@@ -1,33 +1,9 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from [2001:6f8:1178:4:290:27ff:fe1d:cc33]
-	(helo=metis.ext.pengutronix.de)
-	by casper.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NLf4e-0001Kz-Vk
-	for barebox@lists.infradead.org; Fri, 18 Dec 2009 15:49:11 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 18 Dec 2009 16:48:09 +0100
-Message-Id: <1261151305-18627-21-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1261151305-18627-20-git-send-email-s.hauer@pengutronix.de>
-References: <1261151305-18627-1-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-2-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-3-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-4-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-5-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-6-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-7-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-8-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-9-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-10-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-11-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-12-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-13-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-14-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-15-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-16-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-17-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-18-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-19-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-20-git-send-email-s.hauer@pengutronix.de>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Date: Wed, 16 Dec 2009 15:49:17 +0100
+Message-Id: <1260974958-21832-2-git-send-email-mkl@pengutronix.de>
+In-Reply-To: <1260974958-21832-1-git-send-email-mkl@pengutronix.de>
+References: <1260974958-21832-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -41,287 +17,95 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 20/36] scb9328: update defconfig
-To: barebox@lists.infradead.org
+Subject: [PATCH 1/2] arm/lib: add eabi names of helper functions
+To: u-boot-v2@lists.infradead.org
+Cc: sha@pengutronix.de
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Since commit e2b4a792f8751d906d17b7ae343952f78dc41d67, we don't
+undoncitionally link with OABI. If now EABI is selected there are a
+number of missing helper functions, because they have new names now.
+
+This patch add the abi names to the existing helper functions.
+
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- arch/arm/configs/scb9328_defconfig |  144 ++++++++++++++++++++++++++++--------
- 1 files changed, 113 insertions(+), 31 deletions(-)
+ arch/arm/lib/_ashldi3.S |    2 ++
+ arch/arm/lib/_ashrdi3.S |    2 ++
+ arch/arm/lib/_divsi3.S  |    2 ++
+ arch/arm/lib/_lshrdi3.S |    2 ++
+ arch/arm/lib/_udivsi3.S |    3 +++
+ 5 files changed, 11 insertions(+), 0 deletions(-)
 
-diff --git a/arch/arm/configs/scb9328_defconfig b/arch/arm/configs/scb9328_defconfig
-index d3d723f..6638234 100644
---- a/arch/arm/configs/scb9328_defconfig
-+++ b/arch/arm/configs/scb9328_defconfig
-@@ -1,79 +1,139 @@
- #
- # Automatically generated make config: don't edit
--# barebox version: 2.0.0-git
--# Fri Oct 19 11:00:09 2007
-+# barebox version: 2.0.0-rc10
-+# Fri Dec 18 11:50:25 2009
- #
--CONFIG_ARCH_TEXT_BASE=0x08f80000
--CONFIG_BOARDINFO="Synertronixx scb9328"
- # CONFIG_BOARD_LINKER_SCRIPT is not set
- CONFIG_GENERIC_LINKER_SCRIPT=y
- CONFIG_ARM=y
--CONFIG_CPU_ARM920T=y
-+
-+#
-+# System Type
-+#
-+# CONFIG_ARCH_AT91 is not set
-+# CONFIG_ARCH_AT91RM9200 is not set
- CONFIG_ARCH_IMX=y
-+# CONFIG_ARCH_NETX is not set
-+# CONFIG_ARCH_OMAP is not set
-+# CONFIG_ARCH_S3C24xx is not set
-+
-+#
-+# Processor Type
-+#
-+CONFIG_CPU_32=y
-+CONFIG_CPU_ARM920T=y
-+CONFIG_CPU_32v4T=y
-+
-+#
-+# processor features
-+#
-+CONFIG_ARCH_TEXT_BASE=0x08f80000
-+CONFIG_BOARDINFO="Synertronixx scb9328"
-+
-+#
-+# Freescale i.MX System-on-Chip
-+#
- CONFIG_ARCH_IMX1=y
-+# CONFIG_ARCH_IMX21 is not set
-+# CONFIG_ARCH_IMX25 is not set
-+# CONFIG_ARCH_IMX27 is not set
-+# CONFIG_ARCH_IMX31 is not set
-+# CONFIG_ARCH_IMX35 is not set
- # CONFIG_MACH_MX1ADS is not set
- CONFIG_MACH_SCB9328=y
--# CONFIG_MACH_PCM038 is not set
--# CONFIG_MACH_ECO920 is not set
--# CONFIG_MACH_NXDB500 is not set
--# CONFIG_MACH_PCM037 is not set
-+
-+#
-+# Board specific settings
-+#
-+
-+#
-+# i.MX specific settings
-+#
-+# CONFIG_AEABI is not set
+diff --git a/arch/arm/lib/_ashldi3.S b/arch/arm/lib/_ashldi3.S
+index 7344aa7..e1c1bf3 100644
+--- a/arch/arm/lib/_ashldi3.S
++++ b/arch/arm/lib/_ashldi3.S
+@@ -38,6 +38,8 @@ Boston, MA 02110-1301, USA.  */
  
- #
- # Arm specific settings
- #
-+CONFIG_CMD_ARM_CPUINFO=y
- CONFIG_CMDLINE_TAG=y
- CONFIG_SETUP_MEMORY_TAGS=y
- # CONFIG_INITRD_TAG is not set
-+CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
- CONFIG_GREGORIAN_CALENDER=y
- CONFIG_HAS_KALLSYMS=y
- CONFIG_HAS_MODULES=y
-+CONFIG_CMD_MEMORY=y
-+CONFIG_GENERIC_GPIO=y
+ .globl __ashldi3
+ __ashldi3:
++.globl __aeabi_llsl
++__aeabi_llsl:
  
- #
--# General Settings              
-+# General Settings
-+#
-+CONFIG_LOCALVERSION_AUTO=y
-+
- #
-+# memory layout
-+#
-+CONFIG_HAVE_MMU=y
-+# CONFIG_MMU is not set
-+CONFIG_HAVE_CONFIGURABLE_TEXT_BASE=y
- CONFIG_TEXT_BASE=0x08f80000
-+CONFIG_HAVE_CONFIGURABLE_MEMORY_LAYOUT=y
-+CONFIG_MEMORY_LAYOUT_DEFAULT=y
-+# CONFIG_MEMORY_LAYOUT_FIXED is not set
-+CONFIG_STACK_SIZE=0x8000
-+CONFIG_MALLOC_SIZE=0x400000
- # CONFIG_BROKEN is not set
- # CONFIG_EXPERIMENTAL is not set
-+CONFIG_MACH_HAS_LOWLEVEL_INIT=y
-+CONFIG_MACH_DO_LOWLEVEL_INIT=y
- CONFIG_PROMPT="barebox:"
- CONFIG_BAUDRATE=115200
--CONFIG_CMDLINE_EDITING=y
--# CONFIG_AUTO_COMPLETE is not set
- CONFIG_LONGHELP=y
- CONFIG_CBSIZE=1024
- CONFIG_MAXARGS=16
- CONFIG_SHELL_HUSH=y
- # CONFIG_SHELL_SIMPLE is not set
-+# CONFIG_GLOB is not set
- CONFIG_PROMPT_HUSH_PS2="> "
-+CONFIG_CMDLINE_EDITING=y
-+# CONFIG_AUTO_COMPLETE is not set
- CONFIG_DYNAMIC_CRC_TABLE=y
- CONFIG_ERRNO_MESSAGES=y
- CONFIG_TIMESTAMP=y
-+CONFIG_CONSOLE_FULL=y
- CONFIG_CONSOLE_ACTIVATE_FIRST=y
- # CONFIG_OF_FLAT_TREE is not set
-+# CONFIG_PARTITION is not set
- CONFIG_DEFAULT_ENVIRONMENT=y
- CONFIG_DEFAULT_ENVIRONMENT_PATH="board/scb9328/env"
+ 	subs	r3, r2, #32
+ 	rsb	ip, r2, #32
+diff --git a/arch/arm/lib/_ashrdi3.S b/arch/arm/lib/_ashrdi3.S
+index 8994557..e631554 100644
+--- a/arch/arm/lib/_ashrdi3.S
++++ b/arch/arm/lib/_ashrdi3.S
+@@ -38,6 +38,8 @@ Boston, MA 02110-1301, USA.  */
  
- #
--# Debugging                     
-+# Debugging
- #
--CONFIG_SKIP_LOWLEVEL_INIT=y
-+# CONFIG_DEBUG_INFO is not set
- # CONFIG_ENABLE_FLASH_NOISE is not set
- # CONFIG_ENABLE_PARTITION_NOISE is not set
- # CONFIG_ENABLE_DEVICE_NOISE is not set
+ .globl __ashrdi3
+ __ashrdi3:
++.globl __aeabi_lasr
++__aeabi_lasr:
  
- #
--# Commands                      
-+# Commands
- #
+ 	subs	r3, r2, #32
+ 	rsb	ip, r2, #32
+diff --git a/arch/arm/lib/_divsi3.S b/arch/arm/lib/_divsi3.S
+index f6cd2f9..2fbb49d 100644
+--- a/arch/arm/lib/_divsi3.S
++++ b/arch/arm/lib/_divsi3.S
+@@ -99,6 +99,8 @@
+ 	.align	5
+ .globl __divsi3
+ __divsi3:
++.globl __aeabi_idiv
++__aeabi_idiv:
+ 	cmp	r1, #0
+ 	eor	ip, r0, r1			@ save the sign of the result.
+ 	beq	Ldiv0
+diff --git a/arch/arm/lib/_lshrdi3.S b/arch/arm/lib/_lshrdi3.S
+index 44b335b..71e7f3e 100644
+--- a/arch/arm/lib/_lshrdi3.S
++++ b/arch/arm/lib/_lshrdi3.S
+@@ -36,6 +36,8 @@ Boston, MA 02110-1301, USA.  */
  
- #
--# scripting                     
-+# scripting
- #
- CONFIG_CMD_EDIT=y
- CONFIG_CMD_SLEEP=y
--CONFIG_CMD_ENVIRONMENT=y
--CONFIG_CMD_HELP=y
-+# CONFIG_CMD_SAVEENV is not set
-+# CONFIG_CMD_LOADENV is not set
-+# CONFIG_CMD_EXPORT is not set
-+# CONFIG_CMD_PRINTENV is not set
-+# CONFIG_CMD_READLINE is not set
-+CONFIG_CMD_TRUE=y
-+CONFIG_CMD_FALSE=y
+ .globl __lshrdi3
+ __lshrdi3:
++.globl __aeabi_llsr
++__aeabi_llsr:
  
- #
--# file commands                 
-+# file commands
- #
- CONFIG_CMD_LS=y
- CONFIG_CMD_RM=y
-@@ -87,73 +147,95 @@ CONFIG_CMD_MOUNT=y
- CONFIG_CMD_UMOUNT=y
+ 	subs	r3, r2, #32
+ 	rsb	ip, r2, #32
+diff --git a/arch/arm/lib/_udivsi3.S b/arch/arm/lib/_udivsi3.S
+index 1975a0e..bc89b27 100644
+--- a/arch/arm/lib/_udivsi3.S
++++ b/arch/arm/lib/_udivsi3.S
+@@ -13,8 +13,11 @@ curbit		.req	r3
  
- #
--# console                       
-+# console
- #
- CONFIG_CMD_CLEAR=y
- CONFIG_CMD_ECHO=y
- 
- #
--# memory                        
-+# memory
- #
-+# CONFIG_CMD_LOADB is not set
- CONFIG_CMD_MEMINFO=y
--CONFIG_CMD_MEMORY=y
- # CONFIG_CMD_CRC is not set
- # CONFIG_CMD_MTEST is not set
- 
- #
--# flash                         
-+# flash
- #
- CONFIG_CMD_FLASH=y
- 
- #
--# booting                       
-+# booting
- #
- CONFIG_CMD_BOOTM=y
- # CONFIG_CMD_BOOTM_ZLIB is not set
- # CONFIG_CMD_BOOTM_BZLIB is not set
- # CONFIG_CMD_BOOTM_SHOW_TYPE is not set
-+CONFIG_CMD_BOOTZ=y
-+CONFIG_CMD_BOOTU=y
- CONFIG_CMD_RESET=y
- CONFIG_CMD_GO=y
- CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_PARTITION=y
- CONFIG_CMD_TEST=y
-+CONFIG_CMD_VERSION=y
-+CONFIG_CMD_HELP=y
-+CONFIG_CMD_DEVINFO=y
-+CONFIG_CMD_GPIO=y
- CONFIG_NET=y
--CONFIG_NET_BOOTP=y
- CONFIG_NET_DHCP=y
- # CONFIG_NET_RARP is not set
--# CONFIG_NET_SNTP is not set
- # CONFIG_NET_NFS is not set
- CONFIG_NET_PING=y
- CONFIG_NET_TFTP=y
- 
- #
--# Drivers                       
-+# Drivers
- #
- 
- #
--# serial drivers                
-+# serial drivers
- #
-+# CONFIG_DRIVER_SERIAL_ARM_DCC is not set
- CONFIG_DRIVER_SERIAL_IMX=y
-+# CONFIG_DRIVER_SERIAL_NS16550 is not set
- CONFIG_HAS_DM9000=y
- CONFIG_MIIPHY=y
- 
- #
--# Network drivers               
-+# Network drivers
- #
- # CONFIG_DRIVER_NET_SMC911X is not set
-+# CONFIG_DRIVER_NET_SMC91111 is not set
- CONFIG_DRIVER_NET_DM9000=y
- 
- #
--# flash drivers                 
-+# SPI drivers
-+#
-+CONFIG_SPI=y
-+# CONFIG_DRIVER_SPI_IMX is not set
-+# CONFIG_DRIVER_SPI_MC13783 is not set
-+# CONFIG_I2C is not set
-+
-+#
-+# flash drivers
- #
- CONFIG_HAS_CFI=y
- CONFIG_DRIVER_CFI=y
- # CONFIG_DRIVER_CFI_NEW is not set
-+CONFIG_DRIVER_CFI_OLD=y
- CONFIG_CFI_BUFFER_WRITE=y
- # CONFIG_NAND is not set
-+# CONFIG_USB is not set
-+# CONFIG_USB_GADGET is not set
-+# CONFIG_VIDEO is not set
- 
- #
--# Filesystem support            
-+# Filesystem support
- #
- # CONFIG_FS_CRAMFS is not set
-+CONFIG_FS_RAMFS=y
-+CONFIG_FS_DEVFS=y
- CONFIG_CRC32=y
-+# CONFIG_GENERIC_FIND_NEXT_BIT is not set
+ 	.globl	 __udivsi3
+ 	.type  __udivsi3       ,function
++	.globl   __aeabi_uidiv
++	.type  __aeabi_uidiv   ,function
+ 	.align	0
+  __udivsi3      :
++__aeabi_uidiv   :
+ 	cmp	divisor, #0
+ 	beq	Ldiv0
+ 	mov	curbit, #1
 -- 
-1.6.5.2
+1.6.5.4
 
 
 _______________________________________________
