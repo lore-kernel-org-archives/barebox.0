@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from [2001:6f8:1178:4:290:27ff:fe1d:cc33]
 	(helo=metis.ext.pengutronix.de)
-	by casper.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NM7Dy-0001Vk-9G
-	for barebox@lists.infradead.org; Sat, 19 Dec 2009 21:52:31 +0000
-Date: Sat, 19 Dec 2009 22:49:19 +0100
-From: Robert Schwebel <r.schwebel@pengutronix.de>
-Message-ID: <20091219214919.GA22533@pengutronix.de>
-References: <alpine.LFD.2.00.0912190351400.32196@localhost>
+	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
+	id 1NLEHX-0005If-SR
+	for barebox@lists.infradead.org; Thu, 17 Dec 2009 11:12:32 +0000
+Date: Thu, 17 Dec 2009 12:11:55 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20091217111155.GO15126@pengutronix.de>
+References: <20091217083149.GI15126@pengutronix.de>
+	<877hsl6gj3.fsf@macbook.be.48ers.dk>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <alpine.LFD.2.00.0912190351400.32196@localhost>
+In-Reply-To: <877hsl6gj3.fsf@macbook.be.48ers.dk>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,39 +24,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: is barebox meant to be the next generation of u-boot?
-To: "Robert P. J. Day" <rpjday@crashcourse.ca>
-Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: Re: Renaming done / new repository
+To: Peter Korsgaard <jacmet@sunsite.dk>
+Cc: barebox@lists.infradead.org
 
-On Sat, Dec 19, 2009 at 03:56:29AM -0500, Robert P. J. Day wrote:
->   i just want to clarify the direction of barebox -- is it meant to
-> eventually supplant u-boot? i ask since i want to know if it's not
-> worth investing much more time in u-boot (v1) if things are eventually
-> going to switch over to barebox.
+On Thu, Dec 17, 2009 at 11:28:32AM +0100, Peter Korsgaard wrote:
+> >>>>> "Sascha" == Sascha Hauer <s.hauer@pengutronix.de> writes:
+> 
+>  Sascha> Hi All,
+>  Sascha> We now have a new, well we *have* a website:
+> 
+>  Sascha> http://www.barebox.org
+> 
+> Cool! It would be good for a nice first impression to get my doc patch
+> applied and the doxygen documentation regenerated, so the steps in the
+> introduction actually work:
+> 
+> http://lists.infradead.org/pipermail/barebox/2009-December/000277.html
 
-When starting the activities, we had the intention to be a next
-generation technology project, being part of the u-boot project.
-However, things didn't seem to have progressed into that direction over
-the last two years, so we had to move on. We have a new name for the
-project now, which does already give the project a better exposure in
-the community.
+I applied it now. After the release the docs should be regenerated.
 
->   specifically, i want to use it on my beagleboard, so i "git" checked
-> out the source for barebox, configured it for the beagle, built it
-> with the denx "arm-linux-" toolchain and it booted. i haven't got any
-> further than that so far but that's all i was after -- just getting it
-> to boot to the barebox prompt.
->
->   at this point, if barebox is merely *adequate* to do what i want and
-> supports booting my beagleboard fully, is there any reason i don't
-> just move to it entirely, knowing it does what i need and it's only
-> going to get better?  thanks.
+Sascha
 
-If it boots and has everything you need, why not?
-
-However, any contribution is welcome.
-
-rsc
 -- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
