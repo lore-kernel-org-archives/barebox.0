@@ -1,18 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from astoria.ccjclearline.com ([64.235.106.9])
+Received: from tyo201.gate.nec.co.jp ([202.32.8.193])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NMKAq-0004zJ-5l
-	for barebox@lists.infradead.org; Sun, 20 Dec 2009 11:42:12 +0000
-Received: from cpe002129687b04-cm001225dbafb6.cpe.net.cable.rogers.com
-	([99.235.241.187] helo=crashcourse.ca)
-	by astoria.ccjclearline.com with esmtpsa (TLSv1:AES256-SHA:256)
-	(Exim 4.69) (envelope-from <rpjday@crashcourse.ca>)
-	id 1NMKAp-0000o3-6m
-	for barebox@lists.infradead.org; Sun, 20 Dec 2009 06:42:07 -0500
-Date: Sun, 20 Dec 2009 06:41:43 -0500 (EST)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-Message-ID: <alpine.LFD.2.00.0912200640010.16029@localhost>
+	id 1NLQ3q-0006cV-Jf
+	for barebox@lists.infradead.org; Thu, 17 Dec 2009 23:47:15 +0000
+Message-ID: <4B2AC2F9.7080207@necel.com>
+Date: Fri, 18 Dec 2009 08:47:05 +0900
+From: Shinya Kuribayashi <shinya.kuribayashi@necel.com>
 MIME-Version: 1.0
+References: <20091217083149.GI15126@pengutronix.de>
+In-Reply-To: <20091217083149.GI15126@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,45 +17,31 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] MTD:  Correct typo in preprocessor directive.
-To: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: Re: Renaming done / new repository
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
+Sascha Hauer wrote:
+> Along with this the master git repository moved to:
+> 
+> git://git.pengutronix.de/git/barebox.git
 
-Configuration directive should obviously start with "CONFIG_".
+Nice.  Is there any chance we can get the repository via http?
 
-Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+$ git clone http://git.pengutronix.de/git/barebox.git barebox.git
+Initialized empty Git repository in /home/skuribay/git/barebox.git/.git/
+fatal: http://git.pengutronix.de/git/barebox.git/info/refs not found: did you run git update-server-info on the server?
 
----
+$ git version
+git version 1.6.5.7
 
-diff --git a/drivers/nand/diskonchip.c b/drivers/nand/diskonchip.c
-index e17af70..e762524 100644
---- a/drivers/nand/diskonchip.c
-+++ b/drivers/nand/diskonchip.c
-@@ -120,7 +120,7 @@ static int no_autopart=0;
- module_param(no_autopart, int, 0);
- #endif
-
--#ifdef MTD_NAND_DISKONCHIP_BBTWRITE
-+#ifdef CONFIG_MTD_NAND_DISKONCHIP_BBTWRITE
- static int inftl_bbt_write=1;
- #else
- static int inftl_bbt_write=0;
-
-rday
---
-
-========================================================================
-Robert P. J. Day                               Waterloo, Ontario, CANADA
-
-            Linux Consulting, Training and Kernel Pedantry.
-
-Web page:                                          http://crashcourse.ca
-Twitter:                                       http://twitter.com/rpjday
-========================================================================
+-- 
+Shinya Kuribayashi
+NEC Electronics
 
 _______________________________________________
 barebox mailing list
