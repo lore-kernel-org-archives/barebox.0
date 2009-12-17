@@ -2,18 +2,20 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from [2001:6f8:1178:4:290:27ff:fe1d:cc33]
 	(helo=metis.ext.pengutronix.de)
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NLf4n-0005Cr-7P
-	for barebox@lists.infradead.org; Fri, 18 Dec 2009 15:49:10 +0000
+	id 1NLBmb-0001UM-VL
+	for barebox@lists.infradead.org; Thu, 17 Dec 2009 08:32:26 +0000
+Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.69)
+	(envelope-from <sha@pengutronix.de>) id 1NLBm1-00084o-F1
+	for barebox@lists.infradead.org; Thu, 17 Dec 2009 09:31:49 +0100
+Received: from sha by octopus.hi.pengutronix.de with local (Exim 4.69)
+	(envelope-from <sha@pengutronix.de>) id 1NLBm1-00033k-Dz
+	for barebox@lists.infradead.org; Thu, 17 Dec 2009 09:31:49 +0100
+Date: Thu, 17 Dec 2009 09:31:49 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 18 Dec 2009 16:47:55 +0100
-Message-Id: <1261151305-18627-7-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1261151305-18627-6-git-send-email-s.hauer@pengutronix.de>
-References: <1261151305-18627-1-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-2-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-3-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-4-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-5-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-6-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20091217083149.GI15126@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,59 +24,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/36] replace // style comments
+Subject: Renaming done / new repository
 To: barebox@lists.infradead.org
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- include/readkey.h |   20 ++++++++++----------
- 1 files changed, 10 insertions(+), 10 deletions(-)
+Hi All,
 
-diff --git a/include/readkey.h b/include/readkey.h
-index d073e43..919af64 100644
---- a/include/readkey.h
-+++ b/include/readkey.h
-@@ -3,22 +3,22 @@
- 
- #define CTL_CH(c)		((c) - 'a' + 1)
- 
--// Misc. non-Ascii keys
--#define KEY_UP			CTL_CH('p')	// cursor key Up
--#define KEY_DOWN		CTL_CH('n')	// cursor key Down
--#define KEY_RIGHT		CTL_CH('f')	// Cursor Key Right
--#define KEY_LEFT		CTL_CH('b')	// cursor key Left
--#define KEY_HOME		CTL_CH('a')	// Cursor Key Home
-+/* Misc. non-Ascii keys */
-+#define KEY_UP			CTL_CH('p')	/* cursor key Up	*/
-+#define KEY_DOWN		CTL_CH('n')	/* cursor key Down	*/
-+#define KEY_RIGHT		CTL_CH('f')	/* Cursor Key Right	*/
-+#define KEY_LEFT		CTL_CH('b')	/* cursor key Left	*/
-+#define KEY_HOME		CTL_CH('a')	/* Cursor Key Home	*/
- #define KEY_ERASE_TO_EOL	CTL_CH('k')
- #define KEY_REFRESH_TO_EOL	CTL_CH('e')
- #define KEY_ERASE_LINE		CTL_CH('x')
- #define KEY_INSERT		CTL_CH('o')
- #define KEY_CLEAR_SCREEN	CTL_CH('l')
- #define KEY_DEL7		127
--#define KEY_END			133		// Cursor Key End
--#define KEY_PAGEUP		135		// Cursor Key Page Up
--#define KEY_PAGEDOWN		136		// Cursor Key Page Down
--#define KEY_DEL			137		// Cursor Key Del
-+#define KEY_END			133		/* Cursor Key End	*/
-+#define KEY_PAGEUP		135		/* Cursor Key Page Up	*/
-+#define KEY_PAGEDOWN		136		/* Cursor Key Page Down	*/
-+#define KEY_DEL			137		/* Cursor Key Del	*/
- 
- #define ANSI_CLEAR_SCREEN "\e[2J\e[;H"
- 
+We now have a new, well we *have* a website:
+
+http://www.barebox.org
+
+Along with this the master git repository moved to:
+
+git://git.pengutronix.de/git/barebox.git
+
+From now on we'll do timed releases on a monthly base. I'll maintain two
+branches on the git server. In the master branch I'll collect bugfixes
+and this branch leads to the next release. All other patches are
+collected in the next branch which I'll merge directly after a release.
+This is not meant to be set in stone, but that's how I want to work for
+now.
+
+Sascha
+
 -- 
-1.6.5.2
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
