@@ -1,44 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from [2001:6f8:1178:4:290:27ff:fe1d:cc33]
-	(helo=metis.ext.pengutronix.de)
-	by casper.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NLf4l-0001Ku-Rd
-	for barebox@lists.infradead.org; Fri, 18 Dec 2009 15:49:15 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 18 Dec 2009 16:48:20 +0100
-Message-Id: <1261151305-18627-32-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1261151305-18627-31-git-send-email-s.hauer@pengutronix.de>
-References: <1261151305-18627-1-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-2-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-3-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-4-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-5-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-6-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-7-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-8-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-9-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-10-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-11-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-12-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-13-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-14-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-15-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-16-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-17-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-18-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-19-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-20-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-21-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-22-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-23-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-24-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-25-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-26-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-27-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-28-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-29-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-30-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-31-git-send-email-s.hauer@pengutronix.de>
+Received: from comal.ext.ti.com ([198.47.26.152])
+	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
+	id 1NLD0z-0003bu-Bb
+	for barebox@lists.infradead.org; Thu, 17 Dec 2009 09:51:30 +0000
+Received: from dbdp31.itg.ti.com ([172.24.170.98])
+	by comal.ext.ti.com (8.13.7/8.13.7) with ESMTP id nBH9pG9J028994
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <barebox@lists.infradead.org>; Thu, 17 Dec 2009 03:51:18 -0600
+From: Sanjeev Premi <premi@ti.com>
+Date: Thu, 17 Dec 2009 15:21:13 +0530
+Message-Id: <1261043474-31872-2-git-send-email-premi@ti.com>
+In-Reply-To: <1261043474-31872-1-git-send-email-premi@ti.com>
+References: <1261043474-31872-1-git-send-email-premi@ti.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -52,261 +25,365 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 31/36] i.MX35 3stack: update defconfig
+Subject: [PATCH 1/2] omap3evm: Add basic support for the board
 To: barebox@lists.infradead.org
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/configs/freescale_mx35_3stack_defconfig |  108 ++++++++++++++--------
- 1 files changed, 70 insertions(+), 38 deletions(-)
+This patch adds support for OMAP3EVM. It does
+the following:
+ - Adds OMAP3EVM as an option in Kconfig.
+ - Adds choice for UART1/UART3 for serial console
+ - Minimal initializations for the board
+ - Updates to makefile
 
-diff --git a/arch/arm/configs/freescale_mx35_3stack_defconfig b/arch/arm/configs/freescale_mx35_3stack_defconfig
-index d48adf5..1319a69 100644
---- a/arch/arm/configs/freescale_mx35_3stack_defconfig
-+++ b/arch/arm/configs/freescale_mx35_3stack_defconfig
-@@ -1,57 +1,79 @@
- #
- # Automatically generated make config: don't edit
--# barebox version: 2.0.0-rc7
--# Mon Feb  2 16:43:49 2009
-+# barebox version: 2.0.0-rc10
-+# Fri Dec 18 11:47:45 2009
- #
--CONFIG_ARCH_TEXT_BASE=0x87f00000
--CONFIG_BOARDINFO="Freescale MX35 3Stack"
- # CONFIG_BOARD_LINKER_SCRIPT is not set
- CONFIG_GENERIC_LINKER_SCRIPT=y
- CONFIG_ARM=y
+Signed-off-by: Sanjeev Premi <premi@ti.com>
+---
+ board/omap/Kconfig          |   27 ++++
+ board/omap/Makefile         |    1 +
+ board/omap/board-omap3evm.c |  275 +++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 303 insertions(+), 0 deletions(-)
+ create mode 100644 board/omap/board-omap3evm.c
+
+diff --git a/board/omap/Kconfig b/board/omap/Kconfig
+index 07ba87c..361bed4 100644
+--- a/board/omap/Kconfig
++++ b/board/omap/Kconfig
+@@ -30,6 +30,7 @@ menu "OMAP Platform Features"
+ config BOARDINFO
+ 	default "Texas Instrument's SDP343x" if MACH_OMAP343xSDP
+ 	default "Texas Instrument's Beagle" if MACH_BEAGLE
++	default "Texas Instrument's OMAP3EVM" if MACH_OMAP3EVM
+ 
+ choice
+ 	prompt "Select OMAP platform"
+@@ -50,8 +51,34 @@ config MACH_BEAGLE
+ 	  help
+ 	  Say Y here if you are using Beagle Board
+ 
++config MACH_OMAP3EVM
++	bool "Texas Instrument's OMAP3 EVM"
++	select MACH_HAS_LOWLEVEL_INIT
++	select OMAP_CLOCK_ALL
++	select HAS_OMAP_NAND
++	  help
++	  Say Y here if you are using OMAP3EVM
 +
-+#
-+# System Type
-+#
-+# CONFIG_ARCH_AT91 is not set
-+# CONFIG_ARCH_AT91RM9200 is not set
- CONFIG_ARCH_IMX=y
-+# CONFIG_ARCH_NETX is not set
-+# CONFIG_ARCH_OMAP is not set
-+# CONFIG_ARCH_S3C24xx is not set
+ endchoice
+ 
++if MACH_OMAP3EVM
++	choice
++	prompt "Select UART"
 +
-+#
-+# Processor Type
-+#
-+CONFIG_CPU_32=y
++	config OMAP3EVM_UART1
++		bool "Use UART1"
++		depends on MACH_OMAP3EVM
++		help
++		  Say Y here if you would like to use UART1 as console.
 +
-+#
-+# processor features
-+#
-+CONFIG_ARCH_TEXT_BASE=0x87f00000
-+CONFIG_BOARDINFO="Freescale MX35 3Stack"
-+CONFIG_ARCH_HAS_FEC_IMX=y
-+# CONFIG_ARCH_IMX_INTERNAL_BOOT is not set
++	config OMAP3EVM_UART3
++		bool "Use UART3"
++		depends on MACH_OMAP3EVM
++		help
++		  Say Y here if you would like to use UART3 as console.
++	endchoice
++endif
 +
-+#
-+# Freescale i.MX System-on-Chip
-+#
-+# CONFIG_ARCH_IMX1 is not set
-+# CONFIG_ARCH_IMX21 is not set
-+# CONFIG_ARCH_IMX25 is not set
-+# CONFIG_ARCH_IMX27 is not set
-+# CONFIG_ARCH_IMX31 is not set
- CONFIG_ARCH_IMX35=y
--# CONFIG_MACH_MX1ADS is not set
--# CONFIG_MACH_SCB9328 is not set
--# CONFIG_MACH_PCM038 is not set
--# CONFIG_MACH_IMX27ADS is not set
--# CONFIG_MACH_PCM043 is not set
- CONFIG_MACH_FREESCALE_MX35_3STACK=y
--# CONFIG_MACH_ECO920 is not set
--# CONFIG_MACH_NXDB500 is not set
--# CONFIG_MACH_PCM037 is not set
--# CONFIG_MACH_OMAP is not set
--# CONFIG_MACH_AT91SAM9260EK is not set
--# CONFIG_MACH_PM9263 is not set
-+# CONFIG_MACH_PCM043 is not set
+ config MACH_OMAP_ADVANCED_MUX
+ 	bool "Enable advanced pin muxing"
+ 	depends on MACH_OMAP343xSDP
+diff --git a/board/omap/Makefile b/board/omap/Makefile
+index 002855a..b4bb3e1 100644
+--- a/board/omap/Makefile
++++ b/board/omap/Makefile
+@@ -23,5 +23,6 @@
+ obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += platform.o
+ obj-$(CONFIG_MACH_OMAP343xSDP) += board-sdp343x.o
+ obj-$(CONFIG_MACH_BEAGLE) += board-beagle.o
++obj-$(CONFIG_MACH_OMAP3EVM) += board-omap3evm.o
+ obj-$(CONFIG_MACH_OMAP_GPMC_GENERICNAND) += devices-gpmc-nand.o
  
- #
--# Board specific settings       
-+# Board specific settings
- #
- 
- #
--# i.MX specific settings        
-+# i.MX specific settings
- #
--# CONFIG_CMD_IMX_FUSE is not set
-+# CONFIG_IMX_CLKO is not set
-+# CONFIG_AEABI is not set
- 
- #
--# Arm specific settings         
-+# Arm specific settings
- #
- CONFIG_CMD_ARM_CPUINFO=y
- CONFIG_CMDLINE_TAG=y
- CONFIG_SETUP_MEMORY_TAGS=y
- # CONFIG_INITRD_TAG is not set
-+CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
- CONFIG_GREGORIAN_CALENDER=y
- CONFIG_HAS_KALLSYMS=y
- CONFIG_HAS_MODULES=y
- CONFIG_CMD_MEMORY=y
- CONFIG_ENV_HANDLING=y
-+CONFIG_GENERIC_GPIO=y
- 
- #
--# General Settings              
-+# General Settings
- #
- CONFIG_LOCALVERSION_AUTO=y
- 
- #
--# memory layout                 
-+# memory layout
- #
- CONFIG_HAVE_CONFIGURABLE_TEXT_BASE=y
- CONFIG_TEXT_BASE=0x87F00000
-@@ -86,7 +108,7 @@ CONFIG_DEFAULT_ENVIRONMENT=y
- CONFIG_DEFAULT_ENVIRONMENT_PATH="board/pcm043/env/"
- 
- #
--# Debugging                     
-+# Debugging
- #
- # CONFIG_DEBUG_INFO is not set
- # CONFIG_ENABLE_FLASH_NOISE is not set
-@@ -94,11 +116,11 @@ CONFIG_DEFAULT_ENVIRONMENT_PATH="board/pcm043/env/"
- # CONFIG_ENABLE_DEVICE_NOISE is not set
- 
- #
--# Commands                      
-+# Commands
- #
- 
- #
--# scripting                     
-+# scripting
- #
- CONFIG_CMD_EDIT=y
- CONFIG_CMD_SLEEP=y
-@@ -111,7 +133,7 @@ CONFIG_CMD_TRUE=y
- CONFIG_CMD_FALSE=y
- 
- #
--# file commands                 
-+# file commands
- #
- CONFIG_CMD_LS=y
- CONFIG_CMD_RM=y
-@@ -125,13 +147,13 @@ CONFIG_CMD_MOUNT=y
- CONFIG_CMD_UMOUNT=y
- 
- #
--# console                       
-+# console
- #
- CONFIG_CMD_CLEAR=y
- CONFIG_CMD_ECHO=y
- 
- #
--# memory                        
-+# memory
- #
- # CONFIG_CMD_LOADB is not set
- CONFIG_CMD_MEMINFO=y
-@@ -139,17 +161,19 @@ CONFIG_CMD_CRC=y
- # CONFIG_CMD_MTEST is not set
- 
- #
--# flash                         
-+# flash
- #
- CONFIG_CMD_FLASH=y
- 
- #
--# booting                       
-+# booting
- #
- CONFIG_CMD_BOOTM=y
- # CONFIG_CMD_BOOTM_ZLIB is not set
- # CONFIG_CMD_BOOTM_BZLIB is not set
- # CONFIG_CMD_BOOTM_SHOW_TYPE is not set
-+CONFIG_CMD_BOOTZ=y
-+CONFIG_CMD_BOOTU=y
- CONFIG_CMD_RESET=y
- CONFIG_CMD_GO=y
- CONFIG_CMD_TIMEOUT=y
-@@ -158,42 +182,47 @@ CONFIG_CMD_TEST=y
- CONFIG_CMD_VERSION=y
- CONFIG_CMD_HELP=y
- CONFIG_CMD_DEVINFO=y
-+CONFIG_CMD_GPIO=y
- CONFIG_NET=y
--CONFIG_NET_BOOTP=y
- CONFIG_NET_DHCP=y
- # CONFIG_NET_RARP is not set
--# CONFIG_NET_SNTP is not set
- # CONFIG_NET_NFS is not set
- CONFIG_NET_PING=y
- CONFIG_NET_TFTP=y
- 
- #
--# Drivers                       
-+# Drivers
- #
- 
- #
--# serial drivers                
-+# serial drivers
- #
-+# CONFIG_DRIVER_SERIAL_ARM_DCC is not set
- CONFIG_DRIVER_SERIAL_IMX=y
- # CONFIG_DRIVER_SERIAL_NS16550 is not set
- CONFIG_MIIPHY=y
- 
- #
--# Network drivers               
-+# Network drivers
- #
- CONFIG_DRIVER_NET_SMC911X=y
- CONFIG_DRIVER_NET_SMC911X_ADDRESS_SHIFT=0
--CONFIG_DRIVER_NET_IMX27=y
-+# CONFIG_DRIVER_NET_SMC91111 is not set
-+# CONFIG_DRIVER_NET_FEC_IMX is not set
- 
- #
--# SPI drivers                   
-+# SPI drivers
- #
- CONFIG_SPI=y
- # CONFIG_DRIVER_SPI_IMX is not set
- # CONFIG_DRIVER_SPI_MC13783 is not set
-+CONFIG_I2C=y
-+CONFIG_DRIVER_I2C_IMX=y
-+CONFIG_DRIVER_I2C_MC13892=y
-+CONFIG_DRIVER_I2C_MC9SDZ60=y
- 
- #
--# flash drivers                 
-+# flash drivers
- #
- CONFIG_HAS_CFI=y
- CONFIG_DRIVER_CFI=y
-@@ -201,9 +230,12 @@ CONFIG_DRIVER_CFI=y
- CONFIG_DRIVER_CFI_OLD=y
- CONFIG_CFI_BUFFER_WRITE=y
- # CONFIG_NAND is not set
-+# CONFIG_USB is not set
-+# CONFIG_USB_GADGET is not set
-+# CONFIG_VIDEO is not set
- 
- #
--# Filesystem support            
-+# Filesystem support
- #
- # CONFIG_FS_CRAMFS is not set
- CONFIG_FS_RAMFS=y
+diff --git a/board/omap/board-omap3evm.c b/board/omap/board-omap3evm.c
+new file mode 100644
+index 0000000..fdea0ff
+--- /dev/null
++++ b/board/omap/board-omap3evm.c
+@@ -0,0 +1,275 @@
++/**
++ * @file
++ * @brief Board Initialization routines for OMAP3EVM.
++ *
++ * FileName: board/omap/board-omap3evm.c
++ *
++ * This board is based on OMAP3530.
++ * More on OMAP3530 (including documentation can be found here):
++ * http://focus.ti.com/docs/prod/folders/print/omap3530.html
++ *
++ * This file provides initialization in two stages:
++ * @li Boot time initialization - just get SDRAM working.
++ * This is run from SRAM - so no case constructs and global vars can be used.
++ * @li Run time initialization - this is for the rest of the initializations
++ * such as flash, uart etc.
++ *
++ * Boot time initialization includes:
++ * @li SDRAM initialization.
++ * @li Pin Muxing relevant for the EVM.
++ *
++ * Run time initialization includes
++ * @li serial @ref serial_ns16550.c driver device definition
++ *
++ * Originally from board/omap/board-beagle.c
++ */
++
++/*
++ * Copyright (C) 2009 Texas Instruments Incorporated - http://www.ti.com/
++ * Sanjeev Premi <premi@ti.com>
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License
++ * version 2 as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
++
++
++#include <common.h>
++#include <console.h>
++#include <init.h>
++#include <driver.h>
++#include <asm/io.h>
++#include <ns16550.h>
++#include <asm/armlinux.h>
++#include <mach/silicon.h>
++#include <mach/sdrc.h>
++#include <mach/sys_info.h>
++#include <mach/syslib.h>
++#include <mach/control.h>
++#include <mach/omap3-mux.h>
++#include <mach/gpmc.h>
++#include "board.h"
++
++
++/*
++ * Boot-time initialization(s)
++ */
++
++/**
++ * @brief Initialize the SDRC module
++ *
++ * @return void
++ */
++static void sdrc_init(void)
++{
++	/* SDRAM software reset */
++	/* No idle ack and RESET enable */
++	writel(0x1A, SDRC_REG(SYSCONFIG));
++	sdelay(100);
++	/* No idle ack and RESET disable */
++	writel(0x18, SDRC_REG(SYSCONFIG));
++
++	/* SDRC Sharing register */
++	/* 32-bit SDRAM on data lane [31:0] - CS0 */
++	/* pin tri-stated = 1 */
++	writel(0x00000100, SDRC_REG(SHARING));
++
++	/* ----- SDRC Registers Configuration --------- */
++	/* SDRC_MCFG0 register */
++	writel(0x02584099, SDRC_REG(MCFG_0));
++
++	/* SDRC_RFR_CTRL0 register */
++	writel(0x54601, SDRC_REG(RFR_CTRL_0));
++
++	/* SDRC_ACTIM_CTRLA0 register */
++	writel(0xA29DB4C6, SDRC_REG(ACTIM_CTRLA_0));
++
++	/* SDRC_ACTIM_CTRLB0 register */
++	writel(0x12214, SDRC_REG(ACTIM_CTRLB_0));
++
++	/* Disble Power Down of CKE due to 1 CKE on combo part */
++	writel(0x00000081, SDRC_REG(POWER));
++
++	/* SDRC_MANUAL command register */
++	/* NOP command */
++	writel(0x00000000, SDRC_REG(MANUAL_0));
++	/* Precharge command */
++	writel(0x00000001, SDRC_REG(MANUAL_0));
++	/* Auto-refresh command */
++	writel(0x00000002, SDRC_REG(MANUAL_0));
++	/* Auto-refresh command */
++	writel(0x00000002, SDRC_REG(MANUAL_0));
++
++	/* SDRC MR0 register Burst length=4 */
++	writel(0x00000032, SDRC_REG(MR_0));
++
++	/* SDRC DLLA control register */
++	writel(0x0000000A, SDRC_REG(DLLA_CTRL));
++
++	return;
++}
++
++/**
++ * @brief Do the necessary pin muxing required for OMAP3EVM. Some pins in OMAP3
++ * do not have alternate modes. We don't program these pins.
++ *
++ * See @ref MUX_VAL for description of the muxing mode.
++ *
++ * @return void
++ */
++static void mux_config(void)
++{
++	/*
++	 * SDRC
++	 * - SDRC_D0-SDRC_D31: Default MUX mode is mode0.
++	 */
++
++	/*
++	 * GPMC
++	 * - GPMC_D0-GPMC_D7: Default MUX mode is mode0.
++	 * - GPMC_NADV_ALE: Default MUX mode is mode0.
++	 * - GPMC_NOE: Default MUX mode is mode0.
++	 * - GPMC_NWE: Default MUX mode is mode0.
++	 * - GPMC_WAIT0: Default MUX mode is mode0.
++	 */
++	MUX_VAL(CP(GPMC_A1),		(IDIS | PTD | DIS | M0));
++	MUX_VAL(CP(GPMC_A2),		(IDIS | PTD | DIS | M0));
++	MUX_VAL(CP(GPMC_A3),		(IDIS | PTD | DIS | M0));
++	MUX_VAL(CP(GPMC_A4),		(IDIS | PTD | DIS | M0));
++	MUX_VAL(CP(GPMC_A5),		(IDIS | PTD | DIS | M0));
++	MUX_VAL(CP(GPMC_A6),		(IDIS | PTD | DIS | M0));
++	MUX_VAL(CP(GPMC_A7),		(IDIS | PTD | DIS | M0));
++	MUX_VAL(CP(GPMC_A8),		(IDIS | PTD | DIS | M0));
++	MUX_VAL(CP(GPMC_A9),		(IDIS | PTD | DIS | M0));
++	MUX_VAL(CP(GPMC_A10),		(IDIS | PTD | DIS | M0));
++
++	MUX_VAL(CP(GPMC_D8),		(IEN  | PTD | DIS | M0));
++	MUX_VAL(CP(GPMC_D9),		(IEN  | PTD | DIS | M0));
++	MUX_VAL(CP(GPMC_D10),		(IEN  | PTD | DIS | M0));
++	MUX_VAL(CP(GPMC_D11),		(IEN  | PTD | DIS | M0));
++	MUX_VAL(CP(GPMC_D12),		(IEN  | PTD | DIS | M0));
++	MUX_VAL(CP(GPMC_D13),		(IEN  | PTD | DIS | M0));
++	MUX_VAL(CP(GPMC_D14),		(IEN  | PTD | DIS | M0));
++	MUX_VAL(CP(GPMC_D15),		(IEN  | PTD | DIS | M0));
++	MUX_VAL(CP(GPMC_CLK),		(IDIS | PTD | DIS | M0));
++
++	MUX_VAL(CP(GPMC_NBE0_CLE),	(IDIS | PTD | DIS | M0));
++	MUX_VAL(CP(GPMC_NBE1),		(IEN  | PTD | DIS | M0));
++	MUX_VAL(CP(GPMC_NWP),		(IEN  | PTD | DIS | M0));
++
++	MUX_VAL(CP(GPMC_WAIT1),		(IEN  | PTU | EN  | M0));
++
++	/*
++	 * Serial Interface
++	 */
++#if defined(CONFIG_OMAP3EVM_UART1)
++	MUX_VAL(CP(UART1_TX),		(IDIS | PTD | DIS | M0));
++	MUX_VAL(CP(UART1_RTS),		(IDIS | PTD | DIS | M0));
++	MUX_VAL(CP(UART1_CTS),		(IEN  | PTU | DIS | M0));
++	MUX_VAL(CP(UART1_RX),		(IEN  | PTD | DIS | M0));
++#elif defined(CONFIG_OMAP3EVM_UART3)
++	MUX_VAL(CP(UART3_CTS_RCTX),	(IEN  | PTD | EN  | M0));
++	MUX_VAL(CP(UART3_RTS_SD),	(IDIS | PTD | DIS | M0));
++	MUX_VAL(CP(UART3_RX_IRRX),	(IEN  | PTD | DIS | M0));
++	MUX_VAL(CP(UART3_TX_IRTX),	(IDIS | PTD | DIS | M0));
++#endif
++}
++
++/**
++ * @brief The basic entry point for board initialization.
++ *
++ * This is called as part of machine init (after arch init).
++ * This is again called with stack in SRAM, so not too many
++ * constructs possible here.
++ *
++ * @return void
++ */
++void board_init(void)
++{
++	int in_sdram = running_in_sdram();
++
++	mux_config();
++	/* Dont reconfigure SDRAM while running in SDRAM! */
++	if (!in_sdram)
++		sdrc_init();
++}
++
++/*
++ * Run-time initialization(s)
++ */
++
++#ifdef CONFIG_DRIVER_SERIAL_NS16550
++
++static struct NS16550_plat serial_plat = {
++	.clock		= 48000000,      /* 48MHz (APLL96/2) */
++	.f_caps		= CONSOLE_STDIN | CONSOLE_STDOUT | CONSOLE_STDERR,
++	.reg_read	= omap_uart_read,
++	.reg_write	= omap_uart_write,
++};
++
++static struct device_d omap3evm_serial_device = {
++	.name		= "serial_ns16550",
++#if defined(CONFIG_OMAP3EVM_UART1)
++	.map_base	= OMAP_UART1_BASE,
++#elif defined(CONFIG_OMAP3EVM_UART3)
++	.map_base	= OMAP_UART3_BASE,
++#endif
++	.size		= 1024,
++	.platform_data	= (void *)&serial_plat,
++};
++
++/**
++ * @brief Initialize the serial port to be used as console.
++ *
++ * @return result of device registration
++ */
++static int omap3evm_init_console(void)
++{
++	return register_device(&omap3evm_serial_device);
++}
++console_initcall(omap3evm_init_console);
++#endif /* CONFIG_DRIVER_SERIAL_NS16550 */
++
++static struct memory_platform_data sram_pdata = {
++	.name	= "ram0",
++	.flags	= DEVFS_RDWR,
++};
++
++static struct device_d sdram_dev = {
++	.name		= "mem",
++	.map_base	= 0x80000000,
++	.size		= 128 * 1024 * 1024,
++	.platform_data	= &sram_pdata,
++};
++
++static int omap3evm_init_devices(void)
++{
++	int ret;
++
++	ret = register_device(&sdram_dev);
++	if (ret)
++		goto failed;
++
++#ifdef CONFIG_GPMC
++	/*
++	 * WP is made high and WAIT1 active Low
++	 */
++	gpmc_generic_init(0x10);
++#endif
++
++	armlinux_add_dram(&sdram_dev);
++
++failed:
++	return ret;
++}
++device_initcall(omap3evm_init_devices);
 -- 
-1.6.5.2
+1.6.2.2
 
 
 _______________________________________________
