@@ -2,15 +2,46 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from [2001:6f8:1178:4:290:27ff:fe1d:cc33]
 	(helo=metis.ext.pengutronix.de)
 	by casper.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NMf5l-0000J1-SN
-	for barebox@lists.infradead.org; Mon, 21 Dec 2009 10:02:19 +0000
-Date: Mon, 21 Dec 2009 11:01:15 +0100
+	id 1NLf4e-0001L8-OO
+	for barebox@lists.infradead.org; Fri, 18 Dec 2009 15:49:08 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20091221100115.GU15126@pengutronix.de>
-References: <alpine.LFD.2.00.0912200859330.20718@localhost>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <alpine.LFD.2.00.0912200859330.20718@localhost>
+Date: Fri, 18 Dec 2009 16:48:23 +0100
+Message-Id: <1261151305-18627-35-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1261151305-18627-34-git-send-email-s.hauer@pengutronix.de>
+References: <1261151305-18627-1-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-2-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-3-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-4-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-5-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-6-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-7-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-8-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-9-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-10-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-11-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-12-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-13-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-14-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-15-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-16-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-17-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-18-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-19-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-20-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-21-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-22-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-23-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-24-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-25-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-26-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-27-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-28-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-29-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-30-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-31-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-32-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-33-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-34-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,103 +50,121 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: the "CONFIG_" namespace and what's with "CFG_CMD_" prefixes?
-To: "Robert P. J. Day" <rpjday@crashcourse.ca>
-Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: [PATCH 34/36] omap3_evm: update defconfig
+To: barebox@lists.infradead.org
 
-On Sun, Dec 20, 2009 at 09:06:07AM -0500, Robert P. J. Day wrote:
-> 
->   based on some scanning i just did, i notice the following
-> occurrences of the "CMD_CFG_" prefix on a number of preprocessor
-> variables:
-> 
-> $ grep -r CFG_CMD *
-> arch/ppc/mach-mpc5xxx/interrupts.c:#if (CONFIG_COMMANDS & CFG_CMD_IRQ)
-> arch/ppc/mach-mpc5xxx/ide.c:#ifdef CFG_CMD_IDE
-> arch/ppc/mach-mpc5xxx/ide.c:#endif /* CFG_CMD_IDE */
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/configs/omap3_evm_defconfig |   27 +++++++++++++++++++++++----
+ 1 files changed, 23 insertions(+), 4 deletions(-)
 
-This file can be removed (and taken again from U-Boot if we want to add
-ide support for barebox)
-
-> arch/ppc/lib/kgdb.c:#endif /* CFG_CMD_KGDB */
-> board/pcm030/pcm030.c:#if defined (CFG_CMD_IDE) && defined (CONFIG_IDE_RESET)
-> board/pcm030/pcm030.c:#endif /* defined (CFG_CMD_IDE) && defined (CONFIG_IDE_RESET) */
-
-unused code. I just created a patch to remove it.
-
-> commands/loads.c:# if (CONFIG_COMMANDS & CFG_CMD_SAVES)
-> commands/loads.c:# endif /* CFG_CMD_SAVES */
-> commands/loads.c:#if (CONFIG_COMMANDS & CFG_CMD_SAVES)
-> commands/loads.c:# endif /* CFG_CMD_SAVES */
-> commands/loads.c:#if (CONFIG_COMMANDS & CFG_CMD_SAVES)
-> commands/loads.c:#endif	/* CFG_CMD_SAVES */
-
-commands/loads.c hasn't been touched for ages and won't even compile. If
-somebody wants to add loads support he should start from scratch or with
-original U-Boot code. When I started with U-Boot-V2 or now barebox there
-was much old code and some of it is still there. I think we can safely
-remove code which obviously wasn't touched for long time and still looks
-like U-Boot. The original U-Boot code is still there for reference and
-as a base to do a fresh start.
-
-> common/Kconfig:	  automatically enabled when you select CFG_CMD_DATE .
-> drivers/net/at91_ether.c:#if defined(CONFIG_MII) || (CONFIG_COMMANDS & CFG_CMD_MII)
-> drivers/net/at91_ether.c:#endif	/* defined(CONFIG_MII) || (CONFIG_COMMANDS & CFG_CMD_MII) */
-> drivers/net/at91_ether.c:#if defined(CONFIG_MII) || (CONFIG_COMMANDS & CFG_CMD_MII)
-
-The CFG_CMD_MII part can be removed here.
-
-> lib/crc32.c:#include <common.h>	/* to get command definitions like CFG_CMD_JFFS2 */
-
-This comment is obsolete
-
-> $
-> 
->   it's not clear what that prefix is supposed to represent since, in
-> at least one case, it might be a typo -- "CMD_SAVES":
-> 
-> $ grep -r CMD_SAVES *
-> commands/loads.c:# if (CONFIG_COMMANDS & CFG_CMD_SAVES)
-> commands/loads.c:# endif /* CFG_CMD_SAVES */
-> commands/loads.c:#if (CONFIG_COMMANDS & CFG_CMD_SAVES)
-> commands/loads.c:# endif /* CFG_CMD_SAVES */
-> commands/loads.c:#if (CONFIG_COMMANDS & CFG_CMD_SAVES)
-> commands/loads.c:#endif	/* CFG_CMD_SAVES */
-> commands/Kconfig:config CMD_SAVES
-> $
-> 
->   if those tests are meant to match that Kconfig variable, then
-> obviously they're misspelled.  if not, then i'm not sure what's going
-> on.  where *are* CFG_CMD_ variables supposed to be defined?  as in:
-> 
-> $ grep -rw CFG_CMD_MII *
-> drivers/net/at91_ether.c:#if defined(CONFIG_MII) || (CONFIG_COMMANDS & CFG_CMD_MII)
-> drivers/net/at91_ether.c:#endif	/* defined(CONFIG_MII) || (CONFIG_COMMANDS & CFG_CMD_MII) */
-> drivers/net/at91_ether.c:#if defined(CONFIG_MII) || (CONFIG_COMMANDS & CFG_CMD_MII)
-> $
-> 
->   as a final point, it's standard practise that the "CONFIG_"-prefixed
-> variable namespace should be reserved *exclusively* for Kconfig
-> variables.  at least that's the way it works in the kernel world.
-
-Ack.
-
-As a general note all CFG_CMD_ variables are leftovers from original
-U-Boot code and should be either converted to Kconfig variables or
-removed if not needed.
-
-Sascha
-
-
+diff --git a/arch/arm/configs/omap3_evm_defconfig b/arch/arm/configs/omap3_evm_defconfig
+index 99d1198..abf60e6 100644
+--- a/arch/arm/configs/omap3_evm_defconfig
++++ b/arch/arm/configs/omap3_evm_defconfig
+@@ -1,15 +1,22 @@
+ #
+ # Automatically generated make config: don't edit
+-# U-Boot version: 2.0.0-rc10
+-# Mon Dec 14 16:16:09 2009
++# barebox version: 2009.12.0-pre
++# Fri Dec 18 16:39:27 2009
+ #
++# CONFIG_BOARD_LINKER_SCRIPT is not set
+ CONFIG_GENERIC_LINKER_SCRIPT=y
+ CONFIG_ARM=y
+ 
+ #
+ # System Type
+ #
++# CONFIG_ARCH_AT91 is not set
++# CONFIG_ARCH_AT91RM9200 is not set
++# CONFIG_ARCH_IMX is not set
++# CONFIG_ARCH_NETX is not set
+ CONFIG_ARCH_OMAP=y
++# CONFIG_ARCH_S3C24xx is not set
++
+ #
+ # Processor Type
+ #
+@@ -20,7 +27,6 @@ CONFIG_CPU_32v7=y
+ #
+ # processor features
+ #
+-CONFIG_ARCH_TEXT_BASE=0x80e80000
+ CONFIG_BOARDINFO="Texas Instrument's OMAP3EVM"
+ 
+ #
+@@ -38,10 +44,13 @@ CONFIG_GPMC=y
+ #
+ # OMAP Platform Features
+ #
++# CONFIG_MACH_OMAP343xSDP is not set
++# CONFIG_MACH_BEAGLE is not set
+ CONFIG_MACH_OMAP3EVM=y
+ CONFIG_OMAP3EVM_UART1=y
+ # CONFIG_OMAP3EVM_UART3 is not set
+ CONFIG_HAS_OMAP_NAND=y
++# CONFIG_MACH_OMAP_GPMC_NAND is not set
+ CONFIG_AEABI=y
+ 
+ #
+@@ -52,6 +61,7 @@ CONFIG_CMD_ARM_CPUINFO=y
+ # CONFIG_SETUP_MEMORY_TAGS is not set
+ # CONFIG_INITRD_TAG is not set
+ # CONFIG_CPU_V7_DCACHE_SKIP is not set
++# CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS is not set
+ CONFIG_HAS_KALLSYMS=y
+ CONFIG_HAS_MODULES=y
+ # CONFIG_CMD_MEMORY is not set
+@@ -152,6 +162,7 @@ CONFIG_CMD_MEMINFO=y
+ #
+ # flash
+ #
++# CONFIG_CMD_FLASH is not set
+ 
+ #
+ # booting
+@@ -175,6 +186,7 @@ CONFIG_CMD_DEVINFO=y
+ #
+ # serial drivers
+ #
++# CONFIG_DRIVER_SERIAL_ARM_DCC is not set
+ CONFIG_DRIVER_SERIAL_NS16550=y
+ CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
+ 
+@@ -182,11 +194,17 @@ CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
+ # SPI drivers
+ #
+ # CONFIG_SPI is not set
++# CONFIG_I2C is not set
+ 
+ #
+ # flash drivers
+ #
+-
++# CONFIG_DRIVER_CFI is not set
++CONFIG_DRIVER_CFI_OLD=y
++# CONFIG_NAND is not set
++# CONFIG_USB is not set
++# CONFIG_USB_GADGET is not set
++# CONFIG_VIDEO is not set
+ 
+ #
+ # Filesystem support
+@@ -195,3 +213,4 @@ CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
+ CONFIG_FS_RAMFS=y
+ CONFIG_FS_DEVFS=y
+ CONFIG_CRC16=y
++# CONFIG_GENERIC_FIND_NEXT_BIT is not set
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.6.5.2
+
 
 _______________________________________________
 barebox mailing list
