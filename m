@@ -1,112 +1,330 @@
-Delivery-date: Tue, 23 Feb 2021 21:26:12 +0100
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
-	by lore.white.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lEeG4-0002kZ-OG
-	for lore@lore.pengutronix.de; Tue, 23 Feb 2021 21:26:12 +0100
-Received: from merlin.infradead.org ([2001:8b0:10b:1231::1])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1lEeG4-0004Oc-0Z
-	for lore@pengutronix.de; Tue, 23 Feb 2021 21:26:12 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=merlin.20170209; h=Sender:Content-Transfer-Encoding:
-	Content-Type:Cc:List-Subscribe:List-Help:List-Post:List-Archive:
-	List-Unsubscribe:List-Id:MIME-Version:Message-Id:Date:Subject:To:From:
-	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
-	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=xmsCyG523LghD1E1ltSCnsx/9ujSsaPly22wPEk70TM=; b=zDOQ3imbWv+L8V1E3bEU+uxNOh
-	msCl3rYbs+ucNWzJQw+MNr3fH/hqGLyht2LNFnz5+SPzJLFKKLgDdA8yIj6XUPssPYRYM5CkgnKEA
-	FLPYd2m1ZxQTEoR1FOJ/VtyG1hWeGfkpaK4Ztm6UDX3crz/nbtwZY0cSYg76i3gLxA7/A8sqECYgK
-	zcwqxzKpyE0DDse6WznNRSwwmeIUg58/mM7qD3/jZA7JxPK5eSTdYUOySGknG0FOkZfJ4ajeVvHNF
-	zWoqo/fb+nyv7SZDQ8bRyFDfLhF6Pze2xWGRyYtitHHJJefiATrYHrdWGDcslcK1KYP3AS/Qo8CgR
-	C6hwg0Og==;
-Received: from localhost ([::1] helo=merlin.infradead.org)
-	by merlin.infradead.org with esmtp (Exim 4.92.3 #3 (Red Hat Linux))
-	id 1lEeEX-0002jz-Ud; Tue, 23 Feb 2021 20:24:38 +0000
-Received: from mout-p-101.mailbox.org ([80.241.56.151])
- by merlin.infradead.org with esmtps (Exim 4.92.3 #3 (Red Hat Linux))
- id 1lEeEV-0002jD-6r
- for barebox@lists.infradead.org; Tue, 23 Feb 2021 20:24:36 +0000
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [80.241.60.241])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4DlVrs6MnyzQlY4;
- Tue, 23 Feb 2021 21:24:29 +0100 (CET)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp2.mailbox.org ([80.241.60.241])
- by spamfilter05.heinlein-hosting.de (spamfilter05.heinlein-hosting.de
- [80.241.56.123]) (amavisd-new, port 10030)
- with ESMTP id LdS7XkXdpSbH; Tue, 23 Feb 2021 21:24:28 +0100 (CET)
-From: Thorsten Scherer <tsc@scherer.tk>
-To: barebox@lists.infradead.org
-Date: Tue, 23 Feb 2021 21:24:01 +0100
-Message-Id: <20210223202401.35896-1-tsc@scherer.tk>
-MIME-Version: 1.0
-X-MBO-SPAM-Probability: ****
-X-Rspamd-Score: 4.65 / 15.00 / 15.00
-X-Rspamd-Queue-Id: 4C86717CC
-X-Rspamd-UID: d03b90
-X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20210223_152435_377681_57EF2E16 
-X-CRM114-Status: UNSURE (   7.62  )
-X-CRM114-Notice: Please train this message.
-X-BeenThere: barebox@lists.infradead.org
-X-Mailman-Version: 2.1.29
-Precedence: list
+Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
+Received: from [2001:6f8:1178:4:290:27ff:fe1d:cc33]
+	(helo=metis.ext.pengutronix.de)
+	by casper.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
+	id 1NLf4e-0001Kz-Vk
+	for barebox@lists.infradead.org; Fri, 18 Dec 2009 15:49:11 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Fri, 18 Dec 2009 16:48:09 +0100
+Message-Id: <1261151305-18627-21-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1261151305-18627-20-git-send-email-s.hauer@pengutronix.de>
+References: <1261151305-18627-1-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-2-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-3-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-4-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-5-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-6-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-7-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-8-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-9-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-10-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-11-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-12-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-13-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-14-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-15-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-16-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-17-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-18-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-19-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-20-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
- <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
+	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/barebox/>
 List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
- <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Thorsten Scherer <tsc@scherer.tk>
+	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Sender: "barebox" <barebox-bounces@lists.infradead.org>
-X-SA-Exim-Connect-IP: 2001:8b0:10b:1231::1
-X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
-	metis.ext.pengutronix.de
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.6 required=4.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: [PATCH] Documentation: devicetree: include firmware in toctree
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
+Sender: barebox-bounces@lists.infradead.org
+Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
+Subject: [PATCH 20/36] scb9328: update defconfig
+To: barebox@lists.infradead.org
 
-Fix Sphinx consistency warning.
-
-Fixes: fcdcb8177 ("documentation: devicetree: migrate remaining binding to reST")
-Signed-off-by: Thorsten Scherer <tsc@scherer.tk>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- Documentation/devicetree/index.rst | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/configs/scb9328_defconfig |  144 ++++++++++++++++++++++++++++--------
+ 1 files changed, 113 insertions(+), 31 deletions(-)
 
-diff --git a/Documentation/devicetree/index.rst b/Documentation/devicetree/index.rst
-index 8c47d033f..ce62ebe10 100644
---- a/Documentation/devicetree/index.rst
-+++ b/Documentation/devicetree/index.rst
-@@ -108,6 +108,7 @@ Contents:
-    :maxdepth: 1
+diff --git a/arch/arm/configs/scb9328_defconfig b/arch/arm/configs/scb9328_defconfig
+index d3d723f..6638234 100644
+--- a/arch/arm/configs/scb9328_defconfig
++++ b/arch/arm/configs/scb9328_defconfig
+@@ -1,79 +1,139 @@
+ #
+ # Automatically generated make config: don't edit
+-# barebox version: 2.0.0-git
+-# Fri Oct 19 11:00:09 2007
++# barebox version: 2.0.0-rc10
++# Fri Dec 18 11:50:25 2009
+ #
+-CONFIG_ARCH_TEXT_BASE=0x08f80000
+-CONFIG_BOARDINFO="Synertronixx scb9328"
+ # CONFIG_BOARD_LINKER_SCRIPT is not set
+ CONFIG_GENERIC_LINKER_SCRIPT=y
+ CONFIG_ARM=y
+-CONFIG_CPU_ARM920T=y
++
++#
++# System Type
++#
++# CONFIG_ARCH_AT91 is not set
++# CONFIG_ARCH_AT91RM9200 is not set
+ CONFIG_ARCH_IMX=y
++# CONFIG_ARCH_NETX is not set
++# CONFIG_ARCH_OMAP is not set
++# CONFIG_ARCH_S3C24xx is not set
++
++#
++# Processor Type
++#
++CONFIG_CPU_32=y
++CONFIG_CPU_ARM920T=y
++CONFIG_CPU_32v4T=y
++
++#
++# processor features
++#
++CONFIG_ARCH_TEXT_BASE=0x08f80000
++CONFIG_BOARDINFO="Synertronixx scb9328"
++
++#
++# Freescale i.MX System-on-Chip
++#
+ CONFIG_ARCH_IMX1=y
++# CONFIG_ARCH_IMX21 is not set
++# CONFIG_ARCH_IMX25 is not set
++# CONFIG_ARCH_IMX27 is not set
++# CONFIG_ARCH_IMX31 is not set
++# CONFIG_ARCH_IMX35 is not set
+ # CONFIG_MACH_MX1ADS is not set
+ CONFIG_MACH_SCB9328=y
+-# CONFIG_MACH_PCM038 is not set
+-# CONFIG_MACH_ECO920 is not set
+-# CONFIG_MACH_NXDB500 is not set
+-# CONFIG_MACH_PCM037 is not set
++
++#
++# Board specific settings
++#
++
++#
++# i.MX specific settings
++#
++# CONFIG_AEABI is not set
  
-    bindings/barebox/*
-+   bindings/firmware/*
-    bindings/leds/*
-    bindings/misc/*
-    bindings/mtd/*
+ #
+ # Arm specific settings
+ #
++CONFIG_CMD_ARM_CPUINFO=y
+ CONFIG_CMDLINE_TAG=y
+ CONFIG_SETUP_MEMORY_TAGS=y
+ # CONFIG_INITRD_TAG is not set
++CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+ CONFIG_GREGORIAN_CALENDER=y
+ CONFIG_HAS_KALLSYMS=y
+ CONFIG_HAS_MODULES=y
++CONFIG_CMD_MEMORY=y
++CONFIG_GENERIC_GPIO=y
+ 
+ #
+-# General Settings              
++# General Settings
++#
++CONFIG_LOCALVERSION_AUTO=y
++
+ #
++# memory layout
++#
++CONFIG_HAVE_MMU=y
++# CONFIG_MMU is not set
++CONFIG_HAVE_CONFIGURABLE_TEXT_BASE=y
+ CONFIG_TEXT_BASE=0x08f80000
++CONFIG_HAVE_CONFIGURABLE_MEMORY_LAYOUT=y
++CONFIG_MEMORY_LAYOUT_DEFAULT=y
++# CONFIG_MEMORY_LAYOUT_FIXED is not set
++CONFIG_STACK_SIZE=0x8000
++CONFIG_MALLOC_SIZE=0x400000
+ # CONFIG_BROKEN is not set
+ # CONFIG_EXPERIMENTAL is not set
++CONFIG_MACH_HAS_LOWLEVEL_INIT=y
++CONFIG_MACH_DO_LOWLEVEL_INIT=y
+ CONFIG_PROMPT="barebox:"
+ CONFIG_BAUDRATE=115200
+-CONFIG_CMDLINE_EDITING=y
+-# CONFIG_AUTO_COMPLETE is not set
+ CONFIG_LONGHELP=y
+ CONFIG_CBSIZE=1024
+ CONFIG_MAXARGS=16
+ CONFIG_SHELL_HUSH=y
+ # CONFIG_SHELL_SIMPLE is not set
++# CONFIG_GLOB is not set
+ CONFIG_PROMPT_HUSH_PS2="> "
++CONFIG_CMDLINE_EDITING=y
++# CONFIG_AUTO_COMPLETE is not set
+ CONFIG_DYNAMIC_CRC_TABLE=y
+ CONFIG_ERRNO_MESSAGES=y
+ CONFIG_TIMESTAMP=y
++CONFIG_CONSOLE_FULL=y
+ CONFIG_CONSOLE_ACTIVATE_FIRST=y
+ # CONFIG_OF_FLAT_TREE is not set
++# CONFIG_PARTITION is not set
+ CONFIG_DEFAULT_ENVIRONMENT=y
+ CONFIG_DEFAULT_ENVIRONMENT_PATH="board/scb9328/env"
+ 
+ #
+-# Debugging                     
++# Debugging
+ #
+-CONFIG_SKIP_LOWLEVEL_INIT=y
++# CONFIG_DEBUG_INFO is not set
+ # CONFIG_ENABLE_FLASH_NOISE is not set
+ # CONFIG_ENABLE_PARTITION_NOISE is not set
+ # CONFIG_ENABLE_DEVICE_NOISE is not set
+ 
+ #
+-# Commands                      
++# Commands
+ #
+ 
+ #
+-# scripting                     
++# scripting
+ #
+ CONFIG_CMD_EDIT=y
+ CONFIG_CMD_SLEEP=y
+-CONFIG_CMD_ENVIRONMENT=y
+-CONFIG_CMD_HELP=y
++# CONFIG_CMD_SAVEENV is not set
++# CONFIG_CMD_LOADENV is not set
++# CONFIG_CMD_EXPORT is not set
++# CONFIG_CMD_PRINTENV is not set
++# CONFIG_CMD_READLINE is not set
++CONFIG_CMD_TRUE=y
++CONFIG_CMD_FALSE=y
+ 
+ #
+-# file commands                 
++# file commands
+ #
+ CONFIG_CMD_LS=y
+ CONFIG_CMD_RM=y
+@@ -87,73 +147,95 @@ CONFIG_CMD_MOUNT=y
+ CONFIG_CMD_UMOUNT=y
+ 
+ #
+-# console                       
++# console
+ #
+ CONFIG_CMD_CLEAR=y
+ CONFIG_CMD_ECHO=y
+ 
+ #
+-# memory                        
++# memory
+ #
++# CONFIG_CMD_LOADB is not set
+ CONFIG_CMD_MEMINFO=y
+-CONFIG_CMD_MEMORY=y
+ # CONFIG_CMD_CRC is not set
+ # CONFIG_CMD_MTEST is not set
+ 
+ #
+-# flash                         
++# flash
+ #
+ CONFIG_CMD_FLASH=y
+ 
+ #
+-# booting                       
++# booting
+ #
+ CONFIG_CMD_BOOTM=y
+ # CONFIG_CMD_BOOTM_ZLIB is not set
+ # CONFIG_CMD_BOOTM_BZLIB is not set
+ # CONFIG_CMD_BOOTM_SHOW_TYPE is not set
++CONFIG_CMD_BOOTZ=y
++CONFIG_CMD_BOOTU=y
+ CONFIG_CMD_RESET=y
+ CONFIG_CMD_GO=y
+ CONFIG_CMD_TIMEOUT=y
+ CONFIG_CMD_PARTITION=y
+ CONFIG_CMD_TEST=y
++CONFIG_CMD_VERSION=y
++CONFIG_CMD_HELP=y
++CONFIG_CMD_DEVINFO=y
++CONFIG_CMD_GPIO=y
+ CONFIG_NET=y
+-CONFIG_NET_BOOTP=y
+ CONFIG_NET_DHCP=y
+ # CONFIG_NET_RARP is not set
+-# CONFIG_NET_SNTP is not set
+ # CONFIG_NET_NFS is not set
+ CONFIG_NET_PING=y
+ CONFIG_NET_TFTP=y
+ 
+ #
+-# Drivers                       
++# Drivers
+ #
+ 
+ #
+-# serial drivers                
++# serial drivers
+ #
++# CONFIG_DRIVER_SERIAL_ARM_DCC is not set
+ CONFIG_DRIVER_SERIAL_IMX=y
++# CONFIG_DRIVER_SERIAL_NS16550 is not set
+ CONFIG_HAS_DM9000=y
+ CONFIG_MIIPHY=y
+ 
+ #
+-# Network drivers               
++# Network drivers
+ #
+ # CONFIG_DRIVER_NET_SMC911X is not set
++# CONFIG_DRIVER_NET_SMC91111 is not set
+ CONFIG_DRIVER_NET_DM9000=y
+ 
+ #
+-# flash drivers                 
++# SPI drivers
++#
++CONFIG_SPI=y
++# CONFIG_DRIVER_SPI_IMX is not set
++# CONFIG_DRIVER_SPI_MC13783 is not set
++# CONFIG_I2C is not set
++
++#
++# flash drivers
+ #
+ CONFIG_HAS_CFI=y
+ CONFIG_DRIVER_CFI=y
+ # CONFIG_DRIVER_CFI_NEW is not set
++CONFIG_DRIVER_CFI_OLD=y
+ CONFIG_CFI_BUFFER_WRITE=y
+ # CONFIG_NAND is not set
++# CONFIG_USB is not set
++# CONFIG_USB_GADGET is not set
++# CONFIG_VIDEO is not set
+ 
+ #
+-# Filesystem support            
++# Filesystem support
+ #
+ # CONFIG_FS_CRAMFS is not set
++CONFIG_FS_RAMFS=y
++CONFIG_FS_DEVFS=y
+ CONFIG_CRC32=y
++# CONFIG_GENERIC_FIND_NEXT_BIT is not set
 -- 
-2.30.0
+1.6.5.2
 
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
