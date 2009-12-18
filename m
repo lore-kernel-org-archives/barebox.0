@@ -1,18 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from astoria.ccjclearline.com ([64.235.106.9])
+Received: from [2001:6f8:1178:4:290:27ff:fe1d:cc33]
+	(helo=metis.ext.pengutronix.de)
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NMeTv-0002DM-BV
-	for barebox@lists.infradead.org; Mon, 21 Dec 2009 09:23:15 +0000
-Received: from cpe002129687b04-cm001225dbafb6.cpe.net.cable.rogers.com
-	([99.235.241.187] helo=crashcourse.ca)
-	by astoria.ccjclearline.com with esmtpsa (TLSv1:AES256-SHA:256)
-	(Exim 4.69) (envelope-from <rpjday@crashcourse.ca>)
-	id 1NMeTr-0002W9-T6
-	for barebox@lists.infradead.org; Mon, 21 Dec 2009 04:23:08 -0500
-Date: Mon, 21 Dec 2009 04:22:43 -0500 (EST)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-Message-ID: <alpine.LFD.2.00.0912210419020.6190@localhost>
-MIME-Version: 1.0
+	id 1NLf4n-0005Cy-Kg
+	for barebox@lists.infradead.org; Fri, 18 Dec 2009 15:49:10 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Fri, 18 Dec 2009 16:47:57 +0100
+Message-Id: <1261151305-18627-9-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1261151305-18627-8-git-send-email-s.hauer@pengutronix.de>
+References: <1261151305-18627-1-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-2-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-3-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-4-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-5-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-6-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-7-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-8-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,44 +24,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: can barebox avoid creating typedefs just for struct shortcuts?
-To: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: [PATCH 08/36] pcm037: Add missing include
+To: barebox@lists.infradead.org
 
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ board/pcm037/pcm037.c |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
 
-  i noticed the following:
+diff --git a/board/pcm037/pcm037.c b/board/pcm037/pcm037.c
+index 8a15da4..aee40c6 100644
+--- a/board/pcm037/pcm037.c
++++ b/board/pcm037/pcm037.c
+@@ -25,6 +25,7 @@
+ #include <common.h>
+ #include <init.h>
+ #include <driver.h>
++#include <fs.h>
+ #include <environment.h>
+ #include <usb/isp1504.h>
+ #include <mach/imx-regs.h>
+-- 
+1.6.5.2
 
-$ grep -rw gd_t *
-arch/arm/include/asm/global_data.h:typedef	struct	global_data gd_t;
-arch/ppc/include/asm/global_data.h: * Keep it *SMALL* and remember to set CFG_GBL_DATA_SIZE > sizeof(gd_t)
-arch/ppc/include/asm/global_data.h:} gd_t;
-arch/sandbox/include/asm/global_data.h:typedef	struct	global_data gd_t;
-$
-
-  it's obvious that the typedef "gd_t" is being created as a
-time-saving shortcut.  that approach has been actively discouraged in
-the main kernel tree for quite some time, as it just obfuscates the
-code.  there are, of course, numerous typedefs being used to support
-legitimately opaque types, but creating more of them just to save
-keystrokes is now frowned upon.
-
-  and since it looks like no one is actually using that one yet, does
-anyone mind if i remove it?
-
-rday
---
-
-========================================================================
-Robert P. J. Day                               Waterloo, Ontario, CANADA
-
-            Linux Consulting, Training and Kernel Pedantry.
-
-Web page:                                          http://crashcourse.ca
-Twitter:                                       http://twitter.com/rpjday
-========================================================================
 
 _______________________________________________
 barebox mailing list
