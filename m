@@ -1,9 +1,23 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Wed, 16 Dec 2009 15:49:17 +0100
-Message-Id: <1260974958-21832-2-git-send-email-mkl@pengutronix.de>
-In-Reply-To: <1260974958-21832-1-git-send-email-mkl@pengutronix.de>
-References: <1260974958-21832-1-git-send-email-mkl@pengutronix.de>
+Received: from [2001:6f8:1178:4:290:27ff:fe1d:cc33]
+	(helo=metis.ext.pengutronix.de)
+	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
+	id 1NLf4r-0005D1-Rz
+	for barebox@lists.infradead.org; Fri, 18 Dec 2009 15:49:14 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Fri, 18 Dec 2009 16:47:59 +0100
+Message-Id: <1261151305-18627-11-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1261151305-18627-10-git-send-email-s.hauer@pengutronix.de>
+References: <1261151305-18627-1-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-2-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-3-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-4-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-5-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-6-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-7-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-8-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-9-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-10-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,95 +31,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] arm/lib: add eabi names of helper functions
-To: u-boot-v2@lists.infradead.org
-Cc: sha@pengutronix.de
+Subject: [PATCH 10/36] i.MX nand: mx21 has a v1 type controller
+To: barebox@lists.infradead.org
 
-Since commit e2b4a792f8751d906d17b7ae343952f78dc41d67, we don't
-undoncitionally link with OABI. If now EABI is selected there are a
-number of missing helper functions, because they have new names now.
-
-This patch add the abi names to the existing helper functions.
-
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/lib/_ashldi3.S |    2 ++
- arch/arm/lib/_ashrdi3.S |    2 ++
- arch/arm/lib/_divsi3.S  |    2 ++
- arch/arm/lib/_lshrdi3.S |    2 ++
- arch/arm/lib/_udivsi3.S |    3 +++
- 5 files changed, 11 insertions(+), 0 deletions(-)
+ drivers/nand/nand_imx.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/arch/arm/lib/_ashldi3.S b/arch/arm/lib/_ashldi3.S
-index 7344aa7..e1c1bf3 100644
---- a/arch/arm/lib/_ashldi3.S
-+++ b/arch/arm/lib/_ashldi3.S
-@@ -38,6 +38,8 @@ Boston, MA 02110-1301, USA.  */
+diff --git a/drivers/nand/nand_imx.c b/drivers/nand/nand_imx.c
+index 5fe288f..5811e27 100644
+--- a/drivers/nand/nand_imx.c
++++ b/drivers/nand/nand_imx.c
+@@ -32,7 +32,7 @@
  
- .globl __ashldi3
- __ashldi3:
-+.globl __aeabi_llsl
-+__aeabi_llsl:
+ #define DVR_VER "2.0"
  
- 	subs	r3, r2, #32
- 	rsb	ip, r2, #32
-diff --git a/arch/arm/lib/_ashrdi3.S b/arch/arm/lib/_ashrdi3.S
-index 8994557..e631554 100644
---- a/arch/arm/lib/_ashrdi3.S
-+++ b/arch/arm/lib/_ashrdi3.S
-@@ -38,6 +38,8 @@ Boston, MA 02110-1301, USA.  */
+-#define nfc_is_v21()		(cpu_is_mx25() || cpu_is_mx35())
++#define nfc_is_v21()		(cpu_is_mx25() || cpu_is_mx35() || cpu_is_mx21())
+ #define nfc_is_v1()		(cpu_is_mx31() || cpu_is_mx27())
  
- .globl __ashrdi3
- __ashrdi3:
-+.globl __aeabi_lasr
-+__aeabi_lasr:
- 
- 	subs	r3, r2, #32
- 	rsb	ip, r2, #32
-diff --git a/arch/arm/lib/_divsi3.S b/arch/arm/lib/_divsi3.S
-index f6cd2f9..2fbb49d 100644
---- a/arch/arm/lib/_divsi3.S
-+++ b/arch/arm/lib/_divsi3.S
-@@ -99,6 +99,8 @@
- 	.align	5
- .globl __divsi3
- __divsi3:
-+.globl __aeabi_idiv
-+__aeabi_idiv:
- 	cmp	r1, #0
- 	eor	ip, r0, r1			@ save the sign of the result.
- 	beq	Ldiv0
-diff --git a/arch/arm/lib/_lshrdi3.S b/arch/arm/lib/_lshrdi3.S
-index 44b335b..71e7f3e 100644
---- a/arch/arm/lib/_lshrdi3.S
-+++ b/arch/arm/lib/_lshrdi3.S
-@@ -36,6 +36,8 @@ Boston, MA 02110-1301, USA.  */
- 
- .globl __lshrdi3
- __lshrdi3:
-+.globl __aeabi_llsr
-+__aeabi_llsr:
- 
- 	subs	r3, r2, #32
- 	rsb	ip, r2, #32
-diff --git a/arch/arm/lib/_udivsi3.S b/arch/arm/lib/_udivsi3.S
-index 1975a0e..bc89b27 100644
---- a/arch/arm/lib/_udivsi3.S
-+++ b/arch/arm/lib/_udivsi3.S
-@@ -13,8 +13,11 @@ curbit		.req	r3
- 
- 	.globl	 __udivsi3
- 	.type  __udivsi3       ,function
-+	.globl   __aeabi_uidiv
-+	.type  __aeabi_uidiv   ,function
- 	.align	0
-  __udivsi3      :
-+__aeabi_uidiv   :
- 	cmp	divisor, #0
- 	beq	Ldiv0
- 	mov	curbit, #1
+ /*
 -- 
-1.6.5.4
+1.6.5.2
 
 
 _______________________________________________
