@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from astoria.ccjclearline.com ([64.235.106.9])
+Received: from [2001:6f8:1178:4:290:27ff:fe1d:cc33]
+	(helo=metis.ext.pengutronix.de)
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NMf9n-0006NI-9D
-	for barebox@lists.infradead.org; Mon, 21 Dec 2009 10:06:31 +0000
-Received: from cpe002129687b04-cm001225dbafb6.cpe.net.cable.rogers.com
-	([99.235.241.187] helo=crashcourse.ca)
-	by astoria.ccjclearline.com with esmtpsa (TLSv1:AES256-SHA:256)
-	(Exim 4.69) (envelope-from <rpjday@crashcourse.ca>)
-	id 1NMf9m-0005P5-8b
-	for barebox@lists.infradead.org; Mon, 21 Dec 2009 05:06:26 -0500
-Date: Mon, 21 Dec 2009 05:05:51 -0500 (EST)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-Message-ID: <alpine.LFD.2.00.0912210502480.11932@localhost>
-MIME-Version: 1.0
+	id 1NLf4n-0005Cp-11
+	for barebox@lists.infradead.org; Fri, 18 Dec 2009 15:49:09 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Fri, 18 Dec 2009 16:47:51 +0100
+Message-Id: <1261151305-18627-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1261151305-18627-2-git-send-email-s.hauer@pengutronix.de>
+References: <1261151305-18627-1-git-send-email-s.hauer@pengutronix.de>
+	<1261151305-18627-2-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,52 +18,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] commands: correct "CONFIG_SIMPLE_PARSER" to
-	"CONFIG_SHELL_SIMPLE".
-To: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: [PATCH 02/36] ipe337: add missing include
+To: barebox@lists.infradead.org
 
-
-Based on suggestion from S. Hauer, fix the obvious typo in
-commands/Makefile.
-
-Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
-
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
+ board/ipe337/ipe337.c |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
 
-  just as an aside, as i mentioned earlier, i'll make a bunch of these
-corrections as logically independent patches, rather than mixing them
-all together.
+diff --git a/board/ipe337/ipe337.c b/board/ipe337/ipe337.c
+index c9416fe..269e774 100644
+--- a/board/ipe337/ipe337.c
++++ b/board/ipe337/ipe337.c
+@@ -3,6 +3,7 @@
+ #include <driver.h>
+ #include <asm/cpu/cdefBF561.h>
+ #include <partition.h>
++#include <fs.h>
+ 
+ static struct device_d cfi_dev = {
+ 	.name     = "cfi_flash",
+-- 
+1.6.5.2
 
-
-diff --git a/commands/Makefile b/commands/Makefile
-index a08837e..134d8b3 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -32,7 +32,7 @@ obj-$(CONFIG_CMD_FLASH)		+= flash.o
- obj-$(CONFIG_CMD_MEMINFO)	+= meminfo.o
- obj-$(CONFIG_CMD_TIMEOUT)	+= timeout.o
- obj-$(CONFIG_CMD_READLINE)	+= readline.o
--obj-$(CONFIG_SIMPLE_PARSER)	+= setenv.o
-+obj-$(CONFIG_SHELL_SIMPLE)	+= setenv.o
- obj-$(CONFIG_CMD_EXPORT)	+= export.o
- obj-$(CONFIG_CMD_PRINTENV)	+= printenv.o
- obj-$(CONFIG_CMD_SAVEENV)	+= saveenv.o
-
-rday
---
-
-========================================================================
-Robert P. J. Day                               Waterloo, Ontario, CANADA
-
-            Linux Consulting, Training and Kernel Pedantry.
-
-Web page:                                          http://crashcourse.ca
-Twitter:                                       http://twitter.com/rpjday
-========================================================================
 
 _______________________________________________
 barebox mailing list
