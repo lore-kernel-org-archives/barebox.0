@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from comal.ext.ti.com ([198.47.26.152])
+Received: from astoria.ccjclearline.com ([64.235.106.9])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NLD0z-0003bu-Bb
-	for barebox@lists.infradead.org; Thu, 17 Dec 2009 09:51:30 +0000
-Received: from dbdp31.itg.ti.com ([172.24.170.98])
-	by comal.ext.ti.com (8.13.7/8.13.7) with ESMTP id nBH9pG9J028994
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
-	for <barebox@lists.infradead.org>; Thu, 17 Dec 2009 03:51:18 -0600
-From: Sanjeev Premi <premi@ti.com>
-Date: Thu, 17 Dec 2009 15:21:13 +0530
-Message-Id: <1261043474-31872-2-git-send-email-premi@ti.com>
-In-Reply-To: <1261043474-31872-1-git-send-email-premi@ti.com>
-References: <1261043474-31872-1-git-send-email-premi@ti.com>
+	id 1NLv7P-0002hf-QV
+	for barebox@lists.infradead.org; Sat, 19 Dec 2009 08:56:59 +0000
+Received: from cpe002129687b04-cm001225dbafb6.cpe.net.cable.rogers.com
+	([99.235.241.187] helo=crashcourse.ca)
+	by astoria.ccjclearline.com with esmtpsa (TLSv1:AES256-SHA:256)
+	(Exim 4.69) (envelope-from <rpjday@crashcourse.ca>)
+	id 1NLv7N-0004zP-8z
+	for barebox@lists.infradead.org; Sat, 19 Dec 2009 03:56:53 -0500
+Date: Sat, 19 Dec 2009 03:56:29 -0500 (EST)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+Message-ID: <alpine.LFD.2.00.0912190351400.32196@localhost>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,371 +21,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] omap3evm: Add basic support for the board
-To: barebox@lists.infradead.org
+Subject: is barebox meant to be the next generation of u-boot?
+To: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-This patch adds support for OMAP3EVM. It does
-the following:
- - Adds OMAP3EVM as an option in Kconfig.
- - Adds choice for UART1/UART3 for serial console
- - Minimal initializations for the board
- - Updates to makefile
 
-Signed-off-by: Sanjeev Premi <premi@ti.com>
----
- board/omap/Kconfig          |   27 ++++
- board/omap/Makefile         |    1 +
- board/omap/board-omap3evm.c |  275 +++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 303 insertions(+), 0 deletions(-)
- create mode 100644 board/omap/board-omap3evm.c
+  i just want to clarify the direction of barebox -- is it meant to
+eventually supplant u-boot?  i ask since i want to know if it's not
+worth investing much more time in u-boot (v1) if things are eventually
+going to switch over to barebox.
 
-diff --git a/board/omap/Kconfig b/board/omap/Kconfig
-index 07ba87c..361bed4 100644
---- a/board/omap/Kconfig
-+++ b/board/omap/Kconfig
-@@ -30,6 +30,7 @@ menu "OMAP Platform Features"
- config BOARDINFO
- 	default "Texas Instrument's SDP343x" if MACH_OMAP343xSDP
- 	default "Texas Instrument's Beagle" if MACH_BEAGLE
-+	default "Texas Instrument's OMAP3EVM" if MACH_OMAP3EVM
- 
- choice
- 	prompt "Select OMAP platform"
-@@ -50,8 +51,34 @@ config MACH_BEAGLE
- 	  help
- 	  Say Y here if you are using Beagle Board
- 
-+config MACH_OMAP3EVM
-+	bool "Texas Instrument's OMAP3 EVM"
-+	select MACH_HAS_LOWLEVEL_INIT
-+	select OMAP_CLOCK_ALL
-+	select HAS_OMAP_NAND
-+	  help
-+	  Say Y here if you are using OMAP3EVM
-+
- endchoice
- 
-+if MACH_OMAP3EVM
-+	choice
-+	prompt "Select UART"
-+
-+	config OMAP3EVM_UART1
-+		bool "Use UART1"
-+		depends on MACH_OMAP3EVM
-+		help
-+		  Say Y here if you would like to use UART1 as console.
-+
-+	config OMAP3EVM_UART3
-+		bool "Use UART3"
-+		depends on MACH_OMAP3EVM
-+		help
-+		  Say Y here if you would like to use UART3 as console.
-+	endchoice
-+endif
-+
- config MACH_OMAP_ADVANCED_MUX
- 	bool "Enable advanced pin muxing"
- 	depends on MACH_OMAP343xSDP
-diff --git a/board/omap/Makefile b/board/omap/Makefile
-index 002855a..b4bb3e1 100644
---- a/board/omap/Makefile
-+++ b/board/omap/Makefile
-@@ -23,5 +23,6 @@
- obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += platform.o
- obj-$(CONFIG_MACH_OMAP343xSDP) += board-sdp343x.o
- obj-$(CONFIG_MACH_BEAGLE) += board-beagle.o
-+obj-$(CONFIG_MACH_OMAP3EVM) += board-omap3evm.o
- obj-$(CONFIG_MACH_OMAP_GPMC_GENERICNAND) += devices-gpmc-nand.o
- 
-diff --git a/board/omap/board-omap3evm.c b/board/omap/board-omap3evm.c
-new file mode 100644
-index 0000000..fdea0ff
---- /dev/null
-+++ b/board/omap/board-omap3evm.c
-@@ -0,0 +1,275 @@
-+/**
-+ * @file
-+ * @brief Board Initialization routines for OMAP3EVM.
-+ *
-+ * FileName: board/omap/board-omap3evm.c
-+ *
-+ * This board is based on OMAP3530.
-+ * More on OMAP3530 (including documentation can be found here):
-+ * http://focus.ti.com/docs/prod/folders/print/omap3530.html
-+ *
-+ * This file provides initialization in two stages:
-+ * @li Boot time initialization - just get SDRAM working.
-+ * This is run from SRAM - so no case constructs and global vars can be used.
-+ * @li Run time initialization - this is for the rest of the initializations
-+ * such as flash, uart etc.
-+ *
-+ * Boot time initialization includes:
-+ * @li SDRAM initialization.
-+ * @li Pin Muxing relevant for the EVM.
-+ *
-+ * Run time initialization includes
-+ * @li serial @ref serial_ns16550.c driver device definition
-+ *
-+ * Originally from board/omap/board-beagle.c
-+ */
-+
-+/*
-+ * Copyright (C) 2009 Texas Instruments Incorporated - http://www.ti.com/
-+ * Sanjeev Premi <premi@ti.com>
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License
-+ * version 2 as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-+ * MA 02111-1307 USA
-+ */
-+
-+
-+#include <common.h>
-+#include <console.h>
-+#include <init.h>
-+#include <driver.h>
-+#include <asm/io.h>
-+#include <ns16550.h>
-+#include <asm/armlinux.h>
-+#include <mach/silicon.h>
-+#include <mach/sdrc.h>
-+#include <mach/sys_info.h>
-+#include <mach/syslib.h>
-+#include <mach/control.h>
-+#include <mach/omap3-mux.h>
-+#include <mach/gpmc.h>
-+#include "board.h"
-+
-+
-+/*
-+ * Boot-time initialization(s)
-+ */
-+
-+/**
-+ * @brief Initialize the SDRC module
-+ *
-+ * @return void
-+ */
-+static void sdrc_init(void)
-+{
-+	/* SDRAM software reset */
-+	/* No idle ack and RESET enable */
-+	writel(0x1A, SDRC_REG(SYSCONFIG));
-+	sdelay(100);
-+	/* No idle ack and RESET disable */
-+	writel(0x18, SDRC_REG(SYSCONFIG));
-+
-+	/* SDRC Sharing register */
-+	/* 32-bit SDRAM on data lane [31:0] - CS0 */
-+	/* pin tri-stated = 1 */
-+	writel(0x00000100, SDRC_REG(SHARING));
-+
-+	/* ----- SDRC Registers Configuration --------- */
-+	/* SDRC_MCFG0 register */
-+	writel(0x02584099, SDRC_REG(MCFG_0));
-+
-+	/* SDRC_RFR_CTRL0 register */
-+	writel(0x54601, SDRC_REG(RFR_CTRL_0));
-+
-+	/* SDRC_ACTIM_CTRLA0 register */
-+	writel(0xA29DB4C6, SDRC_REG(ACTIM_CTRLA_0));
-+
-+	/* SDRC_ACTIM_CTRLB0 register */
-+	writel(0x12214, SDRC_REG(ACTIM_CTRLB_0));
-+
-+	/* Disble Power Down of CKE due to 1 CKE on combo part */
-+	writel(0x00000081, SDRC_REG(POWER));
-+
-+	/* SDRC_MANUAL command register */
-+	/* NOP command */
-+	writel(0x00000000, SDRC_REG(MANUAL_0));
-+	/* Precharge command */
-+	writel(0x00000001, SDRC_REG(MANUAL_0));
-+	/* Auto-refresh command */
-+	writel(0x00000002, SDRC_REG(MANUAL_0));
-+	/* Auto-refresh command */
-+	writel(0x00000002, SDRC_REG(MANUAL_0));
-+
-+	/* SDRC MR0 register Burst length=4 */
-+	writel(0x00000032, SDRC_REG(MR_0));
-+
-+	/* SDRC DLLA control register */
-+	writel(0x0000000A, SDRC_REG(DLLA_CTRL));
-+
-+	return;
-+}
-+
-+/**
-+ * @brief Do the necessary pin muxing required for OMAP3EVM. Some pins in OMAP3
-+ * do not have alternate modes. We don't program these pins.
-+ *
-+ * See @ref MUX_VAL for description of the muxing mode.
-+ *
-+ * @return void
-+ */
-+static void mux_config(void)
-+{
-+	/*
-+	 * SDRC
-+	 * - SDRC_D0-SDRC_D31: Default MUX mode is mode0.
-+	 */
-+
-+	/*
-+	 * GPMC
-+	 * - GPMC_D0-GPMC_D7: Default MUX mode is mode0.
-+	 * - GPMC_NADV_ALE: Default MUX mode is mode0.
-+	 * - GPMC_NOE: Default MUX mode is mode0.
-+	 * - GPMC_NWE: Default MUX mode is mode0.
-+	 * - GPMC_WAIT0: Default MUX mode is mode0.
-+	 */
-+	MUX_VAL(CP(GPMC_A1),		(IDIS | PTD | DIS | M0));
-+	MUX_VAL(CP(GPMC_A2),		(IDIS | PTD | DIS | M0));
-+	MUX_VAL(CP(GPMC_A3),		(IDIS | PTD | DIS | M0));
-+	MUX_VAL(CP(GPMC_A4),		(IDIS | PTD | DIS | M0));
-+	MUX_VAL(CP(GPMC_A5),		(IDIS | PTD | DIS | M0));
-+	MUX_VAL(CP(GPMC_A6),		(IDIS | PTD | DIS | M0));
-+	MUX_VAL(CP(GPMC_A7),		(IDIS | PTD | DIS | M0));
-+	MUX_VAL(CP(GPMC_A8),		(IDIS | PTD | DIS | M0));
-+	MUX_VAL(CP(GPMC_A9),		(IDIS | PTD | DIS | M0));
-+	MUX_VAL(CP(GPMC_A10),		(IDIS | PTD | DIS | M0));
-+
-+	MUX_VAL(CP(GPMC_D8),		(IEN  | PTD | DIS | M0));
-+	MUX_VAL(CP(GPMC_D9),		(IEN  | PTD | DIS | M0));
-+	MUX_VAL(CP(GPMC_D10),		(IEN  | PTD | DIS | M0));
-+	MUX_VAL(CP(GPMC_D11),		(IEN  | PTD | DIS | M0));
-+	MUX_VAL(CP(GPMC_D12),		(IEN  | PTD | DIS | M0));
-+	MUX_VAL(CP(GPMC_D13),		(IEN  | PTD | DIS | M0));
-+	MUX_VAL(CP(GPMC_D14),		(IEN  | PTD | DIS | M0));
-+	MUX_VAL(CP(GPMC_D15),		(IEN  | PTD | DIS | M0));
-+	MUX_VAL(CP(GPMC_CLK),		(IDIS | PTD | DIS | M0));
-+
-+	MUX_VAL(CP(GPMC_NBE0_CLE),	(IDIS | PTD | DIS | M0));
-+	MUX_VAL(CP(GPMC_NBE1),		(IEN  | PTD | DIS | M0));
-+	MUX_VAL(CP(GPMC_NWP),		(IEN  | PTD | DIS | M0));
-+
-+	MUX_VAL(CP(GPMC_WAIT1),		(IEN  | PTU | EN  | M0));
-+
-+	/*
-+	 * Serial Interface
-+	 */
-+#if defined(CONFIG_OMAP3EVM_UART1)
-+	MUX_VAL(CP(UART1_TX),		(IDIS | PTD | DIS | M0));
-+	MUX_VAL(CP(UART1_RTS),		(IDIS | PTD | DIS | M0));
-+	MUX_VAL(CP(UART1_CTS),		(IEN  | PTU | DIS | M0));
-+	MUX_VAL(CP(UART1_RX),		(IEN  | PTD | DIS | M0));
-+#elif defined(CONFIG_OMAP3EVM_UART3)
-+	MUX_VAL(CP(UART3_CTS_RCTX),	(IEN  | PTD | EN  | M0));
-+	MUX_VAL(CP(UART3_RTS_SD),	(IDIS | PTD | DIS | M0));
-+	MUX_VAL(CP(UART3_RX_IRRX),	(IEN  | PTD | DIS | M0));
-+	MUX_VAL(CP(UART3_TX_IRTX),	(IDIS | PTD | DIS | M0));
-+#endif
-+}
-+
-+/**
-+ * @brief The basic entry point for board initialization.
-+ *
-+ * This is called as part of machine init (after arch init).
-+ * This is again called with stack in SRAM, so not too many
-+ * constructs possible here.
-+ *
-+ * @return void
-+ */
-+void board_init(void)
-+{
-+	int in_sdram = running_in_sdram();
-+
-+	mux_config();
-+	/* Dont reconfigure SDRAM while running in SDRAM! */
-+	if (!in_sdram)
-+		sdrc_init();
-+}
-+
-+/*
-+ * Run-time initialization(s)
-+ */
-+
-+#ifdef CONFIG_DRIVER_SERIAL_NS16550
-+
-+static struct NS16550_plat serial_plat = {
-+	.clock		= 48000000,      /* 48MHz (APLL96/2) */
-+	.f_caps		= CONSOLE_STDIN | CONSOLE_STDOUT | CONSOLE_STDERR,
-+	.reg_read	= omap_uart_read,
-+	.reg_write	= omap_uart_write,
-+};
-+
-+static struct device_d omap3evm_serial_device = {
-+	.name		= "serial_ns16550",
-+#if defined(CONFIG_OMAP3EVM_UART1)
-+	.map_base	= OMAP_UART1_BASE,
-+#elif defined(CONFIG_OMAP3EVM_UART3)
-+	.map_base	= OMAP_UART3_BASE,
-+#endif
-+	.size		= 1024,
-+	.platform_data	= (void *)&serial_plat,
-+};
-+
-+/**
-+ * @brief Initialize the serial port to be used as console.
-+ *
-+ * @return result of device registration
-+ */
-+static int omap3evm_init_console(void)
-+{
-+	return register_device(&omap3evm_serial_device);
-+}
-+console_initcall(omap3evm_init_console);
-+#endif /* CONFIG_DRIVER_SERIAL_NS16550 */
-+
-+static struct memory_platform_data sram_pdata = {
-+	.name	= "ram0",
-+	.flags	= DEVFS_RDWR,
-+};
-+
-+static struct device_d sdram_dev = {
-+	.name		= "mem",
-+	.map_base	= 0x80000000,
-+	.size		= 128 * 1024 * 1024,
-+	.platform_data	= &sram_pdata,
-+};
-+
-+static int omap3evm_init_devices(void)
-+{
-+	int ret;
-+
-+	ret = register_device(&sdram_dev);
-+	if (ret)
-+		goto failed;
-+
-+#ifdef CONFIG_GPMC
-+	/*
-+	 * WP is made high and WAIT1 active Low
-+	 */
-+	gpmc_generic_init(0x10);
-+#endif
-+
-+	armlinux_add_dram(&sdram_dev);
-+
-+failed:
-+	return ret;
-+}
-+device_initcall(omap3evm_init_devices);
--- 
-1.6.2.2
+  specifically, i want to use it on my beagleboard, so i "git" checked
+out the source for barebox, configured it for the beagle, built it
+with the denx "arm-linux-" toolchain and it booted.  i haven't got any
+further than that so far but that's all i was after -- just getting it
+to boot to the barebox prompt.
 
+  at this point, if barebox is merely *adequate* to do what i want and
+supports booting my beagleboard fully, is there any reason i don't
+just move to it entirely, knowing it does what i need and it's only
+going to get better?  thanks.
+
+rday
+--
+
+========================================================================
+Robert P. J. Day                               Waterloo, Ontario, CANADA
+
+            Linux Consulting, Training and Kernel Pedantry.
+
+Web page:                                          http://crashcourse.ca
+Twitter:                                       http://twitter.com/rpjday
+========================================================================
 
 _______________________________________________
 barebox mailing list
