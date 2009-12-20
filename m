@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from [2001:6f8:1178:4:290:27ff:fe1d:cc33]
-	(helo=metis.ext.pengutronix.de)
+Received: from astoria.ccjclearline.com ([64.235.106.9])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NLEJh-0005bf-FJ
-	for barebox@lists.infradead.org; Thu, 17 Dec 2009 11:14:47 +0000
-Date: Thu, 17 Dec 2009 12:13:54 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20091217111354.GP15126@pengutronix.de>
-References: <1261043474-31872-1-git-send-email-premi@ti.com>
+	id 1NMKAq-0004zJ-5l
+	for barebox@lists.infradead.org; Sun, 20 Dec 2009 11:42:12 +0000
+Received: from cpe002129687b04-cm001225dbafb6.cpe.net.cable.rogers.com
+	([99.235.241.187] helo=crashcourse.ca)
+	by astoria.ccjclearline.com with esmtpsa (TLSv1:AES256-SHA:256)
+	(Exim 4.69) (envelope-from <rpjday@crashcourse.ca>)
+	id 1NMKAp-0000o3-6m
+	for barebox@lists.infradead.org; Sun, 20 Dec 2009 06:42:07 -0500
+Date: Sun, 20 Dec 2009 06:41:43 -0500 (EST)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+Message-ID: <alpine.LFD.2.00.0912200640010.16029@localhost>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1261043474-31872-1-git-send-email-premi@ti.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,25 +25,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCHv2 0/2] Initial support for OMAP3EVM
-To: Sanjeev Premi <premi@ti.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] MTD:  Correct typo in preprocessor directive.
+To: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-On Thu, Dec 17, 2009 at 03:21:12PM +0530, Sanjeev Premi wrote:
-> This patchset provides a minimal support to get u-boot-v2
-> working on the OMAP3EVM.
-> 
-> This is just a merge of patches from earlier version, as requested.
 
-Ok, applied
+Configuration directive should obviously start with "CONFIG_".
 
-Sascha
+Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+---
+
+diff --git a/drivers/nand/diskonchip.c b/drivers/nand/diskonchip.c
+index e17af70..e762524 100644
+--- a/drivers/nand/diskonchip.c
++++ b/drivers/nand/diskonchip.c
+@@ -120,7 +120,7 @@ static int no_autopart=0;
+ module_param(no_autopart, int, 0);
+ #endif
+
+-#ifdef MTD_NAND_DISKONCHIP_BBTWRITE
++#ifdef CONFIG_MTD_NAND_DISKONCHIP_BBTWRITE
+ static int inftl_bbt_write=1;
+ #else
+ static int inftl_bbt_write=0;
+
+rday
+--
+
+========================================================================
+Robert P. J. Day                               Waterloo, Ontario, CANADA
+
+            Linux Consulting, Training and Kernel Pedantry.
+
+Web page:                                          http://crashcourse.ca
+Twitter:                                       http://twitter.com/rpjday
+========================================================================
 
 _______________________________________________
 barebox mailing list
