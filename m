@@ -1,14 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from tyo201.gate.nec.co.jp ([202.32.8.193])
+Received: from astoria.ccjclearline.com ([64.235.106.9])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NLQ3q-0006cV-Jf
-	for barebox@lists.infradead.org; Thu, 17 Dec 2009 23:47:15 +0000
-Message-ID: <4B2AC2F9.7080207@necel.com>
-Date: Fri, 18 Dec 2009 08:47:05 +0900
-From: Shinya Kuribayashi <shinya.kuribayashi@necel.com>
+	id 1NMKaL-0000Bi-Kp
+	for barebox@lists.infradead.org; Sun, 20 Dec 2009 12:08:33 +0000
+Received: from cpe002129687b04-cm001225dbafb6.cpe.net.cable.rogers.com
+	([99.235.241.187] helo=crashcourse.ca)
+	by astoria.ccjclearline.com with esmtpsa (TLSv1:AES256-SHA:256)
+	(Exim 4.69) (envelope-from <rpjday@crashcourse.ca>)
+	id 1NMKaI-0002Qw-D9
+	for barebox@lists.infradead.org; Sun, 20 Dec 2009 07:08:26 -0500
+Date: Sun, 20 Dec 2009 07:08:02 -0500 (EST)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+Message-ID: <alpine.LFD.2.00.0912200705560.18199@localhost>
 MIME-Version: 1.0
-References: <20091217083149.GI15126@pengutronix.de>
-In-Reply-To: <20091217083149.GI15126@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,31 +21,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Renaming done / new repository
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: more CONFIG oddities in the current barebox tree
+To: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-Sascha Hauer wrote:
-> Along with this the master git repository moved to:
-> 
-> git://git.pengutronix.de/git/barebox.git
 
-Nice.  Is there any chance we can get the repository via http?
+  here's a short list of Makefile CONFIG tests that test for
+non-existent CONFIG variables -- not strictly an error, just valueless
+and can be removed if there's no compelling reason to keep them.  (as
+always, could be trivial false positives).
 
-$ git clone http://git.pengutronix.de/git/barebox.git barebox.git
-Initialized empty Git repository in /home/skuribay/git/barebox.git/.git/
-fatal: http://git.pengutronix.de/git/barebox.git/info/refs not found: did you run git update-server-info on the server?
+===== CMD_I2C =====
+./commands/Makefile:obj-$(CONFIG_CMD_I2C)		+= i2c.o
+===== LOGO =====
+./scripts/Makefile:hostprogs-$(CONFIG_LOGO)         += pnmtologo
+===== MODULE =====
+./common/Makefile:obj-$(CONFIG_MODULE)		+= module.o
+./arch/ppc/Makefile:ifndef CONFIG_MODULE
+===== MODVERSIONS =====
+./Makefile:  KBUILD_BUILTIN := $(if $(CONFIG_MODVERSIONS),1)
+./scripts/Makefile:#subdir-$(CONFIG_MODVERSIONS) += genksyms
+===== PROM_CONSOLE =====
+./scripts/Makefile:hostprogs-$(CONFIG_PROM_CONSOLE) += conmakehash
+===== SIMPLE_PARSER =====
+./commands/Makefile:obj-$(CONFIG_SIMPLE_PARSER)	+= setenv.o
+===== USE_IRQ =====
+./arch/ppc/mach-mpc5xxx/Makefile:obj-$(CONFIG_USE_IRQ)	+=
+interrupts.o
+./arch/ppc/lib/Makefile:obj-$(CONFIG_USE_IRQ) += interrupts.o
+===== VT =====
+./scripts/Makefile:hostprogs-$(CONFIG_VT)           += conmakehash
 
-$ git version
-git version 1.6.5.7
+  if any of that can be obviously deleted, let me know and i can
+submit the appropriate patches.
 
--- 
-Shinya Kuribayashi
-NEC Electronics
+rday
+--
+
+========================================================================
+Robert P. J. Day                               Waterloo, Ontario, CANADA
+
+            Linux Consulting, Training and Kernel Pedantry.
+
+Web page:                                          http://crashcourse.ca
+Twitter:                                       http://twitter.com/rpjday
+========================================================================
 
 _______________________________________________
 barebox mailing list
