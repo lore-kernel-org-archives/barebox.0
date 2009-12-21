@@ -1,26 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from [2001:6f8:1178:4:290:27ff:fe1d:cc33]
-	(helo=metis.ext.pengutronix.de)
-	by casper.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NLf4e-0001Ku-OR
-	for barebox@lists.infradead.org; Fri, 18 Dec 2009 15:49:07 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 18 Dec 2009 16:48:02 +0100
-Message-Id: <1261151305-18627-14-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1261151305-18627-13-git-send-email-s.hauer@pengutronix.de>
-References: <1261151305-18627-1-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-2-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-3-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-4-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-5-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-6-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-7-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-8-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-9-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-10-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-11-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-12-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-13-git-send-email-s.hauer@pengutronix.de>
+Received: from mail-ew0-f220.google.com ([209.85.219.220])
+	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
+	id 1NMgqY-0003jf-LO
+	for barebox@lists.infradead.org; Mon, 21 Dec 2009 11:54:47 +0000
+Received: by ewy20 with SMTP id 20so2045047ewy.20
+	for <barebox@lists.infradead.org>; Mon, 21 Dec 2009 03:54:40 -0800 (PST)
+From: Peter Korsgaard <jacmet@sunsite.dk>
+References: <alpine.LFD.2.00.0912210615350.13305@localhost>
+	<20091221113052.GG15126@pengutronix.de>
+	<87hbrkzh9w.fsf@macbook.be.48ers.dk>
+	<alpine.LFD.2.00.0912210643010.14007@localhost>
+Date: Mon, 21 Dec 2009 12:54:38 +0100
+In-Reply-To: <alpine.LFD.2.00.0912210643010.14007@localhost> (Robert
+	P. J. Day's message of "Mon, 21 Dec 2009 06:47:48 -0500 (EST)")
+Message-ID: <87d428zgn5.fsf@macbook.be.48ers.dk>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,65 +23,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 13/36] sandbox: update defconfig
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] commands: Remove reference to non-existent CONFIG_CMD_I2C.
+To: "Robert P. J. Day" <rpjday@crashcourse.ca>
+Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/sandbox/configs/sandbox_defconfig |    9 ++-------
- 1 files changed, 2 insertions(+), 7 deletions(-)
+>>>>> "Robert" == Robert P J Day <rpjday@crashcourse.ca> writes:
 
-diff --git a/arch/sandbox/configs/sandbox_defconfig b/arch/sandbox/configs/sandbox_defconfig
-index 8757fd0..adcb07e 100644
---- a/arch/sandbox/configs/sandbox_defconfig
-+++ b/arch/sandbox/configs/sandbox_defconfig
-@@ -1,7 +1,7 @@
- #
- # Automatically generated make config: don't edit
- # barebox version: 2.0.0-rc10
--# Mon Oct 12 14:15:55 2009
-+# Fri Dec 18 11:53:08 2009
- #
- CONFIG_ARCH_TEXT_BASE=0x00000000
- CONFIG_BOARDINFO="sandbox"
-@@ -114,10 +114,8 @@ CONFIG_CMD_VERSION=y
- CONFIG_CMD_HELP=y
- CONFIG_CMD_DEVINFO=y
- CONFIG_NET=y
--CONFIG_NET_BOOTP=y
- CONFIG_NET_DHCP=y
- # CONFIG_NET_RARP is not set
--# CONFIG_NET_SNTP is not set
- # CONFIG_NET_NFS is not set
- CONFIG_NET_PING=y
- CONFIG_NET_TFTP=y
-@@ -143,6 +141,7 @@ CONFIG_DRIVER_NET_TAP=y
- # SPI drivers
- #
- # CONFIG_SPI is not set
-+# CONFIG_I2C is not set
- 
- #
- # flash drivers
-@@ -152,10 +151,6 @@ CONFIG_DRIVER_NET_TAP=y
- # CONFIG_NAND is not set
- # CONFIG_USB is not set
- # CONFIG_USB_GADGET is not set
--
--#
--# Video drivers
--#
- # CONFIG_VIDEO is not set
- 
- #
+Hi,
+
+ >> I could see basic I2C access being useful for debugging (of
+ >> non-eeprom devices).
+
+ Robert>   i was imagining the same thing, but since there's no such
+ Robert> support at the moment, there's little value in leaving that
+ Robert> config variable there.
+
+Agreed.
+
+ Robert>   personally, i'd rather that didn't happen, just because it's
+ Robert> easier to track paches if they're logically complete and
+ Robert> coherent.  in short, when the time comes to add an "i2c"
+ Robert> command, we can put everything back in in one patch.  sound
+ Robert> reasonable?
+
+Sure.
+
 -- 
-1.6.5.2
-
+Bye, Peter Korsgaard
 
 _______________________________________________
 barebox mailing list
