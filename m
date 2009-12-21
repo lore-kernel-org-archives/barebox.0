@@ -1,28 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from [2001:6f8:1178:4:290:27ff:fe1d:cc33]
-	(helo=metis.ext.pengutronix.de)
+Received: from astoria.ccjclearline.com ([64.235.106.9])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NLf4s-0005DP-B4
-	for barebox@lists.infradead.org; Fri, 18 Dec 2009 15:49:15 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 18 Dec 2009 16:48:04 +0100
-Message-Id: <1261151305-18627-16-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1261151305-18627-15-git-send-email-s.hauer@pengutronix.de>
-References: <1261151305-18627-1-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-2-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-3-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-4-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-5-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-6-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-7-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-8-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-9-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-10-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-11-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-12-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-13-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-14-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-15-git-send-email-s.hauer@pengutronix.de>
+	id 1NMfMT-00028j-Fj
+	for barebox@lists.infradead.org; Mon, 21 Dec 2009 10:19:37 +0000
+Received: from cpe002129687b04-cm001225dbafb6.cpe.net.cable.rogers.com
+	([99.235.241.187] helo=crashcourse.ca)
+	by astoria.ccjclearline.com with esmtpsa (TLSv1:AES256-SHA:256)
+	(Exim 4.69) (envelope-from <rpjday@crashcourse.ca>)
+	id 1NMfMQ-0006GZ-FM
+	for barebox@lists.infradead.org; Mon, 21 Dec 2009 05:19:30 -0500
+Date: Mon, 21 Dec 2009 05:19:06 -0500 (EST)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+Message-ID: <alpine.LFD.2.00.0912210515100.12260@localhost>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -31,262 +21,69 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 15/36] mx21ads: update defconfig
-To: barebox@lists.infradead.org
+Subject: [PATCH] scripts: Delete non-barebox content from scripts/.
+To: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+
+Remove scripts/ content having nothing to do with barebox:
+
+  - pnmtologo
+  - conmakehash
+  - unifdef
+  - genksyms
+
 ---
- arch/arm/configs/mx21ads_defconfig |  105 ++++++++++++++++++++++--------------
- 1 files changed, 64 insertions(+), 41 deletions(-)
 
-diff --git a/arch/arm/configs/mx21ads_defconfig b/arch/arm/configs/mx21ads_defconfig
-index 6589ca8..99a8714 100644
---- a/arch/arm/configs/mx21ads_defconfig
-+++ b/arch/arm/configs/mx21ads_defconfig
-@@ -1,60 +1,78 @@
- #
- # Automatically generated make config: don't edit
--# barebox version: 2.0.0-rc8
--# Tue Apr 28 08:40:15 2009
-+# barebox version: 2.0.0-rc10
-+# Fri Dec 18 11:48:02 2009
- #
--CONFIG_ARCH_TEXT_BASE=0xc0000000
--CONFIG_BOARDINFO="Freescale i.MX21 ADS"
- # CONFIG_BOARD_LINKER_SCRIPT is not set
- CONFIG_GENERIC_LINKER_SCRIPT=y
- CONFIG_ARM=y
--CONFIG_CPU_ARM926T=y
--# CONFIG_MACH_MX1ADS is not set
--# CONFIG_MACH_SCB9328 is not set
--# CONFIG_MACH_PCM038 is not set
--CONFIG_MACH_IMX21ADS=y
--# CONFIG_MACH_IMX27ADS is not set
--# CONFIG_MACH_PCM043 is not set
--# CONFIG_MACH_FREESCALE_MX35_3STACK is not set
--# CONFIG_MACH_ECO920 is not set
--# CONFIG_MACH_NXDB500 is not set
--# CONFIG_MACH_PCM037 is not set
--# CONFIG_MACH_OMAP is not set
--# CONFIG_MACH_AT91SAM9260EK is not set
--# CONFIG_MACH_PM9263 is not set
--# CONFIG_MACH_PCA100 is not set
- 
- #
--# Board specific settings       
-+# System Type
- #
-+# CONFIG_ARCH_AT91 is not set
-+# CONFIG_ARCH_AT91RM9200 is not set
- CONFIG_ARCH_IMX=y
-+# CONFIG_ARCH_NETX is not set
-+# CONFIG_ARCH_OMAP is not set
-+# CONFIG_ARCH_S3C24xx is not set
-+
-+#
-+# Processor Type
-+#
-+CONFIG_CPU_32=y
-+CONFIG_CPU_ARM926T=y
-+CONFIG_CPU_32v5=y
-+
-+#
-+# processor features
-+#
-+CONFIG_ARCH_TEXT_BASE=0xc0000000
-+CONFIG_BOARDINFO="Freescale i.MX21 ADS"
-+
-+#
-+# Freescale i.MX System-on-Chip
-+#
-+# CONFIG_ARCH_IMX1 is not set
- CONFIG_ARCH_IMX21=y
-+# CONFIG_ARCH_IMX25 is not set
-+# CONFIG_ARCH_IMX27 is not set
-+# CONFIG_ARCH_IMX31 is not set
-+# CONFIG_ARCH_IMX35 is not set
-+CONFIG_MACH_IMX21ADS=y
-+
-+#
-+# Board specific settings
-+#
- 
- #
--# i.MX specific settings        
-+# i.MX specific settings
- #
- CONFIG_IMX_CLKO=y
-+# CONFIG_AEABI is not set
- 
- #
--# Arm specific settings         
-+# Arm specific settings
- #
- CONFIG_CMD_ARM_CPUINFO=y
- CONFIG_CMDLINE_TAG=y
- CONFIG_SETUP_MEMORY_TAGS=y
- # CONFIG_INITRD_TAG is not set
-+CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
- CONFIG_GREGORIAN_CALENDER=y
- CONFIG_HAS_KALLSYMS=y
- CONFIG_HAS_MODULES=y
- CONFIG_CMD_MEMORY=y
- CONFIG_ENV_HANDLING=y
-+CONFIG_GENERIC_GPIO=y
- 
- #
--# General Settings              
-+# General Settings
- #
- CONFIG_LOCALVERSION_AUTO=y
- 
- #
--# memory layout                 
-+# memory layout
- #
- CONFIG_HAVE_CONFIGURABLE_TEXT_BASE=y
- CONFIG_TEXT_BASE=0xc1000000
-@@ -89,7 +107,7 @@ CONFIG_DEFAULT_ENVIRONMENT=y
- CONFIG_DEFAULT_ENVIRONMENT_PATH="board/imx21ads/env"
- 
- #
--# Debugging                     
-+# Debugging
- #
- # CONFIG_DEBUG_INFO is not set
- # CONFIG_ENABLE_FLASH_NOISE is not set
-@@ -97,11 +115,11 @@ CONFIG_DEFAULT_ENVIRONMENT_PATH="board/imx21ads/env"
- # CONFIG_ENABLE_DEVICE_NOISE is not set
- 
- #
--# Commands                      
-+# Commands
- #
- 
- #
--# scripting                     
-+# scripting
- #
- CONFIG_CMD_EDIT=y
- CONFIG_CMD_SLEEP=y
-@@ -114,7 +132,7 @@ CONFIG_CMD_TRUE=y
- CONFIG_CMD_FALSE=y
- 
- #
--# file commands                 
-+# file commands
- #
- CONFIG_CMD_LS=y
- CONFIG_CMD_RM=y
-@@ -128,13 +146,13 @@ CONFIG_CMD_MOUNT=y
- CONFIG_CMD_UMOUNT=y
- 
- #
--# console                       
-+# console
- #
- CONFIG_CMD_CLEAR=y
- CONFIG_CMD_ECHO=y
- 
- #
--# memory                        
-+# memory
- #
- # CONFIG_CMD_LOADB is not set
- CONFIG_CMD_MEMINFO=y
-@@ -143,18 +161,19 @@ CONFIG_CMD_MTEST=y
- CONFIG_CMD_MTEST_ALTERNATIVE=y
- 
- #
--# flash                         
-+# flash
- #
- CONFIG_CMD_FLASH=y
--CONFIG_CMD_NAND=y
- 
- #
--# booting                       
-+# booting
- #
- CONFIG_CMD_BOOTM=y
- # CONFIG_CMD_BOOTM_ZLIB is not set
- # CONFIG_CMD_BOOTM_BZLIB is not set
- CONFIG_CMD_BOOTM_SHOW_TYPE=y
-+CONFIG_CMD_BOOTZ=y
-+CONFIG_CMD_BOOTU=y
- CONFIG_CMD_RESET=y
- CONFIG_CMD_GO=y
- CONFIG_CMD_TIMEOUT=y
-@@ -163,39 +182,41 @@ CONFIG_CMD_TEST=y
- CONFIG_CMD_VERSION=y
- CONFIG_CMD_HELP=y
- CONFIG_CMD_DEVINFO=y
-+CONFIG_CMD_GPIO=y
- CONFIG_NET=y
--CONFIG_NET_BOOTP=y
- CONFIG_NET_DHCP=y
- # CONFIG_NET_RARP is not set
--# CONFIG_NET_SNTP is not set
- CONFIG_NET_NFS=y
- CONFIG_NET_PING=y
- CONFIG_NET_TFTP=y
- 
- #
--# Drivers                       
-+# Drivers
- #
- 
- #
--# serial drivers                
-+# serial drivers
- #
-+# CONFIG_DRIVER_SERIAL_ARM_DCC is not set
- CONFIG_DRIVER_SERIAL_IMX=y
- # CONFIG_DRIVER_SERIAL_NS16550 is not set
- CONFIG_HAS_CS8900=y
- 
- #
--# Network drivers               
-+# Network drivers
- #
- CONFIG_DRIVER_NET_CS8900=y
- # CONFIG_DRIVER_NET_SMC911X is not set
-+# CONFIG_DRIVER_NET_SMC91111 is not set
- 
- #
--# SPI drivers                   
-+# SPI drivers
- #
- # CONFIG_SPI is not set
-+# CONFIG_I2C is not set
- 
- #
--# flash drivers                 
-+# flash drivers
- #
- CONFIG_HAS_CFI=y
- CONFIG_DRIVER_CFI=y
-@@ -214,9 +235,11 @@ CONFIG_NAND_IMX=y
- # CONFIG_MTD_NAND_ECC_SMC is not set
- CONFIG_MTD_NAND_IDS=y
- # CONFIG_USB is not set
-+# CONFIG_USB_GADGET is not set
-+# CONFIG_VIDEO is not set
- 
- #
--# Filesystem support            
-+# Filesystem support
- #
- # CONFIG_FS_CRAMFS is not set
- CONFIG_FS_RAMFS=y
--- 
-1.6.5.2
+  if there's anything else that can be added to this patch (that is,
+scripts/ content that can be tossed), i can resubmit a more complete
+patch.  otherwise, might as well just apply as is.
 
+
+diff --git a/scripts/Makefile b/scripts/Makefile
+index a6829c5..c22a8b6 100644
+--- a/scripts/Makefile
++++ b/scripts/Makefile
+@@ -3,14 +3,8 @@
+ # the kernel for the build process.
+ # ---------------------------------------------------------------------------
+ # kallsyms:      Find all symbols in barebox
+-# pnmttologo:    Convert pnm files to logo files
+-# conmakehash:   Create chartable
+-# conmakehash:	 Create arrays for initializing the kernel console tables
+
+ hostprogs-$(CONFIG_KALLSYMS)     += kallsyms
+-hostprogs-$(CONFIG_LOGO)         += pnmtologo
+-hostprogs-$(CONFIG_VT)           += conmakehash
+-hostprogs-$(CONFIG_PROM_CONSOLE) += conmakehash
+ hostprogs-y                      += bin2c
+ hostprogs-y                      += mkimage
+ hostprogs-y                      += bareboxenv
+@@ -18,10 +12,6 @@ hostprogs-$(CONFIG_ARCH_NETX)    += gen_netx_image
+
+ always		:= $(hostprogs-y) $(hostprogs-m)
+
+-# The following hostprogs-y programs are only build on demand
+-hostprogs-y += unifdef
+-
+-#subdir-$(CONFIG_MODVERSIONS) += genksyms
+ subdir-y                     += mod
+
+ # Let clean descend into subdirs
+
+
+
+========================================================================
+Robert P. J. Day                               Waterloo, Ontario, CANADA
+
+            Linux Consulting, Training and Kernel Pedantry.
+
+Web page:                                          http://crashcourse.ca
+Twitter:                                       http://twitter.com/rpjday
+========================================================================
 
 _______________________________________________
 barebox mailing list
