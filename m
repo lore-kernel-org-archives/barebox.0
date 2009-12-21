@@ -2,40 +2,15 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from [2001:6f8:1178:4:290:27ff:fe1d:cc33]
 	(helo=metis.ext.pengutronix.de)
 	by casper.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NLf4l-0001Kx-Mc
-	for barebox@lists.infradead.org; Fri, 18 Dec 2009 15:49:14 +0000
+	id 1NMfrP-0001EA-UW
+	for barebox@lists.infradead.org; Mon, 21 Dec 2009 10:51:33 +0000
+Date: Mon, 21 Dec 2009 11:50:34 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 18 Dec 2009 16:48:17 +0100
-Message-Id: <1261151305-18627-29-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1261151305-18627-28-git-send-email-s.hauer@pengutronix.de>
-References: <1261151305-18627-1-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-2-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-3-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-4-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-5-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-6-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-7-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-8-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-9-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-10-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-11-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-12-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-13-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-14-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-15-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-16-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-17-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-18-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-19-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-20-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-21-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-22-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-23-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-24-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-25-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-26-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-27-git-send-email-s.hauer@pengutronix.de>
-	<1261151305-18627-28-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20091221105034.GA15126@pengutronix.de>
+References: <alpine.LFD.2.00.0912210502480.11932@localhost>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <alpine.LFD.2.00.0912210502480.11932@localhost>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -44,257 +19,71 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 28/36] Digi a9m2410: update defconfig
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] commands: correct "CONFIG_SIMPLE_PARSER" to
+	"CONFIG_SHELL_SIMPLE".
+To: "Robert P. J. Day" <rpjday@crashcourse.ca>
+Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/configs/a9m2410_defconfig |   96 +++++++++++++++++++----------------
- 1 files changed, 52 insertions(+), 44 deletions(-)
+On Mon, Dec 21, 2009 at 05:05:51AM -0500, Robert P. J. Day wrote:
+> 
+> Based on suggestion from S. Hauer, fix the obvious typo in
+> commands/Makefile.
+> 
+> Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
-diff --git a/arch/arm/configs/a9m2410_defconfig b/arch/arm/configs/a9m2410_defconfig
-index 5cd1ac2..9429a37 100644
---- a/arch/arm/configs/a9m2410_defconfig
-+++ b/arch/arm/configs/a9m2410_defconfig
-@@ -1,53 +1,59 @@
- #
- # Automatically generated make config: don't edit
--# barebox version: 2.0.0-rc9
--# Wed Jul  1 14:15:55 2009
-+# barebox version: 2.0.0-rc10
-+# Fri Dec 18 11:46:05 2009
- #
--CONFIG_ARCH_TEXT_BASE=0x31fc0000
--CONFIG_BOARDINFO="Digi A9M2410"
- # CONFIG_BOARD_LINKER_SCRIPT is not set
- CONFIG_GENERIC_LINKER_SCRIPT=y
- CONFIG_ARM=y
-+
-+#
-+# System Type
-+#
-+# CONFIG_ARCH_AT91 is not set
-+# CONFIG_ARCH_AT91RM9200 is not set
-+# CONFIG_ARCH_IMX is not set
-+# CONFIG_ARCH_NETX is not set
-+# CONFIG_ARCH_OMAP is not set
-+CONFIG_ARCH_S3C24xx=y
-+
-+#
-+# Processor Type
-+#
-+CONFIG_CPU_32=y
- CONFIG_CPU_ARM920T=y
--# CONFIG_MACH_MX1ADS is not set
--# CONFIG_MACH_SCB9328 is not set
--# CONFIG_MACH_PCM038 is not set
--# CONFIG_MACH_IMX21ADS is not set
--# CONFIG_MACH_IMX27ADS is not set
--# CONFIG_MACH_PCM043 is not set
--# CONFIG_MACH_FREESCALE_MX35_3STACK is not set
--# CONFIG_MACH_ECO920 is not set
--# CONFIG_MACH_NXDB500 is not set
--# CONFIG_MACH_PCM037 is not set
--# CONFIG_MACH_OMAP is not set
--# CONFIG_MACH_AT91SAM9260EK is not set
--# CONFIG_MACH_PM9263 is not set
-+CONFIG_CPU_32v4T=y
-+
-+#
-+# processor features
-+#
-+CONFIG_ARCH_TEXT_BASE=0x31fc0000
-+CONFIG_BOARDINFO="Digi A9M2410"
-+CONFIG_CPU_S3C2410=y
- CONFIG_MACH_A9M2410=y
- # CONFIG_MACH_A9M2440 is not set
--# CONFIG_MACH_PCA100 is not set
--# CONFIG_MACH_MMCCPU is not set
--CONFIG_ARCH_S3C24xx=y
--CONFIG_CPU_S3C2410=y
- 
- #
--# Board specific settings       
-+# Board specific settings
- #
- 
- #
--# S3C24X0 Features              
-+# S3C24X0 Features
- #
- CONFIG_S3C24XX_LOW_LEVEL_INIT=y
- CONFIG_S3C24XX_PLL_INIT=y
- CONFIG_S3C24XX_SDRAM_INIT=y
- CONFIG_S3C24XX_NAND_BOOT=y
-+# CONFIG_AEABI is not set
- 
- #
--# Arm specific settings         
-+# Arm specific settings
- #
- CONFIG_CMD_ARM_CPUINFO=y
- CONFIG_CMDLINE_TAG=y
- CONFIG_SETUP_MEMORY_TAGS=y
- # CONFIG_INITRD_TAG is not set
-+CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
- CONFIG_GREGORIAN_CALENDER=y
- CONFIG_HAS_KALLSYMS=y
- CONFIG_HAS_MODULES=y
-@@ -55,12 +61,12 @@ CONFIG_CMD_MEMORY=y
- CONFIG_ENV_HANDLING=y
- 
- #
--# General Settings              
-+# General Settings
- #
- CONFIG_LOCALVERSION_AUTO=y
- 
- #
--# memory layout                 
-+# memory layout
- #
- CONFIG_HAVE_CONFIGURABLE_TEXT_BASE=y
- CONFIG_TEXT_BASE=0x31fc0000
-@@ -97,7 +103,7 @@ CONFIG_DEFAULT_ENVIRONMENT=y
- CONFIG_DEFAULT_ENVIRONMENT_PATH="board/a9m2410/env"
- 
- #
--# Debugging                     
-+# Debugging
- #
- CONFIG_DEBUG_INFO=y
- # CONFIG_ENABLE_FLASH_NOISE is not set
-@@ -105,11 +111,11 @@ CONFIG_DEBUG_INFO=y
- # CONFIG_ENABLE_DEVICE_NOISE is not set
- 
- #
--# Commands                      
-+# Commands
- #
- 
- #
--# scripting                     
-+# scripting
- #
- CONFIG_CMD_EDIT=y
- CONFIG_CMD_SLEEP=y
-@@ -122,7 +128,7 @@ CONFIG_CMD_TRUE=y
- CONFIG_CMD_FALSE=y
- 
- #
--# file commands                 
-+# file commands
- #
- CONFIG_CMD_LS=y
- CONFIG_CMD_RM=y
-@@ -136,14 +142,13 @@ CONFIG_CMD_MOUNT=y
- CONFIG_CMD_UMOUNT=y
- 
- #
--# console                       
-+# console
- #
- CONFIG_CMD_CLEAR=y
- CONFIG_CMD_ECHO=y
--# CONFIG_CMD_SPLASH is not set
- 
- #
--# memory                        
-+# memory
- #
- # CONFIG_CMD_LOADB is not set
- # CONFIG_CMD_LOADY is not set
-@@ -154,18 +159,19 @@ CONFIG_CMD_MTEST=y
- # CONFIG_CMD_MTEST_ALTERNATIVE is not set
- 
- #
--# flash                         
-+# flash
- #
- CONFIG_CMD_FLASH=y
--CONFIG_CMD_NAND=y
- 
- #
--# booting                       
-+# booting
- #
- CONFIG_CMD_BOOTM=y
- # CONFIG_CMD_BOOTM_ZLIB is not set
- # CONFIG_CMD_BOOTM_BZLIB is not set
- # CONFIG_CMD_BOOTM_SHOW_TYPE is not set
-+CONFIG_CMD_BOOTZ=y
-+CONFIG_CMD_BOOTU=y
- CONFIG_CMD_RESET=y
- CONFIG_CMD_GO=y
- CONFIG_CMD_TIMEOUT=y
-@@ -175,39 +181,39 @@ CONFIG_CMD_VERSION=y
- CONFIG_CMD_HELP=y
- CONFIG_CMD_DEVINFO=y
- CONFIG_NET=y
--CONFIG_NET_BOOTP=y
- CONFIG_NET_DHCP=y
- # CONFIG_NET_RARP is not set
--# CONFIG_NET_SNTP is not set
- # CONFIG_NET_NFS is not set
- CONFIG_NET_PING=y
- CONFIG_NET_TFTP=y
- 
- #
--# Drivers                       
-+# Drivers
- #
- 
- #
--# serial drivers                
-+# serial drivers
- #
-+# CONFIG_DRIVER_SERIAL_ARM_DCC is not set
- # CONFIG_DRIVER_SERIAL_NS16550 is not set
- CONFIG_DRIVER_SERIAL_S3C24X0=y
- # CONFIG_DRIVER_SERIAL_S3C24X0_AUTOSYNC is not set
- CONFIG_MIIPHY=y
- 
- #
--# Network drivers               
-+# Network drivers
- #
- # CONFIG_DRIVER_NET_SMC911X is not set
- CONFIG_DRIVER_NET_SMC91111=y
- 
- #
--# SPI drivers                   
-+# SPI drivers
- #
- # CONFIG_SPI is not set
-+# CONFIG_I2C is not set
- 
- #
--# flash drivers                 
-+# flash drivers
- #
- # CONFIG_DRIVER_CFI is not set
- # CONFIG_DRIVER_CFI_OLD is not set
-@@ -218,9 +224,11 @@ CONFIG_NAND_S3C24X0=y
- CONFIG_MTD_NAND_IDS=y
- # CONFIG_MTD_NAND_DISKONCHIP is not set
- # CONFIG_USB is not set
-+# CONFIG_USB_GADGET is not set
-+# CONFIG_VIDEO is not set
- 
- #
--# Filesystem support            
-+# Filesystem support
- #
- # CONFIG_FS_CRAMFS is not set
- CONFIG_FS_RAMFS=y
+Ok, applied.
+
+Sascha
+
+> 
+> ---
+> 
+>   just as an aside, as i mentioned earlier, i'll make a bunch of these
+> corrections as logically independent patches, rather than mixing them
+> all together.
+> 
+> 
+> diff --git a/commands/Makefile b/commands/Makefile
+> index a08837e..134d8b3 100644
+> --- a/commands/Makefile
+> +++ b/commands/Makefile
+> @@ -32,7 +32,7 @@ obj-$(CONFIG_CMD_FLASH)		+= flash.o
+>  obj-$(CONFIG_CMD_MEMINFO)	+= meminfo.o
+>  obj-$(CONFIG_CMD_TIMEOUT)	+= timeout.o
+>  obj-$(CONFIG_CMD_READLINE)	+= readline.o
+> -obj-$(CONFIG_SIMPLE_PARSER)	+= setenv.o
+> +obj-$(CONFIG_SHELL_SIMPLE)	+= setenv.o
+>  obj-$(CONFIG_CMD_EXPORT)	+= export.o
+>  obj-$(CONFIG_CMD_PRINTENV)	+= printenv.o
+>  obj-$(CONFIG_CMD_SAVEENV)	+= saveenv.o
+> 
+> rday
+> --
+> 
+> ========================================================================
+> Robert P. J. Day                               Waterloo, Ontario, CANADA
+> 
+>             Linux Consulting, Training and Kernel Pedantry.
+> 
+> Web page:                                          http://crashcourse.ca
+> Twitter:                                       http://twitter.com/rpjday
+> ========================================================================
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-1.6.5.2
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
