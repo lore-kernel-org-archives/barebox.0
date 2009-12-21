@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from astoria.ccjclearline.com ([64.235.106.9])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NMh2w-0006yP-HB
-	for barebox@lists.infradead.org; Mon, 21 Dec 2009 12:07:34 +0000
-Received: from cpe002129687b04-cm001225dbafb6.cpe.net.cable.rogers.com
-	([99.235.241.187] helo=crashcourse.ca)
-	by astoria.ccjclearline.com with esmtpsa (TLSv1:AES256-SHA:256)
-	(Exim 4.69) (envelope-from <rpjday@crashcourse.ca>)
-	id 1NMh2v-0005jn-69
-	for barebox@lists.infradead.org; Mon, 21 Dec 2009 07:07:29 -0500
-Date: Mon, 21 Dec 2009 07:07:04 -0500 (EST)
+	id 1NMi19-0008DP-Co
+	for barebox@lists.infradead.org; Mon, 21 Dec 2009 13:09:47 +0000
+Date: Mon, 21 Dec 2009 08:09:11 -0500 (EST)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-Message-ID: <alpine.LFD.2.00.0912210703550.14660@localhost>
+In-Reply-To: <20091221093248.GT15126@pengutronix.de>
+Message-ID: <alpine.LFD.2.00.0912210807310.16078@localhost>
+References: <alpine.LFD.2.00.0912200705560.18199@localhost>
+	<20091221093248.GT15126@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -25,66 +22,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Remove/adjust erroneous references to CONFIG_MODULE.
-To: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: Re: more CONFIG oddities in the current barebox tree
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
 
-The correct config variable is CONFIG_MODULES, so tweak any references
-to the incorrect CONFIG_MODULE.
+  leftovers from one of my earliest posts ...
 
-Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+On Mon, 21 Dec 2009, Sascha Hauer wrote:
 
----
+> On Sun, Dec 20, 2009 at 07:08:02AM -0500, Robert P. J. Day wrote:
 
-  can someone verify that this looks correct, as there are only three
-references to CONFIG_MODULE throughout the tree:
+> > ===== MODVERSIONS =====
+> > ./Makefile:  KBUILD_BUILTIN := $(if $(CONFIG_MODVERSIONS),1)
+> > ./scripts/Makefile:#subdir-$(CONFIG_MODVERSIONS) += genksyms
 
-  * a superfluous one in common/Makefile that's already covered by
-    a test to CONFIG_MODULES
-  * a test in arch/ppc/Makefile
-  * a comment in include/module.h
+  so is barebox actually going to support MODVERSIONS?
 
-so i want to make sure i tweaked all that appropriately.
+> > ===== USE_IRQ =====
+> > ./arch/ppc/mach-mpc5xxx/Makefile:obj-$(CONFIG_USE_IRQ)	+=
+> > interrupts.o
+> > ./arch/ppc/lib/Makefile:obj-$(CONFIG_USE_IRQ) += interrupts.o
+>
+> The IRQ stuff is an area for some more cleanup. So far I do not use
+> interrupts at all and I doubt they are working anywhere. Maybe it's
+> best to keep it like it is until somebody is willing to think about
+> irqs and has some suggestions in which direction we want to go.
 
+  sure, no problem.  all other issues from that post have now been
+addressed.
 
-diff --git a/arch/ppc/Makefile b/arch/ppc/Makefile
-index 2c9c535..c24d3c3 100644
---- a/arch/ppc/Makefile
-+++ b/arch/ppc/Makefile
-@@ -17,7 +17,7 @@ TEXT_BASE = $(CONFIG_TEXT_BASE)
- CPPFLAGS += -DTEXT_BASE=$(TEXT_BASE) -P
-
- # Add cleanup flags
--ifndef CONFIG_MODULE
-+ifndef CONFIG_MODULES
- CPPFLAGS += -fdata-sections -ffunction-sections
- endif
-
-diff --git a/common/Makefile b/common/Makefile
-index d7a024b..0c075a9 100644
---- a/common/Makefile
-+++ b/common/Makefile
-@@ -2,7 +2,6 @@ obj-$(CONFIG_SHELL_HUSH)	+= hush.o
- obj-$(CONFIG_SHELL_SIMPLE)	+= parser.o
- obj-$(CONFIG_GREGORIAN_CALENDER) += date.o
- obj-$(CONFIG_OF_FLAT_TREE)	+= ft_build.o
--obj-$(CONFIG_MODULE)		+= module.o
- obj-$(CONFIG_KALLSYMS)		+= kallsyms.o
- obj-$(CONFIG_ENV_HANDLING)	+= environment.o
- obj-$(CONFIG_AUTO_COMPLETE)	+= complete.o
-diff --git a/include/module.h b/include/module.h
-index 03b226a..9d0e803 100644
---- a/include/module.h
-+++ b/include/module.h
-@@ -71,7 +71,7 @@ int apply_relocate_add(Elf_Shdr *sechdrs,
- 		       struct module *mod);
- #else
- #define EXPORT_SYMBOL(sym)
--#endif /* CONFIG_MODULE */
-+#endif /* CONFIG_MODULES */
-
- extern struct list_head module_list;
-
+rday
+--
 
 ========================================================================
 Robert P. J. Day                               Waterloo, Ontario, CANADA
