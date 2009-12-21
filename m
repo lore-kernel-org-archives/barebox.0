@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from astoria.ccjclearline.com ([64.235.106.9])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NMilM-0007Sw-Ur
-	for barebox@lists.infradead.org; Mon, 21 Dec 2009 13:57:32 +0000
-Date: Mon, 21 Dec 2009 08:56:51 -0500 (EST)
+	id 1NMisB-0008V3-Cc
+	for barebox@lists.infradead.org; Mon, 21 Dec 2009 14:04:35 +0000
+Received: from cpe002129687b04-cm001225dbafb6.cpe.net.cable.rogers.com
+	([99.235.241.187] helo=crashcourse.ca)
+	by astoria.ccjclearline.com with esmtpsa (TLSv1:AES256-SHA:256)
+	(Exim 4.69) (envelope-from <rpjday@crashcourse.ca>)
+	id 1NMis9-0006sb-4S
+	for barebox@lists.infradead.org; Mon, 21 Dec 2009 09:04:29 -0500
+Date: Mon, 21 Dec 2009 09:04:04 -0500 (EST)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-In-Reply-To: <20091221132709.GI15126@pengutronix.de>
-Message-ID: <alpine.LFD.2.00.0912210856130.16835@localhost>
-References: <alpine.LFD.2.00.0912200705560.18199@localhost>
-	<20091221093248.GT15126@pengutronix.de>
-	<alpine.LFD.2.00.0912210807310.16078@localhost>
-	<20091221132709.GI15126@pengutronix.de>
+Message-ID: <alpine.LFD.2.00.0912210901430.17057@localhost>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -24,33 +25,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: more CONFIG oddities in the current barebox tree
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: [PATCH] Remove obsolete comment referring to CFG_CMD_JFFS2.
+To: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-On Mon, 21 Dec 2009, Sascha Hauer wrote:
 
-> On Mon, Dec 21, 2009 at 08:09:11AM -0500, Robert P. J. Day wrote:
-> >
-> >   leftovers from one of my earliest posts ...
-> >
-> > On Mon, 21 Dec 2009, Sascha Hauer wrote:
-> >
-> > > On Sun, Dec 20, 2009 at 07:08:02AM -0500, Robert P. J. Day wrote:
-> >
-> > > > ===== MODVERSIONS =====
-> > > > ./Makefile:  KBUILD_BUILTIN := $(if $(CONFIG_MODVERSIONS),1)
-> > > > ./scripts/Makefile:#subdir-$(CONFIG_MODVERSIONS) += genksyms
-> >
-> >   so is barebox actually going to support MODVERSIONS?
->
-> I think not. If we ever want to do we can add this back in.
+Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
-  ok.  that second line has already been removed as part of an earlier
-patch, i'll submit something to delete the first one appropriately.
+---
 
-rday
---
+  yes, it's a trivial patch, but i'm just trying to cut down on the
+amount of output i'm getting from my scan scripts.  and there's no
+such thing as CFG_CMD_JFFS2.
+
+
+diff --git a/lib/crc32.c b/lib/crc32.c
+index 2ed2df0..be35366 100644
+--- a/lib/crc32.c
++++ b/lib/crc32.c
+@@ -9,7 +9,7 @@
+  */
+
+ #ifdef __BAREBOX__	/* Shut down "ANSI does not permit..." warnings */
+-#include <common.h>	/* to get command definitions like CFG_CMD_JFFS2 */
++#include <common.h>
+ #endif
+
+ #ifdef CONFIG_DYNAMIC_CRC_TABLE
 
 ========================================================================
 Robert P. J. Day                               Waterloo, Ontario, CANADA
