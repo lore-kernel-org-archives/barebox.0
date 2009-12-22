@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from [2001:6f8:1178:4:290:27ff:fe1d:cc33]
-	(helo=metis.ext.pengutronix.de)
-	by casper.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NN64v-0000XG-KA
-	for barebox@lists.infradead.org; Tue, 22 Dec 2009 14:51:18 +0000
-Message-ID: <4B30DC1F.6060305@pengutronix.de>
-Date: Tue, 22 Dec 2009 15:47:59 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+Received: from astoria.ccjclearline.com ([64.235.106.9])
+	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
+	id 1NN65g-0002mD-2N
+	for barebox@lists.infradead.org; Tue, 22 Dec 2009 14:52:03 +0000
+Received: from cpe00142a336e11-cm001ac318e826.cpe.net.cable.rogers.com
+	([174.113.191.234] helo=crashcourse.ca)
+	by astoria.ccjclearline.com with esmtpsa (TLSv1:AES256-SHA:256)
+	(Exim 4.69) (envelope-from <rpjday@crashcourse.ca>)
+	id 1NN65d-0008EL-Hd
+	for barebox@lists.infradead.org; Tue, 22 Dec 2009 09:51:57 -0500
+Date: Tue, 22 Dec 2009 09:51:19 -0500 (EST)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+Message-ID: <alpine.LFD.2.00.0912220948380.4211@localhost>
 MIME-Version: 1.0
-References: <alpine.LFD.2.00.0912220923160.3291@localhost>
-In-Reply-To: <alpine.LFD.2.00.0912220923160.3291@localhost>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,68 +21,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1422701077=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] drivers: use "menuconfig" consistently for all selections.
-To: "Robert P. J. Day" <rpjday@crashcourse.ca>
-Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
-
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---===============1422701077==
-Content-Type: multipart/signed; micalg=pgp-sha1;
- protocol="application/pgp-signature";
- boundary="------------enig56553E8DE076FC3265D25F73"
-
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---------------enig56553E8DE076FC3265D25F73
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-Robert P. J. Day wrote:
-> Use the "menuconfig" directive to make all top-level driver choices
-> 1-touch selectable, and standardize the menuconfig names.
-
-If you change the symbol names you have to change the Makefiles, too.
-
-Have a look at drivers/Makefile and drivers/*/Makefile
-
-cheers, Marc
+Subject: [PATCH] Fix typo, "CFG_LONGHELP" -> "CONFIG_LONGHELP".
+To: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
 
---=20
-Pengutronix e.K.                         | Marc Kleine-Budde           |
-Linux Solutions for Science and Industry | Phone: +49-231-2826-924     |
-Vertretung West/Dortmund                 | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686         | http://www.pengutronix.de   |
+Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+
+---
+
+  while this fixes an obvious typo in this file, it's really just a
+band-aid since this header file sets *numerous* CONFIG_-prefixed
+macros, which it shouldn't be doing.  any macros prefixed with CONFIG_
+should be reserved for the Kconfig namespace, so it wouldn't hurt to
+apply this patch, but it's clear that this file needs a lot more work
+at some point in the future.
 
 
---------------enig56553E8DE076FC3265D25F73
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
+diff --git a/board/eco920/config.h b/board/eco920/config.h
+index 3fb8beb..6f8f8ea 100644
+--- a/board/eco920/config.h
++++ b/board/eco920/config.h
+@@ -112,7 +112,7 @@
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.9 (GNU/Linux)
-Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org
+ #define CFG_BAUDRATE_TABLE	{115200 , 19200, 38400, 57600, 9600 }
 
-iEYEARECAAYFAksw3B8ACgkQjTAFq1RaXHPvdQCeISLNdFPg/8W4UTnkI2q2bNo1
-kKQAn16gF96bCjtvtvGFCQL7h7D/uwTt
-=nNWg
------END PGP SIGNATURE-----
+-#define	CFG_LONGHELP				/* undef to save memory		*/
++#define	CONFIG_LONGHELP				/* undef to save memory		*/
+ #define CFG_PROMPT		"barebox> "	/* Monitor Command Prompt */
+ #define CFG_CBSIZE		1024		/* Console I/O Buffer Size */
+ #define CFG_MAXARGS		32		/* max number of command args */
 
---------------enig56553E8DE076FC3265D25F73--
+========================================================================
+Robert P. J. Day                               Waterloo, Ontario, CANADA
 
+            Linux Consulting, Training and Kernel Pedantry.
 
---===============1422701077==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Web page:                                          http://crashcourse.ca
+Twitter:                                       http://twitter.com/rpjday
+========================================================================
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============1422701077==--
