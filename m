@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from astoria.ccjclearline.com ([64.235.106.9])
+Received: from bear.ext.ti.com ([192.94.94.41])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NNnZi-0003MJ-A7
-	for barebox@lists.infradead.org; Thu, 24 Dec 2009 13:17:58 +0000
-Date: Thu, 24 Dec 2009 08:17:18 -0500 (EST)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-In-Reply-To: <20091224131106.GA8799@pengutronix.de>
-Message-ID: <alpine.LFD.2.00.0912240815570.3833@localhost>
-References: <20091224131106.GA8799@pengutronix.de>
-MIME-Version: 1.0
+	id 1NNoAJ-0002DT-O5
+	for barebox@lists.infradead.org; Thu, 24 Dec 2009 13:55:48 +0000
+Received: from dbdp31.itg.ti.com ([172.24.170.98])
+	by bear.ext.ti.com (8.13.7/8.13.7) with ESMTP id nBODtdDb017897
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <barebox@lists.infradead.org>; Thu, 24 Dec 2009 07:55:41 -0600
+From: Sanjeev Premi <premi@ti.com>
+Date: Thu, 24 Dec 2009 19:25:36 +0530
+Message-Id: <1261662937-31474-1-git-send-email-premi@ti.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,40 +18,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: barebox-2009.12.0 is out
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/1] Exclude code based on config
+To: barebox@lists.infradead.org
 
-On Thu, 24 Dec 2009, Sascha Hauer wrote:
+When trying to build with Networking support enabled;
+but without selecting any protocol, i encountered
+this error:
 
-> Hi all,
->
-> We finally have our first barebox release! Download it here:
->
-> http://barebox.org/download/barebox-2009.12.0.tar.bz2
->
-> Thank you all for contributing. I wish you a merry christmas
+premi # make
+make[1]: `arch/arm/include/asm/mach-types.h' is up to date.
+  CHK     include/linux/version.h
+  CHK     include/linux/utsrelease.h
+  SYMLINK include/config.h -> board/omap/config.h
+  LD      barebox
+commands/built-in.o: In function `do_tftpb':
+help.c:(.text.do_tftpb+0x64): undefined reference to `TftpStart'
+make: *** [barebox] Error 1
 
-  will there be much activity on the mailing list over the holidays?
-i have some spare time and am willing to work on more cleanup, but
-there won't be much point if everyone's going to take a few days off
--- i can just wait until things start up again.
+This 'mistake' led me to making the changes in the following
+patch.
 
-rday
---
+Sanjeev Premi (1):
+  net: Exclude code based on selected protocol
 
-========================================================================
-Robert P. J. Day                               Waterloo, Ontario, CANADA
+ commands/net.c |   13 +++++++++++++
+ 1 files changed, 13 insertions(+), 0 deletions(-)
 
-            Linux Consulting, Training and Kernel Pedantry.
-
-Web page:                                          http://crashcourse.ca
-Twitter:                                       http://twitter.com/rpjday
-========================================================================
 
 _______________________________________________
 barebox mailing list
