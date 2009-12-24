@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from [213.251.138.60] (helo=39.mail-out.ovh.net)
-	by bombadil.infradead.org with smtp (Exim 4.69 #1 (Red Hat Linux))
-	id 1NNoY4-0006PW-9H
-	for barebox@lists.infradead.org; Thu, 24 Dec 2009 14:20:21 +0000
-Date: Thu, 24 Dec 2009 14:57:43 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20091224135743.GA1442@game.jcrosoft.org>
+Received: from mail-ew0-f221.google.com ([209.85.219.221])
+	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
+	id 1NNqqw-0000M7-4A
+	for barebox@lists.infradead.org; Thu, 24 Dec 2009 16:47:58 +0000
+Received: by ewy21 with SMTP id 21so11198074ewy.2
+	for <barebox@lists.infradead.org>; Thu, 24 Dec 2009 08:47:52 -0800 (PST)
+From: Peter Korsgaard <jacmet@sunsite.dk>
 References: <20091224131106.GA8799@pengutronix.de>
+Date: Thu, 24 Dec 2009 17:47:47 +0100
+In-Reply-To: <20091224131106.GA8799@pengutronix.de> (Sascha Hauer's message of
+	"Thu, 24 Dec 2009 14:11:06 +0100")
+Message-ID: <87oclowc7g.fsf@macbook.be.48ers.dk>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20091224131106.GA8799@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,20 +28,18 @@ Subject: Re: barebox-2009.12.0 is out
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 14:11 Thu 24 Dec     , Sascha Hauer wrote:
-> Hi all,
-> 
-> We finally have our first barebox release! Download it here:
-> 
-> http://barebox.org/download/barebox-2009.12.0.tar.bz2
-> 
-> Thank you all for contributing. I wish you a merry christmas
-tks
+>>>>> "Sascha" == Sascha Hauer <s.hauer@pengutronix.de> writes:
 
-Merry Chrismas all
+ Sascha> Hi all,
+ Sascha> We finally have our first barebox release! Download it here:
 
-Best Regards,
-J.
+ Sascha> http://barebox.org/download/barebox-2009.12.0.tar.bz2
+
+Great - It would be good to update the doxygen documentation on
+barebox.org to match.
+
+-- 
+Bye, Peter Korsgaard
 
 _______________________________________________
 barebox mailing list
