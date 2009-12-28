@@ -1,19 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from [212.27.42.5] (helo=smtp5-g21.free.fr)
-	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
-	id 1NPJyx-0007wY-CS
-	for barebox@lists.infradead.org; Mon, 28 Dec 2009 18:06:20 +0000
-Received: from smtp5-g21.free.fr (localhost [127.0.0.1])
-	by smtp5-g21.free.fr (Postfix) with ESMTP id 5CF04D48194
-	for <barebox@lists.infradead.org>; Mon, 28 Dec 2009 19:05:32 +0100 (CET)
-Received: from [192.168.1.15] (tal33-2-82-228-175-43.fbx.proxad.net
-	[82.228.175.43])
-	by smtp5-g21.free.fr (Postfix) with ESMTP id 71F03D480FD
-	for <barebox@lists.infradead.org>; Mon, 28 Dec 2009 19:05:30 +0100 (CET)
-Message-ID: <4B38F36A.6080305@eukrea.com>
-Date: Mon, 28 Dec 2009 19:05:30 +0100
-From: =?ISO-8859-1?Q?Eric_B=E9nard?= <eric@eukrea.com>
+Received: from [2001:6f8:1178:4:290:27ff:fe1d:cc33]
+	(helo=metis.ext.pengutronix.de)
+	by casper.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
+	id 1NPLXp-0004bu-LU
+	for barebox@lists.infradead.org; Mon, 28 Dec 2009 19:46:23 +0000
+Date: Mon, 28 Dec 2009 20:43:11 +0100
+From: Robert Schwebel <r.schwebel@pengutronix.de>
+Message-ID: <20091228194311.GA22533@pengutronix.de>
+References: <4B38F36A.6080305@eukrea.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <4B38F36A.6080305@eukrea.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,34 +19,33 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: i.MX25 NAND status
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: i.MX25 NAND status
+To: Eric =?iso-8859-15?Q?B=E9nard?= <eric@eukrea.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi,
+Eric,
 
-What is the status of current barebox on i.MX25 using NAND boot ?
+On Mon, Dec 28, 2009 at 07:05:30PM +0100, Eric B=E9nard wrote:
+> What is the status of current barebox on i.MX25 using NAND boot ?
 
-At the first try, it doesn't compile with CONFIG_NAND_IMX_BOOT enabled 
-as imx_nand_load_image wasn't updated in 
-board/freescale-mx25-3-stack/3stack.c
--       imx_nand_load_image((void *)TEXT_BASE, 256 * 1024, 2048, 16384);
-+       imx_nand_load_image((void *)TEXT_BASE, 256 * 1024);
+We have it running from NAND on a custom board here, but I assume the
+mainline might not have all necessary patches. As we went to the custom
+hardware relatively early, nobody took the time to polish the PDK port.
 
-I've loaded barebox in ram using a JTAG and the NAND flash is properly 
-detected but the badblock scan works only if the NAND was previously 
-initialised by the JTAG and gives differents results at each run which 
-seems to indicate something is wrong in the setup.
+However, most of our staff is on holiday right now, so we can check next
+week.
 
-The platform I'm testing is a i.MX257 TO 1.1 using a 3.3V 8bits width 2k 
-page size 2Gb NAND from Micron (MT29F2G08AAD).
+Robert
+-- =
 
-Thanks,
-
-Eric
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
