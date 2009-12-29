@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from [212.27.42.4] (helo=smtp4-g21.free.fr)
-	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
-	id 1NPZv1-0008Oo-OC
-	for barebox@lists.infradead.org; Tue, 29 Dec 2009 11:07:20 +0000
-Message-ID: <4B39E2B8.7010401@eukrea.com>
-Date: Tue, 29 Dec 2009 12:06:32 +0100
-From: =?ISO-8859-15?Q?Eric_B=E9nard?= <eric@eukrea.com>
-MIME-Version: 1.0
+Received: from [2001:6f8:1178:4:290:27ff:fe1d:cc33]
+	(helo=metis.ext.pengutronix.de)
+	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
+	id 1NPaIN-0002jv-CK
+	for barebox@lists.infradead.org; Tue, 29 Dec 2009 11:31:24 +0000
+Date: Tue, 29 Dec 2009 12:30:46 +0100
+From: Robert Schwebel <r.schwebel@pengutronix.de>
+Message-ID: <20091229113046.GJ22533@pengutronix.de>
 References: <4B38F36A.6080305@eukrea.com>
 	<20091228194311.GA22533@pengutronix.de>
-In-Reply-To: <20091228194311.GA22533@pengutronix.de>
+	<4B39E2B8.7010401@eukrea.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <4B39E2B8.7010401@eukrea.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,41 +21,31 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-15"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: i.MX25 NAND status
-To: Robert Schwebel <r.schwebel@pengutronix.de>
+To: Eric =?iso-8859-15?Q?B=E9nard?= <eric@eukrea.com>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi Robert,
+Hi Eric,
 
-Robert Schwebel a =E9crit :
-> On Mon, Dec 28, 2009 at 07:05:30PM +0100, Eric B=E9nard wrote:
->> What is the status of current barebox on i.MX25 using NAND boot ?
-> =
+On Tue, Dec 29, 2009 at 12:06:32PM +0100, Eric B=E9nard wrote:
+> OK, I managed to get the MX25 NAND boot working using the
+> CONFIG_ARCH_IMX_INTERNAL_BOOT option (with the proper DCD table for my
+> board low level init). I'll clean our board support and send it to the
+> list in January (at least I hope so ;-).
 
-> We have it running from NAND on a custom board here, but I assume the
-> mainline might not have all necessary patches. As we went to the custom
-> hardware relatively early, nobody took the time to polish the PDK port.
-> =
+Great, thanks!
 
-> However, most of our staff is on holiday right now, so we can check next
-> week.
-> =
+rsc
+-- =
 
-OK, I managed to get the MX25 NAND boot working using the =
-
-CONFIG_ARCH_IMX_INTERNAL_BOOT option (with the proper DCD table for my =
-
-board low level init).
-I'll clean our board support and send it to the list in January (at =
-
-least I hope so ;-).
-
-Thanks,
-Eric
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
