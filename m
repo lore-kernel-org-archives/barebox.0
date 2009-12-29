@@ -1,18 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from [2001:6f8:1178:4:290:27ff:fe1d:cc33]
-	(helo=metis.ext.pengutronix.de)
-	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NPaIN-0002jv-CK
-	for barebox@lists.infradead.org; Tue, 29 Dec 2009 11:31:24 +0000
-Date: Tue, 29 Dec 2009 12:30:46 +0100
-From: Robert Schwebel <r.schwebel@pengutronix.de>
-Message-ID: <20091229113046.GJ22533@pengutronix.de>
-References: <4B38F36A.6080305@eukrea.com>
-	<20091228194311.GA22533@pengutronix.de>
-	<4B39E2B8.7010401@eukrea.com>
+Received: from [217.70.178.89] (helo=slow3-v.mail.gandi.net)
+	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
+	id 1NPiLV-0001Qz-UR
+	for barebox@lists.infradead.org; Tue, 29 Dec 2009 20:07:14 +0000
+Received: from relay2-v.mail.gandi.net (relay2-v.mail.gandi.net
+	[217.70.178.76])
+	by slow3-v.mail.gandi.net (Postfix) with ESMTP id E5302519DE
+	for <barebox@lists.infradead.org>; Tue, 29 Dec 2009 20:38:49 +0100 (CET)
+Received: from d4rwin.no-ip.org (235.Red-88-19-187.staticIP.rima-tde.net
+	[88.19.187.235])
+	by relay2-v.mail.gandi.net (Postfix) with ESMTP id 1EB72135D0
+	for <barebox@lists.infradead.org>; Tue, 29 Dec 2009 20:38:19 +0100 (CET)
+Date: Tue, 29 Dec 2009 20:34:11 +0100
+From: Matthias Kaehlcke <matthias@kaehlcke.net>
+Message-ID: <20091229193411.GB5093@darwin>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <4B39E2B8.7010401@eukrea.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,31 +24,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: i.MX25 NAND status
-To: Eric =?iso-8859-15?Q?B=E9nard?= <eric@eukrea.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH] fix path specs in arch/arm/mach-arm.dox
+To: barebox@lists.infradead.org
 
-Hi Eric,
+Fix incorrect path specs in the documentation for adding an ARM based
+CPU (MACH) to the tree
 
-On Tue, Dec 29, 2009 at 12:06:32PM +0100, Eric B=E9nard wrote:
-> OK, I managed to get the MX25 NAND boot working using the
-> CONFIG_ARCH_IMX_INTERNAL_BOOT option (with the proper DCD table for my
-> board low level init). I'll clean our board support and send it to the
-> list in January (at least I hope so ;-).
+Signed-off-by: Matthias Kaehlcke <matthias@kaehlcke.net>
 
-Great, thanks!
+--
 
-rsc
--- =
+diff --git a/arch/arm/mach-arm.dox b/arch/arm/mach-arm.dox
+index 76b6883..758df3f 100644
+--- a/arch/arm/mach-arm.dox
++++ b/arch/arm/mach-arm.dox
+@@ -40,12 +40,12 @@ target address is the first C instruction in barebox. At this point of time:\n
+ 
+ Lets call the new MACH new_cpu.
+ 
+- - create a new subdirectory in /arch/arm/new_cpu
+- - create a new subdirectory in /include/asm-arm/new_cpu
+- - add CPU specific definitions into /include/asm-arm/new_cpu/
+- - add /arch/arm/new_cpu/Kconfig
+- - add /arch/arm/new_cpu/Makfile
+- - add other CPU specific code into /arch/arm/new_cpu/
++ - create a new subdirectory in /arch/arm/mach-new_cpu
++ - create a new subdirectory in /arch/arm/mach-new_cpu/include
++ - add CPU specific definitions into /arch/arm/mach-new_cpu/include
++ - add /arch/arm/mach-new_cpu/Kconfig
++ - add /arch/arm/mach-new_cpu/Makfile
++ - add other CPU specific code into /arch/arm/mach-new_cpu/
+  - modify /arch/arm/Kconfig
+  - modify /arch/arm/Makfile
 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+-- 
+Matthias Kaehlcke
+Embedded Linux Developer
+Barcelona
+
+             You must have a plan. If you don't have a plan,
+               you'll become part of somebody else's plan
+                                                                 .''`.
+    using free software / Debian GNU/Linux | http://debian.org  : :'  :
+                                                                `. `'`
+gpg --keyserver pgp.mit.edu --recv-keys 47D8E5D4                  `-
 
 _______________________________________________
 barebox mailing list
