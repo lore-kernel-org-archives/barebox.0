@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from [217.70.178.89] (helo=slow3-v.mail.gandi.net)
 	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
-	id 1NPiLV-0001Qz-UR
-	for barebox@lists.infradead.org; Tue, 29 Dec 2009 20:07:14 +0000
+	id 1NQTXy-0007qi-JO
+	for barebox@lists.infradead.org; Thu, 31 Dec 2009 22:31:14 +0000
 Received: from relay2-v.mail.gandi.net (relay2-v.mail.gandi.net
 	[217.70.178.76])
-	by slow3-v.mail.gandi.net (Postfix) with ESMTP id E5302519DE
-	for <barebox@lists.infradead.org>; Tue, 29 Dec 2009 20:38:49 +0100 (CET)
-Received: from d4rwin.no-ip.org (235.Red-88-19-187.staticIP.rima-tde.net
-	[88.19.187.235])
-	by relay2-v.mail.gandi.net (Postfix) with ESMTP id 1EB72135D0
-	for <barebox@lists.infradead.org>; Tue, 29 Dec 2009 20:38:19 +0100 (CET)
-Date: Tue, 29 Dec 2009 20:34:11 +0100
+	by slow3-v.mail.gandi.net (Postfix) with ESMTP id 8CFD242FCE
+	for <barebox@lists.infradead.org>; Thu, 31 Dec 2009 23:00:12 +0100 (CET)
+Received: from d4rwin.no-ip.org (115.Red-88-27-18.staticIP.rima-tde.net
+	[88.27.18.115])
+	by relay2-v.mail.gandi.net (Postfix) with ESMTP id 43706135D0
+	for <barebox@lists.infradead.org>; Thu, 31 Dec 2009 22:59:32 +0100 (CET)
+Date: Thu, 31 Dec 2009 22:55:21 +0100
 From: Matthias Kaehlcke <matthias@kaehlcke.net>
-Message-ID: <20091229193411.GB5093@darwin>
+Message-ID: <20091231215521.GO5093@darwin>
 MIME-Version: 1.0
 Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
@@ -28,46 +28,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fix path specs in arch/arm/mach-arm.dox
+Subject: [PATCH] Fix typo in board.dox
 To: barebox@lists.infradead.org
 
-Fix incorrect path specs in the documentation for adding an ARM based
-CPU (MACH) to the tree
+Fix a typo in documentation file about adapting a new board which
+misnames the linker script template file
 
 Signed-off-by: Matthias Kaehlcke <matthias@kaehlcke.net>
 
 --
 
-diff --git a/arch/arm/mach-arm.dox b/arch/arm/mach-arm.dox
-index 76b6883..758df3f 100644
---- a/arch/arm/mach-arm.dox
-+++ b/arch/arm/mach-arm.dox
-@@ -40,12 +40,12 @@ target address is the first C instruction in barebox. At this point of time:\n
+diff --git a/board/board.dox b/board/board.dox
+index 9c32682..76bff45 100644
+--- a/board/board.dox
++++ b/board/board.dox
+@@ -58,7 +58,7 @@ at the right architecture.
  
- Lets call the new MACH new_cpu.
+ @note Consider to use an unique page lable.
  
-- - create a new subdirectory in /arch/arm/new_cpu
-- - create a new subdirectory in /include/asm-arm/new_cpu
-- - add CPU specific definitions into /include/asm-arm/new_cpu/
-- - add /arch/arm/new_cpu/Kconfig
-- - add /arch/arm/new_cpu/Makfile
-- - add other CPU specific code into /arch/arm/new_cpu/
-+ - create a new subdirectory in /arch/arm/mach-new_cpu
-+ - create a new subdirectory in /arch/arm/mach-new_cpu/include
-+ - add CPU specific definitions into /arch/arm/mach-new_cpu/include
-+ - add /arch/arm/mach-new_cpu/Kconfig
-+ - add /arch/arm/mach-new_cpu/Makfile
-+ - add other CPU specific code into /arch/arm/mach-new_cpu/
-  - modify /arch/arm/Kconfig
-  - modify /arch/arm/Makfile
+-@subsection board_lscript board/\<boardname\>/barebox.ld.S
++@subsection board_lscript board/\<boardname\>/barebox.lds.S
+ 
+ If your board needs a special binary @a barebox layout, you can provide a local
+ board linker script file. This will replace the generic one provided by your
 
 -- 
 Matthias Kaehlcke
 Embedded Linux Developer
 Barcelona
 
-             You must have a plan. If you don't have a plan,
-               you'll become part of somebody else's plan
+     Nationalism is an infantile disease. It is the measles of mankind
+                         (Albert Einstein)
                                                                  .''`.
     using free software / Debian GNU/Linux | http://debian.org  : :'  :
                                                                 `. `'`
