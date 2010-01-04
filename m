@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from [217.70.178.89] (helo=slow3-v.mail.gandi.net)
 	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
-	id 1NRtOl-0002dL-SD
+	id 1NRtOl-0002kW-S8
 	for barebox@lists.infradead.org; Mon, 04 Jan 2010 20:19:36 +0000
 Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net
 	[217.70.183.194])
-	by slow3-v.mail.gandi.net (Postfix) with ESMTP id 783F142066
-	for <barebox@lists.infradead.org>; Mon,  4 Jan 2010 20:47:33 +0100 (CET)
+	by slow3-v.mail.gandi.net (Postfix) with ESMTP id 32FDE38328
+	for <barebox@lists.infradead.org>; Mon,  4 Jan 2010 20:47:40 +0100 (CET)
 Received: from d4rwin.no-ip.org (25.Red-79-153-8.dynamicIP.rima-tde.net
 	[79.153.8.25])
-	by relay2-d.mail.gandi.net (Postfix) with ESMTPSA id AF7A4225187
-	for <barebox@lists.infradead.org>; Mon,  4 Jan 2010 20:47:02 +0100 (CET)
-Date: Mon, 4 Jan 2010 20:42:46 +0100
+	by relay2-d.mail.gandi.net (Postfix) with ESMTPSA id BC082225176
+	for <barebox@lists.infradead.org>; Mon,  4 Jan 2010 20:47:09 +0100 (CET)
+Date: Mon, 4 Jan 2010 20:42:52 +0100
 From: Matthias Kaehlcke <matthias@kaehlcke.net>
-Message-ID: <20100104194246.GA19855@darwin>
+Message-ID: <20100104194252.GB19855@darwin>
 MIME-Version: 1.0
 Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
@@ -28,22 +28,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/2] CFI flash drivers: Fix misleading trace when
+Subject: [PATCH 1/2] CFI flash driver: Fix misleading trace when
 	unprotecting a sector
 To: barebox@lists.infradead.org
 
-When (un)protecting a flash sector with the CFI flash drivers a
-trace "protect 0x..." is generated, independently of the type of
-operation. This is misleading in case of an unprotect. Tell the truth
-when unprotecting a sector.
+When (un)protecting a flash sector with the CFI flash driver a trace
+"protect 0x..." is generated, independently of the type of operation. This is
+misleading in case of an unprotect. Tell the truth when unprotecting a sector.
 
-Matthias Kaehlcke (2):
-  CFI flash driver: Fix misleading trace when unprotecting a sector
-  New CFI flash driver: Fix misleading trace when unprotecting a sector
+Signed-off-by: Matthias Kaehlcke <matthias@kaehlcke.net>
+---
+ drivers/nor/cfi_flash.c |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
 
- drivers/nor/cfi_flash.c     |    3 ++-
- drivers/nor/cfi_flash_new.c |    4 +++-
- 2 files changed, 5 insertions(+), 2 deletions(-)
+diff --git a/drivers/nor/cfi_flash.c b/drivers/nor/cfi_flash.c
+index 37206d0..938e2cb 100644
+--- a/drivers/nor/cfi_flash.c
++++ b/drivers/nor/cfi_flash.c
+@@ -380,7 +380,8 @@ static int cfi_protect(struct cdev *cdev, size_t count, unsigned long offset, in
+ 	unsigned long start, end;
+ 	int i, ret = 0;
+ 
+-	debug("%s: protect 0x%08x (size %d)\n", __FUNCTION__, offset, count);
++	debug("%s: %sprotect 0x%08x (size %d)\n",
++		__FUNCTION__, (prot? "" : "un"), offset, count);
+ 
+ 	start = flash_find_sector(finfo, cdev->dev->map_base + offset);
+ 	end   = flash_find_sector(finfo, cdev->dev->map_base + offset + count - 1);
+-- 
+1.6.3.1
 
 
 _______________________________________________
