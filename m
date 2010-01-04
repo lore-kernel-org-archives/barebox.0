@@ -1,19 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from [2001:6f8:1178:4:290:27ff:fe1d:cc33]
-	(helo=metis.ext.pengutronix.de)
-	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NRtJG-0001zV-3D
-	for barebox@lists.infradead.org; Mon, 04 Jan 2010 20:13:50 +0000
-Date: Mon, 4 Jan 2010 21:13:11 +0100
-From: Robert Schwebel <r.schwebel@pengutronix.de>
-Message-ID: <20100104201311.GN17262@pengutronix.de>
-References: <20100101194822.GR5093@darwin> <4B3E5CCD.60400@eukrea.com>
-	<20100101214826.GS5093@darwin>
-	<20100104120758.GC4976@pengutronix.de>
-	<20100104192153.GA30824@darwin>
+Received: from [217.70.178.89] (helo=slow3-v.mail.gandi.net)
+	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
+	id 1NRtOl-0002dL-SD
+	for barebox@lists.infradead.org; Mon, 04 Jan 2010 20:19:36 +0000
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net
+	[217.70.183.194])
+	by slow3-v.mail.gandi.net (Postfix) with ESMTP id 783F142066
+	for <barebox@lists.infradead.org>; Mon,  4 Jan 2010 20:47:33 +0100 (CET)
+Received: from d4rwin.no-ip.org (25.Red-79-153-8.dynamicIP.rima-tde.net
+	[79.153.8.25])
+	by relay2-d.mail.gandi.net (Postfix) with ESMTPSA id AF7A4225187
+	for <barebox@lists.infradead.org>; Mon,  4 Jan 2010 20:47:02 +0100 (CET)
+Date: Mon, 4 Jan 2010 20:42:46 +0100
+From: Matthias Kaehlcke <matthias@kaehlcke.net>
+Message-ID: <20100104194246.GA19855@darwin>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20100104192153.GA30824@darwin>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,23 +28,23 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: confusion about relocation (ARM)
-To: Matthias Kaehlcke <matthias@kaehlcke.net>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/2] CFI flash drivers: Fix misleading trace when
+	unprotecting a sector
+To: barebox@lists.infradead.org
 
-On Mon, Jan 04, 2010 at 08:21:53PM +0100, Matthias Kaehlcke wrote:
-> after getting compiler errors when using a config file created from
-> scratch,
+When (un)protecting a flash sector with the CFI flash drivers a
+trace "protect 0x..." is generated, independently of the type of
+operation. This is misleading in case of an unprotect. Tell the truth
+when unprotecting a sector.
 
-Can you reproduce that and send us the offending config file? Looks like
-a bug somewhere.
+Matthias Kaehlcke (2):
+  CFI flash driver: Fix misleading trace when unprotecting a sector
+  New CFI flash driver: Fix misleading trace when unprotecting a sector
 
-rsc
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+ drivers/nor/cfi_flash.c     |    3 ++-
+ drivers/nor/cfi_flash_new.c |    4 +++-
+ 2 files changed, 5 insertions(+), 2 deletions(-)
+
 
 _______________________________________________
 barebox mailing list
