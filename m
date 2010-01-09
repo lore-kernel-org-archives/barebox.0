@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relay2-d.mail.gandi.net ([217.70.183.194])
+Received: from relay2-v.mail.gandi.net ([217.70.178.76])
 	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
-	id 1NTko3-0001BN-4v
-	for barebox@lists.infradead.org; Sat, 09 Jan 2010 23:33:24 +0000
+	id 1NTkoC-0001C5-5A
+	for barebox@lists.infradead.org; Sat, 09 Jan 2010 23:33:33 +0000
 Received: from d4rwin.no-ip.org (100.Red-88-27-20.staticIP.rima-tde.net
 	[88.27.20.100])
-	by relay2-d.mail.gandi.net (Postfix) with ESMTPSA id 5F5DB225191
-	for <barebox@lists.infradead.org>; Sun, 10 Jan 2010 00:33:09 +0100 (CET)
-Date: Sun, 10 Jan 2010 00:28:46 +0100
+	by relay2-v.mail.gandi.net (Postfix) with ESMTP id E8812135D7
+	for <barebox@lists.infradead.org>; Sun, 10 Jan 2010 00:33:15 +0100 (CET)
+Date: Sun, 10 Jan 2010 00:28:52 +0100
 From: Matthias Kaehlcke <matthias@kaehlcke.net>
-Message-ID: <20100109232846.GC14051@darwin>
+Message-ID: <20100109232852.GD14051@darwin>
 MIME-Version: 1.0
 Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
@@ -24,667 +24,70 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/5] ARM: Add support for EP93xx SoCs
+Subject: [PATCH 2/5] Add EP93xx ethernet driver
 To: barebox@lists.infradead.org
 
-Add support for the Cirrus Logic EP93xx platform
+Added ethernet driver for EP93xx SoCs
 
 Signed-off-by: Matthias Kaehlcke <matthias@kaehlcke.net>
 ---
- arch/arm/Kconfig                                |    5 +
- arch/arm/Makefile                               |    9 +
- arch/arm/mach-ep93xx/Kconfig                    |  446 +++++++++++++++++
- arch/arm/mach-ep93xx/Makefile                   |    3 +
- arch/arm/mach-ep93xx/clocksource.c              |   96 ++++
- arch/arm/mach-ep93xx/include/mach/ep93xx-regs.h |  600 +++++++++++++++++++++++
- arch/arm/mach-ep93xx/led.c                      |   62 +++
- arch/arm/mach-ep93xx/led.h                      |   26 +
- arch/arm/mach-ep93xx/lowlevel_init.S            |   64 +++
- 9 files changed, 1311 insertions(+), 0 deletions(-)
- create mode 100644 arch/arm/mach-ep93xx/Kconfig
- create mode 100644 arch/arm/mach-ep93xx/Makefile
- create mode 100644 arch/arm/mach-ep93xx/clocksource.c
- create mode 100644 arch/arm/mach-ep93xx/include/mach/ep93xx-regs.h
- create mode 100644 arch/arm/mach-ep93xx/led.c
- create mode 100644 arch/arm/mach-ep93xx/led.h
- create mode 100644 arch/arm/mach-ep93xx/lowlevel_init.S
+ drivers/net/Kconfig  |    5 +
+ drivers/net/Makefile |    1 +
+ drivers/net/ep93xx.c |  686 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ drivers/net/ep93xx.h |  155 ++++++++++++
+ include/common.h     |    1 +
+ 5 files changed, 848 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/net/ep93xx.c
+ create mode 100644 drivers/net/ep93xx.h
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index c091a99..414a013 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -31,6 +31,10 @@ config ARCH_AT91RM9200
- 	bool "Atmel AT91RM9200"
- 	select CPU_ARM920T
+diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
+index ed7656e..0955562 100644
+--- a/drivers/net/Kconfig
++++ b/drivers/net/Kconfig
+@@ -64,6 +64,11 @@ config DRIVER_NET_FEC_IMX
+ 	depends on ARCH_HAS_FEC_IMX
+ 	select MIIPHY
  
-+config ARCH_EP93XX
-+	bool "Cirrus Logic EP93xx"
-+	select CPU_ARM920T
++config DRIVER_NET_EP93XX
++	bool "EP93xx Ethernet driver"
++	depends on ARCH_EP93XX
++	select MIIPHY
 +
- config ARCH_IMX
- 	bool "Freescale iMX-based"
- 	select GENERIC_GPIO
-@@ -51,6 +55,7 @@ endchoice
- source arch/arm/cpu/Kconfig
- source arch/arm/mach-at91/Kconfig
- source arch/arm/mach-at91rm9200/Kconfig
-+source arch/arm/mach-ep93xx/Kconfig
- source arch/arm/mach-imx/Kconfig
- source arch/arm/mach-netx/Kconfig
- source arch/arm/mach-omap/Kconfig
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index 47b002f..ede2085 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -39,6 +39,7 @@ CPPFLAGS += $(CFLAGS_ABI) $(arch-y) $(tune-y)
- # by CONFIG_* macro name.
- machine-$(CONFIG_ARCH_AT91)		:= at91
- machine-$(CONFIG_ARCH_AT91RM9200)	:= at91rm9200
-+machine-$(CONFIG_ARCH_EP93XX)		:= ep93xx
- machine-$(CONFIG_ARCH_IMX)		:= imx
- machine-$(CONFIG_ARCH_NETX)		:= netx
- machine-$(CONFIG_ARCH_OMAP)		:= omap
-@@ -51,6 +52,14 @@ board-$(CONFIG_MACH_A9M2440)			:= a9m2440
- board-$(CONFIG_MACH_AT91SAM9260EK)		:= at91sam9260ek
- board-$(CONFIG_MACH_AT91SAM9263EK)		:= at91sam9263ek
- board-$(CONFIG_MACH_ECO920)			:= eco920
-+board-$(CONFIG_MACH_EDB9301)			:= edb93xx
-+board-$(CONFIG_MACH_EDB9302)			:= edb93xx
-+board-$(CONFIG_MACH_EDB9302A)			:= edb93xx
-+board-$(CONFIG_MACH_EDB9307)			:= edb93xx
-+board-$(CONFIG_MACH_EDB9307A)			:= edb93xx
-+board-$(CONFIG_MACH_EDB93012)			:= edb93xx
-+board-$(CONFIG_MACH_EDB9315)			:= edb93xx
-+board-$(CONFIG_MACH_EDB9315A)			:= edb93xx
- board-$(CONFIG_MACH_EUKREA_CPUIMX27)		:= eukrea_cpuimx27
- board-$(CONFIG_MACH_FREESCALE_MX35_3STACK)	:= freescale-mx35-3-stack
- board-$(CONFIG_MACH_FREESCALE_MX25_3STACK)	:= freescale-mx25-3-stack
-diff --git a/arch/arm/mach-ep93xx/Kconfig b/arch/arm/mach-ep93xx/Kconfig
+ config DRIVER_NET_MACB
+ 	bool "macb Ethernet driver"
+ 	depends on ARCH_AT91
+diff --git a/drivers/net/Makefile b/drivers/net/Makefile
+index 6751920..1b6f104 100644
+--- a/drivers/net/Makefile
++++ b/drivers/net/Makefile
+@@ -6,6 +6,7 @@ obj-$(CONFIG_DRIVER_NET_NETX)		+= netx_eth.o
+ obj-$(CONFIG_DRIVER_NET_AT91_ETHER)	+= at91_ether.o
+ obj-$(CONFIG_DRIVER_NET_MPC5200)	+= fec_mpc5200.o
+ obj-$(CONFIG_DRIVER_NET_FEC_IMX)	+= fec_imx.o
++obj-$(CONFIG_DRIVER_NET_EP93XX)		+= ep93xx.o
+ obj-$(CONFIG_DRIVER_NET_MACB)		+= macb.o
+ obj-$(CONFIG_DRIVER_NET_TAP)		+= tap.o
+ obj-$(CONFIG_MIIPHY)			+= miiphy.o
+diff --git a/drivers/net/ep93xx.c b/drivers/net/ep93xx.c
 new file mode 100644
-index 0000000..139b08d
+index 0000000..63a0d1b
 --- /dev/null
-+++ b/arch/arm/mach-ep93xx/Kconfig
-@@ -0,0 +1,446 @@
-+if ARCH_EP93XX
-+
-+config EP93XX_SDCE0_PHYS_OFFSET
-+	bool
-+
-+config EP93XX_SDCE3_SYNC_PHYS_OFFSET
-+	bool
-+
-+comment "Cirrus EP93xx System-on-Chip"
-+
-+choice
-+	prompt "Cirrus Logic EP93XX Processor"
-+
-+config ARCH_EP9301
-+	bool "EP9301"
-+
-+config ARCH_EP9302
-+	bool "EP9302"
-+
-+config ARCH_EP9307
-+	bool "EP9307"
-+
-+config ARCH_EP9312
-+	bool "EP9312"
-+
-+config ARCH_EP9315
-+	bool "EP9315"
-+
-+endchoice
-+
-+# ----------------------------------------------------------
-+
-+if ARCH_EP9301
-+
-+choice
-+	prompt "EP9301 Board Type"
-+
-+config MACH_EDB9301
-+	bool "Cirrus Logic EDB9301"
-+	select EP93XX_SDCE3_SYNC_PHYS_OFFSET
-+	select MACH_HAS_LOWLEVEL_INIT
-+	select BOARD_LINKER_SCRIPT
-+	help
-+	  Say y here if you are using Cirrus Logic's EDB9301 Evaluation board
-+
-+endchoice
-+
-+if MACH_EDB9301
-+
-+config BOARDINFO
-+	default "Cirrus Logic EDB9301"
-+
-+config ARCH_TEXT_BASE
-+	hex
-+	default 0x05700000
-+
-+config EP93XX_SDRAM_NUM_BANKS
-+	int
-+	default 4
-+
-+config EP93XX_SDRAM_BANK0_BASE
-+	hex
-+	default 0x00000000
-+
-+config EP93XX_SDRAM_BANK0_SIZE
-+	hex
-+	default 0x00800000
-+
-+config EP93XX_SDRAM_BANK1_BASE
-+	hex
-+	default 0x01000000
-+
-+config EP93XX_SDRAM_BANK1_SIZE
-+	hex
-+	default 0x00800000
-+
-+config EP93XX_SDRAM_BANK2_BASE
-+	hex
-+	default 0x04000000
-+
-+config EP93XX_SDRAM_BANK2_SIZE
-+	hex
-+	default 0x00800000
-+
-+config EP93XX_SDRAM_BANK3_BASE
-+	hex
-+	default 0x05000000
-+
-+config EP93XX_SDRAM_BANK3_SIZE
-+	hex
-+	default 0x00800000
-+
-+endif
-+
-+endif
-+
-+# ----------------------------------------------------------
-+
-+if ARCH_EP9302
-+
-+choice
-+	prompt "EP9302 Board Type"
-+
-+config MACH_EDB9302
-+	bool "Cirrus Logic EDB9302"
-+	select EP93XX_SDCE3_SYNC_PHYS_OFFSET
-+	select MACH_HAS_LOWLEVEL_INIT
-+	select BOARD_LINKER_SCRIPT
-+	help
-+	  Say y here if you are using Cirrus Logic's EDB9302 Evaluation board
-+
-+config MACH_EDB9302A
-+	bool "Cirrus Logic EDB9302A"
-+	select EP93XX_SDCE0_PHYS_OFFSET
-+	select MACH_HAS_LOWLEVEL_INIT
-+	select BOARD_LINKER_SCRIPT
-+	help
-+	  Say y here if you are using Cirrus Logic's EDB9302A Evaluation board
-+
-+endchoice
-+
-+if MACH_EDB9302
-+
-+config BOARDINFO
-+	default "Cirrus Logic EDB9302"
-+
-+config ARCH_TEXT_BASE
-+	hex
-+	default 0x05700000
-+
-+config EP93XX_SDRAM_NUM_BANKS
-+	int
-+	default 4
-+
-+config EP93XX_SDRAM_BANK0_BASE
-+	hex
-+	default 0x00000000
-+
-+config EP93XX_SDRAM_BANK0_SIZE
-+	hex
-+	default 0x00800000
-+
-+config EP93XX_SDRAM_BANK1_BASE
-+	hex
-+	default 0x01000000
-+
-+config EP93XX_SDRAM_BANK1_SIZE
-+	hex
-+	default 0x00800000
-+
-+config EP93XX_SDRAM_BANK2_BASE
-+	hex
-+	default 0x04000000
-+
-+config EP93XX_SDRAM_BANK2_SIZE
-+	hex
-+	default 0x00800000
-+
-+config EP93XX_SDRAM_BANK3_BASE
-+	hex
-+	default 0x05000000
-+
-+config EP93XX_SDRAM_BANK3_SIZE
-+	hex
-+	default 0x00800000
-+
-+endif
-+
-+if MACH_EDB9302A
-+
-+config BOARDINFO
-+	default "Cirrus Logic EDB9302A"
-+
-+config ARCH_TEXT_BASE
-+	hex
-+	default 0xc5700000
-+
-+config EP93XX_SDRAM_NUM_BANKS
-+	int
-+	default 4
-+
-+config EP93XX_SDRAM_BANK0_BASE
-+	hex
-+	default 0xc0000000
-+
-+config EP93XX_SDRAM_BANK0_SIZE
-+	hex
-+	default 0x00800000
-+
-+config EP93XX_SDRAM_BANK1_BASE
-+	hex
-+	default 0xc1000000
-+
-+config EP93XX_SDRAM_BANK1_SIZE
-+	hex
-+	default 0x00800000
-+
-+config EP93XX_SDRAM_BANK2_BASE
-+	hex
-+	default 0xc4000000
-+
-+config EP93XX_SDRAM_BANK2_SIZE
-+	hex
-+	default 0x00800000
-+
-+config EP93XX_SDRAM_BANK3_BASE
-+	hex
-+	default 0xc5000000
-+
-+config EP93XX_SDRAM_BANK3_SIZE
-+	hex
-+	default 0x00800000
-+
-+endif
-+
-+endif
-+
-+# ----------------------------------------------------------
-+
-+if ARCH_EP9307
-+
-+choice
-+	prompt "EP9307 Board Type"
-+
-+config MACH_EDB9307
-+	bool "Cirrus Logic EDB9307"
-+	select EP93XX_SDCE3_SYNC_PHYS_OFFSET
-+	select MACH_HAS_LOWLEVEL_INIT
-+	select BOARD_LINKER_SCRIPT
-+	help
-+	  Say y here if you are using Cirrus Logic's EDB9307 Evaluation board
-+
-+config MACH_EDB9307A
-+	bool "Cirrus Logic EDB9307A"
-+	select EP93XX_SDCE0_PHYS_OFFSET
-+	select MACH_HAS_LOWLEVEL_INIT
-+	select BOARD_LINKER_SCRIPT
-+	help
-+	  Say y here if you are using Cirrus Logic's EDB9307A Evaluation board
-+
-+endchoice
-+
-+if MACH_EDB9307
-+
-+config BOARDINFO
-+	default "Cirrus Logic EDB9307"
-+
-+config ARCH_TEXT_BASE
-+	hex
-+	default 0x01f00000
-+
-+config EP93XX_SDRAM_NUM_BANKS
-+	int
-+	default 2
-+
-+config EP93XX_SDRAM_BANK0_BASE
-+	hex
-+	default 0x00000000
-+
-+config EP93XX_SDRAM_BANK0_SIZE
-+	hex
-+	default 0x02000000
-+
-+config EP93XX_SDRAM_BANK1_BASE
-+	hex
-+	default 0x04000000
-+
-+config EP93XX_SDRAM_BANK1_SIZE
-+	hex
-+	default 0x02000000
-+
-+endif
-+
-+if MACH_EDB9307A
-+
-+config BOARDINFO
-+	default "Cirrus Logic EDB9307A"
-+
-+config ARCH_TEXT_BASE
-+	hex
-+	default 0xc1f00000
-+
-+config EP93XX_SDRAM_NUM_BANKS
-+	int
-+	default 2
-+
-+config EP93XX_SDRAM_BANK0_BASE
-+	hex
-+	default 0xc0000000
-+
-+config EP93XX_SDRAM_BANK0_SIZE
-+	hex
-+	default 0x02000000
-+
-+config EP93XX_SDRAM_BANK1_BASE
-+	hex
-+	default 0xc4000000
-+
-+config EP93XX_SDRAM_BANK1_SIZE
-+	hex
-+	default 0x02000000
-+
-+endif
-+
-+endif
-+
-+# ----------------------------------------------------------
-+
-+if ARCH_EP9312
-+
-+choice
-+	prompt "EP9312 Board Type"
-+
-+config MACH_EDB9312
-+	bool "Cirrus Logic EDB9312"
-+	select EP93XX_SDCE3_SYNC_PHYS_OFFSET
-+	select MACH_HAS_LOWLEVEL_INIT
-+	select BOARD_LINKER_SCRIPT
-+	help
-+	  Say y here if you are using Cirrus Logic's EDB9312 Evaluation board
-+
-+endchoice
-+
-+if MACH_EDB9312
-+
-+config BOARDINFO
-+	default "Cirrus Logic EDB9312"
-+
-+config ARCH_TEXT_BASE
-+	hex
-+	default 0x01f00000
-+
-+config EP93XX_SDRAM_NUM_BANKS
-+	int
-+	default 2
-+
-+config EP93XX_SDRAM_BANK0_BASE
-+	hex
-+	default 0x00000000
-+
-+config EP93XX_SDRAM_BANK0_SIZE
-+	hex
-+	default 0x02000000
-+
-+config EP93XX_SDRAM_BANK1_BASE
-+	hex
-+	default 0x04000000
-+
-+config EP93XX_SDRAM_BANK1_SIZE
-+	hex
-+	default 0x02000000
-+
-+endif
-+
-+endif
-+
-+# ----------------------------------------------------------
-+
-+if ARCH_EP9315
-+
-+choice
-+	prompt "EP9315 Board Type"
-+
-+config MACH_EDB9315
-+	bool "Cirrus Logic EDB9315"
-+	select EP93XX_SDCE3_SYNC_PHYS_OFFSET
-+	select MACH_HAS_LOWLEVEL_INIT
-+	select BOARD_LINKER_SCRIPT
-+	help
-+	  Say y here if you are using Cirrus Logic's EDB9315 Evaluation board
-+
-+config MACH_EDB9315A
-+	bool "Cirrus Logic EDB9315A"
-+	select EP93XX_SDCE0_PHYS_OFFSET
-+	select MACH_HAS_LOWLEVEL_INIT
-+	select BOARD_LINKER_SCRIPT
-+	help
-+	  Say y here if you are using Cirrus Logic's EDB9315A Evaluation board
-+
-+endchoice
-+
-+if MACH_EDB9315
-+
-+config BOARDINFO
-+	default "Cirrus Logic EDB9315"
-+
-+config ARCH_TEXT_BASE
-+	hex
-+	default 0x01f00000
-+
-+config EP93XX_SDRAM_NUM_BANKS
-+	int
-+	default 2
-+
-+config EP93XX_SDRAM_BANK0_BASE
-+	hex
-+	default 0x00000000
-+
-+config EP93XX_SDRAM_BANK0_SIZE
-+	hex
-+	default 0x02000000
-+
-+config EP93XX_SDRAM_BANK1_BASE
-+	hex
-+	default 0x04000000
-+
-+config EP93XX_SDRAM_BANK1_SIZE
-+	hex
-+	default 0x02000000
-+
-+endif
-+
-+if MACH_EDB9315A
-+
-+config BOARDINFO
-+	default "Cirrus Logic EDB9315A"
-+
-+config ARCH_TEXT_BASE
-+	hex
-+	default 0xc1f00000
-+
-+config EP93XX_SDRAM_NUM_BANKS
-+	int
-+	default 2
-+
-+config EP93XX_SDRAM_BANK0_BASE
-+	hex
-+	default 0xc0000000
-+
-+config EP93XX_SDRAM_BANK0_SIZE
-+	hex
-+	default 0x02000000
-+
-+config EP93XX_SDRAM_BANK1_BASE
-+	hex
-+	default 0xc4000000
-+
-+config EP93XX_SDRAM_BANK1_SIZE
-+	hex
-+	default 0x02000000
-+
-+endif
-+
-+endif
-+
-+endif
-diff --git a/arch/arm/mach-ep93xx/Makefile b/arch/arm/mach-ep93xx/Makefile
-new file mode 100644
-index 0000000..d5786db
---- /dev/null
-+++ b/arch/arm/mach-ep93xx/Makefile
-@@ -0,0 +1,3 @@
-+obj-y += clocksource.o led.o
-+
-+obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel_init.o
-diff --git a/arch/arm/mach-ep93xx/clocksource.c b/arch/arm/mach-ep93xx/clocksource.c
-new file mode 100644
-index 0000000..2a7d90e
---- /dev/null
-+++ b/arch/arm/mach-ep93xx/clocksource.c
-@@ -0,0 +1,96 @@
++++ b/drivers/net/ep93xx.c
+@@ -0,0 +1,686 @@
 +/*
++ * Cirrus Logic EP93xx ethernet MAC / MII driver.
++ *
 + * Copyright (C) 2009 Matthias Kaehlcke <matthias@kaehlcke.net>
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-+ * MA 02111-1307 USA
-+ */
-+
-+#include <common.h>
-+#include <init.h>
-+#include <clock.h>
-+#include <asm/io.h>
-+#include <mach/ep93xx-regs.h>
-+
-+#define TIMER_CLKSEL		(1 << 3)
-+#define TIMER_MODE		(1 << 6)
-+#define TIMER_ENABLE		(1 << 7)
-+
-+#define TIMER_FREQ		508469
-+
-+static uint64_t ep93xx_clocksource_read(void)
-+{
-+	struct timer_regs *timer = (struct timer_regs *)TIMER_BASE;
-+
-+	return 0xffffffff - readl(&timer->timer3.value);
-+}
-+
-+static struct clocksource cs = {
-+	.read	= ep93xx_clocksource_read,
-+	.mask	= 0xffffffff,
-+	.shift	= 10,
-+};
-+
-+static int clocksource_init(void)
-+{
-+	struct timer_regs *timer = (struct timer_regs *)TIMER_BASE;
-+
-+	/* use timer 3 with 508KHz and free running */
-+	writel(TIMER_CLKSEL,
-+	       &timer->timer3.control);
-+
-+	/* load timer 3 with max value */
-+	writel(0xffffffff, &timer->timer3.load);
-+
-+	/* enable timer 3 with 508KHz and periodic mode */
-+	writel(TIMER_ENABLE | TIMER_MODE | TIMER_CLKSEL,
-+	       &timer->timer3.control);
-+
-+	cs.mult = clocksource_hz2mult(TIMER_FREQ, cs.shift);
-+
-+	init_clock(&cs);
-+
-+	return 0;
-+}
-+
-+core_initcall(clocksource_init);
-+
-+/*
-+ * Reset the cpu
-+ */
-+void reset_cpu(ulong ignored)
-+{
-+	struct syscon_regs *syscon = (struct syscon_regs *)SYSCON_BASE;
-+	uint32_t value;
-+
-+	/* Unlock DeviceCfg and set SWRST */
-+	writel(0xAA, &syscon->sysswlock);
-+	value = readl(&syscon->devicecfg);
-+	value |= SYSCON_DEVICECFG_SWRST;
-+	writel(value, &syscon->devicecfg);
-+
-+	/* Unlock DeviceCfg and clear SWRST */
-+	writel(0xAA, &syscon->sysswlock);
-+	value = readl(&syscon->devicecfg);
-+	value &= ~SYSCON_DEVICECFG_SWRST;
-+	writel(value, &syscon->devicecfg);
-+
-+	/* Dying... */
-+	while (1)
-+		; /* noop */
-+}
-+EXPORT_SYMBOL(reset_cpu);
-diff --git a/arch/arm/mach-ep93xx/include/mach/ep93xx-regs.h b/arch/arm/mach-ep93xx/include/mach/ep93xx-regs.h
-new file mode 100644
-index 0000000..50bb0eb
---- /dev/null
-+++ b/arch/arm/mach-ep93xx/include/mach/ep93xx-regs.h
-@@ -0,0 +1,600 @@
-+/* -----------------------------------------------------------------------------
-+ * Cirrus Logic EP93xx register definitions.
-+ *
-+ * Copyright (C) 2009
-+ * Matthias Kaehlcke <matthias@kaehlcke.net>
-+ *
-+ * Copyright (C) 2006
-+ * Dominic Rath <Dominic.Rath@gmx.de>
 + *
 + * Copyright (C) 2004, 2005
 + * Cory T. Tusar, Videon Central, Inc., <ctusar@videon-central.com>
 + *
-+ * Based in large part on linux/include/asm-arm/arch-ep93xx/regmap.h, which is
++ * Based on the original eth.[ch] Cirrus Logic EP93xx Rev D. Ethernet Driver,
++ * which is
 + *
-+ * Copyright (C) 2004 Ray Lehtiniemi
-+ * Copyright (C) 2003 Cirrus Logic, Inc
-+ * Copyright (C) 1999 ARM Limited.
++ * (C) Copyright 2002 2003
++ * Adam Bezanson, Network Audio Technologies, Inc.
++ * <bezanson@netaudiotech.com>
 + *
 + * See file CREDITS for list of people who contributed to this project.
 + *
@@ -695,7 +98,7 @@ index 0000000..50bb0eb
 + *
 + * This program is distributed in the hope that it will be useful, but
 + * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-+ * or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU General Public License
++ * or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU General Public License
 + * for more details.
 + *
 + * You should have received a copy of the GNU General Public License along
@@ -703,647 +106,671 @@ index 0000000..50bb0eb
 + * 675 Mass Ave, Cambridge, MA 02139, USA.
 + */
 +
-+#ifndef __ASSEMBLY__
-+#include <linux/types.h>
-+#endif
-+
-+#define EP93XX_AHB_BASE			0x80000000
-+#define EP93XX_APB_BASE			0x80800000
-+
-+/* -----------------------------------------------------------------------------
-+ * 0x80000000 - 0x8000FFFF: DMA
-+ */
-+#define DMA_OFFSET			0x000000
-+#define DMA_BASE			(EP93XX_AHB_BASE | DMA_OFFSET)
-+
-+#ifndef __ASSEMBLY__
-+struct dma_channel {
-+	uint32_t control;
-+	uint32_t interrupt;
-+	uint32_t ppalloc;
-+	uint32_t status;
-+	uint32_t reserved0;
-+	uint32_t remain;
-+	uint32_t reserved1[2];
-+	uint32_t maxcnt0;
-+	uint32_t base0;
-+	uint32_t current0;
-+	uint32_t reserved2;
-+	uint32_t maxcnt1;
-+	uint32_t base1;
-+	uint32_t current1;
-+	uint32_t reserved3;
-+};
-+
-+struct dma_regs {
-+	struct dma_channel m2p_channel_0;
-+	struct dma_channel m2p_channel_1;
-+	struct dma_channel m2p_channel_2;
-+	struct dma_channel m2p_channel_3;
-+	struct dma_channel m2m_channel_0;
-+	struct dma_channel m2m_channel_1;
-+	struct dma_channel reserved0[2];
-+	struct dma_channel m2p_channel_5;
-+	struct dma_channel m2p_channel_4;
-+	struct dma_channel m2p_channel_7;
-+	struct dma_channel m2p_channel_6;
-+	struct dma_channel m2p_channel_9;
-+	struct dma_channel m2p_channel_8;
-+	uint32_t channel_arbitration;
-+	uint32_t reserved[15];
-+	uint32_t global_interrupt;
-+};
-+#endif
-+
-+/* -----------------------------------------------------------------------------
-+ * 0x80010000 - 0x8001FFFF: Ethernet MAC
-+ */
-+#define MAC_OFFSET			0x010000
-+#define MAC_BASE			(EP93XX_AHB_BASE | MAC_OFFSET)
-+
-+#ifndef __ASSEMBLY__
-+struct mac_queue {
-+	uint32_t badd;
-+	union { /* deal with half-word aligned registers */
-+		uint32_t blen;
-+		union {
-+			uint16_t filler;
-+			uint16_t curlen;
-+		};
-+	};
-+	uint32_t curadd;
-+};
-+
-+struct mac_regs {
-+	uint32_t rxctl;
-+	uint32_t txctl;
-+	uint32_t testctl;
-+	uint32_t reserved0;
-+	uint32_t miicmd;
-+	uint32_t miidata;
-+	uint32_t miists;
-+	uint32_t reserved1;
-+	uint32_t selfctl;
-+	uint32_t inten;
-+	uint32_t intstsp;
-+	uint32_t intstsc;
-+	uint32_t reserved2[2];
-+	uint32_t diagad;
-+	uint32_t diagdata;
-+	uint32_t gt;
-+	uint32_t fct;
-+	uint32_t fcf;
-+	uint32_t afp;
-+	union {
-+		struct {
-+			uint32_t indad;
-+			uint32_t indad_upper;
-+		};
-+		uint32_t hashtbl;
-+	};
-+	uint32_t reserved3[2];
-+	uint32_t giintsts;
-+	uint32_t giintmsk;
-+	uint32_t giintrosts;
-+	uint32_t giintfrc;
-+	uint32_t txcollcnt;
-+	uint32_t rxmissnct;
-+	uint32_t rxruntcnt;
-+	uint32_t reserved4;
-+	uint32_t bmctl;
-+	uint32_t bmsts;
-+	uint32_t rxbca;
-+	uint32_t reserved5;
-+	struct mac_queue rxdq;
-+	uint32_t rxdqenq;
-+	struct mac_queue rxstsq;
-+	uint32_t rxstsqenq;
-+	struct mac_queue txdq;
-+	uint32_t txdqenq;
-+	struct mac_queue txstsq;
-+	uint32_t reserved6;
-+	uint32_t rxbufthrshld;
-+	uint32_t txbufthrshld;
-+	uint32_t rxststhrshld;
-+	uint32_t txststhrshld;
-+	uint32_t rxdthrshld;
-+	uint32_t txdthrshld;
-+	uint32_t maxfrmlen;
-+	uint32_t maxhdrlen;
-+};
-+#endif
-+
-+#define SELFCTL_RWP		(1 << 7)
-+#define SELFCTL_GPO0		(1 << 5)
-+#define SELFCTL_PUWE		(1 << 4)
-+#define SELFCTL_PDWE		(1 << 3)
-+#define SELFCTL_MIIL		(1 << 2)
-+#define SELFCTL_RESET		(1 << 0)
-+
-+#define INTSTS_RWI		(1 << 30)
-+#define INTSTS_RXMI		(1 << 29)
-+#define INTSTS_RXBI		(1 << 28)
-+#define INTSTS_RXSQI		(1 << 27)
-+#define INTSTS_TXLEI		(1 << 26)
-+#define INTSTS_ECIE		(1 << 25)
-+#define INTSTS_TXUHI		(1 << 24)
-+#define INTSTS_MOI		(1 << 18)
-+#define INTSTS_TXCOI		(1 << 17)
-+#define INTSTS_RXROI		(1 << 16)
-+#define INTSTS_MIII		(1 << 12)
-+#define INTSTS_PHYI		(1 << 11)
-+#define INTSTS_TI		(1 << 10)
-+#define INTSTS_AHBE		(1 << 8)
-+#define INTSTS_OTHER		(1 << 4)
-+#define INTSTS_TXSQ		(1 << 3)
-+#define INTSTS_RXSQ		(1 << 2)
-+
-+#define BMCTL_MT		(1 << 13)
-+#define BMCTL_TT		(1 << 12)
-+#define BMCTL_UNH		(1 << 11)
-+#define BMCTL_TXCHR		(1 << 10)
-+#define BMCTL_TXDIS		(1 << 9)
-+#define BMCTL_TXEN		(1 << 8)
-+#define BMCTL_EH2		(1 << 6)
-+#define BMCTL_EH1		(1 << 5)
-+#define BMCTL_EEOB		(1 << 4)
-+#define BMCTL_RXCHR		(1 << 2)
-+#define BMCTL_RXDIS		(1 << 1)
-+#define BMCTL_RXEN		(1 << 0)
-+
-+#define BMSTS_TXACT		(1 << 7)
-+#define BMSTS_TP		(1 << 4)
-+#define BMSTS_RXACT		(1 << 3)
-+#define BMSTS_QID_MASK		0x07
-+#define BMSTS_QID_RXDATA	0x00
-+#define BMSTS_QID_TXDATA	0x01
-+#define BMSTS_QID_RXSTS		0x02
-+#define BMSTS_QID_TXSTS		0x03
-+#define BMSTS_QID_RXDESC	0x04
-+#define BMSTS_QID_TXDESC	0x05
-+
-+#define AFP_MASK		0x07
-+#define AFP_IAPRIMARY		0x00
-+#define AFP_IASECONDARY1	0x01
-+#define AFP_IASECONDARY2	0x02
-+#define AFP_IASECONDARY3	0x03
-+#define AFP_TX			0x06
-+#define AFP_HASH		0x07
-+
-+#define RXCTL_PAUSEA		(1 << 20)
-+#define RXCTL_RXFCE1		(1 << 19)
-+#define RXCTL_RXFCE0		(1 << 18)
-+#define RXCTL_BCRC		(1 << 17)
-+#define RXCTL_SRXON		(1 << 16)
-+#define RXCTL_RCRCA		(1 << 13)
-+#define RXCTL_RA		(1 << 12)
-+#define RXCTL_PA		(1 << 11)
-+#define RXCTL_BA		(1 << 10)
-+#define RXCTL_MA		(1 << 9)
-+#define RXCTL_IAHA		(1 << 8)
-+#define RXCTL_IA3		(1 << 3)
-+#define RXCTL_IA2		(1 << 2)
-+#define RXCTL_IA1		(1 << 1)
-+#define RXCTL_IA0		(1 << 0)
-+
-+#define TXCTL_DEFDIS		(1 << 7)
-+#define TXCTL_MBE		(1 << 6)
-+#define TXCTL_ICRC		(1 << 5)
-+#define TXCTL_TPD		(1 << 4)
-+#define TXCTL_OCOLL		(1 << 3)
-+#define TXCTL_SP		(1 << 2)
-+#define TXCTL_PB		(1 << 1)
-+#define TXCTL_STXON		(1 << 0)
-+
-+#define MIICMD_REGAD_MASK	(0x001F)
-+#define MIICMD_PHYAD_MASK	(0x03E0)
-+#define MIICMD_OPCODE_MASK	(0xC000)
-+#define MIICMD_PHYAD_8950	(0x0000)
-+#define MIICMD_OPCODE_READ	(0x8000)
-+#define MIICMD_OPCODE_WRITE	(0x4000)
-+
-+#define MIISTS_BUSY		(1 << 0)
-+
-+/* -----------------------------------------------------------------------------
-+ * 0x80020000 - 0x8002FFFF: USB OHCI
-+ */
-+#define USB_OFFSET			0x020000
-+#define USB_BASE			(EP93XX_AHB_BASE | USB_OFFSET)
-+
-+/* -----------------------------------------------------------------------------
-+ * 0x80030000 - 0x8003FFFF: Raster engine
-+ */
-+#if (defined(CONFIG_EP9307) || defined(CONFIG_EP9312) || defined(CONFIG_EP9315))
-+#define RASTER_OFFSET			0x030000
-+#define RASTER_BASE			(EP93XX_AHB_BASE | RASTER_OFFSET)
-+#endif
-+
-+/* -----------------------------------------------------------------------------
-+ * 0x80040000 - 0x8004FFFF: Graphics accelerator
-+ */
-+#if defined(CONFIG_EP9315)
-+#define GFX_OFFSET			0x040000
-+#define GFX_BASE			(EP93XX_AHB_BASE | GFX_OFFSET)
-+#endif
-+
-+/* -----------------------------------------------------------------------------
-+ * 0x80050000 - 0x8005FFFF: Reserved
-+ */
-+
-+/* -----------------------------------------------------------------------------
-+ * 0x80060000 - 0x8006FFFF: SDRAM controller
-+ */
-+#define SDRAM_OFFSET			0x060000
-+#define SDRAM_BASE			(EP93XX_AHB_BASE | SDRAM_OFFSET)
-+
-+#ifndef __ASSEMBLY__
-+struct sdram_regs {
-+	uint32_t reserved;
-+	uint32_t glconfig;
-+	uint32_t refrshtimr;
-+	uint32_t bootsts;
-+	uint32_t devcfg0;
-+	uint32_t devcfg1;
-+	uint32_t devcfg2;
-+	uint32_t devcfg3;
-+};
-+#endif
-+
-+#define SDRAM_DEVCFG_EXTBUSWIDTH	(1 << 2)
-+#define SDRAM_DEVCFG_BANKCOUNT		(1 << 3)
-+#define SDRAM_DEVCFG_SROMLL		(1 << 5)
-+#define SDRAM_DEVCFG_CASLAT_2		0x00010000
-+#define SDRAM_DEVCFG_RASTOCAS_2		0x00200000
-+
-+#define GLCONFIG_INIT			(1 << 0)
-+#define GLCONFIG_MRS			(1 << 1)
-+#define GLCONFIG_SMEMBUSY		(1 << 5)
-+#define GLCONFIG_LCR			(1 << 6)
-+#define GLCONFIG_REARBEN		(1 << 7)
-+#define GLCONFIG_CLKSHUTDOWN		(1 << 30)
-+#define GLCONFIG_CKE			(1 << 31)
-+
-+/* -----------------------------------------------------------------------------
-+ * 0x80070000 - 0x8007FFFF: Reserved
-+ */
-+
-+/* -----------------------------------------------------------------------------
-+ * 0x80080000 - 0x8008FFFF: SRAM controller & PCMCIA
-+ */
-+#define SMC_OFFSET			0x080000
-+#define SMC_BASE			(EP93XX_AHB_BASE | SMC_OFFSET)
-+
-+#ifndef __ASSEMBLY__
-+struct smc_regs {
-+	uint32_t bcr0;
-+	uint32_t bcr1;
-+	uint32_t bcr2;
-+	uint32_t bcr3;
-+	uint32_t reserved0[2];
-+	uint32_t bcr6;
-+	uint32_t bcr7;
-+#if defined(CONFIG_EP9315)
-+	uint32_t pcattribute;
-+	uint32_t pccommon;
-+	uint32_t pcio;
-+	uint32_t reserved1[5];
-+	uint32_t pcmciactrl;
-+#endif
-+};
-+#endif
-+
-+#define SMC_BCR_IDCY_SHIFT	0
-+#define SMC_BCR_WST1_SHIFT	5
-+#define SMC_BCR_BLE		(1 << 10)
-+#define SMC_BCR_WST2_SHIFT	11
-+#define SMC_BCR_MW_SHIFT	28
-+
-+/* -----------------------------------------------------------------------------
-+ * 0x80090000 - 0x8009FFFF: Boot ROM
-+ */
-+
-+/* -----------------------------------------------------------------------------
-+ * 0x800A0000 - 0x800AFFFF: IDE interface
-+ */
-+
-+/* -----------------------------------------------------------------------------
-+ * 0x800B0000 - 0x800BFFFF: VIC1
-+ */
-+
-+/* -----------------------------------------------------------------------------
-+ * 0x800C0000 - 0x800CFFFF: VIC2
-+ */
-+
-+/* -----------------------------------------------------------------------------
-+ * 0x800D0000 - 0x800FFFFF: Reserved
-+ */
-+
-+/* -----------------------------------------------------------------------------
-+ * 0x80800000 - 0x8080FFFF: Reserved
-+ */
-+
-+/* -----------------------------------------------------------------------------
-+ * 0x80810000 - 0x8081FFFF: Timers
-+ */
-+#define TIMER_OFFSET		0x010000
-+#define TIMER_BASE		(EP93XX_APB_BASE | TIMER_OFFSET)
-+
-+#ifndef __ASSEMBLY__
-+struct timer {
-+	uint32_t load;
-+	uint32_t value;
-+	uint32_t control;
-+	uint32_t clear;
-+};
-+
-+struct timer4 {
-+	uint32_t value_low;
-+	uint32_t value_high;
-+};
-+
-+struct timer_regs {
-+	struct timer timer1;
-+	uint32_t reserved0[4];
-+	struct timer timer2;
-+	uint32_t reserved1[12];
-+	struct timer4 timer4;
-+	uint32_t reserved2[6];
-+	struct timer timer3;
-+};
-+#endif
-+
-+/* -----------------------------------------------------------------------------
-+ * 0x80820000 - 0x8082FFFF: I2S
-+ */
-+#define I2S_OFFSET		0x020000
-+#define I2S_BASE		(EP93XX_APB_BASE | I2S_OFFSET)
-+
-+/* -----------------------------------------------------------------------------
-+ * 0x80830000 - 0x8083FFFF: Security
-+ */
-+#define SECURITY_OFFSET		0x030000
-+#define SECURITY_BASE		(EP93XX_APB_BASE | SECURITY_OFFSET)
-+
-+#define EXTENSIONID		(SECURITY_BASE + 0x2714)
-+
-+/* -----------------------------------------------------------------------------
-+ * 0x80840000 - 0x8084FFFF: GPIO
-+ */
-+#define GPIO_OFFSET		0x040000
-+#define GPIO_BASE		(EP93XX_APB_BASE | GPIO_OFFSET)
-+
-+#ifndef __ASSEMBLY__
-+struct gpio_int {
-+	uint32_t inttype1;
-+	uint32_t inttype2;
-+	uint32_t eoi;
-+	uint32_t inten;
-+	uint32_t intsts;
-+	uint32_t rawintsts;
-+	uint32_t db;
-+};
-+
-+struct gpio_regs {
-+	uint32_t padr;
-+	uint32_t pbdr;
-+	uint32_t pcdr;
-+	uint32_t pddr;
-+	uint32_t paddr;
-+	uint32_t pbddr;
-+	uint32_t pcddr;
-+	uint32_t pdddr;
-+	uint32_t pedr;
-+	uint32_t peddr;
-+	uint32_t reserved0[2];
-+	uint32_t pfdr;
-+	uint32_t pfddr;
-+	uint32_t pgdr;
-+	uint32_t pgddr;
-+	uint32_t phdr;
-+	uint32_t phddr;
-+	uint32_t reserved1;
-+	uint32_t finttype1;
-+	uint32_t finttype2;
-+	uint32_t reserved2;
-+	struct gpio_int pfint;
-+	uint32_t reserved3[10];
-+	struct gpio_int paint;
-+	struct gpio_int pbint;
-+	uint32_t eedrive;
-+};
-+#endif
-+
-+/* -----------------------------------------------------------------------------
-+ * 0x80850000 - 0x8087FFFF: Reserved
-+ */
-+
-+/* -----------------------------------------------------------------------------
-+ * 0x80880000 - 0x8088FFFF: AAC
-+ */
-+#define AAC_OFFSET		0x080000
-+#define AAC_BASE		(EP93XX_APB_BASE | AAC_OFFSET)
-+
-+/* -----------------------------------------------------------------------------
-+ * 0x80890000 - 0x8089FFFF: Reserved
-+ */
-+
-+/* -----------------------------------------------------------------------------
-+ * 0x808A0000 - 0x808AFFFF: SPI
-+ */
-+#define SPI_OFFSET		0x0A0000
-+#define SPI_BASE		(EP93XX_APB_BASE | SPI_OFFSET)
-+
-+/* -----------------------------------------------------------------------------
-+ * 0x808B0000 - 0x808BFFFF: IrDA
-+ */
-+#define IRDA_OFFSET		0x0B0000
-+#define IRDA_BASE		(EP93XX_APB_BASE | IRDA_OFFSET)
-+
-+/* -----------------------------------------------------------------------------
-+ * 0x808C0000 - 0x808CFFFF: UART1
-+ */
-+#define UART1_OFFSET		0x0C0000
-+#define UART1_BASE		(EP93XX_APB_BASE | UART1_OFFSET)
-+
-+/* -----------------------------------------------------------------------------
-+ * 0x808D0000 - 0x808DFFFF: UART2
-+ */
-+#define UART2_OFFSET		0x0D0000
-+#define UART2_BASE		(EP93XX_APB_BASE | UART2_OFFSET)
-+
-+/* -----------------------------------------------------------------------------
-+ * 0x808E0000 - 0x808EFFFF: UART3
-+ */
-+#define UART3_OFFSET		0x0E0000
-+#define UART3_BASE		(EP93XX_APB_BASE | UART3_OFFSET)
-+
-+/* -----------------------------------------------------------------------------
-+ * 0x808F0000 - 0x808FFFFF: Key Matrix
-+ */
-+#define KEY_OFFSET		0x0F0000
-+#define KEY_BASE		(EP93XX_APB_BASE | KEY_OFFSET)
-+
-+/* -----------------------------------------------------------------------------
-+ * 0x80900000 - 0x8090FFFF: Touchscreen
-+ */
-+#define TOUCH_OFFSET		0x900000
-+#define TOUCH_BASE		(EP93XX_APB_BASE | TOUCH_OFFSET)
-+
-+/* -----------------------------------------------------------------------------
-+ * 0x80910000 - 0x8091FFFF: Pulse Width Modulation
-+ */
-+#define PWM_OFFSET		0x910000
-+#define PWM_BASE		(EP93XX_APB_BASE | PWM_OFFSET)
-+
-+/* -----------------------------------------------------------------------------
-+ * 0x80920000 - 0x8092FFFF: Real time clock
-+ */
-+#define RTC_OFFSET		0x920000
-+#define RTC_BASE		(EP93XX_APB_BASE | RTC_OFFSET)
-+
-+/* -----------------------------------------------------------------------------
-+ * 0x80930000 - 0x8093FFFF: Syscon
-+ */
-+#define SYSCON_OFFSET		0x930000
-+#define SYSCON_BASE		(EP93XX_APB_BASE | SYSCON_OFFSET)
-+
-+#ifndef __ASSEMBLY__
-+struct syscon_regs {
-+	uint32_t pwrsts;
-+	uint32_t pwrcnt;
-+	uint32_t halt;
-+	uint32_t stby;
-+	uint32_t reserved0[2];
-+	uint32_t teoi;
-+	uint32_t stfclr;
-+	uint32_t clkset1;
-+	uint32_t clkset2;
-+	uint32_t reserved1[6];
-+	uint32_t scratch0;
-+	uint32_t scratch1;
-+	uint32_t reserved2[2];
-+	uint32_t apbwait;
-+	uint32_t bustmstrarb;
-+	uint32_t bootmodeclr;
-+	uint32_t reserved3[9];
-+	uint32_t devicecfg;
-+	uint32_t vidclkdiv;
-+	uint32_t mirclkdiv;
-+	uint32_t i2sclkdiv;
-+	uint32_t keytchclkdiv;
-+	uint32_t chipid;
-+	uint32_t syscfg;
-+	uint32_t reserved4[8];
-+	uint32_t sysswlock;
-+};
-+#else
-+#define SYSCON_SCRATCH0		(SYSCON_BASE + 0x0040)
-+#endif
-+
-+#define SYSCON_PWRCNT_UART_BAUD			(1 << 29)
-+
-+#define SYSCON_CLKSET_PLL_X2IPD_SHIFT		0
-+#define SYSCON_CLKSET_PLL_X2FBD2_SHIFT		5
-+#define SYSCON_CLKSET_PLL_X1FBD1_SHIFT		11
-+#define SYSCON_CLKSET_PLL_PS_SHIFT		16
-+#define SYSCON_CLKSET1_PCLK_DIV_SHIFT		18
-+#define SYSCON_CLKSET1_HCLK_DIV_SHIFT		20
-+#define SYSCON_CLKSET1_NBYP1			(1 << 23)
-+#define SYSCON_CLKSET1_FCLK_DIV_SHIFT		25
-+
-+#define SYSCON_CLKSET2_PLL2_EN			(1 << 18)
-+#define SYSCON_CLKSET2_NBYP2			(1 << 19)
-+#define SYSCON_CLKSET2_USB_DIV_SHIFT		28
-+
-+#define SYSCON_CHIPID_REV_MASK			0xF0000000
-+#define SYSCON_DEVICECFG_SWRST			(1 << 31)
-+
-+/* -----------------------------------------------------------------------------
-+ * 0x80930000 - 0x8093FFFF: Watchdog Timer
-+ */
-+#define WATCHDOG_OFFSET		0x940000
-+#define WATCHDOG_BASE		(EP93XX_APB_BASE | WATCHDOG_OFFSET)
-+
-+/* -----------------------------------------------------------------------------
-+ * 0x80950000 - 0x9000FFFF: Reserved
-+ */
-+
-diff --git a/arch/arm/mach-ep93xx/led.c b/arch/arm/mach-ep93xx/led.c
-new file mode 100644
-index 0000000..6d6b902
---- /dev/null
-+++ b/arch/arm/mach-ep93xx/led.c
-@@ -0,0 +1,62 @@
-+/*
-+ * Copyright (C) 2009 Matthias Kaehlcke <matthias@kaehlcke.net>
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-+ * MA 02111-1307 USA
-+ */
-+
 +#include <common.h>
++#include <command.h>
++#include <init.h>
++#include <malloc.h>
++#include <miiphy.h>
 +#include <asm/io.h>
++#include <linux/types.h>
 +#include <mach/ep93xx-regs.h>
++#include "ep93xx.h"
 +
-+#define GREEN_LED_POS		0x01
-+#define RED_LED_POS		0x02
++static int ep93xx_eth_send_packet(struct eth_device *edev,
++				void *packet, int length);
++static int ep93xx_eth_rcv_packet(struct eth_device *edev);
 +
-+inline void switch_LED_on(uint32_t bit_pos)
++static int ep93xx_phy_read(struct miiphy_device *mdev, uint8_t phy_addr,
++			uint8_t phy_reg, uint16_t *value);
++static int ep93xx_phy_write(struct miiphy_device *mdev, uint8_t phy_addr,
++			uint8_t phy_reg, uint16_t value);
++
++static inline struct ep93xx_eth_priv *ep93xx_get_priv(struct eth_device *edev)
 +{
-+	register struct gpio_regs *gpio = (struct gpio_regs *)GPIO_BASE;
-+
-+	writel(readl(&gpio->pedr) | bit_pos, &gpio->pedr);
++	return (struct ep93xx_eth_priv *)edev->priv;
 +}
 +
-+inline void switch_LED_off(uint32_t bit_pos)
++static inline struct mac_regs *ep93xx_get_regs(struct eth_device *edev)
 +{
-+	register struct gpio_regs *gpio = (struct gpio_regs *)GPIO_BASE;
++	struct ep93xx_eth_priv *priv = ep93xx_get_priv(edev);
 +
-+	writel(readl(&gpio->pedr) & ~bit_pos, &gpio->pedr);
++	return priv->regs;
 +}
 +
-+void red_LED_on(void)
++#if defined(EP93XX_MAC_DEBUG)
++/**
++ * Dump ep93xx_mac values to the terminal.
++ */
++inline void dump_dev(struct eth_device *edev)
 +{
-+	switch_LED_on(RED_LED_POS);
++	struct ep93xx_eth_priv *priv = ep93xx_get_priv(edev);
++	int i;
++
++	printf("\ndump_dev()\n");
++	printf("  rx_dq.base	     %08X\n", priv->rx_dq.base);
++	printf("  rx_dq.current	     %08X\n", priv->rx_dq.current);
++	printf("  rx_dq.end	     %08X\n", priv->rx_dq.end);
++	printf("  rx_sq.base	     %08X\n", priv->rx_sq.base);
++	printf("  rx_sq.current	     %08X\n", priv->rx_sq.current);
++	printf("  rx_sq.end	     %08X\n", priv->rx_sq.end);
++
++	for (i = 0; i < NUMRXDESC; i++)
++		printf("  rx_buffer[%2.d]      %08X\n", i, NetRxPackets[i]);
++
++	printf("  tx_dq.base	     %08X\n", priv->tx_dq.base);
++	printf("  tx_dq.current	     %08X\n", priv->tx_dq.current);
++	printf("  tx_dq.end	     %08X\n", priv->tx_dq.end);
++	printf("  tx_sq.base	     %08X\n", priv->tx_sq.base);
++	printf("  tx_sq.current	     %08X\n", priv->tx_sq.current);
++	printf("  tx_sq.end	     %08X\n", priv->tx_sq.end);
 +}
 +
-+void red_LED_off(void)
++/**
++ * Dump all RX descriptor queue entries to the terminal.
++ */
++inline void dump_rx_descriptor_queue(struct eth_device *edev)
 +{
-+	switch_LED_off(RED_LED_POS);
++	struct ep93xx_eth_priv *priv = ep93xx_get_priv(edev);
++	int i;
++
++	printf("\ndump_rx_descriptor_queue()\n");
++	printf("  descriptor address	 word1		 word2\n");
++	for (i = 0; i < NUMRXDESC; i++) {
++		printf("  [ %08X ]	     %08X	 %08X\n",
++			(priv->rx_dq.base + i),
++			(priv->rx_dq.base + i)->word1,
++			(priv->rx_dq.base + i)->word2);
++	}
 +}
 +
-+void green_LED_on(void)
++/**
++ * Dump all RX status queue entries to the terminal.
++ */
++inline void dump_rx_status_queue(void)
 +{
-+	switch_LED_on(GREEN_LED_POS);
++	struct ep93xx_eth_priv *priv = ep93xx_get_priv(edev);
++	int i;
++
++	printf("\ndump_rx_status_queue()\n");
++	printf("  descriptor address	 word1		 word2\n");
++	for (i = 0; i < NUMRXDESC; i++) {
++		printf("  [ %08X ]	     %08X	 %08X\n",
++			(priv->rx_sq.base + i),
++			(priv->rx_sq.base + i)->word1,
++			(priv->rx_sq.base + i)->word2);
++	}
 +}
 +
-+void green_LED_off(void)
++/**
++ * Dump all TX descriptor queue entries to the terminal.
++ */
++inline void dump_tx_descriptor_queue(void)
 +{
-+	switch_LED_off(GREEN_LED_POS);
++	struct ep93xx_eth_priv *priv = ep93xx_get_priv(edev);
++	int i;
++
++	printf("\ndump_tx_descriptor_queue()\n");
++	printf("  descriptor address	 word1		 word2\n");
++	for (i = 0; i < NUMTXDESC; i++) {
++		printf("  [ %08X ]	     %08X	 %08X\n",
++			(priv->tx_dq.base + i),
++			(priv->tx_dq.base + i)->word1,
++			(priv->tx_dq.base + i)->word2);
++	}
 +}
-diff --git a/arch/arm/mach-ep93xx/led.h b/arch/arm/mach-ep93xx/led.h
++
++/**
++ * Dump all TX status queue entries to the terminal.
++ */
++inline void dump_tx_status_queue(void)
++{
++	struct ep93xx_eth_priv *priv = ep93xx_get_priv(edev);
++	int i;
++
++	printf("\ndump_tx_status_queue()\n");
++	printf("  descriptor address	 word1\n");
++	for (i = 0; i < NUMTXDESC; i++) {
++		printf("  [ %08X ]	     %08X\n",
++			(priv->rx_sq.base + i),
++			(priv->rx_sq.base + i)->word1);
++	}
++}
++#else
++#define dump_dev(x)
++#define dump_rx_descriptor_queue()
++#define dump_rx_status_queue()
++#define dump_tx_descriptor_queue()
++#define dump_tx_status_queue()
++#endif	/* defined(EP93XX_MAC_DEBUG) */
++
++/**
++ * Reset the EP93xx MAC by twiddling the soft reset bit and spinning until
++ * it's cleared.
++ */
++static void ep93xx_eth_reset(struct eth_device *edev)
++{
++	struct mac_regs *regs = ep93xx_get_regs(edev);
++	uint32_t value;
++
++	pr_debug("+ep93xx_eth_reset\n");
++
++	value = readl(&regs->selfctl);
++	value |= SELFCTL_RESET;
++	writel(value, &regs->selfctl);
++
++	while (readl(&regs->selfctl) & SELFCTL_RESET)
++		; /* noop */
++
++	pr_debug("-ep93xx_eth_reset\n");
++}
++
++static int ep93xx_eth_init_dev(struct eth_device *edev)
++{
++	pr_debug("+ep93xx_eth_init_dev\n");
++
++	pr_debug("-ep93xx_eth_init_dev\n");
++
++	return 0;
++}
++
++static int ep93xx_eth_open(struct eth_device *edev)
++{
++	struct ep93xx_eth_priv *priv = ep93xx_get_priv(edev);
++	struct mac_regs *regs = ep93xx_get_regs(edev);
++	int i;
++
++	pr_debug("+ep93xx_eth_open\n");
++
++	ep93xx_eth_reset(edev);
++
++	/* Reset the descriptor queues' current and end address values */
++	priv->tx_dq.current = priv->tx_dq.base;
++	priv->tx_dq.end = (priv->tx_dq.base + NUMTXDESC);
++
++	priv->tx_sq.current = priv->tx_sq.base;
++	priv->tx_sq.end = (priv->tx_sq.base + NUMTXDESC);
++
++	priv->rx_dq.current = priv->rx_dq.base;
++	priv->rx_dq.end = (priv->rx_dq.base + NUMRXDESC);
++
++	priv->rx_sq.current = priv->rx_sq.base;
++	priv->rx_sq.end = (priv->rx_sq.base + NUMRXDESC);
++
++	/*
++	 * Set the transmit descriptor and status queues' base address,
++	 * current address, and length registers.  Set the maximum frame
++	 * length and threshold. Enable the transmit descriptor processor.
++	 */
++	writel((uint32_t)priv->tx_dq.base, &regs->txdq.badd);
++	writel((uint32_t)priv->tx_dq.base, &regs->txdq.curadd);
++	writel(sizeof(struct tx_descriptor) * NUMTXDESC, &regs->txdq.blen);
++
++	writel((uint32_t)priv->tx_sq.base, &regs->txstsq.badd);
++	writel((uint32_t)priv->tx_sq.base, &regs->txstsq.curadd);
++	writel(sizeof(struct tx_status) * NUMTXDESC, &regs->txstsq.blen);
++
++	writel(0x00040000, &regs->txdthrshld);
++	writel(0x00040000, &regs->txststhrshld);
++
++	writel((TXSTARTMAX << 0) | (PKTSIZE_ALIGN << 16), &regs->maxfrmlen);
++	writel(BMCTL_TXEN, &regs->bmctl);
++
++	/*
++	 * Set the receive descriptor and status queues' base address,
++	 * current address, and length registers.  Enable the receive
++	 * descriptor processor.
++	 */
++	writel((uint32_t)priv->rx_dq.base, &regs->rxdq.badd);
++	writel((uint32_t)priv->rx_dq.base, &regs->rxdq.curadd);
++	writel(sizeof(struct rx_descriptor) * NUMRXDESC, &regs->rxdq.blen);
++
++	writel((uint32_t)priv->rx_sq.base, &regs->rxstsq.badd);
++	writel((uint32_t)priv->rx_sq.base, &regs->rxstsq.curadd);
++	writel(sizeof(struct rx_status) * NUMRXDESC, &regs->rxstsq.blen);
++
++	writel(0x00040000, &regs->rxdthrshld);
++
++	writel(BMCTL_RXEN, &regs->bmctl);
++
++	writel(0x00040000, &regs->rxststhrshld);
++
++	/* Wait until the receive descriptor processor is active */
++	while (!(readl(&regs->bmsts) & BMSTS_RXACT))
++		; /* noop */
++
++	/*
++	 * Initialize the RX descriptor queue. Clear the TX descriptor queue.
++	 * Clear the RX and TX status queues. Enqueue the RX descriptor and
++	 * status entries to the MAC.
++	 */
++	for (i = 0; i < NUMRXDESC; i++) {
++		/* set buffer address */
++		(priv->rx_dq.base + i)->word1 = (uint32_t)NetRxPackets[i];
++
++		/* set buffer length, clear buffer index and NSOF */
++		(priv->rx_dq.base + i)->word2 = PKTSIZE_ALIGN;
++	}
++
++	memset(priv->tx_dq.base, 0,
++		(sizeof(struct tx_descriptor) * NUMTXDESC));
++	memset(priv->rx_sq.base, 0,
++		(sizeof(struct rx_status) * NUMRXDESC));
++	memset(priv->tx_sq.base, 0,
++		(sizeof(struct tx_status) * NUMTXDESC));
++
++	writel(NUMRXDESC, &regs->rxdqenq);
++	writel(NUMRXDESC, &regs->rxstsqenq);
++
++	/* Turn on RX and TX */
++	writel(RXCTL_IA0 | RXCTL_BA | RXCTL_SRXON |
++		RXCTL_RCRCA | RXCTL_MA, &regs->rxctl);
++	writel(TXCTL_STXON, &regs->txctl);
++
++	/* Dump data structures if we're debugging */
++	dump_dev();
++	dump_rx_descriptor_queue();
++	dump_rx_status_queue();
++	dump_tx_descriptor_queue();
++	dump_tx_status_queue();
++
++	pr_debug("-ep93xx_eth_open\n");
++
++	return 0;
++}
++
++/**
++ * Halt EP93xx MAC transmit and receive by clearing the TxCTL and RxCTL
++ * registers.
++ */
++static void ep93xx_eth_halt(struct eth_device *edev)
++{
++	struct mac_regs *regs = ep93xx_get_regs(edev);
++
++	pr_debug("+ep93xx_eth_halt\n");
++
++	writel(0x00000000, &regs->rxctl);
++	writel(0x00000000, &regs->txctl);
++
++	pr_debug("-ep93xx_eth_halt\n");
++}
++
++static int ep93xx_eth_get_ethaddr(struct eth_device *edev,
++				unsigned char *mac_addr)
++{
++	struct mac_regs *regs = ep93xx_get_regs(edev);
++	uint32_t value;
++
++	value = readl(&regs->indad);
++	mac_addr[0] = value & 0xFF;
++	mac_addr[1] = (value >> 8) & 0xFF;
++	mac_addr[2] = (value >> 16) & 0xFF;
++	mac_addr[3] = (value >> 24) & 0xFF;
++
++	value = readl(&regs->indad_upper);
++	mac_addr[4] = value & 0xFF;
++	mac_addr[5] = (value >> 8) & 0xFF;
++
++	return 0;
++}
++
++static int ep93xx_eth_set_ethaddr(struct eth_device *edev,
++				unsigned char *mac_addr)
++{
++	struct mac_regs *regs = ep93xx_get_regs(edev);
++
++	writel(AFP_IAPRIMARY, &regs->afp);
++
++	writel(mac_addr[0] | (mac_addr[1] << 8) |
++		(mac_addr[2] << 16) | (mac_addr[3] << 24),
++		&regs->indad);
++	writel(mac_addr[4] | (mac_addr[5] << 8), &regs->indad_upper);
++
++	return 0;
++}
++
++static int ep93xx_eth_probe(struct device_d *dev)
++{
++	struct eth_device *edev;
++	struct ep93xx_eth_priv *priv;
++	int ret = ETH_STATUS_FAILURE;
++
++	pr_debug("ep93xx_eth_probe()\n");
++
++	edev = xzalloc(sizeof(struct eth_device) +
++		sizeof(struct ep93xx_eth_priv));
++	dev->type_data = edev;
++	edev->priv = (struct ep93xx_eth_priv *)(edev + 1);
++
++	priv = edev->priv;
++	priv->regs = (struct mac_regs *)MAC_BASE;
++
++	edev->init = ep93xx_eth_init_dev;
++	edev->open = ep93xx_eth_open;
++	edev->send = ep93xx_eth_send_packet;
++	edev->recv = ep93xx_eth_rcv_packet;
++	edev->halt = ep93xx_eth_halt;
++	edev->get_ethaddr = ep93xx_eth_get_ethaddr;
++	edev->set_ethaddr = ep93xx_eth_set_ethaddr;
++
++	priv->miiphy.read = ep93xx_phy_read;
++	priv->miiphy.write = ep93xx_phy_write;
++	priv->miiphy.address = 0;
++	priv->miiphy.flags = 0;
++
++	priv->tx_dq.base = calloc(NUMTXDESC,
++				sizeof(struct tx_descriptor));
++	if (priv->tx_dq.base == NULL) {
++		pr_err("calloc() failed: tx_dq.base");
++		goto eth_probe_failed_0;
++	}
++
++	priv->tx_sq.base = calloc(NUMTXDESC,
++				sizeof(struct tx_status));
++	if (priv->tx_sq.base == NULL) {
++		pr_err("calloc() failed: tx_sq.base");
++		goto eth_probe_failed_1;
++	}
++
++	priv->rx_dq.base = calloc(NUMRXDESC,
++				sizeof(struct rx_descriptor));
++	if (priv->rx_dq.base == NULL) {
++		pr_err("calloc() failed: rx_dq.base");
++		goto eth_probe_failed_2;
++	}
++
++	priv->rx_sq.base = calloc(NUMRXDESC,
++				sizeof(struct rx_status));
++	if (priv->rx_sq.base == NULL) {
++		pr_err("calloc() failed: rx_sq.base");
++		goto eth_probe_failed_3;
++	}
++
++	miiphy_register(&priv->miiphy);
++	eth_register(edev);
++
++	ret = ETH_STATUS_SUCCESS;
++
++	goto eth_probe_done;
++
++eth_probe_failed_3:
++	free(priv->rx_dq.base);
++	/* Fall through */
++
++eth_probe_failed_2:
++	free(priv->tx_sq.base);
++	/* Fall through */
++
++eth_probe_failed_1:
++	free(priv->tx_dq.base);
++	/* Fall through */
++
++eth_probe_failed_0:
++	/* Fall through */
++
++eth_probe_done:
++	return ret;
++}
++
++/**
++ * Copy a frame of data from the MAC into the protocol layer for further
++ * processing.
++ *
++ * TODO: Enhance this to deal with as many packets as are available at
++ * the MAC at one time? */
++static int ep93xx_eth_rcv_packet(struct eth_device *edev)
++{
++	struct ep93xx_eth_priv *priv = ep93xx_get_priv(edev);
++	struct mac_regs *regs = ep93xx_get_regs(edev);
++	int ret = ETH_STATUS_FAILURE;
++
++	pr_debug("+ep93xx_eth_rcv_packet\n");
++
++	if (RX_STATUS_RFP(priv->rx_sq.current)) {
++		if (RX_STATUS_RWE(priv->rx_sq.current)) {
++			/*
++			 * We have a good frame. Extract the frame's length
++			 * from the current rx_status_queue entry, and copy
++			 * the frame's data into NetRxPackets[] of the
++			 * protocol stack. We track the total number of
++			 * bytes in the frame (nbytes_frame) which will be
++			 * used when we pass the data off to the protocol
++			 * layer via NetReceive().
++			 */
++			NetReceive((uchar *)priv->rx_dq.current->word1,
++				RX_STATUS_FRAME_LEN(priv->rx_sq.current));
++			pr_debug("reporting %d bytes...\n",
++				RX_STATUS_FRAME_LEN(priv->rx_sq.current));
++
++			ret = ETH_STATUS_SUCCESS;
++
++		} else {
++			/* Do we have an erroneous packet? */
++			pr_err("packet rx error, status %08X %08X\n",
++				priv->rx_sq.current->word1,
++				priv->rx_sq.current->word2);
++			dump_rx_descriptor_queue();
++			dump_rx_status_queue();
++		}
++
++		/*
++		 * Clear the associated status queue entry, and
++		 * increment our current pointers to the next RX
++		 * descriptor and status queue entries (making sure
++		 * we wrap properly).
++		 */
++		memset((void *)priv->rx_sq.current, 0,
++			sizeof(struct rx_status));
++
++		priv->rx_sq.current++;
++		if (priv->rx_sq.current >= priv->rx_sq.end)
++			priv->rx_sq.current = priv->rx_sq.base;
++
++		priv->rx_dq.current++;
++		if (priv->rx_dq.current >= priv->rx_dq.end)
++			priv->rx_dq.current = priv->rx_dq.base;
++
++		/*
++		 * Finally, return the RX descriptor and status entries
++		 * back to the MAC engine, and loop again, checking for
++		 * more descriptors to process.
++		 */
++		writel(1, &regs->rxdqenq);
++		writel(1, &regs->rxstsqenq);
++	} else {
++		ret = ETH_STATUS_SUCCESS;
++	}
++
++	pr_debug("-ep93xx_eth_rcv_packet %d\n", ret);
++
++	return ret;
++}
++
++/**
++ * Send a block of data via ethernet.
++ *
++ * TODO: Enhance this to deal with as much data as are available at one time? */
++static int ep93xx_eth_send_packet(struct eth_device *edev,
++				void *packet, int length)
++{
++	struct ep93xx_eth_priv *priv = ep93xx_get_priv(edev);
++	struct mac_regs *regs = ep93xx_get_regs(edev);
++	int ret = ETH_STATUS_FAILURE;
++
++	pr_debug("+ep93xx_eth_send_packet\n");
++
++	/*
++	 * Initialize the TX descriptor queue with the new packet's info.
++	 * Clear the associated status queue entry. Enqueue the packet
++	 * to the MAC for transmission.
++	 */
++
++	/* set buffer address */
++	priv->tx_dq.current->word1 = (uint32_t)packet;
++
++	/* set buffer length and EOF bit */
++	priv->tx_dq.current->word2 = length | TX_DESC_EOF;
++
++	/* clear tx status */
++	priv->tx_sq.current->word1 = 0;
++
++	/* enqueue the TX descriptor */
++	writel(1, &regs->txdqenq);
++
++	/* wait for the frame to become processed */
++	while (!TX_STATUS_TXFP(priv->tx_sq.current))
++		; /* noop */
++
++	if (!TX_STATUS_TXWE(priv->tx_sq.current)) {
++		pr_err("packet tx error, status %08X\n",
++			priv->tx_sq.current->word1);
++		dump_tx_descriptor_queue();
++		dump_tx_status_queue();
++
++		/* TODO: Add better error handling? */
++		goto eth_send_failed_0;
++	}
++
++	ret = ETH_STATUS_SUCCESS;
++	/* Fall through */
++
++eth_send_failed_0:
++	pr_debug("-ep93xx_eth_send_packet %d\n", ret);
++	return ret;
++}
++
++/* -----------------------------------------------------------------------------
++ * EP93xx ethernet MII functionality.
++ */
++
++/**
++ * Maximum MII address we support
++ */
++#define MII_ADDRESS_MAX			(31)
++
++/**
++ * Maximum MII register address we support
++ */
++#define MII_REGISTER_MAX		(31)
++
++/**
++ * Ethernet MII interface return values for public functions.
++ */
++enum mii_status {
++	MII_STATUS_SUCCESS = 0,
++	MII_STATUS_FAILURE = 1,
++};
++
++/**
++ * Read a 16-bit value from an MII register.
++ */
++static int ep93xx_phy_read(struct miiphy_device *mdev, uint8_t phy_addr,
++			uint8_t phy_reg, uint16_t *value)
++{
++	struct mac_regs *regs = ep93xx_get_regs(mdev->edev);
++	int ret = MII_STATUS_FAILURE;
++	uint32_t self_ctl;
++
++	pr_debug("+ep93xx_phy_read\n");
++
++	/*
++	 * Save the current SelfCTL register value.  Set MAC to suppress
++	 * preamble bits.  Wait for any previous MII command to complete
++	 * before issuing the new command.
++	 */
++	self_ctl = readl(&regs->selfctl);
++#if defined(CONFIG_MII_SUPPRESS_PREAMBLE) /* TODO */
++	writel(self_ctl & ~(1 << 8), &regs->selfctl);
++#endif	/* defined(CONFIG_MII_SUPPRESS_PREAMBLE) */
++
++	while (readl(&regs->miists) & MIISTS_BUSY)
++		; /* noop */
++
++	/*
++	 * Issue the MII 'read' command.  Wait for the command to complete.
++	 * Read the MII data value.
++	 */
++	writel(MIICMD_OPCODE_READ | ((uint32_t)phy_addr << 5) |
++		(uint32_t)phy_reg, &regs->miicmd);
++	while (readl(&regs->miists) & MIISTS_BUSY)
++		; /* noop */
++
++	*value = (unsigned short)readl(&regs->miidata);
++
++	/* Restore the saved SelfCTL value and return. */
++	writel(self_ctl, &regs->selfctl);
++
++	ret = MII_STATUS_SUCCESS;
++	/* Fall through */
++
++	pr_debug("-ep93xx_phy_read\n");
++	return ret;
++}
++
++/**
++ * Write a 16-bit value to an MII register.
++ */
++static int ep93xx_phy_write(struct miiphy_device *mdev, uint8_t phy_addr,
++			uint8_t phy_reg, uint16_t value)
++{
++	struct mac_regs *regs = ep93xx_get_regs(mdev->edev);
++	int ret = MII_STATUS_FAILURE;
++	uint32_t self_ctl;
++
++	pr_debug("+ep93xx_phy_write\n");
++
++	/*
++	 * Save the current SelfCTL register value.  Set MAC to suppress
++	 * preamble bits.  Wait for any previous MII command to complete
++	 * before issuing the new command.
++	 */
++	self_ctl = readl(&regs->selfctl);
++#if defined(CONFIG_MII_SUPPRESS_PREAMBLE) /* TODO */
++	writel(self_ctl & ~(1 << 8), &regs->selfctl);
++#endif	/* defined(CONFIG_MII_SUPPRESS_PREAMBLE) */
++
++	while (readl(&regs->miists) & MIISTS_BUSY)
++		; /* noop */
++
++	/* Issue the MII 'write' command.  Wait for the command to complete. */
++	writel((uint32_t)value, &regs->miidata);
++	writel(MIICMD_OPCODE_WRITE | ((uint32_t)phy_addr << 5) | phy_reg,
++		&regs->miicmd);
++	while (readl(&regs->miists) & MIISTS_BUSY)
++		; /* noop */
++
++	/* Restore the saved SelfCTL value and return. */
++	writel(self_ctl, &regs->selfctl);
++
++	ret = MII_STATUS_SUCCESS;
++	/* Fall through */
++
++	pr_debug("-ep93xx_phy_write\n");
++	return ret;
++}
++
++static struct driver_d ep93xx_eth_driver = {
++	.name  = "ep93xx_eth",
++	.probe = ep93xx_eth_probe,
++};
++
++static int ep93xx_eth_init(void)
++{
++	register_driver(&ep93xx_eth_driver);
++	return 0;
++}
++
++device_initcall(ep93xx_eth_init);
+diff --git a/drivers/net/ep93xx.h b/drivers/net/ep93xx.h
 new file mode 100644
-index 0000000..db9512f
+index 0000000..827e28a
 --- /dev/null
-+++ b/arch/arm/mach-ep93xx/led.h
-@@ -0,0 +1,26 @@
++++ b/drivers/net/ep93xx.h
+@@ -0,0 +1,155 @@
 +/*
 + * Copyright (C) 2009 Matthias Kaehlcke <matthias@kaehlcke.net>
++ *
++ * Copyright (C) 2004, 2005
++ * Cory T. Tusar, Videon Central, Inc., <ctusar@videon-central.com>
 + *
 + * See file CREDITS for list of people who contributed to this
 + * project.
@@ -1362,82 +789,150 @@ index 0000000..db9512f
 + * along with this program; if not, write to the Free Software
 + * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
 + * MA 02111-1307 USA
++ *
 + */
 +
-+extern void red_LED_on(void);
-+extern void red_LED_off(void);
-+extern void green_LED_on(void);
-+extern void green_LED_off(void);
-diff --git a/arch/arm/mach-ep93xx/lowlevel_init.S b/arch/arm/mach-ep93xx/lowlevel_init.S
-new file mode 100644
-index 0000000..27c2c90
---- /dev/null
-+++ b/arch/arm/mach-ep93xx/lowlevel_init.S
-@@ -0,0 +1,64 @@
-+/*
-+ * Low-level initialization for EP93xx
-+ *
-+ * Copyright (C) 2009 Matthias Kaehlcke <matthias@kaehlcke.net>
-+ *
-+ * Copyright (C) 2006 Dominic Rath <Dominic.Rath@gmx.de>
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-+ * MA 02111-1307 USA
++#ifndef _ETH_H
++#define _ETH_H
++
++#include <net.h>
++
++/**
++ * #define this to dump device status and queue info during initialization and
++ * following errors.
 + */
++#undef EP93XX_MAC_DEBUG
 +
-+#include <mach/ep93xx-regs.h>
++/**
++ * Number of descriptor and status entries in our RX queues.
++ * It must be power of 2 !
++ */
++#define NUMRXDESC		PKTBUFSRX
 +
-+.globl board_init_lowlevel
-+board_init_lowlevel:
-+	/* backup return address */
-+	ldr r1, =SYSCON_SCRATCH0
-+	str lr, [r1]
++/**
++ * Number of descriptor and status entries in our TX queues.
++ */
++#define NUMTXDESC		1
 +
-+	/* Turn on both LEDs */
-+	bl red_LED_on
-+	bl green_LED_on
++/**
++ * 944 = (1024 - 64) - 16, Fifo size - Minframesize - 16 (Chip FACT)
++ */
++#define TXSTARTMAX		944
 +
-+	/* Configure flash wait states before we switch to the PLL */
-+	bl flash_cfg
++/**
++ * Ethernet MAC interface return values for public functions.
++ */
++enum eth_status {
++	ETH_STATUS_SUCCESS = 0,
++	ETH_STATUS_FAILURE = 1,
++};
 +
-+	/* Set up PLL */
-+	bl pll_cfg
++/**
++ * Receive descriptor queue entry
++ */
++struct rx_descriptor {
++	uint32_t word1;
++	uint32_t word2;
++} __attribute__((packed));
 +
-+	/* Turn off the Green LED and leave the Red LED on */
-+	bl green_LED_off
++/**
++ * Receive status queue entry
++ */
++struct rx_status {
++	uint32_t word1;
++	uint32_t word2;
++} __attribute__((packed));
 +
-+	/* Setup SDRAM */
-+	bl sdram_cfg
++#define RX_STATUS_RWE(rx_status) ((rx_status->word1 >> 30) & 0x01)
++#define RX_STATUS_RFP(rx_status) ((rx_status->word1 >> 31) & 0x01)
++#define RX_STATUS_FRAME_LEN(rx_status) (rx_status->word2 & 0xFFFF)
 +
-+	/* Turn on Green LED, Turn off the Red LED */
-+	bl green_LED_on
-+	bl red_LED_off
 +
-+	/* switch to async mode */
-+	mrc p15, 0, r0, c1, c0, 0
-+	orr r0, r0, #0xc0000000
-+	mcr p15, 0, r0, c1, c0, 0
++/**
++ * Transmit descriptor queue entry
++ */
++struct tx_descriptor {
++	uint32_t word1;
++	uint32_t word2;
++} __attribute__((packed));
 +
-+	/* restore return address */
-+	ldr r1, =SYSCON_SCRATCH0
-+	ldr lr, [r1]
++#define TX_DESC_EOF (1 << 31)
 +
-+	mov pc, lr
++/**
++ * Transmit status queue entry
++ */
++struct tx_status {
++	uint32_t word1;
++} __attribute__((packed));
++
++#define TX_STATUS_TXWE(tx_status) (((tx_status)->word1 >> 30) & 0x01)
++#define TX_STATUS_TXFP(tx_status) (((tx_status)->word1 >> 31) & 0x01)
++
++/**
++ * Transmit descriptor queue
++ */
++struct tx_descriptor_queue {
++	struct tx_descriptor *base;
++	struct tx_descriptor *current;
++	struct tx_descriptor *end;
++};
++
++/**
++ * Transmit status queue
++ */
++struct tx_status_queue {
++	struct tx_status *base;
++	volatile struct tx_status *current;
++	struct tx_status *end;
++};
++
++/**
++ * Receive descriptor queue
++ */
++struct rx_descriptor_queue {
++	struct rx_descriptor *base;
++	struct rx_descriptor *current;
++	struct rx_descriptor *end;
++};
++
++/**
++ * Receive status queue
++ */
++struct rx_status_queue {
++	struct rx_status *base;
++	volatile struct rx_status *current;
++	struct rx_status *end;
++};
++
++/**
++ * EP93xx MAC private data structure
++ */
++struct ep93xx_eth_priv {
++	struct mac_regs			*regs;
++
++	struct rx_descriptor_queue	rx_dq;
++	struct rx_status_queue		rx_sq;
++	void				*rx_buffer[NUMRXDESC];
++
++	struct tx_descriptor_queue	tx_dq;
++	struct tx_status_queue		tx_sq;
++
++	struct miiphy_device miiphy;
++};
++
++#endif
+diff --git a/include/common.h b/include/common.h
+index 0c49d95..2b40954 100644
+--- a/include/common.h
++++ b/include/common.h
+@@ -31,6 +31,7 @@
+ #include <linux/types.h>
+ #include <linux/string.h>
+ #include <linux/kernel.h>
++#include <linux/stddef.h>
+ #include <asm/common.h>
+ 
+ #define pr_info(fmt, arg...)	printf(fmt, ##arg)
 -- 
 1.6.3.1
 
