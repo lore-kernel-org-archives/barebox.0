@@ -1,21 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from devils.ext.ti.com ([198.47.26.153])
-	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NTAzH-0006Sx-TQ
-	for barebox@lists.infradead.org; Fri, 08 Jan 2010 09:18:36 +0000
-Received: from dbdp20.itg.ti.com ([172.24.170.38])
-	by devils.ext.ti.com (8.13.7/8.13.7) with ESMTP id o089IR0j010590
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
-	for <barebox@lists.infradead.org>; Fri, 8 Jan 2010 03:18:29 -0600
-Received: from dbde71.ent.ti.com (localhost [127.0.0.1])
-	by dbdp20.itg.ti.com (8.13.8/8.13.8) with ESMTP id o089IQE9000255
-	for <barebox@lists.infradead.org>; Fri, 8 Jan 2010 14:48:26 +0530 (IST)
-From: "Premi, Sanjeev" <premi@ti.com>
-Date: Fri, 8 Jan 2010 14:48:24 +0530
-Message-ID: <B85A65D85D7EB246BE421B3FB0FBB59301E1DFE8A7@dbde02.ent.ti.com>
-In-Reply-To: <B85A65D85D7EB246BE421B3FB0FBB59301E1C30908@dbde02.ent.ti.com>
-Content-Language: en-US
+Received: from relay4-v.mail.gandi.net ([217.70.178.78])
+	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
+	id 1NTknu-0001A4-0a
+	for barebox@lists.infradead.org; Sat, 09 Jan 2010 23:33:14 +0000
+Received: from d4rwin.no-ip.org (100.Red-88-27-20.staticIP.rima-tde.net
+	[88.27.20.100])
+	by relay4-v.mail.gandi.net (Postfix) with ESMTP id 08929BA0E
+	for <barebox@lists.infradead.org>; Sun, 10 Jan 2010 00:33:02 +0100 (CET)
+Date: Sun, 10 Jan 2010 00:28:38 +0100
+From: Matthias Kaehlcke <matthias@kaehlcke.net>
+Message-ID: <20100109232838.GB14051@darwin>
 MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,53 +24,106 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: Query on default environment
-To: "Premi, Sanjeev" <premi@ti.com>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH 0/5] Add support for EDB93xx boards
+To: barebox@lists.infradead.org
 
-> From: barebox-bounces@lists.infradead.org [mailto:barebox-bounces@lists.infradead.org] On Behalf Of Premi, Sanjeev
-> Sent: Monday, December 28, 2009 7:55 PM
-> To: barebox@lists.infradead.org
-> Subject: Query on default environment
->
-> Hi,
->  
-> I was trying to create a default environment for the OMAP3EVM to contain
-> basic settings and a 'hello world' script before I could do/add something
-> useful. My changes were:
->  
-> -# CONFIG_PARTITION is not set
-> -# CONFIG_DEFAULT_ENVIRONMENT is not set
-> +CONFIG_PARTITION=y
-> +CONFIG_DEFAULT_ENVIRONMENT="board/omap/omap3evm/env"
->  
-> But, I did come across this error:
->  
-> premi # make
-> scripts/kconfig/conf -s arch/arm/Kconfig
-> Makefile:1261: *** default environment path empty.  Stop.
-> 
-> make distclean did not help as well. Somehow, the value of
-> CONFIG_DEFAULT_ENVIRONMENT in the defconfig seem to take
-> precedence over .config. Though, i can;t be sure as I
-> was tinkering all over. But finally when the defconfig
-> and .config were same, build was successful.
->  
-> Will try to see if i can create a reproducible scenario;
-> but, if it give hints, may be a problem to look at. Or
-> simple ignore as user error.
->  
->  
-> Now, I have "barebox_default_env" built alongside barebox.bin
-> How do I get this envronment on the EVM?
->  
-> Did go thru docs (http://barebox.org/documentation/barebox-2009.12.0/)
-> but did not find the next step.
+Add support for the following Cirrus Logic EDB93xx boards:
 
-I plan to spend some time this weekend to update the environment and
-post updated. Any pointers will be useful.
+EDB9301
+EDB9302
+EDB9302A
+EDB9307
+EDB9307A
+EDB93012
+EDB9315
+EDB9315A
 
-Best regards,
-Sanjeev
+This patchset has been tested on boards based on the EDB9301 and EDB9307A designs
+
+Matthias Kaehlcke (5):
+  ARM: Add support for EP93xx SoCs
+  Add EP93xx ethernet driver
+  Add support for EP9xx GPIOs
+  Add PrimeCell PL010 serial driver
+  Add support for EDB93xx boards
+
+ Documentation/boards.dox                        |    8 +
+ MAINTAINERS                                     |   11 +
+ arch/arm/Kconfig                                |    6 +
+ arch/arm/Makefile                               |    9 +
+ arch/arm/configs/edb93xx_defconfig              |  237 ++++++++
+ arch/arm/mach-ep93xx/Kconfig                    |  446 +++++++++++++++
+ arch/arm/mach-ep93xx/Makefile                   |    3 +
+ arch/arm/mach-ep93xx/clocksource.c              |   96 ++++
+ arch/arm/mach-ep93xx/gpio.c                     |  136 +++++
+ arch/arm/mach-ep93xx/include/mach/ep93xx-regs.h |  600 ++++++++++++++++++++
+ arch/arm/mach-ep93xx/include/mach/gpio.h        |   29 +
+ arch/arm/mach-ep93xx/led.c                      |   62 ++
+ arch/arm/mach-ep93xx/led.h                      |   26 +
+ arch/arm/mach-ep93xx/lowlevel_init.S            |   64 +++
+ board/edb93xx/Makefile                          |    4 +
+ board/edb93xx/barebox.lds.S                     |   79 +++
+ board/edb93xx/config.h                          |    4 +
+ board/edb93xx/early_udelay.h                    |   34 ++
+ board/edb93xx/edb93xx.c                         |  172 ++++++
+ board/edb93xx/edb93xx.dox                       |  108 ++++
+ board/edb93xx/edb93xx.h                         |   48 ++
+ board/edb93xx/env/bin/boot                      |   48 ++
+ board/edb93xx/env/bin/flash_partition           |   22 +
+ board/edb93xx/env/bin/init                      |   19 +
+ board/edb93xx/env/bin/set_nor_parts             |    3 +
+ board/edb93xx/env/bin/update_kernel             |   16 +
+ board/edb93xx/env/bin/update_rootfs             |   16 +
+ board/edb93xx/env/config                        |   16 +
+ board/edb93xx/flash_cfg.c                       |   38 ++
+ board/edb93xx/pll_cfg.c                         |   58 ++
+ board/edb93xx/pll_cfg.h                         |   72 +++
+ board/edb93xx/sdram_cfg.c                       |  127 +++++
+ board/edb93xx/sdram_cfg.h                       |  144 +++++
+ drivers/net/Kconfig                             |    5 +
+ drivers/net/Makefile                            |    1 +
+ drivers/net/ep93xx.c                            |  686 +++++++++++++++++++++++
+ drivers/net/ep93xx.h                            |  155 +++++
+ drivers/serial/Kconfig                          |    7 +
+ drivers/serial/Makefile                         |    2 +-
+ drivers/serial/serial_pl010.c                   |  172 ++++++
+ drivers/serial/serial_pl010.h                   |  100 ++++
+ include/common.h                                |    1 +
+ 42 files changed, 3889 insertions(+), 1 deletions(-)
+ create mode 100644 arch/arm/configs/edb93xx_defconfig
+ create mode 100644 arch/arm/mach-ep93xx/Kconfig
+ create mode 100644 arch/arm/mach-ep93xx/Makefile
+ create mode 100644 arch/arm/mach-ep93xx/clocksource.c
+ create mode 100644 arch/arm/mach-ep93xx/gpio.c
+ create mode 100644 arch/arm/mach-ep93xx/include/mach/ep93xx-regs.h
+ create mode 100644 arch/arm/mach-ep93xx/include/mach/gpio.h
+ create mode 100644 arch/arm/mach-ep93xx/led.c
+ create mode 100644 arch/arm/mach-ep93xx/led.h
+ create mode 100644 arch/arm/mach-ep93xx/lowlevel_init.S
+ create mode 100644 board/edb93xx/Makefile
+ create mode 100644 board/edb93xx/barebox.lds.S
+ create mode 100644 board/edb93xx/config.h
+ create mode 100644 board/edb93xx/early_udelay.h
+ create mode 100644 board/edb93xx/edb93xx.c
+ create mode 100644 board/edb93xx/edb93xx.dox
+ create mode 100644 board/edb93xx/edb93xx.h
+ create mode 100644 board/edb93xx/env/bin/boot
+ create mode 100644 board/edb93xx/env/bin/flash_partition
+ create mode 100644 board/edb93xx/env/bin/init
+ create mode 100644 board/edb93xx/env/bin/set_nor_parts
+ create mode 100644 board/edb93xx/env/bin/update_kernel
+ create mode 100644 board/edb93xx/env/bin/update_rootfs
+ create mode 100644 board/edb93xx/env/config
+ create mode 100644 board/edb93xx/flash_cfg.c
+ create mode 100644 board/edb93xx/pll_cfg.c
+ create mode 100644 board/edb93xx/pll_cfg.h
+ create mode 100644 board/edb93xx/sdram_cfg.c
+ create mode 100644 board/edb93xx/sdram_cfg.h
+ create mode 100644 drivers/net/ep93xx.c
+ create mode 100644 drivers/net/ep93xx.h
+ create mode 100644 drivers/serial/serial_pl010.c
+ create mode 100644 drivers/serial/serial_pl010.h
+
 
 _______________________________________________
 barebox mailing list
