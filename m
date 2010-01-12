@@ -1,20 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relay2-v.mail.gandi.net ([217.70.178.76])
+Received: from relay4-v.mail.gandi.net ([217.70.178.78])
 	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
-	id 1NUmW5-000595-2b
-	for barebox@lists.infradead.org; Tue, 12 Jan 2010 19:35:05 +0000
-Date: Tue, 12 Jan 2010 20:30:19 +0100
+	id 1NUmW9-0005CO-6v
+	for barebox@lists.infradead.org; Tue, 12 Jan 2010 19:35:09 +0000
+Received: from d4rwin.no-ip.org (139.Red-83-38-127.dynamicIP.rima-tde.net
+	[83.38.127.139])
+	by relay4-v.mail.gandi.net (Postfix) with ESMTP id 90CA4BA30
+	for <barebox@lists.infradead.org>; Tue, 12 Jan 2010 20:34:57 +0100 (CET)
+Date: Tue, 12 Jan 2010 20:30:30 +0100
 From: Matthias Kaehlcke <matthias@kaehlcke.net>
-Message-ID: <20100112193019.GK14051@darwin>
-References: <20100109232838.GB14051@darwin>
-	<20100111094902.GR6923@pengutronix.de>
-	<20100111103700.GH14051@darwin>
-	<20100111112557.GU6923@pengutronix.de>
-	<20100111213112.GJ14051@darwin>
-	<20100112095233.GD6923@pengutronix.de>
+Message-ID: <20100112193030.GL14051@darwin>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20100112095233.GD6923@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,57 +20,116 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Add support for EDB93xx boards [rev2]
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/5] Add support for EDB93xx boards [rev2]
+To: barebox@lists.infradead.org
 
-Hi Sascha,
+Add support for the following Cirrus Logic EDB93xx boards:
 
-El Tue, Jan 12, 2010 at 10:52:33AM +0100 Sascha Hauer ha dit:
+EDB9301
+EDB9302
+EDB9302A
+EDB9307
+EDB9307A
+EDB93012
+EDB9315
+EDB9315A
 
-> On Mon, Jan 11, 2010 at 10:31:12PM +0100, Matthias Kaehlcke wrote:
-> > diff --git a/arch/arm/mach-ep93xx/Kconfig b/arch/arm/mach-ep93xx/Kconfig
-> > index 139b08d..ed6e986 100644
-> > --- a/arch/arm/mach-ep93xx/Kconfig
-> > +++ b/arch/arm/mach-ep93xx/Kconfig
-> > @@ -39,7 +39,6 @@ config MACH_EDB9301
-> >  	bool "Cirrus Logic EDB9301"
-> >  	select EP93XX_SDCE3_SYNC_PHYS_OFFSET
-> >  	select MACH_HAS_LOWLEVEL_INIT
-> > -	select BOARD_LINKER_SCRIPT
-> >  	help
-> =
+This patchset has been tested on boards based on the EDB9301 and
+EDB9307A designs
 
-> Something went wrong here, this seems to be a fixup patch, at least
-> these hunks.
+Changes with respect to rev1:
 
-sorry, i added applied these changes to the wrong patch of the set
+ * use global linker script with EP93xx specific ifdef instead of a
+   board specific one
+ * eth driver: remove TODO comments about impossible enhancements
+ * eth driver: remove MII_STATUS_* and ETH_STATUS_* macros
 
-> The rest of the patches is ok now. Can you please resend the whole
-> series? It's easier to apply when it's clear that the original messages
-> are the patches than to dig through the thread and look for patches in
-> replies.
+Matthias Kaehlcke (5):
+  ARM: Add support for EP93xx SoCs
+  Add EP93xx ethernet driver
+  Add support for EP9xx GPIOs
+  Add PrimeCell PL010 serial driver
+  Add support for EDB93xx boards
 
-sure, and thanks for pointing me to the right way to send revisions of
-a patch
+ Documentation/boards.dox                        |    8 +
+ arch/arm/Kconfig                                |    6 +
+ arch/arm/Makefile                               |    9 +
+ arch/arm/configs/edb93xx_defconfig              |  236 ++++++++
+ arch/arm/lib/barebox.lds.S                      |    5 +
+ arch/arm/mach-ep93xx/Kconfig                    |  438 +++++++++++++++
+ arch/arm/mach-ep93xx/Makefile                   |    3 +
+ arch/arm/mach-ep93xx/clocksource.c              |   96 ++++
+ arch/arm/mach-ep93xx/gpio.c                     |  136 +++++
+ arch/arm/mach-ep93xx/include/mach/ep93xx-regs.h |  600 ++++++++++++++++++++
+ arch/arm/mach-ep93xx/include/mach/gpio.h        |   29 +
+ arch/arm/mach-ep93xx/led.c                      |   62 ++
+ arch/arm/mach-ep93xx/led.h                      |   26 +
+ arch/arm/mach-ep93xx/lowlevel_init.S            |   64 +++
+ board/edb93xx/Makefile                          |    2 +
+ board/edb93xx/config.h                          |    4 +
+ board/edb93xx/early_udelay.h                    |   34 ++
+ board/edb93xx/edb93xx.c                         |  172 ++++++
+ board/edb93xx/edb93xx.dox                       |  108 ++++
+ board/edb93xx/edb93xx.h                         |   48 ++
+ board/edb93xx/env/bin/boot                      |   48 ++
+ board/edb93xx/env/bin/flash_partition           |   22 +
+ board/edb93xx/env/bin/init                      |   19 +
+ board/edb93xx/env/bin/set_nor_parts             |    3 +
+ board/edb93xx/env/bin/update_kernel             |   16 +
+ board/edb93xx/env/bin/update_rootfs             |   16 +
+ board/edb93xx/env/config                        |   16 +
+ board/edb93xx/flash_cfg.c                       |   38 ++
+ board/edb93xx/pll_cfg.c                         |   58 ++
+ board/edb93xx/pll_cfg.h                         |   72 +++
+ board/edb93xx/sdram_cfg.c                       |  127 +++++
+ board/edb93xx/sdram_cfg.h                       |  144 +++++
+ drivers/net/Kconfig                             |    5 +
+ drivers/net/Makefile                            |    1 +
+ drivers/net/ep93xx.c                            |  676 +++++++++++++++++++++++
+ drivers/net/ep93xx.h                            |  147 +++++
+ drivers/serial/Kconfig                          |    7 +
+ drivers/serial/Makefile                         |    2 +-
+ drivers/serial/serial_pl010.c                   |  172 ++++++
+ drivers/serial/serial_pl010.h                   |  100 ++++
+ include/common.h                                |    1 +
+ 41 files changed, 3775 insertions(+), 1 deletions(-)
+ create mode 100644 arch/arm/configs/edb93xx_defconfig
+ create mode 100644 arch/arm/mach-ep93xx/Kconfig
+ create mode 100644 arch/arm/mach-ep93xx/Makefile
+ create mode 100644 arch/arm/mach-ep93xx/clocksource.c
+ create mode 100644 arch/arm/mach-ep93xx/gpio.c
+ create mode 100644 arch/arm/mach-ep93xx/include/mach/ep93xx-regs.h
+ create mode 100644 arch/arm/mach-ep93xx/include/mach/gpio.h
+ create mode 100644 arch/arm/mach-ep93xx/led.c
+ create mode 100644 arch/arm/mach-ep93xx/led.h
+ create mode 100644 arch/arm/mach-ep93xx/lowlevel_init.S
+ create mode 100644 board/edb93xx/Makefile
+ create mode 100644 board/edb93xx/config.h
+ create mode 100644 board/edb93xx/early_udelay.h
+ create mode 100644 board/edb93xx/edb93xx.c
+ create mode 100644 board/edb93xx/edb93xx.dox
+ create mode 100644 board/edb93xx/edb93xx.h
+ create mode 100644 board/edb93xx/env/bin/boot
+ create mode 100644 board/edb93xx/env/bin/flash_partition
+ create mode 100644 board/edb93xx/env/bin/init
+ create mode 100644 board/edb93xx/env/bin/set_nor_parts
+ create mode 100644 board/edb93xx/env/bin/update_kernel
+ create mode 100644 board/edb93xx/env/bin/update_rootfs
+ create mode 100644 board/edb93xx/env/config
+ create mode 100644 board/edb93xx/flash_cfg.c
+ create mode 100644 board/edb93xx/pll_cfg.c
+ create mode 100644 board/edb93xx/pll_cfg.h
+ create mode 100644 board/edb93xx/sdram_cfg.c
+ create mode 100644 board/edb93xx/sdram_cfg.h
+ create mode 100644 drivers/net/ep93xx.c
+ create mode 100644 drivers/net/ep93xx.h
+ create mode 100644 drivers/serial/serial_pl010.c
+ create mode 100644 drivers/serial/serial_pl010.h
 
--- =
-
-Matthias Kaehlcke
-Embedded Linux Developer
-Barcelona
-
-    Ma patrie est o=F9 je suis, o=F9 personne ne me d=E9range, o=F9 personne
-    ne me demande que je suis, d'o=F9 je viens et ce que je fais
-                              (B. Traven)
-                                                                 .''`.
-    using free software / Debian GNU/Linux | http://debian.org  : :'  :
-                                                                `. `'`
-gpg --keyserver pgp.mit.edu --recv-keys 47D8E5D4                  `-
 
 _______________________________________________
 barebox mailing list
