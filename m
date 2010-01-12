@@ -1,20 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NUdrz-0007Gp-6p
-	for barebox@lists.infradead.org; Tue, 12 Jan 2010 10:21:06 +0000
+	id 1NUdrz-0007Gt-81
+	for barebox@lists.infradead.org; Tue, 12 Jan 2010 10:21:05 +0000
 Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
 	by metis.ext.pengutronix.de with esmtp (Exim 4.69)
-	(envelope-from <jbe@pengutronix.de>) id 1NUdrr-0006W5-7b
+	(envelope-from <jbe@pengutronix.de>) id 1NUdrr-0006WH-Ts
 	for barebox@lists.infradead.org; Tue, 12 Jan 2010 11:20:55 +0100
 Received: from jbe by octopus.hi.pengutronix.de with local (Exim 4.69)
-	(envelope-from <jbe@pengutronix.de>) id 1NUdrr-00070h-4B
+	(envelope-from <jbe@pengutronix.de>) id 1NUdrr-00072R-RT
 	for barebox@lists.infradead.org; Tue, 12 Jan 2010 11:20:55 +0100
-Message-Id: <20100112102055.014154409@pengutronix.de>
+Message-Id: <20100112102055.772999146@pengutronix.de>
 References: <20100112101534.868276907@pengutronix.de>
-Date: Tue, 12 Jan 2010 11:15:42 +0100
+Date: Tue, 12 Jan 2010 11:15:46 +0100
 From: Juergen Beisert <jbe@pengutronix.de>
-Content-Disposition: inline; filename=add_generic_platform.diff
+Content-Disposition: inline; filename=add_bios_disk-driver.diff
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,39 +28,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCHv2 08/14] Add a generic PC platform
+Subject: [PATCHv2 12/14] Add a low level disk drive access driver
 To: barebox@lists.infradead.org
 
-This code adds a generic x86 platform, enabling barebox to act as a
-bootloader like 'GRUB'. Very minimalistic, yet. Supports only a serial console
-and is tested with QEMU only.
+This is a low level disk drive communication driver. It uses the real mode
+BIOS found on most x86 platforms, to read and write sectors. Used by the
+generic disk driver.
 
 Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 
 ---
- Documentation/boards.dox           |    2 
- arch/x86/configs/generic_defconfig |  186 +++++++++++++++++++++++++++++++++++++
- board/x86_generic/Makefile         |    1 
- board/x86_generic/config.h         |   21 ++++
- board/x86_generic/env/bin/boot     |   37 +++++++
- board/x86_generic/env/bin/init     |   15 ++
- board/x86_generic/env/config       |   31 ++++++
- board/x86_generic/generic_pc.c     |  140 +++++++++++++++++++++++++++
- 8 files changed, 432 insertions(+), 1 deletion(-)
+ arch/x86/lib/Makefile    |    1 
+ arch/x86/lib/bios_disk.S |   77 ++++++++++++
+ drivers/ata/Kconfig      |    9 +
+ drivers/ata/Makefile     |    2 
+ drivers/ata/bios.c       |  291 +++++++++++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 380 insertions(+)
 
-Index: barebox-2009.12.0/board/x86_generic/Makefile
+Index: barebox-2009.12.0/drivers/ata/Kconfig
+===================================================================
+--- barebox-2009.12.0.orig/drivers/ata/Kconfig
++++ barebox-2009.12.0/drivers/ata/Kconfig
+@@ -14,4 +14,13 @@ config ATA_DISK
+ 
+ comment "interface types"
+ 
++config ATA_BIOS
++	bool "BIOS based"
++	depends on X86_BIOS_BRINGUP
++	help
++	  Gain disk drive access via int13 calls to the standard PC-BIOS.
++	  The advantage of this driver is, it still uses user's defined boot
++	  media to work on. Disadvantage is: Due to its 16 bit nature it is
++	  slow.
++
+ endif
+Index: barebox-2009.12.0/drivers/ata/Makefile
+===================================================================
+--- barebox-2009.12.0.orig/drivers/ata/Makefile
++++ barebox-2009.12.0/drivers/ata/Makefile
+@@ -3,3 +3,5 @@
+ obj-$(CONFIG_ATA_DISK) += disk_drive.o
+ 
+ # interface types
++
++obj-$(CONFIG_ATA_BIOS) += bios.o
+Index: barebox-2009.12.0/drivers/ata/bios.c
 ===================================================================
 --- /dev/null
-+++ barebox-2009.12.0/board/x86_generic/Makefile
-@@ -0,0 +1 @@
-+obj-y += generic_pc.o
-Index: barebox-2009.12.0/board/x86_generic/generic_pc.c
-===================================================================
---- /dev/null
-+++ barebox-2009.12.0/board/x86_generic/generic_pc.c
-@@ -0,0 +1,140 @@
++++ barebox-2009.12.0/drivers/ata/bios.c
+@@ -0,0 +1,291 @@
 +/*
 + * Copyright (C) 2009 Juergen Beisert, Pengutronix
++ *
++ * Mostly stolen from the GRUB2 project
++ *  Copyright (C) 1999,2000,2001,2002,2003,2004,2005,2006,2007,2008  Free Software Foundation, Inc.
 + *
 + * This program is free software; you can redistribute it and/or
 + * modify it under the terms of the GNU General Public License as
@@ -81,167 +103,291 @@ Index: barebox-2009.12.0/board/x86_generic/generic_pc.c
 +
 +/**
 + * @file
-+ * @brief Generic PC support to let barebox acting as a boot loader
++ * @brief Media communication layer through the standard 16 bit PC-BIOS
++ *
++ * This communication driver does all accesses to the boot medium via 16 bit
++ * real mode calls into the standard BIOS. Due to this method, its possible
++ * to use all the medias to boot from that are supported by the BIOS. This
++ * also includes emulated only medias.
++ *
++ * To be able to call the real mode BIOS, this driver must switch back to
++ * real mode for each access. This will slow down the access a little bit, but
++ * we are a boot loader here, not an operating system...
++ *
++ * Note: We need scratch memory for the BIOS communication, because the BIOS
++ * can only handle memory below 0xA0000. So we must copy all data between
++ * the flat mode buffers and realmode buffers.
++ *
++ * Note: This driver makes no sense on other architectures than x86.
++ *
++ * Note: This driver does only support LBA addressing. Currently no CHS!
 + */
 +
-+#include <common.h>
-+#include <types.h>
-+#include <driver.h>
++#include <stdio.h>
++#include <linux/types.h>
 +#include <init.h>
++#include <driver.h>
++#include <string.h>
++#include <xfuncs.h>
 +#include <asm/syslib.h>
-+#include <ns16550.h>
-+
-+static struct memory_platform_data ram_pdata = {
-+	.name		= "ram0",
-+	.flags		= DEVFS_RDWR,
-+};
-+
-+static struct device_d sdram_dev = {
-+	.name		= "mem",
-+	.size		= 16 * 1024 * 1024,
-+	.map_base	= 0,
-+	.platform_data	= &ram_pdata,
-+};
-+
-+static struct device_d bios_disk_dev = {
-+	.name		= "biosdrive",
-+	.size		= 1,
-+};
-+
-+/*
-+ * These datas are from the MBR, created by the linker and filled by the
-+ * setup tool while installing barebox on the disk drive
-+ */
-+extern uint64_t pers_env_storage;
-+extern uint16_t pers_env_size;
-+extern uint8_t pers_env_drive;
++#include <ata.h>
++#include <errno.h>
 +
 +/**
-+ * Persistant environment "not used" marker.
-+ * Note: Must be in accordance to the value the tool "setup_mbr" writes.
++ * Sector count handled in one count
++ *
++ * @todo 127 are always possible, some BIOS manufacturer supports up to 255.
++ * Is it's worth to detect Phoenic's restriction?
 + */
-+#define PATCH_AREA_PERS_SIZE_UNUSED 0x000
++#define SECTORS_AT_ONCE 64
 +
-+static int devices_init(void)
++/** Size of one sector in bytes */
++#define SECTOR_SIZE 512
++
++/** Command to read sectors from media */
++#define BIOS_READ_CMD 0
++
++/** Command to write sectors to media */
++#define BIOS_WRT_CMD 1
++
++/**
++ * "Disk Address Packet Structure" to be used when calling
++ * BIOS's int13, function 0x42/0x43
++ */
++struct DAPS
++{
++	uint8_t size;		/**< always '16' */
++	uint8_t res1;		/**< always '0' */
++	int8_t count;		/**< number of sectors 0...127 */
++	uint8_t res2;		/**< always '0' */
++	uint16_t offset;	/**< buffer address: offset */
++	uint16_t segment;	/**< buffer address: segment */
++	uint64_t lba;		/**< LBA of the start sector */
++} __attribute__ ((packed));
++
++/**
++ * Collection of data we need to know about the connected drive
++ */
++struct media_access {
++	int drive_no;	/**< drive number used by the BIOS */
++	int is_cdrom;	/**< drive is a CDROM e.g. no write support */
++};
++
++/**
++ * Scratch memory for BIOS communication to handle data in chunks of 32 kiB
++ *
++ * Note: This variable is located in the .bss segment, assuming it is located
++ * below 0xA0000. If not, the BIOS is not able to read or store any data
++ * from/to it. The variable must also aligned to a 16 byte boundary to easify
++ * linear to segment:offset address conversion.
++ */
++static uint8_t scratch_buffer[SECTORS_AT_ONCE * SECTOR_SIZE] __attribute__((aligned(16)));
++
++/**
++ * Communication buffer for the 16 bit int13 BIOS call
++ *
++ * Note: This variable is located in the .bss segment, assuming it is located
++ * below 0xA0000. If not, the BIOS is not able to read or store any data
++ * from/to it. The variable must also aligned to a 16 byte boundary to easify
++ * linear to segment:offset conversion.
++ */
++static struct DAPS bios_daps __attribute__((aligned(16)));
++
++/**
++ * @param media our data we need to do the access
++ * @param cmd Command to forward to the BIOS
++ * @param sector_start LBA of the start sector
++ * @param sector_count Sector count
++ * @param buffer Buffer to read from or write to (in the low memory area)
++ * @return 0 on success, anything else on failure
++ */
++static int biosdisk_bios_call(struct media_access *media, int cmd, uint64_t sector_start, unsigned sector_count, void *buffer)
 +{
 +	int rc;
 +
-+	sdram_dev.size = bios_get_memsize();	/* extended memory only */
-+	sdram_dev.size <<= 10;
++	/* prepare the DAPS for the int13 call */
++	bios_daps.size = sizeof(struct DAPS);
++	bios_daps.res1 = 0;
++	bios_daps.count = sector_count;	/* always less than 128! */
++	bios_daps.res2 = 0;
++	bios_daps.segment = (unsigned long)buffer >> 4;
++	bios_daps.offset = (unsigned long)buffer - (unsigned long)(bios_daps.segment << 4);
++	bios_daps.lba = sector_start;
 +
-+	register_device(&sdram_dev);
-+	register_device(&bios_disk_dev);
++	if (cmd == BIOS_READ_CMD)
++		rc = bios_disk_rw_int13_extensions(0x42, media->drive_no, &bios_daps);
++	else if (cmd == BIOS_WRT_CMD)
++		rc = bios_disk_rw_int13_extensions(0x43, media->drive_no, &bios_daps);
++	else
++		return -1;
 +
-+	if (pers_env_size != PATCH_AREA_PERS_SIZE_UNUSED) {
-+		rc = devfs_add_partition("disk0",	/* FIXME */
-+				pers_env_storage * 512,
-+				(unsigned)pers_env_size * 512,
-+				DEVFS_PARTITION_FIXED, "env0");
-+		printf("Partition: %d\n", rc);
-+	} else
-+		printf("No persistant storage defined\n");
-+
-+        return 0;
++	return rc;
 +}
-+device_initcall(devices_init);
 +
-+#ifdef CONFIG_DRIVER_SERIAL_NS16550
-+
-+static struct NS16550_plat serial_plat = {
-+       .clock = 1843200,
-+       .f_caps = CONSOLE_STDIN | CONSOLE_STDOUT | CONSOLE_STDERR,
-+       .reg_read = x86_uart_read,
-+       .reg_write = x86_uart_write,
-+};
-+
-+/* we are expecting always one serial interface */
-+static struct device_d generic_pc_serial_device = {
-+       .name = "serial_ns16550",
-+       .map_base = 0x3f8,
-+       .size = 8,
-+       .platform_data = (void *)&serial_plat,
-+};
-+
-+static int pc_console_init(void)
++/**
++ * Read a chunk of sectors from media
++ * @param dev our data we need to do the access
++ * @param sector_start Sector's LBA number to start read from
++ * @param sector_count Sectors to read
++ * @param buffer Buffer to read into
++ * @return 0 on success, anything else on failure
++ *
++ * This routine expects the buffer has the correct size to store all data!
++ */
++static int biosdisk_read(struct device_d *dev, uint64_t sector_start, unsigned sector_count, void *buffer)
 +{
-+       /* Register the serial port */
-+       return register_device(&generic_pc_serial_device);
++	int rc;
++	struct ata_interface *intf = dev->platform_data;
++	struct media_access *media = intf->priv;
++
++	while (sector_count >= SECTORS_AT_ONCE) {
++		rc = biosdisk_bios_call(media, BIOS_READ_CMD, sector_start, SECTORS_AT_ONCE, scratch_buffer);
++		if (rc != 0)
++			return rc;
++		__builtin_memcpy(buffer, scratch_buffer, sizeof(scratch_buffer));
++		buffer += sizeof(scratch_buffer);
++		sector_start += SECTORS_AT_ONCE;
++		sector_count -= SECTORS_AT_ONCE;
++	};
++
++	/* Are sectors still remaining? */
++	if (sector_count) {
++		rc = biosdisk_bios_call(media, BIOS_READ_CMD, sector_start, sector_count, scratch_buffer);
++		__builtin_memcpy(buffer, scratch_buffer, sector_count * SECTOR_SIZE);
++	} else
++		rc = 0;
++
++	return rc;
 +}
-+console_initcall(pc_console_init);
 +
-+#endif
++/**
++ * Write a chunk of sectors to media
++ * @param dev our data we need to do the access
++ * @param sector_start Sector's LBA number to start write to
++ * @param sector_count Sectors to write
++ * @param buffer Buffer to write from
++ * @return 0 on success, anything else on failure
++ *
++ * This routine expects the buffer has the correct size to read all data!
++ */
++static int biosdisk_write(struct device_d *dev, uint64_t sector_start, unsigned sector_count, const void *buffer)
++{
++	int rc;
++	struct ata_interface *intf = dev->platform_data;
++	struct media_access *media = intf->priv;
 +
-+/** @page generic_pc Generic PC based bootloader
++	while (sector_count >= SECTORS_AT_ONCE) {
++		__builtin_memcpy(scratch_buffer, buffer, sizeof(scratch_buffer));
++		rc = biosdisk_bios_call(media, BIOS_WRT_CMD, sector_start, SECTORS_AT_ONCE, scratch_buffer);
++		if (rc != 0)
++			return rc;
++		buffer += sizeof(scratch_buffer);
++		sector_start += SECTORS_AT_ONCE;
++		sector_count -= SECTORS_AT_ONCE;
++	};
 +
-+This platform acts as a generic PC based bootloader. It depends on at least
-+one boot media that is connected locally (no network boot) and can be
-+handled by the regular BIOS (any kind of hard disks for example).
++	/* Are sectors still remaining? */
++	if (sector_count) {
++		__builtin_memcpy(scratch_buffer, buffer, sector_count * SECTOR_SIZE);
++		rc = biosdisk_bios_call(media, BIOS_WRT_CMD, sector_start, sector_count, scratch_buffer);
++	} else
++		rc = 0;
 +
-+The created @a barebox image can be used to boot a standard x86 bzImage
-+Linux kernel.
++	return rc;
++}
 +
-+Refer section @ref x86_bootloader_preparations how to do so.
++/**
++ * Probe for connected drives and register them
++ *
++ * Detecting if a drive is present is done by simply reading its MBR.
++ *
++ * FIXME: Relation between BIOS disk numbering scheme and our representation
++ * here in barebox (and later on in the linux kernel)
++ */
++static int biosdisk_probe(struct device_d *dev)
++{
++	int drive, rc;
++	struct media_access media, *m;
++	struct device_d *drive_dev;
++	struct ata_interface *p;
 +
-+How to get the binary image:
++	for (drive = 0x80; drive < 0x90; drive++) {
++		media.drive_no = drive;
++		media.is_cdrom = 0;	/* don't know yet */
++		rc = biosdisk_bios_call(&media, BIOS_READ_CMD, 0, 1, scratch_buffer);
++		if (rc != 0)
++			continue;
 +
-+Using the default configuration:
++		printf("BIOSdrive %d seems valid. Registering...\n", media.drive_no);
 +
-+@code
-+make ARCH=x86 generic_defconfig
-+@endcode
++		drive_dev = xzalloc(sizeof(struct device_d) + sizeof(struct media_access) + sizeof(struct ata_interface));
++		if (drive_dev == NULL) {
++			dev_err(dev, "Out of memory\n");
++			return -1;
++		}
++		m = (struct media_access*)&drive_dev[1];
++		p = (struct ata_interface*)&m[1];
 +
-+Build the binary image:
++		m->drive_no = drive;
++		m->is_cdrom = 0;
 +
-+@code
-+make ARCH=x86 CROSS_COMPILE=x86compiler
-+@endcode
++		p->write = biosdisk_write;
++		p->read = biosdisk_read;
++		p->priv = m;
 +
-+@note replace the 'x86compiler' with your x86 (cross) compiler.
++		strcpy(drive_dev->name, "biosdisk");
++		drive_dev->id = drive - 0x80;
++		drive_dev->size = 1;
++		drive_dev->map_base = 0;
++		drive_dev->platform_data = p;
 +
-+*/
-Index: barebox-2009.12.0/board/x86_generic/env/config
++		register_device(drive_dev);
++	}
++
++	return 0;
++}
++
++static struct driver_d biosdisk_driver = {
++        .name   = "biosdrive",
++        .probe  = biosdisk_probe,
++};
++
++static int biosdisk_init(void)
++{
++	/* sanity */
++	if (scratch_buffer > (uint8_t*)0x9FFFF) {
++		printf("BIOS driver: Scratch memory not in real mode area. Cannot continue!\n");
++		return -EIO;
++	}
++	if (&bios_daps > (struct DAPS*)0x9FFFF) {
++		printf("BIOS driver: DAPS memory not in real mode area. Cannot continue!\n");
++		return -EIO;
++	}
++
++	register_driver(&biosdisk_driver);
++	return 0;
++}
++
++device_initcall(biosdisk_init);
+Index: barebox-2009.12.0/arch/x86/lib/Makefile
+===================================================================
+--- barebox-2009.12.0.orig/arch/x86/lib/Makefile
++++ barebox-2009.12.0/arch/x86/lib/Makefile
+@@ -5,3 +5,4 @@ obj-y += gdt.o
+ # needed, when running via a 16 bit BIOS
+ obj-$(CONFIG_X86_BIOS_BRINGUP) += memory16.o
+ obj-$(CONFIG_X86_BIOS_BRINGUP) += traveler.o
++obj-$(CONFIG_X86_BIOS_BRINGUP) += bios_disk.o
+Index: barebox-2009.12.0/arch/x86/lib/bios_disk.S
 ===================================================================
 --- /dev/null
-+++ barebox-2009.12.0/board/x86_generic/env/config
-@@ -0,0 +1,31 @@
-+#
-+# basic config
-+#
-+# boot source: 'disk' or 'net'
-+kernel=disk
-+root=disk
-+
-+# data for the NFS case
-+nfsroot="/path/to/nfs_root"
-+
-+# data for the disk case
-+kernel_device=/dev/biosdisk0.1
-+rootpart_disk=/dev/sda1
-+rootpart_fs=ext2
-+
-+baudrate=115200
-+serial=ttyS0
-+
-+# use UART for console
-+bootargs="console=$serial,$baudrate"
-+
-+autoboot_timeout=3
-+
-+# use 'dhcp' to do dhcp in uboot and in kernel
-+#  ip=dhcp
-+# or set your networking parameters here
-+#  eth0.ipaddr=192.168.3.11
-+#  eth0.netmask=255.255.255.0
-+#  eth0.gateway=a.b.c.d
-+#  eth0.serverip=192.168.3.10
-+#  eth0.ethaddr=aa.bb.cc.dd.ee.ff
-Index: barebox-2009.12.0/board/x86_generic/config.h
-===================================================================
---- /dev/null
-+++ barebox-2009.12.0/board/x86_generic/config.h
-@@ -0,0 +1,21 @@
++++ barebox-2009.12.0/arch/x86/lib/bios_disk.S
+@@ -0,0 +1,77 @@
 +/*
 + * Copyright (C) 2009 Juergen Beisert, Pengutronix
++ *
++ * Mostly stolen from the GRUB2 project
++ *  Copyright (C) 1999,2000,2001,2002,2003,2004,2005,2006,2007,2008  Free Software Foundation, Inc.
 + *
 + * This program is free software; you can redistribute it and/or
 + * modify it under the terms of the GNU General Public License as
@@ -260,273 +406,60 @@ Index: barebox-2009.12.0/board/x86_generic/config.h
 + *
 + */
 +
-+/* nothing special yet */
-Index: barebox-2009.12.0/board/x86_generic/env/bin/init
-===================================================================
---- /dev/null
-+++ barebox-2009.12.0/board/x86_generic/env/bin/init
-@@ -0,0 +1,15 @@
-+#!/bin/sh
++/**
++ * @file
++ * @brief Do BIOS calls to load or save data from disks
++ *
++ * @note These functions are running in flat and real mode. Due to some
++ * other restrictions these routines must running from an address
++ * space below 0x10000
++ */
 +
-+PATH=/env/bin
-+export PATH
++#ifndef DOXYGEN_SHOULD_SKIP_THIS
++/*
++ *   int bios_disk_rw_int13_extensions (int ah, int drive, void *dap)
++ *
++ *   Call IBM/MS INT13 Extensions (int 13 %ah=AH) for DRIVE. DAP
++ *   is passed for disk address packet. If an error occurs, return
++ *   non-zero, otherwise zero.
++ */
++	.section .boot.text.bios_disk_rw_int13_extensions, "ax"
++	.code32
++	.globl bios_disk_rw_int13_extensions
++	.type bios_disk_rw_int13_extensions, @function
 +
-+. /env/config
++	.extern prot_to_real
++	.extern real_to_prot
 +
-+echo
-+echo -n "Hit any key to stop autoboot: "
-+timeout -a $autoboot_timeout
-+if [ $? != 0 ]; then
-+        exit
-+fi
++bios_disk_rw_int13_extensions:
++	pushl %ebp
++	pushl %esi
 +
-+boot
-Index: barebox-2009.12.0/arch/x86/configs/generic_defconfig
-===================================================================
---- /dev/null
-+++ barebox-2009.12.0/arch/x86/configs/generic_defconfig
-@@ -0,0 +1,186 @@
-+#
-+# Automatically generated make config: don't edit
-+# barebox version: 2009.12.0-x86-trunk
-+#
-+CONFIG_ARCH_TEXT_BASE=0x00007c00
-+CONFIG_BOARDINFO="Generic x86 bootloader"
-+# CONFIG_BOARD_LINKER_SCRIPT is not set
-+CONFIG_GENERIC_LINKER_SCRIPT=y
-+CONFIG_X86=y
-+CONFIG_MACH_X86_GENERIC=y
-+CONFIG_X86_BIOS_BRINGUP=y
-+# CONFIG_X86_NATIVE_BRINGUP is not set
++	/* compute the address of disk_address_packet */
++	movw %cx, %si
++	xorw %cx, %cx
++	shrl $4, %ecx	/* save the segment to cx */
 +
-+#
-+# BIOS boot source              
-+#
-+CONFIG_X86_HDBOOT=y
++	movb %al, %dh
++	call prot_to_real	/* enter real mode right now */
 +
-+#
-+# Board specific settings       
-+#
-+CONFIG_GREGORIAN_CALENDER=y
-+CONFIG_HAS_KALLSYMS=y
-+CONFIG_HAS_MODULES=y
-+CONFIG_CMD_MEMORY=y
-+CONFIG_ENV_HANDLING=y
++	.code16
++	movb %dh, %ah
++	movw %cx, %ds
++	int $0x13		/* do the operation */
++	movb %ah, %dl		/* save return value */
++	/* back to protected mode */
++	DATA32 call real_to_prot
 +
-+#
-+# General Settings              
-+#
-+CONFIG_LOCALVERSION_AUTO=y
++	.code32
++	movb %dl, %al	/* return value in %eax */
 +
-+#
-+# memory layout                 
-+#
-+CONFIG_HAVE_CONFIGURABLE_TEXT_BASE=y
-+CONFIG_TEXT_BASE=0x00007c00
-+CONFIG_HAVE_CONFIGURABLE_MEMORY_LAYOUT=y
-+CONFIG_MEMORY_LAYOUT_DEFAULT=y
-+# CONFIG_MEMORY_LAYOUT_FIXED is not set
-+CONFIG_STACK_SIZE=0x7000
-+CONFIG_MALLOC_SIZE=0x400000
-+CONFIG_BROKEN=y
-+CONFIG_EXPERIMENTAL=y
-+# CONFIG_MODULES is not set
-+# CONFIG_KALLSYMS is not set
-+CONFIG_PROMPT="uboot:"
-+CONFIG_BAUDRATE=115200
-+CONFIG_LONGHELP=y
-+CONFIG_CBSIZE=1024
-+CONFIG_MAXARGS=16
-+CONFIG_SHELL_HUSH=y
-+# CONFIG_SHELL_SIMPLE is not set
-+CONFIG_GLOB=y
-+CONFIG_PROMPT_HUSH_PS2="> "
-+CONFIG_CMDLINE_EDITING=y
-+CONFIG_AUTO_COMPLETE=y
-+CONFIG_DYNAMIC_CRC_TABLE=y
-+CONFIG_ERRNO_MESSAGES=y
-+CONFIG_TIMESTAMP=y
-+CONFIG_CONSOLE_FULL=y
-+CONFIG_CONSOLE_ACTIVATE_FIRST=y
-+# CONFIG_OF_FLAT_TREE is not set
-+CONFIG_PARTITION=y
-+CONFIG_DEFAULT_ENVIRONMENT=y
-+CONFIG_DEFAULT_ENVIRONMENT_PATH="board/x86_generic/env"
++	popl %esi
++	popl %ebp
 +
-+#
-+# Debugging                     
-+#
-+CONFIG_DEBUG_INFO=y
-+# CONFIG_ENABLE_FLASH_NOISE is not set
-+# CONFIG_ENABLE_PARTITION_NOISE is not set
-+# CONFIG_ENABLE_DEVICE_NOISE is not set
++	ret
 +
-+#
-+# Commands                      
-+#
-+
-+#
-+# scripting                     
-+#
-+CONFIG_CMD_EDIT=y
-+CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_SAVEENV=y
-+CONFIG_CMD_LOADENV=y
-+CONFIG_CMD_EXPORT=y
-+CONFIG_CMD_PRINTENV=y
-+CONFIG_CMD_READLINE=y
-+# CONFIG_CMD_TRUE is not set
-+# CONFIG_CMD_FALSE is not set
-+
-+#
-+# file commands                 
-+#
-+CONFIG_CMD_LS=y
-+CONFIG_CMD_RM=y
-+CONFIG_CMD_CAT=y
-+CONFIG_CMD_MKDIR=y
-+CONFIG_CMD_RMDIR=y
-+CONFIG_CMD_CP=y
-+CONFIG_CMD_PWD=y
-+CONFIG_CMD_CD=y
-+CONFIG_CMD_MOUNT=y
-+CONFIG_CMD_UMOUNT=y
-+
-+#
-+# console                       
-+#
-+CONFIG_CMD_CLEAR=y
-+CONFIG_CMD_ECHO=y
-+
-+#
-+# memory                        
-+#
-+# CONFIG_CMD_LOADB is not set
-+# CONFIG_CMD_LOADY is not set
-+# CONFIG_CMD_LOADS is not set
-+CONFIG_CMD_MEMINFO=y
-+# CONFIG_CMD_CRC is not set
-+# CONFIG_CMD_MTEST is not set
-+
-+#
-+# flash                         
-+#
-+# CONFIG_CMD_FLASH is not set
-+
-+#
-+# booting                       
-+#
-+# CONFIG_CMD_BOOTM is not set
-+CONFIG_CMD_LINUX16=y
-+CONFIG_CMD_RESET=y
-+CONFIG_CMD_GO=y
-+CONFIG_CMD_TIMEOUT=y
-+# CONFIG_CMD_PARTITION is not set
-+CONFIG_CMD_TEST=y
-+CONFIG_CMD_VERSION=y
-+CONFIG_CMD_HELP=y
-+CONFIG_CMD_DEVINFO=y
-+# CONFIG_NET is not set
-+
-+#
-+# Drivers                       
-+#
-+
-+#
-+# serial drivers                
-+#
-+CONFIG_DRIVER_SERIAL_NS16550=y
-+
-+#
-+# SPI drivers                   
-+#
-+# CONFIG_SPI is not set
-+# CONFIG_I2C is not set
-+
-+#
-+# flash drivers                 
-+#
-+# CONFIG_DRIVER_CFI is not set
-+# CONFIG_DRIVER_CFI_OLD is not set
-+# CONFIG_NAND is not set
-+CONFIG_ATA=y
-+
-+#
-+# drive types
-+#
-+CONFIG_ATA_DISK=y
-+
-+#
-+# interface types
-+#
-+CONFIG_ATA_BIOS=y
-+# CONFIG_USB is not set
-+# CONFIG_USB_GADGET is not set
-+# CONFIG_VIDEO is not set
-+
-+#
-+# Filesystem support            
-+#
-+# CONFIG_FS_CRAMFS is not set
-+CONFIG_FS_RAMFS=y
-+CONFIG_FS_DEVFS=y
-+CONFIG_CRC32=y
-+# CONFIG_GENERIC_FIND_NEXT_BIT is not set
-Index: barebox-2009.12.0/board/x86_generic/env/bin/boot
-===================================================================
---- /dev/null
-+++ barebox-2009.12.0/board/x86_generic/env/bin/boot
-@@ -0,0 +1,37 @@
-+#!/bin/sh
-+
-+. /env/config
-+
-+if [ x$1 = xdisk ]; then
-+	root=disk
-+	kernel=disk
-+fi
-+
-+if [ x$1 = xnet ]; then
-+	root=net
-+	kernel=net
-+fi
-+
-+if [ x$ip = xdhcp ]; then
-+	bootargs="$bootargs ip=dhcp"
-+else
-+	bootargs="$bootargs ip=$eth0.ipaddr:$eth0.serverip:$eth0.gateway:$eth0.netmask:::"
-+fi
-+
-+if [ x$root = xdisk ]; then
-+	bootargs="$bootargs root=$rootpart_disk rootfstype=$rootpart_fs rw"
-+else
-+	bootargs="$bootargs root=/dev/nfs nfsroot=$eth0.serverip:$nfsroot,v3,tcp rw"
-+fi
-+
-+if [ $kernel = net ]; then
-+	if [ x$ip = xdhcp ]; then
-+		dhcp
-+	fi
-+	tftp $uimage uImage || exit 1
-+	bootm uImage
-+else
-+	bootargs="BOOT_IMAGE=$kernel_device auto $bootargs"
-+	linux16 $kernel_device
-+fi
-+
-Index: barebox-2009.12.0/Documentation/boards.dox
-===================================================================
---- barebox-2009.12.0.orig/Documentation/boards.dox
-+++ barebox-2009.12.0/Documentation/boards.dox
-@@ -27,7 +27,7 @@ Blackfin type:
- 
- x86 type:
- 
--@li nothing yet
-+@li @subpage generic_pc
- 
- coldfire/m68k type:
- 
++#endif
 
 -- 
 
