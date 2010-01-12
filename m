@@ -1,19 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from fmmailgate02.web.de ([217.72.192.227])
-	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
-	id 1NUdQX-0002Dg-37
-	for barebox@lists.infradead.org; Tue, 12 Jan 2010 09:52:45 +0000
-Date: Tue, 12 Jan 2010 10:52:33 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20100112095233.GD6923@pengutronix.de>
-References: <20100109232838.GB14051@darwin>
-	<20100111094902.GR6923@pengutronix.de>
-	<20100111103700.GH14051@darwin>
-	<20100111112557.GU6923@pengutronix.de>
-	<20100111213112.GJ14051@darwin>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20100111213112.GJ14051@darwin>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
+	id 1NUdrz-0007Gh-63
+	for barebox@lists.infradead.org; Tue, 12 Jan 2010 10:21:03 +0000
+Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.69)
+	(envelope-from <jbe@pengutronix.de>) id 1NUdrp-0006Ve-Qo
+	for barebox@lists.infradead.org; Tue, 12 Jan 2010 11:20:53 +0100
+Received: from jbe by octopus.hi.pengutronix.de with local (Exim 4.69)
+	(envelope-from <jbe@pengutronix.de>) id 1NUdrp-0006x9-OP
+	for barebox@lists.infradead.org; Tue, 12 Jan 2010 11:20:53 +0100
+Message-Id: <20100112101534.868276907@pengutronix.de>
+Date: Tue, 12 Jan 2010 11:15:34 +0100
+From: Juergen Beisert <jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,43 +21,32 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Add support for EDB93xx boards [rev2]
-To: Matthias Kaehlcke <matthias@kaehlcke.net>
-Cc: barebox@lists.infradead.org
+Subject: [PATCHv2 00/14] Bring in basic x86 support into 'barebox'
+To: barebox@lists.infradead.org
 
-Hi Matthias,
+This patch series brings in some basic x86 support into the tree.
+At first this support can act as a boot loader on a BIOS based
+x86 machine like GRUB is. E.g. barebox will be stored in the MBR of
+a boot media the BIOS supports to boot from. This implementation still
+talks to the BIOS in real mode, to load or store data from/to a disk
+drive, but the barebox core itself runs in 32 bit flat mode.
 
-On Mon, Jan 11, 2010 at 10:31:12PM +0100, Matthias Kaehlcke wrote:
-> diff --git a/arch/arm/mach-ep93xx/Kconfig b/arch/arm/mach-ep93xx/Kconfig
-> index 139b08d..ed6e986 100644
-> --- a/arch/arm/mach-ep93xx/Kconfig
-> +++ b/arch/arm/mach-ep93xx/Kconfig
-> @@ -39,7 +39,6 @@ config MACH_EDB9301
->  	bool "Cirrus Logic EDB9301"
->  	select EP93XX_SDCE3_SYNC_PHYS_OFFSET
->  	select MACH_HAS_LOWLEVEL_INIT
-> -	select BOARD_LINKER_SCRIPT
->  	help
+Currently only a serial console is supported.
 
-Something went wrong here, this seems to be a fixup patch, at least
-these hunks.
-The rest of the patches is ok now. Can you please resend the whole
-series? It's easier to apply when it's clear that the original messages
-are the patches than to dig through the thread and look for patches in
-replies.
+v2 of this patch series comes with some clean ups and also uses the discussed
+naming convention for BIOS based disk access. The whole series is updated to
+'barebox' (instead of u-boot-v2). Note: Its tested only with QEMU yet. We are
+going to port it to real hardware now.
 
-Thanks
-  Sascha
+Comments are welcome.
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+jbe
+
 
 _______________________________________________
 barebox mailing list
