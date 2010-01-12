@@ -1,20 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NUdrz-0007H9-M3
-	for barebox@lists.infradead.org; Tue, 12 Jan 2010 10:21:05 +0000
+	id 1NUds3-0007Gr-3r
+	for barebox@lists.infradead.org; Tue, 12 Jan 2010 10:21:07 +0000
 Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
 	by metis.ext.pengutronix.de with esmtp (Exim 4.69)
-	(envelope-from <jbe@pengutronix.de>) id 1NUdrs-0006WN-8n
-	for barebox@lists.infradead.org; Tue, 12 Jan 2010 11:20:56 +0100
+	(envelope-from <jbe@pengutronix.de>) id 1NUdrr-0006WB-IZ
+	for barebox@lists.infradead.org; Tue, 12 Jan 2010 11:20:55 +0100
 Received: from jbe by octopus.hi.pengutronix.de with local (Exim 4.69)
-	(envelope-from <jbe@pengutronix.de>) id 1NUdrs-00073K-6k
-	for barebox@lists.infradead.org; Tue, 12 Jan 2010 11:20:56 +0100
-Message-Id: <20100112102056.083255566@pengutronix.de>
+	(envelope-from <jbe@pengutronix.de>) id 1NUdrr-00071Z-Gh
+	for barebox@lists.infradead.org; Tue, 12 Jan 2010 11:20:55 +0100
+Message-Id: <20100112102055.391035883@pengutronix.de>
 References: <20100112101534.868276907@pengutronix.de>
-Date: Tue, 12 Jan 2010 11:15:48 +0100
+Date: Tue, 12 Jan 2010 11:15:44 +0100
 From: Juergen Beisert <jbe@pengutronix.de>
-Content-Disposition: inline; filename=add_x86_architecture.diff
+Content-Disposition: inline; filename=ata_devices.diff
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,143 +28,114 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCHv2 14/14] Add the whole x86 architecture to the build system
+Subject: [PATCHv2 10/14] Start to add ATA support to barebox
 To: barebox@lists.infradead.org
+
+Add the basic files, declarations and folders to bring in ATA support.
 
 Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 
 ---
- arch/x86/Kconfig  |   67 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
- arch/x86/Makefile |   50 ++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 117 insertions(+)
+ drivers/Kconfig      |    1 +
+ drivers/Makefile     |    1 +
+ drivers/ata/Kconfig  |   12 ++++++++++++
+ drivers/ata/Makefile |    3 +++
+ include/ata.h        |   39 +++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 56 insertions(+)
 
-Index: barebox-2009.12.0/arch/x86/Kconfig
+Index: u-boot-2.0.0-rc10/drivers/ata/Kconfig
 ===================================================================
 --- /dev/null
-+++ barebox-2009.12.0/arch/x86/Kconfig
-@@ -0,0 +1,67 @@
-+#
-+#
-+#
-+config ARCH_TEXT_BASE
-+	hex
-+	default 0x00007c00 if MACH_X86_GENERIC
-+
-+config BOARDINFO
-+	default "Generic x86 bootloader" if MACH_X86_GENERIC
-+
-+config BOARD_LINKER_SCRIPT
-+	bool
-+	default n
-+
-+config GENERIC_LINKER_SCRIPT
-+	bool
-+	default y
-+	depends on !BOARD_LINKER_SCRIPT
-+
-+config X86
-+	bool
-+	select HAS_KALLSYMS
-+	select HAS_MODULES
-+	select HAVE_CONFIGURABLE_MEMORY_LAYOUT
-+	select HAVE_CONFIGURABLE_TEXT_BASE
-+	default y
-+
-+choice
-+	prompt "Select your board"
-+
-+config MACH_X86_GENERIC
-+	bool "Generic x86"
-+	select X86_BOOTLOADER
++++ u-boot-2.0.0-rc10/drivers/ata/Kconfig
+@@ -0,0 +1,12 @@
++menuconfig ATA
++	bool "ATA                           "
 +	help
-+	  Say Y here if you want barebox to be your BIOS based bootloader
++	  Add support for ATA types of drives like harddisks and CDROMs.
 +
-+endchoice
++if ATA
 +
-+choice
-+	prompt "Bring up type"
++comment "drive types"
 +
-+	config X86_BIOS_BRINGUP
-+		prompt "16 bit BIOS"
-+		bool
-+		help
-+		   Barebox will act as a BIOS based bootloader. This includes
-+		   some 16 bit real mode code and some restrictions everyone knows
-+		   from BIOS based systems.
++comment "interface types"
 +
-+	config X86_NATIVE_BRINGUP
-+		bool "native"
-+		help
-+		   Barebox will act as a native bootloader. This includes all the
-+		   required initialization needed to bring up a piece of hardware.
-+		   Note: Not implemented yet
-+
-+endchoice
-+
-+source arch/x86/boot/Kconfig
-+source arch/x86/mach-i386/Kconfig
-+
-+source common/Kconfig
-+source commands/Kconfig
-+source net/Kconfig
-+source drivers/Kconfig
-+source fs/Kconfig
-+source lib/Kconfig
-Index: barebox-2009.12.0/arch/x86/Makefile
++endif
+Index: u-boot-2.0.0-rc10/drivers/ata/Makefile
 ===================================================================
 --- /dev/null
-+++ barebox-2009.12.0/arch/x86/Makefile
-@@ -0,0 +1,50 @@
-+CPPFLAGS += -D__X86__ -fno-strict-aliasing
++++ u-boot-2.0.0-rc10/drivers/ata/Makefile
+@@ -0,0 +1,3 @@
++# drive types
 +
-+board-y := x86_generic
-+machine-y := i386
++# interface types
+Index: u-boot-2.0.0-rc10/include/ata.h
+===================================================================
+--- /dev/null
++++ u-boot-2.0.0-rc10/include/ata.h
+@@ -0,0 +1,39 @@
++/*
++ * Copyright (C) 2009 Juergen Beisert, Pengutronix
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ *
++ */
 +
-+TEXT_BASE = $(CONFIG_TEXT_BASE)
++/**
++ * @file
++ * @brief Declarations to communicate with ATA types of drives
++ */
 +
-+CPPFLAGS += -march=i386 -DTEXT_BASE=$(TEXT_BASE) -P
++#include <types.h>
++#include <driver.h>
 +
-+ifndef CONFIG_MODULES
-+# Add cleanup flags
-+CPPFLAGS += -fdata-sections -ffunction-sections
-+LDFLAGS_uboot += -static --gc-sections
-+endif
-+
-+ifeq ($(incdir-y),)
-+incdir-y := $(machine-y)
-+endif
-+INCDIR   := arch-$(incdir-y)
-+
-+all: $(KBUILD_IMAGE)
-+
-+
-+
-+
-+
-+
-+ifneq ($(board-y),)
-+BOARD  := board/$(board-y)/
-+else
-+BOARD  :=
-+endif
-+
-+ifneq ($(machine-y),)
-+MACH  := arch/x86/mach-$(machine-y)/
-+else
-+MACH  :=
-+endif
-+
-+common-y += $(BOARD) $(MACH)
-+common-y += arch/x86/lib/
-+common-y += arch/x86/boot/
-+
-+# arch/x86/cpu/
-+
-+lds-$(CONFIG_GENERIC_LINKER_SCRIPT)   := arch/x86/lib/barebox.lds
-+lds-$(CONFIG_BOARD_LINKER_SCRIPT)     := $(BOARD)/barebox.lds
-+
-+CLEAN_FILES    += arch/x86/lib/barebox.lds barebox.map barebox.S
-+
++/**
++ * Access functions from drives through the specified interface
++ */
++struct ata_interface {
++	/** write a count of sectors from a buffer to the drive */
++	int (*write)(struct device_d*, uint64_t, unsigned, const void*);
++	/** read a count of sectors from the drive into the buffer */
++	int (*read)(struct device_d*, uint64_t, unsigned, void*);
++	/** private interface data */
++	void *priv;
++};
+Index: u-boot-2.0.0-rc10/drivers/Kconfig
+===================================================================
+--- u-boot-2.0.0-rc10.orig/drivers/Kconfig
++++ u-boot-2.0.0-rc10/drivers/Kconfig
+@@ -6,6 +6,7 @@ source "drivers/spi/Kconfig"
+ source "drivers/i2c/Kconfig"
+ source "drivers/nor/Kconfig"
+ source "drivers/nand/Kconfig"
++source "drivers/ata/Kconfig"
+ source "drivers/usb/Kconfig"
+ source "drivers/video/Kconfig"
+ 
+Index: u-boot-2.0.0-rc10/drivers/Makefile
+===================================================================
+--- u-boot-2.0.0-rc10.orig/drivers/Makefile
++++ u-boot-2.0.0-rc10/drivers/Makefile
+@@ -3,6 +3,7 @@ obj-y	+= serial/
+ obj-y	+= nand/
+ obj-y	+= nor/
+ obj-y	+= usb/
++obj-$(CONFIG_ATA) += ata/
+ obj-$(CONFIG_SPI) += spi/
+ obj-$(CONFIG_I2C) += i2c/
+ obj-$(CONFIG_VIDEO) += video/
 
 -- 
 
