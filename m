@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NVM0q-0006Ad-Km
-	for barebox@lists.infradead.org; Thu, 14 Jan 2010 09:29:09 +0000
-Date: Thu, 14 Jan 2010 10:29:00 +0100
+	id 1NVM1K-0006Mb-Sz
+	for barebox@lists.infradead.org; Thu, 14 Jan 2010 09:29:39 +0000
+Date: Thu, 14 Jan 2010 10:29:32 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20100114092900.GB23110@pengutronix.de>
-References: <20100112101534.868276907@pengutronix.de>
+Message-ID: <20100114092932.GC23110@pengutronix.de>
+References: <20100112193030.GL14051@darwin>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20100112101534.868276907@pengutronix.de>
+In-Reply-To: <20100112193030.GL14051@darwin>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,31 +22,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCHv2 00/14] Bring in basic x86 support into 'barebox'
-To: Juergen Beisert <jbe@pengutronix.de>
+Subject: Re: [PATCH 0/5] Add support for EDB93xx boards [rev2]
+To: Matthias Kaehlcke <matthias@kaehlcke.net>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jan 12, 2010 at 11:15:34AM +0100, Juergen Beisert wrote:
-> This patch series brings in some basic x86 support into the tree.
-> At first this support can act as a boot loader on a BIOS based
-> x86 machine like GRUB is. E.g. barebox will be stored in the MBR of
-> a boot media the BIOS supports to boot from. This implementation still
-> talks to the BIOS in real mode, to load or store data from/to a disk
-> drive, but the barebox core itself runs in 32 bit flat mode.
+On Tue, Jan 12, 2010 at 08:30:30PM +0100, Matthias Kaehlcke wrote:
+> Add support for the following Cirrus Logic EDB93xx boards:
 > 
-> Currently only a serial console is supported.
+> EDB9301
+> EDB9302
+> EDB9302A
+> EDB9307
+> EDB9307A
+> EDB93012
+> EDB9315
+> EDB9315A
 > 
-> v2 of this patch series comes with some clean ups and also uses the discussed
-> naming convention for BIOS based disk access. The whole series is updated to
-> 'barebox' (instead of u-boot-v2). Note: Its tested only with QEMU yet. We are
-> going to port it to real hardware now.
+> This patchset has been tested on boards based on the EDB9301 and
+> EDB9307A designs
 > 
-> Comments are welcome.
+> Changes with respect to rev1:
+> 
+>  * use global linker script with EP93xx specific ifdef instead of a
+>    board specific one
+>  * eth driver: remove TODO comments about impossible enhancements
+>  * eth driver: remove MII_STATUS_* and ETH_STATUS_* macros
+> 
+> Matthias Kaehlcke (5):
+>   ARM: Add support for EP93xx SoCs
+>   Add EP93xx ethernet driver
+>   Add support for EP9xx GPIOs
+>   Add PrimeCell PL010 serial driver
+>   Add support for EDB93xx boards
 
-Applied to -next.
+Applied to -next
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
