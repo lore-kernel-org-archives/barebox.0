@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bw0-f212.google.com ([209.85.218.212])
+Received: from smtp4-g21.free.fr ([212.27.42.4])
 	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
-	id 1NVjaz-0004uN-2U
-	for barebox@lists.infradead.org; Fri, 15 Jan 2010 10:40:05 +0000
-Received: by bwz4 with SMTP id 4so143707bwz.2
-	for <barebox@lists.infradead.org>; Fri, 15 Jan 2010 02:39:58 -0800 (PST)
-From: Peter Korsgaard <jacmet@sunsite.dk>
-Date: Fri, 15 Jan 2010 11:39:33 +0100
-Message-Id: <1263551973-14588-1-git-send-email-jacmet@sunsite.dk>
+	id 1NVjlD-0001ee-9c
+	for barebox@lists.infradead.org; Fri, 15 Jan 2010 10:50:40 +0000
+From: Eric Benard <eric@eukrea.com>
+Date: Fri, 15 Jan 2010 11:50:16 +0100
+Message-Id: <1263552619-4601-1-git-send-email-eric@eukrea.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,48 +19,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] documentation: It's U-Boot that doesn't have getopt,
-	not Barebox
-To: barebox@lists.infradead.org
+Subject: [PATCH 1/4] eukrea_cpuimx27 : update timings
+To: s.hauer@pengutronix.de
+Cc: barebox@lists.infradead.org
 
-Commit a3ffa97f (rename U-Boot-v2 project to barebox) also changed the
-U-Boot references to Barebox in the getopt description, which doesn't
-make much sense.
+use optimized DDR, NOR & QuadUART timings
 
-Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+Signed-off-by: Eric Benard <eric@eukrea.com>
 ---
- Documentation/barebox-main.dox |    2 +-
- README                         |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ board/eukrea_cpuimx27/eukrea_cpuimx27.c |   12 ++++++------
+ board/eukrea_cpuimx27/lowlevel_init.S   |    4 ++--
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/Documentation/barebox-main.dox b/Documentation/barebox-main.dox
-index 42d1256..743add8 100644
---- a/Documentation/barebox-main.dox
-+++ b/Documentation/barebox-main.dox
-@@ -64,7 +64,7 @@ things right - without caring about losing support for old boards.
+diff --git a/board/eukrea_cpuimx27/eukrea_cpuimx27.c b/board/eukrea_cpuimx27/eukrea_cpuimx27.c
+index 6878044..629399f 100644
+--- a/board/eukrea_cpuimx27/eukrea_cpuimx27.c
++++ b/board/eukrea_cpuimx27/eukrea_cpuimx27.c
+@@ -198,9 +198,9 @@ static int eukrea_cpuimx27_devices_init(void)
+ 	eukrea_cpuimx27_mmu_init();
  
- - getopt
-   - There is a small getopt implementation. Some commands got really
--    complicated (both in code and in usage) due to the fact that @a barebox only
-+    complicated (both in code and in usage) due to the fact that @a U-Boot only
-     allowed positional parameters.
+ 	/* configure 16 bit nor flash on cs0 */
+-	CS0U = 0x0000CC03;
+-	CS0L = 0xa0330D01;
+-	CS0A = 0x00220800;
++	CS0U = 0x00008F03;
++	CS0L = 0xA0330D01;
++	CS0A = 0x002208C0;
  
- - editor
-diff --git a/README b/README
-index 6f5fb26..9b5317d 100644
---- a/README
-+++ b/README
-@@ -61,7 +61,7 @@ Features
+ 	/* initizalize gpios */
+ 	for (i = 0; i < ARRAY_SIZE(mode); i++)
+@@ -244,9 +244,9 @@ static int eukrea_cpuimx27_console_init(void)
+ #endif
+ 	/* configure 8 bit UART on cs3 */
+ 	FMCR &= ~0x2;
+-	CS3U = 0x0000DCF6;
+-	CS3L = 0x444A4541;
+-	CS3A = 0x44443302;
++	CS3U = 0x0000D603;
++	CS3L = 0x0D1D0D01;
++	CS3A = 0x00D20000;
+ #ifdef CONFIG_DRIVER_SERIAL_NS16550
+ 	register_device(&quad_uart_serial_device);
+ #endif
+diff --git a/board/eukrea_cpuimx27/lowlevel_init.S b/board/eukrea_cpuimx27/lowlevel_init.S
+index 4622af8..5295a8a 100644
+--- a/board/eukrea_cpuimx27/lowlevel_init.S
++++ b/board/eukrea_cpuimx27/lowlevel_init.S
+@@ -8,10 +8,10 @@
  
- - getopt
-   There is a small getopt implementation. Some commands got really
--  complicated (both in code and in usage) due to the fact that barebox only
-+  complicated (both in code and in usage) due to the fact that U-Boot only
-   allowed positional parameters.
+ #if defined CONFIG_EUKREA_CPUIMX27_SDRAM_256MB
+ #define ROWS0	ESDCTL_ROW14
+-#define CFG0	0x00695729
++#define CFG0	0x0029572D
+ #elif defined CONFIG_EUKREA_CPUIMX27_SDRAM_128MB
+ #define ROWS0	ESDCTL_ROW13
+-#define CFG0	0x00395B28
++#define CFG0	0x00095728
+ #endif
  
- - editor
+ #define ESDCTL0_VAL (ESDCTL0_SDE | ROWS0 | ESDCTL0_COL10)
 -- 
-1.6.5
+1.6.3.3
 
 
 _______________________________________________
