@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-bw0-f212.google.com ([209.85.218.212])
 	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
-	id 1NVmCW-00076b-Pz
-	for barebox@lists.infradead.org; Fri, 15 Jan 2010 13:27:01 +0000
-Received: by bwz4 with SMTP id 4so302737bwz.2
-	for <barebox@lists.infradead.org>; Fri, 15 Jan 2010 05:26:55 -0800 (PST)
+	id 1NVmH3-0008Bb-0Q
+	for barebox@lists.infradead.org; Fri, 15 Jan 2010 13:31:41 +0000
+Received: by bwz4 with SMTP id 4so308175bwz.2
+	for <barebox@lists.infradead.org>; Fri, 15 Jan 2010 05:31:36 -0800 (PST)
 From: Peter Korsgaard <jacmet@sunsite.dk>
-Date: Fri, 15 Jan 2010 14:26:51 +0100
-Message-Id: <1263562011-20130-1-git-send-email-jacmet@sunsite.dk>
+Date: Fri, 15 Jan 2010 14:31:29 +0100
+Message-Id: <1263562289-20302-1-git-send-email-jacmet@sunsite.dk>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,7 +21,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] addpart: support @<offset>
+Subject: [PATCHV2] addpart: support @<offset>
 To: barebox@lists.infradead.org
 
 We claim to be compatible with the kernel's cmdlinepart parser, so
@@ -29,11 +29,14 @@ support <size>@<offset> like the kernel does.
 
 Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
 ---
- commands/partition.c |   18 +++++++++++++-----
- 1 files changed, 13 insertions(+), 5 deletions(-)
+ Changes since v1:
+ - Update doxygen documentation to match.
+
+ commands/partition.c |   28 ++++++++++++++++++----------
+ 1 files changed, 18 insertions(+), 10 deletions(-)
 
 diff --git a/commands/partition.c b/commands/partition.c
-index 3cb7b61..b7e2031 100755
+index 3cb7b61..d7bd940 100755
 --- a/commands/partition.c
 +++ b/commands/partition.c
 @@ -41,8 +41,10 @@
@@ -95,6 +98,24 @@ index 3cb7b61..b7e2031 100755
  			return 1;
  
  		offset += size;
+@@ -167,12 +175,12 @@ BAREBOX_CMD_END
+  * Adds a partition description to a device. The partition description has the
+  * form
+  *
+- * size1(name1)[ro],size2(name2)[ro],...
++ * size1[@offset1](name1)[ro],size2[@offset2](name2)[ro],...
+  *
+- * \<device> is the device name under. Sizes can be given in decimal or - if
+- * prefixed with 0x - in hex. Sizes can have an optional suffix K,M,G. The
+- * size of the last partition can be specified as '-' for the remaining space
+- * of the device.
++ * \<device> is the device name under. Sizes and offsets can be given in
++ * decimal or - if prefixed with 0x - in hex. Both can have an optional suffix
++ * K,M,G. The size of the last partition can be specified as '-' for the
++ * remaining space of the device.
+  *
+  * @note The format is the same as used in the Linux kernel for cmdline mtd
+  * partitions.
 -- 
 1.6.5
 
