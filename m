@@ -1,20 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NWqEM-0006Pz-9y
-	for barebox@lists.infradead.org; Mon, 18 Jan 2010 11:57:18 +0000
+	id 1NWqED-0006E2-Kh
+	for barebox@lists.infradead.org; Mon, 18 Jan 2010 11:57:13 +0000
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Mon, 18 Jan 2010 12:56:31 +0100
-Message-Id: <1263815791-10839-9-git-send-email-mkl@pengutronix.de>
-In-Reply-To: <1263815791-10839-8-git-send-email-mkl@pengutronix.de>
+Date: Mon, 18 Jan 2010 12:56:25 +0100
+Message-Id: <1263815791-10839-3-git-send-email-mkl@pengutronix.de>
+In-Reply-To: <1263815791-10839-2-git-send-email-mkl@pengutronix.de>
 References: <1263815791-10839-1-git-send-email-mkl@pengutronix.de>
 	<1263815791-10839-2-git-send-email-mkl@pengutronix.de>
-	<1263815791-10839-3-git-send-email-mkl@pengutronix.de>
-	<1263815791-10839-4-git-send-email-mkl@pengutronix.de>
-	<1263815791-10839-5-git-send-email-mkl@pengutronix.de>
-	<1263815791-10839-6-git-send-email-mkl@pengutronix.de>
-	<1263815791-10839-7-git-send-email-mkl@pengutronix.de>
-	<1263815791-10839-8-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,220 +22,258 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 8/8] i.MX35 3stack: update of defconfig
+Subject: [PATCH 2/8] mc13892: clean up driver interface
 To: barebox@lists.infradead.org
 Cc: sha@pengutronix.de
 
+Export mc13892_reg_read, mc13892_reg_write and mc13892_set_bits
+function instead of exposing the i2c interface.
+
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- arch/arm/configs/freescale_mx35_3stack_defconfig |   67 ++++++++++++----------
- 1 files changed, 36 insertions(+), 31 deletions(-)
+ drivers/i2c/mc13892.c |   91 ++++++++++++++++++++++++++++++++++++++----------
+ include/i2c/mc13892.h |   90 +++++++++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 160 insertions(+), 21 deletions(-)
 
-diff --git a/arch/arm/configs/freescale_mx35_3stack_defconfig b/arch/arm/configs/freescale_mx35_3stack_defconfig
-index 1319a69..17a2fdc 100644
---- a/arch/arm/configs/freescale_mx35_3stack_defconfig
-+++ b/arch/arm/configs/freescale_mx35_3stack_defconfig
-@@ -1,7 +1,7 @@
- #
- # Automatically generated make config: don't edit
--# barebox version: 2.0.0-rc10
--# Fri Dec 18 11:47:45 2009
-+# barebox version: 2009.12.0-pre
-+# Tue Dec 22 17:43:43 2009
- #
- # CONFIG_BOARD_LINKER_SCRIPT is not set
- CONFIG_GENERIC_LINKER_SCRIPT=y
-@@ -43,17 +43,17 @@ CONFIG_MACH_FREESCALE_MX35_3STACK=y
- # CONFIG_MACH_PCM043 is not set
+diff --git a/drivers/i2c/mc13892.c b/drivers/i2c/mc13892.c
+index 54661d4..67d4232 100644
+--- a/drivers/i2c/mc13892.c
++++ b/drivers/i2c/mc13892.c
+@@ -26,47 +26,99 @@
+ #include <errno.h>
  
- #
--# Board specific settings
-+# Board specific settings       
- #
+ #include <i2c/i2c.h>
+-
+-#include <asm/byteorder.h>
++#include <i2c/mc13892.h>
  
- #
--# i.MX specific settings
-+# i.MX specific settings        
- #
- # CONFIG_IMX_CLKO is not set
--# CONFIG_AEABI is not set
-+CONFIG_AEABI=y
+ #define DRIVERNAME		"mc13892"
  
- #
--# Arm specific settings
-+# Arm specific settings         
- #
- CONFIG_CMD_ARM_CPUINFO=y
- CONFIG_CMDLINE_TAG=y
-@@ -68,12 +68,12 @@ CONFIG_ENV_HANDLING=y
- CONFIG_GENERIC_GPIO=y
+-struct mc_priv {
+-	struct cdev		cdev;
+-	struct i2c_client	*client;
+-};
+-
+-#define to_mc_priv(a)		container_of(a, struct mc_priv, cdev)
++#define to_mc13892(a)		container_of(a, struct mc13892, cdev)
  
- #
--# General Settings
-+# General Settings              
- #
- CONFIG_LOCALVERSION_AUTO=y
+-static struct mc_priv *mc_dev;
++static struct mc13892 *mc_dev;
  
- #
--# memory layout
-+# memory layout                 
- #
- CONFIG_HAVE_CONFIGURABLE_TEXT_BASE=y
- CONFIG_TEXT_BASE=0x87F00000
-@@ -81,7 +81,7 @@ CONFIG_HAVE_CONFIGURABLE_MEMORY_LAYOUT=y
- CONFIG_MEMORY_LAYOUT_DEFAULT=y
- # CONFIG_MEMORY_LAYOUT_FIXED is not set
- CONFIG_STACK_SIZE=0x8000
--CONFIG_MALLOC_SIZE=0x400000
-+CONFIG_MALLOC_SIZE=0x1000000
- # CONFIG_BROKEN is not set
- # CONFIG_EXPERIMENTAL is not set
- CONFIG_MACH_HAS_LOWLEVEL_INIT=y
-@@ -105,10 +105,10 @@ CONFIG_CONSOLE_ACTIVATE_FIRST=y
- # CONFIG_OF_FLAT_TREE is not set
- CONFIG_PARTITION=y
- CONFIG_DEFAULT_ENVIRONMENT=y
--CONFIG_DEFAULT_ENVIRONMENT_PATH="board/pcm043/env/"
-+CONFIG_DEFAULT_ENVIRONMENT_PATH="board/freescale-mx35-3-stack/env/"
+-struct i2c_client *mc13892_get_client(void)
++struct mc13892 *mc13892_get(void)
+ {
+ 	if (!mc_dev)
+ 		return NULL;
  
- #
--# Debugging
-+# Debugging                     
- #
- # CONFIG_DEBUG_INFO is not set
- # CONFIG_ENABLE_FLASH_NOISE is not set
-@@ -116,11 +116,11 @@ CONFIG_DEFAULT_ENVIRONMENT_PATH="board/pcm043/env/"
- # CONFIG_ENABLE_DEVICE_NOISE is not set
+-	return mc_dev->client;
++	return mc_dev;
++}
++EXPORT_SYMBOL(mc13892_get);
++
++int mc13892_reg_read(struct mc13892 *mc13892, enum mc13892_reg reg, u32 *val)
++{
++	u8 buf[3];
++	int ret;
++
++	ret = i2c_read_reg(mc13892->client, reg, buf, 3);
++	*val = buf[0] << 16 | buf[1] << 8 | buf[2] << 0;
++
++	return ret == 3 ? 0 : ret;
+ }
++EXPORT_SYMBOL(mc13892_reg_read)
  
- #
--# Commands
-+# Commands                      
- #
+-static u32 mc_read_reg(struct mc_priv *mc, int reg)
++int mc13892_reg_write(struct mc13892 *mc13892, enum mc13892_reg reg, u32 val)
+ {
+-	u32 buf;
++	u8 buf[] = {
++		val >> 16,
++		val >>  8,
++		val >>  0,
++	};
++	int ret;
++
++	ret = i2c_write_reg(mc13892->client, reg, buf, 3);
++
++	return ret == 3 ? 0 : ret;
++}
++EXPORT_SYMBOL(mc13892_reg_write)
++
++int mc13892_set_bits(struct mc13892 *mc13892, enum mc13892_reg reg, u32 mask, u32 val)
++{
++	u32 tmp;
++	int err;
++
++	err = mc13892_reg_read(mc13892, reg, &tmp);
++	tmp = (tmp & ~mask) | val;
  
- #
--# scripting
-+# scripting                     
- #
- CONFIG_CMD_EDIT=y
- CONFIG_CMD_SLEEP=y
-@@ -133,7 +133,7 @@ CONFIG_CMD_TRUE=y
- CONFIG_CMD_FALSE=y
+-	i2c_read_reg(mc->client, reg, (u8 *)&buf, sizeof(buf));
++	if (!err)
++		err = mc13892_reg_write(mc13892, reg, tmp);
  
- #
--# file commands
-+# file commands                 
- #
- CONFIG_CMD_LS=y
- CONFIG_CMD_RM=y
-@@ -147,13 +147,13 @@ CONFIG_CMD_MOUNT=y
- CONFIG_CMD_UMOUNT=y
+-	return buf;
++	return err;
+ }
++EXPORT_SYMBOL(mc13892_set_bits);
  
- #
--# console
-+# console                       
- #
- CONFIG_CMD_CLEAR=y
- CONFIG_CMD_ECHO=y
+ static ssize_t mc_read(struct cdev *cdev, void *_buf, size_t count, ulong offset, ulong flags)
+ {
+-	struct mc_priv *priv = to_mc_priv(cdev);
+-	int i = count >> 2;
++	struct mc13892 *priv = to_mc13892(cdev);
+ 	u32 *buf = _buf;
++	size_t i = count >> 2;
++	int err;
++
++	offset >>= 2;
++
++	while (i) {
++		err = mc13892_reg_read(priv, offset, buf);
++		if (err)
++			return (ssize_t)err;
++		buf++;
++		i--;
++		offset++;
++	}
++
++	return count;
++}
++
++static ssize_t mc_write(struct cdev *cdev, const void *_buf, size_t count, ulong offset, ulong flags)
++{
++	struct mc13892 *mc13892 = to_mc13892(cdev);
++	const u32 *buf = _buf;
++	size_t i = count >> 2;
++	int err;
  
- #
--# memory
-+# memory                        
- #
- # CONFIG_CMD_LOADB is not set
- CONFIG_CMD_MEMINFO=y
-@@ -161,12 +161,12 @@ CONFIG_CMD_CRC=y
- # CONFIG_CMD_MTEST is not set
+ 	offset >>= 2;
  
- #
--# flash
-+# flash                         
- #
- CONFIG_CMD_FLASH=y
+ 	while (i) {
+-		*buf = mc_read_reg(priv, offset);
++		err = mc13892_reg_write(mc13892, offset, *buf);
++		if (err)
++			return (ssize_t)err;
+ 		buf++;
+ 		i--;
+ 		offset++;
+@@ -78,6 +130,7 @@ static ssize_t mc_read(struct cdev *cdev, void *_buf, size_t count, ulong offset
+ static struct file_operations mc_fops = {
+ 	.lseek	= dev_lseek_default,
+ 	.read	= mc_read,
++	.write	= mc_write,
+ };
  
- #
--# booting
-+# booting                       
- #
- CONFIG_CMD_BOOTM=y
- # CONFIG_CMD_BOOTM_ZLIB is not set
-@@ -182,7 +182,8 @@ CONFIG_CMD_TEST=y
- CONFIG_CMD_VERSION=y
- CONFIG_CMD_HELP=y
- CONFIG_CMD_DEVINFO=y
--CONFIG_CMD_GPIO=y
-+CONFIG_CMD_BMP=y
-+# CONFIG_CMD_GPIO is not set
- CONFIG_NET=y
- CONFIG_NET_DHCP=y
- # CONFIG_NET_RARP is not set
-@@ -191,11 +192,11 @@ CONFIG_NET_PING=y
- CONFIG_NET_TFTP=y
+ static int mc_probe(struct device_d *dev)
+@@ -85,7 +138,7 @@ static int mc_probe(struct device_d *dev)
+ 	if (mc_dev)
+ 		return -EBUSY;
  
- #
--# Drivers
-+# Drivers                       
- #
+-	mc_dev = xzalloc(sizeof(struct mc_priv));
++	mc_dev = xzalloc(sizeof(struct mc13892));
+ 	mc_dev->cdev.name = DRIVERNAME;
+ 	mc_dev->client = to_i2c_client(dev);
+ 	mc_dev->cdev.size = 256;
+diff --git a/include/i2c/mc13892.h b/include/i2c/mc13892.h
+index 2f44f6c..112d05b 100644
+--- a/include/i2c/mc13892.h
++++ b/include/i2c/mc13892.h
+@@ -1,7 +1,93 @@
++/*
++ * Copyright (C) 2009 Marc Kleine-Budde <mkl@pengutronix.de>
++ *
++ * This file is released under the GPLv2
++ *
++ * Derived from:
++ * - arch-mxc/pmic_external.h --  contains interface of the PMIC protocol driver
++ *   Copyright 2008-2009 Freescale Semiconductor, Inc. All Rights Reserved.
++ *
++ */
++
+ #ifndef __ASM_ARCH_MC13892_H
+ #define __ASM_ARCH_MC13892_H
  
- #
--# serial drivers
-+# serial drivers                
- #
- # CONFIG_DRIVER_SERIAL_ARM_DCC is not set
- CONFIG_DRIVER_SERIAL_IMX=y
-@@ -203,39 +204,43 @@ CONFIG_DRIVER_SERIAL_IMX=y
- CONFIG_MIIPHY=y
+-extern struct i2c_client *mc13892_get_client(void);
++enum mc13892_reg {
++	MC13892_REG_INT_STATUS0		= 0x00,
++	MC13892_REG_INT_MASK0		= 0x01,
++	MC13892_REG_INT_SENSE0		= 0x02,
++	MC13892_REG_INT_STATUS1		= 0x03,
++	MC13892_REG_INT_MASK1		= 0x04,
++	MC13892_REG_INT_SENSE1		= 0x05,
++	MC13892_REG_PU_MODE_S		= 0x06,
++	MC13892_REG_IDENTIFICATION	= 0x07,
++	MC13892_REG_UNUSED0		= 0x08,
++	MC13892_REG_ACC0		= 0x09,
++	MC13892_REG_ACC1		= 0x0a,
++	MC13892_REG_UNUSED1		= 0x0b,
++	MC13892_REG_UNUSED2		= 0x0c,
++	MC13892_REG_POWER_CTL0		= 0x0d,
++	MC13892_REG_POWER_CTL1		= 0x0e,
++	MC13892_REG_POWER_CTL2		= 0x0f,
++	MC13892_REG_REGEN_ASSIGN	= 0x10,
++	MC13892_REG_UNUSED3		= 0x11,
++	MC13892_REG_MEM_A		= 0x12,
++	MC13892_REG_MEM_B		= 0x13,
++	MC13892_REG_RTC_TIME		= 0x14,
++	MC13892_REG_RTC_ALARM		= 0x15,
++	MC13892_REG_RTC_DAY		= 0x16,
++	MC13892_REG_RTC_DAY_ALARM	= 0x17,
++	MC13892_REG_SW_0		= 0x18,
++	MC13892_REG_SW_1		= 0x19,
++	MC13892_REG_SW_2		= 0x1a,
++	MC13892_REG_SW_3		= 0x1b,
++	MC13892_REG_SW_4		= 0x1c,
++	MC13892_REG_SW_5		= 0x1d,
++	MC13892_REG_SETTING_0		= 0x1e,
++	MC13892_REG_SETTING_1		= 0x1f,
++	MC13892_REG_MODE_0		= 0x20,
++	MC13892_REG_MODE_1		= 0x21,
++	MC13892_REG_POWER_MISC		= 0x22,
++	MC13892_REG_UNUSED4		= 0x23,
++	MC13892_REG_UNUSED5		= 0x24,
++	MC13892_REG_UNUSED6		= 0x25,
++	MC13892_REG_UNUSED7		= 0x26,
++	MC13892_REG_UNUSED8		= 0x27,
++	MC13892_REG_UNUSED9		= 0x28,
++	MC13892_REG_UNUSED10		= 0x29,
++	MC13892_REG_UNUSED11		= 0x2a,
++	MC13892_REG_ADC0		= 0x2b,
++	MC13892_REG_ADC1		= 0x2c,
++	MC13892_REG_ADC2		= 0x2d,
++	MC13892_REG_ADC3		= 0x2e,
++	MC13892_REG_ADC4		= 0x2f,
++	MC13892_REG_CHARGE		= 0x30,
++	MC13892_REG_USB0		= 0x31,
++	MC13892_REG_USB1		= 0x32,
++	MC13892_REG_LED_CTL0		= 0x33,
++	MC13892_REG_LED_CTL1		= 0x34,
++	MC13892_REG_LED_CTL2		= 0x35,
++	MC13892_REG_LED_CTL3		= 0x36,
++	MC13892_REG_UNUSED12		= 0x37,
++	MC13892_REG_UNUSED13		= 0x38,
++	MC13892_REG_TRIM0		= 0x39,
++	MC13892_REG_TRIM1		= 0x3a,
++	MC13892_REG_TEST0		= 0x3b,
++	MC13892_REG_TEST1		= 0x3c,
++	MC13892_REG_TEST2		= 0x3d,
++	MC13892_REG_TEST3		= 0x3e,
++	MC13892_REG_TEST4		= 0x3f,
++};
  
- #
--# Network drivers
-+# Network drivers               
- #
- CONFIG_DRIVER_NET_SMC911X=y
- CONFIG_DRIVER_NET_SMC911X_ADDRESS_SHIFT=0
- # CONFIG_DRIVER_NET_SMC91111 is not set
--# CONFIG_DRIVER_NET_FEC_IMX is not set
-+CONFIG_DRIVER_NET_FEC_IMX=y
+-#endif /* __ASM_ARCH_MC13892_H */
++struct mc13892 {
++	struct cdev		cdev;
++	struct i2c_client	*client;
++};
++
++extern struct mc13892 *mc13892_get(void);
  
- #
--# SPI drivers
-+# SPI drivers                   
- #
--CONFIG_SPI=y
--# CONFIG_DRIVER_SPI_IMX is not set
--# CONFIG_DRIVER_SPI_MC13783 is not set
-+# CONFIG_SPI is not set
- CONFIG_I2C=y
- CONFIG_DRIVER_I2C_IMX=y
- CONFIG_DRIVER_I2C_MC13892=y
- CONFIG_DRIVER_I2C_MC9SDZ60=y
- 
- #
--# flash drivers
-+# flash drivers                 
- #
- CONFIG_HAS_CFI=y
- CONFIG_DRIVER_CFI=y
- # CONFIG_DRIVER_CFI_NEW is not set
- CONFIG_DRIVER_CFI_OLD=y
- CONFIG_CFI_BUFFER_WRITE=y
--# CONFIG_NAND is not set
-+CONFIG_NAND=y
-+CONFIG_NAND_IMX=y
-+CONFIG_NAND_IMX_BOOT=y
-+# CONFIG_MTD_NAND_VERIFY_WRITE is not set
-+# CONFIG_MTD_NAND_ECC_SMC is not set
-+CONFIG_MTD_NAND_IDS=y
- # CONFIG_USB is not set
- # CONFIG_USB_GADGET is not set
--# CONFIG_VIDEO is not set
-+CONFIG_VIDEO=y
-+CONFIG_DRIVER_VIDEO_IMX_IPU=y
- 
- #
--# Filesystem support
-+# Filesystem support            
- #
- # CONFIG_FS_CRAMFS is not set
- CONFIG_FS_RAMFS=y
++extern int mc13892_reg_read(struct mc13892 *mc13892, enum mc13892_reg reg, u32 *val);
++extern int mc13892_reg_write(struct mc13892 *mc13892, enum mc13892_reg reg, u32 val);
++extern int mc13892_set_bits(struct mc13892 *mc13892, enum mc13892_reg reg, u32 mask, u32 val);
++
++#endif /* __ASM_ARCH_MC13892_H */
 -- 
 1.6.6
 
