@@ -1,12 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NWqEL-0006Pj-D6
-	for barebox@lists.infradead.org; Mon, 18 Jan 2010 11:57:17 +0000
+	id 1NWqEM-0006Pz-9y
+	for barebox@lists.infradead.org; Mon, 18 Jan 2010 11:57:18 +0000
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Mon, 18 Jan 2010 12:56:30 +0100
-Message-Id: <1263815791-10839-8-git-send-email-mkl@pengutronix.de>
-In-Reply-To: <1263815791-10839-7-git-send-email-mkl@pengutronix.de>
+Date: Mon, 18 Jan 2010 12:56:31 +0100
+Message-Id: <1263815791-10839-9-git-send-email-mkl@pengutronix.de>
+In-Reply-To: <1263815791-10839-8-git-send-email-mkl@pengutronix.de>
 References: <1263815791-10839-1-git-send-email-mkl@pengutronix.de>
 	<1263815791-10839-2-git-send-email-mkl@pengutronix.de>
 	<1263815791-10839-3-git-send-email-mkl@pengutronix.de>
@@ -14,6 +14,7 @@ References: <1263815791-10839-1-git-send-email-mkl@pengutronix.de>
 	<1263815791-10839-5-git-send-email-mkl@pengutronix.de>
 	<1263815791-10839-6-git-send-email-mkl@pengutronix.de>
 	<1263815791-10839-7-git-send-email-mkl@pengutronix.de>
+	<1263815791-10839-8-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,282 +28,220 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/8] i.MX35 3stack: update environemnt to support jffs and
-	ubi/ubifs
+Subject: [PATCH 8/8] i.MX35 3stack: update of defconfig
 To: barebox@lists.infradead.org
 Cc: sha@pengutronix.de
 
-ubifs from nand is default
-
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- board/freescale-mx35-3-stack/env/bin/_update       |    5 ++-
- board/freescale-mx35-3-stack/env/bin/boot          |   50 ++++++++++++--------
- board/freescale-mx35-3-stack/env/bin/init          |   15 +++---
- board/freescale-mx35-3-stack/env/bin/update_kernel |    2 +-
- board/freescale-mx35-3-stack/env/bin/update_root   |   16 ------
- board/freescale-mx35-3-stack/env/bin/update_rootfs |   20 ++++++++
- board/freescale-mx35-3-stack/env/config            |   41 +++++++++-------
- 7 files changed, 87 insertions(+), 62 deletions(-)
- delete mode 100644 board/freescale-mx35-3-stack/env/bin/update_root
- create mode 100644 board/freescale-mx35-3-stack/env/bin/update_rootfs
+ arch/arm/configs/freescale_mx35_3stack_defconfig |   67 ++++++++++++----------
+ 1 files changed, 36 insertions(+), 31 deletions(-)
 
-diff --git a/board/freescale-mx35-3-stack/env/bin/_update b/board/freescale-mx35-3-stack/env/bin/_update
-index fb7cbe8..4f0839f 100644
---- a/board/freescale-mx35-3-stack/env/bin/_update
-+++ b/board/freescale-mx35-3-stack/env/bin/_update
-@@ -20,7 +20,7 @@ fi
+diff --git a/arch/arm/configs/freescale_mx35_3stack_defconfig b/arch/arm/configs/freescale_mx35_3stack_defconfig
+index 1319a69..17a2fdc 100644
+--- a/arch/arm/configs/freescale_mx35_3stack_defconfig
++++ b/arch/arm/configs/freescale_mx35_3stack_defconfig
+@@ -1,7 +1,7 @@
+ #
+ # Automatically generated make config: don't edit
+-# barebox version: 2.0.0-rc10
+-# Fri Dec 18 11:47:45 2009
++# barebox version: 2009.12.0-pre
++# Tue Dec 22 17:43:43 2009
+ #
+ # CONFIG_BOARD_LINKER_SCRIPT is not set
+ CONFIG_GENERIC_LINKER_SCRIPT=y
+@@ -43,17 +43,17 @@ CONFIG_MACH_FREESCALE_MX35_3STACK=y
+ # CONFIG_MACH_PCM043 is not set
  
- ping $eth0.serverip
- if [ $? -ne 0 ] ; then
--	echo "update aborted"
-+	echo "Server did not reply! Update aborted."
- 	exit 1
- fi
+ #
+-# Board specific settings
++# Board specific settings       
+ #
  
-@@ -28,9 +28,12 @@ unprotect $part
+ #
+-# i.MX specific settings
++# i.MX specific settings        
+ #
+ # CONFIG_IMX_CLKO is not set
+-# CONFIG_AEABI is not set
++CONFIG_AEABI=y
  
- echo
- echo "erasing partition $part"
-+echo
- erase $part
+ #
+-# Arm specific settings
++# Arm specific settings         
+ #
+ CONFIG_CMD_ARM_CPUINFO=y
+ CONFIG_CMDLINE_TAG=y
+@@ -68,12 +68,12 @@ CONFIG_ENV_HANDLING=y
+ CONFIG_GENERIC_GPIO=y
  
- echo
- echo "flashing $image to $part"
- echo
- tftp $image $part
-+
-+protect $part
-diff --git a/board/freescale-mx35-3-stack/env/bin/boot b/board/freescale-mx35-3-stack/env/bin/boot
-index dfb59aa..fb2fe61 100644
---- a/board/freescale-mx35-3-stack/env/bin/boot
-+++ b/board/freescale-mx35-3-stack/env/bin/boot
-@@ -3,43 +3,53 @@
- . /env/config
+ #
+-# General Settings
++# General Settings              
+ #
+ CONFIG_LOCALVERSION_AUTO=y
  
- if [ x$1 = xnand ]; then
--	root=nand
--	kernel=nand
-+	rootfs_loc=nand
-+	kernel_loc=nand
-+elif [ x$1 = xnor ]; then
-+	rootfs_loc=nor
-+	kernel_loc=nor
-+elif [ x$1 = xnet ]; then
-+	rootfs_loc=net
-+	kernel_loc=net
- fi
+ #
+-# memory layout
++# memory layout                 
+ #
+ CONFIG_HAVE_CONFIGURABLE_TEXT_BASE=y
+ CONFIG_TEXT_BASE=0x87F00000
+@@ -81,7 +81,7 @@ CONFIG_HAVE_CONFIGURABLE_MEMORY_LAYOUT=y
+ CONFIG_MEMORY_LAYOUT_DEFAULT=y
+ # CONFIG_MEMORY_LAYOUT_FIXED is not set
+ CONFIG_STACK_SIZE=0x8000
+-CONFIG_MALLOC_SIZE=0x400000
++CONFIG_MALLOC_SIZE=0x1000000
+ # CONFIG_BROKEN is not set
+ # CONFIG_EXPERIMENTAL is not set
+ CONFIG_MACH_HAS_LOWLEVEL_INIT=y
+@@ -105,10 +105,10 @@ CONFIG_CONSOLE_ACTIVATE_FIRST=y
+ # CONFIG_OF_FLAT_TREE is not set
+ CONFIG_PARTITION=y
+ CONFIG_DEFAULT_ENVIRONMENT=y
+-CONFIG_DEFAULT_ENVIRONMENT_PATH="board/pcm043/env/"
++CONFIG_DEFAULT_ENVIRONMENT_PATH="board/freescale-mx35-3-stack/env/"
  
--if [ x$1 = xnet ]; then
--	root=net
--	kernel=net
--fi
--
--if [ x$1 = xnor ]; then
--	root=nor
--	kernel=nor
--fi
+ #
+-# Debugging
++# Debugging                     
+ #
+ # CONFIG_DEBUG_INFO is not set
+ # CONFIG_ENABLE_FLASH_NOISE is not set
+@@ -116,11 +116,11 @@ CONFIG_DEFAULT_ENVIRONMENT_PATH="board/pcm043/env/"
+ # CONFIG_ENABLE_DEVICE_NOISE is not set
  
- if [ x$ip = xdhcp ]; then
- 	bootargs="$bootargs ip=dhcp"
--else
-+elif [ x$ip != xno ]; then
- 	bootargs="$bootargs ip=$eth0.ipaddr:$eth0.serverip:$eth0.gateway:$eth0.netmask:::"
- fi
+ #
+-# Commands
++# Commands                      
+ #
  
--if [ x$root = xnand ]; then
--	bootargs="$bootargs root=$rootpart_nand rootfstype=jffs2"
--elif [ x$root = xnor ]; then
--	bootargs="$bootargs root=$rootpart_nor rootfstype=jffs2"
-+
-+if [ $rootfs_loc != net ]; then
-+	if [ x$rootfs_loc = xnand ]; then
-+		rootfs_mtdblock=$rootfs_mtdblock_nand
-+	else
-+		rootfs_mtdblock=$rootfs_mtdblock_nor
-+	fi
-+
-+
-+	if [ $rootfs_type = ubifs ]; then
-+		bootargs="$bootargs root=ubi0:root ubi.mtd=$rootfs_mtdblock"
-+	else
-+		bootargs="$bootargs root=/dev/mtdblock$rootfs_mtdblock"
-+	fi
-+
-+	bootargs="$bootargs rootfstype=$rootfs_type"
- else
- 	bootargs="$bootargs root=/dev/nfs nfsroot=$eth0.serverip:$nfsroot,v3,tcp"
- fi
+ #
+-# scripting
++# scripting                     
+ #
+ CONFIG_CMD_EDIT=y
+ CONFIG_CMD_SLEEP=y
+@@ -133,7 +133,7 @@ CONFIG_CMD_TRUE=y
+ CONFIG_CMD_FALSE=y
  
--bootargs="$bootargs mtdparts=physmap-flash.0:$nor_parts;imx_nand:$nand_parts"
+ #
+-# file commands
++# file commands                 
+ #
+ CONFIG_CMD_LS=y
+ CONFIG_CMD_RM=y
+@@ -147,13 +147,13 @@ CONFIG_CMD_MOUNT=y
+ CONFIG_CMD_UMOUNT=y
  
--if [ $kernel = net ]; then
-+bootargs="$bootargs mtdparts=\"physmap-flash.0:$nor_parts;mxc_nand:$nand_parts\""
-+
-+if [ $kernel_loc = net ]; then
- 	if [ x$ip = xdhcp ]; then
- 		dhcp
- 	fi
--	tftp $uimage uImage || exit 1
-+	tftp $kernel uImage || exit 1
- 	bootm uImage
--elif [ $kernel = nor ]; then
-+elif [ $kernel_loc = nor ]; then
- 	bootm /dev/nor0.kernel
- else
- 	bootm /dev/nand0.kernel.bb
-diff --git a/board/freescale-mx35-3-stack/env/bin/init b/board/freescale-mx35-3-stack/env/bin/init
-index cdf0f6b..c982f22 100644
---- a/board/freescale-mx35-3-stack/env/bin/init
-+++ b/board/freescale-mx35-3-stack/env/bin/init
-@@ -16,12 +16,13 @@ if [ -e /dev/nand0 ]; then
- 	source /env/bin/hush_hack 
- fi
+ #
+-# console
++# console                       
+ #
+ CONFIG_CMD_CLEAR=y
+ CONFIG_CMD_ECHO=y
  
--#if [ -z $eth0.ethaddr ]; then
--#	while [ -z $eth0.ethaddr ]; do
--#		readline "no MAC address set for eth0. please enter the one found on your board: " eth0.ethaddr
--#	done
--#	echo -a /env/config "eth0.ethaddr=$eth0.ethaddr"
--#fi
-+if [ -z $eth0.ethaddr ]; then
-+	while [ -z $eth0.ethaddr ]; do
-+		readline "no MAC address set for eth0. please enter the one found on your board: " eth0.ethaddr
-+	done
-+	echo -a /env/config "eth0.ethaddr=$eth0.ethaddr"
-+	saveenv
-+fi
+ #
+-# memory
++# memory                        
+ #
+ # CONFIG_CMD_LOADB is not set
+ CONFIG_CMD_MEMINFO=y
+@@ -161,12 +161,12 @@ CONFIG_CMD_CRC=y
+ # CONFIG_CMD_MTEST is not set
  
- echo
- echo -n "Hit any key to stop autoboot: "
-@@ -29,7 +30,7 @@ timeout -a $autoboot_timeout
- if [ $? != 0 ]; then
- 	echo
- 	echo "type update_kernel nand|nor [<imagename>] to update kernel into flash"
--	echo "type update_root nand|nor [<imagename>] to update rootfs into flash"
-+	echo "type update_rootfs nand|nor [<imagename>] to update rootfs into flash"
- 	echo
- 	exit
- fi
-diff --git a/board/freescale-mx35-3-stack/env/bin/update_kernel b/board/freescale-mx35-3-stack/env/bin/update_kernel
-index 05c822d..63ad11a 100644
---- a/board/freescale-mx35-3-stack/env/bin/update_kernel
-+++ b/board/freescale-mx35-3-stack/env/bin/update_kernel
-@@ -1,8 +1,8 @@
- #!/bin/sh
+ #
+-# flash
++# flash                         
+ #
+ CONFIG_CMD_FLASH=y
  
- . /env/config
-+image=$kernel
+ #
+-# booting
++# booting                       
+ #
+ CONFIG_CMD_BOOTM=y
+ # CONFIG_CMD_BOOTM_ZLIB is not set
+@@ -182,7 +182,8 @@ CONFIG_CMD_TEST=y
+ CONFIG_CMD_VERSION=y
+ CONFIG_CMD_HELP=y
+ CONFIG_CMD_DEVINFO=y
+-CONFIG_CMD_GPIO=y
++CONFIG_CMD_BMP=y
++# CONFIG_CMD_GPIO is not set
+ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ # CONFIG_NET_RARP is not set
+@@ -191,11 +192,11 @@ CONFIG_NET_PING=y
+ CONFIG_NET_TFTP=y
  
--image=$uimage
- if [ x$1 = xnand ]; then
- 	part=/dev/nand0.kernel.bb
- elif [ x$1 = xnor ]; then
-diff --git a/board/freescale-mx35-3-stack/env/bin/update_root b/board/freescale-mx35-3-stack/env/bin/update_root
-deleted file mode 100644
-index eaf36eb..0000000
---- a/board/freescale-mx35-3-stack/env/bin/update_root
-+++ /dev/null
-@@ -1,16 +0,0 @@
--#!/bin/sh
--
--. /env/config
--
--image=$uimage
--if [ x$1 = xnand ]; then
--	part=/dev/nand0.root.bb
--elif [ x$1 = xnor ]; then
--	part=/dev/nor0.root
--else
--	echo "usage: $0 nor|nand [imagename]"
--	exit 1
--fi
--
--. /env/bin/_update $2
--
-diff --git a/board/freescale-mx35-3-stack/env/bin/update_rootfs b/board/freescale-mx35-3-stack/env/bin/update_rootfs
-new file mode 100644
-index 0000000..53dd2ca
---- /dev/null
-+++ b/board/freescale-mx35-3-stack/env/bin/update_rootfs
-@@ -0,0 +1,20 @@
-+#!/bin/sh
-+
-+. /env/config
-+
-+if [ $rootfs_type = ubifs ]; then
-+	image=${rootfs}.ubi
-+else
-+	image=${rootfs}.$rootfs_type
-+fi
-+
-+if [ x$1 = xnand ]; then
-+	part=/dev/nand0.root.bb
-+elif [ x$1 = xnor ]; then
-+	part=/dev/nor0.root
-+else
-+	echo "usage: $0 nor|nand [imagename]"
-+	exit 1
-+fi
-+
-+. /env/bin/_update $2
-diff --git a/board/freescale-mx35-3-stack/env/config b/board/freescale-mx35-3-stack/env/config
-index 9fcb3dc..51195f7 100644
---- a/board/freescale-mx35-3-stack/env/config
-+++ b/board/freescale-mx35-3-stack/env/config
-@@ -1,28 +1,35 @@
- #!/bin/sh
+ #
+-# Drivers
++# Drivers                       
+ #
  
-+# use 'dhcp' to do dhcp in barebox and in kernel
-+# use 'no' if you don't want to pass the ip from barebox to the kernel
-+#ip=dhcp
-+
-+# or set your networking parameters here
-+#eth0.ipaddr=a.b.c.d
-+#eth0.netmask=a.b.c.d
-+#eth0.gateway=a.b.c.d
-+#eth0.serverip=a.b.c.d
-+
- # can be either 'net', 'nor' or 'nand''
--kernel=net
--root=net
-+kernel_loc=nand
-+rootfs_loc=nand
+ #
+-# serial drivers
++# serial drivers                
+ #
+ # CONFIG_DRIVER_SERIAL_ARM_DCC is not set
+ CONFIG_DRIVER_SERIAL_IMX=y
+@@ -203,39 +204,43 @@ CONFIG_DRIVER_SERIAL_IMX=y
+ CONFIG_MIIPHY=y
  
--uimage=uImage-pcm038
--jffs2=root-pcm038.jffs2
-+# can be either 'jffs2', or 'ubifs'
-+rootfs_type=ubifs
-+
-+kernel=uImage-mx35-3-stack
-+rootfs=root-mx35-3-stack
-+envimage=u-boot-v2-environment-mx35-3-stack
+ #
+-# Network drivers
++# Network drivers               
+ #
+ CONFIG_DRIVER_NET_SMC911X=y
+ CONFIG_DRIVER_NET_SMC911X_ADDRESS_SHIFT=0
+ # CONFIG_DRIVER_NET_SMC91111 is not set
+-# CONFIG_DRIVER_NET_FEC_IMX is not set
++CONFIG_DRIVER_NET_FEC_IMX=y
  
- autoboot_timeout=3
+ #
+-# SPI drivers
++# SPI drivers                   
+ #
+-CONFIG_SPI=y
+-# CONFIG_DRIVER_SPI_IMX is not set
+-# CONFIG_DRIVER_SPI_MC13783 is not set
++# CONFIG_SPI is not set
+ CONFIG_I2C=y
+ CONFIG_DRIVER_I2C_IMX=y
+ CONFIG_DRIVER_I2C_MC13892=y
+ CONFIG_DRIVER_I2C_MC9SDZ60=y
  
--nfsroot="/ptx/work/octopus/rsc/svn/oselas/bsp/phytec/phyCORE-i.MX27/OSELAS.BSP-Phytec-phyCORE-i.MX27-trunk/root"
-+nfsroot="/path/to/nfs/root"
- bootargs="console=ttymxc0,115200"
+ #
+-# flash drivers
++# flash drivers                 
+ #
+ CONFIG_HAS_CFI=y
+ CONFIG_DRIVER_CFI=y
+ # CONFIG_DRIVER_CFI_NEW is not set
+ CONFIG_DRIVER_CFI_OLD=y
+ CONFIG_CFI_BUFFER_WRITE=y
+-# CONFIG_NAND is not set
++CONFIG_NAND=y
++CONFIG_NAND_IMX=y
++CONFIG_NAND_IMX_BOOT=y
++# CONFIG_MTD_NAND_VERIFY_WRITE is not set
++# CONFIG_MTD_NAND_ECC_SMC is not set
++CONFIG_MTD_NAND_IDS=y
+ # CONFIG_USB is not set
+ # CONFIG_USB_GADGET is not set
+-# CONFIG_VIDEO is not set
++CONFIG_VIDEO=y
++CONFIG_DRIVER_VIDEO_IMX_IPU=y
  
--nor_parts="256k(barebox)ro,128k(bareboxenv),1536k(kernel),-(root)"
--rootpart_nor="/dev/mtdblock3"
--
--nand_parts="256k(barebox)ro,128k(bareboxenv),1536k(kernel),-(root)"
--rootpart_nand="/dev/mtdblock7"
-+bootargs="$bootargs video=mx3fb:CTP-CLAA070LC0ACW"
- 
--# use 'dhcp' to do dhcp in barebox and in kernel
--ip=dhcp
-+nor_parts="256k(barebox)ro,512k(bareboxenv),2M(kernel),-(root)"
-+rootfs_mtdblock_nor=3
- 
--# or set your networking parameters here
--#eth0.ipaddr=a.b.c.d
--#eth0.netmask=a.b.c.d
--#eth0.gateway=a.b.c.d
--#eth0.serverip=a.b.c.d
-+nand_parts="256k(barebox)ro,512k(bareboxenv),2M(kernel),-(root)"
-+rootfs_mtdblock_nand=7
+ #
+-# Filesystem support
++# Filesystem support            
+ #
+ # CONFIG_FS_CRAMFS is not set
+ CONFIG_FS_RAMFS=y
 -- 
 1.6.6
 
