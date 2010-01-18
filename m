@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NW6u4-0007VY-FA
-	for barebox@lists.infradead.org; Sat, 16 Jan 2010 11:33:17 +0000
-Date: Sat, 16 Jan 2010 12:33:09 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20100116113309.GS23110@pengutronix.de>
-References: <1263552619-4601-1-git-send-email-eric@eukrea.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1263552619-4601-1-git-send-email-eric@eukrea.com>
+	id 1NWqEG-0006Mn-6G
+	for barebox@lists.infradead.org; Mon, 18 Jan 2010 11:57:14 +0000
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Date: Mon, 18 Jan 2010 12:56:27 +0100
+Message-Id: <1263815791-10839-5-git-send-email-mkl@pengutronix.de>
+In-Reply-To: <1263815791-10839-4-git-send-email-mkl@pengutronix.de>
+References: <1263815791-10839-1-git-send-email-mkl@pengutronix.de>
+	<1263815791-10839-2-git-send-email-mkl@pengutronix.de>
+	<1263815791-10839-3-git-send-email-mkl@pengutronix.de>
+	<1263815791-10839-4-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,87 +19,67 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] eukrea_cpuimx27 : update timings
-To: Eric Benard <eric@eukrea.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 4/8] i.MX35 3stack: clean up indention
+To: barebox@lists.infradead.org
+Cc: sha@pengutronix.de
 
-Hi Eric,
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ board/freescale-mx35-3-stack/3stack.c |   12 ++++++------
+ 1 files changed, 6 insertions(+), 6 deletions(-)
 
-On Fri, Jan 15, 2010 at 11:50:16AM +0100, Eric Benard wrote:
-> use optimized DDR, NOR & QuadUART timings
-
-Ok, applied for -next.
-
-Sascha
-
-> 
-> Signed-off-by: Eric Benard <eric@eukrea.com>
-> ---
->  board/eukrea_cpuimx27/eukrea_cpuimx27.c |   12 ++++++------
->  board/eukrea_cpuimx27/lowlevel_init.S   |    4 ++--
->  2 files changed, 8 insertions(+), 8 deletions(-)
-> 
-> diff --git a/board/eukrea_cpuimx27/eukrea_cpuimx27.c b/board/eukrea_cpuimx27/eukrea_cpuimx27.c
-> index 6878044..629399f 100644
-> --- a/board/eukrea_cpuimx27/eukrea_cpuimx27.c
-> +++ b/board/eukrea_cpuimx27/eukrea_cpuimx27.c
-> @@ -198,9 +198,9 @@ static int eukrea_cpuimx27_devices_init(void)
->  	eukrea_cpuimx27_mmu_init();
->  
->  	/* configure 16 bit nor flash on cs0 */
-> -	CS0U = 0x0000CC03;
-> -	CS0L = 0xa0330D01;
-> -	CS0A = 0x00220800;
-> +	CS0U = 0x00008F03;
-> +	CS0L = 0xA0330D01;
-> +	CS0A = 0x002208C0;
->  
->  	/* initizalize gpios */
->  	for (i = 0; i < ARRAY_SIZE(mode); i++)
-> @@ -244,9 +244,9 @@ static int eukrea_cpuimx27_console_init(void)
->  #endif
->  	/* configure 8 bit UART on cs3 */
->  	FMCR &= ~0x2;
-> -	CS3U = 0x0000DCF6;
-> -	CS3L = 0x444A4541;
-> -	CS3A = 0x44443302;
-> +	CS3U = 0x0000D603;
-> +	CS3L = 0x0D1D0D01;
-> +	CS3A = 0x00D20000;
->  #ifdef CONFIG_DRIVER_SERIAL_NS16550
->  	register_device(&quad_uart_serial_device);
->  #endif
-> diff --git a/board/eukrea_cpuimx27/lowlevel_init.S b/board/eukrea_cpuimx27/lowlevel_init.S
-> index 4622af8..5295a8a 100644
-> --- a/board/eukrea_cpuimx27/lowlevel_init.S
-> +++ b/board/eukrea_cpuimx27/lowlevel_init.S
-> @@ -8,10 +8,10 @@
->  
->  #if defined CONFIG_EUKREA_CPUIMX27_SDRAM_256MB
->  #define ROWS0	ESDCTL_ROW14
-> -#define CFG0	0x00695729
-> +#define CFG0	0x0029572D
->  #elif defined CONFIG_EUKREA_CPUIMX27_SDRAM_128MB
->  #define ROWS0	ESDCTL_ROW13
-> -#define CFG0	0x00395B28
-> +#define CFG0	0x00095728
->  #endif
->  
->  #define ESDCTL0_VAL (ESDCTL0_SDE | ROWS0 | ESDCTL0_COL10)
-> -- 
-> 1.6.3.3
-> 
-> 
-
+diff --git a/board/freescale-mx35-3-stack/3stack.c b/board/freescale-mx35-3-stack/3stack.c
+index f671936..d87808a 100644
+--- a/board/freescale-mx35-3-stack/3stack.c
++++ b/board/freescale-mx35-3-stack/3stack.c
+@@ -60,8 +60,8 @@ static struct device_d cfi_dev = {
+ };
+ 
+ static struct fec_platform_data fec_info = {
+-	.xcv_type = MII100,
+-	.phy_addr = 0x1F,
++	.xcv_type	= MII100,
++	.phy_addr	= 0x1F,
+ };
+ 
+ static struct device_d fec_dev = {
+@@ -71,8 +71,8 @@ static struct device_d fec_dev = {
+ };
+ 
+ static struct memory_platform_data sdram_pdata = {
+-	.name = "ram0",
+-	.flags = DEVFS_RDWR,
++	.name	= "ram0",
++	.flags	= DEVFS_RDWR,
+ };
+ 
+ static struct device_d sdram_dev = {
+@@ -167,7 +167,7 @@ static int f3s_devices_init(void)
+ 	register_device(&nand_dev);
+ 	register_device(&cfi_dev);
+ 
+-	switch ( (reg >> 25) & 0x3) {
++	switch ((reg >> 25) & 0x3) {
+ 	case 0x01:		/* NAND is the source */
+ 		devfs_add_partition("nand0", 0x00000, 0x40000, PARTITION_FIXED, "self_raw");
+ 		dev_add_bb_dev("self_raw", "self0");
+@@ -332,7 +332,7 @@ static int f3s_core_init(void)
+ 
+ 	/* MPR - priority is M4 > M2 > M3 > M5 > M0 > M1 */
+ #define MAX_PARAM1 0x00302154
+-	writel(MAX_PARAM1, IMX_MAX_BASE + 0x0);   /* for S0 */
++	writel(MAX_PARAM1, IMX_MAX_BASE + 0x000); /* for S0 */
+ 	writel(MAX_PARAM1, IMX_MAX_BASE + 0x100); /* for S1 */
+ 	writel(MAX_PARAM1, IMX_MAX_BASE + 0x200); /* for S2 */
+ 	writel(MAX_PARAM1, IMX_MAX_BASE + 0x300); /* for S3 */
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.6.6
+
 
 _______________________________________________
 barebox mailing list
