@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NYL5o-0008NT-KQ
-	for barebox@lists.infradead.org; Fri, 22 Jan 2010 15:06:39 +0000
-Date: Fri, 22 Jan 2010 16:06:28 +0100
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20100122150628.GA12856@pengutronix.de>
+	id 1NYLDi-0004E1-GN
+	for barebox@lists.infradead.org; Fri, 22 Jan 2010 15:14:47 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Fri, 22 Jan 2010 16:14:35 +0100
+Message-Id: <1264173275-1858-2-git-send-email-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20100122150628.GA12856@pengutronix.de>
+References: <20100122150628.GA12856@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,51 +17,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] arm cache fixes
+Subject: [PATCH 2/2] arm: make disabling the cache actually work
 To: barebox@lists.infradead.org
 
-Hi,
-
-while digging around in Linux' early boot code for ARM I noticed that
-the mmu hasn't been disabled on iMX27 when giving control to Linux.
-
-The other patch mostly cosmetic to print out when barebox.bin (and
-barebox.S) are updated.
-
-I send the patches as reply to this mail.  Shortlog and diffstat are
-below.
-
-Best regards
-Uwe
-
-The following changes since commit 0dde20da20411bf4dcd5593601d2f36e9ba04f66:
-  Peter Korsgaard (1):
-        documentation: It's U-Boot that doesn't have getopt, not Barebox
-
-are available in the git repository at:
-
-  git://git.pengutronix.de/git/ukl/barebox.git master
-
-Uwe Kleine-K=F6nig (2):
-      give nice output when generating barebox.bin and barebox.S
-      arm: make disabling the cache actually work
-
- Makefile           |   15 ++++++++++++---
- arch/arm/cpu/mmu.c |   29 ++++++++++++++++++++++++++++-
- 2 files changed, 40 insertions(+), 4 deletions(-)
-
--- =
-
-Pengutronix e.K.                              | Uwe Kleine-K=F6nig         =
-   |
-Industrial Linux Solutions                    | http://www.pengutronix.de/ =
- |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhlIGNvZGUgYmVmb3JlIGxvb2tzIHRvIG1lIGxpa2Ugd29yayBpbiBwcm9ncmVzcy4gIEl0IG9u
+bHkgZHJhaW5lZCB0aGUKd3JpdGUgYnVmZmVyIGFuZCBza2lwcGVkIGRpc2FibGluZyBtbXUgYW5k
+IGNhY2hlcyBieSBhbiBlYXJseSByZXR1cm4KZnJvbSBpbmxpbmUgYXNzZW1ibGVyICh3aGljaCBp
+cyBicm9rZW4gaW4gaXRzZWxmIGFzIGl0IGRvZXNuJ3QgcmVzdG9yZQpmcmFtZSBwb2ludGVyLCBz
+dGFjayBwb2ludGVyIGFuZCBvdGhlciBzYXZlZCByZWdpc3RlcnMpLgoKU2lnbmVkLW9mZi1ieTog
+VXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4KLS0tCiBh
+cmNoL2FybS9jcHUvbW11LmMgfCAgIDI5ICsrKysrKysrKysrKysrKysrKysrKysrKysrKystCiAx
+IGZpbGVzIGNoYW5nZWQsIDI4IGluc2VydGlvbnMoKyksIDEgZGVsZXRpb25zKC0pCgpkaWZmIC0t
+Z2l0IGEvYXJjaC9hcm0vY3B1L21tdS5jIGIvYXJjaC9hcm0vY3B1L21tdS5jCmluZGV4IDllMDA5
+MjcuLjk1YjgzMDIgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2NwdS9tbXUuYworKysgYi9hcmNoL2Fy
+bS9jcHUvbW11LmMKQEAgLTU0LDcgKzU0LDcgQEAgdm9pZCBtbXVfZW5hYmxlKHZvaWQpCiB7CiAJ
+YXNtIHZvbGF0aWxlICgKIAkJIm1yYyBwMTUsIDAsIHIxLCBjMSwgYzAsIDA7IgotCQkib3JyIHIx
+LCByMSwgIzB4MDAwNzsiICAvKiBlbmFibGUgTU1VICsgRGNhY2hlICovCisJCSJvcnIgcjEsIHIx
+LCAjMHgwMDA3OyIgIC8qIGVuYWJsZSBNTVUgKyBEY2FjaGUgKyBhbGlnbm1lbnQgZmF1bHQgY2hl
+Y2tpbmcgKi8KIAkJIm1jciBwMTUsIDAsIHIxLCBjMSwgYzAsIDAiCiAJCToKIAkJOgpAQCAtNjcs
+NiArNjcsMzAgQEAgdm9pZCBtbXVfZW5hYmxlKHZvaWQpCiAgKi8KIHZvaWQgbW11X2Rpc2FibGUo
+dm9pZCkKIHsKKyNpZiBkZWZpbmVkKENPTkZJR19DUFVfQVJNOTI2VCkKKwl1bnNpZ25lZCBpbnQg
+dG1wID0gMDsKKwlhc20gdm9sYXRpbGUgKAorCQkvKiB0ZXN0LCBjbGVhbiBhbmQgaW52YWxpZGF0
+ZSBEIGNhY2hlICovCisJCSIxOgltcmMJcDE1LCAwLCByMTUsIGM3LCBjMTQsIDNcbiIKKwkJIgli
+bmUJMWJcbiIKKwkJLyogaW52YWxpZGF0ZSBJIGNhY2hlIChSZCBTQlopICovCisJCSIJbWNyCXAx
+NSwgMCwgJTEsIGM3LCBjNSwgMFxuIgorCQkvKiBkcmFpbiB3cml0ZSBidWZmZXIgKFJkIFNCWikg
+Ki8KKwkJIgltY3IJcDE1LCAwLCAlMSwgYzcsIGMxMCwgNFxuIgorCisJCS8qIHJlYWQgY29udHJv
+bCByZWdpc3RlciAqLworCQkiCW1yYwlwMTUsIDAsICUwLCBjMSwgYzBcbiIKKwkJLyogY2xlYXIg
+QyBhbmQgTSAqLworCQkiCWJpYwklMCwgJTAsICMweDAwMDVcbiIKKwkJLyogd3JpdGUgYmFjayBj
+b250cm9sIHJlZ2lzdGVyICovCisJCSIJbWNyCXAxNSwgMCwgJTAsIGMxLCBjMFxuIgorCisJCS8q
+IGludmFsaWRhdGUgVExCcyAoUmQgU0JaKSAqLworCQkiCW1jciBwMTUsIDAsICUxLCBjOCwgYzcs
+IDA7IgorCQk6ICI9JnIiICh0bXApIDogInIiICh0bXApIDogImNjIiApOworCisjZWxzZQorCS8q
+ID8/PyAqLwogCWFzbSB2b2xhdGlsZSAoCiAJCSJub3A7ICIKIAkJIm5vcDsgIgpAQCAtNzUsOSAr
+OTksMTEgQEAgdm9pZCBtbXVfZGlzYWJsZSh2b2lkKQogCQkibm9wOyAiCiAJCSJub3A7ICIKIAkJ
+LyogdGVzdCwgY2xlYW4gYW5kIGludmFsaWRhdGUgY2FjaGUgKi8KKwkJLyogbXJjICAgICBwMTUs
+IDAsICRyZCwgYzcsIGMxNCwgMzsgaXMgYXJtdjV0ZWogc3BlY2lmaWMgKi8KIAkJIjE6CW1yYwlw
+MTUsIDAsIHIxNSwgYzcsIGMxNCwgMzsiIAogCQkiCWJuZQkxYjsiCiAJCSIJbW92CXBjLCBscjsi
+CisJCS8qIHRoZSBmb2xsb3dpbmcgY29kZSBpcyBuZXZlciByZWFjaGVkICovCiAJCSIJbW92IHIw
+LCAjMHgwOyIKIAkJIgltY3IgcDE1LCAwLCByMCwgYzcsIGMxMCwgNDsiIC8qIGRyYWluIHRoZSB3
+cml0ZSBidWZmZXIgICAqLwogCQkiCW1jciBwMTUsIDAsIHIxLCBjNywgYzYsIDA7IiAgLyogY2xl
+YXIgZGF0YSBjYWNoZSAgICAgICAgICovCkBAIC05MCw2ICsxMTYsNyBAQCB2b2lkIG1tdV9kaXNh
+YmxlKHZvaWQpCiAJCToKIAkJOiAicjAiIC8qIENsb2JiZXIgbGlzdCAqLwogCSk7CisjZW5kaWYK
+IH0KIAogLyoKLS0gCjEuNi42CgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQu
+b3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
