@@ -1,18 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from averell.mail.tiscali.it ([213.205.33.55])
-	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
-	id 1NYRVb-0005KO-2L
-	for barebox@lists.infradead.org; Fri, 22 Jan 2010 21:57:43 +0000
-Received: from [192.168.1.11] (84.222.4.62) by averell.mail.tiscali.it
-	(8.0.031) id 4B585A67000F9AA4 for barebox@lists.infradead.org;
-	Fri, 22 Jan 2010 22:57:32 +0100
-Message-ID: <4B5A1F4B.50907@lucaceresoli.net>
-Date: Fri, 22 Jan 2010 22:57:31 +0100
-From: Luca Ceresoli <luca@lucaceresoli.net>
+Received: from smtp2.aruba.it ([62.149.128.201] helo=smtp1.aruba.it)
+	by bombadil.infradead.org with smtp (Exim 4.69 #1 (Red Hat Linux))
+	id 1NYNOq-0005lw-Tn
+	for barebox@lists.infradead.org; Fri, 22 Jan 2010 17:34:29 +0000
+Date: Fri, 22 Jan 2010 18:34:17 +0100
+Message-Id: <KWNST5$F3E5C74A9E7804703269FDE3154F494E@aruba.it>
 MIME-Version: 1.0
-References: <KWLFNO$562DC6F7DC09B93F03CC58E59048B3DD@aruba.it>
-	<20100121134249.GQ7200@pengutronix.de>
-In-Reply-To: <20100121134249.GQ7200@pengutronix.de>
+From: "Luca Ceresoli" <list@lucaceresoli.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,16 +15,16 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: Current status of barebox for OMAP3530/beagle
 To: barebox@lists.infradead.org
 
 Sascha Hauer wrote:
- > I would expect NAND to be working, though I haven't tested it. What's
- > going wrong on your board?
+> I would expect NAND to be working, though I haven't tested it. What's
+> going wrong on your board?
 Actually nothing about NAND, I think. Only, barebox with NAND support
 does not run (no prompt). Detailed report follows.
 
@@ -57,59 +51,59 @@ omap3530_beagle_per_uart_defconfig plus a few commands (config2.patch).
 
 The result:
 
-...
-# go 0x80000000 [at the stage2 prompt]
-## Starting application at 0x80000000 ...
+ ...
+ # go 0x80000000 [at the stage2 prompt]
+ ## Starting application at 0x80000000 ...
 
 
-barebox 2009.12.0 (Jan 22 2010 - 10:26:45) [now in stage3!]
+ barebox 2009.12.0 (Jan 22 2010 - 10:26:45) [now in stage3!]
 
-Board: Texas Instrument's Beagle
-Malloc space: 0x87bfff10 -> 0x87ffff10 (size 4 MB)
-Stack space : 0x87bf7f10 -> 0x87bfff10 (size 32 kB)
-running /env/bin/init...
-not found
-barebox-full>help [different prompt]
-? - alias for help
-bootu - bootu - start a raw linux image
-...
-barebox-full>cpuinfo
-implementer: ARM
-architecture: Unknown
-cache: no cache
-Control register: A W P D L Z I U XP
-barebox-full>devinfo
-devices:
-|----serial_ns165500
-|----cs0
-|----ramfs0
-|----devfs0
-|----mem0 (mem)
-|----mem1 (ram0)
+ Board: Texas Instrument's Beagle
+ Malloc space: 0x87bfff10 -> 0x87ffff10 (size 4 MB)
+ Stack space : 0x87bf7f10 -> 0x87bfff10 (size 32 kB)
+ running /env/bin/init...
+ not found
+ barebox-full>help [different prompt]
+ ? - alias for help
+ bootu - bootu - start a raw linux image
+ ...
+ barebox-full>cpuinfo
+ implementer: ARM
+ architecture: Unknown
+ cache: no cache
+ Control register: A W P D L Z I U XP
+ barebox-full>devinfo
+ devices:
+ |----serial_ns165500
+ |----cs0
+ |----ramfs0
+ |----devfs0
+ |----mem0 (mem)
+ |----mem1 (ram0)
 
-drivers:
-serial_ns16550
-ramfs
-devfs
-mem
-barebox-full>meminfo
-max system bytes = 16624
-system bytes = 16624
-in use bytes = 9336
-barebox-full>mtest 0x84000000 0x87bf0000
-Testing 0x84000000 ... 0x87bf0000:
-Pattern 0xFFFFFFED Writing... Reading... [10 minutes, no error]
-barebox-full>
+ drivers:
+ serial_ns16550
+ ramfs
+ devfs
+ mem
+ barebox-full>meminfo
+ max system bytes = 16624
+ system bytes = 16624
+ in use bytes = 9336
+ barebox-full>mtest 0x84000000 0x87bf0000
+ Testing 0x84000000 ... 0x87bf0000:
+ Pattern 0xFFFFFFED Writing... Reading... [10 minutes, no error]
+ barebox-full>
 
 Great.
 Now I add NAND support (config3.patch), restart the whole procedure
 and suddenly stage3 barebox does not start:
 
-...
-# go 0x80000000 [at the stage2 prompt]
-## Starting application at 0x80000000 ...
+ ...
+ # go 0x80000000 [at the stage2 prompt]
+ ## Starting application at 0x80000000 ...
 
-[nothing else]
+ [nothing else]
 
 This time barebox.bin is 83544 bytes big. In the previous test it was
 less than 64KB. May this be the issue?
@@ -123,6 +117,8 @@ The results are the same: without NAND support and below 64 kB it
 boots, with NAND support or useless stuff and above 64 kB it does't.
 
 Luca
+
+
 
 _______________________________________________
 barebox mailing list
