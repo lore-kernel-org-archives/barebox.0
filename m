@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NXxJI-0005S9-Rn
-	for barebox@lists.infradead.org; Thu, 21 Jan 2010 13:42:57 +0000
-Date: Thu, 21 Jan 2010 14:42:49 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20100121134249.GQ7200@pengutronix.de>
-References: <KWLFNO$562DC6F7DC09B93F03CC58E59048B3DD@aruba.it>
+	id 1NYL5o-0008NT-KQ
+	for barebox@lists.infradead.org; Fri, 22 Jan 2010 15:06:39 +0000
+Date: Fri, 22 Jan 2010 16:06:28 +0100
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20100122150628.GA12856@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <KWLFNO$562DC6F7DC09B93F03CC58E59048B3DD@aruba.it>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,37 +16,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Current status of barebox for OMAP3530/beagle
-To: Luca Ceresoli <list@lucaceresoli.net>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] arm cache fixes
+To: barebox@lists.infradead.org
 
 Hi,
 
-On Thu, Jan 21, 2010 at 11:55:00AM +0100, Luca Ceresoli wrote:
-> Hi all,
-> 
-> after reading the docs and searching the list, it is still not clear
-> to me how much barebox currently supports OMAP3530 (BeagleBoard in
-> particular).
-> 
-> The omap3530_beagle_per_uart_defconfig is working great as a first
-> stage UART loader, as well as adding a few commands. But I failed to
-> go much further, i.e. to enable NAND support.
+while digging around in Linux' early boot code for ARM I noticed that
+the mmu hasn't been disabled on iMX27 when giving control to Linux.
 
-I would expect NAND to be working, though I haven't tested it. What's
-going wrong on your board?
+The other patch mostly cosmetic to print out when barebox.bin (and
+barebox.S) are updated.
 
-Sascha
+I send the patches as reply to this mail.  Shortlog and diffstat are
+below.
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Best regards
+Uwe
+
+The following changes since commit 0dde20da20411bf4dcd5593601d2f36e9ba04f66:
+  Peter Korsgaard (1):
+        documentation: It's U-Boot that doesn't have getopt, not Barebox
+
+are available in the git repository at:
+
+  git://git.pengutronix.de/git/ukl/barebox.git master
+
+Uwe Kleine-K=F6nig (2):
+      give nice output when generating barebox.bin and barebox.S
+      arm: make disabling the cache actually work
+
+ Makefile           |   15 ++++++++++++---
+ arch/arm/cpu/mmu.c |   29 ++++++++++++++++++++++++++++-
+ 2 files changed, 40 insertions(+), 4 deletions(-)
+
+-- =
+
+Pengutronix e.K.                              | Uwe Kleine-K=F6nig         =
+   |
+Industrial Linux Solutions                    | http://www.pengutronix.de/ =
+ |
 
 _______________________________________________
 barebox mailing list
