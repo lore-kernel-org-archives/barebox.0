@@ -1,13 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NZJR9-0005q4-TB
+	id 1NZJRA-0005q8-9V
 	for barebox@lists.infradead.org; Mon, 25 Jan 2010 07:32:41 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 25 Jan 2010 08:32:19 +0100
-Message-Id: <1264404750-11596-2-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1264404750-11596-1-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 25 Jan 2010 08:32:23 +0100
+Message-Id: <1264404750-11596-6-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1264404750-11596-5-git-send-email-s.hauer@pengutronix.de>
 References: <1264404750-11596-1-git-send-email-s.hauer@pengutronix.de>
+	<1264404750-11596-2-git-send-email-s.hauer@pengutronix.de>
+	<1264404750-11596-3-git-send-email-s.hauer@pengutronix.de>
+	<1264404750-11596-4-git-send-email-s.hauer@pengutronix.de>
+	<1264404750-11596-5-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,100 +25,94 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/12] remove unused cdp code
+Subject: [PATCH 05/12] remove unused file common/flash.c
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/net.c |   48 ------------------------------------------------
- include/net.h  |    8 --------
- 2 files changed, 0 insertions(+), 56 deletions(-)
+ common/flash.c |   73 --------------------------------------------------------
+ 1 files changed, 0 insertions(+), 73 deletions(-)
+ delete mode 100644 common/flash.c
 
-diff --git a/commands/net.c b/commands/net.c
-index df06227..902c8bb 100644
---- a/commands/net.c
-+++ b/commands/net.c
-@@ -210,54 +210,6 @@ out:
- 	return rcode;
- }
- 
--#ifdef CONFIG_NET_CDP
+diff --git a/common/flash.c b/common/flash.c
+deleted file mode 100644
+index 4e3d9a3..0000000
+--- a/common/flash.c
++++ /dev/null
+@@ -1,73 +0,0 @@
+-/*
+- * (C) Copyright 2000
+- * Wolfgang Denk, DENX Software Engineering, wd@denx.de.
+- *
+- * See file CREDITS for list of people who contributed to this
+- * project.
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+- * MA 02111-1307 USA
+- */
 -
--static void cdp_update_env(void)
+-/* #define DEBUG */
+-
+-#include <common.h>
+-#include <command.h>
+-#include <cfi_flash.h>
+-
+-extern flash_info_t  flash_info[]; /* info for FLASH chips */
+-
+-flash_info_t *
+-addr2info (ulong addr)
 -{
--	char tmp[16];
+-	printf("%s is broken\n",__FUNCTION__);
 -
--	if (CDPApplianceVLAN != htons(-1)) {
--		printf("CDP offered appliance VLAN %d\n", ntohs(CDPApplianceVLAN));
--		VLAN_to_string(CDPApplianceVLAN, tmp);
--		setenv("vlan", tmp);
--		NetOurVLAN = CDPApplianceVLAN;
--	}
--
--	if (CDPNativeVLAN != htons(-1)) {
--		printf("CDP offered native VLAN %d\n", ntohs(CDPNativeVLAN));
--		VLAN_to_string(CDPNativeVLAN, tmp);
--		setenv("nvlan", tmp);
--		NetOurNativeVLAN = CDPNativeVLAN;
--	}
--
+-	return (NULL);
 -}
 -
--static int do_cdp (cmd_tbl_t *cmdtp, int argc, char *argv[])
+-void flash_perror (int err)
 -{
--	int r;
--
--	if (NetLoopInit(CDP) < 0)
--		return 1;
--
--	r = NetLoop();
--	if (r < 0) {
--		printf("cdp failed; perhaps not a CISCO switch?\n");
--		return 1;
+-	switch (err) {
+-	case ERR_OK:
+-		break;
+-	case ERR_TIMOUT:
+-		puts ("Timeout writing to Flash\n");
+-		break;
+-	case ERR_NOT_ERASED:
+-		puts ("Flash not Erased\n");
+-		break;
+-	case ERR_PROTECTED:
+-		puts ("Can't write to protected Flash sectors\n");
+-		break;
+-	case ERR_INVAL:
+-		puts ("Outside available Flash\n");
+-		break;
+-	case ERR_ALIGN:
+-		puts ("Start and/or end address not on sector boundary\n");
+-		break;
+-	case ERR_UNKNOWN_FLASH_VENDOR:
+-		puts ("Unknown Vendor of Flash\n");
+-		break;
+-	case ERR_UNKNOWN_FLASH_TYPE:
+-		puts ("Unknown Type of Flash\n");
+-		break;
+-	case ERR_PROG_ERROR:
+-		puts ("General Flash Programming Error\n");
+-		break;
+-	default:
+-		printf ("%s[%d] FIXME: rc=%d\n", __FILE__, __LINE__, err);
+-		break;
 -	}
--
--	cdp_update_env();
--
--	return 0;
 -}
--
--BAREBOX_CMD_START(cdp)
--	.cmd		= do_cdp,
--	.usage		= "Perform CDP network configuration",
--	BAREBOX_CMD_HELP("[loadAddress] [host ip addr:bootfilename]\n")
--BAREBOX_CMD_END
--
--#endif	/* CONFIG_NET_CDP */
--
- static int do_ethact (cmd_tbl_t *cmdtp, int argc, char *argv[])
- {
- 	struct eth_device *edev;
-diff --git a/include/net.h b/include/net.h
-index c689a43..7353c8f 100644
---- a/include/net.h
-+++ b/include/net.h
-@@ -279,10 +279,6 @@ extern uchar		NetEtherNullAddr[6];
- extern ushort		NetOurVLAN;		/* Our VLAN 			*/
- extern ushort		NetOurNativeVLAN;	/* Our Native VLAN 		*/
- 
--extern uchar		NetCDPAddr[6]; 		/* Ethernet CDP address		*/
--extern ushort		CDPNativeVLAN;		/* CDP returned native VLAN	*/
--extern ushort		CDPApplianceVLAN;	/* CDP returned appliance VLAN	*/
--
- extern int		NetState;		/* Network loop state		*/
- 
- /* ---------- Added by sha ------------ */
-@@ -301,10 +297,6 @@ extern void ArpRequest (void);
- 
- typedef enum { BOOTP, RARP, ARP, TFTP, DHCP, PING, DNS, NFS, CDP, NETCONS, SNTP } proto_t;
- 
--/* when CDP completes these hold the return values */
--extern ushort CDPNativeVLAN;
--extern ushort CDPApplianceVLAN;
--
- /* Initialize the network adapter */
- int	NetLoopInit(proto_t);
- 
 -- 
 1.6.6
 
