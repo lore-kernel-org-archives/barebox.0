@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NZJRA-0005q8-9V
+	id 1NZJRA-0005q7-9f
 	for barebox@lists.infradead.org; Mon, 25 Jan 2010 07:32:41 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 25 Jan 2010 08:32:23 +0100
-Message-Id: <1264404750-11596-6-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1264404750-11596-5-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 25 Jan 2010 08:32:22 +0100
+Message-Id: <1264404750-11596-5-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1264404750-11596-4-git-send-email-s.hauer@pengutronix.de>
 References: <1264404750-11596-1-git-send-email-s.hauer@pengutronix.de>
 	<1264404750-11596-2-git-send-email-s.hauer@pengutronix.de>
 	<1264404750-11596-3-git-send-email-s.hauer@pengutronix.de>
 	<1264404750-11596-4-git-send-email-s.hauer@pengutronix.de>
-	<1264404750-11596-5-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,94 +24,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/12] remove unused file common/flash.c
+Subject: [PATCH 04/12] remove unused NETCONSOLE stuff
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/flash.c |   73 --------------------------------------------------------
- 1 files changed, 0 insertions(+), 73 deletions(-)
- delete mode 100644 common/flash.c
+ net/net.c |   10 ----------
+ 1 files changed, 0 insertions(+), 10 deletions(-)
 
-diff --git a/common/flash.c b/common/flash.c
-deleted file mode 100644
-index 4e3d9a3..0000000
---- a/common/flash.c
-+++ /dev/null
-@@ -1,73 +0,0 @@
--/*
-- * (C) Copyright 2000
-- * Wolfgang Denk, DENX Software Engineering, wd@denx.de.
-- *
-- * See file CREDITS for list of people who contributed to this
-- * project.
-- *
-- * This program is free software; you can redistribute it and/or
-- * modify it under the terms of the GNU General Public License as
-- * published by the Free Software Foundation; either version 2 of
-- * the License, or (at your option) any later version.
-- *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- *
-- * You should have received a copy of the GNU General Public License
-- * along with this program; if not, write to the Free Software
-- * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-- * MA 02111-1307 USA
-- */
+diff --git a/net/net.c b/net/net.c
+index 214685c..9818f42 100644
+--- a/net/net.c
++++ b/net/net.c
+@@ -576,9 +576,6 @@ NetReceive(uchar * inpkt, int len)
+ 				/* save address for later use */
+ 				memcpy(NetArpWaitPacketMAC, &arp->ar_data[0], 6);
+ 
+-#ifdef CONFIG_NETCONSOLE
+-				(*packetHandler)(0,0,0,0);
+-#endif
+ 				/* modify header, and transmit it */
+ 				memcpy(((Ethernet_t *)NetArpWaitTxPacket)->et_dest, NetArpWaitPacketMAC, 6);
+ 				(void) eth_send(NetArpWaitTxPacket, NetArpWaitTxPacketSize);
+@@ -737,13 +734,6 @@ NetReceive(uchar * inpkt, int len)
+ 			}
+ 		}
+ #endif
 -
--/* #define DEBUG */
--
--#include <common.h>
--#include <command.h>
--#include <cfi_flash.h>
--
--extern flash_info_t  flash_info[]; /* info for FLASH chips */
--
--flash_info_t *
--addr2info (ulong addr)
--{
--	printf("%s is broken\n",__FUNCTION__);
--
--	return (NULL);
--}
--
--void flash_perror (int err)
--{
--	switch (err) {
--	case ERR_OK:
--		break;
--	case ERR_TIMOUT:
--		puts ("Timeout writing to Flash\n");
--		break;
--	case ERR_NOT_ERASED:
--		puts ("Flash not Erased\n");
--		break;
--	case ERR_PROTECTED:
--		puts ("Can't write to protected Flash sectors\n");
--		break;
--	case ERR_INVAL:
--		puts ("Outside available Flash\n");
--		break;
--	case ERR_ALIGN:
--		puts ("Start and/or end address not on sector boundary\n");
--		break;
--	case ERR_UNKNOWN_FLASH_VENDOR:
--		puts ("Unknown Vendor of Flash\n");
--		break;
--	case ERR_UNKNOWN_FLASH_TYPE:
--		puts ("Unknown Type of Flash\n");
--		break;
--	case ERR_PROG_ERROR:
--		puts ("General Flash Programming Error\n");
--		break;
--	default:
--		printf ("%s[%d] FIXME: rc=%d\n", __FILE__, __LINE__, err);
--		break;
--	}
--}
+-#ifdef CONFIG_NETCONSOLE
+-		nc_input_packet((uchar *)ip +IP_HDR_SIZE,
+-						ntohs(ip->udp_dst),
+-						ntohs(ip->udp_src),
+-						ntohs(ip->udp_len) - 8);
+-#endif
+ 		/*
+ 		 *	IP header OK.  Pass the packet to the current handler.
+ 		 */
 -- 
 1.6.6
 
