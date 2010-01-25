@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NZJRA-0005q7-9f
-	for barebox@lists.infradead.org; Mon, 25 Jan 2010 07:32:41 +0000
+	id 1NZJW1-0006wE-Nd
+	for barebox@lists.infradead.org; Mon, 25 Jan 2010 07:37:43 +0000
+Date: Mon, 25 Jan 2010 08:37:34 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 25 Jan 2010 08:32:22 +0100
-Message-Id: <1264404750-11596-5-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1264404750-11596-4-git-send-email-s.hauer@pengutronix.de>
-References: <1264404750-11596-1-git-send-email-s.hauer@pengutronix.de>
-	<1264404750-11596-2-git-send-email-s.hauer@pengutronix.de>
-	<1264404750-11596-3-git-send-email-s.hauer@pengutronix.de>
-	<1264404750-11596-4-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20100125073734.GA10139@pengutronix.de>
+References: <20091231215521.GO5093@darwin>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20091231215521.GO5093@darwin>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,50 +18,66 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/12] remove unused NETCONSOLE stuff
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] Fix typo in board.dox
+To: Matthias Kaehlcke <matthias@kaehlcke.net>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- net/net.c |   10 ----------
- 1 files changed, 0 insertions(+), 10 deletions(-)
+Hi Matthias,
 
-diff --git a/net/net.c b/net/net.c
-index 214685c..9818f42 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -576,9 +576,6 @@ NetReceive(uchar * inpkt, int len)
- 				/* save address for later use */
- 				memcpy(NetArpWaitPacketMAC, &arp->ar_data[0], 6);
- 
--#ifdef CONFIG_NETCONSOLE
--				(*packetHandler)(0,0,0,0);
--#endif
- 				/* modify header, and transmit it */
- 				memcpy(((Ethernet_t *)NetArpWaitTxPacket)->et_dest, NetArpWaitPacketMAC, 6);
- 				(void) eth_send(NetArpWaitTxPacket, NetArpWaitTxPacketSize);
-@@ -737,13 +734,6 @@ NetReceive(uchar * inpkt, int len)
- 			}
- 		}
- #endif
--
--#ifdef CONFIG_NETCONSOLE
--		nc_input_packet((uchar *)ip +IP_HDR_SIZE,
--						ntohs(ip->udp_dst),
--						ntohs(ip->udp_src),
--						ntohs(ip->udp_len) - 8);
--#endif
- 		/*
- 		 *	IP header OK.  Pass the packet to the current handler.
- 		 */
+On Thu, Dec 31, 2009 at 10:55:21PM +0100, Matthias Kaehlcke wrote:
+> Fix a typo in documentation file about adapting a new board which
+> misnames the linker script template file
+> 
+> Signed-off-by: Matthias Kaehlcke <matthias@kaehlcke.net>
+
+This one is already in master. Maybe I forgot to notice you that time.
+
+Sascha
+
+> 
+> --
+> 
+> diff --git a/board/board.dox b/board/board.dox
+> index 9c32682..76bff45 100644
+> --- a/board/board.dox
+> +++ b/board/board.dox
+> @@ -58,7 +58,7 @@ at the right architecture.
+>  
+>  @note Consider to use an unique page lable.
+>  
+> -@subsection board_lscript board/\<boardname\>/barebox.ld.S
+> +@subsection board_lscript board/\<boardname\>/barebox.lds.S
+>  
+>  If your board needs a special binary @a barebox layout, you can provide a local
+>  board linker script file. This will replace the generic one provided by your
+> 
+> -- 
+> Matthias Kaehlcke
+> Embedded Linux Developer
+> Barcelona
+> 
+>      Nationalism is an infantile disease. It is the measles of mankind
+>                          (Albert Einstein)
+>                                                                  .''`.
+>     using free software / Debian GNU/Linux | http://debian.org  : :'  :
+>                                                                 `. `'`
+> gpg --keyserver pgp.mit.edu --recv-keys 47D8E5D4                  `-
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-1.6.6
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
