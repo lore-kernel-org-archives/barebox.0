@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NZJhz-0000SU-MW
-	for barebox@lists.infradead.org; Mon, 25 Jan 2010 07:50:04 +0000
-Date: Mon, 25 Jan 2010 08:49:57 +0100
+	id 1NZpj2-0007Cc-PU
+	for barebox@lists.infradead.org; Tue, 26 Jan 2010 18:01:17 +0000
+Date: Tue, 26 Jan 2010 19:01:09 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20100125074957.GA19551@pengutronix.de>
-References: <20091231215521.GO5093@darwin>
-	<20100125073734.GA10139@pengutronix.de>
+Message-ID: <20100126180109.GF19551@pengutronix.de>
+References: <1263891265-15350-1-git-send-email-jacmet@sunsite.dk>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20100125073734.GA10139@pengutronix.de>
+In-Reply-To: <1263891265-15350-1-git-send-email-jacmet@sunsite.dk>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,25 +22,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Fix typo in board.dox
-To: Matthias Kaehlcke <matthias@kaehlcke.net>
+Subject: Re: [PATCH] mach-at91: reset_cpu: fix confusing reference to watchdog
+To: Peter Korsgaard <jacmet@sunsite.dk>
 Cc: barebox@lists.infradead.org
 
-On Mon, Jan 25, 2010 at 08:37:34AM +0100, Sascha Hauer wrote:
-> Hi Matthias,
-> 
-> On Thu, Dec 31, 2009 at 10:55:21PM +0100, Matthias Kaehlcke wrote:
-> > Fix a typo in documentation file about adapting a new board which
-> > misnames the linker script template file
-> > 
-> > Signed-off-by: Matthias Kaehlcke <matthias@kaehlcke.net>
-> 
-> This one is already in master. Maybe I forgot to notice you that time.
+On Tue, Jan 19, 2010 at 09:54:25AM +0100, Peter Korsgaard wrote:
+> On at91 we talk directly to the reset controller to reset the cpu,
+> rather than use the watchdog, so update the comment to match.
 
-Forget this one, I accidently opened an last years mailbox
+Ok, applied.
 
 Sascha
 
+> 
+> Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+> ---
+>  arch/arm/mach-at91/clocksource.c |    2 +-
+>  1 files changed, 1 insertions(+), 1 deletions(-)
+> 
+> diff --git a/arch/arm/mach-at91/clocksource.c b/arch/arm/mach-at91/clocksource.c
+> index b5886f9..564b560 100644
+> --- a/arch/arm/mach-at91/clocksource.c
+> +++ b/arch/arm/mach-at91/clocksource.c
+> @@ -71,7 +71,7 @@ static int clocksource_init (void)
+>  core_initcall(clocksource_init);
+>  
+>  /*
+> - * Reset the cpu by setting up the watchdog timer and let it time out
+> + * Reset the cpu through the reset controller
+>   */
+>  void reset_cpu (ulong ignored)
+>  {
+> -- 
+> 1.6.5
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
