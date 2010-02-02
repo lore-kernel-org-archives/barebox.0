@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NeTtR-0003oU-9R
-	for barebox@lists.infradead.org; Mon, 08 Feb 2010 13:43:14 +0000
-Date: Mon, 8 Feb 2010 14:43:06 +0100
+	id 1NcDJW-0006pH-7a
+	for barebox@lists.infradead.org; Tue, 02 Feb 2010 07:36:51 +0000
+Date: Tue, 2 Feb 2010 08:36:19 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20100208134306.GC17643@pengutronix.de>
-References: <20100206235513.GE15617@darwin>
+Message-ID: <20100202073619.GD6130@pengutronix.de>
+References: <20100201184957.GI8053@darwin>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20100206235513.GE15617@darwin>
+In-Reply-To: <20100201184957.GI8053@darwin>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,23 +22,20 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] EP93xx: Fix system controller register definitions
+Subject: Re: [PATCH] ep93xx eth driver: Fix dump_xxx_queue() parameter list
 To: Matthias Kaehlcke <matthias@kaehlcke.net>
 Cc: barebox@lists.infradead.org
 
 Hi Matthias,
 
-On Sun, Feb 07, 2010 at 12:55:13AM +0100, Matthias Kaehlcke wrote:
-> EP93xx: The system controller register definition doesn't take into account a 4
-> byte gap between ChipId and SysCfg, in consequence all accesses to syscon registers
-> ahead of ChipId fail. Fix this by inserting a filler field
-> 
-> Signed-off-by: Matthias Kaehlcke <matthias@kaehlcke.net>
+On Mon, Feb 01, 2010 at 07:49:57PM +0100, Matthias Kaehlcke wrote:
+> ep93xx eth driver: Add missing parameter to dump_rx_status_queue(),
+> dump_tx_descriptor_queue() and dump_tx_status_queue()
 
-Your patches seem ok, I applied all three.
+Ok, applied.
 
-Sascha
-
+Thanks
+  Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
