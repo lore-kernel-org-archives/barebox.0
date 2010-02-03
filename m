@@ -1,18 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail2.gnudd.com ([213.203.150.91] helo=mail.gnudd.com)
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NapNt-000809-HE
-	for barebox@lists.infradead.org; Fri, 29 Jan 2010 11:51:38 +0000
-Received: from themisto.ext.pengutronix.de ([92.198.50.58]
-	helo=jupiter.intranet.kreuzholzen.de)
-	by metis.ext.pengutronix.de with esmtp (Exim 4.69)
-	(envelope-from <jbe@pengutronix.de>) id 1NapNg-0006RY-5J
-	for barebox@lists.infradead.org; Fri, 29 Jan 2010 12:51:23 +0100
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Fri, 29 Jan 2010 12:51:16 +0100
+	id 1NclG3-000370-Gh
+	for barebox@lists.infradead.org; Wed, 03 Feb 2010 19:51:36 +0000
+Received: from mail.gnudd.com (localhost [127.0.0.1])
+	by mail.gnudd.com (8.14.3/8.14.3/Debian-5) with ESMTP id o13Jp7GN032328
+	for <barebox@lists.infradead.org>; Wed, 3 Feb 2010 20:51:07 +0100
+Received: (from rubini@localhost)
+	by mail.gnudd.com (8.14.3/8.14.3/Submit) id o13Jp6hH032327
+	for barebox@lists.infradead.org; Wed, 3 Feb 2010 20:51:06 +0100
+Date: Wed, 3 Feb 2010 20:51:06 +0100
+From: Alessandro Rubini <rubini-list@gnudd.com>
+Message-ID: <20100203195105.GA32322@morgana.gnudd.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-Message-Id: <201001291251.16655.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,74 +26,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] i.MX35: Fix pad control bit positions
+Subject: [PATCH] Documentation/porting.txt: s/barebox/u-boot/ wrongly renamed
 To: barebox@lists.infradead.org
 
-Using these macros simplify the configuration for special GPIO usage. But they
-should use correct bit positions for usage in the IOMUX_PAD() macro.
+From: Alessandro Rubini <rubini@gnudd.com>
 
-Note: These are the bit positions of the i.MX35 CPU. Not checked for the other
-i.MX3x CPUs.
-
-Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
-
+Signed-off-by: Alessandro Rubini <rubini@gnudd.com>
 ---
- arch/arm/mach-imx/include/mach/iomux-v3.h |   34 +++++++++++++++---------------
- 1 file changed, 17 insertions(+), 17 deletions(-)
+ Documentation/porting.txt |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-Index: u-boot-v2/arch/arm/mach-imx/include/mach/iomux-v3.h
-===================================================================
---- u-boot-v2.orig/arch/arm/mach-imx/include/mach/iomux-v3.h
-+++ u-boot-v2/arch/arm/mach-imx/include/mach/iomux-v3.h
-@@ -68,25 +68,25 @@ struct pad_desc {
- /*
-  * Use to set PAD control
-  */
--#define PAD_CTL_DRIVE_VOLTAGE_3_3_V	0
--#define PAD_CTL_DRIVE_VOLTAGE_1_8_V	1
-+#define PAD_CTL_DRIVE_VOLTAGE_3_3_V	(0)
-+#define PAD_CTL_DRIVE_VOLTAGE_1_8_V	(1 << 13)
+diff --git a/Documentation/porting.txt b/Documentation/porting.txt
+index ccfe598..48eebdf 100644
+--- a/Documentation/porting.txt
++++ b/Documentation/porting.txt
+@@ -1,5 +1,5 @@
  
--#define PAD_CTL_NO_HYSTERESIS		0
--#define PAD_CTL_HYSTERESIS		1
-+#define PAD_CTL_NO_HYSTERESIS		(0)
-+#define PAD_CTL_HYSTERESIS		(1 << 8)
+-When porting from old barebox the follwing steps must be taken (please complain
++When porting from old u-boot the follwing steps must be taken (please complain
+ if there's something missing here ;)
  
--#define PAD_CTL_PULL_DISABLED		0x0
--#define PAD_CTL_PULL_KEEPER		0xa
--#define PAD_CTL_PULL_DOWN_100K		0xc
--#define PAD_CTL_PULL_UP_47K		0xd
--#define PAD_CTL_PULL_UP_100K		0xe
--#define PAD_CTL_PULL_UP_22K		0xf
--
--#define PAD_CTL_OUTPUT_CMOS		0
--#define PAD_CTL_OUTPUT_OPEN_DRAIN	1
--
--#define PAD_CTL_DRIVE_STRENGTH_NORM	0
--#define PAD_CTL_DRIVE_STRENGTH_HIGH	1
--#define PAD_CTL_DRIVE_STRENGTH_MAX	2
-+#define PAD_CTL_PULL_DISABLED		(0)
-+#define PAD_CTL_PULL_KEEPER		(0xa << 4)
-+#define PAD_CTL_PULL_DOWN_100K		(0xc << 4)
-+#define PAD_CTL_PULL_UP_47K		(0xd << 4)
-+#define PAD_CTL_PULL_UP_100K		(0xe << 4)
-+#define PAD_CTL_PULL_UP_22K		(0xf << 4)
-+
-+#define PAD_CTL_OUTPUT_CMOS		(0)
-+#define PAD_CTL_OUTPUT_OPEN_DRAIN	(1 << 3)
-+
-+#define PAD_CTL_DRIVE_STRENGTH_NORM	(0)
-+#define PAD_CTL_DRIVE_STRENGTH_HIGH	(1 << 1)
-+#define PAD_CTL_DRIVE_STRENGTH_MAX	(2 << 1)
  
- #define PAD_CTL_SLEW_RATE_SLOW		0
- #define PAD_CTL_SLEW_RATE_FAST		1
-
 -- 
-Pengutronix e.K.                              | Juergen Beisert             |
-Linux Solutions for Science and Industry      | Phone: +49-8766-939 228     |
-Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
+1.5.6.5
 
 _______________________________________________
 barebox mailing list
