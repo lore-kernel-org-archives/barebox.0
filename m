@@ -1,19 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail2.gnudd.com ([213.203.150.91] helo=mail.gnudd.com)
-	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NclJJ-0000oG-1W
-	for barebox@lists.infradead.org; Wed, 03 Feb 2010 19:54:54 +0000
-Received: from mail.gnudd.com (localhost [127.0.0.1])
-	by mail.gnudd.com (8.14.3/8.14.3/Debian-5) with ESMTP id o13JsdVq032417
-	for <barebox@lists.infradead.org>; Wed, 3 Feb 2010 20:54:39 +0100
-Received: (from rubini@localhost)
-	by mail.gnudd.com (8.14.3/8.14.3/Submit) id o13JsdDN032416
-	for barebox@lists.infradead.org; Wed, 3 Feb 2010 20:54:39 +0100
-Date: Wed, 3 Feb 2010 20:54:38 +0100
-From: Alessandro Rubini <rubini-list@gnudd.com>
-Message-ID: <20100203195438.GA32411@morgana.gnudd.com>
+Received: from mail-ew0-f223.google.com ([209.85.219.223])
+	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
+	id 1NcmlB-00060q-5b
+	for barebox@lists.infradead.org; Wed, 03 Feb 2010 21:27:45 +0000
+Received: by ewy23 with SMTP id 23so37791ewy.4
+	for <barebox@lists.infradead.org>; Wed, 03 Feb 2010 13:27:34 -0800 (PST)
+From: Peter Korsgaard <jacmet@sunsite.dk>
+References: <20100203195105.GA32322@morgana.gnudd.com>
+Date: Wed, 03 Feb 2010 22:27:32 +0100
+In-Reply-To: <20100203195105.GA32322@morgana.gnudd.com> (Alessandro Rubini's
+	message of "Wed, 3 Feb 2010 20:51:06 +0100")
+Message-ID: <87wryuggcb.fsf@macbook.be.48ers.dk>
 MIME-Version: 1.0
-Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,22 +24,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: about the MAINTAINERS file
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] Documentation/porting.txt: s/barebox/u-boot/ wrongly
+	renamed
+To: Alessandro Rubini <rubini-list@gnudd.com>
+Cc: barebox@lists.infradead.org
 
-Should the maintainers file be removed?
+>>>>> "Alessandro" == Alessandro Rubini <rubini-list@gnudd.com> writes:
 
-It starts with this:
+ Alessandro> From: Alessandro Rubini <rubini@gnudd.com>
+ Alessandro> Signed-off-by: Alessandro Rubini <rubini@gnudd.com>
+ Alessandro> ---
+ Alessandro>  Documentation/porting.txt |    2 +-
+ Alessandro>  1 files changed, 1 insertions(+), 1 deletions(-)
 
-# For any board without permanent maintainer, please contact            #
-#       Wolfgang Denk <wd@denx.de>                                      #
-# and Cc: the <barebox-Users@lists.sourceforge.net> mailing lists.      #
+ Alessandro> diff --git a/Documentation/porting.txt b/Documentation/porting.txt
+ Alessandro> index ccfe598..48eebdf 100644
+ Alessandro> --- a/Documentation/porting.txt
+ Alessandro> +++ b/Documentation/porting.txt
+ Alessandro> @@ -1,5 +1,5 @@
+ 
+ Alessandro> -When porting from old barebox the follwing steps must be taken (please complain
+ Alessandro> +When porting from old u-boot the follwing steps must be taken (please complain
+ Alessandro>  if there's something missing here ;)
 
-But then it continues with a number of boards that are not
-currently supported, nor maintained by the people listed (I suppose).
+There's also s/follwing/following/
 
-Thanks
-/alessandro
+-- 
+Bye, Peter Korsgaard
 
 _______________________________________________
 barebox mailing list
