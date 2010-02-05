@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NcxR1-0007Pw-M2
-	for barebox@lists.infradead.org; Thu, 04 Feb 2010 08:51:36 +0000
-Date: Thu, 4 Feb 2010 09:51:28 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20100204085128.GS6130@pengutronix.de>
-References: <20100203195438.GA32411@morgana.gnudd.com>
+Received: from mail-ew0-f223.google.com ([209.85.219.223])
+	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
+	id 1NdR02-0004kK-IP
+	for barebox@lists.infradead.org; Fri, 05 Feb 2010 16:25:47 +0000
+Received: by ewy23 with SMTP id 23so424661ewy.4
+	for <barebox@lists.infradead.org>; Fri, 05 Feb 2010 08:25:40 -0800 (PST)
+Message-ID: <4B6C4678.9060007@tylerlabs.com>
+Date: Fri, 05 Feb 2010 12:25:28 -0400
+From: "Tyler W. Wilson" <tyler@tylerlabs.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20100203195438.GA32411@morgana.gnudd.com>
+Reply-To: barebox@tylerlabs.com
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,39 +18,21 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: about the MAINTAINERS file
-To: Alessandro Rubini <rubini-list@gnudd.com>
-Cc: barebox@lists.infradead.org
+Subject: barebox for leopardboard
+To: barebox@lists.infradead.org
 
-Hi Alessandro,
+I am curious if anybody has done any work on getting barebox running on 
+the leopardboard, so I do not reproduce effort.
 
-On Wed, Feb 03, 2010 at 08:54:38PM +0100, Alessandro Rubini wrote:
-> Should the maintainers file be removed?
-> 
-> It starts with this:
-> 
-> # For any board without permanent maintainer, please contact            #
-> #       Wolfgang Denk <wd@denx.de>                                      #
-> # and Cc: the <barebox-Users@lists.sourceforge.net> mailing lists.      #
-> 
-> But then it continues with a number of boards that are not
-> currently supported, nor maintained by the people listed (I suppose).
+I am especially interested in setting up a bootloader that directly 
+supports USB and DFU, so that I do not need to use the UART/serial port.
 
-You're right, I just removed it before someone bothers Wolfgang about
-barebox.
-
-Sascha
-
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Thank you,
+Tyler
 
 _______________________________________________
 barebox mailing list
