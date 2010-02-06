@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-px0-f200.google.com ([209.85.216.200])
+Received: from khc.piap.pl ([195.187.100.11])
 	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
-	id 1NdUb7-000804-W1
-	for barebox@lists.infradead.org; Fri, 05 Feb 2010 20:16:18 +0000
-Received: by pxi38 with SMTP id 38so4434435pxi.28
-	for <barebox@lists.infradead.org>; Fri, 05 Feb 2010 12:16:12 -0800 (PST)
+	id 1Ndrlt-0004RY-0q
+	for barebox@lists.infradead.org; Sat, 06 Feb 2010 21:00:58 +0000
+Received: from intrepid.localdomain (intrepid.localdomain [10.0.0.2])
+	by khc.piap.pl (Postfix) with ESMTP id 8127B95D1
+	for <barebox@lists.infradead.org>; Sat,  6 Feb 2010 22:00:42 +0100 (CET)
+From: Krzysztof Halasa <khc@pm.waw.pl>
+Date: Sat, 06 Feb 2010 22:00:42 +0100
+Message-ID: <m33a1eoz9h.fsf@intrepid.localdomain>
 MIME-Version: 1.0
-In-Reply-To: <20100205182045.GB18291@pengutronix.de>
-References: <4B6C4678.9060007@tylerlabs.com>
-	<20100205174959.GA18291@pengutronix.de>
-	<4B6C5C5E.2020208@tylerlabs.com>
-	<20100205182045.GB18291@pengutronix.de>
-Date: Sat, 6 Feb 2010 01:46:11 +0530
-Message-ID: <57969b5c1002051216h5810370cs14ca9295680f78a4@mail.gmail.com>
-From: Anand Gadiyar <gadiyar@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,26 +22,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: barebox for leopardboard
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: IXP4xx support
+To: barebox@lists.infradead.org
 
->>
->> The USB worries me, since I am just familiar enough with it to know how
->> complex it can be. Time will tell
->
-> What kind of controller does this SoC have, EHCI, OHCI?
->
+Hi,
 
-I'm not familiar with this SoC, but a couple of quick searches on google
-led me to the USB controller's reference guide. It looks like MUSB with
-CPPI DMA, similar to what is in other Davinci chips. If so, there's a kernel
-driver for it in Linux (see drivers/usb/musb/) with support for the DMA
-engine as well.
+I'm thinking about adding Barebox support for a certain platform using
+IXP425 (ARM, usually big-endian) CPU. This means the startup code
+(trivial, already got it working in little-endian mode), drivers for
+hardware Queue Manager, Network Processing Engines and built-in Ethernet
+interfaces (all of them easy to port from Linux).
 
-OMAP3 uses MUSB with its own "Inventra" DMA engine.
+This also means supporting the NOR flash: the CPU has 16-bit, always
+big-endian, "value-preserving" EXP bus for connecting such devices. In
+LE mode the address has to be XORed with 2, and if it's byte-oriented
+data (i.e. not a command/response), it has to be byte-swapped. Only
+16-bit writes can be made.
 
-- Anand
+Doing the above in the flash driver would complicate things a lot. The
+drivers currently use plain pointers to access the flash. I'm thinking
+about moving the low-level access (R/W) routines to arch code (with a
+generic defaults), and calling them via the NOR flash platform struct
+(which doesn't do anything useful ATM).
+
+The above would also permit supporting flashes which can't be mapped in
+normal CPU address space. It would be a bit slower, though.
+
+Opinions?
+-- 
+Krzysztof Halasa
 
 _______________________________________________
 barebox mailing list
