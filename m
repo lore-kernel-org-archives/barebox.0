@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from khc.piap.pl ([195.187.100.11])
+Received: from relay2-d.mail.gandi.net ([217.70.183.194])
 	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
-	id 1Ndrlt-0004RY-0q
-	for barebox@lists.infradead.org; Sat, 06 Feb 2010 21:00:58 +0000
-Received: from intrepid.localdomain (intrepid.localdomain [10.0.0.2])
-	by khc.piap.pl (Postfix) with ESMTP id 8127B95D1
-	for <barebox@lists.infradead.org>; Sat,  6 Feb 2010 22:00:42 +0100 (CET)
-From: Krzysztof Halasa <khc@pm.waw.pl>
-Date: Sat, 06 Feb 2010 22:00:42 +0100
-Message-ID: <m33a1eoz9h.fsf@intrepid.localdomain>
+	id 1NduUf-0004sq-Tl
+	for barebox@lists.infradead.org; Sat, 06 Feb 2010 23:55:22 +0000
+Date: Sun, 7 Feb 2010 00:54:56 +0100
+From: Matthias Kaehlcke <matthias@kaehlcke.net>
+Message-ID: <20100206235456.GD15617@darwin>
+References: <d5ecf68c69351ddcef35759f76e7e8ce3d7e0571.1265500315.git.matthias@kaehlcke.net>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <d5ecf68c69351ddcef35759f76e7e8ce3d7e0571.1265500315.git.matthias@kaehlcke.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,35 +22,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: IXP4xx support
+Subject: [PATCH] edb93xx: Enable UART1
 To: barebox@lists.infradead.org
 
-Hi,
+edb93xx: according to the datasheet UART1 needs to be enabled explicitly
 
-I'm thinking about adding Barebox support for a certain platform using
-IXP425 (ARM, usually big-endian) CPU. This means the startup code
-(trivial, already got it working in little-endian mode), drivers for
-hardware Queue Manager, Network Processing Engines and built-in Ethernet
-interfaces (all of them easy to port from Linux).
+Signed-off-by: Matthias Kaehlcke <matthias@kaehlcke.net>
+---
+ board/edb93xx/edb93xx.c |    8 ++++++++
+ 1 files changed, 8 insertions(+), 0 deletions(-)
 
-This also means supporting the NOR flash: the CPU has 16-bit, always
-big-endian, "value-preserving" EXP bus for connecting such devices. In
-LE mode the address has to be XORed with 2, and if it's byte-oriented
-data (i.e. not a command/response), it has to be byte-swapped. Only
-16-bit writes can be made.
-
-Doing the above in the flash driver would complicate things a lot. The
-drivers currently use plain pointers to access the flash. I'm thinking
-about moving the low-level access (R/W) routines to arch code (with a
-generic defaults), and calling them via the NOR flash platform struct
-(which doesn't do anything useful ATM).
-
-The above would also permit supporting flashes which can't be mapped in
-normal CPU address space. It would be a bit slower, though.
-
-Opinions?
+diff --git a/board/edb93xx/edb93xx.c b/board/edb93xx/edb93xx.c
+index add88e1..6316988 100644
+--- a/board/edb93xx/edb93xx.c
++++ b/board/edb93xx/edb93xx.c
+@@ -32,6 +32,8 @@
+ #include <mach/ep93xx-regs.h>
+ #include "edb93xx.h"
+ 
++#define DEVCFG_U1EN (1 << 18)
++
+ /*
+  * Up to 32MiB NOR type flash, connected to
+  * CS line 6, data width is 16 bit
+@@ -164,6 +166,12 @@ static int edb93xx_console_init(void)
+ 	value |= SYSCON_PWRCNT_UART_BAUD;
+ 	writel(value, &syscon->pwrcnt);
+ 
++	/* Enable UART1 */
++	value = readl(&syscon->devicecfg);
++	value |= DEVCFG_U1EN;
++	writel(0xAA, &syscon->sysswlock);
++	writel(value, &syscon->devicecfg);
++
+ 	register_device(&edb93xx_serial_device);
+ 
+ 	return 0;
 -- 
-Krzysztof Halasa
+1.6.5
+
 
 _______________________________________________
 barebox mailing list
