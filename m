@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NbtYp-0003Yi-Qw
-	for barebox@lists.infradead.org; Mon, 01 Feb 2010 10:31:23 +0000
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Mon,  1 Feb 2010 11:31:03 +0100
-Message-Id: <1265020263-21417-3-git-send-email-mkl@pengutronix.de>
-In-Reply-To: <1265020263-21417-2-git-send-email-mkl@pengutronix.de>
-References: <1265020263-21417-1-git-send-email-mkl@pengutronix.de>
-	<1265020263-21417-2-git-send-email-mkl@pengutronix.de>
+Received: from relay2-d.mail.gandi.net ([217.70.183.194])
+	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
+	id 1NduV2-0005Oy-4m
+	for barebox@lists.infradead.org; Sat, 06 Feb 2010 23:55:44 +0000
+Date: Sun, 7 Feb 2010 00:55:22 +0100
+From: Matthias Kaehlcke <matthias@kaehlcke.net>
+Message-ID: <20100206235522.GF15617@darwin>
+References: <d5ecf68c69351ddcef35759f76e7e8ce3d7e0571.1265500315.git.matthias@kaehlcke.net>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <d5ecf68c69351ddcef35759f76e7e8ce3d7e0571.1265500315.git.matthias@kaehlcke.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,81 +18,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] cfi_flash: fix alignment problem
+Subject: [PATCH] edb93xx: Avoid stack usage in early_udelay()
 To: barebox@lists.infradead.org
-Cc: sha@pengutronix.de
 
-This patch fixes a alignment problem which may show during this
-scenario:
-- 32 or 64 attached NOR flash
-- flashing an image directly from network to the nor flash
+edb93xx: The purpose of early_udelay() is to provide delay functionality in the
+early board setup, when the stack isn't set up yet. With some compiler versions
+the current implementation makes use of the stack and ends up crashing. Fix this
+by removing an explicit division from early_udelay()
 
-The involved network driver is "smc9111.c".
-
-The data that comes from the network stack and should be written into
-the flash isn't 32 bit alligned (at least with this network driver).
-This is probably due to the 48 bit wide ethernet addresses.
-
-However the "cfi_flash.c" driver doesn't handle this situation, and
-accesses the not-alligned address with a 32 bit pointer.
-
-This patch fixes the problem by reducing the access width if an
-alligment problem between source and destination is found.
-
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Matthias Kaehlcke <matthias@kaehlcke.net>
 ---
- drivers/nor/cfi_flash.c |   10 +++++++---
- 1 files changed, 7 insertions(+), 3 deletions(-)
+ board/edb93xx/early_udelay.h |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/nor/cfi_flash.c b/drivers/nor/cfi_flash.c
-index 37206d0..bdef856 100644
---- a/drivers/nor/cfi_flash.c
-+++ b/drivers/nor/cfi_flash.c
-@@ -1336,6 +1336,10 @@ static int flash_write_cfibuffer (flash_info_t * info, ulong dest, const uchar *
- 	volatile cfiptr_t src;
- 	volatile cfiptr_t dst;
+diff --git a/board/edb93xx/early_udelay.h b/board/edb93xx/early_udelay.h
+index 3b26b3f..185283d 100644
+--- a/board/edb93xx/early_udelay.h
++++ b/board/edb93xx/early_udelay.h
+@@ -26,7 +26,7 @@
+ static inline void early_udelay(uint32_t usecs)
+ {
+ 	/* loop takes 4 cycles at 5.0ns (fastest case, running at 200MHz) */
+-	register uint32_t loops = (usecs * 1000) / 20;
++	register uint32_t loops = usecs * (1000 / 20);
  
-+	/* reduce width due to possible alignment problems */
-+	const unsigned long ptr = (unsigned long)dest | (unsigned long)cp | info->portwidth;
-+	const int width = ptr & -ptr;
-+
- 	switch (info->vendor) {
- 	case CFI_CMDSET_INTEL_STANDARD:
- 	case CFI_CMDSET_INTEL_EXTENDED:
-@@ -1347,7 +1351,7 @@ static int flash_write_cfibuffer (flash_info_t * info, ulong dest, const uchar *
- 		if ((retcode = flash_status_check (info, sector, info->buffer_write_tout,
- 						   "write to buffer")) == ERR_OK) {
- 			/* reduce the number of loops by the width of the port	*/
--			switch (info->portwidth) {
-+			switch (width) {
- 			case FLASH_CFI_8BIT:
- 				cnt = len;
- 				break;
-@@ -1366,7 +1370,7 @@ static int flash_write_cfibuffer (flash_info_t * info, ulong dest, const uchar *
- 			}
- 			flash_write_cmd (info, sector, 0, (uchar) cnt - 1);
- 			while (cnt-- > 0) {
--				switch (info->portwidth) {
-+				switch (width) {
- 				case FLASH_CFI_8BIT:
- 					*dst.cp++ = *src.cp++;
- 					break;
-@@ -1401,7 +1405,7 @@ static int flash_write_cfibuffer (flash_info_t * info, ulong dest, const uchar *
- 		flash_unlock_seq(info,0);
- 		flash_write_cmd (info, sector, 0, AMD_CMD_WRITE_TO_BUFFER);
- 
--		switch (info->portwidth) {
-+		switch (width) {
- 		case FLASH_CFI_8BIT:
- 			cnt = len;
- 			flash_write_cmd (info, sector, 0,  (uchar) cnt - 1);
+ 	__asm__ volatile ("1:\n"
+ 			"subs %0, %1, #1\n"
 -- 
-1.6.6.1
+1.6.5
 
 
 _______________________________________________
