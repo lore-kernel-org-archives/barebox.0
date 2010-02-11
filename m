@@ -1,19 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relay2-d.mail.gandi.net ([217.70.183.194])
-	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
-	id 1NfIh0-0001lE-NP
-	for barebox@lists.infradead.org; Wed, 10 Feb 2010 19:57:51 +0000
-Received: from d4rwin.no-ip.org (79.Red-88-19-186.staticIP.rima-tde.net
-	[88.19.186.79])
-	by relay2-d.mail.gandi.net (Postfix) with ESMTPSA id 2BE7122519F
-	for <barebox@lists.infradead.org>; Wed, 10 Feb 2010 20:57:38 +0100 (CET)
-Date: Wed, 10 Feb 2010 20:57:23 +0100
-From: Matthias Kaehlcke <matthias@kaehlcke.net>
-Message-ID: <20100210195723.GG374@darwin>
-References: <6e744dd32db7d0d09bf0e429c0dd67768e61e118.1265831572.git.matthias@kaehlcke.net>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
+	id 1NfXr2-0003Pa-3P
+	for barebox@lists.infradead.org; Thu, 11 Feb 2010 12:09:12 +0000
+Received: from themisto.ext.pengutronix.de ([92.198.50.58]
+	helo=jupiter.intranet.kreuzholzen.de)
+	by metis.ext.pengutronix.de with esmtp (Exim 4.69)
+	(envelope-from <jbe@pengutronix.de>) id 1NfXqm-00088Q-DG
+	for barebox@lists.infradead.org; Thu, 11 Feb 2010 13:08:56 +0100
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Thu, 11 Feb 2010 13:08:49 +0100
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <6e744dd32db7d0d09bf0e429c0dd67768e61e118.1265831572.git.matthias@kaehlcke.net>
+Message-Id: <201002111308.50433.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,32 +25,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] edb93xx: Fix comment in edb93xx_console_init()
+Subject: [PATCH] Fix compile time errors when DEBUG is defined
 To: barebox@lists.infradead.org
 
-edb93xx: Fix comment in edb93xx_console_init()
+If the DEBUG macro is defined the compiler complains about a missing
+'ipu_base' variable.
 
-Signed-off-by: Matthias Kaehlcke <matthias@kaehlcke.net>
----
- board/edb93xx/edb93xx.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 
-diff --git a/board/edb93xx/edb93xx.c b/board/edb93xx/edb93xx.c
-index 6316988..b0078a5 100644
---- a/board/edb93xx/edb93xx.c
-+++ b/board/edb93xx/edb93xx.c
-@@ -166,7 +166,7 @@ static int edb93xx_console_init(void)
- 	value |= SYSCON_PWRCNT_UART_BAUD;
- 	writel(value, &syscon->pwrcnt);
+diff --git a/drivers/video/imx-ipu-fb.c b/drivers/video/imx-ipu-fb.c
+index 4a27009..0bd86b2 100644
+--- a/drivers/video/imx-ipu-fb.c
++++ b/drivers/video/imx-ipu-fb.c
+@@ -398,7 +398,7 @@ static inline u32 reg_read(struct ipu_fb_info *fbi, unsigned long reg)
  
--	/* Enable the UART 1 */
-+	/* Enable UART1 */
- 	value = readl(&syscon->devicecfg);
- 	value |= DEVCFG_U1EN;
- 	writel(0xAA, &syscon->sysswlock);
--- 
-1.6.5
+ 	val = readl(fbi->regs + reg);
+ 
+-	debug("%s: %p 0x%08x\n", __func__, ipu_base + reg, val);
++	debug("%s: %p 0x%08x\n", __func__, fbi->regs + reg, val);
+ 
+ 	return val;
+ }
+@@ -406,7 +406,7 @@ static inline u32 reg_read(struct ipu_fb_info *fbi, unsigned long reg)
+ static inline void reg_write(struct ipu_fb_info *fbi, u32 value,
+ 		unsigned long reg)
+ {
+-	debug("%s: %p 0x%08x\n", __func__, ipu_base + reg, value);
++	debug("%s: %p 0x%08x\n", __func__, fbi->regs + reg, value);
+ 
+ 	writel(value, fbi->regs + reg);
+ }
 
+-- 
+Pengutronix e.K.                              | Juergen Beisert             |
+Linux Solutions for Science and Industry      | Phone: +49-8766-939 228     |
+Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555 |
+Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
