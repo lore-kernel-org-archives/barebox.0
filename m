@@ -1,20 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NfaYH-0005Ub-9m
-	for barebox@lists.infradead.org; Thu, 11 Feb 2010 15:02:01 +0000
-Received: from themisto.ext.pengutronix.de ([92.198.50.58]
-	helo=jupiter.intranet.kreuzholzen.de)
-	by metis.ext.pengutronix.de with esmtp (Exim 4.69)
-	(envelope-from <jbe@pengutronix.de>) id 1NfaY9-00082R-B8
-	for barebox@lists.infradead.org; Thu, 11 Feb 2010 16:01:50 +0100
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Thu, 11 Feb 2010 16:01:47 +0100
-References: <201001291251.16655.jbe@pengutronix.de>
-In-Reply-To: <201001291251.16655.jbe@pengutronix.de>
+Received: from relay2-v.mail.gandi.net ([217.70.178.76])
+	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
+	id 1NffMt-0005Ei-92
+	for barebox@lists.infradead.org; Thu, 11 Feb 2010 20:10:36 +0000
+Received: from d4rwin.no-ip.org (165.Red-88-27-22.staticIP.rima-tde.net
+	[88.27.22.165])
+	by relay2-v.mail.gandi.net (Postfix) with ESMTP id 3647C135D9
+	for <barebox@lists.infradead.org>; Thu, 11 Feb 2010 21:10:20 +0100 (CET)
+Date: Thu, 11 Feb 2010 21:10:04 +0100
+From: Matthias Kaehlcke <matthias@kaehlcke.net>
+Message-ID: <20100211201004.GF15905@darwin>
 MIME-Version: 1.0
 Content-Disposition: inline
-Message-Id: <201002111601.47675.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,80 +24,70 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] i.MX35: Fix pad control bit positions
+Subject: [PATCH] edb9302(a): Tweak PLL settings
 To: barebox@lists.infradead.org
 
-Hi Sascha,
+Previous code ran the edb9302(a) boards with the PLL same settings as the
+edb9301, at 166MHz core and 66MHz system bus clock. In difference to the edb9301
+board the edb9302(a) is equipped with an EP9302 processor, which can be clocked
+at higher rates than the EP9301. Therefore we can configure the edb9302(a) with
+the same PLL settings as the other non-edb9301 boards, namely at 200MHz for
+the core and 100MHz for the system bus clock.
 
-as discussed at FOSDEM: *ping* ;-)
+Signed-off-by: Matthias Kaehlcke <matthias@kaehlcke.net>
+---
+ board/edb93xx/pll_cfg.h   |    6 +++---
+ board/edb93xx/sdram_cfg.h |    7 ++++---
+ 2 files changed, 7 insertions(+), 6 deletions(-)
 
-Juergen Beisert wrote:
-> Using these macros simplify the configuration for special GPIO usage. But
-> they should use correct bit positions for usage in the IOMUX_PAD() macro.
->
-> Note: These are the bit positions of the i.MX35 CPU. Not checked for the
-> other i.MX3x CPUs.
->
-> Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
->
-> ---
->  arch/arm/mach-imx/include/mach/iomux-v3.h |   34
-> +++++++++++++++--------------- 1 file changed, 17 insertions(+), 17
-> deletions(-)
->
-> Index: u-boot-v2/arch/arm/mach-imx/include/mach/iomux-v3.h
-> ===================================================================
-> --- u-boot-v2.orig/arch/arm/mach-imx/include/mach/iomux-v3.h
-> +++ u-boot-v2/arch/arm/mach-imx/include/mach/iomux-v3.h
-> @@ -68,25 +68,25 @@ struct pad_desc {
->  /*
->   * Use to set PAD control
->   */
-> -#define PAD_CTL_DRIVE_VOLTAGE_3_3_V	0
-> -#define PAD_CTL_DRIVE_VOLTAGE_1_8_V	1
-> +#define PAD_CTL_DRIVE_VOLTAGE_3_3_V	(0)
-> +#define PAD_CTL_DRIVE_VOLTAGE_1_8_V	(1 << 13)
->
-> -#define PAD_CTL_NO_HYSTERESIS		0
-> -#define PAD_CTL_HYSTERESIS		1
-> +#define PAD_CTL_NO_HYSTERESIS		(0)
-> +#define PAD_CTL_HYSTERESIS		(1 << 8)
->
-> -#define PAD_CTL_PULL_DISABLED		0x0
-> -#define PAD_CTL_PULL_KEEPER		0xa
-> -#define PAD_CTL_PULL_DOWN_100K		0xc
-> -#define PAD_CTL_PULL_UP_47K		0xd
-> -#define PAD_CTL_PULL_UP_100K		0xe
-> -#define PAD_CTL_PULL_UP_22K		0xf
-> -
-> -#define PAD_CTL_OUTPUT_CMOS		0
-> -#define PAD_CTL_OUTPUT_OPEN_DRAIN	1
-> -
-> -#define PAD_CTL_DRIVE_STRENGTH_NORM	0
-> -#define PAD_CTL_DRIVE_STRENGTH_HIGH	1
-> -#define PAD_CTL_DRIVE_STRENGTH_MAX	2
-> +#define PAD_CTL_PULL_DISABLED		(0)
-> +#define PAD_CTL_PULL_KEEPER		(0xa << 4)
-> +#define PAD_CTL_PULL_DOWN_100K		(0xc << 4)
-> +#define PAD_CTL_PULL_UP_47K		(0xd << 4)
-> +#define PAD_CTL_PULL_UP_100K		(0xe << 4)
-> +#define PAD_CTL_PULL_UP_22K		(0xf << 4)
-> +
-> +#define PAD_CTL_OUTPUT_CMOS		(0)
-> +#define PAD_CTL_OUTPUT_OPEN_DRAIN	(1 << 3)
-> +
-> +#define PAD_CTL_DRIVE_STRENGTH_NORM	(0)
-> +#define PAD_CTL_DRIVE_STRENGTH_HIGH	(1 << 1)
-> +#define PAD_CTL_DRIVE_STRENGTH_MAX	(2 << 1)
->
->  #define PAD_CTL_SLEW_RATE_SLOW		0
->  #define PAD_CTL_SLEW_RATE_FAST		1
-
+diff --git a/board/edb93xx/pll_cfg.h b/board/edb93xx/pll_cfg.h
+index 9691339..503507a 100644
+--- a/board/edb93xx/pll_cfg.h
++++ b/board/edb93xx/pll_cfg.h
+@@ -25,8 +25,7 @@
+ #include <config.h>
+ #include <mach/ep93xx-regs.h>
+ 
+-#if defined(CONFIG_MACH_EDB9301) || defined(CONFIG_MACH_EDB9302) || \
+-	defined(CONFIG_MACH_EDB9302A)
++#if defined(CONFIG_MACH_EDB9301)
+ /*
+  * fclk_div: 2, nbyp1: 1, hclk_div: 5, pclk_div: 2
+  * pll1_x1: 294912000.000000, pll1_x2ip: 36864000.000000,
+@@ -39,7 +38,8 @@
+ 			3 << SYSCON_CLKSET1_HCLK_DIV_SHIFT |	   \
+ 			SYSCON_CLKSET1_NBYP1 |			   \
+ 			1 << SYSCON_CLKSET1_FCLK_DIV_SHIFT)
+-#elif defined(CONFIG_MACH_EDB9307) || defined(CONFIG_MACH_EDB9307A) ||\
++#elif defined(CONFIG_MACH_EDB9302) || defined(CONFIG_MACH_EDB9302A) ||	\
++	defined(CONFIG_MACH_EDB9307) || defined(CONFIG_MACH_EDB9307A) || \
+ 	defined CONFIG_MACH_EDB9312 || defined(CONFIG_MACH_EDB9315) ||\
+ 	defined(CONFIG_MACH_EDB9315A)
+ /*
+diff --git a/board/edb93xx/sdram_cfg.h b/board/edb93xx/sdram_cfg.h
+index 7babee8..c57b76e 100644
+--- a/board/edb93xx/sdram_cfg.h
++++ b/board/edb93xx/sdram_cfg.h
+@@ -43,12 +43,13 @@
+  * CLK cycle time min:
+  *	@ CAS latency = 3: 7.5ns
+  *	@ CAS latency = 2: 10ns
+- * We're running at 66MHz (15ns cycle time) external bus speed (HCLK),
+- * so it's safe to use CAS latency = 2
++ * We're running at 66MHz (EDB9301) / 100Mhz (EDB9302(a)) external
++ * bus speed (HCLK), with a cycle time of 15ns / 10ns, so it's safe
++ * to use CAS latency = 2
+  *
+  * RAS-to-CAS delay min:
+  *	20ns
+- * At 15ns cycle time, we use RAS-to-CAS delay = 2
++ * At 15ns/10ns cycle time, we use RAS-to-CAS delay = 2
+  *
+  * SROMLL = 1: Swap BA[1:0] with A[13:12], making the SDRAM appear
+  * as four blocks of 8MB size, instead of eight blocks of 4MB size:
 -- 
-Pengutronix e.K.                              | Juergen Beisert             |
-Linux Solutions for Science and Industry      | Phone: +49-8766-939 228     |
-Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
+1.6.5
+
 
 _______________________________________________
 barebox mailing list
