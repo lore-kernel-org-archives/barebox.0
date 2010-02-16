@@ -1,18 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ew0-f223.google.com ([209.85.219.223])
-	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
-	id 1NdSSS-00085I-12
-	for barebox@lists.infradead.org; Fri, 05 Feb 2010 17:59:12 +0000
-Received: by ewy23 with SMTP id 23so540841ewy.4
-	for <barebox@lists.infradead.org>; Fri, 05 Feb 2010 09:59:06 -0800 (PST)
-Message-ID: <4B6C5C5E.2020208@tylerlabs.com>
-Date: Fri, 05 Feb 2010 13:58:54 -0400
-From: "Tyler W. Wilson" <tyler@tylerlabs.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
+	id 1NhOvI-0007le-JD
+	for barebox@lists.infradead.org; Tue, 16 Feb 2010 15:01:13 +0000
+Date: Tue, 16 Feb 2010 16:01:09 +0100
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20100216150109.GA21776@pengutronix.de>
+References: <1266331586-11253-1-git-send-email-mkl@pengutronix.de>
+	<1266331586-11253-2-git-send-email-mkl@pengutronix.de>
+	<1266331586-11253-3-git-send-email-mkl@pengutronix.de>
+	<1266331586-11253-4-git-send-email-mkl@pengutronix.de>
+	<1266331586-11253-5-git-send-email-mkl@pengutronix.de>
+	<1266331586-11253-6-git-send-email-mkl@pengutronix.de>
+	<1266331586-11253-7-git-send-email-mkl@pengutronix.de>
 MIME-Version: 1.0
-References: <4B6C4678.9060007@tylerlabs.com>
-	<20100205174959.GA18291@pengutronix.de>
-In-Reply-To: <20100205174959.GA18291@pengutronix.de>
-Reply-To: barebox@tylerlabs.com
+Content-Disposition: inline
+In-Reply-To: <1266331586-11253-7-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,49 +24,27 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: barebox for leopardboard
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 06/11] start-arm: cleanup: propper indention
+To: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: barebox@lists.infradead.org, sha@pengutronix.de
 
-On 2/5/2010 1:49 PM, Sascha Hauer wrote:
-> Hi Tyler,
->
-> On Fri, Feb 05, 2010 at 12:25:28PM -0400, Tyler W. Wilson wrote:
->    
->> I am curious if anybody has done any work on getting barebox running on
->> the leopardboard, so I do not reproduce effort.
->>
->> I am especially interested in setting up a bootloader that directly
->> supports USB and DFU, so that I do not need to use the UART/serial port.
->>      
-> I know nothing about the leopardboard, from googling I found out that
-> this is a beagleboard with a camera connected to it, right? Barebox runs
-> on the beagleboard, but unfortunately we do not have USB support for it.
-> You would have to port the usb driver for it, then DFU should work.
-> As a first shot you can compile the beagleboard defconfig and see how
-> far you get.
->
-> Sascha
->
->    
-Unfortunately, it is a little different - it uses a DaVinci DM355 
-processor, which is an ARM9 + custom DSP. The beagleboard uses an OMAP3x 
-of course. Unfortunately, even I am confused on the TI naming scheme as 
-to what is an OMAP versus what is a DaVinci.
+Hey Marc,
 
-I will probably do as you suggest - start with the beagleboard configs 
-and also look at the leopardboard code in the ti u-boot repo. Hopefully 
-that will give me enough data to get the basic barebox running.
+a minor nitpick only:
 
-The USB worries me, since I am just familiar enough with it to know how 
-complex it can be. Time will tell.
+	$Subject ~=3D s/pp/p/
 
-Thank you for your input.
+Best regards
+Uwe
 
-Tyler
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
