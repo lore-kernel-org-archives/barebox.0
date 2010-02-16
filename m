@@ -1,19 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NhU9Q-0004pI-87
-	for barebox@lists.infradead.org; Tue, 16 Feb 2010 20:36:12 +0000
-Message-ID: <4B7B019C.60601@pengutronix.de>
-Date: Tue, 16 Feb 2010 21:35:40 +0100
+	id 1NhUHE-0005i5-G5
+	for barebox@lists.infradead.org; Tue, 16 Feb 2010 20:44:16 +0000
+Message-ID: <4B7B0393.2090907@pengutronix.de>
+Date: Tue, 16 Feb 2010 21:44:03 +0100
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 MIME-Version: 1.0
-References: <1266331586-11253-1-git-send-email-mkl@pengutronix.de>
-	<1266331586-11253-2-git-send-email-mkl@pengutronix.de>
-	<1266331586-11253-3-git-send-email-mkl@pengutronix.de>
-	<1266331586-11253-4-git-send-email-mkl@pengutronix.de>
-	<1266331586-11253-5-git-send-email-mkl@pengutronix.de>
-	<1266331586-11253-6-git-send-email-mkl@pengutronix.de>
-In-Reply-To: <1266331586-11253-6-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,50 +15,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1654053326=="
+Content-Type: multipart/mixed; boundary="===============1381761666=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 05/11] drivers/video/Makefile: cleanup propper indention
-To: barebox@lists.infradead.org
-Cc: sha@pengutronix.de
+Subject: problem with env in NOR
+To: barebox mailing list <barebox@lists.infradead.org>
+Cc: Sascha Hauer <sha@pengutronix.de>
 
 This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---===============1654053326==
+--===============1381761666==
 Content-Type: multipart/signed; micalg=pgp-sha1;
  protocol="application/pgp-signature";
- boundary="------------enig5BE87F15CBAFB5ED0021BA72"
+ boundary="------------enigFAAC8CC23A4A04967255D0CE"
 
 This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---------------enig5BE87F15CBAFB5ED0021BA72
+--------------enigFAAC8CC23A4A04967255D0CE
 Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: quoted-printable
 
-Marc Kleine-Budde wrote:
-> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-> ---
->  drivers/video/Makefile |    7 ++++---
->  1 files changed, 4 insertions(+), 3 deletions(-)
->=20
-> diff --git a/drivers/video/Makefile b/drivers/video/Makefile
-> index 1e0d1b9..45ee09e 100644
-> --- a/drivers/video/Makefile
-> +++ b/drivers/video/Makefile
-> @@ -1,3 +1,4 @@
-> -obj-$(CONFIG_VIDEO)	+=3D fb.o
-> -obj-$(CONFIG_DRIVER_VIDEO_IMX)	+=3D imx.o
-> -obj-$(CONFIG_DRIVER_VIDEO_IMX_IPU) +=3D imx-ipu-fb.o
-> +obj-$(CONFIG_VIDEO)			+=3D fb.o
-> +
-> +obj-$(CONFIG_DRIVER_VIDEO_IMX)		+=3D imx.o
-> +obj-$(CONFIG_DRIVER_VIDEO_IMX_IPU)	+=3D imx-ipu-fb.o
+Hello,
 
-As Uwe pointed out indention with tabs isn't good in the long term. As
-soon as a longer config option occurs the whole indention is broken again=
-=2E
+on my PXA270 I put a splash image into the environment. The env image
+with the splash image covers more than one flash sector. (The flash
+sector size is 256 KiB.)
 
-I'll convert the two files into a "just one space" style.
+Loading the environment fails:
 
-cheers, Marc
+uboot:/ loadenv /dev/env0
+loading environment from /dev/env0
+read: error -262116
+
+(This fails during boot, too.)
+
+[frogger@hardanger:barebox (dev/pxa270)]$ grep CFI .config
+CONFIG_HAS_CFI=3Dy
+CONFIG_DRIVER_CFI=3Dy
+# CONFIG_DRIVER_CFI_NEW is not set
+CONFIG_DRIVER_CFI_OLD=3Dy
+CONFIG_CFI_BUFFER_WRITE=3Dy
+
+Sascha it's probably the problem we discussed the other day, that the
+cfi driver doesn't handle the offset correct. I haven't looked at the
+code though.
+
+Cheers, Marc
 
 --=20
 Pengutronix e.K.                  | Marc Kleine-Budde           |
@@ -74,7 +67,7 @@ Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
 Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
 
 
---------------enig5BE87F15CBAFB5ED0021BA72
+--------------enigFAAC8CC23A4A04967255D0CE
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: OpenPGP digital signature
 Content-Disposition: attachment; filename="signature.asc"
@@ -83,15 +76,15 @@ Content-Disposition: attachment; filename="signature.asc"
 Version: GnuPG v1.4.9 (GNU/Linux)
 Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org
 
-iEYEARECAAYFAkt7AaAACgkQjTAFq1RaXHN0wQCfS47UqPzDx0dw4aqW5zCwdkwS
-TCsAoJbYJladoZVPXM7r56Itm2rAXlZ8
-=nuzv
+iEYEARECAAYFAkt7A5gACgkQjTAFq1RaXHPzqwCeN7rppC77D80ABpNAUrmi3NGH
+8jsAn2sxas3xVJ3bkg7cHm6Jc7VGr/zD
+=YZf+
 -----END PGP SIGNATURE-----
 
---------------enig5BE87F15CBAFB5ED0021BA72--
+--------------enigFAAC8CC23A4A04967255D0CE--
 
 
---===============1654053326==
+--===============1381761666==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -102,4 +95,4 @@ barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
 
---===============1654053326==--
+--===============1381761666==--
