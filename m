@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NhsGc-0008Bu-Ki
-	for barebox@lists.infradead.org; Wed, 17 Feb 2010 22:21:16 +0000
-Message-ID: <4B7C6BCB.5010706@pengutronix.de>
-Date: Wed, 17 Feb 2010 23:20:59 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+Received: from relay2-v.mail.gandi.net ([217.70.178.76])
+	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
+	id 1NkMbI-00006O-SD
+	for barebox@lists.infradead.org; Wed, 24 Feb 2010 19:08:53 +0000
+Received: from d4rwin.no-ip.org (146.Red-88-25-58.staticIP.rima-tde.net
+	[88.25.58.146])
+	by relay2-v.mail.gandi.net (Postfix) with ESMTP id D9BD5135DD
+	for <barebox@lists.infradead.org>; Wed, 24 Feb 2010 20:08:41 +0100 (CET)
+Date: Wed, 24 Feb 2010 20:08:07 +0100
+From: Matthias Kaehlcke <matthias@kaehlcke.net>
+Message-ID: <20100224190807.GW20201@darwin>
 MIME-Version: 1.0
-References: <1266331586-11253-1-git-send-email-mkl@pengutronix.de>
-	<4B7AB1A0.6070903@pengutronix.de>
-	<20100217094609.GZ17643@pengutronix.de>
-In-Reply-To: <20100217094609.GZ17643@pengutronix.de>
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,129 +20,78 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1574234780=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 00/11] arch/arm and other random cleanups
-To: Sascha Hauer <sha@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] edb93xx: Fix SDRAM precharge
+To: barebox@lists.infradead.org
 
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---===============1574234780==
-Content-Type: multipart/signed; micalg=pgp-sha1;
- protocol="application/pgp-signature";
- boundary="------------enigCF653803AA0D23184F2CA335"
+edb93xx SDRAM initialization: Issue a precharge all command before forcing the
+precharge of all SDRAM banks. Write to the SDRAM in order to force a precharge,
+reading causes the edb93xx boards to hang
 
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---------------enigCF653803AA0D23184F2CA335
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Matthias Kaehlcke <matthias@kaehlcke.net>
+---
+ board/edb93xx/sdram_cfg.c |   21 +++++++++++++++------
+ 1 files changed, 15 insertions(+), 6 deletions(-)
 
-Sascha Hauer wrote:
-> On Tue, Feb 16, 2010 at 03:54:24PM +0100, Marc Kleine-Budde wrote:
->> Marc Kleine-Budde wrote:
->>> Please review and consider to apply.
->> The following changes since commit 2e6eb64a396b99559cd46dfd49e649521c4=
-2c010:
->>   Juergen Beisert (1):
->>         Fix compile time errors when DEBUG is defined
->>
->> are available in the git repository at:
->>
->>   git://git.pengutronix.de/git/mkl/barebox.git for-sha-cleanups
->>
->> Marc Kleine-Budde (11):
->>       arm/Kconfig: delete trailing whitespace
->>       arm/Kconfig: removed unused TAG options
->>       arm/Makefile: keep list of boards sorted
->>       arm/cpu/Makefile: cleanup: propper indention
->>       drivers/video/Makefile: cleanup propper indention
->>       start-arm: cleanup: propper indention
->>       i2c.h: fix typo in copyright
->>       ioreadsb: put the whole ioreadsb function into the .text.readsb =
-section
->>       import recent include/linux/compiler*.h
->>       io.h: update definitions of __raw_{read,write}*
->>       common.h: add compile time check helper functions
->=20
-> Looks good modulo the changes mentioned.
+diff --git a/board/edb93xx/sdram_cfg.c b/board/edb93xx/sdram_cfg.c
+index 25b214b..3d4fe08 100644
+--- a/board/edb93xx/sdram_cfg.c
++++ b/board/edb93xx/sdram_cfg.c
+@@ -31,9 +31,9 @@
+ 		(SDRAM_BASE_ADDR | SDRAM_BANK_SEL_##bank | SDRAM_MODE_REG_VAL))
+ 
+ #define PRECHARGE_BANK(bank)		(*(volatile uint32_t *)	\
+-				(SDRAM_BASE_ADDR | SDRAM_BANK_SEL_##bank))
++		(SDRAM_BASE_ADDR | SDRAM_BANK_SEL_##bank)) = 0
+ 
+-static void force_precharge(void);
++static void precharge_all_banks(void);
+ static void setup_refresh_timer(void);
+ static void program_mode_registers(void);
+ 
+@@ -48,7 +48,7 @@ void sdram_cfg(void)
+ 
+ 	early_udelay(200);
+ 
+-	force_precharge();
++	precharge_all_banks();
+ 
+ 	setup_refresh_timer();
+ 
+@@ -58,13 +58,22 @@ void sdram_cfg(void)
+ 	writel(GLCONFIG_CKE, &sdram->glconfig);
+ }
+ 
+-static void force_precharge(void)
++static void precharge_all_banks(void)
+ {
++	struct sdram_regs *sdram = (struct sdram_regs *)SDRAM_BASE;
++
++	/* Issue PRECHARGE ALL commands */
++	writel(GLCONFIG_INIT | GLCONFIG_CKE, &sdram->glconfig);
++
+ 	/*
+-	 * Errata most EP93xx revisions say that PRECHARGE ALL isn't always
++	 * Errata of most EP93xx revisions say that PRECHARGE ALL isn't always
+ 	 * issued.
+ 	 *
+-	 * Do a read from each bank to make sure they're precharged
++	 *  Cirrus proposes a workaround which consists in performing a read from
++	 * each bank to force the precharge. This causes some boards to hang.
++	 * Writing to the SDRAM banks instead of reading has the same
++	 * side-effect (the SDRAM controller issues the necessary precharges),
++	 * but is known to work on all supported boards
+ 	 */
+ 
+ 	PRECHARGE_BANK(0);
+-- 
+1.6.5
 
-The branch is updated, here a pull request:
-
-Cheers, Marc
-
-The following changes since commit 2e6eb64a396b99559cd46dfd49e649521c42c0=
-10:
-  Juergen Beisert (1):
-        Fix compile time errors when DEBUG is defined
-
-are available in the git repository at:
-
-  git://git.pengutronix.de/git/mkl/barebox.git for-sha-cleanups
-
-Marc Kleine-Budde (11):
-      arm/Kconfig: delete trailing whitespace
-      arm/Kconfig: removed unused TAG options
-      arm/Makefile: keep list of boards sorted
-      arm/cpu/Makefile: cleanup: proper indention
-      drivers/video/Makefile: cleanup proper indention
-      start-arm: cleanup: proper indention
-      i2c.h: fix typo in copyright
-      ioreadsb: put the whole ioreadsb function into the .text.readsb sec=
-tion
-      import recent include/linux/compiler*.h
-      io.h: update definitions of __raw_{read,write}*
-      common.h: add compile time check helper functions
-
- arch/arm/Kconfig              |   19 ------
- arch/arm/Makefile             |    2 +-
- arch/arm/cpu/Makefile         |   11 ++--
- arch/arm/cpu/start-arm.S      |   12 ++--
- arch/arm/include/asm/io.h     |   12 ++--
- arch/arm/lib/io-readsb.S      |    4 +-
- drivers/video/Makefile        |    5 +-
- include/common.h              |   31 ++++++++++-
- include/i2c/i2c.h             |    2 +-
- include/linux/compiler-gcc.h  |   30 +++++++++-
- include/linux/compiler-gcc3.h |   11 +++-
- include/linux/compiler-gcc4.h |   32 ++++++++++-
- include/linux/compiler.h      |  124 +++++++++++++++++++++++++++++++++++=
-+++---
- 13 files changed, 234 insertions(+), 61 deletions(-)
-
---=20
-Pengutronix e.K.                  | Marc Kleine-Budde           |
-Industrial Linux Solutions        | Phone: +49-231-2826-924     |
-Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
-
-
---------------enigCF653803AA0D23184F2CA335
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.9 (GNU/Linux)
-Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org
-
-iEYEARECAAYFAkt8a8sACgkQjTAFq1RaXHMVAgCeN5EP5iMU1awjHyc6FjaJessH
-jxAAoInFiEdfOI7LQaSqSgIWBfsKFycs
-=Arcl
------END PGP SIGNATURE-----
-
---------------enigCF653803AA0D23184F2CA335--
-
-
---===============1574234780==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============1574234780==--
