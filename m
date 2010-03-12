@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1Nq0kR-0004Ax-Bs
-	for barebox@lists.infradead.org; Fri, 12 Mar 2010 09:01:36 +0000
-Date: Fri, 12 Mar 2010 10:01:33 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20100312090133.GP19843@pengutronix.de>
-References: <1267786310.19729.11.camel@lws-weitzel>
+	id 1Nq1Wf-00027s-JC
+	for barebox@lists.infradead.org; Fri, 12 Mar 2010 09:51:26 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Fri, 12 Mar 2010 10:51:21 +0100
+Message-Id: <1268387481-32488-1-git-send-email-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <1264173275-1858-1-git-send-email-u.kleine-koenig@pengutronix.de>
+References: <1264173275-1858-1-git-send-email-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1267786310.19729.11.camel@lws-weitzel>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,69 +17,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [Patch] hush exit code fix
-To: Jan Weitzel <J.Weitzel@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] give nice output when generating barebox.bin and barebox.S
+To: barebox@lists.infradead.org
 
-Hi Jan,
-
-On Fri, Mar 05, 2010 at 11:51:50AM +0100, Jan Weitzel wrote:
-> hush: pass return code from exit command within if statement
-> 
-> Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
-> ---
-> diff --git a/common/hush.c b/common/hush.c
-> index cf6704b..ae09374 100644
-> --- a/common/hush.c
-> +++ b/common/hush.c
-> @@ -535,10 +535,9 @@ static int run_pipe_real(struct pipe *pi)
->         if (pi->num_progs == 1)
->                 child = & (pi->progs[0]);
->         if (pi->num_progs == 1 && child->group) {
-> -               int rcode;
->                 debug("non-subshell grouping\n");
-> -               rcode = run_list_real(child->group);
-> -               return rcode;
-> +               run_list_real(child->group);
-> +               return last_return_code;
->         } else if (pi->num_progs == 1 && pi->progs[0].argv != NULL) {
->                 for (i=0; is_assignment(child->argv[i]); i++) { /* nothing */ }
->                 if (i!=0 && child->argv[i]==NULL) {
-> 
-> 
-> 
-
-This does not solve the problem and introduces a new one:
-
-barebox:/ cat /env/bin/bar
-false
-if [ $? != 0 ]; then
-        echo tschuess
-        exit
-fi
-
-echo hallo
-
-barebox:/ bar
-tschuess
-hallo
-barebox:/
-
-
-Sascha
-
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QXMgYSBzaWRlIGVmZmVjdCBkb24ndCBidWlsZCBiYXJlYm94LlMgd2hlbiBiYXJlYm94LmJpbiBp
+cyB1cGRhdGVkLiAgSQpkaWRuJ3QgbWFuYWdlIHRvIGtlZXAgdGhlIG9sZCBiZWhhdmlvdXIgYW5k
+IEkgY29uc2lkZXIgaXQgY2xlYW5lciB0aGlzCndheS4KClNpZ25lZC1vZmYtYnk6IFV3ZSBLbGVp
+bmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVuZ3V0cm9uaXguZGU+Ci0tLQpIZWxsbywKCkkg
+cmViYXNlZCB0aGlzIHRvIGN1cnJlbnQgbWFzdGVyLiAgVGhlIFg4NiBzdHVmZiBpcyB1bnRvdWNo
+ZWQsIHByb2JhYmx5Cml0IGNvdWxkIGJlIGludGVncmF0ZWQsIHRvbywgYnV0IEkgZGlkbid0IHdh
+bnQgdG8gc3BlbmQgdGhlIHRpbWUgdHJ5aW5nLAppZiB0aGUgcGF0Y2ggaXNuJ3Qgd2VsY29tZSBp
+biBwcmluY2lwbGUuICBTYXNjaGE/CgpHcsO8w59sZQpVd2UKCiBNYWtlZmlsZSB8ICAgMTcgKysr
+KysrKysrKysrKystLS0KIDEgZmlsZXMgY2hhbmdlZCwgMTQgaW5zZXJ0aW9ucygrKSwgMyBkZWxl
+dGlvbnMoLSkKCmRpZmYgLS1naXQgYS9NYWtlZmlsZSBiL01ha2VmaWxlCmluZGV4IDAxZDIwNTIu
+LjhiOWI0NTQgMTAwNjQ0Ci0tLSBhL01ha2VmaWxlCisrKyBiL01ha2VmaWxlCkBAIC02NDEsOSAr
+NjQxLDE2IEBAIGRlZmluZSBydWxlX2JhcmVib3gtbW9kcG9zdAogCSQoUSllY2hvICdjbWRfJEAg
+Oj0gJChjbWRfYmFyZWJveC1tb2Rwb3N0KScgPiAkKGRvdC10YXJnZXQpLmNtZAogZW5kZWYKIAot
+YmFyZWJveC5iaW46IGJhcmVib3gKLQkkKFEpJChPQkpDT1BZKSAtTyBiaW5hcnkgYmFyZWJveCBi
+YXJlYm94LmJpbgorcXVpZXRfY21kX29iamNvcHkgPSBPQkpDT1BZICRACisgICAgICBjbWRfb2Jq
+Y29weSA9ICQoT0JKQ09QWSkgJChPQkpDT1BZRkxBR1MpICQoT0JKQ09QWUZMQUdTXyQoQEYpKSAk
+PCAkQAorCitPQkpDT1BZRkxBR1NfYmFyZWJveC5iaW4gPSAtTyBiaW5hcnkKKworYmFyZWJveC5i
+aW46IGJhcmVib3ggRk9SQ0UKKwkkKGNhbGwgaWZfY2hhbmdlZCxvYmpjb3B5KQorCiBpZmRlZiBD
+T05GSUdfWDg2CitiYXJlYm94LlM6IGJhcmVib3gKIGlmZGVmIENPTkZJR19YODZfSERCT09UCiAJ
+QGVjaG8gIi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0i
+ID4gYmFyZWJveC5TCiAJQGVjaG8gIiAqIE1CUiBjb250ZW50IiA+PiBiYXJlYm94LlMKQEAgLTY2
+NSw3ICs2NzIsMTEgQEAgZW5kaWYKIAlAZWNobyAiICogSW5pdCBDYWxscyBjb250ZW50IiA+PiBi
+YXJlYm94LlMKIAkkKFEpJChPQkpEVU1QKSAtaiAuYmFyZWJveF9pbml0Y2FsbHMgLWQgYmFyZWJv
+eCA+PiBiYXJlYm94LlMKIGVsc2UKLQkkKFEpJChPQkpEVU1QKSAtZCBiYXJlYm94ID4gYmFyZWJv
+eC5TCitxdWlldF9jbWRfZGlzYXNtID0gRElTQVNNICAkQAorICAgICAgY21kX2Rpc2FzbSA9ICQo
+T0JKRFVNUCkgLWQgJDwgPiAkQAorCitiYXJlYm94LlM6IGJhcmVib3ggRk9SQ0UKKwkkKGNhbGwg
+aWZfY2hhbmdlZCxkaXNhc20pCiBlbmRpZgogCiAjIGJhcmVib3ggaW1hZ2UKLS0gCjEuNy4wCgoK
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBt
+YWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZy
+YWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
