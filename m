@@ -1,14 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1Nq1Wf-00027s-JC
-	for barebox@lists.infradead.org; Fri, 12 Mar 2010 09:51:26 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Fri, 12 Mar 2010 10:51:21 +0100
-Message-Id: <1268387481-32488-1-git-send-email-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <1264173275-1858-1-git-send-email-u.kleine-koenig@pengutronix.de>
-References: <1264173275-1858-1-git-send-email-u.kleine-koenig@pengutronix.de>
+	id 1Nrsw5-0001UG-EJ
+	for barebox@lists.infradead.org; Wed, 17 Mar 2010 13:05:25 +0000
+Received: from themisto.ext.pengutronix.de ([92.198.50.58]
+	helo=jupiter.intranet.kreuzholzen.de)
+	by metis.ext.pengutronix.de with esmtp (Exim 4.71)
+	(envelope-from <jbe@pengutronix.de>) id 1NrsvY-0005Lp-Lv
+	for barebox@lists.infradead.org; Wed, 17 Mar 2010 14:04:50 +0100
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Wed, 17 Mar 2010 14:04:45 +0100
 MIME-Version: 1.0
+Content-Disposition: inline
+Message-Id: <201003171404.46508.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,40 +21,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] give nice output when generating barebox.bin and barebox.S
+Subject: Make some help comments less confusing
 To: barebox@lists.infradead.org
 
-QXMgYSBzaWRlIGVmZmVjdCBkb24ndCBidWlsZCBiYXJlYm94LlMgd2hlbiBiYXJlYm94LmJpbiBp
-cyB1cGRhdGVkLiAgSQpkaWRuJ3QgbWFuYWdlIHRvIGtlZXAgdGhlIG9sZCBiZWhhdmlvdXIgYW5k
-IEkgY29uc2lkZXIgaXQgY2xlYW5lciB0aGlzCndheS4KClNpZ25lZC1vZmYtYnk6IFV3ZSBLbGVp
-bmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVuZ3V0cm9uaXguZGU+Ci0tLQpIZWxsbywKCkkg
-cmViYXNlZCB0aGlzIHRvIGN1cnJlbnQgbWFzdGVyLiAgVGhlIFg4NiBzdHVmZiBpcyB1bnRvdWNo
-ZWQsIHByb2JhYmx5Cml0IGNvdWxkIGJlIGludGVncmF0ZWQsIHRvbywgYnV0IEkgZGlkbid0IHdh
-bnQgdG8gc3BlbmQgdGhlIHRpbWUgdHJ5aW5nLAppZiB0aGUgcGF0Y2ggaXNuJ3Qgd2VsY29tZSBp
-biBwcmluY2lwbGUuICBTYXNjaGE/CgpHcsO8w59sZQpVd2UKCiBNYWtlZmlsZSB8ICAgMTcgKysr
-KysrKysrKysrKystLS0KIDEgZmlsZXMgY2hhbmdlZCwgMTQgaW5zZXJ0aW9ucygrKSwgMyBkZWxl
-dGlvbnMoLSkKCmRpZmYgLS1naXQgYS9NYWtlZmlsZSBiL01ha2VmaWxlCmluZGV4IDAxZDIwNTIu
-LjhiOWI0NTQgMTAwNjQ0Ci0tLSBhL01ha2VmaWxlCisrKyBiL01ha2VmaWxlCkBAIC02NDEsOSAr
-NjQxLDE2IEBAIGRlZmluZSBydWxlX2JhcmVib3gtbW9kcG9zdAogCSQoUSllY2hvICdjbWRfJEAg
-Oj0gJChjbWRfYmFyZWJveC1tb2Rwb3N0KScgPiAkKGRvdC10YXJnZXQpLmNtZAogZW5kZWYKIAot
-YmFyZWJveC5iaW46IGJhcmVib3gKLQkkKFEpJChPQkpDT1BZKSAtTyBiaW5hcnkgYmFyZWJveCBi
-YXJlYm94LmJpbgorcXVpZXRfY21kX29iamNvcHkgPSBPQkpDT1BZICRACisgICAgICBjbWRfb2Jq
-Y29weSA9ICQoT0JKQ09QWSkgJChPQkpDT1BZRkxBR1MpICQoT0JKQ09QWUZMQUdTXyQoQEYpKSAk
-PCAkQAorCitPQkpDT1BZRkxBR1NfYmFyZWJveC5iaW4gPSAtTyBiaW5hcnkKKworYmFyZWJveC5i
-aW46IGJhcmVib3ggRk9SQ0UKKwkkKGNhbGwgaWZfY2hhbmdlZCxvYmpjb3B5KQorCiBpZmRlZiBD
-T05GSUdfWDg2CitiYXJlYm94LlM6IGJhcmVib3gKIGlmZGVmIENPTkZJR19YODZfSERCT09UCiAJ
-QGVjaG8gIi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0i
-ID4gYmFyZWJveC5TCiAJQGVjaG8gIiAqIE1CUiBjb250ZW50IiA+PiBiYXJlYm94LlMKQEAgLTY2
-NSw3ICs2NzIsMTEgQEAgZW5kaWYKIAlAZWNobyAiICogSW5pdCBDYWxscyBjb250ZW50IiA+PiBi
-YXJlYm94LlMKIAkkKFEpJChPQkpEVU1QKSAtaiAuYmFyZWJveF9pbml0Y2FsbHMgLWQgYmFyZWJv
-eCA+PiBiYXJlYm94LlMKIGVsc2UKLQkkKFEpJChPQkpEVU1QKSAtZCBiYXJlYm94ID4gYmFyZWJv
-eC5TCitxdWlldF9jbWRfZGlzYXNtID0gRElTQVNNICAkQAorICAgICAgY21kX2Rpc2FzbSA9ICQo
-T0JKRFVNUCkgLWQgJDwgPiAkQAorCitiYXJlYm94LlM6IGJhcmVib3ggRk9SQ0UKKwkkKGNhbGwg
-aWZfY2hhbmdlZCxkaXNhc20pCiBlbmRpZgogCiAjIGJhcmVib3ggaW1hZ2UKLS0gCjEuNy4wCgoK
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBt
-YWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZy
-YWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
+
+---
+ commands/nand.c         |    2 +-
+ drivers/nand/nand_imx.c |    6 ++++--
+ 2 files changed, 5 insertions(+), 3 deletions(-)
+
+Index: barebox-2010.03.0/commands/nand.c
+===================================================================
+--- barebox-2010.03.0.orig/commands/nand.c
++++ barebox-2010.03.0/commands/nand.c
+@@ -363,6 +363,6 @@ static const __maybe_unused char cmd_nan
+ 
+ BAREBOX_CMD_START(nand)
+ 	.cmd		= do_nand,
+-	.usage		= "",
++	.usage		= "NAND specific handling",
+ 	BAREBOX_CMD_HELP(cmd_nand_help)
+ BAREBOX_CMD_END
+Index: barebox-2010.03.0/drivers/nand/nand_imx.c
+===================================================================
+--- barebox-2010.03.0.orig/drivers/nand/nand_imx.c
++++ barebox-2010.03.0/drivers/nand/nand_imx.c
+@@ -1166,11 +1166,13 @@ static int do_nand_boot_test(struct comm
+ }
+ 
+ static const __maybe_unused char cmd_nand_boot_test_help[] =
+-"Usage: nand_boot_test <dest> <size>\n";
++"Usage: nand_boot_test <dest> <size>\n"
++"This command loads the booloader from the NAND memory like the reset\n"
++"routine does. Its intended for development tests only";
+ 
+ BAREBOX_CMD_START(nand_boot_test)
+ 	.cmd		= do_nand_boot_test,
+-	.usage		= "list a file or directory",
++	.usage		= "load bootloader from NAND",
+ 	BAREBOX_CMD_HELP(cmd_nand_boot_test_help)
+ BAREBOX_CMD_END
+ #endif
+
+-- 
+Pengutronix e.K.                              | Juergen Beisert             |
+Linux Solutions for Science and Industry      | Phone: +49-8766-939 228     |
+Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555 |
+Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
