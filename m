@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1Ns9to-0002NI-7c
-	for barebox@lists.infradead.org; Thu, 18 Mar 2010 07:12:09 +0000
-Date: Thu, 18 Mar 2010 08:11:36 +0100
+	id 1Ns9y3-0003Ij-TB
+	for barebox@lists.infradead.org; Thu, 18 Mar 2010 07:16:32 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20100318071136.GH19843@pengutronix.de>
-References: <201003171404.46508.jbe@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <201003171404.46508.jbe@pengutronix.de>
+Date: Thu, 18 Mar 2010 08:16:27 +0100
+Message-Id: <1268896587-20407-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1268896587-20407-1-git-send-email-s.hauer@pengutronix.de>
+References: <1268896587-20407-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,77 +16,99 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Make some help comments less confusing
-To: Juergen Beisert <jbe@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/2] remove unused file arch/arm/cpu/cache.S
+To: barebox@lists.infradead.org
 
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/cpu/cache.S |   70 --------------------------------------------------
+ 1 files changed, 0 insertions(+), 70 deletions(-)
+ delete mode 100644 arch/arm/cpu/cache.S
 
-applied to -master.
-
-Sascha
-
-On Wed, Mar 17, 2010 at 02:04:45PM +0100, Juergen Beisert wrote:
-> Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
-> 
-> ---
->  commands/nand.c         |    2 +-
->  drivers/nand/nand_imx.c |    6 ++++--
->  2 files changed, 5 insertions(+), 3 deletions(-)
-> 
-> Index: barebox-2010.03.0/commands/nand.c
-> ===================================================================
-> --- barebox-2010.03.0.orig/commands/nand.c
-> +++ barebox-2010.03.0/commands/nand.c
-> @@ -363,6 +363,6 @@ static const __maybe_unused char cmd_nan
->  
->  BAREBOX_CMD_START(nand)
->  	.cmd		= do_nand,
-> -	.usage		= "",
-> +	.usage		= "NAND specific handling",
->  	BAREBOX_CMD_HELP(cmd_nand_help)
->  BAREBOX_CMD_END
-> Index: barebox-2010.03.0/drivers/nand/nand_imx.c
-> ===================================================================
-> --- barebox-2010.03.0.orig/drivers/nand/nand_imx.c
-> +++ barebox-2010.03.0/drivers/nand/nand_imx.c
-> @@ -1166,11 +1166,13 @@ static int do_nand_boot_test(struct comm
->  }
->  
->  static const __maybe_unused char cmd_nand_boot_test_help[] =
-> -"Usage: nand_boot_test <dest> <size>\n";
-> +"Usage: nand_boot_test <dest> <size>\n"
-> +"This command loads the booloader from the NAND memory like the reset\n"
-> +"routine does. Its intended for development tests only";
->  
->  BAREBOX_CMD_START(nand_boot_test)
->  	.cmd		= do_nand_boot_test,
-> -	.usage		= "list a file or directory",
-> +	.usage		= "load bootloader from NAND",
->  	BAREBOX_CMD_HELP(cmd_nand_boot_test_help)
->  BAREBOX_CMD_END
->  #endif
-> 
-> -- 
-> Pengutronix e.K.                              | Juergen Beisert             |
-> Linux Solutions for Science and Industry      | Phone: +49-8766-939 228     |
-> Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555 |
-> Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/arch/arm/cpu/cache.S b/arch/arm/cpu/cache.S
+deleted file mode 100644
+index f91500a..0000000
+--- a/arch/arm/cpu/cache.S
++++ /dev/null
+@@ -1,70 +0,0 @@
+-#ifndef ENTRY
+-#define ENTRY(name) \
+-  .globl name; \
+-  name:
+-#endif
+-
+-#define CACHE_DLINESIZE 32
+-
+-/*
+- *	dma_inv_range(start, end)
+- *
+- *	Invalidate (discard) the specified virtual address range.
+- *	May not write back any entries.  If 'start' or 'end'
+- *	are not cache line aligned, those lines must be written
+- *	back.
+- *
+- *	- start	- virtual start address
+- *	- end	- virtual end address
+- *
+- * (same as v4wb)
+- */
+-ENTRY(dma_inv_range)
+-	tst	r0, #CACHE_DLINESIZE - 1
+-	bic	r0, r0, #CACHE_DLINESIZE - 1
+-	mcrne	p15, 0, r0, c7, c10, 1		@ clean D entry
+-	tst	r1, #CACHE_DLINESIZE - 1
+-	mcrne	p15, 0, r1, c7, c10, 1		@ clean D entry
+-1:	mcr	p15, 0, r0, c7, c6, 1		@ invalidate D entry
+-	add	r0, r0, #CACHE_DLINESIZE
+-	cmp	r0, r1
+-	blo	1b
+-	mcr	p15, 0, r0, c7, c10, 4		@ drain WB
+-	mov	pc, lr
+-
+-/*
+- *	dma_clean_range(start, end)
+- *
+- *	Clean the specified virtual address range.
+- *
+- *	- start	- virtual start address
+- *	- end	- virtual end address
+- *
+- * (same as v4wb)
+- */
+-ENTRY(dma_clean_range)
+-	bic	r0, r0, #CACHE_DLINESIZE - 1
+-1:	mcr	p15, 0, r0, c7, c10, 1		@ clean D entry
+-	add	r0, r0, #CACHE_DLINESIZE
+-	cmp	r0, r1
+-	blo	1b
+-	mcr	p15, 0, r0, c7, c10, 4		@ drain WB
+-	mov	pc, lr
+-
+-/*
+- *	dma_flush_range(start, end)
+- *
+- *	Clean and invalidate the specified virtual address range.
+- *
+- *	- start	- virtual start address
+- *	- end	- virtual end address
+- */
+-ENTRY(dma_flush_range)
+-	bic	r0, r0, #CACHE_DLINESIZE - 1
+-1:	mcr	p15, 0, r0, c7, c14, 1		@ clean+invalidate D entry
+-	add	r0, r0, #CACHE_DLINESIZE
+-	cmp	r0, r1
+-	blo	1b
+-	mcr	p15, 0, r0, c7, c10, 4		@ drain WB
+-	mov	pc, lr
+-
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.0
+
 
 _______________________________________________
 barebox mailing list
