@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail2.gnudd.com ([213.203.150.91] helo=mail.gnudd.com)
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1Nsa11-0002xg-8D
-	for barebox@lists.infradead.org; Fri, 19 Mar 2010 11:05:23 +0000
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Fri, 19 Mar 2010 12:04:42 +0100
-References: <ba216b431003190349n1d2c05e3i54c78520680ebce1@mail.gmail.com>
-In-Reply-To: <ba216b431003190349n1d2c05e3i54c78520680ebce1@mail.gmail.com>
+	id 1Nsbof-00089h-TZ
+	for barebox@lists.infradead.org; Fri, 19 Mar 2010 13:00:47 +0000
+Date: Fri, 19 Mar 2010 14:00:34 +0100
+From: Alessandro Rubini <rubini-list@gnudd.com>
+Message-ID: <20100319130034.GA23989@morgana.gnudd.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-Message-Id: <201003191204.43829.jbe@pengutronix.de>
+In-Reply-To: <ba216b431003190349n1d2c05e3i54c78520680ebce1@mail.gmail.com>
+References: <ba216b431003190349n1d2c05e3i54c78520680ebce1@mail.gmail.com> 
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,27 +23,43 @@ Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [RFC] imx21ads nand boot
-To: barebox@lists.infradead.org
+To: ivo.clarysse@gmail.com
+Cc: barebox@lists.infradead.org
 
-Ivo Clarysse wrote:
-> I tried getting barebox MX21ADS to boot from NAND, but I can't get it to
-> work.
->
-> Booting in bootstrap mode (copying the barebox image to RAM, and then
-> executing it from RAM) does work, and "nand_boot_test" copies the nand
-> image correctly to RAM.
->
+> I tried getting barebox MX21ADS to boot from NAND, but I can't get
+> it to work.
+> 
 > Any clues, anyone ?
 
-Does the SDRAM setup work?
 
-jbe
+> +	ldmia	r0!, {r3-r9}		/* copy from source address [r0]    */
+> +	stmia	r1!, {r3-r9}		/* copy to   target address [r1]    */
 
--- 
-Pengutronix e.K.                              | Juergen Beisert             |
-Linux Solutions for Science and Industry      | Phone: +49-8766-939 228     |
-Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
+This is 7 registers, so 28 bytes at a time. So you copy
+28, 56, .... 2044, 2072
+
+I don't know what happens when you access memory over the end of
+the SRAM area. Maybe it fires a data abort or something like that?
+
+I'd use 4 registers instead of 7, but it might well not be the problem
+
+> +	cmp	r0, r2			/* until source end addreee [r2]    */
+> +	ble	copy_loop
+
+"blt" would be better, because when it is equal you are done. Or using
+4 registers will not prevent the extra accesses.
+
+> +	ldr	pc, =1f			/* Jump to SDRAM                    */
+> +1:
+> +	bl	nand_boot		/* Load barebox from NAND Flash     */
+> +
+
+Finally, you should ensure the literary pool is within the first 2kB.
+I'd place ".ltorg" before the "1:", or would check the disassembly.
+
+Hope this helps, but it may well not help
+
+/alessandro, who has an mx21ads looking at him but also real work to deliver
 
 _______________________________________________
 barebox mailing list
