@@ -1,15 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail2.gnudd.com ([213.203.150.91] helo=mail.gnudd.com)
-	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1Nsbof-00089h-TZ
-	for barebox@lists.infradead.org; Fri, 19 Mar 2010 13:00:47 +0000
-Date: Fri, 19 Mar 2010 14:00:34 +0100
-From: Alessandro Rubini <rubini-list@gnudd.com>
-Message-ID: <20100319130034.GA23989@morgana.gnudd.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <ba216b431003190349n1d2c05e3i54c78520680ebce1@mail.gmail.com>
-References: <ba216b431003190349n1d2c05e3i54c78520680ebce1@mail.gmail.com> 
+Received: from smtp4-g21.free.fr ([212.27.42.4])
+	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
+	id 1NsdAp-0000vf-Ul
+	for barebox@lists.infradead.org; Fri, 19 Mar 2010 14:27:45 +0000
+Received: from smtp4-g21.free.fr (localhost [127.0.0.1])
+	by smtp4-g21.free.fr (Postfix) with ESMTP id 714D74C80E5
+	for <barebox@lists.infradead.org>; Fri, 19 Mar 2010 15:27:34 +0100 (CET)
+Received: from localhost.localdomain (pac33-2-82-240-38-71.fbx.proxad.net
+	[82.240.38.71])
+	by smtp4-g21.free.fr (Postfix) with ESMTP id 729514C801A
+	for <barebox@lists.infradead.org>; Fri, 19 Mar 2010 15:27:32 +0100 (CET)
+From: Eric Benard <eric@eukrea.com>
+Date: Fri, 19 Mar 2010 15:27:29 +0100
+Message-Id: <1269008851-16647-2-git-send-email-eric@eukrea.com>
+In-Reply-To: <1269008851-16647-1-git-send-email-eric@eukrea.com>
+References: <1269008851-16647-1-git-send-email-eric@eukrea.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,48 +23,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] imx21ads nand boot
-To: ivo.clarysse@gmail.com
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/4] i.MX25 : add lcdc clock support
+To: barebox@lists.infradead.org
 
-> I tried getting barebox MX21ADS to boot from NAND, but I can't get
-> it to work.
-> 
-> Any clues, anyone ?
+Signed-off-by: Eric Benard <eric@eukrea.com>
+---
+ arch/arm/mach-imx/speed-imx25.c |    6 ++++++
+ 1 files changed, 6 insertions(+), 0 deletions(-)
 
+diff --git a/arch/arm/mach-imx/speed-imx25.c b/arch/arm/mach-imx/speed-imx25.c
+index be20880..beb7efe 100644
+--- a/arch/arm/mach-imx/speed-imx25.c
++++ b/arch/arm/mach-imx/speed-imx25.c
+@@ -72,6 +72,11 @@ unsigned long imx_get_fecclk(void)
+ 	return imx_get_ipgclk();
+ }
+ 
++unsigned long imx_get_lcdclk(void)
++{
++	return imx_get_perclk(7);
++}
++
+ int imx_dump_clocks(void)
+ {
+ 	printf("mpll:    %10d Hz\n", imx_get_mpllclk());
+@@ -81,6 +86,7 @@ int imx_dump_clocks(void)
+ 	printf("uart:    %10d Hz\n", imx_get_perclk(15));
+ 	printf("gpt:     %10d Hz\n", imx_get_ipgclk());
+ 	printf("nand:    %10d Hz\n", imx_get_perclk(8));
++	printf("lcd:     %10d Hz\n", imx_get_perclk(7));
+ 	return 0;
+ }
+ 
+-- 
+1.6.3.3
 
-> +	ldmia	r0!, {r3-r9}		/* copy from source address [r0]    */
-> +	stmia	r1!, {r3-r9}		/* copy to   target address [r1]    */
-
-This is 7 registers, so 28 bytes at a time. So you copy
-28, 56, .... 2044, 2072
-
-I don't know what happens when you access memory over the end of
-the SRAM area. Maybe it fires a data abort or something like that?
-
-I'd use 4 registers instead of 7, but it might well not be the problem
-
-> +	cmp	r0, r2			/* until source end addreee [r2]    */
-> +	ble	copy_loop
-
-"blt" would be better, because when it is equal you are done. Or using
-4 registers will not prevent the extra accesses.
-
-> +	ldr	pc, =1f			/* Jump to SDRAM                    */
-> +1:
-> +	bl	nand_boot		/* Load barebox from NAND Flash     */
-> +
-
-Finally, you should ensure the literary pool is within the first 2kB.
-I'd place ".ltorg" before the "1:", or would check the disassembly.
-
-Hope this helps, but it may well not help
-
-/alessandro, who has an mx21ads looking at him but also real work to deliver
 
 _______________________________________________
 barebox mailing list
