@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp4-g21.free.fr ([212.27.42.4])
-	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
-	id 1NsdSb-0002Eq-Ny
-	for barebox@lists.infradead.org; Fri, 19 Mar 2010 14:46:06 +0000
-Received: from smtp4-g21.free.fr (localhost [127.0.0.1])
-	by smtp4-g21.free.fr (Postfix) with ESMTP id 742344C8173
-	for <barebox@lists.infradead.org>; Fri, 19 Mar 2010 15:45:57 +0100 (CET)
-Received: from localhost.localdomain (pac33-2-82-240-38-71.fbx.proxad.net
-	[82.240.38.71])
-	by smtp4-g21.free.fr (Postfix) with ESMTP id 7D0024C8192
-	for <barebox@lists.infradead.org>; Fri, 19 Mar 2010 15:45:55 +0100 (CET)
-From: Eric Benard <eric@eukrea.com>
-Date: Fri, 19 Mar 2010 15:45:55 +0100
-Message-Id: <1269009955-18797-1-git-send-email-eric@eukrea.com>
+Received: from 63.mail-out.ovh.net ([91.121.185.56])
+	by bombadil.infradead.org with smtp (Exim 4.69 #1 (Red Hat Linux))
+	id 1Nse6F-0001mV-LG
+	for barebox@lists.infradead.org; Fri, 19 Mar 2010 15:27:03 +0000
+Message-ID: <4BA39630.9060605@eukrea.com>
+Date: Fri, 19 Mar 2010 16:20:16 +0100
+From: =?ISO-8859-1?Q?Eric_B=E9nard?= <eric@eukrea.com>
+MIME-Version: 1.0
+References: <1268896587-20407-1-git-send-email-s.hauer@pengutronix.de>
+	<1268896587-20407-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1268896587-20407-2-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,72 +18,22 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] i.MX25 : fix define name for clock frequency
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] armv5: use proper cache flush function
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-CONFIG_MX35_HCLK_FREQ -> CONFIG_MX25_HCLK_FREQ
+Hi Sascha,
 
-Signed-off-by: Eric Benard <eric@eukrea.com>
----
- arch/arm/mach-imx/speed-imx25.c       |    4 ++--
- board/eukrea_cpuimx25/config.h        |    2 ++
- board/freescale-mx25-3-stack/config.h |    2 +-
- 3 files changed, 5 insertions(+), 3 deletions(-)
+Le 18/03/2010 08:16, Sascha Hauer a =E9crit :
+> Signed-off-by: Sascha Hauer<s.hauer@pengutronix.de>
 
-diff --git a/arch/arm/mach-imx/speed-imx25.c b/arch/arm/mach-imx/speed-imx25.c
-index beb7efe..a615017 100644
---- a/arch/arm/mach-imx/speed-imx25.c
-+++ b/arch/arm/mach-imx/speed-imx25.c
-@@ -7,13 +7,13 @@
- unsigned long imx_get_mpllclk(void)
- {
- 	ulong mpctl = readl(IMX_CCM_BASE + CCM_MPCTL);
--	return imx_decode_pll(mpctl, CONFIG_MX35_HCLK_FREQ);
-+	return imx_decode_pll(mpctl, CONFIG_MX25_HCLK_FREQ);
- }
- 
- unsigned long imx_get_upllclk(void)
- {
- 	ulong ppctl = readl(IMX_CCM_BASE + CCM_UPCTL);
--	return imx_decode_pll(ppctl, CONFIG_MX35_HCLK_FREQ);
-+	return imx_decode_pll(ppctl, CONFIG_MX25_HCLK_FREQ);
- }
- 
- unsigned long imx_get_armclk(void)
-diff --git a/board/eukrea_cpuimx25/config.h b/board/eukrea_cpuimx25/config.h
-index 460239d..982c406 100644
---- a/board/eukrea_cpuimx25/config.h
-+++ b/board/eukrea_cpuimx25/config.h
-@@ -20,6 +20,8 @@
- #ifndef __CONFIG_H
- #define __CONFIG_H
- 
-+#define CONFIG_MX25_HCLK_FREQ	24000000
-+
- #endif
- 
- /* nothing to do here yet */
-diff --git a/board/freescale-mx25-3-stack/config.h b/board/freescale-mx25-3-stack/config.h
-index 0e3b175..f35e8a0 100644
---- a/board/freescale-mx25-3-stack/config.h
-+++ b/board/freescale-mx25-3-stack/config.h
-@@ -24,7 +24,7 @@
-  * Definitions related to passing arguments to kernel.
-  */
- 
--#define CONFIG_MX35_HCLK_FREQ	24000000
-+#define CONFIG_MX25_HCLK_FREQ	24000000
- 
- #endif
- 
--- 
-1.6.3.3
+tested on i.MX25 : no problem found.
 
+Eric
 
 _______________________________________________
 barebox mailing list
