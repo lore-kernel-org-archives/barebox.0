@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-ww0-f49.google.com ([74.125.82.49])
 	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
-	id 1NtgQB-0007PS-V8
-	for barebox@lists.infradead.org; Mon, 22 Mar 2010 12:07:58 +0000
-Received: by wwd20 with SMTP id 20so1687330wwd.36
-	for <barebox@lists.infradead.org>; Mon, 22 Mar 2010 05:07:49 -0700 (PDT)
+	id 1Ntj4f-0005Ag-Vk
+	for barebox@lists.infradead.org; Mon, 22 Mar 2010 14:57:54 +0000
+Received: by wwd20 with SMTP id 20so1819707wwd.36
+	for <barebox@lists.infradead.org>; Mon, 22 Mar 2010 07:57:48 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20100319110340.GK19843@pengutronix.de>
-References: <ba216b431003190349n1d2c05e3i54c78520680ebce1@mail.gmail.com>
-	<20100319110340.GK19843@pengutronix.de>
-Date: Mon, 22 Mar 2010 13:07:48 +0100
-Message-ID: <ba216b431003220507w69646363l212495ada7e3b965@mail.gmail.com>
+Date: Mon, 22 Mar 2010 15:57:47 +0100
+Message-ID: <ba216b431003220757q3cc1dc6s267c6e760bb7f313@mail.gmail.com>
 From: Ivo Clarysse <ivo.clarysse@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -24,29 +21,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] imx21ads nand boot
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] MX21: Fix nand booting
+To: barebox@lists.infradead.org
 
-On Fri, Mar 19, 2010 at 12:03 PM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> Do you know how far you get? Do you have a JTAG debugger? If not,
-> switching a gpio might help.
+Fixes booting from NAND on i.MX21-based systems.
 
-I used the CLKO pin to track down how far the booting from NAND gets.
+Signed-off-by: Ivo Clarysse <ivo.clarysse@gmail.com>
+---
+diff --git a/drivers/nand/nand_imx.c b/drivers/nand/nand_imx.c
+index afd5637..2eac6fe 100644
+--- a/drivers/nand/nand_imx.c
++++ b/drivers/nand/nand_imx.c
+@@ -1085,12 +1085,18 @@ void __nand_boot_init imx_nand_load_image(void
+*dest, int size)
+ 	writew(0x4, host.regs + NFC_WRPROT);
 
-It hangs in nand_imx.c:wait_op_done, after having sent the first
-NAND_CMD_READ0 command from nand_imx.c:imx_nand_load_image. (Weird,
-since that routine has a timeout)
+ 	tmp = readw(host.regs + NFC_CONFIG1);
++#ifdef CONFIG_ARCH_IMX21
++	tmp |= NFC_ECC_EN;
++	tmp &= ~NFC_INT_MSK;
++	writew(tmp, host.regs + NFC_CONFIG1);
++#else
+ 	tmp |= NFC_ECC_EN | NFC_INT_MSK;
+ 	if (nfc_is_v21())
+ 		/* currently no support for 218 byte OOB with stronger ECC */
+ 		tmp |= NFC_ECC_MODE;
+ 	tmp &= ~NFC_SP_EN;
+ 	writew(tmp, host.regs + NFC_CONFIG1);
++#endif /* CONFIG_ARCH_IMX21 */
 
-So SDRAM init appears to be ok; I also checked barebox.S, and
-everything needed to complete imx_nand_load_image is in the first
-2KiB.
-
-I'll hook up a BDI2000 and see if that helps.
-
-Best regards,
-
-Ivo.
+ 	if (nfc_is_v21()) {
+ 		if (host.pagesize_2k) {
 
 _______________________________________________
 barebox mailing list
