@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1Nu659-0000YK-DI
-	for barebox@lists.infradead.org; Tue, 23 Mar 2010 15:31:52 +0000
-Date: Tue, 23 Mar 2010 16:31:48 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20100323153148.GO2241@pengutronix.de>
+Received: from relay2-v.mail.gandi.net ([217.70.178.76])
+	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
+	id 1Nu6kc-0002zi-OV
+	for barebox@lists.infradead.org; Tue, 23 Mar 2010 16:14:47 +0000
+Date: Tue, 23 Mar 2010 17:13:08 +0100
+From: Matthias Kaehlcke <matthias@kaehlcke.net>
+Message-ID: <20100323161308.GD26177@darwin>
 References: <20100323133217.GA26177@darwin>
 	<20100323142643.GN2241@pengutronix.de>
 	<20100323150915.GB26177@darwin>
+	<20100323153148.GO2241@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20100323150915.GB26177@darwin>
+In-Reply-To: <20100323153148.GO2241@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,62 +26,58 @@ Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: Barebox working on freescale-mx25-3-stack?
-To: Matthias Kaehlcke <matthias@kaehlcke.net>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Mar 23, 2010 at 04:09:15PM +0100, Matthias Kaehlcke wrote:
-> hi sascha,
-> 
-> El Tue, Mar 23, 2010 at 03:26:43PM +0100 Sascha Hauer ha dit:
-> 
-> > On Tue, Mar 23, 2010 at 02:32:17PM +0100, Matthias Kaehlcke wrote:
-> > > hi,
-> > > 
-> > > i'm trying to run barebox on a Freescale i.MX25 3-Stack board. for
-> > > this purpose i built barebox with the freescale-mx25-3-stack
-> > > defconfig, using the toolchain provided by the Freescale BSP (i also
-> > > tried it with a custom one). i then dumped the barebox.bin on a MMC
-> > > card, plugged the card into the socket of the board and switched the
-> > > board on, but nothing happened :(
+El Tue, Mar 23, 2010 at 04:31:48PM +0100 Sascha Hauer ha dit:
+
+> On Tue, Mar 23, 2010 at 04:09:15PM +0100, Matthias Kaehlcke wrote:
+
+> > i enabled CONFIG_ARCH_IMX_INTERNAL_BOOT, but it doesn't work either. i
+> > also tried to start barebox from NAND, but no way :(
 > > 
-> > I just checked, it works, but not with the current defconfig. Please
-> > enable CONFIG_ARCH_IMX_INTERNAL_BOOT to boot from MMC. Note that
-> > currently the CPLD is not initialised in barebox and so the FEC is not
-> > working (It is working if barebox runs as a second stage loader after
-> > Freescales redboot).
+> > the barebox version is v2010.03.0, i forgot to mention that in my
+> > initial post
+> > 
+> > if you can send me the barebox image that works on your board i'll
+> > check if it works on mine, and we'll have some more certainty about
+> > whether there is some obscure problem in my build process or my board
+> > is somehow different to yours
 > 
-> thanks for checking and for your reply
+> I sent the image to you in private. Here are my dip switch settings, I
+> don't know which of them are important:
 > 
-> i enabled CONFIG_ARCH_IMX_INTERNAL_BOOT, but it doesn't work either. i
-> also tried to start barebox from NAND, but no way :(
+> On the baseboard:
+> sw22: 00000000
+> sw21: 11000000
 > 
-> the barebox version is v2010.03.0, i forgot to mention that in my
-> initial post
+> On the Debug board:
 > 
-> if you can send me the barebox image that works on your board i'll
-> check if it works on mine, and we'll have some more certainty about
-> whether there is some obscure problem in my build process or my board
-> is somehow different to yours
+> sw5 .. SW10: 0
 
-I sent the image to you in private. Here are my dip switch settings, I
-don't know which of them are important:
+thanks for the image and your dip switch settings (mine are the same)
 
-On the baseboard:
-sw22: 00000000
-sw21: 11000000
+i flashed the image (first at MMC then at NAND), the board still
+doesn't come up :(
 
-On the Debug board:
+i'm running out of ideas at this point. there must be some difference
+in our hardware, as it clearly works on your board but not on mine
 
-sw5 .. SW10: 0
+for the moment i'll stick with u-boot ...
 
-Sascha
-
+thanks for your help
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Matthias Kaehlcke
+Embedded Linux Developer
+Barcelona
+
+  Si deseas mantener tu libertad, debes estar preparado para defenderla
+                          (Richard Stallman)
+                                                                 .''`.
+    using free software / Debian GNU/Linux | http://debian.org  : :'  :
+                                                                `. `'`
+gpg --keyserver pgp.mit.edu --recv-keys 47D8E5D4                  `-
 
 _______________________________________________
 barebox mailing list
