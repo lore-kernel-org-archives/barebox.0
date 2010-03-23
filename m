@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relay4-v.mail.gandi.net ([217.70.178.78])
-	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
-	id 1Nu5ks-0004Bh-UZ
-	for barebox@lists.infradead.org; Tue, 23 Mar 2010 15:10:59 +0000
-Date: Tue, 23 Mar 2010 16:09:15 +0100
-From: Matthias Kaehlcke <matthias@kaehlcke.net>
-Message-ID: <20100323150915.GB26177@darwin>
-References: <20100323133217.GA26177@darwin>
-	<20100323142643.GN2241@pengutronix.de>
+Received: from 30.mail-out.ovh.net ([213.186.62.213])
+	by bombadil.infradead.org with smtp (Exim 4.69 #1 (Red Hat Linux))
+	id 1Nu64Y-0000PS-7z
+	for barebox@lists.infradead.org; Tue, 23 Mar 2010 15:31:18 +0000
+Message-ID: <4BA8DEBF.6060305@eukrea.com>
+Date: Tue, 23 Mar 2010 16:31:11 +0100
+From: =?ISO-8859-1?Q?Eric_B=E9nard?= <eric@eukrea.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20100323142643.GN2241@pengutronix.de>
+References: <20100323133217.GA26177@darwin>	<20100323142643.GN2241@pengutronix.de>
+	<20100323150915.GB26177@darwin>
+In-Reply-To: <20100323150915.GB26177@darwin>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,58 +18,24 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: Barebox working on freescale-mx25-3-stack?
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+To: barebox@lists.infradead.org
 
-hi sascha,
+Hi Matthias,
 
-El Tue, Mar 23, 2010 at 03:26:43PM +0100 Sascha Hauer ha dit:
+Le 23/03/2010 16:09, Matthias Kaehlcke a =E9crit :
+> if you can send me the barebox image that works on your board i'll
+> check if it works on mine, and we'll have some more certainty about
+> whether there is some obscure problem in my build process or my board
+> is somehow different to yours
+>
+one possible diff : do you have DDR2 or Mobile DDR on your board ?
 
-> On Tue, Mar 23, 2010 at 02:32:17PM +0100, Matthias Kaehlcke wrote:
-> > hi,
-> > 
-> > i'm trying to run barebox on a Freescale i.MX25 3-Stack board. for
-> > this purpose i built barebox with the freescale-mx25-3-stack
-> > defconfig, using the toolchain provided by the Freescale BSP (i also
-> > tried it with a custom one). i then dumped the barebox.bin on a MMC
-> > card, plugged the card into the socket of the board and switched the
-> > board on, but nothing happened :(
-> 
-> I just checked, it works, but not with the current defconfig. Please
-> enable CONFIG_ARCH_IMX_INTERNAL_BOOT to boot from MMC. Note that
-> currently the CPLD is not initialised in barebox and so the FEC is not
-> working (It is working if barebox runs as a second stage loader after
-> Freescales redboot).
-
-thanks for checking and for your reply
-
-i enabled CONFIG_ARCH_IMX_INTERNAL_BOOT, but it doesn't work either. i
-also tried to start barebox from NAND, but no way :(
-
-the barebox version is v2010.03.0, i forgot to mention that in my
-initial post
-
-if you can send me the barebox image that works on your board i'll
-check if it works on mine, and we'll have some more certainty about
-whether there is some obscure problem in my build process or my board
-is somehow different to yours
-
--- 
-Matthias Kaehlcke
-Embedded Linux Developer
-Barcelona
-
-          Dreams and reality are opposites. Action synthesizes them
-                             (Assata Shakur)
-                                                                 .''`.
-    using free software / Debian GNU/Linux | http://debian.org  : :'  :
-                                                                `. `'`
-gpg --keyserver pgp.mit.edu --recv-keys 47D8E5D4                  `-
+Eric
 
 _______________________________________________
 barebox mailing list
