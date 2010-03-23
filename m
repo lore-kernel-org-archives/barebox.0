@@ -1,15 +1,25 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NtyrP-0005vO-JD
-	for barebox@lists.infradead.org; Tue, 23 Mar 2010 07:49:12 +0000
-Date: Tue, 23 Mar 2010 08:48:40 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20100323074840.GL2241@pengutronix.de>
-References: <ba216b431003220757q3cc1dc6s267c6e760bb7f313@mail.gmail.com>
+Received: from relay4-v.mail.gandi.net ([217.70.178.78])
+	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
+	id 1Nu4F2-0005en-EF
+	for barebox@lists.infradead.org; Tue, 23 Mar 2010 13:34:00 +0000
+Received: from mfilter4-d.gandi.net (mfilter4-d.gandi.net [217.70.178.45])
+	by relay4-v.mail.gandi.net (Postfix) with ESMTP id 21A09BA17
+	for <barebox@lists.infradead.org>; Tue, 23 Mar 2010 14:33:54 +0100 (CET)
+Received: from relay4-v.mail.gandi.net ([217.70.178.78])
+	by mfilter4-d.gandi.net (mfilter4-d.gandi.net [217.70.178.45])
+	(amavisd-new, port 10024)
+	with ESMTP id c5dBi5mBO9Ll for <barebox@lists.infradead.org>;
+	Tue, 23 Mar 2010 14:33:48 +0100 (CET)
+Received: from d4rwin.no-ip.org (219.Red-193-152-182.dynamicIP.rima-tde.net
+	[193.152.182.219]) (Authenticated sender: matthias@kaehlcke.net)
+	by relay4-v.mail.gandi.net (Postfix) with ESMTP id 2418DBA34
+	for <barebox@lists.infradead.org>; Tue, 23 Mar 2010 14:33:48 +0100 (CET)
+Date: Tue, 23 Mar 2010 14:32:17 +0100
+From: Matthias Kaehlcke <matthias@kaehlcke.net>
+Message-ID: <20100323133217.GA26177@darwin>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <ba216b431003220757q3cc1dc6s267c6e760bb7f313@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,61 +32,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] MX21: Fix nand booting
-To: Ivo Clarysse <ivo.clarysse@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Barebox working on freescale-mx25-3-stack?
+To: barebox@lists.infradead.org
 
-Hi Ivo,
+hi,
 
-On Mon, Mar 22, 2010 at 03:57:47PM +0100, Ivo Clarysse wrote:
-> Fixes booting from NAND on i.MX21-based systems.
-> 
-> Signed-off-by: Ivo Clarysse <ivo.clarysse@gmail.com>
-> ---
-> diff --git a/drivers/nand/nand_imx.c b/drivers/nand/nand_imx.c
-> index afd5637..2eac6fe 100644
-> --- a/drivers/nand/nand_imx.c
-> +++ b/drivers/nand/nand_imx.c
-> @@ -1085,12 +1085,18 @@ void __nand_boot_init imx_nand_load_image(void
-> *dest, int size)
->  	writew(0x4, host.regs + NFC_WRPROT);
-> 
->  	tmp = readw(host.regs + NFC_CONFIG1);
-> +#ifdef CONFIG_ARCH_IMX21
-> +	tmp |= NFC_ECC_EN;
-> +	tmp &= ~NFC_INT_MSK;
-> +	writew(tmp, host.regs + NFC_CONFIG1);
-> +#else
+i'm trying to run barebox on a Freescale i.MX25 3-Stack board. for
+this purpose i built barebox with the freescale-mx25-3-stack
+defconfig, using the toolchain provided by the Freescale BSP (i also
+tried it with a custom one). i then dumped the barebox.bin on a MMC
+card, plugged the card into the socket of the board and switched the
+board on, but nothing happened :(
 
-I wonder that this patch helps you. Does your NAND work properly after
-starting? I ask because in imxnd_probe() NFC_INT_MSK gets set again.
+booting u-boot or redboot from MMC succeeds, so the settings of SW21
+and SW22 shouldn't be the problem
 
-I tested on i.MX27 that clearing this bit doesn't harm, so I think we do
-not need the ifdef but can clear it on every SoC, like this:
+is barebox supposed to work on this board or is the port still in
+preliminary state?
 
-diff --git a/drivers/nand/nand_imx.c b/drivers/nand/nand_imx.c
-index afd5637..5c910d8 100644
---- a/drivers/nand/nand_imx.c
-+++ b/drivers/nand/nand_imx.c
-@@ -1085,11 +1085,11 @@ void __nand_boot_init imx_nand_load_image(void *dest, int size)
- 	writew(0x4, host.regs + NFC_WRPROT);
- 
- 	tmp = readw(host.regs + NFC_CONFIG1);
--	tmp |= NFC_ECC_EN | NFC_INT_MSK;
-+	tmp |= NFC_ECC_EN;
- 	if (nfc_is_v21())
- 		/* currently no support for 218 byte OOB with stronger ECC */
- 		tmp |= NFC_ECC_MODE;
--	tmp &= ~NFC_SP_EN;
-+	tmp &= ~(NFC_SP_EN | NFC_INT_MSK);
- 	writew(tmp, host.regs + NFC_CONFIG1);
- 
- 	if (nfc_is_v21()) {
+best regards
+
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Matthias Kaehlcke
+Embedded Linux Developer
+Barcelona
+
+            Nothing is more despicable than respect based on fear
+                              (Albert Camus)
+                                                                 .''`.
+    using free software / Debian GNU/Linux | http://debian.org  : :'  :
+                                                                `. `'`
+gpg --keyserver pgp.mit.edu --recv-keys 47D8E5D4                  `-
 
 _______________________________________________
 barebox mailing list
