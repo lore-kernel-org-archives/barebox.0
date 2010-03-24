@@ -1,18 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ww0-f49.google.com ([74.125.82.49])
-	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
-	id 1NuMk3-00012F-BJ
-	for barebox@lists.infradead.org; Wed, 24 Mar 2010 09:19:16 +0000
-Received: by wwb18 with SMTP id 18so928095wwb.36
-	for <barebox@lists.infradead.org>; Wed, 24 Mar 2010 02:19:08 -0700 (PDT)
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
+	id 1NuOsL-0000OE-Cg
+	for barebox@lists.infradead.org; Wed, 24 Mar 2010 11:35:57 +0000
+Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.71)
+	(envelope-from <sha@pengutronix.de>) id 1NuOrv-0000CI-1K
+	for barebox@lists.infradead.org; Wed, 24 Mar 2010 12:35:27 +0100
+Received: from sha by octopus.hi.pengutronix.de with local (Exim 4.69)
+	(envelope-from <sha@pengutronix.de>) id 1NuOru-0005Gs-W6
+	for barebox@lists.infradead.org; Wed, 24 Mar 2010 12:35:26 +0100
+Date: Wed, 24 Mar 2010 12:35:26 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20100324113526.GV2241@pengutronix.de>
+References: <20100324072554.GQ2241@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <ba216b431003240217k4348191fn5b651bb36c9dbf47@mail.gmail.com>
-References: <ba216b431003220757q3cc1dc6s267c6e760bb7f313@mail.gmail.com>
-	<20100323074840.GL2241@pengutronix.de>
-	<ba216b431003240217k4348191fn5b651bb36c9dbf47@mail.gmail.com>
-Date: Wed, 24 Mar 2010 10:19:07 +0100
-Message-ID: <ba216b431003240219x5a3ecc8dx8ec0ff761d08a386@mail.gmail.com>
-From: Ivo Clarysse <ivo.clarysse@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <20100324072554.GQ2241@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,68 +25,76 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] MX21: Fix nand booting
+Subject: Re: [PATCH] hush: Fix return code when calling 'exit' inside loops
 To: barebox@lists.infradead.org
 
-On Tue, Mar 23, 2010 at 8:48 AM, Sascha Hauer <s.hauer@pengutronix.de> wrot=
-e:
-[...]
-> I wonder that this patch helps you. Does your NAND work properly after
-> starting? I ask because in imxnd_probe() NFC_INT_MSK gets set again.
 
-I agree that it's weird. =A0But it does help. =A0Apparantly, on i.MX21, NFC=
-_INT_MSK
-must not be set for the first (non-reset) command, otherwise NFC_INT in
-NFC_CONFIG2 will never get set.
+v2: Do not exit from all scripts but only the current one
 
-After booting, other NAND accesses do work, for instance the NAND
-device ID readout and the scanning for bad blocks:
+This fixes the case:
 
-barebox 2010.03.0-00094-gc6f4ea0-dirty (Mar 22 2010 - 10:02:13)
-
-Board: Freescale i.MX21 ADS
-cfi_probe: cfi_flash base: 0xc8000000 size: 0x02000000
-NAND device: Manufacturer ID: 0xec, Chip ID: 0x36 (Samsung NAND 64MiB
-1,8V 8-bit)
-Scanning device for bad blocks
-Bad eraseblock 2133 at 0x02154000
-Malloc space: 0xc0c00000 -> 0xc1000000 (size =A04 MB)
-Stack space : 0xc0bf8000 -> 0xc0c00000 (size 32 kB)
-Open /dev/env0 No such file or directory
-no valid environment found on /dev/env0. Using default environment
-running /env/bin/init...
+barebox:/ cat /test
+if [ 0 = 0 ]; then
+	exit 1
+fi
+barebox:/ /test
+barebox:/ echo $?
+0
 barebox:/
 
-> I tested on i.MX27 that clearing this bit doesn't harm, so I think we do
-> not need the ifdef but can clear it on every SoC, like this:
->
-> diff --git a/drivers/nand/nand_imx.c b/drivers/nand/nand_imx.c
-> index afd5637..5c910d8 100644
-> --- a/drivers/nand/nand_imx.c
-> +++ b/drivers/nand/nand_imx.c
-> @@ -1085,11 +1085,11 @@ void __nand_boot_init imx_nand_load_image(void *d=
-est, int size)
-> =A0 =A0 =A0 =A0writew(0x4, host.regs + NFC_WRPROT);
->
-> =A0 =A0 =A0 =A0tmp =3D readw(host.regs + NFC_CONFIG1);
-> - =A0 =A0 =A0 tmp |=3D NFC_ECC_EN | NFC_INT_MSK;
-> + =A0 =A0 =A0 tmp |=3D NFC_ECC_EN;
-> =A0 =A0 =A0 =A0if (nfc_is_v21())
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0/* currently no support for 218 byte OOB w=
-ith stronger ECC */
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0tmp |=3D NFC_ECC_MODE;
-> - =A0 =A0 =A0 tmp &=3D ~NFC_SP_EN;
-> + =A0 =A0 =A0 tmp &=3D ~(NFC_SP_EN | NFC_INT_MSK);
-> =A0 =A0 =A0 =A0writew(tmp, host.regs + NFC_CONFIG1);
->
-> =A0 =A0 =A0 =A0if (nfc_is_v21()) {
-> --
+Also, remove code to not allow exit from main shell. The for(;;) loop
+in common/startup.c will bring us back anyway.
 
-Tested this patch on an MX21ADS, and this is sufficient.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/hush.c |   14 +++-----------
+ 1 files changed, 3 insertions(+), 11 deletions(-)
+
+diff --git a/common/hush.c b/common/hush.c
+index cf6704b..6a8b56b 100644
+--- a/common/hush.c
++++ b/common/hush.c
+@@ -699,7 +699,7 @@ static int run_list_real(struct pipe *pi)
+ 		debug("run_pipe_real returned %d\n",rcode);
+ 		if (rcode < -1) {
+ 			last_return_code = -rcode - 2;
+-			return -2;	/* exit */
++			return rcode;	/* exit */
+ 		}
+ 		last_return_code=rcode;
+ 		if ( rmode == RES_IF || rmode == RES_ELIF )
+@@ -1371,17 +1371,9 @@ static int parse_stream_outer(struct p_context *ctx, struct in_str *inp, int fla
+ 				free_pipe_list(ctx->list_head, 0);
+ 				continue;
+ 			}
+-			if (code == -2) {	/* exit */
++			if (code < -1) {	/* exit */
+ 				b_free(&temp);
+-
+-				/* XXX hackish way to not allow exit from main loop */
+-				if (inp->peek == file_peek) {
+-					printf("exit not allowed from main input shell.\n");
+-					code = 0;
+-					continue;
+-				}
+-				code = last_return_code;
+-				break;
++				return -code - 2;
+ 			}
+ 		} else {
+ 			if (ctx->old_flag != 0) {
+-- 
+1.7.0
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
