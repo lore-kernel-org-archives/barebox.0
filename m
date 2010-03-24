@@ -1,11 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NuQSH-0005sT-Q8
-	for barebox@lists.infradead.org; Wed, 24 Mar 2010 13:17:11 +0000
-From: Wolfram Sang <w.sang@pengutronix.de>
-Date: Wed, 24 Mar 2010 14:16:23 +0100
-Message-Id: <1269436583-11896-1-git-send-email-w.sang@pengutronix.de>
+Received: from mail-ew0-f210.google.com ([209.85.219.210])
+	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
+	id 1NuRyS-0007GB-29
+	for barebox@lists.infradead.org; Wed, 24 Mar 2010 14:54:31 +0000
+Received: by ewy2 with SMTP id 2so248046ewy.20
+	for <barebox@lists.infradead.org>; Wed, 24 Mar 2010 07:54:22 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <20100323162201.GE26177@darwin>
+References: <20100323133217.GA26177@darwin>
+	<20100323142643.GN2241@pengutronix.de> <20100323150915.GB26177@darwin>
+	<4BA8DEBF.6060305@eukrea.com> <20100323162201.GE26177@darwin>
+Date: Wed, 24 Mar 2010 15:54:21 +0100
+Message-ID: <ba216b431003240754g2f372416q53dd6f1ef4b95469@mail.gmail.com>
+From: Ivo Clarysse <ivo.clarysse@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,95 +21,68 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH V2] Documentation: fix typos & correct symlink
-To: barebox@lists.infradead.org
-Cc: Wolfram Sang <w.sang@pengutronix.de>
+Subject: Re: Barebox working on freescale-mx25-3-stack?
+To: Matthias Kaehlcke <matthias@kaehlcke.net>
+Cc: barebox@lists.infradead.org
 
-I found the wrong symlink and activated the spell-checker while I was here.
+On Tue, Mar 23, 2010 at 5:22 PM, Matthias Kaehlcke
+<matthias@kaehlcke.net> wrote:
+> according to the board documentation it's DDR2
+>
+> is this what barebox expects to find?
+>
 
-Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
----
+I have an IMX25PDK with DDR2 memory (Samsung K4T51163QE-ZCE6).
 
-Since V1, I dropped the "barebox's licence"-part.
+To boot barebox from an SD card, I had to apply the following patch to
+the current HEAD (ce2411432e23b5cc313c92278b2320bf1547c002):
 
- Documentation/barebox-main.dox |   14 +++++++-------
- 1 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/Documentation/barebox-main.dox b/Documentation/barebox-main.dox
-index 743add8..01c45c1 100644
---- a/Documentation/barebox-main.dox
-+++ b/Documentation/barebox-main.dox
-@@ -48,7 +48,7 @@ things right - without caring about losing support for old boards.
- - simulation target
-   - @a barebox can be compiled to run under Linux. While this is rather useless
-     in real world this is a great debugging and development aid. New features
--    can be easily developped and tested on long train journeys and started
-+    can be easily developed and tested on long train journeys and started
-     under gdb. There is a console driver for linux which emulates a serial
-     device and a tap based ethernet driver. Linux files can be mapped to
-     devices under @a barebox to emulate storage devices.
-@@ -59,7 +59,7 @@ things right - without caring about losing support for old boards.
-     'eth0.ip=192.168.0.7' or 'echo $eth0.ip'
- 
- - initcalls
--  - hooks in the startup process can be archieved with *_initcall() directives
-+  - hooks in the startup process can be achieved with *_initcall() directives
-     in each file.
- 
- - getopt
-@@ -91,7 +91,7 @@ cross_compile pointing to your architecture and compiler. For @p ARCH=sandbox
- we do not need a cross compiler so it is sufficient to specify the
- architecture:
- 
--@code # ln -s sandbox cross_arch @endcode
-+@code # ln -s arch/sandbox cross_arch @endcode
- 
- In order to configure the various aspects of @a barebox, start the @a barebox
- configuration system:
-@@ -102,7 +102,7 @@ This command starts a menu box and lets you select all the different
- options available for your architecture. Once the configuration was
- finished (you can simulate this by using the standard demo config file
- with 'make sandbox_defconfig'), there is a .config file in the toplevel
--directory of the sourcode.
-+directory of the sourcecode.
- 
- Once @a barebox is configured, we can start the compilation
- 
-@@ -115,7 +115,7 @@ If everything goes well, the result is a file called @p barebox:
-     -rwxr-xr-x 1 rsc ptx 114073 Jun 26 22:34 barebox
- @endcode
- 
--@a barebox usually needs an environment for storing the configuation data.
-+@a barebox usually needs an environment for storing the configuration data.
- You can generate an environment using the example environment contained
- in board/sandbox/env:
- 
-@@ -146,7 +146,7 @@ loaded the example environment @a barebox will show you a menu asking for
- your settings.
- 
- If you have started @a barebox as root you will find a new tap device on your
--host which you can configure using ifconfig. Once you configured @a barebox's
-+host which you can configure using ifconfig. Once you configured the
- network settings accordingly you can do a ping or tftpboot.
- 
- If you have mapped a cramfs image try mounting it with
-@@ -191,7 +191,7 @@ net /                     -> Networking stuff
- 
- scripts /                 -> Kconfig system
- 
--Documentation /           -> Parts of the documention, also doxygen
-+Documentation /           -> Parts of the documentation, also doxygen
- @endverbatim
- 
- @section license barebox's License
--- 
-1.7.0
-
+diff --git a/board/freescale-mx25-3-stack/3stack.c
+b/board/freescale-mx25-3-stack/3stack.c
+index 5590e55..d1f0fdc 100644
+--- a/board/freescale-mx25-3-stack/3stack.c
++++ b/board/freescale-mx25-3-stack/3stack.c
+@@ -48,17 +48,25 @@ struct imx_dcd_entry __dcd_entry_0x400 dcd_entry[] = {
+ 	{ .ptr_type = 4, .addr = 0xb8002050, .val = 0x0000d843, },
+ 	{ .ptr_type = 4, .addr = 0xb8002054, .val = 0x22252521, },
+ 	{ .ptr_type = 4, .addr = 0xb8002058, .val = 0x22220a00, },
+-	{ .ptr_type = 4, .addr = 0xb8001010, .val = 0x00000004, },
+-	{ .ptr_type = 4, .addr = 0xb8001000, .val = 0x92100000, },
+-	{ .ptr_type = 1, .addr = 0x80000400, .val = 0x21, },
+-	{ .ptr_type = 4, .addr = 0xb8001000, .val = 0xa2100000, },
+-	{ .ptr_type = 4, .addr = 0x80000000, .val = 0x12344321, },
+-	{ .ptr_type = 4, .addr = 0x80000000, .val = 0x12344321, },
+-	{ .ptr_type = 4, .addr = 0xb8001000, .val = 0xb2100000, },
+-	{ .ptr_type = 1, .addr = 0x80000033, .val = 0xda, },
+-	{ .ptr_type = 1, .addr = 0x81000000, .val = 0xff, },
+-	{ .ptr_type = 4, .addr = 0xb8001000, .val = 0x82216880, },
+-	{ .ptr_type = 4, .addr = 0xb8001004, .val = 0x00295729, },
++	{ .ptr_type = 4, .addr = 0xb8001004, .val = 0x0076e83a, },
++	{ .ptr_type = 4, .addr = 0xb8001010, .val = 0x00000304, },
++	{ .ptr_type = 4, .addr = 0xb8001000, .val = 0x92210000, },
++	{ .ptr_type = 4, .addr = 0x80000f00, .val = 0x12344321, },
++	{ .ptr_type = 4, .addr = 0xb8001000, .val = 0xb2210000, },
++	{ .ptr_type = 1, .addr = 0x82000000, .val = 0xda, },
++	{ .ptr_type = 1, .addr = 0x83000000, .val = 0xda, },
++	{ .ptr_type = 1, .addr = 0x81000400, .val = 0xda, },
++	{ .ptr_type = 1, .addr = 0x80000333, .val = 0xda, },
++	{ .ptr_type = 4, .addr = 0xb8001000, .val = 0x92210000, },
++	{ .ptr_type = 4, .addr = 0x80000400, .val = 0x12344321, },
++	{ .ptr_type = 4, .addr = 0xb8001000, .val = 0xa2210000, },
++	{ .ptr_type = 4, .addr = 0x80000000, .val = 0x87654321, },
++	{ .ptr_type = 4, .addr = 0x80000000, .val = 0x87654321, },
++	{ .ptr_type = 4, .addr = 0xb8001000, .val = 0xb2210000, },
++	{ .ptr_type = 1, .addr = 0x80000233, .val = 0xda, },
++	{ .ptr_type = 1, .addr = 0x81000780, .val = 0xda, },
++	{ .ptr_type = 1, .addr = 0x81000400, .val = 0xda, },
++	{ .ptr_type = 4, .addr = 0xb8001000, .val = 0x82216080, },
+ 	{ .ptr_type = 4, .addr = 0x53f80008, .val = 0x20034000, },
+ };
 
 _______________________________________________
 barebox mailing list
