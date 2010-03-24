@@ -1,15 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 30.mail-out.ovh.net ([213.186.62.213])
-	by bombadil.infradead.org with smtp (Exim 4.69 #1 (Red Hat Linux))
-	id 1Nu725-00089q-3L
-	for barebox@lists.infradead.org; Tue, 23 Mar 2010 16:32:49 +0000
-Message-ID: <4BA8ED29.7060907@eukrea.com>
-Date: Tue, 23 Mar 2010 17:32:41 +0100
-From: =?ISO-8859-1?Q?Eric_B=E9nard?= <eric@eukrea.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
+	id 1NuKyU-0000Te-I7
+	for barebox@lists.infradead.org; Wed, 24 Mar 2010 07:26:03 +0000
+Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.71)
+	(envelope-from <sha@pengutronix.de>) id 1NuKyQ-0004G6-99
+	for barebox@lists.infradead.org; Wed, 24 Mar 2010 08:25:54 +0100
+Received: from sha by octopus.hi.pengutronix.de with local (Exim 4.69)
+	(envelope-from <sha@pengutronix.de>) id 1NuKyQ-0005k8-6L
+	for barebox@lists.infradead.org; Wed, 24 Mar 2010 08:25:54 +0100
+Date: Wed, 24 Mar 2010 08:25:54 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20100324072554.GQ2241@pengutronix.de>
 MIME-Version: 1.0
-References: <20100323133217.GA26177@darwin>	<20100323142643.GN2241@pengutronix.de>	<20100323150915.GB26177@darwin>
-	<4BA8DEBF.6060305@eukrea.com> <20100323162201.GE26177@darwin>
-In-Reply-To: <20100323162201.GE26177@darwin>
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,36 +23,76 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Barebox working on freescale-mx25-3-stack?
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH] hush: Fix return code when calling 'exit' inside loops
+To: barebox@lists.infradead.org
 
-Hi Matthias,
 
-Le 23/03/2010 17:22, Matthias Kaehlcke a =E9crit :
-> El Tue, Mar 23, 2010 at 04:31:11PM +0100 Eric B=E9nard ha dit:
->
->> Le 23/03/2010 16:09, Matthias Kaehlcke a =E9crit :
->>> if you can send me the barebox image that works on your board i'll
->>> check if it works on mine, and we'll have some more certainty about
->>> whether there is some obscure problem in my build process or my board
->>> is somehow different to yours
->>>
->> one possible diff : do you have DDR2 or Mobile DDR on your board ?
->
-> according to the board documentation it's DDR2
->
-> is this what barebox expects to find?
->
-for the 3stack yes (but I think there may be some 3stack with mDDR as =
 
-both init sequence are in redboot for example).
-If you try my patch, it's for mDDR.
 
-Eric
+This fixes the case:
+
+barebox:/ cat /test
+if [ 0 = 0 ]; then
+	exit 1
+fi
+barebox:/ /test
+barebox:/ echo $?
+0
+barebox:/
+
+Also, remove code to not allow exit from main shell. The for(;;) loop
+in common/startup.c will bring us back anyway.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/hush.c |   14 +++-----------
+ 1 files changed, 3 insertions(+), 11 deletions(-)
+
+diff --git a/common/hush.c b/common/hush.c
+index cf6704b..5459224 100644
+--- a/common/hush.c
++++ b/common/hush.c
+@@ -699,7 +699,7 @@ static int run_list_real(struct pipe *pi)
+ 		debug("run_pipe_real returned %d\n",rcode);
+ 		if (rcode < -1) {
+ 			last_return_code = -rcode - 2;
+-			return -2;	/* exit */
++			return rcode;	/* exit */
+ 		}
+ 		last_return_code=rcode;
+ 		if ( rmode == RES_IF || rmode == RES_ELIF )
+@@ -1371,17 +1371,9 @@ static int parse_stream_outer(struct p_context *ctx, struct in_str *inp, int fla
+ 				free_pipe_list(ctx->list_head, 0);
+ 				continue;
+ 			}
+-			if (code == -2) {	/* exit */
++			if (code < -1) {	/* exit */
+ 				b_free(&temp);
+-
+-				/* XXX hackish way to not allow exit from main loop */
+-				if (inp->peek == file_peek) {
+-					printf("exit not allowed from main input shell.\n");
+-					code = 0;
+-					continue;
+-				}
+-				code = last_return_code;
+-				break;
++				return code;
+ 			}
+ 		} else {
+ 			if (ctx->old_flag != 0) {
+-- 
+1.7.0
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
