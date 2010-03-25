@@ -1,21 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relay2-v.mail.gandi.net ([217.70.178.76])
-	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
-	id 1NuSZ1-0004Uz-EA
-	for barebox@lists.infradead.org; Wed, 24 Mar 2010 15:32:15 +0000
-Date: Wed, 24 Mar 2010 16:30:37 +0100
-From: Matthias Kaehlcke <matthias@kaehlcke.net>
-Message-ID: <20100324153037.GC2328@darwin>
-References: <20100323133217.GA26177@darwin>
-	<20100323142643.GN2241@pengutronix.de>
-	<20100323150915.GB26177@darwin> <4BA8DEBF.6060305@eukrea.com>
-	<20100323162201.GE26177@darwin>
-	<ba216b431003240754g2f372416q53dd6f1ef4b95469@mail.gmail.com>
-	<20100324150818.GB2328@darwin>
-	<ba216b431003240823l6b729cbfi6f4fa8e50173a933@mail.gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
+	id 1NuhgQ-00019g-5v
+	for barebox@lists.infradead.org; Thu, 25 Mar 2010 07:40:54 +0000
+Date: Thu, 25 Mar 2010 08:40:48 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20100325074047.GA2241@pengutronix.de>
+References: <1269436583-11896-1-git-send-email-w.sang@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <ba216b431003240823l6b729cbfi6f4fa8e50173a933@mail.gmail.com>
+In-Reply-To: <1269436583-11896-1-git-send-email-w.sang@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,70 +18,112 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Barebox working on freescale-mx25-3-stack?
-To: Ivo Clarysse <ivo.clarysse@gmail.com>
+Subject: Re: [PATCH V2] Documentation: fix typos & correct symlink
+To: Wolfram Sang <w.sang@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-hi ivo,
+On Wed, Mar 24, 2010 at 02:16:23PM +0100, Wolfram Sang wrote:
+> I found the wrong symlink and activated the spell-checker while I was here.
 
-El Wed, Mar 24, 2010 at 04:23:33PM +0100 Ivo Clarysse ha dit:
+Applied.
 
-> On Wed, Mar 24, 2010 at 4:08 PM, Matthias Kaehlcke
-> <matthias@kaehlcke.net> wrote:
-> >
-> > after applying your patch barebox effectivly came up :)
-> >
-> > thanks a lot!
-> >
-> > could you explain in few words why the patch is needed?
-> =
+Sascha
 
-> RAM initialization is implemented in two places: lowlevel_init.S and
-> the "Device Configuration Data" (DCD) block.
-> =
+> 
+> Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
+> ---
+> 
+> Since V1, I dropped the "barebox's licence"-part.
+> 
+>  Documentation/barebox-main.dox |   14 +++++++-------
+>  1 files changed, 7 insertions(+), 7 deletions(-)
+> 
+> diff --git a/Documentation/barebox-main.dox b/Documentation/barebox-main.dox
+> index 743add8..01c45c1 100644
+> --- a/Documentation/barebox-main.dox
+> +++ b/Documentation/barebox-main.dox
+> @@ -48,7 +48,7 @@ things right - without caring about losing support for old boards.
+>  - simulation target
+>    - @a barebox can be compiled to run under Linux. While this is rather useless
+>      in real world this is a great debugging and development aid. New features
+> -    can be easily developped and tested on long train journeys and started
+> +    can be easily developed and tested on long train journeys and started
+>      under gdb. There is a console driver for linux which emulates a serial
+>      device and a tap based ethernet driver. Linux files can be mapped to
+>      devices under @a barebox to emulate storage devices.
+> @@ -59,7 +59,7 @@ things right - without caring about losing support for old boards.
+>      'eth0.ip=192.168.0.7' or 'echo $eth0.ip'
+>  
+>  - initcalls
+> -  - hooks in the startup process can be archieved with *_initcall() directives
+> +  - hooks in the startup process can be achieved with *_initcall() directives
+>      in each file.
+>  
+>  - getopt
+> @@ -91,7 +91,7 @@ cross_compile pointing to your architecture and compiler. For @p ARCH=sandbox
+>  we do not need a cross compiler so it is sufficient to specify the
+>  architecture:
+>  
+> -@code # ln -s sandbox cross_arch @endcode
+> +@code # ln -s arch/sandbox cross_arch @endcode
+>  
+>  In order to configure the various aspects of @a barebox, start the @a barebox
+>  configuration system:
+> @@ -102,7 +102,7 @@ This command starts a menu box and lets you select all the different
+>  options available for your architecture. Once the configuration was
+>  finished (you can simulate this by using the standard demo config file
+>  with 'make sandbox_defconfig'), there is a .config file in the toplevel
+> -directory of the sourcode.
+> +directory of the sourcecode.
+>  
+>  Once @a barebox is configured, we can start the compilation
+>  
+> @@ -115,7 +115,7 @@ If everything goes well, the result is a file called @p barebox:
+>      -rwxr-xr-x 1 rsc ptx 114073 Jun 26 22:34 barebox
+>  @endcode
+>  
+> -@a barebox usually needs an environment for storing the configuation data.
+> +@a barebox usually needs an environment for storing the configuration data.
+>  You can generate an environment using the example environment contained
+>  in board/sandbox/env:
+>  
+> @@ -146,7 +146,7 @@ loaded the example environment @a barebox will show you a menu asking for
+>  your settings.
+>  
+>  If you have started @a barebox as root you will find a new tap device on your
+> -host which you can configure using ifconfig. Once you configured @a barebox's
+> +host which you can configure using ifconfig. Once you configured the
+>  network settings accordingly you can do a ping or tftpboot.
+>  
+>  If you have mapped a cramfs image try mounting it with
+> @@ -191,7 +191,7 @@ net /                     -> Networking stuff
+>  
+>  scripts /                 -> Kconfig system
+>  
+> -Documentation /           -> Parts of the documention, also doxygen
+> +Documentation /           -> Parts of the documentation, also doxygen
+>  @endverbatim
+>  
+>  @section license barebox's License
+> -- 
+> 1.7.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
-> When booting from an SD card, the i.MX25 reads out the DCD block and
-> applies the settings found there.
-> =
-
-> The RAM initialization in lowlevel_init.S is skipped when booting from
-> SD; by the time board_init_lowlevel gets executed,
-> that routine is already running from RAM, and will skip initializing memo=
-ry.
-> =
-
-> The DCD table in barebox git contains entries for mDDR memory.  This
-> does not work with DDR2 memory.
-> =
-
-> Probably barebox needs a compile-time option to switch between 128 MiB
-> mDDR memory installed on older MCIMX25PDK CPU engine boards and the 64
-> MiB DDR2 memory found on newer boards.
-
-thanks a lot for your explication!
-
-i wasn't aware that differently equipped CPU engine boards exists,
-good to know
-
-best regards
-
--- =
-
-Matthias Kaehlcke
-Embedded Linux Developer
-Barcelona
-
-    Me lo contaron y lo olvid=E9, lo vi y lo entend=ED, lo hice y lo aprend=
-=ED
-                              (Confucio)
-                                                                 .''`.
-    using free software / Debian GNU/Linux | http://debian.org  : :'  :
-                                                                `. `'`
-gpg --keyserver pgp.mit.edu --recv-keys 47D8E5D4                  `-
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
