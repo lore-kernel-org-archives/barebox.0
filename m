@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1Nv92Y-0003M2-Ag
-	for barebox@lists.infradead.org; Fri, 26 Mar 2010 12:53:32 +0000
-From: Luotao Fu <l.fu@pengutronix.de>
-Date: Fri, 26 Mar 2010 13:52:27 +0100
-Message-Id: <1269607949-5336-4-git-send-email-l.fu@pengutronix.de>
-In-Reply-To: <1269607949-5336-1-git-send-email-l.fu@pengutronix.de>
-References: <1269607949-5336-1-git-send-email-l.fu@pengutronix.de>
+Received: from mail.visioncatalog.de ([217.6.246.34] helo=root.phytec.de)
+	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
+	id 1NvAvy-00061a-Cs
+	for barebox@lists.infradead.org; Fri, 26 Mar 2010 14:54:55 +0000
+From: Jan Weitzel <J.Weitzel@phytec.de>
+In-Reply-To: <20100324113526.GV2241@pengutronix.de>
+References: <20100324072554.GQ2241@pengutronix.de>
+	<20100324113526.GV2241@pengutronix.de>
+Date: Fri, 26 Mar 2010 15:54:43 +0100
+Message-ID: <1269615283.10401.0.camel@lws-weitzel>
+Mime-Version: 1.0
+Reply-To: J.Weitzel@phytec.de
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,159 +19,75 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] add multi environment support
-To: sha@pengutronix.de
-Cc: barebox@lists.infradead.org, Luotao Fu <l.fu@pengutronix.de>
+Subject: Re: [PATCH] hush: Fix return code when calling 'exit' inside loops
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-We can deal with multiple environments now in our barebox. With this option
-enabled barebox will scan all environment partions on start up and load the
-environment from the first loadable environment partition it finds. Also it will
-check the content of all environment parttions and autmotically synchronize
-content of any outdated partition.
+works fine
 
-Signed-off-by: Luotao Fu <l.fu@pengutronix.de>
----
- common/Kconfig   |   11 ++++++
- common/startup.c |   90 ++++++++++++++++++++++++++++++++++++++++++++++++-----
- 2 files changed, 92 insertions(+), 9 deletions(-)
+Am Mittwoch, den 24.03.2010, 12:35 +0100 schrieb Sascha Hauer:
+> v2: Do not exit from all scripts but only the current one
+> 
+> This fixes the case:
+> 
+> barebox:/ cat /test
+> if [ 0 = 0 ]; then
+> 	exit 1
+> fi
+> barebox:/ /test
+> barebox:/ echo $?
+> 0
+> barebox:/
+> 
+> Also, remove code to not allow exit from main shell. The for(;;) loop
+> in common/startup.c will bring us back anyway.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  common/hush.c |   14 +++-----------
+>  1 files changed, 3 insertions(+), 11 deletions(-)
+> 
+> diff --git a/common/hush.c b/common/hush.c
+> index cf6704b..6a8b56b 100644
+> --- a/common/hush.c
+> +++ b/common/hush.c
+> @@ -699,7 +699,7 @@ static int run_list_real(struct pipe *pi)
+>  		debug("run_pipe_real returned %d\n",rcode);
+>  		if (rcode < -1) {
+>  			last_return_code = -rcode - 2;
+> -			return -2;	/* exit */
+> +			return rcode;	/* exit */
+>  		}
+>  		last_return_code=rcode;
+>  		if ( rmode == RES_IF || rmode == RES_ELIF )
+> @@ -1371,17 +1371,9 @@ static int parse_stream_outer(struct p_context *ctx, struct in_str *inp, int fla
+>  				free_pipe_list(ctx->list_head, 0);
+>  				continue;
+>  			}
+> -			if (code == -2) {	/* exit */
+> +			if (code < -1) {	/* exit */
+>  				b_free(&temp);
+> -
+> -				/* XXX hackish way to not allow exit from main loop */
+> -				if (inp->peek == file_peek) {
+> -					printf("exit not allowed from main input shell.\n");
+> -					code = 0;
+> -					continue;
+> -				}
+> -				code = last_return_code;
+> -				break;
+> +				return -code - 2;
+>  			}
+>  		} else {
+>  			if (ctx->old_flag != 0) {
+> -- 
+> 1.7.0
+> 
 
-diff --git a/common/Kconfig b/common/Kconfig
-index 4c4a627..ffb0257 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -40,6 +40,17 @@ config LOCALVERSION_AUTO
- 
- 	  which is done within the script "scripts/setlocalversion".)
- 
-+config MULTI_ENV_HANDLING
-+	select ENV_HANDLING
-+	bool "Enable handling multiple environment partitions"
-+	help
-+	  We can have multiple environments in our barebox. With this option
-+	  enabled barebox will scan all environment partions on start up and
-+	  load the environment from the first loadable environment partition
-+	  it finds. Also it will check if the content of all environment
-+	  parttions are synchronized and autmotically synchronize content of
-+	  the outdated partition.
-+
- config BOARDINFO
- 	string
- 
-diff --git a/common/startup.c b/common/startup.c
-index 6dca270..af929f8 100644
---- a/common/startup.c
-+++ b/common/startup.c
-@@ -110,6 +110,87 @@ static int mount_root(void)
- }
- fs_initcall(mount_root);
- 
-+#ifdef CONFIG_ENV_HANDLING
-+#ifdef CONFIG_MULTI_ENV_HANDLING
-+static int init_envfs_load(void)
-+{
-+	char *dirname = "/env";
-+	char file[9 + 5];	/* '/dev/env.....' */
-+	int i = 0, j = 0, no_more_parts = 0;
-+	int crc = 0, crc_ref = 0;
-+	int rc;
-+	struct stat file_info;
-+
-+	while (1) {
-+		sprintf(file, "/dev/env%d", i);
-+
-+		if (stat(file, &file_info) != 0) {
-+			no_more_parts = 1;
-+			break;
-+		}
-+
-+		/* first loadable environment is considered to be
-+		 * reference */
-+		if (envfs_load(file, dirname, &crc_ref) == 0)
-+			break;
-+
-+		i++;
-+	}
-+
-+	/* no loadable environment partition found */
-+	if (no_more_parts == 1) {
-+#ifdef CONFIG_DEFAULT_ENVIRONMENT
-+		printf("no valid environment found. "
-+			"Using default environment\n");
-+		envfs_load("/dev/defaultenv", "/env", &crc_ref);
-+#endif
-+		goto out;
-+	}
-+
-+	/* Now try to restore, if any, the previous failed partitions */
-+	for (j = 0; j < i; j++) {
-+		sprintf(file, "/dev/env%d", j);
-+		if (envfs_save(file, dirname))
-+			printf("failed to sync environment on %s\n", file);
-+	}
-+
-+	/* proceed to scan further env partitions */
-+	while (1) {
-+		i++;
-+		sprintf(file, "/dev/env%d", i);
-+
-+		if (stat(file, &file_info) != 0)
-+			break;
-+
-+		/* sync partition if loading failed or crc mismatch with
-+		 * the reference*/
-+		rc = envfs_load(file, NULL, &crc);
-+		if (rc != 0 || crc != crc_ref) {
-+			if (envfs_save(file, dirname))
-+				printf("failed to sync environment on %s\n",
-+						file);
-+		}
-+	}
-+out:
-+	return 0;
-+}
-+#else /* MULTI_ENV_HANDLING */
-+static int init_envfs_load(void)
-+{
-+	if (envfs_load("/dev/env0", "/env")) {
-+#ifdef CONFIG_DEFAULT_ENVIRONMENT
-+		printf("no valid environment found. "
-+			"Using default environment\n");
-+		envfs_load("/dev/defaultenv", "/env", NULL);
-+#endif
-+	}
-+
-+	return 0;
-+}
-+#endif /* MULTI_ENV_HANDLING */
-+late_initcall(init_envfs_load);
-+#endif /* CONFIG_ENV_HANDLING */
-+
- void start_barebox (void)
- {
- 	initcall_t *initcall;
-@@ -137,15 +218,6 @@ void start_barebox (void)
- 
- 	display_meminfo();
- 
--#ifdef CONFIG_ENV_HANDLING
--	if (envfs_load("/dev/env0", "/env")) {
--#ifdef CONFIG_DEFAULT_ENVIRONMENT
--		printf("no valid environment found on /dev/env0. "
--			"Using default environment\n");
--		envfs_load("/dev/defaultenv", "/env");
--#endif
--	}
--#endif
- 	printf("running /env/bin/init...\n");
- 
- 	if (!stat("/env/bin/init", &s)) {
--- 
-1.7.0
 
 
 _______________________________________________
