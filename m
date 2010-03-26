@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1Nv92Q-0003EQ-AB
+	id 1Nv92Q-0003FP-Ae
 	for barebox@lists.infradead.org; Fri, 26 Mar 2010 12:53:22 +0000
 From: Luotao Fu <l.fu@pengutronix.de>
-Date: Fri, 26 Mar 2010 13:52:24 +0100
-Message-Id: <1269607949-5336-1-git-send-email-l.fu@pengutronix.de>
+Date: Fri, 26 Mar 2010 13:52:25 +0100
+Message-Id: <1269607949-5336-2-git-send-email-l.fu@pengutronix.de>
+In-Reply-To: <1269607949-5336-1-git-send-email-l.fu@pengutronix.de>
+References: <1269607949-5336-1-git-send-email-l.fu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,30 +21,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Environment handling fixes and support for multiple environment
-	backends
+Subject: [PATCH 1/5] fix error return value while loading environment
 To: sha@pengutronix.de
-Cc: barebox@lists.infradead.org
+Cc: barebox@lists.infradead.org, Luotao Fu <l.fu@pengutronix.de>
 
-Hi,
-the following patch set fixes and changes the environment handling in barebox.
-The main change is that we have now support for multiple environment backends in
-backup. This option is configurable. Once activated, barebox will scan for all
-environment backends during startup, load the environment from the first loadble
-backend and than synchronize the content of all remaining (or previous)
-backends. The commands savenenv and loadenv are also extended with the support
-for this option.
+Signed-off-by: Luotao Fu <l.fu@pengutronix.de>
+---
+ common/environment.c |    6 +++++-
+ 1 files changed, 5 insertions(+), 1 deletions(-)
 
-diffstat:
-
-commands/loadenv.c    |   51 +++++++++++++++++++++-----
-commands/saveenv.c    |   94 ++++++++++++++++++++++++++---------------------
-common/Kconfig        |   11 ++++++
-common/environment.c  |   53 +++++++++++++++++++++++++--
-common/startup.c      |   97 ++++++++++++++++++++++++++++++++++++++++++++-----
-include/environment.h |    3 +-
-scripts/bareboxenv.c  |    2 +-
-7 files changed, 246 insertions(+), 65 deletions(-)
+diff --git a/common/environment.c b/common/environment.c
+index 0c7de84..0eb7e6b 100644
+--- a/common/environment.c
++++ b/common/environment.c
+@@ -198,6 +198,7 @@ int envfs_load(char *filename, char *dir)
+ 	if (crc32(0, (unsigned char *)&super, sizeof(struct envfs_super) - 4)
+ 		   != ENVFS_32(super.sb_crc)) {
+ 		printf("wrong crc on env superblock\n");
++		ret = -EIO;
+ 		goto out;
+ 	}
+ 
+@@ -207,18 +208,20 @@ int envfs_load(char *filename, char *dir)
+ 	ret = read(envfd, buf, size);
+ 	if (ret < size) {
+ 		perror("read");
++		ret = errno;
+ 		goto out;
+ 	}
+ 
+ 	if (crc32(0, (unsigned char *)buf, size)
+ 		     != ENVFS_32(super.crc)) {
+ 		printf("wrong crc on env\n");
++		ret = -EIO;
+ 		goto out;
+ 	}
+ 
+ 	while (size) {
+ 		struct envfs_inode *inode;
+-        uint32_t inode_size,inode_namelen;
++		uint32_t inode_size, inode_namelen;
+ 
+ 		inode = (struct envfs_inode *)buf;
+ 
+@@ -251,6 +254,7 @@ int envfs_load(char *filename, char *dir)
+ 				inode_size);
+ 		if (ret < inode_size) {
+ 			perror("write");
++			ret = errno;
+ 			close(fd);
+ 			goto out;
+ 		}
+-- 
+1.7.0
 
 
 _______________________________________________
