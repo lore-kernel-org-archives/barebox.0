@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1Nv92G-0003FS-KJ
+	id 1Nv92G-0003FQ-KO
 	for barebox@lists.infradead.org; Fri, 26 Mar 2010 12:53:13 +0000
 From: Luotao Fu <l.fu@pengutronix.de>
-Date: Fri, 26 Mar 2010 13:52:29 +0100
-Message-Id: <1269607949-5336-6-git-send-email-l.fu@pengutronix.de>
+Date: Fri, 26 Mar 2010 13:52:26 +0100
+Message-Id: <1269607949-5336-3-git-send-email-l.fu@pengutronix.de>
 In-Reply-To: <1269607949-5336-1-git-send-email-l.fu@pengutronix.de>
 References: <1269607949-5336-1-git-send-email-l.fu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,177 +21,108 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/5] add general check_and_erase callback to environment
-	handling
+Subject: [PATCH 2/5] crc value handling and dry run mode in envfs_load
 To: sha@pengutronix.de
 Cc: barebox@lists.infradead.org, Luotao Fu <l.fu@pengutronix.de>
 
-Checking and erasing the envfs partition prior to saving the environment is
-required both in start initial environment loading and saveenv commands. Hence
-we add a general callback to do this task. This callback is barebox only and
-cannot be used in the script utils.
+We add some stuffs to envfs_load to enable handling of multiple environment
+partitions:
+* envfs_load now accepts a parameter, where the crc value of the environment
+partition can be stored.
+* Also added "dry run" mode to envfs_load. If the dirname is not set.
+envfs_load will now only check the crc values of the partition and returns
+without writing to the file system.
 
 Signed-off-by: Luotao Fu <l.fu@pengutronix.de>
 ---
- commands/saveenv.c    |   46 +++++-----------------------------------------
- common/environment.c  |   34 ++++++++++++++++++++++++++++++++++
- common/startup.c      |    7 +++++++
- include/environment.h |    1 +
- 4 files changed, 47 insertions(+), 41 deletions(-)
+ commands/loadenv.c    |    4 +++-
+ common/environment.c  |   13 +++++++++++--
+ include/environment.h |    2 +-
+ scripts/bareboxenv.c  |    2 +-
+ 4 files changed, 16 insertions(+), 5 deletions(-)
 
-diff --git a/commands/saveenv.c b/commands/saveenv.c
-index 668e6ae..efc89bd 100644
---- a/commands/saveenv.c
-+++ b/commands/saveenv.c
-@@ -33,50 +33,17 @@
- 
- static int saveenv(char *filename, char *dirname)
- {
--	int ret, fd;
--	char filename[9 + 5];
--	char *dirname;
--
--	printf("saving environment\n");
--	if (argc < 3)
--		dirname = "/env";
--	else
--		dirname = argv[2];
--	if (argc < 2)
--		filename = "/dev/env0";
--	else
--		filename = argv[1];
--
--	fd = open(filename, O_WRONLY | O_CREAT);
--	if (fd < 0) {
--		printf("could not open %s: %s\n", filename, errno_str());
--		return 1;
--	}
--
--	ret = protect(fd, ~0, 0, 0);
--
--	/* ENOSYS is no error here, many devices do not need it */
--	if (ret && errno != -ENOSYS) {
--		printf("could not unprotect %s: %s\n", filename, errno_str());
--		close(fd);
--		return 1;
--	}
--
--	ret = erase(fd, ~0, 0);
-+	int ret = 0;
-+	int fd;
- 
--	/* ENOSYS is no error here, many devices do not need it */
--	if (ret && errno != -ENOSYS) {
--		printf("could not erase %s: %s\n", filename, errno_str());
--		close(fd);
-+	ret = file_check_and_erase(filename);
-+	if (ret)
- 		return 1;
--	}
--
--	close(fd);
- 
- 	ret = envfs_save(filename, dirname);
- 	if (ret) {
- 		printf("saveenv failed\n");
--		goto out;
-+		return 1;
- 	}
- 
- 	fd = open(filename, O_WRONLY | O_CREAT);
-@@ -90,10 +57,7 @@ static int saveenv(char *filename, char *dirname)
- 		return 1;
- 	}
- 
--	ret = 0;
--out:
- 	close(fd);
--
- 	return 0;
+diff --git a/commands/loadenv.c b/commands/loadenv.c
+index 14fbf1e..3da67d9 100644
+--- a/commands/loadenv.c
++++ b/commands/loadenv.c
+@@ -35,12 +35,14 @@ static int do_loadenv(struct command *cmdtp, int argc, char *argv[])
+ 		dirname = "/env";
+ 	else
+ 		dirname = argv[2];
++
+ 	if (argc < 2)
+ 		filename = "/dev/env0";
+ 	else
+ 		filename = argv[1];
+ 	printf("loading environment from %s\n", filename);
+-	return envfs_load(filename, dirname);
++
++	return envfs_load(filename, dirname, NULL);
  }
  
+ static const __maybe_unused char cmd_loadenv_help[] =
 diff --git a/common/environment.c b/common/environment.c
-index e79ec99..da34069 100644
+index 0eb7e6b..e79ec99 100644
 --- a/common/environment.c
 +++ b/common/environment.c
-@@ -93,6 +93,40 @@ out:
- 	return 1;
- }
- 
-+#ifdef __BAREBOX__
-+int file_check_and_erase(char *filename)
-+{
-+	int fd;
-+	int ret;
-+
-+	fd = open(filename, O_WRONLY | O_CREAT);
-+	if (fd < 0) {
-+		printf("could not open %s: %s\n", filename, errno_str());
-+		return errno;
-+	}
-+
-+	ret = protect(fd, ~0, 0, 0);
-+
-+	/* ENOSYS is no error here, many devices do not need it */
-+	if (ret && errno != -ENOSYS) {
-+		printf("could not unprotect %s: %s\n", filename, errno_str());
-+		return errno;
-+	}
-+
-+	ret = erase(fd, ~0, 0);
-+
-+	/* ENOSYS is no error here, many devices do not need it */
-+	if (ret && errno != -ENOSYS) {
-+		printf("could not erase %s: %s\n", filename, errno_str());
-+		close(fd);
-+		return errno;
-+	}
-+
-+	close(fd);
-+	return 0;
-+}
-+#endif /* __BAREBOX__ */
-+
+@@ -159,13 +159,15 @@ EXPORT_SYMBOL(envfs_save);
  /**
-  * Make the current environment persistent
-  * @param[in] filename where to store
-diff --git a/common/startup.c b/common/startup.c
-index af929f8..c589646 100644
---- a/common/startup.c
-+++ b/common/startup.c
-@@ -150,6 +150,10 @@ static int init_envfs_load(void)
- 	/* Now try to restore, if any, the previous failed partitions */
- 	for (j = 0; j < i; j++) {
- 		sprintf(file, "/dev/env%d", j);
-+
-+		if (file_check_and_erase(file))
-+			continue;
-+
- 		if (envfs_save(file, dirname))
- 			printf("failed to sync environment on %s\n", file);
+  * Restore the last environment into the current one
+  * @param[in] filename from where to restore
+- * @param[in] dir where to store the last content
++ * @param[in] dir where to store the last content. Function will return crc
++ * value only if dir==NULL.
++ * @param[in] crc pointer to variale, where the crc can be stored.
+  * @return 0 on success, anything else in case of failure
+  *
+  * Note: This function will also be used on the host! See note in the header
+  * of this file.
+  */
+-int envfs_load(char *filename, char *dir)
++int envfs_load(char *filename, char *dir, int *crc)
+ {
+ 	struct envfs_super super;
+ 	void *buf = NULL, *buf_free = NULL;
+@@ -219,6 +221,13 @@ int envfs_load(char *filename, char *dir)
+ 		goto out;
  	}
-@@ -166,6 +170,9 @@ static int init_envfs_load(void)
- 		 * the reference*/
- 		rc = envfs_load(file, NULL, &crc);
- 		if (rc != 0 || crc != crc_ref) {
-+			if (file_check_and_erase(file))
-+				continue;
+ 
++	if (crc != NULL)
++		*crc = ENVFS_32(super.crc);
 +
- 			if (envfs_save(file, dirname))
- 				printf("failed to sync environment on %s\n",
- 						file);
++	/* return crc only if dir is not set */
++	if (!dir)
++		goto out;
++
+ 	while (size) {
+ 		struct envfs_inode *inode;
+ 		uint32_t inode_size, inode_namelen;
 diff --git a/include/environment.h b/include/environment.h
-index 2b1f5d9..b2b95e0 100644
+index 21a7ffa..2b1f5d9 100644
 --- a/include/environment.h
 +++ b/include/environment.h
-@@ -58,6 +58,7 @@ int export(const char *);
- struct stat;
- int file_size_action(const char *, struct stat *, void *, int);
- int file_save_action(const char *, struct stat *, void *, int);
-+int file_check_and_erase(char *filename);
+@@ -50,7 +50,7 @@ int setenv(const char *, const char *);
+ int env_pop_context(void);
+ int env_push_context(void);
  
- #endif /* __BAREBOX__ */
+-int envfs_load(char *filename, char *dirname);
++int envfs_load(char *filename, char *dirname, int *crc);
+ int envfs_save(char *filename, char *dirname);
  
+ int export(const char *);
+diff --git a/scripts/bareboxenv.c b/scripts/bareboxenv.c
+index 5c7f10e..af012e8 100644
+--- a/scripts/bareboxenv.c
++++ b/scripts/bareboxenv.c
+@@ -186,7 +186,7 @@ int main(int argc, char *argv[])
+ 
+ 	if (load) {
+ 		printf("loading env from file %s to %s\n", filename, dirname);
+-		envfs_load(filename, dirname);
++		envfs_load(filename, dirname, NULL);
+ 	}
+ 	if (save) {
+ 		printf("saving contents of %s to file %s\n", dirname, filename);
 -- 
 1.7.0
 
