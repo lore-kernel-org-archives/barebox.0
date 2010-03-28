@@ -1,16 +1,8 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.visioncatalog.de ([217.6.246.34] helo=root.phytec.de)
-	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
-	id 1NvAvy-00061a-Cs
-	for barebox@lists.infradead.org; Fri, 26 Mar 2010 14:54:55 +0000
-From: Jan Weitzel <J.Weitzel@phytec.de>
-In-Reply-To: <20100324113526.GV2241@pengutronix.de>
-References: <20100324072554.GQ2241@pengutronix.de>
-	<20100324113526.GV2241@pengutronix.de>
-Date: Fri, 26 Mar 2010 15:54:43 +0100
-Message-ID: <1269615283.10401.0.camel@lws-weitzel>
-Mime-Version: 1.0
-Reply-To: J.Weitzel@phytec.de
+Message-ID: <4BAF01C3.2030708@freemail.hu>
+Date: Sun, 28 Mar 2010 09:14:11 +0200
+From: =?UTF-8?B?TsOpbWV0aCBNw6FydG9u?= <nm127@freemail.hu>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,78 +11,31 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] hush: Fix return code when calling 'exit' inside loops
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] u-boot-v2: fix typos in documentation
+To: embedded-linux@pengutronix.de, u-boot-v2@lists.infradead.org
 
-works fine
-
-Am Mittwoch, den 24.03.2010, 12:35 +0100 schrieb Sascha Hauer:
-> v2: Do not exit from all scripts but only the current one
-> 
-> This fixes the case:
-> 
-> barebox:/ cat /test
-> if [ 0 = 0 ]; then
-> 	exit 1
-> fi
-> barebox:/ /test
-> barebox:/ echo $?
-> 0
-> barebox:/
-> 
-> Also, remove code to not allow exit from main shell. The for(;;) loop
-> in common/startup.c will bring us back anyway.
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  common/hush.c |   14 +++-----------
->  1 files changed, 3 insertions(+), 11 deletions(-)
-> 
-> diff --git a/common/hush.c b/common/hush.c
-> index cf6704b..6a8b56b 100644
-> --- a/common/hush.c
-> +++ b/common/hush.c
-> @@ -699,7 +699,7 @@ static int run_list_real(struct pipe *pi)
->  		debug("run_pipe_real returned %d\n",rcode);
->  		if (rcode < -1) {
->  			last_return_code = -rcode - 2;
-> -			return -2;	/* exit */
-> +			return rcode;	/* exit */
->  		}
->  		last_return_code=rcode;
->  		if ( rmode == RES_IF || rmode == RES_ELIF )
-> @@ -1371,17 +1371,9 @@ static int parse_stream_outer(struct p_context *ctx, struct in_str *inp, int fla
->  				free_pipe_list(ctx->list_head, 0);
->  				continue;
->  			}
-> -			if (code == -2) {	/* exit */
-> +			if (code < -1) {	/* exit */
->  				b_free(&temp);
-> -
-> -				/* XXX hackish way to not allow exit from main loop */
-> -				if (inp->peek == file_peek) {
-> -					printf("exit not allowed from main input shell.\n");
-> -					code = 0;
-> -					continue;
-> -				}
-> -				code = last_return_code;
-> -				break;
-> +				return -code - 2;
->  			}
->  		} else {
->  			if (ctx->old_flag != 0) {
-> -- 
-> 1.7.0
-> 
-
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+RnJvbTogTcOhcnRvbiBOw6ltZXRoIDxubTEyN0BmcmVlbWFpbC5odT4KClNpZ25lZC1vZmYtYnk6
+IE3DoXJ0b24gTsOpbWV0aCA8bm0xMjdAZnJlZW1haWwuaHU+Ci0tLQpkaWZmIC0tZ2l0IGEvRG9j
+dW1lbnRhdGlvbi9kZXZpY2VzX2RyaXZlcnMudHh0IGIvRG9jdW1lbnRhdGlvbi9kZXZpY2VzX2Ry
+aXZlcnMudHh0CmluZGV4IDA2ZTc4OGQuLmExN2YwMjAgMTAwNjQ0Ci0tLSBhL0RvY3VtZW50YXRp
+b24vZGV2aWNlc19kcml2ZXJzLnR4dAorKysgYi9Eb2N1bWVudGF0aW9uL2RldmljZXNfZHJpdmVy
+cy50eHQKQEAgLTU1LDcgKzU1LDcgQEAgU2VlIGFib3ZlLgogaW50ICAgICAoKnByb2JlKSAoc3Ry
+dWN0IGRldmljZV9kICopOwogaW50ICAgICAoKnJlbW92ZSkoc3RydWN0IGRldmljZV9kICopOwoK
+LVRoZXNlIGFyZSBjYWxsZWQgaWYgYSBpbnN0YW5jZSBvZiBhIGRldmljZSBpcyBmb3VuZCBvciBn
+b25lLgorVGhlc2UgYXJlIGNhbGxlZCBpZiBhbiBpbnN0YW5jZSBvZiBhIGRldmljZSBpcyBmb3Vu
+ZCBvciBnb25lLgoKIHNzaXplX3QgKCpyZWFkKSAgKHN0cnVjdCBkZXZpY2VfZCosIHZvaWQqIGJ1
+Ziwgc2l6ZV90IGNvdW50LCB1bG9uZyBvZmZzZXQsIHVsb25nIGZsYWdzKTsKIHNzaXplX3QgKCp3
+cml0ZSkgKHN0cnVjdCBkZXZpY2VfZCosIGNvbnN0IHZvaWQqIGJ1Ziwgc2l6ZV90IGNvdW50LCB1
+bG9uZyBvZmZzZXQsIHVsb25nIGZsYWdzKTsKQEAgLTY3LDYgKzY3LDYgQEAgdm9pZCAqdHlwZV9k
+YXRhOwoKIFRoaXMgaXMgc29tZXdoYXQgcmVkdW5kYW50IHdpdGggdGhlIHR5cGUgZGF0YSBpbiBz
+dHJ1Y3QgZGV2aWNlLiBDdXJyZW50bHkgdGhlCiBmaWxlc3lzdGVtIGltcGxlbWVudGF0aW9uIHVz
+ZXMgdGhpcyBmaWVsZCB3aGlsZSBldGhlcm5ldCBkcml2ZXJzIHVzZSB0aGUgc2FtZQotZmllbGQg
+aW4gc3RydWN0IGRldmljZS4gUHJvYmFibHkgb25lIG9mIGJvdGggc2hvdWxkIGJlIHJlbW92ZWQu
+CitmaWVsZCBpbiBzdHJ1Y3QgZGV2aWNlLiBQcm9iYWJseSBvbmUgb2YgdGhlbSBzaG91bGQgYmUg
+cmVtb3ZlZC4KCgoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRw
+Oi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
