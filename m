@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NwBP1-00088i-B2
+	id 1NwBP1-00088l-BI
 	for barebox@lists.infradead.org; Mon, 29 Mar 2010 09:37:00 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 29 Mar 2010 11:36:15 +0200
-Message-Id: <1269855383-22716-5-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 29 Mar 2010 11:36:19 +0200
+Message-Id: <1269855383-22716-9-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1269855383-22716-1-git-send-email-s.hauer@pengutronix.de>
 References: <1269855383-22716-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,40 +21,97 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/12] imx_nand: use memcpy for copying from/to buffer
+Subject: [PATCH 08/12] echo: add -e option support
 To: barebox@lists.infradead.org
-
-We do not need to use memcpy32 in read_buf/write_buf because
-in these functions we only access SDRAM and not the internal SRAM
-buffer.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/nand/nand_imx.c |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
+ commands/echo.c |   52 +++++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 files changed, 51 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/nand/nand_imx.c b/drivers/nand/nand_imx.c
-index 5f92e2f..398a268 100644
---- a/drivers/nand/nand_imx.c
-+++ b/drivers/nand/nand_imx.c
-@@ -505,7 +505,7 @@ static void imx_nand_write_buf(struct mtd_info *mtd,
- 	int n = mtd->oobsize + mtd->writesize - col;
+diff --git a/commands/echo.c b/commands/echo.c
+index d5640a0..6f4f136 100644
+--- a/commands/echo.c
++++ b/commands/echo.c
+@@ -26,12 +26,59 @@
+ #include <fcntl.h>
+ #include <errno.h>
  
- 	n = min(n, len);
--	memcpy32(host->data_buf + col, buf, n);
-+	memcpy(host->data_buf + col, buf, n);
++static int my_fputs(int fd, const char *s)
++{
++	int c;
++
++	while (*s) {
++		if (*s == '\\') {
++			switch (*(s + 1)) {
++			case 0:
++				return 0;
++			case '\\':
++				c = '\\';
++				break;
++			case 'a':
++				c = '\a';
++				break;
++			case 'b':
++				c = '\b';
++				break;
++			case 'n':
++				c = '\n';
++				break;
++			case 'r':
++				c = '\r';
++				break;
++			case 't':
++				c = '\t';
++				break;
++			case 'f':
++				c = '\f';
++				break;
++			case 'e':
++				c = 0x1b;
++				break;
++			default:
++				fputc(fd, '\\');
++				c = *(s + 1);
++			}
++			s++;
++			fputc(fd, c);
++		} else
++			fputc(fd, *s);
++		s++;
++	}
++	return 0;
++}
++
+ static int do_echo(struct command *cmdtp, int argc, char *argv[])
+ {
+ 	int i, optind = 1;
+ 	int fd = stdout, opt, newline = 1;
+ 	char *file = NULL;
+ 	int oflags = O_WRONLY | O_CREAT;
++	int (*fputsfunc)(int, const char *) = fputs;
  
- 	host->buf_start += n;
- }
-@@ -529,7 +529,7 @@ static void imx_nand_read_buf(struct mtd_info *mtd, u_char * buf, int len)
+ 	/* We can't use getopt() here because we want to
+ 	 * echo all things we don't understand.
+@@ -62,6 +109,9 @@ static int do_echo(struct command *cmdtp, int argc, char *argv[])
+ 				goto no_optarg_out;
+ 			optind++;
+ 			break;
++		case 'e':
++			fputsfunc = my_fputs;
++			break;
+ 		default:
+ 			goto exit_parse;
+ 		}
+@@ -80,7 +130,7 @@ exit_parse:
+ 	for (i = optind; i < argc; i++) {
+ 		if (i > optind)
+ 			fputc(fd, ' ');
+-		fputs(fd, argv[i]);
++		fputsfunc(fd, argv[i]);
+ 	}
  
- 	n = min(n, len);
- 
--	memcpy32(buf, host->data_buf + col, len);
-+	memcpy(buf, host->data_buf + col, len);
- 
- 	host->buf_start += len;
- }
+ 	if (newline)
 -- 
 1.7.0
 
