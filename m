@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NwBP1-00088b-Cs
-	for barebox@lists.infradead.org; Mon, 29 Mar 2010 09:36:59 +0000
+	id 1NwBP1-00088n-BR
+	for barebox@lists.infradead.org; Mon, 29 Mar 2010 09:37:00 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 29 Mar 2010 11:36:13 +0200
-Message-Id: <1269855383-22716-3-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 29 Mar 2010 11:36:22 +0200
+Message-Id: <1269855383-22716-12-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1269855383-22716-1-git-send-email-s.hauer@pengutronix.de>
 References: <1269855383-22716-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,69 +21,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/12] nand_imx: use optimized memcpy
+Subject: [PATCH 11/12] hush: only remove backslashes introduced from glob
 To: barebox@lists.infradead.org
-
-The internal SRAM buffer of the i.MX NAND controller does not
-allow byte accesses. We use the memcpy32 function to handle this.
-If we have assembler optimized string functions we can do better
-because they won't do byte accesses when source and target are word
-aligned.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/nand/nand_imx.c |   19 +++++++++++++++++--
- 1 files changed, 17 insertions(+), 2 deletions(-)
+ common/hush.c |    5 +++--
+ 1 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nand/nand_imx.c b/drivers/nand/nand_imx.c
-index afd5637..da9b2d5 100644
---- a/drivers/nand/nand_imx.c
-+++ b/drivers/nand/nand_imx.c
-@@ -200,12 +200,17 @@ static struct nand_ecclayout nandv2_hw_eccoob_largepage = {
- 	}
- };
- 
--static void __nand_boot_init memcpy32(void *trg, const void *src, int size)
-+static void memcpy32(void *trg, const void *src, int size)
- {
- 	int i;
- 	unsigned int *t = trg;
- 	unsigned const int *s = src;
- 
-+#ifdef CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS
-+	if (!((unsigned long)trg & 0x3) && !((unsigned long)src & 0x3))
-+		memcpy(trg, src, size);
-+	else
-+#endif
- 	for (i = 0; i < (size >> 2); i++)
- 		*t++ = *s++;
- }
-@@ -1025,6 +1030,16 @@ static void __nand_boot_init nfc_addr(struct imx_nand_host *host, u32 offs)
- 	}
- }
- 
-+static void __nand_boot_init __memcpy32(void *trg, const void *src, int size)
-+{
-+	int i;
-+	unsigned int *t = trg;
-+	unsigned const int *s = src;
+diff --git a/common/hush.c b/common/hush.c
+index 6a8b56b..afa67d1 100644
+--- a/common/hush.c
++++ b/common/hush.c
+@@ -779,8 +779,9 @@ static int globhack(const char *src, int flags, glob_t *pglob)
+ 	int cnt=0, pathc;
+ 	const char *s;
+ 	char *dest;
 +
-+	for (i = 0; i < (size >> 2); i++)
-+		*t++ = *s++;
-+}
-+
- void __nand_boot_init imx_nand_load_image(void *dest, int size)
- {
- 	struct imx_nand_host host;
-@@ -1135,7 +1150,7 @@ void __nand_boot_init imx_nand_load_image(void *dest, int size)
- 					continue;
- 			}
- 
--			memcpy32(dest, host.base, pagesize);
-+			__memcpy32(dest, host.base, pagesize);
- 			dest += pagesize;
- 			size -= pagesize;
- 
+ 	for (cnt=1, s=src; s && *s; s++) {
+-		if (*s == '\\') s++;
++		if (*s == '\\' && strchr("*[?", *(s + 1))) s++;
+ 		cnt++;
+ 	}
+ 	dest = xmalloc(cnt);
+@@ -794,7 +795,7 @@ static int globhack(const char *src, int flags, glob_t *pglob)
+ 	pglob->gl_pathv[pathc-1] = dest;
+ 	pglob->gl_pathv[pathc] = NULL;
+ 	for (s=src; s && *s; s++, dest++) {
+-		if (*s == '\\') s++;
++		if (*s == '\\' && strchr("*[?", *(s + 1))) s++;
+ 		*dest = *s;
+ 	}
+ 	*dest='\0';
 -- 
 1.7.0
 
