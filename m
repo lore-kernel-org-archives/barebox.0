@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ww0-f49.google.com ([74.125.82.49])
+Received: from mail-pw0-f49.google.com ([209.85.160.49])
 	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
-	id 1NwCQB-0007rN-0o
-	for barebox@lists.infradead.org; Mon, 29 Mar 2010 10:42:19 +0000
-Received: by wwa36 with SMTP id 36so437266wwa.36
-	for <barebox@lists.infradead.org>; Mon, 29 Mar 2010 03:42:12 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <1269855383-22716-5-git-send-email-s.hauer@pengutronix.de>
+	id 1NwK0L-0006lG-OC
+	for barebox@lists.infradead.org; Mon, 29 Mar 2010 18:48:10 +0000
+Received: by pwj2 with SMTP id 2so8622858pwj.36
+	for <barebox@lists.infradead.org>; Mon, 29 Mar 2010 11:48:02 -0700 (PDT)
+From: Peter Korsgaard <jacmet@sunsite.dk>
 References: <1269855383-22716-1-git-send-email-s.hauer@pengutronix.de>
-	<1269855383-22716-5-git-send-email-s.hauer@pengutronix.de>
-Date: Mon, 29 Mar 2010 12:42:12 +0200
-Message-ID: <ba216b431003290342h5f10af7k59265586c2bcfa92@mail.gmail.com>
-From: Ivo Clarysse <ivo.clarysse@gmail.com>
+	<1269855383-22716-2-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 29 Mar 2010 20:47:57 +0200
+In-Reply-To: <1269855383-22716-2-git-send-email-s.hauer@pengutronix.de>
+	(Sascha Hauer's message of "Mon, 29 Mar 2010 11:36:12 +0200")
+Message-ID: <8739zjc6ci.fsf@macbook.be.48ers.dk>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,23 +25,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 04/12] imx_nand: use memcpy for copying from/to buffer
+Subject: Re: [PATCH 01/12] ARM zImage: do memmap if possible
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Sasca,
+>>>>> "Sascha" == Sascha Hauer <s.hauer@pengutronix.de> writes:
 
-On Mon, Mar 29, 2010 at 11:36 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> We do not need to use memcpy32 in read_buf/write_buf because
-> in these functions we only access SDRAM and not the internal SRAM
-> buffer.
+Hi,
 
-Will this not break NAND_IMX_BOOT, as memcpy is not guaranteed to fit
-in the initial X KiB of the resultant barebox image ?
+ Sascha>  	zimage = xmalloc(header.end);
+ Sascha>  	memcpy(zimage, &header, sizeof(header));
+ Sascha> -
+ Sascha> -	ret = read(fd, zimage + sizeof(header), header.end - sizeof(header));
+ Sascha> -	if (ret < header.end - sizeof(header)) {
+ Sascha> -		printf("could not read %s\n", argv[1]);
+ Sascha> -		goto err_out1;
+ Sascha> +	m = memmap(fd, PROT_READ);
+ Sascha> +	if (m != (void *)-1) {
+ Sascha> +		memcpy(zimage, m, header.end);
 
-Best regards,
+Here you're rereading the header as well, instead of everything past it
+like the normal case.
 
-Ivo.
+Does this give a significant boost? read() from something memmap'able
+(like NOR) boils down to a memcpy as well, right?
+
+ Sascha> +	} else {
+ Sascha> +		ret = read(fd, zimage + sizeof(header), header.end - sizeof(header));
+
+-- 
+Bye, Peter Korsgaard
 
 _______________________________________________
 barebox mailing list
