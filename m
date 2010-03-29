@@ -1,23 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NwBmF-0001KN-MN
-	for barebox@lists.infradead.org; Mon, 29 Mar 2010 10:01:00 +0000
-Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.71)
-	(envelope-from <sha@pengutronix.de>) id 1NwBmE-0006UA-8r
-	for barebox@lists.infradead.org; Mon, 29 Mar 2010 12:00:58 +0200
-Received: from sha by octopus.hi.pengutronix.de with local (Exim 4.69)
-	(envelope-from <sha@pengutronix.de>) id 1NwBmE-000898-5S
-	for barebox@lists.infradead.org; Mon, 29 Mar 2010 12:00:58 +0200
-Date: Mon, 29 Mar 2010 12:00:58 +0200
+	id 1NwBP1-00088i-B2
+	for barebox@lists.infradead.org; Mon, 29 Mar 2010 09:37:00 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20100329100058.GG2241@pengutronix.de>
+Date: Mon, 29 Mar 2010 11:36:15 +0200
+Message-Id: <1269855383-22716-5-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1269855383-22716-1-git-send-email-s.hauer@pengutronix.de>
 References: <1269855383-22716-1-git-send-email-s.hauer@pengutronix.de>
-	<1269855383-22716-12-git-send-email-s.hauer@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1269855383-22716-12-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,63 +16,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 11/12] hush: only remove backslashes introduced from glob
+Subject: [PATCH 04/12] imx_nand: use memcpy for copying from/to buffer
 To: barebox@lists.infradead.org
 
-On Mon, Mar 29, 2010 at 11:36:22AM +0200, Sascha Hauer wrote:
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  common/hush.c |    5 +++--
->  1 files changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/common/hush.c b/common/hush.c
-> index 6a8b56b..afa67d1 100644
-> --- a/common/hush.c
-> +++ b/common/hush.c
-> @@ -779,8 +779,9 @@ static int globhack(const char *src, int flags, glob_t *pglob)
->  	int cnt=0, pathc;
->  	const char *s;
->  	char *dest;
-> +
->  	for (cnt=1, s=src; s && *s; s++) {
-> -		if (*s == '\\') s++;
-> +		if (*s == '\\' && strchr("*[?", *(s + 1))) s++;
->  		cnt++;
->  	}
->  	dest = xmalloc(cnt);
-> @@ -794,7 +795,7 @@ static int globhack(const char *src, int flags, glob_t *pglob)
->  	pglob->gl_pathv[pathc-1] = dest;
->  	pglob->gl_pathv[pathc] = NULL;
->  	for (s=src; s && *s; s++, dest++) {
-> -		if (*s == '\\') s++;
-> +		if (*s == '\\' && strchr("*[?", *(s + 1))) s++;
->  		*dest = *s;
->  	}
->  	*dest='\0';
+We do not need to use memcpy32 in read_buf/write_buf because
+in these functions we only access SDRAM and not the internal SRAM
+buffer.
 
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/nand/nand_imx.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
 
-This patch also fixes a quoting workaround found in many
-/env/bin/_update scripts:
-
-if [ \! -e "$part" ]; then
-        echo "Partition $part does not exist"
-        exit 1
-fi
-
-The backslash is not needed anymore (and in fact now breaks the script)
-
-Sascha
-
-
+diff --git a/drivers/nand/nand_imx.c b/drivers/nand/nand_imx.c
+index 5f92e2f..398a268 100644
+--- a/drivers/nand/nand_imx.c
++++ b/drivers/nand/nand_imx.c
+@@ -505,7 +505,7 @@ static void imx_nand_write_buf(struct mtd_info *mtd,
+ 	int n = mtd->oobsize + mtd->writesize - col;
+ 
+ 	n = min(n, len);
+-	memcpy32(host->data_buf + col, buf, n);
++	memcpy(host->data_buf + col, buf, n);
+ 
+ 	host->buf_start += n;
+ }
+@@ -529,7 +529,7 @@ static void imx_nand_read_buf(struct mtd_info *mtd, u_char * buf, int len)
+ 
+ 	n = min(n, len);
+ 
+-	memcpy32(buf, host->data_buf + col, len);
++	memcpy(buf, host->data_buf + col, len);
+ 
+ 	host->buf_start += len;
+ }
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.0
+
 
 _______________________________________________
 barebox mailing list
