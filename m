@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NwBP4-00088r-DF
-	for barebox@lists.infradead.org; Mon, 29 Mar 2010 09:37:02 +0000
+	id 1NwBP1-00088Z-DW
+	for barebox@lists.infradead.org; Mon, 29 Mar 2010 09:37:00 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 29 Mar 2010 11:36:23 +0200
-Message-Id: <1269855383-22716-13-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 29 Mar 2010 11:36:12 +0200
+Message-Id: <1269855383-22716-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1269855383-22716-1-git-send-email-s.hauer@pengutronix.de>
 References: <1269855383-22716-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,63 +21,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/12] hush: allow fancy prompts
+Subject: [PATCH 01/12] ARM zImage: do memmap if possible
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/Kconfig |    9 +++++++++
- common/hush.c  |   12 ++++++++----
- 2 files changed, 17 insertions(+), 4 deletions(-)
+ arch/arm/lib/armlinux.c |   16 ++++++++++------
+ 1 files changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/common/Kconfig b/common/Kconfig
-index 4c4a627..f514759 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -226,6 +226,15 @@ config PROMPT_HUSH_PS2
- 	prompt "hush PS2"
- 	default "> "
+diff --git a/arch/arm/lib/armlinux.c b/arch/arm/lib/armlinux.c
+index 2415c29..ec9ad8e 100644
+--- a/arch/arm/lib/armlinux.c
++++ b/arch/arm/lib/armlinux.c
+@@ -241,7 +241,7 @@ static int do_bootz(struct command *cmdtp, int argc, char *argv[])
+ 	const char *commandline = getenv("bootargs");
+ 	int fd, ret;
+ 	struct zimage_header header;
+-	void *zimage;
++	void *zimage, *m;
  
-+config HUSH_FANCY_PROMPT
-+	bool
-+	depends on SHELL_HUSH
-+	select PROCESS_ESCAPE_SEQUENCE
-+	prompt "allow fancy hush prompts"
-+	help
-+	  Allow to set PS1 from the command line. PS1 can have several escaped commands
-+	  like \h for CONFIG_BOARDINFO or \w for the current working directory.
-+
- config CMDLINE_EDITING
- 	bool
- 	prompt "Enable command line editing"
-diff --git a/common/hush.c b/common/hush.c
-index afa67d1..19e35f5 100644
---- a/common/hush.c
-+++ b/common/hush.c
-@@ -389,15 +389,19 @@ static int static_peek(struct in_str *i)
- 	return *i->p;
- }
+ 	if (argc != 2) {
+ 		barebox_cmd_usage(cmdtp);
+@@ -263,11 +263,15 @@ static int do_bootz(struct command *cmdtp, int argc, char *argv[])
  
+ 	zimage = xmalloc(header.end);
+ 	memcpy(zimage, &header, sizeof(header));
 -
- static char *getprompt(void)
- {
--	static char *prompt;
-+	static char prompt[PATH_MAX + 32];
+-	ret = read(fd, zimage + sizeof(header), header.end - sizeof(header));
+-	if (ret < header.end - sizeof(header)) {
+-		printf("could not read %s\n", argv[1]);
+-		goto err_out1;
++	m = memmap(fd, PROT_READ);
++	if (m != (void *)-1) {
++		memcpy(zimage, m, header.end);
++	} else {
++		ret = read(fd, zimage + sizeof(header), header.end - sizeof(header));
++		if (ret < header.end - sizeof(header)) {
++			printf("could not read %s\n", argv[1]);
++			goto err_out1;
++		}
+ 	}
  
--	if (!prompt)
--		prompt = xmalloc(PATH_MAX + strlen(CONFIG_PROMPT) + 1);
-+#ifdef CONFIG_HUSH_FANCY_PROMPT
-+	const char *ps1 = getenv("PS1");
- 
-+	if (ps1)
-+		process_escape_sequence(ps1, prompt, PATH_MAX + 32);
-+	else
-+#endif
- 	sprintf(prompt, "%s%s ", CONFIG_PROMPT, getcwd());
-+
- 	return prompt;
- }
- 
+ 	theKernel = zimage;
 -- 
 1.7.0
 
