@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NwZHf-0001S6-Qf
+	id 1NwZHf-0001S5-P2
 	for barebox@lists.infradead.org; Tue, 30 Mar 2010 11:07:01 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 30 Mar 2010 13:06:54 +0200
-Message-Id: <1269947215-18214-12-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 30 Mar 2010 13:06:51 +0200
+Message-Id: <1269947215-18214-9-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1269947215-18214-1-git-send-email-s.hauer@pengutronix.de>
 References: <1269947215-18214-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,73 +21,98 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/12] pcm043: enable l2x0 cache
+Subject: [PATCH 08/12] pass arguments to dma_* as unsigned long as the kernel
+	does
 To: barebox@lists.infradead.org
-
-Also, initialize the MMU in a postcore_initcall to enable
-it earlier.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/Kconfig |    3 ++-
- board/pcm043/pcm043.c     |   15 ++++++++-------
- 2 files changed, 10 insertions(+), 8 deletions(-)
+ arch/arm/include/asm/mmu.h   |   12 ++++++------
+ drivers/net/fec_imx.c        |    3 ++-
+ drivers/usb/gadget/fsl_udc.c |    3 ++-
+ drivers/usb/usb_ehci_core.c  |    4 ++--
+ 4 files changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index eeb392a..10561f0 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -228,7 +228,8 @@ config MACH_PCM043
-         bool "phyCORE-i.MX35"
-         select HAS_CFI
- 	select HAVE_MMU
--        select MACH_HAS_LOWLEVEL_INIT
-+	select MACH_HAS_LOWLEVEL_INIT
-+	select ARCH_HAS_L2X0
-         help
-           Say Y here if you are using Phytec's phyCORE-i.MX35 (pcm043) equipped
-           with a Freescale i.MX35 Processor
-diff --git a/board/pcm043/pcm043.c b/board/pcm043/pcm043.c
-index 7b0bad1..2ce7e3a 100644
---- a/board/pcm043/pcm043.c
-+++ b/board/pcm043/pcm043.c
-@@ -145,7 +145,7 @@ static struct device_d imx_ipu_fb_dev = {
- };
+diff --git a/arch/arm/include/asm/mmu.h b/arch/arm/include/asm/mmu.h
+index 0dd3fa8..d0a6562 100644
+--- a/arch/arm/include/asm/mmu.h
++++ b/arch/arm/include/asm/mmu.h
+@@ -19,9 +19,9 @@ void setup_dma_coherent(unsigned long offset);
+ void *dma_alloc_coherent(size_t size);
+ void dma_free_coherent(void *mem);
  
- #ifdef CONFIG_MMU
--static void pcm043_mmu_init(void)
-+static int pcm043_mmu_init(void)
- {
- 	mmu_init();
+-void dma_clean_range(const void *, const void *);
+-void dma_flush_range(const void *, const void *);
+-void dma_inv_range(const void *, const void *);
++void dma_clean_range(unsigned long, unsigned long);
++void dma_flush_range(unsigned long, unsigned long);
++void dma_inv_range(unsigned long, unsigned long);
+ unsigned long virt_to_phys(void *virt);
+ void *phys_to_virt(unsigned long phys);
  
-@@ -159,20 +159,21 @@ static void pcm043_mmu_init(void)
- #else
- 	arm_create_section(0x0,        TEXT_BASE,   1, PMD_SECT_DEF_UNCACHED);
- #endif
-+
- 	mmu_enable();
-+
-+#ifdef CONFIG_CACHE_L2X0
-+	l2x0_init((void __iomem *)0x30000000, 0x00030024, 0x00000000);
-+#endif
-+	return 0;
+@@ -46,15 +46,15 @@ static inline unsigned long virt_to_phys(void *mem)
+ 	return (unsigned long)mem;
  }
--#else
--static void pcm043_mmu_init(void)
--{
--}
-+postcore_initcall(pcm043_mmu_init);
- #endif
  
- static int imx35_devices_init(void)
+-static inline void dma_clean_range(const void *s, const void *e)
++static inline void dma_clean_range(unsigned long s, unsigned long e)
  {
- 	uint32_t reg;
+ }
  
--	pcm043_mmu_init();
--
- 	/* CS0: Nor Flash */
- 	writel(0x0000cf03, CSCR_U(0));
- 	writel(0x10000d03, CSCR_L(0));
+-static inline void dma_flush_range(const void *s, const void *e)
++static inline void dma_flush_range(unsigned long s, unsigned long e)
+ {
+ }
+ 
+-static inline void dma_inv_range(const void *s, const void *e)
++static inline void dma_inv_range(unsigned long s, unsigned long e)
+ {
+ }
+ 
+diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
+index 49140e7..8440333 100644
+--- a/drivers/net/fec_imx.c
++++ b/drivers/net/fec_imx.c
+@@ -425,7 +425,8 @@ static int fec_send(struct eth_device *dev, void *eth_data, int data_length)
+ 	writew(data_length, &fec->tbd_base[fec->tbd_index].data_length);
+ 
+ 	writel((uint32_t)(eth_data), &fec->tbd_base[fec->tbd_index].data_pointer);
+-	dma_flush_range(eth_data, eth_data + data_length);
++	dma_flush_range((unsigned long)eth_data,
++			(unsigned long)(eth_data + data_length));
+ 	/*
+ 	 * update BD's status now
+ 	 * This block:
+diff --git a/drivers/usb/gadget/fsl_udc.c b/drivers/usb/gadget/fsl_udc.c
+index f6dd3ac..95f3bdd 100644
+--- a/drivers/usb/gadget/fsl_udc.c
++++ b/drivers/usb/gadget/fsl_udc.c
+@@ -1224,7 +1224,8 @@ fsl_ep_queue(struct usb_ep *_ep, struct usb_request *_req)
+ 
+ 	req->ep = ep;
+ 
+-	dma_flush_range(req->req.buf, req->req.buf + req->req.length);
++	dma_flush_range((unsigned long)req->req.buf,
++			(unsigned long)(req->req.buf + req->req.length));
+ 
+ 	req->req.status = -EINPROGRESS;
+ 	req->req.actual = 0;
+diff --git a/drivers/usb/usb_ehci_core.c b/drivers/usb/usb_ehci_core.c
+index cb5a073..d7efaad 100644
+--- a/drivers/usb/usb_ehci_core.c
++++ b/drivers/usb/usb_ehci_core.c
+@@ -129,9 +129,9 @@ static struct descriptor {
+ static void flush_invalidate(void *addr, int size, int flush)
+ {
+ 	if (flush)
+-		dma_flush_range(addr, addr + size);
++		dma_flush_range((unsigned long)addr, (unsigned long)(addr + size));
+ 	else
+-		dma_inv_range(addr, addr + size);
++		dma_inv_range((unsigned long)addr, (unsigned long)(addr + size));
+ }
+ 
+ static void cache_qtd(struct qTD *qtd, int flush)
 -- 
 1.7.0
 
