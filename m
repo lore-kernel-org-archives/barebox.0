@@ -1,19 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NwaOQ-0001xW-J3
-	for barebox@lists.infradead.org; Tue, 30 Mar 2010 12:18:03 +0000
-Date: Tue, 30 Mar 2010 14:18:01 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20100330121801.GL2241@pengutronix.de>
-References: <1269855383-22716-1-git-send-email-s.hauer@pengutronix.de>
-	<1269855383-22716-2-git-send-email-s.hauer@pengutronix.de>
-	<8739zjc6ci.fsf@macbook.be.48ers.dk>
-	<20100330092024.GI2241@pengutronix.de>
-	<87r5n2b01l.fsf@macbook.be.48ers.dk>
+Received: from mail-ew0-f213.google.com ([209.85.219.213])
+	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
+	id 1NwbXM-00038O-Oz
+	for barebox@lists.infradead.org; Tue, 30 Mar 2010 13:31:25 +0000
+Received: by ewy5 with SMTP id 5so518ewy.20
+	for <barebox@lists.infradead.org>; Tue, 30 Mar 2010 06:31:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <87r5n2b01l.fsf@macbook.be.48ers.dk>
+In-Reply-To: <ba216b431003220759ufdb05ct2594d4aa8ca4a15f@mail.gmail.com>
+References: <ba216b431003220759ufdb05ct2594d4aa8ca4a15f@mail.gmail.com>
+Date: Tue, 30 Mar 2010 15:30:45 +0200
+Message-ID: <ba216b431003300630j923c2c5n297408bccd5f6584@mail.gmail.com>
+From: Ivo Clarysse <ivo.clarysse@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,44 +23,17 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 01/12] ARM zImage: do memmap if possible
-To: Peter Korsgaard <jacmet@sunsite.dk>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] MX21ADS: Support booting from NAND
+To: barebox@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>
 
-On Tue, Mar 30, 2010 at 12:01:42PM +0200, Peter Korsgaard wrote:
-> >>>>> "Sascha" == Sascha Hauer <s.hauer@pengutronix.de> writes:
-> 
-> Hi,
-> 
->  >> Here you're rereading the header as well, instead of everything past
->  >> it like the normal case.
-> 
->  Sascha> Yes, mostly because I was too lazy to calculate the offsets.
-> 
-> You could just have copied it from the line above ;)
-> 
->  >> Does this give a significant boost? read() from something memmap'able
->  >> (like NOR) boils down to a memcpy as well, right?
-> 
->  Sascha> Hmm, with memmap it's 149ms and with read 156ms in my case. I
->  Sascha> think this is because with memmap it goes down to a single
->  Sascha> memcpy whereas with read we memcpy in chunks of 4k. I
->  Sascha> implemented this out of reflex, but maybe it's really not worth
->  Sascha> the added complexity.
-> 
-> I imho don't think it's worth it. One of barebox' big advantages is how
-> readable and clean the source code is.
+On Mon, Mar 22, 2010 at 4:59 PM, Ivo Clarysse <ivo.clarysse@gmail.com> wrote:
+> Support booting an MX21ADS system from NAND.
+>
+> Signed-off-by: Ivo Clarysse <ivo.clarysse@gmail.com>
 
-Ok, I'll drop this patch.
+Sascha,
 
-Sascha
-
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+  any chance on getting this in ?
 
 _______________________________________________
 barebox mailing list
