@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NwZHf-0001S8-Pw
-	for barebox@lists.infradead.org; Tue, 30 Mar 2010 11:07:01 +0000
+	id 1NwZHf-0001S3-Ks
+	for barebox@lists.infradead.org; Tue, 30 Mar 2010 11:07:00 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 30 Mar 2010 13:06:52 +0200
-Message-Id: <1269947215-18214-10-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 30 Mar 2010 13:06:49 +0200
+Message-Id: <1269947215-18214-7-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1269947215-18214-1-git-send-email-s.hauer@pengutronix.de>
 References: <1269947215-18214-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,214 +21,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/12] ARM: Add a wrapper around dma_* functions
+Subject: [PATCH 06/12] remove now unused arch_execute
 To: barebox@lists.infradead.org
-
-This is a preparation to add second level cache support.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/cache-armv4.S |    6 +++---
- arch/arm/cpu/cache-armv5.S |    6 +++---
- arch/arm/cpu/cache-armv6.S |    6 +++---
- arch/arm/cpu/cache-armv7.S |   12 ++++++------
- arch/arm/cpu/mmu.c         |   17 ++++++++++++++++-
- arch/arm/include/asm/mmu.h |    4 ++++
- 6 files changed, 35 insertions(+), 16 deletions(-)
+ arch/blackfin/include/asm/common.h |    1 -
+ arch/blackfin/lib/board.c          |   11 -----------
+ include/common.h                   |    1 -
+ 3 files changed, 0 insertions(+), 13 deletions(-)
 
-diff --git a/arch/arm/cpu/cache-armv4.S b/arch/arm/cpu/cache-armv4.S
-index a0ab256..a79cc27 100644
---- a/arch/arm/cpu/cache-armv4.S
-+++ b/arch/arm/cpu/cache-armv4.S
-@@ -86,7 +86,7 @@ ENDPROC(__mmu_cache_flush)
-  *
-  * (same as v4wb)
+diff --git a/arch/blackfin/include/asm/common.h b/arch/blackfin/include/asm/common.h
+index 1ddcd71..fa58e37 100644
+--- a/arch/blackfin/include/asm/common.h
++++ b/arch/blackfin/include/asm/common.h
+@@ -2,5 +2,4 @@
+ /* We have to disable instruction cache before
+  * executing an external program
   */
--ENTRY(dma_inv_range)
-+ENTRY(__dma_inv_range)
- 	tst	r0, #CACHE_DLINESIZE - 1
- 	bic	r0, r0, #CACHE_DLINESIZE - 1
- 	mcrne	p15, 0, r0, c7, c10, 1		@ clean D entry
-@@ -109,7 +109,7 @@ ENTRY(dma_inv_range)
-  *
-  * (same as v4wb)
-  */
--ENTRY(dma_clean_range)
-+ENTRY(__dma_clean_range)
- 	bic	r0, r0, #CACHE_DLINESIZE - 1
- 1:	mcr	p15, 0, r0, c7, c10, 1		@ clean D entry
- 	add	r0, r0, #CACHE_DLINESIZE
-@@ -126,7 +126,7 @@ ENTRY(dma_clean_range)
-  *	- start	- virtual start address
-  *	- end	- virtual end address
-  */
--ENTRY(dma_flush_range)
-+ENTRY(__dma_flush_range)
- 	bic	r0, r0, #CACHE_DLINESIZE - 1
- 1:	mcr	p15, 0, r0, c7, c14, 1		@ clean+invalidate D entry
- 	add	r0, r0, #CACHE_DLINESIZE
-diff --git a/arch/arm/cpu/cache-armv5.S b/arch/arm/cpu/cache-armv5.S
-index 3618c44..f52bcb7 100644
---- a/arch/arm/cpu/cache-armv5.S
-+++ b/arch/arm/cpu/cache-armv5.S
-@@ -62,7 +62,7 @@ ENDPROC(__mmu_cache_flush)
-  *
-  * (same as v4wb)
-  */
--ENTRY(dma_inv_range)
-+ENTRY(__dma_inv_range)
- 	tst	r0, #CACHE_DLINESIZE - 1
- 	bic	r0, r0, #CACHE_DLINESIZE - 1
- 	mcrne	p15, 0, r0, c7, c10, 1		@ clean D entry
-@@ -85,7 +85,7 @@ ENTRY(dma_inv_range)
-  *
-  * (same as v4wb)
-  */
--ENTRY(dma_clean_range)
-+ENTRY(__dma_clean_range)
- 	bic	r0, r0, #CACHE_DLINESIZE - 1
- 1:	mcr	p15, 0, r0, c7, c10, 1		@ clean D entry
- 	add	r0, r0, #CACHE_DLINESIZE
-@@ -102,7 +102,7 @@ ENTRY(dma_clean_range)
-  *	- start	- virtual start address
-  *	- end	- virtual end address
-  */
--ENTRY(dma_flush_range)
-+ENTRY(__dma_flush_range)
- 	bic	r0, r0, #CACHE_DLINESIZE - 1
- 1:	mcr	p15, 0, r0, c7, c14, 1		@ clean+invalidate D entry
- 	add	r0, r0, #CACHE_DLINESIZE
-diff --git a/arch/arm/cpu/cache-armv6.S b/arch/arm/cpu/cache-armv6.S
-index ceabd52..e3498bb 100644
---- a/arch/arm/cpu/cache-armv6.S
-+++ b/arch/arm/cpu/cache-armv6.S
-@@ -61,7 +61,7 @@ ENDPROC(__mmu_cache_flush)
-  *	- start   - virtual start address of region
-  *	- end     - virtual end address of region
-  */
--ENTRY(dma_inv_range)
-+ENTRY(__dma_inv_range)
- 	tst	r0, #D_CACHE_LINE_SIZE - 1
- 	bic	r0, r0, #D_CACHE_LINE_SIZE - 1
- #ifdef HARVARD_CACHE
-@@ -94,7 +94,7 @@ ENTRY(dma_inv_range)
-  *	- start   - virtual start address of region
-  *	- end     - virtual end address of region
-  */
--ENTRY(dma_clean_range)
-+ENTRY(__dma_clean_range)
- 	bic	r0, r0, #D_CACHE_LINE_SIZE - 1
- 1:
- #ifdef HARVARD_CACHE
-@@ -114,7 +114,7 @@ ENTRY(dma_clean_range)
-  *	- start   - virtual start address of region
-  *	- end     - virtual end address of region
-  */
--ENTRY(dma_flush_range)
-+ENTRY(__dma_flush_range)
- 	bic	r0, r0, #D_CACHE_LINE_SIZE - 1
- 1:
- #ifdef HARVARD_CACHE
-diff --git a/arch/arm/cpu/cache-armv7.S b/arch/arm/cpu/cache-armv7.S
-index b370acd..9afa20d 100644
---- a/arch/arm/cpu/cache-armv7.S
-+++ b/arch/arm/cpu/cache-armv7.S
-@@ -128,7 +128,7 @@ ENDPROC(__mmu_cache_flush)
-  *	- start   - virtual start address of region
-  *	- end     - virtual end address of region
-  */
--ENTRY(dma_inv_range)
-+ENTRY(__dma_inv_range)
- 	dcache_line_size r2, r3
- 	sub	r3, r2, #1
- 	tst	r0, r3
-@@ -145,14 +145,14 @@ ENTRY(dma_inv_range)
- 	blo	1b
- 	dsb
- 	mov	pc, lr
--ENDPROC(dma_inv_range)
-+ENDPROC(__dma_inv_range)
+-#define ARCH_HAS_EXECUTE
+ #define ARCH_SHUTDOWN
+diff --git a/arch/blackfin/lib/board.c b/arch/blackfin/lib/board.c
+index 294d2b0..581947b 100644
+--- a/arch/blackfin/lib/board.c
++++ b/arch/blackfin/lib/board.c
+@@ -44,17 +44,6 @@ int blackfin_mem_malloc_init(void)
  
- /*
-  *	v7_dma_clean_range(start,end)
-  *	- start   - virtual start address of region
-  *	- end     - virtual end address of region
-  */
--ENTRY(dma_clean_range)
-+ENTRY(__dma_clean_range)
- 	dcache_line_size r2, r3
- 	sub	r3, r2, #1
- 	bic	r0, r0, r3
-@@ -163,14 +163,14 @@ ENTRY(dma_clean_range)
- 	blo	1b
- 	dsb
- 	mov	pc, lr
--ENDPROC(dma_clean_range)
-+ENDPROC(__dma_clean_range)
+ core_initcall(blackfin_mem_malloc_init);
  
- /*
-  *	v7_dma_flush_range(start,end)
-  *	- start   - virtual start address of region
-  *	- end     - virtual end address of region
-  */
--ENTRY(dma_flush_range)
-+ENTRY(__dma_flush_range)
- 	dcache_line_size r2, r3
- 	sub	r3, r2, #1
- 	bic	r0, r0, r3
-@@ -181,5 +181,5 @@ ENTRY(dma_flush_range)
- 	blo	1b
- 	dsb
- 	mov	pc, lr
--ENDPROC(dma_flush_range)
-+ENDPROC(__dma_flush_range)
+-int arch_execute(void * address, int argc, char *argv[])
+-{
+-	int ret;
+-
+-	icache_disable();
+-	ret = ((ulong (*)(int, char *[]))address) (argc, &argv[0]);
+-	icache_enable();
+-
+-	return ret;
+-}
+-
+ void arch_shutdown(void)
+ {
+ 	icache_disable();
+diff --git a/include/common.h b/include/common.h
+index d8130b5..319535b 100644
+--- a/include/common.h
++++ b/include/common.h
+@@ -134,7 +134,6 @@ unsigned long strtoul_suffix(const char *str, char **endp, int base);
+ void start_barebox(void);
+ void shutdown_barebox(void);
  
-diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index 4c4e196..faf47c5 100644
---- a/arch/arm/cpu/mmu.c
-+++ b/arch/arm/cpu/mmu.c
-@@ -98,7 +98,7 @@ void *dma_alloc_coherent(size_t size)
- 	if (mem)
- 		return mem + dma_coherent_offset;
+-int arch_execute(void *, int argc, char *argv[]);
+ void arch_shutdown(void);
  
--	return NULL; 
-+	return NULL;
- }
- 
- unsigned long virt_to_phys(void *virt)
-@@ -116,3 +116,18 @@ void dma_free_coherent(void *mem)
- 	free(mem - dma_coherent_offset);
- }
- 
-+void dma_clean_range(unsigned long start, unsigned long end)
-+{
-+	__dma_clean_range(start, end);
-+}
-+
-+void dma_flush_range(unsigned long start, unsigned long end)
-+{
-+	__dma_flush_range(start, end);
-+}
-+
-+void dma_inv_range(unsigned long start, unsigned long end)
-+{
-+	__dma_inv_range(start, end);
-+}
-+
-diff --git a/arch/arm/include/asm/mmu.h b/arch/arm/include/asm/mmu.h
-index d0a6562..a779101 100644
---- a/arch/arm/include/asm/mmu.h
-+++ b/arch/arm/include/asm/mmu.h
-@@ -60,5 +60,9 @@ static inline void dma_inv_range(unsigned long s, unsigned long e)
- 
- #endif
- 
-+void __dma_clean_range(unsigned long, unsigned long);
-+void __dma_flush_range(unsigned long, unsigned long);
-+void __dma_inv_range(unsigned long, unsigned long);
-+
- #endif /* __ASM_MMU_H */
- 
+ int run_shell(void);
 -- 
 1.7.0
 
