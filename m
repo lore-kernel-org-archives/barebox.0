@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NwZHf-0001S5-P2
-	for barebox@lists.infradead.org; Tue, 30 Mar 2010 11:07:01 +0000
+	id 1NwZHd-0001Mm-K3
+	for barebox@lists.infradead.org; Tue, 30 Mar 2010 11:06:58 +0000
+Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.71)
+	(envelope-from <sha@pengutronix.de>) id 1NwZHc-00015T-4n
+	for barebox@lists.infradead.org; Tue, 30 Mar 2010 13:06:56 +0200
+Received: from sha by octopus.hi.pengutronix.de with local (Exim 4.69)
+	(envelope-from <sha@pengutronix.de>) id 1NwZHc-0004wJ-3a
+	for barebox@lists.infradead.org; Tue, 30 Mar 2010 13:06:56 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 30 Mar 2010 13:06:51 +0200
-Message-Id: <1269947215-18214-9-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1269947215-18214-1-git-send-email-s.hauer@pengutronix.de>
-References: <1269947215-18214-1-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 30 Mar 2010 13:06:43 +0200
+Message-Id: <1269947215-18214-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,100 +26,74 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/12] pass arguments to dma_* as unsigned long as the kernel
-	does
+Subject: More patches for next merge window
 To: barebox@lists.infradead.org
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/include/asm/mmu.h   |   12 ++++++------
- drivers/net/fec_imx.c        |    3 ++-
- drivers/usb/gadget/fsl_udc.c |    3 ++-
- drivers/usb/usb_ehci_core.c  |    4 ++--
- 4 files changed, 12 insertions(+), 10 deletions(-)
+Here are some more patches. Mostly cleanup needed to add second level
+cache support for ARM.
 
-diff --git a/arch/arm/include/asm/mmu.h b/arch/arm/include/asm/mmu.h
-index 0dd3fa8..d0a6562 100644
---- a/arch/arm/include/asm/mmu.h
-+++ b/arch/arm/include/asm/mmu.h
-@@ -19,9 +19,9 @@ void setup_dma_coherent(unsigned long offset);
- void *dma_alloc_coherent(size_t size);
- void dma_free_coherent(void *mem);
- 
--void dma_clean_range(const void *, const void *);
--void dma_flush_range(const void *, const void *);
--void dma_inv_range(const void *, const void *);
-+void dma_clean_range(unsigned long, unsigned long);
-+void dma_flush_range(unsigned long, unsigned long);
-+void dma_inv_range(unsigned long, unsigned long);
- unsigned long virt_to_phys(void *virt);
- void *phys_to_virt(unsigned long phys);
- 
-@@ -46,15 +46,15 @@ static inline unsigned long virt_to_phys(void *mem)
- 	return (unsigned long)mem;
- }
- 
--static inline void dma_clean_range(const void *s, const void *e)
-+static inline void dma_clean_range(unsigned long s, unsigned long e)
- {
- }
- 
--static inline void dma_flush_range(const void *s, const void *e)
-+static inline void dma_flush_range(unsigned long s, unsigned long e)
- {
- }
- 
--static inline void dma_inv_range(const void *s, const void *e)
-+static inline void dma_inv_range(unsigned long s, unsigned long e)
- {
- }
- 
-diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
-index 49140e7..8440333 100644
---- a/drivers/net/fec_imx.c
-+++ b/drivers/net/fec_imx.c
-@@ -425,7 +425,8 @@ static int fec_send(struct eth_device *dev, void *eth_data, int data_length)
- 	writew(data_length, &fec->tbd_base[fec->tbd_index].data_length);
- 
- 	writel((uint32_t)(eth_data), &fec->tbd_base[fec->tbd_index].data_pointer);
--	dma_flush_range(eth_data, eth_data + data_length);
-+	dma_flush_range((unsigned long)eth_data,
-+			(unsigned long)(eth_data + data_length));
- 	/*
- 	 * update BD's status now
- 	 * This block:
-diff --git a/drivers/usb/gadget/fsl_udc.c b/drivers/usb/gadget/fsl_udc.c
-index f6dd3ac..95f3bdd 100644
---- a/drivers/usb/gadget/fsl_udc.c
-+++ b/drivers/usb/gadget/fsl_udc.c
-@@ -1224,7 +1224,8 @@ fsl_ep_queue(struct usb_ep *_ep, struct usb_request *_req)
- 
- 	req->ep = ep;
- 
--	dma_flush_range(req->req.buf, req->req.buf + req->req.length);
-+	dma_flush_range((unsigned long)req->req.buf,
-+			(unsigned long)(req->req.buf + req->req.length));
- 
- 	req->req.status = -EINPROGRESS;
- 	req->req.actual = 0;
-diff --git a/drivers/usb/usb_ehci_core.c b/drivers/usb/usb_ehci_core.c
-index cb5a073..d7efaad 100644
---- a/drivers/usb/usb_ehci_core.c
-+++ b/drivers/usb/usb_ehci_core.c
-@@ -129,9 +129,9 @@ static struct descriptor {
- static void flush_invalidate(void *addr, int size, int flush)
- {
- 	if (flush)
--		dma_flush_range(addr, addr + size);
-+		dma_flush_range((unsigned long)addr, (unsigned long)(addr + size));
- 	else
--		dma_inv_range(addr, addr + size);
-+		dma_inv_range((unsigned long)addr, (unsigned long)(addr + size));
- }
- 
- static void cache_qtd(struct qTD *qtd, int flush)
--- 
-1.7.0
+Sascha
+
+
+The following changes since commit 30bf8c26098c2b8537b648eb6eb8fa3e887ab7b9:
+  Sascha Hauer (1):
+        hush: allow fancy prompts
+
+are available in the git repository at:
+
+  git://git.pengutronix.de/git/barebox.git pu
+
+Sascha Hauer (12):
+      make reset_cpu a __noreturn function
+      make panic and hang __noreturn functions
+      introduce a arch_shutdown call and call it from shutdown_barebox
+      blackfin: implement arch_shutdown call
+      go command: shutdown barebox before calling an application
+      remove now unused arch_execute
+      ARM: replace cleanup_before_linux with the generic shutdown_barebox function
+      pass arguments to dma_* as unsigned long as the kernel does
+      ARM: Add a wrapper around dma_* functions
+      add l2x0 cache support
+      pcm043: enable l2x0 cache
+      netx eth driver: remove local definition of ARRAY_SIZE
+
+ arch/arm/cpu/Kconfig                  |    8 ++
+ arch/arm/cpu/Makefile                 |    2 +
+ arch/arm/cpu/cache-armv4.S            |    6 +-
+ arch/arm/cpu/cache-armv5.S            |    6 +-
+ arch/arm/cpu/cache-armv6.S            |    6 +-
+ arch/arm/cpu/cache-armv7.S            |   12 +-
+ arch/arm/cpu/cache-l2x0.c             |  183 +++++++++++++++++++++++++++++++++
+ arch/arm/cpu/cpu.c                    |   12 +--
+ arch/arm/cpu/mmu.c                    |   28 +++++-
+ arch/arm/include/asm/common.h         |    2 +-
+ arch/arm/include/asm/mmu.h            |   27 ++++-
+ arch/arm/lib/armlinux.c               |    6 +-
+ arch/arm/mach-at91/clocksource.c      |    5 +-
+ arch/arm/mach-ep93xx/clocksource.c    |    2 +-
+ arch/arm/mach-imx/Kconfig             |    3 +-
+ arch/arm/mach-imx/clocksource.c       |    2 +-
+ arch/arm/mach-netx/generic.c          |    5 +-
+ arch/arm/mach-omap/omap3_generic.c    |    2 +-
+ arch/arm/mach-s3c24xx/generic.c       |    2 +-
+ arch/blackfin/include/asm/common.h    |    2 +-
+ arch/blackfin/lib/board.c             |    8 +--
+ arch/blackfin/lib/cpu.c               |    5 +-
+ arch/m68k/mach-mcfv4e/mcf_reset_cpu.c |    2 +-
+ arch/ppc/mach-mpc5xxx/cpu.c           |    2 +-
+ arch/sandbox/os/common.c              |    2 +-
+ arch/x86/mach-i386/reset.c            |    2 +-
+ board/pcm043/pcm043.c                 |   15 ++--
+ commands/go.c                         |   19 ++--
+ common/startup.c                      |    5 +-
+ drivers/net/fec_imx.c                 |    3 +-
+ drivers/net/netx_eth.c                |    2 -
+ drivers/usb/gadget/fsl_udc.c          |    3 +-
+ drivers/usb/usb_ehci_core.c           |    4 +-
+ include/common.h                      |    8 +-
+ lib/vsprintf.c                        |    2 +-
+ 35 files changed, 324 insertions(+), 79 deletions(-)
+ create mode 100644 arch/arm/cpu/cache-l2x0.c
 
 
 _______________________________________________
