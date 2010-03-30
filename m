@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NwZHf-0001Rz-F5
-	for barebox@lists.infradead.org; Tue, 30 Mar 2010 11:07:00 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 30 Mar 2010 13:06:45 +0200
-Message-Id: <1269947215-18214-3-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1269947215-18214-1-git-send-email-s.hauer@pengutronix.de>
-References: <1269947215-18214-1-git-send-email-s.hauer@pengutronix.de>
+Received: from mail-bw0-f218.google.com ([209.85.218.218])
+	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
+	id 1NwZt5-00028F-Pn
+	for barebox@lists.infradead.org; Tue, 30 Mar 2010 11:45:44 +0000
+Received: by bwz10 with SMTP id 10so14404317bwz.2
+	for <barebox@lists.infradead.org>; Tue, 30 Mar 2010 04:45:38 -0700 (PDT)
+From: Peter Korsgaard <jacmet@sunsite.dk>
+References: <1269855383-22716-1-git-send-email-s.hauer@pengutronix.de>
+	<1269855383-22716-9-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 30 Mar 2010 13:45:33 +0200
+In-Reply-To: <1269855383-22716-9-git-send-email-s.hauer@pengutronix.de>
+	(Sascha Hauer's message of "Mon, 29 Mar 2010 11:36:19 +0200")
+Message-ID: <87iq8eav8i.fsf@macbook.be.48ers.dk>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,65 +21,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/12] make panic and hang __noreturn functions
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 08/12] echo: add -e option support
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- common/startup.c |    2 +-
- include/common.h |    4 ++--
- lib/vsprintf.c   |    2 +-
- 3 files changed, 4 insertions(+), 4 deletions(-)
+>>>>> "Sascha" == Sascha Hauer <s.hauer@pengutronix.de> writes:
 
-diff --git a/common/startup.c b/common/startup.c
-index 6dca270..c7d0cf0 100644
---- a/common/startup.c
-+++ b/common/startup.c
-@@ -161,7 +161,7 @@ void start_barebox (void)
- 	/* NOTREACHED - no way out of command loop except booting */
- }
+ Sascha> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+ Sascha> ---
+ Sascha>  commands/echo.c |   52 +++++++++++++++++++++++++++++++++++++++++++++++++++-
+ Sascha>  1 files changed, 51 insertions(+), 1 deletions(-)
+
+ Sascha> diff --git a/commands/echo.c b/commands/echo.c
+ Sascha> index d5640a0..6f4f136 100644
+ Sascha> --- a/commands/echo.c
+ Sascha> +++ b/commands/echo.c
+ Sascha> @@ -26,12 +26,59 @@
+ Sascha>  #include <fcntl.h>
+ Sascha>  #include <errno.h>
  
--void hang (void)
-+void __noreturn hang (void)
- {
- 	puts ("### ERROR ### Please RESET the board ###\n");
- 	for (;;);
-diff --git a/include/common.h b/include/common.h
-index 3b3d2de..fb1400c 100644
---- a/include/common.h
-+++ b/include/common.h
-@@ -65,8 +65,8 @@ typedef void (interrupt_handler_t)(void *);
-  */
- void reginfo(void);
- 
--void	hang (void) __attribute__ ((noreturn));
--void	panic(const char *fmt, ...);
-+void __noreturn hang (void);
-+void __noreturn panic(const char *fmt, ...);
- 
- /* */
- long int initdram (int);
-diff --git a/lib/vsprintf.c b/lib/vsprintf.c
-index 26fcaa7..91ad613 100644
---- a/lib/vsprintf.c
-+++ b/lib/vsprintf.c
-@@ -593,7 +593,7 @@ char *asprintf(const char *fmt, ...)
- }
- EXPORT_SYMBOL(asprintf);
- 
--void panic(const char *fmt, ...)
-+void __noreturn panic(const char *fmt, ...)
- {
- 	va_list	args;
- 	va_start(args, fmt);
+ Sascha> +static int my_fputs(int fd, const char *s)
+
+That's not a very descriptive name - What about something like
+advanced_fputs, escape_fputs or format_fputs?
+
 -- 
-1.7.0
-
+Bye, Peter Korsgaard
 
 _______________________________________________
 barebox mailing list
