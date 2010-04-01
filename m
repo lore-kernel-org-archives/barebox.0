@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-wy0-f177.google.com ([74.125.82.177])
 	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
-	id 1NxMsf-0004cJ-1F
-	for barebox@lists.infradead.org; Thu, 01 Apr 2010 16:04:30 +0000
-Received: by wyb40 with SMTP id 40so611796wyb.36
-	for <barebox@lists.infradead.org>; Thu, 01 Apr 2010 09:04:26 -0700 (PDT)
+	id 1NxMv5-0000bt-MA
+	for barebox@lists.infradead.org; Thu, 01 Apr 2010 16:07:00 +0000
+Received: by wyb40 with SMTP id 40so613070wyb.36
+	for <barebox@lists.infradead.org>; Thu, 01 Apr 2010 09:06:58 -0700 (PDT)
 MIME-Version: 1.0
-Date: Thu, 1 Apr 2010 18:04:26 +0200
-Message-ID: <j2tba216b431004010904if877c3a5wa79f4a3190e33a50@mail.gmail.com>
+Date: Thu, 1 Apr 2010 18:06:58 +0200
+Message-ID: <m2kba216b431004010906k670c0c20w52e5ac408a921c8@mail.gmail.com>
 From: Ivo Clarysse <ivo.clarysse@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,114 +21,135 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] i.MX21: support framebuffer
+Subject: [PATCH] MX21ADS: Support LCD panel
 To: barebox@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>
 
-This patch allows using the i.MX (LCDC) framebuffer driver on boards
-using an i.MX21 SoC.
+This patch enabled support for the Sharp QVGA LCD panel of the MX21ADS board.
 
 Signed-off-by: Ivo Clarysse <ivo.clarysse@gmail.com>
 ---
-diff --git a/arch/arm/mach-imx/include/mach/imx21-regs.h
-b/arch/arm/mach-imx/include/mach/imx21-regs.h
-index 08520e9..3d21749 100644
---- a/arch/arm/mach-imx/include/mach/imx21-regs.h
-+++ b/arch/arm/mach-imx/include/mach/imx21-regs.h
-@@ -107,11 +107,42 @@
- #define MPCTL1_BRMO		(1 << 6)
- #define MPCTL1_LF		(1 << 15)
-
--#define PCCR0_NFC_EN   (1 << 19)
--#define PCCR1_GPT1_EN	(1 << 25)
-+#define PCCR0_PERCLK3_EN	(1 << 18)
-+#define PCCR0_NFC_EN		(1 << 19)
-+#define PCCR0_HCLK_LCDC_EN	(1 << 26)
+diff --git a/board/imx21ads/imx21ads.c b/board/imx21ads/imx21ads.c
+index bc638e3..9eba19a 100644
+--- a/board/imx21ads/imx21ads.c
++++ b/board/imx21ads/imx21ads.c
+@@ -34,6 +34,10 @@
+ #include <fcntl.h>
+ #include <asm/mach-types.h>
+ #include <mach/imx-nand.h>
++#include <mach/imxfb.h>
 +
-+#define PCCR1_GPT1_EN		(1 << 25)
++#define MX21ADS_IO_REG    0xCC800000
++#define MX21ADS_IO_LCDON  (1 << 9)
 
- #define CCSR_32K_SR		(1 << 15)
+ static struct device_d cfi_dev = {
+ 	.name     = "cfi_flash",
+@@ -70,6 +74,45 @@ static struct device_d cs8900_dev = {
+ 	// IRQ is connected to UART3_RTS
+ };
 
-+#define PA5_PF_LSCLK            (GPIO_PORTA | GPIO_PF | GPIO_OUT | 5)
-+#define PA6_PF_LD0              (GPIO_PORTA | GPIO_PF | GPIO_OUT | 6)
-+#define PA7_PF_LD1              (GPIO_PORTA | GPIO_PF | GPIO_OUT | 7)
-+#define PA8_PF_LD2              (GPIO_PORTA | GPIO_PF | GPIO_OUT | 8)
-+#define PA9_PF_LD3              (GPIO_PORTA | GPIO_PF | GPIO_OUT | 9)
-+#define PA10_PF_LD4             (GPIO_PORTA | GPIO_PF | GPIO_OUT | 10)
-+#define PA11_PF_LD5             (GPIO_PORTA | GPIO_PF | GPIO_OUT | 11)
-+#define PA12_PF_LD6             (GPIO_PORTA | GPIO_PF | GPIO_OUT | 12)
-+#define PA13_PF_LD7             (GPIO_PORTA | GPIO_PF | GPIO_OUT | 13)
-+#define PA14_PF_LD8             (GPIO_PORTA | GPIO_PF | GPIO_OUT | 14)
-+#define PA15_PF_LD9             (GPIO_PORTA | GPIO_PF | GPIO_OUT | 15)
-+#define PA16_PF_LD10            (GPIO_PORTA | GPIO_PF | GPIO_OUT | 16)
-+#define PA17_PF_LD11            (GPIO_PORTA | GPIO_PF | GPIO_OUT | 17)
-+#define PA18_PF_LD12            (GPIO_PORTA | GPIO_PF | GPIO_OUT | 18)
-+#define PA19_PF_LD13            (GPIO_PORTA | GPIO_PF | GPIO_OUT | 19)
-+#define PA20_PF_LD14            (GPIO_PORTA | GPIO_PF | GPIO_OUT | 20)
-+#define PA21_PF_LD15            (GPIO_PORTA | GPIO_PF | GPIO_OUT | 21)
-+#define PA22_PF_LD16            (GPIO_PORTA | GPIO_PF | GPIO_OUT | 22)
-+#define PA23_PF_LD17            (GPIO_PORTA | GPIO_PF | GPIO_OUT | 23)
-+#define PA24_PF_REV             (GPIO_PORTA | GPIO_PF | GPIO_OUT | 24)
-+#define PA25_PF_CLS             (GPIO_PORTA | GPIO_PF | GPIO_OUT | 25)
-+#define PA26_PF_PS              (GPIO_PORTA | GPIO_PF | GPIO_OUT | 26)
-+#define PA27_PF_SPL_SPR         (GPIO_PORTA | GPIO_PF | GPIO_OUT | 27)
-+#define PA28_PF_HSYNC           (GPIO_PORTA | GPIO_PF | GPIO_OUT | 28)
-+#define PA29_PF_VSYNC           (GPIO_PORTA | GPIO_PF | GPIO_OUT | 29)
-+#define PA30_PF_CONTRAST        (GPIO_PORTA | GPIO_PF | GPIO_OUT | 30)
-+#define PA31_PF_OE_ACD          (GPIO_PORTA | GPIO_PF | GPIO_OUT | 31)
++/* Sharp LQ035Q7DB02 QVGA display */
++static struct imx_fb_videomode imx_fb_modedata = {
++        .mode = {
++		.name           = "Sharp-LQ035Q7",
++		.refresh        = 60,
++		.xres           = 240,
++		.yres           = 320,
++		.pixclock       = 188679,
++		.left_margin    = 6,
++		.right_margin   = 16,
++		.upper_margin   = 8,
++		.lower_margin   = 10,
++		.hsync_len      = 2,
++		.vsync_len      = 1,
++		.sync           = 0,
++		.vmode          = FB_VMODE_NONINTERLACED,
++		.flag           = 0,
++	},
++        .pcr            = 0xfb108bc7,
++        .bpp            = 16,
++};
 +
- #define PE12_PF_UART1_TXD	(GPIO_PORTE | GPIO_OUT | GPIO_PF | 12)
- #define PE13_PF_UART1_RXD	(GPIO_PORTE | GPIO_IN  | GPIO_PF | 13)
- #define PE14_PF_UART1_CTS	(GPIO_PORTE | GPIO_OUT | GPIO_PF | 14)
-diff --git a/arch/arm/mach-imx/speed-imx21.c b/arch/arm/mach-imx/speed-imx21.c
-index c68a367..9ae8026 100644
---- a/arch/arm/mach-imx/speed-imx21.c
-+++ b/arch/arm/mach-imx/speed-imx21.c
-@@ -135,6 +135,11 @@ ulong imx_get_gptclk(void)
- 	return imx_decode_perclk((PCDR1 & 0x3f) + 1);
- }
++static struct imx_fb_platform_data imx_fb_data = {
++	.mode           = &imx_fb_modedata,
++	.cmap_greyscale = 0,
++	.cmap_inverse   = 0,
++	.cmap_static    = 0,
++	.pwmr           = 0x00a903ff,
++	.lscr1          = 0x00120300,
++	.dmacr          = 0x00020008,
++};
++
++static struct device_d imxfb_dev = {
++	.name           = "imxfb",
++	.map_base       = 0x10021000,
++	.size           = 0x1000,
++	.platform_data  = &imx_fb_data,
++};
++
+ static int imx21ads_timing_init(void)
+ {
+ 	u32 temp;
+@@ -111,6 +154,33 @@ static int mx21ads_devices_init(void)
+ {
+ 	int i;
+ 	unsigned int mode[] = {
++		PA5_PF_LSCLK,
++		PA6_PF_LD0,
++		PA7_PF_LD1,
++		PA8_PF_LD2,
++		PA9_PF_LD3,
++		PA10_PF_LD4,
++		PA11_PF_LD5,
++		PA12_PF_LD6,
++		PA13_PF_LD7,
++		PA14_PF_LD8,
++		PA15_PF_LD9,
++		PA16_PF_LD10,
++		PA17_PF_LD11,
++		PA18_PF_LD12,
++		PA19_PF_LD13,
++		PA20_PF_LD14,
++		PA21_PF_LD15,
++		PA22_PF_LD16,
++		PA23_PF_LD17,
++		PA24_PF_REV,
++		PA25_PF_CLS,
++		PA26_PF_PS,
++		PA27_PF_SPL_SPR,
++		PA28_PF_HSYNC,
++		PA29_PF_VSYNC,
++		PA30_PF_CONTRAST,
++		PA31_PF_OE_ACD,
+ 		PE12_PF_UART1_TXD,
+ 		PE13_PF_UART1_RXD,
+ 		PE14_PF_UART1_CTS,
+@@ -125,6 +195,7 @@ static int mx21ads_devices_init(void)
+ 	register_device(&sdram_dev);
+ 	register_device(&nand_dev);
+ 	register_device(&cs8900_dev);
++	register_device(&imxfb_dev);
 
-+ulong imx_get_lcdclk(void)
+ 	armlinux_add_dram(&sdram_dev);
+ 	armlinux_set_bootparams((void *)0xc0000100);
+@@ -135,6 +206,18 @@ static int mx21ads_devices_init(void)
+
+ device_initcall(mx21ads_devices_init);
+
++static int mx21ads_enable_display(void)
 +{
-+        return imx_get_perclk3();
++	u16 tmp;
++
++	tmp = readw(MX21ADS_IO_REG);
++	tmp |= MX21ADS_IO_LCDON;
++	writew(tmp, MX21ADS_IO_REG);
++	return 0;
 +}
 +
- void imx_dump_clocks(void)
- {
- 	uint32_t	cid = CID;
-diff --git a/drivers/video/imx.c b/drivers/video/imx.c
-index 9a30ca4..87c08d3 100644
---- a/drivers/video/imx.c
-+++ b/drivers/video/imx.c
-@@ -251,6 +251,9 @@ static void imxfb_enable_controller(struct fb_info *info)
- 	struct imxfb_info *fbi = info->priv;
-
- 	writel(RMCR_LCDC_EN, fbi->regs + LCDC_RMCR);
-+#ifdef CONFIG_ARCH_IMX21
-+	PCCR0 |= PCCR0_PERCLK3_EN | PCCR0_HCLK_LCDC_EN;
-+#endif
- #ifdef CONFIG_ARCH_IMX27
- 	PCCR0 |= PCCR0_LCDC_EN;
- 	PCCR1 |= PCCR1_HCLK_LCDC;
-@@ -263,6 +266,9 @@ static void imxfb_disable_controller(struct fb_info *info)
- 	struct imxfb_info *fbi = info->priv;
-
- 	writel(0, fbi->regs + LCDC_RMCR);
-+#ifdef CONFIG_ARCH_IMX21
-+	PCCR0 &= ~(PCCR0_PERCLK3_EN | PCCR0_HCLK_LCDC_EN);
-+#endif
- #ifdef CONFIG_ARCH_IMX27
- 	PCCR0 &= ~PCCR0_LCDC_EN;
- 	PCCR1 &= ~PCCR1_HCLK_LCDC;
-@@ -505,6 +511,9 @@ static int imxfb_probe(struct device_d *dev)
- 	if (!pdata)
- 		return -ENODEV;
-
-+#ifdef CONFIG_ARCH_IMX21
-+	PCCR0 &= ~(PCCR0_PERCLK3_EN | PCCR0_HCLK_LCDC_EN);
-+#endif
- #ifdef CONFIG_ARCH_IMX27
- 	PCCR0 &= ~PCCR0_LCDC_EN;
- 	PCCR1 &= ~PCCR1_HCLK_LCDC;
++late_initcall(mx21ads_enable_display);
++
+ static struct device_d mx21ads_serial_device = {
+ 	.name     = "imx_serial",
+ 	.map_base = IMX_UART1_BASE,
 
 _______________________________________________
 barebox mailing list
