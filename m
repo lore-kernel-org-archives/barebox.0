@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yw0-f193.google.com ([209.85.211.193])
-	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
-	id 1NyeLf-0007Fe-61
-	for barebox@lists.infradead.org; Mon, 05 Apr 2010 04:55:44 +0000
-Received: by ywh31 with SMTP id 31so2182853ywh.25
-	for <barebox@lists.infradead.org>; Sun, 04 Apr 2010 21:55:41 -0700 (PDT)
-From: "Marc Reilly" <marc@cpdesign.com.au>
-References: <007101cad0b8$eba13150$c2e393f0$@cpdesign.com.au>
-	<20100331121903.GU2241@pengutronix.de>
-In-Reply-To: <20100331121903.GU2241@pengutronix.de>
-Date: Mon, 5 Apr 2010 14:55:33 +1000
-Message-ID: <003d01cad47c$3cc272d0$b6475870$@cpdesign.com.au>
-MIME-Version: 1.0
-Content-Language: en-au
-Reply-To: marc@cpdesign.com.au
+Received: from arroyo.ext.ti.com ([192.94.94.40])
+	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
+	id 1NyiHO-0002UC-6z
+	for barebox@lists.infradead.org; Mon, 05 Apr 2010 09:07:35 +0000
+Received: from dbdp31.itg.ti.com ([172.24.170.98])
+	by arroyo.ext.ti.com (8.13.7/8.13.7) with ESMTP id o3597SoH015994
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <barebox@lists.infradead.org>; Mon, 5 Apr 2010 04:07:31 -0500
+From: Anand Gadiyar <gadiyar@ti.com>
+Date: Mon,  5 Apr 2010 14:37:24 +0530
+Message-Id: <1270458446-25073-1-git-send-email-gadiyar@ti.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,53 +18,70 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: Splash screen on mx35 3 stack
-To: 'Sascha Hauer' <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/3] omap3: 3430sdp: add choice of UARTs for console
+To: barebox@lists.infradead.org
+Cc: Anand Gadiyar <gadiyar@ti.com>
 
-Hi Sascha,
+The OMAP3 SDPs have both UART1 and UART3 available.
+Historically, UART1 has been used for the console.
 
-Please pardon my terrible manners for not saying a big "thank you" sooner!
-Easter holiday preparations got in the way.
+Add a config option to select between these UARTs
+(along the lines of what has been done for OMAP3 EVM)
 
-> I have short circuited pins 2 and 3 of q6 on the personality board to get
-power
-> to the LCD. q6 is normally driven by the mc9s08 (pin ptf0). We did not
-have
-> any code for this chip at that time and then forgot about it. As we now
-have a
-> driver for it it should only be a matter of finding the right bits to
-twiddle with.
+Signed-off-by: Anand Gadiyar <gadiyar@ti.com>
+---
+ board/omap/Kconfig         |   16 ++++++++++++++++
+ board/omap/board-sdp343x.c |    4 ++++
+ 2 files changed, 20 insertions(+)
 
-Ah, I see ... so this LCD only works if power is supplied to it? :)
-
-As a quick test I shorted out pin 2 and 3 of Q6, and the LCD works.
-However, I can't that FET to turn on via software. I've tried enabling the
-LCD in f3s_enable_display with:
-
-u8 mask = (0x01 << 6);
-mc9sdz60_set_bits( mc9sdz60_get(), MC9SDZ60_REG_GPIO_1, mask ,  mask);
-
-From a quick glance, this seemed to be essentially what the kernel was
-doing. Mc9sdz60 registers read as expected but the screen stays off - that's
-as much as I had time for.
-
-> Patches welcome ;)
-If I figure it out, will submit a patch for sure, but I'll be moving to
-custom hardware soon and it will become irrelevant, so I may have to admit
-defeat.
-
-Thanks again!
-
-Cheers
-Marc
-
-  
-
+Index: barebox/board/omap/Kconfig
+===================================================================
+--- barebox.orig/board/omap/Kconfig
++++ barebox/board/omap/Kconfig
+@@ -61,6 +61,22 @@ config MACH_OMAP3EVM
+ 
+ endchoice
+ 
++if MACH_OMAP343xSDP
++	choice
++	prompt "Select UART"
++
++	config OMAP343xSDP_UART1
++		bool "Use UART1"
++		help
++		  Say Y here if you would like to use UART1 as console.
++
++	config OMAP343xSDP_UART3
++		bool "Use UART3"
++		help
++		  Say Y here if you would like to use UART1 as console.
++	endchoice
++endif
++
+ if MACH_OMAP3EVM
+ 	choice
+ 	prompt "Select UART"
+Index: barebox/board/omap/board-sdp343x.c
+===================================================================
+--- barebox.orig/board/omap/board-sdp343x.c
++++ barebox/board/omap/board-sdp343x.c
+@@ -611,7 +611,11 @@ static struct NS16550_plat serial_plat =
+ 
+ static struct device_d sdp3430_serial_device = {
+ 	.name = "serial_ns16550",
++#if defined(CONFIG_OMAP343xSDP_UART1)
++	.map_base = OMAP_UART1_BASE,
++#elif defined(CONFIG_OMAP343xSDP_UART3)
+ 	.map_base = OMAP_UART3_BASE,
++#endif
+ 	.size = 1024,
+ 	.platform_data = (void *)&serial_plat,
+ };
 
 _______________________________________________
 barebox mailing list
