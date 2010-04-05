@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-gw0-f49.google.com ([74.125.83.49])
-	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
-	id 1Nyjqt-0000Ix-1A
-	for barebox@lists.infradead.org; Mon, 05 Apr 2010 10:48:19 +0000
-Received: by gwj16 with SMTP id 16so2588791gwj.36
-	for <barebox@lists.infradead.org>; Mon, 05 Apr 2010 03:48:18 -0700 (PDT)
-Message-ID: <4BB9BFED.4070201@gmail.com>
-Date: Mon, 05 Apr 2010 05:48:13 -0500
-From: Nishanth Menon <menon.nishanth@gmail.com>
+Received: from comal.ext.ti.com ([198.47.26.152])
+	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
+	id 1NykkI-0004iO-2C
+	for barebox@lists.infradead.org; Mon, 05 Apr 2010 11:45:34 +0000
+From: "Gadiyar, Anand" <gadiyar@ti.com>
+Date: Mon, 5 Apr 2010 17:15:24 +0530
+Message-ID: <5A47E75E594F054BAF48C5E4FC4B92AB0322418527@dbde02.ent.ti.com>
+References: <1270458446-25073-1-git-send-email-gadiyar@ti.com>
+	<1270458446-25073-2-git-send-email-gadiyar@ti.com>
+	<4BB9BE71.8090908@gmail.com>
+In-Reply-To: <4BB9BE71.8090908@gmail.com>
+Content-Language: en-US
 MIME-Version: 1.0
-References: <1270458446-25073-1-git-send-email-gadiyar@ti.com>	<1270458446-25073-2-git-send-email-gadiyar@ti.com>
-	<1270458446-25073-3-git-send-email-gadiyar@ti.com>
-In-Reply-To: <1270458446-25073-3-git-send-email-gadiyar@ti.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,36 +20,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] omap3: 3430sdp: Update defconfig
-To: Anand Gadiyar <gadiyar@ti.com>
-Cc: barebox@lists.infradead.org
+Subject: RE: [PATCH 1/3] omap3: rename defconfigs to align with kernel
+To: Nishanth Menon <menon.nishanth@gmail.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On 04/05/2010 04:07 AM, Anand Gadiyar wrote:
-> Update the defconfig to enable some useful options
-> - Use UART1 by default
-> - Change the prompt to barebox:
-> - Enable help
-> - Enable some useful commands (not all, as they are not yet tested)
->
-> Signed-off-by: Anand Gadiyar<gadiyar@ti.com>
-> ---
-> This is a safe config, tested and working on the SDP.
-> Need to play some more before enabling other options.
-> So we'll do that later.
->
->   arch/arm/configs/omap_3430sdp_defconfig |   82 +++++++++++++++++---------------
->   1 files changed, 44 insertions(+), 38 deletions(-)
->
-please see previous comment - i think this is mostly a good thing to do, 
-but as a seperate defconfig without loosing the old per_download 
-defconfigs..
+Nishanth Menon wrote:
+> On 04/05/2010 04:07 AM, Anand Gadiyar wrote:
+> > Rename 3430SDP and beagleboard defconfigs to align with the
+> > names used in the Linux kernel
+> >
+> > No functional change
+> >
+> > Signed-off-by: Anand Gadiyar<gadiyar@ti.com>
+> > ---
+> > Not sure if I need to send a git-diff for this. I can resend one
+> > with -M if needed. Let me know
+> >
+> >   arch/arm/configs/omap3430_sdp3430_per_uart_defconfig |  216 -------------------
+> >   arch/arm/configs/omap3530_beagle_per_uart_defconfig  |  215 ------------------
+> >   arch/arm/configs/omap3_beagle_defconfig              |  215 ++++++++++++++++++
+> >   arch/arm/configs/omap_3430sdp_defconfig              |  216 +++++++++++++++++++
+> >   4 files changed, 431 insertions(+), 431 deletions(-)
+> >
+> > Index: barebox/arch/arm/configs/omap3430_sdp3430_per_uart_defconfig
+> > ===================================================================
+> > --- barebox.orig/arch/arm/configs/omap3430_sdp3430_per_uart_defconfig
+> > +++ /dev/null
+> 
+> 
+> NAK. The reason for using UART3 was to allow barebox to be used for 
+> peripheral downloads over uart3. barebox builds are tiny enough to use 
+> it as 2nd images. there are recovery tools that use this configuration. 
+> I would recommend creating a new defconfig and adding additional help 
+> modes in them instead.
+> 
 
-Regards,
-Nishanth Menon
+Ah, I see. I did not know that.
+
+Will resend as one separate patch introducing the new config.
+
+- Anand
 
 _______________________________________________
 barebox mailing list
