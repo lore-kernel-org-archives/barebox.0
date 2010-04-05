@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from comal.ext.ti.com ([198.47.26.152])
+Received: from bear.ext.ti.com ([192.94.94.41])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1NykkI-0004iO-2C
-	for barebox@lists.infradead.org; Mon, 05 Apr 2010 11:45:34 +0000
+	id 1NyklB-0004lp-Ac
+	for barebox@lists.infradead.org; Mon, 05 Apr 2010 11:46:29 +0000
 From: "Gadiyar, Anand" <gadiyar@ti.com>
-Date: Mon, 5 Apr 2010 17:15:24 +0530
-Message-ID: <5A47E75E594F054BAF48C5E4FC4B92AB0322418527@dbde02.ent.ti.com>
+Date: Mon, 5 Apr 2010 17:16:22 +0530
+Message-ID: <5A47E75E594F054BAF48C5E4FC4B92AB0322418528@dbde02.ent.ti.com>
 References: <1270458446-25073-1-git-send-email-gadiyar@ti.com>
-	<1270458446-25073-2-git-send-email-gadiyar@ti.com>
-	<4BB9BE71.8090908@gmail.com>
-In-Reply-To: <4BB9BE71.8090908@gmail.com>
+	<4BB9BFB2.9010807@gmail.com>
+In-Reply-To: <4BB9BFB2.9010807@gmail.com>
 Content-Language: en-US
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
@@ -24,44 +23,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: [PATCH 1/3] omap3: rename defconfigs to align with kernel
+Subject: RE: [PATCH 2/3] omap3: 3430sdp: add choice of UARTs for console
 To: Nishanth Menon <menon.nishanth@gmail.com>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
 Nishanth Menon wrote:
 > On 04/05/2010 04:07 AM, Anand Gadiyar wrote:
-> > Rename 3430SDP and beagleboard defconfigs to align with the
-> > names used in the Linux kernel
+> > The OMAP3 SDPs have both UART1 and UART3 available.
+> > Historically, UART1 has been used for the console.
 > >
-> > No functional change
+> > Add a config option to select between these UARTs
+> > (along the lines of what has been done for OMAP3 EVM)
 > >
-> > Signed-off-by: Anand Gadiyar<gadiyar@ti.com>
-> > ---
-> > Not sure if I need to send a git-diff for this. I can resend one
-> > with -M if needed. Let me know
-> >
-> >   arch/arm/configs/omap3430_sdp3430_per_uart_defconfig |  216 -------------------
-> >   arch/arm/configs/omap3530_beagle_per_uart_defconfig  |  215 ------------------
-> >   arch/arm/configs/omap3_beagle_defconfig              |  215 ++++++++++++++++++
-> >   arch/arm/configs/omap_3430sdp_defconfig              |  216 +++++++++++++++++++
-> >   4 files changed, 431 insertions(+), 431 deletions(-)
-> >
-> > Index: barebox/arch/arm/configs/omap3430_sdp3430_per_uart_defconfig
-> > ===================================================================
-> > --- barebox.orig/arch/arm/configs/omap3430_sdp3430_per_uart_defconfig
-> > +++ /dev/null
-> 
-> 
-> NAK. The reason for using UART3 was to allow barebox to be used for 
-> peripheral downloads over uart3. barebox builds are tiny enough to use 
-> it as 2nd images. there are recovery tools that use this configuration. 
-> I would recommend creating a new defconfig and adding additional help 
-> modes in them instead.
-> 
 
-Ah, I see. I did not know that.
+> I dont see a major reason for supporting UART1 other than historical 
+> reasons, as UART3 seems capable of doing more than just debug terminal 
+> alone (includes download aswell).. overall I dont see an issue, but 
+> might be better to choose the terminal in a generic manner accross 
+> platforms - as in, CONFIG_OMAP_SERIAL_UART1,2,3... for all platforms - 
+> just my 2 cents.
 
-Will resend as one separate patch introducing the new config.
+Yup, sounds good. Let me see if I can make this generic.
 
 - Anand
 
