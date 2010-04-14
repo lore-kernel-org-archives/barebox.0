@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
-	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
-	id 1O1xbr-00058m-Qa
-	for barebox@lists.infradead.org; Wed, 14 Apr 2010 08:06:08 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
-	by root.phytec.de (Postfix) with ESMTP id C22FABF0CF
-	for <barebox@lists.infradead.org>;
-	Wed, 14 Apr 2010 10:05:39 +0200 (CEST)
-From: Jan Weitzel <J.Weitzel@phytec.de>
-Date: Wed, 14 Apr 2010 10:06:06 +0200
-Message-ID: <1271232366.10496.16.camel@lws-weitzel>
-Mime-Version: 1.0
-Reply-To: J.Weitzel@phytec.de
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
+	id 1O1xjm-0000lu-IB
+	for barebox@lists.infradead.org; Wed, 14 Apr 2010 08:14:19 +0000
+Date: Wed, 14 Apr 2010 10:14:17 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20100414081417.GI7882@pengutronix.de>
+References: <1271232307.10496.14.camel@lws-weitzel>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1271232307.10496.14.camel@lws-weitzel>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,30 +22,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] tftp return value
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] fix miiphy alloc
+To: Jan Weitzel <J.Weitzel@phytec.de>
+Cc: barebox@lists.infradead.org
 
-tftp returns transfered bytes on success and 1 in error case. Bad for
-scripting. Change to 0 on success
+Hi Jan,
 
-Signed-off-by: Jan Weitzel <J.Weitzel@phytec.de>
----
-Index: barebox-2010.04.0/net/tftp.c
-===================================================================
---- barebox-2010.04.0.orig/net/tftp.c	2010-04-14 09:41:37.489858785
-+0200
-+++ barebox-2010.04.0/net/tftp.c	2010-04-14 09:43:33.899445811 +0200
-@@ -281,8 +281,7 @@
- 
- 	TftpStart(remotefile);
- 
--	rcode = NetLoop();
--	if (rcode < 0) {
-+	if (NetLoop() < 0) {
- 		rcode = 1;
- 		goto out;
- 	}
+On Wed, Apr 14, 2010 at 10:05:07AM +0200, Jan Weitzel wrote:
+> if fec was allocated using malloc. if fec->miiphy->dev->driver != 0
+> miiphy_probe is not called
 
+Thanks, both applied.
+
+Sascha
+
+> 
+> Signed-off-by: Jan Weitzel <J.Weitzel@phytec.de>
+> ---
+> Index: barebox-2010.04.0/drivers/net/fec_imx.c
+> ===================================================================
+> --- barebox-2010.04.0.orig/drivers/net/fec_imx.c	2010-04-14 09:57:21.019441257 +0200
+> +++ barebox-2010.04.0/drivers/net/fec_imx.c	2010-04-14 09:59:38.489396111 +0200
+> @@ -542,10 +542,10 @@
+>  #ifdef CONFIG_ARCH_IMX27
+>  	PCCR0 |= PCCR0_FEC_EN;
+>  #endif
+> -        edev = (struct eth_device *)xzalloc(sizeof(struct eth_device));
+> -        dev->type_data = edev;
+> -	fec = (struct fec_priv *)malloc(sizeof(*fec));
+> -        edev->priv = fec;
+> +	edev = (struct eth_device *)xzalloc(sizeof(struct eth_device));
+> +	dev->type_data = edev;
+> +	fec = (struct fec_priv *)xzalloc(sizeof(*fec));
+> +	edev->priv = fec;
+>  	edev->open = fec_open,
+>  	edev->init = fec_init,
+>  	edev->send = fec_send,
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
