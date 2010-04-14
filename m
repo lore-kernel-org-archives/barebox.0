@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([92.198.50.35])
-	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1O1Gln-0005G9-Mc
-	for barebox@lists.infradead.org; Mon, 12 Apr 2010 10:21:33 +0000
-Date: Mon, 12 Apr 2010 12:19:24 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20100412101924.GU3688@pengutronix.de>
-References: <201004121422.45667.marc@cpdesign.com.au>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <201004121422.45667.marc@cpdesign.com.au>
+Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
+	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
+	id 1O1xb1-0003mF-3I
+	for barebox@lists.infradead.org; Wed, 14 Apr 2010 08:05:17 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+	by root.phytec.de (Postfix) with ESMTP id BE8B9BF0CF
+	for <barebox@lists.infradead.org>;
+	Wed, 14 Apr 2010 10:04:40 +0200 (CEST)
+From: Jan Weitzel <J.Weitzel@phytec.de>
+Date: Wed, 14 Apr 2010 10:05:07 +0200
+Message-ID: <1271232307.10496.14.camel@lws-weitzel>
+Mime-Version: 1.0
+Reply-To: J.Weitzel@phytec.de
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,43 +24,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: mx35 3stack LCD power enable
-To: Marc Reilly <marc@cpdesign.com.au>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] fix miiphy alloc
+To: barebox@lists.infradead.org
 
-Hi Marc,
+if fec was allocated using malloc. if fec->miiphy->dev->driver != 0
+miiphy_probe is not called
 
-On Mon, Apr 12, 2010 at 02:22:45PM +1000, Marc Reilly wrote:
-> Hi,
-> 
-> These patches enable power to the mx35 3stack LCD.
+Signed-off-by: Jan Weitzel <J.Weitzel@phytec.de>
+---
+Index: barebox-2010.04.0/drivers/net/fec_imx.c
+===================================================================
+--- barebox-2010.04.0.orig/drivers/net/fec_imx.c	2010-04-14 09:57:21.019441257 +0200
++++ barebox-2010.04.0/drivers/net/fec_imx.c	2010-04-14 09:59:38.489396111 +0200
+@@ -542,10 +542,10 @@
+ #ifdef CONFIG_ARCH_IMX27
+ 	PCCR0 |= PCCR0_FEC_EN;
+ #endif
+-        edev = (struct eth_device *)xzalloc(sizeof(struct eth_device));
+-        dev->type_data = edev;
+-	fec = (struct fec_priv *)malloc(sizeof(*fec));
+-        edev->priv = fec;
++	edev = (struct eth_device *)xzalloc(sizeof(struct eth_device));
++	dev->type_data = edev;
++	fec = (struct fec_priv *)xzalloc(sizeof(*fec));
++	edev->priv = fec;
+ 	edev->open = fec_open,
+ 	edev->init = fec_init,
+ 	edev->send = fec_send,
 
-Thanks for working on this. All applied.
-
-> 
-> (First time -so please pardon any transgressions of patching etiquette.)
-
-As you are using git please consider sending patches with git
-send-email next time. It sends patches inline and one mail per patch.
-This helps a lot in reviewing and applying the patches.
-
-> 
-> It'd be nice for someone to double check what I've done in 
-> f3s_pmic_init_all(). I'm not sure what the original author was intending to 
-> turn on/off and whether these patches break that. I've preserved the bit 
-> banging of the physical lines themselves under the assumption that whatever it 
-> was doing before was the correct/intended behavior.
-
-Looks good, though I haven't tested it yet.
-
-Sascha
-
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
