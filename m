@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1O2ffz-0005kL-M2
-	for barebox@lists.infradead.org; Fri, 16 Apr 2010 07:09:20 +0000
-From: Luotao Fu <l.fu@pengutronix.de>
-Date: Fri, 16 Apr 2010 09:08:49 +0200
-Message-Id: <1271401730-30665-2-git-send-email-l.fu@pengutronix.de>
-In-Reply-To: <1271401730-30665-1-git-send-email-l.fu@pengutronix.de>
-References: <1271401730-30665-1-git-send-email-l.fu@pengutronix.de>
+	id 1O2gQ6-000661-Dh
+	for barebox@lists.infradead.org; Fri, 16 Apr 2010 07:56:59 +0000
+Date: Fri, 16 Apr 2010 09:56:56 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20100416075656.GX7882@pengutronix.de>
+References: <alpine.LRH.2.00.1004141327120.2049@localhost.localdomain>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <alpine.LRH.2.00.1004141327120.2049@localhost.localdomain>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,56 +18,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] Makefile: fix detection of absolute environment path
-To: sha@pengutronix.de
+Subject: Re: [PATCH] MX25PDK: Add support for 64MiB DDR2 SDRAM
+To: Ivo Clarysse <ivo.clarysse@gmail.com>
 Cc: barebox@lists.infradead.org
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+On Wed, Apr 14, 2010 at 01:29:45PM +0200, Ivo Clarysse wrote:
+> Newer Freescale 3-Stack development systems are equipped
+> with 64MiB of DDR2 SDRAM, instead of the 128MiB of mDDR SDRAM
+> with which earlier versions were shipped.
+> 
+> Signed-off-by: Ivo Clarysse <ivo.clarysse@gmail.com>
+> ---
+> diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+> index 10561f0..6942c64 100644
+> --- a/arch/arm/mach-imx/Kconfig
+> +++ b/arch/arm/mach-imx/Kconfig
+> @@ -6,7 +6,7 @@ config ARCH_TEXT_BASE
+>  	default 0x08f00000 if MACH_MX1ADS
+>  	default 0xc0000000 if MACH_IMX21ADS
+>  	default 0xa0000000 if MACH_IMX27ADS
+> -	default 0x87f00000 if MACH_FREESCALE_MX25_3STACK
+> +	default 0x83f00000 if MACH_FREESCALE_MX25_3STACK
 
-string-type config symbols als wrapped in quotes ("), remove them before
-trying to detect an absolute path.
+Does Kconfig support something like
 
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- Makefile |   13 +++++++++++--
- 1 files changed, 11 insertions(+), 2 deletions(-)
+	default 0x83f00000 if MACH_FREESCALE_MX25_3STACK && FREESCALE_MX25_3STACK_SDRAM_64MB_DDR2
+	default 0x87f00000 if MACH_FREESCALE_MX25_3STACK && FREESCALE_MX25_3STACK_SDRAM_128MB_MDDR
 
-diff --git a/Makefile b/Makefile
-index c92c5dd..ec7fb10 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1293,12 +1293,21 @@ Makefile: ;
- #
- ifdef CONFIG_DEFAULT_ENVIRONMENT
- 
--ifeq ($(CONFIG_DEFAULT_ENVIRONMENT_PATH),"")
-+quote :="#"
-+
-+define remove_quotes
-+$(strip $(subst $(quote),,$(1)))
-+endef
-+
-+CONFIG_DEFAULT_ENVIRONMENT_PATH := $(call remove_quotes, $(CONFIG_DEFAULT_ENVIRONMENT_PATH))
-+
-+ifeq ($(CONFIG_DEFAULT_ENVIRONMENT_PATH),)
- $(error default environment path empty))
- endif
- 
- saved-env_path := $(CONFIG_DEFAULT_ENVIRONMENT_PATH)
--CONFIG_DEFAULT_ENVIRONMENT_PATH := $(shell cd $(if $(filter /%,$(CONFIG_DEFAULT_ENVIRONMENT_PATH)),,$(srctree)/)$(CONFIG_DEFAULT_ENVIRONMENT_PATH) && /bin/pwd)
-+CONFIG_DEFAULT_ENVIRONMENT_PATH := \
-+	$(shell cd "$(if $(filter /%,$(CONFIG_DEFAULT_ENVIRONMENT_PATH)),,$(srctree)/)$(CONFIG_DEFAULT_ENVIRONMENT_PATH)" 2> /dev/null && /bin/pwd)
- $(if $(CONFIG_DEFAULT_ENVIRONMENT_PATH),, \
- 	$(error default environment path $(saved-env_path) does not exist))
- 
+?
+
+Sascha
+
+
 -- 
-1.7.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
