@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1O7OXj-0008Do-Sa
-	for barebox@lists.infradead.org; Thu, 29 Apr 2010 07:52:23 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 29 Apr 2010 09:52:06 +0200
-Message-Id: <1272527535-17527-9-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1272527535-17527-1-git-send-email-s.hauer@pengutronix.de>
-References: <1272527535-17527-1-git-send-email-s.hauer@pengutronix.de>
+	id 1O3DTZ-0007Zk-WF
+	for barebox@lists.infradead.org; Sat, 17 Apr 2010 19:14:47 +0000
+Date: Sat, 17 Apr 2010 21:14:43 +0200
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20100417191443.GB31753@pengutronix.de>
+References: <1271232366.10496.16.camel@lws-weitzel>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1271232366.10496.16.camel@lws-weitzel>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,147 +18,109 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/17] ARM: update icache functions to use get_cr/set_cr
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] tftp return value
+To: Jan Weitzel <J.Weitzel@phytec.de>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Hello Jan,
+
+On Wed, Apr 14, 2010 at 10:06:06AM +0200, Jan Weitzel wrote:
+> tftp returns transfered bytes on success and 1 in error case. Bad for
+> scripting. Change to 0 on success
+> =
+
+> Signed-off-by: Jan Weitzel <J.Weitzel@phytec.de>
+> ---
+> Index: barebox-2010.04.0/net/tftp.c
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> --- barebox-2010.04.0.orig/net/tftp.c	2010-04-14 09:41:37.489858785
+> +0200
+> +++ barebox-2010.04.0/net/tftp.c	2010-04-14 09:43:33.899445811 +0200
+> @@ -281,8 +281,7 @@
+>  =
+
+>  	TftpStart(remotefile);
+>  =
+
+> -	rcode =3D NetLoop();
+> -	if (rcode < 0) {
+> +	if (NetLoop() < 0) {
+>  		rcode =3D 1;
+>  		goto out;
+>  	}
+Some time ago I created a patch that had the same effect.  (I changed
+the return code of NetLoop() instead of its interpretation, but that
+shouldn't matter much---I didn't (re)verify it though.)
+
+But I had an additional hunk to let tftp return 1 if initializing the netwo=
+rk failed.
+
+Below is my complete patch.
+
+Best regards
+Uwe
+
+---------------------->8-----------------------
+From: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+Date: Fri, 26 Mar 2010 12:55:37 +0100
+Subject: net/tftp: let tftp return 0 on success and 1 on failure
+
+Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
 ---
- arch/arm/cpu/cpu.c |   94 +++++++--------------------------------------------
- 1 files changed, 13 insertions(+), 81 deletions(-)
+ net/net.c  |    2 +-
+ net/tftp.c |    4 +++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/cpu/cpu.c b/arch/arm/cpu/cpu.c
-index a5e2fe2..fbc91aa 100644
---- a/arch/arm/cpu/cpu.c
-+++ b/arch/arm/cpu/cpu.c
-@@ -28,107 +28,39 @@
- #include <common.h>
- #include <command.h>
- #include <asm/mmu.h>
--
--/**
-- * Read special processor register
-- * @return co-processor 15, register #1 (control register)
-- */
--static unsigned long read_p15_c1 (void)
--{
--	unsigned long value;
--
--	__asm__ __volatile__(
--		"mrc	p15, 0, %0, c1, c0, 0   @ read control reg\n"
--		: "=r" (value)
--		:
--		: "memory");
--
--#ifdef MMU_DEBUG
--	printf ("p15/c1 is = %08lx\n", value);
--#endif
--	return value;
--}
--
--/**
-- *
-- * Write special processor register
-- * @param[in] value to write
-- * @return to co-processor 15, register #1 (control register)
-- */
--static void write_p15_c1 (unsigned long value)
--{
--#ifdef MMU_DEBUG
--	printf ("write %08lx to p15/c1\n", value);
--#endif
--	__asm__ __volatile__(
--		"mcr	p15, 0, %0, c1, c0, 0   @ write it back\n"
--		:
--		: "r" (value)
--		: "memory");
--
--	read_p15_c1 ();
--}
--
--/**
-- * Wait for co prozessor (waste time)
-- * Co processor seems to need some delay between accesses
-- */
--static void cp_delay (void)
--{
--	volatile int i;
--
--	for (i = 0; i < 100; i++)	/* FIXME does it work as expected?? */
--		;
--}
--
--/** mmu off/on */
--#define C1_MMU		(1<<0)
--/** alignment faults off/on */
--#define C1_ALIGN	(1<<1)
--/** dcache off/on */
--#define C1_DC		(1<<2)
--/** big endian off/on */
--#define C1_BIG_ENDIAN	(1<<7)
--/** system protection */
--#define C1_SYS_PROT	(1<<8)
--/** ROM protection */
--#define C1_ROM_PROT	(1<<9)
--/** icache off/on */
--#define C1_IC		(1<<12)
--/** location of vectors: low/high addresses */
--#define C1_HIGH_VECTORS (1<<13)
-+#include <asm/system.h>
- 
- /**
-  * Enable processor's instruction cache
-  */
--void icache_enable (void)
-+void icache_enable(void)
- {
--	ulong reg;
-+	u32 r;
- 
--	reg = read_p15_c1 ();		/* get control reg. */
--	cp_delay ();
--	write_p15_c1 (reg | C1_IC);
-+	r = get_cr();
-+	r |= CR_I;
-+	set_cr(r);
- }
- 
- /**
-  * Disable processor's instruction cache
-  */
--void icache_disable (void)
-+void icache_disable(void)
- {
--	ulong reg;
-+	u32 r;
- 
--	reg = read_p15_c1 ();
--	cp_delay ();
--	write_p15_c1 (reg & ~C1_IC);
-+	r = get_cr();
-+	r &= ~CR_I;
-+	set_cr(r);
- }
- 
- /**
-  * Detect processor's current instruction cache status
-  * @return 0=disabled, 1=enabled
-  */
--int icache_status (void)
-+int icache_status(void)
- {
--	return (read_p15_c1 () & C1_IC) != 0;
-+	return (get_cr () & CR_I) != 0;
- }
- 
- /**
--- 
+diff --git a/net/net.c b/net/net.c
+index 4554d49..e73ee31 100644
+--- a/net/net.c
++++ b/net/net.c
+@@ -316,7 +316,7 @@ int NetLoop(void)
+ 				setenv("filesize", buf);
+ 			}
+ 			eth_halt();
+-			return NetBootFileXferSize;
++			return 0;
+ =
+
+ 		case NETLOOP_FAIL:
+ 			eth_halt();
+diff --git a/net/tftp.c b/net/tftp.c
+index 26f0c43..bcb3793 100644
+--- a/net/tftp.c
++++ b/net/tftp.c
+@@ -276,8 +276,10 @@ static int do_tftpb(struct command *cmdtp, int argc, c=
+har *argv[])
+ 		return 1;
+ 	}
+ =
+
+-	if (NetLoopInit(TFTP) < 0)
++	if (NetLoopInit(TFTP) < 0) {
++		rcode =3D 1;
+ 		goto out;
++	}
+ =
+
+ 	TftpStart(remotefile);
+ =
+
+-- =
+
 1.7.0
 
+
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
