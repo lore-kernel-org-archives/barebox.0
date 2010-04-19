@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1O2gQ6-000661-Dh
-	for barebox@lists.infradead.org; Fri, 16 Apr 2010 07:56:59 +0000
-Date: Fri, 16 Apr 2010 09:56:56 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20100416075656.GX7882@pengutronix.de>
-References: <alpine.LRH.2.00.1004141327120.2049@localhost.localdomain>
+	id 1O3mUl-00024O-Cr
+	for barebox@lists.infradead.org; Mon, 19 Apr 2010 08:38:20 +0000
+Date: Mon, 19 Apr 2010 10:38:15 +0200
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20100419083815.GA32752@pengutronix.de>
+References: <1271665698-23163-1-git-send-email-w.sang@pengutronix.de>
+	<1271665698-23163-7-git-send-email-w.sang@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <alpine.LRH.2.00.1004141327120.2049@localhost.localdomain>
+In-Reply-To: <1271665698-23163-7-git-send-email-w.sang@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,47 +19,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] MX25PDK: Add support for 64MiB DDR2 SDRAM
-To: Ivo Clarysse <ivo.clarysse@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 6/7] wip: fix possible error on overflow in is_timeout
+To: Wolfram Sang <w.sang@pengutronix.de>
+Cc: barebox@lists.infradead.org, Marc Kleine-Budde <m.kleine-budde@pengutronix.de>
 
-On Wed, Apr 14, 2010 at 01:29:45PM +0200, Ivo Clarysse wrote:
-> Newer Freescale 3-Stack development systems are equipped
-> with 64MiB of DDR2 SDRAM, instead of the 128MiB of mDDR SDRAM
-> with which earlier versions were shipped.
-> 
-> Signed-off-by: Ivo Clarysse <ivo.clarysse@gmail.com>
-> ---
-> diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-> index 10561f0..6942c64 100644
-> --- a/arch/arm/mach-imx/Kconfig
-> +++ b/arch/arm/mach-imx/Kconfig
-> @@ -6,7 +6,7 @@ config ARCH_TEXT_BASE
->  	default 0x08f00000 if MACH_MX1ADS
->  	default 0xc0000000 if MACH_IMX21ADS
->  	default 0xa0000000 if MACH_IMX27ADS
-> -	default 0x87f00000 if MACH_FREESCALE_MX25_3STACK
-> +	default 0x83f00000 if MACH_FREESCALE_MX25_3STACK
+Hello,
 
-Does Kconfig support something like
+On Mon, Apr 19, 2010 at 10:28:17AM +0200, Wolfram Sang wrote:
+> From: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> =
 
-	default 0x83f00000 if MACH_FREESCALE_MX25_3STACK && FREESCALE_MX25_3STACK_SDRAM_64MB_DDR2
-	default 0x87f00000 if MACH_FREESCALE_MX25_3STACK && FREESCALE_MX25_3STACK_SDRAM_128MB_MDDR
+> Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
+I didn't signed-off that one, because I wanted to think about it.  Marc
+thought it to be OK.
 
-?
+Now I think it is.  Can you please add my S-o-b and remove "wip:" from
+the subject?
 
-Sascha
+Thanks
+Uwe
 
+-- =
 
--- 
-Pengutronix e.K.                           |                             |
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
