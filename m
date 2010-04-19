@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1O5E4t-0001KW-0D
-	for barebox@lists.infradead.org; Fri, 23 Apr 2010 08:17:36 +0000
-Date: Fri, 23 Apr 2010 10:17:32 +0200
+	id 1O3mkO-0004Jq-U2
+	for barebox@lists.infradead.org; Mon, 19 Apr 2010 08:54:29 +0000
+Date: Mon, 19 Apr 2010 10:54:27 +0200
 From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20100423081732.GA17463@pengutronix.de>
+Message-ID: <20100419085427.GB32752@pengutronix.de>
 References: <1271665698-23163-1-git-send-email-w.sang@pengutronix.de>
-	<1271665698-23163-2-git-send-email-w.sang@pengutronix.de>
-	<20100422111001.GH7882@pengutronix.de>
+	<1271665698-23163-3-git-send-email-w.sang@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20100422111001.GH7882@pengutronix.de>
+In-Reply-To: <1271665698-23163-3-git-send-email-w.sang@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,32 +23,28 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/7] give nice output when generating barebox.bin and
-	barebox.S
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 2/7] imx/gpio: make gpio_get_value actually work
+To: Wolfram Sang <w.sang@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hey Sascha,
+Hello,
 
-On Thu, Apr 22, 2010 at 01:10:01PM +0200, Sascha Hauer wrote:
-> On Mon, Apr 19, 2010 at 10:28:12AM +0200, Wolfram Sang wrote:
-> > From: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> > =
-
-> > As a side effect don't build barebox.S when barebox.bin is updated.  I
-> > didn't manage to keep the old behaviour and I consider it cleaner this
-> > way.
+On Mon, Apr 19, 2010 at 10:28:13AM +0200, Wolfram Sang wrote:
+> From: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
 > =
 
-> I don't understand this completely. We only need barebox.S updated when
-> barebox is updated, not when barebox.bin is updated. Is this what you
-> mean?
-The status quo in your master branch is that barebox.S is
-created/updated in the barebox.bin target.  After my patch it's a
-seperate target depending on barebox.
+> Newer i.MX-variants can route the content of the Sample Status Register t=
+o the
+> Data Register, but older ones can't. So, use the Sample Register to be ge=
+neric.
+> As a drawback, the ability to read back the values of output GPIOs is los=
+t.
+AFAIK the last sentence (that was authored by Wolfram, though the patch
+is mine) is wrong.  I checked mx27 and mx35 specs and both the overview
+and the actual description suggest that reading output values works
+(using PSR aka SSR) when the iomuxer is configured for GPIO.
 
-Does this help?
-
+Best regards
 Uwe
 
 -- =
