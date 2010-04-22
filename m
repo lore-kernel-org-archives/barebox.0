@@ -1,17 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ww0-f49.google.com ([74.125.82.49])
+Received: from ns.konzeptpark.de ([195.226.66.162] helo=mail.konzeptpark.de)
 	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
-	id 1O3moy-0005Ct-QA
-	for barebox@lists.infradead.org; Mon, 19 Apr 2010 08:59:13 +0000
-Received: by wwb28 with SMTP id 28so1613810wwb.36
-	for <barebox@lists.infradead.org>; Mon, 19 Apr 2010 01:59:09 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20100416075656.GX7882@pengutronix.de>
-References: <alpine.LRH.2.00.1004141327120.2049@localhost.localdomain>
-	<20100416075656.GX7882@pengutronix.de>
-Date: Mon, 19 Apr 2010 10:59:08 +0200
-Message-ID: <i2yba216b431004190159h873158a1qacee1d4686455e1a@mail.gmail.com>
-From: Ivo Clarysse <ivo.clarysse@gmail.com>
+	id 1O4tNw-0002uJ-6J
+	for barebox@lists.infradead.org; Thu, 22 Apr 2010 10:11:53 +0000
+Received: from KPLADC0001 (cantor.konzeptpark.de [172.25.0.211])
+	by mail.konzeptpark.de (Postfix) with SMTP id D82A2231E0
+	for <barebox@lists.infradead.org>;
+	Thu, 22 Apr 2010 12:05:50 +0200 (CEST)
+Received: from [172.25.0.211] (helo=kpladc0001.konzeptpark.intra)
+	by KPLADC0001 with G Data MailSecurity;
+	for <barebox@lists.infradead.org>; Thu, 22 Apr 2010 12:10:57 +0200
+From: Carsten Schlote <c.schlote@konzeptpark.de>
+Date: Thu, 22 Apr 2010 12:10:56 +0200
+Message-ID: <1271931056.12005.59.camel@kplaws107lx>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,32 +22,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] MX25PDK: Add support for 64MiB DDR2 SDRAM
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Updated MPC5200B support (pcm030, kp-mcb2, ...)
+To: barebox@lists.infradead.org
 
-On Fri, Apr 16, 2010 at 9:56 AM, Sascha Hauer <s.hauer@pengutronix.de> wrot=
-e:
-[...]
-> Does Kconfig support something like
->
-> =A0 =A0 =A0 =A0default 0x83f00000 if MACH_FREESCALE_MX25_3STACK && FREESC=
-ALE_MX25_3STACK_SDRAM_64MB_DDR2
-> =A0 =A0 =A0 =A0default 0x87f00000 if MACH_FREESCALE_MX25_3STACK && FREESC=
-ALE_MX25_3STACK_SDRAM_128MB_MDDR
->
-> ?
+Hi,
 
-Yes, that does seem to work.
+yesterday I spent some time to get BareBox up and running on MPC5200B
+again. Finally I got it working on our hardware. Not yet tested for
+phytec pcm030, but I'm sure that without some fixes it won't work out of
+the box.
 
-Do you want me to submit a new patch ?
+I found and hacked/fixed the following problems so far:
+- cfi_flash driver has problems with big-endian. Some byte swapping is
+done in readb()/writeb() at HW access layer and also at several other
+places in the CFI driver. Swapping things twice isn't exactly what the
+driver and the flashdevice expects and needs a lot of more cleanups.
+- Detection of flash/bank layout was hacked to workaround 'faulty'
+values read from flash device (might be also a chip or HW design
+problem, I need to check that in more detail)
+- CFI flash buffer writes are broken with big-endian as well
+- Some problems and old bugs from the u-boot-v1 era found in cpu_init.c.
+Fortunately the HW did the right things although some register setups
+were broken.
+- Missing headers for arch/ppc to compile the liblzo code.
+(unsigned.h ?)
+
+Now with network, flash and basic debugging outputs available I would
+like to port some more drivers and at least RO filesystems (fat, jffs2,
+ext2/3/4) for MPC5xxx platform and replace the stone-age crappy u-boot
+asap.
+
+Just in case - Is there any on-going or even experimental work for MPC I
+could start with?
 
 
-Ivo.
+-- 
+Carsten Schlote <c.schlote@konzeptpark.de>
+konzeptpark.de
 
 _______________________________________________
 barebox mailing list
