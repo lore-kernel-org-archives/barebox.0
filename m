@@ -1,19 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ns.konzeptpark.de ([195.226.66.162] helo=mail.konzeptpark.de)
-	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
-	id 1O4tNw-0002uJ-6J
-	for barebox@lists.infradead.org; Thu, 22 Apr 2010 10:11:53 +0000
-Received: from KPLADC0001 (cantor.konzeptpark.de [172.25.0.211])
-	by mail.konzeptpark.de (Postfix) with SMTP id D82A2231E0
-	for <barebox@lists.infradead.org>;
-	Thu, 22 Apr 2010 12:05:50 +0200 (CEST)
-Received: from [172.25.0.211] (helo=kpladc0001.konzeptpark.intra)
-	by KPLADC0001 with G Data MailSecurity;
-	for <barebox@lists.infradead.org>; Thu, 22 Apr 2010 12:10:57 +0200
-From: Carsten Schlote <c.schlote@konzeptpark.de>
-Date: Thu, 22 Apr 2010 12:10:56 +0200
-Message-ID: <1271931056.12005.59.camel@kplaws107lx>
-Mime-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
+	id 1O4uIH-0001ZR-3U
+	for barebox@lists.infradead.org; Thu, 22 Apr 2010 11:10:06 +0000
+Date: Thu, 22 Apr 2010 13:10:01 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20100422111001.GH7882@pengutronix.de>
+References: <1271665698-23163-1-git-send-email-w.sang@pengutronix.de>
+	<1271665698-23163-2-git-send-email-w.sang@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1271665698-23163-2-git-send-email-w.sang@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,47 +19,100 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Updated MPC5200B support (pcm030, kp-mcb2, ...)
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/7] give nice output when generating barebox.bin and
+	barebox.S
+To: Wolfram Sang <w.sang@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hi,
+On Mon, Apr 19, 2010 at 10:28:12AM +0200, Wolfram Sang wrote:
+> From: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> =
 
-yesterday I spent some time to get BareBox up and running on MPC5200B
-again. Finally I got it working on our hardware. Not yet tested for
-phytec pcm030, but I'm sure that without some fixes it won't work out of
-the box.
+> As a side effect don't build barebox.S when barebox.bin is updated.  I
+> didn't manage to keep the old behaviour and I consider it cleaner this
+> way.
 
-I found and hacked/fixed the following problems so far:
-- cfi_flash driver has problems with big-endian. Some byte swapping is
-done in readb()/writeb() at HW access layer and also at several other
-places in the CFI driver. Swapping things twice isn't exactly what the
-driver and the flashdevice expects and needs a lot of more cleanups.
-- Detection of flash/bank layout was hacked to workaround 'faulty'
-values read from flash device (might be also a chip or HW design
-problem, I need to check that in more detail)
-- CFI flash buffer writes are broken with big-endian as well
-- Some problems and old bugs from the u-boot-v1 era found in cpu_init.c.
-Fortunately the HW did the right things although some register setups
-were broken.
-- Missing headers for arch/ppc to compile the liblzo code.
-(unsigned.h ?)
+I don't understand this completely. We only need barebox.S updated when
+barebox is updated, not when barebox.bin is updated. Is this what you
+mean?
 
-Now with network, flash and basic debugging outputs available I would
-like to port some more drivers and at least RO filesystems (fat, jffs2,
-ext2/3/4) for MPC5xxx platform and replace the stone-age crappy u-boot
-asap.
+Sascha
 
-Just in case - Is there any on-going or even experimental work for MPC I
-could start with?
+> =
 
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
+> ---
+> =
 
--- 
-Carsten Schlote <c.schlote@konzeptpark.de>
-konzeptpark.de
+> Passing it through, ask Uwe for details if needed.
+> =
+
+>  Makefile |   17 ++++++++++++++---
+>  1 files changed, 14 insertions(+), 3 deletions(-)
+> =
+
+> diff --git a/Makefile b/Makefile
+> index c92c5dd..5b4f964 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -641,9 +641,16 @@ define rule_barebox-modpost
+>  	$(Q)echo 'cmd_$@ :=3D $(cmd_barebox-modpost)' > $(dot-target).cmd
+>  endef
+>  =
+
+> -barebox.bin: barebox
+> -	$(Q)$(OBJCOPY) -O binary barebox barebox.bin
+> +quiet_cmd_objcopy =3D OBJCOPY $@
+> +      cmd_objcopy =3D $(OBJCOPY) $(OBJCOPYFLAGS) $(OBJCOPYFLAGS_$(@F)) $=
+< $@
+> +
+> +OBJCOPYFLAGS_barebox.bin =3D -O binary
+> +
+> +barebox.bin: barebox FORCE
+> +	$(call if_changed,objcopy)
+> +
+>  ifdef CONFIG_X86
+> +barebox.S: barebox
+>  ifdef CONFIG_X86_HDBOOT
+>  	@echo "-------------------------------------------------" > barebox.S
+>  	@echo " * MBR content" >> barebox.S
+> @@ -665,7 +672,11 @@ endif
+>  	@echo " * Init Calls content" >> barebox.S
+>  	$(Q)$(OBJDUMP) -j .barebox_initcalls -d barebox >> barebox.S
+>  else
+> -	$(Q)$(OBJDUMP) -d barebox > barebox.S
+> +quiet_cmd_disasm =3D DISASM  $@
+> +      cmd_disasm =3D $(OBJDUMP) -d $< > $@
+> +
+> +barebox.S: barebox FORCE
+> +	$(call if_changed,disasm)
+>  endif
+>  =
+
+>  # barebox image
+> -- =
+
+> 1.7.0
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
