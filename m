@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1O5Env-0000QR-Sx
-	for barebox@lists.infradead.org; Fri, 23 Apr 2010 09:04:09 +0000
+	id 1O5Env-0000QS-T5
+	for barebox@lists.infradead.org; Fri, 23 Apr 2010 09:04:10 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 23 Apr 2010 11:03:50 +0200
-Message-Id: <1272013443-29196-2-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 23 Apr 2010 11:03:51 +0200
+Message-Id: <1272013443-29196-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1272013443-29196-1-git-send-email-s.hauer@pengutronix.de>
 References: <1272013443-29196-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,30 +21,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/14] i.MX35 stack: Fix mc9sdz60 reset register offset
+Subject: [PATCH 02/14] ARM: use memalign in dma_alloc_coherent to assure
+	alignment
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- board/freescale-mx35-3-stack/3stack.c |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/cpu/mmu.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/board/freescale-mx35-3-stack/3stack.c b/board/freescale-mx35-3-stack/3stack.c
-index 481f9f0..fcb87cf 100644
---- a/board/freescale-mx35-3-stack/3stack.c
-+++ b/board/freescale-mx35-3-stack/3stack.c
-@@ -396,9 +396,9 @@ static int f3s_pmic_init_all(struct mc9sdz60 *mc9sdz60)
+diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
+index 66ee987..5bf31c0 100644
+--- a/arch/arm/cpu/mmu.c
++++ b/arch/arm/cpu/mmu.c
+@@ -99,7 +99,7 @@ void *dma_alloc_coherent(size_t size)
+ {
+ 	void *mem;
  
- 	err |= mc9sdz60_set_bits(mc9sdz60, MC9SDZ60_REG_GPIO_1, 0x04, 0x04);
+-	mem = malloc(size);
++	mem = memalign(4096, size);
+ 	if (mem)
+ 		return mem + dma_coherent_offset;
  
--	err |= mc9sdz60_set_bits(mc9sdz60, MC9SDZ60_REG_RESET_2, 0x80, 0x00);
-+	err |= mc9sdz60_set_bits(mc9sdz60, MC9SDZ60_REG_RESET_1, 0x80, 0x00);
- 	mdelay(200);
--	err |= mc9sdz60_set_bits(mc9sdz60, MC9SDZ60_REG_RESET_2, 0x80, 0x80);
-+	err |= mc9sdz60_set_bits(mc9sdz60, MC9SDZ60_REG_RESET_1, 0x80, 0x80);
- 
- 	if (err)
- 		dev_err(&mc9sdz60->client->dev,
 -- 
 1.7.0
 
