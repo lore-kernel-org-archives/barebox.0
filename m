@@ -1,19 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1O5Env-0000QQ-Sp
-	for barebox@lists.infradead.org; Fri, 23 Apr 2010 09:04:09 +0000
-Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.71)
-	(envelope-from <sha@pengutronix.de>) id 1O5Ent-0006ze-DC
-	for barebox@lists.infradead.org; Fri, 23 Apr 2010 11:04:05 +0200
-Received: from sha by octopus.hi.pengutronix.de with local (Exim 4.69)
-	(envelope-from <sha@pengutronix.de>) id 1O5Ent-0007iD-Bv
-	for barebox@lists.infradead.org; Fri, 23 Apr 2010 11:04:05 +0200
+	id 1O5Env-0000Qa-VW
+	for barebox@lists.infradead.org; Fri, 23 Apr 2010 09:04:10 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 23 Apr 2010 11:03:49 +0200
-Message-Id: <1272013443-29196-1-git-send-email-s.hauer@pengutronix.de>
-MIME-Version: 1.0
+Date: Fri, 23 Apr 2010 11:03:56 +0200
+Message-Id: <1272013443-29196-8-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1272013443-29196-1-git-send-email-s.hauer@pengutronix.de>
+References: <1272013443-29196-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,79 +16,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: some more patches for -next
+Subject: [PATCH 07/14] add arm helper function to determine the program counter
 To: barebox@lists.infradead.org
 
-SGkgQWxsLAoKSGVyZSBhcmUgc29tZSBtb3JlIHBhdGNoZXMgZm9yIC1uZXh0LCBzb21lIG9mIHdo
-aWNoIGRlc2VydmluZyBzb21lCnRlc3RpbmcgZnJvbSBvdGhlcnMsIG5hbWVseSB0aGUgcmV3cml0
-ZSBvZiB0aGUgQVJNIHN0YXJ0dXAgY29kZS4KClNhc2NoYQoKVGhlIGZvbGxvd2luZyBjaGFuZ2Vz
-IHNpbmNlIGNvbW1pdCAzYTE2MTdkOTZmOGI0ZTA5MzkxN2JmMDVmY2E0ZDFlMGJkNjk4M2UwOgog
-IFV3ZSBLbGVpbmUtS8O2bmlnICgxKToKICAgICAgICBjbG9jazogZml4IHBvc3NpYmxlIGVycm9y
-IG9uIG92ZXJmbG93IGluIGlzX3RpbWVvdXQKCmFyZSBhdmFpbGFibGUgaW4gdGhlIGdpdCByZXBv
-c2l0b3J5IGF0OgoKICBnaXQ6Ly9naXQucGVuZ3V0cm9uaXguZGUvZ2l0L2JhcmVib3ggcHUKClNh
-c2NoYSBIYXVlciAoMTQpOgogICAgICBpLk1YMzUgc3RhY2s6IEZpeCBtYzlzZHo2MCByZXNldCBy
-ZWdpc3RlciBvZmZzZXQKICAgICAgQVJNOiB1c2UgbWVtYWxpZ24gaW4gZG1hX2FsbG9jX2NvaGVy
-ZW50IHRvIGFzc3VyZSBhbGlnbm1lbnQKICAgICAgZnNsX3VkYzogbWFrZSBpdCB3b3JrIHdpdGgg
-TU1VIG9uCiAgICAgIEluY3JlYXNlIE1BWF9GSUxFUyB0byAxMjgKICAgICAgZml4IF91cGRhdGUg
-c2NyaXB0cwogICAgICBwY20wNDM6IFNwZWVkIHVwIE5BTkQgY29udHJvbGxlciBiZWZvcmUgY29w
-eWluZyBiYXJlYm94IGltYWdlCiAgICAgIGFkZCBhcm0gaGVscGVyIGZ1bmN0aW9uIHRvIGRldGVy
-bWluZSB0aGUgcHJvZ3JhbSBjb3VudGVyCiAgICAgIGFybTogcmVtb3ZlIHVudXNlZCB2YXJpYWJs
-ZXMgZnJvbSBoZWFkZXIgZmlsZQogICAgICBhcm06IG1vdmUgX19tbXVfY2FjaGVfZmx1c2ggdG8g
-YmFyZV9pbml0IHNlY3Rpb24KICAgICAgYXJtOiByZWltcGxlbWVudCBzdGFydHVwIGNvZGUgaW4g
-QwogICAgICBpLk1YOiByZW1vdmUgX19SRUcgZnJvbSBlc2QgY29udHJvbGxlciByZWdzLiB1c2Ug
-cmVhZGwvd3JpdGVsIGluc3RlYWQKICAgICAgcGNtMDQzOiByZWltcGxlbWVudCBsb3dsZXZlbCBj
-b2RlIGluIEMKICAgICAgaS5NWDM1OiBGaXggYWhiY2xvY2sgY2FsY3VsYXRpb24KICAgICAgcGNt
-MDM4OiByZWltcGxlbWVudCBsb3dsZXZlbCBjb2RlIGluIEMKCiBhcmNoL2FybS9jcHUvTWFrZWZp
-bGUgICAgICAgICAgICAgICAgICAgICAgICB8ICAgIDYgKy0KIGFyY2gvYXJtL2NwdS9jYWNoZS1h
-cm12NC5TICAgICAgICAgICAgICAgICAgIHwgICAgMiArCiBhcmNoL2FybS9jcHUvY2FjaGUtYXJt
-djUuUyAgICAgICAgICAgICAgICAgICB8ICAgIDIgKwogYXJjaC9hcm0vY3B1L2NhY2hlLWFybXY2
-LlMgICAgICAgICAgICAgICAgICAgfCAgICAzICsKIGFyY2gvYXJtL2NwdS9jYWNoZS1hcm12Ny5T
-ICAgICAgICAgICAgICAgICAgIHwgICAgMiArCiBhcmNoL2FybS9jcHUvbW11LmMgICAgICAgICAg
-ICAgICAgICAgICAgICAgICB8ICAgIDIgKy0KIGFyY2gvYXJtL2NwdS9zdGFydC1hcm0uUyAgICAg
-ICAgICAgICAgICAgICAgIHwgIDI0OCAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQogYXJjaC9h
-cm0vY3B1L3N0YXJ0LmMgICAgICAgICAgICAgICAgICAgICAgICAgfCAgMTA3ICsrKysrKysrKysr
-CiBhcmNoL2FybS9pbmNsdWRlL2FzbS9iYXJlYm94LWFybS5oICAgICAgICAgICB8ICAgMTAgKy0K
-IGFyY2gvYXJtL2luY2x1ZGUvYXNtL2NvbW1vbi5oICAgICAgICAgICAgICAgIHwgICAxNCArKwog
-YXJjaC9hcm0vbGliL2JhcmVib3gubGRzLlMgICAgICAgICAgICAgICAgICAgfCAgICAyICstCiBh
-cmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvZXNkY3RsLmggICAgICB8ICAgMTAgKy0KIGFy
-Y2gvYXJtL21hY2gtaW14L3NwZWVkLWlteDM1LmMgICAgICAgICAgICAgIHwgICAgNCArLQogYm9h
-cmQvYTltMjQxMC9lbnYvYmluL191cGRhdGUgICAgICAgICAgICAgICAgfCAgICAyICstCiBib2Fy
-ZC9hOW0yNDQwL2Vudi9iaW4vX3VwZGF0ZSAgICAgICAgICAgICAgICB8ICAgIDIgKy0KIGJvYXJk
-L2F0OTFzYW05MjYwZWsvZW52L2Jpbi9fdXBkYXRlICAgICAgICAgIHwgICAgMiArLQogYm9hcmQv
-YXQ5MXNhbTkyNjNlay9lbnYvYmluL191cGRhdGUgICAgICAgICAgfCAgICAyICstCiBib2FyZC9l
-dWtyZWFfY3B1aW14MjcvZW52L2Jpbi9fdXBkYXRlICAgICAgICB8ICAgIDIgKy0KIGJvYXJkL2Zy
-ZWVzY2FsZS1teDI1LTMtc3RhY2svZW52L2Jpbi9fdXBkYXRlIHwgICAgMiArLQogYm9hcmQvZnJl
-ZXNjYWxlLW14MzUtMy1zdGFjay8zc3RhY2suYyAgICAgICAgfCAgICA0ICstCiBib2FyZC9mcmVl
-c2NhbGUtbXgzNS0zLXN0YWNrL2Vudi9iaW4vX3VwZGF0ZSB8ICAgIDIgKy0KIGJvYXJkL2lteDI3
-YWRzL2Vudi9iaW4vX3VwZGF0ZSAgICAgICAgICAgICAgIHwgICAgMiArLQogYm9hcmQvaXBlMzM3
-L2Vudi9iaW4vX3VwZGF0ZSAgICAgICAgICAgICAgICAgfCAgICAyICstCiBib2FyZC9rcF91a2Rf
-cjFfbnVtL2Vudi9iaW4vX3VwZGF0ZSAgICAgICAgICB8ICAgIDIgKy0KIGJvYXJkL21tY2NwdS9l
-bnYvYmluL191cGRhdGUgICAgICAgICAgICAgICAgIHwgICAgMiArLQogYm9hcmQvcGNtMDM3L2Vu
-di9iaW4vX3VwZGF0ZSAgICAgICAgICAgICAgICAgfCAgICAyICstCiBib2FyZC9wY20wMzgvTWFr
-ZWZpbGUgICAgICAgICAgICAgICAgICAgICAgICB8ICAgIDIgKy0KIGJvYXJkL3BjbTAzOC9lbnYv
-YmluL191cGRhdGUgICAgICAgICAgICAgICAgIHwgICAgMiArLQogYm9hcmQvcGNtMDM4L2xvd2xl
-dmVsLmMgICAgICAgICAgICAgICAgICAgICAgfCAgMTE2ICsrKysrKysrKysrKwogYm9hcmQvcGNt
-MDM4L2xvd2xldmVsX2luaXQuUyAgICAgICAgICAgICAgICAgfCAgMTE2IC0tLS0tLS0tLS0tLQog
-Ym9hcmQvcGNtMDM4L3BjbTAzOC5jICAgICAgICAgICAgICAgICAgICAgICAgfCAgICA5IC0KIGJv
-YXJkL3BjbTA0My9lbnYvYmluL191cGRhdGUgICAgICAgICAgICAgICAgIHwgICAgMiArLQogYm9h
-cmQvcGNtMDQzL2xvd2xldmVsX2luaXQuUyAgICAgICAgICAgICAgICAgfCAgMjMxIC0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLQogYm9hcmQvcGNtMDQzL2xvd2xldmVsX2luaXQuYyAgICAgICAgICAg
-ICAgICAgfCAgMjEzICsrKysrKysrKysrKysrKysrKysrKysKIGJvYXJkL3BjbTA0My9wY20wNDMu
-YyAgICAgICAgICAgICAgICAgICAgICAgIHwgICAxMCAtCiBib2FyZC9waHljYXJkLWkuTVgyNy9l
-bnYvYmluL191cGRhdGUgICAgICAgICB8ICAgIDIgKy0KIGJvYXJkL3BoeWNvcmVfbWNmNTR4eC9l
-bnYvYmluL191cGRhdGUgICAgICAgIHwgICAgMiArLQogYm9hcmQvcG05MjYzL2Vudi9iaW4vX3Vw
-ZGF0ZSAgICAgICAgICAgICAgICAgfCAgICAyICstCiBkcml2ZXJzL3VzYi9nYWRnZXQvZnNsX3Vk
-Yy5jICAgICAgICAgICAgICAgICB8ICAgMTEgKy0KIGluY2x1ZGUvc3RkaW8uaCAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgIHwgICAgMiArLQogNDAgZmlsZXMgY2hhbmdlZCwgNTAxIGluc2Vy
-dGlvbnMoKyksIDY1OSBkZWxldGlvbnMoLSkKIGRlbGV0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9j
-cHUvc3RhcnQtYXJtLlMKIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9jcHUvc3RhcnQuYwog
-Y3JlYXRlIG1vZGUgMTAwNjQ0IGJvYXJkL3BjbTAzOC9sb3dsZXZlbC5jCiBkZWxldGUgbW9kZSAx
-MDA2NDQgYm9hcmQvcGNtMDM4L2xvd2xldmVsX2luaXQuUwogZGVsZXRlIG1vZGUgMTAwNjQ0IGJv
-YXJkL3BjbTA0My9sb3dsZXZlbF9pbml0LlMKIGNyZWF0ZSBtb2RlIDEwMDY0NCBib2FyZC9wY20w
-NDMvbG93bGV2ZWxfaW5pdC5jCgoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFk
-Lm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/include/asm/common.h |   14 ++++++++++++++
+ 1 files changed, 14 insertions(+), 0 deletions(-)
+
+diff --git a/arch/arm/include/asm/common.h b/arch/arm/include/asm/common.h
+index 9afcff7..6b8e179 100644
+--- a/arch/arm/include/asm/common.h
++++ b/arch/arm/include/asm/common.h
+@@ -1 +1,15 @@
+ #define ARCH_SHUTDOWN
++
++static inline unsigned long get_program_counter(void)
++{
++	unsigned long pc;
++
++	__asm__ __volatile__(
++                "mov    %0, pc\n"
++                : "=r" (pc)
++                :
++                : "memory");
++
++	return pc;
++}
++
+-- 
+1.7.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
