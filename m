@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1O5Env-0000QX-TT
-	for barebox@lists.infradead.org; Fri, 23 Apr 2010 09:04:09 +0000
+	id 1O5Env-0000QY-Tb
+	for barebox@lists.infradead.org; Fri, 23 Apr 2010 09:04:11 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 23 Apr 2010 11:03:54 +0200
-Message-Id: <1272013443-29196-6-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 23 Apr 2010 11:03:55 +0200
+Message-Id: <1272013443-29196-7-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1272013443-29196-1-git-send-email-s.hauer@pengutronix.de>
 References: <1272013443-29196-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,251 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/14] fix _update scripts
+Subject: [PATCH 06/14] pcm043: Speed up NAND controller before copying barebox
+	image
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- board/a9m2410/env/bin/_update                |    2 +-
- board/a9m2440/env/bin/_update                |    2 +-
- board/at91sam9260ek/env/bin/_update          |    2 +-
- board/at91sam9263ek/env/bin/_update          |    2 +-
- board/eukrea_cpuimx27/env/bin/_update        |    2 +-
- board/freescale-mx25-3-stack/env/bin/_update |    2 +-
- board/freescale-mx35-3-stack/env/bin/_update |    2 +-
- board/imx27ads/env/bin/_update               |    2 +-
- board/ipe337/env/bin/_update                 |    2 +-
- board/kp_ukd_r1_num/env/bin/_update          |    2 +-
- board/mmccpu/env/bin/_update                 |    2 +-
- board/pcm037/env/bin/_update                 |    2 +-
- board/pcm038/env/bin/_update                 |    2 +-
- board/pcm043/env/bin/_update                 |    2 +-
- board/phycard-i.MX27/env/bin/_update         |    2 +-
- board/phycore_mcf54xx/env/bin/_update        |    2 +-
- board/pm9263/env/bin/_update                 |    2 +-
- 17 files changed, 17 insertions(+), 17 deletions(-)
+ board/pcm043/pcm043.c |    7 +++++++
+ 1 files changed, 7 insertions(+), 0 deletions(-)
 
-diff --git a/board/a9m2410/env/bin/_update b/board/a9m2410/env/bin/_update
-index fb7cbe8..014bce3 100644
---- a/board/a9m2410/env/bin/_update
-+++ b/board/a9m2410/env/bin/_update
-@@ -5,7 +5,7 @@ if [ -z "$part" -o -z "$image" ]; then
- 	exit 1
- fi
- 
--if [ \! -e "$part" ]; then
-+if [ ! -e "$part" ]; then
- 	echo "Partition $part does not exist"
- 	exit 1
- fi
-diff --git a/board/a9m2440/env/bin/_update b/board/a9m2440/env/bin/_update
-index e76eac9..b10682e 100644
---- a/board/a9m2440/env/bin/_update
-+++ b/board/a9m2440/env/bin/_update
-@@ -5,7 +5,7 @@ if [ -z "$part" -o -z "$image" ]; then
- 	exit 1
- fi
- 
--if [ \! -e "$part" ]; then
-+if [ ! -e "$part" ]; then
- 	echo "Partition $part does not exist"
- 	exit 1
- fi
-diff --git a/board/at91sam9260ek/env/bin/_update b/board/at91sam9260ek/env/bin/_update
-index fb7cbe8..014bce3 100644
---- a/board/at91sam9260ek/env/bin/_update
-+++ b/board/at91sam9260ek/env/bin/_update
-@@ -5,7 +5,7 @@ if [ -z "$part" -o -z "$image" ]; then
- 	exit 1
- fi
- 
--if [ \! -e "$part" ]; then
-+if [ ! -e "$part" ]; then
- 	echo "Partition $part does not exist"
- 	exit 1
- fi
-diff --git a/board/at91sam9263ek/env/bin/_update b/board/at91sam9263ek/env/bin/_update
-index fb7cbe8..014bce3 100644
---- a/board/at91sam9263ek/env/bin/_update
-+++ b/board/at91sam9263ek/env/bin/_update
-@@ -5,7 +5,7 @@ if [ -z "$part" -o -z "$image" ]; then
- 	exit 1
- fi
- 
--if [ \! -e "$part" ]; then
-+if [ ! -e "$part" ]; then
- 	echo "Partition $part does not exist"
- 	exit 1
- fi
-diff --git a/board/eukrea_cpuimx27/env/bin/_update b/board/eukrea_cpuimx27/env/bin/_update
-index fb7cbe8..014bce3 100644
---- a/board/eukrea_cpuimx27/env/bin/_update
-+++ b/board/eukrea_cpuimx27/env/bin/_update
-@@ -5,7 +5,7 @@ if [ -z "$part" -o -z "$image" ]; then
- 	exit 1
- fi
- 
--if [ \! -e "$part" ]; then
-+if [ ! -e "$part" ]; then
- 	echo "Partition $part does not exist"
- 	exit 1
- fi
-diff --git a/board/freescale-mx25-3-stack/env/bin/_update b/board/freescale-mx25-3-stack/env/bin/_update
-index fb7cbe8..014bce3 100644
---- a/board/freescale-mx25-3-stack/env/bin/_update
-+++ b/board/freescale-mx25-3-stack/env/bin/_update
-@@ -5,7 +5,7 @@ if [ -z "$part" -o -z "$image" ]; then
- 	exit 1
- fi
- 
--if [ \! -e "$part" ]; then
-+if [ ! -e "$part" ]; then
- 	echo "Partition $part does not exist"
- 	exit 1
- fi
-diff --git a/board/freescale-mx35-3-stack/env/bin/_update b/board/freescale-mx35-3-stack/env/bin/_update
-index 4f0839f..ddd6b84 100644
---- a/board/freescale-mx35-3-stack/env/bin/_update
-+++ b/board/freescale-mx35-3-stack/env/bin/_update
-@@ -5,7 +5,7 @@ if [ -z "$part" -o -z "$image" ]; then
- 	exit 1
- fi
- 
--if [ \! -e "$part" ]; then
-+if [ ! -e "$part" ]; then
- 	echo "Partition $part does not exist"
- 	exit 1
- fi
-diff --git a/board/imx27ads/env/bin/_update b/board/imx27ads/env/bin/_update
-index fb7cbe8..014bce3 100644
---- a/board/imx27ads/env/bin/_update
-+++ b/board/imx27ads/env/bin/_update
-@@ -5,7 +5,7 @@ if [ -z "$part" -o -z "$image" ]; then
- 	exit 1
- fi
- 
--if [ \! -e "$part" ]; then
-+if [ ! -e "$part" ]; then
- 	echo "Partition $part does not exist"
- 	exit 1
- fi
-diff --git a/board/ipe337/env/bin/_update b/board/ipe337/env/bin/_update
-index 124e285..5419ece 100644
---- a/board/ipe337/env/bin/_update
-+++ b/board/ipe337/env/bin/_update
-@@ -9,7 +9,7 @@ if [ -z "$part" -o -z "$image" ]; then
- 	exit 1
- fi
- 
--if [ \! -e "$part" ]; then
-+if [ ! -e "$part" ]; then
- 	echo "Partition $part does not exist"
- 	exit 1
- fi
-diff --git a/board/kp_ukd_r1_num/env/bin/_update b/board/kp_ukd_r1_num/env/bin/_update
-index fb7cbe8..014bce3 100644
---- a/board/kp_ukd_r1_num/env/bin/_update
-+++ b/board/kp_ukd_r1_num/env/bin/_update
-@@ -5,7 +5,7 @@ if [ -z "$part" -o -z "$image" ]; then
- 	exit 1
- fi
- 
--if [ \! -e "$part" ]; then
-+if [ ! -e "$part" ]; then
- 	echo "Partition $part does not exist"
- 	exit 1
- fi
-diff --git a/board/mmccpu/env/bin/_update b/board/mmccpu/env/bin/_update
-index fb7cbe8..014bce3 100644
---- a/board/mmccpu/env/bin/_update
-+++ b/board/mmccpu/env/bin/_update
-@@ -5,7 +5,7 @@ if [ -z "$part" -o -z "$image" ]; then
- 	exit 1
- fi
- 
--if [ \! -e "$part" ]; then
-+if [ ! -e "$part" ]; then
- 	echo "Partition $part does not exist"
- 	exit 1
- fi
-diff --git a/board/pcm037/env/bin/_update b/board/pcm037/env/bin/_update
-index fb7cbe8..014bce3 100644
---- a/board/pcm037/env/bin/_update
-+++ b/board/pcm037/env/bin/_update
-@@ -5,7 +5,7 @@ if [ -z "$part" -o -z "$image" ]; then
- 	exit 1
- fi
- 
--if [ \! -e "$part" ]; then
-+if [ ! -e "$part" ]; then
- 	echo "Partition $part does not exist"
- 	exit 1
- fi
-diff --git a/board/pcm038/env/bin/_update b/board/pcm038/env/bin/_update
-index fb7cbe8..014bce3 100644
---- a/board/pcm038/env/bin/_update
-+++ b/board/pcm038/env/bin/_update
-@@ -5,7 +5,7 @@ if [ -z "$part" -o -z "$image" ]; then
- 	exit 1
- fi
- 
--if [ \! -e "$part" ]; then
-+if [ ! -e "$part" ]; then
- 	echo "Partition $part does not exist"
- 	exit 1
- fi
-diff --git a/board/pcm043/env/bin/_update b/board/pcm043/env/bin/_update
-index fb7cbe8..014bce3 100644
---- a/board/pcm043/env/bin/_update
-+++ b/board/pcm043/env/bin/_update
-@@ -5,7 +5,7 @@ if [ -z "$part" -o -z "$image" ]; then
- 	exit 1
- fi
- 
--if [ \! -e "$part" ]; then
-+if [ ! -e "$part" ]; then
- 	echo "Partition $part does not exist"
- 	exit 1
- fi
-diff --git a/board/phycard-i.MX27/env/bin/_update b/board/phycard-i.MX27/env/bin/_update
-index fb7cbe8..014bce3 100644
---- a/board/phycard-i.MX27/env/bin/_update
-+++ b/board/phycard-i.MX27/env/bin/_update
-@@ -5,7 +5,7 @@ if [ -z "$part" -o -z "$image" ]; then
- 	exit 1
- fi
- 
--if [ \! -e "$part" ]; then
-+if [ ! -e "$part" ]; then
- 	echo "Partition $part does not exist"
- 	exit 1
- fi
-diff --git a/board/phycore_mcf54xx/env/bin/_update b/board/phycore_mcf54xx/env/bin/_update
-index fb7cbe8..014bce3 100644
---- a/board/phycore_mcf54xx/env/bin/_update
-+++ b/board/phycore_mcf54xx/env/bin/_update
-@@ -5,7 +5,7 @@ if [ -z "$part" -o -z "$image" ]; then
- 	exit 1
- fi
- 
--if [ \! -e "$part" ]; then
-+if [ ! -e "$part" ]; then
- 	echo "Partition $part does not exist"
- 	exit 1
- fi
-diff --git a/board/pm9263/env/bin/_update b/board/pm9263/env/bin/_update
-index fb7cbe8..014bce3 100644
---- a/board/pm9263/env/bin/_update
-+++ b/board/pm9263/env/bin/_update
-@@ -5,7 +5,7 @@ if [ -z "$part" -o -z "$image" ]; then
- 	exit 1
- fi
- 
--if [ \! -e "$part" ]; then
-+if [ ! -e "$part" ]; then
- 	echo "Partition $part does not exist"
- 	exit 1
- fi
+diff --git a/board/pcm043/pcm043.c b/board/pcm043/pcm043.c
+index 2ce7e3a..d8cd7b8 100644
+--- a/board/pcm043/pcm043.c
++++ b/board/pcm043/pcm043.c
+@@ -393,6 +393,13 @@ BAREBOX_CMD_END
+ #ifdef CONFIG_NAND_IMX_BOOT
+ void __bare_init nand_boot(void)
+ {
++	u32 val;
++
++	val = readl(IMX_CCM_BASE + CCM_PDR4);
++	val &= ~(0xf << 28);
++	val |= 0x1 << 28;
++	writel(val, IMX_CCM_BASE + CCM_PDR4);
++
+ 	/*
+ 	 * The driver is able to detect NAND's pagesize by CPU internal
+ 	 * fuses or external pull ups. But not the blocksize...
 -- 
 1.7.0
 
