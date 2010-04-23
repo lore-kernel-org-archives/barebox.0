@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1O5Enw-0000Qb-0V
-	for barebox@lists.infradead.org; Fri, 23 Apr 2010 09:04:10 +0000
+	id 1O5Env-0000QX-TT
+	for barebox@lists.infradead.org; Fri, 23 Apr 2010 09:04:09 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 23 Apr 2010 11:04:00 +0200
-Message-Id: <1272013443-29196-12-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 23 Apr 2010 11:03:54 +0200
+Message-Id: <1272013443-29196-6-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1272013443-29196-1-git-send-email-s.hauer@pengutronix.de>
 References: <1272013443-29196-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,38 +21,251 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/14] i.MX: remove __REG from esd controller regs. use
-	readl/writel instead
+Subject: [PATCH 05/14] fix _update scripts
 To: barebox@lists.infradead.org
-
-So far these registers are unused in C, so we can remove the __REG without
-harm.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/include/mach/esdctl.h |   10 +++++-----
- 1 files changed, 5 insertions(+), 5 deletions(-)
+ board/a9m2410/env/bin/_update                |    2 +-
+ board/a9m2440/env/bin/_update                |    2 +-
+ board/at91sam9260ek/env/bin/_update          |    2 +-
+ board/at91sam9263ek/env/bin/_update          |    2 +-
+ board/eukrea_cpuimx27/env/bin/_update        |    2 +-
+ board/freescale-mx25-3-stack/env/bin/_update |    2 +-
+ board/freescale-mx35-3-stack/env/bin/_update |    2 +-
+ board/imx27ads/env/bin/_update               |    2 +-
+ board/ipe337/env/bin/_update                 |    2 +-
+ board/kp_ukd_r1_num/env/bin/_update          |    2 +-
+ board/mmccpu/env/bin/_update                 |    2 +-
+ board/pcm037/env/bin/_update                 |    2 +-
+ board/pcm038/env/bin/_update                 |    2 +-
+ board/pcm043/env/bin/_update                 |    2 +-
+ board/phycard-i.MX27/env/bin/_update         |    2 +-
+ board/phycore_mcf54xx/env/bin/_update        |    2 +-
+ board/pm9263/env/bin/_update                 |    2 +-
+ 17 files changed, 17 insertions(+), 17 deletions(-)
 
-diff --git a/arch/arm/mach-imx/include/mach/esdctl.h b/arch/arm/mach-imx/include/mach/esdctl.h
-index 7f3c66f..d15f52b 100644
---- a/arch/arm/mach-imx/include/mach/esdctl.h
-+++ b/arch/arm/mach-imx/include/mach/esdctl.h
-@@ -1,10 +1,10 @@
+diff --git a/board/a9m2410/env/bin/_update b/board/a9m2410/env/bin/_update
+index fb7cbe8..014bce3 100644
+--- a/board/a9m2410/env/bin/_update
++++ b/board/a9m2410/env/bin/_update
+@@ -5,7 +5,7 @@ if [ -z "$part" -o -z "$image" ]; then
+ 	exit 1
+ fi
  
- /* SDRAM Controller registers */
--#define ESDCTL0 __REG(IMX_ESD_BASE + 0x00) /* Enhanced SDRAM Control Register 0       */
--#define ESDCFG0 __REG(IMX_ESD_BASE + 0x04) /* Enhanced SDRAM Configuration Register 0 */
--#define ESDCTL1 __REG(IMX_ESD_BASE + 0x08) /* Enhanced SDRAM Control Register 1       */
--#define ESDCFG1 __REG(IMX_ESD_BASE + 0x0C) /* Enhanced SDRAM Configuration Register 1 */
--#define ESDMISC __REG(IMX_ESD_BASE + 0x10) /* Enhanced SDRAM Miscellanious Register   */
-+#define ESDCTL0 (IMX_ESD_BASE + 0x00) /* Enhanced SDRAM Control Register 0       */
-+#define ESDCFG0 (IMX_ESD_BASE + 0x04) /* Enhanced SDRAM Configuration Register 0 */
-+#define ESDCTL1 (IMX_ESD_BASE + 0x08) /* Enhanced SDRAM Control Register 1       */
-+#define ESDCFG1 (IMX_ESD_BASE + 0x0C) /* Enhanced SDRAM Configuration Register 1 */
-+#define ESDMISC (IMX_ESD_BASE + 0x10) /* Enhanced SDRAM Miscellanious Register   */
+-if [ \! -e "$part" ]; then
++if [ ! -e "$part" ]; then
+ 	echo "Partition $part does not exist"
+ 	exit 1
+ fi
+diff --git a/board/a9m2440/env/bin/_update b/board/a9m2440/env/bin/_update
+index e76eac9..b10682e 100644
+--- a/board/a9m2440/env/bin/_update
++++ b/board/a9m2440/env/bin/_update
+@@ -5,7 +5,7 @@ if [ -z "$part" -o -z "$image" ]; then
+ 	exit 1
+ fi
  
- #define ESDCTL0_SDE				(1 << 31)
- #define ESDCTL0_SMODE_NORMAL			(0 << 28)
+-if [ \! -e "$part" ]; then
++if [ ! -e "$part" ]; then
+ 	echo "Partition $part does not exist"
+ 	exit 1
+ fi
+diff --git a/board/at91sam9260ek/env/bin/_update b/board/at91sam9260ek/env/bin/_update
+index fb7cbe8..014bce3 100644
+--- a/board/at91sam9260ek/env/bin/_update
++++ b/board/at91sam9260ek/env/bin/_update
+@@ -5,7 +5,7 @@ if [ -z "$part" -o -z "$image" ]; then
+ 	exit 1
+ fi
+ 
+-if [ \! -e "$part" ]; then
++if [ ! -e "$part" ]; then
+ 	echo "Partition $part does not exist"
+ 	exit 1
+ fi
+diff --git a/board/at91sam9263ek/env/bin/_update b/board/at91sam9263ek/env/bin/_update
+index fb7cbe8..014bce3 100644
+--- a/board/at91sam9263ek/env/bin/_update
++++ b/board/at91sam9263ek/env/bin/_update
+@@ -5,7 +5,7 @@ if [ -z "$part" -o -z "$image" ]; then
+ 	exit 1
+ fi
+ 
+-if [ \! -e "$part" ]; then
++if [ ! -e "$part" ]; then
+ 	echo "Partition $part does not exist"
+ 	exit 1
+ fi
+diff --git a/board/eukrea_cpuimx27/env/bin/_update b/board/eukrea_cpuimx27/env/bin/_update
+index fb7cbe8..014bce3 100644
+--- a/board/eukrea_cpuimx27/env/bin/_update
++++ b/board/eukrea_cpuimx27/env/bin/_update
+@@ -5,7 +5,7 @@ if [ -z "$part" -o -z "$image" ]; then
+ 	exit 1
+ fi
+ 
+-if [ \! -e "$part" ]; then
++if [ ! -e "$part" ]; then
+ 	echo "Partition $part does not exist"
+ 	exit 1
+ fi
+diff --git a/board/freescale-mx25-3-stack/env/bin/_update b/board/freescale-mx25-3-stack/env/bin/_update
+index fb7cbe8..014bce3 100644
+--- a/board/freescale-mx25-3-stack/env/bin/_update
++++ b/board/freescale-mx25-3-stack/env/bin/_update
+@@ -5,7 +5,7 @@ if [ -z "$part" -o -z "$image" ]; then
+ 	exit 1
+ fi
+ 
+-if [ \! -e "$part" ]; then
++if [ ! -e "$part" ]; then
+ 	echo "Partition $part does not exist"
+ 	exit 1
+ fi
+diff --git a/board/freescale-mx35-3-stack/env/bin/_update b/board/freescale-mx35-3-stack/env/bin/_update
+index 4f0839f..ddd6b84 100644
+--- a/board/freescale-mx35-3-stack/env/bin/_update
++++ b/board/freescale-mx35-3-stack/env/bin/_update
+@@ -5,7 +5,7 @@ if [ -z "$part" -o -z "$image" ]; then
+ 	exit 1
+ fi
+ 
+-if [ \! -e "$part" ]; then
++if [ ! -e "$part" ]; then
+ 	echo "Partition $part does not exist"
+ 	exit 1
+ fi
+diff --git a/board/imx27ads/env/bin/_update b/board/imx27ads/env/bin/_update
+index fb7cbe8..014bce3 100644
+--- a/board/imx27ads/env/bin/_update
++++ b/board/imx27ads/env/bin/_update
+@@ -5,7 +5,7 @@ if [ -z "$part" -o -z "$image" ]; then
+ 	exit 1
+ fi
+ 
+-if [ \! -e "$part" ]; then
++if [ ! -e "$part" ]; then
+ 	echo "Partition $part does not exist"
+ 	exit 1
+ fi
+diff --git a/board/ipe337/env/bin/_update b/board/ipe337/env/bin/_update
+index 124e285..5419ece 100644
+--- a/board/ipe337/env/bin/_update
++++ b/board/ipe337/env/bin/_update
+@@ -9,7 +9,7 @@ if [ -z "$part" -o -z "$image" ]; then
+ 	exit 1
+ fi
+ 
+-if [ \! -e "$part" ]; then
++if [ ! -e "$part" ]; then
+ 	echo "Partition $part does not exist"
+ 	exit 1
+ fi
+diff --git a/board/kp_ukd_r1_num/env/bin/_update b/board/kp_ukd_r1_num/env/bin/_update
+index fb7cbe8..014bce3 100644
+--- a/board/kp_ukd_r1_num/env/bin/_update
++++ b/board/kp_ukd_r1_num/env/bin/_update
+@@ -5,7 +5,7 @@ if [ -z "$part" -o -z "$image" ]; then
+ 	exit 1
+ fi
+ 
+-if [ \! -e "$part" ]; then
++if [ ! -e "$part" ]; then
+ 	echo "Partition $part does not exist"
+ 	exit 1
+ fi
+diff --git a/board/mmccpu/env/bin/_update b/board/mmccpu/env/bin/_update
+index fb7cbe8..014bce3 100644
+--- a/board/mmccpu/env/bin/_update
++++ b/board/mmccpu/env/bin/_update
+@@ -5,7 +5,7 @@ if [ -z "$part" -o -z "$image" ]; then
+ 	exit 1
+ fi
+ 
+-if [ \! -e "$part" ]; then
++if [ ! -e "$part" ]; then
+ 	echo "Partition $part does not exist"
+ 	exit 1
+ fi
+diff --git a/board/pcm037/env/bin/_update b/board/pcm037/env/bin/_update
+index fb7cbe8..014bce3 100644
+--- a/board/pcm037/env/bin/_update
++++ b/board/pcm037/env/bin/_update
+@@ -5,7 +5,7 @@ if [ -z "$part" -o -z "$image" ]; then
+ 	exit 1
+ fi
+ 
+-if [ \! -e "$part" ]; then
++if [ ! -e "$part" ]; then
+ 	echo "Partition $part does not exist"
+ 	exit 1
+ fi
+diff --git a/board/pcm038/env/bin/_update b/board/pcm038/env/bin/_update
+index fb7cbe8..014bce3 100644
+--- a/board/pcm038/env/bin/_update
++++ b/board/pcm038/env/bin/_update
+@@ -5,7 +5,7 @@ if [ -z "$part" -o -z "$image" ]; then
+ 	exit 1
+ fi
+ 
+-if [ \! -e "$part" ]; then
++if [ ! -e "$part" ]; then
+ 	echo "Partition $part does not exist"
+ 	exit 1
+ fi
+diff --git a/board/pcm043/env/bin/_update b/board/pcm043/env/bin/_update
+index fb7cbe8..014bce3 100644
+--- a/board/pcm043/env/bin/_update
++++ b/board/pcm043/env/bin/_update
+@@ -5,7 +5,7 @@ if [ -z "$part" -o -z "$image" ]; then
+ 	exit 1
+ fi
+ 
+-if [ \! -e "$part" ]; then
++if [ ! -e "$part" ]; then
+ 	echo "Partition $part does not exist"
+ 	exit 1
+ fi
+diff --git a/board/phycard-i.MX27/env/bin/_update b/board/phycard-i.MX27/env/bin/_update
+index fb7cbe8..014bce3 100644
+--- a/board/phycard-i.MX27/env/bin/_update
++++ b/board/phycard-i.MX27/env/bin/_update
+@@ -5,7 +5,7 @@ if [ -z "$part" -o -z "$image" ]; then
+ 	exit 1
+ fi
+ 
+-if [ \! -e "$part" ]; then
++if [ ! -e "$part" ]; then
+ 	echo "Partition $part does not exist"
+ 	exit 1
+ fi
+diff --git a/board/phycore_mcf54xx/env/bin/_update b/board/phycore_mcf54xx/env/bin/_update
+index fb7cbe8..014bce3 100644
+--- a/board/phycore_mcf54xx/env/bin/_update
++++ b/board/phycore_mcf54xx/env/bin/_update
+@@ -5,7 +5,7 @@ if [ -z "$part" -o -z "$image" ]; then
+ 	exit 1
+ fi
+ 
+-if [ \! -e "$part" ]; then
++if [ ! -e "$part" ]; then
+ 	echo "Partition $part does not exist"
+ 	exit 1
+ fi
+diff --git a/board/pm9263/env/bin/_update b/board/pm9263/env/bin/_update
+index fb7cbe8..014bce3 100644
+--- a/board/pm9263/env/bin/_update
++++ b/board/pm9263/env/bin/_update
+@@ -5,7 +5,7 @@ if [ -z "$part" -o -z "$image" ]; then
+ 	exit 1
+ fi
+ 
+-if [ \! -e "$part" ]; then
++if [ ! -e "$part" ]; then
+ 	echo "Partition $part does not exist"
+ 	exit 1
+ fi
 -- 
 1.7.0
 
