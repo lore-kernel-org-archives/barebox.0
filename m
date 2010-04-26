@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-ww0-f49.google.com ([74.125.82.49])
 	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
-	id 1O6Mid-0006No-DY
-	for barebox@lists.infradead.org; Mon, 26 Apr 2010 11:43:19 +0000
-Received: by wwb39 with SMTP id 39so796218wwb.36
-	for <barebox@lists.infradead.org>; Mon, 26 Apr 2010 04:43:16 -0700 (PDT)
-Date: Mon, 26 Apr 2010 13:43:11 +0200 (CEST)
-From: Ivo Clarysse <ivo.clarysse@gmail.com>
-Message-ID: <alpine.LRH.2.00.1004261341360.16802@localhost.localdomain>
+	id 1O6N3Y-0005ZR-FL
+	for barebox@lists.infradead.org; Mon, 26 Apr 2010 12:04:58 +0000
+Received: by wwb39 with SMTP id 39so808721wwb.36
+	for <barebox@lists.infradead.org>; Mon, 26 Apr 2010 05:04:55 -0700 (PDT)
 MIME-Version: 1.0
+In-Reply-To: <1272013443-29196-1-git-send-email-s.hauer@pengutronix.de>
+References: <1272013443-29196-1-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 26 Apr 2010 14:04:54 +0200
+Message-ID: <t2vba216b431004260504y8da1046ep7344b80d269e2564@mail.gmail.com>
+From: Ivo Clarysse <ivo.clarysse@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,64 +23,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Fix build if MULTI_ENV_HANDLING is disabled
-To: barebox@lists.infradead.org, s.hauer@pengutronix.de
+Subject: Re: some more patches for -next
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
+
+On Fri, Apr 23, 2010 at 11:03 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> Hi All,
+>
+> Here are some more patches for -next, some of which deserving some
+> testing from others, namely the rewrite of the ARM startup code.
+[..]
+
+Sascha,
+
+ the pu branch still builds and boots on a MX25PDK
+(freescale_mx25_3stack) with these commits:
 
 
-Signed-off-by: Ivo Clarysse <ivo.clarysse@gmail.com>
----
-diff --git a/commands/loadenv.c b/commands/loadenv.c
-index cb66bb4..b233343 100644
---- a/commands/loadenv.c
-+++ b/commands/loadenv.c
-@@ -33,9 +33,9 @@ static int do_loadenv(struct command *cmdtp, int argc, char *argv[])
- {
- 	char *dirname;
- 	int rc = 0;
--	int i = 0;
- 	char file[9 + 5];	/* '/dev/env.....' */
- #ifdef CONFIG_MULTI_ENV_HANDLING
-+	int i = 0;
- 	struct stat file_info;
- #endif
+barebox 2010.04.0-00144-gc8a1248-dirty (Apr 26 2010 - 13:37:32)
 
-@@ -64,7 +64,7 @@ static int do_loadenv(struct command *cmdtp, int argc, char *argv[])
- 	}
- #else
- 	sprintf(file, "/dev/env0");
--	rc = envfs_load(file, dirname);
-+	rc = envfs_load(file, dirname, NULL);
- #endif
+Board: Freescale MX25 3Stack
+ehci@ehci0: USB EHCI 1.00
+NAND device: Manufacturer ID: 0xec, Chip ID: 0xd5 (Samsung NAND 2GiB 3,3V 8-bit)
+Scanning device for bad blocks
+Bad eraseblock 0 at 0x00000000
+[...]
+Bad eraseblock 950 at 0x0ed80000
+Bad eraseblock 951 at 0x0edc0000
+envfs: wrong magic on /dev/env0
+no valid environment found. Using default environment
+Malloc space: 0x83b00000 -> 0x83f00000 (size  4 MB)
+Stack space : 0x83af8000 -> 0x83b00000 (size 32 kB)
+running /env/bin/init...
 
- 	return rc ? 1 : 0;
-diff --git a/commands/saveenv.c b/commands/saveenv.c
-index efc89bd..a56c296 100644
---- a/commands/saveenv.c
-+++ b/commands/saveenv.c
-@@ -65,9 +65,9 @@ static int do_saveenv(struct command *cmdtp, int argc, char *argv[])
- {
- 	int ret = 0;
- 	char *dirname;
--	int i = 0;
- 	char file[9 + 5];
- #ifdef CONFIG_MULTI_ENV_HANDLING
-+	int i = 0;
- 	struct stat file_info;
- #endif
-
-diff --git a/common/startup.c b/common/startup.c
-index 2d63ce8..b8ae29a 100644
---- a/common/startup.c
-+++ b/common/startup.c
-@@ -184,7 +184,7 @@ out:
- #else /* MULTI_ENV_HANDLING */
- static int init_envfs_load(void)
- {
--	if (envfs_load("/dev/env0", "/env")) {
-+	if (envfs_load("/dev/env0", "/env", NULL)) {
- #ifdef CONFIG_DEFAULT_ENVIRONMENT
- 		printf("no valid environment found. "
- 			"Using default environment\n");
+Hit any key to stop autoboot:  0
+phy0: Link is up - 10/Half
 
 _______________________________________________
 barebox mailing list
