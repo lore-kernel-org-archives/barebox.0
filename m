@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1O7OXj-0008Dp-Uf
-	for barebox@lists.infradead.org; Thu, 29 Apr 2010 07:52:23 +0000
+	id 1O7OkX-0004z0-7L
+	for barebox@lists.infradead.org; Thu, 29 Apr 2010 08:05:34 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 29 Apr 2010 09:52:10 +0200
-Message-Id: <1272527535-17527-13-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 29 Apr 2010 09:52:13 +0200
+Message-Id: <1272527535-17527-16-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1272527535-17527-1-git-send-email-s.hauer@pengutronix.de>
 References: <1272527535-17527-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,109 +21,512 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/17] arm: move __mmu_cache_flush to bare_init section
+Subject: [PATCH 15/17] pcm043: reimplement lowlevel code in C
 To: barebox@lists.infradead.org
-
-Instead of having seperate cache flush functions in the startup code
-we want to call the generic functions. To accomplish this they have
-to be in the bare_init section.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/cache-armv4.S |    2 ++
- arch/arm/cpu/cache-armv5.S |    2 ++
- arch/arm/cpu/cache-armv6.S |    3 +++
- arch/arm/cpu/cache-armv7.S |    2 ++
- 4 files changed, 9 insertions(+), 0 deletions(-)
+ board/pcm043/Makefile        |    2 +-
+ board/pcm043/lowlevel.c      |  214 ++++++++++++++++++++++++++++++++++++++
+ board/pcm043/lowlevel_init.S |  231 ------------------------------------------
+ board/pcm043/pcm043.c        |   17 ---
+ 4 files changed, 215 insertions(+), 249 deletions(-)
+ create mode 100644 board/pcm043/lowlevel.c
+ delete mode 100644 board/pcm043/lowlevel_init.S
 
-diff --git a/arch/arm/cpu/cache-armv4.S b/arch/arm/cpu/cache-armv4.S
-index a79cc27..3cec4dd 100644
---- a/arch/arm/cpu/cache-armv4.S
-+++ b/arch/arm/cpu/cache-armv4.S
-@@ -41,6 +41,7 @@ ENTRY(__mmu_cache_off)
- 		mov	pc, lr
- ENDPROC(__mmu_cache_off)
+diff --git a/board/pcm043/Makefile b/board/pcm043/Makefile
+index 62c0ba5..6753bbe 100644
+--- a/board/pcm043/Makefile
++++ b/board/pcm043/Makefile
+@@ -20,5 +20,5 @@
+ # MA 02111-1307 USA
+ #
  
-+.section ".text_bare_init.text"
- ENTRY(__mmu_cache_flush)
- 		mrc	p15, 0, r6, c0, c0	@ get processor ID
- 		mov	r2, #64*1024		@ default: 32K dcache size (*2)
-@@ -73,6 +74,7 @@ no_cache_id:
- 		mov	pc, lr
- ENDPROC(__mmu_cache_flush)
- 
-+.section ".text.text"
- /*
-  *	dma_inv_range(start, end)
-  *
-diff --git a/arch/arm/cpu/cache-armv5.S b/arch/arm/cpu/cache-armv5.S
-index f52bcb7..9fb320f 100644
---- a/arch/arm/cpu/cache-armv5.S
-+++ b/arch/arm/cpu/cache-armv5.S
-@@ -41,6 +41,7 @@ ENTRY(__mmu_cache_off)
- 		mov	pc, lr
- ENDPROC(__mmu_cache_off)
- 
-+.section ".text_bare_init.text"
- ENTRY(__mmu_cache_flush)
- 1:		mrc	p15, 0, r15, c7, c14, 3	@ test,clean,invalidate D cache
- 		bne	1b
-@@ -48,6 +49,7 @@ ENTRY(__mmu_cache_flush)
- 		mcr	p15, 0, r0, c7, c10, 4	@ drain WB
- 		mov	pc, lr
- ENDPROC(__mmu_cache_flush)
-+.section ".text.text"
- 
- /*
-  *	dma_inv_range(start, end)
-diff --git a/arch/arm/cpu/cache-armv6.S b/arch/arm/cpu/cache-armv6.S
-index e3498bb..25476d5 100644
---- a/arch/arm/cpu/cache-armv6.S
-+++ b/arch/arm/cpu/cache-armv6.S
-@@ -31,6 +31,7 @@ __common_mmu_cache_on:
- 		mrc	p15, 0, r0, c1, c0, 0	@ and read it back to
- 		sub	pc, lr, r0, lsr #32	@ properly flush pipeline
- 
+-obj-y += lowlevel_init.o
++obj-y += lowlevel.o
+ obj-y += pcm043.o
+diff --git a/board/pcm043/lowlevel.c b/board/pcm043/lowlevel.c
+new file mode 100644
+index 0000000..fbbe836
+--- /dev/null
++++ b/board/pcm043/lowlevel.c
+@@ -0,0 +1,214 @@
++/*
++ *
++ * (c) 2007 Pengutronix, Sascha Hauer <s.hauer@pengutronix.de>
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
++#include <common.h>
++#include <init.h>
++#include <mach/imx-regs.h>
++#include <mach/imx-pll.h>
++#include <mach/esdctl.h>
++#include <asm/cache-l2x0.h>
++#include <asm/io.h>
++#include <mach/imx-nand.h>
++#include <asm/barebox-arm.h>
++#include <asm-generic/memory_layout.h>
++#include <asm/system.h>
 +
- ENTRY(__mmu_cache_off)
- #ifdef CONFIG_MMU
- 		mrc	p15, 0, r0, c1, c0
-@@ -42,6 +43,7 @@ ENTRY(__mmu_cache_off)
- #endif
- 		mov	pc, lr
++/* Assuming 24MHz input clock */
++#define MPCTL_PARAM_399     (IMX_PLL_PD(0) | IMX_PLL_MFD(15) | IMX_PLL_MFI(8) | IMX_PLL_MFN(5))
++#define MPCTL_PARAM_532     ((1 << 31) | IMX_PLL_PD(0) | IMX_PLL_MFD(11) | IMX_PLL_MFI(11) | IMX_PLL_MFN(1))
++#define PPCTL_PARAM_300     (IMX_PLL_PD(0) | IMX_PLL_MFD(3) | IMX_PLL_MFI(6) | IMX_PLL_MFN(1))
++
++static void __bare_init __naked insdram(void)
++{
++	uint32_t r;
++
++	/* Speed up NAND controller */
++	r = readl(IMX_CCM_BASE + CCM_PDR4);
++	r &= ~(0xf << 28);
++	r |= 0x1 << 28;
++	writel(r, IMX_CCM_BASE + CCM_PDR4);
++
++	/* setup a stack to be able to call imx_nand_load_image() */
++	r = STACK_BASE + STACK_SIZE - 12;
++	__asm__ __volatile__("mov sp, %0" : : "r"(r));
++
++	imx_nand_load_image((void *)TEXT_BASE, 256 * 1024);
++
++	board_init_lowlevel_return();
++}
++
++void __bare_init __naked board_init_lowlevel(void)
++{
++	uint32_t r, s;
++	unsigned long ccm_base = IMX_CCM_BASE;
++	unsigned long iomuxc_base = IMX_IOMUXC_BASE;
++	unsigned int *trg, *src;
++	int i;
++
++	r = get_cr();
++	r |= CR_Z; /* Flow prediction (Z) */
++	r |= CR_U; /* unaligned accesses  */
++	r |= CR_FI; /* Low Int Latency     */
++
++	__asm__ __volatile__("mrc p15, 0, %0, c1, c0, 1":"=r"(s));
++	s |= 0x7;
++	__asm__ __volatile__("mcr p15, 0, %0, c1, c0, 1" : : "r"(s));
++
++	set_cr(r);
++
++	r = 0;
++	__asm__ __volatile__("mcr p15, 0, %0, c15, c2, 4" : : "r"(r));
++
++	/*
++	 * Branch predicition is now enabled.  Flush the BTAC to ensure a valid
++	 * starting point.  Don't flush BTAC while it is disabled to avoid
++	 * ARM1136 erratum 408023.
++	 */
++	__asm__ __volatile__("mcr p15, 0, %0, c7, c5, 6" : : "r"(r));
++
++	/* invalidate I cache and D cache */
++	__asm__ __volatile__("mcr p15, 0, %0, c7, c7, 0" : : "r"(r));
++
++	/* invalidate TLBs */
++	__asm__ __volatile__("mcr p15, 0, %0, c8, c7, 0" : : "r"(r));
++
++	/* Drain the write buffer */
++	__asm__ __volatile__("mcr p15, 0, %0, c7, c10, 4" : : "r"(r));
++
++	/* Also setup the Peripheral Port Remap register inside the core */
++	r = 0x40000015; /* start from AIPS 2GB region */
++	__asm__ __volatile__("mcr p15, 0, %0, c15, c2, 4" : : "r"(r));
++
++	/*
++	 * End of ARM1136 init
++	 */
++
++	writel(0x003F4208, ccm_base + CCM_CCMR);
++
++	/* Set MPLL , arm clock and ahb clock*/
++	writel(MPCTL_PARAM_532, ccm_base + CCM_MPCTL);
++
++	writel(PPCTL_PARAM_300, ccm_base + CCM_PPCTL);
++	writel(0x00001000, ccm_base + CCM_PDR0);
++
++	r = readl(ccm_base + CCM_CGR0);
++	r |= 0x00300000;
++	writel(r, ccm_base + CCM_CGR0);
++
++	r = readl(ccm_base + CCM_CGR1);
++	r |= 0x00000C00;
++	r |= 0x00000003;
++	writel(r, ccm_base + CCM_CGR1);
++
++	r = readl(IMX_L2CC_BASE + L2X0_AUX_CTRL);
++	r |= 0x1000;
++	writel(r, IMX_L2CC_BASE + L2X0_AUX_CTRL);
++
++	/* Skip SDRAM initialization if we run from RAM */
++	r = get_pc();
++	if (r > 0x80000000 && r < 0x90000000)
++		board_init_lowlevel_return();
++
++	/* Set DDR Type to SDRAM, drive strength workaround	*
++	 * 0x00000000	MDDR					*
++	 * 0x00000800	3,3V SDRAM				*/
++
++	r = 0x00000800;
++	writel(r, iomuxc_base + 0x794);
++	writel(r, iomuxc_base + 0x798);
++	writel(r, iomuxc_base + 0x79c);
++	writel(r, iomuxc_base + 0x7a0);
++	writel(r, iomuxc_base + 0x7a4);
++
++	/* MDDR init, enable mDDR*/
++	writel(0x00000304, ESDMISC); /* was 0x00000004 */
++
++	/* set timing paramters */
++	writel(0x00255417, ESDCFG0);
++	/* select Precharge-All mode */
++	writel(0x92220000, ESDCTL0);
++	/* Precharge-All */
++	writel(0x12345678, IMX_SDRAM_CS0 + 0x400);
++
++	/* select Load-Mode-Register mode */
++	writel(0xB8001000, ESDCTL0);
++	/* Load reg EMR2 */
++	writeb(0xda, 0x84000000);
++	/* Load reg EMR3 */
++	writeb(0xda, 0x86000000);
++	/* Load reg EMR1 -- enable DLL */
++	writeb(0xda, 0x82000400);
++	/* Load reg MR -- reset DLL */
++	writeb(0xda, 0x80000333);
++
++	/* select Precharge-All mode */
++	writel(0x92220000, ESDCTL0);
++	/* Precharge-All */
++	writel(0x12345678, IMX_SDRAM_CS0 + 0x400);
++
++	/* select Manual-Refresh mode */
++	writel(0xA2220000, ESDCTL0);
++	/* Manual-Refresh 2 times */
++	writel(0x87654321, IMX_SDRAM_CS0);
++	writel(0x87654321, IMX_SDRAM_CS0);
++
++	/* select Load-Mode-Register mode */
++	writel(0xB2220000, ESDCTL0);
++	/* Load reg MR -- CL3, BL8, end DLL reset */
++	writeb(0xda, 0x80000233);
++	/* Load reg EMR1 -- OCD default */
++	writeb(0xda, 0x82000780);
++	/* Load reg EMR1 -- OCD exit */
++	writeb(0xda, 0x82000400);
++
++	/* select normal-operation mode
++	 * DSIZ32-bit, BL8, COL10-bit, ROW13-bit
++	 * disable PWT & PRCT
++	 * disable Auto-Refresh */
++	writel(0x82220080, ESDCTL0);
++
++	/* enable Auto-Refresh */
++	writel(0x82228080, ESDCTL0);
++	/* enable Auto-Refresh */
++	writel(0x00002000, ESDCTL1);
++
++#ifdef CONFIG_NAND_IMX_BOOT
++	/* skip NAND boot if not running from NFC space */
++	r = get_pc();
++	if (r < IMX_NFC_BASE && r > IMX_NFC_BASE + 0x800)
++		board_init_lowlevel_return();
++
++	src = (unsigned int *)IMX_NFC_BASE;
++	trg = (unsigned int *)TEXT_BASE;
++
++	/* Move ourselves out of NFC SRAM */
++	for (i = 0; i < 0x800 / sizeof(int); i++)
++		*trg++ = *src++;
++
++	/* Jump to SDRAM */
++	r = (unsigned int)&insdram;
++	__asm__ __volatile__("mov pc, %0" : : "r"(r));
++#else
++	board_init_lowlevel_return();
++#endif
++}
++
+diff --git a/board/pcm043/lowlevel_init.S b/board/pcm043/lowlevel_init.S
+deleted file mode 100644
+index abbc72c..0000000
+--- a/board/pcm043/lowlevel_init.S
++++ /dev/null
+@@ -1,231 +0,0 @@
+-/*
+- *
+- * (c) 2007 Pengutronix, Sascha Hauer <s.hauer@pengutronix.de>
+- *
+- * See file CREDITS for list of people who contributed to this
+- * project.
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+- * MA 02111-1307 USA
+- */
+-
+-#include <mach/imx-regs.h>
+-#include <mach/imx-pll.h>
+-#include <mach/esdctl.h>
+-#include <asm/cache-l2x0.h>
+-
+-#define writel(val, reg) \
+-	ldr		r0,	=reg;	\
+-	ldr		r1,	=val;	\
+-	str		r1,	[r0];
+-
+-#define writeb(val, reg) \
+-	ldr		r0,	=reg;	\
+-	ldr		r1,	=val;	\
+-	strb		r1,	[r0];
+-
+-/* Assuming 24MHz input clock */
+-#define MPCTL_PARAM_399     (IMX_PLL_PD(0) | IMX_PLL_MFD(15) | IMX_PLL_MFI(8) | IMX_PLL_MFN(5))
+-#define MPCTL_PARAM_532     ((1 << 31) | IMX_PLL_PD(0) | IMX_PLL_MFD(11) | IMX_PLL_MFI(11) | IMX_PLL_MFN(1))
+-#define PPCTL_PARAM_300     (IMX_PLL_PD(0) | IMX_PLL_MFD(3) | IMX_PLL_MFI(6) | IMX_PLL_MFN(1))
+-
+-	.section ".text_bare_init","ax"
+-
+-ARM_PPMRR:              .word   0x40000015
+-L2CACHE_PARAM:          .word   0x00030024
+-CCM_CCMR_W:             .word   0x003F4208
+-CCM_PDR0_W:             .word   0x00001000
+-MPCTL_PARAM_399_W:      .word   MPCTL_PARAM_399
+-MPCTL_PARAM_532_W:      .word   MPCTL_PARAM_532
+-PPCTL_PARAM_W:    	.word   PPCTL_PARAM_300
+-CCM_BASE_ADDR_W:        .word   IMX_CCM_BASE
+-
+-.globl board_init_lowlevel
+-board_init_lowlevel:
+-	mov     r10, lr
+-
+-	mrc 15, 0, r1, c1, c0, 0
+-
+-	mrc 15, 0, r0, c1, c0, 1
+-	orr r0, r0, #7
+-	mcr 15, 0, r0, c1, c0, 1
+-
+-	orr r1, r1, #(1<<11) /* Flow prediction (Z) */
+-	orr r1, r1, #(1<<22) /* unaligned accesses  */
+-	orr r1, r1, #(1<<21) /* Low Int Latency     */
+-
+-	mcr 15, 0, r1, c1, c0, 0
+-
+-	mov r0, #0
+-	mcr 15, 0, r0, c15, c2, 4
+-
+-	/*
+-	 * Branch predicition is now enabled.  Flush the BTAC to ensure a valid 
+-	 * starting point.  Don't flush BTAC while it is disabled to avoid
+-	 * ARM1136 erratum 408023.
+-	 */
+-	mov     r0, #0
+-	mcr     p15, 0, r0, c7, c5, 6	/* flush entire BTAC */
+-
+-	mov r0, #0
+-	mcr 15, 0, r0, c7, c7, 0        /* invalidate I cache and D cache */
+-	mcr 15, 0, r0, c8, c7, 0        /* invalidate TLBs */
+-	mcr 15, 0, r0, c7, c10, 4       /* Drain the write buffer */
+-
+-	/* Also setup the Peripheral Port Remap register inside the core */
+-	ldr r0, ARM_PPMRR        /* start from AIPS 2GB region */
+-	mcr p15, 0, r0, c15, c2, 4
+-
+-/*
+- * End of ARM1136 init
+- */
+-	ldr r0, CCM_BASE_ADDR_W
+-
+-	ldr r2, CCM_CCMR_W
+-	str r2, [r0, #CCM_CCMR]
+-
+-	ldr r3, MPCTL_PARAM_532_W  /* consumer path*/
+-
+-	/*Set MPLL , arm clock and ahb clock*/
+-	str r3, [r0, #CCM_MPCTL]
+-
+-	ldr r1, PPCTL_PARAM_W
+-	str r1, [r0, #CCM_PPCTL]
+-
+-	ldr r1, CCM_PDR0_W
+-	str r1, [r0, #CCM_PDR0]
+-
+-	ldr r1, [r0, #CCM_CGR0]
+-	orr r1, r1, #0x00300000
+-	str r1, [r0, #CCM_CGR0]
+-
+-	ldr r1, [r0, #CCM_CGR1]
+-	orr r1, r1, #0x00000C00
+-	orr r1, r1, #0x00000003
+-	str r1, [r0, #CCM_CGR1]
+-
+-	/* Skip SDRAM initialization if we run from RAM */
+-	cmp	pc, #0x80000000
+-	bls	1f
+-	cmp	pc, #0x90000000
+-	bhi	1f
+-
+-	mov	pc, r10
+-
+-1:
+-	/* Set DDR Type to SDRAM, drive strength workaround	*
+-	 * 0x00000000	MDDR					*
+-	 * 0x00000800	3,3V SDRAM				*/
+-
+-	#define DDRTYPE	0x00000800
+-
+-	ldr	r0, =IMX_IOMUXC_BASE + 0x794
+-	ldr	r1, =DDRTYPE
+-	str	r1, [r0], #4	/* IMX_IOMUXC_BASE + 0x794 */
+-	str	r1, [r0], #4	/* IMX_IOMUXC_BASE + 0x798 */
+-	str	r1, [r0], #4	/* IMX_IOMUXC_BASE + 0x79c */
+-	str	r1, [r0], #4	/* IMX_IOMUXC_BASE + 0x7a0 */
+-	str	r1, [r0]	/* IMX_IOMUXC_BASE + 0x7a4 */
+-
+-	/* MDDR init, enable mDDR*/
+-	writel(0x00000304, ESDMISC) /* was 0x00000004 */
+-
+-	/* set timing paramters */
+-	writel(0x00255417, ESDCFG0)
+-	/* select Prechare-All mode */
+-	writel(0x92220000, ESDCTL0)
+-	/* Prechare-All */
+-	writel(0x12345678, IMX_SDRAM_CS0 + 0x400)
+-
+-	/* select Load-Mode-Register mode */
+-	writel(0xB8001000, ESDCTL0)
+-	/* Load reg EMR2 */
+-	writeb(0xda, 0x84000000)
+-	/* Load reg EMR3 */
+-	writeb(0xda, 0x86000000)
+-	/* Load reg EMR1 -- enable DLL */
+-	writeb(0xda, 0x82000400)
+-	/* Load reg MR -- reset DLL */
+-	writeb(0xda, 0x80000333)
+-
+-	/* select Prechare-All mode */
+-	writel(0x92220000, ESDCTL0)
+-	/* Prechare-All */
+-	writel(0x12345678, IMX_SDRAM_CS0 + 0x400)
+-
+-	/* select Manual-Refresh mode */
+-	writel(0xA2220000, ESDCTL0)
+-	/* Manual-Refresh 2 times */
+-	writel(0x87654321, IMX_SDRAM_CS0)
+-	writel(0x87654321, IMX_SDRAM_CS0)
+-
+-	/* select Load-Mode-Register mode */
+-	writel(0xB2220000, ESDCTL0)
+-	/* Load reg MR -- CL3, BL8, end DLL reset */
+-	writeb(0xda, 0x80000233)
+-	/* Load reg EMR1 -- OCD default */
+-	writeb(0xda, 0x82000780)
+-	/* Load reg EMR1 -- OCD exit */
+-	writeb(0xda, 0x82000400)
+-
+-	/* select normal-operation mode
+-	 * DSIZ32-bit, BL8, COL10-bit, ROW13-bit
+-	 * disable PWT & PRCT
+-	 * disable Auto-Refresh */
+-	writel(0x82220080, ESDCTL0)
+-
+-	/* enable Auto-Refresh */
+-	writel(0x82228080, ESDCTL0)
+-	/* enable Auto-Refresh */
+-	writel(0x00002000, ESDCTL1)
+-
+-	mov r0, #IMX_L2CC_BASE
+-	ldr r1, [r0, #L2X0_AUX_CTRL]
+-	orr r1, r1, #0x1000
+-	str r1, [r0, #L2X0_AUX_CTRL]
+-
+-#ifdef CONFIG_NAND_IMX_BOOT
+-	ldr	sp, =TEXT_BASE - 4	/* Setup a temporary stack in SDRAM */
+-
+-	ldr	r0, =IMX_NFC_BASE		/* start of NFC SRAM                */
+-	ldr	r2, =IMX_NFC_BASE + 0x800	/* end of NFC SRAM                  */
+-
+-	/* skip NAND boot if not running from NFC space */
+-	cmp	pc, r0
+-	blo	ret
+-	cmp	pc, r2
+-	bhs	ret
+-
+-	/* Move ourselves out of NFC SRAM */
+-	ldr	r1, =TEXT_BASE
+-
+-copy_loop:
+-	ldmia	r0!, {r3-r9}		/* copy from source address [r0]    */
+-	stmia	r1!, {r3-r9}		/* copy to   target address [r1]    */
+-	cmp	r0, r2			/* until source end addreee [r2]    */
+-	ble	copy_loop
+-
+-	ldr	pc, =1f			/* Jump to SDRAM                    */
+-1:
+-	bl	nand_boot		/* Load barebox from NAND Flash      */
+-
+-	/* rebase the return address */
+-	ldr	r1, =IMX_NFC_BASE - TEXT_BASE
+-	sub	r10, r10, r1		/* adjust return address from NFC SRAM */
+-ret:
+-#endif /* CONFIG_NAND_IMX_BOOT */
+-
+-	mov pc, r10
+-
+diff --git a/board/pcm043/pcm043.c b/board/pcm043/pcm043.c
+index d8cd7b8..dd178ed 100644
+--- a/board/pcm043/pcm043.c
++++ b/board/pcm043/pcm043.c
+@@ -390,20 +390,3 @@ BAREBOX_CMD_START(cpufreq)
+ 	BAREBOX_CMD_HELP(cmd_cpufreq_help)
+ BAREBOX_CMD_END
  
-+.section ".text_bare_init.text"
- ENTRY(__mmu_cache_flush)
- 		mov	r1, #0
- 		mcr	p15, 0, r1, c7, c14, 0	@ clean+invalidate D
-@@ -50,6 +52,7 @@ ENTRY(__mmu_cache_flush)
- 		mcr	p15, 0, r1, c7, c10, 4	@ drain WB
- 		mov	pc, lr
- ENDPROC(__mmu_cache_flush)
-+.section ".text.text"
- 
- /*
-  *	v6_dma_inv_range(start,end)
-diff --git a/arch/arm/cpu/cache-armv7.S b/arch/arm/cpu/cache-armv7.S
-index 9afa20d..a303dc1 100644
---- a/arch/arm/cpu/cache-armv7.S
-+++ b/arch/arm/cpu/cache-armv7.S
-@@ -49,6 +49,7 @@ ENTRY(__mmu_cache_off)
- 		mov	pc, r12
- ENDPROC(__mmu_cache_on)
- 
-+.section ".text_bare_init.text"
- ENTRY(__mmu_cache_flush)
- 		mrc	p15, 0, r10, c0, c1, 5	@ read ID_MMFR1
- 		tst	r10, #0xf << 16		@ hierarchical cache (ARMv7)
-@@ -105,6 +106,7 @@ iflush:
- 		mcr	p15, 0, r10, c7, c5, 4	@ ISB
- 		mov	pc, lr
- ENDPROC(__mmu_cache_flush)
-+.section ".text.text"
- 
- /*
-  * cache_line_size - get the cache line size from the CSIDR register
+-#ifdef CONFIG_NAND_IMX_BOOT
+-void __bare_init nand_boot(void)
+-{
+-	u32 val;
+-
+-	val = readl(IMX_CCM_BASE + CCM_PDR4);
+-	val &= ~(0xf << 28);
+-	val |= 0x1 << 28;
+-	writel(val, IMX_CCM_BASE + CCM_PDR4);
+-
+-	/*
+-	 * The driver is able to detect NAND's pagesize by CPU internal
+-	 * fuses or external pull ups. But not the blocksize...
+-	 */
+-	imx_nand_load_image((void *)TEXT_BASE, 256 * 1024);
+-}
+-#endif
 -- 
 1.7.0
 
