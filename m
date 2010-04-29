@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1O7OXj-0008Di-QK
-	for barebox@lists.infradead.org; Thu, 29 Apr 2010 07:52:21 +0000
+	id 1O7OXj-0008Dk-Rx
+	for barebox@lists.infradead.org; Thu, 29 Apr 2010 07:52:22 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 29 Apr 2010 09:52:07 +0200
-Message-Id: <1272527535-17527-10-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 29 Apr 2010 09:52:04 +0200
+Message-Id: <1272527535-17527-7-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1272527535-17527-1-git-send-email-s.hauer@pengutronix.de>
 References: <1272527535-17527-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,33 +21,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/17] pcm043: Speed up NAND controller before copying barebox
-	image
+Subject: [PATCH 06/17] define __LINUX_ARM_ARCH__ for armv6 processors
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- board/pcm043/pcm043.c |    7 +++++++
- 1 files changed, 7 insertions(+), 0 deletions(-)
+ arch/arm/Makefile |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
 
-diff --git a/board/pcm043/pcm043.c b/board/pcm043/pcm043.c
-index 2ce7e3a..d8cd7b8 100644
---- a/board/pcm043/pcm043.c
-+++ b/board/pcm043/pcm043.c
-@@ -393,6 +393,13 @@ BAREBOX_CMD_END
- #ifdef CONFIG_NAND_IMX_BOOT
- void __bare_init nand_boot(void)
- {
-+	u32 val;
-+
-+	val = readl(IMX_CCM_BASE + CCM_PDR4);
-+	val &= ~(0xf << 28);
-+	val |= 0x1 << 28;
-+	writel(val, IMX_CCM_BASE + CCM_PDR4);
-+
- 	/*
- 	 * The driver is able to detect NAND's pagesize by CPU internal
- 	 * fuses or external pull ups. But not the blocksize...
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index fbbea42..b1991c3 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -20,6 +20,7 @@ comma = ,
+ # macro, but instead defines a whole series of macros which makes
+ # testing for a specific architecture or later rather impossible.
+ arch-$(CONFIG_CPU_32v7)		:=-D__LINUX_ARM_ARCH__=7 $(call cc-option,-march=armv7-a,-march=armv5t -Wa$(comma)-march=armv7-a)
++arch-$(CONFIG_CPU_32v6)            :=-D__LINUX_ARM_ARCH__=6 $(call cc-option,-march=armv6,-march=armv5t -Wa$(comma)-march=armv6)
+ arch-$(CONFIG_CPU_32v5)		:=-D__LINUX_ARM_ARCH__=5 $(call cc-option,-march=armv5te,-march=armv4t)
+ arch-$(CONFIG_CPU_32v4T)	:=-D__LINUX_ARM_ARCH__=4 -march=armv4t
+ 
 -- 
 1.7.0
 
