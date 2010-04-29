@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1O7OXj-0008Dk-Rx
+	id 1O7OXj-0008De-Pw
 	for barebox@lists.infradead.org; Thu, 29 Apr 2010 07:52:22 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 29 Apr 2010 09:52:04 +0200
-Message-Id: <1272527535-17527-7-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 29 Apr 2010 09:51:59 +0200
+Message-Id: <1272527535-17527-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1272527535-17527-1-git-send-email-s.hauer@pengutronix.de>
 References: <1272527535-17527-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,26 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/17] define __LINUX_ARM_ARCH__ for armv6 processors
+Subject: [PATCH 01/17] i.MX35 stack: Fix mc9sdz60 reset register offset
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/Makefile |    1 +
- 1 files changed, 1 insertions(+), 0 deletions(-)
+ board/freescale-mx35-3-stack/3stack.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index fbbea42..b1991c3 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -20,6 +20,7 @@ comma = ,
- # macro, but instead defines a whole series of macros which makes
- # testing for a specific architecture or later rather impossible.
- arch-$(CONFIG_CPU_32v7)		:=-D__LINUX_ARM_ARCH__=7 $(call cc-option,-march=armv7-a,-march=armv5t -Wa$(comma)-march=armv7-a)
-+arch-$(CONFIG_CPU_32v6)            :=-D__LINUX_ARM_ARCH__=6 $(call cc-option,-march=armv6,-march=armv5t -Wa$(comma)-march=armv6)
- arch-$(CONFIG_CPU_32v5)		:=-D__LINUX_ARM_ARCH__=5 $(call cc-option,-march=armv5te,-march=armv4t)
- arch-$(CONFIG_CPU_32v4T)	:=-D__LINUX_ARM_ARCH__=4 -march=armv4t
+diff --git a/board/freescale-mx35-3-stack/3stack.c b/board/freescale-mx35-3-stack/3stack.c
+index 481f9f0..fcb87cf 100644
+--- a/board/freescale-mx35-3-stack/3stack.c
++++ b/board/freescale-mx35-3-stack/3stack.c
+@@ -396,9 +396,9 @@ static int f3s_pmic_init_all(struct mc9sdz60 *mc9sdz60)
  
+ 	err |= mc9sdz60_set_bits(mc9sdz60, MC9SDZ60_REG_GPIO_1, 0x04, 0x04);
+ 
+-	err |= mc9sdz60_set_bits(mc9sdz60, MC9SDZ60_REG_RESET_2, 0x80, 0x00);
++	err |= mc9sdz60_set_bits(mc9sdz60, MC9SDZ60_REG_RESET_1, 0x80, 0x00);
+ 	mdelay(200);
+-	err |= mc9sdz60_set_bits(mc9sdz60, MC9SDZ60_REG_RESET_2, 0x80, 0x80);
++	err |= mc9sdz60_set_bits(mc9sdz60, MC9SDZ60_REG_RESET_1, 0x80, 0x80);
+ 
+ 	if (err)
+ 		dev_err(&mc9sdz60->client->dev,
 -- 
 1.7.0
 
