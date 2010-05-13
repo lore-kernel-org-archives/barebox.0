@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1OCWTv-0005CZ-IE
-	for barebox@lists.infradead.org; Thu, 13 May 2010 11:21:36 +0000
-Message-ID: <4BEBE0B7.10303@pengutronix.de>
-Date: Thu, 13 May 2010 13:21:27 +0200
+	id 1OCWVg-0000F5-OT
+	for barebox@lists.infradead.org; Thu, 13 May 2010 11:23:25 +0000
+Message-ID: <4BEBE12A.6020306@pengutronix.de>
+Date: Thu, 13 May 2010 13:23:22 +0200
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 MIME-Version: 1.0
-References: <1273718822-16800-1-git-send-email-marc@cpdesign.com.au>	<1273718822-16800-2-git-send-email-marc@cpdesign.com.au>	<1273718822-16800-3-git-send-email-marc@cpdesign.com.au>	<1273718822-16800-4-git-send-email-marc@cpdesign.com.au>	<1273718822-16800-5-git-send-email-marc@cpdesign.com.au>	<1273718822-16800-6-git-send-email-marc@cpdesign.com.au>
-	<1273718822-16800-7-git-send-email-marc@cpdesign.com.au>
-In-Reply-To: <1273718822-16800-7-git-send-email-marc@cpdesign.com.au>
+References: <1273718822-16800-1-git-send-email-marc@cpdesign.com.au>	<1273718822-16800-2-git-send-email-marc@cpdesign.com.au>	<1273718822-16800-3-git-send-email-marc@cpdesign.com.au>	<1273718822-16800-4-git-send-email-marc@cpdesign.com.au>
+	<1273718822-16800-5-git-send-email-marc@cpdesign.com.au>
+In-Reply-To: <1273718822-16800-5-git-send-email-marc@cpdesign.com.au>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,83 +18,67 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0788202601=="
+Content-Type: multipart/mixed; boundary="===============1890672428=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 6/6] imx35pdk: make COMPARE pad a GPIO1_5 output
+Subject: Re: [PATCH 4/6] imx35pdk: correct mode for display contrast pin
 To: Marc Reilly <marc@cpdesign.com.au>
 Cc: barebox@lists.infradead.org
 
 This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---===============0788202601==
+--===============1890672428==
 Content-Type: multipart/signed; micalg=pgp-sha1;
  protocol="application/pgp-signature";
- boundary="------------enig342902246171F8400383DED0"
+ boundary="------------enig18971E0C974E6FCE97AB670A"
 
 This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---------------enig342902246171F8400383DED0
+--------------enig18971E0C974E6FCE97AB670A
 Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: quoted-printable
 
-Hello Marc,
-
 Marc Reilly wrote:
-> This pad is an interrupt source, active low for one of the external ICs=
-=2E
 
-just nitpicking from my side, see comments inline.
+Please don't forget to add you'r S-o-b.
 
 Cheers, Marc
 
 > ---
->  board/freescale-mx35-3-stack/3stack.c |    7 ++++++-
->  1 files changed, 6 insertions(+), 1 deletions(-)
+>  board/freescale-mx35-3-stack/3stack.c |    7 +++----
+>  1 files changed, 3 insertions(+), 4 deletions(-)
 >=20
 > diff --git a/board/freescale-mx35-3-stack/3stack.c b/board/freescale-mx=
 35-3-stack/3stack.c
-> index 4dc25e6..797e517 100644
+> index fcb87cf..d09de65 100644
 > --- a/board/freescale-mx35-3-stack/3stack.c
 > +++ b/board/freescale-mx35-3-stack/3stack.c
-> @@ -280,6 +280,8 @@ static struct pad_desc f3s_pads[] =3D {
->  	MX35_PAD_I2C1_DAT__I2C1_SDA,
+> @@ -201,10 +201,8 @@ device_initcall(f3s_devices_init);
 > =20
->  	MX35_PAD_WDOG_RST__GPIO1_6,
-> +	MX35_PAD_COMPARE__GPIO1_5,
-> +=09
-
-no trailing whitespace, please
-
->  	/* Display */
->  	MX35_PAD_LD0__IPU_DISPB_DAT_0,
->  	MX35_PAD_LD1__IPU_DISPB_DAT_1,
-> @@ -332,7 +334,7 @@ static int f3s_core_init(void)
->  	reg |=3D 0x3 << CCM_CGR1_FEC_SHIFT;
->  	reg |=3D 0x3 << CCM_CGR1_I2C1_SHIFT;
->  	reg =3D writel(reg, IMX_CCM_BASE + CCM_CGR1);
-> -
-> +=09
-
-dito
-
->  	/* AIPS setup - Only setup MPROTx registers. The PACR default values =
-are good.*/
->  	/*
->  	 * Set all MPROTx to be non-bufferable, trusted for R/W,
-> @@ -414,6 +416,9 @@ static int f3s_pmic_init_v2(struct mc13892 *mc13892=
-)
+>  static int f3s_enable_display(void)
 >  {
->  	int err =3D 0;
+> -	gpio_direction_output(1, 1);
+> -
+>  	/* Enable power to the LCD. (bit 6 hi.) */
+> -	mc9sdz60_set_bits( mc9sdz60_get(), MC9SDZ60_REG_GPIO_1, 0x40, 0x40);
+> +	mc9sdz60_set_bits(mc9sdz60_get(), MC9SDZ60_REG_GPIO_1, 0x40, 0x40);
 > =20
-> +	/* COMPARE pin (GPIO1_5) as output and set high */
-> +	gpio_direction_output( 32*0 + 5 , 1);
+>  	return 0;
+>  }
+> @@ -270,10 +268,11 @@ static struct pad_desc f3s_pads[] =3D {
+>  	MX35_PAD_D3_HSYNC__IPU_DISPB_D3_HSYNC,
+>  	MX35_PAD_D3_FPSHIFT__IPU_DISPB_D3_CLK,
+>  	MX35_PAD_D3_DRDY__IPU_DISPB_D3_DRDY,
+> -	MX35_PAD_CONTRAST__GPIO1_1,
+> +	MX35_PAD_CONTRAST__IPU_DISPB_CONTR,
+>  	MX35_PAD_D3_VSYNC__IPU_DISPB_D3_VSYNC,
+>  	MX35_PAD_D3_REV__IPU_DISPB_D3_REV,
+>  	MX35_PAD_D3_CLS__IPU_DISPB_D3_CLS,
 > +=09
 
-dito
+IMHO no need for this line, please remove.
 
->  	err |=3D mc13892_set_bits(mc13892, MC13892_REG_SETTING_0, 0x03, 0x03)=
-;
->  	err |=3D mc13892_set_bits(mc13892, MC13892_REG_MODE_0, 0x01, 0x01);
->  	if (err)
+>  };
+> =20
+>  static int f3s_console_init(void)
 
 
 --=20
@@ -104,7 +88,7 @@ Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
 Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
 
 
---------------enig342902246171F8400383DED0
+--------------enig18971E0C974E6FCE97AB670A
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: OpenPGP digital signature
 Content-Disposition: attachment; filename="signature.asc"
@@ -113,15 +97,15 @@ Content-Disposition: attachment; filename="signature.asc"
 Version: GnuPG v1.4.9 (GNU/Linux)
 Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org
 
-iEYEARECAAYFAkvr4LcACgkQjTAFq1RaXHNYlwCePZdH8NVRKpX9Eos/ZtBcA7uc
-UJAAn16oAQ494An8y4uBSOEpLCmmlJtj
-=dbiY
+iEYEARECAAYFAkvr4SoACgkQjTAFq1RaXHN9PwCfXzjkj26HdgJlThQN4Beb6xKk
+wooAmwaT7HIkzxOQ1OfnN7XyyHteLsYT
+=VM7u
 -----END PGP SIGNATURE-----
 
---------------enig342902246171F8400383DED0--
+--------------enig18971E0C974E6FCE97AB670A--
 
 
---===============0788202601==
+--===============1890672428==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -132,4 +116,4 @@ barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
 
---===============0788202601==--
+--===============1890672428==--
