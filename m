@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp3-g21.free.fr ([212.27.42.3])
+Received: from mail-pw0-f49.google.com ([209.85.160.49])
 	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
-	id 1OCXeq-0006ye-Df
-	for barebox@lists.infradead.org; Thu, 13 May 2010 12:36:58 +0000
-Received: from smtp3-g21.free.fr (localhost [127.0.0.1])
-	by smtp3-g21.free.fr (Postfix) with ESMTP id 4220781804E
-	for <barebox@lists.infradead.org>;
-	Thu, 13 May 2010 14:36:48 +0200 (CEST)
-Received: from localhost.localdomain (tal33-3-82-233-81-124.fbx.proxad.net
-	[82.233.81.124]) by smtp3-g21.free.fr (Postfix) with ESMTP
-	for <barebox@lists.infradead.org>;
-	Thu, 13 May 2010 14:36:47 +0200 (CEST)
-From: Eric Benard <eric@eukrea.com>
-Date: Thu, 13 May 2010 14:36:45 +0200
-Message-Id: <1273754207-7763-1-git-send-email-eric@eukrea.com>
+	id 1OCkHj-000118-S6
+	for barebox@lists.infradead.org; Fri, 14 May 2010 02:06:00 +0000
+Received: by pwj6 with SMTP id 6so1094115pwj.36
+	for <barebox@lists.infradead.org>; Thu, 13 May 2010 19:05:54 -0700 (PDT)
+From: Marc Reilly <marc@cpdesign.com.au>
+Date: Fri, 14 May 2010 12:15:15 +1000
+Message-Id: <1273803319-24561-2-git-send-email-marc@cpdesign.com.au>
+In-Reply-To: <1273803319-24561-1-git-send-email-marc@cpdesign.com.au>
+References: <1273803319-24561-1-git-send-email-marc@cpdesign.com.au>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,79 +23,113 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] i.MX25 : add Framebuffer support
+Subject: [PATCH 1/5] arm: Add revision tag to boot parameters
 To: barebox@lists.infradead.org
 
-Signed-off-by: Eric Benard <eric@eukrea.com>
----
- drivers/video/Kconfig |    4 ++--
- drivers/video/imx.c   |   19 ++++++++++++++++++-
- 2 files changed, 20 insertions(+), 3 deletions(-)
+Revision info required for some boards at boot time.
+Only adds if the system_rev has been set to non-zero.
 
-diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
-index dbdc7e2..7a89a3f 100644
---- a/drivers/video/Kconfig
-+++ b/drivers/video/Kconfig
-@@ -7,11 +7,11 @@ if VIDEO
- 
- config DRIVER_VIDEO_IMX
- 	bool "i.MX framebuffer driver"
--	depends on ARCH_IMX1 || ARCH_IMX21 || ARCH_IMX27
-+	depends on ARCH_IMX1 || ARCH_IMX21 || ARCH_IMX25 || ARCH_IMX27
- 
- config IMXFB_DRIVER_VIDEO_IMX_OVERLAY
- 	bool "i.MX framebuffer overlay support"
--	depends on DRIVER_VIDEO_IMX && (ARCH_IMX27 || ARCH_IMX21)
-+	depends on DRIVER_VIDEO_IMX && (ARCH_IMX27 || ARCH_IMX25 || ARCH_IMX21)
- 
- config DRIVER_VIDEO_IMX_IPU
- 	bool "i.MX31/35 framebuffer driver"
-diff --git a/drivers/video/imx.c b/drivers/video/imx.c
-index 87c08d3..67cae34 100644
---- a/drivers/video/imx.c
-+++ b/drivers/video/imx.c
-@@ -258,7 +258,12 @@ static void imxfb_enable_controller(struct fb_info *info)
- 	PCCR0 |= PCCR0_LCDC_EN;
- 	PCCR1 |= PCCR1_HCLK_LCDC;
+Signed-off-by: Marc Reilly <marc@cpdesign.com.au>
+---
+ arch/arm/include/asm/armlinux.h |    6 ++++++
+ arch/arm/lib/armlinux.c         |   23 +++++++++++++++++++++++
+ 2 files changed, 29 insertions(+), 0 deletions(-)
+
+diff --git a/arch/arm/include/asm/armlinux.h b/arch/arm/include/asm/armlinux.h
+index cfe57f4..f4104fb 100644
+--- a/arch/arm/include/asm/armlinux.h
++++ b/arch/arm/include/asm/armlinux.h
+@@ -6,6 +6,7 @@
+ void armlinux_set_bootparams(void *params);
+ void armlinux_set_architecture(int architecture);
+ void armlinux_add_dram(struct device_d *dev);
++void armlinux_set_revision(unsigned int);
+ #else
+ static inline void armlinux_set_bootparams(void *params)
+ {
+@@ -18,6 +19,11 @@ static inline void armlinux_set_architecture(int architecture)
+ static inline void armlinux_add_dram(struct device_d *dev)
+ {
+ }
++
++static inline void armlinux_set_revision(unsigned int)
++{
++}
++
  #endif
--
-+#ifdef CONFIG_ARCH_IMX25
-+	writel(readl(IMX_CCM_BASE + CCM_CGCR0) | (1 << 24) | (1 << 7),
-+		IMX_CCM_BASE + CCM_CGCR0);
-+	writel(readl(IMX_CCM_BASE + CCM_CGCR1) | (1 << 29),
-+		IMX_CCM_BASE + CCM_CGCR1);
-+#endif
+ 
+ #endif /* __ARCH_ARMLINUX_H */
+diff --git a/arch/arm/lib/armlinux.c b/arch/arm/lib/armlinux.c
+index 019c030..1c39045 100644
+--- a/arch/arm/lib/armlinux.c
++++ b/arch/arm/lib/armlinux.c
+@@ -44,6 +44,8 @@ static struct tag *params;
+ static int armlinux_architecture = 0;
+ static void *armlinux_bootparams = NULL;
+ 
++static unsigned int system_rev;
++
+ static void setup_start_tag(void)
+ {
+ 	params = (struct tag *)armlinux_bootparams;
+@@ -106,6 +108,18 @@ static void setup_commandline_tag(const char *commandline)
+ 	params = tag_next(params);
  }
  
- static void imxfb_disable_controller(struct fb_info *info)
-@@ -273,6 +278,12 @@ static void imxfb_disable_controller(struct fb_info *info)
- 	PCCR0 &= ~PCCR0_LCDC_EN;
- 	PCCR1 &= ~PCCR1_HCLK_LCDC;
- #endif
-+#ifdef CONFIG_ARCH_IMX25
-+	writel(readl(IMX_CCM_BASE + CCM_CGCR0) & ~((1 << 24) | (1 << 7)),
-+		IMX_CCM_BASE + CCM_CGCR0);
-+	writel(readl(IMX_CCM_BASE + CCM_CGCR1) & ~(1 << 29),
-+		IMX_CCM_BASE + CCM_CGCR1);
-+#endif
++static void setup_revision_tag(void)
++{
++	if( system_rev) {
++		params->hdr.tag = ATAG_REVISION;
++		params->hdr.size = tag_size(tag_revision);
++		
++		params->u.revision.rev = system_rev;
++		
++		params = tag_next(params);
++	}
++}
++
+ #if 0
+ static void setup_initrd_tag(ulong initrd_start, ulong initrd_end)
+ {
+@@ -147,6 +161,12 @@ void armlinux_add_dram(struct device_d *dev)
+ 	list_add_tail(&mem->list, &memory_list);
  }
  
- /*
-@@ -518,6 +529,12 @@ static int imxfb_probe(struct device_d *dev)
- 	PCCR0 &= ~PCCR0_LCDC_EN;
- 	PCCR1 &= ~PCCR1_HCLK_LCDC;
++void armlinux_set_revision(unsigned int rev)
++{
++	system_rev = rev;
++}
++
++
+ #ifdef CONFIG_CMD_BOOTM
+ int do_bootm_linux(struct image_data *data)
+ {
+@@ -184,6 +204,7 @@ int do_bootm_linux(struct image_data *data)
+ 	if (initrd_start && initrd_end)
+ 		setup_initrd_tag (initrd_start, initrd_end);
  #endif
-+#ifdef CONFIG_ARCH_IMX25
-+	writel(readl(IMX_CCM_BASE + CCM_CGCR0) & ~((1 << 24) | (1 << 7)),
-+		IMX_CCM_BASE + CCM_CGCR0);
-+	writel(readl(IMX_CCM_BASE + CCM_CGCR1) & ~(1 << 29),
-+		IMX_CCM_BASE + CCM_CGCR1);
-+#endif
++	setup_revision_tag();
+ 	setup_end_tag();
  
- 	fbi = xzalloc(sizeof(*fbi));
- 	info = &fbi->info;
+ 	if (relocate_image(data->os, (void *)ntohl(os_header->ih_load)))
+@@ -281,6 +302,7 @@ static int do_bootz(struct command *cmdtp, int argc, char *argv[])
+ 	if (initrd_start && initrd_end)
+ 		setup_initrd_tag (initrd_start, initrd_end);
+ #endif
++	setup_revision_tag();
+ 	setup_end_tag();
+ 
+ 	shutdown_barebox();
+@@ -323,6 +345,7 @@ static int do_bootu(struct command *cmdtp, int argc, char *argv[])
+ 	setup_start_tag();
+ 	setup_memory_tags();
+ 	setup_commandline_tag(commandline);
++	setup_revision_tag();
+ 	setup_end_tag();
+ 
+ 	shutdown_barebox();
 -- 
-1.6.3.3
+1.6.4.2
 
 
 _______________________________________________
