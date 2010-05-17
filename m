@@ -1,19 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pv0-f177.google.com ([74.125.83.177])
+Received: from smtp2-g21.free.fr ([212.27.42.2])
 	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
-	id 1ODyIv-00043E-GV
-	for barebox@lists.infradead.org; Mon, 17 May 2010 11:16:14 +0000
-Received: by pvg13 with SMTP id 13so44991pvg.36
-	for <barebox@lists.infradead.org>; Mon, 17 May 2010 04:16:11 -0700 (PDT)
-From: "Marc Reilly" <marc@cpdesign.com.au>
-References: <1273803319-24561-1-git-send-email-marc@cpdesign.com.au>
-	<20100517090416.GK31199@pengutronix.de>
-In-Reply-To: <20100517090416.GK31199@pengutronix.de>
-Date: Mon, 17 May 2010 21:16:08 +1000
-Message-ID: <013401caf5b2$5c443c40$14ccb4c0$@cpdesign.com.au>
+	id 1OE1X3-00064u-4e
+	for barebox@lists.infradead.org; Mon, 17 May 2010 14:43:02 +0000
+Received: from smtp2-g21.free.fr (localhost [127.0.0.1])
+	by smtp2-g21.free.fr (Postfix) with ESMTP id 82AA34B019D
+	for <barebox@lists.infradead.org>;
+	Mon, 17 May 2010 16:42:57 +0200 (CEST)
+Received: from localhost.localdomain (pac33-2-82-240-38-71.fbx.proxad.net
+	[82.240.38.71]) by smtp2-g21.free.fr (Postfix) with ESMTP
+	for <barebox@lists.infradead.org>;
+	Mon, 17 May 2010 16:42:55 +0200 (CEST)
+From: =?utf-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
+Date: Mon, 17 May 2010 16:42:55 +0200
+Message-Id: <1274107375-10257-1-git-send-email-eric@eukrea.com>
 MIME-Version: 1.0
-Content-language: en-au
-Reply-To: marc@cpdesign.com.au
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,49 +23,28 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: V3 patches for imx35pdk boot
-To: 'Sascha Hauer' <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] eukrea_cpuimx27: allow compilation without LP3972 selected
+To: barebox@lists.infradead.org
 
-Hi,
-
-> > Third time's a charm, hopefully. I fixed up all the whitespace issues
-> > in 3stack.c and signed off all the patches.
-> 
-> There are still some trailing whitespaces left. I killed them while
-committing.
-Sorry, and thanks. I just had a quick scan through the patches that I
-emailed and I swear I'd taken care of them...
-
-> > The morale of the story is get it right first go :) (I'm not too sure
-> > how to combine patch 1 and 2, and being such a git newb my tree is
-> > already starting to look like a pair of octopi mating, so I'm just
-> > going to leave as is.)
-> 
-> Have a look at git rebase -i, it's really nice ;)
-That's what I found in the end. The original morale of the story still
-stands though.
-
-People should also note that the LCD and IPU remains enabled as the kernel
-goes through its initialization. When the IPU is probed/initialized
-(somewhere in ipu_common.c)  the IRQ is enabled (and then immediately
-disabled after the function returns) before all the data structures are
-properly setup. Because the IPU is still enabled the interrupt fires before
-the init finishes and the kernel crashes.
-
-TL;DR: either the ipu init in the kernel needs to be tweaked, or turned off
-in barebox before boot.
-
-Cheers
-Marc
-
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogRXJpYyBCw6luYXJkIDxlcmljQGV1a3JlYS5jb20+Ci0tLQogYm9hcmQv
+ZXVrcmVhX2NwdWlteDI3L2V1a3JlYV9jcHVpbXgyNy5jIHwgICAgNiArKysrLS0KIDEgZmlsZXMg
+Y2hhbmdlZCwgNCBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2Jv
+YXJkL2V1a3JlYV9jcHVpbXgyNy9ldWtyZWFfY3B1aW14MjcuYyBiL2JvYXJkL2V1a3JlYV9jcHVp
+bXgyNy9ldWtyZWFfY3B1aW14MjcuYwppbmRleCAyYjZkYjE1Li5lZjU3YTk2IDEwMDY0NAotLS0g
+YS9ib2FyZC9ldWtyZWFfY3B1aW14MjcvZXVrcmVhX2NwdWlteDI3LmMKKysrIGIvYm9hcmQvZXVr
+cmVhX2NwdWlteDI3L2V1a3JlYV9jcHVpbXgyNy5jCkBAIC0yNzYsMTggKzI3NiwyMCBAQCBjb25z
+b2xlX2luaXRjYWxsKGV1a3JlYV9jcHVpbXgyN19jb25zb2xlX2luaXQpOwogCiBzdGF0aWMgaW50
+IGV1a3JlYV9jcHVpbXgyN19sYXRlX2luaXQodm9pZCkKIHsKKyNpZmRlZiBDT05GSUdfRFJJVkVS
+X0kyQ19MUDM5NzIKIAlzdHJ1Y3QgaTJjX2NsaWVudCAqY2xpZW50OwogCXU4IHJlZ1sxXTsKLQor
+I2VuZGlmCiAJY29uc29sZV9mbHVzaCgpOwogCXJlZ2lzdGVyX2RldmljZSgmZmVjX2Rldik7CiAK
+KyNpZmRlZiBDT05GSUdfRFJJVkVSX0kyQ19MUDM5NzIKIAljbGllbnQgPSBscDM5NzJfZ2V0X2Ns
+aWVudCgpOwogCWlmICghY2xpZW50KQogCQlyZXR1cm4gLUVOT0RFVjsKIAlyZWdbMF0gPSAweGEw
+OwogCWkyY193cml0ZV9yZWcoY2xpZW50LCAweDM5LCByZWcsIHNpemVvZihyZWcpKTsKLQorI2Vu
+ZGlmCiAJcmV0dXJuIDA7CiB9CiAKLS0gCjEuNi4zLjMKCgpfX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxp
+c3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0
+aW5mby9iYXJlYm94Cg==
