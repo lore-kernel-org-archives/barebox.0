@@ -1,18 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1ODx67-0003cP-M7
-	for barebox@lists.infradead.org; Mon, 17 May 2010 09:58:56 +0000
-Date: Mon, 17 May 2010 11:58:54 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20100517095854.GY31199@pengutronix.de>
-References: <1273754207-7763-1-git-send-email-eric@eukrea.com>
-	<1273754207-7763-2-git-send-email-eric@eukrea.com>
-	<20100517091450.GL31199@pengutronix.de>
-	<4BF11043.8050400@eukrea.com>
+Received: from mail-px0-f177.google.com ([209.85.212.177])
+	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
+	id 1ODy0h-00078N-Np
+	for barebox@lists.infradead.org; Mon, 17 May 2010 10:57:24 +0000
+Received: by pxi1 with SMTP id 1so2546759pxi.36
+	for <barebox@lists.infradead.org>; Mon, 17 May 2010 03:57:21 -0700 (PDT)
+From: "Marc Reilly" <marc@cpdesign.com.au>
+References: <4BEBD0FD.6090504@erwinrol.com>	<00b101caf30b$85b54640$911fd2c0$@cpdesign.com.au>	<4BECF779.50306@erwinrol.com>
+	<20100517083633.GI31199@pengutronix.de>
+In-Reply-To: <20100517083633.GI31199@pengutronix.de>
+Date: Mon, 17 May 2010 20:57:18 +1000
+Message-ID: <013001caf5af$ba7b5fd0$2f721f70$@cpdesign.com.au>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <4BF11043.8050400@eukrea.com>
+Content-language: en-au
+Reply-To: marc@cpdesign.com.au
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,42 +22,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3] Add support for Eukrea's CPUIMX25
-To: Eric =?iso-8859-15?Q?B=E9nard?= <eric@eukrea.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: RE: Watchdog support
+To: 'Sascha Hauer' <s.hauer@pengutronix.de>, 'Erwin Rol' <mailinglists@erwinrol.com>
+Cc: barebox@lists.infradead.org
 
-On Mon, May 17, 2010 at 11:45:39AM +0200, Eric B=E9nard wrote:
-> Hi Sascha,
->
-> v2 of the patch passed through checkpatch so no trailing whitespaces  =
+Hi,
 
-> should left.
->
-> Le 17/05/2010 11:14, Sascha Hauer a =E9crit :
->> Care to rewrite this in C like some other boards already do?
->> I will commit it as is though, no showstopper.
->>
-> I put this on the todo list, exercise seems interesting so I'll do it  =
+> > Does barebox have a standard API to trigger and program a watchdog ?
+> 
+> No, we do not have this atm.
+> 
+> Are you looking for real watchdog support, i.e. 'reset watchdog when my
+> system is in a sane state' or do you have a piece of hardware on which you
+> have to reset the watchdog frequently because you can't disable it in
+> software?
+> 
+> For the first case I propose a 'watchdog' command with an underlying
+> reset_watchdog() function which resets the watchdog.
 
-> asap ;-)
+IMHO the use of 'reset' with watchdogs is ambiguous. Typically, the primary
+use is to _prevent_ the watchdog from attacking you (the system resetting),
+but sometimes it is also used to _cause_ the reset, so that the system
+restarts properly. (suicide and resurrection. I suck at analogies.)
+So, that said, I'd suggest watchdog_ping() or watchdog_feed() as functions
+for the first usage, and save watchdog_reset() for the second. (or
+watchdog_trigger_reset() etc)
 
-Ok, the patch looks ok apart from the comment I made. I'll wait applying
-it for some time. Just ping me before the next release if you want me to
-apply the assembler version.
+Just my 0.02c. In the end, I don't think I'll be the one writing it, so I
+won't be the one designing it. :)
 
+> For the latter case you don't have another choice but to scatter the code
+with
+> RESET_WATCHDOG macros like U-Boot does.
 
-Sascha
+Or put it in the timer interrupt :)
+That was, of course, a joke.
 
--- =
+Cheers
+Marc
 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
