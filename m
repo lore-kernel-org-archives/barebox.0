@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1ODvoR-0001Pr-Hq
-	for barebox@lists.infradead.org; Mon, 17 May 2010 08:36:36 +0000
-Date: Mon, 17 May 2010 10:36:33 +0200
+	id 1ODwFH-0007z3-Qa
+	for barebox@lists.infradead.org; Mon, 17 May 2010 09:04:20 +0000
+Date: Mon, 17 May 2010 11:04:16 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20100517083633.GI31199@pengutronix.de>
-References: <4BEBD0FD.6090504@erwinrol.com>
-	<00b101caf30b$85b54640$911fd2c0$@cpdesign.com.au>
-	<4BECF779.50306@erwinrol.com>
+Message-ID: <20100517090416.GK31199@pengutronix.de>
+References: <1273803319-24561-1-git-send-email-marc@cpdesign.com.au>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <4BECF779.50306@erwinrol.com>
+In-Reply-To: <1273803319-24561-1-git-send-email-marc@cpdesign.com.au>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,41 +22,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Watchdog support
-To: Erwin Rol <mailinglists@erwinrol.com>
+Subject: Re: V3 patches for imx35pdk boot
+To: Marc Reilly <marc@cpdesign.com.au>
 Cc: barebox@lists.infradead.org
 
-Hi Erwin,
+Hi Marc,
 
-On Fri, May 14, 2010 at 09:10:49AM +0200, Erwin Rol wrote:
-> Marc Reilly wrote:
->> Hi Erwin,
->>
->>> does barebox have any watchdog support ?
->>
->> I think the answer to your question is really dependent on what platform you
->> are using, and exactly what you want the watchdog to do.
->
-> Platform does not really matter here, I mean does barebox trigger the  
-> watchdog if it is doing lengthy operations like writing flash to prevent  
-> it from being reset in the middle of the operation. That has little to  
-> do with if the platform has a watchdog or not.
->
-> So let me changes the question a bit;
->
-> Does barebox have a standard API to trigger and program a watchdog ?
+On Fri, May 14, 2010 at 12:15:14PM +1000, Marc Reilly wrote:
+> Hi,
+> 
+> Third time's a charm, hopefully. I fixed up all the whitespace issues
+> in 3stack.c and signed off all the patches.
 
-No, we do not have this atm.
+There are still some trailing whitespaces left. I killed them while
+committing.
 
-Are you looking for real watchdog support, i.e. 'reset watchdog when my
-system is in a sane state' or do you have a piece of hardware on which
-you have to reset the watchdog frequently because you can't disable it
-in software?
+> 
+> The morale of the story is get it right first go :) (I'm not too sure
+> how to combine patch 1 and 2, and being such a git newb my tree is
+> already starting to look like a pair of octopi mating, so I'm just
+> going to leave as is.)
 
-For the first case I propose a 'watchdog' command with an underlying
-reset_watchdog() function which resets the watchdog.
-For the latter case you don't have another choice but to scatter the
-code with RESET_WATCHDOG macros like U-Boot does.
+Have a look at git rebase -i, it's really nice ;)
 
 Sascha
 
