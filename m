@@ -1,14 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 27.mail-out.ovh.net ([91.121.30.210])
-	by bombadil.infradead.org with smtp (Exim 4.69 #1 (Red Hat Linux))
-	id 1OE32D-0007u7-Cn
-	for barebox@lists.infradead.org; Mon, 17 May 2010 16:19:18 +0000
-Message-ID: <4BF16C82.2060601@eukrea.com>
-Date: Mon, 17 May 2010 18:19:14 +0200
-From: =?UTF-8?B?RXJpYyBCw6luYXJk?= <eric@eukrea.com>
+Received: from smtp3-g21.free.fr ([212.27.42.3])
+	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
+	id 1OE5vI-0000Fa-Tx
+	for barebox@lists.infradead.org; Mon, 17 May 2010 19:24:22 +0000
+Received: from smtp3-g21.free.fr (localhost [127.0.0.1])
+	by smtp3-g21.free.fr (Postfix) with ESMTP id 00CD5818078
+	for <barebox@lists.infradead.org>;
+	Mon, 17 May 2010 21:24:15 +0200 (CEST)
+Received: from localhost.localdomain (tal33-3-82-233-81-124.fbx.proxad.net
+	[82.233.81.124]) by smtp3-g21.free.fr (Postfix) with ESMTP
+	for <barebox@lists.infradead.org>;
+	Mon, 17 May 2010 21:24:14 +0200 (CEST)
+From: =?utf-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
+Date: Mon, 17 May 2010 21:24:13 +0200
+Message-Id: <1274124253-3523-1-git-send-email-eric@eukrea.com>
 MIME-Version: 1.0
-References: <1274112860-18684-1-git-send-email-eric@eukrea.com>
-In-Reply-To: <1274112860-18684-1-git-send-email-eric@eukrea.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,22 +23,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] cfi_flash_intel: support 1024b buffer write
+Subject: [PATCH] i.MX27: add required defines for I2C2
 To: barebox@lists.infradead.org
 
-TGUgMTcvMDUvMjAxMCAxODoxNCwgRXJpYyBCw6luYXJkIGEgw6ljcml0IDoKPiBuZXdlciBOdW1v
-bnl4IFN0cmF0YWZsYXNoIFAzeCBoYXZlIDEwMjRiIGJ1ZmZlciwgdGh1cywgaXQncyBwb3NzaWJs
-ZQo+IHRvIHdyaXRlIGEgYnVmZmVyIHNpemUgb2YgMHgyMDAgd2hpY2ggdGhlIGFjdHVhbCBmbGFz
-aF93cml0ZV9jbWQKPiBkb2Vzbid0IHBlcm1pdCBhcyBpdCdzIGxpbWl0ZWQgdG8gYSB1Y2hhciBw
-YXJhbWV0ZXIuCj4Kbm90ZSA6IHRoZXJlIGlzIGNlcnRhaW5seSBhIGJldHRlciB3YXkgdG8gZml4
-IHRoaXMgcHJvYmxlbSBidXQgSSB0aGluayAKdGhpcyB3b3VsZCBuZWVkIG11Y2ggbW9yZSB3b3Jr
-IGluIGNmaV9mbGFzaCBhbmQgbWF5IGJyZWFrIG90aGVyIApwbGF0Zm9ybXMsIHNvIEkgc2VudCB0
-aGlzIHBhdGNoIHdoaWNoIG1heSBoZWxwIHBlb3BsZXMgdXNpbmcgcmVjZW50IApmbGFzaHMgYnV0
-IEknbSBxdWl0ZSBzdXJlIGl0IHdvbid0IGJlIHB1c2hlZCA7LSkKCkVyaWMKCl9fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0
-CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9t
-YWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+U2lnbmVkLW9mZi1ieTogRXJpYyBCw6luYXJkIDxlcmljQGV1a3JlYS5jb20+Ci0tLQogYXJjaC9h
+cm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2lteDI3LXJlZ3MuaCB8ICAgIDMgKysrCiAxIGZpbGVz
+IGNoYW5nZWQsIDMgaW5zZXJ0aW9ucygrKSwgMCBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9h
+cmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvaW14MjctcmVncy5oIGIvYXJjaC9hcm0vbWFj
+aC1pbXgvaW5jbHVkZS9tYWNoL2lteDI3LXJlZ3MuaAppbmRleCA2YzMxY2NkLi40ZTIyNjEyIDEw
+MDY0NAotLS0gYS9hcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvaW14MjctcmVncy5oCisr
+KyBiL2FyY2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9pbXgyNy1yZWdzLmgKQEAgLTIyLDYg
+KzIyLDcgQEAKICNkZWZpbmUgSU1YX1RJTTVfQkFTRSAgICAgICAgICAgICAgKDB4MWEwMDAgKyBJ
+TVhfSU9fQkFTRSkKICNkZWZpbmUgSU1YX1VBUlQ1X0JBU0UgICAgICAgICAgICAgKDB4MWIwMDAg
+KyBJTVhfSU9fQkFTRSkKICNkZWZpbmUgSU1YX1VBUlQ2X0JBU0UgICAgICAgICAgICAgKDB4MWMw
+MDAgKyBJTVhfSU9fQkFTRSkKKyNkZWZpbmUgSU1YX0kyQzJfQkFTRSAgICAgICAgICAgICAgKDB4
+MWQwMDAgKyBJTVhfSU9fQkFTRSkKICNkZWZpbmUgSU1YX1RJTTZfQkFTRSAgICAgICAgICAgICAg
+KDB4MWYwMDAgKyBJTVhfSU9fQkFTRSkKICNkZWZpbmUgSU1YX0FJUEkyX0JBU0UgICAgICAgICAg
+ICAgKDB4MjAwMDAgKyBJTVhfSU9fQkFTRSkKICNkZWZpbmUgSU1YX1BMTF9CQVNFICAgICAgICAg
+ICAgICAgKDB4MjcwMDAgKyBJTVhfSU9fQkFTRSkKQEAgLTMwOSw2ICszMTAsOCBAQAogI2RlZmlu
+ZSBQRTEzX1BGX1VBUlQxX1JYRAkoR1BJT19QT1JURSB8IEdQSU9fSU4gIHwgR1BJT19QRiB8IDEz
+KQogI2RlZmluZSBQRTE0X1BGX1VBUlQxX0NUUwkoR1BJT19QT1JURSB8IEdQSU9fT1VUIHwgR1BJ
+T19QRiB8IDE0KQogI2RlZmluZSBQRTE1X1BGX1VBUlQxX1JUUwkoR1BJT19QT1JURSB8IEdQSU9f
+SU4gIHwgR1BJT19QRiB8IDE1KQorI2RlZmluZSBQQzVfUEZfSTJDMl9EQVRBCShHUElPX1BPUlRD
+IHwgR1BJT19PVVQgfCBHUElPX1BGIHwgNSkKKyNkZWZpbmUgUEM2X1BGX0kyQzJfQ0xLCQkoR1BJ
+T19QT1JUQyB8IEdQSU9fT1VUIHwgR1BJT19QRiB8IDYpCiAjZGVmaW5lIFBDN19QRl9VU0JPVEdf
+REFUQTUgICAgIChHUElPX1BPUlRDIHwgR1BJT19QRiB8IEdQSU9fT1VUIHwgNykKICNkZWZpbmUg
+UEM4X1BGX1VTQk9UR19EQVRBNiAgICAgKEdQSU9fUE9SVEMgfCBHUElPX1BGIHwgR1BJT19PVVQg
+fCA4KQogI2RlZmluZSBQQzlfUEZfVVNCT1RHX0RBVEEwICAgICAoR1BJT19QT1JUQyB8IEdQSU9f
+UEYgfCBHUElPX09VVCB8IDkpCi0tIAoxLjYuMy4zCgoKX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0
+cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGlu
+Zm8vYmFyZWJveAo=
