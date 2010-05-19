@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1OEgKt-0002r8-BP
-	for barebox@lists.infradead.org; Wed, 19 May 2010 10:17:14 +0000
-Date: Wed, 19 May 2010 12:17:07 +0200
+	id 1OEh1h-00043A-QR
+	for barebox@lists.infradead.org; Wed, 19 May 2010 11:01:28 +0000
+Date: Wed, 19 May 2010 13:01:24 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20100519101707.GL31199@pengutronix.de>
+Message-ID: <20100519110124.GM31199@pengutronix.de>
 References: <1274174808-9516-1-git-send-email-eric@eukrea.com>
 	<1274174808-9516-2-git-send-email-eric@eukrea.com>
-	<1274174808-9516-3-git-send-email-eric@eukrea.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1274174808-9516-3-git-send-email-eric@eukrea.com>
+In-Reply-To: <1274174808-9516-2-git-send-email-eric@eukrea.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,74 +23,68 @@ Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] commands: add i2c commands
+Subject: Re: [PATCH 2/3] i2c: add i2cdev driver
 To: Eric =?iso-8859-15?Q?B=E9nard?= <eric@eukrea.com>
 Cc: barebox@lists.infradead.org
 
-Hi Eric,
+On Tue, May 18, 2010 at 11:26:47AM +0200, Eric B=E9nard wrote:
+> this driver is needed to introduce i2c commands
 
-On Tue, May 18, 2010 at 11:26:48AM +0200, Eric B=E9nard wrote:
-> theses commands allow low level access to i2c bus and can be useful
-> to setup an i2c device without having to add code, compile and flash
-> barebox.
+This approach limits the i2cdev support to exactly one bus which is not
+good. What we can do here is:
 
-This is surely a nice thing to have sometimes. Comments inline.
+- collect all available adapters in a list in drivers/i2c/i2c.c
+- implement i2c_get_adapter(int busnum) to get an adapter from its
+  busnum
+- then you can add a -b busnum argument to the i2c_read/i2c_write commands
+  and use i2c_get_adapter() there. You don't need this file anymore then.
 
+Sascha
 
 > =
 
 > Signed-off-by: Eric B=E9nard <eric@eukrea.com>
 > ---
->  commands/Kconfig  |    8 ++
->  commands/Makefile |    1 +
->  commands/i2c.c    |  233 +++++++++++++++++++++++++++++++++++++++++++++++=
+>  drivers/i2c/Kconfig  |    3 ++
+>  drivers/i2c/Makefile |    1 +
+>  drivers/i2c/i2cdev.c |   83 ++++++++++++++++++++++++++++++++++++++++++++=
 ++++++
->  3 files changed, 242 insertions(+), 0 deletions(-)
->  create mode 100644 commands/i2c.c
+>  3 files changed, 87 insertions(+), 0 deletions(-)
+>  create mode 100644 drivers/i2c/i2cdev.c
 > =
 
-> diff --git a/commands/Kconfig b/commands/Kconfig
-> index 0c09f91..7115b18 100644
-> --- a/commands/Kconfig
-> +++ b/commands/Kconfig
-> @@ -314,4 +314,12 @@ config CMD_UNLZO
->  	  Say yes here to get the unlzo command. lzo is a fast compression
->  	  algorithm by Markus Franz Xaver Johannes Oberhumer.
+> diff --git a/drivers/i2c/Kconfig b/drivers/i2c/Kconfig
+> index f1b2949..cbd2464 100644
+> --- a/drivers/i2c/Kconfig
+> +++ b/drivers/i2c/Kconfig
+> @@ -16,4 +16,7 @@ config DRIVER_I2C_MC9SDZ60
+>  config DRIVER_I2C_LP3972
+>  	bool "LP3972 driver"
 >  =
 
-> +config CMD_I2C
-> +	bool
-> +	depends on DRIVER_I2C_I2CDEV
-> +	prompt "i2c commands"
-> +	help
-> +	  include i2c_probe, i2c_read and i2c_write commands to communicate
-> +	  on i2c bus.
+> +config DRIVER_I2C_I2CDEV
+> +	bool "I2CDEV driver"
 > +
->  endmenu
-> diff --git a/commands/Makefile b/commands/Makefile
-> index 74b0994..3eef5de 100644
-> --- a/commands/Makefile
-> +++ b/commands/Makefile
-> @@ -48,3 +48,4 @@ obj-$(CONFIG_CMD_BMP)		+=3D bmp.o
->  obj-$(CONFIG_USB_GADGET_DFU)	+=3D dfu.o
->  obj-$(CONFIG_CMD_GPIO)		+=3D gpio.o
->  obj-$(CONFIG_CMD_UNLZO)		+=3D unlzo.o
-> +obj-$(CONFIG_CMD_I2C)		+=3D i2c.o
-> diff --git a/commands/i2c.c b/commands/i2c.c
+>  endif
+> diff --git a/drivers/i2c/Makefile b/drivers/i2c/Makefile
+> index 62d030b..a193f9c 100644
+> --- a/drivers/i2c/Makefile
+> +++ b/drivers/i2c/Makefile
+> @@ -5,3 +5,4 @@ obj-$(CONFIG_DRIVER_I2C_IMX) +=3D i2c-imx.o
+>  obj-$(CONFIG_DRIVER_I2C_MC13892) +=3D mc13892.o
+>  obj-$(CONFIG_DRIVER_I2C_MC9SDZ60) +=3D mc9sdz60.o
+>  obj-$(CONFIG_DRIVER_I2C_LP3972) +=3D lp3972.o
+> +obj-$(CONFIG_DRIVER_I2C_I2CDEV) +=3D i2cdev.o
+> diff --git a/drivers/i2c/i2cdev.c b/drivers/i2c/i2cdev.c
 > new file mode 100644
-> index 0000000..b4152eb
+> index 0000000..194db6c
 > --- /dev/null
-> +++ b/commands/i2c.c
-> @@ -0,0 +1,233 @@
+> +++ b/drivers/i2c/i2cdev.c
+> @@ -0,0 +1,83 @@
 > +/*
-> + * i2c.c - i2c commands
-> + *
-> + * Copyright (c) 2010 Eric B=E9nard <eric@eukrea.Com>, Eukr=E9a Electrom=
-atique
-> + *
-> + * originals hex1_bin and hex2_bin are
-> + * (C) Copyright 2000 Wolfgang Denk, DENX Software Engineering, wd@denx.=
-de.
+> + * Copyright (C) 2007 Sascha Hauer, Pengutronix
+> + *               2009 Marc Kleine-Budde <mkl@pengutronix.de>
+> + *               2009 Eric Benard <eric@eukrea.com>
 > + *
 > + * This program is free software; you can redistribute it and/or
 > + * modify it under the terms of the GNU General Public License as
@@ -107,249 +100,70 @@ de.
 > + * along with this program; if not, write to the Free Software
 > + * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
 > + * MA 02111-1307 USA
+> + *
 > + */
 > +
 > +#include <common.h>
-> +#include <command.h>
+> +#include <init.h>
+> +#include <driver.h>
+> +#include <xfuncs.h>
 > +#include <errno.h>
-> +#include <malloc.h>
-> +#include <getopt.h>
+> +
 > +#include <i2c/i2c.h>
 > +
-> +struct i2c_client	*client;
-> +extern struct i2c_client *i2cdev_get_client(void);
+> +#include <asm/byteorder.h>
 > +
-> +static int hex1_bin(char c)
+> +#define DRIVERNAME		"i2cdev"
+> +
+> +struct i2cdev_priv {
+> +	struct cdev		cdev;
+> +	struct i2c_client	*client;
+> +};
+> +
+> +#define to_i2cdev_priv(a)	container_of(a, struct i2cdev_priv, cdev)
+> +
+> +static struct i2cdev_priv *i2cdev_dev;
+> +
+> +struct i2c_client *i2cdev_get_client(void)
 > +{
-> +	if (c >=3D '0' && c <=3D '9')
-> +		return c - '0';
-> +	if (c >=3D 'a' && c <=3D 'f')
-> +		return c + 10 - 'a';
-> +	if (c >=3D 'A' && c <=3D 'F')
-> +		return c + 10 - 'A';
-> +	return -1;
+> +	if (!i2cdev_dev)
+> +		return NULL;
+> +
+> +	return i2cdev_dev->client;
 > +}
 > +
-> +static int hex2_bin(char *s)
+> +static struct file_operations i2cdev_fops =3D {
+> +};
+> +
+> +static int i2cdev_probe(struct device_d *dev)
 > +{
-> +	int i, j;
+> +	if (i2cdev_dev)
+> +		return -EBUSY;
 > +
-> +	if (*s =3D=3D '0' && (*(s+1) =3D=3D 'x'))
-> +		s +=3D 2;
-> +	i =3D hex1_bin(*s++);
-> +	if (i < 0)
-> +		return -1;
-> +	j =3D hex1_bin(*s);
-> +	if (j < 0)
-> +		return -1;
-> +	return (i<<4) + j;
-> +}
-
-Any reason not to use simple_strtoul here?
-
+> +	i2cdev_dev =3D xzalloc(sizeof(struct i2cdev_priv));
+> +	i2cdev_dev->cdev.name =3D DRIVERNAME;
+> +	i2cdev_dev->client =3D to_i2c_client(dev);
+> +	i2cdev_dev->cdev.size =3D 256;
+> +	i2cdev_dev->cdev.dev =3D dev;
+> +	i2cdev_dev->cdev.ops =3D &i2cdev_fops;
 > +
-> +static int do_i2c_probe(struct command *cmdtp, int argc, char *argv[])
-> +{
-> +	struct i2c_client *client;
-> +	int startaddr =3D -1, stopaddr =3D -1, addr, ret;
-> +	u8 reg;
+> +	devfs_create(&i2cdev_dev->cdev);
 > +
-> +	if (argc < 3)
-> +		return COMMAND_ERROR_USAGE;
-> +
-> +	startaddr =3D hex2_bin(argv[1]);
-> +	stopaddr =3D hex2_bin(argv[2]);
-> +	if ((startaddr =3D=3D -1) || (stopaddr =3D=3D -1))
-> +		return COMMAND_ERROR_USAGE;
-> +
-
-You should also check for stopaddr >=3D startaddr, otherwise you can run
-into a (nearly) infinite loop below. Or better check for addr <=3D
-stopaddr below.
-
-> +	client =3D i2cdev_get_client();
-> +	if (!client)
-> +		return -ENODEV;
-> +
-> +	printf("probing i2c range 0X%02x - 0x%02x :\n", startaddr, stopaddr);
-> +	for (addr =3D startaddr; addr !=3D stopaddr; addr++) {
-> +		client->addr =3D addr;
-> +		ret =3D i2c_write_reg(client, 0x00, &reg, 0);
-> +		if (ret =3D=3D 0)
-> +			printf("0x%02x ", addr);
-> +	}
-> +	printf("\n");
 > +	return 0;
 > +}
 > +
-> +static const __maybe_unused char cmd_i2c_probe_help[] =3D
-> +"Usage: i2c_probe 0xstartaddr 0xstopaddr\n"
-> +"probe a range of i2c addresses.\n";
+> +static struct driver_d i2cdev_driver =3D {
+> +	.name  =3D DRIVERNAME,
+> +	.probe =3D i2cdev_probe,
+> +};
 > +
-> +BAREBOX_CMD_START(i2c_probe)
-> +	.cmd		=3D do_i2c_probe,
-> +	.usage		=3D "probe for an i2c device",
-> +	BAREBOX_CMD_HELP(cmd_i2c_probe_help)
-> +BAREBOX_CMD_END
-> +
-> +static int do_i2c_write(struct command *cmdtp, int argc, char *argv[])
+> +static int i2cdev_init(void)
 > +{
-> +	struct i2c_client *client;
-> +	int addr =3D -1, reg =3D -1, count =3D -1, ret, opt;
-> +	void *buf =3D NULL;
-
-No need to set this to NULL.
-
-> +
-> +	if (argc < 5)
-> +		return COMMAND_ERROR_USAGE;
-
-You don't need this check.
-
-> +
-> +	while ((opt =3D getopt(argc, argv, "a:c:r:")) > 0) {
-> +		switch (opt) {
-> +		case 'a':
-> +			addr =3D hex2_bin(optarg);
-> +			if (addr < 0)
-> +				return COMMAND_ERROR_USAGE;
-> +			break;
-> +		case 'c':
-> +			count =3D simple_strtoul(optarg, NULL, 0);
-> +			break;
-> +		case 'r':
-> +			reg =3D hex2_bin(optarg);
-> +			if (reg < 0)
-> +				return COMMAND_ERROR_USAGE;
-> +			break;
-> +		}
-> +	}
-> +	if ((argc - optind) !=3D count)
-> +		return COMMAND_ERROR_USAGE;
-
-We do not need the count command line argument. Just do a
-count =3D argc - optind.
-
-You should move the addr < 0 and reg < 0 checks here. This also catches
-the case when the user did not specify -a or -r.
-
-> +
-> +	client =3D i2cdev_get_client();
-> +	if (!client)
-> +		return -ENODEV;
-> +	client->addr =3D addr;
-> +
-> +	buf =3D malloc(count);
-> +	if (buf) {
-> +		int i;
-> +		u8 tmp;
-> +		for (i =3D 0; i < count; i++) {
-> +			tmp =3D hex2_bin(argv[optind+i]);
-> +			if (tmp < 1) {
-
-Shouldn't this be tmp < 0?
-Anyway, simple_strtoul can do a better job here. You can explicitely
-specify the base to 16 to get rid of the mandatory 0x prefix.
-
-> +				free(buf);
-> +				return COMMAND_ERROR_USAGE;
-> +			}
-> +			*(u8 *) (buf + i) =3D tmp;
-
-u8 might a better type for buf.
-
-> +		}
-> +		ret =3D i2c_write_reg(client, reg, buf, count);
-> +		if (ret !=3D count) {
-> +			free(buf);
-> +			return ret;
-> +		}
-> +		free(buf);
-> +		printf("wrote %i bytes starting at reg 0x%02x to i2cdev \
-> +			0x%02x\n", count, reg, addr);
-> +		return 0;
-> +	}
-> +	return 1;
+> +	register_driver(&i2cdev_driver);
+> +	return 0;
 > +}
 > +
-> +static const __maybe_unused char cmd_i2c_write_help[] =3D
-> +"Usage: i2c_write [OPTION] ... hexdatas\n"
-> +"write to i2c device.\n"
-> +"  -a 0x<addr>   i2c device address\n"
-> +"  -r 0x<reg>    start register\n"
-> +"  -c <count>  byte number to write\n";
-> +
-> +BAREBOX_CMD_START(i2c_write)
-> +	.cmd		=3D do_i2c_write,
-> +	.usage		=3D "write to an i2c device",
-> +	BAREBOX_CMD_HELP(cmd_i2c_write_help)
-> +BAREBOX_CMD_END
-> +
-> +static int do_i2c_read(struct command *cmdtp, int argc, char *argv[])
-> +{
-
-Some comments above apply to this function aswell.
-
-> +	struct i2c_client *client;
-> +	void *buf =3D NULL;
-> +	int count =3D -1, addr =3D -1, reg =3D -1, ret, opt;
-> +
-> +	if (argc < 4)
-> +		return COMMAND_ERROR_USAGE;
-> +
-> +	while ((opt =3D getopt(argc, argv, "a:c:r:")) > 0) {
-> +		switch (opt) {
-> +		case 'a':
-> +			addr =3D hex2_bin(optarg);
-> +			if (addr < 0)
-> +				return COMMAND_ERROR_USAGE;
-> +			break;
-> +		case 'c':
-> +			count =3D simple_strtoul(optarg, NULL, 0);
-> +			break;
-> +		case 'r':
-> +			reg =3D hex2_bin(optarg);
-> +			if (reg < 0)
-> +				return COMMAND_ERROR_USAGE;
-> +			break;
-> +		}
-> +	}
-> +
-> +	client =3D i2cdev_get_client();
-> +	if (!client)
-> +		return -ENODEV;
-> +	client->addr =3D addr;
-> +
-> +	buf =3D malloc(count);
-> +	if (buf) {
-> +		ret =3D i2c_read_reg(client, reg, buf, count);
-> +		if (ret =3D=3D count) {
-> +			int i;
-> +			printf("read %i bytes starting at reg 0x%02x from \
-> +				i2cdev 0x%02x\n", count, reg, addr);
-> +			for (i =3D 0; i < count; i++)
-> +				printf("0x%02x ", *(u8 *) (buf + i));
-> +			printf("\n");
-> +			free(buf);
-> +			return 0;
-> +		}
-> +		free(buf);
-> +	}
-> +	return 1;
-> +}
-> +
-> +static const __maybe_unused char cmd_i2c_read_help[] =3D
-> +"Usage: i2c_read [OPTION]\n"
-> +"read i2c device.\n"
-> +"  -a 0x<addr>   i2c device address\n"
-> +"  -r 0x<reg>    start register\n"
-> +"  -c <count>  byte count\n";
-> +
-> +BAREBOX_CMD_START(i2c_read)
-> +	.cmd		=3D do_i2c_read,
-> +	.usage		=3D "read from an i2c device",
-> +	BAREBOX_CMD_HELP(cmd_i2c_read_help)
-> +BAREBOX_CMD_END
+> +device_initcall(i2cdev_init);
 > -- =
 
 > 1.6.3.3
