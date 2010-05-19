@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ww0-f49.google.com ([74.125.82.49])
-	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
-	id 1OEhuX-0007Im-8x
-	for barebox@lists.infradead.org; Wed, 19 May 2010 11:58:06 +0000
-Received: by wwb24 with SMTP id 24so804905wwb.36
-	for <barebox@lists.infradead.org>; Wed, 19 May 2010 04:58:03 -0700 (PDT)
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
+	id 1OEiHI-00074F-Qh
+	for barebox@lists.infradead.org; Wed, 19 May 2010 12:21:37 +0000
+Date: Wed, 19 May 2010 14:21:34 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20100519122134.GO31199@pengutronix.de>
+References: <1274174808-9516-1-git-send-email-eric@eukrea.com>
+	<1274174808-9516-2-git-send-email-eric@eukrea.com>
+	<20100519110124.GM31199@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20100519112750.GN31199@pengutronix.de>
-References: <AANLkTikXvBdVzs2w51dzow9V7myhkvq0sSWUNMzPWn23@mail.gmail.com>
-	<20100519112750.GN31199@pengutronix.de>
-Date: Wed, 19 May 2010 13:58:02 +0200
-Message-ID: <AANLkTikkA8YbPdjBN0mzrRkleZo3NEH6gziW2t-jgyXA@mail.gmail.com>
-From: Ivo Clarysse <ivo.clarysse@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <20100519110124.GM31199@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,71 +20,117 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: board_init_lowlevel_return: Error: symbol ABS is in a different 
-	section
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 2/3] i2c: add i2cdev driver
+To: Eric =?iso-8859-15?Q?B=E9nard?= <eric@eukrea.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, May 19, 2010 at 1:27 PM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-[...]
->> Is this a problem with the toolchain I use, or should barebox be patched ?
->
-> This works with our toolchain, but it may be that I used some 'feature'
-> which is not supposed to work. Anyway, I like the way you did it above
-> better as my approach, so how about the following patch which is a
-> slight modification from yours:
->
->
-> From 84aea4781ec1e99481530b4d5a122ce4e95d2266 Mon Sep 17 00:00:00 2001
-> From: Sascha Hauer <s.hauer@pengutronix.de>
-> Date: Wed, 19 May 2010 13:23:43 +0200
-> Subject: [PATCH] arm start.c: Make runtime function address calculation tolerant for more compilers
+On Wed, May 19, 2010 at 01:01:24PM +0200, Sascha Hauer wrote:
+> On Tue, May 18, 2010 at 11:26:47AM +0200, Eric B=E9nard wrote:
+> > this driver is needed to introduce i2c commands
+> =
 
-This builds using the CodeSourcery G++ toolchain (compile-tested only,
-with releases 2009q3 and 2010q1).
+> This approach limits the i2cdev support to exactly one bus which is not
+> good. What we can do here is:
+> =
 
-I couldn't find anything in the GAS manual that would explain the
-presence of an automatic "0:" label.
+> - collect all available adapters in a list in drivers/i2c/i2c.c
+> - implement i2c_get_adapter(int busnum) to get an adapter from its
+>   busnum
 
-http://sourceware.org/binutils/docs-2.20/as/ARM-Opcodes.html#ARM-Opcodes  :
-
-ADR
-
-                adr <register> <label>
+For your convenience, the following patch should do it (untested
+currently)
 
 
-    This instruction will load the address of label into the indicated
-register. The instruction will evaluate to a PC relative ADD or SUB
-instruction depending upon where the label is located. If the label is
-out of range, or if it is not defined in the same file (and section)
-as the ADR instruction, then an error will be generated. This
-instruction will not make use of the literal pool.
+From 541c2167200f2a21584d0fdc0353f130129cf120 Mon Sep 17 00:00:00 2001
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Wed, 19 May 2010 14:20:07 +0200
+Subject: [PATCH] i2c: implement i2c_get_adapter()
 
-http://sourceware.org/binutils/docs-2.20/as/Labels.html#Labels :
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/i2c/i2c.c |   24 +++++++++++++++++++++++-
+ include/i2c/i2c.h |    3 +++
+ 2 files changed, 26 insertions(+), 1 deletions(-)
 
-A label is written as a symbol immediately followed by a colon `:'.
-The symbol then represents the current value of the active location
-counter, and is, for example, a suitable instruction operand. You are
-warned if you use the same symbol to represent two different
-locations: the first definition overrides any other definitions.
+diff --git a/drivers/i2c/i2c.c b/drivers/i2c/i2c.c
+index 32fd026..1fa114a 100644
+--- a/drivers/i2c/i2c.c
++++ b/drivers/i2c/i2c.c
+@@ -39,7 +39,7 @@ struct boardinfo {
+ };
+ =
 
-http://sourceware.org/binutils/docs-2.20/as/Symbol-Names.html#Symbol-Names :
+ static LIST_HEAD(board_list);
+-
++static LIST_HEAD(adapter_list);
+ =
 
-Local Labels
+ /**
+  * i2c_transfer - execute a single or combined I2C message
+@@ -327,6 +327,23 @@ static void scan_boardinfo(struct i2c_adapter *adapter)
+ }
+ =
 
-[...]
-There is no restriction on how you can use these labels, and you can
-reuse them too. So that it is possible to repeatedly define the same
-local label (using the same number `N'), although you can only refer
-to the most recently defined local label of that number (for a
-backwards reference) or the next definition of a specific local label
-for a forward reference. It is also worth noting that the first 10
-local labels (`0:'...`9:') are implemented in a slightly more
-efficient manner than the others.
+ /**
++ *
++ * i2c_get_adapter - get an i2c adapter from its busnum
++ *
++ * @param	busnum	the desired bus number
++ *
++ */
++struct i2c_adapter *i2c_get_adapter(int busnum)
++{
++	struct i2c_adapter *adap;
++
++	list_for_each_entry(adap, &adapter_list, list)
++		if (adap->nr =3D=3D busnum)
++			return adap;
++	return NULL;
++}
++
++/**
+  * i2c_register_master - register I2C master controller
+  *
+  * @param	master	initialized master, originally from i2c_alloc_master()
+@@ -345,6 +362,11 @@ static void scan_boardinfo(struct i2c_adapter *adapter)
+  */
+ int i2c_add_numbered_adapter(struct i2c_adapter *adapter)
+ {
++	if (i2c_get_adapter(adapter->nr))
++		return -EBUSY;
++
++	list_add_tail(&adapter_list, &adapter->list);
++
+ 	/* populate children from any i2c device tables */
+ 	scan_boardinfo(adapter);
+ =
+
+diff --git a/include/i2c/i2c.h b/include/i2c/i2c.h
+index 0760fdc..6c216df 100644
+--- a/include/i2c/i2c.h
++++ b/include/i2c/i2c.h
+@@ -66,6 +66,7 @@ struct i2c_adapter {
+ 	struct device_d		*dev;	/* ptr to device */
+ 	int			nr;	/* bus number */
+ 	int (*master_xfer)(struct i2c_adapter *adap, struct i2c_msg *msgs, int nu=
+m);
++	struct list_head	list;
+ };
+ =
+
+ =
+
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
