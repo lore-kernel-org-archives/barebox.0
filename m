@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 26.mail-out.ovh.net ([91.121.27.225])
-	by bombadil.infradead.org with smtp (Exim 4.69 #1 (Red Hat Linux))
-	id 1OGWUJ-0004Cd-Ey
-	for barebox@lists.infradead.org; Mon, 24 May 2010 12:10:32 +0000
-Message-ID: <4BFA6CB0.7080507@eukrea.com>
-Date: Mon, 24 May 2010 14:10:24 +0200
-From: =?UTF-8?B?RXJpYyBCw6luYXJk?= <eric@eukrea.com>
-MIME-Version: 1.0
-References: <1274702114-11772-1-git-send-email-eric@eukrea.com>
-	<1274702114-11772-2-git-send-email-eric@eukrea.com>
-In-Reply-To: <1274702114-11772-2-git-send-email-eric@eukrea.com>
+Received: from smtp3-g21.free.fr ([212.27.42.3])
+	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
+	id 1OGXyz-0004zs-5V
+	for barebox@lists.infradead.org; Mon, 24 May 2010 13:46:18 +0000
+From: =?utf-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
+Date: Mon, 24 May 2010 15:46:06 +0200
+Message-Id: <1274708768-20607-2-git-send-email-eric@eukrea.com>
+In-Reply-To: <1274708768-20607-1-git-send-email-eric@eukrea.com>
+References: <1274708768-20607-1-git-send-email-eric@eukrea.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,18 +16,99 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3] commands: add i2c commands
-To: barebox@lists.infradead.org
+Subject: [PATCH 2/4] i2c: implement i2c_get_adapter()
+To: s.hauer@pengutronix.de
+Cc: barebox@lists.infradead.org
 
-TGUgMjQvMDUvMjAxMCAxMzo1NSwgRXJpYyBCw6luYXJkIGEgw6ljcml0IDoKPiB0aGVzZXMgY29t
-bWFuZHMgYWxsb3cgbG93IGxldmVsIGFjY2VzcyB0byBpMmMgYnVzIGFuZCBjYW4gYmUgdXNlZnVs
-Cj4gdG8gc2V0dXAgYW4gaTJjIGRldmljZSB3aXRob3V0IGhhdmluZyB0byBhZGQgY29kZSwgY29t
-cGlsZSBhbmQgZmxhc2gKPiBiYXJlYm94Lgo+Cj4gU2lnbmVkLW9mZi1ieTogRXJpYyBCw6luYXJk
-PGVyaWNAZXVrcmVhLmNvbT4KCmZvcmdldCBpdCwgdjMgd2lsbCBiZSB0aGUgcmlnaHQgb25lICEK
-CkVyaWMKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJh
-cmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlz
-dHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+From: Sascha Hauer <s.hauer@pengutronix.de>
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+v2 : add i2c_get_adapter to include/i2c/i2c.h
+
+ drivers/i2c/i2c.c |   24 +++++++++++++++++++++++-
+ include/i2c/i2c.h |    2 ++
+ 2 files changed, 25 insertions(+), 1 deletions(-)
+
+diff --git a/drivers/i2c/i2c.c b/drivers/i2c/i2c.c
+index 32fd026..1fa114a 100644
+--- a/drivers/i2c/i2c.c
++++ b/drivers/i2c/i2c.c
+@@ -39,7 +39,7 @@ struct boardinfo {
+ };
+ 
+ static LIST_HEAD(board_list);
+-
++static LIST_HEAD(adapter_list);
+ 
+ /**
+  * i2c_transfer - execute a single or combined I2C message
+@@ -327,6 +327,23 @@ static void scan_boardinfo(struct i2c_adapter *adapter)
+ }
+ 
+ /**
++ *
++ * i2c_get_adapter - get an i2c adapter from its busnum
++ *
++ * @param	busnum	the desired bus number
++ *
++ */
++struct i2c_adapter *i2c_get_adapter(int busnum)
++{
++	struct i2c_adapter *adap;
++
++	list_for_each_entry(adap, &adapter_list, list)
++		if (adap->nr == busnum)
++			return adap;
++	return NULL;
++}
++
++/**
+  * i2c_register_master - register I2C master controller
+  *
+  * @param	master	initialized master, originally from i2c_alloc_master()
+@@ -345,6 +362,11 @@ static void scan_boardinfo(struct i2c_adapter *adapter)
+  */
+ int i2c_add_numbered_adapter(struct i2c_adapter *adapter)
+ {
++	if (i2c_get_adapter(adapter->nr))
++		return -EBUSY;
++
++	list_add_tail(&adapter_list, &adapter->list);
++
+ 	/* populate children from any i2c device tables */
+ 	scan_boardinfo(adapter);
+ 
+diff --git a/include/i2c/i2c.h b/include/i2c/i2c.h
+index 0760fdc..c031bbb 100644
+--- a/include/i2c/i2c.h
++++ b/include/i2c/i2c.h
+@@ -66,6 +66,7 @@ struct i2c_adapter {
+ 	struct device_d		*dev;	/* ptr to device */
+ 	int			nr;	/* bus number */
+ 	int (*master_xfer)(struct i2c_adapter *adap, struct i2c_msg *msgs, int num);
++	struct list_head	list;
+ };
+ 
+ 
+@@ -120,6 +121,7 @@ static inline int i2c_register_board_info(int busnum,
+ }
+ #endif
+ extern int i2c_add_numbered_adapter(struct i2c_adapter *adapter);
++struct i2c_adapter *i2c_get_adapter(int busnum);
+ 
+ extern int i2c_transfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int num);
+ extern int i2c_master_send(struct i2c_client *client, const char *buf, int count);
+-- 
+1.6.3.3
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
