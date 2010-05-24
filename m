@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp3-g21.free.fr ([212.27.42.3])
-	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
-	id 1OGWFb-0000qR-Uk
-	for barebox@lists.infradead.org; Mon, 24 May 2010 11:55:20 +0000
-From: =?utf-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
-Date: Mon, 24 May 2010 13:55:12 +0200
-Message-Id: <1274702114-11772-1-git-send-email-eric@eukrea.com>
+Received: from 26.mail-out.ovh.net ([91.121.27.225])
+	by bombadil.infradead.org with smtp (Exim 4.69 #1 (Red Hat Linux))
+	id 1OGWUJ-0004Cd-Ey
+	for barebox@lists.infradead.org; Mon, 24 May 2010 12:10:32 +0000
+Message-ID: <4BFA6CB0.7080507@eukrea.com>
+Date: Mon, 24 May 2010 14:10:24 +0200
+From: =?UTF-8?B?RXJpYyBCw6luYXJk?= <eric@eukrea.com>
 MIME-Version: 1.0
+References: <1274702114-11772-1-git-send-email-eric@eukrea.com>
+	<1274702114-11772-2-git-send-email-eric@eukrea.com>
+In-Reply-To: <1274702114-11772-2-git-send-email-eric@eukrea.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,24 +18,18 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] i2c-imx: change log level for No ACK
-To: s.hauer@pengutronix.de
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/3] commands: add i2c commands
+To: barebox@lists.infradead.org
 
-U2lnbmVkLW9mZi1ieTogRXJpYyBCw6luYXJkIDxlcmljQGV1a3JlYS5jb20+Ci0tLQogZHJpdmVy
-cy9pMmMvaTJjLWlteC5jIHwgICAgMiArLQogMSBmaWxlcyBjaGFuZ2VkLCAxIGluc2VydGlvbnMo
-KyksIDEgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9pMmMvaTJjLWlteC5jIGIv
-ZHJpdmVycy9pMmMvaTJjLWlteC5jCmluZGV4IDAzZTM3ODUuLmNjNjRkOTQgMTAwNjQ0Ci0tLSBh
-L2RyaXZlcnMvaTJjL2kyYy1pbXguYworKysgYi9kcml2ZXJzL2kyYy9pMmMtaW14LmMKQEAgLTIx
-NCw3ICsyMTQsNyBAQCBzdGF0aWMgaW50IGkyY19pbXhfYWNrZWQoc3RydWN0IGkyY19hZGFwdGVy
-ICphZGFwdGVyKQogCQkJYnJlYWs7CiAKIAkJaWYgKGlzX3RpbWVvdXQoc3RhcnQsIE1TRUNPTkQp
-KSB7Ci0JCQlkZXZfZXJyKGFkYXB0ZXItPmRldiwgIjwlcz4gTm8gQUNLXG4iLCBfX2Z1bmNfXyk7
-CisJCQlkZXZfZGJnKGFkYXB0ZXItPmRldiwgIjwlcz4gTm8gQUNLXG4iLCBfX2Z1bmNfXyk7CiAJ
-CQlyZXR1cm4gLUVJTzsKIAkJfQogCX0KLS0gCjEuNi4zLjMKCgpfX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94
-QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9s
-aXN0aW5mby9iYXJlYm94Cg==
+TGUgMjQvMDUvMjAxMCAxMzo1NSwgRXJpYyBCw6luYXJkIGEgw6ljcml0IDoKPiB0aGVzZXMgY29t
+bWFuZHMgYWxsb3cgbG93IGxldmVsIGFjY2VzcyB0byBpMmMgYnVzIGFuZCBjYW4gYmUgdXNlZnVs
+Cj4gdG8gc2V0dXAgYW4gaTJjIGRldmljZSB3aXRob3V0IGhhdmluZyB0byBhZGQgY29kZSwgY29t
+cGlsZSBhbmQgZmxhc2gKPiBiYXJlYm94Lgo+Cj4gU2lnbmVkLW9mZi1ieTogRXJpYyBCw6luYXJk
+PGVyaWNAZXVrcmVhLmNvbT4KCmZvcmdldCBpdCwgdjMgd2lsbCBiZSB0aGUgcmlnaHQgb25lICEK
+CkVyaWMKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJh
+cmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlz
+dHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
