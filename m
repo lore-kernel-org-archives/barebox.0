@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp3-g21.free.fr ([212.27.42.3])
 	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
-	id 1OGXyz-0004zs-5V
-	for barebox@lists.infradead.org; Mon, 24 May 2010 13:46:18 +0000
+	id 1OGXz6-00052I-55
+	for barebox@lists.infradead.org; Mon, 24 May 2010 13:46:25 +0000
 From: =?utf-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
-Date: Mon, 24 May 2010 15:46:06 +0200
-Message-Id: <1274708768-20607-2-git-send-email-eric@eukrea.com>
-In-Reply-To: <1274708768-20607-1-git-send-email-eric@eukrea.com>
+Date: Mon, 24 May 2010 15:46:08 +0200
+Message-Id: <1274708768-20607-4-git-send-email-eric@eukrea.com>
+In-Reply-To: <1274708768-20607-3-git-send-email-eric@eukrea.com>
 References: <1274708768-20607-1-git-send-email-eric@eukrea.com>
+	<1274708768-20607-2-git-send-email-eric@eukrea.com>
+	<1274708768-20607-3-git-send-email-eric@eukrea.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,99 +19,61 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] i2c: implement i2c_get_adapter()
+Subject: [PATCH 4/4] eukrea_cpuimx27: add fb support
 To: s.hauer@pengutronix.de
 Cc: barebox@lists.infradead.org
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
-v2 : add i2c_get_adapter to include/i2c/i2c.h
-
- drivers/i2c/i2c.c |   24 +++++++++++++++++++++++-
- include/i2c/i2c.h |    2 ++
- 2 files changed, 25 insertions(+), 1 deletions(-)
-
-diff --git a/drivers/i2c/i2c.c b/drivers/i2c/i2c.c
-index 32fd026..1fa114a 100644
---- a/drivers/i2c/i2c.c
-+++ b/drivers/i2c/i2c.c
-@@ -39,7 +39,7 @@ struct boardinfo {
- };
- 
- static LIST_HEAD(board_list);
--
-+static LIST_HEAD(adapter_list);
- 
- /**
-  * i2c_transfer - execute a single or combined I2C message
-@@ -327,6 +327,23 @@ static void scan_boardinfo(struct i2c_adapter *adapter)
- }
- 
- /**
-+ *
-+ * i2c_get_adapter - get an i2c adapter from its busnum
-+ *
-+ * @param	busnum	the desired bus number
-+ *
-+ */
-+struct i2c_adapter *i2c_get_adapter(int busnum)
-+{
-+	struct i2c_adapter *adap;
-+
-+	list_for_each_entry(adap, &adapter_list, list)
-+		if (adap->nr == busnum)
-+			return adap;
-+	return NULL;
-+}
-+
-+/**
-  * i2c_register_master - register I2C master controller
-  *
-  * @param	master	initialized master, originally from i2c_alloc_master()
-@@ -345,6 +362,11 @@ static void scan_boardinfo(struct i2c_adapter *adapter)
-  */
- int i2c_add_numbered_adapter(struct i2c_adapter *adapter)
- {
-+	if (i2c_get_adapter(adapter->nr))
-+		return -EBUSY;
-+
-+	list_add_tail(&adapter_list, &adapter->list);
-+
- 	/* populate children from any i2c device tables */
- 	scan_boardinfo(adapter);
- 
-diff --git a/include/i2c/i2c.h b/include/i2c/i2c.h
-index 0760fdc..c031bbb 100644
---- a/include/i2c/i2c.h
-+++ b/include/i2c/i2c.h
-@@ -66,6 +66,7 @@ struct i2c_adapter {
- 	struct device_d		*dev;	/* ptr to device */
- 	int			nr;	/* bus number */
- 	int (*master_xfer)(struct i2c_adapter *adap, struct i2c_msg *msgs, int num);
-+	struct list_head	list;
- };
- 
- 
-@@ -120,6 +121,7 @@ static inline int i2c_register_board_info(int busnum,
- }
- #endif
- extern int i2c_add_numbered_adapter(struct i2c_adapter *adapter);
-+struct i2c_adapter *i2c_get_adapter(int busnum);
- 
- extern int i2c_transfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int num);
- extern int i2c_master_send(struct i2c_client *client, const char *buf, int count);
--- 
-1.6.3.3
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogRXJpYyBCw6luYXJkIDxlcmljQGV1a3JlYS5jb20+Ci0tLQogYm9hcmQv
+ZXVrcmVhX2NwdWlteDI3L2V1a3JlYV9jcHVpbXgyNy5jIHwgICA2NyArKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKystCiAxIGZpbGVzIGNoYW5nZWQsIDY2IGluc2VydGlvbnMoKyksIDEgZGVs
+ZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvYm9hcmQvZXVrcmVhX2NwdWlteDI3L2V1a3JlYV9jcHVp
+bXgyNy5jIGIvYm9hcmQvZXVrcmVhX2NwdWlteDI3L2V1a3JlYV9jcHVpbXgyNy5jCmluZGV4IGVm
+NTdhOTYuLmU0MGMyNjAgMTAwNjQ0Ci0tLSBhL2JvYXJkL2V1a3JlYV9jcHVpbXgyNy9ldWtyZWFf
+Y3B1aW14MjcuYworKysgYi9ib2FyZC9ldWtyZWFfY3B1aW14MjcvZXVrcmVhX2NwdWlteDI3LmMK
+QEAgLTQwLDYgKzQwLDcgQEAKICNpbmNsdWRlIDxhc20vaW8uaD4KICNpbmNsdWRlIDxtYWNoL2lt
+eC1uYW5kLmg+CiAjaW5jbHVkZSA8bWFjaC9pbXgtcGxsLmg+CisjaW5jbHVkZSA8bWFjaC9pbXhm
+Yi5oPgogI2luY2x1ZGUgPG5zMTY1NTAuaD4KICNpbmNsdWRlIDxhc20vbW11Lmg+CiAjaW5jbHVk
+ZSA8aTJjL2kyYy5oPgpAQCAtMTc2LDYgKzE3NywzOSBAQCBzdGF0aWMgdm9pZCBldWtyZWFfY3B1
+aW14MjdfbW11X2luaXQodm9pZCkKIH0KICNlbmRpZgogCisjaWZkZWYgQ09ORklHX0RSSVZFUl9W
+SURFT19JTVgKK3N0YXRpYyBzdHJ1Y3QgaW14X2ZiX3ZpZGVvbW9kZSBpbXhmYl9tb2RlID0gewor
+CS5tb2RlID0geworCQkubmFtZQkJPSAiQ01PLVFWR0EiLAorCQkucmVmcmVzaAk9IDYwLAorCQku
+eHJlcwkJPSAzMjAsCisJCS55cmVzCQk9IDI0MCwKKwkJLnBpeGNsb2NrCT0gMTU2MDAwLAorCQku
+aHN5bmNfbGVuCT0gMzAsCisJCS5sZWZ0X21hcmdpbgk9IDM4LAorCQkucmlnaHRfbWFyZ2luCT0g
+MjAsCisJCS52c3luY19sZW4JPSAzLAorCQkudXBwZXJfbWFyZ2luCT0gMTUsCisJCS5sb3dlcl9t
+YXJnaW4JPSA0LAorCX0sCisJLnBjcgkJPSAweEZBRDA4QjgwLAorCS5icHAJCT0gMTYsfTsKKwor
+c3RhdGljIHN0cnVjdCBpbXhfZmJfcGxhdGZvcm1fZGF0YSBldWtyZWFfY3B1aW14MjdfZmJfZGF0
+YSA9IHsKKwkubW9kZQk9ICZpbXhmYl9tb2RlLAorCS5wd21yCT0gMHgwMEE5MDNGRiwKKwkubHNj
+cjEJPSAweDAwMTIwMzAwLAorCS5kbWFjcgk9IDB4MDAwMjAwMTAsCit9OworCitzdGF0aWMgc3Ry
+dWN0IGRldmljZV9kIGlteGZiX2RldiA9IHsKKwkubmFtZQkJPSAiaW14ZmIiLAorCS5tYXBfYmFz
+ZQk9IDB4MTAwMjEwMDAsCisJLnNpemUJCT0gMHgxMDAwLAorCS5wbGF0Zm9ybV9kYXRhCT0gJmV1
+a3JlYV9jcHVpbXgyN19mYl9kYXRhLAorfTsKKyNlbmRpZgorCiBzdGF0aWMgaW50IGV1a3JlYV9j
+cHVpbXgyN19kZXZpY2VzX2luaXQodm9pZCkKIHsKIAljaGFyICplbnZkZXYgPSAibm8iOwpAQCAt
+MjA4LDYgKzI0MiwzMSBAQCBzdGF0aWMgaW50IGV1a3JlYV9jcHVpbXgyN19kZXZpY2VzX2luaXQo
+dm9pZCkKIAkJUEUxNF9QRl9VQVJUMV9DVFMsCiAJCVBFMTVfUEZfVUFSVDFfUlRTLAogI2VuZGlm
+CisjaWZkZWYgQ09ORklHX0RSSVZFUl9WSURFT19JTVgKKwkJUEE1X1BGX0xTQ0xLLAorCQlQQTZf
+UEZfTEQwLAorCQlQQTdfUEZfTEQxLAorCQlQQThfUEZfTEQyLAorCQlQQTlfUEZfTEQzLAorCQlQ
+QTEwX1BGX0xENCwKKwkJUEExMV9QRl9MRDUsCisJCVBBMTJfUEZfTEQ2LAorCQlQQTEzX1BGX0xE
+NywKKwkJUEExNF9QRl9MRDgsCisJCVBBMTVfUEZfTEQ5LAorCQlQQTE2X1BGX0xEMTAsCisJCVBB
+MTdfUEZfTEQxMSwKKwkJUEExOF9QRl9MRDEyLAorCQlQQTE5X1BGX0xEMTMsCisJCVBBMjBfUEZf
+TEQxNCwKKwkJUEEyMV9QRl9MRDE1LAorCQlQQTIyX1BGX0xEMTYsCisJCVBBMjNfUEZfTEQxNywK
+KwkJUEEyOF9QRl9IU1lOQywKKwkJUEEyOV9QRl9WU1lOQywKKwkJUEEzMV9QRl9PRV9BQ0QsCisJ
+CUdQSU9fUE9SVEUgfCA1IHwgR1BJT19HUElPIHwgR1BJT19PVVQsCisjZW5kaWYKIAl9OwogCiAJ
+ZXVrcmVhX2NwdWlteDI3X21tdV9pbml0KCk7CkBAIC0yMTcsNyArMjc2LDcgQEAgc3RhdGljIGlu
+dCBldWtyZWFfY3B1aW14MjdfZGV2aWNlc19pbml0KHZvaWQpCiAJQ1MwTCA9IDB4QTAzMzBEMDE7
+CiAJQ1MwQSA9IDB4MDAyMjA4QzA7CiAKLQkvKiBpbml0aXphbGl6ZSBncGlvcyAqLworCS8qIGlu
+aXRpYWxpemUgZ3Bpb3MgKi8KIAlmb3IgKGkgPSAwOyBpIDwgQVJSQVlfU0laRShtb2RlKTsgaSsr
+KQogCQlpbXhfZ3Bpb19tb2RlKG1vZGVbaV0pOwogCkBAIC0yMzksNiArMjk4LDEyIEBAIHN0YXRp
+YyBpbnQgZXVrcmVhX2NwdWlteDI3X2RldmljZXNfaW5pdCh2b2lkKQogCiAJcHJpbnRmKCJVc2lu
+ZyBlbnZpcm9ubWVudCBpbiAlcyBGbGFzaFxuIiwgZW52ZGV2KTsKIAorI2lmZGVmIENPTkZJR19E
+UklWRVJfVklERU9fSU1YCisJcmVnaXN0ZXJfZGV2aWNlKCZpbXhmYl9kZXYpOworCWdwaW9fZGly
+ZWN0aW9uX291dHB1dChHUElPX1BPUlRFIHwgNSwgMCk7CisJZ3Bpb19zZXRfdmFsdWUoR1BJT19Q
+T1JURSB8IDUsIDEpOworI2VuZGlmCisKIAlhcm1saW51eF9hZGRfZHJhbSgmc2RyYW1fZGV2KTsK
+IAlhcm1saW51eF9zZXRfYm9vdHBhcmFtcygodm9pZCAqKTB4YTAwMDAxMDApOwogCWFybWxpbnV4
+X3NldF9hcmNoaXRlY3R1cmUoTUFDSF9UWVBFX0NQVUlNWDI3KTsKLS0gCjEuNi4zLjMKCgpfX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxp
+bmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVh
+ZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
