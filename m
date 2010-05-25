@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp2-g21.free.fr ([212.27.42.2])
-	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
-	id 1OGqx9-00043X-1n
-	for barebox@lists.infradead.org; Tue, 25 May 2010 10:01:41 +0000
-From: =?utf-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
-Date: Tue, 25 May 2010 12:01:26 +0200
-Message-Id: <1274781690-9022-2-git-send-email-eric@eukrea.com>
-In-Reply-To: <1274781690-9022-1-git-send-email-eric@eukrea.com>
-References: <1274781690-9022-1-git-send-email-eric@eukrea.com>
+Received: from 27.mail-out.ovh.net ([91.121.30.210])
+	by bombadil.infradead.org with smtp (Exim 4.69 #1 (Red Hat Linux))
+	id 1OGt1W-0004Co-IB
+	for barebox@lists.infradead.org; Tue, 25 May 2010 12:14:19 +0000
+Message-ID: <4BFBBF17.8010504@eukrea.com>
+Date: Tue, 25 May 2010 14:14:15 +0200
+From: =?ISO-8859-1?Q?Eric_B=E9nard?= <eric@eukrea.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -17,53 +15,33 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/6] i2c: implement i2c_get_adapter()
-To: s.hauer@pengutronix.de
-Cc: barebox@lists.infradead.org
+Subject: barebox tftp to 2k pagesize NAND
+To: barebox@lists.infradead.org
 
-RnJvbTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPgoKU2lnbmVkLW9mZi1i
-eTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPgpTaWduZWQtb2ZmLWJ5OiBF
-cmljIELDqW5hcmQgPGVyaWNAZXVrcmVhLmNvbT4KLS0tCnYyIDogYWRkIGkyY19nZXRfYWRhcHRl
-ciB0byBpbmNsdWRlL2kyYy9pMmMuaAoKIGRyaXZlcnMvaTJjL2kyYy5jIHwgICAyNCArKysrKysr
-KysrKysrKysrKysrKysrKy0KIGluY2x1ZGUvaTJjL2kyYy5oIHwgICAgMiArKwogMiBmaWxlcyBj
-aGFuZ2VkLCAyNSBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2Ry
-aXZlcnMvaTJjL2kyYy5jIGIvZHJpdmVycy9pMmMvaTJjLmMKaW5kZXggMzJmZDAyNi4uMWZhMTE0
-YSAxMDA2NDQKLS0tIGEvZHJpdmVycy9pMmMvaTJjLmMKKysrIGIvZHJpdmVycy9pMmMvaTJjLmMK
-QEAgLTM5LDcgKzM5LDcgQEAgc3RydWN0IGJvYXJkaW5mbyB7CiB9OwogCiBzdGF0aWMgTElTVF9I
-RUFEKGJvYXJkX2xpc3QpOwotCitzdGF0aWMgTElTVF9IRUFEKGFkYXB0ZXJfbGlzdCk7CiAKIC8q
-KgogICogaTJjX3RyYW5zZmVyIC0gZXhlY3V0ZSBhIHNpbmdsZSBvciBjb21iaW5lZCBJMkMgbWVz
-c2FnZQpAQCAtMzI3LDYgKzMyNywyMyBAQCBzdGF0aWMgdm9pZCBzY2FuX2JvYXJkaW5mbyhzdHJ1
-Y3QgaTJjX2FkYXB0ZXIgKmFkYXB0ZXIpCiB9CiAKIC8qKgorICoKKyAqIGkyY19nZXRfYWRhcHRl
-ciAtIGdldCBhbiBpMmMgYWRhcHRlciBmcm9tIGl0cyBidXNudW0KKyAqCisgKiBAcGFyYW0JYnVz
-bnVtCXRoZSBkZXNpcmVkIGJ1cyBudW1iZXIKKyAqCisgKi8KK3N0cnVjdCBpMmNfYWRhcHRlciAq
-aTJjX2dldF9hZGFwdGVyKGludCBidXNudW0pCit7CisJc3RydWN0IGkyY19hZGFwdGVyICphZGFw
-OworCisJbGlzdF9mb3JfZWFjaF9lbnRyeShhZGFwLCAmYWRhcHRlcl9saXN0LCBsaXN0KQorCQlp
-ZiAoYWRhcC0+bnIgPT0gYnVzbnVtKQorCQkJcmV0dXJuIGFkYXA7CisJcmV0dXJuIE5VTEw7Cit9
-CisKKy8qKgogICogaTJjX3JlZ2lzdGVyX21hc3RlciAtIHJlZ2lzdGVyIEkyQyBtYXN0ZXIgY29u
-dHJvbGxlcgogICoKICAqIEBwYXJhbQltYXN0ZXIJaW5pdGlhbGl6ZWQgbWFzdGVyLCBvcmlnaW5h
-bGx5IGZyb20gaTJjX2FsbG9jX21hc3RlcigpCkBAIC0zNDUsNiArMzYyLDExIEBAIHN0YXRpYyB2
-b2lkIHNjYW5fYm9hcmRpbmZvKHN0cnVjdCBpMmNfYWRhcHRlciAqYWRhcHRlcikKICAqLwogaW50
-IGkyY19hZGRfbnVtYmVyZWRfYWRhcHRlcihzdHJ1Y3QgaTJjX2FkYXB0ZXIgKmFkYXB0ZXIpCiB7
-CisJaWYgKGkyY19nZXRfYWRhcHRlcihhZGFwdGVyLT5ucikpCisJCXJldHVybiAtRUJVU1k7CisK
-KwlsaXN0X2FkZF90YWlsKCZhZGFwdGVyX2xpc3QsICZhZGFwdGVyLT5saXN0KTsKKwogCS8qIHBv
-cHVsYXRlIGNoaWxkcmVuIGZyb20gYW55IGkyYyBkZXZpY2UgdGFibGVzICovCiAJc2Nhbl9ib2Fy
-ZGluZm8oYWRhcHRlcik7CiAKZGlmZiAtLWdpdCBhL2luY2x1ZGUvaTJjL2kyYy5oIGIvaW5jbHVk
-ZS9pMmMvaTJjLmgKaW5kZXggMDc2MGZkYy4uYzAzMWJiYiAxMDA2NDQKLS0tIGEvaW5jbHVkZS9p
-MmMvaTJjLmgKKysrIGIvaW5jbHVkZS9pMmMvaTJjLmgKQEAgLTY2LDYgKzY2LDcgQEAgc3RydWN0
-IGkyY19hZGFwdGVyIHsKIAlzdHJ1Y3QgZGV2aWNlX2QJCSpkZXY7CS8qIHB0ciB0byBkZXZpY2Ug
-Ki8KIAlpbnQJCQlucjsJLyogYnVzIG51bWJlciAqLwogCWludCAoKm1hc3Rlcl94ZmVyKShzdHJ1
-Y3QgaTJjX2FkYXB0ZXIgKmFkYXAsIHN0cnVjdCBpMmNfbXNnICptc2dzLCBpbnQgbnVtKTsKKwlz
-dHJ1Y3QgbGlzdF9oZWFkCWxpc3Q7CiB9OwogCiAKQEAgLTEyMCw2ICsxMjEsNyBAQCBzdGF0aWMg
-aW5saW5lIGludCBpMmNfcmVnaXN0ZXJfYm9hcmRfaW5mbyhpbnQgYnVzbnVtLAogfQogI2VuZGlm
-CiBleHRlcm4gaW50IGkyY19hZGRfbnVtYmVyZWRfYWRhcHRlcihzdHJ1Y3QgaTJjX2FkYXB0ZXIg
-KmFkYXB0ZXIpOworc3RydWN0IGkyY19hZGFwdGVyICppMmNfZ2V0X2FkYXB0ZXIoaW50IGJ1c251
-bSk7CiAKIGV4dGVybiBpbnQgaTJjX3RyYW5zZmVyKHN0cnVjdCBpMmNfYWRhcHRlciAqYWRhcCwg
-c3RydWN0IGkyY19tc2cgKm1zZ3MsIGludCBudW0pOwogZXh0ZXJuIGludCBpMmNfbWFzdGVyX3Nl
-bmQoc3RydWN0IGkyY19jbGllbnQgKmNsaWVudCwgY29uc3QgY2hhciAqYnVmLCBpbnQgY291bnQp
-OwotLSAKMS42LjMuMwoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpo
-dHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Hi,
+
+while running barebox on a i.MX25 which has 2k pagesize nand, I noticed 
+it's not possible to do a tftp directly to NAND (tftp barebox.bin 
+/dev/nand0.barebox for example).
+
+tftp try to write 512bytes packets to the NAND thus we get :
+offset 0x00000200 not page aligned
+when it tries to write the second packet.
+
+The workaround is :
+tftp to ram
+cp ram => nand
+
+Do you have any idea on how tof ix this problem ?
+
+Thanks,
+Eric
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
