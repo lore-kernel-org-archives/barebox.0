@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1OGu1S-0007NB-3g
-	for barebox@lists.infradead.org; Tue, 25 May 2010 13:18:18 +0000
-Date: Tue, 25 May 2010 15:18:16 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20100525131816.GN17272@pengutronix.de>
-References: <4BFBBF17.8010504@eukrea.com>
+Received: from 27.mail-out.ovh.net ([91.121.30.210])
+	by bombadil.infradead.org with smtp (Exim 4.69 #1 (Red Hat Linux))
+	id 1OGu9z-0002Ji-EP
+	for barebox@lists.infradead.org; Tue, 25 May 2010 13:27:08 +0000
+Message-ID: <4BFBD026.2070406@eukrea.com>
+Date: Tue, 25 May 2010 15:27:02 +0200
+From: =?ISO-8859-15?Q?Eric_B=E9nard?= <eric@eukrea.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <4BFBBF17.8010504@eukrea.com>
+References: <4BFBBF17.8010504@eukrea.com>
+	<20100525131816.GN17272@pengutronix.de>
+In-Reply-To: <20100525131816.GN17272@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,45 +18,22 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-15"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: barebox tftp to 2k pagesize NAND
-To: Eric =?iso-8859-15?Q?B=E9nard?= <eric@eukrea.com>
-Cc: barebox@lists.infradead.org
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Tue, May 25, 2010 at 02:14:15PM +0200, Eric B=E9nard wrote:
-> Hi,
+Le 25/05/2010 15:18, Sascha Hauer a =E9crit :
+> Use /dev/nand0.barebox.bb instead. You are not supposed to use the non
+> bad block aware devices directly.
 >
-> while running barebox on a i.MX25 which has 2k pagesize nand, I noticed  =
+OK, this works fine by using .bb device
 
-> it's not possible to do a tftp directly to NAND (tftp barebox.bin  =
-
-> /dev/nand0.barebox for example).
->
-> tftp try to write 512bytes packets to the NAND thus we get :
-> offset 0x00000200 not page aligned
-> when it tries to write the second packet.
->
-> The workaround is :
-> tftp to ram
-> cp ram =3D> nand
->
-> Do you have any idea on how tof ix this problem ?
-
-Use /dev/nand0.barebox.bb instead. You are not supposed to use the non
-bad block aware devices directly.
-
-Sascha
-
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Many thanks,
+Eric
 
 _______________________________________________
 barebox mailing list
