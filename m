@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp2-g21.free.fr ([212.27.42.2])
-	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
-	id 1OGqOH-00059P-PF
-	for barebox@lists.infradead.org; Tue, 25 May 2010 09:25:39 +0000
-From: =?utf-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
-Date: Tue, 25 May 2010 11:25:32 +0200
-Message-Id: <1274779532-8110-1-git-send-email-eric@eukrea.com>
-In-Reply-To: <4BFB9224.9030507@pengutronix.de>
-References: <4BFB9224.9030507@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
+	id 1OGqVE-0006SW-Fv
+	for barebox@lists.infradead.org; Tue, 25 May 2010 09:32:49 +0000
+Message-ID: <4BFB9938.5020001@pengutronix.de>
+Date: Tue, 25 May 2010 11:32:40 +0200
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 MIME-Version: 1.0
+References: <1274776657-6117-1-git-send-email-eric@eukrea.com>	<1274776657-6117-2-git-send-email-eric@eukrea.com>
+	<1274776657-6117-3-git-send-email-eric@eukrea.com>
+	<4BFB9224.9030507@pengutronix.de> <4BFB95C3.5090802@eukrea.com>
+In-Reply-To: <4BFB95C3.5090802@eukrea.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,141 +19,154 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============0040192412=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v5] commands: add i2c commands
-To: s.hauer@pengutronix.de
+Subject: Re: [PATCH v4 3/6] commands: add i2c commands
+To: =?UTF-8?B?RXJpYyBCw6luYXJk?= <eric@eukrea.com>
 Cc: barebox@lists.infradead.org
 
-dGhlc2VzIGNvbW1hbmRzIGFsbG93IGxvdyBsZXZlbCBhY2Nlc3MgdG8gaTJjIGJ1cyBhbmQgY2Fu
-IGJlIHVzZWZ1bAp0byBzZXR1cCBhbiBpMmMgZGV2aWNlIHdpdGhvdXQgaGF2aW5nIHRvIGFkZCBj
-b2RlLCBjb21waWxlIGFuZCBmbGFzaApiYXJlYm94LgoKU2lnbmVkLW9mZi1ieTogRXJpYyBCw6lu
-YXJkIDxlcmljQGV1a3JlYS5jb20+Ci0tLQp2NSA6Cgl1cGRhdGVkIGFzIHBlciBNYXJjJ3MgY29t
-bWVudHMKCWJldHRlciBlcnJvciBoYW5kbGluZyBpbiB3cml0ZQoJYmV0dGVyIGRlZmF1bHQgYnVz
-IGhhbmRsaW5nIGluIHJlYWQgJiB3cml0ZQp2NCA6Cgl1cGRhdGVkIGFzIHBlciBTYXNjaGEgYW5k
-IE1hcmMncyBjb21tZW50cwoJdXNlIGJ1cyAwIGFzIGEgZGVmYXVsdCBmb3IgaTJjX3JlYWQgJiB3
-cml0ZQoJcmVwbGFjZSBtYWxsb2Mgd2l0aCB4bWFsbG9jCglmaXggc2ltcGxlX3N0cnRvbCBjb25m
-aWd1cmF0aW9uIGZvciBwYXJhbWV0ZXJzCnYzIDogCgllbmFibGUgYnJhaW4gYW5kIGZpeCB2MgoJ
-dGVzdGVkIG9uIGlNWDI3CnYyIDoKCXVwZGF0ZWQgYXMgcGVyIFNhc2NoYSdzIGNvbW1lbnRzCgog
-Y29tbWFuZHMvS2NvbmZpZyAgfCAgICA4ICsrCiBjb21tYW5kcy9NYWtlZmlsZSB8ICAgIDEgKwog
-Y29tbWFuZHMvaTJjLmMgICAgfCAgMjExICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrCiAzIGZpbGVzIGNoYW5nZWQsIDIyMCBpbnNlcnRpb25zKCsp
-LCAwIGRlbGV0aW9ucygtKQogY3JlYXRlIG1vZGUgMTAwNjQ0IGNvbW1hbmRzL2kyYy5jCgpkaWZm
-IC0tZ2l0IGEvY29tbWFuZHMvS2NvbmZpZyBiL2NvbW1hbmRzL0tjb25maWcKaW5kZXggMGMwOWY5
-MS4uMGVhMzJkOSAxMDA2NDQKLS0tIGEvY29tbWFuZHMvS2NvbmZpZworKysgYi9jb21tYW5kcy9L
-Y29uZmlnCkBAIC0zMTQsNCArMzE0LDEyIEBAIGNvbmZpZyBDTURfVU5MWk8KIAkgIFNheSB5ZXMg
-aGVyZSB0byBnZXQgdGhlIHVubHpvIGNvbW1hbmQuIGx6byBpcyBhIGZhc3QgY29tcHJlc3Npb24K
-IAkgIGFsZ29yaXRobSBieSBNYXJrdXMgRnJhbnogWGF2ZXIgSm9oYW5uZXMgT2Jlcmh1bWVyLgog
-Citjb25maWcgQ01EX0kyQworCWJvb2wKKwlkZXBlbmRzIG9uIEkyQworCXByb21wdCAiaTJjIGNv
-bW1hbmRzIgorCWhlbHAKKwkgIGluY2x1ZGUgaTJjX3Byb2JlLCBpMmNfcmVhZCBhbmQgaTJjX3dy
-aXRlIGNvbW1hbmRzIHRvIGNvbW11bmljYXRlCisJICBvbiBpMmMgYnVzLgorCiBlbmRtZW51CmRp
-ZmYgLS1naXQgYS9jb21tYW5kcy9NYWtlZmlsZSBiL2NvbW1hbmRzL01ha2VmaWxlCmluZGV4IDc0
-YjA5OTQuLjNlZWY1ZGUgMTAwNjQ0Ci0tLSBhL2NvbW1hbmRzL01ha2VmaWxlCisrKyBiL2NvbW1h
-bmRzL01ha2VmaWxlCkBAIC00OCwzICs0OCw0IEBAIG9iai0kKENPTkZJR19DTURfQk1QKQkJKz0g
-Ym1wLm8KIG9iai0kKENPTkZJR19VU0JfR0FER0VUX0RGVSkJKz0gZGZ1Lm8KIG9iai0kKENPTkZJ
-R19DTURfR1BJTykJCSs9IGdwaW8ubwogb2JqLSQoQ09ORklHX0NNRF9VTkxaTykJCSs9IHVubHpv
-Lm8KK29iai0kKENPTkZJR19DTURfSTJDKQkJKz0gaTJjLm8KZGlmZiAtLWdpdCBhL2NvbW1hbmRz
-L2kyYy5jIGIvY29tbWFuZHMvaTJjLmMKbmV3IGZpbGUgbW9kZSAxMDA2NDQKaW5kZXggMDAwMDAw
-MC4uYjhmMmVlNgotLS0gL2Rldi9udWxsCisrKyBiL2NvbW1hbmRzL2kyYy5jCkBAIC0wLDAgKzEs
-MjExIEBACisvKgorICogaTJjLmMgLSBpMmMgY29tbWFuZHMKKyAqCisgKiBDb3B5cmlnaHQgKGMp
-IDIwMTAgRXJpYyBCw6luYXJkIDxlcmljQGV1a3JlYS5Db20+LCBFdWtyw6lhIEVsZWN0cm9tYXRp
-cXVlCisgKgorICogVGhpcyBwcm9ncmFtIGlzIGZyZWUgc29mdHdhcmU7IHlvdSBjYW4gcmVkaXN0
-cmlidXRlIGl0IGFuZC9vcgorICogbW9kaWZ5IGl0IHVuZGVyIHRoZSB0ZXJtcyBvZiB0aGUgR05V
-IEdlbmVyYWwgUHVibGljIExpY2Vuc2UgYXMKKyAqIHB1Ymxpc2hlZCBieSB0aGUgRnJlZSBTb2Z0
-d2FyZSBGb3VuZGF0aW9uOyBlaXRoZXIgdmVyc2lvbiAyIG9mCisgKiB0aGUgTGljZW5zZSwgb3Ig
-KGF0IHlvdXIgb3B0aW9uKSBhbnkgbGF0ZXIgdmVyc2lvbi4KKyAqCisgKiBUaGlzIHByb2dyYW0g
-aXMgZGlzdHJpYnV0ZWQgaW4gdGhlIGhvcGUgdGhhdCBpdCB3aWxsIGJlIHVzZWZ1bCwKKyAqIGJ1
-dCBXSVRIT1VUIEFOWSBXQVJSQU5UWTsgd2l0aG91dCBldmVuIHRoZSBpbXBsaWVkIHdhcnJhbnR5
-IG9mCisgKiBNRVJDSEFOVEFCSUxJVFkgb3IgRklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBP
-U0UuICBTZWUgdGhlCisgKiBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBmb3IgbW9yZSBkZXRh
-aWxzLgorICoKKyAqIFlvdSBzaG91bGQgaGF2ZSByZWNlaXZlZCBhIGNvcHkgb2YgdGhlIEdOVSBH
-ZW5lcmFsIFB1YmxpYyBMaWNlbnNlCisgKiBhbG9uZyB3aXRoIHRoaXMgcHJvZ3JhbTsgaWYgbm90
-LCB3cml0ZSB0byB0aGUgRnJlZSBTb2Z0d2FyZQorICogRm91bmRhdGlvbiwgSW5jLiwgNTkgVGVt
-cGxlIFBsYWNlLCBTdWl0ZSAzMzAsIEJvc3RvbiwKKyAqIE1BIDAyMTExLTEzMDcgVVNBCisgKi8K
-KworI2luY2x1ZGUgPGNvbW1vbi5oPgorI2luY2x1ZGUgPGNvbW1hbmQuaD4KKyNpbmNsdWRlIDxl
-cnJuby5oPgorI2luY2x1ZGUgPG1hbGxvYy5oPgorI2luY2x1ZGUgPGdldG9wdC5oPgorI2luY2x1
-ZGUgPGkyYy9pMmMuaD4KKworc3RhdGljIGludCBkb19pMmNfcHJvYmUoc3RydWN0IGNvbW1hbmQg
-KmNtZHRwLCBpbnQgYXJnYywgY2hhciAqYXJndltdKQoreworCXN0cnVjdCBpMmNfYWRhcHRlciAq
-YWRhcHRlcjsKKwlzdHJ1Y3QgaTJjX2NsaWVudCBjbGllbnQ7CisJaW50IHN0YXJ0YWRkciA9IC0x
-LCBzdG9wYWRkciA9IC0xLCBhZGRyLCByZXQ7CisJdTggcmVnOworCisJaWYgKGFyZ2MgPCA0KQor
-CQlyZXR1cm4gQ09NTUFORF9FUlJPUl9VU0FHRTsKKworCWFkYXB0ZXIgPSBpMmNfZ2V0X2FkYXB0
-ZXIoc2ltcGxlX3N0cnRvdWwoYXJndlsxXSwgTlVMTCwgMCkpOworCWlmICghYWRhcHRlcikKKwkJ
-cmV0dXJuIC1FTk9ERVY7CisJY2xpZW50LmFkYXB0ZXIgPSBhZGFwdGVyOworCisJc3RhcnRhZGRy
-ID0gc2ltcGxlX3N0cnRvbChhcmd2WzJdLCBOVUxMLCAwKTsKKwlzdG9wYWRkciA9IHNpbXBsZV9z
-dHJ0b2woYXJndlszXSwgTlVMTCwgMCk7CisJaWYgKChzdGFydGFkZHIgPT0gLTEpIHx8IChzdG9w
-YWRkciA9PSAtMSkgfHwgKHN0YXJ0YWRkciA+IHN0b3BhZGRyKSkKKwkJcmV0dXJuIENPTU1BTkRf
-RVJST1JfVVNBR0U7CisKKwlpZiAoc3RvcGFkZHIgPiAweDdGKQorCQlzdG9wYWRkciA9IDB4N0Y7
-CisKKwlwcmludGYoInByb2JpbmcgaTJjIHJhbmdlIDBYJTAyeCAtIDB4JTAyeCA6XG4iLCBzdGFy
-dGFkZHIsIHN0b3BhZGRyKTsKKwlmb3IgKGFkZHIgPSBzdGFydGFkZHI7IGFkZHIgPD0gc3RvcGFk
-ZHI7IGFkZHIrKykgeworCQljbGllbnQuYWRkciA9IGFkZHI7CisJCXJldCA9IGkyY193cml0ZV9y
-ZWcoJmNsaWVudCwgMHgwMCwgJnJlZywgMCk7CisJCWlmIChyZXQgPT0gMCkKKwkJCXByaW50Zigi
-MHglMDJ4ICIsIGFkZHIpOworCX0KKwlwcmludGYoIlxuIik7CisJcmV0dXJuIDA7Cit9CisKK3N0
-YXRpYyBjb25zdCBfX21heWJlX3VudXNlZCBjaGFyIGNtZF9pMmNfcHJvYmVfaGVscFtdID0KKyJV
-c2FnZTogaTJjX3Byb2JlIGJ1cyAweHN0YXJ0YWRkciAweHN0b3BhZGRyXG4iCisicHJvYmUgYSBy
-YW5nZSBvZiBpMmMgYWRkcmVzc2VzLlxuIjsKKworQkFSRUJPWF9DTURfU1RBUlQoaTJjX3Byb2Jl
-KQorCS5jbWQJCT0gZG9faTJjX3Byb2JlLAorCS51c2FnZQkJPSAicHJvYmUgZm9yIGFuIGkyYyBk
-ZXZpY2UiLAorCUJBUkVCT1hfQ01EX0hFTFAoY21kX2kyY19wcm9iZV9oZWxwKQorQkFSRUJPWF9D
-TURfRU5ECisKK3N0YXRpYyBpbnQgZG9faTJjX3dyaXRlKHN0cnVjdCBjb21tYW5kICpjbWR0cCwg
-aW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkKK3sKKwlzdHJ1Y3QgaTJjX2FkYXB0ZXIgKmFkYXB0ZXIg
-PSBOVUxMOworCXN0cnVjdCBpMmNfY2xpZW50IGNsaWVudDsKKwlpbnQgYWRkciA9IC0xLCByZWcg
-PSAtMSwgY291bnQgPSAtMSwgdmVyYm9zZSA9IDAsIHJldCwgb3B0LCBpLCBidXMgPSAwOworCXU4
-ICpidWY7CisJdTggdG1wOworCisJd2hpbGUgKChvcHQgPSBnZXRvcHQoYXJnYywgYXJndiwgImE6
-YjpyOnYiKSkgPiAwKSB7CisJCXN3aXRjaCAob3B0KSB7CisJCWNhc2UgJ2EnOgorCQkJYWRkciA9
-IHNpbXBsZV9zdHJ0b2wob3B0YXJnLCBOVUxMLCAwKTsKKwkJCWJyZWFrOworCQljYXNlICdyJzoK
-KwkJCXJlZyA9IHNpbXBsZV9zdHJ0b2wob3B0YXJnLCBOVUxMLCAwKTsKKwkJCWJyZWFrOworCQlj
-YXNlICdiJzoKKwkJCWJ1cyA9IHNpbXBsZV9zdHJ0b3VsKG9wdGFyZywgTlVMTCwgMCk7CisJCQli
-cmVhazsKKwkJY2FzZSAndic6CisJCQl2ZXJib3NlID0gMTsKKwkJCWJyZWFrOworCQl9CisJfQor
-CisJY291bnQgPSBhcmdjIC0gb3B0aW5kOworCisJaWYgKChhZGRyIDwgMCkgfHwgKHJlZyA8IDAp
-IHx8IChjb3VudCA9PSAwKSB8fCAoYWRkciA+IDB4N0YpKQorCQlyZXR1cm4gQ09NTUFORF9FUlJP
-Ul9VU0FHRTsKKworCWFkYXB0ZXIgPSBpMmNfZ2V0X2FkYXB0ZXIoYnVzKTsKKwlpZiAoIWFkYXB0
-ZXIpCisJCXJldHVybiAtRU5PREVWOworCisJY2xpZW50LmFkYXB0ZXIgPSBhZGFwdGVyOworCWNs
-aWVudC5hZGRyID0gYWRkcjsKKworCWJ1ZiA9IHhtYWxsb2MoY291bnQpOworCWZvciAoaSA9IDA7
-IGkgPCBjb3VudDsgaSsrKQorCQkqKGJ1ZiArIGkpID0gKGNoYXIpIHNpbXBsZV9zdHJ0b2woYXJn
-dltvcHRpbmQraV0sIE5VTEwsIDE2KTsKKworCXJldCA9IGkyY193cml0ZV9yZWcoJmNsaWVudCwg
-cmVnLCBidWYsIGNvdW50KTsKKwlpZiAocmV0ICE9IGNvdW50KQorCQlnb3RvIG91dDsKKwlyZXQg
-PSAwOworCisJaWYgKHZlcmJvc2UpIHsKKwkJcHJpbnRmKCJ3cm90ZSAlaSBieXRlcyBzdGFydGlu
-ZyBhdCByZWcgMHglMDJ4IHRvIGkyY2RldiAweCUwMnggb24gYnVzICVpXG4iLAorCQkJY291bnQs
-IHJlZywgYWRkciwgYWRhcHRlci0+bnIpOworCQlmb3IgKGkgPSAwOyBpIDwgY291bnQ7IGkrKykK
-KwkJCXByaW50ZigiMHglMDJ4ICIsICooYnVmICsgaSkpOworCQlwcmludGYoIlxuIik7CisJfQor
-CitvdXQ6CisJZnJlZShidWYpOworCXJldHVybiByZXQ7Cit9CisKK3N0YXRpYyBjb25zdCBfX21h
-eWJlX3VudXNlZCBjaGFyIGNtZF9pMmNfd3JpdGVfaGVscFtdID0KKyJVc2FnZTogaTJjX3dyaXRl
-IFtPUFRJT05dIC4uLiBoZXhkYXRhc1xuIgorIndyaXRlIHRvIGkyYyBkZXZpY2UuXG4iCisiICAt
-YSAweDxhZGRyPiAgIGkyYyBkZXZpY2UgYWRkcmVzc1xuIgorIiAgLWIgPGJ1c19udW0+ICBpMmMg
-YnVzIG51bWJlciAoZGVmYXVsdCA9IDApXG4iCisiICAtciAweDxyZWc+ICAgIHN0YXJ0IHJlZ2lz
-dGVyXG4iOworCitCQVJFQk9YX0NNRF9TVEFSVChpMmNfd3JpdGUpCisJLmNtZAkJPSBkb19pMmNf
-d3JpdGUsCisJLnVzYWdlCQk9ICJ3cml0ZSB0byBhbiBpMmMgZGV2aWNlIiwKKwlCQVJFQk9YX0NN
-RF9IRUxQKGNtZF9pMmNfd3JpdGVfaGVscCkKK0JBUkVCT1hfQ01EX0VORAorCitzdGF0aWMgaW50
-IGRvX2kyY19yZWFkKHN0cnVjdCBjb21tYW5kICpjbWR0cCwgaW50IGFyZ2MsIGNoYXIgKmFyZ3Zb
-XSkKK3sKKwlzdHJ1Y3QgaTJjX2FkYXB0ZXIgKmFkYXB0ZXIgPSBOVUxMOworCXN0cnVjdCBpMmNf
-Y2xpZW50IGNsaWVudDsKKwl1OCAqYnVmOworCWludCBjb3VudCA9IC0xLCBhZGRyID0gLTEsIHJl
-ZyA9IC0xLCB2ZXJib3NlID0gMCwgcmV0LCBvcHQsIGJ1cyA9IDA7CisKKwl3aGlsZSAoKG9wdCA9
-IGdldG9wdChhcmdjLCBhcmd2LCAiYTpiOmM6cjp2IikpID4gMCkgeworCQlzd2l0Y2ggKG9wdCkg
-eworCQljYXNlICdhJzoKKwkJCWFkZHIgPSBzaW1wbGVfc3RydG9sKG9wdGFyZywgTlVMTCwgMCk7
-CisJCQlicmVhazsKKwkJY2FzZSAnYyc6CisJCQljb3VudCA9IHNpbXBsZV9zdHJ0b3VsKG9wdGFy
-ZywgTlVMTCwgMCk7CisJCQlicmVhazsKKwkJY2FzZSAnYic6CisJCQlidXMgPSBzaW1wbGVfc3Ry
-dG91bChvcHRhcmcsIE5VTEwsIDApOworCQkJYnJlYWs7CisJCWNhc2UgJ3InOgorCQkJcmVnID0g
-c2ltcGxlX3N0cnRvbChvcHRhcmcsIE5VTEwsIDApOworCQkJYnJlYWs7CisJCWNhc2UgJ3YnOgor
-CQkJdmVyYm9zZSA9IDE7CisJCQlicmVhazsKKwkJfQorCX0KKworCWlmICgoYWRkciA8IDApIHx8
-IChyZWcgPCAwKSB8fCAoY291bnQgPT0gMCkgfHwgKGFkZHIgPiAweDdGKSkKKwkJcmV0dXJuIENP
-TU1BTkRfRVJST1JfVVNBR0U7CisKKwlhZGFwdGVyID0gaTJjX2dldF9hZGFwdGVyKGJ1cyk7CisJ
-aWYgKCFhZGFwdGVyKQorCQlyZXR1cm4gLUVOT0RFVjsKKworCWNsaWVudC5hZGFwdGVyID0gYWRh
-cHRlcjsKKwljbGllbnQuYWRkciA9IGFkZHI7CisKKwlidWYgPSB4bWFsbG9jKGNvdW50KTsKKwly
-ZXQgPSBpMmNfcmVhZF9yZWcoJmNsaWVudCwgcmVnLCBidWYsIGNvdW50KTsKKwlpZiAocmV0ID09
-IGNvdW50KSB7CisJCWludCBpOworCQlpZiAodmVyYm9zZSkKKwkJCXByaW50ZigicmVhZCAlaSBi
-eXRlcyBzdGFydGluZyBhdCByZWcgMHglMDJ4IGZyb20gaTJjZGV2IDB4JTAyeCBvbiBidXMgJWlc
-biIsCisJCQkJY291bnQsIHJlZywgYWRkciwgYWRhcHRlci0+bnIpOworCQlmb3IgKGkgPSAwOyBp
-IDwgY291bnQ7IGkrKykKKwkJCXByaW50ZigiMHglMDJ4ICIsICooYnVmICsgaSkpOworCQlwcmlu
-dGYoIlxuIik7CisJCXJldCA9IDA7CisJfQorCisJZnJlZShidWYpOworCXJldHVybiByZXQ7Cit9
-CisKK3N0YXRpYyBjb25zdCBfX21heWJlX3VudXNlZCBjaGFyIGNtZF9pMmNfcmVhZF9oZWxwW10g
-PQorIlVzYWdlOiBpMmNfcmVhZCBbT1BUSU9OXVxuIgorInJlYWQgaTJjIGRldmljZS5cbiIKKyIg
-IC1hIDB4PGFkZHI+ICAgaTJjIGRldmljZSBhZGRyZXNzXG4iCisiICAtYiA8YnVzX251bT4gIGky
-YyBidXMgbnVtYmVyIChkZWZhdWx0ID0gMClcbiIKKyIgIC1yIDB4PHJlZz4gICAgc3RhcnQgcmVn
-aXN0ZXJcbiIKKyIgIC1jIDxjb3VudD4gICAgYnl0ZSBjb3VudFxuIjsKKworQkFSRUJPWF9DTURf
-U1RBUlQoaTJjX3JlYWQpCisJLmNtZAkJPSBkb19pMmNfcmVhZCwKKwkudXNhZ2UJCT0gInJlYWQg
-ZnJvbSBhbiBpMmMgZGV2aWNlIiwKKwlCQVJFQk9YX0NNRF9IRUxQKGNtZF9pMmNfcmVhZF9oZWxw
-KQorQkFSRUJPWF9DTURfRU5ECi0tIAoxLjYuMy4zCgoKX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0
-cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGlu
-Zm8vYmFyZWJveAo=
+This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
+--===============0040192412==
+Content-Type: multipart/signed; micalg=pgp-sha1;
+ protocol="application/pgp-signature";
+ boundary="------------enigEDB2BB5F839786FE0E51A07F"
+
+This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
+--------------enigEDB2BB5F839786FE0E51A07F
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+Hey,
+
+Eric B=C3=A9nard wrote:
+> Le 25/05/2010 11:02, Marc Kleine-Budde a =C3=A9crit :
+>>> +        case 'b':
+>>> +            adapter =3D i2c_get_adapter(simple_strtoul(optarg, NULL,=
+ 0));
+>>
+>> I'd just save the optarg in a variable...
+>>
+>>> +            break;
+>>> +        case 'v':
+>>> +            verbose =3D 1;
+>>> +            break;
+>>> +        }
+>>> +    }
+>>> +
+>>> +    count =3D argc - optind;
+>>> +
+>>> +    if ((addr<  0) || (reg<  0) || (count =3D=3D 0) || (addr>  0x7F)=
+)
+>>> +        return COMMAND_ERROR_USAGE;
+>>> +
+>>> +    if (!adapter)
+>>> +        adapter =3D i2c_get_adapter(0);
+>>
+>> and use it here. Because if you specify an invalid adapter number,
+>> adapter 0 will be used silently (if it exists).
+>>
+> you're right, in fact I should exit in the case 'b' handling if the
+> adapter doesn't exist, that will be simpler.
+
+ACK, I'd do that here.....
+
+int adapter_number =3D 0;
+
+=2E..
+
+	case 'b':
+		adapter_number =3D simple_strtoul(optarg, NULL, 0);
+		break;
+=2E..
+
+adapter =3D i2c_get_adapter(adapter_number);
+if (!adapter) {
+	printf("adapter %d not found\n", adapter_number);
+	return -ENODEV
+}
+
+>>> +    if (!adapter)
+>>> +        return -ENODEV;
+>>> +
+>>> +    client.adapter =3D adapter;
+>>> +    client.addr =3D addr;
+>>> +
+>>> +    buf =3D xmalloc(count);
+>>> +    for (i =3D 0; i<  count; i++)
+>>> +        *(buf + i) =3D (char) simple_strtol(argv[optind+i], NULL, 16=
+);
+
+codingstyle...no space after the cast, but before and after the "+"
+
+(char)simple_strtol(argv[optind + i], NULL, 16);
+
+>>> +
+>>> +    ret =3D i2c_write_reg(&client, reg, buf, count);
+>>> +    if (ret !=3D count)
+>>> +        goto out;
+>>
+>> better set a return value indicating an error here...
+> ret should already be set by i2c_write_reg so it there is no error, I
+> can simply set ret to 0.
+
+ACK
+
+>>
+>>> +
+>>> +    if (verbose) {
+>>> +        printf("wrote %i bytes starting at reg 0x%02x to i2cdev
+>>> 0x%02x on bus %i\n",
+>>> +            count, reg, addr, adapter->nr);
+>>> +        for (i =3D 0; i<  count; i++)
+>>> +            printf("0x%02x ", *(buf + i));
+>>> +        printf("\n");
+>>> +    }
+>>> +
+>>> +out:
+>>> +    free(buf);
+>>> +    return 0;
+>>
+>> ... and return it here.
+>=20
+> yes, that should be return ret
+>=20
+> Eric
+
+Marc
+--=20
+Pengutronix e.K.                  | Marc Kleine-Budde           |
+Industrial Linux Solutions        | Phone: +49-231-2826-924     |
+Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
+Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
+
+
+--------------enigEDB2BB5F839786FE0E51A07F
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.9 (GNU/Linux)
+Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org
+
+iEYEARECAAYFAkv7mT0ACgkQjTAFq1RaXHMCcgCfdHyka2pskikX8qKTQ0FNmtHS
+8/sAniUQQY3PJnMo5kbswpnJ+TNHP4yL
+=5KjR
+-----END PGP SIGNATURE-----
+
+--------------enigEDB2BB5F839786FE0E51A07F--
+
+
+--===============0040192412==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============0040192412==--
