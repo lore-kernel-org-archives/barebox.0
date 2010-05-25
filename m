@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp2-g21.free.fr ([212.27.42.2])
-	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
-	id 1OGpeB-0006og-B9
-	for barebox@lists.infradead.org; Tue, 25 May 2010 08:38:09 +0000
-From: =?utf-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
-Date: Tue, 25 May 2010 10:37:37 +0200
-Message-Id: <1274776657-6117-6-git-send-email-eric@eukrea.com>
-In-Reply-To: <1274776657-6117-5-git-send-email-eric@eukrea.com>
-References: <1274776657-6117-1-git-send-email-eric@eukrea.com>
-	<1274776657-6117-2-git-send-email-eric@eukrea.com>
-	<1274776657-6117-3-git-send-email-eric@eukrea.com>
-	<1274776657-6117-4-git-send-email-eric@eukrea.com>
-	<1274776657-6117-5-git-send-email-eric@eukrea.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
+	id 1OGq21-00015X-FU
+	for barebox@lists.infradead.org; Tue, 25 May 2010 09:02:39 +0000
+Message-ID: <4BFB9224.9030507@pengutronix.de>
+Date: Tue, 25 May 2010 11:02:28 +0200
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 MIME-Version: 1.0
+References: <1274776657-6117-1-git-send-email-eric@eukrea.com>	<1274776657-6117-2-git-send-email-eric@eukrea.com>
+	<1274776657-6117-3-git-send-email-eric@eukrea.com>
+In-Reply-To: <1274776657-6117-3-git-send-email-eric@eukrea.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,113 +18,350 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============1659393509=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/6] eukrea_cpuimx27: update defconfig
-To: s.hauer@pengutronix.de
+Subject: Re: [PATCH v4 3/6] commands: add i2c commands
+To: =?UTF-8?B?RXJpYyBCw6luYXJk?= <eric@eukrea.com>
 Cc: barebox@lists.infradead.org
 
-U2lnbmVkLW9mZi1ieTogRXJpYyBCw6luYXJkIDxlcmljQGV1a3JlYS5jb20+Ci0tLQogYXJjaC9h
-cm0vY29uZmlncy9ldWtyZWFfY3B1aW14MjdfZGVmY29uZmlnIHwgICA3OSArKysrKysrKysrKysr
-KysrLS0tLS0tLS0tLS0KIDEgZmlsZXMgY2hhbmdlZCwgNDcgaW5zZXJ0aW9ucygrKSwgMzIgZGVs
-ZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vY29uZmlncy9ldWtyZWFfY3B1aW14Mjdf
-ZGVmY29uZmlnIGIvYXJjaC9hcm0vY29uZmlncy9ldWtyZWFfY3B1aW14MjdfZGVmY29uZmlnCmlu
-ZGV4IGIxNjI0ZGUuLjNiOTJjMzcgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2NvbmZpZ3MvZXVrcmVh
-X2NwdWlteDI3X2RlZmNvbmZpZworKysgYi9hcmNoL2FybS9jb25maWdzL2V1a3JlYV9jcHVpbXgy
-N19kZWZjb25maWcKQEAgLTEsNyArMSw3IEBACiAjCiAjIEF1dG9tYXRpY2FsbHkgZ2VuZXJhdGVk
-IG1ha2UgY29uZmlnOiBkb24ndCBlZGl0Ci0jIGJhcmVib3ggdmVyc2lvbjogMi4wLjAtcmMxMAot
-IyBGcmkgRGVjIDE4IDExOjQ3OjIyIDIwMDkKKyMgYmFyZWJveCB2ZXJzaW9uOiAyMDEwLjA1LjAK
-KyMgVHVlIE1heSAyNSAwOTo1Nzo1NSAyMDEwCiAjCiAjIENPTkZJR19CT0FSRF9MSU5LRVJfU0NS
-SVBUIGlzIG5vdCBzZXQKIENPTkZJR19HRU5FUklDX0xJTktFUl9TQ1JJUFQ9eQpAQCAtMTIsNiAr
-MTIsNyBAQCBDT05GSUdfQVJNPXkKICMKICMgQ09ORklHX0FSQ0hfQVQ5MSBpcyBub3Qgc2V0CiAj
-IENPTkZJR19BUkNIX0FUOTFSTTkyMDAgaXMgbm90IHNldAorIyBDT05GSUdfQVJDSF9FUDkzWFgg
-aXMgbm90IHNldAogQ09ORklHX0FSQ0hfSU1YPXkKICMgQ09ORklHX0FSQ0hfTkVUWCBpcyBub3Qg
-c2V0CiAjIENPTkZJR19BUkNIX09NQVAgaXMgbm90IHNldApAQCAtNDYsNyArNDcsNyBAQCBDT05G
-SUdfTUFDSF9FVUtSRUFfQ1BVSU1YMjc9eQogIyBDT05GSUdfTUFDSF9QQ00wMzggaXMgbm90IHNl
-dAogCiAjCi0jIEJvYXJkIHNwZWNpZmljIHNldHRpbmdzCisjIEJvYXJkIHNwZWNpZmljIHNldHRp
-bmdzICAgICAgIAogIwogQ09ORklHX0VVS1JFQV9DUFVJTVgyN19TRFJBTV8xMjhNQj15CiAjIENP
-TkZJR19FVUtSRUFfQ1BVSU1YMjdfU0RSQU1fMjU2TUIgaXMgbm90IHNldApAQCAtNTgsMTggKzU5
-LDE1IEBAIENPTkZJR19FVUtSRUFfQ1BVSU1YMjdfUVVBUlQxPXkKICMgQ09ORklHX0VVS1JFQV9D
-UFVJTVgyN19RVUFSVDQgaXMgbm90IHNldAogCiAjCi0jIGkuTVggc3BlY2lmaWMgc2V0dGluZ3MK
-KyMgaS5NWCBzcGVjaWZpYyBzZXR0aW5ncyAgICAgICAgCiAjCiBDT05GSUdfSU1YX0NMS089eQog
-IyBDT05GSUdfQUVBQkkgaXMgbm90IHNldAogCiAjCi0jIEFybSBzcGVjaWZpYyBzZXR0aW5ncwor
-IyBBcm0gc3BlY2lmaWMgc2V0dGluZ3MgICAgICAgICAKICMKIENPTkZJR19DTURfQVJNX0NQVUlO
-Rk89eQotQ09ORklHX0NNRExJTkVfVEFHPXkKLUNPTkZJR19TRVRVUF9NRU1PUllfVEFHUz15Ci0j
-IENPTkZJR19JTklUUkRfVEFHIGlzIG5vdCBzZXQKIENPTkZJR19BUk1fT1BUSU1aRURfU1RSSU5H
-X0ZVTkNUSU9OUz15CiBDT05GSUdfR1JFR09SSUFOX0NBTEVOREVSPXkKIENPTkZJR19IQVNfS0FM
-TFNZTVM9eQpAQCAtNzksMTIgKzc3LDEyIEBAIENPTkZJR19FTlZfSEFORExJTkc9eQogQ09ORklH
-X0dFTkVSSUNfR1BJTz15CiAKICMKLSMgR2VuZXJhbCBTZXR0aW5ncworIyBHZW5lcmFsIFNldHRp
-bmdzICAgICAgICAgICAgICAKICMKIENPTkZJR19MT0NBTFZFUlNJT05fQVVUTz15CiAKICMKLSMg
-bWVtb3J5IGxheW91dAorIyBtZW1vcnkgbGF5b3V0ICAgICAgICAgICAgICAgICAKICMKIENPTkZJ
-R19IQVZFX01NVT15CiBDT05GSUdfTU1VPXkKQEAgLTEwOCw2ICsxMDYsNyBAQCBDT05GSUdfU0hF
-TExfSFVTSD15CiAjIENPTkZJR19TSEVMTF9TSU1QTEUgaXMgbm90IHNldAogQ09ORklHX0dMT0I9
-eQogQ09ORklHX1BST01QVF9IVVNIX1BTMj0iPiAiCitDT05GSUdfSFVTSF9GQU5DWV9QUk9NUFQ9
-eQogQ09ORklHX0NNRExJTkVfRURJVElORz15CiBDT05GSUdfQVVUT19DT01QTEVURT15CiBDT05G
-SUdfRFlOQU1JQ19DUkNfVEFCTEU9eQpAQCAtMTIyLDcgKzEyMSw3IEBAIENPTkZJR19ERUZBVUxU
-X0VOVklST05NRU5UPXkKIENPTkZJR19ERUZBVUxUX0VOVklST05NRU5UX1BBVEg9ImJvYXJkL2V1
-a3JlYV9jcHVpbXgyNy9lbnYiCiAKICMKLSMgRGVidWdnaW5nCisjIERlYnVnZ2luZyAgICAgICAg
-ICAgICAgICAgICAgIAogIwogIyBDT05GSUdfREVCVUdfSU5GTyBpcyBub3Qgc2V0CiAjIENPTkZJ
-R19FTkFCTEVfRkxBU0hfTk9JU0UgaXMgbm90IHNldApAQCAtMTMwLDExICsxMjksMTEgQEAgQ09O
-RklHX0RFRkFVTFRfRU5WSVJPTk1FTlRfUEFUSD0iYm9hcmQvZXVrcmVhX2NwdWlteDI3L2VudiIK
-ICMgQ09ORklHX0VOQUJMRV9ERVZJQ0VfTk9JU0UgaXMgbm90IHNldAogCiAjCi0jIENvbW1hbmRz
-CisjIENvbW1hbmRzICAgICAgICAgICAgICAgICAgICAgIAogIwogCiAjCi0jIHNjcmlwdGluZwor
-IyBzY3JpcHRpbmcgICAgICAgICAgICAgICAgICAgICAKICMKIENPTkZJR19DTURfRURJVD15CiBD
-T05GSUdfQ01EX1NMRUVQPXkKQEAgLTE0Nyw3ICsxNDYsNyBAQCBDT05GSUdfQ01EX1RSVUU9eQog
-Q09ORklHX0NNRF9GQUxTRT15CiAKICMKLSMgZmlsZSBjb21tYW5kcworIyBmaWxlIGNvbW1hbmRz
-ICAgICAgICAgICAgICAgICAKICMKIENPTkZJR19DTURfTFM9eQogQ09ORklHX0NNRF9STT15CkBA
-IC0xNjEsMTMgKzE2MCwxNCBAQCBDT05GSUdfQ01EX01PVU5UPXkKIENPTkZJR19DTURfVU1PVU5U
-PXkKIAogIwotIyBjb25zb2xlCisjIGNvbnNvbGUgICAgICAgICAgICAgICAgICAgICAgIAogIwog
-Q09ORklHX0NNRF9DTEVBUj15CiBDT05GSUdfQ01EX0VDSE89eQorQ09ORklHX0NNRF9FQ0hPX0U9
-eQogCiAjCi0jIG1lbW9yeQorIyBtZW1vcnkgICAgICAgICAgICAgICAgICAgICAgICAKICMKICMg
-Q09ORklHX0NNRF9MT0FEQiBpcyBub3Qgc2V0CiBDT05GSUdfQ01EX01FTUlORk89eQpAQCAtMTc2
-LDE5ICsxNzYsMjAgQEAgQ09ORklHX0NNRF9NVEVTVD15CiAjIENPTkZJR19DTURfTVRFU1RfQUxU
-RVJOQVRJVkUgaXMgbm90IHNldAogCiAjCi0jIGZsYXNoCisjIGZsYXNoICAgICAgICAgICAgICAg
-ICAgICAgICAgIAogIwogQ09ORklHX0NNRF9GTEFTSD15CiAKICMKLSMgYm9vdGluZworIyBib290
-aW5nICAgICAgICAgICAgICAgICAgICAgICAKICMKIENPTkZJR19DTURfQk9PVE09eQogIyBDT05G
-SUdfQ01EX0JPT1RNX1pMSUIgaXMgbm90IHNldAogIyBDT05GSUdfQ01EX0JPT1RNX0JaTElCIGlz
-IG5vdCBzZXQKLSMgQ09ORklHX0NNRF9CT09UTV9TSE9XX1RZUEUgaXMgbm90IHNldAorQ09ORklH
-X0NNRF9CT09UTV9TSE9XX1RZUEU9eQogQ09ORklHX0NNRF9CT09UWj15CiBDT05GSUdfQ01EX0JP
-T1RVPXkKKyMgQ09ORklHX0NNRF9MSU5VWDE2IGlzIG5vdCBzZXQKIENPTkZJR19DTURfUkVTRVQ9
-eQogQ09ORklHX0NNRF9HTz15CiBDT05GSUdfQ01EX1RJTUVPVVQ9eQpAQCAtMTk3LDcgKzE5OCwx
-MCBAQCBDT05GSUdfQ01EX1RFU1Q9eQogQ09ORklHX0NNRF9WRVJTSU9OPXkKIENPTkZJR19DTURf
-SEVMUD15CiBDT05GSUdfQ01EX0RFVklORk89eQorQ09ORklHX0NNRF9CTVA9eQogQ09ORklHX0NN
-RF9HUElPPXkKK0NPTkZJR19DTURfVU5MWk89eQorQ09ORklHX0NNRF9JMkM9eQogQ09ORklHX05F
-VD15CiBDT05GSUdfTkVUX0RIQ1A9eQogIyBDT05GSUdfTkVUX1JBUlAgaXMgbm90IHNldApAQCAt
-MjA2LDExICsyMTAsMTEgQEAgQ09ORklHX05FVF9QSU5HPXkKIENPTkZJR19ORVRfVEZUUD15CiAK
-ICMKLSMgRHJpdmVycworIyBEcml2ZXJzICAgICAgICAgICAgICAgICAgICAgICAKICMKIAogIwot
-IyBzZXJpYWwgZHJpdmVycworIyBzZXJpYWwgZHJpdmVycyAgICAgICAgICAgICAgICAKICMKICMg
-Q09ORklHX0RSSVZFUl9TRVJJQUxfQVJNX0RDQyBpcyBub3Qgc2V0CiBDT05GSUdfRFJJVkVSX1NF
-UklBTF9JTVg9eQpAQCAtMjE4LDI3ICsyMjIsMzMgQEAgQ09ORklHX0RSSVZFUl9TRVJJQUxfTlMx
-NjU1MD15CiBDT05GSUdfTUlJUEhZPXkKIAogIwotIyBOZXR3b3JrIGRyaXZlcnMKKyMgTmV0d29y
-ayBkcml2ZXJzICAgICAgICAgICAgICAgCiAjCiAjIENPTkZJR19EUklWRVJfTkVUX1NNQzkxMVgg
-aXMgbm90IHNldAogIyBDT05GSUdfRFJJVkVSX05FVF9TTUM5MTExMSBpcyBub3Qgc2V0CiBDT05G
-SUdfRFJJVkVSX05FVF9GRUNfSU1YPXkKIAogIwotIyBTUEkgZHJpdmVycworIyBTUEkgZHJpdmVy
-cyAgICAgICAgICAgICAgICAgICAKICMKLUNPTkZJR19TUEk9eQotQ09ORklHX0RSSVZFUl9TUElf
-SU1YPXkKLUNPTkZJR19EUklWRVJfU1BJX01DMTM3ODM9eQotIyBDT05GSUdfSTJDIGlzIG5vdCBz
-ZXQKKyMgQ09ORklHX1NQSSBpcyBub3Qgc2V0CitDT05GSUdfSTJDPXkKK0NPTkZJR19EUklWRVJf
-STJDX0lNWD15CisjIENPTkZJR19EUklWRVJfSTJDX01DMTM4OTIgaXMgbm90IHNldAorIyBDT05G
-SUdfRFJJVkVSX0kyQ19NQzlTRFo2MCBpcyBub3Qgc2V0CitDT05GSUdfRFJJVkVSX0kyQ19MUDM5
-NzI9eQogCiAjCi0jIGZsYXNoIGRyaXZlcnMKKyMgZmxhc2ggZHJpdmVycyAgICAgICAgICAgICAg
-ICAgCiAjCiBDT05GSUdfSEFTX0NGST15CiBDT05GSUdfRFJJVkVSX0NGST15Ci0jIENPTkZJR19E
-UklWRVJfQ0ZJX05FVyBpcyBub3Qgc2V0Ci1DT05GSUdfRFJJVkVSX0NGSV9PTEQ9eQorQ09ORklH
-X0RSSVZFUl9DRklfSU5URUw9eQorIyBDT05GSUdfRFJJVkVSX0NGSV9BTUQgaXMgbm90IHNldAor
-IyBDT05GSUdfRFJJVkVSX0NGSV9CQU5LX1dJRFRIXzEgaXMgbm90IHNldAorQ09ORklHX0RSSVZF
-Ul9DRklfQkFOS19XSURUSF8yPXkKKyMgQ09ORklHX0RSSVZFUl9DRklfQkFOS19XSURUSF80IGlz
-IG5vdCBzZXQKKyMgQ09ORklHX0RSSVZFUl9DRklfQkFOS19XSURUSF84IGlzIG5vdCBzZXQKIENP
-TkZJR19DRklfQlVGRkVSX1dSSVRFPXkKIENPTkZJR19OQU5EPXkKIENPTkZJR19OQU5EX0lNWD15
-CkBAIC0yNDYsMTUgKzI1NiwyMCBAQCBDT05GSUdfTkFORF9JTVg9eQogIyBDT05GSUdfTVREX05B
-TkRfVkVSSUZZX1dSSVRFIGlzIG5vdCBzZXQKICMgQ09ORklHX01URF9OQU5EX0VDQ19TTUMgaXMg
-bm90IHNldAogQ09ORklHX01URF9OQU5EX0lEUz15CisjIENPTkZJR19BVEEgaXMgbm90IHNldAog
-IyBDT05GSUdfVVNCIGlzIG5vdCBzZXQKICMgQ09ORklHX1VTQl9HQURHRVQgaXMgbm90IHNldAot
-IyBDT05GSUdfVklERU8gaXMgbm90IHNldAorQ09ORklHX1ZJREVPPXkKK0NPTkZJR19EUklWRVJf
-VklERU9fSU1YPXkKKyMgQ09ORklHX0lNWEZCX0RSSVZFUl9WSURFT19JTVhfT1ZFUkxBWSBpcyBu
-b3Qgc2V0CiAKICMKLSMgRmlsZXN5c3RlbSBzdXBwb3J0CisjIEZpbGVzeXN0ZW0gc3VwcG9ydCAg
-ICAgICAgICAgIAogIwogIyBDT05GSUdfRlNfQ1JBTUZTIGlzIG5vdCBzZXQKIENPTkZJR19GU19S
-QU1GUz15CiBDT05GSUdfRlNfREVWRlM9eQogQ09ORklHX0NSQzMyPXkKICMgQ09ORklHX0dFTkVS
-SUNfRklORF9ORVhUX0JJVCBpcyBub3Qgc2V0CitDT05GSUdfUFJPQ0VTU19FU0NBUEVfU0VRVUVO
-Q0U9eQorQ09ORklHX0xaT19ERUNPTVBSRVNTPXkKLS0gCjEuNi4zLjMKCgpfX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApi
-YXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFp
-bG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
+--===============1659393509==
+Content-Type: multipart/signed; micalg=pgp-sha1;
+ protocol="application/pgp-signature";
+ boundary="------------enig71E09499E0B959DEC738B5E6"
+
+This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
+--------------enig71E09499E0B959DEC738B5E6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+Eric B=C3=A9nard wrote:
+> theses commands allow low level access to i2c bus and can be useful
+> to setup an i2c device without having to add code, compile and flash
+> barebox.
+>=20
+> Signed-off-by: Eric B=C3=A9nard <eric@eukrea.com>
+> ---
+> v4 :
+> 	updated as per Sascha and Marc's comments
+> 	use bus 0 as a default for i2c_read & write
+> 	replace malloc with xmalloc
+> 	fix simple_strtol configuration for parameters
+> v3 :=20
+> 	enable brain and fix v2
+> 	tested on iMX27
+> v2 :
+> 	updated as per Sascha's comments
+>=20
+>  commands/Kconfig  |    8 ++
+>  commands/Makefile |    1 +
+>  commands/i2c.c    |  212 +++++++++++++++++++++++++++++++++++++++++++++=
+++++++++
+>  3 files changed, 221 insertions(+), 0 deletions(-)
+>  create mode 100644 commands/i2c.c
+>=20
+> diff --git a/commands/Kconfig b/commands/Kconfig
+> index 0c09f91..0ea32d9 100644
+> --- a/commands/Kconfig
+> +++ b/commands/Kconfig
+> @@ -314,4 +314,12 @@ config CMD_UNLZO
+>  	  Say yes here to get the unlzo command. lzo is a fast compression
+>  	  algorithm by Markus Franz Xaver Johannes Oberhumer.
+> =20
+> +config CMD_I2C
+> +	bool
+> +	depends on I2C
+> +	prompt "i2c commands"
+> +	help
+> +	  include i2c_probe, i2c_read and i2c_write commands to communicate
+> +	  on i2c bus.
+> +
+>  endmenu
+> diff --git a/commands/Makefile b/commands/Makefile
+> index 74b0994..3eef5de 100644
+> --- a/commands/Makefile
+> +++ b/commands/Makefile
+> @@ -48,3 +48,4 @@ obj-$(CONFIG_CMD_BMP)		+=3D bmp.o
+>  obj-$(CONFIG_USB_GADGET_DFU)	+=3D dfu.o
+>  obj-$(CONFIG_CMD_GPIO)		+=3D gpio.o
+>  obj-$(CONFIG_CMD_UNLZO)		+=3D unlzo.o
+> +obj-$(CONFIG_CMD_I2C)		+=3D i2c.o
+> diff --git a/commands/i2c.c b/commands/i2c.c
+> new file mode 100644
+> index 0000000..1e617f6
+> --- /dev/null
+> +++ b/commands/i2c.c
+> @@ -0,0 +1,212 @@
+> +/*
+> + * i2c.c - i2c commands
+> + *
+> + * Copyright (c) 2010 Eric B=C3=A9nard <eric@eukrea.Com>, Eukr=C3=A9a =
+Electromatique
+> + *
+> + * This program is free software; you can redistribute it and/or
+> + * modify it under the terms of the GNU General Public License as
+> + * published by the Free Software Foundation; either version 2 of
+> + * the License, or (at your option) any later version.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + *
+> + * You should have received a copy of the GNU General Public License
+> + * along with this program; if not, write to the Free Software
+> + * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+> + * MA 02111-1307 USA
+> + */
+> +
+> +#include <common.h>
+> +#include <command.h>
+> +#include <errno.h>
+> +#include <malloc.h>
+> +#include <getopt.h>
+> +#include <i2c/i2c.h>
+> +
+> +static int do_i2c_probe(struct command *cmdtp, int argc, char *argv[])=
+
+> +{
+> +	struct i2c_adapter *adapter;
+> +	struct i2c_client client;
+> +	int startaddr =3D -1, stopaddr =3D -1, addr, ret;
+> +	u8 reg;
+> +
+> +	if (argc < 4)
+> +		return COMMAND_ERROR_USAGE;
+> +
+> +	adapter =3D i2c_get_adapter(simple_strtoul(argv[1], NULL, 0));
+> +	if (!adapter)
+> +		return -ENODEV;
+> +	client.adapter =3D adapter;
+> +
+> +	startaddr =3D simple_strtol(argv[2], NULL, 0);
+> +	stopaddr =3D simple_strtol(argv[3], NULL, 0);
+> +	if ((startaddr =3D=3D -1) || (stopaddr =3D=3D -1) || (startaddr > sto=
+paddr))
+> +		return COMMAND_ERROR_USAGE;
+> +
+> +	if (stopaddr > 0x7F)
+> +		stopaddr =3D 0x7F;
+> +
+> +	printf("probing i2c range 0X%02x - 0x%02x :\n", startaddr, stopaddr);=
+
+> +	for (addr =3D startaddr; addr <=3D stopaddr; addr++) {
+> +		client.addr =3D addr;
+> +		ret =3D i2c_write_reg(&client, 0x00, &reg, 0);
+> +		if (ret =3D=3D 0)
+> +			printf("0x%02x ", addr);
+> +	}
+> +	printf("\n");
+> +	return 0;
+> +}
+> +
+> +static const __maybe_unused char cmd_i2c_probe_help[] =3D
+> +"Usage: i2c_probe bus 0xstartaddr 0xstopaddr\n"
+> +"probe a range of i2c addresses.\n";
+> +
+> +BAREBOX_CMD_START(i2c_probe)
+> +	.cmd		=3D do_i2c_probe,
+> +	.usage		=3D "probe for an i2c device",
+> +	BAREBOX_CMD_HELP(cmd_i2c_probe_help)
+> +BAREBOX_CMD_END
+> +
+> +static int do_i2c_write(struct command *cmdtp, int argc, char *argv[])=
+
+> +{
+> +	struct i2c_adapter *adapter =3D NULL;
+> +	struct i2c_client client;
+> +	int addr =3D -1, reg =3D -1, count =3D -1, verbose =3D 0, ret =3D 0, =
+opt, i;
+> +	u8 *buf;
+> +	u8 tmp;
+> +
+> +	while ((opt =3D getopt(argc, argv, "a:b:r:v")) > 0) {
+> +		switch (opt) {
+> +		case 'a':
+> +			addr =3D simple_strtol(optarg, NULL, 0);
+> +			break;
+> +		case 'r':
+> +			reg =3D simple_strtol(optarg, NULL, 0);
+> +			break;
+> +		case 'b':
+> +			adapter =3D i2c_get_adapter(simple_strtoul(optarg, NULL, 0));
+
+I'd just save the optarg in a variable...
+
+> +			break;
+> +		case 'v':
+> +			verbose =3D 1;
+> +			break;
+> +		}
+> +	}
+> +
+> +	count =3D argc - optind;
+> +
+> +	if ((addr < 0) || (reg < 0) || (count =3D=3D 0) || (addr > 0x7F))
+> +		return COMMAND_ERROR_USAGE;
+> +
+> +	if (!adapter)
+> +		adapter =3D i2c_get_adapter(0);
+
+and use it here. Because if you specify an invalid adapter number,
+adapter 0 will be used silently (if it exists).
+
+> +	if (!adapter)
+> +		return -ENODEV;
+> +
+> +	client.adapter =3D adapter;
+> +	client.addr =3D addr;
+> +
+> +	buf =3D xmalloc(count);
+> +	for (i =3D 0; i < count; i++)
+> +		*(buf + i) =3D (char) simple_strtol(argv[optind+i], NULL, 16);
+> +
+> +	ret =3D i2c_write_reg(&client, reg, buf, count);
+> +	if (ret !=3D count)
+> +		goto out;
+
+better set a return value indicating an error here...
+
+> +
+> +	if (verbose) {
+> +		printf("wrote %i bytes starting at reg 0x%02x to i2cdev 0x%02x on bu=
+s %i\n",
+> +			count, reg, addr, adapter->nr);
+> +		for (i =3D 0; i < count; i++)
+> +			printf("0x%02x ", *(buf + i));
+> +		printf("\n");
+> +	}
+> +
+> +out:
+> +	free(buf);
+> +	return 0;
+
+=2E.. and return it here.
+> +}
+> +
+> +static const __maybe_unused char cmd_i2c_write_help[] =3D
+> +"Usage: i2c_write [OPTION] ... hexdatas\n"
+> +"write to i2c device.\n"
+> +"  -a 0x<addr>   i2c device address\n"
+> +"  -b <bus_num>  i2c bus number (default =3D 0)\n"
+> +"  -r 0x<reg>    start register\n";
+> +
+> +BAREBOX_CMD_START(i2c_write)
+> +	.cmd		=3D do_i2c_write,
+> +	.usage		=3D "write to an i2c device",
+> +	BAREBOX_CMD_HELP(cmd_i2c_write_help)
+> +BAREBOX_CMD_END
+> +
+> +static int do_i2c_read(struct command *cmdtp, int argc, char *argv[])
+> +{
+> +	struct i2c_adapter *adapter =3D NULL;
+> +	struct i2c_client client;
+> +	u8 *buf;
+> +	int count =3D -1, addr =3D -1, reg =3D -1, verbose =3D 0, ret =3D 0, =
+opt;
+> +
+> +	while ((opt =3D getopt(argc, argv, "a:b:c:r:v")) > 0) {
+> +		switch (opt) {
+> +		case 'a':
+> +			addr =3D simple_strtol(optarg, NULL, 0);
+> +			break;
+> +		case 'c':
+> +			count =3D simple_strtoul(optarg, NULL, 0);
+> +			break;
+> +		case 'b':
+> +			adapter =3D i2c_get_adapter(simple_strtoul(optarg, NULL, 0));
+> +			break;
+> +		case 'r':
+> +			reg =3D simple_strtol(optarg, NULL, 0);
+> +			break;
+> +		case 'v':
+> +			verbose =3D 1;
+> +			break;
+> +		}
+> +	}
+> +
+> +	if ((addr < 0) || (reg < 0) || (count =3D=3D 0) || (addr > 0x7F))
+> +		return COMMAND_ERROR_USAGE;
+> +
+> +	if (!adapter)
+> +		adapter =3D i2c_get_adapter(0);
+> +	if (!adapter)
+> +		return -ENODEV;
+> +
+> +	client.adapter =3D adapter;
+> +	client.addr =3D addr;
+> +
+> +	buf =3D xmalloc(count);
+> +	ret =3D i2c_read_reg(&client, reg, buf, count);
+> +	if (ret =3D=3D count) {
+> +		int i;
+> +		if (verbose)
+> +			printf("read %i bytes starting at reg 0x%02x from i2cdev 0x%02x on =
+bus %i\n",
+> +				count, reg, addr, adapter->nr);
+> +		for (i =3D 0; i < count; i++)
+> +			printf("0x%02x ", *(buf + i));
+> +		printf("\n");
+> +		ret =3D 0;
+> +	}
+> +
+> +	free(buf);
+> +	return ret;
+> +}
+> +
+> +static const __maybe_unused char cmd_i2c_read_help[] =3D
+> +"Usage: i2c_read [OPTION]\n"
+> +"read i2c device.\n"
+> +"  -a 0x<addr>   i2c device address\n"
+> +"  -b <bus_num>  i2c bus number (default =3D 0)\n"
+> +"  -r 0x<reg>    start register\n"
+> +"  -c <count>    byte count\n";
+> +
+> +BAREBOX_CMD_START(i2c_read)
+> +	.cmd		=3D do_i2c_read,
+> +	.usage		=3D "read from an i2c device",
+> +	BAREBOX_CMD_HELP(cmd_i2c_read_help)
+> +BAREBOX_CMD_END
+
+cheers, Marc
+
+--=20
+Pengutronix e.K.                  | Marc Kleine-Budde           |
+Industrial Linux Solutions        | Phone: +49-231-2826-924     |
+Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
+Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
+
+
+--------------enig71E09499E0B959DEC738B5E6
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.9 (GNU/Linux)
+Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org
+
+iEYEARECAAYFAkv7kikACgkQjTAFq1RaXHNNDQCgmWt8m7iNN1haqyeli0NM6j0j
+Yw0AnA5ELKnEpkP5oy8yXJLkis90KHmn
+=cuA8
+-----END PGP SIGNATURE-----
+
+--------------enig71E09499E0B959DEC738B5E6--
+
+
+--===============1659393509==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============1659393509==--
