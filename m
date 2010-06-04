@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.69 #1 (Red Hat Linux))
-	id 1OKTcP-00034t-8e
+	id 1OKTcP-00034u-9C
 	for barebox@lists.infradead.org; Fri, 04 Jun 2010 09:55:15 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  4 Jun 2010 11:55:02 +0200
-Message-Id: <1275645309-9756-7-git-send-email-s.hauer@pengutronix.de>
+Date: Fri,  4 Jun 2010 11:55:04 +0200
+Message-Id: <1275645309-9756-9-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1275645309-9756-1-git-send-email-s.hauer@pengutronix.de>
 References: <1275645309-9756-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,195 +21,153 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/13] implement ping using new network stack
+Subject: [PATCH 08/13] net: consider rarp support as outdated. Remove it
 To: barebox@lists.infradead.org
+
+It is disabled in all defconfigs and probably broken for longer.
+Remove it.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- net/ping.c |  147 ++++++++++++++++++++++++++++++------------------------------
- 1 files changed, 74 insertions(+), 73 deletions(-)
+ net/Kconfig  |    4 --
+ net/Makefile |    1 -
+ net/rarp.c   |  101 ----------------------------------------------------------
+ 3 files changed, 0 insertions(+), 106 deletions(-)
+ delete mode 100644 net/rarp.c
 
-diff --git a/net/ping.c b/net/ping.c
-index 7e21fe4..0f9868e 100644
---- a/net/ping.c
-+++ b/net/ping.c
-@@ -2,102 +2,103 @@
- #include <command.h>
- #include <clock.h>
- #include <net.h>
-+#include <errno.h>
-+#include <linux/err.h>
+diff --git a/net/Kconfig b/net/Kconfig
+index cca2b00..a110bec 100644
+--- a/net/Kconfig
++++ b/net/Kconfig
+@@ -7,10 +7,6 @@ config NET_DHCP
+ 	bool
+ 	prompt "dhcp support"
  
--static ushort PingSeqNo;
-+static uint16_t ping_sequence_number;
- 
--static IPaddr_t	NetPingIP;		/* the ip address to ping 		*/
-+static IPaddr_t	net_ping_ip;		/* the ip address to ping 		*/
- 
--static int PingSend(void)
+-config NET_RARP
+-	bool
+-	prompt "rarp protocol support"
+-
+ config NET_NFS
+ 	bool
+ 	prompt "nfs support"
+diff --git a/net/Makefile b/net/Makefile
+index 0ffc895..bba6f0e 100644
+--- a/net/Makefile
++++ b/net/Makefile
+@@ -2,6 +2,5 @@ obj-$(CONFIG_NET_DHCP)	+= dhcp.o
+ obj-$(CONFIG_NET)	+= eth.o
+ obj-$(CONFIG_NET)	+= net.o
+ obj-$(CONFIG_NET_NFS)	+= nfs.o
+-obj-$(CONFIG_NET_RARP)	+= rarp.o
+ obj-$(CONFIG_NET_TFTP)	+= tftp.o
+ obj-$(CONFIG_NET_PING)	+= ping.o
+diff --git a/net/rarp.c b/net/rarp.c
+deleted file mode 100644
+index 24818f8..0000000
+--- a/net/rarp.c
++++ /dev/null
+@@ -1,101 +0,0 @@
+-/*
+- * (C) Copyright 2000-2002
+- * Wolfgang Denk, DENX Software Engineering, wd@denx.de.
+- *
+- * See file CREDITS for list of people who contributed to this
+- * project.
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+- * MA 02111-1307 USA
+- */
+-
+-#include <common.h>
+-#include <command.h>
+-#include <clock.h>
+-#include <net.h>
+-#include "nfs.h"
+-#include "rarp.h"
+-#include "tftp.h"
+-
+-#define TIMEOUT		5		/* Seconds before trying BOOTP again */
+-#ifndef	CONFIG_NET_RETRY_COUNT
+-# define TIMEOUT_COUNT	5		/* # of timeouts before giving up  */
+-#else
+-# define TIMEOUT_COUNT  (CONFIG_NET_RETRY_COUNT)
+-#endif
+-
+-
+-int		RarpTry;
+-
+-/*
+- *	Handle a RARP received packet.
+- */
+-static void
+-RarpHandler(uchar * dummi0, unsigned dummi1, unsigned dummi2, unsigned dummi3)
 -{
--	static uchar mac[6];
--	IP_t *ip;
--	ushort *s;
--	uchar *pkt;
--
--	/* XXX always send arp request */
--
--	memcpy(mac, NetEtherNullAddr, 6);
--
--	pr_debug("sending ARP for %08lx\n", NetPingIP);
--
--	NetArpWaitPacketIP = NetPingIP;
--	NetArpWaitPacketMAC = mac;
--
--	pkt = NetArpWaitTxPacket;
--	pkt += NetSetEther(pkt, mac, PROT_IP);
--
--	ip = (IP_t *)pkt;
--
--	/*
--	 *	Construct an IP and ICMP header.  (need to set no fragment bit - XXX)
--	 */
--	ip->ip_hl_v  = 0x45;		/* IP_HDR_SIZE / 4 (not including UDP) */
--	ip->ip_tos   = 0;
--	ip->ip_len   = htons(IP_HDR_SIZE_NO_UDP + 8);
--	ip->ip_id    = htons(NetIPID++);
--	ip->ip_off   = htons(0x4000);	/* No fragmentation */
--	ip->ip_ttl   = 255;
--	ip->ip_p     = 0x01;		/* ICMP */
--	ip->ip_sum   = 0;
--	NetCopyIP((void*)&ip->ip_src, &NetOurIP); /* already in network byte order */
--	NetCopyIP((void*)&ip->ip_dst, &NetPingIP);	   /* - "" - */
--	ip->ip_sum   = ~NetCksum((uchar *)ip, IP_HDR_SIZE_NO_UDP / 2);
--
--	s = &ip->udp_src;		/* XXX ICMP starts here */
--	s[0] = htons(0x0800);		/* echo-request, code */
--	s[1] = 0;			/* checksum */
--	s[2] = 0; 			/* identifier */
--	s[3] = htons(PingSeqNo++);	/* sequence number */
--	s[1] = ~NetCksum((uchar *)s, 8/2);
--
--	/* size of the waiting packet */
--	NetArpWaitTxPacketSize = (pkt - NetArpWaitTxPacket) + IP_HDR_SIZE_NO_UDP + 8;
--
--	/* and do the ARP request */
--	NetArpWaitTimerStart = get_time_ns();
--	ArpRequest();
--	return 1;	/* waiting */
--}
-+#define PING_STATE_INIT		0
-+#define PING_STATE_SUCCESS	1
-+
-+static int ping_state;
- 
--static void
--PingTimeout (void)
-+static struct net_connection *ping_con;
-+
-+static int ping_send(void)
- {
--	NetState = NETLOOP_FAIL;	/* we did not get the reply */
-+	unsigned char *payload;
-+	struct icmphdr *icmp;
-+	uint64_t ts;
-+
-+	icmp = ping_con->icmp;
-+
-+	icmp->type = ICMP_ECHO_REQUEST;
-+	icmp->code = 0;
-+	icmp->checksum = 0;
-+	icmp->un.echo.id = 0;
-+	icmp->un.echo.sequence = htons(ping_sequence_number);
-+
-+	ping_sequence_number++;
-+
-+	payload = (char *)(icmp + 1);
-+	ts = get_time_ns();
-+	memcpy(payload, &ts, sizeof(ts));
-+	payload[8] = 0xab;
-+	payload[9] = 0xcd;
-+	return net_icmp_send(ping_con, 9);
- }
- 
--static void
--PingHandler (uchar * pkt, unsigned dest, unsigned src, unsigned len)
-+void ping_handler(char *pkt, unsigned len)
- {
- 	IPaddr_t tmp;
--	IP_t *ip = (IP_t *)pkt;
-+	struct iphdr *ip = net_eth_to_iphdr(pkt);
- 
--	tmp = NetReadIP((void *)&ip->ip_src);
--	if (tmp != NetPingIP)
-+	tmp = net_read_ip((void *)&ip->saddr);
-+	if (tmp != net_ping_ip)
- 		return;
- 
+-#ifdef	DEBUG
+-	puts ("Got good RARP\n");
+-#endif
 -	NetState = NETLOOP_SUCCESS;
-+	ping_state = PING_STATE_SUCCESS;
- }
- 
- int do_ping(struct command *cmdtp, int argc, char *argv[])
- {
--	if (argc < 2 || string_to_ip(argv[1], &NetPingIP))
-+	int ret;
-+	uint64_t ping_start = 0;
-+
-+	if (argc < 2 || string_to_ip(argv[1], &net_ping_ip))
- 		return COMMAND_ERROR_USAGE;
- 
--	if (NetLoopInit(PING) < 0)
--		return 1;
-+	ping_con = net_icmp_new(net_ping_ip, ping_handler);
-+	if (IS_ERR(ping_con)) {
-+		ret = PTR_ERR(ping_con);
-+		goto out;
-+	}
-+
-+	ping_start = get_time_ns();
-+	ret = ping_send();
-+	if (ret)
-+		goto out_unreg;
-+
-+	ping_state = PING_STATE_INIT;
-+	ping_sequence_number = 0;
-+
-+	while (ping_state == PING_STATE_INIT) {
-+		if (ctrlc()) {
-+			ret = -EINTR;
-+			break;
-+		}
- 
--	NetSetTimeout (10 * SECOND, PingTimeout);
--	NetSetHandler (PingHandler);
--	PingSend();
-+		net_poll();
- 
--	if (NetLoop() < 0) {
--		printf("ping failed; host %s is not alive\n", argv[1]);
--		return 1;
-+		if (is_timeout(ping_start, 10 * SECOND)) {
-+			ping_start = get_time_ns();
-+			ret = ping_send();
-+			if (ret)
-+				goto out_unreg;
-+		}
- 	}
- 
--	printf("host %s is alive\n", argv[1]);
-+	if (!ret)
-+		printf("host %s is alive\n", argv[1]);
- 
--	return 0;
-+out_unreg:
-+	net_unregister(ping_con);
-+out:
-+	if (ret)
-+		printf("ping failed: %s\n", strerror(-ret));
-+	return ping_state == PING_STATE_SUCCESS ? 0 : 1;
- }
- 
- BAREBOX_CMD_START(ping)
+-}
+-
+-
+-/*
+- *	Timeout on BOOTP request.
+- */
+-static void
+-RarpTimeout(void)
+-{
+-	NetSetTimeout (TIMEOUT * SECOND, RarpTimeout);
+-	RarpRequest ();
+-}
+-
+-
+-void
+-RarpRequest (void)
+-{
+-	int i;
+-	uchar *pkt;
+-	ARP_t *	rarp;
+-
+-	NetOurIP = 0;
+-	RarpTry = 0;
+-
+-	printf("RARP broadcast %d\n", ++RarpTry);
+-	pkt = NetTxPacket;
+-
+-	pkt += NetSetEther(pkt, NetBcastAddr, PROT_RARP);
+-
+-	rarp = (ARP_t *)pkt;
+-
+-	rarp->ar_hrd = htons (ARP_ETHER);
+-	rarp->ar_pro = htons (PROT_IP);
+-	rarp->ar_hln = 6;
+-	rarp->ar_pln = 4;
+-	rarp->ar_op  = htons (RARPOP_REQUEST);
+-	memcpy (&rarp->ar_data[0],  NetOurEther, 6);	/* source ET addr */
+-	memcpy (&rarp->ar_data[6],  &NetOurIP,   4);	/* source IP addr */
+-	memcpy (&rarp->ar_data[10], NetOurEther, 6);	/* dest ET addr = source ET addr ??*/
+-	/* dest. IP addr set to broadcast */
+-	for (i = 0; i <= 3; i++) {
+-		rarp->ar_data[16 + i] = 0xff;
+-	}
+-
+-	NetSendPacket(NetTxPacket, (pkt - NetTxPacket) + ARP_HDR_SIZE);
+-
+-	NetSetTimeout(TIMEOUT * SECOND, RarpTimeout);
+-	NetSetHandler(RarpHandler);
+-}
+-
 -- 
 1.7.1
 
