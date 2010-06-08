@@ -1,17 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from tango.tkos.co.il ([62.219.50.35])
-	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OMgGd-0002K1-HP
-	for barebox@lists.infradead.org; Thu, 10 Jun 2010 11:49:52 +0000
-Date: Thu, 10 Jun 2010 14:49:39 +0300
-From: Baruch Siach <baruch@tkos.co.il>
-Message-ID: <20100610114939.GF31840@jasper.tkos.co.il>
-References: <cover.1276065824.git.baruch@tkos.co.il>
-	<f9f84cc251848d133fae379e6d20253df2121ffb.1276065824.git.baruch@tkos.co.il>
-	<20100610111237.GH20799@pengutronix.de>
+Received: from smtp4.aruba.it ([62.149.128.203] helo=smtpw2.aruba.it)
+	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1OLtsD-0007Ld-Gi
+	for barebox@lists.infradead.org; Tue, 08 Jun 2010 08:09:27 +0000
+Date: Tue,  8 Jun 2010 10:02:44 +0200
+Message-Id: <L3OROK$8E14E73C17D97B7C877E590EED33976C@aruba.it>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20100610111237.GH20799@pengutronix.de>
+From: "Luca Ceresoli" <list@lucaceresoli.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,46 +19,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 8/8] mx25 3ds: add support for boot from UART
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: OMAP 3530 arch_shutdown "undefined instruction"
+To: barebox@lists.infradead.org
 
-Hi Sascha,
-
-On Thu, Jun 10, 2010 at 01:12:37PM +0200, Sascha Hauer wrote:
-> On Wed, Jun 09, 2010 at 10:05:07AM +0300, Baruch Siach wrote:
-
-[snip]
-
-> > --- a/board/freescale-mx25-3-stack/3stack.c
-> > +++ b/board/freescale-mx25-3-stack/3stack.c
-> > @@ -44,7 +44,11 @@ extern unsigned long _stext;
-> >  
-> >  void __naked __flash_header_start go(void)
-> >  {
-> > +#if defined CONFIG_FREESCALE_MX25_3STACK_UART_BOOT
-> > +	__asm__ (".word	exception_vectors\n");
-> > +#else
-> >  	__asm__ __volatile__("b exception_vectors\n");
-> > +#endif
+Orjan Friberg wrote:> On 2010-05-27 11:31, Sascha Hauer wrote:
+> > Seems this does not work on Cortex Processors. Can you try replacing
+> > this with the following please:
+> >
+> > 	asm volatile (
+> > 		"bl __mmu_cache_flush;"
+> > 		"bl __mmu_cache_off;"
+> > 		:
+> > 		:
+> > 		: "r0", "r1", "r2", "r3", "r6", "r10", "r12", "cc", "memory"
+> > 	);
 > 
-> Do we need this change? I booted other i.MX SoCs without it. I really
-> like to keep this because it enables to jump to the first address if
-> booting second stage.
+> Thanks, this seems to work fine (in the sense that I can load and run a 
+> second stage bootloader; I haven't tried verifying what happens with the 
+> I and D cache).
 
-This is actually a (very) short "flash" header with only the 
-app_code_jump_vector entry left. Only reverse engineering the Freescale ATK 
-software revealed this secret. Reading through the i.MX25 Reference Manual I 
-now see that there is an option to pass DCD separately, but it complicates the 
-boot sequence.  This change only affects builds when this configuration 
-option, and this option is disabled by default.
+Works for me as well.
+Is it going to be committed?
 
-baruch
+Thanks,
+Luca
 
--- 
-                                                     ~. .~   Tk Open Systems
-=}------------------------------------------------ooO--U--Ooo------------{=
-   - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
+
 
 _______________________________________________
 barebox mailing list
