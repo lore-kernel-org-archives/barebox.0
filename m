@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OMgcD-0005Sp-Lz
-	for barebox@lists.infradead.org; Thu, 10 Jun 2010 12:12:11 +0000
-Date: Thu, 10 Jun 2010 14:12:08 +0200
+	id 1OMgmS-0001uX-3k
+	for barebox@lists.infradead.org; Thu, 10 Jun 2010 12:22:45 +0000
+Date: Thu, 10 Jun 2010 14:22:42 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20100610121208.GO20799@pengutronix.de>
-References: <cover.1276065824.git.baruch@tkos.co.il>
-	<f9f84cc251848d133fae379e6d20253df2121ffb.1276065824.git.baruch@tkos.co.il>
-	<20100610111237.GH20799@pengutronix.de>
-	<20100610114939.GF31840@jasper.tkos.co.il>
+Message-ID: <20100610122242.GP20799@pengutronix.de>
+References: <L3OROK$8E14E73C17D97B7C877E590EED33976C@aruba.it>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20100610114939.GF31840@jasper.tkos.co.il>
+In-Reply-To: <L3OROK$8E14E73C17D97B7C877E590EED33976C@aruba.it>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,94 +18,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 8/8] mx25 3ds: add support for boot from UART
-To: Baruch Siach <baruch@tkos.co.il>
+Subject: Re: OMAP 3530 arch_shutdown "undefined instruction"
+To: Luca Ceresoli <list@lucaceresoli.net>
 Cc: barebox@lists.infradead.org
 
-T24gVGh1LCBKdW4gMTAsIDIwMTAgYXQgMDI6NDk6MzlQTSArMDMwMCwgQmFydWNoIFNpYWNoIHdy
-b3RlOgo+IEhpIFNhc2NoYSwKPiAKPiBPbiBUaHUsIEp1biAxMCwgMjAxMCBhdCAwMToxMjozN1BN
-ICswMjAwLCBTYXNjaGEgSGF1ZXIgd3JvdGU6Cj4gPiBPbiBXZWQsIEp1biAwOSwgMjAxMCBhdCAx
-MDowNTowN0FNICswMzAwLCBCYXJ1Y2ggU2lhY2ggd3JvdGU6Cj4gCj4gW3NuaXBdCj4gCj4gPiA+
-IC0tLSBhL2JvYXJkL2ZyZWVzY2FsZS1teDI1LTMtc3RhY2svM3N0YWNrLmMKPiA+ID4gKysrIGIv
-Ym9hcmQvZnJlZXNjYWxlLW14MjUtMy1zdGFjay8zc3RhY2suYwo+ID4gPiBAQCAtNDQsNyArNDQs
-MTEgQEAgZXh0ZXJuIHVuc2lnbmVkIGxvbmcgX3N0ZXh0Owo+ID4gPiAgCj4gPiA+ICB2b2lkIF9f
-bmFrZWQgX19mbGFzaF9oZWFkZXJfc3RhcnQgZ28odm9pZCkKPiA+ID4gIHsKPiA+ID4gKyNpZiBk
-ZWZpbmVkIENPTkZJR19GUkVFU0NBTEVfTVgyNV8zU1RBQ0tfVUFSVF9CT09UCj4gPiA+ICsJX19h
-c21fXyAoIi53b3JkCWV4Y2VwdGlvbl92ZWN0b3JzXG4iKTsKPiA+ID4gKyNlbHNlCj4gPiA+ICAJ
-X19hc21fXyBfX3ZvbGF0aWxlX18oImIgZXhjZXB0aW9uX3ZlY3RvcnNcbiIpOwo+ID4gPiArI2Vu
-ZGlmCj4gPiAKPiA+IERvIHdlIG5lZWQgdGhpcyBjaGFuZ2U/IEkgYm9vdGVkIG90aGVyIGkuTVgg
-U29DcyB3aXRob3V0IGl0LiBJIHJlYWxseQo+ID4gbGlrZSB0byBrZWVwIHRoaXMgYmVjYXVzZSBp
-dCBlbmFibGVzIHRvIGp1bXAgdG8gdGhlIGZpcnN0IGFkZHJlc3MgaWYKPiA+IGJvb3Rpbmcgc2Vj
-b25kIHN0YWdlLgo+IAo+IFRoaXMgaXMgYWN0dWFsbHkgYSAodmVyeSkgc2hvcnQgImZsYXNoIiBo
-ZWFkZXIgd2l0aCBvbmx5IHRoZSAKPiBhcHBfY29kZV9qdW1wX3ZlY3RvciBlbnRyeSBsZWZ0LiBP
-bmx5IHJldmVyc2UgZW5naW5lZXJpbmcgdGhlIEZyZWVzY2FsZSBBVEsgCj4gc29mdHdhcmUgcmV2
-ZWFsZWQgdGhpcyBzZWNyZXQuIFJlYWRpbmcgdGhyb3VnaCB0aGUgaS5NWDI1IFJlZmVyZW5jZSBN
-YW51YWwgSSAKPiBub3cgc2VlIHRoYXQgdGhlcmUgaXMgYW4gb3B0aW9uIHRvIHBhc3MgRENEIHNl
-cGFyYXRlbHksIGJ1dCBpdCBjb21wbGljYXRlcyB0aGUgCj4gYm9vdCBzZXF1ZW5jZS4gIFRoaXMg
-Y2hhbmdlIG9ubHkgYWZmZWN0cyBidWlsZHMgd2hlbiB0aGlzIGNvbmZpZ3VyYXRpb24gCj4gb3B0
-aW9uLCBhbmQgdGhpcyBvcHRpb24gaXMgZGlzYWJsZWQgYnkgZGVmYXVsdC4KCldoYXQgZG8geW91
-IHVzZSB0byB1cGxvYWQgaW1hZ2VzPyBJIG9uY2UgdXBkYXRlZCBteSBmYXZvdXJpdGUgdGVybWlu
-YWwKcHJvZ3JhbSBtaWNyb2NvbSAoZ2l0Oi8vZ2l0LnBlbmd1dHJvbml4LmRlL2dpdC90b29scy9t
-aWNyb2NvbSkgdG8gYmUKYWJsZSB0byB1cGxvYWQgYW5kIHN0YXJ0IGltYWdlcy4gSSBkaWRuJ3Qg
-bmVlZCBhbnkgc3BlY2lhbCBpbWFnZXMuIEkKanVzdCB1c2VkIHRoZSBhYmlsaXR5IHRvIHdyaXRl
-IHJlZ2lzdGVycyB0byBpbml0aWFsaXplIHRoZSBTRFJBTSBhbmQKdGhlbiB1cGxvYWRlZCBhbiBp
-bWFnZSB0byBzZHJhbSB3aXRoIGltYWdlIHR5cGUgMHhhYSB3aGljaCBzZWVtcyB0bwpqdXN0IHN0
-YXJ0IHRoZSBpbWFnZSBhdCB0aGUgZ2l2ZW4gYWRkcmVzcy4gRmluZCBhIGxvZyBhdHRhY2hlZCAo
-d2hpY2ggaXMKb24gYW4gaS5NWDI3LCBidXQgSSB0ZXN0ZWQgaXQgb24gaS5NWDM1IGFuZCBpLk1Y
-NTEgYXN3ZWxsKQpNYXliZSB0aGlzIGNvdWxkIGJlIGEgc29sdXRpb24gZm9yIHlvdSBhc3dlbGwu
-CgpBbnl3YXksIHRoYXQgc2FpZCwgSSBjYW4gYXBwbHkgeW91ciBwYXRjaCwgdG9vLiBJIGp1c3Qg
-ZmluZCBpdCB2ZXJ5CmNvbWZvcnRhYmxlIHRvIHVzZSBvbmUgaW1hZ2UgZm9yIGFsbCBib290IHNj
-ZW5hcmlvcy4KClNhc2NoYQoKc2hhQGtpd2k6fi9vY3RvcHVzL21pY3JvY29tL21pY3JvY29tIC4v
-bWljcm9jb20gLXAgL2Rldi90dHlTMCAtZgpjb25uZWN0ZWQgdG8gL2Rldi90dHlTMApFc2NhcGUg
-Y2hhcmFjdGVyOiBDdHJsLVwKVHlwZSB0aGUgZXNjYXBlIGNoYXJhY3RlciBmb2xsb3dlZCBieSBj
-IHRvIGdldCB0byB0aGUgbWVudSBvciBxIHRvIHF1aXQKCmJhcmVib3g6LwpFbnRlciBjb21tYW5k
-LiBUcnkgJ2hlbHAnIGZvciBhIGxpc3Qgb2YgYnVpbHRpbiBjb21tYW5kcwotPiB4IGIKbXcgMHhE
-ODAwMTAxMCAweDAwMDAwMDA0Cm13IDB4RDgwMDEwMDQgMHgwMDZhYzczYQptdyAweEQ4MDAxMDAw
-IDB4OTIxMDAwMDAKbXcgMHhBMDAwMGYwMCAweDEyMzQ0MzIxCm13IDB4RDgwMDEwMDAgMHhhMjEw
-MDAwMAptdyAweEEwMDAwMDAwIDB4MTIzNDQzMjEKbXcgMHhBMDAwMDAwMCAweDEyMzQ0MzIxCm13
-IDB4RDgwMDEwMDAgMHhiMjEwMDAwMAptd2IgMHhBMDAwMDAzMyAweGRhCm13YiAweEExMDAwMDAw
-IDB4ZmYKbXcgMHhEODAwMTAwMCAweDgyMjI2MDgwCm13IDB4QTAwMDAwMDAgMHhERUFEQkVFRgpt
-dyAweEQ4MDAxMDEwIDB4MDAwMDAwMGMKdXBsb2FkIDB4YTAwMDAwMDAgL2hvbWUvc2hhL29jdG9w
-dXMvYmFyZWJveC9iYXJlYm94L2JhcmVib3gtcGNtMDM4LmJpbiAweGFhCmltYWdlIHR5cGU6IDB4
-YWEKCiAgICAjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMj
-IyMjIyMjIyMjIyMjIyMjCiAgICAjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMj
-IyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjCiAgICAjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMj
-IyMjIyMjIyMjIyMjIyMjCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tCu+/ve+/ve+/ve+/vQoKYmFy
-ZWJveCAyMDEwLjA0LjAtMDAxNDAtZzBhMjhhZGEtZGlydHkgKEFwciAxNSAyMDEwIC0gMTE6NDA6
-MjEpCgpCb2FyZDogUGh5dGVjIHBoeUNPUkUtaS5NWDI3CmNmaV9wcm9iZTogY2ZpX2ZsYXNoIGJh
-c2U6IDB4YzAwMDAwMDAgc2l6ZTogMHgwMjAwMDAwMApOQU5EIGRldmljZTogTWFudWZhY3R1cmVy
-IElEOiAweDIwLCBDaGlwIElEOiAweDM2IChTVCBNaWNybyBOQU5EIDY0TWlCCjEsOFYgOC1iaXQp
-CkJhZCBibG9jayB0YWJsZSBmb3VuZCBhdCBwYWdlIDEzMTA0MCwgdmVyc2lvbiAweDAxCkJhZCBi
-bG9jayB0YWJsZSBmb3VuZCBhdCBwYWdlIDEzMTAwOCwgdmVyc2lvbiAweDAxCmlteGZiQGlteGZi
-MDogaS5NWCBGcmFtZWJ1ZmZlciBkcml2ZXIKVUxQSSBWZW5kb3IgSUQgMHhmZmZmZmY5MiAgICBQ
-cm9kdWN0IElEIDB4ZmZmZmZmOTIKTm8gSVNQMTUwNCBmb3VuZAplaGNpQGVoY2kwOiBVU0IgRUhD
-SSAxLjAwCmNmaV9wcm90ZWN0OiBwcm90ZWN0IDB4YzAwNDAwMDAgKHNpemUgMTMxMDcyKQoKVXNp
-bmcgZW52aXJvbm1lbnQgaW4gTk9SIEZsYXNoCmluaXRpYWxpc2luZyBQTExzOiAweGE3ZjFlYTE4
-IDB4YTdmMjkxZjQKTWFsbG9jIHNwYWNlOiAweGE2ZjAwMDAwIC0+IDB4YTdmMDAwMDAgKHNpemUg
-MTYgTUIpClN0YWNrIHNwYWNlIDogMHhhNmVmODAwMCAtPiAweGE2ZjAwMDAwIChzaXplIDMyIGtC
-KQpydW5uaW5nIC9lbnYvYmluL2luaXQuLi4KCkhpdCBhbnkga2V5IHRvIHN0b3AgYXV0b2Jvb3Q6
-ICAyCgp0eXBlIHVwZGF0ZV9rZXJuZWwgbmFuZHxub3IgWzxpbWFnZW5hbWU+XSB0byB1cGRhdGUg
-a2VybmVsIGludG8gZmxhc2gKdHlwZSB1cGRhdGVfcm9vdCBuYW5kfG5vciBbPGltYWdlbmFtZT5d
-IHRvIHVwZGF0ZSByb290ZnMgaW50byBmbGFzaAoKYmFyZWJveDovCgotLSAKUGVuZ3V0cm9uaXgg
-ZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgIHwKSW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDov
-L3d3dy5wZW5ndXRyb25peC5kZS8gIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWlt
-LCBHZXJtYW55IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGls
-ZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1
-IHwKCj4gCj4gYmFydWNoCj4gCj4gLS0gCj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICB+LiAufiAgIFRrIE9wZW4gU3lzdGVtcwo+ID19LS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tb29PLS1VLS1Pb28tLS0t
-LS0tLS0tLS17PQo+ICAgIC0gYmFydWNoQHRrb3MuY28uaWwgLSB0ZWw6ICs5NzIuMi42NzkuNTM2
-NCwgaHR0cDovL3d3dy50a29zLmNvLmlsIC0KPiAKCi0tIApQZW5ndXRyb25peCBlLksuICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfApJbmR1
-c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1
-dHJvbml4LmRlLyAgfApQZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkg
-fCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfApBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBI
-UkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5n
-IGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQu
-b3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Tue, Jun 08, 2010 at 10:02:44AM +0200, Luca Ceresoli wrote:
+> Orjan Friberg wrote:> On 2010-05-27 11:31, Sascha Hauer wrote:
+> > > Seems this does not work on Cortex Processors. Can you try replacing
+> > > this with the following please:
+> > >
+> > > 	asm volatile (
+> > > 		"bl __mmu_cache_flush;"
+> > > 		"bl __mmu_cache_off;"
+> > > 		:
+> > > 		:
+> > > 		: "r0", "r1", "r2", "r3", "r6", "r10", "r12", "cc", "memory"
+> > > 	);
+> > 
+> > Thanks, this seems to work fine (in the sense that I can load and run a 
+> > second stage bootloader; I haven't tried verifying what happens with the 
+> > I and D cache).
+> 
+> Works for me as well.
+> Is it going to be committed?
+
+Ok, done.
+
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
