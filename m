@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OMfeh-0007HL-2S
-	for barebox@lists.infradead.org; Thu, 10 Jun 2010 11:10:40 +0000
-Date: Thu, 10 Jun 2010 13:10:36 +0200
+	id 1OMfgc-0004GR-Ah
+	for barebox@lists.infradead.org; Thu, 10 Jun 2010 11:12:39 +0000
+Date: Thu, 10 Jun 2010 13:12:37 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20100610111035.GG20799@pengutronix.de>
+Message-ID: <20100610111237.GH20799@pengutronix.de>
 References: <cover.1276065824.git.baruch@tkos.co.il>
+	<f9f84cc251848d133fae379e6d20253df2121ffb.1276065824.git.baruch@tkos.co.il>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <cover.1276065824.git.baruch@tkos.co.il>
+In-Reply-To: <f9f84cc251848d133fae379e6d20253df2121ffb.1276065824.git.baruch@tkos.co.il>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,21 +23,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/8] i.MX25 3DS fixes and enhancements
+Subject: Re: [PATCH 8/8] mx25 3ds: add support for boot from UART
 To: Baruch Siach <baruch@tkos.co.il>
 Cc: barebox@lists.infradead.org
 
-Hi Baruch,
-
-On Wed, Jun 09, 2010 at 10:04:59AM +0300, Baruch Siach wrote:
-> This series of patches includes the following:
+On Wed, Jun 09, 2010 at 10:05:07AM +0300, Baruch Siach wrote:
+> For details of the UART protocol see the i.MX25 Reference Manual, section 7.8
+> "Serial Download protocol".
 > 
-> 1. Fixes and clean-ups for the i.MX25 3DS board code
-> 2. New driver for the i.MX25 3DS on-board PMIC
-> 3. Enable proper FEC initialization including PHY power supply enable
-> 4. Add support for boot from UART on the i.MX25 3DS
+> Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+> ---
+>  arch/arm/mach-imx/Kconfig                    |    5 +++++
+>  board/freescale-mx25-3-stack/3stack.c        |    4 ++++
+>  board/freescale-mx25-3-stack/lowlevel_init.S |    5 +++++
+>  3 files changed, 14 insertions(+), 0 deletions(-)
+> 
+> diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+> index 419daab..40cebed 100644
+> --- a/arch/arm/mach-imx/Kconfig
+> +++ b/arch/arm/mach-imx/Kconfig
+> @@ -319,6 +319,11 @@ config FREESCALE_MX25_3STACK_SDRAM_64MB_DDR2
+>  config FREESCALE_MX25_3STACK_SDRAM_128MB_MDDR
+>  	bool "128 MB (mDDR)"
+>  endchoice
+> +
+> +config FREESCALE_MX25_3STACK_UART_BOOT
+> +	bool "Boot from UART"
+> +	depends on ARCH_IMX_INTERNAL_BOOT
+> +
+>  endif
+>  endmenu
+>  
+> diff --git a/board/freescale-mx25-3-stack/3stack.c b/board/freescale-mx25-3-stack/3stack.c
+> index a657a47..081487a 100644
+> --- a/board/freescale-mx25-3-stack/3stack.c
+> +++ b/board/freescale-mx25-3-stack/3stack.c
+> @@ -44,7 +44,11 @@ extern unsigned long _stext;
+>  
+>  void __naked __flash_header_start go(void)
+>  {
+> +#if defined CONFIG_FREESCALE_MX25_3STACK_UART_BOOT
+> +	__asm__ (".word	exception_vectors\n");
+> +#else
+>  	__asm__ __volatile__("b exception_vectors\n");
+> +#endif
 
-Applied them all except the last one, see the comment there.
+Do we need this change? I booted other i.MX SoCs without it. I really
+like to keep this because it enables to jump to the first address if
+booting second stage.
 
 Sascha
 
