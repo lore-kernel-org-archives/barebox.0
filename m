@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OMfgc-0004GR-Ah
-	for barebox@lists.infradead.org; Thu, 10 Jun 2010 11:12:39 +0000
-Date: Thu, 10 Jun 2010 13:12:37 +0200
+	id 1OMflH-0003Ug-Ke
+	for barebox@lists.infradead.org; Thu, 10 Jun 2010 11:17:28 +0000
+Date: Thu, 10 Jun 2010 13:17:26 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20100610111237.GH20799@pengutronix.de>
-References: <cover.1276065824.git.baruch@tkos.co.il>
-	<f9f84cc251848d133fae379e6d20253df2121ffb.1276065824.git.baruch@tkos.co.il>
+Message-ID: <20100610111726.GI20799@pengutronix.de>
+References: <AANLkTikVBjnjLbC2LZBzRZ0C4FqgxOrbsT-tCgMTqGy8@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <f9f84cc251848d133fae379e6d20253df2121ffb.1276065824.git.baruch@tkos.co.il>
+In-Reply-To: <AANLkTikVBjnjLbC2LZBzRZ0C4FqgxOrbsT-tCgMTqGy8@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,57 +22,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 8/8] mx25 3ds: add support for boot from UART
-To: Baruch Siach <baruch@tkos.co.il>
+Subject: Re: barebox with usb cdc-eth driver?
+To: Belisko Marek <marek.belisko@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, Jun 09, 2010 at 10:05:07AM +0300, Baruch Siach wrote:
-> For details of the UART protocol see the i.MX25 Reference Manual, section 7.8
-> "Serial Download protocol".
-> 
-> Signed-off-by: Baruch Siach <baruch@tkos.co.il>
-> ---
->  arch/arm/mach-imx/Kconfig                    |    5 +++++
->  board/freescale-mx25-3-stack/3stack.c        |    4 ++++
->  board/freescale-mx25-3-stack/lowlevel_init.S |    5 +++++
->  3 files changed, 14 insertions(+), 0 deletions(-)
-> 
-> diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-> index 419daab..40cebed 100644
-> --- a/arch/arm/mach-imx/Kconfig
-> +++ b/arch/arm/mach-imx/Kconfig
-> @@ -319,6 +319,11 @@ config FREESCALE_MX25_3STACK_SDRAM_64MB_DDR2
->  config FREESCALE_MX25_3STACK_SDRAM_128MB_MDDR
->  	bool "128 MB (mDDR)"
->  endchoice
-> +
-> +config FREESCALE_MX25_3STACK_UART_BOOT
-> +	bool "Boot from UART"
-> +	depends on ARCH_IMX_INTERNAL_BOOT
-> +
->  endif
->  endmenu
->  
-> diff --git a/board/freescale-mx25-3-stack/3stack.c b/board/freescale-mx25-3-stack/3stack.c
-> index a657a47..081487a 100644
-> --- a/board/freescale-mx25-3-stack/3stack.c
-> +++ b/board/freescale-mx25-3-stack/3stack.c
-> @@ -44,7 +44,11 @@ extern unsigned long _stext;
->  
->  void __naked __flash_header_start go(void)
->  {
-> +#if defined CONFIG_FREESCALE_MX25_3STACK_UART_BOOT
-> +	__asm__ (".word	exception_vectors\n");
-> +#else
->  	__asm__ __volatile__("b exception_vectors\n");
-> +#endif
+Hi Marek,
 
-Do we need this change? I booted other i.MX SoCs without it. I really
-like to keep this because it enables to jump to the first address if
-booting second stage.
+On Wed, Jun 09, 2010 at 12:55:47PM +0200, Belisko Marek wrote:
+> Hi,
+> 
+> I'm not sure if this would be possible and also make a sense
+> but I think about possibility to add cdc-eth driver to barebox.
+> 
+> If some board doesn't have a eth interface and could be used for development
+> it would be nice to load kernel via usb cdc-eth and also mount rootfs
+> via nfs for kernel.
+
+Currently we do not have plans to add support for cdc ethernet, patches
+welcome ;)
+
+What we have if dfu support (device firmware upgrade) which can at least
+be used to flash images to the board. We also have regular USB
+networking support, so if you have a host interface you could use this.
+
+Adding cdc ethernet support should be doable since barebox uses the
+Linux Kernel gadget framework.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
