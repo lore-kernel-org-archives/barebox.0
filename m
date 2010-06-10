@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp4.aruba.it ([62.149.128.203] helo=smtpw2.aruba.it)
-	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OLtsD-0007Ld-Gi
-	for barebox@lists.infradead.org; Tue, 08 Jun 2010 08:09:27 +0000
-Date: Tue,  8 Jun 2010 10:02:44 +0200
-Message-Id: <L3OROK$8E14E73C17D97B7C877E590EED33976C@aruba.it>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1OMgLY-0002cE-5s
+	for barebox@lists.infradead.org; Thu, 10 Jun 2010 11:54:56 +0000
+Date: Thu, 10 Jun 2010 13:54:54 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20100610115454.GN20799@pengutronix.de>
+References: <1275991382.18173.37.camel@lws-gamez>
 MIME-Version: 1.0
-From: "Luca Ceresoli" <list@lucaceresoli.net>
+Content-Disposition: inline
+In-Reply-To: <1275991382.18173.37.camel@lws-gamez>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,36 +18,85 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: OMAP 3530 arch_shutdown "undefined instruction"
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] mx2 GPIO OCRx register
+To: Teresa Gamez <T.Gamez@phytec.de>
+Cc: barebox@lists.infradead.org
 
-Orjan Friberg wrote:> On 2010-05-27 11:31, Sascha Hauer wrote:
-> > Seems this does not work on Cortex Processors. Can you try replacing
-> > this with the following please:
-> >
-> > 	asm volatile (
-> > 		"bl __mmu_cache_flush;"
-> > 		"bl __mmu_cache_off;"
-> > 		:
-> > 		:
-> > 		: "r0", "r1", "r2", "r3", "r6", "r10", "r12", "cc", "memory"
-> > 	);
-> 
-> Thanks, this seems to work fine (in the sense that I can load and run a 
-> second stage bootloader; I haven't tried verifying what happens with the 
-> I and D cache).
+Hi Teresa,
 
-Works for me as well.
-Is it going to be committed?
+On Tue, Jun 08, 2010 at 12:03:02PM +0200, Teresa Gamez wrote:
+> The GPIO OCRx register has to be set correct or the output is not set as =
+expected.
 
-Thanks,
-Luca
+No. The gpio functions are not expected to change the iomuxer. This is
+what imx_gpio_mode() is for.
+
+Sascha
 
 
+> =
+
+> Signed-off-by: Teresa G=E1mez <T.Gamez@phytec.de> =
+
+> ---
+> Index: barebox-2010.06.0/arch/arm/mach-imx/gpio.c
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> --- barebox-2010.06.0/arch/arm/mach-imx/gpio.c	2010-06-02 10:36:28.000000=
+000 +0200
+> +++ barebox-2010.06.0/arch/arm/mach-imx/gpio.c	2010-06-08 11:02:31.282473=
+877 +0200
+> @@ -31,6 +31,8 @@
+>  #if defined CONFIG_ARCH_IMX1 || defined CONFIG_ARCH_IMX21 || defined CON=
+FIG_ARCH_IMX27
+>  #define GPIO_DR		0x1c
+>  #define GPIO_GDIR	0x00
+> +#define GPIO_OCR1	0x04
+> +#define GPIO_OCR2	0x08
+>  #define GPIO_PSR	0x24
+>  #define GPIO_ICR1	0x28
+>  #define GPIO_ICR2	0x2C
+> @@ -103,6 +105,18 @@
+>  	if (!base)
+>  		return -EINVAL;
+>  =
+
+> +#if defined GPIO_OCR1 && defined GPIO_OCR2
+> +	if (shift < 16) {
+> +		val =3D readl(base + GPIO_OCR1);
+> +		val |=3D (3 << (shift * 2));
+> +		writel(val, base + GPIO_OCR1);
+> +	} else {
+> +		val =3D readl(base + GPIO_OCR2);
+> +		val |=3D (3 << ((shift - 16) * 2));
+> +		writel(val, base + GPIO_OCR2);
+> +	}
+> +#endif
+> +
+>  	gpio_set_value(gpio, value);
+>  =
+
+>  	val =3D readl(base + GPIO_GDIR);
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
