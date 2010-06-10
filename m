@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 27.mail-out.ovh.net ([91.121.30.210])
-	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OMitt-0008N4-5w
-	for barebox@lists.infradead.org; Thu, 10 Jun 2010 14:38:34 +0000
-Message-ID: <4C10F8E5.3010600@eukrea.com>
-Date: Thu, 10 Jun 2010 16:38:29 +0200
-From: =?ISO-8859-1?Q?Eric_B=E9nard?= <eric@eukrea.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1OMjFB-0006VK-M1
+	for barebox@lists.infradead.org; Thu, 10 Jun 2010 15:00:34 +0000
+Date: Thu, 10 Jun 2010 17:00:31 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20100610150031.GT20799@pengutronix.de>
+References: <4C10F8E5.3010600@eukrea.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <4C10F8E5.3010600@eukrea.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,24 +18,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: barebox for i.MX51
-To: barebox@lists.infradead.org
+Subject: Re: barebox for i.MX51
+To: Eric =?iso-8859-15?Q?B=E9nard?= <eric@eukrea.com>
+Cc: barebox@lists.infradead.org
 
-Hi,
+On Thu, Jun 10, 2010 at 04:38:29PM +0200, Eric B=E9nard wrote:
+> Hi,
+>
+> Is anyone working on barebox for i.MX51 ?
+> We actually have u-boot on our i.MX51 boards but I would like to migrate  =
 
-Is anyone working on barebox for i.MX51 ?
-We actually have u-boot on our i.MX51 boards but I would like to migrate 
-to barebox asap so I should start porting i.MX51 to barebox during spare 
-time.
-If someone has started this work, we could colaborate to avoid 
-duplicated work.
+> to barebox asap so I should start porting i.MX51 to barebox during spare  =
 
-Thanks,
-Eric
+> time.
+> If someone has started this work, we could colaborate to avoid  =
+
+> duplicated work.
+
+I have started to work on it, but it surely needs some polishing. Find it in
+the mx51 branch in the master repository.
+
+Sascha
+
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
