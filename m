@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OO6Hi-00080O-D1
-	for barebox@lists.infradead.org; Mon, 14 Jun 2010 09:48:51 +0000
+	id 1OO6Hi-00080M-D5
+	for barebox@lists.infradead.org; Mon, 14 Jun 2010 09:48:52 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 14 Jun 2010 11:48:37 +0200
-Message-Id: <1276508921-3264-8-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 14 Jun 2010 11:48:40 +0200
+Message-Id: <1276508921-3264-11-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1276508921-3264-1-git-send-email-s.hauer@pengutronix.de>
 References: <1276508921-3264-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,277 +21,306 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/11] add a generic default environment
+Subject: [PATCH 10/11] pcm037: use generic default env
 To: barebox@lists.infradead.org
-
-We have several nearly identical default environments in the tree.
-Lets merge them to a single environment and use it on many boards.
-This defaultenv is arm centric at the moment due to the use of arm
-specific boot commands. This can be improved over time.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- defaultenv/bin/_update       |   39 +++++++++++++++
- defaultenv/bin/boot          |  110 ++++++++++++++++++++++++++++++++++++++++++
- defaultenv/bin/hush_hack     |    1 +
- defaultenv/bin/init          |   30 +++++++++++
- defaultenv/bin/update_kernel |   15 ++++++
- defaultenv/bin/update_rootfs |   16 ++++++
- 6 files changed, 211 insertions(+), 0 deletions(-)
- create mode 100644 defaultenv/bin/_update
- create mode 100644 defaultenv/bin/boot
- create mode 100644 defaultenv/bin/hush_hack
- create mode 100644 defaultenv/bin/init
- create mode 100644 defaultenv/bin/update_kernel
- create mode 100644 defaultenv/bin/update_rootfs
+ arch/arm/configs/pcm037_defconfig  |    2 +-
+ board/pcm037/env/bin/_update       |   36 ---------------------
+ board/pcm037/env/bin/boot          |   47 ---------------------------
+ board/pcm037/env/bin/hush_hack     |    1 -
+ board/pcm037/env/bin/init          |   37 ---------------------
+ board/pcm037/env/bin/update_kernel |   15 ---------
+ board/pcm037/env/bin/update_root   |   16 ---------
+ board/pcm037/env/config            |   62 ++++++++++++++++++++++++++----------
+ 8 files changed, 46 insertions(+), 170 deletions(-)
+ delete mode 100644 board/pcm037/env/bin/_update
+ delete mode 100644 board/pcm037/env/bin/boot
+ delete mode 100644 board/pcm037/env/bin/hush_hack
+ delete mode 100644 board/pcm037/env/bin/init
+ delete mode 100644 board/pcm037/env/bin/update_kernel
+ delete mode 100644 board/pcm037/env/bin/update_root
 
-diff --git a/defaultenv/bin/_update b/defaultenv/bin/_update
-new file mode 100644
-index 0000000..ddd6b84
---- /dev/null
-+++ b/defaultenv/bin/_update
-@@ -0,0 +1,39 @@
-+#!/bin/sh
+diff --git a/arch/arm/configs/pcm037_defconfig b/arch/arm/configs/pcm037_defconfig
+index e82733f..9353d0e 100644
+--- a/arch/arm/configs/pcm037_defconfig
++++ b/arch/arm/configs/pcm037_defconfig
+@@ -106,7 +106,7 @@ CONFIG_CONSOLE_ACTIVATE_FIRST=y
+ # CONFIG_OF_FLAT_TREE is not set
+ CONFIG_PARTITION=y
+ CONFIG_DEFAULT_ENVIRONMENT=y
+-CONFIG_DEFAULT_ENVIRONMENT_PATH="board/pcm037/env"
++CONFIG_DEFAULT_ENVIRONMENT_PATH="defaultenv board/pcm037/env"
+ 
+ #
+ # Debugging
+diff --git a/board/pcm037/env/bin/_update b/board/pcm037/env/bin/_update
+deleted file mode 100644
+index 014bce3..0000000
+--- a/board/pcm037/env/bin/_update
++++ /dev/null
+@@ -1,36 +0,0 @@
+-#!/bin/sh
+-
+-if [ -z "$part" -o -z "$image" ]; then
+-	echo "define \$part and \$image"
+-	exit 1
+-fi
+-
+-if [ ! -e "$part" ]; then
+-	echo "Partition $part does not exist"
+-	exit 1
+-fi
+-
+-if [ $# = 1 ]; then
+-	image=$1
+-fi
+-
+-if [ x$ip = xdhcp ]; then
+-	dhcp
+-fi
+-
+-ping $eth0.serverip
+-if [ $? -ne 0 ] ; then
+-	echo "update aborted"
+-	exit 1
+-fi
+-
+-unprotect $part
+-
+-echo
+-echo "erasing partition $part"
+-erase $part
+-
+-echo
+-echo "flashing $image to $part"
+-echo
+-tftp $image $part
+diff --git a/board/pcm037/env/bin/boot b/board/pcm037/env/bin/boot
+deleted file mode 100644
+index dfb59aa..0000000
+--- a/board/pcm037/env/bin/boot
++++ /dev/null
+@@ -1,47 +0,0 @@
+-#!/bin/sh
+-
+-. /env/config
+-
+-if [ x$1 = xnand ]; then
+-	root=nand
+-	kernel=nand
+-fi
+-
+-if [ x$1 = xnet ]; then
+-	root=net
+-	kernel=net
+-fi
+-
+-if [ x$1 = xnor ]; then
+-	root=nor
+-	kernel=nor
+-fi
+-
+-if [ x$ip = xdhcp ]; then
+-	bootargs="$bootargs ip=dhcp"
+-else
+-	bootargs="$bootargs ip=$eth0.ipaddr:$eth0.serverip:$eth0.gateway:$eth0.netmask:::"
+-fi
+-
+-if [ x$root = xnand ]; then
+-	bootargs="$bootargs root=$rootpart_nand rootfstype=jffs2"
+-elif [ x$root = xnor ]; then
+-	bootargs="$bootargs root=$rootpart_nor rootfstype=jffs2"
+-else
+-	bootargs="$bootargs root=/dev/nfs nfsroot=$eth0.serverip:$nfsroot,v3,tcp"
+-fi
+-
+-bootargs="$bootargs mtdparts=physmap-flash.0:$nor_parts;imx_nand:$nand_parts"
+-
+-if [ $kernel = net ]; then
+-	if [ x$ip = xdhcp ]; then
+-		dhcp
+-	fi
+-	tftp $uimage uImage || exit 1
+-	bootm uImage
+-elif [ $kernel = nor ]; then
+-	bootm /dev/nor0.kernel
+-else
+-	bootm /dev/nand0.kernel.bb
+-fi
+-
+diff --git a/board/pcm037/env/bin/hush_hack b/board/pcm037/env/bin/hush_hack
+deleted file mode 100644
+index 5fffa92..0000000
+--- a/board/pcm037/env/bin/hush_hack
++++ /dev/null
+@@ -1 +0,0 @@
+-nand -a /dev/nand0.*
+diff --git a/board/pcm037/env/bin/init b/board/pcm037/env/bin/init
+deleted file mode 100644
+index 3bfd194..0000000
+--- a/board/pcm037/env/bin/init
++++ /dev/null
+@@ -1,37 +0,0 @@
+-#!/bin/sh
+-
+-PATH=/env/bin
+-export PATH
+-
+-. /env/config
+-if [ -e /dev/nor0 ]; then
+-	addpart /dev/nor0 $nor_parts
+-fi
+-
+-if [ -e /dev/nand0 ]; then
+-	addpart /dev/nand0 $nand_parts
+-
+-	# Uh, oh, hush first expands wildcards and then starts executing
+-	# commands. What a bug!
+-	source /env/bin/hush_hack 
+-fi
+-
+-if [ -z $eth0.ethaddr ]; then
+-	while [ -z $eth0.ethaddr ]; do
+-		readline "no MAC address set for eth0. please enter the one found on your board: " eth0.ethaddr
+-	done
+-	echo -a /env/config "eth0.ethaddr=$eth0.ethaddr"
+-fi
+-
+-echo
+-echo -n "Hit any key to stop autoboot: "
+-timeout -a $autoboot_timeout
+-if [ $? != 0 ]; then
+-	echo
+-	echo "type update_kernel nand|nor [<imagename>] to update kernel into flash"
+-	echo "type update_root nand|nor [<imagename>] to update rootfs into flash"
+-	echo
+-	exit
+-fi
+-
+-boot
+diff --git a/board/pcm037/env/bin/update_kernel b/board/pcm037/env/bin/update_kernel
+deleted file mode 100644
+index 05c822d..0000000
+--- a/board/pcm037/env/bin/update_kernel
++++ /dev/null
+@@ -1,15 +0,0 @@
+-#!/bin/sh
+-
+-. /env/config
+-
+-image=$uimage
+-if [ x$1 = xnand ]; then
+-	part=/dev/nand0.kernel.bb
+-elif [ x$1 = xnor ]; then
+-	part=/dev/nor0.kernel
+-else
+-	echo "usage: $0 nor|nand [imagename]"
+-	exit 1
+-fi
+-
+-. /env/bin/_update $2
+diff --git a/board/pcm037/env/bin/update_root b/board/pcm037/env/bin/update_root
+deleted file mode 100644
+index eaf36eb..0000000
+--- a/board/pcm037/env/bin/update_root
++++ /dev/null
+@@ -1,16 +0,0 @@
+-#!/bin/sh
+-
+-. /env/config
+-
+-image=$uimage
+-if [ x$1 = xnand ]; then
+-	part=/dev/nand0.root.bb
+-elif [ x$1 = xnor ]; then
+-	part=/dev/nor0.root
+-else
+-	echo "usage: $0 nor|nand [imagename]"
+-	exit 1
+-fi
+-
+-. /env/bin/_update $2
+-
+diff --git a/board/pcm037/env/config b/board/pcm037/env/config
+index fb1f5af..bf15620 100644
+--- a/board/pcm037/env/config
++++ b/board/pcm037/env/config
+@@ -1,24 +1,11 @@
+ #!/bin/sh
+ 
+-# can be either 'net', 'nor' or 'nand''
+-kernel=net
+-root=net
+-
+-uimage=uImage-pcm037
+-jffs2=root-pcm037.jffs2
+-
+-autoboot_timeout=3
+-
+-nfsroot="/ptx/work/octopus/rsc/svn/oselas/bsp/phytec/phyCORE-i.MX27/OSELAS.BSP-Phytec-phyCORE-i.MX27-trunk/root"
+-bootargs="console=ttymxc0,115200"
+-
+-nor_parts="256k(barebox)ro,128k(bareboxenv),1536k(kernel),-(root)"
+-rootpart_nor="/dev/mtdblock3"
+-
+-nand_parts="256k(barebox)ro,128k(bareboxenv),1536k(kernel),-(root)"
+-rootpart_nand="/dev/mtdblock7"
++machine=pcm037
++eth0.serverip=
++user=
+ 
+ # use 'dhcp' to do dhcp in barebox and in kernel
++# use 'none' if you want to skip kernel ip autoconfiguration
+ ip=dhcp
+ 
+ # or set your networking parameters here
+@@ -26,3 +13,44 @@ ip=dhcp
+ #eth0.netmask=a.b.c.d
+ #eth0.gateway=a.b.c.d
+ #eth0.serverip=a.b.c.d
 +
-+if [ -z "$part" -o -z "$image" ]; then
-+	echo "define \$part and \$image"
-+	exit 1
-+fi
++# can be either 'net', 'nor' or 'nand'
++kernel_loc=net
++# can be either 'net', 'nor', 'nand' or 'initrd'
++rootfs_loc=net
 +
-+if [ ! -e "$part" ]; then
-+	echo "Partition $part does not exist"
-+	exit 1
-+fi
++# can be either 'jffs2' or 'ubifs'
++rootfs_type=ubifs
++rootfsimage=root-$machine.$rootfs_type
 +
-+if [ $# = 1 ]; then
-+	image=$1
-+fi
++# The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
++kernelimage_type=zimage
++kernelimage=zImage-$machine
++#kernelimage_type=uimage
++#kernelimage=uImage-$machine
++#kernelimage_type=raw
++#kernelimage=Image-$machine
++#kernelimage_type=raw_lzo
++#kernelimage=Image-$machine.lzo
 +
-+if [ x$ip = xdhcp ]; then
-+	dhcp
-+fi
-+
-+ping $eth0.serverip
-+if [ $? -ne 0 ] ; then
-+	echo "Server did not reply! Update aborted."
-+	exit 1
-+fi
-+
-+unprotect $part
-+
-+echo
-+echo "erasing partition $part"
-+echo
-+erase $part
-+
-+echo
-+echo "flashing $image to $part"
-+echo
-+tftp $image $part
-+
-+protect $part
-diff --git a/defaultenv/bin/boot b/defaultenv/bin/boot
-new file mode 100644
-index 0000000..8c300a3
---- /dev/null
-+++ b/defaultenv/bin/boot
-@@ -0,0 +1,110 @@
-+#!/bin/sh
-+
-+. /env/config
-+
-+if [ x$1 = xnand ]; then
-+	rootfs_loc=nand
-+	kernel_loc=nand
-+elif [ x$1 = xnor ]; then
-+	rootfs_loc=nor
-+	kernel_loc=nor
-+elif [ x$1 = xnet ]; then
-+	rootfs_loc=net
-+	kernel_loc=net
-+fi
-+
-+
-+if [ x$ip = xdhcp ]; then
-+	bootargs="$bootargs ip=dhcp"
-+elif [ x$ip = xnone ]; then
-+	bootargs="ip=none"
++if [ -n $user ]; then
++	kernelimage="$user"-"$kernelimage"
++	nfsroot="$eth0.serverip:/home/$user/nfsroot/$machine"
++	rootfsimage="$user"-"$rootfsimage"
 +else
-+	bootargs="$bootargs ip=$eth0.ipaddr::$eth0.gateway:$eth0.netmask:::"
++	nfsroot="$eth0.serverip:/path/to/nfs/root"
 +fi
 +
++autoboot_timeout=3
 +
-+if [ $rootfs_loc = net ]; then
-+	bootargs="$bootargs root=/dev/nfs nfsroot=$nfsroot,v3,tcp noinitrd"
-+elif [ $rootfs_loc = initrd ]; then
-+	bootargs="$bootargs root=/dev/ram0 rdinit=/sbin/init"
-+else
-+	if [ x$rootfs_loc = xnand ]; then
-+		rootfs_mtdblock=$rootfs_mtdblock_nand
-+	else
-+		rootfs_mtdblock=$rootfs_mtdblock_nor
-+	fi
++bootargs="console=ttymxc0,115200"
 +
-+	if [ $rootfs_type = ubifs ]; then
-+		bootargs="$bootargs root=ubi0:root ubi.mtd=$rootfs_mtdblock"
-+	else
-+		bootargs="$bootargs root=/dev/mtdblock$rootfs_mtdblock"
-+	fi
++nor_parts="256k(barebox)ro,128k(bareboxenv),2M(kernel),-(root)"
++rootfs_mtdblock_nor=3
 +
-+	bootargs="$bootargs rootfstype=$rootfs_type noinitrd"
-+fi
++nand_parts="256k(barebox)ro,128k(bareboxenv),2M(kernel),-(root)"
++rootfs_mtdblock_nand=7
 +
-+if [ -n $nor_parts ]; then
-+	mtdparts="${mtdparts}physmap-flash.o:${nor_parts};"
-+fi
++# set a fancy prompt (if support is compiled in)
++PS1="\e[1;32mbarebox@\e[1;31m\h:\w\e[0m "
 +
-+if [ -n $nand_parts ]; then
-+	mtdparts="${mtdparts}$nand_device:${nor_parts};"
-+fi
-+
-+if [ -n $mtdparts ]; then
-+	bootargs="${bootargs} mtdparts=\"${mtdparts}\""
-+fi
-+
-+if [ ! -e /dev/ram0.kernelraw ]; then
-+	# arm raw kernel images are usually located at sdram start + 0x8000
-+	addpart dev/ram0 8M@0x8000(kernelraw)
-+fi
-+
-+if [ ! -e /dev/ram0.kernel ]; then
-+	# Here we can safely put the kernel without risking of overwriting it
-+	# while extracting
-+	addpart dev/ram0 8M(kernel)
-+fi
-+
-+if [ $kernel_loc = net ]; then
-+	if [ x$ip = xdhcp ]; then
-+		dhcp
-+	fi
-+	if [ $kernelimage_type = uimage ]; then
-+		netload="/dev/ram0.kernel"
-+	elif [ $kernelimage_type = zimage ]; then
-+		netload="/dev/ram0.kernel"
-+	elif [ $kernelimage_type = raw ]; then
-+		netload="/dev/ram0.kernelraw"
-+	elif [ $kernelimage_type = raw_lzo ]; then
-+		netload="/dev/ram0.kernel"
-+	else
-+		echo "error: missing kernel_image_type"
-+		exit 1
-+	fi
-+	tftp $kernelimage $netload || exit 1
-+	kdev="$netload"
-+elif [ $kernel_loc = nor ]; then
-+	kdev="/dev/nor0.kernel"
-+elif [ $kernel_loc = nand ]; then
-+	kdev="/dev/nand0.kernel.bb"
-+else
-+	echo "error: missing kernel_loc"
-+	exit 1
-+fi
-+
-+if [ $kernelimage_type = uimage ]; then
-+	bootm $kdev
-+elif [ $kernelimage_type = zimage ]; then
-+	bootz $kdev
-+elif [ $kernelimage_type = raw ]; then
-+	if [ $kernel_loc != net ]; then
-+		ec
-+		cp $kdev /dev/ram0.kernelraw
-+	fi
-+	bootu /dev/ram0.kernelraw
-+elif [ $kernelimage_type = raw_lzo ]; then
-+	unlzo $kdev /dev/ram0.kernelraw
-+	bootu /dev/ram0.kernelraw
-+fi
-+
-diff --git a/defaultenv/bin/hush_hack b/defaultenv/bin/hush_hack
-new file mode 100644
-index 0000000..5fffa92
---- /dev/null
-+++ b/defaultenv/bin/hush_hack
-@@ -0,0 +1 @@
-+nand -a /dev/nand0.*
-diff --git a/defaultenv/bin/init b/defaultenv/bin/init
-new file mode 100644
-index 0000000..b17fcbc
---- /dev/null
-+++ b/defaultenv/bin/init
-@@ -0,0 +1,30 @@
-+#!/bin/sh
-+
-+PATH=/env/bin
-+export PATH
-+
-+. /env/config
-+if [ -e /dev/nor0 ]; then
-+	addpart /dev/nor0 $nor_parts
-+fi
-+
-+if [ -e /dev/nand0 ]; then
-+	addpart /dev/nand0 $nand_parts
-+
-+	# Uh, oh, hush first expands wildcards and then starts executing
-+	# commands. What a bug!
-+	source /env/bin/hush_hack
-+fi
-+
-+echo
-+echo -n "Hit any key to stop autoboot: "
-+timeout -a $autoboot_timeout
-+if [ $? != 0 ]; then
-+	echo
-+	echo "type update_kernel nand|nor [<imagename>] to update kernel into flash"
-+	echo "type update_rootfs nand|nor [<imagename>] to update rootfs into flash"
-+	echo
-+	exit
-+fi
-+
-+boot
-diff --git a/defaultenv/bin/update_kernel b/defaultenv/bin/update_kernel
-new file mode 100644
-index 0000000..1d35ed9
---- /dev/null
-+++ b/defaultenv/bin/update_kernel
-@@ -0,0 +1,15 @@
-+#!/bin/sh
-+
-+. /env/config
-+image=$kernelimage
-+
-+if [ x$1 = xnand ]; then
-+	part=/dev/nand0.kernel.bb
-+elif [ x$1 = xnor ]; then
-+	part=/dev/nor0.kernel
-+else
-+	echo "usage: $0 nor|nand [imagename]"
-+	exit 1
-+fi
-+
-+. /env/bin/_update $2
-diff --git a/defaultenv/bin/update_rootfs b/defaultenv/bin/update_rootfs
-new file mode 100644
-index 0000000..6366315
---- /dev/null
-+++ b/defaultenv/bin/update_rootfs
-@@ -0,0 +1,16 @@
-+#!/bin/sh
-+
-+. /env/config
-+
-+image=$rootfsimage
-+
-+if [ x$1 = xnand ]; then
-+	part=/dev/nand0.root.bb
-+elif [ x$1 = xnor ]; then
-+	part=/dev/nor0.root
-+else
-+	echo "usage: $0 nor|nand [imagename]"
-+	exit 1
-+fi
-+
-+. /env/bin/_update $2
 -- 
 1.7.1
 
