@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OO6Hi-00080M-D5
-	for barebox@lists.infradead.org; Mon, 14 Jun 2010 09:48:52 +0000
+	id 1OO6He-0007zF-JP
+	for barebox@lists.infradead.org; Mon, 14 Jun 2010 09:48:49 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 14 Jun 2010 11:48:40 +0200
-Message-Id: <1276508921-3264-11-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 14 Jun 2010 11:48:39 +0200
+Message-Id: <1276508921-3264-10-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1276508921-3264-1-git-send-email-s.hauer@pengutronix.de>
 References: <1276508921-3264-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,44 +21,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/11] pcm037: use generic default env
+Subject: [PATCH 09/11] pcm043: use generic default env
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/configs/pcm037_defconfig  |    2 +-
- board/pcm037/env/bin/_update       |   36 ---------------------
- board/pcm037/env/bin/boot          |   47 ---------------------------
- board/pcm037/env/bin/hush_hack     |    1 -
- board/pcm037/env/bin/init          |   37 ---------------------
- board/pcm037/env/bin/update_kernel |   15 ---------
- board/pcm037/env/bin/update_root   |   16 ---------
- board/pcm037/env/config            |   62 ++++++++++++++++++++++++++----------
- 8 files changed, 46 insertions(+), 170 deletions(-)
- delete mode 100644 board/pcm037/env/bin/_update
- delete mode 100644 board/pcm037/env/bin/boot
- delete mode 100644 board/pcm037/env/bin/hush_hack
- delete mode 100644 board/pcm037/env/bin/init
- delete mode 100644 board/pcm037/env/bin/update_kernel
- delete mode 100644 board/pcm037/env/bin/update_root
+ arch/arm/configs/pcm043_defconfig  |    2 +-
+ board/pcm043/env/bin/_update       |   36 --------------------
+ board/pcm043/env/bin/boot          |   47 --------------------------
+ board/pcm043/env/bin/hush_hack     |    1 -
+ board/pcm043/env/bin/init          |   37 --------------------
+ board/pcm043/env/bin/update_kernel |   15 --------
+ board/pcm043/env/bin/update_root   |   16 ---------
+ board/pcm043/env/config            |   65 ++++++++++++++++++++++++++----------
+ 8 files changed, 48 insertions(+), 171 deletions(-)
+ delete mode 100644 board/pcm043/env/bin/_update
+ delete mode 100644 board/pcm043/env/bin/boot
+ delete mode 100644 board/pcm043/env/bin/hush_hack
+ delete mode 100644 board/pcm043/env/bin/init
+ delete mode 100644 board/pcm043/env/bin/update_kernel
+ delete mode 100644 board/pcm043/env/bin/update_root
 
-diff --git a/arch/arm/configs/pcm037_defconfig b/arch/arm/configs/pcm037_defconfig
-index e82733f..9353d0e 100644
---- a/arch/arm/configs/pcm037_defconfig
-+++ b/arch/arm/configs/pcm037_defconfig
-@@ -106,7 +106,7 @@ CONFIG_CONSOLE_ACTIVATE_FIRST=y
+diff --git a/arch/arm/configs/pcm043_defconfig b/arch/arm/configs/pcm043_defconfig
+index 5563356..72a8a42 100644
+--- a/arch/arm/configs/pcm043_defconfig
++++ b/arch/arm/configs/pcm043_defconfig
+@@ -109,7 +109,7 @@ CONFIG_CONSOLE_ACTIVATE_FIRST=y
  # CONFIG_OF_FLAT_TREE is not set
  CONFIG_PARTITION=y
  CONFIG_DEFAULT_ENVIRONMENT=y
--CONFIG_DEFAULT_ENVIRONMENT_PATH="board/pcm037/env"
-+CONFIG_DEFAULT_ENVIRONMENT_PATH="defaultenv board/pcm037/env"
+-CONFIG_DEFAULT_ENVIRONMENT_PATH="board/pcm043/env/"
++CONFIG_DEFAULT_ENVIRONMENT_PATH="defaultenv board/pcm043/env"
  
  #
  # Debugging
-diff --git a/board/pcm037/env/bin/_update b/board/pcm037/env/bin/_update
+diff --git a/board/pcm043/env/bin/_update b/board/pcm043/env/bin/_update
 deleted file mode 100644
 index 014bce3..0000000
---- a/board/pcm037/env/bin/_update
+--- a/board/pcm043/env/bin/_update
 +++ /dev/null
 @@ -1,36 +0,0 @@
 -#!/bin/sh
@@ -97,10 +97,10 @@ index 014bce3..0000000
 -echo "flashing $image to $part"
 -echo
 -tftp $image $part
-diff --git a/board/pcm037/env/bin/boot b/board/pcm037/env/bin/boot
+diff --git a/board/pcm043/env/bin/boot b/board/pcm043/env/bin/boot
 deleted file mode 100644
-index dfb59aa..0000000
---- a/board/pcm037/env/bin/boot
+index 7bbff2d..0000000
+--- a/board/pcm043/env/bin/boot
 +++ /dev/null
 @@ -1,47 +0,0 @@
 -#!/bin/sh
@@ -136,7 +136,7 @@ index dfb59aa..0000000
 -	bootargs="$bootargs root=/dev/nfs nfsroot=$eth0.serverip:$nfsroot,v3,tcp"
 -fi
 -
--bootargs="$bootargs mtdparts=physmap-flash.0:$nor_parts;imx_nand:$nand_parts"
+-bootargs="$bootargs mtdparts=physmap-flash.0:$nor_parts;mxc_nand:$nand_parts"
 -
 -if [ $kernel = net ]; then
 -	if [ x$ip = xdhcp ]; then
@@ -150,17 +150,17 @@ index dfb59aa..0000000
 -	bootm /dev/nand0.kernel.bb
 -fi
 -
-diff --git a/board/pcm037/env/bin/hush_hack b/board/pcm037/env/bin/hush_hack
+diff --git a/board/pcm043/env/bin/hush_hack b/board/pcm043/env/bin/hush_hack
 deleted file mode 100644
 index 5fffa92..0000000
---- a/board/pcm037/env/bin/hush_hack
+--- a/board/pcm043/env/bin/hush_hack
 +++ /dev/null
 @@ -1 +0,0 @@
 -nand -a /dev/nand0.*
-diff --git a/board/pcm037/env/bin/init b/board/pcm037/env/bin/init
+diff --git a/board/pcm043/env/bin/init b/board/pcm043/env/bin/init
 deleted file mode 100644
 index 3bfd194..0000000
---- a/board/pcm037/env/bin/init
+--- a/board/pcm043/env/bin/init
 +++ /dev/null
 @@ -1,37 +0,0 @@
 -#!/bin/sh
@@ -200,10 +200,10 @@ index 3bfd194..0000000
 -fi
 -
 -boot
-diff --git a/board/pcm037/env/bin/update_kernel b/board/pcm037/env/bin/update_kernel
+diff --git a/board/pcm043/env/bin/update_kernel b/board/pcm043/env/bin/update_kernel
 deleted file mode 100644
 index 05c822d..0000000
---- a/board/pcm037/env/bin/update_kernel
+--- a/board/pcm043/env/bin/update_kernel
 +++ /dev/null
 @@ -1,15 +0,0 @@
 -#!/bin/sh
@@ -221,10 +221,10 @@ index 05c822d..0000000
 -fi
 -
 -. /env/bin/_update $2
-diff --git a/board/pcm037/env/bin/update_root b/board/pcm037/env/bin/update_root
+diff --git a/board/pcm043/env/bin/update_root b/board/pcm043/env/bin/update_root
 deleted file mode 100644
 index eaf36eb..0000000
---- a/board/pcm037/env/bin/update_root
+--- a/board/pcm043/env/bin/update_root
 +++ /dev/null
 @@ -1,16 +0,0 @@
 -#!/bin/sh
@@ -243,43 +243,31 @@ index eaf36eb..0000000
 -
 -. /env/bin/_update $2
 -
-diff --git a/board/pcm037/env/config b/board/pcm037/env/config
-index fb1f5af..bf15620 100644
---- a/board/pcm037/env/config
-+++ b/board/pcm037/env/config
-@@ -1,24 +1,11 @@
+diff --git a/board/pcm043/env/config b/board/pcm043/env/config
+index c1ab234..212b6a9 100644
+--- a/board/pcm043/env/config
++++ b/board/pcm043/env/config
+@@ -1,29 +1,58 @@
  #!/bin/sh
  
 -# can be either 'net', 'nor' or 'nand''
--kernel=net
--root=net
--
--uimage=uImage-pcm037
--jffs2=root-pcm037.jffs2
--
--autoboot_timeout=3
--
--nfsroot="/ptx/work/octopus/rsc/svn/oselas/bsp/phytec/phyCORE-i.MX27/OSELAS.BSP-Phytec-phyCORE-i.MX27-trunk/root"
--bootargs="console=ttymxc0,115200"
--
--nor_parts="256k(barebox)ro,128k(bareboxenv),1536k(kernel),-(root)"
--rootpart_nor="/dev/mtdblock3"
--
--nand_parts="256k(barebox)ro,128k(bareboxenv),1536k(kernel),-(root)"
--rootpart_nand="/dev/mtdblock7"
-+machine=pcm037
+-kernel=nor
+-root=nor
++machine=pcm043
 +eth0.serverip=
 +user=
  
- # use 'dhcp' to do dhcp in barebox and in kernel
+-uimage=uImage-pcm043
+-jffs2=root-pcm043.jffs2
++# use 'dhcp' to do dhcp in barebox and in kernel
 +# use 'none' if you want to skip kernel ip autoconfiguration
- ip=dhcp
- 
- # or set your networking parameters here
-@@ -26,3 +13,44 @@ ip=dhcp
- #eth0.netmask=a.b.c.d
- #eth0.gateway=a.b.c.d
- #eth0.serverip=a.b.c.d
++ip=dhcp
++
++# or set your networking parameters here
++#eth0.ipaddr=a.b.c.d
++#eth0.netmask=a.b.c.d
++#eth0.gateway=a.b.c.d
++#eth0.serverip=a.b.c.d
 +
 +# can be either 'net', 'nor' or 'nand'
 +kernel_loc=net
@@ -307,20 +295,35 @@ index fb1f5af..bf15620 100644
 +else
 +	nfsroot="$eth0.serverip:/path/to/nfs/root"
 +fi
-+
-+autoboot_timeout=3
-+
-+bootargs="console=ttymxc0,115200"
-+
+ 
+ autoboot_timeout=3
+ 
+-nfsroot="/path/to/nfs_root"
+ bootargs="console=ttymxc0,115200"
+ 
+-nor_parts="256k(barebox)ro,128k(bareboxenv),2048k(kernel),-(root)"
+-rootpart_nor="/dev/mtdblock3"
+-nand_parts="256k(barebox)ro,128k(bareboxenv),2048k(kernel),-(root)"
+-rootpart_nand="/dev/mtdblock3"
++bootargs="$bootargs video=mx3fb:CTP-CLAA070LC0ACW"
+ 
+-# use 'dhcp' to do dhcp in barebox and in kernel
+-ip=dhcp
 +nor_parts="256k(barebox)ro,128k(bareboxenv),2M(kernel),-(root)"
 +rootfs_mtdblock_nor=3
-+
+ 
+-# or set your networking parameters here
+-eth0.ipaddr=192.168.3.11
+-eth0.netmask=255.255.255.0
+-#eth0.gateway=a.b.c.d
+-#eth0.serverip=192.168.3.10
+-#eth0.ethaddr=aa.bb.cc.dd.ee.ff
 +nand_parts="256k(barebox)ro,128k(bareboxenv),2M(kernel),-(root)"
 +rootfs_mtdblock_nand=7
 +
 +# set a fancy prompt (if support is compiled in)
 +PS1="\e[1;32mbarebox@\e[1;31m\h:\w\e[0m "
-+
+ 
 -- 
 1.7.1
 
