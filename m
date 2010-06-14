@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OO6He-0007wW-JF
+	id 1OO6He-00080N-J3
 	for barebox@lists.infradead.org; Mon, 14 Jun 2010 09:48:47 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 14 Jun 2010 11:48:32 +0200
-Message-Id: <1276508921-3264-3-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 14 Jun 2010 11:48:35 +0200
+Message-Id: <1276508921-3264-6-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1276508921-3264-1-git-send-email-s.hauer@pengutronix.de>
 References: <1276508921-3264-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,42 +21,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/11] bootu: Allow passing in devices as parameter
+Subject: [PATCH 05/11] net: implement random_ether_addr
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/lib/armlinux.c |   10 ++++++++--
- 1 files changed, 8 insertions(+), 2 deletions(-)
+ include/net.h |   17 +++++++++++++++++
+ 1 files changed, 17 insertions(+), 0 deletions(-)
 
-diff --git a/arch/arm/lib/armlinux.c b/arch/arm/lib/armlinux.c
-index 75c6519..a38c6bf 100644
---- a/arch/arm/lib/armlinux.c
-+++ b/arch/arm/lib/armlinux.c
-@@ -332,15 +332,21 @@ BAREBOX_CMD_END
- #ifdef CONFIG_CMD_BOOTU
- static int do_bootu(struct command *cmdtp, int argc, char *argv[])
- {
--	void (*theKernel)(int zero, int arch, void *params);
-+	void (*theKernel)(int zero, int arch, void *params) = NULL;
- 	const char *commandline = getenv("bootargs");
-+	int fd;
+diff --git a/include/net.h b/include/net.h
+index 8db83d8..2e17e39 100644
+--- a/include/net.h
++++ b/include/net.h
+@@ -16,6 +16,8 @@
+ #include <linux/types.h>
+ #include <param.h>
+ #include <malloc.h>
++#include <clock.h>
++#include <random.h>
+ #include <asm/byteorder.h>	/* for nton* / ntoh* stuff */
  
- 	if (argc != 2) {
- 		barebox_cmd_usage(cmdtp);
- 		return 1;
- 	}
  
--	theKernel = (void *)simple_strtoul(argv[1], NULL, 0);
-+	fd = open(argv[1], O_RDONLY);
-+	if (fd > 0)
-+		theKernel = (void *)memmap(fd, PROT_READ);
+@@ -331,6 +333,21 @@ static inline int is_broadcast_ether_addr(const u8 *addr)
+ }
+ 
+ /**
++ * random_ether_addr - Generate software assigned random Ethernet address
++ * @addr: Pointer to a six-byte array containing the Ethernet address
++ *
++ * Generate a random Ethernet address (MAC) that is not multicast
++ * and has the local assigned bit set.
++ */
++static inline void random_ether_addr(u8 *addr)
++{
++	srand(get_time_ns());
++	get_random_bytes(addr, 6);
++	addr [0] &= 0xfe;	/* clear multicast bit */
++	addr [0] |= 0x02;	/* set local assignment bit (IEEE802) */
++}
 +
-+	if (!theKernel)
-+		theKernel = (void *)simple_strtoul(argv[1], NULL, 0);
- 
- 	setup_start_tag();
- 	setup_memory_tags();
++/**
+  * is_valid_ether_addr - Determine if the given Ethernet address is valid
+  * @addr: Pointer to a six-byte array containing the Ethernet address
+  *
 -- 
 1.7.1
 
