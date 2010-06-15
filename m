@@ -1,17 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from tango.tkos.co.il ([62.219.50.35])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OO9tB-0005rv-6g
-	for barebox@lists.infradead.org; Mon, 14 Jun 2010 13:39:46 +0000
-Date: Mon, 14 Jun 2010 16:39:20 +0300
+	id 1OOOS7-0000nw-9K
+	for barebox@lists.infradead.org; Tue, 15 Jun 2010 05:12:49 +0000
+Received: from sivan.tkos.co.il (guitar.tcltek.co.il [192.115.133.116])
+	by tango.tkos.co.il (8.14.4/8.12.11) with ESMTP id o5F5Ch52001388
+	for <barebox@lists.infradead.org>; Tue, 15 Jun 2010 08:12:43 +0300
+Received: from jasper.tkos.co.il (taragon.tkos.co.il [10.0.4.3])
+	by sivan.tkos.co.il (Postfix) with SMTP id 7A7D2B4F98
+	for <barebox@lists.infradead.org>; Tue, 15 Jun 2010 08:12:38 +0300 (IDT)
+Date: Tue, 15 Jun 2010 08:12:35 +0300
 From: Baruch Siach <baruch@tkos.co.il>
-Message-ID: <20100614133920.GC2395@tarshish>
-References: <cover.1276065824.git.baruch@tkos.co.il>
-	<a2ce7c2796ea62c9ff75eeb6e72a8a36c2675337.1276065824.git.baruch@tkos.co.il>
-	<AANLkTimRyz5AGQltJB8G1_J5RkXZBt9lL8xHIGurAyJC@mail.gmail.com>
+Message-ID: <20100615051235.GC3233@jasper.tkos.co.il>
+References: <471ada329c4028bfda67cfa2bca1e131aed6ae0e.1276022070.git.baruch@tkos.co.il>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <AANLkTimRyz5AGQltJB8G1_J5RkXZBt9lL8xHIGurAyJC@mail.gmail.com>
+In-Reply-To: <471ada329c4028bfda67cfa2bca1e131aed6ae0e.1276022070.git.baruch@tkos.co.il>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,122 +24,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 6/8] mx25 3ds: add support for i2c master and PMIC
-To: Ivo Clarysse <ivo.clarysse@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] i2c: fix adapter_list manipulation
+To: barebox@lists.infradead.org
 
-Hi Ivo,
+Hi barebox list,
 
-On Mon, Jun 14, 2010 at 03:01:48PM +0200, Ivo Clarysse wrote:
-> On barebox-next, I get:
-> =
-
-> board/freescale-mx25-3-stack/built-in.o: In function `go':
-> 3stack.c:(.flash_header_start+0x0): undefined reference to `_start'
-> board/freescale-mx25-3-stack/built-in.o: In function `imx25_3ds_fec_init':
-> 3stack.c:(.text.imx25_3ds_fec_init+0x4): undefined reference to `mc34704_=
-get'
-> 3stack.c:(.text.imx25_3ds_fec_init+0x1c): undefined reference to
-> `mc34704_reg_write'
-> =
-
-> =
-
-> I guess this change also needs:
-> =
-
-> diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-> index afd8cae..18a9cbc 100644
-> --- a/arch/arm/mach-imx/Kconfig
-> +++ b/arch/arm/mach-imx/Kconfig
-> @@ -140,6 +140,8 @@ config MACH_FREESCALE_MX25_3STACK
->         bool "Freescale MX25 3stack"
->         select HAS_CFI
->         select MACH_HAS_LOWLEVEL_INIT
-> +       select I2C
-> +       select DRIVER_I2C_MC34704
->         help
->           Say Y here if you are using the Freescale MX25 3stack board equ=
-ipped
->           with a Freescale i.MX25 Processor
-
-Thanks.
-Acked-by: Baruch Siach <baruch@tkos.co.il>
+Ping?
+This seems to fix an obvious bug.
 
 baruch
 
-> On Wed, Jun 9, 2010 at 9:05 AM, Baruch Siach <baruch@tkos.co.il> wrote:
-> > Signed-off-by: Baruch Siach <baruch@tkos.co.il>
-> > ---
-> > =A0board/freescale-mx25-3-stack/3stack.c | =A0 18 ++++++++++++++++++
-> > =A01 files changed, 18 insertions(+), 0 deletions(-)
-> >
-> > diff --git a/board/freescale-mx25-3-stack/3stack.c b/board/freescale-mx=
-25-3-stack/3stack.c
-> > index 6659185..316a2bc 100644
-> > --- a/board/freescale-mx25-3-stack/3stack.c
-> > +++ b/board/freescale-mx25-3-stack/3stack.c
-> > @@ -36,6 +36,8 @@
-> > =A0#include <nand.h>
-> > =A0#include <mach/imx-flash-header.h>
-> > =A0#include <mach/iomux-mx25.h>
-> > +#include <i2c/i2c.h>
-> > +#include <i2c/mc34704.h>
-> >
-> > =A0extern unsigned long _stext;
-> >
-> > @@ -183,8 +185,18 @@ static struct device_d usbh2_dev =3D {
-> > =A0};
-> > =A0#endif
-> >
-> > +static struct i2c_board_info i2c_devices[] =3D {
-> > + =A0 =A0 =A0 {
-> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 I2C_BOARD_INFO("mc34704", 0x54),
-> > + =A0 =A0 =A0 },
-> > +};
-> > =A0#define IOMUXC_BASE_ADDR =A0 =A0 =A0 =A00x43FAC000
-> >
-> > +static struct device_d i2c_dev =3D {
-> > + =A0 =A0 =A0 .name =A0 =A0 =3D "i2c-imx",
-> > + =A0 =A0 =A0 .map_base =3D IMX_I2C1_BASE,
-> > +};
-> > +
-> > =A0static int imx25_devices_init(void)
-> > =A0{
-> > =A0 =A0 =A0 =A0ulong val;
-> > @@ -256,6 +268,9 @@ static int imx25_devices_init(void)
-> > =A0 =A0 =A0 =A0register_device(&sdram0_dev);
-> > =A0 =A0 =A0 =A0register_device(&sram0_dev);
-> >
-> > + =A0 =A0 =A0 i2c_register_board_info(0, i2c_devices, ARRAY_SIZE(i2c_de=
-vices));
-> > + =A0 =A0 =A0 register_device(&i2c_dev);
-> > +
-> > =A0 =A0 =A0 =A0armlinux_set_bootparams((void *)0x80000100);
-> > =A0 =A0 =A0 =A0armlinux_set_architecture(MACH_TYPE_MX25_3DS);
-> >
-> > @@ -303,6 +318,9 @@ static struct pad_desc imx25_pads[] =3D {
-> > =A0 =A0 =A0 =A0MX25_PAD_VSYNC__USBH2_DATA5,
-> > =A0 =A0 =A0 =A0MX25_PAD_LSCLK__USBH2_DATA6,
-> > =A0 =A0 =A0 =A0MX25_PAD_OE_ACD__USBH2_DATA7,
-> > + =A0 =A0 =A0 /* i2c */
-> > + =A0 =A0 =A0 MX25_PAD_I2C1_CLK__SCL,
-> > + =A0 =A0 =A0 MX25_PAD_I2C1_DAT__SDA,
-> > =A0};
-> >
-> > =A0static int imx25_console_init(void)
-> > --
-> > 1.7.1
+On Tue, Jun 08, 2010 at 09:36:04PM +0300, Baruch Siach wrote:
+> Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+> ---
+>  drivers/i2c/i2c.c |    2 +-
+>  1 files changed, 1 insertions(+), 1 deletions(-)
+> 
+> diff --git a/drivers/i2c/i2c.c b/drivers/i2c/i2c.c
+> index 1fa114a..87360f3 100644
+> --- a/drivers/i2c/i2c.c
+> +++ b/drivers/i2c/i2c.c
+> @@ -365,7 +365,7 @@ int i2c_add_numbered_adapter(struct i2c_adapter *adapter)
+>  	if (i2c_get_adapter(adapter->nr))
+>  		return -EBUSY;
+>  
+> -	list_add_tail(&adapter_list, &adapter->list);
+> +	list_add_tail(&adapter->list, &adapter_list);
+>  
+>  	/* populate children from any i2c device tables */
+>  	scan_boardinfo(adapter);
+> -- 
+> 1.7.1
+> 
 
--- =
-
+-- 
                                                      ~. .~   Tk Open Systems
-=3D}------------------------------------------------ooO--U--Ooo------------=
-{=3D
+=}------------------------------------------------ooO--U--Ooo------------{=
    - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
 
 _______________________________________________
