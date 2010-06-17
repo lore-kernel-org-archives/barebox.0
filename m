@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OP5gs-00024p-5E
-	for barebox@lists.infradead.org; Thu, 17 Jun 2010 03:22:55 +0000
-From: Wolfram Sang <w.sang@pengutronix.de>
-Date: Thu, 17 Jun 2010 05:22:45 +0200
-Message-Id: <1276744965-994-1-git-send-email-w.sang@pengutronix.de>
+	id 1OPArS-0006CH-9p
+	for barebox@lists.infradead.org; Thu, 17 Jun 2010 08:54:11 +0000
+Date: Thu, 17 Jun 2010 10:54:04 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20100617085404.GL20799@pengutronix.de>
+References: <1276744965-994-1-git-send-email-w.sang@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1276744965-994-1-git-send-email-w.sang@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,48 +18,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] drivers/nor: allow overriding of AMD_ADDR_* in board-configs
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] drivers/nor: allow overriding of AMD_ADDR_* in
+	board-configs
+To: Wolfram Sang <w.sang@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Because there are a number of flash-makers who did it wrong.
+On Thu, Jun 17, 2010 at 05:22:45AM +0200, Wolfram Sang wrote:
+> Because there are a number of flash-makers who did it wrong.
+> 
+> Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
+> ---
+>  drivers/nor/cfi_flash.h |   13 ++++++++++---
+>  1 files changed, 10 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/nor/cfi_flash.h b/drivers/nor/cfi_flash.h
+> index a8fa879..a278772 100644
+> --- a/drivers/nor/cfi_flash.h
+> +++ b/drivers/nor/cfi_flash.h
+> @@ -109,9 +109,16 @@ extern struct cfi_cmd_set cfi_cmd_set_amd;
+>  #define AMD_STATUS_TOGGLE		0x40
+>  #define AMD_STATUS_ERROR		0x20
+>  
+> -#define AMD_ADDR_ERASE_START	((info->portwidth == FLASH_CFI_8BIT) ? 0xAAA : 0x555)
+> -#define AMD_ADDR_START		((info->portwidth == FLASH_CFI_8BIT) ? 0xAAA : 0x555)
+> -#define AMD_ADDR_ACK		((info->portwidth == FLASH_CFI_8BIT) ? 0x555 : 0x2AA)
+> +/* AMD_ADDR_* can be overridden in board-specific config.h files */
+> +#ifndef AMD_ADDR_ERASE_START
+> +#  define AMD_ADDR_ERASE_START	((info->portwidth == FLASH_CFI_8BIT) ? 0xAAA : 0x555)
+> +#endif
+> +#ifndef AMD_ADDR_START
+> +#  define AMD_ADDR_START	((info->portwidth == FLASH_CFI_8BIT) ? 0xAAA : 0x555)
+> +#endif
+> +#ifndef AMD_ADDR_ACK
+> +#  define AMD_ADDR_ACK		((info->portwidth == FLASH_CFI_8BIT) ? 0x555 : 0x2AA)
+> +#endif
 
-Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
----
- drivers/nor/cfi_flash.h |   13 ++++++++++---
- 1 files changed, 10 insertions(+), 3 deletions(-)
+Uh, Having arbitrary board specific defines is exactly what I wanted to
+get rid of while rewriting U-Boot. Sorry, this is not acceptable.
 
-diff --git a/drivers/nor/cfi_flash.h b/drivers/nor/cfi_flash.h
-index a8fa879..a278772 100644
---- a/drivers/nor/cfi_flash.h
-+++ b/drivers/nor/cfi_flash.h
-@@ -109,9 +109,16 @@ extern struct cfi_cmd_set cfi_cmd_set_amd;
- #define AMD_STATUS_TOGGLE		0x40
- #define AMD_STATUS_ERROR		0x20
- 
--#define AMD_ADDR_ERASE_START	((info->portwidth == FLASH_CFI_8BIT) ? 0xAAA : 0x555)
--#define AMD_ADDR_START		((info->portwidth == FLASH_CFI_8BIT) ? 0xAAA : 0x555)
--#define AMD_ADDR_ACK		((info->portwidth == FLASH_CFI_8BIT) ? 0x555 : 0x2AA)
-+/* AMD_ADDR_* can be overridden in board-specific config.h files */
-+#ifndef AMD_ADDR_ERASE_START
-+#  define AMD_ADDR_ERASE_START	((info->portwidth == FLASH_CFI_8BIT) ? 0xAAA : 0x555)
-+#endif
-+#ifndef AMD_ADDR_START
-+#  define AMD_ADDR_START	((info->portwidth == FLASH_CFI_8BIT) ? 0xAAA : 0x555)
-+#endif
-+#ifndef AMD_ADDR_ACK
-+#  define AMD_ADDR_ACK		((info->portwidth == FLASH_CFI_8BIT) ? 0x555 : 0x2AA)
-+#endif
- 
- #define FLASH_OFFSET_MANUFACTURER_ID	0x00
- #define FLASH_OFFSET_DEVICE_ID		0x01
+There are some ways to do this: You could add a runtime detection if
+possible, maybe combined with a kconfig option if it influences image
+size too badly. Or you could add the information to platform_data.
+
+Sascha
+
+
 -- 
-1.7.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
