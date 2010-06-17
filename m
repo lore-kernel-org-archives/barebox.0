@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OPArS-0006CH-9p
-	for barebox@lists.infradead.org; Thu, 17 Jun 2010 08:54:11 +0000
-Date: Thu, 17 Jun 2010 10:54:04 +0200
+	id 1OPDlx-0000AE-06
+	for barebox@lists.infradead.org; Thu, 17 Jun 2010 12:00:44 +0000
+Date: Thu, 17 Jun 2010 14:00:37 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20100617085404.GL20799@pengutronix.de>
-References: <1276744965-994-1-git-send-email-w.sang@pengutronix.de>
+Message-ID: <20100617120037.GM20799@pengutronix.de>
+References: <471ada329c4028bfda67cfa2bca1e131aed6ae0e.1276022070.git.baruch@tkos.co.il>
+	<20100615051235.GC3233@jasper.tkos.co.il>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1276744965-994-1-git-send-email-w.sang@pengutronix.de>
+In-Reply-To: <20100615051235.GC3233@jasper.tkos.co.il>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,50 +23,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] drivers/nor: allow overriding of AMD_ADDR_* in
-	board-configs
-To: Wolfram Sang <w.sang@pengutronix.de>
+Subject: Re: [PATCH] i2c: fix adapter_list manipulation
+To: Baruch Siach <baruch@tkos.co.il>
 Cc: barebox@lists.infradead.org
 
-On Thu, Jun 17, 2010 at 05:22:45AM +0200, Wolfram Sang wrote:
-> Because there are a number of flash-makers who did it wrong.
+On Tue, Jun 15, 2010 at 08:12:35AM +0300, Baruch Siach wrote:
+> Hi barebox list,
 > 
-> Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
-> ---
->  drivers/nor/cfi_flash.h |   13 ++++++++++---
->  1 files changed, 10 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/nor/cfi_flash.h b/drivers/nor/cfi_flash.h
-> index a8fa879..a278772 100644
-> --- a/drivers/nor/cfi_flash.h
-> +++ b/drivers/nor/cfi_flash.h
-> @@ -109,9 +109,16 @@ extern struct cfi_cmd_set cfi_cmd_set_amd;
->  #define AMD_STATUS_TOGGLE		0x40
->  #define AMD_STATUS_ERROR		0x20
->  
-> -#define AMD_ADDR_ERASE_START	((info->portwidth == FLASH_CFI_8BIT) ? 0xAAA : 0x555)
-> -#define AMD_ADDR_START		((info->portwidth == FLASH_CFI_8BIT) ? 0xAAA : 0x555)
-> -#define AMD_ADDR_ACK		((info->portwidth == FLASH_CFI_8BIT) ? 0x555 : 0x2AA)
-> +/* AMD_ADDR_* can be overridden in board-specific config.h files */
-> +#ifndef AMD_ADDR_ERASE_START
-> +#  define AMD_ADDR_ERASE_START	((info->portwidth == FLASH_CFI_8BIT) ? 0xAAA : 0x555)
-> +#endif
-> +#ifndef AMD_ADDR_START
-> +#  define AMD_ADDR_START	((info->portwidth == FLASH_CFI_8BIT) ? 0xAAA : 0x555)
-> +#endif
-> +#ifndef AMD_ADDR_ACK
-> +#  define AMD_ADDR_ACK		((info->portwidth == FLASH_CFI_8BIT) ? 0x555 : 0x2AA)
-> +#endif
+> Ping?
 
-Uh, Having arbitrary board specific defines is exactly what I wanted to
-get rid of while rewriting U-Boot. Sorry, this is not acceptable.
-
-There are some ways to do this: You could add a runtime detection if
-possible, maybe combined with a kconfig option if it influences image
-size too badly. Or you could add the information to platform_data.
+Sorry, missed this one. Applied.
 
 Sascha
 
+> This seems to fix an obvious bug.
+> 
+> baruch
+> 
+> On Tue, Jun 08, 2010 at 09:36:04PM +0300, Baruch Siach wrote:
+> > Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+> > ---
+> >  drivers/i2c/i2c.c |    2 +-
+> >  1 files changed, 1 insertions(+), 1 deletions(-)
+> > 
+> > diff --git a/drivers/i2c/i2c.c b/drivers/i2c/i2c.c
+> > index 1fa114a..87360f3 100644
+> > --- a/drivers/i2c/i2c.c
+> > +++ b/drivers/i2c/i2c.c
+> > @@ -365,7 +365,7 @@ int i2c_add_numbered_adapter(struct i2c_adapter *adapter)
+> >  	if (i2c_get_adapter(adapter->nr))
+> >  		return -EBUSY;
+> >  
+> > -	list_add_tail(&adapter_list, &adapter->list);
+> > +	list_add_tail(&adapter->list, &adapter_list);
+> >  
+> >  	/* populate children from any i2c device tables */
+> >  	scan_boardinfo(adapter);
+> > -- 
+> > 1.7.1
+> > 
+> 
+> -- 
+>                                                      ~. .~   Tk Open Systems
+> =}------------------------------------------------ooO--U--Ooo------------{=
+>    - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
