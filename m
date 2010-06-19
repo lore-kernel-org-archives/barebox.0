@@ -1,12 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp2-g21.free.fr ([212.27.42.2])
-	by bombadil.infradead.org with esmtp (Exim 4.69 #1 (Red Hat Linux))
-	id 1OJ700-0001fi-7c
-	for barebox@lists.infradead.org; Mon, 31 May 2010 15:33:57 +0000
-From: =?utf-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
-Date: Mon, 31 May 2010 17:33:48 +0200
-Message-Id: <1275320028-28314-1-git-send-email-eric@eukrea.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1OQ4RL-0004n4-Jk
+	for barebox@lists.infradead.org; Sat, 19 Jun 2010 20:14:56 +0000
+Date: Sat, 19 Jun 2010 22:14:51 +0200
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20100619201451.GA29054@pengutronix.de>
+References: <1276508921-3264-1-git-send-email-s.hauer@pengutronix.de>
+	<1276508921-3264-8-git-send-email-s.hauer@pengutronix.de>
+	<20100617132059.GO20799@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20100617132059.GO20799@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,31 +20,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] eukrea_cpuimx27_defconfig: increase MALLOC_SIZE
-To: s.hauer@pengutronix.de
+Subject: Re: [PATCH 07/11] add a generic default environment
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-U2lnbmVkLW9mZi1ieTogRXJpYyBCw6luYXJkIDxlcmljQGV1a3JlYS5jb20+Ci0tLQogYXJjaC9h
-cm0vY29uZmlncy9ldWtyZWFfY3B1aW14MjdfZGVmY29uZmlnIHwgICAgNCArKy0tCiAxIGZpbGVz
-IGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9h
-cmNoL2FybS9jb25maWdzL2V1a3JlYV9jcHVpbXgyN19kZWZjb25maWcgYi9hcmNoL2FybS9jb25m
-aWdzL2V1a3JlYV9jcHVpbXgyN19kZWZjb25maWcKaW5kZXggM2I5MmMzNy4uY2I4NjhhYyAxMDA2
-NDQKLS0tIGEvYXJjaC9hcm0vY29uZmlncy9ldWtyZWFfY3B1aW14MjdfZGVmY29uZmlnCisrKyBi
-L2FyY2gvYXJtL2NvbmZpZ3MvZXVrcmVhX2NwdWlteDI3X2RlZmNvbmZpZwpAQCAtMSw3ICsxLDcg
-QEAKICMKICMgQXV0b21hdGljYWxseSBnZW5lcmF0ZWQgbWFrZSBjb25maWc6IGRvbid0IGVkaXQK
-ICMgYmFyZWJveCB2ZXJzaW9uOiAyMDEwLjA1LjAKLSMgVHVlIE1heSAyNSAwOTo1Nzo1NSAyMDEw
-CisjIFdlZCBNYXkgMjYgMTA6MjA6NDQgMjAxMAogIwogIyBDT05GSUdfQk9BUkRfTElOS0VSX1ND
-UklQVCBpcyBub3Qgc2V0CiBDT05GSUdfR0VORVJJQ19MSU5LRVJfU0NSSVBUPXkKQEAgLTkyLDcg
-KzkyLDcgQEAgQ09ORklHX0hBVkVfQ09ORklHVVJBQkxFX01FTU9SWV9MQVlPVVQ9eQogQ09ORklH
-X01FTU9SWV9MQVlPVVRfREVGQVVMVD15CiAjIENPTkZJR19NRU1PUllfTEFZT1VUX0ZJWEVEIGlz
-IG5vdCBzZXQKIENPTkZJR19TVEFDS19TSVpFPTB4ODAwMAotQ09ORklHX01BTExPQ19TSVpFPTB4
-NDAwMDAwCitDT05GSUdfTUFMTE9DX1NJWkU9MHg4MDAwMDAKICMgQ09ORklHX0JST0tFTiBpcyBu
-b3Qgc2V0CiAjIENPTkZJR19FWFBFUklNRU5UQUwgaXMgbm90IHNldAogQ09ORklHX01BQ0hfSEFT
-X0xPV0xFVkVMX0lOSVQ9eQotLSAKMS42LjMuMwoKCl9fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMu
-aW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZv
-L2JhcmVib3gK
+Hello Sascha,
+
+On Thu, Jun 17, 2010 at 03:20:59PM +0200, Sascha Hauer wrote:
+> diff --git a/defaultenv/bin/boot b/defaultenv/bin/boot
+> new file mode 100644
+> index 0000000..6a508fb
+> --- /dev/null
+> +++ b/defaultenv/bin/boot
+> @@ -0,0 +1,109 @@
+> +#!/bin/sh
+> +
+> +. /env/config
+> +
+> +if [ x$1 =3D xnand ]; then
+> +	rootfs_loc=3Dnand
+> +	kernel_loc=3Dnand
+> +elif [ x$1 =3D xnor ]; then
+> +	rootfs_loc=3Dnor
+> +	kernel_loc=3Dnor
+> +elif [ x$1 =3D xnet ]; then
+> +	rootfs_loc=3Dnet
+> +	kernel_loc=3Dnet
+> +fi
+I'm not sure if barebox supports the case statement.  Even if not you
+can simplify that to
+
+	if [ "x$1" =3D "xnand" ] || [ "x$1" =3D "xnor" ] || [ "x$1" =3D "xnet" ]; =
+then
+		rootfs_loc=3D"$1";
+		kernel_loc=3D"$1";
+	fi
+
+Best regards
+Uwe
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
