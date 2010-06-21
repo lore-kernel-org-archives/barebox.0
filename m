@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from hbe.hbelightingsystems.com ([213.239.196.253])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OQawF-0004ge-Fa
-	for barebox@lists.infradead.org; Mon, 21 Jun 2010 06:57:00 +0000
-Date: Mon, 21 Jun 2010 08:56:57 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20100621065657.GE12115@pengutronix.de>
+	id 1OQcQR-0002ZY-6B
+	for barebox@lists.infradead.org; Mon, 21 Jun 2010 08:32:15 +0000
+Message-ID: <4C1F2385.20807@erwinrol.com>
+Date: Mon, 21 Jun 2010 10:32:05 +0200
+From: Erwin Rol <mailinglists@erwinrol.com>
+MIME-Version: 1.0
 References: <AANLkTilzfYtRwI1kdFG0O53fRz9NApQnW0P98dZEK-Yo@mail.gmail.com>
 	<20100621063247.GB12115@pengutronix.de>
-	<AANLkTimItYRXe7D_cBHDCmyVwFQsg7FEoEnsZK_D3N9A@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <AANLkTimItYRXe7D_cBHDCmyVwFQsg7FEoEnsZK_D3N9A@mail.gmail.com>
+In-Reply-To: <20100621063247.GB12115@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,29 +18,31 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: Fat32 support
-To: Jose Luis Zabalza <jlz.3008@gmail.com>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Jun 21, 2010 at 08:43:15AM +0200, Jose Luis Zabalza wrote:
-> 
-> Thanks Sascha. But cp command didn't run on NOR flash . unprotect and
-> erase run ok so I thought cp command is not a good command to write on
-> NOR flash. I must revise NOR device code when I have time.
+Sascha Hauer wrote:
 
-It's supposed to run, otherwise it's a bug.
+> This is surely possible, though you might be better off with the U-Boot
+> code as a template for porting. You'll probably also need dos
+> partitioning support.
 
-Sascha
+That is (atleast in part, no extended partitions) already there. The x86 
+target has DOS partition support. And i have EFI GUID partition support 
+here, that should be merged as soon as i have time to clean it up.
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+Both things probably should than be moved out of the x86 target and 
+moved to a more generic place.
+
+
+- Erwin
+
 
 _______________________________________________
 barebox mailing list
