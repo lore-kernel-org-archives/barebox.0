@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from hbe.hbelightingsystems.com ([213.239.196.253])
-	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OQcQR-0002ZY-6B
-	for barebox@lists.infradead.org; Mon, 21 Jun 2010 08:32:15 +0000
-Message-ID: <4C1F2385.20807@erwinrol.com>
-Date: Mon, 21 Jun 2010 10:32:05 +0200
-From: Erwin Rol <mailinglists@erwinrol.com>
+Received: from smtp4.aruba.it ([62.149.128.203] helo=smtpw2.aruba.it)
+	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1OR2YU-0003tI-0Q
+	for barebox@lists.infradead.org; Tue, 22 Jun 2010 12:26:19 +0000
+Date: Tue, 22 Jun 2010 14:26:11 +0200
+Message-Id: <L4F17N$3581604971B72AFF2E4EE2E9FBF2CD32@aruba.it>
 MIME-Version: 1.0
-References: <AANLkTilzfYtRwI1kdFG0O53fRz9NApQnW0P98dZEK-Yo@mail.gmail.com>
-	<20100621063247.GB12115@pengutronix.de>
-In-Reply-To: <20100621063247.GB12115@pengutronix.de>
+From: "Luca Ceresoli" <luca@lucaceresoli.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,30 +15,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Fat32 support
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Regression: not booting anymore on OMAP35xx
+To: barebox@lists.infradead.org
 
-Sascha Hauer wrote:
+Hi,
 
-> This is surely possible, though you might be better off with the U-Boot
-> code as a template for porting. You'll probably also need dos
-> partitioning support.
+recent versions of barebox do not boot anymore on OMAP3530 (Cortex-A8).
 
-That is (atleast in part, no extended partitions) already there. The x86 
-target has DOS partition support. And i have EFI GUID partition support 
-here, that should be merged as soon as i have time to clean it up.
+I build barebox with omap3530_beagle_per_uart_defconfig, and load it
+using pserial from Nishanth Menon's omap-u-boot-utils
+(http://github.com/nmenon/omap-u-boot-utils).
 
+Symptoms:
+pserial detects the OMAP ID, then starts sending via UART.
+The transfer apparently gets completed (obvious as there is no control),
+but after that the UART line to the target is totally mute.
 
-Both things probably should than be moved out of the x86 target and 
-moved to a more generic place.
+This happens since commit:
+ 78104ae arm: reimplement startup code in C
 
+And is still happening on current master:
+ ea5230c i2c: fix adapter_list manipulation
 
-- Erwin
+This issue seems independent on another one recently discussed in ml
+('OMAP 3530 arch_shutdown "undefined instruction"',
+http://lists.infradead.org/pipermail/barebox/2010-May/000919.html),
+for which a patch has recently been committed in:
+ ce971c2 arm: use processor specififc functions to turn off MMU
+
+Thanks,
+Luca
+
 
 
 _______________________________________________
