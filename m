@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1ORoYh-00076w-Gp
-	for barebox@lists.infradead.org; Thu, 24 Jun 2010 15:41:44 +0000
-Date: Thu, 24 Jun 2010 17:41:41 +0200
+	id 1ORopZ-0005P8-P9
+	for barebox@lists.infradead.org; Thu, 24 Jun 2010 15:59:10 +0000
+Date: Thu, 24 Jun 2010 17:59:07 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20100624154141.GC12115@pengutronix.de>
-References: <L4IQU1$4731D5E42E435C795207D3BFB302BAD3@aruba.it>
+Message-ID: <20100624155907.GD12115@pengutronix.de>
+References: <ed04cb68b50f6426c0f154e489cf6436877e4b7a.1277385845.git.baruch@tkos.co.il>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <L4IQU1$4731D5E42E435C795207D3BFB302BAD3@aruba.it>
+In-Reply-To: <ed04cb68b50f6426c0f154e489cf6436877e4b7a.1277385845.git.baruch@tkos.co.il>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,72 +22,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Regression: not booting anymore on OMAP35xx
-To: Luca Ceresoli <list@lucaceresoli.net>
+Subject: Re: [PATCH net-pu] tftp: fix get
+To: Baruch Siach <baruch@tkos.co.il>
 Cc: barebox@lists.infradead.org
 
-On Thu, Jun 24, 2010 at 02:32:25PM +0200, Luca Ceresoli wrote:
-> Sascha Hauer wrote:
-> > On Tue, Jun 22, 2010 at 04:04:52PM +0200, Luca Ceresoli wrote:
-> > > Sascha Hauer wrote:
-> > > > Hi Luca,
-> > > > 
-> > > > On Tue, Jun 22, 2010 at 02:26:11PM +0200, Luca Ceresoli wrote:
-> > > > > Hi,
-> > > > > 
-> > > > 
-> > > > Seems that I lost the call to arch_init_lowlevel. Does the following
-> > > > patch help?
-> > > 
-> > > I'm afraid it doesn't seem to.
-> > > It fails with the same symptoms.
-> > > 
-> > > Luca
-> > > 
-> > > > 
-> > > > 
-> > > > diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
-> > > > index eea7dcf..91d2ccd 100644
-> > > > --- a/arch/arm/cpu/start.c
-> > > > +++ b/arch/arm/cpu/start.c
-> > > > @@ -50,6 +50,8 @@ void __naked __bare_init reset(void)
-> > > >  {
-> > > >  	uint32_t r;
-> > > >  
-> > > > +	arch_init_lowlevel();
-> > > > +
-> > 
-> > Ok, this has to be done *after* switching the cpu to SVC32 mode.
-> > 
-> > I tested this on my beagle board and now it works again. I pushed
-> > a patch to the master repository.
-> 
-> Sascha, thank you for the prompt response.
-> Unfortunately the new version works only partially with my Beagle
-> Board (rev. C4).
-> 
-> I tested commit:
->  46976f7 OMAP: fix compilation
-> 
-> - Test 1: the board is always powered.
->   Press RESET with the USER key pressed.
->   10 tests, 10 passed.
-> 
-> - Test 2: the board is not powered.
->   Turn turn it on with the USER key pressed.
->   Turn turn it off again at the end of the test.
->   10 tests, 5 passed, 5 failed.
-> 
-> During all of the 20 tests, barebox.bin was always the same.
-> I didn't recompile it.
-> 
-> OTOH the commit before the "reimplement in C" passes also test 2.
-> 
-> I hope this gives enough hints to solve the problem.
+Hi Baruch,
 
-Ok, I'll try to reproduce this.
+On Thu, Jun 24, 2010 at 04:26:16PM +0300, Baruch Siach wrote:
+> With this patch tftp start requesting block 0 instead of 1. This fixes
+> tftp get on i.MX25 based board with tftpd-hpa server.
+
+This is strange. In case of tftp get this variable is not used for
+sending packets. We do not request blocks with a certain number, we only
+request a file and ack incoming packets. If you look at 'case TFTP_DATA'
+in tftp_handler(), you'll see tftp_block getting overwritten by the
+block number of the incoming packet.
+
+The initialization of tftp_block is only used for tftp push. For tftp
+push RFC1350 says that the first packet we send has to have block number
+one (not zero). 
+
+> 
+> tftp push isn't working though. I get:
+> 
+> error frame: 0x83705178 0x00000882
+> 
+> from the fec driver. I'll investigate this if I have time.
+
+I also see this message sometimes, but usually this is not a problem.
+The transfer continues once the timeout handler triggers and the packet
+is resent.
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
