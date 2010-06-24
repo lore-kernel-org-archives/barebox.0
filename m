@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from 27.mail-out.ovh.net ([91.121.30.210])
 	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1ORoEw-0005qv-9V
-	for barebox@lists.infradead.org; Thu, 24 Jun 2010 15:21:18 +0000
-Message-ID: <4C2377EA.3000608@eukrea.com>
-Date: Thu, 24 Jun 2010 17:21:14 +0200
+	id 1ORoLG-00010G-Cd
+	for barebox@lists.infradead.org; Thu, 24 Jun 2010 15:27:50 +0000
+Message-ID: <4C237973.3020309@eukrea.com>
+Date: Thu, 24 Jun 2010 17:27:47 +0200
 From: =?ISO-8859-1?Q?Eric_B=E9nard?= <eric@eukrea.com>
 MIME-Version: 1.0
-References: <1275645309-9756-1-git-send-email-s.hauer@pengutronix.de>
-	<1275645309-9756-14-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1275645309-9756-14-git-send-email-s.hauer@pengutronix.de>
+References: <1275645309-9756-1-git-send-email-s.hauer@pengutronix.de>	<1275645309-9756-14-git-send-email-s.hauer@pengutronix.de>
+	<4C2377EA.3000608@eukrea.com>
+In-Reply-To: <4C2377EA.3000608@eukrea.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,16 +26,15 @@ Subject: Re: [PATCH 13/13] add netconsole support
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Sascha,
-
-Le 04/06/2010 11:55, Sascha Hauer a =E9crit :
-> +
-> +On the remote host call scripts/netconsole with bareboxes ip and port as
-> +parameters. port is initialized to 6666 by default.
-> +
-it seems scripts/netconsol is missing from the tree and the netconsole =
-
-patche.
+Le 24/06/2010 17:21, Eric B=E9nard a =E9crit :
+>> +On the remote host call scripts/netconsole with bareboxes ip and port as
+>> +parameters. port is initialized to 6666 by default.
+>> +
+> it seems scripts/netconsol is missing from the tree and the netconsole
+> patche.
+>
+OK this seems to work :
+netcat -p 6666 -l -u IP_OF_BAREBOX
 
 Eric
 
