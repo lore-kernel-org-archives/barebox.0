@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1ORiu1-00043D-Bc
-	for barebox@lists.infradead.org; Thu, 24 Jun 2010 09:39:22 +0000
+	id 1ORiu1-00043I-FM
+	for barebox@lists.infradead.org; Thu, 24 Jun 2010 09:39:23 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 24 Jun 2010 11:39:07 +0200
-Message-Id: <1277372356-32370-3-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 24 Jun 2010 11:39:10 +0200
+Message-Id: <1277372356-32370-6-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1277372356-32370-1-git-send-email-s.hauer@pengutronix.de>
 References: <1277372356-32370-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,66 +21,127 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/11] imxfb: Add board specific hook to enable display
+Subject: [PATCH 05/11] armlinux: reorder tag setup
 To: barebox@lists.infradead.org
+
+We call the individual setup_*_tag functions from three different
+boot commands. Waste less space by calling a single setup_tags function
+instead.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/include/mach/imxfb.h |    2 ++
- drivers/video/imx.c                    |    7 +++++++
- 2 files changed, 9 insertions(+), 0 deletions(-)
+ arch/arm/lib/armlinux.c |   51 ++++++++++++++++++++--------------------------
+ 1 files changed, 22 insertions(+), 29 deletions(-)
 
-diff --git a/arch/arm/mach-imx/include/mach/imxfb.h b/arch/arm/mach-imx/include/mach/imxfb.h
-index e31b668..16b43ea 100644
---- a/arch/arm/mach-imx/include/mach/imxfb.h
-+++ b/arch/arm/mach-imx/include/mach/imxfb.h
-@@ -74,6 +74,8 @@ struct imx_fb_platform_data {
- 	void		*framebuffer;
- 	/** force a memory area to be used, else NULL for dynamic allocation */
- 	void		*framebuffer_ovl;
-+	/** hook to enable backlight and stuff */
-+	void		(*enable)(int enable);
- };
- 
- void set_imx_fb_info(struct imx_fb_platform_data *);
-diff --git a/drivers/video/imx.c b/drivers/video/imx.c
-index d9ba643..3a4f938 100644
---- a/drivers/video/imx.c
-+++ b/drivers/video/imx.c
-@@ -152,6 +152,7 @@ struct imxfb_info {
- 	struct fb_info		info;
- 	struct device_d		*dev;
- 
-+	void			(*enable)(int enable);
- 
- 	struct fb_info		overlay;
- };
-@@ -262,12 +263,17 @@ static void imxfb_enable_controller(struct fb_info *info)
- 	writel(readl(IMX_CCM_BASE + CCM_CGCR1) | (1 << 29),
- 		IMX_CCM_BASE + CCM_CGCR1);
- #endif
-+	if (fbi->enable)
-+		fbi->enable(1);
+diff --git a/arch/arm/lib/armlinux.c b/arch/arm/lib/armlinux.c
+index a38c6bf..89d989a 100644
+--- a/arch/arm/lib/armlinux.c
++++ b/arch/arm/lib/armlinux.c
+@@ -142,6 +142,25 @@ static void setup_end_tag (void)
+ 	params->hdr.size = 0;
  }
  
- static void imxfb_disable_controller(struct fb_info *info)
- {
- 	struct imxfb_info *fbi = info->priv;
- 
-+	if (fbi->enable)
-+		fbi->enable(0);
++static void setup_tags(void)
++{
++	const char *commandline = getenv("bootargs");
 +
- 	writel(0, fbi->regs + LCDC_RMCR);
- #ifdef CONFIG_ARCH_IMX21
- 	PCCR0 &= ~(PCCR0_PERCLK3_EN | PCCR0_HCLK_LCDC_EN);
-@@ -546,6 +552,7 @@ static int imxfb_probe(struct device_d *dev)
- 	fbi->pwmr = pdata->pwmr;
- 	fbi->lscr1 = pdata->lscr1;
- 	fbi->dmacr = pdata->dmacr;
-+	fbi->enable = pdata->enable;
- 	fbi->dev = dev;
- 	info->priv = fbi;
- 	info->mode = &pdata->mode->mode;
++	setup_start_tag();
++	setup_memory_tags();
++	setup_commandline_tag(commandline);
++#if 0
++	if (initrd_start && initrd_end)
++		setup_initrd_tag (initrd_start, initrd_end);
++#endif
++	setup_revision_tag();
++	setup_end_tag();
++
++	printf("commandline: %s\n"
++	       "arch_number: %d\n", commandline, armlinux_architecture);
++
++}
++
+ void armlinux_set_bootparams(void *params)
+ {
+ 	armlinux_bootparams = params;
+@@ -172,7 +191,6 @@ int do_bootm_linux(struct image_data *data)
+ {
+ 	void (*theKernel)(int zero, int arch, void *params);
+ 	image_header_t *os_header = &data->os->header;
+-	const char *commandline = getenv("bootargs");
+ 
+ 	if (os_header->ih_type == IH_TYPE_MULTI) {
+ 		printf("Multifile images not handled at the moment\n");
+@@ -189,23 +207,12 @@ int do_bootm_linux(struct image_data *data)
+ 		return -1;
+ 	}
+ 
+-	printf("commandline: %s\n"
+-	       "arch_number: %d\n", commandline, armlinux_architecture);
+-
+ 	theKernel = (void *)ntohl(os_header->ih_ep);
+ 
+ 	debug("## Transferring control to Linux (at address 0x%p) ...\n",
+ 	       theKernel);
+ 
+-	setup_start_tag();
+-	setup_memory_tags();
+-	setup_commandline_tag(commandline);
+-#if 0
+-	if (initrd_start && initrd_end)
+-		setup_initrd_tag (initrd_start, initrd_end);
+-#endif
+-	setup_revision_tag();
+-	setup_end_tag();
++	setup_tags();
+ 
+ 	if (relocate_image(data->os, (void *)ntohl(os_header->ih_load)))
+ 		return -1;
+@@ -259,7 +266,6 @@ struct zimage_header {
+ static int do_bootz(struct command *cmdtp, int argc, char *argv[])
+ {
+ 	void (*theKernel)(int zero, int arch, void *params);
+-	const char *commandline = getenv("bootargs");
+ 	int fd, ret;
+ 	struct zimage_header header;
+ 	void *zimage;
+@@ -295,15 +301,7 @@ static int do_bootz(struct command *cmdtp, int argc, char *argv[])
+ 
+ 	printf("loaded zImage from %s with size %d\n", argv[1], header.end);
+ 
+-	setup_start_tag();
+-	setup_memory_tags();
+-	setup_commandline_tag(commandline);
+-#if 0
+-	if (initrd_start && initrd_end)
+-		setup_initrd_tag (initrd_start, initrd_end);
+-#endif
+-	setup_revision_tag();
+-	setup_end_tag();
++	setup_tags();
+ 
+ 	shutdown_barebox();
+ 	theKernel(0, armlinux_architecture, armlinux_bootparams);
+@@ -333,7 +331,6 @@ BAREBOX_CMD_END
+ static int do_bootu(struct command *cmdtp, int argc, char *argv[])
+ {
+ 	void (*theKernel)(int zero, int arch, void *params) = NULL;
+-	const char *commandline = getenv("bootargs");
+ 	int fd;
+ 
+ 	if (argc != 2) {
+@@ -348,11 +345,7 @@ static int do_bootu(struct command *cmdtp, int argc, char *argv[])
+ 	if (!theKernel)
+ 		theKernel = (void *)simple_strtoul(argv[1], NULL, 0);
+ 
+-	setup_start_tag();
+-	setup_memory_tags();
+-	setup_commandline_tag(commandline);
+-	setup_revision_tag();
+-	setup_end_tag();
++	setup_tags();
+ 
+ 	shutdown_barebox();
+ 	theKernel(0, armlinux_architecture, armlinux_bootparams);
 -- 
 1.7.1
 
