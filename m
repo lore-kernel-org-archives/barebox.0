@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 68.mail-out.ovh.net ([91.121.185.69])
-	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1ORj9l-0008It-6n
-	for barebox@lists.infradead.org; Thu, 24 Jun 2010 09:55:38 +0000
-Message-ID: <4C232B24.6050105@eukrea.com>
-Date: Thu, 24 Jun 2010 11:53:40 +0200
-From: =?UTF-8?B?RXJpYyBCw6luYXJk?= <eric@eukrea.com>
-MIME-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1ORjlp-0000UV-FX
+	for barebox@lists.infradead.org; Thu, 24 Jun 2010 10:34:58 +0000
+Date: Thu, 24 Jun 2010 12:34:55 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20100624103455.GT12115@pengutronix.de>
 References: <1277372997-6472-1-git-send-email-eric@eukrea.com>
-In-Reply-To: <1277372997-6472-1-git-send-email-eric@eukrea.com>
+	<1277372997-6472-2-git-send-email-eric@eukrea.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1277372997-6472-2-git-send-email-eric@eukrea.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,29 +19,65 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] fix command loadb
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/3] unbreak imx-ipu-fb
+To: Eric =?iso-8859-15?Q?B=E9nard?= <eric@eukrea.com>
+Cc: barebox@lists.infradead.org
 
-TGUgMjQvMDYvMjAxMCAxMTo0OSwgRXJpYyBCw6luYXJkIGEgw6ljcml0IDoKPiB3aGljaCB3YXMg
-YnJva2VuIGFmdGVyIGNvbW1pdCBjMzc4OWNkNDliNDNlYzFjNDE0YmExYjBlOWY0OGU4Y2NjMTlm
-OGUxCj4KdGhpcyBwYXRjaCBpcyBvbmx5IGNvbXBpbGUgdGVzdGVkIHNvIHRoZSBmaXggbWF5IGJl
-IHdyb25nLgoKRXJpYwoKPiBTaWduZWQtb2ZmLWJ5OiBFcmljIELDqW5hcmQ8ZXJpY0BldWtyZWEu
-Y29tPgo+IC0tLQo+ICAgY29tbWFuZHMvbG9hZGIuYyB8ICAgIDIgKy0KPiAgIDEgZmlsZXMgY2hh
-bmdlZCwgMSBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9ucygtKQo+Cj4gZGlmZiAtLWdpdCBhL2Nv
-bW1hbmRzL2xvYWRiLmMgYi9jb21tYW5kcy9sb2FkYi5jCj4gaW5kZXggNjc0MGVmNC4uNDM3YjYw
-ZiAxMDA2NDQKPiAtLS0gYS9jb21tYW5kcy9sb2FkYi5jCj4gKysrIGIvY29tbWFuZHMvbG9hZGIu
-Ywo+IEBAIC03MjQsNyArNzI0LDcgQEAgc3RhdGljIGludCBkb19sb2FkX3NlcmlhbF9iaW4oc3Ry
-dWN0IGNvbW1hbmQgKmNtZHRwLCBpbnQgYXJnYywgY2hhciAqYXJndltdKQo+ICAgCQlwcmludGYo
-IiVzOk5vIGNvbnNvbGUgZGV2aWNlIHdpdGggU1RESU4gYW5kIFNURE9VVFxuIiwgYXJndlswXSk7
-Cj4gICAJCXJldHVybiAtRU5PREVWOwo+ICAgCX0KPiAtCWN1cnJlbnRfYmF1ZHJhdGUgPSBzaW1w
-bGVfc3RydG91bChjZGV2LT5iYXVkcmF0ZV9zdHJpbmcsIE5VTEwsIDEwKTsKPiArCWN1cnJlbnRf
-YmF1ZHJhdGUgPSAoaW50KXNpbXBsZV9zdHJ0b3VsKGRldl9nZXRfcGFyYW0oY2Rldi0+ZGV2LCAi
-YmF1ZHJhdGUiKSwgTlVMTCwgMTApOwo+Cj4gICAJLyogTG9hZCBEZWZhdWx0cyAqLwo+ICAgCWlm
-IChsb2FkX2JhdWRyYXRlID09IDApCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRl
-YWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJv
-eAo=
+On Thu, Jun 24, 2010 at 11:49:56AM +0200, Eric B=E9nard wrote:
+> commit c3789cd49b43ec1c414ba1b0e9f48e8ccc19f8e1 set fb0.enable to 0
+> as a default. Re-enabling the display doesn't work after this.
+> Removing sdc_enable_channel from imxfb_probe fix this problem.
+> =
+
+> This patch also remove verbose log from ipu_fb_disable.
+
+I already stumbled upon this. I prefer the following patch which fixes
+the enabling/disabling of the framebuffer.
+
+Sascha
+
+    imx ipu fb: remove checking of IPU_CHA_BUF0_RDY
+    =
+
+    This check prevents the driver from successfully enabling/disabling
+    the controller more than once, because the second time we get
+    here the check fails and the drivers bails out. We do not need this
+    check at all, so remove it.
+    =
+
+    Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+
+diff --git a/drivers/video/imx-ipu-fb.c b/drivers/video/imx-ipu-fb.c
+index 0bd86b2..d9b94e4 100644
+--- a/drivers/video/imx-ipu-fb.c
++++ b/drivers/video/imx-ipu-fb.c
+@@ -664,12 +664,6 @@ static int ipu_enable_channel(struct ipu_fb_info *fbi,=
+ enum ipu_channel channel)
+ static int ipu_update_channel_buffer(struct ipu_fb_info *fbi,
+ 		enum ipu_channel channel, void *buf)
+ {
+-	u32 reg;
+-
+-	reg =3D reg_read(fbi, IPU_CHA_BUF0_RDY);
+-	if (reg & (1UL << channel))
+-		return -EACCES;
+-
+ 	/* 44.3.3.1.9 - Row Number 1 (WORD1, offset 0) */
+ 	reg_write(fbi, dma_param_addr(channel) + 0x0008UL, IPU_IMA_ADDR);
+ 	reg_write(fbi, (u32)buf, IPU_IMA_DATA);
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
