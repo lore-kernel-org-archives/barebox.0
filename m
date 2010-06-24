@@ -1,17 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 27.mail-out.ovh.net ([91.121.30.210])
-	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1ORkua-0001YC-E0
-	for barebox@lists.infradead.org; Thu, 24 Jun 2010 11:48:05 +0000
-Message-ID: <4C2345F1.9060003@eukrea.com>
-Date: Thu, 24 Jun 2010 13:48:01 +0200
-From: =?ISO-8859-15?Q?Eric_B=E9nard?= <eric@eukrea.com>
-MIME-Version: 1.0
-References: <1277372997-6472-1-git-send-email-eric@eukrea.com>
-	<1277372997-6472-2-git-send-email-eric@eukrea.com>
-	<1277372997-6472-3-git-send-email-eric@eukrea.com>
-	<20100624104801.GV12115@pengutronix.de>
-In-Reply-To: <20100624104801.GV12115@pengutronix.de>
+Received: from tango.tkos.co.il ([62.219.50.35])
+	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1ORmRu-0005v4-JJ
+	for barebox@lists.infradead.org; Thu, 24 Jun 2010 13:26:35 +0000
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Thu, 24 Jun 2010 16:26:16 +0300
+Message-Id: <ed04cb68b50f6426c0f154e489cf6436877e4b7a.1277385845.git.baruch@tkos.co.il>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,33 +14,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-15"; Format="flowed"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] eukrea_cpuimx35: better handling of backlight
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH net-pu] tftp: fix get
+To: barebox@lists.infradead.org
 
-Hi Sascha,
+With this patch tftp start requesting block 0 instead of 1. This fixes
+tftp get on i.MX25 based board with tftpd-hpa server.
 
-Le 24/06/2010 12:48, Sascha Hauer a =E9crit :
-> On Thu, Jun 24, 2010 at 11:49:57AM +0200, Eric B=E9nard wrote:
->> start with backlight disabled and enable it if the logo is
->> displayed.
->
-> I just posted a patch which starts up the imxfb driver disabled and
-> another patch which adds a board specific enable/disable hook. Would
-> this be a solution for you? The only thing missing then is a patch
-> which initializes the ipu fb driver with the display disabled.
->
-yes I saw your patch after sending this one and it's clearly the right =
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
 
-way to do this.
-I'll update ipu_fb to add the enable/disable hook.
+tftp push isn't working though. I get:
 
-Thanks,
-Eric
+error frame: 0x83705178 0x00000882
+
+from the fec driver. I'll investigate this if I have time.
+
+ net/tftp.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/net/tftp.c b/net/tftp.c
+index c0d3278..14d9b5e 100644
+--- a/net/tftp.c
++++ b/net/tftp.c
+@@ -320,7 +320,7 @@ static int do_tftpb(struct command *cmdtp, int argc, char *argv[])
+ 
+ 	tftp_timer_start = get_time_ns();
+ 	tftp_state = tftp_put ? STATE_WRQ : STATE_RRQ;
+-	tftp_block = 1;
++	tftp_block = 0;
+ 
+ 	tftp_err = tftp_send();
+ 	if (tftp_err)
+-- 
+1.7.1
 
 
 _______________________________________________
