@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1ORiu2-00043M-Dx
+	id 1ORiu1-00043H-FE
 	for barebox@lists.infradead.org; Thu, 24 Jun 2010 09:39:24 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 24 Jun 2010 11:39:13 +0200
-Message-Id: <1277372356-32370-9-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 24 Jun 2010 11:39:11 +0200
+Message-Id: <1277372356-32370-7-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1277372356-32370-1-git-send-email-s.hauer@pengutronix.de>
 References: <1277372356-32370-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,248 +21,435 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/11] i.MX serial: Use readl/writel instead of pointer deref
+Subject: [PATCH 06/11] remove eco920 board support
 To: barebox@lists.infradead.org
+
+It has been broken for long time and nobody cared, so remove it.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/serial/serial_imx.c |  137 ++++++++++++++++++++++---------------------
- 1 files changed, 71 insertions(+), 66 deletions(-)
+ arch/arm/Makefile                |    1 -
+ arch/arm/mach-at91rm9200/Kconfig |    8 --
+ board/eco920/Makefile            |    2 -
+ board/eco920/config.h            |  134 ------------------------
+ board/eco920/config.mk           |    1 -
+ board/eco920/eco920.c            |  211 --------------------------------------
+ 6 files changed, 0 insertions(+), 357 deletions(-)
+ delete mode 100644 board/eco920/Makefile
+ delete mode 100644 board/eco920/config.h
+ delete mode 100644 board/eco920/config.mk
+ delete mode 100644 board/eco920/eco920.c
 
-diff --git a/drivers/serial/serial_imx.c b/drivers/serial/serial_imx.c
-index 91d3b18..801004e 100644
---- a/drivers/serial/serial_imx.c
-+++ b/drivers/serial/serial_imx.c
-@@ -24,34 +24,35 @@
- #include <init.h>
- #include <malloc.h>
- #include <notifier.h>
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 85ff9c8..1c9f24e 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -52,7 +52,6 @@ board-$(CONFIG_MACH_A9M2410)			:= a9m2410
+ board-$(CONFIG_MACH_A9M2440)			:= a9m2440
+ board-$(CONFIG_MACH_AT91SAM9260EK)		:= at91sam9260ek
+ board-$(CONFIG_MACH_AT91SAM9263EK)		:= at91sam9263ek
+-board-$(CONFIG_MACH_ECO920)			:= eco920
+ board-$(CONFIG_MACH_EDB9301)			:= edb93xx
+ board-$(CONFIG_MACH_EDB9302)			:= edb93xx
+ board-$(CONFIG_MACH_EDB9302A)			:= edb93xx
+diff --git a/arch/arm/mach-at91rm9200/Kconfig b/arch/arm/mach-at91rm9200/Kconfig
+index 7e90179..c062097 100644
+--- a/arch/arm/mach-at91rm9200/Kconfig
++++ b/arch/arm/mach-at91rm9200/Kconfig
+@@ -2,7 +2,6 @@ if ARCH_AT91RM9200
+ 
+ config ARCH_TEXT_BASE
+ 	hex
+-	default 0x21e00000 if MACH_ECO920
+ 
+ config BOARDINFO
+ 
+@@ -12,13 +11,6 @@ choice
+ 
+ 	prompt "AT91RM9200 Board Type"
+ 
+-config MACH_ECO920
+-	bool "eco920"
+-	select HAS_AT91_ETHER
+-	select HAS_CFI
+-	help
+-	  Say Y here if you are using the Motorola MX1ADS board
 -
--#define URXD0(base) __REG( 0x0 +(base))  /* Receiver Register */
--#define URTX0(base) __REG( 0x40 +(base)) /* Transmitter Register */
--#define UCR1(base)  __REG( 0x80 +(base)) /* Control Register 1 */
--#define UCR2(base)  __REG( 0x84 +(base)) /* Control Register 2 */
--#define UCR3(base)  __REG( 0x88 +(base)) /* Control Register 3 */
--#define UCR4(base)  __REG( 0x8c +(base)) /* Control Register 4 */
--#define UFCR(base)  __REG( 0x90 +(base)) /* FIFO Control Register */
--#define USR1(base)  __REG( 0x94 +(base)) /* Status Register 1 */
--#define USR2(base)  __REG( 0x98 +(base)) /* Status Register 2 */
--#define UESC(base)  __REG( 0x9c +(base)) /* Escape Character Register */
--#define UTIM(base)  __REG( 0xa0 +(base)) /* Escape Timer Register */
--#define UBIR(base)  __REG( 0xa4 +(base)) /* BRM Incremental Register */
--#define UBMR(base)  __REG( 0xa8 +(base)) /* BRM Modulator Register */
--#define UBRC(base)  __REG( 0xac +(base)) /* Baud Rate Count Register */
-+#include <asm/io.h>
-+
-+#define URXD0	0x0	/* Receiver Register */
-+#define URTX0	0x40	/* Transmitter Register */
-+#define UCR1	0x80	/* Control Register 1 */
-+#define UCR2	0x84	/* Control Register 2 */
-+#define UCR3	0x88	/* Control Register 3 */
-+#define UCR4	0x8c	/* Control Register 4 */
-+#define UFCR	0x90	/* FIFO Control Register */
-+#define USR1	0x94	/* Status Register 1 */
-+#define USR2	0x98	/* Status Register 2 */
-+#define UESC	0x9c	/* Escape Character Register */
-+#define UTIM	0xa0	/* Escape Timer Register */
-+#define UBIR	0xa4	/* BRM Incremental Register */
-+#define UBMR	0xa8	/* BRM Modulator Register */
-+#define UBRC	0xac	/* Baud Rate Count Register */
- #ifdef CONFIG_ARCH_IMX1
--#define BIPR1(base) __REG( 0xb0 +(base)) /* Incremental Preset Register 1 */
--#define BIPR2(base) __REG( 0xb4 +(base)) /* Incremental Preset Register 2 */
--#define BIPR3(base) __REG( 0xb8 +(base)) /* Incremental Preset Register 3 */
--#define BIPR4(base) __REG( 0xbc +(base)) /* Incremental Preset Register 4 */
--#define BMPR1(base) __REG( 0xc0 +(base)) /* BRM Modulator Register 1 */
--#define BMPR2(base) __REG( 0xc4 +(base)) /* BRM Modulator Register 2 */
--#define BMPR3(base) __REG( 0xc8 +(base)) /* BRM Modulator Register 3 */
--#define BMPR4(base) __REG( 0xcc +(base)) /* BRM Modulator Register 4 */
--#define UTS(base)   __REG( 0xd0 +(base)) /* UART Test Register */
-+#define BIPR1	0xb0	/* Incremental Preset Register 1 */
-+#define BIPR2	0xb4	/* Incremental Preset Register 2 */
-+#define BIPR3	0xb8	/* Incremental Preset Register 3 */
-+#define BIPR4	0xbc	/* Incremental Preset Register 4 */
-+#define BMPR1	0xc0	/* BRM Modulator Register 1 */
-+#define BMPR2	0xc4	/* BRM Modulator Register 2 */
-+#define BMPR3	0xc8	/* BRM Modulator Register 3 */
-+#define BMPR4	0xcc	/* BRM Modulator Register 4 */
-+#define UTS	0xd0	/* UART Test Register */
- #else
--#define ONEMS(base) __REG( 0xb0 +(base)) /* One Millisecond register */
--#define UTS(base)   __REG( 0xb4 +(base)) /* UART Test Register */
-+#define ONEMS	0xb0 /* One Millisecond register */
-+#define UTS	0xb4 /* UART Test Register */
- #endif
+ endchoice
  
- /* UART Control Register Bit Fields.*/
-@@ -175,7 +176,7 @@ static int imx_serial_reffreq(ulong base)
- {
- 	ulong rfdiv;
- 
--	rfdiv = (UFCR(base) >> 7) & 7;
-+	rfdiv = (readl(base + UFCR) >> 7) & 7;
- 	rfdiv = rfdiv < 6 ? 6 - rfdiv : 7;
- 
- 	return imx_get_uartclk() / rfdiv;
-@@ -190,45 +191,42 @@ static int imx_serial_init_port(struct console_device *cdev)
- {
- 	struct device_d *dev = cdev->dev;
- 	ulong base = dev->map_base;
-+	uint32_t val;
-+
-+	writel(UCR1_VAL, base + UCR1);
-+	writel(UCR2_WS | UCR2_IRTS, base + UCR2);
-+	writel(UCR3_VAL, base + UCR3);
-+	writel(UCR4_VAL, base + UCR4);
-+	writel(0x0000002B, base + UESC);
-+	writel(0, base + UTIM);
-+	writel(0, base + UBIR);
-+	writel(0, base + UBMR);
-+	writel(0, base + UTS);
- 
--	UCR1(base) = UCR1_VAL;
--	UCR2(base) = UCR2_WS | UCR2_IRTS;
--	UCR3(base) = UCR3_VAL;
--	UCR4(base) = UCR4_VAL;
--	UESC(base) = 0x0000002B;
--	UTIM(base) = 0;
--	UBIR(base) = 0;
--	UBMR(base) = 0;
--	UTS(base)  = 0;
- 
- 	/* Configure FIFOs */
--	UFCR(base) = 0xa81;
-+	writel(0xa81, base + UFCR);
- 
- #ifdef ONEMS
--	ONEMS(base) = imx_serial_reffreq(base) / 1000;
-+	writel(imx_serial_reffreq(base) / 1000, base + ONEMS);
- #endif
- 
- 	/* Enable FIFOs */
--	UCR2(base) |= UCR2_SRST | UCR2_RXEN | UCR2_TXEN;
-+	val = readl(base + UCR2);
-+	val |= UCR2_SRST | UCR2_RXEN | UCR2_TXEN;
-+	writel(val, base + UCR2);
- 
-   	/* Clear status flags */
--	USR2(base) |= USR2_ADET  |
--	          USR2_DTRF  |
--	          USR2_IDLE  |
--	          USR2_IRINT |
--	          USR2_WAKE  |
--	          USR2_RTSF  |
--	          USR2_BRCD  |
--	          USR2_ORE   |
--	          USR2_RDR;
-+	val = readl(base + USR2);
-+	val |= USR2_ADET | USR2_DTRF | USR2_IDLE | USR2_IRINT | USR2_WAKE |
-+	       USR2_RTSF | USR2_BRCD | USR2_ORE | USR2_RDR;
-+	writel(val, base + USR2);
- 
-   	/* Clear status flags */
--	USR1(base) |= USR1_PARITYERR |
--	          USR1_RTSD      |
--	          USR1_ESCF      |
--	          USR1_FRAMERR   |
--	          USR1_AIRINT    |
--	          USR1_AWAKE;
-+	val = readl(base + USR2);
-+	val |= USR1_PARITYERR | USR1_RTSD | USR1_ESCF | USR1_FRAMERR | USR1_AIRINT |
-+	       USR1_AWAKE;
-+	writel(val, base + USR2);
- 
- 	return 0;
- }
-@@ -238,9 +236,9 @@ static void imx_serial_putc(struct console_device *cdev, char c)
- 	struct device_d *dev = cdev->dev;
- 
- 	/* Wait for Tx FIFO not full */
--	while (UTS(dev->map_base) & UTS_TXFULL);
-+	while (readl(dev->map_base + UTS) & UTS_TXFULL);
- 
--        URTX0(dev->map_base) = c;
-+        writel(c, dev->map_base + URTX0);
- }
- 
- static int imx_serial_tstc(struct console_device *cdev)
-@@ -248,7 +246,7 @@ static int imx_serial_tstc(struct console_device *cdev)
- 	struct device_d *dev = cdev->dev;
- 
- 	/* If receive fifo is empty, return false */
--	if (UTS(dev->map_base) & UTS_RXEMPTY)
-+	if (readl(dev->map_base + UTS) & UTS_RXEMPTY)
- 		return 0;
- 	return 1;
- }
-@@ -258,9 +256,9 @@ static int imx_serial_getc(struct console_device *cdev)
- 	struct device_d *dev = cdev->dev;
- 	unsigned char ch;
- 
--	while (UTS(dev->map_base) & UTS_RXEMPTY);
-+	while (readl(dev->map_base + UTS) & UTS_RXEMPTY);
- 
--	ch = URXD0(dev->map_base);
-+	ch = readl(dev->map_base + URXD0);
- 
- 	return ch;
- }
-@@ -269,7 +267,7 @@ static void imx_serial_flush(struct console_device *cdev)
- {
- 	struct device_d *dev = cdev->dev;
- 
--	while (!(USR2(dev->map_base) & USR2_TXDC));
-+	while (!(readl(dev->map_base + USR2) & USR2_TXDC));
- }
- 
- static int imx_serial_setbaudrate(struct console_device *cdev, int baudrate)
-@@ -277,18 +275,22 @@ static int imx_serial_setbaudrate(struct console_device *cdev, int baudrate)
- 	struct device_d *dev = cdev->dev;
- 	struct imx_serial_priv *priv = container_of(cdev,
- 					struct imx_serial_priv, cdev);
-+	uint32_t val;
-+
- 	ulong base = dev->map_base;
--	ulong ucr1 = UCR1(base);
-+	ulong ucr1 = readl(base + UCR1);
- 
- 	/* disable UART */
--	UCR1(base) &= ~UCR1_UARTEN;
-+	val = readl(base + UCR1);
-+	val &= ~UCR1_UARTEN;
-+	writel(val, base + UCR1);
- 
- 	/* Set the numerator value minus one of the BRM ratio */
--	UBIR(base) = (baudrate / 100) - 1;
-+	writel((baudrate / 100) - 1, base + UBIR);
- 	/* Set the denominator value minus one of the BRM ratio    */
--	UBMR(base) = ((imx_serial_reffreq(base) / 1600) - 1);
-+	writel((imx_serial_reffreq(base) / 1600) - 1, base + UBMR);
- 
--	UCR1(base) = ucr1;
-+	writel(ucr1, base + UCR1);
- 
- 	priv->baudrate = baudrate;
- 
-@@ -310,6 +312,7 @@ static int imx_serial_probe(struct device_d *dev)
- {
- 	struct console_device *cdev;
- 	struct imx_serial_priv *priv;
-+	uint32_t val;
- 
- 	priv = malloc(sizeof(*priv));
- 	cdev = &priv->cdev;
-@@ -327,7 +330,9 @@ static int imx_serial_probe(struct device_d *dev)
- 	imx_serial_setbaudrate(cdev, 115200);
- 
- 	/* Enable UART */
--	UCR1(cdev->dev->map_base) |= UCR1_UARTEN;
-+	val = readl(cdev->dev->map_base + UCR1);
-+	val |= UCR1_UARTEN;
-+	writel(val, cdev->dev->map_base + UCR1);
- 
- 	console_register(cdev);
- 	priv->notify.notifier_call = imx_clocksource_clock_change;
+ endif
+diff --git a/board/eco920/Makefile b/board/eco920/Makefile
+deleted file mode 100644
+index 2cc70ca..0000000
+--- a/board/eco920/Makefile
++++ /dev/null
+@@ -1,2 +0,0 @@
+-obj-y	+= eco920.o
+-
+diff --git a/board/eco920/config.h b/board/eco920/config.h
+deleted file mode 100644
+index 3fb8beb..0000000
+--- a/board/eco920/config.h
++++ /dev/null
+@@ -1,134 +0,0 @@
+-/*
+- * (C) Copyright 2007 Pengutronix
+- * Sascha Hauer, <s.hauer@pengutronix.de>
+- *
+- * See file CREDITS for list of people who contributed to this
+- * project.
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+- * MA 02111-1307 USA
+- */
+-
+-#ifndef __CONFIG_H
+-#define __CONFIG_H
+-
+-/* ARM asynchronous clock */
+-#define AT91C_MAIN_CLOCK	179712000	/* from 18.432 MHz crystal (18432000 / 4 * 39) */
+-#define AT91C_MASTER_CLOCK	59904000	/* peripheral clock (AT91C_MASTER_CLOCK / 3) */
+-/* #define AT91C_MASTER_CLOCK	44928000 */	/* peripheral clock (AT91C_MASTER_CLOCK / 4) */
+-
+-#define AT91_SLOW_CLOCK		32768	/* slow clock */
+-
+-#undef  CONFIG_USE_IRQ			/* we don't need IRQ/FIQ stuff	*/
+-#define USE_920T_MMU		1
+-
+-#define CONFIG_CMDLINE_TAG	1	/* enable passing of ATAGs	*/
+-#define CONFIG_SETUP_MEMORY_TAGS 1
+-#define CONFIG_INITRD_TAG	1
+-
+-#define CFG_USE_MAIN_OSCILLATOR		1
+-/* flash */
+-#define MC_PUIA_VAL	0x00000000
+-#define MC_PUP_VAL	0x00000000
+-#define MC_PUER_VAL	0x00000000
+-#define MC_ASR_VAL	0x00000000
+-#define MC_AASR_VAL	0x00000000
+-#define EBI_CFGR_VAL	0x00000000
+-#define SMC2_CSR_VAL	0x00003287
+-
+-/* clocks */
+-#define PLLAR_VAL	0x2026be04
+-#define PLLBR_VAL	0x10483e0e
+-#define MCKR_VAL	0x00000202
+-
+-/* sdram */
+-#define PIOC_ASR_VAL	0xffff0000
+-#define PIOC_BSR_VAL	0x00000000
+-#define PIOC_PDR_VAL	0xffff0000
+-#define EBI_CSA_VAL	0x00000002 /* CS1=SDRAM */
+-#define SDRC_CR_VAL	0x2188c155 /* set up the SDRAM */
+-#define SDRAM		0x20000000 /* address of the SDRAM */
+-#define SDRAM1		0x20000080 /* address of the SDRAM */
+-#define SDRAM_VAL	0x00000000 /* value written to SDRAM */
+-#define SDRC_MR_VAL	0x00000002 /* Precharge All */
+-#define SDRC_MR_VAL1	0x00000004 /* refresh */
+-#define SDRC_MR_VAL2	0x00000003 /* Load Mode Register */
+-#define SDRC_MR_VAL3	0x00000000 /* Normal Mode */
+-#define SDRC_TR_VAL	0x000002E0 /* Write refresh rate */
+-
+-#define CONFIG_BAUDRATE 115200
+-
+-/*
+- * Hardware drivers
+- */
+-
+-/* define one of CONFIG_DBGU, CONFIG_USART0 or CONFIG_USART1 to choose console */
+-#define CONFIG_DBGU
+-
+-#define CONFIG_BOOTDELAY      3
+-
+-#define CONFIG_CMDLINE_EDITING  1
+-
+-#define	CONFIG_EXTRA_ENV_SETTINGS											\
+-	"mtdids=nor0=physmap-flash.0\0"											\
+-	"mtdparts=mtdparts=physmap-flash.0:128k(barebox)ro,128k(env),1536k(kernel),-(jffs2)\0"				\
+-	"bootargs_base=setenv bootargs console=ttyAT0,115200\0"								\
+-	"bootargs_nfs=setenv bootargs $(bootargs) root=/dev/nfs ip=dhcp nfsroot=$(serverip):$(nfsrootfs),v3,tcp\0"	\
+-	"bootargs_mtd=setenv bootargs $(bootargs) $(mtdparts)\0"							\
+-	"bootargs_flash=setenv bootargs $(bootargs) root=/dev/mtdblock3 rootfstype=jffs2\0"				\
+-	"bootcmd_flash=run bootargs_base bootargs_mtd bootargs_flash; bootm 0x11040000\0"				\
+-	"bootcmd_net=run bootargs_base bootargs_mtd bootargs_nfs; tftpboot 0x20000000 $(uimage); bootm\0"		\
+-	"autoload=n\0"													\
+-	"uimage=uImage-eco920\0"											\
+-	"jffs2=root-eco920.jffs2\0"
+-
+-/* this must be included AFTER the definition of CONFIG_COMMANDS (if any) */
+-#include <cmd_confdefs.h>
+-
+-#define CONFIG_NR_DRAM_BANKS		1
+-#define PHYS_SDRAM			0x20000000
+-#define PHYS_SDRAM_SIZE			0x2000000
+-
+-#define CFG_MEMTEST_START		PHYS_SDRAM
+-#define CFG_MEMTEST_END			CFG_MEMTEST_START + PHYS_SDRAM_SIZE - 262144
+-
+-#define CONFIG_DRIVER_ETHER
+-#define CONFIG_NET_RETRY_COUNT		20
+-#define CONFIG_AT91C_USE_RMII
+-
+-#define CFG_LOAD_ADDR		0x21000000  /* default load address */
+-
+-#define CFG_BAUDRATE_TABLE	{115200 , 19200, 38400, 57600, 9600 }
+-
+-#define	CFG_LONGHELP				/* undef to save memory		*/
+-#define CFG_PROMPT		"barebox> "	/* Monitor Command Prompt */
+-#define CFG_CBSIZE		1024		/* Console I/O Buffer Size */
+-#define CFG_MAXARGS		32		/* max number of command args */
+-#define CFG_PBSIZE		(CFG_CBSIZE+sizeof(CFG_PROMPT)+16) /* Print Buffer Size */
+-
+-#define CLOCK_TICK_RATE		AT91C_MASTER_CLOCK/2	/* AT91C_TC0_CMR is implicitly set to */
+-							/* AT91C_TC_TIMER_DIV1_CLOCK */
+-
+-#define CONFIG_MISC_INIT_R      1       /* call misc_init_r() on init   */
+-#define CFG_SPLASH		1
+-#define CFG_S1D13706FB		1
+-
+-#define CFG_USB_OHCI_MAX_ROOT_PORTS     15
+-#define CFG_USB_OHCI_SLOT_NAME           "at91rm9200"
+-#define LITTLEENDIAN
+-#define CONFIG_AT91C_PQFP_UHPBUG
+-
+-#endif
+-
+diff --git a/board/eco920/config.mk b/board/eco920/config.mk
+deleted file mode 100644
+index 9ce161e..0000000
+--- a/board/eco920/config.mk
++++ /dev/null
+@@ -1 +0,0 @@
+-TEXT_BASE = 0x21f00000
+diff --git a/board/eco920/eco920.c b/board/eco920/eco920.c
+deleted file mode 100644
+index 8d00877..0000000
+--- a/board/eco920/eco920.c
++++ /dev/null
+@@ -1,211 +0,0 @@
+-/*
+- * (C) Copyright 2007 Pengutronix
+- * Sascha Hauer, <s.hauer@pengutronix.de>
+- *
+- * See file CREDITS for list of people who contributed to this
+- * project.
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+- * MA 02111-1307 USA
+- */
+-
+-#include <common.h>
+-#include <mach/AT91RM9200.h>
+-#include <at91rm9200_net.h>
+-#include <dm9161.h>
+-#include <miiphy.h>
+-#include <splash.h>
+-#include <asm/armlinux.h>
+-#include <s1d13706fb.h>
+-#include <net.h>
+-#include <init.h>
+-
+-/*
+- * Miscelaneous platform dependent initialisations
+- */
+-
+-static struct cfi_platform_data cfi_info = {
+-};
+-
+-struct device_d cfi_dev = {
+-	.name     = "cfi_flash",
+-	.map_base = 0x11000000,
+-	.size     = 16 * 1024 * 1024,
+-
+-	.platform_data = &cfi_info,
+-};
+-
+-static struct memory_platform_data ram_pdata = {
+-	.name = "ram0",
+-	.flags = DEVFS_RDWR,
+-};
+-
+-struct device_d sdram_dev = {
+-	.name     = "mem",
+-	.map_base = 0x20000000,
+-	.size     = 32 * 1024 * 1024,
+-	.platform_data = &ram_pdata,
+-};
+-
+-static struct device_d at91_ath_dev = {
+-	.name     = "at91_eth",
+-};
+-
+-static int devices_init (void)
+-{
+-	register_device(&cfi_dev);
+-	register_device(&sdram_dev);
+-	register_device(&at91_ath_dev);
+-
+-	armlinux_set_bootparams((void *)(PHYS_SDRAM + 0x100));
+-	armlinux_set_architecture(MACH_TYPE_ECO920);
+-
+-	return 0;
+-}
+-
+-device_initcall(devices_init);
+-
+-static unsigned int phy_is_connected (AT91PS_EMAC p_mac)
+-{
+-	return 1;
+-}
+-
+-static unsigned char phy_init_bogus (AT91PS_EMAC p_mac)
+-{
+-	unsigned short val;
+-	int timeout, adr, speed, fullduplex;
+-
+-	at91rm9200_EmacEnableMDIO (p_mac);
+-
+-	/* Scan through phy addresses to find a phy */
+-	for (adr = 0; adr < 16; adr++) {
+-		at91rm9200_EmacReadPhy(p_mac, PHY_PHYIDR1 | (adr << 5), &val);
+-		if (val != 0xffff)
+-			break;
+-	}
+-
+-	adr <<= 5;
+-
+-	val = PHY_BMCR_RESET;
+-	at91rm9200_EmacWritePhy(p_mac, PHY_BMCR | adr, &val);
+-
+-	udelay(1000);
+-
+-	val = 0x01e1; /* ADVERTISE_100FULL | ADVERTISE_100HALF |
+-	               * ADVERTISE_10FULL | ADVERTISE_10HALF |
+-		       * ADVERTISE_CSMA */
+-	at91rm9200_EmacWritePhy(p_mac, PHY_ANAR | adr, &val);
+-
+-	at91rm9200_EmacReadPhy(p_mac, PHY_BMCR | adr, &val);
+-	val |= PHY_BMCR_AUTON | PHY_BMCR_RST_NEG;
+-	at91rm9200_EmacWritePhy(p_mac, PHY_BMCR | adr, &val);
+-
+-	timeout = 500;
+-	do {
+-		/* at91rm9200_EmacReadPhy() has a udelay(10000)
+-		 * in it, so this should be about 5 deconds
+-		 */
+-		if ((timeout--) == 0) {
+-			printf("Autonegotiation timeout\n");
+-			goto out;
+-		}
+-
+-		at91rm9200_EmacReadPhy(p_mac, PHY_BMSR | adr, &val);
+-	} while (!(val & PHY_BMSR_LS));
+-
+-	at91rm9200_EmacReadPhy(p_mac, PHY_ANLPAR | adr, &val);
+-
+-	if (val & PHY_ANLPAR_100) {
+-		speed = 100;
+-		p_mac->EMAC_CFG |= AT91C_EMAC_SPD;
+-	} else {
+-		speed = 10;
+-		p_mac->EMAC_CFG &= ~AT91C_EMAC_SPD;
+-	}
+-
+-	if (val & (PHY_ANLPAR_TXFD | PHY_ANLPAR_10FD)) {
+-		fullduplex = 1;
+-		p_mac->EMAC_CFG |= AT91C_EMAC_FD;
+-	} else {
+-		fullduplex = 0;
+-		p_mac->EMAC_CFG &= ~AT91C_EMAC_FD;
+-	}
+-
+-	printf("running at %d-%sDuplex\n",speed, fullduplex ? "FUll" : "Half");
+-
+-out:
+-	at91rm9200_EmacDisableMDIO (p_mac);
+-
+-	return 1;
+-}
+-
+-void at91rm9200_GetPhyInterface(AT91PS_PhyOps p_phyops)
+-{
+-	p_phyops->Init = phy_init_bogus;
+-	p_phyops->IsPhyConnected = phy_is_connected;
+-	/* This is not used anywhere */
+-	p_phyops->GetLinkSpeed = NULL;
+-	/* ditto */
+-	p_phyops->AutoNegotiate = NULL;
+-}
+-
+-#ifdef CONFIG_DRIVER_VIDEO_S1D13706
+-static int efb_init(struct efb_info *efb)
+-{
+-	writeb(GPIO_CONTROL0_GPO, efb->regs + EFB_GPIO_CONTROL1);
+-	writeb(PCLK_SOURCE_CLKI2, efb->regs + EFB_PCLK_CONF);
+-	writeb(0x1, efb->regs + 0x26); /* FIXME: display specific, should be set to zero
+-					*        according to datasheet
+-					*/
+-	return 0;
+-}
+-
+-/* Nanya STN Display */
+-static struct efb_info efb = {
+-	.fbd = {
+-		.xres = 320,
+-		.yres = 240,
+-		.bpp = 8,
+-		.fb = (void*)0x40020000,
+-	},
+-
+-	.init			= efb_init,
+-	.regs			= (void*)0x40000000,
+-	.pixclock		= 100000,
+-	.hsync_len		= 1,
+-	.left_margin		= 22,
+-	.right_margin		= 1,
+-	.vsync_len		= 1,
+-	.upper_margin		= 0,
+-	.lower_margin		= 1,
+-	.sync			= FB_SYNC_HOR_HIGH_ACT | FB_SYNC_VERT_HIGH_ACT,
+-	.panel_type		= PANEL_TYPE_STN | PANEL_TYPE_WIDTH_8 |
+-				  PANEL_TYPE_COLOR | PANEL_TYPE_FORMAT_2,
+-};
+-#endif
+-#define SMC_CSR3	0xFFFFFF7C
+-
+-int misc_init_r(void)
+-{
+-	/* Initialization of the Static Memory Controller for Chip Select 3 */
+-	*(volatile unsigned long*)SMC_CSR3 = 0x00002185;
+-#ifdef CONFIG_DRIVER_VIDEO_S1D13706
+-	s1d13706fb_init(&efb);
+-#endif
+-#ifdef CONFIG_CMD_SPLASH
+-	splash_set_fb_data(&efb.fbd);
+-#endif
+-	return 0;
+-}
 -- 
 1.7.1
 
