@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1ORjp9-0001Rv-6V
-	for barebox@lists.infradead.org; Thu, 24 Jun 2010 10:38:24 +0000
-Date: Thu, 24 Jun 2010 12:38:21 +0200
+	id 1ORjyV-0003hk-Su
+	for barebox@lists.infradead.org; Thu, 24 Jun 2010 10:48:05 +0000
+Date: Thu, 24 Jun 2010 12:48:01 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20100624103821.GU12115@pengutronix.de>
+Message-ID: <20100624104801.GV12115@pengutronix.de>
 References: <1277372997-6472-1-git-send-email-eric@eukrea.com>
-	<4C232B24.6050105@eukrea.com>
+	<1277372997-6472-2-git-send-email-eric@eukrea.com>
+	<1277372997-6472-3-git-send-email-eric@eukrea.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <4C232B24.6050105@eukrea.com>
+In-Reply-To: <1277372997-6472-3-git-send-email-eric@eukrea.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,49 +24,101 @@ Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] fix command loadb
+Subject: Re: [PATCH 3/3] eukrea_cpuimx35: better handling of backlight
 To: Eric =?iso-8859-15?Q?B=E9nard?= <eric@eukrea.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, Jun 24, 2010 at 11:53:40AM +0200, Eric B=E9nard wrote:
-> Le 24/06/2010 11:49, Eric B=E9nard a =E9crit :
->> which was broken after commit c3789cd49b43ec1c414ba1b0e9f48e8ccc19f8e1
->>
-> this patch is only compile tested so the fix may be wrong.
+Hi Eric,
 
-Looks sane. Applied.
+On Thu, Jun 24, 2010 at 11:49:57AM +0200, Eric B=E9nard wrote:
+> start with backlight disabled and enable it if the logo is
+> displayed.
+
+I just posted a patch which starts up the imxfb driver disabled and
+another patch which adds a board specific enable/disable hook. Would
+this be a solution for you? The only thing missing then is a patch
+which initializes the ipu fb driver with the display disabled.
 
 Sascha
 
->
-> Eric
->
->> Signed-off-by: Eric B=E9nard<eric@eukrea.com>
->> ---
->>   commands/loadb.c |    2 +-
->>   1 files changed, 1 insertions(+), 1 deletions(-)
->>
->> diff --git a/commands/loadb.c b/commands/loadb.c
->> index 6740ef4..437b60f 100644
->> --- a/commands/loadb.c
->> +++ b/commands/loadb.c
->> @@ -724,7 +724,7 @@ static int do_load_serial_bin(struct command *cmdtp,=
- int argc, char *argv[])
->>   		printf("%s:No console device with STDIN and STDOUT\n", argv[0]);
->>   		return -ENODEV;
->>   	}
->> -	current_baudrate =3D simple_strtoul(cdev->baudrate_string, NULL, 10);
->> +	current_baudrate =3D (int)simple_strtoul(dev_get_param(cdev->dev, "bau=
-drate"), NULL, 10);
->>
->>   	/* Load Defaults */
->>   	if (load_baudrate =3D=3D 0)
->
->
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+> =
+
+> Signed-off-by: Eric B=E9nard <eric@eukrea.com>
+> ---
+>  board/eukrea_cpuimx35/env/bin/init      |    2 ++
+>  board/eukrea_cpuimx35/eukrea_cpuimx35.c |   11 +++++++++--
+>  2 files changed, 11 insertions(+), 2 deletions(-)
+> =
+
+> diff --git a/board/eukrea_cpuimx35/env/bin/init b/board/eukrea_cpuimx35/e=
+nv/bin/init
+> index 49e54c5..4610213 100644
+> --- a/board/eukrea_cpuimx35/env/bin/init
+> +++ b/board/eukrea_cpuimx35/env/bin/init
+> @@ -14,9 +14,11 @@ fi
+>  =
+
+>  if [ -f /env/logo.bmp ]; then
+>  	bmp /env/logo.bmp
+> +	gpio_direction_output 1 1
+>  elif [ -f /env/logo.bmp.lzo ]; then
+>  	unlzo /env/logo.bmp.lzo /logo.bmp
+>  	bmp /logo.bmp
+> +	gpio_direction_output 1 1
+>  fi
+>  =
+
+>  if [ -z $eth0.ethaddr ]; then
+> diff --git a/board/eukrea_cpuimx35/eukrea_cpuimx35.c b/board/eukrea_cpuim=
+x35/eukrea_cpuimx35.c
+> index 7f1c782..f358f51 100644
+> --- a/board/eukrea_cpuimx35/eukrea_cpuimx35.c
+> +++ b/board/eukrea_cpuimx35/eukrea_cpuimx35.c
+> @@ -166,8 +166,10 @@ device_initcall(eukrea_cpuimx35_devices_init);
+>  =
+
+>  static int eukrea_cpuimx35_enable_display(void)
+>  {
+> -	gpio_direction_output(1, 1);
+> -	gpio_direction_output(0, 0);
+> +	/* default : backlight OFF */
+> +	gpio_direction_output(1, 0);
+> +	gpio_direction_output(4, 1);
+> +
+>  	return 0;
+>  }
+>  =
+
+> @@ -205,14 +207,19 @@ static struct pad_desc eukrea_cpuimx35_pads[] =3D {
+>  	MX35_PAD_TXD1__UART1_TXD_MUX,
+>  	MX35_PAD_RTS1__UART1_RTS,
+>  	MX35_PAD_CTS1__UART1_CTS,
+> +
+> +	MX35_PAD_CONTRAST__GPIO1_1,
+> +	MX35_PAD_D3_CLS__GPIO1_4,
+>  };
+>  =
+
+> +
+>  static int eukrea_cpuimx35_console_init(void)
+>  {
+>  	mxc_iomux_v3_setup_multiple_pads(eukrea_cpuimx35_pads,
+>  		ARRAY_SIZE(eukrea_cpuimx35_pads));
+>  =
+
+>  	register_device(&eukrea_cpuimx35_serial_device);
+> +
+>  	return 0;
+>  }
+>  =
+
+> -- =
+
+> 1.6.3.3
+> =
+
+> =
+
 
 -- =
 
