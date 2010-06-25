@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 27.mail-out.ovh.net ([91.121.30.210])
-	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OS2rh-0003MD-IW
-	for barebox@lists.infradead.org; Fri, 25 Jun 2010 06:58:18 +0000
-Message-ID: <4C245386.2000607@eukrea.com>
-Date: Fri, 25 Jun 2010 08:58:14 +0200
-From: =?ISO-8859-15?Q?Eric_B=E9nard?= <eric@eukrea.com>
+Received: from mail-wy0-f177.google.com ([74.125.82.177])
+	by bombadil.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1OS3Ae-0001Dj-8P
+	for barebox@lists.infradead.org; Fri, 25 Jun 2010 07:17:53 +0000
+Received: by wyb32 with SMTP id 32so674106wyb.36
+	for <barebox@lists.infradead.org>; Fri, 25 Jun 2010 00:17:49 -0700 (PDT)
+From: Peter Korsgaard <jacmet@sunsite.dk>
+References: <1277372356-32370-1-git-send-email-s.hauer@pengutronix.de>
+	<1277372356-32370-5-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 25 Jun 2010 09:17:44 +0200
+In-Reply-To: <1277372356-32370-5-git-send-email-s.hauer@pengutronix.de>
+	(Sascha Hauer's message of "Thu, 24 Jun 2010 11:39:09 +0200")
+Message-ID: <878w634m3r.fsf@macbook.be.48ers.dk>
 MIME-Version: 1.0
-References: <1275645309-9756-1-git-send-email-s.hauer@pengutronix.de>
-	<1275645309-9756-14-git-send-email-s.hauer@pengutronix.de>
-	<4C2377EA.3000608@eukrea.com>
-	<20100624153757.GB12115@pengutronix.de>
-In-Reply-To: <20100624153757.GB12115@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,26 +21,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-15"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 13/13] add netconsole support
+Subject: Re: [PATCH 04/11] memcpy cmd: Do not expect to read/write the whole
+	chunk at once
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Sascha,
+>>>>> "Sascha" == Sascha Hauer <s.hauer@pengutronix.de> writes:
 
-Le 24/06/2010 17:37, Sascha Hauer a =E9crit :
-> On Thu, Jun 24, 2010 at 05:21:14PM +0200, Eric B=E9nard wrote:
->> it seems scripts/netconsol is missing from the tree and the netconsole
->> patche.
->
-> Oh, I had it in my tree and forgot to commit. Did now.
->
-thanks works fine, this netconsole is really a nice feature.
+Hi,
 
-Eric
+ Sascha> read() does not necessarily return the number of bytes
+ Sascha> we want to read, so deal with less bytes.
+
+ Sascha> -		if ((w = write(destfd, rw_buf, r)) < 0) {
+ Sascha> -			perror("write");
+ Sascha> -			goto out;
+ Sascha> -		}
+ Sascha> -
+ Sascha> -		if (r < now)
+ Sascha> +		if (!r)
+ Sascha>  			break;
+ 
+ Sascha> -		if (w < r)
+ Sascha> -			break;
+ Sascha> +		tmp = 0;
+ Sascha> +		now = r;
+ Sascha> +		while (now) {
+ Sascha> +			w = write(destfd, rw_buf + tmp, now);
+ Sascha> +			if (w < 0) {
+ Sascha> +				perror("write");
+ Sascha> +				goto out;
+ Sascha> +			}
+ Sascha> +	                if (!w)
+ Sascha> +			        break;
+ 
+ Sascha> -		count -= now;
+ Sascha> +			now -= w;
+ Sascha> +			tmp += w;
+ Sascha> +		}
+ Sascha> +
+
+This is probably not the only place we need this. What about moving this
+to a helper function like busybox' full_write()?
+
+-- 
+Bye, Peter Korsgaard
 
 _______________________________________________
 barebox mailing list
