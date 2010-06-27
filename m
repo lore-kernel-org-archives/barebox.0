@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from tango.tkos.co.il ([62.219.50.35])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OSkCv-0006uZ-Kj
-	for barebox@lists.infradead.org; Sun, 27 Jun 2010 05:15:06 +0000
-Date: Sun, 27 Jun 2010 08:14:46 +0300
+	id 1OSkFL-0007YQ-Pe
+	for barebox@lists.infradead.org; Sun, 27 Jun 2010 05:17:36 +0000
 From: Baruch Siach <baruch@tkos.co.il>
-Message-ID: <20100627051445.GA26474@jasper.tkos.co.il>
-References: <ed04cb68b50f6426c0f154e489cf6436877e4b7a.1277385845.git.baruch@tkos.co.il>
-	<20100624155907.GD12115@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20100624155907.GD12115@pengutronix.de>
+Date: Sun, 27 Jun 2010 08:17:16 +0300
+Message-Id: <e049fe5636cc213f485e3d24a3dcbd6c246e8ee5.1277615744.git.baruch@tkos.co.il>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,55 +14,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH net-pu] tftp: fix get
+Subject: [PATCH net-pu] tftp: fix push for servers supporting 'option
+	acknowledgement'
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Sascha,
+When doing push receiving 'option acknowledgement' should move the protocol to
+state WDATA, and set block number to 1.
 
-On Thu, Jun 24, 2010 at 05:59:07PM +0200, Sascha Hauer wrote:
-> On Thu, Jun 24, 2010 at 04:26:16PM +0300, Baruch Siach wrote:
-> > With this patch tftp start requesting block 0 instead of 1. This fixes
-> > tftp get on i.MX25 based board with tftpd-hpa server.
-> 
-> This is strange. In case of tftp get this variable is not used for
-> sending packets. We do not request blocks with a certain number, we only
-> request a file and ack incoming packets. If you look at 'case TFTP_DATA'
-> in tftp_handler(), you'll see tftp_block getting overwritten by the
-> block number of the incoming packet.
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+ net/tftp.c |    4 ++++
+ 1 files changed, 4 insertions(+), 0 deletions(-)
 
-The code that sends the first acknowledgement (in my case, i.e. tftpd-hpa) is 
-at 'case STATE_OACK', in response to the "Option Acknowledgement" of the 
-'timeout=5' option. This code does not initialize tftp_block.
-
-> The initialization of tftp_block is only used for tftp push. For tftp
-> push RFC1350 says that the first packet we send has to have block number
-> one (not zero). 
-
-I'll send a patch fixing push along the same line (for me) shortly.
-
-> > tftp push isn't working though. I get:
-> > 
-> > error frame: 0x83705178 0x00000882
-> > 
-> > from the fec driver. I'll investigate this if I have time.
-> 
-> I also see this message sometimes, but usually this is not a problem.
-> The transfer continues once the timeout handler triggers and the packet
-> is resent.
-
-I see. Thanks for the info.
-
-baruch
-
+diff --git a/net/tftp.c b/net/tftp.c
+index 14d9b5e..20fab78 100644
+--- a/net/tftp.c
++++ b/net/tftp.c
+@@ -186,6 +186,10 @@ static void tftp_handler(char *packet, unsigned len)
+ 	case TFTP_OACK:
+ 		debug("Got OACK: %s %s\n", pkt, pkt + strlen(pkt) + 1);
+ 		tftp_state = STATE_OACK;
++		if (tftp_put) {
++			tftp_block = 1;
++			tftp_state = STATE_WDATA;
++		}
+ 		tftp_server_port = ntohs(udp->uh_sport);
+ 		tftp_con->udp->uh_dport = udp->uh_sport;
+ 		tftp_send(); /* Send ACK */
 -- 
-                                                     ~. .~   Tk Open Systems
-=}------------------------------------------------ooO--U--Ooo------------{=
-   - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
+1.7.1
+
 
 _______________________________________________
 barebox mailing list
