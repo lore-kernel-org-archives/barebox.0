@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OT9qe-0006pe-Lg
-	for barebox@lists.infradead.org; Mon, 28 Jun 2010 08:37:49 +0000
-Date: Mon, 28 Jun 2010 10:37:46 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20100628083746.GI12115@pengutronix.de>
-References: <1277372356-32370-1-git-send-email-s.hauer@pengutronix.de>
-	<1277372356-32370-5-git-send-email-s.hauer@pengutronix.de>
-	<878w634m3r.fsf@macbook.be.48ers.dk>
+Received: from mail-wy0-f177.google.com ([74.125.82.177])
+	by bombadil.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1OTAKV-0002AL-EZ
+	for barebox@lists.infradead.org; Mon, 28 Jun 2010 09:08:40 +0000
+Received: by wyb32 with SMTP id 32so2519104wyb.36
+	for <barebox@lists.infradead.org>; Mon, 28 Jun 2010 02:08:37 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <878w634m3r.fsf@macbook.be.48ers.dk>
+In-Reply-To: <20100628080442.GH12115@pengutronix.de>
+References: <AANLkTimjBoeR8qBpdmbcuRgxr6o7xNRKaYQ6OdyDi_Fu@mail.gmail.com>
+	<20100628080442.GH12115@pengutronix.de>
+Date: Mon, 28 Jun 2010 11:08:36 +0200
+Message-ID: <AANLkTila-9RsB4fiMy35ZDW0NHUckd4fj5kELB8R7VX-@mail.gmail.com>
+From: Belisko Marek <marek.belisko@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,66 +20,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 04/11] memcpy cmd: Do not expect to read/write the
-	whole chunk at once
-To: Peter Korsgaard <jacmet@sunsite.dk>
+Subject: Re: testing barebox on calao sbc35-a9260 board
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, Jun 25, 2010 at 09:17:44AM +0200, Peter Korsgaard wrote:
-> >>>>> "Sascha" == Sascha Hauer <s.hauer@pengutronix.de> writes:
-> 
-> Hi,
-> 
->  Sascha> read() does not necessarily return the number of bytes
->  Sascha> we want to read, so deal with less bytes.
-> 
->  Sascha> -		if ((w = write(destfd, rw_buf, r)) < 0) {
->  Sascha> -			perror("write");
->  Sascha> -			goto out;
->  Sascha> -		}
->  Sascha> -
->  Sascha> -		if (r < now)
->  Sascha> +		if (!r)
->  Sascha>  			break;
->  
->  Sascha> -		if (w < r)
->  Sascha> -			break;
->  Sascha> +		tmp = 0;
->  Sascha> +		now = r;
->  Sascha> +		while (now) {
->  Sascha> +			w = write(destfd, rw_buf + tmp, now);
->  Sascha> +			if (w < 0) {
->  Sascha> +				perror("write");
->  Sascha> +				goto out;
->  Sascha> +			}
->  Sascha> +	                if (!w)
->  Sascha> +			        break;
->  
->  Sascha> -		count -= now;
->  Sascha> +			now -= w;
->  Sascha> +			tmp += w;
->  Sascha> +		}
->  Sascha> +
-> 
-> This is probably not the only place we need this. What about moving this
-> to a helper function like busybox' full_write()?
-
-I merged this for now, but I'll remember it for next time I implement
-such a loop.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgU2FzY2hhLAoKT24gTW9uLCBKdW4gMjgsIDIwMTAgYXQgMTA6MDQgQU0sIFNhc2NoYSBIYXVl
+ciA8cy5oYXVlckBwZW5ndXRyb25peC5kZT4gd3JvdGU6Cj4gSGkgTWFyZWssCj4KPiBPbiBGcmks
+IEp1biAyNSwgMjAxMCBhdCAxMTozMTo0OUFNICswMjAwLCBCZWxpc2tvIE1hcmVrIHdyb3RlOgo+
+PiBIaSwKPj4KPj4gSSBoYXZlIGEgY2FsYW8gYm9hcmQgc2JjMzUtYTkyNjAgd2l0aCB1LWJvb3Qg
+cHJlLWluc3RhbGxlZCBvbiBpdC4KPj4gSSB3b3VsZCBsaWtlIHRvIHRyeSBiYXJlYm94IHJ1bm5p
+bmcgb24gdGhhdCBib2FyZCAoYWxzbyBtYWtlIHNvbWUgZGV2ZWxvcG1lbnQpLgo+PiBJIGJ1aWxk
+IGF0OTFzYW05MjYwZWtfZGVmY29uZmlnIHRvIHRyeSBpdCBvdXQuIEkgYmVjYW1lIHRvIHNpdHVh
+dGlvbgo+PiB0aGF0IEkgZG9uJ3Qga25vdyBob3cgdG8gbG9hZCBpbWFnZSB0byBib2FyZCA6KQo+
+Pgo+PiBJIHRyeSB2aWEgdGZ0cCBidXQgdS1ib290IGF1dG9tYXRpY2FsbHkgdHJ5IHRvIGJvb3Qg
+aXQgYW5kIEkgZ290IHNvbWUKPj4gZXJyb3IgYWJvdXQgbWFnaWMgbnVtYmVyLgo+PiBJIHRoaW5r
+IGFib3V0IHBvc3NpYmlsaXR5IGp1c3QgZG93bmxvYWQgYmluYXJ5IHRvIHNvbWUgUkFNIGFkZHJl
+c3MgYW5kCj4+IHRoZW4gdXNlIGdvIGNvbW1hbmQgaW4gdS1ib290Cj4+IHRvIHRlc3QgaWYgYmFy
+ZWJveCBiaW5hcnkgd2lsbCB3b3JrLgo+Pgo+PiBUaGVyZSBleGlzdCBzb21lIGhvdy10byBvciBl
+eGFtcGxlIGhvdyB0byBkbyB0aGlzPwo+Cj4gSXQncyBwZXJmZWN0bHkgZmluZSB0byBzdGFydCBi
+YXJlYm94IGZyb20gVS1Cb290IHdpdGggdGhlICdnbycgY29tbWFuZC4KPiBUcnkgJ3NldGVudiBh
+dXRvc3RhcnQgbm8nIGluIFUtQm9vdCB0byBzdG9wIFUtQm9vdCBmcm9tIGF1dG9zdGFydGluZwo+
+IGltYWdlcy4KCkkgZGlzYWJsZSBhdXRvc3RhcnQgYW5kIGRvd25sb2FkIGJhcmVib3ggaW1hZ2Ug
+dG8gMHg4MDAwIHdpdGgKdGZ0cCAweDgwMDAgYmFyZWJveC5iaW4gYW5kIHRoZW4ganV0IGdvIDB4
+ODAwMCBlbmRlZCB3aXRoOgojIyBTdGFydGluZyBhcHBsaWNhdGlvbiBhdCAweDAwMDA4MDAwIC4u
+LgoKU2FtZSBJIGdvdCB3aGVuIGxvYWQgbGF0ZXN0IGNvbXBpbGVkIHUtYm9vdCBiaW5hcnkuCgpG
+b3IgY29tcGlsYXRpb24gSSB1c2VkIENvZGVzb3VyY2VyeSBlYWJpIHRvb2xjaGFpbiBhcm0tMjAw
+OXEzCndpdGggYXQ5MXNhbTkyNjBla19kZWZjb25maWcuCgpDb3VsZCBJIHNvbWVob3cgY2hlY2sg
+KHdpdGhvdXQgSlRBRyA6KSkgaWYgaW1hZ2UgaXMgY29tcGlsZWQgT0sKYW5kIGNvdWxkIHN0YXJ0
+IG9uIGJvYXJkPwoKPgo+IFNhc2NoYQo+Cj4gLS0KPiBQZW5ndXRyb25peCBlLksuIMKgIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHwgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAg
+wqAgwqAgwqAgwqAgwqAgwqAgfAo+IEluZHVzdHJpYWwgTGludXggU29sdXRpb25zIMKgIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gwqB8Cj4gUGVpbmVy
+IFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55IHwgUGhvbmU6ICs0OS01MTIxLTIw
+NjkxNy0wIMKgIMKgfAo+IEFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2IMKgIMKgIMKg
+IMKgIMKgIHwgRmF4OiDCoCArNDktNTEyMS0yMDY5MTctNTU1NSB8Cj4KClRoYW5rcywKCk1hcmVr
+CgotLSAKYXMgc2ltcGxlIGFuZCBwcmltaXRpdmUgYXMgcG9zc2libGUKLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpNYXJlayBCZWxpc2tvIC0gT1BFTi1O
+QU5EUkEKRnJlZWxhbmNlIERldmVsb3BlcgoKUnVza2EgTm92YSBWZXMgMjE5IHwgUHJlc292LCAw
+ODAwNSBTbG92YWsgUmVwdWJsaWMKVGVsOiArNDIxIDkxNSAwNTIgMTg0CnNreXBlOiBtYXJla3do
+aXRlCmljcTogMjkwNTUxMDg2CndlYjogaHR0cDovL29wZW4tbmFuZHJhLmNvbQoKX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxp
+c3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3Jn
+L21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
