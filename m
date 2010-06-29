@@ -1,19 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ww0-f49.google.com ([74.125.82.49])
-	by bombadil.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OTBi9-0005fL-5m
-	for barebox@lists.infradead.org; Mon, 28 Jun 2010 10:37:11 +0000
-Received: by wwa36 with SMTP id 36so3315331wwa.36
-	for <barebox@lists.infradead.org>; Mon, 28 Jun 2010 03:37:07 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <201006281136.10750.jbe@pengutronix.de>
-References: <AANLkTimjBoeR8qBpdmbcuRgxr6o7xNRKaYQ6OdyDi_Fu@mail.gmail.com>
-	<AANLkTila-9RsB4fiMy35ZDW0NHUckd4fj5kELB8R7VX-@mail.gmail.com>
-	<4C2868A6.7010600@eukrea.com>
-	<201006281136.10750.jbe@pengutronix.de>
-Date: Mon, 28 Jun 2010 12:37:06 +0200
-Message-ID: <AANLkTinS3Lx8V5gZ17iJfRuoQuz_GU0WR7PSAUwhe2x1@mail.gmail.com>
-From: Belisko Marek <marek.belisko@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1OTZz7-0008W9-3x
+	for barebox@lists.infradead.org; Tue, 29 Jun 2010 12:32:18 +0000
+From: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Date: Tue, 29 Jun 2010 14:32:00 +0200
+Message-Id: <1277814720-1717-1-git-send-email-m.grzeschik@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,45 +14,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: testing barebox on calao sbc35-a9260 board
-To: Juergen Beisert <jbe@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] omap/devices-gpmc-nand.c remove repeating words
+To: barebox@lists.infradead.org
 
-SGksCgpPbiBNb24sIEp1biAyOCwgMjAxMCBhdCAxMTozNiBBTSwgSnVlcmdlbiBCZWlzZXJ0IDxq
-YmVAcGVuZ3V0cm9uaXguZGU+IHdyb3RlOgo+IEVyaWMgQsOpbmFyZCB3cm90ZToKPj4gSGkgTWFy
-ZWssCj4+Cj4+IExlIDI4LzA2LzIwMTAgMTE6MDgsIEJlbGlza28gTWFyZWsgYSDDqWNyaXQgOgo+
-PiA+IEkgZGlzYWJsZSBhdXRvc3RhcnQgYW5kIGRvd25sb2FkIGJhcmVib3ggaW1hZ2UgdG8gMHg4
-MDAwIHdpdGgKPj4gPiB0ZnRwIDB4ODAwMCBiYXJlYm94LmJpbiBhbmQgdGhlbiBqdXQgZ28gMHg4
-MDAwIGVuZGVkIHdpdGg6Cj4+ID4gIyMgU3RhcnRpbmcgYXBwbGljYXRpb24gYXQgMHgwMDAwODAw
-MCAuLi4KPj4KPj4gaWYgSSByZW1lbWJlciB3ZWxsLCBvbiBBVDkxIFNEUkFNIGlzIGF0IDB4MjAw
-MDAwMDAgc28gYWN0dWFsbHkgeW91IGRvbid0Cj4+IHNlZW0gdG8gbG9hZCBpdCBpbiBTRFJBTS4K
-Pj4gRm9yIHRoZSBiaW5hcnkgdG8gZXhlY3V0ZSBwcm9wZXJseSwgeW91IHNob3VsZCBsb2FkIGl0
-IGF0IHRoZSByaWdodAo+PiB0YXJnZXQgYWRkcmVzcyBpbiBTRFJBTS4KPgo+IElmIGJhcmVib3gg
-ZGV0ZWN0cyBpdHMgY3VycmVudCBydW50aW1lIGFkZHJlc3MgZGlmZmVycyBmcm9tIHRoZSBsaW5r
-IGFkZHJlc3MKPiBpdCBjb3BpZXMgaXRzZWxmIHRvIHRoZSBsaW5rIGFkZHJlc3MgZmlyc3QuCj4K
-PiBTbyB3cml0aW5nIGl0IGFueXdoZXJlIGludG8gc2RyYW0gc2hvdWxkIHdvcmsuIEJ1dCBvbmx5
-LCBpZiBhbHNvIHRoZSBsaW5rCj4gYWRkcmVzcyBpcyBpbiB0aGUgc2RyYW0gYXJlYS4uLgpTZWVt
-cyBpdCdzIG5vdCB3b3JraW5nIGluIG15IGNhc2UuIFUtYm9vdCBjb2RlIGp1c3QganVtcCB0byBh
-ZGRyZXNzIHdoaWNoCmlzIHRha2VuIGFzIGFyZ3VtZW50IGFjY29yZGluZyBjb2RlLiBJZiBiYXJl
-Ym94IGlzIGNvcGllZCB0byBjb3JyZWN0IGxpbmsKYWRkcmVzcyBhbmQgc3RhcnRlZCBpdCBzaG91
-bGQgd29yay4gSXMgdGhlcmUgYW55IHBvc3NpYmlsaXR5IHRvIGNoZWNrCmxpbmsgYWRkcmVzcyBm
-cm9tIGJpbmFyeQpvciBpdCdzIG5vdCBuZWNlc3NhcnkgdG8gdXNlIG1raW1hZ2UgdG9vbCBmcm9t
-IHUtYm9vdD8KCj4KPiBqYmUKPgo+IC0tCj4gUGVuZ3V0cm9uaXggZS5LLiDCoCDCoCDCoCDCoCDC
-oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoHwgSnVlcmdlbiBCZWlzZXJ0IMKgIMKgIMKg
-IMKgIMKgIMKgIHwKPiBMaW51eCBTb2x1dGlvbnMgZm9yIFNjaWVuY2UgYW5kIEluZHVzdHJ5IMKg
-IMKgIMKgfCBQaG9uZTogKzQ5LTg3NjYtOTM5IDIyOCDCoCDCoCB8Cj4gVmVydHJldHVuZyBTdWVk
-L011ZW5jaGVuLCBHZXJtYW55IMKgIMKgIMKgIMKgIMKgIMKgIHwgRmF4OiDCoCArNDktNTEyMS0y
-MDY5MTctNTU1NSB8Cj4gQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgwqAgwqAgwqAg
-wqAgwqAgwqAgwqB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvIMKgfAo+CgpNYXJlawoKLS0g
-CmFzIHNpbXBsZSBhbmQgcHJpbWl0aXZlIGFzIHBvc3NpYmxlCi0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTWFyZWsgQmVsaXNrbyAtIE9QRU4tTkFORFJB
-CkZyZWVsYW5jZSBEZXZlbG9wZXIKClJ1c2thIE5vdmEgVmVzIDIxOSB8IFByZXNvdiwgMDgwMDUg
-U2xvdmFrIFJlcHVibGljClRlbDogKzQyMSA5MTUgMDUyIDE4NApza3lwZTogbWFyZWt3aGl0ZQpp
-Y3E6IDI5MDU1MTA4Ngp3ZWI6IGh0dHA6Ly9vcGVuLW5hbmRyYS5jb20KCl9fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJh
-cmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWls
-bWFuL2xpc3RpbmZvL2JhcmVib3gK
+Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+---
+ board/omap/devices-gpmc-nand.c |    6 +++---
+ 1 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/board/omap/devices-gpmc-nand.c b/board/omap/devices-gpmc-nand.c
+index bbcceaf..a25933f 100644
+--- a/board/omap/devices-gpmc-nand.c
++++ b/board/omap/devices-gpmc-nand.c
+@@ -95,7 +95,7 @@ static struct gpmc_config nand_cfg = {
+ 	.size = GPMC_SIZE_16M,
+ };
+ 
+-/** NAND platform specific settings settings */
++/** NAND platform specific settings */
+ static struct gpmc_nand_platform_data nand_plat = {
+ 	.cs = CONFIG_MACH_OMAP_CS,
+ 	.device_width = GPMC_NAND_DEV_WIDTH,
+@@ -111,7 +111,7 @@ static struct gpmc_nand_platform_data nand_plat = {
+ };
+ 
+ /** NAND device definition */
+-static struct device_d gpmc_generic_nand_nand_device = {
++static struct device_d gpmc_generic_nand_device = {
+ 	.name = "gpmc_nand",
+ 	.map_base = OMAP_GPMC_BASE,
+ 	.size = 1024 * 4,	/* GPMC size */
+@@ -127,7 +127,7 @@ static int gpmc_generic_nand_devices_init(void)
+ {
+ 	/* Configure GPMC CS before register */
+ 	gpmc_cs_config(nand_plat.cs, &nand_cfg);
+-	return register_device(&gpmc_generic_nand_nand_device);
++	return register_device(&gpmc_generic_nand_device);
+ }
+ 
+ device_initcall(gpmc_generic_nand_devices_init);
+-- 
+1.7.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
