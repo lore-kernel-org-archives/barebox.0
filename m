@@ -1,11 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OTZz7-0008W9-3x
-	for barebox@lists.infradead.org; Tue, 29 Jun 2010 12:32:18 +0000
-From: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Date: Tue, 29 Jun 2010 14:32:00 +0200
-Message-Id: <1277814720-1717-1-git-send-email-m.grzeschik@pengutronix.de>
+Received: from smtp2-g21.free.fr ([212.27.42.2])
+	by bombadil.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1OTdd2-00077r-CS
+	for barebox@lists.infradead.org; Tue, 29 Jun 2010 16:25:45 +0000
+From: =?utf-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
+Date: Tue, 29 Jun 2010 18:25:36 +0200
+Message-Id: <1277828736-13940-1-git-send-email-eric@eukrea.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,55 +15,64 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] omap/devices-gpmc-nand.c remove repeating words
-To: barebox@lists.infradead.org
+Subject: [PATCH] eukrea_cpuimx35: better usage of LCD enable pins
+To: s.hauer@pengutronix.de
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
----
- board/omap/devices-gpmc-nand.c |    6 +++---
- 1 files changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/board/omap/devices-gpmc-nand.c b/board/omap/devices-gpmc-nand.c
-index bbcceaf..a25933f 100644
---- a/board/omap/devices-gpmc-nand.c
-+++ b/board/omap/devices-gpmc-nand.c
-@@ -95,7 +95,7 @@ static struct gpmc_config nand_cfg = {
- 	.size = GPMC_SIZE_16M,
- };
- 
--/** NAND platform specific settings settings */
-+/** NAND platform specific settings */
- static struct gpmc_nand_platform_data nand_plat = {
- 	.cs = CONFIG_MACH_OMAP_CS,
- 	.device_width = GPMC_NAND_DEV_WIDTH,
-@@ -111,7 +111,7 @@ static struct gpmc_nand_platform_data nand_plat = {
- };
- 
- /** NAND device definition */
--static struct device_d gpmc_generic_nand_nand_device = {
-+static struct device_d gpmc_generic_nand_device = {
- 	.name = "gpmc_nand",
- 	.map_base = OMAP_GPMC_BASE,
- 	.size = 1024 * 4,	/* GPMC size */
-@@ -127,7 +127,7 @@ static int gpmc_generic_nand_devices_init(void)
- {
- 	/* Configure GPMC CS before register */
- 	gpmc_cs_config(nand_plat.cs, &nand_cfg);
--	return register_device(&gpmc_generic_nand_nand_device);
-+	return register_device(&gpmc_generic_nand_device);
- }
- 
- device_initcall(gpmc_generic_nand_devices_init);
--- 
-1.7.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VXNlIHRoZSBlbmFibGUgaG9vayB0byBkcml2ZXIgdGhlIExDRCdzIGVuYWJsZSBwaW4uClVuZm9y
+dHVuYWx0eSwgYmVjYXVzZSBvZiB0aGUgdGltZSB0aGUgTENEIHRha2VzIHRvIGNvbWUgb3V0IG9m
+CnJlc2V0LCBJIGhhdmUgdG8gdXNlIGEgR1BJTyBpbiBvcmRlciB0byB0dXJuIG9uL29mZiB0aGUg
+YmFja2xpZ2h0Cmluc3RlYWQgb2YgZHJpdmluZyBpdCBmcm9tIHRoZSBlbmFibGUgZnVuY3Rpb24s
+IGVsc2Ugd2UgZ2V0IGEKZmxpY2tlciBhdCBwb3dlciBvbi4KClNpZ25lZC1vZmYtYnk6IEVyaWMg
+QsOpbmFyZCA8ZXJpY0BldWtyZWEuY29tPgotLS0KdjIgOgoJdXBkYXRlIGluaXQgc2NyaXB0IHRv
+IHR1cm4gYmFja2xpZ2h0IG9uIChncGlvIDEpCgogYm9hcmQvZXVrcmVhX2NwdWlteDM1L2Vudi9i
+aW4vaW5pdCAgICAgIHwgICAgNCArKysrCiBib2FyZC9ldWtyZWFfY3B1aW14MzUvZXVrcmVhX2Nw
+dWlteDM1LmMgfCAgIDIyICsrKysrKysrKysrKystLS0tLS0tLS0KIDIgZmlsZXMgY2hhbmdlZCwg
+MTcgaW5zZXJ0aW9ucygrKSwgOSBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9ib2FyZC9ldWty
+ZWFfY3B1aW14MzUvZW52L2Jpbi9pbml0IGIvYm9hcmQvZXVrcmVhX2NwdWlteDM1L2Vudi9iaW4v
+aW5pdAppbmRleCA0OWU1NGM1Li45MDAwN2NkIDEwMDY0NAotLS0gYS9ib2FyZC9ldWtyZWFfY3B1
+aW14MzUvZW52L2Jpbi9pbml0CisrKyBiL2JvYXJkL2V1a3JlYV9jcHVpbXgzNS9lbnYvYmluL2lu
+aXQKQEAgLTEzLDEwICsxMywxNCBAQCBpZiBbIC1lIC9kZXYvbmFuZDAgXTsgdGhlbgogZmkKIAog
+aWYgWyAtZiAvZW52L2xvZ28uYm1wIF07IHRoZW4KKwlmYjAuZW5hYmxlPTEKIAlibXAgL2Vudi9s
+b2dvLmJtcAorCWdwaW9fZGlyZWN0aW9uX291dCAxIDEKIGVsaWYgWyAtZiAvZW52L2xvZ28uYm1w
+Lmx6byBdOyB0aGVuCiAJdW5sem8gL2Vudi9sb2dvLmJtcC5sem8gL2xvZ28uYm1wCisJZmIwLmVu
+YWJsZT0xCiAJYm1wIC9sb2dvLmJtcAorCWdwaW9fZGlyZWN0aW9uX291dCAxIDEKIGZpCiAKIGlm
+IFsgLXogJGV0aDAuZXRoYWRkciBdOyB0aGVuCmRpZmYgLS1naXQgYS9ib2FyZC9ldWtyZWFfY3B1
+aW14MzUvZXVrcmVhX2NwdWlteDM1LmMgYi9ib2FyZC9ldWtyZWFfY3B1aW14MzUvZXVrcmVhX2Nw
+dWlteDM1LmMKaW5kZXggNmVlYjRhMy4uNzU2NTQ2YSAxMDA2NDQKLS0tIGEvYm9hcmQvZXVrcmVh
+X2NwdWlteDM1L2V1a3JlYV9jcHVpbXgzNS5jCisrKyBiL2JvYXJkL2V1a3JlYV9jcHVpbXgzNS9l
+dWtyZWFfY3B1aW14MzUuYwpAQCAtMTA0LDkgKzEwNCwxNSBAQCBzdGF0aWMgc3RydWN0IGZiX3Zp
+ZGVvbW9kZSBpbXhmYl9tb2RlID0gewogCS5mbGFnCQk9IDAsCiB9OwogCitzdGF0aWMgdm9pZCBl
+dWtyZWFfY3B1aW14MzVfZW5hYmxlX2Rpc3BsYXkoaW50IGVuYWJsZSkKK3sKKwlncGlvX2RpcmVj
+dGlvbl9vdXRwdXQoNCwgZW5hYmxlKTsKK30KKwogc3RhdGljIHN0cnVjdCBpbXhfaXB1X2ZiX3Bs
+YXRmb3JtX2RhdGEgaXB1X2ZiX2RhdGEgPSB7CiAJLm1vZGUJCT0gJmlteGZiX21vZGUsCiAJLmJw
+cAkJPSAxNiwKKwkuZW5hYmxlCQk9IGV1a3JlYV9jcHVpbXgzNV9lbmFibGVfZGlzcGxheSwKIH07
+CiAKIHN0YXRpYyBzdHJ1Y3QgZGV2aWNlX2QgaW14ZmJfZGV2ID0gewpAQCAtMTUzLDYgKzE1OSw3
+IEBAIHN0YXRpYyBpbnQgZXVrcmVhX2NwdWlteDM1X2RldmljZXNfaW5pdCh2b2lkKQogCXJlZ2lz
+dGVyX2RldmljZSgmZmVjX2Rldik7CiAKIAlyZWdpc3Rlcl9kZXZpY2UoJnNkcmFtX2Rldik7CisK
+IAlyZWdpc3Rlcl9kZXZpY2UoJmlteGZiX2Rldik7CiAKIAlhcm1saW51eF9hZGRfZHJhbSgmc2Ry
+YW1fZGV2KTsKQEAgLTE2NCwxNSArMTcxLDYgQEAgc3RhdGljIGludCBldWtyZWFfY3B1aW14MzVf
+ZGV2aWNlc19pbml0KHZvaWQpCiAKIGRldmljZV9pbml0Y2FsbChldWtyZWFfY3B1aW14MzVfZGV2
+aWNlc19pbml0KTsKIAotc3RhdGljIGludCBldWtyZWFfY3B1aW14MzVfZW5hYmxlX2Rpc3BsYXko
+dm9pZCkKLXsKLQlncGlvX2RpcmVjdGlvbl9vdXRwdXQoMSwgMSk7Ci0JZ3Bpb19kaXJlY3Rpb25f
+b3V0cHV0KDAsIDApOwotCXJldHVybiAwOwotfQotCi1sYXRlX2luaXRjYWxsKGV1a3JlYV9jcHVp
+bXgzNV9lbmFibGVfZGlzcGxheSk7Ci0KIHN0YXRpYyBzdHJ1Y3QgZGV2aWNlX2QgZXVrcmVhX2Nw
+dWlteDM1X3NlcmlhbF9kZXZpY2UgPSB7CiAJLm5hbWUJCT0gImlteF9zZXJpYWwiLAogCS5tYXBf
+YmFzZQk9IElNWF9VQVJUMV9CQVNFLApAQCAtMjA3LDYgKzIwNSw4IEBAIHN0YXRpYyBzdHJ1Y3Qg
+cGFkX2Rlc2MgZXVrcmVhX2NwdWlteDM1X3BhZHNbXSA9IHsKIAlNWDM1X1BBRF9DVFMxX19VQVJU
+MV9DVFMsCiAKIAlNWDM1X1BBRF9MRDIzX19HUElPM18yOSwKKwlNWDM1X1BBRF9DT05UUkFTVF9f
+R1BJTzFfMSwKKwlNWDM1X1BBRF9EM19DTFNfX0dQSU8xXzQsCiB9OwogCiBzdGF0aWMgaW50IGV1
+a3JlYV9jcHVpbXgzNV9jb25zb2xlX2luaXQodm9pZCkKQEAgLTIxNCw2ICsyMTQsMTAgQEAgc3Rh
+dGljIGludCBldWtyZWFfY3B1aW14MzVfY29uc29sZV9pbml0KHZvaWQpCiAJbXhjX2lvbXV4X3Yz
+X3NldHVwX211bHRpcGxlX3BhZHMoZXVrcmVhX2NwdWlteDM1X3BhZHMsCiAJCUFSUkFZX1NJWkUo
+ZXVrcmVhX2NwdWlteDM1X3BhZHMpKTsKIAorCS8qIHNjcmVlbiBkZWZhdWx0IG9uIHRvIHByZXZl
+bnQgZmxpY2tlciAqLworCWdwaW9fZGlyZWN0aW9uX291dHB1dCg0LCAxKTsKKwkvKiBiYWNrbGln
+aHQgZGVmYXVsdCBvZmYgKi8KKwlncGlvX2RpcmVjdGlvbl9vdXRwdXQoMSwgMCk7CiAJLyogbGVk
+IGRlZmF1bHQgb2ZmICovCiAJZ3Bpb19kaXJlY3Rpb25fb3V0cHV0KDMyICogMiArIDI5LCAxKTsK
+IAotLSAKMS42LjMuMwoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpo
+dHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
