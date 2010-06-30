@@ -1,15 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 64.mail-out.ovh.net ([91.121.185.65])
-	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OTsRZ-0007sm-2w
-	for barebox@lists.infradead.org; Wed, 30 Jun 2010 08:14:53 +0000
-Message-ID: <4C2AFCF9.70707@eukrea.com>
-Date: Wed, 30 Jun 2010 10:14:49 +0200
-From: =?ISO-8859-15?Q?Eric_B=E9nard?= <eric@eukrea.com>
+Received: from mail-wy0-f177.google.com ([74.125.82.177])
+	by bombadil.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1OTve0-00032B-J4
+	for barebox@lists.infradead.org; Wed, 30 Jun 2010 11:39:58 +0000
+Received: by wyb32 with SMTP id 32so795333wyb.36
+	for <barebox@lists.infradead.org>; Wed, 30 Jun 2010 04:39:55 -0700 (PDT)
 MIME-Version: 1.0
-References: <4C2A1F94.8030808@eukrea.com>
-	<20100630071707.GR12115@pengutronix.de>
-In-Reply-To: <20100630071707.GR12115@pengutronix.de>
+In-Reply-To: <20100630065757.GO12115@pengutronix.de>
+References: <AANLkTimjBoeR8qBpdmbcuRgxr6o7xNRKaYQ6OdyDi_Fu@mail.gmail.com>
+	<AANLkTila-9RsB4fiMy35ZDW0NHUckd4fj5kELB8R7VX-@mail.gmail.com>
+	<4C2868A6.7010600@eukrea.com>
+	<201006281136.10750.jbe@pengutronix.de>
+	<AANLkTinS3Lx8V5gZ17iJfRuoQuz_GU0WR7PSAUwhe2x1@mail.gmail.com>
+	<20100630065757.GO12115@pengutronix.de>
+Date: Wed, 30 Jun 2010 13:39:51 +0200
+Message-ID: <AANLkTimNUQvQohAOv2pyKsPXWgDg12AnIyrJr5A52js5@mail.gmail.com>
+From: Belisko Marek <marek.belisko@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,35 +24,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-15"; Format="flowed"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Pending patches for 2010.07
+Subject: Re: testing barebox on calao sbc35-a9260 board
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Sascha,
-
-Le 30/06/2010 09:17, Sascha Hauer a =E9crit :
->> [PATCH] eukrea_cpuimx35: boot update
->> http://lists.infradead.org/pipermail/barebox/2010-June/001071.html
->>
->> [PATCH] eukrea_cpuimx35: better usage of LCD enable pins
->> http://lists.infradead.org/pipermail/barebox/2010-June/001095.html
->> (for this last one, please take the patch sent today, I forget to put v2
->> in the subject)
->
-> These do not apply. I haven't looked into it though.
->
-in fact I think these should apply to next I think, sorry I mixed next & =
-
-master !
-
-Thanks,
-Eric
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gV2VkLCBKdW4gMzAsIDIwMTAgYXQgODo1NyBBTSwgU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBl
+bmd1dHJvbml4LmRlPiB3cm90ZToKPiBPbiBNb24sIEp1biAyOCwgMjAxMCBhdCAxMjozNzowNlBN
+ICswMjAwLCBCZWxpc2tvIE1hcmVrIHdyb3RlOgo+PiBIaSwKPj4KPj4gT24gTW9uLCBKdW4gMjgs
+IDIwMTAgYXQgMTE6MzYgQU0sIEp1ZXJnZW4gQmVpc2VydCA8amJlQHBlbmd1dHJvbml4LmRlPiB3
+cm90ZToKPj4gPiBFcmljIELDqW5hcmQgd3JvdGU6Cj4+ID4+IEhpIE1hcmVrLAo+PiA+Pgo+PiA+
+PiBMZSAyOC8wNi8yMDEwIDExOjA4LCBCZWxpc2tvIE1hcmVrIGEgw6ljcml0IDoKPj4gPj4gPiBJ
+IGRpc2FibGUgYXV0b3N0YXJ0IGFuZCBkb3dubG9hZCBiYXJlYm94IGltYWdlIHRvIDB4ODAwMCB3
+aXRoCj4+ID4+ID4gdGZ0cCAweDgwMDAgYmFyZWJveC5iaW4gYW5kIHRoZW4ganV0IGdvIDB4ODAw
+MCBlbmRlZCB3aXRoOgo+PiA+PiA+ICMjIFN0YXJ0aW5nIGFwcGxpY2F0aW9uIGF0IDB4MDAwMDgw
+MDAgLi4uCj4+ID4+Cj4+ID4+IGlmIEkgcmVtZW1iZXIgd2VsbCwgb24gQVQ5MSBTRFJBTSBpcyBh
+dCAweDIwMDAwMDAwIHNvIGFjdHVhbGx5IHlvdSBkb24ndAo+PiA+PiBzZWVtIHRvIGxvYWQgaXQg
+aW4gU0RSQU0uCj4+ID4+IEZvciB0aGUgYmluYXJ5IHRvIGV4ZWN1dGUgcHJvcGVybHksIHlvdSBz
+aG91bGQgbG9hZCBpdCBhdCB0aGUgcmlnaHQKPj4gPj4gdGFyZ2V0IGFkZHJlc3MgaW4gU0RSQU0u
+Cj4+ID4KPj4gPiBJZiBiYXJlYm94IGRldGVjdHMgaXRzIGN1cnJlbnQgcnVudGltZSBhZGRyZXNz
+IGRpZmZlcnMgZnJvbSB0aGUgbGluayBhZGRyZXNzCj4+ID4gaXQgY29waWVzIGl0c2VsZiB0byB0
+aGUgbGluayBhZGRyZXNzIGZpcnN0Lgo+PiA+Cj4+ID4gU28gd3JpdGluZyBpdCBhbnl3aGVyZSBp
+bnRvIHNkcmFtIHNob3VsZCB3b3JrLiBCdXQgb25seSwgaWYgYWxzbyB0aGUgbGluawo+PiA+IGFk
+ZHJlc3MgaXMgaW4gdGhlIHNkcmFtIGFyZWEuLi4KPj4gU2VlbXMgaXQncyBub3Qgd29ya2luZyBp
+biBteSBjYXNlLiBVLWJvb3QgY29kZSBqdXN0IGp1bXAgdG8gYWRkcmVzcyB3aGljaAo+PiBpcyB0
+YWtlbiBhcyBhcmd1bWVudCBhY2NvcmRpbmcgY29kZS4gSWYgYmFyZWJveCBpcyBjb3BpZWQgdG8g
+Y29ycmVjdCBsaW5rCj4+IGFkZHJlc3MgYW5kIHN0YXJ0ZWQgaXQgc2hvdWxkIHdvcmsuIElzIHRo
+ZXJlIGFueSBwb3NzaWJpbGl0eSB0byBjaGVjawo+PiBsaW5rIGFkZHJlc3MgZnJvbSBiaW5hcnkK
+Pj4gb3IgaXQncyBub3QgbmVjZXNzYXJ5IHRvIHVzZSBta2ltYWdlIHRvb2wgZnJvbSB1LWJvb3Q/
+Cj4KPiBIZXJlIGFyZSB0aGUgbmVjZXNzYXJ5IHN0ZXBzIHRvIHJ1biB0aGUgYmFyZWJveC5iaW4g
+ZmlsZSBmcm9tIFUtQm9vdDoKPgo+IHRmdHAgMHgyMDAwMDAwMCBiYXJlYm94LmJpbgo+IGdvIDB4
+MjAwMDAwMDAKCkZvbGxvd2luZyBzdGVwcyBnaXZlIG1lIHRoZSBhbHNvIG9ubHkgU3RhcnRpbmcg
+YXBwbGljYXRpb24gYXQKMHgyMDAwMDAwMCBhbmQgbm90aGluZyBtb3JlLgo+Cj4gQXMgRXJpYyBz
+dGF0ZWQgdGhlIDkyNjAgaGFzIFNEUkFNIGF0IDB4MjAwMDAwMDAsIHNvIHRoaXMgd291bGQgYmUg
+YW4KPiBhcHByb3ByaWF0ZSBsb2FkIGFkZHJlc3MuIGJhcmVib3ggdGhlbiByZWxvY2F0ZXMgaXRz
+ZWxmIHRvIDB4MjNmMDAwMDAKPiBhY2NvcmRpbmcgdG8gdGhlIGxpbmsgYWRkcmVzcyB3aGljaCB5
+b3UgY2FuIGNoZWNrIGJ5IGRvaW5nICdtYWtlCj4gYmFyZWJveC5TJyBhbmQgbG9va2luZyBhdCBi
+YXJlYm94LlMuClllcyBpdCBzZWVtcyBsaW5rIGFkZHJlc3MgKCAweDIzZjAwMDAwKSBpcyBjb3Jy
+ZWN0IGFjY29yZGluZyBiYXJlYm94LlMgZmlsZS4KU3RyYW5nZS4KCkFueXdheSB0aGFua3MgZm9y
+IHN1cHBvcnQgYW5kIGFkdmljZXMuCj4KPiBTYXNjaGEKPgo+Cj4gLS0KPiBQZW5ndXRyb25peCBl
+LksuIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHwgwqAgwqAgwqAgwqAg
+wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgfAo+IEluZHVzdHJpYWwgTGludXggU29sdXRp
+b25zIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8g
+wqB8Cj4gUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55IHwgUGhvbmU6
+ICs0OS01MTIxLTIwNjkxNy0wIMKgIMKgfAo+IEFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAy
+Njg2IMKgIMKgIMKgIMKgIMKgIHwgRmF4OiDCoCArNDktNTEyMS0yMDY5MTctNTU1NSB8Cj4KCgoK
+LS0gCmFzIHNpbXBsZSBhbmQgcHJpbWl0aXZlIGFzIHBvc3NpYmxlCi0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTWFyZWsgQmVsaXNrbyAtIE9QRU4tTkFO
+RFJBCkZyZWVsYW5jZSBEZXZlbG9wZXIKClJ1c2thIE5vdmEgVmVzIDIxOSB8IFByZXNvdiwgMDgw
+MDUgU2xvdmFrIFJlcHVibGljClRlbDogKzQyMSA5MTUgMDUyIDE4NApza3lwZTogbWFyZWt3aGl0
+ZQppY3E6IDI5MDU1MTA4Ngp3ZWI6IGh0dHA6Ly9vcGVuLW5hbmRyYS5jb20KCl9fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0
+CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9t
+YWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
