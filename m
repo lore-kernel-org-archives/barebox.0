@@ -1,10 +1,10 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from 64.mail-out.ovh.net ([91.121.185.65])
 	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OTs2x-0006VU-Sy
-	for barebox@lists.infradead.org; Wed, 30 Jun 2010 07:49:28 +0000
-Message-ID: <4C2AF704.10301@eukrea.com>
-Date: Wed, 30 Jun 2010 09:49:24 +0200
+	id 1OTsRZ-0007sm-2w
+	for barebox@lists.infradead.org; Wed, 30 Jun 2010 08:14:53 +0000
+Message-ID: <4C2AFCF9.70707@eukrea.com>
+Date: Wed, 30 Jun 2010 10:14:49 +0200
 From: =?ISO-8859-15?Q?Eric_B=E9nard?= <eric@eukrea.com>
 MIME-Version: 1.0
 References: <4C2A1F94.8030808@eukrea.com>
@@ -29,27 +29,6 @@ Cc: barebox@lists.infradead.org
 Hi Sascha,
 
 Le 30/06/2010 09:17, Sascha Hauer a =E9crit :
-> On Tue, Jun 29, 2010 at 06:30:12PM +0200, Eric B=E9nard wrote:
->> Hi Sascha,
->>
->> the following patches are needed to get good support of cpuimx35 for
->> 2010.07 :
->
-> What's missing first is the board support. It's currently sitting in
-> -next.
->
-OK sorry, I forget that next is 2010.08 ;-)
->>
->> [PATCH 1/2] imx-ipu-fb: Add board specific hook to enable display
->> http://lists.infradead.org/pipermail/barebox/2010-June/001068.html
->> [PATCH 2/2] imx-ipu-fb: do not enable framebuffer on startup
->> http://lists.infradead.org/pipermail/barebox/2010-June/001069.html
->
-> I applied these to next a few moments ago.
->
-git says 33 min ago ;-)
-
->>
 >> [PATCH] eukrea_cpuimx35: boot update
 >> http://lists.infradead.org/pipermail/barebox/2010-June/001071.html
 >>
@@ -60,7 +39,9 @@ git says 33 min ago ;-)
 >
 > These do not apply. I haven't looked into it though.
 >
-ok strange, I'm rebasing and resending.
+in fact I think these should apply to next I think, sorry I mixed next & =
+
+master !
 
 Thanks,
 Eric
