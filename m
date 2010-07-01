@@ -1,21 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wy0-f177.google.com ([74.125.82.177])
-	by bombadil.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OTve0-00032B-J4
-	for barebox@lists.infradead.org; Wed, 30 Jun 2010 11:39:58 +0000
-Received: by wyb32 with SMTP id 32so795333wyb.36
-	for <barebox@lists.infradead.org>; Wed, 30 Jun 2010 04:39:55 -0700 (PDT)
+Received: from tango.tkos.co.il ([62.219.50.35])
+	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1OUDxV-00069F-Eg
+	for barebox@lists.infradead.org; Thu, 01 Jul 2010 07:13:18 +0000
+Received: from sivan.tkos.co.il (guitar.tcltek.co.il [192.115.133.116])
+	by tango.tkos.co.il (8.14.4/8.12.11) with ESMTP id o617DEVA006425
+	for <barebox@lists.infradead.org>; Thu, 1 Jul 2010 10:13:14 +0300
+Received: from jasper.tkos.co.il (taragon.tkos.co.il [10.0.4.3])
+	by sivan.tkos.co.il (Postfix) with SMTP id A08CCB4F98
+	for <barebox@lists.infradead.org>; Thu,  1 Jul 2010 10:13:09 +0300 (IDT)
+Date: Thu, 1 Jul 2010 10:13:08 +0300
+From: Baruch Siach <baruch@tkos.co.il>
+Message-ID: <20100701071307.GG16981@jasper.tkos.co.il>
 MIME-Version: 1.0
-In-Reply-To: <20100630065757.GO12115@pengutronix.de>
-References: <AANLkTimjBoeR8qBpdmbcuRgxr6o7xNRKaYQ6OdyDi_Fu@mail.gmail.com>
-	<AANLkTila-9RsB4fiMy35ZDW0NHUckd4fj5kELB8R7VX-@mail.gmail.com>
-	<4C2868A6.7010600@eukrea.com>
-	<201006281136.10750.jbe@pengutronix.de>
-	<AANLkTinS3Lx8V5gZ17iJfRuoQuz_GU0WR7PSAUwhe2x1@mail.gmail.com>
-	<20100630065757.GO12115@pengutronix.de>
-Date: Wed, 30 Jun 2010 13:39:51 +0200
-Message-ID: <AANLkTimNUQvQohAOv2pyKsPXWgDg12AnIyrJr5A52js5@mail.gmail.com>
-From: Belisko Marek <marek.belisko@gmail.com>
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,59 +22,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: testing barebox on calao sbc35-a9260 board
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Barebox 'git describe' strangeness
+To: barebox@lists.infradead.org
 
-T24gV2VkLCBKdW4gMzAsIDIwMTAgYXQgODo1NyBBTSwgU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBl
-bmd1dHJvbml4LmRlPiB3cm90ZToKPiBPbiBNb24sIEp1biAyOCwgMjAxMCBhdCAxMjozNzowNlBN
-ICswMjAwLCBCZWxpc2tvIE1hcmVrIHdyb3RlOgo+PiBIaSwKPj4KPj4gT24gTW9uLCBKdW4gMjgs
-IDIwMTAgYXQgMTE6MzYgQU0sIEp1ZXJnZW4gQmVpc2VydCA8amJlQHBlbmd1dHJvbml4LmRlPiB3
-cm90ZToKPj4gPiBFcmljIELDqW5hcmQgd3JvdGU6Cj4+ID4+IEhpIE1hcmVrLAo+PiA+Pgo+PiA+
-PiBMZSAyOC8wNi8yMDEwIDExOjA4LCBCZWxpc2tvIE1hcmVrIGEgw6ljcml0IDoKPj4gPj4gPiBJ
-IGRpc2FibGUgYXV0b3N0YXJ0IGFuZCBkb3dubG9hZCBiYXJlYm94IGltYWdlIHRvIDB4ODAwMCB3
-aXRoCj4+ID4+ID4gdGZ0cCAweDgwMDAgYmFyZWJveC5iaW4gYW5kIHRoZW4ganV0IGdvIDB4ODAw
-MCBlbmRlZCB3aXRoOgo+PiA+PiA+ICMjIFN0YXJ0aW5nIGFwcGxpY2F0aW9uIGF0IDB4MDAwMDgw
-MDAgLi4uCj4+ID4+Cj4+ID4+IGlmIEkgcmVtZW1iZXIgd2VsbCwgb24gQVQ5MSBTRFJBTSBpcyBh
-dCAweDIwMDAwMDAwIHNvIGFjdHVhbGx5IHlvdSBkb24ndAo+PiA+PiBzZWVtIHRvIGxvYWQgaXQg
-aW4gU0RSQU0uCj4+ID4+IEZvciB0aGUgYmluYXJ5IHRvIGV4ZWN1dGUgcHJvcGVybHksIHlvdSBz
-aG91bGQgbG9hZCBpdCBhdCB0aGUgcmlnaHQKPj4gPj4gdGFyZ2V0IGFkZHJlc3MgaW4gU0RSQU0u
-Cj4+ID4KPj4gPiBJZiBiYXJlYm94IGRldGVjdHMgaXRzIGN1cnJlbnQgcnVudGltZSBhZGRyZXNz
-IGRpZmZlcnMgZnJvbSB0aGUgbGluayBhZGRyZXNzCj4+ID4gaXQgY29waWVzIGl0c2VsZiB0byB0
-aGUgbGluayBhZGRyZXNzIGZpcnN0Lgo+PiA+Cj4+ID4gU28gd3JpdGluZyBpdCBhbnl3aGVyZSBp
-bnRvIHNkcmFtIHNob3VsZCB3b3JrLiBCdXQgb25seSwgaWYgYWxzbyB0aGUgbGluawo+PiA+IGFk
-ZHJlc3MgaXMgaW4gdGhlIHNkcmFtIGFyZWEuLi4KPj4gU2VlbXMgaXQncyBub3Qgd29ya2luZyBp
-biBteSBjYXNlLiBVLWJvb3QgY29kZSBqdXN0IGp1bXAgdG8gYWRkcmVzcyB3aGljaAo+PiBpcyB0
-YWtlbiBhcyBhcmd1bWVudCBhY2NvcmRpbmcgY29kZS4gSWYgYmFyZWJveCBpcyBjb3BpZWQgdG8g
-Y29ycmVjdCBsaW5rCj4+IGFkZHJlc3MgYW5kIHN0YXJ0ZWQgaXQgc2hvdWxkIHdvcmsuIElzIHRo
-ZXJlIGFueSBwb3NzaWJpbGl0eSB0byBjaGVjawo+PiBsaW5rIGFkZHJlc3MgZnJvbSBiaW5hcnkK
-Pj4gb3IgaXQncyBub3QgbmVjZXNzYXJ5IHRvIHVzZSBta2ltYWdlIHRvb2wgZnJvbSB1LWJvb3Q/
-Cj4KPiBIZXJlIGFyZSB0aGUgbmVjZXNzYXJ5IHN0ZXBzIHRvIHJ1biB0aGUgYmFyZWJveC5iaW4g
-ZmlsZSBmcm9tIFUtQm9vdDoKPgo+IHRmdHAgMHgyMDAwMDAwMCBiYXJlYm94LmJpbgo+IGdvIDB4
-MjAwMDAwMDAKCkZvbGxvd2luZyBzdGVwcyBnaXZlIG1lIHRoZSBhbHNvIG9ubHkgU3RhcnRpbmcg
-YXBwbGljYXRpb24gYXQKMHgyMDAwMDAwMCBhbmQgbm90aGluZyBtb3JlLgo+Cj4gQXMgRXJpYyBz
-dGF0ZWQgdGhlIDkyNjAgaGFzIFNEUkFNIGF0IDB4MjAwMDAwMDAsIHNvIHRoaXMgd291bGQgYmUg
-YW4KPiBhcHByb3ByaWF0ZSBsb2FkIGFkZHJlc3MuIGJhcmVib3ggdGhlbiByZWxvY2F0ZXMgaXRz
-ZWxmIHRvIDB4MjNmMDAwMDAKPiBhY2NvcmRpbmcgdG8gdGhlIGxpbmsgYWRkcmVzcyB3aGljaCB5
-b3UgY2FuIGNoZWNrIGJ5IGRvaW5nICdtYWtlCj4gYmFyZWJveC5TJyBhbmQgbG9va2luZyBhdCBi
-YXJlYm94LlMuClllcyBpdCBzZWVtcyBsaW5rIGFkZHJlc3MgKCAweDIzZjAwMDAwKSBpcyBjb3Jy
-ZWN0IGFjY29yZGluZyBiYXJlYm94LlMgZmlsZS4KU3RyYW5nZS4KCkFueXdheSB0aGFua3MgZm9y
-IHN1cHBvcnQgYW5kIGFkdmljZXMuCj4KPiBTYXNjaGEKPgo+Cj4gLS0KPiBQZW5ndXRyb25peCBl
-LksuIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHwgwqAgwqAgwqAgwqAg
-wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgfAo+IEluZHVzdHJpYWwgTGludXggU29sdXRp
-b25zIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8g
-wqB8Cj4gUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55IHwgUGhvbmU6
-ICs0OS01MTIxLTIwNjkxNy0wIMKgIMKgfAo+IEFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAy
-Njg2IMKgIMKgIMKgIMKgIMKgIHwgRmF4OiDCoCArNDktNTEyMS0yMDY5MTctNTU1NSB8Cj4KCgoK
-LS0gCmFzIHNpbXBsZSBhbmQgcHJpbWl0aXZlIGFzIHBvc3NpYmxlCi0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTWFyZWsgQmVsaXNrbyAtIE9QRU4tTkFO
-RFJBCkZyZWVsYW5jZSBEZXZlbG9wZXIKClJ1c2thIE5vdmEgVmVzIDIxOSB8IFByZXNvdiwgMDgw
-MDUgU2xvdmFrIFJlcHVibGljClRlbDogKzQyMSA5MTUgMDUyIDE4NApza3lwZTogbWFyZWt3aGl0
-ZQppY3E6IDI5MDU1MTA4Ngp3ZWI6IGh0dHA6Ly9vcGVuLW5hbmRyYS5jb20KCl9fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0
-CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9t
-YWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Hi barebox list,
+
+For some reason 'git describe' shows me:
+
+v2009.12.0-178-gdc882c3
+
+I.e. git doesn't find the more recent v2010.06.0 tag. What is worse is that 
+the top-level Makefile takes the '-178-gdc882c3' part and attaches it to 
+'2010.06.0', making the output of the 'version' command:
+
+barebox 2010.06.0-00178-gcc827a1 (Jul  1 2010 - 09:02:45)
+
+which is plain wrong.
+
+Can anyone here explain what's going on?
+
+BTW, I'm using git version 1.7.1 from Debian testing.
+
+baruch
+
+-- 
+                                                     ~. .~   Tk Open Systems
+=}------------------------------------------------ooO--U--Ooo------------{=
+   - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
