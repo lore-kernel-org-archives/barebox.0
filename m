@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OUIR9-000263-JR
-	for barebox@lists.infradead.org; Thu, 01 Jul 2010 12:00:12 +0000
-Date: Thu, 1 Jul 2010 14:00:08 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20100701120008.GC5929@pengutronix.de>
-References: <c35d1dea198c8447bd4eedd83bb0a8f5d7236365.1277970465.git.baruch@tkos.co.il>
+	id 1OULEe-0001uI-Cl
+	for barebox@lists.infradead.org; Thu, 01 Jul 2010 14:59:29 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Thu,  1 Jul 2010 16:59:22 +0200
+Message-Id: <1277996362-24177-2-git-send-email-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <1277996362-24177-1-git-send-email-u.kleine-koenig@pengutronix.de>
+References: <1277996362-24177-1-git-send-email-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <c35d1dea198c8447bd4eedd83bb0a8f5d7236365.1277970465.git.baruch@tkos.co.il>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,78 +17,23 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] setlocalversion: detect unannotated tags
-To: Baruch Siach <baruch@tkos.co.il>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/2] trivial: fix typos concerning "instead"
+To: barebox@lists.infradead.org
 
-On Thu, Jul 01, 2010 at 10:49:02AM +0300, Baruch Siach wrote:
-> 'git describe' shows:
-> 
-> v2009.12.0-178-gdc882c3
-> 
-> I.e. git doesn't find the more recent v2010.06.0 unannotated tag. The top-level
-> Makefile then takes the '-178-gdc882c3' part and attaches it to '2010.06.0'
-> (the current version string), making the output of the 'version' command:
-> 
-> barebox 2010.06.0-00178-gcc827a1 (Jul  1 2010 - 09:02:45)
-> 
-> which is plain wrong. Add the --tags option to make 'git describe' look for
-> unannotated tags as well.
-
-I was never aware of this. Playing a bit with the Linux Kernel I
-realized that when I have some arbitrary branch and create an annotated
-tag on it the kernel reports 'linux-2.6.xx' without any suffixes which
-is even more wrong.
-
-So when we are using lightweight tags here we even increase the chance
-that this happens.
-
-I will create annotated tags in future anyway, so I think we can drop
-this patch.
-
-Sascha
-
-
-> 
-> Signed-off-by: Baruch Siach <baruch@tkos.co.il>
-> ---
->  scripts/setlocalversion |    2 +-
->  1 files changed, 1 insertions(+), 1 deletions(-)
-> 
-> diff --git a/scripts/setlocalversion b/scripts/setlocalversion
-> index 83b7512..4f9dafe 100755
-> --- a/scripts/setlocalversion
-> +++ b/scripts/setlocalversion
-> @@ -12,7 +12,7 @@ cd "${1:-.}" || usage
->  if head=`git rev-parse --verify HEAD 2>/dev/null`; then
->  	# Do we have an untagged version?
->  	if git name-rev --tags HEAD | grep -E '^HEAD[[:space:]]+(.*~[0-9]*|undefined)$' > /dev/null; then
-> -		if tag=`git describe 2>/dev/null`; then
-> +		if tag=`git describe --tags 2>/dev/null`; then
->  			echo $tag | awk -F- '{printf("-%05d-%s", $(NF-1),$(NF))}'
->  		fi
->  	fi
-> -- 
-> 1.7.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRy
+b25peC5kZT4KLS0tCiBjb21tYW5kcy9lZGl0LmMgfCAgICAyICstCiAxIGZpbGVzIGNoYW5nZWQs
+IDEgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9jb21tYW5kcy9l
+ZGl0LmMgYi9jb21tYW5kcy9lZGl0LmMKaW5kZXggZTg1MWYwZi4uYTY1YjA4YSAxMDA2NDQKLS0t
+IGEvY29tbWFuZHMvZWRpdC5jCisrKyBiL2NvbW1hbmRzL2VkaXQuYwpAQCAtMzk5LDcgKzM5OSw3
+IEBAIHN0YXRpYyBpbnQgZG9fZWRpdChzdHJ1Y3QgY29tbWFuZCAqIGNtZHRwLCBpbnQgYXJnYywg
+Y2hhciAqYXJndltdKQogCWlmIChhcmdjICE9IDIpCiAJCXJldHVybiBDT01NQU5EX0VSUk9SX1VT
+QUdFOwogCi0JLyogY2hlY2sgaWYgd2UgYXJlIGNhbGxlZCBhcyAic2VkaXQiIGluc3RlZCBvZiAi
+ZWRpdCIgKi8KKwkvKiBjaGVjayBpZiB3ZSBhcmUgY2FsbGVkIGFzICJzZWRpdCIgaW5zdGVhZCBv
+ZiAiZWRpdCIgKi8KIAlpZiAoKmFyZ3ZbMF0gPT0gJ3MnKQogCQlzbWFydHNjcm9sbCA9IDE7CiAK
+LS0gCjEuNy4xCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6
+Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
