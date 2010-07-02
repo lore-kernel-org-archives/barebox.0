@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bw0-f49.google.com ([209.85.214.49])
-	by bombadil.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OUWXK-0001cp-0T
-	for barebox@lists.infradead.org; Fri, 02 Jul 2010 03:03:31 +0000
-Received: by bwz20 with SMTP id 20so1547787bwz.36
-	for <barebox@lists.infradead.org>; Thu, 01 Jul 2010 20:03:27 -0700 (PDT)
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1OUaPR-0000ia-Dx
+	for barebox@lists.infradead.org; Fri, 02 Jul 2010 07:11:38 +0000
+Date: Fri, 2 Jul 2010 09:11:29 +0200
+From: Robert Schwebel <r.schwebel@pengutronix.de>
+Message-ID: <20100702071129.GU8767@pengutronix.de>
+References: <AANLkTil-pLayTps_sfU1fURx3MrgFTvnaABgP5QSfn9h@mail.gmail.com>
 MIME-Version: 1.0
-Date: Fri, 2 Jul 2010 05:03:27 +0200
-Message-ID: <AANLkTil-pLayTps_sfU1fURx3MrgFTvnaABgP5QSfn9h@mail.gmail.com>
-From: Jose Luis Zabalza <jlz.3008@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <AANLkTil-pLayTps_sfU1fURx3MrgFTvnaABgP5QSfn9h@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,30 +22,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Novice questions
-To: barebox@lists.infradead.org
+Subject: Re: Novice questions
+To: Jose Luis Zabalza <jlz.3008@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Hello all
+On Fri, Jul 02, 2010 at 05:03:27AM +0200, Jose Luis Zabalza wrote:
+> I'm trying write some code into barebox and  I have seen things that
+> caught my attention.
+>
+> 1.- Modules on barebox. lsmod, insmod commands, EXPORT_SYMBOL() macro.
+> What is the purpouse of these ? Modules have no means less memory
+> footprint ;-??
 
-I'm trying write some code into barebox and  I have seen things that
-caught my attention.
+There are people out there who want to be able to add functionality
+later. Think about a product which was delivered in large quantities;
+then you decide that you need a new functionality in the bootloader.
+Modules make a nice interface for doing so.
 
-1.- Modules on barebox. lsmod, insmod commands, EXPORT_SYMBOL() macro.
-What is the purpouse of these ? Modules have no means less memory
-footprint ;-??
-2.- usb command is on drivers/usb/usb.c file. What is the reason why
-it is not on commands dir?
-3.- What is the purpouse of usb command. Discover devices but after I
-can't read because I have not drivers associates to them. Actually, is
-there any way to read them?
-4.- Does anyone use the usb for anything other than firmwarize the
-device with DFU?
-
-Thanks in avance
-
+rsc
 -- 
-jlz.3008  a t  gmail.com
-Linux Counter 172551
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
