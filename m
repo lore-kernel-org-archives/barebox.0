@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OUaPR-0000ia-Dx
-	for barebox@lists.infradead.org; Fri, 02 Jul 2010 07:11:38 +0000
-Date: Fri, 2 Jul 2010 09:11:29 +0200
-From: Robert Schwebel <r.schwebel@pengutronix.de>
-Message-ID: <20100702071129.GU8767@pengutronix.de>
+	id 1OUaTq-0002ZH-Ll
+	for barebox@lists.infradead.org; Fri, 02 Jul 2010 07:16:11 +0000
+Date: Fri, 2 Jul 2010 09:16:08 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20100702071608.GE5929@pengutronix.de>
 References: <AANLkTil-pLayTps_sfU1fURx3MrgFTvnaABgP5QSfn9h@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
@@ -26,20 +26,47 @@ Subject: Re: Novice questions
 To: Jose Luis Zabalza <jlz.3008@gmail.com>
 Cc: barebox@lists.infradead.org
 
+Hello Jose,
+
 On Fri, Jul 02, 2010 at 05:03:27AM +0200, Jose Luis Zabalza wrote:
+> Hello all
+> 
 > I'm trying write some code into barebox and  I have seen things that
 > caught my attention.
->
+> 
 > 1.- Modules on barebox. lsmod, insmod commands, EXPORT_SYMBOL() macro.
 > What is the purpouse of these ? Modules have no means less memory
 > footprint ;-??
 
-There are people out there who want to be able to add functionality
-later. Think about a product which was delivered in large quantities;
-then you decide that you need a new functionality in the bootloader.
-Modules make a nice interface for doing so.
+We have modules support because we can ;)
 
-rsc
+I haven't used it in production yet, but there are usecases for it. I'm
+currently porting UBI to barebox and it turns out to be quite huge
+(~40k). You normally do not need UBI support for normal booting, but you
+need it for updating UBI images. So you could make a module from it and
+load it on demand.
+
+> 2.- usb command is on drivers/usb/usb.c file. What is the reason why
+> it is not on commands dir?
+
+Some commands are in other directory because they are close to a
+particular framework. We could move it to commands though.
+
+> 3.- What is the purpouse of usb command. Discover devices but after I
+> can't read because I have not drivers associates to them. Actually, is
+> there any way to read them?
+
+You probably tried an USB memory stick. These are not yet supported.
+Barebox currently only supports USB network adapters.
+
+> 4.- Does anyone use the usb for anything other than firmwarize the
+> device with DFU?
+
+Yes, for networking on boards which do not have a NIC, like the Beagle
+Board.
+
+Sascha
+
 -- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
