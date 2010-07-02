@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from csmtp3.one.com ([91.198.169.23])
+Received: from mail-bw0-f49.google.com ([209.85.214.49])
 	by bombadil.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OUTWS-0003FA-RD
-	for barebox@lists.infradead.org; Thu, 01 Jul 2010 23:50:25 +0000
-Received: from [192.168.1.68] (92-32-86-92.tn.glocalnet.net [92.32.86.92])
-	by csmtp3.one.com (Postfix) with ESMTP id 475DB2405640
-	for <barebox@lists.infradead.org>; Thu,  1 Jul 2010 23:50:21 +0000 (UTC)
-From: Henrik Leon <henrik@leotec.se>
-Date: Fri, 02 Jul 2010 01:50:19 +0200
-Message-ID: <1278028219.8621.860.camel@henke-laptop>
-Mime-Version: 1.0
+	id 1OUWXK-0001cp-0T
+	for barebox@lists.infradead.org; Fri, 02 Jul 2010 03:03:31 +0000
+Received: by bwz20 with SMTP id 20so1547787bwz.36
+	for <barebox@lists.infradead.org>; Thu, 01 Jul 2010 20:03:27 -0700 (PDT)
+MIME-Version: 1.0
+Date: Fri, 2 Jul 2010 05:03:27 +0200
+Message-ID: <AANLkTil-pLayTps_sfU1fURx3MrgFTvnaABgP5QSfn9h@mail.gmail.com>
+From: Jose Luis Zabalza <jlz.3008@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,53 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Testing dfu support, build error (beagle)
+Subject: Novice questions
 To: barebox@lists.infradead.org
 
-I'm not a skilled programmer so please bare with me if the solution to
-this is trivial...
+Hello all
 
-I tried to build a "Device Firmwire Upgrade gadget" on a beagle target,
-but a build error occured:
+I'm trying write some code into barebox and  I have seen things that
+caught my attention.
 
-drivers/built-in.o: In function `usb_composite_unregister':
-dfu.c:(.text.usb_composite_unregister+0x14): undefined reference to
-`usb_gadget_unregister_driver'
-drivers/built-in.o: In function `usb_composite_register':
-dfu.c:(.text.usb_composite_register+0x54): undefined reference to
-`usb_gadget_register_driver'
-drivers/built-in.o: In function `usb_dfu_register':
-dfu.c:(.text.usb_dfu_register+0x4c): undefined reference to
-`usb_gadget_poll'
+1.- Modules on barebox. lsmod, insmod commands, EXPORT_SYMBOL() macro.
+What is the purpouse of these ? Modules have no means less memory
+footprint ;-??
+2.- usb command is on drivers/usb/usb.c file. What is the reason why
+it is not on commands dir?
+3.- What is the purpouse of usb command. Discover devices but after I
+can't read because I have not drivers associates to them. Actually, is
+there any way to read them?
+4.- Does anyone use the usb for anything other than firmwarize the
+device with DFU?
 
-I also tried to build (with the experimental code flag set)
-USB_GADGET_SERIAL, but it failed in a similar way:
+Thanks in avance
 
-drivers/built-in.o: In function `usb_composite_register':
-f_acm.c:(.text.usb_composite_register+0x54): undefined reference to
-`usb_gadget_register_driver'
-drivers/built-in.o: In function `do_mycdev':
-f_acm.c:(.text.do_mycdev+0x38): undefined reference to `fsl_udc_irq'
-drivers/built-in.o: In function `serial_putc':
-f_acm.c:(.text.serial_putc+0x60): undefined reference to `fsl_udc_irq'
-
-So then I tried changing barebox/drivers/usb/gadget/Makefile:
----obj-$(CONFIG_USB_GADGET_SERIAL) += u_serial.o serial.o f_serial.o
-f_acm.o
-+++obj-y(CONFIG_USB_GADGET_SERIAL) += u_serial.o serial.o f_serial.o
-f_acm.o
-
-and now it compiles cleanly. Unfortunately, I don't have any hardware to
-test the binary on =/
-
-I'm using codesourcery 2009q3 compiler, barebox 'next' git branch.
-
-My goal with this exercise is to see if I can bring a fresh custom
-AM3517-board up to kernel-life using nothing but a USB-cable.
-
-//Henrik
-
-
+-- 
+jlz.3008  a t  gmail.com
+Linux Counter 172551
 
 _______________________________________________
 barebox mailing list
