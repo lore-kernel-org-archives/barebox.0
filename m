@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OVi8K-00007v-CU
-	for barebox@lists.infradead.org; Mon, 05 Jul 2010 09:38:38 +0000
+	id 1OVi8K-00007u-Cc
+	for barebox@lists.infradead.org; Mon, 05 Jul 2010 09:38:40 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  5 Jul 2010 11:38:31 +0200
-Message-Id: <1278322711-4332-3-git-send-email-s.hauer@pengutronix.de>
+Date: Mon,  5 Jul 2010 11:38:30 +0200
+Message-Id: <1278322711-4332-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1278322711-4332-1-git-send-email-s.hauer@pengutronix.de>
 References: <1278322711-4332-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,285 +21,759 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] Add Garz+Fricke Neso defconfig
+Subject: [PATCH 1/2] Add Garz+Fricke Neso support
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/configs/neso_defconfig |  264 +++++++++++++++++++++++++++++++++++++++
- 1 files changed, 264 insertions(+), 0 deletions(-)
- create mode 100644 arch/arm/configs/neso_defconfig
+ arch/arm/Makefile         |    1 +
+ arch/arm/mach-imx/Kconfig |   10 +
+ board/guf-neso/Makefile   |    5 +
+ board/guf-neso/board.c    |  400 +++++++++++++++++++++++++++++++++++++++++++++
+ board/guf-neso/config.h   |   26 +++
+ board/guf-neso/env/config |   53 ++++++
+ board/guf-neso/lowlevel.c |  117 +++++++++++++
+ board/guf-neso/pll_init.S |   48 ++++++
+ 8 files changed, 660 insertions(+), 0 deletions(-)
+ create mode 100644 board/guf-neso/Makefile
+ create mode 100644 board/guf-neso/board.c
+ create mode 100644 board/guf-neso/config.h
+ create mode 100644 board/guf-neso/env/config
+ create mode 100644 board/guf-neso/lowlevel.c
+ create mode 100644 board/guf-neso/pll_init.S
 
-diff --git a/arch/arm/configs/neso_defconfig b/arch/arm/configs/neso_defconfig
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 1c9f24e..ac8459c 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -77,6 +77,7 @@ board-$(CONFIG_MACH_PCM038)			:= pcm038
+ board-$(CONFIG_MACH_PCM043)			:= pcm043
+ board-$(CONFIG_MACH_PM9263)			:= pm9263
+ board-$(CONFIG_MACH_SCB9328)			:= scb9328
++board-$(CONFIG_MACH_NESO)			:= guf-neso
+ 
+ machdirs := $(patsubst %,arch/arm/mach-%/,$(machine-y))
+ 
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 0cf6334..afee3d1 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -16,6 +16,7 @@ config ARCH_TEXT_BASE
+ 	default 0x87f00000 if MACH_PCM037
+ 	default 0x87f00000 if MACH_PCM043
+ 	default 0x08f80000 if MACH_SCB9328
++	default 0xa7e00000 if MACH_NESO
+ 
+ config BOARDINFO
+ 	default "Eukrea CPUIMX25" if MACH_EUKREA_CPUIMX25
+@@ -30,6 +31,7 @@ config BOARDINFO
+ 	default "Phytec phyCORE-i.MX31" if MACH_PCM037
+ 	default "Phytec phyCORE-i.MX35" if MACH_PCM043
+ 	default "Synertronixx scb9328" if MACH_SCB9328
++	default "Garz+Fricke Neso" if MACH_NESO
+ 
+ config ARCH_HAS_FEC_IMX
+ 	bool
+@@ -195,6 +197,14 @@ config MACH_PCM038
+ 	  Say Y here if you are using Phytec's phyCORE-i.MX27 (pcm038) equipped
+ 	  with a Freescale i.MX27 Processor
+ 
++config MACH_NESO
++	bool "Garz+Fricke Neso"
++	select MACH_HAS_LOWLEVEL_INIT
++	select HAVE_MMU
++	help
++	  Say Y here if you are using the Garz+Fricke Neso board equipped
++	  with a Freescale i.MX27 Processor
++
+ endchoice
+ 
+ endif
+diff --git a/board/guf-neso/Makefile b/board/guf-neso/Makefile
 new file mode 100644
-index 0000000..3f2a978
+index 0000000..2b6eb02
 --- /dev/null
-+++ b/arch/arm/configs/neso_defconfig
-@@ -0,0 +1,264 @@
-+#
-+# Automatically generated make config: don't edit
-+# barebox version: 2010.06.0
-+# Mon Jun 21 14:06:11 2010
-+#
-+# CONFIG_BOARD_LINKER_SCRIPT is not set
-+CONFIG_GENERIC_LINKER_SCRIPT=y
-+CONFIG_ARM=y
++++ b/board/guf-neso/Makefile
+@@ -0,0 +1,5 @@
 +
-+#
-+# System Type
-+#
-+# CONFIG_ARCH_AT91 is not set
-+# CONFIG_ARCH_AT91RM9200 is not set
-+# CONFIG_ARCH_EP93XX is not set
-+CONFIG_ARCH_IMX=y
-+# CONFIG_ARCH_NETX is not set
-+# CONFIG_ARCH_OMAP is not set
-+# CONFIG_ARCH_S3C24xx is not set
++obj-y += lowlevel.o
++obj-y += board.o
++obj-y += pll_init.o
 +
-+#
-+# Processor Type
-+#
-+CONFIG_CPU_32=y
-+CONFIG_CPU_ARM926T=y
-+CONFIG_CPU_32v5=y
+diff --git a/board/guf-neso/board.c b/board/guf-neso/board.c
+new file mode 100644
+index 0000000..d4aa8bb
+--- /dev/null
++++ b/board/guf-neso/board.c
+@@ -0,0 +1,400 @@
++/*
++ * Copyright (C) 2010 Sascha Hauer, Pengutronix
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ *
++ */
 +
-+#
-+# processor features
-+#
-+CONFIG_ARCH_TEXT_BASE=0xa7e00000
-+CONFIG_BOARDINFO="Garz+Fricke Neso"
-+CONFIG_ARCH_HAS_FEC_IMX=y
++#include <common.h>
++#include <net.h>
++#include <init.h>
++#include <environment.h>
++#include <fec.h>
++#include <notifier.h>
++#include <partition.h>
++#include <fs.h>
++#include <fcntl.h>
++#include <nand.h>
++#include <command.h>
++#include <spi/spi.h>
++#include <usb/isp1504.h>
 +
-+#
-+# Freescale i.MX System-on-Chip
-+#
-+# CONFIG_ARCH_IMX1 is not set
-+# CONFIG_ARCH_IMX21 is not set
-+# CONFIG_ARCH_IMX25 is not set
-+CONFIG_ARCH_IMX27=y
-+# CONFIG_ARCH_IMX31 is not set
-+# CONFIG_ARCH_IMX35 is not set
-+# CONFIG_MACH_EUKREA_CPUIMX27 is not set
-+# CONFIG_MACH_IMX27ADS is not set
-+# CONFIG_MACH_PCA100 is not set
-+# CONFIG_MACH_PCM038 is not set
-+CONFIG_MACH_NESO=y
++#include <asm/io.h>
++#include <asm/mmu.h>
++#include <asm/armlinux.h>
++#include <asm/mach-types.h>
 +
-+#
-+# Board specific settings
-+#
++#include <mach/gpio.h>
++#include <mach/spi.h>
++#include <mach/imx-regs.h>
++#include <mach/iomux-mx27.h>
++#include <mach/imx-nand.h>
++#include <mach/imx-pll.h>
++#include <mach/imxfb.h>
 +
-+#
-+# i.MX specific settings
-+#
-+CONFIG_IMX_CLKO=y
-+CONFIG_AEABI=y
++/* two pins are controlling the CS signals to the USB phys */
++#define USBH2_PHY_CS_GPIO (GPIO_PORTF + 20)
++#define OTG_PHY_CS_GPIO (GPIO_PORTF + 19)
 +
-+#
-+# Arm specific settings
-+#
-+CONFIG_CMD_ARM_CPUINFO=y
-+CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_GREGORIAN_CALENDER=y
-+CONFIG_HAS_KALLSYMS=y
-+CONFIG_HAS_MODULES=y
-+CONFIG_CMD_MEMORY=y
-+CONFIG_ENV_HANDLING=y
-+CONFIG_GENERIC_GPIO=y
++/* two pins are controlling the display and its backlight */
++#define LCD_POWER_GPIO (GPIO_PORTF + 18)
++#define BACKLIGHT_POWER_GPIO (GPIO_PORTE + 5)
 +
-+#
-+# General Settings
-+#
-+CONFIG_LOCALVERSION_AUTO=y
++static struct memory_platform_data ram_pdata = {
++	.name = "ram0",
++	.flags = DEVFS_RDWR,
++};
 +
-+#
-+# memory layout
-+#
-+CONFIG_HAVE_MMU=y
-+CONFIG_MMU=y
-+CONFIG_HAVE_CONFIGURABLE_TEXT_BASE=y
-+CONFIG_TEXT_BASE=0xa7e00000
-+CONFIG_HAVE_CONFIGURABLE_MEMORY_LAYOUT=y
-+CONFIG_MEMORY_LAYOUT_DEFAULT=y
-+# CONFIG_MEMORY_LAYOUT_FIXED is not set
-+CONFIG_STACK_SIZE=0x8000
-+CONFIG_MALLOC_SIZE=0x1000000
-+# CONFIG_BROKEN is not set
-+# CONFIG_EXPERIMENTAL is not set
-+CONFIG_MACH_HAS_LOWLEVEL_INIT=y
-+CONFIG_MACH_DO_LOWLEVEL_INIT=y
-+CONFIG_PROMPT="barebox:"
-+CONFIG_BAUDRATE=115200
-+CONFIG_LONGHELP=y
-+CONFIG_CBSIZE=1024
-+CONFIG_MAXARGS=16
-+CONFIG_SHELL_HUSH=y
-+# CONFIG_SHELL_SIMPLE is not set
-+CONFIG_GLOB=y
-+CONFIG_PROMPT_HUSH_PS2="> "
-+CONFIG_HUSH_FANCY_PROMPT=y
-+CONFIG_CMDLINE_EDITING=y
-+CONFIG_AUTO_COMPLETE=y
-+CONFIG_DYNAMIC_CRC_TABLE=y
-+CONFIG_ERRNO_MESSAGES=y
-+CONFIG_TIMESTAMP=y
-+CONFIG_CONSOLE_FULL=y
-+CONFIG_CONSOLE_ACTIVATE_FIRST=y
-+# CONFIG_OF_FLAT_TREE is not set
-+CONFIG_PARTITION=y
-+CONFIG_DEFAULT_ENVIRONMENT=y
-+CONFIG_DEFAULT_ENVIRONMENT_PATH="defaultenv board/guf-neso/env"
++static struct device_d sdram_dev = {
++	.name     = "mem",
++	.map_base = 0xa0000000,
++	.size     = 128 * 1024 * 1024,
++	.platform_data = &ram_pdata,
++};
 +
-+#
-+# Debugging
-+#
-+# CONFIG_DEBUG_INFO is not set
-+# CONFIG_ENABLE_FLASH_NOISE is not set
-+# CONFIG_ENABLE_PARTITION_NOISE is not set
-+# CONFIG_ENABLE_DEVICE_NOISE is not set
++static struct fec_platform_data fec_info = {
++	.xcv_type = MII100,
++	.phy_addr = 31,
++};
 +
-+#
-+# Commands
-+#
++static struct device_d fec_dev = {
++	.name     = "fec_imx",
++	.map_base = 0x1002b000,
++	.platform_data	= &fec_info,
++};
 +
-+#
-+# scripting
-+#
-+CONFIG_CMD_EDIT=y
-+CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_SAVEENV=y
-+CONFIG_CMD_LOADENV=y
-+CONFIG_CMD_EXPORT=y
-+CONFIG_CMD_PRINTENV=y
-+CONFIG_CMD_READLINE=y
-+CONFIG_CMD_TRUE=y
-+CONFIG_CMD_FALSE=y
++static struct imx_nand_platform_data nand_info = {
++	.width		= 1,
++	.hw_ecc		= 1,
++	.flash_bbt	= 1,
++};
 +
-+#
-+# file commands
-+#
-+CONFIG_CMD_LS=y
-+CONFIG_CMD_RM=y
-+CONFIG_CMD_CAT=y
-+CONFIG_CMD_MKDIR=y
-+CONFIG_CMD_RMDIR=y
-+CONFIG_CMD_CP=y
-+CONFIG_CMD_PWD=y
-+CONFIG_CMD_CD=y
-+CONFIG_CMD_MOUNT=y
-+CONFIG_CMD_UMOUNT=y
++static struct device_d nand_dev = {
++	.name     = "imx_nand",
++	.map_base = 0xd8000000,
++	.platform_data	= &nand_info,
++};
 +
-+#
-+# console
-+#
-+CONFIG_CMD_CLEAR=y
-+CONFIG_CMD_ECHO=y
-+CONFIG_CMD_ECHO_E=y
++static struct imx_fb_videomode imxfb_mode = {
++	.mode = {
++		.name		= "CPT CLAA070LC0JCT",
++		.refresh	= 60,
++		.xres		= 800,
++		.yres		= 480,
++		.pixclock	= KHZ2PICOS(27000),
++		.hsync_len	= 1,	/* DE only sync */
++		.left_margin	= 50,
++		.right_margin	= 50,
++		.vsync_len	= 1,	/* DE only sync */
++		.upper_margin	= 10,
++		.lower_margin	= 10,
++	},
++	/*
++	 * - TFT style panel
++	 * - clk enabled while idle
++	 * - clock inverted
++	 * - data not inverted
++	 * - data enable high active
++	 */
++	.pcr = PCR_TFT |
++		PCR_COLOR |
++		PCR_PBSIZ_8 |
++		PCR_BPIX_16 |
++		PCR_CLKPOL |
++		PCR_SCLK_SEL |
++		PCR_LPPOL |
++		PCR_FLMPOL,
++	.bpp = 16,	/* TODO 32 bit does not work: The 'green' component is lacking in this mode */
++};
 +
-+#
-+# memory
-+#
-+# CONFIG_CMD_LOADB is not set
-+CONFIG_CMD_MEMINFO=y
-+CONFIG_CMD_CRC=y
-+CONFIG_CMD_MTEST=y
-+# CONFIG_CMD_MTEST_ALTERNATIVE is not set
++static void neso_fb_enable(int enable)
++{
++	gpio_direction_output(LCD_POWER_GPIO, enable);
++	gpio_direction_output(BACKLIGHT_POWER_GPIO, enable);
++}
 +
-+#
-+# flash
-+#
-+CONFIG_CMD_FLASH=y
++static struct imx_fb_platform_data neso_fb_data = {
++	.mode	= &imxfb_mode,
++	.pwmr	= 0x00000000,	/* doesn't matter */
++	.lscr1	= 0x00120300,	/* doesn't matter */
++	/* dynamic mode -> using the reset values (as recommended in the datasheet) */
++	.dmacr	= (0 << 31) | (4 << 16) | 96,
++	.enable	= neso_fb_enable,
++	.framebuffer_ovl = (void *)0xa7f00000,
++};
 +
-+#
-+# booting
-+#
-+CONFIG_CMD_BOOTM=y
-+# CONFIG_CMD_BOOTM_ZLIB is not set
-+# CONFIG_CMD_BOOTM_BZLIB is not set
-+# CONFIG_CMD_BOOTM_SHOW_TYPE is not set
-+CONFIG_CMD_BOOTZ=y
-+CONFIG_CMD_BOOTU=y
-+# CONFIG_CMD_LINUX16 is not set
-+CONFIG_CMD_RESET=y
-+CONFIG_CMD_GO=y
-+CONFIG_CMD_TIMEOUT=y
-+CONFIG_CMD_PARTITION=y
-+CONFIG_CMD_TEST=y
-+CONFIG_CMD_VERSION=y
-+CONFIG_CMD_HELP=y
-+CONFIG_CMD_DEVINFO=y
-+CONFIG_CMD_BMP=y
-+CONFIG_CMD_GPIO=y
-+CONFIG_CMD_UNLZO=y
-+CONFIG_NET=y
-+CONFIG_NET_DHCP=y
-+CONFIG_NET_NFS=y
-+CONFIG_NET_PING=y
-+CONFIG_NET_TFTP=y
-+CONFIG_NET_TFTP_PUSH=y
-+CONFIG_NET_NETCONSOLE=y
-+CONFIG_NET_RESOLV=y
++static struct device_d imxfb_dev = {
++	.name		= "imxfb",
++	.map_base	= 0x10021000,
++	.size		= 0x1000,
++	.platform_data	= &neso_fb_data,
++};
 +
-+#
-+# Drivers
-+#
++#ifdef CONFIG_USB
 +
-+#
-+# serial drivers
-+#
-+# CONFIG_DRIVER_SERIAL_ARM_DCC is not set
-+CONFIG_DRIVER_SERIAL_IMX=y
-+# CONFIG_DRIVER_SERIAL_NS16550 is not set
-+CONFIG_MIIPHY=y
++static struct device_d usbh2_dev = {
++	.name     = "ehci",
++	.map_base = IMX_OTG_BASE + 0x400,
++	.size     = 0x200,
++};
 +
-+#
-+# Network drivers
-+#
-+# CONFIG_DRIVER_NET_SMC911X is not set
-+# CONFIG_DRIVER_NET_SMC91111 is not set
-+CONFIG_DRIVER_NET_FEC_IMX=y
-+CONFIG_NET_USB=y
-+CONFIG_NET_USB_ASIX=y
-+# CONFIG_NET_USB_SMSC95XX is not set
++static void neso_usbh_init(void)
++{
++	uint32_t temp;
 +
-+#
-+# SPI drivers
-+#
-+CONFIG_SPI=y
-+CONFIG_DRIVER_SPI_IMX=y
-+CONFIG_DRIVER_SPI_MC13783=y
-+# CONFIG_I2C is not set
++	temp = readl(IMX_OTG_BASE + 0x600);
++	temp &= ~((3 << 21) | 1);
++	temp |= (1 << 5) | (1 << 16) | (1 << 19) | (1 << 20) | (1<<11);
++	writel(temp, IMX_OTG_BASE + 0x600);
 +
-+#
-+# flash drivers
-+#
-+# CONFIG_DRIVER_CFI is not set
-+CONFIG_NAND=y
-+CONFIG_NAND_IMX=y
-+CONFIG_NAND_IMX_BOOT=y
-+# CONFIG_MTD_NAND_VERIFY_WRITE is not set
-+# CONFIG_MTD_NAND_ECC_SMC is not set
-+CONFIG_MTD_NAND_IDS=y
-+# CONFIG_ATA is not set
-+CONFIG_USB=y
-+CONFIG_USB_EHCI=y
-+CONFIG_USB_ULPI=y
-+CONFIG_USB_ISP1504=y
-+# CONFIG_USB_GADGET is not set
-+CONFIG_VIDEO=y
-+CONFIG_DRIVER_VIDEO_IMX=y
-+CONFIG_IMXFB_DRIVER_VIDEO_IMX_OVERLAY=y
++	temp = readl(IMX_OTG_BASE + 0x584);
++	temp &= ~(3 << 30);
++	temp |= 2 << 30;
++	writel(temp, IMX_OTG_BASE + 0x584);
 +
-+#
-+# Filesystem support
-+#
-+# CONFIG_FS_CRAMFS is not set
-+CONFIG_FS_RAMFS=y
-+CONFIG_FS_DEVFS=y
-+CONFIG_CRC32=y
-+# CONFIG_GENERIC_FIND_NEXT_BIT is not set
-+CONFIG_PROCESS_ESCAPE_SEQUENCE=y
-+CONFIG_LZO_DECOMPRESS=y
++	mdelay(10);
++
++	gpio_set_value(USBH2_PHY_CS_GPIO, 0);
++	isp1504_set_vbus_power((void *)(IMX_OTG_BASE + 0x570), 1);
++}
++#endif
++
++#ifdef CONFIG_MMU
++static void neso_mmu_init(void)
++{
++	mmu_init();
++
++	arm_create_section(0xa0000000, 0xa0000000, 128, PMD_SECT_DEF_CACHED);
++	arm_create_section(0xb0000000, 0xa0000000, 128, PMD_SECT_DEF_UNCACHED);
++
++	setup_dma_coherent(0x10000000);
++
++#if TEXT_BASE & (0x100000 - 1)
++#warning cannot create vector section. Adjust TEXT_BASE to a 1M boundary
++#else
++	arm_create_section(0x0,        TEXT_BASE,   1, PMD_SECT_DEF_UNCACHED);
++#endif
++	mmu_enable();
++}
++#else
++static void neso_mmu_init(void)
++{
++}
++#endif
++
++static int neso_devices_init(void)
++{
++	int i;
++
++	unsigned int mode[] = {
++		/* UART1 */
++		PE12_PF_UART1_TXD,
++		PE13_PF_UART1_RXD,
++		PE14_PF_UART1_CTS,
++		PE15_PF_UART1_RTS,
++		/* FEC */
++		PD0_AIN_FEC_TXD0,
++		PD1_AIN_FEC_TXD1,
++		PD2_AIN_FEC_TXD2,
++		PD3_AIN_FEC_TXD3,
++		PD4_AOUT_FEC_RX_ER,
++		PD5_AOUT_FEC_RXD1,
++		PD6_AOUT_FEC_RXD2,
++		PD7_AOUT_FEC_RXD3,
++		PD8_AF_FEC_MDIO,
++		PD9_AIN_FEC_MDC,
++		PD10_AOUT_FEC_CRS,
++		PD11_AOUT_FEC_TX_CLK,
++		PD12_AOUT_FEC_RXD0,
++		PD13_AOUT_FEC_RX_DV,
++		PD14_AOUT_FEC_RX_CLK,
++		PD15_AOUT_FEC_COL,
++		PD16_AIN_FEC_TX_ER,
++		PF23_AIN_FEC_TX_EN,
++
++		/* SSI1 connected in AC97 style */
++		PC20_PF_SSI1_FS,
++		PC21_PF_SSI1_RXD,
++		PC22_PF_SSI1_TXD,
++		PC23_PF_SSI1_CLK,
++
++		/* LED 1 */
++		(GPIO_PORTB | 15 | GPIO_GPIO | GPIO_OUT),
++		/* LED 2 */
++		(GPIO_PORTB | 16 | GPIO_GPIO | GPIO_OUT),
++		/* CTOUCH reset */
++		(GPIO_PORTB | 17 | GPIO_GPIO | GPIO_OUT),
++		/* CTOUCH IRQ */
++		(GPIO_PORTB | 14 | GPIO_GPIO | GPIO_IN),
++		/* RTC IRQ */
++		(GPIO_PORTF | 14 | GPIO_GPIO | GPIO_IN),
++		/* SD change card detection */
++		(GPIO_PORTF | 17 | GPIO_GPIO | GPIO_IN),
++		/* SDHC1*/
++		PE18_PF_SD1_D0,
++		PE19_PF_SD1_D1,
++		PE20_PF_SD1_D2,
++		PE21_PF_SD1_D3,
++		PE22_PF_SD1_CMD,
++		PE23_PF_SD1_CLK,
++		/* I2C1 */
++		PD17_PF_I2C_DATA,
++		PD18_PF_I2C_CLK,
++		/* I2C2, for CTOUCH */
++		PC5_PF_I2C2_SDA,
++		PC6_PF_I2C2_SCL,
++
++		/* Connected to: Both USB phys and ethernet phy FIXME 1 = RESET? */
++		PE17_PF_RESET_OUT,
++
++		/* USB host */
++		(USBH2_PHY_CS_GPIO | GPIO_GPIO | GPIO_OUT),
++		PA0_PF_USBH2_CLK,
++		PA1_PF_USBH2_DIR,
++		PA3_PF_USBH2_NXT,
++		PA4_PF_USBH2_STP,
++		PD22_AF_USBH2_DATA0,
++		PD24_AF_USBH2_DATA1,
++		PD23_AF_USBH2_DATA2,
++		PD20_AF_USBH2_DATA3,
++		PD19_AF_USBH2_DATA4,
++		PD26_AF_USBH2_DATA5,
++		PD21_AF_USBH2_DATA6,
++		PA2_PF_USBH2_DATA7,
++
++		/* USB OTG */
++		(OTG_PHY_CS_GPIO | GPIO_GPIO | GPIO_OUT),
++		PE24_PF_USBOTG_CLK,
++		PE2_PF_USBOTG_DIR,
++		PE0_PF_USBOTG_NXT,
++		PE1_PF_USBOTG_STP,
++		PC9_PF_USBOTG_DATA0,
++		PC11_PF_USBOTG_DATA1,
++		PC10_PF_USBOTG_DATA2,
++		PC13_PF_USBOTG_DATA3,
++		PC12_PF_USBOTG_DATA4,
++		PC7_PF_USBOTG_DATA5,
++		PC8_PF_USBOTG_DATA6,
++		PE25_PF_USBOTG_DATA7,
++
++		/* Display signals */
++		(LCD_POWER_GPIO | GPIO_GPIO | GPIO_OUT), /* LCD power: 1 = LCD on */
++		PA5_PF_LSCLK,
++		PA6_PF_LD0,
++		PA7_PF_LD1,
++		PA8_PF_LD2,
++		PA9_PF_LD3,
++		PA10_PF_LD4,
++		PA11_PF_LD5,
++		PA12_PF_LD6,
++		PA13_PF_LD7,
++		PA14_PF_LD8,
++		PA15_PF_LD9,
++		PA16_PF_LD10,
++		PA17_PF_LD11,
++		PA18_PF_LD12,
++		PA19_PF_LD13,
++		PA20_PF_LD14,
++		PA21_PF_LD15,
++		PA22_PF_LD16,
++		PA23_PF_LD17,
++		PA31_PF_OE_ACD,	/* DE */
++
++		/* Backlight PWM (Use as gpio) */
++		(BACKLIGHT_POWER_GPIO | GPIO_GPIO | GPIO_OUT),
++	};
++
++	/* reset the chip select lines to the USB/OTG phys to avoid any hang */
++	gpio_direction_output(OTG_PHY_CS_GPIO, 1);
++	gpio_direction_output(USBH2_PHY_CS_GPIO, 1);
++
++
++	neso_mmu_init();
++
++	/* initialize gpios */
++	for (i = 0; i < ARRAY_SIZE(mode); i++)
++		imx_gpio_mode(mode[i]);
++
++	register_device(&nand_dev);
++	register_device(&sdram_dev);
++	register_device(&imxfb_dev);
++
++#ifdef CONFIG_USB
++	neso_usbh_init();
++	register_device(&usbh2_dev);
++#endif
++
++	register_device(&fec_dev);
++
++	devfs_add_partition("nand0", 0x00000, 0x40000, PARTITION_FIXED, "self_raw");
++	dev_add_bb_dev("self_raw", "self0");
++
++	devfs_add_partition("nand0", 0x40000, 0x80000, PARTITION_FIXED, "env_raw");
++	dev_add_bb_dev("env_raw", "env0");
++
++	armlinux_add_dram(&sdram_dev);
++	armlinux_set_bootparams((void *)0xa0000100);
++	armlinux_set_architecture(MACH_TYPE_NESO);
++
++	return 0;
++}
++
++device_initcall(neso_devices_init);
++
++static struct device_d neso_serial_device = {
++	.name     = "imx_serial",
++	.map_base = IMX_UART1_BASE,
++	.size     = 4096,
++};
++
++static int neso_console_init(void)
++{
++	register_device(&neso_serial_device);
++
++	return 0;
++}
++
++console_initcall(neso_console_init);
++
++extern void *neso_pll_init, *neso_pll_init_end;
++
++static int neso_pll(void)
++{
++	void *vram = (void *)0xffff4c00;
++	void (*pllfunc)(void) = vram;
++
++	printf("initialising PLLs\n");
++
++	memcpy(vram, &neso_pll_init, 0x100);
++
++	console_flush();
++
++	pllfunc();
++
++	/* clock gating enable */
++	GPCR = 0x00050f08;
++
++	PCDR0 = 0x130410c3;
++	PCDR1 = 0x09030911;
++
++	/* Clocks have changed. Notify clients */
++	clock_notifier_call_chain();
++
++	return 0;
++}
++
++late_initcall(neso_pll);
++
+diff --git a/board/guf-neso/config.h b/board/guf-neso/config.h
+new file mode 100644
+index 0000000..c2f5e7c
+--- /dev/null
++++ b/board/guf-neso/config.h
+@@ -0,0 +1,26 @@
++/*
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
++
++/**
++ * @file
++ * @brief Global defintions for the ARM i.MX27 based pcm038
++ */
++
++#ifndef __CONFIG_H
++#define __CONFIG_H
++
++#endif	/* __CONFIG_H */
+diff --git a/board/guf-neso/env/config b/board/guf-neso/env/config
+new file mode 100644
+index 0000000..6327e69
+--- /dev/null
++++ b/board/guf-neso/env/config
+@@ -0,0 +1,53 @@
++#!/bin/sh
++
++machine=guf-neso
++eth0.serverip=
++user=
++
++# use 'dhcp' to do dhcp in barebox and in kernel
++# use 'none' if you want to skip kernel ip autoconfiguration
++ip=dhcp
++
++# or set your networking parameters here
++#eth0.ipaddr=a.b.c.d
++#eth0.netmask=a.b.c.d
++#eth0.gateway=a.b.c.d
++#eth0.serverip=a.b.c.d
++
++# can be either 'net', 'nor' or 'nand'
++kernel_loc=net
++# can be either 'net', 'nor', 'nand' or 'initrd'
++rootfs_loc=net
++
++# can be either 'jffs2' or 'ubifs'
++rootfs_type=ubifs
++rootfsimage=root-$machine.$rootfs_type
++
++# The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
++kernelimage_type=zimage
++kernelimage=zImage-$machine
++#kernelimage_type=uimage
++#kernelimage=uImage-$machine
++#kernelimage_type=raw
++#kernelimage=Image-$machine
++#kernelimage_type=raw_lzo
++#kernelimage=Image-$machine.lzo
++
++if [ -n $user ]; then
++	kernelimage="$user"-"$kernelimage"
++	nfsroot="$eth0.serverip:/home/$user/nfsroot/$machine"
++	rootfsimage="$user"-"$rootfsimage"
++else
++	nfsroot="$eth0.serverip:/path/to/nfs/root"
++fi
++
++autoboot_timeout=3
++
++bootargs="console=ttymxc0,115200"
++
++nand_parts="256k(barebox)ro,512k(bareboxenv),2M(kernel),-(root)"
++rootfs_mtdblock_nand=3
++
++# set a fancy prompt (if support is compiled in)
++PS1="\e[1;32mbarebox@\e[1;31m\h:\w\e[0m "
++
+diff --git a/board/guf-neso/lowlevel.c b/board/guf-neso/lowlevel.c
+new file mode 100644
+index 0000000..0c376f2
+--- /dev/null
++++ b/board/guf-neso/lowlevel.c
+@@ -0,0 +1,117 @@
++/*
++ *
++ * (c) 2007 Pengutronix, Sascha Hauer <s.hauer@pengutronix.de>
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
++#include <common.h>
++#include <init.h>
++#include <mach/imx-regs.h>
++#include <mach/imx-pll.h>
++#include <mach/esdctl.h>
++#include <asm/cache-l2x0.h>
++#include <asm/io.h>
++#include <mach/imx-nand.h>
++#include <asm/barebox-arm.h>
++#include <asm/system.h>
++#include <asm-generic/memory_layout.h>
++
++static void __bare_init __naked insdram(void)
++{
++	uint32_t r;
++
++	PCCR1 |= PCCR1_NFC_BAUDEN;
++
++	/* setup a stack to be able to call imx_nand_load_image() */
++	r = STACK_BASE + STACK_SIZE - 12;
++	__asm__ __volatile__("mov sp, %0" : : "r"(r));
++
++	imx_nand_load_image((void *)TEXT_BASE, 256 * 1024);
++
++	board_init_lowlevel_return();
++}
++
++#define ESDCTL0_VAL (ESDCTL0_SDE | ESDCTL0_ROW13 | ESDCTL0_COL10)
++
++void __bare_init __naked board_init_lowlevel(void)
++{
++	uint32_t r;
++	int i;
++	unsigned int *trg, *src;
++
++	/* ahb lite ip interface */
++	AIPI1_PSR0 = 0x20040304;
++	AIPI1_PSR1 = 0xDFFBFCFB;
++	AIPI2_PSR0 = 0x00000000;
++	AIPI2_PSR1 = 0xFFFFFFFF;
++
++	/* Skip SDRAM initialization if we run from RAM */
++	r = get_pc();
++	if (r > 0xa0000000 && r < 0xb0000000)
++		board_init_lowlevel_return();
++
++	/*
++	 * DDR on CSD0
++	 */
++	writel(0x00000008, ESDMISC); /* Enable DDR SDRAM operation */
++
++	DSCR(3) = 0x55555555; /* Set the driving strength   */
++	DSCR(5) = 0x55555555;
++	DSCR(6) = 0x55555555;
++	DSCR(7) = 0x00005005;
++	DSCR(8) = 0x15555555;
++
++	writel(0x00000004, ESDMISC); /* Initial reset */
++	writel(0x006ac73a, ESDCFG0);
++
++	writel(ESDCTL0_VAL | ESDCTL0_SMODE_PRECHARGE, ESDCTL0); /* precharge CSD0 all banks */
++	writel(0x00000000, 0xA0000F00);	/* CSD0 precharge address (A10 = 1) */
++	writel(ESDCTL0_VAL | ESDCTL0_SMODE_AUTO_REFRESH, ESDCTL0);
++
++	for (i = 0; i < 8; i++)
++		writel(0, 0xa0000f00);
++
++	writel(ESDCTL0_VAL | ESDCTL0_SMODE_LOAD_MODE, ESDCTL0);
++
++	writeb(0xda, 0xa0000033);
++	writeb(0xff, 0xa1000000);
++	writel(ESDCTL0_VAL | ESDCTL0_DSIZ_31_0 | ESDCTL0_REF4 |
++			ESDCTL0_BL | ESDCTL0_SMODE_NORMAL, ESDCTL0);
++
++#ifdef CONFIG_NAND_IMX_BOOT
++	/* skip NAND boot if not running from NFC space */
++	r = get_pc();
++	if (r < IMX_NFC_BASE || r > IMX_NFC_BASE + 0x800)
++		board_init_lowlevel_return();
++
++	src = (unsigned int *)IMX_NFC_BASE;
++	trg = (unsigned int *)TEXT_BASE;
++
++	/* Move ourselves out of NFC SRAM */
++	for (i = 0; i < 0x800 / sizeof(int); i++)
++		*trg++ = *src++;
++
++	/* Jump to SDRAM */
++	r = (unsigned int)&insdram;
++	__asm__ __volatile__("mov pc, %0" : : "r"(r));
++#else
++	board_init_lowlevel_return();
++#endif
++}
++
+diff --git a/board/guf-neso/pll_init.S b/board/guf-neso/pll_init.S
+new file mode 100644
+index 0000000..87e5312
+--- /dev/null
++++ b/board/guf-neso/pll_init.S
+@@ -0,0 +1,48 @@
++#include <config.h>
++#include <mach/imx-regs.h>
++#include <mach/imx-pll.h>
++#include <linux/linkage.h>
++
++#define writel(val, reg) \
++	ldr		r0,	=reg;	\
++	ldr		r1,	=val;	\
++	str		r1,   [r0];
++
++#define CSCR_VAL CSCR_USB_DIV(3) |	\
++		 CSCR_SD_CNT(3) |	\
++		 CSCR_MSHC_SEL |	\
++		 CSCR_H264_SEL |	\
++		 CSCR_SSI1_SEL |	\
++		 CSCR_SSI2_SEL |	\
++		 CSCR_MCU_SEL |		\
++		 CSCR_ARM_SRC_MPLL |	\
++		 CSCR_SP_SEL |		\
++		 CSCR_ARM_DIV(0) |	\
++		 CSCR_FPM_EN |		\
++		 CSCR_SPEN |		\
++		 CSCR_MPEN |		\
++		 CSCR_AHB_DIV(1)
++
++ENTRY(neso_pll_init)
++
++	writel(IMX_PLL_PD(0) |
++		 IMX_PLL_MFD(51) |
++		 IMX_PLL_MFI(7) |
++		 IMX_PLL_MFN(35), MPCTL0) /* 399 MHz */
++
++	writel(IMX_PLL_PD(1) |
++		 IMX_PLL_MFD(12) |
++		 IMX_PLL_MFI(9) |
++		 IMX_PLL_MFN(3), SPCTL0) /* SPLL = 2 * 26 * 4.61538 MHz = 240 MHz */
++
++	writel(CSCR_VAL | CSCR_MPLL_RESTART | CSCR_SPLL_RESTART, CSCR)
++
++	ldr r2, =16000
++1:
++	subs    r2, r2, #1
++	nop
++	bcs 1b
++
++	mov     pc, lr
++ENDPROC(neso_pll_init)
++
 -- 
 1.7.1
 
