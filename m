@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OVlXN-0000km-57
+	id 1OVlXN-0000ko-7L
 	for barebox@lists.infradead.org; Mon, 05 Jul 2010 13:16:46 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  5 Jul 2010 15:16:26 +0200
-Message-Id: <1278335795-16289-4-git-send-email-s.hauer@pengutronix.de>
+Date: Mon,  5 Jul 2010 15:16:28 +0200
+Message-Id: <1278335795-16289-6-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1278335795-16289-1-git-send-email-s.hauer@pengutronix.de>
 References: <1278335795-16289-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,589 +21,457 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/12] add rbtree support (needed for ubi)
+Subject: [PATCH 05/12] cfi_flash: Do not typedef struct flash_info
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/linux/rbtree.h |  160 ++++++++++++++++++++
- lib/Makefile           |    1 +
- lib/rbtree.c           |  389 ++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 550 insertions(+), 0 deletions(-)
- create mode 100644 include/linux/rbtree.h
- create mode 100644 lib/rbtree.c
+ drivers/nor/cfi_flash.c       |   46 +++++++++++++++++++-------------------
+ drivers/nor/cfi_flash.h       |   48 ++++++++++++++++++++--------------------
+ drivers/nor/cfi_flash_amd.c   |   14 ++++++------
+ drivers/nor/cfi_flash_intel.c |   12 +++++-----
+ 4 files changed, 60 insertions(+), 60 deletions(-)
 
-diff --git a/include/linux/rbtree.h b/include/linux/rbtree.h
-new file mode 100644
-index 0000000..6ff28e0
---- /dev/null
-+++ b/include/linux/rbtree.h
-@@ -0,0 +1,160 @@
-+/*
-+  Red Black Trees
-+  (C) 1999  Andrea Arcangeli <andrea@suse.de>
-+
-+  This program is free software; you can redistribute it and/or modify
-+  it under the terms of the GNU General Public License as published by
-+  the Free Software Foundation; either version 2 of the License, or
-+  (at your option) any later version.
-+
-+  This program is distributed in the hope that it will be useful,
-+  but WITHOUT ANY WARRANTY; without even the implied warranty of
-+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+  GNU General Public License for more details.
-+
-+  You should have received a copy of the GNU General Public License
-+  along with this program; if not, write to the Free Software
-+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-+
-+  linux/include/linux/rbtree.h
-+
-+  To use rbtrees you'll have to implement your own insert and search cores.
-+  This will avoid us to use callbacks and to drop drammatically performances.
-+  I know it's not the cleaner way,  but in C (not in C++) to get
-+  performances and genericity...
-+
-+  Some example of insert and search follows here. The search is a plain
-+  normal search over an ordered tree. The insert instead must be implemented
-+  int two steps: as first thing the code must insert the element in
-+  order as a red leaf in the tree, then the support library function
-+  rb_insert_color() must be called. Such function will do the
-+  not trivial work to rebalance the rbtree if necessary.
-+
-+-----------------------------------------------------------------------
-+static inline struct page * rb_search_page_cache(struct inode * inode,
-+						 unsigned long offset)
-+{
-+	struct rb_node * n = inode->i_rb_page_cache.rb_node;
-+	struct page * page;
-+
-+	while (n)
-+	{
-+		page = rb_entry(n, struct page, rb_page_cache);
-+
-+		if (offset < page->offset)
-+			n = n->rb_left;
-+		else if (offset > page->offset)
-+			n = n->rb_right;
-+		else
-+			return page;
-+	}
-+	return NULL;
-+}
-+
-+static inline struct page * __rb_insert_page_cache(struct inode * inode,
-+						   unsigned long offset,
-+						   struct rb_node * node)
-+{
-+	struct rb_node ** p = &inode->i_rb_page_cache.rb_node;
-+	struct rb_node * parent = NULL;
-+	struct page * page;
-+
-+	while (*p)
-+	{
-+		parent = *p;
-+		page = rb_entry(parent, struct page, rb_page_cache);
-+
-+		if (offset < page->offset)
-+			p = &(*p)->rb_left;
-+		else if (offset > page->offset)
-+			p = &(*p)->rb_right;
-+		else
-+			return page;
-+	}
-+
-+	rb_link_node(node, parent, p);
-+
-+	return NULL;
-+}
-+
-+static inline struct page * rb_insert_page_cache(struct inode * inode,
-+						 unsigned long offset,
-+						 struct rb_node * node)
-+{
-+	struct page * ret;
-+	if ((ret = __rb_insert_page_cache(inode, offset, node)))
-+		goto out;
-+	rb_insert_color(node, &inode->i_rb_page_cache);
-+ out:
-+	return ret;
-+}
-+-----------------------------------------------------------------------
-+*/
-+
-+#ifndef	_LINUX_RBTREE_H
-+#define	_LINUX_RBTREE_H
-+
-+#include <linux/stddef.h>
-+
-+struct rb_node
-+{
-+	unsigned long  rb_parent_color;
-+#define	RB_RED		0
-+#define	RB_BLACK	1
-+	struct rb_node *rb_right;
-+	struct rb_node *rb_left;
-+} __attribute__((aligned(sizeof(long))));
-+    /* The alignment might seem pointless, but allegedly CRIS needs it */
-+
-+struct rb_root
-+{
-+	struct rb_node *rb_node;
+diff --git a/drivers/nor/cfi_flash.c b/drivers/nor/cfi_flash.c
+index b21739b..bf582ab 100644
+--- a/drivers/nor/cfi_flash.c
++++ b/drivers/nor/cfi_flash.c
+@@ -77,7 +77,7 @@ static uint flash_offset_cfi[2]={FLASH_OFFSET_CFI,FLASH_OFFSET_CFI_ALT};
+  * Functions
+  */
+ 
+-static void flash_add_byte (flash_info_t * info, cfiword_t * cword, uchar c)
++static void flash_add_byte (struct flash_info *info, cfiword_t * cword, uchar c)
+ {
+ #if defined(__LITTLE_ENDIAN)
+ 	unsigned short	w;
+@@ -114,7 +114,7 @@ static void flash_add_byte (flash_info_t * info, cfiword_t * cword, uchar c)
+ 	}
+ }
+ 
+-static int flash_write_cfiword (flash_info_t * info, ulong dest,
++static int flash_write_cfiword (struct flash_info *info, ulong dest,
+ 				cfiword_t cword)
+ {
+ 	cfiptr_t cptr;
+@@ -159,7 +159,7 @@ void print_longlong (char *str, unsigned long long data)
+ 		sprintf (&str[i * 2], "%2.2x", *cp++);
+ }
+ 
+-static void flash_printqry (flash_info_t * info, flash_sect_t sect)
++static void flash_printqry (struct flash_info *info, flash_sect_t sect)
+ {
+ 	cfiptr_t cptr;
+ 	int x, y;
+@@ -188,7 +188,7 @@ static void flash_printqry (flash_info_t * info, flash_sect_t sect)
+ /*
+  * read a short word by swapping for ppc format.
+  */
+-static ushort flash_read_ushort (flash_info_t * info, flash_sect_t sect, uint offset)
++static ushort flash_read_ushort (struct flash_info *info, flash_sect_t sect, uint offset)
+ {
+ 	uchar *addr;
+ 	ushort retval;
+@@ -220,7 +220,7 @@ static ushort flash_read_ushort (flash_info_t * info, flash_sect_t sect, uint of
+  * read a long word by picking the least significant byte of each maximum
+  * port size word. Swap for ppc format.
+  */
+-static ulong flash_read_long (flash_info_t * info, flash_sect_t sect, uint offset)
++static ulong flash_read_long (struct flash_info *info, flash_sect_t sect, uint offset)
+ {
+ 	uchar *addr;
+ 	ulong retval;
+@@ -254,7 +254,7 @@ static ulong flash_read_long (flash_info_t * info, flash_sect_t sect, uint offse
+  * http://www.jedec.org/download/search/jesd68.pdf
+  *
+ */
+-static int flash_detect_cfi (flash_info_t * info)
++static int flash_detect_cfi (struct flash_info *info)
+ {
+ 	int cfi_offset;
+ 	debug ("flash detect cfi\n");
+@@ -291,7 +291,7 @@ static int flash_detect_cfi (flash_info_t * info)
+ /*
+  * The following code cannot be run from FLASH!
+  */
+-static ulong flash_get_size (flash_info_t *info, ulong base)
++static ulong flash_get_size (struct flash_info *info, ulong base)
+ {
+ 	int i, j;
+ 	flash_sect_t sect_cnt;
+@@ -478,7 +478,7 @@ static ulong flash_get_size (flash_info_t *info, ulong base)
+  * when the passed address is greater or equal to the sector address
+  * we have a match
+  */
+-flash_sect_t find_sector (flash_info_t * info, ulong addr)
++flash_sect_t find_sector (struct flash_info *info, ulong addr)
+ {
+ 	flash_sect_t sector;
+ 
+@@ -491,7 +491,7 @@ flash_sect_t find_sector (flash_info_t * info, ulong addr)
+ 
+ static int cfi_erase(struct cdev *cdev, size_t count, unsigned long offset)
+ {
+-        flash_info_t *finfo = (flash_info_t *)cdev->priv;
++        struct flash_info *finfo = (struct flash_info *)cdev->priv;
+         unsigned long start, end;
+         int i, ret = 0;
+ 
+@@ -519,7 +519,7 @@ out:
+  * 1 - write timeout
+  * 2 - Flash not erased
+  */
+-static int write_buff (flash_info_t * info, const uchar * src, ulong addr, ulong cnt)
++static int write_buff (struct flash_info *info, const uchar * src, ulong addr, ulong cnt)
+ {
+ 	ulong wp;
+ 	ulong cp;
+@@ -614,7 +614,7 @@ static int write_buff (flash_info_t * info, const uchar * src, ulong addr, ulong
+ 	return flash_write_cfiword (info, wp, cword);
+ }
+ 
+-static int flash_real_protect (flash_info_t * info, long sector, int prot)
++static int flash_real_protect (struct flash_info *info, long sector, int prot)
+ {
+ 	int retcode = 0;
+ 
+@@ -649,7 +649,7 @@ static int flash_real_protect (flash_info_t * info, long sector, int prot)
+ 
+ static int cfi_protect(struct cdev *cdev, size_t count, unsigned long offset, int prot)
+ {
+-	flash_info_t *finfo = (flash_info_t *)cdev->priv;
++	struct flash_info *finfo = (struct flash_info *)cdev->priv;
+ 	unsigned long start, end;
+ 	int i, ret = 0;
+ 	const char *action = (prot? "protect" : "unprotect");
+@@ -672,7 +672,7 @@ out:
+ 
+ static ssize_t cfi_write(struct cdev *cdev, const void *buf, size_t count, unsigned long offset, ulong flags)
+ {
+-        flash_info_t *finfo = (flash_info_t *)cdev->priv;
++        struct flash_info *finfo = (struct flash_info *)cdev->priv;
+         int ret;
+ 
+ 	debug("cfi_write: buf=0x%08x addr=0x%08x count=0x%08x\n",buf, cdev->dev->map_base + offset, count);
+@@ -683,7 +683,7 @@ static ssize_t cfi_write(struct cdev *cdev, const void *buf, size_t count, unsig
+ 
+ static void cfi_info (struct device_d* dev)
+ {
+-        flash_info_t *info = (flash_info_t *)dev->priv;
++        struct flash_info *info = (struct flash_info *)dev->priv;
+ 	int i;
+ 
+ 	if (info->flash_id != FLASH_MAN_CFI) {
+@@ -775,7 +775,7 @@ static void cfi_info (struct device_d* dev)
+ /*
+  * flash_read_user_serial - read the OneTimeProgramming cells
+  */
+-static void flash_read_user_serial (flash_info_t * info, void *buffer, int offset,
++static void flash_read_user_serial (struct flash_info *info, void *buffer, int offset,
+ 			     int len)
+ {
+ 	uchar *src;
+@@ -791,7 +791,7 @@ static void flash_read_user_serial (flash_info_t * info, void *buffer, int offse
+ /*
+  * flash_read_factory_serial - read the device Id from the protection area
+  */
+-static void flash_read_factory_serial (flash_info_t * info, void *buffer, int offset,
++static void flash_read_factory_serial (struct flash_info *info, void *buffer, int offset,
+ 				int len)
+ {
+ 	uchar *src;
+@@ -804,7 +804,7 @@ static void flash_read_factory_serial (flash_info_t * info, void *buffer, int of
+ 
+ #endif
+ 
+-int flash_status_check (flash_info_t * info, flash_sect_t sector,
++int flash_status_check (struct flash_info *info, flash_sect_t sector,
+ 			       uint64_t tout, char *prompt)
+ {
+ 	return info->cfi_cmd_set->flash_status_check(info, sector, tout, prompt);
+@@ -814,7 +814,7 @@ int flash_status_check (flash_info_t * info, flash_sect_t sector,
+  *  wait for XSR.7 to be set. Time out with an error if it does not.
+  *  This routine does not set the flash to read-array mode.
+  */
+-int flash_generic_status_check (flash_info_t * info, flash_sect_t sector,
++int flash_generic_status_check (struct flash_info *info, flash_sect_t sector,
+ 			       uint64_t tout, char *prompt)
+ {
+ 	uint64_t start;
+@@ -839,7 +839,7 @@ int flash_generic_status_check (flash_info_t * info, flash_sect_t sector,
+ /*
+  * make a proper sized command based on the port and chip widths
+  */
+-void flash_make_cmd (flash_info_t * info, uchar cmd, void *cmdbuf)
++void flash_make_cmd (struct flash_info *info, uchar cmd, void *cmdbuf)
+ {
+ 	int i;
+ 	uchar *cp = (uchar *) cmdbuf;
+@@ -855,7 +855,7 @@ void flash_make_cmd (flash_info_t * info, uchar cmd, void *cmdbuf)
+ /*
+  * Write a proper sized command to the correct address
+  */
+-void flash_write_cmd (flash_info_t * info, flash_sect_t sect, uint offset, uchar cmd)
++void flash_write_cmd (struct flash_info *info, flash_sect_t sect, uint offset, uchar cmd)
+ {
+ 
+ 	uchar *addr;
+@@ -866,7 +866,7 @@ void flash_write_cmd (flash_info_t * info, flash_sect_t sect, uint offset, uchar
+ 	flash_write_word(info, cword, addr);
+ }
+ 
+-int flash_isequal (flash_info_t * info, flash_sect_t sect, uint offset, uchar cmd)
++int flash_isequal (struct flash_info *info, flash_sect_t sect, uint offset, uchar cmd)
+ {
+ 	cfiptr_t cptr;
+ 	cfiword_t cword;
+@@ -903,7 +903,7 @@ int flash_isequal (flash_info_t * info, flash_sect_t sect, uint offset, uchar cm
+ 	return retval;
+ }
+ 
+-int flash_isset (flash_info_t * info, flash_sect_t sect, uint offset, uchar cmd)
++int flash_isset (struct flash_info *info, flash_sect_t sect, uint offset, uchar cmd)
+ {
+ 	cfiptr_t cptr;
+ 	cfiword_t cword;
+@@ -937,7 +937,7 @@ struct file_operations cfi_ops = {
+ static int cfi_probe (struct device_d *dev)
+ {
+ 	unsigned long size = 0;
+-	flash_info_t *info = xzalloc(sizeof(flash_info_t));
++	struct flash_info *info = xzalloc(sizeof(*info));
+ 
+ 	dev->priv = (void *)info;
+ 
+diff --git a/drivers/nor/cfi_flash.h b/drivers/nor/cfi_flash.h
+index a8fa879..8e76c3e 100644
+--- a/drivers/nor/cfi_flash.h
++++ b/drivers/nor/cfi_flash.h
+@@ -34,7 +34,7 @@ struct cfi_cmd_set;
+  * FLASH Info: contains chip specific data, per FLASH bank
+  */
+ 
+-typedef struct {
++struct flash_info {
+ 	struct driver_d driver;
+ 	ulong	size;			/* total bank size in bytes		*/
+ 	ushort	sector_count;		/* number of erase units		*/
+@@ -60,15 +60,15 @@ typedef struct {
+ 	ushort	cfi_offset;		/* offset for cfi query 		*/
+ 	struct cfi_cmd_set *cfi_cmd_set;
+ 	struct cdev cdev;
+-} flash_info_t;
 +};
-+
-+
-+#define rb_parent(r)   ((struct rb_node *)((r)->rb_parent_color & ~3))
-+#define rb_color(r)   ((r)->rb_parent_color & 1)
-+#define rb_is_red(r)   (!rb_color(r))
-+#define rb_is_black(r) rb_color(r)
-+#define rb_set_red(r)  do { (r)->rb_parent_color &= ~1; } while (0)
-+#define rb_set_black(r)  do { (r)->rb_parent_color |= 1; } while (0)
-+
-+static inline void rb_set_parent(struct rb_node *rb, struct rb_node *p)
-+{
-+	rb->rb_parent_color = (rb->rb_parent_color & 3) | (unsigned long)p;
-+}
-+static inline void rb_set_color(struct rb_node *rb, int color)
-+{
-+	rb->rb_parent_color = (rb->rb_parent_color & ~1) | color;
-+}
-+
-+#define RB_ROOT	(struct rb_root) { NULL, }
-+#define	rb_entry(ptr, type, member) container_of(ptr, type, member)
-+
-+#define RB_EMPTY_ROOT(root)	((root)->rb_node == NULL)
-+#define RB_EMPTY_NODE(node)	(rb_parent(node) == node)
-+#define RB_CLEAR_NODE(node)	(rb_set_parent(node, node))
-+
-+extern void rb_insert_color(struct rb_node *, struct rb_root *);
-+extern void rb_erase(struct rb_node *, struct rb_root *);
-+
-+/* Find logical next and previous nodes in a tree */
-+extern struct rb_node *rb_next(struct rb_node *);
-+extern struct rb_node *rb_prev(struct rb_node *);
-+extern struct rb_node *rb_first(struct rb_root *);
-+extern struct rb_node *rb_last(struct rb_root *);
-+
-+/* Fast replacement of a single node without remove/rebalance/add/rebalance */
-+extern void rb_replace_node(struct rb_node *victim, struct rb_node *new,
-+			    struct rb_root *root);
-+
-+static inline void rb_link_node(struct rb_node * node, struct rb_node * parent,
-+				struct rb_node ** rb_link)
-+{
-+	node->rb_parent_color = (unsigned long )parent;
-+	node->rb_left = node->rb_right = NULL;
-+
-+	*rb_link = node;
-+}
-+
-+#endif	/* _LINUX_RBTREE_H */
-diff --git a/lib/Makefile b/lib/Makefile
-index 5afbf13..8c5df08 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -1,4 +1,5 @@
- obj-y			+= ctype.o
-+obj-y			+= rbtree.o
- obj-y			+= display_options.o
- obj-y			+= ldiv.o
- obj-y			+= string.o
-diff --git a/lib/rbtree.c b/lib/rbtree.c
-new file mode 100644
-index 0000000..99e69bb
---- /dev/null
-+++ b/lib/rbtree.c
-@@ -0,0 +1,389 @@
-+/*
-+  Red Black Trees
-+  (C) 1999  Andrea Arcangeli <andrea@suse.de>
-+  (C) 2002  David Woodhouse <dwmw2@infradead.org>
-+
-+  This program is free software; you can redistribute it and/or modify
-+  it under the terms of the GNU General Public License as published by
-+  the Free Software Foundation; either version 2 of the License, or
-+  (at your option) any later version.
-+
-+  This program is distributed in the hope that it will be useful,
-+  but WITHOUT ANY WARRANTY; without even the implied warranty of
-+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+  GNU General Public License for more details.
-+
-+  You should have received a copy of the GNU General Public License
-+  along with this program; if not, write to the Free Software
-+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-+
-+  linux/lib/rbtree.c
-+*/
-+
-+#include <linux/rbtree.h>
-+
-+static void __rb_rotate_left(struct rb_node *node, struct rb_root *root)
-+{
-+	struct rb_node *right = node->rb_right;
-+	struct rb_node *parent = rb_parent(node);
-+
-+	if ((node->rb_right = right->rb_left))
-+		rb_set_parent(right->rb_left, node);
-+	right->rb_left = node;
-+
-+	rb_set_parent(right, parent);
-+
-+	if (parent)
-+	{
-+		if (node == parent->rb_left)
-+			parent->rb_left = right;
-+		else
-+			parent->rb_right = right;
-+	}
-+	else
-+		root->rb_node = right;
-+	rb_set_parent(node, right);
-+}
-+
-+static void __rb_rotate_right(struct rb_node *node, struct rb_root *root)
-+{
-+	struct rb_node *left = node->rb_left;
-+	struct rb_node *parent = rb_parent(node);
-+
-+	if ((node->rb_left = left->rb_right))
-+		rb_set_parent(left->rb_right, node);
-+	left->rb_right = node;
-+
-+	rb_set_parent(left, parent);
-+
-+	if (parent)
-+	{
-+		if (node == parent->rb_right)
-+			parent->rb_right = left;
-+		else
-+			parent->rb_left = left;
-+	}
-+	else
-+		root->rb_node = left;
-+	rb_set_parent(node, left);
-+}
-+
-+void rb_insert_color(struct rb_node *node, struct rb_root *root)
-+{
-+	struct rb_node *parent, *gparent;
-+
-+	while ((parent = rb_parent(node)) && rb_is_red(parent))
-+	{
-+		gparent = rb_parent(parent);
-+
-+		if (parent == gparent->rb_left)
-+		{
-+			{
-+				register struct rb_node *uncle = gparent->rb_right;
-+				if (uncle && rb_is_red(uncle))
-+				{
-+					rb_set_black(uncle);
-+					rb_set_black(parent);
-+					rb_set_red(gparent);
-+					node = gparent;
-+					continue;
-+				}
-+			}
-+
-+			if (parent->rb_right == node)
-+			{
-+				register struct rb_node *tmp;
-+				__rb_rotate_left(parent, root);
-+				tmp = parent;
-+				parent = node;
-+				node = tmp;
-+			}
-+
-+			rb_set_black(parent);
-+			rb_set_red(gparent);
-+			__rb_rotate_right(gparent, root);
-+		} else {
-+			{
-+				register struct rb_node *uncle = gparent->rb_left;
-+				if (uncle && rb_is_red(uncle))
-+				{
-+					rb_set_black(uncle);
-+					rb_set_black(parent);
-+					rb_set_red(gparent);
-+					node = gparent;
-+					continue;
-+				}
-+			}
-+
-+			if (parent->rb_left == node)
-+			{
-+				register struct rb_node *tmp;
-+				__rb_rotate_right(parent, root);
-+				tmp = parent;
-+				parent = node;
-+				node = tmp;
-+			}
-+
-+			rb_set_black(parent);
-+			rb_set_red(gparent);
-+			__rb_rotate_left(gparent, root);
-+		}
-+	}
-+
-+	rb_set_black(root->rb_node);
-+}
-+
-+static void __rb_erase_color(struct rb_node *node, struct rb_node *parent,
-+			     struct rb_root *root)
-+{
-+	struct rb_node *other;
-+
-+	while ((!node || rb_is_black(node)) && node != root->rb_node)
-+	{
-+		if (parent->rb_left == node)
-+		{
-+			other = parent->rb_right;
-+			if (rb_is_red(other))
-+			{
-+				rb_set_black(other);
-+				rb_set_red(parent);
-+				__rb_rotate_left(parent, root);
-+				other = parent->rb_right;
-+			}
-+			if ((!other->rb_left || rb_is_black(other->rb_left)) &&
-+			    (!other->rb_right || rb_is_black(other->rb_right)))
-+			{
-+				rb_set_red(other);
-+				node = parent;
-+				parent = rb_parent(node);
-+			}
-+			else
-+			{
-+				if (!other->rb_right || rb_is_black(other->rb_right))
-+				{
-+					struct rb_node *o_left;
-+					if ((o_left = other->rb_left))
-+						rb_set_black(o_left);
-+					rb_set_red(other);
-+					__rb_rotate_right(other, root);
-+					other = parent->rb_right;
-+				}
-+				rb_set_color(other, rb_color(parent));
-+				rb_set_black(parent);
-+				if (other->rb_right)
-+					rb_set_black(other->rb_right);
-+				__rb_rotate_left(parent, root);
-+				node = root->rb_node;
-+				break;
-+			}
-+		}
-+		else
-+		{
-+			other = parent->rb_left;
-+			if (rb_is_red(other))
-+			{
-+				rb_set_black(other);
-+				rb_set_red(parent);
-+				__rb_rotate_right(parent, root);
-+				other = parent->rb_left;
-+			}
-+			if ((!other->rb_left || rb_is_black(other->rb_left)) &&
-+			    (!other->rb_right || rb_is_black(other->rb_right)))
-+			{
-+				rb_set_red(other);
-+				node = parent;
-+				parent = rb_parent(node);
-+			}
-+			else
-+			{
-+				if (!other->rb_left || rb_is_black(other->rb_left))
-+				{
-+					register struct rb_node *o_right;
-+					if ((o_right = other->rb_right))
-+						rb_set_black(o_right);
-+					rb_set_red(other);
-+					__rb_rotate_left(other, root);
-+					other = parent->rb_left;
-+				}
-+				rb_set_color(other, rb_color(parent));
-+				rb_set_black(parent);
-+				if (other->rb_left)
-+					rb_set_black(other->rb_left);
-+				__rb_rotate_right(parent, root);
-+				node = root->rb_node;
-+				break;
-+			}
-+		}
-+	}
-+	if (node)
-+		rb_set_black(node);
-+}
-+
-+void rb_erase(struct rb_node *node, struct rb_root *root)
-+{
-+	struct rb_node *child, *parent;
-+	int color;
-+
-+	if (!node->rb_left)
-+		child = node->rb_right;
-+	else if (!node->rb_right)
-+		child = node->rb_left;
-+	else
-+	{
-+		struct rb_node *old = node, *left;
-+
-+		node = node->rb_right;
-+		while ((left = node->rb_left) != NULL)
-+			node = left;
-+		child = node->rb_right;
-+		parent = rb_parent(node);
-+		color = rb_color(node);
-+
-+		if (child)
-+			rb_set_parent(child, parent);
-+		if (parent == old) {
-+			parent->rb_right = child;
-+			parent = node;
-+		} else
-+			parent->rb_left = child;
-+
-+		node->rb_parent_color = old->rb_parent_color;
-+		node->rb_right = old->rb_right;
-+		node->rb_left = old->rb_left;
-+
-+		if (rb_parent(old))
-+		{
-+			if (rb_parent(old)->rb_left == old)
-+				rb_parent(old)->rb_left = node;
-+			else
-+				rb_parent(old)->rb_right = node;
-+		} else
-+			root->rb_node = node;
-+
-+		rb_set_parent(old->rb_left, node);
-+		if (old->rb_right)
-+			rb_set_parent(old->rb_right, node);
-+		goto color;
-+	}
-+
-+	parent = rb_parent(node);
-+	color = rb_color(node);
-+
-+	if (child)
-+		rb_set_parent(child, parent);
-+	if (parent)
-+	{
-+		if (parent->rb_left == node)
-+			parent->rb_left = child;
-+		else
-+			parent->rb_right = child;
-+	}
-+	else
-+		root->rb_node = child;
-+
-+ color:
-+	if (color == RB_BLACK)
-+		__rb_erase_color(child, parent, root);
-+}
-+
-+/*
-+ * This function returns the first node (in sort order) of the tree.
-+ */
-+struct rb_node *rb_first(struct rb_root *root)
-+{
-+	struct rb_node	*n;
-+
-+	n = root->rb_node;
-+	if (!n)
-+		return NULL;
-+	while (n->rb_left)
-+		n = n->rb_left;
-+	return n;
-+}
-+
-+struct rb_node *rb_last(struct rb_root *root)
-+{
-+	struct rb_node	*n;
-+
-+	n = root->rb_node;
-+	if (!n)
-+		return NULL;
-+	while (n->rb_right)
-+		n = n->rb_right;
-+	return n;
-+}
-+
-+struct rb_node *rb_next(struct rb_node *node)
-+{
-+	struct rb_node *parent;
-+
-+	if (rb_parent(node) == node)
-+		return NULL;
-+
-+	/* If we have a right-hand child, go down and then left as far
-+	   as we can. */
-+	if (node->rb_right) {
-+		node = node->rb_right;
-+		while (node->rb_left)
-+			node=node->rb_left;
-+		return node;
-+	}
-+
-+	/* No right-hand children.  Everything down and left is
-+	   smaller than us, so any 'next' node must be in the general
-+	   direction of our parent. Go up the tree; any time the
-+	   ancestor is a right-hand child of its parent, keep going
-+	   up. First time it's a left-hand child of its parent, said
-+	   parent is our 'next' node. */
-+	while ((parent = rb_parent(node)) && node == parent->rb_right)
-+		node = parent;
-+
-+	return parent;
-+}
-+
-+struct rb_node *rb_prev(struct rb_node *node)
-+{
-+	struct rb_node *parent;
-+
-+	if (rb_parent(node) == node)
-+		return NULL;
-+
-+	/* If we have a left-hand child, go down and then right as far
-+	   as we can. */
-+	if (node->rb_left) {
-+		node = node->rb_left;
-+		while (node->rb_right)
-+			node=node->rb_right;
-+		return node;
-+	}
-+
-+	/* No left-hand children. Go up till we find an ancestor which
-+	   is a right-hand child of its parent */
-+	while ((parent = rb_parent(node)) && node == parent->rb_left)
-+		node = parent;
-+
-+	return parent;
-+}
-+
-+void rb_replace_node(struct rb_node *victim, struct rb_node *new,
-+		     struct rb_root *root)
-+{
-+	struct rb_node *parent = rb_parent(victim);
-+
-+	/* Set the surrounding nodes to point to the replacement */
-+	if (parent) {
-+		if (victim == parent->rb_left)
-+			parent->rb_left = new;
-+		else
-+			parent->rb_right = new;
-+	} else {
-+		root->rb_node = new;
-+	}
-+	if (victim->rb_left)
-+		rb_set_parent(victim->rb_left, new);
-+	if (victim->rb_right)
-+		rb_set_parent(victim->rb_right, new);
-+
-+	/* Copy the pointers/colour from the victim to the replacement */
-+	*new = *victim;
-+}
+ 
+ struct cfi_cmd_set {
+-	int (*flash_write_cfibuffer) (flash_info_t * info, ulong dest, const uchar * cp, int len);
+-	int (*flash_erase_one) (flash_info_t * info, long sect);
+-	int (*flash_is_busy) (flash_info_t * info, flash_sect_t sect);
+-	void (*flash_read_jedec_ids) (flash_info_t * info);
+-	void (*flash_prepare_write) (flash_info_t * info);
+-	int (*flash_status_check) (flash_info_t * info, flash_sect_t sector, uint64_t tout, char *prompt);
++	int (*flash_write_cfibuffer) (struct flash_info *info, ulong dest, const uchar * cp, int len);
++	int (*flash_erase_one) (struct flash_info *info, long sect);
++	int (*flash_is_busy) (struct flash_info *info, flash_sect_t sect);
++	void (*flash_read_jedec_ids) (struct flash_info *info);
++	void (*flash_prepare_write) (struct flash_info *info);
++	int (*flash_status_check) (struct flash_info *info, flash_sect_t sector, uint64_t tout, char *prompt);
+ };
+ 
+ extern struct cfi_cmd_set cfi_cmd_set_intel;
+@@ -180,21 +180,21 @@ extern struct cfi_cmd_set cfi_cmd_set_amd;
+ #define CFI_FLASH_SHIFT_WIDTH	3
+ /* Prototypes */
+ 
+-int flash_isset (flash_info_t * info, flash_sect_t sect, uint offset, uchar cmd);
+-void flash_write_cmd (flash_info_t * info, flash_sect_t sect, uint offset, uchar cmd);
+-flash_sect_t find_sector (flash_info_t * info, ulong addr);
+-int flash_status_check (flash_info_t * info, flash_sect_t sector,
++int flash_isset (struct flash_info *info, flash_sect_t sect, uint offset, uchar cmd);
++void flash_write_cmd (struct flash_info *info, flash_sect_t sect, uint offset, uchar cmd);
++flash_sect_t find_sector (struct flash_info *info, ulong addr);
++int flash_status_check (struct flash_info *info, flash_sect_t sector,
+ 			       uint64_t tout, char *prompt);
+-int flash_generic_status_check (flash_info_t * info, flash_sect_t sector,
++int flash_generic_status_check (struct flash_info *info, flash_sect_t sector,
+ 			       uint64_t tout, char *prompt);
+ 
+-int flash_isequal (flash_info_t * info, flash_sect_t sect, uint offset, uchar cmd);
+-void flash_make_cmd (flash_info_t * info, uchar cmd, void *cmdbuf);
++int flash_isequal (struct flash_info *info, flash_sect_t sect, uint offset, uchar cmd);
++void flash_make_cmd (struct flash_info *info, uchar cmd, void *cmdbuf);
+ 
+ /*
+  * create an address based on the offset and the port width
+  */
+-static inline uchar *flash_make_addr (flash_info_t * info, flash_sect_t sect, uint offset)
++static inline uchar *flash_make_addr (struct flash_info *info, flash_sect_t sect, uint offset)
+ {
+ 	return ((uchar *) (info->start[sect] + (offset * info->portwidth)));
+ }
+@@ -202,7 +202,7 @@ static inline uchar *flash_make_addr (flash_info_t * info, flash_sect_t sect, ui
+ /*
+  * read a character at a port width address
+  */
+-static inline uchar flash_read_uchar (flash_info_t * info, uint offset)
++static inline uchar flash_read_uchar (struct flash_info *info, uint offset)
+ {
+ 	uchar *cp;
+ 
+@@ -252,7 +252,7 @@ typedef union {
+ 	volatile unsigned long long *llp;
+ } cfiptr_t;
+ 
+-static inline void flash_write_word(flash_info_t *info, cfiword_t datum, void *addr)
++static inline void flash_write_word(struct flash_info *info, cfiword_t datum, void *addr)
+ {
+ 	if (bankwidth_is_1(info)) {
+ 		debug("fw addr %p val %02x\n", addr, datum.c);
+@@ -268,21 +268,21 @@ static inline void flash_write_word(flash_info_t *info, cfiword_t datum, void *a
+ 	}
+ }
+ 
+-extern void flash_print_info (flash_info_t *);
++extern void flash_print_info (struct flash_info *);
+ extern int flash_sect_erase (ulong addr_first, ulong addr_last);
+ extern int flash_sect_protect (int flag, ulong addr_first, ulong addr_last);
+ 
+ /* common/flash.c */
+-extern void flash_protect (int flag, ulong from, ulong to, flash_info_t *info);
++extern void flash_protect (int flag, ulong from, ulong to, struct flash_info *info);
+ extern int flash_write (char *, ulong, ulong);
+-extern flash_info_t *addr2info (ulong);
++extern struct flash_info *addr2info (ulong);
+ //extern int write_buff (flash_info_t *info, const uchar *src, ulong addr, ulong cnt);
+ 
+ /* board/?/flash.c */
+ #if defined(CFG_FLASH_PROTECTION)
+-extern int flash_real_protect(flash_info_t *info, long sector, int prot);
+-extern void flash_read_user_serial(flash_info_t * info, void * buffer, int offset, int len);
+-extern void flash_read_factory_serial(flash_info_t * info, void * buffer, int offset, int len);
++extern int flash_real_protect(struct flash_info *info, long sector, int prot);
++extern void flash_read_user_serial(struct flash_info *info, void * buffer, int offset, int len);
++extern void flash_read_factory_serial(struct flash_info *info, void * buffer, int offset, int len);
+ #endif	/* CFG_FLASH_PROTECTION */
+ 
+ /*-----------------------------------------------------------------------
+diff --git a/drivers/nor/cfi_flash_amd.c b/drivers/nor/cfi_flash_amd.c
+index ea4c2c9..45b7e5c 100644
+--- a/drivers/nor/cfi_flash_amd.c
++++ b/drivers/nor/cfi_flash_amd.c
+@@ -2,7 +2,7 @@
+ #include <stdio.h>
+ #include "cfi_flash.h"
+ 
+-static void flash_unlock_seq (flash_info_t * info)
++static void flash_unlock_seq (struct flash_info *info)
+ {
+ 	flash_write_cmd (info, 0, AMD_ADDR_START, AMD_CMD_UNLOCK_START);
+ 	flash_write_cmd (info, 0, AMD_ADDR_ACK, AMD_CMD_UNLOCK_ACK);
+@@ -14,7 +14,7 @@ static void flash_unlock_seq (flash_info_t * info)
+  * Note: assume cfi->vendor, cfi->portwidth and cfi->chipwidth are correct
+  *
+ */
+-static void amd_read_jedec_ids (flash_info_t * info)
++static void amd_read_jedec_ids (struct flash_info *info)
+ {
+ 	info->manufacturer_id = 0;
+ 	info->device_id       = 0;
+@@ -39,7 +39,7 @@ static void amd_read_jedec_ids (flash_info_t * info)
+ 	flash_write_cmd(info, 0, 0, AMD_CMD_RESET);
+ }
+ 
+-static int flash_toggle (flash_info_t * info, flash_sect_t sect, uint offset, uchar cmd)
++static int flash_toggle (struct flash_info *info, flash_sect_t sect, uint offset, uchar cmd)
+ {
+ 	cfiptr_t cptr;
+ 	cfiword_t cword;
+@@ -66,12 +66,12 @@ static int flash_toggle (flash_info_t * info, flash_sect_t sect, uint offset, uc
+  * flash_is_busy - check to see if the flash is busy
+  * This routine checks the status of the chip and returns true if the chip is busy
+  */
+-static int amd_flash_is_busy (flash_info_t * info, flash_sect_t sect)
++static int amd_flash_is_busy (struct flash_info *info, flash_sect_t sect)
+ {
+ 	return flash_toggle (info, sect, 0, AMD_STATUS_TOGGLE);
+ }
+ 
+-static int amd_flash_erase_one (flash_info_t * info, long sect)
++static int amd_flash_erase_one (struct flash_info *info, long sect)
+ {
+ 	flash_unlock_seq(info);
+ 	flash_write_cmd (info, 0, AMD_ADDR_ERASE_START, AMD_CMD_ERASE_START);
+@@ -81,14 +81,14 @@ static int amd_flash_erase_one (flash_info_t * info, long sect)
+ 	return flash_status_check(info, sect, info->erase_blk_tout, "erase");
+ }
+ 
+-static void amd_flash_prepare_write(flash_info_t * info)
++static void amd_flash_prepare_write(struct flash_info *info)
+ {
+ 	flash_unlock_seq(info);
+ 	flash_write_cmd (info, 0, AMD_ADDR_START, AMD_CMD_WRITE);
+ }
+ 
+ #ifdef CONFIG_CFI_BUFFER_WRITE
+-static int amd_flash_write_cfibuffer (flash_info_t * info, ulong dest, const uchar * cp,
++static int amd_flash_write_cfibuffer (struct flash_info *info, ulong dest, const uchar * cp,
+ 				  int len)
+ {
+ 	flash_sect_t sector;
+diff --git a/drivers/nor/cfi_flash_intel.c b/drivers/nor/cfi_flash_intel.c
+index e4dfdfa..4344760 100644
+--- a/drivers/nor/cfi_flash_intel.c
++++ b/drivers/nor/cfi_flash_intel.c
+@@ -7,7 +7,7 @@
+  * Note: assume cfi->vendor, cfi->portwidth and cfi->chipwidth are correct
+  *
+ */
+-static void intel_read_jedec_ids (flash_info_t * info)
++static void intel_read_jedec_ids (struct flash_info *info)
+ {
+ 	info->manufacturer_id = 0;
+ 	info->device_id       = 0;
+@@ -27,12 +27,12 @@ static void intel_read_jedec_ids (flash_info_t * info)
+  * flash_is_busy - check to see if the flash is busy
+  * This routine checks the status of the chip and returns true if the chip is busy
+  */
+-static int intel_flash_is_busy (flash_info_t * info, flash_sect_t sect)
++static int intel_flash_is_busy (struct flash_info *info, flash_sect_t sect)
+ {
+ 	return !flash_isset (info, sect, 0, FLASH_STATUS_DONE);
+ }
+ 
+-static int intel_flash_erase_one (flash_info_t * info, long sect)
++static int intel_flash_erase_one (struct flash_info *info, long sect)
+ {
+ 	flash_write_cmd (info, sect, 0, FLASH_CMD_CLEAR_STATUS);
+ 	flash_write_cmd (info, sect, 0, FLASH_CMD_BLOCK_ERASE);
+@@ -41,14 +41,14 @@ static int intel_flash_erase_one (flash_info_t * info, long sect)
+ 	return flash_status_check(info, sect, info->erase_blk_tout, "erase");
+ }
+ 
+-static void intel_flash_prepare_write(flash_info_t * info)
++static void intel_flash_prepare_write(struct flash_info *info)
+ {
+ 	flash_write_cmd (info, 0, 0, FLASH_CMD_CLEAR_STATUS);
+ 	flash_write_cmd (info, 0, 0, FLASH_CMD_WRITE);
+ }
+ 
+ #ifdef CONFIG_CFI_BUFFER_WRITE
+-static int intel_flash_write_cfibuffer (flash_info_t * info, ulong dest, const uchar * cp,
++static int intel_flash_write_cfibuffer (struct flash_info *info, ulong dest, const uchar * cp,
+ 				  int len)
+ {
+ 	flash_sect_t sector;
+@@ -94,7 +94,7 @@ static int intel_flash_write_cfibuffer (flash_info_t * info, ulong dest, const u
+ #define intel_flash_write_cfibuffer NULL
+ #endif /* CONFIG_CFI_BUFFER_WRITE */
+ 
+-static int intel_flash_status_check (flash_info_t * info, flash_sect_t sector,
++static int intel_flash_status_check (struct flash_info *info, flash_sect_t sector,
+ 				    uint64_t tout, char *prompt)
+ {
+ 	int retcode;
 -- 
 1.7.1
 
