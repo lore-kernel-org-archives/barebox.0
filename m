@@ -1,12 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp4.aruba.it ([62.149.128.203] helo=smtpw2.aruba.it)
-	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1ORlba-00008p-I8
-	for barebox@lists.infradead.org; Thu, 24 Jun 2010 12:32:31 +0000
-Date: Thu, 24 Jun 2010 14:32:25 +0200
-Message-Id: <L4IQU1$4731D5E42E435C795207D3BFB302BAD3@aruba.it>
-MIME-Version: 1.0
-From: "Luca Ceresoli" <list@lucaceresoli.net>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1OVmB7-0006Tu-JN
+	for barebox@lists.infradead.org; Mon, 05 Jul 2010 13:57:46 +0000
+From: Luotao Fu <l.fu@pengutronix.de>
+Date: Mon,  5 Jul 2010 15:57:37 +0200
+Message-Id: <1278338260-29454-2-git-send-email-l.fu@pengutronix.de>
+In-Reply-To: <1278338260-29454-1-git-send-email-l.fu@pengutronix.de>
+References: <1278338260-29454-1-git-send-email-l.fu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,73 +16,138 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Regression: not booting anymore on OMAP35xx
-To: barebox@lists.infradead.org
+Subject: [PATCH V2 1/4] crc value handling and dry run mode in envfs_load
+To: s.hauer@pengutronix.de
+Cc: barebox@lists.infradead.org, Luotao Fu <l.fu@pengutronix.de>
 
-Sascha Hauer wrote:
-> On Tue, Jun 22, 2010 at 04:04:52PM +0200, Luca Ceresoli wrote:
-> > Sascha Hauer wrote:
-> > > Hi Luca,
-> > > 
-> > > On Tue, Jun 22, 2010 at 02:26:11PM +0200, Luca Ceresoli wrote:
-> > > > Hi,
-> > > > 
-> > > 
-> > > Seems that I lost the call to arch_init_lowlevel. Does the following
-> > > patch help?
-> > 
-> > I'm afraid it doesn't seem to.
-> > It fails with the same symptoms.
-> > 
-> > Luca
-> > 
-> > > 
-> > > 
-> > > diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
-> > > index eea7dcf..91d2ccd 100644
-> > > --- a/arch/arm/cpu/start.c
-> > > +++ b/arch/arm/cpu/start.c
-> > > @@ -50,6 +50,8 @@ void __naked __bare_init reset(void)
-> > >  {
-> > >  	uint32_t r;
-> > >  
-> > > +	arch_init_lowlevel();
-> > > +
-> 
-> Ok, this has to be done *after* switching the cpu to SVC32 mode.
-> 
-> I tested this on my beagle board and now it works again. I pushed
-> a patch to the master repository.
+We add some stuffs to envfs_load for later usage in implementation of
+multiple environment partitions:
+* envfs_load now accepts a parameter, where the crc value of the environment
+partition can be stored.
+* Also added "dry run" mode to envfs_load. If the dirname is not set.
+envfs_load will now only check the crc values of the partition and returns
+without writing to the file system.
 
-Sascha, thank you for the prompt response.
-Unfortunately the new version works only partially with my Beagle
-Board (rev. C4).
+Signed-off-by: Luotao Fu <l.fu@pengutronix.de>
 
-I tested commit:
- 46976f7 OMAP: fix compilation
+---
+V2 Changes:
+* fixed envfs_load call in common/startup.c
 
-- Test 1: the board is always powered.
-  Press RESET with the USER key pressed.
-  10 tests, 10 passed.
+ commands/loadenv.c    |    4 +++-
+ common/environment.c  |   13 +++++++++++--
+ common/startup.c      |    4 ++--
+ include/environment.h |    2 +-
+ scripts/bareboxenv.c  |    2 +-
+ 5 files changed, 18 insertions(+), 7 deletions(-)
 
-- Test 2: the board is not powered.
-  Turn turn it on with the USER key pressed.
-  Turn turn it off again at the end of the test.
-  10 tests, 5 passed, 5 failed.
-
-During all of the 20 tests, barebox.bin was always the same.
-I didn't recompile it.
-
-OTOH the commit before the "reimplement in C" passes also test 2.
-
-I hope this gives enough hints to solve the problem.
-
-Luca
-
+diff --git a/commands/loadenv.c b/commands/loadenv.c
+index 14fbf1e..3da67d9 100644
+--- a/commands/loadenv.c
++++ b/commands/loadenv.c
+@@ -35,12 +35,14 @@ static int do_loadenv(struct command *cmdtp, int argc, char *argv[])
+ 		dirname = "/env";
+ 	else
+ 		dirname = argv[2];
++
+ 	if (argc < 2)
+ 		filename = "/dev/env0";
+ 	else
+ 		filename = argv[1];
+ 	printf("loading environment from %s\n", filename);
+-	return envfs_load(filename, dirname);
++
++	return envfs_load(filename, dirname, NULL);
+ }
+ 
+ static const __maybe_unused char cmd_loadenv_help[] =
+diff --git a/common/environment.c b/common/environment.c
+index 0eb7e6b..e79ec99 100644
+--- a/common/environment.c
++++ b/common/environment.c
+@@ -159,13 +159,15 @@ EXPORT_SYMBOL(envfs_save);
+ /**
+  * Restore the last environment into the current one
+  * @param[in] filename from where to restore
+- * @param[in] dir where to store the last content
++ * @param[in] dir where to store the last content. Function will return crc
++ * value only if dir==NULL.
++ * @param[in] crc pointer to variale, where the crc can be stored.
+  * @return 0 on success, anything else in case of failure
+  *
+  * Note: This function will also be used on the host! See note in the header
+  * of this file.
+  */
+-int envfs_load(char *filename, char *dir)
++int envfs_load(char *filename, char *dir, int *crc)
+ {
+ 	struct envfs_super super;
+ 	void *buf = NULL, *buf_free = NULL;
+@@ -219,6 +221,13 @@ int envfs_load(char *filename, char *dir)
+ 		goto out;
+ 	}
+ 
++	if (crc != NULL)
++		*crc = ENVFS_32(super.crc);
++
++	/* return crc only if dir is not set */
++	if (!dir)
++		goto out;
++
+ 	while (size) {
+ 		struct envfs_inode *inode;
+ 		uint32_t inode_size, inode_namelen;
+diff --git a/common/startup.c b/common/startup.c
+index 2ed16fe..2190159 100644
+--- a/common/startup.c
++++ b/common/startup.c
+@@ -138,11 +138,11 @@ void start_barebox (void)
+ 	display_meminfo();
+ 
+ #ifdef CONFIG_ENV_HANDLING
+-	if (envfs_load("/dev/env0", "/env")) {
++	if (envfs_load("/dev/env0", "/env", NULL)) {
+ #ifdef CONFIG_DEFAULT_ENVIRONMENT
+ 		printf("no valid environment found on /dev/env0. "
+ 			"Using default environment\n");
+-		envfs_load("/dev/defaultenv", "/env");
++		envfs_load("/dev/defaultenv", "/env", NULL);
+ #endif
+ 	}
+ #endif
+diff --git a/include/environment.h b/include/environment.h
+index 21a7ffa..2b1f5d9 100644
+--- a/include/environment.h
++++ b/include/environment.h
+@@ -50,7 +50,7 @@ int setenv(const char *, const char *);
+ int env_pop_context(void);
+ int env_push_context(void);
+ 
+-int envfs_load(char *filename, char *dirname);
++int envfs_load(char *filename, char *dirname, int *crc);
+ int envfs_save(char *filename, char *dirname);
+ 
+ int export(const char *);
+diff --git a/scripts/bareboxenv.c b/scripts/bareboxenv.c
+index 5c7f10e..af012e8 100644
+--- a/scripts/bareboxenv.c
++++ b/scripts/bareboxenv.c
+@@ -186,7 +186,7 @@ int main(int argc, char *argv[])
+ 
+ 	if (load) {
+ 		printf("loading env from file %s to %s\n", filename, dirname);
+-		envfs_load(filename, dirname);
++		envfs_load(filename, dirname, NULL);
+ 	}
+ 	if (save) {
+ 		printf("saving contents of %s to file %s\n", dirname, filename);
+-- 
+1.7.1
 
 
 _______________________________________________
