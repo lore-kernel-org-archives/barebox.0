@@ -1,13 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OVlXN-0000kv-GT
-	for barebox@lists.infradead.org; Mon, 05 Jul 2010 13:16:49 +0000
+	id 1OVlXN-0000kw-Gb
+	for barebox@lists.infradead.org; Mon, 05 Jul 2010 13:16:52 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Subject: [PATCH 10/12] add ubi support from u-boot. Just enough to compile and
-	scan
-Date: Mon,  5 Jul 2010 15:16:33 +0200
-Message-Id: <1278335795-16289-11-git-send-email-s.hauer@pengutronix.de>
+Subject: [PATCH 02/12] move drivers/nand to drivers/mtd/nand
+Date: Mon,  5 Jul 2010 15:16:25 +0200
+Message-Id: <1278335795-16289-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1278335795-16289-1-git-send-email-s.hauer@pengutronix.de>
 References: <1278335795-16289-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -19,12065 +18,20420 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1576775509=="
+Content-Type: multipart/mixed; boundary="===============0114612343=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 To: barebox@lists.infradead.org
 
---===============1576775509==
+--===============0114612343==
 Content-Type: text/plain
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/Kconfig           |    1 +
- drivers/mtd/Makefile          |    1 +
- drivers/mtd/ubi/Kconfig       |    6 +
- drivers/mtd/ubi/Makefile      |    3 +
- drivers/mtd/ubi/build.c       | 1189 +++++++++++++++++++++++++++++
- drivers/mtd/ubi/crc32defs.h   |   32 +
- drivers/mtd/ubi/debug.c       |  192 +++++
- drivers/mtd/ubi/debug.h       |  152 ++++
- drivers/mtd/ubi/eba.c         | 1256 ++++++++++++++++++++++++++++++
- drivers/mtd/ubi/io.c          | 1274 +++++++++++++++++++++++++++++++
- drivers/mtd/ubi/kapi.c        |  638 ++++++++++++++++
- drivers/mtd/ubi/misc.c        |  106 +++
- drivers/mtd/ubi/scan.c        | 1362 +++++++++++++++++++++++++++++++++
- drivers/mtd/ubi/scan.h        |  165 ++++
- drivers/mtd/ubi/ubi-barebox.h |  191 +++++
- drivers/mtd/ubi/ubi-media.h   |  372 +++++++++
- drivers/mtd/ubi/ubi.h         |  641 ++++++++++++++++
- drivers/mtd/ubi/upd.c         |  441 +++++++++++
- drivers/mtd/ubi/vmt.c         |  866 +++++++++++++++++++++
- drivers/mtd/ubi/vtbl.c        |  837 ++++++++++++++++++++
- drivers/mtd/ubi/wl.c          | 1675 +++++++++++++++++++++++++++++++++++++++++
- include/linux/mtd/ubi.h       |  186 +++++
- include/mtd/ubi-user.h        |  268 +++++++
- 23 files changed, 11854 insertions(+), 0 deletions(-)
- create mode 100644 drivers/mtd/ubi/Kconfig
- create mode 100644 drivers/mtd/ubi/Makefile
- create mode 100644 drivers/mtd/ubi/build.c
- create mode 100644 drivers/mtd/ubi/crc32defs.h
- create mode 100644 drivers/mtd/ubi/debug.c
- create mode 100644 drivers/mtd/ubi/debug.h
- create mode 100644 drivers/mtd/ubi/eba.c
- create mode 100644 drivers/mtd/ubi/io.c
- create mode 100644 drivers/mtd/ubi/kapi.c
- create mode 100644 drivers/mtd/ubi/misc.c
- create mode 100644 drivers/mtd/ubi/scan.c
- create mode 100644 drivers/mtd/ubi/scan.h
- create mode 100644 drivers/mtd/ubi/ubi-barebox.h
- create mode 100644 drivers/mtd/ubi/ubi-media.h
- create mode 100644 drivers/mtd/ubi/ubi.h
- create mode 100644 drivers/mtd/ubi/upd.c
- create mode 100644 drivers/mtd/ubi/vmt.c
- create mode 100644 drivers/mtd/ubi/vtbl.c
- create mode 100644 drivers/mtd/ubi/wl.c
- create mode 100644 include/linux/mtd/ubi.h
- create mode 100644 include/mtd/ubi-user.h
+ drivers/Kconfig                   |    2 +-
+ drivers/Makefile                  |    2 +-
+ drivers/mtd/Kconfig               |    8 +
+ drivers/mtd/Makefile              |    1 +
+ drivers/mtd/nand/Kconfig          |  109 ++
+ drivers/mtd/nand/Makefile         |   12 +
+ drivers/mtd/nand/atmel_nand.c     |  516 ++++++++
+ drivers/mtd/nand/atmel_nand_ecc.h |   39 +
+ drivers/mtd/nand/diskonchip.c     | 1787 +++++++++++++++++++++++++
+ drivers/mtd/nand/nand.c           |  247 ++++
+ drivers/mtd/nand/nand_base.c      | 2648 +++++++++++++++++++++++++++++++++++++
+ drivers/mtd/nand/nand_bbt.c       | 1224 +++++++++++++++++
+ drivers/mtd/nand/nand_ecc.c       |  198 +++
+ drivers/mtd/nand/nand_ids.c       |  153 +++
+ drivers/mtd/nand/nand_imx.c       | 1210 +++++++++++++++++
+ drivers/mtd/nand/nand_omap_gpmc.c |  534 ++++++++
+ drivers/mtd/nand/nand_s3c2410.c   |  525 ++++++++
+ drivers/mtd/nand/nand_util.c      |  858 ++++++++++++
+ drivers/nand/Kconfig              |  109 --
+ drivers/nand/Makefile             |   12 -
+ drivers/nand/atmel_nand.c         |  516 --------
+ drivers/nand/atmel_nand_ecc.h     |   39 -
+ drivers/nand/diskonchip.c         | 1787 -------------------------
+ drivers/nand/nand.c               |  247 ----
+ drivers/nand/nand_base.c          | 2648 -------------------------------------
+ drivers/nand/nand_bbt.c           | 1224 -----------------
+ drivers/nand/nand_ecc.c           |  198 ---
+ drivers/nand/nand_ids.c           |  153 ---
+ drivers/nand/nand_imx.c           | 1210 -----------------
+ drivers/nand/nand_omap_gpmc.c     |  534 --------
+ drivers/nand/nand_s3c2410.c       |  525 --------
+ drivers/nand/nand_util.c          |  858 ------------
+ 32 files changed, 10071 insertions(+), 10062 deletions(-)
+ create mode 100644 drivers/mtd/Kconfig
+ create mode 100644 drivers/mtd/Makefile
+ create mode 100644 drivers/mtd/nand/Kconfig
+ create mode 100644 drivers/mtd/nand/Makefile
+ create mode 100644 drivers/mtd/nand/atmel_nand.c
+ create mode 100644 drivers/mtd/nand/atmel_nand_ecc.h
+ create mode 100644 drivers/mtd/nand/diskonchip.c
+ create mode 100644 drivers/mtd/nand/nand.c
+ create mode 100644 drivers/mtd/nand/nand_base.c
+ create mode 100644 drivers/mtd/nand/nand_bbt.c
+ create mode 100644 drivers/mtd/nand/nand_ecc.c
+ create mode 100644 drivers/mtd/nand/nand_ids.c
+ create mode 100644 drivers/mtd/nand/nand_imx.c
+ create mode 100644 drivers/mtd/nand/nand_omap_gpmc.c
+ create mode 100644 drivers/mtd/nand/nand_s3c2410.c
+ create mode 100644 drivers/mtd/nand/nand_util.c
+ delete mode 100644 drivers/nand/Kconfig
+ delete mode 100644 drivers/nand/Makefile
+ delete mode 100644 drivers/nand/atmel_nand.c
+ delete mode 100644 drivers/nand/atmel_nand_ecc.h
+ delete mode 100644 drivers/nand/diskonchip.c
+ delete mode 100644 drivers/nand/nand.c
+ delete mode 100644 drivers/nand/nand_base.c
+ delete mode 100644 drivers/nand/nand_bbt.c
+ delete mode 100644 drivers/nand/nand_ecc.c
+ delete mode 100644 drivers/nand/nand_ids.c
+ delete mode 100644 drivers/nand/nand_imx.c
+ delete mode 100644 drivers/nand/nand_omap_gpmc.c
+ delete mode 100644 drivers/nand/nand_s3c2410.c
+ delete mode 100644 drivers/nand/nand_util.c
 
+diff --git a/drivers/Kconfig b/drivers/Kconfig
+index bf559c4..ae9efce 100644
+--- a/drivers/Kconfig
++++ b/drivers/Kconfig
+@@ -5,7 +5,7 @@ source "drivers/net/Kconfig"
+ source "drivers/spi/Kconfig"
+ source "drivers/i2c/Kconfig"
+ source "drivers/nor/Kconfig"
+-source "drivers/nand/Kconfig"
++source "drivers/mtd/Kconfig"
+ source "drivers/ata/Kconfig"
+ source "drivers/usb/Kconfig"
+ source "drivers/video/Kconfig"
+diff --git a/drivers/Makefile b/drivers/Makefile
+index 7bae6ff..bce68bc 100644
+--- a/drivers/Makefile
++++ b/drivers/Makefile
+@@ -1,6 +1,6 @@
+ obj-y	+= net/
+ obj-y	+= serial/
+-obj-y	+= nand/
++obj-y	+= mtd/
+ obj-y	+= nor/
+ obj-y	+= usb/
+ obj-$(CONFIG_ATA) += ata/
 diff --git a/drivers/mtd/Kconfig b/drivers/mtd/Kconfig
-index 53183fc..562f0cd 100644
---- a/drivers/mtd/Kconfig
+new file mode 100644
+index 0000000..53183fc
+--- /dev/null
 +++ b/drivers/mtd/Kconfig
-@@ -4,5 +4,6 @@ menuconfig MTD
- if MTD
- 
- source "drivers/mtd/nand/Kconfig"
-+source "drivers/mtd/ubi/Kconfig"
- 
- endif
+@@ -0,0 +1,8 @@
++menuconfig MTD
++        bool "Memory Technology Device (MTD) support"
++
++if MTD
++
++source "drivers/mtd/nand/Kconfig"
++
++endif
 diff --git a/drivers/mtd/Makefile b/drivers/mtd/Makefile
-index 299cca1..85bed11 100644
---- a/drivers/mtd/Makefile
+new file mode 100644
+index 0000000..87ee6f4
+--- /dev/null
 +++ b/drivers/mtd/Makefile
-@@ -1,2 +1,3 @@
- obj-$(CONFIG_NAND)	+= nand/
-+obj-$(CONFIG_UBI)	+= ubi/
- obj-$(CONFIG_PARTITION_NEED_MTD)	+= partition.o
-diff --git a/drivers/mtd/ubi/Kconfig b/drivers/mtd/ubi/Kconfig
+@@ -0,0 +1 @@
++obj-$(CONFIG_NAND)	+= nand/
+diff --git a/drivers/mtd/nand/Kconfig b/drivers/mtd/nand/Kconfig
 new file mode 100644
-index 0000000..35d321b
+index 0000000..e0d9d0d
 --- /dev/null
-+++ b/drivers/mtd/ubi/Kconfig
-@@ -0,0 +1,6 @@
-+config UBI
-+	bool "UBI support               "
-+	select PARTITION_NEED_MTD
++++ b/drivers/mtd/nand/Kconfig
+@@ -0,0 +1,109 @@
++menuconfig NAND
++	bool "NAND support              "
++	select MTD_NAND_IDS
 +	help
-+	  This enables support for UBI (unsorted block images)
++	  This enables support for accessing all type of NAND flash
++	  devices. For further information see
++	  <http://www.linux-mtd.infradead.org/doc/nand.html>.
 +
-diff --git a/drivers/mtd/ubi/Makefile b/drivers/mtd/ubi/Makefile
++if NAND
++
++config NAND_IMX
++	bool
++	prompt "i.MX NAND driver"
++	depends on ARCH_IMX21 || ARCH_IMX27 || ARCH_IMX31 || ARCH_IMX35 || ARCH_IMX25
++
++config NAND_IMX_BOOT
++	bool
++	prompt "Support Starting barebox from NAND"
++	depends on NAND_IMX || NAND_IMX_V2
++
++config NAND_OMAP_GPMC
++	tristate "NAND Flash Support for GPMC based OMAP platforms"
++	depends on ((ARCH_OMAP2 || ARCH_OMAP3) && GPMC)
++	help
++	 Support for NAND flash using GPMC. GPMC is a common memory
++	 interface found on Texas Instrument's OMAP platforms
++
++config NAND_OMAP_GPMC_HWECC
++	bool "The Hardware ECC support"
++	depends on NAND && NAND_OMAP_GPMC
++	default n
++	help
++	 The ECC compuatation for the data to be written/read can be either by
++	 software or omap has Hw ecc engine which calculates it.
++
++config NAND_ATMEL
++	bool
++	prompt "Atmel (AT91SAM9xxx) NAND driver"
++	depends on ARCH_AT91
++
++config NAND_S3C24X0
++	bool
++	prompt "Samsung S3C24X0 NAND driver"
++	depends on ARCH_S3C24xx
++	help
++	  Add support for processor's NAND device controller.
++
++config MTD_NAND_VERIFY_WRITE
++	bool "Verify NAND page writes"
++	help
++	  This adds an extra check when data is written to the flash. The
++	  NAND flash device internally checks only bits transitioning
++	  from 1 to 0. There is a rare possibility that even though the
++	  device thinks the write was successful, a bit could have been
++	  flipped accidentally due to device wear or something else.
++
++config MTD_NAND_ECC_SMC
++	bool "NAND ECC Smart Media byte order"
++	default n
++	help
++	  Software ECC according to the Smart Media Specification.
++	  The original Linux implementation had byte 0 and 1 swapped.
++
++config MTD_NAND_MUSEUM_IDS
++	bool "Enable chip ids for obsolete ancient NAND devices"
++	depends on MTD_NAND
++	default n
++	help
++	  Enable this option only when your board has first generation
++	  NAND chips (page size 256 byte, erase size 4-8KiB). The IDs
++	  of these chips were reused by later, larger chips.
++
++config MTD_NAND_IDS
++	tristate
++
++config MTD_NAND_DISKONCHIP
++	tristate "DiskOnChip 2000, Millennium and Millennium Plus"
++	depends on EXPERIMENTAL && BROKEN
++	help
++	  This is a reimplementation of M-Systems DiskOnChip 2000,
++	  Millennium and Millennium Plus as a standard NAND device driver,
++	  as opposed to the earlier self-contained MTD device drivers.
++	  This should enable, among other things, proper JFFS2 operation on
++	  these devices.
++
++config MTD_NAND_DISKONCHIP_BBTWRITE
++	bool "Allow BBT writes on DiskOnChip Millennium and 2000TSOP"
++	depends on MTD_NAND_DISKONCHIP
++	help
++	  On DiskOnChip devices shipped with the INFTL filesystem (Millennium
++	  and 2000 TSOP/Alon), Linux reserves some space at the end of the
++	  device for the Bad Block Table (BBT).  If you have existing INFTL
++	  data on your device (created by non-Linux tools such as M-Systems'
++	  DOS drivers), your data might overlap the area Linux wants to use for
++	  the BBT.  If this is a concern for you, leave this option disabled and
++	  Linux will not write BBT data into this area.
++	  The downside of leaving this option disabled is that if bad blocks
++	  are detected by Linux, they will not be recorded in the BBT, which
++	  could cause future problems.
++	  Once you enable this option, new filesystems (INFTL or others, created
++	  in Linux or other operating systems) will not use the reserved area.
++	  The only reason not to enable this option is to prevent damage to
++	  preexisting filesystems.
++	  Even if you leave this disabled, you can enable BBT writes at module
++	  load time (assuming you build diskonchip as a module) with the module
++	  parameter "inftl_bbt_write=1".
++
++
++endif
+diff --git a/drivers/mtd/nand/Makefile b/drivers/mtd/nand/Makefile
 new file mode 100644
-index 0000000..425c185
+index 0000000..73f7346
 --- /dev/null
-+++ b/drivers/mtd/ubi/Makefile
-@@ -0,0 +1,3 @@
-+obj-y += build.o vtbl.o vmt.o upd.o kapi.o eba.o io.o wl.o scan.o misc.o debug.o
++++ b/drivers/mtd/nand/Makefile
+@@ -0,0 +1,12 @@
 +
++# Generic NAND options
++obj-$(CONFIG_NAND)			+= nand.o nand_ecc.o
++obj-$(CONFIG_MTD_NAND_IDS)		+= nand_ids.o
++obj-$(CONFIG_NAND)			+= nand_base.o nand_bbt.o
 +
-diff --git a/drivers/mtd/ubi/build.c b/drivers/mtd/ubi/build.c
++obj-$(CONFIG_MTD_NAND_DISKONCHIP)	+= diskonchip.o
++obj-$(CONFIG_NAND_IMX)			+= nand_imx.o
++obj-$(CONFIG_NAND_OMAP_GPMC)		+= nand_omap_gpmc.o
++obj-$(CONFIG_NAND_ATMEL)		+= atmel_nand.o
++obj-$(CONFIG_NAND_S3C24X0)		+= nand_s3c2410.o
++#obj-$(CONFIG_NAND)			+= nand_util.o
+diff --git a/drivers/mtd/nand/atmel_nand.c b/drivers/mtd/nand/atmel_nand.c
 new file mode 100644
-index 0000000..03ce392
+index 0000000..c3669e5
 --- /dev/null
-+++ b/drivers/mtd/ubi/build.c
-@@ -0,0 +1,1189 @@
++++ b/drivers/mtd/nand/atmel_nand.c
+@@ -0,0 +1,516 @@
 +/*
-+ * Copyright (c) International Business Machines Corp., 2006
-+ * Copyright (c) Nokia Corporation, 2007
++ *  Copyright (C) 2003 Rick Bronson
++ *
++ *  Derived from drivers/mtd/nand/autcpu12.c
++ *	 Copyright (c) 2001 Thomas Gleixner (gleixner@autronix.de)
++ *
++ *  Derived from drivers/mtd/spia.c
++ *	 Copyright (C) 2000 Steven J. Hill (sjhill@cotw.com)
++ *
++ *
++ *  Add Hardware ECC support for AT91SAM9260 / AT91SAM9263
++ *     Richard Genoud (richard.genoud@gmail.com), Adeneo Copyright (C) 2007
++ *
++ *     Derived from Das barebox source code
++ *     		(barebox-1.1.5/board/atmel/at91sam9263ek/nand.c)
++ *     (C) Copyright 2006 ATMEL Rousset, Lacressonniere Nicolas
++ *
 + *
 + * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
 + *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
-+ * the GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-+ *
-+ * Author: Artem Bityutskiy (���������������� ����������),
-+ *         Frank Haverkamp
 + */
++
++#include <common.h>
++#include <driver.h>
++#include <malloc.h>
++#include <init.h>
++#include <gpio.h>
++
++#include <linux/mtd/mtd.h>
++#include <linux/mtd/nand.h>
++
++#include <asm/io.h>
++#include <mach/board.h>
++
++#include <errno.h>
++
++#ifdef CONFIG_MTD_NAND_ATMEL_ECC_HW
++#define hard_ecc	1
++#else
++#define hard_ecc	0
++#endif
++
++#ifdef CONFIG_MTD_NAND_ATMEL_ECC_NONE
++#define no_ecc		1
++#else
++#define no_ecc		0
++#endif
++
++/* Register access macros */
++#define ecc_readl(add, reg)				\
++	readl(add + ATMEL_ECC_##reg)
++#define ecc_writel(add, reg, value)			\
++	writel((value), add + ATMEL_ECC_##reg)
++
++#include "atmel_nand_ecc.h"	/* Hardware ECC registers */
++
++/* oob layout for large page size
++ * bad block info is on bytes 0 and 1
++ * the bytes have to be consecutives to avoid
++ * several NAND_CMD_RNDOUT during read
++ */
++static struct nand_ecclayout atmel_oobinfo_large = {
++	.eccbytes = 4,
++	.eccpos = {60, 61, 62, 63},
++	.oobfree = {
++		{2, 58}
++	},
++};
++
++/* oob layout for small page size
++ * bad block info is on bytes 4 and 5
++ * the bytes have to be consecutives to avoid
++ * several NAND_CMD_RNDOUT during read
++ */
++static struct nand_ecclayout atmel_oobinfo_small = {
++	.eccbytes = 4,
++	.eccpos = {0, 1, 2, 3},
++	.oobfree = {
++		{6, 10}
++	},
++};
++
++struct atmel_nand_host {
++	struct nand_chip	nand_chip;
++	struct mtd_info		mtd;
++	void __iomem		*io_base;
++	struct atmel_nand_data	*board;
++	struct device_d		*dev;
++	void __iomem		*ecc;
++};
 +
 +/*
-+ * This file includes UBI initialization and building of UBI devices.
-+ *
-+ * When UBI is initialized, it attaches all the MTD devices specified as the
-+ * module load parameters or the kernel boot parameters. If MTD devices were
-+ * specified, UBI does not attach any MTD device, but it is possible to do
-+ * later using the "UBI control device".
-+ *
-+ * At the moment we only attach UBI devices by scanning, which will become a
-+ * bottleneck when flashes reach certain large size. Then one may improve UBI
-+ * and add other methods, although it does not seem to be easy to do.
++ * Enable NAND.
 + */
-+
-+#ifdef UBI_LINUX
-+#include <linux/err.h>
-+#include <linux/module.h>
-+#include <linux/moduleparam.h>
-+#include <linux/stringify.h>
-+#include <linux/stat.h>
-+#include <linux/miscdevice.h>
-+#include <linux/log2.h>
-+#include <linux/kthread.h>
-+#endif
-+#include "ubi-barebox.h"
-+#include "ubi.h"
-+
-+/* Maximum length of the 'mtd=' parameter */
-+#define MTD_PARAM_LEN_MAX 64
-+
-+/**
-+ * struct mtd_dev_param - MTD device parameter description data structure.
-+ * @name: MTD device name or number string
-+ * @vid_hdr_offs: VID header offset
-+ */
-+struct mtd_dev_param
++static void atmel_nand_enable(struct atmel_nand_host *host)
 +{
-+	char name[MTD_PARAM_LEN_MAX];
-+	int vid_hdr_offs;
-+};
-+
-+/* Numbers of elements set in the @mtd_dev_param array */
-+static int mtd_devs = 0;
-+
-+/* MTD devices specification parameters */
-+static struct mtd_dev_param mtd_dev_param[UBI_MAX_DEVICES];
-+
-+/* Root UBI "class" object (corresponds to '/<sysfs>/class/ubi/') */
-+struct class *ubi_class;
-+
-+#ifdef UBI_LINUX
-+/* Slab cache for wear-leveling entries */
-+struct kmem_cache *ubi_wl_entry_slab;
-+
-+/* UBI control character device */
-+static struct miscdevice ubi_ctrl_cdev = {
-+	.minor = MISC_DYNAMIC_MINOR,
-+	.name = "ubi_ctrl",
-+	.fops = &ubi_ctrl_cdev_operations,
-+};
-+#endif
-+
-+/* All UBI devices in system */
-+struct ubi_device *ubi_devices[UBI_MAX_DEVICES];
-+
-+#ifdef UBI_LINUX
-+/* Serializes UBI devices creations and removals */
-+DEFINE_MUTEX(ubi_devices_mutex);
-+
-+/* Protects @ubi_devices and @ubi->ref_count */
-+static DEFINE_SPINLOCK(ubi_devices_lock);
-+
-+/* "Show" method for files in '/<sysfs>/class/ubi/' */
-+static ssize_t ubi_version_show(struct class *class, char *buf)
-+{
-+	return sprintf(buf, "%d\n", UBI_VERSION);
++	if (host->board->enable_pin)
++		gpio_set_value(host->board->enable_pin, 0);
 +}
 +
-+/* UBI version attribute ('/<sysfs>/class/ubi/version') */
-+static struct class_attribute ubi_version =
-+	__ATTR(version, S_IRUGO, ubi_version_show, NULL);
-+
-+static ssize_t dev_attribute_show(struct device *dev,
-+				  struct device_attribute *attr, char *buf);
-+
-+/* UBI device attributes (correspond to files in '/<sysfs>/class/ubi/ubiX') */
-+static struct device_attribute dev_eraseblock_size =
-+	__ATTR(eraseblock_size, S_IRUGO, dev_attribute_show, NULL);
-+static struct device_attribute dev_avail_eraseblocks =
-+	__ATTR(avail_eraseblocks, S_IRUGO, dev_attribute_show, NULL);
-+static struct device_attribute dev_total_eraseblocks =
-+	__ATTR(total_eraseblocks, S_IRUGO, dev_attribute_show, NULL);
-+static struct device_attribute dev_volumes_count =
-+	__ATTR(volumes_count, S_IRUGO, dev_attribute_show, NULL);
-+static struct device_attribute dev_max_ec =
-+	__ATTR(max_ec, S_IRUGO, dev_attribute_show, NULL);
-+static struct device_attribute dev_reserved_for_bad =
-+	__ATTR(reserved_for_bad, S_IRUGO, dev_attribute_show, NULL);
-+static struct device_attribute dev_bad_peb_count =
-+	__ATTR(bad_peb_count, S_IRUGO, dev_attribute_show, NULL);
-+static struct device_attribute dev_max_vol_count =
-+	__ATTR(max_vol_count, S_IRUGO, dev_attribute_show, NULL);
-+static struct device_attribute dev_min_io_size =
-+	__ATTR(min_io_size, S_IRUGO, dev_attribute_show, NULL);
-+static struct device_attribute dev_bgt_enabled =
-+	__ATTR(bgt_enabled, S_IRUGO, dev_attribute_show, NULL);
-+static struct device_attribute dev_mtd_num =
-+	__ATTR(mtd_num, S_IRUGO, dev_attribute_show, NULL);
-+#endif
-+
-+/**
-+ * ubi_get_device - get UBI device.
-+ * @ubi_num: UBI device number
-+ *
-+ * This function returns UBI device description object for UBI device number
-+ * @ubi_num, or %NULL if the device does not exist. This function increases the
-+ * device reference count to prevent removal of the device. In other words, the
-+ * device cannot be removed if its reference count is not zero.
++/*
++ * Disable NAND.
 + */
-+struct ubi_device *ubi_get_device(int ubi_num)
++static void atmel_nand_disable(struct atmel_nand_host *host)
 +{
-+	struct ubi_device *ubi;
++	if (host->board->enable_pin)
++		gpio_set_value(host->board->enable_pin, 1);
++}
 +
-+	spin_lock(&ubi_devices_lock);
-+	ubi = ubi_devices[ubi_num];
-+	if (ubi) {
-+		ubi_assert(ubi->ref_count >= 0);
-+		ubi->ref_count += 1;
-+		get_device(&ubi->dev);
++/*
++ * Hardware specific access to control-lines
++ */
++static void atmel_nand_cmd_ctrl(struct mtd_info *mtd, int cmd, unsigned int ctrl)
++{
++	struct nand_chip *nand_chip = mtd->priv;
++	struct atmel_nand_host *host = nand_chip->priv;
++
++	if (ctrl & NAND_CTRL_CHANGE) {
++		if (ctrl & NAND_NCE)
++			atmel_nand_enable(host);
++		else
++			atmel_nand_disable(host);
 +	}
-+	spin_unlock(&ubi_devices_lock);
++	if (cmd == NAND_CMD_NONE)
++		return;
 +
-+	return ubi;
-+}
-+
-+/**
-+ * ubi_put_device - drop an UBI device reference.
-+ * @ubi: UBI device description object
-+ */
-+void ubi_put_device(struct ubi_device *ubi)
-+{
-+	spin_lock(&ubi_devices_lock);
-+	ubi->ref_count -= 1;
-+	put_device(&ubi->dev);
-+	spin_unlock(&ubi_devices_lock);
-+}
-+
-+/**
-+ * ubi_get_by_major - get UBI device description object by character device
-+ *                    major number.
-+ * @major: major number
-+ *
-+ * This function is similar to 'ubi_get_device()', but it searches the device
-+ * by its major number.
-+ */
-+struct ubi_device *ubi_get_by_major(int major)
-+{
-+	int i;
-+	struct ubi_device *ubi;
-+
-+	spin_lock(&ubi_devices_lock);
-+	for (i = 0; i < UBI_MAX_DEVICES; i++) {
-+		ubi = ubi_devices[i];
-+		if (ubi && MAJOR(ubi->cdev.dev) == major) {
-+			ubi_assert(ubi->ref_count >= 0);
-+			ubi->ref_count += 1;
-+			get_device(&ubi->dev);
-+			spin_unlock(&ubi_devices_lock);
-+			return ubi;
-+		}
-+	}
-+	spin_unlock(&ubi_devices_lock);
-+
-+	return NULL;
-+}
-+
-+/**
-+ * ubi_major2num - get UBI device number by character device major number.
-+ * @major: major number
-+ *
-+ * This function searches UBI device number object by its major number. If UBI
-+ * device was not found, this function returns -ENODEV, otherwise the UBI device
-+ * number is returned.
-+ */
-+int ubi_major2num(int major)
-+{
-+	int i, ubi_num = -ENODEV;
-+
-+	spin_lock(&ubi_devices_lock);
-+	for (i = 0; i < UBI_MAX_DEVICES; i++) {
-+		struct ubi_device *ubi = ubi_devices[i];
-+
-+		if (ubi && MAJOR(ubi->cdev.dev) == major) {
-+			ubi_num = ubi->ubi_num;
-+			break;
-+		}
-+	}
-+	spin_unlock(&ubi_devices_lock);
-+
-+	return ubi_num;
-+}
-+
-+#ifdef UBI_LINUX
-+/* "Show" method for files in '/<sysfs>/class/ubi/ubiX/' */
-+static ssize_t dev_attribute_show(struct device *dev,
-+				  struct device_attribute *attr, char *buf)
-+{
-+	ssize_t ret;
-+	struct ubi_device *ubi;
-+
-+	/*
-+	 * The below code looks weird, but it actually makes sense. We get the
-+	 * UBI device reference from the contained 'struct ubi_device'. But it
-+	 * is unclear if the device was removed or not yet. Indeed, if the
-+	 * device was removed before we increased its reference count,
-+	 * 'ubi_get_device()' will return -ENODEV and we fail.
-+	 *
-+	 * Remember, 'struct ubi_device' is freed in the release function, so
-+	 * we still can use 'ubi->ubi_num'.
-+	 */
-+	ubi = container_of(dev, struct ubi_device, dev);
-+	ubi = ubi_get_device(ubi->ubi_num);
-+	if (!ubi)
-+		return -ENODEV;
-+
-+	if (attr == &dev_eraseblock_size)
-+		ret = sprintf(buf, "%d\n", ubi->leb_size);
-+	else if (attr == &dev_avail_eraseblocks)
-+		ret = sprintf(buf, "%d\n", ubi->avail_pebs);
-+	else if (attr == &dev_total_eraseblocks)
-+		ret = sprintf(buf, "%d\n", ubi->good_peb_count);
-+	else if (attr == &dev_volumes_count)
-+		ret = sprintf(buf, "%d\n", ubi->vol_count - UBI_INT_VOL_COUNT);
-+	else if (attr == &dev_max_ec)
-+		ret = sprintf(buf, "%d\n", ubi->max_ec);
-+	else if (attr == &dev_reserved_for_bad)
-+		ret = sprintf(buf, "%d\n", ubi->beb_rsvd_pebs);
-+	else if (attr == &dev_bad_peb_count)
-+		ret = sprintf(buf, "%d\n", ubi->bad_peb_count);
-+	else if (attr == &dev_max_vol_count)
-+		ret = sprintf(buf, "%d\n", ubi->vtbl_slots);
-+	else if (attr == &dev_min_io_size)
-+		ret = sprintf(buf, "%d\n", ubi->min_io_size);
-+	else if (attr == &dev_bgt_enabled)
-+		ret = sprintf(buf, "%d\n", ubi->thread_enabled);
-+	else if (attr == &dev_mtd_num)
-+		ret = sprintf(buf, "%d\n", ubi->mtd->index);
++	if (ctrl & NAND_CLE)
++		writeb(cmd, host->io_base + (1 << host->board->cle));
 +	else
-+		ret = -EINVAL;
-+
-+	ubi_put_device(ubi);
-+	return ret;
++		writeb(cmd, host->io_base + (1 << host->board->ale));
 +}
 +
-+/* Fake "release" method for UBI devices */
-+static void dev_release(struct device *dev) { }
++/*
++ * Read the Device Ready pin.
++ */
++static int atmel_nand_device_ready(struct mtd_info *mtd)
++{
++	struct nand_chip *nand_chip = mtd->priv;
++	struct atmel_nand_host *host = nand_chip->priv;
 +
-+/**
-+ * ubi_sysfs_init - initialize sysfs for an UBI device.
-+ * @ubi: UBI device description object
++	return gpio_get_value(host->board->rdy_pin);
++}
++
++/*
++ * Minimal-overhead PIO for data access.
++ */
++static void atmel_read_buf(struct mtd_info *mtd, u8 *buf, int len)
++{
++	struct nand_chip	*nand_chip = mtd->priv;
++
++	readsb(nand_chip->IO_ADDR_R, buf, len);
++}
++
++static void atmel_read_buf16(struct mtd_info *mtd, u8 *buf, int len)
++{
++	struct nand_chip	*nand_chip = mtd->priv;
++
++	readsw(nand_chip->IO_ADDR_R, buf, len / 2);
++}
++
++static void atmel_write_buf(struct mtd_info *mtd, const u8 *buf, int len)
++{
++	struct nand_chip	*nand_chip = mtd->priv;
++
++	writesb(nand_chip->IO_ADDR_W, buf, len);
++}
++
++static void atmel_write_buf16(struct mtd_info *mtd, const u8 *buf, int len)
++{
++	struct nand_chip	*nand_chip = mtd->priv;
++
++	writesw(nand_chip->IO_ADDR_W, buf, len / 2);
++}
++
++/*
++ * Calculate HW ECC
 + *
-+ * This function returns zero in case of success and a negative error code in
-+ * case of failure.
-+ */
-+static int ubi_sysfs_init(struct ubi_device *ubi)
-+{
-+	int err;
-+
-+	ubi->dev.release = dev_release;
-+	ubi->dev.devt = ubi->cdev.dev;
-+	ubi->dev.class = ubi_class;
-+	sprintf(&ubi->dev.bus_id[0], UBI_NAME_STR"%d", ubi->ubi_num);
-+	err = device_register(&ubi->dev);
-+	if (err)
-+		return err;
-+
-+	err = device_create_file(&ubi->dev, &dev_eraseblock_size);
-+	if (err)
-+		return err;
-+	err = device_create_file(&ubi->dev, &dev_avail_eraseblocks);
-+	if (err)
-+		return err;
-+	err = device_create_file(&ubi->dev, &dev_total_eraseblocks);
-+	if (err)
-+		return err;
-+	err = device_create_file(&ubi->dev, &dev_volumes_count);
-+	if (err)
-+		return err;
-+	err = device_create_file(&ubi->dev, &dev_max_ec);
-+	if (err)
-+		return err;
-+	err = device_create_file(&ubi->dev, &dev_reserved_for_bad);
-+	if (err)
-+		return err;
-+	err = device_create_file(&ubi->dev, &dev_bad_peb_count);
-+	if (err)
-+		return err;
-+	err = device_create_file(&ubi->dev, &dev_max_vol_count);
-+	if (err)
-+		return err;
-+	err = device_create_file(&ubi->dev, &dev_min_io_size);
-+	if (err)
-+		return err;
-+	err = device_create_file(&ubi->dev, &dev_bgt_enabled);
-+	if (err)
-+		return err;
-+	err = device_create_file(&ubi->dev, &dev_mtd_num);
-+	return err;
-+}
-+
-+/**
-+ * ubi_sysfs_close - close sysfs for an UBI device.
-+ * @ubi: UBI device description object
-+ */
-+static void ubi_sysfs_close(struct ubi_device *ubi)
-+{
-+	device_remove_file(&ubi->dev, &dev_mtd_num);
-+	device_remove_file(&ubi->dev, &dev_bgt_enabled);
-+	device_remove_file(&ubi->dev, &dev_min_io_size);
-+	device_remove_file(&ubi->dev, &dev_max_vol_count);
-+	device_remove_file(&ubi->dev, &dev_bad_peb_count);
-+	device_remove_file(&ubi->dev, &dev_reserved_for_bad);
-+	device_remove_file(&ubi->dev, &dev_max_ec);
-+	device_remove_file(&ubi->dev, &dev_volumes_count);
-+	device_remove_file(&ubi->dev, &dev_total_eraseblocks);
-+	device_remove_file(&ubi->dev, &dev_avail_eraseblocks);
-+	device_remove_file(&ubi->dev, &dev_eraseblock_size);
-+	device_unregister(&ubi->dev);
-+}
-+#endif
-+
-+/**
-+ * kill_volumes - destroy all volumes.
-+ * @ubi: UBI device description object
-+ */
-+static void kill_volumes(struct ubi_device *ubi)
-+{
-+	int i;
-+
-+	for (i = 0; i < ubi->vtbl_slots; i++)
-+		if (ubi->volumes[i])
-+			ubi_free_volume(ubi, ubi->volumes[i]);
-+}
-+
-+/**
-+ * uif_init - initialize user interfaces for an UBI device.
-+ * @ubi: UBI device description object
++ * function called after a write
 + *
-+ * This function returns zero in case of success and a negative error code in
-+ * case of failure.
++ * mtd:        MTD block structure
++ * dat:        raw data (unused)
++ * ecc_code:   buffer for ECC
 + */
-+static int uif_init(struct ubi_device *ubi)
++static int atmel_nand_calculate(struct mtd_info *mtd,
++		const u_char *dat, unsigned char *ecc_code)
 +{
-+	int i, err;
-+#ifdef UBI_LINUX
-+	dev_t dev;
-+#endif
++	struct nand_chip *nand_chip = mtd->priv;
++	struct atmel_nand_host *host = nand_chip->priv;
++/* 	uint32_t *eccpos = nand_chip->ecc.layout->eccpos; */
++	unsigned int ecc_value;
 +
-+	sprintf(ubi->ubi_name, UBI_NAME_STR "%d", ubi->ubi_num);
++	/* get the first 2 ECC bytes */
++	ecc_value = ecc_readl(host->ecc, PR);
 +
-+	/*
-+	 * Major numbers for the UBI character devices are allocated
-+	 * dynamically. Major numbers of volume character devices are
-+	 * equivalent to ones of the corresponding UBI character device. Minor
-+	 * numbers of UBI character devices are 0, while minor numbers of
-+	 * volume character devices start from 1. Thus, we allocate one major
-+	 * number and ubi->vtbl_slots + 1 minor numbers.
-+	 */
-+	err = alloc_chrdev_region(&dev, 0, ubi->vtbl_slots + 1, ubi->ubi_name);
-+	if (err) {
-+		ubi_err("cannot register UBI character devices");
-+		return err;
-+	}
++	ecc_code[0] = ecc_value & 0xFF;
++	ecc_code[1] = (ecc_value >> 8) & 0xFF;
 +
-+	ubi_assert(MINOR(dev) == 0);
-+	cdev_init(&ubi->cdev, &ubi_cdev_operations);
-+	dbg_msg("%s major is %u", ubi->ubi_name, MAJOR(dev));
-+#ifdef UBI_LINUX
-+	ubi->cdev.owner = THIS_MODULE;
-+#endif
-+	err = cdev_add(&ubi->cdev, dev, 1);
-+	if (err) {
-+		ubi_err("cannot add character device");
-+		goto out_unreg;
-+	}
++	/* get the last 2 ECC bytes */
++	ecc_value = ecc_readl(host->ecc, NPR) & ATMEL_ECC_NPARITY;
 +
-+	err = ubi_sysfs_init(ubi);
-+	if (err)
-+		goto out_sysfs;
-+
-+	for (i = 0; i < ubi->vtbl_slots; i++)
-+		if (ubi->volumes[i]) {
-+			err = ubi_add_volume(ubi, ubi->volumes[i]);
-+			if (err) {
-+				ubi_err("cannot add volume %d", i);
-+				goto out_volumes;
-+			}
-+		}
-+
-+	return 0;
-+
-+out_volumes:
-+	kill_volumes(ubi);
-+out_sysfs:
-+	ubi_sysfs_close(ubi);
-+	cdev_del(&ubi->cdev);
-+out_unreg:
-+	unregister_chrdev_region(ubi->cdev.dev, ubi->vtbl_slots + 1);
-+	ubi_err("cannot initialize UBI %s, error %d", ubi->ubi_name, err);
-+	return err;
-+}
-+
-+/**
-+ * uif_close - close user interfaces for an UBI device.
-+ * @ubi: UBI device description object
-+ */
-+static void uif_close(struct ubi_device *ubi)
-+{
-+	kill_volumes(ubi);
-+	ubi_sysfs_close(ubi);
-+	cdev_del(&ubi->cdev);
-+	unregister_chrdev_region(ubi->cdev.dev, ubi->vtbl_slots + 1);
-+}
-+
-+/**
-+ * attach_by_scanning - attach an MTD device using scanning method.
-+ * @ubi: UBI device descriptor
-+ *
-+ * This function returns zero in case of success and a negative error code in
-+ * case of failure.
-+ *
-+ * Note, currently this is the only method to attach UBI devices. Hopefully in
-+ * the future we'll have more scalable attaching methods and avoid full media
-+ * scanning. But even in this case scanning will be needed as a fall-back
-+ * attaching method if there are some on-flash table corruptions.
-+ */
-+static int attach_by_scanning(struct ubi_device *ubi)
-+{
-+	int err;
-+	struct ubi_scan_info *si;
-+
-+	si = ubi_scan(ubi);
-+	if (IS_ERR(si))
-+		return PTR_ERR(si);
-+
-+	ubi->bad_peb_count = si->bad_peb_count;
-+	ubi->good_peb_count = ubi->peb_count - ubi->bad_peb_count;
-+	ubi->max_ec = si->max_ec;
-+	ubi->mean_ec = si->mean_ec;
-+
-+	err = ubi_read_volume_table(ubi, si);
-+	if (err)
-+		goto out_si;
-+
-+	err = ubi_wl_init_scan(ubi, si);
-+	if (err)
-+		goto out_vtbl;
-+
-+	err = ubi_eba_init_scan(ubi, si);
-+	if (err)
-+		goto out_wl;
-+
-+	ubi_scan_destroy_si(si);
-+	return 0;
-+
-+out_wl:
-+	ubi_wl_close(ubi);
-+out_vtbl:
-+	vfree(ubi->vtbl);
-+out_si:
-+	ubi_scan_destroy_si(si);
-+	return err;
-+}
-+
-+/**
-+ * io_init - initialize I/O unit for a given UBI device.
-+ * @ubi: UBI device description object
-+ *
-+ * If @ubi->vid_hdr_offset or @ubi->leb_start is zero, default offsets are
-+ * assumed:
-+ *   o EC header is always at offset zero - this cannot be changed;
-+ *   o VID header starts just after the EC header at the closest address
-+ *     aligned to @io->hdrs_min_io_size;
-+ *   o data starts just after the VID header at the closest address aligned to
-+ *     @io->min_io_size
-+ *
-+ * This function returns zero in case of success and a negative error code in
-+ * case of failure.
-+ */
-+static int io_init(struct ubi_device *ubi)
-+{
-+	if (ubi->mtd->numeraseregions != 0) {
-+		/*
-+		 * Some flashes have several erase regions. Different regions
-+		 * may have different eraseblock size and other
-+		 * characteristics. It looks like mostly multi-region flashes
-+		 * have one "main" region and one or more small regions to
-+		 * store boot loader code or boot parameters or whatever. I
-+		 * guess we should just pick the largest region. But this is
-+		 * not implemented.
-+		 */
-+		ubi_err("multiple regions, not implemented");
-+		return -EINVAL;
-+	}
-+
-+	if (ubi->vid_hdr_offset < 0)
-+		return -EINVAL;
-+
-+	/*
-+	 * Note, in this implementation we support MTD devices with 0x7FFFFFFF
-+	 * physical eraseblocks maximum.
-+	 */
-+
-+	ubi->peb_size   = ubi->mtd->erasesize;
-+	ubi->peb_count  = mtd_div_by_eb(ubi->mtd->size, ubi->mtd);
-+	ubi->flash_size = ubi->mtd->size;
-+
-+	if (ubi->mtd->block_isbad && ubi->mtd->block_markbad)
-+		ubi->bad_allowed = 1;
-+
-+	ubi->min_io_size = ubi->mtd->writesize;
-+	ubi->hdrs_min_io_size = ubi->mtd->writesize >> ubi->mtd->subpage_sft;
-+
-+	/*
-+	 * Make sure minimal I/O unit is power of 2. Note, there is no
-+	 * fundamental reason for this assumption. It is just an optimization
-+	 * which allows us to avoid costly division operations.
-+	 */
-+	if (!is_power_of_2(ubi->min_io_size)) {
-+		ubi_err("min. I/O unit (%d) is not power of 2",
-+			ubi->min_io_size);
-+		return -EINVAL;
-+	}
-+
-+	ubi_assert(ubi->hdrs_min_io_size > 0);
-+	ubi_assert(ubi->hdrs_min_io_size <= ubi->min_io_size);
-+	ubi_assert(ubi->min_io_size % ubi->hdrs_min_io_size == 0);
-+
-+	/* Calculate default aligned sizes of EC and VID headers */
-+	ubi->ec_hdr_alsize = ALIGN(UBI_EC_HDR_SIZE, ubi->hdrs_min_io_size);
-+	ubi->vid_hdr_alsize = ALIGN(UBI_VID_HDR_SIZE, ubi->hdrs_min_io_size);
-+
-+	dbg_msg("min_io_size      %d", ubi->min_io_size);
-+	dbg_msg("hdrs_min_io_size %d", ubi->hdrs_min_io_size);
-+	dbg_msg("ec_hdr_alsize    %d", ubi->ec_hdr_alsize);
-+	dbg_msg("vid_hdr_alsize   %d", ubi->vid_hdr_alsize);
-+
-+	if (ubi->vid_hdr_offset == 0)
-+		/* Default offset */
-+		ubi->vid_hdr_offset = ubi->vid_hdr_aloffset =
-+				      ubi->ec_hdr_alsize;
-+	else {
-+		ubi->vid_hdr_aloffset = ubi->vid_hdr_offset &
-+						~(ubi->hdrs_min_io_size - 1);
-+		ubi->vid_hdr_shift = ubi->vid_hdr_offset -
-+						ubi->vid_hdr_aloffset;
-+	}
-+
-+	/* Similar for the data offset */
-+	ubi->leb_start = ubi->vid_hdr_offset + UBI_EC_HDR_SIZE;
-+	ubi->leb_start = ALIGN(ubi->leb_start, ubi->min_io_size);
-+
-+	dbg_msg("vid_hdr_offset   %d", ubi->vid_hdr_offset);
-+	dbg_msg("vid_hdr_aloffset %d", ubi->vid_hdr_aloffset);
-+	dbg_msg("vid_hdr_shift    %d", ubi->vid_hdr_shift);
-+	dbg_msg("leb_start        %d", ubi->leb_start);
-+
-+	/* The shift must be aligned to 32-bit boundary */
-+	if (ubi->vid_hdr_shift % 4) {
-+		ubi_err("unaligned VID header shift %d",
-+			ubi->vid_hdr_shift);
-+		return -EINVAL;
-+	}
-+
-+	/* Check sanity */
-+	if (ubi->vid_hdr_offset < UBI_EC_HDR_SIZE ||
-+	    ubi->leb_start < ubi->vid_hdr_offset + UBI_VID_HDR_SIZE ||
-+	    ubi->leb_start > ubi->peb_size - UBI_VID_HDR_SIZE ||
-+	    ubi->leb_start & (ubi->min_io_size - 1)) {
-+		ubi_err("bad VID header (%d) or data offsets (%d)",
-+			ubi->vid_hdr_offset, ubi->leb_start);
-+		return -EINVAL;
-+	}
-+
-+	/*
-+	 * It may happen that EC and VID headers are situated in one minimal
-+	 * I/O unit. In this case we can only accept this UBI image in
-+	 * read-only mode.
-+	 */
-+	if (ubi->vid_hdr_offset + UBI_VID_HDR_SIZE <= ubi->hdrs_min_io_size) {
-+		ubi_warn("EC and VID headers are in the same minimal I/O unit, "
-+			 "switch to read-only mode");
-+		ubi->ro_mode = 1;
-+	}
-+
-+	ubi->leb_size = ubi->peb_size - ubi->leb_start;
-+
-+	if (!(ubi->mtd->flags & MTD_WRITEABLE)) {
-+		ubi_msg("MTD device %d is write-protected, attach in "
-+			"read-only mode", ubi->mtd->index);
-+		ubi->ro_mode = 1;
-+	}
-+
-+	ubi_msg("physical eraseblock size:   %d bytes (%d KiB)",
-+		ubi->peb_size, ubi->peb_size >> 10);
-+	ubi_msg("logical eraseblock size:    %d bytes", ubi->leb_size);
-+	ubi_msg("smallest flash I/O unit:    %d", ubi->min_io_size);
-+	if (ubi->hdrs_min_io_size != ubi->min_io_size)
-+		ubi_msg("sub-page size:              %d",
-+			ubi->hdrs_min_io_size);
-+	ubi_msg("VID header offset:          %d (aligned %d)",
-+		ubi->vid_hdr_offset, ubi->vid_hdr_aloffset);
-+	ubi_msg("data offset:                %d", ubi->leb_start);
-+
-+	/*
-+	 * Note, ideally, we have to initialize ubi->bad_peb_count here. But
-+	 * unfortunately, MTD does not provide this information. We should loop
-+	 * over all physical eraseblocks and invoke mtd->block_is_bad() for
-+	 * each physical eraseblock. So, we skip ubi->bad_peb_count
-+	 * uninitialized and initialize it after scanning.
-+	 */
++	ecc_code[2] = ecc_value & 0xFF;
++	ecc_code[3] = (ecc_value >> 8) & 0xFF;
 +
 +	return 0;
 +}
 +
-+/**
-+ * autoresize - re-size the volume which has the "auto-resize" flag set.
-+ * @ubi: UBI device description object
-+ * @vol_id: ID of the volume to re-size
++/*
++ * HW ECC read page function
 + *
-+ * This function re-sizes the volume marked by the @UBI_VTBL_AUTORESIZE_FLG in
-+ * the volume table to the largest possible size. See comments in ubi-header.h
-+ * for more description of the flag. Returns zero in case of success and a
-+ * negative error code in case of failure.
++ * mtd:        mtd info structure
++ * chip:       nand chip info structure
++ * buf:        buffer to store read data
 + */
-+static int autoresize(struct ubi_device *ubi, int vol_id)
++static int atmel_nand_read_page(struct mtd_info *mtd,
++		struct nand_chip *chip, uint8_t *buf)
 +{
-+	struct ubi_volume_desc desc;
-+	struct ubi_volume *vol = ubi->volumes[vol_id];
-+	int err, old_reserved_pebs = vol->reserved_pebs;
++	int eccsize = chip->ecc.size;
++	int eccbytes = chip->ecc.bytes;
++	uint32_t *eccpos = chip->ecc.layout->eccpos;
++	uint8_t *p = buf;
++	uint8_t *oob = chip->oob_poi;
++	uint8_t *ecc_pos;
++	int stat;
 +
 +	/*
-+	 * Clear the auto-resize flag in the volume in-memory copy of the
-+	 * volume table, and 'ubi_resize_volume()' will propogate this change
-+	 * to the flash.
-+	 */
-+	ubi->vtbl[vol_id].flags &= ~UBI_VTBL_AUTORESIZE_FLG;
-+
-+	if (ubi->avail_pebs == 0) {
-+		struct ubi_vtbl_record vtbl_rec;
-+
-+		/*
-+		 * No avalilable PEBs to re-size the volume, clear the flag on
-+		 * flash and exit.
-+		 */
-+		memcpy(&vtbl_rec, &ubi->vtbl[vol_id],
-+		       sizeof(struct ubi_vtbl_record));
-+		err = ubi_change_vtbl_record(ubi, vol_id, &vtbl_rec);
-+		if (err)
-+			ubi_err("cannot clean auto-resize flag for volume %d",
-+				vol_id);
-+	} else {
-+		desc.vol = vol;
-+		err = ubi_resize_volume(&desc,
-+					old_reserved_pebs + ubi->avail_pebs);
-+		if (err)
-+			ubi_err("cannot auto-resize volume %d", vol_id);
-+	}
-+
-+	if (err)
-+		return err;
-+
-+	ubi_msg("volume %d (\"%s\") re-sized from %d to %d LEBs", vol_id,
-+		vol->name, old_reserved_pebs, vol->reserved_pebs);
-+	return 0;
-+}
-+
-+/**
-+ * ubi_attach_mtd_dev - attach an MTD device.
-+ * @mtd_dev: MTD device description object
-+ * @ubi_num: number to assign to the new UBI device
-+ * @vid_hdr_offset: VID header offset
-+ *
-+ * This function attaches MTD device @mtd_dev to UBI and assign @ubi_num number
-+ * to the newly created UBI device, unless @ubi_num is %UBI_DEV_NUM_AUTO, in
-+ * which case this function finds a vacant device nubert and assings it
-+ * automatically. Returns the new UBI device number in case of success and a
-+ * negative error code in case of failure.
-+ *
-+ * Note, the invocations of this function has to be serialized by the
-+ * @ubi_devices_mutex.
-+ */
-+int ubi_attach_mtd_dev(struct mtd_info *mtd, int ubi_num, int vid_hdr_offset)
-+{
-+	struct ubi_device *ubi;
-+	int i, err;
-+
-+	/*
-+	 * Check if we already have the same MTD device attached.
++	 * Errata: ALE is incorrectly wired up to the ECC controller
++	 * on the AP7000, so it will include the address cycles in the
++	 * ECC calculation.
 +	 *
-+	 * Note, this function assumes that UBI devices creations and deletions
-+	 * are serialized, so it does not take the &ubi_devices_lock.
++	 * Workaround: Reset the parity registers before reading the
++	 * actual data.
 +	 */
-+	for (i = 0; i < UBI_MAX_DEVICES; i++) {
-+		ubi = ubi_devices[i];
-+		if (ubi && mtd->index == ubi->mtd->index) {
-+			dbg_err("mtd%d is already attached to ubi%d",
-+				mtd->index, i);
-+			return -EEXIST;
-+		}
++#if 0
++	if (cpu_is_at32ap7000()) {
++		struct atmel_nand_host *host = chip->priv;
++		ecc_writel(host->ecc, CR, ATMEL_ECC_RST);
 +	}
-+
-+	/*
-+	 * Make sure this MTD device is not emulated on top of an UBI volume
-+	 * already. Well, generally this recursion works fine, but there are
-+	 * different problems like the UBI module takes a reference to itself
-+	 * by attaching (and thus, opening) the emulated MTD device. This
-+	 * results in inability to unload the module. And in general it makes
-+	 * no sense to attach emulated MTD devices, so we prohibit this.
-+	 */
-+	if (mtd->type == MTD_UBIVOLUME) {
-+		ubi_err("refuse attaching mtd%d - it is already emulated on "
-+			"top of UBI", mtd->index);
-+		return -EINVAL;
-+	}
-+
-+	if (ubi_num == UBI_DEV_NUM_AUTO) {
-+		/* Search for an empty slot in the @ubi_devices array */
-+		for (ubi_num = 0; ubi_num < UBI_MAX_DEVICES; ubi_num++)
-+			if (!ubi_devices[ubi_num])
-+				break;
-+		if (ubi_num == UBI_MAX_DEVICES) {
-+			dbg_err("only %d UBI devices may be created", UBI_MAX_DEVICES);
-+			return -ENFILE;
-+		}
-+	} else {
-+		if (ubi_num >= UBI_MAX_DEVICES)
-+			return -EINVAL;
-+
-+		/* Make sure ubi_num is not busy */
-+		if (ubi_devices[ubi_num]) {
-+			dbg_err("ubi%d already exists", ubi_num);
-+			return -EEXIST;
-+		}
-+	}
-+
-+	ubi = kzalloc(sizeof(struct ubi_device), GFP_KERNEL);
-+	if (!ubi)
-+		return -ENOMEM;
-+
-+	ubi->mtd = mtd;
-+	ubi->ubi_num = ubi_num;
-+	ubi->vid_hdr_offset = vid_hdr_offset;
-+	ubi->autoresize_vol_id = -1;
-+
-+	mutex_init(&ubi->buf_mutex);
-+	mutex_init(&ubi->ckvol_mutex);
-+	mutex_init(&ubi->volumes_mutex);
-+	spin_lock_init(&ubi->volumes_lock);
-+
-+	ubi_msg("attaching mtd%d to ubi%d", mtd->index, ubi_num);
-+
-+	err = io_init(ubi);
-+	if (err)
-+		goto out_free;
-+
-+	err = -ENOMEM;
-+	ubi->peb_buf1 = vmalloc(ubi->peb_size);
-+	if (!ubi->peb_buf1)
-+		goto out_free;
-+
-+	ubi->peb_buf2 = vmalloc(ubi->peb_size);
-+	if (!ubi->peb_buf2)
-+		goto out_free;
-+
-+#ifdef CONFIG_MTD_UBI_DEBUG
-+	mutex_init(&ubi->dbg_buf_mutex);
-+	ubi->dbg_peb_buf = vmalloc(ubi->peb_size);
-+	if (!ubi->dbg_peb_buf)
-+		goto out_free;
 +#endif
 +
-+	err = attach_by_scanning(ubi);
-+	if (err) {
-+		dbg_err("failed to attach by scanning, error %d", err);
-+		goto out_free;
-+	}
++	/* read the page */
++	chip->read_buf(mtd, p, eccsize);
 +
-+	if (ubi->autoresize_vol_id != -1) {
-+		err = autoresize(ubi, ubi->autoresize_vol_id);
-+		if (err)
-+			goto out_detach;
-+	}
-+
-+	err = uif_init(ubi);
-+	if (err)
-+		goto out_detach;
-+
-+	ubi->bgt_thread = kthread_create(ubi_thread, ubi, ubi->bgt_name);
-+	if (IS_ERR(ubi->bgt_thread)) {
-+		err = PTR_ERR(ubi->bgt_thread);
-+		ubi_err("cannot spawn \"%s\", error %d", ubi->bgt_name,
-+			err);
-+		goto out_uif;
-+	}
-+
-+	ubi_msg("attached mtd%d to ubi%d", mtd->index, ubi_num);
-+	ubi_msg("MTD device name:            \"%s\"", mtd->name);
-+	ubi_msg("MTD device size:            %llu MiB", ubi->flash_size >> 20);
-+	ubi_msg("number of good PEBs:        %d", ubi->good_peb_count);
-+	ubi_msg("number of bad PEBs:         %d", ubi->bad_peb_count);
-+	ubi_msg("max. allowed volumes:       %d", ubi->vtbl_slots);
-+	ubi_msg("wear-leveling threshold:    %d", CONFIG_MTD_UBI_WL_THRESHOLD);
-+	ubi_msg("number of internal volumes: %d", UBI_INT_VOL_COUNT);
-+	ubi_msg("number of user volumes:     %d",
-+		ubi->vol_count - UBI_INT_VOL_COUNT);
-+	ubi_msg("available PEBs:             %d", ubi->avail_pebs);
-+	ubi_msg("total number of reserved PEBs: %d", ubi->rsvd_pebs);
-+	ubi_msg("number of PEBs reserved for bad PEB handling: %d",
-+		ubi->beb_rsvd_pebs);
-+	ubi_msg("max/mean erase counter: %d/%d", ubi->max_ec, ubi->mean_ec);
-+
-+	/* Enable the background thread */
-+	if (!DBG_DISABLE_BGT) {
-+		ubi->thread_enabled = 1;
-+		wake_up_process(ubi->bgt_thread);
-+	}
-+
-+	ubi_devices[ubi_num] = ubi;
-+	return ubi_num;
-+
-+out_uif:
-+	uif_close(ubi);
-+out_detach:
-+	ubi_eba_close(ubi);
-+	ubi_wl_close(ubi);
-+	vfree(ubi->vtbl);
-+out_free:
-+	vfree(ubi->peb_buf1);
-+	vfree(ubi->peb_buf2);
-+#ifdef CONFIG_MTD_UBI_DEBUG
-+	vfree(ubi->dbg_peb_buf);
-+#endif
-+	kfree(ubi);
-+	return err;
-+}
-+
-+/**
-+ * ubi_detach_mtd_dev - detach an MTD device.
-+ * @ubi_num: UBI device number to detach from
-+ * @anyway: detach MTD even if device reference count is not zero
-+ *
-+ * This function destroys an UBI device number @ubi_num and detaches the
-+ * underlying MTD device. Returns zero in case of success and %-EBUSY if the
-+ * UBI device is busy and cannot be destroyed, and %-EINVAL if it does not
-+ * exist.
-+ *
-+ * Note, the invocations of this function has to be serialized by the
-+ * @ubi_devices_mutex.
-+ */
-+int ubi_detach_mtd_dev(int ubi_num, int anyway)
-+{
-+	struct ubi_device *ubi;
-+
-+	if (ubi_num < 0 || ubi_num >= UBI_MAX_DEVICES)
-+		return -EINVAL;
-+
-+	spin_lock(&ubi_devices_lock);
-+	ubi = ubi_devices[ubi_num];
-+	if (!ubi) {
-+		spin_unlock(&ubi_devices_lock);
-+		return -EINVAL;
-+	}
-+
-+	if (ubi->ref_count) {
-+		if (!anyway) {
-+			spin_unlock(&ubi_devices_lock);
-+			return -EBUSY;
-+		}
-+		/* This may only happen if there is a bug */
-+		ubi_err("%s reference count %d, destroy anyway",
-+			ubi->ubi_name, ubi->ref_count);
-+	}
-+	ubi_devices[ubi_num] = NULL;
-+	spin_unlock(&ubi_devices_lock);
-+
-+	ubi_assert(ubi_num == ubi->ubi_num);
-+	dbg_msg("detaching mtd%d from ubi%d", ubi->mtd->index, ubi_num);
-+
-+	/*
-+	 * Before freeing anything, we have to stop the background thread to
-+	 * prevent it from doing anything on this device while we are freeing.
-+	 */
-+	if (ubi->bgt_thread)
-+		kthread_stop(ubi->bgt_thread);
-+
-+	uif_close(ubi);
-+	ubi_eba_close(ubi);
-+	ubi_wl_close(ubi);
-+	vfree(ubi->vtbl);
-+	put_mtd_device(ubi->mtd);
-+	vfree(ubi->peb_buf1);
-+	vfree(ubi->peb_buf2);
-+#ifdef CONFIG_MTD_UBI_DEBUG
-+	vfree(ubi->dbg_peb_buf);
-+#endif
-+	ubi_msg("mtd%d is detached from ubi%d", ubi->mtd->index, ubi->ubi_num);
-+	kfree(ubi);
-+	return 0;
-+}
-+
-+/**
-+ * find_mtd_device - open an MTD device by its name or number.
-+ * @mtd_dev: name or number of the device
-+ *
-+ * This function tries to open and MTD device described by @mtd_dev string,
-+ * which is first treated as an ASCII number, and if it is not true, it is
-+ * treated as MTD device name. Returns MTD device description object in case of
-+ * success and a negative error code in case of failure.
-+ */
-+static struct mtd_info * __init open_mtd_device(const char *mtd_dev)
-+{
-+	struct mtd_info *mtd;
-+	int mtd_num;
-+	char *endp;
-+
-+	mtd_num = simple_strtoul(mtd_dev, &endp, 0);
-+	if (*endp != '\0' || mtd_dev == endp) {
-+		/*
-+		 * This does not look like an ASCII integer, probably this is
-+		 * MTD device name.
++	/* move to ECC position if needed */
++	if (eccpos[0] != 0) {
++		/* This only works on large pages
++		 * because the ECC controller waits for
++		 * NAND_CMD_RNDOUTSTART after the
++		 * NAND_CMD_RNDOUT.
++		 * anyway, for small pages, the eccpos[0] == 0
 +		 */
-+		mtd = get_mtd_device_nm(mtd_dev);
-+	} else
-+		mtd = get_mtd_device(NULL, mtd_num);
-+
-+	return mtd;
-+}
-+
-+int __init ubi_init(void)
-+{
-+	int err, i, k;
-+
-+	/* Ensure that EC and VID headers have correct size */
-+	BUILD_BUG_ON(sizeof(struct ubi_ec_hdr) != 64);
-+	BUILD_BUG_ON(sizeof(struct ubi_vid_hdr) != 64);
-+
-+	if (mtd_devs > UBI_MAX_DEVICES) {
-+		ubi_err("too many MTD devices, maximum is %d", UBI_MAX_DEVICES);
-+		return -EINVAL;
++		chip->cmdfunc(mtd, NAND_CMD_RNDOUT,
++				mtd->writesize + eccpos[0], -1);
 +	}
 +
-+	/* Create base sysfs directory and sysfs files */
-+	ubi_class = class_create(THIS_MODULE, UBI_NAME_STR);
-+	if (IS_ERR(ubi_class)) {
-+		err = PTR_ERR(ubi_class);
-+		ubi_err("cannot create UBI class");
-+		goto out;
-+	}
++	/* the ECC controller needs to read the ECC just after the data */
++	ecc_pos = oob + eccpos[0];
++	chip->read_buf(mtd, ecc_pos, eccbytes);
 +
-+	err = class_create_file(ubi_class, &ubi_version);
-+	if (err) {
-+		ubi_err("cannot create sysfs file");
-+		goto out_class;
-+	}
++	/* check if there's an error */
++	stat = chip->ecc.correct(mtd, p, oob, NULL);
 +
-+	err = misc_register(&ubi_ctrl_cdev);
-+	if (err) {
-+		ubi_err("cannot register device");
-+		goto out_version;
-+	}
++	if (stat < 0)
++		mtd->ecc_stats.failed++;
++	else
++		mtd->ecc_stats.corrected += stat;
 +
-+#ifdef UBI_LINUX
-+	ubi_wl_entry_slab = kmem_cache_create("ubi_wl_entry_slab",
-+					      sizeof(struct ubi_wl_entry),
-+					      0, 0, NULL);
-+	if (!ubi_wl_entry_slab)
-+		goto out_dev_unreg;
-+#endif
++	/* get back to oob start (end of page) */
++	chip->cmdfunc(mtd, NAND_CMD_RNDOUT, mtd->writesize, -1);
 +
-+	/* Attach MTD devices */
-+	for (i = 0; i < mtd_devs; i++) {
-+		struct mtd_dev_param *p = &mtd_dev_param[i];
-+		struct mtd_info *mtd;
-+
-+		cond_resched();
-+
-+		mtd = open_mtd_device(p->name);
-+		if (IS_ERR(mtd)) {
-+			err = PTR_ERR(mtd);
-+			goto out_detach;
-+		}
-+
-+		mutex_lock(&ubi_devices_mutex);
-+		err = ubi_attach_mtd_dev(mtd, UBI_DEV_NUM_AUTO,
-+					 p->vid_hdr_offs);
-+		mutex_unlock(&ubi_devices_mutex);
-+		if (err < 0) {
-+			put_mtd_device(mtd);
-+			ubi_err("cannot attach mtd%d", mtd->index);
-+			goto out_detach;
-+		}
-+	}
++	/* read the oob */
++	chip->read_buf(mtd, oob, mtd->oobsize);
 +
 +	return 0;
-+
-+out_detach:
-+	for (k = 0; k < i; k++)
-+		if (ubi_devices[k]) {
-+			mutex_lock(&ubi_devices_mutex);
-+			ubi_detach_mtd_dev(ubi_devices[k]->ubi_num, 1);
-+			mutex_unlock(&ubi_devices_mutex);
-+		}
-+#ifdef UBI_LINUX
-+	kmem_cache_destroy(ubi_wl_entry_slab);
-+out_dev_unreg:
-+#endif
-+	misc_deregister(&ubi_ctrl_cdev);
-+out_version:
-+	class_remove_file(ubi_class, &ubi_version);
-+out_class:
-+	class_destroy(ubi_class);
-+out:
-+	ubi_err("UBI error: cannot initialize UBI, error %d", err);
-+	return err;
 +}
-+module_init(ubi_init);
 +
-+void __exit ubi_exit(void)
-+{
-+	int i;
-+
-+	for (i = 0; i < UBI_MAX_DEVICES; i++)
-+		if (ubi_devices[i]) {
-+			mutex_lock(&ubi_devices_mutex);
-+			ubi_detach_mtd_dev(ubi_devices[i]->ubi_num, 1);
-+			mutex_unlock(&ubi_devices_mutex);
-+		}
-+	kmem_cache_destroy(ubi_wl_entry_slab);
-+	misc_deregister(&ubi_ctrl_cdev);
-+	class_remove_file(ubi_class, &ubi_version);
-+	class_destroy(ubi_class);
-+	mtd_devs = 0;
-+}
-+module_exit(ubi_exit);
-+
-+/**
-+ * bytes_str_to_int - convert a string representing number of bytes to an
-+ * integer.
-+ * @str: the string to convert
++/*
++ * HW ECC Correction
 + *
-+ * This function returns positive resulting integer in case of success and a
-+ * negative error code in case of failure.
-+ */
-+static int __init bytes_str_to_int(const char *str)
-+{
-+	char *endp;
-+	unsigned long result;
-+
-+	result = simple_strtoul(str, &endp, 0);
-+	if (str == endp || result < 0) {
-+		printk(KERN_ERR "UBI error: incorrect bytes count: \"%s\"\n",
-+		       str);
-+		return -EINVAL;
-+	}
-+
-+	switch (*endp) {
-+	case 'G':
-+		result *= 1024;
-+	case 'M':
-+		result *= 1024;
-+	case 'K':
-+		result *= 1024;
-+		if (endp[1] == 'i' && endp[2] == 'B')
-+			endp += 2;
-+	case '\0':
-+		break;
-+	default:
-+		printk(KERN_ERR "UBI error: incorrect bytes count: \"%s\"\n",
-+		       str);
-+		return -EINVAL;
-+	}
-+
-+	return result;
-+}
-+
-+/**
-+ * ubi_mtd_param_parse - parse the 'mtd=' UBI parameter.
-+ * @val: the parameter value to parse
-+ * @kp: not used
++ * function called after a read
 + *
-+ * This function returns zero in case of success and a negative error code in
-+ * case of error.
++ * mtd:        MTD block structure
++ * dat:        raw data read from the chip
++ * read_ecc:   ECC from the chip (unused)
++ * isnull:     unused
++ *
++ * Detect and correct a 1 bit error for a page
 + */
-+int __init ubi_mtd_param_parse(const char *val, struct kernel_param *kp)
++static int atmel_nand_correct(struct mtd_info *mtd, u_char *dat,
++		u_char *read_ecc, u_char *isnull)
 +{
-+	int i, len;
-+	struct mtd_dev_param *p;
-+	char buf[MTD_PARAM_LEN_MAX];
-+	char *pbuf = &buf[0];
-+	char *tokens[2] = {NULL, NULL};
++	struct nand_chip *nand_chip = mtd->priv;
++	struct atmel_nand_host *host = nand_chip->priv;
++	unsigned int ecc_status;
++	unsigned int ecc_word, ecc_bit;
 +
-+	if (!val)
-+		return -EINVAL;
++	/* get the status from the Status Register */
++	ecc_status = ecc_readl(host->ecc, SR);
 +
-+	if (mtd_devs == UBI_MAX_DEVICES) {
-+		printk(KERN_ERR "UBI error: too many parameters, max. is %d\n",
-+		       UBI_MAX_DEVICES);
-+		return -EINVAL;
++	/* if there's no error */
++	if (likely(!(ecc_status & ATMEL_ECC_RECERR)))
++		return 0;
++
++	/* get error bit offset (4 bits) */
++	ecc_bit = ecc_readl(host->ecc, PR) & ATMEL_ECC_BITADDR;
++	/* get word address (12 bits) */
++	ecc_word = ecc_readl(host->ecc, PR) & ATMEL_ECC_WORDADDR;
++	ecc_word >>= 4;
++
++	/* if there are multiple errors */
++	if (ecc_status & ATMEL_ECC_MULERR) {
++		/* check if it is a freshly erased block
++		 * (filled with 0xff) */
++		if ((ecc_bit == ATMEL_ECC_BITADDR)
++				&& (ecc_word == (ATMEL_ECC_WORDADDR >> 4))) {
++			/* the block has just been erased, return OK */
++			return 0;
++		}
++		/* it doesn't seems to be a freshly
++		 * erased block.
++		 * We can't correct so many errors */
++		dev_dbg(host->dev, "atmel_nand : multiple errors detected."
++				" Unable to correct.\n");
++		return -EIO;
 +	}
 +
-+	len = strnlen(val, MTD_PARAM_LEN_MAX);
-+	if (len == MTD_PARAM_LEN_MAX) {
-+		printk(KERN_ERR "UBI error: parameter \"%s\" is too long, "
-+		       "max. is %d\n", val, MTD_PARAM_LEN_MAX);
-+		return -EINVAL;
-+	}
-+
-+	if (len == 0) {
-+		printk(KERN_WARNING "UBI warning: empty 'mtd=' parameter - "
-+		       "ignored\n");
++	/* if there's a single bit error : we can correct it */
++	if (ecc_status & ATMEL_ECC_ECCERR) {
++		/* there's nothing much to do here.
++		 * the bit error is on the ECC itself.
++		 */
++		dev_dbg(host->dev, "atmel_nand : one bit error on ECC code."
++				" Nothing to correct\n");
 +		return 0;
 +	}
 +
-+	strcpy(buf, val);
++	dev_dbg(host->dev, "atmel_nand : one bit error on data."
++			" (word offset in the page :"
++			" 0x%x bit offset : 0x%x)\n",
++			ecc_word, ecc_bit);
++	/* correct the error */
++	if (nand_chip->options & NAND_BUSWIDTH_16) {
++		/* 16 bits words */
++		((unsigned short *) dat)[ecc_word] ^= (1 << ecc_bit);
++	} else {
++		/* 8 bits words */
++		dat[ecc_word] ^= (1 << ecc_bit);
++	}
++	dev_dbg(host->dev, "atmel_nand : error corrected\n");
++	return 1;
++}
 +
-+	/* Get rid of the final newline */
-+	if (buf[len - 1] == '\n')
-+		buf[len - 1] = '\0';
++/*
++ * Enable HW ECC : unused on most chips
++ */
++static void atmel_nand_hwctl(struct mtd_info *mtd, int mode)
++{
++#if 0
++	if (cpu_is_at32ap7000()) {
++		struct nand_chip *nand_chip = mtd->priv;
++		struct atmel_nand_host *host = nand_chip->priv;
++		ecc_writel(host->ecc, CR, ATMEL_ECC_RST);
++	}
++#endif
++}
 +
-+	for (i = 0; i < 2; i++)
-+		tokens[i] = strsep(&pbuf, ",");
++/*
++ * Probe for the NAND device.
++ */
++static int __init atmel_nand_probe(struct device_d *dev)
++{
++	struct atmel_nand_data *pdata = dev->platform_data;
++	struct atmel_nand_host *host;
++	struct mtd_info *mtd;
++	struct nand_chip *nand_chip;
++	int res = 0;
 +
-+	if (pbuf) {
-+		printk(KERN_ERR "UBI error: too many arguments at \"%s\"\n",
-+		       val);
-+		return -EINVAL;
++	/* Allocate memory for the device structure (and zero it) */
++	host = kzalloc(sizeof(struct atmel_nand_host), GFP_KERNEL);
++	if (!host)
++		return -ENOMEM;
++
++	host->io_base = (void __iomem *)dev->map_base;
++
++	mtd = &host->mtd;
++	nand_chip = &host->nand_chip;
++	host->board = pdata;
++	host->dev = dev;
++
++	nand_chip->priv = host;		/* link the private data structures */
++	mtd->priv = nand_chip;
++
++	/* Set address of NAND IO lines */
++	nand_chip->IO_ADDR_R = host->io_base;
++	nand_chip->IO_ADDR_W = host->io_base;
++	nand_chip->cmd_ctrl = atmel_nand_cmd_ctrl;
++
++	if (host->board->rdy_pin)
++		nand_chip->dev_ready = atmel_nand_device_ready;
++
++	nand_chip->ecc.mode = pdata->ecc_mode;
++
++	if (pdata->ecc_mode == NAND_ECC_HW) {
++		if (!pdata->ecc_base)
++			return -ENODEV;
++
++		host->ecc = pdata->ecc_base;
++
++		nand_chip->ecc.mode = NAND_ECC_HW;
++		nand_chip->ecc.calculate = atmel_nand_calculate;
++		nand_chip->ecc.correct = atmel_nand_correct;
++		nand_chip->ecc.hwctl = atmel_nand_hwctl;
++		nand_chip->ecc.read_page = atmel_nand_read_page;
++		nand_chip->ecc.bytes = 4;
 +	}
 +
-+	p = &mtd_dev_param[mtd_devs];
-+	strcpy(&p->name[0], tokens[0]);
++	nand_chip->chip_delay = 20;		/* 20us command delay time */
 +
-+	if (tokens[1])
-+		p->vid_hdr_offs = bytes_str_to_int(tokens[1]);
++	if (host->board->bus_width_16) {	/* 16-bit bus width */
++		nand_chip->options |= NAND_BUSWIDTH_16;
++		nand_chip->read_buf = atmel_read_buf16;
++		nand_chip->write_buf = atmel_write_buf16;
++	} else {
++		nand_chip->read_buf = atmel_read_buf;
++		nand_chip->write_buf = atmel_write_buf;
++	}
 +
-+	if (p->vid_hdr_offs < 0)
-+		return p->vid_hdr_offs;
++	atmel_nand_enable(host);
 +
-+	mtd_devs += 1;
++	if (host->board->det_pin) {
++		if (gpio_get_value(host->board->det_pin)) {
++			printk("No SmartMedia card inserted.\n");
++			res = ENXIO;
++			goto err_no_card;
++		}
++	}
++
++	/* first scan to find the device and get the page size */
++	if (nand_scan_ident(mtd, 1)) {
++		res = -ENXIO;
++		goto err_scan_ident;
++	}
++
++	if (nand_chip->ecc.mode == NAND_ECC_HW) {
++		/* ECC is calculated for the whole page (1 step) */
++		nand_chip->ecc.size = mtd->writesize;
++
++		/* set ECC page size and oob layout */
++		switch (mtd->writesize) {
++		case 512:
++			nand_chip->ecc.layout = &atmel_oobinfo_small;
++			ecc_writel(host->ecc, MR, ATMEL_ECC_PAGESIZE_528);
++			break;
++		case 1024:
++			nand_chip->ecc.layout = &atmel_oobinfo_large;
++			ecc_writel(host->ecc, MR, ATMEL_ECC_PAGESIZE_1056);
++			break;
++		case 2048:
++			nand_chip->ecc.layout = &atmel_oobinfo_large;
++			ecc_writel(host->ecc, MR, ATMEL_ECC_PAGESIZE_2112);
++			break;
++		case 4096:
++			nand_chip->ecc.layout = &atmel_oobinfo_large;
++			ecc_writel(host->ecc, MR, ATMEL_ECC_PAGESIZE_4224);
++			break;
++		default:
++			/* page size not handled by HW ECC */
++			/* switching back to soft ECC */
++			nand_chip->ecc.mode = NAND_ECC_SOFT;
++			nand_chip->ecc.calculate = NULL;
++			nand_chip->ecc.correct = NULL;
++			nand_chip->ecc.hwctl = NULL;
++			nand_chip->ecc.read_page = NULL;
++			nand_chip->ecc.postpad = 0;
++			nand_chip->ecc.prepad = 0;
++			nand_chip->ecc.bytes = 0;
++			break;
++		}
++	}
++
++	/* second phase scan */
++	if (nand_scan_tail(mtd)) {
++		res = -ENXIO;
++		goto err_scan_tail;
++	}
++
++	add_mtd_device(mtd);
++
++	if (!res)
++		return res;
++
++	nand_release(mtd);
++err_scan_tail:
++err_scan_ident:
++err_no_card:
++	atmel_nand_disable(host);
++	kfree(host);
++	return res;
++}
++
++static struct driver_d atmel_nand_driver = {
++	.name	= "atmel_nand",
++	.probe	= atmel_nand_probe,
++};
++
++static int __init atmel_nand_init(void)
++{
++	return register_driver(&atmel_nand_driver);
++}
++
++device_initcall(atmel_nand_init);
++
++MODULE_LICENSE("GPL");
++MODULE_AUTHOR("Rick Bronson");
++MODULE_DESCRIPTION("NAND/SmartMedia driver for AT91 / AVR32");
+diff --git a/drivers/mtd/nand/atmel_nand_ecc.h b/drivers/mtd/nand/atmel_nand_ecc.h
+new file mode 100644
+index 0000000..578c776
+--- /dev/null
++++ b/drivers/mtd/nand/atmel_nand_ecc.h
+@@ -0,0 +1,39 @@
++/*
++ * Error Corrected Code Controller (ECC) - System peripherals regsters.
++ * Based on AT91SAM9260 datasheet revision B.
++ *
++ * Copyright (C) 2007 Andrew Victor
++ * Copyright (C) 2007 Atmel Corporation.
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License as published by the
++ * Free Software Foundation; either version 2 of the License, or (at your
++ * option) any later version.
++ */
++
++#ifndef ATMEL_NAND_ECC_H
++#define ATMEL_NAND_ECC_H
++
++#define ATMEL_ECC_CR		0x00			/* Control register */
++#define		ATMEL_ECC_RST		(1 << 0)		/* Reset parity */
++
++#define ATMEL_ECC_MR		0x04			/* Mode register */
++#define		ATMEL_ECC_PAGESIZE	(3 << 0)		/* Page Size */
++#define			ATMEL_ECC_PAGESIZE_528		(0)
++#define			ATMEL_ECC_PAGESIZE_1056		(1)
++#define			ATMEL_ECC_PAGESIZE_2112		(2)
++#define			ATMEL_ECC_PAGESIZE_4224		(3)
++
++#define ATMEL_ECC_SR		0x08			/* Status register */
++#define		ATMEL_ECC_RECERR		(1 << 0)		/* Recoverable Error */
++#define		ATMEL_ECC_ECCERR		(1 << 1)		/* ECC Single Bit Error */
++#define		ATMEL_ECC_MULERR		(1 << 2)		/* Multiple Errors */
++
++#define ATMEL_ECC_PR		0x0c			/* Parity register */
++#define		ATMEL_ECC_BITADDR	(0xf << 0)		/* Bit Error Address */
++#define		ATMEL_ECC_WORDADDR	(0xfff << 4)		/* Word Error Address */
++
++#define ATMEL_ECC_NPR		0x10			/* NParity register */
++#define		ATMEL_ECC_NPARITY	(0xffff << 0)		/* NParity */
++
++#endif
+diff --git a/drivers/mtd/nand/diskonchip.c b/drivers/mtd/nand/diskonchip.c
+new file mode 100644
+index 0000000..e762524
+--- /dev/null
++++ b/drivers/mtd/nand/diskonchip.c
+@@ -0,0 +1,1787 @@
++/*
++ * drivers/mtd/nand/diskonchip.c
++ *
++ * (C) 2003 Red Hat, Inc.
++ * (C) 2004 Dan Brown <dan_brown@ieee.org>
++ * (C) 2004 Kalev Lember <kalev@smartlink.ee>
++ *
++ * Author: David Woodhouse <dwmw2@infradead.org>
++ * Additional Diskonchip 2000 and Millennium support by Dan Brown <dan_brown@ieee.org>
++ * Diskonchip Millennium Plus support by Kalev Lember <kalev@smartlink.ee>
++ *
++ * Error correction code lifted from the old docecc code
++ * Author: Fabrice Bellard (fabrice.bellard@netgem.com)
++ * Copyright (C) 2000 Netgem S.A.
++ * converted to the generic Reed-Solomon library by Thomas Gleixner <tglx@linutronix.de>
++ *
++ * Interface to generic NAND code for M-Systems DiskOnChip devices
++ *
++ * $Id: diskonchip.c,v 1.45 2005/01/05 18:05:14 dwmw2 Exp $
++ */
++
++#include <common.h>
++
++#if !defined(CFG_NAND_LEGACY)
++
++#include <linux/kernel.h>
++#include <linux/init.h>
++#include <linux/sched.h>
++#include <linux/delay.h>
++#include <linux/rslib.h>
++#include <linux/moduleparam.h>
++#include <asm/io.h>
++
++#include <linux/mtd/mtd.h>
++#include <linux/mtd/nand.h>
++#include <linux/mtd/doc2000.h>
++#include <linux/mtd/compatmac.h>
++#include <linux/mtd/partitions.h>
++#include <linux/mtd/inftl.h>
++
++/* Where to look for the devices? */
++#ifndef CONFIG_MTD_DISKONCHIP_PROBE_ADDRESS
++#define CONFIG_MTD_DISKONCHIP_PROBE_ADDRESS 0
++#endif
++
++static unsigned long __initdata doc_locations[] = {
++#if defined (__alpha__) || defined(__i386__) || defined(__x86_64__)
++#ifdef CONFIG_MTD_DISKONCHIP_PROBE_HIGH
++	0xfffc8000, 0xfffca000, 0xfffcc000, 0xfffce000,
++	0xfffd0000, 0xfffd2000, 0xfffd4000, 0xfffd6000,
++	0xfffd8000, 0xfffda000, 0xfffdc000, 0xfffde000,
++	0xfffe0000, 0xfffe2000, 0xfffe4000, 0xfffe6000,
++	0xfffe8000, 0xfffea000, 0xfffec000, 0xfffee000,
++#else /*  CONFIG_MTD_DOCPROBE_HIGH */
++	0xc8000, 0xca000, 0xcc000, 0xce000,
++	0xd0000, 0xd2000, 0xd4000, 0xd6000,
++	0xd8000, 0xda000, 0xdc000, 0xde000,
++	0xe0000, 0xe2000, 0xe4000, 0xe6000,
++	0xe8000, 0xea000, 0xec000, 0xee000,
++#endif /*  CONFIG_MTD_DOCPROBE_HIGH */
++#elif defined(__PPC__)
++	0xe4000000,
++#elif defined(CONFIG_MOMENCO_OCELOT)
++	0x2f000000,
++	0xff000000,
++#elif defined(CONFIG_MOMENCO_OCELOT_G) || defined (CONFIG_MOMENCO_OCELOT_C)
++	0xff000000,
++##else
++#warning Unknown architecture for DiskOnChip. No default probe locations defined
++#endif
++	0xffffffff };
++
++static struct mtd_info *doclist = NULL;
++
++struct doc_priv {
++	void __iomem *virtadr;
++	unsigned long physadr;
++	u_char ChipID;
++	u_char CDSNControl;
++	int chips_per_floor; /* The number of chips detected on each floor */
++	int curfloor;
++	int curchip;
++	int mh0_page;
++	int mh1_page;
++	struct mtd_info *nextdoc;
++};
++
++/* Max number of eraseblocks to scan (from start of device) for the (I)NFTL
++   MediaHeader.  The spec says to just keep going, I think, but that's just
++   silly. */
++#define MAX_MEDIAHEADER_SCAN 8
++
++/* This is the syndrome computed by the HW ecc generator upon reading an empty
++   page, one with all 0xff for data and stored ecc code. */
++static u_char empty_read_syndrome[6] = { 0x26, 0xff, 0x6d, 0x47, 0x73, 0x7a };
++/* This is the ecc value computed by the HW ecc generator upon writing an empty
++   page, one with all 0xff for data. */
++static u_char empty_write_ecc[6] = { 0x4b, 0x00, 0xe2, 0x0e, 0x93, 0xf7 };
++
++#define INFTL_BBT_RESERVED_BLOCKS 4
++
++#define DoC_is_MillenniumPlus(doc) ((doc)->ChipID == DOC_ChipID_DocMilPlus16 || (doc)->ChipID == DOC_ChipID_DocMilPlus32)
++#define DoC_is_Millennium(doc) ((doc)->ChipID == DOC_ChipID_DocMil)
++#define DoC_is_2000(doc) ((doc)->ChipID == DOC_ChipID_Doc2k)
++
++static void doc200x_hwcontrol(struct mtd_info *mtd, int cmd);
++static void doc200x_select_chip(struct mtd_info *mtd, int chip);
++
++static int debug=0;
++module_param(debug, int, 0);
++
++static int try_dword=1;
++module_param(try_dword, int, 0);
++
++static int no_ecc_failures=0;
++module_param(no_ecc_failures, int, 0);
++
++#ifdef CONFIG_MTD_PARTITIONS
++static int no_autopart=0;
++module_param(no_autopart, int, 0);
++#endif
++
++#ifdef CONFIG_MTD_NAND_DISKONCHIP_BBTWRITE
++static int inftl_bbt_write=1;
++#else
++static int inftl_bbt_write=0;
++#endif
++module_param(inftl_bbt_write, int, 0);
++
++static unsigned long doc_config_location = CONFIG_MTD_DISKONCHIP_PROBE_ADDRESS;
++module_param(doc_config_location, ulong, 0);
++MODULE_PARM_DESC(doc_config_location, "Physical memory address at which to probe for DiskOnChip");
++
++
++/* Sector size for HW ECC */
++#define SECTOR_SIZE 512
++/* The sector bytes are packed into NB_DATA 10 bit words */
++#define NB_DATA (((SECTOR_SIZE + 1) * 8 + 6) / 10)
++/* Number of roots */
++#define NROOTS 4
++/* First consective root */
++#define FCR 510
++/* Number of symbols */
++#define NN 1023
++
++/* the Reed Solomon control structure */
++static struct rs_control *rs_decoder;
++
++/*
++ * The HW decoder in the DoC ASIC's provides us a error syndrome,
++ * which we must convert to a standard syndrom usable by the generic
++ * Reed-Solomon library code.
++ *
++ * Fabrice Bellard figured this out in the old docecc code. I added
++ * some comments, improved a minor bit and converted it to make use
++ * of the generic Reed-Solomon libary. tglx
++ */
++static int doc_ecc_decode (struct rs_control *rs, uint8_t *data, uint8_t *ecc)
++{
++	int i, j, nerr, errpos[8];
++	uint8_t parity;
++	uint16_t ds[4], s[5], tmp, errval[8], syn[4];
++
++	/* Convert the ecc bytes into words */
++	ds[0] = ((ecc[4] & 0xff) >> 0) | ((ecc[5] & 0x03) << 8);
++	ds[1] = ((ecc[5] & 0xfc) >> 2) | ((ecc[2] & 0x0f) << 6);
++	ds[2] = ((ecc[2] & 0xf0) >> 4) | ((ecc[3] & 0x3f) << 4);
++	ds[3] = ((ecc[3] & 0xc0) >> 6) | ((ecc[0] & 0xff) << 2);
++	parity = ecc[1];
++
++	/* Initialize the syndrom buffer */
++	for (i = 0; i < NROOTS; i++)
++		s[i] = ds[0];
++	/*
++	 *  Evaluate
++	 *  s[i] = ds[3]x^3 + ds[2]x^2 + ds[1]x^1 + ds[0]
++	 *  where x = alpha^(FCR + i)
++	 */
++	for(j = 1; j < NROOTS; j++) {
++		if(ds[j] == 0)
++			continue;
++		tmp = rs->index_of[ds[j]];
++		for(i = 0; i < NROOTS; i++)
++			s[i] ^= rs->alpha_to[rs_modnn(rs, tmp + (FCR + i) * j)];
++	}
++
++	/* Calc s[i] = s[i] / alpha^(v + i) */
++	for (i = 0; i < NROOTS; i++) {
++		if (syn[i])
++ 			syn[i] = rs_modnn(rs, rs->index_of[s[i]] + (NN - FCR - i));
++	}
++	/* Call the decoder library */
++	nerr = decode_rs16(rs, NULL, NULL, 1019, syn, 0, errpos, 0, errval);
++
++	/* Incorrectable errors ? */
++	if (nerr < 0)
++		return nerr;
++
++	/*
++	 * Correct the errors. The bitpositions are a bit of magic,
++	 * but they are given by the design of the de/encoder circuit
++	 * in the DoC ASIC's.
++	 */
++	for(i = 0;i < nerr; i++) {
++		int index, bitpos, pos = 1015 - errpos[i];
++		uint8_t val;
++		if (pos >= NB_DATA && pos < 1019)
++			continue;
++		if (pos < NB_DATA) {
++			/* extract bit position (MSB first) */
++			pos = 10 * (NB_DATA - 1 - pos) - 6;
++			/* now correct the following 10 bits. At most two bytes
++			   can be modified since pos is even */
++			index = (pos >> 3) ^ 1;
++			bitpos = pos & 7;
++			if ((index >= 0 && index < SECTOR_SIZE) ||
++			    index == (SECTOR_SIZE + 1)) {
++				val = (uint8_t) (errval[i] >> (2 + bitpos));
++				parity ^= val;
++				if (index < SECTOR_SIZE)
++					data[index] ^= val;
++			}
++			index = ((pos >> 3) + 1) ^ 1;
++			bitpos = (bitpos + 10) & 7;
++			if (bitpos == 0)
++				bitpos = 8;
++			if ((index >= 0 && index < SECTOR_SIZE) ||
++			    index == (SECTOR_SIZE + 1)) {
++				val = (uint8_t)(errval[i] << (8 - bitpos));
++				parity ^= val;
++				if (index < SECTOR_SIZE)
++					data[index] ^= val;
++			}
++		}
++	}
++	/* If the parity is wrong, no rescue possible */
++	return parity ? -1 : nerr;
++}
++
++static void DoC_Delay(struct doc_priv *doc, unsigned short cycles)
++{
++	volatile char dummy;
++	int i;
++
++	for (i = 0; i < cycles; i++) {
++		if (DoC_is_Millennium(doc))
++			dummy = ReadDOC(doc->virtadr, NOP);
++		else if (DoC_is_MillenniumPlus(doc))
++			dummy = ReadDOC(doc->virtadr, Mplus_NOP);
++		else
++			dummy = ReadDOC(doc->virtadr, DOCStatus);
++	}
++
++}
++
++#define CDSN_CTRL_FR_B_MASK	(CDSN_CTRL_FR_B0 | CDSN_CTRL_FR_B1)
++
++/* DOC_WaitReady: Wait for RDY line to be asserted by the flash chip */
++static int _DoC_WaitReady(struct doc_priv *doc)
++{
++	void __iomem *docptr = doc->virtadr;
++	unsigned long timeo = jiffies + (HZ * 10);
++
++	if(debug) printk("_DoC_WaitReady...\n");
++	/* Out-of-line routine to wait for chip response */
++	if (DoC_is_MillenniumPlus(doc)) {
++		while ((ReadDOC(docptr, Mplus_FlashControl) & CDSN_CTRL_FR_B_MASK) != CDSN_CTRL_FR_B_MASK) {
++			if (time_after(jiffies, timeo)) {
++				printk("_DoC_WaitReady timed out.\n");
++				return -EIO;
++			}
++			udelay(1);
++			cond_resched();
++		}
++	} else {
++		while (!(ReadDOC(docptr, CDSNControl) & CDSN_CTRL_FR_B)) {
++			if (time_after(jiffies, timeo)) {
++				printk("_DoC_WaitReady timed out.\n");
++				return -EIO;
++			}
++			udelay(1);
++			cond_resched();
++		}
++	}
++
 +	return 0;
 +}
 +
-+module_param_call(mtd, ubi_mtd_param_parse, NULL, NULL, 000);
-+MODULE_PARM_DESC(mtd, "MTD devices to attach. Parameter format: "
-+		      "mtd=<name|num>[,<vid_hdr_offs>].\n"
-+		      "Multiple \"mtd\" parameters may be specified.\n"
-+		      "MTD devices may be specified by their number or name.\n"
-+		      "Optional \"vid_hdr_offs\" parameter specifies UBI VID "
-+		      "header position and data starting position to be used "
-+		      "by UBI.\n"
-+		      "Example: mtd=content,1984 mtd=4 - attach MTD device"
-+		      "with name \"content\" using VID header offset 1984, and "
-+		      "MTD device number 4 with default VID header offset.");
-+
-+MODULE_VERSION(__stringify(UBI_VERSION));
-+MODULE_DESCRIPTION("UBI - Unsorted Block Images");
-+MODULE_AUTHOR("Artem Bityutskiy");
-+MODULE_LICENSE("GPL");
-diff --git a/drivers/mtd/ubi/crc32defs.h b/drivers/mtd/ubi/crc32defs.h
-new file mode 100644
-index 0000000..f5a5401
---- /dev/null
-+++ b/drivers/mtd/ubi/crc32defs.h
-@@ -0,0 +1,32 @@
-+/*
-+ * There are multiple 16-bit CRC polynomials in common use, but this is
-+ * *the* standard CRC-32 polynomial, first popularized by Ethernet.
-+ * x^32+x^26+x^23+x^22+x^16+x^12+x^11+x^10+x^8+x^7+x^5+x^4+x^2+x^1+x^0
-+ */
-+#define CRCPOLY_LE 0xedb88320
-+#define CRCPOLY_BE 0x04c11db7
-+
-+/* How many bits at a time to use.  Requires a table of 4<<CRC_xx_BITS bytes. */
-+/* For less performance-sensitive, use 4 */
-+#ifndef CRC_LE_BITS
-+# define CRC_LE_BITS 8
-+#endif
-+#ifndef CRC_BE_BITS
-+# define CRC_BE_BITS 8
-+#endif
-+
-+/*
-+ * Little-endian CRC computation.  Used with serial bit streams sent
-+ * lsbit-first.  Be sure to use cpu_to_le32() to append the computed CRC.
-+ */
-+#if CRC_LE_BITS > 8 || CRC_LE_BITS < 1 || CRC_LE_BITS & CRC_LE_BITS-1
-+# error CRC_LE_BITS must be a power of 2 between 1 and 8
-+#endif
-+
-+/*
-+ * Big-endian CRC computation.  Used with serial bit streams sent
-+ * msbit-first.  Be sure to use cpu_to_be32() to append the computed CRC.
-+ */
-+#if CRC_BE_BITS > 8 || CRC_BE_BITS < 1 || CRC_BE_BITS & CRC_BE_BITS-1
-+# error CRC_BE_BITS must be a power of 2 between 1 and 8
-+#endif
-diff --git a/drivers/mtd/ubi/debug.c b/drivers/mtd/ubi/debug.c
-new file mode 100644
-index 0000000..6e4b0ff
---- /dev/null
-+++ b/drivers/mtd/ubi/debug.c
-@@ -0,0 +1,192 @@
-+/*
-+ * Copyright (c) International Business Machines Corp., 2006
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
-+ * the GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-+ *
-+ * Author: Artem Bityutskiy (���������������� ����������)
-+ */
-+
-+/*
-+ * Here we keep all the UBI debugging stuff which should normally be disabled
-+ * and compiled-out, but it is extremely helpful when hunting bugs or doing big
-+ * changes.
-+ */
-+#include "ubi-barebox.h"
-+
-+#ifdef CONFIG_MTD_UBI_DEBUG_MSG
-+
-+#include "ubi.h"
-+
-+/**
-+ * ubi_dbg_dump_ec_hdr - dump an erase counter header.
-+ * @ec_hdr: the erase counter header to dump
-+ */
-+void ubi_dbg_dump_ec_hdr(const struct ubi_ec_hdr *ec_hdr)
++static inline int DoC_WaitReady(struct doc_priv *doc)
 +{
-+	dbg_msg("erase counter header dump:");
-+	dbg_msg("magic          %#08x", be32_to_cpu(ec_hdr->magic));
-+	dbg_msg("version        %d",    (int)ec_hdr->version);
-+	dbg_msg("ec             %llu",  (long long)be64_to_cpu(ec_hdr->ec));
-+	dbg_msg("vid_hdr_offset %d",    be32_to_cpu(ec_hdr->vid_hdr_offset));
-+	dbg_msg("data_offset    %d",    be32_to_cpu(ec_hdr->data_offset));
-+	dbg_msg("hdr_crc        %#08x", be32_to_cpu(ec_hdr->hdr_crc));
-+	dbg_msg("erase counter header hexdump:");
-+	print_hex_dump(KERN_DEBUG, "", DUMP_PREFIX_OFFSET, 32, 1,
-+		       ec_hdr, UBI_EC_HDR_SIZE, 1);
-+}
++	void __iomem *docptr = doc->virtadr;
++	int ret = 0;
 +
-+/**
-+ * ubi_dbg_dump_vid_hdr - dump a volume identifier header.
-+ * @vid_hdr: the volume identifier header to dump
-+ */
-+void ubi_dbg_dump_vid_hdr(const struct ubi_vid_hdr *vid_hdr)
-+{
-+	dbg_msg("volume identifier header dump:");
-+	dbg_msg("magic     %08x", be32_to_cpu(vid_hdr->magic));
-+	dbg_msg("version   %d",   (int)vid_hdr->version);
-+	dbg_msg("vol_type  %d",   (int)vid_hdr->vol_type);
-+	dbg_msg("copy_flag %d",   (int)vid_hdr->copy_flag);
-+	dbg_msg("compat    %d",   (int)vid_hdr->compat);
-+	dbg_msg("vol_id    %d",   be32_to_cpu(vid_hdr->vol_id));
-+	dbg_msg("lnum      %d",   be32_to_cpu(vid_hdr->lnum));
-+	dbg_msg("leb_ver   %u",   be32_to_cpu(vid_hdr->leb_ver));
-+	dbg_msg("data_size %d",   be32_to_cpu(vid_hdr->data_size));
-+	dbg_msg("used_ebs  %d",   be32_to_cpu(vid_hdr->used_ebs));
-+	dbg_msg("data_pad  %d",   be32_to_cpu(vid_hdr->data_pad));
-+	dbg_msg("sqnum     %llu",
-+		(unsigned long long)be64_to_cpu(vid_hdr->sqnum));
-+	dbg_msg("hdr_crc   %08x", be32_to_cpu(vid_hdr->hdr_crc));
-+	dbg_msg("volume identifier header hexdump:");
-+}
++	if (DoC_is_MillenniumPlus(doc)) {
++		DoC_Delay(doc, 4);
 +
-+/**
-+ * ubi_dbg_dump_vol_info- dump volume information.
-+ * @vol: UBI volume description object
-+ */
-+void ubi_dbg_dump_vol_info(const struct ubi_volume *vol)
-+{
-+	dbg_msg("volume information dump:");
-+	dbg_msg("vol_id          %d", vol->vol_id);
-+	dbg_msg("reserved_pebs   %d", vol->reserved_pebs);
-+	dbg_msg("alignment       %d", vol->alignment);
-+	dbg_msg("data_pad        %d", vol->data_pad);
-+	dbg_msg("vol_type        %d", vol->vol_type);
-+	dbg_msg("name_len        %d", vol->name_len);
-+	dbg_msg("usable_leb_size %d", vol->usable_leb_size);
-+	dbg_msg("used_ebs        %d", vol->used_ebs);
-+	dbg_msg("used_bytes      %lld", vol->used_bytes);
-+	dbg_msg("last_eb_bytes   %d", vol->last_eb_bytes);
-+	dbg_msg("corrupted       %d", vol->corrupted);
-+	dbg_msg("upd_marker      %d", vol->upd_marker);
-+
-+	if (vol->name_len <= UBI_VOL_NAME_MAX &&
-+	    strnlen(vol->name, vol->name_len + 1) == vol->name_len) {
-+		dbg_msg("name            %s", vol->name);
++		if ((ReadDOC(docptr, Mplus_FlashControl) & CDSN_CTRL_FR_B_MASK) != CDSN_CTRL_FR_B_MASK)
++			/* Call the out-of-line routine to wait */
++			ret = _DoC_WaitReady(doc);
 +	} else {
-+		dbg_msg("the 1st 5 characters of the name: %c%c%c%c%c",
-+			vol->name[0], vol->name[1], vol->name[2],
-+			vol->name[3], vol->name[4]);
++		DoC_Delay(doc, 4);
++
++		if (!(ReadDOC(docptr, CDSNControl) & CDSN_CTRL_FR_B))
++			/* Call the out-of-line routine to wait */
++			ret = _DoC_WaitReady(doc);
++		DoC_Delay(doc, 2);
++	}
++
++	if(debug) printk("DoC_WaitReady OK\n");
++	return ret;
++}
++
++static void doc2000_write_byte(struct mtd_info *mtd, u_char datum)
++{
++	struct nand_chip *this = mtd->priv;
++	struct doc_priv *doc = this->priv;
++	void __iomem *docptr = doc->virtadr;
++
++	if(debug)printk("write_byte %02x\n", datum);
++	WriteDOC(datum, docptr, CDSNSlowIO);
++	WriteDOC(datum, docptr, 2k_CDSN_IO);
++}
++
++static u_char doc2000_read_byte(struct mtd_info *mtd)
++{
++	struct nand_chip *this = mtd->priv;
++	struct doc_priv *doc = this->priv;
++	void __iomem *docptr = doc->virtadr;
++	u_char ret;
++
++	ReadDOC(docptr, CDSNSlowIO);
++	DoC_Delay(doc, 2);
++	ret = ReadDOC(docptr, 2k_CDSN_IO);
++	if (debug) printk("read_byte returns %02x\n", ret);
++	return ret;
++}
++
++static void doc2000_writebuf(struct mtd_info *mtd,
++			     const u_char *buf, int len)
++{
++	struct nand_chip *this = mtd->priv;
++	struct doc_priv *doc = this->priv;
++	void __iomem *docptr = doc->virtadr;
++	int i;
++	if (debug)printk("writebuf of %d bytes: ", len);
++	for (i=0; i < len; i++) {
++		WriteDOC_(buf[i], docptr, DoC_2k_CDSN_IO + i);
++		if (debug && i < 16)
++			printk("%02x ", buf[i]);
++	}
++	if (debug) printk("\n");
++}
++
++static void doc2000_readbuf(struct mtd_info *mtd,
++			    u_char *buf, int len)
++{
++	struct nand_chip *this = mtd->priv;
++	struct doc_priv *doc = this->priv;
++	void __iomem *docptr = doc->virtadr;
++ 	int i;
++
++	if (debug)printk("readbuf of %d bytes: ", len);
++
++	for (i=0; i < len; i++) {
++		buf[i] = ReadDOC(docptr, 2k_CDSN_IO + i);
 +	}
 +}
 +
-+/**
-+ * ubi_dbg_dump_vtbl_record - dump a &struct ubi_vtbl_record object.
-+ * @r: the object to dump
-+ * @idx: volume table index
-+ */
-+void ubi_dbg_dump_vtbl_record(const struct ubi_vtbl_record *r, int idx)
++static void doc2000_readbuf_dword(struct mtd_info *mtd,
++			    u_char *buf, int len)
 +{
-+	int name_len = be16_to_cpu(r->name_len);
++	struct nand_chip *this = mtd->priv;
++	struct doc_priv *doc = this->priv;
++	void __iomem *docptr = doc->virtadr;
++ 	int i;
 +
-+	dbg_msg("volume table record %d dump:", idx);
-+	dbg_msg("reserved_pebs   %d", be32_to_cpu(r->reserved_pebs));
-+	dbg_msg("alignment       %d", be32_to_cpu(r->alignment));
-+	dbg_msg("data_pad        %d", be32_to_cpu(r->data_pad));
-+	dbg_msg("vol_type        %d", (int)r->vol_type);
-+	dbg_msg("upd_marker      %d", (int)r->upd_marker);
-+	dbg_msg("name_len        %d", name_len);
++	if (debug) printk("readbuf_dword of %d bytes: ", len);
 +
-+	if (r->name[0] == '\0') {
-+		dbg_msg("name            NULL");
++	if (unlikely((((unsigned long)buf)|len) & 3)) {
++		for (i=0; i < len; i++) {
++			*(uint8_t *)(&buf[i]) = ReadDOC(docptr, 2k_CDSN_IO + i);
++		}
++	} else {
++		for (i=0; i < len; i+=4) {
++			*(uint32_t*)(&buf[i]) = readl(docptr + DoC_2k_CDSN_IO + i);
++		}
++	}
++}
++
++static int doc2000_verifybuf(struct mtd_info *mtd,
++			      const u_char *buf, int len)
++{
++	struct nand_chip *this = mtd->priv;
++	struct doc_priv *doc = this->priv;
++	void __iomem *docptr = doc->virtadr;
++	int i;
++
++	for (i=0; i < len; i++)
++		if (buf[i] != ReadDOC(docptr, 2k_CDSN_IO))
++			return -EFAULT;
++	return 0;
++}
++
++static uint16_t __init doc200x_ident_chip(struct mtd_info *mtd, int nr)
++{
++	struct nand_chip *this = mtd->priv;
++	struct doc_priv *doc = this->priv;
++	uint16_t ret;
++
++	doc200x_select_chip(mtd, nr);
++	doc200x_hwcontrol(mtd, NAND_CTL_SETCLE);
++	this->write_byte(mtd, NAND_CMD_READID);
++	doc200x_hwcontrol(mtd, NAND_CTL_CLRCLE);
++	doc200x_hwcontrol(mtd, NAND_CTL_SETALE);
++	this->write_byte(mtd, 0);
++	doc200x_hwcontrol(mtd, NAND_CTL_CLRALE);
++
++	ret = this->read_byte(mtd) << 8;
++	ret |= this->read_byte(mtd);
++
++	if (doc->ChipID == DOC_ChipID_Doc2k && try_dword && !nr) {
++		/* First chip probe. See if we get same results by 32-bit access */
++		union {
++			uint32_t dword;
++			uint8_t byte[4];
++		} ident;
++		void __iomem *docptr = doc->virtadr;
++
++		doc200x_hwcontrol(mtd, NAND_CTL_SETCLE);
++		doc2000_write_byte(mtd, NAND_CMD_READID);
++		doc200x_hwcontrol(mtd, NAND_CTL_CLRCLE);
++		doc200x_hwcontrol(mtd, NAND_CTL_SETALE);
++		doc2000_write_byte(mtd, 0);
++		doc200x_hwcontrol(mtd, NAND_CTL_CLRALE);
++
++		ident.dword = readl(docptr + DoC_2k_CDSN_IO);
++		if (((ident.byte[0] << 8) | ident.byte[1]) == ret) {
++			printk(KERN_INFO "DiskOnChip 2000 responds to DWORD access\n");
++			this->read_buf = &doc2000_readbuf_dword;
++		}
++	}
++
++	return ret;
++}
++
++static void __init doc2000_count_chips(struct mtd_info *mtd)
++{
++	struct nand_chip *this = mtd->priv;
++	struct doc_priv *doc = this->priv;
++	uint16_t mfrid;
++	int i;
++
++	/* Max 4 chips per floor on DiskOnChip 2000 */
++	doc->chips_per_floor = 4;
++
++	/* Find out what the first chip is */
++	mfrid = doc200x_ident_chip(mtd, 0);
++
++	/* Find how many chips in each floor. */
++	for (i = 1; i < 4; i++) {
++		if (doc200x_ident_chip(mtd, i) != mfrid)
++			break;
++	}
++	doc->chips_per_floor = i;
++	printk(KERN_DEBUG "Detected %d chips per floor.\n", i);
++}
++
++static int doc200x_wait(struct mtd_info *mtd, struct nand_chip *this, int state)
++{
++	struct doc_priv *doc = this->priv;
++
++	int status;
++
++	DoC_WaitReady(doc);
++	this->cmdfunc(mtd, NAND_CMD_STATUS, -1, -1);
++	DoC_WaitReady(doc);
++	status = (int)this->read_byte(mtd);
++
++	return status;
++}
++
++static void doc2001_write_byte(struct mtd_info *mtd, u_char datum)
++{
++	struct nand_chip *this = mtd->priv;
++	struct doc_priv *doc = this->priv;
++	void __iomem *docptr = doc->virtadr;
++
++	WriteDOC(datum, docptr, CDSNSlowIO);
++	WriteDOC(datum, docptr, Mil_CDSN_IO);
++	WriteDOC(datum, docptr, WritePipeTerm);
++}
++
++static u_char doc2001_read_byte(struct mtd_info *mtd)
++{
++	struct nand_chip *this = mtd->priv;
++	struct doc_priv *doc = this->priv;
++	void __iomem *docptr = doc->virtadr;
++
++	/*ReadDOC(docptr, CDSNSlowIO); */
++	/* 11.4.5 -- delay twice to allow extended length cycle */
++	DoC_Delay(doc, 2);
++	ReadDOC(docptr, ReadPipeInit);
++	/*return ReadDOC(docptr, Mil_CDSN_IO); */
++	return ReadDOC(docptr, LastDataRead);
++}
++
++static void doc2001_writebuf(struct mtd_info *mtd,
++			     const u_char *buf, int len)
++{
++	struct nand_chip *this = mtd->priv;
++	struct doc_priv *doc = this->priv;
++	void __iomem *docptr = doc->virtadr;
++	int i;
++
++	for (i=0; i < len; i++)
++		WriteDOC_(buf[i], docptr, DoC_Mil_CDSN_IO + i);
++	/* Terminate write pipeline */
++	WriteDOC(0x00, docptr, WritePipeTerm);
++}
++
++static void doc2001_readbuf(struct mtd_info *mtd,
++			    u_char *buf, int len)
++{
++	struct nand_chip *this = mtd->priv;
++	struct doc_priv *doc = this->priv;
++	void __iomem *docptr = doc->virtadr;
++	int i;
++
++	/* Start read pipeline */
++	ReadDOC(docptr, ReadPipeInit);
++
++	for (i=0; i < len-1; i++)
++		buf[i] = ReadDOC(docptr, Mil_CDSN_IO + (i & 0xff));
++
++	/* Terminate read pipeline */
++	buf[i] = ReadDOC(docptr, LastDataRead);
++}
++
++static int doc2001_verifybuf(struct mtd_info *mtd,
++			     const u_char *buf, int len)
++{
++	struct nand_chip *this = mtd->priv;
++	struct doc_priv *doc = this->priv;
++	void __iomem *docptr = doc->virtadr;
++	int i;
++
++	/* Start read pipeline */
++	ReadDOC(docptr, ReadPipeInit);
++
++	for (i=0; i < len-1; i++)
++		if (buf[i] != ReadDOC(docptr, Mil_CDSN_IO)) {
++			ReadDOC(docptr, LastDataRead);
++			return i;
++		}
++	if (buf[i] != ReadDOC(docptr, LastDataRead))
++		return i;
++	return 0;
++}
++
++static u_char doc2001plus_read_byte(struct mtd_info *mtd)
++{
++	struct nand_chip *this = mtd->priv;
++	struct doc_priv *doc = this->priv;
++	void __iomem *docptr = doc->virtadr;
++	u_char ret;
++
++	ReadDOC(docptr, Mplus_ReadPipeInit);
++	ReadDOC(docptr, Mplus_ReadPipeInit);
++	ret = ReadDOC(docptr, Mplus_LastDataRead);
++	if (debug) printk("read_byte returns %02x\n", ret);
++	return ret;
++}
++
++static void doc2001plus_writebuf(struct mtd_info *mtd,
++			     const u_char *buf, int len)
++{
++	struct nand_chip *this = mtd->priv;
++	struct doc_priv *doc = this->priv;
++	void __iomem *docptr = doc->virtadr;
++	int i;
++
++	if (debug)printk("writebuf of %d bytes: ", len);
++	for (i=0; i < len; i++) {
++		WriteDOC_(buf[i], docptr, DoC_Mil_CDSN_IO + i);
++		if (debug && i < 16)
++			printk("%02x ", buf[i]);
++	}
++	if (debug) printk("\n");
++}
++
++static void doc2001plus_readbuf(struct mtd_info *mtd,
++			    u_char *buf, int len)
++{
++	struct nand_chip *this = mtd->priv;
++	struct doc_priv *doc = this->priv;
++	void __iomem *docptr = doc->virtadr;
++	int i;
++
++	if (debug)printk("readbuf of %d bytes: ", len);
++
++	/* Start read pipeline */
++	ReadDOC(docptr, Mplus_ReadPipeInit);
++	ReadDOC(docptr, Mplus_ReadPipeInit);
++
++	for (i=0; i < len-2; i++) {
++		buf[i] = ReadDOC(docptr, Mil_CDSN_IO);
++		if (debug && i < 16)
++			printk("%02x ", buf[i]);
++	}
++
++	/* Terminate read pipeline */
++	buf[len-2] = ReadDOC(docptr, Mplus_LastDataRead);
++	if (debug && i < 16)
++		printk("%02x ", buf[len-2]);
++	buf[len-1] = ReadDOC(docptr, Mplus_LastDataRead);
++	if (debug && i < 16)
++		printk("%02x ", buf[len-1]);
++	if (debug) printk("\n");
++}
++
++static int doc2001plus_verifybuf(struct mtd_info *mtd,
++			     const u_char *buf, int len)
++{
++	struct nand_chip *this = mtd->priv;
++	struct doc_priv *doc = this->priv;
++	void __iomem *docptr = doc->virtadr;
++	int i;
++
++	if (debug)printk("verifybuf of %d bytes: ", len);
++
++	/* Start read pipeline */
++	ReadDOC(docptr, Mplus_ReadPipeInit);
++	ReadDOC(docptr, Mplus_ReadPipeInit);
++
++	for (i=0; i < len-2; i++)
++		if (buf[i] != ReadDOC(docptr, Mil_CDSN_IO)) {
++			ReadDOC(docptr, Mplus_LastDataRead);
++			ReadDOC(docptr, Mplus_LastDataRead);
++			return i;
++		}
++	if (buf[len-2] != ReadDOC(docptr, Mplus_LastDataRead))
++		return len-2;
++	if (buf[len-1] != ReadDOC(docptr, Mplus_LastDataRead))
++		return len-1;
++	return 0;
++}
++
++static void doc2001plus_select_chip(struct mtd_info *mtd, int chip)
++{
++	struct nand_chip *this = mtd->priv;
++	struct doc_priv *doc = this->priv;
++	void __iomem *docptr = doc->virtadr;
++	int floor = 0;
++
++	if(debug)printk("select chip (%d)\n", chip);
++
++	if (chip == -1) {
++		/* Disable flash internally */
++		WriteDOC(0, docptr, Mplus_FlashSelect);
 +		return;
 +	}
 +
-+	if (name_len <= UBI_VOL_NAME_MAX &&
-+	    strnlen(&r->name[0], name_len + 1) == name_len) {
-+		dbg_msg("name            %s", &r->name[0]);
-+	} else {
-+		dbg_msg("1st 5 characters of the name: %c%c%c%c%c",
-+			r->name[0], r->name[1], r->name[2], r->name[3],
-+			r->name[4]);
++	floor = chip / doc->chips_per_floor;
++	chip -= (floor *  doc->chips_per_floor);
++
++	/* Assert ChipEnable and deassert WriteProtect */
++	WriteDOC((DOC_FLASH_CE), docptr, Mplus_FlashSelect);
++	this->cmdfunc(mtd, NAND_CMD_RESET, -1, -1);
++
++	doc->curchip = chip;
++	doc->curfloor = floor;
++}
++
++static void doc200x_select_chip(struct mtd_info *mtd, int chip)
++{
++	struct nand_chip *this = mtd->priv;
++	struct doc_priv *doc = this->priv;
++	void __iomem *docptr = doc->virtadr;
++	int floor = 0;
++
++	if(debug)printk("select chip (%d)\n", chip);
++
++	if (chip == -1)
++		return;
++
++	floor = chip / doc->chips_per_floor;
++	chip -= (floor *  doc->chips_per_floor);
++
++	/* 11.4.4 -- deassert CE before changing chip */
++	doc200x_hwcontrol(mtd, NAND_CTL_CLRNCE);
++
++	WriteDOC(floor, docptr, FloorSelect);
++	WriteDOC(chip, docptr, CDSNDeviceSelect);
++
++	doc200x_hwcontrol(mtd, NAND_CTL_SETNCE);
++
++	doc->curchip = chip;
++	doc->curfloor = floor;
++}
++
++static void doc200x_hwcontrol(struct mtd_info *mtd, int cmd)
++{
++	struct nand_chip *this = mtd->priv;
++	struct doc_priv *doc = this->priv;
++	void __iomem *docptr = doc->virtadr;
++
++	switch(cmd) {
++	case NAND_CTL_SETNCE:
++		doc->CDSNControl |= CDSN_CTRL_CE;
++		break;
++	case NAND_CTL_CLRNCE:
++		doc->CDSNControl &= ~CDSN_CTRL_CE;
++		break;
++	case NAND_CTL_SETCLE:
++		doc->CDSNControl |= CDSN_CTRL_CLE;
++		break;
++	case NAND_CTL_CLRCLE:
++		doc->CDSNControl &= ~CDSN_CTRL_CLE;
++		break;
++	case NAND_CTL_SETALE:
++		doc->CDSNControl |= CDSN_CTRL_ALE;
++		break;
++	case NAND_CTL_CLRALE:
++		doc->CDSNControl &= ~CDSN_CTRL_ALE;
++		break;
++	case NAND_CTL_SETWP:
++		doc->CDSNControl |= CDSN_CTRL_WP;
++		break;
++	case NAND_CTL_CLRWP:
++		doc->CDSNControl &= ~CDSN_CTRL_WP;
++		break;
 +	}
-+	dbg_msg("crc             %#08x", be32_to_cpu(r->crc));
++	if (debug)printk("hwcontrol(%d): %02x\n", cmd, doc->CDSNControl);
++	WriteDOC(doc->CDSNControl, docptr, CDSNControl);
++	/* 11.4.3 -- 4 NOPs after CSDNControl write */
++	DoC_Delay(doc, 4);
 +}
 +
-+/**
-+ * ubi_dbg_dump_sv - dump a &struct ubi_scan_volume object.
-+ * @sv: the object to dump
-+ */
-+void ubi_dbg_dump_sv(const struct ubi_scan_volume *sv)
++static void doc2001plus_command (struct mtd_info *mtd, unsigned command, int column, int page_addr)
 +{
-+	dbg_msg("volume scanning information dump:");
-+	dbg_msg("vol_id         %d", sv->vol_id);
-+	dbg_msg("highest_lnum   %d", sv->highest_lnum);
-+	dbg_msg("leb_count      %d", sv->leb_count);
-+	dbg_msg("compat         %d", sv->compat);
-+	dbg_msg("vol_type       %d", sv->vol_type);
-+	dbg_msg("used_ebs       %d", sv->used_ebs);
-+	dbg_msg("last_data_size %d", sv->last_data_size);
-+	dbg_msg("data_pad       %d", sv->data_pad);
-+}
++	struct nand_chip *this = mtd->priv;
++	struct doc_priv *doc = this->priv;
++	void __iomem *docptr = doc->virtadr;
 +
-+/**
-+ * ubi_dbg_dump_seb - dump a &struct ubi_scan_leb object.
-+ * @seb: the object to dump
-+ * @type: object type: 0 - not corrupted, 1 - corrupted
-+ */
-+void ubi_dbg_dump_seb(const struct ubi_scan_leb *seb, int type)
-+{
-+	dbg_msg("eraseblock scanning information dump:");
-+	dbg_msg("ec       %d", seb->ec);
-+	dbg_msg("pnum     %d", seb->pnum);
-+	if (type == 0) {
-+		dbg_msg("lnum     %d", seb->lnum);
-+		dbg_msg("scrub    %d", seb->scrub);
-+		dbg_msg("sqnum    %llu", seb->sqnum);
-+		dbg_msg("leb_ver  %u", seb->leb_ver);
++	/*
++	 * Must terminate write pipeline before sending any commands
++	 * to the device.
++	 */
++	if (command == NAND_CMD_PAGEPROG) {
++		WriteDOC(0x00, docptr, Mplus_WritePipeTerm);
++		WriteDOC(0x00, docptr, Mplus_WritePipeTerm);
 +	}
-+}
 +
-+/**
-+ * ubi_dbg_dump_mkvol_req - dump a &struct ubi_mkvol_req object.
-+ * @req: the object to dump
-+ */
-+void ubi_dbg_dump_mkvol_req(const struct ubi_mkvol_req *req)
-+{
-+	char nm[17];
++	/*
++	 * Write out the command to the device.
++	 */
++	if (command == NAND_CMD_SEQIN) {
++		int readcmd;
 +
-+	dbg_msg("volume creation request dump:");
-+	dbg_msg("vol_id    %d",   req->vol_id);
-+	dbg_msg("alignment %d",   req->alignment);
-+	dbg_msg("bytes     %lld", (long long)req->bytes);
-+	dbg_msg("vol_type  %d",   req->vol_type);
-+	dbg_msg("name_len  %d",   req->name_len);
-+
-+	memcpy(nm, req->name, 16);
-+	nm[16] = 0;
-+	dbg_msg("the 1st 16 characters of the name: %s", nm);
-+}
-+
-+#endif /* CONFIG_MTD_UBI_DEBUG_MSG */
-diff --git a/drivers/mtd/ubi/debug.h b/drivers/mtd/ubi/debug.h
-new file mode 100644
-index 0000000..b44380b
---- /dev/null
-+++ b/drivers/mtd/ubi/debug.h
-@@ -0,0 +1,152 @@
-+/*
-+ * Copyright (c) International Business Machines Corp., 2006
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
-+ * the GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-+ *
-+ * Author: Artem Bityutskiy (���������������� ����������)
-+ */
-+
-+#ifndef __UBI_DEBUG_H__
-+#define __UBI_DEBUG_H__
-+
-+#ifdef CONFIG_MTD_UBI_DEBUG
-+#ifdef UBI_LINUX
-+#include <linux/random.h>
-+#endif
-+
-+#define ubi_assert(expr)  BUG_ON(!(expr))
-+#define dbg_err(fmt, ...) ubi_err(fmt, ##__VA_ARGS__)
-+#else
-+#define ubi_assert(expr)  ({})
-+#define dbg_err(fmt, ...) ({})
-+#endif
-+
-+#ifdef CONFIG_MTD_UBI_DEBUG_DISABLE_BGT
-+#define DBG_DISABLE_BGT 1
-+#else
-+#define DBG_DISABLE_BGT 0
-+#endif
-+
-+#ifdef CONFIG_MTD_UBI_DEBUG_MSG
-+/* Generic debugging message */
-+#define dbg_msg(fmt, ...)                                    \
-+	printk(KERN_DEBUG "UBI DBG: %s: " fmt "\n", \
-+	       __FUNCTION__, ##__VA_ARGS__)
-+
-+#define ubi_dbg_dump_stack() dump_stack()
-+
-+struct ubi_ec_hdr;
-+struct ubi_vid_hdr;
-+struct ubi_volume;
-+struct ubi_vtbl_record;
-+struct ubi_scan_volume;
-+struct ubi_scan_leb;
-+struct ubi_mkvol_req;
-+
-+void ubi_dbg_dump_ec_hdr(const struct ubi_ec_hdr *ec_hdr);
-+void ubi_dbg_dump_vid_hdr(const struct ubi_vid_hdr *vid_hdr);
-+void ubi_dbg_dump_vol_info(const struct ubi_volume *vol);
-+void ubi_dbg_dump_vtbl_record(const struct ubi_vtbl_record *r, int idx);
-+void ubi_dbg_dump_sv(const struct ubi_scan_volume *sv);
-+void ubi_dbg_dump_seb(const struct ubi_scan_leb *seb, int type);
-+void ubi_dbg_dump_mkvol_req(const struct ubi_mkvol_req *req);
-+
-+#else
-+
-+#define dbg_msg(fmt, ...)    ({})
-+#define ubi_dbg_dump_stack() ({})
-+#define ubi_dbg_dump_ec_hdr(ec_hdr)      ({})
-+#define ubi_dbg_dump_vid_hdr(vid_hdr)    ({})
-+#define ubi_dbg_dump_vol_info(vol)       ({})
-+#define ubi_dbg_dump_vtbl_record(r, idx) ({})
-+#define ubi_dbg_dump_sv(sv)              ({})
-+#define ubi_dbg_dump_seb(seb, type)      ({})
-+#define ubi_dbg_dump_mkvol_req(req)      ({})
-+
-+#endif /* CONFIG_MTD_UBI_DEBUG_MSG */
-+
-+#ifdef CONFIG_MTD_UBI_DEBUG_MSG_EBA
-+/* Messages from the eraseblock association unit */
-+#define dbg_eba(fmt, ...) dbg_msg(fmt, ##__VA_ARGS__)
-+#else
-+#define dbg_eba(fmt, ...) ({})
-+#endif
-+
-+#ifdef CONFIG_MTD_UBI_DEBUG_MSG_WL
-+/* Messages from the wear-leveling unit */
-+#define dbg_wl(fmt, ...) dbg_msg(fmt, ##__VA_ARGS__)
-+#else
-+#define dbg_wl(fmt, ...) ({})
-+#endif
-+
-+#ifdef CONFIG_MTD_UBI_DEBUG_MSG_IO
-+/* Messages from the input/output unit */
-+#define dbg_io(fmt, ...) dbg_msg(fmt, ##__VA_ARGS__)
-+#else
-+#define dbg_io(fmt, ...) ({})
-+#endif
-+
-+#ifdef CONFIG_MTD_UBI_DEBUG_MSG_BLD
-+/* Initialization and build messages */
-+#define dbg_bld(fmt, ...) dbg_msg(fmt, ##__VA_ARGS__)
-+#else
-+#define dbg_bld(fmt, ...) ({})
-+#endif
-+
-+#ifdef CONFIG_MTD_UBI_DEBUG_EMULATE_BITFLIPS
-+/**
-+ * ubi_dbg_is_bitflip - if it is time to emulate a bit-flip.
-+ *
-+ * Returns non-zero if a bit-flip should be emulated, otherwise returns zero.
-+ */
-+static inline int ubi_dbg_is_bitflip(void)
-+{
-+	return !(random32() % 200);
-+}
-+#else
-+#define ubi_dbg_is_bitflip() 0
-+#endif
-+
-+#ifdef CONFIG_MTD_UBI_DEBUG_EMULATE_WRITE_FAILURES
-+/**
-+ * ubi_dbg_is_write_failure - if it is time to emulate a write failure.
-+ *
-+ * Returns non-zero if a write failure should be emulated, otherwise returns
-+ * zero.
-+ */
-+static inline int ubi_dbg_is_write_failure(void)
-+{
-+	return !(random32() % 500);
-+}
-+#else
-+#define ubi_dbg_is_write_failure() 0
-+#endif
-+
-+#ifdef CONFIG_MTD_UBI_DEBUG_EMULATE_ERASE_FAILURES
-+/**
-+ * ubi_dbg_is_erase_failure - if its time to emulate an erase failure.
-+ *
-+ * Returns non-zero if an erase failure should be emulated, otherwise returns
-+ * zero.
-+ */
-+static inline int ubi_dbg_is_erase_failure(void)
-+{
-+		return !(random32() % 400);
-+}
-+#else
-+#define ubi_dbg_is_erase_failure() 0
-+#endif
-+
-+#endif /* !__UBI_DEBUG_H__ */
-diff --git a/drivers/mtd/ubi/eba.c b/drivers/mtd/ubi/eba.c
-new file mode 100644
-index 0000000..8f2b3b1
---- /dev/null
-+++ b/drivers/mtd/ubi/eba.c
-@@ -0,0 +1,1256 @@
-+/*
-+ * Copyright (c) International Business Machines Corp., 2006
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
-+ * the GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-+ *
-+ * Author: Artem Bityutskiy (���������������� ����������)
-+ */
-+
-+/*
-+ * The UBI Eraseblock Association (EBA) unit.
-+ *
-+ * This unit is responsible for I/O to/from logical eraseblock.
-+ *
-+ * Although in this implementation the EBA table is fully kept and managed in
-+ * RAM, which assumes poor scalability, it might be (partially) maintained on
-+ * flash in future implementations.
-+ *
-+ * The EBA unit implements per-logical eraseblock locking. Before accessing a
-+ * logical eraseblock it is locked for reading or writing. The per-logical
-+ * eraseblock locking is implemented by means of the lock tree. The lock tree
-+ * is an RB-tree which refers all the currently locked logical eraseblocks. The
-+ * lock tree elements are &struct ubi_ltree_entry objects. They are indexed by
-+ * (@vol_id, @lnum) pairs.
-+ *
-+ * EBA also maintains the global sequence counter which is incremented each
-+ * time a logical eraseblock is mapped to a physical eraseblock and it is
-+ * stored in the volume identifier header. This means that each VID header has
-+ * a unique sequence number. The sequence number is only increased an we assume
-+ * 64 bits is enough to never overflow.
-+ */
-+
-+#ifdef UBI_LINUX
-+#include <linux/slab.h>
-+#include <linux/crc32.h>
-+#include <linux/err.h>
-+#endif
-+
-+#include "ubi-barebox.h"
-+#include "ubi.h"
-+
-+/* Number of physical eraseblocks reserved for atomic LEB change operation */
-+#define EBA_RESERVED_PEBS 1
-+
-+/**
-+ * next_sqnum - get next sequence number.
-+ * @ubi: UBI device description object
-+ *
-+ * This function returns next sequence number to use, which is just the current
-+ * global sequence counter value. It also increases the global sequence
-+ * counter.
-+ */
-+static unsigned long long next_sqnum(struct ubi_device *ubi)
-+{
-+	unsigned long long sqnum;
-+
-+	spin_lock(&ubi->ltree_lock);
-+	sqnum = ubi->global_sqnum++;
-+	spin_unlock(&ubi->ltree_lock);
-+
-+	return sqnum;
-+}
-+
-+/**
-+ * ubi_get_compat - get compatibility flags of a volume.
-+ * @ubi: UBI device description object
-+ * @vol_id: volume ID
-+ *
-+ * This function returns compatibility flags for an internal volume. User
-+ * volumes have no compatibility flags, so %0 is returned.
-+ */
-+static int ubi_get_compat(const struct ubi_device *ubi, int vol_id)
-+{
-+	if (vol_id == UBI_LAYOUT_VOLUME_ID)
-+		return UBI_LAYOUT_VOLUME_COMPAT;
-+	return 0;
-+}
-+
-+/**
-+ * ltree_lookup - look up the lock tree.
-+ * @ubi: UBI device description object
-+ * @vol_id: volume ID
-+ * @lnum: logical eraseblock number
-+ *
-+ * This function returns a pointer to the corresponding &struct ubi_ltree_entry
-+ * object if the logical eraseblock is locked and %NULL if it is not.
-+ * @ubi->ltree_lock has to be locked.
-+ */
-+static struct ubi_ltree_entry *ltree_lookup(struct ubi_device *ubi, int vol_id,
-+					    int lnum)
-+{
-+	struct rb_node *p;
-+
-+	p = ubi->ltree.rb_node;
-+	while (p) {
-+		struct ubi_ltree_entry *le;
-+
-+		le = rb_entry(p, struct ubi_ltree_entry, rb);
-+
-+		if (vol_id < le->vol_id)
-+			p = p->rb_left;
-+		else if (vol_id > le->vol_id)
-+			p = p->rb_right;
-+		else {
-+			if (lnum < le->lnum)
-+				p = p->rb_left;
-+			else if (lnum > le->lnum)
-+				p = p->rb_right;
-+			else
-+				return le;
++		if (column >= mtd->oobblock) {
++			/* OOB area */
++			column -= mtd->oobblock;
++			readcmd = NAND_CMD_READOOB;
++		} else if (column < 256) {
++			/* First 256 bytes --> READ0 */
++			readcmd = NAND_CMD_READ0;
++		} else {
++			column -= 256;
++			readcmd = NAND_CMD_READ1;
 +		}
++		WriteDOC(readcmd, docptr, Mplus_FlashCmd);
 +	}
++	WriteDOC(command, docptr, Mplus_FlashCmd);
++	WriteDOC(0, docptr, Mplus_WritePipeTerm);
++	WriteDOC(0, docptr, Mplus_WritePipeTerm);
 +
-+	return NULL;
-+}
-+
-+/**
-+ * ltree_add_entry - add new entry to the lock tree.
-+ * @ubi: UBI device description object
-+ * @vol_id: volume ID
-+ * @lnum: logical eraseblock number
-+ *
-+ * This function adds new entry for logical eraseblock (@vol_id, @lnum) to the
-+ * lock tree. If such entry is already there, its usage counter is increased.
-+ * Returns pointer to the lock tree entry or %-ENOMEM if memory allocation
-+ * failed.
-+ */
-+static struct ubi_ltree_entry *ltree_add_entry(struct ubi_device *ubi,
-+					       int vol_id, int lnum)
-+{
-+	struct ubi_ltree_entry *le, *le1, *le_free;
-+
-+	le = kmalloc(sizeof(struct ubi_ltree_entry), GFP_NOFS);
-+	if (!le)
-+		return ERR_PTR(-ENOMEM);
-+
-+	le->users = 0;
-+	init_rwsem(&le->mutex);
-+	le->vol_id = vol_id;
-+	le->lnum = lnum;
-+
-+	spin_lock(&ubi->ltree_lock);
-+	le1 = ltree_lookup(ubi, vol_id, lnum);
-+
-+	if (le1) {
-+		/*
-+		 * This logical eraseblock is already locked. The newly
-+		 * allocated lock entry is not needed.
-+		 */
-+		le_free = le;
-+		le = le1;
-+	} else {
-+		struct rb_node **p, *parent = NULL;
-+
-+		/*
-+		 * No lock entry, add the newly allocated one to the
-+		 * @ubi->ltree RB-tree.
-+		 */
-+		le_free = NULL;
-+
-+		p = &ubi->ltree.rb_node;
-+		while (*p) {
-+			parent = *p;
-+			le1 = rb_entry(parent, struct ubi_ltree_entry, rb);
-+
-+			if (vol_id < le1->vol_id)
-+				p = &(*p)->rb_left;
-+			else if (vol_id > le1->vol_id)
-+				p = &(*p)->rb_right;
-+			else {
-+				ubi_assert(lnum != le1->lnum);
-+				if (lnum < le1->lnum)
-+					p = &(*p)->rb_left;
-+				else
-+					p = &(*p)->rb_right;
++	if (column != -1 || page_addr != -1) {
++		/* Serially input address */
++		if (column != -1) {
++			/* Adjust columns for 16 bit buswidth */
++			if (this->options & NAND_BUSWIDTH_16)
++				column >>= 1;
++			WriteDOC(column, docptr, Mplus_FlashAddress);
++		}
++		if (page_addr != -1) {
++			WriteDOC((unsigned char) (page_addr & 0xff), docptr, Mplus_FlashAddress);
++			WriteDOC((unsigned char) ((page_addr >> 8) & 0xff), docptr, Mplus_FlashAddress);
++			/* One more address cycle for higher density devices */
++			if (this->chipsize & 0x0c000000) {
++				WriteDOC((unsigned char) ((page_addr >> 16) & 0x0f), docptr, Mplus_FlashAddress);
++				printk("high density\n");
 +			}
 +		}
-+
-+		rb_link_node(&le->rb, parent, p);
-+		rb_insert_color(&le->rb, &ubi->ltree);
++		WriteDOC(0, docptr, Mplus_WritePipeTerm);
++		WriteDOC(0, docptr, Mplus_WritePipeTerm);
++		/* deassert ALE */
++		if (command == NAND_CMD_READ0 || command == NAND_CMD_READ1 || command == NAND_CMD_READOOB || command == NAND_CMD_READID)
++			WriteDOC(0, docptr, Mplus_FlashControl);
 +	}
-+	le->users += 1;
-+	spin_unlock(&ubi->ltree_lock);
 +
-+	if (le_free)
-+		kfree(le_free);
++	/*
++	 * program and erase have their own busy handlers
++	 * status and sequential in needs no delay
++	*/
++	switch (command) {
 +
-+	return le;
++	case NAND_CMD_PAGEPROG:
++	case NAND_CMD_ERASE1:
++	case NAND_CMD_ERASE2:
++	case NAND_CMD_SEQIN:
++	case NAND_CMD_STATUS:
++		return;
++
++	case NAND_CMD_RESET:
++		if (this->dev_ready)
++			break;
++		udelay(this->chip_delay);
++		WriteDOC(NAND_CMD_STATUS, docptr, Mplus_FlashCmd);
++		WriteDOC(0, docptr, Mplus_WritePipeTerm);
++		WriteDOC(0, docptr, Mplus_WritePipeTerm);
++		while ( !(this->read_byte(mtd) & 0x40));
++		return;
++
++	/* This applies to read commands */
++	default:
++		/*
++		 * If we don't have access to the busy pin, we apply the given
++		 * command delay
++		*/
++		if (!this->dev_ready) {
++			udelay (this->chip_delay);
++			return;
++		}
++	}
++
++	/* Apply this short delay always to ensure that we do wait tWB in
++	 * any case on any machine. */
++	ndelay (100);
++	/* wait until command is processed */
++	while (!this->dev_ready(mtd));
 +}
 +
-+/**
-+ * leb_read_lock - lock logical eraseblock for reading.
-+ * @ubi: UBI device description object
-+ * @vol_id: volume ID
-+ * @lnum: logical eraseblock number
-+ *
-+ * This function locks a logical eraseblock for reading. Returns zero in case
-+ * of success and a negative error code in case of failure.
-+ */
-+static int leb_read_lock(struct ubi_device *ubi, int vol_id, int lnum)
++static int doc200x_dev_ready(struct mtd_info *mtd)
 +{
-+	struct ubi_ltree_entry *le;
++	struct nand_chip *this = mtd->priv;
++	struct doc_priv *doc = this->priv;
++	void __iomem *docptr = doc->virtadr;
 +
-+	le = ltree_add_entry(ubi, vol_id, lnum);
-+	if (IS_ERR(le))
-+		return PTR_ERR(le);
-+	down_read(&le->mutex);
++	if (DoC_is_MillenniumPlus(doc)) {
++		/* 11.4.2 -- must NOP four times before checking FR/B# */
++		DoC_Delay(doc, 4);
++		if ((ReadDOC(docptr, Mplus_FlashControl) & CDSN_CTRL_FR_B_MASK) != CDSN_CTRL_FR_B_MASK) {
++			if(debug)
++				printk("not ready\n");
++			return 0;
++		}
++		if (debug)printk("was ready\n");
++		return 1;
++	} else {
++		/* 11.4.2 -- must NOP four times before checking FR/B# */
++		DoC_Delay(doc, 4);
++		if (!(ReadDOC(docptr, CDSNControl) & CDSN_CTRL_FR_B)) {
++			if(debug)
++				printk("not ready\n");
++			return 0;
++		}
++		/* 11.4.2 -- Must NOP twice if it's ready */
++		DoC_Delay(doc, 2);
++		if (debug)printk("was ready\n");
++		return 1;
++	}
++}
++
++static int doc200x_block_bad(struct mtd_info *mtd, loff_t ofs, int getchip)
++{
++	/* This is our last resort if we couldn't find or create a BBT.  Just
++	   pretend all blocks are good. */
 +	return 0;
 +}
 +
-+/**
-+ * leb_read_unlock - unlock logical eraseblock.
-+ * @ubi: UBI device description object
-+ * @vol_id: volume ID
-+ * @lnum: logical eraseblock number
-+ */
-+static void leb_read_unlock(struct ubi_device *ubi, int vol_id, int lnum)
++static void doc200x_enable_hwecc(struct mtd_info *mtd, int mode)
 +{
-+	int _free = 0;
-+	struct ubi_ltree_entry *le;
++	struct nand_chip *this = mtd->priv;
++	struct doc_priv *doc = this->priv;
++	void __iomem *docptr = doc->virtadr;
 +
-+	spin_lock(&ubi->ltree_lock);
-+	le = ltree_lookup(ubi, vol_id, lnum);
-+	le->users -= 1;
-+	ubi_assert(le->users >= 0);
-+	if (le->users == 0) {
-+		rb_erase(&le->rb, &ubi->ltree);
-+		_free = 1;
++	/* Prime the ECC engine */
++	switch(mode) {
++	case NAND_ECC_READ:
++		WriteDOC(DOC_ECC_RESET, docptr, ECCConf);
++		WriteDOC(DOC_ECC_EN, docptr, ECCConf);
++		break;
++	case NAND_ECC_WRITE:
++		WriteDOC(DOC_ECC_RESET, docptr, ECCConf);
++		WriteDOC(DOC_ECC_EN | DOC_ECC_RW, docptr, ECCConf);
++		break;
 +	}
-+	spin_unlock(&ubi->ltree_lock);
-+
-+	up_read(&le->mutex);
-+	if (_free)
-+		kfree(le);
 +}
 +
-+/**
-+ * leb_write_lock - lock logical eraseblock for writing.
-+ * @ubi: UBI device description object
-+ * @vol_id: volume ID
-+ * @lnum: logical eraseblock number
-+ *
-+ * This function locks a logical eraseblock for writing. Returns zero in case
-+ * of success and a negative error code in case of failure.
-+ */
-+static int leb_write_lock(struct ubi_device *ubi, int vol_id, int lnum)
++static void doc2001plus_enable_hwecc(struct mtd_info *mtd, int mode)
 +{
-+	struct ubi_ltree_entry *le;
++	struct nand_chip *this = mtd->priv;
++	struct doc_priv *doc = this->priv;
++	void __iomem *docptr = doc->virtadr;
 +
-+	le = ltree_add_entry(ubi, vol_id, lnum);
-+	if (IS_ERR(le))
-+		return PTR_ERR(le);
-+	down_write(&le->mutex);
++	/* Prime the ECC engine */
++	switch(mode) {
++	case NAND_ECC_READ:
++		WriteDOC(DOC_ECC_RESET, docptr, Mplus_ECCConf);
++		WriteDOC(DOC_ECC_EN, docptr, Mplus_ECCConf);
++		break;
++	case NAND_ECC_WRITE:
++		WriteDOC(DOC_ECC_RESET, docptr, Mplus_ECCConf);
++		WriteDOC(DOC_ECC_EN | DOC_ECC_RW, docptr, Mplus_ECCConf);
++		break;
++	}
++}
++
++/* This code is only called on write */
++static int doc200x_calculate_ecc(struct mtd_info *mtd, const u_char *dat,
++				 unsigned char *ecc_code)
++{
++	struct nand_chip *this = mtd->priv;
++	struct doc_priv *doc = this->priv;
++	void __iomem *docptr = doc->virtadr;
++	int i;
++	int emptymatch = 1;
++
++	/* flush the pipeline */
++	if (DoC_is_2000(doc)) {
++		WriteDOC(doc->CDSNControl & ~CDSN_CTRL_FLASH_IO, docptr, CDSNControl);
++		WriteDOC(0, docptr, 2k_CDSN_IO);
++		WriteDOC(0, docptr, 2k_CDSN_IO);
++		WriteDOC(0, docptr, 2k_CDSN_IO);
++		WriteDOC(doc->CDSNControl, docptr, CDSNControl);
++	} else if (DoC_is_MillenniumPlus(doc)) {
++		WriteDOC(0, docptr, Mplus_NOP);
++		WriteDOC(0, docptr, Mplus_NOP);
++		WriteDOC(0, docptr, Mplus_NOP);
++	} else {
++		WriteDOC(0, docptr, NOP);
++		WriteDOC(0, docptr, NOP);
++		WriteDOC(0, docptr, NOP);
++	}
++
++	for (i = 0; i < 6; i++) {
++		if (DoC_is_MillenniumPlus(doc))
++			ecc_code[i] = ReadDOC_(docptr, DoC_Mplus_ECCSyndrome0 + i);
++		else
++			ecc_code[i] = ReadDOC_(docptr, DoC_ECCSyndrome0 + i);
++		if (ecc_code[i] != empty_write_ecc[i])
++			emptymatch = 0;
++	}
++	if (DoC_is_MillenniumPlus(doc))
++		WriteDOC(DOC_ECC_DIS, docptr, Mplus_ECCConf);
++	else
++		WriteDOC(DOC_ECC_DIS, docptr, ECCConf);
++#if 0
++	/* If emptymatch=1, we might have an all-0xff data buffer.  Check. */
++	if (emptymatch) {
++		/* Note: this somewhat expensive test should not be triggered
++		   often.  It could be optimized away by examining the data in
++		   the writebuf routine, and remembering the result. */
++		for (i = 0; i < 512; i++) {
++			if (dat[i] == 0xff) continue;
++			emptymatch = 0;
++			break;
++		}
++	}
++	/* If emptymatch still =1, we do have an all-0xff data buffer.
++	   Return all-0xff ecc value instead of the computed one, so
++	   it'll look just like a freshly-erased page. */
++	if (emptymatch) memset(ecc_code, 0xff, 6);
++#endif
 +	return 0;
 +}
 +
-+/**
-+ * leb_write_lock - lock logical eraseblock for writing.
-+ * @ubi: UBI device description object
-+ * @vol_id: volume ID
-+ * @lnum: logical eraseblock number
-+ *
-+ * This function locks a logical eraseblock for writing if there is no
-+ * contention and does nothing if there is contention. Returns %0 in case of
-+ * success, %1 in case of contention, and and a negative error code in case of
-+ * failure.
-+ */
-+static int leb_write_trylock(struct ubi_device *ubi, int vol_id, int lnum)
++static int doc200x_correct_data(struct mtd_info *mtd, u_char *dat, u_char *read_ecc, u_char *calc_ecc)
 +{
-+	int _free;
-+	struct ubi_ltree_entry *le;
++	int i, ret = 0;
++	struct nand_chip *this = mtd->priv;
++	struct doc_priv *doc = this->priv;
++	void __iomem *docptr = doc->virtadr;
++	volatile u_char dummy;
++	int emptymatch = 1;
 +
-+	le = ltree_add_entry(ubi, vol_id, lnum);
-+	if (IS_ERR(le))
-+		return PTR_ERR(le);
-+	if (down_write_trylock(&le->mutex))
++	/* flush the pipeline */
++	if (DoC_is_2000(doc)) {
++		dummy = ReadDOC(docptr, 2k_ECCStatus);
++		dummy = ReadDOC(docptr, 2k_ECCStatus);
++		dummy = ReadDOC(docptr, 2k_ECCStatus);
++	} else if (DoC_is_MillenniumPlus(doc)) {
++		dummy = ReadDOC(docptr, Mplus_ECCConf);
++		dummy = ReadDOC(docptr, Mplus_ECCConf);
++		dummy = ReadDOC(docptr, Mplus_ECCConf);
++	} else {
++		dummy = ReadDOC(docptr, ECCConf);
++		dummy = ReadDOC(docptr, ECCConf);
++		dummy = ReadDOC(docptr, ECCConf);
++	}
++
++	/* Error occured ? */
++	if (dummy & 0x80) {
++		for (i = 0; i < 6; i++) {
++			if (DoC_is_MillenniumPlus(doc))
++				calc_ecc[i] = ReadDOC_(docptr, DoC_Mplus_ECCSyndrome0 + i);
++			else
++				calc_ecc[i] = ReadDOC_(docptr, DoC_ECCSyndrome0 + i);
++			if (calc_ecc[i] != empty_read_syndrome[i])
++				emptymatch = 0;
++		}
++		/* If emptymatch=1, the read syndrome is consistent with an
++		   all-0xff data and stored ecc block.  Check the stored ecc. */
++		if (emptymatch) {
++			for (i = 0; i < 6; i++) {
++				if (read_ecc[i] == 0xff) continue;
++				emptymatch = 0;
++				break;
++			}
++		}
++		/* If emptymatch still =1, check the data block. */
++		if (emptymatch) {
++		/* Note: this somewhat expensive test should not be triggered
++		   often.  It could be optimized away by examining the data in
++		   the readbuf routine, and remembering the result. */
++			for (i = 0; i < 512; i++) {
++				if (dat[i] == 0xff) continue;
++				emptymatch = 0;
++				break;
++			}
++		}
++		/* If emptymatch still =1, this is almost certainly a freshly-
++		   erased block, in which case the ECC will not come out right.
++		   We'll suppress the error and tell the caller everything's
++		   OK.  Because it is. */
++		if (!emptymatch) ret = doc_ecc_decode (rs_decoder, dat, calc_ecc);
++		if (ret > 0)
++			printk(KERN_ERR "doc200x_correct_data corrected %d errors\n", ret);
++	}
++	if (DoC_is_MillenniumPlus(doc))
++		WriteDOC(DOC_ECC_DIS, docptr, Mplus_ECCConf);
++	else
++		WriteDOC(DOC_ECC_DIS, docptr, ECCConf);
++	if (no_ecc_failures && (ret == -1)) {
++		printk(KERN_ERR "suppressing ECC failure\n");
++		ret = 0;
++	}
++	return ret;
++}
++
++/*u_char mydatabuf[528]; */
++
++static struct nand_oobinfo doc200x_oobinfo = {
++	.useecc = MTD_NANDECC_AUTOPLACE,
++	.eccbytes = 6,
++	.eccpos = {0, 1, 2, 3, 4, 5},
++	.oobfree = { {8, 8} }
++};
++
++/* Find the (I)NFTL Media Header, and optionally also the mirror media header.
++   On sucessful return, buf will contain a copy of the media header for
++   further processing.  id is the string to scan for, and will presumably be
++   either "ANAND" or "BNAND".  If findmirror=1, also look for the mirror media
++   header.  The page #s of the found media headers are placed in mh0_page and
++   mh1_page in the DOC private structure. */
++static int __init find_media_headers(struct mtd_info *mtd, u_char *buf,
++				     const char *id, int findmirror)
++{
++	struct nand_chip *this = mtd->priv;
++	struct doc_priv *doc = this->priv;
++	unsigned offs, end = (MAX_MEDIAHEADER_SCAN << this->phys_erase_shift);
++	int ret;
++	size_t retlen;
++
++	end = min(end, mtd->size); /* paranoia */
++	for (offs = 0; offs < end; offs += mtd->erasesize) {
++		ret = mtd->read(mtd, offs, mtd->oobblock, &retlen, buf);
++		if (retlen != mtd->oobblock) continue;
++		if (ret) {
++			printk(KERN_WARNING "ECC error scanning DOC at 0x%x\n",
++				offs);
++		}
++		if (memcmp(buf, id, 6)) continue;
++		printk(KERN_INFO "Found DiskOnChip %s Media Header at 0x%x\n", id, offs);
++		if (doc->mh0_page == -1) {
++			doc->mh0_page = offs >> this->page_shift;
++			if (!findmirror) return 1;
++			continue;
++		}
++		doc->mh1_page = offs >> this->page_shift;
++		return 2;
++	}
++	if (doc->mh0_page == -1) {
++		printk(KERN_WARNING "DiskOnChip %s Media Header not found.\n", id);
 +		return 0;
++	}
++	/* Only one mediaheader was found.  We want buf to contain a
++	   mediaheader on return, so we'll have to re-read the one we found. */
++	offs = doc->mh0_page << this->page_shift;
++	ret = mtd->read(mtd, offs, mtd->oobblock, &retlen, buf);
++	if (retlen != mtd->oobblock) {
++		/* Insanity.  Give up. */
++		printk(KERN_ERR "Read DiskOnChip Media Header once, but can't reread it???\n");
++		return 0;
++	}
++	return 1;
++}
 +
-+	/* Contention, cancel */
-+	spin_lock(&ubi->ltree_lock);
-+	le->users -= 1;
-+	ubi_assert(le->users >= 0);
-+	if (le->users == 0) {
-+		rb_erase(&le->rb, &ubi->ltree);
-+		_free = 1;
-+	} else
-+		_free = 0;
-+	spin_unlock(&ubi->ltree_lock);
-+	if (_free)
-+		kfree(le);
++static inline int __init nftl_partscan(struct mtd_info *mtd,
++				struct mtd_partition *parts)
++{
++	struct nand_chip *this = mtd->priv;
++	struct doc_priv *doc = this->priv;
++	int ret = 0;
++	u_char *buf;
++	struct NFTLMediaHeader *mh;
++	const unsigned psize = 1 << this->page_shift;
++	unsigned blocks, maxblocks;
++	int offs, numheaders;
++
++	buf = kmalloc(mtd->oobblock, GFP_KERNEL);
++	if (!buf) {
++		printk(KERN_ERR "DiskOnChip mediaheader kmalloc failed!\n");
++		return 0;
++	}
++	if (!(numheaders=find_media_headers(mtd, buf, "ANAND", 1))) goto out;
++	mh = (struct NFTLMediaHeader *) buf;
++
++/*#ifdef CONFIG_MTD_DEBUG_VERBOSE */
++/*	if (CONFIG_MTD_DEBUG_VERBOSE >= 2) */
++	printk(KERN_INFO "    DataOrgID        = %s\n"
++			 "    NumEraseUnits    = %d\n"
++			 "    FirstPhysicalEUN = %d\n"
++			 "    FormattedSize    = %d\n"
++			 "    UnitSizeFactor   = %d\n",
++		mh->DataOrgID, mh->NumEraseUnits,
++		mh->FirstPhysicalEUN, mh->FormattedSize,
++		mh->UnitSizeFactor);
++/*#endif */
++
++	blocks = mtd->size >> this->phys_erase_shift;
++	maxblocks = min(32768U, mtd->erasesize - psize);
++
++	if (mh->UnitSizeFactor == 0x00) {
++		/* Auto-determine UnitSizeFactor.  The constraints are:
++		   - There can be at most 32768 virtual blocks.
++		   - There can be at most (virtual block size - page size)
++		     virtual blocks (because MediaHeader+BBT must fit in 1).
++		*/
++		mh->UnitSizeFactor = 0xff;
++		while (blocks > maxblocks) {
++			blocks >>= 1;
++			maxblocks = min(32768U, (maxblocks << 1) + psize);
++			mh->UnitSizeFactor--;
++		}
++		printk(KERN_WARNING "UnitSizeFactor=0x00 detected.  Correct value is assumed to be 0x%02x.\n", mh->UnitSizeFactor);
++	}
++
++	/* NOTE: The lines below modify internal variables of the NAND and MTD
++	   layers; variables with have already been configured by nand_scan.
++	   Unfortunately, we didn't know before this point what these values
++	   should be.  Thus, this code is somewhat dependant on the exact
++	   implementation of the NAND layer.  */
++	if (mh->UnitSizeFactor != 0xff) {
++		this->bbt_erase_shift += (0xff - mh->UnitSizeFactor);
++		mtd->erasesize <<= (0xff - mh->UnitSizeFactor);
++		printk(KERN_INFO "Setting virtual erase size to %d\n", mtd->erasesize);
++		blocks = mtd->size >> this->bbt_erase_shift;
++		maxblocks = min(32768U, mtd->erasesize - psize);
++	}
++
++	if (blocks > maxblocks) {
++		printk(KERN_ERR "UnitSizeFactor of 0x%02x is inconsistent with device size.  Aborting.\n", mh->UnitSizeFactor);
++		goto out;
++	}
++
++	/* Skip past the media headers. */
++	offs = max(doc->mh0_page, doc->mh1_page);
++	offs <<= this->page_shift;
++	offs += mtd->erasesize;
++
++	/*parts[0].name = " DiskOnChip Boot / Media Header partition"; */
++	/*parts[0].offset = 0; */
++	/*parts[0].size = offs; */
++
++	parts[0].name = " DiskOnChip BDTL partition";
++	parts[0].offset = offs;
++	parts[0].size = (mh->NumEraseUnits - numheaders) << this->bbt_erase_shift;
++
++	offs += parts[0].size;
++	if (offs < mtd->size) {
++		parts[1].name = " DiskOnChip Remainder partition";
++		parts[1].offset = offs;
++		parts[1].size = mtd->size - offs;
++		ret = 2;
++		goto out;
++	}
++	ret = 1;
++out:
++	kfree(buf);
++	return ret;
++}
++
++/* This is a stripped-down copy of the code in inftlmount.c */
++static inline int __init inftl_partscan(struct mtd_info *mtd,
++				 struct mtd_partition *parts)
++{
++	struct nand_chip *this = mtd->priv;
++	struct doc_priv *doc = this->priv;
++	int ret = 0;
++	u_char *buf;
++	struct INFTLMediaHeader *mh;
++	struct INFTLPartition *ip;
++	int numparts = 0;
++	int blocks;
++	int vshift, lastvunit = 0;
++	int i;
++	int end = mtd->size;
++
++	if (inftl_bbt_write)
++		end -= (INFTL_BBT_RESERVED_BLOCKS << this->phys_erase_shift);
++
++	buf = kmalloc(mtd->oobblock, GFP_KERNEL);
++	if (!buf) {
++		printk(KERN_ERR "DiskOnChip mediaheader kmalloc failed!\n");
++		return 0;
++	}
++
++	if (!find_media_headers(mtd, buf, "BNAND", 0)) goto out;
++	doc->mh1_page = doc->mh0_page + (4096 >> this->page_shift);
++	mh = (struct INFTLMediaHeader *) buf;
++
++	mh->NoOfBootImageBlocks = le32_to_cpu(mh->NoOfBootImageBlocks);
++	mh->NoOfBinaryPartitions = le32_to_cpu(mh->NoOfBinaryPartitions);
++	mh->NoOfBDTLPartitions = le32_to_cpu(mh->NoOfBDTLPartitions);
++	mh->BlockMultiplierBits = le32_to_cpu(mh->BlockMultiplierBits);
++	mh->FormatFlags = le32_to_cpu(mh->FormatFlags);
++	mh->PercentUsed = le32_to_cpu(mh->PercentUsed);
++
++/*#ifdef CONFIG_MTD_DEBUG_VERBOSE */
++/*	if (CONFIG_MTD_DEBUG_VERBOSE >= 2) */
++	printk(KERN_INFO "    bootRecordID          = %s\n"
++			 "    NoOfBootImageBlocks   = %d\n"
++			 "    NoOfBinaryPartitions  = %d\n"
++			 "    NoOfBDTLPartitions    = %d\n"
++			 "    BlockMultiplerBits    = %d\n"
++			 "    FormatFlgs            = %d\n"
++			 "    OsakVersion           = %d.%d.%d.%d\n"
++			 "    PercentUsed           = %d\n",
++		mh->bootRecordID, mh->NoOfBootImageBlocks,
++		mh->NoOfBinaryPartitions,
++		mh->NoOfBDTLPartitions,
++		mh->BlockMultiplierBits, mh->FormatFlags,
++		((unsigned char *) &mh->OsakVersion)[0] & 0xf,
++		((unsigned char *) &mh->OsakVersion)[1] & 0xf,
++		((unsigned char *) &mh->OsakVersion)[2] & 0xf,
++		((unsigned char *) &mh->OsakVersion)[3] & 0xf,
++		mh->PercentUsed);
++/*#endif */
++
++	vshift = this->phys_erase_shift + mh->BlockMultiplierBits;
++
++	blocks = mtd->size >> vshift;
++	if (blocks > 32768) {
++		printk(KERN_ERR "BlockMultiplierBits=%d is inconsistent with device size.  Aborting.\n", mh->BlockMultiplierBits);
++		goto out;
++	}
++
++	blocks = doc->chips_per_floor << (this->chip_shift - this->phys_erase_shift);
++	if (inftl_bbt_write && (blocks > mtd->erasesize)) {
++		printk(KERN_ERR "Writeable BBTs spanning more than one erase block are not yet supported.  FIX ME!\n");
++		goto out;
++	}
++
++	/* Scan the partitions */
++	for (i = 0; (i < 4); i++) {
++		ip = &(mh->Partitions[i]);
++		ip->virtualUnits = le32_to_cpu(ip->virtualUnits);
++		ip->firstUnit = le32_to_cpu(ip->firstUnit);
++		ip->lastUnit = le32_to_cpu(ip->lastUnit);
++		ip->flags = le32_to_cpu(ip->flags);
++		ip->spareUnits = le32_to_cpu(ip->spareUnits);
++		ip->Reserved0 = le32_to_cpu(ip->Reserved0);
++
++/*#ifdef CONFIG_MTD_DEBUG_VERBOSE */
++/*		if (CONFIG_MTD_DEBUG_VERBOSE >= 2) */
++		printk(KERN_INFO	"    PARTITION[%d] ->\n"
++			"        virtualUnits    = %d\n"
++			"        firstUnit       = %d\n"
++			"        lastUnit        = %d\n"
++			"        flags           = 0x%x\n"
++			"        spareUnits      = %d\n",
++			i, ip->virtualUnits, ip->firstUnit,
++			ip->lastUnit, ip->flags,
++			ip->spareUnits);
++/*#endif */
++
++/*
++		if ((i == 0) && (ip->firstUnit > 0)) {
++			parts[0].name = " DiskOnChip IPL / Media Header partition";
++			parts[0].offset = 0;
++			parts[0].size = mtd->erasesize * ip->firstUnit;
++			numparts = 1;
++		}
++*/
++
++		if (ip->flags & INFTL_BINARY)
++			parts[numparts].name = " DiskOnChip BDK partition";
++		else
++			parts[numparts].name = " DiskOnChip BDTL partition";
++		parts[numparts].offset = ip->firstUnit << vshift;
++		parts[numparts].size = (1 + ip->lastUnit - ip->firstUnit) << vshift;
++		numparts++;
++		if (ip->lastUnit > lastvunit) lastvunit = ip->lastUnit;
++		if (ip->flags & INFTL_LAST) break;
++	}
++	lastvunit++;
++	if ((lastvunit << vshift) < end) {
++		parts[numparts].name = " DiskOnChip Remainder partition";
++		parts[numparts].offset = lastvunit << vshift;
++		parts[numparts].size = end - parts[numparts].offset;
++		numparts++;
++	}
++	ret = numparts;
++out:
++	kfree(buf);
++	return ret;
++}
++
++static int __init nftl_scan_bbt(struct mtd_info *mtd)
++{
++	int ret, numparts;
++	struct nand_chip *this = mtd->priv;
++	struct doc_priv *doc = this->priv;
++	struct mtd_partition parts[2];
++
++	memset((char *) parts, 0, sizeof(parts));
++	/* On NFTL, we have to find the media headers before we can read the
++	   BBTs, since they're stored in the media header eraseblocks. */
++	numparts = nftl_partscan(mtd, parts);
++	if (!numparts) return -EIO;
++	this->bbt_td->options = NAND_BBT_ABSPAGE | NAND_BBT_8BIT |
++				NAND_BBT_SAVECONTENT | NAND_BBT_WRITE |
++				NAND_BBT_VERSION;
++	this->bbt_td->veroffs = 7;
++	this->bbt_td->pages[0] = doc->mh0_page + 1;
++	if (doc->mh1_page != -1) {
++		this->bbt_md->options = NAND_BBT_ABSPAGE | NAND_BBT_8BIT |
++					NAND_BBT_SAVECONTENT | NAND_BBT_WRITE |
++					NAND_BBT_VERSION;
++		this->bbt_md->veroffs = 7;
++		this->bbt_md->pages[0] = doc->mh1_page + 1;
++	} else {
++		this->bbt_md = NULL;
++	}
++
++	/* It's safe to set bd=NULL below because NAND_BBT_CREATE is not set.
++	   At least as nand_bbt.c is currently written. */
++	if ((ret = nand_scan_bbt(mtd, NULL)))
++		return ret;
++	add_mtd_device(mtd);
++#ifdef CONFIG_MTD_PARTITIONS
++	if (!no_autopart)
++		add_mtd_partitions(mtd, parts, numparts);
++#endif
++	return 0;
++}
++
++static int __init inftl_scan_bbt(struct mtd_info *mtd)
++{
++	int ret, numparts;
++	struct nand_chip *this = mtd->priv;
++	struct doc_priv *doc = this->priv;
++	struct mtd_partition parts[5];
++
++	if (this->numchips > doc->chips_per_floor) {
++		printk(KERN_ERR "Multi-floor INFTL devices not yet supported.\n");
++		return -EIO;
++	}
++
++	if (DoC_is_MillenniumPlus(doc)) {
++		this->bbt_td->options = NAND_BBT_2BIT | NAND_BBT_ABSPAGE;
++		if (inftl_bbt_write)
++			this->bbt_td->options |= NAND_BBT_WRITE;
++		this->bbt_td->pages[0] = 2;
++		this->bbt_md = NULL;
++	} else {
++		this->bbt_td->options = NAND_BBT_LASTBLOCK | NAND_BBT_8BIT |
++					NAND_BBT_VERSION;
++		if (inftl_bbt_write)
++			this->bbt_td->options |= NAND_BBT_WRITE;
++		this->bbt_td->offs = 8;
++		this->bbt_td->len = 8;
++		this->bbt_td->veroffs = 7;
++		this->bbt_td->maxblocks = INFTL_BBT_RESERVED_BLOCKS;
++		this->bbt_td->reserved_block_code = 0x01;
++		this->bbt_td->pattern = "MSYS_BBT";
++
++		this->bbt_md->options = NAND_BBT_LASTBLOCK | NAND_BBT_8BIT |
++					NAND_BBT_VERSION;
++		if (inftl_bbt_write)
++			this->bbt_md->options |= NAND_BBT_WRITE;
++		this->bbt_md->offs = 8;
++		this->bbt_md->len = 8;
++		this->bbt_md->veroffs = 7;
++		this->bbt_md->maxblocks = INFTL_BBT_RESERVED_BLOCKS;
++		this->bbt_md->reserved_block_code = 0x01;
++		this->bbt_md->pattern = "TBB_SYSM";
++	}
++
++	/* It's safe to set bd=NULL below because NAND_BBT_CREATE is not set.
++	   At least as nand_bbt.c is currently written. */
++	if ((ret = nand_scan_bbt(mtd, NULL)))
++		return ret;
++	memset((char *) parts, 0, sizeof(parts));
++	numparts = inftl_partscan(mtd, parts);
++	/* At least for now, require the INFTL Media Header.  We could probably
++	   do without it for non-INFTL use, since all it gives us is
++	   autopartitioning, but I want to give it more thought. */
++	if (!numparts) return -EIO;
++	add_mtd_device(mtd);
++#ifdef CONFIG_MTD_PARTITIONS
++	if (!no_autopart)
++		add_mtd_partitions(mtd, parts, numparts);
++#endif
++	return 0;
++}
++
++static inline int __init doc2000_init(struct mtd_info *mtd)
++{
++	struct nand_chip *this = mtd->priv;
++	struct doc_priv *doc = this->priv;
++
++	this->write_byte = doc2000_write_byte;
++	this->read_byte = doc2000_read_byte;
++	this->write_buf = doc2000_writebuf;
++	this->read_buf = doc2000_readbuf;
++	this->verify_buf = doc2000_verifybuf;
++	this->scan_bbt = nftl_scan_bbt;
++
++	doc->CDSNControl = CDSN_CTRL_FLASH_IO | CDSN_CTRL_ECC_IO;
++	doc2000_count_chips(mtd);
++	mtd->name = "DiskOnChip 2000 (NFTL Model)";
++	return (4 * doc->chips_per_floor);
++}
++
++static inline int __init doc2001_init(struct mtd_info *mtd)
++{
++	struct nand_chip *this = mtd->priv;
++	struct doc_priv *doc = this->priv;
++
++	this->write_byte = doc2001_write_byte;
++	this->read_byte = doc2001_read_byte;
++	this->write_buf = doc2001_writebuf;
++	this->read_buf = doc2001_readbuf;
++	this->verify_buf = doc2001_verifybuf;
++
++	ReadDOC(doc->virtadr, ChipID);
++	ReadDOC(doc->virtadr, ChipID);
++	ReadDOC(doc->virtadr, ChipID);
++	if (ReadDOC(doc->virtadr, ChipID) != DOC_ChipID_DocMil) {
++		/* It's not a Millennium; it's one of the newer
++		   DiskOnChip 2000 units with a similar ASIC.
++		   Treat it like a Millennium, except that it
++		   can have multiple chips. */
++		doc2000_count_chips(mtd);
++		mtd->name = "DiskOnChip 2000 (INFTL Model)";
++		this->scan_bbt = inftl_scan_bbt;
++		return (4 * doc->chips_per_floor);
++	} else {
++		/* Bog-standard Millennium */
++		doc->chips_per_floor = 1;
++		mtd->name = "DiskOnChip Millennium";
++		this->scan_bbt = nftl_scan_bbt;
++		return 1;
++	}
++}
++
++static inline int __init doc2001plus_init(struct mtd_info *mtd)
++{
++	struct nand_chip *this = mtd->priv;
++	struct doc_priv *doc = this->priv;
++
++	this->write_byte = NULL;
++	this->read_byte = doc2001plus_read_byte;
++	this->write_buf = doc2001plus_writebuf;
++	this->read_buf = doc2001plus_readbuf;
++	this->verify_buf = doc2001plus_verifybuf;
++	this->scan_bbt = inftl_scan_bbt;
++	this->hwcontrol = NULL;
++	this->select_chip = doc2001plus_select_chip;
++	this->cmdfunc = doc2001plus_command;
++	this->enable_hwecc = doc2001plus_enable_hwecc;
++
++	doc->chips_per_floor = 1;
++	mtd->name = "DiskOnChip Millennium Plus";
 +
 +	return 1;
 +}
 +
-+/**
-+ * leb_write_unlock - unlock logical eraseblock.
-+ * @ubi: UBI device description object
-+ * @vol_id: volume ID
-+ * @lnum: logical eraseblock number
-+ */
-+static void leb_write_unlock(struct ubi_device *ubi, int vol_id, int lnum)
++static inline int __init doc_probe(unsigned long physadr)
 +{
-+	int _free;
-+	struct ubi_ltree_entry *le;
++	unsigned char ChipID;
++	struct mtd_info *mtd;
++	struct nand_chip *nand;
++	struct doc_priv *doc;
++	void __iomem *virtadr;
++	unsigned char save_control;
++	unsigned char tmp, tmpb, tmpc;
++	int reg, len, numchips;
++	int ret = 0;
 +
-+	spin_lock(&ubi->ltree_lock);
-+	le = ltree_lookup(ubi, vol_id, lnum);
-+	le->users -= 1;
-+	ubi_assert(le->users >= 0);
-+	if (le->users == 0) {
-+		rb_erase(&le->rb, &ubi->ltree);
-+		_free = 1;
-+	} else
-+		_free = 0;
-+	spin_unlock(&ubi->ltree_lock);
-+
-+	up_write(&le->mutex);
-+	if (_free)
-+		kfree(le);
-+}
-+
-+/**
-+ * ubi_eba_unmap_leb - un-map logical eraseblock.
-+ * @ubi: UBI device description object
-+ * @vol: volume description object
-+ * @lnum: logical eraseblock number
-+ *
-+ * This function un-maps logical eraseblock @lnum and schedules corresponding
-+ * physical eraseblock for erasure. Returns zero in case of success and a
-+ * negative error code in case of failure.
-+ */
-+int ubi_eba_unmap_leb(struct ubi_device *ubi, struct ubi_volume *vol,
-+		      int lnum)
-+{
-+	int err, pnum, vol_id = vol->vol_id;
-+
-+	if (ubi->ro_mode)
-+		return -EROFS;
-+
-+	err = leb_write_lock(ubi, vol_id, lnum);
-+	if (err)
-+		return err;
-+
-+	pnum = vol->eba_tbl[lnum];
-+	if (pnum < 0)
-+		/* This logical eraseblock is already unmapped */
-+		goto out_unlock;
-+
-+	dbg_eba("erase LEB %d:%d, PEB %d", vol_id, lnum, pnum);
-+
-+	vol->eba_tbl[lnum] = UBI_LEB_UNMAPPED;
-+	err = ubi_wl_put_peb(ubi, pnum, 0);
-+
-+out_unlock:
-+	leb_write_unlock(ubi, vol_id, lnum);
-+	return err;
-+}
-+
-+/**
-+ * ubi_eba_read_leb - read data.
-+ * @ubi: UBI device description object
-+ * @vol: volume description object
-+ * @lnum: logical eraseblock number
-+ * @buf: buffer to store the read data
-+ * @offset: offset from where to read
-+ * @len: how many bytes to read
-+ * @check: data CRC check flag
-+ *
-+ * If the logical eraseblock @lnum is unmapped, @buf is filled with 0xFF
-+ * bytes. The @check flag only makes sense for static volumes and forces
-+ * eraseblock data CRC checking.
-+ *
-+ * In case of success this function returns zero. In case of a static volume,
-+ * if data CRC mismatches - %-EBADMSG is returned. %-EBADMSG may also be
-+ * returned for any volume type if an ECC error was detected by the MTD device
-+ * driver. Other negative error cored may be returned in case of other errors.
-+ */
-+int ubi_eba_read_leb(struct ubi_device *ubi, struct ubi_volume *vol, int lnum,
-+		     void *buf, int offset, int len, int check)
-+{
-+	int err, pnum, scrub = 0, vol_id = vol->vol_id;
-+	struct ubi_vid_hdr *vid_hdr;
-+	uint32_t uninitialized_var(crc);
-+
-+	err = leb_read_lock(ubi, vol_id, lnum);
-+	if (err)
-+		return err;
-+
-+	pnum = vol->eba_tbl[lnum];
-+	if (pnum < 0) {
-+		/*
-+		 * The logical eraseblock is not mapped, fill the whole buffer
-+		 * with 0xFF bytes. The exception is static volumes for which
-+		 * it is an error to read unmapped logical eraseblocks.
-+		 */
-+		dbg_eba("read %d bytes from offset %d of LEB %d:%d (unmapped)",
-+			len, offset, vol_id, lnum);
-+		leb_read_unlock(ubi, vol_id, lnum);
-+		ubi_assert(vol->vol_type != UBI_STATIC_VOLUME);
-+		memset(buf, 0xFF, len);
-+		return 0;
++	virtadr = ioremap(physadr, DOC_IOREMAP_LEN);
++	if (!virtadr) {
++		printk(KERN_ERR "Diskonchip ioremap failed: 0x%x bytes at 0x%lx\n", DOC_IOREMAP_LEN, physadr);
++		return -EIO;
 +	}
 +
-+	dbg_eba("read %d bytes from offset %d of LEB %d:%d, PEB %d",
-+		len, offset, vol_id, lnum, pnum);
-+
-+	if (vol->vol_type == UBI_DYNAMIC_VOLUME)
-+		check = 0;
-+
-+retry:
-+	if (check) {
-+		vid_hdr = ubi_zalloc_vid_hdr(ubi, GFP_NOFS);
-+		if (!vid_hdr) {
-+			err = -ENOMEM;
-+			goto out_unlock;
-+		}
-+
-+		err = ubi_io_read_vid_hdr(ubi, pnum, vid_hdr, 1);
-+		if (err && err != UBI_IO_BITFLIPS) {
-+			if (err > 0) {
-+				/*
-+				 * The header is either absent or corrupted.
-+				 * The former case means there is a bug -
-+				 * switch to read-only mode just in case.
-+				 * The latter case means a real corruption - we
-+				 * may try to recover data. FIXME: but this is
-+				 * not implemented.
-+				 */
-+				if (err == UBI_IO_BAD_VID_HDR) {
-+					ubi_warn("bad VID header at PEB %d, LEB"
-+						 "%d:%d", pnum, vol_id, lnum);
-+					err = -EBADMSG;
-+				} else
-+					ubi_ro_mode(ubi);
-+			}
-+			goto out_free;
-+		} else if (err == UBI_IO_BITFLIPS)
-+			scrub = 1;
-+
-+		ubi_assert(lnum < be32_to_cpu(vid_hdr->used_ebs));
-+		ubi_assert(len == be32_to_cpu(vid_hdr->data_size));
-+
-+		crc = be32_to_cpu(vid_hdr->data_crc);
-+		ubi_free_vid_hdr(ubi, vid_hdr);
-+	}
-+
-+	err = ubi_io_read_data(ubi, buf, pnum, offset, len);
-+	if (err) {
-+		if (err == UBI_IO_BITFLIPS) {
-+			scrub = 1;
-+			err = 0;
-+		} else if (err == -EBADMSG) {
-+			if (vol->vol_type == UBI_DYNAMIC_VOLUME)
-+				goto out_unlock;
-+			scrub = 1;
-+			if (!check) {
-+				ubi_msg("force data checking");
-+				check = 1;
-+				goto retry;
-+			}
-+		} else
-+			goto out_unlock;
-+	}
-+
-+	if (check) {
-+		uint32_t crc1 = crc32(UBI_CRC32_INIT, buf, len);
-+		if (crc1 != crc) {
-+			ubi_warn("CRC error: calculated %#08x, must be %#08x",
-+				 crc1, crc);
-+			err = -EBADMSG;
-+			goto out_unlock;
-+		}
-+	}
-+
-+	if (scrub)
-+		err = ubi_wl_scrub_peb(ubi, pnum);
-+
-+	leb_read_unlock(ubi, vol_id, lnum);
-+	return err;
-+
-+out_free:
-+	ubi_free_vid_hdr(ubi, vid_hdr);
-+out_unlock:
-+	leb_read_unlock(ubi, vol_id, lnum);
-+	return err;
-+}
-+
-+/**
-+ * recover_peb - recover from write failure.
-+ * @ubi: UBI device description object
-+ * @pnum: the physical eraseblock to recover
-+ * @vol_id: volume ID
-+ * @lnum: logical eraseblock number
-+ * @buf: data which was not written because of the write failure
-+ * @offset: offset of the failed write
-+ * @len: how many bytes should have been written
-+ *
-+ * This function is called in case of a write failure and moves all good data
-+ * from the potentially bad physical eraseblock to a good physical eraseblock.
-+ * This function also writes the data which was not written due to the failure.
-+ * Returns new physical eraseblock number in case of success, and a negative
-+ * error code in case of failure.
-+ */
-+static int recover_peb(struct ubi_device *ubi, int pnum, int vol_id, int lnum,
-+		       const void *buf, int offset, int len)
-+{
-+	int err, idx = vol_id2idx(ubi, vol_id), new_pnum, data_size, tries = 0;
-+	struct ubi_volume *vol = ubi->volumes[idx];
-+	struct ubi_vid_hdr *vid_hdr;
-+
-+	vid_hdr = ubi_zalloc_vid_hdr(ubi, GFP_NOFS);
-+	if (!vid_hdr) {
-+		return -ENOMEM;
-+	}
-+
-+	mutex_lock(&ubi->buf_mutex);
-+
-+retry:
-+	new_pnum = ubi_wl_get_peb(ubi, UBI_UNKNOWN);
-+	if (new_pnum < 0) {
-+		mutex_unlock(&ubi->buf_mutex);
-+		ubi_free_vid_hdr(ubi, vid_hdr);
-+		return new_pnum;
-+	}
-+
-+	ubi_msg("recover PEB %d, move data to PEB %d", pnum, new_pnum);
-+
-+	err = ubi_io_read_vid_hdr(ubi, pnum, vid_hdr, 1);
-+	if (err && err != UBI_IO_BITFLIPS) {
-+		if (err > 0)
-+			err = -EIO;
-+		goto out_put;
-+	}
-+
-+	vid_hdr->sqnum = cpu_to_be64(next_sqnum(ubi));
-+	err = ubi_io_write_vid_hdr(ubi, new_pnum, vid_hdr);
-+	if (err)
-+		goto write_error;
-+
-+	data_size = offset + len;
-+	memset(ubi->peb_buf1 + offset, 0xFF, len);
-+
-+	/* Read everything before the area where the write failure happened */
-+	if (offset > 0) {
-+		err = ubi_io_read_data(ubi, ubi->peb_buf1, pnum, 0, offset);
-+		if (err && err != UBI_IO_BITFLIPS)
-+			goto out_put;
-+	}
-+
-+	memcpy(ubi->peb_buf1 + offset, buf, len);
-+
-+	err = ubi_io_write_data(ubi, ubi->peb_buf1, new_pnum, 0, data_size);
-+	if (err)
-+		goto write_error;
-+
-+	mutex_unlock(&ubi->buf_mutex);
-+	ubi_free_vid_hdr(ubi, vid_hdr);
-+
-+	vol->eba_tbl[lnum] = new_pnum;
-+	ubi_wl_put_peb(ubi, pnum, 1);
-+
-+	ubi_msg("data was successfully recovered");
-+	return 0;
-+
-+out_put:
-+	mutex_unlock(&ubi->buf_mutex);
-+	ubi_wl_put_peb(ubi, new_pnum, 1);
-+	ubi_free_vid_hdr(ubi, vid_hdr);
-+	return err;
-+
-+write_error:
-+	/*
-+	 * Bad luck? This physical eraseblock is bad too? Crud. Let's try to
-+	 * get another one.
++	/* It's not possible to cleanly detect the DiskOnChip - the
++	 * bootup procedure will put the device into reset mode, and
++	 * it's not possible to talk to it without actually writing
++	 * to the DOCControl register. So we store the current contents
++	 * of the DOCControl register's location, in case we later decide
++	 * that it's not a DiskOnChip, and want to put it back how we
++	 * found it.
 +	 */
-+	ubi_warn("failed to write to PEB %d", new_pnum);
-+	ubi_wl_put_peb(ubi, new_pnum, 1);
-+	if (++tries > UBI_IO_RETRIES) {
-+		mutex_unlock(&ubi->buf_mutex);
-+		ubi_free_vid_hdr(ubi, vid_hdr);
-+		return err;
-+	}
-+	ubi_msg("try again");
-+	goto retry;
-+}
++	save_control = ReadDOC(virtadr, DOCControl);
 +
-+/**
-+ * ubi_eba_write_leb - write data to dynamic volume.
-+ * @ubi: UBI device description object
-+ * @vol: volume description object
-+ * @lnum: logical eraseblock number
-+ * @buf: the data to write
-+ * @offset: offset within the logical eraseblock where to write
-+ * @len: how many bytes to write
-+ * @dtype: data type
-+ *
-+ * This function writes data to logical eraseblock @lnum of a dynamic volume
-+ * @vol. Returns zero in case of success and a negative error code in case
-+ * of failure. In case of error, it is possible that something was still
-+ * written to the flash media, but may be some garbage.
-+ */
-+int ubi_eba_write_leb(struct ubi_device *ubi, struct ubi_volume *vol, int lnum,
-+		      const void *buf, int offset, int len, int dtype)
-+{
-+	int err, pnum, tries = 0, vol_id = vol->vol_id;
-+	struct ubi_vid_hdr *vid_hdr;
++	/* Reset the DiskOnChip ASIC */
++	WriteDOC(DOC_MODE_CLR_ERR | DOC_MODE_MDWREN | DOC_MODE_RESET,
++		 virtadr, DOCControl);
++	WriteDOC(DOC_MODE_CLR_ERR | DOC_MODE_MDWREN | DOC_MODE_RESET,
++		 virtadr, DOCControl);
 +
-+	if (ubi->ro_mode)
-+		return -EROFS;
++	/* Enable the DiskOnChip ASIC */
++	WriteDOC(DOC_MODE_CLR_ERR | DOC_MODE_MDWREN | DOC_MODE_NORMAL,
++		 virtadr, DOCControl);
++	WriteDOC(DOC_MODE_CLR_ERR | DOC_MODE_MDWREN | DOC_MODE_NORMAL,
++		 virtadr, DOCControl);
 +
-+	err = leb_write_lock(ubi, vol_id, lnum);
-+	if (err)
-+		return err;
++	ChipID = ReadDOC(virtadr, ChipID);
 +
-+	pnum = vol->eba_tbl[lnum];
-+	if (pnum >= 0) {
-+		dbg_eba("write %d bytes at offset %d of LEB %d:%d, PEB %d",
-+			len, offset, vol_id, lnum, pnum);
++	switch(ChipID) {
++	case DOC_ChipID_Doc2k:
++		reg = DoC_2k_ECCStatus;
++		break;
++	case DOC_ChipID_DocMil:
++		reg = DoC_ECCConf;
++		break;
++	case DOC_ChipID_DocMilPlus16:
++	case DOC_ChipID_DocMilPlus32:
++	case 0:
++		/* Possible Millennium Plus, need to do more checks */
++		/* Possibly release from power down mode */
++		for (tmp = 0; (tmp < 4); tmp++)
++			ReadDOC(virtadr, Mplus_Power);
 +
-+		err = ubi_io_write_data(ubi, buf, pnum, offset, len);
-+		if (err) {
-+			ubi_warn("failed to write data to PEB %d", pnum);
-+			if (err == -EIO && ubi->bad_allowed)
-+				err = recover_peb(ubi, pnum, vol_id, lnum, buf,
-+						  offset, len);
-+			if (err)
-+				ubi_ro_mode(ubi);
++		/* Reset the Millennium Plus ASIC */
++		tmp = DOC_MODE_RESET | DOC_MODE_MDWREN | DOC_MODE_RST_LAT |
++			DOC_MODE_BDECT;
++		WriteDOC(tmp, virtadr, Mplus_DOCControl);
++		WriteDOC(~tmp, virtadr, Mplus_CtrlConfirm);
++
++		mdelay(1);
++		/* Enable the Millennium Plus ASIC */
++		tmp = DOC_MODE_NORMAL | DOC_MODE_MDWREN | DOC_MODE_RST_LAT |
++			DOC_MODE_BDECT;
++		WriteDOC(tmp, virtadr, Mplus_DOCControl);
++		WriteDOC(~tmp, virtadr, Mplus_CtrlConfirm);
++		mdelay(1);
++
++		ChipID = ReadDOC(virtadr, ChipID);
++
++		switch (ChipID) {
++		case DOC_ChipID_DocMilPlus16:
++			reg = DoC_Mplus_Toggle;
++			break;
++		case DOC_ChipID_DocMilPlus32:
++			printk(KERN_ERR "DiskOnChip Millennium Plus 32MB is not supported, ignoring.\n");
++		default:
++			ret = -ENODEV;
++			goto notfound;
 +		}
-+		leb_write_unlock(ubi, vol_id, lnum);
-+		return err;
++		break;
++
++	default:
++		ret = -ENODEV;
++		goto notfound;
++	}
++	/* Check the TOGGLE bit in the ECC register */
++	tmp  = ReadDOC_(virtadr, reg) & DOC_TOGGLE_BIT;
++	tmpb = ReadDOC_(virtadr, reg) & DOC_TOGGLE_BIT;
++	tmpc = ReadDOC_(virtadr, reg) & DOC_TOGGLE_BIT;
++	if ((tmp == tmpb) || (tmp != tmpc)) {
++		printk(KERN_WARNING "Possible DiskOnChip at 0x%lx failed TOGGLE test, dropping.\n", physadr);
++		ret = -ENODEV;
++		goto notfound;
 +	}
 +
-+	/*
-+	 * The logical eraseblock is not mapped. We have to get a free physical
-+	 * eraseblock and write the volume identifier header there first.
-+	 */
-+	vid_hdr = ubi_zalloc_vid_hdr(ubi, GFP_NOFS);
-+	if (!vid_hdr) {
-+		leb_write_unlock(ubi, vol_id, lnum);
-+		return -ENOMEM;
-+	}
-+
-+	vid_hdr->vol_type = UBI_VID_DYNAMIC;
-+	vid_hdr->sqnum = cpu_to_be64(next_sqnum(ubi));
-+	vid_hdr->vol_id = cpu_to_be32(vol_id);
-+	vid_hdr->lnum = cpu_to_be32(lnum);
-+	vid_hdr->compat = ubi_get_compat(ubi, vol_id);
-+	vid_hdr->data_pad = cpu_to_be32(vol->data_pad);
-+
-+retry:
-+	pnum = ubi_wl_get_peb(ubi, dtype);
-+	if (pnum < 0) {
-+		ubi_free_vid_hdr(ubi, vid_hdr);
-+		leb_write_unlock(ubi, vol_id, lnum);
-+		return pnum;
-+	}
-+
-+	dbg_eba("write VID hdr and %d bytes at offset %d of LEB %d:%d, PEB %d",
-+		len, offset, vol_id, lnum, pnum);
-+
-+	err = ubi_io_write_vid_hdr(ubi, pnum, vid_hdr);
-+	if (err) {
-+		ubi_warn("failed to write VID header to LEB %d:%d, PEB %d",
-+			 vol_id, lnum, pnum);
-+		goto write_error;
-+	}
-+
-+	if (len) {
-+		err = ubi_io_write_data(ubi, buf, pnum, offset, len);
-+		if (err) {
-+			ubi_warn("failed to write %d bytes at offset %d of "
-+				 "LEB %d:%d, PEB %d", len, offset, vol_id,
-+				 lnum, pnum);
-+			goto write_error;
++	for (mtd = doclist; mtd; mtd = doc->nextdoc) {
++		unsigned char oldval;
++		unsigned char newval;
++		nand = mtd->priv;
++		doc = nand->priv;
++		/* Use the alias resolution register to determine if this is
++		   in fact the same DOC aliased to a new address.  If writes
++		   to one chip's alias resolution register change the value on
++		   the other chip, they're the same chip. */
++		if (ChipID == DOC_ChipID_DocMilPlus16) {
++			oldval = ReadDOC(doc->virtadr, Mplus_AliasResolution);
++			newval = ReadDOC(virtadr, Mplus_AliasResolution);
++		} else {
++			oldval = ReadDOC(doc->virtadr, AliasResolution);
++			newval = ReadDOC(virtadr, AliasResolution);
++		}
++		if (oldval != newval)
++			continue;
++		if (ChipID == DOC_ChipID_DocMilPlus16) {
++			WriteDOC(~newval, virtadr, Mplus_AliasResolution);
++			oldval = ReadDOC(doc->virtadr, Mplus_AliasResolution);
++			WriteDOC(newval, virtadr, Mplus_AliasResolution); /* restore it */
++		} else {
++			WriteDOC(~newval, virtadr, AliasResolution);
++			oldval = ReadDOC(doc->virtadr, AliasResolution);
++			WriteDOC(newval, virtadr, AliasResolution); /* restore it */
++		}
++		newval = ~newval;
++		if (oldval == newval) {
++			printk(KERN_DEBUG "Found alias of DOC at 0x%lx to 0x%lx\n", doc->physadr, physadr);
++			goto notfound;
 +		}
 +	}
 +
-+	vol->eba_tbl[lnum] = pnum;
++	printk(KERN_NOTICE "DiskOnChip found at 0x%lx\n", physadr);
 +
-+	leb_write_unlock(ubi, vol_id, lnum);
-+	ubi_free_vid_hdr(ubi, vid_hdr);
-+	return 0;
-+
-+write_error:
-+	if (err != -EIO || !ubi->bad_allowed) {
-+		ubi_ro_mode(ubi);
-+		leb_write_unlock(ubi, vol_id, lnum);
-+		ubi_free_vid_hdr(ubi, vid_hdr);
-+		return err;
++	len = sizeof(struct mtd_info) +
++	      sizeof(struct nand_chip) +
++	      sizeof(struct doc_priv) +
++	      (2 * sizeof(struct nand_bbt_descr));
++	mtd =  kmalloc(len, GFP_KERNEL);
++	if (!mtd) {
++		printk(KERN_ERR "DiskOnChip kmalloc (%d bytes) failed!\n", len);
++		ret = -ENOMEM;
++		goto fail;
 +	}
++	memset(mtd, 0, len);
 +
-+	/*
-+	 * Fortunately, this is the first write operation to this physical
-+	 * eraseblock, so just put it and request a new one. We assume that if
-+	 * this physical eraseblock went bad, the erase code will handle that.
-+	 */
-+	err = ubi_wl_put_peb(ubi, pnum, 1);
-+	if (err || ++tries > UBI_IO_RETRIES) {
-+		ubi_ro_mode(ubi);
-+		leb_write_unlock(ubi, vol_id, lnum);
-+		ubi_free_vid_hdr(ubi, vid_hdr);
-+		return err;
-+	}
++	nand			= (struct nand_chip *) (mtd + 1);
++	doc			= (struct doc_priv *) (nand + 1);
++	nand->bbt_td		= (struct nand_bbt_descr *) (doc + 1);
++	nand->bbt_md		= nand->bbt_td + 1;
 +
-+	vid_hdr->sqnum = cpu_to_be64(next_sqnum(ubi));
-+	ubi_msg("try another PEB");
-+	goto retry;
-+}
++	mtd->priv		= nand;
++	mtd->owner		= THIS_MODULE;
 +
-+/**
-+ * ubi_eba_write_leb_st - write data to static volume.
-+ * @ubi: UBI device description object
-+ * @vol: volume description object
-+ * @lnum: logical eraseblock number
-+ * @buf: data to write
-+ * @len: how many bytes to write
-+ * @dtype: data type
-+ * @used_ebs: how many logical eraseblocks will this volume contain
-+ *
-+ * This function writes data to logical eraseblock @lnum of static volume
-+ * @vol. The @used_ebs argument should contain total number of logical
-+ * eraseblock in this static volume.
-+ *
-+ * When writing to the last logical eraseblock, the @len argument doesn't have
-+ * to be aligned to the minimal I/O unit size. Instead, it has to be equivalent
-+ * to the real data size, although the @buf buffer has to contain the
-+ * alignment. In all other cases, @len has to be aligned.
-+ *
-+ * It is prohibited to write more then once to logical eraseblocks of static
-+ * volumes. This function returns zero in case of success and a negative error
-+ * code in case of failure.
-+ */
-+int ubi_eba_write_leb_st(struct ubi_device *ubi, struct ubi_volume *vol,
-+			 int lnum, const void *buf, int len, int dtype,
-+			 int used_ebs)
-+{
-+	int err, pnum, tries = 0, data_size = len, vol_id = vol->vol_id;
-+	struct ubi_vid_hdr *vid_hdr;
-+	uint32_t crc;
++	nand->priv		= doc;
++	nand->select_chip	= doc200x_select_chip;
++	nand->hwcontrol		= doc200x_hwcontrol;
++	nand->dev_ready		= doc200x_dev_ready;
++	nand->waitfunc		= doc200x_wait;
++	nand->block_bad		= doc200x_block_bad;
++	nand->enable_hwecc	= doc200x_enable_hwecc;
++	nand->calculate_ecc	= doc200x_calculate_ecc;
++	nand->correct_data	= doc200x_correct_data;
 +
-+	if (ubi->ro_mode)
-+		return -EROFS;
++	nand->autooob		= &doc200x_oobinfo;
++	nand->eccmode		= NAND_ECC_HW6_512;
++	nand->options		= NAND_USE_FLASH_BBT | NAND_HWECC_SYNDROME;
 +
-+	if (lnum == used_ebs - 1)
-+		/* If this is the last LEB @len may be unaligned */
-+		len = ALIGN(data_size, ubi->min_io_size);
++	doc->physadr		= physadr;
++	doc->virtadr		= virtadr;
++	doc->ChipID		= ChipID;
++	doc->curfloor		= -1;
++	doc->curchip		= -1;
++	doc->mh0_page		= -1;
++	doc->mh1_page		= -1;
++	doc->nextdoc		= doclist;
++
++	if (ChipID == DOC_ChipID_Doc2k)
++		numchips = doc2000_init(mtd);
++	else if (ChipID == DOC_ChipID_DocMilPlus16)
++		numchips = doc2001plus_init(mtd);
 +	else
-+		ubi_assert(!(len & (ubi->min_io_size - 1)));
++		numchips = doc2001_init(mtd);
 +
-+	vid_hdr = ubi_zalloc_vid_hdr(ubi, GFP_NOFS);
-+	if (!vid_hdr)
-+		return -ENOMEM;
-+
-+	err = leb_write_lock(ubi, vol_id, lnum);
-+	if (err) {
-+		ubi_free_vid_hdr(ubi, vid_hdr);
-+		return err;
++	if ((ret = nand_scan(mtd, numchips))) {
++		/* DBB note: i believe nand_release is necessary here, as
++		   buffers may have been allocated in nand_base.  Check with
++		   Thomas. FIX ME! */
++		/* nand_release will call del_mtd_device, but we haven't yet
++		   added it.  This is handled without incident by
++		   del_mtd_device, as far as I can tell. */
++		nand_release(mtd);
++		kfree(mtd);
++		goto fail;
 +	}
 +
-+	vid_hdr->sqnum = cpu_to_be64(next_sqnum(ubi));
-+	vid_hdr->vol_id = cpu_to_be32(vol_id);
-+	vid_hdr->lnum = cpu_to_be32(lnum);
-+	vid_hdr->compat = ubi_get_compat(ubi, vol_id);
-+	vid_hdr->data_pad = cpu_to_be32(vol->data_pad);
-+
-+	crc = crc32(UBI_CRC32_INIT, buf, data_size);
-+	vid_hdr->vol_type = UBI_VID_STATIC;
-+	vid_hdr->data_size = cpu_to_be32(data_size);
-+	vid_hdr->used_ebs = cpu_to_be32(used_ebs);
-+	vid_hdr->data_crc = cpu_to_be32(crc);
-+
-+retry:
-+	pnum = ubi_wl_get_peb(ubi, dtype);
-+	if (pnum < 0) {
-+		ubi_free_vid_hdr(ubi, vid_hdr);
-+		leb_write_unlock(ubi, vol_id, lnum);
-+		return pnum;
-+	}
-+
-+	dbg_eba("write VID hdr and %d bytes at LEB %d:%d, PEB %d, used_ebs %d",
-+		len, vol_id, lnum, pnum, used_ebs);
-+
-+	err = ubi_io_write_vid_hdr(ubi, pnum, vid_hdr);
-+	if (err) {
-+		ubi_warn("failed to write VID header to LEB %d:%d, PEB %d",
-+			 vol_id, lnum, pnum);
-+		goto write_error;
-+	}
-+
-+	err = ubi_io_write_data(ubi, buf, pnum, 0, len);
-+	if (err) {
-+		ubi_warn("failed to write %d bytes of data to PEB %d",
-+			 len, pnum);
-+		goto write_error;
-+	}
-+
-+	ubi_assert(vol->eba_tbl[lnum] < 0);
-+	vol->eba_tbl[lnum] = pnum;
-+
-+	leb_write_unlock(ubi, vol_id, lnum);
-+	ubi_free_vid_hdr(ubi, vid_hdr);
++	/* Success! */
++	doclist = mtd;
 +	return 0;
 +
-+write_error:
-+	if (err != -EIO || !ubi->bad_allowed) {
-+		/*
-+		 * This flash device does not admit of bad eraseblocks or
-+		 * something nasty and unexpected happened. Switch to read-only
-+		 * mode just in case.
-+		 */
-+		ubi_ro_mode(ubi);
-+		leb_write_unlock(ubi, vol_id, lnum);
-+		ubi_free_vid_hdr(ubi, vid_hdr);
-+		return err;
-+	}
-+
-+	err = ubi_wl_put_peb(ubi, pnum, 1);
-+	if (err || ++tries > UBI_IO_RETRIES) {
-+		ubi_ro_mode(ubi);
-+		leb_write_unlock(ubi, vol_id, lnum);
-+		ubi_free_vid_hdr(ubi, vid_hdr);
-+		return err;
-+	}
-+
-+	vid_hdr->sqnum = cpu_to_be64(next_sqnum(ubi));
-+	ubi_msg("try another PEB");
-+	goto retry;
++notfound:
++	/* Put back the contents of the DOCControl register, in case it's not
++	   actually a DiskOnChip.  */
++	WriteDOC(save_control, virtadr, DOCControl);
++fail:
++	iounmap(virtadr);
++	return ret;
 +}
 +
-+/*
-+ * ubi_eba_atomic_leb_change - change logical eraseblock atomically.
-+ * @ubi: UBI device description object
-+ * @vol: volume description object
-+ * @lnum: logical eraseblock number
-+ * @buf: data to write
-+ * @len: how many bytes to write
-+ * @dtype: data type
-+ *
-+ * This function changes the contents of a logical eraseblock atomically. @buf
-+ * has to contain new logical eraseblock data, and @len - the length of the
-+ * data, which has to be aligned. This function guarantees that in case of an
-+ * unclean reboot the old contents is preserved. Returns zero in case of
-+ * success and a negative error code in case of failure.
-+ *
-+ * UBI reserves one LEB for the "atomic LEB change" operation, so only one
-+ * LEB change may be done at a time. This is ensured by @ubi->alc_mutex.
-+ */
-+int ubi_eba_atomic_leb_change(struct ubi_device *ubi, struct ubi_volume *vol,
-+			      int lnum, const void *buf, int len, int dtype)
++static void release_nanddoc(void)
 +{
-+	int err, pnum, tries = 0, vol_id = vol->vol_id;
-+	struct ubi_vid_hdr *vid_hdr;
-+	uint32_t crc;
++ 	struct mtd_info *mtd, *nextmtd;
++	struct nand_chip *nand;
++	struct doc_priv *doc;
 +
-+	if (ubi->ro_mode)
-+		return -EROFS;
++	for (mtd = doclist; mtd; mtd = nextmtd) {
++		nand = mtd->priv;
++		doc = nand->priv;
 +
-+	if (len == 0) {
-+		/*
-+		 * Special case when data length is zero. In this case the LEB
-+		 * has to be unmapped and mapped somewhere else.
-+		 */
-+		err = ubi_eba_unmap_leb(ubi, vol, lnum);
-+		if (err)
-+			return err;
-+		return ubi_eba_write_leb(ubi, vol, lnum, NULL, 0, 0, dtype);
++		nextmtd = doc->nextdoc;
++		nand_release(mtd);
++		iounmap(doc->virtadr);
++		kfree(mtd);
 +	}
-+
-+	vid_hdr = ubi_zalloc_vid_hdr(ubi, GFP_NOFS);
-+	if (!vid_hdr)
-+		return -ENOMEM;
-+
-+	mutex_lock(&ubi->alc_mutex);
-+	err = leb_write_lock(ubi, vol_id, lnum);
-+	if (err)
-+		goto out_mutex;
-+
-+	vid_hdr->sqnum = cpu_to_be64(next_sqnum(ubi));
-+	vid_hdr->vol_id = cpu_to_be32(vol_id);
-+	vid_hdr->lnum = cpu_to_be32(lnum);
-+	vid_hdr->compat = ubi_get_compat(ubi, vol_id);
-+	vid_hdr->data_pad = cpu_to_be32(vol->data_pad);
-+
-+	crc = crc32(UBI_CRC32_INIT, buf, len);
-+	vid_hdr->vol_type = UBI_VID_DYNAMIC;
-+	vid_hdr->data_size = cpu_to_be32(len);
-+	vid_hdr->copy_flag = 1;
-+	vid_hdr->data_crc = cpu_to_be32(crc);
-+
-+retry:
-+	pnum = ubi_wl_get_peb(ubi, dtype);
-+	if (pnum < 0) {
-+		err = pnum;
-+		goto out_leb_unlock;
-+	}
-+
-+	dbg_eba("change LEB %d:%d, PEB %d, write VID hdr to PEB %d",
-+		vol_id, lnum, vol->eba_tbl[lnum], pnum);
-+
-+	err = ubi_io_write_vid_hdr(ubi, pnum, vid_hdr);
-+	if (err) {
-+		ubi_warn("failed to write VID header to LEB %d:%d, PEB %d",
-+			 vol_id, lnum, pnum);
-+		goto write_error;
-+	}
-+
-+	err = ubi_io_write_data(ubi, buf, pnum, 0, len);
-+	if (err) {
-+		ubi_warn("failed to write %d bytes of data to PEB %d",
-+			 len, pnum);
-+		goto write_error;
-+	}
-+
-+	if (vol->eba_tbl[lnum] >= 0) {
-+		err = ubi_wl_put_peb(ubi, vol->eba_tbl[lnum], 1);
-+		if (err)
-+			goto out_leb_unlock;
-+	}
-+
-+	vol->eba_tbl[lnum] = pnum;
-+
-+out_leb_unlock:
-+	leb_write_unlock(ubi, vol_id, lnum);
-+out_mutex:
-+	mutex_unlock(&ubi->alc_mutex);
-+	ubi_free_vid_hdr(ubi, vid_hdr);
-+	return err;
-+
-+write_error:
-+	if (err != -EIO || !ubi->bad_allowed) {
-+		/*
-+		 * This flash device does not admit of bad eraseblocks or
-+		 * something nasty and unexpected happened. Switch to read-only
-+		 * mode just in case.
-+		 */
-+		ubi_ro_mode(ubi);
-+		goto out_leb_unlock;
-+	}
-+
-+	err = ubi_wl_put_peb(ubi, pnum, 1);
-+	if (err || ++tries > UBI_IO_RETRIES) {
-+		ubi_ro_mode(ubi);
-+		goto out_leb_unlock;
-+	}
-+
-+	vid_hdr->sqnum = cpu_to_be64(next_sqnum(ubi));
-+	ubi_msg("try another PEB");
-+	goto retry;
 +}
 +
-+/**
-+ * ubi_eba_copy_leb - copy logical eraseblock.
-+ * @ubi: UBI device description object
-+ * @from: physical eraseblock number from where to copy
-+ * @to: physical eraseblock number where to copy
-+ * @vid_hdr: VID header of the @from physical eraseblock
-+ *
-+ * This function copies logical eraseblock from physical eraseblock @from to
-+ * physical eraseblock @to. The @vid_hdr buffer may be changed by this
-+ * function. Returns:
-+ *   o %0  in case of success;
-+ *   o %1 if the operation was canceled and should be tried later (e.g.,
-+ *     because a bit-flip was detected at the target PEB);
-+ *   o %2 if the volume is being deleted and this LEB should not be moved.
-+ */
-+int ubi_eba_copy_leb(struct ubi_device *ubi, int from, int to,
-+		     struct ubi_vid_hdr *vid_hdr)
++static int __init init_nanddoc(void)
 +{
-+	int err, vol_id, lnum, data_size, aldata_size, idx;
-+	struct ubi_volume *vol;
-+	uint32_t crc;
++	int i, ret = 0;
 +
-+	vol_id = be32_to_cpu(vid_hdr->vol_id);
-+	lnum = be32_to_cpu(vid_hdr->lnum);
-+
-+	dbg_eba("copy LEB %d:%d, PEB %d to PEB %d", vol_id, lnum, from, to);
-+
-+	if (vid_hdr->vol_type == UBI_VID_STATIC) {
-+		data_size = be32_to_cpu(vid_hdr->data_size);
-+		aldata_size = ALIGN(data_size, ubi->min_io_size);
-+	} else
-+		data_size = aldata_size =
-+			    ubi->leb_size - be32_to_cpu(vid_hdr->data_pad);
-+
-+	idx = vol_id2idx(ubi, vol_id);
-+	spin_lock(&ubi->volumes_lock);
-+	/*
-+	 * Note, we may race with volume deletion, which means that the volume
-+	 * this logical eraseblock belongs to might be being deleted. Since the
-+	 * volume deletion unmaps all the volume's logical eraseblocks, it will
-+	 * be locked in 'ubi_wl_put_peb()' and wait for the WL worker to finish.
-+	 */
-+	vol = ubi->volumes[idx];
-+	if (!vol) {
-+		/* No need to do further work, cancel */
-+		dbg_eba("volume %d is being removed, cancel", vol_id);
-+		spin_unlock(&ubi->volumes_lock);
-+		return 2;
-+	}
-+	spin_unlock(&ubi->volumes_lock);
-+
-+	/*
-+	 * We do not want anybody to write to this logical eraseblock while we
-+	 * are moving it, so lock it.
++	/* We could create the decoder on demand, if memory is a concern.
++	 * This way we have it handy, if an error happens
 +	 *
-+	 * Note, we are using non-waiting locking here, because we cannot sleep
-+	 * on the LEB, since it may cause deadlocks. Indeed, imagine a task is
-+	 * unmapping the LEB which is mapped to the PEB we are going to move
-+	 * (@from). This task locks the LEB and goes sleep in the
-+	 * 'ubi_wl_put_peb()' function on the @ubi->move_mutex. In turn, we are
-+	 * holding @ubi->move_mutex and go sleep on the LEB lock. So, if the
-+	 * LEB is already locked, we just do not move it and return %1.
++	 * Symbolsize is 10 (bits)
++	 * Primitve polynomial is x^10+x^3+1
++	 * first consecutive root is 510
++	 * primitve element to generate roots = 1
++	 * generator polinomial degree = 4
 +	 */
-+	err = leb_write_trylock(ubi, vol_id, lnum);
-+	if (err) {
-+		dbg_eba("contention on LEB %d:%d, cancel", vol_id, lnum);
-+		return err;
++	rs_decoder = init_rs(10, 0x409, FCR, 1, NROOTS);
++ 	if (!rs_decoder) {
++		printk (KERN_ERR "DiskOnChip: Could not create a RS decoder\n");
++		return -ENOMEM;
 +	}
 +
-+	/*
-+	 * The LEB might have been put meanwhile, and the task which put it is
-+	 * probably waiting on @ubi->move_mutex. No need to continue the work,
-+	 * cancel it.
-+	 */
-+	if (vol->eba_tbl[lnum] != from) {
-+		dbg_eba("LEB %d:%d is no longer mapped to PEB %d, mapped to "
-+			"PEB %d, cancel", vol_id, lnum, from,
-+			vol->eba_tbl[lnum]);
-+		err = 1;
-+		goto out_unlock_leb;
-+	}
-+
-+	/*
-+	 * OK, now the LEB is locked and we can safely start moving iy. Since
-+	 * this function utilizes thie @ubi->peb1_buf buffer which is shared
-+	 * with some other functions, so lock the buffer by taking the
-+	 * @ubi->buf_mutex.
-+	 */
-+	mutex_lock(&ubi->buf_mutex);
-+	dbg_eba("read %d bytes of data", aldata_size);
-+	err = ubi_io_read_data(ubi, ubi->peb_buf1, from, 0, aldata_size);
-+	if (err && err != UBI_IO_BITFLIPS) {
-+		ubi_warn("error %d while reading data from PEB %d",
-+			 err, from);
-+		goto out_unlock_buf;
-+	}
-+
-+	/*
-+	 * Now we have got to calculate how much data we have to to copy. In
-+	 * case of a static volume it is fairly easy - the VID header contains
-+	 * the data size. In case of a dynamic volume it is more difficult - we
-+	 * have to read the contents, cut 0xFF bytes from the end and copy only
-+	 * the first part. We must do this to avoid writing 0xFF bytes as it
-+	 * may have some side-effects. And not only this. It is important not
-+	 * to include those 0xFFs to CRC because later the they may be filled
-+	 * by data.
-+	 */
-+	if (vid_hdr->vol_type == UBI_VID_DYNAMIC)
-+		aldata_size = data_size =
-+			ubi_calc_data_len(ubi, ubi->peb_buf1, data_size);
-+
-+	cond_resched();
-+	crc = crc32(UBI_CRC32_INIT, ubi->peb_buf1, data_size);
-+	cond_resched();
-+
-+	/*
-+	 * It may turn out to me that the whole @from physical eraseblock
-+	 * contains only 0xFF bytes. Then we have to only write the VID header
-+	 * and do not write any data. This also means we should not set
-+	 * @vid_hdr->copy_flag, @vid_hdr->data_size, and @vid_hdr->data_crc.
-+	 */
-+	if (data_size > 0) {
-+		vid_hdr->copy_flag = 1;
-+		vid_hdr->data_size = cpu_to_be32(data_size);
-+		vid_hdr->data_crc = cpu_to_be32(crc);
-+	}
-+	vid_hdr->sqnum = cpu_to_be64(next_sqnum(ubi));
-+
-+	err = ubi_io_write_vid_hdr(ubi, to, vid_hdr);
-+	if (err)
-+		goto out_unlock_buf;
-+
-+	cond_resched();
-+
-+	/* Read the VID header back and check if it was written correctly */
-+	err = ubi_io_read_vid_hdr(ubi, to, vid_hdr, 1);
-+	if (err) {
-+		if (err != UBI_IO_BITFLIPS)
-+			ubi_warn("cannot read VID header back from PEB %d", to);
-+		else
-+			err = 1;
-+		goto out_unlock_buf;
-+	}
-+
-+	if (data_size > 0) {
-+		err = ubi_io_write_data(ubi, ubi->peb_buf1, to, 0, aldata_size);
-+		if (err)
-+			goto out_unlock_buf;
-+
-+		cond_resched();
-+
-+		/*
-+		 * We've written the data and are going to read it back to make
-+		 * sure it was written correctly.
-+		 */
-+
-+		err = ubi_io_read_data(ubi, ubi->peb_buf2, to, 0, aldata_size);
-+		if (err) {
-+			if (err != UBI_IO_BITFLIPS)
-+				ubi_warn("cannot read data back from PEB %d",
-+					 to);
-+			else
-+				err = 1;
-+			goto out_unlock_buf;
-+		}
-+
-+		cond_resched();
-+
-+		if (memcmp(ubi->peb_buf1, ubi->peb_buf2, aldata_size)) {
-+			ubi_warn("read data back from PEB %d - it is different",
-+				 to);
-+			goto out_unlock_buf;
++	if (doc_config_location) {
++		printk(KERN_INFO "Using configured DiskOnChip probe address 0x%lx\n", doc_config_location);
++		ret = doc_probe(doc_config_location);
++		if (ret < 0)
++			goto outerr;
++	} else {
++		for (i=0; (doc_locations[i] != 0xffffffff); i++) {
++			doc_probe(doc_locations[i]);
 +		}
 +	}
-+
-+	ubi_assert(vol->eba_tbl[lnum] == from);
-+	vol->eba_tbl[lnum] = to;
-+
-+out_unlock_buf:
-+	mutex_unlock(&ubi->buf_mutex);
-+out_unlock_leb:
-+	leb_write_unlock(ubi, vol_id, lnum);
-+	return err;
-+}
-+
-+/**
-+ * ubi_eba_init_scan - initialize the EBA unit using scanning information.
-+ * @ubi: UBI device description object
-+ * @si: scanning information
-+ *
-+ * This function returns zero in case of success and a negative error code in
-+ * case of failure.
-+ */
-+int ubi_eba_init_scan(struct ubi_device *ubi, struct ubi_scan_info *si)
-+{
-+	int i, j, err, num_volumes;
-+	struct ubi_scan_volume *sv;
-+	struct ubi_volume *vol;
-+	struct ubi_scan_leb *seb;
-+	struct rb_node *rb;
-+
-+	dbg_eba("initialize EBA unit");
-+
-+	spin_lock_init(&ubi->ltree_lock);
-+	mutex_init(&ubi->alc_mutex);
-+	ubi->ltree = RB_ROOT;
-+
-+	ubi->global_sqnum = si->max_sqnum + 1;
-+	num_volumes = ubi->vtbl_slots + UBI_INT_VOL_COUNT;
-+
-+	for (i = 0; i < num_volumes; i++) {
-+		vol = ubi->volumes[i];
-+		if (!vol)
-+			continue;
-+
-+		cond_resched();
-+
-+		vol->eba_tbl = kmalloc(vol->reserved_pebs * sizeof(int),
-+				       GFP_KERNEL);
-+		if (!vol->eba_tbl) {
-+			err = -ENOMEM;
-+			goto out_free;
-+		}
-+
-+		for (j = 0; j < vol->reserved_pebs; j++)
-+			vol->eba_tbl[j] = UBI_LEB_UNMAPPED;
-+
-+		sv = ubi_scan_find_sv(si, idx2vol_id(ubi, i));
-+		if (!sv)
-+			continue;
-+
-+		ubi_rb_for_each_entry(rb, seb, &sv->root, u.rb) {
-+			if (seb->lnum >= vol->reserved_pebs)
-+				/*
-+				 * This may happen in case of an unclean reboot
-+				 * during re-size.
-+				 */
-+				ubi_scan_move_to_list(sv, seb, &si->erase);
-+			vol->eba_tbl[seb->lnum] = seb->pnum;
-+		}
++	/* No banner message any more. Print a message if no DiskOnChip
++	   found, so the user knows we at least tried. */
++	if (!doclist) {
++		printk(KERN_INFO "No valid DiskOnChip devices found\n");
++		ret = -ENODEV;
++		goto outerr;
 +	}
-+
-+	if (ubi->avail_pebs < EBA_RESERVED_PEBS) {
-+		ubi_err("no enough physical eraseblocks (%d, need %d)",
-+			ubi->avail_pebs, EBA_RESERVED_PEBS);
-+		err = -ENOSPC;
-+		goto out_free;
-+	}
-+	ubi->avail_pebs -= EBA_RESERVED_PEBS;
-+	ubi->rsvd_pebs += EBA_RESERVED_PEBS;
-+
-+	if (ubi->bad_allowed) {
-+		ubi_calculate_reserved(ubi);
-+
-+		if (ubi->avail_pebs < ubi->beb_rsvd_level) {
-+			/* No enough free physical eraseblocks */
-+			ubi->beb_rsvd_pebs = ubi->avail_pebs;
-+			ubi_warn("cannot reserve enough PEBs for bad PEB "
-+				 "handling, reserved %d, need %d",
-+				 ubi->beb_rsvd_pebs, ubi->beb_rsvd_level);
-+		} else
-+			ubi->beb_rsvd_pebs = ubi->beb_rsvd_level;
-+
-+		ubi->avail_pebs -= ubi->beb_rsvd_pebs;
-+		ubi->rsvd_pebs  += ubi->beb_rsvd_pebs;
-+	}
-+
-+	dbg_eba("EBA unit is initialized");
 +	return 0;
-+
-+out_free:
-+	for (i = 0; i < num_volumes; i++) {
-+		if (!ubi->volumes[i])
-+			continue;
-+		kfree(ubi->volumes[i]->eba_tbl);
-+	}
-+	return err;
++outerr:
++	free_rs(rs_decoder);
++	return ret;
 +}
 +
-+/**
-+ * ubi_eba_close - close EBA unit.
-+ * @ubi: UBI device description object
-+ */
-+void ubi_eba_close(const struct ubi_device *ubi)
++static void __exit cleanup_nanddoc(void)
 +{
-+	int i, num_volumes = ubi->vtbl_slots + UBI_INT_VOL_COUNT;
++	/* Cleanup the nand/DoC resources */
++	release_nanddoc();
 +
-+	dbg_eba("close EBA unit");
-+
-+	for (i = 0; i < num_volumes; i++) {
-+		if (!ubi->volumes[i])
-+			continue;
-+		kfree(ubi->volumes[i]->eba_tbl);
++	/* Free the reed solomon resources */
++	if (rs_decoder) {
++		free_rs(rs_decoder);
 +	}
 +}
-diff --git a/drivers/mtd/ubi/io.c b/drivers/mtd/ubi/io.c
++
++module_init(init_nanddoc);
++module_exit(cleanup_nanddoc);
++
++MODULE_LICENSE("GPL");
++MODULE_AUTHOR("David Woodhouse <dwmw2@infradead.org>");
++MODULE_DESCRIPTION("M-Systems DiskOnChip 2000, Millennium and Millennium Plus device driver\n");
++#endif
+diff --git a/drivers/mtd/nand/nand.c b/drivers/mtd/nand/nand.c
 new file mode 100644
-index 0000000..96d2772
+index 0000000..4927231
 --- /dev/null
-+++ b/drivers/mtd/ubi/io.c
-@@ -0,0 +1,1274 @@
++++ b/drivers/mtd/nand/nand.c
+@@ -0,0 +1,247 @@
 +/*
-+ * Copyright (c) International Business Machines Corp., 2006
-+ * Copyright (c) Nokia Corporation, 2006, 2007
++ * (C) Copyright 2005
++ * 2N Telekomunikace, a.s. <www.2n.cz>
++ * Ladislav Michl <michl@2n.cz>
 + *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License
++ * version 2 as published by the Free Software Foundation.
 + *
 + * This program is distributed in the hope that it will be useful,
 + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
-+ * the GNU General Public License for more details.
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
 + *
 + * You should have received a copy of the GNU General Public License
 + * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-+ *
-+ * Author: Artem Bityutskiy (���������������� ����������)
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
 + */
++#include <common.h>
++#include <linux/mtd/nand.h>
++#include <linux/mtd/mtd.h>
++#include <init.h>
++#include <xfuncs.h>
++#include <driver.h>
++#include <malloc.h>
++#include <ioctl.h>
++#include <nand.h>
++#include <errno.h>
 +
-+/*
-+ * UBI input/output unit.
-+ *
-+ * This unit provides a uniform way to work with all kinds of the underlying
-+ * MTD devices. It also implements handy functions for reading and writing UBI
-+ * headers.
-+ *
-+ * We are trying to have a paranoid mindset and not to trust to what we read
-+ * from the flash media in order to be more secure and robust. So this unit
-+ * validates every single header it reads from the flash media.
-+ *
-+ * Some words about how the eraseblock headers are stored.
-+ *
-+ * The erase counter header is always stored at offset zero. By default, the
-+ * VID header is stored after the EC header at the closest aligned offset
-+ * (i.e. aligned to the minimum I/O unit size). Data starts next to the VID
-+ * header at the closest aligned offset. But this default layout may be
-+ * changed. For example, for different reasons (e.g., optimization) UBI may be
-+ * asked to put the VID header at further offset, and even at an unaligned
-+ * offset. Of course, if the offset of the VID header is unaligned, UBI adds
-+ * proper padding in front of it. Data offset may also be changed but it has to
-+ * be aligned.
-+ *
-+ * About minimal I/O units. In general, UBI assumes flash device model where
-+ * there is only one minimal I/O unit size. E.g., in case of NOR flash it is 1,
-+ * in case of NAND flash it is a NAND page, etc. This is reported by MTD in the
-+ * @ubi->mtd->writesize field. But as an exception, UBI admits of using another
-+ * (smaller) minimal I/O unit size for EC and VID headers to make it possible
-+ * to do different optimizations.
-+ *
-+ * This is extremely useful in case of NAND flashes which admit of several
-+ * write operations to one NAND page. In this case UBI can fit EC and VID
-+ * headers at one NAND page. Thus, UBI may use "sub-page" size as the minimal
-+ * I/O unit for the headers (the @ubi->hdrs_min_io_size field). But it still
-+ * reports NAND page size (@ubi->min_io_size) as a minimal I/O unit for the UBI
-+ * users.
-+ *
-+ * Example: some Samsung NANDs with 2KiB pages allow 4x 512-byte writes, so
-+ * although the minimal I/O unit is 2K, UBI uses 512 bytes for EC and VID
-+ * headers.
-+ *
-+ * Q: why not just to treat sub-page as a minimal I/O unit of this flash
-+ * device, e.g., make @ubi->min_io_size = 512 in the example above?
-+ *
-+ * A: because when writing a sub-page, MTD still writes a full 2K page but the
-+ * bytes which are no relevant to the sub-page are 0xFF. So, basically, writing
-+ * 4x512 sub-pages is 4 times slower then writing one 2KiB NAND page. Thus, we
-+ * prefer to use sub-pages only for EV and VID headers.
-+ *
-+ * As it was noted above, the VID header may start at a non-aligned offset.
-+ * For example, in case of a 2KiB page NAND flash with a 512 bytes sub-page,
-+ * the VID header may reside at offset 1984 which is the last 64 bytes of the
-+ * last sub-page (EC header is always at offset zero). This causes some
-+ * difficulties when reading and writing VID headers.
-+ *
-+ * Suppose we have a 64-byte buffer and we read a VID header at it. We change
-+ * the data and want to write this VID header out. As we can only write in
-+ * 512-byte chunks, we have to allocate one more buffer and copy our VID header
-+ * to offset 448 of this buffer.
-+ *
-+ * The I/O unit does the following trick in order to avoid this extra copy.
-+ * It always allocates a @ubi->vid_hdr_alsize bytes buffer for the VID header
-+ * and returns a pointer to offset @ubi->vid_hdr_shift of this buffer. When the
-+ * VID header is being written out, it shifts the VID header pointer back and
-+ * writes the whole sub-page.
-+ */
-+
-+#ifdef UBI_LINUX
-+#include <linux/crc32.h>
-+#include <linux/err.h>
-+#endif
-+
-+#include "ubi-barebox.h"
-+#include "ubi.h"
-+
-+#ifdef CONFIG_MTD_UBI_DEBUG_PARANOID
-+static int paranoid_check_not_bad(const struct ubi_device *ubi, int pnum);
-+static int paranoid_check_peb_ec_hdr(const struct ubi_device *ubi, int pnum);
-+static int paranoid_check_ec_hdr(const struct ubi_device *ubi, int pnum,
-+				 const struct ubi_ec_hdr *ec_hdr);
-+static int paranoid_check_peb_vid_hdr(const struct ubi_device *ubi, int pnum);
-+static int paranoid_check_vid_hdr(const struct ubi_device *ubi, int pnum,
-+				  const struct ubi_vid_hdr *vid_hdr);
-+static int paranoid_check_all_ff(struct ubi_device *ubi, int pnum, int offset,
-+				 int len);
-+#else
-+#define paranoid_check_not_bad(ubi, pnum) 0
-+#define paranoid_check_peb_ec_hdr(ubi, pnum)  0
-+#define paranoid_check_ec_hdr(ubi, pnum, ec_hdr)  0
-+#define paranoid_check_peb_vid_hdr(ubi, pnum) 0
-+#define paranoid_check_vid_hdr(ubi, pnum, vid_hdr) 0
-+#define paranoid_check_all_ff(ubi, pnum, offset, len) 0
-+#endif
-+
-+/**
-+ * ubi_io_read - read data from a physical eraseblock.
-+ * @ubi: UBI device description object
-+ * @buf: buffer where to store the read data
-+ * @pnum: physical eraseblock number to read from
-+ * @offset: offset within the physical eraseblock from where to read
-+ * @len: how many bytes to read
-+ *
-+ * This function reads data from offset @offset of physical eraseblock @pnum
-+ * and stores the read data in the @buf buffer. The following return codes are
-+ * possible:
-+ *
-+ * o %0 if all the requested data were successfully read;
-+ * o %UBI_IO_BITFLIPS if all the requested data were successfully read, but
-+ *   correctable bit-flips were detected; this is harmless but may indicate
-+ *   that this eraseblock may become bad soon (but do not have to);
-+ * o %-EBADMSG if the MTD subsystem reported about data integrity problems, for
-+ *   example it can be an ECC error in case of NAND; this most probably means
-+ *   that the data is corrupted;
-+ * o %-EIO if some I/O error occurred;
-+ * o other negative error codes in case of other errors.
-+ */
-+int ubi_io_read(const struct ubi_device *ubi, void *buf, int pnum, int offset,
-+		int len)
++static 	ssize_t nand_read(struct cdev *cdev, void* buf, size_t count, ulong offset, ulong flags)
 +{
-+	int err, retries = 0;
-+	size_t read;
-+	loff_t addr;
++	struct mtd_info *info = cdev->priv;
++	size_t retlen;
++	int ret;
 +
-+	dbg_io("read %d bytes from PEB %d:%d", len, pnum, offset);
++	debug("nand_read: 0x%08x 0x%08x\n", offset, count);
 +
-+	ubi_assert(pnum >= 0 && pnum < ubi->peb_count);
-+	ubi_assert(offset >= 0 && offset + len <= ubi->peb_size);
-+	ubi_assert(len > 0);
++	ret = info->read(info, offset, count, &retlen, buf);
 +
-+	err = paranoid_check_not_bad(ubi, pnum);
-+	if (err)
-+		return err > 0 ? -EINVAL : err;
-+
-+	addr = (loff_t)pnum * ubi->peb_size + offset;
-+retry:
-+	err = ubi->mtd->read(ubi->mtd, addr, len, &read, buf);
-+	if (err) {
-+		if (err == -EUCLEAN) {
-+			/*
-+			 * -EUCLEAN is reported if there was a bit-flip which
-+			 * was corrected, so this is harmless.
-+			 */
-+			ubi_msg("fixable bit-flip detected at PEB %d", pnum);
-+			ubi_assert(len == read);
-+			return UBI_IO_BITFLIPS;
-+		}
-+
-+		if (read != len && retries++ < UBI_IO_RETRIES) {
-+			dbg_io("error %d while reading %d bytes from PEB %d:%d, "
-+			       "read only %zd bytes, retry",
-+			       err, len, pnum, offset, read);
-+			yield();
-+			goto retry;
-+		}
-+
-+		ubi_err("error %d while reading %d bytes from PEB %d:%d, "
-+			"read %zd bytes", err, len, pnum, offset, read);
-+		ubi_dbg_dump_stack();
-+
-+		/*
-+		 * The driver should never return -EBADMSG if it failed to read
-+		 * all the requested data. But some buggy drivers might do
-+		 * this, so we change it to -EIO.
-+		 */
-+		if (read != len && err == -EBADMSG) {
-+			ubi_assert(0);
-+			printk("%s[%d] not here\n", __func__, __LINE__);
-+/*			err = -EIO; */
-+		}
-+	} else {
-+		ubi_assert(len == read);
-+
-+		if (ubi_dbg_is_bitflip()) {
-+			dbg_msg("bit-flip (emulated)");
-+			err = UBI_IO_BITFLIPS;
-+		}
++	if(ret) {
++		printf("err %d\n", ret);
++		return ret;
 +	}
-+
-+	return err;
++	return retlen;
 +}
 +
-+/**
-+ * ubi_io_write - write data to a physical eraseblock.
-+ * @ubi: UBI device description object
-+ * @buf: buffer with the data to write
-+ * @pnum: physical eraseblock number to write to
-+ * @offset: offset within the physical eraseblock where to write
-+ * @len: how many bytes to write
-+ *
-+ * This function writes @len bytes of data from buffer @buf to offset @offset
-+ * of physical eraseblock @pnum. If all the data were successfully written,
-+ * zero is returned. If an error occurred, this function returns a negative
-+ * error code. If %-EIO is returned, the physical eraseblock most probably went
-+ * bad.
-+ *
-+ * Note, in case of an error, it is possible that something was still written
-+ * to the flash media, but may be some garbage.
-+ */
-+int ubi_io_write(struct ubi_device *ubi, const void *buf, int pnum, int offset,
-+		 int len)
-+{
-+	int err;
-+	size_t written;
-+	loff_t addr;
++#define NOTALIGNED(x) (x & (info->writesize - 1)) != 0
 +
-+	dbg_io("write %d bytes to PEB %d:%d", len, pnum, offset);
-+
-+	ubi_assert(pnum >= 0 && pnum < ubi->peb_count);
-+	ubi_assert(offset >= 0 && offset + len <= ubi->peb_size);
-+	ubi_assert(offset % ubi->hdrs_min_io_size == 0);
-+	ubi_assert(len > 0 && len % ubi->hdrs_min_io_size == 0);
-+
-+	if (ubi->ro_mode) {
-+		ubi_err("read-only mode");
-+		return -EROFS;
-+	}
-+
-+	/* The below has to be compiled out if paranoid checks are disabled */
-+
-+	err = paranoid_check_not_bad(ubi, pnum);
-+	if (err)
-+		return err > 0 ? -EINVAL : err;
-+
-+	/* The area we are writing to has to contain all 0xFF bytes */
-+	err = paranoid_check_all_ff(ubi, pnum, offset, len);
-+	if (err)
-+		return err > 0 ? -EINVAL : err;
-+
-+	if (offset >= ubi->leb_start) {
-+		/*
-+		 * We write to the data area of the physical eraseblock. Make
-+		 * sure it has valid EC and VID headers.
-+		 */
-+		err = paranoid_check_peb_ec_hdr(ubi, pnum);
-+		if (err)
-+			return err > 0 ? -EINVAL : err;
-+		err = paranoid_check_peb_vid_hdr(ubi, pnum);
-+		if (err)
-+			return err > 0 ? -EINVAL : err;
-+	}
-+
-+	if (ubi_dbg_is_write_failure()) {
-+		dbg_err("cannot write %d bytes to PEB %d:%d "
-+			"(emulated)", len, pnum, offset);
-+		ubi_dbg_dump_stack();
-+		return -EIO;
-+	}
-+
-+	addr = (loff_t)pnum * ubi->peb_size + offset;
-+	err = ubi->mtd->write(ubi->mtd, addr, len, &written, buf);
-+	if (err) {
-+		ubi_err("error %d while writing %d bytes to PEB %d:%d, written"
-+			" %zd bytes", err, len, pnum, offset, written);
-+		ubi_dbg_dump_stack();
-+	} else
-+		ubi_assert(written == len);
-+
-+	return err;
-+}
-+
-+/**
-+ * erase_callback - MTD erasure call-back.
-+ * @ei: MTD erase information object.
-+ *
-+ * Note, even though MTD erase interface is asynchronous, all the current
-+ * implementations are synchronous anyway.
-+ */
-+static void erase_callback(struct erase_info *ei)
-+{
-+	wake_up_interruptible((wait_queue_head_t *)ei->priv);
-+}
-+
-+/**
-+ * do_sync_erase - synchronously erase a physical eraseblock.
-+ * @ubi: UBI device description object
-+ * @pnum: the physical eraseblock number to erase
-+ *
-+ * This function synchronously erases physical eraseblock @pnum and returns
-+ * zero in case of success and a negative error code in case of failure. If
-+ * %-EIO is returned, the physical eraseblock most probably went bad.
-+ */
-+static int do_sync_erase(struct ubi_device *ubi, int pnum)
-+{
-+	int err, retries = 0;
-+	struct erase_info ei;
-+	wait_queue_head_t wq;
-+
-+	dbg_io("erase PEB %d", pnum);
-+
-+retry:
-+	init_waitqueue_head(&wq);
-+	memset(&ei, 0, sizeof(struct erase_info));
-+
-+	ei.mtd      = ubi->mtd;
-+	ei.addr     = (loff_t)pnum * ubi->peb_size;
-+	ei.len      = ubi->peb_size;
-+	ei.callback = erase_callback;
-+	ei.priv     = (unsigned long)&wq;
-+
-+	err = ubi->mtd->erase(ubi->mtd, &ei);
-+	if (err) {
-+		if (retries++ < UBI_IO_RETRIES) {
-+			dbg_io("error %d while erasing PEB %d, retry",
-+			       err, pnum);
-+			yield();
-+			goto retry;
-+		}
-+		ubi_err("cannot erase PEB %d, error %d", pnum, err);
-+		ubi_dbg_dump_stack();
-+		return err;
-+	}
-+
-+	err = wait_event_interruptible(wq, ei.state == MTD_ERASE_DONE ||
-+					   ei.state == MTD_ERASE_FAILED);
-+	if (err) {
-+		ubi_err("interrupted PEB %d erasure", pnum);
-+		return -EINTR;
-+	}
-+
-+	if (ei.state == MTD_ERASE_FAILED) {
-+		if (retries++ < UBI_IO_RETRIES) {
-+			dbg_io("error while erasing PEB %d, retry", pnum);
-+			yield();
-+			goto retry;
-+		}
-+		ubi_err("cannot erase PEB %d", pnum);
-+		ubi_dbg_dump_stack();
-+		return -EIO;
-+	}
-+
-+	err = paranoid_check_all_ff(ubi, pnum, 0, ubi->peb_size);
-+	if (err)
-+		return err > 0 ? -EINVAL : err;
-+
-+	if (ubi_dbg_is_erase_failure() && !err) {
-+		dbg_err("cannot erase PEB %d (emulated)", pnum);
-+		return -EIO;
-+	}
-+
-+	return 0;
-+}
-+
-+/**
-+ * check_pattern - check if buffer contains only a certain byte pattern.
-+ * @buf: buffer to check
-+ * @patt: the pattern to check
-+ * @size: buffer size in bytes
-+ *
-+ * This function returns %1 in there are only @patt bytes in @buf, and %0 if
-+ * something else was also found.
-+ */
-+static int check_pattern(const void *buf, uint8_t patt, int size)
++static int all_ff(const void *buf, int len)
 +{
 +	int i;
++	const uint8_t *p = buf;
 +
-+	for (i = 0; i < size; i++)
-+		if (((const uint8_t *)buf)[i] != patt)
++	for (i = 0; i < len; i++)
++		if (p[i] != 0xFF)
 +			return 0;
 +	return 1;
 +}
 +
-+/* Patterns to write to a physical eraseblock when torturing it */
-+static uint8_t patterns[] = {0xa5, 0x5a, 0x0};
-+
-+/**
-+ * torture_peb - test a supposedly bad physical eraseblock.
-+ * @ubi: UBI device description object
-+ * @pnum: the physical eraseblock number to test
-+ *
-+ * This function returns %-EIO if the physical eraseblock did not pass the
-+ * test, a positive number of erase operations done if the test was
-+ * successfully passed, and other negative error codes in case of other errors.
-+ */
-+static int torture_peb(struct ubi_device *ubi, int pnum)
++static ssize_t nand_write(struct cdev* cdev, const void *buf, size_t _count, ulong offset, ulong flags)
 +{
-+	int err, i, patt_count;
++	struct mtd_info *info = cdev->priv;
++	size_t retlen, now;
++	int ret = 0;
++	void *wrbuf = NULL;
++	size_t count = _count;
 +
-+	patt_count = ARRAY_SIZE(patterns);
-+	ubi_assert(patt_count > 0);
-+
-+	mutex_lock(&ubi->buf_mutex);
-+	for (i = 0; i < patt_count; i++) {
-+		err = do_sync_erase(ubi, pnum);
-+		if (err)
-+			goto out;
-+
-+		/* Make sure the PEB contains only 0xFF bytes */
-+		err = ubi_io_read(ubi, ubi->peb_buf1, pnum, 0, ubi->peb_size);
-+		if (err)
-+			goto out;
-+
-+		err = check_pattern(ubi->peb_buf1, 0xFF, ubi->peb_size);
-+		if (err == 0) {
-+			ubi_err("erased PEB %d, but a non-0xFF byte found",
-+				pnum);
-+			err = -EIO;
-+			goto out;
-+		}
-+
-+		/* Write a pattern and check it */
-+		memset(ubi->peb_buf1, patterns[i], ubi->peb_size);
-+		err = ubi_io_write(ubi, ubi->peb_buf1, pnum, 0, ubi->peb_size);
-+		if (err)
-+			goto out;
-+
-+		memset(ubi->peb_buf1, ~patterns[i], ubi->peb_size);
-+		err = ubi_io_read(ubi, ubi->peb_buf1, pnum, 0, ubi->peb_size);
-+		if (err)
-+			goto out;
-+
-+		err = check_pattern(ubi->peb_buf1, patterns[i], ubi->peb_size);
-+		if (err == 0) {
-+			ubi_err("pattern %x checking failed for PEB %d",
-+				patterns[i], pnum);
-+			err = -EIO;
-+			goto out;
-+		}
++	if (NOTALIGNED(offset)) {
++		printf("offset 0x%08x not page aligned\n", offset);
++		return -EINVAL;
 +	}
 +
-+	err = patt_count;
++	debug("write: 0x%08x 0x%08x\n", offset, count);
++
++	while (count) {
++		now = count > info->writesize ? info->writesize : count;
++
++		if (NOTALIGNED(now)) {
++			debug("not aligned: %d %d\n", info->writesize, (offset % info->writesize));
++			wrbuf = xmalloc(info->writesize);
++			memset(wrbuf, 0xff, info->writesize);
++			memcpy(wrbuf + (offset % info->writesize), buf, now);
++			if (!all_ff(wrbuf, info->writesize))
++				ret = info->write(info, offset & ~(info->writesize - 1),
++						info->writesize, &retlen, wrbuf);
++			free(wrbuf);
++		} else {
++			if (!all_ff(buf, info->writesize))
++				ret = info->write(info, offset, now, &retlen, buf);
++			debug("offset: 0x%08x now: 0x%08x retlen: 0x%08x\n", offset, now, retlen);
++		}
++		if (ret)
++			goto out;
++
++		offset += now;
++		count -= now;
++		buf += now;
++	}
 +
 +out:
-+	mutex_unlock(&ubi->buf_mutex);
-+	if (err == UBI_IO_BITFLIPS || err == -EBADMSG) {
-+		/*
-+		 * If a bit-flip or data integrity error was detected, the test
-+		 * has not passed because it happened on a freshly erased
-+		 * physical eraseblock which means something is wrong with it.
++	return ret ? ret : _count;
++}
++
++static int nand_ioctl(struct cdev *cdev, int request, void *buf)
++{
++	struct mtd_info *info = cdev->priv;
++	struct mtd_info_user *user = buf;
++
++	switch (request) {
++	case MEMGETBADBLOCK:
++		debug("MEMGETBADBLOCK: 0x%08x\n", (off_t)buf);
++		return info->block_isbad(info, (off_t)buf);
++	case MEMSETBADBLOCK:
++		debug("MEMSETBADBLOCK: 0x%08x\n", (off_t)buf);
++		return info->block_markbad(info, (off_t)buf);
++	case MEMGETINFO:
++		user->type	= info->type;
++		user->flags	= info->flags;
++		user->size	= info->size;
++		user->erasesize	= info->erasesize;
++		user->oobsize	= info->oobsize;
++		/* The below fields are obsolete */
++		user->ecctype	= -1;
++		user->eccsize	= 0;
++		return 0;
++	}
++
++	return 0;
++}
++
++static ssize_t nand_erase(struct cdev *cdev, size_t count, unsigned long offset)
++{
++	struct mtd_info *info = cdev->priv;
++	struct erase_info erase;
++	int ret;
++
++	memset(&erase, 0, sizeof(erase));
++	erase.mtd = info;
++	erase.addr = offset;
++	erase.len = info->erasesize;
++
++	while (count > 0) {
++		debug("erase %d %d\n", erase.addr, erase.len);
++
++		ret = info->block_isbad(info, erase.addr);
++		if (ret > 0) {
++			printf("Skipping bad block at 0x%08x\n", erase.addr);
++		} else {
++			ret = info->erase(info, &erase);
++			if (ret)
++				return ret;
++		}
++
++		erase.addr += info->erasesize;
++		count -= count > info->erasesize ? info->erasesize : count;
++	}
++
++	return 0;
++}
++#if 0
++static char* mtd_get_size(struct device_d *, struct param_d *param)
++{
++	static char 
++}
++#endif
++
++static struct file_operations nand_ops = {
++	.read   = nand_read,
++	.write  = nand_write,
++	.ioctl  = nand_ioctl,
++	.lseek  = dev_lseek_default,
++	.erase  = nand_erase,
++};
++
++static ssize_t nand_read_oob(struct cdev *cdev, void *buf, size_t count, ulong offset, ulong flags)
++{
++	struct mtd_info *info = cdev->priv;
++	struct nand_chip *chip = info->priv;
++	struct mtd_oob_ops ops;
++	int ret;
++
++	if (count < info->oobsize)
++		return -EINVAL;
++
++	ops.mode = MTD_OOB_RAW;
++	ops.ooboffs = 0;
++	ops.ooblen = info->oobsize;
++	ops.oobbuf = buf;
++	ops.datbuf = NULL;
++	ops.len = info->oobsize;
++
++	offset /= info->oobsize;
++	ret = info->read_oob(info, offset << chip->page_shift, &ops);
++	if (ret)
++		return ret;
++
++	return info->oobsize;
++}
++
++static struct file_operations nand_ops_oob = {
++	.read   = nand_read_oob,
++	.ioctl  = nand_ioctl,
++	.lseek  = dev_lseek_default,
++};
++
++int add_mtd_device(struct mtd_info *mtd)
++{
++	struct nand_chip *chip = mtd->priv;
++	char str[16];
++
++	strcpy(mtd->class_dev.name, "nand");
++	register_device(&mtd->class_dev);
++
++	mtd->cdev.ops = &nand_ops;
++	mtd->cdev.size = mtd->size;
++	mtd->cdev.name = asprintf("nand%d", mtd->class_dev.id);
++	mtd->cdev.priv = mtd;
++	mtd->cdev.dev = &mtd->class_dev;
++
++	sprintf(str, "%u", mtd->size);
++	dev_add_param_fixed(&mtd->class_dev, "size", str);
++
++	devfs_create(&mtd->cdev);
++
++	mtd->cdev_oob.ops = &nand_ops_oob;
++	mtd->cdev_oob.size = (mtd->size >> chip->page_shift) * mtd->oobsize;
++	mtd->cdev_oob.name = asprintf("nand_oob%d", mtd->class_dev.id);
++	mtd->cdev_oob.priv = mtd;
++	mtd->cdev_oob.dev = &mtd->class_dev;
++	devfs_create(&mtd->cdev_oob);
++
++	return 0;
++}
++
++int del_mtd_device (struct mtd_info *mtd)
++{
++	unregister_device(&mtd->class_dev);
++	free(mtd->cdev_oob.name);
++	free(mtd->param_size.value);
++	free(mtd->cdev.name);
++	return 0;
++}
++
+diff --git a/drivers/mtd/nand/nand_base.c b/drivers/mtd/nand/nand_base.c
+new file mode 100644
+index 0000000..b75a450
+--- /dev/null
++++ b/drivers/mtd/nand/nand_base.c
+@@ -0,0 +1,2648 @@
++/*
++ *  drivers/mtd/nand.c
++ *
++ *  Overview:
++ *   This is the generic MTD driver for NAND flash devices. It should be
++ *   capable of working with almost all NAND chips currently available.
++ *   Basic support for AG-AND chips is provided.
++ *
++ *	Additional technical information is available on
++ *	http://www.linux-mtd.infradead.org/doc/nand.html
++ *
++ *  Copyright (C) 2000 Steven J. Hill (sjhill@realitydiluted.com)
++ *		  2002-2006 Thomas Gleixner (tglx@linutronix.de)
++ *
++ *  Credits:
++ *	David Woodhouse for adding multichip support
++ *
++ *	Aleph One Ltd. and Toby Churchill Ltd. for supporting the
++ *	rework for 2K page size chips
++ *
++ *  TODO:
++ *	Enable cached programming for 2k page size chips
++ *	Check, if mtd->ecctype should be set to MTD_ECC_HW
++ *	if we have HW ecc support.
++ *	The AG-AND chips have nice features for speed improvement,
++ *	which are not supported yet. Read / program 4 pages in one go.
++ *	BBT table is not serialized, has to be fixed
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ *
++ */
++#include <common.h>
++#include <errno.h>
++#include <clock.h>
++#include <linux/mtd/mtd.h>
++#include <linux/mtd/nand.h>
++#include <linux/err.h>
++#include <linux/mtd/nand_ecc.h>
++#include <asm/byteorder.h>
++#include <asm/io.h>
++#include <malloc.h>
++#include <module.h>
++
++#ifndef DOXYGEN_SHOULD_SKIP_THIS
++
++/* Define default oob placement schemes for large and small page devices */
++static struct nand_ecclayout nand_oob_8 = {
++	.eccbytes = 3,
++	.eccpos = {0, 1, 2},
++	.oobfree = {
++		{.offset = 3,
++		 .length = 2},
++		{.offset = 6,
++		 .length = 2}}
++};
++
++static struct nand_ecclayout nand_oob_16 = {
++	.eccbytes = 6,
++	.eccpos = {0, 1, 2, 3, 6, 7},
++	.oobfree = {
++		{.offset = 8,
++		 . length = 8}}
++};
++
++static struct nand_ecclayout nand_oob_64 = {
++	.eccbytes = 24,
++	.eccpos = {
++		   40, 41, 42, 43, 44, 45, 46, 47,
++		   48, 49, 50, 51, 52, 53, 54, 55,
++		   56, 57, 58, 59, 60, 61, 62, 63},
++	.oobfree = {
++		{.offset = 2,
++		 .length = 38}}
++};
++
++static int nand_get_device(struct nand_chip *chip, struct mtd_info *mtd,
++			   int new_state);
++
++static int nand_do_write_oob(struct mtd_info *mtd, loff_t to,
++			     struct mtd_oob_ops *ops);
++
++#define DEFINE_LED_TRIGGER(x)
++#define DEFINE_LED_TRIGGER_GLOBAL(x)
++#define led_trigger_register_simple(x, y) do {} while(0)
++#define led_trigger_unregister_simple(x) do {} while(0)
++#define led_trigger_event(x, y) do {} while(0)
++
++/*
++ * For devices which display every fart in the system on a separate LED. Is
++ * compiled away when LED support is disabled.
++ */
++DEFINE_LED_TRIGGER(nand_led_trigger);
++
++/**
++ * nand_release_device - [GENERIC] release chip
++ * @mtd:	MTD device structure
++ *
++ * Deselect, release chip lock and wake up anyone waiting on the device
++ */
++static void nand_release_device(struct mtd_info *mtd)
++{
++	struct nand_chip *chip = mtd->priv;
++
++	/* De-select the NAND device */
++	chip->select_chip(mtd, -1);
++
++	/* Release the controller and the chip */
++	chip->controller->active = NULL;
++	chip->state = FL_READY;
++}
++
++/**
++ * nand_read_byte - [DEFAULT] read one byte from the chip
++ * @mtd:	MTD device structure
++ *
++ * Default read function for 8bit buswith
++ */
++static uint8_t nand_read_byte(struct mtd_info *mtd)
++{
++	struct nand_chip *chip = mtd->priv;
++	return readb(chip->IO_ADDR_R);
++}
++
++/**
++ * nand_read_byte16 - [DEFAULT] read one byte endianess aware from the chip
++ * @mtd:	MTD device structure
++ *
++ * Default read function for 16bit buswith with
++ * endianess conversion
++ */
++static uint8_t nand_read_byte16(struct mtd_info *mtd)
++{
++	struct nand_chip *chip = mtd->priv;
++	return (uint8_t) cpu_to_le16(readw(chip->IO_ADDR_R));
++}
++
++/**
++ * nand_read_word - [DEFAULT] read one word from the chip
++ * @mtd:	MTD device structure
++ *
++ * Default read function for 16bit buswith without
++ * endianess conversion
++ */
++static u16 nand_read_word(struct mtd_info *mtd)
++{
++	struct nand_chip *chip = mtd->priv;
++	return readw(chip->IO_ADDR_R);
++}
++
++/**
++ * nand_select_chip - [DEFAULT] control CE line
++ * @mtd:	MTD device structure
++ * @chipnr:	chipnumber to select, -1 for deselect
++ *
++ * Default select function for 1 chip devices.
++ */
++static void nand_select_chip(struct mtd_info *mtd, int chipnr)
++{
++	struct nand_chip *chip = mtd->priv;
++
++	switch (chipnr) {
++	case -1:
++		chip->cmd_ctrl(mtd, NAND_CMD_NONE, 0 | NAND_CTRL_CHANGE);
++		break;
++	case 0:
++		break;
++	default:
++		printf("%s: illegal chip number %d\n", chipnr);
++	}
++}
++
++/**
++ * nand_write_buf - [DEFAULT] write buffer to chip
++ * @mtd:	MTD device structure
++ * @buf:	data buffer
++ * @len:	number of bytes to write
++ *
++ * Default write function for 8bit buswith
++ */
++static void nand_write_buf(struct mtd_info *mtd, const uint8_t *buf, int len)
++{
++	int i;
++	struct nand_chip *chip = mtd->priv;
++
++	for (i = 0; i < len; i++)
++		writeb(buf[i], chip->IO_ADDR_W);
++}
++
++/**
++ * nand_read_buf - [DEFAULT] read chip data into buffer
++ * @mtd:	MTD device structure
++ * @buf:	buffer to store date
++ * @len:	number of bytes to read
++ *
++ * Default read function for 8bit buswith
++ */
++static void nand_read_buf(struct mtd_info *mtd, uint8_t *buf, int len)
++{
++	int i;
++	struct nand_chip *chip = mtd->priv;
++
++	for (i = 0; i < len; i++)
++		buf[i] = readb(chip->IO_ADDR_R);
++}
++
++/**
++ * nand_verify_buf - [DEFAULT] Verify chip data against buffer
++ * @mtd:	MTD device structure
++ * @buf:	buffer containing the data to compare
++ * @len:	number of bytes to compare
++ *
++ * Default verify function for 8bit buswith
++ */
++static int nand_verify_buf(struct mtd_info *mtd, const uint8_t *buf, int len)
++{
++	int i;
++	struct nand_chip *chip = mtd->priv;
++
++	for (i = 0; i < len; i++)
++		if (buf[i] != readb(chip->IO_ADDR_R))
++			return -EFAULT;
++	return 0;
++}
++
++/**
++ * nand_write_buf16 - [DEFAULT] write buffer to chip
++ * @mtd:	MTD device structure
++ * @buf:	data buffer
++ * @len:	number of bytes to write
++ *
++ * Default write function for 16bit buswith
++ */
++static void nand_write_buf16(struct mtd_info *mtd, const uint8_t *buf, int len)
++{
++	int i;
++	struct nand_chip *chip = mtd->priv;
++	u16 *p = (u16 *) buf;
++	len >>= 1;
++
++	for (i = 0; i < len; i++)
++		writew(p[i], chip->IO_ADDR_W);
++
++}
++
++/**
++ * nand_read_buf16 - [DEFAULT] read chip data into buffer
++ * @mtd:	MTD device structure
++ * @buf:	buffer to store date
++ * @len:	number of bytes to read
++ *
++ * Default read function for 16bit buswith
++ */
++static void nand_read_buf16(struct mtd_info *mtd, uint8_t *buf, int len)
++{
++	int i;
++	struct nand_chip *chip = mtd->priv;
++	u16 *p = (u16 *) buf;
++	len >>= 1;
++
++	for (i = 0; i < len; i++)
++		p[i] = readw(chip->IO_ADDR_R);
++}
++
++/**
++ * nand_verify_buf16 - [DEFAULT] Verify chip data against buffer
++ * @mtd:	MTD device structure
++ * @buf:	buffer containing the data to compare
++ * @len:	number of bytes to compare
++ *
++ * Default verify function for 16bit buswith
++ */
++static int nand_verify_buf16(struct mtd_info *mtd, const uint8_t *buf, int len)
++{
++	int i;
++	struct nand_chip *chip = mtd->priv;
++	u16 *p = (u16 *) buf;
++	len >>= 1;
++
++	for (i = 0; i < len; i++)
++		if (p[i] != readw(chip->IO_ADDR_R))
++			return -EFAULT;
++
++	return 0;
++}
++
++/**
++ * nand_block_bad - [DEFAULT] Read bad block marker from the chip
++ * @mtd:	MTD device structure
++ * @ofs:	offset from device start
++ * @getchip:	0, if the chip is already selected
++ *
++ * Check, if the block is bad.
++ */
++static int nand_block_bad(struct mtd_info *mtd, loff_t ofs, int getchip)
++{
++	int page, chipnr, res = 0;
++	struct nand_chip *chip = mtd->priv;
++	u16 bad;
++
++	page = (int)(ofs >> chip->page_shift) & chip->pagemask;
++
++	if (getchip) {
++		chipnr = (int)(ofs >> chip->chip_shift);
++
++		nand_get_device(chip, mtd, FL_READING);
++
++		/* Select the NAND device */
++		chip->select_chip(mtd, chipnr);
++	}
++
++	if (chip->options & NAND_BUSWIDTH_16) {
++		chip->cmdfunc(mtd, NAND_CMD_READOOB, chip->badblockpos & 0xFE,
++			      page);
++		bad = cpu_to_le16(chip->read_word(mtd));
++		if (chip->badblockpos & 0x1)
++			bad >>= 8;
++		if ((bad & 0xFF) != 0xff)
++			res = 1;
++	} else {
++		chip->cmdfunc(mtd, NAND_CMD_READOOB, chip->badblockpos, page);
++		if (chip->read_byte(mtd) != 0xff)
++			res = 1;
++	}
++
++	if (getchip)
++		nand_release_device(mtd);
++
++	return res;
++}
++
++/**
++ * nand_default_block_markbad - [DEFAULT] mark a block bad
++ * @mtd:	MTD device structure
++ * @ofs:	offset from device start
++ *
++ * This is the default implementation, which can be overridden by
++ * a hardware specific driver.
++*/
++static int nand_default_block_markbad(struct mtd_info *mtd, loff_t ofs)
++{
++	struct nand_chip *chip = mtd->priv;
++	uint8_t buf[2] = { 0, 0 };
++	int block, ret;
++
++	/* Get block number */
++	block = (int)(ofs >> chip->bbt_erase_shift);
++	if (chip->bbt)
++		chip->bbt[block >> 2] |= 0x01 << ((block & 0x03) << 1);
++
++	/* Do we have a flash based bad block table ? */
++	if (chip->options & NAND_USE_FLASH_BBT)
++		ret = nand_update_bbt(mtd, ofs);
++	else {
++		/* We write two bytes, so we dont have to mess with 16 bit
++		 * access
 +		 */
-+		ubi_err("read problems on freshly erased PEB %d, must be bad",
-+			pnum);
-+		err = -EIO;
++		nand_get_device(chip, mtd, FL_WRITING);
++		ofs += mtd->oobsize;
++		chip->ops.len = chip->ops.ooblen = 2;
++		chip->ops.datbuf = NULL;
++		chip->ops.oobbuf = buf;
++		chip->ops.ooboffs = chip->badblockpos & ~0x01;
++
++		ret = nand_do_write_oob(mtd, ofs, &chip->ops);
++		nand_release_device(mtd);
 +	}
-+	return err;
++	if (!ret)
++		mtd->ecc_stats.badblocks++;
++
++	return ret;
 +}
 +
 +/**
-+ * ubi_io_sync_erase - synchronously erase a physical eraseblock.
-+ * @ubi: UBI device description object
-+ * @pnum: physical eraseblock number to erase
-+ * @torture: if this physical eraseblock has to be tortured
++ * nand_check_wp - [GENERIC] check if the chip is write protected
++ * @mtd:	MTD device structure
++ * Check, if the device is write protected
 + *
-+ * This function synchronously erases physical eraseblock @pnum. If @torture
-+ * flag is not zero, the physical eraseblock is checked by means of writing
-+ * different patterns to it and reading them back. If the torturing is enabled,
-+ * the physical eraseblock is erased more then once.
-+ *
-+ * This function returns the number of erasures made in case of success, %-EIO
-+ * if the erasure failed or the torturing test failed, and other negative error
-+ * codes in case of other errors. Note, %-EIO means that the physical
-+ * eraseblock is bad.
++ * The function expects, that the device is already selected
 + */
-+int ubi_io_sync_erase(struct ubi_device *ubi, int pnum, int torture)
++static int nand_check_wp(struct mtd_info *mtd)
 +{
-+	int err, ret = 0;
++	struct nand_chip *chip = mtd->priv;
++	/* Check the WP bit */
++	chip->cmdfunc(mtd, NAND_CMD_STATUS, -1, -1);
++	return (chip->read_byte(mtd) & NAND_STATUS_WP) ? 0 : 1;
++}
 +
-+	ubi_assert(pnum >= 0 && pnum < ubi->peb_count);
++/**
++ * nand_block_checkbad - [GENERIC] Check if a block is marked bad
++ * @mtd:	MTD device structure
++ * @ofs:	offset from device start
++ * @getchip:	0, if the chip is already selected
++ * @allowbbt:	1, if its allowed to access the bbt area
++ *
++ * Check, if the block is bad. Either by reading the bad block table or
++ * calling of the scan function.
++ */
++static int nand_block_checkbad(struct mtd_info *mtd, loff_t ofs, int getchip,
++			       int allowbbt)
++{
++	struct nand_chip *chip = mtd->priv;
 +
-+	err = paranoid_check_not_bad(ubi, pnum);
-+	if (err != 0)
-+		return err > 0 ? -EINVAL : err;
++	if (!chip->bbt)
++		return chip->block_bad(mtd, ofs, getchip);
 +
-+	if (ubi->ro_mode) {
-+		ubi_err("read-only mode");
++	/* Return info from the table */
++	return nand_isbad_bbt(mtd, ofs, allowbbt);
++}
++
++/*
++ * Wait for the ready pin, after a command
++ * The timeout is catched later.
++ */
++void nand_wait_ready(struct mtd_info *mtd)
++{
++	struct nand_chip *chip = mtd->priv;
++	uint64_t start = get_time_ns();
++
++	led_trigger_event(nand_led_trigger, LED_FULL);
++	/* wait until command is processed or timeout occures */
++	do {
++		if (chip->dev_ready(mtd))
++			break;
++	} while (!is_timeout(start, SECOND * 2));
++	led_trigger_event(nand_led_trigger, LED_OFF);
++}
++EXPORT_SYMBOL(nand_wait_ready);
++
++/**
++ * nand_command - [DEFAULT] Send command to NAND device
++ * @mtd:	MTD device structure
++ * @command:	the command to be sent
++ * @column:	the column address for this command, -1 if none
++ * @page_addr:	the page address for this command, -1 if none
++ *
++ * Send command to NAND device. This function is used for small page
++ * devices (256/512 Bytes per page)
++ */
++static void nand_command(struct mtd_info *mtd, unsigned int command,
++			 int column, int page_addr)
++{
++	register struct nand_chip *chip = mtd->priv;
++	int ctrl = NAND_CTRL_CLE | NAND_CTRL_CHANGE;
++
++	/*
++	 * Write out the command to the device.
++	 */
++	if (command == NAND_CMD_SEQIN) {
++		int readcmd;
++
++		if (column >= mtd->writesize) {
++			/* OOB area */
++			column -= mtd->writesize;
++			readcmd = NAND_CMD_READOOB;
++		} else if (column < 256) {
++			/* First 256 bytes --> READ0 */
++			readcmd = NAND_CMD_READ0;
++		} else {
++			column -= 256;
++			readcmd = NAND_CMD_READ1;
++		}
++		chip->cmd_ctrl(mtd, readcmd, ctrl);
++		ctrl &= ~NAND_CTRL_CHANGE;
++	}
++	chip->cmd_ctrl(mtd, command, ctrl);
++
++	/*
++	 * Address cycle, when necessary
++	 */
++	ctrl = NAND_CTRL_ALE | NAND_CTRL_CHANGE;
++	/* Serially input address */
++	if (column != -1) {
++		/* Adjust columns for 16 bit buswidth */
++		if (chip->options & NAND_BUSWIDTH_16)
++			column >>= 1;
++		chip->cmd_ctrl(mtd, column, ctrl);
++		ctrl &= ~NAND_CTRL_CHANGE;
++	}
++	if (page_addr != -1) {
++		chip->cmd_ctrl(mtd, page_addr, ctrl);
++		ctrl &= ~NAND_CTRL_CHANGE;
++		chip->cmd_ctrl(mtd, page_addr >> 8, ctrl);
++		/* One more address cycle for devices > 32MiB */
++		if (chip->chipsize > (32 << 20))
++			chip->cmd_ctrl(mtd, page_addr >> 16, ctrl);
++	}
++	chip->cmd_ctrl(mtd, NAND_CMD_NONE, NAND_NCE | NAND_CTRL_CHANGE);
++
++	/*
++	 * program and erase have their own busy handlers
++	 * status and sequential in needs no delay
++	 */
++	switch (command) {
++
++	case NAND_CMD_PAGEPROG:
++	case NAND_CMD_ERASE1:
++	case NAND_CMD_ERASE2:
++	case NAND_CMD_SEQIN:
++	case NAND_CMD_STATUS:
++		return;
++
++	case NAND_CMD_RESET:
++		if (chip->dev_ready)
++			break;
++		udelay(chip->chip_delay);
++		chip->cmd_ctrl(mtd, NAND_CMD_STATUS,
++			       NAND_CTRL_CLE | NAND_CTRL_CHANGE);
++		chip->cmd_ctrl(mtd,
++			       NAND_CMD_NONE, NAND_NCE | NAND_CTRL_CHANGE);
++		while (!(chip->read_byte(mtd) & NAND_STATUS_READY)) ;
++		return;
++
++		/* This applies to read commands */
++	default:
++		/*
++		 * If we don't have access to the busy pin, we apply the given
++		 * command delay
++		 */
++		if (!chip->dev_ready) {
++			udelay(chip->chip_delay);
++			return;
++		}
++	}
++	/* Apply this short delay always to ensure that we do wait tWB in
++	 * any case on any machine. */
++	ndelay(100);
++
++	nand_wait_ready(mtd);
++}
++
++/**
++ * nand_command_lp - [DEFAULT] Send command to NAND large page device
++ * @mtd:	MTD device structure
++ * @command:	the command to be sent
++ * @column:	the column address for this command, -1 if none
++ * @page_addr:	the page address for this command, -1 if none
++ *
++ * Send command to NAND device. This is the version for the new large page
++ * devices We dont have the separate regions as we have in the small page
++ * devices.  We must emulate NAND_CMD_READOOB to keep the code compatible.
++ */
++static void nand_command_lp(struct mtd_info *mtd, unsigned int command,
++			    int column, int page_addr)
++{
++	register struct nand_chip *chip = mtd->priv;
++
++	/* Emulate NAND_CMD_READOOB */
++	if (command == NAND_CMD_READOOB) {
++		column += mtd->writesize;
++		command = NAND_CMD_READ0;
++	}
++
++	/* Command latch cycle */
++	chip->cmd_ctrl(mtd, command & 0xff,
++		       NAND_NCE | NAND_CLE | NAND_CTRL_CHANGE);
++
++	if (column != -1 || page_addr != -1) {
++		int ctrl = NAND_CTRL_CHANGE | NAND_NCE | NAND_ALE;
++
++		/* Serially input address */
++		if (column != -1) {
++			/* Adjust columns for 16 bit buswidth */
++			if (chip->options & NAND_BUSWIDTH_16)
++				column >>= 1;
++			chip->cmd_ctrl(mtd, column, ctrl);
++			ctrl &= ~NAND_CTRL_CHANGE;
++			chip->cmd_ctrl(mtd, column >> 8, ctrl);
++		}
++		if (page_addr != -1) {
++			chip->cmd_ctrl(mtd, page_addr, ctrl);
++			chip->cmd_ctrl(mtd, page_addr >> 8,
++				       NAND_NCE | NAND_ALE);
++			/* One more address cycle for devices > 128MiB */
++			if (chip->chipsize > (128 << 20))
++				chip->cmd_ctrl(mtd, page_addr >> 16,
++					       NAND_NCE | NAND_ALE);
++		}
++	}
++	chip->cmd_ctrl(mtd, NAND_CMD_NONE, NAND_NCE | NAND_CTRL_CHANGE);
++
++	/*
++	 * program and erase have their own busy handlers
++	 * status, sequential in, and deplete1 need no delay
++	 */
++	switch (command) {
++
++	case NAND_CMD_CACHEDPROG:
++	case NAND_CMD_PAGEPROG:
++	case NAND_CMD_ERASE1:
++	case NAND_CMD_ERASE2:
++	case NAND_CMD_SEQIN:
++	case NAND_CMD_RNDIN:
++	case NAND_CMD_STATUS:
++	case NAND_CMD_DEPLETE1:
++		return;
++
++		/*
++		 * read error status commands require only a short delay
++		 */
++	case NAND_CMD_STATUS_ERROR:
++	case NAND_CMD_STATUS_ERROR0:
++	case NAND_CMD_STATUS_ERROR1:
++	case NAND_CMD_STATUS_ERROR2:
++	case NAND_CMD_STATUS_ERROR3:
++		udelay(chip->chip_delay);
++		return;
++
++	case NAND_CMD_RESET:
++		if (chip->dev_ready)
++			break;
++		udelay(chip->chip_delay);
++		chip->cmd_ctrl(mtd, NAND_CMD_STATUS,
++			       NAND_NCE | NAND_CLE | NAND_CTRL_CHANGE);
++		chip->cmd_ctrl(mtd, NAND_CMD_NONE,
++			       NAND_NCE | NAND_CTRL_CHANGE);
++		while (!(chip->read_byte(mtd) & NAND_STATUS_READY)) ;
++		return;
++
++	case NAND_CMD_RNDOUT:
++		/* No ready / busy check necessary */
++		chip->cmd_ctrl(mtd, NAND_CMD_RNDOUTSTART,
++			       NAND_NCE | NAND_CLE | NAND_CTRL_CHANGE);
++		chip->cmd_ctrl(mtd, NAND_CMD_NONE,
++			       NAND_NCE | NAND_CTRL_CHANGE);
++		return;
++
++	case NAND_CMD_READ0:
++		chip->cmd_ctrl(mtd, NAND_CMD_READSTART,
++			       NAND_NCE | NAND_CLE | NAND_CTRL_CHANGE);
++		chip->cmd_ctrl(mtd, NAND_CMD_NONE,
++			       NAND_NCE | NAND_CTRL_CHANGE);
++
++		/* This applies to read commands */
++	default:
++		/*
++		 * If we don't have access to the busy pin, we apply the given
++		 * command delay
++		 */
++		if (!chip->dev_ready) {
++			udelay(chip->chip_delay);
++			return;
++		}
++	}
++
++	/* Apply this short delay always to ensure that we do wait tWB in
++	 * any case on any machine. */
++	ndelay(100);
++
++	nand_wait_ready(mtd);
++}
++
++/**
++ * nand_get_device - [GENERIC] Get chip for selected access
++ * @chip:	the nand chip descriptor
++ * @mtd:	MTD device structure
++ * @new_state:	the state which is requested
++ *
++ * Get the device and lock it for exclusive access
++ */
++static int
++nand_get_device(struct nand_chip *chip, struct mtd_info *mtd, int new_state)
++{
++ retry:
++	/* Hardware controller shared among independend devices */
++	if (!chip->controller->active)
++		chip->controller->active = chip;
++
++	if (chip->controller->active == chip && chip->state == FL_READY) {
++		chip->state = new_state;
++		return 0;
++	}
++	if (new_state == FL_PM_SUSPENDED) {
++		return (chip->state == FL_PM_SUSPENDED) ? 0 : -EAGAIN;
++	}
++	goto retry;
++}
++
++/**
++ * nand_wait - [DEFAULT]  wait until the command is done
++ * @mtd:	MTD device structure
++ * @chip:	NAND chip structure
++ *
++ * Wait for command done. This applies to erase and program only
++ * Erase can take up to 400ms and program up to 20ms according to
++ * general NAND and SmartMedia specs
++ */
++static int nand_wait(struct mtd_info *mtd, struct nand_chip *chip)
++{
++
++	uint64_t start = get_time_ns();
++	uint64_t timeo;
++	int status, state = chip->state;
++
++	if (state == FL_ERASING)
++		timeo = 400 * MSECOND;
++	else
++		timeo = 20 * MSECOND;
++
++	led_trigger_event(nand_led_trigger, LED_FULL);
++
++	/* Apply this short delay always to ensure that we do wait tWB in
++	 * any case on any machine. */
++	ndelay(100);
++
++	if ((state == FL_ERASING) && (chip->options & NAND_IS_AND))
++		chip->cmdfunc(mtd, NAND_CMD_STATUS_MULTI, -1, -1);
++	else
++		chip->cmdfunc(mtd, NAND_CMD_STATUS, -1, -1);
++
++	while (!is_timeout(start, timeo)) {
++		if (chip->dev_ready) {
++			if (chip->dev_ready(mtd))
++				break;
++		} else {
++			if (chip->read_byte(mtd) & NAND_STATUS_READY)
++				break;
++		}
++	}
++	led_trigger_event(nand_led_trigger, LED_OFF);
++
++	status = (int)chip->read_byte(mtd);
++	return status;
++}
++
++/**
++ * nand_read_page_raw - [Intern] read raw page data without ecc
++ * @mtd:	mtd info structure
++ * @chip:	nand chip info structure
++ * @buf:	buffer to store read data
++ */
++static int nand_read_page_raw(struct mtd_info *mtd, struct nand_chip *chip,
++			      uint8_t *buf)
++{
++	chip->read_buf(mtd, buf, mtd->writesize);
++	chip->read_buf(mtd, chip->oob_poi, mtd->oobsize);
++	return 0;
++}
++
++/**
++ * nand_read_page_swecc - [REPLACABLE] software ecc based page read function
++ * @mtd:	mtd info structure
++ * @chip:	nand chip info structure
++ * @buf:	buffer to store read data
++ */
++static int nand_read_page_swecc(struct mtd_info *mtd, struct nand_chip *chip,
++				uint8_t *buf)
++{
++	int i, eccsize = chip->ecc.size;
++	int eccbytes = chip->ecc.bytes;
++	int eccsteps = chip->ecc.steps;
++	uint8_t *p = buf;
++	uint8_t *ecc_calc = chip->buffers->ecccalc;
++	uint8_t *ecc_code = chip->buffers->ecccode;
++	uint32_t *eccpos = chip->ecc.layout->eccpos;
++
++	chip->ecc.read_page_raw(mtd, chip, buf);
++
++	for (i = 0; eccsteps; eccsteps--, i += eccbytes, p += eccsize)
++		chip->ecc.calculate(mtd, p, &ecc_calc[i]);
++
++	for (i = 0; i < chip->ecc.total; i++)
++		ecc_code[i] = chip->oob_poi[eccpos[i]];
++
++	eccsteps = chip->ecc.steps;
++	p = buf;
++
++	for (i = 0 ; eccsteps; eccsteps--, i += eccbytes, p += eccsize) {
++		int stat;
++
++		stat = chip->ecc.correct(mtd, p, &ecc_code[i], &ecc_calc[i]);
++		if (stat < 0)
++			mtd->ecc_stats.failed++;
++		else
++			mtd->ecc_stats.corrected += stat;
++	}
++	return 0;
++}
++
++/**
++ * nand_read_page_hwecc - [REPLACABLE] hardware ecc based page read function
++ * @mtd:	mtd info structure
++ * @chip:	nand chip info structure
++ * @buf:	buffer to store read data
++ *
++ * Not for syndrome calculating ecc controllers which need a special oob layout
++ */
++static int nand_read_page_hwecc(struct mtd_info *mtd, struct nand_chip *chip,
++				uint8_t *buf)
++{
++	int i, eccsize = chip->ecc.size;
++	int eccbytes = chip->ecc.bytes;
++	int eccsteps = chip->ecc.steps;
++	uint8_t *p = buf;
++	uint8_t *ecc_calc = chip->buffers->ecccalc;
++	uint8_t *ecc_code = chip->buffers->ecccode;
++	uint32_t *eccpos = chip->ecc.layout->eccpos;
++
++	for (i = 0; eccsteps; eccsteps--, i += eccbytes, p += eccsize) {
++		chip->ecc.hwctl(mtd, NAND_ECC_READ);
++		chip->read_buf(mtd, p, eccsize);
++		chip->ecc.calculate(mtd, p, &ecc_calc[i]);
++	}
++	chip->read_buf(mtd, chip->oob_poi, mtd->oobsize);
++
++	for (i = 0; i < chip->ecc.total; i++)
++		ecc_code[i] = chip->oob_poi[eccpos[i]];
++
++	eccsteps = chip->ecc.steps;
++	p = buf;
++
++	for (i = 0 ; eccsteps; eccsteps--, i += eccbytes, p += eccsize) {
++		int stat;
++
++		stat = chip->ecc.correct(mtd, p, &ecc_code[i], &ecc_calc[i]);
++		if (stat < 0)
++			mtd->ecc_stats.failed++;
++		else
++			mtd->ecc_stats.corrected += stat;
++	}
++	return 0;
++}
++
++/**
++ * nand_read_page_syndrome - [REPLACABLE] hardware ecc syndrom based page read
++ * @mtd:	mtd info structure
++ * @chip:	nand chip info structure
++ * @buf:	buffer to store read data
++ *
++ * The hw generator calculates the error syndrome automatically. Therefor
++ * we need a special oob layout and handling.
++ */
++static int nand_read_page_syndrome(struct mtd_info *mtd, struct nand_chip *chip,
++				   uint8_t *buf)
++{
++	int i, eccsize = chip->ecc.size;
++	int eccbytes = chip->ecc.bytes;
++	int eccsteps = chip->ecc.steps;
++	uint8_t *p = buf;
++	uint8_t *oob = chip->oob_poi;
++
++	for (i = 0; eccsteps; eccsteps--, i += eccbytes, p += eccsize) {
++		int stat;
++
++		chip->ecc.hwctl(mtd, NAND_ECC_READ);
++		chip->read_buf(mtd, p, eccsize);
++
++		if (chip->ecc.prepad) {
++			chip->read_buf(mtd, oob, chip->ecc.prepad);
++			oob += chip->ecc.prepad;
++		}
++
++		chip->ecc.hwctl(mtd, NAND_ECC_READSYN);
++		chip->read_buf(mtd, oob, eccbytes);
++		stat = chip->ecc.correct(mtd, p, oob, NULL);
++
++		if (stat < 0)
++			mtd->ecc_stats.failed++;
++		else
++			mtd->ecc_stats.corrected += stat;
++
++		oob += eccbytes;
++
++		if (chip->ecc.postpad) {
++			chip->read_buf(mtd, oob, chip->ecc.postpad);
++			oob += chip->ecc.postpad;
++		}
++	}
++
++	/* Calculate remaining oob bytes */
++	i = mtd->oobsize - (oob - chip->oob_poi);
++	if (i)
++		chip->read_buf(mtd, oob, i);
++
++	return 0;
++}
++
++/**
++ * nand_transfer_oob - [Internal] Transfer oob to client buffer
++ * @chip:	nand chip structure
++ * @oob:	oob destination address
++ * @ops:	oob ops structure
++ * @len:	size of oob to transfer
++ */
++static uint8_t *nand_transfer_oob(struct nand_chip *chip, uint8_t *oob,
++				  struct mtd_oob_ops *ops, size_t len)
++{
++	switch(ops->mode) {
++
++	case MTD_OOB_PLACE:
++	case MTD_OOB_RAW:
++		memcpy(oob, chip->oob_poi + ops->ooboffs, len);
++		return oob + len;
++
++	case MTD_OOB_AUTO: {
++		struct nand_oobfree *free = chip->ecc.layout->oobfree;
++		uint32_t boffs = 0, roffs = ops->ooboffs;
++		size_t bytes = 0;
++
++		for(; free->length && len; free++, len -= bytes) {
++			/* Read request not from offset 0 ? */
++			if (unlikely(roffs)) {
++				if (roffs >= free->length) {
++					roffs -= free->length;
++					continue;
++				}
++				boffs = free->offset + roffs;
++				bytes = min_t(size_t, len,
++					      (free->length - roffs));
++				roffs = 0;
++			} else {
++				bytes = min_t(size_t, len, free->length);
++				boffs = free->offset;
++			}
++			memcpy(oob, chip->oob_poi + boffs, bytes);
++			oob += bytes;
++		}
++		return oob;
++	}
++	default:
++		BUG();
++	}
++	return NULL;
++}
++
++/**
++ * nand_do_read_ops - [Internal] Read data with ECC
++ *
++ * @mtd:	MTD device structure
++ * @from:	offset to read from
++ * @ops:	oob ops structure
++ *
++ * Internal function. Called with chip held.
++ */
++static int nand_do_read_ops(struct mtd_info *mtd, loff_t from,
++			    struct mtd_oob_ops *ops)
++{
++	int chipnr, page, realpage, col, bytes, aligned;
++	struct nand_chip *chip = mtd->priv;
++	struct mtd_ecc_stats stats;
++	int blkcheck = (1 << (chip->phys_erase_shift - chip->page_shift)) - 1;
++	int sndcmd = 1;
++	int ret = 0;
++	uint32_t readlen = ops->len;
++	uint32_t oobreadlen = ops->ooblen;
++	uint8_t *bufpoi, *oob, *buf;
++
++	stats = mtd->ecc_stats;
++
++	chipnr = (int)(from >> chip->chip_shift);
++	chip->select_chip(mtd, chipnr);
++
++	realpage = (int)(from >> chip->page_shift);
++	page = realpage & chip->pagemask;
++
++	col = (int)(from & (mtd->writesize - 1));
++
++	buf = ops->datbuf;
++	oob = ops->oobbuf;
++
++	while(1) {
++		bytes = min(mtd->writesize - col, readlen);
++		aligned = (bytes == mtd->writesize);
++
++		/* Is the current page in the buffer ? */
++		if (realpage != chip->pagebuf || oob) {
++			bufpoi = aligned ? buf : chip->buffers->databuf;
++
++			if (likely(sndcmd)) {
++				chip->cmdfunc(mtd, NAND_CMD_READ0, 0x00, page);
++				sndcmd = 0;
++			}
++
++			/* Now read the page into the buffer */
++			if (unlikely(ops->mode == MTD_OOB_RAW))
++				ret = chip->ecc.read_page_raw(mtd, chip, bufpoi);
++			else
++				ret = chip->ecc.read_page(mtd, chip, bufpoi);
++			if (ret < 0)
++				break;
++
++			/* Transfer not aligned data */
++			if (!aligned) {
++				chip->pagebuf = realpage;
++				memcpy(buf, chip->buffers->databuf + col, bytes);
++			}
++
++			buf += bytes;
++
++			if (unlikely(oob)) {
++				/* Raw mode does data:oob:data:oob */
++				if (ops->mode != MTD_OOB_RAW) {
++					int toread = min(oobreadlen,
++						chip->ecc.layout->oobavail);
++					if (toread) {
++						oob = nand_transfer_oob(chip,
++							oob, ops, toread);
++						oobreadlen -= toread;
++					}
++				} else
++					buf = nand_transfer_oob(chip,
++						buf, ops, mtd->oobsize);
++			}
++
++			if (!(chip->options & NAND_NO_READRDY)) {
++				/*
++				 * Apply delay or wait for ready/busy pin. Do
++				 * this before the AUTOINCR check, so no
++				 * problems arise if a chip which does auto
++				 * increment is marked as NOAUTOINCR by the
++				 * board driver.
++				 */
++				if (!chip->dev_ready)
++					udelay(chip->chip_delay);
++				else
++					nand_wait_ready(mtd);
++			}
++		} else {
++			memcpy(buf, chip->buffers->databuf + col, bytes);
++			buf += bytes;
++		}
++
++		readlen -= bytes;
++
++		if (!readlen)
++			break;
++
++		/* For subsequent reads align to page boundary. */
++		col = 0;
++		/* Increment page address */
++		realpage++;
++
++		page = realpage & chip->pagemask;
++		/* Check, if we cross a chip boundary */
++		if (!page) {
++			chipnr++;
++			chip->select_chip(mtd, -1);
++			chip->select_chip(mtd, chipnr);
++		}
++
++		/* Check, if the chip supports auto page increment
++		 * or if we have hit a block boundary.
++		 */
++		if (!NAND_CANAUTOINCR(chip) || !(page & blkcheck))
++			sndcmd = 1;
++	}
++
++	ops->retlen = ops->len - (size_t) readlen;
++	if (oob)
++		ops->oobretlen = ops->ooblen - oobreadlen;
++
++	if (ret)
++		return ret;
++
++	if (mtd->ecc_stats.failed - stats.failed)
++		return -EBADMSG;
++
++	return 0;
++}
++
++/**
++ * nand_read - [MTD Interface] MTD compability function for nand_do_read_ecc
++ * @mtd:	MTD device structure
++ * @from:	offset to read from
++ * @len:	number of bytes to read
++ * @retlen:	pointer to variable to store the number of read bytes
++ * @buf:	the databuffer to put data
++ *
++ * Get hold of the chip and call nand_do_read
++ */
++static int nand_read(struct mtd_info *mtd, loff_t from, size_t len,
++		     size_t *retlen, uint8_t *buf)
++{
++	struct nand_chip *chip = mtd->priv;
++	int ret;
++
++	/* Do not allow reads past end of device */
++	if ((from + len) > mtd->size)
++		return -EINVAL;
++	if (!len)
++		return 0;
++
++	nand_get_device(chip, mtd, FL_READING);
++
++	chip->ops.len = len;
++	chip->ops.datbuf = buf;
++	chip->ops.oobbuf = NULL;
++
++	ret = nand_do_read_ops(mtd, from, &chip->ops);
++
++	*retlen = chip->ops.retlen;
++
++	nand_release_device(mtd);
++
++	return ret;
++}
++
++/**
++ * nand_read_oob_std - [REPLACABLE] the most common OOB data read function
++ * @mtd:	mtd info structure
++ * @chip:	nand chip info structure
++ * @page:	page number to read
++ * @sndcmd:	flag whether to issue read command or not
++ */
++static int nand_read_oob_std(struct mtd_info *mtd, struct nand_chip *chip,
++			     int page, int sndcmd)
++{
++	if (sndcmd) {
++		chip->cmdfunc(mtd, NAND_CMD_READOOB, 0, page);
++		sndcmd = 0;
++	}
++	chip->read_buf(mtd, chip->oob_poi, mtd->oobsize);
++	return sndcmd;
++}
++
++/**
++ * nand_read_oob_syndrome - [REPLACABLE] OOB data read function for HW ECC
++ *			    with syndromes
++ * @mtd:	mtd info structure
++ * @chip:	nand chip info structure
++ * @page:	page number to read
++ * @sndcmd:	flag whether to issue read command or not
++ */
++static int nand_read_oob_syndrome(struct mtd_info *mtd, struct nand_chip *chip,
++				  int page, int sndcmd)
++{
++	uint8_t *buf = chip->oob_poi;
++	int length = mtd->oobsize;
++	int chunk = chip->ecc.bytes + chip->ecc.prepad + chip->ecc.postpad;
++	int eccsize = chip->ecc.size;
++	uint8_t *bufpoi = buf;
++	int i, toread, sndrnd = 0, pos;
++
++	chip->cmdfunc(mtd, NAND_CMD_READ0, chip->ecc.size, page);
++	for (i = 0; i < chip->ecc.steps; i++) {
++		if (sndrnd) {
++			pos = eccsize + i * (eccsize + chunk);
++			if (mtd->writesize > 512)
++				chip->cmdfunc(mtd, NAND_CMD_RNDOUT, pos, -1);
++			else
++				chip->cmdfunc(mtd, NAND_CMD_READ0, pos, page);
++		} else
++			sndrnd = 1;
++		toread = min_t(int, length, chunk);
++		chip->read_buf(mtd, bufpoi, toread);
++		bufpoi += toread;
++		length -= toread;
++	}
++	if (length > 0)
++		chip->read_buf(mtd, bufpoi, length);
++
++	return 1;
++}
++
++/**
++ * nand_write_oob_std - [REPLACABLE] the most common OOB data write function
++ * @mtd:	mtd info structure
++ * @chip:	nand chip info structure
++ * @page:	page number to write
++ */
++static int nand_write_oob_std(struct mtd_info *mtd, struct nand_chip *chip,
++			      int page)
++{
++	int status = 0;
++	const uint8_t *buf = chip->oob_poi;
++	int length = mtd->oobsize;
++
++	chip->cmdfunc(mtd, NAND_CMD_SEQIN, mtd->writesize, page);
++	chip->write_buf(mtd, buf, length);
++	/* Send command to program the OOB data */
++	chip->cmdfunc(mtd, NAND_CMD_PAGEPROG, -1, -1);
++
++	status = chip->waitfunc(mtd, chip);
++
++	return status & NAND_STATUS_FAIL ? -EIO : 0;
++}
++
++/**
++ * nand_write_oob_syndrome - [REPLACABLE] OOB data write function for HW ECC
++ *			     with syndrome - only for large page flash !
++ * @mtd:	mtd info structure
++ * @chip:	nand chip info structure
++ * @page:	page number to write
++ */
++static int nand_write_oob_syndrome(struct mtd_info *mtd,
++				   struct nand_chip *chip, int page)
++{
++	int chunk = chip->ecc.bytes + chip->ecc.prepad + chip->ecc.postpad;
++	int eccsize = chip->ecc.size, length = mtd->oobsize;
++	int i, len, pos, status = 0, sndcmd = 0, steps = chip->ecc.steps;
++	const uint8_t *bufpoi = chip->oob_poi;
++
++	/*
++	 * data-ecc-data-ecc ... ecc-oob
++	 * or
++	 * data-pad-ecc-pad-data-pad .... ecc-pad-oob
++	 */
++	if (!chip->ecc.prepad && !chip->ecc.postpad) {
++		pos = steps * (eccsize + chunk);
++		steps = 0;
++	} else
++		pos = eccsize;
++
++	chip->cmdfunc(mtd, NAND_CMD_SEQIN, pos, page);
++	for (i = 0; i < steps; i++) {
++		if (sndcmd) {
++			if (mtd->writesize <= 512) {
++				uint32_t fill = 0xFFFFFFFF;
++
++				len = eccsize;
++				while (len > 0) {
++					int num = min_t(int, len, 4);
++					chip->write_buf(mtd, (uint8_t *)&fill,
++							num);
++					len -= num;
++				}
++			} else {
++				pos = eccsize + i * (eccsize + chunk);
++				chip->cmdfunc(mtd, NAND_CMD_RNDIN, pos, -1);
++			}
++		} else
++			sndcmd = 1;
++		len = min_t(int, length, chunk);
++		chip->write_buf(mtd, bufpoi, len);
++		bufpoi += len;
++		length -= len;
++	}
++	if (length > 0)
++		chip->write_buf(mtd, bufpoi, length);
++
++	chip->cmdfunc(mtd, NAND_CMD_PAGEPROG, -1, -1);
++	status = chip->waitfunc(mtd, chip);
++
++	return status & NAND_STATUS_FAIL ? -EIO : 0;
++}
++
++/**
++ * nand_do_read_oob - [Intern] NAND read out-of-band
++ * @mtd:	MTD device structure
++ * @from:	offset to read from
++ * @ops:	oob operations description structure
++ *
++ * NAND read out-of-band data from the spare area
++ */
++static int nand_do_read_oob(struct mtd_info *mtd, loff_t from,
++			    struct mtd_oob_ops *ops)
++{
++	int page, realpage, chipnr, sndcmd = 1;
++	struct nand_chip *chip = mtd->priv;
++	int blkcheck = (1 << (chip->phys_erase_shift - chip->page_shift)) - 1;
++	int readlen = ops->ooblen;
++	int len;
++	uint8_t *buf = ops->oobbuf;
++
++	MTD_DEBUG(MTD_DEBUG_LEVEL3, "nand_read_oob: from = 0x%08Lx, len = %i\n",
++	      (unsigned long long)from, readlen);
++
++	if (ops->mode == MTD_OOB_AUTO)
++		len = chip->ecc.layout->oobavail;
++	else
++		len = mtd->oobsize;
++
++	if (unlikely(ops->ooboffs >= len)) {
++		MTD_DEBUG(MTD_DEBUG_LEVEL0, "nand_read_oob: "
++			"Attempt to start read outside oob\n");
++		return -EINVAL;
++	}
++
++	/* Do not allow reads past end of device */
++	if (unlikely(from >= mtd->size ||
++		     ops->ooboffs + readlen > ((mtd->size >> chip->page_shift) -
++					(from >> chip->page_shift)) * len)) {
++		MTD_DEBUG(MTD_DEBUG_LEVEL0, "nand_read_oob: "
++			"Attempt read beyond end of device\n");
++		return -EINVAL;
++	}
++
++	chipnr = (int)(from >> chip->chip_shift);
++	chip->select_chip(mtd, chipnr);
++
++	/* Shift to get page */
++	realpage = (int)(from >> chip->page_shift);
++	page = realpage & chip->pagemask;
++
++	while(1) {
++		sndcmd = chip->ecc.read_oob(mtd, chip, page, sndcmd);
++
++		len = min(len, readlen);
++		buf = nand_transfer_oob(chip, buf, ops, len);
++
++		if (!(chip->options & NAND_NO_READRDY)) {
++			/*
++			 * Apply delay or wait for ready/busy pin. Do this
++			 * before the AUTOINCR check, so no problems arise if a
++			 * chip which does auto increment is marked as
++			 * NOAUTOINCR by the board driver.
++			 */
++			if (!chip->dev_ready)
++				udelay(chip->chip_delay);
++			else
++				nand_wait_ready(mtd);
++		}
++
++		readlen -= len;
++		if (!readlen)
++			break;
++
++		/* Increment page address */
++		realpage++;
++
++		page = realpage & chip->pagemask;
++		/* Check, if we cross a chip boundary */
++		if (!page) {
++			chipnr++;
++			chip->select_chip(mtd, -1);
++			chip->select_chip(mtd, chipnr);
++		}
++
++		/* Check, if the chip supports auto page increment
++		 * or if we have hit a block boundary.
++		 */
++		if (!NAND_CANAUTOINCR(chip) || !(page & blkcheck))
++			sndcmd = 1;
++	}
++
++	ops->oobretlen = ops->ooblen;
++	return 0;
++}
++
++/**
++ * nand_read_oob - [MTD Interface] NAND read data and/or out-of-band
++ * @mtd:	MTD device structure
++ * @from:	offset to read from
++ * @ops:	oob operation description structure
++ *
++ * NAND read data and/or out-of-band data
++ */
++static int nand_read_oob(struct mtd_info *mtd, loff_t from,
++			 struct mtd_oob_ops *ops)
++{
++	struct nand_chip *chip = mtd->priv;
++	int ret = -ENOSYS;
++
++	ops->retlen = 0;
++
++	/* Do not allow reads past end of device */
++	if (ops->datbuf && (from + ops->len) > mtd->size) {
++		MTD_DEBUG(MTD_DEBUG_LEVEL0, "nand_read_oob: "
++		      "Attempt read beyond end of device\n");
++		return -EINVAL;
++	}
++
++	nand_get_device(chip, mtd, FL_READING);
++
++	switch(ops->mode) {
++	case MTD_OOB_PLACE:
++	case MTD_OOB_AUTO:
++	case MTD_OOB_RAW:
++		break;
++
++	default:
++		goto out;
++	}
++
++	if (!ops->datbuf)
++		ret = nand_do_read_oob(mtd, from, ops);
++	else
++		ret = nand_do_read_ops(mtd, from, ops);
++
++ out:
++	nand_release_device(mtd);
++	return ret;
++}
++
++
++/**
++ * nand_write_page_raw - [Intern] raw page write function
++ * @mtd:	mtd info structure
++ * @chip:	nand chip info structure
++ * @buf:	data buffer
++ */
++static void nand_write_page_raw(struct mtd_info *mtd, struct nand_chip *chip,
++				const uint8_t *buf)
++{
++	chip->write_buf(mtd, buf, mtd->writesize);
++	chip->write_buf(mtd, chip->oob_poi, mtd->oobsize);
++}
++
++/**
++ * nand_write_page_swecc - [REPLACABLE] software ecc based page write function
++ * @mtd:	mtd info structure
++ * @chip:	nand chip info structure
++ * @buf:	data buffer
++ */
++static void nand_write_page_swecc(struct mtd_info *mtd, struct nand_chip *chip,
++				  const uint8_t *buf)
++{
++	int i, eccsize = chip->ecc.size;
++	int eccbytes = chip->ecc.bytes;
++	int eccsteps = chip->ecc.steps;
++	uint8_t *ecc_calc = chip->buffers->ecccalc;
++	const uint8_t *p = buf;
++	uint32_t *eccpos = chip->ecc.layout->eccpos;
++
++	/* Software ecc calculation */
++	for (i = 0; eccsteps; eccsteps--, i += eccbytes, p += eccsize)
++		chip->ecc.calculate(mtd, p, &ecc_calc[i]);
++
++	for (i = 0; i < chip->ecc.total; i++)
++		chip->oob_poi[eccpos[i]] = ecc_calc[i];
++
++	chip->ecc.write_page_raw(mtd, chip, buf);
++}
++
++/**
++ * nand_write_page_hwecc - [REPLACABLE] hardware ecc based page write function
++ * @mtd:	mtd info structure
++ * @chip:	nand chip info structure
++ * @buf:	data buffer
++ */
++static void nand_write_page_hwecc(struct mtd_info *mtd, struct nand_chip *chip,
++				  const uint8_t *buf)
++{
++	int i, eccsize = chip->ecc.size;
++	int eccbytes = chip->ecc.bytes;
++	int eccsteps = chip->ecc.steps;
++	uint8_t *ecc_calc = chip->buffers->ecccalc;
++	const uint8_t *p = buf;
++	uint32_t *eccpos = chip->ecc.layout->eccpos;
++
++	for (i = 0; eccsteps; eccsteps--, i += eccbytes, p += eccsize) {
++		chip->ecc.hwctl(mtd, NAND_ECC_WRITE);
++		chip->write_buf(mtd, p, eccsize);
++		chip->ecc.calculate(mtd, p, &ecc_calc[i]);
++	}
++
++	for (i = 0; i < chip->ecc.total; i++)
++		chip->oob_poi[eccpos[i]] = ecc_calc[i];
++
++	chip->write_buf(mtd, chip->oob_poi, mtd->oobsize);
++}
++
++/**
++ * nand_write_page_syndrome - [REPLACABLE] hardware ecc syndrom based page write
++ * @mtd:	mtd info structure
++ * @chip:	nand chip info structure
++ * @buf:	data buffer
++ *
++ * The hw generator calculates the error syndrome automatically. Therefor
++ * we need a special oob layout and handling.
++ */
++static void nand_write_page_syndrome(struct mtd_info *mtd,
++				    struct nand_chip *chip, const uint8_t *buf)
++{
++	int i, eccsize = chip->ecc.size;
++	int eccbytes = chip->ecc.bytes;
++	int eccsteps = chip->ecc.steps;
++	const uint8_t *p = buf;
++	uint8_t *oob = chip->oob_poi;
++
++	for (i = 0; eccsteps; eccsteps--, i += eccbytes, p += eccsize) {
++
++		chip->ecc.hwctl(mtd, NAND_ECC_WRITE);
++		chip->write_buf(mtd, p, eccsize);
++
++		if (chip->ecc.prepad) {
++			chip->write_buf(mtd, oob, chip->ecc.prepad);
++			oob += chip->ecc.prepad;
++		}
++
++		chip->ecc.calculate(mtd, p, oob);
++		chip->write_buf(mtd, oob, eccbytes);
++		oob += eccbytes;
++
++		if (chip->ecc.postpad) {
++			chip->write_buf(mtd, oob, chip->ecc.postpad);
++			oob += chip->ecc.postpad;
++		}
++	}
++
++	/* Calculate remaining oob bytes */
++	i = mtd->oobsize - (oob - chip->oob_poi);
++	if (i)
++		chip->write_buf(mtd, oob, i);
++}
++
++/**
++ * nand_write_page - [REPLACEABLE] write one page
++ * @mtd:	MTD device structure
++ * @chip:	NAND chip descriptor
++ * @buf:	the data to write
++ * @page:	page number to write
++ * @cached:	cached programming
++ * @raw:	use _raw version of write_page
++ */
++static int nand_write_page(struct mtd_info *mtd, struct nand_chip *chip,
++			   const uint8_t *buf, int page, int cached, int raw)
++{
++	int status;
++
++	chip->cmdfunc(mtd, NAND_CMD_SEQIN, 0x00, page);
++
++	if (unlikely(raw))
++		chip->ecc.write_page_raw(mtd, chip, buf);
++	else
++		chip->ecc.write_page(mtd, chip, buf);
++
++	/*
++	 * Cached progamming disabled for now, Not sure if its worth the
++	 * trouble. The speed gain is not very impressive. (2.3->2.6Mib/s)
++	 */
++	cached = 0;
++
++	if (!cached || !(chip->options & NAND_CACHEPRG)) {
++
++		chip->cmdfunc(mtd, NAND_CMD_PAGEPROG, -1, -1);
++		status = chip->waitfunc(mtd, chip);
++		/*
++		 * See if operation failed and additional status checks are
++		 * available
++		 */
++		if ((status & NAND_STATUS_FAIL) && (chip->errstat))
++			status = chip->errstat(mtd, chip, FL_WRITING, status,
++					       page);
++
++		if (status & NAND_STATUS_FAIL) {
++			return -EIO;
++		}
++	} else {
++		chip->cmdfunc(mtd, NAND_CMD_CACHEDPROG, -1, -1);
++		status = chip->waitfunc(mtd, chip);
++	}
++
++#ifdef CONFIG_MTD_NAND_VERIFY_WRITE
++	/* Send command to read back the data */
++	chip->cmdfunc(mtd, NAND_CMD_READ0, 0, page);
++
++	if (chip->verify_buf(mtd, buf, mtd->writesize))
++		return -EIO;
++#endif
++	return 0;
++}
++
++/**
++ * nand_fill_oob - [Internal] Transfer client buffer to oob
++ * @chip:	nand chip structure
++ * @oob:	oob data buffer
++ * @ops:	oob ops structure
++ */
++static uint8_t *nand_fill_oob(struct nand_chip *chip, uint8_t *oob,
++				  struct mtd_oob_ops *ops)
++{
++	size_t len = ops->ooblen;
++
++	switch(ops->mode) {
++
++	case MTD_OOB_PLACE:
++	case MTD_OOB_RAW:
++		memcpy(chip->oob_poi + ops->ooboffs, oob, len);
++		return oob + len;
++
++	case MTD_OOB_AUTO: {
++		struct nand_oobfree *free = chip->ecc.layout->oobfree;
++		uint32_t boffs = 0, woffs = ops->ooboffs;
++		size_t bytes = 0;
++
++		for(; free->length && len; free++, len -= bytes) {
++			/* Write request not from offset 0 ? */
++			if (unlikely(woffs)) {
++				if (woffs >= free->length) {
++					woffs -= free->length;
++					continue;
++				}
++				boffs = free->offset + woffs;
++				bytes = min_t(size_t, len,
++					      (free->length - woffs));
++				woffs = 0;
++			} else {
++				bytes = min_t(size_t, len, free->length);
++				boffs = free->offset;
++			}
++			memcpy(chip->oob_poi + boffs, oob, bytes);
++			oob += bytes;
++		}
++		return oob;
++	}
++	default:
++		BUG();
++	}
++	return NULL;
++}
++
++#define NOTALIGNED(x)	(x & (chip->subpagesize - 1)) != 0
++
++/**
++ * nand_do_write_ops - [Internal] NAND write with ECC
++ * @mtd:	MTD device structure
++ * @to:		offset to write to
++ * @ops:	oob operations description structure
++ *
++ * NAND write with ECC
++ */
++static int nand_do_write_ops(struct mtd_info *mtd, loff_t to,
++			     struct mtd_oob_ops *ops)
++{
++	int chipnr, realpage, page, blockmask, column;
++	struct nand_chip *chip = mtd->priv;
++	uint32_t writelen = ops->len;
++	uint8_t *oob = ops->oobbuf;
++	uint8_t *buf = ops->datbuf;
++	int ret, subpage;
++
++	ops->retlen = 0;
++	if (!writelen)
++		return 0;
++
++	/* reject writes, which are not page aligned */
++	if (NOTALIGNED(to) || NOTALIGNED(ops->len)) {
++		printk(KERN_NOTICE "nand_write: "
++		       "Attempt to write not page aligned data\n");
++		return -EINVAL;
++	}
++
++	column = to & (mtd->writesize - 1);
++	subpage = column || (writelen & (mtd->writesize - 1));
++
++	if (subpage && oob)
++		return -EINVAL;
++
++	chipnr = (int)(to >> chip->chip_shift);
++	chip->select_chip(mtd, chipnr);
++
++	/* Check, if it is write protected */
++	if (nand_check_wp(mtd)) {
++		return -EIO;
++	}
++
++	realpage = (int)(to >> chip->page_shift);
++	page = realpage & chip->pagemask;
++	blockmask = (1 << (chip->phys_erase_shift - chip->page_shift)) - 1;
++
++	/* Invalidate the page cache, when we write to the cached page */
++	if (to <= (chip->pagebuf << chip->page_shift) &&
++	    (chip->pagebuf << chip->page_shift) < (to + ops->len))
++		chip->pagebuf = -1;
++
++	/* If we're not given explicit OOB data, let it be 0xFF */
++	if (likely(!oob))
++		memset(chip->oob_poi, 0xff, mtd->oobsize);
++
++	while(1) {
++		int bytes = mtd->writesize;
++		int cached = writelen > bytes && page != blockmask;
++		uint8_t *wbuf = buf;
++
++		/* Partial page write ? */
++		if (unlikely(column || writelen < (mtd->writesize - 1))) {
++			cached = 0;
++			bytes = min_t(int, bytes - column, (int) writelen);
++			chip->pagebuf = -1;
++			memset(chip->buffers->databuf, 0xff, mtd->writesize);
++			memcpy(&chip->buffers->databuf[column], buf, bytes);
++			wbuf = chip->buffers->databuf;
++		}
++
++		if (unlikely(oob))
++			oob = nand_fill_oob(chip, oob, ops);
++
++		ret = chip->write_page(mtd, chip, wbuf, page, cached,
++				       (ops->mode == MTD_OOB_RAW));
++		if (ret)
++			break;
++
++		writelen -= bytes;
++		if (!writelen)
++			break;
++
++		column = 0;
++		buf += bytes;
++		realpage++;
++
++		page = realpage & chip->pagemask;
++		/* Check, if we cross a chip boundary */
++		if (!page) {
++			chipnr++;
++			chip->select_chip(mtd, -1);
++			chip->select_chip(mtd, chipnr);
++		}
++	}
++
++	ops->retlen = ops->len - writelen;
++	if (unlikely(oob))
++		ops->oobretlen = ops->ooblen;
++	return ret;
++}
++
++/**
++ * nand_write - [MTD Interface] NAND write with ECC
++ * @mtd:	MTD device structure
++ * @to:		offset to write to
++ * @len:	number of bytes to write
++ * @retlen:	pointer to variable to store the number of written bytes
++ * @buf:	the data to write
++ *
++ * NAND write with ECC
++ */
++static int nand_write(struct mtd_info *mtd, loff_t to, size_t len,
++			  size_t *retlen, const uint8_t *buf)
++{
++	struct nand_chip *chip = mtd->priv;
++	int ret;
++
++	/* Do not allow reads past end of device */
++	if ((to + len) > mtd->size)
++		return -EINVAL;
++	if (!len)
++		return 0;
++
++	nand_get_device(chip, mtd, FL_WRITING);
++
++	chip->ops.len = len;
++	chip->ops.datbuf = (uint8_t *)buf;
++	chip->ops.oobbuf = NULL;
++
++	ret = nand_do_write_ops(mtd, to, &chip->ops);
++
++	*retlen = chip->ops.retlen;
++
++	nand_release_device(mtd);
++
++	return ret;
++}
++
++/**
++ * nand_do_write_oob - [MTD Interface] NAND write out-of-band
++ * @mtd:	MTD device structure
++ * @to:		offset to write to
++ * @ops:	oob operation description structure
++ *
++ * NAND write out-of-band
++ */
++static int nand_do_write_oob(struct mtd_info *mtd, loff_t to,
++			     struct mtd_oob_ops *ops)
++{
++	int chipnr, page, status, len;
++	struct nand_chip *chip = mtd->priv;
++
++	MTD_DEBUG(MTD_DEBUG_LEVEL3, "nand_write_oob: to = 0x%08x, len = %i\n",
++	      (unsigned int)to, (int)ops->ooblen);
++
++	if (ops->mode == MTD_OOB_AUTO)
++		len = chip->ecc.layout->oobavail;
++	else
++		len = mtd->oobsize;
++
++	/* Do not allow write past end of page */
++	if ((ops->ooboffs + ops->ooblen) > len) {
++		MTD_DEBUG(MTD_DEBUG_LEVEL0, "nand_write_oob: "
++		      "Attempt to write past end of page\n");
++		return -EINVAL;
++	}
++
++	if (unlikely(ops->ooboffs >= len)) {
++		MTD_DEBUG(MTD_DEBUG_LEVEL0, "nand_read_oob: "
++			"Attempt to start write outside oob\n");
++		return -EINVAL;
++	}
++
++	/* Do not allow reads past end of device */
++	if (unlikely(to >= mtd->size ||
++		     ops->ooboffs + ops->ooblen >
++			((mtd->size >> chip->page_shift) -
++			 (to >> chip->page_shift)) * len)) {
++		MTD_DEBUG(MTD_DEBUG_LEVEL0, "nand_read_oob: "
++			"Attempt write beyond end of device\n");
++		return -EINVAL;
++	}
++
++	chipnr = (int)(to >> chip->chip_shift);
++	chip->select_chip(mtd, chipnr);
++
++	/* Shift to get page */
++	page = (int)(to >> chip->page_shift);
++
++	/*
++	 * Reset the chip. Some chips (like the Toshiba TC5832DC found in one
++	 * of my DiskOnChip 2000 test units) will clear the whole data page too
++	 * if we don't do this. I have no clue why, but I seem to have 'fixed'
++	 * it in the doc2000 driver in August 1999.  dwmw2.
++	 */
++	chip->cmdfunc(mtd, NAND_CMD_RESET, -1, -1);
++
++	/* Check, if it is write protected */
++	if (nand_check_wp(mtd))
 +		return -EROFS;
-+	}
 +
-+	if (torture) {
-+		ret = torture_peb(ubi, pnum);
-+		if (ret < 0)
-+			return ret;
-+	}
++	/* Invalidate the page cache, if we write to the cached page */
++	if (page == chip->pagebuf)
++		chip->pagebuf = -1;
 +
-+	err = do_sync_erase(ubi, pnum);
-+	if (err)
-+		return err;
++	memset(chip->oob_poi, 0xff, mtd->oobsize);
++	nand_fill_oob(chip, ops->oobbuf, ops);
++	status = chip->ecc.write_oob(mtd, chip, page & chip->pagemask);
++	memset(chip->oob_poi, 0xff, mtd->oobsize);
 +
-+	return ret + 1;
++	if (status)
++		return status;
++
++	ops->oobretlen = ops->ooblen;
++
++	return 0;
 +}
 +
 +/**
-+ * ubi_io_is_bad - check if a physical eraseblock is bad.
-+ * @ubi: UBI device description object
-+ * @pnum: the physical eraseblock number to check
-+ *
-+ * This function returns a positive number if the physical eraseblock is bad,
-+ * zero if not, and a negative error code if an error occurred.
++ * nand_write_oob - [MTD Interface] NAND write data and/or out-of-band
++ * @mtd:	MTD device structure
++ * @to:		offset to write to
++ * @ops:	oob operation description structure
 + */
-+int ubi_io_is_bad(const struct ubi_device *ubi, int pnum)
++static int nand_write_oob(struct mtd_info *mtd, loff_t to,
++			  struct mtd_oob_ops *ops)
 +{
-+	struct mtd_info *mtd = ubi->mtd;
++	struct nand_chip *chip = mtd->priv;
++	int ret = -ENOSYS;
 +
-+	ubi_assert(pnum >= 0 && pnum < ubi->peb_count);
++	ops->retlen = 0;
 +
-+	if (ubi->bad_allowed) {
-+		int ret;
++	/* Do not allow writes past end of device */
++	if (ops->datbuf && (to + ops->len) > mtd->size) {
++		MTD_DEBUG(MTD_DEBUG_LEVEL0, "nand_read_oob: "
++		      "Attempt read beyond end of device\n");
++		return -EINVAL;
++	}
 +
-+		ret = mtd->block_isbad(mtd, (loff_t)pnum * ubi->peb_size);
-+		if (ret < 0)
-+			ubi_err("error %d while checking if PEB %d is bad",
-+				ret, pnum);
-+		else if (ret)
-+			dbg_io("PEB %d is bad", pnum);
++	nand_get_device(chip, mtd, FL_WRITING);
++
++	switch(ops->mode) {
++	case MTD_OOB_PLACE:
++	case MTD_OOB_AUTO:
++	case MTD_OOB_RAW:
++		break;
++
++	default:
++		goto out;
++	}
++
++	if (!ops->datbuf)
++		ret = nand_do_write_oob(mtd, to, ops);
++	else
++		ret = nand_do_write_ops(mtd, to, ops);
++
++ out:
++	nand_release_device(mtd);
++	return ret;
++}
++
++/**
++ * single_erease_cmd - [GENERIC] NAND standard block erase command function
++ * @mtd:	MTD device structure
++ * @page:	the page address of the block which will be erased
++ *
++ * Standard erase command for NAND chips
++ */
++static void single_erase_cmd(struct mtd_info *mtd, int page)
++{
++	struct nand_chip *chip = mtd->priv;
++	/* Send commands to erase a block */
++	chip->cmdfunc(mtd, NAND_CMD_ERASE1, -1, page);
++	chip->cmdfunc(mtd, NAND_CMD_ERASE2, -1, -1);
++}
++
++/**
++ * multi_erease_cmd - [GENERIC] AND specific block erase command function
++ * @mtd:	MTD device structure
++ * @page:	the page address of the block which will be erased
++ *
++ * AND multi block erase command function
++ * Erase 4 consecutive blocks
++ */
++static void multi_erase_cmd(struct mtd_info *mtd, int page)
++{
++	struct nand_chip *chip = mtd->priv;
++	/* Send commands to erase a block */
++	chip->cmdfunc(mtd, NAND_CMD_ERASE1, -1, page++);
++	chip->cmdfunc(mtd, NAND_CMD_ERASE1, -1, page++);
++	chip->cmdfunc(mtd, NAND_CMD_ERASE1, -1, page++);
++	chip->cmdfunc(mtd, NAND_CMD_ERASE1, -1, page);
++	chip->cmdfunc(mtd, NAND_CMD_ERASE2, -1, -1);
++}
++
++/**
++ * nand_erase - [MTD Interface] erase block(s)
++ * @mtd:	MTD device structure
++ * @instr:	erase instruction
++ *
++ * Erase one ore more blocks
++ */
++static int nand_erase(struct mtd_info *mtd, struct erase_info *instr)
++{
++	return nand_erase_nand(mtd, instr, 0);
++}
++
++#define BBT_PAGE_MASK	0xffffff3f
++/**
++ * nand_erase_nand - [Internal] erase block(s)
++ * @mtd:	MTD device structure
++ * @instr:	erase instruction
++ * @allowbbt:	allow erasing the bbt area
++ *
++ * Erase one ore more blocks
++ */
++int nand_erase_nand(struct mtd_info *mtd, struct erase_info *instr,
++		    int allowbbt)
++{
++	int page, len, status, pages_per_block, ret, chipnr;
++	struct nand_chip *chip = mtd->priv;
++	int rewrite_bbt[NAND_MAX_CHIPS]={0};
++	unsigned int bbt_masked_page = 0xffffffff;
++
++	MTD_DEBUG(MTD_DEBUG_LEVEL3, "nand_erase: start = 0x%08x, len = %i\n",
++	      (unsigned int)instr->addr, (unsigned int)instr->len);
++
++	/* Start address must align on block boundary */
++	if (instr->addr & ((1 << chip->phys_erase_shift) - 1)) {
++		MTD_DEBUG(MTD_DEBUG_LEVEL0, "nand_erase: Unaligned address\n");
++		return -EINVAL;
++	}
++
++	/* Length must align on block boundary */
++	if (instr->len & ((1 << chip->phys_erase_shift) - 1)) {
++		MTD_DEBUG(MTD_DEBUG_LEVEL0, "nand_erase: "
++		      "Length not block aligned\n");
++		return -EINVAL;
++	}
++
++	/* Do not allow erase past end of device */
++	if ((instr->len + instr->addr) > mtd->size) {
++		MTD_DEBUG(MTD_DEBUG_LEVEL0, "nand_erase: "
++		      "Erase past end of device\n");
++		return -EINVAL;
++	}
++
++	instr->fail_addr = 0xffffffff;
++
++	/* Grab the lock and see if the device is available */
++	nand_get_device(chip, mtd, FL_ERASING);
++
++	/* Shift to get first page */
++	page = (int)(instr->addr >> chip->page_shift);
++	chipnr = (int)(instr->addr >> chip->chip_shift);
++
++	/* Calculate pages in each block */
++	pages_per_block = 1 << (chip->phys_erase_shift - chip->page_shift);
++
++	/* Select the NAND device */
++	chip->select_chip(mtd, chipnr);
++
++	/* Check, if it is write protected */
++	if (nand_check_wp(mtd)) {
++		MTD_DEBUG(MTD_DEBUG_LEVEL0, "nand_erase: "
++		      "Device is write protected!!!\n");
++		instr->state = MTD_ERASE_FAILED;
++		goto erase_exit;
++	}
++
++	/*
++	 * If BBT requires refresh, set the BBT page mask to see if the BBT
++	 * should be rewritten. Otherwise the mask is set to 0xffffffff which
++	 * can not be matched. This is also done when the bbt is actually
++	 * erased to avoid recusrsive updates
++	 */
++	if (chip->options & BBT_AUTO_REFRESH && !allowbbt)
++		bbt_masked_page = chip->bbt_td->pages[chipnr] & BBT_PAGE_MASK;
++
++	/* Loop through the pages */
++	len = instr->len;
++
++	instr->state = MTD_ERASING;
++
++	while (len) {
++		/*
++		 * heck if we have a bad block, we do not erase bad blocks !
++		 */
++		if (nand_block_checkbad(mtd, ((loff_t) page) <<
++					chip->page_shift, 0, allowbbt)) {
++			printk(KERN_WARNING "nand_erase: attempt to erase a "
++			       "bad block at page 0x%08x\n", page);
++			instr->state = MTD_ERASE_FAILED;
++			goto erase_exit;
++		}
++
++		/*
++		 * Invalidate the page cache, if we erase the block which
++		 * contains the current cached page
++		 */
++		if (page <= chip->pagebuf && chip->pagebuf <
++		    (page + pages_per_block))
++			chip->pagebuf = -1;
++
++		chip->erase_cmd(mtd, page & chip->pagemask);
++
++		status = chip->waitfunc(mtd, chip);
++
++		/*
++		 * See if operation failed and additional status checks are
++		 * available
++		 */
++		if ((status & NAND_STATUS_FAIL) && (chip->errstat))
++			status = chip->errstat(mtd, chip, FL_ERASING,
++					       status, page);
++
++		/* See if block erase succeeded */
++		if (status & NAND_STATUS_FAIL) {
++			MTD_DEBUG(MTD_DEBUG_LEVEL0, "nand_erase: "
++			      "Failed erase, page 0x%08x\n", page);
++			instr->state = MTD_ERASE_FAILED;
++			instr->fail_addr = (page << chip->page_shift);
++			goto erase_exit;
++		}
++
++		/*
++		 * If BBT requires refresh, set the BBT rewrite flag to the
++		 * page being erased
++		 */
++		if (bbt_masked_page != 0xffffffff &&
++		    (page & BBT_PAGE_MASK) == bbt_masked_page)
++			    rewrite_bbt[chipnr] = (page << chip->page_shift);
++
++		/* Increment page address and decrement length */
++		len -= (1 << chip->phys_erase_shift);
++		page += pages_per_block;
++
++		/* Check, if we cross a chip boundary */
++		if (len && !(page & chip->pagemask)) {
++			chipnr++;
++			chip->select_chip(mtd, -1);
++			chip->select_chip(mtd, chipnr);
++
++			/*
++			 * If BBT requires refresh and BBT-PERCHIP, set the BBT
++			 * page mask to see if this BBT should be rewritten
++			 */
++			if (bbt_masked_page != 0xffffffff &&
++			    (chip->bbt_td->options & NAND_BBT_PERCHIP))
++				bbt_masked_page = chip->bbt_td->pages[chipnr] &
++					BBT_PAGE_MASK;
++		}
++	}
++	instr->state = MTD_ERASE_DONE;
++
++ erase_exit:
++
++	ret = instr->state == MTD_ERASE_DONE ? 0 : -EIO;
++
++	/* Deselect and wake up anyone waiting on the device */
++	nand_release_device(mtd);
++
++	/* Do call back function */
++	if (!ret)
++		mtd_erase_callback(instr);
++
++	/*
++	 * If BBT requires refresh and erase was successful, rewrite any
++	 * selected bad block tables
++	 */
++	if (bbt_masked_page == 0xffffffff || ret)
++		return ret;
++
++	for (chipnr = 0; chipnr < chip->numchips; chipnr++) {
++		if (!rewrite_bbt[chipnr])
++			continue;
++		/* update the BBT for chip */
++		MTD_DEBUG(MTD_DEBUG_LEVEL0, "nand_erase_nand: nand_update_bbt "
++		      "(%d:0x%0x 0x%0x)\n", chipnr, rewrite_bbt[chipnr],
++		      chip->bbt_td->pages[chipnr]);
++		nand_update_bbt(mtd, rewrite_bbt[chipnr]);
++	}
++
++	/* Return more or less happy */
++	return ret;
++}
++
++/**
++ * nand_sync - [MTD Interface] sync
++ * @mtd:	MTD device structure
++ *
++ * Sync is actually a wait for chip ready function
++ */
++static void nand_sync(struct mtd_info *mtd)
++{
++	struct nand_chip *chip = mtd->priv;
++
++	MTD_DEBUG(MTD_DEBUG_LEVEL3, "nand_sync: called\n");
++
++	/* Grab the lock and see if the device is available */
++	nand_get_device(chip, mtd, FL_SYNCING);
++	/* Release it and go back */
++	nand_release_device(mtd);
++}
++
++/**
++ * nand_block_isbad - [MTD Interface] Check if block at offset is bad
++ * @mtd:	MTD device structure
++ * @offs:	offset relative to mtd start
++ */
++static int nand_block_isbad(struct mtd_info *mtd, loff_t offs)
++{
++	/* Check for invalid offset */
++	if (offs > mtd->size)
++		return -EINVAL;
++
++	return nand_block_checkbad(mtd, offs, 1, 0);
++}
++
++/**
++ * nand_block_markbad - [MTD Interface] Mark block at the given offset as bad
++ * @mtd:	MTD device structure
++ * @ofs:	offset relative to mtd start
++ */
++static int nand_block_markbad(struct mtd_info *mtd, loff_t ofs)
++{
++	struct nand_chip *chip = mtd->priv;
++	int ret;
++
++	if ((ret = nand_block_isbad(mtd, ofs))) {
++		/* If it was bad already, return success and do nothing. */
++		if (ret > 0)
++			return 0;
 +		return ret;
 +	}
 +
-+	return 0;
++	return chip->block_markbad(mtd, ofs);
 +}
 +
 +/**
-+ * ubi_io_mark_bad - mark a physical eraseblock as bad.
-+ * @ubi: UBI device description object
-+ * @pnum: the physical eraseblock number to mark
-+ *
-+ * This function returns zero in case of success and a negative error code in
-+ * case of failure.
++ * nand_suspend - [MTD Interface] Suspend the NAND flash
++ * @mtd:	MTD device structure
 + */
-+int ubi_io_mark_bad(const struct ubi_device *ubi, int pnum)
++static int nand_suspend(struct mtd_info *mtd)
 +{
-+	int err;
-+	struct mtd_info *mtd = ubi->mtd;
++	struct nand_chip *chip = mtd->priv;
 +
-+	ubi_assert(pnum >= 0 && pnum < ubi->peb_count);
-+
-+	if (ubi->ro_mode) {
-+		ubi_err("read-only mode");
-+		return -EROFS;
-+	}
-+
-+	if (!ubi->bad_allowed)
-+		return 0;
-+
-+	err = mtd->block_markbad(mtd, (loff_t)pnum * ubi->peb_size);
-+	if (err)
-+		ubi_err("cannot mark PEB %d bad, error %d", pnum, err);
-+	return err;
++	return nand_get_device(chip, mtd, FL_PM_SUSPENDED);
 +}
 +
 +/**
-+ * validate_ec_hdr - validate an erase counter header.
-+ * @ubi: UBI device description object
-+ * @ec_hdr: the erase counter header to check
-+ *
-+ * This function returns zero if the erase counter header is OK, and %1 if
-+ * not.
++ * nand_resume - [MTD Interface] Resume the NAND flash
++ * @mtd:	MTD device structure
 + */
-+static int validate_ec_hdr(const struct ubi_device *ubi,
-+			   const struct ubi_ec_hdr *ec_hdr)
++static void nand_resume(struct mtd_info *mtd)
 +{
-+	long long ec;
-+	int vid_hdr_offset, leb_start;
++	struct nand_chip *chip = mtd->priv;
 +
-+	ec = be64_to_cpu(ec_hdr->ec);
-+	vid_hdr_offset = be32_to_cpu(ec_hdr->vid_hdr_offset);
-+	leb_start = be32_to_cpu(ec_hdr->data_offset);
-+
-+	if (ec_hdr->version != UBI_VERSION) {
-+		ubi_err("node with incompatible UBI version found: "
-+			"this UBI version is %d, image version is %d",
-+			UBI_VERSION, (int)ec_hdr->version);
-+		goto bad;
-+	}
-+
-+	if (vid_hdr_offset != ubi->vid_hdr_offset) {
-+		ubi_err("bad VID header offset %d, expected %d",
-+			vid_hdr_offset, ubi->vid_hdr_offset);
-+		goto bad;
-+	}
-+
-+	if (leb_start != ubi->leb_start) {
-+		ubi_err("bad data offset %d, expected %d",
-+			leb_start, ubi->leb_start);
-+		goto bad;
-+	}
-+
-+	if (ec < 0 || ec > UBI_MAX_ERASECOUNTER) {
-+		ubi_err("bad erase counter %lld", ec);
-+		goto bad;
-+	}
-+
-+	return 0;
-+
-+bad:
-+	ubi_err("bad EC header");
-+	ubi_dbg_dump_ec_hdr(ec_hdr);
-+	ubi_dbg_dump_stack();
-+	return 1;
++	if (chip->state == FL_PM_SUSPENDED)
++		nand_release_device(mtd);
++	else
++		printk(KERN_ERR "nand_resume() called for a chip which is not "
++		       "in suspended state\n");
 +}
 +
-+/**
-+ * ubi_io_read_ec_hdr - read and check an erase counter header.
-+ * @ubi: UBI device description object
-+ * @pnum: physical eraseblock to read from
-+ * @ec_hdr: a &struct ubi_ec_hdr object where to store the read erase counter
-+ * header
-+ * @verbose: be verbose if the header is corrupted or was not found
-+ *
-+ * This function reads erase counter header from physical eraseblock @pnum and
-+ * stores it in @ec_hdr. This function also checks CRC checksum of the read
-+ * erase counter header. The following codes may be returned:
-+ *
-+ * o %0 if the CRC checksum is correct and the header was successfully read;
-+ * o %UBI_IO_BITFLIPS if the CRC is correct, but bit-flips were detected
-+ *   and corrected by the flash driver; this is harmless but may indicate that
-+ *   this eraseblock may become bad soon (but may be not);
-+ * o %UBI_IO_BAD_EC_HDR if the erase counter header is corrupted (a CRC error);
-+ * o %UBI_IO_PEB_EMPTY if the physical eraseblock is empty;
-+ * o a negative error code in case of failure.
-+ */
-+int ubi_io_read_ec_hdr(struct ubi_device *ubi, int pnum,
-+		       struct ubi_ec_hdr *ec_hdr, int verbose)
-+{
-+	int err, read_err = 0;
-+	uint32_t crc, magic, hdr_crc;
-+
-+	dbg_io("read EC header from PEB %d", pnum);
-+	ubi_assert(pnum >= 0 && pnum < ubi->peb_count);
-+	if (UBI_IO_DEBUG)
-+		verbose = 1;
-+
-+	err = ubi_io_read(ubi, ec_hdr, pnum, 0, UBI_EC_HDR_SIZE);
-+	if (err) {
-+		if (err != UBI_IO_BITFLIPS && err != -EBADMSG)
-+			return err;
-+
-+		/*
-+		 * We read all the data, but either a correctable bit-flip
-+		 * occurred, or MTD reported about some data integrity error,
-+		 * like an ECC error in case of NAND. The former is harmless,
-+		 * the later may mean that the read data is corrupted. But we
-+		 * have a CRC check-sum and we will detect this. If the EC
-+		 * header is still OK, we just report this as there was a
-+		 * bit-flip.
-+		 */
-+		read_err = err;
-+	}
-+
-+	magic = be32_to_cpu(ec_hdr->magic);
-+	if (magic != UBI_EC_HDR_MAGIC) {
-+		/*
-+		 * The magic field is wrong. Let's check if we have read all
-+		 * 0xFF. If yes, this physical eraseblock is assumed to be
-+		 * empty.
-+		 *
-+		 * But if there was a read error, we do not test it for all
-+		 * 0xFFs. Even if it does contain all 0xFFs, this error
-+		 * indicates that something is still wrong with this physical
-+		 * eraseblock and we anyway cannot treat it as empty.
-+		 */
-+		if (read_err != -EBADMSG &&
-+		    check_pattern(ec_hdr, 0xFF, UBI_EC_HDR_SIZE)) {
-+			/* The physical eraseblock is supposedly empty */
-+
-+			/*
-+			 * The below is just a paranoid check, it has to be
-+			 * compiled out if paranoid checks are disabled.
-+			 */
-+			err = paranoid_check_all_ff(ubi, pnum, 0,
-+						    ubi->peb_size);
-+			if (err)
-+				return err > 0 ? UBI_IO_BAD_EC_HDR : err;
-+
-+			if (verbose)
-+				ubi_warn("no EC header found at PEB %d, "
-+					 "only 0xFF bytes", pnum);
-+			return UBI_IO_PEB_EMPTY;
-+		}
-+
-+		/*
-+		 * This is not a valid erase counter header, and these are not
-+		 * 0xFF bytes. Report that the header is corrupted.
-+		 */
-+		if (verbose) {
-+			ubi_warn("bad magic number at PEB %d: %08x instead of "
-+				 "%08x", pnum, magic, UBI_EC_HDR_MAGIC);
-+			ubi_dbg_dump_ec_hdr(ec_hdr);
-+		}
-+		return UBI_IO_BAD_EC_HDR;
-+	}
-+
-+	crc = crc32(UBI_CRC32_INIT, ec_hdr, UBI_EC_HDR_SIZE_CRC);
-+	hdr_crc = be32_to_cpu(ec_hdr->hdr_crc);
-+
-+	if (hdr_crc != crc) {
-+		if (verbose) {
-+			ubi_warn("bad EC header CRC at PEB %d, calculated %#08x,"
-+				 " read %#08x", pnum, crc, hdr_crc);
-+			ubi_dbg_dump_ec_hdr(ec_hdr);
-+		}
-+		return UBI_IO_BAD_EC_HDR;
-+	}
-+
-+	/* And of course validate what has just been read from the media */
-+	err = validate_ec_hdr(ubi, ec_hdr);
-+	if (err) {
-+		ubi_err("validation failed for PEB %d", pnum);
-+		return -EINVAL;
-+	}
-+
-+	return read_err ? UBI_IO_BITFLIPS : 0;
-+}
-+
-+/**
-+ * ubi_io_write_ec_hdr - write an erase counter header.
-+ * @ubi: UBI device description object
-+ * @pnum: physical eraseblock to write to
-+ * @ec_hdr: the erase counter header to write
-+ *
-+ * This function writes erase counter header described by @ec_hdr to physical
-+ * eraseblock @pnum. It also fills most fields of @ec_hdr before writing, so
-+ * the caller do not have to fill them. Callers must only fill the @ec_hdr->ec
-+ * field.
-+ *
-+ * This function returns zero in case of success and a negative error code in
-+ * case of failure. If %-EIO is returned, the physical eraseblock most probably
-+ * went bad.
-+ */
-+int ubi_io_write_ec_hdr(struct ubi_device *ubi, int pnum,
-+			struct ubi_ec_hdr *ec_hdr)
-+{
-+	int err;
-+	uint32_t crc;
-+
-+	dbg_io("write EC header to PEB %d", pnum);
-+	ubi_assert(pnum >= 0 &&  pnum < ubi->peb_count);
-+
-+	ec_hdr->magic = cpu_to_be32(UBI_EC_HDR_MAGIC);
-+	ec_hdr->version = UBI_VERSION;
-+	ec_hdr->vid_hdr_offset = cpu_to_be32(ubi->vid_hdr_offset);
-+	ec_hdr->data_offset = cpu_to_be32(ubi->leb_start);
-+	crc = crc32(UBI_CRC32_INIT, ec_hdr, UBI_EC_HDR_SIZE_CRC);
-+	ec_hdr->hdr_crc = cpu_to_be32(crc);
-+
-+	err = paranoid_check_ec_hdr(ubi, pnum, ec_hdr);
-+	if (err)
-+		return -EINVAL;
-+
-+	err = ubi_io_write(ubi, ec_hdr, pnum, 0, ubi->ec_hdr_alsize);
-+	return err;
-+}
-+
-+/**
-+ * validate_vid_hdr - validate a volume identifier header.
-+ * @ubi: UBI device description object
-+ * @vid_hdr: the volume identifier header to check
-+ *
-+ * This function checks that data stored in the volume identifier header
-+ * @vid_hdr. Returns zero if the VID header is OK and %1 if not.
-+ */
-+static int validate_vid_hdr(const struct ubi_device *ubi,
-+			    const struct ubi_vid_hdr *vid_hdr)
-+{
-+	int vol_type = vid_hdr->vol_type;
-+	int copy_flag = vid_hdr->copy_flag;
-+	int vol_id = be32_to_cpu(vid_hdr->vol_id);
-+	int lnum = be32_to_cpu(vid_hdr->lnum);
-+	int compat = vid_hdr->compat;
-+	int data_size = be32_to_cpu(vid_hdr->data_size);
-+	int used_ebs = be32_to_cpu(vid_hdr->used_ebs);
-+	int data_pad = be32_to_cpu(vid_hdr->data_pad);
-+	int data_crc = be32_to_cpu(vid_hdr->data_crc);
-+	int usable_leb_size = ubi->leb_size - data_pad;
-+
-+	if (copy_flag != 0 && copy_flag != 1) {
-+		dbg_err("bad copy_flag");
-+		goto bad;
-+	}
-+
-+	if (vol_id < 0 || lnum < 0 || data_size < 0 || used_ebs < 0 ||
-+	    data_pad < 0) {
-+		dbg_err("negative values");
-+		goto bad;
-+	}
-+
-+	if (vol_id >= UBI_MAX_VOLUMES && vol_id < UBI_INTERNAL_VOL_START) {
-+		dbg_err("bad vol_id");
-+		goto bad;
-+	}
-+
-+	if (vol_id < UBI_INTERNAL_VOL_START && compat != 0) {
-+		dbg_err("bad compat");
-+		goto bad;
-+	}
-+
-+	if (vol_id >= UBI_INTERNAL_VOL_START && compat != UBI_COMPAT_DELETE &&
-+	    compat != UBI_COMPAT_RO && compat != UBI_COMPAT_PRESERVE &&
-+	    compat != UBI_COMPAT_REJECT) {
-+		dbg_err("bad compat");
-+		goto bad;
-+	}
-+
-+	if (vol_type != UBI_VID_DYNAMIC && vol_type != UBI_VID_STATIC) {
-+		dbg_err("bad vol_type");
-+		goto bad;
-+	}
-+
-+	if (data_pad >= ubi->leb_size / 2) {
-+		dbg_err("bad data_pad");
-+		goto bad;
-+	}
-+
-+	if (vol_type == UBI_VID_STATIC) {
-+		/*
-+		 * Although from high-level point of view static volumes may
-+		 * contain zero bytes of data, but no VID headers can contain
-+		 * zero at these fields, because they empty volumes do not have
-+		 * mapped logical eraseblocks.
-+		 */
-+		if (used_ebs == 0) {
-+			dbg_err("zero used_ebs");
-+			goto bad;
-+		}
-+		if (data_size == 0) {
-+			dbg_err("zero data_size");
-+			goto bad;
-+		}
-+		if (lnum < used_ebs - 1) {
-+			if (data_size != usable_leb_size) {
-+				dbg_err("bad data_size");
-+				goto bad;
-+			}
-+		} else if (lnum == used_ebs - 1) {
-+			if (data_size == 0) {
-+				dbg_err("bad data_size at last LEB");
-+				goto bad;
-+			}
-+		} else {
-+			dbg_err("too high lnum");
-+			goto bad;
-+		}
-+	} else {
-+		if (copy_flag == 0) {
-+			if (data_crc != 0) {
-+				dbg_err("non-zero data CRC");
-+				goto bad;
-+			}
-+			if (data_size != 0) {
-+				dbg_err("non-zero data_size");
-+				goto bad;
-+			}
-+		} else {
-+			if (data_size == 0) {
-+				dbg_err("zero data_size of copy");
-+				goto bad;
-+			}
-+		}
-+		if (used_ebs != 0) {
-+			dbg_err("bad used_ebs");
-+			goto bad;
-+		}
-+	}
-+
-+	return 0;
-+
-+bad:
-+	ubi_err("bad VID header");
-+	ubi_dbg_dump_vid_hdr(vid_hdr);
-+	ubi_dbg_dump_stack();
-+	return 1;
-+}
-+
-+/**
-+ * ubi_io_read_vid_hdr - read and check a volume identifier header.
-+ * @ubi: UBI device description object
-+ * @pnum: physical eraseblock number to read from
-+ * @vid_hdr: &struct ubi_vid_hdr object where to store the read volume
-+ * identifier header
-+ * @verbose: be verbose if the header is corrupted or wasn't found
-+ *
-+ * This function reads the volume identifier header from physical eraseblock
-+ * @pnum and stores it in @vid_hdr. It also checks CRC checksum of the read
-+ * volume identifier header. The following codes may be returned:
-+ *
-+ * o %0 if the CRC checksum is correct and the header was successfully read;
-+ * o %UBI_IO_BITFLIPS if the CRC is correct, but bit-flips were detected
-+ *   and corrected by the flash driver; this is harmless but may indicate that
-+ *   this eraseblock may become bad soon;
-+ * o %UBI_IO_BAD_VID_HRD if the volume identifier header is corrupted (a CRC
-+ *   error detected);
-+ * o %UBI_IO_PEB_FREE if the physical eraseblock is free (i.e., there is no VID
-+ *   header there);
-+ * o a negative error code in case of failure.
-+ */
-+int ubi_io_read_vid_hdr(struct ubi_device *ubi, int pnum,
-+			struct ubi_vid_hdr *vid_hdr, int verbose)
-+{
-+	int err, read_err = 0;
-+	uint32_t crc, magic, hdr_crc;
-+	void *p;
-+
-+	dbg_io("read VID header from PEB %d", pnum);
-+	ubi_assert(pnum >= 0 &&  pnum < ubi->peb_count);
-+	if (UBI_IO_DEBUG)
-+		verbose = 1;
-+
-+	p = (char *)vid_hdr - ubi->vid_hdr_shift;
-+	err = ubi_io_read(ubi, p, pnum, ubi->vid_hdr_aloffset,
-+			  ubi->vid_hdr_alsize);
-+	if (err) {
-+		if (err != UBI_IO_BITFLIPS && err != -EBADMSG)
-+			return err;
-+
-+		/*
-+		 * We read all the data, but either a correctable bit-flip
-+		 * occurred, or MTD reported about some data integrity error,
-+		 * like an ECC error in case of NAND. The former is harmless,
-+		 * the later may mean the read data is corrupted. But we have a
-+		 * CRC check-sum and we will identify this. If the VID header is
-+		 * still OK, we just report this as there was a bit-flip.
-+		 */
-+		read_err = err;
-+	}
-+
-+	magic = be32_to_cpu(vid_hdr->magic);
-+	if (magic != UBI_VID_HDR_MAGIC) {
-+		/*
-+		 * If we have read all 0xFF bytes, the VID header probably does
-+		 * not exist and the physical eraseblock is assumed to be free.
-+		 *
-+		 * But if there was a read error, we do not test the data for
-+		 * 0xFFs. Even if it does contain all 0xFFs, this error
-+		 * indicates that something is still wrong with this physical
-+		 * eraseblock and it cannot be regarded as free.
-+		 */
-+		if (read_err != -EBADMSG &&
-+		    check_pattern(vid_hdr, 0xFF, UBI_VID_HDR_SIZE)) {
-+			/* The physical eraseblock is supposedly free */
-+
-+			/*
-+			 * The below is just a paranoid check, it has to be
-+			 * compiled out if paranoid checks are disabled.
-+			 */
-+			err = paranoid_check_all_ff(ubi, pnum, ubi->leb_start,
-+						    ubi->leb_size);
-+			if (err)
-+				return err > 0 ? UBI_IO_BAD_VID_HDR : err;
-+
-+			if (verbose)
-+				ubi_warn("no VID header found at PEB %d, "
-+					 "only 0xFF bytes", pnum);
-+			return UBI_IO_PEB_FREE;
-+		}
-+
-+		/*
-+		 * This is not a valid VID header, and these are not 0xFF
-+		 * bytes. Report that the header is corrupted.
-+		 */
-+		if (verbose) {
-+			ubi_warn("bad magic number at PEB %d: %08x instead of "
-+				 "%08x", pnum, magic, UBI_VID_HDR_MAGIC);
-+			ubi_dbg_dump_vid_hdr(vid_hdr);
-+		}
-+		return UBI_IO_BAD_VID_HDR;
-+	}
-+
-+	crc = crc32(UBI_CRC32_INIT, vid_hdr, UBI_VID_HDR_SIZE_CRC);
-+	hdr_crc = be32_to_cpu(vid_hdr->hdr_crc);
-+
-+	if (hdr_crc != crc) {
-+		if (verbose) {
-+			ubi_warn("bad CRC at PEB %d, calculated %#08x, "
-+				 "read %#08x", pnum, crc, hdr_crc);
-+			ubi_dbg_dump_vid_hdr(vid_hdr);
-+		}
-+		return UBI_IO_BAD_VID_HDR;
-+	}
-+
-+	/* Validate the VID header that we have just read */
-+	err = validate_vid_hdr(ubi, vid_hdr);
-+	if (err) {
-+		ubi_err("validation failed for PEB %d", pnum);
-+		return -EINVAL;
-+	}
-+
-+	return read_err ? UBI_IO_BITFLIPS : 0;
-+}
-+
-+/**
-+ * ubi_io_write_vid_hdr - write a volume identifier header.
-+ * @ubi: UBI device description object
-+ * @pnum: the physical eraseblock number to write to
-+ * @vid_hdr: the volume identifier header to write
-+ *
-+ * This function writes the volume identifier header described by @vid_hdr to
-+ * physical eraseblock @pnum. This function automatically fills the
-+ * @vid_hdr->magic and the @vid_hdr->version fields, as well as calculates
-+ * header CRC checksum and stores it at vid_hdr->hdr_crc.
-+ *
-+ * This function returns zero in case of success and a negative error code in
-+ * case of failure. If %-EIO is returned, the physical eraseblock probably went
-+ * bad.
-+ */
-+int ubi_io_write_vid_hdr(struct ubi_device *ubi, int pnum,
-+			 struct ubi_vid_hdr *vid_hdr)
-+{
-+	int err;
-+	uint32_t crc;
-+	void *p;
-+
-+	dbg_io("write VID header to PEB %d", pnum);
-+	ubi_assert(pnum >= 0 &&  pnum < ubi->peb_count);
-+
-+	err = paranoid_check_peb_ec_hdr(ubi, pnum);
-+	if (err)
-+		return err > 0 ? -EINVAL: err;
-+
-+	vid_hdr->magic = cpu_to_be32(UBI_VID_HDR_MAGIC);
-+	vid_hdr->version = UBI_VERSION;
-+	crc = crc32(UBI_CRC32_INIT, vid_hdr, UBI_VID_HDR_SIZE_CRC);
-+	vid_hdr->hdr_crc = cpu_to_be32(crc);
-+
-+	err = paranoid_check_vid_hdr(ubi, pnum, vid_hdr);
-+	if (err)
-+		return -EINVAL;
-+
-+	p = (char *)vid_hdr - ubi->vid_hdr_shift;
-+	err = ubi_io_write(ubi, p, pnum, ubi->vid_hdr_aloffset,
-+			   ubi->vid_hdr_alsize);
-+	return err;
-+}
-+
-+#ifdef CONFIG_MTD_UBI_DEBUG_PARANOID
-+
-+/**
-+ * paranoid_check_not_bad - ensure that a physical eraseblock is not bad.
-+ * @ubi: UBI device description object
-+ * @pnum: physical eraseblock number to check
-+ *
-+ * This function returns zero if the physical eraseblock is good, a positive
-+ * number if it is bad and a negative error code if an error occurred.
-+ */
-+static int paranoid_check_not_bad(const struct ubi_device *ubi, int pnum)
-+{
-+	int err;
-+
-+	err = ubi_io_is_bad(ubi, pnum);
-+	if (!err)
-+		return err;
-+
-+	ubi_err("paranoid check failed for PEB %d", pnum);
-+	ubi_dbg_dump_stack();
-+	return err;
-+}
-+
-+/**
-+ * paranoid_check_ec_hdr - check if an erase counter header is all right.
-+ * @ubi: UBI device description object
-+ * @pnum: physical eraseblock number the erase counter header belongs to
-+ * @ec_hdr: the erase counter header to check
-+ *
-+ * This function returns zero if the erase counter header contains valid
-+ * values, and %1 if not.
-+ */
-+static int paranoid_check_ec_hdr(const struct ubi_device *ubi, int pnum,
-+				 const struct ubi_ec_hdr *ec_hdr)
-+{
-+	int err;
-+	uint32_t magic;
-+
-+	magic = be32_to_cpu(ec_hdr->magic);
-+	if (magic != UBI_EC_HDR_MAGIC) {
-+		ubi_err("bad magic %#08x, must be %#08x",
-+			magic, UBI_EC_HDR_MAGIC);
-+		goto fail;
-+	}
-+
-+	err = validate_ec_hdr(ubi, ec_hdr);
-+	if (err) {
-+		ubi_err("paranoid check failed for PEB %d", pnum);
-+		goto fail;
-+	}
-+
-+	return 0;
-+
-+fail:
-+	ubi_dbg_dump_ec_hdr(ec_hdr);
-+	ubi_dbg_dump_stack();
-+	return 1;
-+}
-+
-+/**
-+ * paranoid_check_peb_ec_hdr - check that the erase counter header of a
-+ * physical eraseblock is in-place and is all right.
-+ * @ubi: UBI device description object
-+ * @pnum: the physical eraseblock number to check
-+ *
-+ * This function returns zero if the erase counter header is all right, %1 if
-+ * not, and a negative error code if an error occurred.
-+ */
-+static int paranoid_check_peb_ec_hdr(const struct ubi_device *ubi, int pnum)
-+{
-+	int err;
-+	uint32_t crc, hdr_crc;
-+	struct ubi_ec_hdr *ec_hdr;
-+
-+	ec_hdr = kzalloc(ubi->ec_hdr_alsize, GFP_NOFS);
-+	if (!ec_hdr)
-+		return -ENOMEM;
-+
-+	err = ubi_io_read(ubi, ec_hdr, pnum, 0, UBI_EC_HDR_SIZE);
-+	if (err && err != UBI_IO_BITFLIPS && err != -EBADMSG)
-+		goto exit;
-+
-+	crc = crc32(UBI_CRC32_INIT, ec_hdr, UBI_EC_HDR_SIZE_CRC);
-+	hdr_crc = be32_to_cpu(ec_hdr->hdr_crc);
-+	if (hdr_crc != crc) {
-+		ubi_err("bad CRC, calculated %#08x, read %#08x", crc, hdr_crc);
-+		ubi_err("paranoid check failed for PEB %d", pnum);
-+		ubi_dbg_dump_ec_hdr(ec_hdr);
-+		ubi_dbg_dump_stack();
-+		err = 1;
-+		goto exit;
-+	}
-+
-+	err = paranoid_check_ec_hdr(ubi, pnum, ec_hdr);
-+
-+exit:
-+	kfree(ec_hdr);
-+	return err;
-+}
-+
-+/**
-+ * paranoid_check_vid_hdr - check that a volume identifier header is all right.
-+ * @ubi: UBI device description object
-+ * @pnum: physical eraseblock number the volume identifier header belongs to
-+ * @vid_hdr: the volume identifier header to check
-+ *
-+ * This function returns zero if the volume identifier header is all right, and
-+ * %1 if not.
-+ */
-+static int paranoid_check_vid_hdr(const struct ubi_device *ubi, int pnum,
-+				  const struct ubi_vid_hdr *vid_hdr)
-+{
-+	int err;
-+	uint32_t magic;
-+
-+	magic = be32_to_cpu(vid_hdr->magic);
-+	if (magic != UBI_VID_HDR_MAGIC) {
-+		ubi_err("bad VID header magic %#08x at PEB %d, must be %#08x",
-+			magic, pnum, UBI_VID_HDR_MAGIC);
-+		goto fail;
-+	}
-+
-+	err = validate_vid_hdr(ubi, vid_hdr);
-+	if (err) {
-+		ubi_err("paranoid check failed for PEB %d", pnum);
-+		goto fail;
-+	}
-+
-+	return err;
-+
-+fail:
-+	ubi_err("paranoid check failed for PEB %d", pnum);
-+	ubi_dbg_dump_vid_hdr(vid_hdr);
-+	ubi_dbg_dump_stack();
-+	return 1;
-+
-+}
-+
-+/**
-+ * paranoid_check_peb_vid_hdr - check that the volume identifier header of a
-+ * physical eraseblock is in-place and is all right.
-+ * @ubi: UBI device description object
-+ * @pnum: the physical eraseblock number to check
-+ *
-+ * This function returns zero if the volume identifier header is all right,
-+ * %1 if not, and a negative error code if an error occurred.
-+ */
-+static int paranoid_check_peb_vid_hdr(const struct ubi_device *ubi, int pnum)
-+{
-+	int err;
-+	uint32_t crc, hdr_crc;
-+	struct ubi_vid_hdr *vid_hdr;
-+	void *p;
-+
-+	vid_hdr = ubi_zalloc_vid_hdr(ubi, GFP_NOFS);
-+	if (!vid_hdr)
-+		return -ENOMEM;
-+
-+	p = (char *)vid_hdr - ubi->vid_hdr_shift;
-+	err = ubi_io_read(ubi, p, pnum, ubi->vid_hdr_aloffset,
-+			  ubi->vid_hdr_alsize);
-+	if (err && err != UBI_IO_BITFLIPS && err != -EBADMSG)
-+		goto exit;
-+
-+	crc = crc32(UBI_CRC32_INIT, vid_hdr, UBI_EC_HDR_SIZE_CRC);
-+	hdr_crc = be32_to_cpu(vid_hdr->hdr_crc);
-+	if (hdr_crc != crc) {
-+		ubi_err("bad VID header CRC at PEB %d, calculated %#08x, "
-+			"read %#08x", pnum, crc, hdr_crc);
-+		ubi_err("paranoid check failed for PEB %d", pnum);
-+		ubi_dbg_dump_vid_hdr(vid_hdr);
-+		ubi_dbg_dump_stack();
-+		err = 1;
-+		goto exit;
-+	}
-+
-+	err = paranoid_check_vid_hdr(ubi, pnum, vid_hdr);
-+
-+exit:
-+	ubi_free_vid_hdr(ubi, vid_hdr);
-+	return err;
-+}
-+
-+/**
-+ * paranoid_check_all_ff - check that a region of flash is empty.
-+ * @ubi: UBI device description object
-+ * @pnum: the physical eraseblock number to check
-+ * @offset: the starting offset within the physical eraseblock to check
-+ * @len: the length of the region to check
-+ *
-+ * This function returns zero if only 0xFF bytes are present at offset
-+ * @offset of the physical eraseblock @pnum, %1 if not, and a negative error
-+ * code if an error occurred.
-+ */
-+static int paranoid_check_all_ff(struct ubi_device *ubi, int pnum, int offset,
-+				 int len)
-+{
-+	size_t read;
-+	int err;
-+	loff_t addr = (loff_t)pnum * ubi->peb_size + offset;
-+
-+	mutex_lock(&ubi->dbg_buf_mutex);
-+	err = ubi->mtd->read(ubi->mtd, addr, len, &read, ubi->dbg_peb_buf);
-+	if (err && err != -EUCLEAN) {
-+		ubi_err("error %d while reading %d bytes from PEB %d:%d, "
-+			"read %zd bytes", err, len, pnum, offset, read);
-+		goto error;
-+	}
-+
-+	err = check_pattern(ubi->dbg_peb_buf, 0xFF, len);
-+	if (err == 0) {
-+		ubi_err("flash region at PEB %d:%d, length %d does not "
-+			"contain all 0xFF bytes", pnum, offset, len);
-+		goto fail;
-+	}
-+	mutex_unlock(&ubi->dbg_buf_mutex);
-+
-+	return 0;
-+
-+fail:
-+	ubi_err("paranoid check failed for PEB %d", pnum);
-+	dbg_msg("hex dump of the %d-%d region", offset, offset + len);
-+	print_hex_dump(KERN_DEBUG, "", DUMP_PREFIX_OFFSET, 32, 1,
-+		       ubi->dbg_peb_buf, len, 1);
-+	err = 1;
-+error:
-+	ubi_dbg_dump_stack();
-+	mutex_unlock(&ubi->dbg_buf_mutex);
-+	return err;
-+}
-+
-+#endif /* CONFIG_MTD_UBI_DEBUG_PARANOID */
-diff --git a/drivers/mtd/ubi/kapi.c b/drivers/mtd/ubi/kapi.c
-new file mode 100644
-index 0000000..fac76f2
---- /dev/null
-+++ b/drivers/mtd/ubi/kapi.c
-@@ -0,0 +1,638 @@
 +/*
-+ * Copyright (c) International Business Machines Corp., 2006
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
-+ * the GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-+ *
-+ * Author: Artem Bityutskiy (���������������� ����������)
++ * Set default functions
 + */
-+
-+/* This file mostly implements UBI kernel API functions */
-+
-+#ifdef UBI_LINUX
-+#include <linux/module.h>
-+#include <linux/err.h>
-+#include <asm/div64.h>
-+#endif
-+
-+#include "ubi-barebox.h"
-+#include "ubi.h"
-+
-+/**
-+ * ubi_get_device_info - get information about UBI device.
-+ * @ubi_num: UBI device number
-+ * @di: the information is stored here
-+ *
-+ * This function returns %0 in case of success, %-EINVAL if the UBI device
-+ * number is invalid, and %-ENODEV if there is no such UBI device.
-+ */
-+int ubi_get_device_info(int ubi_num, struct ubi_device_info *di)
++static void nand_set_defaults(struct nand_chip *chip, int busw)
 +{
-+	struct ubi_device *ubi;
++	/* check for proper chip_delay setup, set 20us if not */
++	if (!chip->chip_delay)
++		chip->chip_delay = 20;
 +
-+	if (ubi_num < 0 || ubi_num >= UBI_MAX_DEVICES)
-+		return -EINVAL;
++	/* check, if a user supplied command function given */
++	if (chip->cmdfunc == NULL)
++		chip->cmdfunc = nand_command;
 +
-+	ubi = ubi_get_device(ubi_num);
-+	if (!ubi)
-+		return -ENODEV;
++	/* check, if a user supplied wait function given */
++	if (chip->waitfunc == NULL)
++		chip->waitfunc = nand_wait;
 +
-+	di->ubi_num = ubi->ubi_num;
-+	di->leb_size = ubi->leb_size;
-+	di->min_io_size = ubi->min_io_size;
-+	di->ro_mode = ubi->ro_mode;
-+	di->cdev = ubi->cdev.dev;
++	if (!chip->select_chip)
++		chip->select_chip = nand_select_chip;
++	if (!chip->read_byte)
++		chip->read_byte = busw ? nand_read_byte16 : nand_read_byte;
++	if (!chip->read_word)
++		chip->read_word = nand_read_word;
++	if (!chip->block_bad)
++		chip->block_bad = nand_block_bad;
++	if (!chip->block_markbad)
++		chip->block_markbad = nand_default_block_markbad;
++	if (!chip->write_buf)
++		chip->write_buf = busw ? nand_write_buf16 : nand_write_buf;
++	if (!chip->read_buf)
++		chip->read_buf = busw ? nand_read_buf16 : nand_read_buf;
++	if (!chip->verify_buf)
++		chip->verify_buf = busw ? nand_verify_buf16 : nand_verify_buf;
++	if (!chip->scan_bbt)
++		chip->scan_bbt = nand_default_bbt;
 +
-+	ubi_put_device(ubi);
-+	return 0;
++	if (!chip->controller) {
++		chip->controller = &chip->hwcontrol;
++	}
++
 +}
-+EXPORT_SYMBOL_GPL(ubi_get_device_info);
 +
-+/**
-+ * ubi_get_volume_info - get information about UBI volume.
-+ * @desc: volume descriptor
-+ * @vi: the information is stored here
++/*
++ * Get the flash and manufacturer id and lookup if the type is supported
 + */
-+void ubi_get_volume_info(struct ubi_volume_desc *desc,
-+			 struct ubi_volume_info *vi)
++static struct nand_flash_dev *nand_get_flash_type(struct mtd_info *mtd,
++						  struct nand_chip *chip,
++						  int busw, int *maf_id)
 +{
-+	struct ubi_volume *vol = desc->vol;
-+	struct ubi_device *ubi = vol->ubi;
++	struct nand_flash_dev *type = NULL;
++	int i, dev_id, maf_idx;
++	int tmp_id, tmp_manf;
 +
-+	vi->vol_id = vol->vol_id;
-+	vi->ubi_num = ubi->ubi_num;
-+	vi->size = vol->reserved_pebs;
-+	vi->used_bytes = vol->used_bytes;
-+	vi->vol_type = vol->vol_type;
-+	vi->corrupted = vol->corrupted;
-+	vi->upd_marker = vol->upd_marker;
-+	vi->alignment = vol->alignment;
-+	vi->usable_leb_size = vol->usable_leb_size;
-+	vi->name_len = vol->name_len;
-+	vi->name = vol->name;
-+	vi->cdev = vol->cdev.dev;
-+}
-+EXPORT_SYMBOL_GPL(ubi_get_volume_info);
++	/* Select the device */
++	chip->select_chip(mtd, 0);
 +
-+/**
-+ * ubi_open_volume - open UBI volume.
-+ * @ubi_num: UBI device number
-+ * @vol_id: volume ID
-+ * @mode: open mode
-+ *
-+ * The @mode parameter specifies if the volume should be opened in read-only
-+ * mode, read-write mode, or exclusive mode. The exclusive mode guarantees that
-+ * nobody else will be able to open this volume. UBI allows to have many volume
-+ * readers and one writer at a time.
-+ *
-+ * If a static volume is being opened for the first time since boot, it will be
-+ * checked by this function, which means it will be fully read and the CRC
-+ * checksum of each logical eraseblock will be checked.
-+ *
-+ * This function returns volume descriptor in case of success and a negative
-+ * error code in case of failure.
-+ */
-+struct ubi_volume_desc *ubi_open_volume(int ubi_num, int vol_id, int mode)
-+{
-+	int err;
-+	struct ubi_volume_desc *desc;
-+	struct ubi_device *ubi;
-+	struct ubi_volume *vol;
++	/* Send the command for reading device ID */
++	chip->cmdfunc(mtd, NAND_CMD_READID, 0x00, -1);
 +
-+	dbg_msg("open device %d volume %d, mode %d", ubi_num, vol_id, mode);
++	/* Read manufacturer and device IDs */
++	*maf_id = chip->read_byte(mtd);
++	dev_id = chip->read_byte(mtd);
 +
-+	if (ubi_num < 0 || ubi_num >= UBI_MAX_DEVICES)
-+		return ERR_PTR(-EINVAL);
-+
-+	if (mode != UBI_READONLY && mode != UBI_READWRITE &&
-+	    mode != UBI_EXCLUSIVE)
-+		return ERR_PTR(-EINVAL);
-+
-+	/*
-+	 * First of all, we have to get the UBI device to prevent its removal.
++	/* Try again to make sure, as some systems the bus-hold or other
++	 * interface concerns can cause random data which looks like a
++	 * possibly credible NAND flash to appear. If the two results do
++	 * not match, ignore the device completely.
 +	 */
-+	ubi = ubi_get_device(ubi_num);
-+	if (!ubi)
++
++	chip->cmdfunc(mtd, NAND_CMD_READID, 0x00, -1);
++
++	/* Read manufacturer and device IDs */
++
++	tmp_manf = chip->read_byte(mtd);
++	tmp_id = chip->read_byte(mtd);
++
++	if (tmp_manf != *maf_id || tmp_id != dev_id) {
++		printk(KERN_INFO "%s: second ID read did not match "
++		       "%02x,%02x against %02x,%02x\n", __func__,
++		       *maf_id, dev_id, tmp_manf, tmp_id);
 +		return ERR_PTR(-ENODEV);
-+
-+	if (vol_id < 0 || vol_id >= ubi->vtbl_slots) {
-+		err = -EINVAL;
-+		goto out_put_ubi;
 +	}
 +
-+	desc = kmalloc(sizeof(struct ubi_volume_desc), GFP_KERNEL);
-+	if (!desc) {
-+		err = -ENOMEM;
-+		goto out_put_ubi;
-+	}
-+
-+	err = -ENODEV;
-+	if (!try_module_get(THIS_MODULE))
-+		goto out_free;
-+
-+	spin_lock(&ubi->volumes_lock);
-+	vol = ubi->volumes[vol_id];
-+	if (!vol)
-+		goto out_unlock;
-+
-+	err = -EBUSY;
-+	switch (mode) {
-+	case UBI_READONLY:
-+		if (vol->exclusive)
-+			goto out_unlock;
-+		vol->readers += 1;
-+		break;
-+
-+	case UBI_READWRITE:
-+		if (vol->exclusive || vol->writers > 0)
-+			goto out_unlock;
-+		vol->writers += 1;
-+		break;
-+
-+	case UBI_EXCLUSIVE:
-+		if (vol->exclusive || vol->writers || vol->readers)
-+			goto out_unlock;
-+		vol->exclusive = 1;
-+		break;
-+	}
-+	get_device(&vol->dev);
-+	vol->ref_count += 1;
-+	spin_unlock(&ubi->volumes_lock);
-+
-+	desc->vol = vol;
-+	desc->mode = mode;
-+
-+	mutex_lock(&ubi->ckvol_mutex);
-+	if (!vol->checked) {
-+		/* This is the first open - check the volume */
-+		err = ubi_check_volume(ubi, vol_id);
-+		if (err < 0) {
-+			mutex_unlock(&ubi->ckvol_mutex);
-+			ubi_close_volume(desc);
-+			return ERR_PTR(err);
-+		}
-+		if (err == 1) {
-+			ubi_warn("volume %d on UBI device %d is corrupted",
-+				 vol_id, ubi->ubi_num);
-+			vol->corrupted = 1;
-+		}
-+		vol->checked = 1;
-+	}
-+	mutex_unlock(&ubi->ckvol_mutex);
-+
-+	return desc;
-+
-+out_unlock:
-+	spin_unlock(&ubi->volumes_lock);
-+	module_put(THIS_MODULE);
-+out_free:
-+	kfree(desc);
-+out_put_ubi:
-+	ubi_put_device(ubi);
-+	return ERR_PTR(err);
-+}
-+EXPORT_SYMBOL_GPL(ubi_open_volume);
-+
-+/**
-+ * ubi_open_volume_nm - open UBI volume by name.
-+ * @ubi_num: UBI device number
-+ * @name: volume name
-+ * @mode: open mode
-+ *
-+ * This function is similar to 'ubi_open_volume()', but opens a volume by name.
-+ */
-+struct ubi_volume_desc *ubi_open_volume_nm(int ubi_num, const char *name,
-+					   int mode)
-+{
-+	int i, vol_id = -1, len;
-+	struct ubi_device *ubi;
-+	struct ubi_volume_desc *ret;
-+
-+	dbg_msg("open volume %s, mode %d", name, mode);
-+
-+	if (!name)
-+		return ERR_PTR(-EINVAL);
-+
-+	len = strnlen(name, UBI_VOL_NAME_MAX + 1);
-+	if (len > UBI_VOL_NAME_MAX)
-+		return ERR_PTR(-EINVAL);
-+
-+	if (ubi_num < 0 || ubi_num >= UBI_MAX_DEVICES)
-+		return ERR_PTR(-EINVAL);
-+
-+	ubi = ubi_get_device(ubi_num);
-+	if (!ubi)
-+		return ERR_PTR(-ENODEV);
-+
-+	spin_lock(&ubi->volumes_lock);
-+	/* Walk all volumes of this UBI device */
-+	for (i = 0; i < ubi->vtbl_slots; i++) {
-+		struct ubi_volume *vol = ubi->volumes[i];
-+
-+		if (vol && len == vol->name_len && !strcmp(name, vol->name)) {
-+			vol_id = i;
++	/* Lookup the flash id */
++	for (i = 0; nand_flash_ids[i].name != NULL; i++) {
++		if (dev_id == nand_flash_ids[i].id) {
++			type =  &nand_flash_ids[i];
 +			break;
 +		}
 +	}
-+	spin_unlock(&ubi->volumes_lock);
 +
-+	if (vol_id >= 0)
-+		ret = ubi_open_volume(ubi_num, vol_id, mode);
-+	else
-+		ret = ERR_PTR(-ENODEV);
++	if (!type)
++		return ERR_PTR(-ENODEV);
++
++	if (!mtd->name)
++		mtd->name = type->name;
++
++	chip->chipsize = type->chipsize << 20;
++
++	/* Newer devices have all the information in additional id bytes */
++	if (!type->pagesize) {
++		int extid;
++		/* The 3rd id byte holds MLC / multichip data */
++		chip->cellinfo = chip->read_byte(mtd);
++		/* The 4th id byte is the important one */
++		extid = chip->read_byte(mtd);
++		/* Calc pagesize */
++		mtd->writesize = 1024 << (extid & 0x3);
++		extid >>= 2;
++		/* Calc oobsize */
++		mtd->oobsize = (8 << (extid & 0x01)) * (mtd->writesize >> 9);
++		extid >>= 2;
++		/* Calc blocksize. Blocksize is multiples of 64KiB */
++		mtd->erasesize = (64 * 1024) << (extid & 0x03);
++		extid >>= 2;
++		/* Get buswidth information */
++		busw = (extid & 0x01) ? NAND_BUSWIDTH_16 : 0;
++
++	} else {
++		/*
++		 * Old devices have chip data hardcoded in the device id table
++		 */
++		mtd->erasesize = type->erasesize;
++		mtd->writesize = type->pagesize;
++		mtd->oobsize = mtd->writesize / 32;
++		busw = type->options & NAND_BUSWIDTH_16;
++	}
++
++	/* Try to identify manufacturer */
++	for (maf_idx = 0; nand_manuf_ids[maf_idx].id != 0x0; maf_idx++) {
++		if (nand_manuf_ids[maf_idx].id == *maf_id)
++			break;
++	}
 +
 +	/*
-+	 * We should put the UBI device even in case of success, because
-+	 * 'ubi_open_volume()' took a reference as well.
++	 * Check, if buswidth is correct. Hardware drivers should set
++	 * chip correct !
 +	 */
-+	ubi_put_device(ubi);
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(ubi_open_volume_nm);
-+
-+/**
-+ * ubi_close_volume - close UBI volume.
-+ * @desc: volume descriptor
-+ */
-+void ubi_close_volume(struct ubi_volume_desc *desc)
-+{
-+	struct ubi_volume *vol = desc->vol;
-+	struct ubi_device *ubi = vol->ubi;
-+
-+	dbg_msg("close volume %d, mode %d", vol->vol_id, desc->mode);
-+
-+	spin_lock(&ubi->volumes_lock);
-+	switch (desc->mode) {
-+	case UBI_READONLY:
-+		vol->readers -= 1;
-+		break;
-+	case UBI_READWRITE:
-+		vol->writers -= 1;
-+		break;
-+	case UBI_EXCLUSIVE:
-+		vol->exclusive = 0;
-+	}
-+	vol->ref_count -= 1;
-+	spin_unlock(&ubi->volumes_lock);
-+
-+	kfree(desc);
-+	put_device(&vol->dev);
-+	ubi_put_device(ubi);
-+	module_put(THIS_MODULE);
-+}
-+EXPORT_SYMBOL_GPL(ubi_close_volume);
-+
-+/**
-+ * ubi_leb_read - read data.
-+ * @desc: volume descriptor
-+ * @lnum: logical eraseblock number to read from
-+ * @buf: buffer where to store the read data
-+ * @offset: offset within the logical eraseblock to read from
-+ * @len: how many bytes to read
-+ * @check: whether UBI has to check the read data's CRC or not.
-+ *
-+ * This function reads data from offset @offset of logical eraseblock @lnum and
-+ * stores the data at @buf. When reading from static volumes, @check specifies
-+ * whether the data has to be checked or not. If yes, the whole logical
-+ * eraseblock will be read and its CRC checksum will be checked (i.e., the CRC
-+ * checksum is per-eraseblock). So checking may substantially slow down the
-+ * read speed. The @check argument is ignored for dynamic volumes.
-+ *
-+ * In case of success, this function returns zero. In case of failure, this
-+ * function returns a negative error code.
-+ *
-+ * %-EBADMSG error code is returned:
-+ * o for both static and dynamic volumes if MTD driver has detected a data
-+ *   integrity problem (unrecoverable ECC checksum mismatch in case of NAND);
-+ * o for static volumes in case of data CRC mismatch.
-+ *
-+ * If the volume is damaged because of an interrupted update this function just
-+ * returns immediately with %-EBADF error code.
-+ */
-+int ubi_leb_read(struct ubi_volume_desc *desc, int lnum, char *buf, int offset,
-+		 int len, int check)
-+{
-+	struct ubi_volume *vol = desc->vol;
-+	struct ubi_device *ubi = vol->ubi;
-+	int err, vol_id = vol->vol_id;
-+
-+	dbg_msg("read %d bytes from LEB %d:%d:%d", len, vol_id, lnum, offset);
-+
-+	if (vol_id < 0 || vol_id >= ubi->vtbl_slots || lnum < 0 ||
-+	    lnum >= vol->used_ebs || offset < 0 || len < 0 ||
-+	    offset + len > vol->usable_leb_size)
-+		return -EINVAL;
-+
-+	if (vol->vol_type == UBI_STATIC_VOLUME) {
-+		if (vol->used_ebs == 0)
-+			/* Empty static UBI volume */
-+			return 0;
-+		if (lnum == vol->used_ebs - 1 &&
-+		    offset + len > vol->last_eb_bytes)
-+			return -EINVAL;
++	if (busw != (chip->options & NAND_BUSWIDTH_16)) {
++		printk(KERN_INFO "NAND device: Manufacturer ID:"
++		       " 0x%02x, Chip ID: 0x%02x (%s %s)\n", *maf_id,
++		       dev_id, nand_manuf_ids[maf_idx].name, mtd->name);
++		printk(KERN_WARNING "NAND bus width %d instead %d bit\n",
++		       (chip->options & NAND_BUSWIDTH_16) ? 16 : 8,
++		       busw ? 16 : 8);
++		return ERR_PTR(-EINVAL);
 +	}
 +
-+	if (vol->upd_marker)
-+		return -EBADF;
-+	if (len == 0)
-+		return 0;
++	/* Calculate the address shift from the page size */
++	chip->page_shift = ffs(mtd->writesize) - 1;
++	/* Convert chipsize to number of pages per chip -1. */
++	chip->pagemask = (chip->chipsize >> chip->page_shift) - 1;
 +
-+	err = ubi_eba_read_leb(ubi, vol, lnum, buf, offset, len, check);
-+	if (err && err == -EBADMSG && vol->vol_type == UBI_STATIC_VOLUME) {
-+		ubi_warn("mark volume %d as corrupted", vol_id);
-+		vol->corrupted = 1;
++	chip->bbt_erase_shift = chip->phys_erase_shift =
++		ffs(mtd->erasesize) - 1;
++	chip->chip_shift = ffs(chip->chipsize) - 1;
++
++	/* Set the bad block position */
++	chip->badblockpos = mtd->writesize > 512 ?
++		NAND_LARGE_BADBLOCK_POS : NAND_SMALL_BADBLOCK_POS;
++
++	/* Get chip options, preserve non chip based options */
++	chip->options &= ~NAND_CHIPOPTIONS_MSK;
++	chip->options |= type->options & NAND_CHIPOPTIONS_MSK;
++
++	/*
++	 * Set chip as a default. Board drivers can override it, if necessary
++	 */
++	chip->options |= NAND_NO_AUTOINCR;
++
++	/* Check if chip is a not a samsung device. Do not clear the
++	 * options for chips which are not having an extended id.
++	 */
++	if (*maf_id != NAND_MFR_SAMSUNG && !type->pagesize)
++		chip->options &= ~NAND_SAMSUNG_LP_OPTIONS;
++
++	/* Check for AND chips with 4 page planes */
++	if (chip->options & NAND_4PAGE_ARRAY)
++		chip->erase_cmd = multi_erase_cmd;
++	else
++		chip->erase_cmd = single_erase_cmd;
++
++	/* Do not replace user supplied command function ! */
++	if (mtd->writesize > 512 && chip->cmdfunc == nand_command)
++		chip->cmdfunc = nand_command_lp;
++
++	printk(KERN_INFO "NAND device: Manufacturer ID:"
++	       " 0x%02x, Chip ID: 0x%02x (%s %s)\n", *maf_id, dev_id,
++	       nand_manuf_ids[maf_idx].name, type->name);
++
++	return type;
++}
++
++/**
++ * nand_scan_ident - [NAND Interface] Scan for the NAND device
++ * @mtd:	     MTD device structure
++ * @maxchips:	     Number of chips to scan for
++ *
++ * This is the first phase of the normal nand_scan() function. It
++ * reads the flash ID and sets up MTD fields accordingly.
++ *
++ * The mtd->owner field must be set to the module of the caller.
++ */
++int nand_scan_ident(struct mtd_info *mtd, int maxchips)
++{
++	int i, busw, nand_maf_id;
++	struct nand_chip *chip = mtd->priv;
++	struct nand_flash_dev *type;
++
++	/* Get buswidth to select the correct functions */
++	busw = chip->options & NAND_BUSWIDTH_16;
++	/* Set the default functions */
++	nand_set_defaults(chip, busw);
++
++	/* Read the flash type */
++	type = nand_get_flash_type(mtd, chip, busw, &nand_maf_id);
++
++	if (IS_ERR(type)) {
++		printk(KERN_WARNING "No NAND device found!!!\n");
++		chip->select_chip(mtd, -1);
++		return PTR_ERR(type);
 +	}
 +
-+	return err;
++	/* Check for a chip array */
++	for (i = 1; i < maxchips; i++) {
++		chip->select_chip(mtd, i);
++		/* Send the command for reading device ID */
++		chip->cmdfunc(mtd, NAND_CMD_READID, 0x00, -1);
++		/* Read manufacturer and device IDs */
++		if (nand_maf_id != chip->read_byte(mtd) ||
++		    type->id != chip->read_byte(mtd))
++			break;
++	}
++	if (i > 1)
++		printk(KERN_INFO "%d NAND chips detected\n", i);
++
++	/* Store the number of chips and calc total size for mtd */
++	chip->numchips = i;
++	mtd->size = i * chip->chipsize;
++
++	return 0;
 +}
-+EXPORT_SYMBOL_GPL(ubi_leb_read);
++
 +
 +/**
-+ * ubi_leb_write - write data.
-+ * @desc: volume descriptor
-+ * @lnum: logical eraseblock number to write to
-+ * @buf: data to write
-+ * @offset: offset within the logical eraseblock where to write
-+ * @len: how many bytes to write
-+ * @dtype: expected data type
++ * nand_scan_tail - [NAND Interface] Scan for the NAND device
++ * @mtd:	    MTD device structure
++ * @maxchips:	    Number of chips to scan for
 + *
-+ * This function writes @len bytes of data from @buf to offset @offset of
-+ * logical eraseblock @lnum. The @dtype argument describes expected lifetime of
-+ * the data.
-+ *
-+ * This function takes care of physical eraseblock write failures. If write to
-+ * the physical eraseblock write operation fails, the logical eraseblock is
-+ * re-mapped to another physical eraseblock, the data is recovered, and the
-+ * write finishes. UBI has a pool of reserved physical eraseblocks for this.
-+ *
-+ * If all the data were successfully written, zero is returned. If an error
-+ * occurred and UBI has not been able to recover from it, this function returns
-+ * a negative error code. Note, in case of an error, it is possible that
-+ * something was still written to the flash media, but that may be some
-+ * garbage.
-+ *
-+ * If the volume is damaged because of an interrupted update this function just
-+ * returns immediately with %-EBADF code.
++ * This is the second phase of the normal nand_scan() function. It
++ * fills out all the uninitialized function pointers with the defaults
++ * and scans for a bad block table if appropriate.
 + */
-+int ubi_leb_write(struct ubi_volume_desc *desc, int lnum, const void *buf,
-+		  int offset, int len, int dtype)
-+{
-+	struct ubi_volume *vol = desc->vol;
-+	struct ubi_device *ubi = vol->ubi;
-+	int vol_id = vol->vol_id;
-+
-+	dbg_msg("write %d bytes to LEB %d:%d:%d", len, vol_id, lnum, offset);
-+
-+	if (vol_id < 0 || vol_id >= ubi->vtbl_slots)
-+		return -EINVAL;
-+
-+	if (desc->mode == UBI_READONLY || vol->vol_type == UBI_STATIC_VOLUME)
-+		return -EROFS;
-+
-+	if (lnum < 0 || lnum >= vol->reserved_pebs || offset < 0 || len < 0 ||
-+	    offset + len > vol->usable_leb_size ||
-+	    offset & (ubi->min_io_size - 1) || len & (ubi->min_io_size - 1))
-+		return -EINVAL;
-+
-+	if (dtype != UBI_LONGTERM && dtype != UBI_SHORTTERM &&
-+	    dtype != UBI_UNKNOWN)
-+		return -EINVAL;
-+
-+	if (vol->upd_marker)
-+		return -EBADF;
-+
-+	if (len == 0)
-+		return 0;
-+
-+	return ubi_eba_write_leb(ubi, vol, lnum, buf, offset, len, dtype);
-+}
-+EXPORT_SYMBOL_GPL(ubi_leb_write);
-+
-+/*
-+ * ubi_leb_change - change logical eraseblock atomically.
-+ * @desc: volume descriptor
-+ * @lnum: logical eraseblock number to change
-+ * @buf: data to write
-+ * @len: how many bytes to write
-+ * @dtype: expected data type
-+ *
-+ * This function changes the contents of a logical eraseblock atomically. @buf
-+ * has to contain new logical eraseblock data, and @len - the length of the
-+ * data, which has to be aligned. The length may be shorter then the logical
-+ * eraseblock size, ant the logical eraseblock may be appended to more times
-+ * later on. This function guarantees that in case of an unclean reboot the old
-+ * contents is preserved. Returns zero in case of success and a negative error
-+ * code in case of failure.
-+ */
-+int ubi_leb_change(struct ubi_volume_desc *desc, int lnum, const void *buf,
-+		   int len, int dtype)
-+{
-+	struct ubi_volume *vol = desc->vol;
-+	struct ubi_device *ubi = vol->ubi;
-+	int vol_id = vol->vol_id;
-+
-+	dbg_msg("atomically write %d bytes to LEB %d:%d", len, vol_id, lnum);
-+
-+	if (vol_id < 0 || vol_id >= ubi->vtbl_slots)
-+		return -EINVAL;
-+
-+	if (desc->mode == UBI_READONLY || vol->vol_type == UBI_STATIC_VOLUME)
-+		return -EROFS;
-+
-+	if (lnum < 0 || lnum >= vol->reserved_pebs || len < 0 ||
-+	    len > vol->usable_leb_size || len & (ubi->min_io_size - 1))
-+		return -EINVAL;
-+
-+	if (dtype != UBI_LONGTERM && dtype != UBI_SHORTTERM &&
-+	    dtype != UBI_UNKNOWN)
-+		return -EINVAL;
-+
-+	if (vol->upd_marker)
-+		return -EBADF;
-+
-+	if (len == 0)
-+		return 0;
-+
-+	return ubi_eba_atomic_leb_change(ubi, vol, lnum, buf, len, dtype);
-+}
-+EXPORT_SYMBOL_GPL(ubi_leb_change);
-+
-+/**
-+ * ubi_leb_erase - erase logical eraseblock.
-+ * @desc: volume descriptor
-+ * @lnum: logical eraseblock number
-+ *
-+ * This function un-maps logical eraseblock @lnum and synchronously erases the
-+ * correspondent physical eraseblock. Returns zero in case of success and a
-+ * negative error code in case of failure.
-+ *
-+ * If the volume is damaged because of an interrupted update this function just
-+ * returns immediately with %-EBADF code.
-+ */
-+int ubi_leb_erase(struct ubi_volume_desc *desc, int lnum)
-+{
-+	struct ubi_volume *vol = desc->vol;
-+	struct ubi_device *ubi = vol->ubi;
-+	int err;
-+
-+	dbg_msg("erase LEB %d:%d", vol->vol_id, lnum);
-+
-+	if (desc->mode == UBI_READONLY || vol->vol_type == UBI_STATIC_VOLUME)
-+		return -EROFS;
-+
-+	if (lnum < 0 || lnum >= vol->reserved_pebs)
-+		return -EINVAL;
-+
-+	if (vol->upd_marker)
-+		return -EBADF;
-+
-+	err = ubi_eba_unmap_leb(ubi, vol, lnum);
-+	if (err)
-+		return err;
-+
-+	return ubi_wl_flush(ubi);
-+}
-+EXPORT_SYMBOL_GPL(ubi_leb_erase);
-+
-+/**
-+ * ubi_leb_unmap - un-map logical eraseblock.
-+ * @desc: volume descriptor
-+ * @lnum: logical eraseblock number
-+ *
-+ * This function un-maps logical eraseblock @lnum and schedules the
-+ * corresponding physical eraseblock for erasure, so that it will eventually be
-+ * physically erased in background. This operation is much faster then the
-+ * erase operation.
-+ *
-+ * Unlike erase, the un-map operation does not guarantee that the logical
-+ * eraseblock will contain all 0xFF bytes when UBI is initialized again. For
-+ * example, if several logical eraseblocks are un-mapped, and an unclean reboot
-+ * happens after this, the logical eraseblocks will not necessarily be
-+ * un-mapped again when this MTD device is attached. They may actually be
-+ * mapped to the same physical eraseblocks again. So, this function has to be
-+ * used with care.
-+ *
-+ * In other words, when un-mapping a logical eraseblock, UBI does not store
-+ * any information about this on the flash media, it just marks the logical
-+ * eraseblock as "un-mapped" in RAM. If UBI is detached before the physical
-+ * eraseblock is physically erased, it will be mapped again to the same logical
-+ * eraseblock when the MTD device is attached again.
-+ *
-+ * The main and obvious use-case of this function is when the contents of a
-+ * logical eraseblock has to be re-written. Then it is much more efficient to
-+ * first un-map it, then write new data, rather then first erase it, then write
-+ * new data. Note, once new data has been written to the logical eraseblock,
-+ * UBI guarantees that the old contents has gone forever. In other words, if an
-+ * unclean reboot happens after the logical eraseblock has been un-mapped and
-+ * then written to, it will contain the last written data.
-+ *
-+ * This function returns zero in case of success and a negative error code in
-+ * case of failure. If the volume is damaged because of an interrupted update
-+ * this function just returns immediately with %-EBADF code.
-+ */
-+int ubi_leb_unmap(struct ubi_volume_desc *desc, int lnum)
-+{
-+	struct ubi_volume *vol = desc->vol;
-+	struct ubi_device *ubi = vol->ubi;
-+
-+	dbg_msg("unmap LEB %d:%d", vol->vol_id, lnum);
-+
-+	if (desc->mode == UBI_READONLY || vol->vol_type == UBI_STATIC_VOLUME)
-+		return -EROFS;
-+
-+	if (lnum < 0 || lnum >= vol->reserved_pebs)
-+		return -EINVAL;
-+
-+	if (vol->upd_marker)
-+		return -EBADF;
-+
-+	return ubi_eba_unmap_leb(ubi, vol, lnum);
-+}
-+EXPORT_SYMBOL_GPL(ubi_leb_unmap);
-+
-+/**
-+ * ubi_leb_map - map logical erasblock to a physical eraseblock.
-+ * @desc: volume descriptor
-+ * @lnum: logical eraseblock number
-+ * @dtype: expected data type
-+ *
-+ * This function maps an un-mapped logical eraseblock @lnum to a physical
-+ * eraseblock. This means, that after a successfull invocation of this
-+ * function the logical eraseblock @lnum will be empty (contain only %0xFF
-+ * bytes) and be mapped to a physical eraseblock, even if an unclean reboot
-+ * happens.
-+ *
-+ * This function returns zero in case of success, %-EBADF if the volume is
-+ * damaged because of an interrupted update, %-EBADMSG if the logical
-+ * eraseblock is already mapped, and other negative error codes in case of
-+ * other failures.
-+ */
-+int ubi_leb_map(struct ubi_volume_desc *desc, int lnum, int dtype)
-+{
-+	struct ubi_volume *vol = desc->vol;
-+	struct ubi_device *ubi = vol->ubi;
-+
-+	dbg_msg("unmap LEB %d:%d", vol->vol_id, lnum);
-+
-+	if (desc->mode == UBI_READONLY || vol->vol_type == UBI_STATIC_VOLUME)
-+		return -EROFS;
-+
-+	if (lnum < 0 || lnum >= vol->reserved_pebs)
-+		return -EINVAL;
-+
-+	if (dtype != UBI_LONGTERM && dtype != UBI_SHORTTERM &&
-+	    dtype != UBI_UNKNOWN)
-+		return -EINVAL;
-+
-+	if (vol->upd_marker)
-+		return -EBADF;
-+
-+	if (vol->eba_tbl[lnum] >= 0)
-+		return -EBADMSG;
-+
-+	return ubi_eba_write_leb(ubi, vol, lnum, NULL, 0, 0, dtype);
-+}
-+EXPORT_SYMBOL_GPL(ubi_leb_map);
-+
-+/**
-+ * ubi_is_mapped - check if logical eraseblock is mapped.
-+ * @desc: volume descriptor
-+ * @lnum: logical eraseblock number
-+ *
-+ * This function checks if logical eraseblock @lnum is mapped to a physical
-+ * eraseblock. If a logical eraseblock is un-mapped, this does not necessarily
-+ * mean it will still be un-mapped after the UBI device is re-attached. The
-+ * logical eraseblock may become mapped to the physical eraseblock it was last
-+ * mapped to.
-+ *
-+ * This function returns %1 if the LEB is mapped, %0 if not, and a negative
-+ * error code in case of failure. If the volume is damaged because of an
-+ * interrupted update this function just returns immediately with %-EBADF error
-+ * code.
-+ */
-+int ubi_is_mapped(struct ubi_volume_desc *desc, int lnum)
-+{
-+	struct ubi_volume *vol = desc->vol;
-+
-+	dbg_msg("test LEB %d:%d", vol->vol_id, lnum);
-+
-+	if (lnum < 0 || lnum >= vol->reserved_pebs)
-+		return -EINVAL;
-+
-+	if (vol->upd_marker)
-+		return -EBADF;
-+
-+	return vol->eba_tbl[lnum] >= 0;
-+}
-+EXPORT_SYMBOL_GPL(ubi_is_mapped);
-diff --git a/drivers/mtd/ubi/misc.c b/drivers/mtd/ubi/misc.c
-new file mode 100644
-index 0000000..298925d
---- /dev/null
-+++ b/drivers/mtd/ubi/misc.c
-@@ -0,0 +1,106 @@
-+/*
-+ * Copyright (c) International Business Machines Corp., 2006
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
-+ * the GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-+ *
-+ * Author: Artem Bityutskiy (���������������� ����������)
-+ */
-+
-+/* Here we keep miscellaneous functions which are used all over the UBI code */
-+
-+#include "ubi-barebox.h"
-+#include "ubi.h"
-+
-+/**
-+ * calc_data_len - calculate how much real data is stored in a buffer.
-+ * @ubi: UBI device description object
-+ * @buf: a buffer with the contents of the physical eraseblock
-+ * @length: the buffer length
-+ *
-+ * This function calculates how much "real data" is stored in @buf and returnes
-+ * the length. Continuous 0xFF bytes at the end of the buffer are not
-+ * considered as "real data".
-+ */
-+int ubi_calc_data_len(const struct ubi_device *ubi, const void *buf,
-+		      int length)
++int nand_scan_tail(struct mtd_info *mtd)
 +{
 +	int i;
++	struct nand_chip *chip = mtd->priv;
 +
-+	ubi_assert(!(length & (ubi->min_io_size - 1)));
-+
-+	for (i = length - 1; i >= 0; i--)
-+		if (((const uint8_t *)buf)[i] != 0xFF)
-+			break;
-+
-+	/* The resulting length must be aligned to the minimum flash I/O size */
-+	length = ALIGN(i + 1, ubi->min_io_size);
-+	return length;
-+}
-+
-+/**
-+ * ubi_check_volume - check the contents of a static volume.
-+ * @ubi: UBI device description object
-+ * @vol_id: ID of the volume to check
-+ *
-+ * This function checks if static volume @vol_id is corrupted by fully reading
-+ * it and checking data CRC. This function returns %0 if the volume is not
-+ * corrupted, %1 if it is corrupted and a negative error code in case of
-+ * failure. Dynamic volumes are not checked and zero is returned immediately.
-+ */
-+int ubi_check_volume(struct ubi_device *ubi, int vol_id)
-+{
-+	void *buf;
-+	int err = 0, i;
-+	struct ubi_volume *vol = ubi->volumes[vol_id];
-+
-+	if (vol->vol_type != UBI_STATIC_VOLUME)
-+		return 0;
-+
-+	buf = vmalloc(vol->usable_leb_size);
-+	if (!buf)
++	if (!(chip->options & NAND_OWN_BUFFERS))
++		chip->buffers = kmalloc(sizeof(*chip->buffers), GFP_KERNEL);
++	if (!chip->buffers)
 +		return -ENOMEM;
 +
-+	for (i = 0; i < vol->used_ebs; i++) {
-+		int size;
++	/* Set the internal oob buffer location, just after the page data */
++	chip->oob_poi = chip->buffers->databuf + mtd->writesize;
 +
-+		if (i == vol->used_ebs - 1)
-+			size = vol->last_eb_bytes;
-+		else
-+			size = vol->usable_leb_size;
-+
-+		err = ubi_eba_read_leb(ubi, vol, i, buf, 0, size, 1);
-+		if (err) {
-+			if (err == -EBADMSG)
-+				err = 1;
++	/*
++	 * If no default placement scheme is given, select an appropriate one
++	 */
++	if (!chip->ecc.layout) {
++		switch (mtd->oobsize) {
++		case 8:
++			chip->ecc.layout = &nand_oob_8;
 +			break;
++		case 16:
++			chip->ecc.layout = &nand_oob_16;
++			break;
++		case 64:
++			chip->ecc.layout = &nand_oob_64;
++			break;
++		default:
++			printk(KERN_WARNING "No oob scheme defined for "
++			       "oobsize %d\n", mtd->oobsize);
++			BUG();
 +		}
 +	}
 +
-+	vfree(buf);
-+	return err;
++	if (!chip->write_page)
++		chip->write_page = nand_write_page;
++
++	/*
++	 * check ECC mode, default to software if 3byte/512byte hardware ECC is
++	 * selected and we have 256 byte pagesize fallback to software ECC
++	 */
++	if (!chip->ecc.read_page_raw)
++		chip->ecc.read_page_raw = nand_read_page_raw;
++	if (!chip->ecc.write_page_raw)
++		chip->ecc.write_page_raw = nand_write_page_raw;
++
++	switch (chip->ecc.mode) {
++	case NAND_ECC_HW:
++		/* Use standard hwecc read page function ? */
++		if (!chip->ecc.read_page)
++			chip->ecc.read_page = nand_read_page_hwecc;
++		if (!chip->ecc.write_page)
++			chip->ecc.write_page = nand_write_page_hwecc;
++		if (!chip->ecc.read_oob)
++			chip->ecc.read_oob = nand_read_oob_std;
++		if (!chip->ecc.write_oob)
++			chip->ecc.write_oob = nand_write_oob_std;
++
++	case NAND_ECC_HW_SYNDROME:
++		if ((!chip->ecc.calculate || !chip->ecc.correct ||
++		     !chip->ecc.hwctl) &&
++		    (!chip->ecc.read_page ||
++		     chip->ecc.read_page == nand_read_page_hwecc ||
++		     !chip->ecc.write_page ||
++		     chip->ecc.write_page == nand_write_page_hwecc)) {
++			printk(KERN_WARNING "No ECC functions supplied, "
++			       "Hardware ECC not possible\n");
++			BUG();
++		}
++		/* Use standard syndrome read/write page function ? */
++		if (!chip->ecc.read_page)
++			chip->ecc.read_page = nand_read_page_syndrome;
++		if (!chip->ecc.write_page)
++			chip->ecc.write_page = nand_write_page_syndrome;
++		if (!chip->ecc.read_oob)
++			chip->ecc.read_oob = nand_read_oob_syndrome;
++		if (!chip->ecc.write_oob)
++			chip->ecc.write_oob = nand_write_oob_syndrome;
++
++		if (mtd->writesize >= chip->ecc.size)
++			break;
++		printk(KERN_WARNING "%d byte HW ECC not possible on "
++		       "%d byte page size, fallback to SW ECC\n",
++		       chip->ecc.size, mtd->writesize);
++		chip->ecc.mode = NAND_ECC_SOFT;
++
++	case NAND_ECC_SOFT:
++		chip->ecc.calculate = nand_calculate_ecc;
++		chip->ecc.correct = nand_correct_data;
++		chip->ecc.read_page = nand_read_page_swecc;
++		chip->ecc.write_page = nand_write_page_swecc;
++		chip->ecc.read_oob = nand_read_oob_std;
++		chip->ecc.write_oob = nand_write_oob_std;
++		chip->ecc.size = 256;
++		chip->ecc.bytes = 3;
++		break;
++
++	case NAND_ECC_NONE:
++		printk(KERN_WARNING "NAND_ECC_NONE selected by board driver. "
++		       "This is not recommended !!\n");
++		chip->ecc.read_page = nand_read_page_raw;
++		chip->ecc.write_page = nand_write_page_raw;
++		chip->ecc.read_oob = nand_read_oob_std;
++		chip->ecc.write_oob = nand_write_oob_std;
++		chip->ecc.size = mtd->writesize;
++		chip->ecc.bytes = 0;
++		break;
++
++	default:
++		printk(KERN_WARNING "Invalid NAND_ECC_MODE %d\n",
++		       chip->ecc.mode);
++		BUG();
++	}
++
++	/*
++	 * The number of bytes available for a client to place data into
++	 * the out of band area
++	 */
++	chip->ecc.layout->oobavail = 0;
++	for (i = 0; chip->ecc.layout->oobfree[i].length; i++)
++		chip->ecc.layout->oobavail +=
++			chip->ecc.layout->oobfree[i].length;
++	mtd->oobavail = chip->ecc.layout->oobavail;
++
++	/*
++	 * Set the number of read / write steps for one page depending on ECC
++	 * mode
++	 */
++	chip->ecc.steps = mtd->writesize / chip->ecc.size;
++	if(chip->ecc.steps * chip->ecc.size != mtd->writesize) {
++		printk(KERN_WARNING "Invalid ecc parameters\n");
++		BUG();
++	}
++	chip->ecc.total = chip->ecc.steps * chip->ecc.bytes;
++
++	/*
++	 * Allow subpage writes up to ecc.steps. Not possible for MLC
++	 * FLASH.
++	 */
++	if (!(chip->options & NAND_NO_SUBPAGE_WRITE) &&
++	    !(chip->cellinfo & NAND_CI_CELLTYPE_MSK)) {
++		switch(chip->ecc.steps) {
++		case 2:
++			mtd->subpage_sft = 1;
++			break;
++		case 4:
++		case 8:
++			mtd->subpage_sft = 2;
++			break;
++		}
++	}
++	chip->subpagesize = mtd->writesize >> mtd->subpage_sft;
++
++	/* Initialize state */
++	chip->state = FL_READY;
++
++	/* De-select the device */
++	chip->select_chip(mtd, -1);
++
++	/* Invalidate the pagebuffer reference */
++	chip->pagebuf = -1;
++
++	/* Fill in remaining MTD driver data */
++	mtd->type = MTD_NANDFLASH;
++	mtd->flags = MTD_CAP_NANDFLASH;
++	mtd->erase = nand_erase;
++	mtd->read = nand_read;
++	mtd->write = nand_write;
++	mtd->read_oob = nand_read_oob;
++	mtd->write_oob = nand_write_oob;
++	mtd->sync = nand_sync;
++	mtd->lock = NULL;
++	mtd->unlock = NULL;
++	mtd->suspend = nand_suspend;
++	mtd->resume = nand_resume;
++	mtd->block_isbad = nand_block_isbad;
++	mtd->block_markbad = nand_block_markbad;
++
++	/* propagate ecc.layout to mtd_info */
++	mtd->ecclayout = chip->ecc.layout;
++
++	/* Check, if we should skip the bad block table scan */
++	if (chip->options & NAND_SKIP_BBTSCAN)
++		return 0;
++
++	/* Build bad block table */
++	return chip->scan_bbt(mtd);
 +}
 +
 +/**
-+ * ubi_calculate_rsvd_pool - calculate how many PEBs must be reserved for bad
-+ * eraseblock handling.
-+ * @ubi: UBI device description object
++ * nand_scan - [NAND Interface] Scan for the NAND device
++ * @mtd:	MTD device structure
++ * @maxchips:	Number of chips to scan for
++ *
++ * This fills out all the uninitialized function pointers
++ * with the defaults.
++ * The flash ID is read and the mtd/chip structures are
++ * filled with the appropriate values.
++ * The mtd->owner field must be set to the module of the caller
++ *
 + */
-+void ubi_calculate_reserved(struct ubi_device *ubi)
++int nand_scan(struct mtd_info *mtd, int maxchips)
 +{
-+	ubi->beb_rsvd_level = ubi->good_peb_count/100;
-+	ubi->beb_rsvd_level *= CONFIG_MTD_UBI_BEB_RESERVE;
-+	if (ubi->beb_rsvd_level < MIN_RESEVED_PEBS)
-+		ubi->beb_rsvd_level = MIN_RESEVED_PEBS;
++	int ret;
++
++	ret = nand_scan_ident(mtd, maxchips);
++	if (!ret)
++		ret = nand_scan_tail(mtd);
++	return ret;
 +}
-diff --git a/drivers/mtd/ubi/scan.c b/drivers/mtd/ubi/scan.c
++
++/**
++ * nand_release - [NAND Interface] Free resources held by the NAND device
++ * @mtd:	MTD device structure
++*/
++void nand_release(struct mtd_info *mtd)
++{
++	struct nand_chip *chip = mtd->priv;
++
++	/* Deregister the device */
++	del_mtd_device(mtd);
++
++	/* Free bad block table memory */
++	kfree(chip->bbt);
++	if (!(chip->options & NAND_OWN_BUFFERS))
++		kfree(chip->buffers);
++}
++
++EXPORT_SYMBOL(nand_scan);
++EXPORT_SYMBOL(nand_scan_ident);
++EXPORT_SYMBOL(nand_scan_tail);
++EXPORT_SYMBOL(nand_release);
++
++#endif /* DOXYGEN_SHOULD_SKIP_THIS */
+diff --git a/drivers/mtd/nand/nand_bbt.c b/drivers/mtd/nand/nand_bbt.c
 new file mode 100644
-index 0000000..3e7fc35
+index 0000000..4a6bf39
 --- /dev/null
-+++ b/drivers/mtd/ubi/scan.c
-@@ -0,0 +1,1362 @@
++++ b/drivers/mtd/nand/nand_bbt.c
+@@ -0,0 +1,1224 @@
 +/*
-+ * Copyright (c) International Business Machines Corp., 2006
++ *  drivers/mtd/nand_bbt.c
++ *
++ *  Overview:
++ *   Bad block table support for the NAND driver
++ *
++ *  Copyright (C) 2004 Thomas Gleixner (tglx@linutronix.de)
++ *
++ * $Id: nand_bbt.c,v 1.36 2005/11/07 11:14:30 gleixner Exp $
 + *
 + * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
 + *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
-+ * the GNU General Public License for more details.
++ * Description:
 + *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
++ * When nand_scan_bbt is called, then it tries to find the bad block table
++ * depending on the options in the bbt descriptor(s). If a bbt is found
++ * then the contents are read and the memory based bbt is created. If a
++ * mirrored bbt is selected then the mirror is searched too and the
++ * versions are compared. If the mirror has a greater version number
++ * than the mirror bbt is used to build the memory based bbt.
++ * If the tables are not versioned, then we "or" the bad block information.
++ * If one of the bbt's is out of date or does not exist it is (re)created.
++ * If no bbt exists at all then the device is scanned for factory marked
++ * good / bad blocks and the bad block tables are created.
 + *
-+ * Author: Artem Bityutskiy (���������������� ����������)
++ * For manufacturer created bbts like the one found on M-SYS DOC devices
++ * the bbt is searched and read but never created
++ *
++ * The autogenerated bad block table is located in the last good blocks
++ * of the device. The table is mirrored, so it can be updated eventually.
++ * The table is marked in the oob area with an ident pattern and a version
++ * number which indicates which of both tables is more up to date.
++ *
++ * The table uses 2 bits per block
++ * 11b: 	block is good
++ * 00b: 	block is factory marked bad
++ * 01b, 10b: 	block is marked bad due to wear
++ *
++ * The memory bad block table uses the following scheme:
++ * 00b:		block is good
++ * 01b:		block is marked bad due to wear
++ * 10b:		block is reserved (to protect the bbt area)
++ * 11b:		block is factory marked bad
++ *
++ * Multichip devices like DOC store the bad block info per floor.
++ *
++ * Following assumptions are made:
++ * - bbts start at a page boundary, if autolocated on a block boundary
++ * - the space necessary for a bbt in FLASH does not exceed a block boundary
++ *
 + */
++#include <common.h>
++#include <linux/types.h>
++#include <linux/mtd/mtd.h>
++#include <linux/mtd/nand.h>
++#include <linux/mtd/nand_ecc.h>
++#include <linux/bitops.h>
++#include <clock.h>
++#include <errno.h>
++#include <malloc.h>
++
++#ifndef DOXYGEN_SHOULD_SKIP_THIS
++
++/**
++ * check_pattern - [GENERIC] check if a pattern is in the buffer
++ * @buf:	the buffer to search
++ * @len:	the length of buffer to search
++ * @paglen:	the pagelength
++ * @td:		search pattern descriptor
++ *
++ * Check for a pattern at the given place. Used to search bad block
++ * tables and good / bad block identifiers.
++ * If the SCAN_EMPTY option is set then check, if all bytes except the
++ * pattern area contain 0xff
++ *
++*/
++static int check_pattern(uint8_t *buf, int len, int paglen, struct nand_bbt_descr *td)
++{
++	int i, end = 0;
++	uint8_t *p = buf;
++
++	end = paglen + td->offs;
++	if (td->options & NAND_BBT_SCANEMPTY) {
++		for (i = 0; i < end; i++) {
++			if (p[i] != 0xff)
++				return -1;
++		}
++	}
++	p += end;
++
++	/* Compare the pattern */
++	for (i = 0; i < td->len; i++) {
++		if (p[i] != td->pattern[i])
++			return -1;
++	}
++
++	if (td->options & NAND_BBT_SCANEMPTY) {
++		p += td->len;
++		end += td->len;
++		for (i = end; i < len; i++) {
++			if (*p++ != 0xff)
++				return -1;
++		}
++	}
++	return 0;
++}
++
++/**
++ * check_short_pattern - [GENERIC] check if a pattern is in the buffer
++ * @buf:	the buffer to search
++ * @td:		search pattern descriptor
++ *
++ * Check for a pattern at the given place. Used to search bad block
++ * tables and good / bad block identifiers. Same as check_pattern, but
++ * no optional empty check
++ *
++*/
++static int check_short_pattern(uint8_t *buf, struct nand_bbt_descr *td)
++{
++	int i;
++	uint8_t *p = buf;
++
++	/* Compare the pattern */
++	for (i = 0; i < td->len; i++) {
++		if (p[td->offs + i] != td->pattern[i])
++			return -1;
++	}
++	return 0;
++}
++
++/**
++ * read_bbt - [GENERIC] Read the bad block table starting from page
++ * @mtd:	MTD device structure
++ * @buf:	temporary buffer
++ * @page:	the starting page
++ * @num:	the number of bbt descriptors to read
++ * @bits:	number of bits per block
++ * @offs:	offset in the memory table
++ * @reserved_block_code:	Pattern to identify reserved blocks
++ *
++ * Read the bad block table starting from page.
++ *
++ */
++static int read_bbt(struct mtd_info *mtd, uint8_t *buf, int page, int num,
++		    int bits, int offs, int reserved_block_code)
++{
++	int res, i, j, act = 0;
++	struct nand_chip *this = mtd->priv;
++	size_t retlen, len, totlen;
++	loff_t from;
++	uint8_t msk = (uint8_t) ((1 << bits) - 1);
++
++	totlen = (num * bits) >> 3;
++	from = ((loff_t) page) << this->page_shift;
++
++	while (totlen) {
++		len = min(totlen, (size_t) (1 << this->bbt_erase_shift));
++		res = mtd->read(mtd, from, len, &retlen, buf);
++		if (res < 0) {
++			if (retlen != len) {
++				printk(KERN_INFO "nand_bbt: Error reading bad block table\n");
++				return res;
++			}
++			printk(KERN_WARNING "nand_bbt: ECC error while reading bad block table\n");
++		}
++
++		/* Analyse data */
++		for (i = 0; i < len; i++) {
++			uint8_t dat = buf[i];
++			for (j = 0; j < 8; j += bits, act += 2) {
++				uint8_t tmp = (dat >> j) & msk;
++				if (tmp == msk)
++					continue;
++				if (reserved_block_code && (tmp == reserved_block_code)) {
++					printk(KERN_DEBUG "nand_read_bbt: Reserved block at 0x%08x\n",
++					       ((offs << 2) + (act >> 1)) << this->bbt_erase_shift);
++					this->bbt[offs + (act >> 3)] |= 0x2 << (act & 0x06);
++					mtd->ecc_stats.bbtblocks++;
++					continue;
++				}
++				/* Leave it for now, if its matured we can move this
++				 * message to MTD_DEBUG_LEVEL0 */
++				printk(KERN_DEBUG "nand_read_bbt: Bad block at 0x%08x\n",
++				       ((offs << 2) + (act >> 1)) << this->bbt_erase_shift);
++				/* Factory marked bad or worn out ? */
++				if (tmp == 0)
++					this->bbt[offs + (act >> 3)] |= 0x3 << (act & 0x06);
++				else
++					this->bbt[offs + (act >> 3)] |= 0x1 << (act & 0x06);
++				mtd->ecc_stats.badblocks++;
++			}
++		}
++		totlen -= len;
++		from += len;
++	}
++	return 0;
++}
++
++/**
++ * read_abs_bbt - [GENERIC] Read the bad block table starting at a given page
++ * @mtd:	MTD device structure
++ * @buf:	temporary buffer
++ * @td:		descriptor for the bad block table
++ * @chip:	read the table for a specific chip, -1 read all chips.
++ *		Applies only if NAND_BBT_PERCHIP option is set
++ *
++ * Read the bad block table for all chips starting at a given page
++ * We assume that the bbt bits are in consecutive order.
++*/
++static int read_abs_bbt(struct mtd_info *mtd, uint8_t *buf, struct nand_bbt_descr *td, int chip)
++{
++	struct nand_chip *this = mtd->priv;
++	int res = 0, i;
++	int bits;
++
++	bits = td->options & NAND_BBT_NRBITS_MSK;
++	if (td->options & NAND_BBT_PERCHIP) {
++		int offs = 0;
++		for (i = 0; i < this->numchips; i++) {
++			if (chip == -1 || chip == i)
++				res = read_bbt (mtd, buf, td->pages[i], this->chipsize >> this->bbt_erase_shift, bits, offs, td->reserved_block_code);
++			if (res)
++				return res;
++			offs += this->chipsize >> (this->bbt_erase_shift + 2);
++		}
++	} else {
++		res = read_bbt (mtd, buf, td->pages[0], mtd->size >> this->bbt_erase_shift, bits, 0, td->reserved_block_code);
++		if (res)
++			return res;
++	}
++	return 0;
++}
 +
 +/*
-+ * UBI scanning unit.
-+ *
-+ * This unit is responsible for scanning the flash media, checking UBI
-+ * headers and providing complete information about the UBI flash image.
-+ *
-+ * The scanning information is represented by a &struct ubi_scan_info' object.
-+ * Information about found volumes is represented by &struct ubi_scan_volume
-+ * objects which are kept in volume RB-tree with root at the @volumes field.
-+ * The RB-tree is indexed by the volume ID.
-+ *
-+ * Found logical eraseblocks are represented by &struct ubi_scan_leb objects.
-+ * These objects are kept in per-volume RB-trees with the root at the
-+ * corresponding &struct ubi_scan_volume object. To put it differently, we keep
-+ * an RB-tree of per-volume objects and each of these objects is the root of
-+ * RB-tree of per-eraseblock objects.
-+ *
-+ * Corrupted physical eraseblocks are put to the @corr list, free physical
-+ * eraseblocks are put to the @free list and the physical eraseblock to be
-+ * erased are put to the @erase list.
++ * Scan read raw data from flash
 + */
-+
-+#ifdef UBI_LINUX
-+#include <linux/err.h>
-+#include <linux/crc32.h>
-+#include <asm/div64.h>
-+#endif
-+
-+#include "ubi-barebox.h"
-+#include "ubi.h"
-+
-+#ifdef CONFIG_MTD_UBI_DEBUG_PARANOID
-+static int paranoid_check_si(struct ubi_device *ubi, struct ubi_scan_info *si);
-+#else
-+#define paranoid_check_si(ubi, si) 0
-+#endif
-+
-+/* Temporary variables used during scanning */
-+static struct ubi_ec_hdr *ech;
-+static struct ubi_vid_hdr *vidh;
-+
-+/**
-+ * add_to_list - add physical eraseblock to a list.
-+ * @si: scanning information
-+ * @pnum: physical eraseblock number to add
-+ * @ec: erase counter of the physical eraseblock
-+ * @list: the list to add to
-+ *
-+ * This function adds physical eraseblock @pnum to free, erase, corrupted or
-+ * alien lists. Returns zero in case of success and a negative error code in
-+ * case of failure.
-+ */
-+static int add_to_list(struct ubi_scan_info *si, int pnum, int ec,
-+		       struct list_head *list)
++static int scan_read_raw(struct mtd_info *mtd, uint8_t *buf, loff_t offs,
++			 size_t len)
 +{
-+	struct ubi_scan_leb *seb;
++	struct mtd_oob_ops ops;
 +
-+	if (list == &si->free)
-+		dbg_bld("add to free: PEB %d, EC %d", pnum, ec);
-+	else if (list == &si->erase)
-+		dbg_bld("add to erase: PEB %d, EC %d", pnum, ec);
-+	else if (list == &si->corr)
-+		dbg_bld("add to corrupted: PEB %d, EC %d", pnum, ec);
-+	else if (list == &si->alien)
-+		dbg_bld("add to alien: PEB %d, EC %d", pnum, ec);
-+	else
-+		BUG();
++	ops.mode = MTD_OOB_RAW;
++	ops.ooboffs = 0;
++	ops.ooblen = mtd->oobsize;
++	ops.oobbuf = buf;
++	ops.datbuf = buf;
++	ops.len = len;
 +
-+	seb = kmalloc(sizeof(struct ubi_scan_leb), GFP_KERNEL);
-+	if (!seb)
-+		return -ENOMEM;
++	return mtd->read_oob(mtd, offs, &ops);
++}
 +
-+	seb->pnum = pnum;
-+	seb->ec = ec;
-+	list_add_tail(&seb->u.list, list);
-+	return 0;
++/*
++ * Scan write data with oob to flash
++ */
++static int scan_write_bbt(struct mtd_info *mtd, loff_t offs, size_t len,
++			  uint8_t *buf, uint8_t *oob)
++{
++	struct mtd_oob_ops ops;
++
++	ops.mode = MTD_OOB_PLACE;
++	ops.ooboffs = 0;
++	ops.ooblen = mtd->oobsize;
++	ops.datbuf = buf;
++	ops.oobbuf = oob;
++	ops.len = len;
++
++	return mtd->write_oob(mtd, offs, &ops);
 +}
 +
 +/**
-+ * validate_vid_hdr - check that volume identifier header is correct and
-+ * consistent.
-+ * @vid_hdr: the volume identifier header to check
-+ * @sv: information about the volume this logical eraseblock belongs to
-+ * @pnum: physical eraseblock number the VID header came from
++ * read_abs_bbts - [GENERIC] Read the bad block table(s) for all chips starting at a given page
++ * @mtd:	MTD device structure
++ * @buf:	temporary buffer
++ * @td:		descriptor for the bad block table
++ * @md:		descriptor for the bad block table mirror
 + *
-+ * This function checks that data stored in @vid_hdr is consistent. Returns
-+ * non-zero if an inconsistency was found and zero if not.
++ * Read the bad block table(s) for all chips starting at a given page
++ * We assume that the bbt bits are in consecutive order.
 + *
-+ * Note, UBI does sanity check of everything it reads from the flash media.
-+ * Most of the checks are done in the I/O unit. Here we check that the
-+ * information in the VID header is consistent to the information in other VID
-+ * headers of the same volume.
-+ */
-+static int validate_vid_hdr(const struct ubi_vid_hdr *vid_hdr,
-+			    const struct ubi_scan_volume *sv, int pnum)
++*/
++static int read_abs_bbts(struct mtd_info *mtd, uint8_t *buf,
++			 struct nand_bbt_descr *td, struct nand_bbt_descr *md)
 +{
-+	int vol_type = vid_hdr->vol_type;
-+	int vol_id = be32_to_cpu(vid_hdr->vol_id);
-+	int used_ebs = be32_to_cpu(vid_hdr->used_ebs);
-+	int data_pad = be32_to_cpu(vid_hdr->data_pad);
++	struct nand_chip *this = mtd->priv;
 +
-+	if (sv->leb_count != 0) {
-+		int sv_vol_type;
-+
-+		/*
-+		 * This is not the first logical eraseblock belonging to this
-+		 * volume. Ensure that the data in its VID header is consistent
-+		 * to the data in previous logical eraseblock headers.
-+		 */
-+
-+		if (vol_id != sv->vol_id) {
-+			dbg_err("inconsistent vol_id");
-+			goto bad;
-+		}
-+
-+		if (sv->vol_type == UBI_STATIC_VOLUME)
-+			sv_vol_type = UBI_VID_STATIC;
-+		else
-+			sv_vol_type = UBI_VID_DYNAMIC;
-+
-+		if (vol_type != sv_vol_type) {
-+			dbg_err("inconsistent vol_type");
-+			goto bad;
-+		}
-+
-+		if (used_ebs != sv->used_ebs) {
-+			dbg_err("inconsistent used_ebs");
-+			goto bad;
-+		}
-+
-+		if (data_pad != sv->data_pad) {
-+			dbg_err("inconsistent data_pad");
-+			goto bad;
-+		}
++	/* Read the primary version, if available */
++	if (td->options & NAND_BBT_VERSION) {
++		scan_read_raw(mtd, buf, td->pages[0] << this->page_shift,
++			      mtd->writesize);
++		td->version[0] = buf[mtd->writesize + td->veroffs];
++		printk(KERN_DEBUG "Bad block table at page %d, version 0x%02X\n",
++		       td->pages[0], td->version[0]);
 +	}
 +
-+	return 0;
-+
-+bad:
-+	ubi_err("inconsistent VID header at PEB %d", pnum);
-+	ubi_dbg_dump_vid_hdr(vid_hdr);
-+	ubi_dbg_dump_sv(sv);
-+	return -EINVAL;
-+}
-+
-+/**
-+ * add_volume - add volume to the scanning information.
-+ * @si: scanning information
-+ * @vol_id: ID of the volume to add
-+ * @pnum: physical eraseblock number
-+ * @vid_hdr: volume identifier header
-+ *
-+ * If the volume corresponding to the @vid_hdr logical eraseblock is already
-+ * present in the scanning information, this function does nothing. Otherwise
-+ * it adds corresponding volume to the scanning information. Returns a pointer
-+ * to the scanning volume object in case of success and a negative error code
-+ * in case of failure.
-+ */
-+static struct ubi_scan_volume *add_volume(struct ubi_scan_info *si, int vol_id,
-+					  int pnum,
-+					  const struct ubi_vid_hdr *vid_hdr)
-+{
-+	struct ubi_scan_volume *sv;
-+	struct rb_node **p = &si->volumes.rb_node, *parent = NULL;
-+
-+	ubi_assert(vol_id == be32_to_cpu(vid_hdr->vol_id));
-+
-+	/* Walk the volume RB-tree to look if this volume is already present */
-+	while (*p) {
-+		parent = *p;
-+		sv = rb_entry(parent, struct ubi_scan_volume, rb);
-+
-+		if (vol_id == sv->vol_id)
-+			return sv;
-+
-+		if (vol_id > sv->vol_id)
-+			p = &(*p)->rb_left;
-+		else
-+			p = &(*p)->rb_right;
++	/* Read the mirror version, if available */
++	if (md && (md->options & NAND_BBT_VERSION)) {
++		scan_read_raw(mtd, buf, md->pages[0] << this->page_shift,
++			      mtd->writesize);
++		md->version[0] = buf[mtd->writesize + md->veroffs];
++		printk(KERN_DEBUG "Bad block table at page %d, version 0x%02X\n",
++		       md->pages[0], md->version[0]);
 +	}
-+
-+	/* The volume is absent - add it */
-+	sv = kmalloc(sizeof(struct ubi_scan_volume), GFP_KERNEL);
-+	if (!sv)
-+		return ERR_PTR(-ENOMEM);
-+
-+	sv->highest_lnum = sv->leb_count = 0;
-+	sv->vol_id = vol_id;
-+	sv->root = RB_ROOT;
-+	sv->used_ebs = be32_to_cpu(vid_hdr->used_ebs);
-+	sv->data_pad = be32_to_cpu(vid_hdr->data_pad);
-+	sv->compat = vid_hdr->compat;
-+	sv->vol_type = vid_hdr->vol_type == UBI_VID_DYNAMIC ? UBI_DYNAMIC_VOLUME
-+							    : UBI_STATIC_VOLUME;
-+	if (vol_id > si->highest_vol_id)
-+		si->highest_vol_id = vol_id;
-+
-+	rb_link_node(&sv->rb, parent, p);
-+	rb_insert_color(&sv->rb, &si->volumes);
-+	si->vols_found += 1;
-+	dbg_bld("added volume %d", vol_id);
-+	return sv;
-+}
-+
-+/**
-+ * compare_lebs - find out which logical eraseblock is newer.
-+ * @ubi: UBI device description object
-+ * @seb: first logical eraseblock to compare
-+ * @pnum: physical eraseblock number of the second logical eraseblock to
-+ * compare
-+ * @vid_hdr: volume identifier header of the second logical eraseblock
-+ *
-+ * This function compares 2 copies of a LEB and informs which one is newer. In
-+ * case of success this function returns a positive value, in case of failure, a
-+ * negative error code is returned. The success return codes use the following
-+ * bits:
-+ *     o bit 0 is cleared: the first PEB (described by @seb) is newer then the
-+ *       second PEB (described by @pnum and @vid_hdr);
-+ *     o bit 0 is set: the second PEB is newer;
-+ *     o bit 1 is cleared: no bit-flips were detected in the newer LEB;
-+ *     o bit 1 is set: bit-flips were detected in the newer LEB;
-+ *     o bit 2 is cleared: the older LEB is not corrupted;
-+ *     o bit 2 is set: the older LEB is corrupted.
-+ */
-+static int compare_lebs(struct ubi_device *ubi, const struct ubi_scan_leb *seb,
-+			int pnum, const struct ubi_vid_hdr *vid_hdr)
-+{
-+	void *buf;
-+	int len, err, second_is_newer, bitflips = 0, corrupted = 0;
-+	uint32_t data_crc, crc;
-+	struct ubi_vid_hdr *vh = NULL;
-+	unsigned long long sqnum2 = be64_to_cpu(vid_hdr->sqnum);
-+
-+	if (seb->sqnum == 0 && sqnum2 == 0) {
-+		long long abs, v1 = seb->leb_ver, v2 = be32_to_cpu(vid_hdr->leb_ver);
-+
-+		/*
-+		 * UBI constantly increases the logical eraseblock version
-+		 * number and it can overflow. Thus, we have to bear in mind
-+		 * that versions that are close to %0xFFFFFFFF are less then
-+		 * versions that are close to %0.
-+		 *
-+		 * The UBI WL unit guarantees that the number of pending tasks
-+		 * is not greater then %0x7FFFFFFF. So, if the difference
-+		 * between any two versions is greater or equivalent to
-+		 * %0x7FFFFFFF, there was an overflow and the logical
-+		 * eraseblock with lower version is actually newer then the one
-+		 * with higher version.
-+		 *
-+		 * FIXME: but this is anyway obsolete and will be removed at
-+		 * some point.
-+		 */
-+		dbg_bld("using old crappy leb_ver stuff");
-+
-+		if (v1 == v2) {
-+			ubi_err("PEB %d and PEB %d have the same version %lld",
-+				seb->pnum, pnum, v1);
-+			return -EINVAL;
-+		}
-+
-+		abs = v1 - v2;
-+		if (abs < 0)
-+			abs = -abs;
-+
-+		if (abs < 0x7FFFFFFF)
-+			/* Non-overflow situation */
-+			second_is_newer = (v2 > v1);
-+		else
-+			second_is_newer = (v2 < v1);
-+	} else
-+		/* Obviously the LEB with lower sequence counter is older */
-+		second_is_newer = sqnum2 > seb->sqnum;
-+
-+	/*
-+	 * Now we know which copy is newer. If the copy flag of the PEB with
-+	 * newer version is not set, then we just return, otherwise we have to
-+	 * check data CRC. For the second PEB we already have the VID header,
-+	 * for the first one - we'll need to re-read it from flash.
-+	 *
-+	 * FIXME: this may be optimized so that we wouldn't read twice.
-+	 */
-+
-+	if (second_is_newer) {
-+		if (!vid_hdr->copy_flag) {
-+			/* It is not a copy, so it is newer */
-+			dbg_bld("second PEB %d is newer, copy_flag is unset",
-+				pnum);
-+			return 1;
-+		}
-+	} else {
-+		pnum = seb->pnum;
-+
-+		vh = ubi_zalloc_vid_hdr(ubi, GFP_KERNEL);
-+		if (!vh)
-+			return -ENOMEM;
-+
-+		err = ubi_io_read_vid_hdr(ubi, pnum, vh, 0);
-+		if (err) {
-+			if (err == UBI_IO_BITFLIPS)
-+				bitflips = 1;
-+			else {
-+				dbg_err("VID of PEB %d header is bad, but it "
-+					"was OK earlier", pnum);
-+				if (err > 0)
-+					err = -EIO;
-+
-+				goto out_free_vidh;
-+			}
-+		}
-+
-+		if (!vh->copy_flag) {
-+			/* It is not a copy, so it is newer */
-+			dbg_bld("first PEB %d is newer, copy_flag is unset",
-+				pnum);
-+			err = bitflips << 1;
-+			goto out_free_vidh;
-+		}
-+
-+		vid_hdr = vh;
-+	}
-+
-+	/* Read the data of the copy and check the CRC */
-+
-+	len = be32_to_cpu(vid_hdr->data_size);
-+	buf = vmalloc(len);
-+	if (!buf) {
-+		err = -ENOMEM;
-+		goto out_free_vidh;
-+	}
-+
-+	err = ubi_io_read_data(ubi, buf, pnum, 0, len);
-+	if (err && err != UBI_IO_BITFLIPS)
-+		goto out_free_buf;
-+
-+	data_crc = be32_to_cpu(vid_hdr->data_crc);
-+	crc = crc32(UBI_CRC32_INIT, buf, len);
-+	if (crc != data_crc) {
-+		dbg_bld("PEB %d CRC error: calculated %#08x, must be %#08x",
-+			pnum, crc, data_crc);
-+		corrupted = 1;
-+		bitflips = 0;
-+		second_is_newer = !second_is_newer;
-+	} else {
-+		dbg_bld("PEB %d CRC is OK", pnum);
-+		bitflips = !!err;
-+	}
-+
-+	vfree(buf);
-+	ubi_free_vid_hdr(ubi, vh);
-+
-+	if (second_is_newer)
-+		dbg_bld("second PEB %d is newer, copy_flag is set", pnum);
-+	else
-+		dbg_bld("first PEB %d is newer, copy_flag is set", pnum);
-+
-+	return second_is_newer | (bitflips << 1) | (corrupted << 2);
-+
-+out_free_buf:
-+	vfree(buf);
-+out_free_vidh:
-+	ubi_free_vid_hdr(ubi, vh);
-+	return err;
-+}
-+
-+/**
-+ * ubi_scan_add_used - add information about a physical eraseblock to the
-+ * scanning information.
-+ * @ubi: UBI device description object
-+ * @si: scanning information
-+ * @pnum: the physical eraseblock number
-+ * @ec: erase counter
-+ * @vid_hdr: the volume identifier header
-+ * @bitflips: if bit-flips were detected when this physical eraseblock was read
-+ *
-+ * This function adds information about a used physical eraseblock to the
-+ * 'used' tree of the corresponding volume. The function is rather complex
-+ * because it has to handle cases when this is not the first physical
-+ * eraseblock belonging to the same logical eraseblock, and the newer one has
-+ * to be picked, while the older one has to be dropped. This function returns
-+ * zero in case of success and a negative error code in case of failure.
-+ */
-+int ubi_scan_add_used(struct ubi_device *ubi, struct ubi_scan_info *si,
-+		      int pnum, int ec, const struct ubi_vid_hdr *vid_hdr,
-+		      int bitflips)
-+{
-+	int err, vol_id, lnum;
-+	uint32_t leb_ver;
-+	unsigned long long sqnum;
-+	struct ubi_scan_volume *sv;
-+	struct ubi_scan_leb *seb;
-+	struct rb_node **p, *parent = NULL;
-+
-+	vol_id = be32_to_cpu(vid_hdr->vol_id);
-+	lnum = be32_to_cpu(vid_hdr->lnum);
-+	sqnum = be64_to_cpu(vid_hdr->sqnum);
-+	leb_ver = be32_to_cpu(vid_hdr->leb_ver);
-+
-+	dbg_bld("PEB %d, LEB %d:%d, EC %d, sqnum %llu, ver %u, bitflips %d",
-+		pnum, vol_id, lnum, ec, sqnum, leb_ver, bitflips);
-+
-+	sv = add_volume(si, vol_id, pnum, vid_hdr);
-+	if (IS_ERR(sv) < 0)
-+		return PTR_ERR(sv);
-+
-+	if (si->max_sqnum < sqnum)
-+		si->max_sqnum = sqnum;
-+
-+	/*
-+	 * Walk the RB-tree of logical eraseblocks of volume @vol_id to look
-+	 * if this is the first instance of this logical eraseblock or not.
-+	 */
-+	p = &sv->root.rb_node;
-+	while (*p) {
-+		int cmp_res;
-+
-+		parent = *p;
-+		seb = rb_entry(parent, struct ubi_scan_leb, u.rb);
-+		if (lnum != seb->lnum) {
-+			if (lnum < seb->lnum)
-+				p = &(*p)->rb_left;
-+			else
-+				p = &(*p)->rb_right;
-+			continue;
-+		}
-+
-+		/*
-+		 * There is already a physical eraseblock describing the same
-+		 * logical eraseblock present.
-+		 */
-+
-+		dbg_bld("this LEB already exists: PEB %d, sqnum %llu, "
-+			"LEB ver %u, EC %d", seb->pnum, seb->sqnum,
-+			seb->leb_ver, seb->ec);
-+
-+		/*
-+		 * Make sure that the logical eraseblocks have different
-+		 * versions. Otherwise the image is bad.
-+		 */
-+		if (seb->leb_ver == leb_ver && leb_ver != 0) {
-+			ubi_err("two LEBs with same version %u", leb_ver);
-+			ubi_dbg_dump_seb(seb, 0);
-+			ubi_dbg_dump_vid_hdr(vid_hdr);
-+			return -EINVAL;
-+		}
-+
-+		/*
-+		 * Make sure that the logical eraseblocks have different
-+		 * sequence numbers. Otherwise the image is bad.
-+		 *
-+		 * FIXME: remove 'sqnum != 0' check when leb_ver is removed.
-+		 */
-+		if (seb->sqnum == sqnum && sqnum != 0) {
-+			ubi_err("two LEBs with same sequence number %llu",
-+				sqnum);
-+			ubi_dbg_dump_seb(seb, 0);
-+			ubi_dbg_dump_vid_hdr(vid_hdr);
-+			return -EINVAL;
-+		}
-+
-+		/*
-+		 * Now we have to drop the older one and preserve the newer
-+		 * one.
-+		 */
-+		cmp_res = compare_lebs(ubi, seb, pnum, vid_hdr);
-+		if (cmp_res < 0)
-+			return cmp_res;
-+
-+		if (cmp_res & 1) {
-+			/*
-+			 * This logical eraseblock is newer then the one
-+			 * found earlier.
-+			 */
-+			err = validate_vid_hdr(vid_hdr, sv, pnum);
-+			if (err)
-+				return err;
-+
-+			if (cmp_res & 4)
-+				err = add_to_list(si, seb->pnum, seb->ec,
-+						  &si->corr);
-+			else
-+				err = add_to_list(si, seb->pnum, seb->ec,
-+						  &si->erase);
-+			if (err)
-+				return err;
-+
-+			seb->ec = ec;
-+			seb->pnum = pnum;
-+			seb->scrub = ((cmp_res & 2) || bitflips);
-+			seb->sqnum = sqnum;
-+			seb->leb_ver = leb_ver;
-+
-+			if (sv->highest_lnum == lnum)
-+				sv->last_data_size =
-+					be32_to_cpu(vid_hdr->data_size);
-+
-+			return 0;
-+		} else {
-+			/*
-+			 * This logical eraseblock is older then the one found
-+			 * previously.
-+			 */
-+			if (cmp_res & 4)
-+				return add_to_list(si, pnum, ec, &si->corr);
-+			else
-+				return add_to_list(si, pnum, ec, &si->erase);
-+		}
-+	}
-+
-+	/*
-+	 * We've met this logical eraseblock for the first time, add it to the
-+	 * scanning information.
-+	 */
-+
-+	err = validate_vid_hdr(vid_hdr, sv, pnum);
-+	if (err)
-+		return err;
-+
-+	seb = kmalloc(sizeof(struct ubi_scan_leb), GFP_KERNEL);
-+	if (!seb)
-+		return -ENOMEM;
-+
-+	seb->ec = ec;
-+	seb->pnum = pnum;
-+	seb->lnum = lnum;
-+	seb->sqnum = sqnum;
-+	seb->scrub = bitflips;
-+	seb->leb_ver = leb_ver;
-+
-+	if (sv->highest_lnum <= lnum) {
-+		sv->highest_lnum = lnum;
-+		sv->last_data_size = be32_to_cpu(vid_hdr->data_size);
-+	}
-+
-+	sv->leb_count += 1;
-+	rb_link_node(&seb->u.rb, parent, p);
-+	rb_insert_color(&seb->u.rb, &sv->root);
-+	return 0;
-+}
-+
-+/**
-+ * ubi_scan_find_sv - find information about a particular volume in the
-+ * scanning information.
-+ * @si: scanning information
-+ * @vol_id: the requested volume ID
-+ *
-+ * This function returns a pointer to the volume description or %NULL if there
-+ * are no data about this volume in the scanning information.
-+ */
-+struct ubi_scan_volume *ubi_scan_find_sv(const struct ubi_scan_info *si,
-+					 int vol_id)
-+{
-+	struct ubi_scan_volume *sv;
-+	struct rb_node *p = si->volumes.rb_node;
-+
-+	while (p) {
-+		sv = rb_entry(p, struct ubi_scan_volume, rb);
-+
-+		if (vol_id == sv->vol_id)
-+			return sv;
-+
-+		if (vol_id > sv->vol_id)
-+			p = p->rb_left;
-+		else
-+			p = p->rb_right;
-+	}
-+
-+	return NULL;
-+}
-+
-+/**
-+ * ubi_scan_find_seb - find information about a particular logical
-+ * eraseblock in the volume scanning information.
-+ * @sv: a pointer to the volume scanning information
-+ * @lnum: the requested logical eraseblock
-+ *
-+ * This function returns a pointer to the scanning logical eraseblock or %NULL
-+ * if there are no data about it in the scanning volume information.
-+ */
-+struct ubi_scan_leb *ubi_scan_find_seb(const struct ubi_scan_volume *sv,
-+				       int lnum)
-+{
-+	struct ubi_scan_leb *seb;
-+	struct rb_node *p = sv->root.rb_node;
-+
-+	while (p) {
-+		seb = rb_entry(p, struct ubi_scan_leb, u.rb);
-+
-+		if (lnum == seb->lnum)
-+			return seb;
-+
-+		if (lnum > seb->lnum)
-+			p = p->rb_left;
-+		else
-+			p = p->rb_right;
-+	}
-+
-+	return NULL;
-+}
-+
-+/**
-+ * ubi_scan_rm_volume - delete scanning information about a volume.
-+ * @si: scanning information
-+ * @sv: the volume scanning information to delete
-+ */
-+void ubi_scan_rm_volume(struct ubi_scan_info *si, struct ubi_scan_volume *sv)
-+{
-+	struct rb_node *rb;
-+	struct ubi_scan_leb *seb;
-+
-+	dbg_bld("remove scanning information about volume %d", sv->vol_id);
-+
-+	while ((rb = rb_first(&sv->root))) {
-+		seb = rb_entry(rb, struct ubi_scan_leb, u.rb);
-+		rb_erase(&seb->u.rb, &sv->root);
-+		list_add_tail(&seb->u.list, &si->erase);
-+	}
-+
-+	rb_erase(&sv->rb, &si->volumes);
-+	kfree(sv);
-+	si->vols_found -= 1;
-+}
-+
-+/**
-+ * ubi_scan_erase_peb - erase a physical eraseblock.
-+ * @ubi: UBI device description object
-+ * @si: scanning information
-+ * @pnum: physical eraseblock number to erase;
-+ * @ec: erase counter value to write (%UBI_SCAN_UNKNOWN_EC if it is unknown)
-+ *
-+ * This function erases physical eraseblock 'pnum', and writes the erase
-+ * counter header to it. This function should only be used on UBI device
-+ * initialization stages, when the EBA unit had not been yet initialized. This
-+ * function returns zero in case of success and a negative error code in case
-+ * of failure.
-+ */
-+int ubi_scan_erase_peb(struct ubi_device *ubi, const struct ubi_scan_info *si,
-+		       int pnum, int ec)
-+{
-+	int err;
-+	struct ubi_ec_hdr *ec_hdr;
-+
-+	if ((long long)ec >= UBI_MAX_ERASECOUNTER) {
-+		/*
-+		 * Erase counter overflow. Upgrade UBI and use 64-bit
-+		 * erase counters internally.
-+		 */
-+		ubi_err("erase counter overflow at PEB %d, EC %d", pnum, ec);
-+		return -EINVAL;
-+	}
-+
-+	ec_hdr = kzalloc(ubi->ec_hdr_alsize, GFP_KERNEL);
-+	if (!ec_hdr)
-+		return -ENOMEM;
-+
-+	ec_hdr->ec = cpu_to_be64(ec);
-+
-+	err = ubi_io_sync_erase(ubi, pnum, 0);
-+	if (err < 0)
-+		goto out_free;
-+
-+	err = ubi_io_write_ec_hdr(ubi, pnum, ec_hdr);
-+
-+out_free:
-+	kfree(ec_hdr);
-+	return err;
-+}
-+
-+/**
-+ * ubi_scan_get_free_peb - get a free physical eraseblock.
-+ * @ubi: UBI device description object
-+ * @si: scanning information
-+ *
-+ * This function returns a free physical eraseblock. It is supposed to be
-+ * called on the UBI initialization stages when the wear-leveling unit is not
-+ * initialized yet. This function picks a physical eraseblocks from one of the
-+ * lists, writes the EC header if it is needed, and removes it from the list.
-+ *
-+ * This function returns scanning physical eraseblock information in case of
-+ * success and an error code in case of failure.
-+ */
-+struct ubi_scan_leb *ubi_scan_get_free_peb(struct ubi_device *ubi,
-+					   struct ubi_scan_info *si)
-+{
-+	int err = 0, i;
-+	struct ubi_scan_leb *seb;
-+
-+	if (!list_empty(&si->free)) {
-+		seb = list_entry(si->free.next, struct ubi_scan_leb, u.list);
-+		list_del(&seb->u.list);
-+		dbg_bld("return free PEB %d, EC %d", seb->pnum, seb->ec);
-+		return seb;
-+	}
-+
-+	for (i = 0; i < 2; i++) {
-+		struct list_head *head;
-+		struct ubi_scan_leb *tmp_seb;
-+
-+		if (i == 0)
-+			head = &si->erase;
-+		else
-+			head = &si->corr;
-+
-+		/*
-+		 * We try to erase the first physical eraseblock from the @head
-+		 * list and pick it if we succeed, or try to erase the
-+		 * next one if not. And so forth. We don't want to take care
-+		 * about bad eraseblocks here - they'll be handled later.
-+		 */
-+		list_for_each_entry_safe(seb, tmp_seb, head, u.list) {
-+			if (seb->ec == UBI_SCAN_UNKNOWN_EC)
-+				seb->ec = si->mean_ec;
-+
-+			err = ubi_scan_erase_peb(ubi, si, seb->pnum, seb->ec+1);
-+			if (err)
-+				continue;
-+
-+			seb->ec += 1;
-+			list_del(&seb->u.list);
-+			dbg_bld("return PEB %d, EC %d", seb->pnum, seb->ec);
-+			return seb;
-+		}
-+	}
-+
-+	ubi_err("no eraseblocks found");
-+	return ERR_PTR(-ENOSPC);
-+}
-+
-+/**
-+ * process_eb - read UBI headers, check them and add corresponding data
-+ * to the scanning information.
-+ * @ubi: UBI device description object
-+ * @si: scanning information
-+ * @pnum: the physical eraseblock number
-+ *
-+ * This function returns a zero if the physical eraseblock was successfully
-+ * handled and a negative error code in case of failure.
-+ */
-+static int process_eb(struct ubi_device *ubi, struct ubi_scan_info *si, int pnum)
-+{
-+	long long uninitialized_var(ec);
-+	int err, bitflips = 0, vol_id, ec_corr = 0;
-+
-+	dbg_bld("scan PEB %d", pnum);
-+
-+	/* Skip bad physical eraseblocks */
-+	err = ubi_io_is_bad(ubi, pnum);
-+	if (err < 0)
-+		return err;
-+	else if (err) {
-+		/*
-+		 * FIXME: this is actually duty of the I/O unit to initialize
-+		 * this, but MTD does not provide enough information.
-+		 */
-+		si->bad_peb_count += 1;
-+		return 0;
-+	}
-+
-+	err = ubi_io_read_ec_hdr(ubi, pnum, ech, 0);
-+	if (err < 0)
-+		return err;
-+	else if (err == UBI_IO_BITFLIPS)
-+		bitflips = 1;
-+	else if (err == UBI_IO_PEB_EMPTY)
-+		return add_to_list(si, pnum, UBI_SCAN_UNKNOWN_EC, &si->erase);
-+	else if (err == UBI_IO_BAD_EC_HDR) {
-+		/*
-+		 * We have to also look at the VID header, possibly it is not
-+		 * corrupted. Set %bitflips flag in order to make this PEB be
-+		 * moved and EC be re-created.
-+		 */
-+		ec_corr = 1;
-+		ec = UBI_SCAN_UNKNOWN_EC;
-+		bitflips = 1;
-+	}
-+
-+	si->is_empty = 0;
-+
-+	if (!ec_corr) {
-+		/* Make sure UBI version is OK */
-+		if (ech->version != UBI_VERSION) {
-+			ubi_err("this UBI version is %d, image version is %d",
-+				UBI_VERSION, (int)ech->version);
-+			return -EINVAL;
-+		}
-+
-+		ec = be64_to_cpu(ech->ec);
-+		if (ec > UBI_MAX_ERASECOUNTER) {
-+			/*
-+			 * Erase counter overflow. The EC headers have 64 bits
-+			 * reserved, but we anyway make use of only 31 bit
-+			 * values, as this seems to be enough for any existing
-+			 * flash. Upgrade UBI and use 64-bit erase counters
-+			 * internally.
-+			 */
-+			ubi_err("erase counter overflow, max is %d",
-+				UBI_MAX_ERASECOUNTER);
-+			ubi_dbg_dump_ec_hdr(ech);
-+			return -EINVAL;
-+		}
-+	}
-+
-+	/* OK, we've done with the EC header, let's look at the VID header */
-+
-+	err = ubi_io_read_vid_hdr(ubi, pnum, vidh, 0);
-+	if (err < 0)
-+		return err;
-+	else if (err == UBI_IO_BITFLIPS)
-+		bitflips = 1;
-+	else if (err == UBI_IO_BAD_VID_HDR ||
-+		 (err == UBI_IO_PEB_FREE && ec_corr)) {
-+		/* VID header is corrupted */
-+		err = add_to_list(si, pnum, ec, &si->corr);
-+		if (err)
-+			return err;
-+		goto adjust_mean_ec;
-+	} else if (err == UBI_IO_PEB_FREE) {
-+		/* No VID header - the physical eraseblock is free */
-+		err = add_to_list(si, pnum, ec, &si->free);
-+		if (err)
-+			return err;
-+		goto adjust_mean_ec;
-+	}
-+
-+	vol_id = be32_to_cpu(vidh->vol_id);
-+	if (vol_id > UBI_MAX_VOLUMES && vol_id != UBI_LAYOUT_VOLUME_ID) {
-+		int lnum = be32_to_cpu(vidh->lnum);
-+
-+		/* Unsupported internal volume */
-+		switch (vidh->compat) {
-+		case UBI_COMPAT_DELETE:
-+			ubi_msg("\"delete\" compatible internal volume %d:%d"
-+				" found, remove it", vol_id, lnum);
-+			err = add_to_list(si, pnum, ec, &si->corr);
-+			if (err)
-+				return err;
-+			break;
-+
-+		case UBI_COMPAT_RO:
-+			ubi_msg("read-only compatible internal volume %d:%d"
-+				" found, switch to read-only mode",
-+				vol_id, lnum);
-+			ubi->ro_mode = 1;
-+			break;
-+
-+		case UBI_COMPAT_PRESERVE:
-+			ubi_msg("\"preserve\" compatible internal volume %d:%d"
-+				" found", vol_id, lnum);
-+			err = add_to_list(si, pnum, ec, &si->alien);
-+			if (err)
-+				return err;
-+			si->alien_peb_count += 1;
-+			return 0;
-+
-+		case UBI_COMPAT_REJECT:
-+			ubi_err("incompatible internal volume %d:%d found",
-+				vol_id, lnum);
-+			return -EINVAL;
-+		}
-+	}
-+
-+	/* Both UBI headers seem to be fine */
-+	err = ubi_scan_add_used(ubi, si, pnum, ec, vidh, bitflips);
-+	if (err)
-+		return err;
-+
-+adjust_mean_ec:
-+	if (!ec_corr) {
-+		si->ec_sum += ec;
-+		si->ec_count += 1;
-+		if (ec > si->max_ec)
-+			si->max_ec = ec;
-+		if (ec < si->min_ec)
-+			si->min_ec = ec;
-+	}
-+
-+	return 0;
-+}
-+
-+/**
-+ * ubi_scan - scan an MTD device.
-+ * @ubi: UBI device description object
-+ *
-+ * This function does full scanning of an MTD device and returns complete
-+ * information about it. In case of failure, an error code is returned.
-+ */
-+struct ubi_scan_info *ubi_scan(struct ubi_device *ubi)
-+{
-+	int err, pnum;
-+	struct rb_node *rb1, *rb2;
-+	struct ubi_scan_volume *sv;
-+	struct ubi_scan_leb *seb;
-+	struct ubi_scan_info *si;
-+
-+	si = kzalloc(sizeof(struct ubi_scan_info), GFP_KERNEL);
-+	if (!si)
-+		return ERR_PTR(-ENOMEM);
-+
-+	INIT_LIST_HEAD(&si->corr);
-+	INIT_LIST_HEAD(&si->free);
-+	INIT_LIST_HEAD(&si->erase);
-+	INIT_LIST_HEAD(&si->alien);
-+	si->volumes = RB_ROOT;
-+	si->is_empty = 1;
-+
-+	err = -ENOMEM;
-+	ech = kzalloc(ubi->ec_hdr_alsize, GFP_KERNEL);
-+	if (!ech)
-+		goto out_si;
-+
-+	vidh = ubi_zalloc_vid_hdr(ubi, GFP_KERNEL);
-+	if (!vidh)
-+		goto out_ech;
-+
-+	for (pnum = 0; pnum < ubi->peb_count; pnum++) {
-+		cond_resched();
-+
-+//		dbg_msg("process PEB %d", pnum);
-+		err = process_eb(ubi, si, pnum);
-+		if(err < 0)
-+			printf("err: %d\n", err);
-+		if (err < 0)
-+			goto out_vidh;
-+	}
-+
-+	dbg_msg("scanning is finished");
-+
-+	/* Calculate mean erase counter */
-+	if (si->ec_count) {
-+		do_div(si->ec_sum, si->ec_count);
-+		si->mean_ec = si->ec_sum;
-+	}
-+
-+	if (si->is_empty)
-+		ubi_msg("empty MTD device detected");
-+
-+	/*
-+	 * In case of unknown erase counter we use the mean erase counter
-+	 * value.
-+	 */
-+	ubi_rb_for_each_entry(rb1, sv, &si->volumes, rb) {
-+		ubi_rb_for_each_entry(rb2, seb, &sv->root, u.rb)
-+			if (seb->ec == UBI_SCAN_UNKNOWN_EC)
-+				seb->ec = si->mean_ec;
-+	}
-+
-+	list_for_each_entry(seb, &si->free, u.list) {
-+		if (seb->ec == UBI_SCAN_UNKNOWN_EC)
-+			seb->ec = si->mean_ec;
-+	}
-+
-+	list_for_each_entry(seb, &si->corr, u.list)
-+		if (seb->ec == UBI_SCAN_UNKNOWN_EC)
-+			seb->ec = si->mean_ec;
-+
-+	list_for_each_entry(seb, &si->erase, u.list)
-+		if (seb->ec == UBI_SCAN_UNKNOWN_EC)
-+			seb->ec = si->mean_ec;
-+
-+	err = paranoid_check_si(ubi, si);
-+	if (err) {
-+		if (err > 0)
-+			err = -EINVAL;
-+		goto out_vidh;
-+	}
-+
-+	ubi_free_vid_hdr(ubi, vidh);
-+	kfree(ech);
-+
-+	return si;
-+
-+out_vidh:
-+	ubi_free_vid_hdr(ubi, vidh);
-+out_ech:
-+	kfree(ech);
-+out_si:
-+	ubi_scan_destroy_si(si);
-+	return ERR_PTR(err);
-+}
-+
-+/**
-+ * destroy_sv - free the scanning volume information
-+ * @sv: scanning volume information
-+ *
-+ * This function destroys the volume RB-tree (@sv->root) and the scanning
-+ * volume information.
-+ */
-+static void destroy_sv(struct ubi_scan_volume *sv)
-+{
-+	struct ubi_scan_leb *seb;
-+	struct rb_node *this = sv->root.rb_node;
-+
-+	while (this) {
-+		if (this->rb_left)
-+			this = this->rb_left;
-+		else if (this->rb_right)
-+			this = this->rb_right;
-+		else {
-+			seb = rb_entry(this, struct ubi_scan_leb, u.rb);
-+			this = rb_parent(this);
-+			if (this) {
-+				if (this->rb_left == &seb->u.rb)
-+					this->rb_left = NULL;
-+				else
-+					this->rb_right = NULL;
-+			}
-+
-+			kfree(seb);
-+		}
-+	}
-+	kfree(sv);
-+}
-+
-+/**
-+ * ubi_scan_destroy_si - destroy scanning information.
-+ * @si: scanning information
-+ */
-+void ubi_scan_destroy_si(struct ubi_scan_info *si)
-+{
-+	struct ubi_scan_leb *seb, *seb_tmp;
-+	struct ubi_scan_volume *sv;
-+	struct rb_node *rb;
-+
-+	list_for_each_entry_safe(seb, seb_tmp, &si->alien, u.list) {
-+		list_del(&seb->u.list);
-+		kfree(seb);
-+	}
-+	list_for_each_entry_safe(seb, seb_tmp, &si->erase, u.list) {
-+		list_del(&seb->u.list);
-+		kfree(seb);
-+	}
-+	list_for_each_entry_safe(seb, seb_tmp, &si->corr, u.list) {
-+		list_del(&seb->u.list);
-+		kfree(seb);
-+	}
-+	list_for_each_entry_safe(seb, seb_tmp, &si->free, u.list) {
-+		list_del(&seb->u.list);
-+		kfree(seb);
-+	}
-+
-+	/* Destroy the volume RB-tree */
-+	rb = si->volumes.rb_node;
-+	while (rb) {
-+		if (rb->rb_left)
-+			rb = rb->rb_left;
-+		else if (rb->rb_right)
-+			rb = rb->rb_right;
-+		else {
-+			sv = rb_entry(rb, struct ubi_scan_volume, rb);
-+
-+			rb = rb_parent(rb);
-+			if (rb) {
-+				if (rb->rb_left == &sv->rb)
-+					rb->rb_left = NULL;
-+				else
-+					rb->rb_right = NULL;
-+			}
-+
-+			destroy_sv(sv);
-+		}
-+	}
-+
-+	kfree(si);
-+}
-+
-+#ifdef CONFIG_MTD_UBI_DEBUG_PARANOID
-+
-+/**
-+ * paranoid_check_si - check if the scanning information is correct and
-+ * consistent.
-+ * @ubi: UBI device description object
-+ * @si: scanning information
-+ *
-+ * This function returns zero if the scanning information is all right, %1 if
-+ * not and a negative error code if an error occurred.
-+ */
-+static int paranoid_check_si(struct ubi_device *ubi, struct ubi_scan_info *si)
-+{
-+	int pnum, err, vols_found = 0;
-+	struct rb_node *rb1, *rb2;
-+	struct ubi_scan_volume *sv;
-+	struct ubi_scan_leb *seb, *last_seb;
-+	uint8_t *buf;
-+
-+	/*
-+	 * At first, check that scanning information is OK.
-+	 */
-+	ubi_rb_for_each_entry(rb1, sv, &si->volumes, rb) {
-+		int leb_count = 0;
-+
-+		cond_resched();
-+
-+		vols_found += 1;
-+
-+		if (si->is_empty) {
-+			ubi_err("bad is_empty flag");
-+			goto bad_sv;
-+		}
-+
-+		if (sv->vol_id < 0 || sv->highest_lnum < 0 ||
-+		    sv->leb_count < 0 || sv->vol_type < 0 || sv->used_ebs < 0 ||
-+		    sv->data_pad < 0 || sv->last_data_size < 0) {
-+			ubi_err("negative values");
-+			goto bad_sv;
-+		}
-+
-+		if (sv->vol_id >= UBI_MAX_VOLUMES &&
-+		    sv->vol_id < UBI_INTERNAL_VOL_START) {
-+			ubi_err("bad vol_id");
-+			goto bad_sv;
-+		}
-+
-+		if (sv->vol_id > si->highest_vol_id) {
-+			ubi_err("highest_vol_id is %d, but vol_id %d is there",
-+				si->highest_vol_id, sv->vol_id);
-+			goto out;
-+		}
-+
-+		if (sv->vol_type != UBI_DYNAMIC_VOLUME &&
-+		    sv->vol_type != UBI_STATIC_VOLUME) {
-+			ubi_err("bad vol_type");
-+			goto bad_sv;
-+		}
-+
-+		if (sv->data_pad > ubi->leb_size / 2) {
-+			ubi_err("bad data_pad");
-+			goto bad_sv;
-+		}
-+
-+		last_seb = NULL;
-+		ubi_rb_for_each_entry(rb2, seb, &sv->root, u.rb) {
-+			cond_resched();
-+
-+			last_seb = seb;
-+			leb_count += 1;
-+
-+			if (seb->pnum < 0 || seb->ec < 0) {
-+				ubi_err("negative values");
-+				goto bad_seb;
-+			}
-+
-+			if (seb->ec < si->min_ec) {
-+				ubi_err("bad si->min_ec (%d), %d found",
-+					si->min_ec, seb->ec);
-+				goto bad_seb;
-+			}
-+
-+			if (seb->ec > si->max_ec) {
-+				ubi_err("bad si->max_ec (%d), %d found",
-+					si->max_ec, seb->ec);
-+				goto bad_seb;
-+			}
-+
-+			if (seb->pnum >= ubi->peb_count) {
-+				ubi_err("too high PEB number %d, total PEBs %d",
-+					seb->pnum, ubi->peb_count);
-+				goto bad_seb;
-+			}
-+
-+			if (sv->vol_type == UBI_STATIC_VOLUME) {
-+				if (seb->lnum >= sv->used_ebs) {
-+					ubi_err("bad lnum or used_ebs");
-+					goto bad_seb;
-+				}
-+			} else {
-+				if (sv->used_ebs != 0) {
-+					ubi_err("non-zero used_ebs");
-+					goto bad_seb;
-+				}
-+			}
-+
-+			if (seb->lnum > sv->highest_lnum) {
-+				ubi_err("incorrect highest_lnum or lnum");
-+				goto bad_seb;
-+			}
-+		}
-+
-+		if (sv->leb_count != leb_count) {
-+			ubi_err("bad leb_count, %d objects in the tree",
-+				leb_count);
-+			goto bad_sv;
-+		}
-+
-+		if (!last_seb)
-+			continue;
-+
-+		seb = last_seb;
-+
-+		if (seb->lnum != sv->highest_lnum) {
-+			ubi_err("bad highest_lnum");
-+			goto bad_seb;
-+		}
-+	}
-+
-+	if (vols_found != si->vols_found) {
-+		ubi_err("bad si->vols_found %d, should be %d",
-+			si->vols_found, vols_found);
-+		goto out;
-+	}
-+
-+	/* Check that scanning information is correct */
-+	ubi_rb_for_each_entry(rb1, sv, &si->volumes, rb) {
-+		last_seb = NULL;
-+		ubi_rb_for_each_entry(rb2, seb, &sv->root, u.rb) {
-+			int vol_type;
-+
-+			cond_resched();
-+
-+			last_seb = seb;
-+
-+			err = ubi_io_read_vid_hdr(ubi, seb->pnum, vidh, 1);
-+			if (err && err != UBI_IO_BITFLIPS) {
-+				ubi_err("VID header is not OK (%d)", err);
-+				if (err > 0)
-+					err = -EIO;
-+				return err;
-+			}
-+
-+			vol_type = vidh->vol_type == UBI_VID_DYNAMIC ?
-+				   UBI_DYNAMIC_VOLUME : UBI_STATIC_VOLUME;
-+			if (sv->vol_type != vol_type) {
-+				ubi_err("bad vol_type");
-+				goto bad_vid_hdr;
-+			}
-+
-+			if (seb->sqnum != be64_to_cpu(vidh->sqnum)) {
-+				ubi_err("bad sqnum %llu", seb->sqnum);
-+				goto bad_vid_hdr;
-+			}
-+
-+			if (sv->vol_id != be32_to_cpu(vidh->vol_id)) {
-+				ubi_err("bad vol_id %d", sv->vol_id);
-+				goto bad_vid_hdr;
-+			}
-+
-+			if (sv->compat != vidh->compat) {
-+				ubi_err("bad compat %d", vidh->compat);
-+				goto bad_vid_hdr;
-+			}
-+
-+			if (seb->lnum != be32_to_cpu(vidh->lnum)) {
-+				ubi_err("bad lnum %d", seb->lnum);
-+				goto bad_vid_hdr;
-+			}
-+
-+			if (sv->used_ebs != be32_to_cpu(vidh->used_ebs)) {
-+				ubi_err("bad used_ebs %d", sv->used_ebs);
-+				goto bad_vid_hdr;
-+			}
-+
-+			if (sv->data_pad != be32_to_cpu(vidh->data_pad)) {
-+				ubi_err("bad data_pad %d", sv->data_pad);
-+				goto bad_vid_hdr;
-+			}
-+
-+			if (seb->leb_ver != be32_to_cpu(vidh->leb_ver)) {
-+				ubi_err("bad leb_ver %u", seb->leb_ver);
-+				goto bad_vid_hdr;
-+			}
-+		}
-+
-+		if (!last_seb)
-+			continue;
-+
-+		if (sv->highest_lnum != be32_to_cpu(vidh->lnum)) {
-+			ubi_err("bad highest_lnum %d", sv->highest_lnum);
-+			goto bad_vid_hdr;
-+		}
-+
-+		if (sv->last_data_size != be32_to_cpu(vidh->data_size)) {
-+			ubi_err("bad last_data_size %d", sv->last_data_size);
-+			goto bad_vid_hdr;
-+		}
-+	}
-+
-+	/*
-+	 * Make sure that all the physical eraseblocks are in one of the lists
-+	 * or trees.
-+	 */
-+	buf = kzalloc(ubi->peb_count, GFP_KERNEL);
-+	if (!buf)
-+		return -ENOMEM;
-+
-+	for (pnum = 0; pnum < ubi->peb_count; pnum++) {
-+		err = ubi_io_is_bad(ubi, pnum);
-+		if (err < 0) {
-+			kfree(buf);
-+			return err;
-+		}
-+		else if (err)
-+			buf[pnum] = 1;
-+	}
-+
-+	ubi_rb_for_each_entry(rb1, sv, &si->volumes, rb)
-+		ubi_rb_for_each_entry(rb2, seb, &sv->root, u.rb)
-+			buf[seb->pnum] = 1;
-+
-+	list_for_each_entry(seb, &si->free, u.list)
-+		buf[seb->pnum] = 1;
-+
-+	list_for_each_entry(seb, &si->corr, u.list)
-+		buf[seb->pnum] = 1;
-+
-+	list_for_each_entry(seb, &si->erase, u.list)
-+		buf[seb->pnum] = 1;
-+
-+	list_for_each_entry(seb, &si->alien, u.list)
-+		buf[seb->pnum] = 1;
-+
-+	err = 0;
-+	for (pnum = 0; pnum < ubi->peb_count; pnum++)
-+		if (!buf[pnum]) {
-+			ubi_err("PEB %d is not referred", pnum);
-+			err = 1;
-+		}
-+
-+	kfree(buf);
-+	if (err)
-+		goto out;
-+	return 0;
-+
-+bad_seb:
-+	ubi_err("bad scanning information about LEB %d", seb->lnum);
-+	ubi_dbg_dump_seb(seb, 0);
-+	ubi_dbg_dump_sv(sv);
-+	goto out;
-+
-+bad_sv:
-+	ubi_err("bad scanning information about volume %d", sv->vol_id);
-+	ubi_dbg_dump_sv(sv);
-+	goto out;
-+
-+bad_vid_hdr:
-+	ubi_err("bad scanning information about volume %d", sv->vol_id);
-+	ubi_dbg_dump_sv(sv);
-+	ubi_dbg_dump_vid_hdr(vidh);
-+
-+out:
-+	ubi_dbg_dump_stack();
 +	return 1;
 +}
 +
-+#endif /* CONFIG_MTD_UBI_DEBUG_PARANOID */
-diff --git a/drivers/mtd/ubi/scan.h b/drivers/mtd/ubi/scan.h
-new file mode 100644
-index 0000000..966b9b6
---- /dev/null
-+++ b/drivers/mtd/ubi/scan.h
-@@ -0,0 +1,165 @@
 +/*
-+ * Copyright (c) International Business Machines Corp., 2006
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
-+ * the GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-+ *
-+ * Author: Artem Bityutskiy (���������������� ����������)
++ * Scan a given block full
 + */
-+
-+#ifndef __UBI_SCAN_H__
-+#define __UBI_SCAN_H__
-+
-+/* The erase counter value for this physical eraseblock is unknown */
-+#define UBI_SCAN_UNKNOWN_EC (-1)
-+
-+/**
-+ * struct ubi_scan_leb - scanning information about a physical eraseblock.
-+ * @ec: erase counter (%UBI_SCAN_UNKNOWN_EC if it is unknown)
-+ * @pnum: physical eraseblock number
-+ * @lnum: logical eraseblock number
-+ * @scrub: if this physical eraseblock needs scrubbing
-+ * @sqnum: sequence number
-+ * @u: unions RB-tree or @list links
-+ * @u.rb: link in the per-volume RB-tree of &struct ubi_scan_leb objects
-+ * @u.list: link in one of the eraseblock lists
-+ * @leb_ver: logical eraseblock version (obsolete)
-+ *
-+ * One object of this type is allocated for each physical eraseblock during
-+ * scanning.
-+ */
-+struct ubi_scan_leb {
-+	int ec;
-+	int pnum;
-+	int lnum;
-+	int scrub;
-+	unsigned long long sqnum;
-+	union {
-+		struct rb_node rb;
-+		struct list_head list;
-+	} u;
-+	uint32_t leb_ver;
-+};
-+
-+/**
-+ * struct ubi_scan_volume - scanning information about a volume.
-+ * @vol_id: volume ID
-+ * @highest_lnum: highest logical eraseblock number in this volume
-+ * @leb_count: number of logical eraseblocks in this volume
-+ * @vol_type: volume type
-+ * @used_ebs: number of used logical eraseblocks in this volume (only for
-+ * static volumes)
-+ * @last_data_size: amount of data in the last logical eraseblock of this
-+ * volume (always equivalent to the usable logical eraseblock size in case of
-+ * dynamic volumes)
-+ * @data_pad: how many bytes at the end of logical eraseblocks of this volume
-+ * are not used (due to volume alignment)
-+ * @compat: compatibility flags of this volume
-+ * @rb: link in the volume RB-tree
-+ * @root: root of the RB-tree containing all the eraseblock belonging to this
-+ * volume (&struct ubi_scan_leb objects)
-+ *
-+ * One object of this type is allocated for each volume during scanning.
-+ */
-+struct ubi_scan_volume {
-+	int vol_id;
-+	int highest_lnum;
-+	int leb_count;
-+	int vol_type;
-+	int used_ebs;
-+	int last_data_size;
-+	int data_pad;
-+	int compat;
-+	struct rb_node rb;
-+	struct rb_root root;
-+};
-+
-+/**
-+ * struct ubi_scan_info - UBI scanning information.
-+ * @volumes: root of the volume RB-tree
-+ * @corr: list of corrupted physical eraseblocks
-+ * @free: list of free physical eraseblocks
-+ * @erase: list of physical eraseblocks which have to be erased
-+ * @alien: list of physical eraseblocks which should not be used by UBI (e.g.,
-+ * @bad_peb_count: count of bad physical eraseblocks
-+ * those belonging to "preserve"-compatible internal volumes)
-+ * @vols_found: number of volumes found during scanning
-+ * @highest_vol_id: highest volume ID
-+ * @alien_peb_count: count of physical eraseblocks in the @alien list
-+ * @is_empty: flag indicating whether the MTD device is empty or not
-+ * @min_ec: lowest erase counter value
-+ * @max_ec: highest erase counter value
-+ * @max_sqnum: highest sequence number value
-+ * @mean_ec: mean erase counter value
-+ * @ec_sum: a temporary variable used when calculating @mean_ec
-+ * @ec_count: a temporary variable used when calculating @mean_ec
-+ *
-+ * This data structure contains the result of scanning and may be used by other
-+ * UBI units to build final UBI data structures, further error-recovery and so
-+ * on.
-+ */
-+struct ubi_scan_info {
-+	struct rb_root volumes;
-+	struct list_head corr;
-+	struct list_head free;
-+	struct list_head erase;
-+	struct list_head alien;
-+	int bad_peb_count;
-+	int vols_found;
-+	int highest_vol_id;
-+	int alien_peb_count;
-+	int is_empty;
-+	int min_ec;
-+	int max_ec;
-+	unsigned long long max_sqnum;
-+	int mean_ec;
-+	uint64_t ec_sum;
-+	int ec_count;
-+};
-+
-+struct ubi_device;
-+struct ubi_vid_hdr;
-+
-+/*
-+ * ubi_scan_move_to_list - move a physical eraseblock from the volume tree to a
-+ * list.
-+ *
-+ * @sv: volume scanning information
-+ * @seb: scanning eraseblock infprmation
-+ * @list: the list to move to
-+ */
-+static inline void ubi_scan_move_to_list(struct ubi_scan_volume *sv,
-+					 struct ubi_scan_leb *seb,
-+					 struct list_head *list)
++static int scan_block_full(struct mtd_info *mtd, struct nand_bbt_descr *bd,
++			   loff_t offs, uint8_t *buf, size_t readlen,
++			   int scanlen, int len)
 +{
-+		rb_erase(&seb->u.rb, &sv->root);
-+		list_add_tail(&seb->u.list, list);
++	int ret, j;
++
++	ret = scan_read_raw(mtd, buf, offs, readlen);
++	if (ret)
++		return ret;
++
++	for (j = 0; j < len; j++, buf += scanlen) {
++		if (check_pattern(buf, scanlen, mtd->writesize, bd))
++			return 1;
++	}
++	return 0;
 +}
 +
-+int ubi_scan_add_used(struct ubi_device *ubi, struct ubi_scan_info *si,
-+		      int pnum, int ec, const struct ubi_vid_hdr *vid_hdr,
-+		      int bitflips);
-+struct ubi_scan_volume *ubi_scan_find_sv(const struct ubi_scan_info *si,
-+					 int vol_id);
-+struct ubi_scan_leb *ubi_scan_find_seb(const struct ubi_scan_volume *sv,
-+				       int lnum);
-+void ubi_scan_rm_volume(struct ubi_scan_info *si, struct ubi_scan_volume *sv);
-+struct ubi_scan_leb *ubi_scan_get_free_peb(struct ubi_device *ubi,
-+					   struct ubi_scan_info *si);
-+int ubi_scan_erase_peb(struct ubi_device *ubi, const struct ubi_scan_info *si,
-+		       int pnum, int ec);
-+struct ubi_scan_info *ubi_scan(struct ubi_device *ubi);
-+void ubi_scan_destroy_si(struct ubi_scan_info *si);
-+
-+#endif /* !__UBI_SCAN_H__ */
-diff --git a/drivers/mtd/ubi/ubi-barebox.h b/drivers/mtd/ubi/ubi-barebox.h
-new file mode 100644
-index 0000000..84c589f
---- /dev/null
-+++ b/drivers/mtd/ubi/ubi-barebox.h
-@@ -0,0 +1,191 @@
 +/*
-+ * Header file for UBI support for U-Boot
++ * Scan a given block partially
++ */
++static int scan_block_fast(struct mtd_info *mtd, struct nand_bbt_descr *bd,
++			   loff_t offs, uint8_t *buf, int len)
++{
++	struct mtd_oob_ops ops;
++	int j, ret;
++
++	ops.ooblen = mtd->oobsize;
++	ops.oobbuf = buf;
++	ops.ooboffs = 0;
++	ops.datbuf = NULL;
++	ops.mode = MTD_OOB_PLACE;
++
++	for (j = 0; j < len; j++) {
++		/*
++		 * Read the full oob until read_oob is fixed to
++		 * handle single byte reads for 16 bit
++		 * buswidth
++		 */
++		ret = mtd->read_oob(mtd, offs, &ops);
++		if (ret)
++			return ret;
++
++		if (check_short_pattern(buf, bd))
++			return 1;
++
++		offs += mtd->writesize;
++	}
++	return 0;
++}
++
++/**
++ * create_bbt - [GENERIC] Create a bad block table by scanning the device
++ * @mtd:	MTD device structure
++ * @buf:	temporary buffer
++ * @bd:		descriptor for the good/bad block search pattern
++ * @chip:	create the table for a specific chip, -1 read all chips.
++ *		Applies only if NAND_BBT_PERCHIP option is set
 + *
-+ * Adaptation from kernel to U-Boot
++ * Create a bad block table by scanning the device
++ * for the given good/bad block identify pattern
++ */
++static int create_bbt(struct mtd_info *mtd, uint8_t *buf,
++	struct nand_bbt_descr *bd, int chip)
++{
++	struct nand_chip *this = mtd->priv;
++	int i, numblocks, len, scanlen;
++	int startblock;
++	loff_t from;
++	size_t readlen;
++
++	printk(KERN_INFO "Scanning device for bad blocks\n");
++
++	if (bd->options & NAND_BBT_SCANALLPAGES)
++		len = 1 << (this->bbt_erase_shift - this->page_shift);
++	else {
++		if (bd->options & NAND_BBT_SCAN2NDPAGE)
++			len = 2;
++		else
++			len = 1;
++	}
++
++	if (!(bd->options & NAND_BBT_SCANEMPTY)) {
++		/* We need only read few bytes from the OOB area */
++		scanlen = 0;
++		readlen = bd->len;
++	} else {
++		/* Full page content should be read */
++		scanlen = mtd->writesize + mtd->oobsize;
++		readlen = len * mtd->writesize;
++	}
++
++	if (chip == -1) {
++		/* Note that numblocks is 2 * (real numblocks) here, see i+=2
++		 * below as it makes shifting and masking less painful */
++		numblocks = mtd->size >> (this->bbt_erase_shift - 1);
++		startblock = 0;
++		from = 0;
++	} else {
++		if (chip >= this->numchips) {
++			printk(KERN_WARNING "create_bbt(): chipnr (%d) > available chips (%d)\n",
++			       chip + 1, this->numchips);
++			return -EINVAL;
++		}
++		numblocks = this->chipsize >> (this->bbt_erase_shift - 1);
++		startblock = chip * numblocks;
++		numblocks += startblock;
++		from = startblock << (this->bbt_erase_shift - 1);
++	}
++
++	for (i = startblock; i < numblocks;) {
++		int ret;
++
++		if (bd->options & NAND_BBT_SCANALLPAGES)
++			ret = scan_block_full(mtd, bd, from, buf, readlen,
++					      scanlen, len);
++		else
++			ret = scan_block_fast(mtd, bd, from, buf, len);
++
++		if (ret < 0)
++			return ret;
++
++		if (ret) {
++			this->bbt[i >> 3] |= 0x03 << (i & 0x6);
++			printk(KERN_WARNING "Bad eraseblock %d at 0x%08x\n",
++			       i >> 1, (unsigned int)from);
++			mtd->ecc_stats.badblocks++;
++		}
++
++		i += 2;
++		from += (1 << this->bbt_erase_shift);
++	}
++	return 0;
++}
++
++/**
++ * search_bbt - [GENERIC] scan the device for a specific bad block table
++ * @mtd:	MTD device structure
++ * @buf:	temporary buffer
++ * @td:		descriptor for the bad block table
 + *
-+ *  Copyright (C) 2005-2007 Samsung Electronics
-+ *  Kyungmin Park <kyungmin.park@samsung.com>
++ * Read the bad block table by searching for a given ident pattern.
++ * Search is preformed either from the beginning up or from the end of
++ * the device downwards. The search starts always at the start of a
++ * block.
++ * If the option NAND_BBT_PERCHIP is given, each chip is searched
++ * for a bbt, which contains the bad block information of this chip.
++ * This is necessary to provide support for certain DOC devices.
++ *
++ * The bbt ident pattern resides in the oob area of the first page
++ * in a block.
++ */
++static int search_bbt(struct mtd_info *mtd, uint8_t *buf, struct nand_bbt_descr *td)
++{
++	struct nand_chip *this = mtd->priv;
++	int i, chips;
++	int bits, startblock, block, dir;
++	int scanlen = mtd->writesize + mtd->oobsize;
++	int bbtblocks;
++	int blocktopage = this->bbt_erase_shift - this->page_shift;
++
++	/* Search direction top -> down ? */
++	if (td->options & NAND_BBT_LASTBLOCK) {
++		startblock = (mtd->size >> this->bbt_erase_shift) - 1;
++		dir = -1;
++	} else {
++		startblock = 0;
++		dir = 1;
++	}
++
++	/* Do we have a bbt per chip ? */
++	if (td->options & NAND_BBT_PERCHIP) {
++		chips = this->numchips;
++		bbtblocks = this->chipsize >> this->bbt_erase_shift;
++		startblock &= bbtblocks - 1;
++	} else {
++		chips = 1;
++		bbtblocks = mtd->size >> this->bbt_erase_shift;
++	}
++
++	/* Number of bits for each erase block in the bbt */
++	bits = td->options & NAND_BBT_NRBITS_MSK;
++
++	for (i = 0; i < chips; i++) {
++		/* Reset version information */
++		td->version[i] = 0;
++		td->pages[i] = -1;
++		/* Scan the maximum number of blocks */
++		for (block = 0; block < td->maxblocks; block++) {
++
++			int actblock = startblock + dir * block;
++			loff_t offs = actblock << this->bbt_erase_shift;
++
++			/* Read first page */
++			scan_read_raw(mtd, buf, offs, mtd->writesize);
++			if (!check_pattern(buf, scanlen, mtd->writesize, td)) {
++				td->pages[i] = actblock << blocktopage;
++				if (td->options & NAND_BBT_VERSION) {
++					td->version[i] = buf[mtd->writesize + td->veroffs];
++				}
++				break;
++			}
++		}
++		startblock += this->chipsize >> this->bbt_erase_shift;
++	}
++	/* Check, if we found a bbt for each requested chip */
++	for (i = 0; i < chips; i++) {
++		if (td->pages[i] == -1)
++			printk(KERN_WARNING "Bad block table not found for chip %d\n", i);
++		else
++			printk(KERN_DEBUG "Bad block table found at page %d, version 0x%02X\n", td->pages[i],
++			       td->version[i]);
++	}
++	return 0;
++}
++
++/**
++ * search_read_bbts - [GENERIC] scan the device for bad block table(s)
++ * @mtd:	MTD device structure
++ * @buf:	temporary buffer
++ * @td:		descriptor for the bad block table
++ * @md:		descriptor for the bad block table mirror
++ *
++ * Search and read the bad block table(s)
++*/
++static int search_read_bbts(struct mtd_info *mtd, uint8_t * buf, struct nand_bbt_descr *td, struct nand_bbt_descr *md)
++{
++	/* Search the primary table */
++	search_bbt(mtd, buf, td);
++
++	/* Search the mirror table */
++	if (md)
++		search_bbt(mtd, buf, md);
++
++	/* Force result check */
++	return 1;
++}
++
++/**
++ * write_bbt - [GENERIC] (Re)write the bad block table
++ *
++ * @mtd:	MTD device structure
++ * @buf:	temporary buffer
++ * @td:		descriptor for the bad block table
++ * @md:		descriptor for the bad block table mirror
++ * @chipsel:	selector for a specific chip, -1 for all
++ *
++ * (Re)write the bad block table
++ *
++*/
++static int write_bbt(struct mtd_info *mtd, uint8_t *buf,
++		     struct nand_bbt_descr *td, struct nand_bbt_descr *md,
++		     int chipsel)
++{
++	struct nand_chip *this = mtd->priv;
++	struct erase_info einfo;
++	int i, j, res, chip = 0;
++	int bits, startblock, dir, page, offs, numblocks, sft, sftmsk;
++	int nrchips, bbtoffs, pageoffs, ooboffs;
++	uint8_t msk[4];
++	uint8_t rcode = td->reserved_block_code;
++	size_t retlen, len = 0;
++	loff_t to;
++	struct mtd_oob_ops ops;
++
++	ops.ooblen = mtd->oobsize;
++	ops.ooboffs = 0;
++	ops.datbuf = NULL;
++	ops.mode = MTD_OOB_PLACE;
++
++	if (!rcode)
++		rcode = 0xff;
++	/* Write bad block table per chip rather than per device ? */
++	if (td->options & NAND_BBT_PERCHIP) {
++		numblocks = (int)(this->chipsize >> this->bbt_erase_shift);
++		/* Full device write or specific chip ? */
++		if (chipsel == -1) {
++			nrchips = this->numchips;
++		} else {
++			nrchips = chipsel + 1;
++			chip = chipsel;
++		}
++	} else {
++		numblocks = (int)(mtd->size >> this->bbt_erase_shift);
++		nrchips = 1;
++	}
++
++	/* Loop through the chips */
++	for (; chip < nrchips; chip++) {
++
++		/* There was already a version of the table, reuse the page
++		 * This applies for absolute placement too, as we have the
++		 * page nr. in td->pages.
++		 */
++		if (td->pages[chip] != -1) {
++			page = td->pages[chip];
++			goto write;
++		}
++
++		/* Automatic placement of the bad block table */
++		/* Search direction top -> down ? */
++		if (td->options & NAND_BBT_LASTBLOCK) {
++			startblock = numblocks * (chip + 1) - 1;
++			dir = -1;
++		} else {
++			startblock = chip * numblocks;
++			dir = 1;
++		}
++
++		for (i = 0; i < td->maxblocks; i++) {
++			int block = startblock + dir * i;
++			/* Check, if the block is bad */
++			switch ((this->bbt[block >> 2] >>
++				 (2 * (block & 0x03))) & 0x03) {
++			case 0x01:
++			case 0x03:
++				continue;
++			}
++			page = block <<
++				(this->bbt_erase_shift - this->page_shift);
++			/* Check, if the block is used by the mirror table */
++			if (!md || md->pages[chip] != page)
++				goto write;
++		}
++		printk(KERN_ERR "No space left to write bad block table\n");
++		return -ENOSPC;
++	write:
++
++		/* Set up shift count and masks for the flash table */
++		bits = td->options & NAND_BBT_NRBITS_MSK;
++		msk[2] = ~rcode;
++		switch (bits) {
++		case 1: sft = 3; sftmsk = 0x07; msk[0] = 0x00; msk[1] = 0x01;
++			msk[3] = 0x01;
++			break;
++		case 2: sft = 2; sftmsk = 0x06; msk[0] = 0x00; msk[1] = 0x01;
++			msk[3] = 0x03;
++			break;
++		case 4: sft = 1; sftmsk = 0x04; msk[0] = 0x00; msk[1] = 0x0C;
++			msk[3] = 0x0f;
++			break;
++		case 8: sft = 0; sftmsk = 0x00; msk[0] = 0x00; msk[1] = 0x0F;
++			msk[3] = 0xff;
++			break;
++		default: return -EINVAL;
++		}
++
++		bbtoffs = chip * (numblocks >> 2);
++
++		to = ((loff_t) page) << this->page_shift;
++
++		/* Must we save the block contents ? */
++		if (td->options & NAND_BBT_SAVECONTENT) {
++			/* Make it block aligned */
++			to &= ~((loff_t) ((1 << this->bbt_erase_shift) - 1));
++			len = 1 << this->bbt_erase_shift;
++			res = mtd->read(mtd, to, len, &retlen, buf);
++			if (res < 0) {
++				if (retlen != len) {
++					printk(KERN_INFO "nand_bbt: Error "
++					       "reading block for writing "
++					       "the bad block table\n");
++					return res;
++				}
++				printk(KERN_WARNING "nand_bbt: ECC error "
++				       "while reading block for writing "
++				       "bad block table\n");
++			}
++			/* Read oob data */
++			ops.ooblen = (len >> this->page_shift) * mtd->oobsize;
++			ops.oobbuf = &buf[len];
++			res = mtd->read_oob(mtd, to + mtd->writesize, &ops);
++			if (res < 0 || ops.oobretlen != ops.ooblen)
++				goto outerr;
++
++			/* Calc the byte offset in the buffer */
++			pageoffs = page - (int)(to >> this->page_shift);
++			offs = pageoffs << this->page_shift;
++			/* Preset the bbt area with 0xff */
++			memset(&buf[offs], 0xff, (size_t) (numblocks >> sft));
++			ooboffs = len + (pageoffs * mtd->oobsize);
++
++		} else {
++			/* Calc length */
++			len = (size_t) (numblocks >> sft);
++			/* Make it page aligned ! */
++			len = (len + (mtd->writesize - 1)) &
++				~(mtd->writesize - 1);
++			/* Preset the buffer with 0xff */
++			memset(buf, 0xff, len +
++			       (len >> this->page_shift)* mtd->oobsize);
++			offs = 0;
++			ooboffs = len;
++			/* Pattern is located in oob area of first page */
++			memcpy(&buf[ooboffs + td->offs], td->pattern, td->len);
++		}
++
++		if (td->options & NAND_BBT_VERSION)
++			buf[ooboffs + td->veroffs] = td->version[chip];
++
++		/* walk through the memory table */
++		for (i = 0; i < numblocks;) {
++			uint8_t dat;
++			dat = this->bbt[bbtoffs + (i >> 2)];
++			for (j = 0; j < 4; j++, i++) {
++				int sftcnt = (i << (3 - sft)) & sftmsk;
++				/* Do not store the reserved bbt blocks ! */
++				buf[offs + (i >> sft)] &=
++					~(msk[dat & 0x03] << sftcnt);
++				dat >>= 2;
++			}
++		}
++
++		memset(&einfo, 0, sizeof(einfo));
++		einfo.mtd = mtd;
++		einfo.addr = (unsigned long)to;
++		einfo.len = 1 << this->bbt_erase_shift;
++		res = nand_erase_nand(mtd, &einfo, 1);
++		if (res < 0)
++			goto outerr;
++
++		res = scan_write_bbt(mtd, to, len, buf, &buf[len]);
++		if (res < 0)
++			goto outerr;
++
++		printk(KERN_DEBUG "Bad block table written to 0x%08x, version "
++		       "0x%02X\n", (unsigned int)to, td->version[chip]);
++
++		/* Mark it as used */
++		td->pages[chip] = page;
++	}
++	return 0;
++
++ outerr:
++	printk(KERN_WARNING
++	       "nand_bbt: Error while writing bad block table %d\n", res);
++	return res;
++}
++
++/**
++ * nand_memory_bbt - [GENERIC] create a memory based bad block table
++ * @mtd:	MTD device structure
++ * @bd:		descriptor for the good/bad block search pattern
++ *
++ * The function creates a memory based bbt by scanning the device
++ * for manufacturer / software marked good / bad blocks
++*/
++static inline int nand_memory_bbt(struct mtd_info *mtd, struct nand_bbt_descr *bd)
++{
++	struct nand_chip *this = mtd->priv;
++
++	bd->options &= ~NAND_BBT_SCANEMPTY;
++	return create_bbt(mtd, this->buffers->databuf, bd, -1);
++}
++
++/**
++ * check_create - [GENERIC] create and write bbt(s) if necessary
++ * @mtd:	MTD device structure
++ * @buf:	temporary buffer
++ * @bd:		descriptor for the good/bad block search pattern
++ *
++ * The function checks the results of the previous call to read_bbt
++ * and creates / updates the bbt(s) if necessary
++ * Creation is necessary if no bbt was found for the chip/device
++ * Update is necessary if one of the tables is missing or the
++ * version nr. of one table is less than the other
++*/
++static int check_create(struct mtd_info *mtd, uint8_t *buf, struct nand_bbt_descr *bd)
++{
++	int i, chips, writeops, chipsel, res;
++	struct nand_chip *this = mtd->priv;
++	struct nand_bbt_descr *td = this->bbt_td;
++	struct nand_bbt_descr *md = this->bbt_md;
++	struct nand_bbt_descr *rd, *rd2;
++
++	/* Do we have a bbt per chip ? */
++	if (td->options & NAND_BBT_PERCHIP)
++		chips = this->numchips;
++	else
++		chips = 1;
++
++	for (i = 0; i < chips; i++) {
++		writeops = 0;
++		rd = NULL;
++		rd2 = NULL;
++		/* Per chip or per device ? */
++		chipsel = (td->options & NAND_BBT_PERCHIP) ? i : -1;
++		/* Mirrored table avilable ? */
++		if (md) {
++			if (td->pages[i] == -1 && md->pages[i] == -1) {
++				writeops = 0x03;
++				goto create;
++			}
++
++			if (td->pages[i] == -1) {
++				rd = md;
++				td->version[i] = md->version[i];
++				writeops = 1;
++				goto writecheck;
++			}
++
++			if (md->pages[i] == -1) {
++				rd = td;
++				md->version[i] = td->version[i];
++				writeops = 2;
++				goto writecheck;
++			}
++
++			if (td->version[i] == md->version[i]) {
++				rd = td;
++				if (!(td->options & NAND_BBT_VERSION))
++					rd2 = md;
++				goto writecheck;
++			}
++
++			if (((int8_t) (td->version[i] - md->version[i])) > 0) {
++				rd = td;
++				md->version[i] = td->version[i];
++				writeops = 2;
++			} else {
++				rd = md;
++				td->version[i] = md->version[i];
++				writeops = 1;
++			}
++
++			goto writecheck;
++
++		} else {
++			if (td->pages[i] == -1) {
++				writeops = 0x01;
++				goto create;
++			}
++			rd = td;
++			goto writecheck;
++		}
++	create:
++		/* Create the bad block table by scanning the device ? */
++		if (!(td->options & NAND_BBT_CREATE))
++			continue;
++
++		/* Create the table in memory by scanning the chip(s) */
++		create_bbt(mtd, buf, bd, chipsel);
++
++		td->version[i] = 1;
++		if (md)
++			md->version[i] = 1;
++	writecheck:
++		/* read back first ? */
++		if (rd)
++			read_abs_bbt(mtd, buf, rd, chipsel);
++		/* If they weren't versioned, read both. */
++		if (rd2)
++			read_abs_bbt(mtd, buf, rd2, chipsel);
++
++		/* Write the bad block table to the device ? */
++		if ((writeops & 0x01) && (td->options & NAND_BBT_WRITE)) {
++			res = write_bbt(mtd, buf, td, md, chipsel);
++			if (res < 0)
++				return res;
++		}
++
++		/* Write the mirror bad block table to the device ? */
++		if ((writeops & 0x02) && md && (md->options & NAND_BBT_WRITE)) {
++			res = write_bbt(mtd, buf, md, td, chipsel);
++			if (res < 0)
++				return res;
++		}
++	}
++	return 0;
++}
++
++/**
++ * mark_bbt_regions - [GENERIC] mark the bad block table regions
++ * @mtd:	MTD device structure
++ * @td:		bad block table descriptor
++ *
++ * The bad block table regions are marked as "bad" to prevent
++ * accidental erasures / writes. The regions are identified by
++ * the mark 0x02.
++*/
++static void mark_bbt_region(struct mtd_info *mtd, struct nand_bbt_descr *td)
++{
++	struct nand_chip *this = mtd->priv;
++	int i, j, chips, block, nrblocks, update;
++	uint8_t oldval, newval;
++
++	/* Do we have a bbt per chip ? */
++	if (td->options & NAND_BBT_PERCHIP) {
++		chips = this->numchips;
++		nrblocks = (int)(this->chipsize >> this->bbt_erase_shift);
++	} else {
++		chips = 1;
++		nrblocks = (int)(mtd->size >> this->bbt_erase_shift);
++	}
++
++	for (i = 0; i < chips; i++) {
++		if ((td->options & NAND_BBT_ABSPAGE) ||
++		    !(td->options & NAND_BBT_WRITE)) {
++			if (td->pages[i] == -1)
++				continue;
++			block = td->pages[i] >> (this->bbt_erase_shift - this->page_shift);
++			block <<= 1;
++			oldval = this->bbt[(block >> 3)];
++			newval = oldval | (0x2 << (block & 0x06));
++			this->bbt[(block >> 3)] = newval;
++			if ((oldval != newval) && td->reserved_block_code)
++				nand_update_bbt(mtd, block << (this->bbt_erase_shift - 1));
++			continue;
++		}
++		update = 0;
++		if (td->options & NAND_BBT_LASTBLOCK)
++			block = ((i + 1) * nrblocks) - td->maxblocks;
++		else
++			block = i * nrblocks;
++		block <<= 1;
++		for (j = 0; j < td->maxblocks; j++) {
++			oldval = this->bbt[(block >> 3)];
++			newval = oldval | (0x2 << (block & 0x06));
++			this->bbt[(block >> 3)] = newval;
++			if (oldval != newval)
++				update = 1;
++			block += 2;
++		}
++		/* If we want reserved blocks to be recorded to flash, and some
++		   new ones have been marked, then we need to update the stored
++		   bbts.  This should only happen once. */
++		if (update && td->reserved_block_code)
++			nand_update_bbt(mtd, (block - 2) << (this->bbt_erase_shift - 1));
++	}
++}
++
++/**
++ * nand_scan_bbt - [NAND Interface] scan, find, read and maybe create bad block table(s)
++ * @mtd:	MTD device structure
++ * @bd:		descriptor for the good/bad block search pattern
++ *
++ * The function checks, if a bad block table(s) is/are already
++ * available. If not it scans the device for manufacturer
++ * marked good / bad blocks and writes the bad block table(s) to
++ * the selected place.
++ *
++ * The bad block table memory is allocated here. It must be freed
++ * by calling the nand_free_bbt function.
++ *
++*/
++int nand_scan_bbt(struct mtd_info *mtd, struct nand_bbt_descr *bd)
++{
++	struct nand_chip *this = mtd->priv;
++	int len, res = 0;
++	uint8_t *buf;
++	struct nand_bbt_descr *td = this->bbt_td;
++	struct nand_bbt_descr *md = this->bbt_md;
++
++	len = mtd->size >> (this->bbt_erase_shift + 2);
++	/* Allocate memory (2bit per block) and clear the memory bad block table */
++	this->bbt = kzalloc(len, GFP_KERNEL);
++	if (!this->bbt) {
++		printk(KERN_ERR "nand_scan_bbt: Out of memory\n");
++		return -ENOMEM;
++	}
++
++	/* If no primary table decriptor is given, scan the device
++	 * to build a memory based bad block table
++	 */
++	if (!td) {
++		if ((res = nand_memory_bbt(mtd, bd))) {
++			printk(KERN_ERR "nand_bbt: Can't scan flash and build the RAM-based BBT\n");
++			kfree(this->bbt);
++			this->bbt = NULL;
++		}
++		return res;
++	}
++
++	/* Allocate a temporary buffer for one eraseblock incl. oob */
++	len = (1 << this->bbt_erase_shift);
++	len += (len >> this->page_shift) * mtd->oobsize;
++	buf = vmalloc(len);
++	if (!buf) {
++		printk(KERN_ERR "nand_bbt: Out of memory\n");
++		kfree(this->bbt);
++		this->bbt = NULL;
++		return -ENOMEM;
++	}
++
++	/* Is the bbt at a given page ? */
++	if (td->options & NAND_BBT_ABSPAGE) {
++		res = read_abs_bbts(mtd, buf, td, md);
++	} else {
++		/* Search the bad block table using a pattern in oob */
++		res = search_read_bbts(mtd, buf, td, md);
++	}
++
++	if (res)
++		res = check_create(mtd, buf, bd);
++
++	/* Prevent the bbt regions from erasing / writing */
++	mark_bbt_region(mtd, td);
++	if (md)
++		mark_bbt_region(mtd, md);
++
++	vfree(buf);
++	return res;
++}
++
++/**
++ * nand_update_bbt - [NAND Interface] update bad block table(s)
++ * @mtd:	MTD device structure
++ * @offs:	the offset of the newly marked block
++ *
++ * The function updates the bad block table(s)
++*/
++int nand_update_bbt(struct mtd_info *mtd, loff_t offs)
++{
++	struct nand_chip *this = mtd->priv;
++	int len, res = 0, writeops = 0;
++	int chip, chipsel;
++	uint8_t *buf;
++	struct nand_bbt_descr *td = this->bbt_td;
++	struct nand_bbt_descr *md = this->bbt_md;
++
++	if (!this->bbt || !td)
++		return -EINVAL;
++
++	len = mtd->size >> (this->bbt_erase_shift + 2);
++	/* Allocate a temporary buffer for one eraseblock incl. oob */
++	len = (1 << this->bbt_erase_shift);
++	len += (len >> this->page_shift) * mtd->oobsize;
++	buf = kmalloc(len, GFP_KERNEL);
++	if (!buf) {
++		printk(KERN_ERR "nand_update_bbt: Out of memory\n");
++		return -ENOMEM;
++	}
++
++	writeops = md != NULL ? 0x03 : 0x01;
++
++	/* Do we have a bbt per chip ? */
++	if (td->options & NAND_BBT_PERCHIP) {
++		chip = (int)(offs >> this->chip_shift);
++		chipsel = chip;
++	} else {
++		chip = 0;
++		chipsel = -1;
++	}
++
++	td->version[chip]++;
++	if (md)
++		md->version[chip]++;
++
++	/* Write the bad block table to the device ? */
++	if ((writeops & 0x01) && (td->options & NAND_BBT_WRITE)) {
++		res = write_bbt(mtd, buf, td, md, chipsel);
++		if (res < 0)
++			goto out;
++	}
++	/* Write the mirror bad block table to the device ? */
++	if ((writeops & 0x02) && md && (md->options & NAND_BBT_WRITE)) {
++		res = write_bbt(mtd, buf, md, td, chipsel);
++	}
++
++ out:
++	kfree(buf);
++	return res;
++}
++
++/* Define some generic bad / good block scan pattern which are used
++ * while scanning a device for factory marked good / bad blocks. */
++static uint8_t scan_ff_pattern[] = { 0xff, 0xff };
++
++static struct nand_bbt_descr smallpage_memorybased = {
++	.options = NAND_BBT_SCAN2NDPAGE,
++	.offs = 5,
++	.len = 1,
++	.pattern = scan_ff_pattern
++};
++
++static struct nand_bbt_descr largepage_memorybased = {
++	.options = 0,
++	.offs = 0,
++	.len = 2,
++	.pattern = scan_ff_pattern
++};
++
++static struct nand_bbt_descr smallpage_flashbased = {
++	.options = NAND_BBT_SCAN2NDPAGE,
++	.offs = 5,
++	.len = 1,
++	.pattern = scan_ff_pattern
++};
++
++static struct nand_bbt_descr largepage_flashbased = {
++	.options = NAND_BBT_SCAN2NDPAGE,
++	.offs = 0,
++	.len = 2,
++	.pattern = scan_ff_pattern
++};
++
++static uint8_t scan_agand_pattern[] = { 0x1C, 0x71, 0xC7, 0x1C, 0x71, 0xC7 };
++
++static struct nand_bbt_descr agand_flashbased = {
++	.options = NAND_BBT_SCANEMPTY | NAND_BBT_SCANALLPAGES,
++	.offs = 0x20,
++	.len = 6,
++	.pattern = scan_agand_pattern
++};
++
++/* Generic flash bbt decriptors
++*/
++static uint8_t bbt_pattern[] = {'B', 'b', 't', '0' };
++static uint8_t mirror_pattern[] = {'1', 't', 'b', 'B' };
++
++static struct nand_bbt_descr bbt_main_descr = {
++	.options = NAND_BBT_LASTBLOCK | NAND_BBT_CREATE | NAND_BBT_WRITE
++		| NAND_BBT_2BIT | NAND_BBT_VERSION | NAND_BBT_PERCHIP,
++	.offs =	8,
++	.len = 4,
++	.veroffs = 12,
++	.maxblocks = 4,
++	.pattern = bbt_pattern
++};
++
++static struct nand_bbt_descr bbt_mirror_descr = {
++	.options = NAND_BBT_LASTBLOCK | NAND_BBT_CREATE | NAND_BBT_WRITE
++		| NAND_BBT_2BIT | NAND_BBT_VERSION | NAND_BBT_PERCHIP,
++	.offs =	8,
++	.len = 4,
++	.veroffs = 12,
++	.maxblocks = 4,
++	.pattern = mirror_pattern
++};
++
++/**
++ * nand_default_bbt - [NAND Interface] Select a default bad block table for the device
++ * @mtd:	MTD device structure
++ *
++ * This function selects the default bad block table
++ * support for the device and calls the nand_scan_bbt function
++ *
++*/
++int nand_default_bbt(struct mtd_info *mtd)
++{
++	struct nand_chip *this = mtd->priv;
++
++	/* Default for AG-AND. We must use a flash based
++	 * bad block table as the devices have factory marked
++	 * _good_ blocks. Erasing those blocks leads to loss
++	 * of the good / bad information, so we _must_ store
++	 * this information in a good / bad table during
++	 * startup
++	 */
++	if (this->options & NAND_IS_AND) {
++		/* Use the default pattern descriptors */
++		if (!this->bbt_td) {
++			this->bbt_td = &bbt_main_descr;
++			this->bbt_md = &bbt_mirror_descr;
++		}
++		this->options |= NAND_USE_FLASH_BBT;
++		return nand_scan_bbt(mtd, &agand_flashbased);
++	}
++
++	/* Is a flash based bad block table requested ? */
++	if (this->options & NAND_USE_FLASH_BBT) {
++		/* Use the default pattern descriptors */
++		if (!this->bbt_td) {
++			this->bbt_td = &bbt_main_descr;
++			this->bbt_md = &bbt_mirror_descr;
++		}
++		if (!this->badblock_pattern) {
++			this->badblock_pattern = (mtd->writesize > 512) ? &largepage_flashbased : &smallpage_flashbased;
++		}
++	} else {
++		this->bbt_td = NULL;
++		this->bbt_md = NULL;
++		if (!this->badblock_pattern) {
++			this->badblock_pattern = (mtd->writesize > 512) ?
++			    &largepage_memorybased : &smallpage_memorybased;
++		}
++	}
++	return nand_scan_bbt(mtd, this->badblock_pattern);
++}
++
++/**
++ * nand_isbad_bbt - [NAND Interface] Check if a block is bad
++ * @mtd:	MTD device structure
++ * @offs:	offset in the device
++ * @allowbbt:	allow access to bad block table region
++ *
++*/
++int nand_isbad_bbt(struct mtd_info *mtd, loff_t offs, int allowbbt)
++{
++	struct nand_chip *this = mtd->priv;
++	int block;
++	uint8_t res;
++
++	/* Get block number * 2 */
++	block = (int)(offs >> (this->bbt_erase_shift - 1));
++	res = (this->bbt[block >> 3] >> (block & 0x06)) & 0x03;
++
++	MTD_DEBUG(MTD_DEBUG_LEVEL2, "nand_isbad_bbt(): bbt info for offs 0x%08x: (block %d) 0x%02x\n",
++	      (unsigned int)offs, block >> 1, res);
++
++	switch ((int)res) {
++	case 0x00:
++		return 0;
++	case 0x01:
++		return 1;
++	case 0x02:
++		return allowbbt ? 0 : 1;
++	}
++	return 1;
++}
++
++EXPORT_SYMBOL(nand_scan_bbt);
++EXPORT_SYMBOL(nand_default_bbt);
++
++#endif /* DOXYGEN_SHOULD_SKIP_THIS */
+diff --git a/drivers/mtd/nand/nand_ecc.c b/drivers/mtd/nand/nand_ecc.c
+new file mode 100644
+index 0000000..266d573
+--- /dev/null
++++ b/drivers/mtd/nand/nand_ecc.c
+@@ -0,0 +1,198 @@
++/*
++ * This file contains an ECC algorithm from Toshiba that detects and
++ * corrects 1 bit errors in a 256 byte block of data.
++ *
++ * drivers/mtd/nand/nand_ecc.c
++ *
++ * Copyright (C) 2000-2004 Steven J. Hill (sjhill@realitydiluted.com)
++ *                         Toshiba America Electronics Components, Inc.
++ *
++ * Copyright (C) 2006 Thomas Gleixner <tglx@linutronix.de>
++ *
++ * $Id: nand_ecc.c,v 1.15 2005/11/07 11:14:30 gleixner Exp $
++ *
++ * This file is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License as published by the
++ * Free Software Foundation; either version 2 or (at your option) any
++ * later version.
++ *
++ * This file is distributed in the hope that it will be useful, but WITHOUT
++ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
++ * for more details.
++ *
++ * You should have received a copy of the GNU General Public License along
++ * with this file; if not, write to the Free Software Foundation, Inc.,
++ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
++ *
++ * As a special exception, if other files instantiate templates or use
++ * macros or inline functions from these files, or you compile these
++ * files and link them with other works to produce a work based on these
++ * files, these files do not by themselves cause the resulting work to be
++ * covered by the GNU General Public License. However the source code for
++ * these files must still be made available in accordance with section (3)
++ * of the GNU General Public License.
++ *
++ * This exception does not invalidate any other reasons why a work based on
++ * this file might be covered by the GNU General Public License.
++ */
++
++#include <linux/types.h>
++#include <common.h>
++#include <errno.h>
++#include <linux/mtd/nand_ecc.h>
++
++/*
++ * Pre-calculated 256-way 1 byte column parity
++ */
++static const u_char nand_ecc_precalc_table[] = {
++	0x00, 0x55, 0x56, 0x03, 0x59, 0x0c, 0x0f, 0x5a, 0x5a, 0x0f, 0x0c, 0x59, 0x03, 0x56, 0x55, 0x00,
++	0x65, 0x30, 0x33, 0x66, 0x3c, 0x69, 0x6a, 0x3f, 0x3f, 0x6a, 0x69, 0x3c, 0x66, 0x33, 0x30, 0x65,
++	0x66, 0x33, 0x30, 0x65, 0x3f, 0x6a, 0x69, 0x3c, 0x3c, 0x69, 0x6a, 0x3f, 0x65, 0x30, 0x33, 0x66,
++	0x03, 0x56, 0x55, 0x00, 0x5a, 0x0f, 0x0c, 0x59, 0x59, 0x0c, 0x0f, 0x5a, 0x00, 0x55, 0x56, 0x03,
++	0x69, 0x3c, 0x3f, 0x6a, 0x30, 0x65, 0x66, 0x33, 0x33, 0x66, 0x65, 0x30, 0x6a, 0x3f, 0x3c, 0x69,
++	0x0c, 0x59, 0x5a, 0x0f, 0x55, 0x00, 0x03, 0x56, 0x56, 0x03, 0x00, 0x55, 0x0f, 0x5a, 0x59, 0x0c,
++	0x0f, 0x5a, 0x59, 0x0c, 0x56, 0x03, 0x00, 0x55, 0x55, 0x00, 0x03, 0x56, 0x0c, 0x59, 0x5a, 0x0f,
++	0x6a, 0x3f, 0x3c, 0x69, 0x33, 0x66, 0x65, 0x30, 0x30, 0x65, 0x66, 0x33, 0x69, 0x3c, 0x3f, 0x6a,
++	0x6a, 0x3f, 0x3c, 0x69, 0x33, 0x66, 0x65, 0x30, 0x30, 0x65, 0x66, 0x33, 0x69, 0x3c, 0x3f, 0x6a,
++	0x0f, 0x5a, 0x59, 0x0c, 0x56, 0x03, 0x00, 0x55, 0x55, 0x00, 0x03, 0x56, 0x0c, 0x59, 0x5a, 0x0f,
++	0x0c, 0x59, 0x5a, 0x0f, 0x55, 0x00, 0x03, 0x56, 0x56, 0x03, 0x00, 0x55, 0x0f, 0x5a, 0x59, 0x0c,
++	0x69, 0x3c, 0x3f, 0x6a, 0x30, 0x65, 0x66, 0x33, 0x33, 0x66, 0x65, 0x30, 0x6a, 0x3f, 0x3c, 0x69,
++	0x03, 0x56, 0x55, 0x00, 0x5a, 0x0f, 0x0c, 0x59, 0x59, 0x0c, 0x0f, 0x5a, 0x00, 0x55, 0x56, 0x03,
++	0x66, 0x33, 0x30, 0x65, 0x3f, 0x6a, 0x69, 0x3c, 0x3c, 0x69, 0x6a, 0x3f, 0x65, 0x30, 0x33, 0x66,
++	0x65, 0x30, 0x33, 0x66, 0x3c, 0x69, 0x6a, 0x3f, 0x3f, 0x6a, 0x69, 0x3c, 0x66, 0x33, 0x30, 0x65,
++	0x00, 0x55, 0x56, 0x03, 0x59, 0x0c, 0x0f, 0x5a, 0x5a, 0x0f, 0x0c, 0x59, 0x03, 0x56, 0x55, 0x00
++};
++
++/**
++ * nand_calculate_ecc - [NAND Interface] Calculate 3-byte ECC for 256-byte block
++ * @mtd:	MTD block structure
++ * @dat:	raw data
++ * @ecc_code:	buffer for ECC
++ */
++int nand_calculate_ecc(struct mtd_info *mtd, const u_char *dat,
++		       u_char *ecc_code)
++{
++	uint8_t idx, reg1, reg2, reg3, tmp1, tmp2;
++	int i;
++
++	/* Initialize variables */
++	reg1 = reg2 = reg3 = 0;
++
++	/* Build up column parity */
++	for(i = 0; i < 256; i++) {
++		/* Get CP0 - CP5 from table */
++		idx = nand_ecc_precalc_table[*dat++];
++		reg1 ^= (idx & 0x3f);
++
++		/* All bit XOR = 1 ? */
++		if (idx & 0x40) {
++			reg3 ^= (uint8_t) i;
++			reg2 ^= ~((uint8_t) i);
++		}
++	}
++
++	/* Create non-inverted ECC code from line parity */
++	tmp1  = (reg3 & 0x80) >> 0; /* B7 -> B7 */
++	tmp1 |= (reg2 & 0x80) >> 1; /* B7 -> B6 */
++	tmp1 |= (reg3 & 0x40) >> 1; /* B6 -> B5 */
++	tmp1 |= (reg2 & 0x40) >> 2; /* B6 -> B4 */
++	tmp1 |= (reg3 & 0x20) >> 2; /* B5 -> B3 */
++	tmp1 |= (reg2 & 0x20) >> 3; /* B5 -> B2 */
++	tmp1 |= (reg3 & 0x10) >> 3; /* B4 -> B1 */
++	tmp1 |= (reg2 & 0x10) >> 4; /* B4 -> B0 */
++
++	tmp2  = (reg3 & 0x08) << 4; /* B3 -> B7 */
++	tmp2 |= (reg2 & 0x08) << 3; /* B3 -> B6 */
++	tmp2 |= (reg3 & 0x04) << 3; /* B2 -> B5 */
++	tmp2 |= (reg2 & 0x04) << 2; /* B2 -> B4 */
++	tmp2 |= (reg3 & 0x02) << 2; /* B1 -> B3 */
++	tmp2 |= (reg2 & 0x02) << 1; /* B1 -> B2 */
++	tmp2 |= (reg3 & 0x01) << 1; /* B0 -> B1 */
++	tmp2 |= (reg2 & 0x01) << 0; /* B7 -> B0 */
++
++	/* Calculate final ECC code */
++#ifdef CONFIG_MTD_NAND_ECC_SMC
++	ecc_code[0] = ~tmp2;
++	ecc_code[1] = ~tmp1;
++#else
++	ecc_code[0] = ~tmp1;
++	ecc_code[1] = ~tmp2;
++#endif
++	ecc_code[2] = ((~reg1) << 2) | 0x03;
++
++	return 0;
++}
++EXPORT_SYMBOL(nand_calculate_ecc);
++
++static inline int countbits(uint32_t byte)
++{
++	int res = 0;
++
++	for (;byte; byte >>= 1)
++		res += byte & 0x01;
++	return res;
++}
++
++/**
++ * nand_correct_data - [NAND Interface] Detect and correct bit error(s)
++ * @mtd:	MTD block structure
++ * @dat:	raw data read from the chip
++ * @read_ecc:	ECC from the chip
++ * @calc_ecc:	the ECC calculated from raw data
++ *
++ * Detect and correct a 1 bit error for 256 byte block
++ */
++int nand_correct_data(struct mtd_info *mtd, u_char *dat,
++		      u_char *read_ecc, u_char *calc_ecc)
++{
++	uint8_t s0, s1, s2;
++
++#ifdef CONFIG_MTD_NAND_ECC_SMC
++	s0 = calc_ecc[0] ^ read_ecc[0];
++	s1 = calc_ecc[1] ^ read_ecc[1];
++	s2 = calc_ecc[2] ^ read_ecc[2];
++#else
++	s1 = calc_ecc[0] ^ read_ecc[0];
++	s0 = calc_ecc[1] ^ read_ecc[1];
++	s2 = calc_ecc[2] ^ read_ecc[2];
++#endif
++	if ((s0 | s1 | s2) == 0)
++		return 0;
++
++	/* Check for a single bit error */
++	if( ((s0 ^ (s0 >> 1)) & 0x55) == 0x55 &&
++	    ((s1 ^ (s1 >> 1)) & 0x55) == 0x55 &&
++	    ((s2 ^ (s2 >> 1)) & 0x54) == 0x54) {
++
++		uint32_t byteoffs, bitnum;
++
++		byteoffs = (s1 << 0) & 0x80;
++		byteoffs |= (s1 << 1) & 0x40;
++		byteoffs |= (s1 << 2) & 0x20;
++		byteoffs |= (s1 << 3) & 0x10;
++
++		byteoffs |= (s0 >> 4) & 0x08;
++		byteoffs |= (s0 >> 3) & 0x04;
++		byteoffs |= (s0 >> 2) & 0x02;
++		byteoffs |= (s0 >> 1) & 0x01;
++
++		bitnum = (s2 >> 5) & 0x04;
++		bitnum |= (s2 >> 4) & 0x02;
++		bitnum |= (s2 >> 3) & 0x01;
++
++		dat[byteoffs] ^= (1 << bitnum);
++
++		return 1;
++	}
++
++	if(countbits(s0 | ((uint32_t)s1 << 8) | ((uint32_t)s2 <<16)) == 1)
++		return 1;
++
++	return -EBADMSG;
++}
++EXPORT_SYMBOL(nand_correct_data);
++
++MODULE_LICENSE("GPL");
++MODULE_AUTHOR("Steven J. Hill <sjhill@realitydiluted.com>");
++MODULE_DESCRIPTION("Generic NAND ECC support");
+diff --git a/drivers/mtd/nand/nand_ids.c b/drivers/mtd/nand/nand_ids.c
+new file mode 100644
+index 0000000..f95975c
+--- /dev/null
++++ b/drivers/mtd/nand/nand_ids.c
+@@ -0,0 +1,153 @@
++/*
++ *  drivers/mtd/nandids.c
++ *
++ *  Copyright (C) 2002 Thomas Gleixner (tglx@linutronix.de)
++ *
++ * $Id: nand_ids.c,v 1.16 2005/11/07 11:14:31 gleixner Exp $
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ *
++ */
++#include <common.h>
++#include <linux/mtd/nand.h>
++/*
++*	Chip ID list
++*
++*	Name. ID code, pagesize, chipsize in MegaByte, eraseblock size,
++*	options
++*
++*	Pagesize; 0, 256, 512
++*	0	get this information from the extended chip ID
+++	256	256 Byte page size
++*	512	512 Byte page size
++*/
++struct nand_flash_dev nand_flash_ids[] = {
++
++#ifdef CONFIG_MTD_NAND_MUSEUM_IDS
++	{"NAND 1MiB 5V 8-bit",		0x6e, 256, 1, 0x1000, 0},
++	{"NAND 2MiB 5V 8-bit",		0x64, 256, 2, 0x1000, 0},
++	{"NAND 4MiB 5V 8-bit",		0x6b, 512, 4, 0x2000, 0},
++	{"NAND 1MiB 3,3V 8-bit",	0xe8, 256, 1, 0x1000, 0},
++	{"NAND 1MiB 3,3V 8-bit",	0xec, 256, 1, 0x1000, 0},
++	{"NAND 2MiB 3,3V 8-bit",	0xea, 256, 2, 0x1000, 0},
++	{"NAND 4MiB 3,3V 8-bit",	0xd5, 512, 4, 0x2000, 0},
++	{"NAND 4MiB 3,3V 8-bit",	0xe3, 512, 4, 0x2000, 0},
++	{"NAND 4MiB 3,3V 8-bit",	0xe5, 512, 4, 0x2000, 0},
++	{"NAND 8MiB 3,3V 8-bit",	0xd6, 512, 8, 0x2000, 0},
++
++	{"NAND 8MiB 1,8V 8-bit",	0x39, 512, 8, 0x2000, 0},
++	{"NAND 8MiB 3,3V 8-bit",	0xe6, 512, 8, 0x2000, 0},
++	{"NAND 8MiB 1,8V 16-bit",	0x49, 512, 8, 0x2000, NAND_BUSWIDTH_16},
++	{"NAND 8MiB 3,3V 16-bit",	0x59, 512, 8, 0x2000, NAND_BUSWIDTH_16},
++#endif
++
++	{"NAND 16MiB 1,8V 8-bit",	0x33, 512, 16, 0x4000, 0},
++	{"NAND 16MiB 3,3V 8-bit",	0x73, 512, 16, 0x4000, 0},
++	{"NAND 16MiB 1,8V 16-bit",	0x43, 512, 16, 0x4000, NAND_BUSWIDTH_16},
++	{"NAND 16MiB 3,3V 16-bit",	0x53, 512, 16, 0x4000, NAND_BUSWIDTH_16},
++
++	{"NAND 32MiB 1,8V 8-bit",	0x35, 512, 32, 0x4000, 0},
++	{"NAND 32MiB 3,3V 8-bit",	0x75, 512, 32, 0x4000, 0},
++	{"NAND 32MiB 1,8V 16-bit",	0x45, 512, 32, 0x4000, NAND_BUSWIDTH_16},
++	{"NAND 32MiB 3,3V 16-bit",	0x55, 512, 32, 0x4000, NAND_BUSWIDTH_16},
++
++	{"NAND 64MiB 1,8V 8-bit",	0x36, 512, 64, 0x4000, 0},
++	{"NAND 64MiB 3,3V 8-bit",	0x76, 512, 64, 0x4000, 0},
++	{"NAND 64MiB 1,8V 16-bit",	0x46, 512, 64, 0x4000, NAND_BUSWIDTH_16},
++	{"NAND 64MiB 3,3V 16-bit",	0x56, 512, 64, 0x4000, NAND_BUSWIDTH_16},
++
++	{"NAND 128MiB 1,8V 8-bit",	0x78, 512, 128, 0x4000, 0},
++	{"NAND 128MiB 1,8V 8-bit",	0x39, 512, 128, 0x4000, 0},
++	{"NAND 128MiB 3,3V 8-bit",	0x79, 512, 128, 0x4000, 0},
++	{"NAND 128MiB 1,8V 16-bit",	0x72, 512, 128, 0x4000, NAND_BUSWIDTH_16},
++	{"NAND 128MiB 1,8V 16-bit",	0x49, 512, 128, 0x4000, NAND_BUSWIDTH_16},
++	{"NAND 128MiB 3,3V 16-bit",	0x74, 512, 128, 0x4000, NAND_BUSWIDTH_16},
++	{"NAND 128MiB 3,3V 16-bit",	0x59, 512, 128, 0x4000, NAND_BUSWIDTH_16},
++
++	{"NAND 256MiB 3,3V 8-bit",	0x71, 512, 256, 0x4000, 0},
++
++	/*
++	 * These are the new chips with large page size. The pagesize and the
++	 * erasesize is determined from the extended id bytes
++	 */
++#define LP_OPTIONS (NAND_SAMSUNG_LP_OPTIONS | NAND_NO_READRDY | NAND_NO_AUTOINCR)
++#define LP_OPTIONS16 (LP_OPTIONS | NAND_BUSWIDTH_16)
++
++	/*512 Megabit */
++	{"NAND 64MiB 1,8V 8-bit",	0xA2, 0,  64, 0, LP_OPTIONS},
++	{"NAND 64MiB 3,3V 8-bit",	0xF2, 0,  64, 0, LP_OPTIONS},
++	{"NAND 64MiB 1,8V 16-bit",	0xB2, 0,  64, 0, LP_OPTIONS16},
++	{"NAND 64MiB 3,3V 16-bit",	0xC2, 0,  64, 0, LP_OPTIONS16},
++
++	/* 1 Gigabit */
++	{"NAND 128MiB 1,8V 8-bit",	0xA1, 0, 128, 0, LP_OPTIONS},
++	{"NAND 128MiB 3,3V 8-bit",	0xF1, 0, 128, 0, LP_OPTIONS},
++	{"NAND 128MiB 1,8V 16-bit",	0xB1, 0, 128, 0, LP_OPTIONS16},
++	{"NAND 128MiB 3,3V 16-bit",	0xC1, 0, 128, 0, LP_OPTIONS16},
++
++	/* 2 Gigabit */
++	{"NAND 256MiB 1,8V 8-bit",	0xAA, 0, 256, 0, LP_OPTIONS},
++	{"NAND 256MiB 3,3V 8-bit",	0xDA, 0, 256, 0, LP_OPTIONS},
++	{"NAND 256MiB 1,8V 16-bit",	0xBA, 0, 256, 0, LP_OPTIONS16},
++	{"NAND 256MiB 3,3V 16-bit",	0xCA, 0, 256, 0, LP_OPTIONS16},
++
++	/* 4 Gigabit */
++	{"NAND 512MiB 1,8V 8-bit",	0xAC, 0, 512, 0, LP_OPTIONS},
++	{"NAND 512MiB 3,3V 8-bit",	0xDC, 0, 512, 0, LP_OPTIONS},
++	{"NAND 512MiB 1,8V 16-bit",	0xBC, 0, 512, 0, LP_OPTIONS16},
++	{"NAND 512MiB 3,3V 16-bit",	0xCC, 0, 512, 0, LP_OPTIONS16},
++
++	/* 8 Gigabit */
++	{"NAND 1GiB 1,8V 8-bit",	0xA3, 0, 1024, 0, LP_OPTIONS},
++	{"NAND 1GiB 3,3V 8-bit",	0xD3, 0, 1024, 0, LP_OPTIONS},
++	{"NAND 1GiB 1,8V 16-bit",	0xB3, 0, 1024, 0, LP_OPTIONS16},
++	{"NAND 1GiB 3,3V 16-bit",	0xC3, 0, 1024, 0, LP_OPTIONS16},
++
++	/* 16 Gigabit */
++	{"NAND 2GiB 1,8V 8-bit",	0xA5, 0, 2048, 0, LP_OPTIONS},
++	{"NAND 2GiB 3,3V 8-bit",	0xD5, 0, 2048, 0, LP_OPTIONS},
++	{"NAND 2GiB 1,8V 16-bit",	0xB5, 0, 2048, 0, LP_OPTIONS16},
++	{"NAND 2GiB 3,3V 16-bit",	0xC5, 0, 2048, 0, LP_OPTIONS16},
++
++	/*
++	 * Renesas AND 1 Gigabit. Those chips do not support extended id and
++	 * have a strange page/block layout !  The chosen minimum erasesize is
++	 * 4 * 2 * 2048 = 16384 Byte, as those chips have an array of 4 page
++	 * planes 1 block = 2 pages, but due to plane arrangement the blocks
++	 * 0-3 consists of page 0 + 4,1 + 5, 2 + 6, 3 + 7 Anyway JFFS2 would
++	 * increase the eraseblock size so we chose a combined one which can be
++	 * erased in one go There are more speed improvements for reads and
++	 * writes possible, but not implemented now
++	 */
++	{"AND 128MiB 3,3V 8-bit",	0x01, 2048, 128, 0x4000,
++	 NAND_IS_AND | NAND_NO_AUTOINCR |NAND_NO_READRDY | NAND_4PAGE_ARRAY |
++	 BBT_AUTO_REFRESH
++	},
++
++	{NULL,}
++};
++
++/*
++*	Manufacturer ID list
++*/
++struct nand_manufacturers nand_manuf_ids[] = {
++	{NAND_MFR_TOSHIBA, "Toshiba"},
++	{NAND_MFR_SAMSUNG, "Samsung"},
++	{NAND_MFR_FUJITSU, "Fujitsu"},
++	{NAND_MFR_NATIONAL, "National"},
++	{NAND_MFR_RENESAS, "Renesas"},
++	{NAND_MFR_STMICRO, "ST Micro"},
++	{NAND_MFR_HYNIX, "Hynix"},
++	{NAND_MFR_MICRON, "Micron"},
++	{NAND_MFR_AMD, "AMD"},
++	{0x0, "Unknown"}
++};
++
++EXPORT_SYMBOL(nand_manuf_ids);
++EXPORT_SYMBOL(nand_flash_ids);
++
++MODULE_LICENSE("GPL");
++MODULE_AUTHOR("Thomas Gleixner <tglx@linutronix.de>");
++MODULE_DESCRIPTION("Nand device & manufacturer IDs");
+diff --git a/drivers/mtd/nand/nand_imx.c b/drivers/mtd/nand/nand_imx.c
+new file mode 100644
+index 0000000..74cdf10
+--- /dev/null
++++ b/drivers/mtd/nand/nand_imx.c
+@@ -0,0 +1,1210 @@
++/*
++ * Copyright 2004-2007 Freescale Semiconductor, Inc. All Rights Reserved.
++ * Copyright 2008 Sascha Hauer, Pengutronix <s.hauer@pengutronix.de>
++ */
++
++/*
++ * The code contained herein is licensed under the GNU General Public
++ * License. You may obtain a copy of the GNU General Public License
++ * Version 2 or later at the following locations:
++ *
++ * http://www.opensource.org/licenses/gpl-license.html
++ * http://www.gnu.org/copyleft/gpl.html
++ */
++
++/*
++ * MX21 Hardware contains a bug which causes HW ECC to fail for two
++ * consecutive read pages containing 1bit Errors (See MX21 Chip Erata,
++ * Erratum 16). Use software ECC for this chip.
++ */
++
++#include <common.h>
++#include <driver.h>
++#include <malloc.h>
++#include <init.h>
++#include <linux/mtd/mtd.h>
++#include <linux/mtd/nand.h>
++#include <mach/generic.h>
++#include <mach/imx-nand.h>
++#include <mach/imx-regs.h>
++#include <asm/io.h>
++#include <errno.h>
++
++#define DVR_VER "2.0"
++
++#define nfc_is_v21()		(cpu_is_mx25() || cpu_is_mx35())
++#define nfc_is_v1()		(cpu_is_mx31() || cpu_is_mx27() || cpu_is_mx21())
++
++/*
++ * Addresses for NFC registers
++ */
++#define NFC_BUF_SIZE		0xE00
++#define NFC_BUF_ADDR		0xE04
++#define NFC_FLASH_ADDR		0xE06
++#define NFC_FLASH_CMD		0xE08
++#define NFC_CONFIG		0xE0A
++#define NFC_ECC_STATUS_RESULT	0xE0C
++#define NFC_RSLTMAIN_AREA	0xE0E
++#define NFC_RSLTSPARE_AREA	0xE10
++#define NFC_SPAS		0xe10
++#define NFC_WRPROT		0xE12
++#define NFC_V1_UNLOCKSTART_BLKADDR	0xe14
++#define NFC_V1_UNLOCKEND_BLKADDR	0xe16
++#define NFC_V21_UNLOCKSTART_BLKADDR	0xe20
++#define NFC_V21_UNLOCKEND_BLKADDR	0xe22
++#define NFC_NF_WRPRST		0xE18
++#define NFC_CONFIG1		0xE1A
++#define NFC_CONFIG2		0xE1C
++
++/*
++ * Addresses for NFC RAM BUFFER Main area 0
++ */
++#define MAIN_AREA0		0x000
++#define MAIN_AREA1		0x200
++#define MAIN_AREA2		0x400
++#define MAIN_AREA3		0x600
++
++/*
++ * Addresses for NFC SPARE BUFFER Spare area 0
++ */
++#define SPARE_AREA0		0x800
++#define SPARE_AREA1		0x810
++#define SPARE_AREA2		0x820
++#define SPARE_AREA3		0x830
++
++/*
++ * Set INT to 0, FCMD to 1, rest to 0 in NFC_CONFIG2 Register for Command
++ * operation
++ */
++#define NFC_CMD            0x1
++
++/*
++ * Set INT to 0, FADD to 1, rest to 0 in NFC_CONFIG2 Register for Address
++ * operation
++ */
++#define NFC_ADDR           0x2
++
++/*
++ * Set INT to 0, FDI to 1, rest to 0 in NFC_CONFIG2 Register for Input
++ * operation
++ */
++#define NFC_INPUT          0x4
++
++/*
++ * Set INT to 0, FDO to 001, rest to 0 in NFC_CONFIG2 Register for Data Output
++ * operation
++ */
++#define NFC_OUTPUT         0x8
++
++/*
++ * Set INT to 0, FD0 to 010, rest to 0 in NFC_CONFIG2 Register for Read ID
++ * operation
++ */
++#define NFC_ID             0x10
++
++/*
++ * Set INT to 0, FDO to 100, rest to 0 in NFC_CONFIG2 Register for Read Status
++ * operation
++ */
++#define NFC_STATUS         0x20
++
++/*
++ * Set INT to 1, rest to 0 in NFC_CONFIG2 Register for Read Status
++ * operation
++ */
++#define NFC_INT            0x8000
++
++#define NFC_ECC_MODE        (1 << 0)
++#define NFC_SP_EN           (1 << 2)
++#define NFC_ECC_EN          (1 << 3)
++#define NFC_INT_MSK         (1 << 4)
++#define NFC_BIG             (1 << 5)
++#define NFC_RST             (1 << 6)
++#define NFC_CE              (1 << 7)
++#define NFC_ONE_CYCLE       (1 << 8)
++
++#define NFC_SPAS_16			 8
++#define NFC_SPAS_64			 32
++#define NFC_SPAS_128			 64
++#define NFC_SPAS_218			 109
++
++#ifdef CONFIG_NAND_IMX_BOOT
++#define __nand_boot_init __bare_init
++#else
++#define __nand_boot_init
++#endif
++
++struct imx_nand_host {
++	struct mtd_info		mtd;		
++	struct nand_chip	nand;
++	struct mtd_partition	*parts;
++	struct device_d		*dev;
++
++	void			*spare0;
++	void			*main_area0;
++	void			*main_area1;
++
++	void __iomem		*base;
++	void __iomem		*regs;
++	int			status_request;
++	struct clk		*clk;
++
++	int			pagesize_2k;
++	uint8_t			*data_buf;
++	unsigned int		buf_start;
++	int			spare_len;
++
++};
++
++/*
++ * OOB placement block for use with hardware ecc generation
++ */
++static struct nand_ecclayout nandv1_hw_eccoob_smallpage = {
++	.eccbytes = 5,
++	.eccpos = {6, 7, 8, 9, 10},
++	.oobfree = {{0, 5}, {12, 4}}
++};
++
++static struct nand_ecclayout nandv1_hw_eccoob_largepage = {
++	.eccbytes = 20,
++	.eccpos = {6, 7, 8, 9, 10, 22, 23, 24, 25, 26,
++		   38, 39, 40, 41, 42, 54, 55, 56, 57, 58},
++	.oobfree = {{2, 4}, {11, 10}, {27, 10}, {43, 10}, {59, 5}, }
++};
++
++/* OOB description for 512 byte pages with 16 byte OOB */
++static struct nand_ecclayout nandv2_hw_eccoob_smallpage = {
++	.eccbytes = 1 * 9,
++	.eccpos = {
++		7,  8,  9, 10, 11, 12, 13, 14, 15
++	},
++	.oobfree = {
++		{.offset = 0, .length = 5}
++	}
++};
++
++/* OOB description for 2048 byte pages with 64 byte OOB */
++static struct nand_ecclayout nandv2_hw_eccoob_largepage = {
++	.eccbytes = 4 * 9,
++	.eccpos = {
++		 7,  8,  9, 10, 11, 12, 13, 14, 15,
++		23, 24, 25, 26, 27, 28, 29, 30, 31,
++		39, 40, 41, 42, 43, 44, 45, 46, 47,
++		55, 56, 57, 58, 59, 60, 61, 62, 63
++	},
++	.oobfree = {
++		{.offset = 2, .length = 4},
++		{.offset = 16, .length = 7},
++		{.offset = 32, .length = 7},
++		{.offset = 48, .length = 7}
++	}
++};
++
++static void memcpy32(void *trg, const void *src, int size)
++{
++	int i;
++	unsigned int *t = trg;
++	unsigned const int *s = src;
++
++#ifdef CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS
++	if (!((unsigned long)trg & 0x3) && !((unsigned long)src & 0x3))
++		memcpy(trg, src, size);
++	else
++#endif
++	for (i = 0; i < (size >> 2); i++)
++		*t++ = *s++;
++}
++
++/*
++ * This function polls the NANDFC to wait for the basic operation to complete by
++ * checking the INT bit of config2 register.
++ *
++ * @param       max_retries     number of retry attempts (separated by 1 us)
++ * @param       param           parameter for debug
++ */
++static void __nand_boot_init wait_op_done(struct imx_nand_host *host)
++{
++	u32 tmp;
++	int i;
++
++	/* This is a timeout of roughly 15ms on my system. We
++	 * need about 2us, but be generous. Don't use udelay
++	 * here as we might be here from nand booting.
++	 */
++	for (i = 0; i < 100000; i++) {
++		if (readw(host->regs + NFC_CONFIG2) & NFC_INT) {
++			tmp = readw(host->regs + NFC_CONFIG2);
++			tmp  &= ~NFC_INT;
++			writew(tmp, host->regs + NFC_CONFIG2);
++			return;
++		}
++	}
++}
++
++/*
++ * This function issues the specified command to the NAND device and
++ * waits for completion.
++ *
++ * @param       cmd     command for NAND Flash
++ */
++static void __nand_boot_init send_cmd(struct imx_nand_host *host, u16 cmd)
++{
++	MTD_DEBUG(MTD_DEBUG_LEVEL3, "send_cmd(host, 0x%x)\n", cmd);
++
++	writew(cmd, host->regs + NFC_FLASH_CMD);
++	writew(NFC_CMD, host->regs + NFC_CONFIG2);
++
++	if (cpu_is_mx21() && (cmd == NAND_CMD_RESET)) {
++		/* Reset completion is indicated by NFC_CONFIG2 */
++		/* being set to 0 */
++		int i;
++		for (i = 0; i < 100000; i++) {
++			if (readw(host->regs + NFC_CONFIG2) == 0) {
++				break;
++			}
++		}
++	} else
++		/* Wait for operation to complete */
++		wait_op_done(host);
++}
++
++/*
++ * This function sends an address (or partial address) to the
++ * NAND device.  The address is used to select the source/destination for
++ * a NAND command.
++ *
++ * @param       addr    address to be written to NFC.
++ * @param       islast  True if this is the last address cycle for command
++ */
++static void __nand_boot_init noinline send_addr(struct imx_nand_host *host, u16 addr)
++{
++	MTD_DEBUG(MTD_DEBUG_LEVEL3, "send_addr(host, 0x%x %d)\n", addr, islast);
++
++	writew(addr, host->regs + NFC_FLASH_ADDR);
++	writew(NFC_ADDR, host->regs + NFC_CONFIG2);
++
++	/* Wait for operation to complete */
++	wait_op_done(host);
++}
++
++/*
++ * This function requests the NANDFC to initate the transfer
++ * of data currently in the NANDFC RAM buffer to the NAND device.
++ *
++ * @param	buf_id	      Specify Internal RAM Buffer number (0-3)
++ * @param       spare_only    set true if only the spare area is transferred
++ */
++static void __nand_boot_init send_page(struct imx_nand_host *host,
++		unsigned int ops)
++{
++	int bufs, i;
++
++	if (nfc_is_v1() && host->pagesize_2k)
++		bufs = 4;
++	else
++		bufs = 1;
++
++	for (i = 0; i < bufs; i++) {
++		/* NANDFC buffer 0 is used for page read/write */
++		writew(i, host->regs + NFC_BUF_ADDR);
++
++		writew(ops, host->regs + NFC_CONFIG2);
++
++		/* Wait for operation to complete */
++		wait_op_done(host);
++	}
++}
++
++/*
++ * This function requests the NANDFC to perform a read of the
++ * NAND device ID.
++ */
++static void send_read_id(struct imx_nand_host *host)
++{
++	struct nand_chip *this = &host->nand;
++	u16 tmp;
++
++	/* NANDFC buffer 0 is used for device ID output */
++	writew(0x0, host->regs + NFC_BUF_ADDR);
++
++	/* Read ID into main buffer */
++	tmp = readw(host->regs + NFC_CONFIG1);
++	tmp &= ~NFC_SP_EN;
++	writew(tmp, host->regs + NFC_CONFIG1);
++
++	writew(NFC_ID, host->regs + NFC_CONFIG2);
++
++	/* Wait for operation to complete */
++	wait_op_done(host);
++
++	if (this->options & NAND_BUSWIDTH_16) {
++		volatile u16 *mainbuf = host->main_area0;
++
++		/*
++		 * Pack the every-other-byte result for 16-bit ID reads
++		 * into every-byte as the generic code expects and various
++		 * chips implement.
++		 */
++
++		mainbuf[0] = (mainbuf[0] & 0xff) | ((mainbuf[1] & 0xff) << 8);
++		mainbuf[1] = (mainbuf[2] & 0xff) | ((mainbuf[3] & 0xff) << 8);
++		mainbuf[2] = (mainbuf[4] & 0xff) | ((mainbuf[5] & 0xff) << 8);
++	}
++	memcpy32(host->data_buf, host->main_area0, 16);
++}
++
++/*
++ * This function requests the NANDFC to perform a read of the
++ * NAND device status and returns the current status.
++ *
++ * @return  device status
++ */
++static u16 get_dev_status(struct imx_nand_host *host)
++{
++	volatile u16 *mainbuf = host->main_area1;
++	u32 store;
++	u16 ret, tmp;
++	/* Issue status request to NAND device */
++
++	/* store the main area1 first word, later do recovery */
++	store = *((u32 *) mainbuf);
++	/*
++	 * NANDFC buffer 1 is used for device status to prevent
++	 * corruption of read/write buffer on status requests.
++	 */
++	writew(1, host->regs + NFC_BUF_ADDR);
++
++	/* Read status into main buffer */
++	tmp = readw(host->regs + NFC_CONFIG1);
++	tmp &= ~NFC_SP_EN;
++	writew(tmp, host->regs + NFC_CONFIG1);
++
++	writew(NFC_STATUS, host->regs + NFC_CONFIG2);
++
++	/* Wait for operation to complete */
++	wait_op_done(host);
++
++	/* Status is placed in first word of main buffer */
++	/* get status, then recovery area 1 data */
++	ret = mainbuf[0];
++	*((u32 *) mainbuf) = store;
++
++	return ret;
++}
++
++/*
++ * This function is used by upper layer to checks if device is ready
++ *
++ * @param       mtd     MTD structure for the NAND Flash
++ *
++ * @return  0 if device is busy else 1
++ */
++static int imx_nand_dev_ready(struct mtd_info *mtd)
++{
++	/*
++	 * NFC handles R/B internally.Therefore,this function
++	 * always returns status as ready.
++	 */
++	return 1;
++}
++
++static void imx_nand_enable_hwecc(struct mtd_info *mtd, int mode)
++{
++	/*
++	 * If HW ECC is enabled, we turn it on during init.  There is
++	 * no need to enable again here.
++	 */
++}
++
++static int imx_nand_correct_data(struct mtd_info *mtd, u_char * dat,
++				 u_char * read_ecc, u_char * calc_ecc)
++{
++	struct nand_chip *nand_chip = mtd->priv;
++	struct imx_nand_host *host = nand_chip->priv;
++
++	/*
++	 * 1-Bit errors are automatically corrected in HW.  No need for
++	 * additional correction.  2-Bit errors cannot be corrected by
++	 * HW ECC, so we need to return failure
++	 */
++	u16 ecc_status = readw(host->regs + NFC_ECC_STATUS_RESULT);
++
++	if (((ecc_status & 0x3) == 2) || ((ecc_status >> 2) == 2)) {
++		MTD_DEBUG(MTD_DEBUG_LEVEL0,
++		      "MXC_NAND: HWECC uncorrectable 2-bit ECC error\n");
++		return -1;
++	}
++
++	return 0;
++}
++
++static int imx_nand_calculate_ecc(struct mtd_info *mtd, const u_char * dat,
++				  u_char * ecc_code)
++{
++	return 0;
++}
++
++/*
++ * This function reads byte from the NAND Flash
++ *
++ * @param       mtd     MTD structure for the NAND Flash
++ *
++ * @return    data read from the NAND Flash
++ */
++static u_char imx_nand_read_byte(struct mtd_info *mtd)
++{
++	struct nand_chip *nand_chip = mtd->priv;
++	struct imx_nand_host *host = nand_chip->priv;
++	u_char ret;
++
++	/* Check for status request */
++	if (host->status_request)
++		return get_dev_status(host) & 0xFF;
++
++	ret = *(uint8_t *)(host->data_buf + host->buf_start);
++	host->buf_start++;
++
++	return ret;
++}
++
++/*
++  * This function reads word from the NAND Flash
++  *
++  * @param       mtd     MTD structure for the NAND Flash
++  *
++  * @return    data read from the NAND Flash
++  */
++static u16 imx_nand_read_word(struct mtd_info *mtd)
++{
++	struct nand_chip *nand_chip = mtd->priv;
++	struct imx_nand_host *host = nand_chip->priv;
++	uint16_t ret;
++
++	ret = *(uint16_t *)(host->data_buf + host->buf_start);
++	host->buf_start += 2;
++
++	return ret;
++}
++
++/*
++ * This function writes data of length \b len to buffer \b buf. The data to be
++ * written on NAND Flash is first copied to RAMbuffer. After the Data Input
++ * Operation by the NFC, the data is written to NAND Flash
++ *
++ * @param       mtd     MTD structure for the NAND Flash
++ * @param       buf     data to be written to NAND Flash
++ * @param       len     number of bytes to be written
++ */
++static void imx_nand_write_buf(struct mtd_info *mtd,
++			       const u_char *buf, int len)
++{
++	struct nand_chip *nand_chip = mtd->priv;
++	struct imx_nand_host *host = nand_chip->priv;
++	u16 col = host->buf_start;
++	int n = mtd->oobsize + mtd->writesize - col;
++
++	n = min(n, len);
++	memcpy(host->data_buf + col, buf, n);
++
++	host->buf_start += n;
++}
++
++/*
++ * This function is used to read the data buffer from the NAND Flash. To
++ * read the data from NAND Flash first the data output cycle is initiated by
++ * the NFC, which copies the data to RAMbuffer. This data of length \b len is
++ * then copied to buffer \b buf.
++ *
++ * @param       mtd     MTD structure for the NAND Flash
++ * @param       buf     data to be read from NAND Flash
++ * @param       len     number of bytes to be read
++ */
++static void imx_nand_read_buf(struct mtd_info *mtd, u_char * buf, int len)
++{
++	struct nand_chip *nand_chip = mtd->priv;
++	struct imx_nand_host *host = nand_chip->priv;
++	u16 col = host->buf_start;
++	int n = mtd->oobsize + mtd->writesize - col;
++
++	n = min(n, len);
++
++	memcpy(buf, host->data_buf + col, len);
++
++	host->buf_start += len;
++}
++
++/*
++ * Function to transfer data to/from spare area.
++ */
++static void copy_spare(struct mtd_info *mtd, int bfrom)
++{
++	struct nand_chip *this = mtd->priv;
++	struct imx_nand_host *host = this->priv;
++	u16 i, j;
++	u16 n = mtd->writesize >> 9;
++	u8 *d = host->data_buf + mtd->writesize;
++	u8 *s = host->spare0;
++	u16 t = host->spare_len;
++
++	j = (mtd->oobsize / n >> 1) << 1;
++
++	if (bfrom) {
++		for (i = 0; i < n - 1; i++)
++			memcpy32(d + i * j, s + i * t, j);
++
++		/* the last section */
++		memcpy32(d + i * j, s + i * t, mtd->oobsize - i * j);
++	} else {
++		for (i = 0; i < n - 1; i++)
++			memcpy32(&s[i * t], &d[i * j], j);
++
++		/* the last section */
++		memcpy32(&s[i * t], &d[i * j], mtd->oobsize - i * j);
++	}
++}
++
++/*
++ * This function is used by the upper layer to verify the data in NAND Flash
++ * with the data in the \b buf.
++ *
++ * @param       mtd     MTD structure for the NAND Flash
++ * @param       buf     data to be verified
++ * @param       len     length of the data to be verified
++ *
++ * @return      -EFAULT if error else 0
++ *
++ */
++static int
++imx_nand_verify_buf(struct mtd_info *mtd, const u_char * buf, int len)
++{
++	return -EFAULT;
++}
++
++/*
++ * This function is used by upper layer for select and deselect of the NAND
++ * chip
++ *
++ * @param       mtd     MTD structure for the NAND Flash
++ * @param       chip    val indicating select or deselect
++ */
++static void imx_nand_select_chip(struct mtd_info *mtd, int chip)
++{
++#ifdef CONFIG_MTD_NAND_MXC_FORCE_CE
++	u16 tmp;
++
++	if (chip > 0) {
++		MTD_DEBUG(MTD_DEBUG_LEVEL0,
++		      "ERROR:  Illegal chip select (chip = %d)\n", chip);
++		return;
++	}
++
++	if (chip == -1) {
++		tmp = readw(host->regs + NFC_CONFIG1);
++		tmp &= ~NFC_CE;
++		writew(tmp, host->regs + NFC_CONFIG1);
++		return;
++	}
++
++	tmp = readw(host->regs + NFC_CONFIG1);
++	tmp |= NFC_CE;
++	writew(tmp, host->regs + NFC_CONFIG1);
++#endif
++}
++
++static void mxc_do_addr_cycle(struct mtd_info *mtd, int column, int page_addr)
++{
++	struct nand_chip *nand_chip = mtd->priv;
++	struct imx_nand_host *host = nand_chip->priv;
++
++	/*
++	 * Write out column address, if necessary
++	 */
++	if (column != -1) {
++		/*
++		 * MXC NANDFC can only perform full page+spare or
++		 * spare-only read/write.  When the upper layers
++		 * layers perform a read/write buf operation,
++		 * we will used the saved column adress to index into
++		 * the full page.
++		 */
++		send_addr(host, 0);
++		if (host->pagesize_2k)
++			/* another col addr cycle for 2k page */
++			send_addr(host, 0);
++	}
++
++	/*
++	 * Write out page address, if necessary
++	 */
++	if (page_addr != -1) {
++		send_addr(host, (page_addr & 0xff));	/* paddr_0 - p_addr_7 */
++
++		if (host->pagesize_2k) {
++			send_addr(host, (page_addr >> 8) & 0xFF);
++			if (mtd->size >= 0x10000000) {
++				send_addr(host, (page_addr >> 16) & 0xff);
++			}
++		} else {
++			/* One more address cycle for higher density devices */
++			if (mtd->size >= 0x4000000) {
++				/* paddr_8 - paddr_15 */
++				send_addr(host, (page_addr >> 8) & 0xff);
++				send_addr(host, (page_addr >> 16) & 0xff);
++			} else
++				/* paddr_8 - paddr_15 */
++				send_addr(host, (page_addr >> 8) & 0xff);
++		}
++	}
++}
++
++/*
++ * This function is used by the upper layer to write command to NAND Flash for
++ * different operations to be carried out on NAND Flash
++ *
++ * @param       mtd             MTD structure for the NAND Flash
++ * @param       command         command for NAND Flash
++ * @param       column          column offset for the page read
++ * @param       page_addr       page to be read from NAND Flash
++ */
++static void imx_nand_command(struct mtd_info *mtd, unsigned command,
++			     int column, int page_addr)
++{
++	struct nand_chip *nand_chip = mtd->priv;
++	struct imx_nand_host *host = nand_chip->priv;
++
++	MTD_DEBUG(MTD_DEBUG_LEVEL3,
++	      "imx_nand_command (cmd = 0x%x, col = 0x%x, page = 0x%x)\n",
++	      command, column, page_addr);
++
++	/*
++	 * Reset command state information
++	 */
++	host->status_request = 0;
++
++	/*
++	 * Command pre-processing step
++	 */
++	switch (command) {
++
++	case NAND_CMD_STATUS:
++		host->buf_start = 0;
++		host->status_request = 1;
++		send_cmd(host, command);
++		mxc_do_addr_cycle(mtd, column, page_addr);
++		break;
++
++	case NAND_CMD_READ0:
++	case NAND_CMD_READOOB:
++		if (command == NAND_CMD_READ0)
++			host->buf_start = column;
++		else
++			host->buf_start = column + mtd->writesize;
++
++		command = NAND_CMD_READ0;
++
++		send_cmd(host, command);
++		mxc_do_addr_cycle(mtd, column, page_addr);
++
++		if (host->pagesize_2k)
++			/* send read confirm command */
++			send_cmd(host, NAND_CMD_READSTART);
++
++		send_page(host, NFC_OUTPUT);
++
++		memcpy32(host->data_buf, host->main_area0, mtd->writesize);
++		copy_spare(mtd, 1);
++		break;
++
++	case NAND_CMD_SEQIN:
++		if (column >= mtd->writesize) {
++			if (host->pagesize_2k) {
++				/**
++				  * FIXME: before send SEQIN command for write
++				  * OOB, we must read one page out. For K9F1GXX
++				  * has no READ1 command to set current HW
++				  * pointer to spare area, we must write the
++				  * whole page including OOB together.
++				  */
++				/* call ourself to read a page */
++				imx_nand_command(mtd, NAND_CMD_READ0, 0,
++						 page_addr);
++			}
++			host->buf_start = column;
++
++			/* Set program pointer to spare region */
++			if (!host->pagesize_2k)
++				send_cmd(host, NAND_CMD_READOOB);
++		} else {
++			host->buf_start = column;
++
++			/* Set program pointer to page start */
++			if (!host->pagesize_2k)
++				send_cmd(host, NAND_CMD_READ0);
++		}
++		send_cmd(host, command);
++		mxc_do_addr_cycle(mtd, column, page_addr);
++
++		break;
++
++	case NAND_CMD_PAGEPROG:
++		memcpy32(host->main_area0, host->data_buf, mtd->writesize);
++		copy_spare(mtd, 0);
++		send_page(host, NFC_INPUT);
++		send_cmd(host, command);
++		mxc_do_addr_cycle(mtd, column, page_addr);
++		break;
++
++	case NAND_CMD_READID:
++		send_cmd(host, command);
++		mxc_do_addr_cycle(mtd, column, page_addr);
++		host->buf_start = 0;
++		send_read_id(host);
++		break;
++
++	case NAND_CMD_ERASE1:
++	case NAND_CMD_ERASE2:
++	case NAND_CMD_RESET:
++		send_cmd(host, command);
++		mxc_do_addr_cycle(mtd, column, page_addr);
++		break;
++	}
++}
++
++#ifdef CONFIG_MXC_NAND_LOW_LEVEL_ERASE
++static void imx_low_erase(struct mtd_info *mtd)
++{
++
++	struct nand_chip *this = mtd->priv;
++	unsigned int page_addr, addr;
++	u_char status;
++
++	MTD_DEBUG(MTD_DEBUG_LEVEL0, "MXC_ND : imx_low_erase:Erasing NAND\n");
++	for (addr = 0; addr < this->chipsize; addr += mtd->erasesize) {
++		page_addr = addr / mtd->writesize;
++		imx_nand_command(mtd, NAND_CMD_ERASE1, -1, page_addr);
++		imx_nand_command(mtd, NAND_CMD_ERASE2, -1, -1);
++		imx_nand_command(mtd, NAND_CMD_STATUS, -1, -1);
++		status = imx_nand_read_byte(mtd);
++		if (status & NAND_STATUS_FAIL) {
++			printk(KERN_ERR
++			       "ERASE FAILED(block = %d,status = 0x%x)\n",
++			       addr / mtd->erasesize, status);
++		}
++	}
++
++}
++#endif
++
++/*
++ * The generic flash bbt decriptors overlap with our ecc
++ * hardware, so define some i.MX specific ones.
++ */
++static uint8_t bbt_pattern[] = { 'B', 'b', 't', '0' };
++static uint8_t mirror_pattern[] = { '1', 't', 'b', 'B' };
++
++static struct nand_bbt_descr bbt_main_descr = {
++	.options = NAND_BBT_LASTBLOCK | NAND_BBT_CREATE | NAND_BBT_WRITE
++		| NAND_BBT_2BIT | NAND_BBT_VERSION | NAND_BBT_PERCHIP,
++	.offs = 0,
++	.len = 4,
++	.veroffs = 4,
++	.maxblocks = 4,
++	.pattern = bbt_pattern,
++};
++
++static struct nand_bbt_descr bbt_mirror_descr = {
++	.options = NAND_BBT_LASTBLOCK | NAND_BBT_CREATE | NAND_BBT_WRITE
++		| NAND_BBT_2BIT | NAND_BBT_VERSION | NAND_BBT_PERCHIP,
++	.offs = 0,
++	.len = 4,
++	.veroffs = 4,
++	.maxblocks = 4,
++	.pattern = mirror_pattern,
++};
++
++/*
++ * This function is called during the driver binding process.
++ *
++ * @param   pdev  the device structure used to store device specific
++ *                information that is used by the suspend, resume and
++ *                remove functions
++ *
++ * @return  The function always returns 0.
++ */
++
++static int __init imxnd_probe(struct device_d *dev)
++{
++	struct nand_chip *this;
++	struct mtd_info *mtd;
++	struct imx_nand_platform_data *pdata = dev->platform_data;
++	struct imx_nand_host *host;
++	struct nand_ecclayout *oob_smallpage, *oob_largepage;
++	u16 tmp;
++	int err = 0;
++
++#ifdef CONFIG_ARCH_IMX27
++	PCCR1 |= PCCR1_NFC_BAUDEN;
++#endif
++#ifdef CONFIG_ARCH_IMX21
++	PCCR0 |= PCCR0_NFC_EN;
++#endif
++	/* Allocate memory for MTD device structure and private data */
++	host = kzalloc(sizeof(struct imx_nand_host) + NAND_MAX_PAGESIZE +
++			NAND_MAX_OOBSIZE, GFP_KERNEL);
++	if (!host)
++		return -ENOMEM;
++
++	host->data_buf = (uint8_t *)(host + 1);
++	host->base = (void __iomem *)dev->map_base;
++
++	host->main_area0 = host->base;
++	host->main_area1 = host->base + 0x200;
++
++	if (nfc_is_v21()) {
++		host->regs = host->base + 0x1000;
++		host->spare0 = host->base + 0x1000;
++		host->spare_len = 64;
++		oob_smallpage = &nandv2_hw_eccoob_smallpage;
++		oob_largepage = &nandv2_hw_eccoob_largepage;
++	} else if (nfc_is_v1()) {
++		host->regs = host->base;
++		host->spare0 = host->base + 0x800;
++		host->spare_len = 16;
++		oob_smallpage = &nandv1_hw_eccoob_smallpage;
++		oob_largepage = &nandv1_hw_eccoob_largepage;
++	}
++
++	host->dev = dev;
++	/* structures must be linked */
++	this = &host->nand;
++	mtd = &host->mtd;
++	mtd->priv = this;
++
++	/* 50 us command delay time */
++	this->chip_delay = 5;
++
++	this->priv = host;
++	this->dev_ready = imx_nand_dev_ready;
++	this->cmdfunc = imx_nand_command;
++	this->select_chip = imx_nand_select_chip;
++	this->read_byte = imx_nand_read_byte;
++	this->read_word = imx_nand_read_word;
++	this->write_buf = imx_nand_write_buf;
++	this->read_buf = imx_nand_read_buf;
++	this->verify_buf = imx_nand_verify_buf;
++#if 0
++	host->clk = clk_get(&pdev->dev, "nfc_clk");
++	if (IS_ERR(host->clk))
++		goto eclk;
++
++	clk_enable(host->clk);
++#endif
++
++	tmp = readw(host->regs + NFC_CONFIG1);
++	tmp |= NFC_INT_MSK;
++	tmp &= ~NFC_SP_EN;
++	if (nfc_is_v21())
++		/* currently no support for 218 byte OOB with stronger ECC */
++		tmp |= NFC_ECC_MODE;
++	writew(tmp, host->regs + NFC_CONFIG1);
++
++	if (pdata->hw_ecc) {
++		this->ecc.calculate = imx_nand_calculate_ecc;
++		this->ecc.hwctl = imx_nand_enable_hwecc;
++		this->ecc.correct = imx_nand_correct_data;
++		this->ecc.mode = NAND_ECC_HW;
++		this->ecc.size = 512;
++		tmp = readw(host->regs + NFC_CONFIG1);
++		tmp |= NFC_ECC_EN;
++		writew(tmp, host->regs + NFC_CONFIG1);
++	} else {
++		this->ecc.size = 512;
++		this->ecc.mode = NAND_ECC_SOFT;
++		tmp = readw(host->regs + NFC_CONFIG1);
++		tmp &= ~NFC_ECC_EN;
++		writew(tmp, host->regs + NFC_CONFIG1);
++	}
++
++	/* Reset NAND */
++	this->cmdfunc(mtd, NAND_CMD_RESET, -1, -1);
++
++	/* preset operation */
++	/* Unlock the internal RAM Buffer */
++	writew(0x2, host->regs + NFC_CONFIG);
++
++	/* Blocks to be unlocked */
++	if (nfc_is_v21()) {
++		writew(0x0, host->regs + NFC_V21_UNLOCKSTART_BLKADDR);
++		writew(0xffff, host->regs + NFC_V21_UNLOCKEND_BLKADDR);
++		this->ecc.bytes = 9;
++	} else if (nfc_is_v1()) {
++		writew(0x0, host->regs + NFC_V1_UNLOCKSTART_BLKADDR);
++		writew(0x4000, host->regs + NFC_V1_UNLOCKEND_BLKADDR);
++		this->ecc.bytes = 3;
++	}
++
++	/* Unlock Block Command for given address range */
++	writew(0x4, host->regs + NFC_WRPROT);
++
++	this->ecc.layout = oob_smallpage;
++
++	/* NAND bus width determines access funtions used by upper layer */
++	if (pdata->width == 2) {
++		this->options |= NAND_BUSWIDTH_16;
++		this->ecc.layout = &nandv1_hw_eccoob_smallpage;
++		imx_nand_set_layout(0, 16);
++	}
++
++	if (pdata->flash_bbt) {
++		this->bbt_td = &bbt_main_descr;
++		this->bbt_md = &bbt_mirror_descr;
++		/* update flash based bbt */
++		this->options |= NAND_USE_FLASH_BBT;
++	}
++
++	/* first scan to find the device and get the page size */
++	if (nand_scan_ident(mtd, 1)) {
++		err = -ENXIO;
++		goto escan;
++	}
++
++	imx_nand_set_layout(mtd->writesize, pdata->width == 2 ? 16 : 8);
++
++	if (mtd->writesize == 2048) {
++		this->ecc.layout = oob_largepage;
++		host->pagesize_2k = 1;
++		if (nfc_is_v21()) {
++			tmp = readw(host->regs + NFC_SPAS);
++			tmp &= 0xff00;
++			tmp |= NFC_SPAS_64;
++			writew(tmp, host->regs + NFC_SPAS);
++		}
++	} else {
++		if (nfc_is_v21()) {
++			tmp = readw(host->regs + NFC_SPAS);
++			tmp &= 0xff00;
++			tmp |= NFC_SPAS_16;
++			writew(tmp, host->regs + NFC_SPAS);
++		}
++	}
++
++	/* second phase scan */
++	if (nand_scan_tail(mtd)) {
++		err = -ENXIO;
++		goto escan;
++	}
++
++	add_mtd_device(mtd);
++
++	dev->priv = host;
++
++	return 0;
++
++escan:
++	kfree(host);
++
++	return err;
++
++}
++
++static struct driver_d imx_nand_driver = {
++	.name  = "imx_nand",
++	.probe = imxnd_probe,
++};
++
++#ifdef CONFIG_NAND_IMX_BOOT
++
++static void __nand_boot_init nfc_addr(struct imx_nand_host *host, u32 offs)
++{
++	if (host->pagesize_2k) {
++		send_addr(host, offs & 0xff);
++		send_addr(host, offs & 0xff);
++		send_addr(host, (offs >> 11) & 0xff);
++		send_addr(host, (offs >> 19) & 0xff);
++		send_addr(host, (offs >> 27) & 0xff);
++	} else {
++		send_addr(host, offs & 0xff);
++		send_addr(host, (offs >> 9) & 0xff);
++		send_addr(host, (offs >> 17) & 0xff);
++		send_addr(host, (offs >> 25) & 0xff);
++	}
++}
++
++static void __nand_boot_init __memcpy32(void *trg, const void *src, int size)
++{
++	int i;
++	unsigned int *t = trg;
++	unsigned const int *s = src;
++
++	for (i = 0; i < (size >> 2); i++)
++		*t++ = *s++;
++}
++
++void __nand_boot_init imx_nand_load_image(void *dest, int size)
++{
++	struct imx_nand_host host;
++	u32 tmp, page, block, blocksize, pagesize;
++#ifdef CONFIG_ARCH_IMX21
++	tmp = readl(IMX_SYSTEM_CTL_BASE + 0x14);
++	if (tmp & (1 << 5))
++		host.pagesize_2k = 1;
++	else
++		host.pagesize_2k = 0;
++#endif
++#ifdef CONFIG_ARCH_IMX27
++	tmp = readl(IMX_SYSTEM_CTL_BASE + 0x14);
++	if (tmp & (1 << 5))
++		host.pagesize_2k = 1;
++	else
++		host.pagesize_2k = 0;
++#endif
++#ifdef CONFIG_ARCH_IMX31
++	tmp = readl(IMX_CCM_BASE + CCM_RCSR);
++	if (tmp & RCSR_NFMS)
++		host.pagesize_2k = 1;
++	else
++		host.pagesize_2k = 0;
++#endif
++#ifdef CONFIG_ARCH_IMX35
++	if (readl(IMX_CCM_BASE + CCM_RCSR) & (1 << 8))
++		host.pagesize_2k = 1;
++	else
++		host.pagesize_2k = 0;
++#endif
++	if (host.pagesize_2k) {
++		pagesize = 2048;
++		blocksize = 128 * 1024;
++	} else {
++		pagesize = 512;
++		blocksize = 16 * 1024;
++	}
++
++	host.base = (void __iomem *)IMX_NFC_BASE;
++	if (nfc_is_v21()) {
++		host.regs = host.base + 0x1000;
++		host.spare0 = host.base + 0x1000;
++		host.spare_len = 64;
++	} else if (nfc_is_v1()) {
++		host.regs = host.base;
++		host.spare0 = host.base + 0x800;
++		host.spare_len = 16;
++	}
++
++	send_cmd(&host, NAND_CMD_RESET);
++
++	/* preset operation */
++	/* Unlock the internal RAM Buffer */
++	writew(0x2, host.regs + NFC_CONFIG);
++
++	/* Unlock Block Command for given address range */
++	writew(0x4, host.regs + NFC_WRPROT);
++
++	tmp = readw(host.regs + NFC_CONFIG1);
++	tmp |= NFC_ECC_EN;
++	if (nfc_is_v21())
++		/* currently no support for 218 byte OOB with stronger ECC */
++		tmp |= NFC_ECC_MODE;
++	tmp &= ~(NFC_SP_EN | NFC_INT_MSK);
++	writew(tmp, host.regs + NFC_CONFIG1);
++
++	if (nfc_is_v21()) {
++		if (host.pagesize_2k) {
++			tmp = readw(host.regs + NFC_SPAS);
++			tmp &= 0xff00;
++			tmp |= NFC_SPAS_64;
++			writew(tmp, host.regs + NFC_SPAS);
++		} else {
++			tmp = readw(host.regs + NFC_SPAS);
++			tmp &= 0xff00;
++			tmp |= NFC_SPAS_16;
++			writew(tmp, host.regs + NFC_SPAS);
++		}
++	}
++
++	block = page = 0;
++
++	while (1) {
++		page = 0;
++		while (page * pagesize < blocksize) {
++			debug("page: %d block: %d dest: %p src "
++					"0x%08x\n",
++					page, block, dest,
++					block * blocksize +
++					page * pagesize);
++
++			send_cmd(&host, NAND_CMD_READ0);
++			nfc_addr(&host, block * blocksize +
++					page * pagesize);
++			if (host.pagesize_2k)
++				send_cmd(&host, NAND_CMD_READSTART);
++			send_page(&host, NFC_OUTPUT);
++			page++;
++
++			if (host.pagesize_2k) {
++				if ((readw(host.spare0) & 0xff)
++						!= 0xff)
++					continue;
++			} else {
++				if ((readw(host.spare0 + 4) & 0xff00)
++						!= 0xff00)
++					continue;
++			}
++
++			__memcpy32(dest, host.base, pagesize);
++			dest += pagesize;
++			size -= pagesize;
++
++			if (size <= 0)
++				return;
++		}
++		block++;
++	}
++}
++#define CONFIG_NAND_IMX_BOOT_DEBUG
++#ifdef CONFIG_NAND_IMX_BOOT_DEBUG
++#include <command.h>
++
++static int do_nand_boot_test(struct command *cmdtp, int argc, char *argv[])
++{
++	void *dest;
++	int size;
++
++	if (argc < 3)
++		return COMMAND_ERROR_USAGE;
++
++	dest = (void *)strtoul_suffix(argv[1], NULL, 0);
++	size = strtoul_suffix(argv[2], NULL, 0);
++
++	imx_nand_load_image(dest, size);
++
++	return 0;
++}
++
++static const __maybe_unused char cmd_nand_boot_test_help[] =
++"Usage: nand_boot_test <dest> <size>\n"
++"This command loads the booloader from the NAND memory like the reset\n"
++"routine does. Its intended for development tests only";
++
++BAREBOX_CMD_START(nand_boot_test)
++	.cmd		= do_nand_boot_test,
++	.usage		= "load bootloader from NAND",
++	BAREBOX_CMD_HELP(cmd_nand_boot_test_help)
++BAREBOX_CMD_END
++#endif
++
++#endif /* CONFIG_NAND_IMX_BOOT */
++
++/*
++ * Main initialization routine
++ * @return  0 if successful; non-zero otherwise
++ */
++static int __init imx_nand_init(void)
++{
++	return register_driver(&imx_nand_driver);
++}
++
++device_initcall(imx_nand_init);
++
++MODULE_AUTHOR("Freescale Semiconductor, Inc.");
++MODULE_DESCRIPTION("MXC NAND MTD driver");
++MODULE_LICENSE("GPL");
+diff --git a/drivers/mtd/nand/nand_omap_gpmc.c b/drivers/mtd/nand/nand_omap_gpmc.c
+new file mode 100644
+index 0000000..c6647e5
+--- /dev/null
++++ b/drivers/mtd/nand/nand_omap_gpmc.c
+@@ -0,0 +1,534 @@
++/**
++ * @file
++ * @brief Provide Generic GPMC NAND implementation for OMAP platforms
++ *
++ * FileName: arch/arm/mach-omap/gpmc_nand.c
++ *
++ * GPMC has a NAND controller inbuilt. This provides a generic implementation
++ * for board files to register a nand device. drivers/nand/nand_base.c takes
++ * care of identifing the type of device, size etc.
++ *
++ * A typical device registration is as follows:
++ *
++ * @code
++ * static struct device_d my_nand_device = {
++ *	.name = "gpmc_nand",
++ *	.id = some identifier you need to show.. e.g. "gpmc_nand0"
++ *	.map_base = GPMC base address
++ *	.size = GPMC address map size.
++ *	.platform_data = platform data - required - explained below
++ * };
++ * platform data required:
++ * static struct gpmc_nand_platform_data nand_plat = {
++ *	.cs = give the chip select of the device
++ *	.device_width = what is the width of the device 8 or 16?
++ *	.max_timeout = delay desired for operation
++ *	.wait_mon_pin = do you use wait monitoring? if so wait pin
++ *	.plat_options = platform options.
++ *		NAND_HWECC_ENABLE/DISABLE - hw ecc enable/disable
++ *		NAND_WAITPOL_LOW/HIGH - wait pin polarity
++ *	.oob = if you would like to replace oob with a custom OOB.
++ *	.nand_setup  = if you would like a special setup function to be called
++ *	.priv = any params you'd like to save(e.g. like nand_setup to use)
++ *};
++ * then in your code, you'd device_register(&my_nand_device);
++ * @endcode
++ *
++ * Note:
++ * @li Enable CONFIG_NAND_OMAP_GPMC_HWECC in menuconfig to get H/w ECC support
++ * @li You may choose to register two "devices" for the same CS to get BOTH
++ * hwecc and swecc devices.
++ * @li You can choose to have your own OOB definition for compliance with ROM
++ * code organization - only if you dont want to use NAND's default oob layout.
++ * see GPMC_NAND_ECC_LP_x8_LAYOUT etc..
++ *
++ * @see gpmc_nand_platform_data
++ * @warning Remember to initialize GPMC before initializing the nand dev.
++ */
++/*
++ * (C) Copyright 2008
++ * Texas Instruments, <www.ti.com>
++ * Nishanth Menon <x0nishan@ti.com>
++ *
++ * Based on:
++ * drivers/mtd/nand/omap2.c from linux kernel
++ *
++ * Copyright (c) 2004 Texas Instruments, Jian Zhang <jzhang@ti.com>
++ * Copyright (c) 2004 Micron Technology Inc.
++ * Copyright (c) 2004 David Brownell
 + *
 + * This program is free software; you can redistribute it and/or modify
 + * it under the terms of the GNU General Public License version 2 as
 + * published by the Free Software Foundation.
 + */
 +
-+#ifndef __UBOOT_UBI_H
-+#define __UBOOT_UBI_H
-+
 +#include <common.h>
-+#include <malloc.h>
-+#include <asm-generic/div64.h>
 +#include <errno.h>
-+#include <linux/err.h>
-+#include <linux/types.h>
-+#include <linux/list.h>
-+#include <linux/rbtree.h>
-+#include <linux/string.h>
++#include <init.h>
++#include <driver.h>
++#include <malloc.h>
++#include <clock.h>
 +#include <linux/mtd/mtd.h>
-+#include <linux/mtd/ubi.h>
-+
-+#define crc32(seed, data, length)  crc32_no_comp(seed, (unsigned char const *)data, length)
-+
-+#define DPRINTK(format, args...)					\
-+do {									\
-+	printf("%s[%d]: " format "\n", __func__, __LINE__, ##args);	\
-+} while (0)
-+
-+/* configurable */
-+#define CONFIG_MTD_UBI_WL_THRESHOLD	4096
-+#define CONFIG_MTD_UBI_BEB_RESERVE	1
-+#define UBI_IO_DEBUG			0
-+
-+/* debug options (Linux: drivers/mtd/ubi/Kconfig.debug) */
-+#undef CONFIG_MTD_UBI_DEBUG
-+#undef CONFIG_MTD_UBI_DEBUG_PARANOID
-+#undef CONFIG_MTD_UBI_DEBUG_MSG
-+#undef CONFIG_MTD_UBI_DEBUG_MSG_EBA
-+#undef CONFIG_MTD_UBI_DEBUG_MSG_WL
-+#undef CONFIG_MTD_UBI_DEBUG_MSG_IO
-+#undef CONFIG_MTD_UBI_DEBUG_MSG_BLD
-+#define CONFIG_MTD_UBI_DEBUG_DISABLE_BGT
-+
-+/* build.c */
-+#define get_device(...)
-+#define put_device(...)
-+#define ubi_sysfs_init(...)		0
-+#define ubi_sysfs_close(...)		do { } while (0)
-+static inline int is_power_of_2(unsigned long n)
-+{
-+	return (n != 0 && ((n & (n - 1)) == 0));
-+}
-+
-+/* FIXME */
-+#define MKDEV(...)			0
-+#define MAJOR(dev)			0
-+#define MINOR(dev)			0
-+
-+#define alloc_chrdev_region(...)	0
-+#define unregister_chrdev_region(...)
-+
-+#define class_create(...)		__builtin_return_address(0)
-+#define class_create_file(...)		0
-+#define class_remove_file(...)
-+#define class_destroy(...)
-+#define misc_register(...)		0
-+#define misc_deregister(...)
-+
-+/* vmt.c */
-+#define device_register(...)		0
-+#define volume_sysfs_init(...)		0
-+#define volume_sysfs_close(...)		do { } while (0)
-+
-+/* kapi.c */
-+
-+/* eba.c */
-+
-+/* io.c */
-+#define init_waitqueue_head(...)	do { } while (0)
-+#define wait_event_interruptible(...)	0
-+#define wake_up_interruptible(...)	do { } while (0)
-+#define print_hex_dump(...)		do { } while (0)
-+#define dump_stack(...)			do { } while (0)
-+
-+/* wl.c */
-+#define task_pid_nr(x)			0
-+#define set_freezable(...)		do { } while (0)
-+#define try_to_freeze(...)		0
-+#define set_current_state(...)		do { } while (0)
-+#define kthread_should_stop(...)	0
-+#define schedule()			do { } while (0)
-+
-+/* upd.c */
-+static inline unsigned long copy_from_user(void *dest, const void *src,
-+					   unsigned long count)
-+{
-+	memcpy((void *)dest, (void *)src, count);
-+	return 0;
-+}
-+
-+/* common */
-+typedef int	spinlock_t;
-+typedef int	wait_queue_head_t;
-+#define spin_lock_init(...)
-+#define spin_lock(...)
-+#define spin_unlock(...)
-+
-+#define mutex_init(...)
-+#define mutex_lock(...)
-+#define mutex_unlock(...)
-+
-+#define init_rwsem(...)			do { } while (0)
-+#define down_read(...)			do { } while (0)
-+#define down_write(...)			do { } while (0)
-+#define down_write_trylock(...)		1
-+#define up_read(...)			do { } while (0)
-+#define up_write(...)			do { } while (0)
-+
-+struct kmem_cache { int i; };
-+#define kmem_cache_create(...)		1
-+#define kmem_cache_alloc(obj, gfp)	malloc(sizeof(struct ubi_wl_entry))
-+#define kmem_cache_free(obj, size)	free(size)
-+#define kmem_cache_destroy(...)
-+
-+#define cond_resched()			do { } while (0)
-+#define yield()				do { } while (0)
-+
-+#define GFP_KERNEL			0
-+#define GFP_NOFS			1
-+
-+#define __user
-+#define __init
-+#define __exit
-+
-+#define kthread_create(...)	__builtin_return_address(0)
-+#define kthread_stop(...)	do { } while (0)
-+#define wake_up_process(...)	do { } while (0)
-+
-+#define BUS_ID_SIZE		20
-+
-+struct rw_semaphore { int i; };
-+struct device {
-+	struct device		*parent;
-+	struct class		*class;
-+	char	bus_id[BUS_ID_SIZE];	/* position on parent bus */
-+	dev_t			devt;	/* dev_t, creates the sysfs "dev" */
-+	void	(*release)(struct device *dev);
-+};
-+struct mutex { int i; };
-+struct kernel_param { int i; };
-+
-+struct cdev_ {
-+	int owner;
-+	dev_t dev;
-+};
-+#define cdev_init(...)		do { } while (0)
-+#define cdev_add(...)		0
-+#define cdev_del(...)		do { } while (0)
-+
-+#define MAX_ERRNO		4095
-+
-+/* module */
-+#define THIS_MODULE		0
-+#define try_module_get(...)	1
-+#define module_put(...)		do { } while (0)
-+#define module_init(...)
-+#define module_exit(...)
-+#define EXPORT_SYMBOL_GPL(...)
-+#define module_param_call(...)
-+#define MODULE_PARM_DESC(...)
-+#define MODULE_VERSION(...)
-+
-+#ifndef __UBIFS_H__
-+#include "ubi.h"
-+#endif
-+
-+/* functions */
-+extern int ubi_mtd_param_parse(const char *val, struct kernel_param *kp);
-+extern int ubi_init(void);
-+extern void ubi_exit(void);
-+
-+extern struct ubi_device *ubi_devices[];
-+
-+#endif
-diff --git a/drivers/mtd/ubi/ubi-media.h b/drivers/mtd/ubi/ubi-media.h
-new file mode 100644
-index 0000000..c3185d9
---- /dev/null
-+++ b/drivers/mtd/ubi/ubi-media.h
-@@ -0,0 +1,372 @@
-+/*
-+ * Copyright (c) International Business Machines Corp., 2006
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
-+ * the GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-+ *
-+ * Authors: Artem Bityutskiy (���������������� ����������)
-+ *          Thomas Gleixner
-+ *          Frank Haverkamp
-+ *          Oliver Lohmann
-+ *          Andreas Arnez
-+ */
-+
-+/*
-+ * This file defines the layout of UBI headers and all the other UBI on-flash
-+ * data structures.
-+ */
-+
-+#ifndef __UBI_MEDIA_H__
-+#define __UBI_MEDIA_H__
-+
-+#include <asm/byteorder.h>
-+
-+/* The version of UBI images supported by this implementation */
-+#define UBI_VERSION 1
-+
-+/* The highest erase counter value supported by this implementation */
-+#define UBI_MAX_ERASECOUNTER 0x7FFFFFFF
-+
-+/* The initial CRC32 value used when calculating CRC checksums */
-+#define UBI_CRC32_INIT 0xFFFFFFFFU
-+
-+/* Erase counter header magic number (ASCII "UBI#") */
-+#define UBI_EC_HDR_MAGIC  0x55424923
-+/* Volume identifier header magic number (ASCII "UBI!") */
-+#define UBI_VID_HDR_MAGIC 0x55424921
-+
-+/*
-+ * Volume type constants used in the volume identifier header.
-+ *
-+ * @UBI_VID_DYNAMIC: dynamic volume
-+ * @UBI_VID_STATIC: static volume
-+ */
-+enum {
-+	UBI_VID_DYNAMIC = 1,
-+	UBI_VID_STATIC  = 2
-+};
-+
-+/*
-+ * Volume flags used in the volume table record.
-+ *
-+ * @UBI_VTBL_AUTORESIZE_FLG: auto-resize this volume
-+ *
-+ * %UBI_VTBL_AUTORESIZE_FLG flag can be set only for one volume in the volume
-+ * table. UBI automatically re-sizes the volume which has this flag and makes
-+ * the volume to be of largest possible size. This means that if after the
-+ * initialization UBI finds out that there are available physical eraseblocks
-+ * present on the device, it automatically appends all of them to the volume
-+ * (the physical eraseblocks reserved for bad eraseblocks handling and other
-+ * reserved physical eraseblocks are not taken). So, if there is a volume with
-+ * the %UBI_VTBL_AUTORESIZE_FLG flag set, the amount of available logical
-+ * eraseblocks will be zero after UBI is loaded, because all of them will be
-+ * reserved for this volume. Note, the %UBI_VTBL_AUTORESIZE_FLG bit is cleared
-+ * after the volume had been initialized.
-+ *
-+ * The auto-resize feature is useful for device production purposes. For
-+ * example, different NAND flash chips may have different amount of initial bad
-+ * eraseblocks, depending of particular chip instance. Manufacturers of NAND
-+ * chips usually guarantee that the amount of initial bad eraseblocks does not
-+ * exceed certain percent, e.g. 2%. When one creates an UBI image which will be
-+ * flashed to the end devices in production, he does not know the exact amount
-+ * of good physical eraseblocks the NAND chip on the device will have, but this
-+ * number is required to calculate the volume sized and put them to the volume
-+ * table of the UBI image. In this case, one of the volumes (e.g., the one
-+ * which will store the root file system) is marked as "auto-resizable", and
-+ * UBI will adjust its size on the first boot if needed.
-+ *
-+ * Note, first UBI reserves some amount of physical eraseblocks for bad
-+ * eraseblock handling, and then re-sizes the volume, not vice-versa. This
-+ * means that the pool of reserved physical eraseblocks will always be present.
-+ */
-+enum {
-+	UBI_VTBL_AUTORESIZE_FLG = 0x01,
-+};
-+
-+/*
-+ * Compatibility constants used by internal volumes.
-+ *
-+ * @UBI_COMPAT_DELETE: delete this internal volume before anything is written
-+ * to the flash
-+ * @UBI_COMPAT_RO: attach this device in read-only mode
-+ * @UBI_COMPAT_PRESERVE: preserve this internal volume - do not touch its
-+ * physical eraseblocks, don't allow the wear-leveling unit to move them
-+ * @UBI_COMPAT_REJECT: reject this UBI image
-+ */
-+enum {
-+	UBI_COMPAT_DELETE   = 1,
-+	UBI_COMPAT_RO       = 2,
-+	UBI_COMPAT_PRESERVE = 4,
-+	UBI_COMPAT_REJECT   = 5
-+};
-+
-+/* Sizes of UBI headers */
-+#define UBI_EC_HDR_SIZE  sizeof(struct ubi_ec_hdr)
-+#define UBI_VID_HDR_SIZE sizeof(struct ubi_vid_hdr)
-+
-+/* Sizes of UBI headers without the ending CRC */
-+#define UBI_EC_HDR_SIZE_CRC  (UBI_EC_HDR_SIZE  - sizeof(__be32))
-+#define UBI_VID_HDR_SIZE_CRC (UBI_VID_HDR_SIZE - sizeof(__be32))
-+
-+/**
-+ * struct ubi_ec_hdr - UBI erase counter header.
-+ * @magic: erase counter header magic number (%UBI_EC_HDR_MAGIC)
-+ * @version: version of UBI implementation which is supposed to accept this
-+ * UBI image
-+ * @padding1: reserved for future, zeroes
-+ * @ec: the erase counter
-+ * @vid_hdr_offset: where the VID header starts
-+ * @data_offset: where the user data start
-+ * @padding2: reserved for future, zeroes
-+ * @hdr_crc: erase counter header CRC checksum
-+ *
-+ * The erase counter header takes 64 bytes and has a plenty of unused space for
-+ * future usage. The unused fields are zeroed. The @version field is used to
-+ * indicate the version of UBI implementation which is supposed to be able to
-+ * work with this UBI image. If @version is greater then the current UBI
-+ * version, the image is rejected. This may be useful in future if something
-+ * is changed radically. This field is duplicated in the volume identifier
-+ * header.
-+ *
-+ * The @vid_hdr_offset and @data_offset fields contain the offset of the the
-+ * volume identifier header and user data, relative to the beginning of the
-+ * physical eraseblock. These values have to be the same for all physical
-+ * eraseblocks.
-+ */
-+struct ubi_ec_hdr {
-+	__be32  magic;
-+	__u8    version;
-+	__u8    padding1[3];
-+	__be64  ec; /* Warning: the current limit is 31-bit anyway! */
-+	__be32  vid_hdr_offset;
-+	__be32  data_offset;
-+	__u8    padding2[36];
-+	__be32  hdr_crc;
-+} __attribute__ ((packed));
-+
-+/**
-+ * struct ubi_vid_hdr - on-flash UBI volume identifier header.
-+ * @magic: volume identifier header magic number (%UBI_VID_HDR_MAGIC)
-+ * @version: UBI implementation version which is supposed to accept this UBI
-+ * image (%UBI_VERSION)
-+ * @vol_type: volume type (%UBI_VID_DYNAMIC or %UBI_VID_STATIC)
-+ * @copy_flag: if this logical eraseblock was copied from another physical
-+ * eraseblock (for wear-leveling reasons)
-+ * @compat: compatibility of this volume (%0, %UBI_COMPAT_DELETE,
-+ * %UBI_COMPAT_IGNORE, %UBI_COMPAT_PRESERVE, or %UBI_COMPAT_REJECT)
-+ * @vol_id: ID of this volume
-+ * @lnum: logical eraseblock number
-+ * @leb_ver: version of this logical eraseblock (IMPORTANT: obsolete, to be
-+ * removed, kept only for not breaking older UBI users)
-+ * @data_size: how many bytes of data this logical eraseblock contains
-+ * @used_ebs: total number of used logical eraseblocks in this volume
-+ * @data_pad: how many bytes at the end of this physical eraseblock are not
-+ * used
-+ * @data_crc: CRC checksum of the data stored in this logical eraseblock
-+ * @padding1: reserved for future, zeroes
-+ * @sqnum: sequence number
-+ * @padding2: reserved for future, zeroes
-+ * @hdr_crc: volume identifier header CRC checksum
-+ *
-+ * The @sqnum is the value of the global sequence counter at the time when this
-+ * VID header was created. The global sequence counter is incremented each time
-+ * UBI writes a new VID header to the flash, i.e. when it maps a logical
-+ * eraseblock to a new physical eraseblock. The global sequence counter is an
-+ * unsigned 64-bit integer and we assume it never overflows. The @sqnum
-+ * (sequence number) is used to distinguish between older and newer versions of
-+ * logical eraseblocks.
-+ *
-+ * There are 2 situations when there may be more then one physical eraseblock
-+ * corresponding to the same logical eraseblock, i.e., having the same @vol_id
-+ * and @lnum values in the volume identifier header. Suppose we have a logical
-+ * eraseblock L and it is mapped to the physical eraseblock P.
-+ *
-+ * 1. Because UBI may erase physical eraseblocks asynchronously, the following
-+ * situation is possible: L is asynchronously erased, so P is scheduled for
-+ * erasure, then L is written to,i.e. mapped to another physical eraseblock P1,
-+ * so P1 is written to, then an unclean reboot happens. Result - there are 2
-+ * physical eraseblocks P and P1 corresponding to the same logical eraseblock
-+ * L. But P1 has greater sequence number, so UBI picks P1 when it attaches the
-+ * flash.
-+ *
-+ * 2. From time to time UBI moves logical eraseblocks to other physical
-+ * eraseblocks for wear-leveling reasons. If, for example, UBI moves L from P
-+ * to P1, and an unclean reboot happens before P is physically erased, there
-+ * are two physical eraseblocks P and P1 corresponding to L and UBI has to
-+ * select one of them when the flash is attached. The @sqnum field says which
-+ * PEB is the original (obviously P will have lower @sqnum) and the copy. But
-+ * it is not enough to select the physical eraseblock with the higher sequence
-+ * number, because the unclean reboot could have happen in the middle of the
-+ * copying process, so the data in P is corrupted. It is also not enough to
-+ * just select the physical eraseblock with lower sequence number, because the
-+ * data there may be old (consider a case if more data was added to P1 after
-+ * the copying). Moreover, the unclean reboot may happen when the erasure of P
-+ * was just started, so it result in unstable P, which is "mostly" OK, but
-+ * still has unstable bits.
-+ *
-+ * UBI uses the @copy_flag field to indicate that this logical eraseblock is a
-+ * copy. UBI also calculates data CRC when the data is moved and stores it at
-+ * the @data_crc field of the copy (P1). So when UBI needs to pick one physical
-+ * eraseblock of two (P or P1), the @copy_flag of the newer one (P1) is
-+ * examined. If it is cleared, the situation* is simple and the newer one is
-+ * picked. If it is set, the data CRC of the copy (P1) is examined. If the CRC
-+ * checksum is correct, this physical eraseblock is selected (P1). Otherwise
-+ * the older one (P) is selected.
-+ *
-+ * Note, there is an obsolete @leb_ver field which was used instead of @sqnum
-+ * in the past. But it is not used anymore and we keep it in order to be able
-+ * to deal with old UBI images. It will be removed at some point.
-+ *
-+ * There are 2 sorts of volumes in UBI: user volumes and internal volumes.
-+ * Internal volumes are not seen from outside and are used for various internal
-+ * UBI purposes. In this implementation there is only one internal volume - the
-+ * layout volume. Internal volumes are the main mechanism of UBI extensions.
-+ * For example, in future one may introduce a journal internal volume. Internal
-+ * volumes have their own reserved range of IDs.
-+ *
-+ * The @compat field is only used for internal volumes and contains the "degree
-+ * of their compatibility". It is always zero for user volumes. This field
-+ * provides a mechanism to introduce UBI extensions and to be still compatible
-+ * with older UBI binaries. For example, if someone introduced a journal in
-+ * future, he would probably use %UBI_COMPAT_DELETE compatibility for the
-+ * journal volume.  And in this case, older UBI binaries, which know nothing
-+ * about the journal volume, would just delete this volume and work perfectly
-+ * fine. This is similar to what Ext2fs does when it is fed by an Ext3fs image
-+ * - it just ignores the Ext3fs journal.
-+ *
-+ * The @data_crc field contains the CRC checksum of the contents of the logical
-+ * eraseblock if this is a static volume. In case of dynamic volumes, it does
-+ * not contain the CRC checksum as a rule. The only exception is when the
-+ * data of the physical eraseblock was moved by the wear-leveling unit, then
-+ * the wear-leveling unit calculates the data CRC and stores it in the
-+ * @data_crc field. And of course, the @copy_flag is %in this case.
-+ *
-+ * The @data_size field is used only for static volumes because UBI has to know
-+ * how many bytes of data are stored in this eraseblock. For dynamic volumes,
-+ * this field usually contains zero. The only exception is when the data of the
-+ * physical eraseblock was moved to another physical eraseblock for
-+ * wear-leveling reasons. In this case, UBI calculates CRC checksum of the
-+ * contents and uses both @data_crc and @data_size fields. In this case, the
-+ * @data_size field contains data size.
-+ *
-+ * The @used_ebs field is used only for static volumes and indicates how many
-+ * eraseblocks the data of the volume takes. For dynamic volumes this field is
-+ * not used and always contains zero.
-+ *
-+ * The @data_pad is calculated when volumes are created using the alignment
-+ * parameter. So, effectively, the @data_pad field reduces the size of logical
-+ * eraseblocks of this volume. This is very handy when one uses block-oriented
-+ * software (say, cramfs) on top of the UBI volume.
-+ */
-+struct ubi_vid_hdr {
-+	__be32  magic;
-+	__u8    version;
-+	__u8    vol_type;
-+	__u8    copy_flag;
-+	__u8    compat;
-+	__be32  vol_id;
-+	__be32  lnum;
-+	__be32  leb_ver; /* obsolete, to be removed, don't use */
-+	__be32  data_size;
-+	__be32  used_ebs;
-+	__be32  data_pad;
-+	__be32  data_crc;
-+	__u8    padding1[4];
-+	__be64  sqnum;
-+	__u8    padding2[12];
-+	__be32  hdr_crc;
-+} __attribute__ ((packed));
-+
-+/* Internal UBI volumes count */
-+#define UBI_INT_VOL_COUNT 1
-+
-+/*
-+ * Starting ID of internal volumes. There is reserved room for 4096 internal
-+ * volumes.
-+ */
-+#define UBI_INTERNAL_VOL_START (0x7FFFFFFF - 4096)
-+
-+/* The layout volume contains the volume table */
-+
-+#define UBI_LAYOUT_VOLUME_ID     UBI_INTERNAL_VOL_START
-+#define UBI_LAYOUT_VOLUME_TYPE   UBI_VID_DYNAMIC
-+#define UBI_LAYOUT_VOLUME_ALIGN  1
-+#define UBI_LAYOUT_VOLUME_EBS    2
-+#define UBI_LAYOUT_VOLUME_NAME   "layout volume"
-+#define UBI_LAYOUT_VOLUME_COMPAT UBI_COMPAT_REJECT
-+
-+/* The maximum number of volumes per one UBI device */
-+#define UBI_MAX_VOLUMES 128
-+
-+/* The maximum volume name length */
-+#define UBI_VOL_NAME_MAX 127
-+
-+/* Size of the volume table record */
-+#define UBI_VTBL_RECORD_SIZE sizeof(struct ubi_vtbl_record)
-+
-+/* Size of the volume table record without the ending CRC */
-+#define UBI_VTBL_RECORD_SIZE_CRC (UBI_VTBL_RECORD_SIZE - sizeof(__be32))
-+
-+/**
-+ * struct ubi_vtbl_record - a record in the volume table.
-+ * @reserved_pebs: how many physical eraseblocks are reserved for this volume
-+ * @alignment: volume alignment
-+ * @data_pad: how many bytes are unused at the end of the each physical
-+ * eraseblock to satisfy the requested alignment
-+ * @vol_type: volume type (%UBI_DYNAMIC_VOLUME or %UBI_STATIC_VOLUME)
-+ * @upd_marker: if volume update was started but not finished
-+ * @name_len: volume name length
-+ * @name: the volume name
-+ * @flags: volume flags (%UBI_VTBL_AUTORESIZE_FLG)
-+ * @padding: reserved, zeroes
-+ * @crc: a CRC32 checksum of the record
-+ *
-+ * The volume table records are stored in the volume table, which is stored in
-+ * the layout volume. The layout volume consists of 2 logical eraseblock, each
-+ * of which contains a copy of the volume table (i.e., the volume table is
-+ * duplicated). The volume table is an array of &struct ubi_vtbl_record
-+ * objects indexed by the volume ID.
-+ *
-+ * If the size of the logical eraseblock is large enough to fit
-+ * %UBI_MAX_VOLUMES records, the volume table contains %UBI_MAX_VOLUMES
-+ * records. Otherwise, it contains as many records as it can fit (i.e., size of
-+ * logical eraseblock divided by sizeof(struct ubi_vtbl_record)).
-+ *
-+ * The @upd_marker flag is used to implement volume update. It is set to %1
-+ * before update and set to %0 after the update. So if the update operation was
-+ * interrupted, UBI knows that the volume is corrupted.
-+ *
-+ * The @alignment field is specified when the volume is created and cannot be
-+ * later changed. It may be useful, for example, when a block-oriented file
-+ * system works on top of UBI. The @data_pad field is calculated using the
-+ * logical eraseblock size and @alignment. The alignment must be multiple to the
-+ * minimal flash I/O unit. If @alignment is 1, all the available space of
-+ * the physical eraseblocks is used.
-+ *
-+ * Empty records contain all zeroes and the CRC checksum of those zeroes.
-+ */
-+struct ubi_vtbl_record {
-+	__be32  reserved_pebs;
-+	__be32  alignment;
-+	__be32  data_pad;
-+	__u8    vol_type;
-+	__u8    upd_marker;
-+	__be16  name_len;
-+	__u8    name[UBI_VOL_NAME_MAX+1];
-+	__u8    flags;
-+	__u8    padding[23];
-+	__be32  crc;
-+} __attribute__ ((packed));
-+
-+#endif /* !__UBI_MEDIA_H__ */
-diff --git a/drivers/mtd/ubi/ubi.h b/drivers/mtd/ubi/ubi.h
-new file mode 100644
-index 0000000..358c8dc
---- /dev/null
-+++ b/drivers/mtd/ubi/ubi.h
-@@ -0,0 +1,641 @@
-+/*
-+ * Copyright (c) International Business Machines Corp., 2006
-+ * Copyright (c) Nokia Corporation, 2006, 2007
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
-+ * the GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-+ *
-+ * Author: Artem Bityutskiy (���������������� ����������)
-+ */
-+
-+#ifndef __UBI_UBI_H__
-+#define __UBI_UBI_H__
-+
-+#ifdef UBI_LINUX
-+#include <linux/init.h>
-+#include <linux/types.h>
-+#include <linux/list.h>
-+#include <linux/rbtree.h>
-+#include <linux/sched.h>
-+#include <linux/wait.h>
-+#include <linux/mutex.h>
-+#include <linux/rwsem.h>
-+#include <linux/spinlock.h>
-+#include <linux/fs.h>
-+#include <linux/cdev.h>
-+#include <linux/device.h>
-+#include <linux/string.h>
-+#include <linux/vmalloc.h>
-+#include <linux/mtd/mtd.h>
-+#include <linux/mtd/ubi.h>
-+#endif
-+
-+#include <linux/types.h>
-+#include <linux/list.h>
-+#include <linux/rbtree.h>
-+#include <linux/string.h>
-+#include <linux/mtd/mtd.h>
-+#include <linux/mtd/ubi.h>
-+
-+#include "ubi-media.h"
-+#include "scan.h"
-+#include "debug.h"
-+
-+/* Maximum number of supported UBI devices */
-+#define UBI_MAX_DEVICES 32
-+
-+/* UBI name used for character devices, sysfs, etc */
-+#define UBI_NAME_STR "ubi"
-+
-+/* Normal UBI messages */
-+#define ubi_msg(fmt, ...) printk(KERN_NOTICE "UBI: " fmt "\n", ##__VA_ARGS__)
-+/* UBI warning messages */
-+#define ubi_warn(fmt, ...) printk(KERN_WARNING "UBI warning: %s: " fmt "\n", \
-+				  __func__, ##__VA_ARGS__)
-+/* UBI error messages */
-+#define ubi_err(fmt, ...) printk(KERN_ERR "UBI error: %s: " fmt "\n", \
-+				 __func__, ##__VA_ARGS__)
-+
-+/* Lowest number PEBs reserved for bad PEB handling */
-+#define MIN_RESEVED_PEBS 2
-+
-+/* Background thread name pattern */
-+#define UBI_BGT_NAME_PATTERN "ubi_bgt%dd"
-+
-+/* This marker in the EBA table means that the LEB is um-mapped */
-+#define UBI_LEB_UNMAPPED -1
-+
-+/*
-+ * In case of errors, UBI tries to repeat the operation several times before
-+ * returning error. The below constant defines how many times UBI re-tries.
-+ */
-+#define UBI_IO_RETRIES 3
-+
-+/*
-+ * Error codes returned by the I/O unit.
-+ *
-+ * UBI_IO_PEB_EMPTY: the physical eraseblock is empty, i.e. it contains only
-+ * 0xFF bytes
-+ * UBI_IO_PEB_FREE: the physical eraseblock is free, i.e. it contains only a
-+ * valid erase counter header, and the rest are %0xFF bytes
-+ * UBI_IO_BAD_EC_HDR: the erase counter header is corrupted (bad magic or CRC)
-+ * UBI_IO_BAD_VID_HDR: the volume identifier header is corrupted (bad magic or
-+ * CRC)
-+ * UBI_IO_BITFLIPS: bit-flips were detected and corrected
-+ */
-+enum {
-+	UBI_IO_PEB_EMPTY = 1,
-+	UBI_IO_PEB_FREE,
-+	UBI_IO_BAD_EC_HDR,
-+	UBI_IO_BAD_VID_HDR,
-+	UBI_IO_BITFLIPS
-+};
-+
-+/**
-+ * struct ubi_wl_entry - wear-leveling entry.
-+ * @rb: link in the corresponding RB-tree
-+ * @ec: erase counter
-+ * @pnum: physical eraseblock number
-+ *
-+ * This data structure is used in the WL unit. Each physical eraseblock has a
-+ * corresponding &struct wl_entry object which may be kept in different
-+ * RB-trees. See WL unit for details.
-+ */
-+struct ubi_wl_entry {
-+	struct rb_node rb;
-+	int ec;
-+	int pnum;
-+};
-+
-+/**
-+ * struct ubi_ltree_entry - an entry in the lock tree.
-+ * @rb: links RB-tree nodes
-+ * @vol_id: volume ID of the locked logical eraseblock
-+ * @lnum: locked logical eraseblock number
-+ * @users: how many tasks are using this logical eraseblock or wait for it
-+ * @mutex: read/write mutex to implement read/write access serialization to
-+ *         the (@vol_id, @lnum) logical eraseblock
-+ *
-+ * This data structure is used in the EBA unit to implement per-LEB locking.
-+ * When a logical eraseblock is being locked - corresponding
-+ * &struct ubi_ltree_entry object is inserted to the lock tree (@ubi->ltree).
-+ * See EBA unit for details.
-+ */
-+struct ubi_ltree_entry {
-+	struct rb_node rb;
-+	int vol_id;
-+	int lnum;
-+	int users;
-+	struct rw_semaphore mutex;
-+};
-+
-+struct ubi_volume_desc;
-+
-+/**
-+ * struct ubi_volume - UBI volume description data structure.
-+ * @dev: device object to make use of the the Linux device model
-+ * @cdev: character device object to create character device
-+ * @ubi: reference to the UBI device description object
-+ * @vol_id: volume ID
-+ * @ref_count: volume reference count
-+ * @readers: number of users holding this volume in read-only mode
-+ * @writers: number of users holding this volume in read-write mode
-+ * @exclusive: whether somebody holds this volume in exclusive mode
-+ *
-+ * @reserved_pebs: how many physical eraseblocks are reserved for this volume
-+ * @vol_type: volume type (%UBI_DYNAMIC_VOLUME or %UBI_STATIC_VOLUME)
-+ * @usable_leb_size: logical eraseblock size without padding
-+ * @used_ebs: how many logical eraseblocks in this volume contain data
-+ * @last_eb_bytes: how many bytes are stored in the last logical eraseblock
-+ * @used_bytes: how many bytes of data this volume contains
-+ * @alignment: volume alignment
-+ * @data_pad: how many bytes are not used at the end of physical eraseblocks to
-+ *            satisfy the requested alignment
-+ * @name_len: volume name length
-+ * @name: volume name
-+ *
-+ * @upd_ebs: how many eraseblocks are expected to be updated
-+ * @ch_lnum: LEB number which is being changing by the atomic LEB change
-+ *           operation
-+ * @ch_dtype: data persistency type which is being changing by the atomic LEB
-+ *            change operation
-+ * @upd_bytes: how many bytes are expected to be received for volume update or
-+ *             atomic LEB change
-+ * @upd_received: how many bytes were already received for volume update or
-+ *                atomic LEB change
-+ * @upd_buf: update buffer which is used to collect update data or data for
-+ *           atomic LEB change
-+ *
-+ * @eba_tbl: EBA table of this volume (LEB->PEB mapping)
-+ * @checked: %1 if this static volume was checked
-+ * @corrupted: %1 if the volume is corrupted (static volumes only)
-+ * @upd_marker: %1 if the update marker is set for this volume
-+ * @updating: %1 if the volume is being updated
-+ * @changing_leb: %1 if the atomic LEB change ioctl command is in progress
-+ *
-+ * @gluebi_desc: gluebi UBI volume descriptor
-+ * @gluebi_refcount: reference count of the gluebi MTD device
-+ * @gluebi_mtd: MTD device description object of the gluebi MTD device
-+ *
-+ * The @corrupted field indicates that the volume's contents is corrupted.
-+ * Since UBI protects only static volumes, this field is not relevant to
-+ * dynamic volumes - it is user's responsibility to assure their data
-+ * integrity.
-+ *
-+ * The @upd_marker flag indicates that this volume is either being updated at
-+ * the moment or is damaged because of an unclean reboot.
-+ */
-+struct ubi_volume {
-+	struct device dev;
-+	struct cdev cdev;
-+	struct ubi_device *ubi;
-+	int vol_id;
-+	int ref_count;
-+	int readers;
-+	int writers;
-+	int exclusive;
-+
-+	int reserved_pebs;
-+	int vol_type;
-+	int usable_leb_size;
-+	int used_ebs;
-+	int last_eb_bytes;
-+	long long used_bytes;
-+	int alignment;
-+	int data_pad;
-+	int name_len;
-+	char name[UBI_VOL_NAME_MAX+1];
-+
-+	int upd_ebs;
-+	int ch_lnum;
-+	int ch_dtype;
-+	long long upd_bytes;
-+	long long upd_received;
-+	void *upd_buf;
-+
-+	int *eba_tbl;
-+	unsigned int checked:1;
-+	unsigned int corrupted:1;
-+	unsigned int upd_marker:1;
-+	unsigned int updating:1;
-+	unsigned int changing_leb:1;
-+
-+#ifdef CONFIG_MTD_UBI_GLUEBI
-+	/*
-+	 * Gluebi-related stuff may be compiled out.
-+	 * TODO: this should not be built into UBI but should be a separate
-+	 * ubimtd driver which works on top of UBI and emulates MTD devices.
-+	 */
-+	struct ubi_volume_desc *gluebi_desc;
-+	int gluebi_refcount;
-+	struct mtd_info gluebi_mtd;
-+#endif
-+};
-+
-+/**
-+ * struct ubi_volume_desc - descriptor of the UBI volume returned when it is
-+ * opened.
-+ * @vol: reference to the corresponding volume description object
-+ * @mode: open mode (%UBI_READONLY, %UBI_READWRITE, or %UBI_EXCLUSIVE)
-+ */
-+struct ubi_volume_desc {
-+	struct ubi_volume *vol;
-+	int mode;
-+};
-+
-+struct ubi_wl_entry;
-+
-+/**
-+ * struct ubi_device - UBI device description structure
-+ * @dev: UBI device object to use the the Linux device model
-+ * @cdev: character device object to create character device
-+ * @ubi_num: UBI device number
-+ * @ubi_name: UBI device name
-+ * @vol_count: number of volumes in this UBI device
-+ * @volumes: volumes of this UBI device
-+ * @volumes_lock: protects @volumes, @rsvd_pebs, @avail_pebs, beb_rsvd_pebs,
-+ *                @beb_rsvd_level, @bad_peb_count, @good_peb_count, @vol_count,
-+ *                @vol->readers, @vol->writers, @vol->exclusive,
-+ *                @vol->ref_count, @vol->mapping and @vol->eba_tbl.
-+ * @ref_count: count of references on the UBI device
-+ *
-+ * @rsvd_pebs: count of reserved physical eraseblocks
-+ * @avail_pebs: count of available physical eraseblocks
-+ * @beb_rsvd_pebs: how many physical eraseblocks are reserved for bad PEB
-+ *                 handling
-+ * @beb_rsvd_level: normal level of PEBs reserved for bad PEB handling
-+ *
-+ * @autoresize_vol_id: ID of the volume which has to be auto-resized at the end
-+ *                     of UBI ititializetion
-+ * @vtbl_slots: how many slots are available in the volume table
-+ * @vtbl_size: size of the volume table in bytes
-+ * @vtbl: in-RAM volume table copy
-+ * @volumes_mutex: protects on-flash volume table and serializes volume
-+ *                 changes, like creation, deletion, update, resize
-+ *
-+ * @max_ec: current highest erase counter value
-+ * @mean_ec: current mean erase counter value
-+ *
-+ * @global_sqnum: global sequence number
-+ * @ltree_lock: protects the lock tree and @global_sqnum
-+ * @ltree: the lock tree
-+ * @alc_mutex: serializes "atomic LEB change" operations
-+ *
-+ * @used: RB-tree of used physical eraseblocks
-+ * @free: RB-tree of free physical eraseblocks
-+ * @scrub: RB-tree of physical eraseblocks which need scrubbing
-+ * @prot: protection trees
-+ * @prot.pnum: protection tree indexed by physical eraseblock numbers
-+ * @prot.aec: protection tree indexed by absolute erase counter value
-+ * @wl_lock: protects the @used, @free, @prot, @lookuptbl, @abs_ec, @move_from,
-+ *           @move_to, @move_to_put @erase_pending, @wl_scheduled, and @works
-+ *           fields
-+ * @move_mutex: serializes eraseblock moves
-+ * @wl_scheduled: non-zero if the wear-leveling was scheduled
-+ * @lookuptbl: a table to quickly find a &struct ubi_wl_entry object for any
-+ *             physical eraseblock
-+ * @abs_ec: absolute erase counter
-+ * @move_from: physical eraseblock from where the data is being moved
-+ * @move_to: physical eraseblock where the data is being moved to
-+ * @move_to_put: if the "to" PEB was put
-+ * @works: list of pending works
-+ * @works_count: count of pending works
-+ * @bgt_thread: background thread description object
-+ * @thread_enabled: if the background thread is enabled
-+ * @bgt_name: background thread name
-+ *
-+ * @flash_size: underlying MTD device size (in bytes)
-+ * @peb_count: count of physical eraseblocks on the MTD device
-+ * @peb_size: physical eraseblock size
-+ * @bad_peb_count: count of bad physical eraseblocks
-+ * @good_peb_count: count of good physical eraseblocks
-+ * @min_io_size: minimal input/output unit size of the underlying MTD device
-+ * @hdrs_min_io_size: minimal I/O unit size used for VID and EC headers
-+ * @ro_mode: if the UBI device is in read-only mode
-+ * @leb_size: logical eraseblock size
-+ * @leb_start: starting offset of logical eraseblocks within physical
-+ * eraseblocks
-+ * @ec_hdr_alsize: size of the EC header aligned to @hdrs_min_io_size
-+ * @vid_hdr_alsize: size of the VID header aligned to @hdrs_min_io_size
-+ * @vid_hdr_offset: starting offset of the volume identifier header (might be
-+ * unaligned)
-+ * @vid_hdr_aloffset: starting offset of the VID header aligned to
-+ * @hdrs_min_io_size
-+ * @vid_hdr_shift: contains @vid_hdr_offset - @vid_hdr_aloffset
-+ * @bad_allowed: whether the MTD device admits of bad physical eraseblocks or
-+ *               not
-+ * @mtd: MTD device descriptor
-+ *
-+ * @peb_buf1: a buffer of PEB size used for different purposes
-+ * @peb_buf2: another buffer of PEB size used for different purposes
-+ * @buf_mutex: proptects @peb_buf1 and @peb_buf2
-+ * @dbg_peb_buf: buffer of PEB size used for debugging
-+ * @dbg_buf_mutex: proptects @dbg_peb_buf
-+ */
-+struct ubi_device {
-+	struct cdev cdev;
-+	struct device dev;
-+	int ubi_num;
-+	char ubi_name[sizeof(UBI_NAME_STR)+5];
-+	int vol_count;
-+	struct ubi_volume *volumes[UBI_MAX_VOLUMES+UBI_INT_VOL_COUNT];
-+	spinlock_t volumes_lock;
-+	int ref_count;
-+
-+	int rsvd_pebs;
-+	int avail_pebs;
-+	int beb_rsvd_pebs;
-+	int beb_rsvd_level;
-+
-+	int autoresize_vol_id;
-+	int vtbl_slots;
-+	int vtbl_size;
-+	struct ubi_vtbl_record *vtbl;
-+	struct mutex volumes_mutex;
-+
-+	int max_ec;
-+	/* TODO: mean_ec is not updated run-time, fix */
-+	int mean_ec;
-+
-+	/* EBA unit's stuff */
-+	unsigned long long global_sqnum;
-+	spinlock_t ltree_lock;
-+	struct rb_root ltree;
-+	struct mutex alc_mutex;
-+
-+	/* Wear-leveling unit's stuff */
-+	struct rb_root used;
-+	struct rb_root free;
-+	struct rb_root scrub;
-+	struct {
-+		struct rb_root pnum;
-+		struct rb_root aec;
-+	} prot;
-+	spinlock_t wl_lock;
-+	struct mutex move_mutex;
-+	struct rw_semaphore work_sem;
-+	int wl_scheduled;
-+	struct ubi_wl_entry **lookuptbl;
-+	unsigned long long abs_ec;
-+	struct ubi_wl_entry *move_from;
-+	struct ubi_wl_entry *move_to;
-+	int move_to_put;
-+	struct list_head works;
-+	int works_count;
-+	struct task_struct *bgt_thread;
-+	int thread_enabled;
-+	char bgt_name[sizeof(UBI_BGT_NAME_PATTERN)+2];
-+
-+	/* I/O unit's stuff */
-+	long long flash_size;
-+	int peb_count;
-+	int peb_size;
-+	int bad_peb_count;
-+	int good_peb_count;
-+	int min_io_size;
-+	int hdrs_min_io_size;
-+	int ro_mode;
-+	int leb_size;
-+	int leb_start;
-+	int ec_hdr_alsize;
-+	int vid_hdr_alsize;
-+	int vid_hdr_offset;
-+	int vid_hdr_aloffset;
-+	int vid_hdr_shift;
-+	int bad_allowed;
-+	struct mtd_info *mtd;
-+
-+	void *peb_buf1;
-+	void *peb_buf2;
-+	struct mutex buf_mutex;
-+	struct mutex ckvol_mutex;
-+#ifdef CONFIG_MTD_UBI_DEBUG
-+	void *dbg_peb_buf;
-+	struct mutex dbg_buf_mutex;
-+#endif
-+};
-+
-+extern struct kmem_cache *ubi_wl_entry_slab;
-+extern struct file_operations ubi_ctrl_cdev_operations;
-+extern struct file_operations ubi_cdev_operations;
-+extern struct file_operations ubi_vol_cdev_operations;
-+extern struct class *ubi_class;
-+extern struct mutex ubi_devices_mutex;
-+
-+/* vtbl.c */
-+int ubi_change_vtbl_record(struct ubi_device *ubi, int idx,
-+			   struct ubi_vtbl_record *vtbl_rec);
-+int ubi_read_volume_table(struct ubi_device *ubi, struct ubi_scan_info *si);
-+
-+/* vmt.c */
-+int ubi_create_volume(struct ubi_device *ubi, struct ubi_mkvol_req *req);
-+int ubi_remove_volume(struct ubi_volume_desc *desc);
-+int ubi_resize_volume(struct ubi_volume_desc *desc, int reserved_pebs);
-+int ubi_add_volume(struct ubi_device *ubi, struct ubi_volume *vol);
-+void ubi_free_volume(struct ubi_device *ubi, struct ubi_volume *vol);
-+
-+/* upd.c */
-+int ubi_start_update(struct ubi_device *ubi, struct ubi_volume *vol,
-+		     long long bytes);
-+int ubi_more_update_data(struct ubi_device *ubi, struct ubi_volume *vol,
-+			 const void __user *buf, int count);
-+int ubi_start_leb_change(struct ubi_device *ubi, struct ubi_volume *vol,
-+			 const struct ubi_leb_change_req *req);
-+int ubi_more_leb_change_data(struct ubi_device *ubi, struct ubi_volume *vol,
-+			     const void __user *buf, int count);
-+
-+/* misc.c */
-+int ubi_calc_data_len(const struct ubi_device *ubi, const void *buf, int length);
-+int ubi_check_volume(struct ubi_device *ubi, int vol_id);
-+void ubi_calculate_reserved(struct ubi_device *ubi);
-+
-+/* gluebi.c */
-+#ifdef CONFIG_MTD_UBI_GLUEBI
-+int ubi_create_gluebi(struct ubi_device *ubi, struct ubi_volume *vol);
-+int ubi_destroy_gluebi(struct ubi_volume *vol);
-+void ubi_gluebi_updated(struct ubi_volume *vol);
++#include <linux/mtd/nand.h>
++#include <linux/mtd/nand_ecc.h>
++#include <asm/io.h>
++#include <mach/silicon.h>
++#include <mach/gpmc.h>
++#include <mach/gpmc_nand.h>
++
++/* Enable me to get tons of debug messages -for use without jtag */
++#if 0
++#define gpmcnand_dbg(FORMAT, ARGS...) fprintf(stdout,\
++		"gpmc_nand:%s:%d:Entry:"FORMAT"\n",\
++		__func__, __LINE__, ARGS)
 +#else
-+#define ubi_create_gluebi(ubi, vol) 0
-+#define ubi_destroy_gluebi(vol) 0
-+#define ubi_gluebi_updated(vol)
++#define gpmcnand_dbg(FORMAT, ARGS...)
 +#endif
++#define gpmcnand_err(ARGS...) fprintf(stderr, "omapnand: " ARGS);
 +
-+/* eba.c */
-+int ubi_eba_unmap_leb(struct ubi_device *ubi, struct ubi_volume *vol,
-+		      int lnum);
-+int ubi_eba_read_leb(struct ubi_device *ubi, struct ubi_volume *vol, int lnum,
-+		     void *buf, int offset, int len, int check);
-+int ubi_eba_write_leb(struct ubi_device *ubi, struct ubi_volume *vol, int lnum,
-+		      const void *buf, int offset, int len, int dtype);
-+int ubi_eba_write_leb_st(struct ubi_device *ubi, struct ubi_volume *vol,
-+			 int lnum, const void *buf, int len, int dtype,
-+			 int used_ebs);
-+int ubi_eba_atomic_leb_change(struct ubi_device *ubi, struct ubi_volume *vol,
-+			      int lnum, const void *buf, int len, int dtype);
-+int ubi_eba_copy_leb(struct ubi_device *ubi, int from, int to,
-+		     struct ubi_vid_hdr *vid_hdr);
-+int ubi_eba_init_scan(struct ubi_device *ubi, struct ubi_scan_info *si);
-+void ubi_eba_close(const struct ubi_device *ubi);
-+
-+/* wl.c */
-+int ubi_wl_get_peb(struct ubi_device *ubi, int dtype);
-+int ubi_wl_put_peb(struct ubi_device *ubi, int pnum, int torture);
-+int ubi_wl_flush(struct ubi_device *ubi);
-+int ubi_wl_scrub_peb(struct ubi_device *ubi, int pnum);
-+int ubi_wl_init_scan(struct ubi_device *ubi, struct ubi_scan_info *si);
-+void ubi_wl_close(struct ubi_device *ubi);
-+int ubi_thread(void *u);
-+
-+/* io.c */
-+int ubi_io_read(const struct ubi_device *ubi, void *buf, int pnum, int offset,
-+		int len);
-+int ubi_io_write(struct ubi_device *ubi, const void *buf, int pnum, int offset,
-+		 int len);
-+int ubi_io_sync_erase(struct ubi_device *ubi, int pnum, int torture);
-+int ubi_io_is_bad(const struct ubi_device *ubi, int pnum);
-+int ubi_io_mark_bad(const struct ubi_device *ubi, int pnum);
-+int ubi_io_read_ec_hdr(struct ubi_device *ubi, int pnum,
-+		       struct ubi_ec_hdr *ec_hdr, int verbose);
-+int ubi_io_write_ec_hdr(struct ubi_device *ubi, int pnum,
-+			struct ubi_ec_hdr *ec_hdr);
-+int ubi_io_read_vid_hdr(struct ubi_device *ubi, int pnum,
-+			struct ubi_vid_hdr *vid_hdr, int verbose);
-+int ubi_io_write_vid_hdr(struct ubi_device *ubi, int pnum,
-+			 struct ubi_vid_hdr *vid_hdr);
-+
-+/* build.c */
-+int ubi_attach_mtd_dev(struct mtd_info *mtd, int ubi_num, int vid_hdr_offset);
-+int ubi_detach_mtd_dev(int ubi_num, int anyway);
-+struct ubi_device *ubi_get_device(int ubi_num);
-+void ubi_put_device(struct ubi_device *ubi);
-+struct ubi_device *ubi_get_by_major(int major);
-+int ubi_major2num(int major);
-+
-+/*
-+ * ubi_rb_for_each_entry - walk an RB-tree.
-+ * @rb: a pointer to type 'struct rb_node' to to use as a loop counter
-+ * @pos: a pointer to RB-tree entry type to use as a loop counter
-+ * @root: RB-tree's root
-+ * @member: the name of the 'struct rb_node' within the RB-tree entry
-+ */
-+#define ubi_rb_for_each_entry(rb, pos, root, member)                         \
-+	for (rb = rb_first(root),                                            \
-+	     pos = (rb ? container_of(rb, typeof(*pos), member) : NULL);     \
-+	     rb;                                                             \
-+	     rb = rb_next(rb), pos = container_of(rb, typeof(*pos), member))
-+
-+/**
-+ * ubi_zalloc_vid_hdr - allocate a volume identifier header object.
-+ * @ubi: UBI device description object
-+ * @gfp_flags: GFP flags to allocate with
-+ *
-+ * This function returns a pointer to the newly allocated and zero-filled
-+ * volume identifier header object in case of success and %NULL in case of
-+ * failure.
-+ */
-+static inline struct ubi_vid_hdr *
-+ubi_zalloc_vid_hdr(const struct ubi_device *ubi, unsigned int gfp_flags)
-+{
-+	void *vid_hdr;
-+
-+	vid_hdr = kzalloc(ubi->vid_hdr_alsize, gfp_flags);
-+	if (!vid_hdr)
-+		return NULL;
-+
-+	/*
-+	 * VID headers may be stored at un-aligned flash offsets, so we shift
-+	 * the pointer.
-+	 */
-+	return vid_hdr + ubi->vid_hdr_shift;
-+}
-+
-+/**
-+ * ubi_free_vid_hdr - free a volume identifier header object.
-+ * @ubi: UBI device description object
-+ * @vid_hdr: the object to free
-+ */
-+static inline void ubi_free_vid_hdr(const struct ubi_device *ubi,
-+				    struct ubi_vid_hdr *vid_hdr)
-+{
-+	void *p = vid_hdr;
-+
-+	if (!p)
-+		return;
-+
-+	kfree(p - ubi->vid_hdr_shift);
-+}
-+
-+/*
-+ * This function is equivalent to 'ubi_io_read()', but @offset is relative to
-+ * the beginning of the logical eraseblock, not to the beginning of the
-+ * physical eraseblock.
-+ */
-+static inline int ubi_io_read_data(const struct ubi_device *ubi, void *buf,
-+				   int pnum, int offset, int len)
-+{
-+	ubi_assert(offset >= 0);
-+	return ubi_io_read(ubi, buf, pnum, offset + ubi->leb_start, len);
-+}
-+
-+/*
-+ * This function is equivalent to 'ubi_io_write()', but @offset is relative to
-+ * the beginning of the logical eraseblock, not to the beginning of the
-+ * physical eraseblock.
-+ */
-+static inline int ubi_io_write_data(struct ubi_device *ubi, const void *buf,
-+				    int pnum, int offset, int len)
-+{
-+	ubi_assert(offset >= 0);
-+	return ubi_io_write(ubi, buf, pnum, offset + ubi->leb_start, len);
-+}
-+
-+/**
-+ * ubi_ro_mode - switch to read-only mode.
-+ * @ubi: UBI device description object
-+ */
-+static inline void ubi_ro_mode(struct ubi_device *ubi)
-+{
-+	if (!ubi->ro_mode) {
-+		ubi->ro_mode = 1;
-+		ubi_warn("switch to read-only mode");
-+	}
-+}
-+
-+/**
-+ * vol_id2idx - get table index by volume ID.
-+ * @ubi: UBI device description object
-+ * @vol_id: volume ID
-+ */
-+static inline int vol_id2idx(const struct ubi_device *ubi, int vol_id)
-+{
-+	if (vol_id >= UBI_INTERNAL_VOL_START)
-+		return vol_id - UBI_INTERNAL_VOL_START + ubi->vtbl_slots;
-+	else
-+		return vol_id;
-+}
-+
-+/**
-+ * idx2vol_id - get volume ID by table index.
-+ * @ubi: UBI device description object
-+ * @idx: table index
-+ */
-+static inline int idx2vol_id(const struct ubi_device *ubi, int idx)
-+{
-+	if (idx >= ubi->vtbl_slots)
-+		return idx - ubi->vtbl_slots + UBI_INTERNAL_VOL_START;
-+	else
-+		return idx;
-+}
-+
-+#endif /* !__UBI_UBI_H__ */
-diff --git a/drivers/mtd/ubi/upd.c b/drivers/mtd/ubi/upd.c
-new file mode 100644
-index 0000000..8267b1a
---- /dev/null
-+++ b/drivers/mtd/ubi/upd.c
-@@ -0,0 +1,441 @@
-+/*
-+ * Copyright (c) International Business Machines Corp., 2006
-+ * Copyright (c) Nokia Corporation, 2006
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
-+ * the GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-+ *
-+ * Author: Artem Bityutskiy (���������������� ����������)
-+ *
-+ * Jan 2007: Alexander Schmidt, hacked per-volume update.
-+ */
-+
-+/*
-+ * This file contains implementation of the volume update and atomic LEB change
-+ * functionality.
-+ *
-+ * The update operation is based on the per-volume update marker which is
-+ * stored in the volume table. The update marker is set before the update
-+ * starts, and removed after the update has been finished. So if the update was
-+ * interrupted by an unclean re-boot or due to some other reasons, the update
-+ * marker stays on the flash media and UBI finds it when it attaches the MTD
-+ * device next time. If the update marker is set for a volume, the volume is
-+ * treated as damaged and most I/O operations are prohibited. Only a new update
-+ * operation is allowed.
-+ *
-+ * Note, in general it is possible to implement the update operation as a
-+ * transaction with a roll-back capability.
-+ */
-+
-+#ifdef UBI_LINUX
-+#include <linux/err.h>
-+#include <asm/uaccess.h>
-+#include <asm/div64.h>
++/** internal structure maintained for nand information */
++struct gpmc_nand_info {
++	struct nand_hw_control controller;
++	struct device_d *pdev;
++	struct gpmc_nand_platform_data *pdata;
++	struct nand_chip nand;
++	struct mtd_info minfo;
++	int gpmc_cs;
++	void *gpmc_command;
++	void *gpmc_address;
++	void *gpmc_data;
++	unsigned long gpmc_base;
++	unsigned char wait_mon_mask;
++	uint64_t timeout;
++	unsigned inuse:1;
++	unsigned wait_pol:1;
++#ifdef CONFIG_NAND_OMAP_GPMC_HWECC
++	unsigned char ecc_parity_pairs;
++	unsigned int ecc_config;
 +#endif
-+
-+#include "ubi-barebox.h"
-+#include "ubi.h"
++};
 +
 +/**
-+ * set_update_marker - set update marker.
-+ * @ubi: UBI device description object
-+ * @vol: volume description object
++ * @brief calls the platform specific dev_ready functionds
 + *
-+ * This function sets the update marker flag for volume @vol. Returns zero
-+ * in case of success and a negative error code in case of failure.
++ * @param mtd - mtd info structure
++ *
++ * @return
 + */
-+static int set_update_marker(struct ubi_device *ubi, struct ubi_volume *vol)
++static int omap_dev_ready(struct mtd_info *mtd)
 +{
-+	int err;
-+	struct ubi_vtbl_record vtbl_rec;
++	struct nand_chip *nand = (struct nand_chip *)(mtd->priv);
++	struct gpmc_nand_info *oinfo = (struct gpmc_nand_info *)(nand->priv);
++	uint64_t start = get_time_ns();
++	unsigned long comp;
 +
-+	dbg_msg("set update marker for volume %d", vol->vol_id);
-+
-+	if (vol->upd_marker) {
-+		ubi_assert(ubi->vtbl[vol->vol_id].upd_marker);
-+		dbg_msg("already set");
-+		return 0;
-+	}
-+
-+	memcpy(&vtbl_rec, &ubi->vtbl[vol->vol_id],
-+	       sizeof(struct ubi_vtbl_record));
-+	vtbl_rec.upd_marker = 1;
-+
-+	mutex_lock(&ubi->volumes_mutex);
-+	err = ubi_change_vtbl_record(ubi, vol->vol_id, &vtbl_rec);
-+	mutex_unlock(&ubi->volumes_mutex);
-+	vol->upd_marker = 1;
-+	return err;
-+}
-+
-+/**
-+ * clear_update_marker - clear update marker.
-+ * @ubi: UBI device description object
-+ * @vol: volume description object
-+ * @bytes: new data size in bytes
-+ *
-+ * This function clears the update marker for volume @vol, sets new volume
-+ * data size and clears the "corrupted" flag (static volumes only). Returns
-+ * zero in case of success and a negative error code in case of failure.
-+ */
-+static int clear_update_marker(struct ubi_device *ubi, struct ubi_volume *vol,
-+			       long long bytes)
-+{
-+	int err;
-+	uint64_t tmp;
-+	struct ubi_vtbl_record vtbl_rec;
-+
-+	dbg_msg("clear update marker for volume %d", vol->vol_id);
-+
-+	memcpy(&vtbl_rec, &ubi->vtbl[vol->vol_id],
-+	       sizeof(struct ubi_vtbl_record));
-+	ubi_assert(vol->upd_marker && vtbl_rec.upd_marker);
-+	vtbl_rec.upd_marker = 0;
-+
-+	if (vol->vol_type == UBI_STATIC_VOLUME) {
-+		vol->corrupted = 0;
-+		vol->used_bytes = tmp = bytes;
-+		vol->last_eb_bytes = do_div(tmp, vol->usable_leb_size);
-+		vol->used_ebs = tmp;
-+		if (vol->last_eb_bytes)
-+			vol->used_ebs += 1;
-+		else
-+			vol->last_eb_bytes = vol->usable_leb_size;
-+	}
-+
-+	mutex_lock(&ubi->volumes_mutex);
-+	err = ubi_change_vtbl_record(ubi, vol->vol_id, &vtbl_rec);
-+	mutex_unlock(&ubi->volumes_mutex);
-+	vol->upd_marker = 0;
-+	return err;
-+}
-+
-+/**
-+ * ubi_start_update - start volume update.
-+ * @ubi: UBI device description object
-+ * @vol: volume description object
-+ * @bytes: update bytes
-+ *
-+ * This function starts volume update operation. If @bytes is zero, the volume
-+ * is just wiped out. Returns zero in case of success and a negative error code
-+ * in case of failure.
-+ */
-+int ubi_start_update(struct ubi_device *ubi, struct ubi_volume *vol,
-+		     long long bytes)
-+{
-+	int i, err;
-+	uint64_t tmp;
-+
-+	dbg_msg("start update of volume %d, %llu bytes", vol->vol_id, bytes);
-+	ubi_assert(!vol->updating && !vol->changing_leb);
-+	vol->updating = 1;
-+
-+	err = set_update_marker(ubi, vol);
-+	if (err)
-+		return err;
-+
-+	/* Before updating - wipe out the volume */
-+	for (i = 0; i < vol->reserved_pebs; i++) {
-+		err = ubi_eba_unmap_leb(ubi, vol, i);
-+		if (err)
-+			return err;
-+	}
-+
-+	if (bytes == 0) {
-+		err = clear_update_marker(ubi, vol, 0);
-+		if (err)
-+			return err;
-+		err = ubi_wl_flush(ubi);
-+		if (!err)
-+			vol->updating = 0;
-+	}
-+
-+	vol->upd_buf = vmalloc(ubi->leb_size);
-+	if (!vol->upd_buf)
-+		return -ENOMEM;
-+
-+	tmp = bytes;
-+	vol->upd_ebs = !!do_div(tmp, vol->usable_leb_size);
-+	vol->upd_ebs += tmp;
-+	vol->upd_bytes = bytes;
-+	vol->upd_received = 0;
-+	return 0;
-+}
-+
-+/**
-+ * ubi_start_leb_change - start atomic LEB change.
-+ * @ubi: UBI device description object
-+ * @vol: volume description object
-+ * @req: operation request
-+ *
-+ * This function starts atomic LEB change operation. Returns zero in case of
-+ * success and a negative error code in case of failure.
-+ */
-+int ubi_start_leb_change(struct ubi_device *ubi, struct ubi_volume *vol,
-+			 const struct ubi_leb_change_req *req)
-+{
-+	ubi_assert(!vol->updating && !vol->changing_leb);
-+
-+	dbg_msg("start changing LEB %d:%d, %u bytes",
-+		vol->vol_id, req->lnum, req->bytes);
-+	if (req->bytes == 0)
-+		return ubi_eba_atomic_leb_change(ubi, vol, req->lnum, NULL, 0,
-+						 req->dtype);
-+
-+	vol->upd_bytes = req->bytes;
-+	vol->upd_received = 0;
-+	vol->changing_leb = 1;
-+	vol->ch_lnum = req->lnum;
-+	vol->ch_dtype = req->dtype;
-+
-+	vol->upd_buf = vmalloc(req->bytes);
-+	if (!vol->upd_buf)
-+		return -ENOMEM;
-+
-+	return 0;
-+}
-+
-+/**
-+ * write_leb - write update data.
-+ * @ubi: UBI device description object
-+ * @vol: volume description object
-+ * @lnum: logical eraseblock number
-+ * @buf: data to write
-+ * @len: data size
-+ * @used_ebs: how many logical eraseblocks will this volume contain (static
-+ * volumes only)
-+ *
-+ * This function writes update data to corresponding logical eraseblock. In
-+ * case of dynamic volume, this function checks if the data contains 0xFF bytes
-+ * at the end. If yes, the 0xFF bytes are cut and not written. So if the whole
-+ * buffer contains only 0xFF bytes, the LEB is left unmapped.
-+ *
-+ * The reason why we skip the trailing 0xFF bytes in case of dynamic volume is
-+ * that we want to make sure that more data may be appended to the logical
-+ * eraseblock in future. Indeed, writing 0xFF bytes may have side effects and
-+ * this PEB won't be writable anymore. So if one writes the file-system image
-+ * to the UBI volume where 0xFFs mean free space - UBI makes sure this free
-+ * space is writable after the update.
-+ *
-+ * We do not do this for static volumes because they are read-only. But this
-+ * also cannot be done because we have to store per-LEB CRC and the correct
-+ * data length.
-+ *
-+ * This function returns zero in case of success and a negative error code in
-+ * case of failure.
-+ */
-+static int write_leb(struct ubi_device *ubi, struct ubi_volume *vol, int lnum,
-+		     void *buf, int len, int used_ebs)
-+{
-+	int err;
-+
-+	if (vol->vol_type == UBI_DYNAMIC_VOLUME) {
-+		int l = ALIGN(len, ubi->min_io_size);
-+
-+		memset(buf + len, 0xFF, l - len);
-+		len = ubi_calc_data_len(ubi, buf, l);
-+		if (len == 0) {
-+			dbg_msg("all %d bytes contain 0xFF - skip", len);
-+			return 0;
++	gpmcnand_dbg("mtd=%x", (unsigned int)mtd);
++	/* What do we mean by assert and de-assert? */
++	comp = (oinfo->wait_pol == NAND_WAITPOL_HIGH) ?
++	    oinfo->wait_mon_mask : 0x0;
++	while (1) {
++		/* Breakout condition */
++		if (is_timeout(start, oinfo->timeout)) {
++			gpmcnand_err("timedout\n");
++			return -ETIMEDOUT;
 +		}
++		/* if the wait is released, we are good to go */
++		if (comp ==
++		    (readl(oinfo->gpmc_base + GPMC_STATUS) &&
++		     oinfo->wait_mon_mask))
++			break;
++	}
++	return 0;
++}
 +
-+		err = ubi_eba_write_leb(ubi, vol, lnum, buf, 0, len, UBI_UNKNOWN);
++/**
++ * @brief This function will enable or disable the Write Protect feature on
++ * NAND device. GPMC has a single WP bit for all CS devices..
++ *
++ * @param oinfo  omap nand info
++ * @param mode 0-disable else enable
++ *
++ * @return none
++ */
++static void gpmc_nand_wp(struct gpmc_nand_info *oinfo, int mode)
++{
++	unsigned long config = readl(oinfo->gpmc_base + GPMC_CFG);
++
++	gpmcnand_dbg("mode=%x", mode);
++	if (mode)
++		config &= ~(NAND_WP_BIT);	/* WP is ON */
++	else
++		config |= (NAND_WP_BIT);	/* WP is OFF */
++
++	writel(config, oinfo->gpmc_base + GPMC_CFG);
++}
++
++/**
++ * @brief respond to hw event change request
++ *
++ * MTD layer uses NAND_CTRL_CLE etc to control selection of the latch
++ * we hoodwink by changing the R and W registers according to the state
++ * we are requested.
++ *
++ * @param mtd - mtd info structure
++ * @param cmd command mtd layer is requesting
++ *
++ * @return none
++ */
++static void omap_hwcontrol(struct mtd_info *mtd, int cmd, unsigned int ctrl)
++{
++	struct nand_chip *nand = (struct nand_chip *)(mtd->priv);
++	struct gpmc_nand_info *oinfo = (struct gpmc_nand_info *)(nand->priv);
++	gpmcnand_dbg("mtd=%x nand=%x cmd=%x ctrl = %x", (unsigned int)mtd, nand,
++		  cmd, ctrl);
++	switch (ctrl) {
++	case NAND_CTRL_CHANGE | NAND_CTRL_CLE:
++		nand->IO_ADDR_W = oinfo->gpmc_command;
++		nand->IO_ADDR_R = oinfo->gpmc_data;
++		break;
++
++	case NAND_CTRL_CHANGE | NAND_CTRL_ALE:
++		nand->IO_ADDR_W = oinfo->gpmc_address;
++		nand->IO_ADDR_R = oinfo->gpmc_data;
++		break;
++
++	case NAND_CTRL_CHANGE | NAND_NCE:
++		nand->IO_ADDR_W = oinfo->gpmc_data;
++		nand->IO_ADDR_R = oinfo->gpmc_data;
++		break;
++	}
++
++	if (cmd != NAND_CMD_NONE)
++		writeb(cmd, nand->IO_ADDR_W);
++	return;
++}
++
++#ifdef CONFIG_NAND_OMAP_GPMC_HWECC
++
++/**
++ * @brief This function will generate true ECC value, which can be used
++ * when correcting data read from NAND flash memory core
++ *
++ * @param ecc_buf buffer to store ecc code
++ *
++ * @return re-formatted ECC value
++ */
++static unsigned int gen_true_ecc(u8 *ecc_buf)
++{
++	gpmcnand_dbg("ecc_buf=%x 1, 2 3 = %x %x %x", (unsigned int)ecc_buf,
++		  ecc_buf[0], ecc_buf[1], ecc_buf[2]);
++	return ecc_buf[0] | (ecc_buf[1] << 16) | ((ecc_buf[2] & 0xF0) << 20) |
++	    ((ecc_buf[2] & 0x0F) << 8);
++}
++
++/**
++ * @brief Compares the ecc read from nand spare area with ECC
++ * registers values and corrects one bit error if it has occured
++ * Further details can be had from OMAP TRM and the following selected links:
++ * http://en.wikipedia.org/wiki/Hamming_code
++ * http://www.cs.utexas.edu/users/plaxton/c/337/05f/slides/ErrorCorrection-4.pdf
++ *
++ * @param mtd - mtd info structure
++ * @param dat  page data
++ * @param read_ecc ecc readback
++ * @param calc_ecc calculated ecc (from reg)
++ *
++ * @return 0 if data is OK or corrected, else returns -1
++ */
++static int omap_correct_data(struct mtd_info *mtd, uint8_t *dat,
++			     uint8_t *read_ecc, uint8_t *calc_ecc)
++{
++	unsigned int orig_ecc, new_ecc, res, hm;
++	unsigned short parity_bits, byte;
++	unsigned char bit;
++	struct nand_chip *nand = (struct nand_chip *)(mtd->priv);
++	struct gpmc_nand_info *oinfo = (struct gpmc_nand_info *)(nand->priv);
++
++	gpmcnand_dbg("mtd=%x dat=%x read_ecc=%x calc_ecc=%x", (unsigned int)mtd,
++		  (unsigned int)dat, (unsigned int)read_ecc,
++		  (unsigned int)calc_ecc);
++
++	/* Regenerate the orginal ECC */
++	orig_ecc = gen_true_ecc(read_ecc);
++	new_ecc = gen_true_ecc(calc_ecc);
++	/* Get the XOR of real ecc */
++	res = orig_ecc ^ new_ecc;
++	if (res) {
++		/* Get the hamming width */
++		hm = hweight32(res);
++		/* Single bit errors can be corrected! */
++		if (hm == oinfo->ecc_parity_pairs) {
++			/* Correctable data! */
++			parity_bits = res >> 16;
++			bit = (parity_bits & 0x7);
++			byte = (parity_bits >> 3) & 0x1FF;
++			/* Flip the bit to correct */
++			dat[byte] ^= (0x1 << bit);
++
++		} else if (hm == 1) {
++			gpmcnand_err("Ecc is wrong\n");
++			/* ECC itself is corrupted */
++			return 2;
++		} else {
++			gpmcnand_err("bad compare! failed\n");
++			/* detected 2 bit error */
++			return -1;
++		}
++	}
++	return 0;
++}
++
++/**
++ * @brief Using noninverted ECC can be considered ugly since writing a blank
++ * page ie. padding will clear the ECC bytes. This is no problem as long
++ * nobody is trying to write data on the seemingly unused page. Reading
++ * an erased page will produce an ECC mismatch between generated and read
++ * ECC bytes that has to be dealt with separately.
++ *
++ * @param mtd - mtd info structure
++ * @param dat data being written
++ * @param ecc_code ecc code returned back to nand layer
++ *
++ * @return 0
++ */
++static int omap_calculate_ecc(struct mtd_info *mtd, const uint8_t *dat,
++			      uint8_t *ecc_code)
++{
++	struct nand_chip *nand = (struct nand_chip *)(mtd->priv);
++	struct gpmc_nand_info *oinfo = (struct gpmc_nand_info *)(nand->priv);
++	unsigned int val;
++	gpmcnand_dbg("mtd=%x dat=%x ecc_code=%x", (unsigned int)mtd,
++		  (unsigned int)dat, (unsigned int)ecc_code);
++	debug("ecc 0 1 2 = %x %x %x", ecc_code[0], ecc_code[1], ecc_code[2]);
++
++	/* Since we smartly tell mtd driver to use eccsize of 512, only
++	 * ECC Reg1 will be used.. we just read that */
++	val = readl(oinfo->gpmc_base + GPMC_ECC1_RESULT);
++	ecc_code[0] = val & 0xFF;
++	ecc_code[1] = (val >> 16) & 0xFF;
++	ecc_code[2] = ((val >> 8) & 0x0f) | ((val >> 20) & 0xf0);
++
++	/* Stop reading anymore ECC vals and clear old results
++	 * enable will be called if more reads are required */
++	writel(0x000, oinfo->gpmc_base + GPMC_ECC_CONFIG);
++	return 0;
++}
++
++/*
++ * omap_enable_ecc - This function enables the hardware ecc functionality
++ * @param mtd - mtd info structure
++ * @param mode - Read/Write mode
++ */
++static void omap_enable_hwecc(struct mtd_info *mtd, int mode)
++{
++	struct nand_chip *nand = (struct nand_chip *)(mtd->priv);
++	struct gpmc_nand_info *oinfo = (struct gpmc_nand_info *)(nand->priv);
++	gpmcnand_dbg("mtd=%x mode=%x", (unsigned int)mtd, mode);
++	switch (mode) {
++	case NAND_ECC_READ:
++	case NAND_ECC_WRITE:
++		/* Clear the ecc result registers
++		 * select ecc reg as 1
++		 */
++		writel(0x101, oinfo->gpmc_base + GPMC_ECC_CONTROL);
++		/* Size 0 = 0xFF, Size1 is 0xFF - both are 512 bytes
++		 * tell all regs to generate size0 sized regs
++		 * we just have a single ECC engine for all CS
++		 */
++		writel(0x3FCFF000, oinfo->gpmc_base +
++				GPMC_ECC_SIZE_CONFIG);
++		writel(oinfo->ecc_config, oinfo->gpmc_base +
++				GPMC_ECC_CONFIG);
++		break;
++	default:
++		gpmcnand_err("Error: Unrecognized Mode[%d]!\n", mode);
++		break;
++	}
++}
++#endif				/* CONFIG_NAND_OMAP_GPMC_HWECC */
++
++/**
++ * @brief nand device probe.
++ *
++ * @param pdev -matching device
++ *
++ * @return -failure reason or give 0
++ */
++static int gpmc_nand_probe(struct device_d *pdev)
++{
++	struct gpmc_nand_info *oinfo;
++	struct gpmc_nand_platform_data *pdata;
++	struct nand_chip *nand;
++	struct mtd_info *minfo;
++	unsigned long cs_base;
++	int err;
++
++	gpmcnand_dbg("pdev=%x", (unsigned int)pdev);
++	pdata = (struct gpmc_nand_platform_data *)pdev->platform_data;
++	if (pdata == NULL) {
++		gpmcnand_err("platform data missing\n");
++		return -ENODEV;
++	}
++
++	oinfo = calloc(1, sizeof(struct gpmc_nand_info));
++	if (!oinfo) {
++		gpmcnand_err("oinfo alloc failed!\n");
++		return -ENOMEM;
++	}
++
++	/* fill up my data structures */
++	oinfo->pdev = pdev;
++	oinfo->pdata = pdata;
++	pdev->platform_data = (void *)oinfo;
++
++	nand = &oinfo->nand;
++	nand->priv = (void *)oinfo;
++
++	minfo = &oinfo->minfo;
++	minfo->priv = (void *)nand;
++
++	if (pdata->cs >= GPMC_NUM_CS) {
++		gpmcnand_err("Invalid CS!\n");
++		err = -EINVAL;
++		goto out_release_mem;
++	}
++	/* Setup register specific data */
++	oinfo->gpmc_cs = pdata->cs;
++	oinfo->gpmc_base = pdev->map_base;
++	cs_base = oinfo->gpmc_base + GPMC_CONFIG1_0 +
++		(pdata->cs * GPMC_CONFIG_CS_SIZE);
++	oinfo->gpmc_command = (void *)(cs_base + GPMC_CS_NAND_COMMAND);
++	oinfo->gpmc_address = (void *)(cs_base + GPMC_CS_NAND_ADDRESS);
++	oinfo->gpmc_data = (void *)(cs_base + GPMC_CS_NAND_DATA);
++	oinfo->timeout = pdata->max_timeout;
++	debug("GPMC Details:\n"
++		"GPMC BASE=%x\n"
++		"CMD=%x\n"
++		"ADDRESS=%x\n"
++		"DATA=%x\n"
++		"CS_BASE=%x\n",
++		oinfo->gpmc_base, oinfo->gpmc_command,
++		oinfo->gpmc_address, oinfo->gpmc_data, cs_base);
++
++	/* If we are 16 bit dev, our gpmc config tells us that */
++	if ((readl(cs_base) & 0x3000) == 0x1000) {
++		debug("16 bit dev\n");
++		nand->options |= NAND_BUSWIDTH_16;
++	}
++
++	/* Same data register for in and out */
++	nand->IO_ADDR_W = nand->IO_ADDR_R = (void *)oinfo->gpmc_data;
++	/*
++	 * If RDY/BSY line is connected to OMAP then use the omap ready
++	 * function and the generic nand_wait function which reads the
++	 * status register after monitoring the RDY/BSY line. Otherwise
++	 * use a standard chip delay which is slightly more than tR
++	 * (AC Timing) of the NAND device and read the status register
++	 * until you get a failure or success
++	 */
++	if (pdata->wait_mon_pin > 4) {
++		gpmcnand_err("Invalid wait monitoring pin\n");
++		err = -EINVAL;
++		goto out_release_mem;
++	}
++	if (pdata->wait_mon_pin) {
++		/* Set up the wait monitoring mask
++		 * This is GPMC_STATUS reg relevant */
++		oinfo->wait_mon_mask = (0x1 << (pdata->wait_mon_pin - 1)) << 8;
++		oinfo->wait_pol = (pdata->plat_options & NAND_WAITPOL_MASK);
++		nand->dev_ready = omap_dev_ready;
++		nand->chip_delay = 0;
 +	} else {
-+		/*
-+		 * When writing static volume, and this is the last logical
-+		 * eraseblock, the length (@len) does not have to be aligned to
-+		 * the minimal flash I/O unit. The 'ubi_eba_write_leb_st()'
-+		 * function accepts exact (unaligned) length and stores it in
-+		 * the VID header. And it takes care of proper alignment by
-+		 * padding the buffer. Here we just make sure the padding will
-+		 * contain zeros, not random trash.
++		/* use the default nand_wait function */
++		nand->chip_delay = 50;
++	}
++
++	/* Use default cmdfunc */
++	/* nand cmd control */
++	nand->cmd_ctrl = omap_hwcontrol;
++
++	/* Dont do a bbt scan at the start */
++	nand->options |= NAND_SKIP_BBTSCAN;
++
++	/* State my controller */
++	nand->controller = &oinfo->controller;
++
++	/* if a different placement scheme is requested */
++	if (pdata->oob)
++		nand->ecc.layout = pdata->oob;
++
++#ifdef CONFIG_NAND_OMAP_GPMC_HWECC
++	if (pdata->plat_options & NAND_HWECC_ENABLE) {
++		/* Program how many columns we expect+
++		 * enable the cs we want and enable the engine
 +		 */
-+		memset(buf + len, 0, vol->usable_leb_size - len);
-+		err = ubi_eba_write_leb_st(ubi, vol, lnum, buf, len,
-+					   UBI_UNKNOWN, used_ebs);
++		oinfo->ecc_config = (pdata->cs << 1) |
++		    ((nand->options & NAND_BUSWIDTH_16) ?
++		     (0x1 << 7) : 0x0) | 0x1;
++		nand->ecc.hwctl = omap_enable_hwecc;
++		nand->ecc.calculate = omap_calculate_ecc;
++		nand->ecc.correct = omap_correct_data;
++		nand->ecc.mode = NAND_ECC_HW;
++		nand->ecc.size = 512;
++		nand->ecc.bytes = 3;
++		nand->ecc.steps = nand->ecc.layout->eccbytes / nand->ecc.bytes;
++		oinfo->ecc_parity_pairs = 12;
++	} else
++#endif
++		nand->ecc.mode = NAND_ECC_SOFT;
++
++	/* All information is ready.. now lets call setup, if present */
++	if (pdata->nand_setup) {
++		err = pdata->nand_setup(pdata);
++		if (err) {
++			gpmcnand_err("pdataform setup failed\n");
++			goto out_release_mem;
++		}
 +	}
++	/* Remove write protection */
++	gpmc_nand_wp(oinfo, 0);
 +
-+	return err;
-+}
-+
-+/**
-+ * ubi_more_update_data - write more update data.
-+ * @vol: volume description object
-+ * @buf: write data (user-space memory buffer)
-+ * @count: how much bytes to write
-+ *
-+ * This function writes more data to the volume which is being updated. It may
-+ * be called arbitrary number of times until all the update data arriveis. This
-+ * function returns %0 in case of success, number of bytes written during the
-+ * last call if the whole volume update has been successfully finished, and a
-+ * negative error code in case of failure.
-+ */
-+int ubi_more_update_data(struct ubi_device *ubi, struct ubi_volume *vol,
-+			 const void __user *buf, int count)
-+{
-+	uint64_t tmp;
-+	int lnum, offs, err = 0, len, to_write = count;
-+
-+	dbg_msg("write %d of %lld bytes, %lld already passed",
-+		count, vol->upd_bytes, vol->upd_received);
-+
-+	if (ubi->ro_mode)
-+		return -EROFS;
-+
-+	tmp = vol->upd_received;
-+	offs = do_div(tmp, vol->usable_leb_size);
-+	lnum = tmp;
-+
-+	if (vol->upd_received + count > vol->upd_bytes)
-+		to_write = count = vol->upd_bytes - vol->upd_received;
-+
-+	/*
-+	 * When updating volumes, we accumulate whole logical eraseblock of
-+	 * data and write it at once.
++	/* we do not know what state of device we have is, so
++	 * Send a reset to the device
++	 * 8 bit write will work on 16 and 8 bit devices
 +	 */
-+	if (offs != 0) {
-+		/*
-+		 * This is a write to the middle of the logical eraseblock. We
-+		 * copy the data to our update buffer and wait for more data or
-+		 * flush it if the whole eraseblock is written or the update
-+		 * is finished.
-+		 */
++	writeb(NAND_CMD_RESET, oinfo->gpmc_command);
++	mdelay(1);
 +
-+		len = vol->usable_leb_size - offs;
-+		if (len > count)
-+			len = count;
-+
-+		err = copy_from_user(vol->upd_buf + offs, buf, len);
-+		if (err)
-+			return -EFAULT;
-+
-+		if (offs + len == vol->usable_leb_size ||
-+		    vol->upd_received + len == vol->upd_bytes) {
-+			int flush_len = offs + len;
-+
-+			/*
-+			 * OK, we gathered either the whole eraseblock or this
-+			 * is the last chunk, it's time to flush the buffer.
-+			 */
-+			ubi_assert(flush_len <= vol->usable_leb_size);
-+			err = write_leb(ubi, vol, lnum, vol->upd_buf, flush_len,
-+					vol->upd_ebs);
-+			if (err)
-+				return err;
-+		}
-+
-+		vol->upd_received += len;
-+		count -= len;
-+		buf += len;
-+		lnum += 1;
-+	}
-+
-+	/*
-+	 * If we've got more to write, let's continue. At this point we know we
-+	 * are starting from the beginning of an eraseblock.
++	/* In normal mode, we scan to get just the device
++	 * presence and then to get the device geometry
 +	 */
-+	while (count) {
-+		if (count > vol->usable_leb_size)
-+			len = vol->usable_leb_size;
-+		else
-+			len = count;
-+
-+		err = copy_from_user(vol->upd_buf, buf, len);
-+		if (err)
-+			return -EFAULT;
-+
-+		if (len == vol->usable_leb_size ||
-+		    vol->upd_received + len == vol->upd_bytes) {
-+			err = write_leb(ubi, vol, lnum, vol->upd_buf,
-+					len, vol->upd_ebs);
-+			if (err)
-+				break;
-+		}
-+
-+		vol->upd_received += len;
-+		count -= len;
-+		lnum += 1;
-+		buf += len;
++	if (nand_scan(minfo, 1)) {
++		gpmcnand_err("device scan failed\n");
++		err = -ENXIO;
++		goto out_release_mem;
 +	}
 +
-+	ubi_assert(vol->upd_received <= vol->upd_bytes);
-+	if (vol->upd_received == vol->upd_bytes) {
-+		/* The update is finished, clear the update marker */
-+		err = clear_update_marker(ubi, vol, vol->upd_bytes);
-+		if (err)
-+			return err;
-+		err = ubi_wl_flush(ubi);
-+		if (err == 0) {
-+			vol->updating = 0;
-+			err = to_write;
-+			vfree(vol->upd_buf);
-+		}
++	/* We are all set to register with the system now! */
++	err = add_mtd_device(minfo);
++	if (err) {
++		gpmcnand_err("device registration failed\n");
++		goto out_release_mem;
 +	}
++	return 0;
 +
++out_release_mem:
++	if (oinfo)
++		free(oinfo);
++
++	gpmcnand_err("Failed!!\n");
 +	return err;
 +}
 +
-+/**
-+ * ubi_more_leb_change_data - accept more data for atomic LEB change.
-+ * @vol: volume description object
-+ * @buf: write data (user-space memory buffer)
-+ * @count: how much bytes to write
-+ *
-+ * This function accepts more data to the volume which is being under the
-+ * "atomic LEB change" operation. It may be called arbitrary number of times
-+ * until all data arrives. This function returns %0 in case of success, number
-+ * of bytes written during the last call if the whole "atomic LEB change"
-+ * operation has been successfully finished, and a negative error code in case
-+ * of failure.
-+ */
-+int ubi_more_leb_change_data(struct ubi_device *ubi, struct ubi_volume *vol,
-+			     const void __user *buf, int count)
++/** GMPC nand driver -> device registered by platforms */
++static struct driver_d gpmc_nand_driver = {
++	.name = "gpmc_nand",
++	.probe = gpmc_nand_probe,
++};
++
++static int gpmc_nand_init(void)
 +{
-+	int err;
-+
-+	dbg_msg("write %d of %lld bytes, %lld already passed",
-+		count, vol->upd_bytes, vol->upd_received);
-+
-+	if (ubi->ro_mode)
-+		return -EROFS;
-+
-+	if (vol->upd_received + count > vol->upd_bytes)
-+		count = vol->upd_bytes - vol->upd_received;
-+
-+	err = copy_from_user(vol->upd_buf + vol->upd_received, buf, count);
-+	if (err)
-+		return -EFAULT;
-+
-+	vol->upd_received += count;
-+
-+	if (vol->upd_received == vol->upd_bytes) {
-+		int len = ALIGN((int)vol->upd_bytes, ubi->min_io_size);
-+
-+		memset(vol->upd_buf + vol->upd_bytes, 0xFF, len - vol->upd_bytes);
-+		len = ubi_calc_data_len(ubi, vol->upd_buf, len);
-+		err = ubi_eba_atomic_leb_change(ubi, vol, vol->ch_lnum,
-+						vol->upd_buf, len, UBI_UNKNOWN);
-+		if (err)
-+			return err;
-+	}
-+
-+	ubi_assert(vol->upd_received <= vol->upd_bytes);
-+	if (vol->upd_received == vol->upd_bytes) {
-+		vol->changing_leb = 0;
-+		err = count;
-+		vfree(vol->upd_buf);
-+	}
-+
-+	return err;
++	return register_driver(&gpmc_nand_driver);
 +}
-diff --git a/drivers/mtd/ubi/vmt.c b/drivers/mtd/ubi/vmt.c
++
++device_initcall(gpmc_nand_init);
+diff --git a/drivers/mtd/nand/nand_s3c2410.c b/drivers/mtd/nand/nand_s3c2410.c
 new file mode 100644
-index 0000000..935dcdc
+index 0000000..b989583
 --- /dev/null
-+++ b/drivers/mtd/ubi/vmt.c
-@@ -0,0 +1,866 @@
-+/*
-+ * Copyright (c) International Business Machines Corp., 2006
++++ b/drivers/mtd/nand/nand_s3c2410.c
+@@ -0,0 +1,525 @@
++/* linux/drivers/mtd/nand/s3c2410.c
++ *
++ * Copyright (C) 2009 Juergen Beisert, Pengutronix
++ *
++ * Copyright �� 2004-2008 Simtec Electronics
++ *	http://armlinux.simtec.co.uk/
++ *	Ben Dooks <ben@simtec.co.uk>
++ *
++ * Samsung S3C2410 NAND driver
 + *
 + * This program is free software; you can redistribute it and/or modify
 + * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation;  either version 2 of the License, or
++ * the Free Software Foundation; either version 2 of the License, or
 + * (at your option) any later version.
 + *
 + * This program is distributed in the hope that it will be useful,
 + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
-+ * the GNU General Public License for more details.
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
 + *
 + * You should have received a copy of the GNU General Public License
 + * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-+ *
-+ * Author: Artem Bityutskiy (���������������� ����������)
-+ */
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++*/
 +
-+/*
-+ * This file contains implementation of volume creation, deletion, updating and
-+ * resizing.
-+ */
++#include <config.h>
++#include <common.h>
++#include <driver.h>
++#include <malloc.h>
++#include <init.h>
++#include <linux/mtd/mtd.h>
++#include <linux/mtd/nand.h>
++#include <mach/s3c24xx-generic.h>
++#include <mach/s3c24x0-iomap.h>
++#include <mach/s3c24x0-nand.h>
++#include <asm/io.h>
++#include <asm-generic/errno.h>
 +
-+#ifdef UBI_LINUX
-+#include <linux/err.h>
-+#include <asm/div64.h>
-+#endif
-+
-+#include "ubi-barebox.h"
-+#include "ubi.h"
-+
-+#ifdef CONFIG_MTD_UBI_DEBUG_PARANOID
-+static void paranoid_check_volumes(struct ubi_device *ubi);
++#ifdef CONFIG_S3C24XX_NAND_BOOT
++# define __nand_boot_init __bare_init
++# ifndef BOARD_DEFAULT_NAND_TIMING
++#  define BOARD_DEFAULT_NAND_TIMING 0x0737
++# endif
 +#else
-+#define paranoid_check_volumes(ubi)
++# define __nand_boot_init
 +#endif
 +
-+#ifdef UBI_LINUX
-+static ssize_t vol_attribute_show(struct device *dev,
-+				  struct device_attribute *attr, char *buf);
-+
-+/* Device attributes corresponding to files in '/<sysfs>/class/ubi/ubiX_Y' */
-+static struct device_attribute attr_vol_reserved_ebs =
-+	__ATTR(reserved_ebs, S_IRUGO, vol_attribute_show, NULL);
-+static struct device_attribute attr_vol_type =
-+	__ATTR(type, S_IRUGO, vol_attribute_show, NULL);
-+static struct device_attribute attr_vol_name =
-+	__ATTR(name, S_IRUGO, vol_attribute_show, NULL);
-+static struct device_attribute attr_vol_corrupted =
-+	__ATTR(corrupted, S_IRUGO, vol_attribute_show, NULL);
-+static struct device_attribute attr_vol_alignment =
-+	__ATTR(alignment, S_IRUGO, vol_attribute_show, NULL);
-+static struct device_attribute attr_vol_usable_eb_size =
-+	__ATTR(usable_eb_size, S_IRUGO, vol_attribute_show, NULL);
-+static struct device_attribute attr_vol_data_bytes =
-+	__ATTR(data_bytes, S_IRUGO, vol_attribute_show, NULL);
-+static struct device_attribute attr_vol_upd_marker =
-+	__ATTR(upd_marker, S_IRUGO, vol_attribute_show, NULL);
-+
-+/*
-+ * "Show" method for files in '/<sysfs>/class/ubi/ubiX_Y/'.
-+ *
-+ * Consider a situation:
-+ * A. process 1 opens a sysfs file related to volume Y, say
-+ *    /<sysfs>/class/ubi/ubiX_Y/reserved_ebs;
-+ * B. process 2 removes volume Y;
-+ * C. process 1 starts reading the /<sysfs>/class/ubi/ubiX_Y/reserved_ebs file;
-+ *
-+ * In this situation, this function will return %-ENODEV because it will find
-+ * out that the volume was removed from the @ubi->volumes array.
++/**
++ * Define this symbol for testing purpose. It will add a command to read an
++ * image from the NAND like it the boot strap code will do.
 + */
-+static ssize_t vol_attribute_show(struct device *dev,
-+				  struct device_attribute *attr, char *buf)
-+{
-+	int ret;
-+	struct ubi_volume *vol = container_of(dev, struct ubi_volume, dev);
-+	struct ubi_device *ubi;
++#define CONFIG_NAND_S3C24XX_BOOT_DEBUG
 +
-+	ubi = ubi_get_device(vol->ubi->ubi_num);
-+	if (!ubi)
-+		return -ENODEV;
++/* NAND controller's register */
 +
-+	spin_lock(&ubi->volumes_lock);
-+	if (!ubi->volumes[vol->vol_id]) {
-+		spin_unlock(&ubi->volumes_lock);
-+		ubi_put_device(ubi);
-+		return -ENODEV;
++#define NFCONF 0x00
++
++#ifdef CONFIG_CPU_S3C2410
++
++#define NFCMD 0x04
++#define NFADDR 0x08
++#define NFDATA 0x0c
++#define NFSTAT 0x10
++#define NFECC 0x14
++
++/* S3C2410 specific bits */
++#define NFSTAT_BUSY (1)
++#define NFCONF_nFCE (1 << 11)
++#define NFCONF_INITECC (1 << 12)
++#define NFCONF_EN (1 << 15)
++
++#endif	/* CONFIG_CPU_S3C2410 */
++
++#ifdef CONFIG_CPU_S3C2440
++
++#define NFCONT 0x04
++#define NFCMD 0x08
++#define NFADDR 0x0C
++#define NFDATA 0x10
++
++#define NFECC 0x1C
++#define NFSTAT 0x20
++
++/* S3C2440 specific bits */
++#define NFSTAT_BUSY (1)
++#define NFCONT_nFCE (1 << 1)
++#define NFCONF_INITECC (1 << 12)
++#define NFCONT_EN (1)
++
++#endif	/* CONFIG_CPU_S3C2440 */
++
++
++struct s3c24x0_nand_host {
++	struct mtd_info		mtd;
++	struct nand_chip	nand;
++	struct mtd_partition	*parts;
++	struct device_d		*dev;
++
++	unsigned long		base;
++};
++
++/**
++ * oob placement block for use with hardware ecc generation
++ */
++static struct nand_ecclayout nand_hw_eccoob = {
++	.eccbytes = 3,
++	.eccpos = { 0, 1, 2},
++	.oobfree = {
++		{
++			.offset = 8,
++			.length = 8
++		}
 +	}
-+	/* Take a reference to prevent volume removal */
-+	vol->ref_count += 1;
-+	spin_unlock(&ubi->volumes_lock);
++};
 +
-+	if (attr == &attr_vol_reserved_ebs)
-+		ret = sprintf(buf, "%d\n", vol->reserved_pebs);
-+	else if (attr == &attr_vol_type) {
-+		const char *tp;
++/* - Functions shared between the boot strap code and the regular driver - */
 +
-+		if (vol->vol_type == UBI_DYNAMIC_VOLUME)
-+			tp = "dynamic";
-+		else
-+			tp = "static";
-+		ret = sprintf(buf, "%s\n", tp);
-+	} else if (attr == &attr_vol_name)
-+		ret = sprintf(buf, "%s\n", vol->name);
-+	else if (attr == &attr_vol_corrupted)
-+		ret = sprintf(buf, "%d\n", vol->corrupted);
-+	else if (attr == &attr_vol_alignment)
-+		ret = sprintf(buf, "%d\n", vol->alignment);
-+	else if (attr == &attr_vol_usable_eb_size)
-+		ret = sprintf(buf, "%d\n", vol->usable_leb_size);
-+	else if (attr == &attr_vol_data_bytes)
-+		ret = sprintf(buf, "%lld\n", vol->used_bytes);
-+	else if (attr == &attr_vol_upd_marker)
-+		ret = sprintf(buf, "%d\n", vol->upd_marker);
++/**
++ * Issue the specified command to the NAND device
++ * @param[in] host Base address of the NAND controller
++ * @param[in] cmd Command for NAND flash
++ */
++static void __nand_boot_init send_cmd(unsigned long host, uint8_t cmd)
++{
++	writeb(cmd, host + NFCMD);
++}
++
++/**
++ * Issue the specified address to the NAND device
++ * @param[in] host Base address of the NAND controller
++ * @param[in] addr Address for the NAND flash
++ */
++static void __nand_boot_init send_addr(unsigned long host, uint8_t addr)
++{
++	writeb(addr, host + NFADDR);
++}
++
++/**
++ * Enable the NAND flash access
++ * @param[in] host Base address of the NAND controller
++ */
++static void __nand_boot_init enable_cs(unsigned long host)
++{
++#ifdef CONFIG_CPU_S3C2410
++	writew(readw(host + NFCONF) & ~NFCONF_nFCE, host + NFCONF);
++#endif
++#ifdef CONFIG_CPU_S3C2440
++	writew(readw(host + NFCONT) & ~NFCONT_nFCE, host + NFCONT);
++#endif
++}
++
++/**
++ * Disable the NAND flash access
++ * @param[in] host Base address of the NAND controller
++ */
++static void __nand_boot_init disable_cs(unsigned long host)
++{
++#ifdef CONFIG_CPU_S3C2410
++	writew(readw(host + NFCONF) | NFCONF_nFCE, host + NFCONF);
++#endif
++#ifdef CONFIG_CPU_S3C2440
++	writew(readw(host + NFCONT) | NFCONT_nFCE, host + NFCONT);
++#endif
++}
++
++/**
++ * Enable the NAND flash controller
++ * @param[in] host Base address of the NAND controller
++ * @param[in] timing Timing to access the NAND memory
++ */
++static void __nand_boot_init enable_nand_controller(unsigned long host, uint32_t timing)
++{
++#ifdef CONFIG_CPU_S3C2410
++	writew(timing + NFCONF_EN + NFCONF_nFCE, host + NFCONF);
++#endif
++#ifdef CONFIG_CPU_S3C2440
++	writew(NFCONT_EN + NFCONT_nFCE, host + NFCONT);
++	writew(timing, host + NFCONF);
++#endif
++}
++
++/**
++ * Diable the NAND flash controller
++ * @param[in] host Base address of the NAND controller
++ */
++static void __nand_boot_init disable_nand_controller(unsigned long host)
++{
++#ifdef CONFIG_CPU_S3C2410
++	writew(NFCONF_nFCE, host + NFCONF);
++#endif
++#ifdef CONFIG_CPU_S3C2440
++	writew(NFCONT_nFCE, host + NFCONT);
++#endif
++}
++
++/* ----------------------------------------------------------------------- */
++
++/**
++ * Check the ECC and try to repair the data if possible
++ * @param[in] mtd_info FIXME
++ * @param[inout] dat Pointer to the data buffer that might contain a bit error
++ * @param[in] read_ecc ECC data from the OOB space
++ * @param[in] calc_ecc ECC data calculated from the data
++ * @return 0 no error, 1 repaired error, -1 no way...
++ *
++ * @note: Alsways 512 byte of data
++ */
++static int s3c2410_nand_correct_data(struct mtd_info *mtd, uint8_t *dat,
++				uint8_t *read_ecc, uint8_t *calc_ecc)
++{
++	unsigned int diff0, diff1, diff2;
++	unsigned int bit, byte;
++
++	diff0 = read_ecc[0] ^ calc_ecc[0];
++	diff1 = read_ecc[1] ^ calc_ecc[1];
++	diff2 = read_ecc[2] ^ calc_ecc[2];
++
++	if (diff0 == 0 && diff1 == 0 && diff2 == 0)
++		return 0;		/* ECC is ok */
++
++	/* sometimes people do not think about using the ECC, so check
++	 * to see if we have an 0xff,0xff,0xff read ECC and then ignore
++	 * the error, on the assumption that this is an un-eccd page.
++	 */
++	if (read_ecc[0] == 0xff && read_ecc[1] == 0xff && read_ecc[2] == 0xff
++		/* && info->platform->ignore_unset_ecc */)
++		return 0;
++
++	/* Can we correct this ECC (ie, one row and column change).
++	 * Note, this is similar to the 256 error code on smartmedia */
++
++	if (((diff0 ^ (diff0 >> 1)) & 0x55) == 0x55 &&
++	    ((diff1 ^ (diff1 >> 1)) & 0x55) == 0x55 &&
++	    ((diff2 ^ (diff2 >> 1)) & 0x55) == 0x55) {
++		/* calculate the bit position of the error */
++
++		bit  = ((diff2 >> 3) & 1) |
++		       ((diff2 >> 4) & 2) |
++		       ((diff2 >> 5) & 4);
++
++		/* calculate the byte position of the error */
++
++		byte = ((diff2 << 7) & 0x100) |
++		       ((diff1 << 0) & 0x80)  |
++		       ((diff1 << 1) & 0x40)  |
++		       ((diff1 << 2) & 0x20)  |
++		       ((diff1 << 3) & 0x10)  |
++		       ((diff0 >> 4) & 0x08)  |
++		       ((diff0 >> 3) & 0x04)  |
++		       ((diff0 >> 2) & 0x02)  |
++		       ((diff0 >> 1) & 0x01);
++
++		dat[byte] ^= (1 << bit);
++		return 1;
++	}
++
++	/* if there is only one bit difference in the ECC, then
++	 * one of only a row or column parity has changed, which
++	 * means the error is most probably in the ECC itself */
++
++	diff0 |= (diff1 << 8);
++	diff0 |= (diff2 << 16);
++
++	if ((diff0 & ~(1<<fls(diff0))) == 0)
++		return 1;
++
++	return -1;
++}
++
++static void s3c2410_nand_enable_hwecc(struct mtd_info *mtd, int mode)
++{
++	struct nand_chip *nand_chip = mtd->priv;
++	struct s3c24x0_nand_host *host = nand_chip->priv;
++
++	writel(readl(host->base + NFCONF) | NFCONF_INITECC , host->base + NFCONF);
++}
++
++static int s3c2410_nand_calculate_ecc(struct mtd_info *mtd, const uint8_t *dat, uint8_t *ecc_code)
++{
++	struct nand_chip *nand_chip = mtd->priv;
++	struct s3c24x0_nand_host *host = nand_chip->priv;
++
++	ecc_code[0] = readb(host->base + NFECC);
++	ecc_code[1] = readb(host->base + NFECC + 1);
++	ecc_code[2] = readb(host->base + NFECC + 2);
++
++	return 0;
++}
++
++static void s3c24x0_nand_select_chip(struct mtd_info *mtd, int chip)
++{
++	struct nand_chip *nand_chip = mtd->priv;
++	struct s3c24x0_nand_host *host = nand_chip->priv;
++
++	if (chip == -1)
++		disable_cs(host->base);
 +	else
-+		/* This must be a bug */
-+		ret = -EINVAL;
++		enable_cs(host->base);
++}
 +
-+	/* We've done the operation, drop volume and UBI device references */
-+	spin_lock(&ubi->volumes_lock);
-+	vol->ref_count -= 1;
-+	ubi_assert(vol->ref_count >= 0);
-+	spin_unlock(&ubi->volumes_lock);
-+	ubi_put_device(ubi);
++static int s3c24x0_nand_devready(struct mtd_info *mtd)
++{
++	struct nand_chip *nand_chip = mtd->priv;
++	struct s3c24x0_nand_host *host = nand_chip->priv;
++
++	return readw(host->base + NFSTAT) & NFSTAT_BUSY;
++}
++
++static void s3c24x0_nand_hwcontrol(struct mtd_info *mtd, int cmd,
++					unsigned int ctrl)
++{
++	struct nand_chip *nand_chip = mtd->priv;
++	struct s3c24x0_nand_host *host = nand_chip->priv;
++
++	if (cmd == NAND_CMD_NONE)
++		return;
++	/*
++	* If the CLE should be active, this call is a NAND command
++	*/
++	if (ctrl & NAND_CLE)
++		send_cmd(host->base, cmd);
++	/*
++	* If the ALE should be active, this call is a NAND address
++	*/
++	if (ctrl & NAND_ALE)
++		send_addr(host->base, cmd);
++}
++
++static int s3c24x0_nand_inithw(struct s3c24x0_nand_host *host)
++{
++	struct s3c24x0_nand_platform_data *pdata = host->dev->platform_data;
++	uint32_t tmp;
++
++	/* reset the NAND controller */
++	disable_nand_controller(host->base);
++
++	if (pdata != NULL)
++		tmp = pdata->nand_timing;
++	else
++		/* else slowest possible timing */
++		tmp = CALC_NFCONF_TIMING(4, 8, 8);
++
++	/* reenable the NAND controller */
++	enable_nand_controller(host->base, tmp);
++
++	return 0;
++}
++
++static int s3c24x0_nand_probe(struct device_d *dev)
++{
++	struct nand_chip *chip;
++	struct mtd_info *mtd;
++	struct s3c24x0_nand_host *host;
++	int ret;
++
++	/* Allocate memory for MTD device structure and private data */
++	host = kzalloc(sizeof(struct s3c24x0_nand_host), GFP_KERNEL);
++	if (!host)
++		return -ENOMEM;
++
++	host->dev = dev;
++	host->base = dev->map_base;
++
++	/* structures must be linked */
++	chip = &host->nand;
++	mtd = &host->mtd;
++	mtd->priv = chip;
++
++	/* init the default settings */
++#if 0
++	/* TODO: Will follow later */
++	init_nand_chip_bw8(chip);
++#endif
++	/* 50 us command delay time */
++	chip->chip_delay = 50;
++	chip->priv = host;
++
++	chip->IO_ADDR_R = chip->IO_ADDR_W = (void*)(dev->map_base + NFDATA);
++
++	chip->cmd_ctrl = s3c24x0_nand_hwcontrol;
++	chip->dev_ready = s3c24x0_nand_devready;
++	chip->select_chip = s3c24x0_nand_select_chip;
++
++	/* we are using the hardware ECC feature of this device */
++	chip->ecc.calculate = s3c2410_nand_calculate_ecc;
++	chip->ecc.correct = s3c2410_nand_correct_data;
++	chip->ecc.hwctl = s3c2410_nand_enable_hwecc;
++	chip->ecc.calculate = s3c2410_nand_calculate_ecc;
++
++	/* our hardware capabilities */
++	chip->ecc.mode = NAND_ECC_HW;
++	chip->ecc.size = 512;
++	chip->ecc.bytes = 3;
++	chip->ecc.layout = &nand_hw_eccoob;
++
++	ret = s3c24x0_nand_inithw(host);
++	if (ret != 0)
++		goto on_error;
++
++	/* Scan to find existence of the device */
++	ret = nand_scan(mtd, 1);
++	if (ret != 0) {
++		ret = -ENXIO;
++		goto on_error;
++	}
++
++	return add_mtd_device(mtd);
++	
++on_error:
++	free(host);
 +	return ret;
 +}
-+#endif
 +
-+/* Release method for volume devices */
-+static void vol_release(struct device *dev)
++static struct driver_d s3c24x0_nand_driver = {
++	.name  = "s3c24x0_nand",
++	.probe = s3c24x0_nand_probe,
++};
++
++#ifdef CONFIG_S3C24XX_NAND_BOOT
++
++static void __nand_boot_init wait_for_completion(unsigned long host)
 +{
-+	struct ubi_volume *vol = container_of(dev, struct ubi_volume, dev);
-+
-+	kfree(vol);
++	while (!(readw(host + NFSTAT) & NFSTAT_BUSY))
++		;
 +}
 +
-+#ifdef UBI_LINUX
++static void __nand_boot_init nfc_addr(unsigned long host, uint32_t offs)
++{
++	send_addr(host, offs & 0xff);
++	send_addr(host, (offs >> 9) & 0xff);
++	send_addr(host, (offs >> 17) & 0xff);
++	send_addr(host, (offs >> 25) & 0xff);
++}
++
 +/**
-+ * volume_sysfs_init - initialize sysfs for new volume.
-+ * @ubi: UBI device description object
-+ * @vol: volume description object
++ * Load a sequential count of blocks from the NAND into memory
++ * @param[out] dest Pointer to target area (in SDRAM)
++ * @param[in] size Bytes to read from NAND device
++ * @param[in] page Start page to read from
++ * @param[in] pagesize Size of each page in the NAND
 + *
-+ * This function returns zero in case of success and a negative error code in
-+ * case of failure.
-+ *
-+ * Note, this function does not free allocated resources in case of failure -
-+ * the caller does it. This is because this would cause release() here and the
-+ * caller would oops.
++ * This function must be located in the first 4kiB of the barebox image
++ * (guess why). When this routine is running the SDRAM is up and running
++ * and it runs from the correct address (physical=linked address).
++ * TODO Could we access the platform data from the boardfile?
++ * Due to it makes no sense this function does not return in case of failure.
 + */
-+static int volume_sysfs_init(struct ubi_device *ubi, struct ubi_volume *vol)
++void __nand_boot_init s3c24x0_nand_load_image(void *dest, int size, int page, int pagesize)
 +{
-+	int err;
-+
-+	err = device_create_file(&vol->dev, &attr_vol_reserved_ebs);
-+	if (err)
-+		return err;
-+	err = device_create_file(&vol->dev, &attr_vol_type);
-+	if (err)
-+		return err;
-+	err = device_create_file(&vol->dev, &attr_vol_name);
-+	if (err)
-+		return err;
-+	err = device_create_file(&vol->dev, &attr_vol_corrupted);
-+	if (err)
-+		return err;
-+	err = device_create_file(&vol->dev, &attr_vol_alignment);
-+	if (err)
-+		return err;
-+	err = device_create_file(&vol->dev, &attr_vol_usable_eb_size);
-+	if (err)
-+		return err;
-+	err = device_create_file(&vol->dev, &attr_vol_data_bytes);
-+	if (err)
-+		return err;
-+	err = device_create_file(&vol->dev, &attr_vol_upd_marker);
-+	return err;
-+}
-+
-+/**
-+ * volume_sysfs_close - close sysfs for a volume.
-+ * @vol: volume description object
-+ */
-+static void volume_sysfs_close(struct ubi_volume *vol)
-+{
-+	device_remove_file(&vol->dev, &attr_vol_upd_marker);
-+	device_remove_file(&vol->dev, &attr_vol_data_bytes);
-+	device_remove_file(&vol->dev, &attr_vol_usable_eb_size);
-+	device_remove_file(&vol->dev, &attr_vol_alignment);
-+	device_remove_file(&vol->dev, &attr_vol_corrupted);
-+	device_remove_file(&vol->dev, &attr_vol_name);
-+	device_remove_file(&vol->dev, &attr_vol_type);
-+	device_remove_file(&vol->dev, &attr_vol_reserved_ebs);
-+	device_unregister(&vol->dev);
-+}
-+#endif
-+
-+/**
-+ * ubi_create_volume - create volume.
-+ * @ubi: UBI device description object
-+ * @req: volume creation request
-+ *
-+ * This function creates volume described by @req. If @req->vol_id id
-+ * %UBI_VOL_NUM_AUTO, this function automatically assign ID to the new volume
-+ * and saves it in @req->vol_id. Returns zero in case of success and a negative
-+ * error code in case of failure. Note, the caller has to have the
-+ * @ubi->volumes_mutex locked.
-+ */
-+int ubi_create_volume(struct ubi_device *ubi, struct ubi_mkvol_req *req)
-+{
-+	int i, err, vol_id = req->vol_id, dont_free = 0;
-+	struct ubi_volume *vol;
-+	struct ubi_vtbl_record vtbl_rec;
-+	uint64_t bytes;
-+	dev_t dev;
-+
-+	if (ubi->ro_mode)
-+		return -EROFS;
-+
-+	vol = kzalloc(sizeof(struct ubi_volume), GFP_KERNEL);
-+	if (!vol)
-+		return -ENOMEM;
-+
-+	spin_lock(&ubi->volumes_lock);
-+	if (vol_id == UBI_VOL_NUM_AUTO) {
-+		/* Find unused volume ID */
-+		dbg_msg("search for vacant volume ID");
-+		for (i = 0; i < ubi->vtbl_slots; i++)
-+			if (!ubi->volumes[i]) {
-+				vol_id = i;
-+				break;
-+			}
-+
-+		if (vol_id == UBI_VOL_NUM_AUTO) {
-+			dbg_err("out of volume IDs");
-+			err = -ENFILE;
-+			goto out_unlock;
-+		}
-+		req->vol_id = vol_id;
-+	}
-+
-+	dbg_msg("volume ID %d, %llu bytes, type %d, name %s",
-+		vol_id, (unsigned long long)req->bytes,
-+		(int)req->vol_type, req->name);
-+
-+	/* Ensure that this volume does not exist */
-+	err = -EEXIST;
-+	if (ubi->volumes[vol_id]) {
-+		dbg_err("volume %d already exists", vol_id);
-+		goto out_unlock;
-+	}
-+
-+	/* Ensure that the name is unique */
-+	for (i = 0; i < ubi->vtbl_slots; i++)
-+		if (ubi->volumes[i] &&
-+		    ubi->volumes[i]->name_len == req->name_len &&
-+		    !strcmp(ubi->volumes[i]->name, req->name)) {
-+			dbg_err("volume \"%s\" exists (ID %d)", req->name, i);
-+			goto out_unlock;
-+		}
-+
-+	/* Calculate how many eraseblocks are requested */
-+	vol->usable_leb_size = ubi->leb_size - ubi->leb_size % req->alignment;
-+	bytes = req->bytes;
-+	if (do_div(bytes, vol->usable_leb_size))
-+		vol->reserved_pebs = 1;
-+	vol->reserved_pebs += bytes;
-+
-+	/* Reserve physical eraseblocks */
-+	if (vol->reserved_pebs > ubi->avail_pebs) {
-+		dbg_err("not enough PEBs, only %d available", ubi->avail_pebs);
-+		err = -ENOSPC;
-+		goto out_unlock;
-+	}
-+	ubi->avail_pebs -= vol->reserved_pebs;
-+	ubi->rsvd_pebs += vol->reserved_pebs;
-+	spin_unlock(&ubi->volumes_lock);
-+
-+	vol->vol_id    = vol_id;
-+	vol->alignment = req->alignment;
-+	vol->data_pad  = ubi->leb_size % vol->alignment;
-+	vol->vol_type  = req->vol_type;
-+	vol->name_len  = req->name_len;
-+	memcpy(vol->name, req->name, vol->name_len + 1);
-+	vol->ubi = ubi;
-+
-+	/*
-+	 * Finish all pending erases because there may be some LEBs belonging
-+	 * to the same volume ID.
-+	 */
-+	err = ubi_wl_flush(ubi);
-+	if (err)
-+		goto out_acc;
-+
-+	vol->eba_tbl = kmalloc(vol->reserved_pebs * sizeof(int), GFP_KERNEL);
-+	if (!vol->eba_tbl) {
-+		err = -ENOMEM;
-+		goto out_acc;
-+	}
-+
-+	for (i = 0; i < vol->reserved_pebs; i++)
-+		vol->eba_tbl[i] = UBI_LEB_UNMAPPED;
-+
-+	if (vol->vol_type == UBI_DYNAMIC_VOLUME) {
-+		vol->used_ebs = vol->reserved_pebs;
-+		vol->last_eb_bytes = vol->usable_leb_size;
-+		vol->used_bytes =
-+			(long long)vol->used_ebs * vol->usable_leb_size;
-+	} else {
-+		bytes = vol->used_bytes;
-+		vol->last_eb_bytes = do_div(bytes, vol->usable_leb_size);
-+		vol->used_ebs = bytes;
-+		if (vol->last_eb_bytes)
-+			vol->used_ebs += 1;
-+		else
-+			vol->last_eb_bytes = vol->usable_leb_size;
-+	}
-+
-+	/* Register character device for the volume */
-+	cdev_init(&vol->cdev, &ubi_vol_cdev_operations);
-+#ifdef UBI_LINUX
-+	vol->cdev.owner = THIS_MODULE;
-+#endif
-+	dev = MKDEV(MAJOR(ubi->cdev.dev), vol_id + 1);
-+	err = cdev_add(&vol->cdev, dev, 1);
-+	if (err) {
-+		ubi_err("cannot add character device");
-+		goto out_mapping;
-+	}
-+
-+	err = ubi_create_gluebi(ubi, vol);
-+	if (err)
-+		goto out_cdev;
-+
-+	vol->dev.release = vol_release;
-+	vol->dev.parent = &ubi->dev;
-+	vol->dev.devt = dev;
-+	vol->dev.class = ubi_class;
-+
-+	sprintf(&vol->dev.bus_id[0], "%s_%d", ubi->ubi_name, vol->vol_id);
-+	err = device_register(&vol->dev);
-+	if (err) {
-+		ubi_err("cannot register device");
-+		goto out_gluebi;
-+	}
-+
-+	err = volume_sysfs_init(ubi, vol);
-+	if (err)
-+		goto out_sysfs;
-+
-+	/* Fill volume table record */
-+	memset(&vtbl_rec, 0, sizeof(struct ubi_vtbl_record));
-+	vtbl_rec.reserved_pebs = cpu_to_be32(vol->reserved_pebs);
-+	vtbl_rec.alignment     = cpu_to_be32(vol->alignment);
-+	vtbl_rec.data_pad      = cpu_to_be32(vol->data_pad);
-+	vtbl_rec.name_len      = cpu_to_be16(vol->name_len);
-+	if (vol->vol_type == UBI_DYNAMIC_VOLUME)
-+		vtbl_rec.vol_type = UBI_VID_DYNAMIC;
-+	else
-+		vtbl_rec.vol_type = UBI_VID_STATIC;
-+	memcpy(vtbl_rec.name, vol->name, vol->name_len + 1);
-+
-+	err = ubi_change_vtbl_record(ubi, vol_id, &vtbl_rec);
-+	if (err)
-+		goto out_sysfs;
-+
-+	spin_lock(&ubi->volumes_lock);
-+	ubi->volumes[vol_id] = vol;
-+	ubi->vol_count += 1;
-+	spin_unlock(&ubi->volumes_lock);
-+
-+	paranoid_check_volumes(ubi);
-+	return 0;
-+
-+out_sysfs:
-+	/*
-+	 * We have registered our device, we should not free the volume*
-+	 * description object in this function in case of an error - it is
-+	 * freed by the release function.
-+	 *
-+	 * Get device reference to prevent the release function from being
-+	 * called just after sysfs has been closed.
-+	 */
-+	dont_free = 1;
-+	get_device(&vol->dev);
-+	volume_sysfs_close(vol);
-+out_gluebi:
-+	if (ubi_destroy_gluebi(vol))
-+		dbg_err("cannot destroy gluebi for volume %d:%d",
-+			ubi->ubi_num, vol_id);
-+out_cdev:
-+	cdev_del(&vol->cdev);
-+out_mapping:
-+	kfree(vol->eba_tbl);
-+out_acc:
-+	spin_lock(&ubi->volumes_lock);
-+	ubi->rsvd_pebs -= vol->reserved_pebs;
-+	ubi->avail_pebs += vol->reserved_pebs;
-+out_unlock:
-+	spin_unlock(&ubi->volumes_lock);
-+	if (dont_free)
-+		put_device(&vol->dev);
-+	else
-+		kfree(vol);
-+	ubi_err("cannot create volume %d, error %d", vol_id, err);
-+	return err;
-+}
-+
-+/**
-+ * ubi_remove_volume - remove volume.
-+ * @desc: volume descriptor
-+ *
-+ * This function removes volume described by @desc. The volume has to be opened
-+ * in "exclusive" mode. Returns zero in case of success and a negative error
-+ * code in case of failure. The caller has to have the @ubi->volumes_mutex
-+ * locked.
-+ */
-+int ubi_remove_volume(struct ubi_volume_desc *desc)
-+{
-+	struct ubi_volume *vol = desc->vol;
-+	struct ubi_device *ubi = vol->ubi;
-+	int i, err, vol_id = vol->vol_id, reserved_pebs = vol->reserved_pebs;
-+
-+	dbg_msg("remove UBI volume %d", vol_id);
-+	ubi_assert(desc->mode == UBI_EXCLUSIVE);
-+	ubi_assert(vol == ubi->volumes[vol_id]);
-+
-+	if (ubi->ro_mode)
-+		return -EROFS;
-+
-+	spin_lock(&ubi->volumes_lock);
-+	if (vol->ref_count > 1) {
-+		/*
-+		 * The volume is busy, probably someone is reading one of its
-+		 * sysfs files.
-+		 */
-+		err = -EBUSY;
-+		goto out_unlock;
-+	}
-+	ubi->volumes[vol_id] = NULL;
-+	spin_unlock(&ubi->volumes_lock);
-+
-+	err = ubi_destroy_gluebi(vol);
-+	if (err)
-+		goto out_err;
-+
-+	err = ubi_change_vtbl_record(ubi, vol_id, NULL);
-+	if (err)
-+		goto out_err;
-+
-+	for (i = 0; i < vol->reserved_pebs; i++) {
-+		err = ubi_eba_unmap_leb(ubi, vol, i);
-+		if (err)
-+			goto out_err;
-+	}
-+
-+	kfree(vol->eba_tbl);
-+	vol->eba_tbl = NULL;
-+	cdev_del(&vol->cdev);
-+	volume_sysfs_close(vol);
-+
-+	spin_lock(&ubi->volumes_lock);
-+	ubi->rsvd_pebs -= reserved_pebs;
-+	ubi->avail_pebs += reserved_pebs;
-+	i = ubi->beb_rsvd_level - ubi->beb_rsvd_pebs;
-+	if (i > 0) {
-+		i = ubi->avail_pebs >= i ? i : ubi->avail_pebs;
-+		ubi->avail_pebs -= i;
-+		ubi->rsvd_pebs += i;
-+		ubi->beb_rsvd_pebs += i;
-+		if (i > 0)
-+			ubi_msg("reserve more %d PEBs", i);
-+	}
-+	ubi->vol_count -= 1;
-+	spin_unlock(&ubi->volumes_lock);
-+
-+	paranoid_check_volumes(ubi);
-+	return 0;
-+
-+out_err:
-+	ubi_err("cannot remove volume %d, error %d", vol_id, err);
-+	spin_lock(&ubi->volumes_lock);
-+	ubi->volumes[vol_id] = vol;
-+out_unlock:
-+	spin_unlock(&ubi->volumes_lock);
-+	return err;
-+}
-+
-+/**
-+ * ubi_resize_volume - re-size volume.
-+ * @desc: volume descriptor
-+ * @reserved_pebs: new size in physical eraseblocks
-+ *
-+ * This function re-sizes the volume and returns zero in case of success, and a
-+ * negative error code in case of failure. The caller has to have the
-+ * @ubi->volumes_mutex locked.
-+ */
-+int ubi_resize_volume(struct ubi_volume_desc *desc, int reserved_pebs)
-+{
-+	int i, err, pebs, *new_mapping;
-+	struct ubi_volume *vol = desc->vol;
-+	struct ubi_device *ubi = vol->ubi;
-+	struct ubi_vtbl_record vtbl_rec;
-+	int vol_id = vol->vol_id;
-+
-+	if (ubi->ro_mode)
-+		return -EROFS;
-+
-+	dbg_msg("re-size volume %d to from %d to %d PEBs",
-+		vol_id, vol->reserved_pebs, reserved_pebs);
-+
-+	if (vol->vol_type == UBI_STATIC_VOLUME &&
-+	    reserved_pebs < vol->used_ebs) {
-+		dbg_err("too small size %d, %d LEBs contain data",
-+			reserved_pebs, vol->used_ebs);
-+		return -EINVAL;
-+	}
-+
-+	/* If the size is the same, we have nothing to do */
-+	if (reserved_pebs == vol->reserved_pebs)
-+		return 0;
-+
-+	new_mapping = kmalloc(reserved_pebs * sizeof(int), GFP_KERNEL);
-+	if (!new_mapping)
-+		return -ENOMEM;
-+
-+	for (i = 0; i < reserved_pebs; i++)
-+		new_mapping[i] = UBI_LEB_UNMAPPED;
-+
-+	spin_lock(&ubi->volumes_lock);
-+	if (vol->ref_count > 1) {
-+		spin_unlock(&ubi->volumes_lock);
-+		err = -EBUSY;
-+		goto out_free;
-+	}
-+	spin_unlock(&ubi->volumes_lock);
-+
-+	/* Reserve physical eraseblocks */
-+	pebs = reserved_pebs - vol->reserved_pebs;
-+	if (pebs > 0) {
-+		spin_lock(&ubi->volumes_lock);
-+		if (pebs > ubi->avail_pebs) {
-+			dbg_err("not enough PEBs: requested %d, available %d",
-+				pebs, ubi->avail_pebs);
-+			spin_unlock(&ubi->volumes_lock);
-+			err = -ENOSPC;
-+			goto out_free;
-+		}
-+		ubi->avail_pebs -= pebs;
-+		ubi->rsvd_pebs += pebs;
-+		for (i = 0; i < vol->reserved_pebs; i++)
-+			new_mapping[i] = vol->eba_tbl[i];
-+		kfree(vol->eba_tbl);
-+		vol->eba_tbl = new_mapping;
-+		spin_unlock(&ubi->volumes_lock);
-+	}
-+
-+	/* Change volume table record */
-+	memcpy(&vtbl_rec, &ubi->vtbl[vol_id], sizeof(struct ubi_vtbl_record));
-+	vtbl_rec.reserved_pebs = cpu_to_be32(reserved_pebs);
-+	err = ubi_change_vtbl_record(ubi, vol_id, &vtbl_rec);
-+	if (err)
-+		goto out_acc;
-+
-+	if (pebs < 0) {
-+		for (i = 0; i < -pebs; i++) {
-+			err = ubi_eba_unmap_leb(ubi, vol, reserved_pebs + i);
-+			if (err)
-+				goto out_acc;
-+		}
-+		spin_lock(&ubi->volumes_lock);
-+		ubi->rsvd_pebs += pebs;
-+		ubi->avail_pebs -= pebs;
-+		pebs = ubi->beb_rsvd_level - ubi->beb_rsvd_pebs;
-+		if (pebs > 0) {
-+			pebs = ubi->avail_pebs >= pebs ? pebs : ubi->avail_pebs;
-+			ubi->avail_pebs -= pebs;
-+			ubi->rsvd_pebs += pebs;
-+			ubi->beb_rsvd_pebs += pebs;
-+			if (pebs > 0)
-+				ubi_msg("reserve more %d PEBs", pebs);
-+		}
-+		for (i = 0; i < reserved_pebs; i++)
-+			new_mapping[i] = vol->eba_tbl[i];
-+		kfree(vol->eba_tbl);
-+		vol->eba_tbl = new_mapping;
-+		spin_unlock(&ubi->volumes_lock);
-+	}
-+
-+	vol->reserved_pebs = reserved_pebs;
-+	if (vol->vol_type == UBI_DYNAMIC_VOLUME) {
-+		vol->used_ebs = reserved_pebs;
-+		vol->last_eb_bytes = vol->usable_leb_size;
-+		vol->used_bytes =
-+			(long long)vol->used_ebs * vol->usable_leb_size;
-+	}
-+
-+	paranoid_check_volumes(ubi);
-+	return 0;
-+
-+out_acc:
-+	if (pebs > 0) {
-+		spin_lock(&ubi->volumes_lock);
-+		ubi->rsvd_pebs -= pebs;
-+		ubi->avail_pebs += pebs;
-+		spin_unlock(&ubi->volumes_lock);
-+	}
-+out_free:
-+	kfree(new_mapping);
-+	return err;
-+}
-+
-+/**
-+ * ubi_add_volume - add volume.
-+ * @ubi: UBI device description object
-+ * @vol: volume description object
-+ *
-+ * This function adds an existing volume and initializes all its data
-+ * structures. Returns zero in case of success and a negative error code in
-+ * case of failure.
-+ */
-+int ubi_add_volume(struct ubi_device *ubi, struct ubi_volume *vol)
-+{
-+	int err, vol_id = vol->vol_id;
-+	dev_t dev;
-+
-+	dbg_msg("add volume %d", vol_id);
-+	ubi_dbg_dump_vol_info(vol);
-+
-+	/* Register character device for the volume */
-+	cdev_init(&vol->cdev, &ubi_vol_cdev_operations);
-+#ifdef UBI_LINUX
-+	vol->cdev.owner = THIS_MODULE;
-+#endif
-+	dev = MKDEV(MAJOR(ubi->cdev.dev), vol->vol_id + 1);
-+	err = cdev_add(&vol->cdev, dev, 1);
-+	if (err) {
-+		ubi_err("cannot add character device for volume %d, error %d",
-+			vol_id, err);
-+		return err;
-+	}
-+
-+	err = ubi_create_gluebi(ubi, vol);
-+	if (err)
-+		goto out_cdev;
-+
-+	vol->dev.release = vol_release;
-+	vol->dev.parent = &ubi->dev;
-+	vol->dev.devt = dev;
-+	vol->dev.class = ubi_class;
-+	sprintf(&vol->dev.bus_id[0], "%s_%d", ubi->ubi_name, vol->vol_id);
-+	err = device_register(&vol->dev);
-+	if (err)
-+		goto out_gluebi;
-+
-+	err = volume_sysfs_init(ubi, vol);
-+	if (err) {
-+		cdev_del(&vol->cdev);
-+		err = ubi_destroy_gluebi(vol);
-+		volume_sysfs_close(vol);
-+		return err;
-+	}
-+
-+	paranoid_check_volumes(ubi);
-+	return 0;
-+
-+out_gluebi:
-+	err = ubi_destroy_gluebi(vol);
-+out_cdev:
-+	cdev_del(&vol->cdev);
-+	return err;
-+}
-+
-+/**
-+ * ubi_free_volume - free volume.
-+ * @ubi: UBI device description object
-+ * @vol: volume description object
-+ *
-+ * This function frees all resources for volume @vol but does not remove it.
-+ * Used only when the UBI device is detached.
-+ */
-+void ubi_free_volume(struct ubi_device *ubi, struct ubi_volume *vol)
-+{
-+	int err;
-+
-+	dbg_msg("free volume %d", vol->vol_id);
-+
-+	ubi->volumes[vol->vol_id] = NULL;
-+	err = ubi_destroy_gluebi(vol);
-+	cdev_del(&vol->cdev);
-+	volume_sysfs_close(vol);
-+}
-+
-+#ifdef CONFIG_MTD_UBI_DEBUG_PARANOID
-+
-+/**
-+ * paranoid_check_volume - check volume information.
-+ * @ubi: UBI device description object
-+ * @vol_id: volume ID
-+ */
-+static void paranoid_check_volume(struct ubi_device *ubi, int vol_id)
-+{
-+	int idx = vol_id2idx(ubi, vol_id);
-+	int reserved_pebs, alignment, data_pad, vol_type, name_len, upd_marker;
-+	const struct ubi_volume *vol;
-+	long long n;
-+	const char *name;
-+
-+	spin_lock(&ubi->volumes_lock);
-+	reserved_pebs = be32_to_cpu(ubi->vtbl[vol_id].reserved_pebs);
-+	vol = ubi->volumes[idx];
-+
-+	if (!vol) {
-+		if (reserved_pebs) {
-+			ubi_err("no volume info, but volume exists");
-+			goto fail;
-+		}
-+		spin_unlock(&ubi->volumes_lock);
-+		return;
-+	}
-+
-+	if (vol->exclusive) {
-+		/*
-+		 * The volume may be being created at the moment, do not check
-+		 * it (e.g., it may be in the middle of ubi_create_volume().
-+		 */
-+		spin_unlock(&ubi->volumes_lock);
-+		return;
-+	}
-+
-+	if (vol->reserved_pebs < 0 || vol->alignment < 0 || vol->data_pad < 0 ||
-+	    vol->name_len < 0) {
-+		ubi_err("negative values");
-+		goto fail;
-+	}
-+	if (vol->alignment > ubi->leb_size || vol->alignment == 0) {
-+		ubi_err("bad alignment");
-+		goto fail;
-+	}
-+
-+	n = vol->alignment & (ubi->min_io_size - 1);
-+	if (vol->alignment != 1 && n) {
-+		ubi_err("alignment is not multiple of min I/O unit");
-+		goto fail;
-+	}
-+
-+	n = ubi->leb_size % vol->alignment;
-+	if (vol->data_pad != n) {
-+		ubi_err("bad data_pad, has to be %lld", n);
-+		goto fail;
-+	}
-+
-+	if (vol->vol_type != UBI_DYNAMIC_VOLUME &&
-+	    vol->vol_type != UBI_STATIC_VOLUME) {
-+		ubi_err("bad vol_type");
-+		goto fail;
-+	}
-+
-+	if (vol->upd_marker && vol->corrupted) {
-+		dbg_err("update marker and corrupted simultaneously");
-+		goto fail;
-+	}
-+
-+	if (vol->reserved_pebs > ubi->good_peb_count) {
-+		ubi_err("too large reserved_pebs");
-+		goto fail;
-+	}
-+
-+	n = ubi->leb_size - vol->data_pad;
-+	if (vol->usable_leb_size != ubi->leb_size - vol->data_pad) {
-+		ubi_err("bad usable_leb_size, has to be %lld", n);
-+		goto fail;
-+	}
-+
-+	if (vol->name_len > UBI_VOL_NAME_MAX) {
-+		ubi_err("too long volume name, max is %d", UBI_VOL_NAME_MAX);
-+		goto fail;
-+	}
-+
-+	if (!vol->name) {
-+		ubi_err("NULL volume name");
-+		goto fail;
-+	}
-+
-+	n = strnlen(vol->name, vol->name_len + 1);
-+	if (n != vol->name_len) {
-+		ubi_err("bad name_len %lld", n);
-+		goto fail;
-+	}
-+
-+	n = (long long)vol->used_ebs * vol->usable_leb_size;
-+	if (vol->vol_type == UBI_DYNAMIC_VOLUME) {
-+		if (vol->corrupted) {
-+			ubi_err("corrupted dynamic volume");
-+			goto fail;
-+		}
-+		if (vol->used_ebs != vol->reserved_pebs) {
-+			ubi_err("bad used_ebs");
-+			goto fail;
-+		}
-+		if (vol->last_eb_bytes != vol->usable_leb_size) {
-+			ubi_err("bad last_eb_bytes");
-+			goto fail;
-+		}
-+		if (vol->used_bytes != n) {
-+			ubi_err("bad used_bytes");
-+			goto fail;
-+		}
-+	} else {
-+		if (vol->used_ebs < 0 || vol->used_ebs > vol->reserved_pebs) {
-+			ubi_err("bad used_ebs");
-+			goto fail;
-+		}
-+		if (vol->last_eb_bytes < 0 ||
-+		    vol->last_eb_bytes > vol->usable_leb_size) {
-+			ubi_err("bad last_eb_bytes");
-+			goto fail;
-+		}
-+		if (vol->used_bytes < 0 || vol->used_bytes > n ||
-+		    vol->used_bytes < n - vol->usable_leb_size) {
-+			ubi_err("bad used_bytes");
-+			goto fail;
-+		}
-+	}
-+
-+	alignment  = be32_to_cpu(ubi->vtbl[vol_id].alignment);
-+	data_pad   = be32_to_cpu(ubi->vtbl[vol_id].data_pad);
-+	name_len   = be16_to_cpu(ubi->vtbl[vol_id].name_len);
-+	upd_marker = ubi->vtbl[vol_id].upd_marker;
-+	name       = &ubi->vtbl[vol_id].name[0];
-+	if (ubi->vtbl[vol_id].vol_type == UBI_VID_DYNAMIC)
-+		vol_type = UBI_DYNAMIC_VOLUME;
-+	else
-+		vol_type = UBI_STATIC_VOLUME;
-+
-+	if (alignment != vol->alignment || data_pad != vol->data_pad ||
-+	    upd_marker != vol->upd_marker || vol_type != vol->vol_type ||
-+	    name_len!= vol->name_len || strncmp(name, vol->name, name_len)) {
-+		ubi_err("volume info is different");
-+		goto fail;
-+	}
-+
-+	spin_unlock(&ubi->volumes_lock);
-+	return;
-+
-+fail:
-+	ubi_err("paranoid check failed for volume %d", vol_id);
-+	ubi_dbg_dump_vol_info(vol);
-+	ubi_dbg_dump_vtbl_record(&ubi->vtbl[vol_id], vol_id);
-+	spin_unlock(&ubi->volumes_lock);
-+	BUG();
-+}
-+
-+/**
-+ * paranoid_check_volumes - check information about all volumes.
-+ * @ubi: UBI device description object
-+ */
-+static void paranoid_check_volumes(struct ubi_device *ubi)
-+{
++	unsigned long host = S3C24X0_NAND_BASE;
 +	int i;
 +
-+	for (i = 0; i < ubi->vtbl_slots; i++)
-+		paranoid_check_volume(ubi, i);
++	/*
++	 * Reenable the NFC and use the default (but slow) access
++	 * timing or the board specific setting if provided.
++	 */
++	enable_nand_controller(host, BOARD_DEFAULT_NAND_TIMING);
++	enable_cs(host);
++
++	/* Reset the NAND device */
++	send_cmd(host, NAND_CMD_RESET);
++	wait_for_completion(host);
++	disable_cs(host);
++
++	do {
++		enable_cs(host);
++		send_cmd(host, NAND_CMD_READ0);
++		nfc_addr(host, page * pagesize);
++		wait_for_completion(host);
++		/* copy one page (do *not* use readsb() here!)*/
++		for (i = 0; i < pagesize; i++)
++			writeb(readb(host + NFDATA), (unsigned long)(dest + i));
++		disable_cs(host);
++
++		page++;
++		dest += pagesize;
++		size -= pagesize;
++	} while (size >= 0);
++
++	/* disable the controller again */
++	disable_nand_controller(host);
 +}
++
++#ifdef CONFIG_NAND_S3C24XX_BOOT_DEBUG
++#include <command.h>
++
++static int do_nand_boot_test(struct command *cmdtp, int argc, char *argv[])
++{
++	void *dest;
++	int size, pagesize;
++
++	if (argc < 3)
++		return COMMAND_ERROR_USAGE;
++
++	dest = (void *)strtoul_suffix(argv[1], NULL, 0);
++	size = strtoul_suffix(argv[2], NULL, 0);
++	pagesize = strtoul_suffix(argv[3], NULL, 0);
++
++	s3c24x0_nand_load_image(dest, size, 0, pagesize);
++
++	return 0;
++}
++
++static const __maybe_unused char cmd_nand_boot_test_help[] =
++"Usage: nand_boot_test <dest> <size> <pagesize>\n";
++
++BAREBOX_CMD_START(nand_boot_test)
++	.cmd		= do_nand_boot_test,
++	.usage		= "load an image from NAND",
++	BAREBOX_CMD_HELP(cmd_nand_boot_test_help)
++BAREBOX_CMD_END
 +#endif
-diff --git a/drivers/mtd/ubi/vtbl.c b/drivers/mtd/ubi/vtbl.c
-new file mode 100644
-index 0000000..765c811
---- /dev/null
-+++ b/drivers/mtd/ubi/vtbl.c
-@@ -0,0 +1,837 @@
++
++#endif /* CONFIG_S3C24XX_NAND_BOOT */
++
 +/*
-+ * Copyright (c) International Business Machines Corp., 2006
-+ * Copyright (c) Nokia Corporation, 2006, 2007
++ * Main initialization routine
++ * @return 0 if successful; non-zero otherwise
++ */
++static int __init s3c24x0_nand_init(void)
++{
++	return register_driver(&s3c24x0_nand_driver);
++}
++
++device_initcall(s3c24x0_nand_init);
+diff --git a/drivers/mtd/nand/nand_util.c b/drivers/mtd/nand/nand_util.c
+new file mode 100644
+index 0000000..d57294e
+--- /dev/null
++++ b/drivers/mtd/nand/nand_util.c
+@@ -0,0 +1,858 @@
++/*
++ * drivers/nand/nand_util.c
 + *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
++ * Copyright (C) 2006 by Weiss-Electronic GmbH.
++ * All rights reserved.
++ *
++ * @author:	Guido Classen <clagix@gmail.com>
++ * @descr:	NAND Flash support
++ * @references: borrowed heavily from Linux mtd-utils code:
++ *		flash_eraseall.c by Arcom Control System Ltd
++ *		nandwrite.c by Steven J. Hill (sjhill@realitydiluted.com)
++ *			       and Thomas Gleixner (tglx@linutronix.de)
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License version
++ * 2 as published by the Free Software Foundation.
 + *
 + * This program is distributed in the hope that it will be useful,
 + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
-+ * the GNU General Public License for more details.
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
++ * GNU General Public License for more details.
 + *
 + * You should have received a copy of the GNU General Public License
 + * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
 + *
-+ * Author: Artem Bityutskiy (���������������� ����������)
 + */
 +
-+/*
-+ * This file includes volume table manipulation code. The volume table is an
-+ * on-flash table containing volume meta-data like name, number of reserved
-+ * physical eraseblocks, type, etc. The volume table is stored in the so-called
-+ * "layout volume".
-+ *
-+ * The layout volume is an internal volume which is organized as follows. It
-+ * consists of two logical eraseblocks - LEB 0 and LEB 1. Each logical
-+ * eraseblock stores one volume table copy, i.e. LEB 0 and LEB 1 duplicate each
-+ * other. This redundancy guarantees robustness to unclean reboots. The volume
-+ * table is basically an array of volume table records. Each record contains
-+ * full information about the volume and protected by a CRC checksum.
-+ *
-+ * The volume table is changed, it is first changed in RAM. Then LEB 0 is
-+ * erased, and the updated volume table is written back to LEB 0. Then same for
-+ * LEB 1. This scheme guarantees recoverability from unclean reboots.
-+ *
-+ * In this UBI implementation the on-flash volume table does not contain any
-+ * information about how many data static volumes contain. This information may
-+ * be found from the scanning data.
-+ *
-+ * But it would still be beneficial to store this information in the volume
-+ * table. For example, suppose we have a static volume X, and all its physical
-+ * eraseblocks became bad for some reasons. Suppose we are attaching the
-+ * corresponding MTD device, the scanning has found no logical eraseblocks
-+ * corresponding to the volume X. According to the volume table volume X does
-+ * exist. So we don't know whether it is just empty or all its physical
-+ * eraseblocks went bad. So we cannot alarm the user about this corruption.
-+ *
-+ * The volume table also stores so-called "update marker", which is used for
-+ * volume updates. Before updating the volume, the update marker is set, and
-+ * after the update operation is finished, the update marker is cleared. So if
-+ * the update operation was interrupted (e.g. by an unclean reboot) - the
-+ * update marker is still there and we know that the volume's contents is
-+ * damaged.
-+ */
++#include <common.h>
++#include <command.h>
++#include <watchdog.h>
++#include <malloc.h>
 +
-+#ifdef UBI_LINUX
-+#include <linux/crc32.h>
-+#include <linux/err.h>
-+#include <asm/div64.h>
-+#endif
++#include <nand.h>
++//#include <jffs2/jffs2.h>
 +
-+#include "ubi-barebox.h"
-+#include "ubi.h"
++typedef struct erase_info erase_info_t;
++typedef struct mtd_info	  mtd_info_t;
 +
-+#ifdef CONFIG_MTD_UBI_DEBUG_PARANOID
-+static void paranoid_vtbl_check(const struct ubi_device *ubi);
-+#else
-+#define paranoid_vtbl_check(ubi)
-+#endif
++/* support only for native endian JFFS2 */
++#define cpu_to_je16(x) (x)
++#define cpu_to_je32(x) (x)
 +
-+/* Empty volume table record */
-+static struct ubi_vtbl_record empty_vtbl_record;
-+
-+/**
-+ * ubi_change_vtbl_record - change volume table record.
-+ * @ubi: UBI device description object
-+ * @idx: table index to change
-+ * @vtbl_rec: new volume table record
-+ *
-+ * This function changes volume table record @idx. If @vtbl_rec is %NULL, empty
-+ * volume table record is written. The caller does not have to calculate CRC of
-+ * the record as it is done by this function. Returns zero in case of success
-+ * and a negative error code in case of failure.
-+ */
-+int ubi_change_vtbl_record(struct ubi_device *ubi, int idx,
-+			   struct ubi_vtbl_record *vtbl_rec)
++/*****************************************************************************/
++static int nand_block_bad_scrub(struct mtd_info *mtd, loff_t ofs, int getchip)
 +{
-+	int i, err;
-+	uint32_t crc;
-+	struct ubi_volume *layout_vol;
-+
-+	ubi_assert(idx >= 0 && idx < ubi->vtbl_slots);
-+	layout_vol = ubi->volumes[vol_id2idx(ubi, UBI_LAYOUT_VOLUME_ID)];
-+
-+	if (!vtbl_rec)
-+		vtbl_rec = &empty_vtbl_record;
-+	else {
-+		crc = crc32(UBI_CRC32_INIT, vtbl_rec, UBI_VTBL_RECORD_SIZE_CRC);
-+		vtbl_rec->crc = cpu_to_be32(crc);
-+	}
-+
-+	memcpy(&ubi->vtbl[idx], vtbl_rec, sizeof(struct ubi_vtbl_record));
-+	for (i = 0; i < UBI_LAYOUT_VOLUME_EBS; i++) {
-+		err = ubi_eba_unmap_leb(ubi, layout_vol, i);
-+		if (err)
-+			return err;
-+
-+		err = ubi_eba_write_leb(ubi, layout_vol, i, ubi->vtbl, 0,
-+					ubi->vtbl_size, UBI_LONGTERM);
-+		if (err)
-+			return err;
-+	}
-+
-+	paranoid_vtbl_check(ubi);
 +	return 0;
 +}
 +
 +/**
-+ * vtbl_check - check if volume table is not corrupted and contains sensible
-+ *              data.
-+ * @ubi: UBI device description object
-+ * @vtbl: volume table
++ * nand_erase_opts: - erase NAND flash with support for various options
++ *		      (jffs2 formating)
 + *
-+ * This function returns zero if @vtbl is all right, %1 if CRC is incorrect,
-+ * and %-EINVAL if it contains inconsistent data.
-+ */
-+static int vtbl_check(const struct ubi_device *ubi,
-+		      const struct ubi_vtbl_record *vtbl)
-+{
-+	int i, n, reserved_pebs, alignment, data_pad, vol_type, name_len;
-+	int upd_marker, err;
-+	uint32_t crc;
-+	const char *name;
-+
-+	for (i = 0; i < ubi->vtbl_slots; i++) {
-+		cond_resched();
-+
-+		reserved_pebs = be32_to_cpu(vtbl[i].reserved_pebs);
-+		alignment = be32_to_cpu(vtbl[i].alignment);
-+		data_pad = be32_to_cpu(vtbl[i].data_pad);
-+		upd_marker = vtbl[i].upd_marker;
-+		vol_type = vtbl[i].vol_type;
-+		name_len = be16_to_cpu(vtbl[i].name_len);
-+		name = (const char *) &vtbl[i].name[0];
-+
-+		crc = crc32(UBI_CRC32_INIT, &vtbl[i], UBI_VTBL_RECORD_SIZE_CRC);
-+		if (be32_to_cpu(vtbl[i].crc) != crc) {
-+			ubi_err("bad CRC at record %u: %#08x, not %#08x",
-+				 i, crc, be32_to_cpu(vtbl[i].crc));
-+			ubi_dbg_dump_vtbl_record(&vtbl[i], i);
-+			return 1;
-+		}
-+
-+		if (reserved_pebs == 0) {
-+			if (memcmp(&vtbl[i], &empty_vtbl_record,
-+						UBI_VTBL_RECORD_SIZE)) {
-+				err = 2;
-+				goto bad;
-+			}
-+			continue;
-+		}
-+
-+		if (reserved_pebs < 0 || alignment < 0 || data_pad < 0 ||
-+		    name_len < 0) {
-+			err = 3;
-+			goto bad;
-+		}
-+
-+		if (alignment > ubi->leb_size || alignment == 0) {
-+			err = 4;
-+			goto bad;
-+		}
-+
-+		n = alignment & (ubi->min_io_size - 1);
-+		if (alignment != 1 && n) {
-+			err = 5;
-+			goto bad;
-+		}
-+
-+		n = ubi->leb_size % alignment;
-+		if (data_pad != n) {
-+			dbg_err("bad data_pad, has to be %d", n);
-+			err = 6;
-+			goto bad;
-+		}
-+
-+		if (vol_type != UBI_VID_DYNAMIC && vol_type != UBI_VID_STATIC) {
-+			err = 7;
-+			goto bad;
-+		}
-+
-+		if (upd_marker != 0 && upd_marker != 1) {
-+			err = 8;
-+			goto bad;
-+		}
-+
-+		if (reserved_pebs > ubi->good_peb_count) {
-+			dbg_err("too large reserved_pebs, good PEBs %d",
-+				ubi->good_peb_count);
-+			err = 9;
-+			goto bad;
-+		}
-+
-+		if (name_len > UBI_VOL_NAME_MAX) {
-+			err = 10;
-+			goto bad;
-+		}
-+
-+		if (name[0] == '\0') {
-+			err = 11;
-+			goto bad;
-+		}
-+
-+		if (name_len != strnlen(name, name_len + 1)) {
-+			err = 12;
-+			goto bad;
-+		}
-+	}
-+
-+	/* Checks that all names are unique */
-+	for (i = 0; i < ubi->vtbl_slots - 1; i++) {
-+		for (n = i + 1; n < ubi->vtbl_slots; n++) {
-+			int len1 = be16_to_cpu(vtbl[i].name_len);
-+			int len2 = be16_to_cpu(vtbl[n].name_len);
-+
-+			if (len1 > 0 && len1 == len2 &&
-+			    !strncmp((char *)vtbl[i].name, (char *)vtbl[n].name, len1)) {
-+				ubi_err("volumes %d and %d have the same name"
-+					" \"%s\"", i, n, vtbl[i].name);
-+				ubi_dbg_dump_vtbl_record(&vtbl[i], i);
-+				ubi_dbg_dump_vtbl_record(&vtbl[n], n);
-+				return -EINVAL;
-+			}
-+		}
-+	}
-+
-+	return 0;
-+
-+bad:
-+	ubi_err("volume table check failed: record %d, error %d", i, err);
-+	ubi_dbg_dump_vtbl_record(&vtbl[i], i);
-+	return -EINVAL;
-+}
-+
-+/**
-+ * create_vtbl - create a copy of volume table.
-+ * @ubi: UBI device description object
-+ * @si: scanning information
-+ * @copy: number of the volume table copy
-+ * @vtbl: contents of the volume table
++ * @param meminfo	NAND device to erase
++ * @param opts		options,  @see struct nand_erase_options
++ * @return		0 in case of success
 + *
-+ * This function returns zero in case of success and a negative error code in
-+ * case of failure.
++ * This code is ported from flash_eraseall.c from Linux mtd utils by
++ * Arcom Control System Ltd.
 + */
-+static int create_vtbl(struct ubi_device *ubi, struct ubi_scan_info *si,
-+		       int copy, void *vtbl)
++int nand_erase_opts(nand_info_t *meminfo, const nand_erase_options_t *opts)
 +{
-+	int err, tries = 0;
-+	static struct ubi_vid_hdr *vid_hdr;
-+	struct ubi_scan_volume *sv;
-+	struct ubi_scan_leb *new_seb, *old_seb = NULL;
++	struct jffs2_unknown_node cleanmarker;
++	int clmpos = 0;
++	int clmlen = 8;
++	erase_info_t erase;
++	ulong erase_length;
++	int isNAND;
++	int bbtest = 1;
++	int result;
++	int percent_complete = -1;
++	int (*nand_block_bad_old)(struct mtd_info *, loff_t, int) = NULL;
++	const char *mtd_device = meminfo->name;
 +
-+	ubi_msg("create volume table (copy #%d)", copy + 1);
++	memset(&erase, 0, sizeof(erase));
 +
-+	vid_hdr = ubi_zalloc_vid_hdr(ubi, GFP_KERNEL);
-+	if (!vid_hdr)
-+		return -ENOMEM;
++	erase.mtd = meminfo;
++	erase.len  = meminfo->erasesize;
++	erase.addr = opts->offset;
++	erase_length = opts->length;
 +
-+	/*
-+	 * Check if there is a logical eraseblock which would have to contain
-+	 * this volume table copy was found during scanning. It has to be wiped
-+	 * out.
-+	 */
-+	sv = ubi_scan_find_sv(si, UBI_LAYOUT_VOLUME_ID);
-+	if (sv)
-+		old_seb = ubi_scan_find_seb(sv, copy);
++	isNAND = meminfo->type == MTD_NANDFLASH ? 1 : 0;
 +
-+retry:
-+	new_seb = ubi_scan_get_free_peb(ubi, si);
-+	if (IS_ERR(new_seb)) {
-+		err = PTR_ERR(new_seb);
-+		goto out_free;
++	if (opts->jffs2) {
++		cleanmarker.magic = cpu_to_je16 (JFFS2_MAGIC_BITMASK);
++		cleanmarker.nodetype = cpu_to_je16 (JFFS2_NODETYPE_CLEANMARKER);
++		if (isNAND) {
++			struct nand_oobinfo *oobinfo = &meminfo->oobinfo;
++
++			/* check for autoplacement */
++			if (oobinfo->useecc == MTD_NANDECC_AUTOPLACE) {
++				/* get the position of the free bytes */
++				if (!oobinfo->oobfree[0][1]) {
++					printf(" Eeep. Autoplacement selected "
++					       "and no empty space in oob\n");
++					return -1;
++				}
++				clmpos = oobinfo->oobfree[0][0];
++				clmlen = oobinfo->oobfree[0][1];
++				if (clmlen > 8)
++					clmlen = 8;
++			} else {
++				/* legacy mode */
++				switch (meminfo->oobsize) {
++				case 8:
++					clmpos = 6;
++					clmlen = 2;
++					break;
++				case 16:
++					clmpos = 8;
++					clmlen = 8;
++					break;
++				case 64:
++					clmpos = 16;
++					clmlen = 8;
++					break;
++				}
++			}
++
++			cleanmarker.totlen = cpu_to_je32(8);
++		} else {
++			cleanmarker.totlen =
++				cpu_to_je32(sizeof(struct jffs2_unknown_node));
++		}
++		cleanmarker.hdr_crc =  cpu_to_je32(
++			crc32_no_comp(0, (unsigned char *) &cleanmarker,
++				      sizeof(struct jffs2_unknown_node) - 4));
 +	}
 +
-+	vid_hdr->vol_type = UBI_VID_DYNAMIC;
-+	vid_hdr->vol_id = cpu_to_be32(UBI_LAYOUT_VOLUME_ID);
-+	vid_hdr->compat = UBI_LAYOUT_VOLUME_COMPAT;
-+	vid_hdr->data_size = vid_hdr->used_ebs =
-+			     vid_hdr->data_pad = cpu_to_be32(0);
-+	vid_hdr->lnum = cpu_to_be32(copy);
-+	vid_hdr->sqnum = cpu_to_be64(++si->max_sqnum);
-+	vid_hdr->leb_ver = cpu_to_be32(old_seb ? old_seb->leb_ver + 1: 0);
-+
-+	/* The EC header is already there, write the VID header */
-+	err = ubi_io_write_vid_hdr(ubi, new_seb->pnum, vid_hdr);
-+	if (err)
-+		goto write_error;
-+
-+	/* Write the layout volume contents */
-+	err = ubi_io_write_data(ubi, vtbl, new_seb->pnum, 0, ubi->vtbl_size);
-+	if (err)
-+		goto write_error;
-+
-+	/*
-+	 * And add it to the scanning information. Don't delete the old
-+	 * @old_seb as it will be deleted and freed in 'ubi_scan_add_used()'.
++	/* scrub option allows to erase badblock. To prevent internal
++	 * check from erase() method, set block check method to dummy
++	 * and disable bad block table while erasing.
 +	 */
-+	err = ubi_scan_add_used(ubi, si, new_seb->pnum, new_seb->ec,
-+				vid_hdr, 0);
-+	kfree(new_seb);
-+	ubi_free_vid_hdr(ubi, vid_hdr);
-+	return err;
++	if (opts->scrub) {
++		struct nand_chip *priv_nand = meminfo->priv;
 +
-+write_error:
-+	if (err == -EIO && ++tries <= 5) {
-+		/*
-+		 * Probably this physical eraseblock went bad, try to pick
-+		 * another one.
++		nand_block_bad_old = priv_nand->block_bad;
++		priv_nand->block_bad = nand_block_bad_scrub;
++		/* we don't need the bad block table anymore...
++		 * after scrub, there are no bad blocks left!
 +		 */
-+		list_add_tail(&new_seb->u.list, &si->corr);
-+		goto retry;
-+	}
-+	kfree(new_seb);
-+out_free:
-+	ubi_free_vid_hdr(ubi, vid_hdr);
-+	return err;
-+
-+}
-+
-+/**
-+ * process_lvol - process the layout volume.
-+ * @ubi: UBI device description object
-+ * @si: scanning information
-+ * @sv: layout volume scanning information
-+ *
-+ * This function is responsible for reading the layout volume, ensuring it is
-+ * not corrupted, and recovering from corruptions if needed. Returns volume
-+ * table in case of success and a negative error code in case of failure.
-+ */
-+static struct ubi_vtbl_record *process_lvol(struct ubi_device *ubi,
-+					    struct ubi_scan_info *si,
-+					    struct ubi_scan_volume *sv)
-+{
-+	int err;
-+	struct rb_node *rb;
-+	struct ubi_scan_leb *seb;
-+	struct ubi_vtbl_record *leb[UBI_LAYOUT_VOLUME_EBS] = { NULL, NULL };
-+	int leb_corrupted[UBI_LAYOUT_VOLUME_EBS] = {1, 1};
-+
-+	/*
-+	 * UBI goes through the following steps when it changes the layout
-+	 * volume:
-+	 * a. erase LEB 0;
-+	 * b. write new data to LEB 0;
-+	 * c. erase LEB 1;
-+	 * d. write new data to LEB 1.
-+	 *
-+	 * Before the change, both LEBs contain the same data.
-+	 *
-+	 * Due to unclean reboots, the contents of LEB 0 may be lost, but there
-+	 * should LEB 1. So it is OK if LEB 0 is corrupted while LEB 1 is not.
-+	 * Similarly, LEB 1 may be lost, but there should be LEB 0. And
-+	 * finally, unclean reboots may result in a situation when neither LEB
-+	 * 0 nor LEB 1 are corrupted, but they are different. In this case, LEB
-+	 * 0 contains more recent information.
-+	 *
-+	 * So the plan is to first check LEB 0. Then
-+	 * a. if LEB 0 is OK, it must be containing the most resent data; then
-+	 *    we compare it with LEB 1, and if they are different, we copy LEB
-+	 *    0 to LEB 1;
-+	 * b. if LEB 0 is corrupted, but LEB 1 has to be OK, and we copy LEB 1
-+	 *    to LEB 0.
-+	 */
-+
-+	dbg_msg("check layout volume");
-+
-+	/* Read both LEB 0 and LEB 1 into memory */
-+	ubi_rb_for_each_entry(rb, seb, &sv->root, u.rb) {
-+		leb[seb->lnum] = vmalloc(ubi->vtbl_size);
-+		if (!leb[seb->lnum]) {
-+			err = -ENOMEM;
-+			goto out_free;
++		if (priv_nand->bbt) {
++			kfree(priv_nand->bbt);
 +		}
-+		memset(leb[seb->lnum], 0, ubi->vtbl_size);
-+
-+		err = ubi_io_read_data(ubi, leb[seb->lnum], seb->pnum, 0,
-+				       ubi->vtbl_size);
-+		if (err == UBI_IO_BITFLIPS || err == -EBADMSG)
-+			/*
-+			 * Scrub the PEB later. Note, -EBADMSG indicates an
-+			 * uncorrectable ECC error, but we have our own CRC and
-+			 * the data will be checked later. If the data is OK,
-+			 * the PEB will be scrubbed (because we set
-+			 * seb->scrub). If the data is not OK, the contents of
-+			 * the PEB will be recovered from the second copy, and
-+			 * seb->scrub will be cleared in
-+			 * 'ubi_scan_add_used()'.
-+			 */
-+			seb->scrub = 1;
-+		else if (err)
-+			goto out_free;
++		priv_nand->bbt = NULL;
 +	}
 +
-+	err = -EINVAL;
-+	if (leb[0]) {
-+		leb_corrupted[0] = vtbl_check(ubi, leb[0]);
-+		if (leb_corrupted[0] < 0)
-+			goto out_free;
-+	}
++	for (;
++	     erase.addr < opts->offset + erase_length;
++	     erase.addr += meminfo->erasesize) {
 +
-+	if (!leb_corrupted[0]) {
-+		/* LEB 0 is OK */
-+		if (leb[1])
-+			leb_corrupted[1] = memcmp(leb[0], leb[1], ubi->vtbl_size);
-+		if (leb_corrupted[1]) {
-+			ubi_warn("volume table copy #2 is corrupted");
-+			err = create_vtbl(ubi, si, 1, leb[0]);
-+			if (err)
-+				goto out_free;
-+			ubi_msg("volume table was restored");
-+		}
++		WATCHDOG_RESET ();
 +
-+		/* Both LEB 1 and LEB 2 are OK and consistent */
-+		vfree(leb[1]);
-+		return leb[0];
-+	} else {
-+		/* LEB 0 is corrupted or does not exist */
-+		if (leb[1]) {
-+			leb_corrupted[1] = vtbl_check(ubi, leb[1]);
-+			if (leb_corrupted[1] < 0)
-+				goto out_free;
-+		}
-+		if (leb_corrupted[1]) {
-+			/* Both LEB 0 and LEB 1 are corrupted */
-+			ubi_err("both volume tables are corrupted");
-+			goto out_free;
-+		}
-+
-+		ubi_warn("volume table copy #1 is corrupted");
-+		err = create_vtbl(ubi, si, 0, leb[1]);
-+		if (err)
-+			goto out_free;
-+		ubi_msg("volume table was restored");
-+
-+		vfree(leb[0]);
-+		return leb[1];
-+	}
-+
-+out_free:
-+	vfree(leb[0]);
-+	vfree(leb[1]);
-+	return ERR_PTR(err);
-+}
-+
-+/**
-+ * create_empty_lvol - create empty layout volume.
-+ * @ubi: UBI device description object
-+ * @si: scanning information
-+ *
-+ * This function returns volume table contents in case of success and a
-+ * negative error code in case of failure.
-+ */
-+static struct ubi_vtbl_record *create_empty_lvol(struct ubi_device *ubi,
-+						 struct ubi_scan_info *si)
-+{
-+	int i;
-+	struct ubi_vtbl_record *vtbl;
-+
-+	vtbl = vmalloc(ubi->vtbl_size);
-+	if (!vtbl)
-+		return ERR_PTR(-ENOMEM);
-+	memset(vtbl, 0, ubi->vtbl_size);
-+
-+	for (i = 0; i < ubi->vtbl_slots; i++)
-+		memcpy(&vtbl[i], &empty_vtbl_record, UBI_VTBL_RECORD_SIZE);
-+
-+	for (i = 0; i < UBI_LAYOUT_VOLUME_EBS; i++) {
-+		int err;
-+
-+		err = create_vtbl(ubi, si, i, vtbl);
-+		if (err) {
-+			vfree(vtbl);
-+			return ERR_PTR(err);
-+		}
-+	}
-+
-+	return vtbl;
-+}
-+
-+/**
-+ * init_volumes - initialize volume information for existing volumes.
-+ * @ubi: UBI device description object
-+ * @si: scanning information
-+ * @vtbl: volume table
-+ *
-+ * This function allocates volume description objects for existing volumes.
-+ * Returns zero in case of success and a negative error code in case of
-+ * failure.
-+ */
-+static int init_volumes(struct ubi_device *ubi, const struct ubi_scan_info *si,
-+			const struct ubi_vtbl_record *vtbl)
-+{
-+	int i, reserved_pebs = 0;
-+	struct ubi_scan_volume *sv;
-+	struct ubi_volume *vol;
-+
-+	for (i = 0; i < ubi->vtbl_slots; i++) {
-+		cond_resched();
-+
-+		if (be32_to_cpu(vtbl[i].reserved_pebs) == 0)
-+			continue; /* Empty record */
-+
-+		vol = kzalloc(sizeof(struct ubi_volume), GFP_KERNEL);
-+		if (!vol)
-+			return -ENOMEM;
-+
-+		vol->reserved_pebs = be32_to_cpu(vtbl[i].reserved_pebs);
-+		vol->alignment = be32_to_cpu(vtbl[i].alignment);
-+		vol->data_pad = be32_to_cpu(vtbl[i].data_pad);
-+		vol->vol_type = vtbl[i].vol_type == UBI_VID_DYNAMIC ?
-+					UBI_DYNAMIC_VOLUME : UBI_STATIC_VOLUME;
-+		vol->name_len = be16_to_cpu(vtbl[i].name_len);
-+		vol->usable_leb_size = ubi->leb_size - vol->data_pad;
-+		memcpy(vol->name, vtbl[i].name, vol->name_len);
-+		vol->name[vol->name_len] = '\0';
-+		vol->vol_id = i;
-+
-+		if (vtbl[i].flags & UBI_VTBL_AUTORESIZE_FLG) {
-+			/* Auto re-size flag may be set only for one volume */
-+			if (ubi->autoresize_vol_id != -1) {
-+				ubi_err("more then one auto-resize volume (%d "
-+					"and %d)", ubi->autoresize_vol_id, i);
-+				kfree(vol);
-+				return -EINVAL;
-+			}
-+
-+			ubi->autoresize_vol_id = i;
-+		}
-+
-+		ubi_assert(!ubi->volumes[i]);
-+		ubi->volumes[i] = vol;
-+		ubi->vol_count += 1;
-+		vol->ubi = ubi;
-+		reserved_pebs += vol->reserved_pebs;
-+
-+		/*
-+		 * In case of dynamic volume UBI knows nothing about how many
-+		 * data is stored there. So assume the whole volume is used.
-+		 */
-+		if (vol->vol_type == UBI_DYNAMIC_VOLUME) {
-+			vol->used_ebs = vol->reserved_pebs;
-+			vol->last_eb_bytes = vol->usable_leb_size;
-+			vol->used_bytes =
-+				(long long)vol->used_ebs * vol->usable_leb_size;
-+			continue;
-+		}
-+
-+		/* Static volumes only */
-+		sv = ubi_scan_find_sv(si, i);
-+		if (!sv) {
-+			/*
-+			 * No eraseblocks belonging to this volume found. We
-+			 * don't actually know whether this static volume is
-+			 * completely corrupted or just contains no data. And
-+			 * we cannot know this as long as data size is not
-+			 * stored on flash. So we just assume the volume is
-+			 * empty. FIXME: this should be handled.
-+			 */
-+			continue;
-+		}
-+
-+		if (sv->leb_count != sv->used_ebs) {
-+			/*
-+			 * We found a static volume which misses several
-+			 * eraseblocks. Treat it as corrupted.
-+			 */
-+			ubi_warn("static volume %d misses %d LEBs - corrupted",
-+				 sv->vol_id, sv->used_ebs - sv->leb_count);
-+			vol->corrupted = 1;
-+			continue;
-+		}
-+
-+		vol->used_ebs = sv->used_ebs;
-+		vol->used_bytes =
-+			(long long)(vol->used_ebs - 1) * vol->usable_leb_size;
-+		vol->used_bytes += sv->last_data_size;
-+		vol->last_eb_bytes = sv->last_data_size;
-+	}
-+
-+	/* And add the layout volume */
-+	vol = kzalloc(sizeof(struct ubi_volume), GFP_KERNEL);
-+	if (!vol)
-+		return -ENOMEM;
-+
-+	vol->reserved_pebs = UBI_LAYOUT_VOLUME_EBS;
-+	vol->alignment = 1;
-+	vol->vol_type = UBI_DYNAMIC_VOLUME;
-+	vol->name_len = sizeof(UBI_LAYOUT_VOLUME_NAME) - 1;
-+	memcpy(vol->name, UBI_LAYOUT_VOLUME_NAME, vol->name_len + 1);
-+	vol->usable_leb_size = ubi->leb_size;
-+	vol->used_ebs = vol->reserved_pebs;
-+	vol->last_eb_bytes = vol->reserved_pebs;
-+	vol->used_bytes =
-+		(long long)vol->used_ebs * (ubi->leb_size - vol->data_pad);
-+	vol->vol_id = UBI_LAYOUT_VOLUME_ID;
-+	vol->ref_count = 1;
-+
-+	ubi_assert(!ubi->volumes[i]);
-+	ubi->volumes[vol_id2idx(ubi, vol->vol_id)] = vol;
-+	reserved_pebs += vol->reserved_pebs;
-+	ubi->vol_count += 1;
-+	vol->ubi = ubi;
-+
-+	if (reserved_pebs > ubi->avail_pebs)
-+		ubi_err("not enough PEBs, required %d, available %d",
-+			reserved_pebs, ubi->avail_pebs);
-+	ubi->rsvd_pebs += reserved_pebs;
-+	ubi->avail_pebs -= reserved_pebs;
-+
-+	return 0;
-+}
-+
-+/**
-+ * check_sv - check volume scanning information.
-+ * @vol: UBI volume description object
-+ * @sv: volume scanning information
-+ *
-+ * This function returns zero if the volume scanning information is consistent
-+ * to the data read from the volume tabla, and %-EINVAL if not.
-+ */
-+static int check_sv(const struct ubi_volume *vol,
-+		    const struct ubi_scan_volume *sv)
-+{
-+	int err;
-+
-+	if (sv->highest_lnum >= vol->reserved_pebs) {
-+		err = 1;
-+		goto bad;
-+	}
-+	if (sv->leb_count > vol->reserved_pebs) {
-+		err = 2;
-+		goto bad;
-+	}
-+	if (sv->vol_type != vol->vol_type) {
-+		err = 3;
-+		goto bad;
-+	}
-+	if (sv->used_ebs > vol->reserved_pebs) {
-+		err = 4;
-+		goto bad;
-+	}
-+	if (sv->data_pad != vol->data_pad) {
-+		err = 5;
-+		goto bad;
-+	}
-+	return 0;
-+
-+bad:
-+	ubi_err("bad scanning information, error %d", err);
-+	ubi_dbg_dump_sv(sv);
-+	ubi_dbg_dump_vol_info(vol);
-+	return -EINVAL;
-+}
-+
-+/**
-+ * check_scanning_info - check that scanning information.
-+ * @ubi: UBI device description object
-+ * @si: scanning information
-+ *
-+ * Even though we protect on-flash data by CRC checksums, we still don't trust
-+ * the media. This function ensures that scanning information is consistent to
-+ * the information read from the volume table. Returns zero if the scanning
-+ * information is OK and %-EINVAL if it is not.
-+ */
-+static int check_scanning_info(const struct ubi_device *ubi,
-+			       struct ubi_scan_info *si)
-+{
-+	int err, i;
-+	struct ubi_scan_volume *sv;
-+	struct ubi_volume *vol;
-+
-+	if (si->vols_found > UBI_INT_VOL_COUNT + ubi->vtbl_slots) {
-+		ubi_err("scanning found %d volumes, maximum is %d + %d",
-+			si->vols_found, UBI_INT_VOL_COUNT, ubi->vtbl_slots);
-+		return -EINVAL;
-+	}
-+
-+	if (si->highest_vol_id >= ubi->vtbl_slots + UBI_INT_VOL_COUNT &&
-+	    si->highest_vol_id < UBI_INTERNAL_VOL_START) {
-+		ubi_err("too large volume ID %d found by scanning",
-+			si->highest_vol_id);
-+		return -EINVAL;
-+	}
-+
-+	for (i = 0; i < ubi->vtbl_slots + UBI_INT_VOL_COUNT; i++) {
-+		cond_resched();
-+
-+		sv = ubi_scan_find_sv(si, i);
-+		vol = ubi->volumes[i];
-+		if (!vol) {
-+			if (sv)
-+				ubi_scan_rm_volume(si, sv);
-+			continue;
-+		}
-+
-+		if (vol->reserved_pebs == 0) {
-+			ubi_assert(i < ubi->vtbl_slots);
-+
-+			if (!sv)
++		if (!opts->scrub && bbtest) {
++			int ret = meminfo->block_isbad(meminfo, erase.addr);
++			if (ret > 0) {
++				if (!opts->quiet)
++					printf("\rSkipping bad block at  "
++					       "0x%08x                   "
++					       "                         \n",
++					       erase.addr);
 +				continue;
 +
-+			/*
-+			 * During scanning we found a volume which does not
-+			 * exist according to the information in the volume
-+			 * table. This must have happened due to an unclean
-+			 * reboot while the volume was being removed. Discard
-+			 * these eraseblocks.
-+			 */
-+			ubi_msg("finish volume %d removal", sv->vol_id);
-+			ubi_scan_rm_volume(si, sv);
-+		} else if (sv) {
-+			err = check_sv(vol, sv);
-+			if (err)
-+				return err;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+/**
-+ * ubi_read_volume_table - read volume table.
-+ * information.
-+ * @ubi: UBI device description object
-+ * @si: scanning information
-+ *
-+ * This function reads volume table, checks it, recover from errors if needed,
-+ * or creates it if needed. Returns zero in case of success and a negative
-+ * error code in case of failure.
-+ */
-+int ubi_read_volume_table(struct ubi_device *ubi, struct ubi_scan_info *si)
-+{
-+	int i, err;
-+	struct ubi_scan_volume *sv;
-+
-+	empty_vtbl_record.crc = cpu_to_be32(0xf116c36b);
-+
-+	/*
-+	 * The number of supported volumes is limited by the eraseblock size
-+	 * and by the UBI_MAX_VOLUMES constant.
-+	 */
-+	ubi->vtbl_slots = ubi->leb_size / UBI_VTBL_RECORD_SIZE;
-+	if (ubi->vtbl_slots > UBI_MAX_VOLUMES)
-+		ubi->vtbl_slots = UBI_MAX_VOLUMES;
-+
-+	ubi->vtbl_size = ubi->vtbl_slots * UBI_VTBL_RECORD_SIZE;
-+	ubi->vtbl_size = ALIGN(ubi->vtbl_size, ubi->min_io_size);
-+
-+	sv = ubi_scan_find_sv(si, UBI_LAYOUT_VOLUME_ID);
-+	if (!sv) {
-+		/*
-+		 * No logical eraseblocks belonging to the layout volume were
-+		 * found. This could mean that the flash is just empty. In
-+		 * this case we create empty layout volume.
-+		 *
-+		 * But if flash is not empty this must be a corruption or the
-+		 * MTD device just contains garbage.
-+		 */
-+		if (si->is_empty) {
-+			ubi->vtbl = create_empty_lvol(ubi, si);
-+			if (IS_ERR(ubi->vtbl))
-+				return PTR_ERR(ubi->vtbl);
-+		} else {
-+			ubi_err("the layout volume was not found");
-+			return -EINVAL;
-+		}
-+	} else {
-+		if (sv->leb_count > UBI_LAYOUT_VOLUME_EBS) {
-+			/* This must not happen with proper UBI images */
-+			dbg_err("too many LEBs (%d) in layout volume",
-+				sv->leb_count);
-+			return -EINVAL;
-+		}
-+
-+		ubi->vtbl = process_lvol(ubi, si, sv);
-+		if (IS_ERR(ubi->vtbl))
-+			return PTR_ERR(ubi->vtbl);
-+	}
-+
-+	ubi->avail_pebs = ubi->good_peb_count;
-+
-+	/*
-+	 * The layout volume is OK, initialize the corresponding in-RAM data
-+	 * structures.
-+	 */
-+	err = init_volumes(ubi, si, ubi->vtbl);
-+	if (err)
-+		goto out_free;
-+
-+	/*
-+	 * Get sure that the scanning information is consistent to the
-+	 * information stored in the volume table.
-+	 */
-+	err = check_scanning_info(ubi, si);
-+	if (err)
-+		goto out_free;
-+
-+	return 0;
-+
-+out_free:
-+	vfree(ubi->vtbl);
-+	for (i = 0; i < ubi->vtbl_slots + UBI_INT_VOL_COUNT; i++)
-+		if (ubi->volumes[i]) {
-+			kfree(ubi->volumes[i]);
-+			ubi->volumes[i] = NULL;
-+		}
-+	return err;
-+}
-+
-+#ifdef CONFIG_MTD_UBI_DEBUG_PARANOID
-+
-+/**
-+ * paranoid_vtbl_check - check volume table.
-+ * @ubi: UBI device description object
-+ */
-+static void paranoid_vtbl_check(const struct ubi_device *ubi)
-+{
-+	if (vtbl_check(ubi, ubi->vtbl)) {
-+		ubi_err("paranoid check failed");
-+		BUG();
-+	}
-+}
-+
-+#endif /* CONFIG_MTD_UBI_DEBUG_PARANOID */
-diff --git a/drivers/mtd/ubi/wl.c b/drivers/mtd/ubi/wl.c
-new file mode 100644
-index 0000000..137e600
---- /dev/null
-+++ b/drivers/mtd/ubi/wl.c
-@@ -0,0 +1,1675 @@
-+/*
-+ * Copyright (c) International Business Machines Corp., 2006
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
-+ * the GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-+ *
-+ * Authors: Artem Bityutskiy (���������������� ����������), Thomas Gleixner
-+ */
-+
-+/*
-+ * UBI wear-leveling unit.
-+ *
-+ * This unit is responsible for wear-leveling. It works in terms of physical
-+ * eraseblocks and erase counters and knows nothing about logical eraseblocks,
-+ * volumes, etc. From this unit's perspective all physical eraseblocks are of
-+ * two types - used and free. Used physical eraseblocks are those that were
-+ * "get" by the 'ubi_wl_get_peb()' function, and free physical eraseblocks are
-+ * those that were put by the 'ubi_wl_put_peb()' function.
-+ *
-+ * Physical eraseblocks returned by 'ubi_wl_get_peb()' have only erase counter
-+ * header. The rest of the physical eraseblock contains only 0xFF bytes.
-+ *
-+ * When physical eraseblocks are returned to the WL unit by means of the
-+ * 'ubi_wl_put_peb()' function, they are scheduled for erasure. The erasure is
-+ * done asynchronously in context of the per-UBI device background thread,
-+ * which is also managed by the WL unit.
-+ *
-+ * The wear-leveling is ensured by means of moving the contents of used
-+ * physical eraseblocks with low erase counter to free physical eraseblocks
-+ * with high erase counter.
-+ *
-+ * The 'ubi_wl_get_peb()' function accepts data type hints which help to pick
-+ * an "optimal" physical eraseblock. For example, when it is known that the
-+ * physical eraseblock will be "put" soon because it contains short-term data,
-+ * the WL unit may pick a free physical eraseblock with low erase counter, and
-+ * so forth.
-+ *
-+ * If the WL unit fails to erase a physical eraseblock, it marks it as bad.
-+ *
-+ * This unit is also responsible for scrubbing. If a bit-flip is detected in a
-+ * physical eraseblock, it has to be moved. Technically this is the same as
-+ * moving it for wear-leveling reasons.
-+ *
-+ * As it was said, for the UBI unit all physical eraseblocks are either "free"
-+ * or "used". Free eraseblock are kept in the @wl->free RB-tree, while used
-+ * eraseblocks are kept in a set of different RB-trees: @wl->used,
-+ * @wl->prot.pnum, @wl->prot.aec, and @wl->scrub.
-+ *
-+ * Note, in this implementation, we keep a small in-RAM object for each physical
-+ * eraseblock. This is surely not a scalable solution. But it appears to be good
-+ * enough for moderately large flashes and it is simple. In future, one may
-+ * re-work this unit and make it more scalable.
-+ *
-+ * At the moment this unit does not utilize the sequence number, which was
-+ * introduced relatively recently. But it would be wise to do this because the
-+ * sequence number of a logical eraseblock characterizes how old is it. For
-+ * example, when we move a PEB with low erase counter, and we need to pick the
-+ * target PEB, we pick a PEB with the highest EC if our PEB is "old" and we
-+ * pick target PEB with an average EC if our PEB is not very "old". This is a
-+ * room for future re-works of the WL unit.
-+ *
-+ * FIXME: looks too complex, should be simplified (later).
-+ */
-+
-+#ifdef UBI_LINUX
-+#include <linux/slab.h>
-+#include <linux/crc32.h>
-+#include <linux/freezer.h>
-+#include <linux/kthread.h>
-+#endif
-+
-+#include "ubi-barebox.h"
-+#include "ubi.h"
-+
-+/* Number of physical eraseblocks reserved for wear-leveling purposes */
-+#define WL_RESERVED_PEBS 1
-+
-+/*
-+ * How many erase cycles are short term, unknown, and long term physical
-+ * eraseblocks protected.
-+ */
-+#define ST_PROTECTION 16
-+#define U_PROTECTION  10
-+#define LT_PROTECTION 4
-+
-+/*
-+ * Maximum difference between two erase counters. If this threshold is
-+ * exceeded, the WL unit starts moving data from used physical eraseblocks with
-+ * low erase counter to free physical eraseblocks with high erase counter.
-+ */
-+#define UBI_WL_THRESHOLD CONFIG_MTD_UBI_WL_THRESHOLD
-+
-+/*
-+ * When a physical eraseblock is moved, the WL unit has to pick the target
-+ * physical eraseblock to move to. The simplest way would be just to pick the
-+ * one with the highest erase counter. But in certain workloads this could lead
-+ * to an unlimited wear of one or few physical eraseblock. Indeed, imagine a
-+ * situation when the picked physical eraseblock is constantly erased after the
-+ * data is written to it. So, we have a constant which limits the highest erase
-+ * counter of the free physical eraseblock to pick. Namely, the WL unit does
-+ * not pick eraseblocks with erase counter greater then the lowest erase
-+ * counter plus %WL_FREE_MAX_DIFF.
-+ */
-+#define WL_FREE_MAX_DIFF (2*UBI_WL_THRESHOLD)
-+
-+/*
-+ * Maximum number of consecutive background thread failures which is enough to
-+ * switch to read-only mode.
-+ */
-+#define WL_MAX_FAILURES 32
-+
-+/**
-+ * struct ubi_wl_prot_entry - PEB protection entry.
-+ * @rb_pnum: link in the @wl->prot.pnum RB-tree
-+ * @rb_aec: link in the @wl->prot.aec RB-tree
-+ * @abs_ec: the absolute erase counter value when the protection ends
-+ * @e: the wear-leveling entry of the physical eraseblock under protection
-+ *
-+ * When the WL unit returns a physical eraseblock, the physical eraseblock is
-+ * protected from being moved for some "time". For this reason, the physical
-+ * eraseblock is not directly moved from the @wl->free tree to the @wl->used
-+ * tree. There is one more tree in between where this physical eraseblock is
-+ * temporarily stored (@wl->prot).
-+ *
-+ * All this protection stuff is needed because:
-+ *  o we don't want to move physical eraseblocks just after we have given them
-+ *    to the user; instead, we first want to let users fill them up with data;
-+ *
-+ *  o there is a chance that the user will put the physical eraseblock very
-+ *    soon, so it makes sense not to move it for some time, but wait; this is
-+ *    especially important in case of "short term" physical eraseblocks.
-+ *
-+ * Physical eraseblocks stay protected only for limited time. But the "time" is
-+ * measured in erase cycles in this case. This is implemented with help of the
-+ * absolute erase counter (@wl->abs_ec). When it reaches certain value, the
-+ * physical eraseblocks are moved from the protection trees (@wl->prot.*) to
-+ * the @wl->used tree.
-+ *
-+ * Protected physical eraseblocks are searched by physical eraseblock number
-+ * (when they are put) and by the absolute erase counter (to check if it is
-+ * time to move them to the @wl->used tree). So there are actually 2 RB-trees
-+ * storing the protected physical eraseblocks: @wl->prot.pnum and
-+ * @wl->prot.aec. They are referred to as the "protection" trees. The
-+ * first one is indexed by the physical eraseblock number. The second one is
-+ * indexed by the absolute erase counter. Both trees store
-+ * &struct ubi_wl_prot_entry objects.
-+ *
-+ * Each physical eraseblock has 2 main states: free and used. The former state
-+ * corresponds to the @wl->free tree. The latter state is split up on several
-+ * sub-states:
-+ * o the WL movement is allowed (@wl->used tree);
-+ * o the WL movement is temporarily prohibited (@wl->prot.pnum and
-+ * @wl->prot.aec trees);
-+ * o scrubbing is needed (@wl->scrub tree).
-+ *
-+ * Depending on the sub-state, wear-leveling entries of the used physical
-+ * eraseblocks may be kept in one of those trees.
-+ */
-+struct ubi_wl_prot_entry {
-+	struct rb_node rb_pnum;
-+	struct rb_node rb_aec;
-+	unsigned long long abs_ec;
-+	struct ubi_wl_entry *e;
-+};
-+
-+/**
-+ * struct ubi_work - UBI work description data structure.
-+ * @list: a link in the list of pending works
-+ * @func: worker function
-+ * @priv: private data of the worker function
-+ *
-+ * @e: physical eraseblock to erase
-+ * @torture: if the physical eraseblock has to be tortured
-+ *
-+ * The @func pointer points to the worker function. If the @cancel argument is
-+ * not zero, the worker has to free the resources and exit immediately. The
-+ * worker has to return zero in case of success and a negative error code in
-+ * case of failure.
-+ */
-+struct ubi_work {
-+	struct list_head list;
-+	int (*func)(struct ubi_device *ubi, struct ubi_work *wrk, int cancel);
-+	/* The below fields are only relevant to erasure works */
-+	struct ubi_wl_entry *e;
-+	int torture;
-+};
-+
-+#ifdef CONFIG_MTD_UBI_DEBUG_PARANOID
-+static int paranoid_check_ec(struct ubi_device *ubi, int pnum, int ec);
-+static int paranoid_check_in_wl_tree(struct ubi_wl_entry *e,
-+				     struct rb_root *root);
-+#else
-+#define paranoid_check_ec(ubi, pnum, ec) 0
-+#define paranoid_check_in_wl_tree(e, root)
-+#endif
-+
-+/**
-+ * wl_tree_add - add a wear-leveling entry to a WL RB-tree.
-+ * @e: the wear-leveling entry to add
-+ * @root: the root of the tree
-+ *
-+ * Note, we use (erase counter, physical eraseblock number) pairs as keys in
-+ * the @ubi->used and @ubi->free RB-trees.
-+ */
-+static void wl_tree_add(struct ubi_wl_entry *e, struct rb_root *root)
-+{
-+	struct rb_node **p, *parent = NULL;
-+
-+	p = &root->rb_node;
-+	while (*p) {
-+		struct ubi_wl_entry *e1;
-+
-+		parent = *p;
-+		e1 = rb_entry(parent, struct ubi_wl_entry, rb);
-+
-+		if (e->ec < e1->ec)
-+			p = &(*p)->rb_left;
-+		else if (e->ec > e1->ec)
-+			p = &(*p)->rb_right;
-+		else {
-+			ubi_assert(e->pnum != e1->pnum);
-+			if (e->pnum < e1->pnum)
-+				p = &(*p)->rb_left;
-+			else
-+				p = &(*p)->rb_right;
-+		}
-+	}
-+
-+	rb_link_node(&e->rb, parent, p);
-+	rb_insert_color(&e->rb, root);
-+}
-+
-+/**
-+ * do_work - do one pending work.
-+ * @ubi: UBI device description object
-+ *
-+ * This function returns zero in case of success and a negative error code in
-+ * case of failure.
-+ */
-+static int do_work(struct ubi_device *ubi)
-+{
-+	int err;
-+	struct ubi_work *wrk;
-+
-+	cond_resched();
-+
-+	/*
-+	 * @ubi->work_sem is used to synchronize with the workers. Workers take
-+	 * it in read mode, so many of them may be doing works at a time. But
-+	 * the queue flush code has to be sure the whole queue of works is
-+	 * done, and it takes the mutex in write mode.
-+	 */
-+	down_read(&ubi->work_sem);
-+	spin_lock(&ubi->wl_lock);
-+	if (list_empty(&ubi->works)) {
-+		spin_unlock(&ubi->wl_lock);
-+		up_read(&ubi->work_sem);
-+		return 0;
-+	}
-+
-+	wrk = list_entry(ubi->works.next, struct ubi_work, list);
-+	list_del(&wrk->list);
-+	ubi->works_count -= 1;
-+	ubi_assert(ubi->works_count >= 0);
-+	spin_unlock(&ubi->wl_lock);
-+
-+	/*
-+	 * Call the worker function. Do not touch the work structure
-+	 * after this call as it will have been freed or reused by that
-+	 * time by the worker function.
-+	 */
-+	err = wrk->func(ubi, wrk, 0);
-+	if (err)
-+		ubi_err("work failed with error code %d", err);
-+	up_read(&ubi->work_sem);
-+
-+	return err;
-+}
-+
-+/**
-+ * produce_free_peb - produce a free physical eraseblock.
-+ * @ubi: UBI device description object
-+ *
-+ * This function tries to make a free PEB by means of synchronous execution of
-+ * pending works. This may be needed if, for example the background thread is
-+ * disabled. Returns zero in case of success and a negative error code in case
-+ * of failure.
-+ */
-+static int produce_free_peb(struct ubi_device *ubi)
-+{
-+	int err;
-+
-+	spin_lock(&ubi->wl_lock);
-+	while (!ubi->free.rb_node) {
-+		spin_unlock(&ubi->wl_lock);
-+
-+		dbg_wl("do one work synchronously");
-+		err = do_work(ubi);
-+		if (err)
-+			return err;
-+
-+		spin_lock(&ubi->wl_lock);
-+	}
-+	spin_unlock(&ubi->wl_lock);
-+
-+	return 0;
-+}
-+
-+/**
-+ * in_wl_tree - check if wear-leveling entry is present in a WL RB-tree.
-+ * @e: the wear-leveling entry to check
-+ * @root: the root of the tree
-+ *
-+ * This function returns non-zero if @e is in the @root RB-tree and zero if it
-+ * is not.
-+ */
-+static int in_wl_tree(struct ubi_wl_entry *e, struct rb_root *root)
-+{
-+	struct rb_node *p;
-+
-+	p = root->rb_node;
-+	while (p) {
-+		struct ubi_wl_entry *e1;
-+
-+		e1 = rb_entry(p, struct ubi_wl_entry, rb);
-+
-+		if (e->pnum == e1->pnum) {
-+			ubi_assert(e == e1);
-+			return 1;
-+		}
-+
-+		if (e->ec < e1->ec)
-+			p = p->rb_left;
-+		else if (e->ec > e1->ec)
-+			p = p->rb_right;
-+		else {
-+			ubi_assert(e->pnum != e1->pnum);
-+			if (e->pnum < e1->pnum)
-+				p = p->rb_left;
-+			else
-+				p = p->rb_right;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+/**
-+ * prot_tree_add - add physical eraseblock to protection trees.
-+ * @ubi: UBI device description object
-+ * @e: the physical eraseblock to add
-+ * @pe: protection entry object to use
-+ * @abs_ec: absolute erase counter value when this physical eraseblock has
-+ * to be removed from the protection trees.
-+ *
-+ * @wl->lock has to be locked.
-+ */
-+static void prot_tree_add(struct ubi_device *ubi, struct ubi_wl_entry *e,
-+			  struct ubi_wl_prot_entry *pe, int abs_ec)
-+{
-+	struct rb_node **p, *parent = NULL;
-+	struct ubi_wl_prot_entry *pe1;
-+
-+	pe->e = e;
-+	pe->abs_ec = ubi->abs_ec + abs_ec;
-+
-+	p = &ubi->prot.pnum.rb_node;
-+	while (*p) {
-+		parent = *p;
-+		pe1 = rb_entry(parent, struct ubi_wl_prot_entry, rb_pnum);
-+
-+		if (e->pnum < pe1->e->pnum)
-+			p = &(*p)->rb_left;
-+		else
-+			p = &(*p)->rb_right;
-+	}
-+	rb_link_node(&pe->rb_pnum, parent, p);
-+	rb_insert_color(&pe->rb_pnum, &ubi->prot.pnum);
-+
-+	p = &ubi->prot.aec.rb_node;
-+	parent = NULL;
-+	while (*p) {
-+		parent = *p;
-+		pe1 = rb_entry(parent, struct ubi_wl_prot_entry, rb_aec);
-+
-+		if (pe->abs_ec < pe1->abs_ec)
-+			p = &(*p)->rb_left;
-+		else
-+			p = &(*p)->rb_right;
-+	}
-+	rb_link_node(&pe->rb_aec, parent, p);
-+	rb_insert_color(&pe->rb_aec, &ubi->prot.aec);
-+}
-+
-+/**
-+ * find_wl_entry - find wear-leveling entry closest to certain erase counter.
-+ * @root: the RB-tree where to look for
-+ * @max: highest possible erase counter
-+ *
-+ * This function looks for a wear leveling entry with erase counter closest to
-+ * @max and less then @max.
-+ */
-+static struct ubi_wl_entry *find_wl_entry(struct rb_root *root, int max)
-+{
-+	struct rb_node *p;
-+	struct ubi_wl_entry *e;
-+
-+	e = rb_entry(rb_first(root), struct ubi_wl_entry, rb);
-+	max += e->ec;
-+
-+	p = root->rb_node;
-+	while (p) {
-+		struct ubi_wl_entry *e1;
-+
-+		e1 = rb_entry(p, struct ubi_wl_entry, rb);
-+		if (e1->ec >= max)
-+			p = p->rb_left;
-+		else {
-+			p = p->rb_right;
-+			e = e1;
-+		}
-+	}
-+
-+	return e;
-+}
-+
-+/**
-+ * ubi_wl_get_peb - get a physical eraseblock.
-+ * @ubi: UBI device description object
-+ * @dtype: type of data which will be stored in this physical eraseblock
-+ *
-+ * This function returns a physical eraseblock in case of success and a
-+ * negative error code in case of failure. Might sleep.
-+ */
-+int ubi_wl_get_peb(struct ubi_device *ubi, int dtype)
-+{
-+	int err, protect, medium_ec;
-+	struct ubi_wl_entry *e, *first, *last;
-+	struct ubi_wl_prot_entry *pe;
-+
-+	ubi_assert(dtype == UBI_LONGTERM || dtype == UBI_SHORTTERM ||
-+		   dtype == UBI_UNKNOWN);
-+
-+	pe = kmalloc(sizeof(struct ubi_wl_prot_entry), GFP_NOFS);
-+	if (!pe)
-+		return -ENOMEM;
-+
-+retry:
-+	spin_lock(&ubi->wl_lock);
-+	if (!ubi->free.rb_node) {
-+		if (ubi->works_count == 0) {
-+			ubi_assert(list_empty(&ubi->works));
-+			ubi_err("no free eraseblocks");
-+			spin_unlock(&ubi->wl_lock);
-+			kfree(pe);
-+			return -ENOSPC;
-+		}
-+		spin_unlock(&ubi->wl_lock);
-+
-+		err = produce_free_peb(ubi);
-+		if (err < 0) {
-+			kfree(pe);
-+			return err;
-+		}
-+		goto retry;
-+	}
-+
-+	switch (dtype) {
-+		case UBI_LONGTERM:
-+			/*
-+			 * For long term data we pick a physical eraseblock
-+			 * with high erase counter. But the highest erase
-+			 * counter we can pick is bounded by the the lowest
-+			 * erase counter plus %WL_FREE_MAX_DIFF.
-+			 */
-+			e = find_wl_entry(&ubi->free, WL_FREE_MAX_DIFF);
-+			protect = LT_PROTECTION;
-+			break;
-+		case UBI_UNKNOWN:
-+			/*
-+			 * For unknown data we pick a physical eraseblock with
-+			 * medium erase counter. But we by no means can pick a
-+			 * physical eraseblock with erase counter greater or
-+			 * equivalent than the lowest erase counter plus
-+			 * %WL_FREE_MAX_DIFF.
-+			 */
-+			first = rb_entry(rb_first(&ubi->free),
-+					 struct ubi_wl_entry, rb);
-+			last = rb_entry(rb_last(&ubi->free),
-+					struct ubi_wl_entry, rb);
-+
-+			if (last->ec - first->ec < WL_FREE_MAX_DIFF)
-+				e = rb_entry(ubi->free.rb_node,
-+						struct ubi_wl_entry, rb);
-+			else {
-+				medium_ec = (first->ec + WL_FREE_MAX_DIFF)/2;
-+				e = find_wl_entry(&ubi->free, medium_ec);
-+			}
-+			protect = U_PROTECTION;
-+			break;
-+		case UBI_SHORTTERM:
-+			/*
-+			 * For short term data we pick a physical eraseblock
-+			 * with the lowest erase counter as we expect it will
-+			 * be erased soon.
-+			 */
-+			e = rb_entry(rb_first(&ubi->free),
-+				     struct ubi_wl_entry, rb);
-+			protect = ST_PROTECTION;
-+			break;
-+		default:
-+			protect = 0;
-+			e = NULL;
-+			BUG();
-+	}
-+
-+	/*
-+	 * Move the physical eraseblock to the protection trees where it will
-+	 * be protected from being moved for some time.
-+	 */
-+	paranoid_check_in_wl_tree(e, &ubi->free);
-+	rb_erase(&e->rb, &ubi->free);
-+	prot_tree_add(ubi, e, pe, protect);
-+
-+	dbg_wl("PEB %d EC %d, protection %d", e->pnum, e->ec, protect);
-+	spin_unlock(&ubi->wl_lock);
-+
-+	return e->pnum;
-+}
-+
-+/**
-+ * prot_tree_del - remove a physical eraseblock from the protection trees
-+ * @ubi: UBI device description object
-+ * @pnum: the physical eraseblock to remove
-+ *
-+ * This function returns PEB @pnum from the protection trees and returns zero
-+ * in case of success and %-ENODEV if the PEB was not found in the protection
-+ * trees.
-+ */
-+static int prot_tree_del(struct ubi_device *ubi, int pnum)
-+{
-+	struct rb_node *p;
-+	struct ubi_wl_prot_entry *pe = NULL;
-+
-+	p = ubi->prot.pnum.rb_node;
-+	while (p) {
-+
-+		pe = rb_entry(p, struct ubi_wl_prot_entry, rb_pnum);
-+
-+		if (pnum == pe->e->pnum)
-+			goto found;
-+
-+		if (pnum < pe->e->pnum)
-+			p = p->rb_left;
-+		else
-+			p = p->rb_right;
-+	}
-+
-+	return -ENODEV;
-+
-+found:
-+	ubi_assert(pe->e->pnum == pnum);
-+	rb_erase(&pe->rb_aec, &ubi->prot.aec);
-+	rb_erase(&pe->rb_pnum, &ubi->prot.pnum);
-+	kfree(pe);
-+	return 0;
-+}
-+
-+/**
-+ * sync_erase - synchronously erase a physical eraseblock.
-+ * @ubi: UBI device description object
-+ * @e: the the physical eraseblock to erase
-+ * @torture: if the physical eraseblock has to be tortured
-+ *
-+ * This function returns zero in case of success and a negative error code in
-+ * case of failure.
-+ */
-+static int sync_erase(struct ubi_device *ubi, struct ubi_wl_entry *e, int torture)
-+{
-+	int err;
-+	struct ubi_ec_hdr *ec_hdr;
-+	unsigned long long ec = e->ec;
-+
-+	dbg_wl("erase PEB %d, old EC %llu", e->pnum, ec);
-+
-+	err = paranoid_check_ec(ubi, e->pnum, e->ec);
-+	if (err > 0)
-+		return -EINVAL;
-+
-+	ec_hdr = kzalloc(ubi->ec_hdr_alsize, GFP_NOFS);
-+	if (!ec_hdr)
-+		return -ENOMEM;
-+
-+	err = ubi_io_sync_erase(ubi, e->pnum, torture);
-+	if (err < 0)
-+		goto out_free;
-+
-+	ec += err;
-+	if (ec > UBI_MAX_ERASECOUNTER) {
-+		/*
-+		 * Erase counter overflow. Upgrade UBI and use 64-bit
-+		 * erase counters internally.
-+		 */
-+		ubi_err("erase counter overflow at PEB %d, EC %llu",
-+			e->pnum, ec);
-+		err = -EINVAL;
-+		goto out_free;
-+	}
-+
-+	dbg_wl("erased PEB %d, new EC %llu", e->pnum, ec);
-+
-+	ec_hdr->ec = cpu_to_be64(ec);
-+
-+	err = ubi_io_write_ec_hdr(ubi, e->pnum, ec_hdr);
-+	if (err)
-+		goto out_free;
-+
-+	e->ec = ec;
-+	spin_lock(&ubi->wl_lock);
-+	if (e->ec > ubi->max_ec)
-+		ubi->max_ec = e->ec;
-+	spin_unlock(&ubi->wl_lock);
-+
-+out_free:
-+	kfree(ec_hdr);
-+	return err;
-+}
-+
-+/**
-+ * check_protection_over - check if it is time to stop protecting some
-+ * physical eraseblocks.
-+ * @ubi: UBI device description object
-+ *
-+ * This function is called after each erase operation, when the absolute erase
-+ * counter is incremented, to check if some physical eraseblock  have not to be
-+ * protected any longer. These physical eraseblocks are moved from the
-+ * protection trees to the used tree.
-+ */
-+static void check_protection_over(struct ubi_device *ubi)
-+{
-+	struct ubi_wl_prot_entry *pe;
-+
-+	/*
-+	 * There may be several protected physical eraseblock to remove,
-+	 * process them all.
-+	 */
-+	while (1) {
-+		spin_lock(&ubi->wl_lock);
-+		if (!ubi->prot.aec.rb_node) {
-+			spin_unlock(&ubi->wl_lock);
-+			break;
-+		}
-+
-+		pe = rb_entry(rb_first(&ubi->prot.aec),
-+			      struct ubi_wl_prot_entry, rb_aec);
-+
-+		if (pe->abs_ec > ubi->abs_ec) {
-+			spin_unlock(&ubi->wl_lock);
-+			break;
-+		}
-+
-+		dbg_wl("PEB %d protection over, abs_ec %llu, PEB abs_ec %llu",
-+		       pe->e->pnum, ubi->abs_ec, pe->abs_ec);
-+		rb_erase(&pe->rb_aec, &ubi->prot.aec);
-+		rb_erase(&pe->rb_pnum, &ubi->prot.pnum);
-+		wl_tree_add(pe->e, &ubi->used);
-+		spin_unlock(&ubi->wl_lock);
-+
-+		kfree(pe);
-+		cond_resched();
-+	}
-+}
-+
-+/**
-+ * schedule_ubi_work - schedule a work.
-+ * @ubi: UBI device description object
-+ * @wrk: the work to schedule
-+ *
-+ * This function enqueues a work defined by @wrk to the tail of the pending
-+ * works list.
-+ */
-+static void schedule_ubi_work(struct ubi_device *ubi, struct ubi_work *wrk)
-+{
-+	spin_lock(&ubi->wl_lock);
-+	list_add_tail(&wrk->list, &ubi->works);
-+	ubi_assert(ubi->works_count >= 0);
-+	ubi->works_count += 1;
-+
-+	/*
-+	 * U-Boot special: We have no bgt_thread in U-Boot!
-+	 * So just call do_work() here directly.
-+	 */
-+	do_work(ubi);
-+
-+	spin_unlock(&ubi->wl_lock);
-+}
-+
-+static int erase_worker(struct ubi_device *ubi, struct ubi_work *wl_wrk,
-+			int cancel);
-+
-+/**
-+ * schedule_erase - schedule an erase work.
-+ * @ubi: UBI device description object
-+ * @e: the WL entry of the physical eraseblock to erase
-+ * @torture: if the physical eraseblock has to be tortured
-+ *
-+ * This function returns zero in case of success and a %-ENOMEM in case of
-+ * failure.
-+ */
-+static int schedule_erase(struct ubi_device *ubi, struct ubi_wl_entry *e,
-+			  int torture)
-+{
-+	struct ubi_work *wl_wrk;
-+
-+	dbg_wl("schedule erasure of PEB %d, EC %d, torture %d",
-+	       e->pnum, e->ec, torture);
-+
-+	wl_wrk = kmalloc(sizeof(struct ubi_work), GFP_NOFS);
-+	if (!wl_wrk)
-+		return -ENOMEM;
-+
-+	wl_wrk->func = &erase_worker;
-+	wl_wrk->e = e;
-+	wl_wrk->torture = torture;
-+
-+	schedule_ubi_work(ubi, wl_wrk);
-+	return 0;
-+}
-+
-+/**
-+ * wear_leveling_worker - wear-leveling worker function.
-+ * @ubi: UBI device description object
-+ * @wrk: the work object
-+ * @cancel: non-zero if the worker has to free memory and exit
-+ *
-+ * This function copies a more worn out physical eraseblock to a less worn out
-+ * one. Returns zero in case of success and a negative error code in case of
-+ * failure.
-+ */
-+static int wear_leveling_worker(struct ubi_device *ubi, struct ubi_work *wrk,
-+				int cancel)
-+{
-+	int err, put = 0, scrubbing = 0, protect = 0;
-+	struct ubi_wl_prot_entry *uninitialized_var(pe);
-+	struct ubi_wl_entry *e1, *e2;
-+	struct ubi_vid_hdr *vid_hdr;
-+
-+	kfree(wrk);
-+
-+	if (cancel)
-+		return 0;
-+
-+	vid_hdr = ubi_zalloc_vid_hdr(ubi, GFP_NOFS);
-+	if (!vid_hdr)
-+		return -ENOMEM;
-+
-+	mutex_lock(&ubi->move_mutex);
-+	spin_lock(&ubi->wl_lock);
-+	ubi_assert(!ubi->move_from && !ubi->move_to);
-+	ubi_assert(!ubi->move_to_put);
-+
-+	if (!ubi->free.rb_node ||
-+	    (!ubi->used.rb_node && !ubi->scrub.rb_node)) {
-+		/*
-+		 * No free physical eraseblocks? Well, they must be waiting in
-+		 * the queue to be erased. Cancel movement - it will be
-+		 * triggered again when a free physical eraseblock appears.
-+		 *
-+		 * No used physical eraseblocks? They must be temporarily
-+		 * protected from being moved. They will be moved to the
-+		 * @ubi->used tree later and the wear-leveling will be
-+		 * triggered again.
-+		 */
-+		dbg_wl("cancel WL, a list is empty: free %d, used %d",
-+		       !ubi->free.rb_node, !ubi->used.rb_node);
-+		goto out_cancel;
-+	}
-+
-+	if (!ubi->scrub.rb_node) {
-+		/*
-+		 * Now pick the least worn-out used physical eraseblock and a
-+		 * highly worn-out free physical eraseblock. If the erase
-+		 * counters differ much enough, start wear-leveling.
-+		 */
-+		e1 = rb_entry(rb_first(&ubi->used), struct ubi_wl_entry, rb);
-+		e2 = find_wl_entry(&ubi->free, WL_FREE_MAX_DIFF);
-+
-+		if (!(e2->ec - e1->ec >= UBI_WL_THRESHOLD)) {
-+			dbg_wl("no WL needed: min used EC %d, max free EC %d",
-+			       e1->ec, e2->ec);
-+			goto out_cancel;
-+		}
-+		paranoid_check_in_wl_tree(e1, &ubi->used);
-+		rb_erase(&e1->rb, &ubi->used);
-+		dbg_wl("move PEB %d EC %d to PEB %d EC %d",
-+		       e1->pnum, e1->ec, e2->pnum, e2->ec);
-+	} else {
-+		/* Perform scrubbing */
-+		scrubbing = 1;
-+		e1 = rb_entry(rb_first(&ubi->scrub), struct ubi_wl_entry, rb);
-+		e2 = find_wl_entry(&ubi->free, WL_FREE_MAX_DIFF);
-+		paranoid_check_in_wl_tree(e1, &ubi->scrub);
-+		rb_erase(&e1->rb, &ubi->scrub);
-+		dbg_wl("scrub PEB %d to PEB %d", e1->pnum, e2->pnum);
-+	}
-+
-+	paranoid_check_in_wl_tree(e2, &ubi->free);
-+	rb_erase(&e2->rb, &ubi->free);
-+	ubi->move_from = e1;
-+	ubi->move_to = e2;
-+	spin_unlock(&ubi->wl_lock);
-+
-+	/*
-+	 * Now we are going to copy physical eraseblock @e1->pnum to @e2->pnum.
-+	 * We so far do not know which logical eraseblock our physical
-+	 * eraseblock (@e1) belongs to. We have to read the volume identifier
-+	 * header first.
-+	 *
-+	 * Note, we are protected from this PEB being unmapped and erased. The
-+	 * 'ubi_wl_put_peb()' would wait for moving to be finished if the PEB
-+	 * which is being moved was unmapped.
-+	 */
-+
-+	err = ubi_io_read_vid_hdr(ubi, e1->pnum, vid_hdr, 0);
-+	if (err && err != UBI_IO_BITFLIPS) {
-+		if (err == UBI_IO_PEB_FREE) {
-+			/*
-+			 * We are trying to move PEB without a VID header. UBI
-+			 * always write VID headers shortly after the PEB was
-+			 * given, so we have a situation when it did not have
-+			 * chance to write it down because it was preempted.
-+			 * Just re-schedule the work, so that next time it will
-+			 * likely have the VID header in place.
-+			 */
-+			dbg_wl("PEB %d has no VID header", e1->pnum);
-+			goto out_not_moved;
-+		}
-+
-+		ubi_err("error %d while reading VID header from PEB %d",
-+			err, e1->pnum);
-+		if (err > 0)
-+			err = -EIO;
-+		goto out_error;
-+	}
-+
-+	err = ubi_eba_copy_leb(ubi, e1->pnum, e2->pnum, vid_hdr);
-+	if (err) {
-+
-+		if (err < 0)
-+			goto out_error;
-+		if (err == 1)
-+			goto out_not_moved;
-+
-+		/*
-+		 * For some reason the LEB was not moved - it might be because
-+		 * the volume is being deleted. We should prevent this PEB from
-+		 * being selected for wear-levelling movement for some "time",
-+		 * so put it to the protection tree.
-+		 */
-+
-+		dbg_wl("cancelled moving PEB %d", e1->pnum);
-+		pe = kmalloc(sizeof(struct ubi_wl_prot_entry), GFP_NOFS);
-+		if (!pe) {
-+			err = -ENOMEM;
-+			goto out_error;
-+		}
-+
-+		protect = 1;
-+	}
-+
-+	ubi_free_vid_hdr(ubi, vid_hdr);
-+	spin_lock(&ubi->wl_lock);
-+	if (protect)
-+		prot_tree_add(ubi, e1, pe, protect);
-+	if (!ubi->move_to_put)
-+		wl_tree_add(e2, &ubi->used);
-+	else
-+		put = 1;
-+	ubi->move_from = ubi->move_to = NULL;
-+	ubi->move_to_put = ubi->wl_scheduled = 0;
-+	spin_unlock(&ubi->wl_lock);
-+
-+	if (put) {
-+		/*
-+		 * Well, the target PEB was put meanwhile, schedule it for
-+		 * erasure.
-+		 */
-+		dbg_wl("PEB %d was put meanwhile, erase", e2->pnum);
-+		err = schedule_erase(ubi, e2, 0);
-+		if (err)
-+			goto out_error;
-+	}
-+
-+	if (!protect) {
-+		err = schedule_erase(ubi, e1, 0);
-+		if (err)
-+			goto out_error;
-+	}
-+
-+
-+	dbg_wl("done");
-+	mutex_unlock(&ubi->move_mutex);
-+	return 0;
-+
-+	/*
-+	 * For some reasons the LEB was not moved, might be an error, might be
-+	 * something else. @e1 was not changed, so return it back. @e2 might
-+	 * be changed, schedule it for erasure.
-+	 */
-+out_not_moved:
-+	ubi_free_vid_hdr(ubi, vid_hdr);
-+	spin_lock(&ubi->wl_lock);
-+	if (scrubbing)
-+		wl_tree_add(e1, &ubi->scrub);
-+	else
-+		wl_tree_add(e1, &ubi->used);
-+	ubi->move_from = ubi->move_to = NULL;
-+	ubi->move_to_put = ubi->wl_scheduled = 0;
-+	spin_unlock(&ubi->wl_lock);
-+
-+	err = schedule_erase(ubi, e2, 0);
-+	if (err)
-+		goto out_error;
-+
-+	mutex_unlock(&ubi->move_mutex);
-+	return 0;
-+
-+out_error:
-+	ubi_err("error %d while moving PEB %d to PEB %d",
-+		err, e1->pnum, e2->pnum);
-+
-+	ubi_free_vid_hdr(ubi, vid_hdr);
-+	spin_lock(&ubi->wl_lock);
-+	ubi->move_from = ubi->move_to = NULL;
-+	ubi->move_to_put = ubi->wl_scheduled = 0;
-+	spin_unlock(&ubi->wl_lock);
-+
-+	kmem_cache_free(ubi_wl_entry_slab, e1);
-+	kmem_cache_free(ubi_wl_entry_slab, e2);
-+	ubi_ro_mode(ubi);
-+
-+	mutex_unlock(&ubi->move_mutex);
-+	return err;
-+
-+out_cancel:
-+	ubi->wl_scheduled = 0;
-+	spin_unlock(&ubi->wl_lock);
-+	mutex_unlock(&ubi->move_mutex);
-+	ubi_free_vid_hdr(ubi, vid_hdr);
-+	return 0;
-+}
-+
-+/**
-+ * ensure_wear_leveling - schedule wear-leveling if it is needed.
-+ * @ubi: UBI device description object
-+ *
-+ * This function checks if it is time to start wear-leveling and schedules it
-+ * if yes. This function returns zero in case of success and a negative error
-+ * code in case of failure.
-+ */
-+static int ensure_wear_leveling(struct ubi_device *ubi)
-+{
-+	int err = 0;
-+	struct ubi_wl_entry *e1;
-+	struct ubi_wl_entry *e2;
-+	struct ubi_work *wrk;
-+
-+	spin_lock(&ubi->wl_lock);
-+	if (ubi->wl_scheduled)
-+		/* Wear-leveling is already in the work queue */
-+		goto out_unlock;
-+
-+	/*
-+	 * If the ubi->scrub tree is not empty, scrubbing is needed, and the
-+	 * the WL worker has to be scheduled anyway.
-+	 */
-+	if (!ubi->scrub.rb_node) {
-+		if (!ubi->used.rb_node || !ubi->free.rb_node)
-+			/* No physical eraseblocks - no deal */
-+			goto out_unlock;
-+
-+		/*
-+		 * We schedule wear-leveling only if the difference between the
-+		 * lowest erase counter of used physical eraseblocks and a high
-+		 * erase counter of free physical eraseblocks is greater then
-+		 * %UBI_WL_THRESHOLD.
-+		 */
-+		e1 = rb_entry(rb_first(&ubi->used), struct ubi_wl_entry, rb);
-+		e2 = find_wl_entry(&ubi->free, WL_FREE_MAX_DIFF);
-+
-+		if (!(e2->ec - e1->ec >= UBI_WL_THRESHOLD))
-+			goto out_unlock;
-+		dbg_wl("schedule wear-leveling");
-+	} else
-+		dbg_wl("schedule scrubbing");
-+
-+	ubi->wl_scheduled = 1;
-+	spin_unlock(&ubi->wl_lock);
-+
-+	wrk = kmalloc(sizeof(struct ubi_work), GFP_NOFS);
-+	if (!wrk) {
-+		err = -ENOMEM;
-+		goto out_cancel;
-+	}
-+
-+	wrk->func = &wear_leveling_worker;
-+	schedule_ubi_work(ubi, wrk);
-+	return err;
-+
-+out_cancel:
-+	spin_lock(&ubi->wl_lock);
-+	ubi->wl_scheduled = 0;
-+out_unlock:
-+	spin_unlock(&ubi->wl_lock);
-+	return err;
-+}
-+
-+/**
-+ * erase_worker - physical eraseblock erase worker function.
-+ * @ubi: UBI device description object
-+ * @wl_wrk: the work object
-+ * @cancel: non-zero if the worker has to free memory and exit
-+ *
-+ * This function erases a physical eraseblock and perform torture testing if
-+ * needed. It also takes care about marking the physical eraseblock bad if
-+ * needed. Returns zero in case of success and a negative error code in case of
-+ * failure.
-+ */
-+static int erase_worker(struct ubi_device *ubi, struct ubi_work *wl_wrk,
-+			int cancel)
-+{
-+	struct ubi_wl_entry *e = wl_wrk->e;
-+	int pnum = e->pnum, err, need;
-+
-+	if (cancel) {
-+		dbg_wl("cancel erasure of PEB %d EC %d", pnum, e->ec);
-+		kfree(wl_wrk);
-+		kmem_cache_free(ubi_wl_entry_slab, e);
-+		return 0;
-+	}
-+
-+	dbg_wl("erase PEB %d EC %d", pnum, e->ec);
-+
-+	err = sync_erase(ubi, e, wl_wrk->torture);
-+	if (!err) {
-+		/* Fine, we've erased it successfully */
-+		kfree(wl_wrk);
-+
-+		spin_lock(&ubi->wl_lock);
-+		ubi->abs_ec += 1;
-+		wl_tree_add(e, &ubi->free);
-+		spin_unlock(&ubi->wl_lock);
-+
-+		/*
-+		 * One more erase operation has happened, take care about protected
-+		 * physical eraseblocks.
-+		 */
-+		check_protection_over(ubi);
-+
-+		/* And take care about wear-leveling */
-+		err = ensure_wear_leveling(ubi);
-+		return err;
-+	}
-+
-+	ubi_err("failed to erase PEB %d, error %d", pnum, err);
-+	kfree(wl_wrk);
-+	kmem_cache_free(ubi_wl_entry_slab, e);
-+
-+	if (err == -EINTR || err == -ENOMEM || err == -EAGAIN ||
-+	    err == -EBUSY) {
-+		int err1;
-+
-+		/* Re-schedule the LEB for erasure */
-+		err1 = schedule_erase(ubi, e, 0);
-+		if (err1) {
-+			err = err1;
-+			goto out_ro;
-+		}
-+		return err;
-+	} else if (err != -EIO) {
-+		/*
-+		 * If this is not %-EIO, we have no idea what to do. Scheduling
-+		 * this physical eraseblock for erasure again would cause
-+		 * errors again and again. Well, lets switch to RO mode.
-+		 */
-+		goto out_ro;
-+	}
-+
-+	/* It is %-EIO, the PEB went bad */
-+
-+	if (!ubi->bad_allowed) {
-+		ubi_err("bad physical eraseblock %d detected", pnum);
-+		goto out_ro;
-+	}
-+
-+	spin_lock(&ubi->volumes_lock);
-+	need = ubi->beb_rsvd_level - ubi->beb_rsvd_pebs + 1;
-+	if (need > 0) {
-+		need = ubi->avail_pebs >= need ? need : ubi->avail_pebs;
-+		ubi->avail_pebs -= need;
-+		ubi->rsvd_pebs += need;
-+		ubi->beb_rsvd_pebs += need;
-+		if (need > 0)
-+			ubi_msg("reserve more %d PEBs", need);
-+	}
-+
-+	if (ubi->beb_rsvd_pebs == 0) {
-+		spin_unlock(&ubi->volumes_lock);
-+		ubi_err("no reserved physical eraseblocks");
-+		goto out_ro;
-+	}
-+
-+	spin_unlock(&ubi->volumes_lock);
-+	ubi_msg("mark PEB %d as bad", pnum);
-+
-+	err = ubi_io_mark_bad(ubi, pnum);
-+	if (err)
-+		goto out_ro;
-+
-+	spin_lock(&ubi->volumes_lock);
-+	ubi->beb_rsvd_pebs -= 1;
-+	ubi->bad_peb_count += 1;
-+	ubi->good_peb_count -= 1;
-+	ubi_calculate_reserved(ubi);
-+	if (ubi->beb_rsvd_pebs == 0)
-+		ubi_warn("last PEB from the reserved pool was used");
-+	spin_unlock(&ubi->volumes_lock);
-+
-+	return err;
-+
-+out_ro:
-+	ubi_ro_mode(ubi);
-+	return err;
-+}
-+
-+/**
-+ * ubi_wl_put_peb - return a physical eraseblock to the wear-leveling unit.
-+ * @ubi: UBI device description object
-+ * @pnum: physical eraseblock to return
-+ * @torture: if this physical eraseblock has to be tortured
-+ *
-+ * This function is called to return physical eraseblock @pnum to the pool of
-+ * free physical eraseblocks. The @torture flag has to be set if an I/O error
-+ * occurred to this @pnum and it has to be tested. This function returns zero
-+ * in case of success, and a negative error code in case of failure.
-+ */
-+int ubi_wl_put_peb(struct ubi_device *ubi, int pnum, int torture)
-+{
-+	int err;
-+	struct ubi_wl_entry *e;
-+
-+	dbg_wl("PEB %d", pnum);
-+	ubi_assert(pnum >= 0);
-+	ubi_assert(pnum < ubi->peb_count);
-+
-+retry:
-+	spin_lock(&ubi->wl_lock);
-+	e = ubi->lookuptbl[pnum];
-+	if (e == ubi->move_from) {
-+		/*
-+		 * User is putting the physical eraseblock which was selected to
-+		 * be moved. It will be scheduled for erasure in the
-+		 * wear-leveling worker.
-+		 */
-+		dbg_wl("PEB %d is being moved, wait", pnum);
-+		spin_unlock(&ubi->wl_lock);
-+
-+		/* Wait for the WL worker by taking the @ubi->move_mutex */
-+		mutex_lock(&ubi->move_mutex);
-+		mutex_unlock(&ubi->move_mutex);
-+		goto retry;
-+	} else if (e == ubi->move_to) {
-+		/*
-+		 * User is putting the physical eraseblock which was selected
-+		 * as the target the data is moved to. It may happen if the EBA
-+		 * unit already re-mapped the LEB in 'ubi_eba_copy_leb()' but
-+		 * the WL unit has not put the PEB to the "used" tree yet, but
-+		 * it is about to do this. So we just set a flag which will
-+		 * tell the WL worker that the PEB is not needed anymore and
-+		 * should be scheduled for erasure.
-+		 */
-+		dbg_wl("PEB %d is the target of data moving", pnum);
-+		ubi_assert(!ubi->move_to_put);
-+		ubi->move_to_put = 1;
-+		spin_unlock(&ubi->wl_lock);
-+		return 0;
-+	} else {
-+		if (in_wl_tree(e, &ubi->used)) {
-+			paranoid_check_in_wl_tree(e, &ubi->used);
-+			rb_erase(&e->rb, &ubi->used);
-+		} else if (in_wl_tree(e, &ubi->scrub)) {
-+			paranoid_check_in_wl_tree(e, &ubi->scrub);
-+			rb_erase(&e->rb, &ubi->scrub);
-+		} else {
-+			err = prot_tree_del(ubi, e->pnum);
-+			if (err) {
-+				ubi_err("PEB %d not found", pnum);
-+				ubi_ro_mode(ubi);
-+				spin_unlock(&ubi->wl_lock);
-+				return err;
++			} else if (ret < 0) {
++				printf("\n%s: MTD get bad block failed: %d\n",
++				       mtd_device,
++				       ret);
++				return -1;
 +			}
 +		}
-+	}
-+	spin_unlock(&ubi->wl_lock);
 +
-+	err = schedule_erase(ubi, e, torture);
-+	if (err) {
-+		spin_lock(&ubi->wl_lock);
-+		wl_tree_add(e, &ubi->used);
-+		spin_unlock(&ubi->wl_lock);
-+	}
-+
-+	return err;
-+}
-+
-+/**
-+ * ubi_wl_scrub_peb - schedule a physical eraseblock for scrubbing.
-+ * @ubi: UBI device description object
-+ * @pnum: the physical eraseblock to schedule
-+ *
-+ * If a bit-flip in a physical eraseblock is detected, this physical eraseblock
-+ * needs scrubbing. This function schedules a physical eraseblock for
-+ * scrubbing which is done in background. This function returns zero in case of
-+ * success and a negative error code in case of failure.
-+ */
-+int ubi_wl_scrub_peb(struct ubi_device *ubi, int pnum)
-+{
-+	struct ubi_wl_entry *e;
-+
-+	ubi_msg("schedule PEB %d for scrubbing", pnum);
-+
-+retry:
-+	spin_lock(&ubi->wl_lock);
-+	e = ubi->lookuptbl[pnum];
-+	if (e == ubi->move_from || in_wl_tree(e, &ubi->scrub)) {
-+		spin_unlock(&ubi->wl_lock);
-+		return 0;
-+	}
-+
-+	if (e == ubi->move_to) {
-+		/*
-+		 * This physical eraseblock was used to move data to. The data
-+		 * was moved but the PEB was not yet inserted to the proper
-+		 * tree. We should just wait a little and let the WL worker
-+		 * proceed.
-+		 */
-+		spin_unlock(&ubi->wl_lock);
-+		dbg_wl("the PEB %d is not in proper tree, retry", pnum);
-+		yield();
-+		goto retry;
-+	}
-+
-+	if (in_wl_tree(e, &ubi->used)) {
-+		paranoid_check_in_wl_tree(e, &ubi->used);
-+		rb_erase(&e->rb, &ubi->used);
-+	} else {
-+		int err;
-+
-+		err = prot_tree_del(ubi, e->pnum);
-+		if (err) {
-+			ubi_err("PEB %d not found", pnum);
-+			ubi_ro_mode(ubi);
-+			spin_unlock(&ubi->wl_lock);
-+			return err;
-+		}
-+	}
-+
-+	wl_tree_add(e, &ubi->scrub);
-+	spin_unlock(&ubi->wl_lock);
-+
-+	/*
-+	 * Technically scrubbing is the same as wear-leveling, so it is done
-+	 * by the WL worker.
-+	 */
-+	return ensure_wear_leveling(ubi);
-+}
-+
-+/**
-+ * ubi_wl_flush - flush all pending works.
-+ * @ubi: UBI device description object
-+ *
-+ * This function returns zero in case of success and a negative error code in
-+ * case of failure.
-+ */
-+int ubi_wl_flush(struct ubi_device *ubi)
-+{
-+	int err;
-+
-+	/*
-+	 * Erase while the pending works queue is not empty, but not more then
-+	 * the number of currently pending works.
-+	 */
-+	dbg_wl("flush (%d pending works)", ubi->works_count);
-+	while (ubi->works_count) {
-+		err = do_work(ubi);
-+		if (err)
-+			return err;
-+	}
-+
-+	/*
-+	 * Make sure all the works which have been done in parallel are
-+	 * finished.
-+	 */
-+	down_write(&ubi->work_sem);
-+	up_write(&ubi->work_sem);
-+
-+	/*
-+	 * And in case last was the WL worker and it cancelled the LEB
-+	 * movement, flush again.
-+	 */
-+	while (ubi->works_count) {
-+		dbg_wl("flush more (%d pending works)", ubi->works_count);
-+		err = do_work(ubi);
-+		if (err)
-+			return err;
-+	}
-+
-+	return 0;
-+}
-+
-+/**
-+ * tree_destroy - destroy an RB-tree.
-+ * @root: the root of the tree to destroy
-+ */
-+static void tree_destroy(struct rb_root *root)
-+{
-+	struct rb_node *rb;
-+	struct ubi_wl_entry *e;
-+
-+	rb = root->rb_node;
-+	while (rb) {
-+		if (rb->rb_left)
-+			rb = rb->rb_left;
-+		else if (rb->rb_right)
-+			rb = rb->rb_right;
-+		else {
-+			e = rb_entry(rb, struct ubi_wl_entry, rb);
-+
-+			rb = rb_parent(rb);
-+			if (rb) {
-+				if (rb->rb_left == &e->rb)
-+					rb->rb_left = NULL;
-+				else
-+					rb->rb_right = NULL;
-+			}
-+
-+			kmem_cache_free(ubi_wl_entry_slab, e);
-+		}
-+	}
-+}
-+
-+/**
-+ * ubi_thread - UBI background thread.
-+ * @u: the UBI device description object pointer
-+ */
-+int ubi_thread(void *u)
-+{
-+	int failures = 0;
-+	struct ubi_device *ubi = u;
-+
-+	ubi_msg("background thread \"%s\" started, PID %d",
-+		ubi->bgt_name, task_pid_nr(current));
-+
-+	set_freezable();
-+	for (;;) {
-+		int err;
-+
-+		if (kthread_should_stop())
-+			break;
-+
-+		if (try_to_freeze())
-+			continue;
-+
-+		spin_lock(&ubi->wl_lock);
-+		if (list_empty(&ubi->works) || ubi->ro_mode ||
-+			       !ubi->thread_enabled) {
-+			set_current_state(TASK_INTERRUPTIBLE);
-+			spin_unlock(&ubi->wl_lock);
-+			schedule();
++		result = meminfo->erase(meminfo, &erase);
++		if (result != 0) {
++			printf("\n%s: MTD Erase failure: %d\n",
++			       mtd_device, result);
 +			continue;
 +		}
-+		spin_unlock(&ubi->wl_lock);
 +
-+		err = do_work(ubi);
-+		if (err) {
-+			ubi_err("%s: work failed with error code %d",
-+				ubi->bgt_name, err);
-+			if (failures++ > WL_MAX_FAILURES) {
-+				/*
-+				 * Too many failures, disable the thread and
-+				 * switch to read-only mode.
-+				 */
-+				ubi_msg("%s: %d consecutive failures",
-+					ubi->bgt_name, WL_MAX_FAILURES);
-+				ubi_ro_mode(ubi);
-+				break;
-+			}
-+		} else
-+			failures = 0;
++		/* format for JFFS2 ? */
++		if (opts->jffs2) {
 +
-+		cond_resched();
-+	}
-+
-+	dbg_wl("background thread \"%s\" is killed", ubi->bgt_name);
-+	return 0;
-+}
-+
-+/**
-+ * cancel_pending - cancel all pending works.
-+ * @ubi: UBI device description object
-+ */
-+static void cancel_pending(struct ubi_device *ubi)
-+{
-+	while (!list_empty(&ubi->works)) {
-+		struct ubi_work *wrk;
-+
-+		wrk = list_entry(ubi->works.next, struct ubi_work, list);
-+		list_del(&wrk->list);
-+		wrk->func(ubi, wrk, 1);
-+		ubi->works_count -= 1;
-+		ubi_assert(ubi->works_count >= 0);
-+	}
-+}
-+
-+/**
-+ * ubi_wl_init_scan - initialize the wear-leveling unit using scanning
-+ * information.
-+ * @ubi: UBI device description object
-+ * @si: scanning information
-+ *
-+ * This function returns zero in case of success, and a negative error code in
-+ * case of failure.
-+ */
-+int ubi_wl_init_scan(struct ubi_device *ubi, struct ubi_scan_info *si)
-+{
-+	int err;
-+	struct rb_node *rb1, *rb2;
-+	struct ubi_scan_volume *sv;
-+	struct ubi_scan_leb *seb, *tmp;
-+	struct ubi_wl_entry *e;
-+
-+
-+	ubi->used = ubi->free = ubi->scrub = RB_ROOT;
-+	ubi->prot.pnum = ubi->prot.aec = RB_ROOT;
-+	spin_lock_init(&ubi->wl_lock);
-+	mutex_init(&ubi->move_mutex);
-+	init_rwsem(&ubi->work_sem);
-+	ubi->max_ec = si->max_ec;
-+	INIT_LIST_HEAD(&ubi->works);
-+
-+	sprintf(ubi->bgt_name, UBI_BGT_NAME_PATTERN, ubi->ubi_num);
-+
-+	err = -ENOMEM;
-+	ubi->lookuptbl = kzalloc(ubi->peb_count * sizeof(void *), GFP_KERNEL);
-+	if (!ubi->lookuptbl)
-+		return err;
-+
-+	list_for_each_entry_safe(seb, tmp, &si->erase, u.list) {
-+		cond_resched();
-+
-+		e = kmem_cache_alloc(ubi_wl_entry_slab, GFP_KERNEL);
-+		if (!e)
-+			goto out_free;
-+
-+		e->pnum = seb->pnum;
-+		e->ec = seb->ec;
-+		ubi->lookuptbl[e->pnum] = e;
-+		if (schedule_erase(ubi, e, 0)) {
-+			kmem_cache_free(ubi_wl_entry_slab, e);
-+			goto out_free;
-+		}
-+	}
-+
-+	list_for_each_entry(seb, &si->free, u.list) {
-+		cond_resched();
-+
-+		e = kmem_cache_alloc(ubi_wl_entry_slab, GFP_KERNEL);
-+		if (!e)
-+			goto out_free;
-+
-+		e->pnum = seb->pnum;
-+		e->ec = seb->ec;
-+		ubi_assert(e->ec >= 0);
-+		wl_tree_add(e, &ubi->free);
-+		ubi->lookuptbl[e->pnum] = e;
-+	}
-+
-+	list_for_each_entry(seb, &si->corr, u.list) {
-+		cond_resched();
-+
-+		e = kmem_cache_alloc(ubi_wl_entry_slab, GFP_KERNEL);
-+		if (!e)
-+			goto out_free;
-+
-+		e->pnum = seb->pnum;
-+		e->ec = seb->ec;
-+		ubi->lookuptbl[e->pnum] = e;
-+		if (schedule_erase(ubi, e, 0)) {
-+			kmem_cache_free(ubi_wl_entry_slab, e);
-+			goto out_free;
-+		}
-+	}
-+
-+	ubi_rb_for_each_entry(rb1, sv, &si->volumes, rb) {
-+		ubi_rb_for_each_entry(rb2, seb, &sv->root, u.rb) {
-+			cond_resched();
-+
-+			e = kmem_cache_alloc(ubi_wl_entry_slab, GFP_KERNEL);
-+			if (!e)
-+				goto out_free;
-+
-+			e->pnum = seb->pnum;
-+			e->ec = seb->ec;
-+			ubi->lookuptbl[e->pnum] = e;
-+			if (!seb->scrub) {
-+				dbg_wl("add PEB %d EC %d to the used tree",
-+				       e->pnum, e->ec);
-+				wl_tree_add(e, &ubi->used);
++			/* write cleanmarker */
++			if (isNAND) {
++				size_t written;
++				result = meminfo->write_oob(meminfo,
++							    erase.addr + clmpos,
++							    clmlen,
++							    &written,
++							    (unsigned char *)
++							    &cleanmarker);
++				if (result != 0) {
++					printf("\n%s: MTD writeoob failure: %d\n",
++					       mtd_device, result);
++					continue;
++				}
 +			} else {
-+				dbg_wl("add PEB %d EC %d to the scrub tree",
-+				       e->pnum, e->ec);
-+				wl_tree_add(e, &ubi->scrub);
++				printf("\n%s: this erase routine only supports"
++				       " NAND devices!\n",
++				       mtd_device);
++			}
++		}
++
++		if (!opts->quiet) {
++			int percent = (int)
++				((unsigned long long)
++				 (erase.addr+meminfo->erasesize-opts->offset)
++				 * 100 / erase_length);
++
++			/* output progress message only at whole percent
++			 * steps to reduce the number of messages printed
++			 * on (slow) serial consoles
++			 */
++			if (percent != percent_complete) {
++				percent_complete = percent;
++
++				printf("\rErasing at 0x%x -- %3d%% complete.",
++				       erase.addr, percent);
++
++				if (opts->jffs2 && result == 0)
++					printf(" Cleanmarker written at 0x%x.",
++					       erase.addr);
 +			}
 +		}
 +	}
++	if (!opts->quiet)
++		printf("\n");
 +
-+	if (ubi->avail_pebs < WL_RESERVED_PEBS) {
-+		ubi_err("no enough physical eraseblocks (%d, need %d)",
-+			ubi->avail_pebs, WL_RESERVED_PEBS);
-+		goto out_free;
++	if (nand_block_bad_old) {
++		struct nand_chip *priv_nand = meminfo->priv;
++
++		priv_nand->block_bad = nand_block_bad_old;
++		priv_nand->scan_bbt(meminfo);
 +	}
-+	ubi->avail_pebs -= WL_RESERVED_PEBS;
-+	ubi->rsvd_pebs += WL_RESERVED_PEBS;
-+
-+	/* Schedule wear-leveling if needed */
-+	err = ensure_wear_leveling(ubi);
-+	if (err)
-+		goto out_free;
 +
 +	return 0;
++}
 +
-+out_free:
-+	cancel_pending(ubi);
-+	tree_destroy(&ubi->used);
-+	tree_destroy(&ubi->free);
-+	tree_destroy(&ubi->scrub);
-+	kfree(ubi->lookuptbl);
-+	return err;
++#define MAX_PAGE_SIZE	2048
++#define MAX_OOB_SIZE	64
++
++/*
++ * buffer array used for writing data
++ */
++static unsigned char data_buf[MAX_PAGE_SIZE];
++static unsigned char oob_buf[MAX_OOB_SIZE];
++
++/* OOB layouts to pass into the kernel as default */
++static struct nand_oobinfo none_oobinfo = {
++	.useecc = MTD_NANDECC_OFF,
++};
++
++static struct nand_oobinfo jffs2_oobinfo = {
++	.useecc = MTD_NANDECC_PLACE,
++	.eccbytes = 6,
++	.eccpos = { 0, 1, 2, 3, 6, 7 }
++};
++
++static struct nand_oobinfo yaffs_oobinfo = {
++	.useecc = MTD_NANDECC_PLACE,
++	.eccbytes = 6,
++	.eccpos = { 8, 9, 10, 13, 14, 15}
++};
++
++static struct nand_oobinfo autoplace_oobinfo = {
++	.useecc = MTD_NANDECC_AUTOPLACE
++};
++
++/**
++ * nand_write_opts: - write image to NAND flash with support for various options
++ *
++ * @param meminfo	NAND device to erase
++ * @param opts		write options (@see nand_write_options)
++ * @return		0 in case of success
++ *
++ * This code is ported from nandwrite.c from Linux mtd utils by
++ * Steven J. Hill and Thomas Gleixner.
++ */
++int nand_write_opts(nand_info_t *meminfo, const nand_write_options_t *opts)
++{
++	int imglen = 0;
++	int pagelen;
++	int baderaseblock;
++	int blockstart = -1;
++	loff_t offs;
++	int readlen;
++	int oobinfochanged = 0;
++	int percent_complete = -1;
++	struct nand_oobinfo old_oobinfo;
++	ulong mtdoffset = opts->offset;
++	ulong erasesize_blockalign;
++	u_char *buffer = opts->buffer;
++	size_t written;
++	int result;
++
++	if (opts->pad && opts->writeoob) {
++		printf("Can't pad when oob data is present.\n");
++		return -1;
++	}
++
++	/* set erasesize to specified number of blocks - to match
++	 * jffs2 (virtual) block size */
++	if (opts->blockalign == 0) {
++		erasesize_blockalign = meminfo->erasesize;
++	} else {
++		erasesize_blockalign = meminfo->erasesize * opts->blockalign;
++	}
++
++	/* make sure device page sizes are valid */
++	if (!(meminfo->oobsize == 16 && meminfo->oobblock == 512)
++	    && !(meminfo->oobsize == 8 && meminfo->oobblock == 256)
++	    && !(meminfo->oobsize == 64 && meminfo->oobblock == 2048)) {
++		printf("Unknown flash (not normal NAND)\n");
++		return -1;
++	}
++
++	/* read the current oob info */
++	memcpy(&old_oobinfo, &meminfo->oobinfo, sizeof(old_oobinfo));
++
++	/* write without ecc? */
++	if (opts->noecc) {
++		memcpy(&meminfo->oobinfo, &none_oobinfo,
++		       sizeof(meminfo->oobinfo));
++		oobinfochanged = 1;
++	}
++
++	/* autoplace ECC? */
++	if (opts->autoplace && (old_oobinfo.useecc != MTD_NANDECC_AUTOPLACE)) {
++
++		memcpy(&meminfo->oobinfo, &autoplace_oobinfo,
++		       sizeof(meminfo->oobinfo));
++		oobinfochanged = 1;
++	}
++
++	/* force OOB layout for jffs2 or yaffs? */
++	if (opts->forcejffs2 || opts->forceyaffs) {
++		struct nand_oobinfo *oobsel =
++			opts->forcejffs2 ? &jffs2_oobinfo : &yaffs_oobinfo;
++
++		if (meminfo->oobsize == 8) {
++			if (opts->forceyaffs) {
++				printf("YAFSS cannot operate on "
++				       "256 Byte page size\n");
++				goto restoreoob;
++			}
++			/* Adjust number of ecc bytes */
++			jffs2_oobinfo.eccbytes = 3;
++		}
++
++		memcpy(&meminfo->oobinfo, oobsel, sizeof(meminfo->oobinfo));
++	}
++
++	/* get image length */
++	imglen = opts->length;
++	pagelen = meminfo->oobblock
++		+ ((opts->writeoob != 0) ? meminfo->oobsize : 0);
++
++	/* check, if file is pagealigned */
++	if ((!opts->pad) && ((imglen % pagelen) != 0)) {
++		printf("Input block length is not page aligned\n");
++		goto restoreoob;
++	}
++
++	/* check, if length fits into device */
++	if (((imglen / pagelen) * meminfo->oobblock)
++	     > (meminfo->size - opts->offset)) {
++		printf("Image %d bytes, NAND page %d bytes, "
++		       "OOB area %u bytes, device size %u bytes\n",
++		       imglen, pagelen, meminfo->oobblock, meminfo->size);
++		printf("Input block does not fit into device\n");
++		goto restoreoob;
++	}
++
++	if (!opts->quiet)
++		printf("\n");
++
++	/* get data from input and write to the device */
++	while (imglen && (mtdoffset < meminfo->size)) {
++
++		WATCHDOG_RESET ();
++
++		/*
++		 * new eraseblock, check for bad block(s). Stay in the
++		 * loop to be sure if the offset changes because of
++		 * a bad block, that the next block that will be
++		 * written to is also checked. Thus avoiding errors if
++		 * the block(s) after the skipped block(s) is also bad
++		 * (number of blocks depending on the blockalign
++		 */
++		while (blockstart != (mtdoffset & (~erasesize_blockalign+1))) {
++			blockstart = mtdoffset & (~erasesize_blockalign+1);
++			offs = blockstart;
++			baderaseblock = 0;
++
++			/* check all the blocks in an erase block for
++			 * bad blocks */
++			do {
++				int ret = meminfo->block_isbad(meminfo, offs);
++
++				if (ret < 0) {
++					printf("Bad block check failed\n");
++					goto restoreoob;
++				}
++				if (ret == 1) {
++					baderaseblock = 1;
++					if (!opts->quiet)
++						printf("\rBad block at 0x%lx "
++						       "in erase block from "
++						       "0x%x will be skipped\n",
++						       (long) offs,
++						       blockstart);
++				}
++
++				if (baderaseblock) {
++					mtdoffset = blockstart
++						+ erasesize_blockalign;
++				}
++				offs +=	 erasesize_blockalign
++					/ opts->blockalign;
++			} while (offs < blockstart + erasesize_blockalign);
++		}
++
++		readlen = meminfo->oobblock;
++		if (opts->pad && (imglen < readlen)) {
++			readlen = imglen;
++			memset(data_buf + readlen, 0xff,
++			       meminfo->oobblock - readlen);
++		}
++
++		/* read page data from input memory buffer */
++		memcpy(data_buf, buffer, readlen);
++		buffer += readlen;
++
++		if (opts->writeoob) {
++			/* read OOB data from input memory block, exit
++			 * on failure */
++			memcpy(oob_buf, buffer, meminfo->oobsize);
++			buffer += meminfo->oobsize;
++
++			/* write OOB data first, as ecc will be placed
++			 * in there*/
++			result = meminfo->write_oob(meminfo,
++						    mtdoffset,
++						    meminfo->oobsize,
++						    &written,
++						    (unsigned char *)
++						    &oob_buf);
++
++			if (result != 0) {
++				printf("\nMTD writeoob failure: %d\n",
++				       result);
++				goto restoreoob;
++			}
++			imglen -= meminfo->oobsize;
++		}
++
++		/* write out the page data */
++		result = meminfo->write(meminfo,
++					mtdoffset,
++					meminfo->oobblock,
++					&written,
++					(unsigned char *) &data_buf);
++
++		if (result != 0) {
++			printf("writing NAND page at offset 0x%lx failed\n",
++			       mtdoffset);
++			goto restoreoob;
++		}
++		imglen -= readlen;
++
++		if (!opts->quiet) {
++			int percent = (int)
++				((unsigned long long)
++				 (opts->length-imglen) * 100
++				 / opts->length);
++			/* output progress message only at whole percent
++			 * steps to reduce the number of messages printed
++			 * on (slow) serial consoles
++			 */
++			if (percent != percent_complete) {
++				printf("\rWriting data at 0x%x "
++				       "-- %3d%% complete.",
++				       mtdoffset, percent);
++				percent_complete = percent;
++			}
++		}
++
++		mtdoffset += meminfo->oobblock;
++	}
++
++	if (!opts->quiet)
++		printf("\n");
++
++restoreoob:
++	if (oobinfochanged) {
++		memcpy(&meminfo->oobinfo, &old_oobinfo,
++		       sizeof(meminfo->oobinfo));
++	}
++
++	if (imglen > 0) {
++		printf("Data did not fit into device, due to bad blocks\n");
++		return -1;
++	}
++
++	/* return happy */
++	return 0;
 +}
 +
 +/**
-+ * protection_trees_destroy - destroy the protection RB-trees.
-+ * @ubi: UBI device description object
++ * nand_read_opts: - read image from NAND flash with support for various options
++ *
++ * @param meminfo	NAND device to erase
++ * @param opts		read options (@see struct nand_read_options)
++ * @return		0 in case of success
++ *
 + */
-+static void protection_trees_destroy(struct ubi_device *ubi)
++int nand_read_opts(nand_info_t *meminfo, const nand_read_options_t *opts)
 +{
-+	struct rb_node *rb;
-+	struct ubi_wl_prot_entry *pe;
++	int imglen = opts->length;
++	int pagelen;
++	int baderaseblock;
++	int blockstart = -1;
++	int percent_complete = -1;
++	loff_t offs;
++	size_t readlen;
++	ulong mtdoffset = opts->offset;
++	u_char *buffer = opts->buffer;
++	int result;
 +
-+	rb = ubi->prot.aec.rb_node;
-+	while (rb) {
-+		if (rb->rb_left)
-+			rb = rb->rb_left;
-+		else if (rb->rb_right)
-+			rb = rb->rb_right;
-+		else {
-+			pe = rb_entry(rb, struct ubi_wl_prot_entry, rb_aec);
++	/* make sure device page sizes are valid */
++	if (!(meminfo->oobsize == 16 && meminfo->oobblock == 512)
++	    && !(meminfo->oobsize == 8 && meminfo->oobblock == 256)
++	    && !(meminfo->oobsize == 64 && meminfo->oobblock == 2048)) {
++		printf("Unknown flash (not normal NAND)\n");
++		return -1;
++	}
 +
-+			rb = rb_parent(rb);
-+			if (rb) {
-+				if (rb->rb_left == &pe->rb_aec)
-+					rb->rb_left = NULL;
-+				else
-+					rb->rb_right = NULL;
++	pagelen = meminfo->oobblock
++		+ ((opts->readoob != 0) ? meminfo->oobsize : 0);
++
++	/* check, if length is not larger than device */
++	if (((imglen / pagelen) * meminfo->oobblock)
++	     > (meminfo->size - opts->offset)) {
++		printf("Image %d bytes, NAND page %d bytes, "
++		       "OOB area %u bytes, device size %u bytes\n",
++		       imglen, pagelen, meminfo->oobblock, meminfo->size);
++		printf("Input block is larger than device\n");
++		return -1;
++	}
++
++	if (!opts->quiet)
++		printf("\n");
++
++	/* get data from input and write to the device */
++	while (imglen && (mtdoffset < meminfo->size)) {
++
++		WATCHDOG_RESET ();
++
++		/*
++		 * new eraseblock, check for bad block(s). Stay in the
++		 * loop to be sure if the offset changes because of
++		 * a bad block, that the next block that will be
++		 * written to is also checked. Thus avoiding errors if
++		 * the block(s) after the skipped block(s) is also bad
++		 * (number of blocks depending on the blockalign
++		 */
++		while (blockstart != (mtdoffset & (~meminfo->erasesize+1))) {
++			blockstart = mtdoffset & (~meminfo->erasesize+1);
++			offs = blockstart;
++			baderaseblock = 0;
++
++			/* check all the blocks in an erase block for
++			 * bad blocks */
++			do {
++				int ret = meminfo->block_isbad(meminfo, offs);
++
++				if (ret < 0) {
++					printf("Bad block check failed\n");
++					return -1;
++				}
++				if (ret == 1) {
++					baderaseblock = 1;
++					if (!opts->quiet)
++						printf("\rBad block at 0x%lx "
++						       "in erase block from "
++						       "0x%x will be skipped\n",
++						       (long) offs,
++						       blockstart);
++				}
++
++				if (baderaseblock) {
++					mtdoffset = blockstart
++						+ meminfo->erasesize;
++				}
++				offs +=	 meminfo->erasesize;
++
++			} while (offs < blockstart + meminfo->erasesize);
++		}
++
++
++		/* read page data to memory buffer */
++		result = meminfo->read(meminfo,
++				       mtdoffset,
++				       meminfo->oobblock,
++				       &readlen,
++				       (unsigned char *) &data_buf);
++
++		if (result != 0) {
++			printf("reading NAND page at offset 0x%lx failed\n",
++			       mtdoffset);
++			return -1;
++		}
++
++		if (imglen < readlen) {
++			readlen = imglen;
++		}
++
++		memcpy(buffer, data_buf, readlen);
++		buffer += readlen;
++		imglen -= readlen;
++
++		if (opts->readoob) {
++			result = meminfo->read_oob(meminfo,
++						   mtdoffset,
++						   meminfo->oobsize,
++						   &readlen,
++						   (unsigned char *)
++						   &oob_buf);
++
++			if (result != 0) {
++				printf("\nMTD readoob failure: %d\n",
++				       result);
++				return -1;
 +			}
 +
-+			kmem_cache_free(ubi_wl_entry_slab, pe->e);
-+			kfree(pe);
++
++			if (imglen < readlen) {
++				readlen = imglen;
++			}
++
++			memcpy(buffer, oob_buf, readlen);
++
++			buffer += readlen;
++			imglen -= readlen;
 +		}
-+	}
-+}
 +
-+/**
-+ * ubi_wl_close - close the wear-leveling unit.
-+ * @ubi: UBI device description object
-+ */
-+void ubi_wl_close(struct ubi_device *ubi)
-+{
-+	dbg_wl("close the UBI wear-leveling unit");
++		if (!opts->quiet) {
++			int percent = (int)
++				((unsigned long long)
++				 (opts->length-imglen) * 100
++				 / opts->length);
++			/* output progress message only at whole percent
++			 * steps to reduce the number of messages printed
++			 * on (slow) serial consoles
++			 */
++			if (percent != percent_complete) {
++			if (!opts->quiet)
++				printf("\rReading data from 0x%x "
++				       "-- %3d%% complete.",
++				       mtdoffset, percent);
++				percent_complete = percent;
++			}
++		}
 +
-+	cancel_pending(ubi);
-+	protection_trees_destroy(ubi);
-+	tree_destroy(&ubi->used);
-+	tree_destroy(&ubi->free);
-+	tree_destroy(&ubi->scrub);
-+	kfree(ubi->lookuptbl);
-+}
-+
-+#ifdef CONFIG_MTD_UBI_DEBUG_PARANOID
-+
-+/**
-+ * paranoid_check_ec - make sure that the erase counter of a physical eraseblock
-+ * is correct.
-+ * @ubi: UBI device description object
-+ * @pnum: the physical eraseblock number to check
-+ * @ec: the erase counter to check
-+ *
-+ * This function returns zero if the erase counter of physical eraseblock @pnum
-+ * is equivalent to @ec, %1 if not, and a negative error code if an error
-+ * occurred.
-+ */
-+static int paranoid_check_ec(struct ubi_device *ubi, int pnum, int ec)
-+{
-+	int err;
-+	long long read_ec;
-+	struct ubi_ec_hdr *ec_hdr;
-+
-+	ec_hdr = kzalloc(ubi->ec_hdr_alsize, GFP_NOFS);
-+	if (!ec_hdr)
-+		return -ENOMEM;
-+
-+	err = ubi_io_read_ec_hdr(ubi, pnum, ec_hdr, 0);
-+	if (err && err != UBI_IO_BITFLIPS) {
-+		/* The header does not have to exist */
-+		err = 0;
-+		goto out_free;
++		mtdoffset += meminfo->oobblock;
 +	}
 +
-+	read_ec = be64_to_cpu(ec_hdr->ec);
-+	if (ec != read_ec) {
-+		ubi_err("paranoid check failed for PEB %d", pnum);
-+		ubi_err("read EC is %lld, should be %d", read_ec, ec);
-+		ubi_dbg_dump_stack();
-+		err = 1;
-+	} else
-+		err = 0;
++	if (!opts->quiet)
++		printf("\n");
 +
-+out_free:
-+	kfree(ec_hdr);
-+	return err;
++	if (imglen > 0) {
++		printf("Could not read entire image due to bad blocks\n");
++		return -1;
++	}
++
++	/* return happy */
++	return 0;
 +}
 +
++/******************************************************************************
++ * Support for locking / unlocking operations of some NAND devices
++ *****************************************************************************/
++
++#define NAND_CMD_LOCK		0x2a
++#define NAND_CMD_LOCK_TIGHT	0x2c
++#define NAND_CMD_UNLOCK1	0x23
++#define NAND_CMD_UNLOCK2	0x24
++#define NAND_CMD_LOCK_STATUS	0x7a
++
 +/**
-+ * paranoid_check_in_wl_tree - make sure that a wear-leveling entry is present
-+ * in a WL RB-tree.
-+ * @e: the wear-leveling entry to check
-+ * @root: the root of the tree
++ * nand_lock: Set all pages of NAND flash chip to the LOCK or LOCK-TIGHT
++ *	      state
 + *
-+ * This function returns zero if @e is in the @root RB-tree and %1 if it
-+ * is not.
++ * @param meminfo	nand mtd instance
++ * @param tight		bring device in lock tight mode
++ *
++ * @return		0 on success, -1 in case of error
++ *
++ * The lock / lock-tight command only applies to the whole chip. To get some
++ * parts of the chip lock and others unlocked use the following sequence:
++ *
++ * - Lock all pages of the chip using nand_lock(mtd, 0) (or the lockpre pin)
++ * - Call nand_unlock() once for each consecutive area to be unlocked
++ * - If desired: Bring the chip to the lock-tight state using nand_lock(mtd, 1)
++ *
++ *   If the device is in lock-tight state software can't change the
++ *   current active lock/unlock state of all pages. nand_lock() / nand_unlock()
++ *   calls will fail. It is only posible to leave lock-tight state by
++ *   an hardware signal (low pulse on _WP pin) or by power down.
 + */
-+static int paranoid_check_in_wl_tree(struct ubi_wl_entry *e,
-+				     struct rb_root *root)
++int nand_lock(nand_info_t *meminfo, int tight)
 +{
-+	if (in_wl_tree(e, root))
-+		return 0;
++	int ret = 0;
++	int status;
++	struct nand_chip *this = meminfo->priv;
 +
-+	ubi_err("paranoid check failed for PEB %d, EC %d, RB-tree %p ",
-+		e->pnum, e->ec, root);
-+	ubi_dbg_dump_stack();
-+	return 1;
++	/* select the NAND device */
++	this->select_chip(meminfo, 0);
++
++	this->cmdfunc(meminfo,
++		      (tight ? NAND_CMD_LOCK_TIGHT : NAND_CMD_LOCK),
++		      -1, -1);
++
++	/* call wait ready function */
++	status = this->waitfunc(meminfo, this, FL_WRITING);
++
++	/* see if device thinks it succeeded */
++	if (status & 0x01) {
++		ret = -1;
++	}
++
++	/* de-select the NAND device */
++	this->select_chip(meminfo, -1);
++	return ret;
 +}
 +
-+#endif /* CONFIG_MTD_UBI_DEBUG_PARANOID */
-diff --git a/include/linux/mtd/ubi.h b/include/linux/mtd/ubi.h
-new file mode 100644
-index 0000000..2f1db31
---- /dev/null
-+++ b/include/linux/mtd/ubi.h
-@@ -0,0 +1,186 @@
-+/*
-+ * Copyright (c) International Business Machines Corp., 2006
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
-+ * the GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-+ *
-+ * Author: Artem Bityutskiy (���������������� ����������)
-+ */
-+
-+#ifndef __LINUX_UBI_H__
-+#define __LINUX_UBI_H__
-+
-+/* #include <asm/ioctl.h> */
-+#include <linux/types.h>
-+#include <mtd/ubi-user.h>
-+
-+/*
-+ * enum ubi_open_mode - UBI volume open mode constants.
-+ *
-+ * UBI_READONLY: read-only mode
-+ * UBI_READWRITE: read-write mode
-+ * UBI_EXCLUSIVE: exclusive mode
-+ */
-+enum {
-+	UBI_READONLY = 1,
-+	UBI_READWRITE,
-+	UBI_EXCLUSIVE
-+};
-+
 +/**
-+ * struct ubi_volume_info - UBI volume description data structure.
-+ * @vol_id: volume ID
-+ * @ubi_num: UBI device number this volume belongs to
-+ * @size: how many physical eraseblocks are reserved for this volume
-+ * @used_bytes: how many bytes of data this volume contains
-+ * @used_ebs: how many physical eraseblocks of this volume actually contain any
-+ * data
-+ * @vol_type: volume type (%UBI_DYNAMIC_VOLUME or %UBI_STATIC_VOLUME)
-+ * @corrupted: non-zero if the volume is corrupted (static volumes only)
-+ * @upd_marker: non-zero if the volume has update marker set
-+ * @alignment: volume alignment
-+ * @usable_leb_size: how many bytes are available in logical eraseblocks of
-+ * this volume
-+ * @name_len: volume name length
-+ * @name: volume name
-+ * @cdev: UBI volume character device major and minor numbers
++ * nand_get_lock_status: - query current lock state from one page of NAND
++ *			   flash
 + *
-+ * The @corrupted flag is only relevant to static volumes and is always zero
-+ * for dynamic ones. This is because UBI does not care about dynamic volume
-+ * data protection and only cares about protecting static volume data.
++ * @param meminfo	nand mtd instance
++ * @param offset	page address to query (muss be page aligned!)
 + *
-+ * The @upd_marker flag is set if the volume update operation was interrupted.
-+ * Before touching the volume data during the update operation, UBI first sets
-+ * the update marker flag for this volume. If the volume update operation was
-+ * further interrupted, the update marker indicates this. If the update marker
-+ * is set, the contents of the volume is certainly damaged and a new volume
-+ * update operation has to be started.
++ * @return		-1 in case of error
++ *			>0 lock status:
++ *			  bitfield with the following combinations:
++ *			  NAND_LOCK_STATUS_TIGHT: page in tight state
++ *			  NAND_LOCK_STATUS_LOCK:  page locked
++ *			  NAND_LOCK_STATUS_UNLOCK: page unlocked
 + *
-+ * To put it differently, @corrupted and @upd_marker fields have different
-+ * semantics:
-+ *     o the @corrupted flag means that this static volume is corrupted for some
-+ *       reasons, but not because an interrupted volume update
-+ *     o the @upd_marker field means that the volume is damaged because of an
-+ *       interrupted update operation.
-+ *
-+ * I.e., the @corrupted flag is never set if the @upd_marker flag is set.
-+ *
-+ * The @used_bytes and @used_ebs fields are only really needed for static
-+ * volumes and contain the number of bytes stored in this static volume and how
-+ * many eraseblock this data occupies. In case of dynamic volumes, the
-+ * @used_bytes field is equivalent to @size*@usable_leb_size, and the @used_ebs
-+ * field is equivalent to @size.
-+ *
-+ * In general, logical eraseblock size is a property of the UBI device, not
-+ * of the UBI volume. Indeed, the logical eraseblock size depends on the
-+ * physical eraseblock size and on how much bytes UBI headers consume. But
-+ * because of the volume alignment (@alignment), the usable size of logical
-+ * eraseblocks if a volume may be less. The following equation is true:
-+ * 	@usable_leb_size = LEB size - (LEB size mod @alignment),
-+ * where LEB size is the logical eraseblock size defined by the UBI device.
-+ *
-+ * The alignment is multiple to the minimal flash input/output unit size or %1
-+ * if all the available space is used.
-+ *
-+ * To put this differently, alignment may be considered is a way to change
-+ * volume logical eraseblock sizes.
 + */
-+struct ubi_volume_info {
-+	int ubi_num;
-+	int vol_id;
-+	int size;
-+	long long used_bytes;
-+	int used_ebs;
-+	int vol_type;
-+	int corrupted;
-+	int upd_marker;
-+	int alignment;
-+	int usable_leb_size;
-+	int name_len;
-+	const char *name;
-+	struct cdev *cdev;
-+};
-+
-+/**
-+ * struct ubi_device_info - UBI device description data structure.
-+ * @ubi_num: ubi device number
-+ * @leb_size: logical eraseblock size on this UBI device
-+ * @min_io_size: minimal I/O unit size
-+ * @ro_mode: if this device is in read-only mode
-+ * @cdev: UBI character device major and minor numbers
-+ *
-+ * Note, @leb_size is the logical eraseblock size offered by the UBI device.
-+ * Volumes of this UBI device may have smaller logical eraseblock size if their
-+ * alignment is not equivalent to %1.
-+ */
-+struct ubi_device_info {
-+	int ubi_num;
-+	int leb_size;
-+	int min_io_size;
-+	int ro_mode;
-+	struct cdev *cdev;
-+};
-+
-+/* UBI descriptor given to users when they open UBI volumes */
-+struct ubi_volume_desc;
-+
-+int ubi_get_device_info(int ubi_num, struct ubi_device_info *di);
-+void ubi_get_volume_info(struct ubi_volume_desc *desc,
-+			 struct ubi_volume_info *vi);
-+struct ubi_volume_desc *ubi_open_volume(int ubi_num, int vol_id, int mode);
-+struct ubi_volume_desc *ubi_open_volume_nm(int ubi_num, const char *name,
-+					   int mode);
-+void ubi_close_volume(struct ubi_volume_desc *desc);
-+int ubi_leb_read(struct ubi_volume_desc *desc, int lnum, char *buf, int offset,
-+		 int len, int check);
-+int ubi_leb_write(struct ubi_volume_desc *desc, int lnum, const void *buf,
-+		  int offset, int len, int dtype);
-+int ubi_leb_change(struct ubi_volume_desc *desc, int lnum, const void *buf,
-+		   int len, int dtype);
-+int ubi_leb_erase(struct ubi_volume_desc *desc, int lnum);
-+int ubi_leb_unmap(struct ubi_volume_desc *desc, int lnum);
-+int ubi_leb_map(struct ubi_volume_desc *desc, int lnum, int dtype);
-+int ubi_is_mapped(struct ubi_volume_desc *desc, int lnum);
-+
-+/*
-+ * This function is the same as the 'ubi_leb_read()' function, but it does not
-+ * provide the checking capability.
-+ */
-+static inline int ubi_read(struct ubi_volume_desc *desc, int lnum, char *buf,
-+			   int offset, int len)
++int nand_get_lock_status(nand_info_t *meminfo, ulong offset)
 +{
-+	return ubi_leb_read(desc, lnum, buf, offset, len, 0);
++	int ret = 0;
++	int chipnr;
++	int page;
++	struct nand_chip *this = meminfo->priv;
++
++	/* select the NAND device */
++	chipnr = (int)(offset >> this->chip_shift);
++	this->select_chip(meminfo, chipnr);
++
++
++	if ((offset & (meminfo->oobblock - 1)) != 0) {
++		printf ("nand_get_lock_status: "
++			"Start address must be beginning of "
++			"nand page!\n");
++		ret = -1;
++		goto out;
++	}
++
++	/* check the Lock Status */
++	page = (int)(offset >> this->page_shift);
++	this->cmdfunc(meminfo, NAND_CMD_LOCK_STATUS, -1, page & this->pagemask);
++
++	ret = this->read_byte(meminfo) & (NAND_LOCK_STATUS_TIGHT
++					  | NAND_LOCK_STATUS_LOCK
++					  | NAND_LOCK_STATUS_UNLOCK);
++
++ out:
++	/* de-select the NAND device */
++	this->select_chip(meminfo, -1);
++	return ret;
 +}
 +
-+/*
-+ * This function is the same as the 'ubi_leb_write()' functions, but it does
-+ * not have the data type argument.
++/**
++ * nand_unlock: - Unlock area of NAND pages
++ *		  only one consecutive area can be unlocked at one time!
++ *
++ * @param meminfo	nand mtd instance
++ * @param start		start byte address
++ * @param length	number of bytes to unlock (must be a multiple of
++ *			page size nand->oobblock)
++ *
++ * @return		0 on success, -1 in case of error
 + */
-+static inline int ubi_write(struct ubi_volume_desc *desc, int lnum,
-+			    const void *buf, int offset, int len)
++int nand_unlock(nand_info_t *meminfo, ulong start, ulong length)
 +{
-+	return ubi_leb_write(desc, lnum, buf, offset, len, UBI_UNKNOWN);
++	int ret = 0;
++	int chipnr;
++	int status;
++	int page;
++	struct nand_chip *this = meminfo->priv;
++	printf ("nand_unlock: start: %08x, length: %d!\n",
++		(int)start, (int)length);
++
++	/* select the NAND device */
++	chipnr = (int)(start >> this->chip_shift);
++	this->select_chip(meminfo, chipnr);
++
++	/* check the WP bit */
++	this->cmdfunc(meminfo, NAND_CMD_STATUS, -1, -1);
++	if ((this->read_byte(meminfo) & 0x80) == 0) {
++		printf ("nand_unlock: Device is write protected!\n");
++		ret = -1;
++		goto out;
++	}
++
++	if ((start & (meminfo->oobblock - 1)) != 0) {
++		printf ("nand_unlock: Start address must be beginning of "
++			"nand page!\n");
++		ret = -1;
++		goto out;
++	}
++
++	if (length == 0 || (length & (meminfo->oobblock - 1)) != 0) {
++		printf ("nand_unlock: Length must be a multiple of nand page "
++			"size!\n");
++		ret = -1;
++		goto out;
++	}
++
++	/* submit address of first page to unlock */
++	page = (int)(start >> this->page_shift);
++	this->cmdfunc(meminfo, NAND_CMD_UNLOCK1, -1, page & this->pagemask);
++
++	/* submit ADDRESS of LAST page to unlock */
++	page += (int)(length >> this->page_shift) - 1;
++	this->cmdfunc(meminfo, NAND_CMD_UNLOCK2, -1, page & this->pagemask);
++
++	/* call wait ready function */
++	status = this->waitfunc(meminfo, this, FL_WRITING);
++	/* see if device thinks it succeeded */
++	if (status & 0x01) {
++		/* there was an error */
++		ret = -1;
++		goto out;
++	}
++
++ out:
++	/* de-select the NAND device */
++	this->select_chip(meminfo, -1);
++	return ret;
 +}
 +
-+/*
-+ * This function is the same as the 'ubi_leb_change()' functions, but it does
-+ * not have the data type argument.
-+ */
-+static inline int ubi_change(struct ubi_volume_desc *desc, int lnum,
-+				    const void *buf, int len)
-+{
-+	return ubi_leb_change(desc, lnum, buf, len, UBI_UNKNOWN);
-+}
-+
-+#endif /* !__LINUX_UBI_H__ */
-diff --git a/include/mtd/ubi-user.h b/include/mtd/ubi-user.h
-new file mode 100644
-index 0000000..a7421f1
---- /dev/null
-+++ b/include/mtd/ubi-user.h
-@@ -0,0 +1,268 @@
-+/*
-+ * Copyright (c) International Business Machines Corp., 2006
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
-+ * the GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-+ *
-+ * Author: Artem Bityutskiy (���������������� ����������)
-+ */
-+
-+#ifndef __UBI_USER_H__
-+#define __UBI_USER_H__
-+
-+/*
-+ * UBI device creation (the same as MTD device attachment)
-+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+ *
-+ * MTD devices may be attached using %UBI_IOCATT ioctl command of the UBI
-+ * control device. The caller has to properly fill and pass
-+ * &struct ubi_attach_req object - UBI will attach the MTD device specified in
-+ * the request and return the newly created UBI device number as the ioctl
-+ * return value.
-+ *
-+ * UBI device deletion (the same as MTD device detachment)
-+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+ *
-+ * An UBI device maybe deleted with %UBI_IOCDET ioctl command of the UBI
-+ * control device.
-+ *
-+ * UBI volume creation
-+ * ~~~~~~~~~~~~~~~~~~~
-+ *
-+ * UBI volumes are created via the %UBI_IOCMKVOL IOCTL command of UBI character
-+ * device. A &struct ubi_mkvol_req object has to be properly filled and a
-+ * pointer to it has to be passed to the IOCTL.
-+ *
-+ * UBI volume deletion
-+ * ~~~~~~~~~~~~~~~~~~~
-+ *
-+ * To delete a volume, the %UBI_IOCRMVOL IOCTL command of the UBI character
-+ * device should be used. A pointer to the 32-bit volume ID hast to be passed
-+ * to the IOCTL.
-+ *
-+ * UBI volume re-size
-+ * ~~~~~~~~~~~~~~~~~~
-+ *
-+ * To re-size a volume, the %UBI_IOCRSVOL IOCTL command of the UBI character
-+ * device should be used. A &struct ubi_rsvol_req object has to be properly
-+ * filled and a pointer to it has to be passed to the IOCTL.
-+ *
-+ * UBI volume update
-+ * ~~~~~~~~~~~~~~~~~
-+ *
-+ * Volume update should be done via the %UBI_IOCVOLUP IOCTL command of the
-+ * corresponding UBI volume character device. A pointer to a 64-bit update
-+ * size should be passed to the IOCTL. After this, UBI expects user to write
-+ * this number of bytes to the volume character device. The update is finished
-+ * when the claimed number of bytes is passed. So, the volume update sequence
-+ * is something like:
-+ *
-+ * fd = open("/dev/my_volume");
-+ * ioctl(fd, UBI_IOCVOLUP, &image_size);
-+ * write(fd, buf, image_size);
-+ * close(fd);
-+ *
-+ * Atomic eraseblock change
-+ * ~~~~~~~~~~~~~~~~~~~~~~~~
-+ *
-+ * Atomic eraseblock change operation is done via the %UBI_IOCEBCH IOCTL
-+ * command of the corresponding UBI volume character device. A pointer to
-+ * &struct ubi_leb_change_req has to be passed to the IOCTL. Then the user is
-+ * expected to write the requested amount of bytes. This is similar to the
-+ * "volume update" IOCTL.
-+ */
-+
-+/*
-+ * When a new UBI volume or UBI device is created, users may either specify the
-+ * volume/device number they want to create or to let UBI automatically assign
-+ * the number using these constants.
-+ */
-+#define UBI_VOL_NUM_AUTO (-1)
-+#define UBI_DEV_NUM_AUTO (-1)
-+
-+/* Maximum volume name length */
-+#define UBI_MAX_VOLUME_NAME 127
-+
-+/* IOCTL commands of UBI character devices */
-+
-+#define UBI_IOC_MAGIC 'o'
-+
-+/* Create an UBI volume */
-+#define UBI_IOCMKVOL _IOW(UBI_IOC_MAGIC, 0, struct ubi_mkvol_req)
-+/* Remove an UBI volume */
-+#define UBI_IOCRMVOL _IOW(UBI_IOC_MAGIC, 1, int32_t)
-+/* Re-size an UBI volume */
-+#define UBI_IOCRSVOL _IOW(UBI_IOC_MAGIC, 2, struct ubi_rsvol_req)
-+
-+/* IOCTL commands of the UBI control character device */
-+
-+#define UBI_CTRL_IOC_MAGIC 'o'
-+
-+/* Attach an MTD device */
-+#define UBI_IOCATT _IOW(UBI_CTRL_IOC_MAGIC, 64, struct ubi_attach_req)
-+/* Detach an MTD device */
-+#define UBI_IOCDET _IOW(UBI_CTRL_IOC_MAGIC, 65, int32_t)
-+
-+/* IOCTL commands of UBI volume character devices */
-+
-+#define UBI_VOL_IOC_MAGIC 'O'
-+
-+/* Start UBI volume update */
-+#define UBI_IOCVOLUP _IOW(UBI_VOL_IOC_MAGIC, 0, int64_t)
-+/* An eraseblock erasure command, used for debugging, disabled by default */
-+#define UBI_IOCEBER _IOW(UBI_VOL_IOC_MAGIC, 1, int32_t)
-+/* An atomic eraseblock change command */
-+#define UBI_IOCEBCH _IOW(UBI_VOL_IOC_MAGIC, 2, int32_t)
-+
-+/* Maximum MTD device name length supported by UBI */
-+#define MAX_UBI_MTD_NAME_LEN 127
-+
-+/*
-+ * UBI data type hint constants.
-+ *
-+ * UBI_LONGTERM: long-term data
-+ * UBI_SHORTTERM: short-term data
-+ * UBI_UNKNOWN: data persistence is unknown
-+ *
-+ * These constants are used when data is written to UBI volumes in order to
-+ * help the UBI wear-leveling unit to find more appropriate physical
-+ * eraseblocks.
-+ */
-+enum {
-+	UBI_LONGTERM  = 1,
-+	UBI_SHORTTERM = 2,
-+	UBI_UNKNOWN   = 3,
-+};
-+
-+/*
-+ * UBI volume type constants.
-+ *
-+ * @UBI_DYNAMIC_VOLUME: dynamic volume
-+ * @UBI_STATIC_VOLUME:  static volume
-+ */
-+enum {
-+	UBI_DYNAMIC_VOLUME = 3,
-+	UBI_STATIC_VOLUME  = 4,
-+};
-+
-+/**
-+ * struct ubi_attach_req - attach MTD device request.
-+ * @ubi_num: UBI device number to create
-+ * @mtd_num: MTD device number to attach
-+ * @vid_hdr_offset: VID header offset (use defaults if %0)
-+ * @padding: reserved for future, not used, has to be zeroed
-+ *
-+ * This data structure is used to specify MTD device UBI has to attach and the
-+ * parameters it has to use. The number which should be assigned to the new UBI
-+ * device is passed in @ubi_num. UBI may automatically assign the number if
-+ * @UBI_DEV_NUM_AUTO is passed. In this case, the device number is returned in
-+ * @ubi_num.
-+ *
-+ * Most applications should pass %0 in @vid_hdr_offset to make UBI use default
-+ * offset of the VID header within physical eraseblocks. The default offset is
-+ * the next min. I/O unit after the EC header. For example, it will be offset
-+ * 512 in case of a 512 bytes page NAND flash with no sub-page support. Or
-+ * it will be 512 in case of a 2KiB page NAND flash with 4 512-byte sub-pages.
-+ *
-+ * But in rare cases, if this optimizes things, the VID header may be placed to
-+ * a different offset. For example, the boot-loader might do things faster if the
-+ * VID header sits at the end of the first 2KiB NAND page with 4 sub-pages. As
-+ * the boot-loader would not normally need to read EC headers (unless it needs
-+ * UBI in RW mode), it might be faster to calculate ECC. This is weird example,
-+ * but it real-life example. So, in this example, @vid_hdr_offer would be
-+ * 2KiB-64 bytes = 1984. Note, that this position is not even 512-bytes
-+ * aligned, which is OK, as UBI is clever enough to realize this is 4th sub-page
-+ * of the first page and add needed padding.
-+ */
-+struct ubi_attach_req {
-+	int32_t ubi_num;
-+	int32_t mtd_num;
-+	int32_t vid_hdr_offset;
-+	uint8_t padding[12];
-+};
-+
-+/**
-+ * struct ubi_mkvol_req - volume description data structure used in
-+ *                        volume creation requests.
-+ * @vol_id: volume number
-+ * @alignment: volume alignment
-+ * @bytes: volume size in bytes
-+ * @vol_type: volume type (%UBI_DYNAMIC_VOLUME or %UBI_STATIC_VOLUME)
-+ * @padding1: reserved for future, not used, has to be zeroed
-+ * @name_len: volume name length
-+ * @padding2: reserved for future, not used, has to be zeroed
-+ * @name: volume name
-+ *
-+ * This structure is used by user-space programs when creating new volumes. The
-+ * @used_bytes field is only necessary when creating static volumes.
-+ *
-+ * The @alignment field specifies the required alignment of the volume logical
-+ * eraseblock. This means, that the size of logical eraseblocks will be aligned
-+ * to this number, i.e.,
-+ *	(UBI device logical eraseblock size) mod (@alignment) = 0.
-+ *
-+ * To put it differently, the logical eraseblock of this volume may be slightly
-+ * shortened in order to make it properly aligned. The alignment has to be
-+ * multiple of the flash minimal input/output unit, or %1 to utilize the entire
-+ * available space of logical eraseblocks.
-+ *
-+ * The @alignment field may be useful, for example, when one wants to maintain
-+ * a block device on top of an UBI volume. In this case, it is desirable to fit
-+ * an integer number of blocks in logical eraseblocks of this UBI volume. With
-+ * alignment it is possible to update this volume using plane UBI volume image
-+ * BLOBs, without caring about how to properly align them.
-+ */
-+struct ubi_mkvol_req {
-+	int32_t vol_id;
-+	int32_t alignment;
-+	int64_t bytes;
-+	int8_t vol_type;
-+	int8_t padding1;
-+	int16_t name_len;
-+	int8_t padding2[4];
-+	char name[UBI_MAX_VOLUME_NAME + 1];
-+} __attribute__ ((packed));
-+
-+/**
-+ * struct ubi_rsvol_req - a data structure used in volume re-size requests.
-+ * @vol_id: ID of the volume to re-size
-+ * @bytes: new size of the volume in bytes
-+ *
-+ * Re-sizing is possible for both dynamic and static volumes. But while dynamic
-+ * volumes may be re-sized arbitrarily, static volumes cannot be made to be
-+ * smaller then the number of bytes they bear. To arbitrarily shrink a static
-+ * volume, it must be wiped out first (by means of volume update operation with
-+ * zero number of bytes).
-+ */
-+struct ubi_rsvol_req {
-+	int64_t bytes;
-+	int32_t vol_id;
-+} __attribute__ ((packed));
-+
-+/**
-+ * struct ubi_leb_change_req - a data structure used in atomic logical
-+ *                             eraseblock change requests.
-+ * @lnum: logical eraseblock number to change
-+ * @bytes: how many bytes will be written to the logical eraseblock
-+ * @dtype: data type (%UBI_LONGTERM, %UBI_SHORTTERM, %UBI_UNKNOWN)
-+ * @padding: reserved for future, not used, has to be zeroed
-+ */
-+struct ubi_leb_change_req {
-+	int32_t lnum;
-+	int32_t bytes;
-+	uint8_t dtype;
-+	uint8_t padding[7];
-+} __attribute__ ((packed));
-+
-+#endif /* __UBI_USER_H__ */
+diff --git a/drivers/nand/Kconfig b/drivers/nand/Kconfig
+deleted file mode 100644
+index 031b94d..0000000
+--- a/drivers/nand/Kconfig
++++ /dev/null
+@@ -1,109 +0,0 @@
+-menuconfig NAND
+-	bool "NAND support                  "
+-	select MTD_NAND_IDS
+-	help
+-	  This enables support for accessing all type of NAND flash
+-	  devices. For further information see
+-	  <http://www.linux-mtd.infradead.org/doc/nand.html>.
+-
+-if NAND
+-
+-config NAND_IMX
+-	bool
+-	prompt "i.MX NAND driver"
+-	depends on ARCH_IMX21 || ARCH_IMX27 || ARCH_IMX31 || ARCH_IMX35 || ARCH_IMX25
+-
+-config NAND_IMX_BOOT
+-	bool
+-	prompt "Support Starting barebox from NAND"
+-	depends on NAND_IMX || NAND_IMX_V2
+-
+-config NAND_OMAP_GPMC
+-	tristate "NAND Flash Support for GPMC based OMAP platforms"
+-	depends on ((ARCH_OMAP2 || ARCH_OMAP3) && GPMC)
+-	help
+-	 Support for NAND flash using GPMC. GPMC is a common memory
+-	 interface found on Texas Instrument's OMAP platforms
+-
+-config NAND_OMAP_GPMC_HWECC
+-	bool "The Hardware ECC support"
+-	depends on NAND && NAND_OMAP_GPMC
+-	default n
+-	help
+-	 The ECC compuatation for the data to be written/read can be either by
+-	 software or omap has Hw ecc engine which calculates it.
+-
+-config NAND_ATMEL
+-	bool
+-	prompt "Atmel (AT91SAM9xxx) NAND driver"
+-	depends on ARCH_AT91
+-
+-config NAND_S3C24X0
+-	bool
+-	prompt "Samsung S3C24X0 NAND driver"
+-	depends on ARCH_S3C24xx
+-	help
+-	  Add support for processor's NAND device controller.
+-
+-config MTD_NAND_VERIFY_WRITE
+-	bool "Verify NAND page writes"
+-	help
+-	  This adds an extra check when data is written to the flash. The
+-	  NAND flash device internally checks only bits transitioning
+-	  from 1 to 0. There is a rare possibility that even though the
+-	  device thinks the write was successful, a bit could have been
+-	  flipped accidentally due to device wear or something else.
+-
+-config MTD_NAND_ECC_SMC
+-	bool "NAND ECC Smart Media byte order"
+-	default n
+-	help
+-	  Software ECC according to the Smart Media Specification.
+-	  The original Linux implementation had byte 0 and 1 swapped.
+-
+-config MTD_NAND_MUSEUM_IDS
+-	bool "Enable chip ids for obsolete ancient NAND devices"
+-	depends on MTD_NAND
+-	default n
+-	help
+-	  Enable this option only when your board has first generation
+-	  NAND chips (page size 256 byte, erase size 4-8KiB). The IDs
+-	  of these chips were reused by later, larger chips.
+-
+-config MTD_NAND_IDS
+-	tristate
+-
+-config MTD_NAND_DISKONCHIP
+-	tristate "DiskOnChip 2000, Millennium and Millennium Plus"
+-	depends on EXPERIMENTAL && BROKEN
+-	help
+-	  This is a reimplementation of M-Systems DiskOnChip 2000,
+-	  Millennium and Millennium Plus as a standard NAND device driver,
+-	  as opposed to the earlier self-contained MTD device drivers.
+-	  This should enable, among other things, proper JFFS2 operation on
+-	  these devices.
+-
+-config MTD_NAND_DISKONCHIP_BBTWRITE
+-	bool "Allow BBT writes on DiskOnChip Millennium and 2000TSOP"
+-	depends on MTD_NAND_DISKONCHIP
+-	help
+-	  On DiskOnChip devices shipped with the INFTL filesystem (Millennium
+-	  and 2000 TSOP/Alon), Linux reserves some space at the end of the
+-	  device for the Bad Block Table (BBT).  If you have existing INFTL
+-	  data on your device (created by non-Linux tools such as M-Systems'
+-	  DOS drivers), your data might overlap the area Linux wants to use for
+-	  the BBT.  If this is a concern for you, leave this option disabled and
+-	  Linux will not write BBT data into this area.
+-	  The downside of leaving this option disabled is that if bad blocks
+-	  are detected by Linux, they will not be recorded in the BBT, which
+-	  could cause future problems.
+-	  Once you enable this option, new filesystems (INFTL or others, created
+-	  in Linux or other operating systems) will not use the reserved area.
+-	  The only reason not to enable this option is to prevent damage to
+-	  preexisting filesystems.
+-	  Even if you leave this disabled, you can enable BBT writes at module
+-	  load time (assuming you build diskonchip as a module) with the module
+-	  parameter "inftl_bbt_write=1".
+-
+-
+-endif
+diff --git a/drivers/nand/Makefile b/drivers/nand/Makefile
+deleted file mode 100644
+index 73f7346..0000000
+--- a/drivers/nand/Makefile
++++ /dev/null
+@@ -1,12 +0,0 @@
+-
+-# Generic NAND options
+-obj-$(CONFIG_NAND)			+= nand.o nand_ecc.o
+-obj-$(CONFIG_MTD_NAND_IDS)		+= nand_ids.o
+-obj-$(CONFIG_NAND)			+= nand_base.o nand_bbt.o
+-
+-obj-$(CONFIG_MTD_NAND_DISKONCHIP)	+= diskonchip.o
+-obj-$(CONFIG_NAND_IMX)			+= nand_imx.o
+-obj-$(CONFIG_NAND_OMAP_GPMC)		+= nand_omap_gpmc.o
+-obj-$(CONFIG_NAND_ATMEL)		+= atmel_nand.o
+-obj-$(CONFIG_NAND_S3C24X0)		+= nand_s3c2410.o
+-#obj-$(CONFIG_NAND)			+= nand_util.o
+diff --git a/drivers/nand/atmel_nand.c b/drivers/nand/atmel_nand.c
+deleted file mode 100644
+index c3669e5..0000000
+--- a/drivers/nand/atmel_nand.c
++++ /dev/null
+@@ -1,516 +0,0 @@
+-/*
+- *  Copyright (C) 2003 Rick Bronson
+- *
+- *  Derived from drivers/mtd/nand/autcpu12.c
+- *	 Copyright (c) 2001 Thomas Gleixner (gleixner@autronix.de)
+- *
+- *  Derived from drivers/mtd/spia.c
+- *	 Copyright (C) 2000 Steven J. Hill (sjhill@cotw.com)
+- *
+- *
+- *  Add Hardware ECC support for AT91SAM9260 / AT91SAM9263
+- *     Richard Genoud (richard.genoud@gmail.com), Adeneo Copyright (C) 2007
+- *
+- *     Derived from Das barebox source code
+- *     		(barebox-1.1.5/board/atmel/at91sam9263ek/nand.c)
+- *     (C) Copyright 2006 ATMEL Rousset, Lacressonniere Nicolas
+- *
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License version 2 as
+- * published by the Free Software Foundation.
+- *
+- */
+-
+-#include <common.h>
+-#include <driver.h>
+-#include <malloc.h>
+-#include <init.h>
+-#include <gpio.h>
+-
+-#include <linux/mtd/mtd.h>
+-#include <linux/mtd/nand.h>
+-
+-#include <asm/io.h>
+-#include <mach/board.h>
+-
+-#include <errno.h>
+-
+-#ifdef CONFIG_MTD_NAND_ATMEL_ECC_HW
+-#define hard_ecc	1
+-#else
+-#define hard_ecc	0
+-#endif
+-
+-#ifdef CONFIG_MTD_NAND_ATMEL_ECC_NONE
+-#define no_ecc		1
+-#else
+-#define no_ecc		0
+-#endif
+-
+-/* Register access macros */
+-#define ecc_readl(add, reg)				\
+-	readl(add + ATMEL_ECC_##reg)
+-#define ecc_writel(add, reg, value)			\
+-	writel((value), add + ATMEL_ECC_##reg)
+-
+-#include "atmel_nand_ecc.h"	/* Hardware ECC registers */
+-
+-/* oob layout for large page size
+- * bad block info is on bytes 0 and 1
+- * the bytes have to be consecutives to avoid
+- * several NAND_CMD_RNDOUT during read
+- */
+-static struct nand_ecclayout atmel_oobinfo_large = {
+-	.eccbytes = 4,
+-	.eccpos = {60, 61, 62, 63},
+-	.oobfree = {
+-		{2, 58}
+-	},
+-};
+-
+-/* oob layout for small page size
+- * bad block info is on bytes 4 and 5
+- * the bytes have to be consecutives to avoid
+- * several NAND_CMD_RNDOUT during read
+- */
+-static struct nand_ecclayout atmel_oobinfo_small = {
+-	.eccbytes = 4,
+-	.eccpos = {0, 1, 2, 3},
+-	.oobfree = {
+-		{6, 10}
+-	},
+-};
+-
+-struct atmel_nand_host {
+-	struct nand_chip	nand_chip;
+-	struct mtd_info		mtd;
+-	void __iomem		*io_base;
+-	struct atmel_nand_data	*board;
+-	struct device_d		*dev;
+-	void __iomem		*ecc;
+-};
+-
+-/*
+- * Enable NAND.
+- */
+-static void atmel_nand_enable(struct atmel_nand_host *host)
+-{
+-	if (host->board->enable_pin)
+-		gpio_set_value(host->board->enable_pin, 0);
+-}
+-
+-/*
+- * Disable NAND.
+- */
+-static void atmel_nand_disable(struct atmel_nand_host *host)
+-{
+-	if (host->board->enable_pin)
+-		gpio_set_value(host->board->enable_pin, 1);
+-}
+-
+-/*
+- * Hardware specific access to control-lines
+- */
+-static void atmel_nand_cmd_ctrl(struct mtd_info *mtd, int cmd, unsigned int ctrl)
+-{
+-	struct nand_chip *nand_chip = mtd->priv;
+-	struct atmel_nand_host *host = nand_chip->priv;
+-
+-	if (ctrl & NAND_CTRL_CHANGE) {
+-		if (ctrl & NAND_NCE)
+-			atmel_nand_enable(host);
+-		else
+-			atmel_nand_disable(host);
+-	}
+-	if (cmd == NAND_CMD_NONE)
+-		return;
+-
+-	if (ctrl & NAND_CLE)
+-		writeb(cmd, host->io_base + (1 << host->board->cle));
+-	else
+-		writeb(cmd, host->io_base + (1 << host->board->ale));
+-}
+-
+-/*
+- * Read the Device Ready pin.
+- */
+-static int atmel_nand_device_ready(struct mtd_info *mtd)
+-{
+-	struct nand_chip *nand_chip = mtd->priv;
+-	struct atmel_nand_host *host = nand_chip->priv;
+-
+-	return gpio_get_value(host->board->rdy_pin);
+-}
+-
+-/*
+- * Minimal-overhead PIO for data access.
+- */
+-static void atmel_read_buf(struct mtd_info *mtd, u8 *buf, int len)
+-{
+-	struct nand_chip	*nand_chip = mtd->priv;
+-
+-	readsb(nand_chip->IO_ADDR_R, buf, len);
+-}
+-
+-static void atmel_read_buf16(struct mtd_info *mtd, u8 *buf, int len)
+-{
+-	struct nand_chip	*nand_chip = mtd->priv;
+-
+-	readsw(nand_chip->IO_ADDR_R, buf, len / 2);
+-}
+-
+-static void atmel_write_buf(struct mtd_info *mtd, const u8 *buf, int len)
+-{
+-	struct nand_chip	*nand_chip = mtd->priv;
+-
+-	writesb(nand_chip->IO_ADDR_W, buf, len);
+-}
+-
+-static void atmel_write_buf16(struct mtd_info *mtd, const u8 *buf, int len)
+-{
+-	struct nand_chip	*nand_chip = mtd->priv;
+-
+-	writesw(nand_chip->IO_ADDR_W, buf, len / 2);
+-}
+-
+-/*
+- * Calculate HW ECC
+- *
+- * function called after a write
+- *
+- * mtd:        MTD block structure
+- * dat:        raw data (unused)
+- * ecc_code:   buffer for ECC
+- */
+-static int atmel_nand_calculate(struct mtd_info *mtd,
+-		const u_char *dat, unsigned char *ecc_code)
+-{
+-	struct nand_chip *nand_chip = mtd->priv;
+-	struct atmel_nand_host *host = nand_chip->priv;
+-/* 	uint32_t *eccpos = nand_chip->ecc.layout->eccpos; */
+-	unsigned int ecc_value;
+-
+-	/* get the first 2 ECC bytes */
+-	ecc_value = ecc_readl(host->ecc, PR);
+-
+-	ecc_code[0] = ecc_value & 0xFF;
+-	ecc_code[1] = (ecc_value >> 8) & 0xFF;
+-
+-	/* get the last 2 ECC bytes */
+-	ecc_value = ecc_readl(host->ecc, NPR) & ATMEL_ECC_NPARITY;
+-
+-	ecc_code[2] = ecc_value & 0xFF;
+-	ecc_code[3] = (ecc_value >> 8) & 0xFF;
+-
+-	return 0;
+-}
+-
+-/*
+- * HW ECC read page function
+- *
+- * mtd:        mtd info structure
+- * chip:       nand chip info structure
+- * buf:        buffer to store read data
+- */
+-static int atmel_nand_read_page(struct mtd_info *mtd,
+-		struct nand_chip *chip, uint8_t *buf)
+-{
+-	int eccsize = chip->ecc.size;
+-	int eccbytes = chip->ecc.bytes;
+-	uint32_t *eccpos = chip->ecc.layout->eccpos;
+-	uint8_t *p = buf;
+-	uint8_t *oob = chip->oob_poi;
+-	uint8_t *ecc_pos;
+-	int stat;
+-
+-	/*
+-	 * Errata: ALE is incorrectly wired up to the ECC controller
+-	 * on the AP7000, so it will include the address cycles in the
+-	 * ECC calculation.
+-	 *
+-	 * Workaround: Reset the parity registers before reading the
+-	 * actual data.
+-	 */
+-#if 0
+-	if (cpu_is_at32ap7000()) {
+-		struct atmel_nand_host *host = chip->priv;
+-		ecc_writel(host->ecc, CR, ATMEL_ECC_RST);
+-	}
+-#endif
+-
+-	/* read the page */
+-	chip->read_buf(mtd, p, eccsize);
+-
+-	/* move to ECC position if needed */
+-	if (eccpos[0] != 0) {
+-		/* This only works on large pages
+-		 * because the ECC controller waits for
+-		 * NAND_CMD_RNDOUTSTART after the
+-		 * NAND_CMD_RNDOUT.
+-		 * anyway, for small pages, the eccpos[0] == 0
+-		 */
+-		chip->cmdfunc(mtd, NAND_CMD_RNDOUT,
+-				mtd->writesize + eccpos[0], -1);
+-	}
+-
+-	/* the ECC controller needs to read the ECC just after the data */
+-	ecc_pos = oob + eccpos[0];
+-	chip->read_buf(mtd, ecc_pos, eccbytes);
+-
+-	/* check if there's an error */
+-	stat = chip->ecc.correct(mtd, p, oob, NULL);
+-
+-	if (stat < 0)
+-		mtd->ecc_stats.failed++;
+-	else
+-		mtd->ecc_stats.corrected += stat;
+-
+-	/* get back to oob start (end of page) */
+-	chip->cmdfunc(mtd, NAND_CMD_RNDOUT, mtd->writesize, -1);
+-
+-	/* read the oob */
+-	chip->read_buf(mtd, oob, mtd->oobsize);
+-
+-	return 0;
+-}
+-
+-/*
+- * HW ECC Correction
+- *
+- * function called after a read
+- *
+- * mtd:        MTD block structure
+- * dat:        raw data read from the chip
+- * read_ecc:   ECC from the chip (unused)
+- * isnull:     unused
+- *
+- * Detect and correct a 1 bit error for a page
+- */
+-static int atmel_nand_correct(struct mtd_info *mtd, u_char *dat,
+-		u_char *read_ecc, u_char *isnull)
+-{
+-	struct nand_chip *nand_chip = mtd->priv;
+-	struct atmel_nand_host *host = nand_chip->priv;
+-	unsigned int ecc_status;
+-	unsigned int ecc_word, ecc_bit;
+-
+-	/* get the status from the Status Register */
+-	ecc_status = ecc_readl(host->ecc, SR);
+-
+-	/* if there's no error */
+-	if (likely(!(ecc_status & ATMEL_ECC_RECERR)))
+-		return 0;
+-
+-	/* get error bit offset (4 bits) */
+-	ecc_bit = ecc_readl(host->ecc, PR) & ATMEL_ECC_BITADDR;
+-	/* get word address (12 bits) */
+-	ecc_word = ecc_readl(host->ecc, PR) & ATMEL_ECC_WORDADDR;
+-	ecc_word >>= 4;
+-
+-	/* if there are multiple errors */
+-	if (ecc_status & ATMEL_ECC_MULERR) {
+-		/* check if it is a freshly erased block
+-		 * (filled with 0xff) */
+-		if ((ecc_bit == ATMEL_ECC_BITADDR)
+-				&& (ecc_word == (ATMEL_ECC_WORDADDR >> 4))) {
+-			/* the block has just been erased, return OK */
+-			return 0;
+-		}
+-		/* it doesn't seems to be a freshly
+-		 * erased block.
+-		 * We can't correct so many errors */
+-		dev_dbg(host->dev, "atmel_nand : multiple errors detected."
+-				" Unable to correct.\n");
+-		return -EIO;
+-	}
+-
+-	/* if there's a single bit error : we can correct it */
+-	if (ecc_status & ATMEL_ECC_ECCERR) {
+-		/* there's nothing much to do here.
+-		 * the bit error is on the ECC itself.
+-		 */
+-		dev_dbg(host->dev, "atmel_nand : one bit error on ECC code."
+-				" Nothing to correct\n");
+-		return 0;
+-	}
+-
+-	dev_dbg(host->dev, "atmel_nand : one bit error on data."
+-			" (word offset in the page :"
+-			" 0x%x bit offset : 0x%x)\n",
+-			ecc_word, ecc_bit);
+-	/* correct the error */
+-	if (nand_chip->options & NAND_BUSWIDTH_16) {
+-		/* 16 bits words */
+-		((unsigned short *) dat)[ecc_word] ^= (1 << ecc_bit);
+-	} else {
+-		/* 8 bits words */
+-		dat[ecc_word] ^= (1 << ecc_bit);
+-	}
+-	dev_dbg(host->dev, "atmel_nand : error corrected\n");
+-	return 1;
+-}
+-
+-/*
+- * Enable HW ECC : unused on most chips
+- */
+-static void atmel_nand_hwctl(struct mtd_info *mtd, int mode)
+-{
+-#if 0
+-	if (cpu_is_at32ap7000()) {
+-		struct nand_chip *nand_chip = mtd->priv;
+-		struct atmel_nand_host *host = nand_chip->priv;
+-		ecc_writel(host->ecc, CR, ATMEL_ECC_RST);
+-	}
+-#endif
+-}
+-
+-/*
+- * Probe for the NAND device.
+- */
+-static int __init atmel_nand_probe(struct device_d *dev)
+-{
+-	struct atmel_nand_data *pdata = dev->platform_data;
+-	struct atmel_nand_host *host;
+-	struct mtd_info *mtd;
+-	struct nand_chip *nand_chip;
+-	int res = 0;
+-
+-	/* Allocate memory for the device structure (and zero it) */
+-	host = kzalloc(sizeof(struct atmel_nand_host), GFP_KERNEL);
+-	if (!host)
+-		return -ENOMEM;
+-
+-	host->io_base = (void __iomem *)dev->map_base;
+-
+-	mtd = &host->mtd;
+-	nand_chip = &host->nand_chip;
+-	host->board = pdata;
+-	host->dev = dev;
+-
+-	nand_chip->priv = host;		/* link the private data structures */
+-	mtd->priv = nand_chip;
+-
+-	/* Set address of NAND IO lines */
+-	nand_chip->IO_ADDR_R = host->io_base;
+-	nand_chip->IO_ADDR_W = host->io_base;
+-	nand_chip->cmd_ctrl = atmel_nand_cmd_ctrl;
+-
+-	if (host->board->rdy_pin)
+-		nand_chip->dev_ready = atmel_nand_device_ready;
+-
+-	nand_chip->ecc.mode = pdata->ecc_mode;
+-
+-	if (pdata->ecc_mode == NAND_ECC_HW) {
+-		if (!pdata->ecc_base)
+-			return -ENODEV;
+-
+-		host->ecc = pdata->ecc_base;
+-
+-		nand_chip->ecc.mode = NAND_ECC_HW;
+-		nand_chip->ecc.calculate = atmel_nand_calculate;
+-		nand_chip->ecc.correct = atmel_nand_correct;
+-		nand_chip->ecc.hwctl = atmel_nand_hwctl;
+-		nand_chip->ecc.read_page = atmel_nand_read_page;
+-		nand_chip->ecc.bytes = 4;
+-	}
+-
+-	nand_chip->chip_delay = 20;		/* 20us command delay time */
+-
+-	if (host->board->bus_width_16) {	/* 16-bit bus width */
+-		nand_chip->options |= NAND_BUSWIDTH_16;
+-		nand_chip->read_buf = atmel_read_buf16;
+-		nand_chip->write_buf = atmel_write_buf16;
+-	} else {
+-		nand_chip->read_buf = atmel_read_buf;
+-		nand_chip->write_buf = atmel_write_buf;
+-	}
+-
+-	atmel_nand_enable(host);
+-
+-	if (host->board->det_pin) {
+-		if (gpio_get_value(host->board->det_pin)) {
+-			printk("No SmartMedia card inserted.\n");
+-			res = ENXIO;
+-			goto err_no_card;
+-		}
+-	}
+-
+-	/* first scan to find the device and get the page size */
+-	if (nand_scan_ident(mtd, 1)) {
+-		res = -ENXIO;
+-		goto err_scan_ident;
+-	}
+-
+-	if (nand_chip->ecc.mode == NAND_ECC_HW) {
+-		/* ECC is calculated for the whole page (1 step) */
+-		nand_chip->ecc.size = mtd->writesize;
+-
+-		/* set ECC page size and oob layout */
+-		switch (mtd->writesize) {
+-		case 512:
+-			nand_chip->ecc.layout = &atmel_oobinfo_small;
+-			ecc_writel(host->ecc, MR, ATMEL_ECC_PAGESIZE_528);
+-			break;
+-		case 1024:
+-			nand_chip->ecc.layout = &atmel_oobinfo_large;
+-			ecc_writel(host->ecc, MR, ATMEL_ECC_PAGESIZE_1056);
+-			break;
+-		case 2048:
+-			nand_chip->ecc.layout = &atmel_oobinfo_large;
+-			ecc_writel(host->ecc, MR, ATMEL_ECC_PAGESIZE_2112);
+-			break;
+-		case 4096:
+-			nand_chip->ecc.layout = &atmel_oobinfo_large;
+-			ecc_writel(host->ecc, MR, ATMEL_ECC_PAGESIZE_4224);
+-			break;
+-		default:
+-			/* page size not handled by HW ECC */
+-			/* switching back to soft ECC */
+-			nand_chip->ecc.mode = NAND_ECC_SOFT;
+-			nand_chip->ecc.calculate = NULL;
+-			nand_chip->ecc.correct = NULL;
+-			nand_chip->ecc.hwctl = NULL;
+-			nand_chip->ecc.read_page = NULL;
+-			nand_chip->ecc.postpad = 0;
+-			nand_chip->ecc.prepad = 0;
+-			nand_chip->ecc.bytes = 0;
+-			break;
+-		}
+-	}
+-
+-	/* second phase scan */
+-	if (nand_scan_tail(mtd)) {
+-		res = -ENXIO;
+-		goto err_scan_tail;
+-	}
+-
+-	add_mtd_device(mtd);
+-
+-	if (!res)
+-		return res;
+-
+-	nand_release(mtd);
+-err_scan_tail:
+-err_scan_ident:
+-err_no_card:
+-	atmel_nand_disable(host);
+-	kfree(host);
+-	return res;
+-}
+-
+-static struct driver_d atmel_nand_driver = {
+-	.name	= "atmel_nand",
+-	.probe	= atmel_nand_probe,
+-};
+-
+-static int __init atmel_nand_init(void)
+-{
+-	return register_driver(&atmel_nand_driver);
+-}
+-
+-device_initcall(atmel_nand_init);
+-
+-MODULE_LICENSE("GPL");
+-MODULE_AUTHOR("Rick Bronson");
+-MODULE_DESCRIPTION("NAND/SmartMedia driver for AT91 / AVR32");
+diff --git a/drivers/nand/atmel_nand_ecc.h b/drivers/nand/atmel_nand_ecc.h
+deleted file mode 100644
+index 578c776..0000000
+--- a/drivers/nand/atmel_nand_ecc.h
++++ /dev/null
+@@ -1,39 +0,0 @@
+-/*
+- * Error Corrected Code Controller (ECC) - System peripherals regsters.
+- * Based on AT91SAM9260 datasheet revision B.
+- *
+- * Copyright (C) 2007 Andrew Victor
+- * Copyright (C) 2007 Atmel Corporation.
+- *
+- * This program is free software; you can redistribute it and/or modify it
+- * under the terms of the GNU General Public License as published by the
+- * Free Software Foundation; either version 2 of the License, or (at your
+- * option) any later version.
+- */
+-
+-#ifndef ATMEL_NAND_ECC_H
+-#define ATMEL_NAND_ECC_H
+-
+-#define ATMEL_ECC_CR		0x00			/* Control register */
+-#define		ATMEL_ECC_RST		(1 << 0)		/* Reset parity */
+-
+-#define ATMEL_ECC_MR		0x04			/* Mode register */
+-#define		ATMEL_ECC_PAGESIZE	(3 << 0)		/* Page Size */
+-#define			ATMEL_ECC_PAGESIZE_528		(0)
+-#define			ATMEL_ECC_PAGESIZE_1056		(1)
+-#define			ATMEL_ECC_PAGESIZE_2112		(2)
+-#define			ATMEL_ECC_PAGESIZE_4224		(3)
+-
+-#define ATMEL_ECC_SR		0x08			/* Status register */
+-#define		ATMEL_ECC_RECERR		(1 << 0)		/* Recoverable Error */
+-#define		ATMEL_ECC_ECCERR		(1 << 1)		/* ECC Single Bit Error */
+-#define		ATMEL_ECC_MULERR		(1 << 2)		/* Multiple Errors */
+-
+-#define ATMEL_ECC_PR		0x0c			/* Parity register */
+-#define		ATMEL_ECC_BITADDR	(0xf << 0)		/* Bit Error Address */
+-#define		ATMEL_ECC_WORDADDR	(0xfff << 4)		/* Word Error Address */
+-
+-#define ATMEL_ECC_NPR		0x10			/* NParity register */
+-#define		ATMEL_ECC_NPARITY	(0xffff << 0)		/* NParity */
+-
+-#endif
+diff --git a/drivers/nand/diskonchip.c b/drivers/nand/diskonchip.c
+deleted file mode 100644
+index e762524..0000000
+--- a/drivers/nand/diskonchip.c
++++ /dev/null
+@@ -1,1787 +0,0 @@
+-/*
+- * drivers/mtd/nand/diskonchip.c
+- *
+- * (C) 2003 Red Hat, Inc.
+- * (C) 2004 Dan Brown <dan_brown@ieee.org>
+- * (C) 2004 Kalev Lember <kalev@smartlink.ee>
+- *
+- * Author: David Woodhouse <dwmw2@infradead.org>
+- * Additional Diskonchip 2000 and Millennium support by Dan Brown <dan_brown@ieee.org>
+- * Diskonchip Millennium Plus support by Kalev Lember <kalev@smartlink.ee>
+- *
+- * Error correction code lifted from the old docecc code
+- * Author: Fabrice Bellard (fabrice.bellard@netgem.com)
+- * Copyright (C) 2000 Netgem S.A.
+- * converted to the generic Reed-Solomon library by Thomas Gleixner <tglx@linutronix.de>
+- *
+- * Interface to generic NAND code for M-Systems DiskOnChip devices
+- *
+- * $Id: diskonchip.c,v 1.45 2005/01/05 18:05:14 dwmw2 Exp $
+- */
+-
+-#include <common.h>
+-
+-#if !defined(CFG_NAND_LEGACY)
+-
+-#include <linux/kernel.h>
+-#include <linux/init.h>
+-#include <linux/sched.h>
+-#include <linux/delay.h>
+-#include <linux/rslib.h>
+-#include <linux/moduleparam.h>
+-#include <asm/io.h>
+-
+-#include <linux/mtd/mtd.h>
+-#include <linux/mtd/nand.h>
+-#include <linux/mtd/doc2000.h>
+-#include <linux/mtd/compatmac.h>
+-#include <linux/mtd/partitions.h>
+-#include <linux/mtd/inftl.h>
+-
+-/* Where to look for the devices? */
+-#ifndef CONFIG_MTD_DISKONCHIP_PROBE_ADDRESS
+-#define CONFIG_MTD_DISKONCHIP_PROBE_ADDRESS 0
+-#endif
+-
+-static unsigned long __initdata doc_locations[] = {
+-#if defined (__alpha__) || defined(__i386__) || defined(__x86_64__)
+-#ifdef CONFIG_MTD_DISKONCHIP_PROBE_HIGH
+-	0xfffc8000, 0xfffca000, 0xfffcc000, 0xfffce000,
+-	0xfffd0000, 0xfffd2000, 0xfffd4000, 0xfffd6000,
+-	0xfffd8000, 0xfffda000, 0xfffdc000, 0xfffde000,
+-	0xfffe0000, 0xfffe2000, 0xfffe4000, 0xfffe6000,
+-	0xfffe8000, 0xfffea000, 0xfffec000, 0xfffee000,
+-#else /*  CONFIG_MTD_DOCPROBE_HIGH */
+-	0xc8000, 0xca000, 0xcc000, 0xce000,
+-	0xd0000, 0xd2000, 0xd4000, 0xd6000,
+-	0xd8000, 0xda000, 0xdc000, 0xde000,
+-	0xe0000, 0xe2000, 0xe4000, 0xe6000,
+-	0xe8000, 0xea000, 0xec000, 0xee000,
+-#endif /*  CONFIG_MTD_DOCPROBE_HIGH */
+-#elif defined(__PPC__)
+-	0xe4000000,
+-#elif defined(CONFIG_MOMENCO_OCELOT)
+-	0x2f000000,
+-	0xff000000,
+-#elif defined(CONFIG_MOMENCO_OCELOT_G) || defined (CONFIG_MOMENCO_OCELOT_C)
+-	0xff000000,
+-##else
+-#warning Unknown architecture for DiskOnChip. No default probe locations defined
+-#endif
+-	0xffffffff };
+-
+-static struct mtd_info *doclist = NULL;
+-
+-struct doc_priv {
+-	void __iomem *virtadr;
+-	unsigned long physadr;
+-	u_char ChipID;
+-	u_char CDSNControl;
+-	int chips_per_floor; /* The number of chips detected on each floor */
+-	int curfloor;
+-	int curchip;
+-	int mh0_page;
+-	int mh1_page;
+-	struct mtd_info *nextdoc;
+-};
+-
+-/* Max number of eraseblocks to scan (from start of device) for the (I)NFTL
+-   MediaHeader.  The spec says to just keep going, I think, but that's just
+-   silly. */
+-#define MAX_MEDIAHEADER_SCAN 8
+-
+-/* This is the syndrome computed by the HW ecc generator upon reading an empty
+-   page, one with all 0xff for data and stored ecc code. */
+-static u_char empty_read_syndrome[6] = { 0x26, 0xff, 0x6d, 0x47, 0x73, 0x7a };
+-/* This is the ecc value computed by the HW ecc generator upon writing an empty
+-   page, one with all 0xff for data. */
+-static u_char empty_write_ecc[6] = { 0x4b, 0x00, 0xe2, 0x0e, 0x93, 0xf7 };
+-
+-#define INFTL_BBT_RESERVED_BLOCKS 4
+-
+-#define DoC_is_MillenniumPlus(doc) ((doc)->ChipID == DOC_ChipID_DocMilPlus16 || (doc)->ChipID == DOC_ChipID_DocMilPlus32)
+-#define DoC_is_Millennium(doc) ((doc)->ChipID == DOC_ChipID_DocMil)
+-#define DoC_is_2000(doc) ((doc)->ChipID == DOC_ChipID_Doc2k)
+-
+-static void doc200x_hwcontrol(struct mtd_info *mtd, int cmd);
+-static void doc200x_select_chip(struct mtd_info *mtd, int chip);
+-
+-static int debug=0;
+-module_param(debug, int, 0);
+-
+-static int try_dword=1;
+-module_param(try_dword, int, 0);
+-
+-static int no_ecc_failures=0;
+-module_param(no_ecc_failures, int, 0);
+-
+-#ifdef CONFIG_MTD_PARTITIONS
+-static int no_autopart=0;
+-module_param(no_autopart, int, 0);
+-#endif
+-
+-#ifdef CONFIG_MTD_NAND_DISKONCHIP_BBTWRITE
+-static int inftl_bbt_write=1;
+-#else
+-static int inftl_bbt_write=0;
+-#endif
+-module_param(inftl_bbt_write, int, 0);
+-
+-static unsigned long doc_config_location = CONFIG_MTD_DISKONCHIP_PROBE_ADDRESS;
+-module_param(doc_config_location, ulong, 0);
+-MODULE_PARM_DESC(doc_config_location, "Physical memory address at which to probe for DiskOnChip");
+-
+-
+-/* Sector size for HW ECC */
+-#define SECTOR_SIZE 512
+-/* The sector bytes are packed into NB_DATA 10 bit words */
+-#define NB_DATA (((SECTOR_SIZE + 1) * 8 + 6) / 10)
+-/* Number of roots */
+-#define NROOTS 4
+-/* First consective root */
+-#define FCR 510
+-/* Number of symbols */
+-#define NN 1023
+-
+-/* the Reed Solomon control structure */
+-static struct rs_control *rs_decoder;
+-
+-/*
+- * The HW decoder in the DoC ASIC's provides us a error syndrome,
+- * which we must convert to a standard syndrom usable by the generic
+- * Reed-Solomon library code.
+- *
+- * Fabrice Bellard figured this out in the old docecc code. I added
+- * some comments, improved a minor bit and converted it to make use
+- * of the generic Reed-Solomon libary. tglx
+- */
+-static int doc_ecc_decode (struct rs_control *rs, uint8_t *data, uint8_t *ecc)
+-{
+-	int i, j, nerr, errpos[8];
+-	uint8_t parity;
+-	uint16_t ds[4], s[5], tmp, errval[8], syn[4];
+-
+-	/* Convert the ecc bytes into words */
+-	ds[0] = ((ecc[4] & 0xff) >> 0) | ((ecc[5] & 0x03) << 8);
+-	ds[1] = ((ecc[5] & 0xfc) >> 2) | ((ecc[2] & 0x0f) << 6);
+-	ds[2] = ((ecc[2] & 0xf0) >> 4) | ((ecc[3] & 0x3f) << 4);
+-	ds[3] = ((ecc[3] & 0xc0) >> 6) | ((ecc[0] & 0xff) << 2);
+-	parity = ecc[1];
+-
+-	/* Initialize the syndrom buffer */
+-	for (i = 0; i < NROOTS; i++)
+-		s[i] = ds[0];
+-	/*
+-	 *  Evaluate
+-	 *  s[i] = ds[3]x^3 + ds[2]x^2 + ds[1]x^1 + ds[0]
+-	 *  where x = alpha^(FCR + i)
+-	 */
+-	for(j = 1; j < NROOTS; j++) {
+-		if(ds[j] == 0)
+-			continue;
+-		tmp = rs->index_of[ds[j]];
+-		for(i = 0; i < NROOTS; i++)
+-			s[i] ^= rs->alpha_to[rs_modnn(rs, tmp + (FCR + i) * j)];
+-	}
+-
+-	/* Calc s[i] = s[i] / alpha^(v + i) */
+-	for (i = 0; i < NROOTS; i++) {
+-		if (syn[i])
+- 			syn[i] = rs_modnn(rs, rs->index_of[s[i]] + (NN - FCR - i));
+-	}
+-	/* Call the decoder library */
+-	nerr = decode_rs16(rs, NULL, NULL, 1019, syn, 0, errpos, 0, errval);
+-
+-	/* Incorrectable errors ? */
+-	if (nerr < 0)
+-		return nerr;
+-
+-	/*
+-	 * Correct the errors. The bitpositions are a bit of magic,
+-	 * but they are given by the design of the de/encoder circuit
+-	 * in the DoC ASIC's.
+-	 */
+-	for(i = 0;i < nerr; i++) {
+-		int index, bitpos, pos = 1015 - errpos[i];
+-		uint8_t val;
+-		if (pos >= NB_DATA && pos < 1019)
+-			continue;
+-		if (pos < NB_DATA) {
+-			/* extract bit position (MSB first) */
+-			pos = 10 * (NB_DATA - 1 - pos) - 6;
+-			/* now correct the following 10 bits. At most two bytes
+-			   can be modified since pos is even */
+-			index = (pos >> 3) ^ 1;
+-			bitpos = pos & 7;
+-			if ((index >= 0 && index < SECTOR_SIZE) ||
+-			    index == (SECTOR_SIZE + 1)) {
+-				val = (uint8_t) (errval[i] >> (2 + bitpos));
+-				parity ^= val;
+-				if (index < SECTOR_SIZE)
+-					data[index] ^= val;
+-			}
+-			index = ((pos >> 3) + 1) ^ 1;
+-			bitpos = (bitpos + 10) & 7;
+-			if (bitpos == 0)
+-				bitpos = 8;
+-			if ((index >= 0 && index < SECTOR_SIZE) ||
+-			    index == (SECTOR_SIZE + 1)) {
+-				val = (uint8_t)(errval[i] << (8 - bitpos));
+-				parity ^= val;
+-				if (index < SECTOR_SIZE)
+-					data[index] ^= val;
+-			}
+-		}
+-	}
+-	/* If the parity is wrong, no rescue possible */
+-	return parity ? -1 : nerr;
+-}
+-
+-static void DoC_Delay(struct doc_priv *doc, unsigned short cycles)
+-{
+-	volatile char dummy;
+-	int i;
+-
+-	for (i = 0; i < cycles; i++) {
+-		if (DoC_is_Millennium(doc))
+-			dummy = ReadDOC(doc->virtadr, NOP);
+-		else if (DoC_is_MillenniumPlus(doc))
+-			dummy = ReadDOC(doc->virtadr, Mplus_NOP);
+-		else
+-			dummy = ReadDOC(doc->virtadr, DOCStatus);
+-	}
+-
+-}
+-
+-#define CDSN_CTRL_FR_B_MASK	(CDSN_CTRL_FR_B0 | CDSN_CTRL_FR_B1)
+-
+-/* DOC_WaitReady: Wait for RDY line to be asserted by the flash chip */
+-static int _DoC_WaitReady(struct doc_priv *doc)
+-{
+-	void __iomem *docptr = doc->virtadr;
+-	unsigned long timeo = jiffies + (HZ * 10);
+-
+-	if(debug) printk("_DoC_WaitReady...\n");
+-	/* Out-of-line routine to wait for chip response */
+-	if (DoC_is_MillenniumPlus(doc)) {
+-		while ((ReadDOC(docptr, Mplus_FlashControl) & CDSN_CTRL_FR_B_MASK) != CDSN_CTRL_FR_B_MASK) {
+-			if (time_after(jiffies, timeo)) {
+-				printk("_DoC_WaitReady timed out.\n");
+-				return -EIO;
+-			}
+-			udelay(1);
+-			cond_resched();
+-		}
+-	} else {
+-		while (!(ReadDOC(docptr, CDSNControl) & CDSN_CTRL_FR_B)) {
+-			if (time_after(jiffies, timeo)) {
+-				printk("_DoC_WaitReady timed out.\n");
+-				return -EIO;
+-			}
+-			udelay(1);
+-			cond_resched();
+-		}
+-	}
+-
+-	return 0;
+-}
+-
+-static inline int DoC_WaitReady(struct doc_priv *doc)
+-{
+-	void __iomem *docptr = doc->virtadr;
+-	int ret = 0;
+-
+-	if (DoC_is_MillenniumPlus(doc)) {
+-		DoC_Delay(doc, 4);
+-
+-		if ((ReadDOC(docptr, Mplus_FlashControl) & CDSN_CTRL_FR_B_MASK) != CDSN_CTRL_FR_B_MASK)
+-			/* Call the out-of-line routine to wait */
+-			ret = _DoC_WaitReady(doc);
+-	} else {
+-		DoC_Delay(doc, 4);
+-
+-		if (!(ReadDOC(docptr, CDSNControl) & CDSN_CTRL_FR_B))
+-			/* Call the out-of-line routine to wait */
+-			ret = _DoC_WaitReady(doc);
+-		DoC_Delay(doc, 2);
+-	}
+-
+-	if(debug) printk("DoC_WaitReady OK\n");
+-	return ret;
+-}
+-
+-static void doc2000_write_byte(struct mtd_info *mtd, u_char datum)
+-{
+-	struct nand_chip *this = mtd->priv;
+-	struct doc_priv *doc = this->priv;
+-	void __iomem *docptr = doc->virtadr;
+-
+-	if(debug)printk("write_byte %02x\n", datum);
+-	WriteDOC(datum, docptr, CDSNSlowIO);
+-	WriteDOC(datum, docptr, 2k_CDSN_IO);
+-}
+-
+-static u_char doc2000_read_byte(struct mtd_info *mtd)
+-{
+-	struct nand_chip *this = mtd->priv;
+-	struct doc_priv *doc = this->priv;
+-	void __iomem *docptr = doc->virtadr;
+-	u_char ret;
+-
+-	ReadDOC(docptr, CDSNSlowIO);
+-	DoC_Delay(doc, 2);
+-	ret = ReadDOC(docptr, 2k_CDSN_IO);
+-	if (debug) printk("read_byte returns %02x\n", ret);
+-	return ret;
+-}
+-
+-static void doc2000_writebuf(struct mtd_info *mtd,
+-			     const u_char *buf, int len)
+-{
+-	struct nand_chip *this = mtd->priv;
+-	struct doc_priv *doc = this->priv;
+-	void __iomem *docptr = doc->virtadr;
+-	int i;
+-	if (debug)printk("writebuf of %d bytes: ", len);
+-	for (i=0; i < len; i++) {
+-		WriteDOC_(buf[i], docptr, DoC_2k_CDSN_IO + i);
+-		if (debug && i < 16)
+-			printk("%02x ", buf[i]);
+-	}
+-	if (debug) printk("\n");
+-}
+-
+-static void doc2000_readbuf(struct mtd_info *mtd,
+-			    u_char *buf, int len)
+-{
+-	struct nand_chip *this = mtd->priv;
+-	struct doc_priv *doc = this->priv;
+-	void __iomem *docptr = doc->virtadr;
+- 	int i;
+-
+-	if (debug)printk("readbuf of %d bytes: ", len);
+-
+-	for (i=0; i < len; i++) {
+-		buf[i] = ReadDOC(docptr, 2k_CDSN_IO + i);
+-	}
+-}
+-
+-static void doc2000_readbuf_dword(struct mtd_info *mtd,
+-			    u_char *buf, int len)
+-{
+-	struct nand_chip *this = mtd->priv;
+-	struct doc_priv *doc = this->priv;
+-	void __iomem *docptr = doc->virtadr;
+- 	int i;
+-
+-	if (debug) printk("readbuf_dword of %d bytes: ", len);
+-
+-	if (unlikely((((unsigned long)buf)|len) & 3)) {
+-		for (i=0; i < len; i++) {
+-			*(uint8_t *)(&buf[i]) = ReadDOC(docptr, 2k_CDSN_IO + i);
+-		}
+-	} else {
+-		for (i=0; i < len; i+=4) {
+-			*(uint32_t*)(&buf[i]) = readl(docptr + DoC_2k_CDSN_IO + i);
+-		}
+-	}
+-}
+-
+-static int doc2000_verifybuf(struct mtd_info *mtd,
+-			      const u_char *buf, int len)
+-{
+-	struct nand_chip *this = mtd->priv;
+-	struct doc_priv *doc = this->priv;
+-	void __iomem *docptr = doc->virtadr;
+-	int i;
+-
+-	for (i=0; i < len; i++)
+-		if (buf[i] != ReadDOC(docptr, 2k_CDSN_IO))
+-			return -EFAULT;
+-	return 0;
+-}
+-
+-static uint16_t __init doc200x_ident_chip(struct mtd_info *mtd, int nr)
+-{
+-	struct nand_chip *this = mtd->priv;
+-	struct doc_priv *doc = this->priv;
+-	uint16_t ret;
+-
+-	doc200x_select_chip(mtd, nr);
+-	doc200x_hwcontrol(mtd, NAND_CTL_SETCLE);
+-	this->write_byte(mtd, NAND_CMD_READID);
+-	doc200x_hwcontrol(mtd, NAND_CTL_CLRCLE);
+-	doc200x_hwcontrol(mtd, NAND_CTL_SETALE);
+-	this->write_byte(mtd, 0);
+-	doc200x_hwcontrol(mtd, NAND_CTL_CLRALE);
+-
+-	ret = this->read_byte(mtd) << 8;
+-	ret |= this->read_byte(mtd);
+-
+-	if (doc->ChipID == DOC_ChipID_Doc2k && try_dword && !nr) {
+-		/* First chip probe. See if we get same results by 32-bit access */
+-		union {
+-			uint32_t dword;
+-			uint8_t byte[4];
+-		} ident;
+-		void __iomem *docptr = doc->virtadr;
+-
+-		doc200x_hwcontrol(mtd, NAND_CTL_SETCLE);
+-		doc2000_write_byte(mtd, NAND_CMD_READID);
+-		doc200x_hwcontrol(mtd, NAND_CTL_CLRCLE);
+-		doc200x_hwcontrol(mtd, NAND_CTL_SETALE);
+-		doc2000_write_byte(mtd, 0);
+-		doc200x_hwcontrol(mtd, NAND_CTL_CLRALE);
+-
+-		ident.dword = readl(docptr + DoC_2k_CDSN_IO);
+-		if (((ident.byte[0] << 8) | ident.byte[1]) == ret) {
+-			printk(KERN_INFO "DiskOnChip 2000 responds to DWORD access\n");
+-			this->read_buf = &doc2000_readbuf_dword;
+-		}
+-	}
+-
+-	return ret;
+-}
+-
+-static void __init doc2000_count_chips(struct mtd_info *mtd)
+-{
+-	struct nand_chip *this = mtd->priv;
+-	struct doc_priv *doc = this->priv;
+-	uint16_t mfrid;
+-	int i;
+-
+-	/* Max 4 chips per floor on DiskOnChip 2000 */
+-	doc->chips_per_floor = 4;
+-
+-	/* Find out what the first chip is */
+-	mfrid = doc200x_ident_chip(mtd, 0);
+-
+-	/* Find how many chips in each floor. */
+-	for (i = 1; i < 4; i++) {
+-		if (doc200x_ident_chip(mtd, i) != mfrid)
+-			break;
+-	}
+-	doc->chips_per_floor = i;
+-	printk(KERN_DEBUG "Detected %d chips per floor.\n", i);
+-}
+-
+-static int doc200x_wait(struct mtd_info *mtd, struct nand_chip *this, int state)
+-{
+-	struct doc_priv *doc = this->priv;
+-
+-	int status;
+-
+-	DoC_WaitReady(doc);
+-	this->cmdfunc(mtd, NAND_CMD_STATUS, -1, -1);
+-	DoC_WaitReady(doc);
+-	status = (int)this->read_byte(mtd);
+-
+-	return status;
+-}
+-
+-static void doc2001_write_byte(struct mtd_info *mtd, u_char datum)
+-{
+-	struct nand_chip *this = mtd->priv;
+-	struct doc_priv *doc = this->priv;
+-	void __iomem *docptr = doc->virtadr;
+-
+-	WriteDOC(datum, docptr, CDSNSlowIO);
+-	WriteDOC(datum, docptr, Mil_CDSN_IO);
+-	WriteDOC(datum, docptr, WritePipeTerm);
+-}
+-
+-static u_char doc2001_read_byte(struct mtd_info *mtd)
+-{
+-	struct nand_chip *this = mtd->priv;
+-	struct doc_priv *doc = this->priv;
+-	void __iomem *docptr = doc->virtadr;
+-
+-	/*ReadDOC(docptr, CDSNSlowIO); */
+-	/* 11.4.5 -- delay twice to allow extended length cycle */
+-	DoC_Delay(doc, 2);
+-	ReadDOC(docptr, ReadPipeInit);
+-	/*return ReadDOC(docptr, Mil_CDSN_IO); */
+-	return ReadDOC(docptr, LastDataRead);
+-}
+-
+-static void doc2001_writebuf(struct mtd_info *mtd,
+-			     const u_char *buf, int len)
+-{
+-	struct nand_chip *this = mtd->priv;
+-	struct doc_priv *doc = this->priv;
+-	void __iomem *docptr = doc->virtadr;
+-	int i;
+-
+-	for (i=0; i < len; i++)
+-		WriteDOC_(buf[i], docptr, DoC_Mil_CDSN_IO + i);
+-	/* Terminate write pipeline */
+-	WriteDOC(0x00, docptr, WritePipeTerm);
+-}
+-
+-static void doc2001_readbuf(struct mtd_info *mtd,
+-			    u_char *buf, int len)
+-{
+-	struct nand_chip *this = mtd->priv;
+-	struct doc_priv *doc = this->priv;
+-	void __iomem *docptr = doc->virtadr;
+-	int i;
+-
+-	/* Start read pipeline */
+-	ReadDOC(docptr, ReadPipeInit);
+-
+-	for (i=0; i < len-1; i++)
+-		buf[i] = ReadDOC(docptr, Mil_CDSN_IO + (i & 0xff));
+-
+-	/* Terminate read pipeline */
+-	buf[i] = ReadDOC(docptr, LastDataRead);
+-}
+-
+-static int doc2001_verifybuf(struct mtd_info *mtd,
+-			     const u_char *buf, int len)
+-{
+-	struct nand_chip *this = mtd->priv;
+-	struct doc_priv *doc = this->priv;
+-	void __iomem *docptr = doc->virtadr;
+-	int i;
+-
+-	/* Start read pipeline */
+-	ReadDOC(docptr, ReadPipeInit);
+-
+-	for (i=0; i < len-1; i++)
+-		if (buf[i] != ReadDOC(docptr, Mil_CDSN_IO)) {
+-			ReadDOC(docptr, LastDataRead);
+-			return i;
+-		}
+-	if (buf[i] != ReadDOC(docptr, LastDataRead))
+-		return i;
+-	return 0;
+-}
+-
+-static u_char doc2001plus_read_byte(struct mtd_info *mtd)
+-{
+-	struct nand_chip *this = mtd->priv;
+-	struct doc_priv *doc = this->priv;
+-	void __iomem *docptr = doc->virtadr;
+-	u_char ret;
+-
+-	ReadDOC(docptr, Mplus_ReadPipeInit);
+-	ReadDOC(docptr, Mplus_ReadPipeInit);
+-	ret = ReadDOC(docptr, Mplus_LastDataRead);
+-	if (debug) printk("read_byte returns %02x\n", ret);
+-	return ret;
+-}
+-
+-static void doc2001plus_writebuf(struct mtd_info *mtd,
+-			     const u_char *buf, int len)
+-{
+-	struct nand_chip *this = mtd->priv;
+-	struct doc_priv *doc = this->priv;
+-	void __iomem *docptr = doc->virtadr;
+-	int i;
+-
+-	if (debug)printk("writebuf of %d bytes: ", len);
+-	for (i=0; i < len; i++) {
+-		WriteDOC_(buf[i], docptr, DoC_Mil_CDSN_IO + i);
+-		if (debug && i < 16)
+-			printk("%02x ", buf[i]);
+-	}
+-	if (debug) printk("\n");
+-}
+-
+-static void doc2001plus_readbuf(struct mtd_info *mtd,
+-			    u_char *buf, int len)
+-{
+-	struct nand_chip *this = mtd->priv;
+-	struct doc_priv *doc = this->priv;
+-	void __iomem *docptr = doc->virtadr;
+-	int i;
+-
+-	if (debug)printk("readbuf of %d bytes: ", len);
+-
+-	/* Start read pipeline */
+-	ReadDOC(docptr, Mplus_ReadPipeInit);
+-	ReadDOC(docptr, Mplus_ReadPipeInit);
+-
+-	for (i=0; i < len-2; i++) {
+-		buf[i] = ReadDOC(docptr, Mil_CDSN_IO);
+-		if (debug && i < 16)
+-			printk("%02x ", buf[i]);
+-	}
+-
+-	/* Terminate read pipeline */
+-	buf[len-2] = ReadDOC(docptr, Mplus_LastDataRead);
+-	if (debug && i < 16)
+-		printk("%02x ", buf[len-2]);
+-	buf[len-1] = ReadDOC(docptr, Mplus_LastDataRead);
+-	if (debug && i < 16)
+-		printk("%02x ", buf[len-1]);
+-	if (debug) printk("\n");
+-}
+-
+-static int doc2001plus_verifybuf(struct mtd_info *mtd,
+-			     const u_char *buf, int len)
+-{
+-	struct nand_chip *this = mtd->priv;
+-	struct doc_priv *doc = this->priv;
+-	void __iomem *docptr = doc->virtadr;
+-	int i;
+-
+-	if (debug)printk("verifybuf of %d bytes: ", len);
+-
+-	/* Start read pipeline */
+-	ReadDOC(docptr, Mplus_ReadPipeInit);
+-	ReadDOC(docptr, Mplus_ReadPipeInit);
+-
+-	for (i=0; i < len-2; i++)
+-		if (buf[i] != ReadDOC(docptr, Mil_CDSN_IO)) {
+-			ReadDOC(docptr, Mplus_LastDataRead);
+-			ReadDOC(docptr, Mplus_LastDataRead);
+-			return i;
+-		}
+-	if (buf[len-2] != ReadDOC(docptr, Mplus_LastDataRead))
+-		return len-2;
+-	if (buf[len-1] != ReadDOC(docptr, Mplus_LastDataRead))
+-		return len-1;
+-	return 0;
+-}
+-
+-static void doc2001plus_select_chip(struct mtd_info *mtd, int chip)
+-{
+-	struct nand_chip *this = mtd->priv;
+-	struct doc_priv *doc = this->priv;
+-	void __iomem *docptr = doc->virtadr;
+-	int floor = 0;
+-
+-	if(debug)printk("select chip (%d)\n", chip);
+-
+-	if (chip == -1) {
+-		/* Disable flash internally */
+-		WriteDOC(0, docptr, Mplus_FlashSelect);
+-		return;
+-	}
+-
+-	floor = chip / doc->chips_per_floor;
+-	chip -= (floor *  doc->chips_per_floor);
+-
+-	/* Assert ChipEnable and deassert WriteProtect */
+-	WriteDOC((DOC_FLASH_CE), docptr, Mplus_FlashSelect);
+-	this->cmdfunc(mtd, NAND_CMD_RESET, -1, -1);
+-
+-	doc->curchip = chip;
+-	doc->curfloor = floor;
+-}
+-
+-static void doc200x_select_chip(struct mtd_info *mtd, int chip)
+-{
+-	struct nand_chip *this = mtd->priv;
+-	struct doc_priv *doc = this->priv;
+-	void __iomem *docptr = doc->virtadr;
+-	int floor = 0;
+-
+-	if(debug)printk("select chip (%d)\n", chip);
+-
+-	if (chip == -1)
+-		return;
+-
+-	floor = chip / doc->chips_per_floor;
+-	chip -= (floor *  doc->chips_per_floor);
+-
+-	/* 11.4.4 -- deassert CE before changing chip */
+-	doc200x_hwcontrol(mtd, NAND_CTL_CLRNCE);
+-
+-	WriteDOC(floor, docptr, FloorSelect);
+-	WriteDOC(chip, docptr, CDSNDeviceSelect);
+-
+-	doc200x_hwcontrol(mtd, NAND_CTL_SETNCE);
+-
+-	doc->curchip = chip;
+-	doc->curfloor = floor;
+-}
+-
+-static void doc200x_hwcontrol(struct mtd_info *mtd, int cmd)
+-{
+-	struct nand_chip *this = mtd->priv;
+-	struct doc_priv *doc = this->priv;
+-	void __iomem *docptr = doc->virtadr;
+-
+-	switch(cmd) {
+-	case NAND_CTL_SETNCE:
+-		doc->CDSNControl |= CDSN_CTRL_CE;
+-		break;
+-	case NAND_CTL_CLRNCE:
+-		doc->CDSNControl &= ~CDSN_CTRL_CE;
+-		break;
+-	case NAND_CTL_SETCLE:
+-		doc->CDSNControl |= CDSN_CTRL_CLE;
+-		break;
+-	case NAND_CTL_CLRCLE:
+-		doc->CDSNControl &= ~CDSN_CTRL_CLE;
+-		break;
+-	case NAND_CTL_SETALE:
+-		doc->CDSNControl |= CDSN_CTRL_ALE;
+-		break;
+-	case NAND_CTL_CLRALE:
+-		doc->CDSNControl &= ~CDSN_CTRL_ALE;
+-		break;
+-	case NAND_CTL_SETWP:
+-		doc->CDSNControl |= CDSN_CTRL_WP;
+-		break;
+-	case NAND_CTL_CLRWP:
+-		doc->CDSNControl &= ~CDSN_CTRL_WP;
+-		break;
+-	}
+-	if (debug)printk("hwcontrol(%d): %02x\n", cmd, doc->CDSNControl);
+-	WriteDOC(doc->CDSNControl, docptr, CDSNControl);
+-	/* 11.4.3 -- 4 NOPs after CSDNControl write */
+-	DoC_Delay(doc, 4);
+-}
+-
+-static void doc2001plus_command (struct mtd_info *mtd, unsigned command, int column, int page_addr)
+-{
+-	struct nand_chip *this = mtd->priv;
+-	struct doc_priv *doc = this->priv;
+-	void __iomem *docptr = doc->virtadr;
+-
+-	/*
+-	 * Must terminate write pipeline before sending any commands
+-	 * to the device.
+-	 */
+-	if (command == NAND_CMD_PAGEPROG) {
+-		WriteDOC(0x00, docptr, Mplus_WritePipeTerm);
+-		WriteDOC(0x00, docptr, Mplus_WritePipeTerm);
+-	}
+-
+-	/*
+-	 * Write out the command to the device.
+-	 */
+-	if (command == NAND_CMD_SEQIN) {
+-		int readcmd;
+-
+-		if (column >= mtd->oobblock) {
+-			/* OOB area */
+-			column -= mtd->oobblock;
+-			readcmd = NAND_CMD_READOOB;
+-		} else if (column < 256) {
+-			/* First 256 bytes --> READ0 */
+-			readcmd = NAND_CMD_READ0;
+-		} else {
+-			column -= 256;
+-			readcmd = NAND_CMD_READ1;
+-		}
+-		WriteDOC(readcmd, docptr, Mplus_FlashCmd);
+-	}
+-	WriteDOC(command, docptr, Mplus_FlashCmd);
+-	WriteDOC(0, docptr, Mplus_WritePipeTerm);
+-	WriteDOC(0, docptr, Mplus_WritePipeTerm);
+-
+-	if (column != -1 || page_addr != -1) {
+-		/* Serially input address */
+-		if (column != -1) {
+-			/* Adjust columns for 16 bit buswidth */
+-			if (this->options & NAND_BUSWIDTH_16)
+-				column >>= 1;
+-			WriteDOC(column, docptr, Mplus_FlashAddress);
+-		}
+-		if (page_addr != -1) {
+-			WriteDOC((unsigned char) (page_addr & 0xff), docptr, Mplus_FlashAddress);
+-			WriteDOC((unsigned char) ((page_addr >> 8) & 0xff), docptr, Mplus_FlashAddress);
+-			/* One more address cycle for higher density devices */
+-			if (this->chipsize & 0x0c000000) {
+-				WriteDOC((unsigned char) ((page_addr >> 16) & 0x0f), docptr, Mplus_FlashAddress);
+-				printk("high density\n");
+-			}
+-		}
+-		WriteDOC(0, docptr, Mplus_WritePipeTerm);
+-		WriteDOC(0, docptr, Mplus_WritePipeTerm);
+-		/* deassert ALE */
+-		if (command == NAND_CMD_READ0 || command == NAND_CMD_READ1 || command == NAND_CMD_READOOB || command == NAND_CMD_READID)
+-			WriteDOC(0, docptr, Mplus_FlashControl);
+-	}
+-
+-	/*
+-	 * program and erase have their own busy handlers
+-	 * status and sequential in needs no delay
+-	*/
+-	switch (command) {
+-
+-	case NAND_CMD_PAGEPROG:
+-	case NAND_CMD_ERASE1:
+-	case NAND_CMD_ERASE2:
+-	case NAND_CMD_SEQIN:
+-	case NAND_CMD_STATUS:
+-		return;
+-
+-	case NAND_CMD_RESET:
+-		if (this->dev_ready)
+-			break;
+-		udelay(this->chip_delay);
+-		WriteDOC(NAND_CMD_STATUS, docptr, Mplus_FlashCmd);
+-		WriteDOC(0, docptr, Mplus_WritePipeTerm);
+-		WriteDOC(0, docptr, Mplus_WritePipeTerm);
+-		while ( !(this->read_byte(mtd) & 0x40));
+-		return;
+-
+-	/* This applies to read commands */
+-	default:
+-		/*
+-		 * If we don't have access to the busy pin, we apply the given
+-		 * command delay
+-		*/
+-		if (!this->dev_ready) {
+-			udelay (this->chip_delay);
+-			return;
+-		}
+-	}
+-
+-	/* Apply this short delay always to ensure that we do wait tWB in
+-	 * any case on any machine. */
+-	ndelay (100);
+-	/* wait until command is processed */
+-	while (!this->dev_ready(mtd));
+-}
+-
+-static int doc200x_dev_ready(struct mtd_info *mtd)
+-{
+-	struct nand_chip *this = mtd->priv;
+-	struct doc_priv *doc = this->priv;
+-	void __iomem *docptr = doc->virtadr;
+-
+-	if (DoC_is_MillenniumPlus(doc)) {
+-		/* 11.4.2 -- must NOP four times before checking FR/B# */
+-		DoC_Delay(doc, 4);
+-		if ((ReadDOC(docptr, Mplus_FlashControl) & CDSN_CTRL_FR_B_MASK) != CDSN_CTRL_FR_B_MASK) {
+-			if(debug)
+-				printk("not ready\n");
+-			return 0;
+-		}
+-		if (debug)printk("was ready\n");
+-		return 1;
+-	} else {
+-		/* 11.4.2 -- must NOP four times before checking FR/B# */
+-		DoC_Delay(doc, 4);
+-		if (!(ReadDOC(docptr, CDSNControl) & CDSN_CTRL_FR_B)) {
+-			if(debug)
+-				printk("not ready\n");
+-			return 0;
+-		}
+-		/* 11.4.2 -- Must NOP twice if it's ready */
+-		DoC_Delay(doc, 2);
+-		if (debug)printk("was ready\n");
+-		return 1;
+-	}
+-}
+-
+-static int doc200x_block_bad(struct mtd_info *mtd, loff_t ofs, int getchip)
+-{
+-	/* This is our last resort if we couldn't find or create a BBT.  Just
+-	   pretend all blocks are good. */
+-	return 0;
+-}
+-
+-static void doc200x_enable_hwecc(struct mtd_info *mtd, int mode)
+-{
+-	struct nand_chip *this = mtd->priv;
+-	struct doc_priv *doc = this->priv;
+-	void __iomem *docptr = doc->virtadr;
+-
+-	/* Prime the ECC engine */
+-	switch(mode) {
+-	case NAND_ECC_READ:
+-		WriteDOC(DOC_ECC_RESET, docptr, ECCConf);
+-		WriteDOC(DOC_ECC_EN, docptr, ECCConf);
+-		break;
+-	case NAND_ECC_WRITE:
+-		WriteDOC(DOC_ECC_RESET, docptr, ECCConf);
+-		WriteDOC(DOC_ECC_EN | DOC_ECC_RW, docptr, ECCConf);
+-		break;
+-	}
+-}
+-
+-static void doc2001plus_enable_hwecc(struct mtd_info *mtd, int mode)
+-{
+-	struct nand_chip *this = mtd->priv;
+-	struct doc_priv *doc = this->priv;
+-	void __iomem *docptr = doc->virtadr;
+-
+-	/* Prime the ECC engine */
+-	switch(mode) {
+-	case NAND_ECC_READ:
+-		WriteDOC(DOC_ECC_RESET, docptr, Mplus_ECCConf);
+-		WriteDOC(DOC_ECC_EN, docptr, Mplus_ECCConf);
+-		break;
+-	case NAND_ECC_WRITE:
+-		WriteDOC(DOC_ECC_RESET, docptr, Mplus_ECCConf);
+-		WriteDOC(DOC_ECC_EN | DOC_ECC_RW, docptr, Mplus_ECCConf);
+-		break;
+-	}
+-}
+-
+-/* This code is only called on write */
+-static int doc200x_calculate_ecc(struct mtd_info *mtd, const u_char *dat,
+-				 unsigned char *ecc_code)
+-{
+-	struct nand_chip *this = mtd->priv;
+-	struct doc_priv *doc = this->priv;
+-	void __iomem *docptr = doc->virtadr;
+-	int i;
+-	int emptymatch = 1;
+-
+-	/* flush the pipeline */
+-	if (DoC_is_2000(doc)) {
+-		WriteDOC(doc->CDSNControl & ~CDSN_CTRL_FLASH_IO, docptr, CDSNControl);
+-		WriteDOC(0, docptr, 2k_CDSN_IO);
+-		WriteDOC(0, docptr, 2k_CDSN_IO);
+-		WriteDOC(0, docptr, 2k_CDSN_IO);
+-		WriteDOC(doc->CDSNControl, docptr, CDSNControl);
+-	} else if (DoC_is_MillenniumPlus(doc)) {
+-		WriteDOC(0, docptr, Mplus_NOP);
+-		WriteDOC(0, docptr, Mplus_NOP);
+-		WriteDOC(0, docptr, Mplus_NOP);
+-	} else {
+-		WriteDOC(0, docptr, NOP);
+-		WriteDOC(0, docptr, NOP);
+-		WriteDOC(0, docptr, NOP);
+-	}
+-
+-	for (i = 0; i < 6; i++) {
+-		if (DoC_is_MillenniumPlus(doc))
+-			ecc_code[i] = ReadDOC_(docptr, DoC_Mplus_ECCSyndrome0 + i);
+-		else
+-			ecc_code[i] = ReadDOC_(docptr, DoC_ECCSyndrome0 + i);
+-		if (ecc_code[i] != empty_write_ecc[i])
+-			emptymatch = 0;
+-	}
+-	if (DoC_is_MillenniumPlus(doc))
+-		WriteDOC(DOC_ECC_DIS, docptr, Mplus_ECCConf);
+-	else
+-		WriteDOC(DOC_ECC_DIS, docptr, ECCConf);
+-#if 0
+-	/* If emptymatch=1, we might have an all-0xff data buffer.  Check. */
+-	if (emptymatch) {
+-		/* Note: this somewhat expensive test should not be triggered
+-		   often.  It could be optimized away by examining the data in
+-		   the writebuf routine, and remembering the result. */
+-		for (i = 0; i < 512; i++) {
+-			if (dat[i] == 0xff) continue;
+-			emptymatch = 0;
+-			break;
+-		}
+-	}
+-	/* If emptymatch still =1, we do have an all-0xff data buffer.
+-	   Return all-0xff ecc value instead of the computed one, so
+-	   it'll look just like a freshly-erased page. */
+-	if (emptymatch) memset(ecc_code, 0xff, 6);
+-#endif
+-	return 0;
+-}
+-
+-static int doc200x_correct_data(struct mtd_info *mtd, u_char *dat, u_char *read_ecc, u_char *calc_ecc)
+-{
+-	int i, ret = 0;
+-	struct nand_chip *this = mtd->priv;
+-	struct doc_priv *doc = this->priv;
+-	void __iomem *docptr = doc->virtadr;
+-	volatile u_char dummy;
+-	int emptymatch = 1;
+-
+-	/* flush the pipeline */
+-	if (DoC_is_2000(doc)) {
+-		dummy = ReadDOC(docptr, 2k_ECCStatus);
+-		dummy = ReadDOC(docptr, 2k_ECCStatus);
+-		dummy = ReadDOC(docptr, 2k_ECCStatus);
+-	} else if (DoC_is_MillenniumPlus(doc)) {
+-		dummy = ReadDOC(docptr, Mplus_ECCConf);
+-		dummy = ReadDOC(docptr, Mplus_ECCConf);
+-		dummy = ReadDOC(docptr, Mplus_ECCConf);
+-	} else {
+-		dummy = ReadDOC(docptr, ECCConf);
+-		dummy = ReadDOC(docptr, ECCConf);
+-		dummy = ReadDOC(docptr, ECCConf);
+-	}
+-
+-	/* Error occured ? */
+-	if (dummy & 0x80) {
+-		for (i = 0; i < 6; i++) {
+-			if (DoC_is_MillenniumPlus(doc))
+-				calc_ecc[i] = ReadDOC_(docptr, DoC_Mplus_ECCSyndrome0 + i);
+-			else
+-				calc_ecc[i] = ReadDOC_(docptr, DoC_ECCSyndrome0 + i);
+-			if (calc_ecc[i] != empty_read_syndrome[i])
+-				emptymatch = 0;
+-		}
+-		/* If emptymatch=1, the read syndrome is consistent with an
+-		   all-0xff data and stored ecc block.  Check the stored ecc. */
+-		if (emptymatch) {
+-			for (i = 0; i < 6; i++) {
+-				if (read_ecc[i] == 0xff) continue;
+-				emptymatch = 0;
+-				break;
+-			}
+-		}
+-		/* If emptymatch still =1, check the data block. */
+-		if (emptymatch) {
+-		/* Note: this somewhat expensive test should not be triggered
+-		   often.  It could be optimized away by examining the data in
+-		   the readbuf routine, and remembering the result. */
+-			for (i = 0; i < 512; i++) {
+-				if (dat[i] == 0xff) continue;
+-				emptymatch = 0;
+-				break;
+-			}
+-		}
+-		/* If emptymatch still =1, this is almost certainly a freshly-
+-		   erased block, in which case the ECC will not come out right.
+-		   We'll suppress the error and tell the caller everything's
+-		   OK.  Because it is. */
+-		if (!emptymatch) ret = doc_ecc_decode (rs_decoder, dat, calc_ecc);
+-		if (ret > 0)
+-			printk(KERN_ERR "doc200x_correct_data corrected %d errors\n", ret);
+-	}
+-	if (DoC_is_MillenniumPlus(doc))
+-		WriteDOC(DOC_ECC_DIS, docptr, Mplus_ECCConf);
+-	else
+-		WriteDOC(DOC_ECC_DIS, docptr, ECCConf);
+-	if (no_ecc_failures && (ret == -1)) {
+-		printk(KERN_ERR "suppressing ECC failure\n");
+-		ret = 0;
+-	}
+-	return ret;
+-}
+-
+-/*u_char mydatabuf[528]; */
+-
+-static struct nand_oobinfo doc200x_oobinfo = {
+-	.useecc = MTD_NANDECC_AUTOPLACE,
+-	.eccbytes = 6,
+-	.eccpos = {0, 1, 2, 3, 4, 5},
+-	.oobfree = { {8, 8} }
+-};
+-
+-/* Find the (I)NFTL Media Header, and optionally also the mirror media header.
+-   On sucessful return, buf will contain a copy of the media header for
+-   further processing.  id is the string to scan for, and will presumably be
+-   either "ANAND" or "BNAND".  If findmirror=1, also look for the mirror media
+-   header.  The page #s of the found media headers are placed in mh0_page and
+-   mh1_page in the DOC private structure. */
+-static int __init find_media_headers(struct mtd_info *mtd, u_char *buf,
+-				     const char *id, int findmirror)
+-{
+-	struct nand_chip *this = mtd->priv;
+-	struct doc_priv *doc = this->priv;
+-	unsigned offs, end = (MAX_MEDIAHEADER_SCAN << this->phys_erase_shift);
+-	int ret;
+-	size_t retlen;
+-
+-	end = min(end, mtd->size); /* paranoia */
+-	for (offs = 0; offs < end; offs += mtd->erasesize) {
+-		ret = mtd->read(mtd, offs, mtd->oobblock, &retlen, buf);
+-		if (retlen != mtd->oobblock) continue;
+-		if (ret) {
+-			printk(KERN_WARNING "ECC error scanning DOC at 0x%x\n",
+-				offs);
+-		}
+-		if (memcmp(buf, id, 6)) continue;
+-		printk(KERN_INFO "Found DiskOnChip %s Media Header at 0x%x\n", id, offs);
+-		if (doc->mh0_page == -1) {
+-			doc->mh0_page = offs >> this->page_shift;
+-			if (!findmirror) return 1;
+-			continue;
+-		}
+-		doc->mh1_page = offs >> this->page_shift;
+-		return 2;
+-	}
+-	if (doc->mh0_page == -1) {
+-		printk(KERN_WARNING "DiskOnChip %s Media Header not found.\n", id);
+-		return 0;
+-	}
+-	/* Only one mediaheader was found.  We want buf to contain a
+-	   mediaheader on return, so we'll have to re-read the one we found. */
+-	offs = doc->mh0_page << this->page_shift;
+-	ret = mtd->read(mtd, offs, mtd->oobblock, &retlen, buf);
+-	if (retlen != mtd->oobblock) {
+-		/* Insanity.  Give up. */
+-		printk(KERN_ERR "Read DiskOnChip Media Header once, but can't reread it???\n");
+-		return 0;
+-	}
+-	return 1;
+-}
+-
+-static inline int __init nftl_partscan(struct mtd_info *mtd,
+-				struct mtd_partition *parts)
+-{
+-	struct nand_chip *this = mtd->priv;
+-	struct doc_priv *doc = this->priv;
+-	int ret = 0;
+-	u_char *buf;
+-	struct NFTLMediaHeader *mh;
+-	const unsigned psize = 1 << this->page_shift;
+-	unsigned blocks, maxblocks;
+-	int offs, numheaders;
+-
+-	buf = kmalloc(mtd->oobblock, GFP_KERNEL);
+-	if (!buf) {
+-		printk(KERN_ERR "DiskOnChip mediaheader kmalloc failed!\n");
+-		return 0;
+-	}
+-	if (!(numheaders=find_media_headers(mtd, buf, "ANAND", 1))) goto out;
+-	mh = (struct NFTLMediaHeader *) buf;
+-
+-/*#ifdef CONFIG_MTD_DEBUG_VERBOSE */
+-/*	if (CONFIG_MTD_DEBUG_VERBOSE >= 2) */
+-	printk(KERN_INFO "    DataOrgID        = %s\n"
+-			 "    NumEraseUnits    = %d\n"
+-			 "    FirstPhysicalEUN = %d\n"
+-			 "    FormattedSize    = %d\n"
+-			 "    UnitSizeFactor   = %d\n",
+-		mh->DataOrgID, mh->NumEraseUnits,
+-		mh->FirstPhysicalEUN, mh->FormattedSize,
+-		mh->UnitSizeFactor);
+-/*#endif */
+-
+-	blocks = mtd->size >> this->phys_erase_shift;
+-	maxblocks = min(32768U, mtd->erasesize - psize);
+-
+-	if (mh->UnitSizeFactor == 0x00) {
+-		/* Auto-determine UnitSizeFactor.  The constraints are:
+-		   - There can be at most 32768 virtual blocks.
+-		   - There can be at most (virtual block size - page size)
+-		     virtual blocks (because MediaHeader+BBT must fit in 1).
+-		*/
+-		mh->UnitSizeFactor = 0xff;
+-		while (blocks > maxblocks) {
+-			blocks >>= 1;
+-			maxblocks = min(32768U, (maxblocks << 1) + psize);
+-			mh->UnitSizeFactor--;
+-		}
+-		printk(KERN_WARNING "UnitSizeFactor=0x00 detected.  Correct value is assumed to be 0x%02x.\n", mh->UnitSizeFactor);
+-	}
+-
+-	/* NOTE: The lines below modify internal variables of the NAND and MTD
+-	   layers; variables with have already been configured by nand_scan.
+-	   Unfortunately, we didn't know before this point what these values
+-	   should be.  Thus, this code is somewhat dependant on the exact
+-	   implementation of the NAND layer.  */
+-	if (mh->UnitSizeFactor != 0xff) {
+-		this->bbt_erase_shift += (0xff - mh->UnitSizeFactor);
+-		mtd->erasesize <<= (0xff - mh->UnitSizeFactor);
+-		printk(KERN_INFO "Setting virtual erase size to %d\n", mtd->erasesize);
+-		blocks = mtd->size >> this->bbt_erase_shift;
+-		maxblocks = min(32768U, mtd->erasesize - psize);
+-	}
+-
+-	if (blocks > maxblocks) {
+-		printk(KERN_ERR "UnitSizeFactor of 0x%02x is inconsistent with device size.  Aborting.\n", mh->UnitSizeFactor);
+-		goto out;
+-	}
+-
+-	/* Skip past the media headers. */
+-	offs = max(doc->mh0_page, doc->mh1_page);
+-	offs <<= this->page_shift;
+-	offs += mtd->erasesize;
+-
+-	/*parts[0].name = " DiskOnChip Boot / Media Header partition"; */
+-	/*parts[0].offset = 0; */
+-	/*parts[0].size = offs; */
+-
+-	parts[0].name = " DiskOnChip BDTL partition";
+-	parts[0].offset = offs;
+-	parts[0].size = (mh->NumEraseUnits - numheaders) << this->bbt_erase_shift;
+-
+-	offs += parts[0].size;
+-	if (offs < mtd->size) {
+-		parts[1].name = " DiskOnChip Remainder partition";
+-		parts[1].offset = offs;
+-		parts[1].size = mtd->size - offs;
+-		ret = 2;
+-		goto out;
+-	}
+-	ret = 1;
+-out:
+-	kfree(buf);
+-	return ret;
+-}
+-
+-/* This is a stripped-down copy of the code in inftlmount.c */
+-static inline int __init inftl_partscan(struct mtd_info *mtd,
+-				 struct mtd_partition *parts)
+-{
+-	struct nand_chip *this = mtd->priv;
+-	struct doc_priv *doc = this->priv;
+-	int ret = 0;
+-	u_char *buf;
+-	struct INFTLMediaHeader *mh;
+-	struct INFTLPartition *ip;
+-	int numparts = 0;
+-	int blocks;
+-	int vshift, lastvunit = 0;
+-	int i;
+-	int end = mtd->size;
+-
+-	if (inftl_bbt_write)
+-		end -= (INFTL_BBT_RESERVED_BLOCKS << this->phys_erase_shift);
+-
+-	buf = kmalloc(mtd->oobblock, GFP_KERNEL);
+-	if (!buf) {
+-		printk(KERN_ERR "DiskOnChip mediaheader kmalloc failed!\n");
+-		return 0;
+-	}
+-
+-	if (!find_media_headers(mtd, buf, "BNAND", 0)) goto out;
+-	doc->mh1_page = doc->mh0_page + (4096 >> this->page_shift);
+-	mh = (struct INFTLMediaHeader *) buf;
+-
+-	mh->NoOfBootImageBlocks = le32_to_cpu(mh->NoOfBootImageBlocks);
+-	mh->NoOfBinaryPartitions = le32_to_cpu(mh->NoOfBinaryPartitions);
+-	mh->NoOfBDTLPartitions = le32_to_cpu(mh->NoOfBDTLPartitions);
+-	mh->BlockMultiplierBits = le32_to_cpu(mh->BlockMultiplierBits);
+-	mh->FormatFlags = le32_to_cpu(mh->FormatFlags);
+-	mh->PercentUsed = le32_to_cpu(mh->PercentUsed);
+-
+-/*#ifdef CONFIG_MTD_DEBUG_VERBOSE */
+-/*	if (CONFIG_MTD_DEBUG_VERBOSE >= 2) */
+-	printk(KERN_INFO "    bootRecordID          = %s\n"
+-			 "    NoOfBootImageBlocks   = %d\n"
+-			 "    NoOfBinaryPartitions  = %d\n"
+-			 "    NoOfBDTLPartitions    = %d\n"
+-			 "    BlockMultiplerBits    = %d\n"
+-			 "    FormatFlgs            = %d\n"
+-			 "    OsakVersion           = %d.%d.%d.%d\n"
+-			 "    PercentUsed           = %d\n",
+-		mh->bootRecordID, mh->NoOfBootImageBlocks,
+-		mh->NoOfBinaryPartitions,
+-		mh->NoOfBDTLPartitions,
+-		mh->BlockMultiplierBits, mh->FormatFlags,
+-		((unsigned char *) &mh->OsakVersion)[0] & 0xf,
+-		((unsigned char *) &mh->OsakVersion)[1] & 0xf,
+-		((unsigned char *) &mh->OsakVersion)[2] & 0xf,
+-		((unsigned char *) &mh->OsakVersion)[3] & 0xf,
+-		mh->PercentUsed);
+-/*#endif */
+-
+-	vshift = this->phys_erase_shift + mh->BlockMultiplierBits;
+-
+-	blocks = mtd->size >> vshift;
+-	if (blocks > 32768) {
+-		printk(KERN_ERR "BlockMultiplierBits=%d is inconsistent with device size.  Aborting.\n", mh->BlockMultiplierBits);
+-		goto out;
+-	}
+-
+-	blocks = doc->chips_per_floor << (this->chip_shift - this->phys_erase_shift);
+-	if (inftl_bbt_write && (blocks > mtd->erasesize)) {
+-		printk(KERN_ERR "Writeable BBTs spanning more than one erase block are not yet supported.  FIX ME!\n");
+-		goto out;
+-	}
+-
+-	/* Scan the partitions */
+-	for (i = 0; (i < 4); i++) {
+-		ip = &(mh->Partitions[i]);
+-		ip->virtualUnits = le32_to_cpu(ip->virtualUnits);
+-		ip->firstUnit = le32_to_cpu(ip->firstUnit);
+-		ip->lastUnit = le32_to_cpu(ip->lastUnit);
+-		ip->flags = le32_to_cpu(ip->flags);
+-		ip->spareUnits = le32_to_cpu(ip->spareUnits);
+-		ip->Reserved0 = le32_to_cpu(ip->Reserved0);
+-
+-/*#ifdef CONFIG_MTD_DEBUG_VERBOSE */
+-/*		if (CONFIG_MTD_DEBUG_VERBOSE >= 2) */
+-		printk(KERN_INFO	"    PARTITION[%d] ->\n"
+-			"        virtualUnits    = %d\n"
+-			"        firstUnit       = %d\n"
+-			"        lastUnit        = %d\n"
+-			"        flags           = 0x%x\n"
+-			"        spareUnits      = %d\n",
+-			i, ip->virtualUnits, ip->firstUnit,
+-			ip->lastUnit, ip->flags,
+-			ip->spareUnits);
+-/*#endif */
+-
+-/*
+-		if ((i == 0) && (ip->firstUnit > 0)) {
+-			parts[0].name = " DiskOnChip IPL / Media Header partition";
+-			parts[0].offset = 0;
+-			parts[0].size = mtd->erasesize * ip->firstUnit;
+-			numparts = 1;
+-		}
+-*/
+-
+-		if (ip->flags & INFTL_BINARY)
+-			parts[numparts].name = " DiskOnChip BDK partition";
+-		else
+-			parts[numparts].name = " DiskOnChip BDTL partition";
+-		parts[numparts].offset = ip->firstUnit << vshift;
+-		parts[numparts].size = (1 + ip->lastUnit - ip->firstUnit) << vshift;
+-		numparts++;
+-		if (ip->lastUnit > lastvunit) lastvunit = ip->lastUnit;
+-		if (ip->flags & INFTL_LAST) break;
+-	}
+-	lastvunit++;
+-	if ((lastvunit << vshift) < end) {
+-		parts[numparts].name = " DiskOnChip Remainder partition";
+-		parts[numparts].offset = lastvunit << vshift;
+-		parts[numparts].size = end - parts[numparts].offset;
+-		numparts++;
+-	}
+-	ret = numparts;
+-out:
+-	kfree(buf);
+-	return ret;
+-}
+-
+-static int __init nftl_scan_bbt(struct mtd_info *mtd)
+-{
+-	int ret, numparts;
+-	struct nand_chip *this = mtd->priv;
+-	struct doc_priv *doc = this->priv;
+-	struct mtd_partition parts[2];
+-
+-	memset((char *) parts, 0, sizeof(parts));
+-	/* On NFTL, we have to find the media headers before we can read the
+-	   BBTs, since they're stored in the media header eraseblocks. */
+-	numparts = nftl_partscan(mtd, parts);
+-	if (!numparts) return -EIO;
+-	this->bbt_td->options = NAND_BBT_ABSPAGE | NAND_BBT_8BIT |
+-				NAND_BBT_SAVECONTENT | NAND_BBT_WRITE |
+-				NAND_BBT_VERSION;
+-	this->bbt_td->veroffs = 7;
+-	this->bbt_td->pages[0] = doc->mh0_page + 1;
+-	if (doc->mh1_page != -1) {
+-		this->bbt_md->options = NAND_BBT_ABSPAGE | NAND_BBT_8BIT |
+-					NAND_BBT_SAVECONTENT | NAND_BBT_WRITE |
+-					NAND_BBT_VERSION;
+-		this->bbt_md->veroffs = 7;
+-		this->bbt_md->pages[0] = doc->mh1_page + 1;
+-	} else {
+-		this->bbt_md = NULL;
+-	}
+-
+-	/* It's safe to set bd=NULL below because NAND_BBT_CREATE is not set.
+-	   At least as nand_bbt.c is currently written. */
+-	if ((ret = nand_scan_bbt(mtd, NULL)))
+-		return ret;
+-	add_mtd_device(mtd);
+-#ifdef CONFIG_MTD_PARTITIONS
+-	if (!no_autopart)
+-		add_mtd_partitions(mtd, parts, numparts);
+-#endif
+-	return 0;
+-}
+-
+-static int __init inftl_scan_bbt(struct mtd_info *mtd)
+-{
+-	int ret, numparts;
+-	struct nand_chip *this = mtd->priv;
+-	struct doc_priv *doc = this->priv;
+-	struct mtd_partition parts[5];
+-
+-	if (this->numchips > doc->chips_per_floor) {
+-		printk(KERN_ERR "Multi-floor INFTL devices not yet supported.\n");
+-		return -EIO;
+-	}
+-
+-	if (DoC_is_MillenniumPlus(doc)) {
+-		this->bbt_td->options = NAND_BBT_2BIT | NAND_BBT_ABSPAGE;
+-		if (inftl_bbt_write)
+-			this->bbt_td->options |= NAND_BBT_WRITE;
+-		this->bbt_td->pages[0] = 2;
+-		this->bbt_md = NULL;
+-	} else {
+-		this->bbt_td->options = NAND_BBT_LASTBLOCK | NAND_BBT_8BIT |
+-					NAND_BBT_VERSION;
+-		if (inftl_bbt_write)
+-			this->bbt_td->options |= NAND_BBT_WRITE;
+-		this->bbt_td->offs = 8;
+-		this->bbt_td->len = 8;
+-		this->bbt_td->veroffs = 7;
+-		this->bbt_td->maxblocks = INFTL_BBT_RESERVED_BLOCKS;
+-		this->bbt_td->reserved_block_code = 0x01;
+-		this->bbt_td->pattern = "MSYS_BBT";
+-
+-		this->bbt_md->options = NAND_BBT_LASTBLOCK | NAND_BBT_8BIT |
+-					NAND_BBT_VERSION;
+-		if (inftl_bbt_write)
+-			this->bbt_md->options |= NAND_BBT_WRITE;
+-		this->bbt_md->offs = 8;
+-		this->bbt_md->len = 8;
+-		this->bbt_md->veroffs = 7;
+-		this->bbt_md->maxblocks = INFTL_BBT_RESERVED_BLOCKS;
+-		this->bbt_md->reserved_block_code = 0x01;
+-		this->bbt_md->pattern = "TBB_SYSM";
+-	}
+-
+-	/* It's safe to set bd=NULL below because NAND_BBT_CREATE is not set.
+-	   At least as nand_bbt.c is currently written. */
+-	if ((ret = nand_scan_bbt(mtd, NULL)))
+-		return ret;
+-	memset((char *) parts, 0, sizeof(parts));
+-	numparts = inftl_partscan(mtd, parts);
+-	/* At least for now, require the INFTL Media Header.  We could probably
+-	   do without it for non-INFTL use, since all it gives us is
+-	   autopartitioning, but I want to give it more thought. */
+-	if (!numparts) return -EIO;
+-	add_mtd_device(mtd);
+-#ifdef CONFIG_MTD_PARTITIONS
+-	if (!no_autopart)
+-		add_mtd_partitions(mtd, parts, numparts);
+-#endif
+-	return 0;
+-}
+-
+-static inline int __init doc2000_init(struct mtd_info *mtd)
+-{
+-	struct nand_chip *this = mtd->priv;
+-	struct doc_priv *doc = this->priv;
+-
+-	this->write_byte = doc2000_write_byte;
+-	this->read_byte = doc2000_read_byte;
+-	this->write_buf = doc2000_writebuf;
+-	this->read_buf = doc2000_readbuf;
+-	this->verify_buf = doc2000_verifybuf;
+-	this->scan_bbt = nftl_scan_bbt;
+-
+-	doc->CDSNControl = CDSN_CTRL_FLASH_IO | CDSN_CTRL_ECC_IO;
+-	doc2000_count_chips(mtd);
+-	mtd->name = "DiskOnChip 2000 (NFTL Model)";
+-	return (4 * doc->chips_per_floor);
+-}
+-
+-static inline int __init doc2001_init(struct mtd_info *mtd)
+-{
+-	struct nand_chip *this = mtd->priv;
+-	struct doc_priv *doc = this->priv;
+-
+-	this->write_byte = doc2001_write_byte;
+-	this->read_byte = doc2001_read_byte;
+-	this->write_buf = doc2001_writebuf;
+-	this->read_buf = doc2001_readbuf;
+-	this->verify_buf = doc2001_verifybuf;
+-
+-	ReadDOC(doc->virtadr, ChipID);
+-	ReadDOC(doc->virtadr, ChipID);
+-	ReadDOC(doc->virtadr, ChipID);
+-	if (ReadDOC(doc->virtadr, ChipID) != DOC_ChipID_DocMil) {
+-		/* It's not a Millennium; it's one of the newer
+-		   DiskOnChip 2000 units with a similar ASIC.
+-		   Treat it like a Millennium, except that it
+-		   can have multiple chips. */
+-		doc2000_count_chips(mtd);
+-		mtd->name = "DiskOnChip 2000 (INFTL Model)";
+-		this->scan_bbt = inftl_scan_bbt;
+-		return (4 * doc->chips_per_floor);
+-	} else {
+-		/* Bog-standard Millennium */
+-		doc->chips_per_floor = 1;
+-		mtd->name = "DiskOnChip Millennium";
+-		this->scan_bbt = nftl_scan_bbt;
+-		return 1;
+-	}
+-}
+-
+-static inline int __init doc2001plus_init(struct mtd_info *mtd)
+-{
+-	struct nand_chip *this = mtd->priv;
+-	struct doc_priv *doc = this->priv;
+-
+-	this->write_byte = NULL;
+-	this->read_byte = doc2001plus_read_byte;
+-	this->write_buf = doc2001plus_writebuf;
+-	this->read_buf = doc2001plus_readbuf;
+-	this->verify_buf = doc2001plus_verifybuf;
+-	this->scan_bbt = inftl_scan_bbt;
+-	this->hwcontrol = NULL;
+-	this->select_chip = doc2001plus_select_chip;
+-	this->cmdfunc = doc2001plus_command;
+-	this->enable_hwecc = doc2001plus_enable_hwecc;
+-
+-	doc->chips_per_floor = 1;
+-	mtd->name = "DiskOnChip Millennium Plus";
+-
+-	return 1;
+-}
+-
+-static inline int __init doc_probe(unsigned long physadr)
+-{
+-	unsigned char ChipID;
+-	struct mtd_info *mtd;
+-	struct nand_chip *nand;
+-	struct doc_priv *doc;
+-	void __iomem *virtadr;
+-	unsigned char save_control;
+-	unsigned char tmp, tmpb, tmpc;
+-	int reg, len, numchips;
+-	int ret = 0;
+-
+-	virtadr = ioremap(physadr, DOC_IOREMAP_LEN);
+-	if (!virtadr) {
+-		printk(KERN_ERR "Diskonchip ioremap failed: 0x%x bytes at 0x%lx\n", DOC_IOREMAP_LEN, physadr);
+-		return -EIO;
+-	}
+-
+-	/* It's not possible to cleanly detect the DiskOnChip - the
+-	 * bootup procedure will put the device into reset mode, and
+-	 * it's not possible to talk to it without actually writing
+-	 * to the DOCControl register. So we store the current contents
+-	 * of the DOCControl register's location, in case we later decide
+-	 * that it's not a DiskOnChip, and want to put it back how we
+-	 * found it.
+-	 */
+-	save_control = ReadDOC(virtadr, DOCControl);
+-
+-	/* Reset the DiskOnChip ASIC */
+-	WriteDOC(DOC_MODE_CLR_ERR | DOC_MODE_MDWREN | DOC_MODE_RESET,
+-		 virtadr, DOCControl);
+-	WriteDOC(DOC_MODE_CLR_ERR | DOC_MODE_MDWREN | DOC_MODE_RESET,
+-		 virtadr, DOCControl);
+-
+-	/* Enable the DiskOnChip ASIC */
+-	WriteDOC(DOC_MODE_CLR_ERR | DOC_MODE_MDWREN | DOC_MODE_NORMAL,
+-		 virtadr, DOCControl);
+-	WriteDOC(DOC_MODE_CLR_ERR | DOC_MODE_MDWREN | DOC_MODE_NORMAL,
+-		 virtadr, DOCControl);
+-
+-	ChipID = ReadDOC(virtadr, ChipID);
+-
+-	switch(ChipID) {
+-	case DOC_ChipID_Doc2k:
+-		reg = DoC_2k_ECCStatus;
+-		break;
+-	case DOC_ChipID_DocMil:
+-		reg = DoC_ECCConf;
+-		break;
+-	case DOC_ChipID_DocMilPlus16:
+-	case DOC_ChipID_DocMilPlus32:
+-	case 0:
+-		/* Possible Millennium Plus, need to do more checks */
+-		/* Possibly release from power down mode */
+-		for (tmp = 0; (tmp < 4); tmp++)
+-			ReadDOC(virtadr, Mplus_Power);
+-
+-		/* Reset the Millennium Plus ASIC */
+-		tmp = DOC_MODE_RESET | DOC_MODE_MDWREN | DOC_MODE_RST_LAT |
+-			DOC_MODE_BDECT;
+-		WriteDOC(tmp, virtadr, Mplus_DOCControl);
+-		WriteDOC(~tmp, virtadr, Mplus_CtrlConfirm);
+-
+-		mdelay(1);
+-		/* Enable the Millennium Plus ASIC */
+-		tmp = DOC_MODE_NORMAL | DOC_MODE_MDWREN | DOC_MODE_RST_LAT |
+-			DOC_MODE_BDECT;
+-		WriteDOC(tmp, virtadr, Mplus_DOCControl);
+-		WriteDOC(~tmp, virtadr, Mplus_CtrlConfirm);
+-		mdelay(1);
+-
+-		ChipID = ReadDOC(virtadr, ChipID);
+-
+-		switch (ChipID) {
+-		case DOC_ChipID_DocMilPlus16:
+-			reg = DoC_Mplus_Toggle;
+-			break;
+-		case DOC_ChipID_DocMilPlus32:
+-			printk(KERN_ERR "DiskOnChip Millennium Plus 32MB is not supported, ignoring.\n");
+-		default:
+-			ret = -ENODEV;
+-			goto notfound;
+-		}
+-		break;
+-
+-	default:
+-		ret = -ENODEV;
+-		goto notfound;
+-	}
+-	/* Check the TOGGLE bit in the ECC register */
+-	tmp  = ReadDOC_(virtadr, reg) & DOC_TOGGLE_BIT;
+-	tmpb = ReadDOC_(virtadr, reg) & DOC_TOGGLE_BIT;
+-	tmpc = ReadDOC_(virtadr, reg) & DOC_TOGGLE_BIT;
+-	if ((tmp == tmpb) || (tmp != tmpc)) {
+-		printk(KERN_WARNING "Possible DiskOnChip at 0x%lx failed TOGGLE test, dropping.\n", physadr);
+-		ret = -ENODEV;
+-		goto notfound;
+-	}
+-
+-	for (mtd = doclist; mtd; mtd = doc->nextdoc) {
+-		unsigned char oldval;
+-		unsigned char newval;
+-		nand = mtd->priv;
+-		doc = nand->priv;
+-		/* Use the alias resolution register to determine if this is
+-		   in fact the same DOC aliased to a new address.  If writes
+-		   to one chip's alias resolution register change the value on
+-		   the other chip, they're the same chip. */
+-		if (ChipID == DOC_ChipID_DocMilPlus16) {
+-			oldval = ReadDOC(doc->virtadr, Mplus_AliasResolution);
+-			newval = ReadDOC(virtadr, Mplus_AliasResolution);
+-		} else {
+-			oldval = ReadDOC(doc->virtadr, AliasResolution);
+-			newval = ReadDOC(virtadr, AliasResolution);
+-		}
+-		if (oldval != newval)
+-			continue;
+-		if (ChipID == DOC_ChipID_DocMilPlus16) {
+-			WriteDOC(~newval, virtadr, Mplus_AliasResolution);
+-			oldval = ReadDOC(doc->virtadr, Mplus_AliasResolution);
+-			WriteDOC(newval, virtadr, Mplus_AliasResolution); /* restore it */
+-		} else {
+-			WriteDOC(~newval, virtadr, AliasResolution);
+-			oldval = ReadDOC(doc->virtadr, AliasResolution);
+-			WriteDOC(newval, virtadr, AliasResolution); /* restore it */
+-		}
+-		newval = ~newval;
+-		if (oldval == newval) {
+-			printk(KERN_DEBUG "Found alias of DOC at 0x%lx to 0x%lx\n", doc->physadr, physadr);
+-			goto notfound;
+-		}
+-	}
+-
+-	printk(KERN_NOTICE "DiskOnChip found at 0x%lx\n", physadr);
+-
+-	len = sizeof(struct mtd_info) +
+-	      sizeof(struct nand_chip) +
+-	      sizeof(struct doc_priv) +
+-	      (2 * sizeof(struct nand_bbt_descr));
+-	mtd =  kmalloc(len, GFP_KERNEL);
+-	if (!mtd) {
+-		printk(KERN_ERR "DiskOnChip kmalloc (%d bytes) failed!\n", len);
+-		ret = -ENOMEM;
+-		goto fail;
+-	}
+-	memset(mtd, 0, len);
+-
+-	nand			= (struct nand_chip *) (mtd + 1);
+-	doc			= (struct doc_priv *) (nand + 1);
+-	nand->bbt_td		= (struct nand_bbt_descr *) (doc + 1);
+-	nand->bbt_md		= nand->bbt_td + 1;
+-
+-	mtd->priv		= nand;
+-	mtd->owner		= THIS_MODULE;
+-
+-	nand->priv		= doc;
+-	nand->select_chip	= doc200x_select_chip;
+-	nand->hwcontrol		= doc200x_hwcontrol;
+-	nand->dev_ready		= doc200x_dev_ready;
+-	nand->waitfunc		= doc200x_wait;
+-	nand->block_bad		= doc200x_block_bad;
+-	nand->enable_hwecc	= doc200x_enable_hwecc;
+-	nand->calculate_ecc	= doc200x_calculate_ecc;
+-	nand->correct_data	= doc200x_correct_data;
+-
+-	nand->autooob		= &doc200x_oobinfo;
+-	nand->eccmode		= NAND_ECC_HW6_512;
+-	nand->options		= NAND_USE_FLASH_BBT | NAND_HWECC_SYNDROME;
+-
+-	doc->physadr		= physadr;
+-	doc->virtadr		= virtadr;
+-	doc->ChipID		= ChipID;
+-	doc->curfloor		= -1;
+-	doc->curchip		= -1;
+-	doc->mh0_page		= -1;
+-	doc->mh1_page		= -1;
+-	doc->nextdoc		= doclist;
+-
+-	if (ChipID == DOC_ChipID_Doc2k)
+-		numchips = doc2000_init(mtd);
+-	else if (ChipID == DOC_ChipID_DocMilPlus16)
+-		numchips = doc2001plus_init(mtd);
+-	else
+-		numchips = doc2001_init(mtd);
+-
+-	if ((ret = nand_scan(mtd, numchips))) {
+-		/* DBB note: i believe nand_release is necessary here, as
+-		   buffers may have been allocated in nand_base.  Check with
+-		   Thomas. FIX ME! */
+-		/* nand_release will call del_mtd_device, but we haven't yet
+-		   added it.  This is handled without incident by
+-		   del_mtd_device, as far as I can tell. */
+-		nand_release(mtd);
+-		kfree(mtd);
+-		goto fail;
+-	}
+-
+-	/* Success! */
+-	doclist = mtd;
+-	return 0;
+-
+-notfound:
+-	/* Put back the contents of the DOCControl register, in case it's not
+-	   actually a DiskOnChip.  */
+-	WriteDOC(save_control, virtadr, DOCControl);
+-fail:
+-	iounmap(virtadr);
+-	return ret;
+-}
+-
+-static void release_nanddoc(void)
+-{
+- 	struct mtd_info *mtd, *nextmtd;
+-	struct nand_chip *nand;
+-	struct doc_priv *doc;
+-
+-	for (mtd = doclist; mtd; mtd = nextmtd) {
+-		nand = mtd->priv;
+-		doc = nand->priv;
+-
+-		nextmtd = doc->nextdoc;
+-		nand_release(mtd);
+-		iounmap(doc->virtadr);
+-		kfree(mtd);
+-	}
+-}
+-
+-static int __init init_nanddoc(void)
+-{
+-	int i, ret = 0;
+-
+-	/* We could create the decoder on demand, if memory is a concern.
+-	 * This way we have it handy, if an error happens
+-	 *
+-	 * Symbolsize is 10 (bits)
+-	 * Primitve polynomial is x^10+x^3+1
+-	 * first consecutive root is 510
+-	 * primitve element to generate roots = 1
+-	 * generator polinomial degree = 4
+-	 */
+-	rs_decoder = init_rs(10, 0x409, FCR, 1, NROOTS);
+- 	if (!rs_decoder) {
+-		printk (KERN_ERR "DiskOnChip: Could not create a RS decoder\n");
+-		return -ENOMEM;
+-	}
+-
+-	if (doc_config_location) {
+-		printk(KERN_INFO "Using configured DiskOnChip probe address 0x%lx\n", doc_config_location);
+-		ret = doc_probe(doc_config_location);
+-		if (ret < 0)
+-			goto outerr;
+-	} else {
+-		for (i=0; (doc_locations[i] != 0xffffffff); i++) {
+-			doc_probe(doc_locations[i]);
+-		}
+-	}
+-	/* No banner message any more. Print a message if no DiskOnChip
+-	   found, so the user knows we at least tried. */
+-	if (!doclist) {
+-		printk(KERN_INFO "No valid DiskOnChip devices found\n");
+-		ret = -ENODEV;
+-		goto outerr;
+-	}
+-	return 0;
+-outerr:
+-	free_rs(rs_decoder);
+-	return ret;
+-}
+-
+-static void __exit cleanup_nanddoc(void)
+-{
+-	/* Cleanup the nand/DoC resources */
+-	release_nanddoc();
+-
+-	/* Free the reed solomon resources */
+-	if (rs_decoder) {
+-		free_rs(rs_decoder);
+-	}
+-}
+-
+-module_init(init_nanddoc);
+-module_exit(cleanup_nanddoc);
+-
+-MODULE_LICENSE("GPL");
+-MODULE_AUTHOR("David Woodhouse <dwmw2@infradead.org>");
+-MODULE_DESCRIPTION("M-Systems DiskOnChip 2000, Millennium and Millennium Plus device driver\n");
+-#endif
+diff --git a/drivers/nand/nand.c b/drivers/nand/nand.c
+deleted file mode 100644
+index 4927231..0000000
+--- a/drivers/nand/nand.c
++++ /dev/null
+@@ -1,247 +0,0 @@
+-/*
+- * (C) Copyright 2005
+- * 2N Telekomunikace, a.s. <www.2n.cz>
+- * Ladislav Michl <michl@2n.cz>
+- *
+- * See file CREDITS for list of people who contributed to this
+- * project.
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License
+- * version 2 as published by the Free Software Foundation.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+- * MA 02111-1307 USA
+- */
+-#include <common.h>
+-#include <linux/mtd/nand.h>
+-#include <linux/mtd/mtd.h>
+-#include <init.h>
+-#include <xfuncs.h>
+-#include <driver.h>
+-#include <malloc.h>
+-#include <ioctl.h>
+-#include <nand.h>
+-#include <errno.h>
+-
+-static 	ssize_t nand_read(struct cdev *cdev, void* buf, size_t count, ulong offset, ulong flags)
+-{
+-	struct mtd_info *info = cdev->priv;
+-	size_t retlen;
+-	int ret;
+-
+-	debug("nand_read: 0x%08x 0x%08x\n", offset, count);
+-
+-	ret = info->read(info, offset, count, &retlen, buf);
+-
+-	if(ret) {
+-		printf("err %d\n", ret);
+-		return ret;
+-	}
+-	return retlen;
+-}
+-
+-#define NOTALIGNED(x) (x & (info->writesize - 1)) != 0
+-
+-static int all_ff(const void *buf, int len)
+-{
+-	int i;
+-	const uint8_t *p = buf;
+-
+-	for (i = 0; i < len; i++)
+-		if (p[i] != 0xFF)
+-			return 0;
+-	return 1;
+-}
+-
+-static ssize_t nand_write(struct cdev* cdev, const void *buf, size_t _count, ulong offset, ulong flags)
+-{
+-	struct mtd_info *info = cdev->priv;
+-	size_t retlen, now;
+-	int ret = 0;
+-	void *wrbuf = NULL;
+-	size_t count = _count;
+-
+-	if (NOTALIGNED(offset)) {
+-		printf("offset 0x%08x not page aligned\n", offset);
+-		return -EINVAL;
+-	}
+-
+-	debug("write: 0x%08x 0x%08x\n", offset, count);
+-
+-	while (count) {
+-		now = count > info->writesize ? info->writesize : count;
+-
+-		if (NOTALIGNED(now)) {
+-			debug("not aligned: %d %d\n", info->writesize, (offset % info->writesize));
+-			wrbuf = xmalloc(info->writesize);
+-			memset(wrbuf, 0xff, info->writesize);
+-			memcpy(wrbuf + (offset % info->writesize), buf, now);
+-			if (!all_ff(wrbuf, info->writesize))
+-				ret = info->write(info, offset & ~(info->writesize - 1),
+-						info->writesize, &retlen, wrbuf);
+-			free(wrbuf);
+-		} else {
+-			if (!all_ff(buf, info->writesize))
+-				ret = info->write(info, offset, now, &retlen, buf);
+-			debug("offset: 0x%08x now: 0x%08x retlen: 0x%08x\n", offset, now, retlen);
+-		}
+-		if (ret)
+-			goto out;
+-
+-		offset += now;
+-		count -= now;
+-		buf += now;
+-	}
+-
+-out:
+-	return ret ? ret : _count;
+-}
+-
+-static int nand_ioctl(struct cdev *cdev, int request, void *buf)
+-{
+-	struct mtd_info *info = cdev->priv;
+-	struct mtd_info_user *user = buf;
+-
+-	switch (request) {
+-	case MEMGETBADBLOCK:
+-		debug("MEMGETBADBLOCK: 0x%08x\n", (off_t)buf);
+-		return info->block_isbad(info, (off_t)buf);
+-	case MEMSETBADBLOCK:
+-		debug("MEMSETBADBLOCK: 0x%08x\n", (off_t)buf);
+-		return info->block_markbad(info, (off_t)buf);
+-	case MEMGETINFO:
+-		user->type	= info->type;
+-		user->flags	= info->flags;
+-		user->size	= info->size;
+-		user->erasesize	= info->erasesize;
+-		user->oobsize	= info->oobsize;
+-		/* The below fields are obsolete */
+-		user->ecctype	= -1;
+-		user->eccsize	= 0;
+-		return 0;
+-	}
+-
+-	return 0;
+-}
+-
+-static ssize_t nand_erase(struct cdev *cdev, size_t count, unsigned long offset)
+-{
+-	struct mtd_info *info = cdev->priv;
+-	struct erase_info erase;
+-	int ret;
+-
+-	memset(&erase, 0, sizeof(erase));
+-	erase.mtd = info;
+-	erase.addr = offset;
+-	erase.len = info->erasesize;
+-
+-	while (count > 0) {
+-		debug("erase %d %d\n", erase.addr, erase.len);
+-
+-		ret = info->block_isbad(info, erase.addr);
+-		if (ret > 0) {
+-			printf("Skipping bad block at 0x%08x\n", erase.addr);
+-		} else {
+-			ret = info->erase(info, &erase);
+-			if (ret)
+-				return ret;
+-		}
+-
+-		erase.addr += info->erasesize;
+-		count -= count > info->erasesize ? info->erasesize : count;
+-	}
+-
+-	return 0;
+-}
+-#if 0
+-static char* mtd_get_size(struct device_d *, struct param_d *param)
+-{
+-	static char 
+-}
+-#endif
+-
+-static struct file_operations nand_ops = {
+-	.read   = nand_read,
+-	.write  = nand_write,
+-	.ioctl  = nand_ioctl,
+-	.lseek  = dev_lseek_default,
+-	.erase  = nand_erase,
+-};
+-
+-static ssize_t nand_read_oob(struct cdev *cdev, void *buf, size_t count, ulong offset, ulong flags)
+-{
+-	struct mtd_info *info = cdev->priv;
+-	struct nand_chip *chip = info->priv;
+-	struct mtd_oob_ops ops;
+-	int ret;
+-
+-	if (count < info->oobsize)
+-		return -EINVAL;
+-
+-	ops.mode = MTD_OOB_RAW;
+-	ops.ooboffs = 0;
+-	ops.ooblen = info->oobsize;
+-	ops.oobbuf = buf;
+-	ops.datbuf = NULL;
+-	ops.len = info->oobsize;
+-
+-	offset /= info->oobsize;
+-	ret = info->read_oob(info, offset << chip->page_shift, &ops);
+-	if (ret)
+-		return ret;
+-
+-	return info->oobsize;
+-}
+-
+-static struct file_operations nand_ops_oob = {
+-	.read   = nand_read_oob,
+-	.ioctl  = nand_ioctl,
+-	.lseek  = dev_lseek_default,
+-};
+-
+-int add_mtd_device(struct mtd_info *mtd)
+-{
+-	struct nand_chip *chip = mtd->priv;
+-	char str[16];
+-
+-	strcpy(mtd->class_dev.name, "nand");
+-	register_device(&mtd->class_dev);
+-
+-	mtd->cdev.ops = &nand_ops;
+-	mtd->cdev.size = mtd->size;
+-	mtd->cdev.name = asprintf("nand%d", mtd->class_dev.id);
+-	mtd->cdev.priv = mtd;
+-	mtd->cdev.dev = &mtd->class_dev;
+-
+-	sprintf(str, "%u", mtd->size);
+-	dev_add_param_fixed(&mtd->class_dev, "size", str);
+-
+-	devfs_create(&mtd->cdev);
+-
+-	mtd->cdev_oob.ops = &nand_ops_oob;
+-	mtd->cdev_oob.size = (mtd->size >> chip->page_shift) * mtd->oobsize;
+-	mtd->cdev_oob.name = asprintf("nand_oob%d", mtd->class_dev.id);
+-	mtd->cdev_oob.priv = mtd;
+-	mtd->cdev_oob.dev = &mtd->class_dev;
+-	devfs_create(&mtd->cdev_oob);
+-
+-	return 0;
+-}
+-
+-int del_mtd_device (struct mtd_info *mtd)
+-{
+-	unregister_device(&mtd->class_dev);
+-	free(mtd->cdev_oob.name);
+-	free(mtd->param_size.value);
+-	free(mtd->cdev.name);
+-	return 0;
+-}
+-
+diff --git a/drivers/nand/nand_base.c b/drivers/nand/nand_base.c
+deleted file mode 100644
+index b75a450..0000000
+--- a/drivers/nand/nand_base.c
++++ /dev/null
+@@ -1,2648 +0,0 @@
+-/*
+- *  drivers/mtd/nand.c
+- *
+- *  Overview:
+- *   This is the generic MTD driver for NAND flash devices. It should be
+- *   capable of working with almost all NAND chips currently available.
+- *   Basic support for AG-AND chips is provided.
+- *
+- *	Additional technical information is available on
+- *	http://www.linux-mtd.infradead.org/doc/nand.html
+- *
+- *  Copyright (C) 2000 Steven J. Hill (sjhill@realitydiluted.com)
+- *		  2002-2006 Thomas Gleixner (tglx@linutronix.de)
+- *
+- *  Credits:
+- *	David Woodhouse for adding multichip support
+- *
+- *	Aleph One Ltd. and Toby Churchill Ltd. for supporting the
+- *	rework for 2K page size chips
+- *
+- *  TODO:
+- *	Enable cached programming for 2k page size chips
+- *	Check, if mtd->ecctype should be set to MTD_ECC_HW
+- *	if we have HW ecc support.
+- *	The AG-AND chips have nice features for speed improvement,
+- *	which are not supported yet. Read / program 4 pages in one go.
+- *	BBT table is not serialized, has to be fixed
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License version 2 as
+- * published by the Free Software Foundation.
+- *
+- */
+-#include <common.h>
+-#include <errno.h>
+-#include <clock.h>
+-#include <linux/mtd/mtd.h>
+-#include <linux/mtd/nand.h>
+-#include <linux/err.h>
+-#include <linux/mtd/nand_ecc.h>
+-#include <asm/byteorder.h>
+-#include <asm/io.h>
+-#include <malloc.h>
+-#include <module.h>
+-
+-#ifndef DOXYGEN_SHOULD_SKIP_THIS
+-
+-/* Define default oob placement schemes for large and small page devices */
+-static struct nand_ecclayout nand_oob_8 = {
+-	.eccbytes = 3,
+-	.eccpos = {0, 1, 2},
+-	.oobfree = {
+-		{.offset = 3,
+-		 .length = 2},
+-		{.offset = 6,
+-		 .length = 2}}
+-};
+-
+-static struct nand_ecclayout nand_oob_16 = {
+-	.eccbytes = 6,
+-	.eccpos = {0, 1, 2, 3, 6, 7},
+-	.oobfree = {
+-		{.offset = 8,
+-		 . length = 8}}
+-};
+-
+-static struct nand_ecclayout nand_oob_64 = {
+-	.eccbytes = 24,
+-	.eccpos = {
+-		   40, 41, 42, 43, 44, 45, 46, 47,
+-		   48, 49, 50, 51, 52, 53, 54, 55,
+-		   56, 57, 58, 59, 60, 61, 62, 63},
+-	.oobfree = {
+-		{.offset = 2,
+-		 .length = 38}}
+-};
+-
+-static int nand_get_device(struct nand_chip *chip, struct mtd_info *mtd,
+-			   int new_state);
+-
+-static int nand_do_write_oob(struct mtd_info *mtd, loff_t to,
+-			     struct mtd_oob_ops *ops);
+-
+-#define DEFINE_LED_TRIGGER(x)
+-#define DEFINE_LED_TRIGGER_GLOBAL(x)
+-#define led_trigger_register_simple(x, y) do {} while(0)
+-#define led_trigger_unregister_simple(x) do {} while(0)
+-#define led_trigger_event(x, y) do {} while(0)
+-
+-/*
+- * For devices which display every fart in the system on a separate LED. Is
+- * compiled away when LED support is disabled.
+- */
+-DEFINE_LED_TRIGGER(nand_led_trigger);
+-
+-/**
+- * nand_release_device - [GENERIC] release chip
+- * @mtd:	MTD device structure
+- *
+- * Deselect, release chip lock and wake up anyone waiting on the device
+- */
+-static void nand_release_device(struct mtd_info *mtd)
+-{
+-	struct nand_chip *chip = mtd->priv;
+-
+-	/* De-select the NAND device */
+-	chip->select_chip(mtd, -1);
+-
+-	/* Release the controller and the chip */
+-	chip->controller->active = NULL;
+-	chip->state = FL_READY;
+-}
+-
+-/**
+- * nand_read_byte - [DEFAULT] read one byte from the chip
+- * @mtd:	MTD device structure
+- *
+- * Default read function for 8bit buswith
+- */
+-static uint8_t nand_read_byte(struct mtd_info *mtd)
+-{
+-	struct nand_chip *chip = mtd->priv;
+-	return readb(chip->IO_ADDR_R);
+-}
+-
+-/**
+- * nand_read_byte16 - [DEFAULT] read one byte endianess aware from the chip
+- * @mtd:	MTD device structure
+- *
+- * Default read function for 16bit buswith with
+- * endianess conversion
+- */
+-static uint8_t nand_read_byte16(struct mtd_info *mtd)
+-{
+-	struct nand_chip *chip = mtd->priv;
+-	return (uint8_t) cpu_to_le16(readw(chip->IO_ADDR_R));
+-}
+-
+-/**
+- * nand_read_word - [DEFAULT] read one word from the chip
+- * @mtd:	MTD device structure
+- *
+- * Default read function for 16bit buswith without
+- * endianess conversion
+- */
+-static u16 nand_read_word(struct mtd_info *mtd)
+-{
+-	struct nand_chip *chip = mtd->priv;
+-	return readw(chip->IO_ADDR_R);
+-}
+-
+-/**
+- * nand_select_chip - [DEFAULT] control CE line
+- * @mtd:	MTD device structure
+- * @chipnr:	chipnumber to select, -1 for deselect
+- *
+- * Default select function for 1 chip devices.
+- */
+-static void nand_select_chip(struct mtd_info *mtd, int chipnr)
+-{
+-	struct nand_chip *chip = mtd->priv;
+-
+-	switch (chipnr) {
+-	case -1:
+-		chip->cmd_ctrl(mtd, NAND_CMD_NONE, 0 | NAND_CTRL_CHANGE);
+-		break;
+-	case 0:
+-		break;
+-	default:
+-		printf("%s: illegal chip number %d\n", chipnr);
+-	}
+-}
+-
+-/**
+- * nand_write_buf - [DEFAULT] write buffer to chip
+- * @mtd:	MTD device structure
+- * @buf:	data buffer
+- * @len:	number of bytes to write
+- *
+- * Default write function for 8bit buswith
+- */
+-static void nand_write_buf(struct mtd_info *mtd, const uint8_t *buf, int len)
+-{
+-	int i;
+-	struct nand_chip *chip = mtd->priv;
+-
+-	for (i = 0; i < len; i++)
+-		writeb(buf[i], chip->IO_ADDR_W);
+-}
+-
+-/**
+- * nand_read_buf - [DEFAULT] read chip data into buffer
+- * @mtd:	MTD device structure
+- * @buf:	buffer to store date
+- * @len:	number of bytes to read
+- *
+- * Default read function for 8bit buswith
+- */
+-static void nand_read_buf(struct mtd_info *mtd, uint8_t *buf, int len)
+-{
+-	int i;
+-	struct nand_chip *chip = mtd->priv;
+-
+-	for (i = 0; i < len; i++)
+-		buf[i] = readb(chip->IO_ADDR_R);
+-}
+-
+-/**
+- * nand_verify_buf - [DEFAULT] Verify chip data against buffer
+- * @mtd:	MTD device structure
+- * @buf:	buffer containing the data to compare
+- * @len:	number of bytes to compare
+- *
+- * Default verify function for 8bit buswith
+- */
+-static int nand_verify_buf(struct mtd_info *mtd, const uint8_t *buf, int len)
+-{
+-	int i;
+-	struct nand_chip *chip = mtd->priv;
+-
+-	for (i = 0; i < len; i++)
+-		if (buf[i] != readb(chip->IO_ADDR_R))
+-			return -EFAULT;
+-	return 0;
+-}
+-
+-/**
+- * nand_write_buf16 - [DEFAULT] write buffer to chip
+- * @mtd:	MTD device structure
+- * @buf:	data buffer
+- * @len:	number of bytes to write
+- *
+- * Default write function for 16bit buswith
+- */
+-static void nand_write_buf16(struct mtd_info *mtd, const uint8_t *buf, int len)
+-{
+-	int i;
+-	struct nand_chip *chip = mtd->priv;
+-	u16 *p = (u16 *) buf;
+-	len >>= 1;
+-
+-	for (i = 0; i < len; i++)
+-		writew(p[i], chip->IO_ADDR_W);
+-
+-}
+-
+-/**
+- * nand_read_buf16 - [DEFAULT] read chip data into buffer
+- * @mtd:	MTD device structure
+- * @buf:	buffer to store date
+- * @len:	number of bytes to read
+- *
+- * Default read function for 16bit buswith
+- */
+-static void nand_read_buf16(struct mtd_info *mtd, uint8_t *buf, int len)
+-{
+-	int i;
+-	struct nand_chip *chip = mtd->priv;
+-	u16 *p = (u16 *) buf;
+-	len >>= 1;
+-
+-	for (i = 0; i < len; i++)
+-		p[i] = readw(chip->IO_ADDR_R);
+-}
+-
+-/**
+- * nand_verify_buf16 - [DEFAULT] Verify chip data against buffer
+- * @mtd:	MTD device structure
+- * @buf:	buffer containing the data to compare
+- * @len:	number of bytes to compare
+- *
+- * Default verify function for 16bit buswith
+- */
+-static int nand_verify_buf16(struct mtd_info *mtd, const uint8_t *buf, int len)
+-{
+-	int i;
+-	struct nand_chip *chip = mtd->priv;
+-	u16 *p = (u16 *) buf;
+-	len >>= 1;
+-
+-	for (i = 0; i < len; i++)
+-		if (p[i] != readw(chip->IO_ADDR_R))
+-			return -EFAULT;
+-
+-	return 0;
+-}
+-
+-/**
+- * nand_block_bad - [DEFAULT] Read bad block marker from the chip
+- * @mtd:	MTD device structure
+- * @ofs:	offset from device start
+- * @getchip:	0, if the chip is already selected
+- *
+- * Check, if the block is bad.
+- */
+-static int nand_block_bad(struct mtd_info *mtd, loff_t ofs, int getchip)
+-{
+-	int page, chipnr, res = 0;
+-	struct nand_chip *chip = mtd->priv;
+-	u16 bad;
+-
+-	page = (int)(ofs >> chip->page_shift) & chip->pagemask;
+-
+-	if (getchip) {
+-		chipnr = (int)(ofs >> chip->chip_shift);
+-
+-		nand_get_device(chip, mtd, FL_READING);
+-
+-		/* Select the NAND device */
+-		chip->select_chip(mtd, chipnr);
+-	}
+-
+-	if (chip->options & NAND_BUSWIDTH_16) {
+-		chip->cmdfunc(mtd, NAND_CMD_READOOB, chip->badblockpos & 0xFE,
+-			      page);
+-		bad = cpu_to_le16(chip->read_word(mtd));
+-		if (chip->badblockpos & 0x1)
+-			bad >>= 8;
+-		if ((bad & 0xFF) != 0xff)
+-			res = 1;
+-	} else {
+-		chip->cmdfunc(mtd, NAND_CMD_READOOB, chip->badblockpos, page);
+-		if (chip->read_byte(mtd) != 0xff)
+-			res = 1;
+-	}
+-
+-	if (getchip)
+-		nand_release_device(mtd);
+-
+-	return res;
+-}
+-
+-/**
+- * nand_default_block_markbad - [DEFAULT] mark a block bad
+- * @mtd:	MTD device structure
+- * @ofs:	offset from device start
+- *
+- * This is the default implementation, which can be overridden by
+- * a hardware specific driver.
+-*/
+-static int nand_default_block_markbad(struct mtd_info *mtd, loff_t ofs)
+-{
+-	struct nand_chip *chip = mtd->priv;
+-	uint8_t buf[2] = { 0, 0 };
+-	int block, ret;
+-
+-	/* Get block number */
+-	block = (int)(ofs >> chip->bbt_erase_shift);
+-	if (chip->bbt)
+-		chip->bbt[block >> 2] |= 0x01 << ((block & 0x03) << 1);
+-
+-	/* Do we have a flash based bad block table ? */
+-	if (chip->options & NAND_USE_FLASH_BBT)
+-		ret = nand_update_bbt(mtd, ofs);
+-	else {
+-		/* We write two bytes, so we dont have to mess with 16 bit
+-		 * access
+-		 */
+-		nand_get_device(chip, mtd, FL_WRITING);
+-		ofs += mtd->oobsize;
+-		chip->ops.len = chip->ops.ooblen = 2;
+-		chip->ops.datbuf = NULL;
+-		chip->ops.oobbuf = buf;
+-		chip->ops.ooboffs = chip->badblockpos & ~0x01;
+-
+-		ret = nand_do_write_oob(mtd, ofs, &chip->ops);
+-		nand_release_device(mtd);
+-	}
+-	if (!ret)
+-		mtd->ecc_stats.badblocks++;
+-
+-	return ret;
+-}
+-
+-/**
+- * nand_check_wp - [GENERIC] check if the chip is write protected
+- * @mtd:	MTD device structure
+- * Check, if the device is write protected
+- *
+- * The function expects, that the device is already selected
+- */
+-static int nand_check_wp(struct mtd_info *mtd)
+-{
+-	struct nand_chip *chip = mtd->priv;
+-	/* Check the WP bit */
+-	chip->cmdfunc(mtd, NAND_CMD_STATUS, -1, -1);
+-	return (chip->read_byte(mtd) & NAND_STATUS_WP) ? 0 : 1;
+-}
+-
+-/**
+- * nand_block_checkbad - [GENERIC] Check if a block is marked bad
+- * @mtd:	MTD device structure
+- * @ofs:	offset from device start
+- * @getchip:	0, if the chip is already selected
+- * @allowbbt:	1, if its allowed to access the bbt area
+- *
+- * Check, if the block is bad. Either by reading the bad block table or
+- * calling of the scan function.
+- */
+-static int nand_block_checkbad(struct mtd_info *mtd, loff_t ofs, int getchip,
+-			       int allowbbt)
+-{
+-	struct nand_chip *chip = mtd->priv;
+-
+-	if (!chip->bbt)
+-		return chip->block_bad(mtd, ofs, getchip);
+-
+-	/* Return info from the table */
+-	return nand_isbad_bbt(mtd, ofs, allowbbt);
+-}
+-
+-/*
+- * Wait for the ready pin, after a command
+- * The timeout is catched later.
+- */
+-void nand_wait_ready(struct mtd_info *mtd)
+-{
+-	struct nand_chip *chip = mtd->priv;
+-	uint64_t start = get_time_ns();
+-
+-	led_trigger_event(nand_led_trigger, LED_FULL);
+-	/* wait until command is processed or timeout occures */
+-	do {
+-		if (chip->dev_ready(mtd))
+-			break;
+-	} while (!is_timeout(start, SECOND * 2));
+-	led_trigger_event(nand_led_trigger, LED_OFF);
+-}
+-EXPORT_SYMBOL(nand_wait_ready);
+-
+-/**
+- * nand_command - [DEFAULT] Send command to NAND device
+- * @mtd:	MTD device structure
+- * @command:	the command to be sent
+- * @column:	the column address for this command, -1 if none
+- * @page_addr:	the page address for this command, -1 if none
+- *
+- * Send command to NAND device. This function is used for small page
+- * devices (256/512 Bytes per page)
+- */
+-static void nand_command(struct mtd_info *mtd, unsigned int command,
+-			 int column, int page_addr)
+-{
+-	register struct nand_chip *chip = mtd->priv;
+-	int ctrl = NAND_CTRL_CLE | NAND_CTRL_CHANGE;
+-
+-	/*
+-	 * Write out the command to the device.
+-	 */
+-	if (command == NAND_CMD_SEQIN) {
+-		int readcmd;
+-
+-		if (column >= mtd->writesize) {
+-			/* OOB area */
+-			column -= mtd->writesize;
+-			readcmd = NAND_CMD_READOOB;
+-		} else if (column < 256) {
+-			/* First 256 bytes --> READ0 */
+-			readcmd = NAND_CMD_READ0;
+-		} else {
+-			column -= 256;
+-			readcmd = NAND_CMD_READ1;
+-		}
+-		chip->cmd_ctrl(mtd, readcmd, ctrl);
+-		ctrl &= ~NAND_CTRL_CHANGE;
+-	}
+-	chip->cmd_ctrl(mtd, command, ctrl);
+-
+-	/*
+-	 * Address cycle, when necessary
+-	 */
+-	ctrl = NAND_CTRL_ALE | NAND_CTRL_CHANGE;
+-	/* Serially input address */
+-	if (column != -1) {
+-		/* Adjust columns for 16 bit buswidth */
+-		if (chip->options & NAND_BUSWIDTH_16)
+-			column >>= 1;
+-		chip->cmd_ctrl(mtd, column, ctrl);
+-		ctrl &= ~NAND_CTRL_CHANGE;
+-	}
+-	if (page_addr != -1) {
+-		chip->cmd_ctrl(mtd, page_addr, ctrl);
+-		ctrl &= ~NAND_CTRL_CHANGE;
+-		chip->cmd_ctrl(mtd, page_addr >> 8, ctrl);
+-		/* One more address cycle for devices > 32MiB */
+-		if (chip->chipsize > (32 << 20))
+-			chip->cmd_ctrl(mtd, page_addr >> 16, ctrl);
+-	}
+-	chip->cmd_ctrl(mtd, NAND_CMD_NONE, NAND_NCE | NAND_CTRL_CHANGE);
+-
+-	/*
+-	 * program and erase have their own busy handlers
+-	 * status and sequential in needs no delay
+-	 */
+-	switch (command) {
+-
+-	case NAND_CMD_PAGEPROG:
+-	case NAND_CMD_ERASE1:
+-	case NAND_CMD_ERASE2:
+-	case NAND_CMD_SEQIN:
+-	case NAND_CMD_STATUS:
+-		return;
+-
+-	case NAND_CMD_RESET:
+-		if (chip->dev_ready)
+-			break;
+-		udelay(chip->chip_delay);
+-		chip->cmd_ctrl(mtd, NAND_CMD_STATUS,
+-			       NAND_CTRL_CLE | NAND_CTRL_CHANGE);
+-		chip->cmd_ctrl(mtd,
+-			       NAND_CMD_NONE, NAND_NCE | NAND_CTRL_CHANGE);
+-		while (!(chip->read_byte(mtd) & NAND_STATUS_READY)) ;
+-		return;
+-
+-		/* This applies to read commands */
+-	default:
+-		/*
+-		 * If we don't have access to the busy pin, we apply the given
+-		 * command delay
+-		 */
+-		if (!chip->dev_ready) {
+-			udelay(chip->chip_delay);
+-			return;
+-		}
+-	}
+-	/* Apply this short delay always to ensure that we do wait tWB in
+-	 * any case on any machine. */
+-	ndelay(100);
+-
+-	nand_wait_ready(mtd);
+-}
+-
+-/**
+- * nand_command_lp - [DEFAULT] Send command to NAND large page device
+- * @mtd:	MTD device structure
+- * @command:	the command to be sent
+- * @column:	the column address for this command, -1 if none
+- * @page_addr:	the page address for this command, -1 if none
+- *
+- * Send command to NAND device. This is the version for the new large page
+- * devices We dont have the separate regions as we have in the small page
+- * devices.  We must emulate NAND_CMD_READOOB to keep the code compatible.
+- */
+-static void nand_command_lp(struct mtd_info *mtd, unsigned int command,
+-			    int column, int page_addr)
+-{
+-	register struct nand_chip *chip = mtd->priv;
+-
+-	/* Emulate NAND_CMD_READOOB */
+-	if (command == NAND_CMD_READOOB) {
+-		column += mtd->writesize;
+-		command = NAND_CMD_READ0;
+-	}
+-
+-	/* Command latch cycle */
+-	chip->cmd_ctrl(mtd, command & 0xff,
+-		       NAND_NCE | NAND_CLE | NAND_CTRL_CHANGE);
+-
+-	if (column != -1 || page_addr != -1) {
+-		int ctrl = NAND_CTRL_CHANGE | NAND_NCE | NAND_ALE;
+-
+-		/* Serially input address */
+-		if (column != -1) {
+-			/* Adjust columns for 16 bit buswidth */
+-			if (chip->options & NAND_BUSWIDTH_16)
+-				column >>= 1;
+-			chip->cmd_ctrl(mtd, column, ctrl);
+-			ctrl &= ~NAND_CTRL_CHANGE;
+-			chip->cmd_ctrl(mtd, column >> 8, ctrl);
+-		}
+-		if (page_addr != -1) {
+-			chip->cmd_ctrl(mtd, page_addr, ctrl);
+-			chip->cmd_ctrl(mtd, page_addr >> 8,
+-				       NAND_NCE | NAND_ALE);
+-			/* One more address cycle for devices > 128MiB */
+-			if (chip->chipsize > (128 << 20))
+-				chip->cmd_ctrl(mtd, page_addr >> 16,
+-					       NAND_NCE | NAND_ALE);
+-		}
+-	}
+-	chip->cmd_ctrl(mtd, NAND_CMD_NONE, NAND_NCE | NAND_CTRL_CHANGE);
+-
+-	/*
+-	 * program and erase have their own busy handlers
+-	 * status, sequential in, and deplete1 need no delay
+-	 */
+-	switch (command) {
+-
+-	case NAND_CMD_CACHEDPROG:
+-	case NAND_CMD_PAGEPROG:
+-	case NAND_CMD_ERASE1:
+-	case NAND_CMD_ERASE2:
+-	case NAND_CMD_SEQIN:
+-	case NAND_CMD_RNDIN:
+-	case NAND_CMD_STATUS:
+-	case NAND_CMD_DEPLETE1:
+-		return;
+-
+-		/*
+-		 * read error status commands require only a short delay
+-		 */
+-	case NAND_CMD_STATUS_ERROR:
+-	case NAND_CMD_STATUS_ERROR0:
+-	case NAND_CMD_STATUS_ERROR1:
+-	case NAND_CMD_STATUS_ERROR2:
+-	case NAND_CMD_STATUS_ERROR3:
+-		udelay(chip->chip_delay);
+-		return;
+-
+-	case NAND_CMD_RESET:
+-		if (chip->dev_ready)
+-			break;
+-		udelay(chip->chip_delay);
+-		chip->cmd_ctrl(mtd, NAND_CMD_STATUS,
+-			       NAND_NCE | NAND_CLE | NAND_CTRL_CHANGE);
+-		chip->cmd_ctrl(mtd, NAND_CMD_NONE,
+-			       NAND_NCE | NAND_CTRL_CHANGE);
+-		while (!(chip->read_byte(mtd) & NAND_STATUS_READY)) ;
+-		return;
+-
+-	case NAND_CMD_RNDOUT:
+-		/* No ready / busy check necessary */
+-		chip->cmd_ctrl(mtd, NAND_CMD_RNDOUTSTART,
+-			       NAND_NCE | NAND_CLE | NAND_CTRL_CHANGE);
+-		chip->cmd_ctrl(mtd, NAND_CMD_NONE,
+-			       NAND_NCE | NAND_CTRL_CHANGE);
+-		return;
+-
+-	case NAND_CMD_READ0:
+-		chip->cmd_ctrl(mtd, NAND_CMD_READSTART,
+-			       NAND_NCE | NAND_CLE | NAND_CTRL_CHANGE);
+-		chip->cmd_ctrl(mtd, NAND_CMD_NONE,
+-			       NAND_NCE | NAND_CTRL_CHANGE);
+-
+-		/* This applies to read commands */
+-	default:
+-		/*
+-		 * If we don't have access to the busy pin, we apply the given
+-		 * command delay
+-		 */
+-		if (!chip->dev_ready) {
+-			udelay(chip->chip_delay);
+-			return;
+-		}
+-	}
+-
+-	/* Apply this short delay always to ensure that we do wait tWB in
+-	 * any case on any machine. */
+-	ndelay(100);
+-
+-	nand_wait_ready(mtd);
+-}
+-
+-/**
+- * nand_get_device - [GENERIC] Get chip for selected access
+- * @chip:	the nand chip descriptor
+- * @mtd:	MTD device structure
+- * @new_state:	the state which is requested
+- *
+- * Get the device and lock it for exclusive access
+- */
+-static int
+-nand_get_device(struct nand_chip *chip, struct mtd_info *mtd, int new_state)
+-{
+- retry:
+-	/* Hardware controller shared among independend devices */
+-	if (!chip->controller->active)
+-		chip->controller->active = chip;
+-
+-	if (chip->controller->active == chip && chip->state == FL_READY) {
+-		chip->state = new_state;
+-		return 0;
+-	}
+-	if (new_state == FL_PM_SUSPENDED) {
+-		return (chip->state == FL_PM_SUSPENDED) ? 0 : -EAGAIN;
+-	}
+-	goto retry;
+-}
+-
+-/**
+- * nand_wait - [DEFAULT]  wait until the command is done
+- * @mtd:	MTD device structure
+- * @chip:	NAND chip structure
+- *
+- * Wait for command done. This applies to erase and program only
+- * Erase can take up to 400ms and program up to 20ms according to
+- * general NAND and SmartMedia specs
+- */
+-static int nand_wait(struct mtd_info *mtd, struct nand_chip *chip)
+-{
+-
+-	uint64_t start = get_time_ns();
+-	uint64_t timeo;
+-	int status, state = chip->state;
+-
+-	if (state == FL_ERASING)
+-		timeo = 400 * MSECOND;
+-	else
+-		timeo = 20 * MSECOND;
+-
+-	led_trigger_event(nand_led_trigger, LED_FULL);
+-
+-	/* Apply this short delay always to ensure that we do wait tWB in
+-	 * any case on any machine. */
+-	ndelay(100);
+-
+-	if ((state == FL_ERASING) && (chip->options & NAND_IS_AND))
+-		chip->cmdfunc(mtd, NAND_CMD_STATUS_MULTI, -1, -1);
+-	else
+-		chip->cmdfunc(mtd, NAND_CMD_STATUS, -1, -1);
+-
+-	while (!is_timeout(start, timeo)) {
+-		if (chip->dev_ready) {
+-			if (chip->dev_ready(mtd))
+-				break;
+-		} else {
+-			if (chip->read_byte(mtd) & NAND_STATUS_READY)
+-				break;
+-		}
+-	}
+-	led_trigger_event(nand_led_trigger, LED_OFF);
+-
+-	status = (int)chip->read_byte(mtd);
+-	return status;
+-}
+-
+-/**
+- * nand_read_page_raw - [Intern] read raw page data without ecc
+- * @mtd:	mtd info structure
+- * @chip:	nand chip info structure
+- * @buf:	buffer to store read data
+- */
+-static int nand_read_page_raw(struct mtd_info *mtd, struct nand_chip *chip,
+-			      uint8_t *buf)
+-{
+-	chip->read_buf(mtd, buf, mtd->writesize);
+-	chip->read_buf(mtd, chip->oob_poi, mtd->oobsize);
+-	return 0;
+-}
+-
+-/**
+- * nand_read_page_swecc - [REPLACABLE] software ecc based page read function
+- * @mtd:	mtd info structure
+- * @chip:	nand chip info structure
+- * @buf:	buffer to store read data
+- */
+-static int nand_read_page_swecc(struct mtd_info *mtd, struct nand_chip *chip,
+-				uint8_t *buf)
+-{
+-	int i, eccsize = chip->ecc.size;
+-	int eccbytes = chip->ecc.bytes;
+-	int eccsteps = chip->ecc.steps;
+-	uint8_t *p = buf;
+-	uint8_t *ecc_calc = chip->buffers->ecccalc;
+-	uint8_t *ecc_code = chip->buffers->ecccode;
+-	uint32_t *eccpos = chip->ecc.layout->eccpos;
+-
+-	chip->ecc.read_page_raw(mtd, chip, buf);
+-
+-	for (i = 0; eccsteps; eccsteps--, i += eccbytes, p += eccsize)
+-		chip->ecc.calculate(mtd, p, &ecc_calc[i]);
+-
+-	for (i = 0; i < chip->ecc.total; i++)
+-		ecc_code[i] = chip->oob_poi[eccpos[i]];
+-
+-	eccsteps = chip->ecc.steps;
+-	p = buf;
+-
+-	for (i = 0 ; eccsteps; eccsteps--, i += eccbytes, p += eccsize) {
+-		int stat;
+-
+-		stat = chip->ecc.correct(mtd, p, &ecc_code[i], &ecc_calc[i]);
+-		if (stat < 0)
+-			mtd->ecc_stats.failed++;
+-		else
+-			mtd->ecc_stats.corrected += stat;
+-	}
+-	return 0;
+-}
+-
+-/**
+- * nand_read_page_hwecc - [REPLACABLE] hardware ecc based page read function
+- * @mtd:	mtd info structure
+- * @chip:	nand chip info structure
+- * @buf:	buffer to store read data
+- *
+- * Not for syndrome calculating ecc controllers which need a special oob layout
+- */
+-static int nand_read_page_hwecc(struct mtd_info *mtd, struct nand_chip *chip,
+-				uint8_t *buf)
+-{
+-	int i, eccsize = chip->ecc.size;
+-	int eccbytes = chip->ecc.bytes;
+-	int eccsteps = chip->ecc.steps;
+-	uint8_t *p = buf;
+-	uint8_t *ecc_calc = chip->buffers->ecccalc;
+-	uint8_t *ecc_code = chip->buffers->ecccode;
+-	uint32_t *eccpos = chip->ecc.layout->eccpos;
+-
+-	for (i = 0; eccsteps; eccsteps--, i += eccbytes, p += eccsize) {
+-		chip->ecc.hwctl(mtd, NAND_ECC_READ);
+-		chip->read_buf(mtd, p, eccsize);
+-		chip->ecc.calculate(mtd, p, &ecc_calc[i]);
+-	}
+-	chip->read_buf(mtd, chip->oob_poi, mtd->oobsize);
+-
+-	for (i = 0; i < chip->ecc.total; i++)
+-		ecc_code[i] = chip->oob_poi[eccpos[i]];
+-
+-	eccsteps = chip->ecc.steps;
+-	p = buf;
+-
+-	for (i = 0 ; eccsteps; eccsteps--, i += eccbytes, p += eccsize) {
+-		int stat;
+-
+-		stat = chip->ecc.correct(mtd, p, &ecc_code[i], &ecc_calc[i]);
+-		if (stat < 0)
+-			mtd->ecc_stats.failed++;
+-		else
+-			mtd->ecc_stats.corrected += stat;
+-	}
+-	return 0;
+-}
+-
+-/**
+- * nand_read_page_syndrome - [REPLACABLE] hardware ecc syndrom based page read
+- * @mtd:	mtd info structure
+- * @chip:	nand chip info structure
+- * @buf:	buffer to store read data
+- *
+- * The hw generator calculates the error syndrome automatically. Therefor
+- * we need a special oob layout and handling.
+- */
+-static int nand_read_page_syndrome(struct mtd_info *mtd, struct nand_chip *chip,
+-				   uint8_t *buf)
+-{
+-	int i, eccsize = chip->ecc.size;
+-	int eccbytes = chip->ecc.bytes;
+-	int eccsteps = chip->ecc.steps;
+-	uint8_t *p = buf;
+-	uint8_t *oob = chip->oob_poi;
+-
+-	for (i = 0; eccsteps; eccsteps--, i += eccbytes, p += eccsize) {
+-		int stat;
+-
+-		chip->ecc.hwctl(mtd, NAND_ECC_READ);
+-		chip->read_buf(mtd, p, eccsize);
+-
+-		if (chip->ecc.prepad) {
+-			chip->read_buf(mtd, oob, chip->ecc.prepad);
+-			oob += chip->ecc.prepad;
+-		}
+-
+-		chip->ecc.hwctl(mtd, NAND_ECC_READSYN);
+-		chip->read_buf(mtd, oob, eccbytes);
+-		stat = chip->ecc.correct(mtd, p, oob, NULL);
+-
+-		if (stat < 0)
+-			mtd->ecc_stats.failed++;
+-		else
+-			mtd->ecc_stats.corrected += stat;
+-
+-		oob += eccbytes;
+-
+-		if (chip->ecc.postpad) {
+-			chip->read_buf(mtd, oob, chip->ecc.postpad);
+-			oob += chip->ecc.postpad;
+-		}
+-	}
+-
+-	/* Calculate remaining oob bytes */
+-	i = mtd->oobsize - (oob - chip->oob_poi);
+-	if (i)
+-		chip->read_buf(mtd, oob, i);
+-
+-	return 0;
+-}
+-
+-/**
+- * nand_transfer_oob - [Internal] Transfer oob to client buffer
+- * @chip:	nand chip structure
+- * @oob:	oob destination address
+- * @ops:	oob ops structure
+- * @len:	size of oob to transfer
+- */
+-static uint8_t *nand_transfer_oob(struct nand_chip *chip, uint8_t *oob,
+-				  struct mtd_oob_ops *ops, size_t len)
+-{
+-	switch(ops->mode) {
+-
+-	case MTD_OOB_PLACE:
+-	case MTD_OOB_RAW:
+-		memcpy(oob, chip->oob_poi + ops->ooboffs, len);
+-		return oob + len;
+-
+-	case MTD_OOB_AUTO: {
+-		struct nand_oobfree *free = chip->ecc.layout->oobfree;
+-		uint32_t boffs = 0, roffs = ops->ooboffs;
+-		size_t bytes = 0;
+-
+-		for(; free->length && len; free++, len -= bytes) {
+-			/* Read request not from offset 0 ? */
+-			if (unlikely(roffs)) {
+-				if (roffs >= free->length) {
+-					roffs -= free->length;
+-					continue;
+-				}
+-				boffs = free->offset + roffs;
+-				bytes = min_t(size_t, len,
+-					      (free->length - roffs));
+-				roffs = 0;
+-			} else {
+-				bytes = min_t(size_t, len, free->length);
+-				boffs = free->offset;
+-			}
+-			memcpy(oob, chip->oob_poi + boffs, bytes);
+-			oob += bytes;
+-		}
+-		return oob;
+-	}
+-	default:
+-		BUG();
+-	}
+-	return NULL;
+-}
+-
+-/**
+- * nand_do_read_ops - [Internal] Read data with ECC
+- *
+- * @mtd:	MTD device structure
+- * @from:	offset to read from
+- * @ops:	oob ops structure
+- *
+- * Internal function. Called with chip held.
+- */
+-static int nand_do_read_ops(struct mtd_info *mtd, loff_t from,
+-			    struct mtd_oob_ops *ops)
+-{
+-	int chipnr, page, realpage, col, bytes, aligned;
+-	struct nand_chip *chip = mtd->priv;
+-	struct mtd_ecc_stats stats;
+-	int blkcheck = (1 << (chip->phys_erase_shift - chip->page_shift)) - 1;
+-	int sndcmd = 1;
+-	int ret = 0;
+-	uint32_t readlen = ops->len;
+-	uint32_t oobreadlen = ops->ooblen;
+-	uint8_t *bufpoi, *oob, *buf;
+-
+-	stats = mtd->ecc_stats;
+-
+-	chipnr = (int)(from >> chip->chip_shift);
+-	chip->select_chip(mtd, chipnr);
+-
+-	realpage = (int)(from >> chip->page_shift);
+-	page = realpage & chip->pagemask;
+-
+-	col = (int)(from & (mtd->writesize - 1));
+-
+-	buf = ops->datbuf;
+-	oob = ops->oobbuf;
+-
+-	while(1) {
+-		bytes = min(mtd->writesize - col, readlen);
+-		aligned = (bytes == mtd->writesize);
+-
+-		/* Is the current page in the buffer ? */
+-		if (realpage != chip->pagebuf || oob) {
+-			bufpoi = aligned ? buf : chip->buffers->databuf;
+-
+-			if (likely(sndcmd)) {
+-				chip->cmdfunc(mtd, NAND_CMD_READ0, 0x00, page);
+-				sndcmd = 0;
+-			}
+-
+-			/* Now read the page into the buffer */
+-			if (unlikely(ops->mode == MTD_OOB_RAW))
+-				ret = chip->ecc.read_page_raw(mtd, chip, bufpoi);
+-			else
+-				ret = chip->ecc.read_page(mtd, chip, bufpoi);
+-			if (ret < 0)
+-				break;
+-
+-			/* Transfer not aligned data */
+-			if (!aligned) {
+-				chip->pagebuf = realpage;
+-				memcpy(buf, chip->buffers->databuf + col, bytes);
+-			}
+-
+-			buf += bytes;
+-
+-			if (unlikely(oob)) {
+-				/* Raw mode does data:oob:data:oob */
+-				if (ops->mode != MTD_OOB_RAW) {
+-					int toread = min(oobreadlen,
+-						chip->ecc.layout->oobavail);
+-					if (toread) {
+-						oob = nand_transfer_oob(chip,
+-							oob, ops, toread);
+-						oobreadlen -= toread;
+-					}
+-				} else
+-					buf = nand_transfer_oob(chip,
+-						buf, ops, mtd->oobsize);
+-			}
+-
+-			if (!(chip->options & NAND_NO_READRDY)) {
+-				/*
+-				 * Apply delay or wait for ready/busy pin. Do
+-				 * this before the AUTOINCR check, so no
+-				 * problems arise if a chip which does auto
+-				 * increment is marked as NOAUTOINCR by the
+-				 * board driver.
+-				 */
+-				if (!chip->dev_ready)
+-					udelay(chip->chip_delay);
+-				else
+-					nand_wait_ready(mtd);
+-			}
+-		} else {
+-			memcpy(buf, chip->buffers->databuf + col, bytes);
+-			buf += bytes;
+-		}
+-
+-		readlen -= bytes;
+-
+-		if (!readlen)
+-			break;
+-
+-		/* For subsequent reads align to page boundary. */
+-		col = 0;
+-		/* Increment page address */
+-		realpage++;
+-
+-		page = realpage & chip->pagemask;
+-		/* Check, if we cross a chip boundary */
+-		if (!page) {
+-			chipnr++;
+-			chip->select_chip(mtd, -1);
+-			chip->select_chip(mtd, chipnr);
+-		}
+-
+-		/* Check, if the chip supports auto page increment
+-		 * or if we have hit a block boundary.
+-		 */
+-		if (!NAND_CANAUTOINCR(chip) || !(page & blkcheck))
+-			sndcmd = 1;
+-	}
+-
+-	ops->retlen = ops->len - (size_t) readlen;
+-	if (oob)
+-		ops->oobretlen = ops->ooblen - oobreadlen;
+-
+-	if (ret)
+-		return ret;
+-
+-	if (mtd->ecc_stats.failed - stats.failed)
+-		return -EBADMSG;
+-
+-	return 0;
+-}
+-
+-/**
+- * nand_read - [MTD Interface] MTD compability function for nand_do_read_ecc
+- * @mtd:	MTD device structure
+- * @from:	offset to read from
+- * @len:	number of bytes to read
+- * @retlen:	pointer to variable to store the number of read bytes
+- * @buf:	the databuffer to put data
+- *
+- * Get hold of the chip and call nand_do_read
+- */
+-static int nand_read(struct mtd_info *mtd, loff_t from, size_t len,
+-		     size_t *retlen, uint8_t *buf)
+-{
+-	struct nand_chip *chip = mtd->priv;
+-	int ret;
+-
+-	/* Do not allow reads past end of device */
+-	if ((from + len) > mtd->size)
+-		return -EINVAL;
+-	if (!len)
+-		return 0;
+-
+-	nand_get_device(chip, mtd, FL_READING);
+-
+-	chip->ops.len = len;
+-	chip->ops.datbuf = buf;
+-	chip->ops.oobbuf = NULL;
+-
+-	ret = nand_do_read_ops(mtd, from, &chip->ops);
+-
+-	*retlen = chip->ops.retlen;
+-
+-	nand_release_device(mtd);
+-
+-	return ret;
+-}
+-
+-/**
+- * nand_read_oob_std - [REPLACABLE] the most common OOB data read function
+- * @mtd:	mtd info structure
+- * @chip:	nand chip info structure
+- * @page:	page number to read
+- * @sndcmd:	flag whether to issue read command or not
+- */
+-static int nand_read_oob_std(struct mtd_info *mtd, struct nand_chip *chip,
+-			     int page, int sndcmd)
+-{
+-	if (sndcmd) {
+-		chip->cmdfunc(mtd, NAND_CMD_READOOB, 0, page);
+-		sndcmd = 0;
+-	}
+-	chip->read_buf(mtd, chip->oob_poi, mtd->oobsize);
+-	return sndcmd;
+-}
+-
+-/**
+- * nand_read_oob_syndrome - [REPLACABLE] OOB data read function for HW ECC
+- *			    with syndromes
+- * @mtd:	mtd info structure
+- * @chip:	nand chip info structure
+- * @page:	page number to read
+- * @sndcmd:	flag whether to issue read command or not
+- */
+-static int nand_read_oob_syndrome(struct mtd_info *mtd, struct nand_chip *chip,
+-				  int page, int sndcmd)
+-{
+-	uint8_t *buf = chip->oob_poi;
+-	int length = mtd->oobsize;
+-	int chunk = chip->ecc.bytes + chip->ecc.prepad + chip->ecc.postpad;
+-	int eccsize = chip->ecc.size;
+-	uint8_t *bufpoi = buf;
+-	int i, toread, sndrnd = 0, pos;
+-
+-	chip->cmdfunc(mtd, NAND_CMD_READ0, chip->ecc.size, page);
+-	for (i = 0; i < chip->ecc.steps; i++) {
+-		if (sndrnd) {
+-			pos = eccsize + i * (eccsize + chunk);
+-			if (mtd->writesize > 512)
+-				chip->cmdfunc(mtd, NAND_CMD_RNDOUT, pos, -1);
+-			else
+-				chip->cmdfunc(mtd, NAND_CMD_READ0, pos, page);
+-		} else
+-			sndrnd = 1;
+-		toread = min_t(int, length, chunk);
+-		chip->read_buf(mtd, bufpoi, toread);
+-		bufpoi += toread;
+-		length -= toread;
+-	}
+-	if (length > 0)
+-		chip->read_buf(mtd, bufpoi, length);
+-
+-	return 1;
+-}
+-
+-/**
+- * nand_write_oob_std - [REPLACABLE] the most common OOB data write function
+- * @mtd:	mtd info structure
+- * @chip:	nand chip info structure
+- * @page:	page number to write
+- */
+-static int nand_write_oob_std(struct mtd_info *mtd, struct nand_chip *chip,
+-			      int page)
+-{
+-	int status = 0;
+-	const uint8_t *buf = chip->oob_poi;
+-	int length = mtd->oobsize;
+-
+-	chip->cmdfunc(mtd, NAND_CMD_SEQIN, mtd->writesize, page);
+-	chip->write_buf(mtd, buf, length);
+-	/* Send command to program the OOB data */
+-	chip->cmdfunc(mtd, NAND_CMD_PAGEPROG, -1, -1);
+-
+-	status = chip->waitfunc(mtd, chip);
+-
+-	return status & NAND_STATUS_FAIL ? -EIO : 0;
+-}
+-
+-/**
+- * nand_write_oob_syndrome - [REPLACABLE] OOB data write function for HW ECC
+- *			     with syndrome - only for large page flash !
+- * @mtd:	mtd info structure
+- * @chip:	nand chip info structure
+- * @page:	page number to write
+- */
+-static int nand_write_oob_syndrome(struct mtd_info *mtd,
+-				   struct nand_chip *chip, int page)
+-{
+-	int chunk = chip->ecc.bytes + chip->ecc.prepad + chip->ecc.postpad;
+-	int eccsize = chip->ecc.size, length = mtd->oobsize;
+-	int i, len, pos, status = 0, sndcmd = 0, steps = chip->ecc.steps;
+-	const uint8_t *bufpoi = chip->oob_poi;
+-
+-	/*
+-	 * data-ecc-data-ecc ... ecc-oob
+-	 * or
+-	 * data-pad-ecc-pad-data-pad .... ecc-pad-oob
+-	 */
+-	if (!chip->ecc.prepad && !chip->ecc.postpad) {
+-		pos = steps * (eccsize + chunk);
+-		steps = 0;
+-	} else
+-		pos = eccsize;
+-
+-	chip->cmdfunc(mtd, NAND_CMD_SEQIN, pos, page);
+-	for (i = 0; i < steps; i++) {
+-		if (sndcmd) {
+-			if (mtd->writesize <= 512) {
+-				uint32_t fill = 0xFFFFFFFF;
+-
+-				len = eccsize;
+-				while (len > 0) {
+-					int num = min_t(int, len, 4);
+-					chip->write_buf(mtd, (uint8_t *)&fill,
+-							num);
+-					len -= num;
+-				}
+-			} else {
+-				pos = eccsize + i * (eccsize + chunk);
+-				chip->cmdfunc(mtd, NAND_CMD_RNDIN, pos, -1);
+-			}
+-		} else
+-			sndcmd = 1;
+-		len = min_t(int, length, chunk);
+-		chip->write_buf(mtd, bufpoi, len);
+-		bufpoi += len;
+-		length -= len;
+-	}
+-	if (length > 0)
+-		chip->write_buf(mtd, bufpoi, length);
+-
+-	chip->cmdfunc(mtd, NAND_CMD_PAGEPROG, -1, -1);
+-	status = chip->waitfunc(mtd, chip);
+-
+-	return status & NAND_STATUS_FAIL ? -EIO : 0;
+-}
+-
+-/**
+- * nand_do_read_oob - [Intern] NAND read out-of-band
+- * @mtd:	MTD device structure
+- * @from:	offset to read from
+- * @ops:	oob operations description structure
+- *
+- * NAND read out-of-band data from the spare area
+- */
+-static int nand_do_read_oob(struct mtd_info *mtd, loff_t from,
+-			    struct mtd_oob_ops *ops)
+-{
+-	int page, realpage, chipnr, sndcmd = 1;
+-	struct nand_chip *chip = mtd->priv;
+-	int blkcheck = (1 << (chip->phys_erase_shift - chip->page_shift)) - 1;
+-	int readlen = ops->ooblen;
+-	int len;
+-	uint8_t *buf = ops->oobbuf;
+-
+-	MTD_DEBUG(MTD_DEBUG_LEVEL3, "nand_read_oob: from = 0x%08Lx, len = %i\n",
+-	      (unsigned long long)from, readlen);
+-
+-	if (ops->mode == MTD_OOB_AUTO)
+-		len = chip->ecc.layout->oobavail;
+-	else
+-		len = mtd->oobsize;
+-
+-	if (unlikely(ops->ooboffs >= len)) {
+-		MTD_DEBUG(MTD_DEBUG_LEVEL0, "nand_read_oob: "
+-			"Attempt to start read outside oob\n");
+-		return -EINVAL;
+-	}
+-
+-	/* Do not allow reads past end of device */
+-	if (unlikely(from >= mtd->size ||
+-		     ops->ooboffs + readlen > ((mtd->size >> chip->page_shift) -
+-					(from >> chip->page_shift)) * len)) {
+-		MTD_DEBUG(MTD_DEBUG_LEVEL0, "nand_read_oob: "
+-			"Attempt read beyond end of device\n");
+-		return -EINVAL;
+-	}
+-
+-	chipnr = (int)(from >> chip->chip_shift);
+-	chip->select_chip(mtd, chipnr);
+-
+-	/* Shift to get page */
+-	realpage = (int)(from >> chip->page_shift);
+-	page = realpage & chip->pagemask;
+-
+-	while(1) {
+-		sndcmd = chip->ecc.read_oob(mtd, chip, page, sndcmd);
+-
+-		len = min(len, readlen);
+-		buf = nand_transfer_oob(chip, buf, ops, len);
+-
+-		if (!(chip->options & NAND_NO_READRDY)) {
+-			/*
+-			 * Apply delay or wait for ready/busy pin. Do this
+-			 * before the AUTOINCR check, so no problems arise if a
+-			 * chip which does auto increment is marked as
+-			 * NOAUTOINCR by the board driver.
+-			 */
+-			if (!chip->dev_ready)
+-				udelay(chip->chip_delay);
+-			else
+-				nand_wait_ready(mtd);
+-		}
+-
+-		readlen -= len;
+-		if (!readlen)
+-			break;
+-
+-		/* Increment page address */
+-		realpage++;
+-
+-		page = realpage & chip->pagemask;
+-		/* Check, if we cross a chip boundary */
+-		if (!page) {
+-			chipnr++;
+-			chip->select_chip(mtd, -1);
+-			chip->select_chip(mtd, chipnr);
+-		}
+-
+-		/* Check, if the chip supports auto page increment
+-		 * or if we have hit a block boundary.
+-		 */
+-		if (!NAND_CANAUTOINCR(chip) || !(page & blkcheck))
+-			sndcmd = 1;
+-	}
+-
+-	ops->oobretlen = ops->ooblen;
+-	return 0;
+-}
+-
+-/**
+- * nand_read_oob - [MTD Interface] NAND read data and/or out-of-band
+- * @mtd:	MTD device structure
+- * @from:	offset to read from
+- * @ops:	oob operation description structure
+- *
+- * NAND read data and/or out-of-band data
+- */
+-static int nand_read_oob(struct mtd_info *mtd, loff_t from,
+-			 struct mtd_oob_ops *ops)
+-{
+-	struct nand_chip *chip = mtd->priv;
+-	int ret = -ENOSYS;
+-
+-	ops->retlen = 0;
+-
+-	/* Do not allow reads past end of device */
+-	if (ops->datbuf && (from + ops->len) > mtd->size) {
+-		MTD_DEBUG(MTD_DEBUG_LEVEL0, "nand_read_oob: "
+-		      "Attempt read beyond end of device\n");
+-		return -EINVAL;
+-	}
+-
+-	nand_get_device(chip, mtd, FL_READING);
+-
+-	switch(ops->mode) {
+-	case MTD_OOB_PLACE:
+-	case MTD_OOB_AUTO:
+-	case MTD_OOB_RAW:
+-		break;
+-
+-	default:
+-		goto out;
+-	}
+-
+-	if (!ops->datbuf)
+-		ret = nand_do_read_oob(mtd, from, ops);
+-	else
+-		ret = nand_do_read_ops(mtd, from, ops);
+-
+- out:
+-	nand_release_device(mtd);
+-	return ret;
+-}
+-
+-
+-/**
+- * nand_write_page_raw - [Intern] raw page write function
+- * @mtd:	mtd info structure
+- * @chip:	nand chip info structure
+- * @buf:	data buffer
+- */
+-static void nand_write_page_raw(struct mtd_info *mtd, struct nand_chip *chip,
+-				const uint8_t *buf)
+-{
+-	chip->write_buf(mtd, buf, mtd->writesize);
+-	chip->write_buf(mtd, chip->oob_poi, mtd->oobsize);
+-}
+-
+-/**
+- * nand_write_page_swecc - [REPLACABLE] software ecc based page write function
+- * @mtd:	mtd info structure
+- * @chip:	nand chip info structure
+- * @buf:	data buffer
+- */
+-static void nand_write_page_swecc(struct mtd_info *mtd, struct nand_chip *chip,
+-				  const uint8_t *buf)
+-{
+-	int i, eccsize = chip->ecc.size;
+-	int eccbytes = chip->ecc.bytes;
+-	int eccsteps = chip->ecc.steps;
+-	uint8_t *ecc_calc = chip->buffers->ecccalc;
+-	const uint8_t *p = buf;
+-	uint32_t *eccpos = chip->ecc.layout->eccpos;
+-
+-	/* Software ecc calculation */
+-	for (i = 0; eccsteps; eccsteps--, i += eccbytes, p += eccsize)
+-		chip->ecc.calculate(mtd, p, &ecc_calc[i]);
+-
+-	for (i = 0; i < chip->ecc.total; i++)
+-		chip->oob_poi[eccpos[i]] = ecc_calc[i];
+-
+-	chip->ecc.write_page_raw(mtd, chip, buf);
+-}
+-
+-/**
+- * nand_write_page_hwecc - [REPLACABLE] hardware ecc based page write function
+- * @mtd:	mtd info structure
+- * @chip:	nand chip info structure
+- * @buf:	data buffer
+- */
+-static void nand_write_page_hwecc(struct mtd_info *mtd, struct nand_chip *chip,
+-				  const uint8_t *buf)
+-{
+-	int i, eccsize = chip->ecc.size;
+-	int eccbytes = chip->ecc.bytes;
+-	int eccsteps = chip->ecc.steps;
+-	uint8_t *ecc_calc = chip->buffers->ecccalc;
+-	const uint8_t *p = buf;
+-	uint32_t *eccpos = chip->ecc.layout->eccpos;
+-
+-	for (i = 0; eccsteps; eccsteps--, i += eccbytes, p += eccsize) {
+-		chip->ecc.hwctl(mtd, NAND_ECC_WRITE);
+-		chip->write_buf(mtd, p, eccsize);
+-		chip->ecc.calculate(mtd, p, &ecc_calc[i]);
+-	}
+-
+-	for (i = 0; i < chip->ecc.total; i++)
+-		chip->oob_poi[eccpos[i]] = ecc_calc[i];
+-
+-	chip->write_buf(mtd, chip->oob_poi, mtd->oobsize);
+-}
+-
+-/**
+- * nand_write_page_syndrome - [REPLACABLE] hardware ecc syndrom based page write
+- * @mtd:	mtd info structure
+- * @chip:	nand chip info structure
+- * @buf:	data buffer
+- *
+- * The hw generator calculates the error syndrome automatically. Therefor
+- * we need a special oob layout and handling.
+- */
+-static void nand_write_page_syndrome(struct mtd_info *mtd,
+-				    struct nand_chip *chip, const uint8_t *buf)
+-{
+-	int i, eccsize = chip->ecc.size;
+-	int eccbytes = chip->ecc.bytes;
+-	int eccsteps = chip->ecc.steps;
+-	const uint8_t *p = buf;
+-	uint8_t *oob = chip->oob_poi;
+-
+-	for (i = 0; eccsteps; eccsteps--, i += eccbytes, p += eccsize) {
+-
+-		chip->ecc.hwctl(mtd, NAND_ECC_WRITE);
+-		chip->write_buf(mtd, p, eccsize);
+-
+-		if (chip->ecc.prepad) {
+-			chip->write_buf(mtd, oob, chip->ecc.prepad);
+-			oob += chip->ecc.prepad;
+-		}
+-
+-		chip->ecc.calculate(mtd, p, oob);
+-		chip->write_buf(mtd, oob, eccbytes);
+-		oob += eccbytes;
+-
+-		if (chip->ecc.postpad) {
+-			chip->write_buf(mtd, oob, chip->ecc.postpad);
+-			oob += chip->ecc.postpad;
+-		}
+-	}
+-
+-	/* Calculate remaining oob bytes */
+-	i = mtd->oobsize - (oob - chip->oob_poi);
+-	if (i)
+-		chip->write_buf(mtd, oob, i);
+-}
+-
+-/**
+- * nand_write_page - [REPLACEABLE] write one page
+- * @mtd:	MTD device structure
+- * @chip:	NAND chip descriptor
+- * @buf:	the data to write
+- * @page:	page number to write
+- * @cached:	cached programming
+- * @raw:	use _raw version of write_page
+- */
+-static int nand_write_page(struct mtd_info *mtd, struct nand_chip *chip,
+-			   const uint8_t *buf, int page, int cached, int raw)
+-{
+-	int status;
+-
+-	chip->cmdfunc(mtd, NAND_CMD_SEQIN, 0x00, page);
+-
+-	if (unlikely(raw))
+-		chip->ecc.write_page_raw(mtd, chip, buf);
+-	else
+-		chip->ecc.write_page(mtd, chip, buf);
+-
+-	/*
+-	 * Cached progamming disabled for now, Not sure if its worth the
+-	 * trouble. The speed gain is not very impressive. (2.3->2.6Mib/s)
+-	 */
+-	cached = 0;
+-
+-	if (!cached || !(chip->options & NAND_CACHEPRG)) {
+-
+-		chip->cmdfunc(mtd, NAND_CMD_PAGEPROG, -1, -1);
+-		status = chip->waitfunc(mtd, chip);
+-		/*
+-		 * See if operation failed and additional status checks are
+-		 * available
+-		 */
+-		if ((status & NAND_STATUS_FAIL) && (chip->errstat))
+-			status = chip->errstat(mtd, chip, FL_WRITING, status,
+-					       page);
+-
+-		if (status & NAND_STATUS_FAIL) {
+-			return -EIO;
+-		}
+-	} else {
+-		chip->cmdfunc(mtd, NAND_CMD_CACHEDPROG, -1, -1);
+-		status = chip->waitfunc(mtd, chip);
+-	}
+-
+-#ifdef CONFIG_MTD_NAND_VERIFY_WRITE
+-	/* Send command to read back the data */
+-	chip->cmdfunc(mtd, NAND_CMD_READ0, 0, page);
+-
+-	if (chip->verify_buf(mtd, buf, mtd->writesize))
+-		return -EIO;
+-#endif
+-	return 0;
+-}
+-
+-/**
+- * nand_fill_oob - [Internal] Transfer client buffer to oob
+- * @chip:	nand chip structure
+- * @oob:	oob data buffer
+- * @ops:	oob ops structure
+- */
+-static uint8_t *nand_fill_oob(struct nand_chip *chip, uint8_t *oob,
+-				  struct mtd_oob_ops *ops)
+-{
+-	size_t len = ops->ooblen;
+-
+-	switch(ops->mode) {
+-
+-	case MTD_OOB_PLACE:
+-	case MTD_OOB_RAW:
+-		memcpy(chip->oob_poi + ops->ooboffs, oob, len);
+-		return oob + len;
+-
+-	case MTD_OOB_AUTO: {
+-		struct nand_oobfree *free = chip->ecc.layout->oobfree;
+-		uint32_t boffs = 0, woffs = ops->ooboffs;
+-		size_t bytes = 0;
+-
+-		for(; free->length && len; free++, len -= bytes) {
+-			/* Write request not from offset 0 ? */
+-			if (unlikely(woffs)) {
+-				if (woffs >= free->length) {
+-					woffs -= free->length;
+-					continue;
+-				}
+-				boffs = free->offset + woffs;
+-				bytes = min_t(size_t, len,
+-					      (free->length - woffs));
+-				woffs = 0;
+-			} else {
+-				bytes = min_t(size_t, len, free->length);
+-				boffs = free->offset;
+-			}
+-			memcpy(chip->oob_poi + boffs, oob, bytes);
+-			oob += bytes;
+-		}
+-		return oob;
+-	}
+-	default:
+-		BUG();
+-	}
+-	return NULL;
+-}
+-
+-#define NOTALIGNED(x)	(x & (chip->subpagesize - 1)) != 0
+-
+-/**
+- * nand_do_write_ops - [Internal] NAND write with ECC
+- * @mtd:	MTD device structure
+- * @to:		offset to write to
+- * @ops:	oob operations description structure
+- *
+- * NAND write with ECC
+- */
+-static int nand_do_write_ops(struct mtd_info *mtd, loff_t to,
+-			     struct mtd_oob_ops *ops)
+-{
+-	int chipnr, realpage, page, blockmask, column;
+-	struct nand_chip *chip = mtd->priv;
+-	uint32_t writelen = ops->len;
+-	uint8_t *oob = ops->oobbuf;
+-	uint8_t *buf = ops->datbuf;
+-	int ret, subpage;
+-
+-	ops->retlen = 0;
+-	if (!writelen)
+-		return 0;
+-
+-	/* reject writes, which are not page aligned */
+-	if (NOTALIGNED(to) || NOTALIGNED(ops->len)) {
+-		printk(KERN_NOTICE "nand_write: "
+-		       "Attempt to write not page aligned data\n");
+-		return -EINVAL;
+-	}
+-
+-	column = to & (mtd->writesize - 1);
+-	subpage = column || (writelen & (mtd->writesize - 1));
+-
+-	if (subpage && oob)
+-		return -EINVAL;
+-
+-	chipnr = (int)(to >> chip->chip_shift);
+-	chip->select_chip(mtd, chipnr);
+-
+-	/* Check, if it is write protected */
+-	if (nand_check_wp(mtd)) {
+-		return -EIO;
+-	}
+-
+-	realpage = (int)(to >> chip->page_shift);
+-	page = realpage & chip->pagemask;
+-	blockmask = (1 << (chip->phys_erase_shift - chip->page_shift)) - 1;
+-
+-	/* Invalidate the page cache, when we write to the cached page */
+-	if (to <= (chip->pagebuf << chip->page_shift) &&
+-	    (chip->pagebuf << chip->page_shift) < (to + ops->len))
+-		chip->pagebuf = -1;
+-
+-	/* If we're not given explicit OOB data, let it be 0xFF */
+-	if (likely(!oob))
+-		memset(chip->oob_poi, 0xff, mtd->oobsize);
+-
+-	while(1) {
+-		int bytes = mtd->writesize;
+-		int cached = writelen > bytes && page != blockmask;
+-		uint8_t *wbuf = buf;
+-
+-		/* Partial page write ? */
+-		if (unlikely(column || writelen < (mtd->writesize - 1))) {
+-			cached = 0;
+-			bytes = min_t(int, bytes - column, (int) writelen);
+-			chip->pagebuf = -1;
+-			memset(chip->buffers->databuf, 0xff, mtd->writesize);
+-			memcpy(&chip->buffers->databuf[column], buf, bytes);
+-			wbuf = chip->buffers->databuf;
+-		}
+-
+-		if (unlikely(oob))
+-			oob = nand_fill_oob(chip, oob, ops);
+-
+-		ret = chip->write_page(mtd, chip, wbuf, page, cached,
+-				       (ops->mode == MTD_OOB_RAW));
+-		if (ret)
+-			break;
+-
+-		writelen -= bytes;
+-		if (!writelen)
+-			break;
+-
+-		column = 0;
+-		buf += bytes;
+-		realpage++;
+-
+-		page = realpage & chip->pagemask;
+-		/* Check, if we cross a chip boundary */
+-		if (!page) {
+-			chipnr++;
+-			chip->select_chip(mtd, -1);
+-			chip->select_chip(mtd, chipnr);
+-		}
+-	}
+-
+-	ops->retlen = ops->len - writelen;
+-	if (unlikely(oob))
+-		ops->oobretlen = ops->ooblen;
+-	return ret;
+-}
+-
+-/**
+- * nand_write - [MTD Interface] NAND write with ECC
+- * @mtd:	MTD device structure
+- * @to:		offset to write to
+- * @len:	number of bytes to write
+- * @retlen:	pointer to variable to store the number of written bytes
+- * @buf:	the data to write
+- *
+- * NAND write with ECC
+- */
+-static int nand_write(struct mtd_info *mtd, loff_t to, size_t len,
+-			  size_t *retlen, const uint8_t *buf)
+-{
+-	struct nand_chip *chip = mtd->priv;
+-	int ret;
+-
+-	/* Do not allow reads past end of device */
+-	if ((to + len) > mtd->size)
+-		return -EINVAL;
+-	if (!len)
+-		return 0;
+-
+-	nand_get_device(chip, mtd, FL_WRITING);
+-
+-	chip->ops.len = len;
+-	chip->ops.datbuf = (uint8_t *)buf;
+-	chip->ops.oobbuf = NULL;
+-
+-	ret = nand_do_write_ops(mtd, to, &chip->ops);
+-
+-	*retlen = chip->ops.retlen;
+-
+-	nand_release_device(mtd);
+-
+-	return ret;
+-}
+-
+-/**
+- * nand_do_write_oob - [MTD Interface] NAND write out-of-band
+- * @mtd:	MTD device structure
+- * @to:		offset to write to
+- * @ops:	oob operation description structure
+- *
+- * NAND write out-of-band
+- */
+-static int nand_do_write_oob(struct mtd_info *mtd, loff_t to,
+-			     struct mtd_oob_ops *ops)
+-{
+-	int chipnr, page, status, len;
+-	struct nand_chip *chip = mtd->priv;
+-
+-	MTD_DEBUG(MTD_DEBUG_LEVEL3, "nand_write_oob: to = 0x%08x, len = %i\n",
+-	      (unsigned int)to, (int)ops->ooblen);
+-
+-	if (ops->mode == MTD_OOB_AUTO)
+-		len = chip->ecc.layout->oobavail;
+-	else
+-		len = mtd->oobsize;
+-
+-	/* Do not allow write past end of page */
+-	if ((ops->ooboffs + ops->ooblen) > len) {
+-		MTD_DEBUG(MTD_DEBUG_LEVEL0, "nand_write_oob: "
+-		      "Attempt to write past end of page\n");
+-		return -EINVAL;
+-	}
+-
+-	if (unlikely(ops->ooboffs >= len)) {
+-		MTD_DEBUG(MTD_DEBUG_LEVEL0, "nand_read_oob: "
+-			"Attempt to start write outside oob\n");
+-		return -EINVAL;
+-	}
+-
+-	/* Do not allow reads past end of device */
+-	if (unlikely(to >= mtd->size ||
+-		     ops->ooboffs + ops->ooblen >
+-			((mtd->size >> chip->page_shift) -
+-			 (to >> chip->page_shift)) * len)) {
+-		MTD_DEBUG(MTD_DEBUG_LEVEL0, "nand_read_oob: "
+-			"Attempt write beyond end of device\n");
+-		return -EINVAL;
+-	}
+-
+-	chipnr = (int)(to >> chip->chip_shift);
+-	chip->select_chip(mtd, chipnr);
+-
+-	/* Shift to get page */
+-	page = (int)(to >> chip->page_shift);
+-
+-	/*
+-	 * Reset the chip. Some chips (like the Toshiba TC5832DC found in one
+-	 * of my DiskOnChip 2000 test units) will clear the whole data page too
+-	 * if we don't do this. I have no clue why, but I seem to have 'fixed'
+-	 * it in the doc2000 driver in August 1999.  dwmw2.
+-	 */
+-	chip->cmdfunc(mtd, NAND_CMD_RESET, -1, -1);
+-
+-	/* Check, if it is write protected */
+-	if (nand_check_wp(mtd))
+-		return -EROFS;
+-
+-	/* Invalidate the page cache, if we write to the cached page */
+-	if (page == chip->pagebuf)
+-		chip->pagebuf = -1;
+-
+-	memset(chip->oob_poi, 0xff, mtd->oobsize);
+-	nand_fill_oob(chip, ops->oobbuf, ops);
+-	status = chip->ecc.write_oob(mtd, chip, page & chip->pagemask);
+-	memset(chip->oob_poi, 0xff, mtd->oobsize);
+-
+-	if (status)
+-		return status;
+-
+-	ops->oobretlen = ops->ooblen;
+-
+-	return 0;
+-}
+-
+-/**
+- * nand_write_oob - [MTD Interface] NAND write data and/or out-of-band
+- * @mtd:	MTD device structure
+- * @to:		offset to write to
+- * @ops:	oob operation description structure
+- */
+-static int nand_write_oob(struct mtd_info *mtd, loff_t to,
+-			  struct mtd_oob_ops *ops)
+-{
+-	struct nand_chip *chip = mtd->priv;
+-	int ret = -ENOSYS;
+-
+-	ops->retlen = 0;
+-
+-	/* Do not allow writes past end of device */
+-	if (ops->datbuf && (to + ops->len) > mtd->size) {
+-		MTD_DEBUG(MTD_DEBUG_LEVEL0, "nand_read_oob: "
+-		      "Attempt read beyond end of device\n");
+-		return -EINVAL;
+-	}
+-
+-	nand_get_device(chip, mtd, FL_WRITING);
+-
+-	switch(ops->mode) {
+-	case MTD_OOB_PLACE:
+-	case MTD_OOB_AUTO:
+-	case MTD_OOB_RAW:
+-		break;
+-
+-	default:
+-		goto out;
+-	}
+-
+-	if (!ops->datbuf)
+-		ret = nand_do_write_oob(mtd, to, ops);
+-	else
+-		ret = nand_do_write_ops(mtd, to, ops);
+-
+- out:
+-	nand_release_device(mtd);
+-	return ret;
+-}
+-
+-/**
+- * single_erease_cmd - [GENERIC] NAND standard block erase command function
+- * @mtd:	MTD device structure
+- * @page:	the page address of the block which will be erased
+- *
+- * Standard erase command for NAND chips
+- */
+-static void single_erase_cmd(struct mtd_info *mtd, int page)
+-{
+-	struct nand_chip *chip = mtd->priv;
+-	/* Send commands to erase a block */
+-	chip->cmdfunc(mtd, NAND_CMD_ERASE1, -1, page);
+-	chip->cmdfunc(mtd, NAND_CMD_ERASE2, -1, -1);
+-}
+-
+-/**
+- * multi_erease_cmd - [GENERIC] AND specific block erase command function
+- * @mtd:	MTD device structure
+- * @page:	the page address of the block which will be erased
+- *
+- * AND multi block erase command function
+- * Erase 4 consecutive blocks
+- */
+-static void multi_erase_cmd(struct mtd_info *mtd, int page)
+-{
+-	struct nand_chip *chip = mtd->priv;
+-	/* Send commands to erase a block */
+-	chip->cmdfunc(mtd, NAND_CMD_ERASE1, -1, page++);
+-	chip->cmdfunc(mtd, NAND_CMD_ERASE1, -1, page++);
+-	chip->cmdfunc(mtd, NAND_CMD_ERASE1, -1, page++);
+-	chip->cmdfunc(mtd, NAND_CMD_ERASE1, -1, page);
+-	chip->cmdfunc(mtd, NAND_CMD_ERASE2, -1, -1);
+-}
+-
+-/**
+- * nand_erase - [MTD Interface] erase block(s)
+- * @mtd:	MTD device structure
+- * @instr:	erase instruction
+- *
+- * Erase one ore more blocks
+- */
+-static int nand_erase(struct mtd_info *mtd, struct erase_info *instr)
+-{
+-	return nand_erase_nand(mtd, instr, 0);
+-}
+-
+-#define BBT_PAGE_MASK	0xffffff3f
+-/**
+- * nand_erase_nand - [Internal] erase block(s)
+- * @mtd:	MTD device structure
+- * @instr:	erase instruction
+- * @allowbbt:	allow erasing the bbt area
+- *
+- * Erase one ore more blocks
+- */
+-int nand_erase_nand(struct mtd_info *mtd, struct erase_info *instr,
+-		    int allowbbt)
+-{
+-	int page, len, status, pages_per_block, ret, chipnr;
+-	struct nand_chip *chip = mtd->priv;
+-	int rewrite_bbt[NAND_MAX_CHIPS]={0};
+-	unsigned int bbt_masked_page = 0xffffffff;
+-
+-	MTD_DEBUG(MTD_DEBUG_LEVEL3, "nand_erase: start = 0x%08x, len = %i\n",
+-	      (unsigned int)instr->addr, (unsigned int)instr->len);
+-
+-	/* Start address must align on block boundary */
+-	if (instr->addr & ((1 << chip->phys_erase_shift) - 1)) {
+-		MTD_DEBUG(MTD_DEBUG_LEVEL0, "nand_erase: Unaligned address\n");
+-		return -EINVAL;
+-	}
+-
+-	/* Length must align on block boundary */
+-	if (instr->len & ((1 << chip->phys_erase_shift) - 1)) {
+-		MTD_DEBUG(MTD_DEBUG_LEVEL0, "nand_erase: "
+-		      "Length not block aligned\n");
+-		return -EINVAL;
+-	}
+-
+-	/* Do not allow erase past end of device */
+-	if ((instr->len + instr->addr) > mtd->size) {
+-		MTD_DEBUG(MTD_DEBUG_LEVEL0, "nand_erase: "
+-		      "Erase past end of device\n");
+-		return -EINVAL;
+-	}
+-
+-	instr->fail_addr = 0xffffffff;
+-
+-	/* Grab the lock and see if the device is available */
+-	nand_get_device(chip, mtd, FL_ERASING);
+-
+-	/* Shift to get first page */
+-	page = (int)(instr->addr >> chip->page_shift);
+-	chipnr = (int)(instr->addr >> chip->chip_shift);
+-
+-	/* Calculate pages in each block */
+-	pages_per_block = 1 << (chip->phys_erase_shift - chip->page_shift);
+-
+-	/* Select the NAND device */
+-	chip->select_chip(mtd, chipnr);
+-
+-	/* Check, if it is write protected */
+-	if (nand_check_wp(mtd)) {
+-		MTD_DEBUG(MTD_DEBUG_LEVEL0, "nand_erase: "
+-		      "Device is write protected!!!\n");
+-		instr->state = MTD_ERASE_FAILED;
+-		goto erase_exit;
+-	}
+-
+-	/*
+-	 * If BBT requires refresh, set the BBT page mask to see if the BBT
+-	 * should be rewritten. Otherwise the mask is set to 0xffffffff which
+-	 * can not be matched. This is also done when the bbt is actually
+-	 * erased to avoid recusrsive updates
+-	 */
+-	if (chip->options & BBT_AUTO_REFRESH && !allowbbt)
+-		bbt_masked_page = chip->bbt_td->pages[chipnr] & BBT_PAGE_MASK;
+-
+-	/* Loop through the pages */
+-	len = instr->len;
+-
+-	instr->state = MTD_ERASING;
+-
+-	while (len) {
+-		/*
+-		 * heck if we have a bad block, we do not erase bad blocks !
+-		 */
+-		if (nand_block_checkbad(mtd, ((loff_t) page) <<
+-					chip->page_shift, 0, allowbbt)) {
+-			printk(KERN_WARNING "nand_erase: attempt to erase a "
+-			       "bad block at page 0x%08x\n", page);
+-			instr->state = MTD_ERASE_FAILED;
+-			goto erase_exit;
+-		}
+-
+-		/*
+-		 * Invalidate the page cache, if we erase the block which
+-		 * contains the current cached page
+-		 */
+-		if (page <= chip->pagebuf && chip->pagebuf <
+-		    (page + pages_per_block))
+-			chip->pagebuf = -1;
+-
+-		chip->erase_cmd(mtd, page & chip->pagemask);
+-
+-		status = chip->waitfunc(mtd, chip);
+-
+-		/*
+-		 * See if operation failed and additional status checks are
+-		 * available
+-		 */
+-		if ((status & NAND_STATUS_FAIL) && (chip->errstat))
+-			status = chip->errstat(mtd, chip, FL_ERASING,
+-					       status, page);
+-
+-		/* See if block erase succeeded */
+-		if (status & NAND_STATUS_FAIL) {
+-			MTD_DEBUG(MTD_DEBUG_LEVEL0, "nand_erase: "
+-			      "Failed erase, page 0x%08x\n", page);
+-			instr->state = MTD_ERASE_FAILED;
+-			instr->fail_addr = (page << chip->page_shift);
+-			goto erase_exit;
+-		}
+-
+-		/*
+-		 * If BBT requires refresh, set the BBT rewrite flag to the
+-		 * page being erased
+-		 */
+-		if (bbt_masked_page != 0xffffffff &&
+-		    (page & BBT_PAGE_MASK) == bbt_masked_page)
+-			    rewrite_bbt[chipnr] = (page << chip->page_shift);
+-
+-		/* Increment page address and decrement length */
+-		len -= (1 << chip->phys_erase_shift);
+-		page += pages_per_block;
+-
+-		/* Check, if we cross a chip boundary */
+-		if (len && !(page & chip->pagemask)) {
+-			chipnr++;
+-			chip->select_chip(mtd, -1);
+-			chip->select_chip(mtd, chipnr);
+-
+-			/*
+-			 * If BBT requires refresh and BBT-PERCHIP, set the BBT
+-			 * page mask to see if this BBT should be rewritten
+-			 */
+-			if (bbt_masked_page != 0xffffffff &&
+-			    (chip->bbt_td->options & NAND_BBT_PERCHIP))
+-				bbt_masked_page = chip->bbt_td->pages[chipnr] &
+-					BBT_PAGE_MASK;
+-		}
+-	}
+-	instr->state = MTD_ERASE_DONE;
+-
+- erase_exit:
+-
+-	ret = instr->state == MTD_ERASE_DONE ? 0 : -EIO;
+-
+-	/* Deselect and wake up anyone waiting on the device */
+-	nand_release_device(mtd);
+-
+-	/* Do call back function */
+-	if (!ret)
+-		mtd_erase_callback(instr);
+-
+-	/*
+-	 * If BBT requires refresh and erase was successful, rewrite any
+-	 * selected bad block tables
+-	 */
+-	if (bbt_masked_page == 0xffffffff || ret)
+-		return ret;
+-
+-	for (chipnr = 0; chipnr < chip->numchips; chipnr++) {
+-		if (!rewrite_bbt[chipnr])
+-			continue;
+-		/* update the BBT for chip */
+-		MTD_DEBUG(MTD_DEBUG_LEVEL0, "nand_erase_nand: nand_update_bbt "
+-		      "(%d:0x%0x 0x%0x)\n", chipnr, rewrite_bbt[chipnr],
+-		      chip->bbt_td->pages[chipnr]);
+-		nand_update_bbt(mtd, rewrite_bbt[chipnr]);
+-	}
+-
+-	/* Return more or less happy */
+-	return ret;
+-}
+-
+-/**
+- * nand_sync - [MTD Interface] sync
+- * @mtd:	MTD device structure
+- *
+- * Sync is actually a wait for chip ready function
+- */
+-static void nand_sync(struct mtd_info *mtd)
+-{
+-	struct nand_chip *chip = mtd->priv;
+-
+-	MTD_DEBUG(MTD_DEBUG_LEVEL3, "nand_sync: called\n");
+-
+-	/* Grab the lock and see if the device is available */
+-	nand_get_device(chip, mtd, FL_SYNCING);
+-	/* Release it and go back */
+-	nand_release_device(mtd);
+-}
+-
+-/**
+- * nand_block_isbad - [MTD Interface] Check if block at offset is bad
+- * @mtd:	MTD device structure
+- * @offs:	offset relative to mtd start
+- */
+-static int nand_block_isbad(struct mtd_info *mtd, loff_t offs)
+-{
+-	/* Check for invalid offset */
+-	if (offs > mtd->size)
+-		return -EINVAL;
+-
+-	return nand_block_checkbad(mtd, offs, 1, 0);
+-}
+-
+-/**
+- * nand_block_markbad - [MTD Interface] Mark block at the given offset as bad
+- * @mtd:	MTD device structure
+- * @ofs:	offset relative to mtd start
+- */
+-static int nand_block_markbad(struct mtd_info *mtd, loff_t ofs)
+-{
+-	struct nand_chip *chip = mtd->priv;
+-	int ret;
+-
+-	if ((ret = nand_block_isbad(mtd, ofs))) {
+-		/* If it was bad already, return success and do nothing. */
+-		if (ret > 0)
+-			return 0;
+-		return ret;
+-	}
+-
+-	return chip->block_markbad(mtd, ofs);
+-}
+-
+-/**
+- * nand_suspend - [MTD Interface] Suspend the NAND flash
+- * @mtd:	MTD device structure
+- */
+-static int nand_suspend(struct mtd_info *mtd)
+-{
+-	struct nand_chip *chip = mtd->priv;
+-
+-	return nand_get_device(chip, mtd, FL_PM_SUSPENDED);
+-}
+-
+-/**
+- * nand_resume - [MTD Interface] Resume the NAND flash
+- * @mtd:	MTD device structure
+- */
+-static void nand_resume(struct mtd_info *mtd)
+-{
+-	struct nand_chip *chip = mtd->priv;
+-
+-	if (chip->state == FL_PM_SUSPENDED)
+-		nand_release_device(mtd);
+-	else
+-		printk(KERN_ERR "nand_resume() called for a chip which is not "
+-		       "in suspended state\n");
+-}
+-
+-/*
+- * Set default functions
+- */
+-static void nand_set_defaults(struct nand_chip *chip, int busw)
+-{
+-	/* check for proper chip_delay setup, set 20us if not */
+-	if (!chip->chip_delay)
+-		chip->chip_delay = 20;
+-
+-	/* check, if a user supplied command function given */
+-	if (chip->cmdfunc == NULL)
+-		chip->cmdfunc = nand_command;
+-
+-	/* check, if a user supplied wait function given */
+-	if (chip->waitfunc == NULL)
+-		chip->waitfunc = nand_wait;
+-
+-	if (!chip->select_chip)
+-		chip->select_chip = nand_select_chip;
+-	if (!chip->read_byte)
+-		chip->read_byte = busw ? nand_read_byte16 : nand_read_byte;
+-	if (!chip->read_word)
+-		chip->read_word = nand_read_word;
+-	if (!chip->block_bad)
+-		chip->block_bad = nand_block_bad;
+-	if (!chip->block_markbad)
+-		chip->block_markbad = nand_default_block_markbad;
+-	if (!chip->write_buf)
+-		chip->write_buf = busw ? nand_write_buf16 : nand_write_buf;
+-	if (!chip->read_buf)
+-		chip->read_buf = busw ? nand_read_buf16 : nand_read_buf;
+-	if (!chip->verify_buf)
+-		chip->verify_buf = busw ? nand_verify_buf16 : nand_verify_buf;
+-	if (!chip->scan_bbt)
+-		chip->scan_bbt = nand_default_bbt;
+-
+-	if (!chip->controller) {
+-		chip->controller = &chip->hwcontrol;
+-	}
+-
+-}
+-
+-/*
+- * Get the flash and manufacturer id and lookup if the type is supported
+- */
+-static struct nand_flash_dev *nand_get_flash_type(struct mtd_info *mtd,
+-						  struct nand_chip *chip,
+-						  int busw, int *maf_id)
+-{
+-	struct nand_flash_dev *type = NULL;
+-	int i, dev_id, maf_idx;
+-	int tmp_id, tmp_manf;
+-
+-	/* Select the device */
+-	chip->select_chip(mtd, 0);
+-
+-	/* Send the command for reading device ID */
+-	chip->cmdfunc(mtd, NAND_CMD_READID, 0x00, -1);
+-
+-	/* Read manufacturer and device IDs */
+-	*maf_id = chip->read_byte(mtd);
+-	dev_id = chip->read_byte(mtd);
+-
+-	/* Try again to make sure, as some systems the bus-hold or other
+-	 * interface concerns can cause random data which looks like a
+-	 * possibly credible NAND flash to appear. If the two results do
+-	 * not match, ignore the device completely.
+-	 */
+-
+-	chip->cmdfunc(mtd, NAND_CMD_READID, 0x00, -1);
+-
+-	/* Read manufacturer and device IDs */
+-
+-	tmp_manf = chip->read_byte(mtd);
+-	tmp_id = chip->read_byte(mtd);
+-
+-	if (tmp_manf != *maf_id || tmp_id != dev_id) {
+-		printk(KERN_INFO "%s: second ID read did not match "
+-		       "%02x,%02x against %02x,%02x\n", __func__,
+-		       *maf_id, dev_id, tmp_manf, tmp_id);
+-		return ERR_PTR(-ENODEV);
+-	}
+-
+-	/* Lookup the flash id */
+-	for (i = 0; nand_flash_ids[i].name != NULL; i++) {
+-		if (dev_id == nand_flash_ids[i].id) {
+-			type =  &nand_flash_ids[i];
+-			break;
+-		}
+-	}
+-
+-	if (!type)
+-		return ERR_PTR(-ENODEV);
+-
+-	if (!mtd->name)
+-		mtd->name = type->name;
+-
+-	chip->chipsize = type->chipsize << 20;
+-
+-	/* Newer devices have all the information in additional id bytes */
+-	if (!type->pagesize) {
+-		int extid;
+-		/* The 3rd id byte holds MLC / multichip data */
+-		chip->cellinfo = chip->read_byte(mtd);
+-		/* The 4th id byte is the important one */
+-		extid = chip->read_byte(mtd);
+-		/* Calc pagesize */
+-		mtd->writesize = 1024 << (extid & 0x3);
+-		extid >>= 2;
+-		/* Calc oobsize */
+-		mtd->oobsize = (8 << (extid & 0x01)) * (mtd->writesize >> 9);
+-		extid >>= 2;
+-		/* Calc blocksize. Blocksize is multiples of 64KiB */
+-		mtd->erasesize = (64 * 1024) << (extid & 0x03);
+-		extid >>= 2;
+-		/* Get buswidth information */
+-		busw = (extid & 0x01) ? NAND_BUSWIDTH_16 : 0;
+-
+-	} else {
+-		/*
+-		 * Old devices have chip data hardcoded in the device id table
+-		 */
+-		mtd->erasesize = type->erasesize;
+-		mtd->writesize = type->pagesize;
+-		mtd->oobsize = mtd->writesize / 32;
+-		busw = type->options & NAND_BUSWIDTH_16;
+-	}
+-
+-	/* Try to identify manufacturer */
+-	for (maf_idx = 0; nand_manuf_ids[maf_idx].id != 0x0; maf_idx++) {
+-		if (nand_manuf_ids[maf_idx].id == *maf_id)
+-			break;
+-	}
+-
+-	/*
+-	 * Check, if buswidth is correct. Hardware drivers should set
+-	 * chip correct !
+-	 */
+-	if (busw != (chip->options & NAND_BUSWIDTH_16)) {
+-		printk(KERN_INFO "NAND device: Manufacturer ID:"
+-		       " 0x%02x, Chip ID: 0x%02x (%s %s)\n", *maf_id,
+-		       dev_id, nand_manuf_ids[maf_idx].name, mtd->name);
+-		printk(KERN_WARNING "NAND bus width %d instead %d bit\n",
+-		       (chip->options & NAND_BUSWIDTH_16) ? 16 : 8,
+-		       busw ? 16 : 8);
+-		return ERR_PTR(-EINVAL);
+-	}
+-
+-	/* Calculate the address shift from the page size */
+-	chip->page_shift = ffs(mtd->writesize) - 1;
+-	/* Convert chipsize to number of pages per chip -1. */
+-	chip->pagemask = (chip->chipsize >> chip->page_shift) - 1;
+-
+-	chip->bbt_erase_shift = chip->phys_erase_shift =
+-		ffs(mtd->erasesize) - 1;
+-	chip->chip_shift = ffs(chip->chipsize) - 1;
+-
+-	/* Set the bad block position */
+-	chip->badblockpos = mtd->writesize > 512 ?
+-		NAND_LARGE_BADBLOCK_POS : NAND_SMALL_BADBLOCK_POS;
+-
+-	/* Get chip options, preserve non chip based options */
+-	chip->options &= ~NAND_CHIPOPTIONS_MSK;
+-	chip->options |= type->options & NAND_CHIPOPTIONS_MSK;
+-
+-	/*
+-	 * Set chip as a default. Board drivers can override it, if necessary
+-	 */
+-	chip->options |= NAND_NO_AUTOINCR;
+-
+-	/* Check if chip is a not a samsung device. Do not clear the
+-	 * options for chips which are not having an extended id.
+-	 */
+-	if (*maf_id != NAND_MFR_SAMSUNG && !type->pagesize)
+-		chip->options &= ~NAND_SAMSUNG_LP_OPTIONS;
+-
+-	/* Check for AND chips with 4 page planes */
+-	if (chip->options & NAND_4PAGE_ARRAY)
+-		chip->erase_cmd = multi_erase_cmd;
+-	else
+-		chip->erase_cmd = single_erase_cmd;
+-
+-	/* Do not replace user supplied command function ! */
+-	if (mtd->writesize > 512 && chip->cmdfunc == nand_command)
+-		chip->cmdfunc = nand_command_lp;
+-
+-	printk(KERN_INFO "NAND device: Manufacturer ID:"
+-	       " 0x%02x, Chip ID: 0x%02x (%s %s)\n", *maf_id, dev_id,
+-	       nand_manuf_ids[maf_idx].name, type->name);
+-
+-	return type;
+-}
+-
+-/**
+- * nand_scan_ident - [NAND Interface] Scan for the NAND device
+- * @mtd:	     MTD device structure
+- * @maxchips:	     Number of chips to scan for
+- *
+- * This is the first phase of the normal nand_scan() function. It
+- * reads the flash ID and sets up MTD fields accordingly.
+- *
+- * The mtd->owner field must be set to the module of the caller.
+- */
+-int nand_scan_ident(struct mtd_info *mtd, int maxchips)
+-{
+-	int i, busw, nand_maf_id;
+-	struct nand_chip *chip = mtd->priv;
+-	struct nand_flash_dev *type;
+-
+-	/* Get buswidth to select the correct functions */
+-	busw = chip->options & NAND_BUSWIDTH_16;
+-	/* Set the default functions */
+-	nand_set_defaults(chip, busw);
+-
+-	/* Read the flash type */
+-	type = nand_get_flash_type(mtd, chip, busw, &nand_maf_id);
+-
+-	if (IS_ERR(type)) {
+-		printk(KERN_WARNING "No NAND device found!!!\n");
+-		chip->select_chip(mtd, -1);
+-		return PTR_ERR(type);
+-	}
+-
+-	/* Check for a chip array */
+-	for (i = 1; i < maxchips; i++) {
+-		chip->select_chip(mtd, i);
+-		/* Send the command for reading device ID */
+-		chip->cmdfunc(mtd, NAND_CMD_READID, 0x00, -1);
+-		/* Read manufacturer and device IDs */
+-		if (nand_maf_id != chip->read_byte(mtd) ||
+-		    type->id != chip->read_byte(mtd))
+-			break;
+-	}
+-	if (i > 1)
+-		printk(KERN_INFO "%d NAND chips detected\n", i);
+-
+-	/* Store the number of chips and calc total size for mtd */
+-	chip->numchips = i;
+-	mtd->size = i * chip->chipsize;
+-
+-	return 0;
+-}
+-
+-
+-/**
+- * nand_scan_tail - [NAND Interface] Scan for the NAND device
+- * @mtd:	    MTD device structure
+- * @maxchips:	    Number of chips to scan for
+- *
+- * This is the second phase of the normal nand_scan() function. It
+- * fills out all the uninitialized function pointers with the defaults
+- * and scans for a bad block table if appropriate.
+- */
+-int nand_scan_tail(struct mtd_info *mtd)
+-{
+-	int i;
+-	struct nand_chip *chip = mtd->priv;
+-
+-	if (!(chip->options & NAND_OWN_BUFFERS))
+-		chip->buffers = kmalloc(sizeof(*chip->buffers), GFP_KERNEL);
+-	if (!chip->buffers)
+-		return -ENOMEM;
+-
+-	/* Set the internal oob buffer location, just after the page data */
+-	chip->oob_poi = chip->buffers->databuf + mtd->writesize;
+-
+-	/*
+-	 * If no default placement scheme is given, select an appropriate one
+-	 */
+-	if (!chip->ecc.layout) {
+-		switch (mtd->oobsize) {
+-		case 8:
+-			chip->ecc.layout = &nand_oob_8;
+-			break;
+-		case 16:
+-			chip->ecc.layout = &nand_oob_16;
+-			break;
+-		case 64:
+-			chip->ecc.layout = &nand_oob_64;
+-			break;
+-		default:
+-			printk(KERN_WARNING "No oob scheme defined for "
+-			       "oobsize %d\n", mtd->oobsize);
+-			BUG();
+-		}
+-	}
+-
+-	if (!chip->write_page)
+-		chip->write_page = nand_write_page;
+-
+-	/*
+-	 * check ECC mode, default to software if 3byte/512byte hardware ECC is
+-	 * selected and we have 256 byte pagesize fallback to software ECC
+-	 */
+-	if (!chip->ecc.read_page_raw)
+-		chip->ecc.read_page_raw = nand_read_page_raw;
+-	if (!chip->ecc.write_page_raw)
+-		chip->ecc.write_page_raw = nand_write_page_raw;
+-
+-	switch (chip->ecc.mode) {
+-	case NAND_ECC_HW:
+-		/* Use standard hwecc read page function ? */
+-		if (!chip->ecc.read_page)
+-			chip->ecc.read_page = nand_read_page_hwecc;
+-		if (!chip->ecc.write_page)
+-			chip->ecc.write_page = nand_write_page_hwecc;
+-		if (!chip->ecc.read_oob)
+-			chip->ecc.read_oob = nand_read_oob_std;
+-		if (!chip->ecc.write_oob)
+-			chip->ecc.write_oob = nand_write_oob_std;
+-
+-	case NAND_ECC_HW_SYNDROME:
+-		if ((!chip->ecc.calculate || !chip->ecc.correct ||
+-		     !chip->ecc.hwctl) &&
+-		    (!chip->ecc.read_page ||
+-		     chip->ecc.read_page == nand_read_page_hwecc ||
+-		     !chip->ecc.write_page ||
+-		     chip->ecc.write_page == nand_write_page_hwecc)) {
+-			printk(KERN_WARNING "No ECC functions supplied, "
+-			       "Hardware ECC not possible\n");
+-			BUG();
+-		}
+-		/* Use standard syndrome read/write page function ? */
+-		if (!chip->ecc.read_page)
+-			chip->ecc.read_page = nand_read_page_syndrome;
+-		if (!chip->ecc.write_page)
+-			chip->ecc.write_page = nand_write_page_syndrome;
+-		if (!chip->ecc.read_oob)
+-			chip->ecc.read_oob = nand_read_oob_syndrome;
+-		if (!chip->ecc.write_oob)
+-			chip->ecc.write_oob = nand_write_oob_syndrome;
+-
+-		if (mtd->writesize >= chip->ecc.size)
+-			break;
+-		printk(KERN_WARNING "%d byte HW ECC not possible on "
+-		       "%d byte page size, fallback to SW ECC\n",
+-		       chip->ecc.size, mtd->writesize);
+-		chip->ecc.mode = NAND_ECC_SOFT;
+-
+-	case NAND_ECC_SOFT:
+-		chip->ecc.calculate = nand_calculate_ecc;
+-		chip->ecc.correct = nand_correct_data;
+-		chip->ecc.read_page = nand_read_page_swecc;
+-		chip->ecc.write_page = nand_write_page_swecc;
+-		chip->ecc.read_oob = nand_read_oob_std;
+-		chip->ecc.write_oob = nand_write_oob_std;
+-		chip->ecc.size = 256;
+-		chip->ecc.bytes = 3;
+-		break;
+-
+-	case NAND_ECC_NONE:
+-		printk(KERN_WARNING "NAND_ECC_NONE selected by board driver. "
+-		       "This is not recommended !!\n");
+-		chip->ecc.read_page = nand_read_page_raw;
+-		chip->ecc.write_page = nand_write_page_raw;
+-		chip->ecc.read_oob = nand_read_oob_std;
+-		chip->ecc.write_oob = nand_write_oob_std;
+-		chip->ecc.size = mtd->writesize;
+-		chip->ecc.bytes = 0;
+-		break;
+-
+-	default:
+-		printk(KERN_WARNING "Invalid NAND_ECC_MODE %d\n",
+-		       chip->ecc.mode);
+-		BUG();
+-	}
+-
+-	/*
+-	 * The number of bytes available for a client to place data into
+-	 * the out of band area
+-	 */
+-	chip->ecc.layout->oobavail = 0;
+-	for (i = 0; chip->ecc.layout->oobfree[i].length; i++)
+-		chip->ecc.layout->oobavail +=
+-			chip->ecc.layout->oobfree[i].length;
+-	mtd->oobavail = chip->ecc.layout->oobavail;
+-
+-	/*
+-	 * Set the number of read / write steps for one page depending on ECC
+-	 * mode
+-	 */
+-	chip->ecc.steps = mtd->writesize / chip->ecc.size;
+-	if(chip->ecc.steps * chip->ecc.size != mtd->writesize) {
+-		printk(KERN_WARNING "Invalid ecc parameters\n");
+-		BUG();
+-	}
+-	chip->ecc.total = chip->ecc.steps * chip->ecc.bytes;
+-
+-	/*
+-	 * Allow subpage writes up to ecc.steps. Not possible for MLC
+-	 * FLASH.
+-	 */
+-	if (!(chip->options & NAND_NO_SUBPAGE_WRITE) &&
+-	    !(chip->cellinfo & NAND_CI_CELLTYPE_MSK)) {
+-		switch(chip->ecc.steps) {
+-		case 2:
+-			mtd->subpage_sft = 1;
+-			break;
+-		case 4:
+-		case 8:
+-			mtd->subpage_sft = 2;
+-			break;
+-		}
+-	}
+-	chip->subpagesize = mtd->writesize >> mtd->subpage_sft;
+-
+-	/* Initialize state */
+-	chip->state = FL_READY;
+-
+-	/* De-select the device */
+-	chip->select_chip(mtd, -1);
+-
+-	/* Invalidate the pagebuffer reference */
+-	chip->pagebuf = -1;
+-
+-	/* Fill in remaining MTD driver data */
+-	mtd->type = MTD_NANDFLASH;
+-	mtd->flags = MTD_CAP_NANDFLASH;
+-	mtd->erase = nand_erase;
+-	mtd->read = nand_read;
+-	mtd->write = nand_write;
+-	mtd->read_oob = nand_read_oob;
+-	mtd->write_oob = nand_write_oob;
+-	mtd->sync = nand_sync;
+-	mtd->lock = NULL;
+-	mtd->unlock = NULL;
+-	mtd->suspend = nand_suspend;
+-	mtd->resume = nand_resume;
+-	mtd->block_isbad = nand_block_isbad;
+-	mtd->block_markbad = nand_block_markbad;
+-
+-	/* propagate ecc.layout to mtd_info */
+-	mtd->ecclayout = chip->ecc.layout;
+-
+-	/* Check, if we should skip the bad block table scan */
+-	if (chip->options & NAND_SKIP_BBTSCAN)
+-		return 0;
+-
+-	/* Build bad block table */
+-	return chip->scan_bbt(mtd);
+-}
+-
+-/**
+- * nand_scan - [NAND Interface] Scan for the NAND device
+- * @mtd:	MTD device structure
+- * @maxchips:	Number of chips to scan for
+- *
+- * This fills out all the uninitialized function pointers
+- * with the defaults.
+- * The flash ID is read and the mtd/chip structures are
+- * filled with the appropriate values.
+- * The mtd->owner field must be set to the module of the caller
+- *
+- */
+-int nand_scan(struct mtd_info *mtd, int maxchips)
+-{
+-	int ret;
+-
+-	ret = nand_scan_ident(mtd, maxchips);
+-	if (!ret)
+-		ret = nand_scan_tail(mtd);
+-	return ret;
+-}
+-
+-/**
+- * nand_release - [NAND Interface] Free resources held by the NAND device
+- * @mtd:	MTD device structure
+-*/
+-void nand_release(struct mtd_info *mtd)
+-{
+-	struct nand_chip *chip = mtd->priv;
+-
+-	/* Deregister the device */
+-	del_mtd_device(mtd);
+-
+-	/* Free bad block table memory */
+-	kfree(chip->bbt);
+-	if (!(chip->options & NAND_OWN_BUFFERS))
+-		kfree(chip->buffers);
+-}
+-
+-EXPORT_SYMBOL(nand_scan);
+-EXPORT_SYMBOL(nand_scan_ident);
+-EXPORT_SYMBOL(nand_scan_tail);
+-EXPORT_SYMBOL(nand_release);
+-
+-#endif /* DOXYGEN_SHOULD_SKIP_THIS */
+diff --git a/drivers/nand/nand_bbt.c b/drivers/nand/nand_bbt.c
+deleted file mode 100644
+index 4a6bf39..0000000
+--- a/drivers/nand/nand_bbt.c
++++ /dev/null
+@@ -1,1224 +0,0 @@
+-/*
+- *  drivers/mtd/nand_bbt.c
+- *
+- *  Overview:
+- *   Bad block table support for the NAND driver
+- *
+- *  Copyright (C) 2004 Thomas Gleixner (tglx@linutronix.de)
+- *
+- * $Id: nand_bbt.c,v 1.36 2005/11/07 11:14:30 gleixner Exp $
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License version 2 as
+- * published by the Free Software Foundation.
+- *
+- * Description:
+- *
+- * When nand_scan_bbt is called, then it tries to find the bad block table
+- * depending on the options in the bbt descriptor(s). If a bbt is found
+- * then the contents are read and the memory based bbt is created. If a
+- * mirrored bbt is selected then the mirror is searched too and the
+- * versions are compared. If the mirror has a greater version number
+- * than the mirror bbt is used to build the memory based bbt.
+- * If the tables are not versioned, then we "or" the bad block information.
+- * If one of the bbt's is out of date or does not exist it is (re)created.
+- * If no bbt exists at all then the device is scanned for factory marked
+- * good / bad blocks and the bad block tables are created.
+- *
+- * For manufacturer created bbts like the one found on M-SYS DOC devices
+- * the bbt is searched and read but never created
+- *
+- * The autogenerated bad block table is located in the last good blocks
+- * of the device. The table is mirrored, so it can be updated eventually.
+- * The table is marked in the oob area with an ident pattern and a version
+- * number which indicates which of both tables is more up to date.
+- *
+- * The table uses 2 bits per block
+- * 11b: 	block is good
+- * 00b: 	block is factory marked bad
+- * 01b, 10b: 	block is marked bad due to wear
+- *
+- * The memory bad block table uses the following scheme:
+- * 00b:		block is good
+- * 01b:		block is marked bad due to wear
+- * 10b:		block is reserved (to protect the bbt area)
+- * 11b:		block is factory marked bad
+- *
+- * Multichip devices like DOC store the bad block info per floor.
+- *
+- * Following assumptions are made:
+- * - bbts start at a page boundary, if autolocated on a block boundary
+- * - the space necessary for a bbt in FLASH does not exceed a block boundary
+- *
+- */
+-#include <common.h>
+-#include <linux/types.h>
+-#include <linux/mtd/mtd.h>
+-#include <linux/mtd/nand.h>
+-#include <linux/mtd/nand_ecc.h>
+-#include <linux/bitops.h>
+-#include <clock.h>
+-#include <errno.h>
+-#include <malloc.h>
+-
+-#ifndef DOXYGEN_SHOULD_SKIP_THIS
+-
+-/**
+- * check_pattern - [GENERIC] check if a pattern is in the buffer
+- * @buf:	the buffer to search
+- * @len:	the length of buffer to search
+- * @paglen:	the pagelength
+- * @td:		search pattern descriptor
+- *
+- * Check for a pattern at the given place. Used to search bad block
+- * tables and good / bad block identifiers.
+- * If the SCAN_EMPTY option is set then check, if all bytes except the
+- * pattern area contain 0xff
+- *
+-*/
+-static int check_pattern(uint8_t *buf, int len, int paglen, struct nand_bbt_descr *td)
+-{
+-	int i, end = 0;
+-	uint8_t *p = buf;
+-
+-	end = paglen + td->offs;
+-	if (td->options & NAND_BBT_SCANEMPTY) {
+-		for (i = 0; i < end; i++) {
+-			if (p[i] != 0xff)
+-				return -1;
+-		}
+-	}
+-	p += end;
+-
+-	/* Compare the pattern */
+-	for (i = 0; i < td->len; i++) {
+-		if (p[i] != td->pattern[i])
+-			return -1;
+-	}
+-
+-	if (td->options & NAND_BBT_SCANEMPTY) {
+-		p += td->len;
+-		end += td->len;
+-		for (i = end; i < len; i++) {
+-			if (*p++ != 0xff)
+-				return -1;
+-		}
+-	}
+-	return 0;
+-}
+-
+-/**
+- * check_short_pattern - [GENERIC] check if a pattern is in the buffer
+- * @buf:	the buffer to search
+- * @td:		search pattern descriptor
+- *
+- * Check for a pattern at the given place. Used to search bad block
+- * tables and good / bad block identifiers. Same as check_pattern, but
+- * no optional empty check
+- *
+-*/
+-static int check_short_pattern(uint8_t *buf, struct nand_bbt_descr *td)
+-{
+-	int i;
+-	uint8_t *p = buf;
+-
+-	/* Compare the pattern */
+-	for (i = 0; i < td->len; i++) {
+-		if (p[td->offs + i] != td->pattern[i])
+-			return -1;
+-	}
+-	return 0;
+-}
+-
+-/**
+- * read_bbt - [GENERIC] Read the bad block table starting from page
+- * @mtd:	MTD device structure
+- * @buf:	temporary buffer
+- * @page:	the starting page
+- * @num:	the number of bbt descriptors to read
+- * @bits:	number of bits per block
+- * @offs:	offset in the memory table
+- * @reserved_block_code:	Pattern to identify reserved blocks
+- *
+- * Read the bad block table starting from page.
+- *
+- */
+-static int read_bbt(struct mtd_info *mtd, uint8_t *buf, int page, int num,
+-		    int bits, int offs, int reserved_block_code)
+-{
+-	int res, i, j, act = 0;
+-	struct nand_chip *this = mtd->priv;
+-	size_t retlen, len, totlen;
+-	loff_t from;
+-	uint8_t msk = (uint8_t) ((1 << bits) - 1);
+-
+-	totlen = (num * bits) >> 3;
+-	from = ((loff_t) page) << this->page_shift;
+-
+-	while (totlen) {
+-		len = min(totlen, (size_t) (1 << this->bbt_erase_shift));
+-		res = mtd->read(mtd, from, len, &retlen, buf);
+-		if (res < 0) {
+-			if (retlen != len) {
+-				printk(KERN_INFO "nand_bbt: Error reading bad block table\n");
+-				return res;
+-			}
+-			printk(KERN_WARNING "nand_bbt: ECC error while reading bad block table\n");
+-		}
+-
+-		/* Analyse data */
+-		for (i = 0; i < len; i++) {
+-			uint8_t dat = buf[i];
+-			for (j = 0; j < 8; j += bits, act += 2) {
+-				uint8_t tmp = (dat >> j) & msk;
+-				if (tmp == msk)
+-					continue;
+-				if (reserved_block_code && (tmp == reserved_block_code)) {
+-					printk(KERN_DEBUG "nand_read_bbt: Reserved block at 0x%08x\n",
+-					       ((offs << 2) + (act >> 1)) << this->bbt_erase_shift);
+-					this->bbt[offs + (act >> 3)] |= 0x2 << (act & 0x06);
+-					mtd->ecc_stats.bbtblocks++;
+-					continue;
+-				}
+-				/* Leave it for now, if its matured we can move this
+-				 * message to MTD_DEBUG_LEVEL0 */
+-				printk(KERN_DEBUG "nand_read_bbt: Bad block at 0x%08x\n",
+-				       ((offs << 2) + (act >> 1)) << this->bbt_erase_shift);
+-				/* Factory marked bad or worn out ? */
+-				if (tmp == 0)
+-					this->bbt[offs + (act >> 3)] |= 0x3 << (act & 0x06);
+-				else
+-					this->bbt[offs + (act >> 3)] |= 0x1 << (act & 0x06);
+-				mtd->ecc_stats.badblocks++;
+-			}
+-		}
+-		totlen -= len;
+-		from += len;
+-	}
+-	return 0;
+-}
+-
+-/**
+- * read_abs_bbt - [GENERIC] Read the bad block table starting at a given page
+- * @mtd:	MTD device structure
+- * @buf:	temporary buffer
+- * @td:		descriptor for the bad block table
+- * @chip:	read the table for a specific chip, -1 read all chips.
+- *		Applies only if NAND_BBT_PERCHIP option is set
+- *
+- * Read the bad block table for all chips starting at a given page
+- * We assume that the bbt bits are in consecutive order.
+-*/
+-static int read_abs_bbt(struct mtd_info *mtd, uint8_t *buf, struct nand_bbt_descr *td, int chip)
+-{
+-	struct nand_chip *this = mtd->priv;
+-	int res = 0, i;
+-	int bits;
+-
+-	bits = td->options & NAND_BBT_NRBITS_MSK;
+-	if (td->options & NAND_BBT_PERCHIP) {
+-		int offs = 0;
+-		for (i = 0; i < this->numchips; i++) {
+-			if (chip == -1 || chip == i)
+-				res = read_bbt (mtd, buf, td->pages[i], this->chipsize >> this->bbt_erase_shift, bits, offs, td->reserved_block_code);
+-			if (res)
+-				return res;
+-			offs += this->chipsize >> (this->bbt_erase_shift + 2);
+-		}
+-	} else {
+-		res = read_bbt (mtd, buf, td->pages[0], mtd->size >> this->bbt_erase_shift, bits, 0, td->reserved_block_code);
+-		if (res)
+-			return res;
+-	}
+-	return 0;
+-}
+-
+-/*
+- * Scan read raw data from flash
+- */
+-static int scan_read_raw(struct mtd_info *mtd, uint8_t *buf, loff_t offs,
+-			 size_t len)
+-{
+-	struct mtd_oob_ops ops;
+-
+-	ops.mode = MTD_OOB_RAW;
+-	ops.ooboffs = 0;
+-	ops.ooblen = mtd->oobsize;
+-	ops.oobbuf = buf;
+-	ops.datbuf = buf;
+-	ops.len = len;
+-
+-	return mtd->read_oob(mtd, offs, &ops);
+-}
+-
+-/*
+- * Scan write data with oob to flash
+- */
+-static int scan_write_bbt(struct mtd_info *mtd, loff_t offs, size_t len,
+-			  uint8_t *buf, uint8_t *oob)
+-{
+-	struct mtd_oob_ops ops;
+-
+-	ops.mode = MTD_OOB_PLACE;
+-	ops.ooboffs = 0;
+-	ops.ooblen = mtd->oobsize;
+-	ops.datbuf = buf;
+-	ops.oobbuf = oob;
+-	ops.len = len;
+-
+-	return mtd->write_oob(mtd, offs, &ops);
+-}
+-
+-/**
+- * read_abs_bbts - [GENERIC] Read the bad block table(s) for all chips starting at a given page
+- * @mtd:	MTD device structure
+- * @buf:	temporary buffer
+- * @td:		descriptor for the bad block table
+- * @md:		descriptor for the bad block table mirror
+- *
+- * Read the bad block table(s) for all chips starting at a given page
+- * We assume that the bbt bits are in consecutive order.
+- *
+-*/
+-static int read_abs_bbts(struct mtd_info *mtd, uint8_t *buf,
+-			 struct nand_bbt_descr *td, struct nand_bbt_descr *md)
+-{
+-	struct nand_chip *this = mtd->priv;
+-
+-	/* Read the primary version, if available */
+-	if (td->options & NAND_BBT_VERSION) {
+-		scan_read_raw(mtd, buf, td->pages[0] << this->page_shift,
+-			      mtd->writesize);
+-		td->version[0] = buf[mtd->writesize + td->veroffs];
+-		printk(KERN_DEBUG "Bad block table at page %d, version 0x%02X\n",
+-		       td->pages[0], td->version[0]);
+-	}
+-
+-	/* Read the mirror version, if available */
+-	if (md && (md->options & NAND_BBT_VERSION)) {
+-		scan_read_raw(mtd, buf, md->pages[0] << this->page_shift,
+-			      mtd->writesize);
+-		md->version[0] = buf[mtd->writesize + md->veroffs];
+-		printk(KERN_DEBUG "Bad block table at page %d, version 0x%02X\n",
+-		       md->pages[0], md->version[0]);
+-	}
+-	return 1;
+-}
+-
+-/*
+- * Scan a given block full
+- */
+-static int scan_block_full(struct mtd_info *mtd, struct nand_bbt_descr *bd,
+-			   loff_t offs, uint8_t *buf, size_t readlen,
+-			   int scanlen, int len)
+-{
+-	int ret, j;
+-
+-	ret = scan_read_raw(mtd, buf, offs, readlen);
+-	if (ret)
+-		return ret;
+-
+-	for (j = 0; j < len; j++, buf += scanlen) {
+-		if (check_pattern(buf, scanlen, mtd->writesize, bd))
+-			return 1;
+-	}
+-	return 0;
+-}
+-
+-/*
+- * Scan a given block partially
+- */
+-static int scan_block_fast(struct mtd_info *mtd, struct nand_bbt_descr *bd,
+-			   loff_t offs, uint8_t *buf, int len)
+-{
+-	struct mtd_oob_ops ops;
+-	int j, ret;
+-
+-	ops.ooblen = mtd->oobsize;
+-	ops.oobbuf = buf;
+-	ops.ooboffs = 0;
+-	ops.datbuf = NULL;
+-	ops.mode = MTD_OOB_PLACE;
+-
+-	for (j = 0; j < len; j++) {
+-		/*
+-		 * Read the full oob until read_oob is fixed to
+-		 * handle single byte reads for 16 bit
+-		 * buswidth
+-		 */
+-		ret = mtd->read_oob(mtd, offs, &ops);
+-		if (ret)
+-			return ret;
+-
+-		if (check_short_pattern(buf, bd))
+-			return 1;
+-
+-		offs += mtd->writesize;
+-	}
+-	return 0;
+-}
+-
+-/**
+- * create_bbt - [GENERIC] Create a bad block table by scanning the device
+- * @mtd:	MTD device structure
+- * @buf:	temporary buffer
+- * @bd:		descriptor for the good/bad block search pattern
+- * @chip:	create the table for a specific chip, -1 read all chips.
+- *		Applies only if NAND_BBT_PERCHIP option is set
+- *
+- * Create a bad block table by scanning the device
+- * for the given good/bad block identify pattern
+- */
+-static int create_bbt(struct mtd_info *mtd, uint8_t *buf,
+-	struct nand_bbt_descr *bd, int chip)
+-{
+-	struct nand_chip *this = mtd->priv;
+-	int i, numblocks, len, scanlen;
+-	int startblock;
+-	loff_t from;
+-	size_t readlen;
+-
+-	printk(KERN_INFO "Scanning device for bad blocks\n");
+-
+-	if (bd->options & NAND_BBT_SCANALLPAGES)
+-		len = 1 << (this->bbt_erase_shift - this->page_shift);
+-	else {
+-		if (bd->options & NAND_BBT_SCAN2NDPAGE)
+-			len = 2;
+-		else
+-			len = 1;
+-	}
+-
+-	if (!(bd->options & NAND_BBT_SCANEMPTY)) {
+-		/* We need only read few bytes from the OOB area */
+-		scanlen = 0;
+-		readlen = bd->len;
+-	} else {
+-		/* Full page content should be read */
+-		scanlen = mtd->writesize + mtd->oobsize;
+-		readlen = len * mtd->writesize;
+-	}
+-
+-	if (chip == -1) {
+-		/* Note that numblocks is 2 * (real numblocks) here, see i+=2
+-		 * below as it makes shifting and masking less painful */
+-		numblocks = mtd->size >> (this->bbt_erase_shift - 1);
+-		startblock = 0;
+-		from = 0;
+-	} else {
+-		if (chip >= this->numchips) {
+-			printk(KERN_WARNING "create_bbt(): chipnr (%d) > available chips (%d)\n",
+-			       chip + 1, this->numchips);
+-			return -EINVAL;
+-		}
+-		numblocks = this->chipsize >> (this->bbt_erase_shift - 1);
+-		startblock = chip * numblocks;
+-		numblocks += startblock;
+-		from = startblock << (this->bbt_erase_shift - 1);
+-	}
+-
+-	for (i = startblock; i < numblocks;) {
+-		int ret;
+-
+-		if (bd->options & NAND_BBT_SCANALLPAGES)
+-			ret = scan_block_full(mtd, bd, from, buf, readlen,
+-					      scanlen, len);
+-		else
+-			ret = scan_block_fast(mtd, bd, from, buf, len);
+-
+-		if (ret < 0)
+-			return ret;
+-
+-		if (ret) {
+-			this->bbt[i >> 3] |= 0x03 << (i & 0x6);
+-			printk(KERN_WARNING "Bad eraseblock %d at 0x%08x\n",
+-			       i >> 1, (unsigned int)from);
+-			mtd->ecc_stats.badblocks++;
+-		}
+-
+-		i += 2;
+-		from += (1 << this->bbt_erase_shift);
+-	}
+-	return 0;
+-}
+-
+-/**
+- * search_bbt - [GENERIC] scan the device for a specific bad block table
+- * @mtd:	MTD device structure
+- * @buf:	temporary buffer
+- * @td:		descriptor for the bad block table
+- *
+- * Read the bad block table by searching for a given ident pattern.
+- * Search is preformed either from the beginning up or from the end of
+- * the device downwards. The search starts always at the start of a
+- * block.
+- * If the option NAND_BBT_PERCHIP is given, each chip is searched
+- * for a bbt, which contains the bad block information of this chip.
+- * This is necessary to provide support for certain DOC devices.
+- *
+- * The bbt ident pattern resides in the oob area of the first page
+- * in a block.
+- */
+-static int search_bbt(struct mtd_info *mtd, uint8_t *buf, struct nand_bbt_descr *td)
+-{
+-	struct nand_chip *this = mtd->priv;
+-	int i, chips;
+-	int bits, startblock, block, dir;
+-	int scanlen = mtd->writesize + mtd->oobsize;
+-	int bbtblocks;
+-	int blocktopage = this->bbt_erase_shift - this->page_shift;
+-
+-	/* Search direction top -> down ? */
+-	if (td->options & NAND_BBT_LASTBLOCK) {
+-		startblock = (mtd->size >> this->bbt_erase_shift) - 1;
+-		dir = -1;
+-	} else {
+-		startblock = 0;
+-		dir = 1;
+-	}
+-
+-	/* Do we have a bbt per chip ? */
+-	if (td->options & NAND_BBT_PERCHIP) {
+-		chips = this->numchips;
+-		bbtblocks = this->chipsize >> this->bbt_erase_shift;
+-		startblock &= bbtblocks - 1;
+-	} else {
+-		chips = 1;
+-		bbtblocks = mtd->size >> this->bbt_erase_shift;
+-	}
+-
+-	/* Number of bits for each erase block in the bbt */
+-	bits = td->options & NAND_BBT_NRBITS_MSK;
+-
+-	for (i = 0; i < chips; i++) {
+-		/* Reset version information */
+-		td->version[i] = 0;
+-		td->pages[i] = -1;
+-		/* Scan the maximum number of blocks */
+-		for (block = 0; block < td->maxblocks; block++) {
+-
+-			int actblock = startblock + dir * block;
+-			loff_t offs = actblock << this->bbt_erase_shift;
+-
+-			/* Read first page */
+-			scan_read_raw(mtd, buf, offs, mtd->writesize);
+-			if (!check_pattern(buf, scanlen, mtd->writesize, td)) {
+-				td->pages[i] = actblock << blocktopage;
+-				if (td->options & NAND_BBT_VERSION) {
+-					td->version[i] = buf[mtd->writesize + td->veroffs];
+-				}
+-				break;
+-			}
+-		}
+-		startblock += this->chipsize >> this->bbt_erase_shift;
+-	}
+-	/* Check, if we found a bbt for each requested chip */
+-	for (i = 0; i < chips; i++) {
+-		if (td->pages[i] == -1)
+-			printk(KERN_WARNING "Bad block table not found for chip %d\n", i);
+-		else
+-			printk(KERN_DEBUG "Bad block table found at page %d, version 0x%02X\n", td->pages[i],
+-			       td->version[i]);
+-	}
+-	return 0;
+-}
+-
+-/**
+- * search_read_bbts - [GENERIC] scan the device for bad block table(s)
+- * @mtd:	MTD device structure
+- * @buf:	temporary buffer
+- * @td:		descriptor for the bad block table
+- * @md:		descriptor for the bad block table mirror
+- *
+- * Search and read the bad block table(s)
+-*/
+-static int search_read_bbts(struct mtd_info *mtd, uint8_t * buf, struct nand_bbt_descr *td, struct nand_bbt_descr *md)
+-{
+-	/* Search the primary table */
+-	search_bbt(mtd, buf, td);
+-
+-	/* Search the mirror table */
+-	if (md)
+-		search_bbt(mtd, buf, md);
+-
+-	/* Force result check */
+-	return 1;
+-}
+-
+-/**
+- * write_bbt - [GENERIC] (Re)write the bad block table
+- *
+- * @mtd:	MTD device structure
+- * @buf:	temporary buffer
+- * @td:		descriptor for the bad block table
+- * @md:		descriptor for the bad block table mirror
+- * @chipsel:	selector for a specific chip, -1 for all
+- *
+- * (Re)write the bad block table
+- *
+-*/
+-static int write_bbt(struct mtd_info *mtd, uint8_t *buf,
+-		     struct nand_bbt_descr *td, struct nand_bbt_descr *md,
+-		     int chipsel)
+-{
+-	struct nand_chip *this = mtd->priv;
+-	struct erase_info einfo;
+-	int i, j, res, chip = 0;
+-	int bits, startblock, dir, page, offs, numblocks, sft, sftmsk;
+-	int nrchips, bbtoffs, pageoffs, ooboffs;
+-	uint8_t msk[4];
+-	uint8_t rcode = td->reserved_block_code;
+-	size_t retlen, len = 0;
+-	loff_t to;
+-	struct mtd_oob_ops ops;
+-
+-	ops.ooblen = mtd->oobsize;
+-	ops.ooboffs = 0;
+-	ops.datbuf = NULL;
+-	ops.mode = MTD_OOB_PLACE;
+-
+-	if (!rcode)
+-		rcode = 0xff;
+-	/* Write bad block table per chip rather than per device ? */
+-	if (td->options & NAND_BBT_PERCHIP) {
+-		numblocks = (int)(this->chipsize >> this->bbt_erase_shift);
+-		/* Full device write or specific chip ? */
+-		if (chipsel == -1) {
+-			nrchips = this->numchips;
+-		} else {
+-			nrchips = chipsel + 1;
+-			chip = chipsel;
+-		}
+-	} else {
+-		numblocks = (int)(mtd->size >> this->bbt_erase_shift);
+-		nrchips = 1;
+-	}
+-
+-	/* Loop through the chips */
+-	for (; chip < nrchips; chip++) {
+-
+-		/* There was already a version of the table, reuse the page
+-		 * This applies for absolute placement too, as we have the
+-		 * page nr. in td->pages.
+-		 */
+-		if (td->pages[chip] != -1) {
+-			page = td->pages[chip];
+-			goto write;
+-		}
+-
+-		/* Automatic placement of the bad block table */
+-		/* Search direction top -> down ? */
+-		if (td->options & NAND_BBT_LASTBLOCK) {
+-			startblock = numblocks * (chip + 1) - 1;
+-			dir = -1;
+-		} else {
+-			startblock = chip * numblocks;
+-			dir = 1;
+-		}
+-
+-		for (i = 0; i < td->maxblocks; i++) {
+-			int block = startblock + dir * i;
+-			/* Check, if the block is bad */
+-			switch ((this->bbt[block >> 2] >>
+-				 (2 * (block & 0x03))) & 0x03) {
+-			case 0x01:
+-			case 0x03:
+-				continue;
+-			}
+-			page = block <<
+-				(this->bbt_erase_shift - this->page_shift);
+-			/* Check, if the block is used by the mirror table */
+-			if (!md || md->pages[chip] != page)
+-				goto write;
+-		}
+-		printk(KERN_ERR "No space left to write bad block table\n");
+-		return -ENOSPC;
+-	write:
+-
+-		/* Set up shift count and masks for the flash table */
+-		bits = td->options & NAND_BBT_NRBITS_MSK;
+-		msk[2] = ~rcode;
+-		switch (bits) {
+-		case 1: sft = 3; sftmsk = 0x07; msk[0] = 0x00; msk[1] = 0x01;
+-			msk[3] = 0x01;
+-			break;
+-		case 2: sft = 2; sftmsk = 0x06; msk[0] = 0x00; msk[1] = 0x01;
+-			msk[3] = 0x03;
+-			break;
+-		case 4: sft = 1; sftmsk = 0x04; msk[0] = 0x00; msk[1] = 0x0C;
+-			msk[3] = 0x0f;
+-			break;
+-		case 8: sft = 0; sftmsk = 0x00; msk[0] = 0x00; msk[1] = 0x0F;
+-			msk[3] = 0xff;
+-			break;
+-		default: return -EINVAL;
+-		}
+-
+-		bbtoffs = chip * (numblocks >> 2);
+-
+-		to = ((loff_t) page) << this->page_shift;
+-
+-		/* Must we save the block contents ? */
+-		if (td->options & NAND_BBT_SAVECONTENT) {
+-			/* Make it block aligned */
+-			to &= ~((loff_t) ((1 << this->bbt_erase_shift) - 1));
+-			len = 1 << this->bbt_erase_shift;
+-			res = mtd->read(mtd, to, len, &retlen, buf);
+-			if (res < 0) {
+-				if (retlen != len) {
+-					printk(KERN_INFO "nand_bbt: Error "
+-					       "reading block for writing "
+-					       "the bad block table\n");
+-					return res;
+-				}
+-				printk(KERN_WARNING "nand_bbt: ECC error "
+-				       "while reading block for writing "
+-				       "bad block table\n");
+-			}
+-			/* Read oob data */
+-			ops.ooblen = (len >> this->page_shift) * mtd->oobsize;
+-			ops.oobbuf = &buf[len];
+-			res = mtd->read_oob(mtd, to + mtd->writesize, &ops);
+-			if (res < 0 || ops.oobretlen != ops.ooblen)
+-				goto outerr;
+-
+-			/* Calc the byte offset in the buffer */
+-			pageoffs = page - (int)(to >> this->page_shift);
+-			offs = pageoffs << this->page_shift;
+-			/* Preset the bbt area with 0xff */
+-			memset(&buf[offs], 0xff, (size_t) (numblocks >> sft));
+-			ooboffs = len + (pageoffs * mtd->oobsize);
+-
+-		} else {
+-			/* Calc length */
+-			len = (size_t) (numblocks >> sft);
+-			/* Make it page aligned ! */
+-			len = (len + (mtd->writesize - 1)) &
+-				~(mtd->writesize - 1);
+-			/* Preset the buffer with 0xff */
+-			memset(buf, 0xff, len +
+-			       (len >> this->page_shift)* mtd->oobsize);
+-			offs = 0;
+-			ooboffs = len;
+-			/* Pattern is located in oob area of first page */
+-			memcpy(&buf[ooboffs + td->offs], td->pattern, td->len);
+-		}
+-
+-		if (td->options & NAND_BBT_VERSION)
+-			buf[ooboffs + td->veroffs] = td->version[chip];
+-
+-		/* walk through the memory table */
+-		for (i = 0; i < numblocks;) {
+-			uint8_t dat;
+-			dat = this->bbt[bbtoffs + (i >> 2)];
+-			for (j = 0; j < 4; j++, i++) {
+-				int sftcnt = (i << (3 - sft)) & sftmsk;
+-				/* Do not store the reserved bbt blocks ! */
+-				buf[offs + (i >> sft)] &=
+-					~(msk[dat & 0x03] << sftcnt);
+-				dat >>= 2;
+-			}
+-		}
+-
+-		memset(&einfo, 0, sizeof(einfo));
+-		einfo.mtd = mtd;
+-		einfo.addr = (unsigned long)to;
+-		einfo.len = 1 << this->bbt_erase_shift;
+-		res = nand_erase_nand(mtd, &einfo, 1);
+-		if (res < 0)
+-			goto outerr;
+-
+-		res = scan_write_bbt(mtd, to, len, buf, &buf[len]);
+-		if (res < 0)
+-			goto outerr;
+-
+-		printk(KERN_DEBUG "Bad block table written to 0x%08x, version "
+-		       "0x%02X\n", (unsigned int)to, td->version[chip]);
+-
+-		/* Mark it as used */
+-		td->pages[chip] = page;
+-	}
+-	return 0;
+-
+- outerr:
+-	printk(KERN_WARNING
+-	       "nand_bbt: Error while writing bad block table %d\n", res);
+-	return res;
+-}
+-
+-/**
+- * nand_memory_bbt - [GENERIC] create a memory based bad block table
+- * @mtd:	MTD device structure
+- * @bd:		descriptor for the good/bad block search pattern
+- *
+- * The function creates a memory based bbt by scanning the device
+- * for manufacturer / software marked good / bad blocks
+-*/
+-static inline int nand_memory_bbt(struct mtd_info *mtd, struct nand_bbt_descr *bd)
+-{
+-	struct nand_chip *this = mtd->priv;
+-
+-	bd->options &= ~NAND_BBT_SCANEMPTY;
+-	return create_bbt(mtd, this->buffers->databuf, bd, -1);
+-}
+-
+-/**
+- * check_create - [GENERIC] create and write bbt(s) if necessary
+- * @mtd:	MTD device structure
+- * @buf:	temporary buffer
+- * @bd:		descriptor for the good/bad block search pattern
+- *
+- * The function checks the results of the previous call to read_bbt
+- * and creates / updates the bbt(s) if necessary
+- * Creation is necessary if no bbt was found for the chip/device
+- * Update is necessary if one of the tables is missing or the
+- * version nr. of one table is less than the other
+-*/
+-static int check_create(struct mtd_info *mtd, uint8_t *buf, struct nand_bbt_descr *bd)
+-{
+-	int i, chips, writeops, chipsel, res;
+-	struct nand_chip *this = mtd->priv;
+-	struct nand_bbt_descr *td = this->bbt_td;
+-	struct nand_bbt_descr *md = this->bbt_md;
+-	struct nand_bbt_descr *rd, *rd2;
+-
+-	/* Do we have a bbt per chip ? */
+-	if (td->options & NAND_BBT_PERCHIP)
+-		chips = this->numchips;
+-	else
+-		chips = 1;
+-
+-	for (i = 0; i < chips; i++) {
+-		writeops = 0;
+-		rd = NULL;
+-		rd2 = NULL;
+-		/* Per chip or per device ? */
+-		chipsel = (td->options & NAND_BBT_PERCHIP) ? i : -1;
+-		/* Mirrored table avilable ? */
+-		if (md) {
+-			if (td->pages[i] == -1 && md->pages[i] == -1) {
+-				writeops = 0x03;
+-				goto create;
+-			}
+-
+-			if (td->pages[i] == -1) {
+-				rd = md;
+-				td->version[i] = md->version[i];
+-				writeops = 1;
+-				goto writecheck;
+-			}
+-
+-			if (md->pages[i] == -1) {
+-				rd = td;
+-				md->version[i] = td->version[i];
+-				writeops = 2;
+-				goto writecheck;
+-			}
+-
+-			if (td->version[i] == md->version[i]) {
+-				rd = td;
+-				if (!(td->options & NAND_BBT_VERSION))
+-					rd2 = md;
+-				goto writecheck;
+-			}
+-
+-			if (((int8_t) (td->version[i] - md->version[i])) > 0) {
+-				rd = td;
+-				md->version[i] = td->version[i];
+-				writeops = 2;
+-			} else {
+-				rd = md;
+-				td->version[i] = md->version[i];
+-				writeops = 1;
+-			}
+-
+-			goto writecheck;
+-
+-		} else {
+-			if (td->pages[i] == -1) {
+-				writeops = 0x01;
+-				goto create;
+-			}
+-			rd = td;
+-			goto writecheck;
+-		}
+-	create:
+-		/* Create the bad block table by scanning the device ? */
+-		if (!(td->options & NAND_BBT_CREATE))
+-			continue;
+-
+-		/* Create the table in memory by scanning the chip(s) */
+-		create_bbt(mtd, buf, bd, chipsel);
+-
+-		td->version[i] = 1;
+-		if (md)
+-			md->version[i] = 1;
+-	writecheck:
+-		/* read back first ? */
+-		if (rd)
+-			read_abs_bbt(mtd, buf, rd, chipsel);
+-		/* If they weren't versioned, read both. */
+-		if (rd2)
+-			read_abs_bbt(mtd, buf, rd2, chipsel);
+-
+-		/* Write the bad block table to the device ? */
+-		if ((writeops & 0x01) && (td->options & NAND_BBT_WRITE)) {
+-			res = write_bbt(mtd, buf, td, md, chipsel);
+-			if (res < 0)
+-				return res;
+-		}
+-
+-		/* Write the mirror bad block table to the device ? */
+-		if ((writeops & 0x02) && md && (md->options & NAND_BBT_WRITE)) {
+-			res = write_bbt(mtd, buf, md, td, chipsel);
+-			if (res < 0)
+-				return res;
+-		}
+-	}
+-	return 0;
+-}
+-
+-/**
+- * mark_bbt_regions - [GENERIC] mark the bad block table regions
+- * @mtd:	MTD device structure
+- * @td:		bad block table descriptor
+- *
+- * The bad block table regions are marked as "bad" to prevent
+- * accidental erasures / writes. The regions are identified by
+- * the mark 0x02.
+-*/
+-static void mark_bbt_region(struct mtd_info *mtd, struct nand_bbt_descr *td)
+-{
+-	struct nand_chip *this = mtd->priv;
+-	int i, j, chips, block, nrblocks, update;
+-	uint8_t oldval, newval;
+-
+-	/* Do we have a bbt per chip ? */
+-	if (td->options & NAND_BBT_PERCHIP) {
+-		chips = this->numchips;
+-		nrblocks = (int)(this->chipsize >> this->bbt_erase_shift);
+-	} else {
+-		chips = 1;
+-		nrblocks = (int)(mtd->size >> this->bbt_erase_shift);
+-	}
+-
+-	for (i = 0; i < chips; i++) {
+-		if ((td->options & NAND_BBT_ABSPAGE) ||
+-		    !(td->options & NAND_BBT_WRITE)) {
+-			if (td->pages[i] == -1)
+-				continue;
+-			block = td->pages[i] >> (this->bbt_erase_shift - this->page_shift);
+-			block <<= 1;
+-			oldval = this->bbt[(block >> 3)];
+-			newval = oldval | (0x2 << (block & 0x06));
+-			this->bbt[(block >> 3)] = newval;
+-			if ((oldval != newval) && td->reserved_block_code)
+-				nand_update_bbt(mtd, block << (this->bbt_erase_shift - 1));
+-			continue;
+-		}
+-		update = 0;
+-		if (td->options & NAND_BBT_LASTBLOCK)
+-			block = ((i + 1) * nrblocks) - td->maxblocks;
+-		else
+-			block = i * nrblocks;
+-		block <<= 1;
+-		for (j = 0; j < td->maxblocks; j++) {
+-			oldval = this->bbt[(block >> 3)];
+-			newval = oldval | (0x2 << (block & 0x06));
+-			this->bbt[(block >> 3)] = newval;
+-			if (oldval != newval)
+-				update = 1;
+-			block += 2;
+-		}
+-		/* If we want reserved blocks to be recorded to flash, and some
+-		   new ones have been marked, then we need to update the stored
+-		   bbts.  This should only happen once. */
+-		if (update && td->reserved_block_code)
+-			nand_update_bbt(mtd, (block - 2) << (this->bbt_erase_shift - 1));
+-	}
+-}
+-
+-/**
+- * nand_scan_bbt - [NAND Interface] scan, find, read and maybe create bad block table(s)
+- * @mtd:	MTD device structure
+- * @bd:		descriptor for the good/bad block search pattern
+- *
+- * The function checks, if a bad block table(s) is/are already
+- * available. If not it scans the device for manufacturer
+- * marked good / bad blocks and writes the bad block table(s) to
+- * the selected place.
+- *
+- * The bad block table memory is allocated here. It must be freed
+- * by calling the nand_free_bbt function.
+- *
+-*/
+-int nand_scan_bbt(struct mtd_info *mtd, struct nand_bbt_descr *bd)
+-{
+-	struct nand_chip *this = mtd->priv;
+-	int len, res = 0;
+-	uint8_t *buf;
+-	struct nand_bbt_descr *td = this->bbt_td;
+-	struct nand_bbt_descr *md = this->bbt_md;
+-
+-	len = mtd->size >> (this->bbt_erase_shift + 2);
+-	/* Allocate memory (2bit per block) and clear the memory bad block table */
+-	this->bbt = kzalloc(len, GFP_KERNEL);
+-	if (!this->bbt) {
+-		printk(KERN_ERR "nand_scan_bbt: Out of memory\n");
+-		return -ENOMEM;
+-	}
+-
+-	/* If no primary table decriptor is given, scan the device
+-	 * to build a memory based bad block table
+-	 */
+-	if (!td) {
+-		if ((res = nand_memory_bbt(mtd, bd))) {
+-			printk(KERN_ERR "nand_bbt: Can't scan flash and build the RAM-based BBT\n");
+-			kfree(this->bbt);
+-			this->bbt = NULL;
+-		}
+-		return res;
+-	}
+-
+-	/* Allocate a temporary buffer for one eraseblock incl. oob */
+-	len = (1 << this->bbt_erase_shift);
+-	len += (len >> this->page_shift) * mtd->oobsize;
+-	buf = vmalloc(len);
+-	if (!buf) {
+-		printk(KERN_ERR "nand_bbt: Out of memory\n");
+-		kfree(this->bbt);
+-		this->bbt = NULL;
+-		return -ENOMEM;
+-	}
+-
+-	/* Is the bbt at a given page ? */
+-	if (td->options & NAND_BBT_ABSPAGE) {
+-		res = read_abs_bbts(mtd, buf, td, md);
+-	} else {
+-		/* Search the bad block table using a pattern in oob */
+-		res = search_read_bbts(mtd, buf, td, md);
+-	}
+-
+-	if (res)
+-		res = check_create(mtd, buf, bd);
+-
+-	/* Prevent the bbt regions from erasing / writing */
+-	mark_bbt_region(mtd, td);
+-	if (md)
+-		mark_bbt_region(mtd, md);
+-
+-	vfree(buf);
+-	return res;
+-}
+-
+-/**
+- * nand_update_bbt - [NAND Interface] update bad block table(s)
+- * @mtd:	MTD device structure
+- * @offs:	the offset of the newly marked block
+- *
+- * The function updates the bad block table(s)
+-*/
+-int nand_update_bbt(struct mtd_info *mtd, loff_t offs)
+-{
+-	struct nand_chip *this = mtd->priv;
+-	int len, res = 0, writeops = 0;
+-	int chip, chipsel;
+-	uint8_t *buf;
+-	struct nand_bbt_descr *td = this->bbt_td;
+-	struct nand_bbt_descr *md = this->bbt_md;
+-
+-	if (!this->bbt || !td)
+-		return -EINVAL;
+-
+-	len = mtd->size >> (this->bbt_erase_shift + 2);
+-	/* Allocate a temporary buffer for one eraseblock incl. oob */
+-	len = (1 << this->bbt_erase_shift);
+-	len += (len >> this->page_shift) * mtd->oobsize;
+-	buf = kmalloc(len, GFP_KERNEL);
+-	if (!buf) {
+-		printk(KERN_ERR "nand_update_bbt: Out of memory\n");
+-		return -ENOMEM;
+-	}
+-
+-	writeops = md != NULL ? 0x03 : 0x01;
+-
+-	/* Do we have a bbt per chip ? */
+-	if (td->options & NAND_BBT_PERCHIP) {
+-		chip = (int)(offs >> this->chip_shift);
+-		chipsel = chip;
+-	} else {
+-		chip = 0;
+-		chipsel = -1;
+-	}
+-
+-	td->version[chip]++;
+-	if (md)
+-		md->version[chip]++;
+-
+-	/* Write the bad block table to the device ? */
+-	if ((writeops & 0x01) && (td->options & NAND_BBT_WRITE)) {
+-		res = write_bbt(mtd, buf, td, md, chipsel);
+-		if (res < 0)
+-			goto out;
+-	}
+-	/* Write the mirror bad block table to the device ? */
+-	if ((writeops & 0x02) && md && (md->options & NAND_BBT_WRITE)) {
+-		res = write_bbt(mtd, buf, md, td, chipsel);
+-	}
+-
+- out:
+-	kfree(buf);
+-	return res;
+-}
+-
+-/* Define some generic bad / good block scan pattern which are used
+- * while scanning a device for factory marked good / bad blocks. */
+-static uint8_t scan_ff_pattern[] = { 0xff, 0xff };
+-
+-static struct nand_bbt_descr smallpage_memorybased = {
+-	.options = NAND_BBT_SCAN2NDPAGE,
+-	.offs = 5,
+-	.len = 1,
+-	.pattern = scan_ff_pattern
+-};
+-
+-static struct nand_bbt_descr largepage_memorybased = {
+-	.options = 0,
+-	.offs = 0,
+-	.len = 2,
+-	.pattern = scan_ff_pattern
+-};
+-
+-static struct nand_bbt_descr smallpage_flashbased = {
+-	.options = NAND_BBT_SCAN2NDPAGE,
+-	.offs = 5,
+-	.len = 1,
+-	.pattern = scan_ff_pattern
+-};
+-
+-static struct nand_bbt_descr largepage_flashbased = {
+-	.options = NAND_BBT_SCAN2NDPAGE,
+-	.offs = 0,
+-	.len = 2,
+-	.pattern = scan_ff_pattern
+-};
+-
+-static uint8_t scan_agand_pattern[] = { 0x1C, 0x71, 0xC7, 0x1C, 0x71, 0xC7 };
+-
+-static struct nand_bbt_descr agand_flashbased = {
+-	.options = NAND_BBT_SCANEMPTY | NAND_BBT_SCANALLPAGES,
+-	.offs = 0x20,
+-	.len = 6,
+-	.pattern = scan_agand_pattern
+-};
+-
+-/* Generic flash bbt decriptors
+-*/
+-static uint8_t bbt_pattern[] = {'B', 'b', 't', '0' };
+-static uint8_t mirror_pattern[] = {'1', 't', 'b', 'B' };
+-
+-static struct nand_bbt_descr bbt_main_descr = {
+-	.options = NAND_BBT_LASTBLOCK | NAND_BBT_CREATE | NAND_BBT_WRITE
+-		| NAND_BBT_2BIT | NAND_BBT_VERSION | NAND_BBT_PERCHIP,
+-	.offs =	8,
+-	.len = 4,
+-	.veroffs = 12,
+-	.maxblocks = 4,
+-	.pattern = bbt_pattern
+-};
+-
+-static struct nand_bbt_descr bbt_mirror_descr = {
+-	.options = NAND_BBT_LASTBLOCK | NAND_BBT_CREATE | NAND_BBT_WRITE
+-		| NAND_BBT_2BIT | NAND_BBT_VERSION | NAND_BBT_PERCHIP,
+-	.offs =	8,
+-	.len = 4,
+-	.veroffs = 12,
+-	.maxblocks = 4,
+-	.pattern = mirror_pattern
+-};
+-
+-/**
+- * nand_default_bbt - [NAND Interface] Select a default bad block table for the device
+- * @mtd:	MTD device structure
+- *
+- * This function selects the default bad block table
+- * support for the device and calls the nand_scan_bbt function
+- *
+-*/
+-int nand_default_bbt(struct mtd_info *mtd)
+-{
+-	struct nand_chip *this = mtd->priv;
+-
+-	/* Default for AG-AND. We must use a flash based
+-	 * bad block table as the devices have factory marked
+-	 * _good_ blocks. Erasing those blocks leads to loss
+-	 * of the good / bad information, so we _must_ store
+-	 * this information in a good / bad table during
+-	 * startup
+-	 */
+-	if (this->options & NAND_IS_AND) {
+-		/* Use the default pattern descriptors */
+-		if (!this->bbt_td) {
+-			this->bbt_td = &bbt_main_descr;
+-			this->bbt_md = &bbt_mirror_descr;
+-		}
+-		this->options |= NAND_USE_FLASH_BBT;
+-		return nand_scan_bbt(mtd, &agand_flashbased);
+-	}
+-
+-	/* Is a flash based bad block table requested ? */
+-	if (this->options & NAND_USE_FLASH_BBT) {
+-		/* Use the default pattern descriptors */
+-		if (!this->bbt_td) {
+-			this->bbt_td = &bbt_main_descr;
+-			this->bbt_md = &bbt_mirror_descr;
+-		}
+-		if (!this->badblock_pattern) {
+-			this->badblock_pattern = (mtd->writesize > 512) ? &largepage_flashbased : &smallpage_flashbased;
+-		}
+-	} else {
+-		this->bbt_td = NULL;
+-		this->bbt_md = NULL;
+-		if (!this->badblock_pattern) {
+-			this->badblock_pattern = (mtd->writesize > 512) ?
+-			    &largepage_memorybased : &smallpage_memorybased;
+-		}
+-	}
+-	return nand_scan_bbt(mtd, this->badblock_pattern);
+-}
+-
+-/**
+- * nand_isbad_bbt - [NAND Interface] Check if a block is bad
+- * @mtd:	MTD device structure
+- * @offs:	offset in the device
+- * @allowbbt:	allow access to bad block table region
+- *
+-*/
+-int nand_isbad_bbt(struct mtd_info *mtd, loff_t offs, int allowbbt)
+-{
+-	struct nand_chip *this = mtd->priv;
+-	int block;
+-	uint8_t res;
+-
+-	/* Get block number * 2 */
+-	block = (int)(offs >> (this->bbt_erase_shift - 1));
+-	res = (this->bbt[block >> 3] >> (block & 0x06)) & 0x03;
+-
+-	MTD_DEBUG(MTD_DEBUG_LEVEL2, "nand_isbad_bbt(): bbt info for offs 0x%08x: (block %d) 0x%02x\n",
+-	      (unsigned int)offs, block >> 1, res);
+-
+-	switch ((int)res) {
+-	case 0x00:
+-		return 0;
+-	case 0x01:
+-		return 1;
+-	case 0x02:
+-		return allowbbt ? 0 : 1;
+-	}
+-	return 1;
+-}
+-
+-EXPORT_SYMBOL(nand_scan_bbt);
+-EXPORT_SYMBOL(nand_default_bbt);
+-
+-#endif /* DOXYGEN_SHOULD_SKIP_THIS */
+diff --git a/drivers/nand/nand_ecc.c b/drivers/nand/nand_ecc.c
+deleted file mode 100644
+index 266d573..0000000
+--- a/drivers/nand/nand_ecc.c
++++ /dev/null
+@@ -1,198 +0,0 @@
+-/*
+- * This file contains an ECC algorithm from Toshiba that detects and
+- * corrects 1 bit errors in a 256 byte block of data.
+- *
+- * drivers/mtd/nand/nand_ecc.c
+- *
+- * Copyright (C) 2000-2004 Steven J. Hill (sjhill@realitydiluted.com)
+- *                         Toshiba America Electronics Components, Inc.
+- *
+- * Copyright (C) 2006 Thomas Gleixner <tglx@linutronix.de>
+- *
+- * $Id: nand_ecc.c,v 1.15 2005/11/07 11:14:30 gleixner Exp $
+- *
+- * This file is free software; you can redistribute it and/or modify it
+- * under the terms of the GNU General Public License as published by the
+- * Free Software Foundation; either version 2 or (at your option) any
+- * later version.
+- *
+- * This file is distributed in the hope that it will be useful, but WITHOUT
+- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+- * for more details.
+- *
+- * You should have received a copy of the GNU General Public License along
+- * with this file; if not, write to the Free Software Foundation, Inc.,
+- * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
+- *
+- * As a special exception, if other files instantiate templates or use
+- * macros or inline functions from these files, or you compile these
+- * files and link them with other works to produce a work based on these
+- * files, these files do not by themselves cause the resulting work to be
+- * covered by the GNU General Public License. However the source code for
+- * these files must still be made available in accordance with section (3)
+- * of the GNU General Public License.
+- *
+- * This exception does not invalidate any other reasons why a work based on
+- * this file might be covered by the GNU General Public License.
+- */
+-
+-#include <linux/types.h>
+-#include <common.h>
+-#include <errno.h>
+-#include <linux/mtd/nand_ecc.h>
+-
+-/*
+- * Pre-calculated 256-way 1 byte column parity
+- */
+-static const u_char nand_ecc_precalc_table[] = {
+-	0x00, 0x55, 0x56, 0x03, 0x59, 0x0c, 0x0f, 0x5a, 0x5a, 0x0f, 0x0c, 0x59, 0x03, 0x56, 0x55, 0x00,
+-	0x65, 0x30, 0x33, 0x66, 0x3c, 0x69, 0x6a, 0x3f, 0x3f, 0x6a, 0x69, 0x3c, 0x66, 0x33, 0x30, 0x65,
+-	0x66, 0x33, 0x30, 0x65, 0x3f, 0x6a, 0x69, 0x3c, 0x3c, 0x69, 0x6a, 0x3f, 0x65, 0x30, 0x33, 0x66,
+-	0x03, 0x56, 0x55, 0x00, 0x5a, 0x0f, 0x0c, 0x59, 0x59, 0x0c, 0x0f, 0x5a, 0x00, 0x55, 0x56, 0x03,
+-	0x69, 0x3c, 0x3f, 0x6a, 0x30, 0x65, 0x66, 0x33, 0x33, 0x66, 0x65, 0x30, 0x6a, 0x3f, 0x3c, 0x69,
+-	0x0c, 0x59, 0x5a, 0x0f, 0x55, 0x00, 0x03, 0x56, 0x56, 0x03, 0x00, 0x55, 0x0f, 0x5a, 0x59, 0x0c,
+-	0x0f, 0x5a, 0x59, 0x0c, 0x56, 0x03, 0x00, 0x55, 0x55, 0x00, 0x03, 0x56, 0x0c, 0x59, 0x5a, 0x0f,
+-	0x6a, 0x3f, 0x3c, 0x69, 0x33, 0x66, 0x65, 0x30, 0x30, 0x65, 0x66, 0x33, 0x69, 0x3c, 0x3f, 0x6a,
+-	0x6a, 0x3f, 0x3c, 0x69, 0x33, 0x66, 0x65, 0x30, 0x30, 0x65, 0x66, 0x33, 0x69, 0x3c, 0x3f, 0x6a,
+-	0x0f, 0x5a, 0x59, 0x0c, 0x56, 0x03, 0x00, 0x55, 0x55, 0x00, 0x03, 0x56, 0x0c, 0x59, 0x5a, 0x0f,
+-	0x0c, 0x59, 0x5a, 0x0f, 0x55, 0x00, 0x03, 0x56, 0x56, 0x03, 0x00, 0x55, 0x0f, 0x5a, 0x59, 0x0c,
+-	0x69, 0x3c, 0x3f, 0x6a, 0x30, 0x65, 0x66, 0x33, 0x33, 0x66, 0x65, 0x30, 0x6a, 0x3f, 0x3c, 0x69,
+-	0x03, 0x56, 0x55, 0x00, 0x5a, 0x0f, 0x0c, 0x59, 0x59, 0x0c, 0x0f, 0x5a, 0x00, 0x55, 0x56, 0x03,
+-	0x66, 0x33, 0x30, 0x65, 0x3f, 0x6a, 0x69, 0x3c, 0x3c, 0x69, 0x6a, 0x3f, 0x65, 0x30, 0x33, 0x66,
+-	0x65, 0x30, 0x33, 0x66, 0x3c, 0x69, 0x6a, 0x3f, 0x3f, 0x6a, 0x69, 0x3c, 0x66, 0x33, 0x30, 0x65,
+-	0x00, 0x55, 0x56, 0x03, 0x59, 0x0c, 0x0f, 0x5a, 0x5a, 0x0f, 0x0c, 0x59, 0x03, 0x56, 0x55, 0x00
+-};
+-
+-/**
+- * nand_calculate_ecc - [NAND Interface] Calculate 3-byte ECC for 256-byte block
+- * @mtd:	MTD block structure
+- * @dat:	raw data
+- * @ecc_code:	buffer for ECC
+- */
+-int nand_calculate_ecc(struct mtd_info *mtd, const u_char *dat,
+-		       u_char *ecc_code)
+-{
+-	uint8_t idx, reg1, reg2, reg3, tmp1, tmp2;
+-	int i;
+-
+-	/* Initialize variables */
+-	reg1 = reg2 = reg3 = 0;
+-
+-	/* Build up column parity */
+-	for(i = 0; i < 256; i++) {
+-		/* Get CP0 - CP5 from table */
+-		idx = nand_ecc_precalc_table[*dat++];
+-		reg1 ^= (idx & 0x3f);
+-
+-		/* All bit XOR = 1 ? */
+-		if (idx & 0x40) {
+-			reg3 ^= (uint8_t) i;
+-			reg2 ^= ~((uint8_t) i);
+-		}
+-	}
+-
+-	/* Create non-inverted ECC code from line parity */
+-	tmp1  = (reg3 & 0x80) >> 0; /* B7 -> B7 */
+-	tmp1 |= (reg2 & 0x80) >> 1; /* B7 -> B6 */
+-	tmp1 |= (reg3 & 0x40) >> 1; /* B6 -> B5 */
+-	tmp1 |= (reg2 & 0x40) >> 2; /* B6 -> B4 */
+-	tmp1 |= (reg3 & 0x20) >> 2; /* B5 -> B3 */
+-	tmp1 |= (reg2 & 0x20) >> 3; /* B5 -> B2 */
+-	tmp1 |= (reg3 & 0x10) >> 3; /* B4 -> B1 */
+-	tmp1 |= (reg2 & 0x10) >> 4; /* B4 -> B0 */
+-
+-	tmp2  = (reg3 & 0x08) << 4; /* B3 -> B7 */
+-	tmp2 |= (reg2 & 0x08) << 3; /* B3 -> B6 */
+-	tmp2 |= (reg3 & 0x04) << 3; /* B2 -> B5 */
+-	tmp2 |= (reg2 & 0x04) << 2; /* B2 -> B4 */
+-	tmp2 |= (reg3 & 0x02) << 2; /* B1 -> B3 */
+-	tmp2 |= (reg2 & 0x02) << 1; /* B1 -> B2 */
+-	tmp2 |= (reg3 & 0x01) << 1; /* B0 -> B1 */
+-	tmp2 |= (reg2 & 0x01) << 0; /* B7 -> B0 */
+-
+-	/* Calculate final ECC code */
+-#ifdef CONFIG_MTD_NAND_ECC_SMC
+-	ecc_code[0] = ~tmp2;
+-	ecc_code[1] = ~tmp1;
+-#else
+-	ecc_code[0] = ~tmp1;
+-	ecc_code[1] = ~tmp2;
+-#endif
+-	ecc_code[2] = ((~reg1) << 2) | 0x03;
+-
+-	return 0;
+-}
+-EXPORT_SYMBOL(nand_calculate_ecc);
+-
+-static inline int countbits(uint32_t byte)
+-{
+-	int res = 0;
+-
+-	for (;byte; byte >>= 1)
+-		res += byte & 0x01;
+-	return res;
+-}
+-
+-/**
+- * nand_correct_data - [NAND Interface] Detect and correct bit error(s)
+- * @mtd:	MTD block structure
+- * @dat:	raw data read from the chip
+- * @read_ecc:	ECC from the chip
+- * @calc_ecc:	the ECC calculated from raw data
+- *
+- * Detect and correct a 1 bit error for 256 byte block
+- */
+-int nand_correct_data(struct mtd_info *mtd, u_char *dat,
+-		      u_char *read_ecc, u_char *calc_ecc)
+-{
+-	uint8_t s0, s1, s2;
+-
+-#ifdef CONFIG_MTD_NAND_ECC_SMC
+-	s0 = calc_ecc[0] ^ read_ecc[0];
+-	s1 = calc_ecc[1] ^ read_ecc[1];
+-	s2 = calc_ecc[2] ^ read_ecc[2];
+-#else
+-	s1 = calc_ecc[0] ^ read_ecc[0];
+-	s0 = calc_ecc[1] ^ read_ecc[1];
+-	s2 = calc_ecc[2] ^ read_ecc[2];
+-#endif
+-	if ((s0 | s1 | s2) == 0)
+-		return 0;
+-
+-	/* Check for a single bit error */
+-	if( ((s0 ^ (s0 >> 1)) & 0x55) == 0x55 &&
+-	    ((s1 ^ (s1 >> 1)) & 0x55) == 0x55 &&
+-	    ((s2 ^ (s2 >> 1)) & 0x54) == 0x54) {
+-
+-		uint32_t byteoffs, bitnum;
+-
+-		byteoffs = (s1 << 0) & 0x80;
+-		byteoffs |= (s1 << 1) & 0x40;
+-		byteoffs |= (s1 << 2) & 0x20;
+-		byteoffs |= (s1 << 3) & 0x10;
+-
+-		byteoffs |= (s0 >> 4) & 0x08;
+-		byteoffs |= (s0 >> 3) & 0x04;
+-		byteoffs |= (s0 >> 2) & 0x02;
+-		byteoffs |= (s0 >> 1) & 0x01;
+-
+-		bitnum = (s2 >> 5) & 0x04;
+-		bitnum |= (s2 >> 4) & 0x02;
+-		bitnum |= (s2 >> 3) & 0x01;
+-
+-		dat[byteoffs] ^= (1 << bitnum);
+-
+-		return 1;
+-	}
+-
+-	if(countbits(s0 | ((uint32_t)s1 << 8) | ((uint32_t)s2 <<16)) == 1)
+-		return 1;
+-
+-	return -EBADMSG;
+-}
+-EXPORT_SYMBOL(nand_correct_data);
+-
+-MODULE_LICENSE("GPL");
+-MODULE_AUTHOR("Steven J. Hill <sjhill@realitydiluted.com>");
+-MODULE_DESCRIPTION("Generic NAND ECC support");
+diff --git a/drivers/nand/nand_ids.c b/drivers/nand/nand_ids.c
+deleted file mode 100644
+index f95975c..0000000
+--- a/drivers/nand/nand_ids.c
++++ /dev/null
+@@ -1,153 +0,0 @@
+-/*
+- *  drivers/mtd/nandids.c
+- *
+- *  Copyright (C) 2002 Thomas Gleixner (tglx@linutronix.de)
+- *
+- * $Id: nand_ids.c,v 1.16 2005/11/07 11:14:31 gleixner Exp $
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License version 2 as
+- * published by the Free Software Foundation.
+- *
+- */
+-#include <common.h>
+-#include <linux/mtd/nand.h>
+-/*
+-*	Chip ID list
+-*
+-*	Name. ID code, pagesize, chipsize in MegaByte, eraseblock size,
+-*	options
+-*
+-*	Pagesize; 0, 256, 512
+-*	0	get this information from the extended chip ID
+-+	256	256 Byte page size
+-*	512	512 Byte page size
+-*/
+-struct nand_flash_dev nand_flash_ids[] = {
+-
+-#ifdef CONFIG_MTD_NAND_MUSEUM_IDS
+-	{"NAND 1MiB 5V 8-bit",		0x6e, 256, 1, 0x1000, 0},
+-	{"NAND 2MiB 5V 8-bit",		0x64, 256, 2, 0x1000, 0},
+-	{"NAND 4MiB 5V 8-bit",		0x6b, 512, 4, 0x2000, 0},
+-	{"NAND 1MiB 3,3V 8-bit",	0xe8, 256, 1, 0x1000, 0},
+-	{"NAND 1MiB 3,3V 8-bit",	0xec, 256, 1, 0x1000, 0},
+-	{"NAND 2MiB 3,3V 8-bit",	0xea, 256, 2, 0x1000, 0},
+-	{"NAND 4MiB 3,3V 8-bit",	0xd5, 512, 4, 0x2000, 0},
+-	{"NAND 4MiB 3,3V 8-bit",	0xe3, 512, 4, 0x2000, 0},
+-	{"NAND 4MiB 3,3V 8-bit",	0xe5, 512, 4, 0x2000, 0},
+-	{"NAND 8MiB 3,3V 8-bit",	0xd6, 512, 8, 0x2000, 0},
+-
+-	{"NAND 8MiB 1,8V 8-bit",	0x39, 512, 8, 0x2000, 0},
+-	{"NAND 8MiB 3,3V 8-bit",	0xe6, 512, 8, 0x2000, 0},
+-	{"NAND 8MiB 1,8V 16-bit",	0x49, 512, 8, 0x2000, NAND_BUSWIDTH_16},
+-	{"NAND 8MiB 3,3V 16-bit",	0x59, 512, 8, 0x2000, NAND_BUSWIDTH_16},
+-#endif
+-
+-	{"NAND 16MiB 1,8V 8-bit",	0x33, 512, 16, 0x4000, 0},
+-	{"NAND 16MiB 3,3V 8-bit",	0x73, 512, 16, 0x4000, 0},
+-	{"NAND 16MiB 1,8V 16-bit",	0x43, 512, 16, 0x4000, NAND_BUSWIDTH_16},
+-	{"NAND 16MiB 3,3V 16-bit",	0x53, 512, 16, 0x4000, NAND_BUSWIDTH_16},
+-
+-	{"NAND 32MiB 1,8V 8-bit",	0x35, 512, 32, 0x4000, 0},
+-	{"NAND 32MiB 3,3V 8-bit",	0x75, 512, 32, 0x4000, 0},
+-	{"NAND 32MiB 1,8V 16-bit",	0x45, 512, 32, 0x4000, NAND_BUSWIDTH_16},
+-	{"NAND 32MiB 3,3V 16-bit",	0x55, 512, 32, 0x4000, NAND_BUSWIDTH_16},
+-
+-	{"NAND 64MiB 1,8V 8-bit",	0x36, 512, 64, 0x4000, 0},
+-	{"NAND 64MiB 3,3V 8-bit",	0x76, 512, 64, 0x4000, 0},
+-	{"NAND 64MiB 1,8V 16-bit",	0x46, 512, 64, 0x4000, NAND_BUSWIDTH_16},
+-	{"NAND 64MiB 3,3V 16-bit",	0x56, 512, 64, 0x4000, NAND_BUSWIDTH_16},
+-
+-	{"NAND 128MiB 1,8V 8-bit",	0x78, 512, 128, 0x4000, 0},
+-	{"NAND 128MiB 1,8V 8-bit",	0x39, 512, 128, 0x4000, 0},
+-	{"NAND 128MiB 3,3V 8-bit",	0x79, 512, 128, 0x4000, 0},
+-	{"NAND 128MiB 1,8V 16-bit",	0x72, 512, 128, 0x4000, NAND_BUSWIDTH_16},
+-	{"NAND 128MiB 1,8V 16-bit",	0x49, 512, 128, 0x4000, NAND_BUSWIDTH_16},
+-	{"NAND 128MiB 3,3V 16-bit",	0x74, 512, 128, 0x4000, NAND_BUSWIDTH_16},
+-	{"NAND 128MiB 3,3V 16-bit",	0x59, 512, 128, 0x4000, NAND_BUSWIDTH_16},
+-
+-	{"NAND 256MiB 3,3V 8-bit",	0x71, 512, 256, 0x4000, 0},
+-
+-	/*
+-	 * These are the new chips with large page size. The pagesize and the
+-	 * erasesize is determined from the extended id bytes
+-	 */
+-#define LP_OPTIONS (NAND_SAMSUNG_LP_OPTIONS | NAND_NO_READRDY | NAND_NO_AUTOINCR)
+-#define LP_OPTIONS16 (LP_OPTIONS | NAND_BUSWIDTH_16)
+-
+-	/*512 Megabit */
+-	{"NAND 64MiB 1,8V 8-bit",	0xA2, 0,  64, 0, LP_OPTIONS},
+-	{"NAND 64MiB 3,3V 8-bit",	0xF2, 0,  64, 0, LP_OPTIONS},
+-	{"NAND 64MiB 1,8V 16-bit",	0xB2, 0,  64, 0, LP_OPTIONS16},
+-	{"NAND 64MiB 3,3V 16-bit",	0xC2, 0,  64, 0, LP_OPTIONS16},
+-
+-	/* 1 Gigabit */
+-	{"NAND 128MiB 1,8V 8-bit",	0xA1, 0, 128, 0, LP_OPTIONS},
+-	{"NAND 128MiB 3,3V 8-bit",	0xF1, 0, 128, 0, LP_OPTIONS},
+-	{"NAND 128MiB 1,8V 16-bit",	0xB1, 0, 128, 0, LP_OPTIONS16},
+-	{"NAND 128MiB 3,3V 16-bit",	0xC1, 0, 128, 0, LP_OPTIONS16},
+-
+-	/* 2 Gigabit */
+-	{"NAND 256MiB 1,8V 8-bit",	0xAA, 0, 256, 0, LP_OPTIONS},
+-	{"NAND 256MiB 3,3V 8-bit",	0xDA, 0, 256, 0, LP_OPTIONS},
+-	{"NAND 256MiB 1,8V 16-bit",	0xBA, 0, 256, 0, LP_OPTIONS16},
+-	{"NAND 256MiB 3,3V 16-bit",	0xCA, 0, 256, 0, LP_OPTIONS16},
+-
+-	/* 4 Gigabit */
+-	{"NAND 512MiB 1,8V 8-bit",	0xAC, 0, 512, 0, LP_OPTIONS},
+-	{"NAND 512MiB 3,3V 8-bit",	0xDC, 0, 512, 0, LP_OPTIONS},
+-	{"NAND 512MiB 1,8V 16-bit",	0xBC, 0, 512, 0, LP_OPTIONS16},
+-	{"NAND 512MiB 3,3V 16-bit",	0xCC, 0, 512, 0, LP_OPTIONS16},
+-
+-	/* 8 Gigabit */
+-	{"NAND 1GiB 1,8V 8-bit",	0xA3, 0, 1024, 0, LP_OPTIONS},
+-	{"NAND 1GiB 3,3V 8-bit",	0xD3, 0, 1024, 0, LP_OPTIONS},
+-	{"NAND 1GiB 1,8V 16-bit",	0xB3, 0, 1024, 0, LP_OPTIONS16},
+-	{"NAND 1GiB 3,3V 16-bit",	0xC3, 0, 1024, 0, LP_OPTIONS16},
+-
+-	/* 16 Gigabit */
+-	{"NAND 2GiB 1,8V 8-bit",	0xA5, 0, 2048, 0, LP_OPTIONS},
+-	{"NAND 2GiB 3,3V 8-bit",	0xD5, 0, 2048, 0, LP_OPTIONS},
+-	{"NAND 2GiB 1,8V 16-bit",	0xB5, 0, 2048, 0, LP_OPTIONS16},
+-	{"NAND 2GiB 3,3V 16-bit",	0xC5, 0, 2048, 0, LP_OPTIONS16},
+-
+-	/*
+-	 * Renesas AND 1 Gigabit. Those chips do not support extended id and
+-	 * have a strange page/block layout !  The chosen minimum erasesize is
+-	 * 4 * 2 * 2048 = 16384 Byte, as those chips have an array of 4 page
+-	 * planes 1 block = 2 pages, but due to plane arrangement the blocks
+-	 * 0-3 consists of page 0 + 4,1 + 5, 2 + 6, 3 + 7 Anyway JFFS2 would
+-	 * increase the eraseblock size so we chose a combined one which can be
+-	 * erased in one go There are more speed improvements for reads and
+-	 * writes possible, but not implemented now
+-	 */
+-	{"AND 128MiB 3,3V 8-bit",	0x01, 2048, 128, 0x4000,
+-	 NAND_IS_AND | NAND_NO_AUTOINCR |NAND_NO_READRDY | NAND_4PAGE_ARRAY |
+-	 BBT_AUTO_REFRESH
+-	},
+-
+-	{NULL,}
+-};
+-
+-/*
+-*	Manufacturer ID list
+-*/
+-struct nand_manufacturers nand_manuf_ids[] = {
+-	{NAND_MFR_TOSHIBA, "Toshiba"},
+-	{NAND_MFR_SAMSUNG, "Samsung"},
+-	{NAND_MFR_FUJITSU, "Fujitsu"},
+-	{NAND_MFR_NATIONAL, "National"},
+-	{NAND_MFR_RENESAS, "Renesas"},
+-	{NAND_MFR_STMICRO, "ST Micro"},
+-	{NAND_MFR_HYNIX, "Hynix"},
+-	{NAND_MFR_MICRON, "Micron"},
+-	{NAND_MFR_AMD, "AMD"},
+-	{0x0, "Unknown"}
+-};
+-
+-EXPORT_SYMBOL(nand_manuf_ids);
+-EXPORT_SYMBOL(nand_flash_ids);
+-
+-MODULE_LICENSE("GPL");
+-MODULE_AUTHOR("Thomas Gleixner <tglx@linutronix.de>");
+-MODULE_DESCRIPTION("Nand device & manufacturer IDs");
+diff --git a/drivers/nand/nand_imx.c b/drivers/nand/nand_imx.c
+deleted file mode 100644
+index 74cdf10..0000000
+--- a/drivers/nand/nand_imx.c
++++ /dev/null
+@@ -1,1210 +0,0 @@
+-/*
+- * Copyright 2004-2007 Freescale Semiconductor, Inc. All Rights Reserved.
+- * Copyright 2008 Sascha Hauer, Pengutronix <s.hauer@pengutronix.de>
+- */
+-
+-/*
+- * The code contained herein is licensed under the GNU General Public
+- * License. You may obtain a copy of the GNU General Public License
+- * Version 2 or later at the following locations:
+- *
+- * http://www.opensource.org/licenses/gpl-license.html
+- * http://www.gnu.org/copyleft/gpl.html
+- */
+-
+-/*
+- * MX21 Hardware contains a bug which causes HW ECC to fail for two
+- * consecutive read pages containing 1bit Errors (See MX21 Chip Erata,
+- * Erratum 16). Use software ECC for this chip.
+- */
+-
+-#include <common.h>
+-#include <driver.h>
+-#include <malloc.h>
+-#include <init.h>
+-#include <linux/mtd/mtd.h>
+-#include <linux/mtd/nand.h>
+-#include <mach/generic.h>
+-#include <mach/imx-nand.h>
+-#include <mach/imx-regs.h>
+-#include <asm/io.h>
+-#include <errno.h>
+-
+-#define DVR_VER "2.0"
+-
+-#define nfc_is_v21()		(cpu_is_mx25() || cpu_is_mx35())
+-#define nfc_is_v1()		(cpu_is_mx31() || cpu_is_mx27() || cpu_is_mx21())
+-
+-/*
+- * Addresses for NFC registers
+- */
+-#define NFC_BUF_SIZE		0xE00
+-#define NFC_BUF_ADDR		0xE04
+-#define NFC_FLASH_ADDR		0xE06
+-#define NFC_FLASH_CMD		0xE08
+-#define NFC_CONFIG		0xE0A
+-#define NFC_ECC_STATUS_RESULT	0xE0C
+-#define NFC_RSLTMAIN_AREA	0xE0E
+-#define NFC_RSLTSPARE_AREA	0xE10
+-#define NFC_SPAS		0xe10
+-#define NFC_WRPROT		0xE12
+-#define NFC_V1_UNLOCKSTART_BLKADDR	0xe14
+-#define NFC_V1_UNLOCKEND_BLKADDR	0xe16
+-#define NFC_V21_UNLOCKSTART_BLKADDR	0xe20
+-#define NFC_V21_UNLOCKEND_BLKADDR	0xe22
+-#define NFC_NF_WRPRST		0xE18
+-#define NFC_CONFIG1		0xE1A
+-#define NFC_CONFIG2		0xE1C
+-
+-/*
+- * Addresses for NFC RAM BUFFER Main area 0
+- */
+-#define MAIN_AREA0		0x000
+-#define MAIN_AREA1		0x200
+-#define MAIN_AREA2		0x400
+-#define MAIN_AREA3		0x600
+-
+-/*
+- * Addresses for NFC SPARE BUFFER Spare area 0
+- */
+-#define SPARE_AREA0		0x800
+-#define SPARE_AREA1		0x810
+-#define SPARE_AREA2		0x820
+-#define SPARE_AREA3		0x830
+-
+-/*
+- * Set INT to 0, FCMD to 1, rest to 0 in NFC_CONFIG2 Register for Command
+- * operation
+- */
+-#define NFC_CMD            0x1
+-
+-/*
+- * Set INT to 0, FADD to 1, rest to 0 in NFC_CONFIG2 Register for Address
+- * operation
+- */
+-#define NFC_ADDR           0x2
+-
+-/*
+- * Set INT to 0, FDI to 1, rest to 0 in NFC_CONFIG2 Register for Input
+- * operation
+- */
+-#define NFC_INPUT          0x4
+-
+-/*
+- * Set INT to 0, FDO to 001, rest to 0 in NFC_CONFIG2 Register for Data Output
+- * operation
+- */
+-#define NFC_OUTPUT         0x8
+-
+-/*
+- * Set INT to 0, FD0 to 010, rest to 0 in NFC_CONFIG2 Register for Read ID
+- * operation
+- */
+-#define NFC_ID             0x10
+-
+-/*
+- * Set INT to 0, FDO to 100, rest to 0 in NFC_CONFIG2 Register for Read Status
+- * operation
+- */
+-#define NFC_STATUS         0x20
+-
+-/*
+- * Set INT to 1, rest to 0 in NFC_CONFIG2 Register for Read Status
+- * operation
+- */
+-#define NFC_INT            0x8000
+-
+-#define NFC_ECC_MODE        (1 << 0)
+-#define NFC_SP_EN           (1 << 2)
+-#define NFC_ECC_EN          (1 << 3)
+-#define NFC_INT_MSK         (1 << 4)
+-#define NFC_BIG             (1 << 5)
+-#define NFC_RST             (1 << 6)
+-#define NFC_CE              (1 << 7)
+-#define NFC_ONE_CYCLE       (1 << 8)
+-
+-#define NFC_SPAS_16			 8
+-#define NFC_SPAS_64			 32
+-#define NFC_SPAS_128			 64
+-#define NFC_SPAS_218			 109
+-
+-#ifdef CONFIG_NAND_IMX_BOOT
+-#define __nand_boot_init __bare_init
+-#else
+-#define __nand_boot_init
+-#endif
+-
+-struct imx_nand_host {
+-	struct mtd_info		mtd;		
+-	struct nand_chip	nand;
+-	struct mtd_partition	*parts;
+-	struct device_d		*dev;
+-
+-	void			*spare0;
+-	void			*main_area0;
+-	void			*main_area1;
+-
+-	void __iomem		*base;
+-	void __iomem		*regs;
+-	int			status_request;
+-	struct clk		*clk;
+-
+-	int			pagesize_2k;
+-	uint8_t			*data_buf;
+-	unsigned int		buf_start;
+-	int			spare_len;
+-
+-};
+-
+-/*
+- * OOB placement block for use with hardware ecc generation
+- */
+-static struct nand_ecclayout nandv1_hw_eccoob_smallpage = {
+-	.eccbytes = 5,
+-	.eccpos = {6, 7, 8, 9, 10},
+-	.oobfree = {{0, 5}, {12, 4}}
+-};
+-
+-static struct nand_ecclayout nandv1_hw_eccoob_largepage = {
+-	.eccbytes = 20,
+-	.eccpos = {6, 7, 8, 9, 10, 22, 23, 24, 25, 26,
+-		   38, 39, 40, 41, 42, 54, 55, 56, 57, 58},
+-	.oobfree = {{2, 4}, {11, 10}, {27, 10}, {43, 10}, {59, 5}, }
+-};
+-
+-/* OOB description for 512 byte pages with 16 byte OOB */
+-static struct nand_ecclayout nandv2_hw_eccoob_smallpage = {
+-	.eccbytes = 1 * 9,
+-	.eccpos = {
+-		7,  8,  9, 10, 11, 12, 13, 14, 15
+-	},
+-	.oobfree = {
+-		{.offset = 0, .length = 5}
+-	}
+-};
+-
+-/* OOB description for 2048 byte pages with 64 byte OOB */
+-static struct nand_ecclayout nandv2_hw_eccoob_largepage = {
+-	.eccbytes = 4 * 9,
+-	.eccpos = {
+-		 7,  8,  9, 10, 11, 12, 13, 14, 15,
+-		23, 24, 25, 26, 27, 28, 29, 30, 31,
+-		39, 40, 41, 42, 43, 44, 45, 46, 47,
+-		55, 56, 57, 58, 59, 60, 61, 62, 63
+-	},
+-	.oobfree = {
+-		{.offset = 2, .length = 4},
+-		{.offset = 16, .length = 7},
+-		{.offset = 32, .length = 7},
+-		{.offset = 48, .length = 7}
+-	}
+-};
+-
+-static void memcpy32(void *trg, const void *src, int size)
+-{
+-	int i;
+-	unsigned int *t = trg;
+-	unsigned const int *s = src;
+-
+-#ifdef CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS
+-	if (!((unsigned long)trg & 0x3) && !((unsigned long)src & 0x3))
+-		memcpy(trg, src, size);
+-	else
+-#endif
+-	for (i = 0; i < (size >> 2); i++)
+-		*t++ = *s++;
+-}
+-
+-/*
+- * This function polls the NANDFC to wait for the basic operation to complete by
+- * checking the INT bit of config2 register.
+- *
+- * @param       max_retries     number of retry attempts (separated by 1 us)
+- * @param       param           parameter for debug
+- */
+-static void __nand_boot_init wait_op_done(struct imx_nand_host *host)
+-{
+-	u32 tmp;
+-	int i;
+-
+-	/* This is a timeout of roughly 15ms on my system. We
+-	 * need about 2us, but be generous. Don't use udelay
+-	 * here as we might be here from nand booting.
+-	 */
+-	for (i = 0; i < 100000; i++) {
+-		if (readw(host->regs + NFC_CONFIG2) & NFC_INT) {
+-			tmp = readw(host->regs + NFC_CONFIG2);
+-			tmp  &= ~NFC_INT;
+-			writew(tmp, host->regs + NFC_CONFIG2);
+-			return;
+-		}
+-	}
+-}
+-
+-/*
+- * This function issues the specified command to the NAND device and
+- * waits for completion.
+- *
+- * @param       cmd     command for NAND Flash
+- */
+-static void __nand_boot_init send_cmd(struct imx_nand_host *host, u16 cmd)
+-{
+-	MTD_DEBUG(MTD_DEBUG_LEVEL3, "send_cmd(host, 0x%x)\n", cmd);
+-
+-	writew(cmd, host->regs + NFC_FLASH_CMD);
+-	writew(NFC_CMD, host->regs + NFC_CONFIG2);
+-
+-	if (cpu_is_mx21() && (cmd == NAND_CMD_RESET)) {
+-		/* Reset completion is indicated by NFC_CONFIG2 */
+-		/* being set to 0 */
+-		int i;
+-		for (i = 0; i < 100000; i++) {
+-			if (readw(host->regs + NFC_CONFIG2) == 0) {
+-				break;
+-			}
+-		}
+-	} else
+-		/* Wait for operation to complete */
+-		wait_op_done(host);
+-}
+-
+-/*
+- * This function sends an address (or partial address) to the
+- * NAND device.  The address is used to select the source/destination for
+- * a NAND command.
+- *
+- * @param       addr    address to be written to NFC.
+- * @param       islast  True if this is the last address cycle for command
+- */
+-static void __nand_boot_init noinline send_addr(struct imx_nand_host *host, u16 addr)
+-{
+-	MTD_DEBUG(MTD_DEBUG_LEVEL3, "send_addr(host, 0x%x %d)\n", addr, islast);
+-
+-	writew(addr, host->regs + NFC_FLASH_ADDR);
+-	writew(NFC_ADDR, host->regs + NFC_CONFIG2);
+-
+-	/* Wait for operation to complete */
+-	wait_op_done(host);
+-}
+-
+-/*
+- * This function requests the NANDFC to initate the transfer
+- * of data currently in the NANDFC RAM buffer to the NAND device.
+- *
+- * @param	buf_id	      Specify Internal RAM Buffer number (0-3)
+- * @param       spare_only    set true if only the spare area is transferred
+- */
+-static void __nand_boot_init send_page(struct imx_nand_host *host,
+-		unsigned int ops)
+-{
+-	int bufs, i;
+-
+-	if (nfc_is_v1() && host->pagesize_2k)
+-		bufs = 4;
+-	else
+-		bufs = 1;
+-
+-	for (i = 0; i < bufs; i++) {
+-		/* NANDFC buffer 0 is used for page read/write */
+-		writew(i, host->regs + NFC_BUF_ADDR);
+-
+-		writew(ops, host->regs + NFC_CONFIG2);
+-
+-		/* Wait for operation to complete */
+-		wait_op_done(host);
+-	}
+-}
+-
+-/*
+- * This function requests the NANDFC to perform a read of the
+- * NAND device ID.
+- */
+-static void send_read_id(struct imx_nand_host *host)
+-{
+-	struct nand_chip *this = &host->nand;
+-	u16 tmp;
+-
+-	/* NANDFC buffer 0 is used for device ID output */
+-	writew(0x0, host->regs + NFC_BUF_ADDR);
+-
+-	/* Read ID into main buffer */
+-	tmp = readw(host->regs + NFC_CONFIG1);
+-	tmp &= ~NFC_SP_EN;
+-	writew(tmp, host->regs + NFC_CONFIG1);
+-
+-	writew(NFC_ID, host->regs + NFC_CONFIG2);
+-
+-	/* Wait for operation to complete */
+-	wait_op_done(host);
+-
+-	if (this->options & NAND_BUSWIDTH_16) {
+-		volatile u16 *mainbuf = host->main_area0;
+-
+-		/*
+-		 * Pack the every-other-byte result for 16-bit ID reads
+-		 * into every-byte as the generic code expects and various
+-		 * chips implement.
+-		 */
+-
+-		mainbuf[0] = (mainbuf[0] & 0xff) | ((mainbuf[1] & 0xff) << 8);
+-		mainbuf[1] = (mainbuf[2] & 0xff) | ((mainbuf[3] & 0xff) << 8);
+-		mainbuf[2] = (mainbuf[4] & 0xff) | ((mainbuf[5] & 0xff) << 8);
+-	}
+-	memcpy32(host->data_buf, host->main_area0, 16);
+-}
+-
+-/*
+- * This function requests the NANDFC to perform a read of the
+- * NAND device status and returns the current status.
+- *
+- * @return  device status
+- */
+-static u16 get_dev_status(struct imx_nand_host *host)
+-{
+-	volatile u16 *mainbuf = host->main_area1;
+-	u32 store;
+-	u16 ret, tmp;
+-	/* Issue status request to NAND device */
+-
+-	/* store the main area1 first word, later do recovery */
+-	store = *((u32 *) mainbuf);
+-	/*
+-	 * NANDFC buffer 1 is used for device status to prevent
+-	 * corruption of read/write buffer on status requests.
+-	 */
+-	writew(1, host->regs + NFC_BUF_ADDR);
+-
+-	/* Read status into main buffer */
+-	tmp = readw(host->regs + NFC_CONFIG1);
+-	tmp &= ~NFC_SP_EN;
+-	writew(tmp, host->regs + NFC_CONFIG1);
+-
+-	writew(NFC_STATUS, host->regs + NFC_CONFIG2);
+-
+-	/* Wait for operation to complete */
+-	wait_op_done(host);
+-
+-	/* Status is placed in first word of main buffer */
+-	/* get status, then recovery area 1 data */
+-	ret = mainbuf[0];
+-	*((u32 *) mainbuf) = store;
+-
+-	return ret;
+-}
+-
+-/*
+- * This function is used by upper layer to checks if device is ready
+- *
+- * @param       mtd     MTD structure for the NAND Flash
+- *
+- * @return  0 if device is busy else 1
+- */
+-static int imx_nand_dev_ready(struct mtd_info *mtd)
+-{
+-	/*
+-	 * NFC handles R/B internally.Therefore,this function
+-	 * always returns status as ready.
+-	 */
+-	return 1;
+-}
+-
+-static void imx_nand_enable_hwecc(struct mtd_info *mtd, int mode)
+-{
+-	/*
+-	 * If HW ECC is enabled, we turn it on during init.  There is
+-	 * no need to enable again here.
+-	 */
+-}
+-
+-static int imx_nand_correct_data(struct mtd_info *mtd, u_char * dat,
+-				 u_char * read_ecc, u_char * calc_ecc)
+-{
+-	struct nand_chip *nand_chip = mtd->priv;
+-	struct imx_nand_host *host = nand_chip->priv;
+-
+-	/*
+-	 * 1-Bit errors are automatically corrected in HW.  No need for
+-	 * additional correction.  2-Bit errors cannot be corrected by
+-	 * HW ECC, so we need to return failure
+-	 */
+-	u16 ecc_status = readw(host->regs + NFC_ECC_STATUS_RESULT);
+-
+-	if (((ecc_status & 0x3) == 2) || ((ecc_status >> 2) == 2)) {
+-		MTD_DEBUG(MTD_DEBUG_LEVEL0,
+-		      "MXC_NAND: HWECC uncorrectable 2-bit ECC error\n");
+-		return -1;
+-	}
+-
+-	return 0;
+-}
+-
+-static int imx_nand_calculate_ecc(struct mtd_info *mtd, const u_char * dat,
+-				  u_char * ecc_code)
+-{
+-	return 0;
+-}
+-
+-/*
+- * This function reads byte from the NAND Flash
+- *
+- * @param       mtd     MTD structure for the NAND Flash
+- *
+- * @return    data read from the NAND Flash
+- */
+-static u_char imx_nand_read_byte(struct mtd_info *mtd)
+-{
+-	struct nand_chip *nand_chip = mtd->priv;
+-	struct imx_nand_host *host = nand_chip->priv;
+-	u_char ret;
+-
+-	/* Check for status request */
+-	if (host->status_request)
+-		return get_dev_status(host) & 0xFF;
+-
+-	ret = *(uint8_t *)(host->data_buf + host->buf_start);
+-	host->buf_start++;
+-
+-	return ret;
+-}
+-
+-/*
+-  * This function reads word from the NAND Flash
+-  *
+-  * @param       mtd     MTD structure for the NAND Flash
+-  *
+-  * @return    data read from the NAND Flash
+-  */
+-static u16 imx_nand_read_word(struct mtd_info *mtd)
+-{
+-	struct nand_chip *nand_chip = mtd->priv;
+-	struct imx_nand_host *host = nand_chip->priv;
+-	uint16_t ret;
+-
+-	ret = *(uint16_t *)(host->data_buf + host->buf_start);
+-	host->buf_start += 2;
+-
+-	return ret;
+-}
+-
+-/*
+- * This function writes data of length \b len to buffer \b buf. The data to be
+- * written on NAND Flash is first copied to RAMbuffer. After the Data Input
+- * Operation by the NFC, the data is written to NAND Flash
+- *
+- * @param       mtd     MTD structure for the NAND Flash
+- * @param       buf     data to be written to NAND Flash
+- * @param       len     number of bytes to be written
+- */
+-static void imx_nand_write_buf(struct mtd_info *mtd,
+-			       const u_char *buf, int len)
+-{
+-	struct nand_chip *nand_chip = mtd->priv;
+-	struct imx_nand_host *host = nand_chip->priv;
+-	u16 col = host->buf_start;
+-	int n = mtd->oobsize + mtd->writesize - col;
+-
+-	n = min(n, len);
+-	memcpy(host->data_buf + col, buf, n);
+-
+-	host->buf_start += n;
+-}
+-
+-/*
+- * This function is used to read the data buffer from the NAND Flash. To
+- * read the data from NAND Flash first the data output cycle is initiated by
+- * the NFC, which copies the data to RAMbuffer. This data of length \b len is
+- * then copied to buffer \b buf.
+- *
+- * @param       mtd     MTD structure for the NAND Flash
+- * @param       buf     data to be read from NAND Flash
+- * @param       len     number of bytes to be read
+- */
+-static void imx_nand_read_buf(struct mtd_info *mtd, u_char * buf, int len)
+-{
+-	struct nand_chip *nand_chip = mtd->priv;
+-	struct imx_nand_host *host = nand_chip->priv;
+-	u16 col = host->buf_start;
+-	int n = mtd->oobsize + mtd->writesize - col;
+-
+-	n = min(n, len);
+-
+-	memcpy(buf, host->data_buf + col, len);
+-
+-	host->buf_start += len;
+-}
+-
+-/*
+- * Function to transfer data to/from spare area.
+- */
+-static void copy_spare(struct mtd_info *mtd, int bfrom)
+-{
+-	struct nand_chip *this = mtd->priv;
+-	struct imx_nand_host *host = this->priv;
+-	u16 i, j;
+-	u16 n = mtd->writesize >> 9;
+-	u8 *d = host->data_buf + mtd->writesize;
+-	u8 *s = host->spare0;
+-	u16 t = host->spare_len;
+-
+-	j = (mtd->oobsize / n >> 1) << 1;
+-
+-	if (bfrom) {
+-		for (i = 0; i < n - 1; i++)
+-			memcpy32(d + i * j, s + i * t, j);
+-
+-		/* the last section */
+-		memcpy32(d + i * j, s + i * t, mtd->oobsize - i * j);
+-	} else {
+-		for (i = 0; i < n - 1; i++)
+-			memcpy32(&s[i * t], &d[i * j], j);
+-
+-		/* the last section */
+-		memcpy32(&s[i * t], &d[i * j], mtd->oobsize - i * j);
+-	}
+-}
+-
+-/*
+- * This function is used by the upper layer to verify the data in NAND Flash
+- * with the data in the \b buf.
+- *
+- * @param       mtd     MTD structure for the NAND Flash
+- * @param       buf     data to be verified
+- * @param       len     length of the data to be verified
+- *
+- * @return      -EFAULT if error else 0
+- *
+- */
+-static int
+-imx_nand_verify_buf(struct mtd_info *mtd, const u_char * buf, int len)
+-{
+-	return -EFAULT;
+-}
+-
+-/*
+- * This function is used by upper layer for select and deselect of the NAND
+- * chip
+- *
+- * @param       mtd     MTD structure for the NAND Flash
+- * @param       chip    val indicating select or deselect
+- */
+-static void imx_nand_select_chip(struct mtd_info *mtd, int chip)
+-{
+-#ifdef CONFIG_MTD_NAND_MXC_FORCE_CE
+-	u16 tmp;
+-
+-	if (chip > 0) {
+-		MTD_DEBUG(MTD_DEBUG_LEVEL0,
+-		      "ERROR:  Illegal chip select (chip = %d)\n", chip);
+-		return;
+-	}
+-
+-	if (chip == -1) {
+-		tmp = readw(host->regs + NFC_CONFIG1);
+-		tmp &= ~NFC_CE;
+-		writew(tmp, host->regs + NFC_CONFIG1);
+-		return;
+-	}
+-
+-	tmp = readw(host->regs + NFC_CONFIG1);
+-	tmp |= NFC_CE;
+-	writew(tmp, host->regs + NFC_CONFIG1);
+-#endif
+-}
+-
+-static void mxc_do_addr_cycle(struct mtd_info *mtd, int column, int page_addr)
+-{
+-	struct nand_chip *nand_chip = mtd->priv;
+-	struct imx_nand_host *host = nand_chip->priv;
+-
+-	/*
+-	 * Write out column address, if necessary
+-	 */
+-	if (column != -1) {
+-		/*
+-		 * MXC NANDFC can only perform full page+spare or
+-		 * spare-only read/write.  When the upper layers
+-		 * layers perform a read/write buf operation,
+-		 * we will used the saved column adress to index into
+-		 * the full page.
+-		 */
+-		send_addr(host, 0);
+-		if (host->pagesize_2k)
+-			/* another col addr cycle for 2k page */
+-			send_addr(host, 0);
+-	}
+-
+-	/*
+-	 * Write out page address, if necessary
+-	 */
+-	if (page_addr != -1) {
+-		send_addr(host, (page_addr & 0xff));	/* paddr_0 - p_addr_7 */
+-
+-		if (host->pagesize_2k) {
+-			send_addr(host, (page_addr >> 8) & 0xFF);
+-			if (mtd->size >= 0x10000000) {
+-				send_addr(host, (page_addr >> 16) & 0xff);
+-			}
+-		} else {
+-			/* One more address cycle for higher density devices */
+-			if (mtd->size >= 0x4000000) {
+-				/* paddr_8 - paddr_15 */
+-				send_addr(host, (page_addr >> 8) & 0xff);
+-				send_addr(host, (page_addr >> 16) & 0xff);
+-			} else
+-				/* paddr_8 - paddr_15 */
+-				send_addr(host, (page_addr >> 8) & 0xff);
+-		}
+-	}
+-}
+-
+-/*
+- * This function is used by the upper layer to write command to NAND Flash for
+- * different operations to be carried out on NAND Flash
+- *
+- * @param       mtd             MTD structure for the NAND Flash
+- * @param       command         command for NAND Flash
+- * @param       column          column offset for the page read
+- * @param       page_addr       page to be read from NAND Flash
+- */
+-static void imx_nand_command(struct mtd_info *mtd, unsigned command,
+-			     int column, int page_addr)
+-{
+-	struct nand_chip *nand_chip = mtd->priv;
+-	struct imx_nand_host *host = nand_chip->priv;
+-
+-	MTD_DEBUG(MTD_DEBUG_LEVEL3,
+-	      "imx_nand_command (cmd = 0x%x, col = 0x%x, page = 0x%x)\n",
+-	      command, column, page_addr);
+-
+-	/*
+-	 * Reset command state information
+-	 */
+-	host->status_request = 0;
+-
+-	/*
+-	 * Command pre-processing step
+-	 */
+-	switch (command) {
+-
+-	case NAND_CMD_STATUS:
+-		host->buf_start = 0;
+-		host->status_request = 1;
+-		send_cmd(host, command);
+-		mxc_do_addr_cycle(mtd, column, page_addr);
+-		break;
+-
+-	case NAND_CMD_READ0:
+-	case NAND_CMD_READOOB:
+-		if (command == NAND_CMD_READ0)
+-			host->buf_start = column;
+-		else
+-			host->buf_start = column + mtd->writesize;
+-
+-		command = NAND_CMD_READ0;
+-
+-		send_cmd(host, command);
+-		mxc_do_addr_cycle(mtd, column, page_addr);
+-
+-		if (host->pagesize_2k)
+-			/* send read confirm command */
+-			send_cmd(host, NAND_CMD_READSTART);
+-
+-		send_page(host, NFC_OUTPUT);
+-
+-		memcpy32(host->data_buf, host->main_area0, mtd->writesize);
+-		copy_spare(mtd, 1);
+-		break;
+-
+-	case NAND_CMD_SEQIN:
+-		if (column >= mtd->writesize) {
+-			if (host->pagesize_2k) {
+-				/**
+-				  * FIXME: before send SEQIN command for write
+-				  * OOB, we must read one page out. For K9F1GXX
+-				  * has no READ1 command to set current HW
+-				  * pointer to spare area, we must write the
+-				  * whole page including OOB together.
+-				  */
+-				/* call ourself to read a page */
+-				imx_nand_command(mtd, NAND_CMD_READ0, 0,
+-						 page_addr);
+-			}
+-			host->buf_start = column;
+-
+-			/* Set program pointer to spare region */
+-			if (!host->pagesize_2k)
+-				send_cmd(host, NAND_CMD_READOOB);
+-		} else {
+-			host->buf_start = column;
+-
+-			/* Set program pointer to page start */
+-			if (!host->pagesize_2k)
+-				send_cmd(host, NAND_CMD_READ0);
+-		}
+-		send_cmd(host, command);
+-		mxc_do_addr_cycle(mtd, column, page_addr);
+-
+-		break;
+-
+-	case NAND_CMD_PAGEPROG:
+-		memcpy32(host->main_area0, host->data_buf, mtd->writesize);
+-		copy_spare(mtd, 0);
+-		send_page(host, NFC_INPUT);
+-		send_cmd(host, command);
+-		mxc_do_addr_cycle(mtd, column, page_addr);
+-		break;
+-
+-	case NAND_CMD_READID:
+-		send_cmd(host, command);
+-		mxc_do_addr_cycle(mtd, column, page_addr);
+-		host->buf_start = 0;
+-		send_read_id(host);
+-		break;
+-
+-	case NAND_CMD_ERASE1:
+-	case NAND_CMD_ERASE2:
+-	case NAND_CMD_RESET:
+-		send_cmd(host, command);
+-		mxc_do_addr_cycle(mtd, column, page_addr);
+-		break;
+-	}
+-}
+-
+-#ifdef CONFIG_MXC_NAND_LOW_LEVEL_ERASE
+-static void imx_low_erase(struct mtd_info *mtd)
+-{
+-
+-	struct nand_chip *this = mtd->priv;
+-	unsigned int page_addr, addr;
+-	u_char status;
+-
+-	MTD_DEBUG(MTD_DEBUG_LEVEL0, "MXC_ND : imx_low_erase:Erasing NAND\n");
+-	for (addr = 0; addr < this->chipsize; addr += mtd->erasesize) {
+-		page_addr = addr / mtd->writesize;
+-		imx_nand_command(mtd, NAND_CMD_ERASE1, -1, page_addr);
+-		imx_nand_command(mtd, NAND_CMD_ERASE2, -1, -1);
+-		imx_nand_command(mtd, NAND_CMD_STATUS, -1, -1);
+-		status = imx_nand_read_byte(mtd);
+-		if (status & NAND_STATUS_FAIL) {
+-			printk(KERN_ERR
+-			       "ERASE FAILED(block = %d,status = 0x%x)\n",
+-			       addr / mtd->erasesize, status);
+-		}
+-	}
+-
+-}
+-#endif
+-
+-/*
+- * The generic flash bbt decriptors overlap with our ecc
+- * hardware, so define some i.MX specific ones.
+- */
+-static uint8_t bbt_pattern[] = { 'B', 'b', 't', '0' };
+-static uint8_t mirror_pattern[] = { '1', 't', 'b', 'B' };
+-
+-static struct nand_bbt_descr bbt_main_descr = {
+-	.options = NAND_BBT_LASTBLOCK | NAND_BBT_CREATE | NAND_BBT_WRITE
+-		| NAND_BBT_2BIT | NAND_BBT_VERSION | NAND_BBT_PERCHIP,
+-	.offs = 0,
+-	.len = 4,
+-	.veroffs = 4,
+-	.maxblocks = 4,
+-	.pattern = bbt_pattern,
+-};
+-
+-static struct nand_bbt_descr bbt_mirror_descr = {
+-	.options = NAND_BBT_LASTBLOCK | NAND_BBT_CREATE | NAND_BBT_WRITE
+-		| NAND_BBT_2BIT | NAND_BBT_VERSION | NAND_BBT_PERCHIP,
+-	.offs = 0,
+-	.len = 4,
+-	.veroffs = 4,
+-	.maxblocks = 4,
+-	.pattern = mirror_pattern,
+-};
+-
+-/*
+- * This function is called during the driver binding process.
+- *
+- * @param   pdev  the device structure used to store device specific
+- *                information that is used by the suspend, resume and
+- *                remove functions
+- *
+- * @return  The function always returns 0.
+- */
+-
+-static int __init imxnd_probe(struct device_d *dev)
+-{
+-	struct nand_chip *this;
+-	struct mtd_info *mtd;
+-	struct imx_nand_platform_data *pdata = dev->platform_data;
+-	struct imx_nand_host *host;
+-	struct nand_ecclayout *oob_smallpage, *oob_largepage;
+-	u16 tmp;
+-	int err = 0;
+-
+-#ifdef CONFIG_ARCH_IMX27
+-	PCCR1 |= PCCR1_NFC_BAUDEN;
+-#endif
+-#ifdef CONFIG_ARCH_IMX21
+-	PCCR0 |= PCCR0_NFC_EN;
+-#endif
+-	/* Allocate memory for MTD device structure and private data */
+-	host = kzalloc(sizeof(struct imx_nand_host) + NAND_MAX_PAGESIZE +
+-			NAND_MAX_OOBSIZE, GFP_KERNEL);
+-	if (!host)
+-		return -ENOMEM;
+-
+-	host->data_buf = (uint8_t *)(host + 1);
+-	host->base = (void __iomem *)dev->map_base;
+-
+-	host->main_area0 = host->base;
+-	host->main_area1 = host->base + 0x200;
+-
+-	if (nfc_is_v21()) {
+-		host->regs = host->base + 0x1000;
+-		host->spare0 = host->base + 0x1000;
+-		host->spare_len = 64;
+-		oob_smallpage = &nandv2_hw_eccoob_smallpage;
+-		oob_largepage = &nandv2_hw_eccoob_largepage;
+-	} else if (nfc_is_v1()) {
+-		host->regs = host->base;
+-		host->spare0 = host->base + 0x800;
+-		host->spare_len = 16;
+-		oob_smallpage = &nandv1_hw_eccoob_smallpage;
+-		oob_largepage = &nandv1_hw_eccoob_largepage;
+-	}
+-
+-	host->dev = dev;
+-	/* structures must be linked */
+-	this = &host->nand;
+-	mtd = &host->mtd;
+-	mtd->priv = this;
+-
+-	/* 50 us command delay time */
+-	this->chip_delay = 5;
+-
+-	this->priv = host;
+-	this->dev_ready = imx_nand_dev_ready;
+-	this->cmdfunc = imx_nand_command;
+-	this->select_chip = imx_nand_select_chip;
+-	this->read_byte = imx_nand_read_byte;
+-	this->read_word = imx_nand_read_word;
+-	this->write_buf = imx_nand_write_buf;
+-	this->read_buf = imx_nand_read_buf;
+-	this->verify_buf = imx_nand_verify_buf;
+-#if 0
+-	host->clk = clk_get(&pdev->dev, "nfc_clk");
+-	if (IS_ERR(host->clk))
+-		goto eclk;
+-
+-	clk_enable(host->clk);
+-#endif
+-
+-	tmp = readw(host->regs + NFC_CONFIG1);
+-	tmp |= NFC_INT_MSK;
+-	tmp &= ~NFC_SP_EN;
+-	if (nfc_is_v21())
+-		/* currently no support for 218 byte OOB with stronger ECC */
+-		tmp |= NFC_ECC_MODE;
+-	writew(tmp, host->regs + NFC_CONFIG1);
+-
+-	if (pdata->hw_ecc) {
+-		this->ecc.calculate = imx_nand_calculate_ecc;
+-		this->ecc.hwctl = imx_nand_enable_hwecc;
+-		this->ecc.correct = imx_nand_correct_data;
+-		this->ecc.mode = NAND_ECC_HW;
+-		this->ecc.size = 512;
+-		tmp = readw(host->regs + NFC_CONFIG1);
+-		tmp |= NFC_ECC_EN;
+-		writew(tmp, host->regs + NFC_CONFIG1);
+-	} else {
+-		this->ecc.size = 512;
+-		this->ecc.mode = NAND_ECC_SOFT;
+-		tmp = readw(host->regs + NFC_CONFIG1);
+-		tmp &= ~NFC_ECC_EN;
+-		writew(tmp, host->regs + NFC_CONFIG1);
+-	}
+-
+-	/* Reset NAND */
+-	this->cmdfunc(mtd, NAND_CMD_RESET, -1, -1);
+-
+-	/* preset operation */
+-	/* Unlock the internal RAM Buffer */
+-	writew(0x2, host->regs + NFC_CONFIG);
+-
+-	/* Blocks to be unlocked */
+-	if (nfc_is_v21()) {
+-		writew(0x0, host->regs + NFC_V21_UNLOCKSTART_BLKADDR);
+-		writew(0xffff, host->regs + NFC_V21_UNLOCKEND_BLKADDR);
+-		this->ecc.bytes = 9;
+-	} else if (nfc_is_v1()) {
+-		writew(0x0, host->regs + NFC_V1_UNLOCKSTART_BLKADDR);
+-		writew(0x4000, host->regs + NFC_V1_UNLOCKEND_BLKADDR);
+-		this->ecc.bytes = 3;
+-	}
+-
+-	/* Unlock Block Command for given address range */
+-	writew(0x4, host->regs + NFC_WRPROT);
+-
+-	this->ecc.layout = oob_smallpage;
+-
+-	/* NAND bus width determines access funtions used by upper layer */
+-	if (pdata->width == 2) {
+-		this->options |= NAND_BUSWIDTH_16;
+-		this->ecc.layout = &nandv1_hw_eccoob_smallpage;
+-		imx_nand_set_layout(0, 16);
+-	}
+-
+-	if (pdata->flash_bbt) {
+-		this->bbt_td = &bbt_main_descr;
+-		this->bbt_md = &bbt_mirror_descr;
+-		/* update flash based bbt */
+-		this->options |= NAND_USE_FLASH_BBT;
+-	}
+-
+-	/* first scan to find the device and get the page size */
+-	if (nand_scan_ident(mtd, 1)) {
+-		err = -ENXIO;
+-		goto escan;
+-	}
+-
+-	imx_nand_set_layout(mtd->writesize, pdata->width == 2 ? 16 : 8);
+-
+-	if (mtd->writesize == 2048) {
+-		this->ecc.layout = oob_largepage;
+-		host->pagesize_2k = 1;
+-		if (nfc_is_v21()) {
+-			tmp = readw(host->regs + NFC_SPAS);
+-			tmp &= 0xff00;
+-			tmp |= NFC_SPAS_64;
+-			writew(tmp, host->regs + NFC_SPAS);
+-		}
+-	} else {
+-		if (nfc_is_v21()) {
+-			tmp = readw(host->regs + NFC_SPAS);
+-			tmp &= 0xff00;
+-			tmp |= NFC_SPAS_16;
+-			writew(tmp, host->regs + NFC_SPAS);
+-		}
+-	}
+-
+-	/* second phase scan */
+-	if (nand_scan_tail(mtd)) {
+-		err = -ENXIO;
+-		goto escan;
+-	}
+-
+-	add_mtd_device(mtd);
+-
+-	dev->priv = host;
+-
+-	return 0;
+-
+-escan:
+-	kfree(host);
+-
+-	return err;
+-
+-}
+-
+-static struct driver_d imx_nand_driver = {
+-	.name  = "imx_nand",
+-	.probe = imxnd_probe,
+-};
+-
+-#ifdef CONFIG_NAND_IMX_BOOT
+-
+-static void __nand_boot_init nfc_addr(struct imx_nand_host *host, u32 offs)
+-{
+-	if (host->pagesize_2k) {
+-		send_addr(host, offs & 0xff);
+-		send_addr(host, offs & 0xff);
+-		send_addr(host, (offs >> 11) & 0xff);
+-		send_addr(host, (offs >> 19) & 0xff);
+-		send_addr(host, (offs >> 27) & 0xff);
+-	} else {
+-		send_addr(host, offs & 0xff);
+-		send_addr(host, (offs >> 9) & 0xff);
+-		send_addr(host, (offs >> 17) & 0xff);
+-		send_addr(host, (offs >> 25) & 0xff);
+-	}
+-}
+-
+-static void __nand_boot_init __memcpy32(void *trg, const void *src, int size)
+-{
+-	int i;
+-	unsigned int *t = trg;
+-	unsigned const int *s = src;
+-
+-	for (i = 0; i < (size >> 2); i++)
+-		*t++ = *s++;
+-}
+-
+-void __nand_boot_init imx_nand_load_image(void *dest, int size)
+-{
+-	struct imx_nand_host host;
+-	u32 tmp, page, block, blocksize, pagesize;
+-#ifdef CONFIG_ARCH_IMX21
+-	tmp = readl(IMX_SYSTEM_CTL_BASE + 0x14);
+-	if (tmp & (1 << 5))
+-		host.pagesize_2k = 1;
+-	else
+-		host.pagesize_2k = 0;
+-#endif
+-#ifdef CONFIG_ARCH_IMX27
+-	tmp = readl(IMX_SYSTEM_CTL_BASE + 0x14);
+-	if (tmp & (1 << 5))
+-		host.pagesize_2k = 1;
+-	else
+-		host.pagesize_2k = 0;
+-#endif
+-#ifdef CONFIG_ARCH_IMX31
+-	tmp = readl(IMX_CCM_BASE + CCM_RCSR);
+-	if (tmp & RCSR_NFMS)
+-		host.pagesize_2k = 1;
+-	else
+-		host.pagesize_2k = 0;
+-#endif
+-#ifdef CONFIG_ARCH_IMX35
+-	if (readl(IMX_CCM_BASE + CCM_RCSR) & (1 << 8))
+-		host.pagesize_2k = 1;
+-	else
+-		host.pagesize_2k = 0;
+-#endif
+-	if (host.pagesize_2k) {
+-		pagesize = 2048;
+-		blocksize = 128 * 1024;
+-	} else {
+-		pagesize = 512;
+-		blocksize = 16 * 1024;
+-	}
+-
+-	host.base = (void __iomem *)IMX_NFC_BASE;
+-	if (nfc_is_v21()) {
+-		host.regs = host.base + 0x1000;
+-		host.spare0 = host.base + 0x1000;
+-		host.spare_len = 64;
+-	} else if (nfc_is_v1()) {
+-		host.regs = host.base;
+-		host.spare0 = host.base + 0x800;
+-		host.spare_len = 16;
+-	}
+-
+-	send_cmd(&host, NAND_CMD_RESET);
+-
+-	/* preset operation */
+-	/* Unlock the internal RAM Buffer */
+-	writew(0x2, host.regs + NFC_CONFIG);
+-
+-	/* Unlock Block Command for given address range */
+-	writew(0x4, host.regs + NFC_WRPROT);
+-
+-	tmp = readw(host.regs + NFC_CONFIG1);
+-	tmp |= NFC_ECC_EN;
+-	if (nfc_is_v21())
+-		/* currently no support for 218 byte OOB with stronger ECC */
+-		tmp |= NFC_ECC_MODE;
+-	tmp &= ~(NFC_SP_EN | NFC_INT_MSK);
+-	writew(tmp, host.regs + NFC_CONFIG1);
+-
+-	if (nfc_is_v21()) {
+-		if (host.pagesize_2k) {
+-			tmp = readw(host.regs + NFC_SPAS);
+-			tmp &= 0xff00;
+-			tmp |= NFC_SPAS_64;
+-			writew(tmp, host.regs + NFC_SPAS);
+-		} else {
+-			tmp = readw(host.regs + NFC_SPAS);
+-			tmp &= 0xff00;
+-			tmp |= NFC_SPAS_16;
+-			writew(tmp, host.regs + NFC_SPAS);
+-		}
+-	}
+-
+-	block = page = 0;
+-
+-	while (1) {
+-		page = 0;
+-		while (page * pagesize < blocksize) {
+-			debug("page: %d block: %d dest: %p src "
+-					"0x%08x\n",
+-					page, block, dest,
+-					block * blocksize +
+-					page * pagesize);
+-
+-			send_cmd(&host, NAND_CMD_READ0);
+-			nfc_addr(&host, block * blocksize +
+-					page * pagesize);
+-			if (host.pagesize_2k)
+-				send_cmd(&host, NAND_CMD_READSTART);
+-			send_page(&host, NFC_OUTPUT);
+-			page++;
+-
+-			if (host.pagesize_2k) {
+-				if ((readw(host.spare0) & 0xff)
+-						!= 0xff)
+-					continue;
+-			} else {
+-				if ((readw(host.spare0 + 4) & 0xff00)
+-						!= 0xff00)
+-					continue;
+-			}
+-
+-			__memcpy32(dest, host.base, pagesize);
+-			dest += pagesize;
+-			size -= pagesize;
+-
+-			if (size <= 0)
+-				return;
+-		}
+-		block++;
+-	}
+-}
+-#define CONFIG_NAND_IMX_BOOT_DEBUG
+-#ifdef CONFIG_NAND_IMX_BOOT_DEBUG
+-#include <command.h>
+-
+-static int do_nand_boot_test(struct command *cmdtp, int argc, char *argv[])
+-{
+-	void *dest;
+-	int size;
+-
+-	if (argc < 3)
+-		return COMMAND_ERROR_USAGE;
+-
+-	dest = (void *)strtoul_suffix(argv[1], NULL, 0);
+-	size = strtoul_suffix(argv[2], NULL, 0);
+-
+-	imx_nand_load_image(dest, size);
+-
+-	return 0;
+-}
+-
+-static const __maybe_unused char cmd_nand_boot_test_help[] =
+-"Usage: nand_boot_test <dest> <size>\n"
+-"This command loads the booloader from the NAND memory like the reset\n"
+-"routine does. Its intended for development tests only";
+-
+-BAREBOX_CMD_START(nand_boot_test)
+-	.cmd		= do_nand_boot_test,
+-	.usage		= "load bootloader from NAND",
+-	BAREBOX_CMD_HELP(cmd_nand_boot_test_help)
+-BAREBOX_CMD_END
+-#endif
+-
+-#endif /* CONFIG_NAND_IMX_BOOT */
+-
+-/*
+- * Main initialization routine
+- * @return  0 if successful; non-zero otherwise
+- */
+-static int __init imx_nand_init(void)
+-{
+-	return register_driver(&imx_nand_driver);
+-}
+-
+-device_initcall(imx_nand_init);
+-
+-MODULE_AUTHOR("Freescale Semiconductor, Inc.");
+-MODULE_DESCRIPTION("MXC NAND MTD driver");
+-MODULE_LICENSE("GPL");
+diff --git a/drivers/nand/nand_omap_gpmc.c b/drivers/nand/nand_omap_gpmc.c
+deleted file mode 100644
+index c6647e5..0000000
+--- a/drivers/nand/nand_omap_gpmc.c
++++ /dev/null
+@@ -1,534 +0,0 @@
+-/**
+- * @file
+- * @brief Provide Generic GPMC NAND implementation for OMAP platforms
+- *
+- * FileName: arch/arm/mach-omap/gpmc_nand.c
+- *
+- * GPMC has a NAND controller inbuilt. This provides a generic implementation
+- * for board files to register a nand device. drivers/nand/nand_base.c takes
+- * care of identifing the type of device, size etc.
+- *
+- * A typical device registration is as follows:
+- *
+- * @code
+- * static struct device_d my_nand_device = {
+- *	.name = "gpmc_nand",
+- *	.id = some identifier you need to show.. e.g. "gpmc_nand0"
+- *	.map_base = GPMC base address
+- *	.size = GPMC address map size.
+- *	.platform_data = platform data - required - explained below
+- * };
+- * platform data required:
+- * static struct gpmc_nand_platform_data nand_plat = {
+- *	.cs = give the chip select of the device
+- *	.device_width = what is the width of the device 8 or 16?
+- *	.max_timeout = delay desired for operation
+- *	.wait_mon_pin = do you use wait monitoring? if so wait pin
+- *	.plat_options = platform options.
+- *		NAND_HWECC_ENABLE/DISABLE - hw ecc enable/disable
+- *		NAND_WAITPOL_LOW/HIGH - wait pin polarity
+- *	.oob = if you would like to replace oob with a custom OOB.
+- *	.nand_setup  = if you would like a special setup function to be called
+- *	.priv = any params you'd like to save(e.g. like nand_setup to use)
+- *};
+- * then in your code, you'd device_register(&my_nand_device);
+- * @endcode
+- *
+- * Note:
+- * @li Enable CONFIG_NAND_OMAP_GPMC_HWECC in menuconfig to get H/w ECC support
+- * @li You may choose to register two "devices" for the same CS to get BOTH
+- * hwecc and swecc devices.
+- * @li You can choose to have your own OOB definition for compliance with ROM
+- * code organization - only if you dont want to use NAND's default oob layout.
+- * see GPMC_NAND_ECC_LP_x8_LAYOUT etc..
+- *
+- * @see gpmc_nand_platform_data
+- * @warning Remember to initialize GPMC before initializing the nand dev.
+- */
+-/*
+- * (C) Copyright 2008
+- * Texas Instruments, <www.ti.com>
+- * Nishanth Menon <x0nishan@ti.com>
+- *
+- * Based on:
+- * drivers/mtd/nand/omap2.c from linux kernel
+- *
+- * Copyright (c) 2004 Texas Instruments, Jian Zhang <jzhang@ti.com>
+- * Copyright (c) 2004 Micron Technology Inc.
+- * Copyright (c) 2004 David Brownell
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License version 2 as
+- * published by the Free Software Foundation.
+- */
+-
+-#include <common.h>
+-#include <errno.h>
+-#include <init.h>
+-#include <driver.h>
+-#include <malloc.h>
+-#include <clock.h>
+-#include <linux/mtd/mtd.h>
+-#include <linux/mtd/nand.h>
+-#include <linux/mtd/nand_ecc.h>
+-#include <asm/io.h>
+-#include <mach/silicon.h>
+-#include <mach/gpmc.h>
+-#include <mach/gpmc_nand.h>
+-
+-/* Enable me to get tons of debug messages -for use without jtag */
+-#if 0
+-#define gpmcnand_dbg(FORMAT, ARGS...) fprintf(stdout,\
+-		"gpmc_nand:%s:%d:Entry:"FORMAT"\n",\
+-		__func__, __LINE__, ARGS)
+-#else
+-#define gpmcnand_dbg(FORMAT, ARGS...)
+-#endif
+-#define gpmcnand_err(ARGS...) fprintf(stderr, "omapnand: " ARGS);
+-
+-/** internal structure maintained for nand information */
+-struct gpmc_nand_info {
+-	struct nand_hw_control controller;
+-	struct device_d *pdev;
+-	struct gpmc_nand_platform_data *pdata;
+-	struct nand_chip nand;
+-	struct mtd_info minfo;
+-	int gpmc_cs;
+-	void *gpmc_command;
+-	void *gpmc_address;
+-	void *gpmc_data;
+-	unsigned long gpmc_base;
+-	unsigned char wait_mon_mask;
+-	uint64_t timeout;
+-	unsigned inuse:1;
+-	unsigned wait_pol:1;
+-#ifdef CONFIG_NAND_OMAP_GPMC_HWECC
+-	unsigned char ecc_parity_pairs;
+-	unsigned int ecc_config;
+-#endif
+-};
+-
+-/**
+- * @brief calls the platform specific dev_ready functionds
+- *
+- * @param mtd - mtd info structure
+- *
+- * @return
+- */
+-static int omap_dev_ready(struct mtd_info *mtd)
+-{
+-	struct nand_chip *nand = (struct nand_chip *)(mtd->priv);
+-	struct gpmc_nand_info *oinfo = (struct gpmc_nand_info *)(nand->priv);
+-	uint64_t start = get_time_ns();
+-	unsigned long comp;
+-
+-	gpmcnand_dbg("mtd=%x", (unsigned int)mtd);
+-	/* What do we mean by assert and de-assert? */
+-	comp = (oinfo->wait_pol == NAND_WAITPOL_HIGH) ?
+-	    oinfo->wait_mon_mask : 0x0;
+-	while (1) {
+-		/* Breakout condition */
+-		if (is_timeout(start, oinfo->timeout)) {
+-			gpmcnand_err("timedout\n");
+-			return -ETIMEDOUT;
+-		}
+-		/* if the wait is released, we are good to go */
+-		if (comp ==
+-		    (readl(oinfo->gpmc_base + GPMC_STATUS) &&
+-		     oinfo->wait_mon_mask))
+-			break;
+-	}
+-	return 0;
+-}
+-
+-/**
+- * @brief This function will enable or disable the Write Protect feature on
+- * NAND device. GPMC has a single WP bit for all CS devices..
+- *
+- * @param oinfo  omap nand info
+- * @param mode 0-disable else enable
+- *
+- * @return none
+- */
+-static void gpmc_nand_wp(struct gpmc_nand_info *oinfo, int mode)
+-{
+-	unsigned long config = readl(oinfo->gpmc_base + GPMC_CFG);
+-
+-	gpmcnand_dbg("mode=%x", mode);
+-	if (mode)
+-		config &= ~(NAND_WP_BIT);	/* WP is ON */
+-	else
+-		config |= (NAND_WP_BIT);	/* WP is OFF */
+-
+-	writel(config, oinfo->gpmc_base + GPMC_CFG);
+-}
+-
+-/**
+- * @brief respond to hw event change request
+- *
+- * MTD layer uses NAND_CTRL_CLE etc to control selection of the latch
+- * we hoodwink by changing the R and W registers according to the state
+- * we are requested.
+- *
+- * @param mtd - mtd info structure
+- * @param cmd command mtd layer is requesting
+- *
+- * @return none
+- */
+-static void omap_hwcontrol(struct mtd_info *mtd, int cmd, unsigned int ctrl)
+-{
+-	struct nand_chip *nand = (struct nand_chip *)(mtd->priv);
+-	struct gpmc_nand_info *oinfo = (struct gpmc_nand_info *)(nand->priv);
+-	gpmcnand_dbg("mtd=%x nand=%x cmd=%x ctrl = %x", (unsigned int)mtd, nand,
+-		  cmd, ctrl);
+-	switch (ctrl) {
+-	case NAND_CTRL_CHANGE | NAND_CTRL_CLE:
+-		nand->IO_ADDR_W = oinfo->gpmc_command;
+-		nand->IO_ADDR_R = oinfo->gpmc_data;
+-		break;
+-
+-	case NAND_CTRL_CHANGE | NAND_CTRL_ALE:
+-		nand->IO_ADDR_W = oinfo->gpmc_address;
+-		nand->IO_ADDR_R = oinfo->gpmc_data;
+-		break;
+-
+-	case NAND_CTRL_CHANGE | NAND_NCE:
+-		nand->IO_ADDR_W = oinfo->gpmc_data;
+-		nand->IO_ADDR_R = oinfo->gpmc_data;
+-		break;
+-	}
+-
+-	if (cmd != NAND_CMD_NONE)
+-		writeb(cmd, nand->IO_ADDR_W);
+-	return;
+-}
+-
+-#ifdef CONFIG_NAND_OMAP_GPMC_HWECC
+-
+-/**
+- * @brief This function will generate true ECC value, which can be used
+- * when correcting data read from NAND flash memory core
+- *
+- * @param ecc_buf buffer to store ecc code
+- *
+- * @return re-formatted ECC value
+- */
+-static unsigned int gen_true_ecc(u8 *ecc_buf)
+-{
+-	gpmcnand_dbg("ecc_buf=%x 1, 2 3 = %x %x %x", (unsigned int)ecc_buf,
+-		  ecc_buf[0], ecc_buf[1], ecc_buf[2]);
+-	return ecc_buf[0] | (ecc_buf[1] << 16) | ((ecc_buf[2] & 0xF0) << 20) |
+-	    ((ecc_buf[2] & 0x0F) << 8);
+-}
+-
+-/**
+- * @brief Compares the ecc read from nand spare area with ECC
+- * registers values and corrects one bit error if it has occured
+- * Further details can be had from OMAP TRM and the following selected links:
+- * http://en.wikipedia.org/wiki/Hamming_code
+- * http://www.cs.utexas.edu/users/plaxton/c/337/05f/slides/ErrorCorrection-4.pdf
+- *
+- * @param mtd - mtd info structure
+- * @param dat  page data
+- * @param read_ecc ecc readback
+- * @param calc_ecc calculated ecc (from reg)
+- *
+- * @return 0 if data is OK or corrected, else returns -1
+- */
+-static int omap_correct_data(struct mtd_info *mtd, uint8_t *dat,
+-			     uint8_t *read_ecc, uint8_t *calc_ecc)
+-{
+-	unsigned int orig_ecc, new_ecc, res, hm;
+-	unsigned short parity_bits, byte;
+-	unsigned char bit;
+-	struct nand_chip *nand = (struct nand_chip *)(mtd->priv);
+-	struct gpmc_nand_info *oinfo = (struct gpmc_nand_info *)(nand->priv);
+-
+-	gpmcnand_dbg("mtd=%x dat=%x read_ecc=%x calc_ecc=%x", (unsigned int)mtd,
+-		  (unsigned int)dat, (unsigned int)read_ecc,
+-		  (unsigned int)calc_ecc);
+-
+-	/* Regenerate the orginal ECC */
+-	orig_ecc = gen_true_ecc(read_ecc);
+-	new_ecc = gen_true_ecc(calc_ecc);
+-	/* Get the XOR of real ecc */
+-	res = orig_ecc ^ new_ecc;
+-	if (res) {
+-		/* Get the hamming width */
+-		hm = hweight32(res);
+-		/* Single bit errors can be corrected! */
+-		if (hm == oinfo->ecc_parity_pairs) {
+-			/* Correctable data! */
+-			parity_bits = res >> 16;
+-			bit = (parity_bits & 0x7);
+-			byte = (parity_bits >> 3) & 0x1FF;
+-			/* Flip the bit to correct */
+-			dat[byte] ^= (0x1 << bit);
+-
+-		} else if (hm == 1) {
+-			gpmcnand_err("Ecc is wrong\n");
+-			/* ECC itself is corrupted */
+-			return 2;
+-		} else {
+-			gpmcnand_err("bad compare! failed\n");
+-			/* detected 2 bit error */
+-			return -1;
+-		}
+-	}
+-	return 0;
+-}
+-
+-/**
+- * @brief Using noninverted ECC can be considered ugly since writing a blank
+- * page ie. padding will clear the ECC bytes. This is no problem as long
+- * nobody is trying to write data on the seemingly unused page. Reading
+- * an erased page will produce an ECC mismatch between generated and read
+- * ECC bytes that has to be dealt with separately.
+- *
+- * @param mtd - mtd info structure
+- * @param dat data being written
+- * @param ecc_code ecc code returned back to nand layer
+- *
+- * @return 0
+- */
+-static int omap_calculate_ecc(struct mtd_info *mtd, const uint8_t *dat,
+-			      uint8_t *ecc_code)
+-{
+-	struct nand_chip *nand = (struct nand_chip *)(mtd->priv);
+-	struct gpmc_nand_info *oinfo = (struct gpmc_nand_info *)(nand->priv);
+-	unsigned int val;
+-	gpmcnand_dbg("mtd=%x dat=%x ecc_code=%x", (unsigned int)mtd,
+-		  (unsigned int)dat, (unsigned int)ecc_code);
+-	debug("ecc 0 1 2 = %x %x %x", ecc_code[0], ecc_code[1], ecc_code[2]);
+-
+-	/* Since we smartly tell mtd driver to use eccsize of 512, only
+-	 * ECC Reg1 will be used.. we just read that */
+-	val = readl(oinfo->gpmc_base + GPMC_ECC1_RESULT);
+-	ecc_code[0] = val & 0xFF;
+-	ecc_code[1] = (val >> 16) & 0xFF;
+-	ecc_code[2] = ((val >> 8) & 0x0f) | ((val >> 20) & 0xf0);
+-
+-	/* Stop reading anymore ECC vals and clear old results
+-	 * enable will be called if more reads are required */
+-	writel(0x000, oinfo->gpmc_base + GPMC_ECC_CONFIG);
+-	return 0;
+-}
+-
+-/*
+- * omap_enable_ecc - This function enables the hardware ecc functionality
+- * @param mtd - mtd info structure
+- * @param mode - Read/Write mode
+- */
+-static void omap_enable_hwecc(struct mtd_info *mtd, int mode)
+-{
+-	struct nand_chip *nand = (struct nand_chip *)(mtd->priv);
+-	struct gpmc_nand_info *oinfo = (struct gpmc_nand_info *)(nand->priv);
+-	gpmcnand_dbg("mtd=%x mode=%x", (unsigned int)mtd, mode);
+-	switch (mode) {
+-	case NAND_ECC_READ:
+-	case NAND_ECC_WRITE:
+-		/* Clear the ecc result registers
+-		 * select ecc reg as 1
+-		 */
+-		writel(0x101, oinfo->gpmc_base + GPMC_ECC_CONTROL);
+-		/* Size 0 = 0xFF, Size1 is 0xFF - both are 512 bytes
+-		 * tell all regs to generate size0 sized regs
+-		 * we just have a single ECC engine for all CS
+-		 */
+-		writel(0x3FCFF000, oinfo->gpmc_base +
+-				GPMC_ECC_SIZE_CONFIG);
+-		writel(oinfo->ecc_config, oinfo->gpmc_base +
+-				GPMC_ECC_CONFIG);
+-		break;
+-	default:
+-		gpmcnand_err("Error: Unrecognized Mode[%d]!\n", mode);
+-		break;
+-	}
+-}
+-#endif				/* CONFIG_NAND_OMAP_GPMC_HWECC */
+-
+-/**
+- * @brief nand device probe.
+- *
+- * @param pdev -matching device
+- *
+- * @return -failure reason or give 0
+- */
+-static int gpmc_nand_probe(struct device_d *pdev)
+-{
+-	struct gpmc_nand_info *oinfo;
+-	struct gpmc_nand_platform_data *pdata;
+-	struct nand_chip *nand;
+-	struct mtd_info *minfo;
+-	unsigned long cs_base;
+-	int err;
+-
+-	gpmcnand_dbg("pdev=%x", (unsigned int)pdev);
+-	pdata = (struct gpmc_nand_platform_data *)pdev->platform_data;
+-	if (pdata == NULL) {
+-		gpmcnand_err("platform data missing\n");
+-		return -ENODEV;
+-	}
+-
+-	oinfo = calloc(1, sizeof(struct gpmc_nand_info));
+-	if (!oinfo) {
+-		gpmcnand_err("oinfo alloc failed!\n");
+-		return -ENOMEM;
+-	}
+-
+-	/* fill up my data structures */
+-	oinfo->pdev = pdev;
+-	oinfo->pdata = pdata;
+-	pdev->platform_data = (void *)oinfo;
+-
+-	nand = &oinfo->nand;
+-	nand->priv = (void *)oinfo;
+-
+-	minfo = &oinfo->minfo;
+-	minfo->priv = (void *)nand;
+-
+-	if (pdata->cs >= GPMC_NUM_CS) {
+-		gpmcnand_err("Invalid CS!\n");
+-		err = -EINVAL;
+-		goto out_release_mem;
+-	}
+-	/* Setup register specific data */
+-	oinfo->gpmc_cs = pdata->cs;
+-	oinfo->gpmc_base = pdev->map_base;
+-	cs_base = oinfo->gpmc_base + GPMC_CONFIG1_0 +
+-		(pdata->cs * GPMC_CONFIG_CS_SIZE);
+-	oinfo->gpmc_command = (void *)(cs_base + GPMC_CS_NAND_COMMAND);
+-	oinfo->gpmc_address = (void *)(cs_base + GPMC_CS_NAND_ADDRESS);
+-	oinfo->gpmc_data = (void *)(cs_base + GPMC_CS_NAND_DATA);
+-	oinfo->timeout = pdata->max_timeout;
+-	debug("GPMC Details:\n"
+-		"GPMC BASE=%x\n"
+-		"CMD=%x\n"
+-		"ADDRESS=%x\n"
+-		"DATA=%x\n"
+-		"CS_BASE=%x\n",
+-		oinfo->gpmc_base, oinfo->gpmc_command,
+-		oinfo->gpmc_address, oinfo->gpmc_data, cs_base);
+-
+-	/* If we are 16 bit dev, our gpmc config tells us that */
+-	if ((readl(cs_base) & 0x3000) == 0x1000) {
+-		debug("16 bit dev\n");
+-		nand->options |= NAND_BUSWIDTH_16;
+-	}
+-
+-	/* Same data register for in and out */
+-	nand->IO_ADDR_W = nand->IO_ADDR_R = (void *)oinfo->gpmc_data;
+-	/*
+-	 * If RDY/BSY line is connected to OMAP then use the omap ready
+-	 * function and the generic nand_wait function which reads the
+-	 * status register after monitoring the RDY/BSY line. Otherwise
+-	 * use a standard chip delay which is slightly more than tR
+-	 * (AC Timing) of the NAND device and read the status register
+-	 * until you get a failure or success
+-	 */
+-	if (pdata->wait_mon_pin > 4) {
+-		gpmcnand_err("Invalid wait monitoring pin\n");
+-		err = -EINVAL;
+-		goto out_release_mem;
+-	}
+-	if (pdata->wait_mon_pin) {
+-		/* Set up the wait monitoring mask
+-		 * This is GPMC_STATUS reg relevant */
+-		oinfo->wait_mon_mask = (0x1 << (pdata->wait_mon_pin - 1)) << 8;
+-		oinfo->wait_pol = (pdata->plat_options & NAND_WAITPOL_MASK);
+-		nand->dev_ready = omap_dev_ready;
+-		nand->chip_delay = 0;
+-	} else {
+-		/* use the default nand_wait function */
+-		nand->chip_delay = 50;
+-	}
+-
+-	/* Use default cmdfunc */
+-	/* nand cmd control */
+-	nand->cmd_ctrl = omap_hwcontrol;
+-
+-	/* Dont do a bbt scan at the start */
+-	nand->options |= NAND_SKIP_BBTSCAN;
+-
+-	/* State my controller */
+-	nand->controller = &oinfo->controller;
+-
+-	/* if a different placement scheme is requested */
+-	if (pdata->oob)
+-		nand->ecc.layout = pdata->oob;
+-
+-#ifdef CONFIG_NAND_OMAP_GPMC_HWECC
+-	if (pdata->plat_options & NAND_HWECC_ENABLE) {
+-		/* Program how many columns we expect+
+-		 * enable the cs we want and enable the engine
+-		 */
+-		oinfo->ecc_config = (pdata->cs << 1) |
+-		    ((nand->options & NAND_BUSWIDTH_16) ?
+-		     (0x1 << 7) : 0x0) | 0x1;
+-		nand->ecc.hwctl = omap_enable_hwecc;
+-		nand->ecc.calculate = omap_calculate_ecc;
+-		nand->ecc.correct = omap_correct_data;
+-		nand->ecc.mode = NAND_ECC_HW;
+-		nand->ecc.size = 512;
+-		nand->ecc.bytes = 3;
+-		nand->ecc.steps = nand->ecc.layout->eccbytes / nand->ecc.bytes;
+-		oinfo->ecc_parity_pairs = 12;
+-	} else
+-#endif
+-		nand->ecc.mode = NAND_ECC_SOFT;
+-
+-	/* All information is ready.. now lets call setup, if present */
+-	if (pdata->nand_setup) {
+-		err = pdata->nand_setup(pdata);
+-		if (err) {
+-			gpmcnand_err("pdataform setup failed\n");
+-			goto out_release_mem;
+-		}
+-	}
+-	/* Remove write protection */
+-	gpmc_nand_wp(oinfo, 0);
+-
+-	/* we do not know what state of device we have is, so
+-	 * Send a reset to the device
+-	 * 8 bit write will work on 16 and 8 bit devices
+-	 */
+-	writeb(NAND_CMD_RESET, oinfo->gpmc_command);
+-	mdelay(1);
+-
+-	/* In normal mode, we scan to get just the device
+-	 * presence and then to get the device geometry
+-	 */
+-	if (nand_scan(minfo, 1)) {
+-		gpmcnand_err("device scan failed\n");
+-		err = -ENXIO;
+-		goto out_release_mem;
+-	}
+-
+-	/* We are all set to register with the system now! */
+-	err = add_mtd_device(minfo);
+-	if (err) {
+-		gpmcnand_err("device registration failed\n");
+-		goto out_release_mem;
+-	}
+-	return 0;
+-
+-out_release_mem:
+-	if (oinfo)
+-		free(oinfo);
+-
+-	gpmcnand_err("Failed!!\n");
+-	return err;
+-}
+-
+-/** GMPC nand driver -> device registered by platforms */
+-static struct driver_d gpmc_nand_driver = {
+-	.name = "gpmc_nand",
+-	.probe = gpmc_nand_probe,
+-};
+-
+-static int gpmc_nand_init(void)
+-{
+-	return register_driver(&gpmc_nand_driver);
+-}
+-
+-device_initcall(gpmc_nand_init);
+diff --git a/drivers/nand/nand_s3c2410.c b/drivers/nand/nand_s3c2410.c
+deleted file mode 100644
+index b989583..0000000
+--- a/drivers/nand/nand_s3c2410.c
++++ /dev/null
+@@ -1,525 +0,0 @@
+-/* linux/drivers/mtd/nand/s3c2410.c
+- *
+- * Copyright (C) 2009 Juergen Beisert, Pengutronix
+- *
+- * Copyright �� 2004-2008 Simtec Electronics
+- *	http://armlinux.simtec.co.uk/
+- *	Ben Dooks <ben@simtec.co.uk>
+- *
+- * Samsung S3C2410 NAND driver
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+-*/
+-
+-#include <config.h>
+-#include <common.h>
+-#include <driver.h>
+-#include <malloc.h>
+-#include <init.h>
+-#include <linux/mtd/mtd.h>
+-#include <linux/mtd/nand.h>
+-#include <mach/s3c24xx-generic.h>
+-#include <mach/s3c24x0-iomap.h>
+-#include <mach/s3c24x0-nand.h>
+-#include <asm/io.h>
+-#include <asm-generic/errno.h>
+-
+-#ifdef CONFIG_S3C24XX_NAND_BOOT
+-# define __nand_boot_init __bare_init
+-# ifndef BOARD_DEFAULT_NAND_TIMING
+-#  define BOARD_DEFAULT_NAND_TIMING 0x0737
+-# endif
+-#else
+-# define __nand_boot_init
+-#endif
+-
+-/**
+- * Define this symbol for testing purpose. It will add a command to read an
+- * image from the NAND like it the boot strap code will do.
+- */
+-#define CONFIG_NAND_S3C24XX_BOOT_DEBUG
+-
+-/* NAND controller's register */
+-
+-#define NFCONF 0x00
+-
+-#ifdef CONFIG_CPU_S3C2410
+-
+-#define NFCMD 0x04
+-#define NFADDR 0x08
+-#define NFDATA 0x0c
+-#define NFSTAT 0x10
+-#define NFECC 0x14
+-
+-/* S3C2410 specific bits */
+-#define NFSTAT_BUSY (1)
+-#define NFCONF_nFCE (1 << 11)
+-#define NFCONF_INITECC (1 << 12)
+-#define NFCONF_EN (1 << 15)
+-
+-#endif	/* CONFIG_CPU_S3C2410 */
+-
+-#ifdef CONFIG_CPU_S3C2440
+-
+-#define NFCONT 0x04
+-#define NFCMD 0x08
+-#define NFADDR 0x0C
+-#define NFDATA 0x10
+-
+-#define NFECC 0x1C
+-#define NFSTAT 0x20
+-
+-/* S3C2440 specific bits */
+-#define NFSTAT_BUSY (1)
+-#define NFCONT_nFCE (1 << 1)
+-#define NFCONF_INITECC (1 << 12)
+-#define NFCONT_EN (1)
+-
+-#endif	/* CONFIG_CPU_S3C2440 */
+-
+-
+-struct s3c24x0_nand_host {
+-	struct mtd_info		mtd;
+-	struct nand_chip	nand;
+-	struct mtd_partition	*parts;
+-	struct device_d		*dev;
+-
+-	unsigned long		base;
+-};
+-
+-/**
+- * oob placement block for use with hardware ecc generation
+- */
+-static struct nand_ecclayout nand_hw_eccoob = {
+-	.eccbytes = 3,
+-	.eccpos = { 0, 1, 2},
+-	.oobfree = {
+-		{
+-			.offset = 8,
+-			.length = 8
+-		}
+-	}
+-};
+-
+-/* - Functions shared between the boot strap code and the regular driver - */
+-
+-/**
+- * Issue the specified command to the NAND device
+- * @param[in] host Base address of the NAND controller
+- * @param[in] cmd Command for NAND flash
+- */
+-static void __nand_boot_init send_cmd(unsigned long host, uint8_t cmd)
+-{
+-	writeb(cmd, host + NFCMD);
+-}
+-
+-/**
+- * Issue the specified address to the NAND device
+- * @param[in] host Base address of the NAND controller
+- * @param[in] addr Address for the NAND flash
+- */
+-static void __nand_boot_init send_addr(unsigned long host, uint8_t addr)
+-{
+-	writeb(addr, host + NFADDR);
+-}
+-
+-/**
+- * Enable the NAND flash access
+- * @param[in] host Base address of the NAND controller
+- */
+-static void __nand_boot_init enable_cs(unsigned long host)
+-{
+-#ifdef CONFIG_CPU_S3C2410
+-	writew(readw(host + NFCONF) & ~NFCONF_nFCE, host + NFCONF);
+-#endif
+-#ifdef CONFIG_CPU_S3C2440
+-	writew(readw(host + NFCONT) & ~NFCONT_nFCE, host + NFCONT);
+-#endif
+-}
+-
+-/**
+- * Disable the NAND flash access
+- * @param[in] host Base address of the NAND controller
+- */
+-static void __nand_boot_init disable_cs(unsigned long host)
+-{
+-#ifdef CONFIG_CPU_S3C2410
+-	writew(readw(host + NFCONF) | NFCONF_nFCE, host + NFCONF);
+-#endif
+-#ifdef CONFIG_CPU_S3C2440
+-	writew(readw(host + NFCONT) | NFCONT_nFCE, host + NFCONT);
+-#endif
+-}
+-
+-/**
+- * Enable the NAND flash controller
+- * @param[in] host Base address of the NAND controller
+- * @param[in] timing Timing to access the NAND memory
+- */
+-static void __nand_boot_init enable_nand_controller(unsigned long host, uint32_t timing)
+-{
+-#ifdef CONFIG_CPU_S3C2410
+-	writew(timing + NFCONF_EN + NFCONF_nFCE, host + NFCONF);
+-#endif
+-#ifdef CONFIG_CPU_S3C2440
+-	writew(NFCONT_EN + NFCONT_nFCE, host + NFCONT);
+-	writew(timing, host + NFCONF);
+-#endif
+-}
+-
+-/**
+- * Diable the NAND flash controller
+- * @param[in] host Base address of the NAND controller
+- */
+-static void __nand_boot_init disable_nand_controller(unsigned long host)
+-{
+-#ifdef CONFIG_CPU_S3C2410
+-	writew(NFCONF_nFCE, host + NFCONF);
+-#endif
+-#ifdef CONFIG_CPU_S3C2440
+-	writew(NFCONT_nFCE, host + NFCONT);
+-#endif
+-}
+-
+-/* ----------------------------------------------------------------------- */
+-
+-/**
+- * Check the ECC and try to repair the data if possible
+- * @param[in] mtd_info FIXME
+- * @param[inout] dat Pointer to the data buffer that might contain a bit error
+- * @param[in] read_ecc ECC data from the OOB space
+- * @param[in] calc_ecc ECC data calculated from the data
+- * @return 0 no error, 1 repaired error, -1 no way...
+- *
+- * @note: Alsways 512 byte of data
+- */
+-static int s3c2410_nand_correct_data(struct mtd_info *mtd, uint8_t *dat,
+-				uint8_t *read_ecc, uint8_t *calc_ecc)
+-{
+-	unsigned int diff0, diff1, diff2;
+-	unsigned int bit, byte;
+-
+-	diff0 = read_ecc[0] ^ calc_ecc[0];
+-	diff1 = read_ecc[1] ^ calc_ecc[1];
+-	diff2 = read_ecc[2] ^ calc_ecc[2];
+-
+-	if (diff0 == 0 && diff1 == 0 && diff2 == 0)
+-		return 0;		/* ECC is ok */
+-
+-	/* sometimes people do not think about using the ECC, so check
+-	 * to see if we have an 0xff,0xff,0xff read ECC and then ignore
+-	 * the error, on the assumption that this is an un-eccd page.
+-	 */
+-	if (read_ecc[0] == 0xff && read_ecc[1] == 0xff && read_ecc[2] == 0xff
+-		/* && info->platform->ignore_unset_ecc */)
+-		return 0;
+-
+-	/* Can we correct this ECC (ie, one row and column change).
+-	 * Note, this is similar to the 256 error code on smartmedia */
+-
+-	if (((diff0 ^ (diff0 >> 1)) & 0x55) == 0x55 &&
+-	    ((diff1 ^ (diff1 >> 1)) & 0x55) == 0x55 &&
+-	    ((diff2 ^ (diff2 >> 1)) & 0x55) == 0x55) {
+-		/* calculate the bit position of the error */
+-
+-		bit  = ((diff2 >> 3) & 1) |
+-		       ((diff2 >> 4) & 2) |
+-		       ((diff2 >> 5) & 4);
+-
+-		/* calculate the byte position of the error */
+-
+-		byte = ((diff2 << 7) & 0x100) |
+-		       ((diff1 << 0) & 0x80)  |
+-		       ((diff1 << 1) & 0x40)  |
+-		       ((diff1 << 2) & 0x20)  |
+-		       ((diff1 << 3) & 0x10)  |
+-		       ((diff0 >> 4) & 0x08)  |
+-		       ((diff0 >> 3) & 0x04)  |
+-		       ((diff0 >> 2) & 0x02)  |
+-		       ((diff0 >> 1) & 0x01);
+-
+-		dat[byte] ^= (1 << bit);
+-		return 1;
+-	}
+-
+-	/* if there is only one bit difference in the ECC, then
+-	 * one of only a row or column parity has changed, which
+-	 * means the error is most probably in the ECC itself */
+-
+-	diff0 |= (diff1 << 8);
+-	diff0 |= (diff2 << 16);
+-
+-	if ((diff0 & ~(1<<fls(diff0))) == 0)
+-		return 1;
+-
+-	return -1;
+-}
+-
+-static void s3c2410_nand_enable_hwecc(struct mtd_info *mtd, int mode)
+-{
+-	struct nand_chip *nand_chip = mtd->priv;
+-	struct s3c24x0_nand_host *host = nand_chip->priv;
+-
+-	writel(readl(host->base + NFCONF) | NFCONF_INITECC , host->base + NFCONF);
+-}
+-
+-static int s3c2410_nand_calculate_ecc(struct mtd_info *mtd, const uint8_t *dat, uint8_t *ecc_code)
+-{
+-	struct nand_chip *nand_chip = mtd->priv;
+-	struct s3c24x0_nand_host *host = nand_chip->priv;
+-
+-	ecc_code[0] = readb(host->base + NFECC);
+-	ecc_code[1] = readb(host->base + NFECC + 1);
+-	ecc_code[2] = readb(host->base + NFECC + 2);
+-
+-	return 0;
+-}
+-
+-static void s3c24x0_nand_select_chip(struct mtd_info *mtd, int chip)
+-{
+-	struct nand_chip *nand_chip = mtd->priv;
+-	struct s3c24x0_nand_host *host = nand_chip->priv;
+-
+-	if (chip == -1)
+-		disable_cs(host->base);
+-	else
+-		enable_cs(host->base);
+-}
+-
+-static int s3c24x0_nand_devready(struct mtd_info *mtd)
+-{
+-	struct nand_chip *nand_chip = mtd->priv;
+-	struct s3c24x0_nand_host *host = nand_chip->priv;
+-
+-	return readw(host->base + NFSTAT) & NFSTAT_BUSY;
+-}
+-
+-static void s3c24x0_nand_hwcontrol(struct mtd_info *mtd, int cmd,
+-					unsigned int ctrl)
+-{
+-	struct nand_chip *nand_chip = mtd->priv;
+-	struct s3c24x0_nand_host *host = nand_chip->priv;
+-
+-	if (cmd == NAND_CMD_NONE)
+-		return;
+-	/*
+-	* If the CLE should be active, this call is a NAND command
+-	*/
+-	if (ctrl & NAND_CLE)
+-		send_cmd(host->base, cmd);
+-	/*
+-	* If the ALE should be active, this call is a NAND address
+-	*/
+-	if (ctrl & NAND_ALE)
+-		send_addr(host->base, cmd);
+-}
+-
+-static int s3c24x0_nand_inithw(struct s3c24x0_nand_host *host)
+-{
+-	struct s3c24x0_nand_platform_data *pdata = host->dev->platform_data;
+-	uint32_t tmp;
+-
+-	/* reset the NAND controller */
+-	disable_nand_controller(host->base);
+-
+-	if (pdata != NULL)
+-		tmp = pdata->nand_timing;
+-	else
+-		/* else slowest possible timing */
+-		tmp = CALC_NFCONF_TIMING(4, 8, 8);
+-
+-	/* reenable the NAND controller */
+-	enable_nand_controller(host->base, tmp);
+-
+-	return 0;
+-}
+-
+-static int s3c24x0_nand_probe(struct device_d *dev)
+-{
+-	struct nand_chip *chip;
+-	struct mtd_info *mtd;
+-	struct s3c24x0_nand_host *host;
+-	int ret;
+-
+-	/* Allocate memory for MTD device structure and private data */
+-	host = kzalloc(sizeof(struct s3c24x0_nand_host), GFP_KERNEL);
+-	if (!host)
+-		return -ENOMEM;
+-
+-	host->dev = dev;
+-	host->base = dev->map_base;
+-
+-	/* structures must be linked */
+-	chip = &host->nand;
+-	mtd = &host->mtd;
+-	mtd->priv = chip;
+-
+-	/* init the default settings */
+-#if 0
+-	/* TODO: Will follow later */
+-	init_nand_chip_bw8(chip);
+-#endif
+-	/* 50 us command delay time */
+-	chip->chip_delay = 50;
+-	chip->priv = host;
+-
+-	chip->IO_ADDR_R = chip->IO_ADDR_W = (void*)(dev->map_base + NFDATA);
+-
+-	chip->cmd_ctrl = s3c24x0_nand_hwcontrol;
+-	chip->dev_ready = s3c24x0_nand_devready;
+-	chip->select_chip = s3c24x0_nand_select_chip;
+-
+-	/* we are using the hardware ECC feature of this device */
+-	chip->ecc.calculate = s3c2410_nand_calculate_ecc;
+-	chip->ecc.correct = s3c2410_nand_correct_data;
+-	chip->ecc.hwctl = s3c2410_nand_enable_hwecc;
+-	chip->ecc.calculate = s3c2410_nand_calculate_ecc;
+-
+-	/* our hardware capabilities */
+-	chip->ecc.mode = NAND_ECC_HW;
+-	chip->ecc.size = 512;
+-	chip->ecc.bytes = 3;
+-	chip->ecc.layout = &nand_hw_eccoob;
+-
+-	ret = s3c24x0_nand_inithw(host);
+-	if (ret != 0)
+-		goto on_error;
+-
+-	/* Scan to find existence of the device */
+-	ret = nand_scan(mtd, 1);
+-	if (ret != 0) {
+-		ret = -ENXIO;
+-		goto on_error;
+-	}
+-
+-	return add_mtd_device(mtd);
+-	
+-on_error:
+-	free(host);
+-	return ret;
+-}
+-
+-static struct driver_d s3c24x0_nand_driver = {
+-	.name  = "s3c24x0_nand",
+-	.probe = s3c24x0_nand_probe,
+-};
+-
+-#ifdef CONFIG_S3C24XX_NAND_BOOT
+-
+-static void __nand_boot_init wait_for_completion(unsigned long host)
+-{
+-	while (!(readw(host + NFSTAT) & NFSTAT_BUSY))
+-		;
+-}
+-
+-static void __nand_boot_init nfc_addr(unsigned long host, uint32_t offs)
+-{
+-	send_addr(host, offs & 0xff);
+-	send_addr(host, (offs >> 9) & 0xff);
+-	send_addr(host, (offs >> 17) & 0xff);
+-	send_addr(host, (offs >> 25) & 0xff);
+-}
+-
+-/**
+- * Load a sequential count of blocks from the NAND into memory
+- * @param[out] dest Pointer to target area (in SDRAM)
+- * @param[in] size Bytes to read from NAND device
+- * @param[in] page Start page to read from
+- * @param[in] pagesize Size of each page in the NAND
+- *
+- * This function must be located in the first 4kiB of the barebox image
+- * (guess why). When this routine is running the SDRAM is up and running
+- * and it runs from the correct address (physical=linked address).
+- * TODO Could we access the platform data from the boardfile?
+- * Due to it makes no sense this function does not return in case of failure.
+- */
+-void __nand_boot_init s3c24x0_nand_load_image(void *dest, int size, int page, int pagesize)
+-{
+-	unsigned long host = S3C24X0_NAND_BASE;
+-	int i;
+-
+-	/*
+-	 * Reenable the NFC and use the default (but slow) access
+-	 * timing or the board specific setting if provided.
+-	 */
+-	enable_nand_controller(host, BOARD_DEFAULT_NAND_TIMING);
+-	enable_cs(host);
+-
+-	/* Reset the NAND device */
+-	send_cmd(host, NAND_CMD_RESET);
+-	wait_for_completion(host);
+-	disable_cs(host);
+-
+-	do {
+-		enable_cs(host);
+-		send_cmd(host, NAND_CMD_READ0);
+-		nfc_addr(host, page * pagesize);
+-		wait_for_completion(host);
+-		/* copy one page (do *not* use readsb() here!)*/
+-		for (i = 0; i < pagesize; i++)
+-			writeb(readb(host + NFDATA), (unsigned long)(dest + i));
+-		disable_cs(host);
+-
+-		page++;
+-		dest += pagesize;
+-		size -= pagesize;
+-	} while (size >= 0);
+-
+-	/* disable the controller again */
+-	disable_nand_controller(host);
+-}
+-
+-#ifdef CONFIG_NAND_S3C24XX_BOOT_DEBUG
+-#include <command.h>
+-
+-static int do_nand_boot_test(struct command *cmdtp, int argc, char *argv[])
+-{
+-	void *dest;
+-	int size, pagesize;
+-
+-	if (argc < 3)
+-		return COMMAND_ERROR_USAGE;
+-
+-	dest = (void *)strtoul_suffix(argv[1], NULL, 0);
+-	size = strtoul_suffix(argv[2], NULL, 0);
+-	pagesize = strtoul_suffix(argv[3], NULL, 0);
+-
+-	s3c24x0_nand_load_image(dest, size, 0, pagesize);
+-
+-	return 0;
+-}
+-
+-static const __maybe_unused char cmd_nand_boot_test_help[] =
+-"Usage: nand_boot_test <dest> <size> <pagesize>\n";
+-
+-BAREBOX_CMD_START(nand_boot_test)
+-	.cmd		= do_nand_boot_test,
+-	.usage		= "load an image from NAND",
+-	BAREBOX_CMD_HELP(cmd_nand_boot_test_help)
+-BAREBOX_CMD_END
+-#endif
+-
+-#endif /* CONFIG_S3C24XX_NAND_BOOT */
+-
+-/*
+- * Main initialization routine
+- * @return 0 if successful; non-zero otherwise
+- */
+-static int __init s3c24x0_nand_init(void)
+-{
+-	return register_driver(&s3c24x0_nand_driver);
+-}
+-
+-device_initcall(s3c24x0_nand_init);
+diff --git a/drivers/nand/nand_util.c b/drivers/nand/nand_util.c
+deleted file mode 100644
+index d57294e..0000000
+--- a/drivers/nand/nand_util.c
++++ /dev/null
+@@ -1,858 +0,0 @@
+-/*
+- * drivers/nand/nand_util.c
+- *
+- * Copyright (C) 2006 by Weiss-Electronic GmbH.
+- * All rights reserved.
+- *
+- * @author:	Guido Classen <clagix@gmail.com>
+- * @descr:	NAND Flash support
+- * @references: borrowed heavily from Linux mtd-utils code:
+- *		flash_eraseall.c by Arcom Control System Ltd
+- *		nandwrite.c by Steven J. Hill (sjhill@realitydiluted.com)
+- *			       and Thomas Gleixner (tglx@linutronix.de)
+- *
+- * See file CREDITS for list of people who contributed to this
+- * project.
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License version
+- * 2 as published by the Free Software Foundation.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+- * MA 02111-1307 USA
+- *
+- */
+-
+-#include <common.h>
+-#include <command.h>
+-#include <watchdog.h>
+-#include <malloc.h>
+-
+-#include <nand.h>
+-//#include <jffs2/jffs2.h>
+-
+-typedef struct erase_info erase_info_t;
+-typedef struct mtd_info	  mtd_info_t;
+-
+-/* support only for native endian JFFS2 */
+-#define cpu_to_je16(x) (x)
+-#define cpu_to_je32(x) (x)
+-
+-/*****************************************************************************/
+-static int nand_block_bad_scrub(struct mtd_info *mtd, loff_t ofs, int getchip)
+-{
+-	return 0;
+-}
+-
+-/**
+- * nand_erase_opts: - erase NAND flash with support for various options
+- *		      (jffs2 formating)
+- *
+- * @param meminfo	NAND device to erase
+- * @param opts		options,  @see struct nand_erase_options
+- * @return		0 in case of success
+- *
+- * This code is ported from flash_eraseall.c from Linux mtd utils by
+- * Arcom Control System Ltd.
+- */
+-int nand_erase_opts(nand_info_t *meminfo, const nand_erase_options_t *opts)
+-{
+-	struct jffs2_unknown_node cleanmarker;
+-	int clmpos = 0;
+-	int clmlen = 8;
+-	erase_info_t erase;
+-	ulong erase_length;
+-	int isNAND;
+-	int bbtest = 1;
+-	int result;
+-	int percent_complete = -1;
+-	int (*nand_block_bad_old)(struct mtd_info *, loff_t, int) = NULL;
+-	const char *mtd_device = meminfo->name;
+-
+-	memset(&erase, 0, sizeof(erase));
+-
+-	erase.mtd = meminfo;
+-	erase.len  = meminfo->erasesize;
+-	erase.addr = opts->offset;
+-	erase_length = opts->length;
+-
+-	isNAND = meminfo->type == MTD_NANDFLASH ? 1 : 0;
+-
+-	if (opts->jffs2) {
+-		cleanmarker.magic = cpu_to_je16 (JFFS2_MAGIC_BITMASK);
+-		cleanmarker.nodetype = cpu_to_je16 (JFFS2_NODETYPE_CLEANMARKER);
+-		if (isNAND) {
+-			struct nand_oobinfo *oobinfo = &meminfo->oobinfo;
+-
+-			/* check for autoplacement */
+-			if (oobinfo->useecc == MTD_NANDECC_AUTOPLACE) {
+-				/* get the position of the free bytes */
+-				if (!oobinfo->oobfree[0][1]) {
+-					printf(" Eeep. Autoplacement selected "
+-					       "and no empty space in oob\n");
+-					return -1;
+-				}
+-				clmpos = oobinfo->oobfree[0][0];
+-				clmlen = oobinfo->oobfree[0][1];
+-				if (clmlen > 8)
+-					clmlen = 8;
+-			} else {
+-				/* legacy mode */
+-				switch (meminfo->oobsize) {
+-				case 8:
+-					clmpos = 6;
+-					clmlen = 2;
+-					break;
+-				case 16:
+-					clmpos = 8;
+-					clmlen = 8;
+-					break;
+-				case 64:
+-					clmpos = 16;
+-					clmlen = 8;
+-					break;
+-				}
+-			}
+-
+-			cleanmarker.totlen = cpu_to_je32(8);
+-		} else {
+-			cleanmarker.totlen =
+-				cpu_to_je32(sizeof(struct jffs2_unknown_node));
+-		}
+-		cleanmarker.hdr_crc =  cpu_to_je32(
+-			crc32_no_comp(0, (unsigned char *) &cleanmarker,
+-				      sizeof(struct jffs2_unknown_node) - 4));
+-	}
+-
+-	/* scrub option allows to erase badblock. To prevent internal
+-	 * check from erase() method, set block check method to dummy
+-	 * and disable bad block table while erasing.
+-	 */
+-	if (opts->scrub) {
+-		struct nand_chip *priv_nand = meminfo->priv;
+-
+-		nand_block_bad_old = priv_nand->block_bad;
+-		priv_nand->block_bad = nand_block_bad_scrub;
+-		/* we don't need the bad block table anymore...
+-		 * after scrub, there are no bad blocks left!
+-		 */
+-		if (priv_nand->bbt) {
+-			kfree(priv_nand->bbt);
+-		}
+-		priv_nand->bbt = NULL;
+-	}
+-
+-	for (;
+-	     erase.addr < opts->offset + erase_length;
+-	     erase.addr += meminfo->erasesize) {
+-
+-		WATCHDOG_RESET ();
+-
+-		if (!opts->scrub && bbtest) {
+-			int ret = meminfo->block_isbad(meminfo, erase.addr);
+-			if (ret > 0) {
+-				if (!opts->quiet)
+-					printf("\rSkipping bad block at  "
+-					       "0x%08x                   "
+-					       "                         \n",
+-					       erase.addr);
+-				continue;
+-
+-			} else if (ret < 0) {
+-				printf("\n%s: MTD get bad block failed: %d\n",
+-				       mtd_device,
+-				       ret);
+-				return -1;
+-			}
+-		}
+-
+-		result = meminfo->erase(meminfo, &erase);
+-		if (result != 0) {
+-			printf("\n%s: MTD Erase failure: %d\n",
+-			       mtd_device, result);
+-			continue;
+-		}
+-
+-		/* format for JFFS2 ? */
+-		if (opts->jffs2) {
+-
+-			/* write cleanmarker */
+-			if (isNAND) {
+-				size_t written;
+-				result = meminfo->write_oob(meminfo,
+-							    erase.addr + clmpos,
+-							    clmlen,
+-							    &written,
+-							    (unsigned char *)
+-							    &cleanmarker);
+-				if (result != 0) {
+-					printf("\n%s: MTD writeoob failure: %d\n",
+-					       mtd_device, result);
+-					continue;
+-				}
+-			} else {
+-				printf("\n%s: this erase routine only supports"
+-				       " NAND devices!\n",
+-				       mtd_device);
+-			}
+-		}
+-
+-		if (!opts->quiet) {
+-			int percent = (int)
+-				((unsigned long long)
+-				 (erase.addr+meminfo->erasesize-opts->offset)
+-				 * 100 / erase_length);
+-
+-			/* output progress message only at whole percent
+-			 * steps to reduce the number of messages printed
+-			 * on (slow) serial consoles
+-			 */
+-			if (percent != percent_complete) {
+-				percent_complete = percent;
+-
+-				printf("\rErasing at 0x%x -- %3d%% complete.",
+-				       erase.addr, percent);
+-
+-				if (opts->jffs2 && result == 0)
+-					printf(" Cleanmarker written at 0x%x.",
+-					       erase.addr);
+-			}
+-		}
+-	}
+-	if (!opts->quiet)
+-		printf("\n");
+-
+-	if (nand_block_bad_old) {
+-		struct nand_chip *priv_nand = meminfo->priv;
+-
+-		priv_nand->block_bad = nand_block_bad_old;
+-		priv_nand->scan_bbt(meminfo);
+-	}
+-
+-	return 0;
+-}
+-
+-#define MAX_PAGE_SIZE	2048
+-#define MAX_OOB_SIZE	64
+-
+-/*
+- * buffer array used for writing data
+- */
+-static unsigned char data_buf[MAX_PAGE_SIZE];
+-static unsigned char oob_buf[MAX_OOB_SIZE];
+-
+-/* OOB layouts to pass into the kernel as default */
+-static struct nand_oobinfo none_oobinfo = {
+-	.useecc = MTD_NANDECC_OFF,
+-};
+-
+-static struct nand_oobinfo jffs2_oobinfo = {
+-	.useecc = MTD_NANDECC_PLACE,
+-	.eccbytes = 6,
+-	.eccpos = { 0, 1, 2, 3, 6, 7 }
+-};
+-
+-static struct nand_oobinfo yaffs_oobinfo = {
+-	.useecc = MTD_NANDECC_PLACE,
+-	.eccbytes = 6,
+-	.eccpos = { 8, 9, 10, 13, 14, 15}
+-};
+-
+-static struct nand_oobinfo autoplace_oobinfo = {
+-	.useecc = MTD_NANDECC_AUTOPLACE
+-};
+-
+-/**
+- * nand_write_opts: - write image to NAND flash with support for various options
+- *
+- * @param meminfo	NAND device to erase
+- * @param opts		write options (@see nand_write_options)
+- * @return		0 in case of success
+- *
+- * This code is ported from nandwrite.c from Linux mtd utils by
+- * Steven J. Hill and Thomas Gleixner.
+- */
+-int nand_write_opts(nand_info_t *meminfo, const nand_write_options_t *opts)
+-{
+-	int imglen = 0;
+-	int pagelen;
+-	int baderaseblock;
+-	int blockstart = -1;
+-	loff_t offs;
+-	int readlen;
+-	int oobinfochanged = 0;
+-	int percent_complete = -1;
+-	struct nand_oobinfo old_oobinfo;
+-	ulong mtdoffset = opts->offset;
+-	ulong erasesize_blockalign;
+-	u_char *buffer = opts->buffer;
+-	size_t written;
+-	int result;
+-
+-	if (opts->pad && opts->writeoob) {
+-		printf("Can't pad when oob data is present.\n");
+-		return -1;
+-	}
+-
+-	/* set erasesize to specified number of blocks - to match
+-	 * jffs2 (virtual) block size */
+-	if (opts->blockalign == 0) {
+-		erasesize_blockalign = meminfo->erasesize;
+-	} else {
+-		erasesize_blockalign = meminfo->erasesize * opts->blockalign;
+-	}
+-
+-	/* make sure device page sizes are valid */
+-	if (!(meminfo->oobsize == 16 && meminfo->oobblock == 512)
+-	    && !(meminfo->oobsize == 8 && meminfo->oobblock == 256)
+-	    && !(meminfo->oobsize == 64 && meminfo->oobblock == 2048)) {
+-		printf("Unknown flash (not normal NAND)\n");
+-		return -1;
+-	}
+-
+-	/* read the current oob info */
+-	memcpy(&old_oobinfo, &meminfo->oobinfo, sizeof(old_oobinfo));
+-
+-	/* write without ecc? */
+-	if (opts->noecc) {
+-		memcpy(&meminfo->oobinfo, &none_oobinfo,
+-		       sizeof(meminfo->oobinfo));
+-		oobinfochanged = 1;
+-	}
+-
+-	/* autoplace ECC? */
+-	if (opts->autoplace && (old_oobinfo.useecc != MTD_NANDECC_AUTOPLACE)) {
+-
+-		memcpy(&meminfo->oobinfo, &autoplace_oobinfo,
+-		       sizeof(meminfo->oobinfo));
+-		oobinfochanged = 1;
+-	}
+-
+-	/* force OOB layout for jffs2 or yaffs? */
+-	if (opts->forcejffs2 || opts->forceyaffs) {
+-		struct nand_oobinfo *oobsel =
+-			opts->forcejffs2 ? &jffs2_oobinfo : &yaffs_oobinfo;
+-
+-		if (meminfo->oobsize == 8) {
+-			if (opts->forceyaffs) {
+-				printf("YAFSS cannot operate on "
+-				       "256 Byte page size\n");
+-				goto restoreoob;
+-			}
+-			/* Adjust number of ecc bytes */
+-			jffs2_oobinfo.eccbytes = 3;
+-		}
+-
+-		memcpy(&meminfo->oobinfo, oobsel, sizeof(meminfo->oobinfo));
+-	}
+-
+-	/* get image length */
+-	imglen = opts->length;
+-	pagelen = meminfo->oobblock
+-		+ ((opts->writeoob != 0) ? meminfo->oobsize : 0);
+-
+-	/* check, if file is pagealigned */
+-	if ((!opts->pad) && ((imglen % pagelen) != 0)) {
+-		printf("Input block length is not page aligned\n");
+-		goto restoreoob;
+-	}
+-
+-	/* check, if length fits into device */
+-	if (((imglen / pagelen) * meminfo->oobblock)
+-	     > (meminfo->size - opts->offset)) {
+-		printf("Image %d bytes, NAND page %d bytes, "
+-		       "OOB area %u bytes, device size %u bytes\n",
+-		       imglen, pagelen, meminfo->oobblock, meminfo->size);
+-		printf("Input block does not fit into device\n");
+-		goto restoreoob;
+-	}
+-
+-	if (!opts->quiet)
+-		printf("\n");
+-
+-	/* get data from input and write to the device */
+-	while (imglen && (mtdoffset < meminfo->size)) {
+-
+-		WATCHDOG_RESET ();
+-
+-		/*
+-		 * new eraseblock, check for bad block(s). Stay in the
+-		 * loop to be sure if the offset changes because of
+-		 * a bad block, that the next block that will be
+-		 * written to is also checked. Thus avoiding errors if
+-		 * the block(s) after the skipped block(s) is also bad
+-		 * (number of blocks depending on the blockalign
+-		 */
+-		while (blockstart != (mtdoffset & (~erasesize_blockalign+1))) {
+-			blockstart = mtdoffset & (~erasesize_blockalign+1);
+-			offs = blockstart;
+-			baderaseblock = 0;
+-
+-			/* check all the blocks in an erase block for
+-			 * bad blocks */
+-			do {
+-				int ret = meminfo->block_isbad(meminfo, offs);
+-
+-				if (ret < 0) {
+-					printf("Bad block check failed\n");
+-					goto restoreoob;
+-				}
+-				if (ret == 1) {
+-					baderaseblock = 1;
+-					if (!opts->quiet)
+-						printf("\rBad block at 0x%lx "
+-						       "in erase block from "
+-						       "0x%x will be skipped\n",
+-						       (long) offs,
+-						       blockstart);
+-				}
+-
+-				if (baderaseblock) {
+-					mtdoffset = blockstart
+-						+ erasesize_blockalign;
+-				}
+-				offs +=	 erasesize_blockalign
+-					/ opts->blockalign;
+-			} while (offs < blockstart + erasesize_blockalign);
+-		}
+-
+-		readlen = meminfo->oobblock;
+-		if (opts->pad && (imglen < readlen)) {
+-			readlen = imglen;
+-			memset(data_buf + readlen, 0xff,
+-			       meminfo->oobblock - readlen);
+-		}
+-
+-		/* read page data from input memory buffer */
+-		memcpy(data_buf, buffer, readlen);
+-		buffer += readlen;
+-
+-		if (opts->writeoob) {
+-			/* read OOB data from input memory block, exit
+-			 * on failure */
+-			memcpy(oob_buf, buffer, meminfo->oobsize);
+-			buffer += meminfo->oobsize;
+-
+-			/* write OOB data first, as ecc will be placed
+-			 * in there*/
+-			result = meminfo->write_oob(meminfo,
+-						    mtdoffset,
+-						    meminfo->oobsize,
+-						    &written,
+-						    (unsigned char *)
+-						    &oob_buf);
+-
+-			if (result != 0) {
+-				printf("\nMTD writeoob failure: %d\n",
+-				       result);
+-				goto restoreoob;
+-			}
+-			imglen -= meminfo->oobsize;
+-		}
+-
+-		/* write out the page data */
+-		result = meminfo->write(meminfo,
+-					mtdoffset,
+-					meminfo->oobblock,
+-					&written,
+-					(unsigned char *) &data_buf);
+-
+-		if (result != 0) {
+-			printf("writing NAND page at offset 0x%lx failed\n",
+-			       mtdoffset);
+-			goto restoreoob;
+-		}
+-		imglen -= readlen;
+-
+-		if (!opts->quiet) {
+-			int percent = (int)
+-				((unsigned long long)
+-				 (opts->length-imglen) * 100
+-				 / opts->length);
+-			/* output progress message only at whole percent
+-			 * steps to reduce the number of messages printed
+-			 * on (slow) serial consoles
+-			 */
+-			if (percent != percent_complete) {
+-				printf("\rWriting data at 0x%x "
+-				       "-- %3d%% complete.",
+-				       mtdoffset, percent);
+-				percent_complete = percent;
+-			}
+-		}
+-
+-		mtdoffset += meminfo->oobblock;
+-	}
+-
+-	if (!opts->quiet)
+-		printf("\n");
+-
+-restoreoob:
+-	if (oobinfochanged) {
+-		memcpy(&meminfo->oobinfo, &old_oobinfo,
+-		       sizeof(meminfo->oobinfo));
+-	}
+-
+-	if (imglen > 0) {
+-		printf("Data did not fit into device, due to bad blocks\n");
+-		return -1;
+-	}
+-
+-	/* return happy */
+-	return 0;
+-}
+-
+-/**
+- * nand_read_opts: - read image from NAND flash with support for various options
+- *
+- * @param meminfo	NAND device to erase
+- * @param opts		read options (@see struct nand_read_options)
+- * @return		0 in case of success
+- *
+- */
+-int nand_read_opts(nand_info_t *meminfo, const nand_read_options_t *opts)
+-{
+-	int imglen = opts->length;
+-	int pagelen;
+-	int baderaseblock;
+-	int blockstart = -1;
+-	int percent_complete = -1;
+-	loff_t offs;
+-	size_t readlen;
+-	ulong mtdoffset = opts->offset;
+-	u_char *buffer = opts->buffer;
+-	int result;
+-
+-	/* make sure device page sizes are valid */
+-	if (!(meminfo->oobsize == 16 && meminfo->oobblock == 512)
+-	    && !(meminfo->oobsize == 8 && meminfo->oobblock == 256)
+-	    && !(meminfo->oobsize == 64 && meminfo->oobblock == 2048)) {
+-		printf("Unknown flash (not normal NAND)\n");
+-		return -1;
+-	}
+-
+-	pagelen = meminfo->oobblock
+-		+ ((opts->readoob != 0) ? meminfo->oobsize : 0);
+-
+-	/* check, if length is not larger than device */
+-	if (((imglen / pagelen) * meminfo->oobblock)
+-	     > (meminfo->size - opts->offset)) {
+-		printf("Image %d bytes, NAND page %d bytes, "
+-		       "OOB area %u bytes, device size %u bytes\n",
+-		       imglen, pagelen, meminfo->oobblock, meminfo->size);
+-		printf("Input block is larger than device\n");
+-		return -1;
+-	}
+-
+-	if (!opts->quiet)
+-		printf("\n");
+-
+-	/* get data from input and write to the device */
+-	while (imglen && (mtdoffset < meminfo->size)) {
+-
+-		WATCHDOG_RESET ();
+-
+-		/*
+-		 * new eraseblock, check for bad block(s). Stay in the
+-		 * loop to be sure if the offset changes because of
+-		 * a bad block, that the next block that will be
+-		 * written to is also checked. Thus avoiding errors if
+-		 * the block(s) after the skipped block(s) is also bad
+-		 * (number of blocks depending on the blockalign
+-		 */
+-		while (blockstart != (mtdoffset & (~meminfo->erasesize+1))) {
+-			blockstart = mtdoffset & (~meminfo->erasesize+1);
+-			offs = blockstart;
+-			baderaseblock = 0;
+-
+-			/* check all the blocks in an erase block for
+-			 * bad blocks */
+-			do {
+-				int ret = meminfo->block_isbad(meminfo, offs);
+-
+-				if (ret < 0) {
+-					printf("Bad block check failed\n");
+-					return -1;
+-				}
+-				if (ret == 1) {
+-					baderaseblock = 1;
+-					if (!opts->quiet)
+-						printf("\rBad block at 0x%lx "
+-						       "in erase block from "
+-						       "0x%x will be skipped\n",
+-						       (long) offs,
+-						       blockstart);
+-				}
+-
+-				if (baderaseblock) {
+-					mtdoffset = blockstart
+-						+ meminfo->erasesize;
+-				}
+-				offs +=	 meminfo->erasesize;
+-
+-			} while (offs < blockstart + meminfo->erasesize);
+-		}
+-
+-
+-		/* read page data to memory buffer */
+-		result = meminfo->read(meminfo,
+-				       mtdoffset,
+-				       meminfo->oobblock,
+-				       &readlen,
+-				       (unsigned char *) &data_buf);
+-
+-		if (result != 0) {
+-			printf("reading NAND page at offset 0x%lx failed\n",
+-			       mtdoffset);
+-			return -1;
+-		}
+-
+-		if (imglen < readlen) {
+-			readlen = imglen;
+-		}
+-
+-		memcpy(buffer, data_buf, readlen);
+-		buffer += readlen;
+-		imglen -= readlen;
+-
+-		if (opts->readoob) {
+-			result = meminfo->read_oob(meminfo,
+-						   mtdoffset,
+-						   meminfo->oobsize,
+-						   &readlen,
+-						   (unsigned char *)
+-						   &oob_buf);
+-
+-			if (result != 0) {
+-				printf("\nMTD readoob failure: %d\n",
+-				       result);
+-				return -1;
+-			}
+-
+-
+-			if (imglen < readlen) {
+-				readlen = imglen;
+-			}
+-
+-			memcpy(buffer, oob_buf, readlen);
+-
+-			buffer += readlen;
+-			imglen -= readlen;
+-		}
+-
+-		if (!opts->quiet) {
+-			int percent = (int)
+-				((unsigned long long)
+-				 (opts->length-imglen) * 100
+-				 / opts->length);
+-			/* output progress message only at whole percent
+-			 * steps to reduce the number of messages printed
+-			 * on (slow) serial consoles
+-			 */
+-			if (percent != percent_complete) {
+-			if (!opts->quiet)
+-				printf("\rReading data from 0x%x "
+-				       "-- %3d%% complete.",
+-				       mtdoffset, percent);
+-				percent_complete = percent;
+-			}
+-		}
+-
+-		mtdoffset += meminfo->oobblock;
+-	}
+-
+-	if (!opts->quiet)
+-		printf("\n");
+-
+-	if (imglen > 0) {
+-		printf("Could not read entire image due to bad blocks\n");
+-		return -1;
+-	}
+-
+-	/* return happy */
+-	return 0;
+-}
+-
+-/******************************************************************************
+- * Support for locking / unlocking operations of some NAND devices
+- *****************************************************************************/
+-
+-#define NAND_CMD_LOCK		0x2a
+-#define NAND_CMD_LOCK_TIGHT	0x2c
+-#define NAND_CMD_UNLOCK1	0x23
+-#define NAND_CMD_UNLOCK2	0x24
+-#define NAND_CMD_LOCK_STATUS	0x7a
+-
+-/**
+- * nand_lock: Set all pages of NAND flash chip to the LOCK or LOCK-TIGHT
+- *	      state
+- *
+- * @param meminfo	nand mtd instance
+- * @param tight		bring device in lock tight mode
+- *
+- * @return		0 on success, -1 in case of error
+- *
+- * The lock / lock-tight command only applies to the whole chip. To get some
+- * parts of the chip lock and others unlocked use the following sequence:
+- *
+- * - Lock all pages of the chip using nand_lock(mtd, 0) (or the lockpre pin)
+- * - Call nand_unlock() once for each consecutive area to be unlocked
+- * - If desired: Bring the chip to the lock-tight state using nand_lock(mtd, 1)
+- *
+- *   If the device is in lock-tight state software can't change the
+- *   current active lock/unlock state of all pages. nand_lock() / nand_unlock()
+- *   calls will fail. It is only posible to leave lock-tight state by
+- *   an hardware signal (low pulse on _WP pin) or by power down.
+- */
+-int nand_lock(nand_info_t *meminfo, int tight)
+-{
+-	int ret = 0;
+-	int status;
+-	struct nand_chip *this = meminfo->priv;
+-
+-	/* select the NAND device */
+-	this->select_chip(meminfo, 0);
+-
+-	this->cmdfunc(meminfo,
+-		      (tight ? NAND_CMD_LOCK_TIGHT : NAND_CMD_LOCK),
+-		      -1, -1);
+-
+-	/* call wait ready function */
+-	status = this->waitfunc(meminfo, this, FL_WRITING);
+-
+-	/* see if device thinks it succeeded */
+-	if (status & 0x01) {
+-		ret = -1;
+-	}
+-
+-	/* de-select the NAND device */
+-	this->select_chip(meminfo, -1);
+-	return ret;
+-}
+-
+-/**
+- * nand_get_lock_status: - query current lock state from one page of NAND
+- *			   flash
+- *
+- * @param meminfo	nand mtd instance
+- * @param offset	page address to query (muss be page aligned!)
+- *
+- * @return		-1 in case of error
+- *			>0 lock status:
+- *			  bitfield with the following combinations:
+- *			  NAND_LOCK_STATUS_TIGHT: page in tight state
+- *			  NAND_LOCK_STATUS_LOCK:  page locked
+- *			  NAND_LOCK_STATUS_UNLOCK: page unlocked
+- *
+- */
+-int nand_get_lock_status(nand_info_t *meminfo, ulong offset)
+-{
+-	int ret = 0;
+-	int chipnr;
+-	int page;
+-	struct nand_chip *this = meminfo->priv;
+-
+-	/* select the NAND device */
+-	chipnr = (int)(offset >> this->chip_shift);
+-	this->select_chip(meminfo, chipnr);
+-
+-
+-	if ((offset & (meminfo->oobblock - 1)) != 0) {
+-		printf ("nand_get_lock_status: "
+-			"Start address must be beginning of "
+-			"nand page!\n");
+-		ret = -1;
+-		goto out;
+-	}
+-
+-	/* check the Lock Status */
+-	page = (int)(offset >> this->page_shift);
+-	this->cmdfunc(meminfo, NAND_CMD_LOCK_STATUS, -1, page & this->pagemask);
+-
+-	ret = this->read_byte(meminfo) & (NAND_LOCK_STATUS_TIGHT
+-					  | NAND_LOCK_STATUS_LOCK
+-					  | NAND_LOCK_STATUS_UNLOCK);
+-
+- out:
+-	/* de-select the NAND device */
+-	this->select_chip(meminfo, -1);
+-	return ret;
+-}
+-
+-/**
+- * nand_unlock: - Unlock area of NAND pages
+- *		  only one consecutive area can be unlocked at one time!
+- *
+- * @param meminfo	nand mtd instance
+- * @param start		start byte address
+- * @param length	number of bytes to unlock (must be a multiple of
+- *			page size nand->oobblock)
+- *
+- * @return		0 on success, -1 in case of error
+- */
+-int nand_unlock(nand_info_t *meminfo, ulong start, ulong length)
+-{
+-	int ret = 0;
+-	int chipnr;
+-	int status;
+-	int page;
+-	struct nand_chip *this = meminfo->priv;
+-	printf ("nand_unlock: start: %08x, length: %d!\n",
+-		(int)start, (int)length);
+-
+-	/* select the NAND device */
+-	chipnr = (int)(start >> this->chip_shift);
+-	this->select_chip(meminfo, chipnr);
+-
+-	/* check the WP bit */
+-	this->cmdfunc(meminfo, NAND_CMD_STATUS, -1, -1);
+-	if ((this->read_byte(meminfo) & 0x80) == 0) {
+-		printf ("nand_unlock: Device is write protected!\n");
+-		ret = -1;
+-		goto out;
+-	}
+-
+-	if ((start & (meminfo->oobblock - 1)) != 0) {
+-		printf ("nand_unlock: Start address must be beginning of "
+-			"nand page!\n");
+-		ret = -1;
+-		goto out;
+-	}
+-
+-	if (length == 0 || (length & (meminfo->oobblock - 1)) != 0) {
+-		printf ("nand_unlock: Length must be a multiple of nand page "
+-			"size!\n");
+-		ret = -1;
+-		goto out;
+-	}
+-
+-	/* submit address of first page to unlock */
+-	page = (int)(start >> this->page_shift);
+-	this->cmdfunc(meminfo, NAND_CMD_UNLOCK1, -1, page & this->pagemask);
+-
+-	/* submit ADDRESS of LAST page to unlock */
+-	page += (int)(length >> this->page_shift) - 1;
+-	this->cmdfunc(meminfo, NAND_CMD_UNLOCK2, -1, page & this->pagemask);
+-
+-	/* call wait ready function */
+-	status = this->waitfunc(meminfo, this, FL_WRITING);
+-	/* see if device thinks it succeeded */
+-	if (status & 0x01) {
+-		/* there was an error */
+-		ret = -1;
+-		goto out;
+-	}
+-
+- out:
+-	/* de-select the NAND device */
+-	this->select_chip(meminfo, -1);
+-	return ret;
+-}
+-
 -- 
 1.7.1
 
 
 
---===============1576775509==
+--===============0114612343==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -12088,4 +20442,4 @@ barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
 
---===============1576775509==--
+--===============0114612343==--
