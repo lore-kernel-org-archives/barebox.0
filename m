@@ -1,11 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from tango.tkos.co.il ([62.219.50.35])
-	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OVHvg-0007MF-Lw
-	for barebox@lists.infradead.org; Sun, 04 Jul 2010 05:39:50 +0000
-From: Baruch Siach <baruch@tkos.co.il>
-Date: Sun,  4 Jul 2010 08:39:32 +0300
-Message-Id: <738392b926a79541ab1ca4f1b547b59feabbdbc2.1278221880.git.baruch@tkos.co.il>
+Received: from mail-pw0-f49.google.com ([209.85.160.49])
+	by bombadil.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1OVZAH-00032q-3t
+	for barebox@lists.infradead.org; Mon, 05 Jul 2010 00:04:03 +0000
+Received: by pwj5 with SMTP id 5so2269425pwj.36
+	for <barebox@lists.infradead.org>; Sun, 04 Jul 2010 17:03:59 -0700 (PDT)
+MIME-Version: 1.0
+Date: Mon, 5 Jul 2010 08:03:59 +0800
+Message-ID: <AANLkTinpo0s4FZGsfTMFIgAM8Q4hdcZq5NxY4smk1ohh@mail.gmail.com>
+From: Randolph Chung <rchung42@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,38 +17,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] nand_imx: fix "used uninitialized" warning on mx25
+Subject: [PATCH] Fix typo in commands/gpio.c
 To: barebox@lists.infradead.org
 
-drivers/nand/nand_imx.c: In function 'imx_nand_load_image':
-drivers/nand/nand_imx.c:1074: warning: 'host' is used uninitialized in this function
+Please apply. -randolph
 
-Signed-off-by: Baruch Siach <baruch@tkos.co.il>
----
- drivers/nand/nand_imx.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+diff --git a/commands/gpio.c b/commands/gpio.c
+index 2575c1e..91078cf 100644
+--- a/commands/gpio.c
++++ b/commands/gpio.c
+@@ -37,7 +37,7 @@ static int do_gpio_get_value(struct command *cmdtp, int argc,
+ }
 
-diff --git a/drivers/nand/nand_imx.c b/drivers/nand/nand_imx.c
-index 74cdf10..5454e32 100644
---- a/drivers/nand/nand_imx.c
-+++ b/drivers/nand/nand_imx.c
-@@ -1065,7 +1065,7 @@ void __nand_boot_init imx_nand_load_image(void *dest, int size)
- 	else
- 		host.pagesize_2k = 0;
- #endif
--#ifdef CONFIG_ARCH_IMX35
-+#if defined(CONFIG_ARCH_IMX35) || defined(CONFIG_ARCH_IMX25)
- 	if (readl(IMX_CCM_BASE + CCM_RCSR) & (1 << 8))
- 		host.pagesize_2k = 1;
- 	else
--- 
-1.7.1
+ static const __maybe_unused char cmd_gpio_get_value_help[] =
+-"Usage: gpio_set_value <gpio>\n";
++"Usage: gpio_get_value <gpio>\n";
 
+ BAREBOX_CMD_START(gpio_get_value)
+        .cmd            = do_gpio_get_value,
+@@ -90,7 +90,7 @@ static const __maybe_unused char cmd_do_gpio_direction_input_h
+
+ BAREBOX_CMD_START(gpio_direction_input)
+        .cmd            = do_gpio_direction_input,
+-       .usage          = "set a gpio as output",
++       .usage          = "set a gpio as input",
+        BAREBOX_CMD_HELP(cmd_do_gpio_direction_input_help)
+ BAREBOX_CMD_END
 
 _______________________________________________
 barebox mailing list
