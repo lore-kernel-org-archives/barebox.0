@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OVi8K-00007t-Cj
+	id 1OVi8K-00007v-CU
 	for barebox@lists.infradead.org; Mon, 05 Jul 2010 09:38:38 +0000
-Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.71)
-	(envelope-from <sha@pengutronix.de>) id 1OVi8H-0004ir-7Z
-	for barebox@lists.infradead.org; Mon, 05 Jul 2010 11:38:33 +0200
-Received: from sha by octopus.hi.pengutronix.de with local (Exim 4.69)
-	(envelope-from <sha@pengutronix.de>) id 1OVi8H-00019K-6b
-	for barebox@lists.infradead.org; Mon, 05 Jul 2010 11:38:33 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  5 Jul 2010 11:38:29 +0200
-Message-Id: <1278322711-4332-1-git-send-email-s.hauer@pengutronix.de>
+Date: Mon,  5 Jul 2010 11:38:31 +0200
+Message-Id: <1278322711-4332-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1278322711-4332-1-git-send-email-s.hauer@pengutronix.de>
+References: <1278322711-4332-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,39 +21,288 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Garz+Fricke Neso Support
+Subject: [PATCH 2/2] Add Garz+Fricke Neso defconfig
 To: barebox@lists.infradead.org
 
-The following patches add support for the Garz+Fricke Neso (i.MX27) board
-
-The following changes since commit a398a920b6847775c255e2a783c9562bd7227e43:
-
-  trivial: fix typos concerning "instead" (2010-07-05 08:27:28 +0200)
-
-are available in the git repository at:
-  git://git.pengutronix.de/git/barebox.git guf-neso
-
-Sascha Hauer (2):
-      Add Garz+Fricke Neso support
-      Add Garz+Fricke Neso defconfig
-
- arch/arm/Makefile               |    1 +
- arch/arm/configs/neso_defconfig |  264 ++++++++++++++++++++++++++
- arch/arm/mach-imx/Kconfig       |   10 +
- board/guf-neso/Makefile         |    5 +
- board/guf-neso/board.c          |  400 +++++++++++++++++++++++++++++++++++++++
- board/guf-neso/config.h         |   26 +++
- board/guf-neso/env/config       |   53 +++++
- board/guf-neso/lowlevel.c       |  117 ++++++++++++
- board/guf-neso/pll_init.S       |   48 +++++
- 9 files changed, 924 insertions(+), 0 deletions(-)
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/configs/neso_defconfig |  264 +++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 264 insertions(+), 0 deletions(-)
  create mode 100644 arch/arm/configs/neso_defconfig
- create mode 100644 board/guf-neso/Makefile
- create mode 100644 board/guf-neso/board.c
- create mode 100644 board/guf-neso/config.h
- create mode 100644 board/guf-neso/env/config
- create mode 100644 board/guf-neso/lowlevel.c
- create mode 100644 board/guf-neso/pll_init.S
+
+diff --git a/arch/arm/configs/neso_defconfig b/arch/arm/configs/neso_defconfig
+new file mode 100644
+index 0000000..3f2a978
+--- /dev/null
++++ b/arch/arm/configs/neso_defconfig
+@@ -0,0 +1,264 @@
++#
++# Automatically generated make config: don't edit
++# barebox version: 2010.06.0
++# Mon Jun 21 14:06:11 2010
++#
++# CONFIG_BOARD_LINKER_SCRIPT is not set
++CONFIG_GENERIC_LINKER_SCRIPT=y
++CONFIG_ARM=y
++
++#
++# System Type
++#
++# CONFIG_ARCH_AT91 is not set
++# CONFIG_ARCH_AT91RM9200 is not set
++# CONFIG_ARCH_EP93XX is not set
++CONFIG_ARCH_IMX=y
++# CONFIG_ARCH_NETX is not set
++# CONFIG_ARCH_OMAP is not set
++# CONFIG_ARCH_S3C24xx is not set
++
++#
++# Processor Type
++#
++CONFIG_CPU_32=y
++CONFIG_CPU_ARM926T=y
++CONFIG_CPU_32v5=y
++
++#
++# processor features
++#
++CONFIG_ARCH_TEXT_BASE=0xa7e00000
++CONFIG_BOARDINFO="Garz+Fricke Neso"
++CONFIG_ARCH_HAS_FEC_IMX=y
++
++#
++# Freescale i.MX System-on-Chip
++#
++# CONFIG_ARCH_IMX1 is not set
++# CONFIG_ARCH_IMX21 is not set
++# CONFIG_ARCH_IMX25 is not set
++CONFIG_ARCH_IMX27=y
++# CONFIG_ARCH_IMX31 is not set
++# CONFIG_ARCH_IMX35 is not set
++# CONFIG_MACH_EUKREA_CPUIMX27 is not set
++# CONFIG_MACH_IMX27ADS is not set
++# CONFIG_MACH_PCA100 is not set
++# CONFIG_MACH_PCM038 is not set
++CONFIG_MACH_NESO=y
++
++#
++# Board specific settings
++#
++
++#
++# i.MX specific settings
++#
++CONFIG_IMX_CLKO=y
++CONFIG_AEABI=y
++
++#
++# Arm specific settings
++#
++CONFIG_CMD_ARM_CPUINFO=y
++CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
++CONFIG_GREGORIAN_CALENDER=y
++CONFIG_HAS_KALLSYMS=y
++CONFIG_HAS_MODULES=y
++CONFIG_CMD_MEMORY=y
++CONFIG_ENV_HANDLING=y
++CONFIG_GENERIC_GPIO=y
++
++#
++# General Settings
++#
++CONFIG_LOCALVERSION_AUTO=y
++
++#
++# memory layout
++#
++CONFIG_HAVE_MMU=y
++CONFIG_MMU=y
++CONFIG_HAVE_CONFIGURABLE_TEXT_BASE=y
++CONFIG_TEXT_BASE=0xa7e00000
++CONFIG_HAVE_CONFIGURABLE_MEMORY_LAYOUT=y
++CONFIG_MEMORY_LAYOUT_DEFAULT=y
++# CONFIG_MEMORY_LAYOUT_FIXED is not set
++CONFIG_STACK_SIZE=0x8000
++CONFIG_MALLOC_SIZE=0x1000000
++# CONFIG_BROKEN is not set
++# CONFIG_EXPERIMENTAL is not set
++CONFIG_MACH_HAS_LOWLEVEL_INIT=y
++CONFIG_MACH_DO_LOWLEVEL_INIT=y
++CONFIG_PROMPT="barebox:"
++CONFIG_BAUDRATE=115200
++CONFIG_LONGHELP=y
++CONFIG_CBSIZE=1024
++CONFIG_MAXARGS=16
++CONFIG_SHELL_HUSH=y
++# CONFIG_SHELL_SIMPLE is not set
++CONFIG_GLOB=y
++CONFIG_PROMPT_HUSH_PS2="> "
++CONFIG_HUSH_FANCY_PROMPT=y
++CONFIG_CMDLINE_EDITING=y
++CONFIG_AUTO_COMPLETE=y
++CONFIG_DYNAMIC_CRC_TABLE=y
++CONFIG_ERRNO_MESSAGES=y
++CONFIG_TIMESTAMP=y
++CONFIG_CONSOLE_FULL=y
++CONFIG_CONSOLE_ACTIVATE_FIRST=y
++# CONFIG_OF_FLAT_TREE is not set
++CONFIG_PARTITION=y
++CONFIG_DEFAULT_ENVIRONMENT=y
++CONFIG_DEFAULT_ENVIRONMENT_PATH="defaultenv board/guf-neso/env"
++
++#
++# Debugging
++#
++# CONFIG_DEBUG_INFO is not set
++# CONFIG_ENABLE_FLASH_NOISE is not set
++# CONFIG_ENABLE_PARTITION_NOISE is not set
++# CONFIG_ENABLE_DEVICE_NOISE is not set
++
++#
++# Commands
++#
++
++#
++# scripting
++#
++CONFIG_CMD_EDIT=y
++CONFIG_CMD_SLEEP=y
++CONFIG_CMD_SAVEENV=y
++CONFIG_CMD_LOADENV=y
++CONFIG_CMD_EXPORT=y
++CONFIG_CMD_PRINTENV=y
++CONFIG_CMD_READLINE=y
++CONFIG_CMD_TRUE=y
++CONFIG_CMD_FALSE=y
++
++#
++# file commands
++#
++CONFIG_CMD_LS=y
++CONFIG_CMD_RM=y
++CONFIG_CMD_CAT=y
++CONFIG_CMD_MKDIR=y
++CONFIG_CMD_RMDIR=y
++CONFIG_CMD_CP=y
++CONFIG_CMD_PWD=y
++CONFIG_CMD_CD=y
++CONFIG_CMD_MOUNT=y
++CONFIG_CMD_UMOUNT=y
++
++#
++# console
++#
++CONFIG_CMD_CLEAR=y
++CONFIG_CMD_ECHO=y
++CONFIG_CMD_ECHO_E=y
++
++#
++# memory
++#
++# CONFIG_CMD_LOADB is not set
++CONFIG_CMD_MEMINFO=y
++CONFIG_CMD_CRC=y
++CONFIG_CMD_MTEST=y
++# CONFIG_CMD_MTEST_ALTERNATIVE is not set
++
++#
++# flash
++#
++CONFIG_CMD_FLASH=y
++
++#
++# booting
++#
++CONFIG_CMD_BOOTM=y
++# CONFIG_CMD_BOOTM_ZLIB is not set
++# CONFIG_CMD_BOOTM_BZLIB is not set
++# CONFIG_CMD_BOOTM_SHOW_TYPE is not set
++CONFIG_CMD_BOOTZ=y
++CONFIG_CMD_BOOTU=y
++# CONFIG_CMD_LINUX16 is not set
++CONFIG_CMD_RESET=y
++CONFIG_CMD_GO=y
++CONFIG_CMD_TIMEOUT=y
++CONFIG_CMD_PARTITION=y
++CONFIG_CMD_TEST=y
++CONFIG_CMD_VERSION=y
++CONFIG_CMD_HELP=y
++CONFIG_CMD_DEVINFO=y
++CONFIG_CMD_BMP=y
++CONFIG_CMD_GPIO=y
++CONFIG_CMD_UNLZO=y
++CONFIG_NET=y
++CONFIG_NET_DHCP=y
++CONFIG_NET_NFS=y
++CONFIG_NET_PING=y
++CONFIG_NET_TFTP=y
++CONFIG_NET_TFTP_PUSH=y
++CONFIG_NET_NETCONSOLE=y
++CONFIG_NET_RESOLV=y
++
++#
++# Drivers
++#
++
++#
++# serial drivers
++#
++# CONFIG_DRIVER_SERIAL_ARM_DCC is not set
++CONFIG_DRIVER_SERIAL_IMX=y
++# CONFIG_DRIVER_SERIAL_NS16550 is not set
++CONFIG_MIIPHY=y
++
++#
++# Network drivers
++#
++# CONFIG_DRIVER_NET_SMC911X is not set
++# CONFIG_DRIVER_NET_SMC91111 is not set
++CONFIG_DRIVER_NET_FEC_IMX=y
++CONFIG_NET_USB=y
++CONFIG_NET_USB_ASIX=y
++# CONFIG_NET_USB_SMSC95XX is not set
++
++#
++# SPI drivers
++#
++CONFIG_SPI=y
++CONFIG_DRIVER_SPI_IMX=y
++CONFIG_DRIVER_SPI_MC13783=y
++# CONFIG_I2C is not set
++
++#
++# flash drivers
++#
++# CONFIG_DRIVER_CFI is not set
++CONFIG_NAND=y
++CONFIG_NAND_IMX=y
++CONFIG_NAND_IMX_BOOT=y
++# CONFIG_MTD_NAND_VERIFY_WRITE is not set
++# CONFIG_MTD_NAND_ECC_SMC is not set
++CONFIG_MTD_NAND_IDS=y
++# CONFIG_ATA is not set
++CONFIG_USB=y
++CONFIG_USB_EHCI=y
++CONFIG_USB_ULPI=y
++CONFIG_USB_ISP1504=y
++# CONFIG_USB_GADGET is not set
++CONFIG_VIDEO=y
++CONFIG_DRIVER_VIDEO_IMX=y
++CONFIG_IMXFB_DRIVER_VIDEO_IMX_OVERLAY=y
++
++#
++# Filesystem support
++#
++# CONFIG_FS_CRAMFS is not set
++CONFIG_FS_RAMFS=y
++CONFIG_FS_DEVFS=y
++CONFIG_CRC32=y
++# CONFIG_GENERIC_FIND_NEXT_BIT is not set
++CONFIG_PROCESS_ESCAPE_SEQUENCE=y
++CONFIG_LZO_DECOMPRESS=y
+-- 
+1.7.1
+
 
 _______________________________________________
 barebox mailing list
