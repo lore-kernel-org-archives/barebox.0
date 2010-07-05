@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OVlXM-0000kl-O8
+	id 1OVlXN-0000kr-BG
 	for barebox@lists.infradead.org; Mon, 05 Jul 2010 13:16:42 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  5 Jul 2010 15:16:24 +0200
-Message-Id: <1278335795-16289-2-git-send-email-s.hauer@pengutronix.de>
+Date: Mon,  5 Jul 2010 15:16:31 +0200
+Message-Id: <1278335795-16289-9-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1278335795-16289-1-git-send-email-s.hauer@pengutronix.de>
 References: <1278335795-16289-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,68 +21,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/12] crc32: activate crc32_no_comp (needed for jffs2 and UBI)
+Subject: [PATCH 08/12] devfs: only check for ioctl function when needed
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/common.h |    4 ++--
- lib/crc32.c      |   11 ++++++-----
- 2 files changed, 8 insertions(+), 7 deletions(-)
+ fs/devfs.c |   15 +++++++--------
+ 1 files changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/include/common.h b/include/common.h
-index 319535b..0edc778 100644
---- a/include/common.h
-+++ b/include/common.h
-@@ -109,8 +109,8 @@ unsigned long long	simple_strtoull(const char *cp,char **endp,unsigned int base)
- long	simple_strtol(const char *cp,char **endp,unsigned int base);
- 
- /* lib_generic/crc32.c */
--ulong crc32 (ulong, const unsigned char *, uint);
--ulong crc32_no_comp (ulong, const unsigned char *, uint);
-+uint32_t crc32(uint32_t, const void*, unsigned int);
-+uint32_t crc32_no_comp(uint32_t, const void*, unsigned int);
- 
- /* common/console.c */
- int	ctrlc (void);
-diff --git a/lib/crc32.c b/lib/crc32.c
-index be35366..3481782 100644
---- a/lib/crc32.c
-+++ b/lib/crc32.c
-@@ -132,8 +132,10 @@ static const ulong crc_table[256] = {
- #define DO8(buf)  DO4(buf); DO4(buf);
- 
- /* ========================================================================= */
--ulong crc32(ulong crc, const unsigned char *buf, uint len)
-+uint32_t crc32(uint32_t crc, const void *_buf, unsigned int len)
+diff --git a/fs/devfs.c b/fs/devfs.c
+index 9ce9117..7019c8d 100644
+--- a/fs/devfs.c
++++ b/fs/devfs.c
+@@ -193,6 +193,8 @@ static int partition_ioctl(struct cdev *cdev, int request, void *buf)
+ 			user->eccsize	= 0;
+ 			return 0;
+ 		}
++		if (!cdev->ops->ioctl)
++			return -EINVAL;
+ 		return cdev->ops->ioctl(cdev, request, buf);
+ 	default:
+ 		return -EINVAL;
+@@ -202,17 +204,14 @@ static int partition_ioctl(struct cdev *cdev, int request, void *buf)
+ static int devfs_ioctl(struct device_d *_dev, FILE *f, int request, void *buf)
  {
-+    const unsigned char *buf = _buf;
+ 	struct cdev *cdev = f->inode;
+-	int ret = -EINVAL;
 +
- #ifdef CONFIG_DYNAMIC_CRC_TABLE
-     if (crc_table_empty)
-       make_crc_table();
-@@ -153,13 +155,13 @@ ulong crc32(ulong crc, const unsigned char *buf, uint len)
- EXPORT_SYMBOL(crc32);
- #endif
++	if (cdev->flags & DEVFS_IS_PARTITION)
++		return partition_ioctl(cdev, request, buf);
  
--#if 0
--
- /* No ones complement version. JFFS2 (and other things ?)
-  * don't use ones compliment in their CRC calculations.
-  */
--uLong crc32_no_comp(uLong crc, const Bytef *buf, uint len)
-+uint32_t crc32_no_comp(uint32_t crc, const void *_buf, unsigned int len)
- {
-+   const unsigned char *buf = _buf;
-+
- #ifdef CONFIG_DYNAMIC_CRC_TABLE
-     if (crc_table_empty)
-       make_crc_table();
-@@ -176,4 +178,3 @@ uLong crc32_no_comp(uLong crc, const Bytef *buf, uint len)
-     return crc;
+ 	if (!cdev->ops->ioctl)
+-		goto out;
++		return -EINVAL;
+ 
+-	if (cdev->flags & DEVFS_IS_PARTITION)
+-		ret = partition_ioctl(cdev, request, buf);
+-	else
+-		ret = cdev->ops->ioctl(cdev, request, buf);
+-out:
+-	return ret;
++	return cdev->ops->ioctl(cdev, request, buf);
  }
  
--#endif
+ static int devfs_truncate(struct device_d *dev, FILE *f, ulong size)
 -- 
 1.7.1
 
