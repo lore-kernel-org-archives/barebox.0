@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OVmB7-0006Tu-JN
+	id 1OVmB7-0006Tw-Jg
 	for barebox@lists.infradead.org; Mon, 05 Jul 2010 13:57:46 +0000
 From: Luotao Fu <l.fu@pengutronix.de>
-Date: Mon,  5 Jul 2010 15:57:37 +0200
-Message-Id: <1278338260-29454-2-git-send-email-l.fu@pengutronix.de>
+Date: Mon,  5 Jul 2010 15:57:38 +0200
+Message-Id: <1278338260-29454-3-git-send-email-l.fu@pengutronix.de>
 In-Reply-To: <1278338260-29454-1-git-send-email-l.fu@pengutronix.de>
 References: <1278338260-29454-1-git-send-email-l.fu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,131 +21,155 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH V2 1/4] crc value handling and dry run mode in envfs_load
+Subject: [PATCH V2 2/4] add multi environment support
 To: s.hauer@pengutronix.de
 Cc: barebox@lists.infradead.org, Luotao Fu <l.fu@pengutronix.de>
 
-We add some stuffs to envfs_load for later usage in implementation of
-multiple environment partitions:
-* envfs_load now accepts a parameter, where the crc value of the environment
-partition can be stored.
-* Also added "dry run" mode to envfs_load. If the dirname is not set.
-envfs_load will now only check the crc values of the partition and returns
-without writing to the file system.
+We can deal with multiple environments now in our barebox. With this option
+enabled barebox will scan all environment partions on start up and load the
+environment from the first loadable environment partition it finds. Also it will
+check the content of all environment parttions and autmotically synchronize
+content of any outdated partition.
 
 Signed-off-by: Luotao Fu <l.fu@pengutronix.de>
-
 ---
 V2 Changes:
-* fixed envfs_load call in common/startup.c
+* fix envfs_load call if the multienv support is disabled
 
- commands/loadenv.c    |    4 +++-
- common/environment.c  |   13 +++++++++++--
- common/startup.c      |    4 ++--
- include/environment.h |    2 +-
- scripts/bareboxenv.c  |    2 +-
- 5 files changed, 18 insertions(+), 7 deletions(-)
+ common/Kconfig   |   11 ++++++
+ common/startup.c |   90 ++++++++++++++++++++++++++++++++++++++++++++++++-----
+ 2 files changed, 92 insertions(+), 9 deletions(-)
 
-diff --git a/commands/loadenv.c b/commands/loadenv.c
-index 14fbf1e..3da67d9 100644
---- a/commands/loadenv.c
-+++ b/commands/loadenv.c
-@@ -35,12 +35,14 @@ static int do_loadenv(struct command *cmdtp, int argc, char *argv[])
- 		dirname = "/env";
- 	else
- 		dirname = argv[2];
-+
- 	if (argc < 2)
- 		filename = "/dev/env0";
- 	else
- 		filename = argv[1];
- 	printf("loading environment from %s\n", filename);
--	return envfs_load(filename, dirname);
-+
-+	return envfs_load(filename, dirname, NULL);
- }
+diff --git a/common/Kconfig b/common/Kconfig
+index a58f242..c33cf14 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -40,6 +40,17 @@ config LOCALVERSION_AUTO
  
- static const __maybe_unused char cmd_loadenv_help[] =
-diff --git a/common/environment.c b/common/environment.c
-index 0eb7e6b..e79ec99 100644
---- a/common/environment.c
-+++ b/common/environment.c
-@@ -159,13 +159,15 @@ EXPORT_SYMBOL(envfs_save);
- /**
-  * Restore the last environment into the current one
-  * @param[in] filename from where to restore
-- * @param[in] dir where to store the last content
-+ * @param[in] dir where to store the last content. Function will return crc
-+ * value only if dir==NULL.
-+ * @param[in] crc pointer to variale, where the crc can be stored.
-  * @return 0 on success, anything else in case of failure
-  *
-  * Note: This function will also be used on the host! See note in the header
-  * of this file.
-  */
--int envfs_load(char *filename, char *dir)
-+int envfs_load(char *filename, char *dir, int *crc)
- {
- 	struct envfs_super super;
- 	void *buf = NULL, *buf_free = NULL;
-@@ -219,6 +221,13 @@ int envfs_load(char *filename, char *dir)
- 		goto out;
- 	}
+ 	  which is done within the script "scripts/setlocalversion".)
  
-+	if (crc != NULL)
-+		*crc = ENVFS_32(super.crc);
++config MULTI_ENV_HANDLING
++	select ENV_HANDLING
++	bool "Enable handling multiple environment partitions"
++	help
++	  We can have multiple environments in our barebox. With this option
++	  enabled barebox will scan all environment partions on start up and
++	  load the environment from the first loadable environment partition
++	  it finds. Also it will check if the content of all environment
++	  parttions are synchronized and autmotically synchronize content of
++	  the outdated partition.
 +
-+	/* return crc only if dir is not set */
-+	if (!dir)
-+		goto out;
-+
- 	while (size) {
- 		struct envfs_inode *inode;
- 		uint32_t inode_size, inode_namelen;
+ config BOARDINFO
+ 	string
+ 
 diff --git a/common/startup.c b/common/startup.c
-index 2ed16fe..2190159 100644
+index 2190159..b57a712 100644
 --- a/common/startup.c
 +++ b/common/startup.c
-@@ -138,11 +138,11 @@ void start_barebox (void)
+@@ -110,6 +110,87 @@ static int mount_root(void)
+ }
+ fs_initcall(mount_root);
+ 
++#ifdef CONFIG_ENV_HANDLING
++#ifdef CONFIG_MULTI_ENV_HANDLING
++static int init_envfs_load(void)
++{
++	char *dirname = "/env";
++	char file[9 + 5];	/* '/dev/env.....' */
++	int i = 0, j = 0, no_more_parts = 0;
++	int crc = 0, crc_ref = 0;
++	int rc;
++	struct stat file_info;
++
++	while (1) {
++		sprintf(file, "/dev/env%d", i);
++
++		if (stat(file, &file_info) != 0) {
++			no_more_parts = 1;
++			break;
++		}
++
++		/* first loadable environment is considered to be
++		 * reference */
++		if (envfs_load(file, dirname, &crc_ref) == 0)
++			break;
++
++		i++;
++	}
++
++	/* no loadable environment partition found */
++	if (no_more_parts == 1) {
++#ifdef CONFIG_DEFAULT_ENVIRONMENT
++		printf("no valid environment found. "
++			"Using default environment\n");
++		envfs_load("/dev/defaultenv", "/env", &crc_ref);
++#endif
++		goto out;
++	}
++
++	/* Now try to restore, if any, the previous failed partitions */
++	for (j = 0; j < i; j++) {
++		sprintf(file, "/dev/env%d", j);
++		if (envfs_save(file, dirname))
++			printf("failed to sync environment on %s\n", file);
++	}
++
++	/* proceed to scan further env partitions */
++	while (1) {
++		i++;
++		sprintf(file, "/dev/env%d", i);
++
++		if (stat(file, &file_info) != 0)
++			break;
++
++		/* sync partition if loading failed or crc mismatch with
++		 * the reference*/
++		rc = envfs_load(file, NULL, &crc);
++		if (rc != 0 || crc != crc_ref) {
++			if (envfs_save(file, dirname))
++				printf("failed to sync environment on %s\n",
++						file);
++		}
++	}
++out:
++	return 0;
++}
++#else /* MULTI_ENV_HANDLING */
++static int init_envfs_load(void)
++{
++	if (envfs_load("/dev/env0", "/env", NULL)) {
++#ifdef CONFIG_DEFAULT_ENVIRONMENT
++		printf("no valid environment found. "
++			"Using default environment\n");
++		envfs_load("/dev/defaultenv", "/env", NULL);
++#endif
++	}
++
++	return 0;
++}
++#endif /* MULTI_ENV_HANDLING */
++late_initcall(init_envfs_load);
++#endif /* CONFIG_ENV_HANDLING */
++
+ void start_barebox (void)
+ {
+ 	initcall_t *initcall;
+@@ -137,15 +218,6 @@ void start_barebox (void)
+ 
  	display_meminfo();
  
- #ifdef CONFIG_ENV_HANDLING
--	if (envfs_load("/dev/env0", "/env")) {
-+	if (envfs_load("/dev/env0", "/env", NULL)) {
- #ifdef CONFIG_DEFAULT_ENVIRONMENT
- 		printf("no valid environment found on /dev/env0. "
- 			"Using default environment\n");
--		envfs_load("/dev/defaultenv", "/env");
-+		envfs_load("/dev/defaultenv", "/env", NULL);
- #endif
- 	}
- #endif
-diff --git a/include/environment.h b/include/environment.h
-index 21a7ffa..2b1f5d9 100644
---- a/include/environment.h
-+++ b/include/environment.h
-@@ -50,7 +50,7 @@ int setenv(const char *, const char *);
- int env_pop_context(void);
- int env_push_context(void);
+-#ifdef CONFIG_ENV_HANDLING
+-	if (envfs_load("/dev/env0", "/env", NULL)) {
+-#ifdef CONFIG_DEFAULT_ENVIRONMENT
+-		printf("no valid environment found on /dev/env0. "
+-			"Using default environment\n");
+-		envfs_load("/dev/defaultenv", "/env", NULL);
+-#endif
+-	}
+-#endif
+ 	printf("running /env/bin/init...\n");
  
--int envfs_load(char *filename, char *dirname);
-+int envfs_load(char *filename, char *dirname, int *crc);
- int envfs_save(char *filename, char *dirname);
- 
- int export(const char *);
-diff --git a/scripts/bareboxenv.c b/scripts/bareboxenv.c
-index 5c7f10e..af012e8 100644
---- a/scripts/bareboxenv.c
-+++ b/scripts/bareboxenv.c
-@@ -186,7 +186,7 @@ int main(int argc, char *argv[])
- 
- 	if (load) {
- 		printf("loading env from file %s to %s\n", filename, dirname);
--		envfs_load(filename, dirname);
-+		envfs_load(filename, dirname, NULL);
- 	}
- 	if (save) {
- 		printf("saving contents of %s to file %s\n", dirname, filename);
+ 	if (!stat("/env/bin/init", &s)) {
 -- 
 1.7.1
 
