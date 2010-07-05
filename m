@@ -1,14 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pw0-f49.google.com ([209.85.160.49])
-	by bombadil.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OVZAH-00032q-3t
-	for barebox@lists.infradead.org; Mon, 05 Jul 2010 00:04:03 +0000
-Received: by pwj5 with SMTP id 5so2269425pwj.36
-	for <barebox@lists.infradead.org>; Sun, 04 Jul 2010 17:03:59 -0700 (PDT)
-MIME-Version: 1.0
-Date: Mon, 5 Jul 2010 08:03:59 +0800
-Message-ID: <AANLkTinpo0s4FZGsfTMFIgAM8Q4hdcZq5NxY4smk1ohh@mail.gmail.com>
-From: Randolph Chung <rchung42@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1OVi8K-00007t-Cj
+	for barebox@lists.infradead.org; Mon, 05 Jul 2010 09:38:38 +0000
+Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.71)
+	(envelope-from <sha@pengutronix.de>) id 1OVi8H-0004ir-7Z
+	for barebox@lists.infradead.org; Mon, 05 Jul 2010 11:38:33 +0200
+Received: from sha by octopus.hi.pengutronix.de with local (Exim 4.69)
+	(envelope-from <sha@pengutronix.de>) id 1OVi8H-00019K-6b
+	for barebox@lists.infradead.org; Mon, 05 Jul 2010 11:38:33 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Mon,  5 Jul 2010 11:38:29 +0200
+Message-Id: <1278322711-4332-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,36 +21,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Fix typo in commands/gpio.c
+Subject: Garz+Fricke Neso Support
 To: barebox@lists.infradead.org
 
-Please apply. -randolph
+The following patches add support for the Garz+Fricke Neso (i.MX27) board
 
-diff --git a/commands/gpio.c b/commands/gpio.c
-index 2575c1e..91078cf 100644
---- a/commands/gpio.c
-+++ b/commands/gpio.c
-@@ -37,7 +37,7 @@ static int do_gpio_get_value(struct command *cmdtp, int argc,
- }
+The following changes since commit a398a920b6847775c255e2a783c9562bd7227e43:
 
- static const __maybe_unused char cmd_gpio_get_value_help[] =
--"Usage: gpio_set_value <gpio>\n";
-+"Usage: gpio_get_value <gpio>\n";
+  trivial: fix typos concerning "instead" (2010-07-05 08:27:28 +0200)
 
- BAREBOX_CMD_START(gpio_get_value)
-        .cmd            = do_gpio_get_value,
-@@ -90,7 +90,7 @@ static const __maybe_unused char cmd_do_gpio_direction_input_h
+are available in the git repository at:
+  git://git.pengutronix.de/git/barebox.git guf-neso
 
- BAREBOX_CMD_START(gpio_direction_input)
-        .cmd            = do_gpio_direction_input,
--       .usage          = "set a gpio as output",
-+       .usage          = "set a gpio as input",
-        BAREBOX_CMD_HELP(cmd_do_gpio_direction_input_help)
- BAREBOX_CMD_END
+Sascha Hauer (2):
+      Add Garz+Fricke Neso support
+      Add Garz+Fricke Neso defconfig
+
+ arch/arm/Makefile               |    1 +
+ arch/arm/configs/neso_defconfig |  264 ++++++++++++++++++++++++++
+ arch/arm/mach-imx/Kconfig       |   10 +
+ board/guf-neso/Makefile         |    5 +
+ board/guf-neso/board.c          |  400 +++++++++++++++++++++++++++++++++++++++
+ board/guf-neso/config.h         |   26 +++
+ board/guf-neso/env/config       |   53 +++++
+ board/guf-neso/lowlevel.c       |  117 ++++++++++++
+ board/guf-neso/pll_init.S       |   48 +++++
+ 9 files changed, 924 insertions(+), 0 deletions(-)
+ create mode 100644 arch/arm/configs/neso_defconfig
+ create mode 100644 board/guf-neso/Makefile
+ create mode 100644 board/guf-neso/board.c
+ create mode 100644 board/guf-neso/config.h
+ create mode 100644 board/guf-neso/env/config
+ create mode 100644 board/guf-neso/lowlevel.c
+ create mode 100644 board/guf-neso/pll_init.S
 
 _______________________________________________
 barebox mailing list
