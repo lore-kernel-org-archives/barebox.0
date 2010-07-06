@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
 	by bombadil.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OW336-0006tx-Ef
-	for barebox@lists.infradead.org; Tue, 06 Jul 2010 07:58:39 +0000
+	id 1OW3A6-0001S2-Bn
+	for barebox@lists.infradead.org; Tue, 06 Jul 2010 08:05:52 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
-	by root.phytec.de (Postfix) with ESMTP id 0F746BF097
+	by root.phytec.de (Postfix) with ESMTP id 31248BF07A
 	for <barebox@lists.infradead.org>;
-	Tue,  6 Jul 2010 09:59:16 +0200 (CEST)
-From: PHYTEC Mailinglists <mailinglists@phytec.de>
+	Tue,  6 Jul 2010 10:06:35 +0200 (CEST)
 MIME-Version: 1.0
-Message-ID: <OF8B05D0C6.9D08C03A-ONC1257758.002B9607-C1257758.002BAFA5@phytec.de>
-Date: Tue, 6 Jul 2010 09:58:29 +0200
+Message-ID: <OF49EF7127.FA712DA5-ONC1257758.002C5098-C1257758.002C5B08@phytec.de>
+From: =?ISO-8859-1?Q?J=FCrgen_Kilb?= <J.Kilb@phytec.de>
+Date: Tue, 6 Jul 2010 10:05:48 +0200
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,7 +23,7 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: OMAP3530 linux crash during boot....
+Subject: OMAP3530 linux crash during boot.... again from right account.
 To: barebox@lists.infradead.org
 
 Hi,
