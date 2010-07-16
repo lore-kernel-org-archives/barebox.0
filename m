@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from [77.233.226.4] (helo=public.doredevelopment.dk)
-	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OZjuW-0000vD-RF
-	for barebox@lists.infradead.org; Fri, 16 Jul 2010 12:21:01 +0000
-From: Esben Haabendal <eha@dev.doredevelopment.dk>
-In-Reply-To: <20100716072702.GJ14113@pengutronix.de>
-References: <1278335795-16289-1-git-send-email-s.hauer@pengutronix.de>
-	<20100708091925.GF25143@jasper.tkos.co.il>
-	<20100716072702.GJ14113@pengutronix.de>
-Date: Fri, 16 Jul 2010 14:13:39 +0200
-Message-ID: <1279282419.4732.4.camel@eha.doredevelopment.dk>
-Mime-Version: 1.0
+Received: from mail-vw0-f49.google.com ([209.85.212.49])
+	by bombadil.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1OZkyU-0000xx-5E
+	for barebox@lists.infradead.org; Fri, 16 Jul 2010 13:29:10 +0000
+Received: by vws8 with SMTP id 8so2853619vws.36
+	for <barebox@lists.infradead.org>; Fri, 16 Jul 2010 06:29:09 -0700 (PDT)
+MIME-Version: 1.0
+Date: Fri, 16 Jul 2010 18:59:09 +0530
+Message-ID: <AANLkTik2E-amNP6qE1RSImyOuPBzH_o6Sbg_WPGc9SLt@mail.gmail.com>
+From: Gaurav Singh <gausinghnsit@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,50 +17,30 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: UBI support
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Amba PL011 driver support
+To: barebox@lists.infradead.org
 
-On Fri, 2010-07-16 at 09:27 +0200, Sascha Hauer wrote:
+Hi all,
+Currently I am working to port Barebox on an ARM11v6 based board. I
+have a PL011 UART peripheral on my board and want to use this UART as
+my console. I read somewhere that the PL010 serial driver would
+support PL011 as well but I was unable to use this driver to bring up
+the console.
+Looking =A0at the device specifications I noticed that some changes to
+the PL010 driver would suffce for my requirement and making these
+changes I was able to initialize the console and use my UART for
+entering bb commands.
 
-> > 
-> > I've tested this on our i.MX25 board. Here's what I get:
-> > 
-> > barebox:/ ubiattach /dev/nand0.rootfs
-> > UBI: attaching mtd0 to ubi0
-> > UBI: physical eraseblock size:   131072 bytes (128 KiB)
-> > UBI: logical eraseblock size:    129024 bytes
-> > UBI: smallest flash I/O unit:    2048
-> > UBI: sub-page size:              512
-> > UBI: VID header offset:          512 (aligned 512)
-> > UBI: data offset:                2048
-> > UBI: empty MTD device detected
-> > UBI: create volume table (copy #1)
-> > UBI error: ubi_scan_get_free_peb: no eraseblocks found
-> > failed to attach: error 28
-> 
-> I just tested it on an i.MX35 board which should have the same Nand
-> Controller as the i.MX25. I have never seen Nand devices with a subpage
-> size smaller than the I/O unit size (sub-page size: 512), so I would
-> start looking there.
-> I don't know how this subpage size is handled. It may well be that this
-> is a bug in the Nand driver and not UBI.
-> You could also go through 'git log drivers/mtd/ubi' in the kernel to see
-> if there's something relevant. Unfortunately I don't know from which
-> kernel version the U-Boot UBI code was derived from.
+Is there a requirement for a seperate PL011 driver in barebox at the
+moment ? I notice that both U-boot and the kernel have seperate
+drivers for PL010 and PL011.
 
-FWIW, I am working on a device here with a similar NAND device.
-To get it working properly, you must not enable
-CONFIG_MTD_NAND_VERIFY_WRITE (as it is known to be broken for sub-page
-size != I/O unit size).  I haven't looked at barebox nand or ubi driver,
-so I have no idea if something similar to this could be present there.
-
-/Esben
-
+Thanks and Regards
+Gaurav Singh
 
 _______________________________________________
 barebox mailing list
