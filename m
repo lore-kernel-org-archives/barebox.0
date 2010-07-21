@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OZmY4-0007VX-9j
-	for barebox@lists.infradead.org; Fri, 16 Jul 2010 15:10:01 +0000
-Date: Fri, 16 Jul 2010 17:09:57 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20100716150957.GK14113@pengutronix.de>
-References: <AANLkTik2E-amNP6qE1RSImyOuPBzH_o6Sbg_WPGc9SLt@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <AANLkTik2E-amNP6qE1RSImyOuPBzH_o6Sbg_WPGc9SLt@mail.gmail.com>
+Received: from 30.mail-out.ovh.net ([213.186.62.213])
+	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1Obb1o-00085x-1u
+	for barebox@lists.infradead.org; Wed, 21 Jul 2010 15:16:15 +0000
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Wed, 21 Jul 2010 17:05:22 +0200
+Message-Id: <1279724722-31325-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,46 +14,66 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Amba PL011 driver support
-To: Gaurav Singh <gausinghnsit@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/1] barebox_default_env: fix out of tree build
+To: barebox@lists.infradead.org
 
-Hi Gaurav,
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ common/Makefile |    8 +++++---
+ scripts/genenv  |    8 +++++---
+ 2 files changed, 10 insertions(+), 6 deletions(-)
 
-On Fri, Jul 16, 2010 at 06:59:09PM +0530, Gaurav Singh wrote:
-> Hi all,
-> Currently I am working to port Barebox on an ARM11v6 based board. I
-> have a PL011 UART peripheral on my board and want to use this UART as
-> my console. I read somewhere that the PL010 serial driver would
-> support PL011 as well but I was unable to use this driver to bring up
-> the console.
-> Looking =A0at the device specifications I noticed that some changes to
-> the PL010 driver would suffce for my requirement and making these
-> changes I was able to initialize the console and use my UART for
-> entering bb commands.
-> =
+diff --git a/common/Makefile b/common/Makefile
+index 8b8686d..14f8643 100644
+--- a/common/Makefile
++++ b/common/Makefile
+@@ -26,6 +26,8 @@ ENV_FILES := $(shell cd $(srctree); for i in $(CONFIG_DEFAULT_ENVIRONMENT_PATH);
+ 
+ endif # ifdef CONFIG_DEFAULT_ENVIRONMENT
+ 
+-include/barebox_default_env.h: $(ENV_FILES)
+-	$(Q)scripts/genenv $(srctree) $(CONFIG_DEFAULT_ENVIRONMENT_PATH)
+-	$(Q)cat barebox_default_env | scripts/bin2c default_environment > $@
++barebox_default_env: $(ENV_FILES)
++	$(Q)$(srctree)/scripts/genenv $(srctree) $(objtree) $(CONFIG_DEFAULT_ENVIRONMENT_PATH)
++
++include/barebox_default_env.h: barebox_default_env
++	$(Q)cat $< | $(objtree)/scripts/bin2c default_environment > $@
+diff --git a/scripts/genenv b/scripts/genenv
+index 6a833b1..de8b4f1 100755
+--- a/scripts/genenv
++++ b/scripts/genenv
+@@ -1,17 +1,19 @@
+ #!/bin/bash
+ 
+ # Generate the default environment file from a list of directories
+-# usage: genenv <basedir> <dir>...
++# usage: genenv <basedir> <objdir> <dir>...
+ # where <basedir> is the base directory for relative pathes in <dir>
++# where <objdir> is the base directory for relative pathes for result
++objtree=$2
+ cd $1 || exit 1
+-shift
++shift 2
+ 
+ tempdir=$(mktemp -d)
+ 
+ for i in $*; do
+ 	cp -r $i/* $tempdir
+ done
+-scripts/bareboxenv -s $tempdir barebox_default_env
++$objtree/scripts/bareboxenv -s $tempdir $objtree/barebox_default_env
+ 
+ rm -r $tempdir
+ 
+-- 
+1.7.1
 
-> Is there a requirement for a seperate PL011 driver in barebox at the
-> moment ? I notice that both U-boot and the kernel have seperate
-> drivers for PL010 and PL011.
-
-No, there is no requirement for this. I don't know the differences
-between the PL011 and the PL010, but if you manage to handle both in one
-driver, maybe with a flag in platform_data specifying which type it is,
-that's perfectly fine.
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
