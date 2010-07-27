@@ -1,12 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycore.de ([217.6.246.34] helo=root.phytec.de)
-	by bombadil.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OcGcQ-0005QP-MK
-	for barebox@lists.infradead.org; Fri, 23 Jul 2010 11:40:47 +0000
-From: Teresa Gamez <T.Gamez@phytec.de>
-Date: Fri, 23 Jul 2010 13:40:35 +0200
-Message-ID: <1279885235.22206.38.camel@lws-gamez>
-Mime-Version: 1.0
+Received: from tango.tkos.co.il ([62.219.50.35])
+	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1Odk25-0006K9-NL
+	for barebox@lists.infradead.org; Tue, 27 Jul 2010 13:17:23 +0000
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Tue, 27 Jul 2010 16:16:57 +0300
+Message-Id: <34b884f5ad525ce661f0872634673ac5c13b575f.1280236567.git.baruch@tkos.co.il>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,23 +14,128 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Adding usb otg mode to pcm038 bootargs
+Subject: [PATCH] fs: add basic sanity check before accessing the files array
 To: barebox@lists.infradead.org
-Cc: Projektmanagement Phytec <customers.phytec-pm@pengutronix.de>
 
-QWRkaW5nIHVzYiBvdGcgbW9kZSB0byB0aGUgYm9vdGFyZ3MgaW4gdGhlIHBjbTAzOCBjb25maWcg
-ZmlsZS4KClNpZ25lZC1vZmYtYnk6IFRlcmVzYSBHw6FtZXogPHQuZ2FtZXpAcGh5dGVjLmRlPgot
-LS0KZGlmZiAtLWdpdCBhL2JvYXJkL3BjbTAzOC9lbnYvY29uZmlnIGIvYm9hcmQvcGNtMDM4L2Vu
-di9jb25maWcKaW5kZXggYThiZTVjOS4uMTRhNDEyNSAxMDA2NDQKLS0tIGEvYm9hcmQvcGNtMDM4
-L2Vudi9jb25maWcKKysrIGIvYm9hcmQvcGNtMDM4L2Vudi9jb25maWcKQEAgLTQ0LDYgKzQ0LDcg
-QEAgZmkKIGF1dG9ib290X3RpbWVvdXQ9MwogCiBib290YXJncz0iY29uc29sZT10dHlteGMwLDEx
-NTIwMCIKK2Jvb3RhcmdzPSIkYm9vdGFyZ3MgcGNtMDM4X290Z19tb2RlPWhvc3QiCiAKIG5vcl9w
-YXJ0cz0iMjU2ayhiYXJlYm94KXJvLDEyOGsoYmFyZWJveGVudiksMk0oa2VybmVsKSwtKHJvb3Qp
-Igogcm9vdGZzX210ZGJsb2NrX25vcj0zCgoKCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5p
-bmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8v
-YmFyZWJveAo=
+This patch adds some basic file descriptor sanity checks to the file access
+routines. Check whether the given file descriptor is in the files array range,
+and whether the file entry is valid.
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+ fs/fs.c |   40 ++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 40 insertions(+), 0 deletions(-)
+
+diff --git a/fs/fs.c b/fs/fs.c
+index 8417067..449dcc2 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -457,6 +457,11 @@ int ioctl(int fd, int request, void *buf)
+ 	struct fs_driver_d *fsdrv;
+ 	FILE *f = &files[fd];
+ 
++	if (fd < 0 || fd >= MAX_FILES || !f->in_use) {
++		errno = -EBADF;
++		return errno;
++	}
++
+ 	dev = f->dev;
+ 
+ 	fsdrv = (struct fs_driver_d *)dev->driver->type_data;
+@@ -474,6 +479,11 @@ int read(int fd, void *buf, size_t count)
+ 	struct fs_driver_d *fsdrv;
+ 	FILE *f = &files[fd];
+ 
++	if (fd < 0 || fd >= MAX_FILES || !f->in_use) {
++		errno = -EBADF;
++		return errno;
++	}
++
+ 	dev = f->dev;
+ 
+ 	fsdrv = (struct fs_driver_d *)dev->driver->type_data;
+@@ -494,6 +504,11 @@ ssize_t write(int fd, const void *buf, size_t count)
+ 	struct fs_driver_d *fsdrv;
+ 	FILE *f = &files[fd];
+ 
++	if (fd < 0 || fd >= MAX_FILES || !f->in_use) {
++		errno = -EBADF;
++		return errno;
++	}
++
+ 	dev = f->dev;
+ 
+ 	fsdrv = (struct fs_driver_d *)dev->driver->type_data;
+@@ -524,6 +539,11 @@ off_t lseek(int fildes, off_t offset, int whence)
+ 	FILE *f = &files[fildes];
+ 	off_t pos;
+ 
++	if (fildes < 0 || fildes >= MAX_FILES || !f->in_use) {
++		errno = -EBADF;
++		return -1;
++	}
++
+ 	errno = 0;
+ 
+ 	dev = f->dev;
+@@ -567,6 +587,11 @@ int erase(int fd, size_t count, unsigned long offset)
+ 	struct fs_driver_d *fsdrv;
+ 	FILE *f = &files[fd];
+ 
++	if (fd < 0 || fd >= MAX_FILES || !f->in_use) {
++		errno = -EBADF;
++		return errno;
++	}
++
+ 	dev = f->dev;
+ 
+ 	fsdrv = (struct fs_driver_d *)dev->driver->type_data;
+@@ -589,6 +614,11 @@ int protect(int fd, size_t count, unsigned long offset, int prot)
+ 	struct fs_driver_d *fsdrv;
+ 	FILE *f = &files[fd];
+ 
++	if (fd < 0 || fd >= MAX_FILES || !f->in_use) {
++		errno = -EBADF;
++		return errno;
++	}
++
+ 	dev = f->dev;
+ 
+ 	fsdrv = (struct fs_driver_d *)dev->driver->type_data;
+@@ -627,6 +657,11 @@ void *memmap(int fd, int flags)
+ 	FILE *f = &files[fd];
+ 	void *ret = (void *)-1;
+ 
++	if (fd < 0 || fd >= MAX_FILES || !f->in_use) {
++		errno = -EBADF;
++		return ret;
++	}
++
+ 	dev = f->dev;
+ 
+ 	fsdrv = (struct fs_driver_d *)dev->driver->type_data;
+@@ -646,6 +681,11 @@ int close(int fd)
+ 	struct fs_driver_d *fsdrv;
+ 	FILE *f = &files[fd];
+ 
++	if (fd < 0 || fd >= MAX_FILES || !f->in_use) {
++		errno = -EBADF;
++		return errno;
++	}
++
+ 	dev = f->dev;
+ 
+ 	fsdrv = (struct fs_driver_d *)dev->driver->type_data;
+-- 
+1.7.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
