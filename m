@@ -1,20 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OgaR2-0004kt-Jh
-	for barebox@lists.infradead.org; Wed, 04 Aug 2010 09:38:53 +0000
-Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.71)
-	(envelope-from <mgr@pengutronix.de>) id 1OgaQz-0007Q4-F4
-	for barebox@lists.infradead.org; Wed, 04 Aug 2010 11:38:49 +0200
-Received: from mgr by octopus.hi.pengutronix.de with local (Exim 4.69)
-	(envelope-from <mgr@pengutronix.de>) id 1OgaQz-0005De-EH
-	for barebox@lists.infradead.org; Wed, 04 Aug 2010 11:38:49 +0200
-Date: Wed, 4 Aug 2010 11:38:49 +0200
+	id 1Ogakx-0000Vf-JY
+	for barebox@lists.infradead.org; Wed, 04 Aug 2010 09:59:29 +0000
 From: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Message-ID: <20100804093849.GA19882@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Wed,  4 Aug 2010 11:59:11 +0200
+Message-Id: <1280915957-2910-8-git-send-email-m.grzeschik@pengutronix.de>
+In-Reply-To: <1280915957-2910-1-git-send-email-m.grzeschik@pengutronix.de>
+References: <1280915957-2910-1-git-send-email-m.grzeschik@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,31 +16,71 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] beagle: add bootparams and architecture
+Subject: [PATCH 07/13] ehci: Make has_tt configurable via platform data
 To: barebox@lists.infradead.org
 
+From: Sascha Hauer <s.hauer@pengutronix.de>
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
 ---
- arch/arm/boards/omap/board-beagle.c |    2 ++
- 1 files changed, 2 insertions(+), 0 deletions(-)
+ drivers/usb/host/ehci-hcd.c |   13 ++++++++-----
+ include/usb/ehci.h          |    2 ++
+ 2 files changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/boards/omap/board-beagle.c b/arch/arm/boards/omap/board-beagle.c
-index da59a93..5daad86 100644
---- a/arch/arm/boards/omap/board-beagle.c
-+++ b/arch/arm/boards/omap/board-beagle.c
-@@ -269,6 +269,8 @@ static int beagle_devices_init(void)
- 	gpmc_generic_nand_devices_init(0, 16, 1);
+diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
+index 8995fa3..1c266f3 100644
+--- a/drivers/usb/host/ehci-hcd.c
++++ b/drivers/usb/host/ehci-hcd.c
+@@ -899,22 +899,25 @@ static int ehci_probe(struct device_d *dev)
+ 	ehci = xmalloc(sizeof(struct ehci_priv));
+ 	host = &ehci->host;
  
- 	armlinux_add_dram(&sdram_dev);
-+	armlinux_set_bootparams((void *)0x80000100);
-+	armlinux_set_architecture(MACH_TYPE_OMAP3_BEAGLE);
- failed:
- 	return ret;
- }
+-	if (pdata)
++	if (pdata) {
+ 		ehci->flags = pdata->flags;
+-	else
++		ehci->hccr = (void *)(dev->map_base + pdata->hccr_offset);
++		ehci->hcor = (void *)(dev->map_base + pdata->hcor_offset);
++	}
++	else {
+ 		/* default to EHCI_HAS_TT to not change behaviour of boards
+ 		 * with platform_data
+ 		 */
+ 		ehci->flags = EHCI_HAS_TT;
++		ehci->hccr = (void *)(dev->map_base + 0x100);
++		ehci->hcor = (void *)(dev->map_base + 0x140);
++	}
+ 
+ 	host->init = ehci_init;
+ 	host->submit_int_msg = submit_int_msg;
+ 	host->submit_control_msg = submit_control_msg;
+ 	host->submit_bulk_msg = submit_bulk_msg;
+ 
+-	ehci->hccr = (void *)(dev->map_base + 0x100);
+-	ehci->hcor = (void *)(dev->map_base + 0x140);
+-
+ 	usb_register_host(host);
+ 
+ 	reg = HC_VERSION(ehci_readl(&ehci->hccr->cr_capbase));
+diff --git a/include/usb/ehci.h b/include/usb/ehci.h
+index 3304b60..2ec862c 100644
+--- a/include/usb/ehci.h
++++ b/include/usb/ehci.h
+@@ -5,6 +5,8 @@
+ 
+ struct ehci_platform_data {
+ 	unsigned long flags;
++	unsigned long hccr_offset;
++	unsigned long hcor_offset;
+ };
+ 
+ #endif  /* __USB_EHCI_H */
 -- 
 1.7.1
 
