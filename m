@@ -1,13 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 27.mail-out.ovh.net ([91.121.30.210])
+Received: from 64.mail-out.ovh.net ([91.121.185.65])
 	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OgT61-0006I2-KY
+	id 1OgT63-0006JE-36
 	for barebox@lists.infradead.org; Wed, 04 Aug 2010 01:48:44 +0000
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Wed,  4 Aug 2010 03:43:54 +0200
-Message-Id: <1280886239-19133-1-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <20100804014227.GA16337@game.jcrosoft.org>
+Date: Wed,  4 Aug 2010 03:43:58 +0200
+Message-Id: <1280886239-19133-5-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1280886239-19133-4-git-send-email-plagnioj@jcrosoft.com>
 References: <20100804014227.GA16337@game.jcrosoft.org>
+	<1280886239-19133-1-git-send-email-plagnioj@jcrosoft.com>
+	<1280886239-19133-2-git-send-email-plagnioj@jcrosoft.com>
+	<1280886239-19133-3-git-send-email-plagnioj@jcrosoft.com>
+	<1280886239-19133-4-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,7 +25,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/6] string: add strlcpy support
+Subject: [PATCH 5/6] nand: driver for Nomadik 8815 SoC
 To: barebox@lists.infradead.org
 Cc: Andrea GALLO <andrea.gallo@stericsson.com>
 
@@ -29,74 +33,317 @@ Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: Andrea GALLO <andrea.gallo@stericsson.com>
 Cc: Gael SALLES <gael.salles@stericsson.com>
 ---
- include/linux/string.h |    3 +++
- include/stdio.h        |    1 +
- lib/string.c           |   26 ++++++++++++++++++++++++++
- 3 files changed, 30 insertions(+), 0 deletions(-)
+ arch/arm/mach-nomadik/include/mach/nand.h |   16 ++
+ drivers/mtd/nand/Kconfig                  |    5 +
+ drivers/mtd/nand/Makefile                 |    1 +
+ drivers/mtd/nand/nomadik_nand.c           |  248 +++++++++++++++++++++++++++++
+ 4 files changed, 270 insertions(+), 0 deletions(-)
+ create mode 100644 arch/arm/mach-nomadik/include/mach/nand.h
+ create mode 100644 drivers/mtd/nand/nomadik_nand.c
 
-diff --git a/include/linux/string.h b/include/linux/string.h
-index 20b0829..62d743e 100644
---- a/include/linux/string.h
-+++ b/include/linux/string.h
-@@ -38,6 +38,9 @@ extern char * strcpy(char *,const char *);
- #ifndef __HAVE_ARCH_STRNCPY
- extern char * strncpy(char *,const char *, __kernel_size_t);
- #endif
-+#ifndef __HAVE_ARCH_STRLCPY
-+size_t strlcpy(char *, const char *, size_t);
-+#endif
- #ifndef __HAVE_ARCH_STRCAT
- extern char * strcat(char *, const char *);
- #endif
-diff --git a/include/stdio.h b/include/stdio.h
-index d591b6a..8bc45fa 100644
---- a/include/stdio.h
-+++ b/include/stdio.h
-@@ -36,6 +36,7 @@ int	vsprintf(char *buf, const char *fmt, va_list args);
- char	*asprintf(const char *fmt, ...);
- char	*vasprintf(const char *fmt, va_list ap);
- int	vsnprintf(char *buf, size_t size, const char *fmt, va_list args);
-+int	vscnprintf(char *buf, size_t size, const char *fmt, va_list args);
- 
- /* stderr */
- #define eputc(c)		console_putc(CONSOLE_STDERR, c)
-diff --git a/lib/string.c b/lib/string.c
-index cbb13d3..77435aa 100644
---- a/lib/string.c
-+++ b/lib/string.c
-@@ -62,6 +62,32 @@ char * strncpy(char * dest,const char *src,size_t count)
- #endif
- EXPORT_SYMBOL(strncpy);
- 
-+#ifndef __HAVE_ARCH_STRLCPY
-+/**
-+ * strlcpy - Copy a %NUL terminated string into a sized buffer
-+ * @dest: Where to copy the string to
-+ * @src: Where to copy the string from
-+ * @size: size of destination buffer
-+ *
-+ * Compatible with *BSD: the result is always a valid
-+ * NUL-terminated string that fits in the buffer (unless,
-+ * of course, the buffer size is zero). It does not pad
-+ * out the result like strncpy() does.
-+ */
-+size_t strlcpy(char *dest, const char *src, size_t size)
-+{
-+	size_t ret = strlen(src);
+diff --git a/arch/arm/mach-nomadik/include/mach/nand.h b/arch/arm/mach-nomadik/include/mach/nand.h
+new file mode 100644
+index 0000000..265fe53
+--- /dev/null
++++ b/arch/arm/mach-nomadik/include/mach/nand.h
+@@ -0,0 +1,16 @@
++#ifndef __ASM_ARCH_NAND_H
++#define __ASM_ARCH_NAND_H
 +
-+	if (size) {
-+		size_t len = (ret >= size) ? size - 1 : ret;
-+		memcpy(dest, src, len);
-+		dest[len] = '\0';
++struct nomadik_nand_platform_data {
++	unsigned long data_va;
++	unsigned long cmd_va;
++	unsigned long addr_va;
++	int options;
++	int (*init) (void);
++};
++
++#define NAND_IO_DATA	0x40000000
++#define NAND_IO_CMD	0x40800000
++#define NAND_IO_ADDR	0x41000000
++
++#endif				/* __ASM_ARCH_NAND_H */
+diff --git a/drivers/mtd/nand/Kconfig b/drivers/mtd/nand/Kconfig
+index ddc0c34..475499a 100644
+--- a/drivers/mtd/nand/Kconfig
++++ b/drivers/mtd/nand/Kconfig
+@@ -97,5 +97,10 @@ config MTD_NAND_DISKONCHIP_BBTWRITE
+ 	  load time (assuming you build diskonchip as a module) with the module
+ 	  parameter "inftl_bbt_write=1".
+ 
++config MTD_NAND_NOMADIK
++	tristate "ST Nomadik 8815 NAND support"
++	depends on ARCH_NOMADIK
++	help
++	  Driver for the NAND flash controller on the Nomadik, with ECC.
+ 
+ endif
+diff --git a/drivers/mtd/nand/Makefile b/drivers/mtd/nand/Makefile
+index 73f7346..bac39e7 100644
+--- a/drivers/mtd/nand/Makefile
++++ b/drivers/mtd/nand/Makefile
+@@ -5,6 +5,7 @@ obj-$(CONFIG_MTD_NAND_IDS)		+= nand_ids.o
+ obj-$(CONFIG_NAND)			+= nand_base.o nand_bbt.o
+ 
+ obj-$(CONFIG_MTD_NAND_DISKONCHIP)	+= diskonchip.o
++obj-$(CONFIG_MTD_NAND_NOMADIK)		+= nomadik_nand.o
+ obj-$(CONFIG_NAND_IMX)			+= nand_imx.o
+ obj-$(CONFIG_NAND_OMAP_GPMC)		+= nand_omap_gpmc.o
+ obj-$(CONFIG_NAND_ATMEL)		+= atmel_nand.o
+diff --git a/drivers/mtd/nand/nomadik_nand.c b/drivers/mtd/nand/nomadik_nand.c
+new file mode 100644
+index 0000000..673fd88
+--- /dev/null
++++ b/drivers/mtd/nand/nomadik_nand.c
+@@ -0,0 +1,248 @@
++/*
++ *  drivers/mtd/nand/nomadik_nand.c
++ *
++ *  Overview:
++ *  	Driver for on-board NAND flash on Nomadik Platforms
++ *
++ * Copyright (C) 2007 STMicroelectronics Pvt. Ltd.
++ * Author: Sachin Verma <sachin.verma@st.com>
++ *
++ * Copyright (C) 2009 Alessandro Rubini
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++
++#include <common.h>
++#include <driver.h>
++#include <malloc.h>
++#include <init.h>
++
++#include <linux/types.h>
++#include <linux/mtd/mtd.h>
++#include <linux/mtd/nand.h>
++
++#include <asm/io.h>
++#include <mach/nand.h>
++#include <mach/fsmc.h>
++
++#include <errno.h>
++
++struct nomadik_nand_host {
++	struct mtd_info		mtd;
++	struct nand_chip	nand;
++	void __iomem *cmd_va;
++	void __iomem *addr_va;
++	struct nand_bbt_descr *bbt_desc;
++};
++
++static inline int parity(int b) /* uses low 8 bits: returns 0 or all-1 */
++{
++	b = b ^ (b >> 4);
++	b = b ^ (b >> 2);
++	return (b ^ (b >> 1)) & 1
++		? ~0 : 0;
++}
++
++/*
++ * This is the ECC routine used in hardware, according to the manual.
++ * HW claims to make the calculation but not the correction. However,
++ * I haven't managed to get the desired data out of it; so do it in sw.
++ * There is problably some errata involved, but currently miss the info.
++ */
++static int nomadik_ecc512_calc(struct mtd_info *mtd, const u_char *data,
++			u_char *ecc)
++{
++	int gpar = 0;
++	int i, val, par;
++	int pbits = 0;		/* P8, P16, ... P2048 */
++	int pprime = 0;		/* P8', P16', ... P2048' */
++	int lowbits;		/* P1, P2, P4 and primes */
++
++	for (i = 0; i < 512; i++) {
++		par = parity((val = data[i]));
++		gpar ^= val;
++		pbits ^= (i & par);
 +	}
++	/*
++	 * Ok, now gpar is global parity (xor of all bytes)
++	 * pbits are all the parity bits (non-prime ones)
++	 */
++	par = parity(gpar);
++	pprime = pbits ^ par;
++	/* Put low bits in the right position for ecc[2] (bits 7..2) */
++	lowbits = 0
++		| (parity(gpar & 0xf0) & 0x80)	/* P4  */
++		| (parity(gpar & 0x0f) & 0x40)	/* P4' */
++		| (parity(gpar & 0xcc) & 0x20)	/* P2  */
++		| (parity(gpar & 0x33) & 0x10)	/* P2' */
++		| (parity(gpar & 0xaa) & 0x08)	/* P1  */
++		| (parity(gpar & 0x55) & 0x04);	/* P1' */
++
++	ecc[2] = ~(lowbits | ((pbits & 0x100) >> 7) | ((pprime & 0x100) >> 8));
++	/* now intermix bits for ecc[1] (P1024..P128') and ecc[0] (P64..P8') */
++	ecc[1] = ~(    (pbits & 0x80) >> 0  | ((pprime & 0x80) >> 1)
++		    | ((pbits & 0x40) >> 1) | ((pprime & 0x40) >> 2)
++		    | ((pbits & 0x20) >> 2) | ((pprime & 0x20) >> 3)
++		    | ((pbits & 0x10) >> 3) | ((pprime & 0x10) >> 4));
++
++	ecc[0] = ~(    (pbits & 0x8) << 4  | ((pprime & 0x8) << 3)
++		    | ((pbits & 0x4) << 3) | ((pprime & 0x4) << 2)
++		    | ((pbits & 0x2) << 2) | ((pprime & 0x2) << 1)
++		    | ((pbits & 0x1) << 1) | ((pprime & 0x1) << 0));
++	return 0;
++}
++
++static int nomadik_ecc512_correct(struct mtd_info *mtd, uint8_t *dat,
++				uint8_t *r_ecc, uint8_t *c_ecc)
++{
++	struct nand_chip *chip = mtd->priv;
++	uint32_t r, c, d, diff; /*read, calculated, xor of them */
++
++	if (!memcmp(r_ecc, c_ecc, chip->ecc.bytes))
++		return 0;
++
++	/* Reorder the bytes into ascending-order 24 bits -- see manual */
++	r = r_ecc[2] << 22 | r_ecc[1] << 14 | r_ecc[0] << 6 | r_ecc[2] >> 2;
++	c = c_ecc[2] << 22 | c_ecc[1] << 14 | c_ecc[0] << 6 | c_ecc[2] >> 2;
++	diff = (r ^ c) & ((1 << 24) - 1); /* use 24 bits only */
++
++	/* If 12 bits are different, one per pair, it's correctable */
++	if (((diff | (diff>>1)) & 0x555555) == 0x555555) {
++		int bit = ((diff & 2) >> 1)
++			| ((diff & 0x8) >> 2) | ((diff & 0x20) >> 3);
++		int byte;
++
++		d = diff >> 6; /* remove bit-order info */
++		byte =  ((d & 2) >> 1)
++			| ((d & 0x8) >> 2) | ((d & 0x20) >> 3)
++			| ((d & 0x80) >> 4) | ((d & 0x200) >> 5)
++			| ((d & 0x800) >> 6) | ((d & 0x2000) >> 7)
++			| ((d & 0x8000) >> 8) | ((d & 0x20000) >> 9);
++		/* correct the single bit */
++		dat[byte] ^= 1 << bit;
++		return 0;
++	}
++	/* If 1 bit only differs, it's one bit error in ECC, ignore */
++	if ((diff ^ (1 << (ffs(diff) - 1))) == 0)
++		return 0;
++	/* Otherwise, uncorrectable */
++	return -1;
++}
++
++static struct nand_ecclayout nomadik_ecc_layout = {
++	.eccbytes = 3 * 4,
++	.eccpos = { /* each subpage has 16 bytes: pos 2,3,4 hosts ECC */
++		0x02, 0x03, 0x04,
++		0x12, 0x13, 0x14,
++		0x22, 0x23, 0x24,
++		0x32, 0x33, 0x34},
++	/* let's keep bytes 5,6,7 for us, just in case we change ECC algo */
++	.oobfree = { {0x08, 0x08}, {0x18, 0x08}, {0x28, 0x08}, {0x38, 0x08} },
++};
++
++static void nomadik_ecc_control(struct mtd_info *mtd, int mode)
++{
++	/* No need to enable hw ecc, it's on by default */
++}
++
++static void nomadik_cmd_ctrl(struct mtd_info *mtd, int cmd, unsigned int ctrl)
++{
++	struct nand_chip *nand = mtd->priv;
++	struct nomadik_nand_host *host = nand->priv;
++
++	if (cmd == NAND_CMD_NONE)
++		return;
++
++	if (ctrl & NAND_CLE)
++		writeb(cmd, host->cmd_va);
++	else
++		writeb(cmd, host->addr_va);
++}
++
++static int nomadik_nand_probe(struct device_d *dev)
++{
++	struct nomadik_nand_platform_data *pdata = dev->platform_data;
++	struct nomadik_nand_host *host;
++	struct mtd_info *mtd;
++	struct nand_chip *nand;
++	int ret = 0;
++
++	/* Allocate memory for the device structure (and zero it) */
++	host = kzalloc(sizeof(struct nomadik_nand_host), GFP_KERNEL);
++	if (!host) {
++		dev_err(dev, "Failed to allocate device structure.\n");
++		return -ENOMEM;
++	}
++
++	/* Call the client's init function, if any */
++	if (pdata->init && (ret = pdata->init()) < 0) {
++		dev_err(dev, "Init function failed\n");
++		goto err;
++	}
++
++	host->cmd_va = (void __iomem*)pdata->cmd_va;
++	host->addr_va = (void __iomem*)pdata->addr_va;
++
++	/* Link all private pointers */
++	mtd = &host->mtd;
++	nand = &host->nand;
++	mtd->priv = nand;
++	nand->priv = host;
++
++	nand->IO_ADDR_R = (void __iomem*)pdata->data_va;
++	nand->IO_ADDR_W = (void __iomem*)pdata->data_va;
++	nand->cmd_ctrl = nomadik_cmd_ctrl;
++
++	nand->ecc.mode = NAND_ECC_HW;
++	nand->ecc.layout = &nomadik_ecc_layout;
++	nand->ecc.calculate = nomadik_ecc512_calc;
++	nand->ecc.correct = nomadik_ecc512_correct;
++	nand->ecc.hwctl = nomadik_ecc_control;
++	nand->ecc.size = 512;
++	nand->ecc.bytes = 3;
++
++	nand->options = pdata->options;
++
++	/*
++	 * Scan to find existance of the device
++	 */
++	if (nand_scan(&host->mtd, 1)) {
++		ret = -ENXIO;
++		goto err;
++	}
++
++	pr_info("Registering %s as whole device\n", mtd->name);
++	add_mtd_device(mtd);
++
++	return 0;
++
++err:
++	kfree(host);
 +	return ret;
 +}
-+EXPORT_SYMBOL(strlcpy);
-+#endif
 +
- #ifndef __HAVE_ARCH_STRCAT
- /**
-  * strcat - Append one %NUL-terminated string to another
++static struct driver_d nomadik_nand_driver = {
++	.probe = nomadik_nand_probe,
++	.name = "nomadik_nand",
++};
++
++static int __init nand_nomadik_init(void)
++{
++	pr_info("Nomadik NAND driver\n");
++	return register_driver(&nomadik_nand_driver);
++}
++
++device_initcall(nand_nomadik_init);
++
++MODULE_LICENSE("GPL");
++MODULE_AUTHOR("ST Microelectronics (sachin.verma@st.com)");
++MODULE_DESCRIPTION("NAND driver for Nomadik Platform");
 -- 
 1.7.1
 
