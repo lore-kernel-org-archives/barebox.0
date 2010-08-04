@@ -1,17 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from tango.tkos.co.il ([62.219.50.35])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OgYuD-0007Al-E4
-	for barebox@lists.infradead.org; Wed, 04 Aug 2010 08:00:54 +0000
-Date: Wed, 4 Aug 2010 10:00:51 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20100804080051.GT14113@pengutronix.de>
-References: <1280483395-9043-1-git-send-email-eric@eukrea.com>
-	<20100804074253.GS14113@pengutronix.de>
-	<4C591B60.7090204@eukrea.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <4C591B60.7090204@eukrea.com>
+	id 1OgYxe-0003aN-7y
+	for barebox@lists.infradead.org; Wed, 04 Aug 2010 08:04:27 +0000
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Wed,  4 Aug 2010 11:04:10 +0300
+Message-Id: <dc1d8290e67d38ef25daa2a86b8547afafa71ed3.1280909003.git.baruch@tkos.co.il>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,53 +14,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] cfi_flash_intel: support 1024b buffer write
-To: Eric =?iso-8859-15?Q?B=E9nard?= <eric@eukrea.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] md: fix help text
+To: barebox@lists.infradead.org
 
-On Wed, Aug 04, 2010 at 09:48:48AM +0200, Eric B=E9nard wrote:
-> Hi Sascha,
->
-> Le 04/08/2010 09:42, Sascha Hauer a =E9crit :
->> On Fri, Jul 30, 2010 at 11:49:55AM +0200, Eric B=E9nard wrote:
->>> newer Numonyx Strataflash P3x have 1024b buffer, thus, it's possible
->>> to write a buffer size of 0x200 which the actual flash_write_cmd
->>> doesn't permit as it's limited to a uchar parameter.
->>
->> So I guess these chips have 16 data lines?
->>
-> actual flash_write_cmd is also used on chips with 16 data lines (like  =
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+ commands/mem.c |    1 -
+ 1 files changed, 0 insertions(+), 1 deletions(-)
 
-> P30 or P33 Numonyx).
+diff --git a/commands/mem.c b/commands/mem.c
+index bd1d349..d609805 100644
+--- a/commands/mem.c
++++ b/commands/mem.c
+@@ -217,7 +217,6 @@ static const __maybe_unused char cmd_md_help[] =
+ "display (hexdump) a memory region.\n"
+ "options:\n"
+ "  -s <file>   display file (default /dev/mem)\n"
+-"  -d <file>   write file (default /dev/mem)\n"
+ "  -b          output in bytes\n"
+ "  -w          output in halfwords (16bit)\n"
+ "  -l          output in words (32bit)\n"
+-- 
+1.7.1
 
-Yes. I meant that 8 wouldn't be enough because the command gets
-wider than 8bit.
-
->
->>
-> >Unfortunately this won't work when two of these are parallel. You'd have
->> to duplicate the command for the upper 16 bit.
->>
-> Does actual flash_write_cmd works when 2 chips are parallel ?
-
-At least it's supposed to ;)
-
-See flash_make_cmd, it iterates over all bytes in info->portwidth and
-writes cmd or 0 into the buffer depending on info->chipwidth.
-
-Sascha
-
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
