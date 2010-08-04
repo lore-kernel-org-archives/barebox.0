@@ -1,11 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 63.mail-out.ovh.net ([91.121.185.56])
-	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OgXKo-0005R7-91
-	for barebox@lists.infradead.org; Wed, 04 Aug 2010 06:20:16 +0000
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Wed,  4 Aug 2010 08:15:33 +0200
-Message-Id: <1280902533-12387-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1OgXjn-00021U-Fj
+	for barebox@lists.infradead.org; Wed, 04 Aug 2010 06:46:04 +0000
+Date: Wed, 4 Aug 2010 08:46:00 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20100804064600.GQ14113@pengutronix.de>
+References: <20100804014227.GA16337@game.jcrosoft.org>
+	<1280886239-19133-1-git-send-email-plagnioj@jcrosoft.com>
+	<1280886239-19133-2-git-send-email-plagnioj@jcrosoft.com>
+	<1280886239-19133-3-git-send-email-plagnioj@jcrosoft.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1280886239-19133-3-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,41 +21,58 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] gitignore: ignore .orig and .patch files
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 3/6] amba: add pl011
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org, Andrea GALLO <andrea.gallo@stericsson.com>
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- .gitignore |    4 ++++
- 1 files changed, 4 insertions(+), 0 deletions(-)
+On Wed, Aug 04, 2010 at 03:43:56AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> +++ b/drivers/serial/amba-pl011.c
+> @@ -0,0 +1,192 @@
+> +/*
+> + * (C) Copyright 2000
+> + * Rob Taylor, Flying Pig Systems. robt@flyingpig.com.
+> + *
+> + * (C) Copyright 2004
+> + * ARM Ltd.
+> + * Philippe Robin, <philippe.robin@arm.com>
+> + *
+> + * See file CREDITS for list of people who contributed to this
+> + * project.
+> + *
+> + * This program is free software; you can redistribute it and/or
+> + * modify it under the terms of the GNU General Public License as
+> + * published by the Free Software Foundation; either version 2 of
+> + * the License, or (at your option) any later version.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + *
+> + * You should have received a copy of the GNU General Public License
+> + * along with this program; if not, write to the Free Software
+> + * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+> + * MA 02111-1307 USA
+> + */
+> +
+> +/* Simple U-Boot driver for the PrimeCell PL010/PL011 UARTs */
 
-diff --git a/.gitignore b/.gitignore
-index 6f04601..3577153 100644
---- a/.gitignore
-+++ b/.gitignore
-@@ -19,6 +19,7 @@
- *.symtypes
- *.elf
- *.mcp
-+*.orig
- 
- #
- # Top-level generic files
-@@ -59,3 +60,6 @@ series
- 
- # cscope files
- cscope.*
-+
-+# patches
-+*.patch
+We already have a driver for the pl010 in the tree, so I would expect
+arguments like 'this one is much more flexible, drop the old one', or
+'the pl011 is totally different' (which doesn't seem to be the case).
+
+Sascha
+
+
 -- 
-1.7.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
