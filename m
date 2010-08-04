@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 26.mail-out.ovh.net ([91.121.27.225])
+Received: from 63.mail-out.ovh.net ([91.121.185.56])
 	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OgXJq-0004g5-Ug
-	for barebox@lists.infradead.org; Wed, 04 Aug 2010 06:19:15 +0000
+	id 1OgXKo-0005R7-91
+	for barebox@lists.infradead.org; Wed, 04 Aug 2010 06:20:16 +0000
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Wed,  4 Aug 2010 08:14:33 +0200
-Message-Id: <1280902473-12183-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Wed,  4 Aug 2010 08:15:33 +0200
+Message-Id: <1280902533-12387-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,45 +19,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] stddef: introduce true/false enum
+Subject: [PATCH] gitignore: ignore .orig and .patch files
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- include/linux/stddef.h |    5 +++++
- include/xyzModem.h     |    3 ---
- 2 files changed, 5 insertions(+), 3 deletions(-)
+ .gitignore |    4 ++++
+ 1 files changed, 4 insertions(+), 0 deletions(-)
 
-diff --git a/include/linux/stddef.h b/include/linux/stddef.h
-index 81e34c2..e366328 100644
---- a/include/linux/stddef.h
-+++ b/include/linux/stddef.h
-@@ -8,6 +8,11 @@
- #define NULL ((void *)0)
- #endif
+diff --git a/.gitignore b/.gitignore
+index 6f04601..3577153 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -19,6 +19,7 @@
+ *.symtypes
+ *.elf
+ *.mcp
++*.orig
  
-+enum {
-+	false	= 0,
-+	true	= 1
-+};
+ #
+ # Top-level generic files
+@@ -59,3 +60,6 @@ series
+ 
+ # cscope files
+ cscope.*
 +
- #ifndef _SIZE_T
- #include <linux/types.h>
- #endif
-diff --git a/include/xyzModem.h b/include/xyzModem.h
-index 9723e73..a3ea768 100644
---- a/include/xyzModem.h
-+++ b/include/xyzModem.h
-@@ -97,9 +97,6 @@ typedef struct {
- #endif
- } connection_info_t;
- 
--#define false 0
--#define true 1
--
- #endif
- 
- 
++# patches
++*.patch
 -- 
 1.7.1
 
