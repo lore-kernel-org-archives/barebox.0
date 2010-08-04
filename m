@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Ogakx-0000Vh-Ji
-	for barebox@lists.infradead.org; Wed, 04 Aug 2010 09:59:29 +0000
+	id 1Ogakx-0000VV-9S
+	for barebox@lists.infradead.org; Wed, 04 Aug 2010 09:59:28 +0000
 From: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Date: Wed,  4 Aug 2010 11:59:12 +0200
-Message-Id: <1280915957-2910-9-git-send-email-m.grzeschik@pengutronix.de>
+Date: Wed,  4 Aug 2010 11:59:05 +0200
+Message-Id: <1280915957-2910-2-git-send-email-m.grzeschik@pengutronix.de>
 In-Reply-To: <1280915957-2910-1-git-send-email-m.grzeschik@pengutronix.de>
 References: <1280915957-2910-1-git-send-email-m.grzeschik@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,30 +21,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/13] ehci: set CONFIG_SYS_USB_EHCI_MAX_ROOT_PORTS to 16
+Subject: [PATCH 01/13] i2c: Add missing defines for omap
 To: barebox@lists.infradead.org
 
 From: Sascha Hauer <s.hauer@pengutronix.de>
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
 ---
- drivers/usb/host/ehci.h |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+ include/i2c/i2c.h |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
 
-diff --git a/drivers/usb/host/ehci.h b/drivers/usb/host/ehci.h
-index af49249..07a1768 100644
---- a/drivers/usb/host/ehci.h
-+++ b/drivers/usb/host/ehci.h
-@@ -23,7 +23,7 @@
- #define USB_EHCI_H
+diff --git a/include/i2c/i2c.h b/include/i2c/i2c.h
+index c031bbb..2507d68 100644
+--- a/include/i2c/i2c.h
++++ b/include/i2c/i2c.h
+@@ -30,6 +30,8 @@ struct i2c_platform_data {
+ #define I2C_NAME_SIZE	20
  
- #if !defined(CONFIG_SYS_USB_EHCI_MAX_ROOT_PORTS)
--#define CONFIG_SYS_USB_EHCI_MAX_ROOT_PORTS	2
-+#define CONFIG_SYS_USB_EHCI_MAX_ROOT_PORTS	16
- #endif
+ #define I2C_M_RD		0x0001	/* read data, from slave to master */
++#define I2C_M_TEN               0x0010  /* this is a ten bit chip address */
++#define I2C_M_IGNORE_NAK        0x1000  /* if I2C_FUNC_PROTOCOL_MANGLING */
  
- /* (shifted) direction/type/recipient from the USB 2.0 spec, table 9.2 */
+ /**
+  * struct i2c_msg - an I2C transaction segment beginning with START
 -- 
 1.7.1
 
