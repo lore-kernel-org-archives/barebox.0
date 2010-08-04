@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 63.mail-out.ovh.net ([91.121.185.56])
+Received: from 27.mail-out.ovh.net ([91.121.30.210])
 	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OgbDH-00075c-5o
-	for barebox@lists.infradead.org; Wed, 04 Aug 2010 10:28:44 +0000
-Date: Wed, 4 Aug 2010 12:24:02 +0200
+	id 1OgbEv-0001m7-HL
+	for barebox@lists.infradead.org; Wed, 04 Aug 2010 10:30:28 +0000
+Date: Wed, 4 Aug 2010 12:25:45 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20100804102402.GA12545@game.jcrosoft.org>
-References: <1280888414-22759-1-git-send-email-plagnioj@jcrosoft.com>
-	<20100804065008.GC17208@jasper.tkos.co.il>
+Message-ID: <20100804102545.GB12545@game.jcrosoft.org>
+References: <cover.1280749932.git.baruch@tkos.co.il>
+	<20100802120213.GC13044@game.jcrosoft.org>
+	<20100804064641.GB17208@jasper.tkos.co.il>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20100804065008.GC17208@jasper.tkos.co.il>
+In-Reply-To: <20100804064641.GB17208@jasper.tkos.co.il>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,25 +24,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] init.h: introduce fake define (__init & __initdata) to
-	simplify the linux sync
+Subject: Re: [PATCH 0/3] arm/imx: serial number / UID support
 To: Baruch Siach <baruch@tkos.co.il>
 Cc: barebox@lists.infradead.org
 
-> >  
-> > +/*
-> > + * fake define to simplify the linux sync
-> > + */
-> > +#define __init
-> > +#define __initdata
-> > +
+On 09:46 Wed 04 Aug     , Baruch Siach wrote:
+> Hi Jean-Christophe,
 > 
-> IMO, having useless __init/__initdata in the code adds noise, and reduces 
-> readability.  These can be easily removed as code gets moved from Linux to 
-> Barebox.
-
-but make impossible to apply patch directly or very quickly update the code
-so this will make the job of maintainance easier
+> On Mon, Aug 02, 2010 at 02:02:13PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > 	serial number is more for board ref than CPU ref
+> > 	as you can easly read it from the register.
+> > 
+> > 	So why pass it via the ATAG?
+> 
+> The point of the serial number ATAG is to uniquely identify the system.  
+> Getting this unique ID from the CPU is as good as any other IMO. I'm not aware 
+> of any other UID source on the mx25 3DS system. Besides, having the serial 
+> number nicely listed in /proc/cpuinfo is far easier than reading registers.
+> 
+> Anyway, patches 1 and 2 in this series are useful on their own, I think. I 
+> intend to use this functionality for our own board. I've added the mx25 3ds 
+> two lines patch to justify the bloat :).
+I agree about the other patch I just do not think we need to pass the CPUID to
+the kernel as he can easly get it by himself IMHO
 
 Best Regards,
 J.
