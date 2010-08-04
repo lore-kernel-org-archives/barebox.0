@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from tango.tkos.co.il ([62.219.50.35])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OgXka-00029I-VX
-	for barebox@lists.infradead.org; Wed, 04 Aug 2010 06:46:54 +0000
-Date: Wed, 4 Aug 2010 09:46:41 +0300
+	id 1OgXnu-0003Z9-NC
+	for barebox@lists.infradead.org; Wed, 04 Aug 2010 06:50:19 +0000
+Date: Wed, 4 Aug 2010 09:50:08 +0300
 From: Baruch Siach <baruch@tkos.co.il>
-Message-ID: <20100804064641.GB17208@jasper.tkos.co.il>
-References: <cover.1280749932.git.baruch@tkos.co.il>
-	<20100802120213.GC13044@game.jcrosoft.org>
+Message-ID: <20100804065008.GC17208@jasper.tkos.co.il>
+References: <1280888414-22759-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20100802120213.GC13044@game.jcrosoft.org>
+In-Reply-To: <1280888414-22759-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,47 +22,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/3] arm/imx: serial number / UID support
+Subject: Re: [PATCH] init.h: introduce fake define (__init & __initdata) to
+	simplify the linux sync
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
 Hi Jean-Christophe,
 
-On Mon, Aug 02, 2010 at 02:02:13PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> 	serial number is more for board ref than CPU ref
-> 	as you can easly read it from the register.
+On Wed, Aug 04, 2010 at 04:20:14AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  include/init.h |    6 ++++++
+>  1 files changed, 6 insertions(+), 0 deletions(-)
 > 
-> 	So why pass it via the ATAG?
+> diff --git a/include/init.h b/include/init.h
+> index c5dea07..accc4d0 100644
+> --- a/include/init.h
+> +++ b/include/init.h
+> @@ -1,6 +1,12 @@
+>  #ifndef _INIT_H
+>  #define _INIT_H
+>  
+> +/*
+> + * fake define to simplify the linux sync
+> + */
+> +#define __init
+> +#define __initdata
+> +
 
-The point of the serial number ATAG is to uniquely identify the system.  
-Getting this unique ID from the CPU is as good as any other IMO. I'm not aware 
-of any other UID source on the mx25 3DS system. Besides, having the serial 
-number nicely listed in /proc/cpuinfo is far easier than reading registers.
-
-Anyway, patches 1 and 2 in this series are useful on their own, I think. I 
-intend to use this functionality for our own board. I've added the mx25 3ds 
-two lines patch to justify the bloat :).
+IMO, having useless __init/__initdata in the code adds noise, and reduces 
+readability.  These can be easily removed as code gets moved from Linux to 
+Barebox.
 
 baruch
-
-> Best Regards,
-> J.
-> On 14:58 Mon 02 Aug     , Baruch Siach wrote:
-> > This patch series adds support for the serial ATAG, and uses this functionality 
-> > to pass the i.MX25 chip UID as a serial number to the Linux kernel.
-> > 
-> > Baruch Siach (3):
-> >   arm: add support for the serial ATAG
-> >   imx25: add support for UID read from eFuse
-> >   mx25 3ds: set CPU UID
-> > 
-> >  arch/arm/boards/freescale-mx25-3-stack/3stack.c |    2 ++
-> >  arch/arm/include/asm/armlinux.h                 |    4 ++++
-> >  arch/arm/lib/armlinux.c                         |   19 +++++++++++++++++++
-> >  arch/arm/mach-imx/imx25.c                       |   12 ++++++++++++
-> >  arch/arm/mach-imx/include/mach/generic.h        |    1 +
-> >  arch/arm/mach-imx/include/mach/imx25-regs.h     |    3 +++
-> >  6 files changed, 41 insertions(+), 0 deletions(-)
 
 -- 
                                                      ~. .~   Tk Open Systems
