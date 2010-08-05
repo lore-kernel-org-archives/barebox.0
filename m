@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from tango.tkos.co.il ([62.219.50.35])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OgyY1-0001Jg-Kl
+	id 1OgyY1-0001Jh-Kx
 	for barebox@lists.infradead.org; Thu, 05 Aug 2010 11:23:43 +0000
 From: Baruch Siach <baruch@tkos.co.il>
-Date: Thu,  5 Aug 2010 14:23:17 +0300
-Message-Id: <f375ed4cd64b27529dd717f6f39518eb261e1853.1281007209.git.baruch@tkos.co.il>
+Date: Thu,  5 Aug 2010 14:23:18 +0300
+Message-Id: <7a1057f8529fef23994321d48ab50c64a362dfeb.1281007209.git.baruch@tkos.co.il>
+In-Reply-To: <f375ed4cd64b27529dd717f6f39518eb261e1853.1281007209.git.baruch@tkos.co.il>
+References: <f375ed4cd64b27529dd717f6f39518eb261e1853.1281007209.git.baruch@tkos.co.il>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,96 +21,95 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] misc: introduce string_to_bin
+Subject: [PATCH 2/2] setser: new command to set serial number on ARM
 To: barebox@lists.infradead.org
-
-Factor out string_to_bin from string_to_ethaddr. string_to_bin is useful for
-other hex data strings.
 
 Signed-off-by: Baruch Siach <baruch@tkos.co.il>
 ---
- include/common.h |    1 +
- lib/misc.c       |   29 +++++++++++++++++++++++++++++
- net/net.c        |   17 +----------------
- 3 files changed, 31 insertions(+), 16 deletions(-)
+ commands/Kconfig  |    8 ++++++++
+ commands/Makefile |    1 +
+ commands/setser.c |   43 +++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 52 insertions(+), 0 deletions(-)
+ create mode 100644 commands/setser.c
 
-diff --git a/include/common.h b/include/common.h
-index 0edc778..f600eb0 100644
---- a/include/common.h
-+++ b/include/common.h
-@@ -127,6 +127,7 @@ struct memarea_info {
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 1ffc826..9d11a8b 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -231,6 +231,14 @@ config CMD_BOOTU
+ 	   compile in the 'bootu' command to start raw (uncompressed)
+ 	   Linux images
  
- int spec_str_to_info(const char *str, struct memarea_info *info);
- int parse_area_spec(const char *str, ulong *start, ulong *size);
-+int string_to_bin(const char *str, u8 *buf, unsigned int buflen);
- 
- /* Just like simple_strtoul(), but this one honors a K/M/G suffix */
- unsigned long strtoul_suffix(const char *str, char **endp, int base);
-diff --git a/lib/misc.c b/lib/misc.c
-index 549b960..7735725 100644
---- a/lib/misc.c
-+++ b/lib/misc.c
-@@ -107,3 +107,32 @@ int parse_area_spec(const char *str, ulong *start, ulong *size)
- 	return -1;
- }
- EXPORT_SYMBOL(parse_area_spec);
++config CMD_SETSER
++	tristate
++	depends on ARM
++	prompt "setser"
++	help
++	  compile in the 'setser' command to set the 64bit serial number to be 
++	  passed to the Linux kernel upon boot
 +
+ config CMD_LINUX16
+ 	tristate
+ 	default y if X86
+diff --git a/commands/Makefile b/commands/Makefile
+index b99f042..276af85 100644
+--- a/commands/Makefile
++++ b/commands/Makefile
+@@ -1,4 +1,5 @@
+ obj-$(CONFIG_CMD_BOOTM)		+= bootm.o
++obj-$(CONFIG_CMD_SETSER)	+= setser.o
+ obj-$(CONFIG_CMD_LINUX16)	+= linux16.o
+ obj-$(CONFIG_CMD_LOADB)		+= loadb.o xyzModem.o
+ obj-$(CONFIG_CMD_LOADY)		+= loadb.o xyzModem.o
+diff --git a/commands/setser.c b/commands/setser.c
+new file mode 100644
+index 0000000..ef4fb0a
+--- /dev/null
++++ b/commands/setser.c
+@@ -0,0 +1,43 @@
 +/*
-+ * This function parses strings in the form "xx:xx:xx...", where x is an
-+ * hexadecimal digit.
++ * Copyright (c) 2010 Baruch Siach <baruch@tkos.co.il>,
++ *	Orex Computed Radiography
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * http://www.opensource.org/licenses/gpl-license.html
++ * http://www.gnu.org/copyleft/gpl.html
 + */
-+int string_to_bin(const char *str, u8 *buf, unsigned int buflen)
++
++#include <common.h>
++#include <command.h>
++#include <asm/armlinux.h>
++#include <asm/byteorder.h>
++
++static int do_setser(struct command *cmdtp, int argc, char *argv[])
 +{
-+	int i;
-+	char *e;
++	int ret;
++	u8 buf[8];
 +
-+	if (!str || strlen(str) != buflen*3 - 1)
-+		return -1;
++	if (argc != 2)
++		return COMMAND_ERROR_USAGE;
 +
-+	for (i = 0; i < buflen-1; i++)
-+		if (str[i*3 + 2] != ':')
-+			return -1;
++	ret = string_to_bin(argv[1], buf, 8);
++	if (ret < 0)
++		return COMMAND_ERROR_USAGE;
 +
-+	for (i = 0; str[i]; i++)
-+		if (!isxdigit(str[i]) && !(str[i] == ':'))
-+			return -1;
-+
-+	for (i = 0; i < buflen; i++) {
-+		buf[i] = simple_strtoul(str, &e, 16);
-+		str = e + 1;
-+	}
++	armlinux_set_serial(be64_to_cpup((u64 *)buf));
 +
 +	return 0;
 +}
-+EXPORT_SYMBOL(string_to_bin);
-diff --git a/net/net.c b/net/net.c
-index 8d99595..017de8b 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -161,22 +161,7 @@ void print_IPaddr (IPaddr_t x)
- 
- int string_to_ethaddr(const char *str, char *enetaddr)
- {
--	int reg;
--	char *e;
--
--        if (!str || strlen(str) != 17)
--                return -1;
--
--        if (str[2] != ':' || str[5] != ':' || str[8] != ':' ||
--                        str[11] != ':' || str[14] != ':')
--                return -1;
--
--	for (reg = 0; reg < 6; ++reg) {
--		enetaddr[reg] = simple_strtoul (str, &e, 16);
--			str = e + 1;
--	}
--
--	return 0;
-+	return string_to_bin(str, enetaddr, 6);
- }
- 
- void ethaddr_to_string(const unsigned char *enetaddr, char *str)
++
++static const __maybe_unused char cmd_setser_help[] =
++"Usage: setser xx:xx:xx:xx:xx:xx:xx:xx\n"
++"Set 64bit serial number to pass to the Linux kernel\n";
++
++BAREBOX_CMD_START(setser)
++	.cmd	= do_setser,
++	.usage	= "set serial number",
++	BAREBOX_CMD_HELP(cmd_setser_help)
++BAREBOX_CMD_END
 -- 
 1.7.1
 
