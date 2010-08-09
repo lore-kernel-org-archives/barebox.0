@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 64.mail-out.ovh.net ([91.121.185.65])
-	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1Oi4wo-0007Rw-20
-	for barebox@lists.infradead.org; Sun, 08 Aug 2010 12:25:51 +0000
-Date: Sun, 8 Aug 2010 14:20:59 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20100808122059.GN24069@game.jcrosoft.org>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1OiMAp-0006lr-Rz
+	for barebox@lists.infradead.org; Mon, 09 Aug 2010 06:49:28 +0000
+Date: Mon, 9 Aug 2010 08:49:23 +0200
+From: Robert Schwebel <r.schwebel@pengutronix.de>
+Message-ID: <20100809064923.GL30096@pengutronix.de>
 References: <1281241073-19115-1-git-send-email-plagnioj@jcrosoft.com>
 	<20100808064846.GA31364@merkur.ravnborg.org>
-	<20100808090612.GM24069@game.jcrosoft.org>
-	<20100808120741.GA32022@merkur.ravnborg.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20100808120741.GA32022@merkur.ravnborg.org>
+In-Reply-To: <20100808064846.GA31364@merkur.ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,57 +27,32 @@ Subject: Re: [PATCH] Kconfig: sync with linux kernel v2.6.35-4771-g1787985
 To: Sam Ravnborg <sam@ravnborg.org>
 Cc: barebox@lists.infradead.org
 
-> > 
-> > also a small doc for the mandatory env and symbol will be nice for people to
-> > integrate it as not everyone is also a kernel dev or maintainer
-> 
-> I actually take this that integrating kconfig should be simpler.
-> So it:
-> a) should be documented using a HOW-TO
-> b) we sould rely on very little outside scripts/kconfig
-> 
-> The primary 'customer' is the kernel but it would be good
-> to generalize stuff a bit more.
-> This is by far the biggest task listed.
-> I will add it to my mental TODO list - but no promises :-) 
-for barebox point of view just be able to change the projects name will be enough as most
-of us if not all are kernel dev or maintainer
+Hi Sam,
 
-> > 
-> > and a last thing It will be nice to be able to set a value to a symbol from an
-> > other one and not only select it
-> 
-> I am not sure I see how this is usefull.
-> Can you give me an example.
-> 
-> Note: We recently had a patch where "select" was extended to
-> specify an optional value.
-> But my issue with that was that I failed to see the use of it so
-> I was not happy with the extension.
-> 
-> But I may have missed something!
-ok take a look on arch/arm/mach-at91/Kconfig
+On Sun, Aug 08, 2010 at 08:48:46AM +0200, Sam Ravnborg wrote:
+> Which bring up another question. We have plenty of projects out there
+> that rely on kconfig.
 
-as example for the
+ptxdist as well.
 
-config BOARDINFO
-        default "Atmel at91rm9200-ek" if MACH_AT91RM9200EK
-        default "Atmel 91SAM9260-EK" if MACH_AT91SAM9260EK
-        default "Atmel at91sam9261-ek" if MACH_AT91SAM9261EK
-        default "Atmel at91sam9263-ek" if MACH_AT91SAM9263EK
-        default "Bucyrus MMC-CPU" if MACH_MMCCPU
-        default "Ronetix PM9261" if MACH_PM9261
-        default "Ronetix PM9263" if MACH_PM9263
+> What can we do to kconfig to make the integration easier?
+>
+> We have discussed that kconfig should be a seperate installable tool
+> (as rpm, deb whatever). But there is a few quirks needed before we can
+> do so.
 
-if you change the board via the interface it will not be change and it will the same for
-config ARCH_TEXT_BASE in some case
+I don't think that it is necessary. Last time I checked the most
+complicated thing was to exchange the project name ("Linux kernel") to
+something else, because there were quite a lot of hand coded numbers
+representing the string length or length-1. But we are not up to the
+latest versions - I'll have to re-check.
 
-and I'll prefer to do set BOARDINFO="Atmel at91rm9200-ek" from the config MACH_AT91RM9200EK
-
-hope it will be a good example
-
-Best Regards,
-J.
+rsc
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
