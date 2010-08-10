@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from tango.tkos.co.il ([62.219.50.35])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OiMAp-0006lr-Rz
-	for barebox@lists.infradead.org; Mon, 09 Aug 2010 06:49:28 +0000
-Date: Mon, 9 Aug 2010 08:49:23 +0200
-From: Robert Schwebel <r.schwebel@pengutronix.de>
-Message-ID: <20100809064923.GL30096@pengutronix.de>
-References: <1281241073-19115-1-git-send-email-plagnioj@jcrosoft.com>
-	<20100808064846.GA31364@merkur.ravnborg.org>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20100808064846.GA31364@merkur.ravnborg.org>
+	id 1OiiH9-0004mU-UJ
+	for barebox@lists.infradead.org; Tue, 10 Aug 2010 06:25:28 +0000
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Tue, 10 Aug 2010 09:25:05 +0300
+Message-Id: <2241db062357664544bbe6d88770b6696ed4c4b4.1281421396.git.baruch@tkos.co.il>
+In-Reply-To: <82c0fbf5703ae752521a1bea229a616d4d924583.1281421396.git.baruch@tkos.co.il>
+References: <82c0fbf5703ae752521a1bea229a616d4d924583.1281421396.git.baruch@tkos.co.il>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,40 +16,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Kconfig: sync with linux kernel v2.6.35-4771-g1787985
-To: Sam Ravnborg <sam@ravnborg.org>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/2] fec: add support for IIM stored mac address
+To: barebox@lists.infradead.org
 
-Hi Sam,
+This patch adds support for i.MX25 only, because that's what I have. Extending
+this to other i.MX chip should be trivial, given the right IIM_MAC_ADDR define.
 
-On Sun, Aug 08, 2010 at 08:48:46AM +0200, Sam Ravnborg wrote:
-> Which bring up another question. We have plenty of projects out there
-> that rely on kconfig.
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+ arch/arm/mach-imx/include/mach/imx25-regs.h |    1 +
+ drivers/net/fec_imx.c                       |   10 ++++++++++
+ 2 files changed, 11 insertions(+), 0 deletions(-)
 
-ptxdist as well.
-
-> What can we do to kconfig to make the integration easier?
->
-> We have discussed that kconfig should be a seperate installable tool
-> (as rpm, deb whatever). But there is a few quirks needed before we can
-> do so.
-
-I don't think that it is necessary. Last time I checked the most
-complicated thing was to exchange the project name ("Linux kernel") to
-something else, because there were quite a lot of hand coded numbers
-representing the string length or length-1. But we are not up to the
-latest versions - I'll have to re-check.
-
-rsc
+diff --git a/arch/arm/mach-imx/include/mach/imx25-regs.h b/arch/arm/mach-imx/include/mach/imx25-regs.h
+index 7c2b5f9..f3da7b5 100644
+--- a/arch/arm/mach-imx/include/mach/imx25-regs.h
++++ b/arch/arm/mach-imx/include/mach/imx25-regs.h
+@@ -142,6 +142,7 @@
+ 
+ /* IIM fuse definitions */
+ #define IIM_UID		0x820
++#define IIM_MAC_ADDR	0x868
+ 
+ #endif /* __ASM_ARCH_MX25_REGS_H */
+ 
+diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
+index 40a7543..af93eec 100644
+--- a/drivers/net/fec_imx.c
++++ b/drivers/net/fec_imx.c
+@@ -235,6 +235,16 @@ static void fec_rbd_clean(int last, struct buffer_descriptor *pRbd)
+ 
+ static int fec_get_hwaddr(struct eth_device *dev, unsigned char *mac)
+ {
++	int i;
++
++	if (cpu_is_mx25()) {
++		/* get MAC address from the IMM fusebox */
++		for (i = 0; i < 6; i++)
++			mac[i] = readb(IMX_IIM_BASE + IIM_MAC_ADDR + i*4);
++
++		return 0;
++	}
++
+ 	/* no eeprom */
+ 	return -1;
+ }
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.1
+
 
 _______________________________________________
 barebox mailing list
