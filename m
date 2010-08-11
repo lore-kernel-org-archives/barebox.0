@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from tango.tkos.co.il ([62.219.50.35])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Oinbu-0006cR-H5
-	for barebox@lists.infradead.org; Tue, 10 Aug 2010 12:07:15 +0000
-From: Baruch Siach <baruch@tkos.co.il>
-Date: Tue, 10 Aug 2010 15:06:51 +0300
-Message-Id: <ae2bb35f25192515bafff6a78a1b7f915b9f0b53.1281441977.git.baruch@tkos.co.il>
+	id 1Oj80M-0006OR-Fd
+	for barebox@lists.infradead.org; Wed, 11 Aug 2010 09:53:51 +0000
+From: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Date: Wed, 11 Aug 2010 11:53:29 +0200
+Message-Id: <1281520409-27408-1-git-send-email-m.grzeschik@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,29 +19,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] cp: fix help text
+Subject: [PATCH|RFC] loadb: get console baudrate from class_dev not dev
 To: barebox@lists.infradead.org
 
-Copy to target directory is supported since commit b36fca0c, circa 2007.
+With this fix its possible to run loadb -f /dev/ram0
+again with the latest next patchstack. Without you will
+run into data_abort. Tested with omap3530 beagleboard.
 
-Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
 ---
- commands/cp.c |    2 --
- 1 files changed, 0 insertions(+), 2 deletions(-)
+ commands/loadb.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/commands/cp.c b/commands/cp.c
-index a0c7c84..2c35ba1 100644
---- a/commands/cp.c
-+++ b/commands/cp.c
-@@ -80,8 +80,6 @@ out:
- static const __maybe_unused char cmd_cp_help[] =
- "Usage: cp <source> <destination>\n"
- "cp copies file <source> to <destination>.\n"
--"Currently only this form is supported and you have to specify the exact target\n"
--"filename (not a target directory).\n"
- "This command is file based only. See memcpy for memory copy\n";
+diff --git a/commands/loadb.c b/commands/loadb.c
+index 437b60f..acfb94f 100644
+--- a/commands/loadb.c
++++ b/commands/loadb.c
+@@ -724,7 +724,7 @@ static int do_load_serial_bin(struct command *cmdtp, int argc, char *argv[])
+ 		printf("%s:No console device with STDIN and STDOUT\n", argv[0]);
+ 		return -ENODEV;
+ 	}
+-	current_baudrate = (int)simple_strtoul(dev_get_param(cdev->dev, "baudrate"), NULL, 10);
++	current_baudrate = (int)simple_strtoul(dev_get_param(&cdev->class_dev, "baudrate"), NULL, 10);
  
- BAREBOX_CMD_START(cp)
+ 	/* Load Defaults */
+ 	if (load_baudrate == 0)
 -- 
 1.7.1
 
