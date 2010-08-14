@@ -1,14 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-gx0-f177.google.com ([209.85.161.177])
-	by bombadil.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1Ojw0q-0007Yb-Lc
-	for barebox@lists.infradead.org; Fri, 13 Aug 2010 15:17:41 +0000
-Received: by gxk27 with SMTP id 27so1215698gxk.36
-	for <barebox@lists.infradead.org>; Fri, 13 Aug 2010 08:17:39 -0700 (PDT)
+Received: from 68.mail-out.ovh.net ([91.121.185.69])
+	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1Ok8e6-0007JO-7k
+	for barebox@lists.infradead.org; Sat, 14 Aug 2010 04:47:05 +0000
+Date: Sat, 14 Aug 2010 06:35:16 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20100814043516.GB24191@game.jcrosoft.org>
+References: <1281241073-19115-1-git-send-email-plagnioj@jcrosoft.com>
+	<20100808064846.GA31364@merkur.ravnborg.org>
+	<20100808090612.GM24069@game.jcrosoft.org>
+	<20100813192612.GA8351@merkur.ravnborg.org>
 MIME-Version: 1.0
-Date: Fri, 13 Aug 2010 20:47:38 +0530
-Message-ID: <AANLkTin5C2PLPS26q5BjyBZC3Dt_aYCVWYifSNri8p+G@mail.gmail.com>
-From: kuldeep ghan <ghankp@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <20100813192612.GA8351@merkur.ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,61 +21,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0224621996=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: changes for reducing DDR size
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] Kconfig: sync with linux kernel v2.6.35-4771-g1787985
+To: Sam Ravnborg <sam@ravnborg.org>
+Cc: barebox@lists.infradead.org
 
---===============0224621996==
-Content-Type: multipart/alternative; boundary=000e0cd3429ab2d496048db5fb51
+> We could instead pick this up from the mainmenu entry.
+> 
+> So we in a Kconfig file could have:
+> 
+> mainmenu "My application configuration - version $VERSION"
+> 
+> config VERSION
+> 	string
+> 	option env=VERSION
+> 
+> 
+> The text in mainmenu will have all references to $SOMETHING
+> expanded to the string representation of that symbol.
+> 
+> And we can use existing functionality to pick up environment variables.
+> 
+> The frontends needs to be adapted as well as the kconfig backend.
+> 
+> But doing the above I guess we have 'fixed' almost all kernel references.
+I like it
 
---000e0cd3429ab2d496048db5fb51
-Content-Type: text/plain; charset=ISO-8859-1
+and how about the new set/select option I mention also?
 
-Hi,
-        I am using PCM038 based custom board with changes in Memory
-configuration. I want to know what all changes i have to do in barebox
-source if I am reducing the size of DDR to 64 MB.
-I have two 32MB DDR chips interfaced on CSD0 and CSD1. I am able to boot the
-board with changes in pcm038 and lowlevel_init.S. I see that both the DDRs
-are initialized properly and able to write and read to DDR address space.
-         Ping to command is failing with these changes.  And I am not sure
-about the changes required for stack size and malloc size.
+because I also take a look in the kernel for ARM as example and it will be
+usefull to simplify it
 
-Thanks,
-Ghan Kuldeep
-
---000e0cd3429ab2d496048db5fb51
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-<div class=3D"gmail_quote">Hi, <br>=A0=A0=A0=A0=A0=A0=A0 I am using PCM038 =
-based custom board with changes in Memory configuration. I want to know wha=
-t all changes i have to do in barebox source if I am reducing the size of D=
-DR to 64 MB. <br>
-I have two 32MB DDR chips interfaced on CSD0 and CSD1. I am able to boot th=
-e board with changes in pcm038 and lowlevel_init.S. I see that both the DDR=
-s are initialized properly and able to write and read to DDR address space.=
- <br>
-
-=A0=A0=A0=A0=A0=A0=A0=A0 Ping to command is failing with these changes.=A0 =
-And I am not sure about the changes required for stack size and malloc size=
-.<br><br>Thanks,<br><font color=3D"#888888">Ghan Kuldeep<br><br>
-</font></div><br>
-
---000e0cd3429ab2d496048db5fb51--
-
-
---===============0224621996==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============0224621996==--
