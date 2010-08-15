@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from tango.tkos.co.il ([62.219.50.35])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OkdRK-0000KD-57
-	for barebox@lists.infradead.org; Sun, 15 Aug 2010 13:39:55 +0000
+	id 1OkdRJ-0000Ko-6s
+	for barebox@lists.infradead.org; Sun, 15 Aug 2010 13:39:54 +0000
 From: Baruch Siach <baruch@tkos.co.il>
-Date: Sun, 15 Aug 2010 16:39:23 +0300
-Message-Id: <cover.1281877781.git.baruch@tkos.co.il>
+Date: Sun, 15 Aug 2010 16:39:27 +0300
+Message-Id: <db0a37dfa4bb09aa2bbd18aa2817c10248d00ed8.1281877781.git.baruch@tkos.co.il>
+In-Reply-To: <cover.1281877781.git.baruch@tkos.co.il>
+References: <cover.1281877781.git.baruch@tkos.co.il>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,35 +21,72 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/5] imx: support for the IIM fusebox
+Subject: [PATCH 4/5] imx25 3ds: add support for the iim fusebox driver
 To: barebox@lists.infradead.org
 
-This patch series adds a driver for the IIM fusebox. As suggested by Sascha 
-Hauer, this driver is implemented as a character device, which allows use of 
-the standard md/mw commands to access the fuses.
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+ arch/arm/boards/freescale-mx25-3-stack/3stack.c |   31 +++++++++++++++++++++++
+ 1 files changed, 31 insertions(+), 0 deletions(-)
 
-The last patch in this series adds to the fec NIC driver the ability to fetch 
-the MAC address from the IIM fusebox.
-
-Baruch Siach (5):
-  imx: move IIM registers to their own header
-  imx: driver for the IIM fusebox
-  imx25: add chip specific IIM fusebox defines
-  imx25 3ds: add support for the iim fusebox driver
-  fec: add support for IIM stored mac address
-
- arch/arm/boards/freescale-mx25-3-stack/3stack.c |   31 +++
- arch/arm/mach-imx/Kconfig                       |   18 ++
- arch/arm/mach-imx/Makefile                      |    1 +
- arch/arm/mach-imx/iim.c                         |  291 +++++++++++++++++++++++
- arch/arm/mach-imx/imx35.c                       |    1 +
- arch/arm/mach-imx/include/mach/iim.h            |   42 ++++
- arch/arm/mach-imx/include/mach/imx25-regs.h     |    6 +
- arch/arm/mach-imx/include/mach/imx35-regs.h     |   18 --
- drivers/net/fec_imx.c                           |   11 +
- 9 files changed, 401 insertions(+), 18 deletions(-)
- create mode 100644 arch/arm/mach-imx/iim.c
- create mode 100644 arch/arm/mach-imx/include/mach/iim.h
+diff --git a/arch/arm/boards/freescale-mx25-3-stack/3stack.c b/arch/arm/boards/freescale-mx25-3-stack/3stack.c
+index cd228cc..7b96dc8 100644
+--- a/arch/arm/boards/freescale-mx25-3-stack/3stack.c
++++ b/arch/arm/boards/freescale-mx25-3-stack/3stack.c
+@@ -37,6 +37,7 @@
+ #include <mach/imx-flash-header.h>
+ #include <mach/iomux-mx25.h>
+ #include <mach/generic.h>
++#include <mach/iim.h>
+ #include <linux/err.h>
+ #include <i2c/i2c.h>
+ #include <i2c/mc34704.h>
+@@ -244,6 +245,32 @@ static int imx25_3ds_fec_init(void)
+ }
+ late_initcall(imx25_3ds_fec_init);
+ 
++static struct device_d imx_iim_dev = {
++	.name		= "imx_iim",
++	.map_base	= IMX_IIM_BASE,
++};
++
++static struct device_d imx_iim_bank0_dev = {
++	.name		= "imx_iim_bank",
++	.id		= 0,
++	.map_base	= IIM_BANK0_BASE,
++	.size		= IIM_BANK_SIZE,
++};
++
++static struct device_d imx_iim_bank1_dev = {
++	.name		= "imx_iim_bank",
++	.id		= 1,
++	.map_base	= IIM_BANK1_BASE,
++	.size		= IIM_BANK_SIZE,
++};
++
++static struct device_d imx_iim_bank2_dev = {
++	.name		= "imx_iim_bank",
++	.id		= 2,
++	.map_base	= IIM_BANK2_BASE,
++	.size		= IIM_BANK_SIZE,
++};
++
+ static int imx25_devices_init(void)
+ {
+ #ifdef CONFIG_USB
+@@ -259,6 +286,10 @@ static int imx25_devices_init(void)
+ 	if (readl(IMX_CCM_BASE + CCM_RCSR) & (1 << 14))
+ 		nand_info.width = 2;
+ 
++	register_device(&imx_iim_dev);
++	register_device(&imx_iim_bank0_dev);
++	register_device(&imx_iim_bank1_dev);
++	register_device(&imx_iim_bank2_dev);
+ 	register_device(&nand_dev);
+ 
+ 	devfs_add_partition("nand0", 0x00000, 0x40000, PARTITION_FIXED, "self_raw");
+-- 
+1.7.1
 
 
 _______________________________________________
