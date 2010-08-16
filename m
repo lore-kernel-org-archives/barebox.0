@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from tango.tkos.co.il ([62.219.50.35])
+Received: from metis.ext.pengutronix.de ([92.198.50.35])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OkvRN-0005Fe-Cb
-	for barebox@lists.infradead.org; Mon, 16 Aug 2010 08:53:10 +0000
-Date: Mon, 16 Aug 2010 11:52:54 +0300
-From: Baruch Siach <baruch@tkos.co.il>
-Message-ID: <20100816085253.GB1664@jasper.tkos.co.il>
+	id 1Okvax-0004pq-95
+	for barebox@lists.infradead.org; Mon, 16 Aug 2010 09:03:09 +0000
+Date: Mon, 16 Aug 2010 11:02:35 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20100816090235.GL27749@pengutronix.de>
 References: <cover.1281877781.git.baruch@tkos.co.il>
 	<1da6b4f3c4cf5edd1634d6ea7e0516b981fb7613.1281877781.git.baruch@tkos.co.il>
 	<20100816084506.GJ27749@pengutronix.de>
+	<20100816085253.GB1664@jasper.tkos.co.il>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20100816084506.GJ27749@pengutronix.de>
+In-Reply-To: <20100816085253.GB1664@jasper.tkos.co.il>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,76 +26,92 @@ Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 5/5] fec: add support for IIM stored mac address
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Baruch Siach <baruch@tkos.co.il>
 Cc: barebox@lists.infradead.org
 
-Hi Sascha,
-
-On Mon, Aug 16, 2010 at 10:45:06AM +0200, Sascha Hauer wrote:
-> On Sun, Aug 15, 2010 at 04:39:28PM +0300, Baruch Siach wrote:
-> > This patch adds support for i.MX25 only, because that's what I have. Extending
-> > this to other i.MX chip should be trivial, given the right IIM_MAC_ADDR define.
+On Mon, Aug 16, 2010 at 11:52:54AM +0300, Baruch Siach wrote:
+> Hi Sascha,
 > 
-> This needs to be ifdeffed because this define is not present for
-> !i.MX25.
-
-OK. I hoped we can avoid the ugly ifdef, but, obviously, this is not possible 
-here.
-
-baruch
-
-> > Signed-off-by: Baruch Siach <baruch@tkos.co.il>
-> > ---
-> >  arch/arm/mach-imx/include/mach/imx25-regs.h |    1 +
-> >  drivers/net/fec_imx.c                       |   11 +++++++++++
-> >  2 files changed, 12 insertions(+), 0 deletions(-)
+> On Mon, Aug 16, 2010 at 10:45:06AM +0200, Sascha Hauer wrote:
+> > On Sun, Aug 15, 2010 at 04:39:28PM +0300, Baruch Siach wrote:
+> > > This patch adds support for i.MX25 only, because that's what I have. Extending
+> > > this to other i.MX chip should be trivial, given the right IIM_MAC_ADDR define.
 > > 
-> > diff --git a/arch/arm/mach-imx/include/mach/imx25-regs.h b/arch/arm/mach-imx/include/mach/imx25-regs.h
-> > index f8908f2..ddd3e04 100644
-> > --- a/arch/arm/mach-imx/include/mach/imx25-regs.h
-> > +++ b/arch/arm/mach-imx/include/mach/imx25-regs.h
-> > @@ -142,6 +142,7 @@
-> >  
-> >  /* IIM fuse definitions */
-> >  #define IIM_UID		0x820
-> > +#define IIM_MAC_ADDR	0x868
-> >  
-> >  #define IIM_BANK_SIZE	32	/* excluding alignment padding for each row */
-> >  #define IIM_BANK0_BASE	(IMX_IIM_BASE + 0x800)
-> > diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
-> > index 40a7543..c29119c 100644
-> > --- a/drivers/net/fec_imx.c
-> > +++ b/drivers/net/fec_imx.c
-> > @@ -32,6 +32,7 @@
-> >  #include <mach/imx-regs.h>
-> >  #include <clock.h>
-> >  #include <mach/clock.h>
-> > +#include <mach/generic.h>
-> >  #include <xfuncs.h>
-> >  
-> >  #include "fec_imx.h"
-> > @@ -235,6 +236,16 @@ static void fec_rbd_clean(int last, struct buffer_descriptor *pRbd)
-> >  
-> >  static int fec_get_hwaddr(struct eth_device *dev, unsigned char *mac)
-> >  {
-> > +	int i;
-> > +
-> > +	if (cpu_is_mx25()) {
-> > +		/* get MAC address from the IMM fusebox */
-> > +		for (i = 0; i < 6; i++)
-> > +			mac[i] = readb(IMX_IIM_BASE + IIM_MAC_ADDR + i*4);
-> > +
-> > +		return 0;
-> > +	}
-> > +
-> >  	/* no eeprom */
-> >  	return -1;
-> >  }
+> > This needs to be ifdeffed because this define is not present for
+> > !i.MX25.
+> 
+> OK. I hoped we can avoid the ugly ifdef, but, obviously, this is not possible 
+> here.
+
+Well, we could. You could provide platform data to the iim device,
+telling the iim driver where to find the mac address and a
+imx_iim_get_mac() function. This function returns -EINVAL when the
+platform data is missing.
+
+Sascha
+
+> 
+> baruch
+> 
+> > > Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+> > > ---
+> > >  arch/arm/mach-imx/include/mach/imx25-regs.h |    1 +
+> > >  drivers/net/fec_imx.c                       |   11 +++++++++++
+> > >  2 files changed, 12 insertions(+), 0 deletions(-)
+> > > 
+> > > diff --git a/arch/arm/mach-imx/include/mach/imx25-regs.h b/arch/arm/mach-imx/include/mach/imx25-regs.h
+> > > index f8908f2..ddd3e04 100644
+> > > --- a/arch/arm/mach-imx/include/mach/imx25-regs.h
+> > > +++ b/arch/arm/mach-imx/include/mach/imx25-regs.h
+> > > @@ -142,6 +142,7 @@
+> > >  
+> > >  /* IIM fuse definitions */
+> > >  #define IIM_UID		0x820
+> > > +#define IIM_MAC_ADDR	0x868
+> > >  
+> > >  #define IIM_BANK_SIZE	32	/* excluding alignment padding for each row */
+> > >  #define IIM_BANK0_BASE	(IMX_IIM_BASE + 0x800)
+> > > diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
+> > > index 40a7543..c29119c 100644
+> > > --- a/drivers/net/fec_imx.c
+> > > +++ b/drivers/net/fec_imx.c
+> > > @@ -32,6 +32,7 @@
+> > >  #include <mach/imx-regs.h>
+> > >  #include <clock.h>
+> > >  #include <mach/clock.h>
+> > > +#include <mach/generic.h>
+> > >  #include <xfuncs.h>
+> > >  
+> > >  #include "fec_imx.h"
+> > > @@ -235,6 +236,16 @@ static void fec_rbd_clean(int last, struct buffer_descriptor *pRbd)
+> > >  
+> > >  static int fec_get_hwaddr(struct eth_device *dev, unsigned char *mac)
+> > >  {
+> > > +	int i;
+> > > +
+> > > +	if (cpu_is_mx25()) {
+> > > +		/* get MAC address from the IMM fusebox */
+> > > +		for (i = 0; i < 6; i++)
+> > > +			mac[i] = readb(IMX_IIM_BASE + IIM_MAC_ADDR + i*4);
+> > > +
+> > > +		return 0;
+> > > +	}
+> > > +
+> > >  	/* no eeprom */
+> > >  	return -1;
+> > >  }
+> 
+> -- 
+>                                                      ~. .~   Tk Open Systems
+> =}------------------------------------------------ooO--U--Ooo------------{=
+>    - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
+> 
 
 -- 
-                                                     ~. .~   Tk Open Systems
-=}------------------------------------------------ooO--U--Ooo------------{=
-   - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
