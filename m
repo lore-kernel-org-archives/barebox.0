@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from tango.tkos.co.il ([62.219.50.35])
-	by casper.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OkvM1-0004jU-4w
-	for barebox@lists.infradead.org; Mon, 16 Aug 2010 08:47:42 +0000
-Date: Mon, 16 Aug 2010 11:47:18 +0300
+	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1OkvRN-0005Fe-Cb
+	for barebox@lists.infradead.org; Mon, 16 Aug 2010 08:53:10 +0000
+Date: Mon, 16 Aug 2010 11:52:54 +0300
 From: Baruch Siach <baruch@tkos.co.il>
-Message-ID: <20100816084716.GA1664@jasper.tkos.co.il>
+Message-ID: <20100816085253.GB1664@jasper.tkos.co.il>
 References: <cover.1281877781.git.baruch@tkos.co.il>
-	<20100816083330.GI27749@pengutronix.de>
+	<1da6b4f3c4cf5edd1634d6ea7e0516b981fb7613.1281877781.git.baruch@tkos.co.il>
+	<20100816084506.GJ27749@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20100816083330.GI27749@pengutronix.de>
+In-Reply-To: <20100816084506.GJ27749@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,109 +24,72 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/5] imx: support for the IIM fusebox
+Subject: Re: [PATCH 5/5] fec: add support for IIM stored mac address
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
 Hi Sascha,
 
-On Mon, Aug 16, 2010 at 10:33:30AM +0200, Sascha Hauer wrote:
-> On Sun, Aug 15, 2010 at 04:39:23PM +0300, Baruch Siach wrote:
-> > This patch series adds a driver for the IIM fusebox. As suggested by Sascha 
-> > Hauer, this driver is implemented as a character device, which allows use of 
-> > the standard md/mw commands to access the fuses.
+On Mon, Aug 16, 2010 at 10:45:06AM +0200, Sascha Hauer wrote:
+> On Sun, Aug 15, 2010 at 04:39:28PM +0300, Baruch Siach wrote:
+> > This patch adds support for i.MX25 only, because that's what I have. Extending
+> > this to other i.MX chip should be trivial, given the right IIM_MAC_ADDR define.
 > 
-> Much better, thanks. I just tested this on an i.MX35 and it works fine.
-> I used the following patch to add support for the i.MX35. I think it's
-> better to put the IIM device info into a i.MX35 specific file. The
-> device does not need any platform data, and it is much code duplicated
-> into each board otherwise. Maybe you can do this change for the i.MX25
-> aswell.
+> This needs to be ifdeffed because this define is not present for
+> !i.MX25.
 
-OK. I'll fold the platform code into patch 3, and send as a reply to that 
-patch. You can then drop no. 4.
+OK. I hoped we can avoid the ugly ifdef, but, obviously, this is not possible 
+here.
 
 baruch
 
-> commit 1d47b8fe08b519e43babb7de802813359bed8e54
-> Author: Sascha Hauer <s.hauer@pengutronix.de>
-> Date:   Mon Aug 16 10:26:52 2010 +0200
-> 
->     i.MX35: add iim support
->     
->     Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> 
-> diff --git a/arch/arm/mach-imx/imx35.c b/arch/arm/mach-imx/imx35.c
-> index 74d63eb..72851f7 100644
-> --- a/arch/arm/mach-imx/imx35.c
-> +++ b/arch/arm/mach-imx/imx35.c
-> @@ -16,6 +16,7 @@
->   */
->  
->  #include <common.h>
-> +#include <init.h>
->  #include <asm/io.h>
->  #include <mach/imx-regs.h>
->  #include <mach/iim.h>
-> @@ -39,3 +40,52 @@ int imx_silicon_revision()
->  
->  	return (reg & 0xFF);
->  }
-> +
-> +#ifdef CONFIG_IMX_IIM
-> +#define IIM_BANK_SIZE	32	/* excluding alignment padding for each row */
-> +
-> +static struct device_d imx_iim_dev = {
-> +	.name		= "imx_iim",
-> +	.map_base	= IMX_IIM_BASE,
-> +};
-> +
-> +static struct device_d imx_iim_bank0_dev = {
-> +	.name		= "imx_iim_bank",
-> +	.id		= 0,
-> +	.map_base	= IMX_IIM_BASE + 0x800,
-> +	.size		= IIM_BANK_SIZE,
-> +};
-> +
-> +static struct device_d imx_iim_bank1_dev = {
-> +	.name		= "imx_iim_bank",
-> +	.id		= 1,
-> +	.map_base	= IMX_IIM_BASE + 0xc00,
-> +	.size		= IIM_BANK_SIZE,
-> +};
-> +
-> +static struct device_d imx_iim_bank2_dev = {
-> +	.name		= "imx_iim_bank",
-> +	.id		= 2,
-> +	.map_base	= IMX_IIM_BASE + 0x1000,
-> +	.size		= IIM_BANK_SIZE,
-> +};
-> +
-> +static int imx35_iim_init(void)
-> +{
-> +	uint32_t reg;
-> +
-> +	/* Start the clock */
-> +	reg = readl(IMX_CCM_BASE + CCM_CGR3);
-> +	reg |= (3 << 2);
-> +	writel(reg, IMX_CCM_BASE + CCM_CGR3);
-> +
-> +	register_device(&imx_iim_dev);
-> +	register_device(&imx_iim_bank0_dev);
-> +	register_device(&imx_iim_bank1_dev);
-> +	register_device(&imx_iim_bank2_dev);
-> +
-> +	return 0;
-> +}
-> +
-> +device_initcall(imx35_iim_init);
-> +#endif /* CONFIG_IMX_IIM */
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> > Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+> > ---
+> >  arch/arm/mach-imx/include/mach/imx25-regs.h |    1 +
+> >  drivers/net/fec_imx.c                       |   11 +++++++++++
+> >  2 files changed, 12 insertions(+), 0 deletions(-)
+> > 
+> > diff --git a/arch/arm/mach-imx/include/mach/imx25-regs.h b/arch/arm/mach-imx/include/mach/imx25-regs.h
+> > index f8908f2..ddd3e04 100644
+> > --- a/arch/arm/mach-imx/include/mach/imx25-regs.h
+> > +++ b/arch/arm/mach-imx/include/mach/imx25-regs.h
+> > @@ -142,6 +142,7 @@
+> >  
+> >  /* IIM fuse definitions */
+> >  #define IIM_UID		0x820
+> > +#define IIM_MAC_ADDR	0x868
+> >  
+> >  #define IIM_BANK_SIZE	32	/* excluding alignment padding for each row */
+> >  #define IIM_BANK0_BASE	(IMX_IIM_BASE + 0x800)
+> > diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
+> > index 40a7543..c29119c 100644
+> > --- a/drivers/net/fec_imx.c
+> > +++ b/drivers/net/fec_imx.c
+> > @@ -32,6 +32,7 @@
+> >  #include <mach/imx-regs.h>
+> >  #include <clock.h>
+> >  #include <mach/clock.h>
+> > +#include <mach/generic.h>
+> >  #include <xfuncs.h>
+> >  
+> >  #include "fec_imx.h"
+> > @@ -235,6 +236,16 @@ static void fec_rbd_clean(int last, struct buffer_descriptor *pRbd)
+> >  
+> >  static int fec_get_hwaddr(struct eth_device *dev, unsigned char *mac)
+> >  {
+> > +	int i;
+> > +
+> > +	if (cpu_is_mx25()) {
+> > +		/* get MAC address from the IMM fusebox */
+> > +		for (i = 0; i < 6; i++)
+> > +			mac[i] = readb(IMX_IIM_BASE + IIM_MAC_ADDR + i*4);
+> > +
+> > +		return 0;
+> > +	}
+> > +
+> >  	/* no eeprom */
+> >  	return -1;
+> >  }
 
 -- 
                                                      ~. .~   Tk Open Systems
