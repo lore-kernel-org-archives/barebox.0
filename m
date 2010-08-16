@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from tango.tkos.co.il ([62.219.50.35])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OktJq-0008I5-Bo
-	for barebox@lists.infradead.org; Mon, 16 Aug 2010 06:37:15 +0000
-Received: from sivan.tkos.co.il (guitar.tcltek.co.il [192.115.133.116])
-	by tango.tkos.co.il (8.14.4/8.12.11) with ESMTP id o7G6bAMo009050
-	for <barebox@lists.infradead.org>; Mon, 16 Aug 2010 09:37:10 +0300
-Received: from jasper.tkos.co.il (taragon.tkos.co.il [10.0.4.3])
-	by sivan.tkos.co.il (Postfix) with SMTP id A08FEB4F98
-	for <barebox@lists.infradead.org>; Mon, 16 Aug 2010 09:37:05 +0300 (IDT)
-Date: Mon, 16 Aug 2010 09:37:04 +0300
-From: Baruch Siach <baruch@tkos.co.il>
-Message-ID: <20100816063704.GB28343@jasper.tkos.co.il>
+	id 1Oktoh-0005Ri-LV
+	for barebox@lists.infradead.org; Mon, 16 Aug 2010 07:09:08 +0000
+Date: Mon, 16 Aug 2010 09:09:04 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20100816070904.GG27749@pengutronix.de>
+References: <20100816063704.GB28343@jasper.tkos.co.il>
 MIME-Version: 1.0
 Content-Disposition: inline
+In-Reply-To: <20100816063704.GB28343@jasper.tkos.co.il>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,23 +22,70 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: fsl-udc (USB gadget) anyone?
-To: barebox@lists.infradead.org
+Subject: Re: fsl-udc (USB gadget) anyone?
+To: Baruch Siach <baruch@tkos.co.il>
+Cc: barebox@lists.infradead.org
 
-Hi Barebox list,
+Hi Baruch,
 
-I see that there are no in-tree fsl-udc driver users. Does anyone here have 
-experience with this driver on an i.MX based system? What pre-probe() 
-initialization does this driver require at the platform code?
+On Mon, Aug 16, 2010 at 09:37:04AM +0300, Baruch Siach wrote:
+> Hi Barebox list,
+> 
+> I see that there are no in-tree fsl-udc driver users. Does anyone here have 
+> experience with this driver on an i.MX based system? What pre-probe() 
+> initialization does this driver require at the platform code?
 
-TIA,
 
-baruch
+We are using it on a custom i.MX25 board (which is not in mainline
+because hardly anyone could make use of the code). Here is the platform
+initialization code (mixed with ehci host support). It works fine in DFU
+mode, serial support is probably not working. I have tried serial
+support, but had problems integrating it properly in barebox.
+
++static void cm3389_usb_init(void)
++{
++	unsigned int tmp;
++
++	/* Host 2 */
++	tmp = readl(IMX_OTG_BASE + 0x600);
++	tmp &= ~(3 << 21);
++	tmp |= (2 << 21) | (1 << 4) | (1 << 5);
++	writel(tmp, IMX_OTG_BASE + 0x600);
++
++	tmp = readl(IMX_OTG_BASE + 0x584);
++	tmp |= 3 << 30;
++	writel(tmp, IMX_OTG_BASE + 0x584);
++
++	/* Set to Host mode */
++	tmp = readl(IMX_OTG_BASE + 0x1a8);
++	writel(tmp | 0x3, IMX_OTG_BASE + 0x1a8);
++}
++
++static struct device_d usbh2_dev = {
++	.name     = "ehci",
++	.map_base = IMX_OTG_BASE + 0x400,
++	.size     = 0x200,
++};
++
++static struct fsl_usb2_platform_data usb_pdata = {
++	.operating_mode	= FSL_USB2_DR_DEVICE,
++	.phy_mode	= FSL_USB2_PHY_UTMI,
++};
++
++static struct device_d usbotg_dev = {
++	.name     = "fsl-udc",
++	.map_base = IMX_OTG_BASE,
++	.size     = 0x200,
++	.platform_data = &usb_pdata,
++};
+
+Sascha
 
 -- 
-                                                     ~. .~   Tk Open Systems
-=}------------------------------------------------ooO--U--Ooo------------{=
-   - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
