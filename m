@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from tango.tkos.co.il ([62.219.50.35])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Ol0P3-0000af-Ow
+	id 1Ol0P4-0000aj-Uv
 	for barebox@lists.infradead.org; Mon, 16 Aug 2010 14:11:13 +0000
 From: Baruch Siach <baruch@tkos.co.il>
-Date: Mon, 16 Aug 2010 17:10:35 +0300
-Message-Id: <ba700c1797f3cc6fbf0427c53ac3183325129848.1281966840.git.baruch@tkos.co.il>
+Date: Mon, 16 Aug 2010 17:10:37 +0300
+Message-Id: <cc0071de23d39f9981c5008239038e6552a05568.1281966840.git.baruch@tkos.co.il>
 In-Reply-To: <cover.1281966840.git.baruch@tkos.co.il>
 References: <cover.1281966840.git.baruch@tkos.co.il>
 List-Id: <barebox.lists.infradead.org>
@@ -21,80 +21,73 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 3/6] imx iim: add mac address support
+Subject: [PATCH v2 5/6] imx25: add iim platform code
 To: barebox@lists.infradead.org
 
 ---
- arch/arm/mach-imx/iim.c              |   22 +++++++++++++++++++++-
- arch/arm/mach-imx/include/mach/iim.h |   13 +++++++++++++
- 2 files changed, 34 insertions(+), 1 deletions(-)
+ arch/arm/mach-imx/imx25.c |   44 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 44 insertions(+), 0 deletions(-)
 
-diff --git a/arch/arm/mach-imx/iim.c b/arch/arm/mach-imx/iim.c
-index 73369b7..9d14d35 100644
---- a/arch/arm/mach-imx/iim.c
-+++ b/arch/arm/mach-imx/iim.c
-@@ -29,6 +29,8 @@
+diff --git a/arch/arm/mach-imx/imx25.c b/arch/arm/mach-imx/imx25.c
+index 70494aa..760f740 100644
+--- a/arch/arm/mach-imx/imx25.c
++++ b/arch/arm/mach-imx/imx25.c
+@@ -16,7 +16,9 @@
+  */
  
- #define DRIVERNAME	"imx_iim"
+ #include <common.h>
++#include <init.h>
+ #include <mach/imx-regs.h>
++#include <mach/iim.h>
+ #include <asm/io.h>
  
-+static unsigned long mac_addr_base;
-+
- static int do_fuse_sense(unsigned long reg_base, unsigned int bank,
- 		unsigned int row)
- {
-@@ -224,6 +226,11 @@ static int imx_iim_blow_enable_set(struct device_d *dev, struct param_d *param,
+ #include "gpio.h"
+@@ -46,3 +48,45 @@ u64 imx_uid(void)
  
- static int imx_iim_probe(struct device_d *dev)
- {
-+	struct imx_iim_platform_data *pdata = dev->platform_data;
-+
-+	if (pdata)
-+		mac_addr_base = pdata->mac_addr_base;
-+
- 	return 0;
+ 	return uid;
  }
- 
-@@ -288,4 +295,17 @@ static int imx_iim_init(void)
- 
- 	return 0;
- }
--device_initcall(imx_iim_init);
-+coredevice_initcall(imx_iim_init);
 +
-+int imx_iim_get_mac(unsigned char *mac)
++static struct imx_iim_platform_data imx25_iim_pdata = {
++	.mac_addr_base	= IMX_IIM_BASE + IIM_MAC_ADDR,
++};
++
++static struct device_d imx25_iim_dev = {
++	.name		= "imx_iim",
++	.map_base	= IMX_IIM_BASE,
++	.platform_data	= &imx25_iim_pdata,
++};
++
++static struct device_d imx25_iim_bank0_dev = {
++	.name		= "imx_iim_bank",
++	.id		= 0,
++	.map_base	= IIM_BANK0_BASE,
++	.size		= IIM_BANK_SIZE,
++};
++
++static struct device_d imx25_iim_bank1_dev = {
++	.name		= "imx_iim_bank",
++	.id		= 1,
++	.map_base	= IIM_BANK1_BASE,
++	.size		= IIM_BANK_SIZE,
++};
++
++static struct device_d imx25_iim_bank2_dev = {
++	.name		= "imx_iim_bank",
++	.id		= 2,
++	.map_base	= IIM_BANK2_BASE,
++	.size		= IIM_BANK_SIZE,
++};
++
++static int imx25_iim_init(void)
 +{
-+	int i;
-+
-+	if (mac_addr_base == 0)
-+		return -EINVAL;
-+
-+	for (i = 0; i < 6; i++)
-+		 mac[i] = readb(mac_addr_base + i*4);
++	register_device(&imx25_iim_dev);
++	register_device(&imx25_iim_bank0_dev);
++	register_device(&imx25_iim_bank1_dev);
++	register_device(&imx25_iim_bank2_dev);
 +
 +	return 0;
 +}
-diff --git a/arch/arm/mach-imx/include/mach/iim.h b/arch/arm/mach-imx/include/mach/iim.h
-index 6e13547..4d54cc0 100644
---- a/arch/arm/mach-imx/include/mach/iim.h
-+++ b/arch/arm/mach-imx/include/mach/iim.h
-@@ -39,4 +39,17 @@
- #define IIM_SCS2	0x0034
- #define IIM_SCS3	0x0038
- 
-+struct imx_iim_platform_data {
-+	unsigned long	mac_addr_base;
-+};
-+
-+#ifdef CONFIG_IMX_IIM
-+int imx_iim_get_mac(unsigned char *mac);
-+#else
-+int imx_iim_get_mac(unsigned char *mac)
-+{
-+	return -EINVAL;
-+}
-+#endif /* CONFIG_IMX_IIM */
-+
- #endif /* __MACH_IMX_IIM_H */
++coredevice_initcall(imx25_iim_init);
 -- 
 1.7.1
 
