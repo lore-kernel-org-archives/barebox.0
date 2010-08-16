@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from tango.tkos.co.il ([62.219.50.35])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Ol0P2-0000aP-LY
-	for barebox@lists.infradead.org; Mon, 16 Aug 2010 14:11:08 +0000
+	id 1Ol0P3-0000af-Ow
+	for barebox@lists.infradead.org; Mon, 16 Aug 2010 14:11:13 +0000
 From: Baruch Siach <baruch@tkos.co.il>
-Date: Mon, 16 Aug 2010 17:10:33 +0300
-Message-Id: <2877284976393f4aa54f0c65c81ba668c944fbad.1281966840.git.baruch@tkos.co.il>
+Date: Mon, 16 Aug 2010 17:10:35 +0300
+Message-Id: <ba700c1797f3cc6fbf0427c53ac3183325129848.1281966840.git.baruch@tkos.co.il>
 In-Reply-To: <cover.1281966840.git.baruch@tkos.co.il>
 References: <cover.1281966840.git.baruch@tkos.co.il>
 List-Id: <barebox.lists.infradead.org>
@@ -21,108 +21,80 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/6] imx: move IIM registers to their own header
+Subject: [PATCH v2 3/6] imx iim: add mac address support
 To: barebox@lists.infradead.org
 
-This allows the use of IIM registers from code which is not mx35 specific.
-
-Signed-off-by: Baruch Siach <baruch@tkos.co.il>
 ---
- arch/arm/mach-imx/imx35.c                   |    1 +
- arch/arm/mach-imx/include/mach/iim.h        |   42 +++++++++++++++++++++++++++
- arch/arm/mach-imx/include/mach/imx35-regs.h |   18 -----------
- 3 files changed, 43 insertions(+), 18 deletions(-)
- create mode 100644 arch/arm/mach-imx/include/mach/iim.h
+ arch/arm/mach-imx/iim.c              |   22 +++++++++++++++++++++-
+ arch/arm/mach-imx/include/mach/iim.h |   13 +++++++++++++
+ 2 files changed, 34 insertions(+), 1 deletions(-)
 
-diff --git a/arch/arm/mach-imx/imx35.c b/arch/arm/mach-imx/imx35.c
-index d78a4c5..74d63eb 100644
---- a/arch/arm/mach-imx/imx35.c
-+++ b/arch/arm/mach-imx/imx35.c
-@@ -18,6 +18,7 @@
- #include <common.h>
- #include <asm/io.h>
- #include <mach/imx-regs.h>
-+#include <mach/iim.h>
- #include <mach/generic.h>
+diff --git a/arch/arm/mach-imx/iim.c b/arch/arm/mach-imx/iim.c
+index 73369b7..9d14d35 100644
+--- a/arch/arm/mach-imx/iim.c
++++ b/arch/arm/mach-imx/iim.c
+@@ -29,6 +29,8 @@
  
- #include "gpio.h"
+ #define DRIVERNAME	"imx_iim"
+ 
++static unsigned long mac_addr_base;
++
+ static int do_fuse_sense(unsigned long reg_base, unsigned int bank,
+ 		unsigned int row)
+ {
+@@ -224,6 +226,11 @@ static int imx_iim_blow_enable_set(struct device_d *dev, struct param_d *param,
+ 
+ static int imx_iim_probe(struct device_d *dev)
+ {
++	struct imx_iim_platform_data *pdata = dev->platform_data;
++
++	if (pdata)
++		mac_addr_base = pdata->mac_addr_base;
++
+ 	return 0;
+ }
+ 
+@@ -288,4 +295,17 @@ static int imx_iim_init(void)
+ 
+ 	return 0;
+ }
+-device_initcall(imx_iim_init);
++coredevice_initcall(imx_iim_init);
++
++int imx_iim_get_mac(unsigned char *mac)
++{
++	int i;
++
++	if (mac_addr_base == 0)
++		return -EINVAL;
++
++	for (i = 0; i < 6; i++)
++		 mac[i] = readb(mac_addr_base + i*4);
++
++	return 0;
++}
 diff --git a/arch/arm/mach-imx/include/mach/iim.h b/arch/arm/mach-imx/include/mach/iim.h
-new file mode 100644
-index 0000000..6e13547
---- /dev/null
+index 6e13547..4d54cc0 100644
+--- a/arch/arm/mach-imx/include/mach/iim.h
 +++ b/arch/arm/mach-imx/include/mach/iim.h
-@@ -0,0 +1,42 @@
-+/*
-+ * (c) 2009 Pengutronix, Sascha Hauer <s.hauer@pengutronix.de>
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-+ * MA 02111-1307 USA
-+ */
-+
-+#ifndef __MACH_IMX_IIM_H
-+#define __MACH_IMX_IIM_H
-+
-+#define IIM_STAT	0x0000
-+#define IIM_STATM	0x0004
-+#define IIM_ERR		0x0008
-+#define IIM_EMASK	0x000C
-+#define IIM_FCTL	0x0010
-+#define IIM_UA		0x0014
-+#define IIM_LA		0x0018
-+#define IIM_SDAT	0x001C
-+#define IIM_PREV	0x0020
-+#define IIM_SREV	0x0024
-+#define IIM_PREG_P	0x0028
-+#define IIM_SCS0	0x002C
-+#define IIM_SCS1	0x0030
-+#define IIM_SCS2	0x0034
-+#define IIM_SCS3	0x0038
-+
-+#endif /* __MACH_IMX_IIM_H */
-diff --git a/arch/arm/mach-imx/include/mach/imx35-regs.h b/arch/arm/mach-imx/include/mach/imx35-regs.h
-index 899e57b..c394a2a 100644
---- a/arch/arm/mach-imx/include/mach/imx35-regs.h
-+++ b/arch/arm/mach-imx/include/mach/imx35-regs.h
-@@ -76,24 +76,6 @@
- #define PDR0_AUTO_CON		(1 << 0)
- #define PDR0_PER_SEL		(1 << 26)
+@@ -39,4 +39,17 @@
+ #define IIM_SCS2	0x0034
+ #define IIM_SCS3	0x0038
  
--
--#define IIM_STAT	0x0000
--#define IIM_STATM	0x0004
--#define IIM_ERR		0x0008
--#define IIM_EMASK	0x000C
--#define IIM_FCTL	0x0010
--#define IIM_UA		0x0014
--#define IIM_LA		0x0018
--#define IIM_SDAT	0x001C
--#define IIM_PREV	0x0020
--#define IIM_SREV	0x0024
--#define IIM_PREG_P	0x0028
--#define IIM_SCS0	0x002C
--#define IIM_SCS1	0x0030
--#define IIM_SCS2	0x0034
--#define IIM_SCS3	0x0038
--
--
- /*
-  * Adresses and ranges of the external chip select lines
-  */
++struct imx_iim_platform_data {
++	unsigned long	mac_addr_base;
++};
++
++#ifdef CONFIG_IMX_IIM
++int imx_iim_get_mac(unsigned char *mac);
++#else
++int imx_iim_get_mac(unsigned char *mac)
++{
++	return -EINVAL;
++}
++#endif /* CONFIG_IMX_IIM */
++
+ #endif /* __MACH_IMX_IIM_H */
 -- 
 1.7.1
 
