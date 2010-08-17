@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OlG0A-00007G-Fp
-	for barebox@lists.infradead.org; Tue, 17 Aug 2010 06:50:27 +0000
-Date: Tue, 17 Aug 2010 08:50:24 +0200
+	id 1OlG2d-0000Sq-U1
+	for barebox@lists.infradead.org; Tue, 17 Aug 2010 06:53:01 +0000
+Date: Tue, 17 Aug 2010 08:52:58 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20100817065024.GT27749@pengutronix.de>
-References: <4C6A074A.4050606@gmail.com>
-	<20100817063554.GR27749@pengutronix.de>
+Message-ID: <20100817065258.GU27749@pengutronix.de>
+References: <cover.1281966840.git.baruch@tkos.co.il>
+	<ba700c1797f3cc6fbf0427c53ac3183325129848.1281966840.git.baruch@tkos.co.il>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20100817063554.GR27749@pengutronix.de>
+In-Reply-To: <ba700c1797f3cc6fbf0427c53ac3183325129848.1281966840.git.baruch@tkos.co.il>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,40 +23,84 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: omap3: omap3530_beagle_per_uart_defconfig broken
-To: Nishanth Menon <menon.nishanth@gmail.com>
-Cc: barebox@lists.infradead.org, Michael Grzeschik <mgr@pengutronix.de>
+Subject: Re: [PATCH v2 3/6] imx iim: add mac address support
+To: Baruch Siach <baruch@tkos.co.il>
+Cc: barebox@lists.infradead.org
 
-On Tue, Aug 17, 2010 at 08:35:54AM +0200, Sascha Hauer wrote:
-> On Mon, Aug 16, 2010 at 10:51:38PM -0500, Nishanth Menon wrote:
-> > Hi,
-> > while just giving the omap3530 boot from internal sram a whirl, found that
-> >
-> > commit 78104ae181f78d83664fdc7522eb632d9c3b2ec9
-> > Author: Sascha Hauer <s.hauer@pengutronix.de>
-> > Date:   Fri Apr 16 15:50:30 2010 +0200
-> >
-> >     arm: reimplement startup code in C
-> >
-> >     Lets translate the startup code to a language we all understand better.
-> >     Tested on pcm038 (arm v5) and pcm043 (arm v6).
-> >
-> >     Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> >
-> > broke the support for OMAP3530 internal boot capability -> it looks like  
-> > many of the V7Dcache skip logic got dropped off in the patch. will try  
-> > to fix it ahead.. reverting this commit helps the barebox master..
+On Mon, Aug 16, 2010 at 05:10:35PM +0300, Baruch Siach wrote:
+> ---
+>  arch/arm/mach-imx/iim.c              |   22 +++++++++++++++++++++-
+>  arch/arm/mach-imx/include/mach/iim.h |   13 +++++++++++++
+>  2 files changed, 34 insertions(+), 1 deletions(-)
 > 
-> We worked on Omap lately. I remember that there was a problem with the
-> call to arch_init_lowlevel. Michael, do you have input on this?
+> diff --git a/arch/arm/mach-imx/iim.c b/arch/arm/mach-imx/iim.c
+> index 73369b7..9d14d35 100644
+> --- a/arch/arm/mach-imx/iim.c
+> +++ b/arch/arm/mach-imx/iim.c
+> @@ -29,6 +29,8 @@
+>  
+>  #define DRIVERNAME	"imx_iim"
+>  
+> +static unsigned long mac_addr_base;
+> +
+>  static int do_fuse_sense(unsigned long reg_base, unsigned int bank,
+>  		unsigned int row)
+>  {
+> @@ -224,6 +226,11 @@ static int imx_iim_blow_enable_set(struct device_d *dev, struct param_d *param,
+>  
+>  static int imx_iim_probe(struct device_d *dev)
+>  {
+> +	struct imx_iim_platform_data *pdata = dev->platform_data;
+> +
+> +	if (pdata)
+> +		mac_addr_base = pdata->mac_addr_base;
+> +
+>  	return 0;
+>  }
+>  
+> @@ -288,4 +295,17 @@ static int imx_iim_init(void)
+>  
+>  	return 0;
+>  }
+> -device_initcall(imx_iim_init);
+> +coredevice_initcall(imx_iim_init);
+> +
+> +int imx_iim_get_mac(unsigned char *mac)
+> +{
+> +	int i;
+> +
+> +	if (mac_addr_base == 0)
+> +		return -EINVAL;
+> +
+> +	for (i = 0; i < 6; i++)
+> +		 mac[i] = readb(mac_addr_base + i*4);
+> +
+> +	return 0;
+> +}
+> diff --git a/arch/arm/mach-imx/include/mach/iim.h b/arch/arm/mach-imx/include/mach/iim.h
+> index 6e13547..4d54cc0 100644
+> --- a/arch/arm/mach-imx/include/mach/iim.h
+> +++ b/arch/arm/mach-imx/include/mach/iim.h
+> @@ -39,4 +39,17 @@
+>  #define IIM_SCS2	0x0034
+>  #define IIM_SCS3	0x0038
+>  
+> +struct imx_iim_platform_data {
+> +	unsigned long	mac_addr_base;
+> +};
+> +
+> +#ifdef CONFIG_IMX_IIM
+> +int imx_iim_get_mac(unsigned char *mac);
+> +#else
+> +int imx_iim_get_mac(unsigned char *mac)
 
-This commit indeed broke omap because the call to arch_init_lowlevel was
-missing afterwards. This got fixed with 3aa5c83. Maybe you have a
-different problem and stumbled upon this commit while bisecting. You
-could try checking out 78104ae181f78d83664fdc7522eb632d9c3b2ec9 and
-cherry-pick 3aa5c83. Does this work?
+static inline please. Otherwise linking fails if this function gets a
+second user.
+
+Otherwise the series looks fine. Thanks for your work.
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
