@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yx0-f177.google.com ([209.85.213.177])
-	by bombadil.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OlDDC-0005KC-1h
-	for barebox@lists.infradead.org; Tue, 17 Aug 2010 03:51:42 +0000
-Received: by yxf34 with SMTP id 34so2167285yxf.36
-	for <barebox@lists.infradead.org>; Mon, 16 Aug 2010 20:51:40 -0700 (PDT)
-Message-ID: <4C6A074A.4050606@gmail.com>
-Date: Mon, 16 Aug 2010 22:51:38 -0500
-From: Nishanth Menon <menon.nishanth@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1OlFmE-0005U1-G2
+	for barebox@lists.infradead.org; Tue, 17 Aug 2010 06:36:03 +0000
+Date: Tue, 17 Aug 2010 08:35:54 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20100817063554.GR27749@pengutronix.de>
+References: <4C6A074A.4050606@gmail.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <4C6A074A.4050606@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,33 +18,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: omap3: omap3530_beagle_per_uart_defconfig broken
-To: barebox@lists.infradead.org
+Subject: Re: omap3: omap3530_beagle_per_uart_defconfig broken
+To: Nishanth Menon <menon.nishanth@gmail.com>
+Cc: barebox@lists.infradead.org, Michael Grzeschik <mgr@pengutronix.de>
 
-Hi,
-while just giving the omap3530 boot from internal sram a whirl, found that
+On Mon, Aug 16, 2010 at 10:51:38PM -0500, Nishanth Menon wrote:
+> Hi,
+> while just giving the omap3530 boot from internal sram a whirl, found that
+>
+> commit 78104ae181f78d83664fdc7522eb632d9c3b2ec9
+> Author: Sascha Hauer <s.hauer@pengutronix.de>
+> Date:   Fri Apr 16 15:50:30 2010 +0200
+>
+>     arm: reimplement startup code in C
+>
+>     Lets translate the startup code to a language we all understand better.
+>     Tested on pcm038 (arm v5) and pcm043 (arm v6).
+>
+>     Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+>
+> broke the support for OMAP3530 internal boot capability -> it looks like  
+> many of the V7Dcache skip logic got dropped off in the patch. will try  
+> to fix it ahead.. reverting this commit helps the barebox master..
 
-commit 78104ae181f78d83664fdc7522eb632d9c3b2ec9
-Author: Sascha Hauer <s.hauer@pengutronix.de>
-Date:   Fri Apr 16 15:50:30 2010 +0200
+We worked on Omap lately. I remember that there was a problem with the
+call to arch_init_lowlevel. Michael, do you have input on this?
 
-     arm: reimplement startup code in C
+Sascha
 
-     Lets translate the startup code to a language we all understand better.
-     Tested on pcm038 (arm v5) and pcm043 (arm v6).
 
-     Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-
-broke the support for OMAP3530 internal boot capability -> it looks like 
-many of the V7Dcache skip logic got dropped off in the patch. will try 
-to fix it ahead.. reverting this commit helps the barebox master..
-
-Regards,
-Nishanth Menon
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
