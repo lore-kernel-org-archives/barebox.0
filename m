@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from tango.tkos.co.il ([62.219.50.35])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OlKIj-0004Hc-Hd
-	for barebox@lists.infradead.org; Tue, 17 Aug 2010 11:25:54 +0000
-Date: Tue, 17 Aug 2010 13:25:52 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20100817112552.GX27749@pengutronix.de>
-References: <4C6A074A.4050606@gmail.com>
-	<20100817063554.GR27749@pengutronix.de>
-	<20100817065024.GT27749@pengutronix.de>
-	<4C6A5FE9.5050303@gmail.com>
+	id 1OlMv0-0004Rm-0r
+	for barebox@lists.infradead.org; Tue, 17 Aug 2010 14:13:35 +0000
+Date: Tue, 17 Aug 2010 17:13:16 +0300
+From: Baruch Siach <baruch@tkos.co.il>
+Message-ID: <20100817141315.GE9631@jasper.tkos.co.il>
+References: <20100816063704.GB28343@jasper.tkos.co.il>
+	<20100816070904.GG27749@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <4C6A5FE9.5050303@gmail.com>
+In-Reply-To: <20100816070904.GG27749@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,73 +23,77 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: omap3: omap3530_beagle_per_uart_defconfig broken
-To: Nishanth Menon <menon.nishanth@gmail.com>
-Cc: barebox@lists.infradead.org, Michael Grzeschik <mgr@pengutronix.de>
+Subject: Re: fsl-udc (USB gadget) anyone?
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Tue, Aug 17, 2010 at 05:09:45AM -0500, Nishanth Menon wrote:
-> On 08/17/2010 01:50 AM, Sascha Hauer wrote:
->> On Tue, Aug 17, 2010 at 08:35:54AM +0200, Sascha Hauer wrote:
->>> On Mon, Aug 16, 2010 at 10:51:38PM -0500, Nishanth Menon wrote:
->>>> Hi,
->>>> while just giving the omap3530 boot from internal sram a whirl, found that
->>>>
->>>> commit 78104ae181f78d83664fdc7522eb632d9c3b2ec9
->>>> Author: Sascha Hauer<s.hauer@pengutronix.de>
->>>> Date:   Fri Apr 16 15:50:30 2010 +0200
->>>>
->>>>      arm: reimplement startup code in C
->>>>
->>>>      Lets translate the startup code to a language we all understand better.
->>>>      Tested on pcm038 (arm v5) and pcm043 (arm v6).
->>>>
->>>>      Signed-off-by: Sascha Hauer<s.hauer@pengutronix.de>
->>>>
->>>> broke the support for OMAP3530 internal boot capability ->  it looks like
->>>> many of the V7Dcache skip logic got dropped off in the patch. will try
->>>> to fix it ahead.. reverting this commit helps the barebox master..
->>>
->>> We worked on Omap lately. I remember that there was a problem with the
->>> call to arch_init_lowlevel. Michael, do you have input on this?
->>
->> This commit indeed broke omap because the call to arch_init_lowlevel was
->> missing afterwards. This got fixed with 3aa5c83. Maybe you have a
->> different problem and stumbled upon this commit while bisecting. You
->> could try checking out 78104ae181f78d83664fdc7522eb632d9c3b2ec9 and
->> cherry-pick 3aa5c83. Does this work?
->
-> will try later tonight (but I doubt it - I had tried master and next -
+Hi Sascha,
 
-The fixup patch already came in between v2010.06.0 and v2010.07.0. So
-there definitely is a window in which barebox was broken. Maybe you hit
-this while bisecting. Maybe there is a second one which is the real
-cause of your trouble here.
+On Mon, Aug 16, 2010 at 09:09:04AM +0200, Sascha Hauer wrote:
+> On Mon, Aug 16, 2010 at 09:37:04AM +0300, Baruch Siach wrote:
+> > Hi Barebox list,
+> > 
+> > I see that there are no in-tree fsl-udc driver users. Does anyone here have 
+> > experience with this driver on an i.MX based system? What pre-probe() 
+> > initialization does this driver require at the platform code?
+> 
+> 
+> We are using it on a custom i.MX25 board (which is not in mainline
+> because hardly anyone could make use of the code). Here is the platform
+> initialization code (mixed with ehci host support). It works fine in DFU
+> mode, serial support is probably not working. I have tried serial
+> support, but had problems integrating it properly in barebox.
 
-> it did not build yesterday due to ehci/otg changes, but those have  
-> patches from Michael today), but to give an idea, attached is my revert  
-> patch I applied(against master), but if you see there are two parts  
-> between arch_init_lowlevel and board_init_lowlevel:
-> cache invalidate
-> and configuration of cache
->
-> Just glancing, cache invalidate logic that got introduced is the  
-> v4/v5(?) logic I guess, not the v7 logic.
+[snip]
 
-Nope, we do have v7 logic.
+> +static struct fsl_usb2_platform_data usb_pdata = {
+> +	.operating_mode	= FSL_USB2_DR_DEVICE,
+> +	.phy_mode	= FSL_USB2_PHY_UTMI,
+> +};
+> +
+> +static struct device_d usbotg_dev = {
+> +	.name     = "fsl-udc",
+> +	.map_base = IMX_OTG_BASE,
+> +	.size     = 0x200,
+> +	.platform_data = &usb_pdata,
+> +};
 
-> let me see later tonight if  
-> there is a cleaner way to do it..
->
-> Regards,
-> Nishanth Menon
+Thanks for the info. Unfortunately I was not able to get dfu work on both the 
+i.MX25 PDK and our custom board. The board doesn't even get enumerated. The 
+USB PHY wiring is the same on both.  After running the 'dfu' command as 
+follows:
 
+barebox:/ dfu -V 0x082d -P 0x2000 test(script)
 
+I connect the board to my host and see the following on the host side:
+
+[113870.024034] usb 2-1: new high speed USB device using ehci_hcd and address 101
+[113870.092245] hub 2-0:1.0: unable to enumerate USB device on port 1
+[113870.584048] usb 6-1: new full speed USB device using uhci_hcd and address 27
+[113870.700071] hub 6-0:1.0: unable to enumerate USB device on port 1
+[113871.080062] usb 6-1: new full speed USB device using uhci_hcd and address 28
+[113871.200106] usb 6-1: device descriptor read/64, error -71
+[113871.424073] usb 6-1: device descriptor read/64, error -71
+[113871.640069] usb 6-1: new full speed USB device using uhci_hcd and address 29
+[113871.760068] usb 6-1: device descriptor read/64, error -71
+[113871.984068] usb 6-1: device descriptor read/64, error -71
+[113872.200067] usb 6-1: new full speed USB device using uhci_hcd and address 30
+[113872.608070] usb 6-1: device not accepting address 30, error -71
+[113872.720073] usb 6-1: new full speed USB device using uhci_hcd and address 31
+[113873.128058] usb 6-1: device not accepting address 31, error -71
+[113873.128079] hub 6-0:1.0: unable to enumerate USB device on port 1
+
+Sprinkling printfs over the fsl-udc driver code didn't reveal much, except 
+from repeated USB_STS_PORT_CHANGE and USB_STS_RESET interrupts. Before giving 
+up completely I thought I'd just report this failure, maybe someone has a 
+clue.
+
+baruch
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+                                                     ~. .~   Tk Open Systems
+=}------------------------------------------------ooO--U--Ooo------------{=
+   - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
 
 _______________________________________________
 barebox mailing list
