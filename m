@@ -1,20 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from tango.tkos.co.il ([62.219.50.35])
-	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Om4N8-0003XH-Ki
-	for barebox@lists.infradead.org; Thu, 19 Aug 2010 12:37:35 +0000
-Date: Thu, 19 Aug 2010 15:37:12 +0300
-From: Baruch Siach <baruch@tkos.co.il>
-Message-ID: <20100819123712.GC2421@tarshish>
-References: <f375ed4cd64b27529dd717f6f39518eb261e1853.1281007209.git.baruch@tkos.co.il>
-	<20100805122349.GC24069@game.jcrosoft.org>
-	<20100805124307.GC3004@jasper.tkos.co.il>
-	<20100805134114.GE24069@game.jcrosoft.org>
-	<20100805141304.GD3004@jasper.tkos.co.il>
-	<20100819064347.GI454@game.jcrosoft.org>
+Received: from 68.mail-out.ovh.net ([91.121.185.69])
+	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1Om7L5-00086P-LM
+	for barebox@lists.infradead.org; Thu, 19 Aug 2010 15:47:40 +0000
+Date: Thu, 19 Aug 2010 17:42:18 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20100819154218.GK454@game.jcrosoft.org>
+References: <20100819024811.GG454@game.jcrosoft.org>
+	<1282186110-32738-2-git-send-email-plagnioj@jcrosoft.com>
+	<20100819065223.GD27749@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20100819064347.GI454@game.jcrosoft.org>
+In-Reply-To: <20100819065223.GD27749@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,58 +24,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] misc: introduce string_to_bin
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH 2/6] at91: Introduction of at91sam9261 SOC.
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Jean-Christophe,
-
-On Thu, Aug 19, 2010 at 08:43:48AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 17:13 Thu 05 Aug     , Baruch Siach wrote:
-> > On Thu, Aug 05, 2010 at 03:41:14PM +0200, Jean-Christophe PLAGNIOL-VILLARD 
-> > wrote:
-> > > On 15:43 Thu 05 Aug     , Baruch Siach wrote:
-> > > > On Thu, Aug 05, 2010 at 02:23:49PM +0200, Jean-Christophe PLAGNIOL-VILLARD 
-> > > > wrote:
-> > > > > 	how about use the kernel printf format instead
-> > > > 
-> > > > How can I use printf to convert a string representation to binary?
-> > > as example for ethernet address on the kernel we use %M or for UUID we %U to
-> > > print it in the right format. so take a look on vsprintf.c
+On 08:52 Thu 19 Aug     , Sascha Hauer wrote:
+> On Thu, Aug 19, 2010 at 04:48:26AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > AT91sam9261 series is an ARM 926ej-s SOC family clocked at 190/100MHz.
 > > 
-> > This is good for converting binary values to strings, not the other way around 
-> > as we do here.
-> It's the same here u can do %xs to print it as hexa so it will be easier to
-> use
+> > The first board that embeds at91sam9261 chip is the AT91SAM9261-EK.
+> > http://www.atmel.com/dyn/products/tools_card.asp?tool_id=3820
+> > 
+> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > ---
+> >  arch/arm/Makefile                                  |    1 +
+> >  arch/arm/boards/at91sam9261ek/Makefile             |    1 +
+> >  arch/arm/boards/at91sam9261ek/config.h             |  110 +++++++++
+> >  arch/arm/boards/at91sam9261ek/env/bin/_update      |   36 +++
+> >  arch/arm/boards/at91sam9261ek/env/bin/boot         |   47 ++++
+> >  arch/arm/boards/at91sam9261ek/env/bin/hush_hack    |    1 +
+> >  arch/arm/boards/at91sam9261ek/env/bin/init         |   38 +++
+> >  .../at91sam9261ek/env/bin/update_barebox_xmodem    |   26 ++
+> >  .../arm/boards/at91sam9261ek/env/bin/update_kernel |   15 ++
+> >  arch/arm/boards/at91sam9261ek/env/bin/update_root  |   16 ++
+> >  arch/arm/boards/at91sam9261ek/env/config           |   28 +++
+> 
+> Care to use the generic environment? What's missing in it for you to use
+> it?
+miss it in the code
+> 
+> >  arch/arm/boards/at91sam9261ek/init.c               |  170 ++++++++++++++
+> >  arch/arm/configs/at91sam9261ek_defconfig           |  242 ++++++++++++++++++++
+> >  arch/arm/mach-at91/Kconfig                         |   23 ++
+> >  arch/arm/mach-at91/Makefile                        |    1 +
+> >  arch/arm/mach-at91/at91sam9261.c                   |  230 +++++++++++++++++++
+> >  arch/arm/mach-at91/at91sam9261_devices.c           |  169 ++++++++++++++
+> >  arch/arm/mach-at91/include/mach/at91sam9261.h      |  109 +++++++++
+> 
+> Can you please make two patches out of this? One for the architecture
+> support and another one for the board support.
+Personnaly I prefer to add the first board at the same as e do for the kernel
+otherwise ok
 
-Apparently I'm missing something obvious here. I'll try to clarify how I see 
-things. Feel free to correct my understanding.
-
-The various printf() variants take binary data as an argument, and translate 
-it into a string representation, according to the format string.
-
-The purposed string_to_bin() function does the opposite. It takes a string 
-argument
-
-const char* mac_str = "01:02:03:04:05:06";
-
-and return the binary equivalent of this string in the buf pointer:
-
-u8 mac[6];
-
-string_to_bin(mac_str, mac, 6)
-
-now the mac[] array contains the binary representation of the string mac_str, 
-in big-endian order.
-
-I've found no way to do the same with printf.
-
-baruch
-
--- 
-                                                     ~. .~   Tk Open Systems
-=}------------------------------------------------ooO--U--Ooo------------{=
-   - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
