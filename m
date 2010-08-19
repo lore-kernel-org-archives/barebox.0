@@ -1,15 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from tango.tkos.co.il ([62.219.50.35])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Om0V2-0006Lr-8p
-	for barebox@lists.infradead.org; Thu, 19 Aug 2010 08:29:25 +0000
-Date: Thu, 19 Aug 2010 10:29:22 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20100819082922.GE27749@pengutronix.de>
-References: <1282190002-6807-1-git-send-email-plagnioj@jcrosoft.com>
+	id 1Om4N8-0003XH-Ki
+	for barebox@lists.infradead.org; Thu, 19 Aug 2010 12:37:35 +0000
+Date: Thu, 19 Aug 2010 15:37:12 +0300
+From: Baruch Siach <baruch@tkos.co.il>
+Message-ID: <20100819123712.GC2421@tarshish>
+References: <f375ed4cd64b27529dd717f6f39518eb261e1853.1281007209.git.baruch@tkos.co.il>
+	<20100805122349.GC24069@game.jcrosoft.org>
+	<20100805124307.GC3004@jasper.tkos.co.il>
+	<20100805134114.GE24069@game.jcrosoft.org>
+	<20100805141304.GD3004@jasper.tkos.co.il>
+	<20100819064347.GI454@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1282190002-6807-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20100819064347.GI454@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,113 +27,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Add Menu Framework
+Subject: Re: [PATCH 1/2] misc: introduce string_to_bin
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, Aug 19, 2010 at 05:53:22AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> Introduce a menu framework that allow us to create list menu to simplify
-> barebox and make it more user-frendly
-> 
-> This kind of menu is very usefull when you do not have a keyboard or a
-> serial console attached to your board to allow you to interract with
-> barebox
+Hi Jean-Christophe,
 
-\o/ Cool! I really like it.
+On Thu, Aug 19, 2010 at 08:43:48AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 17:13 Thu 05 Aug     , Baruch Siach wrote:
+> > On Thu, Aug 05, 2010 at 03:41:14PM +0200, Jean-Christophe PLAGNIOL-VILLARD 
+> > wrote:
+> > > On 15:43 Thu 05 Aug     , Baruch Siach wrote:
+> > > > On Thu, Aug 05, 2010 at 02:23:49PM +0200, Jean-Christophe PLAGNIOL-VILLARD 
+> > > > wrote:
+> > > > > 	how about use the kernel printf format instead
+> > > > 
+> > > > How can I use printf to convert a string representation to binary?
+> > > as example for ethernet address on the kernel we use %M or for UUID we %U to
+> > > print it in the right format. so take a look on vsprintf.c
+> > 
+> > This is good for converting binary values to strings, not the other way around 
+> > as we do here.
+> It's the same here u can do %xs to print it as hexa so it will be easier to
+> use
 
-This is simple and still very flexible.
+Apparently I'm missing something obvious here. I'll try to clarify how I see 
+things. Feel free to correct my understanding.
 
-Some things which came up during testing:
+The various printf() variants take binary data as an argument, and translate 
+it into a string representation, according to the format string.
 
-- I get a data abort when trying to remove a menu without removing the
-  entries first. example:
+The purposed string_to_bin() function does the opposite. It takes a string 
+argument
 
-barebox@Phytec phyCORE-i.MX31:/ menu -a -m boot -d "Boot Menu"
-barebox@Phytec phyCORE-i.MX31:/ menu -e -a -m boot -c boot -d "Boot"
-barebox@Phytec phyCORE-i.MX31:/ menu -r -m boot
-data abort
-pc : [<87f05058>]    lr : [<87f05098>]
-sp : 87affe20  ip : 87f20794  fp : 00000004
-r10: 00000002  r9 : 00000000  r8 : 00200200
-r7 : 00100100  r6 : 87b0daf8  r5 : 87b0db18  r4 : 001000f0
-r3 : 87b0db18  r2 : 87b0db18  r1 : 003b7fff  r0 : 001000f0
-Flags: nzCv  IRQs off  FIQs off  Mode SVC_32
-Resetting CPU ...
+const char* mac_str = "01:02:03:04:05:06";
 
-- do_menu could use a if (!argc) return COMMAND_ERROR_USAGE;
+and return the binary equivalent of this string in the buf pointer:
 
-- It would be nice to have an option to directly create a submenu on the
-  command line (though this can be added later). So instead of doing
+u8 mac[6];
 
-menu -e -a -m boot -c "menu -s -m network" -R -d "Network settings ->"
+string_to_bin(mac_str, mac, 6)
 
-we could have a
+now the mac[] array contains the binary representation of the string mac_str, 
+in big-endian order.
 
-menu -e -a -m boot -u network -R -d "Network settings ->"
+I've found no way to do the same with printf.
 
-We could than automatically add a 'back' entry if a menu is a submenu.
-
-- It shouldn't be possible to add the same menu twice. example:
-
-barebox@Phytec phyCORE-i.MX31:/ menu -a -m boot -d "Boot Menu"
-barebox@Phytec phyCORE-i.MX31:/ menu -a -m boot -d "Boot Menu"
-barebox@Phytec phyCORE-i.MX31:/ menu -l
-boot: Boot Menu
-boot: Boot Menu
-barebox@Phytec phyCORE-i.MX31:/
-
-- Removing entries does not work as expected. example:
-
-menu -a -m boot -d "Boot Menu"
-menu -e -a -m boot -c boot -d "Boot"
-menu -e -a -m boot -c reset -d "Reset"
-menu -e -a -m boot -c "exit" -d "Command line"
-menu -e -r -m boot -n 1
-menu -s -m boot
-
-As expected the first entry is missing, but instead an empty line is
-printed. When I then try to add an entry after this the menu is corrupt.
-
-- commands should always return positive error codes. A good practice is
-  to pass -E* values up to do_menu, use strerror() to print the error
-  code and return 1 afterwards.
-
-> +		switch(opt) {
-> +		case 'm':
-> +			cm.menu = optarg;
-> +			break;
-> +			break;
-> +		case 'l':
-> +			cm.action = action_list;
-> +			break;
-> +		case 's':
-> +			cm.action = action_show;
-> +			break;
-> +#if defined(CONFIG_CMD_MENU_MANAGEMENT)
-> +		case 'e':
-> +			cm.entry = 1;
-> +		case 'a':
-
-There is a 'break' missing here.
-
-> +			cm.action = action_add;
-> +			break;
-> +		case 'r':
-> +			cm.action = action_remove;
-> +			break;
-> +		case 'c':
-> +			cm.command = optarg;
-> +			break;
-
-Thank you for this work. I really appreciate it ;)
-
-Sascha
+baruch
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+                                                     ~. .~   Tk Open Systems
+=}------------------------------------------------ooO--U--Ooo------------{=
+   - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
 
 _______________________________________________
 barebox mailing list
