@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 29.mail-out.ovh.net ([87.98.216.213])
+Received: from 70.mail-out.ovh.net ([91.121.185.63])
 	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OlvGG-0004m0-4L
-	for barebox@lists.infradead.org; Thu, 19 Aug 2010 02:53:49 +0000
+	id 1OlvGG-0004mJ-6K
+	for barebox@lists.infradead.org; Thu, 19 Aug 2010 02:53:50 +0000
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu, 19 Aug 2010 04:48:25 +0200
-Message-Id: <1282186110-32738-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Thu, 19 Aug 2010 04:48:28 +0200
+Message-Id: <1282186110-32738-4-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <20100819024811.GG454@game.jcrosoft.org>
 References: <20100819024811.GG454@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
@@ -21,57 +21,219 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/6] dm9000: allow to specify that no srom is present
+Subject: [PATCH 4/6] at91: rename clocksource.c -> at91sam926x_time.c
 To: barebox@lists.infradead.org
+
+preparation to move the rm9200 to the same api as other at91
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/boards/scb9328/scb9328.c |    1 +
- drivers/net/dm9000.c              |    6 ++++--
- include/dm9000.h                  |    1 +
- 3 files changed, 6 insertions(+), 2 deletions(-)
+ arch/arm/mach-at91/Makefile           |    8 ++--
+ arch/arm/mach-at91/at91sam926x_time.c |   85 +++++++++++++++++++++++++++++++++
+ arch/arm/mach-at91/clocksource.c      |   85 ---------------------------------
+ 3 files changed, 89 insertions(+), 89 deletions(-)
+ create mode 100644 arch/arm/mach-at91/at91sam926x_time.c
+ delete mode 100644 arch/arm/mach-at91/clocksource.c
 
-diff --git a/arch/arm/boards/scb9328/scb9328.c b/arch/arm/boards/scb9328/scb9328.c
-index e781393..3c04996 100644
---- a/arch/arm/boards/scb9328/scb9328.c
-+++ b/arch/arm/boards/scb9328/scb9328.c
-@@ -55,6 +55,7 @@ static struct dm9000_platform_data dm9000_data = {
- 	.iobase   = 0x16000000,
- 	.iodata   = 0x16000004,
- 	.buswidth = DM9000_WIDTH_16,
-+	.srom     = 1;
- };
+diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
+index 65a2657..d711f6a 100644
+--- a/arch/arm/mach-at91/Makefile
++++ b/arch/arm/mach-at91/Makefile
+@@ -1,8 +1,8 @@
+-obj-y += clock.o clocksource.o gpio.o
++obj-y += clock.o gpio.o
  
- static struct device_d dm9000_dev = {
-diff --git a/drivers/net/dm9000.c b/drivers/net/dm9000.c
-index 2062c66..5f61ddc 100644
---- a/drivers/net/dm9000.c
-+++ b/drivers/net/dm9000.c
-@@ -498,8 +498,10 @@ static int dm9000_probe(struct device_d *dev)
- 	edev->send = dm9000_eth_send;
- 	edev->recv = dm9000_eth_rx;
- 	edev->halt = dm9000_eth_halt;
--	edev->get_ethaddr = dm9000_get_ethaddr;
--	edev->set_ethaddr = dm9000_set_ethaddr;
-+	if (pdata->srom) {
-+		edev->get_ethaddr = dm9000_get_ethaddr;
-+		edev->set_ethaddr = dm9000_set_ethaddr;
-+	}
+ obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel_init.o
  
- 	/* RESET device */
- 	dm9000_reset(priv);
-diff --git a/include/dm9000.h b/include/dm9000.h
-index 3cc5235..b4a04b1 100644
---- a/include/dm9000.h
-+++ b/include/dm9000.h
-@@ -10,6 +10,7 @@ struct dm9000_platform_data {
- 	unsigned long iobase;
- 	unsigned long iodata;
- 	int buswidth;
-+	int srom;
- };
- 
- #endif /* __DM9000_H__ */
+ # CPU-specific support
+-obj-$(CONFIG_ARCH_AT91SAM9260) += at91sam9260.o at91sam9260_devices.o sam9_smc.o
+-obj-$(CONFIG_ARCH_AT91SAM9261) += at91sam9261.o at91sam9261_devices.o sam9_smc.o
+-obj-$(CONFIG_ARCH_AT91SAM9263) += at91sam9263.o at91sam9263_devices.o sam9_smc.o
++obj-$(CONFIG_ARCH_AT91SAM9260) += at91sam9260.o at91sam926x_time.o at91sam9260_devices.o sam9_smc.o
++obj-$(CONFIG_ARCH_AT91SAM9261) += at91sam9261.o at91sam926x_time.o at91sam9261_devices.o sam9_smc.o
++obj-$(CONFIG_ARCH_AT91SAM9263) += at91sam9263.o at91sam926x_time.o at91sam9263_devices.o sam9_smc.o
+diff --git a/arch/arm/mach-at91/at91sam926x_time.c b/arch/arm/mach-at91/at91sam926x_time.c
+new file mode 100644
+index 0000000..84df1a1
+--- /dev/null
++++ b/arch/arm/mach-at91/at91sam926x_time.c
+@@ -0,0 +1,85 @@
++/*
++ * (C) Copyright 2002
++ * Sysgo Real-Time Solutions, GmbH <www.elinos.com>
++ * Marius Groeger <mgroeger@sysgo.de>
++ *
++ * (C) Copyright 2002
++ * Sysgo Real-Time Solutions, GmbH <www.elinos.com>
++ * Alex Zuepke <azu@sysgo.de>
++ *
++ * (C) Copyright 2002
++ * Gary Jennejohn, DENX Software Engineering, <gj@denx.de>
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
++
++#include <common.h>
++#include <init.h>
++#include <clock.h>
++#include <asm/hardware.h>
++#include <mach/at91_pit.h>
++#include <mach/at91_pmc.h>
++#include <mach/at91_rstc.h>
++#include <mach/io.h>
++#include <asm/io.h>
++
++uint64_t at91sam9_clocksource_read(void)
++{
++	return at91_sys_read(AT91_PIT_PIIR);
++}
++
++static struct clocksource cs = {
++	.read	= at91sam9_clocksource_read,
++	.mask	= 0xffffffff,
++	.shift	= 10,
++};
++
++static int clocksource_init (void)
++{
++	/*
++	 * Enable PITC Clock
++	 * The clock is already enabled for system controller in boot
++	 */
++	at91_sys_write(AT91_PMC_PCER, 1 << AT91_ID_SYS);
++
++	/* Enable PITC */
++	at91_sys_write(AT91_PIT_MR, 0xfffff | AT91_PIT_PITEN);
++
++	cs.mult = clocksource_hz2mult(1000000 * 6, cs.shift);
++
++	init_clock(&cs);
++
++	return 0;
++}
++
++core_initcall(clocksource_init);
++
++/*
++ * Reset the cpu through the reset controller
++ */
++void __noreturn reset_cpu (unsigned long ignored)
++{
++	at91_sys_write(AT91_RSTC_CR, AT91_RSTC_KEY |
++				     AT91_RSTC_PROCRST |
++				     AT91_RSTC_PERRST);
++
++	/* Not reached */
++	while (1);
++}
++EXPORT_SYMBOL(reset_cpu);
+diff --git a/arch/arm/mach-at91/clocksource.c b/arch/arm/mach-at91/clocksource.c
+deleted file mode 100644
+index 84df1a1..0000000
+--- a/arch/arm/mach-at91/clocksource.c
++++ /dev/null
+@@ -1,85 +0,0 @@
+-/*
+- * (C) Copyright 2002
+- * Sysgo Real-Time Solutions, GmbH <www.elinos.com>
+- * Marius Groeger <mgroeger@sysgo.de>
+- *
+- * (C) Copyright 2002
+- * Sysgo Real-Time Solutions, GmbH <www.elinos.com>
+- * Alex Zuepke <azu@sysgo.de>
+- *
+- * (C) Copyright 2002
+- * Gary Jennejohn, DENX Software Engineering, <gj@denx.de>
+- *
+- * See file CREDITS for list of people who contributed to this
+- * project.
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+- * MA 02111-1307 USA
+- */
+-
+-#include <common.h>
+-#include <init.h>
+-#include <clock.h>
+-#include <asm/hardware.h>
+-#include <mach/at91_pit.h>
+-#include <mach/at91_pmc.h>
+-#include <mach/at91_rstc.h>
+-#include <mach/io.h>
+-#include <asm/io.h>
+-
+-uint64_t at91sam9_clocksource_read(void)
+-{
+-	return at91_sys_read(AT91_PIT_PIIR);
+-}
+-
+-static struct clocksource cs = {
+-	.read	= at91sam9_clocksource_read,
+-	.mask	= 0xffffffff,
+-	.shift	= 10,
+-};
+-
+-static int clocksource_init (void)
+-{
+-	/*
+-	 * Enable PITC Clock
+-	 * The clock is already enabled for system controller in boot
+-	 */
+-	at91_sys_write(AT91_PMC_PCER, 1 << AT91_ID_SYS);
+-
+-	/* Enable PITC */
+-	at91_sys_write(AT91_PIT_MR, 0xfffff | AT91_PIT_PITEN);
+-
+-	cs.mult = clocksource_hz2mult(1000000 * 6, cs.shift);
+-
+-	init_clock(&cs);
+-
+-	return 0;
+-}
+-
+-core_initcall(clocksource_init);
+-
+-/*
+- * Reset the cpu through the reset controller
+- */
+-void __noreturn reset_cpu (unsigned long ignored)
+-{
+-	at91_sys_write(AT91_RSTC_CR, AT91_RSTC_KEY |
+-				     AT91_RSTC_PROCRST |
+-				     AT91_RSTC_PERRST);
+-
+-	/* Not reached */
+-	while (1);
+-}
+-EXPORT_SYMBOL(reset_cpu);
 -- 
 1.7.1
 
