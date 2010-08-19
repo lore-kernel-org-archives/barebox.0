@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from 70.mail-out.ovh.net ([91.121.185.63])
 	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OlvHT-00084r-RT
-	for barebox@lists.infradead.org; Thu, 19 Aug 2010 02:55:05 +0000
+	id 1OlvXU-0002U2-UK
+	for barebox@lists.infradead.org; Thu, 19 Aug 2010 03:11:42 +0000
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu, 19 Aug 2010 04:49:46 +0200
-Message-Id: <1282186186-521-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Thu, 19 Aug 2010 05:06:19 +0200
+Message-Id: <1282187179-2377-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,27 +19,17 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mmccpu: fix typo in AT91_MAIN_CLOCK
+Subject: [PATCH] commands: partition.c fix file mod bits
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/boards/mmccpu/config.h |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+ 0 files changed, 0 insertions(+), 0 deletions(-)
+ mode change 100755 => 100644 commands/partition.c
 
-diff --git a/arch/arm/boards/mmccpu/config.h b/arch/arm/boards/mmccpu/config.h
-index 422ac09..c37d5eb 100644
---- a/arch/arm/boards/mmccpu/config.h
-+++ b/arch/arm/boards/mmccpu/config.h
-@@ -1,7 +1,7 @@
- #ifndef __CONFIG_H
- #define __CONFIG_H
- 
--#define AT91_M1IN_CLOCK		18432000
-+#define AT91_MAIN_CLOCK		18432000
- 
- /* values */
- #define MASTER_PLL_MUL		54
+diff --git a/commands/partition.c b/commands/partition.c
+old mode 100755
+new mode 100644
 -- 
 1.7.1
 
