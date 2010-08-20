@@ -1,18 +1,26 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 27.mail-out.ovh.net ([91.121.30.210])
-	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OmLS4-0004C6-75
-	for barebox@lists.infradead.org; Fri, 20 Aug 2010 06:51:45 +0000
-Date: Fri, 20 Aug 2010 08:51:39 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20100820065139.GG8693@game.jcrosoft.org>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1OmLjM-0000Lz-Nn
+	for barebox@lists.infradead.org; Fri, 20 Aug 2010 07:09:37 +0000
+Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.71)
+	(envelope-from <rsc@pengutronix.de>) id 1OmLjI-00069h-4c
+	for barebox@lists.infradead.org; Fri, 20 Aug 2010 09:09:32 +0200
+Received: from rsc by octopus.hi.pengutronix.de with local (Exim 4.69)
+	(envelope-from <rsc@pengutronix.de>) id 1OmLjI-0002sf-3R
+	for barebox@lists.infradead.org; Fri, 20 Aug 2010 09:09:32 +0200
+Date: Fri, 20 Aug 2010 09:09:32 +0200
+From: Robert Schwebel <r.schwebel@pengutronix.de>
+Message-ID: <20100820070932.GT30096@pengutronix.de>
 References: <1282190002-6807-1-git-send-email-plagnioj@jcrosoft.com>
 	<20100819082922.GE27749@pengutronix.de>
 	<20100820032101.GA8693@game.jcrosoft.org>
 	<20100820063822.GH27749@pengutronix.de>
+	<20100820065139.GG8693@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20100820063822.GH27749@pengutronix.de>
+In-Reply-To: <20100820065139.GG8693@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,62 +29,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] Add Menu Framework
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+To: barebox@lists.infradead.org
 
-> > > 
-> > > - commands should always return positive error codes. A good practice is
-> > >   to pass -E* values up to do_menu, use strerror() to print the error
-> > >   code and return 1 afterwards.
-> > I agree but but of the time there is no -E* related to this Framework
-> > 
-> > so do u want to create them?
-> 
-> No. The use of strerror might not be appropriate here, but all functions
-> used should return some error value instead of -1, with -EINVAL as
-> fallback when no better value can be found.
-ok
-> 
-> > > 
-> > > There is a 'break' missing here.
-> > > 
-> > fix
-> > > > +			cm.action = action_add;
-> > > > +			break;
-> > > > +		case 'r':
-> > > > +			cm.action = action_remove;
-> > > > +			break;
-> > > > +		case 'c':
-> > > > +			cm.command = optarg;
-> > > > +			break;
-> > > 
-> > > Thank you for this work. I really appreciate it ;)
-> > Your welcome
-> > My goal was to make the bootloader more easy to use for end user and
-> > device without keyboard
-> 
-> Do you know openmoko? They also have a menu in U-Boot, but it's more or
-> less hardcoded to their exact needs.
-yeah I known, Denk force me to take a look at it when I send my patch to u-boot
-ML but as you said everything is hardcoded and very limited
-and for the record my code is NOT based on there work :)
-so as I said him I do not like there stuff and think this one is as you said
-flexible and simple
+On Fri, Aug 20, 2010 at 08:51:39AM +0200, Jean-Christophe PLAGNIOL-VILLARD =
+wrote:
+> > > I plan to have this also via FrameBuffer and with a background image
+> > > so maybe barebox could replace grub & co aneday :)
+> >
+> > A long way to go ;)
+>
+> but a good target :-)
 
-> > 
-> > I plan to have this also via FrameBuffer and with a background image
-> > so maybe barebox could replace grub & co aneday :)
-> 
-> A long way to go ;)
-but a good target :-)
+Note that J=FCrgen has already pushed initial x86 support (ontop of BIOS)
+into Barebox. What's mainly needed to be useful for people is:
 
-Best Regards,
-J.
+- framebuffer console
+- support for fetchin the kernel from filesystems
+
+rsc
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
