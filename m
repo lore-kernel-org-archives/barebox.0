@@ -1,11 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 68.mail-out.ovh.net ([91.121.185.69])
-	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1On4Mc-0001pH-M7
-	for barebox@lists.infradead.org; Sun, 22 Aug 2010 06:49:07 +0000
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sun, 22 Aug 2010 08:48:56 +0200
-Message-Id: <1282459736-2378-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from mail-ww0-f49.google.com ([74.125.82.49])
+	by bombadil.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1OnA4U-0004rc-EN
+	for barebox@lists.infradead.org; Sun, 22 Aug 2010 12:54:50 +0000
+Received: by wwb31 with SMTP id 31so2323793wwb.18
+	for <barebox@lists.infradead.org>; Sun, 22 Aug 2010 05:54:44 -0700 (PDT)
+From: Peter Korsgaard <jacmet@sunsite.dk>
+References: <1281241073-19115-1-git-send-email-plagnioj@jcrosoft.com>
+	<20100808064846.GA31364@merkur.ravnborg.org>
+	<20100809064923.GL30096@pengutronix.de>
+Date: Sun, 22 Aug 2010 14:54:38 +0200
+In-Reply-To: <20100809064923.GL30096@pengutronix.de> (Robert Schwebel's
+	message of "Mon, 9 Aug 2010 08:49:23 +0200")
+Message-ID: <87wrrikdtd.fsf@macbook.be.48ers.dk>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,248 +22,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] move board.dox to Documentation and update it
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] Kconfig: sync with linux kernel v2.6.35-4771-g1787985
+To: Robert Schwebel <r.schwebel@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- Documentation/board.dox      |   95 ++++++++++++++++++++++++++++++++++++++++++
- Documentation/manual_org.dox |    4 +-
- board/board.dox              |   95 ------------------------------------------
- 3 files changed, 97 insertions(+), 97 deletions(-)
- create mode 100644 Documentation/board.dox
- delete mode 100644 board/board.dox
+>>>>> "Robert" == Robert Schwebel <r.schwebel@pengutronix.de> writes:
 
-diff --git a/Documentation/board.dox b/Documentation/board.dox
-new file mode 100644
-index 0000000..07425e4
---- /dev/null
-+++ b/Documentation/board.dox
-@@ -0,0 +1,95 @@
-+/** @page dev_board Adapting a new Board
-+
-+To add a new board to @a barebox a few steps must be done, to extend and modify
-+the @a barebox source tree.
-+
-+@section board_add_files Files/Directories to be added
-+
-+ - arch/\<architecture\>/boards/\<boardname\>
-+ - arch/\<architecture\>/boards/\<boardname\>/Makefile
-+ - arch/\<architecture\>/boards/\<boardname\>/\<boardname\>.c
-+ - arch/\<architecture\>/boards/\<boardname\>/\<boardname\>.dox
-+ - include/configs/\<boardname\>.h
-+ - arch/\<architecture\>/configs/\<boardname\>_defconfig
-+
-+@subsection board_makefile arch/\<architecture\>/boards/\<boardname\>Makefile
-+
-+@verbatim
-+	obj-y += all files that builds the BSP (Assembler and/or C files)
-+@endverbatim
-+
-+@subsection board_basefile arch/\<architecture\>/boards/\<boardname\>\<boardname\>.c
-+
-+TBD
-+
-+@subsection board_doxygen arch/\<architecture\>/boards/\<boardname\>/\<boardname\>.dox
-+
-+This file should describe in short words your new board, what CPU
-+it uses, what resources are provided and features it supports.
-+
-+Use the doxygen style for this kind of documentation. Below you find a
-+template for this kind of file:
-+
-+@verbatim
-+/** @page <boardname> <Manufacturer> <Board's Name>
-+
-+This board uses an <architecture> based CPU. The board is shipped with:
-+
-+- many MiB NOR type Flash Memory
-+- many MiB SDRAM
-+- a very special network controller
-+
-+and so on.
-+
-+*/
-+@endverbatim
-+
-+To make your new shiny file visible in the automatically generated
-+documentation you must sort in the used page lable ("<boardname>" in the
-+template above) into Documentation/boards.dox as:
-+
-+@verbatim
-+ ...
-+ @subpage <boardname>
-+ ...
-+@endverbatim
-+
-+at the right architecture.
-+
-+@note Consider to use an unique page lable.
-+
-+@subsection board_lscript arch/\<architecture\>/boards/\<boardname\>/barebox.lds.S
-+
-+If your board needs a special binary @a barebox layout, you can provide a local
-+board linker script file. This will replace the generic one provided by your
-+architecture or CPU support.
-+
-+Add this file with
-+
-+@verbatim
-+	extra-y += <board_linker_script>
-+@endverbatim
-+
-+in your local \b Makefile to the list of files, forwarded to the last linking step.
-+
-+@section board_defconfig arch/\<architecture\>/configs/\<boardname\>_defconfig
-+
-+TBD
-+
-+@section board_mod_files These files needs to be modified:
-+
-+ - modify Documentation/board.dox
-+ - modify arch/\<architecture\>/Kconfig
-+  - add your board (MACH_*) to the list
-+  - add your default text base address for this architecture (ARCH_TEXT_BASE)
-+  - add BOARDINFO with valueable info for your board
-+ - modify arch/\<architecture\>/Makefile:
-+  - add board-$(MACH_*) = \<your board_dir\>
-+
-+First, the new board should be visible in the menu.
-+
-+@section board_specific_cpu Porting hints for specific CPUs
-+
-+@li @subpage dev_s3c24xx_mach
-+
-+*/
-diff --git a/Documentation/manual_org.dox b/Documentation/manual_org.dox
-index 6f3b157..17238f0 100644
---- a/Documentation/manual_org.dox
-+++ b/Documentation/manual_org.dox
-@@ -10,7 +10,7 @@ than listed here. But these files are the main control files:
-    - Documentation/users_manual.dox
-     - Documentation/commands.dox
-    - Documentation/developers_manual.dox
--    - board/board.dox
-+    - Documentation/board.dox
-     - arch/architecture.dox
-      - arch/arm/mach-arm.dox
-      - arch/blackfin/mach-bf.dox
-@@ -24,4 +24,4 @@ their pages should be listed in this file.
- 
- New boards should forward their content to Documentation/boards.dox, so
- their pages should be listed in this file.
--*/
-\ No newline at end of file
-+*/
-diff --git a/board/board.dox b/board/board.dox
-deleted file mode 100644
-index 6bda416..0000000
---- a/board/board.dox
-+++ /dev/null
-@@ -1,95 +0,0 @@
--/** @page dev_board Adapting a new Board
--
--To add a new board to @a barebox a few steps must be done, to extend and modify
--the @a barebox source tree.
--
--@section board_add_files Files/Directories to be added
--
-- - arch/\<architecture\>/boards/\<boardname\>
-- - arch/\<architecture\>/boards/\<boardname\>/Makefile
-- - arch/\<architecture\>/boards/\<boardname\>/\<boardname\>.c
-- - arch/\<architecture\>/boards/\<boardname\>/\<boardname\>.dox
-- - include/configs/\<boardname\>.h
-- - arch/\<architecture\>/configs/\<boardname\>_defconfig
--
--@subsection board_makefile arch/\<architecture\>/boards/\<boardname\>Makefile
--
--@verbatim
--	obj-y += all files that builds the BSP (Assembler and/or C files)
--@endverbatim
--
--@subsection board_basefile arch/\<architecture\>/boards/\<boardname\>\<boardname\>.c
--
--TBD
--
--@subsection board_doxygen arch/\<architecture\>/boards/\<boardname\>/\<boardname\>.dox
--
--This file should describe in short words your new board, what CPU
--it uses, what resources are provided and features it supports.
--
--Use the doxygen style for this kind of documentation. Below you find a
--template for this kind of file:
--
--@verbatim
--/** @page <boardname> <Manufacturer> <Board's Name>
--
--This board uses an <architecture> based CPU. The board is shipped with:
--
--- many MiB NOR type Flash Memory
--- many MiB SDRAM
--- a very special network controller
--
--and so on.
--
--*/
--@endverbatim
--
--To make your new shiny file visible in the automatically generated
--documentation you must sort in the used page lable ("<boardname>" in the
--template above) into Documentation/boards.dox as:
--
--@verbatim
-- ...
-- @subpage <boardname>
-- ...
--@endverbatim
--
--at the right architecture.
--
--@note Consider to use an unique page lable.
--
--@subsection board_lscript arch/\<architecture\>/boards/\<boardname\>/barebox.lds.S
--
--If your board needs a special binary @a barebox layout, you can provide a local
--board linker script file. This will replace the generic one provided by your
--architecture or CPU support.
--
--Add this file with
--
--@verbatim
--	extra-y += <board_linker_script>
--@endverbatim
--
--in your local \b Makefile to the list of files, forwarded to the last linking step.
--
--@section board_defconfig arch/\<architecture\>/configs/\<boardname\>_defconfig
--
--TBD
--
--@section board_mod_files These files needs to be modified:
--
-- - modify board/board.dox
-- - modify arch/\<architecture\>/Kconfig
--  - add your board (MACH_*) to the list
--  - add your default text base address for this architecture (ARCH_TEXT_BASE)
--  - add BOARDINFO with valueable info for your board
-- - modify arch/\<architecture\>/Makefile:
--  - add board-$(MACH_*) = \<your board_dir\>
--
--First, the new board should be visible in the menu.
--
--@section board_specific_cpu Porting hints for specific CPUs
--
--@li @subpage dev_s3c24xx_mach
--
--*/
+[Sorry, old thread - Been away on vacation]
+
+ >> Which bring up another question. We have plenty of projects out there
+ >> that rely on kconfig.
+
+ Robert> ptxdist as well.
+
+And Buildroot and OpenWrt and crosstool-ng, ...
+
+ >> What can we do to kconfig to make the integration easier?
+ >> 
+ >> We have discussed that kconfig should be a seperate installable tool
+ >> (as rpm, deb whatever). But there is a few quirks needed before we can
+ >> do so.
+
+ Robert> I don't think that it is necessary. Last time I checked the most
+ Robert> complicated thing was to exchange the project name ("Linux kernel") to
+ Robert> something else, because there were quite a lot of hand coded numbers
+ Robert> representing the string length or length-1. But we are not up to the
+ Robert> latest versions - I'll have to re-check.
+
+Yeah. Buildroot has historically done s/CONFIG_/BR2_/ as well, but I'm
+strongly considering going back to CONFIG_.
+
 -- 
-1.7.1
-
+Bye, Peter Korsgaard
 
 _______________________________________________
 barebox mailing list
