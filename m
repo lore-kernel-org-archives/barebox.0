@@ -1,18 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ww0-f49.google.com ([74.125.82.49])
+Received: from mail-wy0-f177.google.com ([74.125.82.177])
 	by bombadil.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OnA4U-0004rc-EN
-	for barebox@lists.infradead.org; Sun, 22 Aug 2010 12:54:50 +0000
-Received: by wwb31 with SMTP id 31so2323793wwb.18
-	for <barebox@lists.infradead.org>; Sun, 22 Aug 2010 05:54:44 -0700 (PDT)
+	id 1OnAuC-0008E1-ON
+	for barebox@lists.infradead.org; Sun, 22 Aug 2010 13:48:13 +0000
+Received: by wyb34 with SMTP id 34so2810582wyb.36
+	for <barebox@lists.infradead.org>; Sun, 22 Aug 2010 06:48:11 -0700 (PDT)
 From: Peter Korsgaard <jacmet@sunsite.dk>
 References: <1281241073-19115-1-git-send-email-plagnioj@jcrosoft.com>
-	<20100808064846.GA31364@merkur.ravnborg.org>
-	<20100809064923.GL30096@pengutronix.de>
-Date: Sun, 22 Aug 2010 14:54:38 +0200
-In-Reply-To: <20100809064923.GL30096@pengutronix.de> (Robert Schwebel's
-	message of "Mon, 9 Aug 2010 08:49:23 +0200")
-Message-ID: <87wrrikdtd.fsf@macbook.be.48ers.dk>
+	<20100818151536.GF454@game.jcrosoft.org>
+	<20100821102734.GN27749@pengutronix.de>
+	<20100821113550.GA25293@merkur.ravnborg.org>
+Date: Sun, 22 Aug 2010 15:48:07 +0200
+In-Reply-To: <20100821113550.GA25293@merkur.ravnborg.org> (Sam Ravnborg's
+	message of "Sat, 21 Aug 2010 13:35:50 +0200")
+Message-ID: <87sk26kbc8.fsf@macbook.be.48ers.dk>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -27,34 +28,34 @@ Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] Kconfig: sync with linux kernel v2.6.35-4771-g1787985
-To: Robert Schwebel <r.schwebel@pengutronix.de>
+To: Sam Ravnborg <sam@ravnborg.org>
 Cc: barebox@lists.infradead.org
 
->>>>> "Robert" == Robert Schwebel <r.schwebel@pengutronix.de> writes:
+>>>>> "Sam" == Sam Ravnborg <sam@ravnborg.org> writes:
 
-[Sorry, old thread - Been away on vacation]
+Hi,
 
- >> Which bring up another question. We have plenty of projects out there
- >> that rely on kconfig.
+ Sam> Current state of kconfig in v2.6.36-rc1 (which is a later version
+ Sam> than the one Jean-Christophe references) is the following: -
+ Sam> savedefconfig bugs fixed - reading a minimal config (created by
+ Sam> savedefconfig) fixed
 
- Robert> ptxdist as well.
+ Sam> The nconfig issues I mentioned regarding search are
+ Sam> not yet ready.
+ Sam> And I am not sure if they go in until next merge window.
 
-And Buildroot and OpenWrt and crosstool-ng, ...
+ Sam> Likewise there are patches in the works that will ease
+ Sam> the integration with external projects.
+ Sam> The patches does the following:
+ Sam> - Allows the prefix to be configured (CONFIG_ => BR2_)
+ Sam> - No more hardcoded "kernel" strings
+ Sam> - mainmenu in the config file is used as headline
 
- >> What can we do to kconfig to make the integration easier?
- >> 
- >> We have discussed that kconfig should be a seperate installable tool
- >> (as rpm, deb whatever). But there is a few quirks needed before we can
- >> do so.
+ Sam> These patches will go in during next merge window if they
+ Sam> are finished in due time.
 
- Robert> I don't think that it is necessary. Last time I checked the most
- Robert> complicated thing was to exchange the project name ("Linux kernel") to
- Robert> something else, because there were quite a lot of hand coded numbers
- Robert> representing the string length or length-1. But we are not up to the
- Robert> latest versions - I'll have to re-check.
-
-Yeah. Buildroot has historically done s/CONFIG_/BR2_/ as well, but I'm
-strongly considering going back to CONFIG_.
+Nice! FYI, I'm planning on syncing kconfig for buildroot after the
+2010.08 release.
 
 -- 
 Bye, Peter Korsgaard
