@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from 70.mail-out.ovh.net ([91.121.185.63])
 	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1On2sa-00019l-6a
-	for barebox@lists.infradead.org; Sun, 22 Aug 2010 05:14:01 +0000
-Date: Sun, 22 Aug 2010 07:07:10 +0200
+	id 1On2wI-00020Q-SI
+	for barebox@lists.infradead.org; Sun, 22 Aug 2010 05:17:52 +0000
+Date: Sun, 22 Aug 2010 07:17:42 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20100822050710.GN8693@game.jcrosoft.org>
+Message-ID: <20100822051742.GO8693@game.jcrosoft.org>
 References: <1281241073-19115-1-git-send-email-plagnioj@jcrosoft.com>
-	<20100818151536.GF454@game.jcrosoft.org>
-	<20100821102734.GN27749@pengutronix.de>
-	<20100821113550.GA25293@merkur.ravnborg.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20100821113550.GA25293@merkur.ravnborg.org>
+In-Reply-To: <1281241073-19115-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,48 +22,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Kconfig: sync with linux kernel v2.6.35-4771-g1787985
-To: Sam Ravnborg <sam@ravnborg.org>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2] Kconfig: sync with linux kernel v2.6.36-rc1-168-ge36c886
+To: barebox@lists.infradead.org
 
-On 13:35 Sat 21 Aug     , Sam Ravnborg wrote:
-> On Sat, Aug 21, 2010 at 12:27:34PM +0200, Sascha Hauer wrote:
-> > On Wed, Aug 18, 2010 at 05:15:36PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > On 06:17 Sun 08 Aug     , Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > > this will add also the support of the new ncurse interface nconfig
-> > > > 
-> > > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > > is it ok to apply it?
-> > 
-> > Generally ok, yes. I just thought we should wait a little for a later
-> > version, or have I misunderstood Sam?
-> 
-> Current state of kconfig in v2.6.36-rc1 (which is a later version than
-> the one Jean-Christophe references) is the following:
-> - savedefconfig bugs fixed
-> - reading a minimal config (created by savedefconfig) fixed
-> 
-> The nconfig issues I mentioned regarding search are
-> not yet ready.
-> And I am not sure if they go in until next merge window.
-> 
-> Likewise there are patches in the works that will ease
-> the integration with external projects.
-> The patches does the following:
-> - Allows the prefix to be configured (CONFIG_ => BR2_)
-> - No more hardcoded "kernel" strings
-> - mainmenu in the config file is used as headline
-> 
-> These patches will go in during next merge window if they
-> are finished in due time.
-> 
-> So all-in-all I would recommend to use kconfig from
-> v2.6.36-rc1 (rather than some random commit) and
-> then upgrade again around v2.6.37-rc1 time.
-ok I upgrade the patch
+Hi,
 
-and it will be good to update it regulary I will follow it
-is there a ML for Kconfig?
+	I've push the new version on git://git.jcrosoft.org kconfig
+
+The following changes since commit 77df62be5d5140b083152316d67a756d9fae962c:
+
+  beagle: fix usb dependencies (2010-08-18 08:47:33 +0200)
+
+are available in the git repository at:
+  git://git.jcrosoft.org/barebox.git kconfig
+
+Jean-Christophe PLAGNIOL-VILLARD (1):
+      Kconfig: sync with linux kernel v2.6.36-rc1-168-ge36c886
+
+ Makefile                                   |    2 +-
+ common/Kconfig                             |   13 +
+ scripts/kconfig/.gitignore                 |    4 +
+ scripts/kconfig/Makefile                   |  175 ++-
+ scripts/kconfig/POTFILES.in                |    7 +
+ scripts/kconfig/check.sh                   |   14 +
+ scripts/kconfig/conf.c                     |  439 ++++----
+ scripts/kconfig/confdata.c                 |  537 +++++++---
+ scripts/kconfig/expr.c                     |   65 +-
+ scripts/kconfig/expr.h                     |  106 ++-
+ scripts/kconfig/gconf.c                    |  145 +--
+ scripts/kconfig/gconf.glade                |   30 +-
+ scripts/kconfig/kxgettext.c                |    8 +-
+ scripts/kconfig/lex.zconf.c_shipped        |  127 ++-
+ scripts/kconfig/lkc.h                      |   40 +-
+ scripts/kconfig/lkc_proto.h                |    9 +-
+ scripts/kconfig/lxdialog/BIG.FAT.WARNING   |    2 +-
+ scripts/kconfig/lxdialog/check-lxdialog.sh |   20 +-
+ scripts/kconfig/lxdialog/checklist.c       |   17 +-
+ scripts/kconfig/lxdialog/dialog.h          |   11 +-
+ scripts/kconfig/lxdialog/inputbox.c        |   10 +-
+ scripts/kconfig/lxdialog/menubox.c         |   28 +-
+ scripts/kconfig/lxdialog/textbox.c         |    2 +-
+ scripts/kconfig/lxdialog/util.c            |   34 +-
+ scripts/kconfig/lxdialog/yesno.c           |    4 +-
+ scripts/kconfig/mconf.c                    |  262 ++---
+ scripts/kconfig/menu.c                     |  211 +++-
+ scripts/kconfig/nconf.c                    | 1570 ++++++++++++++++++++++++++
+ scripts/kconfig/nconf.gui.c                |  617 ++++++++++
+ scripts/kconfig/nconf.h                    |   95 ++
+ scripts/kconfig/qconf.cc                   |  255 +++--
+ scripts/kconfig/qconf.h                    |   17 +-
+ scripts/kconfig/streamline_config.pl       |  422 +++++++
+ scripts/kconfig/symbol.c                   |  501 +++++++--
+ scripts/kconfig/util.c                     |   44 +-
+ scripts/kconfig/zconf.gperf                |    6 +-
+ scripts/kconfig/zconf.hash.c_shipped       |  225 ++--
+ scripts/kconfig/zconf.l                    |   21 +-
+ scripts/kconfig/zconf.tab.c_shipped        | 1665 +++++++++++++++-------------
+ scripts/kconfig/zconf.y                    |   62 +-
+ 40 files changed, 5815 insertions(+), 2007 deletions(-)
+ create mode 100755 scripts/kconfig/check.sh
+ create mode 100644 scripts/kconfig/nconf.c
+ create mode 100644 scripts/kconfig/nconf.gui.c
+ create mode 100644 scripts/kconfig/nconf.h
+ create mode 100644 scripts/kconfig/streamline_config.pl
 
 Best Regards,
 J.
