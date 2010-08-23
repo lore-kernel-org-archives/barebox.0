@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from 68.mail-out.ovh.net ([91.121.185.69])
 	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OnN8I-00017m-Er
-	for barebox@lists.infradead.org; Mon, 23 Aug 2010 02:51:35 +0000
-Date: Mon, 23 Aug 2010 04:51:23 +0200
+	id 1OnNkc-0003y3-Kc
+	for barebox@lists.infradead.org; Mon, 23 Aug 2010 03:31:11 +0000
+Date: Mon, 23 Aug 2010 05:30:59 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20100823025123.GP8693@game.jcrosoft.org>
-References: <1281241073-19115-1-git-send-email-plagnioj@jcrosoft.com>
-	<20100808064846.GA31364@merkur.ravnborg.org>
-	<20100809064923.GL30096@pengutronix.de>
-	<87wrrikdtd.fsf@macbook.be.48ers.dk>
+Message-ID: <20100823033059.GS8693@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <87wrrikdtd.fsf@macbook.be.48ers.dk>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,40 +20,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Kconfig: sync with linux kernel v2.6.35-4771-g1787985
-To: Peter Korsgaard <jacmet@sunsite.dk>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/5] AT91 fix and preparation for at91rm9200 readding and
+	at91sam9261
+To: barebox@lists.infradead.org
 
-On 14:54 Sun 22 Aug     , Peter Korsgaard wrote:
-> >>>>> "Robert" == Robert Schwebel <r.schwebel@pengutronix.de> writes:
-> 
-> [Sorry, old thread - Been away on vacation]
-> 
->  >> Which bring up another question. We have plenty of projects out there
->  >> that rely on kconfig.
-> 
->  Robert> ptxdist as well.
-> 
-> And Buildroot and OpenWrt and crosstool-ng, ...
-> 
->  >> What can we do to kconfig to make the integration easier?
->  >> 
->  >> We have discussed that kconfig should be a seperate installable tool
->  >> (as rpm, deb whatever). But there is a few quirks needed before we can
->  >> do so.
-> 
->  Robert> I don't think that it is necessary. Last time I checked the most
->  Robert> complicated thing was to exchange the project name ("Linux kernel") to
->  Robert> something else, because there were quite a lot of hand coded numbers
->  Robert> representing the string length or length-1. But we are not up to the
->  Robert> latest versions - I'll have to re-check.
-> 
-> Yeah. Buildroot has historically done s/CONFIG_/BR2_/ as well, but I'm
-> strongly considering going back to CONFIG_.
-I agree too
+Hi Sascha,
 
-Best Regards,
-J.
+this contain fix up and prepacation for adding at91rm9200 and at91sam9261
+
+please pull
+
+The following changes since commit c52f80cc89e559ade702486d03bb8bfe3113db6c:
+
+  Add missing include (2010-08-22 12:08:10 +0200)
+
+are available in the git repository at:
+  git://git.jcrosoft.org/barebox.git at91
+
+Jean-Christophe PLAGNIOL-VILLARD (5):
+      mmccpu: fix typo in AT91_MAIN_CLOCK
+      dm9000: allow to specify that no srom is present
+      at91: rename clocksource.c -> at91sam926x_time.c
+      macb: introduce HAS_MACB configuration
+      at91: remove non used and obsolete at91rm9200 code
+
+ arch/arm/Kconfig                                   |    5 -
+ arch/arm/Makefile                                  |    1 -
+ arch/arm/boards/mmccpu/config.h                    |    2 +-
+ arch/arm/boards/scb9328/scb9328.c                  |    1 +
+ arch/arm/mach-at91/Kconfig                         |    2 +
+ arch/arm/mach-at91/Makefile                        |    6 +-
+ .../{clocksource.c => at91sam926x_time.c}          |    0
+ arch/arm/mach-at91rm9200/Kconfig                   |   16 -
+ arch/arm/mach-at91rm9200/include/mach/AT91RM9200.h |  762 --------------------
+ arch/arm/mach-at91rm9200/include/mach/hardware.h   |   78 --
+ drivers/net/Kconfig                                |    5 +-
+ drivers/net/dm9000.c                               |    3 +-
+ include/dm9000.h                                   |    1 +
+ 13 files changed, 14 insertions(+), 868 deletions(-)
+ rename arch/arm/mach-at91/{clocksource.c => at91sam926x_time.c} (100%)
+ delete mode 100644 arch/arm/mach-at91rm9200/Kconfig
+ delete mode 100644 arch/arm/mach-at91rm9200/include/mach/AT91RM9200.h
+ delete mode 100644 arch/arm/mach-at91rm9200/include/mach/hardware.h
 
 _______________________________________________
 barebox mailing list
