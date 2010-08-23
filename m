@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OnQU9-00086z-TG
-	for barebox@lists.infradead.org; Mon, 23 Aug 2010 06:26:22 +0000
-Date: Mon, 23 Aug 2010 08:26:20 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20100823062620.GO27749@pengutronix.de>
-References: <AANLkTimhfWcb+q0AzmJs=tW2-B59A8Hg4nU_KqfU7J-e@mail.gmail.com>
+	id 1OnRHX-000734-J5
+	for barebox@lists.infradead.org; Mon, 23 Aug 2010 07:17:24 +0000
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Mon, 23 Aug 2010 09:16:16 +0200
+References: <AANLkTin5C2PLPS26q5BjyBZC3Dt_aYCVWYifSNri8p+G@mail.gmail.com>
+	<20100816091330.GN27749@pengutronix.de>
+	<AANLkTi=i9OVu5g1i1_AXquB_TzX8uE9o6=vMTqmxmhRo@mail.gmail.com>
+In-Reply-To: <AANLkTi=i9OVu5g1i1_AXquB_TzX8uE9o6=vMTqmxmhRo@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <AANLkTimhfWcb+q0AzmJs=tW2-B59A8Hg4nU_KqfU7J-e@mail.gmail.com>
+Message-Id: <201008230916.16725.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,34 +24,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: YAFFS
-To: Nataraj S Narayan <natarajsn@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: changes for reducing DDR size
+To: barebox@lists.infradead.org
 
-Hello,
+kuldeep ghan wrote:
+> [...]
+>  I am adding two device using armlinux_add_dram() each with 32MB size and
+> map_base address of 0xA0000000 and 0xB0000000 respectively.. Is that fine
+> or Can I have one device registered with map_base address of 0xA0000000 and
+> 64MB size??
 
-On Mon, Aug 23, 2010 at 10:17:05AM +0530, Nataraj S Narayan wrote:
-> Hi
-> 
-> I am u-boot-at91.  My board is at91sam9263ek. Would like to know if barebox
-> supports YAFFS2?
+You are using non continuous memory. I'm not sure, if that is handled in 
+barebox correctly. Also Linux may have a problem with this kind of memory 
+organization.
 
-Barebox currently does not support YAFFS2.
-
-> 
->  Need also an advice on going for Yaffs or Ubifs for Fs on NAND Flash?
-
-We currently also do not support UBIFS. We only support UBI (the UBIFS
-layer works on top of UBI)
-
-Sascha
-
+jbe
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Pengutronix e.K.                              | Juergen Beisert             |
+Linux Solutions for Science and Industry      | Phone: +49-8766-939 228     |
+Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555 |
+Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
