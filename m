@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.coresystems.de ([80.81.252.135])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OqWCo-0000oD-1e
-	for barebox@lists.infradead.org; Tue, 31 Aug 2010 19:09:14 +0000
-Message-ID: <4C7D5354.7000702@coresystems.de>
-Date: Tue, 31 Aug 2010 21:09:08 +0200
-From: Stefan Reinauer <stefan.reinauer@coresystems.de>
+	id 1OnWNy-0000ex-6h
+	for barebox@lists.infradead.org; Mon, 23 Aug 2010 12:44:22 +0000
+Date: Mon, 23 Aug 2010 14:44:19 +0200
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20100823124419.GC8018@pengutronix.de>
+References: <1282544653-11508-1-git-send-email-s.hauer@pengutronix.de>
+	<1282544653-11508-8-git-send-email-s.hauer@pengutronix.de>
+	<20100823114015.GU8693@game.jcrosoft.org>
 MIME-Version: 1.0
-References: <4C7CD898.9040902@coresystems.de>
-	<201008311745.27052.jbe@pengutronix.de>
-In-Reply-To: <201008311745.27052.jbe@pengutronix.de>
+Content-Disposition: inline
+In-Reply-To: <20100823114015.GU8693@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,69 +20,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: barebox on x86
-To: Juergen Beisert <jbe@pengutronix.de>
+Subject: Re: [PATCH 7/9] menu: fix memory corruption
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
- On 8/31/10 5:45 PM, Juergen Beisert wrote:
-> Hi Stefan,
->
-> Stefan Reinauer wrote:
->> here's some initial work on getting barebox working on x86 (again?).
->>
->> The patch is very ugly, and it makes some assumptions on me using
->> Darwin/Mac OS X to compile barebox.
->> What kind of becomes clear though, is that there is no clear distinction
->> between which set of headers are used for the user space utilities and
->> which set of headers are used for the barebox binary. I think that's the
->> reason why barebox features an include/linux directory which seems to
->> duplicate about half of what Linux usually has in there, but more than
->> barebox uses (or should use, ftm).
->>
->> With the attached patch I get as far as the linking stage.
->>
->>> i386-elf-ld -Map barebox.map -o barebox -T arch/x86/lib/barebox.lds
->> --start-group common/built-in.o drivers/built-in.o commands/built-in.o
->> lib/built-in.o net/built-in.o fs/built-in.o
->> arch/x86/boards/x86_generic/built-in.o arch/x86/mach-i386/built-in.o
->> arch/x86/lib/built-in.o arch/x86/boot/built-in.o --end-group
->>
->> When I define CONFIG_X86_HDBOOT
->> I get:
->>
->> i386-elf-ld: barebox section `.initcall.8' will not fit in region `mbr'
->> i386-elf-ld: section .initcall.8 loaded at
->> [0000000000000400,000000000000040b] overlaps section .bootstrapping
->> loaded at [0000000000000400,00000000000008e7]
->> i386-elf-ld: region `mbr' overflowed by 12 bytes
-> -> MBR -> 16 Bit boot loader.
+On Mon, Aug 23, 2010 at 01:40:15PM +0200, Jean-Christophe PLAGNIOL-VILLARD =
+wrote:
+> On 08:24 Mon 23 Aug     , Sascha Hauer wrote:
+> > menu_free and menu_entry_free are called on not fully initialized
+> > entries, so we have to check for validity before freeing the
+> > members.
+> > =
 
-Yes, I wanted to compile the "known working" version first, but it seems
-to choke on the "late_initcall" mechanism somehow.
+> I disagree free is suposed to not fail evenif we pass a NULL pointer
+Ack.  (ie. free must accept NULL without barfing.)
 
->> If I choose "native", I get
->>
->> arch/x86/lib/barebox.lds:124: nonconstant expression for load base
-> The 'native' case is not finished yet. It does not use any 16 bit code nor 
-> BIOS calls. But need adaptions to get some vital information about the system 
-> (for example memory size).
-Ok, will try to figure this one out.
+free(3) has this feature:
 
->> Since barebox is not really specialized in doing complex hardware
->> initialization like it's needed on x86 machines, and coreboot is not
->> really specialized in providing any kind of user interface I would like
->> to work on making barebox available as a coreboot payload. For that I
->> need to produce an ELF file that does no BIOS calls because coreboot is
->> not a BIOS or UEFI but only does the most necessary hardware
->> initialization on x86 systems.
-> The 'native' case is the correct direction to get it work with coreboot.
+	"free() frees the memory space pointed to by ptr [...].  If ptr
+	 is NULL, no operation is performed."
 
-Great! That's what I assumed. Thanks for the input.
+and kfree in the kernel accepts NULL, too.
 
+Best regards
+Uwe
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
