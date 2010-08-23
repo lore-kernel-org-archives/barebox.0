@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OnQSA-0004DJ-Eh
-	for barebox@lists.infradead.org; Mon, 23 Aug 2010 06:24:19 +0000
+	id 1OnQSA-0004DH-Em
+	for barebox@lists.infradead.org; Mon, 23 Aug 2010 06:24:20 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 23 Aug 2010 08:24:11 +0200
-Message-Id: <1282544653-11508-8-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 23 Aug 2010 08:24:10 +0200
+Message-Id: <1282544653-11508-7-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1282544653-11508-1-git-send-email-s.hauer@pengutronix.de>
 References: <1282544653-11508-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,46 +21,80 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/9] menu: fix memory corruption
+Subject: [PATCH 6/9] menu: use an initialized struct list as menu list
 To: barebox@lists.infradead.org
-
-menu_free and menu_entry_free are called on not fully initialized
-entries, so we have to check for validity before freeing the
-members.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/menu.c |   10 +++++++---
- 1 files changed, 7 insertions(+), 3 deletions(-)
+ commands/menu.c |    3 +++
+ common/menu.c   |   19 +++++++------------
+ 2 files changed, 10 insertions(+), 12 deletions(-)
 
+diff --git a/commands/menu.c b/commands/menu.c
+index 5efaa61..b874ccb 100644
+--- a/commands/menu.c
++++ b/commands/menu.c
+@@ -278,6 +278,9 @@ static int do_menu_list(struct cmd_menu *cm)
+ 	struct menu* m = NULL;
+ 	struct menu* menus = menu_get_menus();
+ 
++	if (!menus)
++		return 0;
++
+ 	if (is_entry(cm)) {
+ 		if (cm->menu)
+ 			m = menu_get_by_name(cm->menu);
 diff --git a/common/menu.c b/common/menu.c
-index 6e6637a..294e372 100644
+index 3596e21..6e6637a 100644
 --- a/common/menu.c
 +++ b/common/menu.c
-@@ -46,8 +46,10 @@ void menu_free(struct menu *m)
+@@ -30,11 +30,14 @@
+ #include <errno.h>
+ #include <readkey.h>
  
- 	if (!m)
- 		return;
--	free(m->name);
--	free(m->display);
-+	if (m->name)
-+		free(m->name);
-+	if (m->display)
-+		free(m->display);
+-static struct menu menus;
++static LIST_HEAD(menus);
  
- 	list_for_each_entry_safe(me, tmp, &m->entries, list)
- 		menu_entry_free(me);
-@@ -143,7 +145,9 @@ void menu_entry_free(struct menu_entry *me)
- 	if (!me)
- 		return;
- 
--	free(me->display);
-+	if (me->display)
-+		free(me->display);
+ struct menu* menu_get_menus(void)
+ {
+-	return &menus;
++	if (list_empty(&menus))
++		return NULL;
 +
- 	free(me);
++	return list_entry(&menus, struct menu, list);
  }
  
+ void menu_free(struct menu *m)
+@@ -60,7 +63,7 @@ int menu_add(struct menu *m)
+ 	if (menu_get_by_name(m->name))
+ 		return -EEXIST;
+ 
+-	list_add_tail(&m->list, &menus.list);
++	list_add_tail(&m->list, &menus);
+ 
+ 	return 0;
+ }
+@@ -112,7 +115,7 @@ struct menu* menu_get_by_name(char *name)
+ 	if (!name)
+ 		return NULL;
+ 
+-	list_for_each_entry(m, &menus.list, list) {
++	list_for_each_entry(m, &menus, list) {
+ 		if(strcmp(m->name, name) == 0)
+ 			return m;
+ 	}
+@@ -291,11 +294,3 @@ void menu_action_show(struct menu *m, struct menu_entry *me)
+ 
+ 	menu_show(sm);
+ }
+-
+-static int menu_init(void)
+-{
+-	INIT_LIST_HEAD(&menus.list);
+-
+-	return 0;
+-}
+-postcore_initcall(menu_init);
 -- 
 1.7.1
 
