@@ -1,13 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Oo04d-0001vb-RR
-	for barebox@lists.infradead.org; Tue, 24 Aug 2010 20:26:24 +0000
+	id 1OoFRS-0000Sl-3Z
+	for barebox@lists.infradead.org; Wed, 25 Aug 2010 12:51:01 +0000
+Received: from gallifrey.ext.pengutronix.de
+	([2001:6f8:1178:4:5054:ff:fe8d:eefb] helo=[127.0.0.1])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.71)
+	(envelope-from <mkl@pengutronix.de>) id 1OoFRP-0000CH-OV
+	for barebox@lists.infradead.org; Wed, 25 Aug 2010 14:50:55 +0200
+Message-ID: <4C7511B1.6030100@pengutronix.de>
+Date: Wed, 25 Aug 2010 14:50:57 +0200
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Tue, 24 Aug 2010 22:26:10 +0200
-Message-Id: <1282681572-20846-2-git-send-email-mkl@pengutronix.de>
-In-Reply-To: <1282681572-20846-1-git-send-email-mkl@pengutronix.de>
-References: <1282681572-20846-1-git-send-email-mkl@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,41 +20,68 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============1326300947=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] defaultenv: fix physmap-flash device name
-To: barebox@lists.infradead.org
-Cc: sha@pengutronix.de
+Subject: broken quoting
+To: barebox mailing list <barebox@lists.infradead.org>
 
-The first physmap-flash device is called "physmap-flash.0" (like zero),
-not "physmap-flash.o" (like in oops).
+This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
+--===============1326300947==
+Content-Type: multipart/signed; micalg=pgp-sha1;
+ protocol="application/pgp-signature";
+ boundary="------------enig188B66D8A4CEFFC900816B85"
 
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- defaultenv/bin/boot |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
+--------------enig188B66D8A4CEFFC900816B85
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/defaultenv/bin/boot b/defaultenv/bin/boot
-index 6a508fb..5312d1e 100644
---- a/defaultenv/bin/boot
-+++ b/defaultenv/bin/boot
-@@ -43,7 +43,7 @@ else
- fi
- 
- if [ -n $nor_parts ]; then
--	mtdparts="${mtdparts}physmap-flash.o:${nor_parts};"
-+	mtdparts="${mtdparts}physmap-flash.0:${nor_parts};"
- fi
- 
- if [ -n $nand_parts ]; then
--- 
-1.7.1
+Hello,
 
+in the latest release the quoting is broken:
+
+barebox:/ echo "\""
+\"
+barebox:/ echo "\
+> "
+\
+
+cheers, Marc
+
+--=20
+Pengutronix e.K.                  | Marc Kleine-Budde           |
+Industrial Linux Solutions        | Phone: +49-231-2826-924     |
+Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
+Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
+
+
+--------------enig188B66D8A4CEFFC900816B85
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.9 (GNU/Linux)
+Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org
+
+iEYEARECAAYFAkx1EbEACgkQjTAFq1RaXHOHTgCgk+ou6k6pxE1rB2Vv5jbqNIv0
+83YAn3y3tOeBSTk8f39TXINo6OuR7YuK
+=FxOO
+-----END PGP SIGNATURE-----
+
+--------------enig188B66D8A4CEFFC900816B85--
+
+
+--===============1326300947==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============1326300947==--
