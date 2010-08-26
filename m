@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OoFRS-0000Sl-3Z
-	for barebox@lists.infradead.org; Wed, 25 Aug 2010 12:51:01 +0000
-Received: from gallifrey.ext.pengutronix.de
-	([2001:6f8:1178:4:5054:ff:fe8d:eefb] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.71)
-	(envelope-from <mkl@pengutronix.de>) id 1OoFRP-0000CH-OV
-	for barebox@lists.infradead.org; Wed, 25 Aug 2010 14:50:55 +0200
-Message-ID: <4C7511B1.6030100@pengutronix.de>
-Date: Wed, 25 Aug 2010 14:50:57 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+Received: from mail-wy0-f177.google.com ([74.125.82.177])
+	by bombadil.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1OoWIf-0001PR-B7
+	for barebox@lists.infradead.org; Thu, 26 Aug 2010 06:51:02 +0000
+Received: by wyb38 with SMTP id 38so158623wyb.36
+	for <barebox@lists.infradead.org>; Wed, 25 Aug 2010 23:50:59 -0700 (PDT)
 MIME-Version: 1.0
+Date: Thu, 26 Aug 2010 12:20:59 +0530
+Message-ID: <AANLkTimM6xAp48S98Ob1eRwks+AKa6OR++ufO30wZNFH@mail.gmail.com>
+From: Nataraj S Narayan <natarajsn@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,60 +17,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1326300947=="
+Content-Type: multipart/mixed; boundary="===============0280104059=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: broken quoting
-To: barebox mailing list <barebox@lists.infradead.org>
+Subject: barebox and setenv
+To: barebox@lists.infradead.org
 
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---===============1326300947==
-Content-Type: multipart/signed; micalg=pgp-sha1;
- protocol="application/pgp-signature";
- boundary="------------enig188B66D8A4CEFFC900816B85"
+--===============0280104059==
+Content-Type: multipart/alternative; boundary=0016e65b5844bdb734048eb46b4f
 
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---------------enig188B66D8A4CEFFC900816B85
+--0016e65b5844bdb734048eb46b4f
 Content-Type: text/plain; charset=ISO-8859-1
+
+Hi
+
+How do I  "setenv bootargs mem=64M console=ttyS0,115200 root=/dev/mtdblock0
+rw rootfstype=jffs2" in barebox?
+
+export seems not to work for me.
+
+regards
+
+Nataraj
+
+--0016e65b5844bdb734048eb46b4f
+Content-Type: text/html; charset=ISO-8859-1
 Content-Transfer-Encoding: quoted-printable
 
-Hello,
+Hi<br><br>How do I=A0 &quot;setenv bootargs mem=3D64M console=3DttyS0,11520=
+0 root=3D/dev/mtdblock0 rw rootfstype=3Djffs2&quot; in barebox?<br><br>expo=
+rt seems not to work for me.<br><br>regards<br><br>Nataraj<br>
 
-in the latest release the quoting is broken:
-
-barebox:/ echo "\""
-\"
-barebox:/ echo "\
-> "
-\
-
-cheers, Marc
-
---=20
-Pengutronix e.K.                  | Marc Kleine-Budde           |
-Industrial Linux Solutions        | Phone: +49-231-2826-924     |
-Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
+--0016e65b5844bdb734048eb46b4f--
 
 
---------------enig188B66D8A4CEFFC900816B85
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.9 (GNU/Linux)
-Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org
-
-iEYEARECAAYFAkx1EbEACgkQjTAFq1RaXHOHTgCgk+ou6k6pxE1rB2Vv5jbqNIv0
-83YAn3y3tOeBSTk8f39TXINo6OuR7YuK
-=FxOO
------END PGP SIGNATURE-----
-
---------------enig188B66D8A4CEFFC900816B85--
-
-
---===============1326300947==
+--===============0280104059==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -84,4 +62,4 @@ barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
 
---===============1326300947==--
+--===============0280104059==--
