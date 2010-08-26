@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 63.mail-out.ovh.net ([91.121.185.56])
+Received: from 26.mail-out.ovh.net ([91.121.27.225])
 	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OofJF-0006JC-CR
-	for barebox@lists.infradead.org; Thu, 26 Aug 2010 16:28:19 +0000
+	id 1OofOe-0006jV-IX
+	for barebox@lists.infradead.org; Thu, 26 Aug 2010 16:33:53 +0000
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu, 26 Aug 2010 18:27:52 +0200
-Message-Id: <1282840072-8005-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Thu, 26 Aug 2010 18:33:28 +0200
+Message-Id: <1282840408-8653-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1282840072-8005-1-git-send-email-plagnioj@jcrosoft.com>
+References: <1282840072-8005-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,13 +21,16 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] net: rework the mii support
+Subject: [PATCH V2] net: rework the mii support
 To: barebox@lists.infradead.org
 
 this rework is done in order to add a phylib and allow to have phy driver support
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
+v2:
+patch generate with rename detection
+
  arch/arm/configs/a9m2410_defconfig                 |    2 +-
  arch/arm/configs/a9m2440_defconfig                 |    2 +-
  arch/arm/configs/at91sam9260ek_defconfig           |    2 +-
@@ -51,36 +56,32 @@ Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
  .../m68k/configs/phycore_kpukdr1_5475num_defconfig |    2 +-
  arch/m68k/configs/phycore_mcf54xx_defconfig        |    2 +-
  arch/ppc/configs/pcm030_defconfig                  |    2 +-
- drivers/net/Kconfig                                |   18 +-
+ drivers/net/Kconfig                                |   18 ++--
  drivers/net/Makefile                               |    2 +-
  drivers/net/at91_ether.c                           |   10 +-
- drivers/net/dm9000.c                               |   33 ++--
- drivers/net/ep93xx.c                               |   37 ++--
+ drivers/net/dm9000.c                               |   33 +++---
+ drivers/net/ep93xx.c                               |   37 +++----
  drivers/net/ep93xx.h                               |    2 +-
- drivers/net/fec_imx.c                              |   33 ++--
+ drivers/net/fec_imx.c                              |   33 +++---
  drivers/net/fec_imx.h                              |    2 +-
- drivers/net/fec_mpc5200.c                          |   35 ++--
+ drivers/net/fec_mpc5200.c                          |   35 +++---
  drivers/net/fec_mpc5200.h                          |    2 +-
- drivers/net/macb.c                                 |   33 ++--
- drivers/net/miidev.c                               |  228 +++++++++++++++++++
- drivers/net/miiphy.c                               |  224 -------------------
- drivers/net/netx_eth.c                             |   37 ++--
- drivers/net/smc91111.c                             |   32 ++--
- drivers/net/smc911x.c                              |   33 ++--
+ drivers/net/macb.c                                 |   33 +++---
+ drivers/net/{miiphy.c => miidev.c}                 |   96 ++++++++-------
+ drivers/net/netx_eth.c                             |   37 +++---
+ drivers/net/smc91111.c                             |   32 +++---
+ drivers/net/smc911x.c                              |   33 +++---
  drivers/net/usb/Kconfig                            |    2 +-
- drivers/net/usb/asix.c                             |   26 +--
+ drivers/net/usb/asix.c                             |   26 ++---
  drivers/net/usb/usbnet.c                           |    6 +-
- include/linux/mii.h                                |  232 ++++++++++++++++++++
- include/miidev.h                                   |   62 ++++++
- include/miiphy.h                                   |  158 -------------
+ include/{miiphy.h => linux/mii.h}                  |  132 +++++++++++++++-----
+ include/miidev.h                                   |   62 +++++++++
  include/usb/usbnet.h                               |    4 +-
  net/eth.c                                          |    2 +-
- 49 files changed, 711 insertions(+), 592 deletions(-)
- create mode 100644 drivers/net/miidev.c
- delete mode 100644 drivers/net/miiphy.c
- create mode 100644 include/linux/mii.h
+ 47 files changed, 404 insertions(+), 285 deletions(-)
+ rename drivers/net/{miiphy.c => miidev.c} (59%)
+ rename include/{miiphy.h => linux/mii.h} (74%)
  create mode 100644 include/miidev.h
- delete mode 100644 include/miiphy.h
 
 diff --git a/arch/arm/configs/a9m2410_defconfig b/arch/arm/configs/a9m2410_defconfig
 index 9e888fc..e9fa74c 100644
@@ -1055,470 +1056,249 @@ index 6864119..df3b6af 100644
  	eth_register(edev);
  
  	return 0;
-diff --git a/drivers/net/miidev.c b/drivers/net/miidev.c
-new file mode 100644
-index 0000000..343eb40
---- /dev/null
-+++ b/drivers/net/miidev.c
-@@ -0,0 +1,228 @@
-+/*
-+ * miidev.c - generic phy abstraction
-+ *
-+ * Copyright (c) 2007 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-+ */
-+
-+#include <common.h>
-+#include <driver.h>
-+#include <init.h>
-+#include <miidev.h>
-+#include <clock.h>
-+#include <net.h>
-+#include <malloc.h>
-+
-+int miidev_restart_aneg(struct mii_device *mdev)
-+{
-+	uint16_t status;
-+	int timeout;
-+
-+	/*
-+	 * Reset PHY, then delay 300ns
-+	 */
-+	mii_write(mdev, mdev->address, MII_BMCR, BMCR_RESET);
-+
-+	if (mdev->flags & MIIDEV_FORCE_LINK)
-+		return 0;
-+
-+	udelay(1000);
-+
-+	if (mdev->flags & MIIDEV_FORCE_10) {
-+		printf("Forcing 10 Mbps ethernet link... ");
-+		status = mii_read(mdev, mdev->address, MII_BMSR);
-+		mii_write(mdev, mdev->address, MII_BMCR, BMCR_FULLDPLX | BMCR_CTST);
-+
-+		timeout = 20;
-+		do {	/* wait for link status to go down */
-+			udelay(10000);
-+			if ((timeout--) == 0) {
-+				debug("hmmm, should not have waited...");
-+				break;
-+			}
-+			status = mii_read(mdev, mdev->address, MII_BMSR);
-+		} while (status & BMSR_LSTATUS);
-+
-+	} else {	/* MII100 */
-+		/*
-+		 * Set the auto-negotiation advertisement register bits
-+		 */
-+		status = mii_read(mdev, mdev->address, MII_ADVERTISE);
-+		status |= ADVERTISE_ALL;
-+		mii_write(mdev, mdev->address, MII_ADVERTISE, status);
-+
-+		mii_write(mdev, mdev->address, MII_BMCR, BMCR_ANENABLE | BMCR_ANRESTART);
-+	}
-+
-+	return 0;
-+}
-+
-+int miidev_wait_aneg(struct mii_device *mdev)
-+{
-+	uint64_t start;
-+	int status;
-+
-+	if (mdev->flags & MIIDEV_FORCE_LINK)
-+		return 0;
-+
-+	/*
-+	 * Wait for AN completion
-+	 */
-+	start = get_time_ns();
-+	do {
-+		if (is_timeout(start, 5 * SECOND)) {
-+			printf("%s: Autonegotiation timeout\n", mdev->cdev.name);
-+			return -1;
-+		}
-+
-+		status = mii_read(mdev, mdev->address, MII_BMSR);
-+		if (status < 0) {
-+			printf("%s: Autonegotiation failed. status: 0x%04x\n", mdev->cdev.name, status);
-+			return -1;
-+		}
-+	} while (!(status & BMSR_LSTATUS));
-+
-+	return 0;
-+}
-+
-+int miidev_print_status(struct mii_device *mdev)
-+{
-+	int bmsr, bmcr, lpa;
-+	char *duplex;
-+	int speed;
-+
-+	if (mdev->flags & MIIDEV_FORCE_LINK) {
-+		printf("Forcing link present...\n");
-+		return 0;
-+	}
-+
-+	bmsr = mii_read(mdev, mdev->address, MII_BMSR);
-+	if (bmsr < 0)
-+		goto err_out;
-+	bmcr = mii_read(mdev, mdev->address, MII_BMCR);
-+	if (bmcr < 0)
-+		goto err_out;
-+	lpa = mii_read(mdev, mdev->address, MII_LPA);
-+	if (lpa < 0)
-+		goto err_out;
-+
-+	printf("%s: Link is %s", mdev->cdev.name,
-+			bmsr & BMSR_LSTATUS ? "up" : "down");
-+
-+	if (bmcr & BMCR_ANENABLE) {
-+		duplex = lpa & LPA_DUPLEX ? "Full" : "Half";
-+		speed = lpa & LPA_100 ? 100 : 10;
-+	} else {
-+		duplex = bmcr & BMCR_FULLDPLX ? "Full" : "Half";
-+		speed = bmcr & BMCR_SPEED100 ? 100 : 10;
-+	}
-+
-+	printf(" - %d/%s\n", speed, duplex);
-+
-+	return 0;
-+err_out:
-+	printf("%s: failed to read\n", mdev->cdev.name);
-+	return -1;
-+}
-+
-+static ssize_t miidev_read(struct cdev *cdev, void *_buf, size_t count, ulong offset, ulong flags)
-+{
-+	int i = count;
-+	uint16_t *buf = _buf;
-+	struct mii_device *mdev = cdev->priv;
-+
-+	while (i > 1) {
-+		*buf = mii_read(mdev, mdev->address, offset);
-+		buf++;
-+		i -= 2;
-+		offset++;
-+	}
-+
-+	return count;
-+}
-+
-+static ssize_t miidev_write(struct cdev *cdev, const void *_buf, size_t count, ulong offset, ulong flags)
-+{
-+	int i = count;
-+	const uint16_t *buf = _buf;
-+	struct mii_device *mdev = cdev->priv;
-+
-+	while (i > 1) {
-+		mii_write(mdev, mdev->address, offset, *buf);
-+		buf++;
-+		i -= 2;
-+		offset++;
-+	}
-+
-+	return count;
-+}
-+
-+static struct file_operations miidev_ops = {
-+	.read  = miidev_read,
-+	.write = miidev_write,
-+	.lseek = dev_lseek_default,
-+};
-+
-+static int miidev_probe(struct device_d *dev)
-+{
-+	struct mii_device *mdev = dev->priv;
-+
-+	mdev->cdev.name = asprintf("phy%d", dev->id);
-+	mdev->cdev.size = 32;
-+	mdev->cdev.ops = &miidev_ops;
-+	mdev->cdev.priv = mdev;
-+	mdev->cdev.dev = dev;
-+	devfs_create(&mdev->cdev);
-+	return 0;
-+}
-+
-+static void miidev_remove(struct device_d *dev)
-+{
-+	struct mii_device *mdev = dev->priv;
-+
-+	free(mdev->cdev.name);
-+	devfs_remove(&mdev->cdev);
-+}
-+
-+static struct driver_d miidev_drv = {
-+        .name  = "miidev",
-+        .probe = miidev_probe,
-+	.remove = miidev_remove,
-+};
-+
-+int mii_register(struct mii_device *mdev)
-+{
-+	mdev->dev.priv = mdev;
-+	strcpy(mdev->dev.name, "miidev");
-+
-+	return register_device(&mdev->dev);
-+}
-+
-+void mii_unregister(struct mii_device *mdev)
-+{
-+	unregister_device(&mdev->dev);
-+}
-+
-+static int miidev_init(void)
-+{
-+	register_driver(&miidev_drv);
-+	return 0;
-+}
-+
-+device_initcall(miidev_init);
-+
-diff --git a/drivers/net/miiphy.c b/drivers/net/miiphy.c
-deleted file mode 100644
-index 12aa7a6..0000000
+diff --git a/drivers/net/miiphy.c b/drivers/net/miidev.c
+similarity index 59%
+rename from drivers/net/miiphy.c
+rename to drivers/net/miidev.c
+index 12aa7a6..343eb40 100644
 --- a/drivers/net/miiphy.c
-+++ /dev/null
-@@ -1,224 +0,0 @@
--/*
++++ b/drivers/net/miidev.c
+@@ -1,5 +1,5 @@
+ /*
 - * miiphy.c - generic phy abstraction
-- *
-- * Copyright (c) 2007 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-- *
-- * See file CREDITS for list of people who contributed to this
-- * project.
-- *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License version 2
-- * as published by the Free Software Foundation.
-- *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- *
-- * You should have received a copy of the GNU General Public License
-- * along with this program; if not, write to the Free Software
-- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-- */
--
--#include <common.h>
--#include <driver.h>
--#include <init.h>
++ * miidev.c - generic phy abstraction
+  *
+  * Copyright (c) 2007 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+  *
+@@ -23,12 +23,12 @@
+ #include <common.h>
+ #include <driver.h>
+ #include <init.h>
 -#include <miiphy.h>
--#include <clock.h>
--#include <net.h>
--#include <malloc.h>
--
++#include <miidev.h>
+ #include <clock.h>
+ #include <net.h>
+ #include <malloc.h>
+ 
 -int miiphy_restart_aneg(struct miiphy_device *mdev)
--{
--	uint16_t status;
--	int timeout;
--
--	/*
--	 * Reset PHY, then delay 300ns
--	 */
++int miidev_restart_aneg(struct mii_device *mdev)
+ {
+ 	uint16_t status;
+ 	int timeout;
+@@ -36,17 +36,17 @@ int miiphy_restart_aneg(struct miiphy_device *mdev)
+ 	/*
+ 	 * Reset PHY, then delay 300ns
+ 	 */
 -	mdev->write(mdev, mdev->address, MII_BMCR, BMCR_RESET);
--
++	mii_write(mdev, mdev->address, MII_BMCR, BMCR_RESET);
+ 
 -	if (mdev->flags & MIIPHY_FORCE_LINK)
--		return 0;
--
--	udelay(1000);
--
++	if (mdev->flags & MIIDEV_FORCE_LINK)
+ 		return 0;
+ 
+ 	udelay(1000);
+ 
 -	if (mdev->flags & MIIPHY_FORCE_10) {
--		printf("Forcing 10 Mbps ethernet link... ");
++	if (mdev->flags & MIIDEV_FORCE_10) {
+ 		printf("Forcing 10 Mbps ethernet link... ");
 -		mdev->read(mdev, mdev->address, MII_BMSR, &status);
 -		mdev->write(mdev, mdev->address, MII_BMCR, BMCR_FULLDPLX | BMCR_CTST);
--
--		timeout = 20;
--		do {	/* wait for link status to go down */
--			udelay(10000);
--			if ((timeout--) == 0) {
--				debug("hmmm, should not have waited...");
--				break;
--			}
++		status = mii_read(mdev, mdev->address, MII_BMSR);
++		mii_write(mdev, mdev->address, MII_BMCR, BMCR_FULLDPLX | BMCR_CTST);
+ 
+ 		timeout = 20;
+ 		do {	/* wait for link status to go down */
+@@ -55,29 +55,29 @@ int miiphy_restart_aneg(struct miiphy_device *mdev)
+ 				debug("hmmm, should not have waited...");
+ 				break;
+ 			}
 -			mdev->read(mdev, mdev->address, MII_BMSR, &status);
--		} while (status & BMSR_LSTATUS);
--
--	} else {	/* MII100 */
--		/*
--		 * Set the auto-negotiation advertisement register bits
--		 */
++			status = mii_read(mdev, mdev->address, MII_BMSR);
+ 		} while (status & BMSR_LSTATUS);
+ 
+ 	} else {	/* MII100 */
+ 		/*
+ 		 * Set the auto-negotiation advertisement register bits
+ 		 */
 -		mdev->read(mdev, mdev->address, MII_ADVERTISE, &status);
--		status |= ADVERTISE_ALL;
++		status = mii_read(mdev, mdev->address, MII_ADVERTISE);
+ 		status |= ADVERTISE_ALL;
 -		mdev->write(mdev, mdev->address, MII_ADVERTISE, status);
--
++		mii_write(mdev, mdev->address, MII_ADVERTISE, status);
+ 
 -		mdev->write(mdev, mdev->address, MII_BMCR, BMCR_ANENABLE | BMCR_ANRESTART);
--	}
--
--	return 0;
--}
--
++		mii_write(mdev, mdev->address, MII_BMCR, BMCR_ANENABLE | BMCR_ANRESTART);
+ 	}
+ 
+ 	return 0;
+ }
+ 
 -int miiphy_wait_aneg(struct miiphy_device *mdev)
--{
--	uint64_t start;
++int miidev_wait_aneg(struct mii_device *mdev)
+ {
+ 	uint64_t start;
 -	uint16_t status;
--
++	int status;
+ 
 -	if (mdev->flags & MIIPHY_FORCE_LINK)
--		return 0;
--
--	/*
--	 * Wait for AN completion
--	 */
--	start = get_time_ns();
--	do {
--		if (is_timeout(start, 5 * SECOND)) {
--			printf("%s: Autonegotiation timeout\n", mdev->cdev.name);
--			return -1;
--		}
--
++	if (mdev->flags & MIIDEV_FORCE_LINK)
+ 		return 0;
+ 
+ 	/*
+@@ -90,7 +90,8 @@ int miiphy_wait_aneg(struct miiphy_device *mdev)
+ 			return -1;
+ 		}
+ 
 -		if (mdev->read(mdev, mdev->address, MII_BMSR, &status)) {
--			printf("%s: Autonegotiation failed. status: 0x%04x\n", mdev->cdev.name, status);
--			return -1;
--		}
--	} while (!(status & BMSR_LSTATUS));
--
--	return 0;
--}
--
++		status = mii_read(mdev, mdev->address, MII_BMSR);
++		if (status < 0) {
+ 			printf("%s: Autonegotiation failed. status: 0x%04x\n", mdev->cdev.name, status);
+ 			return -1;
+ 		}
+@@ -99,22 +100,25 @@ int miiphy_wait_aneg(struct miiphy_device *mdev)
+ 	return 0;
+ }
+ 
 -int miiphy_print_status(struct miiphy_device *mdev)
--{
++int miidev_print_status(struct mii_device *mdev)
+ {
 -	uint16_t bmsr, bmcr, lpa;
--	char *duplex;
--	int speed;
--
++	int bmsr, bmcr, lpa;
+ 	char *duplex;
+ 	int speed;
+ 
 -	if (mdev->flags & MIIPHY_FORCE_LINK) {
--		printf("Forcing link present...\n");
--		return 0;
--	}
--
++	if (mdev->flags & MIIDEV_FORCE_LINK) {
+ 		printf("Forcing link present...\n");
+ 		return 0;
+ 	}
+ 
 -	if (mdev->read(mdev, mdev->address, MII_BMSR, &bmsr) != 0)
--		goto err_out;
++	bmsr = mii_read(mdev, mdev->address, MII_BMSR);
++	if (bmsr < 0)
+ 		goto err_out;
 -	if (mdev->read(mdev, mdev->address, MII_BMCR, &bmcr) != 0)
--		goto err_out;
++	bmcr = mii_read(mdev, mdev->address, MII_BMCR);
++	if (bmcr < 0)
+ 		goto err_out;
 -	if (mdev->read(mdev, mdev->address, MII_LPA, &lpa) != 0)
--		goto err_out;
--
--	printf("%s: Link is %s", mdev->cdev.name,
--			bmsr & BMSR_LSTATUS ? "up" : "down");
--
--	if (bmcr & BMCR_ANENABLE) {
--		duplex = lpa & LPA_DUPLEX ? "Full" : "Half";
--		speed = lpa & LPA_100 ? 100 : 10;
--	} else {
--		duplex = bmcr & BMCR_FULLDPLX ? "Full" : "Half";
--		speed = bmcr & BMCR_SPEED100 ? 100 : 10;
--	}
--
--	printf(" - %d/%s\n", speed, duplex);
--
--	return 0;
--err_out:
--	printf("%s: failed to read\n", mdev->cdev.name);
--	return -1;
--}
--
++	lpa = mii_read(mdev, mdev->address, MII_LPA);
++	if (lpa < 0)
+ 		goto err_out;
+ 
+ 	printf("%s: Link is %s", mdev->cdev.name,
+@@ -136,14 +140,14 @@ err_out:
+ 	return -1;
+ }
+ 
 -static ssize_t miiphy_read(struct cdev *cdev, void *_buf, size_t count, ulong offset, ulong flags)
--{
--	int i = count;
--	uint16_t *buf = _buf;
++static ssize_t miidev_read(struct cdev *cdev, void *_buf, size_t count, ulong offset, ulong flags)
+ {
+ 	int i = count;
+ 	uint16_t *buf = _buf;
 -	struct miiphy_device *mdev = cdev->priv;
--
--	while (i > 1) {
++	struct mii_device *mdev = cdev->priv;
+ 
+ 	while (i > 1) {
 -		mdev->read(mdev, mdev->address, offset, buf);
--		buf++;
--		i -= 2;
--		offset++;
--	}
--
--	return count;
--}
--
++		*buf = mii_read(mdev, mdev->address, offset);
+ 		buf++;
+ 		i -= 2;
+ 		offset++;
+@@ -152,14 +156,14 @@ static ssize_t miiphy_read(struct cdev *cdev, void *_buf, size_t count, ulong of
+ 	return count;
+ }
+ 
 -static ssize_t miiphy_write(struct cdev *cdev, const void *_buf, size_t count, ulong offset, ulong flags)
--{
--	int i = count;
--	const uint16_t *buf = _buf;
++static ssize_t miidev_write(struct cdev *cdev, const void *_buf, size_t count, ulong offset, ulong flags)
+ {
+ 	int i = count;
+ 	const uint16_t *buf = _buf;
 -	struct miiphy_device *mdev = cdev->priv;
--
--	while (i > 1) {
++	struct mii_device *mdev = cdev->priv;
+ 
+ 	while (i > 1) {
 -		mdev->write(mdev, mdev->address, offset, *buf);
--		buf++;
--		i -= 2;
--		offset++;
--	}
--
--	return count;
--}
--
++		mii_write(mdev, mdev->address, offset, *buf);
+ 		buf++;
+ 		i -= 2;
+ 		offset++;
+@@ -168,57 +172,57 @@ static ssize_t miiphy_write(struct cdev *cdev, const void *_buf, size_t count, u
+ 	return count;
+ }
+ 
 -static struct file_operations miiphy_ops = {
 -	.read  = miiphy_read,
 -	.write = miiphy_write,
--	.lseek = dev_lseek_default,
--};
--
++static struct file_operations miidev_ops = {
++	.read  = miidev_read,
++	.write = miidev_write,
+ 	.lseek = dev_lseek_default,
+ };
+ 
 -static int miiphy_probe(struct device_d *dev)
--{
++static int miidev_probe(struct device_d *dev)
+ {
 -	struct miiphy_device *mdev = dev->priv;
--
--	mdev->cdev.name = asprintf("phy%d", dev->id);
--	mdev->cdev.size = 32;
++	struct mii_device *mdev = dev->priv;
+ 
+ 	mdev->cdev.name = asprintf("phy%d", dev->id);
+ 	mdev->cdev.size = 32;
 -	mdev->cdev.ops = &miiphy_ops;
--	mdev->cdev.priv = mdev;
--	mdev->cdev.dev = dev;
--	devfs_create(&mdev->cdev);
--	return 0;
--}
--
++	mdev->cdev.ops = &miidev_ops;
+ 	mdev->cdev.priv = mdev;
+ 	mdev->cdev.dev = dev;
+ 	devfs_create(&mdev->cdev);
+ 	return 0;
+ }
+ 
 -static void miiphy_remove(struct device_d *dev)
--{
++static void miidev_remove(struct device_d *dev)
+ {
 -	struct miiphy_device *mdev = dev->priv;
--
--	free(mdev->cdev.name);
--	devfs_remove(&mdev->cdev);
--}
--
++	struct mii_device *mdev = dev->priv;
+ 
+ 	free(mdev->cdev.name);
+ 	devfs_remove(&mdev->cdev);
+ }
+ 
 -static struct driver_d miiphy_drv = {
 -        .name  = "miiphy",
 -        .probe = miiphy_probe,
 -	.remove = miiphy_remove,
--};
--
++static struct driver_d miidev_drv = {
++        .name  = "miidev",
++        .probe = miidev_probe,
++	.remove = miidev_remove,
+ };
+ 
 -int miiphy_register(struct miiphy_device *mdev)
--{
--	mdev->dev.priv = mdev;
++int mii_register(struct mii_device *mdev)
+ {
+ 	mdev->dev.priv = mdev;
 -	strcpy(mdev->dev.name, "miiphy");
--
--	return register_device(&mdev->dev);
--}
--
++	strcpy(mdev->dev.name, "miidev");
+ 
+ 	return register_device(&mdev->dev);
+ }
+ 
 -void miiphy_unregister(struct miiphy_device *mdev)
--{
--	unregister_device(&mdev->dev);
--}
--
++void mii_unregister(struct mii_device *mdev)
+ {
+ 	unregister_device(&mdev->dev);
+ }
+ 
 -static int miiphy_init(void)
--{
++static int miidev_init(void)
+ {
 -	register_driver(&miiphy_drv);
--	return 0;
--}
--
++	register_driver(&miidev_drv);
+ 	return 0;
+ }
+ 
 -device_initcall(miiphy_init);
--
++device_initcall(miidev_init);
+ 
 diff --git a/drivers/net/netx_eth.c b/drivers/net/netx_eth.c
 index f2d7b4a..c3083f7 100644
 --- a/drivers/net/netx_eth.c
@@ -1908,153 +1688,88 @@ index cc170f6..983d464 100644
  
  	return 0;
  }
-diff --git a/include/linux/mii.h b/include/linux/mii.h
-new file mode 100644
-index 0000000..7345172
---- /dev/null
+diff --git a/include/miiphy.h b/include/linux/mii.h
+similarity index 74%
+rename from include/miiphy.h
+rename to include/linux/mii.h
+index 67f1b1c..7345172 100644
+--- a/include/miiphy.h
 +++ b/include/linux/mii.h
-@@ -0,0 +1,232 @@
-+/*
-+ * linux/mii.h: definitions for MII-compatible transceivers
-+ * Originally drivers/net/sunhme.h.
-+ *
-+ * Copyright (C) 1996, 1999, 2001 David S. Miller (davem@redhat.com)
-+ */
-+
+@@ -5,13 +5,10 @@
+  * Copyright (C) 1996, 1999, 2001 David S. Miller (davem@redhat.com)
+  */
+ 
+-#ifndef _MII_PHY_H_
+-#define _MII_PHY_H_
 +#ifndef __LINUX_MII_H__
 +#define __LINUX_MII_H__
-+
+ 
+-#include <driver.h>
+-
+-#define MIIPHY_FORCE_10		(1 << 0)
+-#define MIIPHY_FORCE_LINK	(1 << 1)
 +/* Generic MII registers. */
-+
-+#define MII_BMCR            0x00        /* Basic mode control register */
-+#define MII_BMSR            0x01        /* Basic mode status register  */
-+#define MII_PHYSID1         0x02        /* PHYS ID 1                   */
-+#define MII_PHYSID2         0x03        /* PHYS ID 2                   */
-+#define MII_ADVERTISE       0x04        /* Advertisement control reg   */
-+#define MII_LPA             0x05        /* Link partner ability reg    */
-+#define MII_EXPANSION       0x06        /* Expansion register          */
-+#define MII_CTRL1000        0x09        /* 1000BASE-T control          */
-+#define MII_STAT1000        0x0a        /* 1000BASE-T status           */
+ 
+ #define MII_BMCR            0x00        /* Basic mode control register */
+ #define MII_BMSR            0x01        /* Basic mode status register  */
+@@ -22,7 +19,7 @@
+ #define MII_EXPANSION       0x06        /* Expansion register          */
+ #define MII_CTRL1000        0x09        /* 1000BASE-T control          */
+ #define MII_STAT1000        0x0a        /* 1000BASE-T status           */
+-#define MII_ESTATUS	    0x0f	/* Extended Status             */
 +#define MII_ESTATUS	    0x0f	/* Extended Status */
-+#define MII_DCOUNTER        0x12        /* Disconnect counter          */
-+#define MII_FCSCOUNTER      0x13        /* False carrier counter       */
-+#define MII_NWAYTEST        0x14        /* N-way auto-neg test reg     */
-+#define MII_RERRCOUNTER     0x15        /* Receive error counter       */
-+#define MII_SREVISION       0x16        /* Silicon revision            */
-+#define MII_RESV1           0x17        /* Reserved...                 */
-+#define MII_LBRERROR        0x18        /* Lpback, rx, bypass error    */
-+#define MII_PHYADDR         0x19        /* PHY address                 */
-+#define MII_RESV2           0x1a        /* Reserved...                 */
-+#define MII_TPISTATUS       0x1b        /* TPI status for 10mbps       */
-+#define MII_NCONFIG         0x1c        /* Network interface config    */
-+
-+/* Basic mode control register. */
+ #define MII_DCOUNTER        0x12        /* Disconnect counter          */
+ #define MII_FCSCOUNTER      0x13        /* False carrier counter       */
+ #define MII_NWAYTEST        0x14        /* N-way auto-neg test reg     */
+@@ -36,6 +33,8 @@
+ #define MII_NCONFIG         0x1c        /* Network interface config    */
+ 
+ /* Basic mode control register. */
 +#define BMCR_SPEED_MASK		0x2040	/* 10/100/1000		       */
 +#define BMCR_SPEED10		0x0000	/* Select 10Mbps	       */
-+#define BMCR_RESV               0x003f  /* Unused...                   */
-+#define BMCR_SPEED1000		0x0040  /* MSB of Speed (1000)         */
-+#define BMCR_CTST               0x0080  /* Collision test              */
-+#define BMCR_FULLDPLX           0x0100  /* Full duplex                 */
-+#define BMCR_ANRESTART          0x0200  /* Auto negotiation restart    */
-+#define BMCR_ISOLATE            0x0400  /* Disconnect DP83840 from MII */
-+#define BMCR_PDOWN              0x0800  /* Powerdown the DP83840       */
-+#define BMCR_ANENABLE           0x1000  /* Enable auto negotiation     */
-+#define BMCR_SPEED100           0x2000  /* Select 100Mbps              */
-+#define BMCR_LOOPBACK           0x4000  /* TXD loopback bits           */
-+#define BMCR_RESET              0x8000  /* Reset the DP83840           */
-+
-+/* Basic mode status register. */
-+#define BMSR_ERCAP              0x0001  /* Ext-reg capability          */
-+#define BMSR_JCD                0x0002  /* Jabber detected             */
-+#define BMSR_LSTATUS            0x0004  /* Link status                 */
-+#define BMSR_ANEGCAPABLE        0x0008  /* Able to do auto-negotiation */
-+#define BMSR_RFAULT             0x0010  /* Remote fault detected       */
-+#define BMSR_ANEGCOMPLETE       0x0020  /* Auto-negotiation complete   */
-+#define BMSR_RESV               0x00c0  /* Unused...                   */
+ #define BMCR_RESV               0x003f  /* Unused...                   */
+ #define BMCR_SPEED1000		0x0040  /* MSB of Speed (1000)         */
+ #define BMCR_CTST               0x0080  /* Collision test              */
+@@ -56,9 +55,9 @@
+ #define BMSR_RFAULT             0x0010  /* Remote fault detected       */
+ #define BMSR_ANEGCOMPLETE       0x0020  /* Auto-negotiation complete   */
+ #define BMSR_RESV               0x00c0  /* Unused...                   */
+-#define BMSR_ESTATEN		0x0100	/* Extended Status in R15      */
+-#define BMSR_100HALF2           0x0200  /* Can do 100BASE-T2 HDX       */
+-#define BMSR_100FULL2           0x0400  /* Can do 100BASE-T2 FDX       */
 +#define BMSR_ESTATEN		0x0100	/* Extended Status in R15 */
 +#define BMSR_100HALF2           0x0200  /* Can do 100BASE-T2 HDX */
 +#define BMSR_100FULL2           0x0400  /* Can do 100BASE-T2 FDX */
-+#define BMSR_10HALF             0x0800  /* Can do 10mbps, half-duplex  */
-+#define BMSR_10FULL             0x1000  /* Can do 10mbps, full-duplex  */
-+#define BMSR_100HALF            0x2000  /* Can do 100mbps, half-duplex */
-+#define BMSR_100FULL            0x4000  /* Can do 100mbps, full-duplex */
-+#define BMSR_100BASE4           0x8000  /* Can do 100mbps, 4k packets  */
-+
-+/* Advertisement control register. */
-+#define ADVERTISE_SLCT          0x001f  /* Selector bits               */
-+#define ADVERTISE_CSMA          0x0001  /* Only selector supported     */
-+#define ADVERTISE_10HALF        0x0020  /* Try for 10mbps half-duplex  */
-+#define ADVERTISE_1000XFULL     0x0020  /* Try for 1000BASE-X full-duplex */
-+#define ADVERTISE_10FULL        0x0040  /* Try for 10mbps full-duplex  */
-+#define ADVERTISE_1000XHALF     0x0040  /* Try for 1000BASE-X half-duplex */
-+#define ADVERTISE_100HALF       0x0080  /* Try for 100mbps half-duplex */
-+#define ADVERTISE_1000XPAUSE    0x0080  /* Try for 1000BASE-X pause    */
-+#define ADVERTISE_100FULL       0x0100  /* Try for 100mbps full-duplex */
-+#define ADVERTISE_1000XPSE_ASYM 0x0100  /* Try for 1000BASE-X asym pause */
-+#define ADVERTISE_100BASE4      0x0200  /* Try for 100mbps 4k packets  */
-+#define ADVERTISE_PAUSE_CAP     0x0400  /* Try for pause               */
-+#define ADVERTISE_PAUSE_ASYM    0x0800  /* Try for asymetric pause     */
-+#define ADVERTISE_RESV          0x1000  /* Unused...                   */
-+#define ADVERTISE_RFAULT        0x2000  /* Say we can detect faults    */
-+#define ADVERTISE_LPACK         0x4000  /* Ack link partners response  */
-+#define ADVERTISE_NPAGE         0x8000  /* Next page bit               */
-+
-+#define ADVERTISE_FULL (ADVERTISE_100FULL | ADVERTISE_10FULL | \
-+			ADVERTISE_CSMA)
-+#define ADVERTISE_ALL (ADVERTISE_10HALF | ADVERTISE_10FULL | \
-+                       ADVERTISE_100HALF | ADVERTISE_100FULL)
-+
-+/* Link partner ability register. */
-+#define LPA_SLCT                0x001f  /* Same as advertise selector  */
-+#define LPA_10HALF              0x0020  /* Can do 10mbps half-duplex   */
-+#define LPA_1000XFULL           0x0020  /* Can do 1000BASE-X full-duplex */
-+#define LPA_10FULL              0x0040  /* Can do 10mbps full-duplex   */
-+#define LPA_1000XHALF           0x0040  /* Can do 1000BASE-X half-duplex */
-+#define LPA_100HALF             0x0080  /* Can do 100mbps half-duplex  */
-+#define LPA_1000XPAUSE          0x0080  /* Can do 1000BASE-X pause     */
-+#define LPA_100FULL             0x0100  /* Can do 100mbps full-duplex  */
-+#define LPA_1000XPAUSE_ASYM     0x0100  /* Can do 1000BASE-X pause asym*/
-+#define LPA_100BASE4            0x0200  /* Can do 100mbps 4k packets   */
-+#define LPA_PAUSE_CAP           0x0400  /* Can pause                   */
-+#define LPA_PAUSE_ASYM          0x0800  /* Can pause asymetrically     */
-+#define LPA_RESV                0x1000  /* Unused...                   */
-+#define LPA_RFAULT              0x2000  /* Link partner faulted        */
-+#define LPA_LPACK               0x4000  /* Link partner acked us       */
-+#define LPA_NPAGE               0x8000  /* Next page bit               */
-+
-+#define LPA_DUPLEX		(LPA_10FULL | LPA_100FULL)
-+#define LPA_100			(LPA_100FULL | LPA_100HALF | LPA_100BASE4)
-+
-+/* Expansion register for auto-negotiation. */
-+#define EXPANSION_NWAY          0x0001  /* Can do N-way auto-nego      */
-+#define EXPANSION_LCWP          0x0002  /* Got new RX page code word   */
-+#define EXPANSION_ENABLENPAGE   0x0004  /* This enables npage words    */
-+#define EXPANSION_NPCAPABLE     0x0008  /* Link partner supports npage */
-+#define EXPANSION_MFAULTS       0x0010  /* Multiple faults detected    */
-+#define EXPANSION_RESV          0xffe0  /* Unused...                   */
-+
-+#define ESTATUS_1000_TFULL	0x2000	/* Can do 1000BT Full */
-+#define ESTATUS_1000_THALF	0x1000	/* Can do 1000BT Half */
-+
-+/* N-way test register. */
-+#define NWAYTEST_RESV1          0x00ff  /* Unused...                   */
-+#define NWAYTEST_LOOPBACK       0x0100  /* Enable loopback for N-way   */
-+#define NWAYTEST_RESV2          0xfe00  /* Unused...                   */
-+
-+/* 1000BASE-T Control register */
-+#define ADVERTISE_1000FULL      0x0200  /* Advertise 1000BASE-T full duplex */
-+#define ADVERTISE_1000HALF      0x0100  /* Advertise 1000BASE-T half duplex */
-+
-+/* 1000BASE-T Status register */
-+#define LPA_1000LOCALRXOK       0x2000  /* Link partner local receiver status */
-+#define LPA_1000REMRXOK         0x1000  /* Link partner remote receiver status */
-+#define LPA_1000FULL            0x0800  /* Link partner 1000BASE-T full duplex */
-+#define LPA_1000HALF            0x0400  /* Link partner 1000BASE-T half duplex */
-+
+ #define BMSR_10HALF             0x0800  /* Can do 10mbps, half-duplex  */
+ #define BMSR_10FULL             0x1000  /* Can do 10mbps, full-duplex  */
+ #define BMSR_100HALF            0x2000  /* Can do 100mbps, half-duplex */
+@@ -136,23 +135,98 @@
+ #define LPA_1000FULL            0x0800  /* Link partner 1000BASE-T full duplex */
+ #define LPA_1000HALF            0x0400  /* Link partner 1000BASE-T half duplex */
+ 
+-struct miiphy_device {
+-	struct device_d dev;
+-
+-	int address;	/* The address the phy has on the bus */
+-	int (*read)(struct miiphy_device *mdev, uint8_t phy_addr, uint8_t reg_addr, uint16_t *value);
+-	int (*write)(struct miiphy_device *mdev, uint8_t phy_addr, uint8_t reg_addr, uint16_t data);
+-
+-	int flags;
+-
+-	struct eth_device *edev;
+-	struct cdev cdev;
+-};
 +/* Flow control flags */
 +#define FLOW_CTRL_TX		0x01
 +#define FLOW_CTRL_RX		0x02
-+
+ 
+-int miiphy_register(struct miiphy_device *mdev);
+-void miiphy_unregister(struct miiphy_device *mdev);
+-int miiphy_restart_aneg(struct miiphy_device *mdev);
+-int miiphy_wait_aneg(struct miiphy_device *mdev);
+-int miiphy_print_status(struct miiphy_device *mdev);
+-
+-#endif
 +/**
 + * mii_nway_result
 + * @negotiated: value of MII ANAR and'd with ANLPAR
@@ -2214,170 +1929,6 @@ index 0000000..6f653d9
 +	return dev->read(dev, addr, reg);
 +}
 +#endif /* __MIIDEV_H__ */
-diff --git a/include/miiphy.h b/include/miiphy.h
-deleted file mode 100644
-index 67f1b1c..0000000
---- a/include/miiphy.h
-+++ /dev/null
-@@ -1,158 +0,0 @@
--/*
-- * linux/mii.h: definitions for MII-compatible transceivers
-- * Originally drivers/net/sunhme.h.
-- *
-- * Copyright (C) 1996, 1999, 2001 David S. Miller (davem@redhat.com)
-- */
--
--#ifndef _MII_PHY_H_
--#define _MII_PHY_H_
--
--#include <driver.h>
--
--#define MIIPHY_FORCE_10		(1 << 0)
--#define MIIPHY_FORCE_LINK	(1 << 1)
--
--#define MII_BMCR            0x00        /* Basic mode control register */
--#define MII_BMSR            0x01        /* Basic mode status register  */
--#define MII_PHYSID1         0x02        /* PHYS ID 1                   */
--#define MII_PHYSID2         0x03        /* PHYS ID 2                   */
--#define MII_ADVERTISE       0x04        /* Advertisement control reg   */
--#define MII_LPA             0x05        /* Link partner ability reg    */
--#define MII_EXPANSION       0x06        /* Expansion register          */
--#define MII_CTRL1000        0x09        /* 1000BASE-T control          */
--#define MII_STAT1000        0x0a        /* 1000BASE-T status           */
--#define MII_ESTATUS	    0x0f	/* Extended Status             */
--#define MII_DCOUNTER        0x12        /* Disconnect counter          */
--#define MII_FCSCOUNTER      0x13        /* False carrier counter       */
--#define MII_NWAYTEST        0x14        /* N-way auto-neg test reg     */
--#define MII_RERRCOUNTER     0x15        /* Receive error counter       */
--#define MII_SREVISION       0x16        /* Silicon revision            */
--#define MII_RESV1           0x17        /* Reserved...                 */
--#define MII_LBRERROR        0x18        /* Lpback, rx, bypass error    */
--#define MII_PHYADDR         0x19        /* PHY address                 */
--#define MII_RESV2           0x1a        /* Reserved...                 */
--#define MII_TPISTATUS       0x1b        /* TPI status for 10mbps       */
--#define MII_NCONFIG         0x1c        /* Network interface config    */
--
--/* Basic mode control register. */
--#define BMCR_RESV               0x003f  /* Unused...                   */
--#define BMCR_SPEED1000		0x0040  /* MSB of Speed (1000)         */
--#define BMCR_CTST               0x0080  /* Collision test              */
--#define BMCR_FULLDPLX           0x0100  /* Full duplex                 */
--#define BMCR_ANRESTART          0x0200  /* Auto negotiation restart    */
--#define BMCR_ISOLATE            0x0400  /* Disconnect DP83840 from MII */
--#define BMCR_PDOWN              0x0800  /* Powerdown the DP83840       */
--#define BMCR_ANENABLE           0x1000  /* Enable auto negotiation     */
--#define BMCR_SPEED100           0x2000  /* Select 100Mbps              */
--#define BMCR_LOOPBACK           0x4000  /* TXD loopback bits           */
--#define BMCR_RESET              0x8000  /* Reset the DP83840           */
--
--/* Basic mode status register. */
--#define BMSR_ERCAP              0x0001  /* Ext-reg capability          */
--#define BMSR_JCD                0x0002  /* Jabber detected             */
--#define BMSR_LSTATUS            0x0004  /* Link status                 */
--#define BMSR_ANEGCAPABLE        0x0008  /* Able to do auto-negotiation */
--#define BMSR_RFAULT             0x0010  /* Remote fault detected       */
--#define BMSR_ANEGCOMPLETE       0x0020  /* Auto-negotiation complete   */
--#define BMSR_RESV               0x00c0  /* Unused...                   */
--#define BMSR_ESTATEN		0x0100	/* Extended Status in R15      */
--#define BMSR_100HALF2           0x0200  /* Can do 100BASE-T2 HDX       */
--#define BMSR_100FULL2           0x0400  /* Can do 100BASE-T2 FDX       */
--#define BMSR_10HALF             0x0800  /* Can do 10mbps, half-duplex  */
--#define BMSR_10FULL             0x1000  /* Can do 10mbps, full-duplex  */
--#define BMSR_100HALF            0x2000  /* Can do 100mbps, half-duplex */
--#define BMSR_100FULL            0x4000  /* Can do 100mbps, full-duplex */
--#define BMSR_100BASE4           0x8000  /* Can do 100mbps, 4k packets  */
--
--/* Advertisement control register. */
--#define ADVERTISE_SLCT          0x001f  /* Selector bits               */
--#define ADVERTISE_CSMA          0x0001  /* Only selector supported     */
--#define ADVERTISE_10HALF        0x0020  /* Try for 10mbps half-duplex  */
--#define ADVERTISE_1000XFULL     0x0020  /* Try for 1000BASE-X full-duplex */
--#define ADVERTISE_10FULL        0x0040  /* Try for 10mbps full-duplex  */
--#define ADVERTISE_1000XHALF     0x0040  /* Try for 1000BASE-X half-duplex */
--#define ADVERTISE_100HALF       0x0080  /* Try for 100mbps half-duplex */
--#define ADVERTISE_1000XPAUSE    0x0080  /* Try for 1000BASE-X pause    */
--#define ADVERTISE_100FULL       0x0100  /* Try for 100mbps full-duplex */
--#define ADVERTISE_1000XPSE_ASYM 0x0100  /* Try for 1000BASE-X asym pause */
--#define ADVERTISE_100BASE4      0x0200  /* Try for 100mbps 4k packets  */
--#define ADVERTISE_PAUSE_CAP     0x0400  /* Try for pause               */
--#define ADVERTISE_PAUSE_ASYM    0x0800  /* Try for asymetric pause     */
--#define ADVERTISE_RESV          0x1000  /* Unused...                   */
--#define ADVERTISE_RFAULT        0x2000  /* Say we can detect faults    */
--#define ADVERTISE_LPACK         0x4000  /* Ack link partners response  */
--#define ADVERTISE_NPAGE         0x8000  /* Next page bit               */
--
--#define ADVERTISE_FULL (ADVERTISE_100FULL | ADVERTISE_10FULL | \
--			ADVERTISE_CSMA)
--#define ADVERTISE_ALL (ADVERTISE_10HALF | ADVERTISE_10FULL | \
--                       ADVERTISE_100HALF | ADVERTISE_100FULL)
--
--/* Link partner ability register. */
--#define LPA_SLCT                0x001f  /* Same as advertise selector  */
--#define LPA_10HALF              0x0020  /* Can do 10mbps half-duplex   */
--#define LPA_1000XFULL           0x0020  /* Can do 1000BASE-X full-duplex */
--#define LPA_10FULL              0x0040  /* Can do 10mbps full-duplex   */
--#define LPA_1000XHALF           0x0040  /* Can do 1000BASE-X half-duplex */
--#define LPA_100HALF             0x0080  /* Can do 100mbps half-duplex  */
--#define LPA_1000XPAUSE          0x0080  /* Can do 1000BASE-X pause     */
--#define LPA_100FULL             0x0100  /* Can do 100mbps full-duplex  */
--#define LPA_1000XPAUSE_ASYM     0x0100  /* Can do 1000BASE-X pause asym*/
--#define LPA_100BASE4            0x0200  /* Can do 100mbps 4k packets   */
--#define LPA_PAUSE_CAP           0x0400  /* Can pause                   */
--#define LPA_PAUSE_ASYM          0x0800  /* Can pause asymetrically     */
--#define LPA_RESV                0x1000  /* Unused...                   */
--#define LPA_RFAULT              0x2000  /* Link partner faulted        */
--#define LPA_LPACK               0x4000  /* Link partner acked us       */
--#define LPA_NPAGE               0x8000  /* Next page bit               */
--
--#define LPA_DUPLEX		(LPA_10FULL | LPA_100FULL)
--#define LPA_100			(LPA_100FULL | LPA_100HALF | LPA_100BASE4)
--
--/* Expansion register for auto-negotiation. */
--#define EXPANSION_NWAY          0x0001  /* Can do N-way auto-nego      */
--#define EXPANSION_LCWP          0x0002  /* Got new RX page code word   */
--#define EXPANSION_ENABLENPAGE   0x0004  /* This enables npage words    */
--#define EXPANSION_NPCAPABLE     0x0008  /* Link partner supports npage */
--#define EXPANSION_MFAULTS       0x0010  /* Multiple faults detected    */
--#define EXPANSION_RESV          0xffe0  /* Unused...                   */
--
--#define ESTATUS_1000_TFULL	0x2000	/* Can do 1000BT Full */
--#define ESTATUS_1000_THALF	0x1000	/* Can do 1000BT Half */
--
--/* N-way test register. */
--#define NWAYTEST_RESV1          0x00ff  /* Unused...                   */
--#define NWAYTEST_LOOPBACK       0x0100  /* Enable loopback for N-way   */
--#define NWAYTEST_RESV2          0xfe00  /* Unused...                   */
--
--/* 1000BASE-T Control register */
--#define ADVERTISE_1000FULL      0x0200  /* Advertise 1000BASE-T full duplex */
--#define ADVERTISE_1000HALF      0x0100  /* Advertise 1000BASE-T half duplex */
--
--/* 1000BASE-T Status register */
--#define LPA_1000LOCALRXOK       0x2000  /* Link partner local receiver status */
--#define LPA_1000REMRXOK         0x1000  /* Link partner remote receiver status */
--#define LPA_1000FULL            0x0800  /* Link partner 1000BASE-T full duplex */
--#define LPA_1000HALF            0x0400  /* Link partner 1000BASE-T half duplex */
--
--struct miiphy_device {
--	struct device_d dev;
--
--	int address;	/* The address the phy has on the bus */
--	int (*read)(struct miiphy_device *mdev, uint8_t phy_addr, uint8_t reg_addr, uint16_t *value);
--	int (*write)(struct miiphy_device *mdev, uint8_t phy_addr, uint8_t reg_addr, uint16_t data);
--
--	int flags;
--
--	struct eth_device *edev;
--	struct cdev cdev;
--};
--
--int miiphy_register(struct miiphy_device *mdev);
--void miiphy_unregister(struct miiphy_device *mdev);
--int miiphy_restart_aneg(struct miiphy_device *mdev);
--int miiphy_wait_aneg(struct miiphy_device *mdev);
--int miiphy_print_status(struct miiphy_device *mdev);
--
--#endif
 diff --git a/include/usb/usbnet.h b/include/usb/usbnet.h
 index e3ea373..1609b2e 100644
 --- a/include/usb/usbnet.h
