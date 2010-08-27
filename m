@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 64.mail-out.ovh.net ([91.121.185.65])
-	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1Oos4i-0003NQ-Nd
-	for barebox@lists.infradead.org; Fri, 27 Aug 2010 06:06:11 +0000
-Date: Fri, 27 Aug 2010 08:05:45 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20100827060545.GC16555@game.jcrosoft.org>
-References: <1282888157-18427-1-git-send-email-plagnioj@jcrosoft.com>
-	<20100827055634.GC2324@tarshish>
+Received: from mail-wy0-f177.google.com ([74.125.82.177])
+	by bombadil.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1OoqYE-0004w7-FG
+	for barebox@lists.infradead.org; Fri, 27 Aug 2010 04:28:27 +0000
+Received: by wyb38 with SMTP id 38so1551100wyb.36
+	for <barebox@lists.infradead.org>; Thu, 26 Aug 2010 21:28:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20100827055634.GC2324@tarshish>
+Date: Fri, 27 Aug 2010 09:58:24 +0530
+Message-ID: <AANLkTi=fu9YB-Te21U5TBTdVD=BKfpYHxjAW2m7mX1K8@mail.gmail.com>
+From: Nataraj S Narayan <natarajsn@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,30 +17,95 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============0442119351=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] udpate fixdep.c to linux kernel
-	v2.6.36-rc1-168-ge36c886
-To: Baruch Siach <baruch@tkos.co.il>
-Cc: barebox@lists.infradead.org
+Subject: Barebox: unprotect dataflash
+To: barebox@lists.infradead.org
 
-On 08:56 Fri 27 Aug     , Baruch Siach wrote:
-> Hi Jean-Christophe,
-> 
-> On Fri, Aug 27, 2010 at 07:49:16AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > as autoconf.h is store in include/generated and not include/linux anymore
-> 
-> This log entry seems to belong to the next patch in this series.
-???
+--===============0442119351==
+Content-Type: multipart/alternative; boundary=0016e659f1d8adbf7d048ec68baf
 
-it's patch 1 not patch 0
+--0016e659f1d8adbf7d048ec68baf
+Content-Type: text/plain; charset=ISO-8859-1
 
-Best Regards,
-J.
+Hi
+
+I am on barebox 2010.05.0-00446-g02f7dfe-dirty (Aug 23 2010 - 10:05:28).
+
+
+I need to store the Env onto dataflash. While using u-boot, the env is
+written to  0x4000 in the dataflash.
+
+Which of this could be the  Data-flash device?
+
+
+
+9263-EK:/ ls -l /dev/
+/dev/zero                /dev/defaultenv          /dev/mem
+/dev/ram0                /dev/nand0               /dev/nand_oob0
+/dev/phy0                /dev/nor0                /dev/self
+/dev/env0                /dev/nor0.barebox        /dev/nor0.bareboxenv
+/dev/nor0.kernel         /dev/nor0.root
+
+9263-EK:/ ls -l /dev/defaultenv
+drwxrwxrwx          0 .
+drwxrwxrwx          0 ..
+drwxrwxrwx          0 dev
+drwxrwxrwx          0 env
+-rwxrwxrwx          0 uImage
+
+
+Tried on /dev/defaultenv to get this , and stalls:-
+
+9263-EK:/ unprotect  /dev/defaultenv
+9263-EK:/ saveenv
+saving environment
+cfi_protect: unprotect 0xf1851002 (size 131072)
+
+
+regards
+
+Nataraj
+
+--0016e659f1d8adbf7d048ec68baf
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+Hi<br><br>I am on barebox 2010.05.0-00446-g02f7dfe-dirty (Aug 23 2010 - 10:=
+05:28).<br><br><br>I need to store the Env onto dataflash. While using u-bo=
+ot, the env is written to=A0 0x4000 in the dataflash.<br><br>Which of this =
+could be the=A0 Data-flash device?<br>
+<br><br><br>9263-EK:/ ls -l /dev/<br>/dev/zero=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0 /dev/defaultenv=A0=A0=A0=A0=A0=A0=A0=A0=A0 /dev/mem <br>=
+/dev/ram0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 /dev/nand0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 /dev/nand_oob0 <br>/dev/phy0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 /dev/nor0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0 /dev/self <br>
+/dev/env0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 /dev/nor0.barebox=A0=
+=A0=A0=A0=A0=A0=A0 /dev/nor0.bareboxenv <br>/dev/nor0.kernel=A0=A0=A0=A0=A0=
+=A0=A0=A0 /dev/nor0.root=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 <br><br>9263-EK:/ ls=
+ -l /dev/defaultenv <br>drwxrwxrwx=A0=A0=A0=A0=A0=A0=A0=A0=A0 0 .<br>drwxrw=
+xrwx=A0=A0=A0=A0=A0=A0=A0=A0=A0 0 ..<br>
+drwxrwxrwx=A0=A0=A0=A0=A0=A0=A0=A0=A0 0 dev<br>drwxrwxrwx=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0 0 env<br>-rwxrwxrwx=A0=A0=A0=A0=A0=A0=A0=A0=A0 0 uImage<br><br><b=
+r>Tried on /dev/defaultenv to get this , and stalls:-<br><br>9263-EK:/ unpr=
+otect=A0 /dev/defaultenv <br>9263-EK:/ saveenv <br>saving environment<br>
+cfi_protect: unprotect 0xf1851002 (size 131072)<br><br><br>regards<br><br>N=
+ataraj<br>
+
+--0016e659f1d8adbf7d048ec68baf--
+
+
+--===============0442119351==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============0442119351==--
