@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from tango.tkos.co.il ([62.219.50.35])
-	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Oorvu-0004jL-TG
-	for barebox@lists.infradead.org; Fri, 27 Aug 2010 05:57:00 +0000
-Date: Fri, 27 Aug 2010 08:56:34 +0300
-From: Baruch Siach <baruch@tkos.co.il>
-Message-ID: <20100827055634.GC2324@tarshish>
+Received: from 64.mail-out.ovh.net ([91.121.185.65])
+	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1Oos4i-0003NQ-Nd
+	for barebox@lists.infradead.org; Fri, 27 Aug 2010 06:06:11 +0000
+Date: Fri, 27 Aug 2010 08:05:45 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20100827060545.GC16555@game.jcrosoft.org>
 References: <1282888157-18427-1-git-send-email-plagnioj@jcrosoft.com>
+	<20100827055634.GC2324@tarshish>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1282888157-18427-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20100827055634.GC2324@tarshish>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,27 +25,22 @@ Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 1/2] udpate fixdep.c to linux kernel
 	v2.6.36-rc1-168-ge36c886
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+To: Baruch Siach <baruch@tkos.co.il>
 Cc: barebox@lists.infradead.org
 
-Hi Jean-Christophe,
+On 08:56 Fri 27 Aug     , Baruch Siach wrote:
+> Hi Jean-Christophe,
+> 
+> On Fri, Aug 27, 2010 at 07:49:16AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > as autoconf.h is store in include/generated and not include/linux anymore
+> 
+> This log entry seems to belong to the next patch in this series.
+???
 
-On Fri, Aug 27, 2010 at 07:49:16AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> as autoconf.h is store in include/generated and not include/linux anymore
+it's patch 1 not patch 0
 
-This log entry seems to belong to the next patch in this series.
-
-baruch
-
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  scripts/basic/fixdep.c |   55 ++++++++++++++++++++++++++---------------------
->  1 files changed, 30 insertions(+), 25 deletions(-)
-
--- 
-                                                     ~. .~   Tk Open Systems
-=}------------------------------------------------ooO--U--Ooo------------{=
-   - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
