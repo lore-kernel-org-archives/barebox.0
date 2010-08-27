@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from 68.mail-out.ovh.net ([91.121.185.69])
 	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1Ooroq-0007pV-0q
-	for barebox@lists.infradead.org; Fri, 27 Aug 2010 05:49:41 +0000
+	id 1OorvL-0003Lw-0b
+	for barebox@lists.infradead.org; Fri, 27 Aug 2010 05:56:23 +0000
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 27 Aug 2010 07:49:17 +0200
-Message-Id: <1282888157-18427-2-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1282888157-18427-1-git-send-email-plagnioj@jcrosoft.com>
-References: <1282888157-18427-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri, 27 Aug 2010 07:56:02 +0200
+Message-Id: <1282888562-19163-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1282886118-15217-4-git-send-email-plagnioj@jcrosoft.com>
+References: <1282886118-15217-4-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,35 +21,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] Makefile: fix autoconf.h location
+Subject: [PATCH 4/4 v2] use resource_size_t for device resources
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- Makefile |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
+v2:
+	remove comment as we fix it
+	fix commit subject
 
-diff --git a/Makefile b/Makefile
-index b4c7ae5..90252cc 100644
---- a/Makefile
-+++ b/Makefile
-@@ -290,7 +290,7 @@ LINUXINCLUDE    := -Iinclude \
-                    $(if $(KBUILD_SRC),-Iinclude2 -I$(srctree)/include) \
- 		   -I$(srctree)/arch/$(ARCH)/include \
- 		   -I$(objtree)/arch/$(ARCH)/include \
--		   -include include/linux/autoconf.h
-+                   -include include/generated/autoconf.h
+Best Regards,
+J.
+ include/driver.h |    5 ++---
+ 1 files changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/include/driver.h b/include/driver.h
+index ae3e777..ee0749d 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -69,12 +69,11 @@ struct device_d {
+ 	 * something like eth0 or nor0. */
+ 	int id;
  
- CPPFLAGS        := -D__KERNEL__ -D__BAREBOX__ $(LINUXINCLUDE) -fno-builtin -ffreestanding
+-	/*! FIXME */
+-	unsigned long size;
++	resource_size_t size;
  
-@@ -979,7 +979,7 @@ CLEAN_FILES +=	barebox System.map include/barebox_default_env.h \
- # Directories & files removed with 'make mrproper'
- MRPROPER_DIRS  += include/config include2 usr/include
- MRPROPER_FILES += .config .config.old include/asm .version .old_version \
--                  include/linux/autoconf.h include/linux/version.h      \
-+                  include/generated/autoconf.h include/linux/version.h      \
-                   include/linux/utsrelease.h include/config.h           \
- 		  Module.symvers tags TAGS cscope*
+ 	/*! For devices which are directly mapped into memory, i.e. NOR
+ 	 * Flash or SDRAM. */
+-	unsigned long map_base;
++	resource_size_t map_base;
+ 
+ 	void *platform_data; /*! board specific information about this device */
  
 -- 
 1.7.1
