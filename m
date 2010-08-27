@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OozM4-0000Zc-M3
-	for barebox@lists.infradead.org; Fri, 27 Aug 2010 13:52:29 +0000
-Message-ID: <4C77C319.9090306@pengutronix.de>
-Date: Fri, 27 Aug 2010 15:52:25 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-MIME-Version: 1.0
+Received: from 63.mail-out.ovh.net ([91.121.185.56])
+	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1Op0V8-0002Vy-2T
+	for barebox@lists.infradead.org; Fri, 27 Aug 2010 15:05:54 +0000
+Date: Fri, 27 Aug 2010 17:05:33 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20100827150533.GD16555@game.jcrosoft.org>
 References: <AANLkTimgEO3wqt27v2RKYtSHtmMK-w1FGoLP-dH44SnB@mail.gmail.com>
-In-Reply-To: <AANLkTimgEO3wqt27v2RKYtSHtmMK-w1FGoLP-dH44SnB@mail.gmail.com>
+	<4C77C319.9090306@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <4C77C319.9090306@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,74 +19,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1084873937=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: barebox:Nand flash issue
-To: Nataraj S Narayan <natarajsn@gmail.com>
+To: Marc Kleine-Budde <mkl@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---===============1084873937==
-Content-Type: multipart/signed; micalg=pgp-sha1;
- protocol="application/pgp-signature";
- boundary="------------enig63330E68689BE9F23875E963"
+On 15:52 Fri 27 Aug     , Marc Kleine-Budde wrote:
+> Nataraj S Narayan wrote:
+> > Hi
+> > 
+> > If
+> > 
+> > CONFIG_NAND=y
+> > CONFIG_NAND_ATMEL=y
+> > 
+> > 
+> > barebox breaks and  wont load from dataflash.
+> 
+> I'm not sure if dataflash is supported. Try to boot from real NAND or NOR.
+> 
+> Jean-Christophe can probably say something to this.
+I've not yet add the spi-flash support
+but how do you boot from spi-flash?
+via at91bootstrap?
 
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---------------enig63330E68689BE9F23875E963
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
+I'm currently travelling so I can not test it by now as I just take some SH4
+boards
 
-Nataraj S Narayan wrote:
-> Hi
->=20
-> If
->=20
-> CONFIG_NAND=3Dy
-> CONFIG_NAND_ATMEL=3Dy
->=20
->=20
-> barebox breaks and  wont load from dataflash.
+I plan to add it later next month
 
-I'm not sure if dataflash is supported. Try to boot from real NAND or NOR=
-=2E
-
-Jean-Christophe can probably say something to this.
-
-Cheers, Marc
---=20
-Pengutronix e.K.                  | Marc Kleine-Budde           |
-Industrial Linux Solutions        | Phone: +49-231-2826-924     |
-Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
-
-
---------------enig63330E68689BE9F23875E963
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.9 (GNU/Linux)
-Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org
-
-iEYEARECAAYFAkx3wx0ACgkQjTAFq1RaXHOJOACfTOxCUzUGAfsbFLJaXBTLSwv1
-bUIAoJmjQ4dvHeO1Vzi5jDMsgqt+DKPm
-=Vvey
------END PGP SIGNATURE-----
-
---------------enig63330E68689BE9F23875E963--
-
-
---===============1084873937==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============1084873937==--
