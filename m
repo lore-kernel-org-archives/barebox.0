@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from 27.mail-out.ovh.net ([91.121.30.210])
 	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OorHy-0005im-Ud
+	id 1OorHy-0005in-UX
 	for barebox@lists.infradead.org; Fri, 27 Aug 2010 05:15:47 +0000
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 27 Aug 2010 07:15:16 +0200
-Message-Id: <1282886118-15217-2-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri, 27 Aug 2010 07:15:17 +0200
+Message-Id: <1282886118-15217-3-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1282886118-15217-1-git-send-email-plagnioj@jcrosoft.com>
 References: <1282886118-15217-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
@@ -21,45 +21,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] introduce pure_initcall
+Subject: [PATCH 3/4] introduce phys_addr_t and resource_size_t
 To: barebox@lists.infradead.org
 
-A "pure" initcall has no dependencies on anything else, and purely
-initializes variables that couldn't be statically initialized.
-
-This only exists for built-in code, not for modules.
+this will allow to support 64bit platform
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- include/init.h |   15 +++++++++++----
- 1 files changed, 11 insertions(+), 4 deletions(-)
+ include/linux/types.h |    8 ++++++++
+ 1 files changed, 8 insertions(+), 0 deletions(-)
 
-diff --git a/include/init.h b/include/init.h
-index accc4d0..bc70874 100644
---- a/include/init.h
-+++ b/include/init.h
-@@ -14,10 +14,17 @@ typedef int (*initcall_t)(void);
- 	__attribute__((__section__(".initcall." level))) = fn
+diff --git a/include/linux/types.h b/include/linux/types.h
+index 2241364..96e5708 100644
+--- a/include/linux/types.h
++++ b/include/linux/types.h
+@@ -139,6 +139,14 @@ typedef __u64 __bitwise __be64;
+ typedef __u16 __bitwise __sum16;
+ typedef __u32 __bitwise __wsum;
  
- 
--#define core_initcall(fn)		__define_initcall("0",fn,0)
--#define postcore_initcall(fn)		__define_initcall("1",fn,1)
--#define console_initcall(fn)		__define_initcall("2",fn,2)
--#define postconsole_initcall(fn)	__define_initcall("3",fn,3)
-+/*
-+ * A "pure" initcall has no dependencies on anything else, and purely
-+ * initializes variables that couldn't be statically initialized.
-+ *
-+ * This only exists for built-in code, not for modules.
-+ */
-+#define pure_initcall(fn)		__define_initcall("0",fn,0)
++#ifdef CONFIG_PHYS_ADDR_T_64BIT
++typedef u64 phys_addr_t;
++#else
++typedef u32 phys_addr_t;
++#endif
 +
-+#define core_initcall(fn)		__define_initcall("1",fn,1)
-+#define postcore_initcall(fn)		__define_initcall("2",fn,2)
-+#define console_initcall(fn)		__define_initcall("3",fn,3)
- #define coredevice_initcall(fn)		__define_initcall("4",fn,4)
- #define fs_initcall(fn)			__define_initcall("5",fn,5)
- #define device_initcall(fn)		__define_initcall("6",fn,6)
++typedef phys_addr_t resource_size_t;
++
+ struct ustat {
+ 	__kernel_daddr_t	f_tfree;
+ 	__kernel_ino_t		f_tinode;
 -- 
 1.7.1
 
