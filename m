@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from 63.mail-out.ovh.net ([91.121.185.56])
 	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1Op0V8-0002Vy-2T
-	for barebox@lists.infradead.org; Fri, 27 Aug 2010 15:05:54 +0000
-Date: Fri, 27 Aug 2010 17:05:33 +0200
+	id 1Op1UH-0002fV-76
+	for barebox@lists.infradead.org; Fri, 27 Aug 2010 16:09:06 +0000
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20100827150533.GD16555@game.jcrosoft.org>
-References: <AANLkTimgEO3wqt27v2RKYtSHtmMK-w1FGoLP-dH44SnB@mail.gmail.com>
-	<4C77C319.9090306@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <4C77C319.9090306@pengutronix.de>
+Date: Fri, 27 Aug 2010 18:08:42 +0200
+Message-Id: <1282925322-11622-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,40 +14,115 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: barebox:Nand flash issue
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] types.h: move _kernel_dev_t to include/linux/types.h
+To: barebox@lists.infradead.org
 
-On 15:52 Fri 27 Aug     , Marc Kleine-Budde wrote:
-> Nataraj S Narayan wrote:
-> > Hi
-> > 
-> > If
-> > 
-> > CONFIG_NAND=y
-> > CONFIG_NAND_ATMEL=y
-> > 
-> > 
-> > barebox breaks and  wont load from dataflash.
-> 
-> I'm not sure if dataflash is supported. Try to boot from real NAND or NOR.
-> 
-> Jean-Christophe can probably say something to this.
-I've not yet add the spi-flash support
-but how do you boot from spi-flash?
-via at91bootstrap?
+no need to have a arch specific type
 
-I'm currently travelling so I can not test it by now as I just take some SH4
-boards
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ arch/arm/include/asm/posix_types.h      |    1 -
+ arch/blackfin/include/asm/posix_types.h |    1 -
+ arch/m68k/include/asm/posix_types.h     |    1 -
+ arch/ppc/include/asm/posix_types.h      |    1 -
+ arch/sandbox/include/asm/posix_types.h  |    1 -
+ arch/x86/include/asm/posix_types.h      |    1 -
+ include/linux/types.h                   |    2 ++
+ 7 files changed, 2 insertions(+), 6 deletions(-)
 
-I plan to add it later next month
+diff --git a/arch/arm/include/asm/posix_types.h b/arch/arm/include/asm/posix_types.h
+index c412486..aee050e 100644
+--- a/arch/arm/include/asm/posix_types.h
++++ b/arch/arm/include/asm/posix_types.h
+@@ -19,7 +19,6 @@
+  * assume GCC is being used.
+  */
+ 
+-typedef unsigned short		__kernel_dev_t;
+ typedef unsigned long		__kernel_ino_t;
+ typedef unsigned short		__kernel_mode_t;
+ typedef unsigned short		__kernel_nlink_t;
+diff --git a/arch/blackfin/include/asm/posix_types.h b/arch/blackfin/include/asm/posix_types.h
+index 98397ca..bbf6e9c 100644
+--- a/arch/blackfin/include/asm/posix_types.h
++++ b/arch/blackfin/include/asm/posix_types.h
+@@ -34,7 +34,6 @@
+  * assume GCC is being used.
+  */
+ 
+-typedef unsigned short __kernel_dev_t;
+ typedef unsigned long __kernel_ino_t;
+ typedef unsigned short __kernel_mode_t;
+ typedef unsigned short __kernel_nlink_t;
+diff --git a/arch/m68k/include/asm/posix_types.h b/arch/m68k/include/asm/posix_types.h
+index c40c41d..d83afe9 100644
+--- a/arch/m68k/include/asm/posix_types.h
++++ b/arch/m68k/include/asm/posix_types.h
+@@ -27,7 +27,6 @@
+ #define __ARCH_M68K_POSIX_TYPES_H
+ 
+ 
+-typedef unsigned short		__kernel_dev_t;
+ typedef unsigned long		__kernel_ino_t;
+ typedef unsigned short		__kernel_mode_t;
+ typedef unsigned short		__kernel_nlink_t;
+diff --git a/arch/ppc/include/asm/posix_types.h b/arch/ppc/include/asm/posix_types.h
+index 9170728..a7af406 100644
+--- a/arch/ppc/include/asm/posix_types.h
++++ b/arch/ppc/include/asm/posix_types.h
+@@ -7,7 +7,6 @@
+  * assume GCC is being used.
+  */
+ 
+-typedef unsigned int	__kernel_dev_t;
+ typedef unsigned int	__kernel_ino_t;
+ typedef unsigned int	__kernel_mode_t;
+ typedef unsigned short	__kernel_nlink_t;
+diff --git a/arch/sandbox/include/asm/posix_types.h b/arch/sandbox/include/asm/posix_types.h
+index 5dcc842..4345141 100644
+--- a/arch/sandbox/include/asm/posix_types.h
++++ b/arch/sandbox/include/asm/posix_types.h
+@@ -7,7 +7,6 @@
+  * assume GCC is being used.
+  */
+ 
+-typedef unsigned short	__kernel_dev_t;
+ typedef unsigned long	__kernel_ino_t;
+ typedef unsigned short	__kernel_mode_t;
+ typedef unsigned short	__kernel_nlink_t;
+diff --git a/arch/x86/include/asm/posix_types.h b/arch/x86/include/asm/posix_types.h
+index a22f301..9278681 100644
+--- a/arch/x86/include/asm/posix_types.h
++++ b/arch/x86/include/asm/posix_types.h
+@@ -27,7 +27,6 @@
+ #define _ASM_X86_POSIX_TYPES_H
+ 
+ typedef unsigned long	__kernel_ino_t;
+-typedef unsigned short	__kernel_dev_t;
+ typedef unsigned short	__kernel_mode_t;
+ typedef unsigned short	__kernel_nlink_t;
+ typedef long		__kernel_off_t;
+diff --git a/include/linux/types.h b/include/linux/types.h
+index 96e5708..2145b6d 100644
+--- a/include/linux/types.h
++++ b/include/linux/types.h
+@@ -6,6 +6,8 @@
+ 
+ #ifndef __KERNEL_STRICT_NAMES
+ 
++typedef __u32 __kernel_dev_t;
++
+ typedef __kernel_fd_set		fd_set;
+ typedef __kernel_dev_t		dev_t;
+ typedef __kernel_ino_t		ino_t;
+-- 
+1.7.1
 
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
