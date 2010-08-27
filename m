@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 68.mail-out.ovh.net ([91.121.185.69])
-	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OorvL-0003Lw-0b
-	for barebox@lists.infradead.org; Fri, 27 Aug 2010 05:56:23 +0000
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 27 Aug 2010 07:56:02 +0200
-Message-Id: <1282888562-19163-1-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1282886118-15217-4-git-send-email-plagnioj@jcrosoft.com>
-References: <1282886118-15217-4-git-send-email-plagnioj@jcrosoft.com>
+Received: from tango.tkos.co.il ([62.219.50.35])
+	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1Oorvu-0004jL-TG
+	for barebox@lists.infradead.org; Fri, 27 Aug 2010 05:57:00 +0000
+Date: Fri, 27 Aug 2010 08:56:34 +0300
+From: Baruch Siach <baruch@tkos.co.il>
+Message-ID: <20100827055634.GC2324@tarshish>
+References: <1282888157-18427-1-git-send-email-plagnioj@jcrosoft.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1282888157-18427-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,47 +18,33 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4 v2] use resource_size_t for device resources
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] udpate fixdep.c to linux kernel
+	v2.6.36-rc1-168-ge36c886
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
-v2:
-	remove comment as we fix it
-	fix commit subject
+Hi Jean-Christophe,
 
-Best Regards,
-J.
- include/driver.h |    5 ++---
- 1 files changed, 2 insertions(+), 3 deletions(-)
+On Fri, Aug 27, 2010 at 07:49:16AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> as autoconf.h is store in include/generated and not include/linux anymore
 
-diff --git a/include/driver.h b/include/driver.h
-index ae3e777..ee0749d 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -69,12 +69,11 @@ struct device_d {
- 	 * something like eth0 or nor0. */
- 	int id;
- 
--	/*! FIXME */
--	unsigned long size;
-+	resource_size_t size;
- 
- 	/*! For devices which are directly mapped into memory, i.e. NOR
- 	 * Flash or SDRAM. */
--	unsigned long map_base;
-+	resource_size_t map_base;
- 
- 	void *platform_data; /*! board specific information about this device */
- 
+This log entry seems to belong to the next patch in this series.
+
+baruch
+
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  scripts/basic/fixdep.c |   55 ++++++++++++++++++++++++++---------------------
+>  1 files changed, 30 insertions(+), 25 deletions(-)
+
 -- 
-1.7.1
-
+                                                     ~. .~   Tk Open Systems
+=}------------------------------------------------ooO--U--Ooo------------{=
+   - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
 
 _______________________________________________
 barebox mailing list
