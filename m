@@ -1,11 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 63.mail-out.ovh.net ([91.121.185.56])
-	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1Op1UH-0002fV-76
-	for barebox@lists.infradead.org; Fri, 27 Aug 2010 16:09:06 +0000
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 27 Aug 2010 18:08:42 +0200
-Message-Id: <1282925322-11622-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from mail-ww0-f49.google.com ([74.125.82.49])
+	by bombadil.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1OpKJb-00045v-5N
+	for barebox@lists.infradead.org; Sat, 28 Aug 2010 12:15:19 +0000
+Received: by wwb24 with SMTP id 24so833838wwb.18
+	for <barebox@lists.infradead.org>; Sat, 28 Aug 2010 05:15:17 -0700 (PDT)
+MIME-Version: 1.0
+Date: Sat, 28 Aug 2010 17:45:17 +0530
+Message-ID: <AANLkTikVJ7wU7neSsep=OG23tstrv4f=LpQ_YptFu1Cd@mail.gmail.com>
+From: Nataraj S Narayan <natarajsn@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,117 +17,64 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============1195607123=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] types.h: move _kernel_dev_t to include/linux/types.h
+Subject: Barebox: Nand flash
 To: barebox@lists.infradead.org
 
-no need to have a arch specific type
+--===============1195607123==
+Content-Type: multipart/alternative; boundary=0016367fba5c36156e048ee12f08
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- arch/arm/include/asm/posix_types.h      |    1 -
- arch/blackfin/include/asm/posix_types.h |    1 -
- arch/m68k/include/asm/posix_types.h     |    1 -
- arch/ppc/include/asm/posix_types.h      |    1 -
- arch/sandbox/include/asm/posix_types.h  |    1 -
- arch/x86/include/asm/posix_types.h      |    1 -
- include/linux/types.h                   |    2 ++
- 7 files changed, 2 insertions(+), 6 deletions(-)
+--0016367fba5c36156e048ee12f08
+Content-Type: text/plain; charset=ISO-8859-1
 
-diff --git a/arch/arm/include/asm/posix_types.h b/arch/arm/include/asm/posix_types.h
-index c412486..aee050e 100644
---- a/arch/arm/include/asm/posix_types.h
-+++ b/arch/arm/include/asm/posix_types.h
-@@ -19,7 +19,6 @@
-  * assume GCC is being used.
-  */
- 
--typedef unsigned short		__kernel_dev_t;
- typedef unsigned long		__kernel_ino_t;
- typedef unsigned short		__kernel_mode_t;
- typedef unsigned short		__kernel_nlink_t;
-diff --git a/arch/blackfin/include/asm/posix_types.h b/arch/blackfin/include/asm/posix_types.h
-index 98397ca..bbf6e9c 100644
---- a/arch/blackfin/include/asm/posix_types.h
-+++ b/arch/blackfin/include/asm/posix_types.h
-@@ -34,7 +34,6 @@
-  * assume GCC is being used.
-  */
- 
--typedef unsigned short __kernel_dev_t;
- typedef unsigned long __kernel_ino_t;
- typedef unsigned short __kernel_mode_t;
- typedef unsigned short __kernel_nlink_t;
-diff --git a/arch/m68k/include/asm/posix_types.h b/arch/m68k/include/asm/posix_types.h
-index c40c41d..d83afe9 100644
---- a/arch/m68k/include/asm/posix_types.h
-+++ b/arch/m68k/include/asm/posix_types.h
-@@ -27,7 +27,6 @@
- #define __ARCH_M68K_POSIX_TYPES_H
- 
- 
--typedef unsigned short		__kernel_dev_t;
- typedef unsigned long		__kernel_ino_t;
- typedef unsigned short		__kernel_mode_t;
- typedef unsigned short		__kernel_nlink_t;
-diff --git a/arch/ppc/include/asm/posix_types.h b/arch/ppc/include/asm/posix_types.h
-index 9170728..a7af406 100644
---- a/arch/ppc/include/asm/posix_types.h
-+++ b/arch/ppc/include/asm/posix_types.h
-@@ -7,7 +7,6 @@
-  * assume GCC is being used.
-  */
- 
--typedef unsigned int	__kernel_dev_t;
- typedef unsigned int	__kernel_ino_t;
- typedef unsigned int	__kernel_mode_t;
- typedef unsigned short	__kernel_nlink_t;
-diff --git a/arch/sandbox/include/asm/posix_types.h b/arch/sandbox/include/asm/posix_types.h
-index 5dcc842..4345141 100644
---- a/arch/sandbox/include/asm/posix_types.h
-+++ b/arch/sandbox/include/asm/posix_types.h
-@@ -7,7 +7,6 @@
-  * assume GCC is being used.
-  */
- 
--typedef unsigned short	__kernel_dev_t;
- typedef unsigned long	__kernel_ino_t;
- typedef unsigned short	__kernel_mode_t;
- typedef unsigned short	__kernel_nlink_t;
-diff --git a/arch/x86/include/asm/posix_types.h b/arch/x86/include/asm/posix_types.h
-index a22f301..9278681 100644
---- a/arch/x86/include/asm/posix_types.h
-+++ b/arch/x86/include/asm/posix_types.h
-@@ -27,7 +27,6 @@
- #define _ASM_X86_POSIX_TYPES_H
- 
- typedef unsigned long	__kernel_ino_t;
--typedef unsigned short	__kernel_dev_t;
- typedef unsigned short	__kernel_mode_t;
- typedef unsigned short	__kernel_nlink_t;
- typedef long		__kernel_off_t;
-diff --git a/include/linux/types.h b/include/linux/types.h
-index 96e5708..2145b6d 100644
---- a/include/linux/types.h
-+++ b/include/linux/types.h
-@@ -6,6 +6,8 @@
- 
- #ifndef __KERNEL_STRICT_NAMES
- 
-+typedef __u32 __kernel_dev_t;
-+
- typedef __kernel_fd_set		fd_set;
- typedef __kernel_dev_t		dev_t;
- typedef __kernel_ino_t		ino_t;
--- 
-1.7.1
+Hi
 
+on commit a74a26f25477ec65229a57ca15e0f2c56396c69a
+
+I don't find nand0.rootfs.
+
+9263-EK:/  ls /dev/
+
+/dev/zero           /dev/defaultenv     /dev/mem
+/dev/ram0           /dev/nand0          /dev/nand_oob0
+/dev/phy0           /dev/self_raw       /dev/self0
+/dev/env_raw        /dev/env0
+
+
+Am I missing anything?
+
+
+regards
+
+Nataraj
+
+--0016367fba5c36156e048ee12f08
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+Hi<br><br>on commit a74a26f25477ec65229a57ca15e0f2c56396c69a<br><br>I don&#=
+39;t find nand0.rootfs.<br><br>9263-EK:/=A0 ls /dev/<br><br>/dev/zero=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0 /dev/defaultenv=A0=A0=A0=A0 /dev/mem <br>/dev/ram0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 /dev/nand0=A0=A0=A0=A0=A0=A0=A0=A0=A0 /dev/n=
+and_oob0 <br>
+/dev/phy0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 /dev/self_raw=A0=A0=A0=A0=A0=A0 /de=
+v/self0 <br>/dev/env_raw=A0=A0=A0=A0=A0=A0=A0 /dev/env0=A0 <br><br><br>Am I=
+ missing anything?<br><br><br>regards<br><br>Nataraj<br>
+
+--0016367fba5c36156e048ee12f08--
+
+
+--===============1195607123==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============1195607123==--
