@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OpM9y-0007fu-7P
-	for barebox@lists.infradead.org; Sat, 28 Aug 2010 14:13:31 +0000
-Date: Sat, 28 Aug 2010 16:13:26 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20100828141326.GH1473@pengutronix.de>
-References: <AANLkTikVJ7wU7neSsep=OG23tstrv4f=LpQ_YptFu1Cd@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <AANLkTikVJ7wU7neSsep=OG23tstrv4f=LpQ_YptFu1Cd@mail.gmail.com>
+Received: from 29.mail-out.ovh.net ([87.98.216.213])
+	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1OpavT-0005UW-1M
+	for barebox@lists.infradead.org; Sun, 29 Aug 2010 05:59:32 +0000
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Sun, 29 Aug 2010 07:52:25 +0200
+Message-Id: <1283061145-27417-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,48 +14,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Barebox: Nand flash
-To: Nataraj S Narayan <natarajsn@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] module: move EXPORT_SYMBOL_GPL define to module.h
+To: barebox@lists.infradead.org
 
-On Sat, Aug 28, 2010 at 05:45:17PM +0530, Nataraj S Narayan wrote:
-> Hi
-> 
-> on commit a74a26f25477ec65229a57ca15e0f2c56396c69a
-> 
-> I don't find nand0.rootfs.
-> 
-> 9263-EK:/  ls /dev/
-> 
-> /dev/zero           /dev/defaultenv     /dev/mem
-> /dev/ram0           /dev/nand0          /dev/nand_oob0
-> /dev/phy0           /dev/self_raw       /dev/self0
-> /dev/env_raw        /dev/env0
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ drivers/mtd/ubi/ubi-barebox.h |    1 -
+ include/module.h              |    4 ++++
+ 2 files changed, 4 insertions(+), 1 deletions(-)
 
-/dev/nand0 is there, so there's only partitioning missing. Try something
-like
-
-addpart /dev/nand0 256k(barebox),256k(bareboxenv),2M(kernel),-(rootfs)
-nand -a /dev/nand0.*
-
-Normally your environment does this for you.
-
-Note that /dev/nand0.rootfs is not intended for direct use, instead use
-/dev/nand0.rootfs.bb. The .bb devices automatically skip bad blocks
-while writing on it or reading from it.
-
-Regards,
-  Sascha
-
+diff --git a/drivers/mtd/ubi/ubi-barebox.h b/drivers/mtd/ubi/ubi-barebox.h
+index 84c589f..d23228f 100644
+--- a/drivers/mtd/ubi/ubi-barebox.h
++++ b/drivers/mtd/ubi/ubi-barebox.h
+@@ -172,7 +172,6 @@ struct cdev_ {
+ #define module_put(...)		do { } while (0)
+ #define module_init(...)
+ #define module_exit(...)
+-#define EXPORT_SYMBOL_GPL(...)
+ #define module_param_call(...)
+ #define MODULE_PARM_DESC(...)
+ #define MODULE_VERSION(...)
+diff --git a/include/module.h b/include/module.h
+index 9d0e803..228a543 100644
+--- a/include/module.h
++++ b/include/module.h
+@@ -36,6 +36,9 @@ struct module * load_module(void *mod_image, unsigned long len);
+ #define EXPORT_SYMBOL(sym)					\
+ 	__EXPORT_SYMBOL(sym, "")
+ 
++#define EXPORT_SYMBOL_GPL(sym)					\
++	__EXPORT_SYMBOL(sym, "")
++
+ struct module {
+ 	/* Unique handle for this module */
+ 	char name[MODULE_NAME_LEN];
+@@ -71,6 +74,7 @@ int apply_relocate_add(Elf_Shdr *sechdrs,
+ 		       struct module *mod);
+ #else
+ #define EXPORT_SYMBOL(sym)
++#define EXPORT_SYMBOL_GPL(sym)
+ #endif /* CONFIG_MODULES */
+ 
+ extern struct list_head module_list;
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.1
+
 
 _______________________________________________
 barebox mailing list
