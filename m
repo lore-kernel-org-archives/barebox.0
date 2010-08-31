@@ -1,25 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail.coresystems.de ([80.81.252.135])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OqW9r-0004hr-97
-	for barebox@lists.infradead.org; Tue, 31 Aug 2010 19:06:15 +0000
-Received: from hsi-kbw-095-208-161-019.hsi5.kabel-badenwuerttemberg.de
-	([95.208.161.19] helo=macpro.fritz.box)
-	by ra.coresystems.de with esmtpsa (TLSv1:CAMELLIA256-SHA:256)
-	(Exim 4.72) (envelope-from <stepan@coresystems.de>)
-	id 1OqW9j-0001e8-0e
-	for barebox@lists.infradead.org; Tue, 31 Aug 2010 21:06:04 +0200
-Message-ID: <4C7D5299.2060503@coresystems.de>
-Date: Tue, 31 Aug 2010 21:06:01 +0200
-From: Stefan Reinauer <stepan@coresystems.de>
+	id 1OqWCo-0000oD-1e
+	for barebox@lists.infradead.org; Tue, 31 Aug 2010 19:09:14 +0000
+Message-ID: <4C7D5354.7000702@coresystems.de>
+Date: Tue, 31 Aug 2010 21:09:08 +0200
+From: Stefan Reinauer <stefan.reinauer@coresystems.de>
 MIME-Version: 1.0
 References: <4C7CD898.9040902@coresystems.de>
-	<20100831131817.GA1883@game.jcrosoft.org>
-	<4C7D08A3.8000505@coresystems.de>
-	<20100831151819.GA22790@game.jcrosoft.org>
-	<4C7D26FF.2030706@coresystems.de>
-	<20100831170814.GC22790@game.jcrosoft.org>
-In-Reply-To: <20100831170814.GC22790@game.jcrosoft.org>
+	<201008311745.27052.jbe@pengutronix.de>
+In-Reply-To: <201008311745.27052.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -33,27 +23,64 @@ Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: barebox on x86
-To: barebox@lists.infradead.org
+To: Juergen Beisert <jbe@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
- On 8/31/10 7:08 PM, Jean-Christophe PLAGNIOL-VILLARD wrote:
->>> I build it on MacOS too
->>>
->> How did you overcome the programs in scripts/ using Linux system headers
->> that are not there with HOSTCC (even with a Linux cross toolchain)?
-> the tool chain provive it and it's the same for compiling the kernel on MacOS
+ On 8/31/10 5:45 PM, Juergen Beisert wrote:
+> Hi Stefan,
+>
+> Stefan Reinauer wrote:
+>> here's some initial work on getting barebox working on x86 (again?).
+>>
+>> The patch is very ugly, and it makes some assumptions on me using
+>> Darwin/Mac OS X to compile barebox.
+>> What kind of becomes clear though, is that there is no clear distinction
+>> between which set of headers are used for the user space utilities and
+>> which set of headers are used for the barebox binary. I think that's the
+>> reason why barebox features an include/linux directory which seems to
+>> duplicate about half of what Linux usually has in there, but more than
+>> barebox uses (or should use, ftm).
+>>
+>> With the attached patch I get as far as the linking stage.
+>>
+>>> i386-elf-ld -Map barebox.map -o barebox -T arch/x86/lib/barebox.lds
+>> --start-group common/built-in.o drivers/built-in.o commands/built-in.o
+>> lib/built-in.o net/built-in.o fs/built-in.o
+>> arch/x86/boards/x86_generic/built-in.o arch/x86/mach-i386/built-in.o
+>> arch/x86/lib/built-in.o arch/x86/boot/built-in.o --end-group
+>>
+>> When I define CONFIG_X86_HDBOOT
+>> I get:
+>>
+>> i386-elf-ld: barebox section `.initcall.8' will not fit in region `mbr'
+>> i386-elf-ld: section .initcall.8 loaded at
+>> [0000000000000400,000000000000040b] overlaps section .bootstrapping
+>> loaded at [0000000000000400,00000000000008e7]
+>> i386-elf-ld: region `mbr' overflowed by 12 bytes
+> -> MBR -> 16 Bit boot loader.
 
-Hm... maybe I need a different host toolchain on MacOS then?
+Yes, I wanted to compile the "known working" version first, but it seems
+to choke on the "late_initcall" mechanism somehow.
 
-I am using Xcode 3.2.2, i.e. gcc version 4.2.1 (Apple Inc. build 5659)
-for the host parts - that's those not intended for the target but for
-running on MacOS during the build process, like setupmbr, mk_elfconfig
-and modpost. And that toolchain does for example not come with an elf.h
-header file (mostly because ELF is not used on MacOS). For obvious
-reasons, the target compiler's (cross compiler) include files are taboo
-for compiling the host programs.
+>> If I choose "native", I get
+>>
+>> arch/x86/lib/barebox.lds:124: nonconstant expression for load base
+> The 'native' case is not finished yet. It does not use any 16 bit code nor 
+> BIOS calls. But need adaptions to get some vital information about the system 
+> (for example memory size).
+Ok, will try to figure this one out.
 
-Best regards,
-Stefan
+>> Since barebox is not really specialized in doing complex hardware
+>> initialization like it's needed on x86 machines, and coreboot is not
+>> really specialized in providing any kind of user interface I would like
+>> to work on making barebox available as a coreboot payload. For that I
+>> need to produce an ELF file that does no BIOS calls because coreboot is
+>> not a BIOS or UEFI but only does the most necessary hardware
+>> initialization on x86 systems.
+> The 'native' case is the correct direction to get it work with coreboot.
+
+Great! That's what I assumed. Thanks for the input.
+
 
 _______________________________________________
 barebox mailing list
