@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 27.mail-out.ovh.net ([91.121.30.210])
-	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OqQjg-0003b3-HL
-	for barebox@lists.infradead.org; Tue, 31 Aug 2010 13:18:51 +0000
-Date: Tue, 31 Aug 2010 15:18:17 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20100831131817.GA1883@game.jcrosoft.org>
-References: <4C7CD898.9040902@coresystems.de>
+Received: from mail.coresystems.de ([80.81.252.135])
+	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1OqREY-0004rK-Tc
+	for barebox@lists.infradead.org; Tue, 31 Aug 2010 13:50:48 +0000
+Message-ID: <4C7D08A3.8000505@coresystems.de>
+Date: Tue, 31 Aug 2010 15:50:27 +0200
+From: Stefan Reinauer <stepan@coresystems.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <4C7CD898.9040902@coresystems.de>
+References: <4C7CD898.9040902@coresystems.de>
+	<20100831131817.GA1883@game.jcrosoft.org>
+In-Reply-To: <20100831131817.GA1883@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,30 +23,26 @@ Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: barebox on x86
-To: Stefan Reinauer <stefan.reinauer@coresystems.de>
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On 12:25 Tue 31 Aug     , Stefan Reinauer wrote:
->  Hi,
-> 
-> here's some initial work on getting barebox working on x86 (again?).
-> 
-> The patch is very ugly, and it makes some assumptions on me using
-> Darwin/Mac OS X to compile barebox.
-> What kind of becomes clear though, is that there is no clear distinction
-> between which set of headers are used for the user space utilities and
-> which set of headers are used for the barebox binary. I think that's the
-> reason why barebox features an include/linux directory which seems to
-> duplicate about half of what Linux usually has in there, but more than
-> barebox uses (or should use, ftm).
-> 
-> With the attached patch I get as far as the linking stage.
-why do you touch it?
-barebox is self content so I do not understand why you do such modificaton
-specially uf we are supposed to do crosscompile
+ Hi Jean-Christophe,
 
-Best Regards,
-J.
+On 8/31/10 3:18 PM, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> why do you touch it?
+Sorry, touch _what_ in particular?
+
+> barebox is self content so I do not understand why you do such modificaton
+> specially uf we are supposed to do crosscompile
+>
+Unfortunately that assumption is wrong, at least for the x86 target.
+Almost all my patch does is trying to fix exactly that (along with
+dropping the requirement to use Linux on the host side)
+
+And, yes, I am using an i386-elf- cross compiler.
+
+Best regards,
+Stefan
 
 _______________________________________________
 barebox mailing list
