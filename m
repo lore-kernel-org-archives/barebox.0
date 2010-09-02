@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from 26.mail-out.ovh.net ([91.121.27.225])
 	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OrAWG-0008Lq-38
-	for barebox@lists.infradead.org; Thu, 02 Sep 2010 14:12:01 +0000
+	id 1OrAWC-0008Kk-Ng
+	for barebox@lists.infradead.org; Thu, 02 Sep 2010 14:12:00 +0000
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu,  2 Sep 2010 16:10:16 +0200
-Message-Id: <1283436624-29567-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Thu,  2 Sep 2010 16:10:18 +0200
+Message-Id: <1283436624-29567-3-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <20100902141001.GA28968@game.jcrosoft.org>
 References: <20100902141001.GA28968@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
@@ -21,107 +21,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/9] types.h: move __kernel_dev_t to include/linux/types.h
+Subject: [PATCH 3/9] stm8815: fix the uart device clock match
 To: barebox@lists.infradead.org
 
-no need to have a arch specific type
+that use the device name + id to found it's clock
+to use the right match as we fix the dev_name macro
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/include/asm/posix_types.h      |    1 -
- arch/blackfin/include/asm/posix_types.h |    1 -
- arch/m68k/include/asm/posix_types.h     |    1 -
- arch/ppc/include/asm/posix_types.h      |    1 -
- arch/sandbox/include/asm/posix_types.h  |    1 -
- arch/x86/include/asm/posix_types.h      |    1 -
- include/linux/types.h                   |    2 ++
- 7 files changed, 2 insertions(+), 6 deletions(-)
+ arch/arm/mach-nomadik/8815.c |    6 ++++--
+ 1 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/include/asm/posix_types.h b/arch/arm/include/asm/posix_types.h
-index c412486..aee050e 100644
---- a/arch/arm/include/asm/posix_types.h
-+++ b/arch/arm/include/asm/posix_types.h
-@@ -19,7 +19,6 @@
-  * assume GCC is being used.
-  */
+diff --git a/arch/arm/mach-nomadik/8815.c b/arch/arm/mach-nomadik/8815.c
+index 8598f14..faeded4 100644
+--- a/arch/arm/mach-nomadik/8815.c
++++ b/arch/arm/mach-nomadik/8815.c
+@@ -50,12 +50,14 @@ void st8815_add_device_sdram(u32 size)
+ }
  
--typedef unsigned short		__kernel_dev_t;
- typedef unsigned long		__kernel_ino_t;
- typedef unsigned short		__kernel_mode_t;
- typedef unsigned short		__kernel_nlink_t;
-diff --git a/arch/blackfin/include/asm/posix_types.h b/arch/blackfin/include/asm/posix_types.h
-index 98397ca..bbf6e9c 100644
---- a/arch/blackfin/include/asm/posix_types.h
-+++ b/arch/blackfin/include/asm/posix_types.h
-@@ -34,7 +34,6 @@
-  * assume GCC is being used.
-  */
+ static struct device_d uart0_serial_device = {
++	.id = 0,
+ 	.name = "uart-pl011",
+ 	.map_base = NOMADIK_UART0_BASE,
+ 	.size = 4096,
+ };
  
--typedef unsigned short __kernel_dev_t;
- typedef unsigned long __kernel_ino_t;
- typedef unsigned short __kernel_mode_t;
- typedef unsigned short __kernel_nlink_t;
-diff --git a/arch/m68k/include/asm/posix_types.h b/arch/m68k/include/asm/posix_types.h
-index c40c41d..d83afe9 100644
---- a/arch/m68k/include/asm/posix_types.h
-+++ b/arch/m68k/include/asm/posix_types.h
-@@ -27,7 +27,6 @@
- #define __ARCH_M68K_POSIX_TYPES_H
- 
- 
--typedef unsigned short		__kernel_dev_t;
- typedef unsigned long		__kernel_ino_t;
- typedef unsigned short		__kernel_mode_t;
- typedef unsigned short		__kernel_nlink_t;
-diff --git a/arch/ppc/include/asm/posix_types.h b/arch/ppc/include/asm/posix_types.h
-index 9170728..a7af406 100644
---- a/arch/ppc/include/asm/posix_types.h
-+++ b/arch/ppc/include/asm/posix_types.h
-@@ -7,7 +7,6 @@
-  * assume GCC is being used.
-  */
- 
--typedef unsigned int	__kernel_dev_t;
- typedef unsigned int	__kernel_ino_t;
- typedef unsigned int	__kernel_mode_t;
- typedef unsigned short	__kernel_nlink_t;
-diff --git a/arch/sandbox/include/asm/posix_types.h b/arch/sandbox/include/asm/posix_types.h
-index 5dcc842..4345141 100644
---- a/arch/sandbox/include/asm/posix_types.h
-+++ b/arch/sandbox/include/asm/posix_types.h
-@@ -7,7 +7,6 @@
-  * assume GCC is being used.
-  */
- 
--typedef unsigned short	__kernel_dev_t;
- typedef unsigned long	__kernel_ino_t;
- typedef unsigned short	__kernel_mode_t;
- typedef unsigned short	__kernel_nlink_t;
-diff --git a/arch/x86/include/asm/posix_types.h b/arch/x86/include/asm/posix_types.h
-index a22f301..9278681 100644
---- a/arch/x86/include/asm/posix_types.h
-+++ b/arch/x86/include/asm/posix_types.h
-@@ -27,7 +27,6 @@
- #define _ASM_X86_POSIX_TYPES_H
- 
- typedef unsigned long	__kernel_ino_t;
--typedef unsigned short	__kernel_dev_t;
- typedef unsigned short	__kernel_mode_t;
- typedef unsigned short	__kernel_nlink_t;
- typedef long		__kernel_off_t;
-diff --git a/include/linux/types.h b/include/linux/types.h
-index 96e5708..2145b6d 100644
---- a/include/linux/types.h
-+++ b/include/linux/types.h
-@@ -6,6 +6,8 @@
- 
- #ifndef __KERNEL_STRICT_NAMES
- 
-+typedef __u32 __kernel_dev_t;
-+
- typedef __kernel_fd_set		fd_set;
- typedef __kernel_dev_t		dev_t;
- typedef __kernel_ino_t		ino_t;
+ static struct device_d uart1_serial_device = {
++	.id = 1,
+ 	.name = "uart-pl011",
+ 	.map_base = NOMADIK_UART1_BASE,
+ 	.size = 4096,
+@@ -65,12 +67,12 @@ void st8815_register_uart(unsigned id)
+ {
+ 	switch (id) {
+ 	case 0:
+-		nmdk_clk_create(&st8815_clk_48, uart0_serial_device.name);
+ 		register_device(&uart0_serial_device);
++		nmdk_clk_create(&st8815_clk_48, dev_name(&uart0_serial_device));
+ 		break;
+ 	case 1:
+-		nmdk_clk_create(&st8815_clk_48, uart1_serial_device.name);
+ 		register_device(&uart1_serial_device);
++		nmdk_clk_create(&st8815_clk_48, dev_name(&uart0_serial_device));
+ 		break;
+ 	}
+ }
 -- 
 1.7.1
 
