@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 63.mail-out.ovh.net ([91.121.185.56])
+Received: from 64.mail-out.ovh.net ([91.121.185.65])
 	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OrAVM-00083Q-5M
+	id 1OrAVN-00083J-21
 	for barebox@lists.infradead.org; Thu, 02 Sep 2010 14:11:05 +0000
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu,  2 Sep 2010 16:10:22 +0200
-Message-Id: <1283436624-29567-7-git-send-email-plagnioj@jcrosoft.com>
+Date: Thu,  2 Sep 2010 16:10:24 +0200
+Message-Id: <1283436624-29567-9-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <20100902141001.GA28968@game.jcrosoft.org>
 References: <20100902141001.GA28968@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
@@ -21,36 +21,79 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/9] cfi_flash: use %W and IEEE 1541 format
+Subject: [PATCH 9/9] clkdev: add print clk info command
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- drivers/nor/cfi_flash.c |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
+ commands/Kconfig     |    7 +++++++
+ drivers/clk/clkdev.c |   33 +++++++++++++++++++++++++++++++++
+ 2 files changed, 40 insertions(+), 0 deletions(-)
 
-diff --git a/drivers/nor/cfi_flash.c b/drivers/nor/cfi_flash.c
-index fa5e5ee..cbca368 100644
---- a/drivers/nor/cfi_flash.c
-+++ b/drivers/nor/cfi_flash.c
-@@ -713,7 +713,7 @@ static void cfi_info (struct device_d* dev)
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 57c9b75..f20c2e1 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -338,4 +338,11 @@ config CMD_I2C
+ 	  include i2c_probe, i2c_read and i2c_write commands to communicate
+ 	  on i2c bus.
  
- 	printf ("CFI conformant FLASH (%d x %d)",
- 		(info->portwidth << 3), (info->chipwidth << 3));
--	printf ("  Size: %ld MB in %d Sectors\n",
-+	printf ("  Size: %WiB in %d Sectors\n",
- 		info->size >> 20, info->sector_count);
- 	printf ("  ");
- 	switch (info->vendor) {
-@@ -1036,7 +1036,7 @@ static int cfi_probe (struct device_d *dev)
- 	}
++config CMD_CLOCK_INFO
++	bool
++	depends on LOOKUP_CLKDEV
++	prompt "clock info command"
++	help
++	  shop list of registered clock
++
+ endmenu
+diff --git a/drivers/clk/clkdev.c b/drivers/clk/clkdev.c
+index 717fea5..d78d3e0 100644
+--- a/drivers/clk/clkdev.c
++++ b/drivers/clk/clkdev.c
+@@ -11,6 +11,7 @@
+  */
  
- 	if (info->flash_id == FLASH_UNKNOWN) {
--		printf ("## Unknown FLASH on Bank at 0x%08x - Size = 0x%08lx = %ld MB\n",
-+		printf ("## Unknown FLASH on Bank at 0x%08x - Size = 0x%08lx = %WiB\n",
- 			dev->map_base, info->size, info->size << 20);
- 		return -ENODEV;
- 	}
+ #include <common.h>
++#include <command.h>
+ #include <linux/list.h>
+ #include <errno.h>
+ #include <linux/err.h>
+@@ -166,3 +167,35 @@ void clkdev_drop(struct clk_lookup *cl)
+ 	kfree(cl);
+ }
+ EXPORT_SYMBOL(clkdev_drop);
++
++#ifdef CONFIG_CMD_CLOCK_INFO
++static int do_clock_info(struct command *cmdtp, int argc, char *argv[])
++{
++	struct clk_lookup *p;
++
++	puts("Clocks\n");
++
++	list_for_each_entry(p, &clocks, node)
++		if (!p->dev_id)
++			printf("%s: %wHz\n", p->con_id, clk_get_rate(p->clk));
++
++	puts("Clocks for dev\n");
++
++	list_for_each_entry(p, &clocks, node)
++		if (p->dev_id)
++			printf("%s[%s]: %wHz\n", p->con_id, p->dev_id,
++					       clk_get_rate(p->clk));
++
++	return 0;
++}
++
++static const __maybe_unused char cmd_clock_info_help[] =
++"Print clocks info\n"
++;
++
++BAREBOX_CMD_START(clock_info)
++	.cmd		= do_clock_info,
++	.usage		= "Clocks Info",
++	BAREBOX_CMD_HELP(cmd_clock_info_help)
++BAREBOX_CMD_END
++#endif
 -- 
 1.7.1
 
