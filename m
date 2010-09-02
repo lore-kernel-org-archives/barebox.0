@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 63.mail-out.ovh.net ([91.121.185.56])
+Received: from 31.mail-out.ovh.net ([213.186.62.10])
 	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OrAVK-00082P-O0
-	for barebox@lists.infradead.org; Thu, 02 Sep 2010 14:11:04 +0000
+	id 1OrAVL-00082d-GE
+	for barebox@lists.infradead.org; Thu, 02 Sep 2010 14:11:05 +0000
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu,  2 Sep 2010 16:10:23 +0200
-Message-Id: <1283436624-29567-8-git-send-email-plagnioj@jcrosoft.com>
+Date: Thu,  2 Sep 2010 16:10:21 +0200
+Message-Id: <1283436624-29567-6-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <20100902141001.GA28968@game.jcrosoft.org>
 References: <20100902141001.GA28968@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
@@ -21,158 +21,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 8/9] use %W instead of size_human_readable and use IEEE 1541
-	format
+Subject: [PATCH 6/9] at91/clock: switch to %w for clock info printing
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- commands/bootm.c      |    7 ++---
- common/startup.c      |    9 +++----
- include/common.h      |    1 -
- lib/Makefile          |    1 -
- lib/display_options.c |   60 -------------------------------------------------
- 5 files changed, 7 insertions(+), 71 deletions(-)
- delete mode 100644 lib/display_options.c
+ arch/arm/mach-at91/clock.c |    8 +++-----
+ 1 files changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/commands/bootm.c b/commands/bootm.c
-index 11325dc..ea6b5d7 100644
---- a/commands/bootm.c
-+++ b/commands/bootm.c
-@@ -552,11 +552,11 @@ print_image_hdr (image_header_t *hdr)
- 	printf ("   Image Type:   %s %s %s (%s)\n", image_arch(hdr), image_os(hdr),
- 			image_type(hdr), image_compression(hdr));
- #endif
--	printf ("   Data Size:    %d Bytes = %s\n"
-+	printf ("   Data Size:    %d Bytes = %WiB\n"
- 		"   Load Address: %08x\n"
- 		"   Entry Point:  %08x\n",
- 			ntohl(hdr->ih_size),
--			size_human_readable(ntohl(hdr->ih_size)),
-+			ntohl(hdr->ih_size),
- 			ntohl(hdr->ih_load),
- 			ntohl(hdr->ih_ep));
+diff --git a/arch/arm/mach-at91/clock.c b/arch/arm/mach-at91/clock.c
+index 6fd09d5..8d5547b 100644
+--- a/arch/arm/mach-at91/clock.c
++++ b/arch/arm/mach-at91/clock.c
+@@ -677,12 +677,10 @@ int at91_clock_init(unsigned long main_clock)
+ static int at91_clock_display(void)
+ {
+ 	if (pll_overclock)
+-		pr_info("Clocks: PLLA overclocked, %ld MHz\n", plla.rate_hz / 1000000);
++		pr_info("Clocks: PLLA overclocked, %wHz\n", plla.rate_hz);
  
-@@ -567,8 +567,7 @@ print_image_hdr (image_header_t *hdr)
+-	printf("Clocks: CPU %u MHz, master %u MHz, main %u.%03u MHz\n",
+-		mck.parent->rate_hz / 1000000, (unsigned) mck.rate_hz / 1000000,
+-		(unsigned) main_clk.rate_hz / 1000000,
+-		((unsigned) main_clk.rate_hz % 1000000) / 1000);
++	printf("Clocks: CPU %wHz, master %wHz, main %wHz\n",
++		mck.parent->rate_hz, mck.rate_hz, main_clk.rate_hz);
  
- 		puts ("   Contents:\n");
- 		for (i=0; (len = ntohl(*len_ptr)); ++i, ++len_ptr) {
--			printf ("   Image %d: %8ld Bytes = %s", i, len,
--				size_human_readable (len));
-+			printf ("   Image %d: %8ld Bytes = %WiB", i, len, len);
- 		}
- 	}
+ 	return 0;
  }
-diff --git a/common/startup.c b/common/startup.c
-index 2ed16fe..ff9da3a 100644
---- a/common/startup.c
-+++ b/common/startup.c
-@@ -52,12 +52,11 @@ static void display_meminfo(void)
- 
- 	debug("barebox code : 0x%08lX -> 0x%08lX  BSS: -> 0x%08lX\n",
- 	       _barebox_start, _bss_start, _bss_end);
--	printf("Malloc space: 0x%08lx -> 0x%08lx (size %s)\n",
--		mstart, mend, size_human_readable(msize));
-+	printf("Malloc space: 0x%08lx -> 0x%08lx (size %WiB)\n",
-+		mstart, mend, msize);
- #ifdef CONFIG_ARM
--	printf("Stack space : 0x%08lx -> 0x%08lx (size %s)\n",
--		STACK_BASE, STACK_BASE + STACK_SIZE,
--		size_human_readable(STACK_SIZE));
-+	printf("Stack space : 0x%08lx -> 0x%08lx (size %WiB)\n",
-+		STACK_BASE, STACK_BASE + STACK_SIZE, STACK_SIZE);
- #endif
- }
- 
-diff --git a/include/common.h b/include/common.h
-index 64f49db..fda04d4 100644
---- a/include/common.h
-+++ b/include/common.h
-@@ -95,7 +95,6 @@ void __noreturn panic(const char *fmt, ...);
- 
- /* */
- long int initdram (int);
--char *size_human_readable(ulong size);
- 
- /* common/main.c */
- int	run_command	(const char *cmd, int flag);
-diff --git a/lib/Makefile b/lib/Makefile
-index 8c5df08..e5a82fc 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -1,6 +1,5 @@
- obj-y			+= ctype.o
- obj-y			+= rbtree.o
--obj-y			+= display_options.o
- obj-y			+= ldiv.o
- obj-y			+= string.o
- obj-y			+= vsprintf.o
-diff --git a/lib/display_options.c b/lib/display_options.c
-deleted file mode 100644
-index 03f4f22..0000000
---- a/lib/display_options.c
-+++ /dev/null
-@@ -1,60 +0,0 @@
--/*
-- * (C) Copyright 2000-2002
-- * Wolfgang Denk, DENX Software Engineering, wd@denx.de.
-- *
-- * See file CREDITS for list of people who contributed to this
-- * project.
-- *
-- * This program is free software; you can redistribute it and/or
-- * modify it under the terms of the GNU General Public License as
-- * published by the Free Software Foundation; either version 2 of
-- * the License, or (at your option) any later version.
-- *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- *
-- * You should have received a copy of the GNU General Public License
-- * along with this program; if not, write to the Free Software
-- * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-- * MA 02111-1307 USA
-- */
--
--#include <common.h>
--
--/*
-- * return a pointer to a string containing the size
-- * as "xxx kB", "xxx.y kB", "xxx MB" or "xxx.y MB" as needed;
-- */
--char *size_human_readable(ulong size)
--{
--	static char buf[20];
--	ulong m, n;
--	ulong d = 1 << 20;		/* 1 MB */
--	char  c = 'M';
--	char *ptr = buf;
--
--	if (size < d) {			/* print in kB */
--		c = 'k';
--		d = 1 << 10;
--	}
--
--	n = size / d;
--
--	m = (10 * (size - (n * d)) + (d / 2) ) / d;
--
--	if (m >= 10) {
--		m -= 10;
--		n += 1;
--	}
--
--	ptr += sprintf(buf, "%2ld", n);
--	if (m) {
--		ptr += sprintf (ptr,".%ld", m);
--	}
--	sprintf(ptr, " %cB", c);
--
--	return buf;
--}
--EXPORT_SYMBOL(size_human_readable);
 -- 
 1.7.1
 
