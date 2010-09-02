@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OrDzg-0004Er-QM
-	for barebox@lists.infradead.org; Thu, 02 Sep 2010 17:54:41 +0000
-Date: Thu, 2 Sep 2010 19:54:32 +0200
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20100902175432.GT14214@pengutronix.de>
+Received: from 63.mail-out.ovh.net ([91.121.185.56])
+	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1OrFf0-00038d-Qq
+	for barebox@lists.infradead.org; Thu, 02 Sep 2010 19:41:23 +0000
+Date: Thu, 2 Sep 2010 21:40:46 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20100902194046.GA21449@game.jcrosoft.org>
 References: <20100902141001.GA28968@game.jcrosoft.org>
-	<1283436624-29567-5-git-send-email-plagnioj@jcrosoft.com>
-	<20100902152933.GQ14214@pengutronix.de>
-	<20100902153220.GR14214@pengutronix.de>
-	<20100902155421.GB28968@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20100902155421.GB28968@game.jcrosoft.org>
+In-Reply-To: <20100902141001.GA28968@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,79 +18,84 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 5/9] vsprintf: add %w and %w support to print unit
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/9 V2] preperation for sh adding
+To: barebox@lists.infradead.org
 
-On Thu, Sep 02, 2010 at 05:54:21PM +0200, Jean-Christophe PLAGNIOL-VILLARD =
-wrote:
-> On 17:32 Thu 02 Sep     , Uwe Kleine-K=F6nig wrote:
-> > Hello,
-> > =
+Hi,
 
-> > On Thu, Sep 02, 2010 at 05:29:33PM +0200, Uwe Kleine-K=F6nig wrote:
-> > > Hello Jean-Christophe,
-> > > =
+	this version 2
+	update the vsprintf by managing the iB internally and the Space
+	before the unit as optional
 
-> > > On Thu, Sep 02, 2010 at 04:10:20PM +0200, Jean-Christophe PLAGNIOL-VI=
-LLARD wrote:
-> > > > Show a '%w' or %W thing.
-> > > > This will show a frequency or byte at format xxx[.xxx] [ kMG]
-> > > > the precision can not excess the base kMG of the current unit
-> > > > otherwise it will be automatically reduce
-> > > > if no precision is specified and there is rest we will use a default
-> > > > precision of 3 as 66.667 M
-> > > > base will be typically 1000 for Hz or B and 1024 for iB
-> > > I see this used e.g. as:
-> > > =
+	the others comments was also fix
 
-> > > 	printk("%WiB", somevalue)
-> > > =
+The following changes since commit 0d35c3c8a0c2a1f1ff06eac20a12af0186753bc4:
 
-> > > right?  hmm, what if somevalue is say 5?  If I understand correctly t=
-he
-> > > output then is: "5 iB".
-> > [I forgot to complete this, sorry]
-> > =
+  menu: simplify usage for clients (2010-08-30 21:06:02 +0200)
 
-> > "5 iB" looks ugly, doesn't it?  Do you care enough to fix that?
-> After it's everyone preference
-> =
+are available in the git repository at:
+  git://git.jcrosoft.org/barebox.git sh-prepare
 
-> What do you think of
-> 100MHz
-> 100 MHz
-> =
+Jean-Christophe PLAGNIOL-VILLARD (9):
+      types.h: move __kernel_dev_t to include/linux/types.h
+      device: fix dev_name
+      stm8815: fix the uart device clock match
+      arm: move clkdev to drivers/clk
+      vsprintf: add %w and %w support to print unit
+      at91/clock: switch to %w for clock info printing
+      cfi_flash: use %W and IEEE 1541 format
+      use %W instead of size_human_readable and use IEEE 1541 format
+      clkdev: add print clk info command
 
-> 1 Hz
-> 1Hz
-> =
+ arch/arm/Kconfig                          |    1 -
+ arch/arm/Makefile                         |    2 +-
+ arch/arm/common/Kconfig                   |    2 -
+ arch/arm/common/Makefile                  |    5 --
+ arch/arm/configs/nhk8815_defconfig        |    2 +-
+ arch/arm/include/asm/clkdev.h             |   15 +-----
+ arch/arm/include/asm/posix_types.h        |    1 -
+ arch/arm/mach-at91/clock.c                |    8 +--
+ arch/arm/mach-nomadik/8815.c              |    6 +-
+ arch/arm/mach-nomadik/Kconfig             |    2 +-
+ arch/arm/mach-nomadik/clock.c             |    7 +--
+ arch/blackfin/include/asm/posix_types.h   |    1 -
+ arch/m68k/include/asm/posix_types.h       |    1 -
+ arch/ppc/include/asm/posix_types.h        |    1 -
+ arch/sandbox/include/asm/posix_types.h    |    1 -
+ arch/x86/include/asm/posix_types.h        |    1 -
+ commands/Kconfig                          |    7 ++
+ commands/bootm.c                          |    7 +-
+ common/startup.c                          |    9 +--
+ drivers/Kconfig                           |    1 +
+ drivers/Makefile                          |    1 +
+ drivers/clk/Kconfig                       |    4 +
+ drivers/clk/Makefile                      |    2 +
+ {arch/arm/common => drivers/clk}/clkdev.c |   57 +++++++++++++++---
+ drivers/nor/cfi_flash.c                   |    8 +-
+ include/common.h                          |    1 -
+ include/driver.h                          |   12 ++--
+ include/linux/clkdev.h                    |   36 +++++++++++
+ include/linux/kernel.h                    |   20 ++++++
+ include/linux/types.h                     |    2 +
+ lib/Makefile                              |    1 -
+ lib/display_options.c                     |   60 -------------------
+ lib/driver.c                              |   16 ++---
+ lib/vsprintf.c                            |   91 +++++++++++++++++++++++++++++
+ 34 files changed, 250 insertions(+), 141 deletions(-)
+ delete mode 100644 arch/arm/common/Kconfig
+ delete mode 100644 arch/arm/common/Makefile
+ create mode 100644 drivers/clk/Kconfig
+ create mode 100644 drivers/clk/Makefile
+ rename {arch/arm/common => drivers/clk}/clkdev.c (74%)
+ create mode 100644 include/linux/clkdev.h
+ delete mode 100644 lib/display_options.c
 
-> 100 MiB
-> 100MiB
-> =
-
-> 1iB
-> 1 iB
-> =
-
-> so which one?
-IMHO iB doesn't make sense.  What should be the difference to a plain B?
-
-And if "%WiB" yields 100MiB for 100*1024**2, it should yield 5B for 5
-but neither "5 iB" nor "5iB" nor "5 B".
-
-Best regards
-Uwe
-
--- =
-
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
