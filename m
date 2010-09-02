@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 31.mail-out.ovh.net ([213.186.62.10])
+Received: from 26.mail-out.ovh.net ([91.121.27.225])
 	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OrAVL-00082O-G8
-	for barebox@lists.infradead.org; Thu, 02 Sep 2010 14:11:04 +0000
+	id 1OrAWG-0008Lq-38
+	for barebox@lists.infradead.org; Thu, 02 Sep 2010 14:12:01 +0000
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu,  2 Sep 2010 16:10:20 +0200
-Message-Id: <1283436624-29567-5-git-send-email-plagnioj@jcrosoft.com>
+Date: Thu,  2 Sep 2010 16:10:16 +0200
+Message-Id: <1283436624-29567-1-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <20100902141001.GA28968@game.jcrosoft.org>
 References: <20100902141001.GA28968@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
@@ -21,145 +21,107 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/9] vsprintf: add %w and %w support to print unit
+Subject: [PATCH 1/9] types.h: move __kernel_dev_t to include/linux/types.h
 To: barebox@lists.infradead.org
 
-Show a '%w' or %W thing.
-This will show a frequency or byte at format xxx[.xxx] [ kMG]
-the precision can not excess the base kMG of the current unit
-otherwise it will be automatically reduce
-if no precision is specified and there is rest we will use a default
-precision of 3 as 66.667 M
-base will be typically 1000 for Hz or B and 1024 for iB
+no need to have a arch specific type
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- include/linux/kernel.h |   20 +++++++++++++
- lib/vsprintf.c         |   73 ++++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 93 insertions(+), 0 deletions(-)
+ arch/arm/include/asm/posix_types.h      |    1 -
+ arch/blackfin/include/asm/posix_types.h |    1 -
+ arch/m68k/include/asm/posix_types.h     |    1 -
+ arch/ppc/include/asm/posix_types.h      |    1 -
+ arch/sandbox/include/asm/posix_types.h  |    1 -
+ arch/x86/include/asm/posix_types.h      |    1 -
+ include/linux/types.h                   |    2 ++
+ 7 files changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/include/linux/kernel.h b/include/linux/kernel.h
-index e9e2f07..b605946 100644
---- a/include/linux/kernel.h
-+++ b/include/linux/kernel.h
-@@ -5,6 +5,26 @@
- #include <linux/barebox-wrapper.h>
+diff --git a/arch/arm/include/asm/posix_types.h b/arch/arm/include/asm/posix_types.h
+index c412486..aee050e 100644
+--- a/arch/arm/include/asm/posix_types.h
++++ b/arch/arm/include/asm/posix_types.h
+@@ -19,7 +19,6 @@
+  * assume GCC is being used.
+  */
  
- /*
-+ * This looks more complex than it should be. But we need to
-+ * get the type for the ~ right in round_down (it needs to be
-+ * as wide as the result!), and we want to evaluate the macro
-+ * arguments just once each.
-+ */
-+#define __round_mask(x, y) ((__typeof__(x))((y)-1))
-+#define round_up(x, y) ((((x)-1) | __round_mask(x, y))+1)
-+#define round_down(x, y) ((x) & ~__round_mask(x, y))
-+
-+#define FIELD_SIZEOF(t, f) (sizeof(((t*)0)->f))
-+#define DIV_ROUND_UP(n,d) (((n) + (d) - 1) / (d))
-+#define roundup(x, y) ((((x) + ((y) - 1)) / (y)) * (y))
-+#define DIV_ROUND_CLOSEST(x, divisor)(			\
-+{							\
-+	typeof(divisor) __divisor = divisor;		\
-+	(((x) + ((__divisor) / 2)) / (__divisor));	\
-+}							\
-+)
-+
-+/*
-  * min()/max()/clamp() macros that also do
-  * strict type-checking.. See the
-  * "unnecessary" pointer comparison.
-diff --git a/lib/vsprintf.c b/lib/vsprintf.c
-index 6066845..add8bd5 100644
---- a/lib/vsprintf.c
-+++ b/lib/vsprintf.c
-@@ -254,6 +254,71 @@ static char *symbol_string(char *buf, char *end, void *ptr, int field_width, int
- }
+-typedef unsigned short		__kernel_dev_t;
+ typedef unsigned long		__kernel_ino_t;
+ typedef unsigned short		__kernel_mode_t;
+ typedef unsigned short		__kernel_nlink_t;
+diff --git a/arch/blackfin/include/asm/posix_types.h b/arch/blackfin/include/asm/posix_types.h
+index 98397ca..bbf6e9c 100644
+--- a/arch/blackfin/include/asm/posix_types.h
++++ b/arch/blackfin/include/asm/posix_types.h
+@@ -34,7 +34,6 @@
+  * assume GCC is being used.
+  */
  
- /*
-+ * Show a '%w' or %W thing.  This will show a frequency or byte
-+ * at format xxx[.xxx] [ kMG]
-+ * the precision can not excess the base kMG of the current unit
-+ * otherwise it will be automatically reduce
-+ * if no precision is specified and there is rest we will use a default
-+ * precision of 3 as 66.667 M
-+ * base will be typically 1000 for Hz or B and 1024 for iB
-+ */
-+static char *unit_string(char *buf, char *end, long val, int base, int field_width, int precision, int flags)
-+{
-+	long rest = 0;
-+	long integer;
-+	long pr = 3;
-+	long pr_mul = 1;
-+	long unit = 1;
-+	char format[] = " kMG";
-+	int pow, i;
-+
-+	for (pow = 0; pow < strlen(format) - 1; pow++) {
-+		if (val < unit * base)
-+			break;
-+		unit *= base;
-+	}
-+
-+	integer = val / unit;
-+
-+	if (precision != -1) {
-+		if (precision > pow * 3)
-+			precision = pow * 3;
-+		pr = precision;
-+	}
-+
-+	for (i = 0; i < pr; i++) {
-+		pr_mul *= 10;
-+	}
-+
-+	if (val % unit) {
-+		rest = DIV_ROUND_CLOSEST(pr_mul * (val - (integer * unit)), unit);
-+
-+		if (rest >= pr_mul) {
-+			rest -= pr_mul;
-+			integer++;
-+		}
-+	}
-+
-+	buf = number(buf, end, integer, 10, field_width, -1, 0);
-+
-+	if (rest != 0 || precision != -1) {
-+		if (buf < end)
-+			*buf = '.';
-+		buf++;
-+		buf = number(buf, end, rest, 10, -1, pr, 0);
-+	}
-+
-+	if (buf < end)
-+		*buf = ' ';
-+	buf++;
-+	if (buf < end && pow != 0)
-+		*buf = format[pow];
-+	buf++;
-+
-+	return buf;
-+}
-+
-+/*
-  * Show a '%p' thing.  A kernel extension is that the '%p' is followed
-  * by an extra set of alphanumeric characters that are extended format
-  * specifiers.
-@@ -421,6 +486,14 @@ int vsnprintf(char *buf, size_t size, const char *fmt, va_list args)
- 				str = string(str, end, va_arg(args, char *), field_width, precision, flags);
- 				continue;
+-typedef unsigned short __kernel_dev_t;
+ typedef unsigned long __kernel_ino_t;
+ typedef unsigned short __kernel_mode_t;
+ typedef unsigned short __kernel_nlink_t;
+diff --git a/arch/m68k/include/asm/posix_types.h b/arch/m68k/include/asm/posix_types.h
+index c40c41d..d83afe9 100644
+--- a/arch/m68k/include/asm/posix_types.h
++++ b/arch/m68k/include/asm/posix_types.h
+@@ -27,7 +27,6 @@
+ #define __ARCH_M68K_POSIX_TYPES_H
  
-+			case 'W':
-+				str = unit_string(str, end, va_arg(args, long), 1024, field_width, precision, flags);
-+				continue;
+ 
+-typedef unsigned short		__kernel_dev_t;
+ typedef unsigned long		__kernel_ino_t;
+ typedef unsigned short		__kernel_mode_t;
+ typedef unsigned short		__kernel_nlink_t;
+diff --git a/arch/ppc/include/asm/posix_types.h b/arch/ppc/include/asm/posix_types.h
+index 9170728..a7af406 100644
+--- a/arch/ppc/include/asm/posix_types.h
++++ b/arch/ppc/include/asm/posix_types.h
+@@ -7,7 +7,6 @@
+  * assume GCC is being used.
+  */
+ 
+-typedef unsigned int	__kernel_dev_t;
+ typedef unsigned int	__kernel_ino_t;
+ typedef unsigned int	__kernel_mode_t;
+ typedef unsigned short	__kernel_nlink_t;
+diff --git a/arch/sandbox/include/asm/posix_types.h b/arch/sandbox/include/asm/posix_types.h
+index 5dcc842..4345141 100644
+--- a/arch/sandbox/include/asm/posix_types.h
++++ b/arch/sandbox/include/asm/posix_types.h
+@@ -7,7 +7,6 @@
+  * assume GCC is being used.
+  */
+ 
+-typedef unsigned short	__kernel_dev_t;
+ typedef unsigned long	__kernel_ino_t;
+ typedef unsigned short	__kernel_mode_t;
+ typedef unsigned short	__kernel_nlink_t;
+diff --git a/arch/x86/include/asm/posix_types.h b/arch/x86/include/asm/posix_types.h
+index a22f301..9278681 100644
+--- a/arch/x86/include/asm/posix_types.h
++++ b/arch/x86/include/asm/posix_types.h
+@@ -27,7 +27,6 @@
+ #define _ASM_X86_POSIX_TYPES_H
+ 
+ typedef unsigned long	__kernel_ino_t;
+-typedef unsigned short	__kernel_dev_t;
+ typedef unsigned short	__kernel_mode_t;
+ typedef unsigned short	__kernel_nlink_t;
+ typedef long		__kernel_off_t;
+diff --git a/include/linux/types.h b/include/linux/types.h
+index 96e5708..2145b6d 100644
+--- a/include/linux/types.h
++++ b/include/linux/types.h
+@@ -6,6 +6,8 @@
+ 
+ #ifndef __KERNEL_STRICT_NAMES
+ 
++typedef __u32 __kernel_dev_t;
 +
-+			case 'w':
-+				str = unit_string(str, end, va_arg(args, long), 1000, field_width, precision, flags);
-+				continue;
-+
- 			case 'p':
- 				str = pointer(fmt+1, str, end,
- 						va_arg(args, void *),
+ typedef __kernel_fd_set		fd_set;
+ typedef __kernel_dev_t		dev_t;
+ typedef __kernel_ino_t		ino_t;
 -- 
 1.7.1
 
