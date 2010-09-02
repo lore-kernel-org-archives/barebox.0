@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 27.mail-out.ovh.net ([91.121.30.210])
+Received: from 68.mail-out.ovh.net ([91.121.185.69])
 	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OrFg8-0004yl-LK
+	id 1OrFg8-0004yG-He
 	for barebox@lists.infradead.org; Thu, 02 Sep 2010 19:42:34 +0000
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu,  2 Sep 2010 21:41:50 +0200
-Message-Id: <1283456510-28086-9-git-send-email-plagnioj@jcrosoft.com>
+Date: Thu,  2 Sep 2010 21:41:49 +0200
+Message-Id: <1283456510-28086-8-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <20100902194046.GA21449@game.jcrosoft.org>
 References: <20100902194046.GA21449@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
@@ -21,79 +21,158 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 9/9 V2] clkdev: add print clk info command
+Subject: [PATCH 8/9 V2] use %W instead of size_human_readable and use IEEE
+	1541 format
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- commands/Kconfig     |    7 +++++++
- drivers/clk/clkdev.c |   33 +++++++++++++++++++++++++++++++++
- 2 files changed, 40 insertions(+), 0 deletions(-)
+ commands/bootm.c      |    7 ++---
+ common/startup.c      |    9 +++----
+ include/common.h      |    1 -
+ lib/Makefile          |    1 -
+ lib/display_options.c |   60 -------------------------------------------------
+ 5 files changed, 7 insertions(+), 71 deletions(-)
+ delete mode 100644 lib/display_options.c
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 57c9b75..fe13f90 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -338,4 +338,11 @@ config CMD_I2C
- 	  include i2c_probe, i2c_read and i2c_write commands to communicate
- 	  on i2c bus.
+diff --git a/commands/bootm.c b/commands/bootm.c
+index 11325dc..cbdf55f 100644
+--- a/commands/bootm.c
++++ b/commands/bootm.c
+@@ -552,11 +552,11 @@ print_image_hdr (image_header_t *hdr)
+ 	printf ("   Image Type:   %s %s %s (%s)\n", image_arch(hdr), image_os(hdr),
+ 			image_type(hdr), image_compression(hdr));
+ #endif
+-	printf ("   Data Size:    %d Bytes = %s\n"
++	printf ("   Data Size:    %d Bytes = %WB\n"
+ 		"   Load Address: %08x\n"
+ 		"   Entry Point:  %08x\n",
+ 			ntohl(hdr->ih_size),
+-			size_human_readable(ntohl(hdr->ih_size)),
++			ntohl(hdr->ih_size),
+ 			ntohl(hdr->ih_load),
+ 			ntohl(hdr->ih_ep));
  
-+config CMD_CLOCK_INFO
-+	bool
-+	depends on CLKDEV_LOOKUP
-+	prompt "clock info command"
-+	help
-+	  show list of registered clock
-+
- endmenu
-diff --git a/drivers/clk/clkdev.c b/drivers/clk/clkdev.c
-index 717fea5..49d98df 100644
---- a/drivers/clk/clkdev.c
-+++ b/drivers/clk/clkdev.c
-@@ -11,6 +11,7 @@
-  */
+@@ -567,8 +567,7 @@ print_image_hdr (image_header_t *hdr)
  
- #include <common.h>
-+#include <command.h>
- #include <linux/list.h>
- #include <errno.h>
- #include <linux/err.h>
-@@ -166,3 +167,35 @@ void clkdev_drop(struct clk_lookup *cl)
- 	kfree(cl);
+ 		puts ("   Contents:\n");
+ 		for (i=0; (len = ntohl(*len_ptr)); ++i, ++len_ptr) {
+-			printf ("   Image %d: %8ld Bytes = %s", i, len,
+-				size_human_readable (len));
++			printf ("   Image %d: %8ld Bytes = %WB", i, len, len);
+ 		}
+ 	}
  }
- EXPORT_SYMBOL(clkdev_drop);
-+
-+#ifdef CONFIG_CMD_CLOCK_INFO
-+static int do_clock_info(struct command *cmdtp, int argc, char *argv[])
-+{
-+	struct clk_lookup *p;
-+
-+	puts("Global clocks:\n");
-+
-+	list_for_each_entry(p, &clocks, node)
-+		if (!p->dev_id)
-+			printf("%s: %#wHz\n", p->con_id, clk_get_rate(p->clk));
-+
-+	puts("Device specific clocks:\n");
-+
-+	list_for_each_entry(p, &clocks, node)
-+		if (p->dev_id)
-+			printf("%s[%s]: %#wHz\n", p->con_id, p->dev_id,
-+					       clk_get_rate(p->clk));
-+
-+	return 0;
-+}
-+
-+static const __maybe_unused char cmd_clock_info_help[] =
-+"Print clocks info\n"
-+;
-+
-+BAREBOX_CMD_START(clock_info)
-+	.cmd		= do_clock_info,
-+	.usage		= "Clocks Info",
-+	BAREBOX_CMD_HELP(cmd_clock_info_help)
-+BAREBOX_CMD_END
-+#endif
+diff --git a/common/startup.c b/common/startup.c
+index 2ed16fe..8e49bd2 100644
+--- a/common/startup.c
++++ b/common/startup.c
+@@ -52,12 +52,11 @@ static void display_meminfo(void)
+ 
+ 	debug("barebox code : 0x%08lX -> 0x%08lX  BSS: -> 0x%08lX\n",
+ 	       _barebox_start, _bss_start, _bss_end);
+-	printf("Malloc space: 0x%08lx -> 0x%08lx (size %s)\n",
+-		mstart, mend, size_human_readable(msize));
++	printf("Malloc space: 0x%08lx -> 0x%08lx (size %WB)\n",
++		mstart, mend, msize);
+ #ifdef CONFIG_ARM
+-	printf("Stack space : 0x%08lx -> 0x%08lx (size %s)\n",
+-		STACK_BASE, STACK_BASE + STACK_SIZE,
+-		size_human_readable(STACK_SIZE));
++	printf("Stack space : 0x%08lx -> 0x%08lx (size %WB)\n",
++		STACK_BASE, STACK_BASE + STACK_SIZE, STACK_SIZE);
+ #endif
+ }
+ 
+diff --git a/include/common.h b/include/common.h
+index 64f49db..fda04d4 100644
+--- a/include/common.h
++++ b/include/common.h
+@@ -95,7 +95,6 @@ void __noreturn panic(const char *fmt, ...);
+ 
+ /* */
+ long int initdram (int);
+-char *size_human_readable(ulong size);
+ 
+ /* common/main.c */
+ int	run_command	(const char *cmd, int flag);
+diff --git a/lib/Makefile b/lib/Makefile
+index 8c5df08..e5a82fc 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -1,6 +1,5 @@
+ obj-y			+= ctype.o
+ obj-y			+= rbtree.o
+-obj-y			+= display_options.o
+ obj-y			+= ldiv.o
+ obj-y			+= string.o
+ obj-y			+= vsprintf.o
+diff --git a/lib/display_options.c b/lib/display_options.c
+deleted file mode 100644
+index 03f4f22..0000000
+--- a/lib/display_options.c
++++ /dev/null
+@@ -1,60 +0,0 @@
+-/*
+- * (C) Copyright 2000-2002
+- * Wolfgang Denk, DENX Software Engineering, wd@denx.de.
+- *
+- * See file CREDITS for list of people who contributed to this
+- * project.
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+- * MA 02111-1307 USA
+- */
+-
+-#include <common.h>
+-
+-/*
+- * return a pointer to a string containing the size
+- * as "xxx kB", "xxx.y kB", "xxx MB" or "xxx.y MB" as needed;
+- */
+-char *size_human_readable(ulong size)
+-{
+-	static char buf[20];
+-	ulong m, n;
+-	ulong d = 1 << 20;		/* 1 MB */
+-	char  c = 'M';
+-	char *ptr = buf;
+-
+-	if (size < d) {			/* print in kB */
+-		c = 'k';
+-		d = 1 << 10;
+-	}
+-
+-	n = size / d;
+-
+-	m = (10 * (size - (n * d)) + (d / 2) ) / d;
+-
+-	if (m >= 10) {
+-		m -= 10;
+-		n += 1;
+-	}
+-
+-	ptr += sprintf(buf, "%2ld", n);
+-	if (m) {
+-		ptr += sprintf (ptr,".%ld", m);
+-	}
+-	sprintf(ptr, " %cB", c);
+-
+-	return buf;
+-}
+-EXPORT_SYMBOL(size_human_readable);
 -- 
 1.7.1
 
