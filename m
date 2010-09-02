@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OrBcY-0006YL-1r
-	for barebox@lists.infradead.org; Thu, 02 Sep 2010 15:22:35 +0000
-Date: Thu, 2 Sep 2010 17:22:31 +0200
+	id 1OrBjK-0007ns-L3
+	for barebox@lists.infradead.org; Thu, 02 Sep 2010 15:29:35 +0000
+Date: Thu, 2 Sep 2010 17:29:33 +0200
 From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20100902152231.GP14214@pengutronix.de>
+Message-ID: <20100902152933.GQ14214@pengutronix.de>
 References: <20100902141001.GA28968@game.jcrosoft.org>
-	<1283436624-29567-9-git-send-email-plagnioj@jcrosoft.com>
+	<1283436624-29567-5-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1283436624-29567-9-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1283436624-29567-5-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,88 +23,173 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 9/9] clkdev: add print clk info command
+Subject: Re: [PATCH 5/9] vsprintf: add %w and %w support to print unit
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, Sep 02, 2010 at 04:10:24PM +0200, Jean-Christophe PLAGNIOL-VILLARD =
+Hello Jean-Christophe,
+
+On Thu, Sep 02, 2010 at 04:10:20PM +0200, Jean-Christophe PLAGNIOL-VILLARD =
 wrote:
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  commands/Kconfig     |    7 +++++++
->  drivers/clk/clkdev.c |   33 +++++++++++++++++++++++++++++++++
->  2 files changed, 40 insertions(+), 0 deletions(-)
+> Show a '%w' or %W thing.
+> This will show a frequency or byte at format xxx[.xxx] [ kMG]
+> the precision can not excess the base kMG of the current unit
+> otherwise it will be automatically reduce
+> if no precision is specified and there is rest we will use a default
+> precision of 3 as 66.667 M
+> base will be typically 1000 for Hz or B and 1024 for iB
+I see this used e.g. as:
+
+	printk("%WiB", somevalue)
+
+right?  hmm, what if somevalue is say 5?  If I understand correctly the
+output then is: "5 iB".
+
 > =
 
-> diff --git a/commands/Kconfig b/commands/Kconfig
-> index 57c9b75..f20c2e1 100644
-> --- a/commands/Kconfig
-> +++ b/commands/Kconfig
-> @@ -338,4 +338,11 @@ config CMD_I2C
->  	  include i2c_probe, i2c_read and i2c_write commands to communicate
->  	  on i2c bus.
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  include/linux/kernel.h |   20 +++++++++++++
+>  lib/vsprintf.c         |   73 ++++++++++++++++++++++++++++++++++++++++++=
+++++++
+>  2 files changed, 93 insertions(+), 0 deletions(-)
+> =
+
+> diff --git a/include/linux/kernel.h b/include/linux/kernel.h
+> index e9e2f07..b605946 100644
+> --- a/include/linux/kernel.h
+> +++ b/include/linux/kernel.h
+> @@ -5,6 +5,26 @@
+>  #include <linux/barebox-wrapper.h>
 >  =
 
-> +config CMD_CLOCK_INFO
-> +	bool
-> +	depends on LOOKUP_CLKDEV
-> +	prompt "clock info command"
-> +	help
-> +	  shop list of registered clock
+>  /*
+> + * This looks more complex than it should be. But we need to
+> + * get the type for the ~ right in round_down (it needs to be
+> + * as wide as the result!), and we want to evaluate the macro
+> + * arguments just once each.
+> + */
+> +#define __round_mask(x, y) ((__typeof__(x))((y)-1))
+> +#define round_up(x, y) ((((x)-1) | __round_mask(x, y))+1)
+> +#define round_down(x, y) ((x) & ~__round_mask(x, y))
 > +
->  endmenu
-> diff --git a/drivers/clk/clkdev.c b/drivers/clk/clkdev.c
-> index 717fea5..d78d3e0 100644
-> --- a/drivers/clk/clkdev.c
-> +++ b/drivers/clk/clkdev.c
-> @@ -11,6 +11,7 @@
->   */
->  =
-
->  #include <common.h>
-> +#include <command.h>
->  #include <linux/list.h>
->  #include <errno.h>
->  #include <linux/err.h>
-> @@ -166,3 +167,35 @@ void clkdev_drop(struct clk_lookup *cl)
->  	kfree(cl);
+> +#define FIELD_SIZEOF(t, f) (sizeof(((t*)0)->f))
+> +#define DIV_ROUND_UP(n,d) (((n) + (d) - 1) / (d))
+> +#define roundup(x, y) ((((x) + ((y) - 1)) / (y)) * (y))
+> +#define DIV_ROUND_CLOSEST(x, divisor)(			\
+> +{							\
+> +	typeof(divisor) __divisor =3D divisor;		\
+> +	(((x) + ((__divisor) / 2)) / (__divisor));	\
+> +}							\
+> +)
+> +
+> +/*
+>   * min()/max()/clamp() macros that also do
+>   * strict type-checking.. See the
+>   * "unnecessary" pointer comparison.
+> diff --git a/lib/vsprintf.c b/lib/vsprintf.c
+> index 6066845..add8bd5 100644
+> --- a/lib/vsprintf.c
+> +++ b/lib/vsprintf.c
+> @@ -254,6 +254,71 @@ static char *symbol_string(char *buf, char *end, voi=
+d *ptr, int field_width, int
 >  }
->  EXPORT_SYMBOL(clkdev_drop);
-> +
-> +#ifdef CONFIG_CMD_CLOCK_INFO
-> +static int do_clock_info(struct command *cmdtp, int argc, char *argv[])
-> +{
-> +	struct clk_lookup *p;
-> +
-> +	puts("Clocks\n");
-"global clocks"?
-> +
-> +	list_for_each_entry(p, &clocks, node)
-> +		if (!p->dev_id)
-> +			printf("%s: %wHz\n", p->con_id, clk_get_rate(p->clk));
-> +
-> +	puts("Clocks for dev\n");
-"device specific clocks"?
+>  =
 
+>  /*
+> + * Show a '%w' or %W thing.  This will show a frequency or byte
+> + * at format xxx[.xxx] [ kMG]
+> + * the precision can not excess the base kMG of the current unit
+> + * otherwise it will be automatically reduce
+> + * if no precision is specified and there is rest we will use a default
+> + * precision of 3 as 66.667 M
+> + * base will be typically 1000 for Hz or B and 1024 for iB
+> + */
+> +static char *unit_string(char *buf, char *end, long val, int base, int f=
+ield_width, int precision, int flags)
+> +{
+> +	long rest =3D 0;
+> +	long integer;
+> +	long pr =3D 3;
+> +	long pr_mul =3D 1;
+> +	long unit =3D 1;
+> +	char format[] =3D " kMG";
+> +	int pow, i;
 > +
-> +	list_for_each_entry(p, &clocks, node)
-> +		if (p->dev_id)
-> +			printf("%s[%s]: %wHz\n", p->con_id, p->dev_id,
-> +					       clk_get_rate(p->clk));
+> +	for (pow =3D 0; pow < strlen(format) - 1; pow++) {
+> +		if (val < unit * base)
+> +			break;
+> +		unit *=3D base;
+> +	}
 > +
-> +	return 0;
+> +	integer =3D val / unit;
+> +
+> +	if (precision !=3D -1) {
+> +		if (precision > pow * 3)
+> +			precision =3D pow * 3;
+> +		pr =3D precision;
+> +	}
+> +
+> +	for (i =3D 0; i < pr; i++) {
+> +		pr_mul *=3D 10;
+> +	}
+> +
+> +	if (val % unit) {
+> +		rest =3D DIV_ROUND_CLOSEST(pr_mul * (val - (integer * unit)), unit);
+> +
+> +		if (rest >=3D pr_mul) {
+> +			rest -=3D pr_mul;
+> +			integer++;
+> +		}
+> +	}
+> +
+> +	buf =3D number(buf, end, integer, 10, field_width, -1, 0);
+> +
+> +	if (rest !=3D 0 || precision !=3D -1) {
+> +		if (buf < end)
+> +			*buf =3D '.';
+> +		buf++;
+> +		buf =3D number(buf, end, rest, 10, -1, pr, 0);
+> +	}
+> +
+> +	if (buf < end)
+> +		*buf =3D ' ';
+> +	buf++;
+> +	if (buf < end && pow !=3D 0)
+> +		*buf =3D format[pow];
+> +	buf++;
+> +
+> +	return buf;
 > +}
 > +
-> +static const __maybe_unused char cmd_clock_info_help[] =3D
-> +"Print clocks info\n"
-> +;
+> +/*
+>   * Show a '%p' thing.  A kernel extension is that the '%p' is followed
+>   * by an extra set of alphanumeric characters that are extended format
+>   * specifiers.
+I think the kernel documents all available formats in a single place.
+(Is that here in barebox?  If yes, please add your new formats here,
+too.)
+
+> @@ -421,6 +486,14 @@ int vsnprintf(char *buf, size_t size, const char *fm=
+t, va_list args)
+>  				str =3D string(str, end, va_arg(args, char *), field_width, precisio=
+n, flags);
+>  				continue;
+>  =
+
+> +			case 'W':
+> +				str =3D unit_string(str, end, va_arg(args, long), 1024, field_width,=
+ precision, flags);
+> +				continue;
 > +
-> +BAREBOX_CMD_START(clock_info)
-> +	.cmd		=3D do_clock_info,
-> +	.usage		=3D "Clocks Info",
-> +	BAREBOX_CMD_HELP(cmd_clock_info_help)
-> +BAREBOX_CMD_END
-> +#endif
+> +			case 'w':
+> +				str =3D unit_string(str, end, va_arg(args, long), 1000, field_width,=
+ precision, flags);
+> +				continue;
+> +
+>  			case 'p':
+>  				str =3D pointer(fmt+1, str, end,
+>  						va_arg(args, void *),
 > -- =
 
 > 1.7.1
