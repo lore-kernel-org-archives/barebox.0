@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from 26.mail-out.ovh.net ([91.121.27.225])
 	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OrAWC-0008Kk-Ng
-	for barebox@lists.infradead.org; Thu, 02 Sep 2010 14:12:00 +0000
+	id 1OrAbO-0001es-93
+	for barebox@lists.infradead.org; Thu, 02 Sep 2010 14:17:19 +0000
+Date: Thu, 2 Sep 2010 16:10:01 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu,  2 Sep 2010 16:10:18 +0200
-Message-Id: <1283436624-29567-3-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <20100902141001.GA28968@game.jcrosoft.org>
-References: <20100902141001.GA28968@game.jcrosoft.org>
+Message-ID: <20100902141001.GA28968@game.jcrosoft.org>
+MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,59 +16,81 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/9] stm8815: fix the uart device clock match
+Subject: [PATCH 0/9] preperation for sh adding
 To: barebox@lists.infradead.org
 
-that use the device name + id to found it's clock
-to use the right match as we fix the dev_name macro
+Hi,
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- arch/arm/mach-nomadik/8815.c |    6 ++++--
- 1 files changed, 4 insertions(+), 2 deletions(-)
+	this is the last updated patch series to prepare the adding of the SH
+	architecture
 
-diff --git a/arch/arm/mach-nomadik/8815.c b/arch/arm/mach-nomadik/8815.c
-index 8598f14..faeded4 100644
---- a/arch/arm/mach-nomadik/8815.c
-+++ b/arch/arm/mach-nomadik/8815.c
-@@ -50,12 +50,14 @@ void st8815_add_device_sdram(u32 size)
- }
- 
- static struct device_d uart0_serial_device = {
-+	.id = 0,
- 	.name = "uart-pl011",
- 	.map_base = NOMADIK_UART0_BASE,
- 	.size = 4096,
- };
- 
- static struct device_d uart1_serial_device = {
-+	.id = 1,
- 	.name = "uart-pl011",
- 	.map_base = NOMADIK_UART1_BASE,
- 	.size = 4096,
-@@ -65,12 +67,12 @@ void st8815_register_uart(unsigned id)
- {
- 	switch (id) {
- 	case 0:
--		nmdk_clk_create(&st8815_clk_48, uart0_serial_device.name);
- 		register_device(&uart0_serial_device);
-+		nmdk_clk_create(&st8815_clk_48, dev_name(&uart0_serial_device));
- 		break;
- 	case 1:
--		nmdk_clk_create(&st8815_clk_48, uart1_serial_device.name);
- 		register_device(&uart1_serial_device);
-+		nmdk_clk_create(&st8815_clk_48, dev_name(&uart0_serial_device));
- 		break;
- 	}
- }
--- 
-1.7.1
+The following changes since commit 0d35c3c8a0c2a1f1ff06eac20a12af0186753bc4:
 
+  menu: simplify usage for clients (2010-08-30 21:06:02 +0200)
+
+are available in the git repository at:
+  git://git.jcrosoft.org/barebox.git sh-prepare
+
+Jean-Christophe PLAGNIOL-VILLARD (9):
+      types.h: move __kernel_dev_t to include/linux/types.h
+      device: fix dev_name
+      stm8815: fix the uart device clock match
+      arm: move clkdev to drivers/clk
+      vsprintf: add %w and %w support to print unit
+      at91/clock: switch to %w for clock info printing
+      cfi_flash: use %W and IEEE 1541 format
+      use %W instead of size_human_readable and use IEEE 1541 format
+      clkdev: add print clk info command
+
+ arch/arm/Kconfig                          |    1 -
+ arch/arm/Makefile                         |    2 +-
+ arch/arm/common/Kconfig                   |    2 -
+ arch/arm/common/Makefile                  |    5 --
+ arch/arm/configs/nhk8815_defconfig        |    2 +-
+ arch/arm/include/asm/clkdev.h             |   15 +------
+ arch/arm/include/asm/posix_types.h        |    1 -
+ arch/arm/mach-at91/clock.c                |    8 +--
+ arch/arm/mach-nomadik/8815.c              |    6 ++-
+ arch/arm/mach-nomadik/Kconfig             |    2 +-
+ arch/arm/mach-nomadik/clock.c             |    7 +--
+ arch/blackfin/include/asm/posix_types.h   |    1 -
+ arch/m68k/include/asm/posix_types.h       |    1 -
+ arch/ppc/include/asm/posix_types.h        |    1 -
+ arch/sandbox/include/asm/posix_types.h    |    1 -
+ arch/x86/include/asm/posix_types.h        |    1 -
+ commands/Kconfig                          |    7 +++
+ commands/bootm.c                          |    7 +--
+ common/startup.c                          |    9 ++--
+ drivers/Kconfig                           |    1 +
+ drivers/Makefile                          |    1 +
+ drivers/clk/Kconfig                       |    4 ++
+ drivers/clk/Makefile                      |    2 +
+ {arch/arm/common => drivers/clk}/clkdev.c |   57 +++++++++++++++++++---
+ drivers/nor/cfi_flash.c                   |    4 +-
+ include/common.h                          |    1 -
+ include/driver.h                          |   12 +++--
+ include/linux/clkdev.h                    |   36 ++++++++++++++
+ include/linux/kernel.h                    |   20 ++++++++
+ include/linux/types.h                     |    2 +
+ lib/Makefile                              |    1 -
+ lib/display_options.c                     |   60 -----------------------
+ lib/driver.c                              |   16 +++----
+ lib/vsprintf.c                            |   73 +++++++++++++++++++++++++++++
+ 34 files changed, 230 insertions(+), 139 deletions(-)
+ delete mode 100644 arch/arm/common/Kconfig
+ delete mode 100644 arch/arm/common/Makefile
+ create mode 100644 drivers/clk/Kconfig
+ create mode 100644 drivers/clk/Makefile
+ rename {arch/arm/common => drivers/clk}/clkdev.c (75%)
+ create mode 100644 include/linux/clkdev.h
+ delete mode 100644 lib/display_options.c
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
