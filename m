@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Orb62-0000Mf-Sy
-	for barebox@lists.infradead.org; Fri, 03 Sep 2010 18:34:44 +0000
-Date: Fri, 3 Sep 2010 20:34:41 +0200
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20100903183441.GB17152@pengutronix.de>
-References: <20100902194046.GA21449@game.jcrosoft.org>
-	<1283456510-28086-5-git-send-email-plagnioj@jcrosoft.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1283456510-28086-5-git-send-email-plagnioj@jcrosoft.com>
+Received: from 26.mail-out.ovh.net ([91.121.27.225])
+	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1OsHBT-0000L8-H2
+	for barebox@lists.infradead.org; Sun, 05 Sep 2010 15:31:09 +0000
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Sun,  5 Sep 2010 17:23:42 +0200
+Message-Id: <1283700222-19388-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,229 +14,265 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 5/9 V2] vsprintf: add %w and %w support to print unit
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] Menu: add box stype entry
+To: barebox@lists.infradead.org
 
-Hello Jean-Christophe,
+this will allow you to create a box style entry
 
-On Thu, Sep 02, 2010 at 09:41:46PM +0200, Jean-Christophe PLAGNIOL-VILLARD =
-wrote:
-> Show a '%w' or %W thing.  This will show a unit
-> at format xxx[.xxx][ ][ kMG] with iEEE 1541 support
-> =
+via C API by specifying the type as
 
-> The precision can not excess the base kMG of the current unit
-> otherwise it will be automatically reduce
-> =
+struct menu_entry me = {
+	.display "test",
+	.box_state = MENU_ENTRY_BOX,
+	.box_action = action_to_run,
+}
 
-> If no precision is specified and there is rest we will use a default
-> precision of 3 as 66.667 M or 66.667M
-> =
+and via shell
+menu -e -a -m <menu> -c <command> [-R] [-b 0|1 -B <select action>] -d <description>
+menu -e -a -m <menu> -u submenu -d [-b 0|1 -B <select action>] <description>
 
-> %#w or %#W will add a space between the value and the unit
-> =
+-b with 0 for not selected and 1 for selected
+and -B for the command to run when changing state
 
-> The base will be typically 1000 for Hz or B and 1024 for iB
-> for 1024 the i is automactically add for val >=3D 1024
-> =
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ commands/menu.c |   31 ++++++++++++++++++++++++-----
+ common/menu.c   |   56 ++++++++++++++++++++++++++++++++++++++++++++++++++----
+ include/menu.h  |   14 ++++++++++++-
+ 3 files changed, 89 insertions(+), 12 deletions(-)
 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  include/linux/kernel.h |   20 ++++++++++
->  lib/vsprintf.c         |   91 ++++++++++++++++++++++++++++++++++++++++++=
-++++++
->  2 files changed, 111 insertions(+), 0 deletions(-)
-> =
+diff --git a/commands/menu.c b/commands/menu.c
+index f734db3..e502709 100644
+--- a/commands/menu.c
++++ b/commands/menu.c
+@@ -48,11 +48,14 @@ struct cmd_menu {
+ 	char		*command;
+ 	char		*submenu;
+ 	int		num;
++	menu_entry_type	type;
++	int		box_state;
++	char		*box_command;
+ #endif
+ };
+ 
+ #if defined(CONFIG_CMD_MENU_MANAGEMENT)
+-#define OPTS		"m:earlc:d:RsSn:u:"
++#define OPTS		"m:earlc:d:RsSn:u:b:B:"
+ #define	is_entry(x)	((x)->entry)
+ #else
+ #define OPTS		"m:ls"
+@@ -61,8 +64,8 @@ struct cmd_menu {
+ 
+ #if defined(CONFIG_CMD_MENU_MANAGEMENT)
+ /*
+- * menu -e -a -m <menu> -c <command> [-R] -d <description>
+- * menu -e -a -m <menu> -u submenu -d <description>
++ * menu -e -a -m <menu> -c <command> [-R] [-b 0|1 -B <select action>] -d <description>
++ * menu -e -a -m <menu> -u submenu -d [-b 0|1 -B <select action>] <description>
+  */
+ static int do_menu_entry_add(struct cmd_menu *cm)
+ {
+@@ -82,10 +85,15 @@ static int do_menu_entry_add(struct cmd_menu *cm)
+ 	if (cm->submenu)
+ 		me = menu_add_submenu(m, cm->submenu, cm->description);
+ 	else
+-		me = menu_add_command_entry(m, cm->description, cm->command);
++		me = menu_add_command_entry(m, cm->description, cm->command,
++					    cm->box_command);
+ 	if (!me)
+ 		return PTR_ERR(me);
+ 
++	me->type = cm->type;
++
++	me->box_state = cm->box_state > 0 ? 1 : 0;
++
+ 	me->non_re_ent = !cm->re_entrant;
+ 
+ 	return 0;
+@@ -343,6 +351,13 @@ static int do_menu(struct command *cmdtp, int argc, char *argv[])
+ 		case 'n':
+ 			cm.num = simple_strtoul(optarg, NULL, 10);
+ 			break;
++		case 'b':
++			cm.type = MENU_ENTRY_BOX;
++			cm.box_state = simple_strtoul(optarg, NULL, 10);
++			break;
++		case 'B':
++			cm.command = optarg;
++			break;
+ #endif
+ 		default:
+ 			return 1;
+@@ -412,11 +427,15 @@ static const __maybe_unused char cmd_menu_help[] =
+ "\n"
+ "Add an entry\n"
+ "  (-R for do no exit the menu after executing the command)\n"
+-"  menu -e -a -m <menu> -c <command> [-R] -d <description>\n"
++"  (-b for box style 1 for selected)\n"
++"  (and -B for the command to run when we change the state)\n"
++"  menu -e -a -m <menu> -c <command> [-R] [-b 0|1 -B <select action>] -d <description>\n"
+ 
+ "Add a submenu entry\n"
+ "  (-R is not needed)\n"
+-"  menu -e -a -m <menu> -u <menu> -d <description>\n"
++"  (-b for box style 1 for selected)\n"
++"  (and -B for the command to run when we change the state)\n"
++"  menu -e -a -m <menu> -u submenu -d [-b 0|1 -B <select action>] <description>\n"
+ "\n"
+ "Remove an entry\n"
+ "  menu -e -r -m <name> -n <num>\n"
+diff --git a/common/menu.c b/common/menu.c
+index 7620d9e..0590c7e 100644
+--- a/common/menu.c
++++ b/common/menu.c
+@@ -150,10 +150,27 @@ void menu_entry_free(struct menu_entry *me)
+ static void print_menu_entry(struct menu *m, struct menu_entry *me, int reverse)
+ {
+ 	gotoXY(me->num + 1, 3);
+-	if (reverse)
+-		printf_reverse("%d: %-*s", me->num, m->width, me->display);
+-	else
+-		printf("%d: %-*s", me->num, m->width, me->display);
++	if (reverse) {
++		if (me->type == MENU_ENTRY_BOX) {
++			if (me->box_state)
++				puts_reverse("[*]");
++			else
++				puts_reverse("[ ]");
++		} else {
++			printf_reverse("   ");
++		}
++		printf_reverse(" %d: %-*s", me->num, m->width, me->display);
++	} else {
++		if (me->type == MENU_ENTRY_BOX) {
++			if (me->box_state)
++				puts("[*]");
++			else
++				puts("[ ]");
++		} else {
++			puts("   ");
++		}
++		printf(" %d: %-*s", me->num, m->width, me->display);
++	}
+ }
+ 
+ int menu_set_selected_entry(struct menu *m, struct menu_entry* me)
+@@ -254,6 +271,12 @@ int menu_show(struct menu *m)
+ 			}
+ 			print_menu_entry(m, m->selected, 1);
+ 			break;
++		case ' ':
++			m->selected->box_state = !m->selected->box_state;
++			if (m->selected->box_action)
++				m->selected->box_action(m, m->selected);
++			print_menu_entry(m, m->selected, 1);
++			break;
+ 		case '\n':
+ 		case '\r':
+ 			clear();
+@@ -329,6 +352,7 @@ err_free:
+ 
+ struct action_entry {
+ 	char *command;
++	char *box_command;
+ 	struct menu_entry entry;
+ };
+ 
+@@ -348,17 +372,35 @@ static void menu_action_command(struct menu *m, struct menu_entry *me)
+ 		udelay(1000000);
+ }
+ 
++static void menu_action_box_command(struct menu *m, struct menu_entry *me)
++{
++	struct action_entry *e = container_of(me, struct action_entry, entry);
++	int ret;
++	const char *s = getenv(e->box_command);
++
++	/* can be a command as boot */
++	if (!s)
++		s = e->box_command;
++
++	ret = run_command (s, 0);
++
++	if (ret < 0)
++		udelay(1000000);
++}
++
+ static void menu_command_free(struct menu_entry *me)
+ {
+ 	struct action_entry *e = container_of(me, struct action_entry, entry);
+ 
+ 	free(e->entry.display);
+ 	free(e->command);
++	free(e->box_command);
+ 
+ 	free(e);
+ }
+ 
+-struct menu_entry *menu_add_command_entry(struct menu *m, char *display, char *command)
++struct menu_entry *menu_add_command_entry(struct menu *m, char *display,
++					  char *command, char* box_command)
+ {
+ 	struct action_entry *e = calloc(1, sizeof(*e));
+ 	int ret;
+@@ -370,6 +412,10 @@ struct menu_entry *menu_add_command_entry(struct menu *m, char *display, char *c
+ 	e->entry.action = menu_action_command;
+ 	e->entry.free = menu_command_free;
+ 	e->entry.display = strdup(display);
++	if (box_command) {
++		e->box_command = strdup(box_command);
++		e->entry.box_action = menu_action_box_command;
++	}
+ 
+ 	if (!e->entry.display || !e->command) {
+ 		ret = -ENOMEM;
+diff --git a/include/menu.h b/include/menu.h
+index 22bfc23..f824894 100644
+--- a/include/menu.h
++++ b/include/menu.h
+@@ -28,6 +28,11 @@
+ 
+ struct menu;
+ 
++typedef enum {
++	MENU_ENTRY_NORMAL = 0,
++	MENU_ENTRY_BOX,
++} menu_entry_type;
++
+ struct menu_entry {
+ 	int num;
+ 	char *display;
+@@ -35,6 +40,12 @@ struct menu_entry {
+ 	void (*free)(struct menu_entry *me);
+ 	int non_re_ent;
+ 
++	/* MENU_ENTRY_BOX */
++	int box_state;
++	void (*box_action)(struct menu *m, struct menu_entry *me);
++
++	menu_entry_type type;
++
+ 	struct list_head list;
+ };
+ 
+@@ -66,7 +77,8 @@ static inline struct menu* menu_alloc(void)
+ 	return m;
+ }
+ struct menu_entry *menu_add_submenu(struct menu *parent, char *submenu, char *display);
+-struct menu_entry *menu_add_command_entry(struct menu *m, char *display, char *command);
++struct menu_entry *menu_add_command_entry(struct menu *m, char *display,
++					  char *command, char* box_command);
+ void menu_free(struct menu *m);
+ int menu_add(struct menu* m);
+ void menu_remove(struct menu *m);
+-- 
+1.7.1
 
-> diff --git a/include/linux/kernel.h b/include/linux/kernel.h
-> index e9e2f07..b605946 100644
-> --- a/include/linux/kernel.h
-> +++ b/include/linux/kernel.h
-> @@ -5,6 +5,26 @@
->  #include <linux/barebox-wrapper.h>
->  =
-
->  /*
-> + * This looks more complex than it should be. But we need to
-> + * get the type for the ~ right in round_down (it needs to be
-> + * as wide as the result!), and we want to evaluate the macro
-> + * arguments just once each.
-> + */
-> +#define __round_mask(x, y) ((__typeof__(x))((y)-1))
-> +#define round_up(x, y) ((((x)-1) | __round_mask(x, y))+1)
-> +#define round_down(x, y) ((x) & ~__round_mask(x, y))
-> +
-> +#define FIELD_SIZEOF(t, f) (sizeof(((t*)0)->f))
-> +#define DIV_ROUND_UP(n,d) (((n) + (d) - 1) / (d))
-> +#define roundup(x, y) ((((x) + ((y) - 1)) / (y)) * (y))
-> +#define DIV_ROUND_CLOSEST(x, divisor)(			\
-> +{							\
-> +	typeof(divisor) __divisor =3D divisor;		\
-> +	(((x) + ((__divisor) / 2)) / (__divisor));	\
-> +}							\
-> +)
-> +
-> +/*
->   * min()/max()/clamp() macros that also do
->   * strict type-checking.. See the
->   * "unnecessary" pointer comparison.
-> diff --git a/lib/vsprintf.c b/lib/vsprintf.c
-> index 6066845..18ba371 100644
-> --- a/lib/vsprintf.c
-> +++ b/lib/vsprintf.c
-> @@ -254,6 +254,88 @@ static char *symbol_string(char *buf, char *end, voi=
-d *ptr, int field_width, int
->  }
->  =
-
->  /*
-> + * Show a '%w' or %W thing.  This will show a unit
-s/%W/'%W'/, and you should note here, that %W uses 1024 as base, %w uses
-1000.  These formats expect a (signed) long, right?  What about making
-this a flag to the usual %d and %u to support all integer types?
-
-Something like: %lWuB to print an unsigned long using the ieee format
-(with base 1024)?  (I don't know why you choosed 'w', is it just any
-free letter or a 'real' abbreviation?)
-
-> + * at format xxx[.xxx][ ][ kMG] with iEEE 1541 support
-> + *
-> + * The precision can not excess the base kMG of the current unit
-> + * otherwise it will be automatically reduce
-s/reduce/reduced./
-> + *
-> + * If no precision is specified and there is rest we will use a default
-> + * precision of 3 as 66.667 M or 66.667M
-> + *
-> + * %#w or %#W will add a space between the value and the unit
-> + *
-> + * The base will be typically 1000 for Hz or B and 1024 for iB
-> + * for 1024 the i is automactically add for val >=3D 1024
-> + */
-> +static char *unit_string(char *buf, char *end, long val, int base, int f=
-ield_width, int precision, int flags)
-> +{
-> +	long rest =3D 0;
-> +	long integer;
-> +	long pr =3D 3;
-> +	long pr_mul =3D 1;
-> +	long unit =3D 1;
-> +	char format[] =3D " kMG";
-> +	int pow, i;
-> +
-> +	for (pow =3D 0; pow < strlen(format) - 1; pow++) {
-> +		if (val < unit * base)
-> +			break;
-> +		unit *=3D base;
-> +	}
-> +
-> +	integer =3D val / unit;
-> +
-> +	if (precision !=3D -1) {
-> +		if (precision > pow * 3)
-> +			precision =3D pow * 3;
-> +		pr =3D precision;
-> +	}
-> +
-> +	for (i =3D 0; i < pr; i++) {
-> +		pr_mul *=3D 10;
-> +	}
-> +
-> +	if (val % unit) {
-> +		rest =3D DIV_ROUND_CLOSEST(pr_mul * (val - (integer * unit)), unit);
-> +
-> +		if (rest >=3D pr_mul) {
-> +			rest -=3D pr_mul;
-> +			integer++;
-> +		}
-> +	}
-> +
-> +	buf =3D number(buf, end, integer, 10, field_width, -1, flags & ~LEFT);
-> +
-> +	if (rest !=3D 0 || precision !=3D -1) {
-> +		if (buf < end)
-> +			*buf =3D '.';
-> +		buf++;
-> +		buf =3D number(buf, end, rest, 10, -1, pr, flags | ZEROPAD);
-> +	}
-> +
-> +	/* use SPECIAL as SPACE could be used for the interger part */
-> +	if (flags & SPECIAL) {
-> +		if (buf < end)
-> +			*buf =3D ' ';
-> +		buf++;
-> +	}
-> +
-> +	if (pow > 0) {
-> +		if (buf < end)
-> +			*buf =3D format[pow];
-> +		buf++;
-> +		if (base =3D=3D 1024) {
-> +			if (buf < end)
-> +				*buf =3D 'i';
-> +			buf++;
-> +		}
-> +	}
-> +
-> +	return buf;
-> +}
-> +
-> +/*
->   * Show a '%p' thing.  A kernel extension is that the '%p' is followed
->   * by an extra set of alphanumeric characters that are extended format
->   * specifiers.
-> @@ -291,6 +373,7 @@ static char *pointer(const char *fmt, char *buf, char=
- *end, void *ptr, int field
->   * %pS output the name of a text symbol
->   * %pF output the name of a function pointer
->   * %pR output the address range in a struct resource
-> + * %W and %w output at unit format with iEEE 1541 support
->   *
->   * The return value is the number of characters which would
->   * be generated for the given input, excluding the trailing
-> @@ -421,6 +504,14 @@ int vsnprintf(char *buf, size_t size, const char *fm=
-t, va_list args)
->  				str =3D string(str, end, va_arg(args, char *), field_width, precisio=
-n, flags);
->  				continue;
->  =
-
-> +			case 'W':
-> +				str =3D unit_string(str, end, va_arg(args, long), 1024, field_width,=
- precision, flags);
-> +				continue;
-> +
-> +			case 'w':
-> +				str =3D unit_string(str, end, va_arg(args, long), 1000, field_width,=
- precision, flags);
-> +				continue;
-> +
->  			case 'p':
->  				str =3D pointer(fmt+1, str, end,
->  						va_arg(args, void *),
-> -- =
-
-> 1.7.1
-> =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> =
-
-
--- =
-
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
