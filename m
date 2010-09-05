@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 26.mail-out.ovh.net ([91.121.27.225])
+Received: from 68.mail-out.ovh.net ([91.121.185.69])
 	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OsHBT-0000L8-H2
-	for barebox@lists.infradead.org; Sun, 05 Sep 2010 15:31:09 +0000
+	id 1OsHhn-0006xL-TE
+	for barebox@lists.infradead.org; Sun, 05 Sep 2010 16:04:33 +0000
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sun,  5 Sep 2010 17:23:42 +0200
-Message-Id: <1283700222-19388-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Sun,  5 Sep 2010 18:03:47 +0200
+Message-Id: <1283702627-23167-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1283700222-19388-1-git-send-email-plagnioj@jcrosoft.com>
+References: <1283700222-19388-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,7 +21,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Menu: add box stype entry
+Subject: [PATCH V2] Menu: add box style entry
 To: barebox@lists.infradead.org
 
 this will allow you to create a box style entry
@@ -34,20 +36,29 @@ struct menu_entry me = {
 
 and via shell
 menu -e -a -m <menu> -c <command> [-R] [-b 0|1 -B <select action>] -d <description>
-menu -e -a -m <menu> -u submenu -d [-b 0|1 -B <select action>] <description>
+menu -e -a -m <menu> -u submenu -d [-b 0|1] <description>
 
 -b with 0 for not selected and 1 for selected
 and -B for the command to run when changing state
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- commands/menu.c |   31 ++++++++++++++++++++++++-----
- common/menu.c   |   56 ++++++++++++++++++++++++++++++++++++++++++++++++++----
+v2:
+
+	fix subject
+
+	fix shell doc as submenu does not need select action as the they will
+	simply do nothing if not selected
+
+Best Regards,
+J.
+ commands/menu.c |   34 +++++++++++++++++++++++++------
+ common/menu.c   |   59 ++++++++++++++++++++++++++++++++++++++++++++++++++----
  include/menu.h  |   14 ++++++++++++-
- 3 files changed, 89 insertions(+), 12 deletions(-)
+ 3 files changed, 94 insertions(+), 13 deletions(-)
 
 diff --git a/commands/menu.c b/commands/menu.c
-index f734db3..e502709 100644
+index f734db3..0d49232 100644
 --- a/commands/menu.c
 +++ b/commands/menu.c
 @@ -48,11 +48,14 @@ struct cmd_menu {
@@ -73,11 +84,11 @@ index f734db3..e502709 100644
 - * menu -e -a -m <menu> -c <command> [-R] -d <description>
 - * menu -e -a -m <menu> -u submenu -d <description>
 + * menu -e -a -m <menu> -c <command> [-R] [-b 0|1 -B <select action>] -d <description>
-+ * menu -e -a -m <menu> -u submenu -d [-b 0|1 -B <select action>] <description>
++ * menu -e -a -m <menu> -u submenu -d [-b 0|1] <description>
   */
  static int do_menu_entry_add(struct cmd_menu *cm)
  {
-@@ -82,10 +85,15 @@ static int do_menu_entry_add(struct cmd_menu *cm)
+@@ -82,11 +85,17 @@ static int do_menu_entry_add(struct cmd_menu *cm)
  	if (cm->submenu)
  		me = menu_add_submenu(m, cm->submenu, cm->description);
  	else
@@ -87,14 +98,17 @@ index f734db3..e502709 100644
  	if (!me)
  		return PTR_ERR(me);
  
+-	me->non_re_ent = !cm->re_entrant;
 +	me->type = cm->type;
 +
 +	me->box_state = cm->box_state > 0 ? 1 : 0;
 +
- 	me->non_re_ent = !cm->re_entrant;
++	if (!cm->submenu)
++		me->non_re_ent = !cm->re_entrant;
  
  	return 0;
-@@ -343,6 +351,13 @@ static int do_menu(struct command *cmdtp, int argc, char *argv[])
+ }
+@@ -343,6 +352,13 @@ static int do_menu(struct command *cmdtp, int argc, char *argv[])
  		case 'n':
  			cm.num = simple_strtoul(optarg, NULL, 10);
  			break;
@@ -108,7 +122,7 @@ index f734db3..e502709 100644
  #endif
  		default:
  			return 1;
-@@ -412,11 +427,15 @@ static const __maybe_unused char cmd_menu_help[] =
+@@ -412,11 +428,15 @@ static const __maybe_unused char cmd_menu_help[] =
  "\n"
  "Add an entry\n"
  "  (-R for do no exit the menu after executing the command)\n"
@@ -121,13 +135,13 @@ index f734db3..e502709 100644
  "  (-R is not needed)\n"
 -"  menu -e -a -m <menu> -u <menu> -d <description>\n"
 +"  (-b for box style 1 for selected)\n"
-+"  (and -B for the command to run when we change the state)\n"
++"  (and -B is not needed)\n"
 +"  menu -e -a -m <menu> -u submenu -d [-b 0|1 -B <select action>] <description>\n"
  "\n"
  "Remove an entry\n"
  "  menu -e -r -m <name> -n <num>\n"
 diff --git a/common/menu.c b/common/menu.c
-index 7620d9e..0590c7e 100644
+index 7620d9e..82fea1d 100644
 --- a/common/menu.c
 +++ b/common/menu.c
 @@ -150,10 +150,27 @@ void menu_entry_free(struct menu_entry *me)
@@ -175,7 +189,17 @@ index 7620d9e..0590c7e 100644
  		case '\n':
  		case '\r':
  			clear();
-@@ -329,6 +352,7 @@ err_free:
+@@ -283,6 +306,9 @@ static void menu_action_show(struct menu *m, struct menu_entry *me)
+ 	struct submenu *s = container_of(me, struct submenu, entry);
+ 	struct menu *sm;
+ 
++	if (me->type == MENU_ENTRY_BOX && !me->box_state)
++		return;
++
+ 	sm = menu_get_by_name(s->submenu);
+ 	if (sm)
+ 		menu_show(sm);
+@@ -329,6 +355,7 @@ err_free:
  
  struct action_entry {
  	char *command;
@@ -183,7 +207,7 @@ index 7620d9e..0590c7e 100644
  	struct menu_entry entry;
  };
  
-@@ -348,17 +372,35 @@ static void menu_action_command(struct menu *m, struct menu_entry *me)
+@@ -348,17 +375,35 @@ static void menu_action_command(struct menu *m, struct menu_entry *me)
  		udelay(1000000);
  }
  
@@ -220,7 +244,7 @@ index 7620d9e..0590c7e 100644
  {
  	struct action_entry *e = calloc(1, sizeof(*e));
  	int ret;
-@@ -370,6 +412,10 @@ struct menu_entry *menu_add_command_entry(struct menu *m, char *display, char *c
+@@ -370,6 +415,10 @@ struct menu_entry *menu_add_command_entry(struct menu *m, char *display, char *c
  	e->entry.action = menu_action_command;
  	e->entry.free = menu_command_free;
  	e->entry.display = strdup(display);
