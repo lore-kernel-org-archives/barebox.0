@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from pfepa.post.tele.dk ([195.41.46.235])
-	by bombadil.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OsIlY-0007Ip-RJ
-	for barebox@lists.infradead.org; Sun, 05 Sep 2010 17:12:30 +0000
-Date: Sun, 5 Sep 2010 19:12:26 +0200
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20100905171226.GA3052@merkur.ravnborg.org>
-References: <1283704919-26808-1-git-send-email-plagnioj@jcrosoft.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1283704919-26808-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from 31.mail-out.ovh.net ([213.186.62.10])
+	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1OsaV3-00047I-Gi
+	for barebox@lists.infradead.org; Mon, 06 Sep 2010 12:08:41 +0000
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Mon,  6 Sep 2010 14:07:48 +0200
+Message-Id: <1283774869-6086-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,33 +14,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] init: introduce __BARE_INIT for .section
-	".text_bare_init.text"
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/2] menu: shell fix do_menu_select
+To: barebox@lists.infradead.org
 
-> diff --git a/include/init.h b/include/init.h
-> index 8692b68..5a7a5b6 100644
-> --- a/include/init.h
-> +++ b/include/init.h
-> @@ -7,6 +7,10 @@
->  #define __init
->  #define __initdata
->  
-> +/* For assembly routines */
-> +#define __BARE_INIT	.section ".text_bare_init.text"
+invert the error report
 
-You should consider using:
-#define __BARE_INIT  .section ".text_bare_init.text","ax"
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ commands/menu.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-Then you do not rely on the as/ld to add these flags.
-In the kernel we had a few cases where it mattered.
+diff --git a/commands/menu.c b/commands/menu.c
+index ab35cf9..2c9ddc3 100644
+--- a/commands/menu.c
++++ b/commands/menu.c
+@@ -203,7 +203,7 @@ static int do_menu_select(struct cmd_menu *cm)
+ 		return -EINVAL;
+ 	}
+ 
+-	if (!menu_set_selected(m, cm->num)) {
++	if (menu_set_selected(m, cm->num) < 0) {
+ 		eprintf("Entry '%d' not found\n", cm->num);
+ 		return -EINVAL;
+ 	}
+-- 
+1.7.1
 
-	Sam
 
 _______________________________________________
 barebox mailing list
