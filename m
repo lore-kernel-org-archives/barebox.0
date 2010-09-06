@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 31.mail-out.ovh.net ([213.186.62.10])
+Received: from 29.mail-out.ovh.net ([87.98.216.213])
 	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OsdWC-0007vu-7j
-	for barebox@lists.infradead.org; Mon, 06 Sep 2010 15:22:05 +0000
+	id 1Osg5W-0002Fa-2Z
+	for barebox@lists.infradead.org; Mon, 06 Sep 2010 18:06:42 +0000
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon,  6 Sep 2010 17:21:14 +0200
-Message-Id: <1283786474-24332-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Mon,  6 Sep 2010 20:05:50 +0200
+Message-Id: <1283796350-7361-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1283786474-24332-1-git-send-email-plagnioj@jcrosoft.com>
+References: <1283786474-24332-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,7 +21,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH V2] Menu: add box style entry
+Subject: [PATCH v3] Menu: add box style entry
 To: barebox@lists.infradead.org
 
 this will allow you to create a box style entry
@@ -42,40 +44,19 @@ and -c for the command to run when changing state
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
-V2:
+V3:
 
-	fix commit message
-	remove the box_command as we do not need it as we can do one
-	acion only for box type, it selection action
-	except for sub menu which as hanlde via C API already
-
-	this is apply after the auto select patch
-	The following changes since commit 0d35c3c8a0c2a1f1ff06eac20a12af0186753bc4:
-
-  menu: simplify usage for clients (2010-08-30 21:06:02 +0200)
-
-are available in the git repository at:
-  git://git.jcrosoft.org/barebox.git menu
-
-Jean-Christophe PLAGNIOL-VILLARD (3):
-      menu: shell fix do_menu_select
-      menu: add auto select support
-      Menu: add box style entry
-
- commands/menu.c |   55 +++++++++++++++++++++++++-----
- common/menu.c   |   99 +++++++++++++++++++++++++++++++++++++++++++++++++++----
- include/menu.h  |   18 +++++++++-
- 3 files changed, 154 insertions(+), 18 deletions(-)
+	do not force a comment for box type
 
 Best Regards,
 J.
- commands/menu.c |   30 +++++++++++++++++++++++-------
- common/menu.c   |   44 ++++++++++++++++++++++++++++++++++++++------
+ commands/menu.c |   33 +++++++++++++++++++++++++--------
+ common/menu.c   |   50 ++++++++++++++++++++++++++++++++++++++++++--------
  include/menu.h  |   14 +++++++++++++-
- 3 files changed, 74 insertions(+), 14 deletions(-)
+ 3 files changed, 80 insertions(+), 17 deletions(-)
 
 diff --git a/commands/menu.c b/commands/menu.c
-index 2c9ddc3..b0fdd99 100644
+index 2c9ddc3..2350639 100644
 --- a/commands/menu.c
 +++ b/commands/menu.c
 @@ -49,11 +49,13 @@ struct cmd_menu {
@@ -93,7 +74,7 @@ index 2c9ddc3..b0fdd99 100644
  #define	is_entry(x)	((x)->entry)
  #else
  #define OPTS		"m:ls"
-@@ -62,8 +64,8 @@ struct cmd_menu {
+@@ -62,15 +64,16 @@ struct cmd_menu {
  
  #if defined(CONFIG_CMD_MENU_MANAGEMENT)
  /*
@@ -104,7 +85,16 @@ index 2c9ddc3..b0fdd99 100644
   */
  static int do_menu_entry_add(struct cmd_menu *cm)
  {
-@@ -83,11 +85,15 @@ static int do_menu_entry_add(struct cmd_menu *cm)
+ 	struct menu_entry *me;
+ 	struct menu *m;
+ 
+-	if (!cm->menu || (!cm->command && !cm->submenu) || !cm->description)
++	if (!cm->menu || !cm->description ||
++	    (!cm->command && (!cm->submenu && cm->type !=MENU_ENTRY_BOX)))
+ 		return -EINVAL;
+ 
+ 	m = menu_get_by_name(cm->menu);
+@@ -83,11 +86,15 @@ static int do_menu_entry_add(struct cmd_menu *cm)
  	if (cm->submenu)
  		me = menu_add_submenu(m, cm->submenu, cm->description);
  	else
@@ -122,7 +112,7 @@ index 2c9ddc3..b0fdd99 100644
  
  	return 0;
  }
-@@ -359,6 +365,12 @@ static int do_menu(struct command *cmdtp, int argc, char *argv[])
+@@ -359,6 +366,12 @@ static int do_menu(struct command *cmdtp, int argc, char *argv[])
  			break;
  		case 'A':
  			cm.auto_select = simple_strtoul(optarg, NULL, 10);
@@ -135,7 +125,7 @@ index 2c9ddc3..b0fdd99 100644
  			break;
  #endif
  		default:
-@@ -431,11 +443,15 @@ static const __maybe_unused char cmd_menu_help[] =
+@@ -431,11 +444,15 @@ static const __maybe_unused char cmd_menu_help[] =
  "\n"
  "Add an entry\n"
  "  (-R for do no exit the menu after executing the command)\n"
@@ -154,7 +144,7 @@ index 2c9ddc3..b0fdd99 100644
  "Remove an entry\n"
  "  menu -e -r -m <name> -n <num>\n"
 diff --git a/common/menu.c b/common/menu.c
-index 4307a07..0b8c8d9 100644
+index 4307a07..36d9f45 100644
 --- a/common/menu.c
 +++ b/common/menu.c
 @@ -152,10 +152,27 @@ void menu_entry_free(struct menu_entry *me)
@@ -203,7 +193,7 @@ index 4307a07..0b8c8d9 100644
 +			break;
  		case '\n':
  		case '\r':
-+			if (m->selected->type == MENU_ENTRY_BOX)
++			if (!m->selected->action)
 +				break;
  			clear();
  			gotoXY(1,1);
@@ -228,9 +218,16 @@ index 4307a07..0b8c8d9 100644
  {
  	struct action_entry *e = calloc(1, sizeof(*e));
  	int ret;
-@@ -422,9 +453,10 @@ struct menu_entry *menu_add_command_entry(struct menu *m, char *display, char *c
- 	e->command = strdup(command);
- 	e->entry.action = menu_action_command;
+@@ -419,12 +450,15 @@ struct menu_entry *menu_add_command_entry(struct menu *m, char *display, char *c
+ 	if (!e)
+ 		return ERR_PTR(-ENOMEM);
+ 
+-	e->command = strdup(command);
+-	e->entry.action = menu_action_command;
++	if (type != MENU_ENTRY_BOX) {
++		e->command = strdup(command);
++		e->entry.action = menu_action_command;
++	}
  	e->entry.free = menu_command_free;
 +	e->entry.type = type;
  	e->entry.display = strdup(display);
