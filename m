@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 63.mail-out.ovh.net ([91.121.185.56])
+Received: from 26.mail-out.ovh.net ([91.121.27.225])
 	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OsaV2-00047H-UV
-	for barebox@lists.infradead.org; Mon, 06 Sep 2010 12:08:38 +0000
+	id 1Oscwi-00009F-9i
+	for barebox@lists.infradead.org; Mon, 06 Sep 2010 14:45:22 +0000
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon,  6 Sep 2010 14:07:49 +0200
-Message-Id: <1283774869-6086-2-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1283774869-6086-1-git-send-email-plagnioj@jcrosoft.com>
-References: <1283774869-6086-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Mon,  6 Sep 2010 16:44:17 +0200
+Message-Id: <1283784257-20828-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1283774869-6086-2-git-send-email-plagnioj@jcrosoft.com>
+References: <1283774869-6086-2-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,7 +21,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] menu: add auto select support
+Subject: [PATCH 2/2 v2] menu: add auto select support
 To: barebox@lists.infradead.org
 
 this will allow to automaticaly run an entry if the user do no choice
@@ -32,13 +32,19 @@ with menu -s -m boot -A 3 -d "Auto Boot in"
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
+V2:
+
+	fix cursor and key pressed when cancel the auto select
+
+Best Regards,
+J.
  commands/menu.c |   25 ++++++++++++++++++++++---
- common/menu.c   |   54 +++++++++++++++++++++++++++++++++++++++++++++++++++++-
+ common/menu.c   |   55 ++++++++++++++++++++++++++++++++++++++++++++++++++++++-
  include/menu.h  |    4 ++++
- 3 files changed, 79 insertions(+), 4 deletions(-)
+ 3 files changed, 80 insertions(+), 4 deletions(-)
 
 diff --git a/commands/menu.c b/commands/menu.c
-index f734db3..ab35cf9 100644
+index 7b8e8be..2c9ddc3 100644
 --- a/commands/menu.c
 +++ b/commands/menu.c
 @@ -48,11 +48,12 @@ struct cmd_menu {
@@ -113,7 +119,7 @@ index f734db3..ab35cf9 100644
  "List menu\n"
  "  menu -l\n"
 diff --git a/common/menu.c b/common/menu.c
-index 7620d9e..339bb3d 100644
+index 7620d9e..4307a07 100644
 --- a/common/menu.c
 +++ b/common/menu.c
 @@ -29,6 +29,7 @@
@@ -149,7 +155,7 @@ index 7620d9e..339bb3d 100644
  static void print_menu(struct menu *m)
  {
  	struct menu_entry *me;
-@@ -217,14 +229,54 @@ int menu_show(struct menu *m)
+@@ -217,14 +229,55 @@ int menu_show(struct menu *m)
  {
  	int ch;
  	int escape = 0;
@@ -178,7 +184,6 @@ index 7620d9e..339bb3d 100644
 +	second = start;
 +	while (m->auto_select > 0 && !is_timeout(start, m->auto_select * SECOND)) {
 +		if (tstc()) {
-+			ch = getc();
 +			m->auto_select = -1;
 +			break;
 +		}
@@ -192,6 +197,8 @@ index 7620d9e..339bb3d 100644
 +	gotoXY(m->nb_entries + 2, 3);
 +	for (start = 0; start < auto_display_len + 4; start++)
 +		putchar(' ');
++
++	gotoXY(m->selected->num + 1, 3);
 +
  	do {
 -		ch = getc();
