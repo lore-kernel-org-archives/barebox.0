@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 68.mail-out.ovh.net ([91.121.185.69])
-	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OsyH6-00040f-Od
-	for barebox@lists.infradead.org; Tue, 07 Sep 2010 13:31:50 +0000
-Date: Tue, 7 Sep 2010 15:31:00 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20100907133100.GF30509@game.jcrosoft.org>
-References: <AANLkTi=F9yCBrpyYOdts_-Up3ywCMh4=MSa0iwjLLavh@mail.gmail.com>
-	<201009071401.47921.jbe@pengutronix.de>
-	<AANLkTinym9bzzP8J7OmY=kauzEHdOVgVsMJ78Yyph2-t@mail.gmail.com>
+Received: from mail-vw0-f49.google.com ([209.85.212.49])
+	by bombadil.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1Ot3HE-000842-PF
+	for barebox@lists.infradead.org; Tue, 07 Sep 2010 18:52:19 +0000
+Received: by vws11 with SMTP id 11so4796178vws.36
+	for <barebox@lists.infradead.org>; Tue, 07 Sep 2010 11:52:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <AANLkTinym9bzzP8J7OmY=kauzEHdOVgVsMJ78Yyph2-t@mail.gmail.com>
+Date: Tue, 7 Sep 2010 20:52:13 +0200
+Message-ID: <AANLkTinY-pU+97DMxkFddz6qj+ayQh=5nC1Or++A1qfh@mail.gmail.com>
+From: Marek Belisko <marek.belisko@open-nandra.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,38 +21,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: a9m2440_defconfig failed to compile
-To: Belisko Marek <marek.belisko@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] mach-s3c24xx: Fix compilation problem when make a9m2410 or
+	a9m2440 defconfig.
+To: barebox@lists.infradead.org
 
-On 14:59 Tue 07 Sep     , Belisko Marek wrote:
-> On Tue, Sep 7, 2010 at 2:01 PM, Juergen Beisert <jbe@pengutronix.de> wrote:
-> > Belisko Marek wrote:
-> >> Hi,
-> >>
-> >> following steps lead to compilation error (barebox v2010.09.0):
-> >>
-> >> 1. make a9m2440_defconfig ARCH=arm
-> >> 2. make CROSS_COMPILE=arm-linux- ARCH=arm
-> >>
-> >> error: arch/arm/boards/a9m2440/built-in.o: In function `nand_boot':
-> >> /home/open-nandra/projects/barebox/arch/arm/boards/a9m2440/a9m2440.c:183:
-> >> undefined reference to `s3c24x0_nand_load_image'
-> >>
-> >> It seems in Kconfig for mach-s3c24xx is selected NAND_S3C24X0 but
-> >> missing CONFIG_MTD and CONFIG_NAND to properly compile
-> >> nand driver for s3c24xx.
-> >>
-> >> Could I send a patch with updated defconfig or exist better solution?
-> >
-> > Should be repaired in the menu and the source files. The defconfig is not the
-> > correct location to fix it. There are dependencies between these components
-> > that must be part of the menu.
-> Not sure which menu type do you think?
-Kconfig file
+Following steps lead to compilation error (barebox v2010.09.0):
 
-Best Regards,
-J.
+1. make a9m2440_defconfig (or a9m2410) ARCH=arm
+2. make CROSS_COMPILE=arm-linux- ARCH=arm
+
+This patch should fix problems.
+
+Signed-off-by: Marek Belisko <marek.belisko@open-nandra.com>
+---
+ arch/arm/mach-s3c24xx/Kconfig |    4 +++-
+ 1 files changed, 3 insertions(+), 1 deletions(-)
+
+diff --git a/arch/arm/mach-s3c24xx/Kconfig b/arch/arm/mach-s3c24xx/Kconfig
+index 37ccf2f..297fdbb 100644
+--- a/arch/arm/mach-s3c24xx/Kconfig
++++ b/arch/arm/mach-s3c24xx/Kconfig
+@@ -81,7 +81,9 @@ config S3C24XX_SDRAM_INIT
+ config S3C24XX_NAND_BOOT
+ 	bool
+ 	prompt "Booting from NAND"
+-	select NAND_S3C24X0
++	select MTD
++	select NAND
++	select NAND_S3C24X0
+ 	help
+ 	  Add generic support to boot from NAND flash. Image loading will be
+ 	  skipped if the code is running from NOR or already from SDRAM.
+-- 
+1.7.1
 
 _______________________________________________
 barebox mailing list
