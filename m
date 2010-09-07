@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vw0-f49.google.com ([209.85.212.49])
-	by bombadil.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OsxlV-0005V4-BA
-	for barebox@lists.infradead.org; Tue, 07 Sep 2010 12:59:11 +0000
-Received: by vws11 with SMTP id 11so4480555vws.36
-	for <barebox@lists.infradead.org>; Tue, 07 Sep 2010 05:59:08 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <201009071401.47921.jbe@pengutronix.de>
+Received: from 68.mail-out.ovh.net ([91.121.185.69])
+	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1OsyH6-00040f-Od
+	for barebox@lists.infradead.org; Tue, 07 Sep 2010 13:31:50 +0000
+Date: Tue, 7 Sep 2010 15:31:00 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20100907133100.GF30509@game.jcrosoft.org>
 References: <AANLkTi=F9yCBrpyYOdts_-Up3ywCMh4=MSa0iwjLLavh@mail.gmail.com>
 	<201009071401.47921.jbe@pengutronix.de>
-Date: Tue, 7 Sep 2010 14:59:05 +0200
-Message-ID: <AANLkTinym9bzzP8J7OmY=kauzEHdOVgVsMJ78Yyph2-t@mail.gmail.com>
-From: Belisko Marek <marek.belisko@gmail.com>
+	<AANLkTinym9bzzP8J7OmY=kauzEHdOVgVsMJ78Yyph2-t@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <AANLkTinym9bzzP8J7OmY=kauzEHdOVgVsMJ78Yyph2-t@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,42 +20,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: a9m2440_defconfig failed to compile
-To: Juergen Beisert <jbe@pengutronix.de>
+To: Belisko Marek <marek.belisko@gmail.com>
 Cc: barebox@lists.infradead.org
 
-T24gVHVlLCBTZXAgNywgMjAxMCBhdCAyOjAxIFBNLCBKdWVyZ2VuIEJlaXNlcnQgPGpiZUBwZW5n
-dXRyb25peC5kZT4gd3JvdGU6Cj4gQmVsaXNrbyBNYXJlayB3cm90ZToKPj4gSGksCj4+Cj4+IGZv
-bGxvd2luZyBzdGVwcyBsZWFkIHRvIGNvbXBpbGF0aW9uIGVycm9yIChiYXJlYm94IHYyMDEwLjA5
-LjApOgo+Pgo+PiAxLiBtYWtlIGE5bTI0NDBfZGVmY29uZmlnIEFSQ0g9YXJtCj4+IDIuIG1ha2Ug
-Q1JPU1NfQ09NUElMRT1hcm0tbGludXgtIEFSQ0g9YXJtCj4+Cj4+IGVycm9yOiBhcmNoL2FybS9i
-b2FyZHMvYTltMjQ0MC9idWlsdC1pbi5vOiBJbiBmdW5jdGlvbiBgbmFuZF9ib290JzoKPj4gL2hv
-bWUvb3Blbi1uYW5kcmEvcHJvamVjdHMvYmFyZWJveC9hcmNoL2FybS9ib2FyZHMvYTltMjQ0MC9h
-OW0yNDQwLmM6MTgzOgo+PiB1bmRlZmluZWQgcmVmZXJlbmNlIHRvIGBzM2MyNHgwX25hbmRfbG9h
-ZF9pbWFnZScKPj4KPj4gSXQgc2VlbXMgaW4gS2NvbmZpZyBmb3IgbWFjaC1zM2MyNHh4IGlzIHNl
-bGVjdGVkIE5BTkRfUzNDMjRYMCBidXQKPj4gbWlzc2luZyBDT05GSUdfTVREIGFuZCBDT05GSUdf
-TkFORCB0byBwcm9wZXJseSBjb21waWxlCj4+IG5hbmQgZHJpdmVyIGZvciBzM2MyNHh4Lgo+Pgo+
-PiBDb3VsZCBJIHNlbmQgYSBwYXRjaCB3aXRoIHVwZGF0ZWQgZGVmY29uZmlnIG9yIGV4aXN0IGJl
-dHRlciBzb2x1dGlvbj8KPgo+IFNob3VsZCBiZSByZXBhaXJlZCBpbiB0aGUgbWVudSBhbmQgdGhl
-IHNvdXJjZSBmaWxlcy4gVGhlIGRlZmNvbmZpZyBpcyBub3QgdGhlCj4gY29ycmVjdCBsb2NhdGlv
-biB0byBmaXggaXQuIFRoZXJlIGFyZSBkZXBlbmRlbmNpZXMgYmV0d2VlbiB0aGVzZSBjb21wb25l
-bnRzCj4gdGhhdCBtdXN0IGJlIHBhcnQgb2YgdGhlIG1lbnUuCk5vdCBzdXJlIHdoaWNoIG1lbnUg
-dHlwZSBkbyB5b3UgdGhpbms/Cj4KPiBqYmUKPgo+IC0tCj4gUGVuZ3V0cm9uaXggZS5LLiDCoCDC
-oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoHwgSnVlcmdlbiBCZWlzZXJ0
-IMKgIMKgIMKgIMKgIMKgIMKgIHwKPiBMaW51eCBTb2x1dGlvbnMgZm9yIFNjaWVuY2UgYW5kIElu
-ZHVzdHJ5IMKgIMKgIMKgfCBQaG9uZTogKzQ5LTg3NjYtOTM5IDIyOCDCoCDCoCB8Cj4gVmVydHJl
-dHVuZyBTdWVkL011ZW5jaGVuLCBHZXJtYW55IMKgIMKgIMKgIMKgIMKgIMKgIHwgRmF4OiDCoCAr
-NDktNTEyMS0yMDY5MTctNTU1NSB8Cj4gQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYg
-wqAgwqAgwqAgwqAgwqAgwqAgwqB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvIMKgfAo+CgpU
-aGFua3MsCgpNYXJlawoKLS0gCmFzIHNpbXBsZSBhbmQgcHJpbWl0aXZlIGFzIHBvc3NpYmxlCi0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTWFyZWsgQmVs
-aXNrbyAtIE9QRU4tTkFORFJBCkZyZWVsYW5jZSBEZXZlbG9wZXIKClJ1c2thIE5vdmEgVmVzIDIx
-OSB8IFByZXNvdiwgMDgwMDUgU2xvdmFrIFJlcHVibGljClRlbDogKzQyMSA5MTUgMDUyIDE4NApz
-a3lwZTogbWFyZWt3aGl0ZQppY3E6IDI5MDU1MTA4Ngp3ZWI6IGh0dHA6Ly9vcGVuLW5hbmRyYS5j
-b20KCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVi
-b3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMu
-aW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On 14:59 Tue 07 Sep     , Belisko Marek wrote:
+> On Tue, Sep 7, 2010 at 2:01 PM, Juergen Beisert <jbe@pengutronix.de> wrote:
+> > Belisko Marek wrote:
+> >> Hi,
+> >>
+> >> following steps lead to compilation error (barebox v2010.09.0):
+> >>
+> >> 1. make a9m2440_defconfig ARCH=arm
+> >> 2. make CROSS_COMPILE=arm-linux- ARCH=arm
+> >>
+> >> error: arch/arm/boards/a9m2440/built-in.o: In function `nand_boot':
+> >> /home/open-nandra/projects/barebox/arch/arm/boards/a9m2440/a9m2440.c:183:
+> >> undefined reference to `s3c24x0_nand_load_image'
+> >>
+> >> It seems in Kconfig for mach-s3c24xx is selected NAND_S3C24X0 but
+> >> missing CONFIG_MTD and CONFIG_NAND to properly compile
+> >> nand driver for s3c24xx.
+> >>
+> >> Could I send a patch with updated defconfig or exist better solution?
+> >
+> > Should be repaired in the menu and the source files. The defconfig is not the
+> > correct location to fix it. There are dependencies between these components
+> > that must be part of the menu.
+> Not sure which menu type do you think?
+Kconfig file
+
+Best Regards,
+J.
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
