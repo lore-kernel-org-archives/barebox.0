@@ -1,16 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OtHTu-0006WR-VH
-	for barebox@lists.infradead.org; Wed, 08 Sep 2010 10:02:20 +0000
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Wed, 8 Sep 2010 12:01:01 +0200
+Received: from mail-ww0-f49.google.com ([74.125.82.49])
+	by bombadil.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1OtI1C-0005Aw-Sl
+	for barebox@lists.infradead.org; Wed, 08 Sep 2010 10:36:43 +0000
+Received: by wwb24 with SMTP id 24so8535481wwb.18
+	for <barebox@lists.infradead.org>; Wed, 08 Sep 2010 03:36:41 -0700 (PDT)
+From: Peter Korsgaard <jacmet@sunsite.dk>
 References: <AANLkTinY-pU+97DMxkFddz6qj+ayQh=5nC1Or++A1qfh@mail.gmail.com>
 	<20100908094706.GA2847@game.jcrosoft.org>
-In-Reply-To: <20100908094706.GA2847@game.jcrosoft.org>
+	<201009081201.01622.jbe@pengutronix.de>
+Date: Wed, 08 Sep 2010 12:36:30 +0200
+In-Reply-To: <201009081201.01622.jbe@pengutronix.de> (Juergen Beisert's
+	message of "Wed, 8 Sep 2010 12:01:01 +0200")
+Message-ID: <87sk1kcyj5.fsf@macbook.be.48ers.dk>
 MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <201009081201.01622.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,49 +28,30 @@ Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] mach-s3c24xx: Fix compilation problem when make a9m2410
 	or a9m2440 defconfig.
-To: barebox@lists.infradead.org
-Cc: Marek Belisko <marek.belisko@open-nandra.com>
+To: Juergen Beisert <jbe@pengutronix.de>
+Cc: barebox@lists.infradead.org, Marek Belisko <marek.belisko@open-nandra.com>
 
-Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 20:52 Tue 07 Sep     , Marek Belisko wrote:
-> > Following steps lead to compilation error (barebox v2010.09.0):
-> >
-> > 1. make a9m2440_defconfig (or a9m2410) ARCH=arm
-> > 2. make CROSS_COMPILE=arm-linux- ARCH=arm
-> >
-> > This patch should fix problems.
-> >
-> > Signed-off-by: Marek Belisko <marek.belisko@open-nandra.com>
-> > ---
-> >  arch/arm/mach-s3c24xx/Kconfig |    4 +++-
-> >  1 files changed, 3 insertions(+), 1 deletions(-)
-> >
-> > diff --git a/arch/arm/mach-s3c24xx/Kconfig
-> > b/arch/arm/mach-s3c24xx/Kconfig index 37ccf2f..297fdbb 100644
-> > --- a/arch/arm/mach-s3c24xx/Kconfig
-> > +++ b/arch/arm/mach-s3c24xx/Kconfig
-> > @@ -81,7 +81,9 @@ config S3C24XX_SDRAM_INIT
-> >  config S3C24XX_NAND_BOOT
-> >  	bool
-> >  	prompt "Booting from NAND"
-> > -	select NAND_S3C24X0
-> > +	select MTD
-> > +	select NAND
-> > +	select NAND_S3C24X0
->
-> you should be able to boot from nand only if you enable the NAND and not
-> the invert
+>>>>> "Juergen" == Juergen Beisert <jbe@pengutronix.de> writes:
 
-Hmm, you can enable NAND support, but you may do not want to boot from it. 
-IMHO its correct in this way.
+Hi,
 
-jbe
+ >> >  	prompt "Booting from NAND"
+ >> > -	select NAND_S3C24X0
+ >> > +	select MTD
+ >> > +	select NAND
+ >> > +	select NAND_S3C24X0
+ >> 
+ >> you should be able to boot from nand only if you enable the NAND and not
+ >> the invert
+
+ Juergen> Hmm, you can enable NAND support, but you may do not want to
+ Juergen> boot from it.  IMHO its correct in this way.
+
+Yes, but you cannot boot from nand unless you have nand support - So I
+agree, depends makes more sense.
 
 -- 
-Pengutronix e.K.                              | Juergen Beisert             |
-Linux Solutions for Science and Industry      | Phone: +49-8766-939 228     |
-Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
+Bye, Peter Korsgaard
 
 _______________________________________________
 barebox mailing list
