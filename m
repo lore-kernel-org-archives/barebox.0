@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vw0-f49.google.com ([209.85.212.49])
-	by bombadil.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1Ot3HE-000842-PF
-	for barebox@lists.infradead.org; Tue, 07 Sep 2010 18:52:19 +0000
-Received: by vws11 with SMTP id 11so4796178vws.36
-	for <barebox@lists.infradead.org>; Tue, 07 Sep 2010 11:52:14 -0700 (PDT)
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1OtGMg-0001Hy-Oq
+	for barebox@lists.infradead.org; Wed, 08 Sep 2010 08:50:49 +0000
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Wed, 8 Sep 2010 10:49:20 +0200
+References: <AANLkTinY-pU+97DMxkFddz6qj+ayQh=5nC1Or++A1qfh@mail.gmail.com>
+In-Reply-To: <AANLkTinY-pU+97DMxkFddz6qj+ayQh=5nC1Or++A1qfh@mail.gmail.com>
 MIME-Version: 1.0
-Date: Tue, 7 Sep 2010 20:52:13 +0200
-Message-ID: <AANLkTinY-pU+97DMxkFddz6qj+ayQh=5nC1Or++A1qfh@mail.gmail.com>
-From: Marek Belisko <marek.belisko@open-nandra.com>
+Content-Disposition: inline
+Message-Id: <201009081049.20304.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,39 +22,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mach-s3c24xx: Fix compilation problem when make a9m2410 or
-	a9m2440 defconfig.
+Subject: Re: [PATCH] mach-s3c24xx: Fix compilation problem when make a9m2410
+	or a9m2440 defconfig.
 To: barebox@lists.infradead.org
+Cc: Marek Belisko <marek.belisko@open-nandra.com>
 
-Following steps lead to compilation error (barebox v2010.09.0):
+Marek Belisko wrote:
+> Following steps lead to compilation error (barebox v2010.09.0):
+>
+> 1. make a9m2440_defconfig (or a9m2410) ARCH=arm
+> 2. make CROSS_COMPILE=arm-linux- ARCH=arm
+>
+> This patch should fix problems.
+>
+> Signed-off-by: Marek Belisko <marek.belisko@open-nandra.com>
+> ---
+>  arch/arm/mach-s3c24xx/Kconfig |    4 +++-
+>  1 files changed, 3 insertions(+), 1 deletions(-)
+>
+> diff --git a/arch/arm/mach-s3c24xx/Kconfig b/arch/arm/mach-s3c24xx/Kconfig
+> index 37ccf2f..297fdbb 100644
+> --- a/arch/arm/mach-s3c24xx/Kconfig
+> +++ b/arch/arm/mach-s3c24xx/Kconfig
+> @@ -81,7 +81,9 @@ config S3C24XX_SDRAM_INIT
+>  config S3C24XX_NAND_BOOT
+>  	bool
+>  	prompt "Booting from NAND"
+> -	select NAND_S3C24X0
+> +	select MTD
+> +	select NAND
+> +	select NAND_S3C24X0
+>  	help
+>  	  Add generic support to boot from NAND flash. Image loading will be
+>  	  skipped if the code is running from NOR or already from SDRAM.
 
-1. make a9m2440_defconfig (or a9m2410) ARCH=arm
-2. make CROSS_COMPILE=arm-linux- ARCH=arm
+Acked-by: Juergen Beisert <jbe@pengutronix.de>
 
-This patch should fix problems.
+jbe
 
-Signed-off-by: Marek Belisko <marek.belisko@open-nandra.com>
----
- arch/arm/mach-s3c24xx/Kconfig |    4 +++-
- 1 files changed, 3 insertions(+), 1 deletions(-)
-
-diff --git a/arch/arm/mach-s3c24xx/Kconfig b/arch/arm/mach-s3c24xx/Kconfig
-index 37ccf2f..297fdbb 100644
---- a/arch/arm/mach-s3c24xx/Kconfig
-+++ b/arch/arm/mach-s3c24xx/Kconfig
-@@ -81,7 +81,9 @@ config S3C24XX_SDRAM_INIT
- config S3C24XX_NAND_BOOT
- 	bool
- 	prompt "Booting from NAND"
--	select NAND_S3C24X0
-+	select MTD
-+	select NAND
-+	select NAND_S3C24X0
- 	help
- 	  Add generic support to boot from NAND flash. Image loading will be
- 	  skipped if the code is running from NOR or already from SDRAM.
 -- 
-1.7.1
+Pengutronix e.K.                              | Juergen Beisert             |
+Linux Solutions for Science and Industry      | Phone: +49-8766-939 228     |
+Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555 |
+Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
