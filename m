@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 70.mail-out.ovh.net ([91.121.185.63])
+Received: from 31.mail-out.ovh.net ([213.186.62.10])
 	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OthgF-0003of-Qj
-	for barebox@lists.infradead.org; Thu, 09 Sep 2010 14:00:51 +0000
+	id 1OthgE-0003o8-6v
+	for barebox@lists.infradead.org; Thu, 09 Sep 2010 14:00:47 +0000
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu,  9 Sep 2010 15:59:51 +0200
-Message-Id: <1284040793-32145-5-git-send-email-plagnioj@jcrosoft.com>
+Date: Thu,  9 Sep 2010 15:59:47 +0200
+Message-Id: <1284040793-32145-1-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <20100909135543.GF9112@game.jcrosoft.org>
 References: <20100909135543.GF9112@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
@@ -21,85 +21,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/7] add password framework
+Subject: [PATCH 1/7] add digest framework
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- common/Kconfig     |   28 +++++
- common/Makefile    |    1 +
- common/password.c  |  286 ++++++++++++++++++++++++++++++++++++++++++++++++++++
- include/password.h |   41 ++++++++
- 4 files changed, 356 insertions(+), 0 deletions(-)
- create mode 100644 common/password.c
- create mode 100644 include/password.h
+ common/Makefile  |    1 +
+ common/digest.c  |   77 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ include/digest.h |   49 ++++++++++++++++++++++++++++++++++
+ lib/Kconfig      |    7 +++++
+ 4 files changed, 134 insertions(+), 0 deletions(-)
+ create mode 100644 common/digest.c
+ create mode 100644 include/digest.h
 
-diff --git a/common/Kconfig b/common/Kconfig
-index 6556c62..ad70cde 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -264,6 +264,34 @@ config MENU
- 	   a menu framework that allow us to create list menu to simplify
- 	   barebox and make it more user-frendly
- 
-+config PASSWORD
-+	bool
-+	prompt "Password Framework"
-+	select DIGEST
-+	help
-+	  allow you to have password protection framework
-+
-+if PASSWORD
-+
-+choice
-+	prompt "passwd checksum"
-+
-+config PASSWD_SUM_MD5
-+	bool "MD5"
-+	select MD5
-+
-+config PASSWD_SUM_SHA1
-+	bool "SHA1"
-+	select SHA1
-+
-+config PASSWD_SUM_SHA256
-+	bool "SHA256"
-+	select SHA256
-+
-+endchoice
-+
-+endif
-+
- config DYNAMIC_CRC_TABLE
- 	bool
- 	depends on CRC32
 diff --git a/common/Makefile b/common/Makefile
-index b087e3d..6e1c4c2 100644
+index 4b8cce0..b087e3d 100644
 --- a/common/Makefile
 +++ b/common/Makefile
-@@ -17,6 +17,7 @@ obj-y += startup.o
+@@ -11,6 +11,7 @@ obj-y += clock.o
+ obj-y += command.o
+ obj-$(CONFIG_CONSOLE_FULL) += console.o
+ obj-$(CONFIG_CONSOLE_SIMPLE) += console_simple.o
++obj-$(CONFIG_DIGEST) += digest.o
+ obj-y += env.o
+ obj-y += startup.o
  obj-y += misc.o
- obj-y += memsize.o
- obj-$(CONFIG_MENU) += menu.o
-+obj-$(CONFIG_PASSWORD) += password.o
- obj-$(CONFIG_MODULES) += module.o
- extra-$(CONFIG_MODULES) += module.lds
- 
-diff --git a/common/password.c b/common/password.c
+diff --git a/common/digest.c b/common/digest.c
 new file mode 100644
-index 0000000..cf36970
+index 0000000..10ad060
 --- /dev/null
-+++ b/common/password.c
-@@ -0,0 +1,286 @@
++++ b/common/digest.c
+@@ -0,0 +1,77 @@
 +/*
-+ * Copyright (c) 2008-2010 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
++ * (C) Copyright 2008-2010 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 + *
 + * See file CREDITS for list of people who contributed to this
 + * project.
 + *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; version 2 of
++ * the License.
 + *
 + * This program is distributed in the hope that it will be useful,
 + * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -108,322 +70,138 @@ index 0000000..cf36970
 + *
 + * You should have received a copy of the GNU General Public License
 + * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
 + */
 +
 +#include <common.h>
-+#include <password.h>
-+#include <errno.h>
-+#include <readkey.h>
-+#include <fs.h>
-+#include <fcntl.h>
 +#include <digest.h>
 +#include <malloc.h>
-+#include <xfuncs.h>
++#include <errno.h>
++#include <module.h>
++#include <linux/err.h>
 +
-+#if defined(CONFIG_PASSWD_SUM_MD5)
-+#define PASSWD_SUM "md5"
-+#elif defined(CONFIG_PASSWD_SUM_SHA1)
-+#define PASSWD_SUM "sha1"
-+#elif defined(CONFIG_PASSWD_SUM_SHA256)
-+#define PASSWD_SUM "sha256"
-+#endif
++static LIST_HEAD(digests);
 +
-+int password(unsigned char *passwd, size_t length, int flags)
++static int dummy_init(struct digest *d)
 +{
-+	unsigned char *buf = passwd;
-+	int pos = 0;
-+	unsigned char ch;
++	return 0;
++}
 +
-+	if (!passwd)
++int digest_register(struct digest *d)
++{
++	if (!d || !d->name || !d->update || !d->final || d->length < 1)
 +		return -EINVAL;
 +
-+	do {
-+		ch = getc();
++	if (!d->init)
++		d->init = dummy_init;
 +
-+		switch (ch) {
-+		case '\r':
-+		case '\n':
-+			*buf = '\0';
-+			puts("\r\n");
-+			return pos;
-+		case '\0':
-+		case '\t':
-+			continue;
-+		case CTL_CH('c'):
-+			passwd[0] = '\0';
-+			puts("\r\n");
-+			return 0;
-+		case CTL_CH('h'):
-+		case KEY_DEL7:
-+		case KEY_DEL:
-+			if (flags & STAR && pos > 0)
-+				puts("\b \b");
-+			*buf = '\0';
-+			buf--;
-+			pos--;
-+			continue;
-+		default:
-+			if (pos < length - 1) {
-+				if (flags & STAR)
-+					putchar('*');
-+				else if (flags & CLEAR)
-+					putchar(ch);
++	if (digest_get_by_name(d->name))
++		return -EEXIST;
 +
-+				*buf = ch;
-+				buf++;
-+				pos++;
-+			} else {
-+				if (flags & STAR)
-+					putchar('\a');
-+			}
-+		}
-+	} while(1);
++	list_add_tail(&d->list, &digests);
++
++	return 0;
 +}
++EXPORT_SYMBOL(digest_register);
 +
-+int is_passwd_enable(void)
++void digest_unregister(struct digest *d)
 +{
-+	int fd;
++	if (!d)
++		return;
 +
-+	fd = open(PASSWD_FILE, O_RDONLY);
-+
-+	if (fd < 0)
-+		return 0;
-+
-+	close(fd);
-+
-+	return 1;
++	list_del(&d->list);
 +}
++EXPORT_SYMBOL(digest_unregister);
 +
-+int passwd_disable(void)
++struct digest* digest_get_by_name(char* name)
 +{
-+	return unlink(PASSWD_FILE);
-+}
++	struct digest* d;
 +
-+static unsigned char to_digit(unsigned char c)
-+{
-+	if (c >= '0' && c <= '9')
-+		c -= '0';
-+	else
-+		c -= 'a' - 10;
++	if (!name)
++		return NULL;
 +
-+	return c;
-+}
-+
-+static unsigned char to_hexa(unsigned char c)
-+{
-+	if (c < 10)
-+		c += '0';
-+	else
-+		c += 'a' - 10;
-+
-+	return c;
-+}
-+
-+int read_passwd(unsigned char *sum, size_t length)
-+{
-+	int fd;
-+	int ret = 0;
-+	unsigned char c;
-+
-+	if (!sum && length < 1)
-+		return -EINVAL;
-+
-+	fd = open(PASSWD_FILE, O_RDONLY);
-+
-+	if (fd < 0)
-+		return fd;
-+
-+	do {
-+		ret = read(fd, &c, sizeof(char));
-+
-+		if (ret < 0)
-+			goto exit;
-+
-+		*sum = to_digit(c) << 4;
-+
-+		ret = read(fd, &c, sizeof(char));
-+
-+		if (ret < 0)
-+			goto exit;
-+
-+		*sum |= to_digit(c);
-+		sum++;
-+		length--;
-+	} while(length > 0);
-+
-+exit:
-+
-+	ret = 0;
-+
-+	close(fd);
-+
-+	return ret;
-+}
-+
-+int write_passwd(unsigned char *sum, size_t length)
-+{
-+	int fd;
-+	unsigned char c;
-+	int ret = 0;
-+
-+	if (!sum && length < 1)
-+		return -EINVAL;
-+
-+	fd = open(PASSWD_DIR, O_RDONLY);
-+
-+	if (fd < 0)
-+		mkdir(PASSWD_DIR, 644);
-+
-+	close(fd);
-+
-+	fd = open(PASSWD_FILE, O_WRONLY | O_CREAT, 600);
-+
-+	if (fd < 0)
-+		return fd;
-+
-+	do {
-+		c = to_hexa(*sum >> 4 & 0xf);
-+
-+		ret = write(fd, &c, sizeof(unsigned char));
-+
-+		if (ret < 0)
-+			goto exit;
-+
-+		c = to_hexa(*sum & 0xf);
-+
-+		ret = write(fd, &c, sizeof(unsigned char));
-+
-+		if (ret < 0)
-+			goto exit;
-+
-+		sum++;
-+		length--;
-+	} while(length > 0);
-+
-+	ret = 0;
-+
-+exit:
-+	close(fd);
-+
-+	return ret;
-+}
-+
-+int check_passwd(unsigned char* passwd, size_t length)
-+{
-+	struct digest *d;
-+	unsigned char *passwd1_sum;
-+	unsigned char *passwd2_sum;
-+	int ret = 0;
-+
-+	d = digest_get_by_name(PASSWD_SUM);
-+
-+	passwd1_sum = calloc(d->length, sizeof(unsigned char));
-+
-+	if (!passwd1_sum)
-+		return -ENOMEM;
-+
-+	passwd2_sum = calloc(d->length, sizeof(unsigned char));
-+
-+	if (!passwd2_sum) {
-+		ret = -ENOMEM;
-+		goto err1;
++	list_for_each_entry(d, &digests, list) {
++		if(strcmp(d->name, name) == 0)
++			return d;
 +	}
 +
-+	d->init(d);
-+
-+	d->update(d, passwd, length);
-+
-+	d->final(d, passwd1_sum);
-+
-+	ret = read_passwd(passwd2_sum, d->length);
-+
-+	if (ret < 0)
-+		goto err2;
-+
-+	if (strncmp(passwd1_sum, passwd2_sum, d->length) == 0)
-+		ret = 1;
-+
-+err2:
-+	free(passwd2_sum);
-+err1:
-+	free(passwd1_sum);
-+
-+	return ret;
++	return NULL;
 +}
-+
-+int set_passwd(unsigned char* passwd, size_t length)
-+{
-+	struct digest *d;
-+	unsigned char *passwd_sum;
-+	int ret;
-+
-+	d = digest_get_by_name(PASSWD_SUM);
-+
-+	passwd_sum = calloc(d->length, sizeof(unsigned char));
-+
-+	if (!passwd_sum)
-+		return -ENOMEM;
-+
-+	d->init(d);
-+
-+	d->update(d, passwd, length);
-+
-+	d->final(d, passwd_sum);
-+
-+	ret = write_passwd(passwd_sum, d->length);
-+
-+	free(passwd_sum);
-+
-+	return ret;
-+}
-diff --git a/include/password.h b/include/password.h
++EXPORT_SYMBOL_GPL(digest_get_by_name);
+diff --git a/include/digest.h b/include/digest.h
 new file mode 100644
-index 0000000..32301eb
+index 0000000..1dcfd9d
 --- /dev/null
-+++ b/include/password.h
-@@ -0,0 +1,41 @@
++++ b/include/digest.h
+@@ -0,0 +1,49 @@
 +/*
-+ * Copyright (c) 2008-2010 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
++ * (C) Copyright 2008-2010 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 + *
 + * See file CREDITS for list of people who contributed to this
 + * project.
 + *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; version 2 of
++ * the License.
 + *
 + * This program is distributed in the hope that it will be useful,
 + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 + * GNU General Public License for more details.
 + *
 + * You should have received a copy of the GNU General Public License
 + * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
 + */
 +
-+#ifndef __PASSWORD_H__
-+#define __PASSWORD_H__
++#ifndef __DIGEST_H__
++#define __DIGEST_H__
 +
-+#define PASSWD_FILE		"/env/etc/passwd"
-+#define PASSWD_DIR		"/env/etc/"
++#include <linux/list.h>
 +
-+#define HIDE	(0 << 0)
-+#define STAR	(1 << 1)
-+#define CLEAR	(1 << 2)
++struct digest
++{
++	char *name;
 +
-+int password(unsigned char *passwd, size_t length, int flags);
++	int (*init)(struct digest *d);
++	int (*update)(struct digest *d, const void *data, unsigned long len);
++	int (*final)(struct digest *d, unsigned char *md);
 +
-+int read_passwd(unsigned char *sum, size_t length);
-+int write_passwd(unsigned char *sum, size_t length);
++	unsigned int length;
 +
-+int is_passwd_enable(void);
-+int passwd_disable(void);
-+int check_passwd(unsigned char* passwd, size_t length);
-+int set_passwd(unsigned char* passwd, size_t length);
++	struct list_head list;
++};
 +
-+#endif /* __PASSWORD_H__ */
++/*
++ * digest functions
++ */
++int digest_register(struct digest *d);
++void digest_unregister(struct digest *d);
++
++struct digest* digest_get_by_name(char* name);
++
++#endif /* __SH_ST_DEVICES_H__ */
+diff --git a/lib/Kconfig b/lib/Kconfig
+index 28c92cd..a571ba8 100644
+--- a/lib/Kconfig
++++ b/lib/Kconfig
+@@ -10,6 +10,13 @@ config CRC32
+ config CRC16
+ 	bool
+ 
++menuconfig DIGEST
++	bool "Digest"
++
++if DIGEST
++
++endif
++
+ config GENERIC_FIND_NEXT_BIT
+ 	def_bool n
+ 
 -- 
 1.7.1
 
