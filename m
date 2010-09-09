@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OtLYq-00007T-Oa
-	for barebox@lists.infradead.org; Wed, 08 Sep 2010 14:23:41 +0000
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Wed, 8 Sep 2010 16:22:29 +0200
-References: <OFD70E892C.B10E0160-ONC1257798.0047E686-C1257798.004D952C@phytec.de>
-In-Reply-To: <OFD70E892C.B10E0160-ONC1257798.0047E686-C1257798.004D952C@phytec.de>
+Received: from 31.mail-out.ovh.net ([213.186.62.10])
+	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1OthcC-0004Je-9y
+	for barebox@lists.infradead.org; Thu, 09 Sep 2010 13:56:37 +0000
+Date: Thu, 9 Sep 2010 15:55:43 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20100909135543.GF9112@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-Message-Id: <201009081622.29415.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,33 +20,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Generating barebox.S
+Subject: [PATCH 0/7] Digest and login/password Frameworks
 To: barebox@lists.infradead.org
 
-Teresa Gamez wrote:
-> Hello,
->
-> I noticed while upgrading from barebox-2010.04.0 to barebox-2010.07.0 that
-> the part of generating a barebox.S file in the Makefile has changed. I'm
-> working with an ARM board and it seems that the barebox.S is not being
-> build by default anymore. My Makefile reading skills are not really
-> good... So how do I activate the generation of the barebox.S file? Or do I
-> miss something?
+Hi,
 
-Don't know why the behaviour was changed, but a:
+	this patch serie will introduce the support
+	of 2 frameworks
 
-$ make barebox.S
+	Digest Framework
 
-should help.
+	Which allow you to add easely digest algo
+	with md5, sha1, sha256
 
-Regards,
-jbe
+	Login/Passwd Framework
 
--- 
-Pengutronix e.K.                              | Juergen Beisert             |
-Linux Solutions for Science and Industry      | Phone: +49-8766-939 228     |
-Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
+	It will allow you to protect your barebox with a password
+	and require it via login command or manange it via passwd
+	This framework use the Digest framework to calculate the checksum
+	to store the password
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
