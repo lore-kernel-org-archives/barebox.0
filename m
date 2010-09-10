@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vw0-f49.google.com ([209.85.212.49])
-	by bombadil.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1Ou186-0004Lx-Ft
-	for barebox@lists.infradead.org; Fri, 10 Sep 2010 10:46:51 +0000
-Received: by vws11 with SMTP id 11so2576728vws.36
-	for <barebox@lists.infradead.org>; Fri, 10 Sep 2010 03:46:49 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <201009101230.46079.jbe@pengutronix.de>
+Received: from 26.mail-out.ovh.net ([91.121.27.225])
+	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1Ou1NB-0002Tv-0d
+	for barebox@lists.infradead.org; Fri, 10 Sep 2010 11:02:25 +0000
+Date: Fri, 10 Sep 2010 13:01:30 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20100910110130.GS9112@game.jcrosoft.org>
 References: <AANLkTi=M-LyNQqYmBmrMivx-Ymfw3PQJvXvZFLjJ_rz6@mail.gmail.com>
 	<201009101127.01766.jbe@pengutronix.de>
 	<AANLkTi=kFq71uyAstUiw82oV5EFt3nUv2u1JoQpO_XHR@mail.gmail.com>
 	<201009101230.46079.jbe@pengutronix.de>
-Date: Fri, 10 Sep 2010 12:46:49 +0200
-Message-ID: <AANLkTinDUzc8BrJ_MqDWFhg9jpWayyuhZ2X_DCDx2sTD@mail.gmail.com>
-From: Belisko Marek <marek.belisko@gmail.com>
+	<AANLkTinDUzc8BrJ_MqDWFhg9jpWayyuhZ2X_DCDx2sTD@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <AANLkTinDUzc8BrJ_MqDWFhg9jpWayyuhZ2X_DCDx2sTD@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,70 +22,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: storing barebox to flash /dev/nand0
-To: Juergen Beisert <jbe@pengutronix.de>
+To: Belisko Marek <marek.belisko@gmail.com>
 Cc: barebox@lists.infradead.org
 
-T24gRnJpLCBTZXAgMTAsIDIwMTAgYXQgMTI6MzAgUE0sIEp1ZXJnZW4gQmVpc2VydCA8amJlQHBl
-bmd1dHJvbml4LmRlPiB3cm90ZToKPiBNYXJlaywKPgo+IEJlbGlza28gTWFyZWsgd3JvdGU6Cj4+
-IE9uIEZyaSwgU2VwIDEwLCAyMDEwIGF0IDExOjI3IEFNLCBKdWVyZ2VuIEJlaXNlcnQgPGpiZUBw
-ZW5ndXRyb25peC5kZT4KPiB3cm90ZToKPj4gPiBCZWxpc2tvIE1hcmVrIHdyb3RlOgo+PiA+PiBI
-aSwKPj4gPj4KPj4gPj4gSSdtIHBvcnRpbmcgYmFyZWJveCB0byBtaW5pMjQ0MCBib2FyZC4gSSBj
-YW4gYm9vdCBiYXJlYm94IGZyb20gU0RSQU0KPj4gPj4gYnkgbG9hZGluZyB0byBURVhUX0JBU0Ug
-YWRkcmVzcy4KPj4gPj4gSSB3b3VsZCBsaWtlIHRvIHRlc3QgYWxzbyBib290aW5nIGZyb20gTkFO
-RCBmbGFzaCBidXQgSSBjYW4ndCBmaW5kIGEKPj4gPj4gd2F5IGhvdyB0byBzdG9yZSBiYXJlYm94
-IGxvYWRlZCBpbiBSQU0KPj4gPj4gdG8gZmxhc2guCj4+ID4+Cj4+ID4+IEkgdHJ5IHRmdHAgYmFy
-ZWJveC5iaW4gL2Rldi9uYW5kMCBidXQgaWYgZmFpbGVkIHdpdGg6Cj4+ID4+Cj4+ID4+IFRGVFAg
-ZnJvbSBzZXJ2ZXIgMTAuMTQ2LjEuMjEgKCdiYXJlYm94LmJpbicgLT4gJy9kZXYvbmFuZDAnKQo+
-PiA+PiDCoCDCoCDCoCDCoCBvZmZzZXQgMHgwMDAwMDIwMCBub3QgcGFnZSBhbGlnbmVkCj4+ID4+
-IHdyaXRlOiBJbnZhbGlkIGFyZ3VtZW50Cj4+ID4+Cj4+ID4+IHRmdHAgZmFpbGVkOiBlcnJvciAt
-MjIKPj4gPj4KPj4gPj4gSG93IGNhbiBJIHByb3Blcmx5IHN0b3JlIHRvIGZsYXNoPwo+PiA+Cj4+
-ID4gQ29uc2lkZXIgdGhlIGJhZCBibG9ja3MgaW4geW91ciBOQU5ELiBTbywgeW91IHdpbGwgbmVl
-ZCBhIGJhZCBibG9jayBhd2FyZQo+PiA+IGRldmljZSB0byB3cml0ZSB0by4KPj4gPgo+PiA+IFRo
-aXMgY29kZSBpbiB5b3VyIGJvYXJkIHNwZWNpZmljIGluaXQgcm91dGluZSBzaG91bGQgYWRkIHRo
-ZSB0aGluZzoKPj4gPgo+PiA+IFsuLi5dCj4+ID4gLyogLS0tLS0tLS0tLS0gYWRkIHNvbWUgdml0
-YWwgcGFydGl0aW9ucyAtLS0tLS0tLSAqLwo+PiA+IGRldmZzX2FkZF9wYXJ0aXRpb24oIm5hbmQw
-IiwgMHgwMDAwMCwgMHg0MDAwMCwgUEFSVElUSU9OX0ZJWEVELAo+PiA+ICJzZWxmX3JhdyIpOyBk
-ZXZfYWRkX2JiX2Rldigic2VsZl9yYXciLCAic2VsZjAiKTsKPj4gPgo+PiA+IGRldmZzX2FkZF9w
-YXJ0aXRpb24oIm5hbmQwIiwgMHg0MDAwMCwgMHgyMDAwMCwgUEFSVElUSU9OX0ZJWEVELAo+PiA+
-ICJlbnZfcmF3Iik7IGRldl9hZGRfYmJfZGV2KCJlbnZfcmF3IiwgImVudjAiKTsKPj4gPiBbLi4u
-XQo+Pgo+PiBPSyBhZGQgdml0YWwgcGFydGl0aW9ucyBidXQgYWZ0ZXIgdGhhdCBscyAtbGEgL2Rl
-diBzaG93czoKPj4gWy4uLl0KPgo+IE5vdCBzdXJlIGlmIHRoaXMgaXMgYWxsIHJpZ2h0IChhbGwg
-c2hvdyB0aGUgYmFyZWJveCBwYXJ0aXRpb24pOgo+Cj4+IGNydy0tLS0tLS0gwqAgwqAgMjYyMTQ0
-IHNlbGZfcmF3Cj4KPiBPa2F5LCAyNTYga2lCCj4KPj4gY3J3LS0tLS0tLSDCoCDCoCDCoCDCoCDC
-oDAgc2VsZjAKPgo+IEhtbSwgMD8KPgo+PiBjcnctLS0tLS0tIMKgIMKgIDI2MjE0NCBuYW5kMC5i
-YXJlYm94Cj4KPiBPa2F5LCAyNTYga2lCCj4KPj4gY3J3LS0tLS0tLSDCoCDCoCDCoCDCoCDCoDAg
-bmFuZDAuYmFyZWJveC5iYgo+Cj4gQWdhaW4sIDA/Cj4KPiBGb3IgdGhlIGVudmlyb25tZW50IGl0
-IGxvb2tzIGRpZmZlcmVudDoKPgo+PiBjcnctLS0tLS0tIMKgIMKgIDEzMTA3MiBlbnZfcmF3Cj4+
-IGNydy0tLS0tLS0gwqAgwqAgMTMxMDcyIGVudjAKPj4gY3J3LS0tLS0tLSDCoCDCoCAxMzEwNzIg
-bmFuZDAuYmFyZWJveGVudgo+PiBjcnctLS0tLS0tIMKgIMKgIDEzMTA3MiBuYW5kMC5iYXJlYm94
-ZW52LmJiCj4KPiBBbGwgYXJlIDEyOCBraUIuCk9LIG1heWJlZSB0aGVyZSBpcyBtaXggZnJvbSBt
-dGRfcGFydHMgaW4gZW52IGNvbmZpZyB3aXRoIHZpdGFsIHBhcnRpdGlvbnMuCkkga2VlcCBqdXN0
-IHZpdGFsIHBhcnRpdGlvbnMgaW4gY29kZSBidXQgcmVzdWx0IGlzIHRoZSBzYW1lOgpjci0tLS0t
-LS0tIDQyOTQ5NjcyOTUgemVybwpjcnctLS0tLS0tICAgICAgIDI5NzMgZGVmYXVsdGVudgpjcnct
-LS0tLS0tIDQyOTQ5NjcyOTUgbWVtCmNydy0tLS0tLS0gIDI2ODQzNTQ1NiBuYW5kMApjci0tLS0t
-LS0tICAgIDgzODg2MDggbmFuZF9vb2IwCmNydy0tLS0tLS0gICAgICAgICAgMCByYW0wCmNydy0t
-LS0tLS0gICAgICAgICAzMiBwaHkwCmNydy0tLS0tLS0gICAgIDI2MjE0NCBzZWxmX3Jhdwpjcnct
-LS0tLS0tICAgICAgICAgIDAgc2VsZjAKY3J3LS0tLS0tLSAgICAgMTMxMDcyIGVudl9yYXcKY3J3
-LS0tLS0tLSAgICAgMTMxMDcyIGVudjAKCnNlbGYwIHNob3VsZCBiZSBiYiBmb3Igc2VsZl9yYXcg
-d2hlcmUgdG8gc3RvcmUgYmFyZWJveC4gQnV0IHdoeSBpdCBoYXMgc2l6ZSAwPwpEb24ndCB1bmRl
-cnN0YW5kPyBBbSBJIGRvaW5nIHNvbWV0aGluZyB3cm9uZz8gRm9yIGVudiBpdCB3b3JrcyBmaW5l
-LgoKPgo+IGpiZQo+Cj4gLS0KPiBQZW5ndXRyb25peCBlLksuIMKgIMKgIMKgIMKgIMKgIMKgIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgfCBKdWVyZ2VuIEJlaXNlcnQgwqAgwqAgwqAgwqAgwqAg
-wqAgfAo+IExpbnV4IFNvbHV0aW9ucyBmb3IgU2NpZW5jZSBhbmQgSW5kdXN0cnkgwqAgwqAgwqB8
-IFBob25lOiArNDktODc2Ni05MzkgMjI4IMKgIMKgIHwKPiBWZXJ0cmV0dW5nIFN1ZWQvTXVlbmNo
-ZW4sIEdlcm1hbnkgwqAgwqAgwqAgwqAgwqAgwqAgfCBGYXg6IMKgICs0OS01MTIxLTIwNjkxNy01
-NTU1IHwKPiBBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiDCoCDCoCDCoCDCoCDCoCDC
-oCDCoHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gwqB8Cj4KCm1hcmVrCgotLSAKYXMgc2lt
-cGxlIGFuZCBwcmltaXRpdmUgYXMgcG9zc2libGUKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpNYXJlayBCZWxpc2tvIC0gT1BFTi1OQU5EUkEKRnJlZWxh
-bmNlIERldmVsb3BlcgoKUnVza2EgTm92YSBWZXMgMjE5IHwgUHJlc292LCAwODAwNSBTbG92YWsg
-UmVwdWJsaWMKVGVsOiArNDIxIDkxNSAwNTIgMTg0CnNreXBlOiBtYXJla3doaXRlCmljcTogMjkw
-NTUxMDg2CndlYjogaHR0cDovL29wZW4tbmFuZHJhLmNvbQoKX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBs
-aXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlz
-dGluZm8vYmFyZWJveAo=
+> >
+> > Okay, 256 kiB
+> >
+> >> crw------- =A0 =A0 =A0 =A0 =A00 nand0.barebox.bb
+> >
+> > Again, 0?
+> >
+> > For the environment it looks different:
+> >
+> >> crw------- =A0 =A0 131072 env_raw
+> >> crw------- =A0 =A0 131072 env0
+> >> crw------- =A0 =A0 131072 nand0.bareboxenv
+> >> crw------- =A0 =A0 131072 nand0.bareboxenv.bb
+> >
+> > All are 128 kiB.
+> OK maybee there is mix from mtd_parts in env config with vital partitions.
+> I keep just vital partitions in code but result is the same:
+> cr-------- 4294967295 zero
+> crw-------       2973 defaultenv
+> crw------- 4294967295 mem
+> crw-------  268435456 nand0
+> cr--------    8388608 nand_oob0
+> crw-------          0 ram0
+> crw-------         32 phy0
+> crw-------     262144 self_raw
+> crw-------          0 self0
+> crw-------     131072 env_raw
+> crw-------     131072 env0
+> =
+
+> self0 should be bb for self_raw where to store barebox. But why it has si=
+ze 0?
+> Don't understand? Am I doing something wrong? For env it works fine.
+If I understand correctly your log you have a bad block on it
+
+Best Regards,
+J.
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
