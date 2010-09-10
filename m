@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 31.mail-out.ovh.net ([213.186.62.10])
-	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OtzuJ-0002FZ-R3
-	for barebox@lists.infradead.org; Fri, 10 Sep 2010 09:28:32 +0000
-Date: Fri, 10 Sep 2010 11:27:37 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20100910092737.GO9112@game.jcrosoft.org>
-References: <AANLkTi=M-LyNQqYmBmrMivx-Ymfw3PQJvXvZFLjJ_rz6@mail.gmail.com>
+Received: from mail-vw0-f49.google.com ([209.85.212.49])
+	by bombadil.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1Ou0I2-0005TH-Al
+	for barebox@lists.infradead.org; Fri, 10 Sep 2010 09:53:03 +0000
+Received: by vws11 with SMTP id 11so2537889vws.36
+	for <barebox@lists.infradead.org>; Fri, 10 Sep 2010 02:53:01 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <AANLkTi=M-LyNQqYmBmrMivx-Ymfw3PQJvXvZFLjJ_rz6@mail.gmail.com>
+In-Reply-To: <201009101127.01766.jbe@pengutronix.de>
+References: <AANLkTi=M-LyNQqYmBmrMivx-Ymfw3PQJvXvZFLjJ_rz6@mail.gmail.com>
+	<201009101127.01766.jbe@pengutronix.de>
+Date: Fri, 10 Sep 2010 11:53:00 +0200
+Message-ID: <AANLkTi=kFq71uyAstUiw82oV5EFt3nUv2u1JoQpO_XHR@mail.gmail.com>
+From: Belisko Marek <marek.belisko@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,40 +20,80 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: storing barebox to flash /dev/nand0
-To: Belisko Marek <marek.belisko@gmail.com>
+To: Juergen Beisert <jbe@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 11:01 Fri 10 Sep     , Belisko Marek wrote:
-> Hi,
-> 
-> I'm porting barebox to mini2440 board. I can boot barebox from SDRAM
-> by loading to TEXT_BASE address.
-> I would like to test also booting from NAND flash but I can't find a
-> way how to store barebox loaded in RAM
-> to flash.
-> 
-> I try tftp barebox.bin /dev/nand0 but if failed with:
-> 
-> TFTP from server 10.146.1.21 ('barebox.bin' -> '/dev/nand0')
->         offset 0x00000200 not page aligned
-> write: Invalid argument
-you are not supposed to write directly to nand0
-
-but to nand0.bb
-
-tftp barebox.bin /dev/nand0.bb
-
-after you need a barebox that boor from NAND
-
-Best Regards,
-J.
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gRnJpLCBTZXAgMTAsIDIwMTAgYXQgMTE6MjcgQU0sIEp1ZXJnZW4gQmVpc2VydCA8amJlQHBl
+bmd1dHJvbml4LmRlPiB3cm90ZToKPiBCZWxpc2tvIE1hcmVrIHdyb3RlOgo+PiBIaSwKPj4KPj4g
+SSdtIHBvcnRpbmcgYmFyZWJveCB0byBtaW5pMjQ0MCBib2FyZC4gSSBjYW4gYm9vdCBiYXJlYm94
+IGZyb20gU0RSQU0KPj4gYnkgbG9hZGluZyB0byBURVhUX0JBU0UgYWRkcmVzcy4KPj4gSSB3b3Vs
+ZCBsaWtlIHRvIHRlc3QgYWxzbyBib290aW5nIGZyb20gTkFORCBmbGFzaCBidXQgSSBjYW4ndCBm
+aW5kIGEKPj4gd2F5IGhvdyB0byBzdG9yZSBiYXJlYm94IGxvYWRlZCBpbiBSQU0KPj4gdG8gZmxh
+c2guCj4+Cj4+IEkgdHJ5IHRmdHAgYmFyZWJveC5iaW4gL2Rldi9uYW5kMCBidXQgaWYgZmFpbGVk
+IHdpdGg6Cj4+Cj4+IFRGVFAgZnJvbSBzZXJ2ZXIgMTAuMTQ2LjEuMjEgKCdiYXJlYm94LmJpbicg
+LT4gJy9kZXYvbmFuZDAnKQo+PiDCoCDCoCDCoCDCoCBvZmZzZXQgMHgwMDAwMDIwMCBub3QgcGFn
+ZSBhbGlnbmVkCj4+IHdyaXRlOiBJbnZhbGlkIGFyZ3VtZW50Cj4+Cj4+IHRmdHAgZmFpbGVkOiBl
+cnJvciAtMjIKPj4KPj4gSG93IGNhbiBJIHByb3Blcmx5IHN0b3JlIHRvIGZsYXNoPwo+Cj4gQ29u
+c2lkZXIgdGhlIGJhZCBibG9ja3MgaW4geW91ciBOQU5ELiBTbywgeW91IHdpbGwgbmVlZCBhIGJh
+ZCBibG9jayBhd2FyZQo+IGRldmljZSB0byB3cml0ZSB0by4KPgo+IFRoaXMgY29kZSBpbiB5b3Vy
+IGJvYXJkIHNwZWNpZmljIGluaXQgcm91dGluZSBzaG91bGQgYWRkIHRoZSB0aGluZzoKPgo+IFsu
+Li5dCj4gLyogLS0tLS0tLS0tLS0gYWRkIHNvbWUgdml0YWwgcGFydGl0aW9ucyAtLS0tLS0tLSAq
+Lwo+IGRldmZzX2FkZF9wYXJ0aXRpb24oIm5hbmQwIiwgMHgwMDAwMCwgMHg0MDAwMCwgUEFSVElU
+SU9OX0ZJWEVELCAic2VsZl9yYXciKTsKPiBkZXZfYWRkX2JiX2Rldigic2VsZl9yYXciLCAic2Vs
+ZjAiKTsKPgo+IGRldmZzX2FkZF9wYXJ0aXRpb24oIm5hbmQwIiwgMHg0MDAwMCwgMHgyMDAwMCwg
+UEFSVElUSU9OX0ZJWEVELCAiZW52X3JhdyIpOwo+IGRldl9hZGRfYmJfZGV2KCJlbnZfcmF3Iiwg
+ImVudjAiKTsKPiBbLi4uXQpPSyBhZGQgdml0YWwgcGFydGl0aW9ucyBidXQgYWZ0ZXIgdGhhdCBs
+cyAtbGEgL2RldiBzaG93czoKY3ItLS0tLS0tLSA0Mjk0OTY3Mjk1IHplcm8KY3J3LS0tLS0tLSAg
+ICAgICAyOTc3IGRlZmF1bHRlbnYKY3J3LS0tLS0tLSA0Mjk0OTY3Mjk1IG1lbQpjcnctLS0tLS0t
+ICAyNjg0MzU0NTYgbmFuZDAKY3ItLS0tLS0tLSAgICA4Mzg4NjA4IG5hbmRfb29iMApjcnctLS0t
+LS0tICAgICAgICAgIDAgcmFtMApjcnctLS0tLS0tICAgICAgICAgMzIgcGh5MApjcnctLS0tLS0t
+ICAgICAyNjIxNDQgc2VsZl9yYXcKY3J3LS0tLS0tLSAgICAgICAgICAwIHNlbGYwCmNydy0tLS0t
+LS0gICAgIDEzMTA3MiBlbnZfcmF3CmNydy0tLS0tLS0gICAgIDEzMTA3MiBlbnYwCmNydy0tLS0t
+LS0gICAgIDI2MjE0NCBuYW5kMC5iYXJlYm94CmNydy0tLS0tLS0gICAgIDEzMTA3MiBuYW5kMC5i
+YXJlYm94ZW52CmNydy0tLS0tLS0gICAgMTU3Mjg2NCBuYW5kMC5rZXJuZWwKY3J3LS0tLS0tLSAg
+MjY2NDY5Mzc2IG5hbmQwLnJvb3QKY3J3LS0tLS0tLSAgMjY2MDc2MTYwIG5hbmQwLnJvb3QuYmIK
+Y3J3LS0tLS0tLSAgICAxNTcyODY0IG5hbmQwLmtlcm5lbC5iYgpjcnctLS0tLS0tICAgICAxMzEw
+NzIgbmFuZDAuYmFyZWJveGVudi5iYgpjcnctLS0tLS0tICAgICAgICAgIDAgbmFuZDAuYmFyZWJv
+eC5iYgoKYW5kIHN0b3JpbmcgYmFyZWJveCB0byBuYW5kMC5iYXJlYm94LmJiIHJlcG9ydCBubyBz
+cGFjZSBsZWZ0LgpJbmNsdWRlIHN0YXJ0dXAgbG9nOgpiYXJlYm94IDIwMTAuMDkuMC0wMDA3Ny1n
+Zjg5OWUzZi1kaXJ0eSAoU2VwIDEwIDIwMTAgLSAxMDowMjo0OCkKCkJvYXJkOiBNaW5pIDI0NDAK
+TkFORCBkZXZpY2U6IE1hbnVmYWN0dXJlciBJRDogMHhlYywgQ2hpcCBJRDogMHhkYSAoU2Ftc3Vu
+ZyBOQU5EIDI1Nk1pQgozLDNWIDgtYml0KQpTY2FubmluZyBkZXZpY2UgZm9yIGJhZCBibG9ja3MK
+QmFkIGVyYXNlYmxvY2sgMCBhdCAweDAwMDAwMDAwCkJhZCBlcmFzZWJsb2NrIDEgYXQgMHgwMDAy
+MDAwMApCYWQgZXJhc2VibG9jayAzNzYgYXQgMHgwMmYwMDAwMApCYWQgZXJhc2VibG9jayA1MzEg
+YXQgMHgwNDI2MDAwMApCYWQgZXJhc2VibG9jayAxMDk3IGF0IDB4MDg5MjAwMDAKZG05MDAwIGkv
+bzogMHgyMDAwMDMwMCwgaWQ6IDB4OTAwMDBhNDYKZ290IE1BQyBhZGRyZXNzIGZyb20gRUVQUk9N
+OiAwMDowMDowMDowMDowMDowMApyZWZjbGs6ICAgIDEyMDAwIGtIegptcGxsOiAgICAgNDA1MDAw
+IGtIegp1cGxsOiAgICAgIDQ4MDAwIGtIegpmY2xrOiAgICAgNDA1MDAwIGtIegpoY2xrOiAgICAg
+MTAxMjUwIGtIegpwY2xrOiAgICAgIDUwNjI1IGtIegpTRFJBTTE6ICAgQ0w0QDEwMU1IegpTRFJB
+TTI6ICAgQ0w0QDEwMU1IegpNYWxsb2Mgc3BhY2U6IDB4MzFiYzAwMDAgLT4gMHgzMWZjMDAwMCAo
+c2l6ZSAgNCBNQikKU3RhY2sgc3BhY2UgOiAweDMxYmI4MDAwIC0+IDB4MzFiYzAwMDAgKHNpemUg
+MzIga0IpCmVudmZzOiB3cm9uZyBtYWdpYyBvbiAvZGV2L2VudjAKbm8gdmFsaWQgZW52aXJvbm1l
+bnQgZm91bmQgb24gL2Rldi9lbnYwLiBVc2luZyBkZWZhdWx0IGVudmlyb25tZW50CnJ1bm5pbmcg
+L2Vudi9iaW4vaW5pdC4uLgoKSGl0IGFueSBrZXkgdG8gc3RvcCBhdXRvYm9vdDogIDMKCnR5cGUg
+dXBkYXRlX2tlcm5lbCBbPGltYWdlbmFtZT5dIHRvIHVwZGF0ZSBrZXJuZWwgaW50byBmbGFzaAp0
+eXBlIHVwZGF0ZV9yb290IFs8aW1hZ2VuYW1lPl0gdG8gdXBkYXRlIHJvb3RmcyBpbnRvIGZsYXNo
+Cj4KPiAoU2l6ZXMgZGVwZW5kaW5nIG9uIHRoZSBzaXplIG9mIHlvdXIgYm9vdCBsb2FkZXIgYmlu
+YXJ5KS4KPgo+IEFuZCBhdCBydW50aW1lOgo+Cj4gYmFyZWJveD4gYWRkcGFydCAvZGV2L25hbmQw
+IDI1NmsoYmFyZWJveClybywxMjhrKGJhcmVib3hlbnYpCj4gYmFyZWJveD4gZXJhc2UgL2Rldi9u
+YW5kMC5iYXJlYm94LmJiCj4gYmFyZWJveD4gdGZ0cCBiYXJlYm94LmJpbiAvZGV2L25hbmQwLmJh
+cmVib3guYmIKPgo+IGpiZQo+Cj4gLS0KPiBQZW5ndXRyb25peCBlLksuIMKgIMKgIMKgIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgfCBKdWVyZ2VuIEJlaXNlcnQgwqAgwqAgwqAg
+wqAgwqAgwqAgfAo+IExpbnV4IFNvbHV0aW9ucyBmb3IgU2NpZW5jZSBhbmQgSW5kdXN0cnkgwqAg
+wqAgwqB8IFBob25lOiArNDktODc2Ni05MzkgMjI4IMKgIMKgIHwKPiBWZXJ0cmV0dW5nIFN1ZWQv
+TXVlbmNoZW4sIEdlcm1hbnkgwqAgwqAgwqAgwqAgwqAgwqAgfCBGYXg6IMKgICs0OS01MTIxLTIw
+NjkxNy01NTU1IHwKPiBBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiDCoCDCoCDCoCDC
+oCDCoCDCoCDCoHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gwqB8Cj4KClRoYW5rcywKCk1h
+cmVrCgotLSAKYXMgc2ltcGxlIGFuZCBwcmltaXRpdmUgYXMgcG9zc2libGUKLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpNYXJlayBCZWxpc2tvIC0gT1BF
+Ti1OQU5EUkEKRnJlZWxhbmNlIERldmVsb3BlcgoKUnVza2EgTm92YSBWZXMgMjE5IHwgUHJlc292
+LCAwODAwNSBTbG92YWsgUmVwdWJsaWMKVGVsOiArNDIxIDkxNSAwNTIgMTg0CnNreXBlOiBtYXJl
+a3doaXRlCmljcTogMjkwNTUxMDg2CndlYjogaHR0cDovL29wZW4tbmFuZHJhLmNvbQoKX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5n
+IGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQu
+b3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
