@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vw0-f49.google.com ([209.85.212.49])
-	by bombadil.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OtzUC-0007Jy-22
-	for barebox@lists.infradead.org; Fri, 10 Sep 2010 09:01:33 +0000
-Received: by vws11 with SMTP id 11so2502374vws.36
-	for <barebox@lists.infradead.org>; Fri, 10 Sep 2010 02:01:30 -0700 (PDT)
+Received: from walscop001.walsimou.com ([82.228.201.70]
+	helo=bekkor.walsimou.com)
+	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1OtzhZ-0004fX-Es
+	for barebox@lists.infradead.org; Fri, 10 Sep 2010 09:15:22 +0000
+Message-ID: <4C89F806.9050002@embtoolkit.org>
+Date: Fri, 10 Sep 2010 11:19:02 +0200
+From: Abdoulaye Walsimou Gaye <awg@embtoolkit.org>
 MIME-Version: 1.0
-Date: Fri, 10 Sep 2010 11:01:30 +0200
-Message-ID: <AANLkTi=M-LyNQqYmBmrMivx-Ymfw3PQJvXvZFLjJ_rz6@mail.gmail.com>
-From: Belisko Marek <marek.belisko@gmail.com>
+References: <AANLkTi=M-LyNQqYmBmrMivx-Ymfw3PQJvXvZFLjJ_rz6@mail.gmail.com>
+In-Reply-To: <AANLkTi=M-LyNQqYmBmrMivx-Ymfw3PQJvXvZFLjJ_rz6@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,42 +22,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: storing barebox to flash /dev/nand0
+Subject: Re: storing barebox to flash /dev/nand0
 To: barebox@lists.infradead.org
 
-Hi,
+On 09/10/2010 11:01 AM, Belisko Marek wrote:
+> Hi,
+>
+> I'm porting barebox to mini2440 board.
 
-I'm porting barebox to mini2440 board. I can boot barebox from SDRAM
-by loading to TEXT_BASE address.
-I would like to test also booting from NAND flash but I can't find a
-way how to store barebox loaded in RAM
-to flash.
+Good news, I have this board and use a fork of u-boot from
+http://repo.or.cz/w/u-boot-openmoko/mini2440.git
+which is not maintained any more and it is not in mainline u-boot.
 
-I try tftp barebox.bin /dev/nand0 but if failed with:
+> I can boot barebox from SDRAM
+> by loading to TEXT_BASE address.
+> I would like to test also booting from NAND flash but I can't find a
+> way how to store barebox loaded in RAM
+> to flash.
+>
+> I try tftp barebox.bin /dev/nand0 but if failed with:
+>
+> TFTP from server 10.146.1.21 ('barebox.bin' -> '/dev/nand0')
+>         offset 0x00000200 not page aligned
+> write: Invalid argument
+>
+> tftp failed: error -22
+>
+> How can I properly store to flash?
+>
+>   
 
-TFTP from server 10.146.1.21 ('barebox.bin' -> '/dev/nand0')
-        offset 0x00000200 not page aligned
-write: Invalid argument
+I am not familiar with barebox (I discovered it recently), but you seem
+to wrongly
+create your nand  image (think page size,  eraze block size, etc...)
 
-tftp failed: error -22
+> Thank's in advance,
+>
+> Marek
+>
+>   
 
-How can I properly store to flash?
+Best regards,
+AWG
 
-Thank's in advance,
-
-Marek
-
--- 
-as simple and primitive as possible
--------------------------------------------------
-Marek Belisko - OPEN-NANDRA
-Freelance Developer
-
-Ruska Nova Ves 219 | Presov, 08005 Slovak Republic
-Tel: +421 915 052 184
-skype: marekwhite
-icq: 290551086
-web: http://open-nandra.com
 
 _______________________________________________
 barebox mailing list
