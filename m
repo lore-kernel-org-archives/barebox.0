@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 29.mail-out.ovh.net ([87.98.216.213])
-	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OthhN-0004y4-2D
-	for barebox@lists.infradead.org; Thu, 09 Sep 2010 14:01:58 +0000
-Date: Thu, 9 Sep 2010 16:01:05 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20100909140105.GG9112@game.jcrosoft.org>
-References: <20100909135543.GF9112@game.jcrosoft.org>
+Received: from mail-vw0-f49.google.com ([209.85.212.49])
+	by bombadil.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1OtzUC-0007Jy-22
+	for barebox@lists.infradead.org; Fri, 10 Sep 2010 09:01:33 +0000
+Received: by vws11 with SMTP id 11so2502374vws.36
+	for <barebox@lists.infradead.org>; Fri, 10 Sep 2010 02:01:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20100909135543.GF9112@game.jcrosoft.org>
+Date: Fri, 10 Sep 2010 11:01:30 +0200
+Message-ID: <AANLkTi=M-LyNQqYmBmrMivx-Ymfw3PQJvXvZFLjJ_rz6@mail.gmail.com>
+From: Belisko Marek <marek.belisko@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,70 +21,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/7] Digest and login/password Frameworks
+Subject: storing barebox to flash /dev/nand0
 To: barebox@lists.infradead.org
 
-On 15:55 Thu 09 Sep     , Jean-Christophe PLAGNIOL-VILLARD wrote:
-> Hi,
-> 
-> 	this patch serie will introduce the support
-> 	of 2 frameworks
-> 
-> 	Digest Framework
-> 
-> 	Which allow you to add easely digest algo
-> 	with md5, sha1, sha256
-> 
-> 	Login/Passwd Framework
-> 
-> 	It will allow you to protect your barebox with a password
-> 	and require it via login command or manange it via passwd
-> 	This framework use the Digest framework to calculate the checksum
-> 	to store the password
-The following changes since commit 0d35c3c8a0c2a1f1ff06eac20a12af0186753bc4:
+Hi,
 
-  menu: simplify usage for clients (2010-08-30 21:06:02 +0200)
+I'm porting barebox to mini2440 board. I can boot barebox from SDRAM
+by loading to TEXT_BASE address.
+I would like to test also booting from NAND flash but I can't find a
+way how to store barebox loaded in RAM
+to flash.
 
-are available in the git repository at:
-  git://git.jcrosoft.org/barebox.git login_passwd
+I try tftp barebox.bin /dev/nand0 but if failed with:
 
-Jean-Christophe PLAGNIOL-VILLARD (7):
-      add digest framework
-      add md5 support
-      add sha1 support
-      add sha256 support
-      add password framework
-      add passwd command
-      add login support
+TFTP from server 10.146.1.21 ('barebox.bin' -> '/dev/nand0')
+        offset 0x00000200 not page aligned
+write: Invalid argument
 
- commands/Kconfig   |   28 ++++
- commands/Makefile  |    2 +
- commands/login.c   |   63 +++++++++
- commands/passwd.c  |   98 +++++++++++++
- common/Kconfig     |   28 ++++
- common/Makefile    |    2 +
- common/digest.c    |   77 ++++++++++
- common/password.c  |  286 +++++++++++++++++++++++++++++++++++++
- include/digest.h   |   49 +++++++
- include/password.h |   41 ++++++
- lib/Kconfig        |   17 +++
- lib/Makefile       |    3 +
- lib/md5.c          |  317 +++++++++++++++++++++++++++++++++++++++++
- lib/sha1.c         |  396 ++++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/sha256.c       |  319 ++++++++++++++++++++++++++++++++++++++++++
- 15 files changed, 1726 insertions(+), 0 deletions(-)
- create mode 100644 commands/login.c
- create mode 100644 commands/passwd.c
- create mode 100644 common/digest.c
- create mode 100644 common/password.c
- create mode 100644 include/digest.h
- create mode 100644 include/password.h
- create mode 100644 lib/md5.c
- create mode 100644 lib/sha1.c
- create mode 100644 lib/sha256.c
+tftp failed: error -22
 
-Best Regards,
-J.
+How can I properly store to flash?
+
+Thank's in advance,
+
+Marek
+
+-- 
+as simple and primitive as possible
+-------------------------------------------------
+Marek Belisko - OPEN-NANDRA
+Freelance Developer
+
+Ruska Nova Ves 219 | Presov, 08005 Slovak Republic
+Tel: +421 915 052 184
+skype: marekwhite
+icq: 290551086
+web: http://open-nandra.com
 
 _______________________________________________
 barebox mailing list
