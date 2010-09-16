@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OwGcF-0007Yq-BO
-	for barebox@lists.infradead.org; Thu, 16 Sep 2010 15:43:18 +0000
-Date: Thu, 16 Sep 2010 17:43:13 +0200
+	id 1OwGmd-0000tr-5V
+	for barebox@lists.infradead.org; Thu, 16 Sep 2010 15:54:01 +0000
+Date: Thu, 16 Sep 2010 17:53:57 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20100916154313.GA1473@pengutronix.de>
+Message-ID: <20100916155357.GB1473@pengutronix.de>
 References: <20100909135543.GF9112@game.jcrosoft.org>
-	<1284040793-32145-2-git-send-email-plagnioj@jcrosoft.com>
+	<1284040793-32145-3-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1284040793-32145-2-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1284040793-32145-3-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,380 +23,117 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/7] add md5 support
+Subject: Re: [PATCH 3/7] add sha1 support
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, Sep 09, 2010 at 03:59:48PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+On Thu, Sep 09, 2010 at 03:59:49PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
 > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 > ---
->  lib/Kconfig  |    4 +
+>  lib/Kconfig  |    3 +
 >  lib/Makefile |    1 +
->  lib/md5.c    |  317 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 322 insertions(+), 0 deletions(-)
->  create mode 100644 lib/md5.c
+>  lib/sha1.c   |  396 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 400 insertions(+), 0 deletions(-)
+>  create mode 100644 lib/sha1.c
 > 
 > diff --git a/lib/Kconfig b/lib/Kconfig
-> index a571ba8..e8776a7 100644
+> index e8776a7..650e86c 100644
 > --- a/lib/Kconfig
 > +++ b/lib/Kconfig
-> @@ -15,6 +15,10 @@ menuconfig DIGEST
+> @@ -19,6 +19,9 @@ config MD5
+>  	bool "MD5"
+>  	default y
 >  
->  if DIGEST
->  
-> +config MD5
-> +	bool "MD5"
-> +	default y
-
-Please no default y here.
-
-Sascha
-
+> +config SHA1
+> +	bool "SHA1"
 > +
 >  endif
 >  
 >  config GENERIC_FIND_NEXT_BIT
 > diff --git a/lib/Makefile b/lib/Makefile
-> index 8c5df08..6a1fb5d 100644
+> index 6a1fb5d..6f79d03 100644
 > --- a/lib/Makefile
 > +++ b/lib/Makefile
-> @@ -34,3 +34,4 @@ obj-y			+= lzo/
->  obj-y			+= show_progress.o
+> @@ -35,3 +35,4 @@ obj-y			+= show_progress.o
 >  obj-$(CONFIG_LZO_DECOMPRESS)		+= decompress_unlzo.o
 >  obj-$(CONFIG_PROCESS_ESCAPE_SEQUENCE)	+= process_escape_sequence.o
-> +obj-$(CONFIG_MD5)	+= md5.o
-> diff --git a/lib/md5.c b/lib/md5.c
+>  obj-$(CONFIG_MD5)	+= md5.o
+> +obj-$(CONFIG_SHA1)	+= sha1.o
+> diff --git a/lib/sha1.c b/lib/sha1.c
 > new file mode 100644
-> index 0000000..6c4ca1d
+> index 0000000..00dcc78
 > --- /dev/null
-> +++ b/lib/md5.c
-> @@ -0,0 +1,317 @@
+> +++ b/lib/sha1.c
+> @@ -0,0 +1,396 @@
 > +/*
-> + * This file was transplanted with slight modifications from Linux sources
-> + * (fs/cifs/md5.c) into U-Boot by Bartlomiej Sieka <tur@semihalf.com>.
+> + *  Heiko Schocher, DENX Software Engineering, hs@denx.de.
+> + *  based on:
+> + *  FIPS-180-1 compliant SHA-1 implementation
+> + *
+> + *  Copyright (C) 2003-2006  Christophe Devine
+> + *
+> + *  This library is free software; you can redistribute it and/or
+> + *  modify it under the terms of the GNU Lesser General Public
+> + *  License, version 2.1 as published by the Free Software Foundation.
+> + *
+> + *  This library is distributed in the hope that it will be useful,
+> + *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+> + *  Lesser General Public License for more details.
+> + *
+> + *  You should have received a copy of the GNU Lesser General Public
+> + *  License along with this library; if not, write to the Free Software
+> + *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+> + *  MA  02110-1301  USA
 > + */
-> +
 > +/*
-> + * This code implements the MD5 message-digest algorithm.
-> + * The algorithm is due to Ron Rivest.  This code was
-> + * written by Colin Plumb in 1993, no copyright is claimed.
-> + * This code is in the public domain; do with it what you wish.
+> + *  The SHA-1 standard was published by NIST in 1993.
 > + *
-> + * Equivalent code is available from RSA Data Security, Inc.
-> + * This code has been tested against that, and is equivalent,
-> + * except that you don't need to include two pages of legalese
-> + * with every copy.
-> + *
-> + * To compute the message digest of a chunk of bytes, declare an
-> + * MD5Context structure, pass it to MD5Init, call MD5Update as
-> + * needed on buffers full of bytes, and then call MD5Final, which
-> + * will fill a supplied 16-byte array with the digest.
+> + *  http://www.itl.nist.gov/fipspubs/fip180-1.htm
 > + */
-> +
-> +/* This code slightly modified to fit into Samba by
-> +   abartlet@samba.org Jun 2001
-> +   and to fit the cifs vfs by
-> +   Steve French sfrench@us.ibm.com */
 > +
 > +#include <common.h>
 > +#include <digest.h>
 > +#include <init.h>
+> +#include <linux/string.h>
 > +
-> +struct MD5Context {
-> +	__u32 buf[4];
-> +	__u32 bits[2];
-> +	unsigned char in[64];
-> +};
+> +#define SHA1_SUM_POS	-0x20
+> +#define SHA1_SUM_LEN	20
 > +
-> +static void
-> +MD5Transform(__u32 buf[4], __u32 const in[16]);
+> +typedef struct
+> +{
+> +    unsigned long total[2];	/*!< number of bytes processed	*/
+> +    unsigned long state[5];	/*!< intermediate digest state	*/
+> +    unsigned char buffer[64];	/*!< data block being processed */
+> +}
+> +sha1_context;
 > +
 > +/*
-> + * Note: this code is harmless on little-endian machines.
+> + * 32-bit integer manipulation macros (big endian)
 > + */
-> +static void
-> +byteReverse(unsigned char *buf, unsigned longs)
-> +{
-> +	__u32 t;
-> +	do {
-> +		t = (__u32) ((unsigned) buf[3] << 8 | buf[2]) << 16 |
-> +		    ((unsigned) buf[1] << 8 | buf[0]);
-> +		*(__u32 *) buf = t;
-> +		buf += 4;
-> +	} while (--longs);
+> +#ifndef GET_UINT32_BE
+> +#define GET_UINT32_BE(n,b,i) {				\
+> +	(n) = ( (unsigned long) (b)[(i)    ] << 24 )	\
+> +	    | ( (unsigned long) (b)[(i) + 1] << 16 )	\
+> +	    | ( (unsigned long) (b)[(i) + 2] <<  8 )	\
+> +	    | ( (unsigned long) (b)[(i) + 3]       );	\
 > +}
-> +
-> +/*
-> + * Start MD5 accumulation.  Set bit count to 0 and buffer to mysterious
-> + * initialization constants.
-> + */
-> +static void
-> +MD5Init(struct MD5Context *ctx)
-> +{
-> +	ctx->buf[0] = 0x67452301;
-> +	ctx->buf[1] = 0xefcdab89;
-> +	ctx->buf[2] = 0x98badcfe;
-> +	ctx->buf[3] = 0x10325476;
-> +
-> +	ctx->bits[0] = 0;
-> +	ctx->bits[1] = 0;
+> +#endif
+> +#ifndef PUT_UINT32_BE
+> +#define PUT_UINT32_BE(n,b,i) {				\
+> +	(b)[(i)    ] = (unsigned char) ( (n) >> 24 );	\
+> +	(b)[(i) + 1] = (unsigned char) ( (n) >> 16 );	\
+> +	(b)[(i) + 2] = (unsigned char) ( (n) >>  8 );	\
+> +	(b)[(i) + 3] = (unsigned char) ( (n)       );	\
 > +}
-> +
-> +/*
-> + * Update context to reflect the concatenation of another buffer full
-> + * of bytes.
-> + */
-> +static void
-> +MD5Update(struct MD5Context *ctx, unsigned char const *buf, unsigned len)
-> +{
-> +	register __u32 t;
-> +
-> +	/* Update bitcount */
-> +
-> +	t = ctx->bits[0];
-> +	if ((ctx->bits[0] = t + ((__u32) len << 3)) < t)
-> +		ctx->bits[1]++;	/* Carry from low to high */
-> +	ctx->bits[1] += len >> 29;
-> +
-> +	t = (t >> 3) & 0x3f;	/* Bytes already in shsInfo->data */
-> +
-> +	/* Handle any leading odd-sized chunks */
-> +
-> +	if (t) {
-> +		unsigned char *p = (unsigned char *) ctx->in + t;
-> +
-> +		t = 64 - t;
-> +		if (len < t) {
-> +			memmove(p, buf, len);
-> +			return;
-> +		}
-> +		memmove(p, buf, t);
-> +		byteReverse(ctx->in, 16);
-> +		MD5Transform(ctx->buf, (__u32 *) ctx->in);
-> +		buf += t;
-> +		len -= t;
-> +	}
-> +	/* Process data in 64-byte chunks */
-> +
-> +	while (len >= 64) {
-> +		memmove(ctx->in, buf, 64);
-> +		byteReverse(ctx->in, 16);
-> +		MD5Transform(ctx->buf, (__u32 *) ctx->in);
-> +		buf += 64;
-> +		len -= 64;
-> +	}
-> +
-> +	/* Handle any remaining bytes of data. */
-> +
-> +	memmove(ctx->in, buf, len);
-> +}
-> +
-> +/*
-> + * Final wrapup - pad to 64-byte boundary with the bit pattern
-> + * 1 0* (64-bit count of bits processed, MSB-first)
-> + */
-> +static void
-> +MD5Final(unsigned char digest[16], struct MD5Context *ctx)
-> +{
-> +	unsigned int count;
-> +	unsigned char *p;
-> +
-> +	/* Compute number of bytes mod 64 */
-> +	count = (ctx->bits[0] >> 3) & 0x3F;
-> +
-> +	/* Set the first char of padding to 0x80.  This is safe since there is
-> +	   always at least one byte free */
-> +	p = ctx->in + count;
-> +	*p++ = 0x80;
-> +
-> +	/* Bytes of padding needed to make 64 bytes */
-> +	count = 64 - 1 - count;
-> +
-> +	/* Pad out to 56 mod 64 */
-> +	if (count < 8) {
-> +		/* Two lots of padding:  Pad the first block to 64 bytes */
-> +		memset(p, 0, count);
-> +		byteReverse(ctx->in, 16);
-> +		MD5Transform(ctx->buf, (__u32 *) ctx->in);
-> +
-> +		/* Now fill the next block with 56 bytes */
-> +		memset(ctx->in, 0, 56);
-> +	} else {
-> +		/* Pad block to 56 bytes */
-> +		memset(p, 0, count - 8);
-> +	}
-> +	byteReverse(ctx->in, 14);
-> +
-> +	/* Append length in bits and transform */
-> +	((__u32 *) ctx->in)[14] = ctx->bits[0];
-> +	((__u32 *) ctx->in)[15] = ctx->bits[1];
-> +
-> +	MD5Transform(ctx->buf, (__u32 *) ctx->in);
-> +	byteReverse((unsigned char *) ctx->buf, 4);
-> +	memmove(digest, ctx->buf, 16);
-> +	memset(ctx, 0, sizeof(*ctx));	/* In case it's sensitive */
-> +}
-> +
-> +/* The four core functions - F1 is optimized somewhat */
-> +
-> +/* #define F1(x, y, z) (x & y | ~x & z) */
-> +#define F1(x, y, z) (z ^ (x & (y ^ z)))
-> +#define F2(x, y, z) F1(z, x, y)
-> +#define F3(x, y, z) (x ^ y ^ z)
-> +#define F4(x, y, z) (y ^ (x | ~z))
-> +
-> +/* This is the central step in the MD5 algorithm. */
-> +#define MD5STEP(f, w, x, y, z, data, s) \
-> +	( w += f(x, y, z) + data,  w = w<<s | w>>(32-s),  w += x )
-> +
-> +/*
-> + * The core of the MD5 algorithm, this alters an existing MD5 hash to
-> + * reflect the addition of 16 longwords of new data.  MD5Update blocks
-> + * the data and converts bytes into longwords for this routine.
-> + */
-> +static void
-> +MD5Transform(__u32 buf[4], __u32 const in[16])
-> +{
-> +	register __u32 a, b, c, d;
-> +
-> +	a = buf[0];
-> +	b = buf[1];
-> +	c = buf[2];
-> +	d = buf[3];
-> +
-> +	MD5STEP(F1, a, b, c, d, in[0] + 0xd76aa478, 7);
-> +	MD5STEP(F1, d, a, b, c, in[1] + 0xe8c7b756, 12);
-> +	MD5STEP(F1, c, d, a, b, in[2] + 0x242070db, 17);
-> +	MD5STEP(F1, b, c, d, a, in[3] + 0xc1bdceee, 22);
-> +	MD5STEP(F1, a, b, c, d, in[4] + 0xf57c0faf, 7);
-> +	MD5STEP(F1, d, a, b, c, in[5] + 0x4787c62a, 12);
-> +	MD5STEP(F1, c, d, a, b, in[6] + 0xa8304613, 17);
-> +	MD5STEP(F1, b, c, d, a, in[7] + 0xfd469501, 22);
-> +	MD5STEP(F1, a, b, c, d, in[8] + 0x698098d8, 7);
-> +	MD5STEP(F1, d, a, b, c, in[9] + 0x8b44f7af, 12);
-> +	MD5STEP(F1, c, d, a, b, in[10] + 0xffff5bb1, 17);
-> +	MD5STEP(F1, b, c, d, a, in[11] + 0x895cd7be, 22);
-> +	MD5STEP(F1, a, b, c, d, in[12] + 0x6b901122, 7);
-> +	MD5STEP(F1, d, a, b, c, in[13] + 0xfd987193, 12);
-> +	MD5STEP(F1, c, d, a, b, in[14] + 0xa679438e, 17);
-> +	MD5STEP(F1, b, c, d, a, in[15] + 0x49b40821, 22);
-> +
-> +	MD5STEP(F2, a, b, c, d, in[1] + 0xf61e2562, 5);
-> +	MD5STEP(F2, d, a, b, c, in[6] + 0xc040b340, 9);
-> +	MD5STEP(F2, c, d, a, b, in[11] + 0x265e5a51, 14);
-> +	MD5STEP(F2, b, c, d, a, in[0] + 0xe9b6c7aa, 20);
-> +	MD5STEP(F2, a, b, c, d, in[5] + 0xd62f105d, 5);
-> +	MD5STEP(F2, d, a, b, c, in[10] + 0x02441453, 9);
-> +	MD5STEP(F2, c, d, a, b, in[15] + 0xd8a1e681, 14);
-> +	MD5STEP(F2, b, c, d, a, in[4] + 0xe7d3fbc8, 20);
-> +	MD5STEP(F2, a, b, c, d, in[9] + 0x21e1cde6, 5);
-> +	MD5STEP(F2, d, a, b, c, in[14] + 0xc33707d6, 9);
-> +	MD5STEP(F2, c, d, a, b, in[3] + 0xf4d50d87, 14);
-> +	MD5STEP(F2, b, c, d, a, in[8] + 0x455a14ed, 20);
-> +	MD5STEP(F2, a, b, c, d, in[13] + 0xa9e3e905, 5);
-> +	MD5STEP(F2, d, a, b, c, in[2] + 0xfcefa3f8, 9);
-> +	MD5STEP(F2, c, d, a, b, in[7] + 0x676f02d9, 14);
-> +	MD5STEP(F2, b, c, d, a, in[12] + 0x8d2a4c8a, 20);
-> +
-> +	MD5STEP(F3, a, b, c, d, in[5] + 0xfffa3942, 4);
-> +	MD5STEP(F3, d, a, b, c, in[8] + 0x8771f681, 11);
-> +	MD5STEP(F3, c, d, a, b, in[11] + 0x6d9d6122, 16);
-> +	MD5STEP(F3, b, c, d, a, in[14] + 0xfde5380c, 23);
-> +	MD5STEP(F3, a, b, c, d, in[1] + 0xa4beea44, 4);
-> +	MD5STEP(F3, d, a, b, c, in[4] + 0x4bdecfa9, 11);
-> +	MD5STEP(F3, c, d, a, b, in[7] + 0xf6bb4b60, 16);
-> +	MD5STEP(F3, b, c, d, a, in[10] + 0xbebfbc70, 23);
-> +	MD5STEP(F3, a, b, c, d, in[13] + 0x289b7ec6, 4);
-> +	MD5STEP(F3, d, a, b, c, in[0] + 0xeaa127fa, 11);
-> +	MD5STEP(F3, c, d, a, b, in[3] + 0xd4ef3085, 16);
-> +	MD5STEP(F3, b, c, d, a, in[6] + 0x04881d05, 23);
-> +	MD5STEP(F3, a, b, c, d, in[9] + 0xd9d4d039, 4);
-> +	MD5STEP(F3, d, a, b, c, in[12] + 0xe6db99e5, 11);
-> +	MD5STEP(F3, c, d, a, b, in[15] + 0x1fa27cf8, 16);
-> +	MD5STEP(F3, b, c, d, a, in[2] + 0xc4ac5665, 23);
-> +
-> +	MD5STEP(F4, a, b, c, d, in[0] + 0xf4292244, 6);
-> +	MD5STEP(F4, d, a, b, c, in[7] + 0x432aff97, 10);
-> +	MD5STEP(F4, c, d, a, b, in[14] + 0xab9423a7, 15);
-> +	MD5STEP(F4, b, c, d, a, in[5] + 0xfc93a039, 21);
-> +	MD5STEP(F4, a, b, c, d, in[12] + 0x655b59c3, 6);
-> +	MD5STEP(F4, d, a, b, c, in[3] + 0x8f0ccc92, 10);
-> +	MD5STEP(F4, c, d, a, b, in[10] + 0xffeff47d, 15);
-> +	MD5STEP(F4, b, c, d, a, in[1] + 0x85845dd1, 21);
-> +	MD5STEP(F4, a, b, c, d, in[8] + 0x6fa87e4f, 6);
-> +	MD5STEP(F4, d, a, b, c, in[15] + 0xfe2ce6e0, 10);
-> +	MD5STEP(F4, c, d, a, b, in[6] + 0xa3014314, 15);
-> +	MD5STEP(F4, b, c, d, a, in[13] + 0x4e0811a1, 21);
-> +	MD5STEP(F4, a, b, c, d, in[4] + 0xf7537e82, 6);
-> +	MD5STEP(F4, d, a, b, c, in[11] + 0xbd3af235, 10);
-> +	MD5STEP(F4, c, d, a, b, in[2] + 0x2ad7d2bb, 15);
-> +	MD5STEP(F4, b, c, d, a, in[9] + 0xeb86d391, 21);
-> +
-> +	buf[0] += a;
-> +	buf[1] += b;
-> +	buf[2] += c;
-> +	buf[3] += d;
-> +}
-> +
-> +struct md5 {
-> +	struct MD5Context context;
-> +	struct digest d;
-> +};
-> +
-> +static int digest_md5_init(struct digest *d)
-> +{
-> +	struct md5 *m = container_of(d, struct md5, d);
-> +
-> +	MD5Init(&m->context);
-> +
-> +	return 0;
-> +}
-> +
-> +static int digest_md5_update(struct digest *d, const void *data,
-> +			     unsigned long len)
-> +{
-> +	struct md5 *m = container_of(d, struct md5, d);
-> +
-> +	MD5Update(&m->context, data, len);
-> +
-> +	return 0;
-> +}
-> +
-> +static int digest_md5_final(struct digest *d, unsigned char *md)
-> +{
-> +	struct md5 *m = container_of(d, struct md5, d);
-> +
-> +	MD5Final(md, &m->context);
-> +
-> +	return 0;
-> +}
-> +
-> +static struct md5 m = {
-> +	.d = {
-> +		.name = "md5",
-> +		.init = digest_md5_init,
-> +		.update = digest_md5_update,
-> +		.final = digest_md5_final,
-> +		.length = 16,
-> +	}
-> +};
-> +
-> +static int md5_digest_register(void)
-> +{
-> +	digest_register(&m.d);
-> +
-> +	return 0;
-> +}
-> +device_initcall(md5_digest_register);
-> -- 
-> 1.7.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+> +#endif
+
+Isn't cpu_to_be32 a better weapon here?
+
+The corresponding kernel code looks cleaner to me. Have you considered
+using it?
+
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
