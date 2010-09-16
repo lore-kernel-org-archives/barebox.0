@@ -1,17 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 68.mail-out.ovh.net ([91.121.185.69])
+Received: from 26.mail-out.ovh.net ([91.121.27.225])
 	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OwGtC-0004DK-Gl
-	for barebox@lists.infradead.org; Thu, 16 Sep 2010 16:00:47 +0000
-Date: Thu, 16 Sep 2010 17:59:36 +0200
+	id 1OwGu7-0005ym-S7
+	for barebox@lists.infradead.org; Thu, 16 Sep 2010 16:01:44 +0000
+Date: Thu, 16 Sep 2010 18:00:29 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20100916155936.GD5762@game.jcrosoft.org>
-References: <20100909135543.GF9112@game.jcrosoft.org>
-	<1284040793-32145-3-git-send-email-plagnioj@jcrosoft.com>
-	<20100916155357.GB1473@pengutronix.de>
+Message-ID: <20100916160029.GE5762@game.jcrosoft.org>
+References: <1283700222-19388-1-git-send-email-plagnioj@jcrosoft.com>
+	<1283702627-23167-1-git-send-email-plagnioj@jcrosoft.com>
+	<20100916105322.GS1473@pengutronix.de>
+	<20100916120956.GB5762@game.jcrosoft.org>
+	<20100916135501.GW1473@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20100916155357.GB1473@pengutronix.de>
+In-Reply-To: <20100916135501.GW1473@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,119 +26,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/7] add sha1 support
+Subject: Re: [PATCH V2] Menu: add box style entry
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 17:53 Thu 16 Sep     , Sascha Hauer wrote:
-> On Thu, Sep 09, 2010 at 03:59:49PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > ---
-> >  lib/Kconfig  |    3 +
-> >  lib/Makefile |    1 +
-> >  lib/sha1.c   |  396 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-> >  3 files changed, 400 insertions(+), 0 deletions(-)
-> >  create mode 100644 lib/sha1.c
-> > 
-> > diff --git a/lib/Kconfig b/lib/Kconfig
-> > index e8776a7..650e86c 100644
-> > --- a/lib/Kconfig
-> > +++ b/lib/Kconfig
-> > @@ -19,6 +19,9 @@ config MD5
-> >  	bool "MD5"
-> >  	default y
-> >  
-> > +config SHA1
-> > +	bool "SHA1"
-> > +
-> >  endif
-> >  
-> >  config GENERIC_FIND_NEXT_BIT
-> > diff --git a/lib/Makefile b/lib/Makefile
-> > index 6a1fb5d..6f79d03 100644
-> > --- a/lib/Makefile
-> > +++ b/lib/Makefile
-> > @@ -35,3 +35,4 @@ obj-y			+= show_progress.o
-> >  obj-$(CONFIG_LZO_DECOMPRESS)		+= decompress_unlzo.o
-> >  obj-$(CONFIG_PROCESS_ESCAPE_SEQUENCE)	+= process_escape_sequence.o
-> >  obj-$(CONFIG_MD5)	+= md5.o
-> > +obj-$(CONFIG_SHA1)	+= sha1.o
-> > diff --git a/lib/sha1.c b/lib/sha1.c
-> > new file mode 100644
-> > index 0000000..00dcc78
-> > --- /dev/null
-> > +++ b/lib/sha1.c
-> > @@ -0,0 +1,396 @@
-> > +/*
-> > + *  Heiko Schocher, DENX Software Engineering, hs@denx.de.
-> > + *  based on:
-> > + *  FIPS-180-1 compliant SHA-1 implementation
-> > + *
-> > + *  Copyright (C) 2003-2006  Christophe Devine
-> > + *
-> > + *  This library is free software; you can redistribute it and/or
-> > + *  modify it under the terms of the GNU Lesser General Public
-> > + *  License, version 2.1 as published by the Free Software Foundation.
-> > + *
-> > + *  This library is distributed in the hope that it will be useful,
-> > + *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-> > + *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-> > + *  Lesser General Public License for more details.
-> > + *
-> > + *  You should have received a copy of the GNU Lesser General Public
-> > + *  License along with this library; if not, write to the Free Software
-> > + *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-> > + *  MA  02110-1301  USA
-> > + */
-> > +/*
-> > + *  The SHA-1 standard was published by NIST in 1993.
-> > + *
-> > + *  http://www.itl.nist.gov/fipspubs/fip180-1.htm
-> > + */
-> > +
-> > +#include <common.h>
-> > +#include <digest.h>
-> > +#include <init.h>
-> > +#include <linux/string.h>
-> > +
-> > +#define SHA1_SUM_POS	-0x20
-> > +#define SHA1_SUM_LEN	20
-> > +
-> > +typedef struct
-> > +{
-> > +    unsigned long total[2];	/*!< number of bytes processed	*/
-> > +    unsigned long state[5];	/*!< intermediate digest state	*/
-> > +    unsigned char buffer[64];	/*!< data block being processed */
-> > +}
-> > +sha1_context;
-> > +
-> > +/*
-> > + * 32-bit integer manipulation macros (big endian)
-> > + */
-> > +#ifndef GET_UINT32_BE
-> > +#define GET_UINT32_BE(n,b,i) {				\
-> > +	(n) = ( (unsigned long) (b)[(i)    ] << 24 )	\
-> > +	    | ( (unsigned long) (b)[(i) + 1] << 16 )	\
-> > +	    | ( (unsigned long) (b)[(i) + 2] <<  8 )	\
-> > +	    | ( (unsigned long) (b)[(i) + 3]       );	\
-> > +}
-> > +#endif
-> > +#ifndef PUT_UINT32_BE
-> > +#define PUT_UINT32_BE(n,b,i) {				\
-> > +	(b)[(i)    ] = (unsigned char) ( (n) >> 24 );	\
-> > +	(b)[(i) + 1] = (unsigned char) ( (n) >> 16 );	\
-> > +	(b)[(i) + 2] = (unsigned char) ( (n) >>  8 );	\
-> > +	(b)[(i) + 3] = (unsigned char) ( (n)       );	\
-> > +}
-> > +#endif
+On 15:55 Thu 16 Sep     , Sascha Hauer wrote:
+> On Thu, Sep 16, 2010 at 02:09:56PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > > +		} else {
+> > > > +			puts("   ");
+> > > > +		}
+> > > > +		printf(" %d: %-*s", me->num, m->width, me->display);
+> > > > +	}
+> > > 
+> > > I think this could look a bit simpler if we had a
+> > > static int printf_menu(int selected, const char *fmt, ...) function.
+> > > 'selected' is a better name for the argument. with 'reverse' my first
+> > > thought was that it prints backwards...
+> > sorry I do not follow
 > 
-> Isn't cpu_to_be32 a better weapon here?
+> The print_menu_entry would look simpler like this:
 > 
-> The corresponding kernel code looks cleaner to me. Have you considered
-> using it?
-no I did not take a look on it as I choose to keep the original code but I can
-put new patch to do it as a second step to keep the history of modification
-IIRC it's the same for sha256
+> static void print_menu_entry(struct menu *m, struct menu_entry *me, int selected)
+> {
+> 	gotoXY(me->num + 1, 3);
+> 
+> 	if (selected)
+> 		printf("\e[7m");
+> 
+> 	if (me->type == MENU_ENTRY_BOX) {
+> 		if (me->box_state)
+> 			printf("[*]");
+> 		else
+> 			printf("[ ]");
+> 	} else {
+> 		printf("   ");
+> 	}
+> 
+> 	printf(" %d: %-*s", me->num, m->width, me->display);
+> 
+> 	if (selected)
+> 		printf("\e[m");
+> }
+> 
+> I was confused by the name of the printf_reverse macro. For me it was
+> not clear what it should do without looking at the macro definition.
+ok
 
 Best Regards,
 J.
