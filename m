@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OwG2K-000211-Jy
-	for barebox@lists.infradead.org; Thu, 16 Sep 2010 15:06:10 +0000
-Date: Thu, 16 Sep 2010 17:06:05 +0200
+	id 1OwGcF-0007Yq-BO
+	for barebox@lists.infradead.org; Thu, 16 Sep 2010 15:43:18 +0000
+Date: Thu, 16 Sep 2010 17:43:13 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20100916150605.GX1473@pengutronix.de>
-References: <1283774869-6086-1-git-send-email-plagnioj@jcrosoft.com>
-	<1283774869-6086-2-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20100916154313.GA1473@pengutronix.de>
+References: <20100909135543.GF9112@game.jcrosoft.org>
+	<1284040793-32145-2-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1283774869-6086-2-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1284040793-32145-2-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,237 +23,371 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] menu: add auto select support
+Subject: Re: [PATCH 2/7] add md5 support
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Sep 06, 2010 at 02:07:49PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> this will allow to automaticaly run an entry if the user do no choice
-> 
-> this is usefull for boot menu as example
-> 
-> with menu -s -m boot -A 3 -d "Auto Boot in"
-> 
+On Thu, Sep 09, 2010 at 03:59:48PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
 > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 > ---
->  commands/menu.c |   25 ++++++++++++++++++++++---
->  common/menu.c   |   54 +++++++++++++++++++++++++++++++++++++++++++++++++++++-
->  include/menu.h  |    4 ++++
->  3 files changed, 79 insertions(+), 4 deletions(-)
+>  lib/Kconfig  |    4 +
+>  lib/Makefile |    1 +
+>  lib/md5.c    |  317 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 322 insertions(+), 0 deletions(-)
+>  create mode 100644 lib/md5.c
 > 
-> diff --git a/commands/menu.c b/commands/menu.c
-> index f734db3..ab35cf9 100644
-> --- a/commands/menu.c
-> +++ b/commands/menu.c
-> @@ -48,11 +48,12 @@ struct cmd_menu {
->  	char		*command;
->  	char		*submenu;
->  	int		num;
-> +	int		auto_select;
->  #endif
->  };
+> diff --git a/lib/Kconfig b/lib/Kconfig
+> index a571ba8..e8776a7 100644
+> --- a/lib/Kconfig
+> +++ b/lib/Kconfig
+> @@ -15,6 +15,10 @@ menuconfig DIGEST
 >  
->  #if defined(CONFIG_CMD_MENU_MANAGEMENT)
-> -#define OPTS		"m:earlc:d:RsSn:u:"
-> +#define OPTS		"m:earlc:d:RsSn:u:A:"
->  #define	is_entry(x)	((x)->entry)
->  #else
->  #define OPTS		"m:ls"
-> @@ -212,7 +213,7 @@ static int do_menu_select(struct cmd_menu *cm)
->  #endif
+>  if DIGEST
 >  
->  /*
-> - * menu -s -m <menu>
-> + * menu -s -m <menu> [-A <auto select delay>] [-d <display]
->   */
->  static int do_menu_show(struct cmd_menu *cm)
->  {
-> @@ -223,6 +224,18 @@ static int do_menu_show(struct cmd_menu *cm)
->  	else
->  		m = menu_get_by_name("boot");
->  
-> +	if (!m)
-> +		return -EINVAL;
-> +
-> +	if (cm->auto_select != -EINVAL) {
-> +		menu_set_auto_select(m, cm->auto_select);
-> +
-> +		if (m->auto_display)
-> +			free(m->auto_display);
+> +config MD5
+> +	bool "MD5"
+> +	default y
 
-I was told free(NULL) is safe...
+Please no default y here.
+
+Sascha
 
 > +
-> +		m->auto_display = strdup(cm->description);
+>  endif
+>  
+>  config GENERIC_FIND_NEXT_BIT
+> diff --git a/lib/Makefile b/lib/Makefile
+> index 8c5df08..6a1fb5d 100644
+> --- a/lib/Makefile
+> +++ b/lib/Makefile
+> @@ -34,3 +34,4 @@ obj-y			+= lzo/
+>  obj-y			+= show_progress.o
+>  obj-$(CONFIG_LZO_DECOMPRESS)		+= decompress_unlzo.o
+>  obj-$(CONFIG_PROCESS_ESCAPE_SEQUENCE)	+= process_escape_sequence.o
+> +obj-$(CONFIG_MD5)	+= md5.o
+> diff --git a/lib/md5.c b/lib/md5.c
+> new file mode 100644
+> index 0000000..6c4ca1d
+> --- /dev/null
+> +++ b/lib/md5.c
+> @@ -0,0 +1,317 @@
+> +/*
+> + * This file was transplanted with slight modifications from Linux sources
+> + * (fs/cifs/md5.c) into U-Boot by Bartlomiej Sieka <tur@semihalf.com>.
+> + */
+> +
+> +/*
+> + * This code implements the MD5 message-digest algorithm.
+> + * The algorithm is due to Ron Rivest.  This code was
+> + * written by Colin Plumb in 1993, no copyright is claimed.
+> + * This code is in the public domain; do with it what you wish.
+> + *
+> + * Equivalent code is available from RSA Data Security, Inc.
+> + * This code has been tested against that, and is equivalent,
+> + * except that you don't need to include two pages of legalese
+> + * with every copy.
+> + *
+> + * To compute the message digest of a chunk of bytes, declare an
+> + * MD5Context structure, pass it to MD5Init, call MD5Update as
+> + * needed on buffers full of bytes, and then call MD5Final, which
+> + * will fill a supplied 16-byte array with the digest.
+> + */
+> +
+> +/* This code slightly modified to fit into Samba by
+> +   abartlet@samba.org Jun 2001
+> +   and to fit the cifs vfs by
+> +   Steve French sfrench@us.ibm.com */
+> +
+> +#include <common.h>
+> +#include <digest.h>
+> +#include <init.h>
+> +
+> +struct MD5Context {
+> +	__u32 buf[4];
+> +	__u32 bits[2];
+> +	unsigned char in[64];
+> +};
+> +
+> +static void
+> +MD5Transform(__u32 buf[4], __u32 const in[16]);
+> +
+> +/*
+> + * Note: this code is harmless on little-endian machines.
+> + */
+> +static void
+> +byteReverse(unsigned char *buf, unsigned longs)
+> +{
+> +	__u32 t;
+> +	do {
+> +		t = (__u32) ((unsigned) buf[3] << 8 | buf[2]) << 16 |
+> +		    ((unsigned) buf[1] << 8 | buf[0]);
+> +		*(__u32 *) buf = t;
+> +		buf += 4;
+> +	} while (--longs);
+> +}
+> +
+> +/*
+> + * Start MD5 accumulation.  Set bit count to 0 and buffer to mysterious
+> + * initialization constants.
+> + */
+> +static void
+> +MD5Init(struct MD5Context *ctx)
+> +{
+> +	ctx->buf[0] = 0x67452301;
+> +	ctx->buf[1] = 0xefcdab89;
+> +	ctx->buf[2] = 0x98badcfe;
+> +	ctx->buf[3] = 0x10325476;
+> +
+> +	ctx->bits[0] = 0;
+> +	ctx->bits[1] = 0;
+> +}
+> +
+> +/*
+> + * Update context to reflect the concatenation of another buffer full
+> + * of bytes.
+> + */
+> +static void
+> +MD5Update(struct MD5Context *ctx, unsigned char const *buf, unsigned len)
+> +{
+> +	register __u32 t;
+> +
+> +	/* Update bitcount */
+> +
+> +	t = ctx->bits[0];
+> +	if ((ctx->bits[0] = t + ((__u32) len << 3)) < t)
+> +		ctx->bits[1]++;	/* Carry from low to high */
+> +	ctx->bits[1] += len >> 29;
+> +
+> +	t = (t >> 3) & 0x3f;	/* Bytes already in shsInfo->data */
+> +
+> +	/* Handle any leading odd-sized chunks */
+> +
+> +	if (t) {
+> +		unsigned char *p = (unsigned char *) ctx->in + t;
+> +
+> +		t = 64 - t;
+> +		if (len < t) {
+> +			memmove(p, buf, len);
+> +			return;
+> +		}
+> +		memmove(p, buf, t);
+> +		byteReverse(ctx->in, 16);
+> +		MD5Transform(ctx->buf, (__u32 *) ctx->in);
+> +		buf += t;
+> +		len -= t;
+> +	}
+> +	/* Process data in 64-byte chunks */
+> +
+> +	while (len >= 64) {
+> +		memmove(ctx->in, buf, 64);
+> +		byteReverse(ctx->in, 16);
+> +		MD5Transform(ctx->buf, (__u32 *) ctx->in);
+> +		buf += 64;
+> +		len -= 64;
 > +	}
 > +
->  	return menu_show(m);
->  }
->  
-> @@ -300,6 +313,7 @@ static int do_menu(struct command *cmdtp, int argc, char *argv[])
->  	memset(&cm, 0, sizeof(struct cmd_menu));
->  #if defined(CONFIG_CMD_MENU_MANAGEMENT)
->  	cm.num = -EINVAL;
-> +	cm.auto_select = -EINVAL;
->  #endif
->  
->  	cm.action = action_show;
-> @@ -343,6 +357,9 @@ static int do_menu(struct command *cmdtp, int argc, char *argv[])
->  		case 'n':
->  			cm.num = simple_strtoul(optarg, NULL, 10);
->  			break;
-> +		case 'A':
-> +			cm.auto_select = simple_strtoul(optarg, NULL, 10);
-> +			break;
->  #endif
->  		default:
->  			return 1;
-> @@ -398,7 +415,9 @@ static const __maybe_unused char cmd_menu_help[] =
->  "How to\n"
->  "\n"
->  "Show menu\n"
-> -"  menu -s -m <menu>\n"
-> +"  (-A auto select delay)\n"
-> +"  (-d auto select description)\n"
-> +"  menu -s -m <menu> [-A delay] [-d auto_display]\n"
->  "\n"
->  "List menu\n"
->  "  menu -l\n"
-> diff --git a/common/menu.c b/common/menu.c
-> index 7620d9e..339bb3d 100644
-> --- a/common/menu.c
-> +++ b/common/menu.c
-> @@ -29,6 +29,7 @@
->  #include <xfuncs.h>
->  #include <errno.h>
->  #include <readkey.h>
-> +#include <clock.h>
->  #include <linux/err.h>
->  
->  static LIST_HEAD(menus);
-> @@ -49,6 +50,7 @@ void menu_free(struct menu *m)
->  		return;
->  	free(m->name);
->  	free(m->display);
-> +	free(m->auto_display);
->  
->  	list_for_each_entry_safe(me, tmp, &m->entries, list)
->  		menu_entry_free(me);
-> @@ -187,6 +189,16 @@ int menu_set_selected(struct menu *m, int num)
->  	return 0;
->  }
->  
-> +int menu_set_auto_select(struct menu *m, int delay)
-> +{
-> +	if (!m)
-> +		return -EINVAL;
+> +	/* Handle any remaining bytes of data. */
 > +
-> +	m->auto_select = delay;
+> +	memmove(ctx->in, buf, len);
+> +}
+> +
+> +/*
+> + * Final wrapup - pad to 64-byte boundary with the bit pattern
+> + * 1 0* (64-bit count of bits processed, MSB-first)
+> + */
+> +static void
+> +MD5Final(unsigned char digest[16], struct MD5Context *ctx)
+> +{
+> +	unsigned int count;
+> +	unsigned char *p;
+> +
+> +	/* Compute number of bytes mod 64 */
+> +	count = (ctx->bits[0] >> 3) & 0x3F;
+> +
+> +	/* Set the first char of padding to 0x80.  This is safe since there is
+> +	   always at least one byte free */
+> +	p = ctx->in + count;
+> +	*p++ = 0x80;
+> +
+> +	/* Bytes of padding needed to make 64 bytes */
+> +	count = 64 - 1 - count;
+> +
+> +	/* Pad out to 56 mod 64 */
+> +	if (count < 8) {
+> +		/* Two lots of padding:  Pad the first block to 64 bytes */
+> +		memset(p, 0, count);
+> +		byteReverse(ctx->in, 16);
+> +		MD5Transform(ctx->buf, (__u32 *) ctx->in);
+> +
+> +		/* Now fill the next block with 56 bytes */
+> +		memset(ctx->in, 0, 56);
+> +	} else {
+> +		/* Pad block to 56 bytes */
+> +		memset(p, 0, count - 8);
+> +	}
+> +	byteReverse(ctx->in, 14);
+> +
+> +	/* Append length in bits and transform */
+> +	((__u32 *) ctx->in)[14] = ctx->bits[0];
+> +	((__u32 *) ctx->in)[15] = ctx->bits[1];
+> +
+> +	MD5Transform(ctx->buf, (__u32 *) ctx->in);
+> +	byteReverse((unsigned char *) ctx->buf, 4);
+> +	memmove(digest, ctx->buf, 16);
+> +	memset(ctx, 0, sizeof(*ctx));	/* In case it's sensitive */
+> +}
+> +
+> +/* The four core functions - F1 is optimized somewhat */
+> +
+> +/* #define F1(x, y, z) (x & y | ~x & z) */
+> +#define F1(x, y, z) (z ^ (x & (y ^ z)))
+> +#define F2(x, y, z) F1(z, x, y)
+> +#define F3(x, y, z) (x ^ y ^ z)
+> +#define F4(x, y, z) (y ^ (x | ~z))
+> +
+> +/* This is the central step in the MD5 algorithm. */
+> +#define MD5STEP(f, w, x, y, z, data, s) \
+> +	( w += f(x, y, z) + data,  w = w<<s | w>>(32-s),  w += x )
+> +
+> +/*
+> + * The core of the MD5 algorithm, this alters an existing MD5 hash to
+> + * reflect the addition of 16 longwords of new data.  MD5Update blocks
+> + * the data and converts bytes into longwords for this routine.
+> + */
+> +static void
+> +MD5Transform(__u32 buf[4], __u32 const in[16])
+> +{
+> +	register __u32 a, b, c, d;
+> +
+> +	a = buf[0];
+> +	b = buf[1];
+> +	c = buf[2];
+> +	d = buf[3];
+> +
+> +	MD5STEP(F1, a, b, c, d, in[0] + 0xd76aa478, 7);
+> +	MD5STEP(F1, d, a, b, c, in[1] + 0xe8c7b756, 12);
+> +	MD5STEP(F1, c, d, a, b, in[2] + 0x242070db, 17);
+> +	MD5STEP(F1, b, c, d, a, in[3] + 0xc1bdceee, 22);
+> +	MD5STEP(F1, a, b, c, d, in[4] + 0xf57c0faf, 7);
+> +	MD5STEP(F1, d, a, b, c, in[5] + 0x4787c62a, 12);
+> +	MD5STEP(F1, c, d, a, b, in[6] + 0xa8304613, 17);
+> +	MD5STEP(F1, b, c, d, a, in[7] + 0xfd469501, 22);
+> +	MD5STEP(F1, a, b, c, d, in[8] + 0x698098d8, 7);
+> +	MD5STEP(F1, d, a, b, c, in[9] + 0x8b44f7af, 12);
+> +	MD5STEP(F1, c, d, a, b, in[10] + 0xffff5bb1, 17);
+> +	MD5STEP(F1, b, c, d, a, in[11] + 0x895cd7be, 22);
+> +	MD5STEP(F1, a, b, c, d, in[12] + 0x6b901122, 7);
+> +	MD5STEP(F1, d, a, b, c, in[13] + 0xfd987193, 12);
+> +	MD5STEP(F1, c, d, a, b, in[14] + 0xa679438e, 17);
+> +	MD5STEP(F1, b, c, d, a, in[15] + 0x49b40821, 22);
+> +
+> +	MD5STEP(F2, a, b, c, d, in[1] + 0xf61e2562, 5);
+> +	MD5STEP(F2, d, a, b, c, in[6] + 0xc040b340, 9);
+> +	MD5STEP(F2, c, d, a, b, in[11] + 0x265e5a51, 14);
+> +	MD5STEP(F2, b, c, d, a, in[0] + 0xe9b6c7aa, 20);
+> +	MD5STEP(F2, a, b, c, d, in[5] + 0xd62f105d, 5);
+> +	MD5STEP(F2, d, a, b, c, in[10] + 0x02441453, 9);
+> +	MD5STEP(F2, c, d, a, b, in[15] + 0xd8a1e681, 14);
+> +	MD5STEP(F2, b, c, d, a, in[4] + 0xe7d3fbc8, 20);
+> +	MD5STEP(F2, a, b, c, d, in[9] + 0x21e1cde6, 5);
+> +	MD5STEP(F2, d, a, b, c, in[14] + 0xc33707d6, 9);
+> +	MD5STEP(F2, c, d, a, b, in[3] + 0xf4d50d87, 14);
+> +	MD5STEP(F2, b, c, d, a, in[8] + 0x455a14ed, 20);
+> +	MD5STEP(F2, a, b, c, d, in[13] + 0xa9e3e905, 5);
+> +	MD5STEP(F2, d, a, b, c, in[2] + 0xfcefa3f8, 9);
+> +	MD5STEP(F2, c, d, a, b, in[7] + 0x676f02d9, 14);
+> +	MD5STEP(F2, b, c, d, a, in[12] + 0x8d2a4c8a, 20);
+> +
+> +	MD5STEP(F3, a, b, c, d, in[5] + 0xfffa3942, 4);
+> +	MD5STEP(F3, d, a, b, c, in[8] + 0x8771f681, 11);
+> +	MD5STEP(F3, c, d, a, b, in[11] + 0x6d9d6122, 16);
+> +	MD5STEP(F3, b, c, d, a, in[14] + 0xfde5380c, 23);
+> +	MD5STEP(F3, a, b, c, d, in[1] + 0xa4beea44, 4);
+> +	MD5STEP(F3, d, a, b, c, in[4] + 0x4bdecfa9, 11);
+> +	MD5STEP(F3, c, d, a, b, in[7] + 0xf6bb4b60, 16);
+> +	MD5STEP(F3, b, c, d, a, in[10] + 0xbebfbc70, 23);
+> +	MD5STEP(F3, a, b, c, d, in[13] + 0x289b7ec6, 4);
+> +	MD5STEP(F3, d, a, b, c, in[0] + 0xeaa127fa, 11);
+> +	MD5STEP(F3, c, d, a, b, in[3] + 0xd4ef3085, 16);
+> +	MD5STEP(F3, b, c, d, a, in[6] + 0x04881d05, 23);
+> +	MD5STEP(F3, a, b, c, d, in[9] + 0xd9d4d039, 4);
+> +	MD5STEP(F3, d, a, b, c, in[12] + 0xe6db99e5, 11);
+> +	MD5STEP(F3, c, d, a, b, in[15] + 0x1fa27cf8, 16);
+> +	MD5STEP(F3, b, c, d, a, in[2] + 0xc4ac5665, 23);
+> +
+> +	MD5STEP(F4, a, b, c, d, in[0] + 0xf4292244, 6);
+> +	MD5STEP(F4, d, a, b, c, in[7] + 0x432aff97, 10);
+> +	MD5STEP(F4, c, d, a, b, in[14] + 0xab9423a7, 15);
+> +	MD5STEP(F4, b, c, d, a, in[5] + 0xfc93a039, 21);
+> +	MD5STEP(F4, a, b, c, d, in[12] + 0x655b59c3, 6);
+> +	MD5STEP(F4, d, a, b, c, in[3] + 0x8f0ccc92, 10);
+> +	MD5STEP(F4, c, d, a, b, in[10] + 0xffeff47d, 15);
+> +	MD5STEP(F4, b, c, d, a, in[1] + 0x85845dd1, 21);
+> +	MD5STEP(F4, a, b, c, d, in[8] + 0x6fa87e4f, 6);
+> +	MD5STEP(F4, d, a, b, c, in[15] + 0xfe2ce6e0, 10);
+> +	MD5STEP(F4, c, d, a, b, in[6] + 0xa3014314, 15);
+> +	MD5STEP(F4, b, c, d, a, in[13] + 0x4e0811a1, 21);
+> +	MD5STEP(F4, a, b, c, d, in[4] + 0xf7537e82, 6);
+> +	MD5STEP(F4, d, a, b, c, in[11] + 0xbd3af235, 10);
+> +	MD5STEP(F4, c, d, a, b, in[2] + 0x2ad7d2bb, 15);
+> +	MD5STEP(F4, b, c, d, a, in[9] + 0xeb86d391, 21);
+> +
+> +	buf[0] += a;
+> +	buf[1] += b;
+> +	buf[2] += c;
+> +	buf[3] += d;
+> +}
+> +
+> +struct md5 {
+> +	struct MD5Context context;
+> +	struct digest d;
+> +};
+> +
+> +static int digest_md5_init(struct digest *d)
+> +{
+> +	struct md5 *m = container_of(d, struct md5, d);
+> +
+> +	MD5Init(&m->context);
 > +
 > +	return 0;
 > +}
-
-I think this function only makes sense when struct menu is opaque to its
-users, but in our case you can simply do a m->auto_select = delay
-instead of calling this function.
-
 > +
->  static void print_menu(struct menu *m)
->  {
->  	struct menu_entry *me;
-> @@ -217,14 +229,54 @@ int menu_show(struct menu *m)
->  {
->  	int ch;
->  	int escape = 0;
-> +	int countdown;
-> +	int auto_display_len = 16;
-> +	uint64_t start, second;
->  
->  	if(!m || list_empty(&m->entries))
->  		return -EINVAL;
->  
->  	print_menu(m);
->  
-> +	countdown = m->auto_select;
-> +	if (m->auto_select >= 0) {
-
-m->auto_select should be initialized to -EINVAL. Otherwise this
-condition is true even when we do not want to autoselect an item.
-Also, I think m->auto_select shouldn't be modified in this function.
-Otherwise the behaviour of this function changes if called again.
-
-> +		gotoXY(m->nb_entries + 2, 3);
-> +		if (!m->auto_display) {
-> +			printf("Auto Select in");
-> +		} else {
-> +			auto_display_len = strlen(m->auto_display);
-> +			printf(m->auto_display);
-> +		}
-> +		printf(" %2d", countdown--);
+> +static int digest_md5_update(struct digest *d, const void *data,
+> +			     unsigned long len)
+> +{
+> +	struct md5 *m = container_of(d, struct md5, d);
+> +
+> +	MD5Update(&m->context, data, len);
+> +
+> +	return 0;
+> +}
+> +
+> +static int digest_md5_final(struct digest *d, unsigned char *md)
+> +{
+> +	struct md5 *m = container_of(d, struct md5, d);
+> +
+> +	MD5Final(md, &m->context);
+> +
+> +	return 0;
+> +}
+> +
+> +static struct md5 m = {
+> +	.d = {
+> +		.name = "md5",
+> +		.init = digest_md5_init,
+> +		.update = digest_md5_update,
+> +		.final = digest_md5_final,
+> +		.length = 16,
 > +	}
+> +};
 > +
-> +	start = get_time_ns();
-> +	second = start;
-> +	while (m->auto_select > 0 && !is_timeout(start, m->auto_select * SECOND)) {
-> +		if (tstc()) {
-> +			ch = getc();
-
-You should remove this line. It only makes that the first character the
-user types is lost.
-
-> +			m->auto_select = -1;
-> +			break;
-> +		}
+> +static int md5_digest_register(void)
+> +{
+> +	digest_register(&m.d);
 > +
-> +		if (is_timeout(second, SECOND)) {
-> +			printf("\b\b%2d", countdown--);
-> +			second += SECOND;
-> +		}
-> +	}
-> +
-> +	gotoXY(m->nb_entries + 2, 3);
-> +	for (start = 0; start < auto_display_len + 4; start++)
-> +		putchar(' ');
-
-This can be done without a loop:
-
-	printf("%*c", auto_display_len + 4, ' ');
-
-> +
->  	do {
-> -		ch = getc();
-> +		if (m->auto_select >= 0)
-> +			ch = '\n';
-> +		else
-> +			ch = getc();
-> +
-> +		m->auto_select = -1;
-> +
->  		switch(ch) {
->  		case 0x1b:
->  			escape = 1;
-> diff --git a/include/menu.h b/include/menu.h
-> index 22bfc23..cc9d0af 100644
-> --- a/include/menu.h
-> +++ b/include/menu.h
-> @@ -42,6 +42,9 @@ struct menu {
->  	char *name;
->  	char *display;
->  
-> +	int auto_select;
-> +	char *auto_display;
-> +
->  	struct list_head list;
->  	struct list_head entries;
->  
-> @@ -74,6 +77,7 @@ struct menu* menu_get_by_name(char *name);
->  int menu_show(struct menu *m);
->  int menu_set_selected_entry(struct menu *m, struct menu_entry* me);
->  int menu_set_selected(struct menu *m, int num);
-> +int menu_set_auto_select(struct menu *m, int delay);
->  struct menu* menu_get_menus(void);
->  
->  /*
+> +	return 0;
+> +}
+> +device_initcall(md5_digest_register);
 > -- 
 > 1.7.1
 > 
