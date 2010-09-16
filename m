@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OwGmd-0000tr-5V
-	for barebox@lists.infradead.org; Thu, 16 Sep 2010 15:54:01 +0000
-Date: Thu, 16 Sep 2010 17:53:57 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20100916155357.GB1473@pengutronix.de>
-References: <20100909135543.GF9112@game.jcrosoft.org>
-	<1284040793-32145-3-git-send-email-plagnioj@jcrosoft.com>
+Received: from 26.mail-out.ovh.net ([91.121.27.225])
+	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1OwGr9-0000Qz-V4
+	for barebox@lists.infradead.org; Thu, 16 Sep 2010 15:58:41 +0000
+Date: Thu, 16 Sep 2010 17:57:29 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20100916155729.GC5762@game.jcrosoft.org>
+References: <1283774869-6086-1-git-send-email-plagnioj@jcrosoft.com>
+	<1283774869-6086-2-git-send-email-plagnioj@jcrosoft.com>
+	<20100916150605.GX1473@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1284040793-32145-3-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20100916150605.GX1473@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,123 +24,187 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/7] add sha1 support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH 2/2] menu: add auto select support
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Sep 09, 2010 at 03:59:49PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  lib/Kconfig  |    3 +
->  lib/Makefile |    1 +
->  lib/sha1.c   |  396 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 400 insertions(+), 0 deletions(-)
->  create mode 100644 lib/sha1.c
+> > +	if (cm->auto_select != -EINVAL) {
+> > +		menu_set_auto_select(m, cm->auto_select);
+> > +
+> > +		if (m->auto_display)
+> > +			free(m->auto_display);
 > 
-> diff --git a/lib/Kconfig b/lib/Kconfig
-> index e8776a7..650e86c 100644
-> --- a/lib/Kconfig
-> +++ b/lib/Kconfig
-> @@ -19,6 +19,9 @@ config MD5
->  	bool "MD5"
->  	default y
->  
-> +config SHA1
-> +	bool "SHA1"
-> +
->  endif
->  
->  config GENERIC_FIND_NEXT_BIT
-> diff --git a/lib/Makefile b/lib/Makefile
-> index 6a1fb5d..6f79d03 100644
-> --- a/lib/Makefile
-> +++ b/lib/Makefile
-> @@ -35,3 +35,4 @@ obj-y			+= show_progress.o
->  obj-$(CONFIG_LZO_DECOMPRESS)		+= decompress_unlzo.o
->  obj-$(CONFIG_PROCESS_ESCAPE_SEQUENCE)	+= process_escape_sequence.o
->  obj-$(CONFIG_MD5)	+= md5.o
-> +obj-$(CONFIG_SHA1)	+= sha1.o
-> diff --git a/lib/sha1.c b/lib/sha1.c
-> new file mode 100644
-> index 0000000..00dcc78
-> --- /dev/null
-> +++ b/lib/sha1.c
-> @@ -0,0 +1,396 @@
-> +/*
-> + *  Heiko Schocher, DENX Software Engineering, hs@denx.de.
-> + *  based on:
-> + *  FIPS-180-1 compliant SHA-1 implementation
-> + *
-> + *  Copyright (C) 2003-2006  Christophe Devine
-> + *
-> + *  This library is free software; you can redistribute it and/or
-> + *  modify it under the terms of the GNU Lesser General Public
-> + *  License, version 2.1 as published by the Free Software Foundation.
-> + *
-> + *  This library is distributed in the hope that it will be useful,
-> + *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-> + *  Lesser General Public License for more details.
-> + *
-> + *  You should have received a copy of the GNU Lesser General Public
-> + *  License along with this library; if not, write to the Free Software
-> + *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-> + *  MA  02110-1301  USA
-> + */
-> +/*
-> + *  The SHA-1 standard was published by NIST in 1993.
-> + *
-> + *  http://www.itl.nist.gov/fipspubs/fip180-1.htm
-> + */
-> +
-> +#include <common.h>
-> +#include <digest.h>
-> +#include <init.h>
-> +#include <linux/string.h>
-> +
-> +#define SHA1_SUM_POS	-0x20
-> +#define SHA1_SUM_LEN	20
-> +
-> +typedef struct
-> +{
-> +    unsigned long total[2];	/*!< number of bytes processed	*/
-> +    unsigned long state[5];	/*!< intermediate digest state	*/
-> +    unsigned char buffer[64];	/*!< data block being processed */
-> +}
-> +sha1_context;
-> +
-> +/*
-> + * 32-bit integer manipulation macros (big endian)
-> + */
-> +#ifndef GET_UINT32_BE
-> +#define GET_UINT32_BE(n,b,i) {				\
-> +	(n) = ( (unsigned long) (b)[(i)    ] << 24 )	\
-> +	    | ( (unsigned long) (b)[(i) + 1] << 16 )	\
-> +	    | ( (unsigned long) (b)[(i) + 2] <<  8 )	\
-> +	    | ( (unsigned long) (b)[(i) + 3]       );	\
-> +}
-> +#endif
-> +#ifndef PUT_UINT32_BE
-> +#define PUT_UINT32_BE(n,b,i) {				\
-> +	(b)[(i)    ] = (unsigned char) ( (n) >> 24 );	\
-> +	(b)[(i) + 1] = (unsigned char) ( (n) >> 16 );	\
-> +	(b)[(i) + 2] = (unsigned char) ( (n) >>  8 );	\
-> +	(b)[(i) + 3] = (unsigned char) ( (n)       );	\
-> +}
-> +#endif
+> I was told free(NULL) is safe...
+good catch :p
+> 
+> > +
+> > +		m->auto_display = strdup(cm->description);
+> > +	}
+> > +
+> >  	return menu_show(m);
+> >  }
+> >  
+> > @@ -300,6 +313,7 @@ static int do_menu(struct command *cmdtp, int argc, char *argv[])
+> >  	memset(&cm, 0, sizeof(struct cmd_menu));
+> >  #if defined(CONFIG_CMD_MENU_MANAGEMENT)
+> >  	cm.num = -EINVAL;
+> > +	cm.auto_select = -EINVAL;
+> >  #endif
+> >  
+> >  	cm.action = action_show;
+> > @@ -343,6 +357,9 @@ static int do_menu(struct command *cmdtp, int argc, char *argv[])
+> >  		case 'n':
+> >  			cm.num = simple_strtoul(optarg, NULL, 10);
+> >  			break;
+> > +		case 'A':
+> > +			cm.auto_select = simple_strtoul(optarg, NULL, 10);
+> > +			break;
+> >  #endif
+> >  		default:
+> >  			return 1;
+> > @@ -398,7 +415,9 @@ static const __maybe_unused char cmd_menu_help[] =
+> >  "How to\n"
+> >  "\n"
+> >  "Show menu\n"
+> > -"  menu -s -m <menu>\n"
+> > +"  (-A auto select delay)\n"
+> > +"  (-d auto select description)\n"
+> > +"  menu -s -m <menu> [-A delay] [-d auto_display]\n"
+> >  "\n"
+> >  "List menu\n"
+> >  "  menu -l\n"
+> > diff --git a/common/menu.c b/common/menu.c
+> > index 7620d9e..339bb3d 100644
+> > --- a/common/menu.c
+> > +++ b/common/menu.c
+> > @@ -29,6 +29,7 @@
+> >  #include <xfuncs.h>
+> >  #include <errno.h>
+> >  #include <readkey.h>
+> > +#include <clock.h>
+> >  #include <linux/err.h>
+> >  
+> >  static LIST_HEAD(menus);
+> > @@ -49,6 +50,7 @@ void menu_free(struct menu *m)
+> >  		return;
+> >  	free(m->name);
+> >  	free(m->display);
+> > +	free(m->auto_display);
+> >  
+> >  	list_for_each_entry_safe(me, tmp, &m->entries, list)
+> >  		menu_entry_free(me);
+> > @@ -187,6 +189,16 @@ int menu_set_selected(struct menu *m, int num)
+> >  	return 0;
+> >  }
+> >  
+> > +int menu_set_auto_select(struct menu *m, int delay)
+> > +{
+> > +	if (!m)
+> > +		return -EINVAL;
+> > +
+> > +	m->auto_select = delay;
+> > +
+> > +	return 0;
+> > +}
+> 
+> I think this function only makes sense when struct menu is opaque to its
+> users, but in our case you can simply do a m->auto_select = delay
+> instead of calling this function.
+as we can call it from the C API I prefer to make it safe
+> 
+> > +
+> >  static void print_menu(struct menu *m)
+> >  {
+> >  	struct menu_entry *me;
+> > @@ -217,14 +229,54 @@ int menu_show(struct menu *m)
+> >  {
+> >  	int ch;
+> >  	int escape = 0;
+> > +	int countdown;
+> > +	int auto_display_len = 16;
+> > +	uint64_t start, second;
+> >  
+> >  	if(!m || list_empty(&m->entries))
+> >  		return -EINVAL;
+> >  
+> >  	print_menu(m);
+> >  
+> > +	countdown = m->auto_select;
+> > +	if (m->auto_select >= 0) {
+> 
+> m->auto_select should be initialized to -EINVAL. Otherwise this
+> condition is true even when we do not want to autoselect an item.
+> Also, I think m->auto_select shouldn't be modified in this function.
+> Otherwise the behaviour of this function changes if called again.
+I o;ut cm.auto_select = -EINVAL by default
+yeah it's the idea as you go back in the menu from a sub-menu we do not want
+to retart the auto_select so we disable it
+> 
+> > +		gotoXY(m->nb_entries + 2, 3);
+> > +		if (!m->auto_display) {
+> > +			printf("Auto Select in");
+> > +		} else {
+> > +			auto_display_len = strlen(m->auto_display);
+> > +			printf(m->auto_display);
+> > +		}
+> > +		printf(" %2d", countdown--);
+> > +	}
+> > +
+> > +	start = get_time_ns();
+> > +	second = start;
+> > +	while (m->auto_select > 0 && !is_timeout(start, m->auto_select * SECOND)) {
+> > +		if (tstc()) {
+> > +			ch = getc();
+> 
+> You should remove this line. It only makes that the first character the
+> user types is lost.
+I drop it in the v2 IIRC
+> 
+> > +			m->auto_select = -1;
+> > +			break;
+> > +		}
+> > +
+> > +		if (is_timeout(second, SECOND)) {
+> > +			printf("\b\b%2d", countdown--);
+> > +			second += SECOND;
+> > +		}
+> > +	}
+> > +
+> > +	gotoXY(m->nb_entries + 2, 3);
+> > +	for (start = 0; start < auto_display_len + 4; start++)
+> > +		putchar(' ');
+> 
+> This can be done without a loop:
+> 
+> 	printf("%*c", auto_display_len + 4, ' ');
+ok
+> 
+> > +
+> >  	do {
+> > -		ch = getc();
+> > +		if (m->auto_select >= 0)
+> > +			ch = '\n';
+> > +		else
+> > +			ch = getc();
+btw I work no a input box to specify IP
 
-Isn't cpu_to_be32 a better weapon here?
+like this
 
-The corresponding kernel code looks cleaner to me. Have you considered
-using it?
+xxx.xxx.xxx.xxx which will be manage by 2 key only
 
-Sascha
+and I'm also working on a selection choice as
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+choice
+
+endchoice
+
+in Kconfig
+
+I some one have I idea of other type that we may need for creating a bios like
+menu they are welcome
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
