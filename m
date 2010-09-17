@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from 70.mail-out.ovh.net ([91.121.185.63])
 	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OwSlf-00035G-Py
+	id 1OwSlf-00035H-Q4
 	for barebox@lists.infradead.org; Fri, 17 Sep 2010 04:41:49 +0000
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 17 Sep 2010 06:40:33 +0200
-Message-Id: <1284698436-1097-2-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri, 17 Sep 2010 06:40:36 +0200
+Message-Id: <1284698436-1097-5-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1284698436-1097-1-git-send-email-plagnioj@jcrosoft.com>
 References: <1284698436-1097-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
@@ -21,68 +21,72 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] move version.h to include/generated/ instead of
-	include/linux
+Subject: [PATCH 5/5] move barebox_default_env.h to include/generated/
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- .gitignore |    1 -
- Makefile   |    8 ++++----
- 2 files changed, 4 insertions(+), 5 deletions(-)
+ Makefile           |    2 +-
+ common/Makefile    |    6 +++---
+ common/startup.c   |    2 +-
+ include/.gitignore |    1 -
+ 4 files changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/.gitignore b/.gitignore
-index 7c60cc2..2179251 100644
---- a/.gitignore
-+++ b/.gitignore
-@@ -46,7 +46,6 @@ include/asm
- include/asm-*/asm-offsets.h
- include/config
- include/linux/compile.h
--include/linux/version.h
- include/linux/utsrelease.h
- include/generated
- 
 diff --git a/Makefile b/Makefile
-index 62053c8..838d6ed 100644
+index c990005..3a97a26 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -349,7 +349,7 @@ endif
+@@ -971,7 +971,7 @@ endif # CONFIG_MODULES
  
- no-dot-config-targets := clean mrproper distclean \
- 			 cscope TAGS tags help %docs check% \
--			 include/linux/version.h headers_% \
-+			 include/generated/version.h headers_% \
- 			 kernelrelease kernelversion
+ # Directories & files removed with 'make clean'
+ CLEAN_DIRS  += $(MODVERDIR)
+-CLEAN_FILES +=	barebox System.map include/barebox_default_env.h \
++CLEAN_FILES +=	barebox System.map include/generated/barebox_default_env.h \
+                 .tmp_version .tmp_barebox* barebox.bin barebox.S \
+ 		.tmp_kallsyms* barebox_default_env barebox.ldr
  
- config-targets := 0
-@@ -796,7 +796,7 @@ endif
- # prepare2 creates a makefile if using a separate output directory
- prepare2: prepare3 outputmakefile
+diff --git a/common/Makefile b/common/Makefile
+index 4b8cce0..fb06a2d 100644
+--- a/common/Makefile
++++ b/common/Makefile
+@@ -20,8 +20,8 @@ obj-$(CONFIG_MODULES) += module.o
+ extra-$(CONFIG_MODULES) += module.lds
  
--prepare1: prepare2 include/linux/version.h include/linux/utsrelease.h \
-+prepare1: prepare2 include/generated/version.h include/linux/utsrelease.h \
-                    include/asm include/config.h include/config/auto.conf
+ ifdef CONFIG_DEFAULT_ENVIRONMENT
+-$(obj)/startup.o: include/barebox_default_env.h
+-$(obj)/env.o: include/barebox_default_env.h
++$(obj)/startup.o: include/generated/barebox_default_env.h
++$(obj)/env.o: include/generated/barebox_default_env.h
  
- ifneq ($(KBUILD_MODULES),)
-@@ -879,7 +879,7 @@ define filechk_version.h
- 	echo '#define KERNEL_VERSION(a,b,c) (((a) << 16) + ((b) << 8) + (c))';)
- endef
+ ENV_FILES := $(shell cd $(srctree); for i in $(CONFIG_DEFAULT_ENVIRONMENT_PATH); do find $${i} -type f -exec readlink -f {} \;; done)
  
--include/linux/version.h: $(srctree)/Makefile FORCE
-+include/generated/version.h: $(srctree)/Makefile FORCE
- 	$(call filechk,version.h)
+@@ -30,5 +30,5 @@ endif # ifdef CONFIG_DEFAULT_ENVIRONMENT
+ barebox_default_env: $(ENV_FILES)
+ 	$(Q)$(srctree)/scripts/genenv $(srctree) $(objtree) $(CONFIG_DEFAULT_ENVIRONMENT_PATH)
  
- include/linux/utsrelease.h: include/config/kernel.release FORCE
-@@ -978,7 +978,7 @@ CLEAN_FILES +=	barebox System.map include/barebox_default_env.h \
- # Directories & files removed with 'make mrproper'
- MRPROPER_DIRS  += include/config include2 usr/include
- MRPROPER_FILES += .config .config.old include/asm .version .old_version \
--                  include/generated/autoconf.h include/linux/version.h      \
-+                  include/generated/autoconf.h include/generated/version.h      \
-                   include/linux/utsrelease.h include/config.h           \
- 		  Module.symvers tags TAGS cscope*
+-include/barebox_default_env.h: barebox_default_env
++include/generated/barebox_default_env.h: barebox_default_env
+ 	$(Q)cat $< | $(objtree)/scripts/bin2c default_environment > $@
+diff --git a/common/startup.c b/common/startup.c
+index 2ed16fe..7fa9099 100644
+--- a/common/startup.c
++++ b/common/startup.c
+@@ -79,7 +79,7 @@ void early_init (void)
+ #endif /* CONFIG_HAS_EARLY_INIT */
  
+ #ifdef CONFIG_DEFAULT_ENVIRONMENT
+-#include <barebox_default_env.h>
++#include <generated/barebox_default_env.h>
+ 
+ static struct memory_platform_data default_env_platform_data = {
+ 	.name = "defaultenv",
+diff --git a/include/.gitignore b/include/.gitignore
+index bb388cc..0e56cf2 100644
+--- a/include/.gitignore
++++ b/include/.gitignore
+@@ -1,2 +1 @@
+ config.h
+-barebox_default_env.h
 -- 
 1.7.1
 
