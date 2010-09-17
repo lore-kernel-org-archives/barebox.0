@@ -1,19 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-iw0-f177.google.com ([209.85.214.177])
-	by bombadil.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OwWbs-0003Ug-S2
-	for barebox@lists.infradead.org; Fri, 17 Sep 2010 08:47:57 +0000
-Received: by iwn36 with SMTP id 36so2209733iwn.36
-	for <barebox@lists.infradead.org>; Fri, 17 Sep 2010 01:47:55 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <201008230916.16725.jbe@pengutronix.de>
-References: <AANLkTin5C2PLPS26q5BjyBZC3Dt_aYCVWYifSNri8p+G@mail.gmail.com>
-	<20100816091330.GN27749@pengutronix.de>
-	<AANLkTi=i9OVu5g1i1_AXquB_TzX8uE9o6=vMTqmxmhRo@mail.gmail.com>
-	<201008230916.16725.jbe@pengutronix.de>
-Date: Fri, 17 Sep 2010 14:17:55 +0530
-Message-ID: <AANLkTi=fzeCkt7-YedYGBJXkat5O3dkuyc0hGpKGK6Rq@mail.gmail.com>
-From: kuldeep ghan <ghankp@gmail.com>
+Received: from 68.mail-out.ovh.net ([91.121.185.69])
+	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1OwbEV-00064y-NR
+	for barebox@lists.infradead.org; Fri, 17 Sep 2010 13:44:09 +0000
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Fri, 17 Sep 2010 15:42:56 +0200
+Message-Id: <1284730976-19565-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,114 +14,210 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1447936587=="
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: changes for reducing DDR size
-To: Juergen Beisert <jbe@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/1] Support for the at91sam9g20 : Atmel 400Mhz ARM 926ej-s
+	SOC.
+To: barebox@lists.infradead.org
+Cc: Patrice Vilchez <patrice.vilchez@atmel.com>, Nicolas Ferre <nicolas.ferre@atmel.com>
 
---===============1447936587==
-Content-Type: multipart/alternative; boundary=00221532cbbc6849430490709e00
+AT91sam9g20 is an evolution of the at91sam9260 with a faster clock
+speed.
+We created a new board for this device but based the chip support
+directly on 9260 files with little updates.
+Here is the chip page on Atmel wabsite:
+http://atmel.com/dyn/products/product_card.asp?part_id=4337
 
---00221532cbbc6849430490709e00
-Content-Type: text/plain; charset=ISO-8859-1
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: Nicolas Ferre <nicolas.ferre@atmel.com>
+Cc: Patrice Vilchez <patrice.vilchez@atmel.com>
+---
+ arch/arm/Makefile                        |    1 +
+ arch/arm/boards/at91sam9260ek/init.c     |   21 +++++++++++++++-
+ arch/arm/configs/at91sam9g20ek_defconfig |   38 ++++++++++++++++++++++++++++++
+ arch/arm/mach-at91/Kconfig               |   30 ++++++++++++++++++++++-
+ arch/arm/mach-at91/Makefile              |    1 +
+ 5 files changed, 88 insertions(+), 3 deletions(-)
+ create mode 100644 arch/arm/configs/at91sam9g20ek_defconfig
 
-Yes I am using Non continuous memory. I have two variants of the boards. On
-one type of board. I use two DDRs of 128MB each on CSD0 and CSD1. In that
-case it works, also I see Linux utilizing 256MB memory.
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index e404ad0..77b6cf4 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -52,6 +52,7 @@ board-$(CONFIG_MACH_A9M2410)			:= a9m2410
+ board-$(CONFIG_MACH_A9M2440)			:= a9m2440
+ board-$(CONFIG_MACH_AT91SAM9260EK)		:= at91sam9260ek
+ board-$(CONFIG_MACH_AT91SAM9263EK)		:= at91sam9263ek
++board-$(CONFIG_MACH_AT91SAM9G20EK)		:= at91sam9260ek
+ board-$(CONFIG_MACH_EDB9301)			:= edb93xx
+ board-$(CONFIG_MACH_EDB9302)			:= edb93xx
+ board-$(CONFIG_MACH_EDB9302A)			:= edb93xx
+diff --git a/arch/arm/boards/at91sam9260ek/init.c b/arch/arm/boards/at91sam9260ek/init.c
+index 7bb3c45..966dd2f 100644
+--- a/arch/arm/boards/at91sam9260ek/init.c
++++ b/arch/arm/boards/at91sam9260ek/init.c
+@@ -40,6 +40,25 @@
+ #include <mach/at91_pmc.h>
+ #include <mach/at91_rstc.h>
+ 
++/*
++ * board revision encoding
++ * bit 0:
++ *	0 => 1 mmc
++ *	1 => 2 mmcs (board from revision C)
++ */
++#define HAVE_2MMC	(1 << 0)
++static void ek_set_board_type(void)
++{
++	if (machine_is_at91sam9g20ek()) {
++		armlinux_set_architecture(MACH_TYPE_AT91SAM9G20EK);
++#ifdef CONFIG_AT91_HAVE_2MMC
++		armlinux_set_revision(HAVE_2MMC);
++#endif
++	} else {
++		armlinux_set_architecture(MACH_TYPE_AT91SAM9260EK);
++	}
++}
++
+ static struct atmel_nand_data nand_pdata = {
+ 	.ale		= 21,
+ 	.cle		= 22,
+@@ -130,7 +149,7 @@ static int at91sam9260ek_devices_init(void)
+ 
+ 	at91_add_device_sdram(64 * 1024 * 1024);
+ 	armlinux_set_bootparams((void *)(AT91_CHIPSELECT_1 + 0x100));
+-	armlinux_set_architecture(MACH_TYPE_AT91SAM9260EK);
++	ek_set_board_type();
+ 
+ 	devfs_add_partition("nand0", 0x00000, 0x80000, PARTITION_FIXED, "self_raw");
+ 	dev_add_bb_dev("self_raw", "self0");
+diff --git a/arch/arm/configs/at91sam9g20ek_defconfig b/arch/arm/configs/at91sam9g20ek_defconfig
+new file mode 100644
+index 0000000..0612547
+--- /dev/null
++++ b/arch/arm/configs/at91sam9g20ek_defconfig
+@@ -0,0 +1,38 @@
++CONFIG_ARCH_AT91SAM9G20=y
++CONFIG_MACH_AT91SAM9G20EK=y
++CONFIG_AT91_HAVE_2MMC=y
++CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
++CONFIG_LONGHELP=y
++CONFIG_GLOB=y
++CONFIG_PROMPT_HUSH_PS2="y"
++CONFIG_CMDLINE_EDITING=y
++CONFIG_AUTO_COMPLETE=y
++CONFIG_PARTITION=y
++CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/pm9263/env/"
++CONFIG_CMD_EDIT=y
++CONFIG_CMD_SLEEP=y
++CONFIG_CMD_SAVEENV=y
++CONFIG_CMD_LOADENV=y
++CONFIG_CMD_EXPORT=y
++CONFIG_CMD_PRINTENV=y
++CONFIG_CMD_READLINE=y
++CONFIG_CMD_MEMINFO=y
++CONFIG_CMD_CRC=y
++CONFIG_CMD_MTEST=y
++CONFIG_CMD_MTEST_ALTERNATIVE=y
++CONFIG_CMD_FLASH=y
++CONFIG_CMD_BOOTM_SHOW_TYPE=y
++CONFIG_CMD_RESET=y
++CONFIG_CMD_GO=y
++CONFIG_CMD_TIMEOUT=y
++CONFIG_CMD_PARTITION=y
++CONFIG_CMD_GPIO=y
++CONFIG_NET=y
++CONFIG_NET_DHCP=y
++CONFIG_NET_PING=y
++CONFIG_NET_TFTP=y
++CONFIG_DRIVER_NET_MACB=y
++# CONFIG_SPI is not set
++CONFIG_I2C=y
++CONFIG_DRIVER_CFI=y
++CONFIG_CFI_BUFFER_WRITE=y
+diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+index 99d0f4d..fa432a5 100644
+--- a/arch/arm/mach-at91/Kconfig
++++ b/arch/arm/mach-at91/Kconfig
+@@ -7,6 +7,7 @@ config ARCH_TEXT_BASE
+ config BOARDINFO
+ 	default "Atmel 91SAM9260-EK" if MACH_AT91SAM9260EK
+ 	default "Atmel at91sam9263-ek" if MACH_AT91SAM9263EK
++	default "Atmel at91sam9g20-ek" if MACH_AT91SAM9G20EK
+ 	default "Bucyrus MMC-CPU" if MACH_MMCCPU
+ 	default "Ronetix PM9263" if MACH_PM9263
+ 
+@@ -26,21 +27,34 @@ config ARCH_AT91SAM9263
+ 	select MACH_HAS_LOWLEVEL_INIT
+ 	select HAS_MACB
+ 
++config ARCH_AT91SAM9G20
++	bool "AT91SAM9G20"
++	select CPU_ARM926T
++	select HAS_MACB
++
+ endchoice
+ 
+ # ----------------------------------------------------------
+ 
+-if ARCH_AT91SAM9260
++if (ARCH_AT91SAM9260 || ARCH_AT91SAM9G20)
+ 
+ choice
+ 
+-	prompt "AT91SAM9260 Board Type"
++	prompt "AT91SAM9260/AT91SAM9G20 Board Type"
+ 
+ config MACH_AT91SAM9260EK
+ 	bool "Atmel AT91SAM9260-EK"
+ 	help
+ 	  Say y here if you are using Atmel's AT91SAM9260-EK Evaluation board
+ 
++config MACH_AT91SAM9G20EK
++	bool "Atmel AT91SAM9G20-EK Evaluation Kit"
++	select HAVE_AT91_DATAFLASH_CARD
++	select HAVE_NAND_ATMEL_BUSWIDTH_16
++	help
++	  Select this if you are using Atmel's AT91SAM9G20-EK Evaluation Kit
++	  that embeds only one SD/MMC slot.
++
+ endchoice
+ 
+ endif
+@@ -71,4 +85,16 @@ endchoice
+ 
+ endif
+ 
++# ----------------------------------------------------------
++
++comment "AT91 Board Options"
++
++config AT91_HAVE_2MMC
++	bool "Have 2 MMC"
++	depends on MACH_AT91SAM9G20EK
++	help
++	  Select this if you are using an Atmel AT91SAM9G20-EK Evaluation Kit
++	  with 2 SD/MMC Slots. This is the case for AT91SAM9G20-EK rev. C and
++	  onwards.
++
+ endif
+diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
+index 2878b04..1bedadb 100644
+--- a/arch/arm/mach-at91/Makefile
++++ b/arch/arm/mach-at91/Makefile
+@@ -5,3 +5,4 @@ obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel_init.o
+ # CPU-specific support
+ obj-$(CONFIG_ARCH_AT91SAM9260) += at91sam9260.o at91sam926x_time.o at91sam9260_devices.o sam9_smc.o
+ obj-$(CONFIG_ARCH_AT91SAM9263) += at91sam9263.o at91sam926x_time.o at91sam9263_devices.o sam9_smc.o
++obj-$(CONFIG_ARCH_AT91SAM9G20) += at91sam9260.o at91sam926x_time.o at91sam9260_devices.o sam9_smc.o
+-- 
+1.7.1
 
-On board with 32MB DDRs on CSD0 and CSD1 each, I see that ping commands
-calls fec_send in fec_imx.c (FEC driver for imx27) and after enabling dma it
-hangs.
-
-Is there any change required for initiazation of DMA due change id DDR size
-from 128MB to 32 MB on each chipselect CSD0 and CSD1.
-
-On Mon, Aug 23, 2010 at 12:46 PM, Juergen Beisert <jbe@pengutronix.de>wrote:
-
-> kuldeep ghan wrote:
-> > [...]
-> >  I am adding two device using armlinux_add_dram() each with 32MB size and
-> > map_base address of 0xA0000000 and 0xB0000000 respectively.. Is that fine
-> > or Can I have one device registered with map_base address of 0xA0000000
-> and
-> > 64MB size??
->
-> You are using non continuous memory. I'm not sure, if that is handled in
-> barebox correctly. Also Linux may have a problem with this kind of memory
-> organization.
->
-> jbe
->
-> --
-> Pengutronix e.K.                              | Juergen Beisert
-> |
-> Linux Solutions for Science and Industry      | Phone: +49-8766-939 228
-> |
-> Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555
-> |
-> Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/ |
->
-
---00221532cbbc6849430490709e00
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-Yes I am using Non continuous memory. I have two variants of the boards. On=
- one type of board. I use two DDRs of 128MB each on CSD0 and CSD1. In that =
-case it works, also I see Linux utilizing 256MB memory.<br><br>On board wit=
-h 32MB DDRs on CSD0 and CSD1 each, I see that ping commands calls fec_send =
-in fec_imx.c (FEC driver for imx27) and after enabling dma it hangs.<br>
-<br>Is there any change required for initiazation of DMA due change id DDR =
-size from 128MB to 32 MB on each chipselect CSD0 and CSD1.<br><br><div clas=
-s=3D"gmail_quote">On Mon, Aug 23, 2010 at 12:46 PM, Juergen Beisert <span d=
-ir=3D"ltr">&lt;<a href=3D"mailto:jbe@pengutronix.de">jbe@pengutronix.de</a>=
-&gt;</span> wrote:<br>
-<blockquote class=3D"gmail_quote" style=3D"border-left: 1px solid rgb(204, =
-204, 204); margin: 0pt 0pt 0pt 0.8ex; padding-left: 1ex;">kuldeep ghan wrot=
-e:<br>
-&gt; [...]<br>
-<div class=3D"im">&gt; =A0I am adding two device using armlinux_add_dram() =
-each with 32MB size and<br>
-&gt; map_base address of 0xA0000000 and 0xB0000000 respectively.. Is that f=
-ine<br>
-&gt; or Can I have one device registered with map_base address of 0xA000000=
-0 and<br>
-&gt; 64MB size??<br>
-<br>
-</div>You are using non continuous memory. I&#39;m not sure, if that is han=
-dled in<br>
-barebox correctly. Also Linux may have a problem with this kind of memory<b=
-r>
-organization.<br>
-<br>
-jbe<br>
-<font color=3D"#888888"><br>
---<br>
-Pengutronix e.K. =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0| Juergen Beisert =A0 =A0 =A0 =A0 =A0 =A0 |<br>
-Linux Solutions for Science and Industry =A0 =A0 =A0| Phone: +49-8766-939 2=
-28 =A0 =A0 |<br>
-Vertretung Sued/Muenchen, Germany =A0 =A0 =A0 =A0 =A0 =A0 | Fax: =A0 +49-51=
-21-206917-5555 |<br>
-Amtsgericht Hildesheim, HRA 2686 =A0 =A0 =A0 =A0 =A0 =A0 =A0| <a href=3D"ht=
-tp://www.pengutronix.de/" target=3D"_blank">http://www.pengutronix.de/</a> =
-=A0|<br>
-</font></blockquote></div><br>
-
---00221532cbbc6849430490709e00--
-
-
---===============1447936587==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============1447936587==--
