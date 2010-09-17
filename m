@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 64.mail-out.ovh.net ([91.121.185.65])
-	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OwbR7-00014M-9T
-	for barebox@lists.infradead.org; Fri, 17 Sep 2010 13:57:10 +0000
-Date: Fri, 17 Sep 2010 15:55:56 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20100917135556.GB21110@game.jcrosoft.org>
-References: <1284290860-32033-1-git-send-email-plagnioj@jcrosoft.com>
-	<20100917134530.GD1473@pengutronix.de>
-	<20100917135037.GB20438@game.jcrosoft.org>
-	<20100917135414.GG1473@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1OwbqU-0008Fe-9d
+	for barebox@lists.infradead.org; Fri, 17 Sep 2010 14:23:23 +0000
+Date: Fri, 17 Sep 2010 16:23:11 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20100917142311.GI1473@pengutronix.de>
+References: <AANLkTimF=u+DegrO+d2kvWyae6TWnwwz5Zo=HMwqwhrn@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20100917135414.GG1473@pengutronix.de>
+In-Reply-To: <AANLkTimF=u+DegrO+d2kvWyae6TWnwwz5Zo=HMwqwhrn@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,33 +22,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] driver: allow register device with specific id
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: Mentor Inventra USB Contoller driver
+To: Gaurav Singh <gausinghnsit@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On 15:54 Fri 17 Sep     , Sascha Hauer wrote:
-> On Fri, Sep 17, 2010 at 03:50:37PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > On 15:45 Fri 17 Sep     , Sascha Hauer wrote:
-> > > Hi J,
-> > > 
-> > > On Sun, Sep 12, 2010 at 01:27:37PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > > if you specify id = 0 the next available id will be taken
-> > > > otherwise fail if already registered
-> > > 
-> > > I think we need a better solution here. Being able to specify an id
-> > > is a good idea in general, but since 0 is a valid id we should be able
-> > > to specify exactly this id aswell.
-> > > An idea is to use -1 for a dynamic id, but of course this needs changes
-> > > to all existing devices.
-> > I prefer to do it a second step
-> > in this case
-> 
-> I prefer doing it first, because it makes sure the problem is getting
-> solved.
-I prefer to do a second incremental patch
+Hi Gaurav,
 
-Best Regards,
-J.
+On Wed, Sep 08, 2010 at 04:57:25PM +0530, Gaurav Singh wrote:
+> Hi all,
+> Was working on MUSB (Mentor Inventra conroller) gadget driver for
+> Barebox. Need to support DFU for my test board which has this
+> controller. Currently trying to figure out how to modify kernel code
+> which uses interrupts to a polling mode form. Was wondering if
+> developers have planned this device or not.
+
+What do you mean by 'developers have planned this device'? AFAIK nobody
+is working on a barebox driver for the musb at them moment, if that's
+what you wanted to know.
+
+> I would be happy to
+> contibute once I'm done :)
+
+Nice to here :) Such patches are always welcome.
+
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
