@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OwbOJ-00009y-MS
-	for barebox@lists.infradead.org; Fri, 17 Sep 2010 13:54:16 +0000
-Date: Fri, 17 Sep 2010 15:54:14 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20100917135414.GG1473@pengutronix.de>
+Received: from 29.mail-out.ovh.net ([87.98.216.213])
+	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1OwbPp-0000ua-Cv
+	for barebox@lists.infradead.org; Fri, 17 Sep 2010 13:55:50 +0000
+Date: Fri, 17 Sep 2010 15:54:37 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20100917135437.GA21110@game.jcrosoft.org>
 References: <1284290860-32033-1-git-send-email-plagnioj@jcrosoft.com>
-	<20100917134530.GD1473@pengutronix.de>
-	<20100917135037.GB20438@game.jcrosoft.org>
+	<1284290860-32033-3-git-send-email-plagnioj@jcrosoft.com>
+	<20100917135151.GE1473@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20100917135037.GB20438@game.jcrosoft.org>
+In-Reply-To: <20100917135151.GE1473@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,36 +24,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] driver: allow register device with specific id
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH 3/4] amba-pl011: probe fail if we can get the clock
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, Sep 17, 2010 at 03:50:37PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 15:45 Fri 17 Sep     , Sascha Hauer wrote:
-> > Hi J,
+On 15:51 Fri 17 Sep     , Sascha Hauer wrote:
+> Hi J,
+> 
+> The subject should be '...fail if we can *not* get the clock'.
+yeah it's fix inthe pull request
+> 
+> On Sun, Sep 12, 2010 at 01:27:39PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > ---
+> >  drivers/serial/amba-pl011.c |    4 ++++
+> >  1 files changed, 4 insertions(+), 0 deletions(-)
 > > 
-> > On Sun, Sep 12, 2010 at 01:27:37PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > if you specify id = 0 the next available id will be taken
-> > > otherwise fail if already registered
-> > 
-> > I think we need a better solution here. Being able to specify an id
-> > is a good idea in general, but since 0 is a valid id we should be able
-> > to specify exactly this id aswell.
-> > An idea is to use -1 for a dynamic id, but of course this needs changes
-> > to all existing devices.
-> I prefer to do it a second step
-> in this case
+> > diff --git a/drivers/serial/amba-pl011.c b/drivers/serial/amba-pl011.c
+> > index 07508d0..8ddba2e 100644
+> > --- a/drivers/serial/amba-pl011.c
+> > +++ b/drivers/serial/amba-pl011.c
+> > @@ -34,6 +34,7 @@
+> >  #include <asm/io.h>
+> >  #include <linux/amba/serial.h>
+> >  #include <linux/clk.h>
+> > +#include <linux/err.h>
+> >  
+> >  /*
+> >   * We wrap our port structure around the generic console_device.
+> > @@ -160,6 +161,9 @@ static int pl011_probe(struct device_d *dev)
+> >  
+> >  	uart->clk = clk_get(dev, NULL);
+> >  
+> > +	if (PTR_ERR(uart->clk) < 0)
+> 
+> We have the IS_ERR macro for testing. PTR_ERR is wrong here because it
+> only casts the pointer to long, so the condition above is true for every
+> pointer > 0x80000000.
+too
 
-I prefer doing it first, because it makes sure the problem is getting
-solved.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
