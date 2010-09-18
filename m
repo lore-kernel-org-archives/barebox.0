@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 70.mail-out.ovh.net ([91.121.185.63])
+Received: from 68.mail-out.ovh.net ([91.121.185.69])
 	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1Own1r-0000an-JJ
-	for barebox@lists.infradead.org; Sat, 18 Sep 2010 02:19:53 +0000
+	id 1Own9D-00024K-U4
+	for barebox@lists.infradead.org; Sat, 18 Sep 2010 02:27:29 +0000
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sat, 18 Sep 2010 04:18:37 +0200
-Message-Id: <1284776317-6195-3-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1284776317-6195-1-git-send-email-plagnioj@jcrosoft.com>
-References: <1284776317-6195-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Sat, 18 Sep 2010 04:26:14 +0200
+Message-Id: <1284776774-7502-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1284776317-6195-3-git-send-email-plagnioj@jcrosoft.com>
+References: <1284776317-6195-3-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,7 +21,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] Support for the at91sam9g20 : Atmel 400Mhz ARM 926ej-s
+Subject: [PATCH 3/3 v2] Support for the at91sam9g20 : Atmel 400Mhz ARM 926ej-s
 	SOC.
 To: barebox@lists.infradead.org
 Cc: Patrice Vilchez <patrice.vilchez@atmel.com>, Nicolas Ferre <nicolas.ferre@atmel.com>
@@ -37,6 +37,9 @@ Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: Nicolas Ferre <nicolas.ferre@atmel.com>
 Cc: Patrice Vilchez <patrice.vilchez@atmel.com>
 ---
+v2:
+
+	fix wrong ARCH name in the lowlevel
  arch/arm/Makefile                        |    1 +
  arch/arm/boards/at91sam9260ek/init.c     |   21 +++++++++++++++-
  arch/arm/configs/at91sam9g20ek_defconfig |   39 ++++++++++++++++++++++++++++++
@@ -215,7 +218,7 @@ index 2878b04..1bedadb 100644
  obj-$(CONFIG_ARCH_AT91SAM9263) += at91sam9263.o at91sam926x_time.o at91sam9263_devices.o sam9_smc.o
 +obj-$(CONFIG_ARCH_AT91SAM9G20) += at91sam9260.o at91sam926x_time.o at91sam9260_devices.o sam9_smc.o
 diff --git a/arch/arm/mach-at91/lowlevel_init.S b/arch/arm/mach-at91/lowlevel_init.S
-index 497cc0d..0b29866 100644
+index 497cc0d..8a0ae02 100644
 --- a/arch/arm/mach-at91/lowlevel_init.S
 +++ b/arch/arm/mach-at91/lowlevel_init.S
 @@ -193,7 +193,8 @@ SMRDATA:
@@ -223,8 +226,8 @@ index 497cc0d..0b29866 100644
  	.word (AT91_BASE_SYS + AT91_PIOD + PIO_ASR)
  	.word CONFIG_SYS_PIOD_PPUDR_VAL
 -#elif defined(CONFIG_ARCH_AT91SAM9260) || defined(CONFIG_ARCH_AT91SAM9261)
-+#elif defined(CONFIG_AT91SAM9260) || defined(CONFIG_AT91SAM9261) \
-+	|| defined(CONFIG_AT91SAM9G20)
++#elif defined(CONFIG_ARCH_AT91SAM9260) || defined(CONFIG_ARCH_AT91SAM9261) \
++	|| defined(CONFIG_ARCH_AT91SAM9G20)
  	.word (AT91_BASE_SYS + AT91_PIOC + PIO_PDR)
  	.word CONFIG_SYS_PIOC_PDR_VAL1
  	.word (AT91_BASE_SYS + AT91_PIOC + PIO_PUDR)
