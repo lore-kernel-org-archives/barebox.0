@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 68.mail-out.ovh.net ([91.121.185.69])
-	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1Own9D-00024K-U4
-	for barebox@lists.infradead.org; Sat, 18 Sep 2010 02:27:29 +0000
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sat, 18 Sep 2010 04:26:14 +0200
-Message-Id: <1284776774-7502-1-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1284776317-6195-3-git-send-email-plagnioj@jcrosoft.com>
-References: <1284776317-6195-3-git-send-email-plagnioj@jcrosoft.com>
+Received: from mail-fx0-f49.google.com ([209.85.161.49])
+	by bombadil.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1OxJ9k-0003zZ-7K
+	for barebox@lists.infradead.org; Sun, 19 Sep 2010 12:38:08 +0000
+Received: by fxm4 with SMTP id 4so347313fxm.36
+	for <barebox@lists.infradead.org>; Sun, 19 Sep 2010 05:38:06 -0700 (PDT)
+MIME-Version: 1.0
+From: Anand Gadiyar <gadiyar@gmail.com>
+Date: Sun, 19 Sep 2010 18:07:46 +0530
+Message-ID: <AANLkTi=pbGJYGCsbqOxtgrkRwJW8up2FKnHzHsgjg-bV@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,224 +17,33 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3 v2] Support for the at91sam9g20 : Atmel 400Mhz ARM 926ej-s
-	SOC.
-To: barebox@lists.infradead.org
-Cc: Patrice Vilchez <patrice.vilchez@atmel.com>, Nicolas Ferre <nicolas.ferre@atmel.com>
+Subject: Using barebox to replace u-boot on OMAPs
+To: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-AT91sam9g20 is an evolution of the at91sam9260 with a faster clock
-speed.
-We created a new board for this device but based the chip support
-directly on 9260 files with little updates.
-Here is the chip page on Atmel wabsite:
-http://atmel.com/dyn/products/product_card.asp?part_id=4337
+Hi all,
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: Nicolas Ferre <nicolas.ferre@atmel.com>
-Cc: Patrice Vilchez <patrice.vilchez@atmel.com>
----
-v2:
+I'm new to barebox and trying to play with it on a beagleboard.
+So please bear with my newbie questions - I have tried to
+search for documentation on this, but I wasn't successful.
 
-	fix wrong ARCH name in the lowlevel
- arch/arm/Makefile                        |    1 +
- arch/arm/boards/at91sam9260ek/init.c     |   21 +++++++++++++++-
- arch/arm/configs/at91sam9g20ek_defconfig |   39 ++++++++++++++++++++++++++++++
- arch/arm/mach-at91/Kconfig               |   33 +++++++++++++++++++++++++
- arch/arm/mach-at91/Makefile              |    1 +
- arch/arm/mach-at91/lowlevel_init.S       |    3 +-
- 6 files changed, 96 insertions(+), 2 deletions(-)
- create mode 100644 arch/arm/configs/at91sam9g20ek_defconfig
+I have been able to use barebox with the sandbox config
+and figured out how to build a cramfs filesystem and modify
+the default environment.
 
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index e404ad0..77b6cf4 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -52,6 +52,7 @@ board-$(CONFIG_MACH_A9M2410)			:= a9m2410
- board-$(CONFIG_MACH_A9M2440)			:= a9m2440
- board-$(CONFIG_MACH_AT91SAM9260EK)		:= at91sam9260ek
- board-$(CONFIG_MACH_AT91SAM9263EK)		:= at91sam9263ek
-+board-$(CONFIG_MACH_AT91SAM9G20EK)		:= at91sam9260ek
- board-$(CONFIG_MACH_EDB9301)			:= edb93xx
- board-$(CONFIG_MACH_EDB9302)			:= edb93xx
- board-$(CONFIG_MACH_EDB9302A)			:= edb93xx
-diff --git a/arch/arm/boards/at91sam9260ek/init.c b/arch/arm/boards/at91sam9260ek/init.c
-index 7bb3c45..966dd2f 100644
---- a/arch/arm/boards/at91sam9260ek/init.c
-+++ b/arch/arm/boards/at91sam9260ek/init.c
-@@ -40,6 +40,25 @@
- #include <mach/at91_pmc.h>
- #include <mach/at91_rstc.h>
- 
-+/*
-+ * board revision encoding
-+ * bit 0:
-+ *	0 => 1 mmc
-+ *	1 => 2 mmcs (board from revision C)
-+ */
-+#define HAVE_2MMC	(1 << 0)
-+static void ek_set_board_type(void)
-+{
-+	if (machine_is_at91sam9g20ek()) {
-+		armlinux_set_architecture(MACH_TYPE_AT91SAM9G20EK);
-+#ifdef CONFIG_AT91_HAVE_2MMC
-+		armlinux_set_revision(HAVE_2MMC);
-+#endif
-+	} else {
-+		armlinux_set_architecture(MACH_TYPE_AT91SAM9260EK);
-+	}
-+}
-+
- static struct atmel_nand_data nand_pdata = {
- 	.ale		= 21,
- 	.cle		= 22,
-@@ -130,7 +149,7 @@ static int at91sam9260ek_devices_init(void)
- 
- 	at91_add_device_sdram(64 * 1024 * 1024);
- 	armlinux_set_bootparams((void *)(AT91_CHIPSELECT_1 + 0x100));
--	armlinux_set_architecture(MACH_TYPE_AT91SAM9260EK);
-+	ek_set_board_type();
- 
- 	devfs_add_partition("nand0", 0x00000, 0x80000, PARTITION_FIXED, "self_raw");
- 	dev_add_bb_dev("self_raw", "self0");
-diff --git a/arch/arm/configs/at91sam9g20ek_defconfig b/arch/arm/configs/at91sam9g20ek_defconfig
-new file mode 100644
-index 0000000..bc7c242
---- /dev/null
-+++ b/arch/arm/configs/at91sam9g20ek_defconfig
-@@ -0,0 +1,39 @@
-+CONFIG_ARCH_AT91SAM9G20=y
-+CONFIG_MACH_AT91SAM9G20EK=y
-+CONFIG_AT91_HAVE_2MMC=y
-+CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_PROMPT="9G20-EK:"
-+CONFIG_LONGHELP=y
-+CONFIG_GLOB=y
-+CONFIG_PROMPT_HUSH_PS2="y"
-+CONFIG_CMDLINE_EDITING=y
-+CONFIG_AUTO_COMPLETE=y
-+CONFIG_PARTITION=y
-+CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/at91sam9260ek/env"
-+CONFIG_CMD_EDIT=y
-+CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_SAVEENV=y
-+CONFIG_CMD_LOADENV=y
-+CONFIG_CMD_EXPORT=y
-+CONFIG_CMD_PRINTENV=y
-+CONFIG_CMD_READLINE=y
-+CONFIG_CMD_MEMINFO=y
-+CONFIG_CMD_CRC=y
-+CONFIG_CMD_MTEST=y
-+CONFIG_CMD_MTEST_ALTERNATIVE=y
-+CONFIG_CMD_FLASH=y
-+CONFIG_CMD_BOOTM_SHOW_TYPE=y
-+CONFIG_CMD_RESET=y
-+CONFIG_CMD_GO=y
-+CONFIG_CMD_TIMEOUT=y
-+CONFIG_CMD_PARTITION=y
-+CONFIG_CMD_GPIO=y
-+CONFIG_NET=y
-+CONFIG_NET_DHCP=y
-+CONFIG_NET_PING=y
-+CONFIG_NET_TFTP=y
-+CONFIG_DRIVER_NET_MACB=y
-+# CONFIG_SPI is not set
-+CONFIG_I2C=y
-+CONFIG_DRIVER_CFI=y
-+CONFIG_CFI_BUFFER_WRITE=y
-diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index 288ee6f..1491161 100644
---- a/arch/arm/mach-at91/Kconfig
-+++ b/arch/arm/mach-at91/Kconfig
-@@ -7,6 +7,7 @@ config ARCH_TEXT_BASE
- config BOARDINFO
- 	default "Atmel 91SAM9260-EK" if MACH_AT91SAM9260EK
- 	default "Atmel at91sam9263-ek" if MACH_AT91SAM9263EK
-+	default "Atmel at91sam9g20-ek" if MACH_AT91SAM9G20EK
- 	default "Bucyrus MMC-CPU" if MACH_MMCCPU
- 	default "Ronetix PM9263" if MACH_PM9263
- 
-@@ -28,6 +29,11 @@ config ARCH_AT91SAM9263
- 	select CPU_ARM926T
- 	select HAS_MACB
- 
-+config ARCH_AT91SAM9G20
-+	bool "AT91SAM9G20"
-+	select CPU_ARM926T
-+	select HAS_MACB
-+
- endchoice
- 
- # ----------------------------------------------------------
-@@ -50,6 +56,25 @@ endif
- 
- # ----------------------------------------------------------
- 
-+if ARCH_AT91SAM9G20
-+
-+choice
-+
-+	prompt "AT91SAM9G20 Board Type"
-+
-+config MACH_AT91SAM9G20EK
-+	bool "Atmel AT91SAM9G20-EK Evaluation Kit"
-+	select HAVE_NAND_ATMEL_BUSWIDTH_16
-+	help
-+	  Select this if you are using Atmel's AT91SAM9G20-EK Evaluation Kit
-+	  that embeds only one SD/MMC slot.
-+
-+endchoice
-+
-+endif
-+
-+# ----------------------------------------------------------
-+
- if ARCH_AT91SAM9263
- 
- choice
-@@ -88,4 +113,12 @@ config MTD_NAND_ATMEL_BUSWIDTH_16
- 	  On AT91SAM926x boards both types of NAND flash can be present
- 	  (8 and 16 bit data bus width).
- 
-+config AT91_HAVE_2MMC
-+	bool "Have 2 MMC"
-+	depends on MACH_AT91SAM9G20EK
-+	help
-+	  Select this if you are using an Atmel AT91SAM9G20-EK Evaluation Kit
-+	  with 2 SD/MMC Slots. This is the case for AT91SAM9G20-EK rev. C and
-+	  onwards.
-+
- endif
-diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
-index 2878b04..1bedadb 100644
---- a/arch/arm/mach-at91/Makefile
-+++ b/arch/arm/mach-at91/Makefile
-@@ -5,3 +5,4 @@ obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel_init.o
- # CPU-specific support
- obj-$(CONFIG_ARCH_AT91SAM9260) += at91sam9260.o at91sam926x_time.o at91sam9260_devices.o sam9_smc.o
- obj-$(CONFIG_ARCH_AT91SAM9263) += at91sam9263.o at91sam926x_time.o at91sam9263_devices.o sam9_smc.o
-+obj-$(CONFIG_ARCH_AT91SAM9G20) += at91sam9260.o at91sam926x_time.o at91sam9260_devices.o sam9_smc.o
-diff --git a/arch/arm/mach-at91/lowlevel_init.S b/arch/arm/mach-at91/lowlevel_init.S
-index 497cc0d..8a0ae02 100644
---- a/arch/arm/mach-at91/lowlevel_init.S
-+++ b/arch/arm/mach-at91/lowlevel_init.S
-@@ -193,7 +193,8 @@ SMRDATA:
- 	.word CONFIG_SYS_PIOD_PPUDR_VAL
- 	.word (AT91_BASE_SYS + AT91_PIOD + PIO_ASR)
- 	.word CONFIG_SYS_PIOD_PPUDR_VAL
--#elif defined(CONFIG_ARCH_AT91SAM9260) || defined(CONFIG_ARCH_AT91SAM9261)
-+#elif defined(CONFIG_ARCH_AT91SAM9260) || defined(CONFIG_ARCH_AT91SAM9261) \
-+	|| defined(CONFIG_ARCH_AT91SAM9G20)
- 	.word (AT91_BASE_SYS + AT91_PIOC + PIO_PDR)
- 	.word CONFIG_SYS_PIOC_PDR_VAL1
- 	.word (AT91_BASE_SYS + AT91_PIOC + PIO_PUDR)
--- 
-1.7.1
+What I'm trying to do now is to see if barebox can be used
+to replace u-boot on beagleboard, to load uImage directly.
 
+Specifically, I would like to know if it given barebox.bin and
+uImage are present at particular RAM locations, how to get
+barebox to locate the uImage in RAM?
+
+Thanks in advance for any pointers.
+
+- Anand
 
 _______________________________________________
 barebox mailing list
