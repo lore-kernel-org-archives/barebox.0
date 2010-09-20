@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 31.mail-out.ovh.net ([213.186.62.10])
+Received: from 63.mail-out.ovh.net ([91.121.185.56])
 	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OxbLs-0000H2-AH
-	for barebox@lists.infradead.org; Mon, 20 Sep 2010 08:03:54 +0000
-Date: Mon, 20 Sep 2010 10:02:31 +0200
+	id 1Oxbca-0004J6-76
+	for barebox@lists.infradead.org; Mon, 20 Sep 2010 08:21:08 +0000
+Date: Mon, 20 Sep 2010 10:19:49 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20100920080231.GB32018@game.jcrosoft.org>
+Message-ID: <20100920081949.GD32018@game.jcrosoft.org>
 References: <AANLkTimw-1=r7yLe4dT6=TVFBtePZXRdfjz08ptt0H3D@mail.gmail.com>
+	<20100920080231.GB32018@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <AANLkTimw-1=r7yLe4dT6=TVFBtePZXRdfjz08ptt0H3D@mail.gmail.com>
+In-Reply-To: <20100920080231.GB32018@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,16 +27,19 @@ Subject: Re: dm9601 USB Network Controller
 To: Nataraj S Narayan <natarajsn@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On 13:23 Mon 20 Sep     , Nataraj S Narayan wrote:
->    Hi  Sascha
+On 10:02 Mon 20 Sep     , Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 13:23 Mon 20 Sep     , Nataraj S Narayan wrote:
+> >    Hi  Sascha
+> > 
+> >    Does barebox support Davicom 9601 USB Network Controller?
+> > 
+> >    Would like to tftp over this USB gadget. Would suit boards wihtout 
+> >    Ethernet Phy.
+> no but we have asix usb
 > 
->    Does barebox support Davicom 9601 USB Network Controller?
-> 
->    Would like to tftp over this USB gadget. Would suit boards wihtout 
->    Ethernet Phy.
-no but we have asix usb
-
-it will be easy to add
+> it will be easy to add
+I forget we have also USB ECM but I've not yet add the usb device driver for
+AT91
 
 Best Regards,
 J.
