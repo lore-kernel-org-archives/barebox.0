@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ww0-f49.google.com ([74.125.82.49])
-	by bombadil.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OxbBh-000620-BF
-	for barebox@lists.infradead.org; Mon, 20 Sep 2010 07:53:22 +0000
-Received: by wwb24 with SMTP id 24so4373178wwb.18
-	for <barebox@lists.infradead.org>; Mon, 20 Sep 2010 00:53:19 -0700 (PDT)
+Received: from 31.mail-out.ovh.net ([213.186.62.10])
+	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1OxbLs-0000H2-AH
+	for barebox@lists.infradead.org; Mon, 20 Sep 2010 08:03:54 +0000
+Date: Mon, 20 Sep 2010 10:02:31 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20100920080231.GB32018@game.jcrosoft.org>
+References: <AANLkTimw-1=r7yLe4dT6=TVFBtePZXRdfjz08ptt0H3D@mail.gmail.com>
 MIME-Version: 1.0
-Date: Mon, 20 Sep 2010 13:23:19 +0530
-Message-ID: <AANLkTimw-1=r7yLe4dT6=TVFBtePZXRdfjz08ptt0H3D@mail.gmail.com>
-From: Nataraj S Narayan <natarajsn@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <AANLkTimw-1=r7yLe4dT6=TVFBtePZXRdfjz08ptt0H3D@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,49 +18,29 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0855014457=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: dm9601 USB Network Controller
-To: barebox@lists.infradead.org
+Subject: Re: dm9601 USB Network Controller
+To: Nataraj S Narayan <natarajsn@gmail.com>
+Cc: barebox@lists.infradead.org
 
---===============0855014457==
-Content-Type: multipart/alternative; boundary=0016e6498592ae0b130490ac34c2
+On 13:23 Mon 20 Sep     , Nataraj S Narayan wrote:
+>    Hi  Sascha
+> 
+>    Does barebox support Davicom 9601 USB Network Controller?
+> 
+>    Would like to tftp over this USB gadget. Would suit boards wihtout 
+>    Ethernet Phy.
+no but we have asix usb
 
---0016e6498592ae0b130490ac34c2
-Content-Type: text/plain; charset=ISO-8859-1
+it will be easy to add
 
-Hi  Sascha
-
-Does barebox support Davicom 9601 USB Network Controller?
-
-Would like to tftp over this USB gadget. Would suit boards wihtout  Ethernet
-Phy.
-
-Warm regards
-
-Nataraj
-
---0016e6498592ae0b130490ac34c2
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-Hi=A0 Sascha<br><br>Does barebox support Davicom 9601 USB Network Controlle=
-r?<br><br>Would like to tftp over this USB gadget. Would suit boards wihtou=
-t=A0 Ethernet Phy.<br><br>Warm regards<br><br>Nataraj<br>
-
---0016e6498592ae0b130490ac34c2--
-
-
---===============0855014457==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============0855014457==--
