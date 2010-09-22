@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1OyOYe-0007KB-Qr
-	for barebox@lists.infradead.org; Wed, 22 Sep 2010 12:36:21 +0000
-Date: Wed, 22 Sep 2010 14:36:13 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20100922123613.GD23406@pengutronix.de>
+Received: from 68.mail-out.ovh.net ([91.121.185.69])
+	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1OyP8Y-0007kk-11
+	for barebox@lists.infradead.org; Wed, 22 Sep 2010 13:13:26 +0000
+Date: Wed, 22 Sep 2010 15:12:02 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20100922131202.GR32018@game.jcrosoft.org>
 References: <1285151785-507-1-git-send-email-plagnioj@jcrosoft.com>
+	<20100922123613.GD23406@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1285151785-507-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20100922123613.GD23406@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,25 +24,20 @@ Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] commands/crc32: add compare 2 files crc
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Sep 22, 2010 at 12:36:25PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> add -F options to compare to file crc
+On 14:36 Wed 22 Sep     , Sascha Hauer wrote:
+> On Wed, Sep 22, 2010 at 12:36:25PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > add -F options to compare to file crc
+> > 
+> > it's usefull to compare what you flash in a partition
 > 
-> it's usefull to compare what you flash in a partition
+> Why don't you use memcmp?
+why not crc as I want to check the crc of the file on the host too
 
-Why don't you use memcmp?
-
-memcmp -s uImage -d /dev/nand0.kernel.bb 0 0
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
