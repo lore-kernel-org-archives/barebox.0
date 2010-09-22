@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 63.mail-out.ovh.net ([91.121.185.56])
+Received: from 64.mail-out.ovh.net ([91.121.185.65])
 	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1Oy4UH-0005xc-0y
-	for barebox@lists.infradead.org; Tue, 21 Sep 2010 15:10:29 +0000
-Date: Tue, 21 Sep 2010 17:09:07 +0200
+	id 1OyIUH-0002eQ-PH
+	for barebox@lists.infradead.org; Wed, 22 Sep 2010 06:07:26 +0000
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20100921150907.GL32018@game.jcrosoft.org>
-References: <1285076567-12594-1-git-send-email-plagnioj@jcrosoft.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1285076567-12594-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Wed, 22 Sep 2010 08:05:58 +0200
+Message-Id: <1285135558-7838-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,20 +14,79 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] arm: allow to overwrite the system_rev via bootm
+Subject: [PATCH] nhk8815: update defconfig
 To: barebox@lists.infradead.org
-Cc: Nicolas Ferre <nicolas.ferre@atmel.com>
 
-On 15:42 Tue 21 Sep     , Jean-Christophe PLAGNIOL-VILLARD wrote:
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Tested-by: Nicolas Ferre <nicolas.ferre@atmel.com>
+fix env patch
+enable cramfs, ubi, login/password and menu
 
-Best Regards,
-J.
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ arch/arm/configs/nhk8815_defconfig |   17 ++++++++++++++++-
+ 1 files changed, 16 insertions(+), 1 deletions(-)
+
+diff --git a/arch/arm/configs/nhk8815_defconfig b/arch/arm/configs/nhk8815_defconfig
+index c0fc436..e3f4102 100644
+--- a/arch/arm/configs/nhk8815_defconfig
++++ b/arch/arm/configs/nhk8815_defconfig
+@@ -4,10 +4,13 @@ CONFIG_TEXT_BASE=0x03F80000
+ CONFIG_PROMPT="Nomadik:"
+ CONFIG_LONGHELP=y
+ CONFIG_GLOB=y
++CONFIG_HUSH_FANCY_PROMPT=y
+ CONFIG_CMDLINE_EDITING=y
+ CONFIG_AUTO_COMPLETE=y
++CONFIG_MENU=y
++CONFIG_PASSWD_SUM_SHA1=y
+ CONFIG_PARTITION=y
+-CONFIG_DEFAULT_ENVIRONMENT_PATH="board/nhk8815/env"
++CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/nhk8815/env"
+ CONFIG_CMD_EDIT=y
+ CONFIG_CMD_SLEEP=y
+ CONFIG_CMD_SAVEENV=y
+@@ -15,6 +18,10 @@ CONFIG_CMD_LOADENV=y
+ CONFIG_CMD_EXPORT=y
+ CONFIG_CMD_PRINTENV=y
+ CONFIG_CMD_READLINE=y
++CONFIG_CMD_MENU=y
++CONFIG_CMD_MENU_MANAGEMENT=y
++CONFIG_CMD_PASSWD=y
++CONFIG_CMD_ECHO_E=y
+ CONFIG_CMD_MEMINFO=y
+ CONFIG_CMD_CRC=y
+ CONFIG_CMD_MTEST=y
+@@ -26,11 +33,15 @@ CONFIG_CMD_RESET=y
+ CONFIG_CMD_GO=y
+ CONFIG_CMD_TIMEOUT=y
+ CONFIG_CMD_PARTITION=y
++CONFIG_CMD_UNLZO=y
+ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+ CONFIG_NET_TFTP=y
++CONFIG_NET_TFTP_PUSH=y
++CONFIG_NET_NETCONSOLE=y
++CONFIG_NET_RESOLV=y
+ CONFIG_SERIAL_AMBA_PL011=y
+ CONFIG_DRIVER_NET_SMC91111=y
+ # CONFIG_SPI is not set
+@@ -39,3 +50,7 @@ CONFIG_NAND=y
+ CONFIG_MTD_NAND_VERIFY_WRITE=y
+ CONFIG_MTD_NAND_ECC_SMC=y
+ CONFIG_MTD_NAND_NOMADIK=y
++CONFIG_UBI=y
++CONFIG_FS_CRAMFS=y
++CONFIG_MD5=y
++CONFIG_SHA256=y
+-- 
+1.7.1
+
 
 _______________________________________________
 barebox mailing list
