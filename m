@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 70.mail-out.ovh.net ([91.121.185.63])
+Received: from 64.mail-out.ovh.net ([91.121.185.65])
 	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1Oys7I-0002nH-Ob
+	id 1Oys7I-00031V-Fw
 	for barebox@lists.infradead.org; Thu, 23 Sep 2010 20:10:05 +0000
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu, 23 Sep 2010 22:08:34 +0200
-Message-Id: <1285272515-26680-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Thu, 23 Sep 2010 22:08:35 +0200
+Message-Id: <1285272515-26680-2-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1285272515-26680-1-git-send-email-plagnioj@jcrosoft.com>
+References: <1285272515-26680-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,38 +21,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] netconsole: remove non-needed setbaudrate
+Subject: [PATCH 2/2] console: set device_d id at -1
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- net/netconsole.c |    6 ------
- 1 files changed, 0 insertions(+), 6 deletions(-)
+ common/console.c |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
 
-diff --git a/net/netconsole.c b/net/netconsole.c
-index 07e6a6c..fda524e 100644
---- a/net/netconsole.c
-+++ b/net/netconsole.c
-@@ -124,11 +124,6 @@ static void nc_putc(struct console_device *cdev, char c)
- 	priv->busy = 0;
- }
+diff --git a/common/console.c b/common/console.c
+index 889c262..204a08c 100644
+--- a/common/console.c
++++ b/common/console.c
+@@ -135,6 +135,7 @@ int console_register(struct console_device *newcdev)
+ 	int first = 0;
+ 	char ch;
  
--static int nc_setbaudrate(struct console_device *cdev, int baudrate)
--{
--	return 0;
--}
--
- static int nc_port_set(struct device_d *dev, struct param_d *param,
- 		const char *val)
- {
-@@ -185,7 +180,6 @@ static int netconsole_init(void)
- 	cdev->tstc = nc_tstc;
- 	cdev->putc = nc_putc;
- 	cdev->getc = nc_getc;
--	cdev->setbrg = nc_setbaudrate;
- 
- 	g_priv = priv;
- 
++	dev->id = -1;
+ 	strcpy(dev->name, "cs");
+ 	dev->type_data = newcdev;
+ 	register_device(dev);
 -- 
 1.7.1
 
