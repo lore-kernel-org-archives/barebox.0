@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 63.mail-out.ovh.net ([91.121.185.56])
+Received: from 26.mail-out.ovh.net ([91.121.27.225])
 	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OyiqI-00048M-8W
+	id 1OyiqI-00047j-7p
 	for barebox@lists.infradead.org; Thu, 23 Sep 2010 10:15:56 +0000
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu, 23 Sep 2010 12:14:26 +0200
-Message-Id: <1285236866-3674-5-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1285236866-3674-1-git-send-email-plagnioj@jcrosoft.com>
-References: <1285236866-3674-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Thu, 23 Sep 2010 12:14:22 +0200
+Message-Id: <1285236866-3674-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,414 +19,483 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/5] image: factorise image printing contents
+Subject: [PATCH 1/5] image: factorise string helper
 To: barebox@lists.infradead.org
 
-before we duplicate it between command/bootm.c and scripts/mkimage.c
+before we duplicate it between common/bootm.c and scripts/mkimage.c
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- commands/bootm.c  |   46 +--------------
- common/Makefile   |    2 +-
- common/image.c    |  175 +++++++++++++++++++++++++++++++++++++++++++++++++++++
- include/image.h   |   10 +++-
- scripts/mkimage.c |   71 +---------------------
- 5 files changed, 188 insertions(+), 116 deletions(-)
+ commands/bootm.c  |   93 ++-----------------------------------
+ common/Makefile   |    1 +
+ common/image.c    |  134 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ include/image.h   |   27 +++++++++++
+ scripts/mkimage.c |  122 +++---------------------------------------------
+ 5 files changed, 175 insertions(+), 202 deletions(-)
+ create mode 100644 common/image.c
 
 diff --git a/commands/bootm.c b/commands/bootm.c
-index 98047cd..83d36d3 100644
+index 11325dc..aa83566 100644
 --- a/commands/bootm.c
 +++ b/commands/bootm.c
-@@ -203,7 +203,7 @@ struct image_handle *map_image(const char *filename, int verify)
- 		puts ("OK\n");
- 	}
+@@ -95,92 +95,6 @@ fixup_silent_linux ()
+ }
+ #endif /* CONFIG_SILENT_CONSOLE */
  
--	print_image_hdr(header);
-+	image_print_contents(header);
- 
- 	close(fd);
- 
-@@ -451,50 +451,6 @@ BAREBOX_CMD(
- 
- #endif	/* CONFIG_CMD_IMI */
- 
--void
--print_image_hdr (image_header_t *hdr)
--{
--#if defined(CONFIG_CMD_DATE) || defined(CONFIG_TIMESTAMP)
--	time_t timestamp = (time_t)image_get_time(hdr);
--	struct rtc_time tm;
--#endif
--
--	printf ("   Image Name:   %.*s\n", IH_NMLEN, image_get_name(hdr));
--#if defined(CONFIG_CMD_DATE) || defined(CONFIG_TIMESTAMP)
--	to_tm (timestamp, &tm);
--	printf ("   Created:      %4d-%02d-%02d  %2d:%02d:%02d UTC\n",
--		tm.tm_year, tm.tm_mon, tm.tm_mday,
--		tm.tm_hour, tm.tm_min, tm.tm_sec);
--#endif	/* CONFIG_CMD_DATE, CONFIG_TIMESTAMP */
 -#ifdef CONFIG_CMD_BOOTM_SHOW_TYPE
--	printf ("   Image Type:   %s %s %s (%s)\n",
--			image_get_arch_name(image_get_arch(hdr)),
--			image_get_os_name(image_get_os(hdr)),
--			image_get_type_name(image_get_type(hdr)),
--			image_get_comp_name(image_get_comp(hdr)));
+-static const char *image_os(image_header_t *hdr)
+-{
+-	char *os;
+-
+-	switch (hdr->ih_os) {
+-	case IH_OS_INVALID:	os = "Invalid OS";		break;
+-	case IH_OS_NETBSD:	os = "NetBSD";			break;
+-	case IH_OS_LINUX:	os = "Linux";			break;
+-	case IH_OS_VXWORKS:	os = "VxWorks";			break;
+-	case IH_OS_QNX:		os = "QNX";			break;
+-	case IH_OS_BAREBOX:	os = "barebox";			break;
+-	case IH_OS_RTEMS:	os = "RTEMS";			break;
+-#ifdef CONFIG_ARTOS
+-	case IH_OS_ARTOS:	os = "ARTOS";			break;
 -#endif
--	printf ("   Data Size:    %d Bytes = %s\n"
--		"   Load Address: %08x\n"
--		"   Entry Point:  %08x\n",
--			image_get_size(hdr),
--			size_human_readable(image_get_size(hdr)),
--			image_get_load(hdr),
--			image_get_ep(hdr));
--
--	if (image_check_type(hdr, IH_TYPE_MULTI)) {
--		int i;
--		uint32_t len;
--		uint32_t *len_ptr = (uint32_t *)((ulong)hdr + image_get_header_size());
--
--		puts ("   Contents:\n");
--		for (i=0; len_ptr[i]; ++i) {
--			len = ntohl(len_ptr[i]);
--			printf ("   Image %d: %8ld Bytes = %s", i, len,
--				size_human_readable (len));
--		}
+-#ifdef CONFIG_LYNXKDI
+-	case IH_OS_LYNXOS:	os = "LynxOS";			break;
+-#endif
+-	default:		os = "Unknown OS";		break;
 -	}
+-
+-	return os;
 -}
 -
- #ifdef CONFIG_BZLIB
- void bz_internal_error(int errcode)
+-static const char *image_arch(image_header_t *hdr)
+-{
+-	char *arch;
+-
+-	switch (hdr->ih_arch) {
+-	case IH_CPU_INVALID:	arch = "Invalid CPU";		break;
+-	case IH_CPU_ALPHA:	arch = "Alpha";			break;
+-	case IH_CPU_ARM:	arch = "ARM";			break;
+-	case IH_CPU_AVR32:	arch = "AVR32";			break;
+-	case IH_CPU_I386:	arch = "Intel x86";		break;
+-	case IH_CPU_IA64:	arch = "IA64";			break;
+-	case IH_CPU_MIPS:	arch = "MIPS";			break;
+-	case IH_CPU_MIPS64:	arch = "MIPS 64 Bit";		break;
+-	case IH_CPU_PPC:	arch = "PowerPC";		break;
+-	case IH_CPU_S390:	arch = "IBM S390";		break;
+-	case IH_CPU_SH:		arch = "SuperH";		break;
+-	case IH_CPU_SPARC:	arch = "SPARC";			break;
+-	case IH_CPU_SPARC64:	arch = "SPARC 64 Bit";		break;
+-	case IH_CPU_M68K:	arch = "M68K"; 			break;
+-	case IH_CPU_MICROBLAZE:	arch = "Microblaze"; 		break;
+-	case IH_CPU_NIOS:	arch = "Nios";			break;
+-	case IH_CPU_NIOS2:	arch = "Nios-II";		break;
+-	default:		arch = "Unknown Architecture";	break;
+-	}
+-
+-	return arch;
+-}
+-
+-static const char *image_type(image_header_t *hdr)
+-{
+-	char *type;
+-
+-	switch (hdr->ih_type) {
+-	case IH_TYPE_INVALID:	type = "Invalid Image";		break;
+-	case IH_TYPE_STANDALONE:type = "Standalone Program";	break;
+-	case IH_TYPE_KERNEL:	type = "Kernel Image";		break;
+-	case IH_TYPE_RAMDISK:	type = "RAMDisk Image";		break;
+-	case IH_TYPE_MULTI:	type = "Multi-File Image";	break;
+-	case IH_TYPE_FIRMWARE:	type = "Firmware";		break;
+-	case IH_TYPE_SCRIPT:	type = "Script";		break;
+-	case IH_TYPE_FLATDT:	type = "Flat Device Tree";	break;
+-	default:		type = "Unknown Image";		break;
+-	}
+-	return type;
+-}
+-
+-static const char *image_compression(image_header_t *hdr)
+-{
+-	char *comp;
+-
+-	switch (hdr->ih_comp) {
+-	case IH_COMP_NONE:	comp = "uncompressed";		break;
+-	case IH_COMP_GZIP:	comp = "gzip compressed";	break;
+-	case IH_COMP_BZIP2:	comp = "bzip2 compressed";	break;
+-	default:		comp = "unknown compression";	break;
+-	}
+-
+-	return comp;
+-}
+-#endif
+-
+ int relocate_image(struct image_handle *handle, void *load_address)
  {
+ 	image_header_t *hdr = &handle->header;
+@@ -549,8 +463,11 @@ print_image_hdr (image_header_t *hdr)
+ 		tm.tm_hour, tm.tm_min, tm.tm_sec);
+ #endif	/* CONFIG_CMD_DATE, CONFIG_TIMESTAMP */
+ #ifdef CONFIG_CMD_BOOTM_SHOW_TYPE
+-	printf ("   Image Type:   %s %s %s (%s)\n", image_arch(hdr), image_os(hdr),
+-			image_type(hdr), image_compression(hdr));
++	printf ("   Image Type:   %s %s %s (%s)\n",
++			image_get_arch_name(hdr->ih_arch),
++			image_get_os_name(hdr->ih_os),
++			image_get_type_name(hdr->ih_type),
++			image_get_comp_name(hdr->ih_comp));
+ #endif
+ 	printf ("   Data Size:    %d Bytes = %s\n"
+ 		"   Load Address: %08x\n"
 diff --git a/common/Makefile b/common/Makefile
-index 94b1387..e56dbc2 100644
+index 6ca3d98..94b1387 100644
 --- a/common/Makefile
 +++ b/common/Makefile
-@@ -13,7 +13,7 @@ obj-$(CONFIG_CONSOLE_FULL) += console.o
+@@ -13,6 +13,7 @@ obj-$(CONFIG_CONSOLE_FULL) += console.o
  obj-$(CONFIG_CONSOLE_SIMPLE) += console_simple.o
  obj-$(CONFIG_DIGEST) += digest.o
  obj-y += env.o
--obj-$(CONFIG_CMD_BOOTM_SHOW_TYPE) += image.o
-+obj-$(CONFIG_CMD_BOOTM) += image.o
++obj-$(CONFIG_CMD_BOOTM_SHOW_TYPE) += image.o
  obj-y += startup.o
  obj-y += misc.o
  obj-y += memsize.o
 diff --git a/common/image.c b/common/image.c
-index 75346f5..fd57443 100644
---- a/common/image.c
+new file mode 100644
+index 0000000..e6ab26b
+--- /dev/null
 +++ b/common/image.c
-@@ -22,9 +22,14 @@
-  */
- 
- #ifdef __BAREBOX__
-+#include <common.h>
- #include <image.h>
-+#include <rtc.h>
-+#else
-+#include <time.h>
- #endif
- 
-+#if defined(CONFIG_CMD_BOOTM_SHOW_TYPE) || !defined(__BAREBOX__)
- typedef struct table_entry {
- 	int	id;		/* as defined in image.h	*/
- 	char	*sname;		/* short (input) name		*/
-@@ -132,3 +137,173 @@ const char *image_get_comp_name(uint8_t comp)
- {
- 	return get_table_entry_name(comp_name, "Unknown Compression", comp);
- }
-+#endif
-+
-+/**
-+ * image_multi_count - get component (sub-image) count
-+ * @hdr: pointer to the header of the multi component image
+@@ -0,0 +1,134 @@
++/*
++ * (C) Copyright 2000-2006
++ * Wolfgang Denk, DENX Software Engineering, wd@denx.de.
 + *
-+ * image_multi_count() returns number of components in a multi
-+ * component image.
++ * See file CREDITS for list of people who contributed to this
++ * project.
 + *
-+ * Note: no checking of the image type is done, caller must pass
-+ * a valid multi component image.
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
 + *
-+ * returns:
-+ *     number of components
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
 + */
-+ulong image_multi_count(const image_header_t *hdr)
-+{
-+	ulong i, count = 0;
-+	uint32_t *size;
-+
-+	/* get start of the image payload, which in case of multi
-+	 * component images that points to a table of component sizes */
-+	size = (uint32_t *)image_get_data (hdr);
-+
-+	/* count non empty slots */
-+	for (i = 0; size[i]; ++i)
-+		count++;
-+
-+	return count;
-+}
-+
-+/**
-+ * image_multi_getimg - get component data address and size
-+ * @hdr: pointer to the header of the multi component image
-+ * @idx: index of the requested component
-+ * @data: pointer to a ulong variable, will hold component data address
-+ * @len: pointer to a ulong variable, will hold component size
-+ *
-+ * image_multi_getimg() returns size and data address for the requested
-+ * component in a multi component image.
-+ *
-+ * Note: no checking of the image type is done, caller must pass
-+ * a valid multi component image.
-+ *
-+ * returns:
-+ *     data address and size of the component, if idx is valid
-+ *     0 in data and len, if idx is out of range
-+ */
-+void image_multi_getimg(const image_header_t *hdr, ulong idx,
-+			ulong *data, ulong *len)
-+{
-+	int i;
-+	uint32_t *size;
-+	ulong offset, count, img_data;
-+
-+	/* get number of component */
-+	count = image_multi_count(hdr);
-+
-+	/* get start of the image payload, which in case of multi
-+	 * component images that points to a table of component sizes */
-+	size = (uint32_t *)image_get_data(hdr);
-+
-+	/* get address of the proper component data start, which means
-+	 * skipping sizes table (add 1 for last, null entry) */
-+	img_data = image_get_data(hdr) + (count + 1) * sizeof (uint32_t);
-+
-+	if (idx < count) {
-+		*len = uimage_to_cpu(size[idx]);
-+		offset = 0;
-+
-+		/* go over all indices preceding requested component idx */
-+		for (i = 0; i < idx; i++) {
-+			/* add up i-th component size, rounding up to 4 bytes */
-+			offset += (uimage_to_cpu(size[i]) + 3) & ~3 ;
-+		}
-+
-+		/* calculate idx-th component data address */
-+		*data = img_data + offset;
-+	} else {
-+		*len = 0;
-+		*data = 0;
-+	}
-+}
-+
-+static void image_print_type(const image_header_t *hdr)
-+{
-+	const char *os, *arch, *type, *comp;
-+
-+	os = image_get_os_name(image_get_os(hdr));
-+	arch = image_get_arch_name(image_get_arch(hdr));
-+	type = image_get_type_name(image_get_type(hdr));
-+	comp = image_get_comp_name(image_get_comp(hdr));
-+
-+	printf ("%s %s %s (%s)\n", arch, os, type, comp);
-+}
-+
-+#if defined(CONFIG_TIMESTAMP) || defined(CONFIG_CMD_DATE) || !defined(__BAREBOX__)
-+static void image_print_time(time_t timestamp)
-+{
-+#if defined(__BAREBOX__)
-+	struct rtc_time tm;
-+
-+	to_tm(timestamp, &tm);
-+	printf("%4d-%02d-%02d  %2d:%02d:%02d UTC\n",
-+			tm.tm_year, tm.tm_mon, tm.tm_mday,
-+			tm.tm_hour, tm.tm_min, tm.tm_sec);
-+#else
-+	printf("%s", ctime(&timestamp));
-+#endif
-+}
-+#endif /* CONFIG_TIMESTAMP || CONFIG_CMD_DATE || !__BAREBOX__ */
-+
-+void image_print_size(uint32_t size)
-+{
-+#ifdef __BAREBOX__
-+	printf("%d Bytes = %s\n", size, size_human_readable(size));
-+#else
-+	printf("%d Bytes = %.2f kB = %.2f MB\n",
-+			size, (double)size / 1.024e3,
-+			(double)size / 1.048576e6);
-+#endif
-+}
-+
-+void image_print_contents(const void *ptr)
-+{
-+	const image_header_t *hdr = (const image_header_t *)ptr;
-+	const char *p;
 +
 +#ifdef __BAREBOX__
-+	p = "   ";
-+#else
-+	p = "";
++#include <image.h>
 +#endif
 +
-+	printf("%sImage Name:   %.*s\n", p, IH_NMLEN, image_get_name(hdr));
-+#if defined(CONFIG_TIMESTAMP) || defined(CONFIG_CMD_DATE) || !defined(__BAREBOX__)
-+	printf("%sCreated:      ", p);
-+	image_print_time((time_t)image_get_time(hdr));
++typedef struct table_entry {
++	int	id;		/* as defined in image.h	*/
++	char	*sname;		/* short (input) name		*/
++	char	*lname;		/* long (output) name		*/
++} table_entry_t;
++
++static table_entry_t arch_name[] = {
++	{ IH_CPU_INVALID,	NULL,		"Invalid CPU",	},
++	{ IH_CPU_ALPHA,		"alpha",	"Alpha",	},
++	{ IH_CPU_ARM,		"arm",		"ARM",		},
++	{ IH_CPU_I386,		"x86",		"Intel x86",	},
++	{ IH_CPU_IA64,		"ia64",		"IA64",		},
++	{ IH_CPU_M68K,		"m68k",		"MC68000",	},
++	{ IH_CPU_MICROBLAZE,	"microblaze",	"MicroBlaze",	},
++	{ IH_CPU_MIPS,		"mips",		"MIPS",		},
++	{ IH_CPU_MIPS64,	"mips64",	"MIPS 64 Bit",	},
++	{ IH_CPU_NIOS,		"nios",		"NIOS",		},
++	{ IH_CPU_NIOS2,		"nios2",	"NIOS II",	},
++	{ IH_CPU_PPC,		"ppc",		"PowerPC",	},
++	{ IH_CPU_S390,		"s390",		"IBM S390",	},
++	{ IH_CPU_SH,		"sh",		"SuperH",	},
++	{ IH_CPU_SPARC,		"sparc",	"SPARC",	},
++	{ IH_CPU_SPARC64,	"sparc64",	"SPARC 64 Bit",	},
++	{ IH_CPU_BLACKFIN,	"blackfin",	"Blackfin",	},
++	{ IH_CPU_AVR32,		"avr32",	"AVR32",	},
++	{ -1,			"",		"",		},
++};
++
++static table_entry_t os_name[] = {
++	{ IH_OS_INVALID,	NULL,		"Invalid OS",	},
++#ifndef __BAREBOX__
++	{ IH_OS_4_4BSD,		"4_4bsd",	"4_4BSD",	},
++	{ IH_OS_ARTOS,		"artos",	"ARTOS",	},
++	{ IH_OS_DELL,		"dell",		"Dell",		},
++	{ IH_OS_ESIX,		"esix",		"Esix",		},
++	{ IH_OS_FREEBSD,	"freebsd",	"FreeBSD",	},
++	{ IH_OS_IRIX,		"irix",		"Irix",		},
 +#endif
-+	printf ("%sImage Type:   ", p);
-+	image_print_type(hdr);
-+	printf ("%sData Size:    ", p);
-+	image_print_size(image_get_data_size(hdr));
-+	printf ("%sLoad Address: %08x\n", p, image_get_load(hdr));
-+	printf ("%sEntry Point:  %08x\n", p, image_get_ep(hdr));
++	{ IH_OS_LINUX,		"linux",	"Linux",	},
++#ifndef __BAREBOX__
++	{ IH_OS_LYNXOS,		"lynxos",	"LynxOS",	},
++	{ IH_OS_NCR,		"ncr",		"NCR",		},
++	{ IH_OS_NETBSD,		"netbsd",	"NetBSD",	},
++	{ IH_OS_OPENBSD,	"openbsd",	"OpenBSD",	},
++	{ IH_OS_PSOS,		"psos",		"pSOS",		},
++	{ IH_OS_QNX,		"qnx",		"QNX",		},
++	{ IH_OS_RTEMS,		"rtems",	"RTEMS",	},
++	{ IH_OS_SCO,		"sco",		"SCO",		},
++	{ IH_OS_SOLARIS,	"solaris",	"Solaris",	},
++	{ IH_OS_SVR4,		"svr4",		"SVR4",		},
++#endif
++	{ IH_OS_BAREBOX,	"barebox",	"barebox",	},
++#ifndef __BAREBOX__
++	{ IH_OS_VXWORKS,	"vxworks",	"VxWorks",	},
++#endif
++	{ -1,			"",		"",		},
++};
 +
-+	if (image_check_type(hdr, IH_TYPE_MULTI) ||
-+			image_check_type(hdr, IH_TYPE_SCRIPT)) {
-+		int i;
-+		ulong data, len;
-+		ulong count = image_multi_count(hdr);
++static table_entry_t type_name[] = {
++	{ IH_TYPE_INVALID,	NULL,		"Invalid Image",	},
++	{ IH_TYPE_FILESYSTEM,	"filesystem",	"Filesystem Image",	},
++	{ IH_TYPE_FIRMWARE,	"firmware",	"Firmware",		},
++	{ IH_TYPE_KERNEL,	"kernel",	"Kernel Image",		},
++	{ IH_TYPE_MULTI,	"multi",	"Multi-File Image",	},
++	{ IH_TYPE_RAMDISK,	"ramdisk",	"RAMDisk Image",	},
++	{ IH_TYPE_SCRIPT,	 "script",	"Script",		},
++	{ IH_TYPE_STANDALONE,	"standalone",	"Standalone Program",	},
++	{ IH_TYPE_FLATDT,	"flat_dt",	"Flat Device Tree",	},
++	{ -1,			"",		"",			},
++};
 +
-+		printf ("%sContents:\n", p);
-+		for (i = 0; i < count; i++) {
-+			image_multi_getimg(hdr, i, &data, &len);
++static table_entry_t comp_name[] = {
++	{ IH_COMP_NONE,		"none",		"uncompressed",		},
++	{ IH_COMP_BZIP2,	"bzip2",	"bzip2 compressed",	},
++	{ IH_COMP_GZIP,		"gzip",		"gzip compressed",	},
++	{ -1,			"",		"",			},
++};
 +
-+			printf("%s   Image %d: ", p, i);
-+			image_print_size(len);
-+
-+			if (image_check_type(hdr, IH_TYPE_SCRIPT) && i > 0) {
-+				/*
-+				 * the user may need to know offsets
-+				 * if planning to do something with
-+				 * multiple files
-+				 */
-+				printf("%s    Offset = 0x%08lx\n", p, data);
-+			}
-+		}
++static char *get_table_entry_name(table_entry_t *table, char *msg, int id)
++{
++	for (; table->id >= 0; ++table) {
++		if (table->id == id)
++			return table->lname;
 +	}
++
++	return msg;
++}
++
++const char *image_get_os_name(uint8_t os)
++{
++	return get_table_entry_name(os_name, "Unknown OS", os);
++}
++
++const char *image_get_arch_name(uint8_t arch)
++{
++	return get_table_entry_name(arch_name, "Unknown Architecture", arch);
++}
++
++const char *image_get_type_name(uint8_t type)
++{
++	return get_table_entry_name(type_name, "Unknown Image", type);
++}
++
++const char *image_get_comp_name(uint8_t comp)
++{
++	return get_table_entry_name(comp_name, "Unknown Compression", comp);
 +}
 diff --git a/include/image.h b/include/image.h
-index 543204b..c500ce1 100644
+index 13d0303..6bc8027 100644
 --- a/include/image.h
 +++ b/include/image.h
-@@ -373,7 +373,15 @@ static inline int image_check_target_arch(const image_header_t *hdr)
+@@ -187,6 +187,33 @@ struct image_handle {
+ 	int flags;
+ };
  
- 	return 1;
- }
--#endif /* USE_HOSTCC */
++#if defined(CONFIG_CMD_BOOTM_SHOW_TYPE) || !defined(__BAREBOX__)
++const char *image_get_os_name(uint8_t os);
++const char *image_get_arch_name(uint8_t arch);
++const char *image_get_type_name(uint8_t type);
++const char *image_get_comp_name(uint8_t comp);
++#else
++static inline const char *image_get_os_name(uint8_t os)
++{
++	return NULL;
++}
++
++static inline const char *image_get_arch_name(uint8_t arch)
++{
++	return NULL;
++}
++
++static inline const char *image_get_type_name(uint8_t type)
++{
++	return NULL;
++}
++
++static inline const char *image_get_comp_name(uint8_t comp)
++{
++	return NULL;
++}
 +#endif
 +
-+ulong image_multi_count(const image_header_t *hdr);
-+void image_multi_getimg(const image_header_t *hdr, ulong idx,
-+			ulong *data, ulong *len);
-+
-+void image_print_size(uint32_t size);
-+
-+void image_print_contents(const void *ptr);
- 
  /* commamds/bootm.c */
  void	print_image_hdr (image_header_t *hdr);
+ 
 diff --git a/scripts/mkimage.c b/scripts/mkimage.c
-index fef82c6..2698aa2 100644
+index 240c5cf..0e5ec1e 100644
 --- a/scripts/mkimage.c
 +++ b/scripts/mkimage.c
-@@ -38,8 +38,6 @@ char *cmdname;
+@@ -59,6 +59,7 @@ typedef		unsigned int	uint32_t;
+ #endif
  
+ #include "../include/image.h"
++#include "../common/image.c"
+ 
+ #ifndef MAP_FAILED
+ #define MAP_FAILED (-1)
+@@ -71,87 +72,10 @@ char *cmdname;
+ 
+ //extern unsigned long crc32 (unsigned long crc, const char *buf, unsigned int len);
+ 
+-typedef struct table_entry {
+-	int	val;		/* as defined in image.h	*/
+-	char	*sname;		/* short (input) name		*/
+-	char	*lname;		/* long (output) name		*/
+-} table_entry_t;
+-
+-table_entry_t arch_name[] = {
+-    {	IH_CPU_INVALID,		NULL,		"Invalid CPU",	},
+-    {	IH_CPU_ALPHA,		"alpha",	"Alpha",	},
+-    {	IH_CPU_ARM,		"arm",		"ARM",		},
+-    {	IH_CPU_I386,		"x86",		"Intel x86",	},
+-    {	IH_CPU_IA64,		"ia64",		"IA64",		},
+-    {	IH_CPU_M68K,		"m68k",		"MC68000",	},
+-    {	IH_CPU_MICROBLAZE,	"microblaze",	"MicroBlaze",	},
+-    {	IH_CPU_MIPS,		"mips",		"MIPS",		},
+-    {	IH_CPU_MIPS64,		"mips64",	"MIPS 64 Bit",	},
+-    {	IH_CPU_NIOS,		"nios",		"NIOS",		},
+-    {	IH_CPU_NIOS2,		"nios2",	"NIOS II",	},
+-    {	IH_CPU_PPC,		"ppc",		"PowerPC",	},
+-    {	IH_CPU_S390,		"s390",		"IBM S390",	},
+-    {	IH_CPU_SH,		"sh",		"SuperH",	},
+-    {	IH_CPU_SPARC,		"sparc",	"SPARC",	},
+-    {	IH_CPU_SPARC64,		"sparc64",	"SPARC 64 Bit",	},
+-    {	IH_CPU_BLACKFIN,	"blackfin",	"Blackfin",	},
+-    {	IH_CPU_AVR32,		"avr32",	"AVR32",	},
+-    {	-1,			"",		"",		},
+-};
+-
+-table_entry_t os_name[] = {
+-    {	IH_OS_INVALID,	NULL,		"Invalid OS",		},
+-    {	IH_OS_4_4BSD,	"4_4bsd",	"4_4BSD",		},
+-    {	IH_OS_ARTOS,	"artos",	"ARTOS",		},
+-    {	IH_OS_DELL,	"dell",		"Dell",			},
+-    {	IH_OS_ESIX,	"esix",		"Esix",			},
+-    {	IH_OS_FREEBSD,	"freebsd",	"FreeBSD",		},
+-    {	IH_OS_IRIX,	"irix",		"Irix",			},
+-    {	IH_OS_LINUX,	"linux",	"Linux",		},
+-    {	IH_OS_LYNXOS,	"lynxos",	"LynxOS",		},
+-    {	IH_OS_NCR,	"ncr",		"NCR",			},
+-    {	IH_OS_NETBSD,	"netbsd",	"NetBSD",		},
+-    {	IH_OS_OPENBSD,	"openbsd",	"OpenBSD",		},
+-    {	IH_OS_PSOS,	"psos",		"pSOS",			},
+-    {	IH_OS_QNX,	"qnx",		"QNX",			},
+-    {	IH_OS_RTEMS,	"rtems",	"RTEMS",		},
+-    {	IH_OS_SCO,	"sco",		"SCO",			},
+-    {	IH_OS_SOLARIS,	"solaris",	"Solaris",		},
+-    {	IH_OS_SVR4,	"svr4",		"SVR4",			},
+-    {	IH_OS_BAREBOX,	"barebox",	"barebox",		},
+-    {	IH_OS_VXWORKS,	"vxworks",	"VxWorks",		},
+-    {	-1,		"",		"",			},
+-};
+-
+-table_entry_t type_name[] = {
+-    {	IH_TYPE_INVALID,    NULL,	  "Invalid Image",	},
+-    {	IH_TYPE_FILESYSTEM, "filesystem", "Filesystem Image",	},
+-    {	IH_TYPE_FIRMWARE,   "firmware",	  "Firmware",		},
+-    {	IH_TYPE_KERNEL,	    "kernel",	  "Kernel Image",	},
+-    {	IH_TYPE_MULTI,	    "multi",	  "Multi-File Image",	},
+-    {	IH_TYPE_RAMDISK,    "ramdisk",	  "RAMDisk Image",	},
+-    {	IH_TYPE_SCRIPT,     "script",	  "Script",		},
+-    {	IH_TYPE_STANDALONE, "standalone", "Standalone Program", },
+-    {	IH_TYPE_FLATDT,     "flat_dt",    "Flat Device Tree",	},
+-    {	-1,		    "",		  "",			},
+-};
+-
+-table_entry_t comp_name[] = {
+-    {	IH_COMP_NONE,	"none",		"uncompressed",		},
+-    {	IH_COMP_BZIP2,	"bzip2",	"bzip2 compressed",	},
+-    {	IH_COMP_GZIP,	"gzip",		"gzip compressed",	},
+-    {	-1,		"",		"",			},
+-};
+-
  static	void	copy_file (int, const char *, int);
  static	void	usage	(void);
--static	void	print_header (image_header_t *);
--static	void	print_type (image_header_t *);
+ static	void	print_header (image_header_t *);
+ static	void	print_type (image_header_t *);
+-static	char	*put_table_entry (table_entry_t *, char *, int);
+-static	char	*put_arch (int);
+-static	char	*put_type (int);
+-static	char	*put_os   (int);
+-static	char	*put_comp (int);
  static	int	get_table_entry (table_entry_t *, char *, char *);
  static	int	get_arch(char *);
  static	int	get_comp(char *);
-@@ -255,7 +253,7 @@ NXTARG:		;
- 		}
- 
- 		/* for multi-file images we need the data part, too */
--		print_header ((image_header_t *)ptr);
-+		image_print_contents((image_header_t *)ptr);
- 
- 		(void) munmap((void *)ptr, sbuf.st_size);
- 		(void) close (ifd);
-@@ -381,7 +379,7 @@ NXTARG:		;
- 
- 	image_set_hcrc(hdr, checksum);
- 
--	print_header (hdr);
-+	image_print_contents(hdr);
- 
- 	(void) munmap((void *)ptr, sbuf.st_size);
- 
-@@ -504,71 +502,6 @@ usage ()
- 	exit (EXIT_FAILURE);
- }
- 
--static void
--print_header (image_header_t *hdr)
--{
--	time_t timestamp;
--	uint32_t size;
--
--	timestamp = (time_t)image_get_time(hdr);
--	size = image_get_size(hdr);
--
--	printf ("Image Name:   %.*s\n", IH_NMLEN, image_get_name(hdr));
--	printf ("Created:      %s", ctime(&timestamp));
--	printf ("Image Type:   "); print_type(hdr);
--	printf ("Data Size:    %d Bytes = %.2f kB = %.2f MB\n",
--		size, (double)size / 1.024e3, (double)size / 1.048576e6 );
--	printf ("Load Address: 0x%08X\n", image_get_load(hdr));
--	printf ("Entry Point:  0x%08X\n", image_get_ep(hdr));
--
--	if (image_check_type(hdr, IH_TYPE_MULTI) ||
--	    image_check_type(hdr, IH_TYPE_SCRIPT)) {
--		int i, ptrs;
--		uint32_t pos;
--		uint32_t *len_ptr = (uint32_t *) (
--					(unsigned long)hdr + image_get_header_size()
--				);
--
--		/* determine number of images first (to calculate image offsets) */
--		for (i=0; len_ptr[i]; ++i)	/* null pointer terminates list */
--			;
--		ptrs = i;		/* null pointer terminates list */
--
--		pos = image_get_header_size() + ptrs * sizeof(long);
--		printf ("Contents:\n");
--		for (i=0; len_ptr[i]; ++i) {
--			size = ntohl(len_ptr[i]);
--
--			printf ("   Image %d: %8d Bytes = %4d kB = %d MB\n",
--				i, size, size>>10, size>>20);
--			if (image_check_type(hdr, IH_TYPE_SCRIPT) && i > 0) {
--				/*
--				 * the user may need to know offsets
--				 * if planning to do something with
--				 * multiple files
--				 */
--				printf ("    Offset = %08X\n", pos);
--			}
--			/* copy_file() will pad the first files to even word align */
--			size += 3;
--			size &= ~3;
--			pos += size;
--		}
--	}
--}
--
--
--static void
--print_type (image_header_t *hdr)
--{
--	printf ("%s %s %s (%s)\n",
--		image_get_arch_name(image_get_arch(hdr)),
--		image_get_os_name(image_get_os(hdr)),
--		image_get_type_name(image_get_type(hdr)),
--		image_get_comp_name(image_get_comp(hdr))
+@@ -672,40 +596,10 @@ static void
+ print_type (image_header_t *hdr)
+ {
+ 	printf ("%s %s %s (%s)\n",
+-		put_arch (hdr->ih_arch),
+-		put_os   (hdr->ih_os  ),
+-		put_type (hdr->ih_type),
+-		put_comp (hdr->ih_comp)
 -	);
 -}
 -
+-static char *put_arch (int arch)
+-{
+-	return (put_table_entry(arch_name, "Unknown Architecture", arch));
+-}
+-
+-static char *put_os (int os)
+-{
+-	return (put_table_entry(os_name, "Unknown OS", os));
+-}
+-
+-static char *put_type (int type)
+-{
+-	return (put_table_entry(type_name, "Unknown Image", type));
+-}
+-
+-static char *put_comp (int comp)
+-{
+-	return (put_table_entry(comp_name, "Unknown Compression", comp));
+-}
+-
+-static char *put_table_entry (table_entry_t *table, char *msg, int type)
+-{
+-	for (; table->val>=0; ++table) {
+-		if (table->val == type)
+-			return (table->lname);
+-	}
+-	return (msg);
++		image_get_arch_name(hdr->ih_arch),
++		image_get_os_name(hdr->ih_os),
++		image_get_type_name(hdr->ih_type),
++		image_get_comp_name(hdr->ih_comp));
+ }
+ 
  static int get_arch(char *name)
- {
- 	return (get_table_entry(arch_name, "CPU", name));
+@@ -736,12 +630,12 @@ static int get_table_entry (table_entry_t *table, char *msg, char *name)
+ 	table_entry_t *t;
+ 	int first = 1;
+ 
+-	for (t=table; t->val>=0; ++t) {
++	for (t=table; t->id>=0; ++t) {
+ 		if (t->sname && strcasecmp(t->sname, name)==0)
+-			return (t->val);
++			return (t->id);
+ 	}
+ 	fprintf (stderr, "\nInvalid %s Type - valid names are", msg);
+-	for (t=table; t->val>=0; ++t) {
++	for (t=table; t->id>=0; ++t) {
+ 		if (t->sname == NULL)
+ 			continue;
+ 		fprintf (stderr, "%c %s", (first) ? ':' : ',', t->sname);
 -- 
 1.7.1
 
