@@ -1,20 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 31.mail-out.ovh.net ([213.186.62.10])
+Received: from 63.mail-out.ovh.net ([91.121.185.56])
 	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OyjxK-00070Y-NN
-	for barebox@lists.infradead.org; Thu, 23 Sep 2010 11:27:15 +0000
-Date: Thu, 23 Sep 2010 13:25:48 +0200
+	id 1OyrYD-0003re-I1
+	for barebox@lists.infradead.org; Thu, 23 Sep 2010 19:33:51 +0000
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20100923112548.GC32018@game.jcrosoft.org>
-References: <1285151785-507-1-git-send-email-plagnioj@jcrosoft.com>
-	<20100922123613.GD23406@pengutronix.de>
-	<87d3s5by0y.fsf@macbook.be.48ers.dk>
-	<20100922160834.GG23406@pengutronix.de>
-	<20100922161218.GW32018@game.jcrosoft.org>
-	<20100922165422.GI23406@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20100922165422.GI23406@pengutronix.de>
+Date: Thu, 23 Sep 2010 21:32:18 +0200
+Message-Id: <1285270340-23156-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,56 +14,195 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] commands/crc32: add compare 2 files crc
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/3 v2] host: introduce compiler.h to handle host include
+To: barebox@lists.infradead.org
 
-On 18:54 Wed 22 Sep     , Sascha Hauer wrote:
-> On Wed, Sep 22, 2010 at 06:12:18PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > On 18:08 Wed 22 Sep     , Sascha Hauer wrote:
-> > > On Wed, Sep 22, 2010 at 05:25:49PM +0200, Peter Korsgaard wrote:
-> > > > >>>>> "Sascha" == Sascha Hauer <s.hauer@pengutronix.de> writes:
-> > > > 
-> > > >  Sascha> On Wed, Sep 22, 2010 at 12:36:25PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > >  >> add -F options to compare to file crc
-> > > >  >> 
-> > > >  >> it's usefull to compare what you flash in a partition
-> > > > 
-> > > >  Sascha> Why don't you use memcmp?
-> > > > 
-> > > >  Sascha> memcmp -s uImage -d /dev/nand0.kernel.bb 0 0
-> > > > 
-> > > > It's sometimes interesting to be able to compare a checksum with a file
-> > > > on the host (E.G. output of cksum/md5sum/sha1sum/..)
-> > > 
-> > > crc32 can output the crc checksum of a file using the -f option. What
-> > > Jean-Christophe added is an option to calculate the checksum of two
-> > > files (one given with -f and the other with -F). I just fail to see why
-> > > this must be done in a single step instead of using a crc32 followed by
-> > > a memcmp.
-> > it's faster btw
-> 
-> Yes, that's the remaining argument, so this should be the selling point
-> for this patch?
-yes
-> 
-> btw, does the patch handle the case when the partition is bigger than
-> the image file?
-yes
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+rebase against next
+ scripts/compiler.h |  107 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ scripts/mkimage.c  |   38 +------------------
+ 2 files changed, 108 insertions(+), 37 deletions(-)
+ create mode 100644 scripts/compiler.h
 
-> 
-> I would also write the image file directly to the flash instead of
-> transfering it to RAM and then copy it to flash. That should be even
-> faster.
-here we just do a crc32 but we could integrate it in the tftp & co to as check
-in a second step
+diff --git a/scripts/compiler.h b/scripts/compiler.h
+new file mode 100644
+index 0000000..f4b1432
+--- /dev/null
++++ b/scripts/compiler.h
+@@ -0,0 +1,107 @@
++/*
++ * Keep all the ugly #ifdef for system stuff here
++ */
++
++#ifndef __COMPILER_H__
++#define __COMPILER_H__
++
++#include <stddef.h>
++
++#if defined(__BEOS__)	 || \
++    defined(__NetBSD__)  || \
++    defined(__FreeBSD__) || \
++    defined(__sun__)	 || \
++    defined(__APPLE__)
++# include <inttypes.h>
++#elif defined(__linux__) || defined(__WIN32__) || defined(__MINGW32__)
++# include <stdint.h>
++#endif
++
++#include <errno.h>
++#include <stdlib.h>
++#include <stdint.h>
++#include <stdio.h>
++#include <string.h>
++
++#if !defined(__WIN32__) && !defined(__MINGW32__)
++#include <sys/mman.h>
++#include <netinet/in.h>		/* for host / network byte order conversions	*/
++#endif
++
++/* Not all systems (like Windows) has this define, and yes
++ * we do replace/emulate mmap() on those systems ...
++ */
++#ifndef MAP_FAILED
++# define MAP_FAILED ((void *)-1)
++#endif
++
++#include <fcntl.h>
++#ifndef O_BINARY		/* should be define'd on __WIN32__ */
++#define O_BINARY	0
++#endif
++
++#ifdef __linux__
++# include <endian.h>
++# include <byteswap.h>
++#elif defined(__MACH__)
++# include <machine/endian.h>
++typedef unsigned long ulong;
++typedef unsigned int  uint;
++#endif
++
++typedef uint8_t __u8;
++typedef uint16_t __u16;
++typedef uint32_t __u32;
++
++#define uswap_16(x) \
++	((((x) & 0xff00) >> 8) | \
++	 (((x) & 0x00ff) << 8))
++#define uswap_32(x) \
++	((((x) & 0xff000000) >> 24) | \
++	 (((x) & 0x00ff0000) >>  8) | \
++	 (((x) & 0x0000ff00) <<  8) | \
++	 (((x) & 0x000000ff) << 24))
++#define _uswap_64(x, sfx) \
++	((((x) & 0xff00000000000000##sfx) >> 56) | \
++	 (((x) & 0x00ff000000000000##sfx) >> 40) | \
++	 (((x) & 0x0000ff0000000000##sfx) >> 24) | \
++	 (((x) & 0x000000ff00000000##sfx) >>  8) | \
++	 (((x) & 0x00000000ff000000##sfx) <<  8) | \
++	 (((x) & 0x0000000000ff0000##sfx) << 24) | \
++	 (((x) & 0x000000000000ff00##sfx) << 40) | \
++	 (((x) & 0x00000000000000ff##sfx) << 56))
++#if defined(__GNUC__)
++# define uswap_64(x) _uswap_64(x, ull)
++#else
++# define uswap_64(x) _uswap_64(x, )
++#endif
++
++#if __BYTE_ORDER == __LITTLE_ENDIAN
++# define cpu_to_le16(x)		(x)
++# define cpu_to_le32(x)		(x)
++# define cpu_to_le64(x)		(x)
++# define le16_to_cpu(x)		(x)
++# define le32_to_cpu(x)		(x)
++# define le64_to_cpu(x)		(x)
++# define cpu_to_be16(x)		uswap_16(x)
++# define cpu_to_be32(x)		uswap_32(x)
++# define cpu_to_be64(x)		uswap_64(x)
++# define be16_to_cpu(x)		uswap_16(x)
++# define be32_to_cpu(x)		uswap_32(x)
++# define be64_to_cpu(x)		uswap_64(x)
++#else
++# define cpu_to_le16(x)		uswap_16(x)
++# define cpu_to_le32(x)		uswap_32(x)
++# define cpu_to_le64(x)		uswap_64(x)
++# define le16_to_cpu(x)		uswap_16(x)
++# define le32_to_cpu(x)		uswap_32(x)
++# define le64_to_cpu(x)		uswap_64(x)
++# define cpu_to_be16(x)		(x)
++# define cpu_to_be32(x)		(x)
++# define cpu_to_be64(x)		(x)
++# define be16_to_cpu(x)		(x)
++# define be32_to_cpu(x)		(x)
++# define be64_to_cpu(x)		(x)
++#endif
++
++#endif
+diff --git a/scripts/mkimage.c b/scripts/mkimage.c
+index 561dc84..aac7220 100644
+--- a/scripts/mkimage.c
++++ b/scripts/mkimage.c
+@@ -20,51 +20,15 @@
+  * MA 02111-1307 USA
+  */
+ 
+-#include <errno.h>
+-#include <fcntl.h>
+-#include <stdio.h>
+-#include <stdlib.h>
+-#include <string.h>
+-#ifndef __WIN32__
+-#include <netinet/in.h>		/* for host / network byte order conversions	*/
+-#endif
+-#include <sys/mman.h>
+ #include <sys/stat.h>
+ #include <time.h>
+ #include <unistd.h>
+ 
+-#if defined(__BEOS__) || defined(__NetBSD__) || defined(__APPLE__)
+-#include <inttypes.h>
+-#endif
+-
+-#ifdef __WIN32__
+-typedef unsigned int __u32;
+-
+-#define SWAP_LONG(x) \
+-	((__u32)( \
+-		(((__u32)(x) & (__u32)0x000000ffUL) << 24) | \
+-		(((__u32)(x) & (__u32)0x0000ff00UL) <<  8) | \
+-		(((__u32)(x) & (__u32)0x00ff0000UL) >>  8) | \
+-		(((__u32)(x) & (__u32)0xff000000UL) >> 24) ))
+-typedef		unsigned char	uint8_t;
+-typedef		unsigned short	uint16_t;
+-typedef		unsigned int	uint32_t;
+-
+-#define     ntohl(a)	SWAP_LONG(a)
+-#define     htonl(a)	SWAP_LONG(a)
+-#endif	/* __WIN32__ */
+-
+-#ifndef	O_BINARY		/* should be define'd on __WIN32__ */
+-#define O_BINARY	0
+-#endif
++#include "compiler.h"
+ 
+ #include "../include/image.h"
+ #include "../common/image.c"
+ 
+-#ifndef MAP_FAILED
+-#define MAP_FAILED (-1)
+-#endif
+-
+ char *cmdname;
+ 
+ #include "../include/zlib.h"
+-- 
+1.7.1
 
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
