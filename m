@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 68.mail-out.ovh.net ([91.121.185.69])
+Received: from 64.mail-out.ovh.net ([91.121.185.65])
 	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OyiqG-00047d-Iw
-	for barebox@lists.infradead.org; Thu, 23 Sep 2010 10:15:53 +0000
+	id 1OyiqH-00047i-4w
+	for barebox@lists.infradead.org; Thu, 23 Sep 2010 10:15:54 +0000
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu, 23 Sep 2010 12:14:24 +0200
-Message-Id: <1285236866-3674-3-git-send-email-plagnioj@jcrosoft.com>
+Date: Thu, 23 Sep 2010 12:14:23 +0200
+Message-Id: <1285236866-3674-2-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1285236866-3674-1-git-send-email-plagnioj@jcrosoft.com>
 References: <1285236866-3674-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
@@ -21,186 +21,168 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] host: introduce compiler.h to handle host include
+Subject: [PATCH 2/5] image: rename IH_CPU to IH_ARCH to be more concistant
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- scripts/compiler.h |  107 ++++++++++++++++++++++++++++++++++++++++++++++++++++
- scripts/mkimage.c  |   38 +------------------
- 2 files changed, 108 insertions(+), 37 deletions(-)
- create mode 100644 scripts/compiler.h
+ commands/bootm.c  |    2 +-
+ common/image.c    |   36 +++++++++++++++++-----------------
+ include/image.h   |   56 ++++++++++++++++++++++++++--------------------------
+ scripts/mkimage.c |    2 +-
+ 4 files changed, 48 insertions(+), 48 deletions(-)
 
-diff --git a/scripts/compiler.h b/scripts/compiler.h
-new file mode 100644
-index 0000000..f4b1432
---- /dev/null
-+++ b/scripts/compiler.h
-@@ -0,0 +1,107 @@
-+/*
-+ * Keep all the ugly #ifdef for system stuff here
-+ */
-+
-+#ifndef __COMPILER_H__
-+#define __COMPILER_H__
-+
-+#include <stddef.h>
-+
-+#if defined(__BEOS__)	 || \
-+    defined(__NetBSD__)  || \
-+    defined(__FreeBSD__) || \
-+    defined(__sun__)	 || \
-+    defined(__APPLE__)
-+# include <inttypes.h>
-+#elif defined(__linux__) || defined(__WIN32__) || defined(__MINGW32__)
-+# include <stdint.h>
-+#endif
-+
-+#include <errno.h>
-+#include <stdlib.h>
-+#include <stdint.h>
-+#include <stdio.h>
-+#include <string.h>
-+
-+#if !defined(__WIN32__) && !defined(__MINGW32__)
-+#include <sys/mman.h>
-+#include <netinet/in.h>		/* for host / network byte order conversions	*/
-+#endif
-+
-+/* Not all systems (like Windows) has this define, and yes
-+ * we do replace/emulate mmap() on those systems ...
-+ */
-+#ifndef MAP_FAILED
-+# define MAP_FAILED ((void *)-1)
-+#endif
-+
-+#include <fcntl.h>
-+#ifndef O_BINARY		/* should be define'd on __WIN32__ */
-+#define O_BINARY	0
-+#endif
-+
-+#ifdef __linux__
-+# include <endian.h>
-+# include <byteswap.h>
-+#elif defined(__MACH__)
-+# include <machine/endian.h>
-+typedef unsigned long ulong;
-+typedef unsigned int  uint;
-+#endif
-+
-+typedef uint8_t __u8;
-+typedef uint16_t __u16;
-+typedef uint32_t __u32;
-+
-+#define uswap_16(x) \
-+	((((x) & 0xff00) >> 8) | \
-+	 (((x) & 0x00ff) << 8))
-+#define uswap_32(x) \
-+	((((x) & 0xff000000) >> 24) | \
-+	 (((x) & 0x00ff0000) >>  8) | \
-+	 (((x) & 0x0000ff00) <<  8) | \
-+	 (((x) & 0x000000ff) << 24))
-+#define _uswap_64(x, sfx) \
-+	((((x) & 0xff00000000000000##sfx) >> 56) | \
-+	 (((x) & 0x00ff000000000000##sfx) >> 40) | \
-+	 (((x) & 0x0000ff0000000000##sfx) >> 24) | \
-+	 (((x) & 0x000000ff00000000##sfx) >>  8) | \
-+	 (((x) & 0x00000000ff000000##sfx) <<  8) | \
-+	 (((x) & 0x0000000000ff0000##sfx) << 24) | \
-+	 (((x) & 0x000000000000ff00##sfx) << 40) | \
-+	 (((x) & 0x00000000000000ff##sfx) << 56))
-+#if defined(__GNUC__)
-+# define uswap_64(x) _uswap_64(x, ull)
-+#else
-+# define uswap_64(x) _uswap_64(x, )
-+#endif
-+
-+#if __BYTE_ORDER == __LITTLE_ENDIAN
-+# define cpu_to_le16(x)		(x)
-+# define cpu_to_le32(x)		(x)
-+# define cpu_to_le64(x)		(x)
-+# define le16_to_cpu(x)		(x)
-+# define le32_to_cpu(x)		(x)
-+# define le64_to_cpu(x)		(x)
-+# define cpu_to_be16(x)		uswap_16(x)
-+# define cpu_to_be32(x)		uswap_32(x)
-+# define cpu_to_be64(x)		uswap_64(x)
-+# define be16_to_cpu(x)		uswap_16(x)
-+# define be32_to_cpu(x)		uswap_32(x)
-+# define be64_to_cpu(x)		uswap_64(x)
-+#else
-+# define cpu_to_le16(x)		uswap_16(x)
-+# define cpu_to_le32(x)		uswap_32(x)
-+# define cpu_to_le64(x)		uswap_64(x)
-+# define le16_to_cpu(x)		uswap_16(x)
-+# define le32_to_cpu(x)		uswap_32(x)
-+# define le64_to_cpu(x)		uswap_64(x)
-+# define cpu_to_be16(x)		(x)
-+# define cpu_to_be32(x)		(x)
-+# define cpu_to_be64(x)		(x)
-+# define be16_to_cpu(x)		(x)
-+# define be32_to_cpu(x)		(x)
-+# define be64_to_cpu(x)		(x)
-+#endif
-+
-+#endif
+diff --git a/commands/bootm.c b/commands/bootm.c
+index aa83566..98de2e9 100644
+--- a/commands/bootm.c
++++ b/commands/bootm.c
+@@ -330,7 +330,7 @@ static int do_bootm(struct command *cmdtp, int argc, char *argv[])
+ 
+ 	os_header = &os_handle->header;
+ 
+-	if (os_header->ih_arch != IH_CPU)	{
++	if (os_header->ih_arch != IH_ARCH)	{
+ 		printf ("Unsupported Architecture 0x%x\n", os_header->ih_arch);
+ 		goto err_out;
+ 	}
+diff --git a/common/image.c b/common/image.c
+index e6ab26b..75346f5 100644
+--- a/common/image.c
++++ b/common/image.c
+@@ -32,24 +32,24 @@ typedef struct table_entry {
+ } table_entry_t;
+ 
+ static table_entry_t arch_name[] = {
+-	{ IH_CPU_INVALID,	NULL,		"Invalid CPU",	},
+-	{ IH_CPU_ALPHA,		"alpha",	"Alpha",	},
+-	{ IH_CPU_ARM,		"arm",		"ARM",		},
+-	{ IH_CPU_I386,		"x86",		"Intel x86",	},
+-	{ IH_CPU_IA64,		"ia64",		"IA64",		},
+-	{ IH_CPU_M68K,		"m68k",		"MC68000",	},
+-	{ IH_CPU_MICROBLAZE,	"microblaze",	"MicroBlaze",	},
+-	{ IH_CPU_MIPS,		"mips",		"MIPS",		},
+-	{ IH_CPU_MIPS64,	"mips64",	"MIPS 64 Bit",	},
+-	{ IH_CPU_NIOS,		"nios",		"NIOS",		},
+-	{ IH_CPU_NIOS2,		"nios2",	"NIOS II",	},
+-	{ IH_CPU_PPC,		"ppc",		"PowerPC",	},
+-	{ IH_CPU_S390,		"s390",		"IBM S390",	},
+-	{ IH_CPU_SH,		"sh",		"SuperH",	},
+-	{ IH_CPU_SPARC,		"sparc",	"SPARC",	},
+-	{ IH_CPU_SPARC64,	"sparc64",	"SPARC 64 Bit",	},
+-	{ IH_CPU_BLACKFIN,	"blackfin",	"Blackfin",	},
+-	{ IH_CPU_AVR32,		"avr32",	"AVR32",	},
++	{ IH_ARCH_INVALID,	NULL,		"Invalid CPU",	},
++	{ IH_ARCH_ALPHA,	"alpha",	"Alpha",	},
++	{ IH_ARCH_ARM,		"arm",		"ARM",		},
++	{ IH_ARCH_I386,		"x86",		"Intel x86",	},
++	{ IH_ARCH_IA64,		"ia64",		"IA64",		},
++	{ IH_ARCH_M68K,		"m68k",		"MC68000",	},
++	{ IH_ARCH_MICROBLAZE,	"microblaze",	"MicroBlaze",	},
++	{ IH_ARCH_MIPS,		"mips",		"MIPS",		},
++	{ IH_ARCH_MIPS64,	"mips64",	"MIPS 64 Bit",	},
++	{ IH_ARCH_NIOS,		"nios",		"NIOS",		},
++	{ IH_ARCH_NIOS2,	"nios2",	"NIOS II",	},
++	{ IH_ARCH_PPC,		"ppc",		"PowerPC",	},
++	{ IH_ARCH_S390,		"s390",		"IBM S390",	},
++	{ IH_ARCH_SH,		"sh",		"SuperH",	},
++	{ IH_ARCH_SPARC,	"sparc",	"SPARC",	},
++	{ IH_ARCH_SPARC64,	"sparc64",	"SPARC 64 Bit",	},
++	{ IH_ARCH_BLACKFIN,	"blackfin",	"Blackfin",	},
++	{ IH_ARCH_AVR32,	"avr32",	"AVR32",	},
+ 	{ -1,			"",		"",		},
+ };
+ 
+diff --git a/include/image.h b/include/image.h
+index 6bc8027..185ba64 100644
+--- a/include/image.h
++++ b/include/image.h
+@@ -61,45 +61,45 @@
+ /*
+  * CPU Architecture Codes (supported by Linux)
+  */
+-#define IH_CPU_INVALID		0	/* Invalid CPU	*/
+-#define IH_CPU_ALPHA		1	/* Alpha	*/
+-#define IH_CPU_ARM		2	/* ARM		*/
+-#define IH_CPU_I386		3	/* Intel x86	*/
+-#define IH_CPU_IA64		4	/* IA64		*/
+-#define IH_CPU_MIPS		5	/* MIPS		*/
+-#define IH_CPU_MIPS64		6	/* MIPS	 64 Bit */
+-#define IH_CPU_PPC		7	/* PowerPC	*/
+-#define IH_CPU_S390		8	/* IBM S390	*/
+-#define IH_CPU_SH		9	/* SuperH	*/
+-#define IH_CPU_SPARC		10	/* Sparc	*/
+-#define IH_CPU_SPARC64		11	/* Sparc 64 Bit */
+-#define IH_CPU_M68K		12	/* M68K		*/
+-#define IH_CPU_NIOS		13	/* Nios-32	*/
+-#define IH_CPU_MICROBLAZE	14	/* MicroBlaze   */
+-#define IH_CPU_NIOS2		15	/* Nios-II	*/
+-#define IH_CPU_BLACKFIN		16	/* Blackfin	*/
+-#define IH_CPU_AVR32		17	/* AVR32	*/
++#define IH_ARCH_INVALID		0	/* Invalid CPU	*/
++#define IH_ARCH_ALPHA		1	/* Alpha	*/
++#define IH_ARCH_ARM		2	/* ARM		*/
++#define IH_ARCH_I386		3	/* Intel x86	*/
++#define IH_ARCH_IA64		4	/* IA64		*/
++#define IH_ARCH_MIPS		5	/* MIPS		*/
++#define IH_ARCH_MIPS64		6	/* MIPS	 64 Bit */
++#define IH_ARCH_PPC		7	/* PowerPC	*/
++#define IH_ARCH_S390		8	/* IBM S390	*/
++#define IH_ARCH_SH		9	/* SuperH	*/
++#define IH_ARCH_SPARC		10	/* Sparc	*/
++#define IH_ARCH_SPARC64		11	/* Sparc 64 Bit */
++#define IH_ARCH_M68K		12	/* M68K		*/
++#define IH_ARCH_NIOS		13	/* Nios-32	*/
++#define IH_ARCH_MICROBLAZE	14	/* MicroBlaze	*/
++#define IH_ARCH_NIOS2		15	/* Nios-II	*/
++#define IH_ARCH_BLACKFIN	16	/* Blackfin	*/
++#define IH_ARCH_AVR32		17	/* AVR32	*/
+ 
+ #if defined(__PPC__)
+-#define IH_CPU IH_CPU_PPC
++#define IH_ARCH IH_ARCH_PPC
+ #elif defined(__ARM__)
+-#define IH_CPU IH_CPU_ARM
++#define IH_ARCH IH_ARCH_ARM
+ #elif defined(__I386__) || defined(__x86_64__)
+-#define IH_CPU IH_CPU_I386
++#define IH_ARCH IH_ARCH_I386
+ #elif defined(__mips__)
+-#define IH_CPU IH_CPU_MIPS
++#define IH_ARCH IH_ARCH_MIPS
+ #elif defined(__nios__)
+-#define IH_CPU IH_CPU_NIOS
++#define IH_ARCH IH_ARCH_NIOS
+ #elif defined(__M68K__)
+-#define IH_CPU IH_CPU_M68K
++#define IH_ARCH IH_ARCH_M68K
+ #elif defined(__microblaze__)
+-#define IH_CPU IH_CPU_MICROBLAZE
++#define IH_ARCH IH_ARCH_MICROBLAZE
+ #elif defined(__nios2__)
+-#define IH_CPU IH_CPU_NIOS2
++#define IH_ARCH IH_ARCH_NIOS2
+ #elif defined(__blackfin__)
+-#define IH_CPU IH_CPU_BLACKFIN
++#define IH_ARCH IH_ARCH_BLACKFIN
+ #elif defined(__avr32__)
+-#define IH_CPU IH_CPU_AVR32
++#define IH_ARCH IH_ARCH_AVR32
+ #endif
+ 
+ /*
 diff --git a/scripts/mkimage.c b/scripts/mkimage.c
-index 15812e5..8abd3ac 100644
+index 0e5ec1e..15812e5 100644
 --- a/scripts/mkimage.c
 +++ b/scripts/mkimage.c
-@@ -20,51 +20,15 @@
-  * MA 02111-1307 USA
-  */
+@@ -92,7 +92,7 @@ int lflag    = 0;
+ int vflag    = 0;
+ int xflag    = 0;
+ int opt_os   = IH_OS_LINUX;
+-int opt_arch = IH_CPU_PPC;
++int opt_arch = IH_ARCH_PPC;
+ int opt_type = IH_TYPE_KERNEL;
+ int opt_comp = IH_COMP_GZIP;
  
--#include <errno.h>
--#include <fcntl.h>
--#include <stdio.h>
--#include <stdlib.h>
--#include <string.h>
--#ifndef __WIN32__
--#include <netinet/in.h>		/* for host / network byte order conversions	*/
--#endif
--#include <sys/mman.h>
- #include <sys/stat.h>
- #include <time.h>
- #include <unistd.h>
- 
--#if defined(__BEOS__) || defined(__NetBSD__) || defined(__APPLE__)
--#include <inttypes.h>
--#endif
--
--#ifdef __WIN32__
--typedef unsigned int __u32;
--
--#define SWAP_LONG(x) \
--	((__u32)( \
--		(((__u32)(x) & (__u32)0x000000ffUL) << 24) | \
--		(((__u32)(x) & (__u32)0x0000ff00UL) <<  8) | \
--		(((__u32)(x) & (__u32)0x00ff0000UL) >>  8) | \
--		(((__u32)(x) & (__u32)0xff000000UL) >> 24) ))
--typedef		unsigned char	uint8_t;
--typedef		unsigned short	uint16_t;
--typedef		unsigned int	uint32_t;
--
--#define     ntohl(a)	SWAP_LONG(a)
--#define     htonl(a)	SWAP_LONG(a)
--#endif	/* __WIN32__ */
--
--#ifndef	O_BINARY		/* should be define'd on __WIN32__ */
--#define O_BINARY	0
--#endif
-+#include "compiler.h"
- 
- #include "../include/image.h"
- #include "../common/image.c"
- 
--#ifndef MAP_FAILED
--#define MAP_FAILED (-1)
--#endif
--
- char *cmdname;
- 
- #include "../include/zlib.h"
 -- 
 1.7.1
 
