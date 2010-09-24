@@ -1,18 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Oz7vr-0004Mm-OB
-	for barebox@lists.infradead.org; Fri, 24 Sep 2010 13:03:20 +0000
+	id 1Oz88y-0007VU-42
+	for barebox@lists.infradead.org; Fri, 24 Sep 2010 13:16:53 +0000
 Received: from gallifrey.ext.pengutronix.de
 	([2001:6f8:1178:4:5054:ff:fe8d:eefb] helo=localhost)
 	by metis.ext.pengutronix.de with esmtp (Exim 4.71)
-	(envelope-from <jbe@pengutronix.de>) id 1Oz7vq-0000dN-4K
-	for barebox@lists.infradead.org; Fri, 24 Sep 2010 15:03:18 +0200
+	(envelope-from <jbe@pengutronix.de>) id 1Oz88w-00016U-H7
+	for barebox@lists.infradead.org; Fri, 24 Sep 2010 15:16:50 +0200
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Fri, 24 Sep 2010 15:01:54 +0200
+Date: Fri, 24 Sep 2010 15:15:27 +0200
+References: <201009241455.13828.jbe@pengutronix.de>
+In-Reply-To: <201009241455.13828.jbe@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-Message-Id: <201009241501.54827.jbe@pengutronix.de>
+Message-Id: <201009241515.27635.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,31 +27,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: The i.MX27 has no second leve cache, remove include file
+Subject: Re: [PATCH] Fix watchdog's register size for the i.MX27 CPU
 To: barebox@lists.infradead.org
 
-commit 7edbf19ca3a3b4890043ba3707f74b7f8b4cfb7b
-Author: Juergen Beisert <jbe@pengutronix.de>
-Date:   Fri Sep 24 15:00:04 2010 +0200
+Juergen Beisert wrote:
+> commit adbc97930ed1e2259f779732540583cbef810d68
+> Author: Juergen Beisert <jbe@pengutronix.de>
+> Date:   Fri Sep 24 14:51:42 2010 +0200
+>
+>     Fix watchdog's register size for the i.MX27 CPU
+>
+>     The watchdog registers on the i.MX27 CPU are 16 bit registers. This
+> patch just fixes the access macros.
+>
+>     Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
+>
+> diff --git a/arch/arm/mach-imx/include/mach/imx27-regs.h
+> b/arch/arm/mach-imx/include/mach/imx27-regs.h
+> index 8d0bcda..d95379c 100644
+> --- a/arch/arm/mach-imx/include/mach/imx27-regs.h
+> +++ b/arch/arm/mach-imx/include/mach/imx27-regs.h
+> @@ -83,9 +83,9 @@
+>  #include "esdctl.h"
+>
+>  /* Watchdog Registers*/
+> -#define WCR  __REG(IMX_WDT_BASE + 0x00) /* Watchdog Control Register */
+> -#define WSR  __REG(IMX_WDT_BASE + 0x04) /* Watchdog Service Register */
+> -#define WSTR __REG(IMX_WDT_BASE + 0x08) /* Watchdog Status Register  */
+> +#define WCR  __REG16(IMX_WDT_BASE + 0x00) /* Watchdog Control Register */
+> +#define WSR  __REG16(IMX_WDT_BASE + 0x04) /* Watchdog Service Register */
+> +#define WSTR __REG16(IMX_WDT_BASE + 0x08) /* Watchdog Status Register  */
+>
+>  /* important definition of some bits of WCR */
+>  #define WCR_WDE 0x04
 
-    The i.MX27 has no second leve cache, remove include file
-    
-    Just a little bit cleanup.
-    
-    Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
+Ups, sorry incomplete. Also the offsets must be changeed. Will resend.
 
-diff --git a/arch/arm/boards/pcm038/lowlevel.c b/arch/arm/boards/pcm038/lowlevel.c
-index 0c376f2..3c5b293 100644
---- a/arch/arm/boards/pcm038/lowlevel.c
-+++ b/arch/arm/boards/pcm038/lowlevel.c
-@@ -25,7 +25,6 @@
- #include <mach/imx-regs.h>
- #include <mach/imx-pll.h>
- #include <mach/esdctl.h>
--#include <asm/cache-l2x0.h>
- #include <asm/io.h>
- #include <mach/imx-nand.h>
- #include <asm/barebox-arm.h>
+jbe
 
 -- 
 Pengutronix e.K.                              | Juergen Beisert             |
