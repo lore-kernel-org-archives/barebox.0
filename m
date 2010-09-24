@@ -1,13 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 64.mail-out.ovh.net ([91.121.185.65])
-	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1Oys7I-00031V-Fw
-	for barebox@lists.infradead.org; Thu, 23 Sep 2010 20:10:05 +0000
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu, 23 Sep 2010 22:08:35 +0200
-Message-Id: <1285272515-26680-2-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1285272515-26680-1-git-send-email-plagnioj@jcrosoft.com>
-References: <1285272515-26680-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from mail-px0-f177.google.com ([209.85.212.177])
+	by bombadil.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1Oz2H2-00028K-F2
+	for barebox@lists.infradead.org; Fri, 24 Sep 2010 07:00:49 +0000
+Received: by pxi4 with SMTP id 4so944655pxi.36
+	for <barebox@lists.infradead.org>; Fri, 24 Sep 2010 00:00:47 -0700 (PDT)
+Message-ID: <4C9C4C9A.7010504@gmail.com>
+Date: Fri, 24 Sep 2010 00:00:42 -0700
+From: Andre <armccurdy@gmail.com>
+MIME-Version: 1.0
+References: <1285075689-11071-1-git-send-email-plagnioj@jcrosoft.com>
+	<1285075689-11071-2-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1285075689-11071-2-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,33 +20,66 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] console: set device_d id at -1
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/2] sha1/sha256: use be32_to_cpu and cpu_to_be32
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>, barebox@lists.infradead.org
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- common/console.c |    1 +
- 1 files changed, 1 insertions(+), 0 deletions(-)
+On 09/21/2010 06:28 AM, Jean-Christophe PLAGNIOL-VILLARD wrote:
 
-diff --git a/common/console.c b/common/console.c
-index 889c262..204a08c 100644
---- a/common/console.c
-+++ b/common/console.c
-@@ -135,6 +135,7 @@ int console_register(struct console_device *newcdev)
- 	int first = 0;
- 	char ch;
- 
-+	dev->id = -1;
- 	strcpy(dev->name, "cs");
- 	dev->type_data = newcdev;
- 	register_device(dev);
--- 
-1.7.1
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD<plagnioj at jcrosoft.com>
+> ---
+>   lib/sha1.c   |   20 +++-----------------
+>   lib/sha256.c |   19 +++----------------
+>   2 files changed, 6 insertions(+), 33 deletions(-)
+>
+> diff --git a/lib/sha1.c b/lib/sha1.c
+> index 0e8aed1..b4e2abc 100644
+> --- a/lib/sha1.c
+> +++ b/lib/sha1.c
+> @@ -29,6 +29,7 @@
+>   #include<digest.h>
+>   #include<init.h>
+>   #include<linux/string.h>
+> +#include<asm/byteorder.h>
+>
+>   #define SHA1_SUM_POS	-0x20
+>   #define SHA1_SUM_LEN	20
+> @@ -44,23 +45,8 @@ sha1_context;
+>   /*
+>    * 32-bit integer manipulation macros (big endian)
+>    */
+> -#ifndef GET_UINT32_BE
+> -#define GET_UINT32_BE(n,b,i) {				\
+> -	(n) = ( (uint32_t) (b)[(i)    ]<<  24 )	\
+> -	    | ( (uint32_t) (b)[(i) + 1]<<  16 )	\
+> -	    | ( (uint32_t) (b)[(i) + 2]<<   8 )	\
+> -	    | ( (uint32_t) (b)[(i) + 3]       );	\
+> -}
+> -#endif
+> -
+> -#ifndef PUT_UINT32_BE
+> -#define PUT_UINT32_BE(n,b,i) {				\
+> -	(b)[(i)    ] = (unsigned char) ( (n)>>  24 );	\
+> -	(b)[(i) + 1] = (unsigned char) ( (n)>>  16 );	\
+> -	(b)[(i) + 2] = (unsigned char) ( (n)>>   8 );	\
+> -	(b)[(i) + 3] = (unsigned char) ( (n)       );	\
+> -}
+> -#endif
+> +#define GET_UINT32_BE(n,b,i) (n) = be32_to_cpu(((uint32_t*)(b))[i / 4])
+> +#define PUT_UINT32_BE(n,b,i) ((uint32_t*)(b))[i / 4] = cpu_to_be32(n)
+>
+>    
+
+The previous macros served two purposes: endian swapping and performing 
+the memory accesses byte-by-byte. New versions are unsafe for CPUs which 
+do not support misaligned 32bit memory accesses.
+
+Andre
+--
+
 
 
 _______________________________________________
