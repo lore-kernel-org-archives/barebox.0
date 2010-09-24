@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 68.mail-out.ovh.net ([91.121.185.69])
+Received: from 26.mail-out.ovh.net ([91.121.27.225])
 	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1Oz63F-0002pu-HP
+	id 1Oz63F-0002q2-N5
 	for barebox@lists.infradead.org; Fri, 24 Sep 2010 11:02:50 +0000
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 24 Sep 2010 13:01:16 +0200
-Message-Id: <1285326078-13582-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri, 24 Sep 2010 13:01:17 +0200
+Message-Id: <1285326078-13582-2-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1285326078-13582-1-git-send-email-plagnioj@jcrosoft.com>
+References: <1285326078-13582-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,28 +21,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] imx/fb: struct imx_ipu_fb_platform_data remove const for
-	mode
+Subject: [PATCH 2/3] imx-ipu-fb: set default bits per pixel at 16 for mx3
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/mach-imx/include/mach/imx-ipu-fb.h |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+ drivers/video/imx-ipu-fb.c |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
 
-diff --git a/arch/arm/mach-imx/include/mach/imx-ipu-fb.h b/arch/arm/mach-imx/include/mach/imx-ipu-fb.h
-index dd65b04..8e1cc87 100644
---- a/arch/arm/mach-imx/include/mach/imx-ipu-fb.h
-+++ b/arch/arm/mach-imx/include/mach/imx-ipu-fb.h
-@@ -25,7 +25,7 @@
-  * struct mx3fb_platform_data - mx3fb platform data
-  */
- struct imx_ipu_fb_platform_data {
--	const struct fb_videomode	*mode;
-+	struct fb_videomode	*mode;
- 	unsigned char		bpp;
- 	void __iomem		*framebuffer;
- 	/** hook to enable backlight and stuff */
+diff --git a/drivers/video/imx-ipu-fb.c b/drivers/video/imx-ipu-fb.c
+index f6ac26f..94b99f2 100644
+--- a/drivers/video/imx-ipu-fb.c
++++ b/drivers/video/imx-ipu-fb.c
+@@ -748,6 +748,7 @@ static int mx3fb_set_par(struct fb_info *info)
+ 		rgb = &def_rgb_24;
+ 		break;
+ 	case 16:
++	default:
+ 		rgb = &def_rgb_16;
+ 		break;
+ 	}
 -- 
 1.7.1
 
