@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qy0-f177.google.com ([209.85.216.177])
-	by bombadil.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1OzN2P-0000Gm-A5
-	for barebox@lists.infradead.org; Sat, 25 Sep 2010 05:11:05 +0000
-Received: by qyk34 with SMTP id 34so5420855qyk.15
-	for <barebox@lists.infradead.org>; Fri, 24 Sep 2010 22:11:03 -0700 (PDT)
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1OzYTA-0002sC-RD
+	for barebox@lists.infradead.org; Sat, 25 Sep 2010 17:23:29 +0000
+Received: from gallifrey.ext.pengutronix.de
+	([2001:6f8:1178:4:5054:ff:fe8d:eefb] helo=localhost)
+	by metis.ext.pengutronix.de with esmtp (Exim 4.71)
+	(envelope-from <jbe@pengutronix.de>) id 1OzYT4-0000b5-EH
+	for barebox@lists.infradead.org; Sat, 25 Sep 2010 19:23:22 +0200
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Sat, 25 Sep 2010 19:21:59 +0200
 MIME-Version: 1.0
-In-Reply-To: <20100925041426.GC2111@game.jcrosoft.org>
-References: <1285350271-18637-1-git-send-email-plagnioj@jcrosoft.com>
-	<AANLkTimAbBNcJEbJPSVXhHMBmgFUyh7wAgmYPguDg1T5@mail.gmail.com>
-	<20100925041426.GC2111@game.jcrosoft.org>
-From: Mike Frysinger <vapier.adi@gmail.com>
-Date: Sat, 25 Sep 2010 01:10:42 -0400
-Message-ID: <AANLkTikocLdu++-XiRkKKi9GdKuEZu72bF7TH9FPcP11@mail.gmail.com>
+Content-Disposition: inline
+Message-Id: <201009251921.59904.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,29 +21,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] MAKEALL: make it generic
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] Fix default baudrate setting
+To: barebox@lists.infradead.org
 
-T24gU2F0LCBTZXAgMjUsIDIwMTAgYXQgMDA6MTQsIEplYW4tQ2hyaXN0b3BoZSBQTEFHTklPTC1W
-SUxMQVJEIHdyb3RlOgo+IE9uIDE0OjEzIEZyaSAyNCBTZXAgwqAgwqAgLCBNaWtlIEZyeXNpbmdl
-ciB3cm90ZToKPj4gT24gRnJpLCBTZXAgMjQsIDIwMTAgYXQgMTM6NDQsIEplYW4tQ2hyaXN0b3Bo
-ZSBQTEFHTklPTC1WSUxMQVJEIHdyb3RlOgo+PiA+ICtDUk9TU19DT01QSUxFX2FybT0vb3B0L2Fy
-bS0yMDA3cTMvYmluL2FybS1ub25lLWxpbnV4LWdudWVhYmktCj4+ID4gK0NST1NTX0NPTVBJTEVf
-bTY4az1tNjhrLXVjbGludXgtCj4+ID4gK0NST1NTX0NPTVBJTEVfYmxhY2tmaW49L29wdC91Q2xp
-bnV4L2JmaW4tbGludXgtdWNsaWJjL2Jpbi9iZmluLWxpbnV4LXVjbGliYy0KPj4gPiArQ1JPU1Nf
-Q09NUElMRV9wcGM9L29wdC9wb3dlcnBjL2Jpbi9wb3dlcnBjLXVua25vd24tbGludXgtZ251LQo+
-PiA+ICtDUk9TU19DT01QSUxFX3NhbmRib3g9L3Vzci9iaW4vCj4+ID4gK0NST1NTX0NPTVBJTEVf
-eDg2PS91c3IvYmluLwo+Pgo+PiBpIGRvbnQgdGhpbmsgaGFyZGNvZGluZyBwYXRocyBpcyBhIGdv
-b2QgaWRlYSwgYW5kIGJmaW4tbGludXgtdWNsaWJjLQo+PiBtaWdodCBub3Qgd29yay4gwqBzbyBi
-ZmluLXVjbGludXgtIG1pZ2h0IGJlIGJldHRlci4KPgo+IGl0J3MganVzdCBhbiBleGFtcGxlIG9m
-IGNvbmZpZ3VyYXRpb24KPiBzbyBJIGRvIG5vdCBtaW5kIFNhc2NoYSB3aGF0IGRvIHlvdSBwcmVm
-ZXI/CgppIGRvbnQgdGhpbmsgc2FtcGxlIGNvbmZpZ3VyYXRpb25zIHNob3VsZCBiZSBjb21taXR0
-ZWQgdW5sZXNzIHRoZXkncmUKdXNhYmxlIG91dCBvZiB0aGUgYm94Ci1taWtlCgpfX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlz
-dApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcv
-bWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+commit 604c99039f873952e252a5933309fc8e59b603db
+Author: Juergen Beisert <jbe@pengutronix.de>
+Date:   Sat Sep 25 19:18:25 2010 +0200
+
+    Fix default baudrate setting
+    
+    The menu entry to set the default baudrate (CONFIG_BAUDRATE) makes no sense,
+    as long as its content is not used. This patch makes barebox using the setting
+    again.
+    
+    Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
+
+diff --git a/common/console.c b/common/console.c
+index 204a08c..71fa88f 100644
+--- a/common/console.c
++++ b/common/console.c
+@@ -140,9 +140,12 @@ int console_register(struct console_device *newcdev)
+ 	dev->type_data = newcdev;
+ 	register_device(dev);
+ 
++#define xstr(s) str(s)
++#define str(s) #s
++
+ 	if (newcdev->setbrg) {
+ 		dev_add_param(dev, "baudrate", console_baudrate_set, NULL, 0);
+-		dev_set_param(dev, "baudrate", "115200");
++		dev_set_param(dev, "baudrate", xstr(CONFIG_BAUDRATE));
+ 	}
+ 
+ 	dev_add_param(dev, "active", console_std_set, NULL, 0);
+
+-- 
+Pengutronix e.K.                              | Juergen Beisert             |
+Linux Solutions for Science and Industry      | Phone: +49-8766-939 228     |
+Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555 |
+Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
