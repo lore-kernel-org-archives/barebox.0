@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 64.mail-out.ovh.net ([91.121.185.65])
+Received: from 70.mail-out.ovh.net ([91.121.185.63])
 	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1P06vX-00073b-D8
-	for barebox@lists.infradead.org; Mon, 27 Sep 2010 06:11:05 +0000
+	id 1P06vX-00073r-Ry
+	for barebox@lists.infradead.org; Mon, 27 Sep 2010 06:11:06 +0000
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon, 27 Sep 2010 08:09:27 +0200
-Message-Id: <1285567767-938-3-git-send-email-plagnioj@jcrosoft.com>
+Date: Mon, 27 Sep 2010 08:09:26 +0200
+Message-Id: <1285567767-938-2-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1285567767-938-1-git-send-email-plagnioj@jcrosoft.com>
 References: <1285567767-938-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
@@ -21,29 +21,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] x86: fix out of tree build support
+Subject: [PATCH 2/3] x86: add 64bit host build support
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- scripts/setupmbr/setupmbr.c |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/Makefile |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
 
-diff --git a/scripts/setupmbr/setupmbr.c b/scripts/setupmbr/setupmbr.c
-index 3cfec97..dd7f38c 100644
---- a/scripts/setupmbr/setupmbr.c
-+++ b/scripts/setupmbr/setupmbr.c
-@@ -42,8 +42,8 @@
- #include <assert.h>
+diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+index 57c5dbc..8ab40b6 100644
+--- a/arch/x86/Makefile
++++ b/arch/x86/Makefile
+@@ -5,7 +5,8 @@ machine-y := i386
  
- /* include the info from this barebox release */
--#include "include/generated/utsrelease.h"
--#include "arch/x86/include/asm/barebox.lds.h"
-+#include "../../include/generated/utsrelease.h"
-+#include "../../arch/x86/include/asm/barebox.lds.h"
+ TEXT_BASE = $(CONFIG_TEXT_BASE)
  
- /** define to disable integrity tests and debug messages */
- #define NDEBUG
+-CPPFLAGS += -march=i386 -DTEXT_BASE=$(TEXT_BASE) -P
++CPPFLAGS += -march=i386 -m32 -DTEXT_BASE=$(TEXT_BASE) -P
++LDFLAGS += -m elf_i386
+ 
+ ifndef CONFIG_MODULES
+ # Add cleanup flags
 -- 
 1.7.1
 
