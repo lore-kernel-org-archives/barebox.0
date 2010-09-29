@@ -1,18 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 63.mail-out.ovh.net ([91.121.185.56])
-	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1P0tyi-0008Rg-B7
-	for barebox@lists.infradead.org; Wed, 29 Sep 2010 10:33:37 +0000
-Date: Wed, 29 Sep 2010 12:31:55 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20100929103155.GD30987@game.jcrosoft.org>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1P0wn4-0005FE-9X
+	for barebox@lists.infradead.org; Wed, 29 Sep 2010 13:33:47 +0000
+Date: Wed, 29 Sep 2010 15:33:43 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20100929133343.GH23406@pengutronix.de>
 References: <1285567954-1394-1-git-send-email-plagnioj@jcrosoft.com>
 	<20100927143508.GY23406@pengutronix.de>
 	<20100927160229.GI2111@game.jcrosoft.org>
 	<20100929072942.GD23406@pengutronix.de>
+	<20100929103155.GD30987@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20100929072942.GD23406@pengutronix.de>
+In-Reply-To: <20100929103155.GD30987@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,47 +27,59 @@ Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH v2] MAKEALL: make it generic
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On 09:29 Wed 29 Sep     , Sascha Hauer wrote:
-> Hi J,
-> 
-> On Mon, Sep 27, 2010 at 06:02:29PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > On 16:35 Mon 27 Sep     , Sascha Hauer wrote:
-> > > On Mon, Sep 27, 2010 at 08:12:34AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > > add MAKEALL.cfg example
+On Wed, Sep 29, 2010 at 12:31:55PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 09:29 Wed 29 Sep     , Sascha Hauer wrote:
+> > Hi J,
+> > 
+> > On Mon, Sep 27, 2010 at 06:02:29PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > On 16:35 Mon 27 Sep     , Sascha Hauer wrote:
+> > > > On Mon, Sep 27, 2010 at 08:12:34AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > > > add MAKEALL.cfg example
+> > > > > 
+> > > > > it's allow you to compile specific defconfig or ARCH or all
+> > > > > as
+> > > > > CROSS_COMPILE=arm-linux- ARCH=arm ./MAKEALL at91sam9263ek_defconfig
+> > > > > CROSS_COMPILE=arm-linux- ARCH=arm ./MAKEALL
+> > > > > 
+> > > > > or via config
+> > > > > 
+> > > > > CONFIG=./MAKEALL.cfg ARCH=arm ./MAKEALL at91sam9263ek_defconfig
+> > > > > CONFIG=./MAKEALL.cfg ARCH=arm ./MAKEALL
+> > > > > 
+> > > > > and for all
+> > > > > 
+> > > > > CONFIG=./MAKEALL.cfg ./MAKEALL
+> > > > > 
+> > > > > you can specify
+> > > > > JOBS            jobs
+> > > > > BUILDDIR        build dir
+> > > > > LOGDIR          log dir
 > > > > 
-> > > > it's allow you to compile specific defconfig or ARCH or all
-> > > > as
-> > > > CROSS_COMPILE=arm-linux- ARCH=arm ./MAKEALL at91sam9263ek_defconfig
-> > > > CROSS_COMPILE=arm-linux- ARCH=arm ./MAKEALL
-> > > > 
-> > > > or via config
-> > > > 
-> > > > CONFIG=./MAKEALL.cfg ARCH=arm ./MAKEALL at91sam9263ek_defconfig
-> > > > CONFIG=./MAKEALL.cfg ARCH=arm ./MAKEALL
-> > > > 
-> > > > and for all
-> > > > 
-> > > > CONFIG=./MAKEALL.cfg ./MAKEALL
-> > > > 
-> > > > you can specify
-> > > > JOBS            jobs
-> > > > BUILDDIR        build dir
-> > > > LOGDIR          log dir
-> > > 
-> > > Would be good to have this example somewhere in the code, maybe as help
-> > > text in MAKEALL
-> > MAKEALL -h is ok?
-> 
-> Yes, -h and if called without arguments.
-no agument means all arch
+> > > > Would be good to have this example somewhere in the code, maybe as help
+> > > > text in MAKEALL
+> > > MAKEALL -h is ok?
+> > 
+> > Yes, -h and if called without arguments.
+> no agument means all arch
 
-I prefer to printf it just if -h or missing info
+Ah, yes.
 
-Best Regards,
-J.
+> 
+> I prefer to printf it just if -h or missing info
+
+Missing info is what I meant, I remember seeing an error message the
+first time I called the script.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
