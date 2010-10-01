@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail9.tpgi.com.au ([203.12.160.104])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1P1Xhz-000417-RS
-	for barebox@lists.infradead.org; Fri, 01 Oct 2010 04:59:00 +0000
-From: Marc Reilly <marc@cpdesign.com.au>
-Date: Fri, 1 Oct 2010 14:58:24 +1000
-References: <1285904458-7015-1-git-send-email-marc@cpdesign.com.au>
-	<20101001042959.GE25320@game.jcrosoft.org>
-In-Reply-To: <20101001042959.GE25320@game.jcrosoft.org>
+	id 1P1Zqt-0001uf-TX
+	for barebox@lists.infradead.org; Fri, 01 Oct 2010 07:16:23 +0000
+Date: Fri, 1 Oct 2010 09:16:18 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20101001071618.GA28242@pengutronix.de>
+References: <1285567954-1394-1-git-send-email-plagnioj@jcrosoft.com>
+	<1285903152-5840-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
-Message-Id: <201010011458.24626.marc@cpdesign.com.au>
+Content-Disposition: inline
+In-Reply-To: <1285903152-5840-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,37 +23,85 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] imx: Internal boot sources, handle all header offsets
+Subject: Re: [PATCH v3] MAKEALL: make it generic
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-Hi,
-
-> > -#define __image_len_0x100		__section(.image_len_0x100)
-> > +#if defined(CONFIG_ARCH_IMX_INTERNAL_BOOT_NOR)
-> > +	#define __flash_header_section		__section(.flash_header_0x1000)
-> > +	#define __dcd_entry_section		__section(.dcd_entry_0x1000)
-> > +	#define __image_len_section		__section(.image_len_0x1000)
-> > +	#define FLASH_HEADER_OFFSET 0x1000
-> > +#elif defined(CONFIG_ARCH_IMX_INTERNAL_BOOT_ONENAND)
-> > +	#define __flash_header_section		__section(.flash_header_0x0100)
-> > +	#define __dcd_entry_section		__section(.dcd_entry_0x0100)
-> > +	#define __image_len_section		__section(.image_len_0x0100)
-> > +	#define FLASH_HEADER_OFFSET 0x0100
+On Fri, Oct 01, 2010 at 05:19:12AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> it's allow you to compile specific defconfig or ARCH or all
+> as
 > 
-> nor and onenand are the same why duplicate them?
+> CROSS_COMPILE=arm-linux- ARCH=arm ./MAKEALL at91sam9263ek_defconfig
+> CROSS_COMPILE=arm-linux- ARCH=arm ./MAKEALL
+> 
+> The cross-compiler can be specify via
+>     CROSS_COMPILE               default
+>     CROSS_COMPILE_<arch>        arch default
+>     CROSS_COMPILE_<target>      deconfig specifc
+> 
+> it will be evaluated in the invert order
+> 
+> or via config
+> 
+> you can specify it via env CONFIG or option -c (overwrite env)
+> 
+> CONFIG=./MAKEALL.cfg ARCH=arm ./MAKEALL at91sam9263ek_defconfig
+> CONFIG=./MAKEALL.cfg ARCH=arm ./MAKEALL
+> 
+> and for all
+> 
+> CONFIG=./MAKEALL.cfg ./MAKEALL
+> 
+> you can specify via env or option
+> env       option
+> ARCH      -a      arch
+> CONFIG    -c      config
+> JOBS      -j      jobs
+> BUILDDIR  -O      build dir
+> LOGDIR    -l      log dir
+> 
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+> v3:
+> add getopts supports
+> 
+> add usage support
+> 
+> Best Rebards,
+> J.
+>  MAKEALL |  286 ++++++++++++++++++++++++++++++++++++++++++++++++++-------------
+>  1 files changed, 227 insertions(+), 59 deletions(-)
+> 
+> diff --git a/MAKEALL b/MAKEALL
+> index dd0f66b..d42be6e 100755
+> --- a/MAKEALL
+> +++ b/MAKEALL
+> @@ -1,89 +1,257 @@
+> -#!/bin/bash
+> +#!/bin/sh
 
-They look similar but, NOR offset is at 4Kb (0x1000), OneNand is 256b (0x100).  
-
-(The leading zero for 0x0100 doesn't help, but is necessary otherwise the 
-blah_0x1000 matches the blah_0x100* linker section.)
-
-Cheers
-Marc
+With /bin/sh here ./MAKEALL -c MAKEALL.cfg does not work. I have to
+explicitely call ./MAKEALL -c ./MAKEALL.cfg. Can we keep /bin/bash here
+or has anybody a better idea?
 
 
+> +
+> +if [ "${CONFIG}" ]
+> +then
+> +	source "${CONFIG}"
+> +fi
 
- 
+It fails here with:
+
+./MAKEALL: line 230: source: MAKEALL.cfg: file not found
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
