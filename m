@@ -1,20 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qy0-f177.google.com ([209.85.216.177])
-	by bombadil.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1P1dVY-00079e-Rw
-	for barebox@lists.infradead.org; Fri, 01 Oct 2010 11:10:34 +0000
-Received: by qyk31 with SMTP id 31so1521155qyk.15
-	for <barebox@lists.infradead.org>; Fri, 01 Oct 2010 04:10:30 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <AANLkTikrna=mcBoayqbAezJdvuo1oUhs3XEUrf+W3kpA@mail.gmail.com>
-References: <AANLkTi=k3qTJtQeuOMoBDJMrrR3DQbF7GunjT10FRDSW@mail.gmail.com>
-	<AANLkTinsWzaMthMo2djN17hWUMG5+4K+Y-H-YZPs-q-H@mail.gmail.com>
-	<201009291108.18378.jbe@pengutronix.de>
-	<201009291123.19306.jbe@pengutronix.de>
-	<AANLkTikrna=mcBoayqbAezJdvuo1oUhs3XEUrf+W3kpA@mail.gmail.com>
-Date: Fri, 1 Oct 2010 16:40:25 +0530
-Message-ID: <AANLkTikcCPfcaDAdmLajCY-Y9RQn=9gqz28VfZELfTb8@mail.gmail.com>
-From: Gaurav Singh <gausinghnsit@gmail.com>
+Received: from 64.mail-out.ovh.net ([91.121.185.65])
+	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1P1ioe-00016K-1U
+	for barebox@lists.infradead.org; Fri, 01 Oct 2010 16:50:37 +0000
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Fri,  1 Oct 2010 18:48:47 +0200
+Message-Id: <1285951727-16500-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1285903152-5840-1-git-send-email-plagnioj@jcrosoft.com>
+References: <1285903152-5840-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,213 +16,388 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Failing to load Barebox Environment
-To: Juergen Beisert <jbe@pengutronix.de>, Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v4] MAKEALL: make it generic
+To: barebox@lists.infradead.org
 
-Hi all,
-Well turns out my character device inode values were being overwritten
-by the NAND buffer contents... this was because I have to change
-NAND_MAX_PAGESIZE from 2048 to 4096 ! I have a NAND on my board where
-Page size is 4096.
-It is working fine now - no need for a seperate envfs_nand_load function.
+it's allow you to compile specific defconfig or ARCH or all
+as
 
-Thanks
-Regards
-Gaurav
+CROSS_COMPILE=arm-linux- ARCH=arm ./MAKEALL at91sam9263ek_defconfig
+CROSS_COMPILE=arm-linux- ARCH=arm ./MAKEALL
 
-On Thu, Sep 30, 2010 at 12:09 PM, Gaurav Singh <gausinghnsit@gmail.com> wro=
-te:
-> Hi Sascha, Juergen,
-> I did a rather crude workaround for this. Copied the NAND partition
-> containing the environment from NAND on startup into a file using
-> run_command.
-> run_command("cp /dev/env0 /env_temp",0);
-> then
-> envfs_load("/env_temp", "/env")
->
-> This is working fine.
-> I think - overall the enfs_load logic has to be tweaked for NAND devices.
->
-> Now I wrote a new enfs_nand_load function - This basically reads a
-> Page of NAND (which works fine if my env file is less than 4096 :))
-> into the buffer and manipulates it to prepare the Environment
-> correctly. So basically we can read the entire environment partition
-> from NAND in one go and then manipulate it to prepare the env in RAM.
->
-> int envfs_nand_load(char *filename, char *dir)
-> {
-> =A0 =A0 =A0 =A0struct envfs_super* super;
-> =A0 =A0 =A0 =A0void *buf =3D NULL, *buf_free =3D NULL;
-> =A0 =A0 =A0 =A0int envfd;
-> =A0 =A0 =A0 =A0int fd, ret =3D 0;
-> =A0 =A0 =A0 =A0char *str, *tmp;
-> =A0 =A0 =A0 =A0int namelen_full;
-> =A0 =A0 =A0 =A0unsigned long size;
->
-> =A0 =A0 =A0 =A0envfd =3D open(filename, O_RDONLY);
-> =A0 =A0 =A0 =A0if (envfd < 0) {
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0printf("Open %s %s\n", filename, errno_str=
-());
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0return -1;
-> =A0 =A0 =A0 =A0}
-> =A0 =A0 =A0 =A0/* Reading a Page into Buf */
-> =A0 =A0 =A0 =A0size =3D ENVFS_32(4096);
-> =A0 =A0 =A0 =A0buf =3D xzalloc(size);
-> =A0 =A0 =A0 =A0buf_free =3D buf;
-> =A0 =A0 =A0 =A0printf("1\n");
-> =A0 =A0 =A0 =A0ret =3D read(envfd, buf, size);
-> =A0 =A0 =A0 =A0if (ret < size) {
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0perror("read");
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0ret =3D errno;
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0goto out;
-> =A0 =A0 =A0 =A0}
->
-> =A0 =A0 =A0 =A0super =3D (struct envfs_super *)buf;
->
-> =A0 =A0 =A0 =A0if ( ENVFS_32(super->magic) !=3D ENVFS_MAGIC) {
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0printf("envfs: wrong magic on %s\n", filen=
-ame);
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0ret =3D -EIO;
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0goto out;
-> =A0 =A0 =A0 =A0}
->
-> =A0 =A0 =A0 =A0if (crc32(0, (unsigned char *)super, sizeof(struct envfs_s=
-uper) - 4)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 !=3D ENVFS_32(super->sb_crc)) {
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0printf("wrong crc on env superblock\n");
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0ret =3D -EIO;
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0goto out;
-> =A0 =A0 =A0 =A0}
->
-> =A0 =A0 =A0 =A0void *buf2;
-> =A0 =A0 =A0 =A0size =3D ENVFS_32(super->size);
-> =A0 =A0 =A0 =A0/* Rest on ENV except Superblock to be kept in buf2 */
-> =A0 =A0 =A0 =A0buf2 =3D (void *)((char *)buf + sizeof(struct envfs_super)=
-);
->
-> =A0 =A0 =A0 =A0if (crc32(0, (unsigned char *)buf2, size)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 !=3D ENVFS_32(super->crc)) {
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0printf("wrong crc on env\n");
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0ret =3D -EIO;
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0goto out;
-> =A0 =A0 =A0 =A0}
->
-> =A0 =A0 =A0 =A0while (size) {
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0struct envfs_inode *inode;
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0uint32_t inode_size, inode_namelen;
->
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0inode =3D (struct envfs_inode *)buf2;
->
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0if (ENVFS_32(inode->magic) !=3D ENVFS_INOD=
-E_MAGIC) {
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0printf("envfs: wrong magic=
- on %s\n", filename);
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0ret =3D -EIO;
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0goto out;
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0}
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0inode_size =3D ENVFS_32(inode->size);
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0inode_namelen =3D ENVFS_32(inode->namelen);
->
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0debug("loading %s size %d namelen %d\n", i=
-node->data,
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0inode_size, inode_namelen);
->
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0str =3D concat_path_file(dir, inode->data);
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0tmp =3D strdup(str);
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0make_directory(dirname(tmp));
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0free(tmp);
->
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0fd =3D open(str, O_WRONLY | O_CREAT | O_TR=
-UNC, 0644);
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0free(str);
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0if (fd < 0) {
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0printf("Open %s\n", errno_=
-str());
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0ret =3D fd;
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0goto out;
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0}
->
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0namelen_full =3D PAD4(inode_namelen);
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0ret =3D write(fd, buf2 + namelen_full + si=
-zeof(struct
-> envfs_inode),
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0inode_size=
-);
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0if (ret < inode_size) {
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0perror("write");
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0ret =3D errno;
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0close(fd);
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0goto out;
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0}
->
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0close(fd);
->
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0buf2 +=3D PAD4(inode_namelen) + PAD4(inode=
-_size) +
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0sizeof(str=
-uct envfs_inode);
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0size -=3D PAD4(inode_namelen) + PAD4(inode=
-_size) +
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0sizeof(str=
-uct envfs_inode);
-> =A0 =A0 =A0 =A0}
->
-> =A0 =A0 =A0 =A0ret =3D 0;
-> out:
-> =A0 =A0 =A0 =A0close(envfd);
-> =A0 =A0 =A0 =A0if (buf_free)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0free(buf_free);
-> =A0 =A0 =A0 =A0return ret;
-> }
->
->
->
->
-> On Wed, Sep 29, 2010 at 2:53 PM, Juergen Beisert <jbe@pengutronix.de> wro=
-te:
->> Juergen Beisert wrote:
->>> Just a note:
->>>
->>> You configure:
->>> > >> devfs_add_partition("nand0", 0x00000, 0x200000, PARTITION_FIXED,
->>> > >> "self_raw"); dev_add_bb_dev("self_raw", "self0");
->>> > >> devfs_add_partition("nand0", 0x200000, 0x200000, PARTITION_FIXED,
->>> > >> "env_raw"); dev_add_bb_dev("env_raw", "env0");
->>>
->>> And then:
->>> > EVB2065> addpart /dev/nand0 4M(barebox)ro,2M(kernel)ro,-(root)
->>>
->>> Both must match!
->>>
->>> Try instead:
->>>
->>> EVB2065> addpart /dev/nand0 256k(barebox)ro,256k(env),2M(kernel)ro,-(ro=
-ot)
->>>
->>> jbe
->>
->> Ups, sorry: 0x200000 !=3D 256k (didn't count the '0' right...)
->>
->> EVB2065> addpart /dev/nand0 2M(barebox)ro,2M(env),2M(kernel)ro,-(root)
->>
->> jbe
->>
->> --
->> Pengutronix e.K. =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0| Juergen Beisert =A0 =A0 =A0 =A0 =A0 =A0 |
->> Linux Solutions for Science and Industry =A0 =A0 =A0| Phone: +49-8766-93=
-9 228 =A0 =A0 |
->> Vertretung Sued/Muenchen, Germany =A0 =A0 =A0 =A0 =A0 =A0 | Fax: =A0 +49=
--5121-206917-5555 |
->> Amtsgericht Hildesheim, HRA 2686 =A0 =A0 =A0 =A0 =A0 =A0 =A0| http://www=
-.pengutronix.de/ =A0|
->>
->
+The cross-compiler can be specify via
+    CROSS_COMPILE               default
+    CROSS_COMPILE_<arch>        arch default
+    CROSS_COMPILE_<target>      deconfig specifc
+
+it will be evaluated in the invert order
+
+or via config
+
+you can specify it via env CONFIG or option -c (overwrite env)
+
+CONFIG=./MAKEALL.cfg ARCH=arm ./MAKEALL at91sam9263ek_defconfig
+CONFIG=./MAKEALL.cfg ARCH=arm ./MAKEALL
+
+and for all
+
+CONFIG=./MAKEALL.cfg ./MAKEALL
+
+you can specify via env or option
+env       option
+ARCH      -a      arch
+CONFIG    -c      config
+JOBS      -j      jobs
+BUILDDIR  -O      build dir
+LOGDIR    -l      log dir
+
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+v4:
+
+	fix support of CONFIG=MAKEALL.cfg or -c MAKEALL.cfg
+
+Best Regards,
+J.
+ MAKEALL |  293 ++++++++++++++++++++++++++++++++++++++++++++++++++-------------
+ 1 files changed, 234 insertions(+), 59 deletions(-)
+
+diff --git a/MAKEALL b/MAKEALL
+index dd0f66b..9353cd8 100755
+--- a/MAKEALL
++++ b/MAKEALL
+@@ -1,89 +1,264 @@
+-#!/bin/bash
++#!/bin/sh
+ 
+-check_pipe_status() {
+-        for i in  "${PIPESTATUS[@]}"; do
+-		[ $i -gt 0 ] && return 1
+-        done
+-	return 0
+-}
++# Print statistics when we exit
++trap exit 1 2 3 15
++trap stats 0
+ 
++# Keep track of the number of builds and errors
++nb_errors=0
++errors_list=""
++nb_defconfigs=0
++ret=0
+ 
+-HERE=$(pwd)
+-AUTOBUILD_DIR=${HERE}/autobuild
+-REPORT=${AUTOBUILD_DIR}/REPORT
++here=$(pwd)
+ 
+-if [ -d "${AUTOBUILD_DIR}" ]; then
+-	echo "warning: ${AUTOBUILD_DIR} exists, press <ctrl-c> to exit or wait for 3 seconds"
+-	sleep 3
+-	rm -fr ${AUTOBUILD_DIR}
+-fi
++time_start=$(date +%s)
++
++filename=`basename $0`
++
++is_print_stats=1
+ 
+-mkdir -p ${AUTOBUILD_DIR}
++#-----------------------------------------------------------------------
+ 
+-BOARDS="${BOARDS} sandbox"
+-sandbox_ARCH=sandbox
+-sandbox_CROSS_COMPILE=
++usage() {
++	is_print_stats=0
++	echo "Usage: ${filename} [OPTION]..."
++	echo "Barebox MAKEALL tools."
++	echo ""
++	echo "it's allow you to compile specific defconfig or ARCH or all"
++	echo "as"
++	echo ""
++	echo "CROSS_COMPILE=arm-linux- ARCH=arm ./MAKEALL at91sam9263ek_defconfig"
++	echo "CROSS_COMPILE=arm-linux- ARCH=arm ./MAKEALL"
++	echo ""
++	echo "The cross-compiler can be specify via"
++	echo "    CROSS_COMPILE               default"
++	echo "    CROSS_COMPILE_<arch>        arch default"
++	echo "    CROSS_COMPILE_<target>      deconfig specifc"
++	echo ""
++	echo "it will be evaluated in the invert order"
++	echo ""
++	echo "or via config"
++	echo ""
++	echo "you can specify it via env CONFIG or option -c (overwrite env)"
++	echo ""
++	echo "CONFIG=./MAKEALL.cfg ARCH=arm ./MAKEALL at91sam9263ek_defconfig"
++	echo "CONFIG=./MAKEALL.cfg ARCH=arm ./MAKEALL"
++	echo ""
++	echo "and for all"
++	echo ""
++	echo "CONFIG=./MAKEALL.cfg ./MAKEALL"
++	echo ""
++	echo "you can specify via env or option"
++	echo "env       option"
++	echo "ARCH      -a      arch"
++	echo "CONFIG    -c      config"
++	echo "JOBS      -j      jobs"
++	echo "BUILDDIR  -O      build dir"
++	echo "LOGDIR    -l      log dir"
++	echo ""
++}
+ 
+-BOARDS="${BOARDS} ipe337"
+-ipe337_ARCH=blackfin
+-ipe337_CROSS_COMPILE=bfin-elf-
++stats() {
++	[ ${is_print_stats} -lt 1 ] && return
+ 
+-BOARDS="${BOARDS} netx_nxdb500"
+-netx_nxdb500_ARCH=arm
+-netx_nxdb500_CROSS_COMPILE=arm-v4t-linux-gnueabi-
++	echo ""
++	echo "--------------------- SUMMARY ----------------------------"
++	echo "defconfigs compiled: ${nb_defconfigs}"
++	time_stop=$(date +%s)
++	time_diff=$((${time_stop} - ${time_start}))
++	printf "compiled in %4is\n" ${time_diff}
++	if [ ${nb_errors} -gt 0 ] ; then
++		echo "defcongids with warnings or errors: ${nb_errors} (${errors_list} )"
++	fi
++	echo "----------------------------------------------------------"
+ 
+-BOARDS="${BOARDS} pcm030"
+-pcm030_ARCH=ppc
+-pcm030_CROSS_COMPILE=powerpc-603e-linux-gnu-
++	exit ${ret}
++}
+ 
+-BOARDS="${BOARDS} pcm037"
+-pcm037_ARCH=arm
+-pcm037_CROSS_COMPILE=arm-1136jfs-linux-gnueabi-
++check_pipe_status() {
++	for i in "${PIPESTATUS[@]}"
++	do
++		[ $i -gt 0 ] && return 1
++	done
++	return 0
++}
+ 
+-BOARDS="${BOARDS} pcm038"
+-pcm038_ARCH=arm
+-pcm038_CROSS_COMPILE=arm-v4t-linux-gnueabi-
++do_build_target() {
++	local arch=$1
++	local target=$2
++	local target_time_start=$(date +%s)
++	local log_report="${LOGDIR}/${target}/report.log"
++	local log_err="${LOGDIR}/${target}/errors.log"
+ 
+-for board in ${BOARDS}; do
++	rm -rf "${BUILDDIR}"
++	mkdir -p "${BUILDDIR}"
++	mkdir -p "${LOGDIR}/${target}"
++	printf "Building ${arch} ${target} \n" >&2 | tee -a "${log_report}"
+ 
+-	time_start=$(date +%s)
+-	arch=${board}_ARCH
+-	cross_compile=${board}_CROSS_COMPILE
+-	mkdir -p ${AUTOBUILD_DIR}/${board}
+-	printf "%-20s defconfig: " ${board} | tee -a ${REPORT}
++	cross_compile=`eval echo '$CROSS_COMPILE_'${target}`
++	if [ ! "${cross_compile}" ]
++	then
++		cross_compile=`eval echo '$CROSS_COMPILE_'${arch}`
++		if [ ! "${cross_compile}" ]
++		then
++			cross_compile=${CROSS_COMPILE}
++		fi
++	fi
+ 
+-	make -C ${HERE} \
+-		O=${AUTOBUILD_DIR}/${board} \
+-		ARCH=${!arch} \
+-		${board}_defconfig \
+-		> ${AUTOBUILD_DIR}/${board}.log 2>&1
++	MAKE="make -C ${here} CROSS_COMPILE=${cross_compile} ARCH=${arch} O=${BUILDDIR}"
++	${MAKE} -j${JOBS} ${target} 2>&1 > "${log_report}" | tee "${log_err}"
+ 
++	printf "Configure: " | tee -a "${log_report}"
+ 	check_pipe_status
+ 	if [ "$?" = "0" ]; then
++		printf "OK     \n" | tee -a "${log_report}"
+ 
+-		printf "OK     " | tee -a ${REPORT}
+-		printf "compile: " ${board} | tee -a ${REPORT}
++		${MAKE} -j${JOBS} -s 2>&1 >> "${log_report}" | tee -a "${log_err}"
+ 
+-		make -C ${HERE} \
+-			O=${AUTOBUILD_DIR}/${board} \
+-			ARCH=${!arch} \
+-			CROSS_COMPILE=${!cross_compile} \
+-			> ${AUTOBUILD_DIR}/${board}.log 2>&1
++		printf "Compile: " ${target} | tee -a "${log_report}"
+ 
+ 		check_pipe_status
+ 		if [ "$?" = "0" ]; then
+-			printf "OK     " | tee -a ${REPORT}
++			printf "OK     \n" | tee -a "${log_report}"
++			${cross_compile}size ${BUILDDIR}/barebox | tee -a "${log_report}"
+ 		else
+-			printf "FAILED " | tee -a ${REPORT}
++			printf "FAILED \n" | tee -a "${log_report}"
++			ret=1
+ 		fi
++	else
++		printf "FAILED \n" | tee -a "${log_report}"
++		printf "Compile: ------ \n" | tee -a "${log_report}"
++		ret=1
++	fi
+ 
++	if [ -s "${log_err}" ] ; then
++		nb_errors=$((nb_errors + 1))
++		errors_list="${errors_list} ${target}"
+ 	else
+-		printf "FAILED " | tee -a ${REPORT}
+-		printf "compile: ------ " | tee -a ${REPORT}
++		rm "${log_err}"
+ 	fi
+ 
+-	time_stop=$(date +%s)
+-	time_diff=$(($time_stop - $time_start))
+-	printf "%4is\n" $time_diff | tee -a ${REPORT}
++	nb_defconfigs=$((nb_defconfigs + 1))
++
++	target_time_stop=$(date +%s)
++	target_time_diff=$((${target_time_stop} - ${target_time_start}))
++	printf "Compiled in %4is\n" ${target_time_diff} | tee -a "${log_report}"
++}
++
++do_build() {
++	local arch=$1
++
++	for i in arch/${arch}/configs/*_defconfig
++	do
++		local target=$(basename $i)
++
++		do_build_target ${arch} ${target}
++	done
++}
++
++do_build_all() {
++	local build_target=0
++
++	for i in arch/*
++	do
++		local arch=$(basename $i)
++
++		if [ -d $i ]
++		then
++			do_build ${arch}
++			build_target=$((build_target + 1))
++		fi
++	done
++
++	return $build_target
++}
++
++while getopts "hc:j:O:l:a:" Option
++do
++case $Option in
++	a )
++		ARCH=${OPTARG}
++		;;
++	c )
++		CONFIG=${OPTARG}
++		;;
++	j )
++		JOBS=${OPTARG}
++		;;
++	l )
++		LOGDIR=${OPTARG}
++		;;
++	O )
++		BUILDDIR=${OPTARG}
++		;;
++	h )
++		usage
++		exit 0
++		;;
++esac
+ done
+ 
++shift $((OPTIND - 1))
++
++if [ ! "${JOBS}" ] ; then
++	#linux, BSD, MacOS
++	nb_cpu=`getconf _NPROCESSORS_ONLN`
++
++	if [ $? -gt 0 ]
++	then
++		nb_cpu=1
++	fi
++
++	JOBS=$((${nb_cpu} * 2))
++fi
++
++if [ ! "${LOGDIR}" ]
++then
++	LOGDIR="log"
++fi
++
++if [ ! "${BUILDDIR}" ]
++then
++	BUILDDIR="makeall_builddir"
++fi
++
++if [ "${CONFIG}" ]
++then
++	basedir=`dirname ${CONFIG}`
++
++	if [ ! "${basedir}" ] || [ "${basedir}" = "." ]
++	then
++		CONFIG="./${CONFIG}"
++	fi
++
++	source "${CONFIG}"
++fi
++
++[ -d "${LOGDIR}" ] || mkdir ${LOGDIR} || exit 1
++
++if [ ! "${CONFIG}" ] && [ ! "${CROSS_COMPILE}" ]
++then
++	echo "You need to specify a CONFIG or a CROSS_COMPILE"
++	usage
++	exit 1
++fi
++
++if [ ! "${ARCH}" ] || [ ! -d arch/${ARCH} ]
++then
++	do_build_all
++	if [ $? -eq 0 ]
++	then
++		echo "You need to specify the ARCH or CROSS_COMPILE_<arch> or CROSS_COMPILE_<target> in your config file"
++		usage
++		exit 1
++	fi
++	exit 0
++fi
++
++if [ $# -eq 0 ]
++then
++	do_build ${ARCH}
++else
++	do_build_target ${ARCH} $1
++fi
+-- 
+1.7.1
+
 
 _______________________________________________
 barebox mailing list
