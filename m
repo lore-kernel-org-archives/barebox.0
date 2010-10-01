@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-px0-f177.google.com ([209.85.212.177])
+Received: from mail-pz0-f49.google.com ([209.85.210.49])
 	by bombadil.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1P1WV9-0004In-6a
-	for barebox@lists.infradead.org; Fri, 01 Oct 2010 03:41:40 +0000
-Received: by pxi4 with SMTP id 4so893787pxi.36
-	for <barebox@lists.infradead.org>; Thu, 30 Sep 2010 20:41:38 -0700 (PDT)
+	id 1P1WVE-0004Jg-OI
+	for barebox@lists.infradead.org; Fri, 01 Oct 2010 03:41:46 +0000
+Received: by pzk32 with SMTP id 32so896277pzk.36
+	for <barebox@lists.infradead.org>; Thu, 30 Sep 2010 20:41:43 -0700 (PDT)
 From: Marc Reilly <marc@cpdesign.com.au>
-Date: Fri,  1 Oct 2010 13:40:57 +1000
-Message-Id: <1285904458-7015-1-git-send-email-marc@cpdesign.com.au>
+Date: Fri,  1 Oct 2010 13:40:58 +1000
+Message-Id: <1285904458-7015-2-git-send-email-marc@cpdesign.com.au>
+In-Reply-To: <1285904458-7015-1-git-send-email-marc@cpdesign.com.au>
+References: <1285904458-7015-1-git-send-email-marc@cpdesign.com.au>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,124 +23,212 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] imx: Internal boot sources, handle all header offsets
+Subject: [PATCH 2/2] Update flash headers for boards supporting internal boot.
 To: barebox@lists.infradead.org
-
-Makes the internal boot source configurable.
-Also changes section names slightly so that .flash_header_0x1000 isn't
-matched to .flash_header_0x100* etc.
 
 Signed-off-by: Marc Reilly <marc@cpdesign.com.au>
 ---
- arch/arm/mach-imx/Kconfig                         |   22 +++++++++++++
- arch/arm/mach-imx/include/mach/barebox.lds.h      |   12 ++++----
- arch/arm/mach-imx/include/mach/imx-flash-header.h |   34 +++++++++++++++-----
- 3 files changed, 53 insertions(+), 15 deletions(-)
+ arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c  |   15 ++++++++-------
+ arch/arm/boards/eukrea_cpuimx35/flash_header.c     |   20 +++++++++++---------
+ arch/arm/boards/freescale-mx25-3-stack/3stack.c    |   19 +++++++++----------
+ .../boards/freescale-mx35-3-stack/flash_header.c   |   20 ++++++++++----------
+ 4 files changed, 38 insertions(+), 36 deletions(-)
 
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index 24d2684..b529ea2 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -40,6 +40,28 @@ config ARCH_IMX_INTERNAL_BOOT
- 	bool "support internal boot mode"
- 	depends on ARCH_IMX25 || ARCH_IMX35
+diff --git a/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c b/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
+index caeb46e..5a0c988 100644
+--- a/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
++++ b/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
+@@ -42,13 +42,14 @@
+ #include <mach/iomux-mx25.h>
  
-+choice
-+	depends on ARCH_IMX_INTERNAL_BOOT
-+	prompt "Internal boot source"
-+	help
-+	  Determines the location of the header information for internal boot. 
-+	  0x100 for OneNAND
-+	  0x400 for NAND, SD/MMC or Serial ROM
-+	  0x1000 for NOR
+ extern unsigned long _stext;
++extern void exception_vectors(void);
+ 
+ void __naked __flash_header_start go(void)
+ {
+ 	__asm__ __volatile__("b exception_vectors\n");
+ }
+ 
+-struct imx_dcd_entry __dcd_entry_0x400 dcd_entry[] = {
++struct imx_dcd_entry __dcd_entry_section dcd_entry[] = {
+ 	{ .ptr_type = 4, .addr = 0xb8001010, .val = 0x00000004, },
+ 	{ .ptr_type = 4, .addr = 0xb8001000, .val = 0x92100000, },
+ 	{ .ptr_type = 1, .addr = 0x80000400, .val = 0x12344321, },
+@@ -63,21 +64,21 @@ struct imx_dcd_entry __dcd_entry_0x400 dcd_entry[] = {
+ 	{ .ptr_type = 4, .addr = 0x53f80008, .val = 0x20034000, },
+ };
+ 
+-struct imx_flash_header __flash_header_0x400 eukrea_cpuimx25_header = {
+-	.app_code_jump_vector	= TEXT_BASE + 0x2000,
++struct imx_flash_header __flash_header_section flash_header = {
++	.app_code_jump_vector	= DEST_BASE + ((unsigned int)&exception_vectors - TEXT_BASE),
+ 	.app_code_barker	= APP_CODE_BARKER,
+ 	.app_code_csf		= 0,
+-	.dcd_ptr_ptr		= TEXT_BASE + 0x400 + offsetof(struct imx_flash_header, dcd),
++	.dcd_ptr_ptr		= FLASH_HEADER_BASE + offsetof(struct imx_flash_header, dcd),
+ 	.super_root_key		= 0,
+-	.dcd			= TEXT_BASE + 0x400 + offsetof(struct imx_flash_header, dcd_barker),
+-	.app_dest		= TEXT_BASE,
++	.dcd			= FLASH_HEADER_BASE + offsetof(struct imx_flash_header, dcd_barker),
++	.app_dest		= DEST_BASE,
+ 	.dcd_barker		= DCD_BARKER,
+ 	.dcd_block_len		= sizeof(dcd_entry),
+ };
+ 
+ extern unsigned long __bss_start;
+ 
+-unsigned long __image_len_0x400 barebox_len = 0x40000;
++unsigned long __image_len_section barebox_len = 0x40000;
+ 
+ static struct fec_platform_data fec_info = {
+ 	.xcv_type	= RMII,
+diff --git a/arch/arm/boards/eukrea_cpuimx35/flash_header.c b/arch/arm/boards/eukrea_cpuimx35/flash_header.c
+index 78f51f6..285a2d4 100644
+--- a/arch/arm/boards/eukrea_cpuimx35/flash_header.c
++++ b/arch/arm/boards/eukrea_cpuimx35/flash_header.c
+@@ -1,12 +1,15 @@
+ #include <common.h>
+ #include <mach/imx-flash-header.h>
++#include <mach/imx-regs.h>
 +
-+config ARCH_IMX_INTERNAL_BOOT_NAND
-+	default y
-+	bool "NAND, SD/MMC, Serial ROM"
-+	select NAND_IMX_BOOT
-+
-+config ARCH_IMX_INTERNAL_BOOT_NOR
-+	bool "NOR"
-+
-+config ARCH_IMX_INTERNAL_BOOT_ONENAND
-+	bool "OneNAND"
-+
-+endchoice
-+
- comment "Freescale i.MX System-on-Chip"
++extern void exception_vectors(void);
  
- choice
-diff --git a/arch/arm/mach-imx/include/mach/barebox.lds.h b/arch/arm/mach-imx/include/mach/barebox.lds.h
-index 8e1eccd..a2932bd 100644
---- a/arch/arm/mach-imx/include/mach/barebox.lds.h
-+++ b/arch/arm/mach-imx/include/mach/barebox.lds.h
-@@ -5,13 +5,13 @@
- 	.pre_image : {					\
- 		KEEP(*(.flash_header_start*))		\
- 		. = 0x100;				\
--		KEEP(*(.flash_header_0x100*))		\
--		KEEP(*(.dcd_entry_0x100*))		\
--		KEEP(*(.image_len_0x100*))		\
-+		KEEP(*(.flash_header_0x0100*))		\
-+		KEEP(*(.dcd_entry_0x0100*))		\
-+		KEEP(*(.image_len_0x0100*))		\
- 		. = 0x400;				\
--		KEEP(*(.flash_header_0x400*))		\
--		KEEP(*(.dcd_entry_0x400*))		\
--		KEEP(*(.image_len_0x400*))		\
-+		KEEP(*(.flash_header_0x0400*))		\
-+		KEEP(*(.dcd_entry_0x0400*))		\
-+		KEEP(*(.image_len_0x0400*))		\
- 		. = 0x1000;				\
- 		KEEP(*(.flash_header_0x1000*))		\
- 		KEEP(*(.dcd_entry_0x1000*))		\
-diff --git a/arch/arm/mach-imx/include/mach/imx-flash-header.h b/arch/arm/mach-imx/include/mach/imx-flash-header.h
-index 831a3aa..f1054da 100644
---- a/arch/arm/mach-imx/include/mach/imx-flash-header.h
-+++ b/arch/arm/mach-imx/include/mach/imx-flash-header.h
-@@ -3,17 +3,33 @@
+ void __naked __flash_header_start go(void)
+ {
+ 	__asm__ __volatile__("b exception_vectors\n");
+ }
  
- #define __flash_header_start		__section(.flash_header_start)
+-struct imx_dcd_entry __dcd_entry_0x400 dcd_entry[] = {
++struct imx_dcd_entry __dcd_entry_section dcd_entry[] = {
+ 	{ .ptr_type = 4, .addr = 0x53F80004, .val = 0x00821000, },
+ 	{ .ptr_type = 4, .addr = 0x53F80004, .val = 0x00821000, },
+ 	{ .ptr_type = 4, .addr = 0xB8001010, .val = 0x00000004, },
+@@ -24,18 +27,17 @@ struct imx_dcd_entry __dcd_entry_0x400 dcd_entry[] = {
+ 	{ .ptr_type = 4, .addr = 0xB8001010, .val = 0x00000004, },
+ };
  
--#define __flash_header_0x100		__section(.flash_header_0x100)
--#define __dcd_entry_0x100		__section(.dcd_entry_0x100)
--#define __image_len_0x100		__section(.image_len_0x100)
-+#if defined(CONFIG_ARCH_IMX_INTERNAL_BOOT_NOR)
-+	#define __flash_header_section		__section(.flash_header_0x1000)
-+	#define __dcd_entry_section		__section(.dcd_entry_0x1000)
-+	#define __image_len_section		__section(.image_len_0x1000)
-+	#define FLASH_HEADER_OFFSET 0x1000
-+#elif defined(CONFIG_ARCH_IMX_INTERNAL_BOOT_ONENAND)
-+	#define __flash_header_section		__section(.flash_header_0x0100)
-+	#define __dcd_entry_section		__section(.dcd_entry_0x0100)
-+	#define __image_len_section		__section(.image_len_0x0100)
-+	#define FLASH_HEADER_OFFSET 0x0100
-+#else
-+	#define __flash_header_section		__section(.flash_header_0x0400)
-+	#define __dcd_entry_section		__section(.dcd_entry_0x0400)
-+	#define __image_len_section		__section(.image_len_0x0400)
-+	#define FLASH_HEADER_OFFSET 0x0400
-+#endif
+-#define APP_DEST	0x80000000
  
--#define __flash_header_0x400		__section(.flash_header_0x400)
--#define __dcd_entry_0x400		__section(.dcd_entry_0x400)
--#define __image_len_0x400		__section(.image_len_0x400)
-+/*
-+ * NOR is not automatically copied anywhere by the boot ROM
-+ */
-+#if defined (CONFIG_ARCH_IMX_INTERNAL_BOOT_NOR)
-+	#define DEST_BASE	IMX_CS0_BASE
-+#else
-+	#define DEST_BASE	TEXT_BASE
-+#endif
+-struct imx_flash_header __flash_header_0x400 eukrea_cpuimx35_header = {
+-	.app_code_jump_vector	= APP_DEST + 0x1000,
++struct imx_flash_header __flash_header_section flash_header = {
++	.app_code_jump_vector	= DEST_BASE + ((unsigned int)&exception_vectors - TEXT_BASE),
+ 	.app_code_barker	= APP_CODE_BARKER,
+ 	.app_code_csf		= 0,
+-	.dcd_ptr_ptr		= APP_DEST + 0x400 + offsetof(struct imx_flash_header, dcd),
++	.dcd_ptr_ptr		= FLASH_HEADER_BASE + offsetof(struct imx_flash_header, dcd),
+ 	.super_root_key		= 0,
+-	.dcd			= APP_DEST + 0x400 + offsetof(struct imx_flash_header, dcd_barker),
+-	.app_dest		= APP_DEST,
++	.dcd			= FLASH_HEADER_BASE + offsetof(struct imx_flash_header, dcd_barker),
++	.app_dest		= DEST_BASE,
+ 	.dcd_barker		= DCD_BARKER,
+-	.dcd_block_len		= sizeof (dcd_entry),
++	.dcd_block_len		= sizeof(dcd_entry),
+ };
  
--#define __flash_header_0x1000		__section(.flash_header_0x1000)
--#define __dcd_entry_0x1000		__section(.dcd_entry_0x1000)
--#define __image_len_0x1000		__section(.image_len_0x1000)
-+#define FLASH_HEADER_BASE	(DEST_BASE + FLASH_HEADER_OFFSET)
+-unsigned long __image_len_0x400 barebox_len = 0x40000;
++unsigned long __image_len_section barebox_len = 0x40000;
+diff --git a/arch/arm/boards/freescale-mx25-3-stack/3stack.c b/arch/arm/boards/freescale-mx25-3-stack/3stack.c
+index cd228cc..065cefb 100644
+--- a/arch/arm/boards/freescale-mx25-3-stack/3stack.c
++++ b/arch/arm/boards/freescale-mx25-3-stack/3stack.c
+@@ -42,13 +42,14 @@
+ #include <i2c/mc34704.h>
  
- struct imx_dcd_entry {
- 	unsigned long ptr_type;
+ extern unsigned long _stext;
++extern void exception_vectors(void);
+ 
+ void __naked __flash_header_start go(void)
+ {
+ 	__asm__ __volatile__("b exception_vectors\n");
+ }
+ 
+-struct imx_dcd_entry __dcd_entry_0x400 dcd_entry[] = {
++struct imx_dcd_entry __dcd_entry_section dcd_entry[] = {
+ 	{ .ptr_type = 4, .addr = 0xb8002050, .val = 0x0000d843, },
+ 	{ .ptr_type = 4, .addr = 0xb8002054, .val = 0x22252521, },
+ 	{ .ptr_type = 4, .addr = 0xb8002058, .val = 0x22220a00, },
+@@ -90,23 +91,21 @@ struct imx_dcd_entry __dcd_entry_0x400 dcd_entry[] = {
+ 	{ .ptr_type = 4, .addr = 0x53f80008, .val = 0x20034000, },
+ };
+ 
+-#define APP_DEST	0x80000000
+-
+-struct imx_flash_header __flash_header_0x400 mx25_3ds_header = {
+-	.app_code_jump_vector	= APP_DEST + 0x1000,
++struct imx_flash_header __flash_header_section flash_header = {
++	.app_code_jump_vector	= DEST_BASE + ((unsigned int)&exception_vectors - TEXT_BASE),
+ 	.app_code_barker	= APP_CODE_BARKER,
+ 	.app_code_csf		= 0,
+-	.dcd_ptr_ptr		= APP_DEST + 0x400 + offsetof(struct imx_flash_header, dcd),
++	.dcd_ptr_ptr		= FLASH_HEADER_BASE + offsetof(struct imx_flash_header, dcd),
+ 	.super_root_key		= 0,
+-	.dcd			= APP_DEST + 0x400 + offsetof(struct imx_flash_header, dcd_barker),
+-	.app_dest		= APP_DEST,
++	.dcd			= FLASH_HEADER_BASE + offsetof(struct imx_flash_header, dcd_barker),
++	.app_dest		= DEST_BASE,
+ 	.dcd_barker		= DCD_BARKER,
+-	.dcd_block_len		= sizeof (dcd_entry),
++	.dcd_block_len		= sizeof(dcd_entry),
+ };
+ 
+ extern unsigned long __bss_start;
+ 
+-unsigned long __image_len_0x400 barebox_len = 0x40000;
++unsigned long __image_len_section barebox_len = 0x40000;
+ 
+ static struct fec_platform_data fec_info = {
+ 	.xcv_type	= RMII,
+diff --git a/arch/arm/boards/freescale-mx35-3-stack/flash_header.c b/arch/arm/boards/freescale-mx35-3-stack/flash_header.c
+index 171c499..4bee797 100644
+--- a/arch/arm/boards/freescale-mx35-3-stack/flash_header.c
++++ b/arch/arm/boards/freescale-mx35-3-stack/flash_header.c
+@@ -1,14 +1,15 @@
+ #include <common.h>
+ #include <mach/imx-flash-header.h>
++#include <mach/imx-regs.h>
+ 
+-extern unsigned long _stext;
++extern void exception_vectors(void);
+ 
+ void __naked __flash_header_start go(void)
+ {
+ 	__asm__ __volatile__("b exception_vectors\n");
+ }
+ 
+-struct imx_dcd_entry __dcd_entry_0x400 dcd_entry[] = {
++struct imx_dcd_entry __dcd_entry_section dcd_entry[] = {
+ 	{ .ptr_type = 4, .addr = 0xb8002050, .val = 0x0000d843, },
+ 	{ .ptr_type = 4, .addr = 0xB8002054, .val = 0x22252521, },
+ 	{ .ptr_type = 4, .addr = 0xB8002058, .val = 0x22220a00, },
+@@ -31,19 +32,18 @@ struct imx_dcd_entry __dcd_entry_0x400 dcd_entry[] = {
+ 	{ .ptr_type = 4, .addr = 0xB8001008, .val = 0x00002000, },
+ };
+ 
+-#define APP_DEST	0x80000000
+ 
+-struct imx_flash_header __flash_header_0x400 flash_header = {
+-	.app_code_jump_vector	= APP_DEST + 0x1000,
++struct imx_flash_header __flash_header_section flash_header = {
++	.app_code_jump_vector	= DEST_BASE + ((unsigned int)&exception_vectors - TEXT_BASE),
+ 	.app_code_barker	= APP_CODE_BARKER,
+ 	.app_code_csf		= 0,
+-	.dcd_ptr_ptr		= APP_DEST + 0x400 + offsetof(struct imx_flash_header, dcd),
++	.dcd_ptr_ptr		= FLASH_HEADER_BASE + offsetof(struct imx_flash_header, dcd),
+ 	.super_root_key		= 0,
+-	.dcd			= APP_DEST + 0x400 + offsetof(struct imx_flash_header, dcd_barker),
+-	.app_dest		= APP_DEST,
++	.dcd			= FLASH_HEADER_BASE + offsetof(struct imx_flash_header, dcd_barker),
++	.app_dest		= DEST_BASE,
+ 	.dcd_barker		= DCD_BARKER,
+-	.dcd_block_len		= sizeof (dcd_entry),
++	.dcd_block_len		= sizeof(dcd_entry),
+ };
+ 
+-unsigned long __image_len_0x400 barebox_len = 0x40000;
++unsigned long __image_len_section barebox_len = 0x40000;
+ 
 -- 
 1.7.1
 
