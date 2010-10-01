@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 26.mail-out.ovh.net ([91.121.27.225])
-	by bombadil.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1P1XHb-0007J3-Gt
-	for barebox@lists.infradead.org; Fri, 01 Oct 2010 04:31:44 +0000
-Date: Fri, 1 Oct 2010 06:29:59 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20101001042959.GE25320@game.jcrosoft.org>
-References: <1285904458-7015-1-git-send-email-marc@cpdesign.com.au>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1285904458-7015-1-git-send-email-marc@cpdesign.com.au>
+Received: from mail-px0-f177.google.com ([209.85.212.177])
+	by bombadil.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1P1XHY-0007Ij-RY
+	for barebox@lists.infradead.org; Fri, 01 Oct 2010 04:31:41 +0000
+Received: by pxi4 with SMTP id 4so903317pxi.36
+	for <barebox@lists.infradead.org>; Thu, 30 Sep 2010 21:31:39 -0700 (PDT)
+From: Marc Reilly <marc@cpdesign.com.au>
+Date: Fri,  1 Oct 2010 14:30:59 +1000
+Message-Id: <1285907459-9374-1-git-send-email-marc@cpdesign.com.au>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,34 +16,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] imx: Internal boot sources, handle all header offsets
-To: Marc Reilly <marc@cpdesign.com.au>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2] i2c-imx: wait for STOP before disabling controller
+To: barebox@lists.infradead.org
 
->  
->  #define __flash_header_start		__section(.flash_header_start)
->  
-> -#define __flash_header_0x100		__section(.flash_header_0x100)
-> -#define __dcd_entry_0x100		__section(.dcd_entry_0x100)
-> -#define __image_len_0x100		__section(.image_len_0x100)
-> +#if defined(CONFIG_ARCH_IMX_INTERNAL_BOOT_NOR)
-> +	#define __flash_header_section		__section(.flash_header_0x1000)
-> +	#define __dcd_entry_section		__section(.dcd_entry_0x1000)
-> +	#define __image_len_section		__section(.image_len_0x1000)
-> +	#define FLASH_HEADER_OFFSET 0x1000
-> +#elif defined(CONFIG_ARCH_IMX_INTERNAL_BOOT_ONENAND)
-> +	#define __flash_header_section		__section(.flash_header_0x0100)
-> +	#define __dcd_entry_section		__section(.dcd_entry_0x0100)
-> +	#define __image_len_section		__section(.image_len_0x0100)
-> +	#define FLASH_HEADER_OFFSET 0x0100
-nor and onenand are the same why duplicate them?
+Makes sure that the STOP condition is transmitted before the I2C
+controller is disabled.
+This fixes a problem where writing to an external EEPROM was not working
+because the EEPROM waits until the STOP before initiating the write
+internally.
 
-Best Regards,
-J.
+Signed-off-by: Marc Reilly <marc@cpdesign.com.au>
+---
+ drivers/i2c/i2c-imx.c |   10 +++++-----
+ 1 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/i2c/i2c-imx.c b/drivers/i2c/i2c-imx.c
+index cc64d94..ef7be65 100644
+--- a/drivers/i2c/i2c-imx.c
++++ b/drivers/i2c/i2c-imx.c
+@@ -265,7 +265,9 @@ static void i2c_imx_stop(struct i2c_adapter *adapter)
+ 		temp = readb(base + IMX_I2C_I2CR);
+ 		temp &= ~(I2CR_MSTA | I2CR_MTX);
+ 		writeb(temp, base + IMX_I2C_I2CR);
+-		i2c_imx->stopped = 1;
++		/* wait for the stop condition to be send, otherwise the i2c 
++		 * controller is disabled before the STOP is sent completely */
++		i2c_imx->stopped = i2c_imx_bus_busy(adapter, 0) ? 0 : 1;
+ 	}
+ 	if (cpu_is_mx1()) {
+ 		/*
+@@ -275,11 +277,9 @@ static void i2c_imx_stop(struct i2c_adapter *adapter)
+ 		udelay(i2c_imx->disable_delay);
+ 	}
+ 
+-	if (!i2c_imx->stopped)
+-		i2c_imx_bus_busy(adapter, 0);
+-
+-	/* Disable I2C controller */
++	/* Disable I2C controller, and force our state to stopped */
+ 	writeb(0, base + IMX_I2C_I2CR);
++	i2c_imx->stopped = 1;
+ }
+ 
+ static void i2c_imx_set_clk(struct imx_i2c_struct *i2c_imx,
+-- 
+1.7.1
+
 
 _______________________________________________
 barebox mailing list
