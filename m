@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pv0-f177.google.com ([74.125.83.177])
+Received: from mail-px0-f177.google.com ([209.85.212.177])
 	by bombadil.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1P1WCZ-00084R-5R
-	for barebox@lists.infradead.org; Fri, 01 Oct 2010 03:22:28 +0000
-Received: by pvg12 with SMTP id 12so889332pvg.36
-	for <barebox@lists.infradead.org>; Thu, 30 Sep 2010 20:22:25 -0700 (PDT)
+	id 1P1WDe-000894-AT
+	for barebox@lists.infradead.org; Fri, 01 Oct 2010 03:23:35 +0000
+Received: by pxi4 with SMTP id 4so890447pxi.36
+	for <barebox@lists.infradead.org>; Thu, 30 Sep 2010 20:23:33 -0700 (PDT)
 From: Marc Reilly <marc@cpdesign.com.au>
-Date: Fri,  1 Oct 2010 13:21:37 +1000
-Message-Id: <1285903297-6779-1-git-send-email-marc@cpdesign.com.au>
+Date: Fri,  1 Oct 2010 13:22:54 +1000
+Message-Id: <1285903374-6825-1-git-send-email-marc@cpdesign.com.au>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,30 +21,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] imx35: add base addresses for I2C and SDHC
+Subject: [PATCH] i2c-imx: wait for STOP before disabling controller
 To: barebox@lists.infradead.org
+
+Makes sure that the STOP condition is transmitted before the I2C
+controller is disabled.
+This fixes a problem where writing to an external EEPROM was not working
+because the EEPROM waits until the STOP before initiating the write
+internally.
 
 Signed-off-by: Marc Reilly <marc@cpdesign.com.au>
 ---
- arch/arm/mach-imx/include/mach/imx35-regs.h |    5 +++++
- 1 files changed, 5 insertions(+), 0 deletions(-)
+ drivers/i2c/i2c-imx.c |   10 +++++-----
+ 1 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/mach-imx/include/mach/imx35-regs.h b/arch/arm/mach-imx/include/mach/imx35-regs.h
-index c394a2a..b24674c 100644
---- a/arch/arm/mach-imx/include/mach/imx35-regs.h
-+++ b/arch/arm/mach-imx/include/mach/imx35-regs.h
-@@ -46,6 +46,11 @@
- #define IMX_NFC_BASE		0xBB000000
- #define IMX_FEC_BASE		0x50038000
- #define IMX_I2C1_BASE		0x43F80000
-+#define IMX_I2C2_BASE		0x43F98000
-+#define IMX_IC23_BASE		0x43F84000
-+#define IMX_SDHC1_BASE		0x53FB4000
-+#define IMX_SDHC2_BASE		0x53FB8000
-+#define IMX_SDHC3_BASE		0x53FBC000
+diff --git a/drivers/i2c/i2c-imx.c b/drivers/i2c/i2c-imx.c
+index cc64d94..3e37441 100644
+--- a/drivers/i2c/i2c-imx.c
++++ b/drivers/i2c/i2c-imx.c
+@@ -265,7 +265,9 @@ static void i2c_imx_stop(struct i2c_adapter *adapter)
+ 		temp = readb(base + IMX_I2C_I2CR);
+ 		temp &= ~(I2CR_MSTA | I2CR_MTX);
+ 		writeb(temp, base + IMX_I2C_I2CR);
+-		i2c_imx->stopped = 1;
++		/* wait for the stop condition to be send, otherwise the i2c 
++		 * controller is disabled before the STOP is sent completely */
++		i2c_imx->stopped = i2c_imx_bus_busy(adapter,0) ? 0 : 1;
+ 	}
+ 	if (cpu_is_mx1()) {
+ 		/*
+@@ -275,11 +277,9 @@ static void i2c_imx_stop(struct i2c_adapter *adapter)
+ 		udelay(i2c_imx->disable_delay);
+ 	}
  
- /*
-  * Clock Controller Module (CCM)
+-	if (!i2c_imx->stopped)
+-		i2c_imx_bus_busy(adapter, 0);
+-
+-	/* Disable I2C controller */
++	/* Disable I2C controller, and force our state to stopped */
+ 	writeb(0, base + IMX_I2C_I2CR);
++	i2c_imx->stopped = 1;
+ }
+ 
+ static void i2c_imx_set_clk(struct imx_i2c_struct *i2c_imx,
 -- 
 1.7.1
 
