@@ -1,11 +1,18 @@
-Return-path: <barebox-bounces@lists.infradead.org>
-Received: from 26.mail-out.ovh.net ([91.121.27.225])
-	by casper.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1P1tMP-0006bN-9f
-	for barebox@lists.infradead.org; Sat, 02 Oct 2010 04:06:11 +0000
-Date: Sat, 2 Oct 2010 05:57:43 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20101002035743.GH25320@game.jcrosoft.org>
+Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by casper.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1P205K-0007WB-OH
+	for barebox@lists.infradead.org; Sat, 02 Oct 2010 11:17:02 +0000
+Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.71)
+	(envelope-from <sha@pengutronix.de>) id 1P204s-0004oq-Q3
+	for barebox@lists.infradead.org; Sat, 02 Oct 2010 13:16:30 +0200
+Received: from sha by octopus.hi.pengutronix.de with local (Exim 4.69)
+	(envelope-from <sha@pengutronix.de>) id 1P204s-00010w-Ow
+	for barebox@lists.infradead.org; Sat, 02 Oct 2010 13:16:30 +0200
+Date: Sat, 2 Oct 2010 13:16:30 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20101002111630.GC28242@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
@@ -19,274 +26,447 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
-Errors-To: barebox-bounces@lists.infradead.org
-Subject: m68k pull request
+Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
+Subject: v2010.10.0
 To: barebox@lists.infradead.org
 
-Hi,
+Hi All,
 
-please pull The following changes since commit f6c9a980791489e27b564750478cde498b2a1a42:
+Another month is over and we have a new release. It gets evident that
+more and more patches come from !pengutronix. That's nice ;)
 
-  Update flash headers for boards supporting internal boot. (2010-10-01 10:01:14 +0200)
+Have fun
+ Sascha
+
+The following changes since commit 3d5d2279c0c5d3a7e83f94d98434c1cf29e35311:
+
+  Release v2010.09.0 (2010-08-30 20:47:59 +0200)
 
 are available in the git repository at:
-  git://git.jcrosoft.org/barebox.git m68k
+  git://git.pengutronix.de/git/barebox.git master
 
-Jean-Christophe PLAGNIOL-VILLARD (1):
-      remove m68k arch support
+Baruch Siach (12):
+      arm: add support for the serial ATAG
+      imx25: add support for UID read from eFuse
+      mx25 3ds: set CPU UID
+      imx25: fix UID endianess
+      mw: fix help text
+      imx: move IIM registers to their own header
+      imx: driver for the IIM fusebox
+      imx iim: add mac address support
+      imx25: add chip specific IIM fusebox defines
+      imx25: add iim platform code
+      fec_imx: add support for IIM stored mac address
+      iim/imx25: fix MAC and UID offsets
 
- Documentation/boards.dox                           |    5 -
- TODO                                               |    1 -
- arch/architecture.dox                              |    1 -
- arch/m68k/Kconfig                                  |  182 --
- arch/m68k/Makefile                                 |   82 -
- arch/m68k/boards/kp_ukd_r1_num/Makefile            |   31 -
- arch/m68k/boards/kp_ukd_r1_num/env/bin/_update     |   36 -
- arch/m68k/boards/kp_ukd_r1_num/env/bin/boot        |   38 -
- arch/m68k/boards/kp_ukd_r1_num/env/bin/init        |   20 -
- arch/m68k/boards/kp_ukd_r1_num/env/bin/pcidmaloop  |   14 -
- arch/m68k/boards/kp_ukd_r1_num/env/bin/pciloop     |   13 -
- .../boards/kp_ukd_r1_num/env/bin/update_kernel     |    8 -
- arch/m68k/boards/kp_ukd_r1_num/env/bin/update_root |    8 -
- arch/m68k/boards/kp_ukd_r1_num/env/config          |   32 -
- arch/m68k/boards/kp_ukd_r1_num/highlevel_init.c    |  124 -
- arch/m68k/boards/kp_ukd_r1_num/kp_ukd_r1_num.c     |  160 --
- arch/m68k/boards/kp_ukd_r1_num/kp_ukd_r1_num.dox   |   13 -
- arch/m68k/boards/kp_ukd_r1_num/lowlevel_init.c     |  183 --
- arch/m68k/boards/kp_ukd_r1_num/pci-stubs.c         |   41 -
- arch/m68k/boards/phycore_mcf54xx/Makefile          |   31 -
- arch/m68k/boards/phycore_mcf54xx/env/bin/_update   |   36 -
- arch/m68k/boards/phycore_mcf54xx/env/bin/boot      |   38 -
- arch/m68k/boards/phycore_mcf54xx/env/bin/init      |   20 -
- .../m68k/boards/phycore_mcf54xx/env/bin/pcidmaloop |   14 -
- arch/m68k/boards/phycore_mcf54xx/env/bin/pciloop   |   13 -
- .../boards/phycore_mcf54xx/env/bin/update_kernel   |    8 -
- .../boards/phycore_mcf54xx/env/bin/update_root     |    8 -
- arch/m68k/boards/phycore_mcf54xx/env/config        |   32 -
- arch/m68k/boards/phycore_mcf54xx/highlevel_init.c  |  124 -
- arch/m68k/boards/phycore_mcf54xx/lowlevel_init.c   |  194 --
- arch/m68k/boards/phycore_mcf54xx/pci-stubs.c       |   41 -
- arch/m68k/boards/phycore_mcf54xx/phyCore_MCF54xx.c |  139 --
- .../boards/phycore_mcf54xx/phyCore_MCF54xx.dox     |   14 -
- .../m68k/configs/phycore_kpukdr1_5475num_defconfig |   36 -
- arch/m68k/configs/phycore_mcf54xx_defconfig        |   36 -
- arch/m68k/cpu/Makefile                             |   41 -
- arch/m68k/cpu/cpu.c                                |  185 --
- arch/m68k/cpu/cw_console_io.c                      |  116 -
- arch/m68k/cpu/early_init_support.c                 |   41 -
- arch/m68k/cpu/interrupts.c                         |  246 --
- arch/m68k/cpu/start-mcfv4e.S                       |  677 ------
- arch/m68k/include/asm/atomic.h                     |   25 -
- arch/m68k/include/asm/barebox-m68k.h               |   40 -
- arch/m68k/include/asm/barebox.h                    |   33 -
- arch/m68k/include/asm/bitops.h                     |  141 --
- arch/m68k/include/asm/bootinfo.h                   |  381 ---
- arch/m68k/include/asm/byteorder.h                  |   43 -
- arch/m68k/include/asm/coldfire/mcf548x.h           |   63 -
- .../include/asm/coldfire/mcf548x/mcf548x_can.h     |  159 --
- .../include/asm/coldfire/mcf548x/mcf548x_ctm.h     |   88 -
- .../include/asm/coldfire/mcf548x/mcf548x_dma.h     |  121 -
- .../asm/coldfire/mcf548x/mcf548x_dma_ereq.h        |   62 -
- .../include/asm/coldfire/mcf548x/mcf548x_dspi.h    |  155 --
- .../include/asm/coldfire/mcf548x/mcf548x_eport.h   |   98 -
- .../include/asm/coldfire/mcf548x/mcf548x_fbcs.h    |   97 -
- .../include/asm/coldfire/mcf548x/mcf548x_fec.h     |  623 -----
- .../include/asm/coldfire/mcf548x/mcf548x_gpio.h    |  708 ------
- .../include/asm/coldfire/mcf548x/mcf548x_gpt.h     |  100 -
- .../include/asm/coldfire/mcf548x/mcf548x_i2c.h     |   69 -
- .../include/asm/coldfire/mcf548x/mcf548x_intc.h    |  329 ---
- .../include/asm/coldfire/mcf548x/mcf548x_pci.h     |  349 ---
- .../include/asm/coldfire/mcf548x/mcf548x_pciarb.h  |   50 -
- .../include/asm/coldfire/mcf548x/mcf548x_psc.h     |  486 ----
- .../include/asm/coldfire/mcf548x/mcf548x_sdramc.h  |  109 -
- .../include/asm/coldfire/mcf548x/mcf548x_sec.h     |  389 ----
- .../include/asm/coldfire/mcf548x/mcf548x_siu.h     |   69 -
- .../include/asm/coldfire/mcf548x/mcf548x_slt.h     |   71 -
- .../include/asm/coldfire/mcf548x/mcf548x_sram.h    |   66 -
- .../include/asm/coldfire/mcf548x/mcf548x_uart.h    |  233 --
- .../include/asm/coldfire/mcf548x/mcf548x_usb.h     |  509 ----
- .../include/asm/coldfire/mcf548x/mcf548x_xlbarb.h  |   45 -
- arch/m68k/include/asm/coldfire/mcf5xxx.h           |  258 --
- arch/m68k/include/asm/common.h                     |   25 -
- arch/m68k/include/asm/elf.h                        |  146 --
- arch/m68k/include/asm/hardware.h                   |   30 -
- arch/m68k/include/asm/io.h                         |  304 ---
- arch/m68k/include/asm/mach-types.h                 |   48 -
- arch/m68k/include/asm/memory.h                     |   28 -
- arch/m68k/include/asm/module.h                     |   36 -
- arch/m68k/include/asm/posix_types.h                |   86 -
- arch/m68k/include/asm/processor.h                  |   46 -
- arch/m68k/include/asm/ptrace.h                     |   55 -
- arch/m68k/include/asm/setup.h                      |  412 ----
- arch/m68k/include/asm/string.h                     |   32 -
- arch/m68k/include/asm/types.h                      |   82 -
- arch/m68k/lib/Makefile                             |   31 -
- arch/m68k/lib/barebox.lds.S                        |   92 -
- arch/m68k/lib/m68k-linuxboot.c                     |  177 --
- arch/m68k/lib/m68k-meminit.c                       |   43 -
- arch/m68k/lib/m68k-module.c                        |  110 -
- arch/m68k/mach-mcfv4e.dox                          |   39 -
- arch/m68k/mach-mcfv4e/Kconfig                      |   18 -
- arch/m68k/mach-mcfv4e/Makefile                     |   19 -
- arch/m68k/mach-mcfv4e/dma_utils.c                  |  502 ----
- arch/m68k/mach-mcfv4e/fec.c                        | 1440 ------------
- arch/m68k/mach-mcfv4e/fecbd.c                      |  232 --
- arch/m68k/mach-mcfv4e/include/mach/clocks.h        |   30 -
- arch/m68k/mach-mcfv4e/include/mach/debug_ll.h      |   33 -
- arch/m68k/mach-mcfv4e/include/mach/hardware.h      |   33 -
- arch/m68k/mach-mcfv4e/include/mach/mcf54xx-regs.h  |   30 -
- arch/m68k/mach-mcfv4e/include/proc/dma_utils.h     |   80 -
- arch/m68k/mach-mcfv4e/include/proc/fec.h           |  130 --
- arch/m68k/mach-mcfv4e/include/proc/fecbd.h         |  115 -
- .../m68k/mach-mcfv4e/include/proc/mcdapi/MCD_dma.h |  379 ---
- .../include/proc/mcdapi/MCD_progCheck.h            |   27 -
- .../include/proc/mcdapi/MCD_tasksInit.h            |   66 -
- arch/m68k/mach-mcfv4e/include/proc/net/eth.h       |   70 -
- arch/m68k/mach-mcfv4e/include/proc/net/nbuf.h      |   88 -
- arch/m68k/mach-mcfv4e/include/proc/net/net.h       |   39 -
- arch/m68k/mach-mcfv4e/include/proc/net/queue.h     |   54 -
- arch/m68k/mach-mcfv4e/include/proc/processor.h     |   33 -
- arch/m68k/mach-mcfv4e/include/proc/ptrace.h        |  119 -
- arch/m68k/mach-mcfv4e/mcdapi/MCD_dmaApi.c          |  907 --------
- arch/m68k/mach-mcfv4e/mcdapi/MCD_library.dox       |   10 -
- arch/m68k/mach-mcfv4e/mcdapi/MCD_tasks.c           | 2449 --------------------
- arch/m68k/mach-mcfv4e/mcdapi/MCD_tasksInit.c       |  225 --
- arch/m68k/mach-mcfv4e/mcdapi/Makefile              |   26 -
- arch/m68k/mach-mcfv4e/mcdapi/ReleaseNotes.txt      |   27 -
- arch/m68k/mach-mcfv4e/mcf_clocksource.c            |  138 --
- arch/m68k/mach-mcfv4e/mcf_reset_cpu.c              |   45 -
- arch/m68k/mach-mcfv4e/multichannel_dma.c           |   51 -
- arch/m68k/mach-mcfv4e/net/Makefile                 |   26 -
- arch/m68k/mach-mcfv4e/net/nbuf.c                   |  239 --
- arch/m68k/mach-mcfv4e/net/net.c                    |  156 --
- arch/m68k/mach-mcfv4e/net/queue.c                  |  128 -
- commands/bootm.c                                   |    1 -
- 126 files changed, 0 insertions(+), 18838 deletions(-)
- delete mode 100644 arch/m68k/Kconfig
- delete mode 100644 arch/m68k/Makefile
- delete mode 100644 arch/m68k/boards/kp_ukd_r1_num/Makefile
- delete mode 100644 arch/m68k/boards/kp_ukd_r1_num/env/bin/_update
- delete mode 100644 arch/m68k/boards/kp_ukd_r1_num/env/bin/boot
- delete mode 100644 arch/m68k/boards/kp_ukd_r1_num/env/bin/init
- delete mode 100644 arch/m68k/boards/kp_ukd_r1_num/env/bin/pcidmaloop
- delete mode 100644 arch/m68k/boards/kp_ukd_r1_num/env/bin/pciloop
- delete mode 100644 arch/m68k/boards/kp_ukd_r1_num/env/bin/update_kernel
- delete mode 100644 arch/m68k/boards/kp_ukd_r1_num/env/bin/update_root
- delete mode 100644 arch/m68k/boards/kp_ukd_r1_num/env/config
- delete mode 100644 arch/m68k/boards/kp_ukd_r1_num/highlevel_init.c
- delete mode 100644 arch/m68k/boards/kp_ukd_r1_num/kp_ukd_r1_num.c
- delete mode 100644 arch/m68k/boards/kp_ukd_r1_num/kp_ukd_r1_num.dox
- delete mode 100644 arch/m68k/boards/kp_ukd_r1_num/lowlevel_init.c
- delete mode 100644 arch/m68k/boards/kp_ukd_r1_num/pci-stubs.c
- delete mode 100644 arch/m68k/boards/phycore_mcf54xx/Makefile
- delete mode 100644 arch/m68k/boards/phycore_mcf54xx/env/bin/_update
- delete mode 100644 arch/m68k/boards/phycore_mcf54xx/env/bin/boot
- delete mode 100644 arch/m68k/boards/phycore_mcf54xx/env/bin/init
- delete mode 100644 arch/m68k/boards/phycore_mcf54xx/env/bin/pcidmaloop
- delete mode 100644 arch/m68k/boards/phycore_mcf54xx/env/bin/pciloop
- delete mode 100644 arch/m68k/boards/phycore_mcf54xx/env/bin/update_kernel
- delete mode 100644 arch/m68k/boards/phycore_mcf54xx/env/bin/update_root
- delete mode 100644 arch/m68k/boards/phycore_mcf54xx/env/config
- delete mode 100644 arch/m68k/boards/phycore_mcf54xx/highlevel_init.c
- delete mode 100644 arch/m68k/boards/phycore_mcf54xx/lowlevel_init.c
- delete mode 100644 arch/m68k/boards/phycore_mcf54xx/pci-stubs.c
- delete mode 100644 arch/m68k/boards/phycore_mcf54xx/phyCore_MCF54xx.c
- delete mode 100644 arch/m68k/boards/phycore_mcf54xx/phyCore_MCF54xx.dox
- delete mode 100644 arch/m68k/configs/phycore_kpukdr1_5475num_defconfig
- delete mode 100644 arch/m68k/configs/phycore_mcf54xx_defconfig
- delete mode 100644 arch/m68k/cpu/Makefile
- delete mode 100644 arch/m68k/cpu/cpu.c
- delete mode 100644 arch/m68k/cpu/cw_console_io.c
- delete mode 100644 arch/m68k/cpu/early_init_support.c
- delete mode 100644 arch/m68k/cpu/interrupts.c
- delete mode 100644 arch/m68k/cpu/start-mcfv4e.S
- delete mode 100644 arch/m68k/include/asm/atomic.h
- delete mode 100644 arch/m68k/include/asm/barebox-m68k.h
- delete mode 100644 arch/m68k/include/asm/barebox.h
- delete mode 100644 arch/m68k/include/asm/bitops.h
- delete mode 100644 arch/m68k/include/asm/bootinfo.h
- delete mode 100644 arch/m68k/include/asm/byteorder.h
- delete mode 100644 arch/m68k/include/asm/coldfire/mcf548x.h
- delete mode 100644 arch/m68k/include/asm/coldfire/mcf548x/mcf548x_can.h
- delete mode 100644 arch/m68k/include/asm/coldfire/mcf548x/mcf548x_ctm.h
- delete mode 100644 arch/m68k/include/asm/coldfire/mcf548x/mcf548x_dma.h
- delete mode 100644 arch/m68k/include/asm/coldfire/mcf548x/mcf548x_dma_ereq.h
- delete mode 100644 arch/m68k/include/asm/coldfire/mcf548x/mcf548x_dspi.h
- delete mode 100644 arch/m68k/include/asm/coldfire/mcf548x/mcf548x_eport.h
- delete mode 100644 arch/m68k/include/asm/coldfire/mcf548x/mcf548x_fbcs.h
- delete mode 100644 arch/m68k/include/asm/coldfire/mcf548x/mcf548x_fec.h
- delete mode 100644 arch/m68k/include/asm/coldfire/mcf548x/mcf548x_gpio.h
- delete mode 100644 arch/m68k/include/asm/coldfire/mcf548x/mcf548x_gpt.h
- delete mode 100644 arch/m68k/include/asm/coldfire/mcf548x/mcf548x_i2c.h
- delete mode 100644 arch/m68k/include/asm/coldfire/mcf548x/mcf548x_intc.h
- delete mode 100644 arch/m68k/include/asm/coldfire/mcf548x/mcf548x_pci.h
- delete mode 100644 arch/m68k/include/asm/coldfire/mcf548x/mcf548x_pciarb.h
- delete mode 100644 arch/m68k/include/asm/coldfire/mcf548x/mcf548x_psc.h
- delete mode 100644 arch/m68k/include/asm/coldfire/mcf548x/mcf548x_sdramc.h
- delete mode 100644 arch/m68k/include/asm/coldfire/mcf548x/mcf548x_sec.h
- delete mode 100644 arch/m68k/include/asm/coldfire/mcf548x/mcf548x_siu.h
- delete mode 100644 arch/m68k/include/asm/coldfire/mcf548x/mcf548x_slt.h
- delete mode 100644 arch/m68k/include/asm/coldfire/mcf548x/mcf548x_sram.h
- delete mode 100644 arch/m68k/include/asm/coldfire/mcf548x/mcf548x_uart.h
- delete mode 100644 arch/m68k/include/asm/coldfire/mcf548x/mcf548x_usb.h
- delete mode 100644 arch/m68k/include/asm/coldfire/mcf548x/mcf548x_xlbarb.h
- delete mode 100644 arch/m68k/include/asm/coldfire/mcf5xxx.h
- delete mode 100644 arch/m68k/include/asm/common.h
- delete mode 100644 arch/m68k/include/asm/elf.h
- delete mode 100644 arch/m68k/include/asm/hardware.h
- delete mode 100644 arch/m68k/include/asm/io.h
- delete mode 100644 arch/m68k/include/asm/mach-types.h
- delete mode 100644 arch/m68k/include/asm/memory.h
- delete mode 100644 arch/m68k/include/asm/module.h
- delete mode 100644 arch/m68k/include/asm/posix_types.h
- delete mode 100644 arch/m68k/include/asm/processor.h
- delete mode 100644 arch/m68k/include/asm/ptrace.h
- delete mode 100644 arch/m68k/include/asm/setup.h
- delete mode 100644 arch/m68k/include/asm/string.h
- delete mode 100644 arch/m68k/include/asm/types.h
- delete mode 100644 arch/m68k/lib/Makefile
- delete mode 100644 arch/m68k/lib/barebox.lds.S
- delete mode 100644 arch/m68k/lib/m68k-linuxboot.c
- delete mode 100644 arch/m68k/lib/m68k-meminit.c
- delete mode 100644 arch/m68k/lib/m68k-module.c
- delete mode 100644 arch/m68k/mach-mcfv4e.dox
- delete mode 100644 arch/m68k/mach-mcfv4e/Kconfig
- delete mode 100644 arch/m68k/mach-mcfv4e/Makefile
- delete mode 100644 arch/m68k/mach-mcfv4e/dma_utils.c
- delete mode 100644 arch/m68k/mach-mcfv4e/fec.c
- delete mode 100644 arch/m68k/mach-mcfv4e/fecbd.c
- delete mode 100644 arch/m68k/mach-mcfv4e/include/mach/clocks.h
- delete mode 100644 arch/m68k/mach-mcfv4e/include/mach/debug_ll.h
- delete mode 100644 arch/m68k/mach-mcfv4e/include/mach/hardware.h
- delete mode 100644 arch/m68k/mach-mcfv4e/include/mach/mcf54xx-regs.h
- delete mode 100644 arch/m68k/mach-mcfv4e/include/proc/dma_utils.h
- delete mode 100644 arch/m68k/mach-mcfv4e/include/proc/fec.h
- delete mode 100644 arch/m68k/mach-mcfv4e/include/proc/fecbd.h
- delete mode 100644 arch/m68k/mach-mcfv4e/include/proc/mcdapi/MCD_dma.h
- delete mode 100644 arch/m68k/mach-mcfv4e/include/proc/mcdapi/MCD_progCheck.h
- delete mode 100644 arch/m68k/mach-mcfv4e/include/proc/mcdapi/MCD_tasksInit.h
- delete mode 100644 arch/m68k/mach-mcfv4e/include/proc/net/eth.h
- delete mode 100644 arch/m68k/mach-mcfv4e/include/proc/net/nbuf.h
- delete mode 100644 arch/m68k/mach-mcfv4e/include/proc/net/net.h
- delete mode 100644 arch/m68k/mach-mcfv4e/include/proc/net/queue.h
- delete mode 100644 arch/m68k/mach-mcfv4e/include/proc/processor.h
- delete mode 100644 arch/m68k/mach-mcfv4e/include/proc/ptrace.h
- delete mode 100644 arch/m68k/mach-mcfv4e/mcdapi/MCD_dmaApi.c
- delete mode 100644 arch/m68k/mach-mcfv4e/mcdapi/MCD_library.dox
- delete mode 100644 arch/m68k/mach-mcfv4e/mcdapi/MCD_tasks.c
- delete mode 100644 arch/m68k/mach-mcfv4e/mcdapi/MCD_tasksInit.c
- delete mode 100644 arch/m68k/mach-mcfv4e/mcdapi/Makefile
- delete mode 100644 arch/m68k/mach-mcfv4e/mcdapi/ReleaseNotes.txt
- delete mode 100644 arch/m68k/mach-mcfv4e/mcf_clocksource.c
- delete mode 100644 arch/m68k/mach-mcfv4e/mcf_reset_cpu.c
- delete mode 100644 arch/m68k/mach-mcfv4e/multichannel_dma.c
- delete mode 100644 arch/m68k/mach-mcfv4e/net/Makefile
- delete mode 100644 arch/m68k/mach-mcfv4e/net/nbuf.c
- delete mode 100644 arch/m68k/mach-mcfv4e/net/net.c
- delete mode 100644 arch/m68k/mach-mcfv4e/net/queue.c
+Jean-Christophe PLAGNIOL-VILLARD (34):
+      initcall: add postconsole_initcall
+      clock: Introduce clock framework from Linux
+      at91: implement clock framework
+      string: add strlcpy support
+      arm: add common clkdev
+      amba: add pl011
+      arm: add Nomadik 8815 SoC support
+      nand: driver for Nomadik 8815 SoC
+      arm: add nhk8815 board support
+      init.h: introduce fake define (__init & __initdata) to simplify the linux sync
+      stddef: introduce true/false enum
+      gitignore: ignore .orig and .patch files
+      Kconfig: sync with linux kernel v2.6.36-rc1-168-ge36c886
+      mmccpu: fix typo in AT91_MAIN_CLOCK
+      dm9000: allow to specify that no srom is present
+      at91: rename clocksource.c -> at91sam926x_time.c
+      macb: introduce HAS_MACB configuration
+      at91: remove non used and obsolete at91rm9200 code
+      udpate fixdep.c to linux kernel v2.6.36-rc1-168-ge36c886
+      Makefile: fix autoconf.h location
+      xfuncs.h: include linux/types.h to avoid non decleration of size_t
+      introduce pure_initcall
+      introduce phys_addr_t and resource_size_t
+      use resource_size_t for device resources
+      net: rework the mii support
+      add WARN_ON and WARN support
+      move include/unaligned to include/linux/unaligned/
+      at91: remove non-needed include of autoconf.h
+      module: move EXPORT_SYMBOL_GPL define to module.h
+      initcall: add postconsole_initcall
+      Add Menu Framework
+      Menu/cmd: add sub menu entry command support
+      blackfin: remove duplicated PAGE_SIZE define
+      imx/fb: struct imx_ipu_fb_platform_data remove const for mode
 
-Best Regards,
-J.
+Marek Belisko (1):
+      mach-s3c24xx: Fix compilation problem when make a9m2410 or a9m2440 defconfig
+
+Michael Grzeschik (11):
+      ehci: add remove function
+      usb: add twl4030 phy support
+      ehci: add omap support
+      beagle: add usb support
+      beagle: add bootparams and architecture
+      omap nand: bugfix configure ecc order
+      loadb: get console baudrate from class_dev not dev
+      armlinux: bugfix add parameter name into inline function
+      omap: nand remove unnecessary condition
+      beagle: defconfig cleanup for v2010.08.0
+      beagle: fix usb dependencies
+
+Sascha Hauer (30):
+      i2c: Add missing defines for omap
+      arm omap: Add I2C driver
+      add twl4030 support
+      arm omap: Add gpio support
+      arm omap: Add cpu_is_ macros
+      beagle: Add missing pinmux for usb
+      ehci: Make has_tt configurable via platform data
+      ehci: set CONFIG_SYS_USB_EHCI_MAX_ROOT_PORTS to 16
+      add beagle board defconfig
+      Add missing include
+      menu: initialize entries list in menu_alloc
+      menu: Use strdup instead of malloc/strncpy
+      menu: simplify menu_free with list_for_each_entry_safe
+      menu: remove superfluous struct menu_entry member from struct menu
+      menu: use list_for_each_entry where appropriate
+      menu: use an initialized struct list as menu list
+      menu: do not go to free if there's nothing to free
+      menu: simplify usage for clients
+      Merge branch 'next'
+      vsprintf: fix wrong EXPORT_SYMBOL
+      fec_mpc5200: Fix compilation
+      rename __initdata to __early_initdata
+      ep93xx net driver: Fix compilation
+      netx eth: Fix compilation
+      scb9328: Fix compilation
+      twl4030: Fix compiler warnings
+      guf-neso: Fix compiler warnings
+      pcm043: Fix compiler warnings
+      pcm038: Fix compiler warnings
+      Release v2010.10.0
+
+Wolfram Sang (1):
+      i2c: fix wrong comment and symbol export for i2c_add_numbered_adapter()
+
+ .gitignore                                         |    4 +
+ Makefile                                           |    8 +-
+ arch/arm/Kconfig                                   |   16 +-
+ arch/arm/Makefile                                  |    5 +-
+ arch/arm/boards/at91sam9260ek/config.h             |    2 +-
+ arch/arm/boards/at91sam9263ek/config.h             |    2 +-
+ arch/arm/boards/at91sam9263ek/init.c               |    3 -
+ arch/arm/boards/freescale-mx25-3-stack/3stack.c    |    2 +
+ arch/arm/boards/guf-neso/lowlevel.c                |    5 +-
+ arch/arm/boards/mmccpu/config.h                    |    2 +-
+ arch/arm/boards/mmccpu/init.c                      |    3 -
+ arch/arm/boards/nhk8815/Makefile                   |    1 +
+ arch/arm/boards/nhk8815/env/bin/_update            |   36 +
+ arch/arm/boards/nhk8815/env/bin/boot               |   38 +
+ arch/arm/boards/nhk8815/env/bin/init               |   28 +
+ .../boards/nhk8815/env/bin/update_barebox_xmodem   |   19 +
+ arch/arm/boards/nhk8815/env/bin/update_kernel      |    8 +
+ arch/arm/boards/nhk8815/env/bin/update_root        |    8 +
+ arch/arm/boards/nhk8815/env/config                 |   32 +
+ arch/arm/boards/nhk8815/setup.c                    |  106 ++
+ arch/arm/boards/omap/board-beagle.c                |   64 +
+ arch/arm/boards/pcm038/lowlevel.c                  |    5 +-
+ arch/arm/boards/pcm043/lowlevel.c                  |    5 +-
+ arch/arm/boards/pm9263/config.h                    |    2 +-
+ arch/arm/boards/pm9263/init.c                      |    3 -
+ arch/arm/boards/scb9328/scb9328.c                  |    1 +
+ arch/arm/common/Kconfig                            |    2 +
+ arch/arm/common/Makefile                           |    5 +
+ arch/arm/common/clkdev.c                           |  160 ++
+ arch/arm/configs/a9m2410_defconfig                 |    2 +-
+ arch/arm/configs/a9m2440_defconfig                 |    2 +-
+ arch/arm/configs/at91sam9260ek_defconfig           |    2 +-
+ arch/arm/configs/at91sam9263ek_defconfig           |    2 +-
+ arch/arm/configs/edb93xx_defconfig                 |    2 +-
+ arch/arm/configs/eukrea_cpuimx25_defconfig         |    2 +-
+ arch/arm/configs/eukrea_cpuimx27_defconfig         |    2 +-
+ arch/arm/configs/eukrea_cpuimx35_defconfig         |    2 +-
+ arch/arm/configs/freescale_mx25_3stack_defconfig   |    2 +-
+ arch/arm/configs/freescale_mx35_3stack_defconfig   |    2 +-
+ arch/arm/configs/mmccpu_defconfig                  |    2 +-
+ arch/arm/configs/neso_defconfig                    |    2 +-
+ arch/arm/configs/netx_nxdb500_defconfig            |    2 +-
+ arch/arm/configs/nhk8815_defconfig                 |  232 +++
+ arch/arm/configs/omap3530_beagle_defconfig         |  257 +++
+ arch/arm/configs/pca100_defconfig                  |    2 +-
+ arch/arm/configs/pcm037_defconfig                  |    2 +-
+ arch/arm/configs/pcm038_defconfig                  |    2 +-
+ arch/arm/configs/pcm043_defconfig                  |    2 +-
+ arch/arm/configs/pm9263_defconfig                  |    2 +-
+ arch/arm/configs/scb9328_defconfig                 |    2 +-
+ arch/arm/include/asm/armlinux.h                    |    6 +-
+ arch/arm/include/asm/clkdev.h                      |   30 +
+ arch/arm/include/asm/unaligned.h                   |    6 +-
+ arch/arm/lib/armlinux.c                            |   19 +
+ arch/arm/mach-at91/Kconfig                         |    2 +
+ arch/arm/mach-at91/Makefile                        |    6 +-
+ arch/arm/mach-at91/at91sam9260.c                   |  207 +++
+ arch/arm/mach-at91/at91sam9260_devices.c           |   18 +-
+ arch/arm/mach-at91/at91sam9263.c                   |  217 +++
+ arch/arm/mach-at91/at91sam9263_devices.c           |   13 +-
+ .../{clocksource.c => at91sam926x_time.c}          |    0
+ arch/arm/mach-at91/clock.c                         |  718 +++++++++
+ arch/arm/mach-at91/clock.h                         |   31 +
+ arch/arm/mach-at91/generic.h                       |   14 +
+ arch/arm/mach-at91/gpio.c                          |    3 +
+ arch/arm/mach-at91/include/mach/at91_dbgu.h        |   66 +
+ arch/arm/mach-at91/include/mach/clk.h              |   39 -
+ arch/arm/mach-at91/include/mach/cpu.h              |  158 ++
+ arch/arm/mach-at91/include/mach/gpio.h             |    1 +
+ arch/arm/mach-at91/lowlevel_init.S                 |    1 -
+ arch/arm/mach-at91rm9200/Kconfig                   |   16 -
+ arch/arm/mach-at91rm9200/include/mach/AT91RM9200.h |  762 ---------
+ arch/arm/mach-at91rm9200/include/mach/hardware.h   |   78 -
+ arch/arm/mach-imx/Kconfig                          |   18 +
+ arch/arm/mach-imx/Makefile                         |    1 +
+ arch/arm/mach-imx/iim.c                            |  311 ++++
+ arch/arm/mach-imx/imx25.c                          |   62 +
+ arch/arm/mach-imx/imx35.c                          |    1 +
+ arch/arm/mach-imx/include/mach/generic.h           |    1 +
+ arch/arm/mach-imx/include/mach/iim.h               |   57 +
+ arch/arm/mach-imx/include/mach/imx-ipu-fb.h        |    2 +-
+ arch/arm/mach-imx/include/mach/imx25-regs.h        |    9 +
+ arch/arm/mach-imx/include/mach/imx35-regs.h        |   18 -
+ arch/arm/mach-nomadik/8815.c                       |   76 +
+ arch/arm/mach-nomadik/Kconfig                      |   24 +
+ arch/arm/mach-nomadik/Makefile                     |    3 +
+ arch/arm/mach-nomadik/clock.c                      |   52 +
+ arch/arm/mach-nomadik/clock.h                      |   14 +
+ arch/arm/mach-nomadik/include/mach/board.h         |   28 +
+ arch/arm/mach-nomadik/include/mach/clkdev.h        |    7 +
+ arch/arm/mach-nomadik/include/mach/fsmc.h          |   28 +
+ arch/arm/mach-nomadik/include/mach/hardware.h      |   91 ++
+ arch/arm/mach-nomadik/include/mach/mtu.h           |   46 +
+ arch/arm/mach-nomadik/include/mach/nand.h          |   16 +
+ arch/arm/mach-nomadik/include/mach/timex.h         |    6 +
+ arch/arm/mach-nomadik/reset.c                      |   36 +
+ arch/arm/mach-nomadik/timer.c                      |   81 +
+ arch/arm/mach-omap/Kconfig                         |   15 +-
+ arch/arm/mach-omap/Makefile                        |    1 +
+ arch/arm/mach-omap/gpio.c                          |  206 +++
+ arch/arm/mach-omap/include/mach/cm-regbits-34xx.h  |  799 ++++++++++
+ arch/arm/mach-omap/include/mach/ehci.h             |  109 ++
+ arch/arm/mach-omap/include/mach/generic.h          |   19 +
+ arch/arm/mach-omap/include/mach/gpio.h             |   92 ++
+ arch/arm/mach-omap/include/mach/omap3-clock.h      |   11 +
+ arch/arm/mach-omap/include/mach/omap3-silicon.h    |    6 +
+ arch/arm/mach-s3c24xx/Kconfig                      |    2 +
+ arch/blackfin/configs/ipe337_defconfig             |    2 +-
+ arch/blackfin/include/asm/page.h                   |    1 -
+ .../m68k/configs/phycore_kpukdr1_5475num_defconfig |    2 +-
+ arch/m68k/configs/phycore_mcf54xx_defconfig        |    2 +-
+ arch/ppc/configs/pcm030_defconfig                  |    2 +-
+ commands/Kconfig                                   |   10 +
+ commands/Makefile                                  |    1 +
+ commands/loadb.c                                   |    2 +-
+ commands/mem.c                                     |    4 +-
+ commands/menu.c                                    |  445 ++++++
+ common/Kconfig                                     |   20 +
+ common/Makefile                                    |    1 +
+ common/console.c                                   |    4 +-
+ common/menu.c                                      |  388 +++++
+ drivers/i2c/Kconfig                                |    8 +
+ drivers/i2c/Makefile                               |    2 +
+ drivers/i2c/i2c-omap.c                             |  803 ++++++++++
+ drivers/i2c/i2c.c                                  |   26 +-
+ drivers/i2c/twl4030.c                              |  186 +++
+ drivers/mtd/nand/Kconfig                           |    5 +
+ drivers/mtd/nand/Makefile                          |    1 +
+ drivers/mtd/nand/nand_omap_gpmc.c                  |   41 +-
+ drivers/mtd/nand/nomadik_nand.c                    |  248 +++
+ drivers/mtd/ubi/ubi-barebox.h                      |    1 -
+ drivers/net/Kconfig                                |   23 +-
+ drivers/net/Makefile                               |    2 +-
+ drivers/net/at91_ether.c                           |   10 +-
+ drivers/net/dm9000.c                               |   36 +-
+ drivers/net/ep93xx.c                               |   45 +-
+ drivers/net/ep93xx.h                               |    2 +-
+ drivers/net/fec_imx.c                              |   37 +-
+ drivers/net/fec_imx.h                              |    2 +-
+ drivers/net/fec_mpc5200.c                          |   35 +-
+ drivers/net/fec_mpc5200.h                          |    2 +-
+ drivers/net/macb.c                                 |   44 +-
+ drivers/net/{miiphy.c => miidev.c}                 |   96 +-
+ drivers/net/netx_eth.c                             |   39 +-
+ drivers/net/smc91111.c                             |   32 +-
+ drivers/net/smc911x.c                              |   33 +-
+ drivers/net/usb/Kconfig                            |    2 +-
+ drivers/net/usb/asix.c                             |   26 +-
+ drivers/net/usb/usbnet.c                           |    6 +-
+ drivers/serial/Kconfig                             |    9 +
+ drivers/serial/Makefile                            |    1 +
+ drivers/serial/amba-pl011.c                        |  192 +++
+ drivers/serial/atmel.c                             |   32 +-
+ drivers/usb/host/Kconfig                           |    4 +
+ drivers/usb/host/Makefile                          |    1 +
+ drivers/usb/host/ehci-hcd.c                        |   21 +-
+ drivers/usb/host/ehci-omap.c                       |  260 +++
+ drivers/usb/host/ehci.h                            |    2 +-
+ drivers/usb/otg/Kconfig                            |    3 +
+ drivers/usb/otg/Makefile                           |    2 +
+ drivers/usb/otg/twl4030.c                          |  199 +++
+ include/asm-generic/barebox.lds.h                  |    3 +-
+ include/common.h                                   |   25 +
+ include/dm9000.h                                   |    1 +
+ include/driver.h                                   |    5 +-
+ include/i2c/i2c.h                                  |    2 +
+ include/i2c/twl4030.h                              |  461 ++++++
+ include/init.h                                     |   29 +-
+ include/linux/amba/serial.h                        |  164 ++
+ include/linux/clk.h                                |  158 ++
+ include/{miiphy.h => linux/mii.h}                  |  132 ++-
+ include/linux/stddef.h                             |    5 +
+ include/linux/string.h                             |    3 +
+ include/linux/types.h                              |    8 +
+ include/{ => linux}/unaligned/access_ok.h          |    0
+ include/{ => linux}/unaligned/be_byteshift.h       |    0
+ include/{ => linux}/unaligned/be_memmove.h         |    0
+ include/{ => linux}/unaligned/be_struct.h          |    0
+ include/{ => linux}/unaligned/generic.h            |    0
+ include/{ => linux}/unaligned/le_byteshift.h       |    0
+ include/{ => linux}/unaligned/le_memmove.h         |    0
+ include/{ => linux}/unaligned/le_struct.h          |    0
+ include/{ => linux}/unaligned/memmove.h            |    0
+ include/{ => linux}/unaligned/packed_struct.h      |    0
+ include/menu.h                                     |   96 ++
+ include/miidev.h                                   |   62 +
+ include/module.h                                   |    4 +
+ include/readkey.h                                  |    5 +
+ include/reloc.h                                    |    4 +-
+ include/stdio.h                                    |    1 +
+ include/usb/ehci.h                                 |    2 +
+ include/usb/twl4030.h                              |   28 +
+ include/usb/usbnet.h                               |    4 +-
+ include/xfuncs.h                                   |    2 +
+ include/xyzModem.h                                 |    3 -
+ lib/string.c                                       |   26 +
+ lib/vsprintf.c                                     |   27 +-
+ net/eth.c                                          |    2 +-
+ scripts/basic/fixdep.c                             |   55 +-
+ scripts/kconfig/.gitignore                         |    4 +
+ scripts/kconfig/Makefile                           |  175 ++-
+ scripts/kconfig/POTFILES.in                        |    7 +
+ scripts/kconfig/check.sh                           |   14 +
+ scripts/kconfig/conf.c                             |  439 +++---
+ scripts/kconfig/confdata.c                         |  537 +++++--
+ scripts/kconfig/expr.c                             |   65 +-
+ scripts/kconfig/expr.h                             |  106 +-
+ scripts/kconfig/gconf.c                            |  145 +--
+ scripts/kconfig/gconf.glade                        |   30 +-
+ scripts/kconfig/kxgettext.c                        |    8 +-
+ scripts/kconfig/lex.zconf.c_shipped                |  127 ++-
+ scripts/kconfig/lkc.h                              |   40 +-
+ scripts/kconfig/lkc_proto.h                        |    9 +-
+ scripts/kconfig/lxdialog/BIG.FAT.WARNING           |    2 +-
+ scripts/kconfig/lxdialog/check-lxdialog.sh         |   20 +-
+ scripts/kconfig/lxdialog/checklist.c               |   17 +-
+ scripts/kconfig/lxdialog/dialog.h                  |   11 +-
+ scripts/kconfig/lxdialog/inputbox.c                |   10 +-
+ scripts/kconfig/lxdialog/menubox.c                 |   28 +-
+ scripts/kconfig/lxdialog/textbox.c                 |    2 +-
+ scripts/kconfig/lxdialog/util.c                    |   34 +-
+ scripts/kconfig/lxdialog/yesno.c                   |    4 +-
+ scripts/kconfig/mconf.c                            |  262 ++--
+ scripts/kconfig/menu.c                             |  211 +++-
+ scripts/kconfig/nconf.c                            | 1570 ++++++++++++++++++
+ scripts/kconfig/nconf.gui.c                        |  617 ++++++++
+ scripts/kconfig/nconf.h                            |   95 ++
+ scripts/kconfig/qconf.cc                           |  255 ++--
+ scripts/kconfig/qconf.h                            |   17 +-
+ scripts/kconfig/streamline_config.pl               |  422 +++++
+ scripts/kconfig/symbol.c                           |  501 +++++-
+ scripts/kconfig/util.c                             |   44 +-
+ scripts/kconfig/zconf.gperf                        |    6 +-
+ scripts/kconfig/zconf.hash.c_shipped               |  225 ++--
+ scripts/kconfig/zconf.l                            |   21 +-
+ scripts/kconfig/zconf.tab.c_shipped                | 1665 +++++++++++---------
+ scripts/kconfig/zconf.y                            |   62 +-
+ 237 files changed, 14928 insertions(+), 3360 deletions(-)
+ create mode 100644 arch/arm/boards/nhk8815/Makefile
+ create mode 100644 arch/arm/boards/nhk8815/config.h
+ create mode 100644 arch/arm/boards/nhk8815/env/bin/_update
+ create mode 100644 arch/arm/boards/nhk8815/env/bin/boot
+ create mode 100644 arch/arm/boards/nhk8815/env/bin/init
+ create mode 100644 arch/arm/boards/nhk8815/env/bin/update_barebox_xmodem
+ create mode 100644 arch/arm/boards/nhk8815/env/bin/update_kernel
+ create mode 100644 arch/arm/boards/nhk8815/env/bin/update_root
+ create mode 100644 arch/arm/boards/nhk8815/env/config
+ create mode 100644 arch/arm/boards/nhk8815/setup.c
+ create mode 100644 arch/arm/common/Kconfig
+ create mode 100644 arch/arm/common/Makefile
+ create mode 100644 arch/arm/common/clkdev.c
+ create mode 100644 arch/arm/configs/nhk8815_defconfig
+ create mode 100644 arch/arm/configs/omap3530_beagle_defconfig
+ create mode 100644 arch/arm/include/asm/clkdev.h
+ rename arch/arm/mach-at91/{clocksource.c => at91sam926x_time.c} (100%)
+ create mode 100644 arch/arm/mach-at91/clock.c
+ create mode 100644 arch/arm/mach-at91/clock.h
+ create mode 100644 arch/arm/mach-at91/generic.h
+ create mode 100644 arch/arm/mach-at91/include/mach/at91_dbgu.h
+ delete mode 100644 arch/arm/mach-at91/include/mach/clk.h
+ create mode 100644 arch/arm/mach-at91/include/mach/cpu.h
+ delete mode 100644 arch/arm/mach-at91rm9200/Kconfig
+ delete mode 100644 arch/arm/mach-at91rm9200/include/mach/AT91RM9200.h
+ delete mode 100644 arch/arm/mach-at91rm9200/include/mach/hardware.h
+ create mode 100644 arch/arm/mach-imx/iim.c
+ create mode 100644 arch/arm/mach-imx/include/mach/iim.h
+ create mode 100644 arch/arm/mach-nomadik/8815.c
+ create mode 100644 arch/arm/mach-nomadik/Kconfig
+ create mode 100644 arch/arm/mach-nomadik/Makefile
+ create mode 100644 arch/arm/mach-nomadik/clock.c
+ create mode 100644 arch/arm/mach-nomadik/clock.h
+ create mode 100644 arch/arm/mach-nomadik/include/mach/board.h
+ create mode 100644 arch/arm/mach-nomadik/include/mach/clkdev.h
+ create mode 100644 arch/arm/mach-nomadik/include/mach/fsmc.h
+ create mode 100644 arch/arm/mach-nomadik/include/mach/hardware.h
+ create mode 100644 arch/arm/mach-nomadik/include/mach/mtu.h
+ create mode 100644 arch/arm/mach-nomadik/include/mach/nand.h
+ create mode 100644 arch/arm/mach-nomadik/include/mach/timex.h
+ create mode 100644 arch/arm/mach-nomadik/reset.c
+ create mode 100644 arch/arm/mach-nomadik/timer.c
+ create mode 100644 arch/arm/mach-omap/gpio.c
+ create mode 100644 arch/arm/mach-omap/include/mach/cm-regbits-34xx.h
+ create mode 100644 arch/arm/mach-omap/include/mach/ehci.h
+ create mode 100644 arch/arm/mach-omap/include/mach/generic.h
+ create mode 100644 arch/arm/mach-omap/include/mach/gpio.h
+ create mode 100644 commands/menu.c
+ create mode 100644 common/menu.c
+ create mode 100644 drivers/i2c/i2c-omap.c
+ create mode 100644 drivers/i2c/twl4030.c
+ create mode 100644 drivers/mtd/nand/nomadik_nand.c
+ rename drivers/net/{miiphy.c => miidev.c} (59%)
+ create mode 100644 drivers/serial/amba-pl011.c
+ create mode 100644 drivers/usb/host/ehci-omap.c
+ create mode 100644 drivers/usb/otg/twl4030.c
+ create mode 100644 include/i2c/twl4030.h
+ create mode 100644 include/linux/amba/serial.h
+ create mode 100644 include/linux/clk.h
+ rename include/{miiphy.h => linux/mii.h} (74%)
+ rename include/{ => linux}/unaligned/access_ok.h (100%)
+ rename include/{ => linux}/unaligned/be_byteshift.h (100%)
+ rename include/{ => linux}/unaligned/be_memmove.h (100%)
+ rename include/{ => linux}/unaligned/be_struct.h (100%)
+ rename include/{ => linux}/unaligned/generic.h (100%)
+ rename include/{ => linux}/unaligned/le_byteshift.h (100%)
+ rename include/{ => linux}/unaligned/le_memmove.h (100%)
+ rename include/{ => linux}/unaligned/le_struct.h (100%)
+ rename include/{ => linux}/unaligned/memmove.h (100%)
+ rename include/{ => linux}/unaligned/packed_struct.h (100%)
+ create mode 100644 include/menu.h
+ create mode 100644 include/miidev.h
+ create mode 100644 include/usb/twl4030.h
+ create mode 100755 scripts/kconfig/check.sh
+ create mode 100644 scripts/kconfig/nconf.c
+ create mode 100644 scripts/kconfig/nconf.gui.c
+ create mode 100644 scripts/kconfig/nconf.h
+ create mode 100644 scripts/kconfig/streamline_config.pl
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
