@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1P32oJ-0003uo-Tt
-	for barebox@lists.infradead.org; Tue, 05 Oct 2010 08:23:44 +0000
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Tue, 5 Oct 2010 10:21:55 +0200
-References: <201010051844.37189.marc@cpdesign.com.au>
-In-Reply-To: <201010051844.37189.marc@cpdesign.com.au>
+Received: from mail-out.m-online.net ([212.18.0.9])
+	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1P37wH-00037h-UF
+	for barebox@lists.infradead.org; Tue, 05 Oct 2010 13:52:19 +0000
+From: Wolfgang Denk <wd@denx.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <201010051021.55643.jbe@pengutronix.de>
+Date: Tue, 05 Oct 2010 15:52:13 +0200
+Message-Id: <20101005135213.24F871539A0@gemini.denx.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,34 +19,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: SD/MMC driver for imx
-To: barebox@lists.infradead.org
+Subject: Code "borrowed" without attribution to original authors
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>, Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Marc Reilly wrote:
-> Does anybody happen to be working on a driver for mmc/sd cards for imx(35)?
->
-> All I'm really looking for is something simple that can read a kernel image
-> off a card, no file system need be involved.
->
-> Otherwise, any tips for a good starting point would be appreciated. I was
-> thinking of using the uboot driver as a starting point.
+Hello,
 
-I'm currently working on an SD/MMC framework and drivers for Samsung S3C2440, 
-Freescale i.MX23 and i.MX27. S3C2440 is already working, i.MX23 can read from 
-SD cards (but not write yet) and the state of the i.MX27 driver is currently 
-unknown. I'm working on these topics in the next few days. I hope it will 
-work on all these platforms by the end of this week.
+it has been brought to my attention that lately a number of commits
+have been added to the BareBox repository (and released as BareBox
+v2010.10.0) that contain literal copies of hundreds of lines of code
+taken from the U-Boot project.
 
-BTW: A FAT filesystem support would be nice to access files on the SD card...
+While this is OK in general (U-Boot is covered by the GPLv2/GPLv2+),
+in this case the code has been added to the BareBox repository
+without any attribution to the original authors.  Instead, the
+respective commits carry only SoB lines like these:
 
-Regards
-Juergen
+	Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+	Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+
+Commits that very clearly show this problem are for example:
+
+ d424ce7  image: factorise image printing contents
+ 0ceafe1  Replace direct header access with the API routines
+ aba80a2  image: rename IH_CPU to IH_ARCH to be more concistant
+ 7bd7d59  image: factorise string helper
+
+In the examples given, most of the copied code was actually written by
+Marian Balakowicz and should be attributed to him.  Neither
+Jean-Christophe nor Sascha have any credits on that code.
+
+
+We all have been working long enough in free and open source software
+projects that I can assume you are well aware of the basic principles
+of open source software licensing and the requirement to attribute
+code to its original authors.
+
+
+Jean-Christophe, may I please ask you to stop copying code from other
+projects without proper attribution?
+
+
+Sascha, may I please ask you to make sure that proper attribution of
+all such copied code gets added to the BareBox repository and released
+code?
+
+
+[Please make sure to keep me on cc: to any replies as I am not
+subscribed to the BareBox mailing list.]
+
+
+Thanks.
+
+Wolfgang Denk
 
 -- 
-Pengutronix e.K.                              | Juergen Beisert             |
-Linux Solutions for Science and Industry      | Phone: +49-8766-939 228     |
-Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
+DENX Software Engineering GmbH,     MD: Wolfgang Denk & Detlev Zundel
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+Phone: (+49)-8142-66989-10 Fax: (+49)-8142-66989-80 Email: wd@denx.de
+By the way, ALL software projects are done by iterative  prototyping.
+Some companies call their prototypes "releases", that's all.
 
 _______________________________________________
 barebox mailing list
