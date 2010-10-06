@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 26.mail-out.ovh.net ([91.121.27.225])
-	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1P3KJk-0003Ui-Gt
-	for barebox@lists.infradead.org; Wed, 06 Oct 2010 03:05:21 +0000
-Date: Wed, 6 Oct 2010 05:03:24 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20101006030324.GA32214@game.jcrosoft.org>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1P3OQ4-0007EN-NA
+	for barebox@lists.infradead.org; Wed, 06 Oct 2010 07:28:11 +0000
+Date: Wed, 6 Oct 2010 09:27:49 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20101006072749.GR28242@pengutronix.de>
 References: <20101005135213.24F871539A0@gemini.denx.de>
-	<20101005160042.GI25320@game.jcrosoft.org>
-	<20101005162019.GK25320@game.jcrosoft.org>
-	<20101005175354.E53D21539A0@gemini.denx.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20101005175354.E53D21539A0@gemini.denx.de>
+In-Reply-To: <20101005135213.24F871539A0@gemini.denx.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,74 +26,66 @@ Subject: Re: Code "borrowed" without attribution to original authors
 To: Wolfgang Denk <wd@denx.de>
 Cc: barebox@lists.infradead.org
 
-On 19:53 Tue 05 Oct     , Wolfgang Denk wrote:
-> Dear Jean-Christophe PLAGNIOL-VILLARD,
-> 
-> In message <20101005162019.GK25320@game.jcrosoft.org> you wrote:
-> >
-> > > >  d424ce7  image: factorise image printing contents
-> > > >  0ceafe1  Replace direct header access with the API routines
-> > 
-> > > >  aba80a2  image: rename IH_CPU to IH_ARCH to be more concistant
-> > > >  7bd7d59  image: factorise string helper
-> > for the record the two are not borrowed at all from U-Boot but done based on
-> > barebox
-> 
-> Oh. Interesting statement. Let me check again. 
-> 
-> Your commit:
-> 
-> 	commit aba80a2d2d0f1b25185246925577ce2108247dde
-> 	Author: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> 	Date:   Thu Sep 23 06:48:42 2010 +0200
-> 
-> 	    image: rename IH_CPU to IH_ARCH to be more concistant
-> 
-> So BB used to have IH_CPU and switched to IH_ARCH :
-> 
-> Please compare against this U-Boot commit:
-> 
-> 	commit b97a2a0a21f279d66de8a9bdbfe21920968bcb1c
-> 	Author: Marian Balakowicz <m8@semihalf.com>
-> 	Date:   Tue Jan 8 18:14:09 2008 +0100
-> 
-> 	    [new uImage] Define a API for image handling operations
-> 	    
-> 	    - Add inline helper macros for basic header processing
-> 	    - Move common non inline code common/image.c
-> 	    - Replace direct header access with the API routines
-> 	    - Rename IH_CPU_* to IH_ARCH_*
-> 	    
-> 	    Signed-off-by: Marian Balakowicz <m8@semihalf.com>
-> 
-> Pay special attention to the "Rename IH_CPU_* to IH_ARCH_*" part.
-> 
-> Not borrowed?  What an extremely unlikely coincidence then!  I think
-> you should try to explain that.
-> 
-> > and as we all known the uImage format come from U-Boot I just sync it
-> > recently without commit details as we do for Kconfig we do not trac
-> > modifications details and we respect the copyright. SO I'll repeat myself
-> > if Marian copyright is missing We will add it with pleasure.
-> 
-> 
-> I recommend you to get a clue about what is needed to properly
-> attribute code to the people who actually wrote it, instead of
-> submitting it without any due reference and then even claiming you
-> developed it yourself.  I guess you are not interested in having a
-> reputation as a plagiarist?
-I'll repeat I'ev not borrow these two they look similar I agree but I do not
-borrow them. And I'm fine to put Marian copyright I eally do not carefor the
-other 2 commits. But these two I just had the same idea by looking at the
-code of barebox when I was working to re-introduce the mutli-image support.
+Hello WOlfgang,
 
-The two other commits are here for sync before finish the full sync of uImage
-and I will not take Marina work as mine. I'll put my SoB as I apply it and
-responsible for this integration as I did for kconfig and others without take
-the copyright.
+On Tue, Oct 05, 2010 at 03:52:13PM +0200, Wolfgang Denk wrote:
+> Hello,
+> 
+> it has been brought to my attention that lately a number of commits
+> have been added to the BareBox repository (and released as BareBox
+> v2010.10.0) that contain literal copies of hundreds of lines of code
+> taken from the U-Boot project.
+> 
+> While this is OK in general (U-Boot is covered by the GPLv2/GPLv2+),
+> in this case the code has been added to the BareBox repository
+> without any attribution to the original authors.  Instead, the
+> respective commits carry only SoB lines like these:
+> 
+> 	Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> 	Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> 
+> Commits that very clearly show this problem are for example:
+> 
+>  d424ce7  image: factorise image printing contents
+>  0ceafe1  Replace direct header access with the API routines
+>  aba80a2  image: rename IH_CPU to IH_ARCH to be more concistant
+>  7bd7d59  image: factorise string helper
+> 
+> In the examples given, most of the copied code was actually written by
+> Marian Balakowicz and should be attributed to him.  Neither
+> Jean-Christophe nor Sascha have any credits on that code.
+> 
+> 
+> We all have been working long enough in free and open source software
+> projects that I can assume you are well aware of the basic principles
+> of open source software licensing and the requirement to attribute
+> code to its original authors.
 
-Best Regards,
-J.
+Does that mean U-Boot has credits to all the original mtd authors when
+updating U-Boots mtd support to a newer kernel? /me is digging in the
+archives; no, it has not. Does that mean with
+9b7076229ec6a958bd835ab70745f7676297ce82 Ilya Yanok is the original
+author of jffs2 summary support? No, it's the same in the Linux kernel.
+Does that mean you are the original author of include/linux/list.h in
+700a0c648df72f2c8e0589c0d0470b5ffd7cab7b? Obviously not.
+
+Please lets go not down that road, it leads to nowhere.
+
+We obviously copy code from other projects like U-Boot and the kernel
+and we do our best to keep the copyrights intact, but we can only do
+this on a per file base, not on a per commit base. That said,
+common/image.c has a copyright to semihalf in U-Boot which is missing in
+barebox, we can add this. Note that Jean-Christophe added a copyright to
+*you* and not to *him* to this file, which means that he did not even
+try to put this his own work.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
