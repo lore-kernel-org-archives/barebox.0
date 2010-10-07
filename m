@@ -1,11 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 70.mail-out.ovh.net ([91.121.185.63])
-	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1P3tWV-0000u6-WD
-	for barebox@lists.infradead.org; Thu, 07 Oct 2010 16:40:52 +0000
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu,  7 Oct 2010 18:38:49 +0200
-Message-Id: <1286469529-11579-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1P3tp3-0002bT-LO
+	for barebox@lists.infradead.org; Thu, 07 Oct 2010 17:00:02 +0000
+Date: Thu, 7 Oct 2010 18:59:59 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20101007165959.GJ28242@pengutronix.de>
+References: <1286457858-29771-1-git-send-email-jbe@pengutronix.de>
+	<1286457858-29771-6-git-send-email-jbe@pengutronix.de>
+	<20101007153713.GH28242@pengutronix.de>
+	<201010071800.06450.jbe@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <201010071800.06450.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,50 +21,142 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] MAKEALL: allow CROSS_COMPILE*=""
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 5/7] Add MCI card support to barebox
+To: Juergen Beisert <jbe@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- MAKEALL |    8 +++++---
- 1 files changed, 5 insertions(+), 3 deletions(-)
+On Thu, Oct 07, 2010 at 06:00:06PM +0200, Juergen Beisert wrote:
+> Sascha Hauer wrote:
+> > On Thu, Oct 07, 2010 at 03:24:16PM +0200, Juergen Beisert wrote:
+> > > This adds the basic framework to handle MCI cards in barebox.
+> > >
+> > > Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
+> > > ---
+> > >  drivers/Kconfig        |    1 +
+> > >  drivers/Makefile       |    1 +
+> > >  drivers/mci/Kconfig    |   30 ++
+> > >  drivers/mci/Makefile   |    1 +
+> > >  drivers/mci/mci-core.c | 1308
+> > > ++++++++++++++++++++++++++++++++++++++++++++++++ include/mci.h          |
+> > >  230 +++++++++
+> > >  6 files changed, 1571 insertions(+), 0 deletions(-)
+> > >  create mode 100644 drivers/mci/Kconfig
+> > >  create mode 100644 drivers/mci/Makefile
+> > >  create mode 100644 drivers/mci/mci-core.c
+> > >  create mode 100644 include/mci.h
+> >
+> > This whole patch looks quite good.
+> > Please add some linebreaks in mci-core.c. I don't want strict 80
+> > character lines, but some lines are really long.
+> >
+> > [snip]
+> >
+> > > +static int mci_probe(struct device_d *mci_dev)
+> > > +{
+> > > +	struct mci *mci;
+> > > +	int rc;
+> > > +
+> > > +	mci = xzalloc(sizeof(struct mci));
+> > > +	mci_dev->priv = mci;
+> > > +
+> > > +#ifdef CONFIG_MCI_STARTUP
+> > > +	/* if enabled, probe the attached card immediately */
+> > > +	rc = mci_card_probe(mci_dev);
+> > > +	if (rc == -ENODEV) {
+> > > +		/*
+> > > +		 * If it fails, add the 'probe' parameter to give the user
+> > > +		 * a chance to insert a card and try again. Note: This may fail
+> > > +		 * systems that rely on the MCI card for startup (for the
+> > > +		 * persistant environment for example)
+> > > +		 */
+> > > +		rc = add_mci_parameter(mci_dev);
+> > > +		if (rc != 0) {
+> > > +			pr_err("Failed to add 'probe' parameter to the MCI device\n");
+> > > +			goto on_error;
+> > > +		}
+> > > +	}
+> > > +#endif
+> > > +
+> > > +#ifndef CONFIG_MCI_STARTUP
+> >
+> > #else instead?
+> >
+> > > +	/* add params on demand */
+> > > +	rc = add_mci_parameter(mci_dev);
+> > > +	if (rc != 0) {
+> > > +		pr_err("Failed to add 'probe' parameter to the MCI device\n");
+> > > +		goto on_error;
+> > > +	}
+> > > +#endif
+> > > +
+> > > +	return rc;
+> > > +
+> > > +on_error:
+> > > +	free(mci);
+> > > +	return rc;
+> > > +}
+> > > +
+> >
+> > [snip]
+> >
+> > > +
+> > > +/** host information */
+> > > +struct mci_platformdata {
+> > > +	struct device_d *hw_dev;	/**< the host MCI hardware device */
+> > > +	unsigned voltages;
+> > > +	unsigned host_caps;	/**< Host's interface capabilities, refer MMC_VDD_*
+> > > and FIXME */ +	unsigned f_min;		/**< host interface lower limit */
+> > > +	unsigned f_max;		/**< host interface upper limit */
+> > > +	unsigned clock;		/**< Current clock used to talk to the card */
+> > > +	unsigned bus_width;	/**< used data bus width to the card */
+> > > +
+> > > +	int (*init)(struct device_d*, struct device_d*);	/**< init the host
+> > > interface */ +	void (*set_ios)(struct device_d*, struct device_d*,
+> > > unsigned, unsigned);	/**< change host interface settings */ +	int
+> > > (*send_cmd)(struct device_d*, struct mci_cmd*, struct mci_data*);	/**<
+> > > handle a command */ +};
+> >
+> > I prefer this struct named mci_host, this seems to match better what it
+> > actually is.
+> 
+> Hmm, no, its not a "host". It is the MMC/SD card instance. The host is more 
+> the interface, isn't it (at least for me)?
 
-diff --git a/MAKEALL b/MAKEALL
-index 9353cd8..e987de2 100755
---- a/MAKEALL
-+++ b/MAKEALL
-@@ -97,10 +97,12 @@ do_build_target() {
- 	printf "Building ${arch} ${target} \n" >&2 | tee -a "${log_report}"
- 
- 	cross_compile=`eval echo '$CROSS_COMPILE_'${target}`
--	if [ ! "${cross_compile}" ]
-+	cross_compile_set=`eval echo '${CROSS_COMPILE_'${target}'+set}'`
-+	if [ "${cross_compile_set}" = "" ]
- 	then
- 		cross_compile=`eval echo '$CROSS_COMPILE_'${arch}`
--		if [ ! "${cross_compile}" ]
-+		cross_compile_set=`eval echo '${CROSS_COMPILE_'${arch}'+set}'`
-+		if [ "${cross_compile_set}" = "" ]
- 		then
- 			cross_compile=${CROSS_COMPILE}
- 		fi
-@@ -237,7 +239,7 @@ fi
- 
- [ -d "${LOGDIR}" ] || mkdir ${LOGDIR} || exit 1
- 
--if [ ! "${CONFIG}" ] && [ ! "${CROSS_COMPILE}" ]
-+if [ ! "${CONFIG}" ] && [ ! "${CROSS_COMPILE+set}" ]
- then
- 	echo "You need to specify a CONFIG or a CROSS_COMPILE"
- 	usage
+It's a host at least in the Linux terminology.
+
+> 
+> > For the convenience of drivers set init/set_ios/send_cmd 
+> > functions should be passed a pointer to the mci_host, not the device,
+> > because that's what they actually registered. I already prepared a patch
+> > for this, I'll send it in a seperate mail.
+> 
+> I tried to layering the devices:
+> 
+>  disk_device -> knows how to handle disk drives and partition tables
+>     |
+>  mci_device -> knows how to probe and manage MMC/SD cards
+>     |
+>  hw_device -> knows how to transfer data
+> 
+> Most functions in the hw_device layer do not need access to any other 
+> structure data than their own device (okay, there is a exception). So, I 
+> tried to keep it simple.
+
+I didn't change the underlying structure, only the pointer which is
+passed to the functions.
+
+Sascha
+
+
 -- 
-1.7.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
