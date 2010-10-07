@@ -1,19 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1P3pqN-0004PJ-8W
-	for barebox@lists.infradead.org; Thu, 07 Oct 2010 12:45:08 +0000
-Date: Thu, 7 Oct 2010 14:45:03 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20101007124503.GF28242@pengutronix.de>
-References: <20101005135213.24F871539A0@gemini.denx.de>
-	<20101006072749.GR28242@pengutronix.de>
-	<20101006135644.8D7051539A0@gemini.denx.de>
-	<20101007080646.GB28242@pengutronix.de>
-	<20101007084530.82D8E153A7E@gemini.denx.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20101007084530.82D8E153A7E@gemini.denx.de>
+	id 1P3qSZ-00065e-A8
+	for barebox@lists.infradead.org; Thu, 07 Oct 2010 13:24:36 +0000
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Thu,  7 Oct 2010 15:24:12 +0200
+Message-Id: <1286457858-29771-2-git-send-email-jbe@pengutronix.de>
+In-Reply-To: <1286457858-29771-1-git-send-email-jbe@pengutronix.de>
+References: <1286457858-29771-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,48 +16,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Code "borrowed" without attribution to original authors
-To: Wolfgang Denk <wd@denx.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/7] x-functions do not return in case of failure.
+To: barebox@lists.infradead.org
 
-On Thu, Oct 07, 2010 at 10:45:30AM +0200, Wolfgang Denk wrote:
-> Dear Sascha,
-> 
-> In message <20101007080646.GB28242@pengutronix.de> you wrote:
-> >
-> > > Do you think such a short hint cannot be done?
-> > 
-> > We can (and actually I prefered Jean-Christophe had done it) add a
-> > hint in the commit log saying that the code is derived from U-Boot,
-> > but I will not dig through the U-Boot commit log to see who actually
-> > made a commit looking similar to a barebox commit, and I do not expect
-> > anyone to do so.
-> 
-> It is trivial to find the commits that added the lines you are
-> copying from - just run "git blame" on that file.
+Remove error handling, because in case of failure the xzalloc() function
+does not return.
 
-You showed me in a long mail that it's enough of contribution if the
-string 'Linux' shows up in the commit log and now you want me to
-reference particular commits? That's cool.
+Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
+---
+ drivers/ata/disk_drive.c |    4 ----
+ 1 files changed, 0 insertions(+), 4 deletions(-)
 
-Anyway, I don't want to run further into your
-barebox-sucks-from-the-community argumentation.
-
-Jean-Christophe, I just reverted the offending commits. Can you please
-update the patches to contain credits to U-Boot and Marian
-Balakowicz?
-
-Sascha
-
+diff --git a/drivers/ata/disk_drive.c b/drivers/ata/disk_drive.c
+index 250dada..6d5c87a 100644
+--- a/drivers/ata/disk_drive.c
++++ b/drivers/ata/disk_drive.c
+@@ -281,10 +281,6 @@ static int disk_probe(struct device_d *dev)
+ 
+ 	/* It seems a valuable disk. Register it */
+ 	disk_cdev = xzalloc(sizeof(struct cdev));
+-	if (disk_cdev == NULL) {
+-		dev_err(dev, "Out of memory\n");
+-		return -ENOMEM;
+-	}
+ 
+ 	/*
+ 	 * BIOS based disks needs special handling. Not the driver can
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.2.3
+
 
 _______________________________________________
 barebox mailing list
