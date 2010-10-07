@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 31.mail-out.ovh.net ([213.186.62.10])
+Received: from 29.mail-out.ovh.net ([87.98.216.213])
 	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1P3tVN-0000dt-Gm
-	for barebox@lists.infradead.org; Thu, 07 Oct 2010 16:39:42 +0000
+	id 1P3tVP-0000eS-0C
+	for barebox@lists.infradead.org; Thu, 07 Oct 2010 16:39:44 +0000
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu,  7 Oct 2010 18:37:35 +0200
-Message-Id: <1286469458-11362-2-git-send-email-plagnioj@jcrosoft.com>
+Date: Thu,  7 Oct 2010 18:37:37 +0200
+Message-Id: <1286469458-11362-4-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1286469458-11362-1-git-send-email-plagnioj@jcrosoft.com>
 References: <1286469458-11362-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
@@ -21,194 +21,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] commands/crc32: add compare 2 files crc
+Subject: [PATCH 4/5] defaultenv: add update_barebox to update barebox easly
+	for tftp or xmodem
 To: barebox@lists.infradead.org
-
-add -F options to compare to file crc
-
-it's usefull to compare what you flash in a partition
-
-it's selectable by CONFIG_CMD_CRC_CMP
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- commands/Kconfig |    5 ++
- commands/crc.c   |  111 ++++++++++++++++++++++++++++++++++++------------------
- 2 files changed, 79 insertions(+), 37 deletions(-)
+ commands/Kconfig              |    1 +
+ defaultenv/bin/init           |    1 +
+ defaultenv/bin/update_barebox |   21 +++++++++++++++++++++
+ 3 files changed, 23 insertions(+), 0 deletions(-)
+ create mode 100644 defaultenv/bin/update_barebox
 
 diff --git a/commands/Kconfig b/commands/Kconfig
-index 0fc80aa..5416073 100644
+index 5416073..151758b 100644
 --- a/commands/Kconfig
 +++ b/commands/Kconfig
-@@ -202,6 +202,11 @@ config CMD_CRC
- 	select CRC32
- 	prompt "crc"
+@@ -204,6 +204,7 @@ config CMD_CRC
  
-+config CMD_CRC_CMP
-+	tristate
-+	depends on CMD_CRC
-+	prompt "compare 2 files crc"
-+
- config CMD_MTEST
+ config CMD_CRC_CMP
  	tristate
- 	prompt "mtest"
-diff --git a/commands/crc.c b/commands/crc.c
-index 4842cdc..d3e0865 100644
---- a/commands/crc.c
-+++ b/commands/crc.c
-@@ -30,20 +30,80 @@
- #include <malloc.h>
- #include <linux/ctype.h>
++	default y if DEFAULT_ENVIRONMENT_GENERIC
+ 	depends on CMD_CRC
+ 	prompt "compare 2 files crc"
  
-+static int file_crc(char* filename, ulong start, ulong size, ulong *crc,
-+		    ulong *total)
-+{
-+	int fd, now;
-+	int ret = 0;
-+	char *buf;
+diff --git a/defaultenv/bin/init b/defaultenv/bin/init
+index db2b525..18a0c95 100644
+--- a/defaultenv/bin/init
++++ b/defaultenv/bin/init
+@@ -28,6 +28,7 @@ if [ $? != 0 ]; then
+ 	echo "default mode is net"
+ 	echo "type update_kernel nand|nor [<imagename>] [net|xmodem] to update kernel into flash"
+ 	echo "type update_rootfs nand|nor [<imagename>] [net|xmodem] to update rootfs into flash"
++	echo "type update_barebox nand|nor [<imagename>] [net|xmodem] to update barebox into flash"
+ 	echo
+ 	exit
+ fi
+diff --git a/defaultenv/bin/update_barebox b/defaultenv/bin/update_barebox
+new file mode 100644
+index 0000000..2f3b1d9
+--- /dev/null
++++ b/defaultenv/bin/update_barebox
+@@ -0,0 +1,21 @@
++#!/bin/sh
 +
-+	*total = 0;
-+	*crc = 0;
++. /env/config
++image=barebox.bin
++mode=net
 +
-+	fd = open(filename, O_RDONLY);
-+	if (fd < 0) {
-+		printf("open %s: %s\n", filename, errno_str());
-+		return fd;
-+	}
++if [ x$1 = xnand ]; then
++	part=/dev/nand0.barebox.bb
++elif [ x$1 = xnor ]; then
++	part=/dev/nor0.barebox
++else
++	echo "usage: $0 nor|nand [imagename] [net|xmodem]"
++	exit 1
++fi
 +
-+	if (start > 0) {
-+		ret = lseek(fd, start, SEEK_SET);
-+		if (ret == -1) {
-+			perror("lseek");
-+			goto out;
-+		}
-+	}
++if [ x$3 != x ]; then
++	mode=$3
++fi
 +
-+	buf = xmalloc(4096);
-+
-+	while (size) {
-+		now = min((ulong)4096, size);
-+		now = read(fd, buf, now);
-+		if (now < 0) {
-+			ret = now;
-+			perror("read");
-+			goto out_free;
-+		}
-+		if (!now)
-+			break;
-+		*crc = crc32(*crc, buf, now);
-+		size -= now;
-+		*total += now;
-+	}
-+
-+	printf ("CRC32 for %s 0x%08lx ... 0x%08lx ==> 0x%08lx",
-+			filename, start, start + *total - 1, *crc);
-+
-+out_free:
-+	free(buf);
-+out:
-+	close(fd);
-+
-+	return ret;
-+}
-+
- static int do_crc(struct command *cmdtp, int argc, char *argv[])
- {
- 	ulong start = 0, size = ~0, total = 0;
- 	ulong crc = 0, vcrc = 0;
- 	char *filename = "/dev/mem";
--	char *buf;
--	int fd, opt, err = 0, filegiven = 0, verify = 0, now;
-+#ifdef CONFIG_CMD_CRC_CMP
-+	char *vfilename = NULL;
-+#endif
-+	int opt, err = 0, filegiven = 0, verify = 0;
- 
--	while((opt = getopt(argc, argv, "f:v:")) > 0) {
-+	while((opt = getopt(argc, argv, "f:F:v:")) > 0) {
- 		switch(opt) {
- 		case 'f':
- 			filename = optarg;
- 			filegiven = 1;
- 			break;
-+#ifdef CONFIG_CMD_CRC_CMP
-+		case 'F':
-+			verify = 1;
-+			vfilename = optarg;
-+			break;
-+#endif
- 		case 'v':
- 			verify = 1;
- 			vcrc = simple_strtoul(optarg, NULL, 0);
-@@ -61,38 +121,17 @@ static int do_crc(struct command *cmdtp, int argc, char *argv[])
- 		}
- 	}
- 
--	fd = open(filename, O_RDONLY);
--	if (fd < 0) {
--		printf("open %s: %s\n", filename, errno_str());
-+	if (file_crc(filename, start, size, &crc, &total) < 0)
- 		return 1;
--	}
- 
--	if (start > 0) {
--		if (lseek(fd, start, SEEK_SET) == -1) {
--			perror("lseek");
--			err = 1;
--			goto out;
--		}
--	}
--
--	buf = xmalloc(4096);
--
--	while (size) {
--		now = min((ulong)4096, size);
--		now = read(fd, buf, now);
--		if (now < 0) {
--			perror("read");
--			goto out_free;
--		}
--		if (!now)
--			break;
--		crc = crc32(crc, buf, now);
--		size -= now;
--		total += now;
-+#ifdef CONFIG_CMD_CRC_CMP
-+	if (vfilename) {
-+		size = total;
-+		puts("\n");
-+		if (file_crc(vfilename, start, size, &vcrc, &total) < 0)
-+			return 1;
- 	}
--
--	printf ("CRC32 for %s 0x%08lx ... 0x%08lx ==> 0x%08lx",
--			filename, start, start + total - 1, crc);
-+#endif
- 
- 	if (verify && crc != vcrc) {
- 		printf(" != 0x%08x ** ERROR **", vcrc);
-@@ -101,11 +140,6 @@ static int do_crc(struct command *cmdtp, int argc, char *argv[])
- 
- 	printf("\n");
- 
--out_free:
--	free(buf);
--out:
--	close(fd);
--
- 	return err;
- }
- 
-@@ -114,6 +148,9 @@ static const __maybe_unused char cmd_crc_help[] =
- "Calculate a crc32 checksum of a memory area\n"
- "Options:\n"
- "  -f <file>   Use file instead of memory\n"
-+#ifdef CONFIG_CMD_CRC_CMP
-+"  -F <file>   Use file to compare\n"
-+#endif
- "  -v <crc>    Verfify\n";
- 
- BAREBOX_CMD_START(crc32)
++. /env/bin/_update $2
++crc32 -f $image -F $part
 -- 
 1.7.1
 
