@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1P3rxJ-0003n9-Tb
-	for barebox@lists.infradead.org; Thu, 07 Oct 2010 15:01:13 +0000
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Thu,  7 Oct 2010 16:59:57 +0200
-Message-Id: <1286463597-16948-5-git-send-email-jbe@pengutronix.de>
-In-Reply-To: <1286463597-16948-1-git-send-email-jbe@pengutronix.de>
-References: <1286463597-16948-1-git-send-email-jbe@pengutronix.de>
+	id 1P3sWy-0007Us-CK
+	for barebox@lists.infradead.org; Thu, 07 Oct 2010 15:37:17 +0000
+Date: Thu, 7 Oct 2010 17:37:14 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20101007153713.GH28242@pengutronix.de>
+References: <1286457858-29771-1-git-send-email-jbe@pengutronix.de>
+	<1286457858-29771-6-git-send-email-jbe@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1286457858-29771-6-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,618 +19,165 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] Add the i.MX23 based Chumby platform (WIP)
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 5/7] Add MCI card support to barebox
+To: Juergen Beisert <jbe@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-The so called "chumby one" aka falconwing is an i.MX23 based platform.
+Hi J=FCrgen,
 
-Note: This is work in progress. Use with care.
+On Thu, Oct 07, 2010 at 03:24:16PM +0200, Juergen Beisert wrote:
+> This adds the basic framework to handle MCI cards in barebox.
+> =
 
-Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
----
- arch/arm/Makefile                              |    1 +
- arch/arm/boards/chumby_falconwing/Makefile     |    1 +
- arch/arm/boards/chumby_falconwing/config.h     |   21 ++
- arch/arm/boards/chumby_falconwing/falconwing.c |  271 ++++++++++++++++++++++++
- arch/arm/configs/chumbyone_defconfig           |  224 +++++++++++++++++++
- arch/arm/mach-stm/Kconfig                      |    9 +
- 6 files changed, 527 insertions(+), 0 deletions(-)
- create mode 100644 arch/arm/boards/chumby_falconwing/Makefile
- create mode 100644 arch/arm/boards/chumby_falconwing/config.h
- create mode 100644 arch/arm/boards/chumby_falconwing/falconwing.c
- create mode 100644 arch/arm/configs/chumbyone_defconfig
+> Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
+> ---
+>  drivers/Kconfig        |    1 +
+>  drivers/Makefile       |    1 +
+>  drivers/mci/Kconfig    |   30 ++
+>  drivers/mci/Makefile   |    1 +
+>  drivers/mci/mci-core.c | 1308 ++++++++++++++++++++++++++++++++++++++++++=
+++++++
+>  include/mci.h          |  230 +++++++++
+>  6 files changed, 1571 insertions(+), 0 deletions(-)
+>  create mode 100644 drivers/mci/Kconfig
+>  create mode 100644 drivers/mci/Makefile
+>  create mode 100644 drivers/mci/mci-core.c
+>  create mode 100644 include/mci.h
+>
 
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index 75fa6d3..b25f366 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -82,6 +82,7 @@ board-$(CONFIG_MACH_PM9263)			:= pm9263
- board-$(CONFIG_MACH_SCB9328)			:= scb9328
- board-$(CONFIG_MACH_NESO)			:= guf-neso
- board-$(CONFIG_MACH_MX23EVK)			:= freescale-mx23-evk
-+board-$(CONFIG_MACH_CHUMBY)			:= chumby_falconwing
- 
- machdirs := $(patsubst %,arch/arm/mach-%/,$(machine-y))
- 
-diff --git a/arch/arm/boards/chumby_falconwing/Makefile b/arch/arm/boards/chumby_falconwing/Makefile
-new file mode 100644
-index 0000000..0bc79d9
---- /dev/null
-+++ b/arch/arm/boards/chumby_falconwing/Makefile
-@@ -0,0 +1 @@
-+obj-y = falconwing.o
-diff --git a/arch/arm/boards/chumby_falconwing/config.h b/arch/arm/boards/chumby_falconwing/config.h
-new file mode 100644
-index 0000000..87d9e2f
---- /dev/null
-+++ b/arch/arm/boards/chumby_falconwing/config.h
-@@ -0,0 +1,21 @@
-+/*
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-+ * MA 02111-1307 USA
-+ */
-+
-+#ifndef _CONFIG_H_
-+# define _CONFIG_H_
-+
-+#endif /* _CONFIG_H_ */
-diff --git a/arch/arm/boards/chumby_falconwing/falconwing.c b/arch/arm/boards/chumby_falconwing/falconwing.c
-new file mode 100644
-index 0000000..b28d0ba
---- /dev/null
-+++ b/arch/arm/boards/chumby_falconwing/falconwing.c
-@@ -0,0 +1,271 @@
-+/*
-+ * (C) Copyright 2010 Juergen Beisert - Pengutronix
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-+ * MA 02111-1307 USA
-+ */
-+#include <common.h>
-+#include <init.h>
-+#include <gpio.h>
-+#include <environment.h>
-+#include <asm/armlinux.h>
-+#include <asm/io.h>
-+#include <generated/mach-types.h>
-+#include <mach/imx-regs.h>
-+
-+static struct memory_platform_data ram_pdata = {
-+	.name = "ram0",
-+	.flags = DEVFS_RDWR,
-+};
-+
-+static struct device_d sdram_dev = {
-+	.name     = "mem",
-+	.map_base = IMX_MEMORY_BASE,
-+	.size     = 64 * 1024 * 1024,
-+	.platform_data = &ram_pdata,
-+};
-+
-+static void falconwing_mmu_init(void)
-+{
-+#ifdef CONFIG_MMU
-+	mmu_init();
-+	arm_create_section(IMX_MEMORY_BASE, IMX_MEMORY_BASE, 64, PMD_SECT_DEF_CACHED);
-+	arm_create_section(IMX_MEMORY_BASE + 128 * 1024 * 1024, IMX_MEMORY_BASE, 64, PMD_SECT_DEF_UNCACHED);
-+	setup_dma_coherent(0x10000000);
-+	arm_create_section(0x0, TEXT_BASE, 1, PMD_SECT_DEF_UNCACHED);
-+	mmu_enable();
-+#endif
-+}
-+
-+extern void imx_dump_clocks(void);
-+
-+static const uint32_t pad_setup[] = {
-+	/* may be not required as already done by the bootlet code */
-+#if 0
-+	/* SDRAM data signals */
-+	EMI_D15 | STRENGTH(0) | VE_2_5V,
-+	EMI_D14 | STRENGTH(0) | VE_2_5V,
-+	EMI_D13 | STRENGTH(0) | VE_2_5V,
-+	EMI_D12 | STRENGTH(0) | VE_2_5V,
-+	EMI_D11 | STRENGTH(0) | VE_2_5V,
-+	EMI_D10 | STRENGTH(0) | VE_2_5V,
-+	EMI_D9 | STRENGTH(0) | VE_2_5V,
-+	EMI_D8 | STRENGTH(0) | VE_2_5V,
-+	EMI_D7 | STRENGTH(0) | VE_2_5V,
-+	EMI_D6 | STRENGTH(0) | VE_2_5V,
-+	EMI_D5 | STRENGTH(0) | VE_2_5V,
-+	EMI_D4 | STRENGTH(0) | VE_2_5V,
-+	EMI_D3 | STRENGTH(0) | VE_2_5V,
-+	EMI_D2 | STRENGTH(0) | VE_2_5V,
-+	EMI_D1 | STRENGTH(0) | VE_2_5V,
-+	EMI_D0 | STRENGTH(0) | VE_2_5V,
-+
-+	/* SDRAM data control signals */
-+	EMI_DQM0 | STRENGTH(0) | VE_2_5V,	/* LDM */
-+	EMI_DQM1 | STRENGTH(0) | VE_2_5V,	/* UDM */
-+
-+	/* SDRAM address signals */
-+	EMI_A0 | STRENGTH(0) | VE_2_5V,
-+	EMI_A1 | STRENGTH(0) | VE_2_5V,
-+	EMI_A2 | STRENGTH(0) | VE_2_5V,
-+	EMI_A3 | STRENGTH(0) | VE_2_5V,
-+	EMI_A4 | STRENGTH(0) | VE_2_5V,
-+	EMI_A5 | STRENGTH(0) | VE_2_5V,
-+	EMI_A6 | STRENGTH(0) | VE_2_5V,
-+	EMI_A7 | STRENGTH(0) | VE_2_5V,
-+	EMI_A8 | STRENGTH(0) | VE_2_5V,
-+	EMI_A9 | STRENGTH(0) | VE_2_5V,
-+	EMI_A10 | STRENGTH(0) | VE_2_5V,
-+	EMI_A11 | STRENGTH(0) | VE_2_5V,
-+	EMI_A12 | STRENGTH(0) | VE_2_5V,
-+
-+	/* SDRAM address control signals */
-+	EMI_RASN | STRENGTH(0) | VE_2_5V,
-+	EMI_CASN | STRENGTH(0) | VE_2_5V,
-+
-+	/* SDRAM control signals */
-+	EMI_CE0N | STRENGTH(0) | VE_2_5V,
-+	EMI_CLK | STRENGTH(0) | VE_2_5V,
-+	EMI_CLKN | STRENGTH(0) | VE_2_5V,
-+	EMI_CKE | STRENGTH(0) | VE_2_5V,
-+	EMI_WEN | STRENGTH(0) | VE_2_5V,
-+	EMI_BA0 | STRENGTH(0) | VE_2_5V,
-+	EMI_BA1 | STRENGTH(0) | VE_2_5V,
-+	EMI_DQS0 | STRENGTH(0) | VE_2_5V,
-+	EMI_DQS1 | STRENGTH(0) | VE_2_5V,
-+#endif
-+	/* debug port */
-+	PWM1_DUART_TX | STRENGTH(S4MA),	/*  strength is TBD */
-+	PWM0_DUART_RX | STRENGTH(S4MA),	/*  strength is TBD */
-+
-+	/* lcd */
-+	LCD_VSYNC,	/* kernel tries with 12 mA for all LCD related pins */
-+	LCD_HSYNC,
-+	LCD_ENABE,
-+	LCD_DOTCLOCK,
-+	LCD_D17,
-+	LCD_D16,
-+	LCD_D15,
-+	LCD_D14,
-+	LCD_D13,
-+	LCD_D12,
-+	LCD_D11,
-+	LCD_D10,
-+	LCD_D9,
-+	LCD_D8,
-+	LCD_D7,
-+	LCD_D6,
-+	LCD_D5,
-+	LCD_D4,
-+	LCD_D3,
-+	LCD_D2,
-+	LCD_D1,
-+	LCD_D0,
-+
-+	/* LCD usage currently unknown */
-+	LCD_CS,	/* used as SPI SS */
-+	LCD_RS,	/* used as SPI CLK */
-+	LCD_RESET,
-+	LCD_WR,	/* used as SPI MOSI */
-+
-+	/* I2C to the MMA7455L, KXTE9, AT24C08 (DCID), AT24C128B (ID EEPROM) and QN8005B */
-+	I2C_SDA,
-+	I2C_CLK,
-+
-+	/* Rotary decoder (external pull ups) */
-+	ROTARYA,
-+	ROTARYB,
-+
-+	/* the chumby bend (external pull up) */
-+	PWM4_GPIO | GPIO_IN,
-+
-+	/* backlight control, to be controled by PWM, here we only want to disable it */
-+	PWM2_GPIO | GPIO_OUT | GPIO_VALUE(0),	/* 1 enables, 0 disables the backlight */
-+
-+	/* send a reset signal to the USB hub */
-+	AUART1_TX_GPIO | GPIO_OUT | GPIO_VALUE(0),
-+
-+	/* USB power disable (FIXME what level to be switched off) */
-+	AUART1_CTS_GPIO | GPIO_OUT | GPIO_VALUE(0),
-+
-+	/* Detecting if a display is connected (0 = display attached) (external pull up) */
-+	AUART1_RTS_GPIO | GPIO_IN,
-+
-+	/* disable the audio amplifier */
-+	GPMI_D08_GPIO | GPIO_OUT | GPIO_VALUE(0),
-+
-+	/* Head Phone detection (FIXME what level when plugged in) (external pull up) */
-+	GPMI_D11_GPIO | GPIO_IN,
-+
-+#if 0
-+	/* Enable the local 5V (FIXME what to do when the bootloader runs) */
-+	GPMI_D12_GPIO | GPIO_OUT | GPIO_VALUE(1),
-+#endif
-+
-+	/* not used pins */
-+	GPMI_D09_GPIO | GPIO_IN | PULLUP(1),
-+	GPMI_D10_GPIO | GPIO_IN | PULLUP(1),
-+	GPMI_D13_GPIO | GPIO_IN | PULLUP(1),
-+
-+	/* unknown. Not connected to anything than test pin J113 */
-+	GPMI_D14_GPIO | GPIO_IN | PULLUP(1),
-+
-+	/* unknown. Not connected to anything than test pin J114 */
-+	GPMI_D15_GPIO | GPIO_IN | PULLUP(1),
-+
-+	/* NAND controller (Note: There is no NAND device on the board) */
-+	GPMI_D00 | PULLUP(1),
-+	GPMI_D01 | PULLUP(1),
-+	GPMI_D02 | PULLUP(1),
-+	GPMI_D03 | PULLUP(1),
-+	GPMI_D04 | PULLUP(1),
-+	GPMI_D05 | PULLUP(1),
-+	GPMI_D06 | PULLUP(1),
-+	GPMI_D07 | PULLUP(1),
-+	GPMI_CE0N,
-+	GPMI_RDY0 | PULLUP(1),
-+	GPMI_WRN,	/* kernel tries here with 12 mA */
-+	GPMI_RDN,	/* kernel tries here with 12 mA */
-+	GPMI_WPM,	/* kernel tries here with 12 mA */
-+	GPMI_CLE,
-+	GPMI_ALE,
-+
-+	/* SD card interface */
-+	SSP1_DATA0 | PULLUP(1),	/* available at J201 */
-+	SSP1_DATA1 | PULLUP(1),	/* available at J200 */
-+	SSP1_DATA2 | PULLUP(1),	/* available at J205 */
-+	SSP1_DATA3 | PULLUP(1),	/* available at J204 */
-+	SSP1_SCK,		/* available at J202 */
-+	SSP1_CMD | PULLUP(1),	/* available at J203 */
-+	SSP1_DETECT | PULLUP(1),	/* only connected to test pin J115 */
-+
-+	/* other not used pins */
-+	GPMI_CE1N_GPIO | GPIO_IN | PULLUP(1),
-+	GPMI_CE2N_GPIO | GPIO_IN | PULLUP(1),
-+	GPMI_RDY1_GPIO | GPIO_IN | PULLUP(1),
-+	GPMI_RDY2_GPIO | GPIO_IN | PULLUP(1),
-+	GPMI_RDY3_GPIO | GPIO_IN | PULLUP(1),
-+};
-+
-+static int falconwing_devices_init(void)
-+{
-+	int i;
-+
-+	falconwing_mmu_init();
-+
-+	/* initizalize gpios */
-+	for (i = 0; i < ARRAY_SIZE(pad_setup); i++)
-+		imx_gpio_mode(pad_setup[i]);
-+
-+	register_device(&sdram_dev);
-+
-+	armlinux_add_dram(&sdram_dev);
-+	armlinux_set_bootparams((void*)(sdram_dev.map_base + 0x100));
-+	armlinux_set_architecture(MACH_TYPE_CHUMBY);
-+
-+	imx_dump_clocks();
-+
-+	return 0;
-+}
-+
-+device_initcall(falconwing_devices_init);
-+
-+static struct device_d falconwing_serial_device = {
-+	.name     = "stm_serial",
-+	.map_base = IMX_DBGUART_BASE,
-+	.size     = 8192,
-+};
-+
-+static int falconwing_console_init(void)
-+{
-+	return register_device(&falconwing_serial_device);
-+}
-+
-+console_initcall(falconwing_console_init);
-+
-+/** @page chumby Chumby Industrie's Falconwing aka "chumby one" (http://www.chumby.com/)
-+
-+This CPU card is based on a Freescale i.MX23 CPU. The card is shipped with:
-+
-+- 64 MiB synchronous dynamic RAM (DDR type)
-+
-+Memory layout when @b barebox is running:
-+
-+- 0x40000000 start of SDRAM
-+- 0x40000100 start of kernel's boot parameters
-+  - below malloc area: stack area
-+  - below barebox: malloc area
-+- 0x42000000 start of @b barebox
-+*/
-diff --git a/arch/arm/configs/chumbyone_defconfig b/arch/arm/configs/chumbyone_defconfig
-new file mode 100644
-index 0000000..a3d3e25
---- /dev/null
-+++ b/arch/arm/configs/chumbyone_defconfig
-@@ -0,0 +1,224 @@
-+#
-+# Automatically generated make config: don't edit
-+# Linux barebox version: 2010.09.0
-+# Thu Oct  7 16:36:33 2010
-+#
-+# CONFIG_BOARD_LINKER_SCRIPT is not set
-+CONFIG_GENERIC_LINKER_SCRIPT=y
-+CONFIG_ARM=y
-+
-+#
-+# System Type
-+#
-+# CONFIG_ARCH_AT91 is not set
-+# CONFIG_ARCH_EP93XX is not set
-+# CONFIG_ARCH_IMX is not set
-+CONFIG_ARCH_STM=y
-+# CONFIG_ARCH_NETX is not set
-+# CONFIG_ARCH_NOMADIK is not set
-+# CONFIG_ARCH_OMAP is not set
-+# CONFIG_ARCH_S3C24xx is not set
-+
-+#
-+# Processor Type
-+#
-+CONFIG_CPU_32=y
-+CONFIG_CPU_ARM926T=y
-+CONFIG_CPU_32v5=y
-+
-+#
-+# processor features
-+#
-+CONFIG_ARCH_TEXT_BASE=0x42000000
-+CONFIG_BOARDINFO="Chumby Falconwing"
-+
-+#
-+# SigmaTel/Freescale i.MX System-on-Chip
-+#
-+CONFIG_ARCH_IMX23=y
-+# CONFIG_MACH_MX23EVK is not set
-+CONFIG_MACH_CHUMBY=y
-+
-+#
-+# Board specific settings       
-+#
-+CONFIG_AEABI=y
-+
-+#
-+# Arm specific settings         
-+#
-+CONFIG_CMD_ARM_CPUINFO=y
-+CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_DEFCONFIG_LIST="$ARCH_DEFCONFIG"
-+CONFIG_GREGORIAN_CALENDER=y
-+CONFIG_HAS_KALLSYMS=y
-+CONFIG_HAS_MODULES=y
-+CONFIG_CMD_MEMORY=y
-+CONFIG_ENV_HANDLING=y
-+CONFIG_GENERIC_GPIO=y
-+
-+#
-+# General Settings              
-+#
-+CONFIG_LOCALVERSION_AUTO=y
-+
-+#
-+# memory layout                 
-+#
-+CONFIG_HAVE_MMU=y
-+# CONFIG_MMU is not set
-+CONFIG_HAVE_CONFIGURABLE_TEXT_BASE=y
-+CONFIG_TEXT_BASE=0x42000000
-+CONFIG_HAVE_CONFIGURABLE_MEMORY_LAYOUT=y
-+CONFIG_MEMORY_LAYOUT_DEFAULT=y
-+# CONFIG_MEMORY_LAYOUT_FIXED is not set
-+CONFIG_STACK_SIZE=0x8000
-+CONFIG_MALLOC_SIZE=0x400000
-+CONFIG_BROKEN=y
-+# CONFIG_EXPERIMENTAL is not set
-+# CONFIG_KALLSYMS is not set
-+CONFIG_PROMPT="chumby:"
-+CONFIG_BAUDRATE=115200
-+CONFIG_LONGHELP=y
-+CONFIG_CBSIZE=1024
-+CONFIG_MAXARGS=16
-+CONFIG_SHELL_HUSH=y
-+# CONFIG_SHELL_SIMPLE is not set
-+# CONFIG_GLOB is not set
-+CONFIG_PROMPT_HUSH_PS2="> "
-+# CONFIG_HUSH_FANCY_PROMPT is not set
-+CONFIG_CMDLINE_EDITING=y
-+CONFIG_AUTO_COMPLETE=y
-+# CONFIG_MENU is not set
-+# CONFIG_PASSWORD is not set
-+CONFIG_DYNAMIC_CRC_TABLE=y
-+CONFIG_ERRNO_MESSAGES=y
-+CONFIG_TIMESTAMP=y
-+CONFIG_CONSOLE_FULL=y
-+CONFIG_CONSOLE_ACTIVATE_FIRST=y
-+# CONFIG_OF_FLAT_TREE is not set
-+CONFIG_PARTITION=y
-+# CONFIG_DEFAULT_ENVIRONMENT is not set
-+
-+#
-+# Debugging                     
-+#
-+CONFIG_DEBUG_INFO=y
-+# CONFIG_ENABLE_FLASH_NOISE is not set
-+# CONFIG_ENABLE_PARTITION_NOISE is not set
-+# CONFIG_ENABLE_DEVICE_NOISE is not set
-+
-+#
-+# Commands                      
-+#
-+
-+#
-+# scripting                     
-+#
-+CONFIG_CMD_EDIT=y
-+CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_SAVEENV=y
-+CONFIG_CMD_LOADENV=y
-+CONFIG_CMD_EXPORT=y
-+CONFIG_CMD_PRINTENV=y
-+CONFIG_CMD_READLINE=y
-+CONFIG_CMD_TRUE=y
-+CONFIG_CMD_FALSE=y
-+# CONFIG_CMD_LOGIN is not set
-+# CONFIG_CMD_PASSWD is not set
-+
-+#
-+# file commands                 
-+#
-+CONFIG_CMD_LS=y
-+CONFIG_CMD_RM=y
-+CONFIG_CMD_CAT=y
-+CONFIG_CMD_MKDIR=y
-+CONFIG_CMD_RMDIR=y
-+CONFIG_CMD_CP=y
-+CONFIG_CMD_PWD=y
-+CONFIG_CMD_CD=y
-+CONFIG_CMD_MOUNT=y
-+CONFIG_CMD_UMOUNT=y
-+
-+#
-+# console                       
-+#
-+CONFIG_CMD_CLEAR=y
-+CONFIG_CMD_ECHO=y
-+CONFIG_CMD_ECHO_E=y
-+
-+#
-+# memory                        
-+#
-+# CONFIG_CMD_LOADB is not set
-+# CONFIG_CMD_LOADS is not set
-+# CONFIG_CMD_MEMINFO is not set
-+# CONFIG_CMD_CRC is not set
-+CONFIG_CMD_MTEST=y
-+CONFIG_CMD_MTEST_ALTERNATIVE=y
-+
-+#
-+# flash                         
-+#
-+# CONFIG_CMD_FLASH is not set
-+# CONFIG_CMD_UBI is not set
-+
-+#
-+# booting                       
-+#
-+CONFIG_CMD_BOOTM=y
-+# CONFIG_CMD_BOOTM_ZLIB is not set
-+# CONFIG_CMD_BOOTM_BZLIB is not set
-+# CONFIG_CMD_BOOTM_SHOW_TYPE is not set
-+CONFIG_CMD_BOOTZ=y
-+CONFIG_CMD_BOOTU=y
-+CONFIG_CMD_RESET=y
-+# CONFIG_CMD_GO is not set
-+CONFIG_CMD_TIMEOUT=y
-+CONFIG_CMD_PARTITION=y
-+CONFIG_CMD_TEST=y
-+CONFIG_CMD_VERSION=y
-+CONFIG_CMD_HELP=y
-+CONFIG_CMD_DEVINFO=y
-+# CONFIG_CMD_GPIO is not set
-+# CONFIG_CMD_UNLZO is not set
-+# CONFIG_NET is not set
-+
-+#
-+# Drivers                       
-+#
-+
-+#
-+# serial drivers                
-+#
-+# CONFIG_DRIVER_SERIAL_ARM_DCC is not set
-+CONFIG_DRIVER_SERIAL_STM378X=y
-+# CONFIG_DRIVER_SERIAL_NS16550 is not set
-+
-+#
-+# SPI drivers                   
-+#
-+# CONFIG_SPI is not set
-+# CONFIG_I2C is not set
-+
-+#
-+# flash drivers                 
-+#
-+# CONFIG_DRIVER_CFI is not set
-+# CONFIG_MTD is not set
-+# CONFIG_ATA is not set
-+# CONFIG_USB is not set
-+# CONFIG_USB_GADGET is not set
-+# CONFIG_VIDEO is not set
-+
-+#
-+# Filesystem support            
-+#
-+# CONFIG_FS_CRAMFS is not set
-+CONFIG_FS_RAMFS=y
-+CONFIG_FS_DEVFS=y
-+CONFIG_CRC32=y
-+# CONFIG_DIGEST is not set
-+# CONFIG_GENERIC_FIND_NEXT_BIT is not set
-+CONFIG_PROCESS_ESCAPE_SEQUENCE=y
-diff --git a/arch/arm/mach-stm/Kconfig b/arch/arm/mach-stm/Kconfig
-index bbdea51..021919a 100644
---- a/arch/arm/mach-stm/Kconfig
-+++ b/arch/arm/mach-stm/Kconfig
-@@ -3,9 +3,11 @@ if ARCH_STM
- config ARCH_TEXT_BASE
- 	hex
- 	default 0x41000000 if MACH_MX23EVK
-+	default 0x42000000 if MACH_CHUMBY
- 
- config BOARDINFO
- 	default "Freescale i.MX23-EVK" if MACH_MX23EVK
-+	default "Chumby Falconwing" if MACH_CHUMBY
- 
- comment "SigmaTel/Freescale i.MX System-on-Chip"
- 
-@@ -28,6 +30,13 @@ config MACH_MX23EVK
- 	help
- 	  Say Y here if you are using the Freescale i.MX23-EVK board
- 
-+config MACH_CHUMBY
-+	bool "Chumby Falconwing"
-+	select HAVE_MMU
-+	help
-+	  Say Y here if you are using the "chumby one" aka falconwing from
-+	  Chumby Industries
-+
- endchoice
- 
- endif
--- 
-1.7.2.3
+This whole patch looks quite good.
+Please add some linebreaks in mci-core.c. I don't want strict 80
+character lines, but some lines are really long.
 
+[snip]
+
+> +static int mci_probe(struct device_d *mci_dev)
+> +{
+> +	struct mci *mci;
+> +	int rc;
+> +
+> +	mci =3D xzalloc(sizeof(struct mci));
+> +	mci_dev->priv =3D mci;
+> +
+> +#ifdef CONFIG_MCI_STARTUP
+> +	/* if enabled, probe the attached card immediately */
+> +	rc =3D mci_card_probe(mci_dev);
+> +	if (rc =3D=3D -ENODEV) {
+> +		/*
+> +		 * If it fails, add the 'probe' parameter to give the user
+> +		 * a chance to insert a card and try again. Note: This may fail
+> +		 * systems that rely on the MCI card for startup (for the
+> +		 * persistant environment for example)
+> +		 */
+> +		rc =3D add_mci_parameter(mci_dev);
+> +		if (rc !=3D 0) {
+> +			pr_err("Failed to add 'probe' parameter to the MCI device\n");
+> +			goto on_error;
+> +		}
+> +	}
+> +#endif
+> +
+> +#ifndef CONFIG_MCI_STARTUP
+
+#else instead?
+
+> +	/* add params on demand */
+> +	rc =3D add_mci_parameter(mci_dev);
+> +	if (rc !=3D 0) {
+> +		pr_err("Failed to add 'probe' parameter to the MCI device\n");
+> +		goto on_error;
+> +	}
+> +#endif
+> +
+> +	return rc;
+> +
+> +on_error:
+> +	free(mci);
+> +	return rc;
+> +}
+> +
+
+[snip]
+
+> +
+> +/** host information */
+> +struct mci_platformdata {
+> +	struct device_d *hw_dev;	/**< the host MCI hardware device */
+> +	unsigned voltages;
+> +	unsigned host_caps;	/**< Host's interface capabilities, refer MMC_VDD_*=
+ and FIXME */
+> +	unsigned f_min;		/**< host interface lower limit */
+> +	unsigned f_max;		/**< host interface upper limit */
+> +	unsigned clock;		/**< Current clock used to talk to the card */
+> +	unsigned bus_width;	/**< used data bus width to the card */
+> +
+> +	int (*init)(struct device_d*, struct device_d*);	/**< init the host int=
+erface */
+> +	void (*set_ios)(struct device_d*, struct device_d*, unsigned, unsigned)=
+;	/**< change host interface settings */
+> +	int (*send_cmd)(struct device_d*, struct mci_cmd*, struct mci_data*);	/=
+**< handle a command */
+> +};
+
+I prefer this struct named mci_host, this seems to match better what it
+actually is. For the convenience of drivers set init/set_ios/send_cmd
+functions should be passed a pointer to the mci_host, not the device,
+because that's what they actually registered. I already prepared a patch
+for this, I'll send it in a seperate mail.
+
+> +
+> +/** MMC/SD and interface instance information */
+> +struct mci {
+> +	unsigned version;
+> +	int high_capacity;	/**< !=3D 0 when a high capacity card is connected (=
+OCR -> OCR_HCS) */
+> +	unsigned card_caps;	/**< Card's capabilities */
+> +	unsigned ocr;		/**< card's "operation condition register" */
+> +	unsigned scr[2];
+> +	unsigned csd[4];	/**< card's "card specific data register" */
+> +	unsigned cid[4];	/**< card's "card identification register" */
+> +	unsigned short rca;	/* FIXME */
+> +	unsigned tran_speed;	/**< not yet used */
+> +	unsigned read_bl_len;	/**< currently used data block length for read ac=
+cesses */
+> +	unsigned write_bl_len;	/**< currently used data block length for write =
+accesses */
+> +	uint64_t capacity;	/**< Card's data capacity in bytes */
+> +	int ready_for_use;	/** true if already probed */
+> +};
+> +
+> +int mci_register(struct mci_platformdata*);
+> +
+> +#define GET_HOST_DATA(x) (x->priv)
+> +#define GET_HOST_PDATA(x) (x->platform_data)
+> +#define GET_MCI_DATA(x) (x->priv)
+> +#define GET_MCI_PDATA(x) (x->platform_data)
+> +
+> +#endif /* _MCI_H_ */
+> -- =
+
+> 1.7.2.3
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> =
+
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
