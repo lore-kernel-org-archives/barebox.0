@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 64.mail-out.ovh.net ([91.121.185.65])
+Received: from 29.mail-out.ovh.net ([87.98.216.213])
 	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1P3tVM-0000dg-56
-	for barebox@lists.infradead.org; Thu, 07 Oct 2010 16:39:41 +0000
+	id 1P3tVP-0000el-0I
+	for barebox@lists.infradead.org; Thu, 07 Oct 2010 16:39:45 +0000
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu,  7 Oct 2010 18:37:34 +0200
-Message-Id: <1286469458-11362-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Thu,  7 Oct 2010 18:37:38 +0200
+Message-Id: <1286469458-11362-5-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1286469458-11362-1-git-send-email-plagnioj@jcrosoft.com>
+References: <1286469458-11362-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,126 +21,275 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/5] defaultenv: introduce CONFIG_DEFAULT_ENVIRONMENT_GENERIC
-	to enable it
+Subject: [PATCH 5/5] nhk8815: use defaultenv
 To: barebox@lists.infradead.org
-
-this will we usefull to enable functionnality if used
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/configs/neso_defconfig   |    3 ++-
- arch/arm/configs/pca100_defconfig |    3 ++-
- arch/arm/configs/pcm037_defconfig |    3 ++-
- arch/arm/configs/pcm038_defconfig |    3 ++-
- arch/arm/configs/pcm043_defconfig |    3 ++-
- common/Kconfig                    |    7 +++++++
- common/Makefile                   |    4 ++++
- 7 files changed, 21 insertions(+), 5 deletions(-)
+ arch/arm/boards/nhk8815/env/bin/_update            |   36 ----------------
+ arch/arm/boards/nhk8815/env/bin/boot               |   38 -----------------
+ arch/arm/boards/nhk8815/env/bin/init               |   28 ------------
+ .../boards/nhk8815/env/bin/update_barebox_xmodem   |   19 --------
+ arch/arm/boards/nhk8815/env/bin/update_kernel      |    8 ----
+ arch/arm/boards/nhk8815/env/bin/update_root        |    8 ----
+ arch/arm/boards/nhk8815/env/config                 |   44 +++++++++++++------
+ arch/arm/configs/nhk8815_defconfig                 |    1 +
+ 8 files changed, 31 insertions(+), 151 deletions(-)
+ delete mode 100644 arch/arm/boards/nhk8815/env/bin/_update
+ delete mode 100644 arch/arm/boards/nhk8815/env/bin/boot
+ delete mode 100644 arch/arm/boards/nhk8815/env/bin/init
+ delete mode 100644 arch/arm/boards/nhk8815/env/bin/update_barebox_xmodem
+ delete mode 100644 arch/arm/boards/nhk8815/env/bin/update_kernel
+ delete mode 100644 arch/arm/boards/nhk8815/env/bin/update_root
 
-diff --git a/arch/arm/configs/neso_defconfig b/arch/arm/configs/neso_defconfig
-index 9f6e3f4..24125f9 100644
---- a/arch/arm/configs/neso_defconfig
-+++ b/arch/arm/configs/neso_defconfig
-@@ -12,7 +12,8 @@ CONFIG_HUSH_FANCY_PROMPT=y
- CONFIG_CMDLINE_EDITING=y
- CONFIG_AUTO_COMPLETE=y
- CONFIG_PARTITION=y
--CONFIG_DEFAULT_ENVIRONMENT_PATH="defaultenv arch/arm/boards/guf-neso/env"
-+CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
-+CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/guf-neso/env"
- CONFIG_CMD_EDIT=y
- CONFIG_CMD_SLEEP=y
- CONFIG_CMD_SAVEENV=y
-diff --git a/arch/arm/configs/pca100_defconfig b/arch/arm/configs/pca100_defconfig
-index d1708a6..8c72bdf 100644
---- a/arch/arm/configs/pca100_defconfig
-+++ b/arch/arm/configs/pca100_defconfig
-@@ -12,7 +12,8 @@ CONFIG_HUSH_FANCY_PROMPT=y
- CONFIG_CMDLINE_EDITING=y
- CONFIG_AUTO_COMPLETE=y
- CONFIG_PARTITION=y
--CONFIG_DEFAULT_ENVIRONMENT_PATH="defaultenv arch/arm/boards/phycard-i.MX27/env"
-+CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
-+CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/phycard-i.MX27/env"
- CONFIG_CMD_EDIT=y
- CONFIG_CMD_SLEEP=y
- CONFIG_CMD_SAVEENV=y
-diff --git a/arch/arm/configs/pcm037_defconfig b/arch/arm/configs/pcm037_defconfig
-index 8e60b0a..e12f690 100644
---- a/arch/arm/configs/pcm037_defconfig
-+++ b/arch/arm/configs/pcm037_defconfig
-@@ -10,7 +10,8 @@ CONFIG_HUSH_FANCY_PROMPT=y
- CONFIG_CMDLINE_EDITING=y
- CONFIG_AUTO_COMPLETE=y
- CONFIG_PARTITION=y
--CONFIG_DEFAULT_ENVIRONMENT_PATH="defaultenv arch/arm/boards/pcm037/env"
-+CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
-+CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/pcm037/env"
- CONFIG_CMD_EDIT=y
- CONFIG_CMD_SLEEP=y
- CONFIG_CMD_SAVEENV=y
-diff --git a/arch/arm/configs/pcm038_defconfig b/arch/arm/configs/pcm038_defconfig
-index eacbbc6..2038f14 100644
---- a/arch/arm/configs/pcm038_defconfig
-+++ b/arch/arm/configs/pcm038_defconfig
-@@ -13,7 +13,8 @@ CONFIG_HUSH_FANCY_PROMPT=y
- CONFIG_CMDLINE_EDITING=y
- CONFIG_AUTO_COMPLETE=y
- CONFIG_PARTITION=y
--CONFIG_DEFAULT_ENVIRONMENT_PATH="defaultenv arch/arm/boards/pcm038/env"
-+CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
-+CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/pcm038/env"
- CONFIG_CMD_EDIT=y
- CONFIG_CMD_SLEEP=y
- CONFIG_CMD_SAVEENV=y
-diff --git a/arch/arm/configs/pcm043_defconfig b/arch/arm/configs/pcm043_defconfig
-index 51ca833..2dd711b 100644
---- a/arch/arm/configs/pcm043_defconfig
-+++ b/arch/arm/configs/pcm043_defconfig
-@@ -13,7 +13,8 @@ CONFIG_HUSH_FANCY_PROMPT=y
- CONFIG_CMDLINE_EDITING=y
- CONFIG_AUTO_COMPLETE=y
- CONFIG_PARTITION=y
--CONFIG_DEFAULT_ENVIRONMENT_PATH="defaultenv arch/arm/boards/pcm043/env"
-+CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
-+CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/pcm043/env"
- CONFIG_CMD_EDIT=y
- CONFIG_CMD_SLEEP=y
- CONFIG_CMD_SAVEENV=y
-diff --git a/common/Kconfig b/common/Kconfig
-index ad70cde..485133e 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -382,6 +382,13 @@ config DEFAULT_ENVIRONMENT
- 	  Enabling this option will give you a default environment when
- 	  the environment found in the environment sector is invalid
+diff --git a/arch/arm/boards/nhk8815/env/bin/_update b/arch/arm/boards/nhk8815/env/bin/_update
+deleted file mode 100644
+index fb7cbe8..0000000
+--- a/arch/arm/boards/nhk8815/env/bin/_update
++++ /dev/null
+@@ -1,36 +0,0 @@
+-#!/bin/sh
+-
+-if [ -z "$part" -o -z "$image" ]; then
+-	echo "define \$part and \$image"
+-	exit 1
+-fi
+-
+-if [ \! -e "$part" ]; then
+-	echo "Partition $part does not exist"
+-	exit 1
+-fi
+-
+-if [ $# = 1 ]; then
+-	image=$1
+-fi
+-
+-if [ x$ip = xdhcp ]; then
+-	dhcp
+-fi
+-
+-ping $eth0.serverip
+-if [ $? -ne 0 ] ; then
+-	echo "update aborted"
+-	exit 1
+-fi
+-
+-unprotect $part
+-
+-echo
+-echo "erasing partition $part"
+-erase $part
+-
+-echo
+-echo "flashing $image to $part"
+-echo
+-tftp $image $part
+diff --git a/arch/arm/boards/nhk8815/env/bin/boot b/arch/arm/boards/nhk8815/env/bin/boot
+deleted file mode 100644
+index fd8d957..0000000
+--- a/arch/arm/boards/nhk8815/env/bin/boot
++++ /dev/null
+@@ -1,38 +0,0 @@
+-#!/bin/sh
+-
+-. /env/config
+-
+-if [ x$1 = xflash ]; then
+-	root=flash
+-	kernel=flash
+-fi
+-
+-if [ x$1 = xnet ]; then
+-	root=net
+-	kernel=net
+-fi
+-
+-if [ x$ip = xdhcp ]; then
+-	bootargs="$bootargs ip=dhcp"
+-else
+-	bootargs="$bootargs ip=$eth0.ipaddr:$eth0.serverip:$eth0.gateway:$eth0.netmask:::"
+-fi
+-
+-if [ x$root = xflash ]; then
+-	bootargs="$bootargs root=$rootpart rootfstype=jffs2"
+-else
+-	bootargs="$bootargs root=/dev/nfs nfsroot=192.168.23.111:$nfsroot"
+-fi
+-
+-bootargs="$bootargs"
+-
+-if [ $kernel = net ]; then
+-	if [ x$ip = xdhcp ]; then
+-		dhcp
+-	fi
+-	tftp $uimage uImage
+-	bootm uImage
+-else
+-	bootm /dev/nor0.kernel
+-fi
+-
+diff --git a/arch/arm/boards/nhk8815/env/bin/init b/arch/arm/boards/nhk8815/env/bin/init
+deleted file mode 100644
+index 5b45a70..0000000
+--- a/arch/arm/boards/nhk8815/env/bin/init
++++ /dev/null
+@@ -1,28 +0,0 @@
+-#!/bin/sh
+-
+-PATH=/env/bin
+-export PATH
+-
+-. /env/config
+-
+-if [ -e /dev/nand0 ]; then
+-	addpart /dev/nand0 $nand_parts
+-
+-	# Uh, oh, hush first expands wildcards and then starts executing
+-	# commands. What a bug!
+-	source /env/bin/hush_hack
+-fi
+-
+-echo
+-echo -n "Hit any key to stop autoboot: "
+-timeout -a $autoboot_timeout
+-if [ $? != 0 ]; then
+-	echo
+-	echo "type update_kernel [<imagename>] to update kernel into flash"
+-	echo "type udate_root [<imagename>] to update rootfs into flash"
+-	echo "type update_barebox_xmodem nor to update barebox into flash"
+-	echo
+-	exit
+-fi
+-
+-boot
+diff --git a/arch/arm/boards/nhk8815/env/bin/update_barebox_xmodem b/arch/arm/boards/nhk8815/env/bin/update_barebox_xmodem
+deleted file mode 100644
+index 40f4ad3..0000000
+--- a/arch/arm/boards/nhk8815/env/bin/update_barebox_xmodem
++++ /dev/null
+@@ -1,19 +0,0 @@
+-#!/bin/sh
+-
+-. /env/config
+-
+-part=/dev/nand0.barebox
+-
+-loadb -f barebox.bin -c
+-
+-unprotect $part
+-echo
+-echo "erasing partition $part"
+-erase $part
+-
+-echo
+-echo "flashing barebox.bin to $part"
+-echo
+-cp barebox.bin $part
+-crc32 -f barebox.bin
+-crc32 -f $part
+diff --git a/arch/arm/boards/nhk8815/env/bin/update_kernel b/arch/arm/boards/nhk8815/env/bin/update_kernel
+deleted file mode 100644
+index db0f4c2..0000000
+--- a/arch/arm/boards/nhk8815/env/bin/update_kernel
++++ /dev/null
+@@ -1,8 +0,0 @@
+-#!/bin/sh
+-
+-. /env/config
+-
+-image=$uimage
+-part=/dev/nand0.kernel
+-
+-. /env/bin/_update $1
+diff --git a/arch/arm/boards/nhk8815/env/bin/update_root b/arch/arm/boards/nhk8815/env/bin/update_root
+deleted file mode 100644
+index 9530e84..0000000
+--- a/arch/arm/boards/nhk8815/env/bin/update_root
++++ /dev/null
+@@ -1,8 +0,0 @@
+-#!/bin/sh
+-
+-. /env/config
+-
+-image=$jffs2
+-part=/dev/nand0.rootfs
+-
+-. /env/bin/_update $1
+diff --git a/arch/arm/boards/nhk8815/env/config b/arch/arm/boards/nhk8815/env/config
+index 7e7fc45..e657a76 100644
+--- a/arch/arm/boards/nhk8815/env/config
++++ b/arch/arm/boards/nhk8815/env/config
+@@ -1,16 +1,33 @@
+ #!/bin/sh
  
-+config DEFAULT_ENVIRONMENT_GENERIC
-+	bool
-+	depends on DEFAULT_ENVIRONMENT
-+	prompt "Default environment generic"
-+	help
-+	  Generic barebox default env
+-# can be either 'net' or 'flash'
+-kernel=net
+-root=net
+-
+-# use 'dhcp' todo dhcp in uboot and in kernel
++# use 'dhcp' to do dhcp in barebox and in kernel
++# use 'none' if you want to skip kernel ip autoconfiguration
+ ip=dhcp
+ 
+-#
+-# setup default ethernet address
+-#
+-#eth0.serverip=192.168.23.108
++# or set your networking parameters here
++#eth0.ipaddr=a.b.c.d
++#eth0.netmask=a.b.c.d
++#eth0.gateway=a.b.c.d
++#eth0.serverip=a.b.c.d
 +
- config DEFAULT_ENVIRONMENT_PATH
- 	string
- 	depends on DEFAULT_ENVIRONMENT
-diff --git a/common/Makefile b/common/Makefile
-index e56dbc2..b42ab7a 100644
---- a/common/Makefile
-+++ b/common/Makefile
-@@ -26,6 +26,10 @@ ifdef CONFIG_DEFAULT_ENVIRONMENT
- $(obj)/startup.o: include/generated/barebox_default_env.h
- $(obj)/env.o: include/generated/barebox_default_env.h
- 
-+ifeq ($(CONFIG_DEFAULT_ENVIRONMENT_GENERIC),y)
-+CONFIG_DEFAULT_ENVIRONMENT_PATH += defaultenv
-+endif
++# can be either 'net' or 'nand'
++kernel_loc=net
++# can be either 'net', 'nand' or 'initrd'
++rootfs_loc=net
 +
- ENV_FILES := $(shell cd $(srctree); for i in $(CONFIG_DEFAULT_ENVIRONMENT_PATH); do find $${i} -type f -exec readlink -f {} \;; done)
++# can be either 'jffs2' or 'ubifs'
++rootfs_type=ubifs
++rootfsimage=root.$rootfs_type
++
++# The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
++#kernelimage_type=zimage
++#kernelimage=zImage
++kernelimage_type=uimage
++kernelimage=uImage
++#kernelimage_type=raw
++#kernelimage=Image
++#kernelimage_type=raw_lzo
++#kernelimage=Image.lzo
  
- endif # ifdef CONFIG_DEFAULT_ENVIRONMENT
+ # Partition			Size	Start
+ # XloaderTOC + X-Loader		256KB	0x00000000
+@@ -22,11 +39,10 @@ ip=dhcp
+ 
+ nand_parts="256k(xloader)ro,256k(meminit),2M(barebox),3M(kernel),22M(rootfs),100M(userfs),384k(free),128k(bareboxenv)"
+ 
+-uimage=uImage-nhk15
+-
+-# use 'dhcp' to do dhcp in uboot and in kernel
+-ip=dhcp
+-
+ autoboot_timeout=3
+ 
+ bootargs="root=/dev/ram0 console=ttyAMA1,115200n8 init=linuxrc"
++
++# set a fancy prompt (if support is compiled in)
++PS1="\e[1;32mbarebox@\e[1;31m\h:\w\e[0m "
++
+diff --git a/arch/arm/configs/nhk8815_defconfig b/arch/arm/configs/nhk8815_defconfig
+index e3f4102..5e03d05 100644
+--- a/arch/arm/configs/nhk8815_defconfig
++++ b/arch/arm/configs/nhk8815_defconfig
+@@ -10,6 +10,7 @@ CONFIG_AUTO_COMPLETE=y
+ CONFIG_MENU=y
+ CONFIG_PASSWD_SUM_SHA1=y
+ CONFIG_PARTITION=y
++CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
+ CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/nhk8815/env"
+ CONFIG_CMD_EDIT=y
+ CONFIG_CMD_SLEEP=y
 -- 
 1.7.1
 
