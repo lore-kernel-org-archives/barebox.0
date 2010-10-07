@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yw0-f49.google.com ([209.85.213.49])
-	by bombadil.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1P1Cnc-0003ud-4p
-	for barebox@lists.infradead.org; Thu, 30 Sep 2010 06:39:25 +0000
-Received: by ywi4 with SMTP id 4so707892ywi.36
-	for <barebox@lists.infradead.org>; Wed, 29 Sep 2010 23:39:23 -0700 (PDT)
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1P3lyK-0001t4-OM
+	for barebox@lists.infradead.org; Thu, 07 Oct 2010 08:37:06 +0000
+Date: Thu, 7 Oct 2010 10:37:02 +0200
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20101007083702.GQ29673@pengutronix.de>
+References: <20101005135213.24F871539A0@gemini.denx.de>
+	<20101006072749.GR28242@pengutronix.de>
+	<20101006135644.8D7051539A0@gemini.denx.de>
+	<20101007073842.GP29673@pengutronix.de>
+	<20101007080810.EFDC4153A7E@gemini.denx.de>
 MIME-Version: 1.0
-In-Reply-To: <201009291123.19306.jbe@pengutronix.de>
-References: <AANLkTi=k3qTJtQeuOMoBDJMrrR3DQbF7GunjT10FRDSW@mail.gmail.com>
-	<AANLkTinsWzaMthMo2djN17hWUMG5+4K+Y-H-YZPs-q-H@mail.gmail.com>
-	<201009291108.18378.jbe@pengutronix.de>
-	<201009291123.19306.jbe@pengutronix.de>
-Date: Thu, 30 Sep 2010 12:09:22 +0530
-Message-ID: <AANLkTikrna=mcBoayqbAezJdvuo1oUhs3XEUrf+W3kpA@mail.gmail.com>
-From: Gaurav Singh <gausinghnsit@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <20101007080810.EFDC4153A7E@gemini.denx.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,179 +26,115 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Failing to load Barebox Environment
-To: Juergen Beisert <jbe@pengutronix.de>, Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: Code "borrowed" without attribution to original authors
+To: Wolfgang Denk <wd@denx.de>
 Cc: barebox@lists.infradead.org
 
-Hi Sascha, Juergen,
-I did a rather crude workaround for this. Copied the NAND partition
-containing the environment from NAND on startup into a file using
-run_command.
-run_command("cp /dev/env0 /env_temp",0);
-then
-envfs_load("/env_temp", "/env")
+Hi Wolfgang,
 
-This is working fine.
-I think - overall the enfs_load logic has to be tweaked for NAND devices.
+On Thu, Oct 07, 2010 at 10:08:10AM +0200, Wolfgang Denk wrote:
+> In message <20101007073842.GP29673@pengutronix.de> you wrote:
+> > =
 
-Now I wrote a new enfs_nand_load function - This basically reads a
-Page of NAND (which works fine if my env file is less than 4096 :))
-into the buffer and manipulates it to prepare the Environment
-correctly. So basically we can read the entire environment partition
-from NAND in one go and then manipulate it to prepare the env in RAM.
+> > I really wonder why you care about the commit log.  I would care more
+> > about the copyright statements in the code.  (Nevertheless I consider it
+> > correct and fair to attribute in the commit log where the code is taken
+> > from.)
+> =
 
-int envfs_nand_load(char *filename, char *dir)
-{
-        struct envfs_super* super;
-        void *buf =3D NULL, *buf_free =3D NULL;
-        int envfd;
-        int fd, ret =3D 0;
-        char *str, *tmp;
-        int namelen_full;
-        unsigned long size;
+> The introduction of the Signed-off-by: system to the Linux kernel has
+> been a significant improvement to make the origin of each and every
+> line of code clear, independent of the copyright statements which
+> quite often only list the original authors, even if the current file
+> does not contain much of the original code any more.
+Yep, it's a hard job to keep copyright statements up to date (and
+sensible).  Updating the in-file statements is the best thing the
+barebox people can do now.
+ =
 
-        envfd =3D open(filename, O_RDONLY);
-        if (envfd < 0) {
-                printf("Open %s %s\n", filename, errno_str());
-                return -1;
-        }
-        /* Reading a Page into Buf */
-        size =3D ENVFS_32(4096);
-        buf =3D xzalloc(size);
-        buf_free =3D buf;
-        printf("1\n");
-        ret =3D read(envfd, buf, size);
-        if (ret < size) {
-                perror("read");
-                ret =3D errno;
-                goto out;
-        }
+> I think it i quite instructive to re-read the "12) Sign your work"
+> section of the Linux kernel's "SubmittingPatches" document. I think
+> our situation is best covered by the notes to back-porters there:
+> =
 
-        super =3D (struct envfs_super *)buf;
+> |  Special note to back-porters: It seems to be a common and useful pract=
+ise
+> |  to insert an indication of the origin of a patch at the top of the com=
+mit
+> |  message (just after the subject line) to facilitate tracking. For inst=
+ance,
+> |  here's what we see in 2.6-stable :
+> |  =
 
-        if ( ENVFS_32(super->magic) !=3D ENVFS_MAGIC) {
-                printf("envfs: wrong magic on %s\n", filename);
-                ret =3D -EIO;
-                goto out;
-        }
+> |      Date:   Tue May 13 19:10:30 2008 +0000
+> |  =
 
-        if (crc32(0, (unsigned char *)super, sizeof(struct envfs_super) - 4)
-                   !=3D ENVFS_32(super->sb_crc)) {
-                printf("wrong crc on env superblock\n");
-                ret =3D -EIO;
-                goto out;
-        }
+> |          SCSI: libiscsi regression in 2.6.25: fix nop timer handling
+> |  =
 
-        void *buf2;
-        size =3D ENVFS_32(super->size);
-        /* Rest on ENV except Superblock to be kept in buf2 */
-        buf2 =3D (void *)((char *)buf + sizeof(struct envfs_super));
+> |          commit 4cf1043593db6a337f10e006c23c69e5fc93e722 upstream
+> |  =
 
-        if (crc32(0, (unsigned char *)buf2, size)
-                     !=3D ENVFS_32(super->crc)) {
-                printf("wrong crc on env\n");
-                ret =3D -EIO;
-                goto out;
-        }
+> |  And here's what appears in 2.4 :
+> |  =
 
-        while (size) {
-                struct envfs_inode *inode;
-                uint32_t inode_size, inode_namelen;
+> |      Date:   Tue May 13 22:12:27 2008 +0200
+> |  =
 
-                inode =3D (struct envfs_inode *)buf2;
+> |          wireless, airo: waitbusy() won't delay
+> |  =
 
-                if (ENVFS_32(inode->magic) !=3D ENVFS_INODE_MAGIC) {
-                        printf("envfs: wrong magic on %s\n", filename);
-                        ret =3D -EIO;
-                        goto out;
-                }
-                inode_size =3D ENVFS_32(inode->size);
-                inode_namelen =3D ENVFS_32(inode->namelen);
+> |          [backport of 2.6 commit b7acbdfbd1f277c1eb23f344f899cfa4cd0bf3=
+6a]
+> |  =
 
-                debug("loading %s size %d namelen %d\n", inode->data,
-                        inode_size, inode_namelen);
+> |  Whatever the format, this information provides a valuable help to peop=
+le
+> |  tracking your trees, and to people trying to trouble-shoot bugs in your
+> |  tree.
+> =
 
-                str =3D concat_path_file(dir, inode->data);
-                tmp =3D strdup(str);
-                make_directory(dirname(tmp));
-                free(tmp);
+> Note that this is not only a topic from the point of code
+> attribution, but also from the point of bug tracking and quality
+> insurance.  I consider it a good thing in general.  I definitely
+> want to have this in U-Boot myself.
+full ack.  But the impression I got on your first mails is not that you
+care much about bug tracking and quality assurance in barebox.  I
+thought it's more about missing fame for U-Boot and it's contributors.
 
-                fd =3D open(str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-                free(str);
-                if (fd < 0) {
-                        printf("Open %s\n", errno_str());
-                        ret =3D fd;
-                        goto out;
-                }
+And it needs an adaption if you copy code that was added and changed by
+several commits.  Then I would not add the "original" Sobs to my commit
+log, only reference the HEAD commit where the code is taken from.)
 
-                namelen_full =3D PAD4(inode_namelen);
-                ret =3D write(fd, buf2 + namelen_full + sizeof(struct
-envfs_inode),
-                                inode_size);
-                if (ret < inode_size) {
-                        perror("write");
-                        ret =3D errno;
-                        close(fd);
-                        goto out;
-                }
+> > I don't know if you want to make it easier for people to get the
+> > annotations right/better when copying from U-Boot or not.  But if you
+> > do, you could change your standard copyright header to include the
+> > project's name.  Something like:
+> =
 
-                close(fd);
+> Hm... we could do that, of course. But what exactly would it help or
+> change?
+If Joe Developer copies a file from U-Boot to barebox, he automatically
+get's the in-file attribution right/better.
 
-                buf2 +=3D PAD4(inode_namelen) + PAD4(inode_size) +
-                                sizeof(struct envfs_inode);
-                size -=3D PAD4(inode_namelen) + PAD4(inode_size) +
-                                sizeof(struct envfs_inode);
-        }
+>          This is not done in Linux, either...
+So you scruple to make U-Boot better than the Linux kernel? ;-)
 
-        ret =3D 0;
-out:
-        close(envfd);
-        if (buf_free)
-                free(buf_free);
-        return ret;
-}
+In the section "How to Apply These Terms to Your New Programs" of the
+GPL-2 it's even suggested to add =
 
 
+	<one line to give the program's name and a brief idea of what it does.>
 
+I prefer my suggestion, but YMMV.
 
-On Wed, Sep 29, 2010 at 2:53 PM, Juergen Beisert <jbe@pengutronix.de> wrote:
-> Juergen Beisert wrote:
->> Just a note:
->>
->> You configure:
->> > >> devfs_add_partition("nand0", 0x00000, 0x200000, PARTITION_FIXED,
->> > >> "self_raw"); dev_add_bb_dev("self_raw", "self0");
->> > >> devfs_add_partition("nand0", 0x200000, 0x200000, PARTITION_FIXED,
->> > >> "env_raw"); dev_add_bb_dev("env_raw", "env0");
->>
->> And then:
->> > EVB2065> addpart /dev/nand0 4M(barebox)ro,2M(kernel)ro,-(root)
->>
->> Both must match!
->>
->> Try instead:
->>
->> EVB2065> addpart /dev/nand0 256k(barebox)ro,256k(env),2M(kernel)ro,-(roo=
-t)
->>
->> jbe
->
-> Ups, sorry: 0x200000 !=3D 256k (didn't count the '0' right...)
->
-> EVB2065> addpart /dev/nand0 2M(barebox)ro,2M(env),2M(kernel)ro,-(root)
->
-> jbe
->
-> --
-> Pengutronix e.K. =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0| Juergen Beisert =A0 =A0 =A0 =A0 =A0 =A0 |
-> Linux Solutions for Science and Industry =A0 =A0 =A0| Phone: +49-8766-939=
- 228 =A0 =A0 |
-> Vertretung Sued/Muenchen, Germany =A0 =A0 =A0 =A0 =A0 =A0 | Fax: =A0 +49-=
-5121-206917-5555 |
-> Amtsgericht Hildesheim, HRA 2686 =A0 =A0 =A0 =A0 =A0 =A0 =A0| http://www.=
-pengutronix.de/ =A0|
->
+Best regards
+Uwe
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
