@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1P4C3C-00036i-Gq
-	for barebox@lists.infradead.org; Fri, 08 Oct 2010 12:27:51 +0000
-Date: Fri, 8 Oct 2010 14:27:48 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20101008122747.GN28242@pengutronix.de>
-References: <1286469458-11362-1-git-send-email-plagnioj@jcrosoft.com>
-	<1286469458-11362-3-git-send-email-plagnioj@jcrosoft.com>
+Received: from 68.mail-out.ovh.net ([91.121.185.69])
+	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1P4CDV-0003G2-Ki
+	for barebox@lists.infradead.org; Fri, 08 Oct 2010 12:38:30 +0000
+Date: Fri, 8 Oct 2010 14:36:27 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20101008123627.GC30252@game.jcrosoft.org>
+References: <1286540674-17174-1-git-send-email-s.hauer@pengutronix.de>
+	<1286540674-17174-4-git-send-email-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1286469458-11362-3-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1286540674-17174-4-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,137 +23,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/5] defaultenv: add xmodem support for update
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH 3/3] hush: implement getopt builtin
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Oct 07, 2010 at 06:37:36PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> this is add as last parameter to do not change the default behavior
+On 14:24 Fri 08 Oct     , Sascha Hauer wrote:
+> Positional parameters are not nice, so implement a getopt
+> function. This has to be done as a builtin because otherwise
+> we have no access to the parents argc/argv.
 > 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  defaultenv/bin/_update       |   26 +++++++++++++++++---------
->  defaultenv/bin/init          |    5 +++--
->  defaultenv/bin/update_kernel |    7 ++++++-
->  defaultenv/bin/update_rootfs |    7 ++++++-
->  4 files changed, 32 insertions(+), 13 deletions(-)
+> getopt works as expected, here is a little example:
 > 
-> diff --git a/defaultenv/bin/_update b/defaultenv/bin/_update
-> index ddd6b84..c60ff88 100644
-> --- a/defaultenv/bin/_update
-> +++ b/defaultenv/bin/_update
-> @@ -14,14 +14,16 @@ if [ $# = 1 ]; then
->  	image=$1
->  fi
->  
-> -if [ x$ip = xdhcp ]; then
-> -	dhcp
-> -fi
-> -
-> -ping $eth0.serverip
-> -if [ $? -ne 0 ] ; then
-> -	echo "Server did not reply! Update aborted."
-> -	exit 1
-> +if [ x$mode = xnet ]; then
-> +	if [ x$ip = xdhcp ]; then
-> +		dhcp
-> +	fi
-> +
-> +	ping $eth0.serverip
-> +	if [ $? -ne 0 ] ; then
-> +		echo "Server did not reply! Update aborted."
-> +		exit 1
-> +	fi
->  fi
->  
->  unprotect $part
-> @@ -34,6 +36,12 @@ erase $part
->  echo
->  echo "flashing $image to $part"
->  echo
-> -tftp $image $part
-> +
-> +if [ x$mode = xnet ]; then
-> +	tftp $image $part
-> +else
-> +	loadb -f $image -c
-> +	cp $image $part
-> +fi
->  
->  protect $part
-> diff --git a/defaultenv/bin/init b/defaultenv/bin/init
-> index a55e8e6..db2b525 100644
-> --- a/defaultenv/bin/init
-> +++ b/defaultenv/bin/init
-> @@ -25,8 +25,9 @@ echo -n "Hit any key to stop autoboot: "
->  timeout -a $autoboot_timeout
->  if [ $? != 0 ]; then
->  	echo
-> -	echo "type update_kernel nand|nor [<imagename>] to update kernel into flash"
-> -	echo "type update_rootfs nand|nor [<imagename>] to update rootfs into flash"
-> +	echo "default mode is net"
-> +	echo "type update_kernel nand|nor [<imagename>] [net|xmodem] to update kernel into flash"
-> +	echo "type update_rootfs nand|nor [<imagename>] [net|xmodem] to update rootfs into flash"
->  	echo
->  	exit
->  fi
-> diff --git a/defaultenv/bin/update_kernel b/defaultenv/bin/update_kernel
-> index 1d35ed9..b29927f 100644
-> --- a/defaultenv/bin/update_kernel
-> +++ b/defaultenv/bin/update_kernel
-> @@ -2,14 +2,19 @@
->  
->  . /env/config
->  image=$kernelimage
-> +mode=net
->  
->  if [ x$1 = xnand ]; then
->  	part=/dev/nand0.kernel.bb
->  elif [ x$1 = xnor ]; then
->  	part=/dev/nor0.kernel
->  else
-> -	echo "usage: $0 nor|nand [imagename]"
-> +	echo "usage: $0 nor|nand [imagename] [net|xmodem]"
->  	exit 1
->  fi
->  
-> +if [ x$3 != x ]; then
-> +	mode=$3
-> +fi
-> +
->  . /env/bin/_update $2
-> diff --git a/defaultenv/bin/update_rootfs b/defaultenv/bin/update_rootfs
-> index 6366315..bac74ca 100644
-> --- a/defaultenv/bin/update_rootfs
-> +++ b/defaultenv/bin/update_rootfs
-> @@ -3,14 +3,19 @@
->  . /env/config
->  
->  image=$rootfsimage
-> +mode=net
->  
->  if [ x$1 = xnand ]; then
->  	part=/dev/nand0.root.bb
->  elif [ x$1 = xnor ]; then
->  	part=/dev/nor0.root
->  else
-> -	echo "usage: $0 nor|nand [imagename]"
-> +	echo "usage: $0 nor|nand [imagename] [net|xmodem]"
+> while getopt "hs:" OPT
+> do
+>         if [ $OPT = h ]; then
+>                 echo "usage"
+>                 exit 1
+>         else
+>                 echo "scr: opt: $OPT optarg: $OPTARG"
+> 	fi
+> done
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+how about make it optional?
 
-I'm not really happy with this patch. We have 3 positional parameters
-now and with xmodem it makes no sense to supply an image name,
-nontheless we have to supply it because otherwise we do not have three
-arguments.
-I just posted a patch adding a getopt command to hush. Maybe this could
-improve the situation here?
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
