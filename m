@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1P3ueF-0003Iv-Lm
-	for barebox@lists.infradead.org; Thu, 07 Oct 2010 17:52:56 +0000
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Thu, 7 Oct 2010 19:51:24 +0200
-References: <1286457858-29771-1-git-send-email-jbe@pengutronix.de>
-	<1286457858-29771-8-git-send-email-jbe@pengutronix.de>
-	<20101007171003.GK28242@pengutronix.de>
-In-Reply-To: <20101007171003.GK28242@pengutronix.de>
+	id 1P46vX-0006go-Jb
+	for barebox@lists.infradead.org; Fri, 08 Oct 2010 06:59:36 +0000
+Date: Fri, 8 Oct 2010 08:59:33 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20101008065933.GM28242@pengutronix.de>
+References: <1286469458-11362-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-Message-Id: <201010071951.24867.jbe@pengutronix.de>
+In-Reply-To: <1286469458-11362-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,68 +22,72 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 7/7] Add S3C2440 MCI card support
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/5] defaultenv: introduce
+	CONFIG_DEFAULT_ENVIRONMENT_GENERIC to enable it
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-Sascha Hauer wrote:
-> [...]
-> > +#define CLOCKRATE_MIN (1 * 1000 * 1000)
->
-> Isn't this a bit high? I thought the initialization frequnency should be
-> 400Khz at maximum. Or does the hardware not allow lower rates?
+On Thu, Oct 07, 2010 at 06:37:34PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> this will we usefull to enable functionnality if used
+> 
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  arch/arm/configs/neso_defconfig   |    3 ++-
+>  arch/arm/configs/pca100_defconfig |    3 ++-
+>  arch/arm/configs/pcm037_defconfig |    3 ++-
+>  arch/arm/configs/pcm038_defconfig |    3 ++-
+>  arch/arm/configs/pcm043_defconfig |    3 ++-
+>  common/Kconfig                    |    7 +++++++
+>  common/Makefile                   |    4 ++++
+>  7 files changed, 21 insertions(+), 5 deletions(-)
+> 
+>  
+> +config DEFAULT_ENVIRONMENT_GENERIC
+> +	bool
+> +	depends on DEFAULT_ENVIRONMENT
+> +	prompt "Default environment generic"
+> +	help
+> +	  Generic barebox default env
 
-I see you know more about MCI cards than me. This limit is a new fact to me.
+How about a bit more verbosity:
 
-Maybe this is the reason why the old 16 MiB MMC fails... will check.
+	prompt "Add generic default environment"
+	help
+	  With this option barebox will use the generic default
+	  environment found under defaultenv/ in the src tree.
+	  The Directory given with DEFAULT_ENVIRONMENT_PATH
+	  will be added to the default environment. This should
+	  at least contain a /env/config file.
 
-And no: There is *mostly* no limit for the minimal clockrate. I should 
-calculate it at runtime, because it depends on some other settings in the 
-clock tree. In the i.MX23 driver I do so already.
+> +
+>  config DEFAULT_ENVIRONMENT_PATH
+>  	string
+>  	depends on DEFAULT_ENVIRONMENT
+> diff --git a/common/Makefile b/common/Makefile
+> index e56dbc2..b42ab7a 100644
+> --- a/common/Makefile
+> +++ b/common/Makefile
+> @@ -26,6 +26,10 @@ ifdef CONFIG_DEFAULT_ENVIRONMENT
+>  $(obj)/startup.o: include/generated/barebox_default_env.h
+>  $(obj)/env.o: include/generated/barebox_default_env.h
+>  
+> +ifeq ($(CONFIG_DEFAULT_ENVIRONMENT_GENERIC),y)
+> +CONFIG_DEFAULT_ENVIRONMENT_PATH += defaultenv
+> +endif
 
-> [...]
-> > +/**
-> > + * Prepare engine's bits for the next command transfer
-> > + * @param cmd_flags MCI's command flags
-> > + * @param data_flags MCI's data flags
-> > + * @return Register bits for this transfer
-> > + */
-> > +static uint32_t s3c_prepare_command_setup(unsigned cmd_flags, unsigned
-> > data_flags) +{
-> > +	uint32_t reg;
-> > +
-> > +	/* source (=host) */
-> > +	reg = SDICMDCON_SENDERHOST;
-> > +
-> > +	if (cmd_flags & MMC_RSP_PRESENT) {
-> > +		reg |= SDICMDCON_WAITRSP;
-> > +		pr_debug("Command with response\n");
-> > +	}
-> > +	if (cmd_flags & MMC_RSP_136) {
-> > +		reg |= SDICMDCON_LONGRSP;
-> > +		pr_debug("Command with long response\n");
-> > +	}
-> > +	if (cmd_flags & MMC_RSP_CRC)
-> > +		; /* FIXME */
-> > +	if (cmd_flags & MMC_RSP_BUSY)
-> > +		; /* FIXME */
-> > +	if (cmd_flags & MMC_RSP_OPCODE)
-> > +		; /* FIXME */
->
-> It's ok that these flags are not handled in the first run, but I think
-> the driver should issue a warning when one of these flags is set.
+This reverses the order the different environment directories are
+parsed. Now the files from defaultenv will overwrite the ones
+from DEFAULT_ENVIRONMENT_PATH. I made it intentionally the other
+way round.
 
-I'm still not sure what bits to set in the various registers to match these 
-settings. So, a warning would be a good idea.
+Sascha
 
-> [...]
-
-jbe
 
 -- 
-Pengutronix e.K.                              | Juergen Beisert             |
-Linux Solutions for Science and Industry      | Phone: +49-8766-939 228     |
-Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
