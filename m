@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1P4Fqt-0005bS-QR
-	for barebox@lists.infradead.org; Fri, 08 Oct 2010 16:31:24 +0000
+	id 1P4Fqz-0005bt-3S
+	for barebox@lists.infradead.org; Fri, 08 Oct 2010 16:31:29 +0000
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Fri,  8 Oct 2010 18:30:49 +0200
-Message-Id: <1286555458-20125-2-git-send-email-jbe@pengutronix.de>
+Date: Fri,  8 Oct 2010 18:30:50 +0200
+Message-Id: <1286555458-20125-3-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1286555458-20125-1-git-send-email-jbe@pengutronix.de>
 References: <1286555458-20125-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,32 +21,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/10] x-functions do not return in case of failure.
+Subject: [PATCH 02/10] Make the disk driver less noisy
 To: barebox@lists.infradead.org
 
-Remove error handling, because in case of failure the xzalloc() function
-does not return.
+In real life this output is only a "nice to have", but most of the time
+its useless and confusing. So, make it a debug feature for the interested
+developer.
+
+Note: This is in preparation to add MCI card support, which mostly come with
+a partition table and can be handled like a disk drive.
 
 Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 ---
- drivers/ata/disk_drive.c |    4 ----
- 1 files changed, 0 insertions(+), 4 deletions(-)
+ drivers/ata/disk_drive.c |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
 
 diff --git a/drivers/ata/disk_drive.c b/drivers/ata/disk_drive.c
-index 250dada..6d5c87a 100644
+index 6d5c87a..5b22e49 100644
 --- a/drivers/ata/disk_drive.c
 +++ b/drivers/ata/disk_drive.c
-@@ -281,10 +281,6 @@ static int disk_probe(struct device_d *dev)
- 
- 	/* It seems a valuable disk. Register it */
- 	disk_cdev = xzalloc(sizeof(struct cdev));
--	if (disk_cdev == NULL) {
--		dev_err(dev, "Out of memory\n");
--		return -ENOMEM;
--	}
- 
- 	/*
- 	 * BIOS based disks needs special handling. Not the driver can
+@@ -105,7 +105,8 @@ static int disk_register_partitions(struct device_d *dev, struct partition_entry
+ 			if (table[part_order[i]].partition_size > 0x7fffff)
+ 				continue;
+ #endif
+-			dev_info(dev, "Registering partition %s to drive %s\n", partition_name, drive_name);
++			dev_dbg(dev, "Registering partition %s to drive %s\n",
++				partition_name, drive_name);
+ 			rc = devfs_add_partition(drive_name,
+ 				table[part_order[i]].partition_start * SECTOR_SIZE,
+ 				table[part_order[i]].partition_size * SECTOR_SIZE,
 -- 
 1.7.2.3
 
