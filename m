@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1P5E7I-0001cM-8X
-	for barebox@lists.infradead.org; Mon, 11 Oct 2010 08:52:21 +0000
-Received: from gallifrey.ext.pengutronix.de
-	([2001:6f8:1178:4:5054:ff:fe8d:eefb] helo=localhost)
-	by metis.ext.pengutronix.de with esmtp (Exim 4.71)
-	(envelope-from <jbe@pengutronix.de>) id 1P5E7E-0005mZ-VY
-	for barebox@lists.infradead.org; Mon, 11 Oct 2010 10:52:17 +0200
+	id 1P5ELn-0002P0-Ql
+	for barebox@lists.infradead.org; Mon, 11 Oct 2010 09:07:21 +0000
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Mon, 11 Oct 2010 10:50:28 +0200
-MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <201010111050.28141.jbe@pengutronix.de>
+Date: Mon, 11 Oct 2010 11:06:58 +0200
+Message-Id: <1286788020-14077-3-git-send-email-jbe@pengutronix.de>
+In-Reply-To: <1286788020-14077-1-git-send-email-jbe@pengutronix.de>
+References: <1286788020-14077-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,49 +16,264 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] barebox-next: Avoid a Kconfig warning
+Subject: [PATCH 2/4] Add the driver for the i.MX23 debug UART
 To: barebox@lists.infradead.org
 
-This patch removes the following warning in the current next-tree:
-
-"arch/arm/mach-imx/Kconfig:53:warning: defaults for choice values not supported"
+The i.MX23 comes with a special UART dedicated for debugging purposes. This one
+is mostly used for the console the user can reach.
 
 Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
-
 ---
- arch/arm/mach-imx/Kconfig |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/serial/Kconfig      |    5 +
+ drivers/serial/Makefile     |    1 +
+ drivers/serial/stm-serial.c |  202 +++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 208 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/serial/stm-serial.c
 
-Index: arch/arm/mach-imx/Kconfig
-===================================================================
---- arch/arm/mach-imx/Kconfig.orig
-+++ arch/arm/mach-imx/Kconfig
-@@ -42,6 +42,7 @@ config ARCH_IMX_INTERNAL_BOOT
+diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
+index c7ea2d9..3a8882f 100644
+--- a/drivers/serial/Kconfig
++++ b/drivers/serial/Kconfig
+@@ -18,6 +18,11 @@ config DRIVER_SERIAL_IMX
+ 	default y
+ 	bool "i.MX serial driver"
  
- choice
- 	depends on ARCH_IMX_INTERNAL_BOOT
-+	default ARCH_IMX_INTERNAL_BOOT_NAND
- 	prompt "Internal boot source"
- 	help
- 	  Determines the location of the header information for internal boot.
-@@ -50,7 +51,6 @@ choice
- 	  0x1000 for NOR
- 
- config ARCH_IMX_INTERNAL_BOOT_NAND
--	default y
- 	bool "NAND, SD/MMC, Serial ROM"
- 	select NAND_IMX_BOOT
- 
-
++config DRIVER_SERIAL_STM378X
++	depends on ARCH_STM
++	default y
++	bool "i.MX23 serial driver"
++
+ config DRIVER_SERIAL_NETX
+ 	depends on ARCH_NETX
+ 	default y
+diff --git a/drivers/serial/Makefile b/drivers/serial/Makefile
+index 959290e..9f0e12b 100644
+--- a/drivers/serial/Makefile
++++ b/drivers/serial/Makefile
+@@ -7,6 +7,7 @@
+ obj-$(CONFIG_DRIVER_SERIAL_ARM_DCC)		+= arm_dcc.o
+ obj-$(CONFIG_SERIAL_AMBA_PL011) += amba-pl011.o
+ obj-$(CONFIG_DRIVER_SERIAL_IMX)			+= serial_imx.o
++obj-$(CONFIG_DRIVER_SERIAL_STM378X)		+= stm-serial.o
+ obj-$(CONFIG_DRIVER_SERIAL_ATMEL)		+= atmel.o
+ obj-$(CONFIG_DRIVER_SERIAL_NETX)		+= serial_netx.o
+ obj-$(CONFIG_DRIVER_SERIAL_LINUX_COMSOLE)	+= linux_console.o
+diff --git a/drivers/serial/stm-serial.c b/drivers/serial/stm-serial.c
+new file mode 100644
+index 0000000..90563f5
+--- /dev/null
++++ b/drivers/serial/stm-serial.c
+@@ -0,0 +1,202 @@
++/*
++ * (C) Copyright 2010 Juergen Beisert - Pengutronix
++ *
++ * This code was inspired by some patches made for u-boot covered by:
++ * (c) 2007 Sascha Hauer <s.hauer@pengutronix.de>
++ * (C) Copyright 2009 Freescale Semiconductor, Inc.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ *
++ */
++
++/*
++ * Note: This is the driver for the debug UART. There is
++ * only one of these UARTs on the Freescale/SigmaTel parts
++ */
++
++#include <common.h>
++#include <init.h>
++#include <notifier.h>
++#include <gpio.h>
++#include <asm/io.h>
++#include <mach/imx-regs.h>
++#include <mach/clock.h>
++
++#define UARTDBGDR 0x00
++#define UARTDBGFR 0x18
++# define TXFF (1 << 5)
++# define RXFE (1 << 4)
++#define UARTDBGIBRD 0x24
++#define UARTDBGFBRD 0x28
++#define UARTDBGLCR_H 0x2c
++# define WLEN8 (3 << 5)
++# define WLEN7 (2 << 5)
++# define WLEN6 (1 << 5)
++# define WLEN5 (0 << 5)
++# define FEN (1 << 4)
++#define UARTDBGCR 0x30
++# define UARTEN (1 << 0)
++# define TXE (1 << 8)
++# define RXE (1 << 9)
++#define UARTDBGIMSC 0x38
++
++struct stm_serial_local {
++	struct console_device cdev;
++	int baudrate;
++	struct notifier_block notify;
++};
++
++static void stm_serial_putc(struct console_device *cdev, char c)
++{
++	struct device_d *dev = cdev->dev;
++
++	/* Wait for room in TX FIFO */
++	while (readl(dev->map_base + UARTDBGFR) & TXFF)
++		;
++
++	writel(c, dev->map_base + UARTDBGDR);
++}
++
++static int stm_serial_tstc(struct console_device *cdev)
++{
++	struct device_d *dev = cdev->dev;
++
++	/* Check if RX FIFO is not empty */
++	return !(readl(dev->map_base + UARTDBGFR) & RXFE);
++}
++
++static int stm_serial_getc(struct console_device *cdev)
++{
++	struct device_d *dev = cdev->dev;
++
++	/* Wait while TX FIFO is empty */
++	while (readl(dev->map_base + UARTDBGFR) & RXFE)
++		;
++
++	return readl(dev->map_base + UARTDBGDR) & 0xff;
++}
++
++static void stm_serial_flush(struct console_device *cdev)
++{
++	struct device_d *dev = cdev->dev;
++
++	/* Wait for TX FIFO empty */
++	while (readl(dev->map_base + UARTDBGFR) & TXFF)
++		;
++}
++
++static int stm_serial_setbaudrate(struct console_device *cdev, int new_baudrate)
++{
++	struct device_d *dev = cdev->dev;
++	struct stm_serial_local *local = container_of(cdev, struct stm_serial_local, cdev);
++	uint32_t cr, lcr_h, quot;
++
++	/* Disable everything */
++	cr = readl(dev->map_base + UARTDBGCR);
++	writel(0, dev->map_base + UARTDBGCR);
++
++	/* Calculate and set baudrate */
++	quot = (imx_get_xclk() * 4000) / new_baudrate;
++	writel(quot & 0x3f, dev->map_base + UARTDBGFBRD);
++	writel(quot >> 6, dev->map_base + UARTDBGIBRD);
++
++	/* Set 8n1 mode, enable FIFOs */
++	lcr_h = WLEN8 | FEN;
++	writel(lcr_h, dev->map_base + UARTDBGLCR_H);
++
++	/* Re-enable debug UART */
++	writel(cr, dev->map_base + UARTDBGCR);
++
++	local->baudrate = new_baudrate;
++
++	return 0;
++}
++
++static int stm_clocksource_clock_change(struct notifier_block *nb, unsigned long event, void *data)
++{
++	struct stm_serial_local *local = container_of(nb, struct stm_serial_local, notify);
++
++	return stm_serial_setbaudrate(&local->cdev, local->baudrate);
++}
++
++static int stm_serial_init_port(struct console_device *cdev)
++{
++	struct device_d *dev = cdev->dev;
++	/*
++	 * If the board specific file registers this console we should force
++	 * the usage of the debug UART pins, to be able to let the user see
++	 * the output, even if the board file forgets to configure these pins.
++	 */
++	imx_gpio_mode(PWM1_DUART_TX);
++	imx_gpio_mode(PWM0_DUART_RX);
++
++	/* Disable UART */
++	writel(0, dev->map_base + UARTDBGCR);
++
++	/* Mask interrupts */
++	writel(0, dev->map_base + UARTDBGIMSC);
++
++	return 0;
++}
++
++static struct stm_serial_local stm_device = {
++	.cdev = {
++		.f_caps = CONSOLE_STDIN | CONSOLE_STDOUT | CONSOLE_STDERR,
++		.tstc = stm_serial_tstc,
++		.putc = stm_serial_putc,
++		.getc = stm_serial_getc,
++		.flush = stm_serial_flush,
++		.setbrg = stm_serial_setbaudrate,
++	},
++};
++
++static int stm_serial_probe(struct device_d *dev)
++{
++	stm_device.cdev.dev = dev;
++	dev->type_data = &stm_device.cdev;
++
++	stm_serial_init_port(&stm_device.cdev);
++	stm_serial_setbaudrate(&stm_device.cdev, CONFIG_BAUDRATE);
++
++	/* Enable UART */
++	writel(TXE | RXE | UARTEN, dev->map_base + UARTDBGCR);
++
++	console_register(&stm_device.cdev);
++	stm_device.notify.notifier_call = stm_clocksource_clock_change;
++	clock_register_client(&stm_device.notify);
++
++	return 0;
++}
++
++static void stm_serial_remove(struct device_d *dev)
++{
++	struct console_device *cdev = dev->type_data;
++
++	stm_serial_flush(cdev);
++}
++
++static struct driver_d stm_serial_driver = {
++        .name   = "stm_serial",
++        .probe  = stm_serial_probe,
++	.remove = stm_serial_remove,
++};
++
++static int stm_serial_init(void)
++{
++	register_driver(&stm_serial_driver);
++	return 0;
++}
++
++console_initcall(stm_serial_init);
 -- 
-Pengutronix e.K.                              | Juergen Beisert             |
-Linux Solutions for Science and Industry      | Phone: +49-8766-939 228     |
-Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
+1.7.2.3
+
 
 _______________________________________________
 barebox mailing list
