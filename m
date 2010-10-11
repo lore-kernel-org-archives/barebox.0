@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1P5Jk7-0005GU-Ff
-	for barebox@lists.infradead.org; Mon, 11 Oct 2010 14:52:48 +0000
+	id 1P5JkC-0005Hw-4L
+	for barebox@lists.infradead.org; Mon, 11 Oct 2010 14:52:53 +0000
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Mon, 11 Oct 2010 16:52:25 +0200
-Message-Id: <1286808746-19456-4-git-send-email-jbe@pengutronix.de>
+Date: Mon, 11 Oct 2010 16:52:26 +0200
+Message-Id: <1286808746-19456-5-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1286808746-19456-1-git-send-email-jbe@pengutronix.de>
 References: <1286808746-19456-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,259 +21,269 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] Spend the ChumbyOne a persistant environment memory on
-	MCI card
+Subject: [PATCH 4/4] Adapt the defconfig for a full blown ChumbyOne support
 To: barebox@lists.infradead.org
 
-The ChumbyOne boot from MCI card only. As ist more fun to run barebox with
-a persistant environment, provide one in the second partition on the MCI card.
+Make the ChumbyOne use of the MCI framework.
 
 Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 ---
- arch/arm/boards/chumby_falconwing/env/bin/boot |   38 +++++++++++
- arch/arm/boards/chumby_falconwing/env/bin/init |   15 +++++
- arch/arm/boards/chumby_falconwing/env/config   |   36 +++++++++++
- arch/arm/boards/chumby_falconwing/falconwing.c |   81 +++++++++++++++++++++++-
- 4 files changed, 169 insertions(+), 1 deletions(-)
- create mode 100644 arch/arm/boards/chumby_falconwing/env/bin/boot
- create mode 100644 arch/arm/boards/chumby_falconwing/env/bin/init
- create mode 100644 arch/arm/boards/chumby_falconwing/env/config
+ arch/arm/configs/chumbyone_defconfig |  224 +++++++++++++++++++++++++++++++++-
+ 1 files changed, 223 insertions(+), 1 deletions(-)
 
-diff --git a/arch/arm/boards/chumby_falconwing/env/bin/boot b/arch/arm/boards/chumby_falconwing/env/bin/boot
-new file mode 100644
-index 0000000..981a387
---- /dev/null
-+++ b/arch/arm/boards/chumby_falconwing/env/bin/boot
-@@ -0,0 +1,38 @@
-+#!/bin/sh
+diff --git a/arch/arm/configs/chumbyone_defconfig b/arch/arm/configs/chumbyone_defconfig
+index c21c7cd..277dbda 100644
+--- a/arch/arm/configs/chumbyone_defconfig
++++ b/arch/arm/configs/chumbyone_defconfig
+@@ -1,14 +1,122 @@
++#
++# Automatically generated make config: don't edit
++# Linux barebox version: 2010.10.0
++# Mon Oct 11 16:26:31 2010
++#
++# CONFIG_BOARD_LINKER_SCRIPT is not set
++CONFIG_GENERIC_LINKER_SCRIPT=y
++CONFIG_ARM=y
 +
-+. /env/config
++#
++# System Type
++#
++# CONFIG_ARCH_AT91 is not set
++# CONFIG_ARCH_EP93XX is not set
++# CONFIG_ARCH_IMX is not set
+ CONFIG_ARCH_STM=y
++# CONFIG_ARCH_NETX is not set
++# CONFIG_ARCH_NOMADIK is not set
++# CONFIG_ARCH_OMAP is not set
++# CONFIG_ARCH_S3C24xx is not set
 +
-+if [ x$1 = xdisk ]; then
-+	rootfs_loc=disk
-+	kernel_loc=disk
-+elif [ x$1 = xnet ]; then
-+	rootfs_loc=net
-+	kernel_loc=net
-+fi
++#
++# Processor Type
++#
++CONFIG_CPU_32=y
++CONFIG_CPU_ARM926T=y
++CONFIG_CPU_32v5=y
 +
-+if [ x$ip = xdhcp ]; then
-+	bootargs="$bootargs ip=dhcp"
-+elif [ x$ip = xnone ]; then
-+	bootargs="$bootargs ip=none"
-+else
-+	bootargs="$bootargs ip=$eth0.ipaddr::$eth0.gateway:$eth0.netmask:::"
-+fi
++#
++# processor features
++#
++CONFIG_ARCH_TEXT_BASE=0x42000000
++CONFIG_BOARDINFO="Chumby Falconwing"
 +
-+if [ x$rootfs_loc = xdisk ]; then
-+	bootargs="$bootargs noinitrd rootfstype=$rootfs_type root=/dev/$rootfs_part"
-+elif [ x$rootfs_loc = xnet ]; then
-+	bootargs="$bootargs root=/dev/nfs nfsroot=$nfsroot,v3,tcp noinitrd"
-+elif [ x$rootfs_loc = xinitrd ]; then
-+	bootargs="$bootargs root=/dev/ram0 rdinit=/sbin/init"
-+fi
++#
++# SigmaTel/Freescale i.MX System-on-Chip
++#
++CONFIG_ARCH_IMX23=y
++# CONFIG_MACH_MX23EVK is not set
+ CONFIG_MACH_CHUMBY=y
 +
-+if [ x$kernelimage_type = xuimage ]; then
-+	bootm /dev/$kernel_part
-+elif [ x$kernelimage_type = xzimage ]; then
-+	bootz /dev/$kernel_part
-+else
-+	echo "Booting failed. Correct setup of 'kernelimage_type'?"
-+	exit
-+fi
++#
++# Board specific settings       
++#
+ CONFIG_AEABI=y
 +
-+echo "Booting failed. Correct setup of 'kernel_part'?"
-diff --git a/arch/arm/boards/chumby_falconwing/env/bin/init b/arch/arm/boards/chumby_falconwing/env/bin/init
-new file mode 100644
-index 0000000..3ed68f7
---- /dev/null
-+++ b/arch/arm/boards/chumby_falconwing/env/bin/init
-@@ -0,0 +1,15 @@
-+#!/bin/sh
++#
++# Arm specific settings         
++#
++CONFIG_CMD_ARM_CPUINFO=y
+ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
++CONFIG_DEFCONFIG_LIST="$ARCH_DEFCONFIG"
++CONFIG_GREGORIAN_CALENDER=y
++CONFIG_HAS_KALLSYMS=y
++CONFIG_HAS_MODULES=y
++CONFIG_CMD_MEMORY=y
++CONFIG_ENV_HANDLING=y
++CONFIG_GENERIC_GPIO=y
 +
-+PATH=/env/bin
-+export PATH
++#
++# General Settings              
++#
++CONFIG_LOCALVERSION_AUTO=y
 +
-+. /env/config
++#
++# memory layout                 
++#
++CONFIG_HAVE_MMU=y
++# CONFIG_MMU is not set
++CONFIG_HAVE_CONFIGURABLE_TEXT_BASE=y
++CONFIG_TEXT_BASE=0x42000000
++CONFIG_HAVE_CONFIGURABLE_MEMORY_LAYOUT=y
++CONFIG_MEMORY_LAYOUT_DEFAULT=y
++# CONFIG_MEMORY_LAYOUT_FIXED is not set
++CONFIG_STACK_SIZE=0x8000
++CONFIG_MALLOC_SIZE=0x400000
+ CONFIG_BROKEN=y
++# CONFIG_EXPERIMENTAL is not set
++# CONFIG_KALLSYMS is not set
++CONFIG_PROMPT="chumby:"
++CONFIG_BAUDRATE=115200
+ CONFIG_LONGHELP=y
++CONFIG_CBSIZE=1024
++CONFIG_MAXARGS=16
++CONFIG_SHELL_HUSH=y
++# CONFIG_SHELL_SIMPLE is not set
++# CONFIG_GLOB is not set
++CONFIG_PROMPT_HUSH_PS2="> "
++# CONFIG_HUSH_FANCY_PROMPT is not set
++# CONFIG_HUSH_GETOPT is not set
+ CONFIG_CMDLINE_EDITING=y
+ CONFIG_AUTO_COMPLETE=y
++# CONFIG_MENU is not set
++# CONFIG_PASSWORD is not set
++CONFIG_DYNAMIC_CRC_TABLE=y
++CONFIG_ERRNO_MESSAGES=y
++CONFIG_TIMESTAMP=y
++CONFIG_CONSOLE_FULL=y
++CONFIG_CONSOLE_ACTIVATE_FIRST=y
++# CONFIG_OF_FLAT_TREE is not set
+ CONFIG_PARTITION=y
+-# CONFIG_DEFAULT_ENVIRONMENT is not set
++CONFIG_DEFAULT_ENVIRONMENT=y
++CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/chumby_falconwing/env"
 +
-+echo
-+echo -n "Hit any key to stop autoboot: "
-+timeout -a $autoboot_timeout
-+if [ $? != 0 ]; then
-+	exit
-+fi
++#
++# Debugging                     
++#
+ CONFIG_DEBUG_INFO=y
++# CONFIG_ENABLE_FLASH_NOISE is not set
++# CONFIG_ENABLE_PARTITION_NOISE is not set
++# CONFIG_ENABLE_DEVICE_NOISE is not set
 +
-+boot
-diff --git a/arch/arm/boards/chumby_falconwing/env/config b/arch/arm/boards/chumby_falconwing/env/config
-new file mode 100644
-index 0000000..1e61dce
---- /dev/null
-+++ b/arch/arm/boards/chumby_falconwing/env/config
-@@ -0,0 +1,36 @@
-+#!/bin/sh
++#
++# Commands                      
++#
 +
-+machine=falconwing
++#
++# scripting                     
++#
+ CONFIG_CMD_EDIT=y
+ CONFIG_CMD_SLEEP=y
+ CONFIG_CMD_SAVEENV=y
+@@ -16,10 +124,124 @@ CONFIG_CMD_LOADENV=y
+ CONFIG_CMD_EXPORT=y
+ CONFIG_CMD_PRINTENV=y
+ CONFIG_CMD_READLINE=y
++CONFIG_CMD_TRUE=y
++CONFIG_CMD_FALSE=y
++# CONFIG_CMD_LOGIN is not set
++# CONFIG_CMD_PASSWD is not set
 +
-+# use 'dhcp' to do dhcp in barebox and in kernel
-+# use 'none' if you want to skip kernel ip autoconfiguration
-+ip=none
++#
++# file commands                 
++#
++CONFIG_CMD_LS=y
++CONFIG_CMD_RM=y
++CONFIG_CMD_CAT=y
++CONFIG_CMD_MKDIR=y
++CONFIG_CMD_RMDIR=y
++CONFIG_CMD_CP=y
++CONFIG_CMD_PWD=y
++CONFIG_CMD_CD=y
++CONFIG_CMD_MOUNT=y
++CONFIG_CMD_UMOUNT=y
 +
-+# or set your networking parameters here (if a USB network adapter is attached)
-+#eth0.ipaddr=a.b.c.d
-+#eth0.netmask=a.b.c.d
-+#eth0.gateway=a.b.c.d
-+#eth0.serverip=a.b.c.d
++#
++# console                       
++#
++CONFIG_CMD_CLEAR=y
++CONFIG_CMD_ECHO=y
+ CONFIG_CMD_ECHO_E=y
 +
-+# can be either 'net' or 'disk'
-+kernel_loc=disk
-+# can be either 'net', or 'disk' or 'initrd'
-+rootfs_loc=disk
++#
++# memory                        
++#
++# CONFIG_CMD_LOADB is not set
++# CONFIG_CMD_LOADS is not set
++# CONFIG_CMD_MEMINFO is not set
++# CONFIG_CMD_CRC is not set
+ CONFIG_CMD_MTEST=y
+ CONFIG_CMD_MTEST_ALTERNATIVE=y
 +
-+# can be any regular filesystem like ext2, ext3, reiserfs in case of 'rootfs_loc=disk'
-+rootfs_type=ext2
-+# Where is the rootfs in case of 'rootfs_loc=disk'
-+rootfs_part=mmcblk0p4
++#
++# flash                         
++#
++# CONFIG_CMD_FLASH is not set
++# CONFIG_CMD_UBI is not set
 +
-+# Where is the rootfs in case of 'rootfs_loc=net'
-+nfsroot=FIXME
++#
++# booting                       
++#
++CONFIG_CMD_BOOTM=y
++# CONFIG_CMD_BOOTM_ZLIB is not set
++# CONFIG_CMD_BOOTM_BZLIB is not set
++# CONFIG_CMD_BOOTM_SHOW_TYPE is not set
++CONFIG_CMD_BOOTZ=y
++CONFIG_CMD_BOOTU=y
+ CONFIG_CMD_RESET=y
++# CONFIG_CMD_GO is not set
+ CONFIG_CMD_TIMEOUT=y
+ CONFIG_CMD_PARTITION=y
++CONFIG_CMD_TEST=y
++CONFIG_CMD_VERSION=y
++CONFIG_CMD_HELP=y
++CONFIG_CMD_DEVINFO=y
++# CONFIG_CMD_GPIO is not set
++# CONFIG_CMD_UNLZO is not set
++# CONFIG_NET is not set
 +
-+# The image type of the kernel. Can be uimage, zimage
-+kernelimage_type=uimage
-+# Where to get the kernel image in case of 'kernel_loc=disk'
-+kernel_part=disk0.2
++#
++# Drivers                       
++#
 +
-+# base kernel parameter
-+bootargs="console=ttyAM0,115200 debug ro lcd_panel=lms350 ssp1=mmc line=1 sysrq_always_enabled rotary=1"
++#
++# serial drivers                
++#
++# CONFIG_DRIVER_SERIAL_ARM_DCC is not set
++CONFIG_DRIVER_SERIAL_STM378X=y
++# CONFIG_DRIVER_SERIAL_NS16550 is not set
 +
-+autoboot_timeout=2
-diff --git a/arch/arm/boards/chumby_falconwing/falconwing.c b/arch/arm/boards/chumby_falconwing/falconwing.c
-index d209dd5..952a384 100644
---- a/arch/arm/boards/chumby_falconwing/falconwing.c
-+++ b/arch/arm/boards/chumby_falconwing/falconwing.c
-@@ -20,10 +20,14 @@
- #include <init.h>
- #include <gpio.h>
- #include <environment.h>
-+#include <errno.h>
-+#include <mci.h>
- #include <asm/armlinux.h>
- #include <asm/io.h>
- #include <generated/mach-types.h>
- #include <mach/imx-regs.h>
-+#include <mach/clock.h>
-+#include <mach/mci.h>
- 
- static struct memory_platform_data ram_pdata = {
- 	.name = "ram0",
-@@ -37,6 +41,17 @@ static struct device_d sdram_dev = {
- 	.platform_data = &ram_pdata,
- };
- 
-+static struct stm_mci_platform_data mci_pdata = {
-+	.caps = MMC_MODE_4BIT | MMC_MODE_HS | MMC_MODE_HS_52MHz,
-+	.voltages = MMC_VDD_32_33 | MMC_VDD_33_34,	/* fixed to 3.3 V */
-+};
++#
++# SPI drivers                   
++#
+ # CONFIG_SPI is not set
++# CONFIG_I2C is not set
 +
-+static struct device_d mci_dev = {
-+	.name     = "stm_mci",
-+	.map_base = IMX_SSP1_BASE,
-+	.platform_data = &mci_pdata,
-+};
++#
++# flash drivers                 
++#
++# CONFIG_DRIVER_CFI is not set
++# CONFIG_MTD is not set
++CONFIG_ATA=y
 +
- static const uint32_t pad_setup[] = {
- 	/* may be not required as already done by the bootlet code */
- #if 0
-@@ -205,20 +220,64 @@ static const uint32_t pad_setup[] = {
- 	GPMI_RDY3_GPIO | GPIO_IN | PULLUP(1),
- };
- 
-+/**
-+ * Try to register an environment storage on the attached MCI card
-+ * @return 0 on success
-+ *
-+ * We relay on the existance of a useable SD card, already attached to
-+ * our system, to get someting like a persistant memory for our environment.
-+ * If this SD card is also the boot media, we can use the second partition
-+ * for our environment purpose (if present!).
-+ */
-+static int register_persistant_environment(void)
-+{
-+	struct cdev *cdev;
++#
++# drive types
++#
++CONFIG_ATA_DISK=y
 +
-+	/*
-+	 * The chumby one only has one MCI card socket.
-+	 * So, we expect its name as "disk0".
-+	 */
-+	cdev = cdev_by_name("disk0");
-+	if (cdev == NULL) {
-+		pr_err("No MCI card preset\n");
-+		return -ENODEV;
-+	}
++#
++# interface types
++#
++# CONFIG_USB is not set
++# CONFIG_USB_GADGET is not set
++# CONFIG_VIDEO is not set
++CONFIG_MCI=y
 +
-+	/* MCI card is present, also a useable partition on it? */
-+	cdev = cdev_by_name("disk0.1");
-+	if (cdev == NULL) {
-+		pr_err("No second partition available\n");
-+		pr_info("Please create at least a second partition with"
-+			" 256 kiB...512 kiB in size (your choice)\n");
-+		return -ENODEV;
-+	}
++#
++# --- Feature list ---
++#
++CONFIG_MCI_STARTUP=y
++CONFIG_MCI_INFO=y
 +
-+	/* use the full partition as our persistant environment storage */
-+	return devfs_add_partition("disk0.1", 0, cdev->size, DEVFS_PARTITION_FIXED, "env0");
-+}
++#
++# --- MCI host drivers ---
++#
++CONFIG_MCI_STM378X=y
 +
- static int falconwing_devices_init(void)
- {
--	int i;
-+	int i, rc;
- 
- 	/* initizalize gpios */
- 	for (i = 0; i < ARRAY_SIZE(pad_setup); i++)
- 		imx_gpio_mode(pad_setup[i]);
- 
- 	register_device(&sdram_dev);
-+	imx_set_ioclk(480U * 1000U);	/* enable IOCLK to run at the PLL frequency */
-+	/* run the SSP unit clock at 100,000 kHz */
-+	imx_set_sspclk(0, 100U * 1000U, 1);
-+	register_device(&mci_dev);
- 
- 	armlinux_add_dram(&sdram_dev);
- 	armlinux_set_bootparams((void*)(sdram_dev.map_base + 0x100));
- 	armlinux_set_architecture(MACH_TYPE_CHUMBY);
- 
-+	rc = register_persistant_environment();
-+	if (rc != 0)
-+		printf("Cannot create the 'env0' persistant environment storage (%d)\n", rc);
-+
- 	return 0;
- }
- 
-@@ -268,4 +327,24 @@ make ARCH=arm CROSS_COMPILE=armv5compiler
- @endverbatim
- 
- @note replace the armv5compiler with your ARM v5 cross compiler.
-+
-+@section setup_falconwing How to prepare an MCI card to boot the "chumby one" with barebox
-+
-+- Create four primary partitions on the MCI card
-+ - the first one for the bootlets (about 256 kiB)
-+ - the second one for the persistant environment (size is up to you, at least 256k)
-+ - the third one for the kernel (2 MiB ... 4 MiB in size)
-+ - the 4th one for the root filesystem which can fill the rest of the available space
-+
-+- Mark the first partition with the partition ID "53" and copy the bootlets
-+  into this partition (currently not part of @b barebox!).
-+
-+- Copy the default @b barebox environment into the second partition (no filesystem required).
-+
-+- Copy the kernel into the third partition (no filesystem required).
-+
-+- Create the root filesystem in the 4th partition. You may copy an image into this
-+  partition or you can do it in the classic way: mkfs on it, mount it and copy
-+  all required data and programs into it.
-+
- */
++#
++# Filesystem support            
++#
++# CONFIG_FS_CRAMFS is not set
++CONFIG_FS_RAMFS=y
++CONFIG_FS_DEVFS=y
++CONFIG_CRC32=y
++# CONFIG_DIGEST is not set
++# CONFIG_GENERIC_FIND_NEXT_BIT is not set
++CONFIG_PROCESS_ESCAPE_SEQUENCE=y
 -- 
 1.7.2.3
 
