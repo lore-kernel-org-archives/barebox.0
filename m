@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 63.mail-out.ovh.net ([91.121.185.56])
+Received: from 26.mail-out.ovh.net ([91.121.27.225])
 	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1P5Aed-0007gS-Am
-	for barebox@lists.infradead.org; Mon, 11 Oct 2010 05:10:34 +0000
-Date: Mon, 11 Oct 2010 07:08:17 +0200
+	id 1P5AhF-0007yz-92
+	for barebox@lists.infradead.org; Mon, 11 Oct 2010 05:13:14 +0000
+Date: Mon, 11 Oct 2010 07:11:04 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20101011050817.GE30252@game.jcrosoft.org>
-References: <1286540674-17174-1-git-send-email-s.hauer@pengutronix.de>
-	<1286540674-17174-4-git-send-email-s.hauer@pengutronix.de>
-	<20101008123627.GC30252@game.jcrosoft.org>
-	<20101008124515.GP28242@pengutronix.de>
+Message-ID: <20101011051104.GF30252@game.jcrosoft.org>
+References: <1286469458-11362-1-git-send-email-plagnioj@jcrosoft.com>
+	<1286469458-11362-3-git-send-email-plagnioj@jcrosoft.com>
+	<20101008122747.GN28242@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20101008124515.GP28242@pengutronix.de>
+In-Reply-To: <20101008122747.GN28242@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,44 +24,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] hush: implement getopt builtin
+Subject: Re: [PATCH 3/5] defaultenv: add xmodem support for update
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 14:45 Fri 08 Oct     , Sascha Hauer wrote:
-> On Fri, Oct 08, 2010 at 02:36:27PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > On 14:24 Fri 08 Oct     , Sascha Hauer wrote:
-> > > Positional parameters are not nice, so implement a getopt
-> > > function. This has to be done as a builtin because otherwise
-> > > we have no access to the parents argc/argv.
-> > > 
-> > > getopt works as expected, here is a little example:
-> > > 
-> > > while getopt "hs:" OPT
-> > > do
-> > >         if [ $OPT = h ]; then
-> > >                 echo "usage"
-> > >                 exit 1
-> > >         else
-> > >                 echo "scr: opt: $OPT optarg: $OPTARG"
-> > > 	fi
-> > > done
-> > > 
-> > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > how about make it optional?
+> >  	exit 1
+> >  fi
+> >  
+> > +if [ x$3 != x ]; then
+> > +	mode=$3
+> > +fi
+> > +
+> >  . /env/bin/_update $2
+> > diff --git a/defaultenv/bin/update_rootfs b/defaultenv/bin/update_rootfs
+> > index 6366315..bac74ca 100644
+> > --- a/defaultenv/bin/update_rootfs
+> > +++ b/defaultenv/bin/update_rootfs
+> > @@ -3,14 +3,19 @@
+> >  . /env/config
+> >  
+> >  image=$rootfsimage
+> > +mode=net
+> >  
+> >  if [ x$1 = xnand ]; then
+> >  	part=/dev/nand0.root.bb
+> >  elif [ x$1 = xnor ]; then
+> >  	part=/dev/nor0.root
+> >  else
+> > -	echo "usage: $0 nor|nand [imagename]"
+> > +	echo "usage: $0 nor|nand [imagename] [net|xmodem]"
 > 
-> Probably a good idea. I just had in mind that we need to adjust
-> the defconfigs then to still have a working defaultenv.
-> 
-> How about making it optional and combined with your defaultenv-Kconfig
-> patch we could do a
-> 
-> 	select HUSH
-> 	select HUSH_GETOPT
-> 
-> to make sure all commands needed by the defaultenv are in place.
-that's why I move the defaultenv to Kconfig, I'm still in vacation. I'll send
-the patch tomorrow
+> I'm not really happy with this patch. We have 3 positional parameters
+> now and with xmodem it makes no sense to supply an image name,
+> nontheless we have to supply it because otherwise we do not have three
+> arguments.
+> I just posted a patch adding a getopt command to hush. Maybe this could
+> improve the situation here?
+I get exactly the same idea
 
 Best Regards,
 J.
