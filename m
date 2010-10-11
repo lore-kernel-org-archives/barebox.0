@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 26.mail-out.ovh.net ([91.121.27.225])
-	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1P5HqB-00021V-FQ
-	for barebox@lists.infradead.org; Mon, 11 Oct 2010 12:50:56 +0000
-Date: Mon, 11 Oct 2010 14:48:45 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20101011124845.GG30252@game.jcrosoft.org>
-References: <201010111050.28141.jbe@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1P5HuF-0002Q6-5i
+	for barebox@lists.infradead.org; Mon, 11 Oct 2010 12:55:08 +0000
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Mon, 11 Oct 2010 14:53:22 +0200
+References: <1286796505-16049-1-git-send-email-s.hauer@pengutronix.de>
+	<1286796505-16049-12-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1286796505-16049-12-git-send-email-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <201010111050.28141.jbe@pengutronix.de>
+Message-Id: <201010111453.22164.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,20 +23,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] barebox-next: Avoid a Kconfig warning
-To: Juergen Beisert <jbe@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 11/17] mci: handle SD cards < 2.0 correctly
+To: barebox@lists.infradead.org
 
-On 10:50 Mon 11 Oct     , Juergen Beisert wrote:
-> This patch removes the following warning in the current next-tree:
-> 
-> "arch/arm/mach-imx/Kconfig:53:warning: defaults for choice values not supported"
-> 
-> Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
-already fix in master
+Hi Sascha,
 
-Best Regards,
-J.
+Sascha Hauer wrote:
+> With SD cards older than 2.0 the sd_send_if_cond() fails. Do
+> not assume it's an MMC card in this case. Instead, assume
+> it's a MMC card if sd_send_op_cond() fails.
+
+With your patch you can add this one also:
+
+diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
+index f961e46..bf060b5 100644
+--- a/drivers/mci/mci-core.c
++++ b/drivers/mci/mci-core.c
+@@ -45,7 +45,7 @@
+  * @brief Memory Card framework
+  *
+  * Checked with the following cards:
+- * - old Canon SD 16 MiB, does not like the 0x08 command (SD_CMD_SEND_IF_COND) -> failed
++ * - Canon MMC 16 MiB
+  * - Kingston 512 MiB
+  * - SanDisk 512 MiB
+  * - Transcend SD Ultra, 1 GiB (Industrial)
+
+jbe
+
+-- 
+Pengutronix e.K.                              | Juergen Beisert             |
+Linux Solutions for Science and Industry      | Phone: +49-8766-939 228     |
+Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555 |
+Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
