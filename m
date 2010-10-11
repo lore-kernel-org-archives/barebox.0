@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1P5GYR-0003G7-2L
-	for barebox@lists.infradead.org; Mon, 11 Oct 2010 11:28:40 +0000
+	id 1P5GYQ-0003G4-W3
+	for barebox@lists.infradead.org; Mon, 11 Oct 2010 11:28:42 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 11 Oct 2010 13:28:18 +0200
-Message-Id: <1286796505-16049-11-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 11 Oct 2010 13:28:16 +0200
+Message-Id: <1286796505-16049-9-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1286796505-16049-1-git-send-email-s.hauer@pengutronix.de>
 References: <1286796505-16049-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,149 +21,192 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/17] mfd mc13892: support reading the revision
+Subject: [PATCH 08/17] move include files for mfd drivers to include/mfd
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mfd/mc13892.c |   62 +++++++++++++++++++++++++++++++++++++++++++++++++
- include/mfd/mc13892.h |   22 ++++++++++++++++-
- 2 files changed, 83 insertions(+), 1 deletions(-)
+ arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c |    2 +-
+ arch/arm/boards/freescale-mx25-3-stack/3stack.c   |    2 +-
+ arch/arm/boards/freescale-mx35-3-stack/3stack.c   |    4 ++--
+ drivers/mfd/mc13892.c                             |    2 +-
+ drivers/mfd/mc34704.c                             |    2 +-
+ drivers/mfd/mc9sdz60.c                            |    2 +-
+ drivers/mfd/twl4030.c                             |    2 +-
+ drivers/usb/host/ehci-omap.c                      |    2 +-
+ drivers/usb/otg/twl4030.c                         |    2 +-
+ include/{i2c => mfd}/lp3972.h                     |    0
+ include/{i2c => mfd}/mc13892.h                    |    8 ++++++++
+ include/{i2c => mfd}/mc34704.h                    |    0
+ include/{i2c => mfd}/mc9sdz60.h                   |    0
+ include/{i2c => mfd}/twl4030.h                    |    0
+ 14 files changed, 18 insertions(+), 10 deletions(-)
+ rename include/{i2c => mfd}/lp3972.h (100%)
+ rename include/{i2c => mfd}/mc13892.h (95%)
+ rename include/{i2c => mfd}/mc34704.h (100%)
+ rename include/{i2c => mfd}/mc9sdz60.h (100%)
+ rename include/{i2c => mfd}/twl4030.h (100%)
 
-diff --git a/drivers/mfd/mc13892.c b/drivers/mfd/mc13892.c
-index 2f415fc..08a439b 100644
---- a/drivers/mfd/mc13892.c
-+++ b/drivers/mfd/mc13892.c
-@@ -25,6 +25,7 @@
- #include <xfuncs.h>
- #include <errno.h>
- #include <spi/spi.h>
-+#include <malloc.h>
+diff --git a/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c b/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
+index 4d1797b..cbc7500 100644
+--- a/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
++++ b/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
+@@ -44,7 +44,7 @@
+ #include <ns16550.h>
+ #include <asm/mmu.h>
+ #include <i2c/i2c.h>
+-#include <i2c/lp3972.h>
++#include <mfd/lp3972.h>
+ #include <mach/iomux-mx27.h>
+ 
+ static struct device_d cfi_dev = {
+diff --git a/arch/arm/boards/freescale-mx25-3-stack/3stack.c b/arch/arm/boards/freescale-mx25-3-stack/3stack.c
+index 70de7958..25945f1 100644
+--- a/arch/arm/boards/freescale-mx25-3-stack/3stack.c
++++ b/arch/arm/boards/freescale-mx25-3-stack/3stack.c
+@@ -39,7 +39,7 @@
+ #include <mach/generic.h>
+ #include <linux/err.h>
+ #include <i2c/i2c.h>
+-#include <i2c/mc34704.h>
++#include <mfd/mc34704.h>
+ 
+ extern unsigned long _stext;
+ extern void exception_vectors(void);
+diff --git a/arch/arm/boards/freescale-mx35-3-stack/3stack.c b/arch/arm/boards/freescale-mx35-3-stack/3stack.c
+index 71aaa92..9b8d718 100644
+--- a/arch/arm/boards/freescale-mx35-3-stack/3stack.c
++++ b/arch/arm/boards/freescale-mx35-3-stack/3stack.c
+@@ -50,8 +50,8 @@
+ #include <mach/generic.h>
  
  #include <i2c/i2c.h>
- #include <mfd/mc13892.h>
-@@ -210,8 +211,63 @@ static struct file_operations mc_fops = {
- 	.write	= mc_write,
- };
+-#include <i2c/mc13892.h>
+-#include <i2c/mc9sdz60.h>
++#include <mfd/mc13892.h>
++#include <mfd/mc9sdz60.h>
  
-+struct mc13892_rev {
-+	u16 rev_id;
-+	enum mc13892_revision rev;
-+	char *revstr;
-+};
-+
-+static struct mc13892_rev mc13892_revisions[] = {
-+	{ 0x01, MC13892_REVISION_1_0, "1.0" },
-+	{ 0x09, MC13892_REVISION_1_1, "1.1" },
-+	{ 0x0a, MC13892_REVISION_1_2, "1.2" },
-+	{ 0x10, MC13892_REVISION_2_0, "2.0" },
-+	{ 0x11, MC13892_REVISION_2_1, "2.1" },
-+	{ 0x18, MC13892_REVISION_3_0, "3.0" },
-+	{ 0x19, MC13892_REVISION_3_1, "3.1" },
-+	{ 0x1a, MC13892_REVISION_3_2, "3.2" },
-+	{ 0x02, MC13892_REVISION_3_2a, "3.2a" },
-+	{ 0x1b, MC13892_REVISION_3_3, "3.3" },
-+	{ 0x1d, MC13892_REVISION_3_5, "3.5" },
-+};
-+
-+static int mc13893_query_revision(struct mc13892 *mc13892)
-+{
-+	unsigned int rev_id;
-+	char *revstr;
-+	int rev, i;
-+
-+	mc13892_reg_read(mc13892, 7, &rev_id);
-+
-+	for (i = 0; i < ARRAY_SIZE(mc13892_revisions); i++)
-+		if ((rev_id & 0x1f) == mc13892_revisions[i].rev_id)
-+			break;
-+
-+	if (i == ARRAY_SIZE(mc13892_revisions))
-+		return -EINVAL;
-+
-+	rev = mc13892_revisions[i].rev;
-+	revstr = mc13892_revisions[i].revstr;
-+
-+	if (rev == MC13892_REVISION_2_0) {
-+		if ((rev_id >> 9) & 0x3) {
-+			rev = MC13892_REVISION_2_0a;
-+			revstr = "2.0a";
-+		}
-+	}
-+
-+	dev_info(mc_dev->cdev.dev, "PMIC ID: 0x%08x [Rev: %s]\n",
-+			rev_id, revstr);
-+
-+	mc13892->revision = rev;
-+
-+	return rev;
-+}
-+
- static int mc_probe(struct device_d *dev, enum mc13892_mode mode)
- {
-+	int rev;
-+
- 	if (mc_dev)
- 		return -EBUSY;
  
-@@ -230,6 +286,12 @@ static int mc_probe(struct device_d *dev, enum mc13892_mode mode)
- 	mc_dev->cdev.dev = dev;
- 	mc_dev->cdev.ops = &mc_fops;
+ /* Board rev for the PDK 3stack */
+diff --git a/drivers/mfd/mc13892.c b/drivers/mfd/mc13892.c
+index 67d4232..240a7a9 100644
+--- a/drivers/mfd/mc13892.c
++++ b/drivers/mfd/mc13892.c
+@@ -26,7 +26,7 @@
+ #include <errno.h>
  
-+	rev = mc13893_query_revision(mc_dev);
-+	if (rev < 0) {
-+		free(mc_dev);
-+		return -EINVAL;
-+	}
-+
- 	devfs_create(&mc_dev->cdev);
+ #include <i2c/i2c.h>
+-#include <i2c/mc13892.h>
++#include <mfd/mc13892.h>
  
- 	return 0;
-diff --git a/include/mfd/mc13892.h b/include/mfd/mc13892.h
-index 11ae878..78a42e9 100644
---- a/include/mfd/mc13892.h
+ #define DRIVERNAME		"mc13892"
+ 
+diff --git a/drivers/mfd/mc34704.c b/drivers/mfd/mc34704.c
+index 51a8737..a2171b3 100644
+--- a/drivers/mfd/mc34704.c
++++ b/drivers/mfd/mc34704.c
+@@ -27,7 +27,7 @@
+ #include <errno.h>
+ 
+ #include <i2c/i2c.h>
+-#include <i2c/mc34704.h>
++#include <mfd/mc34704.h>
+ 
+ #define DRIVERNAME		"mc34704"
+ 
+diff --git a/drivers/mfd/mc9sdz60.c b/drivers/mfd/mc9sdz60.c
+index 3580af8..db208ec 100644
+--- a/drivers/mfd/mc9sdz60.c
++++ b/drivers/mfd/mc9sdz60.c
+@@ -26,7 +26,7 @@
+ #include <errno.h>
+ 
+ #include <i2c/i2c.h>
+-#include <i2c/mc9sdz60.h>
++#include <mfd/mc9sdz60.h>
+ 
+ #define DRIVERNAME		"mc9sdz60"
+ 
+diff --git a/drivers/mfd/twl4030.c b/drivers/mfd/twl4030.c
+index 5305ec6..81bf48b 100644
+--- a/drivers/mfd/twl4030.c
++++ b/drivers/mfd/twl4030.c
+@@ -12,7 +12,7 @@
+ #include <errno.h>
+ 
+ #include <i2c/i2c.h>
+-#include <i2c/twl4030.h>
++#include <mfd/twl4030.h>
+ 
+ #define DRIVERNAME		"twl4030"
+ 
+diff --git a/drivers/usb/host/ehci-omap.c b/drivers/usb/host/ehci-omap.c
+index 0c30c52..05f1628 100644
+--- a/drivers/usb/host/ehci-omap.c
++++ b/drivers/usb/host/ehci-omap.c
+@@ -11,7 +11,7 @@
+ 
+ /*-------------------------------------------------------------------------*/
+ 
+-#include <i2c/twl4030.h>
++#include <mfd/twl4030.h>
+ #include <usb/twl4030.h>
+ #include <mach/ehci.h>
+ #include <common.h>
+diff --git a/drivers/usb/otg/twl4030.c b/drivers/usb/otg/twl4030.c
+index 72edf25..4077169 100644
+--- a/drivers/usb/otg/twl4030.c
++++ b/drivers/usb/otg/twl4030.c
+@@ -37,7 +37,7 @@
+  * MA 02111-1307 USA
+  */
+ 
+-#include <i2c/twl4030.h>
++#include <mfd/twl4030.h>
+ #include <usb/twl4030.h>
+ #include <clock.h>
+ 
+diff --git a/include/i2c/lp3972.h b/include/mfd/lp3972.h
+similarity index 100%
+rename from include/i2c/lp3972.h
+rename to include/mfd/lp3972.h
+diff --git a/include/i2c/mc13892.h b/include/mfd/mc13892.h
+similarity index 95%
+rename from include/i2c/mc13892.h
+rename to include/mfd/mc13892.h
+index 112d05b..11ae878 100644
+--- a/include/i2c/mc13892.h
 +++ b/include/mfd/mc13892.h
-@@ -79,6 +79,21 @@ enum mc13892_reg {
+@@ -79,9 +79,17 @@ enum mc13892_reg {
  	MC13892_REG_TEST4		= 0x3f,
  };
  
-+enum mc13892_revision {
-+	MC13892_REVISION_1_0,
-+	MC13892_REVISION_1_1,
-+	MC13892_REVISION_1_2,
-+	MC13892_REVISION_2_0,
-+	MC13892_REVISION_2_0a,
-+	MC13892_REVISION_2_1,
-+	MC13892_REVISION_3_0,
-+	MC13892_REVISION_3_1,
-+	MC13892_REVISION_3_2,
-+	MC13892_REVISION_3_2a,
-+	MC13892_REVISION_3_3,
-+	MC13892_REVISION_3_5,
++enum mc13892_mode {
++	MC13892_MODE_I2C,
++	MC13892_MODE_SPI,
 +};
 +
- enum mc13892_mode {
- 	MC13892_MODE_I2C,
- 	MC13892_MODE_SPI,
-@@ -89,7 +104,7 @@ struct mc13892 {
+ struct mc13892 {
+ 	struct cdev		cdev;
  	struct i2c_client	*client;
- 	struct spi_device	*spi;
- 	enum mc13892_mode	mode;
--	
-+	enum mc13892_revision	revision;
++	struct spi_device	*spi;
++	enum mc13892_mode	mode;
++	
  };
  
  extern struct mc13892 *mc13892_get(void);
-@@ -98,4 +113,9 @@ extern int mc13892_reg_read(struct mc13892 *mc13892, enum mc13892_reg reg, u32 *
- extern int mc13892_reg_write(struct mc13892 *mc13892, enum mc13892_reg reg, u32 val);
- extern int mc13892_set_bits(struct mc13892 *mc13892, enum mc13892_reg reg, u32 mask, u32 val);
- 
-+static inline enum mc13892_revision mc13892_get_revision(struct mc13892 *mc13892)
-+{
-+	return mc13892->revision;
-+}
-+
- #endif /* __ASM_ARCH_MC13892_H */
+diff --git a/include/i2c/mc34704.h b/include/mfd/mc34704.h
+similarity index 100%
+rename from include/i2c/mc34704.h
+rename to include/mfd/mc34704.h
+diff --git a/include/i2c/mc9sdz60.h b/include/mfd/mc9sdz60.h
+similarity index 100%
+rename from include/i2c/mc9sdz60.h
+rename to include/mfd/mc9sdz60.h
+diff --git a/include/i2c/twl4030.h b/include/mfd/twl4030.h
+similarity index 100%
+rename from include/i2c/twl4030.h
+rename to include/mfd/twl4030.h
 -- 
 1.7.2.3
 
