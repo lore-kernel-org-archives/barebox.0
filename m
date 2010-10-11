@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1P5Jju-0005Cy-4C
-	for barebox@lists.infradead.org; Mon, 11 Oct 2010 14:52:35 +0000
+	id 1P5Jk1-0005EV-GM
+	for barebox@lists.infradead.org; Mon, 11 Oct 2010 14:52:42 +0000
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Mon, 11 Oct 2010 16:52:23 +0200
-Message-Id: <1286808746-19456-2-git-send-email-jbe@pengutronix.de>
+Date: Mon, 11 Oct 2010 16:52:24 +0200
+Message-Id: <1286808746-19456-3-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1286808746-19456-1-git-send-email-jbe@pengutronix.de>
 References: <1286808746-19456-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,56 +21,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] Glue i.MX23 and MCI support
+Subject: [PATCH 2/4] Adapt the i.MX23 MCI driver to the v2 i.MX23 patch series
 To: barebox@lists.infradead.org
 
-The MCI framework and the i.MX23 architecture are present now. Bring both
-together.
+The i.MX23 v2 architecture patch series was sligthly modified to easify
+the i.MX28 architecture addition later on. So, we need now an index to
+query the SSP clock frequency.
 
 Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 ---
- arch/arm/mach-stm/include/mach/mci.h |   32 ++++++++++++++++++++++++++++++++
- 1 files changed, 32 insertions(+), 0 deletions(-)
- create mode 100644 arch/arm/mach-stm/include/mach/mci.h
+ drivers/mci/stm378x.c |   10 +++++-----
+ 1 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/mach-stm/include/mach/mci.h b/arch/arm/mach-stm/include/mach/mci.h
-new file mode 100644
-index 0000000..b924908
---- /dev/null
-+++ b/arch/arm/mach-stm/include/mach/mci.h
-@@ -0,0 +1,32 @@
-+/*
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-+ * MA 02111-1307 USA
-+ */
-+
-+#ifndef __MACH_MMC_H
-+#define __MACH_MMC_H
-+
-+struct stm_mci_platform_data {
-+	unsigned caps;	/**< supported operating modes (MMC_MODE_*) */
-+	unsigned voltages; /**< supported voltage range (MMC_VDD_*) */
-+	unsigned f_min;	/**< min operating frequency in Hz (0 -> no limit) */
-+	unsigned f_max;	/**< max operating frequency in Hz (0 -> no limit) */
-+	/* TODO */
-+	/* function to modify the voltage */
-+	/* function to switch the voltage */
-+	/* function to detect the presence of a SD card in the socket */
-+};
-+
-+#endif /* __MACH_MMC_H */
+diff --git a/drivers/mci/stm378x.c b/drivers/mci/stm378x.c
+index fbb9994..8865ee8 100644
+--- a/drivers/mci/stm378x.c
++++ b/drivers/mci/stm378x.c
+@@ -481,7 +481,7 @@ static unsigned setup_clock_speed(struct device_d *hw_dev, unsigned nc)
+ 		return 0;
+ 	}
+ 
+-	ssp = imx_get_sspclk() * 1000;
++	ssp = imx_get_sspclk(0) * 1000;
+ 
+ 	for (div1 = 2; div1 < 255; div1 += 2) {
+ 		div2 = ssp / nc / div1;
+@@ -658,20 +658,20 @@ static int stm_mci_probe(struct device_d *hw_dev)
+ 	host->host_caps = pd->caps;
+ 
+ 	if (pd->f_min == 0) {
+-		host->f_min = imx_get_sspclk() / 254U / 256U * 1000U;
++		host->f_min = imx_get_sspclk(0) / 254U / 256U * 1000U;
+ 		pr_debug("Min. frequency is %u Hz\n", host->f_min);
+ 	} else {
+ 		host->f_min = pd->f_min;
+ 		pr_debug("Min. frequency is %u Hz, could be %u Hz\n",
+-			host->f_min, imx_get_sspclk() / 254U / 256U * 1000U);
++			host->f_min, imx_get_sspclk(0) / 254U / 256U * 1000U);
+ 	}
+ 	if (pd->f_max == 0) {
+-		host->f_max = imx_get_sspclk() / 2U / 1U * 1000U;
++		host->f_max = imx_get_sspclk(0) / 2U / 1U * 1000U;
+ 		pr_debug("Max. frequency is %u Hz\n", host->f_max);
+ 	} else {
+ 		host->f_max =  pd->f_max;
+ 		pr_debug("Max. frequency is %u Hz, could be %u Hz\n",
+-			host->f_max, imx_get_sspclk() / 2U / 1U * 1000U);
++			host->f_max, imx_get_sspclk(0) / 2U / 1U * 1000U);
+ 	}
+ 
+ #ifdef CONFIG_MCI_INFO
 -- 
 1.7.2.3
 
