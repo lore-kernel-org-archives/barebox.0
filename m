@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1P5ELl-0002P2-JW
-	for barebox@lists.infradead.org; Mon, 11 Oct 2010 09:07:23 +0000
+	id 1P5ELj-0002Of-9o
+	for barebox@lists.infradead.org; Mon, 11 Oct 2010 09:07:17 +0000
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Mon, 11 Oct 2010 11:07:00 +0200
-Message-Id: <1286788020-14077-5-git-send-email-jbe@pengutronix.de>
+Date: Mon, 11 Oct 2010 11:06:59 +0200
+Message-Id: <1286788020-14077-4-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1286788020-14077-1-git-send-email-jbe@pengutronix.de>
 References: <1286788020-14077-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,65 +21,72 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] Add the i.MX23 based Chumby platform (WIP)
+Subject: [PATCH 3/4] Add the i.MX23-EVK platform (WIP)
 To: barebox@lists.infradead.org
-
-The so called "chumby one" aka falconwing is an i.MX23 based platform.
 
 Note: This is work in progress. Use with care.
 
 Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 ---
- Documentation/boards.dox                       |    1 +
- arch/arm/Makefile                              |    1 +
- arch/arm/boards/chumby_falconwing/Makefile     |    1 +
- arch/arm/boards/chumby_falconwing/config.h     |   21 ++
- arch/arm/boards/chumby_falconwing/falconwing.c |  271 ++++++++++++++++++++++++
- arch/arm/configs/chumbyone_defconfig           |  224 +++++++++++++++++++
- arch/arm/mach-stm/Kconfig                      |    9 +
- 7 files changed, 528 insertions(+), 0 deletions(-)
- create mode 100644 arch/arm/boards/chumby_falconwing/Makefile
- create mode 100644 arch/arm/boards/chumby_falconwing/config.h
- create mode 100644 arch/arm/boards/chumby_falconwing/falconwing.c
- create mode 100644 arch/arm/configs/chumbyone_defconfig
+ Documentation/boards.dox                      |    1 +
+ arch/arm/Makefile                             |    2 +
+ arch/arm/boards/freescale-mx23-evk/Makefile   |    2 +
+ arch/arm/boards/freescale-mx23-evk/config.h   |   16 ++
+ arch/arm/boards/freescale-mx23-evk/mx23-evk.c |   96 +++++++++++
+ arch/arm/configs/imx23evk_defconfig           |  222 +++++++++++++++++++++++++
+ arch/arm/mach-stm/Kconfig                     |    7 +
+ 7 files changed, 346 insertions(+), 0 deletions(-)
+ create mode 100644 arch/arm/boards/freescale-mx23-evk/Makefile
+ create mode 100644 arch/arm/boards/freescale-mx23-evk/config.h
+ create mode 100644 arch/arm/boards/freescale-mx23-evk/mx23-evk.c
+ create mode 100644 arch/arm/configs/imx23evk_defconfig
 
 diff --git a/Documentation/boards.dox b/Documentation/boards.dox
-index 7b1450e..0b7a198 100644
+index 3eb79b2..7b1450e 100644
 --- a/Documentation/boards.dox
 +++ b/Documentation/boards.dox
-@@ -15,6 +15,7 @@ ARM type:
+@@ -14,6 +14,7 @@ ARM type:
+ @li @subpage imx21ads
  @li @subpage imx27ads
  @li @subpage the3stack
- @li @subpage mx23_evk
-+@li @subpage chumbyone
++@li @subpage mx23_evk
  @li @subpage scb9328
  @li @subpage netx
  @li @subpage dev_omap_arch
 diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index 75fa6d3..b25f366 100644
+index 77b6cf4..75fa6d3 100644
 --- a/arch/arm/Makefile
 +++ b/arch/arm/Makefile
-@@ -82,6 +82,7 @@ board-$(CONFIG_MACH_PM9263)			:= pm9263
+@@ -41,6 +41,7 @@ CPPFLAGS += $(CFLAGS_ABI) $(arch-y) $(tune-y)
+ machine-$(CONFIG_ARCH_AT91)		:= at91
+ machine-$(CONFIG_ARCH_EP93XX)		:= ep93xx
+ machine-$(CONFIG_ARCH_IMX)		:= imx
++machine-$(CONFIG_ARCH_STM)		:= stm
+ machine-$(CONFIG_ARCH_NOMADIK)		:= nomadik
+ machine-$(CONFIG_ARCH_NETX)		:= netx
+ machine-$(CONFIG_ARCH_OMAP)		:= omap
+@@ -80,6 +81,7 @@ board-$(CONFIG_MACH_PCM043)			:= pcm043
+ board-$(CONFIG_MACH_PM9263)			:= pm9263
  board-$(CONFIG_MACH_SCB9328)			:= scb9328
  board-$(CONFIG_MACH_NESO)			:= guf-neso
- board-$(CONFIG_MACH_MX23EVK)			:= freescale-mx23-evk
-+board-$(CONFIG_MACH_CHUMBY)			:= chumby_falconwing
++board-$(CONFIG_MACH_MX23EVK)			:= freescale-mx23-evk
  
  machdirs := $(patsubst %,arch/arm/mach-%/,$(machine-y))
  
-diff --git a/arch/arm/boards/chumby_falconwing/Makefile b/arch/arm/boards/chumby_falconwing/Makefile
+diff --git a/arch/arm/boards/freescale-mx23-evk/Makefile b/arch/arm/boards/freescale-mx23-evk/Makefile
 new file mode 100644
-index 0000000..0bc79d9
+index 0000000..cffb561
 --- /dev/null
-+++ b/arch/arm/boards/chumby_falconwing/Makefile
-@@ -0,0 +1 @@
-+obj-y = falconwing.o
-diff --git a/arch/arm/boards/chumby_falconwing/config.h b/arch/arm/boards/chumby_falconwing/config.h
++++ b/arch/arm/boards/freescale-mx23-evk/Makefile
+@@ -0,0 +1,2 @@
++#
++obj-y := mx23-evk.o
+diff --git a/arch/arm/boards/freescale-mx23-evk/config.h b/arch/arm/boards/freescale-mx23-evk/config.h
 new file mode 100644
-index 0000000..87d9e2f
+index 0000000..4b3da8f
 --- /dev/null
-+++ b/arch/arm/boards/chumby_falconwing/config.h
-@@ -0,0 +1,21 @@
++++ b/arch/arm/boards/freescale-mx23-evk/config.h
+@@ -0,0 +1,16 @@
 +/*
 + * This program is free software; you can redistribute it and/or
 + * modify it under the terms of the GNU General Public License as
@@ -96,17 +103,12 @@ index 0000000..87d9e2f
 + * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
 + * MA 02111-1307 USA
 + */
-+
-+#ifndef _CONFIG_H_
-+# define _CONFIG_H_
-+
-+#endif /* _CONFIG_H_ */
-diff --git a/arch/arm/boards/chumby_falconwing/falconwing.c b/arch/arm/boards/chumby_falconwing/falconwing.c
+diff --git a/arch/arm/boards/freescale-mx23-evk/mx23-evk.c b/arch/arm/boards/freescale-mx23-evk/mx23-evk.c
 new file mode 100644
-index 0000000..d209dd5
+index 0000000..1ce72be
 --- /dev/null
-+++ b/arch/arm/boards/chumby_falconwing/falconwing.c
-@@ -0,0 +1,271 @@
++++ b/arch/arm/boards/freescale-mx23-evk/mx23-evk.c
+@@ -0,0 +1,96 @@
 +/*
 + * (C) Copyright 2010 Juergen Beisert - Pengutronix
 + *
@@ -125,12 +127,12 @@ index 0000000..d209dd5
 + * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
 + * MA 02111-1307 USA
 + */
++
 +#include <common.h>
 +#include <init.h>
 +#include <gpio.h>
 +#include <environment.h>
 +#include <asm/armlinux.h>
-+#include <asm/io.h>
 +#include <generated/mach-types.h>
 +#include <mach/imx-regs.h>
 +
@@ -142,217 +144,42 @@ index 0000000..d209dd5
 +static struct device_d sdram_dev = {
 +	.name     = "mem",
 +	.map_base = IMX_MEMORY_BASE,
-+	.size     = 64 * 1024 * 1024,
++	.size     = 32 * 1024 * 1024,
 +	.platform_data = &ram_pdata,
 +};
 +
-+static const uint32_t pad_setup[] = {
-+	/* may be not required as already done by the bootlet code */
-+#if 0
-+	/* SDRAM data signals */
-+	EMI_D15 | STRENGTH(0) | VE_2_5V,
-+	EMI_D14 | STRENGTH(0) | VE_2_5V,
-+	EMI_D13 | STRENGTH(0) | VE_2_5V,
-+	EMI_D12 | STRENGTH(0) | VE_2_5V,
-+	EMI_D11 | STRENGTH(0) | VE_2_5V,
-+	EMI_D10 | STRENGTH(0) | VE_2_5V,
-+	EMI_D9 | STRENGTH(0) | VE_2_5V,
-+	EMI_D8 | STRENGTH(0) | VE_2_5V,
-+	EMI_D7 | STRENGTH(0) | VE_2_5V,
-+	EMI_D6 | STRENGTH(0) | VE_2_5V,
-+	EMI_D5 | STRENGTH(0) | VE_2_5V,
-+	EMI_D4 | STRENGTH(0) | VE_2_5V,
-+	EMI_D3 | STRENGTH(0) | VE_2_5V,
-+	EMI_D2 | STRENGTH(0) | VE_2_5V,
-+	EMI_D1 | STRENGTH(0) | VE_2_5V,
-+	EMI_D0 | STRENGTH(0) | VE_2_5V,
-+
-+	/* SDRAM data control signals */
-+	EMI_DQM0 | STRENGTH(0) | VE_2_5V,	/* LDM */
-+	EMI_DQM1 | STRENGTH(0) | VE_2_5V,	/* UDM */
-+
-+	/* SDRAM address signals */
-+	EMI_A0 | STRENGTH(0) | VE_2_5V,
-+	EMI_A1 | STRENGTH(0) | VE_2_5V,
-+	EMI_A2 | STRENGTH(0) | VE_2_5V,
-+	EMI_A3 | STRENGTH(0) | VE_2_5V,
-+	EMI_A4 | STRENGTH(0) | VE_2_5V,
-+	EMI_A5 | STRENGTH(0) | VE_2_5V,
-+	EMI_A6 | STRENGTH(0) | VE_2_5V,
-+	EMI_A7 | STRENGTH(0) | VE_2_5V,
-+	EMI_A8 | STRENGTH(0) | VE_2_5V,
-+	EMI_A9 | STRENGTH(0) | VE_2_5V,
-+	EMI_A10 | STRENGTH(0) | VE_2_5V,
-+	EMI_A11 | STRENGTH(0) | VE_2_5V,
-+	EMI_A12 | STRENGTH(0) | VE_2_5V,
-+
-+	/* SDRAM address control signals */
-+	EMI_RASN | STRENGTH(0) | VE_2_5V,
-+	EMI_CASN | STRENGTH(0) | VE_2_5V,
-+
-+	/* SDRAM control signals */
-+	EMI_CE0N | STRENGTH(0) | VE_2_5V,
-+	EMI_CLK | STRENGTH(0) | VE_2_5V,
-+	EMI_CLKN | STRENGTH(0) | VE_2_5V,
-+	EMI_CKE | STRENGTH(0) | VE_2_5V,
-+	EMI_WEN | STRENGTH(0) | VE_2_5V,
-+	EMI_BA0 | STRENGTH(0) | VE_2_5V,
-+	EMI_BA1 | STRENGTH(0) | VE_2_5V,
-+	EMI_DQS0 | STRENGTH(0) | VE_2_5V,
-+	EMI_DQS1 | STRENGTH(0) | VE_2_5V,
-+#endif
-+	/* debug port */
-+	PWM1_DUART_TX | STRENGTH(S4MA),	/*  strength is TBD */
-+	PWM0_DUART_RX | STRENGTH(S4MA),	/*  strength is TBD */
-+
-+	/* lcd */
-+	LCD_VSYNC,	/* kernel tries with 12 mA for all LCD related pins */
-+	LCD_HSYNC,
-+	LCD_ENABE,
-+	LCD_DOTCLOCK,
-+	LCD_D17,
-+	LCD_D16,
-+	LCD_D15,
-+	LCD_D14,
-+	LCD_D13,
-+	LCD_D12,
-+	LCD_D11,
-+	LCD_D10,
-+	LCD_D9,
-+	LCD_D8,
-+	LCD_D7,
-+	LCD_D6,
-+	LCD_D5,
-+	LCD_D4,
-+	LCD_D3,
-+	LCD_D2,
-+	LCD_D1,
-+	LCD_D0,
-+
-+	/* LCD usage currently unknown */
-+	LCD_CS,	/* used as SPI SS */
-+	LCD_RS,	/* used as SPI CLK */
-+	LCD_RESET,
-+	LCD_WR,	/* used as SPI MOSI */
-+
-+	/* I2C to the MMA7455L, KXTE9, AT24C08 (DCID), AT24C128B (ID EEPROM) and QN8005B */
-+	I2C_SDA,
-+	I2C_CLK,
-+
-+	/* Rotary decoder (external pull ups) */
-+	ROTARYA,
-+	ROTARYB,
-+
-+	/* the chumby bend (external pull up) */
-+	PWM4_GPIO | GPIO_IN,
-+
-+	/* backlight control, to be controled by PWM, here we only want to disable it */
-+	PWM2_GPIO | GPIO_OUT | GPIO_VALUE(0),	/* 1 enables, 0 disables the backlight */
-+
-+	/* send a reset signal to the USB hub */
-+	AUART1_TX_GPIO | GPIO_OUT | GPIO_VALUE(0),
-+
-+	/* USB power disable (FIXME what level to be switched off) */
-+	AUART1_CTS_GPIO | GPIO_OUT | GPIO_VALUE(0),
-+
-+	/* Detecting if a display is connected (0 = display attached) (external pull up) */
-+	AUART1_RTS_GPIO | GPIO_IN,
-+
-+	/* disable the audio amplifier */
-+	GPMI_D08_GPIO | GPIO_OUT | GPIO_VALUE(0),
-+
-+	/* Head Phone detection (FIXME what level when plugged in) (external pull up) */
-+	GPMI_D11_GPIO | GPIO_IN,
-+
-+#if 0
-+	/* Enable the local 5V (FIXME what to do when the bootloader runs) */
-+	GPMI_D12_GPIO | GPIO_OUT | GPIO_VALUE(1),
-+#endif
-+
-+	/* not used pins */
-+	GPMI_D09_GPIO | GPIO_IN | PULLUP(1),
-+	GPMI_D10_GPIO | GPIO_IN | PULLUP(1),
-+	GPMI_D13_GPIO | GPIO_IN | PULLUP(1),
-+
-+	/* unknown. Not connected to anything than test pin J113 */
-+	GPMI_D14_GPIO | GPIO_IN | PULLUP(1),
-+
-+	/* unknown. Not connected to anything than test pin J114 */
-+	GPMI_D15_GPIO | GPIO_IN | PULLUP(1),
-+
-+	/* NAND controller (Note: There is no NAND device on the board) */
-+	GPMI_D00 | PULLUP(1),
-+	GPMI_D01 | PULLUP(1),
-+	GPMI_D02 | PULLUP(1),
-+	GPMI_D03 | PULLUP(1),
-+	GPMI_D04 | PULLUP(1),
-+	GPMI_D05 | PULLUP(1),
-+	GPMI_D06 | PULLUP(1),
-+	GPMI_D07 | PULLUP(1),
-+	GPMI_CE0N,
-+	GPMI_RDY0 | PULLUP(1),
-+	GPMI_WRN,	/* kernel tries here with 12 mA */
-+	GPMI_RDN,	/* kernel tries here with 12 mA */
-+	GPMI_WPM,	/* kernel tries here with 12 mA */
-+	GPMI_CLE,
-+	GPMI_ALE,
-+
-+	/* SD card interface */
-+	SSP1_DATA0 | PULLUP(1),	/* available at J201 */
-+	SSP1_DATA1 | PULLUP(1),	/* available at J200 */
-+	SSP1_DATA2 | PULLUP(1),	/* available at J205 */
-+	SSP1_DATA3 | PULLUP(1),	/* available at J204 */
-+	SSP1_SCK,		/* available at J202 */
-+	SSP1_CMD | PULLUP(1),	/* available at J203 */
-+	SSP1_DETECT | PULLUP(1),	/* only connected to test pin J115 */
-+
-+	/* other not used pins */
-+	GPMI_CE1N_GPIO | GPIO_IN | PULLUP(1),
-+	GPMI_CE2N_GPIO | GPIO_IN | PULLUP(1),
-+	GPMI_RDY1_GPIO | GPIO_IN | PULLUP(1),
-+	GPMI_RDY2_GPIO | GPIO_IN | PULLUP(1),
-+	GPMI_RDY3_GPIO | GPIO_IN | PULLUP(1),
-+};
-+
-+static int falconwing_devices_init(void)
++static int mx23_evk_devices_init(void)
 +{
-+	int i;
-+
-+	/* initizalize gpios */
-+	for (i = 0; i < ARRAY_SIZE(pad_setup); i++)
-+		imx_gpio_mode(pad_setup[i]);
-+
 +	register_device(&sdram_dev);
 +
 +	armlinux_add_dram(&sdram_dev);
 +	armlinux_set_bootparams((void*)(sdram_dev.map_base + 0x100));
-+	armlinux_set_architecture(MACH_TYPE_CHUMBY);
++	armlinux_set_architecture(MACH_TYPE_MX23EVK);
 +
 +	return 0;
 +}
 +
-+device_initcall(falconwing_devices_init);
++device_initcall(mx23_evk_devices_init);
 +
-+static struct device_d falconwing_serial_device = {
++static struct device_d mx23_evk_serial_device = {
 +	.name     = "stm_serial",
 +	.map_base = IMX_DBGUART_BASE,
 +	.size     = 8192,
 +};
 +
-+static int falconwing_console_init(void)
++static int mx23_evk_console_init(void)
 +{
-+	return register_device(&falconwing_serial_device);
++	return register_device(&mx23_evk_serial_device);
 +}
 +
-+console_initcall(falconwing_console_init);
++console_initcall(mx23_evk_console_init);
 +
-+/** @page chumbyone Chumby Industrie's Falconwing
++/** @page mx23_evk Freescale's i.MX23 evaluation kit
 +
-+This device is also known as "chumby one" (http://www.chumby.com/)
++This CPU card is based on an i.MX23 CPU. The card is shipped with:
 +
-+This CPU card is based on a Freescale i.MX23 CPU. The card is shipped with:
-+
-+- 64 MiB synchronous dynamic RAM (DDR type)
++- 32 MiB synchronous dynamic RAM (mobile DDR type)
++- ENC28j60 based network (over SPI)
 +
 +Memory layout when @b barebox is running:
 +
@@ -360,14 +187,14 @@ index 0000000..d209dd5
 +- 0x40000100 start of kernel's boot parameters
 +  - below malloc area: stack area
 +  - below barebox: malloc area
-+- 0x42000000 start of @b barebox
++- 0x41000000 start of @b barebox
 +
-+@section get_falconwing_binary How to get the bootloader binary image:
++@section get_imx23evk_binary How to get the bootloader binary image:
 +
 +Using the default configuration:
 +
 +@verbatim
-+make ARCH=arm chumbyone_defconfig
++make ARCH=arm imx23evk_defconfig
 +@endverbatim
 +
 +Build the bootloader binary image:
@@ -378,16 +205,16 @@ index 0000000..d209dd5
 +
 +@note replace the armv5compiler with your ARM v5 cross compiler.
 +*/
-diff --git a/arch/arm/configs/chumbyone_defconfig b/arch/arm/configs/chumbyone_defconfig
+diff --git a/arch/arm/configs/imx23evk_defconfig b/arch/arm/configs/imx23evk_defconfig
 new file mode 100644
-index 0000000..1e158dc
+index 0000000..52eae05
 --- /dev/null
-+++ b/arch/arm/configs/chumbyone_defconfig
-@@ -0,0 +1,224 @@
++++ b/arch/arm/configs/imx23evk_defconfig
+@@ -0,0 +1,222 @@
 +#
 +# Automatically generated make config: don't edit
 +# Linux barebox version: 2010.09.0
-+# Mon Oct 11 10:23:23 2010
++# Mon Oct 11 10:25:16 2010
 +#
 +# CONFIG_BOARD_LINKER_SCRIPT is not set
 +CONFIG_GENERIC_LINKER_SCRIPT=y
@@ -415,15 +242,15 @@ index 0000000..1e158dc
 +#
 +# processor features
 +#
-+CONFIG_ARCH_TEXT_BASE=0x42000000
-+CONFIG_BOARDINFO="Chumby Falconwing"
++CONFIG_ARCH_TEXT_BASE=0x41000000
++CONFIG_BOARDINFO="Freescale i.MX23-EVK"
 +
 +#
 +# SigmaTel/Freescale i.MX System-on-Chip
 +#
 +CONFIG_ARCH_IMX23=y
-+# CONFIG_MACH_MX23EVK is not set
-+CONFIG_MACH_CHUMBY=y
++CONFIG_MACH_MX23EVK=y
++# CONFIG_MACH_CHUMBY is not set
 +
 +#
 +# Board specific settings       
@@ -451,10 +278,8 @@ index 0000000..1e158dc
 +#
 +# memory layout                 
 +#
-+CONFIG_HAVE_MMU=y
-+# CONFIG_MMU is not set
 +CONFIG_HAVE_CONFIGURABLE_TEXT_BASE=y
-+CONFIG_TEXT_BASE=0x42000000
++CONFIG_TEXT_BASE=0x41000000
 +CONFIG_HAVE_CONFIGURABLE_MEMORY_LAYOUT=y
 +CONFIG_MEMORY_LAYOUT_DEFAULT=y
 +# CONFIG_MEMORY_LAYOUT_FIXED is not set
@@ -609,31 +434,28 @@ index 0000000..1e158dc
 +# CONFIG_GENERIC_FIND_NEXT_BIT is not set
 +CONFIG_PROCESS_ESCAPE_SEQUENCE=y
 diff --git a/arch/arm/mach-stm/Kconfig b/arch/arm/mach-stm/Kconfig
-index bbdea51..021919a 100644
+index 9858d3a..bbdea51 100644
 --- a/arch/arm/mach-stm/Kconfig
 +++ b/arch/arm/mach-stm/Kconfig
-@@ -3,9 +3,11 @@ if ARCH_STM
+@@ -2,8 +2,10 @@ if ARCH_STM
+ 
  config ARCH_TEXT_BASE
  	hex
- 	default 0x41000000 if MACH_MX23EVK
-+	default 0x42000000 if MACH_CHUMBY
++	default 0x41000000 if MACH_MX23EVK
  
  config BOARDINFO
- 	default "Freescale i.MX23-EVK" if MACH_MX23EVK
-+	default "Chumby Falconwing" if MACH_CHUMBY
++	default "Freescale i.MX23-EVK" if MACH_MX23EVK
  
  comment "SigmaTel/Freescale i.MX System-on-Chip"
  
-@@ -28,6 +30,13 @@ config MACH_MX23EVK
- 	help
- 	  Say Y here if you are using the Freescale i.MX23-EVK board
+@@ -21,6 +23,11 @@ if ARCH_IMX23
+ choice
+ 	prompt "i.MX23 Board Type"
  
-+config MACH_CHUMBY
-+	bool "Chumby Falconwing"
-+	select HAVE_MMU
++config MACH_MX23EVK
++	bool "mx23-evk"
 +	help
-+	  Say Y here if you are using the "chumby one" aka falconwing from
-+	  Chumby Industries
++	  Say Y here if you are using the Freescale i.MX23-EVK board
 +
  endchoice
  
