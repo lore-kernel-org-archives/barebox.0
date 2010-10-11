@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 68.mail-out.ovh.net ([91.121.185.69])
-	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1P5KFV-0007uS-Io
-	for barebox@lists.infradead.org; Mon, 11 Oct 2010 15:25:14 +0000
-Date: Mon, 11 Oct 2010 17:23:04 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20101011152304.GD7412@game.jcrosoft.org>
-References: <20101010230505.17833.46593.stgit@zaytsev.su>
-	<20101011144129.GB7412@game.jcrosoft.org>
-	<20101011144836.GB28242@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1P5KXO-0001bX-GH
+	for barebox@lists.infradead.org; Mon, 11 Oct 2010 15:43:43 +0000
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Mon, 11 Oct 2010 17:42:01 +0200
+References: <1286808746-19456-1-git-send-email-jbe@pengutronix.de>
+	<1286808746-19456-5-git-send-email-jbe@pengutronix.de>
+	<20101011152058.GC7412@game.jcrosoft.org>
+In-Reply-To: <20101011152058.GC7412@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20101011144836.GB28242@pengutronix.de>
+Message-Id: <201010111742.02731.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,60 +24,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Add basic support from ARM Versatile/PB
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, Bahadir Balban <bbalban@b-labs.com>
+Subject: Re: [PATCH 4/4] Adapt the defconfig for a full blown ChumbyOne support
+To: barebox@lists.infradead.org
 
-On 16:48 Mon 11 Oct     , Sascha Hauer wrote:
-> On Mon, Oct 11, 2010 at 04:41:29PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > On 23:15 Sun 10 Oct     , Alexey Zaytsev wrote:
-> > > Signed-off-by: Alexey Zaytsev <alexey.zaytsev@gmail.com>
-> > > ---
-> > > 
-> > > Hi.
-> > > 
-> > > It seems that barebox does not run on any ARM machines provided
-> > > by QEMU. This patch adds basic Versatile/PB support. It is far from
-> > > being complete and has not been tested on real hardware, but
-> > > seems to work fine in QEMU.
-> > > 
-> > > Please notice, that you need to set CONFIG_VERSATILE_SMC91C111
-> > > in order to have networking in QEMU, as it does not provide
-> > > smc91x found on the real hardware.
-> > > 
-> > > For a queck test, run:
-> > > 
-> > > 	qemu-system-arm -kernel barebox.bin -M versatilepb -cpu arm926 -nographic -m 64 -net nic,model=smc91c111 -net user
-> > this must be in a doc
-> > 
-> > please use defaultenv and enable more functionnability
-> > 
-> > as we can use it as ref board for emulation
-> > > 
-> > > 
-> > > +
-> > > +config BOARDINFO
-> > > +	default "ARM Versatile/PB (ARM926EJ-S)"
-> > > +endif
-> > > +
-> > > +config VERSATILE_SMC91C111
-> > > +	bool "Use smc91c111 instead of smc91x (for QEMU)"
-> > > +	default 0
-> > ??
-> > > +	help
-> > > +	 Enable this option to run barebox inside qemu.
-> > > +	 Real versatile boards are equipped with smc911x,
-> > > +	 but qemu only provides smc91111, which is a bit different.
-> > it will be beter to modify the ressources depending on the drivers enabled
-> 
-> I think it's ok the way Alexey did this. It's a good place to document
-> that we need two different ethernet drivers depending on native/qemu
-> compilation.
-yeah but just enable the drivers is enough but we need to make it exclusive
-via Kconfig otherwise it will be confusing
+Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 16:52 Mon 11 Oct     , Juergen Beisert wrote:
+> > Make the ChumbyOne use of the MCI framework.
+> >
+> > Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
+> > ---
+> >  arch/arm/configs/chumbyone_defconfig |  224
+> > +++++++++++++++++++++++++++++++++-
+>
+> please use savedefconfig
 
-Best Regards,
-J.
+Sorry, didn't notice the difference yet. I will resend this patch.
+
+jbe
+
+-- 
+Pengutronix e.K.                              | Juergen Beisert             |
+Linux Solutions for Science and Industry      | Phone: +49-8766-939 228     |
+Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555 |
+Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
