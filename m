@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1P5aDR-0007WN-P6
-	for barebox@lists.infradead.org; Tue, 12 Oct 2010 08:28:11 +0000
-Received: from gallifrey.ext.pengutronix.de
-	([2001:6f8:1178:4:5054:ff:fe8d:eefb] helo=localhost)
-	by metis.ext.pengutronix.de with esmtp (Exim 4.71)
-	(envelope-from <jbe@pengutronix.de>) id 1P5aDO-00060k-BV
-	for barebox@lists.infradead.org; Tue, 12 Oct 2010 10:28:06 +0200
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Tue, 12 Oct 2010 10:28:04 +0200
+Received: from mail-qw0-f49.google.com ([209.85.216.49])
+	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1P5aps-0005Si-KW
+	for barebox@lists.infradead.org; Tue, 12 Oct 2010 09:07:53 +0000
+Received: by qwj8 with SMTP id 8so2201734qwj.36
+	for <barebox@lists.infradead.org>; Tue, 12 Oct 2010 02:07:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <201010121028.04871.jbe@pengutronix.de>
+In-Reply-To: <20101012060000.GH7412@game.jcrosoft.org>
+References: <20101011162832.14102.69708.stgit@zaytsev.su>
+	<20101012060000.GH7412@game.jcrosoft.org>
+Date: Tue, 12 Oct 2010 13:07:50 +0400
+Message-ID: <AANLkTimi49xXMg1giyMOyz1uA491++cfRy5s_1=zsPVQ@mail.gmail.com>
+From: Alexey Zaytsev <alexey.zaytsev@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,37 +20,26 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Where to store a header file
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v3] Add basic support from ARM Versatile/PB
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org, Bahadir Balban <bbalban@b-labs.com>
 
-Hi,
-
-currently I'm adding the i.MX28 architecture to barebox. This new CPU is the 
-successor of the i.MX23. So, it shares the most parts with it. But it also 
-shares the fact, its not a real i.MX like the i.MX27 is (STM378x-SigmaTel -> 
-i.MX23-Freescale).
-
-But new to the i.MX28 is the FEC known from the i.MX family. To be able to 
-reuse the i.MX FEC driver (fec_imx.c) on the i.MX28 I need the "mach/iim.h" 
-from the "mach-imx" tree. As the i.MX23/28 itself is "mach-stm" this files 
-must be shared between these architectures. But where to store this 
-headerfile? In "arch/arm/include/asm/"? In "include/" (perhaps 
-as "include/imx_iim.h")? Or in "drivers/net/" as a local header file? Any 
-ideas?
-
-jbe
-
--- 
-Pengutronix e.K.                              | Juergen Beisert             |
-Linux Solutions for Science and Industry      | Phone: +49-8766-939 228     |
-Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gVHVlLCBPY3QgMTIsIDIwMTAgYXQgMTA6MDAsIEplYW4tQ2hyaXN0b3BoZSBQTEFHTklPTC1W
+SUxMQVJECjxwbGFnbmlvakBqY3Jvc29mdC5jb20+IHdyb3RlOgo+PiAraWYgTUFDSF9WRVJTQVRJ
+TEVQQgo+PiArCj4+ICtjb25maWcgQVJDSF9URVhUX0JBU0UKPj4gKyDCoCDCoCBoZXgKPj4gKyDC
+oCDCoCBkZWZhdWx0IDAKPiBzdXJlPwoKVGhhdCdzIG9uZSB0aGluZyBJIHdhbnRlZCB0byBhc2sg
+LSB3aGVyZSBzaG91bGQgSSBwbGFjZSB0aGUgYmFyZWJveD8KQ3VycmVudGx5LCBJJ20gcGxhY2lu
+ZyBpdCBhdCA1TSwgd2l0aCA0TSBtYWxsb2MgYW5kIHRoZSBzdGFjayBiZWxvdy4KRG8gSSBnZXQg
+aXQgcmlnaHQgdGhhdCB0aGUgZG93bmxvYWRlZCBpbWFnZXMgYXJlIHN0b3JlZCBpbiB0aGUgbWFs
+bG9jCmFyZWE/IEluIHRoaXMgY2FzZSwgc2hvdWxkIEkgZXhwYW5kIHRoZSBtYWxsb2MgYXJlYSBj
+bG9zZSB0byB0aGUgUkFNCnNpemUgaW4gb3JkZXIgdG8gYmUgYWJsZSB0byBoYW5kbGUgbGFyZ2Ug
+aW1hZ2VzPwoKPj4KPiB0aGVyZSBpcyBzdGlsbCBhIGxvdHMgb2Ygd2hpdGVzcGFjZQo+Cj4gcGxl
+YXNlIHVzZSBjaGVja3BhdGNoLnBsCgpPaywgSSdsbCBmaXggZXZlcnl0aGluZyBidXQgcGxhdGZv
+cm0uaCwgbm90IHRvIGNvbXBsaWNhdGUgY29kZSBzaGFyaW5nLgoKX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJv
+eEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4v
+bGlzdGluZm8vYmFyZWJveAo=
