@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qw0-f49.google.com ([209.85.216.49])
-	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1P5aps-0005Si-KW
-	for barebox@lists.infradead.org; Tue, 12 Oct 2010 09:07:53 +0000
-Received: by qwj8 with SMTP id 8so2201734qwj.36
-	for <barebox@lists.infradead.org>; Tue, 12 Oct 2010 02:07:51 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20101012060000.GH7412@game.jcrosoft.org>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1P5inv-000069-V6
+	for barebox@lists.infradead.org; Tue, 12 Oct 2010 17:38:25 +0000
+Date: Tue, 12 Oct 2010 19:38:19 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20101012173819.GG28242@pengutronix.de>
 References: <20101011162832.14102.69708.stgit@zaytsev.su>
 	<20101012060000.GH7412@game.jcrosoft.org>
-Date: Tue, 12 Oct 2010 13:07:50 +0400
-Message-ID: <AANLkTimi49xXMg1giyMOyz1uA491++cfRy5s_1=zsPVQ@mail.gmail.com>
-From: Alexey Zaytsev <alexey.zaytsev@gmail.com>
+	<AANLkTimi49xXMg1giyMOyz1uA491++cfRy5s_1=zsPVQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <AANLkTimi49xXMg1giyMOyz1uA491++cfRy5s_1=zsPVQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,26 +20,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH v3] Add basic support from ARM Versatile/PB
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+To: Alexey Zaytsev <alexey.zaytsev@gmail.com>
 Cc: barebox@lists.infradead.org, Bahadir Balban <bbalban@b-labs.com>
 
-T24gVHVlLCBPY3QgMTIsIDIwMTAgYXQgMTA6MDAsIEplYW4tQ2hyaXN0b3BoZSBQTEFHTklPTC1W
-SUxMQVJECjxwbGFnbmlvakBqY3Jvc29mdC5jb20+IHdyb3RlOgo+PiAraWYgTUFDSF9WRVJTQVRJ
-TEVQQgo+PiArCj4+ICtjb25maWcgQVJDSF9URVhUX0JBU0UKPj4gKyDCoCDCoCBoZXgKPj4gKyDC
-oCDCoCBkZWZhdWx0IDAKPiBzdXJlPwoKVGhhdCdzIG9uZSB0aGluZyBJIHdhbnRlZCB0byBhc2sg
-LSB3aGVyZSBzaG91bGQgSSBwbGFjZSB0aGUgYmFyZWJveD8KQ3VycmVudGx5LCBJJ20gcGxhY2lu
-ZyBpdCBhdCA1TSwgd2l0aCA0TSBtYWxsb2MgYW5kIHRoZSBzdGFjayBiZWxvdy4KRG8gSSBnZXQg
-aXQgcmlnaHQgdGhhdCB0aGUgZG93bmxvYWRlZCBpbWFnZXMgYXJlIHN0b3JlZCBpbiB0aGUgbWFs
-bG9jCmFyZWE/IEluIHRoaXMgY2FzZSwgc2hvdWxkIEkgZXhwYW5kIHRoZSBtYWxsb2MgYXJlYSBj
-bG9zZSB0byB0aGUgUkFNCnNpemUgaW4gb3JkZXIgdG8gYmUgYWJsZSB0byBoYW5kbGUgbGFyZ2Ug
-aW1hZ2VzPwoKPj4KPiB0aGVyZSBpcyBzdGlsbCBhIGxvdHMgb2Ygd2hpdGVzcGFjZQo+Cj4gcGxl
-YXNlIHVzZSBjaGVja3BhdGNoLnBsCgpPaywgSSdsbCBmaXggZXZlcnl0aGluZyBidXQgcGxhdGZv
-cm0uaCwgbm90IHRvIGNvbXBsaWNhdGUgY29kZSBzaGFyaW5nLgoKX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJv
-eEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4v
-bGlzdGluZm8vYmFyZWJveAo=
+On Tue, Oct 12, 2010 at 01:07:50PM +0400, Alexey Zaytsev wrote:
+> On Tue, Oct 12, 2010 at 10:00, Jean-Christophe PLAGNIOL-VILLARD
+> <plagnioj@jcrosoft.com> wrote:
+> >> +if MACH_VERSATILEPB
+> >> +
+> >> +config ARCH_TEXT_BASE
+> >> + =A0 =A0 hex
+> >> + =A0 =A0 default 0
+> > sure?
+> =
+
+> That's one thing I wanted to ask - where should I place the barebox?
+> Currently, I'm placing it at 5M, with 4M malloc and the stack below.
+> Do I get it right that the downloaded images are stored in the malloc
+> area?
+
+It depends. If you download images to the filesystem they end up in the
+malloc area, so this should at least be big enough to store a kernel
+image. You also can tftp directly to flash, so the malloc space does not
+have to be as big as your rootfs.
+Normally I put barebox at the end of RAM and use 4-16MB of malloc area.
+Please make sure that there is ~4MB of free space at the beginning of
+the SDRAM since this is used during start of Linux images.
+
+Sascha
+
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
