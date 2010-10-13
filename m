@@ -1,15 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 68.mail-out.ovh.net ([91.121.185.69])
-	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1P5yQj-0001Jm-07
-	for barebox@lists.infradead.org; Wed, 13 Oct 2010 10:19:29 +0000
-Message-ID: <4CB587AD.4010609@eukrea.com>
-Date: Wed, 13 Oct 2010 12:19:25 +0200
-From: =?ISO-8859-1?Q?Eric_B=E9nard?= <eric@eukrea.com>
-MIME-Version: 1.0
-References: <1286963684-16359-1-git-send-email-eric@eukrea.com>
-	<20101013100859.GN7412@game.jcrosoft.org>
-In-Reply-To: <20101013100859.GN7412@game.jcrosoft.org>
+Received: from ns.konzeptpark.de ([195.226.66.162] helo=mail.konzeptpark.de)
+	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1P5zAw-00016o-Sn
+	for barebox@lists.infradead.org; Wed, 13 Oct 2010 11:07:21 +0000
+Received: from KPLADC0001 (cantor.konzeptpark.de [172.25.0.211])
+	by mail.konzeptpark.de (Postfix) with SMTP id D9B10231EA
+	for <barebox@lists.infradead.org>;
+	Wed, 13 Oct 2010 12:39:34 +0200 (CEST)
+Received: from [172.25.0.211] (helo=kpladc0001.konzeptpark.intra)
+	by KPLADC0001 with G Data MailSecurity;
+	for <barebox@lists.infradead.org>; Wed, 13 Oct 2010 12:40:10 +0200
+From: Carsten Schlote <c.schlote@konzeptpark.de>
+Date: Wed, 13 Oct 2010 12:40:08 +0200
+Message-ID: <1286966408.19212.1.camel@kplaws107lx>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,36 +22,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] unbreak bootm
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: pull-request: kp-mcb2 board files and configuration, GCC 4.5.x
+	optimizer workaround, powerpc mach changes
+To: barebox@lists.infradead.org
 
-Hi Jean-Christophe,
+The following changes since commit
+a14c018d11ab8931eb0882dd9d7f6bdb04aa6d8b:
 
-Le 13/10/2010 12:08, Jean-Christophe PLAGNIOL-VILLARD a =E9crit :
-> On 11:54 Wed 13 Oct     , Eric B=E9nard wrote:
->> commit a3c1e5d888d0ee317ffc7635694684bb71213c9c was
->> not tested as all the tests are wrong and it breaks bootm
+  MAKEALL: allow CROSS_COMPILE*="" (2010-10-08 15:43:09 +0200)
 
-Sorry this was not meant to be offensive, just spent to much time
-on this so my comment may be a little bit to agressive.
+are available in the git repository at:
+  git://git.vahanus.net/csc/barebox.git for-upstream
 
-> I test it but no see it
+Carsten Schlote (5):
+      [ppc/mpc5xxx] Fixed typo in cpu_init.c
+      [ppc/mpc5xxx] Small text cleanups and ADDECR to output
+      [kp-mcb2] Added board files and configs for konzeptpark mcb2
+      [compiler] Added OPTIMIZE options to enable GCC optimizer
+      [drivers/nor] Fixed mismatch in prototype
 
-How do you test this ? In the present case it prevents to boot a uImage.
+ Makefile                                |    2 +-
+ arch/arm/Makefile                       |    8 +
+ arch/blackfin/Makefile                  |    7 +
+ arch/m68k/Makefile                      |    7 +
+ arch/ppc/Kconfig                        |   11 +
+ arch/ppc/Makefile                       |    8 +
+ arch/ppc/boards/kp-mcb2/Makefile        |    2 +
+ arch/ppc/boards/kp-mcb2/barebox.lds.S   |  139 ++++++++++++
+ arch/ppc/boards/kp-mcb2/config.h        |  253 ++++++++++++++++++++++
+ arch/ppc/boards/kp-mcb2/kp-mcb2.c       |  349
++++++++++++++++++++++++++++++++
+ arch/ppc/boards/kp-mcb2/kp-mcb2.dox     |    8 +
+ arch/ppc/boards/kp-mcb2/mt46v32m16-75.h |   46 ++++
+ arch/ppc/mach-mpc5xxx/Kconfig           |    5 +-
+ arch/ppc/mach-mpc5xxx/cpu_init.c        |    2 +-
+ arch/ppc/mach-mpc5xxx/reginfo.c         |    3 +-
+ arch/sandbox/Makefile                   |    8 +
+ arch/x86/Makefile                       |    8 +
+ common/Kconfig                          |   13 ++
+ drivers/nor/cfi_flash.c                 |    2 +-
+ 19 files changed, 875 insertions(+), 6 deletions(-)
+ create mode 100644 arch/ppc/boards/kp-mcb2/Makefile
+ create mode 100644 arch/ppc/boards/kp-mcb2/barebox.lds.S
+ create mode 100644 arch/ppc/boards/kp-mcb2/config.h
+ create mode 100644 arch/ppc/boards/kp-mcb2/kp-mcb2.c
+ create mode 100644 arch/ppc/boards/kp-mcb2/kp-mcb2.dox
+ create mode 100644 arch/ppc/boards/kp-mcb2/mt46v32m16-75.h
 
-I think some other tests may be concerned also but I didn't have time to =
-
-check everywhere.
-
-Will resend with the space fixed.
-
-Eric
-
+-- 
+Carsten Schlote <c.schlote@konzeptpark.de>
+konzeptpark.de
 
 _______________________________________________
 barebox mailing list
