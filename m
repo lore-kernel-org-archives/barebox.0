@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from 68.mail-out.ovh.net ([91.121.185.69])
 	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1P5yLv-00086D-G8
-	for barebox@lists.infradead.org; Wed, 13 Oct 2010 10:14:34 +0000
-From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
-Date: Wed, 13 Oct 2010 12:14:27 +0200
-Message-Id: <1286964867-16922-1-git-send-email-eric@eukrea.com>
+	id 1P5yPB-0000wX-GV
+	for barebox@lists.infradead.org; Wed, 13 Oct 2010 10:17:59 +0000
+Date: Wed, 13 Oct 2010 12:08:59 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20101013100859.GN7412@game.jcrosoft.org>
+References: <1286963684-16359-1-git-send-email-eric@eukrea.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1286963684-16359-1-git-send-email-eric@eukrea.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,77 +18,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] eukrea_cpuimx27: update board support
-To: s.hauer@pengutronix.de
+Subject: Re: [PATCH] unbreak bootm
+To: Eric =?iso-8859-1?Q?B=E9nard?= <eric@eukrea.com>
 Cc: barebox@lists.infradead.org
 
-LSBmaXggZm9yIExDRCBzdXBwb3J0Ci0gZW52aXJvbm1lbnQgdXBkYXRlIChsYXN0IG9uZSBiZWZv
-cmUgdHJ5aW5nIHRvIHVzZSB0aGUgZ2VuZXJpYyBlbnYpCgpTaWduZWQtb2ZmLWJ5OiBFcmljIELD
-qW5hcmQgPGVyaWNAZXVrcmVhLmNvbT4KLS0tCiBhcmNoL2FybS9ib2FyZHMvZXVrcmVhX2NwdWlt
-eDI3L2Vudi9iaW4vYm9vdCAgICAgIHwgICAxMiArKysrKysrLS0tLS0KIGFyY2gvYXJtL2JvYXJk
-cy9ldWtyZWFfY3B1aW14MjcvZW52L2Jpbi9pbml0ICAgICAgfCAgIDEwICsrKysrKysrKysKIGFy
-Y2gvYXJtL2JvYXJkcy9ldWtyZWFfY3B1aW14MjcvZW52L2NvbmZpZyAgICAgICAgfCAgICA5ICsr
-KysrKystLQogYXJjaC9hcm0vYm9hcmRzL2V1a3JlYV9jcHVpbXgyNy9ldWtyZWFfY3B1aW14Mjcu
-YyB8ICAgIDMgKysrCiA0IGZpbGVzIGNoYW5nZWQsIDI3IGluc2VydGlvbnMoKyksIDcgZGVsZXRp
-b25zKC0pCgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL2V1a3JlYV9jcHVpbXgyNy9lbnYv
-YmluL2Jvb3QgYi9hcmNoL2FybS9ib2FyZHMvZXVrcmVhX2NwdWlteDI3L2Vudi9iaW4vYm9vdApp
-bmRleCA3MjcyZTU2Li4wZTFjODBhIDEwMDY0NAotLS0gYS9hcmNoL2FybS9ib2FyZHMvZXVrcmVh
-X2NwdWlteDI3L2Vudi9iaW4vYm9vdAorKysgYi9hcmNoL2FybS9ib2FyZHMvZXVrcmVhX2NwdWlt
-eDI3L2Vudi9iaW4vYm9vdApAQCAtMjcsMTIgKzI3LDE0IEBAIGVsc2UKIAlib290YXJncz0iJGJv
-b3RhcmdzIGlwPW9mZiIKIGZpCiAKLWlmIFsgeCRyb290ID0geG5hbmQgXTsgdGhlbgotCWJvb3Rh
-cmdzPSIkYm9vdGFyZ3Mgcm9vdD0kcm9vdHBhcnRfbmFuZCByb290ZnN0eXBlPWpmZnMyIgotZWxp
-ZiBbIHgkcm9vdCA9IHhub3IgXTsgdGhlbgotCWJvb3RhcmdzPSIkYm9vdGFyZ3Mgcm9vdD0kcm9v
-dHBhcnRfbm9yIHJvb3Rmc3R5cGU9amZmczIiCitpZiBbIHgkcm9vdGZzdHlwZSA9IHh1YmlmcyBd
-OyB0aGVuCisJYm9vdGFyZ3M9IiRib290YXJncyByb290PXViaTA6JHViaXJvb3QgdWJpLm10ZD0k
-cm9vdHBhcnRudW0gcm9vdGZzdHlwZT11YmlmcyIKIGVsc2UKLQlib290YXJncz0iJGJvb3Rhcmdz
-IHJvb3Q9L2Rldi9uZnMgbmZzcm9vdD0kZXRoMC5zZXJ2ZXJpcDokbmZzcm9vdCx2Myx0Y3AiCisJ
-aWYgWyB4JHJvb3QgPSB4bmFuZCBdOyB0aGVuCisJCWJvb3RhcmdzPSIkYm9vdGFyZ3Mgcm9vdD0k
-cm9vdHBhcnRfbmFuZCByb290ZnN0eXBlPWpmZnMyIgorCWVsaWYgWyB4JHJvb3QgPSB4bm9yIF07
-IHRoZW4KKwkJYm9vdGFyZ3M9IiRib290YXJncyByb290PSRyb290cGFydF9ub3Igcm9vdGZzdHlw
-ZT1qZmZzMiIKKwlmaQogZmkKIAogYm9vdGFyZ3M9IiRib290YXJncyBtdGRwYXJ0cz1waHlzbWFw
-LWZsYXNoLjA6JG5vcl9wYXJ0cztteGNfbmFuZDokbmFuZF9wYXJ0cyIKZGlmZiAtLWdpdCBhL2Fy
-Y2gvYXJtL2JvYXJkcy9ldWtyZWFfY3B1aW14MjcvZW52L2Jpbi9pbml0IGIvYXJjaC9hcm0vYm9h
-cmRzL2V1a3JlYV9jcHVpbXgyNy9lbnYvYmluL2luaXQKaW5kZXggM2JmZDE5NC4uYWVmZDY3YyAx
-MDA2NDQKLS0tIGEvYXJjaC9hcm0vYm9hcmRzL2V1a3JlYV9jcHVpbXgyNy9lbnYvYmluL2luaXQK
-KysrIGIvYXJjaC9hcm0vYm9hcmRzL2V1a3JlYV9jcHVpbXgyNy9lbnYvYmluL2luaXQKQEAgLTE2
-LDExICsxNiwyMSBAQCBpZiBbIC1lIC9kZXYvbmFuZDAgXTsgdGhlbgogCXNvdXJjZSAvZW52L2Jp
-bi9odXNoX2hhY2sgCiBmaQogCitpZiBbIC1mIC9lbnYvbG9nby5ibXAgXTsgdGhlbgorCWJtcCAv
-ZW52L2xvZ28uYm1wCisJZmIwLmVuYWJsZT0xCitlbGlmIFsgLWYgL2Vudi9sb2dvLmJtcC5sem8g
-XTsgdGhlbgorCXVubHpvIC9lbnYvbG9nby5ibXAubHpvIC9sb2dvLmJtcAorCWJtcCAvbG9nby5i
-bXAKKwlmYjAuZW5hYmxlPTEKK2ZpCisKIGlmIFsgLXogJGV0aDAuZXRoYWRkciBdOyB0aGVuCiAJ
-d2hpbGUgWyAteiAkZXRoMC5ldGhhZGRyIF07IGRvCiAJCXJlYWRsaW5lICJubyBNQUMgYWRkcmVz
-cyBzZXQgZm9yIGV0aDAuIHBsZWFzZSBlbnRlciB0aGUgb25lIGZvdW5kIG9uIHlvdXIgYm9hcmQ6
-ICIgZXRoMC5ldGhhZGRyCiAJZG9uZQogCWVjaG8gLWEgL2Vudi9jb25maWcgImV0aDAuZXRoYWRk
-cj0kZXRoMC5ldGhhZGRyIgorCXNhdmVlbnYKIGZpCiAKIGVjaG8KZGlmZiAtLWdpdCBhL2FyY2gv
-YXJtL2JvYXJkcy9ldWtyZWFfY3B1aW14MjcvZW52L2NvbmZpZyBiL2FyY2gvYXJtL2JvYXJkcy9l
-dWtyZWFfY3B1aW14MjcvZW52L2NvbmZpZwppbmRleCA1MDVhZGEzLi42NDQ5Y2RmIDEwMDY0NAot
-LS0gYS9hcmNoL2FybS9ib2FyZHMvZXVrcmVhX2NwdWlteDI3L2Vudi9jb25maWcKKysrIGIvYXJj
-aC9hcm0vYm9hcmRzL2V1a3JlYV9jcHVpbXgyNy9lbnYvY29uZmlnCkBAIC0zLDkgKzMsMTEgQEAK
-ICMgY2FuIGJlIGVpdGhlciAnbmV0JywgJ25vcicgb3IgJ25hbmQnJwoga2VybmVsPW5vcgogcm9v
-dD1ub3IKK3Jvb3Rmc3R5cGU9dWJpZnMKIAotdWltYWdlPW14MjcvdUltYWdlCi1qZmZzMj1teDI3
-L3Jvb3Rmcy5qZmZzMgorYmFzZWRpcj1jcHVpbXgyNwordWltYWdlPSRiYXNlZGlyL3VJbWFnZQor
-cm9vdGZzPSRiYXNlZGlyL3Jvb3RmcwogCiBhdXRvYm9vdF90aW1lb3V0PTEKIApAQCAtMTksNiAr
-MjEsOSBAQCByb290cGFydF9ub3I9Ii9kZXYvbXRkYmxvY2szIgogbmFuZF9wYXJ0cz0iLShuYW5k
-KSIKIHJvb3RwYXJ0X25hbmQ9IiIKIAorcm9vdHBhcnRudW09MwordWJpcm9vdD0iZXVrcmVhLWNw
-dWlteDI3LXJvb3RmcyIKKwogbmZzcm9vdD0iIgogCiAjIHVzZSAnZGhjcCcgdG8gZG8gZGhjcCBp
-biBiYXJlYm94IGFuZCBpbiBrZXJuZWwKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9ldWty
-ZWFfY3B1aW14MjcvZXVrcmVhX2NwdWlteDI3LmMgYi9hcmNoL2FybS9ib2FyZHMvZXVrcmVhX2Nw
-dWlteDI3L2V1a3JlYV9jcHVpbXgyNy5jCmluZGV4IDRkMTc5N2IuLmM3NTcwY2YgMTAwNjQ0Ci0t
-LSBhL2FyY2gvYXJtL2JvYXJkcy9ldWtyZWFfY3B1aW14MjcvZXVrcmVhX2NwdWlteDI3LmMKKysr
-IGIvYXJjaC9hcm0vYm9hcmRzL2V1a3JlYV9jcHVpbXgyNy9ldWtyZWFfY3B1aW14MjcuYwpAQCAt
-Mjc1LDYgKzI3NSw3IEBAIHN0YXRpYyBpbnQgZXVrcmVhX2NwdWlteDI3X2RldmljZXNfaW5pdCh2
-b2lkKQogCQlQQTI5X1BGX1ZTWU5DLAogCQlQQTMxX1BGX09FX0FDRCwKIAkJR1BJT19QT1JURSB8
-IDUgfCBHUElPX0dQSU8gfCBHUElPX09VVCwKKwkJR1BJT19QT1JUQSB8IDI1IHwgR1BJT19HUElP
-IHwgR1BJT19PVVQsCiAjZW5kaWYKIAl9OwogCkBAIC0zMTEsNiArMzEyLDggQEAgc3RhdGljIGlu
-dCBldWtyZWFfY3B1aW14MjdfZGV2aWNlc19pbml0KHZvaWQpCiAJcmVnaXN0ZXJfZGV2aWNlKCZp
-bXhmYl9kZXYpOwogCWdwaW9fZGlyZWN0aW9uX291dHB1dChHUElPX1BPUlRFIHwgNSwgMCk7CiAJ
-Z3Bpb19zZXRfdmFsdWUoR1BJT19QT1JURSB8IDUsIDEpOworCWdwaW9fZGlyZWN0aW9uX291dHB1
-dChHUElPX1BPUlRBIHwgMjUsIDApOworCWdwaW9fc2V0X3ZhbHVlKEdQSU9fUE9SVEEgfCAyNSwg
-MSk7CiAjZW5kaWYKIAogCWFybWxpbnV4X2FkZF9kcmFtKCZzZHJhbV9kZXYpOwotLSAKMS43LjAu
-NAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVi
-b3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMu
-aW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On 11:54 Wed 13 Oct     , Eric B=E9nard wrote:
+> commit a3c1e5d888d0ee317ffc7635694684bb71213c9c was
+> not tested as all the tests are wrong and it breaks bootm
+I test it but no see it
+> =
+
+> Signed-off-by: Eric B=E9nard <eric@eukrea.com>
+> ---
+>  commands/bootm.c |    6 +++---
+>  1 files changed, 3 insertions(+), 3 deletions(-)
+> =
+
+> diff --git a/commands/bootm.c b/commands/bootm.c
+> index 83d36d3..666deeb 100644
+> --- a/commands/bootm.c
+> +++ b/commands/bootm.c
+> @@ -167,7 +167,7 @@ struct image_handle *map_image(const char *filename, =
+int verify)
+>  		goto err_out;
+>  	}
+>  =
+
+> -	if (image_check_magic(header)) {
+> +	if (! image_check_magic(header)) {
+no space after !
+>  		puts ("Bad Magic Number\n");
+>  		goto err_out;
+>  	}
+Best Regards,
+J.
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
