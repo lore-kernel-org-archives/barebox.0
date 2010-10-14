@@ -1,14 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 68.mail-out.ovh.net ([91.121.185.69])
-	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1P6OR9-00004r-76
-	for barebox@lists.infradead.org; Thu, 14 Oct 2010 14:05:45 +0000
-From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
-Date: Thu, 14 Oct 2010 16:05:31 +0200
-Message-Id: <1287065132-20372-9-git-send-email-eric@eukrea.com>
-In-Reply-To: <1287065132-20372-1-git-send-email-eric@eukrea.com>
-References: <1287065132-20372-1-git-send-email-eric@eukrea.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1P6Tf7-0003PJ-5Z
+	for barebox@lists.infradead.org; Thu, 14 Oct 2010 19:40:26 +0000
+Received: from gallifrey.ext.pengutronix.de
+	([2001:6f8:1178:4:5054:ff:fe8d:eefb] helo=localhost)
+	by metis.ext.pengutronix.de with esmtp (Exim 4.71)
+	(envelope-from <jbe@pengutronix.de>) id 1P6Tf1-0007lA-QW
+	for barebox@lists.infradead.org; Thu, 14 Oct 2010 21:40:19 +0200
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Thu, 14 Oct 2010 21:38:45 +0200
 MIME-Version: 1.0
+Content-Disposition: inline
+Message-Id: <201010142138.45775.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,92 +21,78 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/10] iomux-mx35: fox IOMUX for SDHC1's pins
-To: s.hauer@pengutronix.de
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] i.MX23/MCI: Make the clock calculation easier to read and
+	correct
+To: barebox@lists.infradead.org
 
-U2lnbmVkLW9mZi1ieTogRXJpYyBCw6luYXJkIDxlcmljQGV1a3JlYS5jb20+Ci0tLQogYXJjaC9h
-cm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2lvbXV4LW14MzUuaCB8ICAgMTIgKysrKysrLS0tLS0t
-CiAxIGZpbGVzIGNoYW5nZWQsIDYgaW5zZXJ0aW9ucygrKSwgNiBkZWxldGlvbnMoLSkKCmRpZmYg
-LS1naXQgYS9hcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvaW9tdXgtbXgzNS5oIGIvYXJj
-aC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2lvbXV4LW14MzUuaAppbmRleCA4YTU2ZDg2Li5h
-ZDdmZjU2IDEwMDY0NAotLS0gYS9hcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvaW9tdXgt
-bXgzNS5oCisrKyBiL2FyY2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9pb211eC1teDM1LmgK
-QEAgLTgxNSw0MiArODE1LDQyIEBACiAjZGVmaW5lIE1YMzVfUEFEX0QzX1NQTF9fU0RNQV9ERUJV
-R19CVVNfREVWSUNFXzEJCUlPTVVYX1BBRCgweDY5MCwgMHgyMmMsIDYsIDB4MCwgICAwLCBOT19Q
-QURfQ1RSTCkKICNkZWZpbmUgTVgzNV9QQURfRDNfU1BMX19BUk0xMVBfVE9QX1RSQUNFXzIyCQkJ
-SU9NVVhfUEFEKDB4NjkwLCAweDIyYywgNywgMHgwLCAgIDAsIE5PX1BBRF9DVFJMKQogCi0jZGVm
-aW5lIE1YMzVfUEFEX1NEMV9DTURfX0VTREhDMV9DTUQJCQkJSU9NVVhfUEFEKDB4Njk0LCAweDIz
-MCwgMCwgMHgwLCAgIDAsIE5PX1BBRF9DVFJMKQorI2RlZmluZSBNWDM1X1BBRF9TRDFfQ01EX19F
-U0RIQzFfQ01ECQkJCUlPTVVYX1BBRCgweDY5NCwgMHgyMzAsIDB4MTAsIDB4MCwgICAwLCBOT19Q
-QURfQ1RSTCkKICNkZWZpbmUgTVgzNV9QQURfU0QxX0NNRF9fTVNIQ19TQ0xLCQkJCUlPTVVYX1BB
-RCgweDY5NCwgMHgyMzAsIDEsIDB4MCwgICAwLCBOT19QQURfQ1RSTCkKICNkZWZpbmUgTVgzNV9Q
-QURfU0QxX0NNRF9fSVBVX0RJU1BCX0QwX1ZTWU5DCQkJSU9NVVhfUEFEKDB4Njk0LCAweDIzMCwg
-MywgMHg5MjQsIDIsIE5PX1BBRF9DVFJMKQogI2RlZmluZSBNWDM1X1BBRF9TRDFfQ01EX19VU0Jf
-VE9QX1VTQk9UR19EQVRBXzQJCQlJT01VWF9QQUQoMHg2OTQsIDB4MjMwLCA0LCAweDliNCwgMCwg
-Tk9fUEFEX0NUUkwpCiAjZGVmaW5lIE1YMzVfUEFEX1NEMV9DTURfX0dQSU8xXzYJCQkJSU9NVVhf
-UEFEKDB4Njk0LCAweDIzMCwgNSwgMHg4NTgsIDIsIE5PX1BBRF9DVFJMKQogI2RlZmluZSBNWDM1
-X1BBRF9TRDFfQ01EX19BUk0xMVBfVE9QX1RSQ1RMCQkJSU9NVVhfUEFEKDB4Njk0LCAweDIzMCwg
-NywgMHgwLCAgIDAsIE5PX1BBRF9DVFJMKQogCi0jZGVmaW5lIE1YMzVfUEFEX1NEMV9DTEtfX0VT
-REhDMV9DTEsJCQkJSU9NVVhfUEFEKDB4Njk4LCAweDIzNCwgMCwgMHgwLCAgIDAsIE5PX1BBRF9D
-VFJMKQorI2RlZmluZSBNWDM1X1BBRF9TRDFfQ0xLX19FU0RIQzFfQ0xLCQkJCUlPTVVYX1BBRCgw
-eDY5OCwgMHgyMzQsIDB4MTAsIDB4MCwgICAwLCBOT19QQURfQ1RSTCkKICNkZWZpbmUgTVgzNV9Q
-QURfU0QxX0NMS19fTVNIQ19CUwkJCQlJT01VWF9QQUQoMHg2OTgsIDB4MjM0LCAxLCAweDAsICAg
-MCwgTk9fUEFEX0NUUkwpCiAjZGVmaW5lIE1YMzVfUEFEX1NEMV9DTEtfX0lQVV9ESVNQQl9CQ0xL
-CQkJSU9NVVhfUEFEKDB4Njk4LCAweDIzNCwgMywgMHgwLCAgIDAsIE5PX1BBRF9DVFJMKQogI2Rl
-ZmluZSBNWDM1X1BBRF9TRDFfQ0xLX19VU0JfVE9QX1VTQk9UR19EQVRBXzUJCQlJT01VWF9QQUQo
-MHg2OTgsIDB4MjM0LCA0LCAweDliOCwgMCwgTk9fUEFEX0NUUkwpCiAjZGVmaW5lIE1YMzVfUEFE
-X1NEMV9DTEtfX0dQSU8xXzcJCQkJSU9NVVhfUEFEKDB4Njk4LCAweDIzNCwgNSwgMHg4NWMsIDIs
-IE5PX1BBRF9DVFJMKQogI2RlZmluZSBNWDM1X1BBRF9TRDFfQ0xLX19BUk0xMVBfVE9QX1RSQ0xL
-CQkJSU9NVVhfUEFEKDB4Njk4LCAweDIzNCwgNywgMHgwLCAgIDAsIE5PX1BBRF9DVFJMKQogCi0j
-ZGVmaW5lIE1YMzVfUEFEX1NEMV9EQVRBMF9fRVNESEMxX0RBVDAJCQkJSU9NVVhfUEFEKDB4Njlj
-LCAweDIzOCwgMCwgMHgwLCAgIDAsIE5PX1BBRF9DVFJMKQorI2RlZmluZSBNWDM1X1BBRF9TRDFf
-REFUQTBfX0VTREhDMV9EQVQwCQkJCUlPTVVYX1BBRCgweDY5YywgMHgyMzgsIDB4MTAsIDB4MCwg
-ICAwLCBOT19QQURfQ1RSTCkKICNkZWZpbmUgTVgzNV9QQURfU0QxX0RBVEEwX19NU0hDX0RBVEFf
-MAkJCQlJT01VWF9QQUQoMHg2OWMsIDB4MjM4LCAxLCAweDAsICAgMCwgTk9fUEFEX0NUUkwpCiAj
-ZGVmaW5lIE1YMzVfUEFEX1NEMV9EQVRBMF9fSVBVX0RJU1BCX0NTMAkJCUlPTVVYX1BBRCgweDY5
-YywgMHgyMzgsIDMsIDB4MCwgICAwLCBOT19QQURfQ1RSTCkKICNkZWZpbmUgTVgzNV9QQURfU0Qx
-X0RBVEEwX19VU0JfVE9QX1VTQk9UR19EQVRBXzYJCUlPTVVYX1BBRCgweDY5YywgMHgyMzgsIDQs
-IDB4OWJjLCAwLCBOT19QQURfQ1RSTCkKICNkZWZpbmUgTVgzNV9QQURfU0QxX0RBVEEwX19HUElP
-MV84CQkJCUlPTVVYX1BBRCgweDY5YywgMHgyMzgsIDUsIDB4ODYwLCAyLCBOT19QQURfQ1RSTCkK
-ICNkZWZpbmUgTVgzNV9QQURfU0QxX0RBVEEwX19BUk0xMVBfVE9QX1RSQUNFXzIzCQkJSU9NVVhf
-UEFEKDB4NjljLCAweDIzOCwgNywgMHgwLCAgIDAsIE5PX1BBRF9DVFJMKQogCi0jZGVmaW5lIE1Y
-MzVfUEFEX1NEMV9EQVRBMV9fRVNESEMxX0RBVDEJCQkJSU9NVVhfUEFEKDB4NmEwLCAweDIzYywg
-MCwgMHgwLCAgIDAsIE5PX1BBRF9DVFJMKQorI2RlZmluZSBNWDM1X1BBRF9TRDFfREFUQTFfX0VT
-REhDMV9EQVQxCQkJCUlPTVVYX1BBRCgweDZhMCwgMHgyM2MsIDB4MTAsIDB4MCwgICAwLCBOT19Q
-QURfQ1RSTCkKICNkZWZpbmUgTVgzNV9QQURfU0QxX0RBVEExX19NU0hDX0RBVEFfMQkJCQlJT01V
-WF9QQUQoMHg2YTAsIDB4MjNjLCAxLCAweDAsICAgMCwgTk9fUEFEX0NUUkwpCiAjZGVmaW5lIE1Y
-MzVfUEFEX1NEMV9EQVRBMV9fSVBVX0RJU1BCX1BBUl9SUwkJCUlPTVVYX1BBRCgweDZhMCwgMHgy
-M2MsIDMsIDB4MCwgICAwLCBOT19QQURfQ1RSTCkKICNkZWZpbmUgTVgzNV9QQURfU0QxX0RBVEEx
-X19VU0JfVE9QX1VTQk9UR19EQVRBXzAJCUlPTVVYX1BBRCgweDZhMCwgMHgyM2MsIDQsIDB4OWE0
-LCAwLCBOT19QQURfQ1RSTCkKICNkZWZpbmUgTVgzNV9QQURfU0QxX0RBVEExX19HUElPMV85CQkJ
-CUlPTVVYX1BBRCgweDZhMCwgMHgyM2MsIDUsIDB4ODY0LCAxLCBOT19QQURfQ1RSTCkKICNkZWZp
-bmUgTVgzNV9QQURfU0QxX0RBVEExX19BUk0xMVBfVE9QX1RSQUNFXzI0CQkJSU9NVVhfUEFEKDB4
-NmEwLCAweDIzYywgNywgMHgwLCAgIDAsIE5PX1BBRF9DVFJMKQogCi0jZGVmaW5lIE1YMzVfUEFE
-X1NEMV9EQVRBMl9fRVNESEMxX0RBVDIJCQkJSU9NVVhfUEFEKDB4NmE0LCAweDI0MCwgMCwgMHgw
-LCAgIDAsIE5PX1BBRF9DVFJMKQorI2RlZmluZSBNWDM1X1BBRF9TRDFfREFUQTJfX0VTREhDMV9E
-QVQyCQkJCUlPTVVYX1BBRCgweDZhNCwgMHgyNDAsIDB4MTAsIDB4MCwgICAwLCBOT19QQURfQ1RS
-TCkKICNkZWZpbmUgTVgzNV9QQURfU0QxX0RBVEEyX19NU0hDX0RBVEFfMgkJCQlJT01VWF9QQUQo
-MHg2YTQsIDB4MjQwLCAxLCAweDAsICAgMCwgTk9fUEFEX0NUUkwpCiAjZGVmaW5lIE1YMzVfUEFE
-X1NEMV9EQVRBMl9fSVBVX0RJU1BCX1dSCQkJSU9NVVhfUEFEKDB4NmE0LCAweDI0MCwgMywgMHgw
-LCAgIDAsIE5PX1BBRF9DVFJMKQogI2RlZmluZSBNWDM1X1BBRF9TRDFfREFUQTJfX1VTQl9UT1Bf
-VVNCT1RHX0RBVEFfMQkJSU9NVVhfUEFEKDB4NmE0LCAweDI0MCwgNCwgMHg5YTgsIDAsIE5PX1BB
-RF9DVFJMKQogI2RlZmluZSBNWDM1X1BBRF9TRDFfREFUQTJfX0dQSU8xXzEwCQkJCUlPTVVYX1BB
-RCgweDZhNCwgMHgyNDAsIDUsIDB4ODMwLCAxLCBOT19QQURfQ1RSTCkKICNkZWZpbmUgTVgzNV9Q
-QURfU0QxX0RBVEEyX19BUk0xMVBfVE9QX1RSQUNFXzI1CQkJSU9NVVhfUEFEKDB4NmE0LCAweDI0
-MCwgNywgMHgwLCAgIDAsIE5PX1BBRF9DVFJMKQogCi0jZGVmaW5lIE1YMzVfUEFEX1NEMV9EQVRB
-M19fRVNESEMxX0RBVDMJCQkJSU9NVVhfUEFEKDB4NmE4LCAweDI0NCwgMCwgMHgwLCAgIDAsIE5P
-X1BBRF9DVFJMKQorI2RlZmluZSBNWDM1X1BBRF9TRDFfREFUQTNfX0VTREhDMV9EQVQzCQkJCUlP
-TVVYX1BBRCgweDZhOCwgMHgyNDQsIDB4MTAsIDB4MCwgICAwLCBOT19QQURfQ1RSTCkKICNkZWZp
-bmUgTVgzNV9QQURfU0QxX0RBVEEzX19NU0hDX0RBVEFfMwkJCQlJT01VWF9QQUQoMHg2YTgsIDB4
-MjQ0LCAxLCAweDAsICAgMCwgTk9fUEFEX0NUUkwpCiAjZGVmaW5lIE1YMzVfUEFEX1NEMV9EQVRB
-M19fSVBVX0RJU1BCX1JECQkJSU9NVVhfUEFEKDB4NmE4LCAweDI0NCwgMywgMHgwLCAgIDAsIE5P
-X1BBRF9DVFJMKQogI2RlZmluZSBNWDM1X1BBRF9TRDFfREFUQTNfX1VTQl9UT1BfVVNCT1RHX0RB
-VEFfMgkJSU9NVVhfUEFEKDB4NmE4LCAweDI0NCwgNCwgMHg5YWMsIDAsIE5PX1BBRF9DVFJMKQot
-LSAKMS43LjAuNAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRw
-Oi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+From: Juergen Beisert <jbe@pengutronix.de>
+Subject: Make the clock calculation easier to read and correct
+
+Due to a wrong rounding while calculating the clock divider the requested clock
+of 25 MHz resulted into a 48 MHz clock. With this patch a clock frequency
+below or equal the requested one will be set.
+By using 'div' and 'rate' as vars, its also easier to check against the data
+sheet.
+
+Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
+
+---
+ drivers/mci/stm378x.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+Index: a/drivers/mci/stm378x.c
+===================================================================
+--- a/drivers/mci/stm378x.c
++++ b/drivers/mci/stm378x.c
+@@ -474,7 +474,7 @@ static int stm_mci_adtc(struct device_d 
+  */
+ static unsigned setup_clock_speed(struct device_d *hw_dev, unsigned nc)
+ {
+-	unsigned ssp, div1, div2, reg;
++	unsigned ssp, div, rate, reg;
+ 
+ 	if (nc == 0U) {
+ 		/* TODO stop the clock */
+@@ -483,21 +483,21 @@ static unsigned setup_clock_speed(struct
+ 
+ 	ssp = imx_get_sspclk(0) * 1000;
+ 
+-	for (div1 = 2; div1 < 255; div1 += 2) {
+-		div2 = ssp / nc / div1;
+-		if (div2 <= 0x100)
++	for (div = 2; div < 255; div += 2) {
++		rate = (((ssp + (nc >> 1) ) / nc) + (div >> 1)) / div;
++		if (rate <= 0x100)
+ 			break;
+ 	}
+-	if (div1 >= 255) {
++	if (div >= 255) {
+ 		pr_warning("Cannot set clock to %d Hz\n", nc);
+ 		return 0;
+ 	}
+ 
+ 	reg = readl(hw_dev->map_base + HW_SSP_TIMING) & SSP_TIMING_TIMEOUT_MASK;
+-	reg |= SSP_TIMING_CLOCK_DIVIDE(div1) | SSP_TIMING_CLOCK_RATE(div2 - 1);
++	reg |= SSP_TIMING_CLOCK_DIVIDE(div) | SSP_TIMING_CLOCK_RATE(rate - 1);
+ 	writel(reg, hw_dev->map_base + HW_SSP_TIMING);
+ 
+-	return ssp / div1 / div2;
++	return ssp / div / rate;
+ }
+ 
+ /**
+
+-- 
+Pengutronix e.K.                              | Juergen Beisert             |
+Linux Solutions for Science and Industry      | Phone: +49-8766-939 228     |
+Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555 |
+Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
