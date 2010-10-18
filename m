@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1P7szq-0000cn-Fb
-	for barebox@lists.infradead.org; Mon, 18 Oct 2010 16:55:40 +0000
+	id 1P7t1D-0000gs-Kx
+	for barebox@lists.infradead.org; Mon, 18 Oct 2010 16:57:04 +0000
 Received: from gallifrey.ext.pengutronix.de
 	([2001:6f8:1178:4:5054:ff:fe8d:eefb] helo=localhost)
 	by metis.ext.pengutronix.de with esmtp (Exim 4.71)
-	(envelope-from <jbe@pengutronix.de>) id 1P7szo-0001oH-FF
-	for barebox@lists.infradead.org; Mon, 18 Oct 2010 18:55:36 +0200
+	(envelope-from <jbe@pengutronix.de>) id 1P7t1B-0001q6-Pv
+	for barebox@lists.infradead.org; Mon, 18 Oct 2010 18:57:01 +0200
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Mon, 18 Oct 2010 18:55:34 +0200
+Date: Mon, 18 Oct 2010 18:57:00 +0200
 MIME-Version: 1.0
 Content-Disposition: inline
-Message-Id: <201010181855.34960.jbe@pengutronix.de>
+Message-Id: <201010181857.00515.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,138 +25,106 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH]  S3C24xx: Remove variable type size restrictions
+Subject: [PATCH] S3C24xx: Move register definitions into their user
 To: barebox@lists.infradead.org
 
 From: Juergen Beisert <juergen@kreuzholzen.de>
-Subject: [PATCH] S3C24xx: Remove variable type size restrictions
+Subject: [PATCH] S3C24xx: Move register definitions into their user
 
-There is no need to restrict the size of the variables for the clock calculation
-routines. So, remove and replace them by generic types.
+Follow the other architectures and drivers defining their used registers only
+locally.
 
 Signed-off-by: Juergen Beisert <juergen@kreuzholzen.de>
 
 ---
- arch/arm/mach-s3c24xx/generic.c                      |   29 ++++++++++---------
- arch/arm/mach-s3c24xx/include/mach/s3c24xx-generic.h |   14 ++++-----
- 2 files changed, 23 insertions(+), 20 deletions(-)
+ arch/arm/mach-s3c24xx/generic.c                    |   29 ++++++++++++++++++
+ arch/arm/mach-s3c24xx/include/mach/s3c24x0-iomap.h |   33 ---------------------
+ 2 files changed, 29 insertions(+), 33 deletions(-)
 
 Index: barebox-2010.10.0/arch/arm/mach-s3c24xx/generic.c
 ===================================================================
 --- barebox-2010.10.0.orig/arch/arm/mach-s3c24xx/generic.c
 +++ barebox-2010.10.0/arch/arm/mach-s3c24xx/generic.c
-@@ -33,9 +33,10 @@
+@@ -29,6 +29,35 @@
+ #include <asm/io.h>
+ #include <mach/s3c24x0-iomap.h>
+ 
++#define LOCKTIME (S3C24X0_CLOCK_POWER_BASE)
++#define MPLLCON (S3C24X0_CLOCK_POWER_BASE + 0x4)
++#define UPLLCON (S3C24X0_CLOCK_POWER_BASE + 0x8)
++#define CLKCON (S3C24X0_CLOCK_POWER_BASE + 0xc)
++#define CLKSLOW (S3C24X0_CLOCK_POWER_BASE + 0x10)
++#define CLKDIVN (S3C24X0_CLOCK_POWER_BASE + 0x14)
++
++#define TCFG0 (S3C24X0_TIMER_BASE + 0x00)
++#define TCFG1 (S3C24X0_TIMER_BASE + 0x04)
++#define TCON (S3C24X0_TIMER_BASE + 0x08)
++#define TCNTB0 (S3C24X0_TIMER_BASE + 0x0c)
++#define TCMPB0 (S3C24X0_TIMER_BASE + 0x10)
++#define TCNTO0 (S3C24X0_TIMER_BASE + 0x14)
++#define TCNTB1 (S3C24X0_TIMER_BASE + 0x18)
++#define TCMPB1 (S3C24X0_TIMER_BASE + 0x1c)
++#define TCNTO1 (S3C24X0_TIMER_BASE + 0x20)
++#define TCNTB2 (S3C24X0_TIMER_BASE + 0x24)
++#define TCMPB2 (S3C24X0_TIMER_BASE + 0x28)
++#define TCNTO2 (S3C24X0_TIMER_BASE + 0x2c)
++#define TCNTB3 (S3C24X0_TIMER_BASE + 0x30)
++#define TCMPB3 (S3C24X0_TIMER_BASE + 0x34)
++#define TCNTO3 (S3C24X0_TIMER_BASE + 0x38)
++#define TCNTB4 (S3C24X0_TIMER_BASE + 0x3c)
++#define TCNTO4 (S3C24X0_TIMER_BASE + 0x40)
++
++#define WTCON (S3C24X0_WATCHDOG_BASE)
++#define WTDAT (S3C24X0_WATCHDOG_BASE + 0x04)
++#define WTCNT (S3C24X0_WATCHDOG_BASE + 0x08)
++
+ /**
   * Calculate the current M-PLL clock.
   * @return Current frequency in Hz
-  */
--uint32_t s3c24xx_get_mpllclk(void)
-+unsigned s3c24xx_get_mpllclk(void)
- {
--	uint32_t m, p, s, reg_val;
-+	uint32_t reg_val;
-+	unsigned m, p, s;
- 
- 	reg_val = readl(MPLLCON);
- 	m = ((reg_val & 0xFF000) >> 12) + 8;
-@@ -53,9 +54,10 @@ uint32_t s3c24xx_get_mpllclk(void)
-  * Calculate the current U-PLL clock
-  * @return Current frequency in Hz
-  */
--uint32_t s3c24xx_get_upllclk(void)
-+unsigned s3c24xx_get_upllclk(void)
- {
--	uint32_t m, p, s, reg_val;
-+	uint32_t reg_val;
-+	unsigned m, p, s;
- 
- 	reg_val = readl(UPLLCON);
- 	m = ((reg_val & 0xFF000) >> 12) + 8;
-@@ -69,7 +71,7 @@ uint32_t s3c24xx_get_upllclk(void)
-  * Calculate the FCLK frequency used for the ARM CPU core
-  * @return Current frequency in Hz
-  */
--uint32_t s3c24xx_get_fclk(void)
-+unsigned s3c24xx_get_fclk(void)
- {
- 	return s3c24xx_get_mpllclk();
- }
-@@ -78,9 +80,9 @@ uint32_t s3c24xx_get_fclk(void)
-  * Calculate the HCLK frequency used for the AHB bus (CPU to main peripheral)
-  * @return Current frequency in Hz
-  */
--uint32_t s3c24xx_get_hclk(void)
-+unsigned s3c24xx_get_hclk(void)
- {
--	uint32_t f_clk;
-+	unsigned f_clk;
- 
- 	f_clk = s3c24xx_get_fclk();
- #ifdef CONFIG_CPU_S3C2410
-@@ -104,9 +106,9 @@ uint32_t s3c24xx_get_hclk(void)
-  * Calculate the PCLK frequency used for the slower peripherals
-  * @return Current frequency in Hz
-  */
--uint32_t s3c24xx_get_pclk(void)
-+unsigned s3c24xx_get_pclk(void)
- {
--	uint32_t p_clk;
-+	unsigned p_clk;
- 
- 	p_clk = s3c24xx_get_hclk();
- 	if (readl(CLKDIVN) & 0x01)
-@@ -118,7 +120,7 @@ uint32_t s3c24xx_get_pclk(void)
-  * Calculate the UCLK frequency used by the USB host device
-  * @return Current frequency in Hz
-  */
--uint32_t s3c24xx_get_uclk(void)
-+unsigned s3c24xx_get_uclk(void)
- {
-     return s3c24xx_get_upllclk();
- }
-@@ -127,9 +129,10 @@ uint32_t s3c24xx_get_uclk(void)
-  * Calculate the amount of connected and available memory
-  * @return Memory size in bytes
-  */
--uint32_t s3c24x0_get_memory_size(void)
-+unsigned s3c24x0_get_memory_size(void)
- {
--	uint32_t reg, size;
-+	uint32_t reg;
-+	unsigned size;
- 
- 	/*
- 	 * detect the current memory size
-@@ -202,7 +205,7 @@ static struct clocksource cs = {
- 
- static int clocksource_init (void)
- {
--	uint32_t p_clk = s3c24xx_get_pclk();
-+	unsigned p_clk = s3c24xx_get_pclk();
- 
- 	writel(0x00000000, TCON);	/* stop all timers */
- 	writel(0x00ffffff, TCFG0);	/* PCLK / (255 + 1) for timer 4 */
-Index: barebox-2010.10.0/arch/arm/mach-s3c24xx/include/mach/s3c24xx-generic.h
+Index: barebox-2010.10.0/arch/arm/mach-s3c24xx/include/mach/s3c24x0-iomap.h
 ===================================================================
---- barebox-2010.10.0.orig/arch/arm/mach-s3c24xx/include/mach/s3c24xx-generic.h
-+++ barebox-2010.10.0/arch/arm/mach-s3c24xx/include/mach/s3c24xx-generic.h
-@@ -24,10 +24,10 @@
-  * MA 02111-1307 USA
-  */
+--- barebox-2010.10.0.orig/arch/arm/mach-s3c24xx/include/mach/s3c24x0-iomap.h
++++ barebox-2010.10.0/arch/arm/mach-s3c24xx/include/mach/s3c24x0-iomap.h
+@@ -40,39 +40,6 @@
+ #define S3C2410_SPI_BASE		0x59000000
+ #define S3C2410_SDI_BASE		0x5A000000
  
--uint32_t s3c24xx_get_mpllclk(void);
--uint32_t s3c24xx_get_upllclk(void);
--uint32_t s3c24xx_get_fclk(void);
--uint32_t s3c24xx_get_hclk(void);
--uint32_t s3c24xx_get_pclk(void);
--uint32_t s3c24xx_get_uclk(void);
--uint32_t s3c24x0_get_memory_size(void);
-+unsigned s3c24xx_get_mpllclk(void);
-+unsigned s3c24xx_get_upllclk(void);
-+unsigned s3c24xx_get_fclk(void);
-+unsigned s3c24xx_get_hclk(void);
-+unsigned s3c24xx_get_pclk(void);
-+unsigned s3c24xx_get_uclk(void);
-+unsigned s3c24x0_get_memory_size(void);
+-/* Clock control (direct access) */
+-
+-#define LOCKTIME (S3C24X0_CLOCK_POWER_BASE)
+-#define MPLLCON (S3C24X0_CLOCK_POWER_BASE + 0x4)
+-#define UPLLCON (S3C24X0_CLOCK_POWER_BASE + 0x8)
+-#define CLKCON (S3C24X0_CLOCK_POWER_BASE + 0xc)
+-#define CLKSLOW (S3C24X0_CLOCK_POWER_BASE + 0x10)
+-#define CLKDIVN (S3C24X0_CLOCK_POWER_BASE + 0x14)
+-
+-/* Timer (direct access) */
+-#define TCFG0 (S3C24X0_TIMER_BASE + 0x00)
+-#define TCFG1 (S3C24X0_TIMER_BASE + 0x04)
+-#define TCON (S3C24X0_TIMER_BASE + 0x08)
+-#define TCNTB0 (S3C24X0_TIMER_BASE + 0x0c)
+-#define TCMPB0 (S3C24X0_TIMER_BASE + 0x10)
+-#define TCNTO0 (S3C24X0_TIMER_BASE + 0x14)
+-#define TCNTB1 (S3C24X0_TIMER_BASE + 0x18)
+-#define TCMPB1 (S3C24X0_TIMER_BASE + 0x1c)
+-#define TCNTO1 (S3C24X0_TIMER_BASE + 0x20)
+-#define TCNTB2 (S3C24X0_TIMER_BASE + 0x24)
+-#define TCMPB2 (S3C24X0_TIMER_BASE + 0x28)
+-#define TCNTO2 (S3C24X0_TIMER_BASE + 0x2c)
+-#define TCNTB3 (S3C24X0_TIMER_BASE + 0x30)
+-#define TCMPB3 (S3C24X0_TIMER_BASE + 0x34)
+-#define TCNTO3 (S3C24X0_TIMER_BASE + 0x38)
+-#define TCNTB4 (S3C24X0_TIMER_BASE + 0x3c)
+-#define TCNTO4 (S3C24X0_TIMER_BASE + 0x40)
+-
+-/* Watchdog (direct access) */
+-#define WTCON (S3C24X0_WATCHDOG_BASE)
+-#define WTDAT (S3C24X0_WATCHDOG_BASE + 0x04)
+-#define WTCNT (S3C24X0_WATCHDOG_BASE + 0x08)
+-
+ /*
+  * if we are booting from NAND, its internal SRAM occures at
+  * a different address than without this feature
 
 _______________________________________________
 barebox mailing list
