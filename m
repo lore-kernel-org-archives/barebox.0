@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1P8Bj9-0005qt-UG
-	for barebox@lists.infradead.org; Tue, 19 Oct 2010 12:55:49 +0000
+	by casper.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1P8BjQ-0000sa-Un
+	for barebox@lists.infradead.org; Tue, 19 Oct 2010 12:55:57 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 19 Oct 2010 14:55:21 +0200
-Message-Id: <1287492930-15716-34-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 19 Oct 2010 14:55:15 +0200
+Message-Id: <1287492930-15716-28-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1287492930-15716-1-git-send-email-s.hauer@pengutronix.de>
 References: <1287492930-15716-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,36 +21,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 33/42] net: make locally used functions static
+Subject: [PATCH 27/42] ping: make locally used functions static
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- net/net.c |    4 ++--
+ net/ping.c |    4 ++--
  1 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/net.c b/net/net.c
-index 8d99595..a613d1d 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -209,7 +209,7 @@ static void arp_handler(struct arprequest *arp)
- 	}
+diff --git a/net/ping.c b/net/ping.c
+index 440e229..d414784 100644
+--- a/net/ping.c
++++ b/net/ping.c
+@@ -40,7 +40,7 @@ static int ping_send(void)
+ 	return net_icmp_send(ping_con, 9);
  }
  
--int arp_request(IPaddr_t dest, unsigned char *ether)
-+static int arp_request(IPaddr_t dest, unsigned char *ether)
+-void ping_handler(char *pkt, unsigned len)
++static void ping_handler(char *pkt, unsigned len)
  {
- 	char *pkt;
- 	struct arprequest *arp;
-@@ -437,7 +437,7 @@ void net_unregister(struct net_connection *con)
- 	free(con);
+ 	IPaddr_t tmp;
+ 	struct iphdr *ip = net_eth_to_iphdr(pkt);
+@@ -52,7 +52,7 @@ void ping_handler(char *pkt, unsigned len)
+ 	ping_state = PING_STATE_SUCCESS;
  }
  
--int net_ip_send(struct net_connection *con, int len)
-+static int net_ip_send(struct net_connection *con, int len)
+-int do_ping(struct command *cmdtp, int argc, char *argv[])
++static int do_ping(struct command *cmdtp, int argc, char *argv[])
  {
- 	con->ip->tot_len = htons(sizeof(struct iphdr) + len);
- 	con->ip->id = htons(net_ip_id++);;
+ 	int ret;
+ 	uint64_t ping_start = 0;
 -- 
 1.7.2.3
 
