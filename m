@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by casper.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1P8BjQ-0000sa-Un
-	for barebox@lists.infradead.org; Tue, 19 Oct 2010 12:55:57 +0000
+	id 1P8Bj8-0000sX-Mc
+	for barebox@lists.infradead.org; Tue, 19 Oct 2010 12:55:43 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 19 Oct 2010 14:55:15 +0200
-Message-Id: <1287492930-15716-28-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 19 Oct 2010 14:55:12 +0200
+Message-Id: <1287492930-15716-25-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1287492930-15716-1-git-send-email-s.hauer@pengutronix.de>
 References: <1287492930-15716-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,36 +21,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 27/42] ping: make locally used functions static
+Subject: [PATCH 24/42] common/env.c: sparse fixes
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- net/ping.c |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
+ common/env.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/net/ping.c b/net/ping.c
-index 440e229..d414784 100644
---- a/net/ping.c
-+++ b/net/ping.c
-@@ -40,7 +40,7 @@ static int ping_send(void)
- 	return net_icmp_send(ping_con, 9);
- }
+diff --git a/common/env.c b/common/env.c
+index edaf388..f81bd46 100644
+--- a/common/env.c
++++ b/common/env.c
+@@ -137,7 +137,7 @@ const char *getenv (const char *name)
+ 	const char *val;
  
--void ping_handler(char *pkt, unsigned len)
-+static void ping_handler(char *pkt, unsigned len)
- {
- 	IPaddr_t tmp;
- 	struct iphdr *ip = net_eth_to_iphdr(pkt);
-@@ -52,7 +52,7 @@ void ping_handler(char *pkt, unsigned len)
- 	ping_state = PING_STATE_SUCCESS;
- }
- 
--int do_ping(struct command *cmdtp, int argc, char *argv[])
-+static int do_ping(struct command *cmdtp, int argc, char *argv[])
- {
- 	int ret;
- 	uint64_t ping_start = 0;
+ 	if (strchr(name, '.')) {
+-		const char *ret = 0;
++		const char *ret = NULL;
+ 		char *devstr = strdup(name);
+ 		char *par = strchr(devstr, '.');
+ 		struct device_d *dev;
 -- 
 1.7.2.3
 
