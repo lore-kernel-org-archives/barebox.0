@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1P8Bj7-0005rR-6u
-	for barebox@lists.infradead.org; Tue, 19 Oct 2010 12:55:47 +0000
+	id 1P8Bj6-0005rL-Uq
+	for barebox@lists.infradead.org; Tue, 19 Oct 2010 12:55:44 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 19 Oct 2010 14:55:06 +0200
-Message-Id: <1287492930-15716-19-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 19 Oct 2010 14:55:01 +0200
+Message-Id: <1287492930-15716-14-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1287492930-15716-1-git-send-email-s.hauer@pengutronix.de>
 References: <1287492930-15716-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,62 +21,78 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 18/42] speed-imx35: sparse fixes
+Subject: [PATCH 13/42] imx gpio: sparse fixes
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/speed-imx35.c |    9 +++++----
- 1 files changed, 5 insertions(+), 4 deletions(-)
+ arch/arm/mach-imx/gpio.c |   15 ++++++++-------
+ 1 files changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm/mach-imx/speed-imx35.c b/arch/arm/mach-imx/speed-imx35.c
-index 324cc29..8937ef1 100644
---- a/arch/arm/mach-imx/speed-imx35.c
-+++ b/arch/arm/mach-imx/speed-imx35.c
-@@ -19,6 +19,7 @@
- #include <mach/imx-regs.h>
+diff --git a/arch/arm/mach-imx/gpio.c b/arch/arm/mach-imx/gpio.c
+index c6a59a6..0a3e046 100644
+--- a/arch/arm/mach-imx/gpio.c
++++ b/arch/arm/mach-imx/gpio.c
+@@ -27,6 +27,7 @@
+ #include <errno.h>
  #include <asm/io.h>
- #include <mach/clock.h>
-+#include <mach/generic.h>
- #include <init.h>
+ #include <mach/imx-regs.h>
++#include <mach/gpio.h>
  
- unsigned long imx_get_mpllclk(void)
-@@ -27,7 +28,7 @@ unsigned long imx_get_mpllclk(void)
- 	return imx_decode_pll(mpctl, CONFIG_MX35_HCLK_FREQ);
+ #if defined CONFIG_ARCH_IMX1 || defined CONFIG_ARCH_IMX21 || defined CONFIG_ARCH_IMX27
+ #define GPIO_DR		0x1c
+@@ -47,20 +48,20 @@
+ #define GPIO_ISR	0x18
+ #endif
+ 
+-extern void *imx_gpio_base[];
++extern void __iomem *imx_gpio_base[];
+ extern int imx_gpio_count;
+ 
+-static void *gpio_get_base(unsigned gpio)
++static void __iomem *gpio_get_base(unsigned gpio)
+ {
+ 	if (gpio >= imx_gpio_count)
+-		return 0;
++		return NULL;
+ 
+ 	return imx_gpio_base[gpio / 32];
  }
  
--unsigned long imx_get_ppllclk(void)
-+static unsigned long imx_get_ppllclk(void)
+ void gpio_set_value(unsigned gpio, int value)
  {
- 	ulong ppctl = readl(IMX_CCM_BASE + CCM_PPCTL);
- 	return imx_decode_pll(ppctl, CONFIG_MX35_HCLK_FREQ);
-@@ -56,7 +57,7 @@ static struct arm_ahb_div clk_consumer[] = {
- 	{ .arm = 0, .ahb = 0, .sel = 0},
- };
+-	void *base = gpio_get_base(gpio);
++	void __iomem *base = gpio_get_base(gpio);
+ 	int shift = gpio % 32;
+ 	u32 val;
  
--unsigned long imx_get_armclk(void)
-+static unsigned long imx_get_armclk(void)
+@@ -79,7 +80,7 @@ void gpio_set_value(unsigned gpio, int value)
+ 
+ int gpio_direction_input(unsigned gpio)
  {
- 	unsigned long pdr0 = readl(IMX_CCM_BASE + CCM_PDR0);
- 	struct arm_ahb_div *aad;
-@@ -83,7 +84,7 @@ unsigned long imx_get_ahbclk(void)
- 	return fref / aad->ahb;
- }
+-	void *base = gpio_get_base(gpio);
++	void __iomem *base = gpio_get_base(gpio);
+ 	int shift = gpio % 32;
+ 	u32 val;
  
--unsigned long imx_get_ipgclk(void)
-+static unsigned long imx_get_ipgclk(void)
+@@ -96,7 +97,7 @@ int gpio_direction_input(unsigned gpio)
+ 
+ int gpio_direction_output(unsigned gpio, int value)
  {
- 	ulong clk = imx_get_ahbclk();
+-	void *base = gpio_get_base(gpio);
++	void __iomem *base = gpio_get_base(gpio);
+ 	int shift = gpio % 32;
+ 	u32 val;
  
-@@ -95,7 +96,7 @@ static unsigned long get_3_3_div(unsigned long in)
- 	return (((in >> 3) & 0x7) + 1) * ((in & 0x7) + 1);
- }
+@@ -114,7 +115,7 @@ int gpio_direction_output(unsigned gpio, int value)
  
--unsigned long imx_get_ipg_perclk(void)
-+static unsigned long imx_get_ipg_perclk(void)
+ int gpio_get_value(unsigned gpio)
  {
- 	ulong pdr0 = readl(IMX_CCM_BASE + CCM_PDR0);
- 	ulong pdr4 = readl(IMX_CCM_BASE + CCM_PDR4);
+-	void *base = gpio_get_base(gpio);
++	void __iomem *base = gpio_get_base(gpio);
+ 	int shift = gpio % 32;
+ 	u32 val;
+ 
 -- 
 1.7.2.3
 
