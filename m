@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 30.mail-out.ovh.net ([213.186.62.213])
-	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1P87bo-00011I-O6
-	for barebox@lists.infradead.org; Tue, 19 Oct 2010 08:31:49 +0000
-Date: Tue, 19 Oct 2010 10:29:21 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20101019082921.GM11127@game.jcrosoft.org>
+Received: from mail-yx0-f177.google.com ([209.85.213.177])
+	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1P87sg-00026W-8k
+	for barebox@lists.infradead.org; Tue, 19 Oct 2010 08:49:16 +0000
+Received: by yxl31 with SMTP id 31so465512yxl.36
+	for <barebox@lists.infradead.org>; Tue, 19 Oct 2010 01:49:11 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <201010191028.28405.jbe@pengutronix.de>
 References: <1287474532-31528-1-git-send-email-marek.belisko@gmail.com>
 	<201010191028.28405.jbe@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <201010191028.28405.jbe@pengutronix.de>
+Date: Tue, 19 Oct 2010 10:49:09 +0200
+Message-ID: <AANLkTimaQW8B+BpVJn-U4XvAyyiV5BrFZRqYYvW-ZZ3i@mail.gmail.com>
+From: Belisko Marek <marek.belisko@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,74 +20,66 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] Add basic support for mini2440 dev board.
 To: Juergen Beisert <jbe@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 10:28 Tue 19 Oct     , Juergen Beisert wrote:
-> Marek Belisko wrote:
-> > This work is mainly based on a9m2440 board implementation
-> > from Juergen Beisert <jbe@pengutronix.de>. Functionality
-> > was tested only running barebox from ram. Loading to flash
-> > and booting will not work because missing lowlevel_init
-> > functionality (lack of jtag debugger on my side ;)).
-> 
-> I have now access to a mini2440 at Pengutronix. I will add this feature soon.
-> 
-> > [...]
-> > +static int mini2440_devices_init(void)
-> > +{
-> > +	uint32_t reg;
-> > +
-> > +	reg = readl(BWSCON);
-> > +
-> > +	/* CS#4 to access the network controller */
-> > +	reg &= ~0x000f0000;
-> > +	reg |=  0x000d0000;	/* 16 bit */
-> > +	writel(0x1f4c, BANKCON4);
-> > +
-> > +	writel(reg, BWSCON);
-> > +
-> > +	/* release the reset signal to external devices */
-> > +	reg = readl(MISCCR);
-> > +	reg |= 0x10000;
-> > +	writel(reg, MISCCR);
-> > +
-> > +	register_device(&nand_dev);
-> > +	register_device(&sdram_dev);
-> > +	register_device(&dm9000_dev);
-> > +#ifdef CONFIG_NAND
-> > +	/* ----------- add some vital partitions -------- */
-> > +	devfs_del_partition("self_raw");
-> > +	devfs_add_partition("nand0", 0x00000, 0x40000, PARTITION_FIXED,
-> > "self_raw"); +	dev_add_bb_dev("self_raw", NULL);
-> > +
-> > +	devfs_del_partition("env_raw");
-> > +	devfs_add_partition("nand0", 0x40000, 0x20000, PARTITION_FIXED,
-> > "env_raw"); +	dev_add_bb_dev("env_raw", NULL);
-> > +#endif
-> > +	armlinux_add_dram(&sdram_dev);
-> > +	armlinux_set_bootparams((void *)sdram_dev.map_base + 0x100);
-> > +	armlinux_set_architecture(MACH_TYPE_MINI2440);
-> > +
-> > +	return 0;
-> > +}
-> 
-> We need some kind of management here, because the mini2440 comes with NOR and 
-> NAND flash. And both can be configured to boot the system from: We need a 
-> location to store the environment. Maybe in NOR, when booting from NOR, and 
-> in NAND, when booting form NAND? Or only one single location where to store 
-> the environment, independent from the boot source? Ideas?
-I like the idea to store in the boot media
-
-Best Regards,
-J.
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gVHVlLCBPY3QgMTksIDIwMTAgYXQgMTA6MjggQU0sIEp1ZXJnZW4gQmVpc2VydCA8amJlQHBl
+bmd1dHJvbml4LmRlPiB3cm90ZToKPiBNYXJlayBCZWxpc2tvIHdyb3RlOgo+PiBUaGlzIHdvcmsg
+aXMgbWFpbmx5IGJhc2VkIG9uIGE5bTI0NDAgYm9hcmQgaW1wbGVtZW50YXRpb24KPj4gZnJvbSBK
+dWVyZ2VuIEJlaXNlcnQgPGpiZUBwZW5ndXRyb25peC5kZT4uIEZ1bmN0aW9uYWxpdHkKPj4gd2Fz
+IHRlc3RlZCBvbmx5IHJ1bm5pbmcgYmFyZWJveCBmcm9tIHJhbS4gTG9hZGluZyB0byBmbGFzaAo+
+PiBhbmQgYm9vdGluZyB3aWxsIG5vdCB3b3JrIGJlY2F1c2UgbWlzc2luZyBsb3dsZXZlbF9pbml0
+Cj4+IGZ1bmN0aW9uYWxpdHkgKGxhY2sgb2YganRhZyBkZWJ1Z2dlciBvbiBteSBzaWRlIDspKS4K
+Pgo+IEkgaGF2ZSBub3cgYWNjZXNzIHRvIGEgbWluaTI0NDAgYXQgUGVuZ3V0cm9uaXguIEkgd2ls
+bCBhZGQgdGhpcyBmZWF0dXJlIHNvb24uCj4KPj4gWy4uLl0KPj4gK3N0YXRpYyBpbnQgbWluaTI0
+NDBfZGV2aWNlc19pbml0KHZvaWQpCj4+ICt7Cj4+ICsgwqAgwqAgdWludDMyX3QgcmVnOwo+PiAr
+Cj4+ICsgwqAgwqAgcmVnID0gcmVhZGwoQldTQ09OKTsKPj4gKwo+PiArIMKgIMKgIC8qIENTIzQg
+dG8gYWNjZXNzIHRoZSBuZXR3b3JrIGNvbnRyb2xsZXIgKi8KPj4gKyDCoCDCoCByZWcgJj0gfjB4
+MDAwZjAwMDA7Cj4+ICsgwqAgwqAgcmVnIHw9IMKgMHgwMDBkMDAwMDsgwqAgwqAgLyogMTYgYml0
+ICovCj4+ICsgwqAgwqAgd3JpdGVsKDB4MWY0YywgQkFOS0NPTjQpOwo+PiArCj4+ICsgwqAgwqAg
+d3JpdGVsKHJlZywgQldTQ09OKTsKPj4gKwo+PiArIMKgIMKgIC8qIHJlbGVhc2UgdGhlIHJlc2V0
+IHNpZ25hbCB0byBleHRlcm5hbCBkZXZpY2VzICovCj4+ICsgwqAgwqAgcmVnID0gcmVhZGwoTUlT
+Q0NSKTsKPj4gKyDCoCDCoCByZWcgfD0gMHgxMDAwMDsKPj4gKyDCoCDCoCB3cml0ZWwocmVnLCBN
+SVNDQ1IpOwo+PiArCj4+ICsgwqAgwqAgcmVnaXN0ZXJfZGV2aWNlKCZuYW5kX2Rldik7Cj4+ICsg
+wqAgwqAgcmVnaXN0ZXJfZGV2aWNlKCZzZHJhbV9kZXYpOwo+PiArIMKgIMKgIHJlZ2lzdGVyX2Rl
+dmljZSgmZG05MDAwX2Rldik7Cj4+ICsjaWZkZWYgQ09ORklHX05BTkQKPj4gKyDCoCDCoCAvKiAt
+LS0tLS0tLS0tLSBhZGQgc29tZSB2aXRhbCBwYXJ0aXRpb25zIC0tLS0tLS0tICovCj4+ICsgwqAg
+wqAgZGV2ZnNfZGVsX3BhcnRpdGlvbigic2VsZl9yYXciKTsKPj4gKyDCoCDCoCBkZXZmc19hZGRf
+cGFydGl0aW9uKCJuYW5kMCIsIDB4MDAwMDAsIDB4NDAwMDAsIFBBUlRJVElPTl9GSVhFRCwKPj4g
+InNlbGZfcmF3Iik7ICsgwqAgwqAgwqAgwqBkZXZfYWRkX2JiX2Rldigic2VsZl9yYXciLCBOVUxM
+KTsKPj4gKwo+PiArIMKgIMKgIGRldmZzX2RlbF9wYXJ0aXRpb24oImVudl9yYXciKTsKPj4gKyDC
+oCDCoCBkZXZmc19hZGRfcGFydGl0aW9uKCJuYW5kMCIsIDB4NDAwMDAsIDB4MjAwMDAsIFBBUlRJ
+VElPTl9GSVhFRCwKPj4gImVudl9yYXciKTsgKyBkZXZfYWRkX2JiX2RldigiZW52X3JhdyIsIE5V
+TEwpOwo+PiArI2VuZGlmCj4+ICsgwqAgwqAgYXJtbGludXhfYWRkX2RyYW0oJnNkcmFtX2Rldik7
+Cj4+ICsgwqAgwqAgYXJtbGludXhfc2V0X2Jvb3RwYXJhbXMoKHZvaWQgKilzZHJhbV9kZXYubWFw
+X2Jhc2UgKyAweDEwMCk7Cj4+ICsgwqAgwqAgYXJtbGludXhfc2V0X2FyY2hpdGVjdHVyZShNQUNI
+X1RZUEVfTUlOSTI0NDApOwo+PiArCj4+ICsgwqAgwqAgcmV0dXJuIDA7Cj4+ICt9Cj4KPiBXZSBu
+ZWVkIHNvbWUga2luZCBvZiBtYW5hZ2VtZW50IGhlcmUsIGJlY2F1c2UgdGhlIG1pbmkyNDQwIGNv
+bWVzIHdpdGggTk9SIGFuZAo+IE5BTkQgZmxhc2guIEFuZCBib3RoIGNhbiBiZSBjb25maWd1cmVk
+IHRvIGJvb3QgdGhlIHN5c3RlbSBmcm9tOiBXZSBuZWVkIGEKPiBsb2NhdGlvbiB0byBzdG9yZSB0
+aGUgZW52aXJvbm1lbnQuIE1heWJlIGluIE5PUiwgd2hlbiBib290aW5nIGZyb20gTk9SLCBhbmQK
+PiBpbiBOQU5ELCB3aGVuIGJvb3RpbmcgZm9ybSBOQU5EPyBPciBvbmx5IG9uZSBzaW5nbGUgbG9j
+YXRpb24gd2hlcmUgdG8gc3RvcmUKPiB0aGUgZW52aXJvbm1lbnQsIGluZGVwZW5kZW50IGZyb20g
+dGhlIGJvb3Qgc291cmNlPyBJZGVhcz8KQUZBSUsgTk9SIGZsYXNoIHdpdGggc3VwZXJ2aXZpIGJv
+b3Rsb2FkZXIgaXMgdXNlZCBqdXN0IGZvciByZXBhaXIgY29udGVudCBvZgpOQU5EIGZsYXNoIHdo
+ZW4gc29tZXRoaW5nIGdvZXMgd3JvbmcuIERvIHdlIHJlYWxseSBuZWVkIHRvIHN0b3JlCmJhcmVi
+b3ggdG8gTk9SIGZsYXNoPwo+Cj4gamJlCj4KPiAtLQo+IFBlbmd1dHJvbml4IGUuSy4gwqAgwqAg
+wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqB8IEp1ZXJnZW4gQmVpc2VydCDC
+oCDCoCDCoCDCoCDCoCDCoCB8Cj4gTGludXggU29sdXRpb25zIGZvciBTY2llbmNlIGFuZCBJbmR1
+c3RyeSDCoCDCoCDCoHwgUGhvbmU6ICs0OS04NzY2LTkzOSAyMjggwqAgwqAgfAo+IFZlcnRyZXR1
+bmcgU3VlZC9NdWVuY2hlbiwgR2VybWFueSDCoCDCoCDCoCDCoCDCoCDCoCB8IEZheDogwqAgKzQ5
+LTUxMjEtMjA2OTE3LTU1NTUgfAo+IEFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2IMKg
+IMKgIMKgIMKgIMKgIMKgIMKgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyDCoHwKPgoKdGhh
+bmtzLAoKbWFyZWsKCi0tIAphcyBzaW1wbGUgYW5kIHByaW1pdGl2ZSBhcyBwb3NzaWJsZQotLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCk1hcmVrIEJlbGlz
+a28gLSBPUEVOLU5BTkRSQQpGcmVlbGFuY2UgRGV2ZWxvcGVyCgpSdXNrYSBOb3ZhIFZlcyAyMTkg
+fCBQcmVzb3YsIDA4MDA1IFNsb3ZhayBSZXB1YmxpYwpUZWw6ICs0MjEgOTE1IDA1MiAxODQKc2t5
+cGU6IG1hcmVrd2hpdGUKaWNxOiAyOTA1NTEwODYKd2ViOiBodHRwOi8vb3Blbi1uYW5kcmEuY29t
+CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94
+IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmlu
+ZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
