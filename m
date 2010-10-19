@@ -1,19 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yw0-f49.google.com ([209.85.213.49])
-	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1P88Ff-0002QM-K4
-	for barebox@lists.infradead.org; Tue, 19 Oct 2010 09:13:00 +0000
-Received: by ywp6 with SMTP id 6so1113899ywp.36
-	for <barebox@lists.infradead.org>; Tue, 19 Oct 2010 02:12:57 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <201010191108.35835.jbe@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1P8BSi-0004zA-7d
+	for barebox@lists.infradead.org; Tue, 19 Oct 2010 12:38:41 +0000
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Tue, 19 Oct 2010 14:38:34 +0200
 References: <1287474532-31528-1-git-send-email-marek.belisko@gmail.com>
 	<201010191028.28405.jbe@pengutronix.de>
-	<AANLkTimaQW8B+BpVJn-U4XvAyyiV5BrFZRqYYvW-ZZ3i@mail.gmail.com>
-	<201010191108.35835.jbe@pengutronix.de>
-Date: Tue, 19 Oct 2010 11:12:57 +0200
-Message-ID: <AANLkTimO51uYiuv-D+yzDu8YugcZHzokhTy2U8NAyvKB@mail.gmail.com>
-From: Belisko Marek <marek.belisko@gmail.com>
+	<20101019082921.GM11127@game.jcrosoft.org>
+In-Reply-To: <20101019082921.GM11127@game.jcrosoft.org>
+MIME-Version: 1.0
+Content-Disposition: inline
+Message-Id: <201010191438.34628.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,78 +20,88 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] Add basic support for mini2440 dev board.
-To: Juergen Beisert <jbe@pengutronix.de>
-Cc: barebox@lists.infradead.org
+To: barebox@lists.infradead.org
 
-T24gVHVlLCBPY3QgMTksIDIwMTAgYXQgMTE6MDggQU0sIEp1ZXJnZW4gQmVpc2VydCA8amJlQHBl
-bmd1dHJvbml4LmRlPiB3cm90ZToKPiBCZWxpc2tvIE1hcmVrIHdyb3RlOgo+PiBPbiBUdWUsIE9j
-dCAxOSwgMjAxMCBhdCAxMDoyOCBBTSwgSnVlcmdlbiBCZWlzZXJ0IDxqYmVAcGVuZ3V0cm9uaXgu
-ZGU+Cj4gd3JvdGU6Cj4+ID4gTWFyZWsgQmVsaXNrbyB3cm90ZToKPj4gPj4gVGhpcyB3b3JrIGlz
-IG1haW5seSBiYXNlZCBvbiBhOW0yNDQwIGJvYXJkIGltcGxlbWVudGF0aW9uCj4+ID4+IGZyb20g
-SnVlcmdlbiBCZWlzZXJ0IDxqYmVAcGVuZ3V0cm9uaXguZGU+LiBGdW5jdGlvbmFsaXR5Cj4+ID4+
-IHdhcyB0ZXN0ZWQgb25seSBydW5uaW5nIGJhcmVib3ggZnJvbSByYW0uIExvYWRpbmcgdG8gZmxh
-c2gKPj4gPj4gYW5kIGJvb3Rpbmcgd2lsbCBub3Qgd29yayBiZWNhdXNlIG1pc3NpbmcgbG93bGV2
-ZWxfaW5pdAo+PiA+PiBmdW5jdGlvbmFsaXR5IChsYWNrIG9mIGp0YWcgZGVidWdnZXIgb24gbXkg
-c2lkZSA7KSkuCj4+ID4KPj4gPiBJIGhhdmUgbm93IGFjY2VzcyB0byBhIG1pbmkyNDQwIGF0IFBl
-bmd1dHJvbml4LiBJIHdpbGwgYWRkIHRoaXMgZmVhdHVyZQo+PiA+IHNvb24uCj4+ID4KPj4gPj4g
-Wy4uLl0KPj4gPj4gK3N0YXRpYyBpbnQgbWluaTI0NDBfZGV2aWNlc19pbml0KHZvaWQpCj4+ID4+
-ICt7Cj4+ID4+ICsgwqAgwqAgdWludDMyX3QgcmVnOwo+PiA+PiArCj4+ID4+ICsgwqAgwqAgcmVn
-ID0gcmVhZGwoQldTQ09OKTsKPj4gPj4gKwo+PiA+PiArIMKgIMKgIC8qIENTIzQgdG8gYWNjZXNz
-IHRoZSBuZXR3b3JrIGNvbnRyb2xsZXIgKi8KPj4gPj4gKyDCoCDCoCByZWcgJj0gfjB4MDAwZjAw
-MDA7Cj4+ID4+ICsgwqAgwqAgcmVnIHw9IMKgMHgwMDBkMDAwMDsgwqAgwqAgLyogMTYgYml0ICov
-Cj4+ID4+ICsgwqAgwqAgd3JpdGVsKDB4MWY0YywgQkFOS0NPTjQpOwo+PiA+PiArCj4+ID4+ICsg
-wqAgwqAgd3JpdGVsKHJlZywgQldTQ09OKTsKPj4gPj4gKwo+PiA+PiArIMKgIMKgIC8qIHJlbGVh
-c2UgdGhlIHJlc2V0IHNpZ25hbCB0byBleHRlcm5hbCBkZXZpY2VzICovCj4+ID4+ICsgwqAgwqAg
-cmVnID0gcmVhZGwoTUlTQ0NSKTsKPj4gPj4gKyDCoCDCoCByZWcgfD0gMHgxMDAwMDsKPj4gPj4g
-KyDCoCDCoCB3cml0ZWwocmVnLCBNSVNDQ1IpOwo+PiA+PiArCj4+ID4+ICsgwqAgwqAgcmVnaXN0
-ZXJfZGV2aWNlKCZuYW5kX2Rldik7Cj4+ID4+ICsgwqAgwqAgcmVnaXN0ZXJfZGV2aWNlKCZzZHJh
-bV9kZXYpOwo+PiA+PiArIMKgIMKgIHJlZ2lzdGVyX2RldmljZSgmZG05MDAwX2Rldik7Cj4+ID4+
-ICsjaWZkZWYgQ09ORklHX05BTkQKPj4gPj4gKyDCoCDCoCAvKiAtLS0tLS0tLS0tLSBhZGQgc29t
-ZSB2aXRhbCBwYXJ0aXRpb25zIC0tLS0tLS0tICovCj4+ID4+ICsgwqAgwqAgZGV2ZnNfZGVsX3Bh
-cnRpdGlvbigic2VsZl9yYXciKTsKPj4gPj4gKyDCoCDCoCBkZXZmc19hZGRfcGFydGl0aW9uKCJu
-YW5kMCIsIDB4MDAwMDAsIDB4NDAwMDAsIFBBUlRJVElPTl9GSVhFRCwKPj4gPj4gInNlbGZfcmF3
-Iik7ICsgwqAgwqAgwqAgwqBkZXZfYWRkX2JiX2Rldigic2VsZl9yYXciLCBOVUxMKTsKPj4gPj4g
-Kwo+PiA+PiArIMKgIMKgIGRldmZzX2RlbF9wYXJ0aXRpb24oImVudl9yYXciKTsKPj4gPj4gKyDC
-oCDCoCBkZXZmc19hZGRfcGFydGl0aW9uKCJuYW5kMCIsIDB4NDAwMDAsIDB4MjAwMDAsIFBBUlRJ
-VElPTl9GSVhFRCwKPj4gPj4gImVudl9yYXciKTsgKyBkZXZfYWRkX2JiX2RldigiZW52X3JhdyIs
-IE5VTEwpOwo+PiA+PiArI2VuZGlmCj4+ID4+ICsgwqAgwqAgYXJtbGludXhfYWRkX2RyYW0oJnNk
-cmFtX2Rldik7Cj4+ID4+ICsgwqAgwqAgYXJtbGludXhfc2V0X2Jvb3RwYXJhbXMoKHZvaWQgKilz
-ZHJhbV9kZXYubWFwX2Jhc2UgKyAweDEwMCk7Cj4+ID4+ICsgwqAgwqAgYXJtbGludXhfc2V0X2Fy
-Y2hpdGVjdHVyZShNQUNIX1RZUEVfTUlOSTI0NDApOwo+PiA+PiArCj4+ID4+ICsgwqAgwqAgcmV0
-dXJuIDA7Cj4+ID4+ICt9Cj4+ID4KPj4gPiBXZSBuZWVkIHNvbWUga2luZCBvZiBtYW5hZ2VtZW50
-IGhlcmUsIGJlY2F1c2UgdGhlIG1pbmkyNDQwIGNvbWVzIHdpdGggTk9SCj4+ID4gYW5kIE5BTkQg
-Zmxhc2guIEFuZCBib3RoIGNhbiBiZSBjb25maWd1cmVkIHRvIGJvb3QgdGhlIHN5c3RlbSBmcm9t
-OiBXZQo+PiA+IG5lZWQgYSBsb2NhdGlvbiB0byBzdG9yZSB0aGUgZW52aXJvbm1lbnQuIE1heWJl
-IGluIE5PUiwgd2hlbiBib290aW5nIGZyb20KPj4gPiBOT1IsIGFuZCBpbiBOQU5ELCB3aGVuIGJv
-b3RpbmcgZm9ybSBOQU5EPyBPciBvbmx5IG9uZSBzaW5nbGUgbG9jYXRpb24KPj4gPiB3aGVyZSB0
-byBzdG9yZSB0aGUgZW52aXJvbm1lbnQsIGluZGVwZW5kZW50IGZyb20gdGhlIGJvb3Qgc291cmNl
-PyBJZGVhcz8KPj4KPj4gQUZBSUsgTk9SIGZsYXNoIHdpdGggc3VwZXJ2aXZpIGJvb3Rsb2FkZXIg
-aXMgdXNlZCBqdXN0IGZvciByZXBhaXIgY29udGVudAo+PiBvZiBOQU5EIGZsYXNoIHdoZW4gc29t
-ZXRoaW5nIGdvZXMgd3JvbmcuIERvIHdlIHJlYWxseSBuZWVkIHRvIHN0b3JlCj4+IGJhcmVib3gg
-dG8gTk9SIGZsYXNoPwo+Cj4gV2UgZG8gbm90IG5lZWQgaXQuIEJ1dCBtYXliZSB3ZSB3YW50IGl0
-IDstKQo+Cj4gV2h5IHN1cGVydml2aSwgd2hlbiBiYXJlYm94IHN1cHBvcnRzIHRoZSBtaW5pMjQ0
-MCBjb21wbGV0ZWx5PyAob2theSwgb2theSwKPiBuZWVkcyBtb3JlIHdvcmsuLi4uKQpXZWxsIHll
-cyBzb21ldGhpbmcgbGlrZSBmb3IgbXkgZnJlZS1ydW5uZXIgb3Blbi1tb2tvIChpbiBOT1IgdS1i
-b290KQo7KS4gWW91J3JlIHJpZ2h0LgpJIGNhbiBhZGQgbW9yZSBzdXBwb3J0IGJ1dCB3aXRob3V0
-IGp0YWcgZGVidWdnZXIgSSB0aGluayBJIGNhbid0IG9yCmp1c3QgYSBtYXR0ZXIgb2YgbHVjayA7
-KQp0aGF0IGl0IGJvb3QgZnJvbSBGTEFTSC4gSG9wZSB0aGlzIGJhc2ljIGhlbHAgc29tZWJvZHkg
-dG8gYWRkIGZ1bGwgc3VwcG9ydC4KPgo+IGpiZQo+Cj4gLS0KPiBQZW5ndXRyb25peCBlLksuIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgfCBKdWVyZ2VuIEJlaXNl
-cnQgwqAgwqAgwqAgwqAgwqAgwqAgfAo+IExpbnV4IFNvbHV0aW9ucyBmb3IgU2NpZW5jZSBhbmQg
-SW5kdXN0cnkgwqAgwqAgwqB8IFBob25lOiArNDktODc2Ni05MzkgMjI4IMKgIMKgIHwKPiBWZXJ0
-cmV0dW5nIFN1ZWQvTXVlbmNoZW4sIEdlcm1hbnkgwqAgwqAgwqAgwqAgwqAgwqAgfCBGYXg6IMKg
-ICs0OS01MTIxLTIwNjkxNy01NTU1IHwKPiBBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4
-NiDCoCDCoCDCoCDCoCDCoCDCoCDCoHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gwqB8Cj4K
-Cm1hcmVrCgotLSAKYXMgc2ltcGxlIGFuZCBwcmltaXRpdmUgYXMgcG9zc2libGUKLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpNYXJlayBCZWxpc2tvIC0g
-T1BFTi1OQU5EUkEKRnJlZWxhbmNlIERldmVsb3BlcgoKUnVza2EgTm92YSBWZXMgMjE5IHwgUHJl
-c292LCAwODAwNSBTbG92YWsgUmVwdWJsaWMKVGVsOiArNDIxIDkxNSAwNTIgMTg0CnNreXBlOiBt
-YXJla3doaXRlCmljcTogMjkwNTUxMDg2CndlYjogaHR0cDovL29wZW4tbmFuZHJhLmNvbQoKX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWls
-aW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRl
-YWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 10:28 Tue 19 Oct     , Juergen Beisert wrote:
+> > Marek Belisko wrote:
+> > > This work is mainly based on a9m2440 board implementation
+> > > from Juergen Beisert <jbe@pengutronix.de>. Functionality
+> > > was tested only running barebox from ram. Loading to flash
+> > > and booting will not work because missing lowlevel_init
+> > > functionality (lack of jtag debugger on my side ;)).
+> >
+> > I have now access to a mini2440 at Pengutronix. I will add this feature
+> > soon.
+> >
+> > > [...]
+> > > +static int mini2440_devices_init(void)
+> > > +{
+> > > +	uint32_t reg;
+> > > +
+> > > +	reg = readl(BWSCON);
+> > > +
+> > > +	/* CS#4 to access the network controller */
+> > > +	reg &= ~0x000f0000;
+> > > +	reg |=  0x000d0000;	/* 16 bit */
+> > > +	writel(0x1f4c, BANKCON4);
+> > > +
+> > > +	writel(reg, BWSCON);
+> > > +
+> > > +	/* release the reset signal to external devices */
+> > > +	reg = readl(MISCCR);
+> > > +	reg |= 0x10000;
+> > > +	writel(reg, MISCCR);
+> > > +
+> > > +	register_device(&nand_dev);
+> > > +	register_device(&sdram_dev);
+> > > +	register_device(&dm9000_dev);
+> > > +#ifdef CONFIG_NAND
+> > > +	/* ----------- add some vital partitions -------- */
+> > > +	devfs_del_partition("self_raw");
+> > > +	devfs_add_partition("nand0", 0x00000, 0x40000, PARTITION_FIXED,
+> > > "self_raw"); +	dev_add_bb_dev("self_raw", NULL);
+> > > +
+> > > +	devfs_del_partition("env_raw");
+> > > +	devfs_add_partition("nand0", 0x40000, 0x20000, PARTITION_FIXED,
+> > > "env_raw"); +	dev_add_bb_dev("env_raw", NULL);
+> > > +#endif
+> > > +	armlinux_add_dram(&sdram_dev);
+> > > +	armlinux_set_bootparams((void *)sdram_dev.map_base + 0x100);
+> > > +	armlinux_set_architecture(MACH_TYPE_MINI2440);
+> > > +
+> > > +	return 0;
+> > > +}
+> >
+> > We need some kind of management here, because the mini2440 comes with NOR
+> > and NAND flash. And both can be configured to boot the system from: We
+> > need a location to store the environment. Maybe in NOR, when booting from
+> > NOR, and in NAND, when booting form NAND? Or only one single location
+> > where to store the environment, independent from the boot source? Ideas?
+>
+> I like the idea to store in the boot media
+
+If you switch the boot media the environment moves, too? That may confuse 
+users, as their settings are "moving away" in this case. Okay, its not a 
+regular usecase. But with the mini2440 its simply a configuration switch on 
+the board. My idea was to add some Kconfig menu entries to select one of the 
+possible cases a) move the environment with the boot source or b) store and 
+expect it always in NOR or NAND.
+
+jbe
+
+-- 
+Pengutronix e.K.                              | Juergen Beisert             |
+Linux Solutions for Science and Industry      | Phone: +49-8766-939 228     |
+Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555 |
+Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
