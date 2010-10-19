@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1P87Yo-0000pV-Pv
-	for barebox@lists.infradead.org; Tue, 19 Oct 2010 08:28:43 +0000
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Tue, 19 Oct 2010 10:28:28 +0200
-References: <1287474532-31528-1-git-send-email-marek.belisko@gmail.com>
-In-Reply-To: <1287474532-31528-1-git-send-email-marek.belisko@gmail.com>
+Received: from 63.mail-out.ovh.net ([91.121.185.56])
+	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1P87a0-0000vc-24
+	for barebox@lists.infradead.org; Tue, 19 Oct 2010 08:29:56 +0000
+Date: Tue, 19 Oct 2010 10:27:28 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20101019082728.GL11127@game.jcrosoft.org>
+References: <201010181859.51317.jbe@pengutronix.de>
+	<20101019014246.GK11127@game.jcrosoft.org>
+	<201010190855.18736.jbe@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-Message-Id: <201010191028.28405.jbe@pengutronix.de>
+In-Reply-To: <201010190855.18736.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,70 +24,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Add basic support for mini2440 dev board.
-To: barebox@lists.infradead.org
+Subject: Re: [RFC] S3C24xx: Enable only the clocks of used units
+To: Juergen Beisert <jbe@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Marek Belisko wrote:
-> This work is mainly based on a9m2440 board implementation
-> from Juergen Beisert <jbe@pengutronix.de>. Functionality
-> was tested only running barebox from ram. Loading to flash
-> and booting will not work because missing lowlevel_init
-> functionality (lack of jtag debugger on my side ;)).
-
-I have now access to a mini2440 at Pengutronix. I will add this feature soon.
-
+On 08:55 Tue 19 Oct     , Juergen Beisert wrote:
+> Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > -	mov r1, #0xFFFFFFF0
+> > > +	/*
+> > > +	 * Disable the clocks for most devices on this chip.
+> > > +	 * They will be enabled again on demand
+> > > +	 */
+> > > +#ifdef CONFIG_S3C24XX_NAND_BOOT
+> > > +	ldr r1, =0x6010 /* (CLK_RTC | CLK_GPIO | CLK_NAND) */
+> > > +#else
+> > > +	mov r1, #0x6000 /* (CLK_RTC | CLK_GPIO) */
+> >
+> > how about use the macro and define a macro to avoid the ifdef
+> 
+> I tried with macros, but the assembler failed. Can't remember why. But I tried 
+> again a few minutes ago .... and now it works (????).
+make because you had c definition in the header?
+> 
+> Do you mean something like this instead?
+> 
 > [...]
-> +static int mini2440_devices_init(void)
-> +{
-> +	uint32_t reg;
-> +
-> +	reg = readl(BWSCON);
-> +
-> +	/* CS#4 to access the network controller */
-> +	reg &= ~0x000f0000;
-> +	reg |=  0x000d0000;	/* 16 bit */
-> +	writel(0x1f4c, BANKCON4);
-> +
-> +	writel(reg, BWSCON);
-> +
-> +	/* release the reset signal to external devices */
-> +	reg = readl(MISCCR);
-> +	reg |= 0x10000;
-> +	writel(reg, MISCCR);
-> +
-> +	register_device(&nand_dev);
-> +	register_device(&sdram_dev);
-> +	register_device(&dm9000_dev);
-> +#ifdef CONFIG_NAND
-> +	/* ----------- add some vital partitions -------- */
-> +	devfs_del_partition("self_raw");
-> +	devfs_add_partition("nand0", 0x00000, 0x40000, PARTITION_FIXED,
-> "self_raw"); +	dev_add_bb_dev("self_raw", NULL);
-> +
-> +	devfs_del_partition("env_raw");
-> +	devfs_add_partition("nand0", 0x40000, 0x20000, PARTITION_FIXED,
-> "env_raw"); +	dev_add_bb_dev("env_raw", NULL);
-> +#endif
-> +	armlinux_add_dram(&sdram_dev);
-> +	armlinux_set_bootparams((void *)sdram_dev.map_base + 0x100);
-> +	armlinux_set_architecture(MACH_TYPE_MINI2440);
-> +
-> +	return 0;
-> +}
+> #ifdef CONFIG_S3C24XX_NAND_BOOT
+> # define FORCED_CLOCKS (CLK_RTC | CLK_GPIO | CLK_NAND)
+> #else
+> # define FORCED_CLOCKS (CLK_RTC | CLK_GPIO)
+> #endif
+> 
+> 	/*
+> 	 * Disable the clocks for most devices on this chip.
+> 	 * They will be enabled again on demand
+> 	 */
+> 	ldr r1, =FORCED_CLOCKS
+yeah excalty
 
-We need some kind of management here, because the mini2440 comes with NOR and 
-NAND flash. And both can be configured to boot the system from: We need a 
-location to store the environment. Maybe in NOR, when booting from NOR, and 
-in NAND, when booting form NAND? Or only one single location where to store 
-the environment, independent from the boot source? Ideas?
-
-jbe
-
--- 
-Pengutronix e.K.                              | Juergen Beisert             |
-Linux Solutions for Science and Industry      | Phone: +49-8766-939 228     |
-Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
