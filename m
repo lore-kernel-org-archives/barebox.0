@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1P8Bj6-0005rH-Hi
-	for barebox@lists.infradead.org; Tue, 19 Oct 2010 12:55:41 +0000
+	id 1P8Bj5-0005qv-Hn
+	for barebox@lists.infradead.org; Tue, 19 Oct 2010 12:55:38 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 19 Oct 2010 14:54:59 +0200
-Message-Id: <1287492930-15716-12-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 19 Oct 2010 14:54:54 +0200
+Message-Id: <1287492930-15716-7-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1287492930-15716-1-git-send-email-s.hauer@pengutronix.de>
 References: <1287492930-15716-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,26 +21,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/42] notifier: sparse fixes
+Subject: [PATCH 06/42] crc32: sparse fixes
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/notifier.h |    1 +
- 1 files changed, 1 insertions(+), 0 deletions(-)
+ lib/crc32.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/include/notifier.h b/include/notifier.h
-index 878b17e..cb2be5f 100644
---- a/include/notifier.h
-+++ b/include/notifier.h
-@@ -15,6 +15,7 @@ struct notifier_head {
- };
- 
- int notifier_chain_register(struct notifier_head *nh, struct notifier_block *n);
-+int notifier_chain_unregister(struct notifier_head *nh, struct notifier_block *n);
- 
- int notifier_call_chain(struct notifier_head *nh, unsigned long val, void *v);
- 
+diff --git a/lib/crc32.c b/lib/crc32.c
+index 3481782..275edb4 100644
+--- a/lib/crc32.c
++++ b/lib/crc32.c
+@@ -42,7 +42,7 @@ static void make_crc_table(void);
+   the information needed to generate CRC's on data a byte at a time for all
+   combinations of CRC register values and incoming bytes.
+ */
+-static void make_crc_table()
++static void make_crc_table(void)
+ {
+   ulong c;
+   int n, k;
 -- 
 1.7.2.3
 
