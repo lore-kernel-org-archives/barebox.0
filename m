@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from 30.mail-out.ovh.net ([213.186.62.213])
 	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1P8W8g-0004Cm-32
-	for barebox@lists.infradead.org; Wed, 20 Oct 2010 10:43:22 +0000
-Message-ID: <4CBEC7C7.1040301@eukrea.com>
-Date: Wed, 20 Oct 2010 12:43:19 +0200
-From: =?ISO-8859-1?Q?Eric_B=E9nard?= <eric@eukrea.com>
+	id 1P8Yu2-0003bj-7m
+	for barebox@lists.infradead.org; Wed, 20 Oct 2010 13:40:28 +0000
+From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
+Date: Wed, 20 Oct 2010 15:40:17 +0200
+Message-Id: <1287582017-12999-3-git-send-email-eric@eukrea.com>
+In-Reply-To: <1287582017-12999-1-git-send-email-eric@eukrea.com>
+References: <1287582017-12999-1-git-send-email-eric@eukrea.com>
 MIME-Version: 1.0
-References: <1287065132-20372-1-git-send-email-eric@eukrea.com>
-	<1287065132-20372-6-git-send-email-eric@eukrea.com>
-	<20101016190102.GD6225@tarshish>
-In-Reply-To: <20101016190102.GD6225@tarshish>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,37 +17,64 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"; Format="flowed"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 06/10] eukrea_cpuimx25: update board support
-To: Baruch Siach <baruch@tkos.co.il>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 3/3] i.MX25 & 35 usb config bits : create mach/usb.h
+To: barebox@lists.infradead.org
 
-Hi Baruch,
-
-Le 16/10/2010 21:01, Baruch Siach a =E9crit :
->> +#ifdef CONFIG_USB
->> +
->> +#define MX35_H1_SIC_SHIFT	21
->> +#define MX35_H1_SIC_MASK	(0x3<<  MX35_H1_SIC_SHIFT)
->> +#define MX35_H1_PM_BIT		(1<<  8)
->> +#define MX35_H1_IPPUE_UP_BIT	(1<<  7)
->> +#define MX35_H1_IPPUE_DOWN_BIT	(1<<  6)
->> +#define MX35_H1_TLL_BIT		(1<<  5)
->> +#define MX35_H1_USBTE_BIT	(1<<  4)
->> +#define MXC_EHCI_INTERFACE_SINGLE_UNI	(2<<  0)
->
-> The exact same defines appear in patch no. 10 of this series. IMO these s=
-hould
-> go into a shared header file.
->
-done, thanks for the review.
-
-Eric
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+YXMgc3VnZ2VzdGVkIGJ5IEJhcnVjaCBTaWFjaAoKU2lnbmVkLW9mZi1ieTogRXJpYyBCw6luYXJk
+IDxlcmljQGV1a3JlYS5jb20+Ci0tLQogYXJjaC9hcm0vYm9hcmRzL2V1a3JlYV9jcHVpbXgyNS9l
+dWtyZWFfY3B1aW14MjUuYyB8ICAgMTEgKy0tLS0tLS0tLS0KIGFyY2gvYXJtL2JvYXJkcy9ldWty
+ZWFfY3B1aW14MzUvZXVrcmVhX2NwdWlteDM1LmMgfCAgIDExICstLS0tLS0tLS0tCiBhcmNoL2Fy
+bS9tYWNoLWlteC9pbmNsdWRlL21hY2gvdXNiLmggICAgICAgICAgICAgIHwgICAxNCArKysrKysr
+KysrKysrKwogMyBmaWxlcyBjaGFuZ2VkLCAxNiBpbnNlcnRpb25zKCspLCAyMCBkZWxldGlvbnMo
+LSkKIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvdXNi
+LmgKCmRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2FyZHMvZXVrcmVhX2NwdWlteDI1L2V1a3JlYV9j
+cHVpbXgyNS5jIGIvYXJjaC9hcm0vYm9hcmRzL2V1a3JlYV9jcHVpbXgyNS9ldWtyZWFfY3B1aW14
+MjUuYwppbmRleCBjMmViMzk4Li44MDVmZmUyIDEwMDY0NAotLS0gYS9hcmNoL2FybS9ib2FyZHMv
+ZXVrcmVhX2NwdWlteDI1L2V1a3JlYV9jcHVpbXgyNS5jCisrKyBiL2FyY2gvYXJtL2JvYXJkcy9l
+dWtyZWFfY3B1aW14MjUvZXVrcmVhX2NwdWlteDI1LmMKQEAgLTQyLDYgKzQyLDcgQEAKICNpbmNs
+dWRlIDxtYWNoL2lvbXV4LW14MjUuaD4KICNpbmNsdWRlIDxpMmMvaTJjLmg+CiAjaW5jbHVkZSA8
+dXNiL2ZzbF91c2IyLmg+CisjaW5jbHVkZSA8bWFjaC91c2IuaD4KIAogZXh0ZXJuIHVuc2lnbmVk
+IGxvbmcgX3N0ZXh0OwogZXh0ZXJuIHZvaWQgZXhjZXB0aW9uX3ZlY3RvcnModm9pZCk7CkBAIC0x
+NjUsMTYgKzE2Niw2IEBAIHN0YXRpYyBzdHJ1Y3QgZGV2aWNlX2QgZXNkaGNfZGV2ID0gewogfTsK
+IAogI2lmZGVmIENPTkZJR19VU0IKLQotI2RlZmluZSBNWDM1X0gxX1NJQ19TSElGVAkyMQotI2Rl
+ZmluZSBNWDM1X0gxX1NJQ19NQVNLCSgweDMgPDwgTVgzNV9IMV9TSUNfU0hJRlQpCi0jZGVmaW5l
+IE1YMzVfSDFfUE1fQklUCQkoMSA8PCA4KQotI2RlZmluZSBNWDM1X0gxX0lQUFVFX1VQX0JJVAko
+MSA8PCA3KQotI2RlZmluZSBNWDM1X0gxX0lQUFVFX0RPV05fQklUCSgxIDw8IDYpCi0jZGVmaW5l
+IE1YMzVfSDFfVExMX0JJVAkJKDEgPDwgNSkKLSNkZWZpbmUgTVgzNV9IMV9VU0JURV9CSVQJKDEg
+PDwgNCkKLSNkZWZpbmUgTVhDX0VIQ0lfSU5URVJGQUNFX1NJTkdMRV9VTkkJKDIgPDwgMCkKLQog
+c3RhdGljIHZvaWQgaW14MjVfdXNiX2luaXQodm9pZCkKIHsKIAl1bnNpZ25lZCBpbnQgdG1wOwpk
+aWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL2V1a3JlYV9jcHVpbXgzNS9ldWtyZWFfY3B1aW14
+MzUuYyBiL2FyY2gvYXJtL2JvYXJkcy9ldWtyZWFfY3B1aW14MzUvZXVrcmVhX2NwdWlteDM1LmMK
+aW5kZXggN2Q4NWY5Ny4uZGZlNjRkMCAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vYm9hcmRzL2V1a3Jl
+YV9jcHVpbXgzNS9ldWtyZWFfY3B1aW14MzUuYworKysgYi9hcmNoL2FybS9ib2FyZHMvZXVrcmVh
+X2NwdWlteDM1L2V1a3JlYV9jcHVpbXgzNS5jCkBAIC01Myw2ICs1Myw3IEBACiAjaW5jbHVkZSA8
+bWFjaC9pbXgtcGxsLmg+CiAjaW5jbHVkZSA8aTJjL2kyYy5oPgogI2luY2x1ZGUgPHVzYi9mc2xf
+dXNiMi5oPgorI2luY2x1ZGUgPG1hY2gvdXNiLmg+CiAKIHN0YXRpYyBzdHJ1Y3QgZmVjX3BsYXRm
+b3JtX2RhdGEgZmVjX2luZm8gPSB7CiAJLnhjdl90eXBlCT0gTUlJMTAwLApAQCAtMTQwLDE2ICsx
+NDEsNiBAQCBzdGF0aWMgc3RydWN0IGRldmljZV9kIGVzZGhjX2RldiA9IHsKIH07CiAKICNpZmRl
+ZiBDT05GSUdfVVNCCi0KLSNkZWZpbmUgTVgzNV9IMV9TSUNfU0hJRlQJMjEKLSNkZWZpbmUgTVgz
+NV9IMV9TSUNfTUFTSwkoMHgzIDw8IE1YMzVfSDFfU0lDX1NISUZUKQotI2RlZmluZSBNWDM1X0gx
+X1BNX0JJVAkJKDEgPDwgOCkKLSNkZWZpbmUgTVgzNV9IMV9JUFBVRV9VUF9CSVQJKDEgPDwgNykK
+LSNkZWZpbmUgTVgzNV9IMV9JUFBVRV9ET1dOX0JJVAkoMSA8PCA2KQotI2RlZmluZSBNWDM1X0gx
+X1RMTF9CSVQJCSgxIDw8IDUpCi0jZGVmaW5lIE1YMzVfSDFfVVNCVEVfQklUCSgxIDw8IDQpCi0j
+ZGVmaW5lIE1YQ19FSENJX0lOVEVSRkFDRV9TSU5HTEVfVU5JCSgyIDw8IDApCi0KIHN0YXRpYyB2
+b2lkIGlteDM1X3VzYl9pbml0KHZvaWQpCiB7CiAJdW5zaWduZWQgaW50IHRtcDsKZGlmZiAtLWdp
+dCBhL2FyY2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC91c2IuaCBiL2FyY2gvYXJtL21hY2gt
+aW14L2luY2x1ZGUvbWFjaC91c2IuaApuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRleCAwMDAwMDAw
+Li41ZDY2NzBkCi0tLSAvZGV2L251bGwKKysrIGIvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9t
+YWNoL3VzYi5oCkBAIC0wLDAgKzEsMTQgQEAKKyNpZm5kZWYgX19NQUNIX1VTQl9IXworI2RlZmlu
+ZSBfX01BQ0hfVVNCX0hfCisKKy8qIGNvbmZpZ3VyYXRpb24gYml0cyBmb3IgaS5NWDI1IGFuZCBp
+Lk1YMzUgKi8KKyNkZWZpbmUgTVgzNV9IMV9TSUNfU0hJRlQJMjEKKyNkZWZpbmUgTVgzNV9IMV9T
+SUNfTUFTSwkoMHgzIDw8IE1YMzVfSDFfU0lDX1NISUZUKQorI2RlZmluZSBNWDM1X0gxX1BNX0JJ
+VAkJKDEgPDwgOCkKKyNkZWZpbmUgTVgzNV9IMV9JUFBVRV9VUF9CSVQJKDEgPDwgNykKKyNkZWZp
+bmUgTVgzNV9IMV9JUFBVRV9ET1dOX0JJVAkoMSA8PCA2KQorI2RlZmluZSBNWDM1X0gxX1RMTF9C
+SVQJCSgxIDw8IDUpCisjZGVmaW5lIE1YMzVfSDFfVVNCVEVfQklUCSgxIDw8IDQpCisjZGVmaW5l
+IE1YQ19FSENJX0lOVEVSRkFDRV9TSU5HTEVfVU5JCSgyIDw8IDApCisKKyNlbmRpZiAvKiBfX01B
+Q0hfVVNCX0hfKi8KLS0gCjEuNy4wLjQKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJh
+ZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJl
+Ym94Cg==
