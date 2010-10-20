@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from 30.mail-out.ovh.net ([213.186.62.213])
-	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1P8W7c-00044Z-Nd
-	for barebox@lists.infradead.org; Wed, 20 Oct 2010 10:42:19 +0000
+	by casper.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1P8W8B-00038u-4J
+	for barebox@lists.infradead.org; Wed, 20 Oct 2010 10:42:51 +0000
 From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
-Date: Wed, 20 Oct 2010 12:42:09 +0200
-Message-Id: <1287571331-11842-1-git-send-email-eric@eukrea.com>
+Date: Wed, 20 Oct 2010 12:42:23 +0200
+Message-Id: <1287571345-11877-1-git-send-email-eric@eukrea.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
