@@ -1,17 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1P8S9P-0006Mx-NM
-	for barebox@lists.infradead.org; Wed, 20 Oct 2010 06:27:52 +0000
-Date: Wed, 20 Oct 2010 08:27:48 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20101020062748.GC28242@pengutronix.de>
-References: <1287492930-15716-1-git-send-email-s.hauer@pengutronix.de>
-	<1287492930-15716-22-git-send-email-s.hauer@pengutronix.de>
-	<20101020014820.GB20390@game.jcrosoft.org>
+Received: from 30.mail-out.ovh.net ([213.186.62.213])
+	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1P8W7c-00044Z-Nd
+	for barebox@lists.infradead.org; Wed, 20 Oct 2010 10:42:19 +0000
+From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
+Date: Wed, 20 Oct 2010 12:42:09 +0200
+Message-Id: <1287571331-11842-1-git-send-email-eric@eukrea.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20101020014820.GB20390@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,62 +15,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 21/42] i.MX remove wdog registers from header files
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/3] fsl_udc: fix warning
+To: barebox@lists.infradead.org
 
-On Wed, Oct 20, 2010 at 03:48:20AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 14:55 Tue 19 Oct     , Sascha Hauer wrote:
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > ---
-> >  arch/arm/mach-imx/clocksource.c             |   23 +++++++++++++++++++----
-> >  arch/arm/mach-imx/include/mach/imx1-regs.h  |    8 --------
-> >  arch/arm/mach-imx/include/mach/imx21-regs.h |    8 --------
-> >  arch/arm/mach-imx/include/mach/imx27-regs.h |    8 --------
-> >  arch/arm/mach-imx/include/mach/imx31-regs.h |   10 ----------
-> >  arch/arm/mach-imx/include/mach/imx35-regs.h |   10 ----------
-> >  arch/arm/mach-imx/include/mach/imx51-regs.h |    7 -------
-> >  7 files changed, 19 insertions(+), 55 deletions(-)
-> > 
-> > diff --git a/arch/arm/mach-imx/clocksource.c b/arch/arm/mach-imx/clocksource.c
-> > index e492890..4cb923f 100644
-> > --- a/arch/arm/mach-imx/clocksource.c
-> > +++ b/arch/arm/mach-imx/clocksource.c
-> > @@ -101,19 +101,34 @@ static int clocksource_init (void)
-> >  core_initcall(clocksource_init);
-> >  
-> >  /*
-> > + * Watchdog Registers
-> > + */
-> > +#ifdef CONFIG_ARCH_IMX1
-> > +#define WDOG_WCR	0x00 /* Watchdog Control Register */
-> > +#define WDOG_WSR	0x02 /* Watchdog Service Register */
-> > +#define WDOG_WSTR	0x04 /* Watchdog Status Register  */
-> > +#define WDOG_WCR_WDE	(1 << 0)
-> > +#else
-> > +#define WDOG_WCR	0x00 /* Watchdog Control Register */
-> > +#define WDOG_WSR	0x02 /* Watchdog Service Register */
-> > +#define WDOG_WSTR	0x04 /* Watchdog Status Register  */
-> > +#define WDOG_WCR_WDE	(1 << 2)
-> only the WDE seems different
-
-oops, bug. on i.MX1 WSR should be 0x4 and SWTR should be 0x8. Will fix
-this.
-
-Sascha
-
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+dGhpcyBwYXRjaCBmaXggdGhlIGZvbGxvd2luZyB3YXJuaW5nIDoKZHJpdmVycy91c2IvZ2FkZ2V0
+L2ZzbF91ZGMuYzogSW4gZnVuY3Rpb24gJ2RvbmUnOgpkcml2ZXJzL3VzYi9nYWRnZXQvZnNsX3Vk
+Yy5jOjU2Njogd2FybmluZzogcGFzc2luZyBhcmd1bWVudCAxIG9mICdkbWFfaW52X3JhbmdlJyBt
+YWtlcyBpbnRlZ2VyIGZyb20gcG9pbnRlciB3aXRob3V0IGEgY2FzdAphcmNoL2FybS9pbmNsdWRl
+L2FzbS9tbXUuaDoyNDogbm90ZTogZXhwZWN0ZWQgJ2xvbmcgdW5zaWduZWQgaW50JyBidXQgYXJn
+dW1lbnQgaXMgb2YgdHlwZSAndm9pZCAqJwpkcml2ZXJzL3VzYi9nYWRnZXQvZnNsX3VkYy5jOjU2
+Njogd2FybmluZzogcGFzc2luZyBhcmd1bWVudCAyIG9mICdkbWFfaW52X3JhbmdlJyBtYWtlcyBp
+bnRlZ2VyIGZyb20gcG9pbnRlciB3aXRob3V0IGEgY2FzdAphcmNoL2FybS9pbmNsdWRlL2FzbS9t
+bXUuaDoyNDogbm90ZTogZXhwZWN0ZWQgJ2xvbmcgdW5zaWduZWQgaW50JyBidXQgYXJndW1lbnQg
+aXMgb2YgdHlwZSAndm9pZCAqJwoKU2lnbmVkLW9mZi1ieTogRXJpYyBCw6luYXJkIDxlcmljQGV1
+a3JlYS5jb20+Ci0tLQogZHJpdmVycy91c2IvZ2FkZ2V0L2ZzbF91ZGMuYyB8ICAgIDMgKystCiAx
+IGZpbGVzIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbnMoLSkKCmRpZmYgLS1n
+aXQgYS9kcml2ZXJzL3VzYi9nYWRnZXQvZnNsX3VkYy5jIGIvZHJpdmVycy91c2IvZ2FkZ2V0L2Zz
+bF91ZGMuYwppbmRleCAxMTlhZmNiLi40OGZkMGI1IDEwMDY0NAotLS0gYS9kcml2ZXJzL3VzYi9n
+YWRnZXQvZnNsX3VkYy5jCisrKyBiL2RyaXZlcnMvdXNiL2dhZGdldC9mc2xfdWRjLmMKQEAgLTU2
+Myw3ICs1NjMsOCBAQCBzdGF0aWMgdm9pZCBkb25lKHN0cnVjdCBmc2xfZXAgKmVwLCBzdHJ1Y3Qg
+ZnNsX3JlcSAqcmVxLCBpbnQgc3RhdHVzKQogCQlkbWFfZnJlZV9jb2hlcmVudChjdXJyX3RkKTsK
+IAl9CiAKLQlkbWFfaW52X3JhbmdlKHJlcS0+cmVxLmJ1ZiwgcmVxLT5yZXEuYnVmICsgcmVxLT5y
+ZXEubGVuZ3RoKTsKKwlkbWFfaW52X3JhbmdlKCh1bnNpZ25lZCBsb25nKXJlcS0+cmVxLmJ1ZiwK
+KwkJKHVuc2lnbmVkIGxvbmcpKHJlcS0+cmVxLmJ1ZiArIHJlcS0+cmVxLmxlbmd0aCkpOwogCiAJ
+aWYgKHN0YXR1cyAmJiAoc3RhdHVzICE9IC1FU0hVVERPV04pKQogCQlWREJHKCJjb21wbGV0ZSAl
+cyByZXEgJXAgc3RhdCAlZCBsZW4gJXUvJXUiLAotLSAKMS43LjAuNAoKCl9fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJh
+cmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWls
+bWFuL2xpc3RpbmZvL2JhcmVib3gK
