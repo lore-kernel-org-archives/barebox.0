@@ -1,12 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from 30.mail-out.ovh.net ([213.186.62.213])
-	by casper.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1P8W8B-00038u-4J
-	for barebox@lists.infradead.org; Wed, 20 Oct 2010 10:42:51 +0000
-From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
-Date: Wed, 20 Oct 2010 12:42:23 +0200
-Message-Id: <1287571345-11877-1-git-send-email-eric@eukrea.com>
+	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1P8W8g-0004Cm-32
+	for barebox@lists.infradead.org; Wed, 20 Oct 2010 10:43:22 +0000
+Message-ID: <4CBEC7C7.1040301@eukrea.com>
+Date: Wed, 20 Oct 2010 12:43:19 +0200
+From: =?ISO-8859-1?Q?Eric_B=E9nard?= <eric@eukrea.com>
 MIME-Version: 1.0
+References: <1287065132-20372-1-git-send-email-eric@eukrea.com>
+	<1287065132-20372-6-git-send-email-eric@eukrea.com>
+	<20101016190102.GD6225@tarshish>
+In-Reply-To: <20101016190102.GD6225@tarshish>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,35 +19,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] fsl_udc: fix warning
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 06/10] eukrea_cpuimx25: update board support
+To: Baruch Siach <baruch@tkos.co.il>
+Cc: barebox@lists.infradead.org
 
-dGhpcyBwYXRjaCBmaXggdGhlIGZvbGxvd2luZyB3YXJuaW5nIDoKZHJpdmVycy91c2IvZ2FkZ2V0
-L2ZzbF91ZGMuYzogSW4gZnVuY3Rpb24gJ2RvbmUnOgpkcml2ZXJzL3VzYi9nYWRnZXQvZnNsX3Vk
-Yy5jOjU2Njogd2FybmluZzogcGFzc2luZyBhcmd1bWVudCAxIG9mICdkbWFfaW52X3JhbmdlJyBt
-YWtlcyBpbnRlZ2VyIGZyb20gcG9pbnRlciB3aXRob3V0IGEgY2FzdAphcmNoL2FybS9pbmNsdWRl
-L2FzbS9tbXUuaDoyNDogbm90ZTogZXhwZWN0ZWQgJ2xvbmcgdW5zaWduZWQgaW50JyBidXQgYXJn
-dW1lbnQgaXMgb2YgdHlwZSAndm9pZCAqJwpkcml2ZXJzL3VzYi9nYWRnZXQvZnNsX3VkYy5jOjU2
-Njogd2FybmluZzogcGFzc2luZyBhcmd1bWVudCAyIG9mICdkbWFfaW52X3JhbmdlJyBtYWtlcyBp
-bnRlZ2VyIGZyb20gcG9pbnRlciB3aXRob3V0IGEgY2FzdAphcmNoL2FybS9pbmNsdWRlL2FzbS9t
-bXUuaDoyNDogbm90ZTogZXhwZWN0ZWQgJ2xvbmcgdW5zaWduZWQgaW50JyBidXQgYXJndW1lbnQg
-aXMgb2YgdHlwZSAndm9pZCAqJwoKU2lnbmVkLW9mZi1ieTogRXJpYyBCw6luYXJkIDxlcmljQGV1
-a3JlYS5jb20+Ci0tLQogZHJpdmVycy91c2IvZ2FkZ2V0L2ZzbF91ZGMuYyB8ICAgIDMgKystCiAx
-IGZpbGVzIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbnMoLSkKCmRpZmYgLS1n
-aXQgYS9kcml2ZXJzL3VzYi9nYWRnZXQvZnNsX3VkYy5jIGIvZHJpdmVycy91c2IvZ2FkZ2V0L2Zz
-bF91ZGMuYwppbmRleCAxMTlhZmNiLi40OGZkMGI1IDEwMDY0NAotLS0gYS9kcml2ZXJzL3VzYi9n
-YWRnZXQvZnNsX3VkYy5jCisrKyBiL2RyaXZlcnMvdXNiL2dhZGdldC9mc2xfdWRjLmMKQEAgLTU2
-Myw3ICs1NjMsOCBAQCBzdGF0aWMgdm9pZCBkb25lKHN0cnVjdCBmc2xfZXAgKmVwLCBzdHJ1Y3Qg
-ZnNsX3JlcSAqcmVxLCBpbnQgc3RhdHVzKQogCQlkbWFfZnJlZV9jb2hlcmVudChjdXJyX3RkKTsK
-IAl9CiAKLQlkbWFfaW52X3JhbmdlKHJlcS0+cmVxLmJ1ZiwgcmVxLT5yZXEuYnVmICsgcmVxLT5y
-ZXEubGVuZ3RoKTsKKwlkbWFfaW52X3JhbmdlKCh1bnNpZ25lZCBsb25nKXJlcS0+cmVxLmJ1ZiwK
-KwkJKHVuc2lnbmVkIGxvbmcpKHJlcS0+cmVxLmJ1ZiArIHJlcS0+cmVxLmxlbmd0aCkpOwogCiAJ
-aWYgKHN0YXR1cyAmJiAoc3RhdHVzICE9IC1FU0hVVERPV04pKQogCQlWREJHKCJjb21wbGV0ZSAl
-cyByZXEgJXAgc3RhdCAlZCBsZW4gJXUvJXUiLAotLSAKMS43LjAuNAoKCl9fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJh
-cmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWls
-bWFuL2xpc3RpbmZvL2JhcmVib3gK
+Hi Baruch,
+
+Le 16/10/2010 21:01, Baruch Siach a =E9crit :
+>> +#ifdef CONFIG_USB
+>> +
+>> +#define MX35_H1_SIC_SHIFT	21
+>> +#define MX35_H1_SIC_MASK	(0x3<<  MX35_H1_SIC_SHIFT)
+>> +#define MX35_H1_PM_BIT		(1<<  8)
+>> +#define MX35_H1_IPPUE_UP_BIT	(1<<  7)
+>> +#define MX35_H1_IPPUE_DOWN_BIT	(1<<  6)
+>> +#define MX35_H1_TLL_BIT		(1<<  5)
+>> +#define MX35_H1_USBTE_BIT	(1<<  4)
+>> +#define MXC_EHCI_INTERFACE_SINGLE_UNI	(2<<  0)
+>
+> The exact same defines appear in patch no. 10 of this series. IMO these s=
+hould
+> go into a shared header file.
+>
+done, thanks for the review.
+
+Eric
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
