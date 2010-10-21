@@ -1,14 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-gw0-f49.google.com ([74.125.83.49])
-	by casper.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1P8zNM-0005Gk-CF
-	for barebox@lists.infradead.org; Thu, 21 Oct 2010 17:56:29 +0000
-Received: by gwj17 with SMTP id 17so344938gwj.36
-	for <barebox@lists.infradead.org>; Thu, 21 Oct 2010 10:55:17 -0700 (PDT)
+Received: from [2001:6f8:1178:4:290:27ff:fe1d:cc33]
+	(helo=metis.ext.pengutronix.de)
+	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1P90WP-00029d-Pk
+	for barebox@lists.infradead.org; Thu, 21 Oct 2010 19:10:49 +0000
+Date: Thu, 21 Oct 2010 21:06:23 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20101021190623.GG28242@pengutronix.de>
+References: <1287582017-12999-1-git-send-email-eric@eukrea.com>
+	<1287582017-12999-2-git-send-email-eric@eukrea.com>
 MIME-Version: 1.0
-Date: Thu, 21 Oct 2010 12:55:16 -0500
-Message-ID: <AANLkTinosq5jY41=piCX3JaeFy6Z93gnG1Ym_VRqZ_sJ@mail.gmail.com>
-From: Victor Rodriguez <vm.rod25@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <1287582017-12999-2-git-send-email-eric@eukrea.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,73 +20,62 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Beagleboard and barebox problem
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/3] cpuimx35: fix warning
+To: Eric =?iso-8859-15?Q?B=E9nard?= <eric@eukrea.com>
+Cc: barebox@lists.infradead.org
 
-Hey I am new on bare box I have download it from git repo and when I
-make the barebox.bin with omap3530_beagle_defconfig this is the output
+Hi Eric,
 
-Texas Instruments X-Loader 1.4.2 (Feb 19 2009 - 12:01:24)
-Reading boot sector
-Loading u-boot.bin from mmc
+On Wed, Oct 20, 2010 at 03:40:16PM +0200, Eric B=E9nard wrote:
+> this patch fix the following warning :
+> arch/arm/boards/eukrea_cpuimx35/flash_header.c:30: warning: "DEST_BASE" r=
+edefined
+> arch/arm/mach-imx/include/mach/imx-flash-header.h:29: note: this is the l=
+ocation of the previous definition
+> =
+
+> Signed-off-by: Eric B=E9nard <eric@eukrea.com>
+> ---
+>  arch/arm/boards/eukrea_cpuimx35/flash_header.c |    1 +
+>  1 files changed, 1 insertions(+), 0 deletions(-)
+> =
+
+> diff --git a/arch/arm/boards/eukrea_cpuimx35/flash_header.c b/arch/arm/bo=
+ards/eukrea_cpuimx35/flash_header.c
+> index 4163caf..3133995 100644
+> --- a/arch/arm/boards/eukrea_cpuimx35/flash_header.c
+> +++ b/arch/arm/boards/eukrea_cpuimx35/flash_header.c
+> @@ -27,6 +27,7 @@ struct imx_dcd_entry __dcd_entry_section dcd_entry[] =
+=3D {
+>  	{ .ptr_type =3D 4, .addr =3D 0xb8001010, .val =3D 0x00000004, },
+>  };
+>  =
+
+> +#undef DEST_BASE
+>  #define DEST_BASE 0x80000000
+>  struct imx_flash_header __flash_header_section flash_header =3D {
+>  	.app_code_jump_vector	=3D DEST_BASE + 0x1000,
+
+Why don't you just use another define instead of redefining DEST_BASE?
+
+Grepping through the other boards there seems to be something wrong
+here. The original idea was to let the rom code copy the image to the
+address it is linked at to not have to relocate it later. This seems to
+be not the case for most boards
+
+Sascha
 
 
-barebox 2010.10.0-00086-ga14c018 (Oct 21 2010 - 12:19:10)
+-- =
 
-Board: Texas Instrument's Beagle
-I2C probe
-i2c-omap@i2c-omap0: bus 0 rev3.12 at 100 kHz
-ehci@ehci0: USB EHCI 1.00
-NAND device: Manufacturer ID: 0x2c, Chip ID: 0xba (Micron NAND 256MiB
-1,8V 16-bit)
-Malloc space: 0x80c00000 -> 0x81000000 (size  4 MB)
-Stack space : 0x80bf8000 -> 0x80c00000 (size 32 kB)
-Open /dev/env0 No such file or directory
-running /env/bin/init...
-not found
-barebox> ls
-.      ..     dev
-barebox> ls /dev/
-zero         mem          ram0         twl4030      nand0
-nand_oob0
-
-
-And when I compile with omap3530_beagle_per_uart_defconfig
-
-This is the output
-
-Texas Instruments X-Loader 1.4.2 (Feb 19 2009 - 12:01:24)
-Reading boot sector
-Loading u-boot.bin from mmc
-
-
-barebox 2010.10.0-00086-ga14c018 (Oct 21 2010 - 12:41:33)
-
-Board: Texas Instrument's Beagle
-Malloc space: 0x87bfff10 -> 0x87ffff10 (size  4 MB)
-Stack space : 0x87bf7f10 -> 0x87bfff10 (size 32 kB)
-running /env/bin/init...
-not found
-X-load Beagle>ls
-Unknown command 'ls'
-X-load Beagle>help
-Unknown command 'help'
-
-And the same to all the commands
-
-What I am looking for is to use bare box with MMC, the kernel image
-and the File System are on the MMC on different partitions, I have
-tested them and work perfect with the traditioanl u-boot.
-
-I really want to try this new boat loader
-
-Thanks
-
-Victor Rodriguez
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
