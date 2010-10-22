@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1P9HT5-0006Ht-0I
+	id 1P9HT4-0006Hr-W3
 	for barebox@lists.infradead.org; Fri, 22 Oct 2010 13:15:42 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 22 Oct 2010 15:15:26 +0200
-Message-Id: <1287753331-7696-9-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 22 Oct 2010 15:15:23 +0200
+Message-Id: <1287753331-7696-6-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1287753331-7696-1-git-send-email-s.hauer@pengutronix.de>
 References: <1287753331-7696-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,119 +21,120 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/13] fb: i.MX IPU: move fb_info initialization to a single
-	function
+Subject: [PATCH 05/13] i.MX esdctl: Add register bits from redboot
 To: barebox@lists.infradead.org
-
-The bitfield information was only added to fb_info when the
-framebuffer actually was enabled. That made it impossible to
-call 'bmp' before enabling the display.
-So, move all fb_info init to a single place and make it a function
-to better allow for multiple displays later.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/video/imx-ipu-fb.c |   63 ++++++++++++++++++++++++-------------------
- 1 files changed, 35 insertions(+), 28 deletions(-)
+ arch/arm/mach-imx/include/mach/esdctl.h |   88 +++++++++++++++++++++++++++++++
+ 1 files changed, 88 insertions(+), 0 deletions(-)
 
-diff --git a/drivers/video/imx-ipu-fb.c b/drivers/video/imx-ipu-fb.c
-index 399af75..08036aa 100644
---- a/drivers/video/imx-ipu-fb.c
-+++ b/drivers/video/imx-ipu-fb.c
-@@ -729,7 +729,6 @@ static void sdc_enable_channel(struct ipu_fb_info *fbi, void *fbmem)
- static int mx3fb_set_par(struct fb_info *info)
- {
- 	struct ipu_fb_info *fbi = info->priv;
--	struct imx_ipu_fb_rgb *rgb;
- 	struct fb_videomode *mode = info->mode;
- 	int ret;
+diff --git a/arch/arm/mach-imx/include/mach/esdctl.h b/arch/arm/mach-imx/include/mach/esdctl.h
+index d15f52b..fe74cb6 100644
+--- a/arch/arm/mach-imx/include/mach/esdctl.h
++++ b/arch/arm/mach-imx/include/mach/esdctl.h
+@@ -18,9 +18,11 @@
+ #define ESDCTL0_ROW13				(2 << 24)
+ #define ESDCTL0_ROW14				(3 << 24)
+ #define ESDCTL0_ROW15				(4 << 24)
++#define ESDCTL0_ROW_MASK			(7 << 24)
+ #define ESDCTL0_COL8				(0 << 20)
+ #define ESDCTL0_COL9				(1 << 20)
+ #define ESDCTL0_COL10				(2 << 20)
++#define ESDCTL0_COL_MASK			(3 << 20)
+ #define ESDCTL0_DSIZ_31_16			(0 << 16)
+ #define ESDCTL0_DSIZ_15_0			(1 << 16)
+ #define ESDCTL0_DSIZ_31_0			(2 << 16)
+@@ -32,3 +34,89 @@
+ #define ESDCTL0_FP				(1 << 8)
+ #define ESDCTL0_BL				(1 << 7)
  
-@@ -740,29 +739,6 @@ static int mx3fb_set_par(struct fb_info *info)
- 	reg_write(fbi, (mode->left_margin << 16) | mode->upper_margin,
- 			SDC_BG_POS);
- 
--	switch (info->bits_per_pixel) {
--	case 32:
--		rgb = &def_rgb_32;
--		break;
--	case 24:
--		rgb = &def_rgb_24;
--		break;
--	case 16:
--	default:
--		rgb = &def_rgb_16;
--		break;
--	}
--
--	/*
--	 * Copy the RGB parameters for this display
--	 * from the machine specific parameters.
--	 */
--	info->red    = rgb->red;
--	info->green  = rgb->green;
--	info->blue   = rgb->blue;
--	info->transp = rgb->transp;
--
--
- 	return 0;
- }
- 
-@@ -853,6 +829,39 @@ static struct fb_ops imxfb_ops = {
- 	.fb_disable = ipu_fb_disable,
- };
- 
-+static void imxfb_init_info(struct fb_info *info, struct fb_videomode *mode,
-+		int bpp)
-+{
-+	struct imx_ipu_fb_rgb *rgb;
++#define ESDMISC_RST			0x00000002
++#define ESDMISC_MDDR_EN			0x00000004
++#define ESDMISC_MDDR_DIS		0x00000000
++#define ESDMISC_MDDR_DL_RST		0x00000008
++#define ESDMISC_MDDR_MDIS		0x00000010
++#define ESDMISC_LHD			0x00000020
++#define ESDMISC_SDRAMRDY		0x80000000
 +
-+	info->mode = mode;
-+	info->xres = mode->xres;
-+	info->yres = mode->yres;
-+	info->bits_per_pixel = bpp;
++#define	ESDCFGx_tXP_MASK 		0x00600000
++#define ESDCFGx_tXP_1			0x00000000
++#define ESDCFGx_tXP_2			0x00200000
++#define ESDCFGx_tXP_3			0x00400000
++#define ESDCFGx_tXP_4			0x00600000
 +
-+	switch (info->bits_per_pixel) {
-+	case 32:
-+		rgb = &def_rgb_32;
-+		break;
-+	case 24:
-+		rgb = &def_rgb_24;
-+		break;
-+	case 16:
-+	default:
-+		rgb = &def_rgb_16;
-+		break;
-+	}
++#define ESDCFGx_tWTR_MASK		0x00100000
++#define ESDCFGx_tWTR_1			0x00000000
++#define ESDCFGx_tWTR_2			0x00100000
 +
-+	/*
-+	 * Copy the RGB parameters for this display
-+	 * from the machine specific parameters.
-+	 */
-+	info->red    = rgb->red;
-+	info->green  = rgb->green;
-+	info->blue   = rgb->blue;
-+	info->transp = rgb->transp;
-+}
++#define ESDCFGx_tRP_MASK		0x000c0000
++#define ESDCFGx_tRP_1			0x00000000
++#define ESDCFGx_tRP_2			0x00040000
++#define ESDCFGx_tRP_3			0x00080000
++#define ESDCFGx_tRP_4			0x000c0000
 +
- static int imxfb_probe(struct device_d *dev)
- {
- 	struct ipu_fb_info *fbi;
-@@ -869,13 +878,11 @@ static int imxfb_probe(struct device_d *dev)
- 	fbi->regs = (void *)dev->map_base;
- 	fbi->dev = dev;
- 	info->priv = fbi;
--	info->mode = pdata->mode;
--	info->xres = pdata->mode->xres;
--	info->yres = pdata->mode->yres;
--	info->bits_per_pixel = pdata->bpp;
- 	info->fbops = &imxfb_ops;
- 	fbi->enable = pdata->enable;
- 
-+	imxfb_init_info(info, pdata->mode, pdata->bpp);
 +
- 	dev_info(dev, "i.MX Framebuffer driver\n");
- 
- 	/*
++#define ESDCFGx_tMRD_MASK		0x00030000
++#define ESDCFGx_tMRD_1			0x00000000
++#define ESDCFGx_tMRD_2			0x00010000
++#define ESDCFGx_tMRD_3			0x00020000
++#define ESDCFGx_tMRD_4			0x00030000
++
++
++#define ESDCFGx_tWR_MASK		0x00008000
++#define ESDCFGx_tWR_1_2			0x00000000
++#define ESDCFGx_tWR_2_3			0x00008000
++
++#define ESDCFGx_tRAS_MASK		0x00007000
++#define ESDCFGx_tRAS_1			0x00000000
++#define ESDCFGx_tRAS_2			0x00001000
++#define ESDCFGx_tRAS_3			0x00002000
++#define ESDCFGx_tRAS_4			0x00003000
++#define ESDCFGx_tRAS_5			0x00004000
++#define ESDCFGx_tRAS_6			0x00005000
++#define ESDCFGx_tRAS_7			0x00006000
++#define ESDCFGx_tRAS_8			0x00007000
++
++
++#define ESDCFGx_tRRD_MASK		0x00000c00
++#define ESDCFGx_tRRD_1			0x00000000
++#define ESDCFGx_tRRD_2			0x00000400
++#define ESDCFGx_tRRD_3			0x00000800
++#define ESDCFGx_tRRD_4			0x00000c00
++
++
++#define ESDCFGx_tCAS_MASK		0x00000300
++#define ESDCFGx_tCAS_2			0x00000200
++#define ESDCFGx_tCAS_3			0x00000300
++
++#define ESDCFGx_tRCD_MASK		0x00000070
++#define ESDCFGx_tRCD_1			0x00000000
++#define ESDCFGx_tRCD_2			0x00000010
++#define ESDCFGx_tRCD_3			0x00000020
++#define ESDCFGx_tRCD_4			0x00000030
++#define ESDCFGx_tRCD_5			0x00000040
++#define ESDCFGx_tRCD_6			0x00000050
++#define ESDCFGx_tRCD_7			0x00000060
++#define ESDCFGx_tRCD_8			0x00000070
++
++#define ESDCFGx_tRC_MASK		0x0000000f
++#define ESDCFGx_tRC_20			0x00000000
++#define ESDCFGx_tRC_2			0x00000001
++#define ESDCFGx_tRC_3			0x00000002
++#define ESDCFGx_tRC_4			0x00000003
++#define ESDCFGx_tRC_5			0x00000004
++#define ESDCFGx_tRC_6			0x00000005
++#define ESDCFGx_tRC_7			0x00000006
++#define ESDCFGx_tRC_8			0x00000007
++#define ESDCFGx_tRC_9			0x00000008
++#define ESDCFGx_tRC_10			0x00000009
++#define ESDCFGx_tRC_11			0x0000000a
++#define ESDCFGx_tRC_12			0x0000000b
++#define ESDCFGx_tRC_13			0x0000000c
++#define ESDCFGx_tRC_14			0x0000000d
++//#define ESDCFGx_tRC_14		0x0000000e	// 15 seems to not exist
++#define ESDCFGx_tRC_16			0x0000000f
++
 -- 
 1.7.2.3
 
