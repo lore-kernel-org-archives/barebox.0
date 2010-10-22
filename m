@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1P9HT5-0006Hy-1v
-	for barebox@lists.infradead.org; Fri, 22 Oct 2010 13:15:39 +0000
+	id 1P9HT5-0006Hw-0p
+	for barebox@lists.infradead.org; Fri, 22 Oct 2010 13:15:40 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 22 Oct 2010 15:15:30 +0200
-Message-Id: <1287753331-7696-13-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 22 Oct 2010 15:15:28 +0200
+Message-Id: <1287753331-7696-11-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1287753331-7696-1-git-send-email-s.hauer@pengutronix.de>
 References: <1287753331-7696-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,31 +21,71 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/13] defaultenv: fix mtdparts
+Subject: [PATCH 10/13] mci: align data for commands
 To: barebox@lists.infradead.org
 
-We had some \" in mtdparts to allow for spaces in the mtdparts
-kernel option. Barebox does not handle these correctly, so remove
-them and disallow spaces in mtdparts
+Some mci controllers cannot transfer data with their DMA engines
+if the data is not sufficiently aligned. Normally this is a driver
+problem, but hey, we have no problem aligning the data and keep
+the burden from the drivers.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Juergen Beisert <jbe@pengutronix.de>
 ---
- defaultenv/bin/boot |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+ drivers/mci/mci-core.c |   12 ++++++------
+ 1 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/defaultenv/bin/boot b/defaultenv/bin/boot
-index 3fdc5c1..42c7ec2 100644
---- a/defaultenv/bin/boot
-+++ b/defaultenv/bin/boot
-@@ -51,7 +51,7 @@ if [ -n $nand_parts ]; then
- fi
+diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
+index 34c4f8c..6f31cca 100644
+--- a/drivers/mci/mci-core.c
++++ b/drivers/mci/mci-core.c
+@@ -347,7 +347,7 @@ static int mci_switch(struct device_d *mci_dev, unsigned set, unsigned index,
+ static int mmc_change_freq(struct device_d *mci_dev)
+ {
+ 	struct mci *mci = GET_MCI_DATA(mci_dev);
+-	char ext_csd[512];
++	char *ext_csd = sector_buf;
+ 	char cardtype;
+ 	int err;
  
- if [ -n $mtdparts ]; then
--	bootargs="${bootargs} mtdparts=\"${mtdparts}\""
-+	bootargs="${bootargs} mtdparts=${mtdparts}"
- fi
+@@ -439,8 +439,8 @@ static int sd_change_freq(struct device_d *mci_dev)
+ 	struct mci *mci = GET_MCI_DATA(mci_dev);
+ 	struct mci_cmd cmd;
+ 	struct mci_data data;
+-	uint32_t switch_status[16];
+-	uint scr[2];
++	uint32_t *switch_status = sector_buf;
++	uint32_t *scr = sector_buf;
+ 	int timeout;
+ 	int err;
  
- if [ ! -e /dev/ram0.kernelraw ]; then
+@@ -461,7 +461,7 @@ static int sd_change_freq(struct device_d *mci_dev)
+ 
+ retry_scr:
+ 	pr_debug("Trying to read the SCR (try %d of %d)\n", 4 - timeout, 3);
+-	data.dest = (char *)&scr;
++	data.dest = (char *)scr;
+ 	data.blocksize = 8;
+ 	data.blocks = 1;
+ 	data.flags = MMC_DATA_READ;
+@@ -502,7 +502,7 @@ retry_scr:
+ 	timeout = 4;
+ 	while (timeout--) {
+ 		err = sd_switch(mci_dev, SD_SWITCH_CHECK, 0, 1,
+-				(uint8_t*)&switch_status);
++				(uint8_t*)switch_status);
+ 		if (err) {
+ 			pr_debug("Checking SD transfer switch frequency feature failed: %d\n", err);
+ 			return err;
+@@ -520,7 +520,7 @@ retry_scr:
+ 	if (!(__be32_to_cpu(switch_status[3]) & SD_HIGHSPEED_SUPPORTED))
+ 		return 0;
+ 
+-	err = sd_switch(mci_dev, SD_SWITCH_SWITCH, 0, 1, (uint8_t*)&switch_status);
++	err = sd_switch(mci_dev, SD_SWITCH_SWITCH, 0, 1, (uint8_t*)switch_status);
+ 	if (err) {
+ 		pr_debug("Switching SD transfer frequency failed: %d\n", err);
+ 		return err;
 -- 
 1.7.2.3
 
