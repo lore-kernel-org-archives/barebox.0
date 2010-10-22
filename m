@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1P9MhU-0006fJ-0i
-	for barebox@lists.infradead.org; Fri, 22 Oct 2010 18:50:51 +0000
-Date: Fri, 22 Oct 2010 20:50:45 +0200
+	id 1P9Mn9-00082O-8e
+	for barebox@lists.infradead.org; Fri, 22 Oct 2010 18:56:40 +0000
+Date: Fri, 22 Oct 2010 20:56:37 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20101022185045.GM22139@pengutronix.de>
-References: <1287765924-1856-1-git-send-email-r.schwebel@pengutronix.de>
-	<1287765924-1856-19-git-send-email-r.schwebel@pengutronix.de>
+Message-ID: <20101022185637.GN22139@pengutronix.de>
+References: <1287766405-1646-1-git-send-email-jbe@pengutronix.de>
+	<1287766405-1646-9-git-send-email-jbe@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1287765924-1856-19-git-send-email-r.schwebel@pengutronix.de>
+In-Reply-To: <1287766405-1646-9-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,16 +23,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 18/32] doc: silence doxygen warnings
-To: Robert Schwebel <r.schwebel@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 08/11] Add a video driver for S3C2440 bases platforms
+To: Juergen Beisert <jbe@pengutronix.de>
+Cc: barebox@lists.infradead.org, Juergen Beisert <juergen@kreuzholzen.de>
 
-Hi Robert,
+On Fri, Oct 22, 2010 at 06:53:22PM +0200, Juergen Beisert wrote:
+> From: Juergen Beisert <juergen@kreuzholzen.de>
+> 
+> Signed-off-by: Juergen Beisert <juergen@kreuzholzen.de>
+> ---
+>  arch/arm/mach-s3c24xx/include/mach/fb.h |   40 +++
+>  drivers/video/Kconfig                   |    6 +
+>  drivers/video/Makefile                  |    1 +
+>  drivers/video/s3c.c                     |  454 +++++++++++++++++++++++++++++++
+>  4 files changed, 501 insertions(+), 0 deletions(-)
+>  create mode 100644 arch/arm/mach-s3c24xx/include/mach/fb.h
+>  create mode 100644 drivers/video/s3c.c
+> 
+> diff --git a/drivers/video/s3c.c b/drivers/video/s3c.c
+> new file mode 100644
+> index 0000000..cd0f220
+> --- /dev/null
+> +++ b/drivers/video/s3c.c
+> +
+> +/**
+> + * Prepare the video hardware for a specified video mode
+> + * @param fb_info Framebuffer information
+> + * @param mode The video mode description to initialize
+> + * @return 0 on success
+> + *
+> + * FIXME Diese Routine darf die Pinx nach drau?en nicht aktivieren. Zur Zeit macht sie das!
 
-I applied the series up to this patch excluding the one Juergen
-commented about. For the rest I want to have a closer look.
-
-Sascha
+You should at least translate this to english ;)
 
 
 -- 
