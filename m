@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by casper.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1P9KsU-00029z-OE
-	for barebox@lists.infradead.org; Fri, 22 Oct 2010 16:54:04 +0000
+	id 1P9KsI-0002AH-My
+	for barebox@lists.infradead.org; Fri, 22 Oct 2010 16:53:52 +0000
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Fri, 22 Oct 2010 18:53:22 +0200
-Message-Id: <1287766405-1646-9-git-send-email-jbe@pengutronix.de>
+Date: Fri, 22 Oct 2010 18:53:25 +0200
+Message-Id: <1287766405-1646-12-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1287766405-1646-1-git-send-email-jbe@pengutronix.de>
 References: <1287766405-1646-1-git-send-email-jbe@pengutronix.de>
-MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,573 +16,489 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0177660058=="
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?q?=5BPATCH=2008/11=5D=20Add=20a=20video=20driver=20for=20S3C2440=20bases=20platforms?=
+Subject: [PATCH 11/11] Add doxygen documentation to the framebfuffer code
 To: barebox@lists.infradead.org
-Cc: Juergen Beisert <juergen@kreuzholzen.de>
 
---===============0177660058==
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Add some (hopyfully) helpful documentation to the source code.
 
-From: Juergen Beisert <juergen@kreuzholzen.de>
-
-Signed-off-by: Juergen Beisert <juergen@kreuzholzen.de>
+Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 ---
- arch/arm/mach-s3c24xx/include/mach/fb.h |   40 +++
- drivers/video/Kconfig                   |    6 +
- drivers/video/Makefile                  |    1 +
- drivers/video/s3c.c                     |  454 +++++++++++++++++++++++++++++++
- 4 files changed, 501 insertions(+), 0 deletions(-)
- create mode 100644 arch/arm/mach-s3c24xx/include/mach/fb.h
- create mode 100644 drivers/video/s3c.c
+ Documentation/developers_manual.dox |    1 +
+ Documentation/users_manual.dox      |    1 +
+ drivers/video/fb.c                  |  221 +++++++++++++++++++++++++++++++++++
+ include/fb.h                        |   98 ++++++++++-----
+ 4 files changed, 288 insertions(+), 33 deletions(-)
 
-diff --git a/arch/arm/mach-s3c24xx/include/mach/fb.h b/arch/arm/mach-s3c24xx/include/mach/fb.h
-new file mode 100644
-index 0000000..eec6164
---- /dev/null
-+++ b/arch/arm/mach-s3c24xx/include/mach/fb.h
-@@ -0,0 +1,40 @@
-+/*
-+ * Copyright (C) 2010 Juergen Beisert
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-+ * MA 02111-1307 USA
-+ *
-+ */
-+
-+#ifndef __MACH_FB_H_
-+# define __MACH_FB_H_
-+
-+#include <fb.h>
-+
-+struct s3c_fb_platform_data {
-+
-+	const struct fb_videomode *mode_list;
-+	unsigned mode_cnt;
-+
-+	int passive_display;	/**< enable support for STN or CSTN displays */
-+
-+	void *framebuffer;	/**< force framebuffer base address */
-+	unsigned size;		/**< force framebuffer size */
-+
-+	/** hook to enable backlight and stuff */
-+	void (*enable)(int);
-+};
-+
-+#endif /* __MACH_FB_H_ */
-diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
-index f96accc..64f68c4 100644
---- a/drivers/video/Kconfig
-+++ b/drivers/video/Kconfig
-@@ -49,4 +49,10 @@ config DRIVER_VIDEO_IMX_IPU
- 	  Add support for the IPU framebuffer device found on
- 	  i.MX31 and i.MX35 CPUs.
+diff --git a/Documentation/developers_manual.dox b/Documentation/developers_manual.dox
+index 620905e..609d0a0 100644
+--- a/Documentation/developers_manual.dox
++++ b/Documentation/developers_manual.dox
+@@ -21,5 +21,6 @@ This part of the documentation is intended for developers of @a barebox.
+ @li @subpage io_access_functions
+ @li @subpage mcfv4e_MCDlib
+ @li @subpage x86_runtime
++@li @subpage fb_for_developers
  
-+config S3C_VIDEO
-+	bool "S3C244x framebuffer driver"
-+	depends on ARCH_S3C24xx
-+	help
-+	  Add support for the S3C244x LCD controller.
-+
- endif
-diff --git a/drivers/video/Makefile b/drivers/video/Makefile
-index 179f0c4..4287fc8 100644
---- a/drivers/video/Makefile
-+++ b/drivers/video/Makefile
-@@ -2,3 +2,4 @@ obj-$(CONFIG_VIDEO) += fb.o
+ */
+diff --git a/Documentation/users_manual.dox b/Documentation/users_manual.dox
+index cd2b99c..1f0e35b 100644
+--- a/Documentation/users_manual.dox
++++ b/Documentation/users_manual.dox
+@@ -12,5 +12,6 @@ work easier.
+ @li @subpage partitions
+ @li @subpage x86_bootloader
+ @li @subpage net_netconsole
++@li @subpage fb_for_users
  
- obj-$(CONFIG_DRIVER_VIDEO_IMX) += imx.o
- obj-$(CONFIG_DRIVER_VIDEO_IMX_IPU) += imx-ipu-fb.o
-+obj-$(CONFIG_S3C_VIDEO) += s3c.o
-diff --git a/drivers/video/s3c.c b/drivers/video/s3c.c
-new file mode 100644
-index 0000000..cd0f220
---- /dev/null
-+++ b/drivers/video/s3c.c
-@@ -0,0 +1,454 @@
-+/*
-+ * Copyright (C) 2010 Juergen Beisert
-+ *
-+ * This driver is based on a patch found in the web:
-+ * (C) Copyright 2006 by OpenMoko, Inc.
-+ * Author: Harald Welte <laforge at openmoko.org>
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-+ * MA 02111-1307 USA
-+ *
-+ */
-+
-+/* #define DEBUG */
-+
-+#include <common.h>
-+#include <init.h>
-+#include <fb.h>
-+#include <driver.h>
-+#include <malloc.h>
-+#include <errno.h>
-+#include <asm/io.h>
-+#include <mach/gpio.h>
-+#include <mach/s3c24xx-generic.h>
-+#include <mach/s3c24x0-clocks.h>
-+#include <mach/fb.h>
-+
-+#define LCDCON1 0x00
-+# define PNRMODE(x) (((x) & 3) << 5)
-+# define BPPMODE(x) (((x) & 0xf) << 1)
-+# define SET_CLKVAL(x) (((x) & 0x3ff) << 8)
-+# define GET_CLKVAL(x) (((x) >> 8) & 0x3ff)
-+# define ENVID (1 << 0)
-+
-+#define LCDCON2 0x04
-+# define SET_VBPD(x) (((x) & 0xff) << 24)
-+# define SET_LINEVAL(x) (((x) & 0x3ff) << 14)
-+# define SET_VFPD(x) (((x) & 0xff) << 6)
-+# define SET_VSPW(x) ((x) & 0x3f)
-+
-+#define LCDCON3 0x08
-+# define SET_HBPD(x) (((x) & 0x7f) << 19)
-+# define SET_HOZVAL(x) (((x) & 0x7ff) << 8)
-+# define SET_HFPD(x) ((x) & 0xff)
-+
-+#define LCDCON4 0x0c
-+# define SET_HSPW(x) ((x) & 0xff)
-+
-+#define LCDCON5 0x10
-+# define BPP24BL (1 << 12)
-+# define FRM565 (1 << 11)
-+# define INV_CLK (1 << 10)
-+# define INV_HS (1 << 9)
-+# define INV_VS (1 << 8)
-+# define INV_DTA (1 << 7)
-+# define INV_DE (1 << 6)
-+# define INV_PWREN (1 << 5)
-+# define INV_LEND (1 << 4)	/* FIXME */
-+# define ENA_PWREN (1 << 3)
-+# define ENA_LEND (1 << 2)	/* FIXME */
-+# define BSWP (1 << 1)
-+# define HWSWP (1 << 0)
-+
-+#define LCDSADDR1 0x14
-+# define SET_LCDBANK(x) (((x) & 0x1ff) << 21)
-+# define GET_LCDBANK(x) (((x) >> 21) & 0x1ff)
-+# define SET_LCDBASEU(x) ((x) & 0x1fffff)
-+# define GET_LCDBASEU(x) ((x) & 0x1fffff)
-+
-+#define LCDSADDR2 0x18
-+# define SET_LCDBASEL(x) ((x) & 0x1fffff)
-+# define GET_LCDBASEL(x) ((x) & 0x1fffff)
-+
-+#define LCDSADDR3 0x1c
-+# define SET_OFFSIZE(x) (((x) & 0x7ff) << 11)
-+# define GET_OFFSIZE(x) (((x) >> 11) & 0x7ff)
-+# define SET_PAGE_WIDTH(x) ((x) & 0x3ff)
-+# define GET_PAGE_WIDTH(x) ((x) & 0x3ff)
-+
-+#define RED_LUT 0x20
-+#define GREEN_LUT 0x24
-+#define BLUE_LUT 0x28
-+
-+#define DITHMODE 0x4c
-+
-+#define TPAL 0x50
-+
-+#define LCDINTPND 0x54
-+
-+#define LCDSRCPND 0x58
-+
-+#define LCDINTMSK 0x5c
-+# define FIWSEL (1 << 2)
-+
-+#define TCONSEL 0x60
-+
-+#define RED 0
-+#define GREEN 1
-+#define BLUE 2
-+#define TRANSP 3
-+
-+struct s3cfb_host {
-+	struct fb_host fb_data;
-+	struct device_d *hw_dev;
-+	void __iomem *base;
-+};
-+
-+#define fb_info_to_s3cfb_host(x) ((struct s3cfb_host*)((x)->host))
-+#define s3cfb_host_to_s3c_fb_platform_data(x) ((struct s3c_fb_platform_data*)((x)->hw_dev->platform_data))
-+
-+/* the RGB565 true colour mode */
-+static const struct fb_bitfield def_rgb565[] = {
-+	[RED] = {
-+		.offset = 11,
-+		.length = 5,
-+	},
-+	[GREEN] = {
-+		.offset = 5,
-+		.length = 6,
-+	},
-+	[BLUE] = {
-+		.offset = 0,
-+		.length = 5,
-+	},
-+	[TRANSP] = {	/* no support for transparency */
-+		.length = 0,
-+	}
-+};
-+
-+/* the RGB888 true colour mode */
-+static const struct fb_bitfield def_rgb888[] = {
-+	[RED] = {
-+		.offset = 16,
-+		.length = 8,
-+	},
-+	[GREEN] = {
-+		.offset = 8,
-+		.length = 8,
-+	},
-+	[BLUE] = {
-+		.offset = 0,
-+		.length = 8,
-+	},
-+	[TRANSP] = {	/* no support for transparency */
-+		.length = 0,
-+	}
-+};
-+
+ */
+diff --git a/drivers/video/fb.c b/drivers/video/fb.c
+index 15d993d..9381bd1 100644
+--- a/drivers/video/fb.c
++++ b/drivers/video/fb.c
+@@ -32,6 +32,13 @@ static int fb_ioctl(struct cdev* cdev, int req, void *data)
+ }
+ 
+ #ifdef CONFIG_VIDEO_DELAY_INIT
 +/**
-+ * @param fb_info Framebuffer information
++ * Check if the framebuffer is already initialized
++ * @param fb_dev The framebuffer device to check
++ * @return 0 if the framebuffer is still uninitialized, -EPERM if already initialized
++ *
++ * @note Currently video mode initializing is a "one time only" task.
 + */
-+static void s3cfb_enable_controller(struct fb_info *fb_info)
-+{
-+	struct s3cfb_host *fbh = fb_info_to_s3cfb_host(fb_info);
-+	struct s3c_fb_platform_data *pdata = s3cfb_host_to_s3c_fb_platform_data(fbh);
-+	uint32_t con1;
-+
-+	pr_debug("%s called\n", __func__);
-+
-+	con1 = readl(fbh->base + LCDCON1);
-+
-+	con1 |= ENVID;
-+
-+	writel(con1, fbh->base + LCDCON1);
-+
-+	if (pdata->enable)
-+		(pdata->enable)(1);
-+}
-+
+ static int fb_check_if_already_initialized(struct device_d *fb_dev)
+ {
+ 	struct cdev *cdev = fb_dev->priv;
+@@ -45,6 +52,9 @@ static int fb_check_if_already_initialized(struct device_d *fb_dev)
+ 	return 0;
+ }
+ 
 +/**
-+ * @param fb_info Framebuffer information
++ * Change colour depth via device parameter
 + */
-+static void s3cfb_disable_controller(struct fb_info *fb_info)
-+{
-+	struct s3cfb_host *fbh = fb_info_to_s3cfb_host(fb_info);
-+	struct s3c_fb_platform_data *pdata = s3cfb_host_to_s3c_fb_platform_data(fbh);
-+	uint32_t con1;
-+
-+	pr_debug("%s called\n", __func__);
-+
-+	if (pdata->enable)
-+		(pdata->enable)(0);
-+
-+	con1 = readl(fbh->base + LCDCON1);
-+
-+	con1 &= ~ENVID;
-+
-+	writel(con1, fbh->base + LCDCON1);
-+}
-+
+ static int fb_cdepth_set(struct device_d *fb_dev, struct param_d *param, const char *val)
+ {
+ 	struct cdev *cdev = fb_dev->priv;
+@@ -67,6 +77,9 @@ static int fb_cdepth_set(struct device_d *fb_dev, struct param_d *param, const c
+ #endif
+ 
+ #ifdef CONFIG_VIDEO_DELAY_ENABLING
 +/**
-+ * Prepare the video hardware for a specified video mode
-+ * @param fb_info Framebuffer information
-+ * @param mode The video mode description to initialize
++ * Enable/disable video output via device parameter
++ */
+ static int fb_enable_set(struct device_d *fb_dev, struct param_d *param, const char *val)
+ {
+ 	struct cdev *cdev = fb_dev->priv;
+@@ -97,6 +110,10 @@ static int fb_enable_set(struct device_d *fb_dev, struct param_d *param, const c
+ }
+ #endif
+ 
++/**
++ * Output the list of supported video modes in this framebuffer
++ * @param host Platformdata of the hardware video device
++ */
+ static void fb_list_modes(struct fb_host *host)
+ {
+ 	unsigned u;
+@@ -109,6 +126,14 @@ static void fb_list_modes(struct fb_host *host)
+ 		printf("  '%s'\n", host->mode[u].name);
+ }
+ 
++/**
++ * Call the video hardware driver to initialize the given video mode
++ * @param fb_dev Framebuffer device
++ * @param mode Mode description to initialize
 + * @return 0 on success
 + *
-+ * FIXME Diese Routine darf die Pinx nach drau�en nicht aktivieren. Zur Zeit macht sie das!
++ * @note This call does not imply enabling the video output device!
 + */
-+static int s3cfb_initialize_mode(struct fb_info *fb_info, const struct fb_videomode *mode)
-+{
-+	struct s3cfb_host *fbh = fb_info_to_s3cfb_host(fb_info);
-+	struct s3c_fb_platform_data *pdata = s3cfb_host_to_s3c_fb_platform_data(fbh);
-+	unsigned size, hclk, div;
-+	uint32_t con1, con2, con3, con4, con5 = 0;
-+
-+	pr_debug("%s called\n", __func__);
-+
-+	if (pdata->passive_display != 0) {
-+		pr_err("Passive displays are currently not supported\n");
-+		return -EINVAL;
-+	}
-+
-+	/*
-+	 * we need at least this amount of memory for the framebuffer
-+	 */
-+	size = mode->xres * mode->yres * (fb_info->bits_per_pixel >> 3);
-+	if (fb_info->fb_dev->size != 0) {
-+		if (size > fb_info->fb_dev->size) {
-+			pr_err("Cannot initialize video mode '%s': Its too large. "
-+				"Required bytes are %u, available only %u\n",
-+				mode->name, size, fb_info->fb_dev->size);
-+			return -EINVAL;
-+		}
-+	} else
-+		fb_info->fb_dev->size = size;
-+
-+	/*
-+	 * if no framebuffer memory was specified yet, allocate one,
-+	 * and allocate more memory, on user request
-+	 */
-+	if (fb_info->fb_dev->map_base == 0U)
-+		fb_info->fb_dev->map_base = (resource_size_t)xzalloc(fb_info->fb_dev->size);
-+
-+	/* its useful to enable the unit's clock */
-+	s3c244x_mod_clock(CLK_LCDC, 1);
-+
-+	/* ensure video output is _off_ */
-+	writel(0x00000000, fbh->base + LCDCON1);
-+
-+	hclk = s3c24xx_get_hclk() / 1000U;	/* hclk in kHz */
-+	div = hclk / PICOS2KHZ(mode->pixclock);
-+	if (div < 3)
-+		div  = 3;
-+	/* pixel clock is: (hclk) / ((div + 1) * 2) */
-+	div += 1;
-+	div >>= 1;
-+	div -= 1;
-+
-+	con1 = PNRMODE(3) | SET_CLKVAL(div);	/* PNRMODE=3 is TFT */
-+
-+	switch (fb_info->bits_per_pixel) {
-+#if 0
-+	/* TODO add CLUT based modes */
-+	case 1:
-+		con1 |= BPPMODE(8);
-+		break;
-+	case 2:
-+		con1 |= BPPMODE(9);
-+		break;
-+	case 4:
-+		con1 |= BPPMODE(10);
-+		break;
-+	case 8:
-+		con1 |= BPPMODE(11);
-+		break;
-+#endif
-+	case 16:
-+		con1 |= BPPMODE(12);
-+		con5 |= FRM565;
-+		fb_info->red = def_rgb565[RED];
-+		fb_info->green = def_rgb565[GREEN];
-+		fb_info->blue = def_rgb565[BLUE];
-+		fb_info->transp =  def_rgb565[TRANSP];
-+		break;
-+	case 24:
-+		con1 |= BPPMODE(13);
-+		con5 |= BPP24BL;	/* FIXME */
-+		fb_info->red = def_rgb888[RED];
-+		fb_info->green = def_rgb888[GREEN];
-+		fb_info->blue = def_rgb888[BLUE];
-+		fb_info->transp =  def_rgb888[TRANSP];
-+		break;
-+	default:
-+		pr_err("Invalid bits per pixel value: %u\n", fb_info->bits_per_pixel);
-+		return -EINVAL;
-+	}
-+
-+	/* 'normal' in register description means positive logic */
-+	if (!(mode->sync & FB_SYNC_HOR_HIGH_ACT))
-+		con5 |= INV_HS;
-+	if (!(mode->sync & FB_SYNC_VERT_HIGH_ACT))
-+		con5 |= INV_VS;
-+	if (!(mode->sync & FB_SYNC_DE_HIGH_ACT))
-+		con5 |= INV_DE;
-+	if (mode->sync & FB_SYNC_CLK_INVERT)
-+		con5 |= INV_CLK;	/* display should latch at the rising edge */
-+	if (mode->sync & FB_SYNC_SWAP_RGB)
-+		con5 |= HWSWP;
-+
-+	/* TODO power enable config via platform data */
-+
-+	/* vertical timing */
-+	con2 = SET_VBPD(mode->upper_margin - 1) |
-+		SET_LINEVAL(mode->yres - 1) |
-+		SET_VFPD(mode->lower_margin - 1) |
-+		SET_VSPW(mode->vsync_len - 1);
-+
-+	/* horizontal timing */
-+	con3 = SET_HBPD(mode->left_margin - 1) |
-+		SET_HOZVAL(mode->xres - 1) |
-+		SET_HFPD(mode->right_margin - 1);
-+	con4 = SET_HSPW(mode->hsync_len - 1);
-+
-+	/* basic timing setup */
-+	writel(con1, fbh->base + LCDCON1);
-+	pr_debug(" Writing %08X into %08X (con1)\n", con1, fbh->base + LCDCON1);
-+	writel(con2, fbh->base + LCDCON2);
-+	pr_debug(" Writing %08X into %08X (con2)\n", con2, fbh->base + LCDCON2);
-+	writel(con3, fbh->base + LCDCON3);
-+	pr_debug(" Writing %08X into %08X (con3)\n", con3, fbh->base + LCDCON3);
-+	writel(con4, fbh->base + LCDCON4);
-+	pr_debug(" Writing %08X into %08X (con4)\n", con4, fbh->base + LCDCON4);
-+	writel(con5, fbh->base + LCDCON5);
-+	pr_debug(" Writing %08X into %08X (con5)\n", con5, fbh->base + LCDCON5);
-+
-+	pr_debug("Setting up the fb baseadress to %08X\n", fb_info->fb_dev->map_base);
-+
-+	/* framebuffer memory setup */
-+	writel(fb_info->fb_dev->map_base >> 1, fbh->base + LCDSADDR1);
-+	size = mode->xres * (fb_info->bits_per_pixel >> 3) * (mode->yres);
-+	writel(SET_LCDBASEL((fb_info->fb_dev->map_base + size) >> 1), fbh->base + LCDSADDR2);
-+
-+	writel(SET_OFFSIZE(0) |
-+		SET_PAGE_WIDTH((mode->xres * fb_info->bits_per_pixel) >> 4),
-+		fbh->base + LCDSADDR3);
-+
-+	writel(FIWSEL, fbh->base + LCDINTMSK);
-+
-+	return 0;
-+}
+ static int fb_activate_mode(struct device_d *fb_dev, const struct fb_videomode *mode)
+ {
+ 	struct cdev *cdev = fb_dev->priv;
+@@ -133,6 +158,15 @@ static int fb_activate_mode(struct device_d *fb_dev, const struct fb_videomode *
+ }
+ 
+ #ifdef CONFIG_VIDEO_DELAY_INIT
++/**
++ * Setup the requested video mode via device parameter
++ * @param dev Device instance
++ * @param param FIXME
++ * @param name Video mode name to activate
++ * @return 0 on success
++ *
++ * @note One time setup only, changing video modes is currently not supported.
++ */
+ static int fb_mode_set(struct device_d *fb_dev, struct param_d *param, const char *name)
+ {
+ 	struct fb_host *host = fb_dev->platform_data;
+@@ -211,6 +245,14 @@ static void fb_info(struct device_d *fb_dev)
+ 	fb_list_modes(fb_dev->platform_data);
+ }
+ 
++/**
++ * Add parameter to the framebuffer device on demand
++ * @param dev Device instance
++ * @return 0 on success
++ *
++ * Some parameter are only available (or usefull) if the intialization or
++ * enabling the video hardware is delayed.
++ */
+ static int add_fb_parameter(struct device_d *fb_dev)
+ {
+ #ifdef CONFIG_VIDEO_DELAY_INIT
+@@ -299,6 +341,13 @@ static int framebuffer_init(void)
+ 
+ device_initcall(framebuffer_init);
+ 
++/**
++ * Create a new framebuffer device (for convenience)
++ * @param pinfo Video device's platform data for this framebuffer device
++ * @param base force framebuffer's base address to given value, or NULL for dynamically allocation
++ * @param sze force framebuffer's size to this value, or 0 for dynamically allocation
++ * @return Pointer to the newly created device or NULL on failure
++ */
+ struct device_d *register_framebuffer(struct fb_host *host, void *base, unsigned size)
+ {
+ 	struct device_d *fb_dev;
+@@ -322,3 +371,175 @@ struct device_d *register_framebuffer(struct fb_host *host, void *base, unsigned
+ 
+ 	return fb_dev;
+ }
 +
 +/**
-+ * Print some information about the current hardware state
-+ * @param hw_dev S3C video device
-+ */
-+#ifdef CONFIG_VIDEO_INFO_VERBOSE
-+static void s3cfb_info(struct device_d *hw_dev)
-+{
-+	uint32_t con1, con2, con3, con4, con5, addr1, addr2, addr3;
++@page fb_for_users Framebuffer handling for users
 +
-+	con1 = readl(hw_dev->map_base + LCDCON1);
-+	addr1 = readl(hw_dev->map_base + LCDSADDR1);
-+	addr2 = readl(hw_dev->map_base + LCDSADDR2);
-+	addr3 = readl(hw_dev->map_base + LCDSADDR3);
++@section regular_fb Static framebuffer setup
 +
-+	printf(" Video hardware info:\n");
-+	printf("  Video clock is running at %u Hz\n", s3c24xx_get_hclk() / ((GET_CLKVAL(con1) + 1) * 2));
-+	printf("  Video memory bank starts at 0x%08X\n", GET_LCDBANK(addr1) << 22);
-+	printf("  Video memory bank offset: 0x%08X\n", GET_LCDBASEU(addr1));
-+	printf("  Video memory end: 0x%08X\n", GET_LCDBASEU(addr2));
-+	printf("  Virtual screen offset size: %u half words\n", GET_OFFSIZE(addr3));
-+	printf("  Virtual screen page width: %u half words\n", GET_PAGE_WIDTH(addr3));
-+}
-+#endif
++After registering the video device the driver initializes the video hardware, clears the
++framebuffer (set all to zero) and enables the video output hardware. This will happen
++prior any shell code is running. In this case a user will see an activated video output device
++(an LC display for example or a connected CRT) showing a black screen.
++When the shell code starts, its possible to write some kind of image into the framebuffer memory
++to show a splash screen (refer 'bmp' command).
 +
-+/*
-+ * There is only one video hardware instance available.
-+ * It makes no sense to dynamically allocate this data
-+ */
-+static struct s3cfb_host host_data = {
-+	.fb_data.fb_mode = s3cfb_initialize_mode,
-+	.fb_data.fb_enable = s3cfb_enable_controller,
-+	.fb_data.fb_disable = s3cfb_disable_controller,
-+};
++@section delayed_fb Dynamic framebuffer setup
 +
-+static int s3cfb_probe(struct device_d *hw_dev)
-+{
-+	struct s3c_fb_platform_data *pdata = hw_dev->platform_data;
-+	struct device_d *fb_dev;
++To avoid a black screen until the image can be written, enabling the video output device
++can be delayed. Say 'y' to the "Delayed enabling" menu entry to activate this feature. This
++will initialize the video hardware, but do not enable the video output device. Instead it adds
++the parameter 'enable' to the framebuffer device. The video output device kept disabled until the
++command
++@verbatim
++barebox:/ fb0.enable=1
++@endverbatim
++is given in a shell script.
 +
-+	pr_debug("%s called\n", __func__);
++If the platform supports more than one video output device its possible to select one of
++the supported ones at runtime. Say 'y' to the "Delayed initialization" menu entry to activate
++this feature. This will add the parameter 'mode' to the framebuffer device and will delay the
++initialization of the video hardware until the video output device gets specified.
++It will also delay the enabling of the video output device.
 +
-+	if (pdata == NULL) {
-+		pr_debug("Framebuffer driver missing platform data");
-+		return -ENODEV;
-+	}
++Running the @b devinfo command on this fb0 device will output:
++@verbatim
++barebox:/ devinfo fb0
++base  : 0x00000000
++size  : 0x00000000
++driver: framebuffer
 +
-+	/* enable unit's clock */
-+	s3c244x_mod_clock(CLK_LCDC, 1);
++ Video/Mode info:
++  Video output not enabled
++ Current video mode:
++  No video mode selected yet
++ Supported video mode(s):
++  'QVGA'
++  'VGA'
++Parameters:
++          cdepth = 16
++            mode = <NULL>
++          enable = <NULL>
++@endverbatim
 +
-+	writel(0, hw_dev->map_base + LCDCON1);
-+	/* off may be means high level */
-+	writel(0, hw_dev->map_base + LCDCON5);
++@note As long @b devinfo reports a @b base or @b size of zero there is
++@b no framebuffer memory yet!
 +
-+	/* disable it again until user request */
-+	s3c244x_mod_clock(CLK_LCDC, 0);
++This framebuffer device is not initialized yet. As shown in the list, it
++supports two video modes: QVGA and VGA.
 +
-+	/* add runtime hardware info */
-+	host_data.hw_dev = hw_dev;
-+	host_data.base = (void*)hw_dev->map_base;
++So, the user can first specifiy the video output device with (for example)
++@verbatim
++barebox:/ fb0.mode="QVGA"
++@endverbatim
 +
-+	/* add runtime video info */
-+	host_data.fb_data.mode = pdata->mode_list;
-+	host_data.fb_data.mode_cnt = pdata->mode_cnt;
++After this the @b devinfo output changes to:
++@verbatim
++barebox:/ devinfo fb0
++base  : 0x31fc0000
++size  : 0x00040000
++driver: framebuffer
 +
-+	fb_dev = register_framebuffer(&host_data.fb_data, pdata->framebuffer, pdata->size);
-+	if (fb_dev == NULL) {
-+		pr_err("Failed to register framebuffer\n");
-+		return -EINVAL;
-+	}
++ Video/Mode info:
++  Video output not enabled
++ Current video mode:
++  Name: QVGA
++  Refresh rate: 60 Hz
++  Horizontal active pixel: 320
++  Vertical active lines: 240
++  Pixel clock: 6500 kHz
++  Left/Right margin (pixel): 20/20
++  Upper/Lower margin (lines): 10/10
++  HSYNC length in pixel: 10, polarity: high
++  VSYNC length in lines: 5, polarity: high
++  Colour depth: 16 bpp
++ Supported video mode(s):
++  'QVGA'
++  'VGA'
++Parameters:
++          cdepth = 16
++            mode = QVGA
++          enable = <NULL>
++@endverbatim
++As one can see, the framebuffer has a @b base, a @b size and a video mode
++configuration now.
++@note Take care if setting a video mode fails. In this case @b base and @b size
++will kept at zero!
 +
-+	return 0;
-+}
++With this setting its possible to write some kind of image into the framebuffer
++memory and enabling the video output as the final step at runtime
++@verbatim
++barebox:/ fb0.enable=1
++@endverbatim
++The video output is fully enabled now:
++@verbatim
++barebox:/ devinfo fb0
++base  : 0x31fc0000
++size  : 0x00040000
++driver: framebuffer
 +
-+static struct driver_d s3cfb_driver = {
-+	.name	= "s3cfb",
-+	.probe	= s3cfb_probe,
-+#ifdef CONFIG_VIDEO_INFO_VERBOSE
-+	.info	= s3cfb_info,
-+#endif
-+};
++ Video/Mode info:
++  Video output enabled
++ Current video mode:
++  Name: QVGA
++  Refresh rate: 60 Hz
++  Horizontal active pixel: 320
++  Vertical active lines: 240
++  Pixel clock: 6500 kHz
++  Left/Right margin (pixel): 20/20
++  Upper/Lower margin (lines): 10/10
++  HSYNC length in pixel: 10, polarity: high
++  VSYNC length in lines: 5, polarity: high
++  Colour depth: 16 bpp
++ Supported video mode(s):
++  'QVGA'
++  'VGA'
++Parameters:
++          cdepth = 16
++            mode = QVGA
++          enable = 1
++@endverbatim
 +
-+static int s3cfb_init(void)
-+{
-+	return register_driver(&s3cfb_driver);
-+}
++@section other_fb_params Other framebuffer parameter
++@verbatim
++fb0.cdepth=[1 | 4 | 8 | 16 | 24 | 32]
++@endverbatim
 +
-+device_initcall(s3cfb_init);
++Only available if "Delayed initialization" is selected. Colour depth to be used with the
++framebuffer. Its unit is "bit per pixel" and the default value is 16 bits per pixel (means
++"RGB565" format). This value can only be changed prior specifying the video mode.
++
++@note The possible values from the list above are hardware dependend.
++
++@note The default colour depth value may also depend on the hardware
++*/
 +
 +/**
-+ * The S3C244x LCD controller supports passive (CSTN/STN) and active (TFT) LC displays
++ * @page fb_for_developers Framebuffer handling for developers
++ * For the platform developer:
 + *
-+ * The driver itself currently supports only active TFT LC displays in the follwing manner:
++ * When filling the platform specific video output device description you can still provide only one entry and
++ * you should setup the 'mode_cnt' entry with 0: Initialisation of the video hardware and enabling the
++ * video output device will still happen immediately.
 + *
-+ *  * Palletized colours
-+ *    - 1 bpp
-+ *    - 2 bpp
-+ *    - 4 bpp
-+ *    - 8 bpp
-+ *  * True colours
-+ *    - 16 bpp
-+ *    - 24 bpp
++ * If you provide more than one video output device description use an array of this type. In this case the
++ * 'mode_cnt' entry must contain the count of existing array entries (> 1). Give each video output
++ * device description entry an unique name, because a user will select the required output device by this name
++ * at runtime.
++ *
++ * For the video hardware driver developer:
++ *
++ * Don't initialize a special video mode in your probe function (e.g. don't allocate any framebuffer memory aso).
++ * The framework will call back your exported fb_mode() function to do so (immediately ore delayed).
++ *
++ * Don't enable video output in your probe or exported fb_mode() function. Also do not switch on any LCD or
++ * backlight if any. The framework will call your exported fb_enable() function to do so (immediately ore delayed).
++ *
++ * If your hardware cannot handle the default 16 bit colour depth, change the 'bits_per_pixel' field
++ * prior registering your framebuffer.
++ *
++ * When your exported fb_mode() function is called, calculate the amount of memory you need for the requested
++ * video mode and colour depth, save this value to framebuffer's info struct in field 'size' and allocate some
++ * memory with this size for the framebuffer.
++ *
 + */
+diff --git a/include/fb.h b/include/fb.h
+index e0cd6aa..b17cc7d 100644
+--- a/include/fb.h
++++ b/include/fb.h
+@@ -18,19 +18,27 @@
+ 					/* vtotal = 121d/242n/484i => NTSC */
+ #define FB_SYNC_ON_GREEN	32	/* sync on green */
+ /* LC display related settings */
++/** LC display uses active high data enable signal */
+ #define FB_SYNC_DE_HIGH_ACT	(1 << 6)
++/** LC display will latch its data at clock's rising edge */
+ #define FB_SYNC_CLK_INVERT	(1 << 7)
++/** output RGB data inverted */
+ #define FB_SYNC_DATA_INVERT	(1 << 8)
++/** Stop clock if no data is sent (required for passive displays) */
+ #define FB_SYNC_CLK_IDLE_EN	(1 << 9)
++/** swap RGB to BGR */
+ #define FB_SYNC_SWAP_RGB	(1 << 10)
++/** FIXME */
+ #define FB_SYNC_CLK_SEL_EN	(1 << 11)
++/** enable special signals for SHARP displays (_very_ hardware specific) */
+ #define FB_SYNC_SHARP_MODE	(1 << 31)
+ 
+-#define FB_VMODE_NONINTERLACED  0	/* non interlaced */
+-#define FB_VMODE_INTERLACED	1	/* interlaced	*/
++#define FB_VMODE_NONINTERLACED  0	/** non interlaced */
++#define FB_VMODE_INTERLACED	1	/** interlaced	*/
+ #define FB_VMODE_DOUBLE		2	/* double scan */
+-#define FB_VMODE_ODD_FLD_FIRST	4	/* interlaced: top line first */
++#define FB_VMODE_ODD_FLD_FIRST	4	/** interlaced: top line first */
+ /* LC display related settings */
++/** output two screen parts at once (required for passive displays) */
+ #define FB_VMODE_DUAL_SCAN	8
+ #define FB_VMODE_MASK		255
+ 
+@@ -42,19 +50,24 @@
+ #define KHZ2PICOS(a) (1000000000UL/(a))
+ 
+ struct fb_videomode {
+-	const char *name;	/* optional */
+-	unsigned refresh;		/* optional */
+-	unsigned xres;
+-	unsigned yres;
+-	unsigned pixclock;
+-	unsigned left_margin;
+-	unsigned right_margin;
+-	unsigned upper_margin;
+-	unsigned lower_margin;
+-	unsigned hsync_len;
+-	unsigned vsync_len;
+-	unsigned sync;
+-	unsigned vmode;
++	const char *name;	/**< always required and must be unique */
++	unsigned refresh;	/**< frame refresh rate in [Hz] (optional) */
++	unsigned xres;		/**< visible horizontal pixel */
++	unsigned yres;		/**< visible vertical pixel */
++	unsigned pixclock;	/**< pixel clock period in [ps]. Refer
++				     PICOS2KHZ/KHZ2PICOS macros */
++	unsigned left_margin;	/**< distance in pixels between ending active HSYNC
++				     and starting visible line content */
++	unsigned right_margin;	/**< distance in pixels between ending visible line
++				     content and starting active HSYNC */
++	unsigned upper_margin;	/**< distance in lines between ending active VSYNC
++				     and the first line with visible content */
++	unsigned lower_margin;	/**< distance in lines between last line with
++				     visible content and starting active VSYNC */
++	unsigned hsync_len;	/**< HSYNC's active length in pixels */
++	unsigned vsync_len;	/**< VSYNC's active lenght in lines */
++	unsigned sync;		/**< sync information, refer FB_SYNC_* macros */
++	unsigned vmode;		/**< video mode information, refer FB_VMODE_* macros */
+ 	unsigned flag;
+ };
+ 
+@@ -69,18 +82,33 @@ struct fb_videomode {
+  * of available palette entries (i.e. # of entries = 1 << length).
+  */
+ struct fb_bitfield {
+-	unsigned offset;		/* beginning of bitfield	*/
+-	unsigned length;		/* length of bitfield		*/
+-	int msb_right;			/* != 0 : Most significant bit is right */
++	unsigned offset;		/**< beginning of bitfield	*/
++	unsigned length;		/**< length of bitfield		*/
++	int msb_right;			/**< != 0 : Most significant bit is right */
+ };
+ 
+ struct fb_info;
+ 
++/**
++ * Framebuffer device's platform information
++ *
++ * The video hardware driver must set the following fields:
++ * - 'fb_mode' function to setup a specific video mode
++ * - 'fb_enable' function to activate the video output
++ * - 'fb_disable' function to deactivate the video output
++ * - 'fb_setcolreg' function to ???????? FIXME
++ *
++ * The video hardware driver can set default values for the following fields:
++ * - 'mode' if the driver supports only specific video modes.
++ * - 'mode_cnt' must be set, if 'mode_list' is given
++ * - 'bits_per_pixel' if the video hardware driver defaults to another bpp than 16
++ */
+ struct fb_host {
+-	const struct fb_videomode *mode;
+-	unsigned mode_cnt;
++	/* information about possible video mode(s) */
++	const struct fb_videomode *mode;	/**< Array of modes */
++	unsigned mode_cnt;		/**< count of entries in 'mode'. */
+ 
+-	struct device_d *hw_dev;
++	struct device_d *hw_dev;	/**< the host device */
+ 
+ 	/* callbacks into the video hardware driver */
+ 	int (*fb_setcolreg)(struct fb_info*, unsigned, unsigned, unsigned, unsigned, unsigned);
+@@ -88,24 +116,28 @@ struct fb_host {
+ 	void (*fb_enable)(struct fb_info*);
+ 	void (*fb_disable)(struct fb_info*);
+ 
+-	unsigned bits_per_pixel;
++	unsigned bits_per_pixel;	/**< default bpp, 0 = use framebuffer's default */
+ };
+ 
++/**
++ * Framebuffer's runtime information
++ */
+ struct fb_info {
+-	struct fb_host *host;
+-	struct device_d *fb_dev;
++	struct fb_host *host;		/**< host data this fb is based on */
++	struct device_d *fb_dev;	/**< the framebuffer device */
++	/* information about current video mode */
++	/** the currently active video mode if set. Can be NULL = no video mode set yet */
+ 	const struct fb_videomode *active_mode;
++	unsigned xres;			/**< visible horizontal pixel count */
++	unsigned yres;			/**< visible vertical line count */
++	unsigned bits_per_pixel;	/**< requested colour depth */
+ 
+-	unsigned xres;			/* visible resolution		*/
+-	unsigned yres;
+-	unsigned bits_per_pixel;	/* guess what			*/
+-
+-	int grayscale;			/* != 0 Graylevels instead of colors */
++	int grayscale;			/**< != 0 Graylevels instead of colors */
+ 
+-	struct fb_bitfield red;		/* bitfield in fb mem if true color, */
+-	struct fb_bitfield green;	/* else only length is significant */
++	struct fb_bitfield red;		/**< bitfield in fb mem if true color, */
++	struct fb_bitfield green;	/**< else only length is significant */
+ 	struct fb_bitfield blue;
+-	struct fb_bitfield transp;	/* transparency			*/
++	struct fb_bitfield transp;	/**< transparency			*/
+ 
+ #ifdef CONFIG_VIDEO_DELAY_ENABLING
+ 	int enabled;
 -- 
 1.7.2.3
 
-
-
---===============0177660058==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============0177660058==--
