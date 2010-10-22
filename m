@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1P9KkY-0002cE-Kp
+	id 1P9KkY-0002cN-Ki
 	for barebox@lists.infradead.org; Fri, 22 Oct 2010 16:45:58 +0000
 From: Robert Schwebel <r.schwebel@pengutronix.de>
-Date: Fri, 22 Oct 2010 18:44:57 +0200
-Message-Id: <1287765924-1856-6-git-send-email-r.schwebel@pengutronix.de>
+Date: Fri, 22 Oct 2010 18:45:03 +0200
+Message-Id: <1287765924-1856-12-git-send-email-r.schwebel@pengutronix.de>
 In-Reply-To: <1287765924-1856-1-git-send-email-r.schwebel@pengutronix.de>
 References: <1287765924-1856-1-git-send-email-r.schwebel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,39 +21,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/32] Doxyfile: remove non-existing directories
+Subject: [PATCH 11/32] doc: eliminate nonexisting reference
 To: barebox@lists.infradead.org
 
-The example and image directories are currently not used, so we remove
-the references from the Doxyfile. Silences a doxygen warning.
+Silence this warning:
+arch/architecture.dox:89: Warning: unable to resolve reference to `dev_x86_mach' for \ref command
 
 Signed-off-by: Robert Schwebel <r.schwebel@pengutronix.de>
 ---
- Doxyfile |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
+ Documentation/developers_manual.dox |    1 -
+ arch/x86/mach-x86.dox               |    2 +-
+ 2 files changed, 1 insertions(+), 2 deletions(-)
 
-diff --git a/Doxyfile b/Doxyfile
-index 46f086c..21a6212 100644
---- a/Doxyfile
-+++ b/Doxyfile
-@@ -544,7 +544,7 @@ EXCLUDE_SYMBOLS        =
- # directories that contain example code fragments that are included (see
- # the \include command).
+diff --git a/Documentation/developers_manual.dox b/Documentation/developers_manual.dox
+index 620905e..2f7d360 100644
+--- a/Documentation/developers_manual.dox
++++ b/Documentation/developers_manual.dox
+@@ -20,6 +20,5 @@ This part of the documentation is intended for developers of @a barebox.
+ @li @subpage barebox_simul
+ @li @subpage io_access_functions
+ @li @subpage mcfv4e_MCDlib
+-@li @subpage x86_runtime
  
--EXAMPLE_PATH           = Documentation/examples/
-+EXAMPLE_PATH           =
+ */
+diff --git a/arch/x86/mach-x86.dox b/arch/x86/mach-x86.dox
+index fc5b85a..661e905 100644
+--- a/arch/x86/mach-x86.dox
++++ b/arch/x86/mach-x86.dox
+@@ -2,7 +2,7 @@
+  * how to integrate a new CPU (MACH) into this part of the barebox tree
+  */
  
- # If the value of the EXAMPLE_PATH tag contains directories, you can use the
- # EXAMPLE_PATTERNS tag to specify one or more wildcard pattern (like *.cpp
-@@ -564,7 +564,7 @@ EXAMPLE_RECURSIVE      = NO
- # directories that contain image that are included in the documentation (see
- # the \image command).
+-/** @page x86_runtime barebox on x86 at runtime
++/** @page dev_x86_mach barebox on x86 at runtime
  
--IMAGE_PATH             = Documentation/images/
-+IMAGE_PATH             =
+ @section mach_x86_memory_layout barebox's memory layout (BIOS based)
  
- # The INPUT_FILTER tag can be used to specify a program that doxygen should
- # invoke to filter for each input file. Doxygen will invoke the filter program
 -- 
 1.7.2.3
 
