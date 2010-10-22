@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by casper.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1P9Krz-000287-E5
-	for barebox@lists.infradead.org; Fri, 22 Oct 2010 16:53:32 +0000
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Fri, 22 Oct 2010 18:53:15 +0200
-Message-Id: <1287766405-1646-2-git-send-email-jbe@pengutronix.de>
-In-Reply-To: <1287766405-1646-1-git-send-email-jbe@pengutronix.de>
-References: <1287766405-1646-1-git-send-email-jbe@pengutronix.de>
+	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1P9Kke-0002cF-57
+	for barebox@lists.infradead.org; Fri, 22 Oct 2010 16:46:02 +0000
+From: Robert Schwebel <r.schwebel@pengutronix.de>
+Date: Fri, 22 Oct 2010 18:45:00 +0200
+Message-Id: <1287765924-1856-9-git-send-email-r.schwebel@pengutronix.de>
+In-Reply-To: <1287765924-1856-1-git-send-email-r.schwebel@pengutronix.de>
+References: <1287765924-1856-1-git-send-email-r.schwebel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,263 +21,113 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/11] imx: Separate framebuffer platformdata and the videomode
+Subject: [PATCH 08/32] doc: let doxygen find some assembler functions
 To: barebox@lists.infradead.org
 
-This patch separates the imx platformdata and its videomode in two structures,
-in order to support more than one defined videomode in the boardfile. This
-is intended to support runtime videomode selection later on. It also uses
-now the same videomode setup style than the imx-fpu based systems (like the
-i.MX35).
+Silences these warnings:
 
-    Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
+arch/x86/boot/boot_hdisk.S:29: Warning: documented function `void real_start' was not declared or defined.
+arch/x86/boot/boot_main.S:28: Warning: documented function `void _start' was not declared or defined.
+arch/x86/boot/pmjump.S:20: Warning: documented function `void protected_mode_jump' was not declared or defined.
+arch/x86/lib/memory16.S:32: Warning: documented function `unsigned short bios_get_memsize' was not declared or defined.
+arch/x86/lib/traveler.S:31: Warning: documented function `void real_to_prot' was not declared or defined.
+arch/x86/lib/traveler.S:38: Warning: documented function `void prot_to_real' was not declared or defined.
+
+Signed-off-by: Robert Schwebel <r.schwebel@pengutronix.de>
 ---
- arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c |   28 +++++++++--------
- arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c |   28 +++++++++--------
- arch/arm/boards/guf-neso/board.c                  |   28 +++++++++--------
- arch/arm/boards/imx21ads/imx21ads.c               |   34 +++++++++++----------
- arch/arm/boards/pcm038/pcm038.c                   |   28 +++++++++--------
- arch/arm/mach-imx/include/mach/imxfb.h            |    2 +-
- drivers/video/imx.c                               |    6 ++--
- 7 files changed, 82 insertions(+), 72 deletions(-)
+ arch/x86/boot/boot_hdisk.S |    2 --
+ arch/x86/boot/boot_main.S  |    2 --
+ arch/x86/boot/pmjump.S     |    2 --
+ arch/x86/lib/memory16.S    |    2 --
+ arch/x86/lib/traveler.S    |    3 ---
+ 5 files changed, 0 insertions(+), 11 deletions(-)
 
-diff --git a/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c b/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
-index 805ffe2..032897a 100644
---- a/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
-+++ b/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
-@@ -120,20 +120,22 @@ static struct device_d nand_dev = {
- 	.platform_data	= &nand_info,
- };
+diff --git a/arch/x86/boot/boot_hdisk.S b/arch/x86/boot/boot_hdisk.S
+index 40388e9..fc4c4d5 100644
+--- a/arch/x86/boot/boot_hdisk.S
++++ b/arch/x86/boot/boot_hdisk.S
+@@ -31,7 +31,6 @@
+  * from the boot media.
+  */
  
-+static struct fb_videomode cmo_display = {
-+	.name		= "CMO-QVGA",
-+	.refresh	= 60,
-+	.xres		= 320,
-+	.yres		= 240,
-+	.pixclock	= KHZ2PICOS(6500),
-+	.hsync_len	= 30,
-+	.left_margin	= 38,
-+	.right_margin	= 20,
-+	.vsync_len	= 3,
-+	.upper_margin	= 15,
-+	.lower_margin	= 4,
-+};
-+
- static struct imx_fb_videomode imxfb_mode = {
--	.mode = {
--		.name		= "CMO-QVGA",
--		.refresh	= 60,
--		.xres		= 320,
--		.yres		= 240,
--		.pixclock	= KHZ2PICOS(6500),
--		.hsync_len	= 30,
--		.left_margin	= 38,
--		.right_margin	= 20,
--		.vsync_len	= 3,
--		.upper_margin	= 15,
--		.lower_margin	= 4,
--	},
-+	.mode		= &cmo_display,
- 	.pcr		= 0xCAD08B80,
- 	.bpp		= 16,
- };
-diff --git a/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c b/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
-index 62fc14e..3ea2466 100644
---- a/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
-+++ b/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
-@@ -186,20 +186,22 @@ static void eukrea_cpuimx27_mmu_init(void)
- #endif
+-#ifndef DOXYGEN_SHOULD_SKIP_THIS
  
- #ifdef CONFIG_DRIVER_VIDEO_IMX
-+static struct fb_videomode cmo_display = {
-+	.name		= "CMO-QVGA",
-+	.refresh	= 60,
-+	.xres		= 320,
-+	.yres		= 240,
-+	.pixclock	= 156000,
-+	.hsync_len	= 30,
-+	.left_margin	= 38,
-+	.right_margin	= 20,
-+	.vsync_len	= 3,
-+	.upper_margin	= 15,
-+	.lower_margin	= 4,
-+};
-+
- static struct imx_fb_videomode imxfb_mode = {
--	.mode = {
--		.name		= "CMO-QVGA",
--		.refresh	= 60,
--		.xres		= 320,
--		.yres		= 240,
--		.pixclock	= 156000,
--		.hsync_len	= 30,
--		.left_margin	= 38,
--		.right_margin	= 20,
--		.vsync_len	= 3,
--		.upper_margin	= 15,
--		.lower_margin	= 4,
--	},
-+	.mode		= &cmo_display,
- 	.pcr		= 0xFAD08B80,
- 	.bpp		= 16,};
+ 	.file "boot_hdisk.S"
+ 	.code16
+@@ -173,4 +172,3 @@ notification_string:	.asciz "UBOOT2 "
+ chs_string:	.asciz "CHS "
+ jmp_string:	.asciz "JMP "
  
-diff --git a/arch/arm/boards/guf-neso/board.c b/arch/arm/boards/guf-neso/board.c
-index 9c85c08..6949675 100644
---- a/arch/arm/boards/guf-neso/board.c
-+++ b/arch/arm/boards/guf-neso/board.c
-@@ -91,20 +91,22 @@ static struct device_d nand_dev = {
- 	.platform_data	= &nand_info,
- };
+-#endif
+diff --git a/arch/x86/boot/boot_main.S b/arch/x86/boot/boot_main.S
+index f3d248a..94fe434 100644
+--- a/arch/x86/boot/boot_main.S
++++ b/arch/x86/boot/boot_main.S
+@@ -30,7 +30,6 @@
+  * @brief Fix segment:offset settings of some buggy BIOSs
+  */
  
-+static struct fb_videomode cpt_display = {
-+	.name		= "CPT CLAA070LC0JCT",
-+	.refresh	= 60,
-+	.xres		= 800,
-+	.yres		= 480,
-+	.pixclock	= KHZ2PICOS(27000),
-+	.hsync_len	= 1,	/* DE only sync */
-+	.left_margin	= 50,
-+	.right_margin	= 50,
-+	.vsync_len	= 1,	/* DE only sync */
-+	.upper_margin	= 10,
-+	.lower_margin	= 10,
-+};
-+
- static struct imx_fb_videomode imxfb_mode = {
--	.mode = {
--		.name		= "CPT CLAA070LC0JCT",
--		.refresh	= 60,
--		.xres		= 800,
--		.yres		= 480,
--		.pixclock	= KHZ2PICOS(27000),
--		.hsync_len	= 1,	/* DE only sync */
--		.left_margin	= 50,
--		.right_margin	= 50,
--		.vsync_len	= 1,	/* DE only sync */
--		.upper_margin	= 10,
--		.lower_margin	= 10,
--	},
-+	.mode = &cpt_display,
- 	/*
- 	 * - TFT style panel
- 	 * - clk enabled while idle
-diff --git a/arch/arm/boards/imx21ads/imx21ads.c b/arch/arm/boards/imx21ads/imx21ads.c
-index 44d37aa..81006de 100644
---- a/arch/arm/boards/imx21ads/imx21ads.c
-+++ b/arch/arm/boards/imx21ads/imx21ads.c
-@@ -79,24 +79,26 @@ static struct device_d cs8900_dev = {
- 	// IRQ is connected to UART3_RTS
- };
+-#ifndef DOXYGEN_SHOULD_SKIP_THIS
  
-+static struct fb_videomode sharp_display = {
-+	.name           = "Sharp-LQ035Q7",
-+	.refresh        = 60,
-+	.xres           = 240,
-+	.yres           = 320,
-+	.pixclock       = 188679,
-+	.left_margin    = 6,
-+	.right_margin   = 16,
-+	.upper_margin   = 8,
-+	.lower_margin   = 10,
-+	.hsync_len      = 2,
-+	.vsync_len      = 1,
-+	.sync           = 0,
-+	.vmode          = FB_VMODE_NONINTERLACED,
-+	.flag           = 0,
-+};
-+
- /* Sharp LQ035Q7DB02 QVGA display */
- static struct imx_fb_videomode imx_fb_modedata = {
--        .mode = {
--		.name           = "Sharp-LQ035Q7",
--		.refresh        = 60,
--		.xres           = 240,
--		.yres           = 320,
--		.pixclock       = 188679,
--		.left_margin    = 6,
--		.right_margin   = 16,
--		.upper_margin   = 8,
--		.lower_margin   = 10,
--		.hsync_len      = 2,
--		.vsync_len      = 1,
--		.sync           = 0,
--		.vmode          = FB_VMODE_NONINTERLACED,
--		.flag           = 0,
--	},
-+        .mode           = &sharp_display,
-         .pcr            = 0xfb108bc7,
-         .bpp            = 16,
- };
-diff --git a/arch/arm/boards/pcm038/pcm038.c b/arch/arm/boards/pcm038/pcm038.c
-index 3a9b413..026e9c0 100644
---- a/arch/arm/boards/pcm038/pcm038.c
-+++ b/arch/arm/boards/pcm038/pcm038.c
-@@ -127,20 +127,22 @@ static struct device_d nand_dev = {
- 	.platform_data	= &nand_info,
- };
+ 	.file "boot_main.S"
+ 	.code16
+@@ -55,4 +54,3 @@ _start:
  
-+static struct fb_videomode sharp_display = {
-+	.name		= "Sharp-LQ035Q7",
-+	.refresh	= 60,
-+	.xres		= 240,
-+	.yres		= 320,
-+	.pixclock	= 188679, /* in ps (5.3MHz) */
-+	.hsync_len	= 7,
-+	.left_margin	= 5,
-+	.right_margin	= 16,
-+	.vsync_len	= 1,
-+	.upper_margin	= 7,
-+	.lower_margin	= 9,
-+};
-+
- static struct imx_fb_videomode imxfb_mode = {
--	.mode = {
--		.name		= "Sharp-LQ035Q7",
--		.refresh	= 60,
--		.xres		= 240,
--		.yres		= 320,
--		.pixclock	= 188679, /* in ps (5.3MHz) */
--		.hsync_len	= 7,
--		.left_margin	= 5,
--		.right_margin	= 16,
--		.vsync_len	= 1,
--		.upper_margin	= 7,
--		.lower_margin	= 9,
--	},
-+	.mode		= &sharp_display,
- 	/*
- 	 * - HSYNC active high
- 	 * - VSYNC active high
-diff --git a/arch/arm/mach-imx/include/mach/imxfb.h b/arch/arm/mach-imx/include/mach/imxfb.h
-index 16b43ea..7baa244 100644
---- a/arch/arm/mach-imx/include/mach/imxfb.h
-+++ b/arch/arm/mach-imx/include/mach/imxfb.h
-@@ -50,7 +50,7 @@
- #define DMACR_TM(x)	((x) & 0xf)
+ 	.size _start, .-_start
  
- struct imx_fb_videomode {
--	struct fb_videomode mode;
-+	struct fb_videomode *mode;
- 	u32 pcr;
- 	unsigned char	bpp;
- };
-diff --git a/drivers/video/imx.c b/drivers/video/imx.c
-index ac51858..6ccd77e 100644
---- a/drivers/video/imx.c
-+++ b/drivers/video/imx.c
-@@ -555,9 +555,9 @@ static int imxfb_probe(struct device_d *dev)
- 	fbi->enable = pdata->enable;
- 	fbi->dev = dev;
- 	info->priv = fbi;
--	info->mode = &pdata->mode->mode;
--	info->xres = pdata->mode->mode.xres;
--	info->yres = pdata->mode->mode.yres;
-+	info->mode = pdata->mode->mode;
-+	info->xres = pdata->mode->mode->xres;
-+	info->yres = pdata->mode->mode->yres;
- 	info->bits_per_pixel = pdata->mode->bpp;
- 	info->fbops = &imxfb_ops;
+-#endif
+diff --git a/arch/x86/boot/pmjump.S b/arch/x86/boot/pmjump.S
+index d48e198..0e4cd38 100644
+--- a/arch/x86/boot/pmjump.S
++++ b/arch/x86/boot/pmjump.S
+@@ -20,7 +20,6 @@
+  * @fn void protected_mode_jump(void)
+  * @brief Switches the first time from real mode to flat mode
+  */
+-#ifndef DOXYGEN_SHOULD_SKIP_THIS
  
+ #include <asm/modes.h>
+ #include "boot.h"
+@@ -86,4 +85,3 @@ in_pm32:
+ 
+ 	.size protected_mode_jump, .-protected_mode_jump
+ 
+-#endif
+diff --git a/arch/x86/lib/memory16.S b/arch/x86/lib/memory16.S
+index 01450fa..cb2f833 100644
+--- a/arch/x86/lib/memory16.S
++++ b/arch/x86/lib/memory16.S
+@@ -38,7 +38,6 @@
+  *
+  */
+ 
+-#ifndef DOXYGEN_SHOULD_SKIP_THIS
+ 
+ 	.section .boot.text.bios_get_memsize, "ax"
+ 	.code32
+@@ -70,4 +69,3 @@ bios_get_memsize:
+ 
+ 	.size bios_get_memsize, .-bios_get_memsize
+ 
+-#endif
+diff --git a/arch/x86/lib/traveler.S b/arch/x86/lib/traveler.S
+index 2b6dc85..0614195 100644
+--- a/arch/x86/lib/traveler.S
++++ b/arch/x86/lib/traveler.S
+@@ -41,8 +41,6 @@
+  * Called from a 16 bit real mode segment and returns into a 32 bit segment
+  */
+ 
+-#ifndef DOXYGEN_SHOULD_SKIP_THIS
+-
+ #include <asm/modes.h>
+ 
+ 	.file "walkyrie.S"
+@@ -180,4 +178,3 @@ enter_realmode:
+ 
+ 	.size prot_to_real, .-prot_to_real
+ 
+-#endif
 -- 
 1.7.2.3
 
