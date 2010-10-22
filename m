@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by casper.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1P9Ks6-000298-Fv
-	for barebox@lists.infradead.org; Fri, 22 Oct 2010 16:53:39 +0000
+	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1P9L7X-0000Bm-6y
+	for barebox@lists.infradead.org; Fri, 22 Oct 2010 17:09:36 +0000
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Fri, 22 Oct 2010 18:53:19 +0200
-Message-Id: <1287766405-1646-6-git-send-email-jbe@pengutronix.de>
+Date: Fri, 22 Oct 2010 18:53:24 +0200
+Message-Id: <1287766405-1646-11-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1287766405-1646-1-git-send-email-jbe@pengutronix.de>
 References: <1287766405-1646-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,92 +21,84 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/11] Add verbose framebuffer device info
+Subject: [PATCH 10/11] Remove variable size restrictions
 To: barebox@lists.infradead.org
 
-This is patch 3 of 7 to keep the repository bisectable.
+There is no really need for special variable types in these structures. Replace
+them by standard C types with the same behaviour.
 
 Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 ---
- drivers/video/Kconfig |    6 ++++++
- drivers/video/fb.c    |   40 ++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 46 insertions(+), 0 deletions(-)
+ include/fb.h |   41 ++++++++++++++++++++---------------------
+ 1 files changed, 20 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
-index e6ecfc8..f96accc 100644
---- a/drivers/video/Kconfig
-+++ b/drivers/video/Kconfig
-@@ -26,6 +26,12 @@ config VIDEO_DELAY_INIT
-           This entry adds the "mode" parameter to the video device, to setup
-           the desired videomode prior enabling it at runtime.
+diff --git a/include/fb.h b/include/fb.h
+index c004a56..e0cd6aa 100644
+--- a/include/fb.h
++++ b/include/fb.h
+@@ -43,19 +43,19 @@
  
-+config VIDEO_INFO_VERBOSE
-+	bool "verbose video info"
-+	help
-+	  Say 'y' here to be more verbose when running the 'devinfo' command
-+	  on the framebuffer device.
-+
- comment "drivers"
- 
- config DRIVER_VIDEO_IMX
-diff --git a/drivers/video/fb.c b/drivers/video/fb.c
-index ca3a4cd..15d993d 100644
---- a/drivers/video/fb.c
-+++ b/drivers/video/fb.c
-@@ -172,6 +172,45 @@ static struct file_operations fb_ops = {
- 	.ioctl	= fb_ioctl,
+ struct fb_videomode {
+ 	const char *name;	/* optional */
+-	u32 refresh;		/* optional */
+-	u32 xres;
+-	u32 yres;
+-	u32 pixclock;
+-	u32 left_margin;
+-	u32 right_margin;
+-	u32 upper_margin;
+-	u32 lower_margin;
+-	u32 hsync_len;
+-	u32 vsync_len;
+-	u32 sync;
+-	u32 vmode;
+-	u32 flag;
++	unsigned refresh;		/* optional */
++	unsigned xres;
++	unsigned yres;
++	unsigned pixclock;
++	unsigned left_margin;
++	unsigned right_margin;
++	unsigned upper_margin;
++	unsigned lower_margin;
++	unsigned hsync_len;
++	unsigned vsync_len;
++	unsigned sync;
++	unsigned vmode;
++	unsigned flag;
  };
  
-+static void fb_info(struct device_d *fb_dev)
-+{
-+	struct cdev *cdev = fb_dev->priv;
-+	struct fb_info *info = cdev->priv;
-+
-+	printf(" Video/Mode info:\n");
-+#ifdef CONFIG_VIDEO_DELAY_ENABLING
-+	printf("  Video output %senabled\n", info->enabled != 0 ? "" : "not ");
-+#endif
-+	printf(" Current video mode:\n");
-+	if (info->active_mode != NULL) {
-+		printf("  Name: %s\n", info->active_mode->name);
-+#ifdef CONFIG_VIDEO_INFO_VERBOSE
-+		if (info->active_mode->refresh == 0)
-+			printf("  Refresh rate: undefined\n");
-+		else
-+			printf("  Refresh rate: %u Hz\n",  info->active_mode->refresh);
-+		printf("  Horizontal active pixel: %u\n", info->active_mode->xres);
-+		printf("  Vertical active lines: %u\n", info->active_mode->yres);
-+		printf("  Pixel clock: %u kHz\n", PICOS2KHZ(info->active_mode->pixclock));
-+		printf("  Left/Right margin (pixel): %u/%u\n", info->active_mode->left_margin,
-+			info->active_mode->right_margin);
-+		printf("  Upper/Lower margin (lines): %u/%u\n", info->active_mode->upper_margin,
-+			info->active_mode->lower_margin);
-+		printf("  HSYNC length in pixel: %u, polarity: %s\n", info->active_mode->hsync_len,
-+			(info->active_mode->sync & FB_SYNC_HOR_HIGH_ACT) ? "high" : "low");
-+		printf("  VSYNC length in lines: %u, polarity: %s\n", info->active_mode->vsync_len,
-+			(info->active_mode->sync & FB_SYNC_VERT_HIGH_ACT) ? "high" : "low");
-+		printf("  Colour depth: %u bpp\n", info->bits_per_pixel);
-+		printf("  Framebuffer size is: %u bytes\n", cdev->size);
-+		/* TODO add the remaining information from fb_videomode. How valuable are they? */
-+#endif
-+	} else {
-+		printf ("  No video mode selected yet\n");
-+	}
-+
-+	fb_list_modes(fb_dev->platform_data);
-+}
-+
- static int add_fb_parameter(struct device_d *fb_dev)
- {
- #ifdef CONFIG_VIDEO_DELAY_INIT
-@@ -250,6 +289,7 @@ static int fb_probe(struct device_d *fb_dev)
- static struct driver_d fb_driver = {
- 	.name	= "framebuffer",
- 	.probe	= fb_probe,
-+	.info	= fb_info,
+ /* Interpretation of offset for color fields: All offsets are from the right,
+@@ -69,10 +69,9 @@ struct fb_videomode {
+  * of available palette entries (i.e. # of entries = 1 << length).
+  */
+ struct fb_bitfield {
+-	u32 offset;			/* beginning of bitfield	*/
+-	u32 length;			/* length of bitfield		*/
+-	u32 msb_right;			/* != 0 : Most significant bit is */ 
+-					/* right */ 
++	unsigned offset;		/* beginning of bitfield	*/
++	unsigned length;		/* length of bitfield		*/
++	int msb_right;			/* != 0 : Most significant bit is right */
  };
  
- static int framebuffer_init(void)
+ struct fb_info;
+@@ -97,11 +96,11 @@ struct fb_info {
+ 	struct device_d *fb_dev;
+ 	const struct fb_videomode *active_mode;
+ 
+-	u32 xres;			/* visible resolution		*/
+-	u32 yres;
+-	u32 bits_per_pixel;		/* guess what			*/
++	unsigned xres;			/* visible resolution		*/
++	unsigned yres;
++	unsigned bits_per_pixel;	/* guess what			*/
+ 
+-	u32 grayscale;			/* != 0 Graylevels instead of colors */
++	int grayscale;			/* != 0 Graylevels instead of colors */
+ 
+ 	struct fb_bitfield red;		/* bitfield in fb mem if true color, */
+ 	struct fb_bitfield green;	/* else only length is significant */
 -- 
 1.7.2.3
 
