@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1P9HT4-0006Hr-W3
-	for barebox@lists.infradead.org; Fri, 22 Oct 2010 13:15:42 +0000
+	id 1P9HT4-0006Ho-Aq
+	for barebox@lists.infradead.org; Fri, 22 Oct 2010 13:15:40 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 22 Oct 2010 15:15:23 +0200
-Message-Id: <1287753331-7696-6-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 22 Oct 2010 15:15:20 +0200
+Message-Id: <1287753331-7696-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1287753331-7696-1-git-send-email-s.hauer@pengutronix.de>
 References: <1287753331-7696-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,120 +21,344 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/13] i.MX esdctl: Add register bits from redboot
+Subject: [PATCH 02/13] i.MX nand: optimize nand boot code for size
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/include/mach/esdctl.h |   88 +++++++++++++++++++++++++++++++
- 1 files changed, 88 insertions(+), 0 deletions(-)
+ drivers/mtd/nand/Kconfig    |   16 ++++
+ drivers/mtd/nand/nand_imx.c |  196 +++++++++++++++++++++++++++++--------------
+ 2 files changed, 150 insertions(+), 62 deletions(-)
 
-diff --git a/arch/arm/mach-imx/include/mach/esdctl.h b/arch/arm/mach-imx/include/mach/esdctl.h
-index d15f52b..fe74cb6 100644
---- a/arch/arm/mach-imx/include/mach/esdctl.h
-+++ b/arch/arm/mach-imx/include/mach/esdctl.h
-@@ -18,9 +18,11 @@
- #define ESDCTL0_ROW13				(2 << 24)
- #define ESDCTL0_ROW14				(3 << 24)
- #define ESDCTL0_ROW15				(4 << 24)
-+#define ESDCTL0_ROW_MASK			(7 << 24)
- #define ESDCTL0_COL8				(0 << 20)
- #define ESDCTL0_COL9				(1 << 20)
- #define ESDCTL0_COL10				(2 << 20)
-+#define ESDCTL0_COL_MASK			(3 << 20)
- #define ESDCTL0_DSIZ_31_16			(0 << 16)
- #define ESDCTL0_DSIZ_15_0			(1 << 16)
- #define ESDCTL0_DSIZ_31_0			(2 << 16)
-@@ -32,3 +34,89 @@
- #define ESDCTL0_FP				(1 << 8)
- #define ESDCTL0_BL				(1 << 7)
+diff --git a/drivers/mtd/nand/Kconfig b/drivers/mtd/nand/Kconfig
+index 475499a..bc95195 100644
+--- a/drivers/mtd/nand/Kconfig
++++ b/drivers/mtd/nand/Kconfig
+@@ -18,6 +18,22 @@ config NAND_IMX_BOOT
+ 	prompt "Support Starting barebox from NAND"
+ 	depends on NAND_IMX || NAND_IMX_V2
  
-+#define ESDMISC_RST			0x00000002
-+#define ESDMISC_MDDR_EN			0x00000004
-+#define ESDMISC_MDDR_DIS		0x00000000
-+#define ESDMISC_MDDR_DL_RST		0x00000008
-+#define ESDMISC_MDDR_MDIS		0x00000010
-+#define ESDMISC_LHD			0x00000020
-+#define ESDMISC_SDRAMRDY		0x80000000
++choice
++	depends on NAND_IMX_BOOT
++	default NAND_IMX_BOOT_512_2K
++	prompt "select nand pagesize you want to support booting from"
 +
-+#define	ESDCFGx_tXP_MASK 		0x00600000
-+#define ESDCFGx_tXP_1			0x00000000
-+#define ESDCFGx_tXP_2			0x00200000
-+#define ESDCFGx_tXP_3			0x00400000
-+#define ESDCFGx_tXP_4			0x00600000
++config NAND_IMX_BOOT_512
++	bool "512 byte page size"
 +
-+#define ESDCFGx_tWTR_MASK		0x00100000
-+#define ESDCFGx_tWTR_1			0x00000000
-+#define ESDCFGx_tWTR_2			0x00100000
++config NAND_IMX_BOOT_2K
++	bool "2048 byte page size"
 +
-+#define ESDCFGx_tRP_MASK		0x000c0000
-+#define ESDCFGx_tRP_1			0x00000000
-+#define ESDCFGx_tRP_2			0x00040000
-+#define ESDCFGx_tRP_3			0x00080000
-+#define ESDCFGx_tRP_4			0x000c0000
++config NAND_IMX_BOOT_512_2K
++	bool "512 byte and 2048 byte pagesize"
 +
++endchoice
 +
-+#define ESDCFGx_tMRD_MASK		0x00030000
-+#define ESDCFGx_tMRD_1			0x00000000
-+#define ESDCFGx_tMRD_2			0x00010000
-+#define ESDCFGx_tMRD_3			0x00020000
-+#define ESDCFGx_tMRD_4			0x00030000
+ config NAND_OMAP_GPMC
+ 	tristate "NAND Flash Support for GPMC based OMAP platforms"
+ 	depends on ((ARCH_OMAP2 || ARCH_OMAP3) && GPMC)
+diff --git a/drivers/mtd/nand/nand_imx.c b/drivers/mtd/nand/nand_imx.c
+index 5454e32..63ba188 100644
+--- a/drivers/mtd/nand/nand_imx.c
++++ b/drivers/mtd/nand/nand_imx.c
+@@ -222,7 +222,7 @@ static void memcpy32(void *trg, const void *src, int size)
+  * @param       max_retries     number of retry attempts (separated by 1 us)
+  * @param       param           parameter for debug
+  */
+-static void __nand_boot_init wait_op_done(struct imx_nand_host *host)
++static void wait_op_done(struct imx_nand_host *host)
+ {
+ 	u32 tmp;
+ 	int i;
+@@ -247,7 +247,7 @@ static void __nand_boot_init wait_op_done(struct imx_nand_host *host)
+  *
+  * @param       cmd     command for NAND Flash
+  */
+-static void __nand_boot_init send_cmd(struct imx_nand_host *host, u16 cmd)
++static void send_cmd(struct imx_nand_host *host, u16 cmd)
+ {
+ 	MTD_DEBUG(MTD_DEBUG_LEVEL3, "send_cmd(host, 0x%x)\n", cmd);
+ 
+@@ -276,7 +276,7 @@ static void __nand_boot_init send_cmd(struct imx_nand_host *host, u16 cmd)
+  * @param       addr    address to be written to NFC.
+  * @param       islast  True if this is the last address cycle for command
+  */
+-static void __nand_boot_init noinline send_addr(struct imx_nand_host *host, u16 addr)
++static void send_addr(struct imx_nand_host *host, u16 addr)
+ {
+ 	MTD_DEBUG(MTD_DEBUG_LEVEL3, "send_addr(host, 0x%x %d)\n", addr, islast);
+ 
+@@ -294,7 +294,7 @@ static void __nand_boot_init noinline send_addr(struct imx_nand_host *host, u16
+  * @param	buf_id	      Specify Internal RAM Buffer number (0-3)
+  * @param       spare_only    set true if only the spare area is transferred
+  */
+-static void __nand_boot_init send_page(struct imx_nand_host *host,
++static void send_page(struct imx_nand_host *host,
+ 		unsigned int ops)
+ {
+ 	int bufs, i;
+@@ -1013,20 +1013,87 @@ static struct driver_d imx_nand_driver = {
+ };
+ 
+ #ifdef CONFIG_NAND_IMX_BOOT
++static void __nand_boot_init noinline imx_nandboot_wait_op_done(void *regs)
++{
++	u32 r;
 +
++	while (1) {
++		r = readw(regs + NFC_CONFIG2);
++		if (r & NFC_INT)
++			break;
++	};
 +
-+#define ESDCFGx_tWR_MASK		0x00008000
-+#define ESDCFGx_tWR_1_2			0x00000000
-+#define ESDCFGx_tWR_2_3			0x00008000
++	r &= ~NFC_INT;
 +
-+#define ESDCFGx_tRAS_MASK		0x00007000
-+#define ESDCFGx_tRAS_1			0x00000000
-+#define ESDCFGx_tRAS_2			0x00001000
-+#define ESDCFGx_tRAS_3			0x00002000
-+#define ESDCFGx_tRAS_4			0x00003000
-+#define ESDCFGx_tRAS_5			0x00004000
-+#define ESDCFGx_tRAS_6			0x00005000
-+#define ESDCFGx_tRAS_7			0x00006000
-+#define ESDCFGx_tRAS_8			0x00007000
++	writew(r, regs + NFC_CONFIG2);
++}
 +
++/*
++ * This function issues the specified command to the NAND device and
++ * waits for completion.
++ *
++ * @param       cmd     command for NAND Flash
++ */
++static void __nand_boot_init imx_nandboot_send_cmd(void *regs, u16 cmd)
++{
++	writew(cmd, regs + NFC_FLASH_CMD);
++	writew(NFC_CMD, regs + NFC_CONFIG2);
 +
-+#define ESDCFGx_tRRD_MASK		0x00000c00
-+#define ESDCFGx_tRRD_1			0x00000000
-+#define ESDCFGx_tRRD_2			0x00000400
-+#define ESDCFGx_tRRD_3			0x00000800
-+#define ESDCFGx_tRRD_4			0x00000c00
++	imx_nandboot_wait_op_done(regs);
++}
 +
++/*
++ * This function sends an address (or partial address) to the
++ * NAND device.  The address is used to select the source/destination for
++ * a NAND command.
++ *
++ * @param       addr    address to be written to NFC.
++ * @param       islast  True if this is the last address cycle for command
++ */
++static void __nand_boot_init noinline imx_nandboot_send_addr(void *regs, u16 addr)
++{
++	writew(addr, regs + NFC_FLASH_ADDR);
++	writew(NFC_ADDR, regs + NFC_CONFIG2);
 +
-+#define ESDCFGx_tCAS_MASK		0x00000300
-+#define ESDCFGx_tCAS_2			0x00000200
-+#define ESDCFGx_tCAS_3			0x00000300
++	/* Wait for operation to complete */
++	imx_nandboot_wait_op_done(regs);
++}
+ 
+-static void __nand_boot_init nfc_addr(struct imx_nand_host *host, u32 offs)
++static void __nand_boot_init imx_nandboot_nfc_addr(void *regs, u32 offs, int pagesize_2k)
+ {
+-	if (host->pagesize_2k) {
+-		send_addr(host, offs & 0xff);
+-		send_addr(host, offs & 0xff);
+-		send_addr(host, (offs >> 11) & 0xff);
+-		send_addr(host, (offs >> 19) & 0xff);
+-		send_addr(host, (offs >> 27) & 0xff);
++	imx_nandboot_send_addr(regs, offs & 0xff);
 +
-+#define ESDCFGx_tRCD_MASK		0x00000070
-+#define ESDCFGx_tRCD_1			0x00000000
-+#define ESDCFGx_tRCD_2			0x00000010
-+#define ESDCFGx_tRCD_3			0x00000020
-+#define ESDCFGx_tRCD_4			0x00000030
-+#define ESDCFGx_tRCD_5			0x00000040
-+#define ESDCFGx_tRCD_6			0x00000050
-+#define ESDCFGx_tRCD_7			0x00000060
-+#define ESDCFGx_tRCD_8			0x00000070
++	if (pagesize_2k) {
++		imx_nandboot_send_addr(regs, offs & 0xff);
++		imx_nandboot_send_addr(regs, (offs >> 11) & 0xff);
++		imx_nandboot_send_addr(regs, (offs >> 19) & 0xff);
++		imx_nandboot_send_addr(regs, (offs >> 27) & 0xff);
++		imx_nandboot_send_cmd(regs, NAND_CMD_READSTART);
+ 	} else {
+-		send_addr(host, offs & 0xff);
+-		send_addr(host, (offs >> 9) & 0xff);
+-		send_addr(host, (offs >> 17) & 0xff);
+-		send_addr(host, (offs >> 25) & 0xff);
++		imx_nandboot_send_addr(regs, (offs >> 9) & 0xff);
++		imx_nandboot_send_addr(regs, (offs >> 17) & 0xff);
++		imx_nandboot_send_addr(regs, (offs >> 25) & 0xff);
++	}
++}
 +
-+#define ESDCFGx_tRC_MASK		0x0000000f
-+#define ESDCFGx_tRC_20			0x00000000
-+#define ESDCFGx_tRC_2			0x00000001
-+#define ESDCFGx_tRC_3			0x00000002
-+#define ESDCFGx_tRC_4			0x00000003
-+#define ESDCFGx_tRC_5			0x00000004
-+#define ESDCFGx_tRC_6			0x00000005
-+#define ESDCFGx_tRC_7			0x00000006
-+#define ESDCFGx_tRC_8			0x00000007
-+#define ESDCFGx_tRC_9			0x00000008
-+#define ESDCFGx_tRC_10			0x00000009
-+#define ESDCFGx_tRC_11			0x0000000a
-+#define ESDCFGx_tRC_12			0x0000000b
-+#define ESDCFGx_tRC_13			0x0000000c
-+#define ESDCFGx_tRC_14			0x0000000d
-+//#define ESDCFGx_tRC_14		0x0000000e	// 15 seems to not exist
-+#define ESDCFGx_tRC_16			0x0000000f
++static void __nand_boot_init imx_nandboot_send_page(void *regs,
++		unsigned int ops, int pagesize_2k)
++{
++	int bufs, i;
 +
++	if (nfc_is_v1() && pagesize_2k)
++		bufs = 4;
++	else
++		bufs = 1;
++
++	for (i = 0; i < bufs; i++) {
++		/* NANDFC buffer 0 is used for page read/write */
++		writew(i, regs + NFC_BUF_ADDR);
++
++		writew(ops, regs + NFC_CONFIG2);
++
++		/* Wait for operation to complete */
++		imx_nandboot_wait_op_done(regs);
+ 	}
+ }
+ 
+@@ -1040,38 +1107,49 @@ static void __nand_boot_init __memcpy32(void *trg, const void *src, int size)
+ 		*t++ = *s++;
+ }
+ 
+-void __nand_boot_init imx_nand_load_image(void *dest, int size)
++static int __maybe_unused is_pagesize_2k(void)
+ {
+-	struct imx_nand_host host;
+-	u32 tmp, page, block, blocksize, pagesize;
+ #ifdef CONFIG_ARCH_IMX21
+-	tmp = readl(IMX_SYSTEM_CTL_BASE + 0x14);
+-	if (tmp & (1 << 5))
+-		host.pagesize_2k = 1;
++	if (readl(IMX_SYSTEM_CTL_BASE + 0x14) & (1 << 5))
++		return 1;
+ 	else
+-		host.pagesize_2k = 0;
++		return 0;
+ #endif
+ #ifdef CONFIG_ARCH_IMX27
+-	tmp = readl(IMX_SYSTEM_CTL_BASE + 0x14);
+-	if (tmp & (1 << 5))
+-		host.pagesize_2k = 1;
++	if (readl(IMX_SYSTEM_CTL_BASE + 0x14) & (1 << 5))
++		return 1;
+ 	else
+-		host.pagesize_2k = 0;
++		return 0;
+ #endif
+ #ifdef CONFIG_ARCH_IMX31
+-	tmp = readl(IMX_CCM_BASE + CCM_RCSR);
+-	if (tmp & RCSR_NFMS)
+-		host.pagesize_2k = 1;
++	if (readl(IMX_CCM_BASE + CCM_RCSR) & RCSR_NFMS)
++		return 1;
+ 	else
+-		host.pagesize_2k = 0;
++		return 0;
+ #endif
+ #if defined(CONFIG_ARCH_IMX35) || defined(CONFIG_ARCH_IMX25)
+ 	if (readl(IMX_CCM_BASE + CCM_RCSR) & (1 << 8))
+-		host.pagesize_2k = 1;
++		return 1;
+ 	else
+-		host.pagesize_2k = 0;
++		return 0;
++#endif
++}
++
++void __nand_boot_init imx_nand_load_image(void *dest, int size)
++{
++	u32 tmp, page, block, blocksize, pagesize;
++	int pagesize_2k = 1;
++	void *regs, *base, *spare0;
++
++#if defined(CONFIG_NAND_IMX_BOOT_512)
++	pagesize_2k = 0;
++#elif defined(CONFIG_NAND_IMX_BOOT_2K)
++	pagesize_2k = 1;
++#else
++	pagesize_2k = is_pagesize_2k();
+ #endif
+-	if (host.pagesize_2k) {
++
++	if (pagesize_2k) {
+ 		pagesize = 2048;
+ 		blocksize = 128 * 1024;
+ 	} else {
+@@ -1079,45 +1157,43 @@ void __nand_boot_init imx_nand_load_image(void *dest, int size)
+ 		blocksize = 16 * 1024;
+ 	}
+ 
+-	host.base = (void __iomem *)IMX_NFC_BASE;
++	base = (void __iomem *)IMX_NFC_BASE;
+ 	if (nfc_is_v21()) {
+-		host.regs = host.base + 0x1000;
+-		host.spare0 = host.base + 0x1000;
+-		host.spare_len = 64;
++		regs = base + 0x1000;
++		spare0 = base + 0x1000;
+ 	} else if (nfc_is_v1()) {
+-		host.regs = host.base;
+-		host.spare0 = host.base + 0x800;
+-		host.spare_len = 16;
++		regs = base;
++		spare0 = base + 0x800;
+ 	}
+ 
+-	send_cmd(&host, NAND_CMD_RESET);
++	imx_nandboot_send_cmd(regs, NAND_CMD_RESET);
+ 
+ 	/* preset operation */
+ 	/* Unlock the internal RAM Buffer */
+-	writew(0x2, host.regs + NFC_CONFIG);
++	writew(0x2, regs + NFC_CONFIG);
+ 
+ 	/* Unlock Block Command for given address range */
+-	writew(0x4, host.regs + NFC_WRPROT);
++	writew(0x4, regs + NFC_WRPROT);
+ 
+-	tmp = readw(host.regs + NFC_CONFIG1);
++	tmp = readw(regs + NFC_CONFIG1);
+ 	tmp |= NFC_ECC_EN;
+ 	if (nfc_is_v21())
+ 		/* currently no support for 218 byte OOB with stronger ECC */
+ 		tmp |= NFC_ECC_MODE;
+ 	tmp &= ~(NFC_SP_EN | NFC_INT_MSK);
+-	writew(tmp, host.regs + NFC_CONFIG1);
++	writew(tmp, regs + NFC_CONFIG1);
+ 
+ 	if (nfc_is_v21()) {
+-		if (host.pagesize_2k) {
+-			tmp = readw(host.regs + NFC_SPAS);
++		if (pagesize_2k) {
++			tmp = readw(regs + NFC_SPAS);
+ 			tmp &= 0xff00;
+ 			tmp |= NFC_SPAS_64;
+-			writew(tmp, host.regs + NFC_SPAS);
++			writew(tmp, regs + NFC_SPAS);
+ 		} else {
+-			tmp = readw(host.regs + NFC_SPAS);
++			tmp = readw(regs + NFC_SPAS);
+ 			tmp &= 0xff00;
+ 			tmp |= NFC_SPAS_16;
+-			writew(tmp, host.regs + NFC_SPAS);
++			writew(tmp, regs + NFC_SPAS);
+ 		}
+ 	}
+ 
+@@ -1132,25 +1208,21 @@ void __nand_boot_init imx_nand_load_image(void *dest, int size)
+ 					block * blocksize +
+ 					page * pagesize);
+ 
+-			send_cmd(&host, NAND_CMD_READ0);
+-			nfc_addr(&host, block * blocksize +
+-					page * pagesize);
+-			if (host.pagesize_2k)
+-				send_cmd(&host, NAND_CMD_READSTART);
+-			send_page(&host, NFC_OUTPUT);
++			imx_nandboot_send_cmd(regs, NAND_CMD_READ0);
++			imx_nandboot_nfc_addr(regs, block * blocksize +
++					page * pagesize, pagesize_2k);
++			imx_nandboot_send_page(regs, NFC_OUTPUT, pagesize_2k);
+ 			page++;
+ 
+-			if (host.pagesize_2k) {
+-				if ((readw(host.spare0) & 0xff)
+-						!= 0xff)
++			if (pagesize_2k) {
++				if ((readw(spare0) & 0xff) != 0xff)
+ 					continue;
+ 			} else {
+-				if ((readw(host.spare0 + 4) & 0xff00)
+-						!= 0xff00)
++				if ((readw(spare0 + 4) & 0xff00) != 0xff00)
+ 					continue;
+ 			}
+ 
+-			__memcpy32(dest, host.base, pagesize);
++			__memcpy32(dest, base, pagesize);
+ 			dest += pagesize;
+ 			size -= pagesize;
+ 
 -- 
 1.7.2.3
 
