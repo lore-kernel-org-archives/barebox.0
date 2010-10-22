@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1P9KkY-0002cN-Ki
-	for barebox@lists.infradead.org; Fri, 22 Oct 2010 16:45:58 +0000
+	id 1P9Kkd-0002cI-Lr
+	for barebox@lists.infradead.org; Fri, 22 Oct 2010 16:46:01 +0000
 From: Robert Schwebel <r.schwebel@pengutronix.de>
-Date: Fri, 22 Oct 2010 18:45:03 +0200
-Message-Id: <1287765924-1856-12-git-send-email-r.schwebel@pengutronix.de>
+Date: Fri, 22 Oct 2010 18:45:04 +0200
+Message-Id: <1287765924-1856-13-git-send-email-r.schwebel@pengutronix.de>
 In-Reply-To: <1287765924-1856-1-git-send-email-r.schwebel@pengutronix.de>
 References: <1287765924-1856-1-git-send-email-r.schwebel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,42 +21,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/32] doc: eliminate nonexisting reference
+Subject: [PATCH 12/32] doc: add missing quoting
 To: barebox@lists.infradead.org
 
 Silence this warning:
-arch/architecture.dox:89: Warning: unable to resolve reference to `dev_x86_mach' for \ref command
+
+/home/rsc/git/barebox/commands/partition.c:177: Warning: Found unknown command `\offset1'
+/home/rsc/git/barebox/commands/partition.c:177: Warning: Found unknown command `\offset2'
 
 Signed-off-by: Robert Schwebel <r.schwebel@pengutronix.de>
 ---
- Documentation/developers_manual.dox |    1 -
- arch/x86/mach-x86.dox               |    2 +-
- 2 files changed, 1 insertions(+), 2 deletions(-)
+ commands/partition.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/Documentation/developers_manual.dox b/Documentation/developers_manual.dox
-index 620905e..2f7d360 100644
---- a/Documentation/developers_manual.dox
-+++ b/Documentation/developers_manual.dox
-@@ -20,6 +20,5 @@ This part of the documentation is intended for developers of @a barebox.
- @li @subpage barebox_simul
- @li @subpage io_access_functions
- @li @subpage mcfv4e_MCDlib
--@li @subpage x86_runtime
- 
- */
-diff --git a/arch/x86/mach-x86.dox b/arch/x86/mach-x86.dox
-index fc5b85a..661e905 100644
---- a/arch/x86/mach-x86.dox
-+++ b/arch/x86/mach-x86.dox
-@@ -2,7 +2,7 @@
-  * how to integrate a new CPU (MACH) into this part of the barebox tree
-  */
- 
--/** @page x86_runtime barebox on x86 at runtime
-+/** @page dev_x86_mach barebox on x86 at runtime
- 
- @section mach_x86_memory_layout barebox's memory layout (BIOS based)
- 
+diff --git a/commands/partition.c b/commands/partition.c
+index 7794925..a1edcf6 100644
+--- a/commands/partition.c
++++ b/commands/partition.c
+@@ -176,7 +176,7 @@ BAREBOX_CMD_END
+  * Adds a partition description to a device. The partition description has the
+  * form
+  *
+- * size1[@offset1](name1)[ro],size2[@offset2](name2)[ro],...
++ * size1[\@offset1](name1)[ro],size2[\@offset2](name2)[ro],...
+  *
+  * \<device> is the device name under. Size and offset can be given in decimal
+  * or - if prefixed with 0x - in hex. Both can have an optional suffix K,M,G.
 -- 
 1.7.2.3
 
