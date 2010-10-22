@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1P9HT4-0006Hu-V2
-	for barebox@lists.infradead.org; Fri, 22 Oct 2010 13:15:38 +0000
+	id 1P9HT5-0006Hy-1v
+	for barebox@lists.infradead.org; Fri, 22 Oct 2010 13:15:39 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 22 Oct 2010 15:15:25 +0200
-Message-Id: <1287753331-7696-8-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 22 Oct 2010 15:15:30 +0200
+Message-Id: <1287753331-7696-13-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1287753331-7696-1-git-send-email-s.hauer@pengutronix.de>
 References: <1287753331-7696-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,27 +21,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/13] fb: i.MX IPU: remove unnecessary printf
+Subject: [PATCH 12/13] defaultenv: fix mtdparts
 To: barebox@lists.infradead.org
+
+We had some \" in mtdparts to allow for spaces in the mtdparts
+kernel option. Barebox does not handle these correctly, so remove
+them and disallow spaces in mtdparts
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/video/imx-ipu-fb.c |    2 --
- 1 files changed, 0 insertions(+), 2 deletions(-)
+ defaultenv/bin/boot |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/video/imx-ipu-fb.c b/drivers/video/imx-ipu-fb.c
-index 2c25b81..399af75 100644
---- a/drivers/video/imx-ipu-fb.c
-+++ b/drivers/video/imx-ipu-fb.c
-@@ -840,8 +840,6 @@ static void ipu_fb_disable(struct fb_info *info)
- 	struct ipu_fb_info *fbi = info->priv;
- 	u32 reg;
+diff --git a/defaultenv/bin/boot b/defaultenv/bin/boot
+index 3fdc5c1..42c7ec2 100644
+--- a/defaultenv/bin/boot
++++ b/defaultenv/bin/boot
+@@ -51,7 +51,7 @@ if [ -n $nand_parts ]; then
+ fi
  
--	printf("%s\n", __func__);
--
- 	if (fbi->enable)
- 		fbi->enable(0);
+ if [ -n $mtdparts ]; then
+-	bootargs="${bootargs} mtdparts=\"${mtdparts}\""
++	bootargs="${bootargs} mtdparts=${mtdparts}"
+ fi
  
+ if [ ! -e /dev/ram0.kernelraw ]; then
 -- 
 1.7.2.3
 
