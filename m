@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1P9HT4-0006Hq-DX
+	id 1P9HT4-0006Hp-Dc
 	for barebox@lists.infradead.org; Fri, 22 Oct 2010 13:15:37 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 22 Oct 2010 15:15:21 +0200
-Message-Id: <1287753331-7696-4-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 22 Oct 2010 15:15:22 +0200
+Message-Id: <1287753331-7696-5-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1287753331-7696-1-git-send-email-s.hauer@pengutronix.de>
 References: <1287753331-7696-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,93 +21,71 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/13] mci-core: add multiple block support
+Subject: [PATCH 04/13] i.MX51: Fix mmcclk rate
 To: barebox@lists.infradead.org
 
-So far only for reading blocks. This is based on the corresponding
-U-Boot code.
-
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Juergen Beisert <jbe@pengutronix.de>
 ---
- drivers/mci/mci-core.c |   35 +++++++++++++++++++++++++++--------
- 1 files changed, 27 insertions(+), 8 deletions(-)
+ arch/arm/mach-imx/speed-imx51.c |   33 ++++++++++++++++++++++++++++++---
+ 1 files changed, 30 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-index c92d5a9..34c4f8c 100644
---- a/drivers/mci/mci-core.c
-+++ b/drivers/mci/mci-core.c
-@@ -139,23 +139,41 @@ static int mci_block_write(struct device_d *mci_dev, const void *src, unsigned b
-  * @param dst Where to store the data read from the card
-  * @param blocknum Block number to read
-  */
--static int mci_read_block(struct device_d *mci_dev, void *dst, unsigned blocknum)
-+static int mci_read_block(struct device_d *mci_dev, void *dst, unsigned blocknum, int blocks)
- {
- 	struct mci *mci = GET_MCI_DATA(mci_dev);
- 	struct mci_cmd cmd;
- 	struct mci_data data;
-+	int ret;
-+	unsigned mmccmd;
-+
-+	if (blocks > 1)
-+		mmccmd = MMC_CMD_READ_MULTIPLE_BLOCK;
-+	else
-+		mmccmd = MMC_CMD_READ_SINGLE_BLOCK;
- 
- 	mci_setup_cmd(&cmd,
--		MMC_CMD_READ_SINGLE_BLOCK,
-+		mmccmd,
- 		mci->high_capacity != 0 ? blocknum : blocknum * mci->read_bl_len,
- 		MMC_RSP_R1);
- 
- 	data.dest = dst;
--	data.blocks = 1;
-+	data.blocks = blocks;
- 	data.blocksize = mci->read_bl_len;
- 	data.flags = MMC_DATA_READ;
- 
--	return mci_send_cmd(mci_dev, &cmd, &data);
-+	ret = mci_send_cmd(mci_dev, &cmd, &data);
-+	if (ret)
-+		return ret;
-+
-+	if (blocks > 1) {
-+		mci_setup_cmd(&cmd,
-+			MMC_CMD_STOP_TRANSMISSION,
-+			0,
-+			MMC_RSP_R1b);
-+			ret = mci_send_cmd(mci_dev, &cmd, NULL);
-+	}
-+	return ret;
+diff --git a/arch/arm/mach-imx/speed-imx51.c b/arch/arm/mach-imx/speed-imx51.c
+index dcfc874..9983297 100644
+--- a/arch/arm/mach-imx/speed-imx51.c
++++ b/arch/arm/mach-imx/speed-imx51.c
+@@ -90,6 +90,26 @@ static unsigned long pll3_sw_get_rate(void)
+ 	return pll_get_rate((void __iomem *)MX51_PLL3_BASE_ADDR);
  }
  
- /**
-@@ -979,19 +997,20 @@ static int mci_sd_read(struct device_d *disk_dev, uint64_t sector_start,
- 	}
++static unsigned long get_rate_select(int select,
++	unsigned long (* get_rate1)(void),
++	unsigned long (* get_rate2)(void),
++	unsigned long (* get_rate3)(void),
++	unsigned long (* get_rate4)(void))
++{
++	switch (select) {
++	case 0:
++		return get_rate1() ? get_rate1() : 0;
++	case 1:
++		return get_rate2() ? get_rate2() : 0;
++	case 2:
++		return get_rate3 ? get_rate3() : 0;
++	case 3:
++		return get_rate4 ? get_rate4() : 0;
++	}
++
++	return 0;
++}
++
+ unsigned long imx_get_uartclk(void)
+ {
+ 	u32 reg, prediv, podf;
+@@ -140,15 +160,22 @@ unsigned long imx_get_mmcclk(void)
+ {
+ 	u32 reg, prediv, podf, rate;
  
- 	while (sector_count) {
-+		int now = min(sector_count, 32);
- 		if (sector_start > MAX_BUFFER_NUMBER) {
- 			pr_err("Cannot handle block number %lu. Too large!\n",
- 				(unsigned)sector_start);
- 			return -EINVAL;
- 		}
--		rc = mci_read_block(mci_dev, buffer, (unsigned)sector_start);
-+		rc = mci_read_block(mci_dev, buffer, (unsigned)sector_start, now);
- 		if (rc != 0) {
- 			pr_err("Reading block %lu failed with %d\n", (unsigned)sector_start, rc);
- 			return rc;
- 		}
--		sector_count--;
--		buffer += mci->read_bl_len;
--		sector_start++;
-+		sector_count -= now;
-+		buffer += mci->read_bl_len * now;
-+		sector_start += now;
- 	}
++	reg = ccm_readl(MX51_CCM_CSCMR1);
++	reg &= MX51_CCM_CSCMR1_ESDHC1_MSHC1_CLK_SEL_MASK;
++	reg >>= MX51_CCM_CSCMR1_ESDHC1_MSHC1_CLK_SEL_OFFSET;
++	rate = get_rate_select(reg,
++			pll1_main_get_rate,
++			pll2_sw_get_rate,
++			pll3_sw_get_rate,
++			NULL);
++
+ 	reg = ccm_readl(MX51_CCM_CSCDR1);
+ 	prediv = ((reg & MX51_CCM_CSCDR1_ESDHC1_MSHC1_CLK_PRED_MASK) >>
+ 			MX51_CCM_CSCDR1_ESDHC1_MSHC1_CLK_PRED_OFFSET) + 1;
+ 	podf = ((reg & MX51_CCM_CSCDR1_ESDHC1_MSHC1_CLK_PODF_MASK) >>
+ 			MX51_CCM_CSCDR1_ESDHC1_MSHC1_CLK_PODF_OFFSET) + 1;
  
- 	return 0;
+-	rate = pll2_sw_get_rate() / (prediv * podf);
+-
+-	return rate;
++	return rate / (prediv * podf);
+ }
+ 
+ void imx_dump_clocks(void)
 -- 
 1.7.2.3
 
