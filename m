@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1P9KkU-0002cL-W9
-	for barebox@lists.infradead.org; Fri, 22 Oct 2010 16:45:48 +0000
+	id 1P9KkV-0002cC-04
+	for barebox@lists.infradead.org; Fri, 22 Oct 2010 16:45:49 +0000
 From: Robert Schwebel <r.schwebel@pengutronix.de>
-Date: Fri, 22 Oct 2010 18:45:05 +0200
-Message-Id: <1287765924-1856-14-git-send-email-r.schwebel@pengutronix.de>
+Date: Fri, 22 Oct 2010 18:45:01 +0200
+Message-Id: <1287765924-1856-10-git-send-email-r.schwebel@pengutronix.de>
 In-Reply-To: <1287765924-1856-1-git-send-email-r.schwebel@pengutronix.de>
 References: <1287765924-1856-1-git-send-email-r.schwebel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,30 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 13/32] doc: fix typo
+Subject: [PATCH 09/32] doc: remove nonexisting command
 To: barebox@lists.infradead.org
 
-Remove a # which leads to this warning:
-arch/arm/mach-s3c24xx/lowlevel-init.S:307: Warning: explicit link request to 'CALC_NFCONF_TIMING' could not be resolved
+Silence this warning:
+
+Documentation/commands.dox:24: Warning: unable to resolve reference to `rarp_command' for \ref command
 
 Signed-off-by: Robert Schwebel <r.schwebel@pengutronix.de>
 ---
- arch/arm/mach-s3c24xx/lowlevel-init.S |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+ Documentation/commands.dox |    1 -
+ 1 files changed, 0 insertions(+), 1 deletions(-)
 
-diff --git a/arch/arm/mach-s3c24xx/lowlevel-init.S b/arch/arm/mach-s3c24xx/lowlevel-init.S
-index e8004e5..27f3a32 100644
---- a/arch/arm/mach-s3c24xx/lowlevel-init.S
-+++ b/arch/arm/mach-s3c24xx/lowlevel-init.S
-@@ -304,7 +304,7 @@ minimalistic. Setup the NAND access timing is done in a safe manner, what
- means: Slowest possible values are used. If you want to increase the speed you
- should define the BOARD_DEFAULT_NAND_TIMING to a valid setting into the
- NFCONF register and add it to your board specific config.h. Refer S3C24x0's
--datasheet for further details. The macro #CALC_NFCONF_TIMING could help to
-+datasheet for further details. The macro CALC_NFCONF_TIMING could help to
- calculate the register setting in a hardware independent manner.
- 
- @note The regular NAND driver uses a platform data structure to define the
+diff --git a/Documentation/commands.dox b/Documentation/commands.dox
+index a8850b1..5404483 100644
+--- a/Documentation/commands.dox
++++ b/Documentation/commands.dox
+@@ -15,7 +15,6 @@
+ @li @subpage mount_command
+ @li @subpage printenv_command
+ @li @subpage protect_command
+-@li @subpage rarp_command
+ @li @subpage saveenv_command
+ @li @subpage setenv_command
+ @li @subpage sh_command
 -- 
 1.7.2.3
 
