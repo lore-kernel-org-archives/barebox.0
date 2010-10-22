@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1P9KkY-0002cG-KT
-	for barebox@lists.infradead.org; Fri, 22 Oct 2010 16:45:54 +0000
+	id 1P9KkY-0002cH-KN
+	for barebox@lists.infradead.org; Fri, 22 Oct 2010 16:45:58 +0000
 From: Robert Schwebel <r.schwebel@pengutronix.de>
-Date: Fri, 22 Oct 2010 18:44:59 +0200
-Message-Id: <1287765924-1856-8-git-send-email-r.schwebel@pengutronix.de>
+Date: Fri, 22 Oct 2010 18:45:06 +0200
+Message-Id: <1287765924-1856-15-git-send-email-r.schwebel@pengutronix.de>
 In-Reply-To: <1287765924-1856-1-git-send-email-r.schwebel@pengutronix.de>
 References: <1287765924-1856-1-git-send-email-r.schwebel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,26 +21,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/32] Doxyfile: enable assembler files
+Subject: [PATCH 14/32] doc: mark code explicitely
 To: barebox@lists.infradead.org
+
+Silence this warning:
+arch/arm/mach-omap/arch-omap.dox:51: Warning: explicit link request to 'define' could not be resolved
 
 Signed-off-by: Robert Schwebel <r.schwebel@pengutronix.de>
 ---
- Doxyfile |    1 +
- 1 files changed, 1 insertions(+), 0 deletions(-)
+ arch/arm/mach-omap/arch-omap.dox |    6 +++++-
+ 1 files changed, 5 insertions(+), 1 deletions(-)
 
-diff --git a/Doxyfile b/Doxyfile
-index 37597f6..912abc1 100644
---- a/Doxyfile
-+++ b/Doxyfile
-@@ -503,6 +503,7 @@ INPUT_ENCODING         = UTF-8
+diff --git a/arch/arm/mach-omap/arch-omap.dox b/arch/arm/mach-omap/arch-omap.dox
+index df16b7b..9c90b4f 100644
+--- a/arch/arm/mach-omap/arch-omap.dox
++++ b/arch/arm/mach-omap/arch-omap.dox
+@@ -50,7 +50,11 @@ All basic devices you'd like to register should be put here with postcore_initca
+ All OMAP common headers are located here. Where we have to incorporate a OMAP variant specific header, add a omapX_function_name.h.
+ @warning Do not add board specific header files/information here. Put them in mach-omap.
  
- FILE_PATTERNS          = *.c \
-                          *.h \
-+                         *.S \
-                          *.dox
+-include/asm-arm/arch-omap/silicon.h contains includes for omapX-silicon.h which defines the base addresses for the peripherals on that platform. the usual convention is to use #define OMAP_SOMETHING_BASE to allow re-use.
++include/asm-arm/arch-omap/silicon.h contains includes for omapX-silicon.h which defines the base addresses for the peripherals on that platform. the usual convention is to use
++@code
++#define OMAP_SOMETHING_BASE
++@endcode
++to allow re-use.
  
- # The RECURSIVE tag can be used to turn specify whether or not subdirectories
+ @section board_omap arch/arm/boards/omap directory guidelines
+ All Board specific files go here. In u-boot, we always had to use common config file which is shared by other drivers to get serial, ethernet baseaddress etc.. we can easily use the device_d structure to handle it with @a barebox. This is more like programming for Linux kernel - it is pretty easy.
 -- 
 1.7.2.3
 
