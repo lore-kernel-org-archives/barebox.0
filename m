@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1P9KkU-0002cQ-VZ
-	for barebox@lists.infradead.org; Fri, 22 Oct 2010 16:45:49 +0000
+	by casper.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1P9KkV-0001x8-2E
+	for barebox@lists.infradead.org; Fri, 22 Oct 2010 16:45:48 +0000
 From: Robert Schwebel <r.schwebel@pengutronix.de>
-Date: Fri, 22 Oct 2010 18:45:12 +0200
-Message-Id: <1287765924-1856-21-git-send-email-r.schwebel@pengutronix.de>
+Date: Fri, 22 Oct 2010 18:45:10 +0200
+Message-Id: <1287765924-1856-19-git-send-email-r.schwebel@pengutronix.de>
 In-Reply-To: <1287765924-1856-1-git-send-email-r.schwebel@pengutronix.de>
 References: <1287765924-1856-1-git-send-email-r.schwebel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,57 +21,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 20/32] doc: add documentation for 'bmp'
+Subject: [PATCH 18/32] doc: silence doxygen warnings
 To: barebox@lists.infradead.org
+
+Silence these warnings:
+
+common/kallsyms.c:8: Warning: documented function `const u8 kallsyms_names' was not declared or defined.
+common/kallsyms.c:10: Warning: documented function `const u8 kallsyms_token_table' was not declared or defined.
+common/kallsyms.c:11: Warning: documented function `const u16 kallsyms_token_index' was not declared or defined.
+common/kallsyms.c:13: Warning: documented function `const unsigned long kallsyms_markers' was not declared or defined.
 
 Signed-off-by: Robert Schwebel <r.schwebel@pengutronix.de>
 ---
- Documentation/commands.dox |    1 +
- commands/bmp.c             |   16 ++++++++--------
- 2 files changed, 9 insertions(+), 8 deletions(-)
+ common/kallsyms.c |    4 ++++
+ 1 files changed, 4 insertions(+), 0 deletions(-)
 
-diff --git a/Documentation/commands.dox b/Documentation/commands.dox
-index 5404483..da95e85 100644
---- a/Documentation/commands.dox
-+++ b/Documentation/commands.dox
-@@ -2,6 +2,7 @@
-  * @page command_reference Supported Shell Commands
+diff --git a/common/kallsyms.c b/common/kallsyms.c
+index 4069f4b..490adb9 100644
+--- a/common/kallsyms.c
++++ b/common/kallsyms.c
+@@ -2,6 +2,8 @@
+ #include <init.h>
+ #include <kallsyms.h>
  
- @li @subpage addpart_command
-+@li @subpage bmp_command
- @li @subpage cat_command
- @li @subpage cd_command
- @li @subpage cp_command
-diff --git a/commands/bmp.c b/commands/bmp.c
-index 6e17200..242965a 100644
---- a/commands/bmp.c
-+++ b/commands/bmp.c
-@@ -193,17 +193,17 @@ failed_memmap:
- 	return 1;
- }
++#ifndef DOXYGEN_SHOULD_SKIP_THIS
++
+ /* These will be re-linked against their real values during the second link stage */
+ extern const unsigned long kallsyms_addresses[] __attribute__((weak));
+ extern const unsigned long kallsyms_num_syms __attribute__((weak));
+@@ -12,6 +14,8 @@ extern const u16 kallsyms_token_index[] __attribute__((weak));
  
--static const __maybe_unused char cmd_bmp_help[] =
--"Usage: bmp [OPTION]... FILE\n"
--"show bmp image FILE.\n"
--"  -f <fb>   framebuffer device (/dev/fb0)\n"
--"  -x <xofs> x offset (default center)\n"
--"  -y <yofs> y offset (default center)\n"
--"  -o        render offscreen\n";
-+BAREBOX_CMD_HELP_START(bmp)
-+BAREBOX_CMD_HELP_USAGE("bmp [OPTIONS] FILE")
-+BAREBOX_CMD_HELP_SHORT("Show the bitmap FILE on the framebuffer.")
-+BAREBOX_CMD_HELP_OPT  ("-f <fb>",   "framebuffer device (/dev/fb0)")
-+BAREBOX_CMD_HELP_OPT  ("-x <xofs>", "x offset (default center)")
-+BAREBOX_CMD_HELP_OPT  ("-y <yofs>", "y offset (default center)")
-+BAREBOX_CMD_HELP_OPT  ("-o",        "render offscreen")
-+BAREBOX_CMD_HELP_END
+ extern const unsigned long kallsyms_markers[] __attribute__((weak));
  
- BAREBOX_CMD_START(bmp)
- 	.cmd		= do_bmp,
- 	.usage		= "show a bmp image",
- 	BAREBOX_CMD_HELP(cmd_bmp_help)
- BAREBOX_CMD_END
--
++#endif /* DOXYGEN_SHOULD_SKIP_THIS */
++
+ /* expand a compressed symbol data into the resulting uncompressed string,
+    given the offset to where the symbol is in the compressed stream */
+ static unsigned int kallsyms_expand_symbol(unsigned int off, char *result)
 -- 
 1.7.2.3
 
