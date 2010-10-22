@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1P9HT5-0006Hz-2D
-	for barebox@lists.infradead.org; Fri, 22 Oct 2010 13:15:40 +0000
+	id 1P9HT5-0006Ht-0I
+	for barebox@lists.infradead.org; Fri, 22 Oct 2010 13:15:42 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 22 Oct 2010 15:15:31 +0200
-Message-Id: <1287753331-7696-14-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 22 Oct 2010 15:15:26 +0200
+Message-Id: <1287753331-7696-9-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1287753331-7696-1-git-send-email-s.hauer@pengutronix.de>
 References: <1287753331-7696-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,77 +21,119 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 13/13] ARM: Add defconfig for Garz+Fricke cupid board
+Subject: [PATCH 08/13] fb: i.MX IPU: move fb_info initialization to a single
+	function
 To: barebox@lists.infradead.org
+
+The bitfield information was only added to fb_info when the
+framebuffer actually was enabled. That made it impossible to
+call 'bmp' before enabling the display.
+So, move all fb_info init to a single place and make it a function
+to better allow for multiple displays later.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/configs/cupid_defconfig |   56 ++++++++++++++++++++++++++++++++++++++
- 1 files changed, 56 insertions(+), 0 deletions(-)
- create mode 100644 arch/arm/configs/cupid_defconfig
+ drivers/video/imx-ipu-fb.c |   63 ++++++++++++++++++++++++-------------------
+ 1 files changed, 35 insertions(+), 28 deletions(-)
 
-diff --git a/arch/arm/configs/cupid_defconfig b/arch/arm/configs/cupid_defconfig
-new file mode 100644
-index 0000000..e24afe1
---- /dev/null
-+++ b/arch/arm/configs/cupid_defconfig
-@@ -0,0 +1,56 @@
-+CONFIG_ARCH_IMX=y
-+CONFIG_CACHE_L2X0=y
-+CONFIG_ARCH_IMX35=y
-+CONFIG_MACH_GUF_CUPID=y
-+CONFIG_IMX_CLKO=y
-+CONFIG_AEABI=y
-+CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_MMU=y
-+CONFIG_TEXT_BASE=0x87F00000
-+CONFIG_MALLOC_SIZE=0x1000000
-+CONFIG_LONGHELP=y
-+CONFIG_GLOB=y
-+CONFIG_HUSH_FANCY_PROMPT=y
-+CONFIG_CMDLINE_EDITING=y
-+CONFIG_AUTO_COMPLETE=y
-+CONFIG_MENU=y
-+CONFIG_PARTITION=y
-+CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
-+CONFIG_DEFAULT_ENVIRONMENT_PATH="defaultenv arch/arm/boards/guf-cupid/env"
-+CONFIG_CMD_EDIT=y
-+CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_SAVEENV=y
-+CONFIG_CMD_LOADENV=y
-+CONFIG_CMD_EXPORT=y
-+CONFIG_CMD_PRINTENV=y
-+CONFIG_CMD_READLINE=y
-+CONFIG_CMD_ECHO_E=y
-+CONFIG_CMD_MEMINFO=y
-+CONFIG_CMD_FLASH=y
-+CONFIG_CMD_RESET=y
-+CONFIG_CMD_GO=y
-+CONFIG_CMD_TIMEOUT=y
-+CONFIG_CMD_PARTITION=y
-+CONFIG_CMD_BMP=y
-+CONFIG_CMD_GPIO=y
-+CONFIG_CMD_UNLZO=y
-+CONFIG_NET=y
-+CONFIG_NET_DHCP=y
-+CONFIG_NET_NFS=y
-+CONFIG_NET_PING=y
-+CONFIG_NET_TFTP=y
-+CONFIG_NET_TFTP_PUSH=y
-+CONFIG_NET_NETCONSOLE=y
-+CONFIG_NET_RESOLV=y
-+CONFIG_DRIVER_NET_FEC_IMX=y
-+# CONFIG_SPI is not set
-+CONFIG_MTD=y
-+CONFIG_NAND=y
-+CONFIG_NAND_IMX=y
-+CONFIG_NAND_IMX_BOOT=y
-+CONFIG_NAND_IMX_BOOT_2K=y
-+CONFIG_UBI=y
-+CONFIG_VIDEO=y
-+CONFIG_DRIVER_VIDEO_IMX_IPU=y
-+CONFIG_MCI=y
-+CONFIG_MCI_IMX_ESDHC=y
+diff --git a/drivers/video/imx-ipu-fb.c b/drivers/video/imx-ipu-fb.c
+index 399af75..08036aa 100644
+--- a/drivers/video/imx-ipu-fb.c
++++ b/drivers/video/imx-ipu-fb.c
+@@ -729,7 +729,6 @@ static void sdc_enable_channel(struct ipu_fb_info *fbi, void *fbmem)
+ static int mx3fb_set_par(struct fb_info *info)
+ {
+ 	struct ipu_fb_info *fbi = info->priv;
+-	struct imx_ipu_fb_rgb *rgb;
+ 	struct fb_videomode *mode = info->mode;
+ 	int ret;
+ 
+@@ -740,29 +739,6 @@ static int mx3fb_set_par(struct fb_info *info)
+ 	reg_write(fbi, (mode->left_margin << 16) | mode->upper_margin,
+ 			SDC_BG_POS);
+ 
+-	switch (info->bits_per_pixel) {
+-	case 32:
+-		rgb = &def_rgb_32;
+-		break;
+-	case 24:
+-		rgb = &def_rgb_24;
+-		break;
+-	case 16:
+-	default:
+-		rgb = &def_rgb_16;
+-		break;
+-	}
+-
+-	/*
+-	 * Copy the RGB parameters for this display
+-	 * from the machine specific parameters.
+-	 */
+-	info->red    = rgb->red;
+-	info->green  = rgb->green;
+-	info->blue   = rgb->blue;
+-	info->transp = rgb->transp;
+-
+-
+ 	return 0;
+ }
+ 
+@@ -853,6 +829,39 @@ static struct fb_ops imxfb_ops = {
+ 	.fb_disable = ipu_fb_disable,
+ };
+ 
++static void imxfb_init_info(struct fb_info *info, struct fb_videomode *mode,
++		int bpp)
++{
++	struct imx_ipu_fb_rgb *rgb;
++
++	info->mode = mode;
++	info->xres = mode->xres;
++	info->yres = mode->yres;
++	info->bits_per_pixel = bpp;
++
++	switch (info->bits_per_pixel) {
++	case 32:
++		rgb = &def_rgb_32;
++		break;
++	case 24:
++		rgb = &def_rgb_24;
++		break;
++	case 16:
++	default:
++		rgb = &def_rgb_16;
++		break;
++	}
++
++	/*
++	 * Copy the RGB parameters for this display
++	 * from the machine specific parameters.
++	 */
++	info->red    = rgb->red;
++	info->green  = rgb->green;
++	info->blue   = rgb->blue;
++	info->transp = rgb->transp;
++}
++
+ static int imxfb_probe(struct device_d *dev)
+ {
+ 	struct ipu_fb_info *fbi;
+@@ -869,13 +878,11 @@ static int imxfb_probe(struct device_d *dev)
+ 	fbi->regs = (void *)dev->map_base;
+ 	fbi->dev = dev;
+ 	info->priv = fbi;
+-	info->mode = pdata->mode;
+-	info->xres = pdata->mode->xres;
+-	info->yres = pdata->mode->yres;
+-	info->bits_per_pixel = pdata->bpp;
+ 	info->fbops = &imxfb_ops;
+ 	fbi->enable = pdata->enable;
+ 
++	imxfb_init_info(info, pdata->mode, pdata->bpp);
++
+ 	dev_info(dev, "i.MX Framebuffer driver\n");
+ 
+ 	/*
 -- 
 1.7.2.3
 
