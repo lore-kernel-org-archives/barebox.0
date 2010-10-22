@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by casper.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1P9KkV-0001xC-33
+	id 1P9KkV-0001x9-Tv
 	for barebox@lists.infradead.org; Fri, 22 Oct 2010 16:45:50 +0000
 From: Robert Schwebel <r.schwebel@pengutronix.de>
-Date: Fri, 22 Oct 2010 18:45:20 +0200
-Message-Id: <1287765924-1856-29-git-send-email-r.schwebel@pengutronix.de>
+Date: Fri, 22 Oct 2010 18:45:14 +0200
+Message-Id: <1287765924-1856-23-git-send-email-r.schwebel@pengutronix.de>
 In-Reply-To: <1287765924-1856-1-git-send-email-r.schwebel@pengutronix.de>
 References: <1287765924-1856-1-git-send-email-r.schwebel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,65 +21,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 28/32] doc: unify documentation for 'edit'
+Subject: [PATCH 22/32] doc: add documentation for 'crc32'
 To: barebox@lists.infradead.org
 
 Signed-off-by: Robert Schwebel <r.schwebel@pengutronix.de>
 ---
- commands/edit.c |   36 +++++++++++-------------------------
- 1 files changed, 11 insertions(+), 25 deletions(-)
+ Documentation/commands.dox |    1 +
+ commands/crc.c             |   15 +++++++--------
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/commands/edit.c b/commands/edit.c
-index c2ab877..d35097e 100644
---- a/commands/edit.c
-+++ b/commands/edit.c
-@@ -550,35 +550,21 @@ out:
+diff --git a/Documentation/commands.dox b/Documentation/commands.dox
+index f829a3c..cfff884 100644
+--- a/Documentation/commands.dox
++++ b/Documentation/commands.dox
+@@ -7,6 +7,7 @@
+ @li @subpage cd_command
+ @li @subpage clear_command
+ @li @subpage cp_command
++@li @subpage crc_command
+ @li @subpage delpart_command
+ @li @subpage devinfo_command
+ @li @subpage edit_command
+diff --git a/commands/crc.c b/commands/crc.c
+index d3e0865..0873a1c 100644
+--- a/commands/crc.c
++++ b/commands/crc.c
+@@ -143,19 +143,18 @@ static int do_crc(struct command *cmdtp, int argc, char *argv[])
+ 	return err;
+ }
  
- static const char *edit_aliases[] = { "sedit", NULL};
- 
--static const __maybe_unused char cmd_edit_help[] =
--"Usage: (s)edit <file>\n"
--"This is a very small editor. Its only features are moving the cursor with\n"
--"the usual keys and typing characters.\n"
--"<ctrl-c> quits the editor without saving,\n"
--"<ctrl-d> quits the editor with saving the current file.\n"
--"\n"
--"If called as sedit the editor uses ansi codes to scroll the screen.\n";
--
--static const __maybe_unused char cmd_edit_usage[] = "edit a file";
-+BAREBOX_CMD_HELP_START(edit)
-+BAREBOX_CMD_HELP_USAGE("(s)edit <file>\n")
-+BAREBOX_CMD_HELP_SHORT("A small editor. <ctrl-c> is exit, <ctrl-d> exit-with-save.\n")
-+BAREBOX_CMD_HELP_TEXT ("This is a very small text editor. You can move the cursor around\n")
-+BAREBOX_CMD_HELP_TEXT ("with the usual keys and type characters.\n")
-+BAREBOX_CMD_HELP_TEXT ("<ctrl-c> quits the editor without saving,\n")
-+BAREBOX_CMD_HELP_TEXT ("<ctrl-d> quits the editor with saving the current file.\n")
-+BAREBOX_CMD_HELP_TEXT (" \n")
-+BAREBOX_CMD_HELP_TEXT ("If called as sedit, the editor uses ansi codes to scroll the screen.\n")
+-static const __maybe_unused char cmd_crc_help[] =
+-"Usage: crc32 [OPTION] [AREA]\n"
+-"Calculate a crc32 checksum of a memory area\n"
+-"Options:\n"
+-"  -f <file>   Use file instead of memory\n"
++BAREBOX_CMD_HELP_START(crc)
++BAREBOX_CMD_HELP_USAGE("crc32 [OPTION] [AREA]\n")
++BAREBOX_CMD_HELP_SHORT("Calculate a crc32 checksum of a memory area.\n")
++BAREBOX_CMD_HELP_OPT  ("-f <file>", "Use file instead of memory.\n")
+ #ifdef CONFIG_CMD_CRC_CMP
+-"  -F <file>   Use file to compare\n"
++BAREBOX_CMD_HELP_OPT  ("-F <file>", "Use file to compare.\n")
+ #endif
+-"  -v <crc>    Verfify\n";
++BAREBOX_CMD_HELP_OPT  ("-v <crc>",  "Verfify\n")
 +BAREBOX_CMD_HELP_END
  
- BAREBOX_CMD_START(edit)
- 	.cmd		= do_edit,
- 	.aliases	= edit_aliases,
--	.usage		= cmd_edit_usage,
-+	.usage		= "Usage: (s)edit <file>",
- 	BAREBOX_CMD_HELP(cmd_edit_help)
+ BAREBOX_CMD_START(crc32)
+ 	.cmd		= do_crc,
+ 	.usage		= "crc32 checksum calculation",
+ 	BAREBOX_CMD_HELP(cmd_crc_help)
  BAREBOX_CMD_END
- 
 -
--/**
-- * @page edit_command edit (editor)
-- *
-- * Usage is: [s]edit \<file\>
-- *
-- * This is a very small editor. It's only features are moving the cursor with
-- * the usual keys and typing characters.
-- *
-- * \b \<ctrl-c\> quits the editor without saving,\n
-- * \b \<ctrl-d\> quits the editor with saving the current file.
-- *
-- * If called as \c sedit the editor uses ansi codes to scroll the screen.
-- */
 -- 
 1.7.2.3
 
