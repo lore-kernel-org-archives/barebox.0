@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-px0-f177.google.com ([209.85.212.177])
-	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1P9HCg-0004oy-Dj
-	for barebox@lists.infradead.org; Fri, 22 Oct 2010 12:58:40 +0000
-Received: by pxi11 with SMTP id 11so173677pxi.36
-	for <barebox@lists.infradead.org>; Fri, 22 Oct 2010 05:58:36 -0700 (PDT)
-From: "Marc Reilly" <marc@cpdesign.com.au>
-References: <201010221058.01249.jbe@pengutronix.de>
-In-Reply-To: <201010221058.01249.jbe@pengutronix.de>
-Date: Fri, 22 Oct 2010 23:58:27 +1100
-Message-ID: <034801cb71e8$d8d10740$8a7315c0$@cpdesign.com.au>
-MIME-Version: 1.0
-Content-language: en-au
-Reply-To: marc@cpdesign.com.au
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1P9HT4-0006Hn-8B
+	for barebox@lists.infradead.org; Fri, 22 Oct 2010 13:15:35 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Fri, 22 Oct 2010 15:15:19 +0200
+Message-Id: <1287753331-7696-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1287753331-7696-1-git-send-email-s.hauer@pengutronix.de>
+References: <1287753331-7696-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,148 +16,33 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: [PATCH] Add some help using the gpio commands at runtime
-To: 'Juergen Beisert' <jbe@pengutronix.de>, barebox@lists.infradead.org
+Subject: [PATCH 01/13] ARM pca100: Use a flash bbt
+To: barebox@lists.infradead.org
 
-Hi,
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/boards/phycard-i.MX27/pca100.c |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
 
-This is a great step for documentation, and a few things I didn't know. 
-Thanks for the effort!
-
-Just FYI, some really minor corrections below. (Sorry for being pedantic..
-I'm OK if they are ignored :) )
-
-Cheers
-Marc
-
-> -----Original Message-----
-> From: barebox-bounces@lists.infradead.org [mailto:barebox-
-> bounces@lists.infradead.org] On Behalf Of Juergen Beisert
-> Sent: Friday, 22 October 2010 7:58 PM
-> To: barebox@lists.infradead.org
-> Subject: [PATCH] Add some help using the gpio commands at runtime
-> 
-> From: Juergen Beisert <jbe@pengutronix.de>
-> Subject: [PATCH] Add some help using the gpio commands at runtime
-> 
-> Last time I used the gpio commands I was somehow confused about the
-> behaviour of the 'gpio_get_value' command. So, I decided to add some doc
-> for it. Here's the result.
-> 
-> Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
-> 
-> ---
->  Documentation/commands.dox |    1
->  commands/gpio.c            |   61
-> +++++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 62 insertions(+)
-> 
-> Index: barebox-2010.10.0/Documentation/commands.dox
-> ==========================================================
-> =========
-> --- barebox-2010.10.0.orig/Documentation/commands.dox
-> +++ barebox-2010.10.0/Documentation/commands.dox
-> @@ -10,6 +10,7 @@
->  @li @subpage edit_command
->  @li @subpage erase_command
->  @li @subpage export_command
-> +@li @subpage gpio_for_users
->  @li @subpage tftp_command
->  @li @subpage loadenv_command
->  @li @subpage mount_command
-> Index: barebox-2010.10.0/commands/gpio.c
-> ==========================================================
-> =========
-> --- barebox-2010.10.0.orig/commands/gpio.c
-> +++ barebox-2010.10.0/commands/gpio.c
-> @@ -120,3 +120,64 @@ BAREBOX_CMD_START(gpio_direction_output)
->  	BAREBOX_CMD_HELP(cmd_gpio_direction_output_help)
->  BAREBOX_CMD_END
-> 
-> +/**
-> +@page gpio_for_users Runtime GPIO handling
-> +
-> +@section regular_gpio General usage information
-> +
-> +These commands are available if the symbol @b CONFIG_GENERIC_GPIO
-> and
-> +@b CONFIG_CMD_GPIO are enabled in the Kconfig.
-> +
-> +@note All gpio related commands take a number to identify the pad. This
-> +number is architecture dependend. There may be no intuitional
-
-s/dependend/dependent
-
-> +correlation between available pads and the GPIO numbers to be used in
-> +the commands. Due to this its also possible the numbers change between
-
-s/its/it's
-
-> @b barebox releases.
-> +
-> +@section gpio_dir_out Switch a pad into an output GPIO @verbatim
-> +gpio_direction_output <gpio_no> <initial_value> @endverbatim
-> +- @b gpio_no Architecture dependend GPIO number
-> +- @b initial_value Output value the pad should emit
-> +
-> +@note To avoid glitches on the pad's line, the routines will first
-> +setting up the pad's value and after that switching the pad itself to
-> +output (if the silicon is able to do so)
-> +
-> +@note If the pad is already configured into a non GPIO mode (if
-> +available) this command may fail (silently)
-> +
-> +@section gpio_dir_in Switch a pad into an input GPIO @verbatim
-> +gpio_direction_input <gpio_no> @endverbatim
-> +- @b gpio_no Architecture dependend GPIO number
-> +
-> +@note If the pad is already configured into a non GPIO mode (if
-> +available) this command may fail (silently)
-> +
-> +@section gpio_get_value Read in the value of an GPIO input pad
-> +@verbatim gpio_get_value <gpio_no> @endverbatim
-> +
-> +Reads in the current pad's line value from the given GPIO number. It
-> +returns the value as a shell return code. There is no visible output at
-> +stdout. You can check the return value by using "echo $?"
-> +
-> +@note If the return code is not '0' or '1' it's meant as an error code.
-> +
-> +@note If the pad is not configured for GPIO mode this command may fail
-> +(silently) and returns garbage
-> +
-> +@section gpio_set_value Set a new value to a GPIO output pad @verbatim
-> +gpio_set_value <gpio_no> <value> @endverbatim
-> +- @b gpio_no Architecture dependend GPIO number
-
-s/dependend/dependent
-
-
-> +- @b value Output value the pad should emit
-> +
-> +Sets a new output @b value to the pad with GPIO number @b gpio_no
-> +
-> +@note If the pad is not configured for GPIO mode this command may fail
-> +(silently) */
-> 
-> --
-> Pengutronix e.K.                              | Juergen Beisert
-|
-> Linux Solutions for Science and Industry      | Phone: +49-8766-939 228
-|
-> Vertretung Sued/Muenchen, Germany             | Fax:
-+49-5121-206917-5555 |
-> Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/
-|
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+diff --git a/arch/arm/boards/phycard-i.MX27/pca100.c b/arch/arm/boards/phycard-i.MX27/pca100.c
+index 7460c00..3a96180 100644
+--- a/arch/arm/boards/phycard-i.MX27/pca100.c
++++ b/arch/arm/boards/phycard-i.MX27/pca100.c
+@@ -68,6 +68,7 @@ static struct device_d fec_dev = {
+ struct imx_nand_platform_data nand_info = {
+ 	.width = 1,
+ 	.hw_ecc = 1,
++	.flash_bbt = 1,
+ };
+ 
+ static struct device_d nand_dev = {
+-- 
+1.7.2.3
 
 
 _______________________________________________
