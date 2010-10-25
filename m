@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-fx0-f49.google.com ([209.85.161.49])
-	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1PAMJA-0001qz-BS
-	for barebox@lists.infradead.org; Mon, 25 Oct 2010 12:37:48 +0000
-Received: by fxm15 with SMTP id 15so2232100fxm.36
-	for <barebox@lists.infradead.org>; Mon, 25 Oct 2010 05:37:46 -0700 (PDT)
-From: Marek Belisko <marek.belisko@gmail.com>
-Date: Mon, 25 Oct 2010 14:39:53 +0200
-Message-Id: <1288010393-3644-1-git-send-email-marek.belisko@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1PAQ0l-0003i0-48
+	for barebox@lists.infradead.org; Mon, 25 Oct 2010 16:35:03 +0000
+Date: Mon, 25 Oct 2010 18:34:57 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20101025163457.GA6017@pengutronix.de>
+References: <1288010393-3644-1-git-send-email-marek.belisko@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1288010393-3644-1-git-send-email-marek.belisko@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,38 +18,31 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] barebox:usb_gadget:Remove compilation error.
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] barebox:usb_gadget:Remove compilation error.
+To: Marek Belisko <marek.belisko@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Missing include <init.h> caused that __initdata was
-undeclared what lead to compilation error.
+Hi Marek,
 
-Signed-off-by: Marek Belisko <marek.belisko@gmail.com>
----
- drivers/usb/gadget/epautoconf.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+On Mon, Oct 25, 2010 at 02:39:53PM +0200, Marek Belisko wrote:
+> Missing include <init.h> caused that __initdata was
+> undeclared what lead to compilation error.
 
-diff --git a/drivers/usb/gadget/epautoconf.c b/drivers/usb/gadget/epautoconf.c
-index e549792..78f3099 100644
---- a/drivers/usb/gadget/epautoconf.c
-+++ b/drivers/usb/gadget/epautoconf.c
-@@ -18,7 +18,7 @@
-  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-  *
-  */
--
-+#include <init.h>
- #include <common.h>
- #include <linux/ctype.h>
- #include <asm/byteorder.h>
+You probably mean the master branch, because next already has a fix for
+this from Eric. I cherry-picked his patch to the master branch.
+
+Sascha
+
+
 -- 
-1.7.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
