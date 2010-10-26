@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PAhl3-0007mf-KX
-	for barebox@lists.infradead.org; Tue, 26 Oct 2010 11:32:11 +0000
+	id 1PAhl0-0007ll-VW
+	for barebox@lists.infradead.org; Tue, 26 Oct 2010 11:32:05 +0000
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Tue, 26 Oct 2010 13:31:45 +0200
-Message-Id: <1288092708-5187-10-git-send-email-jbe@pengutronix.de>
+Date: Tue, 26 Oct 2010 13:31:42 +0200
+Message-Id: <1288092708-5187-7-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1288092708-5187-1-git-send-email-jbe@pengutronix.de>
 References: <1288092708-5187-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,657 +21,392 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/12] STM378x: Add video driver for this platform
+Subject: [PATCH 06/12] Adapt the existing imx fb driver to support runtime
+	videomode selection
 To: barebox@lists.infradead.org
+
+Adapt the API to the new framebuffer videomode selection at runtime. If the new
+feature is not used, there is no visible change at runtime for platforms using
+this driver.
+
+NOTE: Due to the lack of hardware, this is compile time tested only.
+
+This is patch 4 of 7 to keep the repository bisectable.
 
 Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 ---
- arch/arm/mach-stm/include/mach/fb.h |   38 +++
- drivers/video/Kconfig               |    7 +
- drivers/video/Makefile              |    1 +
- drivers/video/stm.c                 |  561 +++++++++++++++++++++++++++++++++++
- 4 files changed, 607 insertions(+), 0 deletions(-)
- create mode 100644 arch/arm/mach-stm/include/mach/fb.h
- create mode 100644 drivers/video/stm.c
+ arch/arm/mach-imx/include/mach/imxfb.h |    1 +
+ drivers/video/imx.c                    |  211 ++++++++++++++++++--------------
+ 2 files changed, 120 insertions(+), 92 deletions(-)
 
-diff --git a/arch/arm/mach-stm/include/mach/fb.h b/arch/arm/mach-stm/include/mach/fb.h
-new file mode 100644
-index 0000000..6596ef2
---- /dev/null
-+++ b/arch/arm/mach-stm/include/mach/fb.h
-@@ -0,0 +1,38 @@
-+/*
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License
-+ * as published by the Free Software Foundation; either version 2
-+ * of the License, or (at your option) any later version.
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-+ * MA 02110-1301, USA.
-+ */
-+
-+#ifndef __MACH_FB_H
-+# define __MACH_FB_H
-+
-+#include <fb.h>
-+
-+#define STMLCDIF_8BIT 1	/** pixel data bus to the display is of 8 bit width */
-+#define STMLCDIF_16BIT 0 /** pixel data bus to the display is of 16 bit width */
-+#define STMLCDIF_18BIT 2 /** pixel data bus to the display is of 18 bit width */
-+#define STMLCDIF_24BIT 3 /** pixel data bus to the display is of 24 bit width */
-+
-+struct imx_fb_videomode {
-+	struct fb_videomode *mode_list;
-+	unsigned mode_count;
-+	void *framebuffer;	/**< force fixed framebuffer address if != NULL */
-+	unsigned size;		/**< force fixed size if != NULL */
-+
-+	unsigned dotclk_delay;	/**< refer manual HW_LCDIF_VDCTRL4 register */
-+	unsigned ld_intf_width;	/**< refer STMLCDIF_* macros */
-+};
-+
-+#endif /* __MACH_FB_H */
-+
-diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
-index 5a5edd2..6cda478 100644
---- a/drivers/video/Kconfig
-+++ b/drivers/video/Kconfig
-@@ -45,4 +45,11 @@ config S3C_VIDEO
- 	help
- 	  Add support for the S3C244x LCD controller.
+diff --git a/arch/arm/mach-imx/include/mach/imxfb.h b/arch/arm/mach-imx/include/mach/imxfb.h
+index 7baa244..c536119 100644
+--- a/arch/arm/mach-imx/include/mach/imxfb.h
++++ b/arch/arm/mach-imx/include/mach/imxfb.h
+@@ -60,6 +60,7 @@ struct imx_fb_videomode {
+  */
+ struct imx_fb_platform_data {
+ 	struct imx_fb_videomode *mode;
++	unsigned mode_cnt;	/**< number of entries in 'mode' */
  
-+config DRIVER_VIDEO_STM
-+	bool "i.MX23/28 framebuffer driver"
-+	depends on ARCH_STM
-+	help
-+	  Say 'Y' here to enable framebuffer and spash screen support for
-+	  i.MX23 and i.MX28 based systems.
-+
- endif
-diff --git a/drivers/video/Makefile b/drivers/video/Makefile
-index 4287fc8..0ddb81e 100644
---- a/drivers/video/Makefile
-+++ b/drivers/video/Makefile
-@@ -1,5 +1,6 @@
- obj-$(CONFIG_VIDEO) += fb.o
+ 	u_int		cmap_greyscale:1,
+ 			cmap_inverse:1,
+diff --git a/drivers/video/imx.c b/drivers/video/imx.c
+index 6ccd77e..07438e5 100644
+--- a/drivers/video/imx.c
++++ b/drivers/video/imx.c
+@@ -137,6 +137,7 @@ struct imxfb_rgb {
+ };
  
-+obj-$(CONFIG_DRIVER_VIDEO_STM) += stm.o
- obj-$(CONFIG_DRIVER_VIDEO_IMX) += imx.o
- obj-$(CONFIG_DRIVER_VIDEO_IMX_IPU) += imx-ipu-fb.o
- obj-$(CONFIG_S3C_VIDEO) += s3c.o
-diff --git a/drivers/video/stm.c b/drivers/video/stm.c
-new file mode 100644
-index 0000000..5f5d60a
---- /dev/null
-+++ b/drivers/video/stm.c
-@@ -0,0 +1,561 @@
-+/*
-+ * Copyright (C) 2010 Juergen Beisert, Pengutronix
-+ *
-+ * This code is based on:
-+ * Author: Vitaly Wool <vital@embeddedalley.com>
-+ *
-+ * Copyright 2008-2009 Freescale Semiconductor, Inc. All Rights Reserved.
-+ * Copyright 2008 Embedded Alley Solutions, Inc All Rights Reserved.
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License
-+ * as published by the Free Software Foundation; either version 2
-+ * of the License, or (at your option) any later version.
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-+ * MA 02110-1301, USA.
-+ */
+ struct imxfb_info {
++	struct fb_host		fb_host;	/**< myself */
+ 	void __iomem		*regs;
+ 
+ 	u_int			pcr;
+@@ -147,16 +148,15 @@ struct imxfb_info {
+ 				cmap_static:1,
+ 				unused:30;
+ 
+-	struct imx_fb_videomode *mode;
+-
+-	struct fb_info		info;
+-	struct device_d		*dev;
+-
+ 	void			(*enable)(int enable);
+ 
+-	struct fb_info		overlay;
++	struct fb_host		fb_overlay;
+ };
+ 
++#define fb_overlay_to_imxfb_info(x) (container_of((struct fb_host*)(x->host), struct imxfb_info, fb_overlay))
++#define fb_overlay_dev_to_imxfb_info(x) (container_of((struct fb_host*)(x->platform_data), struct imxfb_info, fb_overlay))
++#define fb_info_to_imxfb_info(x) ((struct imxfb_info*)((x)->host))
 +
-+/**
-+ * @file
-+ * @brief LCDIF driver for i.MX23 and i.MX28 (i.MX23 untested yet)
-+ *
-+ * The LCDIF support four modes of operation
-+ * - MPU interface (to drive smart displays) -> not supported yet
-+ * - VSYNC interface (like MPU interface plus Vsync) -> not supported yet
-+ * - Dotclock interface (to drive LC displays with RGB data and sync signals)
-+ * - DVI (to drive ITU-R BT656)  -> not supported yet
-+ *
-+ * This driver depends on a correct setup of the pins used for this purpose
-+ * (platform specific).
-+ *
-+ * For the developer: Don't forget to set the data bus width to the display
-+ * in the imx_fb_videomode structure. You will else end up with ugly colours.
-+ * If you fight against jitter you can vary the clock delay. This is a feature
-+ * of the i.MX28 and you can vary it between 2 ns ... 8 ns in 2 ns steps. Give
-+ * the required value in the imx_fb_videomode structure.
-+ */
-+
-+/* #define DEBUG */
-+
-+#include <common.h>
-+#include <init.h>
-+#include <driver.h>
-+#include <malloc.h>
-+#include <errno.h>
-+#include <xfuncs.h>
-+#include <asm/io.h>
-+#include <mach/clock.h>
-+#include <mach/fb.h>
-+
-+#define HW_LCDIF_CTRL 0x00
-+# define CTRL_SFTRST (1 << 31)
-+# define CTRL_CLKGATE (1 << 30)
-+# define CTRL_BYPASS_COUNT (1 << 19)
-+# define CTRL_VSYNC_MODE (1 << 18)
-+# define CTRL_DOTCLK_MODE (1 << 17)
-+# define CTRL_DATA_SELECT (1 << 16)
-+# define SET_BUS_WIDTH(x) (((x) & 0x3) << 10)
-+# define SET_WORD_LENGTH(x) (((x) & 0x3) << 8)
-+# define GET_WORD_LENGTH(x) (((x) >> 8) & 0x3)
-+# define CTRL_MASTER (1 << 5)
-+# define CTRL_DF16 (1 << 3)
-+# define CTRL_DF18 (1 << 2)
-+# define CTRL_DF24 (1 << 1)
-+# define CTRL_RUN (1 << 0)
-+
-+#define HW_LCDIF_CTRL1 0x10
-+# define SET_BYTE_PACKAGING(x) (((x) & 0xf) << 16)
-+# define GET_BYTE_PACKAGING(x) (((x) >> 16) & 0xf)
-+
-+#define HW_LCDIF_CTRL2 0x20
-+
-+#define HW_LCDIF_TRANSFER_COUNT 0x30
-+# define SET_VCOUNT(x) (((x) & 0xffff) << 16)
-+# define SET_HCOUNT(x) ((x) & 0xffff)
-+
-+#define HW_LCDIF_CUR_BUF 0x40
-+
-+#define HW_LCDIF_NEXT_BUF 0x50
-+
-+#define HW_LCDIF_TIMING 0x60
-+# define SET_CMD_HOLD(x) (((x) & 0xff) << 24)
-+# define SET_CMD_SETUP(x) (((x) & 0xff) << 16)
-+# define SET_DATA_HOLD(x) (((x) & 0xff) << 8)
-+# define SET_DATA_SETUP(x) ((x) & 0xff))
-+
-+#define HW_LCDIF_VDCTRL0 0x70
-+# define VDCTRL0_ENABLE_PRESENT (1 << 28)
-+# define VDCTRL0_VSYNC_POL (1 << 27) /* 0 = low active, 1 = high active */
-+# define VDCTRL0_HSYNC_POL (1 << 26) /* 0 = low active, 1 = high active */
-+# define VDCTRL0_DOTCLK_POL (1 << 25) /* 0 = output at falling edge, capturing at rising edge */
-+# define VDCTRL0_ENABLE_POL (1 << 24) /* 0 = low active, 1 = high active */
-+# define VDCTRL0_VSYNC_PERIOD_UNIT (1 << 21)
-+# define VDCTRL0_VSYNC_PULSE_WIDTH_UNIT (1 << 20)
-+# define VDCTRL0_HALF_LINE (1 << 19)
-+# define VDCTRL0_HALF_LINE_MODE (1 << 18)
-+# define SET_VSYNC_PULSE_WIDTH(x) ((x) & 0x3ffff)
-+
-+#define HW_LCDIF_VDCTRL1 0x80
-+
-+#define HW_LCDIF_VDCTRL2 0x90
-+# define SET_HSYNC_PULSE_WIDTH(x) (((x) & 0x3fff) << 18)
-+# define SET_HSYNC_PERIOD(x) ((x) & 0x3ffff)
-+
-+#define HW_LCDIF_VDCTRL3 0xa0
-+# define VDCTRL3_MUX_SYNC_SIGNALS (1 << 29)
-+# define VDCTRL3_VSYNC_ONLY (1 << 28)
-+# define SET_HOR_WAIT_CNT(x) (((x) & 0xfff) << 16)
-+# define SET_VERT_WAIT_CNT(x) ((x) & 0xffff)
-+
-+#define HW_LCDIF_VDCTRL4 0xb0
-+# define SET_DOTCLK_DLY(x) (((x) & 0x7) << 29)
-+# define VDCTRL4_SYNC_SIGNALS_ON (1 << 18)
-+# define SET_DOTCLK_H_VALID_DATA_CNT(x) ((x) & 0x3ffff)
-+
-+#define HW_LCDIF_DVICTRL0 0xc0
-+#define HW_LCDIF_DVICTRL1 0xd0
-+#define HW_LCDIF_DVICTRL2 0xe0
-+#define HW_LCDIF_DVICTRL3 0xf0
-+#define HW_LCDIF_DVICTRL4 0x100
-+#define HW_LCDIF_DATA 0x180
-+
-+#define HW_LCDIF_DEBUG0 0x1d0
-+# define DEBUG_HSYNC (1 < 26)
-+# define DEBUG_VSYNC (1 < 25)
-+
-+#define RED 0
-+#define GREEN 1
-+#define BLUE 2
-+#define TRANSP 3
-+
-+struct imxfb_host {
-+	struct fb_host fb_data;
-+	struct device_d *hw_dev;
-+	void __iomem *base;
-+};
-+
-+#define fb_info_to_imxfb_host(x) ((struct imxfb_host*)((x)->host))
-+
-+/* the RGB565 true colour mode */
-+static const struct fb_bitfield def_rgb565[] = {
-+	[RED] = {
-+		.offset = 11,
-+		.length = 5,
-+	},
-+	[GREEN] = {
-+		.offset = 5,
-+		.length = 6,
-+	},
-+	[BLUE] = {
-+		.offset = 0,
-+		.length = 5,
-+	},
-+	[TRANSP] = {	/* no support for transparency */
-+		.length = 0,
-+	}
-+};
-+
-+/* the RGB666 true colour mode */
-+static const struct fb_bitfield def_rgb666[] = {
-+	[RED] = {
-+		.offset = 16,
-+		.length = 6,
-+	},
-+	[GREEN] = {
-+		.offset = 8,
-+		.length = 6,
-+	},
-+	[BLUE] = {
-+		.offset = 0,
-+		.length = 6,
-+	},
-+	[TRANSP] = {	/* no support for transparency */
-+		.length = 0,
-+	}
-+};
-+
-+/* the RGB888 true colour mode */
-+static const struct fb_bitfield def_rgb888[] = {
-+	[RED] = {
-+		.offset = 16,
-+		.length = 8,
-+	},
-+	[GREEN] = {
-+		.offset = 8,
-+		.length = 8,
-+	},
-+	[BLUE] = {
-+		.offset = 0,
-+		.length = 8,
-+	},
-+	[TRANSP] = {	/* no support for transparency */
-+		.length = 0,
-+	}
-+};
-+
-+/**
-+ * Just calculate the amount of required bytes per line
-+ * @param ppl Used pixel per line
-+ * @param bpp Bits per pixel
-+ * @return Byte count
-+ */
-+static inline unsigned calc_line_length(unsigned ppl, unsigned bpp)
-+{
-+	return (ppl * bpp) >> 3;
-+}
-+
-+/**
-+ * Prepare the video hardware for a specified video mode
-+ * @param fb_info Framebuffer information
-+ * @param mode The video mode description to initialize
-+ * @return 0 on success
-+ *
-+ * Dotclock mode:
-+ * One line of pixels or one frame in the i.MX28 is defined to:
-+ * @verbatim
-+ * |<---------------------- one line period -------------------------------->|
-+ * |<- HSync length ->|
-+ * |<----- Start of line --->|
-+ *                           |<-------- active line data ------>|
-+ *
-+ * |<------------------------ frame period --------------------------------->|
-+ * |<- VSync length ->|
-+ * |<--- Start of 1. line -->|
-+ *                           |<---------- active lines -------->|
-+ * @endverbatim
-+ * Based on the values from struct fb_videomode:
-+ * - "one line period" = left_margin + xres + right_margin + hsync_len
-+ * - "HSync length" = hsync_len
-+ * - "Start of line" = hsync_len + left_margin
-+ * - "active line data" = xres
-+ */
-+static int stmfb_initialize_mode(struct fb_info *fb_info,
-+		const struct fb_videomode *mode)
-+{
-+	struct imxfb_host *fbh = fb_info_to_imxfb_host(fb_info);
-+	struct imx_fb_videomode *pdata = fbh->hw_dev->platform_data;
-+	uint32_t reg;
+ #define IMX_NAME	"IMX"
+ 
+ /*
+@@ -204,11 +204,10 @@ static inline u_int chan_to_field(u_int chan, struct fb_bitfield *bf)
+ 	return chan << bf->offset;
+ }
+ 
+-
+-static int imxfb_setcolreg(u_int regno, u_int red, u_int green, u_int blue,
+-		   u_int trans, struct fb_info *info)
++static int imxfb_setcolreg(struct fb_info *info, u_int regno, u_int red,
++			u_int green, u_int blue, u_int trans)
+ {
+-	struct imxfb_info *fbi = info->priv;
++	struct imxfb_info *fbi = fb_info_to_imxfb_info(info);
+ 	int ret = 1;
+ 	u32 val;
+ 
+@@ -247,7 +246,7 @@ static int imxfb_setcolreg(u_int regno, u_int red, u_int green, u_int blue,
+ 
+ static void imxfb_enable_controller(struct fb_info *info)
+ {
+-	struct imxfb_info *fbi = info->priv;
++	struct imxfb_info *fbi = fb_info_to_imxfb_info(info);
+ 
+ 	writel(RMCR_LCDC_EN, fbi->regs + LCDC_RMCR);
+ #ifdef CONFIG_ARCH_IMX21
+@@ -269,7 +268,7 @@ static void imxfb_enable_controller(struct fb_info *info)
+ 
+ static void imxfb_disable_controller(struct fb_info *info)
+ {
+-	struct imxfb_info *fbi = info->priv;
++	struct imxfb_info *fbi = fb_info_to_imxfb_info(info);
+ 
+ 	if (fbi->enable)
+ 		fbi->enable(0);
+@@ -295,14 +294,35 @@ static void imxfb_disable_controller(struct fb_info *info)
+  *	Configures LCD Controller based on entries in var parameter.  Settings are
+  *	only written to the controller if changes were made.
+  */
+-static int imxfb_activate_var(struct fb_info *info)
++static int imxfb_initialize_mode(struct fb_info *info, const struct fb_videomode *mode)
+ {
+-	struct fb_videomode *mode = info->mode;
+ 	struct imxfb_rgb *rgb;
+ 	unsigned long lcd_clk;
+ 	unsigned long long tmp;
+-	struct imxfb_info *fbi = info->priv;
++	struct imxfb_info *fbi = fb_info_to_imxfb_info(info);
+ 	u32 pcr;
 +	unsigned size;
 +
-+	pr_debug("%s called\n", __func__);
 +	/*
 +	 * we need at least this amount of memory for the framebuffer
 +	 */
-+	size = calc_line_length(mode->xres, fb_info->bits_per_pixel) * mode->yres;
-+	if (fb_info->fb_dev->size != 0) {
-+		if (size > fb_info->fb_dev->size) {
++	size = mode->xres * mode->yres * (info->bits_per_pixel >> 3);
++	if (info->fb_dev->size != 0) {
++		if (size > info->fb_dev->size) {
 +			pr_err("Cannot initialize video mode '%s': Its too large. "
 +				"Required bytes are %u, available only %u\n",
-+				mode->name, size, fb_info->fb_dev->size);
++				mode->name, size, info->fb_dev->size);
 +			return -EINVAL;
 +		}
 +	} else
-+		fb_info->fb_dev->size = size;
++		info->fb_dev->size = size;
 +
 +	/*
 +	 * if no framebuffer memory was specified yet, allocate one,
 +	 * and allocate more memory, on user request
 +	 */
-+	if (fb_info->fb_dev->map_base == 0U)
-+		fb_info->fb_dev->map_base = (resource_size_t)xzalloc(fb_info->fb_dev->size);
++	if (info->fb_dev->map_base == 0U /* FIXME should be 'NULL'*/)
++		info->fb_dev->map_base = (unsigned long)xzalloc(info->fb_dev->size);
+ 
+ 	/* physical screen start address	    */
+ 	writel(VPW_VPW(mode->xres * info->bits_per_pixel / 8 / 4),
+@@ -318,13 +338,13 @@ static int imxfb_activate_var(struct fb_info *info)
+ 		VCR_V_WAIT_2(mode->upper_margin),
+ 		fbi->regs + LCDC_VCR);
+ 
+-	writel(SIZE_XMAX(info->xres) | SIZE_YMAX(info->yres),
++	writel(SIZE_XMAX(mode->xres) | SIZE_YMAX(mode->yres),
+ 			fbi->regs + LCDC_SIZE);
+ 
+ 	writel(fbi->pwmr, fbi->regs + LCDC_PWMR);
+ 	writel(fbi->lscr1, fbi->regs + LCDC_LSCR1);
+ 	writel(fbi->dmacr, fbi->regs + LCDC_DMACR);
+-	writel((unsigned long)fbi->info.screen_base, fbi->regs + LCDC_SSA);
++	writel((uint32_t)info->fb_dev->map_base, fbi->regs + LCDC_SSA);
+ 
+ 	/* panning offset 0 (0 pixel offset)        */
+ 	writel(0x0, fbi->regs + LCDC_POS);
+@@ -386,16 +406,10 @@ static int imxfb_activate_var(struct fb_info *info)
+ 	return 0;
+ }
+ 
+-static struct fb_ops imxfb_ops = {
+-	.fb_setcolreg	= imxfb_setcolreg,
+-	.fb_enable	= imxfb_enable_controller,
+-	.fb_disable	= imxfb_disable_controller,
+-};
+-
+ #ifdef CONFIG_IMXFB_DRIVER_VIDEO_IMX_OVERLAY
+ static void imxfb_overlay_enable_controller(struct fb_info *overlay)
+ {
+-	struct imxfb_info *fbi = overlay->priv;
++	struct imxfb_info *fbi = fb_overlay_to_imxfb_info(overlay);
+ 	unsigned int tmp;
+ 
+ 	tmp = readl(fbi->regs + LCDC_LGWCR);
+@@ -405,7 +419,7 @@ static void imxfb_overlay_enable_controller(struct fb_info *overlay)
+ 
+ static void imxfb_overlay_disable_controller(struct fb_info *overlay)
+ {
+-	struct imxfb_info *fbi = overlay->priv;
++	struct imxfb_info *fbi = fb_overlay_to_imxfb_info(overlay);
+ 	unsigned int tmp;
+ 
+ 	tmp = readl(fbi->regs + LCDC_LGWCR);
+@@ -413,23 +427,16 @@ static void imxfb_overlay_disable_controller(struct fb_info *overlay)
+ 	writel(tmp , fbi->regs + LCDC_LGWCR);
+ }
+ 
+-static int imxfb_overlay_setcolreg(u_int regno, u_int red, u_int green, u_int blue,
+-		   u_int trans, struct fb_info *info)
++static int imxfb_overlay_setcolreg(struct fb_info *overlay, u_int regno,
++		u_int red, u_int green, u_int blue, u_int trans)
+ {
+ 	return 0;
+ }
+ 
+-static struct fb_ops imxfb_overlay_ops = {
+-	.fb_setcolreg	= imxfb_overlay_setcolreg,
+-	.fb_enable	= imxfb_overlay_enable_controller,
+-	.fb_disable	= imxfb_overlay_disable_controller,
+-};
+-
+ static int imxfb_alpha_set(struct device_d *dev, struct param_d *param,
+ 		const char *val)
+ {
+-	struct fb_info *overlay = dev->priv;
+-	struct imxfb_info *fbi = overlay->priv;
++	struct imxfb_info *fbi = fb_overlay_dev_to_imxfb_info(dev);
+ 	int alpha;
+ 	char alphastr[16];
+ 	unsigned int tmp;
+@@ -452,32 +459,35 @@ static int imxfb_alpha_set(struct device_d *dev, struct param_d *param,
+ 	return 0;
+ }
+ 
+-static int imxfb_register_overlay(struct imxfb_info *fbi, void *fb)
++static int imxfb_overlay_mode(struct fb_info *overlay, const struct fb_videomode *mode)
+ {
+-	struct fb_info *overlay;
++	struct imxfb_info *fbi = fb_overlay_to_imxfb_info(overlay);
+ 	struct imxfb_rgb *rgb;
+-	int ret;
+-
+-	overlay = &fbi->overlay;
+-
+-	overlay->priv = fbi;
+-	overlay->mode = fbi->info.mode;
+-	overlay->xres = fbi->info.xres;
+-	overlay->yres = fbi->info.yres;
+-	overlay->bits_per_pixel = fbi->info.bits_per_pixel;
+-	overlay->fbops = &imxfb_overlay_ops;
+-
+-	if (fb)
+-		overlay->screen_base = fb;
+-	else
+-		overlay->screen_base = xzalloc(overlay->xres * overlay->yres *
+-			(overlay->bits_per_pixel >> 3));
+-
+-	writel((unsigned long)overlay->screen_base, fbi->regs + LCDC_LGWSAR);
+-	writel(SIZE_XMAX(overlay->xres) | SIZE_YMAX(overlay->yres),
+-			fbi->regs + LCDC_LGWSR);
+-	writel(VPW_VPW(overlay->xres * overlay->bits_per_pixel / 8 / 4),
+-		fbi->regs + LCDC_LGWVPWR);
++	unsigned size;
 +
-+	/* TODO HCLK must be active at this point of time! */
++	/* we need at least this amount of memory for the framebuffer */
++	size = mode->xres * mode->yres * (overlay->bits_per_pixel >> 3);
 +
-+	size = imx_set_lcdifclk(PICOS2KHZ(mode->pixclock));
-+	if (size == 0) {
-+		pr_debug("Unable to set a valid pixel clock\n");
-+		return -EINVAL;
-+	}
-+
-+	/*
-+	 * bring the controller out of reset and configure it into DOTCLOCK mode
-+	 */
-+	reg = CTRL_BYPASS_COUNT |	/* always in DOTCLOCK mode */
-+		CTRL_DOTCLK_MODE;
-+	writel(reg, fbh->base + HW_LCDIF_CTRL);
-+
-+	/* master mode only */
-+	reg |= CTRL_MASTER;
-+
-+	/*
-+	 * Configure videomode and interface mode
-+	 */
-+	reg |= SET_BUS_WIDTH(pdata->ld_intf_width);
-+	switch (fb_info->bits_per_pixel) {
-+	case 8:
-+		reg |= SET_WORD_LENGTH(1);
-+		/* TODO refer manual page 2046 */
-+		pr_warning("8 bpp mode not supported yet\n");
-+		break;
-+	case 16:
-+		pr_debug("Setting up an RGB565 mode\n");
-+		reg |= SET_WORD_LENGTH(0) | CTRL_DF16; /* we assume RGB565 */
-+		writel(SET_BYTE_PACKAGING(0xf), fbh->base + HW_LCDIF_CTRL1);
-+		fb_info->red = def_rgb565[RED];
-+		fb_info->green = def_rgb565[GREEN];
-+		fb_info->blue = def_rgb565[BLUE];
-+		fb_info->transp =  def_rgb565[TRANSP];
-+		break;
-+	case 24:
-+	case 32:
-+		pr_debug("Setting up an RGB888/666 mode\n");
-+		reg |= SET_WORD_LENGTH(3);
-+		switch (pdata->ld_intf_width) {
-+		case STMLCDIF_8BIT:
-+			pr_debug("Unsupported LCD bus width mapping\n");
-+			break;
-+		case STMLCDIF_16BIT:
-+		case STMLCDIF_18BIT:
-+			/* 24 bit to 18 bit mapping */
-+			reg |= CTRL_DF24; /* ignore the upper 2 bits in each colour component */
-+			fb_info->red = def_rgb666[RED];
-+			fb_info->green = def_rgb666[GREEN];
-+			fb_info->blue = def_rgb666[BLUE];
-+			fb_info->transp =  def_rgb666[TRANSP];
-+			break;
-+		case STMLCDIF_24BIT:
-+			/* real 24 bit */
-+			fb_info->red = def_rgb888[RED];
-+			fb_info->green = def_rgb888[GREEN];
-+			fb_info->blue = def_rgb888[BLUE];
-+			fb_info->transp =  def_rgb888[TRANSP];
-+			break;
++	if (overlay->fb_dev->size != 0) {
++		if (size > overlay->fb_dev->size) {
++			pr_err("Cannot initialize video mode '%s': Its too large. "
++				"Required bytes are %u, available only %u\n",
++				mode->name, size, overlay->fb_dev->size);
++			return -EINVAL;
 +		}
-+		/* do not use packed pixels = one pixel per word instead */
-+		writel(SET_BYTE_PACKAGING(0x7), fbh->base + HW_LCDIF_CTRL1);
-+		break;
-+	default:
-+		pr_debug("Unhandled colour depth of %u\n", fb_info->bits_per_pixel);
-+		return -EINVAL;
-+	}
-+	writel(reg, fbh->base + HW_LCDIF_CTRL);
-+	pr_debug("Setting up CTRL to %08X\n", reg);
++	} else
++		overlay->fb_dev->size = size;
 +
-+	writel(SET_VCOUNT(mode->yres) |
-+		SET_HCOUNT(mode->xres), fbh->base + HW_LCDIF_TRANSFER_COUNT);
++	/*
++	 * if no framebuffer memory was specified yet, allocate one,
++	 * and allocate more memory, on user request
++	 */
++	if (overlay->fb_dev->map_base == 0U /* FIXME should be 'NULL'*/)
++		overlay->fb_dev->map_base = (unsigned long)xzalloc(overlay->fb_dev->size);
 +
-+	reg = VDCTRL0_ENABLE_PRESENT |	/* always in DOTCLOCK mode */
-+		VDCTRL0_VSYNC_PERIOD_UNIT |
-+		VDCTRL0_VSYNC_PULSE_WIDTH_UNIT;
-+	if (mode->sync & FB_SYNC_HOR_HIGH_ACT)
-+		reg |= VDCTRL0_HSYNC_POL;
-+	if (mode->sync & FB_SYNC_VERT_HIGH_ACT)
-+		reg |= VDCTRL0_VSYNC_POL;
-+	if (mode->sync & FB_SYNC_DE_HIGH_ACT)
-+		reg |= VDCTRL0_ENABLE_POL;
-+	if (mode->sync & FB_SYNC_CLK_INVERT)
-+		reg |= VDCTRL0_DOTCLK_POL;
-+
-+	reg |= SET_VSYNC_PULSE_WIDTH(mode->vsync_len);
-+	writel(reg, fbh->base + HW_LCDIF_VDCTRL0);
-+	pr_debug("Setting up VDCTRL0 to %08X\n", reg);
-+
-+	/* frame length in lines */
-+	writel(mode->upper_margin + mode->vsync_len + mode->lower_margin + mode->yres,
-+		fbh->base + HW_LCDIF_VDCTRL1);
-+
-+	/* line length in units of clocks or pixels */
-+	writel(SET_HSYNC_PULSE_WIDTH(mode->hsync_len) |
-+		SET_HSYNC_PERIOD(mode->left_margin + mode->hsync_len + mode->right_margin + mode->xres),
-+		fbh->base + HW_LCDIF_VDCTRL2);
-+
-+	writel(SET_HOR_WAIT_CNT(mode->left_margin + mode->hsync_len) |
-+		SET_VERT_WAIT_CNT(mode->upper_margin + mode->vsync_len),
-+		fbh->base + HW_LCDIF_VDCTRL3);
-+
-+	writel(SET_DOTCLK_DLY(pdata->dotclk_delay) |
-+		SET_DOTCLK_H_VALID_DATA_CNT(mode->xres),
-+		fbh->base + HW_LCDIF_VDCTRL4);
-+
-+	writel(fb_info->fb_dev->map_base, fbh->base + HW_LCDIF_CUR_BUF);
-+	/* always show one framebuffer only */
-+	writel(fb_info->fb_dev->map_base, fbh->base + HW_LCDIF_NEXT_BUF);
-+
++	writel((uint32_t)overlay->fb_dev->map_base, fbi->regs + LCDC_LGWSAR);
++	writel(SIZE_XMAX(mode->xres) | SIZE_YMAX(mode->yres), fbi->regs + LCDC_LGWSR);
++	writel(VPW_VPW(mode->xres * overlay->bits_per_pixel / 8 / 4), fbi->regs + LCDC_LGWVPWR);
+ 	writel(0, fbi->regs + LCDC_LGWPR);
+ 	writel(LGWCR_GWAV(0x0), fbi->regs + LCDC_LGWCR);
+ 
+@@ -506,14 +516,36 @@ static int imxfb_register_overlay(struct imxfb_info *fbi, void *fb)
+ 	overlay->blue   = rgb->blue;
+ 	overlay->transp = rgb->transp;
+ 
+-	ret = register_framebuffer(overlay);
+-	if (ret < 0) {
+-		dev_err(fbi->dev, "failed to register framebuffer\n");
+-		return ret;
 +	return 0;
 +}
 +
-+/**
-+ * @param fb_info Framebuffer information
-+ */
-+static void stmfb_enable_controller(struct fb_info *fb_info)
++static int imxfb_register_overlay(struct imxfb_info *fbi, struct device_d *hw_dev,
++				struct imx_fb_platform_data *pdata)
 +{
-+	struct imxfb_host *fbh = fb_info_to_imxfb_host(fb_info);
-+	uint32_t reg, last_reg;
-+	unsigned loop, edges;
++	struct fb_host *overlay;
++	struct device_d *overlay_dev;
 +
-+	pr_debug("%s called\n", __func__);
-+
-+	/* if it was disabled, re-enable the mode again */
-+	reg = readl(fbh->base + HW_LCDIF_CTRL);
-+	reg |= CTRL_DOTCLK_MODE;
-+	writel(reg, fbh->base + HW_LCDIF_CTRL);
-+
-+	/* enable the SYNC signals first, then the DMA enginge */
-+	reg = readl(fbh->base + HW_LCDIF_VDCTRL4);
-+	reg |= VDCTRL4_SYNC_SIGNALS_ON;
-+	writel(reg, fbh->base + HW_LCDIF_VDCTRL4);
-+
-+	/*
-+	 * Give the attached LC display or monitor a chance to sync into
-+	 * our signals.
-+	 * Wait for at least 2 VSYNCs = four VSYNC edges
-+	 */
-+	edges = 4;
-+
-+	while (edges != 0) {
-+		loop = 800;
-+		last_reg = readl(fbh->base + HW_LCDIF_DEBUG0) & DEBUG_VSYNC;
-+		do {
-+			reg = readl(fbh->base + HW_LCDIF_DEBUG0) & DEBUG_VSYNC;
-+			if (reg != last_reg);
-+				break;
-+			last_reg = reg;
-+			loop--;
-+		} while (loop != 0);
-+		edges--;
-+	}
-+
-+	reg = readl(fbh->base + HW_LCDIF_CTRL);
-+	reg |= CTRL_RUN;
-+	writel(reg, fbh->base + HW_LCDIF_CTRL);
-+}
-+
-+/**
-+ * @param fb_info Framebuffer information
-+ */
-+static void stmfb_disable_controller(struct fb_info *fb_info)
-+{
-+	struct imxfb_host *fbh = fb_info_to_imxfb_host(fb_info);
-+	unsigned loop;
-+	uint32_t reg;
-+
-+	pr_debug("%s called\n", __func__);
-+	/*
-+	 * Even if we disable the controller here, it will still continue
-+	 * until its FIFOs are running out of data
-+	 */
-+	reg = readl(fbh->base + HW_LCDIF_CTRL);
-+	reg &= ~CTRL_DOTCLK_MODE;
-+	writel(reg, fbh->base + HW_LCDIF_CTRL);
-+
-+	loop = 1000;
-+	while (loop) {
-+		reg = readl(fbh->base + HW_LCDIF_CTRL);
-+		if (!(reg & CTRL_RUN))
-+			break;
-+		loop--;
-+	}
-+
-+	reg = readl(fbh->base + HW_LCDIF_VDCTRL4);
-+	reg &= ~VDCTRL4_SYNC_SIGNALS_ON;
-+	writel(reg, fbh->base + HW_LCDIF_VDCTRL4);
-+}
-+
-+/**
-+ * Print some information about the current hardware state
-+ * @param hw_dev STM video device
-+ */
-+static void stmfb_info(struct device_d *hw_dev)
-+{
-+	uint32_t reg;
-+
-+	printf(" STM video hardware:\n");
-+	printf("  Pixel clock: %u kHz\n", imx_get_lcdifclk());
-+
-+	reg = readl(hw_dev->map_base + HW_LCDIF_CTRL);
-+	switch (GET_WORD_LENGTH(reg)) {
-+	case 0:
-+		printf("  16 bpp mode with %s colour scheme\n",
-+			reg & CTRL_DF16 ? "RGB565" : "ARGB1555");
-+		switch (GET_BYTE_PACKAGING(readl(hw_dev->map_base + HW_LCDIF_CTRL1))) {
-+		case 0xf:
-+			printf("  One pixel per halfword\n");
-+			break;
-+		case 0x3:
-+			printf("  One pixel per word\n");
-+			break;
-+		default:
-+			printf("Unknown pixel packaging: %u\n",
-+				GET_BYTE_PACKAGING(readl(hw_dev->map_base + HW_LCDIF_CTRL1)));
-+		}
-+		break;
-+	case 1:
-+	case 2:
-+		printf("Unsupported bpp mode yet!\n");
-+		break;
-+	case 3:
-+		printf("  24 bpp mode with %s colour scheme\n",
-+			reg & CTRL_DF24 ? "RGB888" : "RGB666");
-+		switch (GET_BYTE_PACKAGING(readl(hw_dev->map_base + HW_LCDIF_CTRL1))) {
-+		case 0x7:
-+			printf("  One pixel per word (xRGB xRGB xRGB ...)\n");
-+			break;
-+		case 0xf:
-+			printf("Packed pixel format per word (RGBR GBRG BRGB ...)\n");
-+			break;
-+		default:
-+			printf("Unknown pixel packaging: %u\n",
-+				GET_BYTE_PACKAGING(readl(hw_dev->map_base + HW_LCDIF_CTRL1)));
-+		}
-+		break;
-+	}
-+}
-+
-+/*
-+ * There is only one video hardware instance available.
-+ * It makes no sense to dynamically allocate this data
-+ */
-+static struct imxfb_host host_data = {
-+	.fb_data.fb_mode = stmfb_initialize_mode,
-+	.fb_data.fb_enable = stmfb_enable_controller,
-+	.fb_data.fb_disable = stmfb_disable_controller,
-+	.fb_data.bits_per_pixel = 16,
-+};
-+
-+static int stmfb_probe(struct device_d *hw_dev)
-+{
-+	struct imx_fb_videomode *pdata = hw_dev->platform_data;
-+	struct device_d *fb_dev;
-+
-+	if (pdata == NULL) {
-+		pr_debug("STMFB: No platformdata. Giving up\n");
-+		return -ENODEV;
-+	}
++	overlay = &fbi->fb_overlay;
 +
 +	/* add runtime hardware info */
-+	host_data.hw_dev = hw_dev;
-+	host_data.base = (void*)hw_dev->map_base;
++	overlay->hw_dev = hw_dev;	/* same as the master device */
++	overlay->fb_mode = imxfb_overlay_mode;
++	overlay->fb_enable = imxfb_overlay_enable_controller;
++	overlay->fb_disable = imxfb_overlay_disable_controller;
++	overlay->fb_setcolreg = imxfb_overlay_setcolreg;
 +
 +	/* add runtime video info */
-+	host_data.fb_data.mode = pdata->mode_list;
-+	host_data.fb_data.mode_cnt = pdata->mode_count;
++	overlay->mode = pdata->mode->mode;
++	overlay->mode_cnt = 1;	/* no choice */
 +
-+	fb_dev = register_framebuffer(&host_data.fb_data, pdata->framebuffer,
-+					pdata->size);
-+	if (fb_dev == NULL) {
-+		pr_err("STMFB: Failed to register framebuffer\n");
++	overlay_dev = register_framebuffer(overlay, pdata->framebuffer_ovl, 0);
++	if (overlay_dev == NULL) {
++		dev_err(hw_dev, "failed to register overlay framebuffer\n");
 +		return -EINVAL;
-+	}
+ 	}
+ 
+-	dev_add_param(&overlay->dev, "alpha", imxfb_alpha_set, NULL, 0);
+-	dev_set_param(&overlay->dev, "alpha", "0");
++	dev_add_param(overlay_dev, "alpha", imxfb_alpha_set, NULL, 0);
++	dev_set_param(overlay_dev, "alpha", "0");
+ 
+ 	return 0;
+ }
+@@ -522,13 +554,13 @@ static int imxfb_register_overlay(struct imxfb_info *fbi, void *fb)
+ static int imxfb_probe(struct device_d *dev)
+ {
+ 	struct imxfb_info *fbi;
+-	struct fb_info *info;
++	struct device_d *fb_dev;
+ 	struct imx_fb_platform_data *pdata = dev->platform_data;
+-	int ret;
+ 
+ 	if (!pdata)
+ 		return -ENODEV;
+ 
++	/* TODO should be done when enabling the video output */
+ #ifdef CONFIG_ARCH_IMX21
+ 	PCCR0 &= ~(PCCR0_PERCLK3_EN | PCCR0_HCLK_LCDC_EN);
+ #endif
+@@ -544,40 +576,35 @@ static int imxfb_probe(struct device_d *dev)
+ #endif
+ 
+ 	fbi = xzalloc(sizeof(*fbi));
+-	info = &fbi->info;
+ 
+-	fbi->mode = pdata->mode;
+-	fbi->regs = (void *)dev->map_base;
++	/* add runtime hardware info */
++	fbi->fb_host.hw_dev = dev;
++	fbi->fb_host.fb_mode = imxfb_initialize_mode;
++	fbi->fb_host.fb_enable = imxfb_enable_controller;
++	fbi->fb_host.fb_disable = imxfb_disable_controller;
++	fbi->fb_host.fb_setcolreg = imxfb_setcolreg;
 +
-+	return 0;
-+}
++	fbi->regs = (void*)dev->map_base;
+ 	fbi->pcr = pdata->mode->pcr;
+ 	fbi->pwmr = pdata->pwmr;
+ 	fbi->lscr1 = pdata->lscr1;
+ 	fbi->dmacr = pdata->dmacr;
+ 	fbi->enable = pdata->enable;
+-	fbi->dev = dev;
+-	info->priv = fbi;
+-	info->mode = pdata->mode->mode;
+-	info->xres = pdata->mode->mode->xres;
+-	info->yres = pdata->mode->mode->yres;
+-	info->bits_per_pixel = pdata->mode->bpp;
+-	info->fbops = &imxfb_ops;
+-
+-	dev_info(dev, "i.MX Framebuffer driver\n");
+-
+-	if (pdata->framebuffer)
+-		fbi->info.screen_base = pdata->framebuffer;
+-	else
+-		fbi->info.screen_base = xzalloc(info->xres * info->yres *
+-			(info->bits_per_pixel >> 3));
+-
+-	imxfb_activate_var(&fbi->info);
+-
+-	ret = register_framebuffer(&fbi->info);
+-	if (ret < 0) {
 +
-+static struct driver_d stmfb_driver = {
-+	.name	= "stmfb",
-+	.probe	= stmfb_probe,
-+	.info	= stmfb_info,
-+};
++	/* add runtime video info */
++	fbi->fb_host.mode = pdata->mode->mode;
++	/* to be backward compatible */
++	fbi->fb_host.mode_cnt = pdata->mode_cnt == 0 ? 1 : pdata->mode_cnt;
++	fbi->fb_host.bits_per_pixel = 16;	/* RGB565, the default */
 +
-+static int stmfb_init(void)
-+{
-+	return register_driver(&stmfb_driver);
-+}
++	fb_dev = register_framebuffer(&fbi->fb_host, pdata->framebuffer, 0);
++	if (dev == NULL) {
+ 		dev_err(dev, "failed to register framebuffer\n");
+-		return ret;
++		return -EINVAL;
+ 	}
 +
-+device_initcall(stmfb_init);
+ #ifdef CONFIG_IMXFB_DRIVER_VIDEO_IMX_OVERLAY
+-	imxfb_register_overlay(fbi, pdata->framebuffer_ovl);
++	imxfb_register_overlay(fbi, fb_dev, pdata);
+ #endif
+ 	return 0;
+ }
 -- 
 1.7.2.3
 
