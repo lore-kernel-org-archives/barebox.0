@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PAhkw-0007kn-BG
-	for barebox@lists.infradead.org; Tue, 26 Oct 2010 11:31:56 +0000
+	id 1PAhky-0007l7-P0
+	for barebox@lists.infradead.org; Tue, 26 Oct 2010 11:31:59 +0000
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Tue, 26 Oct 2010 13:31:37 +0200
-Message-Id: <1288092708-5187-2-git-send-email-jbe@pengutronix.de>
+Date: Tue, 26 Oct 2010 13:31:39 +0200
+Message-Id: <1288092708-5187-4-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1288092708-5187-1-git-send-email-jbe@pengutronix.de>
 References: <1288092708-5187-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,262 +21,374 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/12] Separate framebuffer platformdata and the videomode
+Subject: [PATCH 03/12] Bring in dynamic videomode selection at runtime
 To: barebox@lists.infradead.org
 
-This patch separates the imx platformdata and its videomode in two structures,
-in order to support more than one defined videomode in the boardfile. This
-is intended to support runtime videomode selection later on. It also uses
-now the same videomode setup style than the imx-fpu based systems (like the
-i.MX35).
+This patch mostly rewrites all parts of /drivers/video/fb.c. As it changes
+the API to the drivers, it must be done in one step to keep the repository
+bisectable. But to do it in one step makes the patches itself unreadable.
+
+So, I decided to do it in a few steps, only for the review. All patches marked
+with a "step n" should be merged, prior the final commit onto the repository.
+
+This step brings in the required function for dynamic videomode selection at
+runtime but keep the old functions untouched (the new one are commented out).
+
+This is patch 1 of 7 to keep the repository bisectable.
 
 Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 ---
- arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c |   28 +++++++++--------
- arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c |   28 +++++++++--------
- arch/arm/boards/guf-neso/board.c                  |   28 +++++++++--------
- arch/arm/boards/imx21ads/imx21ads.c               |   34 +++++++++++----------
- arch/arm/boards/pcm038/pcm038.c                   |   28 +++++++++--------
- arch/arm/mach-imx/include/mach/imxfb.h            |    2 +-
- drivers/video/imx.c                               |    6 ++--
- 7 files changed, 82 insertions(+), 72 deletions(-)
+ drivers/video/Kconfig |   13 +++
+ drivers/video/fb.c    |  243 +++++++++++++++++++++++++++++++++++++++++++++++++
+ include/fb.h          |   40 ++++++++
+ 3 files changed, 296 insertions(+), 0 deletions(-)
 
-diff --git a/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c b/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
-index 805ffe2..032897a 100644
---- a/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
-+++ b/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
-@@ -120,20 +120,22 @@ static struct device_d nand_dev = {
- 	.platform_data	= &nand_info,
+diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
+index 7a89a3f..8138226 100644
+--- a/drivers/video/Kconfig
++++ b/drivers/video/Kconfig
+@@ -5,6 +5,19 @@ menuconfig VIDEO
+ 
+ if VIDEO
+ 
++comment "runtime options"
++
++config VIDEO_DELAY_INIT
++	bool "Delayed initialization"
++	help
++	  If the platform supports more than one video mode say 'y' her to delay
++	  the initialization of the video device until any kind of barebox's
++          shell code sets up the correct mode at runtime.
++          This entry adds the "mode" parameter to the video device, to setup
++          the desired videomode prior enabling it at runtime.
++
++comment "drivers"
++
+ config DRIVER_VIDEO_IMX
+ 	bool "i.MX framebuffer driver"
+ 	depends on ARCH_IMX1 || ARCH_IMX21 || ARCH_IMX25 || ARCH_IMX27
+diff --git a/drivers/video/fb.c b/drivers/video/fb.c
+index f9a425e..c3c4761 100644
+--- a/drivers/video/fb.c
++++ b/drivers/video/fb.c
+@@ -1,3 +1,4 @@
++#include <init.h>
+ #include <common.h>
+ #include <fb.h>
+ #include <errno.h>
+@@ -5,6 +6,8 @@
+ #include <getopt.h>
+ #include <fcntl.h>
+ #include <fs.h>
++#include <malloc.h>
++#include <xfuncs.h>
+ 
+ static int fb_ioctl(struct cdev* cdev, int req, void *data)
+ {
+@@ -57,6 +60,139 @@ static int fb_enable_set(struct device_d *dev, struct param_d *param,
+ 	return 0;
+ }
+ 
++#if 0
++#ifdef CONFIG_VIDEO_DELAY_INIT
++static int fb_check_if_already_initialized(struct device_d *fb_dev)
++{
++	struct cdev *cdev = fb_dev->priv;
++	struct fb_info *info = cdev->priv;
++
++	if (info->active_mode != NULL) {
++		pr_err("Video mode '%s' is already set. Cannot change colour depth anymore.\n", info->active_mode->name);
++		return -EPERM;
++	}
++
++	return 0;
++}
++
++static int fb_cdepth_set(struct device_d *fb_dev, struct param_d *param, const char *val)
++{
++	struct cdev *cdev = fb_dev->priv;
++	struct fb_info *info = cdev->priv;
++	unsigned cdepth;
++	int rc;
++
++	rc = fb_check_if_already_initialized(fb_dev);
++	if (rc != 0)
++		return rc;
++
++	cdepth = simple_strtoul(val, NULL, 0);
++	if (cdepth != 0)
++		info->bits_per_pixel = cdepth;
++	else
++		return -EINVAL;
++
++	return dev_param_set_generic(fb_dev, param, val);
++}
++#endif
++
++static int fb_enable_set(struct device_d *fb_dev, struct param_d *param, const char *val)
++{
++	struct cdev *cdev = fb_dev->priv;
++	struct fb_info *info = cdev->priv;
++	struct fb_host *host = fb_dev->platform_data;
++	int enable;
++	char *new;
++
++	if (!val)
++		return dev_param_set_generic(fb_dev, param, NULL);
++
++	enable = simple_strtoul(val, NULL, 0);
++
++	if (info->enabled == !!enable)
++		return 0;
++
++	if (enable) {
++		(host->fb_enable)(info);
++		new = "1";
++	} else {
++		(host->fb_disable)(info);
++		new = "0";
++	}
++
++	info->enabled = !!enable;
++
++	return dev_param_set_generic(fb_dev, param, new);
++}
++
++static void fb_list_modes(struct fb_host *host)
++{
++	unsigned u;
++
++	if (host->mode_cnt == 0)
++		return;
++
++	printf(" Supported video mode(s):\n");
++	for (u = 0; u < host->mode_cnt; u++)
++		printf("  '%s'\n", host->mode[u].name);
++}
++
++static int fb_activate_mode(struct device_d *fb_dev, const struct fb_videomode *mode)
++{
++	struct cdev *cdev = fb_dev->priv;
++	struct fb_info *info = cdev->priv;
++	struct fb_host *host = fb_dev->platform_data;
++	int rc;
++
++	rc = (host->fb_mode)(info, mode);
++	if (rc != 0)
++		return rc;
++
++	info->active_mode = mode;
++	/*
++	 * At this point of time we know the remaining information we need
++	 * for the cdev and fb_info structure.
++	 */
++	cdev->size = fb_dev->size;
++	info->xres = mode->xres;
++	info->yres = mode->yres;
++
++	return 0;
++}
++
++#ifdef CONFIG_VIDEO_DELAY_INIT
++static int fb_mode_set(struct device_d *fb_dev, struct param_d *param, const char *name)
++{
++	struct fb_host *host = fb_dev->platform_data;
++	unsigned u;
++	int rc;
++
++	pr_debug("%s called\n", __func__);
++
++	rc = fb_check_if_already_initialized(fb_dev);
++	if (rc != 0)
++		return rc;
++
++	/* Search for the requested video mode by name */
++	for (u = 0; u < host->mode_cnt; u++) {
++		if (!strcmp(host->mode[u].name, name))
++			break;
++	}
++	if (u >= host->mode_cnt) {
++		fb_list_modes(host);	/* no mode with 'name' found */
++		return -ENODEV;
++	} else {
++		rc = fb_activate_mode(fb_dev, &host->mode[u]);
++	}
++
++	if (rc == 0)
++		dev_param_set_generic(fb_dev, param, name);
++
++	return rc;
++}
++#endif
++#endif
++
+ static struct file_operations fb_ops = {
+ 	.read	= mem_read,
+ 	.write	= mem_write,
+@@ -65,6 +201,113 @@ static struct file_operations fb_ops = {
+ 	.ioctl	= fb_ioctl,
  };
  
-+static struct fb_videomode cmo_display = {
-+	.name		= "CMO-QVGA",
-+	.refresh	= 60,
-+	.xres		= 320,
-+	.yres		= 240,
-+	.pixclock	= KHZ2PICOS(6500),
-+	.hsync_len	= 30,
-+	.left_margin	= 38,
-+	.right_margin	= 20,
-+	.vsync_len	= 3,
-+	.upper_margin	= 15,
-+	.lower_margin	= 4,
++#if 0
++static int add_fb_parameter(struct device_d *fb_dev)
++{
++#ifdef CONFIG_VIDEO_DELAY_INIT
++	struct cdev *cdev = fb_dev->priv;
++	struct fb_info *info = cdev->priv;
++	char cd[10];
++
++	/** @todo provide base address parameter for the user */
++
++	dev_add_param(fb_dev, "cdepth", fb_cdepth_set, NULL, 0);
++	if (info->bits_per_pixel == 0) {
++		dev_set_param(fb_dev, "cdepth", "16");
++		info->bits_per_pixel = 16;
++	} else {
++		sprintf(cd, "%u", info->bits_per_pixel);
++		dev_set_param(fb_dev, "cdepth", cd);
++	}
++	dev_add_param(fb_dev, "mode", fb_mode_set, NULL, 0);
++	/* default is 'none' for delayed video mode setup */
++#endif
++	dev_add_param(fb_dev, "enable", fb_enable_set, NULL, 0);
++	/* default is 'off' for delayed video output */
++	return 0;
++}
++
++struct framebuffer_desc {
++	struct cdev cdev;
++	struct fb_info info;
 +};
 +
- static struct imx_fb_videomode imxfb_mode = {
--	.mode = {
--		.name		= "CMO-QVGA",
--		.refresh	= 60,
--		.xres		= 320,
--		.yres		= 240,
--		.pixclock	= KHZ2PICOS(6500),
--		.hsync_len	= 30,
--		.left_margin	= 38,
--		.right_margin	= 20,
--		.vsync_len	= 3,
--		.upper_margin	= 15,
--		.lower_margin	= 4,
--	},
-+	.mode		= &cmo_display,
- 	.pcr		= 0xCAD08B80,
- 	.bpp		= 16,
- };
-diff --git a/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c b/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
-index 62fc14e..3ea2466 100644
---- a/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
-+++ b/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
-@@ -186,20 +186,22 @@ static void eukrea_cpuimx27_mmu_init(void)
- #endif
- 
- #ifdef CONFIG_DRIVER_VIDEO_IMX
-+static struct fb_videomode cmo_display = {
-+	.name		= "CMO-QVGA",
-+	.refresh	= 60,
-+	.xres		= 320,
-+	.yres		= 240,
-+	.pixclock	= 156000,
-+	.hsync_len	= 30,
-+	.left_margin	= 38,
-+	.right_margin	= 20,
-+	.vsync_len	= 3,
-+	.upper_margin	= 15,
-+	.lower_margin	= 4,
++static int fb_probe(struct device_d *fb_dev)
++{
++	int id = get_free_deviceid("fb");
++	struct cdev *cdev;
++	struct fb_info *info;
++	struct fb_host *host = fb_dev->platform_data;
++
++	cdev = xzalloc(sizeof(struct framebuffer_desc));
++	info = (struct fb_info*)&cdev[1];
++
++	fb_dev->priv = cdev;	/* pointer forward */
++	cdev->dev = fb_dev;	/* pointer backward */
++
++	cdev->ops = &fb_ops;
++	cdev->name = asprintf("fb%d", id);
++
++	cdev->size = fb_dev->size;	/* use the default if any */
++	cdev->priv = info;
++
++	info->host = host;
++	info->fb_dev = fb_dev;
++
++	/* setup defaults */
++	if (host->bits_per_pixel != 0)
++		info->bits_per_pixel = host->bits_per_pixel;
++	else
++		info->bits_per_pixel = 16;	/* means RGB565 */
++
++	/* add params on demand */
++	add_fb_parameter(fb_dev);
++
++	devfs_create(cdev);
++#ifndef CONFIG_VIDEO_DELAY_INIT
++	/* initialize video mode immediately (the first one) */
++	fb_activate_mode(fb_dev, &host->mode[0]);
++#endif
++	return 0;
++}
++
++static struct driver_d fb_driver = {
++	.name	= "framebuffer",
++	.probe	= fb_probe,
 +};
 +
- static struct imx_fb_videomode imxfb_mode = {
--	.mode = {
--		.name		= "CMO-QVGA",
--		.refresh	= 60,
--		.xres		= 320,
--		.yres		= 240,
--		.pixclock	= 156000,
--		.hsync_len	= 30,
--		.left_margin	= 38,
--		.right_margin	= 20,
--		.vsync_len	= 3,
--		.upper_margin	= 15,
--		.lower_margin	= 4,
--	},
-+	.mode		= &cmo_display,
- 	.pcr		= 0xFAD08B80,
- 	.bpp		= 16,};
- 
-diff --git a/arch/arm/boards/guf-neso/board.c b/arch/arm/boards/guf-neso/board.c
-index 9c85c08..6949675 100644
---- a/arch/arm/boards/guf-neso/board.c
-+++ b/arch/arm/boards/guf-neso/board.c
-@@ -91,20 +91,22 @@ static struct device_d nand_dev = {
- 	.platform_data	= &nand_info,
++static int framebuffer_init(void)
++{
++	return register_driver(&fb_driver);
++}
++
++device_initcall(framebuffer_init);
++
++struct device_d *register_framebuffer(struct fb_host *host, void *base, unsigned size)
++{
++	struct device_d *fb_dev;
++	int rc;
++
++	fb_dev = xzalloc(sizeof(struct device_d));
++
++	strcpy(fb_dev->name, fb_driver.name);
++	fb_dev->platform_data = (void*)host;
++
++	/* setup the defaults for this framebuffer if given */
++	fb_dev->size = size;
++	fb_dev->map_base = (unsigned long)base;
++
++	rc = register_device(fb_dev);
++	if (rc != 0) {
++		pr_debug("Cannot register framebuffer device\n");
++		free(fb_dev);
++		return NULL;
++	}
++
++	return fb_dev;
++}
++#endif
++
+ int register_framebuffer(struct fb_info *info)
+ {
+ 	int id = get_free_deviceid("fb");
+diff --git a/include/fb.h b/include/fb.h
+index 218b244..96edc24 100644
+--- a/include/fb.h
++++ b/include/fb.h
+@@ -85,6 +85,46 @@ struct fb_ops {
+ 	void (*fb_disable)(struct fb_info *info);
  };
  
-+static struct fb_videomode cpt_display = {
-+	.name		= "CPT CLAA070LC0JCT",
-+	.refresh	= 60,
-+	.xres		= 800,
-+	.yres		= 480,
-+	.pixclock	= KHZ2PICOS(27000),
-+	.hsync_len	= 1,	/* DE only sync */
-+	.left_margin	= 50,
-+	.right_margin	= 50,
-+	.vsync_len	= 1,	/* DE only sync */
-+	.upper_margin	= 10,
-+	.lower_margin	= 10,
++#if 0
++struct fb_host {
++	const struct fb_videomode *mode;
++	unsigned mode_cnt;
++
++	struct device_d *hw_dev;
++
++	/* callbacks into the video hardware driver */
++	int (*fb_setcolreg)(struct fb_info*, unsigned, unsigned, unsigned, unsigned, unsigned);
++	int (*fb_mode)(struct fb_info*, const struct fb_videomode*);
++	void (*fb_enable)(struct fb_info*);
++	void (*fb_disable)(struct fb_info*);
++
++	unsigned bits_per_pixel;
 +};
 +
- static struct imx_fb_videomode imxfb_mode = {
--	.mode = {
--		.name		= "CPT CLAA070LC0JCT",
--		.refresh	= 60,
--		.xres		= 800,
--		.yres		= 480,
--		.pixclock	= KHZ2PICOS(27000),
--		.hsync_len	= 1,	/* DE only sync */
--		.left_margin	= 50,
--		.right_margin	= 50,
--		.vsync_len	= 1,	/* DE only sync */
--		.upper_margin	= 10,
--		.lower_margin	= 10,
--	},
-+	.mode = &cpt_display,
- 	/*
- 	 * - TFT style panel
- 	 * - clk enabled while idle
-diff --git a/arch/arm/boards/imx21ads/imx21ads.c b/arch/arm/boards/imx21ads/imx21ads.c
-index 44d37aa..81006de 100644
---- a/arch/arm/boards/imx21ads/imx21ads.c
-+++ b/arch/arm/boards/imx21ads/imx21ads.c
-@@ -79,24 +79,26 @@ static struct device_d cs8900_dev = {
- 	// IRQ is connected to UART3_RTS
- };
- 
-+static struct fb_videomode sharp_display = {
-+	.name           = "Sharp-LQ035Q7",
-+	.refresh        = 60,
-+	.xres           = 240,
-+	.yres           = 320,
-+	.pixclock       = 188679,
-+	.left_margin    = 6,
-+	.right_margin   = 16,
-+	.upper_margin   = 8,
-+	.lower_margin   = 10,
-+	.hsync_len      = 2,
-+	.vsync_len      = 1,
-+	.sync           = 0,
-+	.vmode          = FB_VMODE_NONINTERLACED,
-+	.flag           = 0,
++struct fb_info {
++	struct fb_host *host;
++	struct device_d *fb_dev;
++	const struct fb_videomode *active_mode;
++
++	u32 xres;			/* visible resolution		*/
++	u32 yres;
++	u32 bits_per_pixel;		/* guess what			*/
++
++	u32 grayscale;			/* != 0 Graylevels instead of colors */
++
++	struct fb_bitfield red;		/* bitfield in fb mem if true color, */
++	struct fb_bitfield green;	/* else only length is significant */
++	struct fb_bitfield blue;
++	struct fb_bitfield transp;	/* transparency			*/
++
++#ifdef CONFIG_VIDEO_DELAY_ENABLING
++	int enabled;
++#endif
 +};
 +
- /* Sharp LQ035Q7DB02 QVGA display */
- static struct imx_fb_videomode imx_fb_modedata = {
--        .mode = {
--		.name           = "Sharp-LQ035Q7",
--		.refresh        = 60,
--		.xres           = 240,
--		.yres           = 320,
--		.pixclock       = 188679,
--		.left_margin    = 6,
--		.right_margin   = 16,
--		.upper_margin   = 8,
--		.lower_margin   = 10,
--		.hsync_len      = 2,
--		.vsync_len      = 1,
--		.sync           = 0,
--		.vmode          = FB_VMODE_NONINTERLACED,
--		.flag           = 0,
--	},
-+        .mode           = &sharp_display,
-         .pcr            = 0xfb108bc7,
-         .bpp            = 16,
- };
-diff --git a/arch/arm/boards/pcm038/pcm038.c b/arch/arm/boards/pcm038/pcm038.c
-index 3a9b413..026e9c0 100644
---- a/arch/arm/boards/pcm038/pcm038.c
-+++ b/arch/arm/boards/pcm038/pcm038.c
-@@ -127,20 +127,22 @@ static struct device_d nand_dev = {
- 	.platform_data	= &nand_info,
- };
- 
-+static struct fb_videomode sharp_display = {
-+	.name		= "Sharp-LQ035Q7",
-+	.refresh	= 60,
-+	.xres		= 240,
-+	.yres		= 320,
-+	.pixclock	= 188679, /* in ps (5.3MHz) */
-+	.hsync_len	= 7,
-+	.left_margin	= 5,
-+	.right_margin	= 16,
-+	.vsync_len	= 1,
-+	.upper_margin	= 7,
-+	.lower_margin	= 9,
-+};
++struct device_d *register_framebuffer(struct fb_host*, void*, unsigned);
++#endif
 +
- static struct imx_fb_videomode imxfb_mode = {
--	.mode = {
--		.name		= "Sharp-LQ035Q7",
--		.refresh	= 60,
--		.xres		= 240,
--		.yres		= 320,
--		.pixclock	= 188679, /* in ps (5.3MHz) */
--		.hsync_len	= 7,
--		.left_margin	= 5,
--		.right_margin	= 16,
--		.vsync_len	= 1,
--		.upper_margin	= 7,
--		.lower_margin	= 9,
--	},
-+	.mode		= &sharp_display,
- 	/*
- 	 * - HSYNC active high
- 	 * - VSYNC active high
-diff --git a/arch/arm/mach-imx/include/mach/imxfb.h b/arch/arm/mach-imx/include/mach/imxfb.h
-index 16b43ea..7baa244 100644
---- a/arch/arm/mach-imx/include/mach/imxfb.h
-+++ b/arch/arm/mach-imx/include/mach/imxfb.h
-@@ -50,7 +50,7 @@
- #define DMACR_TM(x)	((x) & 0xf)
- 
- struct imx_fb_videomode {
--	struct fb_videomode mode;
-+	struct fb_videomode *mode;
- 	u32 pcr;
- 	unsigned char	bpp;
- };
-diff --git a/drivers/video/imx.c b/drivers/video/imx.c
-index ac51858..6ccd77e 100644
---- a/drivers/video/imx.c
-+++ b/drivers/video/imx.c
-@@ -555,9 +555,9 @@ static int imxfb_probe(struct device_d *dev)
- 	fbi->enable = pdata->enable;
- 	fbi->dev = dev;
- 	info->priv = fbi;
--	info->mode = &pdata->mode->mode;
--	info->xres = pdata->mode->mode.xres;
--	info->yres = pdata->mode->mode.yres;
-+	info->mode = pdata->mode->mode;
-+	info->xres = pdata->mode->mode->xres;
-+	info->yres = pdata->mode->mode->yres;
- 	info->bits_per_pixel = pdata->mode->bpp;
- 	info->fbops = &imxfb_ops;
+ struct fb_info {
+ 	struct fb_videomode *mode;
  
 -- 
 1.7.2.3
