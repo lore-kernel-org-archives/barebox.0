@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-gy0-f177.google.com ([209.85.160.177])
-	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1PAhm7-000831-E9
-	for barebox@lists.infradead.org; Tue, 26 Oct 2010 11:33:10 +0000
-Received: by gyg13 with SMTP id 13so3015762gyg.36
-	for <barebox@lists.infradead.org>; Tue, 26 Oct 2010 04:33:06 -0700 (PDT)
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1PAoMI-0007G3-0z
+	for barebox@lists.infradead.org; Tue, 26 Oct 2010 18:34:55 +0000
+Date: Tue, 26 Oct 2010 20:34:49 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20101026183449.GE6017@pengutronix.de>
+References: <AANLkTinosq5jY41=piCX3JaeFy6Z93gnG1Ym_VRqZ_sJ@mail.gmail.com>
+	<20101022070504.GD22139@pengutronix.de>
+	<AANLkTimNiUjRq3GLNNa0gYRGGZjLaTrWbsNRKPU9=1mw@mail.gmail.com>
+	<20101026033958.GD6017@pengutronix.de>
+	<AANLkTi==hZCG9TbR1udevZPJp=wbji-JTTZaMTYYcW6f@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <201010191438.34628.jbe@pengutronix.de>
-References: <1287474532-31528-1-git-send-email-marek.belisko@gmail.com>
-	<201010191028.28405.jbe@pengutronix.de>
-	<20101019082921.GM11127@game.jcrosoft.org>
-	<201010191438.34628.jbe@pengutronix.de>
-Date: Tue, 26 Oct 2010 13:33:05 +0200
-Message-ID: <AANLkTi=3PyjrHEgq5cCwL0XwCtNWiLTseeG8NHGkQgPJ@mail.gmail.com>
-From: Belisko Marek <marek.belisko@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <AANLkTi==hZCG9TbR1udevZPJp=wbji-JTTZaMTYYcW6f@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,79 +22,71 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Add basic support for mini2440 dev board.
-To: Juergen Beisert <jbe@pengutronix.de>
+Subject: Re: Beagleboard and barebox problem
+To: Victor Rodriguez <vm.rod25@gmail.com>
 Cc: barebox@lists.infradead.org
 
-V2lsbCBiZSB0aGlzIHBhdGNoIGFkZGVkIHRvIGdpdCByZXBvPyBJIGhhdmUgdWRjIGdhZGdldCBw
-YXRjaCBhdmFpbGFibGUKYnV0IGhhcyBkZXBlbmRlbmN5IG9uIHRoaXMgb25lLgoKT24gVHVlLCBP
-Y3QgMTksIDIwMTAgYXQgMjozOCBQTSwgSnVlcmdlbiBCZWlzZXJ0IDxqYmVAcGVuZ3V0cm9uaXgu
-ZGU+IHdyb3RlOgo+IEplYW4tQ2hyaXN0b3BoZSBQTEFHTklPTC1WSUxMQVJEIHdyb3RlOgo+PiBP
-biAxMDoyOCBUdWUgMTkgT2N0IMKgIMKgICwgSnVlcmdlbiBCZWlzZXJ0IHdyb3RlOgo+PiA+IE1h
-cmVrIEJlbGlza28gd3JvdGU6Cj4+ID4gPiBUaGlzIHdvcmsgaXMgbWFpbmx5IGJhc2VkIG9uIGE5
-bTI0NDAgYm9hcmQgaW1wbGVtZW50YXRpb24KPj4gPiA+IGZyb20gSnVlcmdlbiBCZWlzZXJ0IDxq
-YmVAcGVuZ3V0cm9uaXguZGU+LiBGdW5jdGlvbmFsaXR5Cj4+ID4gPiB3YXMgdGVzdGVkIG9ubHkg
-cnVubmluZyBiYXJlYm94IGZyb20gcmFtLiBMb2FkaW5nIHRvIGZsYXNoCj4+ID4gPiBhbmQgYm9v
-dGluZyB3aWxsIG5vdCB3b3JrIGJlY2F1c2UgbWlzc2luZyBsb3dsZXZlbF9pbml0Cj4+ID4gPiBm
-dW5jdGlvbmFsaXR5IChsYWNrIG9mIGp0YWcgZGVidWdnZXIgb24gbXkgc2lkZSA7KSkuCj4+ID4K
-Pj4gPiBJIGhhdmUgbm93IGFjY2VzcyB0byBhIG1pbmkyNDQwIGF0IFBlbmd1dHJvbml4LiBJIHdp
-bGwgYWRkIHRoaXMgZmVhdHVyZQo+PiA+IHNvb24uCj4+ID4KPj4gPiA+IFsuLi5dCj4+ID4gPiAr
-c3RhdGljIGludCBtaW5pMjQ0MF9kZXZpY2VzX2luaXQodm9pZCkKPj4gPiA+ICt7Cj4+ID4gPiAr
-IHVpbnQzMl90IHJlZzsKPj4gPiA+ICsKPj4gPiA+ICsgcmVnID0gcmVhZGwoQldTQ09OKTsKPj4g
-PiA+ICsKPj4gPiA+ICsgLyogQ1MjNCB0byBhY2Nlc3MgdGhlIG5ldHdvcmsgY29udHJvbGxlciAq
-Lwo+PiA+ID4gKyByZWcgJj0gfjB4MDAwZjAwMDA7Cj4+ID4gPiArIHJlZyB8PSDCoDB4MDAwZDAw
-MDA7IMKgIMKgIC8qIDE2IGJpdCAqLwo+PiA+ID4gKyB3cml0ZWwoMHgxZjRjLCBCQU5LQ09ONCk7
-Cj4+ID4gPiArCj4+ID4gPiArIHdyaXRlbChyZWcsIEJXU0NPTik7Cj4+ID4gPiArCj4+ID4gPiAr
-IC8qIHJlbGVhc2UgdGhlIHJlc2V0IHNpZ25hbCB0byBleHRlcm5hbCBkZXZpY2VzICovCj4+ID4g
-PiArIHJlZyA9IHJlYWRsKE1JU0NDUik7Cj4+ID4gPiArIHJlZyB8PSAweDEwMDAwOwo+PiA+ID4g
-KyB3cml0ZWwocmVnLCBNSVNDQ1IpOwo+PiA+ID4gKwo+PiA+ID4gKyByZWdpc3Rlcl9kZXZpY2Uo
-Jm5hbmRfZGV2KTsKPj4gPiA+ICsgcmVnaXN0ZXJfZGV2aWNlKCZzZHJhbV9kZXYpOwo+PiA+ID4g
-KyByZWdpc3Rlcl9kZXZpY2UoJmRtOTAwMF9kZXYpOwo+PiA+ID4gKyNpZmRlZiBDT05GSUdfTkFO
-RAo+PiA+ID4gKyAvKiAtLS0tLS0tLS0tLSBhZGQgc29tZSB2aXRhbCBwYXJ0aXRpb25zIC0tLS0t
-LS0tICovCj4+ID4gPiArIGRldmZzX2RlbF9wYXJ0aXRpb24oInNlbGZfcmF3Iik7Cj4+ID4gPiAr
-IGRldmZzX2FkZF9wYXJ0aXRpb24oIm5hbmQwIiwgMHgwMDAwMCwgMHg0MDAwMCwgUEFSVElUSU9O
-X0ZJWEVELAo+PiA+ID4gInNlbGZfcmF3Iik7ICsgwqAgwqBkZXZfYWRkX2JiX2Rldigic2VsZl9y
-YXciLCBOVUxMKTsKPj4gPiA+ICsKPj4gPiA+ICsgZGV2ZnNfZGVsX3BhcnRpdGlvbigiZW52X3Jh
-dyIpOwo+PiA+ID4gKyBkZXZmc19hZGRfcGFydGl0aW9uKCJuYW5kMCIsIDB4NDAwMDAsIDB4MjAw
-MDAsIFBBUlRJVElPTl9GSVhFRCwKPj4gPiA+ICJlbnZfcmF3Iik7ICsgwqAgwqAgZGV2X2FkZF9i
-Yl9kZXYoImVudl9yYXciLCBOVUxMKTsKPj4gPiA+ICsjZW5kaWYKPj4gPiA+ICsgYXJtbGludXhf
-YWRkX2RyYW0oJnNkcmFtX2Rldik7Cj4+ID4gPiArIGFybWxpbnV4X3NldF9ib290cGFyYW1zKCh2
-b2lkICopc2RyYW1fZGV2Lm1hcF9iYXNlICsgMHgxMDApOwo+PiA+ID4gKyBhcm1saW51eF9zZXRf
-YXJjaGl0ZWN0dXJlKE1BQ0hfVFlQRV9NSU5JMjQ0MCk7Cj4+ID4gPiArCj4+ID4gPiArIHJldHVy
-biAwOwo+PiA+ID4gK30KPj4gPgo+PiA+IFdlIG5lZWQgc29tZSBraW5kIG9mIG1hbmFnZW1lbnQg
-aGVyZSwgYmVjYXVzZSB0aGUgbWluaTI0NDAgY29tZXMgd2l0aCBOT1IKPj4gPiBhbmQgTkFORCBm
-bGFzaC4gQW5kIGJvdGggY2FuIGJlIGNvbmZpZ3VyZWQgdG8gYm9vdCB0aGUgc3lzdGVtIGZyb206
-IFdlCj4+ID4gbmVlZCBhIGxvY2F0aW9uIHRvIHN0b3JlIHRoZSBlbnZpcm9ubWVudC4gTWF5YmUg
-aW4gTk9SLCB3aGVuIGJvb3RpbmcgZnJvbQo+PiA+IE5PUiwgYW5kIGluIE5BTkQsIHdoZW4gYm9v
-dGluZyBmb3JtIE5BTkQ/IE9yIG9ubHkgb25lIHNpbmdsZSBsb2NhdGlvbgo+PiA+IHdoZXJlIHRv
-IHN0b3JlIHRoZSBlbnZpcm9ubWVudCwgaW5kZXBlbmRlbnQgZnJvbSB0aGUgYm9vdCBzb3VyY2U/
-IElkZWFzPwo+Pgo+PiBJIGxpa2UgdGhlIGlkZWEgdG8gc3RvcmUgaW4gdGhlIGJvb3QgbWVkaWEK
-Pgo+IElmIHlvdSBzd2l0Y2ggdGhlIGJvb3QgbWVkaWEgdGhlIGVudmlyb25tZW50IG1vdmVzLCB0
-b28/IFRoYXQgbWF5IGNvbmZ1c2UKPiB1c2VycywgYXMgdGhlaXIgc2V0dGluZ3MgYXJlICJtb3Zp
-bmcgYXdheSIgaW4gdGhpcyBjYXNlLiBPa2F5LCBpdHMgbm90IGEKPiByZWd1bGFyIHVzZWNhc2Uu
-IEJ1dCB3aXRoIHRoZSBtaW5pMjQ0MCBpdHMgc2ltcGx5IGEgY29uZmlndXJhdGlvbiBzd2l0Y2gg
-b24KPiB0aGUgYm9hcmQuIE15IGlkZWEgd2FzIHRvIGFkZCBzb21lIEtjb25maWcgbWVudSBlbnRy
-aWVzIHRvIHNlbGVjdCBvbmUgb2YgdGhlCj4gcG9zc2libGUgY2FzZXMgYSkgbW92ZSB0aGUgZW52
-aXJvbm1lbnQgd2l0aCB0aGUgYm9vdCBzb3VyY2Ugb3IgYikgc3RvcmUgYW5kCj4gZXhwZWN0IGl0
-IGFsd2F5cyBpbiBOT1Igb3IgTkFORC4KPgo+IGpiZQo+Cj4gLS0KPiBQZW5ndXRyb25peCBlLksu
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgfCBKdWVyZ2VuIEJl
-aXNlcnQgwqAgwqAgwqAgwqAgwqAgwqAgfAo+IExpbnV4IFNvbHV0aW9ucyBmb3IgU2NpZW5jZSBh
-bmQgSW5kdXN0cnkgwqAgwqAgwqB8IFBob25lOiArNDktODc2Ni05MzkgMjI4IMKgIMKgIHwKPiBW
-ZXJ0cmV0dW5nIFN1ZWQvTXVlbmNoZW4sIEdlcm1hbnkgwqAgwqAgwqAgwqAgwqAgwqAgfCBGYXg6
-IMKgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKPiBBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEg
-MjY4NiDCoCDCoCDCoCDCoCDCoCDCoCDCoHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gwqB8
-Cj4KPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwo+IGJh
-cmVib3ggbWFpbGluZyBsaXN0Cj4gYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCj4gaHR0cDov
-L2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cj4KCnRoYW5rcywK
-Cm1hcmVrCgotLSAKYXMgc2ltcGxlIGFuZCBwcmltaXRpdmUgYXMgcG9zc2libGUKLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpNYXJlayBCZWxpc2tvIC0g
-T1BFTi1OQU5EUkEKRnJlZWxhbmNlIERldmVsb3BlcgoKUnVza2EgTm92YSBWZXMgMjE5IHwgUHJl
-c292LCAwODAwNSBTbG92YWsgUmVwdWJsaWMKVGVsOiArNDIxIDkxNSAwNTIgMTg0CnNreXBlOiBt
-YXJla3doaXRlCmljcTogMjkwNTUxMDg2CndlYjogaHR0cDovL29wZW4tbmFuZHJhLmNvbQoKX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWls
-aW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRl
-YWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Mon, Oct 25, 2010 at 11:07:21PM -0500, Victor Rodriguez wrote:
+> On Mon, Oct 25, 2010 at 10:39 PM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> > Hi Victor,
+> >
+> > Right, dont forget to erase the partitions with 'erase
+> > /dev/nand0.kernel.bb' beforehand, otherwise you'll have garbage in your
+> > nand.
+> 
+> You mean to erase the part of the nand where the kernel is saved
+> before copy the ramdisk to its partition? or before i run the 'boot'
+> comand ?
+
+You have to erase the Nand before writing to it. (though I wonder if
+that behaviour should be changed).
+
+> >
+> > I'm sorry the situation on the beagle board is still a bit rough and
+> > unclear. I hope we find time working on this.
+> 
+> 
+> Yes I could give some free time to work on this :) but could you
+> please give me more information about the mmc dirver I am new on
+> barebox but I would like to help to improve it  :)
+
+Great ;)
+
+> 
+> Which other board is using this MMC driver ? I can check the code.
+
+Currently there is no Omap MMC support in barebox. The path to go would
+be to copy the Omap MMC driver from U-Boot and bash onto it until it
+runs. For a clue what has to be changed in this driver you might want to
+look at a diff between the i.MX esdhc driver inU-Boot and barebox.
+
+> 
+> The problem is that beagle board is much more familiar with booting by
+> mmc because it does not have any RJ45 connector in order to transfer
+> by TFTP or NFS the uImage.
+> 
+> By the way about the small piece of code for the beagle board nand. Do
+> you consider that is good enough for an small patch ?
+
+I think at least the offset of the environment has to be moved. AFAIK
+the first 768k in Nand is used for the Xloader and the secoond stage
+bootloader. It's probably not good for users overwriting this
+accidently.
+
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
