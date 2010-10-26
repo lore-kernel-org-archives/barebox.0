@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PAg8W-0003sm-FC
-	for barebox@lists.infradead.org; Tue, 26 Oct 2010 09:48:09 +0000
-Message-ID: <4CC6A3D1.5050708@pengutronix.de>
-Date: Tue, 26 Oct 2010 11:48:01 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-MIME-Version: 1.0
-References: <1287753331-7696-1-git-send-email-s.hauer@pengutronix.de>
-	<201010261120.30875.jbe@pengutronix.de>
-In-Reply-To: <201010261120.30875.jbe@pengutronix.de>
+	id 1PAhku-0007kZ-Hg
+	for barebox@lists.infradead.org; Tue, 26 Oct 2010 11:31:53 +0000
+Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.71)
+	(envelope-from <jbe@pengutronix.de>) id 1PAhks-0005KP-BY
+	for barebox@lists.infradead.org; Tue, 26 Oct 2010 13:31:50 +0200
+Received: from jbe by octopus.hi.pengutronix.de with local (Exim 4.69)
+	(envelope-from <jbe@pengutronix.de>) id 1PAhks-00086Q-AR
+	for barebox@lists.infradead.org; Tue, 26 Oct 2010 13:31:50 +0200
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Tue, 26 Oct 2010 13:31:36 +0200
+Message-Id: <1288092708-5187-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,78 +21,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1806290365=="
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: more patches for next
-To: Juergen Beisert <jbe@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCHv2] Add dynamic video initialization to barebox
+To: barebox@lists.infradead.org
 
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---===============1806290365==
-Content-Type: multipart/signed; micalg=pgp-sha1;
- protocol="application/pgp-signature";
- boundary="------------enigC3982F59C5688B6DB48D77F3"
+Currently barebox uses a fixed videomode setup. Everything is compiled in.
+This change adds the possibility to select a videomode according to a
+connected display at runtime. The current behaviour is still present if not
+otherwise configured. If configured for runtime setup, initialization of the
+video hardware will be delayed until the required videomode will be selected
+from the shell code. If more than one videomode is supported by the platform,
+running the 'devinfo' command on the framebuffer device shows the supported
+videomode list. After selecting the videomode, the output can be enabled.
 
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---------------enigC3982F59C5688B6DB48D77F3
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
+On my hardware I can connect a regular monitor, which supports more than one
+videomode. The runtime setup sequence looks like that:
 
-On 10/26/2010 11:20 AM, Juergen Beisert wrote:
+tx28:/ devinfo framebuffer0
+base  : 0x00000000
+size  : 0x00000000
+driver: framebuffer
 
-[...]
+ Video/Mode info:
+   Video output not enabled
+ Current video mode:
+   No video mode selected yet
+ Supported video mode(s):
+   'VGA'
+   'SVGA'
+   'XGA'
+   'SXGA'
+ Parameters:
+           cdepth = 16
+             mode = <NULL>
+           enable = <NULL>
 
-> BTW: When building the "pcm043_defconfig" I get the following warnings
-> multiple times:
->=20
-> [...]
->  CC      commands/mem.o
-> {standard input}: Assembler messages:
-> {standard input}:908: rdhi, rdlo and rm must all be different
-> {standard input}:934: rdhi, rdlo and rm must all be different
-> {standard input}:976: rdhi, rdlo and rm must all be different
-> [...]
+tx28:/ framebuffer0.mode=SVGA
+tx28:/ bmp splash.bmp
+tx28:/ framebuffer0.enable=1
 
-use a newer toolchain with newer binutils, e.g.
+After the last command the monitor shows the splash screen.
 
-/opt/OSELAS.Toolchain-1.99.3/arm-1136jfs-linux-gnueabi/gcc-4.3.2-glibc-2.=
-8-binutils-2.19-kernel-2.6.27-sanitized/bin/
-Marc
+This is revision 2 of this patch stack.
+ - enabling the video output is now always required to get a picture
+ - driver specific data can now be added on a per videomode base
+ - documentation is adapted to the new behaviour
 
---=20
-Pengutronix e.K.                  | Marc Kleine-Budde           |
-Industrial Linux Solutions        | Phone: +49-231-2826-924     |
-Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
+jbe
 
-
---------------enigC3982F59C5688B6DB48D77F3
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.10 (GNU/Linux)
-Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org/
-
-iEYEARECAAYFAkzGo9QACgkQjTAFq1RaXHN+KgCeIvJUrYgYN4PBgbPIDoOzeIpd
-uhcAnibA0n/Qdzbi2LmT78hH6iWrQIm0
-=wPWO
------END PGP SIGNATURE-----
-
---------------enigC3982F59C5688B6DB48D77F3--
-
-
---===============1806290365==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============1806290365==--
