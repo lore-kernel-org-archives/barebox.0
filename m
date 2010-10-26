@@ -1,19 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PAoMI-0007G3-0z
-	for barebox@lists.infradead.org; Tue, 26 Oct 2010 18:34:55 +0000
-Date: Tue, 26 Oct 2010 20:34:49 +0200
+	id 1PAoj7-00083q-Qw
+	for barebox@lists.infradead.org; Tue, 26 Oct 2010 18:58:31 +0000
+Date: Tue, 26 Oct 2010 20:58:28 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20101026183449.GE6017@pengutronix.de>
-References: <AANLkTinosq5jY41=piCX3JaeFy6Z93gnG1Ym_VRqZ_sJ@mail.gmail.com>
-	<20101022070504.GD22139@pengutronix.de>
-	<AANLkTimNiUjRq3GLNNa0gYRGGZjLaTrWbsNRKPU9=1mw@mail.gmail.com>
-	<20101026033958.GD6017@pengutronix.de>
-	<AANLkTi==hZCG9TbR1udevZPJp=wbji-JTTZaMTYYcW6f@mail.gmail.com>
+Message-ID: <20101026185827.GF6017@pengutronix.de>
+References: <1287753331-7696-1-git-send-email-s.hauer@pengutronix.de>
+	<201010261120.30875.jbe@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <AANLkTi==hZCG9TbR1udevZPJp=wbji-JTTZaMTYYcW6f@mail.gmail.com>
+In-Reply-To: <201010261120.30875.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,59 +23,86 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Beagleboard and barebox problem
-To: Victor Rodriguez <vm.rod25@gmail.com>
+Subject: Re: more patches for next
+To: Juergen Beisert <jbe@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Oct 25, 2010 at 11:07:21PM -0500, Victor Rodriguez wrote:
-> On Mon, Oct 25, 2010 at 10:39 PM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> > Hi Victor,
-> >
-> > Right, dont forget to erase the partitions with 'erase
-> > /dev/nand0.kernel.bb' beforehand, otherwise you'll have garbage in your
-> > nand.
+On Tue, Oct 26, 2010 at 11:20:30AM +0200, Juergen Beisert wrote:
+> Some of these changes lead into:
 > 
-> You mean to erase the part of the nand where the kernel is saved
-> before copy the ramdisk to its partition? or before i run the 'boot'
-> comand ?
-
-You have to erase the Nand before writing to it. (though I wonder if
-that behaviour should be changed).
-
-> >
-> > I'm sorry the situation on the beagle board is still a bit rough and
-> > unclear. I hope we find time working on this.
+> [...]
+>   CC      drivers/serial/serial_imx.o
+> In file included from arch/arm/mach-imx/include/mach/imx-regs.h:47,
+>                  from drivers/serial/serial_imx.c:21:
+> arch/arm/mach-imx/include/mach/imx27-regs.h:222:1: warning: "ESDMISC_RST" redefined
+> In file included from arch/arm/mach-imx/include/mach/imx27-regs.h:83,
+>                  from arch/arm/mach-imx/include/mach/imx-regs.h:47,
+>                  from drivers/serial/serial_imx.c:21:
+> arch/arm/mach-imx/include/mach/esdctl.h:37:1: warning: this is the location of the previous definition
+> In file included from arch/arm/mach-imx/include/mach/imx-regs.h:47,
+>                  from drivers/serial/serial_imx.c:21:
+> arch/arm/mach-imx/include/mach/imx27-regs.h:224:1: warning: "ESDMISC_MDDR_DL_RST" redefined
+> In file included from arch/arm/mach-imx/include/mach/imx27-regs.h:83,
+>                  from arch/arm/mach-imx/include/mach/imx-regs.h:47,
+>                  from drivers/serial/serial_imx.c:21:
+> arch/arm/mach-imx/include/mach/esdctl.h:40:1: warning: this is the location of the previous definition
+> In file included from arch/arm/mach-imx/include/mach/imx-regs.h:47,
+>                  from drivers/serial/serial_imx.c:21:
+> arch/arm/mach-imx/include/mach/imx27-regs.h:225:1: warning: "ESDMISC_MDDR_MDIS" redefined
+> In file included from arch/arm/mach-imx/include/mach/imx27-regs.h:83,
+>                  from arch/arm/mach-imx/include/mach/imx-regs.h:47,
+>                  from drivers/serial/serial_imx.c:21:
+> arch/arm/mach-imx/include/mach/esdctl.h:41:1: warning: this is the location of the previous definition
+> In file included from arch/arm/mach-imx/include/mach/imx-regs.h:47,
+>                  from drivers/serial/serial_imx.c:21:
+> arch/arm/mach-imx/include/mach/imx27-regs.h:226:1: warning: "ESDMISC_LHD" redefined
+> In file included from arch/arm/mach-imx/include/mach/imx27-regs.h:83,
+>                  from arch/arm/mach-imx/include/mach/imx-regs.h:47,
+>                  from drivers/serial/serial_imx.c:21:
+> arch/arm/mach-imx/include/mach/esdctl.h:42:1: warning: this is the location of the previous definition
+> [...]
 > 
-> 
-> Yes I could give some free time to work on this :) but could you
-> please give me more information about the mmc dirver I am new on
-> barebox but I would like to help to improve it  :)
+> Tested with the "pcm038_defconfig".
 
-Great ;)
 
-> 
-> Which other board is using this MMC driver ? I can check the code.
+The good thing is that all defines even if written differently are the
+same. The following fixes this:
 
-Currently there is no Omap MMC support in barebox. The path to go would
-be to copy the Omap MMC driver from U-Boot and bash onto it until it
-runs. For a clue what has to be changed in this driver you might want to
-look at a diff between the i.MX esdhc driver inU-Boot and barebox.
 
-> 
-> The problem is that beagle board is much more familiar with booting by
-> mmc because it does not have any RJ45 connector in order to transfer
-> by TFTP or NFS the uImage.
-> 
-> By the way about the small piece of code for the beagle board nand. Do
-> you consider that is good enough for an small patch ?
+From cc406226ebddd0ce791faba083272a006b73730f Mon Sep 17 00:00:00 2001
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue, 26 Oct 2010 20:56:17 +0200
+Subject: [PATCH] ARM i.MX27: remove duplicated defines
 
-I think at least the offset of the environment has to be moved. AFAIK
-the first 768k in Nand is used for the Xloader and the secoond stage
-bootloader. It's probably not good for users overwriting this
-accidently.
+The esdctl regs are now in a seperate header file, so remove the
+duplicates from imx27-regs.h
 
-Sascha
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/mach-imx/include/mach/imx27-regs.h |    8 --------
+ 1 files changed, 0 insertions(+), 8 deletions(-)
 
+diff --git a/arch/arm/mach-imx/include/mach/imx27-regs.h b/arch/arm/mach-imx/include/mach/imx27-regs.h
+index 0fa954d..e87d5bf 100644
+--- a/arch/arm/mach-imx/include/mach/imx27-regs.h
++++ b/arch/arm/mach-imx/include/mach/imx27-regs.h
+@@ -219,14 +219,6 @@
+ #define ESDCFG_TWTR		(1 << 20)
+ #define ESDCFG_TXP(x)		(((x) & 0x3) << 21)
+ 
+-#define ESDMISC_RST		(1 << 1)
+-#define ESDMISC_MDDREN		(1 << 2)
+-#define ESDMISC_MDDR_DL_RST	(1 << 3)
+-#define ESDMISC_MDDR_MDIS	(1 << 4)
+-#define ESDMISC_LHD		(1 << 5)
+-#define ESDMISC_MA10_SHARE	(1 << 6)
+-#define ESDMISC_SDRAM_RDY	(1 << 6)
+-
+ /*
+  * Definitions for the clocksource driver
+  */
+-- 
+1.7.2.3
 
 -- 
 Pengutronix e.K.                           |                             |
