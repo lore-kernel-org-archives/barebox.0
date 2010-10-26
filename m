@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PAhl3-0007mk-Sr
-	for barebox@lists.infradead.org; Tue, 26 Oct 2010 11:32:09 +0000
+	id 1PAhl3-0007mi-Rx
+	for barebox@lists.infradead.org; Tue, 26 Oct 2010 11:32:11 +0000
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Tue, 26 Oct 2010 13:31:48 +0200
-Message-Id: <1288092708-5187-13-git-send-email-jbe@pengutronix.de>
+Date: Tue, 26 Oct 2010 13:31:44 +0200
+Message-Id: <1288092708-5187-9-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1288092708-5187-1-git-send-email-jbe@pengutronix.de>
 References: <1288092708-5187-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,408 +21,550 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/12] Provide more driver specific data in a videomode
+Subject: [PATCH 08/12] Add a video driver for S3C2440 bases platforms
 To: barebox@lists.infradead.org
+Cc: Juergen Beisert <juergen@kreuzholzen.de>
 
-In order to support more than one videomode in a binary barebox, some drivers
-need more specific data to setup the requested video mode in a correct manner.
-This patch adds the 'priv' field to the generic videomode description to give
-any platform a chance to forward some video hardware specific information on
-a per videomode base.
+From: Juergen Beisert <juergen@kreuzholzen.de>
 
-This is currently i.MX21/i.MX25/i.MX27 specific.
-
-BTW: At least the 'pcr' value could be generated at runtime from the 'sync'
-field in 'struct fb_videomode'.
-
-Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
+Signed-off-by: Juergen Beisert <juergen@kreuzholzen.de>
 ---
- arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c |   22 +++++------
- arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c |   21 +++++-----
- arch/arm/boards/guf-neso/board.c                  |   45 +++++++++++----------
- arch/arm/boards/imx21ads/imx21ads.c               |   24 ++++++------
- arch/arm/boards/pcm038/pcm038.c                   |   40 +++++++++---------
- arch/arm/mach-imx/include/mach/imxfb.h            |   20 +++++----
- drivers/video/imx.c                               |   19 +++++----
- include/fb.h                                      |    2 +
- 8 files changed, 99 insertions(+), 94 deletions(-)
+ arch/arm/mach-s3c24xx/include/mach/fb.h |   40 +++
+ drivers/video/Kconfig                   |    6 +
+ drivers/video/Makefile                  |    1 +
+ drivers/video/s3c.c                     |  452 +++++++++++++++++++++++++++++++
+ 4 files changed, 499 insertions(+), 0 deletions(-)
+ create mode 100644 arch/arm/mach-s3c24xx/include/mach/fb.h
+ create mode 100644 drivers/video/s3c.c
 
-diff --git a/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c b/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
-index 032897a..9a9021a 100644
---- a/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
-+++ b/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
-@@ -120,7 +120,14 @@ static struct device_d nand_dev = {
- 	.platform_data	= &nand_info,
- };
- 
--static struct fb_videomode cmo_display = {
-+static const struct imx_fb_driver_data driver_data = {
-+	.pwmr		= 0x00A903FF,
-+	.lscr1		= 0x00120300,
-+	.dmacr		= 0x80040060,
-+	.pcr		= 0xCAD08B80,
-+};
-+
-+static const struct fb_videomode cmo_display = {
- 	.name		= "CMO-QVGA",
- 	.refresh	= 60,
- 	.xres		= 320,
-@@ -134,20 +141,11 @@ static struct fb_videomode cmo_display = {
- 	.lower_margin	= 4,
- };
- 
--static struct imx_fb_videomode imxfb_mode = {
--	.mode		= &cmo_display,
--	.pcr		= 0xCAD08B80,
--	.bpp		= 16,
--};
--
- static struct imx_fb_platform_data eukrea_cpuimx25_fb_data = {
--	.mode		= &imxfb_mode,
--	.pwmr		= 0x00A903FF,
--	.lscr1		= 0x00120300,
--	.dmacr		= 0x80040060,
-+	.mode		= &cmo_display,
-+	.mode_cnt	= 1,
- };
- 
--
- static struct device_d imxfb_dev = {
- 	.id		= -1,
- 	.name		= "imxfb",
-diff --git a/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c b/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
-index 3ea2466..3696105 100644
---- a/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
-+++ b/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
-@@ -186,7 +186,14 @@ static void eukrea_cpuimx27_mmu_init(void)
- #endif
- 
- #ifdef CONFIG_DRIVER_VIDEO_IMX
--static struct fb_videomode cmo_display = {
-+static const struct imx_fb_driver_data driver_data = {
-+	.pwmr	= 0x00A903FF,
-+	.lscr1	= 0x00120300,
-+	.dmacr	= 0x00020010,
-+	.pcr	= 0xFAD08B80,
-+};
-+
-+static const struct fb_videomode cmo_display = {
- 	.name		= "CMO-QVGA",
- 	.refresh	= 60,
- 	.xres		= 320,
-@@ -198,18 +205,12 @@ static struct fb_videomode cmo_display = {
- 	.vsync_len	= 3,
- 	.upper_margin	= 15,
- 	.lower_margin	= 4,
-+	.priv		= &driver_data,
- };
- 
--static struct imx_fb_videomode imxfb_mode = {
--	.mode		= &cmo_display,
--	.pcr		= 0xFAD08B80,
--	.bpp		= 16,};
--
- static struct imx_fb_platform_data eukrea_cpuimx27_fb_data = {
--	.mode	= &imxfb_mode,
--	.pwmr	= 0x00A903FF,
--	.lscr1	= 0x00120300,
--	.dmacr	= 0x00020010,
-+	.mode	= &cmo_display,
-+	.mode_cnt = 1,
- };
- 
- static struct device_d imxfb_dev = {
-diff --git a/arch/arm/boards/guf-neso/board.c b/arch/arm/boards/guf-neso/board.c
-index 6949675..a4d246f 100644
---- a/arch/arm/boards/guf-neso/board.c
-+++ b/arch/arm/boards/guf-neso/board.c
-@@ -91,22 +91,11 @@ static struct device_d nand_dev = {
- 	.platform_data	= &nand_info,
- };
- 
--static struct fb_videomode cpt_display = {
--	.name		= "CPT CLAA070LC0JCT",
--	.refresh	= 60,
--	.xres		= 800,
--	.yres		= 480,
--	.pixclock	= KHZ2PICOS(27000),
--	.hsync_len	= 1,	/* DE only sync */
--	.left_margin	= 50,
--	.right_margin	= 50,
--	.vsync_len	= 1,	/* DE only sync */
--	.upper_margin	= 10,
--	.lower_margin	= 10,
--};
--
--static struct imx_fb_videomode imxfb_mode = {
--	.mode = &cpt_display,
-+static const struct imx_fb_driver_data driver_data = {
-+	.pwmr	= 0x00000000,	/* doesn't matter */
-+	.lscr1	= 0x00120300,	/* doesn't matter */
-+	/* dynamic mode -> using the reset values (as recommended in the datasheet) */
-+	.dmacr	= (0 << 31) | (4 << 16) | 96,
- 	/*
- 	 * - TFT style panel
- 	 * - clk enabled while idle
-@@ -122,7 +111,21 @@ static struct imx_fb_videomode imxfb_mode = {
- 		PCR_SCLK_SEL |
- 		PCR_LPPOL |
- 		PCR_FLMPOL,
--	.bpp = 16,	/* TODO 32 bit does not work: The 'green' component is lacking in this mode */
-+};
-+
-+static struct fb_videomode cpt_display = {
-+	.name		= "CPT CLAA070LC0JCT",
-+	.refresh	= 60,
-+	.xres		= 800,
-+	.yres		= 480,
-+	.pixclock	= KHZ2PICOS(27000),
-+	.hsync_len	= 1,	/* DE only sync */
-+	.left_margin	= 50,
-+	.right_margin	= 50,
-+	.vsync_len	= 1,	/* DE only sync */
-+	.upper_margin	= 10,
-+	.lower_margin	= 10,
-+	.priv		= &driver_data,
- };
- 
- static void neso_fb_enable(int enable)
-@@ -132,12 +135,10 @@ static void neso_fb_enable(int enable)
- }
- 
- static struct imx_fb_platform_data neso_fb_data = {
--	.mode	= &imxfb_mode,
--	.pwmr	= 0x00000000,	/* doesn't matter */
--	.lscr1	= 0x00120300,	/* doesn't matter */
--	/* dynamic mode -> using the reset values (as recommended in the datasheet) */
--	.dmacr	= (0 << 31) | (4 << 16) | 96,
-+	.mode	= &cpt_display,
-+	.mode_cnt = 1,
- 	.enable	= neso_fb_enable,
-+	.bpp = 16,	/* TODO 32 bit does not work: The 'green' component is lacking in this mode */
- 	.framebuffer_ovl = (void *)0xa7f00000,
- };
- 
-diff --git a/arch/arm/boards/imx21ads/imx21ads.c b/arch/arm/boards/imx21ads/imx21ads.c
-index 81006de..3b654ec 100644
---- a/arch/arm/boards/imx21ads/imx21ads.c
-+++ b/arch/arm/boards/imx21ads/imx21ads.c
-@@ -79,7 +79,14 @@ static struct device_d cs8900_dev = {
- 	// IRQ is connected to UART3_RTS
- };
- 
--static struct fb_videomode sharp_display = {
-+static const struct imx_fb_driver_data driver_data = {
-+	.pwmr           = 0x00a903ff,
-+	.lscr1          = 0x00120300,
-+	.dmacr          = 0x00020008,
-+        .pcr            = 0xfb108bc7,
-+};
-+
-+static const struct fb_videomode sharp_display = {
- 	.name           = "Sharp-LQ035Q7",
- 	.refresh        = 60,
- 	.xres           = 240,
-@@ -94,23 +101,16 @@ static struct fb_videomode sharp_display = {
- 	.sync           = 0,
- 	.vmode          = FB_VMODE_NONINTERLACED,
- 	.flag           = 0,
--};
--
--/* Sharp LQ035Q7DB02 QVGA display */
--static struct imx_fb_videomode imx_fb_modedata = {
--        .mode           = &sharp_display,
--        .pcr            = 0xfb108bc7,
--        .bpp            = 16,
-+	.priv		= &driver_data,
- };
- 
- static struct imx_fb_platform_data imx_fb_data = {
--	.mode           = &imx_fb_modedata,
-+/* Sharp LQ035Q7DB02 QVGA display */
-+	.mode           = &sharp_display,
-+	.mode_cnt	= 1,
- 	.cmap_greyscale = 0,
- 	.cmap_inverse   = 0,
- 	.cmap_static    = 0,
--	.pwmr           = 0x00a903ff,
--	.lscr1          = 0x00120300,
--	.dmacr          = 0x00020008,
- };
- 
- static struct device_d imxfb_dev = {
-diff --git a/arch/arm/boards/pcm038/pcm038.c b/arch/arm/boards/pcm038/pcm038.c
-index 026e9c0..6a5d938 100644
---- a/arch/arm/boards/pcm038/pcm038.c
-+++ b/arch/arm/boards/pcm038/pcm038.c
-@@ -127,7 +127,23 @@ static struct device_d nand_dev = {
- 	.platform_data	= &nand_info,
- };
- 
--static struct fb_videomode sharp_display = {
-+static const struct imx_fb_driver_data driver_data = {
-+	/*
-+	 * - HSYNC active high
-+	 * - VSYNC active high
-+	 * - clk notenabled while idle
-+	 * - clock not inverted
-+	 * - data not inverted
-+	 * - data enable low active
-+	 * - enable sharp mode
-+	 */
-+	.pwmr	= 0x00A903FF,
-+	.lscr1	= 0x00120300,
-+	.dmacr	= 0x00020010,
-+	.pcr	= 0xF00080C0,
-+};
-+
-+static const struct fb_videomode sharp_display = {
- 	.name		= "Sharp-LQ035Q7",
- 	.refresh	= 60,
- 	.xres		= 240,
-@@ -139,28 +155,12 @@ static struct fb_videomode sharp_display = {
- 	.vsync_len	= 1,
- 	.upper_margin	= 7,
- 	.lower_margin	= 9,
--};
--
--static struct imx_fb_videomode imxfb_mode = {
--	.mode		= &sharp_display,
--	/*
--	 * - HSYNC active high
--	 * - VSYNC active high
--	 * - clk notenabled while idle
--	 * - clock not inverted
--	 * - data not inverted
--	 * - data enable low active
--	 * - enable sharp mode
--	 */
--	.pcr		= 0xF00080C0,
--	.bpp		= 16,
-+	.priv		= &driver_data,
- };
- 
- static struct imx_fb_platform_data pcm038_fb_data = {
--	.mode	= &imxfb_mode,
--	.pwmr	= 0x00A903FF,
--	.lscr1	= 0x00120300,
--	.dmacr	= 0x00020010,
-+	.mode	= &sharp_display,
-+	.mode_cnt = 1,
- };
- 
- static struct device_d imxfb_dev = {
-diff --git a/arch/arm/mach-imx/include/mach/imxfb.h b/arch/arm/mach-imx/include/mach/imxfb.h
-index c536119..dbd7c93 100644
---- a/arch/arm/mach-imx/include/mach/imxfb.h
-+++ b/arch/arm/mach-imx/include/mach/imxfb.h
-@@ -49,28 +49,30 @@
- #define DMACR_HM(x)	(((x) & 0xf) << 16)
- #define DMACR_TM(x)	((x) & 0xf)
- 
--struct imx_fb_videomode {
--	struct fb_videomode *mode;
--	u32 pcr;
--	unsigned char	bpp;
-+/**
-+ * Videomode dependent, but driver specific data
+diff --git a/arch/arm/mach-s3c24xx/include/mach/fb.h b/arch/arm/mach-s3c24xx/include/mach/fb.h
+new file mode 100644
+index 0000000..eec6164
+--- /dev/null
++++ b/arch/arm/mach-s3c24xx/include/mach/fb.h
+@@ -0,0 +1,40 @@
++/*
++ * Copyright (C) 2010 Juergen Beisert
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ *
 + */
-+struct imx_fb_driver_data {
-+	uint32_t	pwmr;	/**< refer datasheet: LPCCR register */
-+	uint32_t	lscr1;	/**< refer datasheet: LSCR register */
-+	uint32_t	dmacr;	/**< refer datasheet: LDCR register */
-+	uint32_t	pcr;	/**< refer datasheet: LPCR register */
- };
- 
- /**
-  * Define relevant framebuffer information
-  */
- struct imx_fb_platform_data {
--	struct imx_fb_videomode *mode;
-+	const struct fb_videomode *mode;
- 	unsigned mode_cnt;	/**< number of entries in 'mode' */
- 
-+	unsigned char	bpp;	/**< preferred colour depth for this device */
 +
- 	u_int		cmap_greyscale:1,
- 			cmap_inverse:1,
- 			cmap_static:1,
- 			unused:29;
- 
--	u_int		pwmr;
--	u_int		lscr1;
--	u_int		dmacr;
--
- 	/** force a memory area to be used, else NULL for dynamic allocation */
- 	void		*framebuffer;
- 	/** force a memory area to be used, else NULL for dynamic allocation */
-diff --git a/drivers/video/imx.c b/drivers/video/imx.c
-index 07438e5..d935149 100644
---- a/drivers/video/imx.c
-+++ b/drivers/video/imx.c
-@@ -300,6 +300,7 @@ static int imxfb_initialize_mode(struct fb_info *info, const struct fb_videomode
- 	unsigned long lcd_clk;
- 	unsigned long long tmp;
- 	struct imxfb_info *fbi = fb_info_to_imxfb_info(info);
-+	const struct imx_fb_driver_data *drv_data = mode->priv;
- 	u32 pcr;
- 	unsigned size;
- 
-@@ -324,6 +325,11 @@ static int imxfb_initialize_mode(struct fb_info *info, const struct fb_videomode
- 	if (info->fb_dev->map_base == 0U /* FIXME should be 'NULL'*/)
- 		info->fb_dev->map_base = (unsigned long)xzalloc(info->fb_dev->size);
- 
-+	fbi->pcr = drv_data->pcr;
-+	fbi->pwmr = drv_data->pwmr;
-+	fbi->lscr1 = drv_data->lscr1;
-+	fbi->dmacr = drv_data->dmacr;
++#ifndef __MACH_FB_H_
++# define __MACH_FB_H_
 +
- 	/* physical screen start address	    */
- 	writel(VPW_VPW(mode->xres * info->bits_per_pixel / 8 / 4),
- 		fbi->regs + LCDC_VPW);
-@@ -535,7 +541,7 @@ static int imxfb_register_overlay(struct imxfb_info *fbi, struct device_d *hw_de
- 	overlay->fb_setcolreg = imxfb_overlay_setcolreg;
- 
- 	/* add runtime video info */
--	overlay->mode = pdata->mode->mode;
-+	overlay->mode = pdata->mode;
- 	overlay->mode_cnt = 1;	/* no choice */
- 
- 	overlay_dev = register_framebuffer(overlay, pdata->framebuffer_ovl, 0);
-@@ -585,17 +591,12 @@ static int imxfb_probe(struct device_d *dev)
- 	fbi->fb_host.fb_setcolreg = imxfb_setcolreg;
- 
- 	fbi->regs = (void*)dev->map_base;
--	fbi->pcr = pdata->mode->pcr;
--	fbi->pwmr = pdata->pwmr;
--	fbi->lscr1 = pdata->lscr1;
--	fbi->dmacr = pdata->dmacr;
- 	fbi->enable = pdata->enable;
- 
- 	/* add runtime video info */
--	fbi->fb_host.mode = pdata->mode->mode;
--	/* to be backward compatible */
--	fbi->fb_host.mode_cnt = pdata->mode_cnt == 0 ? 1 : pdata->mode_cnt;
--	fbi->fb_host.bits_per_pixel = 16;	/* RGB565, the default */
-+	fbi->fb_host.mode = pdata->mode;
-+	fbi->fb_host.mode_cnt = pdata->mode_cnt;
-+	fbi->fb_host.bits_per_pixel = pdata->bpp;
- 
- 	fb_dev = register_framebuffer(&fbi->fb_host, pdata->framebuffer, 0);
- 	if (dev == NULL) {
-diff --git a/include/fb.h b/include/fb.h
-index 223b301..8ba4e5a 100644
---- a/include/fb.h
-+++ b/include/fb.h
-@@ -69,6 +69,8 @@ struct fb_videomode {
- 	unsigned sync;		/**< sync information, refer FB_SYNC_* macros */
- 	unsigned vmode;		/**< video mode information, refer FB_VMODE_* macros */
- 	unsigned flag;
++#include <fb.h>
 +
-+	const void *priv;	/**< video driver related information */
- };
++struct s3c_fb_platform_data {
++
++	const struct fb_videomode *mode_list;
++	unsigned mode_cnt;
++
++	int passive_display;	/**< enable support for STN or CSTN displays */
++
++	void *framebuffer;	/**< force framebuffer base address */
++	unsigned size;		/**< force framebuffer size */
++
++	/** hook to enable backlight and stuff */
++	void (*enable)(int);
++};
++
++#endif /* __MACH_FB_H_ */
+diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
+index d7f3d01..5a5edd2 100644
+--- a/drivers/video/Kconfig
++++ b/drivers/video/Kconfig
+@@ -39,4 +39,10 @@ config DRIVER_VIDEO_IMX_IPU
+ 	  Add support for the IPU framebuffer device found on
+ 	  i.MX31 and i.MX35 CPUs.
  
- /* Interpretation of offset for color fields: All offsets are from the right,
++config S3C_VIDEO
++	bool "S3C244x framebuffer driver"
++	depends on ARCH_S3C24xx
++	help
++	  Add support for the S3C244x LCD controller.
++
+ endif
+diff --git a/drivers/video/Makefile b/drivers/video/Makefile
+index 179f0c4..4287fc8 100644
+--- a/drivers/video/Makefile
++++ b/drivers/video/Makefile
+@@ -2,3 +2,4 @@ obj-$(CONFIG_VIDEO) += fb.o
+ 
+ obj-$(CONFIG_DRIVER_VIDEO_IMX) += imx.o
+ obj-$(CONFIG_DRIVER_VIDEO_IMX_IPU) += imx-ipu-fb.o
++obj-$(CONFIG_S3C_VIDEO) += s3c.o
+diff --git a/drivers/video/s3c.c b/drivers/video/s3c.c
+new file mode 100644
+index 0000000..8ae5785
+--- /dev/null
++++ b/drivers/video/s3c.c
+@@ -0,0 +1,452 @@
++/*
++ * Copyright (C) 2010 Juergen Beisert
++ *
++ * This driver is based on a patch found in the web:
++ * (C) Copyright 2006 by OpenMoko, Inc.
++ * Author: Harald Welte <laforge at openmoko.org>
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ *
++ */
++
++/* #define DEBUG */
++
++#include <common.h>
++#include <init.h>
++#include <fb.h>
++#include <driver.h>
++#include <malloc.h>
++#include <errno.h>
++#include <asm/io.h>
++#include <mach/gpio.h>
++#include <mach/s3c24xx-generic.h>
++#include <mach/s3c24x0-clocks.h>
++#include <mach/fb.h>
++
++#define LCDCON1 0x00
++# define PNRMODE(x) (((x) & 3) << 5)
++# define BPPMODE(x) (((x) & 0xf) << 1)
++# define SET_CLKVAL(x) (((x) & 0x3ff) << 8)
++# define GET_CLKVAL(x) (((x) >> 8) & 0x3ff)
++# define ENVID (1 << 0)
++
++#define LCDCON2 0x04
++# define SET_VBPD(x) (((x) & 0xff) << 24)
++# define SET_LINEVAL(x) (((x) & 0x3ff) << 14)
++# define SET_VFPD(x) (((x) & 0xff) << 6)
++# define SET_VSPW(x) ((x) & 0x3f)
++
++#define LCDCON3 0x08
++# define SET_HBPD(x) (((x) & 0x7f) << 19)
++# define SET_HOZVAL(x) (((x) & 0x7ff) << 8)
++# define SET_HFPD(x) ((x) & 0xff)
++
++#define LCDCON4 0x0c
++# define SET_HSPW(x) ((x) & 0xff)
++
++#define LCDCON5 0x10
++# define BPP24BL (1 << 12)
++# define FRM565 (1 << 11)
++# define INV_CLK (1 << 10)
++# define INV_HS (1 << 9)
++# define INV_VS (1 << 8)
++# define INV_DTA (1 << 7)
++# define INV_DE (1 << 6)
++# define INV_PWREN (1 << 5)
++# define INV_LEND (1 << 4)	/* FIXME */
++# define ENA_PWREN (1 << 3)
++# define ENA_LEND (1 << 2)	/* FIXME */
++# define BSWP (1 << 1)
++# define HWSWP (1 << 0)
++
++#define LCDSADDR1 0x14
++# define SET_LCDBANK(x) (((x) & 0x1ff) << 21)
++# define GET_LCDBANK(x) (((x) >> 21) & 0x1ff)
++# define SET_LCDBASEU(x) ((x) & 0x1fffff)
++# define GET_LCDBASEU(x) ((x) & 0x1fffff)
++
++#define LCDSADDR2 0x18
++# define SET_LCDBASEL(x) ((x) & 0x1fffff)
++# define GET_LCDBASEL(x) ((x) & 0x1fffff)
++
++#define LCDSADDR3 0x1c
++# define SET_OFFSIZE(x) (((x) & 0x7ff) << 11)
++# define GET_OFFSIZE(x) (((x) >> 11) & 0x7ff)
++# define SET_PAGE_WIDTH(x) ((x) & 0x3ff)
++# define GET_PAGE_WIDTH(x) ((x) & 0x3ff)
++
++#define RED_LUT 0x20
++#define GREEN_LUT 0x24
++#define BLUE_LUT 0x28
++
++#define DITHMODE 0x4c
++
++#define TPAL 0x50
++
++#define LCDINTPND 0x54
++
++#define LCDSRCPND 0x58
++
++#define LCDINTMSK 0x5c
++# define FIWSEL (1 << 2)
++
++#define TCONSEL 0x60
++
++#define RED 0
++#define GREEN 1
++#define BLUE 2
++#define TRANSP 3
++
++struct s3cfb_host {
++	struct fb_host fb_data;
++	struct device_d *hw_dev;
++	void __iomem *base;
++};
++
++#define fb_info_to_s3cfb_host(x) ((struct s3cfb_host*)((x)->host))
++#define s3cfb_host_to_s3c_fb_platform_data(x) ((struct s3c_fb_platform_data*)((x)->hw_dev->platform_data))
++
++/* the RGB565 true colour mode */
++static const struct fb_bitfield def_rgb565[] = {
++	[RED] = {
++		.offset = 11,
++		.length = 5,
++	},
++	[GREEN] = {
++		.offset = 5,
++		.length = 6,
++	},
++	[BLUE] = {
++		.offset = 0,
++		.length = 5,
++	},
++	[TRANSP] = {	/* no support for transparency */
++		.length = 0,
++	}
++};
++
++/* the RGB888 true colour mode */
++static const struct fb_bitfield def_rgb888[] = {
++	[RED] = {
++		.offset = 16,
++		.length = 8,
++	},
++	[GREEN] = {
++		.offset = 8,
++		.length = 8,
++	},
++	[BLUE] = {
++		.offset = 0,
++		.length = 8,
++	},
++	[TRANSP] = {	/* no support for transparency */
++		.length = 0,
++	}
++};
++
++/**
++ * @param fb_info Framebuffer information
++ */
++static void s3cfb_enable_controller(struct fb_info *fb_info)
++{
++	struct s3cfb_host *fbh = fb_info_to_s3cfb_host(fb_info);
++	struct s3c_fb_platform_data *pdata = s3cfb_host_to_s3c_fb_platform_data(fbh);
++	uint32_t con1;
++
++	pr_debug("%s called\n", __func__);
++
++	con1 = readl(fbh->base + LCDCON1);
++
++	con1 |= ENVID;
++
++	writel(con1, fbh->base + LCDCON1);
++
++	if (pdata->enable)
++		(pdata->enable)(1);
++}
++
++/**
++ * @param fb_info Framebuffer information
++ */
++static void s3cfb_disable_controller(struct fb_info *fb_info)
++{
++	struct s3cfb_host *fbh = fb_info_to_s3cfb_host(fb_info);
++	struct s3c_fb_platform_data *pdata = s3cfb_host_to_s3c_fb_platform_data(fbh);
++	uint32_t con1;
++
++	pr_debug("%s called\n", __func__);
++
++	if (pdata->enable)
++		(pdata->enable)(0);
++
++	con1 = readl(fbh->base + LCDCON1);
++
++	con1 &= ~ENVID;
++
++	writel(con1, fbh->base + LCDCON1);
++}
++
++/**
++ * Prepare the video hardware for a specified video mode
++ * @param fb_info Framebuffer information
++ * @param mode The video mode description to initialize
++ * @return 0 on success
++ */
++static int s3cfb_initialize_mode(struct fb_info *fb_info, const struct fb_videomode *mode)
++{
++	struct s3cfb_host *fbh = fb_info_to_s3cfb_host(fb_info);
++	struct s3c_fb_platform_data *pdata = s3cfb_host_to_s3c_fb_platform_data(fbh);
++	unsigned size, hclk, div;
++	uint32_t con1, con2, con3, con4, con5 = 0;
++
++	pr_debug("%s called\n", __func__);
++
++	if (pdata->passive_display != 0) {
++		pr_err("Passive displays are currently not supported\n");
++		return -EINVAL;
++	}
++
++	/*
++	 * we need at least this amount of memory for the framebuffer
++	 */
++	size = mode->xres * mode->yres * (fb_info->bits_per_pixel >> 3);
++	if (fb_info->fb_dev->size != 0) {
++		if (size > fb_info->fb_dev->size) {
++			pr_err("Cannot initialize video mode '%s': Its too large. "
++				"Required bytes are %u, available only %u\n",
++				mode->name, size, fb_info->fb_dev->size);
++			return -EINVAL;
++		}
++	} else
++		fb_info->fb_dev->size = size;
++
++	/*
++	 * if no framebuffer memory was specified yet, allocate one,
++	 * and allocate more memory, on user request
++	 */
++	if (fb_info->fb_dev->map_base == 0U)
++		fb_info->fb_dev->map_base = (resource_size_t)xzalloc(fb_info->fb_dev->size);
++
++	/* its useful to enable the unit's clock */
++	s3c244x_mod_clock(CLK_LCDC, 1);
++
++	/* ensure video output is _off_ */
++	writel(0x00000000, fbh->base + LCDCON1);
++
++	hclk = s3c24xx_get_hclk() / 1000U;	/* hclk in kHz */
++	div = hclk / PICOS2KHZ(mode->pixclock);
++	if (div < 3)
++		div  = 3;
++	/* pixel clock is: (hclk) / ((div + 1) * 2) */
++	div += 1;
++	div >>= 1;
++	div -= 1;
++
++	con1 = PNRMODE(3) | SET_CLKVAL(div);	/* PNRMODE=3 is TFT */
++
++	switch (fb_info->bits_per_pixel) {
++#if 0
++	/* TODO add CLUT based modes */
++	case 1:
++		con1 |= BPPMODE(8);
++		break;
++	case 2:
++		con1 |= BPPMODE(9);
++		break;
++	case 4:
++		con1 |= BPPMODE(10);
++		break;
++	case 8:
++		con1 |= BPPMODE(11);
++		break;
++#endif
++	case 16:
++		con1 |= BPPMODE(12);
++		con5 |= FRM565;
++		fb_info->red = def_rgb565[RED];
++		fb_info->green = def_rgb565[GREEN];
++		fb_info->blue = def_rgb565[BLUE];
++		fb_info->transp =  def_rgb565[TRANSP];
++		break;
++	case 24:
++		con1 |= BPPMODE(13);
++		con5 |= BPP24BL;	/* FIXME */
++		fb_info->red = def_rgb888[RED];
++		fb_info->green = def_rgb888[GREEN];
++		fb_info->blue = def_rgb888[BLUE];
++		fb_info->transp =  def_rgb888[TRANSP];
++		break;
++	default:
++		pr_err("Invalid bits per pixel value: %u\n", fb_info->bits_per_pixel);
++		return -EINVAL;
++	}
++
++	/* 'normal' in register description means positive logic */
++	if (!(mode->sync & FB_SYNC_HOR_HIGH_ACT))
++		con5 |= INV_HS;
++	if (!(mode->sync & FB_SYNC_VERT_HIGH_ACT))
++		con5 |= INV_VS;
++	if (!(mode->sync & FB_SYNC_DE_HIGH_ACT))
++		con5 |= INV_DE;
++	if (mode->sync & FB_SYNC_CLK_INVERT)
++		con5 |= INV_CLK;	/* display should latch at the rising edge */
++	if (mode->sync & FB_SYNC_SWAP_RGB)
++		con5 |= HWSWP;
++
++	/* TODO power enable config via platform data */
++
++	/* vertical timing */
++	con2 = SET_VBPD(mode->upper_margin - 1) |
++		SET_LINEVAL(mode->yres - 1) |
++		SET_VFPD(mode->lower_margin - 1) |
++		SET_VSPW(mode->vsync_len - 1);
++
++	/* horizontal timing */
++	con3 = SET_HBPD(mode->left_margin - 1) |
++		SET_HOZVAL(mode->xres - 1) |
++		SET_HFPD(mode->right_margin - 1);
++	con4 = SET_HSPW(mode->hsync_len - 1);
++
++	/* basic timing setup */
++	writel(con1, fbh->base + LCDCON1);
++	pr_debug(" Writing %08X into %08X (con1)\n", con1, fbh->base + LCDCON1);
++	writel(con2, fbh->base + LCDCON2);
++	pr_debug(" Writing %08X into %08X (con2)\n", con2, fbh->base + LCDCON2);
++	writel(con3, fbh->base + LCDCON3);
++	pr_debug(" Writing %08X into %08X (con3)\n", con3, fbh->base + LCDCON3);
++	writel(con4, fbh->base + LCDCON4);
++	pr_debug(" Writing %08X into %08X (con4)\n", con4, fbh->base + LCDCON4);
++	writel(con5, fbh->base + LCDCON5);
++	pr_debug(" Writing %08X into %08X (con5)\n", con5, fbh->base + LCDCON5);
++
++	pr_debug("Setting up the fb baseadress to %08X\n", fb_info->fb_dev->map_base);
++
++	/* framebuffer memory setup */
++	writel(fb_info->fb_dev->map_base >> 1, fbh->base + LCDSADDR1);
++	size = mode->xres * (fb_info->bits_per_pixel >> 3) * (mode->yres);
++	writel(SET_LCDBASEL((fb_info->fb_dev->map_base + size) >> 1), fbh->base + LCDSADDR2);
++
++	writel(SET_OFFSIZE(0) |
++		SET_PAGE_WIDTH((mode->xres * fb_info->bits_per_pixel) >> 4),
++		fbh->base + LCDSADDR3);
++
++	writel(FIWSEL, fbh->base + LCDINTMSK);
++
++	return 0;
++}
++
++/**
++ * Print some information about the current hardware state
++ * @param hw_dev S3C video device
++ */
++#ifdef CONFIG_VIDEO_INFO_VERBOSE
++static void s3cfb_info(struct device_d *hw_dev)
++{
++	uint32_t con1, addr1, addr2, addr3;
++
++	con1 = readl(hw_dev->map_base + LCDCON1);
++	addr1 = readl(hw_dev->map_base + LCDSADDR1);
++	addr2 = readl(hw_dev->map_base + LCDSADDR2);
++	addr3 = readl(hw_dev->map_base + LCDSADDR3);
++
++	printf(" Video hardware info:\n");
++	printf("  Video clock is running at %u Hz\n", s3c24xx_get_hclk() / ((GET_CLKVAL(con1) + 1) * 2));
++	printf("  Video memory bank starts at 0x%08X\n", GET_LCDBANK(addr1) << 22);
++	printf("  Video memory bank offset: 0x%08X\n", GET_LCDBASEU(addr1));
++	printf("  Video memory end: 0x%08X\n", GET_LCDBASEU(addr2));
++	printf("  Virtual screen offset size: %u half words\n", GET_OFFSIZE(addr3));
++	printf("  Virtual screen page width: %u half words\n", GET_PAGE_WIDTH(addr3));
++}
++#endif
++
++/*
++ * There is only one video hardware instance available.
++ * It makes no sense to dynamically allocate this data
++ */
++static struct s3cfb_host host_data = {
++	.fb_data.fb_mode = s3cfb_initialize_mode,
++	.fb_data.fb_enable = s3cfb_enable_controller,
++	.fb_data.fb_disable = s3cfb_disable_controller,
++};
++
++static int s3cfb_probe(struct device_d *hw_dev)
++{
++	struct s3c_fb_platform_data *pdata = hw_dev->platform_data;
++	struct device_d *fb_dev;
++
++	pr_debug("%s called\n", __func__);
++
++	if (pdata == NULL) {
++		pr_debug("Framebuffer driver missing platform data");
++		return -ENODEV;
++	}
++
++	/* enable unit's clock */
++	s3c244x_mod_clock(CLK_LCDC, 1);
++
++	writel(0, hw_dev->map_base + LCDCON1);
++	/* off may be means high level (FIXME itlp specific) */
++	writel(0, hw_dev->map_base + LCDCON5);
++
++	/* disable it again until user request */
++	s3c244x_mod_clock(CLK_LCDC, 0);
++
++	/* add runtime hardware info */
++	host_data.hw_dev = hw_dev;
++	host_data.base = (void*)hw_dev->map_base;
++
++	/* add runtime video info */
++	host_data.fb_data.mode = pdata->mode_list;
++	host_data.fb_data.mode_cnt = pdata->mode_cnt;
++
++	fb_dev = register_framebuffer(&host_data.fb_data, pdata->framebuffer, pdata->size);
++	if (fb_dev == NULL) {
++		pr_err("Failed to register framebuffer\n");
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++static struct driver_d s3cfb_driver = {
++	.name	= "s3cfb",
++	.probe	= s3cfb_probe,
++#ifdef CONFIG_VIDEO_INFO_VERBOSE
++	.info	= s3cfb_info,
++#endif
++};
++
++static int s3cfb_init(void)
++{
++	return register_driver(&s3cfb_driver);
++}
++
++device_initcall(s3cfb_init);
++
++/**
++ * The S3C244x LCD controller supports passive (CSTN/STN) and active (TFT) LC displays
++ *
++ * The driver itself currently supports only active TFT LC displays in the follwing manner:
++ *
++ *  * Palletized colours
++ *    - 1 bpp
++ *    - 2 bpp
++ *    - 4 bpp
++ *    - 8 bpp
++ *  * True colours
++ *    - 16 bpp
++ *    - 24 bpp
++ */
 -- 
 1.7.2.3
 
