@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PAhl0-0007ll-VW
-	for barebox@lists.infradead.org; Tue, 26 Oct 2010 11:32:05 +0000
+	id 1PAhl3-0007mk-Sr
+	for barebox@lists.infradead.org; Tue, 26 Oct 2010 11:32:09 +0000
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Tue, 26 Oct 2010 13:31:42 +0200
-Message-Id: <1288092708-5187-7-git-send-email-jbe@pengutronix.de>
+Date: Tue, 26 Oct 2010 13:31:48 +0200
+Message-Id: <1288092708-5187-13-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1288092708-5187-1-git-send-email-jbe@pengutronix.de>
 References: <1288092708-5187-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,392 +21,408 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/12] Adapt the existing imx fb driver to support runtime
-	videomode selection
+Subject: [PATCH 12/12] Provide more driver specific data in a videomode
 To: barebox@lists.infradead.org
 
-Adapt the API to the new framebuffer videomode selection at runtime. If the new
-feature is not used, there is no visible change at runtime for platforms using
-this driver.
+In order to support more than one videomode in a binary barebox, some drivers
+need more specific data to setup the requested video mode in a correct manner.
+This patch adds the 'priv' field to the generic videomode description to give
+any platform a chance to forward some video hardware specific information on
+a per videomode base.
 
-NOTE: Due to the lack of hardware, this is compile time tested only.
+This is currently i.MX21/i.MX25/i.MX27 specific.
 
-This is patch 4 of 7 to keep the repository bisectable.
+BTW: At least the 'pcr' value could be generated at runtime from the 'sync'
+field in 'struct fb_videomode'.
 
 Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 ---
- arch/arm/mach-imx/include/mach/imxfb.h |    1 +
- drivers/video/imx.c                    |  211 ++++++++++++++++++--------------
- 2 files changed, 120 insertions(+), 92 deletions(-)
+ arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c |   22 +++++------
+ arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c |   21 +++++-----
+ arch/arm/boards/guf-neso/board.c                  |   45 +++++++++++----------
+ arch/arm/boards/imx21ads/imx21ads.c               |   24 ++++++------
+ arch/arm/boards/pcm038/pcm038.c                   |   40 +++++++++---------
+ arch/arm/mach-imx/include/mach/imxfb.h            |   20 +++++----
+ drivers/video/imx.c                               |   19 +++++----
+ include/fb.h                                      |    2 +
+ 8 files changed, 99 insertions(+), 94 deletions(-)
 
+diff --git a/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c b/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
+index 032897a..9a9021a 100644
+--- a/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
++++ b/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
+@@ -120,7 +120,14 @@ static struct device_d nand_dev = {
+ 	.platform_data	= &nand_info,
+ };
+ 
+-static struct fb_videomode cmo_display = {
++static const struct imx_fb_driver_data driver_data = {
++	.pwmr		= 0x00A903FF,
++	.lscr1		= 0x00120300,
++	.dmacr		= 0x80040060,
++	.pcr		= 0xCAD08B80,
++};
++
++static const struct fb_videomode cmo_display = {
+ 	.name		= "CMO-QVGA",
+ 	.refresh	= 60,
+ 	.xres		= 320,
+@@ -134,20 +141,11 @@ static struct fb_videomode cmo_display = {
+ 	.lower_margin	= 4,
+ };
+ 
+-static struct imx_fb_videomode imxfb_mode = {
+-	.mode		= &cmo_display,
+-	.pcr		= 0xCAD08B80,
+-	.bpp		= 16,
+-};
+-
+ static struct imx_fb_platform_data eukrea_cpuimx25_fb_data = {
+-	.mode		= &imxfb_mode,
+-	.pwmr		= 0x00A903FF,
+-	.lscr1		= 0x00120300,
+-	.dmacr		= 0x80040060,
++	.mode		= &cmo_display,
++	.mode_cnt	= 1,
+ };
+ 
+-
+ static struct device_d imxfb_dev = {
+ 	.id		= -1,
+ 	.name		= "imxfb",
+diff --git a/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c b/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
+index 3ea2466..3696105 100644
+--- a/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
++++ b/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
+@@ -186,7 +186,14 @@ static void eukrea_cpuimx27_mmu_init(void)
+ #endif
+ 
+ #ifdef CONFIG_DRIVER_VIDEO_IMX
+-static struct fb_videomode cmo_display = {
++static const struct imx_fb_driver_data driver_data = {
++	.pwmr	= 0x00A903FF,
++	.lscr1	= 0x00120300,
++	.dmacr	= 0x00020010,
++	.pcr	= 0xFAD08B80,
++};
++
++static const struct fb_videomode cmo_display = {
+ 	.name		= "CMO-QVGA",
+ 	.refresh	= 60,
+ 	.xres		= 320,
+@@ -198,18 +205,12 @@ static struct fb_videomode cmo_display = {
+ 	.vsync_len	= 3,
+ 	.upper_margin	= 15,
+ 	.lower_margin	= 4,
++	.priv		= &driver_data,
+ };
+ 
+-static struct imx_fb_videomode imxfb_mode = {
+-	.mode		= &cmo_display,
+-	.pcr		= 0xFAD08B80,
+-	.bpp		= 16,};
+-
+ static struct imx_fb_platform_data eukrea_cpuimx27_fb_data = {
+-	.mode	= &imxfb_mode,
+-	.pwmr	= 0x00A903FF,
+-	.lscr1	= 0x00120300,
+-	.dmacr	= 0x00020010,
++	.mode	= &cmo_display,
++	.mode_cnt = 1,
+ };
+ 
+ static struct device_d imxfb_dev = {
+diff --git a/arch/arm/boards/guf-neso/board.c b/arch/arm/boards/guf-neso/board.c
+index 6949675..a4d246f 100644
+--- a/arch/arm/boards/guf-neso/board.c
++++ b/arch/arm/boards/guf-neso/board.c
+@@ -91,22 +91,11 @@ static struct device_d nand_dev = {
+ 	.platform_data	= &nand_info,
+ };
+ 
+-static struct fb_videomode cpt_display = {
+-	.name		= "CPT CLAA070LC0JCT",
+-	.refresh	= 60,
+-	.xres		= 800,
+-	.yres		= 480,
+-	.pixclock	= KHZ2PICOS(27000),
+-	.hsync_len	= 1,	/* DE only sync */
+-	.left_margin	= 50,
+-	.right_margin	= 50,
+-	.vsync_len	= 1,	/* DE only sync */
+-	.upper_margin	= 10,
+-	.lower_margin	= 10,
+-};
+-
+-static struct imx_fb_videomode imxfb_mode = {
+-	.mode = &cpt_display,
++static const struct imx_fb_driver_data driver_data = {
++	.pwmr	= 0x00000000,	/* doesn't matter */
++	.lscr1	= 0x00120300,	/* doesn't matter */
++	/* dynamic mode -> using the reset values (as recommended in the datasheet) */
++	.dmacr	= (0 << 31) | (4 << 16) | 96,
+ 	/*
+ 	 * - TFT style panel
+ 	 * - clk enabled while idle
+@@ -122,7 +111,21 @@ static struct imx_fb_videomode imxfb_mode = {
+ 		PCR_SCLK_SEL |
+ 		PCR_LPPOL |
+ 		PCR_FLMPOL,
+-	.bpp = 16,	/* TODO 32 bit does not work: The 'green' component is lacking in this mode */
++};
++
++static struct fb_videomode cpt_display = {
++	.name		= "CPT CLAA070LC0JCT",
++	.refresh	= 60,
++	.xres		= 800,
++	.yres		= 480,
++	.pixclock	= KHZ2PICOS(27000),
++	.hsync_len	= 1,	/* DE only sync */
++	.left_margin	= 50,
++	.right_margin	= 50,
++	.vsync_len	= 1,	/* DE only sync */
++	.upper_margin	= 10,
++	.lower_margin	= 10,
++	.priv		= &driver_data,
+ };
+ 
+ static void neso_fb_enable(int enable)
+@@ -132,12 +135,10 @@ static void neso_fb_enable(int enable)
+ }
+ 
+ static struct imx_fb_platform_data neso_fb_data = {
+-	.mode	= &imxfb_mode,
+-	.pwmr	= 0x00000000,	/* doesn't matter */
+-	.lscr1	= 0x00120300,	/* doesn't matter */
+-	/* dynamic mode -> using the reset values (as recommended in the datasheet) */
+-	.dmacr	= (0 << 31) | (4 << 16) | 96,
++	.mode	= &cpt_display,
++	.mode_cnt = 1,
+ 	.enable	= neso_fb_enable,
++	.bpp = 16,	/* TODO 32 bit does not work: The 'green' component is lacking in this mode */
+ 	.framebuffer_ovl = (void *)0xa7f00000,
+ };
+ 
+diff --git a/arch/arm/boards/imx21ads/imx21ads.c b/arch/arm/boards/imx21ads/imx21ads.c
+index 81006de..3b654ec 100644
+--- a/arch/arm/boards/imx21ads/imx21ads.c
++++ b/arch/arm/boards/imx21ads/imx21ads.c
+@@ -79,7 +79,14 @@ static struct device_d cs8900_dev = {
+ 	// IRQ is connected to UART3_RTS
+ };
+ 
+-static struct fb_videomode sharp_display = {
++static const struct imx_fb_driver_data driver_data = {
++	.pwmr           = 0x00a903ff,
++	.lscr1          = 0x00120300,
++	.dmacr          = 0x00020008,
++        .pcr            = 0xfb108bc7,
++};
++
++static const struct fb_videomode sharp_display = {
+ 	.name           = "Sharp-LQ035Q7",
+ 	.refresh        = 60,
+ 	.xres           = 240,
+@@ -94,23 +101,16 @@ static struct fb_videomode sharp_display = {
+ 	.sync           = 0,
+ 	.vmode          = FB_VMODE_NONINTERLACED,
+ 	.flag           = 0,
+-};
+-
+-/* Sharp LQ035Q7DB02 QVGA display */
+-static struct imx_fb_videomode imx_fb_modedata = {
+-        .mode           = &sharp_display,
+-        .pcr            = 0xfb108bc7,
+-        .bpp            = 16,
++	.priv		= &driver_data,
+ };
+ 
+ static struct imx_fb_platform_data imx_fb_data = {
+-	.mode           = &imx_fb_modedata,
++/* Sharp LQ035Q7DB02 QVGA display */
++	.mode           = &sharp_display,
++	.mode_cnt	= 1,
+ 	.cmap_greyscale = 0,
+ 	.cmap_inverse   = 0,
+ 	.cmap_static    = 0,
+-	.pwmr           = 0x00a903ff,
+-	.lscr1          = 0x00120300,
+-	.dmacr          = 0x00020008,
+ };
+ 
+ static struct device_d imxfb_dev = {
+diff --git a/arch/arm/boards/pcm038/pcm038.c b/arch/arm/boards/pcm038/pcm038.c
+index 026e9c0..6a5d938 100644
+--- a/arch/arm/boards/pcm038/pcm038.c
++++ b/arch/arm/boards/pcm038/pcm038.c
+@@ -127,7 +127,23 @@ static struct device_d nand_dev = {
+ 	.platform_data	= &nand_info,
+ };
+ 
+-static struct fb_videomode sharp_display = {
++static const struct imx_fb_driver_data driver_data = {
++	/*
++	 * - HSYNC active high
++	 * - VSYNC active high
++	 * - clk notenabled while idle
++	 * - clock not inverted
++	 * - data not inverted
++	 * - data enable low active
++	 * - enable sharp mode
++	 */
++	.pwmr	= 0x00A903FF,
++	.lscr1	= 0x00120300,
++	.dmacr	= 0x00020010,
++	.pcr	= 0xF00080C0,
++};
++
++static const struct fb_videomode sharp_display = {
+ 	.name		= "Sharp-LQ035Q7",
+ 	.refresh	= 60,
+ 	.xres		= 240,
+@@ -139,28 +155,12 @@ static struct fb_videomode sharp_display = {
+ 	.vsync_len	= 1,
+ 	.upper_margin	= 7,
+ 	.lower_margin	= 9,
+-};
+-
+-static struct imx_fb_videomode imxfb_mode = {
+-	.mode		= &sharp_display,
+-	/*
+-	 * - HSYNC active high
+-	 * - VSYNC active high
+-	 * - clk notenabled while idle
+-	 * - clock not inverted
+-	 * - data not inverted
+-	 * - data enable low active
+-	 * - enable sharp mode
+-	 */
+-	.pcr		= 0xF00080C0,
+-	.bpp		= 16,
++	.priv		= &driver_data,
+ };
+ 
+ static struct imx_fb_platform_data pcm038_fb_data = {
+-	.mode	= &imxfb_mode,
+-	.pwmr	= 0x00A903FF,
+-	.lscr1	= 0x00120300,
+-	.dmacr	= 0x00020010,
++	.mode	= &sharp_display,
++	.mode_cnt = 1,
+ };
+ 
+ static struct device_d imxfb_dev = {
 diff --git a/arch/arm/mach-imx/include/mach/imxfb.h b/arch/arm/mach-imx/include/mach/imxfb.h
-index 7baa244..c536119 100644
+index c536119..dbd7c93 100644
 --- a/arch/arm/mach-imx/include/mach/imxfb.h
 +++ b/arch/arm/mach-imx/include/mach/imxfb.h
-@@ -60,6 +60,7 @@ struct imx_fb_videomode {
+@@ -49,28 +49,30 @@
+ #define DMACR_HM(x)	(((x) & 0xf) << 16)
+ #define DMACR_TM(x)	((x) & 0xf)
+ 
+-struct imx_fb_videomode {
+-	struct fb_videomode *mode;
+-	u32 pcr;
+-	unsigned char	bpp;
++/**
++ * Videomode dependent, but driver specific data
++ */
++struct imx_fb_driver_data {
++	uint32_t	pwmr;	/**< refer datasheet: LPCCR register */
++	uint32_t	lscr1;	/**< refer datasheet: LSCR register */
++	uint32_t	dmacr;	/**< refer datasheet: LDCR register */
++	uint32_t	pcr;	/**< refer datasheet: LPCR register */
+ };
+ 
+ /**
+  * Define relevant framebuffer information
   */
  struct imx_fb_platform_data {
- 	struct imx_fb_videomode *mode;
-+	unsigned mode_cnt;	/**< number of entries in 'mode' */
+-	struct imx_fb_videomode *mode;
++	const struct fb_videomode *mode;
+ 	unsigned mode_cnt;	/**< number of entries in 'mode' */
  
++	unsigned char	bpp;	/**< preferred colour depth for this device */
++
  	u_int		cmap_greyscale:1,
  			cmap_inverse:1,
+ 			cmap_static:1,
+ 			unused:29;
+ 
+-	u_int		pwmr;
+-	u_int		lscr1;
+-	u_int		dmacr;
+-
+ 	/** force a memory area to be used, else NULL for dynamic allocation */
+ 	void		*framebuffer;
+ 	/** force a memory area to be used, else NULL for dynamic allocation */
 diff --git a/drivers/video/imx.c b/drivers/video/imx.c
-index 6ccd77e..07438e5 100644
+index 07438e5..d935149 100644
 --- a/drivers/video/imx.c
 +++ b/drivers/video/imx.c
-@@ -137,6 +137,7 @@ struct imxfb_rgb {
- };
- 
- struct imxfb_info {
-+	struct fb_host		fb_host;	/**< myself */
- 	void __iomem		*regs;
- 
- 	u_int			pcr;
-@@ -147,16 +148,15 @@ struct imxfb_info {
- 				cmap_static:1,
- 				unused:30;
- 
--	struct imx_fb_videomode *mode;
--
--	struct fb_info		info;
--	struct device_d		*dev;
--
- 	void			(*enable)(int enable);
- 
--	struct fb_info		overlay;
-+	struct fb_host		fb_overlay;
- };
- 
-+#define fb_overlay_to_imxfb_info(x) (container_of((struct fb_host*)(x->host), struct imxfb_info, fb_overlay))
-+#define fb_overlay_dev_to_imxfb_info(x) (container_of((struct fb_host*)(x->platform_data), struct imxfb_info, fb_overlay))
-+#define fb_info_to_imxfb_info(x) ((struct imxfb_info*)((x)->host))
-+
- #define IMX_NAME	"IMX"
- 
- /*
-@@ -204,11 +204,10 @@ static inline u_int chan_to_field(u_int chan, struct fb_bitfield *bf)
- 	return chan << bf->offset;
- }
- 
--
--static int imxfb_setcolreg(u_int regno, u_int red, u_int green, u_int blue,
--		   u_int trans, struct fb_info *info)
-+static int imxfb_setcolreg(struct fb_info *info, u_int regno, u_int red,
-+			u_int green, u_int blue, u_int trans)
- {
--	struct imxfb_info *fbi = info->priv;
-+	struct imxfb_info *fbi = fb_info_to_imxfb_info(info);
- 	int ret = 1;
- 	u32 val;
- 
-@@ -247,7 +246,7 @@ static int imxfb_setcolreg(u_int regno, u_int red, u_int green, u_int blue,
- 
- static void imxfb_enable_controller(struct fb_info *info)
- {
--	struct imxfb_info *fbi = info->priv;
-+	struct imxfb_info *fbi = fb_info_to_imxfb_info(info);
- 
- 	writel(RMCR_LCDC_EN, fbi->regs + LCDC_RMCR);
- #ifdef CONFIG_ARCH_IMX21
-@@ -269,7 +268,7 @@ static void imxfb_enable_controller(struct fb_info *info)
- 
- static void imxfb_disable_controller(struct fb_info *info)
- {
--	struct imxfb_info *fbi = info->priv;
-+	struct imxfb_info *fbi = fb_info_to_imxfb_info(info);
- 
- 	if (fbi->enable)
- 		fbi->enable(0);
-@@ -295,14 +294,35 @@ static void imxfb_disable_controller(struct fb_info *info)
-  *	Configures LCD Controller based on entries in var parameter.  Settings are
-  *	only written to the controller if changes were made.
-  */
--static int imxfb_activate_var(struct fb_info *info)
-+static int imxfb_initialize_mode(struct fb_info *info, const struct fb_videomode *mode)
- {
--	struct fb_videomode *mode = info->mode;
- 	struct imxfb_rgb *rgb;
+@@ -300,6 +300,7 @@ static int imxfb_initialize_mode(struct fb_info *info, const struct fb_videomode
  	unsigned long lcd_clk;
  	unsigned long long tmp;
--	struct imxfb_info *fbi = info->priv;
-+	struct imxfb_info *fbi = fb_info_to_imxfb_info(info);
+ 	struct imxfb_info *fbi = fb_info_to_imxfb_info(info);
++	const struct imx_fb_driver_data *drv_data = mode->priv;
  	u32 pcr;
-+	unsigned size;
-+
-+	/*
-+	 * we need at least this amount of memory for the framebuffer
-+	 */
-+	size = mode->xres * mode->yres * (info->bits_per_pixel >> 3);
-+	if (info->fb_dev->size != 0) {
-+		if (size > info->fb_dev->size) {
-+			pr_err("Cannot initialize video mode '%s': Its too large. "
-+				"Required bytes are %u, available only %u\n",
-+				mode->name, size, info->fb_dev->size);
-+			return -EINVAL;
-+		}
-+	} else
-+		info->fb_dev->size = size;
-+
-+	/*
-+	 * if no framebuffer memory was specified yet, allocate one,
-+	 * and allocate more memory, on user request
-+	 */
-+	if (info->fb_dev->map_base == 0U /* FIXME should be 'NULL'*/)
-+		info->fb_dev->map_base = (unsigned long)xzalloc(info->fb_dev->size);
+ 	unsigned size;
  
+@@ -324,6 +325,11 @@ static int imxfb_initialize_mode(struct fb_info *info, const struct fb_videomode
+ 	if (info->fb_dev->map_base == 0U /* FIXME should be 'NULL'*/)
+ 		info->fb_dev->map_base = (unsigned long)xzalloc(info->fb_dev->size);
+ 
++	fbi->pcr = drv_data->pcr;
++	fbi->pwmr = drv_data->pwmr;
++	fbi->lscr1 = drv_data->lscr1;
++	fbi->dmacr = drv_data->dmacr;
++
  	/* physical screen start address	    */
  	writel(VPW_VPW(mode->xres * info->bits_per_pixel / 8 / 4),
-@@ -318,13 +338,13 @@ static int imxfb_activate_var(struct fb_info *info)
- 		VCR_V_WAIT_2(mode->upper_margin),
- 		fbi->regs + LCDC_VCR);
+ 		fbi->regs + LCDC_VPW);
+@@ -535,7 +541,7 @@ static int imxfb_register_overlay(struct imxfb_info *fbi, struct device_d *hw_de
+ 	overlay->fb_setcolreg = imxfb_overlay_setcolreg;
  
--	writel(SIZE_XMAX(info->xres) | SIZE_YMAX(info->yres),
-+	writel(SIZE_XMAX(mode->xres) | SIZE_YMAX(mode->yres),
- 			fbi->regs + LCDC_SIZE);
+ 	/* add runtime video info */
+-	overlay->mode = pdata->mode->mode;
++	overlay->mode = pdata->mode;
+ 	overlay->mode_cnt = 1;	/* no choice */
  
- 	writel(fbi->pwmr, fbi->regs + LCDC_PWMR);
- 	writel(fbi->lscr1, fbi->regs + LCDC_LSCR1);
- 	writel(fbi->dmacr, fbi->regs + LCDC_DMACR);
--	writel((unsigned long)fbi->info.screen_base, fbi->regs + LCDC_SSA);
-+	writel((uint32_t)info->fb_dev->map_base, fbi->regs + LCDC_SSA);
+ 	overlay_dev = register_framebuffer(overlay, pdata->framebuffer_ovl, 0);
+@@ -585,17 +591,12 @@ static int imxfb_probe(struct device_d *dev)
+ 	fbi->fb_host.fb_setcolreg = imxfb_setcolreg;
  
- 	/* panning offset 0 (0 pixel offset)        */
- 	writel(0x0, fbi->regs + LCDC_POS);
-@@ -386,16 +406,10 @@ static int imxfb_activate_var(struct fb_info *info)
- 	return 0;
- }
- 
--static struct fb_ops imxfb_ops = {
--	.fb_setcolreg	= imxfb_setcolreg,
--	.fb_enable	= imxfb_enable_controller,
--	.fb_disable	= imxfb_disable_controller,
--};
--
- #ifdef CONFIG_IMXFB_DRIVER_VIDEO_IMX_OVERLAY
- static void imxfb_overlay_enable_controller(struct fb_info *overlay)
- {
--	struct imxfb_info *fbi = overlay->priv;
-+	struct imxfb_info *fbi = fb_overlay_to_imxfb_info(overlay);
- 	unsigned int tmp;
- 
- 	tmp = readl(fbi->regs + LCDC_LGWCR);
-@@ -405,7 +419,7 @@ static void imxfb_overlay_enable_controller(struct fb_info *overlay)
- 
- static void imxfb_overlay_disable_controller(struct fb_info *overlay)
- {
--	struct imxfb_info *fbi = overlay->priv;
-+	struct imxfb_info *fbi = fb_overlay_to_imxfb_info(overlay);
- 	unsigned int tmp;
- 
- 	tmp = readl(fbi->regs + LCDC_LGWCR);
-@@ -413,23 +427,16 @@ static void imxfb_overlay_disable_controller(struct fb_info *overlay)
- 	writel(tmp , fbi->regs + LCDC_LGWCR);
- }
- 
--static int imxfb_overlay_setcolreg(u_int regno, u_int red, u_int green, u_int blue,
--		   u_int trans, struct fb_info *info)
-+static int imxfb_overlay_setcolreg(struct fb_info *overlay, u_int regno,
-+		u_int red, u_int green, u_int blue, u_int trans)
- {
- 	return 0;
- }
- 
--static struct fb_ops imxfb_overlay_ops = {
--	.fb_setcolreg	= imxfb_overlay_setcolreg,
--	.fb_enable	= imxfb_overlay_enable_controller,
--	.fb_disable	= imxfb_overlay_disable_controller,
--};
--
- static int imxfb_alpha_set(struct device_d *dev, struct param_d *param,
- 		const char *val)
- {
--	struct fb_info *overlay = dev->priv;
--	struct imxfb_info *fbi = overlay->priv;
-+	struct imxfb_info *fbi = fb_overlay_dev_to_imxfb_info(dev);
- 	int alpha;
- 	char alphastr[16];
- 	unsigned int tmp;
-@@ -452,32 +459,35 @@ static int imxfb_alpha_set(struct device_d *dev, struct param_d *param,
- 	return 0;
- }
- 
--static int imxfb_register_overlay(struct imxfb_info *fbi, void *fb)
-+static int imxfb_overlay_mode(struct fb_info *overlay, const struct fb_videomode *mode)
- {
--	struct fb_info *overlay;
-+	struct imxfb_info *fbi = fb_overlay_to_imxfb_info(overlay);
- 	struct imxfb_rgb *rgb;
--	int ret;
--
--	overlay = &fbi->overlay;
--
--	overlay->priv = fbi;
--	overlay->mode = fbi->info.mode;
--	overlay->xres = fbi->info.xres;
--	overlay->yres = fbi->info.yres;
--	overlay->bits_per_pixel = fbi->info.bits_per_pixel;
--	overlay->fbops = &imxfb_overlay_ops;
--
--	if (fb)
--		overlay->screen_base = fb;
--	else
--		overlay->screen_base = xzalloc(overlay->xres * overlay->yres *
--			(overlay->bits_per_pixel >> 3));
--
--	writel((unsigned long)overlay->screen_base, fbi->regs + LCDC_LGWSAR);
--	writel(SIZE_XMAX(overlay->xres) | SIZE_YMAX(overlay->yres),
--			fbi->regs + LCDC_LGWSR);
--	writel(VPW_VPW(overlay->xres * overlay->bits_per_pixel / 8 / 4),
--		fbi->regs + LCDC_LGWVPWR);
-+	unsigned size;
-+
-+	/* we need at least this amount of memory for the framebuffer */
-+	size = mode->xres * mode->yres * (overlay->bits_per_pixel >> 3);
-+
-+	if (overlay->fb_dev->size != 0) {
-+		if (size > overlay->fb_dev->size) {
-+			pr_err("Cannot initialize video mode '%s': Its too large. "
-+				"Required bytes are %u, available only %u\n",
-+				mode->name, size, overlay->fb_dev->size);
-+			return -EINVAL;
-+		}
-+	} else
-+		overlay->fb_dev->size = size;
-+
-+	/*
-+	 * if no framebuffer memory was specified yet, allocate one,
-+	 * and allocate more memory, on user request
-+	 */
-+	if (overlay->fb_dev->map_base == 0U /* FIXME should be 'NULL'*/)
-+		overlay->fb_dev->map_base = (unsigned long)xzalloc(overlay->fb_dev->size);
-+
-+	writel((uint32_t)overlay->fb_dev->map_base, fbi->regs + LCDC_LGWSAR);
-+	writel(SIZE_XMAX(mode->xres) | SIZE_YMAX(mode->yres), fbi->regs + LCDC_LGWSR);
-+	writel(VPW_VPW(mode->xres * overlay->bits_per_pixel / 8 / 4), fbi->regs + LCDC_LGWVPWR);
- 	writel(0, fbi->regs + LCDC_LGWPR);
- 	writel(LGWCR_GWAV(0x0), fbi->regs + LCDC_LGWCR);
- 
-@@ -506,14 +516,36 @@ static int imxfb_register_overlay(struct imxfb_info *fbi, void *fb)
- 	overlay->blue   = rgb->blue;
- 	overlay->transp = rgb->transp;
- 
--	ret = register_framebuffer(overlay);
--	if (ret < 0) {
--		dev_err(fbi->dev, "failed to register framebuffer\n");
--		return ret;
-+	return 0;
-+}
-+
-+static int imxfb_register_overlay(struct imxfb_info *fbi, struct device_d *hw_dev,
-+				struct imx_fb_platform_data *pdata)
-+{
-+	struct fb_host *overlay;
-+	struct device_d *overlay_dev;
-+
-+	overlay = &fbi->fb_overlay;
-+
-+	/* add runtime hardware info */
-+	overlay->hw_dev = hw_dev;	/* same as the master device */
-+	overlay->fb_mode = imxfb_overlay_mode;
-+	overlay->fb_enable = imxfb_overlay_enable_controller;
-+	overlay->fb_disable = imxfb_overlay_disable_controller;
-+	overlay->fb_setcolreg = imxfb_overlay_setcolreg;
-+
-+	/* add runtime video info */
-+	overlay->mode = pdata->mode->mode;
-+	overlay->mode_cnt = 1;	/* no choice */
-+
-+	overlay_dev = register_framebuffer(overlay, pdata->framebuffer_ovl, 0);
-+	if (overlay_dev == NULL) {
-+		dev_err(hw_dev, "failed to register overlay framebuffer\n");
-+		return -EINVAL;
- 	}
- 
--	dev_add_param(&overlay->dev, "alpha", imxfb_alpha_set, NULL, 0);
--	dev_set_param(&overlay->dev, "alpha", "0");
-+	dev_add_param(overlay_dev, "alpha", imxfb_alpha_set, NULL, 0);
-+	dev_set_param(overlay_dev, "alpha", "0");
- 
- 	return 0;
- }
-@@ -522,13 +554,13 @@ static int imxfb_register_overlay(struct imxfb_info *fbi, void *fb)
- static int imxfb_probe(struct device_d *dev)
- {
- 	struct imxfb_info *fbi;
--	struct fb_info *info;
-+	struct device_d *fb_dev;
- 	struct imx_fb_platform_data *pdata = dev->platform_data;
--	int ret;
- 
- 	if (!pdata)
- 		return -ENODEV;
- 
-+	/* TODO should be done when enabling the video output */
- #ifdef CONFIG_ARCH_IMX21
- 	PCCR0 &= ~(PCCR0_PERCLK3_EN | PCCR0_HCLK_LCDC_EN);
- #endif
-@@ -544,40 +576,35 @@ static int imxfb_probe(struct device_d *dev)
- #endif
- 
- 	fbi = xzalloc(sizeof(*fbi));
--	info = &fbi->info;
- 
--	fbi->mode = pdata->mode;
--	fbi->regs = (void *)dev->map_base;
-+	/* add runtime hardware info */
-+	fbi->fb_host.hw_dev = dev;
-+	fbi->fb_host.fb_mode = imxfb_initialize_mode;
-+	fbi->fb_host.fb_enable = imxfb_enable_controller;
-+	fbi->fb_host.fb_disable = imxfb_disable_controller;
-+	fbi->fb_host.fb_setcolreg = imxfb_setcolreg;
-+
-+	fbi->regs = (void*)dev->map_base;
- 	fbi->pcr = pdata->mode->pcr;
- 	fbi->pwmr = pdata->pwmr;
- 	fbi->lscr1 = pdata->lscr1;
- 	fbi->dmacr = pdata->dmacr;
+ 	fbi->regs = (void*)dev->map_base;
+-	fbi->pcr = pdata->mode->pcr;
+-	fbi->pwmr = pdata->pwmr;
+-	fbi->lscr1 = pdata->lscr1;
+-	fbi->dmacr = pdata->dmacr;
  	fbi->enable = pdata->enable;
--	fbi->dev = dev;
--	info->priv = fbi;
--	info->mode = pdata->mode->mode;
--	info->xres = pdata->mode->mode->xres;
--	info->yres = pdata->mode->mode->yres;
--	info->bits_per_pixel = pdata->mode->bpp;
--	info->fbops = &imxfb_ops;
--
--	dev_info(dev, "i.MX Framebuffer driver\n");
--
--	if (pdata->framebuffer)
--		fbi->info.screen_base = pdata->framebuffer;
--	else
--		fbi->info.screen_base = xzalloc(info->xres * info->yres *
--			(info->bits_per_pixel >> 3));
--
--	imxfb_activate_var(&fbi->info);
--
--	ret = register_framebuffer(&fbi->info);
--	if (ret < 0) {
+ 
+ 	/* add runtime video info */
+-	fbi->fb_host.mode = pdata->mode->mode;
+-	/* to be backward compatible */
+-	fbi->fb_host.mode_cnt = pdata->mode_cnt == 0 ? 1 : pdata->mode_cnt;
+-	fbi->fb_host.bits_per_pixel = 16;	/* RGB565, the default */
++	fbi->fb_host.mode = pdata->mode;
++	fbi->fb_host.mode_cnt = pdata->mode_cnt;
++	fbi->fb_host.bits_per_pixel = pdata->bpp;
+ 
+ 	fb_dev = register_framebuffer(&fbi->fb_host, pdata->framebuffer, 0);
+ 	if (dev == NULL) {
+diff --git a/include/fb.h b/include/fb.h
+index 223b301..8ba4e5a 100644
+--- a/include/fb.h
++++ b/include/fb.h
+@@ -69,6 +69,8 @@ struct fb_videomode {
+ 	unsigned sync;		/**< sync information, refer FB_SYNC_* macros */
+ 	unsigned vmode;		/**< video mode information, refer FB_VMODE_* macros */
+ 	unsigned flag;
 +
-+	/* add runtime video info */
-+	fbi->fb_host.mode = pdata->mode->mode;
-+	/* to be backward compatible */
-+	fbi->fb_host.mode_cnt = pdata->mode_cnt == 0 ? 1 : pdata->mode_cnt;
-+	fbi->fb_host.bits_per_pixel = 16;	/* RGB565, the default */
-+
-+	fb_dev = register_framebuffer(&fbi->fb_host, pdata->framebuffer, 0);
-+	if (dev == NULL) {
- 		dev_err(dev, "failed to register framebuffer\n");
--		return ret;
-+		return -EINVAL;
- 	}
-+
- #ifdef CONFIG_IMXFB_DRIVER_VIDEO_IMX_OVERLAY
--	imxfb_register_overlay(fbi, pdata->framebuffer_ovl);
-+	imxfb_register_overlay(fbi, fb_dev, pdata);
- #endif
- 	return 0;
- }
++	const void *priv;	/**< video driver related information */
+ };
+ 
+ /* Interpretation of offset for color fields: All offsets are from the right,
 -- 
 1.7.2.3
 
