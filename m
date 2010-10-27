@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PAoj7-00083q-Qw
-	for barebox@lists.infradead.org; Tue, 26 Oct 2010 18:58:31 +0000
-Date: Tue, 26 Oct 2010 20:58:28 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20101026185827.GF6017@pengutronix.de>
-References: <1287753331-7696-1-git-send-email-s.hauer@pengutronix.de>
-	<201010261120.30875.jbe@pengutronix.de>
+Received: from mail-yw0-f49.google.com ([209.85.213.49])
+	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1PB5KX-0000ZN-Mf
+	for barebox@lists.infradead.org; Wed, 27 Oct 2010 12:42:17 +0000
+Received: by ywg4 with SMTP id 4so341522ywg.36
+	for <barebox@lists.infradead.org>; Wed, 27 Oct 2010 05:42:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <201010261120.30875.jbe@pengutronix.de>
+Date: Wed, 27 Oct 2010 14:42:03 +0200
+Message-ID: <AANLkTimj3WiRQaeP+tQ7-AHy3WcVG0MKpwt5uNfo_cWf@mail.gmail.com>
+From: Belisko Marek <marek.belisko@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,92 +21,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: more patches for next
-To: Juergen Beisert <jbe@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: command bootu to start kernel
+To: barebox@lists.infradead.org
 
-On Tue, Oct 26, 2010 at 11:20:30AM +0200, Juergen Beisert wrote:
-> Some of these changes lead into:
-> 
-> [...]
->   CC      drivers/serial/serial_imx.o
-> In file included from arch/arm/mach-imx/include/mach/imx-regs.h:47,
->                  from drivers/serial/serial_imx.c:21:
-> arch/arm/mach-imx/include/mach/imx27-regs.h:222:1: warning: "ESDMISC_RST" redefined
-> In file included from arch/arm/mach-imx/include/mach/imx27-regs.h:83,
->                  from arch/arm/mach-imx/include/mach/imx-regs.h:47,
->                  from drivers/serial/serial_imx.c:21:
-> arch/arm/mach-imx/include/mach/esdctl.h:37:1: warning: this is the location of the previous definition
-> In file included from arch/arm/mach-imx/include/mach/imx-regs.h:47,
->                  from drivers/serial/serial_imx.c:21:
-> arch/arm/mach-imx/include/mach/imx27-regs.h:224:1: warning: "ESDMISC_MDDR_DL_RST" redefined
-> In file included from arch/arm/mach-imx/include/mach/imx27-regs.h:83,
->                  from arch/arm/mach-imx/include/mach/imx-regs.h:47,
->                  from drivers/serial/serial_imx.c:21:
-> arch/arm/mach-imx/include/mach/esdctl.h:40:1: warning: this is the location of the previous definition
-> In file included from arch/arm/mach-imx/include/mach/imx-regs.h:47,
->                  from drivers/serial/serial_imx.c:21:
-> arch/arm/mach-imx/include/mach/imx27-regs.h:225:1: warning: "ESDMISC_MDDR_MDIS" redefined
-> In file included from arch/arm/mach-imx/include/mach/imx27-regs.h:83,
->                  from arch/arm/mach-imx/include/mach/imx-regs.h:47,
->                  from drivers/serial/serial_imx.c:21:
-> arch/arm/mach-imx/include/mach/esdctl.h:41:1: warning: this is the location of the previous definition
-> In file included from arch/arm/mach-imx/include/mach/imx-regs.h:47,
->                  from drivers/serial/serial_imx.c:21:
-> arch/arm/mach-imx/include/mach/imx27-regs.h:226:1: warning: "ESDMISC_LHD" redefined
-> In file included from arch/arm/mach-imx/include/mach/imx27-regs.h:83,
->                  from arch/arm/mach-imx/include/mach/imx-regs.h:47,
->                  from drivers/serial/serial_imx.c:21:
-> arch/arm/mach-imx/include/mach/esdctl.h:42:1: warning: this is the location of the previous definition
-> [...]
-> 
-> Tested with the "pcm038_defconfig".
+Hi,
 
+I have mini2440 board with barebox running from RAM.
+I try to start uImage kernel for that platform but I'm little bit
+confused how to do it.
 
-The good thing is that all defines even if written differently are the
-same. The following fixes this:
+I do tftp uImage and the bootu uImage but it always hangs :
 
+commandline: console=ttySAC0,115200
+arch_number: 1999
 
-From cc406226ebddd0ce791faba083272a006b73730f Mon Sep 17 00:00:00 2001
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 26 Oct 2010 20:56:17 +0200
-Subject: [PATCH] ARM i.MX27: remove duplicated defines
+I track down that theKernel pointer point to 0xffffffff (memmap return
+(void*)-1) which is obviously wrong.
+If I understand correctly bootu function take first parameter and try to
+open a file and memmap. If file isn't opened successfully then convert
+string address which is then taken for
+theKernel pointer.
 
-The esdctl regs are now in a seperate header file, so remove the
-duplicates from imx27-regs.h
+Is this correct procedure or do I something wrong?
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/mach-imx/include/mach/imx27-regs.h |    8 --------
- 1 files changed, 0 insertions(+), 8 deletions(-)
+Thanks for replies,
 
-diff --git a/arch/arm/mach-imx/include/mach/imx27-regs.h b/arch/arm/mach-imx/include/mach/imx27-regs.h
-index 0fa954d..e87d5bf 100644
---- a/arch/arm/mach-imx/include/mach/imx27-regs.h
-+++ b/arch/arm/mach-imx/include/mach/imx27-regs.h
-@@ -219,14 +219,6 @@
- #define ESDCFG_TWTR		(1 << 20)
- #define ESDCFG_TXP(x)		(((x) & 0x3) << 21)
- 
--#define ESDMISC_RST		(1 << 1)
--#define ESDMISC_MDDREN		(1 << 2)
--#define ESDMISC_MDDR_DL_RST	(1 << 3)
--#define ESDMISC_MDDR_MDIS	(1 << 4)
--#define ESDMISC_LHD		(1 << 5)
--#define ESDMISC_MA10_SHARE	(1 << 6)
--#define ESDMISC_SDRAM_RDY	(1 << 6)
--
- /*
-  * Definitions for the clocksource driver
-  */
--- 
-1.7.2.3
+Marek
+
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+as simple and primitive as possible
+-------------------------------------------------
+Marek Belisko - OPEN-NANDRA
+Freelance Developer
+
+Ruska Nova Ves 219 | Presov, 08005 Slovak Republic
+Tel: +421 915 052 184
+skype: marekwhite
+icq: 290551086
+web: http://open-nandra.com
 
 _______________________________________________
 barebox mailing list
