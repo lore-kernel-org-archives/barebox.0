@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PB6Ks-0000xP-V4
-	for barebox@lists.infradead.org; Wed, 27 Oct 2010 13:46:40 +0000
-Date: Wed, 27 Oct 2010 15:46:36 +0200
+	id 1PB6Se-0001ZB-JC
+	for barebox@lists.infradead.org; Wed, 27 Oct 2010 13:54:41 +0000
+Date: Wed, 27 Oct 2010 15:54:38 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20101027134636.GK6017@pengutronix.de>
+Message-ID: <20101027135438.GL6017@pengutronix.de>
 References: <AANLkTimj3WiRQaeP+tQ7-AHy3WcVG0MKpwt5uNfo_cWf@mail.gmail.com>
+	<201010271533.15954.jbe@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <AANLkTimj3WiRQaeP+tQ7-AHy3WcVG0MKpwt5uNfo_cWf@mail.gmail.com>
+In-Reply-To: <201010271533.15954.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,24 +24,39 @@ Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: command bootu to start kernel
-To: Belisko Marek <marek.belisko@gmail.com>
+To: Juergen Beisert <jbe@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Marek,
-
-On Wed, Oct 27, 2010 at 02:42:03PM +0200, Belisko Marek wrote:
-> Hi,
+On Wed, Oct 27, 2010 at 03:33:15PM +0200, Juergen Beisert wrote:
+> Belisko Marek wrote:
+> > I have mini2440 board with barebox running from RAM.
+> > I try to start uImage kernel for that platform but I'm little bit
+> > confused how to do it.
+> >
+> > I do tftp uImage and the bootu uImage but it always hangs :
+> >
+> > commandline: console=ttySAC0,115200
+> > arch_number: 1999
+> >
+> > I track down that theKernel pointer point to 0xffffffff (memmap return
+> > (void*)-1) which is obviously wrong.
+> > If I understand correctly bootu function take first parameter and try to
+> > open a file and memmap. If file isn't opened successfully then convert
+> > string address which is then taken for
+> > theKernel pointer.
+> >
+> > Is this correct procedure or do I something wrong?
 > 
-> I have mini2440 board with barebox running from RAM.
-> I try to start uImage kernel for that platform but I'm little bit
-> confused how to do it.
-> 
-> I do tftp uImage and the bootu uImage but it always hangs :
+> Try to start a zImage with "bootz". On my system 'bootm' and 'bootu' do not 
+> work.
 
-Uh, I can't remember why I named the bootu command this way, but it was
-an unlucky decision. Actually this command starts raw kernel images.
-What you are looking for is the bootm command which starts uimages. I
-don't know why it's bootm, the command name is derived from U-Boot.
+bootz is for starting zImages. At least this command has a convenient
+name :)
+bootz should work on your system aswell. If not, please complain loudly.
+bootu is a bit tricky though. To start a raw linux image it has to be
+copied to the exact address is is expected to run, for most boards this
+is start of sdram + 0x8000, but this may differ on some boards (it's
+basically PHYS_OFFSET + TEXT_OFFSET in the kernel)
 
 Sascha
 
