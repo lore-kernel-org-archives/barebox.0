@@ -1,20 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qw0-f49.google.com ([209.85.216.49])
-	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1PBjik-0008I2-LH
-	for barebox@lists.infradead.org; Fri, 29 Oct 2010 07:49:55 +0000
-Received: by qwh6 with SMTP id 6so2740012qwh.36
-	for <barebox@lists.infradead.org>; Fri, 29 Oct 2010 00:49:52 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <AANLkTim9C1gxiGNj3gyso0aqcM_r1qxf0M3dDCWDmMMO@mail.gmail.com>
+Received: from mail9.tpgi.com.au ([203.12.160.104])
+	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1PBjvZ-0008WM-D3
+	for barebox@lists.infradead.org; Fri, 29 Oct 2010 08:03:11 +0000
+Received: from dev1.localnet (220-244-174-13.static.tpgi.com.au
+	[220.244.174.13]) (authenticated bits=0)
+	by mail9.tpgi.com.au (envelope-from marc@cpdesign.com.au)
+	(8.14.3/8.14.3) with ESMTP id o9T82wBN030849
+	for <barebox@lists.infradead.org>; Fri, 29 Oct 2010 19:03:00 +1100
+From: Marc Reilly <marc@cpdesign.com.au>
+Date: Fri, 29 Oct 2010 19:04:16 +1100
 References: <AANLkTimj3WiRQaeP+tQ7-AHy3WcVG0MKpwt5uNfo_cWf@mail.gmail.com>
-	<201010271533.15954.jbe@pengutronix.de>
-	<20101027135438.GL6017@pengutronix.de>
-	<201010271638.42404.jbe@pengutronix.de>
 	<AANLkTim9C1gxiGNj3gyso0aqcM_r1qxf0M3dDCWDmMMO@mail.gmail.com>
-Date: Fri, 29 Oct 2010 09:49:52 +0200
-Message-ID: <AANLkTikBmg33g-Uh=_fEtvkN6n6GZAi71Lc5tFm51yjJ@mail.gmail.com>
-From: Belisko Marek <marek.belisko@gmail.com>
+	<AANLkTikBmg33g-Uh=_fEtvkN6n6GZAi71Lc5tFm51yjJ@mail.gmail.com>
+In-Reply-To: <AANLkTikBmg33g-Uh=_fEtvkN6n6GZAi71Lc5tFm51yjJ@mail.gmail.com>
+MIME-Version: 1.0
+Message-Id: <201010291904.16717.marc@cpdesign.com.au>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,82 +24,71 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: command bootu to start kernel
-To: Juergen Beisert <jbe@pengutronix.de>
-Cc: barebox@lists.infradead.org
+To: barebox@lists.infradead.org
 
-T24gRnJpLCBPY3QgMjksIDIwMTAgYXQgODowOCBBTSwgQmVsaXNrbyBNYXJlayA8bWFyZWsuYmVs
-aXNrb0BnbWFpbC5jb20+IHdyb3RlOgo+IE9uIFdlZCwgT2N0IDI3LCAyMDEwIGF0IDQ6MzggUE0s
-IEp1ZXJnZW4gQmVpc2VydCA8amJlQHBlbmd1dHJvbml4LmRlPiB3cm90ZToKPj4gU2FzY2hhIEhh
-dWVyIHdyb3RlOgo+Pj4gT24gV2VkLCBPY3QgMjcsIDIwMTAgYXQgMDM6MzM6MTVQTSArMDIwMCwg
-SnVlcmdlbiBCZWlzZXJ0IHdyb3RlOgo+Pj4gPiBCZWxpc2tvIE1hcmVrIHdyb3RlOgo+Pj4gPiA+
-IEkgaGF2ZSBtaW5pMjQ0MCBib2FyZCB3aXRoIGJhcmVib3ggcnVubmluZyBmcm9tIFJBTS4KPj4+
-ID4gPiBJIHRyeSB0byBzdGFydCB1SW1hZ2Uga2VybmVsIGZvciB0aGF0IHBsYXRmb3JtIGJ1dCBJ
-J20gbGl0dGxlIGJpdAo+Pj4gPiA+IGNvbmZ1c2VkIGhvdyB0byBkbyBpdC4KPj4+ID4gPgo+Pj4g
-PiA+IEkgZG8gdGZ0cCB1SW1hZ2UgYW5kIHRoZSBib290dSB1SW1hZ2UgYnV0IGl0IGFsd2F5cyBo
-YW5ncyA6Cj4+PiA+ID4KPj4+ID4gPiBjb21tYW5kbGluZTogY29uc29sZT10dHlTQUMwLDExNTIw
-MAo+Pj4gPiA+IGFyY2hfbnVtYmVyOiAxOTk5Cj4+PiA+ID4KPj4+ID4gPiBJIHRyYWNrIGRvd24g
-dGhhdCB0aGVLZXJuZWwgcG9pbnRlciBwb2ludCB0byAweGZmZmZmZmZmIChtZW1tYXAgcmV0dXJu
-Cj4+PiA+ID4gKHZvaWQqKS0xKSB3aGljaCBpcyBvYnZpb3VzbHkgd3JvbmcuCj4+PiA+ID4gSWYg
-SSB1bmRlcnN0YW5kIGNvcnJlY3RseSBib290dSBmdW5jdGlvbiB0YWtlIGZpcnN0IHBhcmFtZXRl
-ciBhbmQgdHJ5Cj4+PiA+ID4gdG8gb3BlbiBhIGZpbGUgYW5kIG1lbW1hcC4gSWYgZmlsZSBpc24n
-dCBvcGVuZWQgc3VjY2Vzc2Z1bGx5IHRoZW4KPj4+ID4gPiBjb252ZXJ0IHN0cmluZyBhZGRyZXNz
-IHdoaWNoIGlzIHRoZW4gdGFrZW4gZm9yCj4+PiA+ID4gdGhlS2VybmVsIHBvaW50ZXIuCj4+PiA+
-ID4KPj4+ID4gPiBJcyB0aGlzIGNvcnJlY3QgcHJvY2VkdXJlIG9yIGRvIEkgc29tZXRoaW5nIHdy
-b25nPwo+Pj4gPgo+Pj4gPiBUcnkgdG8gc3RhcnQgYSB6SW1hZ2Ugd2l0aCAiYm9vdHoiLiBPbiBt
-eSBzeXN0ZW0gJ2Jvb3RtJyBhbmQgJ2Jvb3R1JyBkbwo+Pj4gPiBub3Qgd29yay4KPj4+Cj4+PiBi
-b290eiBpcyBmb3Igc3RhcnRpbmcgekltYWdlcy4gQXQgbGVhc3QgdGhpcyBjb21tYW5kIGhhcyBh
-IGNvbnZlbmllbnQKPj4+IG5hbWUgOikKPj4+IGJvb3R6IHNob3VsZCB3b3JrIG9uIHlvdXIgc3lz
-dGVtIGFzd2VsbC4gSWYgbm90LCBwbGVhc2UgY29tcGxhaW4gbG91ZGx5Lgo+Pgo+PiBib290eiB3
-b3JrcyBoZXJlLiBib290bSBhbHdheXMgY29tcGxhaW5zIHdpdGggdGhlIHNjcmlwdHMgZnJvbSB0
-aGUgZ2VuZXJpYwo+PiBlbnZpcm9ubWVudDoKPiBib290eiBhbHNvIHdvcmsgaGVyZSBidXQgbmVl
-ZCB0byBpbmNyZWFzZSBtYWxsb2Mgc2l6ZS4gVXNlIDhNIGluc3RlYWQgNE0uCj4+Cj4+IGJvb3Rp
-bmcga2VybmVsIG9mIHR5cGUgdWltYWdlIGZyb20gL2Rldi9yYW0wLmtlcm5lbAo+PiBCYWQgTWFn
-aWMgTnVtYmVyCj4+Cj4+IEJ1dDoKPj4KPj4gbWVAaG9zdCQgZmlsZSBhcmNoL2FybS9ib290L3VJ
-bWFnZQo+PiBhcmNoL2FybS9ib290L3VJbWFnZTogdS1ib290IGxlZ2FjeSB1SW1hZ2UsIExpbnV4
-LTIuNi4zMS0wMDc3MC1nNTRjM2ZlNi1kaXIsCj4+IExpbnV4L0FSTSwgT1MgS2VybmVsIEltYWdl
-IChOb3QgY29tcHJlc3NlZCksIDIzNTAwMTYgYnl0ZXMsIE1vbiBPY3QgMjUKPj4gMTY6NTg6MzAg
-MjAxMCwgTG9hZCBBZGRyZXNzOiAweDQwMDA4MDAwLCBFbnRyeSBQb2ludDogMHg0MDAwODAwMCwg
-SGVhZGVyIENSQzoKPj4gMHgxN0E3MzMwQiwgRGF0YSBDUkM6IDB4ODg4REFBNjMKPj4KPj4gQW55
-dGhpbmcgd3Jvbmcgd2l0aCB0aGUgdUltYWdlIChidWlsdCB3aXRoICJtYWtlIHVJbWFnZSIpIG9y
-IHRoZQo+PiBjb21tYW5kICdib290bSc/Cj4gSW5zdGVhZCBib290bSBmb3IgbXkgdUltYWdlIHdv
-cmtzOgo+IGJvb3RtIHVJbWFnZQo+IMKgIFZlcmlmeWluZyBDaGVja3N1bSAuLi4gT0sKPiDCoCBJ
-bWFnZSBOYW1lOiDCoCBMaW51eC0yLjYuMzItcmM4Cj4gwqAgQ3JlYXRlZDogwqAgwqAgwqAyMDEw
-LTA5LTI3IMKgIDg6MzY6MDEgVVRDCj4gwqAgSW1hZ2UgVHlwZTogwqAgQVJNIExpbnV4IEtlcm5l
-bCBJbWFnZSAodW5jb21wcmVzc2VkKQo+IMKgIERhdGEgU2l6ZTogwqAgwqAyMDU4NDA0IEJ5dGVz
-ID0gwqAyIE1CCj4gwqAgTG9hZCBBZGRyZXNzOiAzMDAwODAwMAo+IMKgIEVudHJ5IFBvaW50OiDC
-oDMwMDA4MDAwCj4gT0sKPiBjb21tYW5kbGluZTogY29uc29sZT10dHlTQUMwLDExNTIwMAo+IGFy
-Y2hfbnVtYmVyOiAxOTk5Cj4KPiBTdGFydGluZyBrZXJuZWwgLi4uCkRlc3BpdGUgb2YgbG9hZGlu
-ZyBrZXJuZWwgaXMgd29ya2luZyBrZXJuZWwgaXNuJ3Qgc3RhcnRlZCBmb3IKbWluaTI0NDAoZnJv
-bSB1LWJvb3Qgd29ya3MgZmluZSkuIEl0IGhhbmcgYXQ6ClVuY29tcHJlc3NpbmcgTGludXguLi4u
-Li4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4u
-Li4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4u
-Li4uLi4uLi4uLi4uCmRvbmUsIGJvb3RpbmcgdGhlIGtlcm5lbC4KClNhbWUgYm9vdCB6SW1hZ2Ug
-YW5kIHVJbWFnZSBrZXJuZWxzLgo+Cj4gc3RyYW5nZSBidXQgdHJ1ZSA7KQo+Pgo+PiBqYmUKPj4K
-Pj4gLS0KPj4gUGVuZ3V0cm9uaXggZS5LLiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
-oCDCoCDCoCDCoCDCoHwgSnVlcmdlbiBCZWlzZXJ0IMKgIMKgIMKgIMKgIMKgIMKgIHwKPj4gTGlu
-dXggU29sdXRpb25zIGZvciBTY2llbmNlIGFuZCBJbmR1c3RyeSDCoCDCoCDCoHwgUGhvbmU6ICs0
-OS04NzY2LTkzOSAyMjggwqAgwqAgfAo+PiBWZXJ0cmV0dW5nIFN1ZWQvTXVlbmNoZW4sIEdlcm1h
-bnkgwqAgwqAgwqAgwqAgwqAgwqAgfCBGYXg6IMKgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKPj4g
-QW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgwqAgwqAgwqAgwqAgwqAgwqAgwqB8IGh0
-dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvIMKgfAo+Pgo+PiBfX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fXwo+PiBiYXJlYm94IG1haWxpbmcgbGlzdAo+PiBiYXJl
-Ym94QGxpc3RzLmluZnJhZGVhZC5vcmcKPj4gaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFp
-bG1hbi9saXN0aW5mby9iYXJlYm94Cj4+Cj4KPiB0aGFua3MsCj4KPiBtYXJlawo+Cj4gLS0KPiBh
-cyBzaW1wbGUgYW5kIHByaW1pdGl2ZSBhcyBwb3NzaWJsZQo+IC0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KPiBNYXJlayBCZWxpc2tvIC0gT1BFTi1OQU5E
-UkEKPiBGcmVlbGFuY2UgRGV2ZWxvcGVyCj4KPiBSdXNrYSBOb3ZhIFZlcyAyMTkgfCBQcmVzb3Ys
-IDA4MDA1IFNsb3ZhayBSZXB1YmxpYwo+IFRlbDogKzQyMSA5MTUgMDUyIDE4NAo+IHNreXBlOiBt
-YXJla3doaXRlCj4gaWNxOiAyOTA1NTEwODYKPiB3ZWI6IGh0dHA6Ly9vcGVuLW5hbmRyYS5jb20K
-PgoKdGhhbmtzLAoKbWFyZWsKCi0tIAphcyBzaW1wbGUgYW5kIHByaW1pdGl2ZSBhcyBwb3NzaWJs
-ZQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCk1hcmVr
-IEJlbGlza28gLSBPUEVOLU5BTkRSQQpGcmVlbGFuY2UgRGV2ZWxvcGVyCgpSdXNrYSBOb3ZhIFZl
-cyAyMTkgfCBQcmVzb3YsIDA4MDA1IFNsb3ZhayBSZXB1YmxpYwpUZWw6ICs0MjEgOTE1IDA1MiAx
-ODQKc2t5cGU6IG1hcmVrd2hpdGUKaWNxOiAyOTA1NTEwODYKd2ViOiBodHRwOi8vb3Blbi1uYW5k
-cmEuY29tCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpi
-YXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xp
-c3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Hi,
+
+I have no experience with the mini2440, but:
+
+On Friday, October 29, 2010 06:49:52 pm Belisko Marek wrote:
+> On Fri, Oct 29, 2010 at 8:08 AM, Belisko Marek <marek.belisko@gmail.com> 
+> >> me@host$ file arch/arm/boot/uImage
+> >> arch/arm/boot/uImage: u-boot legacy uImage,
+> >> Linux-2.6.31-00770-g54c3fe6-dir, Linux/ARM, OS Kernel Image (Not
+> >> compressed), 2350016 bytes, Mon Oct 25 16:58:30 2010, Load Address:
+> >> 0x40008000, Entry Point: 0x40008000, Header CRC: 0x17A7330B, Data CRC:
+> >> 0x888DAA63
+> >> 
+> >> Anything wrong with the uImage (built with "make uImage") or the
+> >> command 'bootm'?
+
+The load and entry point are 0x400...  here
+
+> > 
+> > Instead bootm for my uImage works:
+> > bootm uImage
+> >   Verifying Checksum ... OK
+> >   Image Name:   Linux-2.6.32-rc8
+> >   Created:      2010-09-27   8:36:01 UTC
+> >   Image Type:   ARM Linux Kernel Image (uncompressed)
+> >   Data Size:    2058404 Bytes =  2 MB
+> >   Load Address: 30008000
+> >   Entry Point:  30008000
+> > OK
+
+and 0x300.. here
+
+
+I've no idea how your RAM is mapped, but verify that it is being loaded to the 
+correct address. (also check that it's not overlapping your barebox, malloc or 
+stack)
+
+> > commandline: console=ttySAC0,115200
+> > arch_number: 1999
+> > 
+> > Starting kernel ...
+> 
+> Despite of loading kernel is working kernel isn't started for
+> mini2440(from u-boot works fine). It hang at:
+> Uncompressing
+> Linux.....................................................................
+> ............................................................. done, booting
+> the kernel.
+
+Also enable low level debugging and the earlyprintk in your kernel - maybe the 
+kernel is running but crashes before it gets ti initializing the console.
+
+
+Cheers
+Marc
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
