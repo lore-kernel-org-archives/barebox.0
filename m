@@ -1,17 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PB79S-0004g2-Eb
-	for barebox@lists.infradead.org; Wed, 27 Oct 2010 14:38:55 +0000
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Wed, 27 Oct 2010 16:38:42 +0200
+Received: from mail-qy0-f170.google.com ([209.85.216.170])
+	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1PBi8T-0007QG-BY
+	for barebox@lists.infradead.org; Fri, 29 Oct 2010 06:08:22 +0000
+Received: by qyk2 with SMTP id 2so492704qyk.15
+	for <barebox@lists.infradead.org>; Thu, 28 Oct 2010 23:08:19 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <201010271638.42404.jbe@pengutronix.de>
 References: <AANLkTimj3WiRQaeP+tQ7-AHy3WcVG0MKpwt5uNfo_cWf@mail.gmail.com>
 	<201010271533.15954.jbe@pengutronix.de>
 	<20101027135438.GL6017@pengutronix.de>
-In-Reply-To: <20101027135438.GL6017@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <201010271638.42404.jbe@pengutronix.de>
+	<201010271638.42404.jbe@pengutronix.de>
+Date: Fri, 29 Oct 2010 08:08:19 +0200
+Message-ID: <AANLkTim9C1gxiGNj3gyso0aqcM_r1qxf0M3dDCWDmMMO@mail.gmail.com>
+From: Belisko Marek <marek.belisko@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,67 +22,68 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: command bootu to start kernel
-To: barebox@lists.infradead.org
+To: Juergen Beisert <jbe@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Sascha Hauer wrote:
-> On Wed, Oct 27, 2010 at 03:33:15PM +0200, Juergen Beisert wrote:
-> > Belisko Marek wrote:
-> > > I have mini2440 board with barebox running from RAM.
-> > > I try to start uImage kernel for that platform but I'm little bit
-> > > confused how to do it.
-> > >
-> > > I do tftp uImage and the bootu uImage but it always hangs :
-> > >
-> > > commandline: console=ttySAC0,115200
-> > > arch_number: 1999
-> > >
-> > > I track down that theKernel pointer point to 0xffffffff (memmap return
-> > > (void*)-1) which is obviously wrong.
-> > > If I understand correctly bootu function take first parameter and try
-> > > to open a file and memmap. If file isn't opened successfully then
-> > > convert string address which is then taken for
-> > > theKernel pointer.
-> > >
-> > > Is this correct procedure or do I something wrong?
-> >
-> > Try to start a zImage with "bootz". On my system 'bootm' and 'bootu' do
-> > not work.
->
-> bootz is for starting zImages. At least this command has a convenient
-> name :)
-> bootz should work on your system aswell. If not, please complain loudly.
-
-bootz works here. bootm always complains with the scripts from the generic 
-environment:
-
-booting kernel of type uimage from /dev/ram0.kernel
-Bad Magic Number
-
-But:
-
-me@host$ file arch/arm/boot/uImage
-arch/arm/boot/uImage: u-boot legacy uImage, Linux-2.6.31-00770-g54c3fe6-dir, 
-Linux/ARM, OS Kernel Image (Not compressed), 2350016 bytes, Mon Oct 25 
-16:58:30 2010, Load Address: 0x40008000, Entry Point: 0x40008000, Header CRC: 
-0x17A7330B, Data CRC: 0x888DAA63
-
-Anything wrong with the uImage (built with "make uImage") or the 
-command 'bootm'?
-
-jbe
-
--- 
-Pengutronix e.K.                              | Juergen Beisert             |
-Linux Solutions for Science and Industry      | Phone: +49-8766-939 228     |
-Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gV2VkLCBPY3QgMjcsIDIwMTAgYXQgNDozOCBQTSwgSnVlcmdlbiBCZWlzZXJ0IDxqYmVAcGVu
+Z3V0cm9uaXguZGU+IHdyb3RlOgo+IFNhc2NoYSBIYXVlciB3cm90ZToKPj4gT24gV2VkLCBPY3Qg
+MjcsIDIwMTAgYXQgMDM6MzM6MTVQTSArMDIwMCwgSnVlcmdlbiBCZWlzZXJ0IHdyb3RlOgo+PiA+
+IEJlbGlza28gTWFyZWsgd3JvdGU6Cj4+ID4gPiBJIGhhdmUgbWluaTI0NDAgYm9hcmQgd2l0aCBi
+YXJlYm94IHJ1bm5pbmcgZnJvbSBSQU0uCj4+ID4gPiBJIHRyeSB0byBzdGFydCB1SW1hZ2Uga2Vy
+bmVsIGZvciB0aGF0IHBsYXRmb3JtIGJ1dCBJJ20gbGl0dGxlIGJpdAo+PiA+ID4gY29uZnVzZWQg
+aG93IHRvIGRvIGl0Lgo+PiA+ID4KPj4gPiA+IEkgZG8gdGZ0cCB1SW1hZ2UgYW5kIHRoZSBib290
+dSB1SW1hZ2UgYnV0IGl0IGFsd2F5cyBoYW5ncyA6Cj4+ID4gPgo+PiA+ID4gY29tbWFuZGxpbmU6
+IGNvbnNvbGU9dHR5U0FDMCwxMTUyMDAKPj4gPiA+IGFyY2hfbnVtYmVyOiAxOTk5Cj4+ID4gPgo+
+PiA+ID4gSSB0cmFjayBkb3duIHRoYXQgdGhlS2VybmVsIHBvaW50ZXIgcG9pbnQgdG8gMHhmZmZm
+ZmZmZiAobWVtbWFwIHJldHVybgo+PiA+ID4gKHZvaWQqKS0xKSB3aGljaCBpcyBvYnZpb3VzbHkg
+d3JvbmcuCj4+ID4gPiBJZiBJIHVuZGVyc3RhbmQgY29ycmVjdGx5IGJvb3R1IGZ1bmN0aW9uIHRh
+a2UgZmlyc3QgcGFyYW1ldGVyIGFuZCB0cnkKPj4gPiA+IHRvIG9wZW4gYSBmaWxlIGFuZCBtZW1t
+YXAuIElmIGZpbGUgaXNuJ3Qgb3BlbmVkIHN1Y2Nlc3NmdWxseSB0aGVuCj4+ID4gPiBjb252ZXJ0
+IHN0cmluZyBhZGRyZXNzIHdoaWNoIGlzIHRoZW4gdGFrZW4gZm9yCj4+ID4gPiB0aGVLZXJuZWwg
+cG9pbnRlci4KPj4gPiA+Cj4+ID4gPiBJcyB0aGlzIGNvcnJlY3QgcHJvY2VkdXJlIG9yIGRvIEkg
+c29tZXRoaW5nIHdyb25nPwo+PiA+Cj4+ID4gVHJ5IHRvIHN0YXJ0IGEgekltYWdlIHdpdGggImJv
+b3R6Ii4gT24gbXkgc3lzdGVtICdib290bScgYW5kICdib290dScgZG8KPj4gPiBub3Qgd29yay4K
+Pj4KPj4gYm9vdHogaXMgZm9yIHN0YXJ0aW5nIHpJbWFnZXMuIEF0IGxlYXN0IHRoaXMgY29tbWFu
+ZCBoYXMgYSBjb252ZW5pZW50Cj4+IG5hbWUgOikKPj4gYm9vdHogc2hvdWxkIHdvcmsgb24geW91
+ciBzeXN0ZW0gYXN3ZWxsLiBJZiBub3QsIHBsZWFzZSBjb21wbGFpbiBsb3VkbHkuCj4KPiBib290
+eiB3b3JrcyBoZXJlLiBib290bSBhbHdheXMgY29tcGxhaW5zIHdpdGggdGhlIHNjcmlwdHMgZnJv
+bSB0aGUgZ2VuZXJpYwo+IGVudmlyb25tZW50Ogpib290eiBhbHNvIHdvcmsgaGVyZSBidXQgbmVl
+ZCB0byBpbmNyZWFzZSBtYWxsb2Mgc2l6ZS4gVXNlIDhNIGluc3RlYWQgNE0uCj4KPiBib290aW5n
+IGtlcm5lbCBvZiB0eXBlIHVpbWFnZSBmcm9tIC9kZXYvcmFtMC5rZXJuZWwKPiBCYWQgTWFnaWMg
+TnVtYmVyCj4KPiBCdXQ6Cj4KPiBtZUBob3N0JCBmaWxlIGFyY2gvYXJtL2Jvb3QvdUltYWdlCj4g
+YXJjaC9hcm0vYm9vdC91SW1hZ2U6IHUtYm9vdCBsZWdhY3kgdUltYWdlLCBMaW51eC0yLjYuMzEt
+MDA3NzAtZzU0YzNmZTYtZGlyLAo+IExpbnV4L0FSTSwgT1MgS2VybmVsIEltYWdlIChOb3QgY29t
+cHJlc3NlZCksIDIzNTAwMTYgYnl0ZXMsIE1vbiBPY3QgMjUKPiAxNjo1ODozMCAyMDEwLCBMb2Fk
+IEFkZHJlc3M6IDB4NDAwMDgwMDAsIEVudHJ5IFBvaW50OiAweDQwMDA4MDAwLCBIZWFkZXIgQ1JD
+Ogo+IDB4MTdBNzMzMEIsIERhdGEgQ1JDOiAweDg4OERBQTYzCj4KPiBBbnl0aGluZyB3cm9uZyB3
+aXRoIHRoZSB1SW1hZ2UgKGJ1aWx0IHdpdGggIm1ha2UgdUltYWdlIikgb3IgdGhlCj4gY29tbWFu
+ZCAnYm9vdG0nPwpJbnN0ZWFkIGJvb3RtIGZvciBteSB1SW1hZ2Ugd29ya3M6CmJvb3RtIHVJbWFn
+ZQogICBWZXJpZnlpbmcgQ2hlY2tzdW0gLi4uIE9LCiAgIEltYWdlIE5hbWU6ICAgTGludXgtMi42
+LjMyLXJjOAogICBDcmVhdGVkOiAgICAgIDIwMTAtMDktMjcgICA4OjM2OjAxIFVUQwogICBJbWFn
+ZSBUeXBlOiAgIEFSTSBMaW51eCBLZXJuZWwgSW1hZ2UgKHVuY29tcHJlc3NlZCkKICAgRGF0YSBT
+aXplOiAgICAyMDU4NDA0IEJ5dGVzID0gIDIgTUIKICAgTG9hZCBBZGRyZXNzOiAzMDAwODAwMAog
+ICBFbnRyeSBQb2ludDogIDMwMDA4MDAwCk9LCmNvbW1hbmRsaW5lOiBjb25zb2xlPXR0eVNBQzAs
+MTE1MjAwCmFyY2hfbnVtYmVyOiAxOTk5CgpTdGFydGluZyBrZXJuZWwgLi4uCgpzdHJhbmdlIGJ1
+dCB0cnVlIDspCj4KPiBqYmUKPgo+IC0tCj4gUGVuZ3V0cm9uaXggZS5LLiDCoCDCoCDCoCDCoCDC
+oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoHwgSnVlcmdlbiBCZWlzZXJ0IMKgIMKgIMKg
+IMKgIMKgIMKgIHwKPiBMaW51eCBTb2x1dGlvbnMgZm9yIFNjaWVuY2UgYW5kIEluZHVzdHJ5IMKg
+IMKgIMKgfCBQaG9uZTogKzQ5LTg3NjYtOTM5IDIyOCDCoCDCoCB8Cj4gVmVydHJldHVuZyBTdWVk
+L011ZW5jaGVuLCBHZXJtYW55IMKgIMKgIMKgIMKgIMKgIMKgIHwgRmF4OiDCoCArNDktNTEyMS0y
+MDY5MTctNTU1NSB8Cj4gQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgwqAgwqAgwqAg
+wqAgwqAgwqAgwqB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvIMKgfAo+Cj4gX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KPiBiYXJlYm94IG1haWxpbmcg
+bGlzdAo+IGJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwo+IGh0dHA6Ly9saXN0cy5pbmZyYWRl
+YWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo+Cgp0aGFua3MsCgptYXJlawoKLS0gCmFz
+IHNpbXBsZSBhbmQgcHJpbWl0aXZlIGFzIHBvc3NpYmxlCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTWFyZWsgQmVsaXNrbyAtIE9QRU4tTkFORFJBCkZy
+ZWVsYW5jZSBEZXZlbG9wZXIKClJ1c2thIE5vdmEgVmVzIDIxOSB8IFByZXNvdiwgMDgwMDUgU2xv
+dmFrIFJlcHVibGljClRlbDogKzQyMSA5MTUgMDUyIDE4NApza3lwZTogbWFyZWt3aGl0ZQppY3E6
+IDI5MDU1MTA4Ngp3ZWI6IGh0dHA6Ly9vcGVuLW5hbmRyYS5jb20KCl9fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVi
+b3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFu
+L2xpc3RpbmZvL2JhcmVib3gK
