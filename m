@@ -1,21 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail9.tpgi.com.au ([203.12.160.104])
-	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PBjvZ-0008WM-D3
-	for barebox@lists.infradead.org; Fri, 29 Oct 2010 08:03:11 +0000
-Received: from dev1.localnet (220-244-174-13.static.tpgi.com.au
-	[220.244.174.13]) (authenticated bits=0)
-	by mail9.tpgi.com.au (envelope-from marc@cpdesign.com.au)
-	(8.14.3/8.14.3) with ESMTP id o9T82wBN030849
-	for <barebox@lists.infradead.org>; Fri, 29 Oct 2010 19:03:00 +1100
-From: Marc Reilly <marc@cpdesign.com.au>
-Date: Fri, 29 Oct 2010 19:04:16 +1100
+Received: from mail-gy0-f177.google.com ([209.85.160.177])
+	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1PBkCe-0000HY-Hj
+	for barebox@lists.infradead.org; Fri, 29 Oct 2010 08:20:50 +0000
+Received: by gyb11 with SMTP id 11so1934560gyb.36
+	for <barebox@lists.infradead.org>; Fri, 29 Oct 2010 01:20:47 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <201010291904.16717.marc@cpdesign.com.au>
 References: <AANLkTimj3WiRQaeP+tQ7-AHy3WcVG0MKpwt5uNfo_cWf@mail.gmail.com>
 	<AANLkTim9C1gxiGNj3gyso0aqcM_r1qxf0M3dDCWDmMMO@mail.gmail.com>
 	<AANLkTikBmg33g-Uh=_fEtvkN6n6GZAi71Lc5tFm51yjJ@mail.gmail.com>
-In-Reply-To: <AANLkTikBmg33g-Uh=_fEtvkN6n6GZAi71Lc5tFm51yjJ@mail.gmail.com>
-MIME-Version: 1.0
-Message-Id: <201010291904.16717.marc@cpdesign.com.au>
+	<201010291904.16717.marc@cpdesign.com.au>
+Date: Fri, 29 Oct 2010 10:20:46 +0200
+Message-ID: <AANLkTikYV-vFVU-QF09yC-wzF5nSDmcy1rG0xz2WJLpj@mail.gmail.com>
+From: Belisko Marek <marek.belisko@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,71 +22,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: command bootu to start kernel
-To: barebox@lists.infradead.org
+To: Marc Reilly <marc@cpdesign.com.au>
+Cc: barebox@lists.infradead.org
 
-Hi,
-
-I have no experience with the mini2440, but:
-
-On Friday, October 29, 2010 06:49:52 pm Belisko Marek wrote:
-> On Fri, Oct 29, 2010 at 8:08 AM, Belisko Marek <marek.belisko@gmail.com> 
-> >> me@host$ file arch/arm/boot/uImage
-> >> arch/arm/boot/uImage: u-boot legacy uImage,
-> >> Linux-2.6.31-00770-g54c3fe6-dir, Linux/ARM, OS Kernel Image (Not
-> >> compressed), 2350016 bytes, Mon Oct 25 16:58:30 2010, Load Address:
-> >> 0x40008000, Entry Point: 0x40008000, Header CRC: 0x17A7330B, Data CRC:
-> >> 0x888DAA63
-> >> 
-> >> Anything wrong with the uImage (built with "make uImage") or the
-> >> command 'bootm'?
-
-The load and entry point are 0x400...  here
-
-> > 
-> > Instead bootm for my uImage works:
-> > bootm uImage
-> >   Verifying Checksum ... OK
-> >   Image Name:   Linux-2.6.32-rc8
-> >   Created:      2010-09-27   8:36:01 UTC
-> >   Image Type:   ARM Linux Kernel Image (uncompressed)
-> >   Data Size:    2058404 Bytes =  2 MB
-> >   Load Address: 30008000
-> >   Entry Point:  30008000
-> > OK
-
-and 0x300.. here
-
-
-I've no idea how your RAM is mapped, but verify that it is being loaded to the 
-correct address. (also check that it's not overlapping your barebox, malloc or 
-stack)
-
-> > commandline: console=ttySAC0,115200
-> > arch_number: 1999
-> > 
-> > Starting kernel ...
-> 
-> Despite of loading kernel is working kernel isn't started for
-> mini2440(from u-boot works fine). It hang at:
-> Uncompressing
-> Linux.....................................................................
-> ............................................................. done, booting
-> the kernel.
-
-Also enable low level debugging and the earlyprintk in your kernel - maybe the 
-kernel is running but crashes before it gets ti initializing the console.
-
-
-Cheers
-Marc
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gRnJpLCBPY3QgMjksIDIwMTAgYXQgMTA6MDQgQU0sIE1hcmMgUmVpbGx5IDxtYXJjQGNwZGVz
+aWduLmNvbS5hdT4gd3JvdGU6Cj4gSGksCj4KPiBJIGhhdmUgbm8gZXhwZXJpZW5jZSB3aXRoIHRo
+ZSBtaW5pMjQ0MCwgYnV0Ogo+Cj4gT24gRnJpZGF5LCBPY3RvYmVyIDI5LCAyMDEwIDA2OjQ5OjUy
+IHBtIEJlbGlza28gTWFyZWsgd3JvdGU6Cj4+IE9uIEZyaSwgT2N0IDI5LCAyMDEwIGF0IDg6MDgg
+QU0sIEJlbGlza28gTWFyZWsgPG1hcmVrLmJlbGlza29AZ21haWwuY29tPgo+PiA+PiBtZUBob3N0
+JCBmaWxlIGFyY2gvYXJtL2Jvb3QvdUltYWdlCj4+ID4+IGFyY2gvYXJtL2Jvb3QvdUltYWdlOiB1
+LWJvb3QgbGVnYWN5IHVJbWFnZSwKPj4gPj4gTGludXgtMi42LjMxLTAwNzcwLWc1NGMzZmU2LWRp
+ciwgTGludXgvQVJNLCBPUyBLZXJuZWwgSW1hZ2UgKE5vdAo+PiA+PiBjb21wcmVzc2VkKSwgMjM1
+MDAxNiBieXRlcywgTW9uIE9jdCAyNSAxNjo1ODozMCAyMDEwLCBMb2FkIEFkZHJlc3M6Cj4+ID4+
+IDB4NDAwMDgwMDAsIEVudHJ5IFBvaW50OiAweDQwMDA4MDAwLCBIZWFkZXIgQ1JDOiAweDE3QTcz
+MzBCLCBEYXRhIENSQzoKPj4gPj4gMHg4ODhEQUE2Mwo+PiA+Pgo+PiA+PiBBbnl0aGluZyB3cm9u
+ZyB3aXRoIHRoZSB1SW1hZ2UgKGJ1aWx0IHdpdGggIm1ha2UgdUltYWdlIikgb3IgdGhlCj4+ID4+
+IGNvbW1hbmQgJ2Jvb3RtJz8KPgo+IFRoZSBsb2FkIGFuZCBlbnRyeSBwb2ludCBhcmUgMHg0MDAu
+Li4gwqBoZXJlClRoaXMgcG9zdCB3YXMgZnJvbSBKdWVyZ2VuIHdoZXJlIGJvb3RtIGRvZXNuJ3Qg
+d29yay4gWW91J3JlIG1heWJlCnJpZ2h0IHdyb25nIGxvYWQgYWRkcmVzcwppcyB0aGVyZS4gRm9y
+IHMzYyBzaG91ZGwgYmUgMHgzMDAwODAwMCBsaWtlIGZvciB3b3JraW5nIGV4YW1wbGUgYmVsb3cu
+Cj4KPj4gPgo+PiA+IEluc3RlYWQgYm9vdG0gZm9yIG15IHVJbWFnZSB3b3JrczoKPj4gPiBib290
+bSB1SW1hZ2UKPj4gPiDCoCBWZXJpZnlpbmcgQ2hlY2tzdW0gLi4uIE9LCj4+ID4gwqAgSW1hZ2Ug
+TmFtZTogwqAgTGludXgtMi42LjMyLXJjOAo+PiA+IMKgIENyZWF0ZWQ6IMKgIMKgIMKgMjAxMC0w
+OS0yNyDCoCA4OjM2OjAxIFVUQwo+PiA+IMKgIEltYWdlIFR5cGU6IMKgIEFSTSBMaW51eCBLZXJu
+ZWwgSW1hZ2UgKHVuY29tcHJlc3NlZCkKPj4gPiDCoCBEYXRhIFNpemU6IMKgIMKgMjA1ODQwNCBC
+eXRlcyA9IMKgMiBNQgo+PiA+IMKgIExvYWQgQWRkcmVzczogMzAwMDgwMDAKPj4gPiDCoCBFbnRy
+eSBQb2ludDogwqAzMDAwODAwMAo+PiA+IE9LCj4KPiBhbmQgMHgzMDAuLiBoZXJlCj4KPgo+IEkn
+dmUgbm8gaWRlYSBob3cgeW91ciBSQU0gaXMgbWFwcGVkLCBidXQgdmVyaWZ5IHRoYXQgaXQgaXMg
+YmVpbmcgbG9hZGVkIHRvIHRoZQo+IGNvcnJlY3QgYWRkcmVzcy4gKGFsc28gY2hlY2sgdGhhdCBp
+dCdzIG5vdCBvdmVybGFwcGluZyB5b3VyIGJhcmVib3gsIG1hbGxvYyBvcgo+IHN0YWNrKQo+Cj4+
+ID4gY29tbWFuZGxpbmU6IGNvbnNvbGU9dHR5U0FDMCwxMTUyMDAKPj4gPiBhcmNoX251bWJlcjog
+MTk5OQo+PiA+Cj4+ID4gU3RhcnRpbmcga2VybmVsIC4uLgo+Pgo+PiBEZXNwaXRlIG9mIGxvYWRp
+bmcga2VybmVsIGlzIHdvcmtpbmcga2VybmVsIGlzbid0IHN0YXJ0ZWQgZm9yCj4+IG1pbmkyNDQw
+KGZyb20gdS1ib290IHdvcmtzIGZpbmUpLiBJdCBoYW5nIGF0Ogo+PiBVbmNvbXByZXNzaW5nCj4+
+IExpbnV4Li4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4u
+Li4uLi4uLi4uLi4uLi4uLi4uCj4+IC4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4u
+Li4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4gZG9uZSwgYm9vdGluZwo+PiB0aGUga2VybmVsLgo+
+Cj4gQWxzbyBlbmFibGUgbG93IGxldmVsIGRlYnVnZ2luZyBhbmQgdGhlIGVhcmx5cHJpbnRrIGlu
+IHlvdXIga2VybmVsIC0gbWF5YmUgdGhlCj4ga2VybmVsIGlzIHJ1bm5pbmcgYnV0IGNyYXNoZXMg
+YmVmb3JlIGl0IGdldHMgdGkgaW5pdGlhbGl6aW5nIHRoZSBjb25zb2xlLgpJIGhhdmUgMi42LjMy
+IGtlcm5lbCBidXQgZWFybHlfcHJpbnRrIGlzbid0IGF2YWlsYWJsZSBhbmQgSSBlbmFibGUKbG93
+bGV2ZWwgZGVidWdnaW5nIGJ1dApkb24ndCBnZXQgbm90aGluZyBlbHNlIG9uIGNvbnNvbGUuIEFu
+eXdheSB0aGFua3MuCj4KPgo+IENoZWVycwo+IE1hcmMKPgo+Cj4gX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KPiBiYXJlYm94IG1haWxpbmcgbGlzdAo+IGJh
+cmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwo+IGh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21h
+aWxtYW4vbGlzdGluZm8vYmFyZWJveAo+CgptYXJlawoKLS0gCmFzIHNpbXBsZSBhbmQgcHJpbWl0
+aXZlIGFzIHBvc3NpYmxlCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0KTWFyZWsgQmVsaXNrbyAtIE9QRU4tTkFORFJBCkZyZWVsYW5jZSBEZXZlbG9wZXIK
+ClJ1c2thIE5vdmEgVmVzIDIxOSB8IFByZXNvdiwgMDgwMDUgU2xvdmFrIFJlcHVibGljClRlbDog
+KzQyMSA5MTUgMDUyIDE4NApza3lwZTogbWFyZWt3aGl0ZQppY3E6IDI5MDU1MTA4Ngp3ZWI6IGh0
+dHA6Ly9vcGVuLW5hbmRyYS5jb20KCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFk
+Lm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
