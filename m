@@ -1,15 +1,23 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PBkfk-0000wR-LC
-	for barebox@lists.infradead.org; Fri, 29 Oct 2010 08:50:53 +0000
-Message-ID: <4CCA8ADF.2020209@pengutronix.de>
-Date: Fri, 29 Oct 2010 10:50:39 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+Received: from mail-qy0-f177.google.com ([209.85.216.177])
+	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1PBksc-0001AF-EI
+	for barebox@lists.infradead.org; Fri, 29 Oct 2010 09:04:11 +0000
+Received: by qyk32 with SMTP id 32so1973859qyk.15
+	for <barebox@lists.infradead.org>; Fri, 29 Oct 2010 02:04:09 -0700 (PDT)
 MIME-Version: 1.0
-References: <AANLkTimj3WiRQaeP+tQ7-AHy3WcVG0MKpwt5uNfo_cWf@mail.gmail.com>	<AANLkTim9C1gxiGNj3gyso0aqcM_r1qxf0M3dDCWDmMMO@mail.gmail.com>	<AANLkTikBmg33g-Uh=_fEtvkN6n6GZAi71Lc5tFm51yjJ@mail.gmail.com>	<201010291904.16717.marc@cpdesign.com.au>	<AANLkTikYV-vFVU-QF09yC-wzF5nSDmcy1rG0xz2WJLpj@mail.gmail.com>	<20101029083451.GB21232@tarshish>
+In-Reply-To: <4CCA8ADF.2020209@pengutronix.de>
+References: <AANLkTimj3WiRQaeP+tQ7-AHy3WcVG0MKpwt5uNfo_cWf@mail.gmail.com>
+	<AANLkTim9C1gxiGNj3gyso0aqcM_r1qxf0M3dDCWDmMMO@mail.gmail.com>
+	<AANLkTikBmg33g-Uh=_fEtvkN6n6GZAi71Lc5tFm51yjJ@mail.gmail.com>
+	<201010291904.16717.marc@cpdesign.com.au>
+	<AANLkTikYV-vFVU-QF09yC-wzF5nSDmcy1rG0xz2WJLpj@mail.gmail.com>
+	<20101029083451.GB21232@tarshish>
 	<AANLkTim_NDWXcHj7oPuaTMymHKVtMZCnmCKwVkKuLFBJ@mail.gmail.com>
-In-Reply-To: <AANLkTim_NDWXcHj7oPuaTMymHKVtMZCnmCKwVkKuLFBJ@mail.gmail.com>
+	<4CCA8ADF.2020209@pengutronix.de>
+Date: Fri, 29 Oct 2010 11:04:08 +0200
+Message-ID: <AANLkTi==CwV+WZZ5Mb=1+usVAheaEi11F+=KDf=drXQp@mail.gmail.com>
+From: Belisko Marek <marek.belisko@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,118 +26,76 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============2010487513=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: command bootu to start kernel
-To: Belisko Marek <marek.belisko@gmail.com>
+To: Marc Kleine-Budde <mkl@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---===============2010487513==
-Content-Type: multipart/signed; micalg=pgp-sha1;
- protocol="application/pgp-signature";
- boundary="------------enigE3084F6D75C726352BE76608"
-
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---------------enigE3084F6D75C726352BE76608
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-
-On 10/29/2010 10:45 AM, Belisko Marek wrote:
-> HI Baruch,
->=20
-> On Fri, Oct 29, 2010 at 10:34 AM, Baruch Siach <baruch@tkos.co.il> wrot=
-e:
->> Hi Belisko,
->>
->> On Fri, Oct 29, 2010 at 10:20:46AM +0200, Belisko Marek wrote:
->>> I have 2.6.32 kernel but early_printk isn't available and I enable
->>> lowlevel debugging but
->>> don't get nothing else on console. Anyway thanks.
->>
->> Try this patch to see the low level console output:
->>
->> commit 5c31454464ed655401c31c68c895b16eafd2bde5
->> Author: Baruch Siach <baruch@tkos.co.il>
->> Date:   Mon Jan 19 10:41:47 2009 +0200
->>
->>    arm, printk: the famous printascii() hack
->>
->> diff --git a/kernel/printk.c b/kernel/printk.c
->> index 5052b54..d685f8a 100644
->> --- a/kernel/printk.c
->> +++ b/kernel/printk.c
->> @@ -685,6 +685,10 @@ asmlinkage int vprintk(const char *fmt, va_list a=
-rgs)
->>        /* Emit the output into the temporary buffer */
->>        printed_len +=3D vscnprintf(printk_buf + printed_len,
->>                                  sizeof(printk_buf) - printed_len, fmt=
-, args);
->> +       {
->> +               extern void printascii(const char *);
->> +               printascii(printk_buf);
->> +       }
->>
->>
->>        /*
->>
->> --
->>                                                     ~. .~   Tk Open Sy=
-stems
->> =3D}------------------------------------------------ooO--U--Ooo-------=
------{=3D
->>   - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
->>
-> Patch works like charm. Output from my kernel startup:
->=20
-> <5>Linux version 2.6.32-rc8 (open-nandra@linux) (gcc version 4.3.5
-> (Buildroot 2010.08-rc1) ) #14 Fri Oct 29 10:40:20 CEST 2010
-> CPU: ARM920T [41129200] revision 0 (ARMv4T), cr=3Dc0007177
-> CPU: VIVT data cache, VIVT instruction cache
-> Machine: MINI2440
-> Memory policy: ECC disabled, Data cache writeback
-> <7>On node 0 totalpages: 0
-> <1>bootmem alloc of 32768 bytes failed!
-> <0>Kernel panic - not syncing: Out of memory
-
-do you have a "MEM=3D32" on your command line?
-
-Marc
-
---=20
-Pengutronix e.K.                  | Marc Kleine-Budde           |
-Industrial Linux Solutions        | Phone: +49-231-2826-924     |
-Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
-
-
---------------enigE3084F6D75C726352BE76608
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.10 (GNU/Linux)
-Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org/
-
-iEYEARECAAYFAkzKiuAACgkQjTAFq1RaXHMBQACfajnY+ET2eOhxn/lkupZCxQdl
-kBQAnjY3sgFuicAiUo+gSChNy4kM1cPo
-=woe6
------END PGP SIGNATURE-----
-
---------------enigE3084F6D75C726352BE76608--
-
-
---===============2010487513==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
-
---===============2010487513==--
+T24gRnJpLCBPY3QgMjksIDIwMTAgYXQgMTA6NTAgQU0sIE1hcmMgS2xlaW5lLUJ1ZGRlIDxta2xA
+cGVuZ3V0cm9uaXguZGU+IHdyb3RlOgo+IE9uIDEwLzI5LzIwMTAgMTA6NDUgQU0sIEJlbGlza28g
+TWFyZWsgd3JvdGU6Cj4+IEhJIEJhcnVjaCwKPj4KPj4gT24gRnJpLCBPY3QgMjksIDIwMTAgYXQg
+MTA6MzQgQU0sIEJhcnVjaCBTaWFjaCA8YmFydWNoQHRrb3MuY28uaWw+IHdyb3RlOgo+Pj4gSGkg
+QmVsaXNrbywKPj4+Cj4+PiBPbiBGcmksIE9jdCAyOSwgMjAxMCBhdCAxMDoyMDo0NkFNICswMjAw
+LCBCZWxpc2tvIE1hcmVrIHdyb3RlOgo+Pj4+IEkgaGF2ZSAyLjYuMzIga2VybmVsIGJ1dCBlYXJs
+eV9wcmludGsgaXNuJ3QgYXZhaWxhYmxlIGFuZCBJIGVuYWJsZQo+Pj4+IGxvd2xldmVsIGRlYnVn
+Z2luZyBidXQKPj4+PiBkb24ndCBnZXQgbm90aGluZyBlbHNlIG9uIGNvbnNvbGUuIEFueXdheSB0
+aGFua3MuCj4+Pgo+Pj4gVHJ5IHRoaXMgcGF0Y2ggdG8gc2VlIHRoZSBsb3cgbGV2ZWwgY29uc29s
+ZSBvdXRwdXQ6Cj4+Pgo+Pj4gY29tbWl0IDVjMzE0NTQ0NjRlZDY1NTQwMWMzMWM2OGM4OTViMTZl
+YWZkMmJkZTUKPj4+IEF1dGhvcjogQmFydWNoIFNpYWNoIDxiYXJ1Y2hAdGtvcy5jby5pbD4KPj4+
+IERhdGU6IMKgIE1vbiBKYW4gMTkgMTA6NDE6NDcgMjAwOSArMDIwMAo+Pj4KPj4+IMKgIMKgYXJt
+LCBwcmludGs6IHRoZSBmYW1vdXMgcHJpbnRhc2NpaSgpIGhhY2sKPj4+Cj4+PiBkaWZmIC0tZ2l0
+IGEva2VybmVsL3ByaW50ay5jIGIva2VybmVsL3ByaW50ay5jCj4+PiBpbmRleCA1MDUyYjU0Li5k
+Njg1ZjhhIDEwMDY0NAo+Pj4gLS0tIGEva2VybmVsL3ByaW50ay5jCj4+PiArKysgYi9rZXJuZWwv
+cHJpbnRrLmMKPj4+IEBAIC02ODUsNiArNjg1LDEwIEBAIGFzbWxpbmthZ2UgaW50IHZwcmludGso
+Y29uc3QgY2hhciAqZm10LCB2YV9saXN0IGFyZ3MpCj4+PiDCoCDCoCDCoCDCoC8qIEVtaXQgdGhl
+IG91dHB1dCBpbnRvIHRoZSB0ZW1wb3JhcnkgYnVmZmVyICovCj4+PiDCoCDCoCDCoCDCoHByaW50
+ZWRfbGVuICs9IHZzY25wcmludGYocHJpbnRrX2J1ZiArIHByaW50ZWRfbGVuLAo+Pj4gwqAgwqAg
+wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBzaXplb2YocHJpbnRr
+X2J1ZikgLSBwcmludGVkX2xlbiwgZm10LCBhcmdzKTsKPj4+ICsgwqAgwqAgwqAgewo+Pj4gKyDC
+oCDCoCDCoCDCoCDCoCDCoCDCoCBleHRlcm4gdm9pZCBwcmludGFzY2lpKGNvbnN0IGNoYXIgKik7
+Cj4+PiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHByaW50YXNjaWkocHJpbnRrX2J1Zik7Cj4+PiAr
+IMKgIMKgIMKgIH0KPj4+Cj4+Pgo+Pj4gwqAgwqAgwqAgwqAvKgo+Pj4KPj4+IC0tCj4+PiDCoCDC
+oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
+oCDCoCDCoCDCoCDCoCDCoCB+LiAufiDCoCBUayBPcGVuIFN5c3RlbXMKPj4+ID19LS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tb29PLS1VLS1Pb28tLS0tLS0t
+LS0tLS17PQo+Pj4gwqAgLSBiYXJ1Y2hAdGtvcy5jby5pbCAtIHRlbDogKzk3Mi4yLjY3OS41MzY0
+LCBodHRwOi8vd3d3LnRrb3MuY28uaWwgLQo+Pj4KPj4gUGF0Y2ggd29ya3MgbGlrZSBjaGFybS4g
+T3V0cHV0IGZyb20gbXkga2VybmVsIHN0YXJ0dXA6Cj4+Cj4+IDw1PkxpbnV4IHZlcnNpb24gMi42
+LjMyLXJjOCAob3Blbi1uYW5kcmFAbGludXgpIChnY2MgdmVyc2lvbiA0LjMuNQo+PiAoQnVpbGRy
+b290IDIwMTAuMDgtcmMxKSApICMxNCBGcmkgT2N0IDI5IDEwOjQwOjIwIENFU1QgMjAxMAo+PiBD
+UFU6IEFSTTkyMFQgWzQxMTI5MjAwXSByZXZpc2lvbiAwIChBUk12NFQpLCBjcj1jMDAwNzE3Nwo+
+PiBDUFU6IFZJVlQgZGF0YSBjYWNoZSwgVklWVCBpbnN0cnVjdGlvbiBjYWNoZQo+PiBNYWNoaW5l
+OiBNSU5JMjQ0MAo+PiBNZW1vcnkgcG9saWN5OiBFQ0MgZGlzYWJsZWQsIERhdGEgY2FjaGUgd3Jp
+dGViYWNrCj4+IDw3Pk9uIG5vZGUgMCB0b3RhbHBhZ2VzOiAwCj4+IDwxPmJvb3RtZW0gYWxsb2Mg
+b2YgMzI3NjggYnl0ZXMgZmFpbGVkIQo+PiA8MD5LZXJuZWwgcGFuaWMgLSBub3Qgc3luY2luZzog
+T3V0IG9mIG1lbW9yeQo+Cj4gZG8geW91IGhhdmUgYSAiTUVNPTMyIiBvbiB5b3VyIGNvbW1hbmQg
+bGluZT8KV2VsbCBJIGFkZCBpdCBidXQgc2FtZSByZXN1bHQ6CmJvb3R6IHpJbWFnZQpsb2FkZWQg
+ekltYWdlIGZyb20gekltYWdlIHdpdGggc2l6ZSAyMDU5MDY0CmNvbW1hbmRsaW5lOiBjb25zb2xl
+PXR0eVNBQzAsMTE1MjAwIG1lbT0zMgphcmNoX251bWJlcjogMTk5OQpVbmNvbXByZXNzaW5nIExp
+bnV4Li4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4u
+Li4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4u
+Li4uLi4uLi4uLi4uLi4uLi4uLgpkb25lLCBib290aW5nIHRoZSBrZXJuZWwuCjw1PkxpbnV4IHZl
+cnNpb24gMi42LjMyLXJjOCAob3Blbi1uYW5kcmFAbGludXgpIChnY2MgdmVyc2lvbiA0LjMuNQoo
+QnVpbGRyb290IDIwMTAuMDgtcmMxKSApICMxNCBGcmkgT2N0IDI5IDEwOjQwOjIwIENFU1QgMjAx
+MApDUFU6IEFSTTkyMFQgWzQxMTI5MjAwXSByZXZpc2lvbiAwIChBUk12NFQpLCBjcj1jMDAwNzE3
+NwpDUFU6IFZJVlQgZGF0YSBjYWNoZSwgVklWVCBpbnN0cnVjdGlvbiBjYWNoZQpNYWNoaW5lOiBN
+SU5JMjQ0MApNZW1vcnkgcG9saWN5OiBFQ0MgZGlzYWJsZWQsIERhdGEgY2FjaGUgd3JpdGViYWNr
+Cjw3Pk9uIG5vZGUgMCB0b3RhbHBhZ2VzOiAwCjwxPmJvb3RtZW0gYWxsb2Mgb2YgMzI3NjggYnl0
+ZXMgZmFpbGVkIQo8MD5LZXJuZWwgcGFuaWMgLSBub3Qgc3luY2luZzogT3V0IG9mIG1lbW9yeQo+
+Cj4gTWFyYwo+Cj4gLS0KPiBQZW5ndXRyb25peCBlLksuIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
+IMKgfCBNYXJjIEtsZWluZS1CdWRkZSDCoCDCoCDCoCDCoCDCoCB8Cj4gSW5kdXN0cmlhbCBMaW51
+eCBTb2x1dGlvbnMgwqAgwqAgwqAgwqB8IFBob25lOiArNDktMjMxLTI4MjYtOTI0IMKgIMKgIHwK
+PiBWZXJ0cmV0dW5nIFdlc3QvRG9ydG11bmQgwqAgwqAgwqAgwqAgwqB8IEZheDogwqAgKzQ5LTUx
+MjEtMjA2OTE3LTU1NTUgfAo+IEFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2IMKgfCBo
+dHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlIMKgIHwKPgo+Cgp0aGFua3MsCgptYXJlawoKLS0gCmFz
+IHNpbXBsZSBhbmQgcHJpbWl0aXZlIGFzIHBvc3NpYmxlCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTWFyZWsgQmVsaXNrbyAtIE9QRU4tTkFORFJBCkZy
+ZWVsYW5jZSBEZXZlbG9wZXIKClJ1c2thIE5vdmEgVmVzIDIxOSB8IFByZXNvdiwgMDgwMDUgU2xv
+dmFrIFJlcHVibGljClRlbDogKzQyMSA5MTUgMDUyIDE4NApza3lwZTogbWFyZWt3aGl0ZQppY3E6
+IDI5MDU1MTA4Ngp3ZWI6IGh0dHA6Ly9vcGVuLW5hbmRyYS5jb20KCl9fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVi
+b3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFu
+L2xpc3RpbmZvL2JhcmVib3gK
