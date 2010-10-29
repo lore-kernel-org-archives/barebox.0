@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-gy0-f177.google.com ([209.85.160.177])
-	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1PBkCe-0000HY-Hj
-	for barebox@lists.infradead.org; Fri, 29 Oct 2010 08:20:50 +0000
-Received: by gyb11 with SMTP id 11so1934560gyb.36
-	for <barebox@lists.infradead.org>; Fri, 29 Oct 2010 01:20:47 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <201010291904.16717.marc@cpdesign.com.au>
+Received: from tango.tkos.co.il ([62.219.50.35])
+	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1PBkQo-0000mi-Dt
+	for barebox@lists.infradead.org; Fri, 29 Oct 2010 08:35:27 +0000
+Date: Fri, 29 Oct 2010 10:34:51 +0200
+From: Baruch Siach <baruch@tkos.co.il>
+Message-ID: <20101029083451.GB21232@tarshish>
 References: <AANLkTimj3WiRQaeP+tQ7-AHy3WcVG0MKpwt5uNfo_cWf@mail.gmail.com>
 	<AANLkTim9C1gxiGNj3gyso0aqcM_r1qxf0M3dDCWDmMMO@mail.gmail.com>
 	<AANLkTikBmg33g-Uh=_fEtvkN6n6GZAi71Lc5tFm51yjJ@mail.gmail.com>
 	<201010291904.16717.marc@cpdesign.com.au>
-Date: Fri, 29 Oct 2010 10:20:46 +0200
-Message-ID: <AANLkTikYV-vFVU-QF09yC-wzF5nSDmcy1rG0xz2WJLpj@mail.gmail.com>
-From: Belisko Marek <marek.belisko@gmail.com>
+	<AANLkTikYV-vFVU-QF09yC-wzF5nSDmcy1rG0xz2WJLpj@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <AANLkTikYV-vFVU-QF09yC-wzF5nSDmcy1rG0xz2WJLpj@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,60 +22,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: command bootu to start kernel
-To: Marc Reilly <marc@cpdesign.com.au>
+To: Belisko Marek <marek.belisko@gmail.com>
 Cc: barebox@lists.infradead.org
 
-T24gRnJpLCBPY3QgMjksIDIwMTAgYXQgMTA6MDQgQU0sIE1hcmMgUmVpbGx5IDxtYXJjQGNwZGVz
-aWduLmNvbS5hdT4gd3JvdGU6Cj4gSGksCj4KPiBJIGhhdmUgbm8gZXhwZXJpZW5jZSB3aXRoIHRo
-ZSBtaW5pMjQ0MCwgYnV0Ogo+Cj4gT24gRnJpZGF5LCBPY3RvYmVyIDI5LCAyMDEwIDA2OjQ5OjUy
-IHBtIEJlbGlza28gTWFyZWsgd3JvdGU6Cj4+IE9uIEZyaSwgT2N0IDI5LCAyMDEwIGF0IDg6MDgg
-QU0sIEJlbGlza28gTWFyZWsgPG1hcmVrLmJlbGlza29AZ21haWwuY29tPgo+PiA+PiBtZUBob3N0
-JCBmaWxlIGFyY2gvYXJtL2Jvb3QvdUltYWdlCj4+ID4+IGFyY2gvYXJtL2Jvb3QvdUltYWdlOiB1
-LWJvb3QgbGVnYWN5IHVJbWFnZSwKPj4gPj4gTGludXgtMi42LjMxLTAwNzcwLWc1NGMzZmU2LWRp
-ciwgTGludXgvQVJNLCBPUyBLZXJuZWwgSW1hZ2UgKE5vdAo+PiA+PiBjb21wcmVzc2VkKSwgMjM1
-MDAxNiBieXRlcywgTW9uIE9jdCAyNSAxNjo1ODozMCAyMDEwLCBMb2FkIEFkZHJlc3M6Cj4+ID4+
-IDB4NDAwMDgwMDAsIEVudHJ5IFBvaW50OiAweDQwMDA4MDAwLCBIZWFkZXIgQ1JDOiAweDE3QTcz
-MzBCLCBEYXRhIENSQzoKPj4gPj4gMHg4ODhEQUE2Mwo+PiA+Pgo+PiA+PiBBbnl0aGluZyB3cm9u
-ZyB3aXRoIHRoZSB1SW1hZ2UgKGJ1aWx0IHdpdGggIm1ha2UgdUltYWdlIikgb3IgdGhlCj4+ID4+
-IGNvbW1hbmQgJ2Jvb3RtJz8KPgo+IFRoZSBsb2FkIGFuZCBlbnRyeSBwb2ludCBhcmUgMHg0MDAu
-Li4gwqBoZXJlClRoaXMgcG9zdCB3YXMgZnJvbSBKdWVyZ2VuIHdoZXJlIGJvb3RtIGRvZXNuJ3Qg
-d29yay4gWW91J3JlIG1heWJlCnJpZ2h0IHdyb25nIGxvYWQgYWRkcmVzcwppcyB0aGVyZS4gRm9y
-IHMzYyBzaG91ZGwgYmUgMHgzMDAwODAwMCBsaWtlIGZvciB3b3JraW5nIGV4YW1wbGUgYmVsb3cu
-Cj4KPj4gPgo+PiA+IEluc3RlYWQgYm9vdG0gZm9yIG15IHVJbWFnZSB3b3JrczoKPj4gPiBib290
-bSB1SW1hZ2UKPj4gPiDCoCBWZXJpZnlpbmcgQ2hlY2tzdW0gLi4uIE9LCj4+ID4gwqAgSW1hZ2Ug
-TmFtZTogwqAgTGludXgtMi42LjMyLXJjOAo+PiA+IMKgIENyZWF0ZWQ6IMKgIMKgIMKgMjAxMC0w
-OS0yNyDCoCA4OjM2OjAxIFVUQwo+PiA+IMKgIEltYWdlIFR5cGU6IMKgIEFSTSBMaW51eCBLZXJu
-ZWwgSW1hZ2UgKHVuY29tcHJlc3NlZCkKPj4gPiDCoCBEYXRhIFNpemU6IMKgIMKgMjA1ODQwNCBC
-eXRlcyA9IMKgMiBNQgo+PiA+IMKgIExvYWQgQWRkcmVzczogMzAwMDgwMDAKPj4gPiDCoCBFbnRy
-eSBQb2ludDogwqAzMDAwODAwMAo+PiA+IE9LCj4KPiBhbmQgMHgzMDAuLiBoZXJlCj4KPgo+IEkn
-dmUgbm8gaWRlYSBob3cgeW91ciBSQU0gaXMgbWFwcGVkLCBidXQgdmVyaWZ5IHRoYXQgaXQgaXMg
-YmVpbmcgbG9hZGVkIHRvIHRoZQo+IGNvcnJlY3QgYWRkcmVzcy4gKGFsc28gY2hlY2sgdGhhdCBp
-dCdzIG5vdCBvdmVybGFwcGluZyB5b3VyIGJhcmVib3gsIG1hbGxvYyBvcgo+IHN0YWNrKQo+Cj4+
-ID4gY29tbWFuZGxpbmU6IGNvbnNvbGU9dHR5U0FDMCwxMTUyMDAKPj4gPiBhcmNoX251bWJlcjog
-MTk5OQo+PiA+Cj4+ID4gU3RhcnRpbmcga2VybmVsIC4uLgo+Pgo+PiBEZXNwaXRlIG9mIGxvYWRp
-bmcga2VybmVsIGlzIHdvcmtpbmcga2VybmVsIGlzbid0IHN0YXJ0ZWQgZm9yCj4+IG1pbmkyNDQw
-KGZyb20gdS1ib290IHdvcmtzIGZpbmUpLiBJdCBoYW5nIGF0Ogo+PiBVbmNvbXByZXNzaW5nCj4+
-IExpbnV4Li4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4u
-Li4uLi4uLi4uLi4uLi4uLi4uCj4+IC4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4u
-Li4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4gZG9uZSwgYm9vdGluZwo+PiB0aGUga2VybmVsLgo+
-Cj4gQWxzbyBlbmFibGUgbG93IGxldmVsIGRlYnVnZ2luZyBhbmQgdGhlIGVhcmx5cHJpbnRrIGlu
-IHlvdXIga2VybmVsIC0gbWF5YmUgdGhlCj4ga2VybmVsIGlzIHJ1bm5pbmcgYnV0IGNyYXNoZXMg
-YmVmb3JlIGl0IGdldHMgdGkgaW5pdGlhbGl6aW5nIHRoZSBjb25zb2xlLgpJIGhhdmUgMi42LjMy
-IGtlcm5lbCBidXQgZWFybHlfcHJpbnRrIGlzbid0IGF2YWlsYWJsZSBhbmQgSSBlbmFibGUKbG93
-bGV2ZWwgZGVidWdnaW5nIGJ1dApkb24ndCBnZXQgbm90aGluZyBlbHNlIG9uIGNvbnNvbGUuIEFu
-eXdheSB0aGFua3MuCj4KPgo+IENoZWVycwo+IE1hcmMKPgo+Cj4gX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KPiBiYXJlYm94IG1haWxpbmcgbGlzdAo+IGJh
-cmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwo+IGh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21h
-aWxtYW4vbGlzdGluZm8vYmFyZWJveAo+CgptYXJlawoKLS0gCmFzIHNpbXBsZSBhbmQgcHJpbWl0
-aXZlIGFzIHBvc3NpYmxlCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0KTWFyZWsgQmVsaXNrbyAtIE9QRU4tTkFORFJBCkZyZWVsYW5jZSBEZXZlbG9wZXIK
-ClJ1c2thIE5vdmEgVmVzIDIxOSB8IFByZXNvdiwgMDgwMDUgU2xvdmFrIFJlcHVibGljClRlbDog
-KzQyMSA5MTUgMDUyIDE4NApza3lwZTogbWFyZWt3aGl0ZQppY3E6IDI5MDU1MTA4Ngp3ZWI6IGh0
-dHA6Ly9vcGVuLW5hbmRyYS5jb20KCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFk
-Lm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Hi Belisko,
+
+On Fri, Oct 29, 2010 at 10:20:46AM +0200, Belisko Marek wrote:
+> I have 2.6.32 kernel but early_printk isn't available and I enable
+> lowlevel debugging but
+> don't get nothing else on console. Anyway thanks.
+
+Try this patch to see the low level console output:
+
+commit 5c31454464ed655401c31c68c895b16eafd2bde5
+Author: Baruch Siach <baruch@tkos.co.il>
+Date:   Mon Jan 19 10:41:47 2009 +0200
+
+    arm, printk: the famous printascii() hack
+
+diff --git a/kernel/printk.c b/kernel/printk.c
+index 5052b54..d685f8a 100644
+--- a/kernel/printk.c
++++ b/kernel/printk.c
+@@ -685,6 +685,10 @@ asmlinkage int vprintk(const char *fmt, va_list args)
+ 	/* Emit the output into the temporary buffer */
+ 	printed_len += vscnprintf(printk_buf + printed_len,
+ 				  sizeof(printk_buf) - printed_len, fmt, args);
++	{
++		extern void printascii(const char *);
++		printascii(printk_buf);
++	}
+ 
+ 
+ 	/*
+
+-- 
+                                                     ~. .~   Tk Open Systems
+=}------------------------------------------------ooO--U--Ooo------------{=
+   - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
