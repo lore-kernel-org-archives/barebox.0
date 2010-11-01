@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PCpq5-0007oI-V8
-	for barebox@lists.infradead.org; Mon, 01 Nov 2010 08:34:10 +0000
+	id 1PCpq5-0007oF-Td
+	for barebox@lists.infradead.org; Mon, 01 Nov 2010 08:34:11 +0000
 From: Robert Schwebel <r.schwebel@pengutronix.de>
-Date: Mon,  1 Nov 2010 09:33:48 +0100
-Message-Id: <1288600434-6112-16-git-send-email-r.schwebel@pengutronix.de>
+Date: Mon,  1 Nov 2010 09:33:45 +0100
+Message-Id: <1288600434-6112-13-git-send-email-r.schwebel@pengutronix.de>
 In-Reply-To: <1288600434-6112-1-git-send-email-r.schwebel@pengutronix.de>
 References: <1288600434-6112-1-git-send-email-r.schwebel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,71 +21,85 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 15/21] doc: unify documentation for 'delpart'
+Subject: [PATCH 12/21] doc: add documentation for 'bootm'
 To: barebox@lists.infradead.org
 
 Signed-off-by: Robert Schwebel <r.schwebel@pengutronix.de>
 ---
- commands/partition.c |   35 +++++++++++++++++++++--------------
- 1 files changed, 21 insertions(+), 14 deletions(-)
+ Documentation/commands.dox |    1 +
+ commands/bootm.c           |   38 ++++++++++++++++++++------------------
+ 2 files changed, 21 insertions(+), 18 deletions(-)
 
-diff --git a/commands/partition.c b/commands/partition.c
-index dd37bc2..db9b9fb 100644
---- a/commands/partition.c
-+++ b/commands/partition.c
-@@ -158,11 +158,12 @@ BAREBOX_CMD_HELP_END
+diff --git a/Documentation/commands.dox b/Documentation/commands.dox
+index 38968b5..2679ed7 100644
+--- a/Documentation/commands.dox
++++ b/Documentation/commands.dox
+@@ -3,6 +3,7 @@
  
- /**
-  * @page addpart_command
--Size and offset can be given in decimal hex (prefixed with 0x).  Both
--can have an optional suffix K, M or G. The size of the last partition
--can be specified as '-' for the remaining space on the device. This
--format is the same as used by the Linux kernel or cmdline mtd
--partitions.
-+
-+The size and the offset can be given in decimal (without any prefix) and
-+in hex (prefixed with 0x). Both can have an optional suffix K, M or G.
-+The size of the last partition can be specified as '-' for the remaining
-+space on the device.  This format is the same as used by the Linux
-+kernel or cmdline mtd partitions.
- 
- \todo This command has to be reworked and will probably change it's API.
- */
-@@ -188,9 +189,21 @@ static int do_delpart(struct command * cmdtp, int argc, char *argv[])
+ @li @subpage addpart_command
+ @li @subpage bmp_command
++@li @subpage bootm_command
+ @li @subpage cat_command
+ @li @subpage cd_command
+ @li @subpage clear_command
+diff --git a/commands/bootm.c b/commands/bootm.c
+index 0d3649f..eab23d9 100644
+--- a/commands/bootm.c
++++ b/commands/bootm.c
+@@ -368,18 +368,18 @@ err_out:
  	return 1;
  }
  
--static const __maybe_unused char cmd_delpart_help[] =
--"Usage: delpart FILE...\n"
--"Delete partitions previously added to a device with addpart.\n";
-+BAREBOX_CMD_HELP_START(delpart)
-+BAREBOX_CMD_HELP_USAGE("delpart <part 1> [<part n>] \n")
-+BAREBOX_CMD_HELP_SHORT("Delete partitions previously added to a device with addpart.\n")
+-static const __maybe_unused char cmd_bootm_help[] =
+-"Usage: bootm [OPTION] image\n"
+-"Boot application image\n"
+-" -n             do not verify the images (speeds up boot process)\n"
+-" -h             show advanced options\n";
++BAREBOX_CMD_HELP_START(bootm)
++BAREBOX_CMD_HELP_USAGE("bootm [-n] image\n")
++BAREBOX_CMD_HELP_SHORT("Boot an application image.\n")
++BAREBOX_CMD_HELP_OPT  ("-n",  "Do not verify the image (speeds up boot process)")
 +BAREBOX_CMD_HELP_END
-+
+ 
 +/**
-+ * @page delpart_command
-+
-+Partitions are created by adding their description with the addpart
-+command. If you want to get rid of a partition again, use delpart. The
-+argument list is taken as a list of partitions to be deleted.
-+
-+\todo Add an example
++ * @page bootm_command
+ 
+-BAREBOX_CMD_START(bootm)
+-	.cmd		= do_bootm,
+-	.usage		= "boot application image",
+-	BAREBOX_CMD_HELP(cmd_bootm_help)
+-BAREBOX_CMD_END
++\todo What does bootm do, what kind of image does it boot?
 +
 + */
  
- BAREBOX_CMD_START(delpart)
- 	.cmd = do_delpart,
-@@ -198,9 +211,3 @@ BAREBOX_CMD_START(delpart)
- 	BAREBOX_CMD_HELP(cmd_delpart_help)
- BAREBOX_CMD_END
+ #ifdef CONFIG_CMD_IMI
+ static int do_iminfo(struct command *cmdtp, int argc, char *argv[])
+@@ -440,14 +440,16 @@ static int image_info (ulong addr)
+ 	return 0;
+ }
  
--/** @page delpart_command delpart Delete a partition
-- *
-- * Usage is: delpart \<partions>
-- *
-- * Delete a partition previously added to a device with addpart.
-- */
+-BAREBOX_CMD(
+-	iminfo,		1,	do_iminfo,
+-	"iminfo  - print header information for application image\n",
+-	"addr [addr ...]\n"
+-	"    - print header information for application image starting at\n"
+-	"      address 'addr' in memory; this includes verification of the\n"
+-	"      image contents (magic number, header and payload checksums)\n"
+-);
++BAREBOX_CMD_HELP_START(iminfo)
++BAREBOX_CMD_HELP_USAGE("iminfo")
++BAREBOX_CMD_HELP_SHORT("Print header information for an application image.")
++BAREBOX_CMD_HELP_END
++
++BAREBOX_CMD_START(iminfo)
++	.cmd		= do_iminfo,
++	.usage		= "print header information for an application image",
++	BAREBOX_CMD_HELP(cmd_iminfo_help)
++BAREBOX_CMD_END
+ 
+ #endif	/* CONFIG_CMD_IMI */
+ 
 -- 
 1.7.2.3
 
