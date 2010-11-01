@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PCpq5-0007oK-V1
-	for barebox@lists.infradead.org; Mon, 01 Nov 2010 08:34:10 +0000
+	id 1PCpq5-0007oD-T3
+	for barebox@lists.infradead.org; Mon, 01 Nov 2010 08:34:08 +0000
 From: Robert Schwebel <r.schwebel@pengutronix.de>
-Date: Mon,  1 Nov 2010 09:33:47 +0100
-Message-Id: <1288600434-6112-15-git-send-email-r.schwebel@pengutronix.de>
+Date: Mon,  1 Nov 2010 09:33:43 +0100
+Message-Id: <1288600434-6112-11-git-send-email-r.schwebel@pengutronix.de>
 In-Reply-To: <1288600434-6112-1-git-send-email-r.schwebel@pengutronix.de>
 References: <1288600434-6112-1-git-send-email-r.schwebel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,66 +21,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 14/21] doc: unify documentation for 'cp'
+Subject: [PATCH 10/21] doc: add documentation for 'echo'
 To: barebox@lists.infradead.org
 
 Signed-off-by: Robert Schwebel <r.schwebel@pengutronix.de>
 ---
- commands/cp.c |   30 ++++++++++++++----------------
- 1 files changed, 14 insertions(+), 16 deletions(-)
+ Documentation/commands.dox |    1 +
+ commands/echo.c            |   17 +++++++++++++++++
+ 2 files changed, 18 insertions(+), 0 deletions(-)
 
-diff --git a/commands/cp.c b/commands/cp.c
-index 2c35ba1..ae8719b 100644
---- a/commands/cp.c
-+++ b/commands/cp.c
-@@ -51,7 +51,7 @@ static int do_cp(struct command *cmdtp, int argc, char *argv[])
- 		if (S_ISDIR(statbuf.st_mode))
- 			last_is_dir = 1;
- 	}
--	
-+
- 	if (argc > 3 && !last_is_dir) {
- 		printf("cp: target `%s' is not a directory\n", argv[argc - 1]);
- 		return 1;
-@@ -77,10 +77,19 @@ out:
- 	return ret;
+diff --git a/Documentation/commands.dox b/Documentation/commands.dox
+index 4bcf548..38968b5 100644
+--- a/Documentation/commands.dox
++++ b/Documentation/commands.dox
+@@ -11,6 +11,7 @@
+ @li @subpage delpart_command
+ @li @subpage devinfo_command
+ @li @subpage dfu_command
++@li @subpage echo_command
+ @li @subpage edit_command
+ @li @subpage erase_command
+ @li @subpage export_command
+diff --git a/commands/echo.c b/commands/echo.c
+index dfa14d6..3e098df 100644
+--- a/commands/echo.c
++++ b/commands/echo.c
+@@ -111,8 +111,25 @@ no_optarg_out:
+ 	return 1;
  }
  
--static const __maybe_unused char cmd_cp_help[] =
--"Usage: cp <source> <destination>\n"
--"cp copies file <source> to <destination>.\n"
--"This command is file based only. See memcpy for memory copy\n";
-+BAREBOX_CMD_HELP_START(cp)
-+BAREBOX_CMD_HELP_USAGE("cp <source> <destination>\n")
-+BAREBOX_CMD_HELP_SHORT("copy file from <source> to <destination>.\n")
++BAREBOX_CMD_HELP_START(echo)
++BAREBOX_CMD_HELP_USAGE("echo [OPTIONS] [STRING]\n")
++BAREBOX_CMD_HELP_SHORT("Display a line of text.\n")
++BAREBOX_CMD_HELP_OPT  ("-n",  "do not output the trailing newline\n")
++BAREBOX_CMD_HELP_OPT  ("-a",  "FIXME\n")
++BAREBOX_CMD_HELP_OPT  ("-o",  "FIXME\n")
++BAREBOX_CMD_HELP_OPT  ("-e",  "FIXME\n")
 +BAREBOX_CMD_HELP_END
 +
 +/**
-+ * @page cp_command
-+This command operates on files.
++ * @page echo_command
 +
-+If you want to copy between memory blocks, use 'memcpy'.
++\todo Add documentation for -a, -o and -e.
 +
-+\todo What does this mean? Add examples.
 + */
- 
- BAREBOX_CMD_START(cp)
- 	.cmd		= do_cp,
-@@ -88,14 +97,3 @@ BAREBOX_CMD_START(cp)
- 	BAREBOX_CMD_HELP(cmd_cp_help)
++
+ BAREBOX_CMD_START(echo)
+ 	.cmd		= do_echo,
+ 	.usage		= "echo args to console",
++	BAREBOX_CMD_HELP(cmd_echo_help)
  BAREBOX_CMD_END
  
--/**
-- * @page cp_command cp: Copy file
-- *
-- * Usage: cp \<source> [\<source>] \<destination>
-- *
-- * \c cp copies file \<source> to \<destination>
-- *
-- * Currently only this form is supported and you have to specify the exact
-- * target filename (not a target directory).\n
-- * This command is file based only. See memcpy for generic memory copy
-- */
 -- 
 1.7.2.3
 
