@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PCpq5-0007oE-Sf
+	id 1PCpq5-0007oB-Sm
 	for barebox@lists.infradead.org; Mon, 01 Nov 2010 08:34:07 +0000
 From: Robert Schwebel <r.schwebel@pengutronix.de>
-Date: Mon,  1 Nov 2010 09:33:44 +0100
-Message-Id: <1288600434-6112-12-git-send-email-r.schwebel@pengutronix.de>
+Date: Mon,  1 Nov 2010 09:33:40 +0100
+Message-Id: <1288600434-6112-8-git-send-email-r.schwebel@pengutronix.de>
 In-Reply-To: <1288600434-6112-1-git-send-email-r.schwebel@pengutronix.de>
 References: <1288600434-6112-1-git-send-email-r.schwebel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,68 +21,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/21] doc: unify documentation for 'edit'
+Subject: [PATCH 07/21] doc: unify documentation for 'ls'
 To: barebox@lists.infradead.org
 
 Signed-off-by: Robert Schwebel <r.schwebel@pengutronix.de>
 ---
- commands/edit.c |   38 ++++++++++++++------------------------
- 1 files changed, 14 insertions(+), 24 deletions(-)
+ Documentation/commands.dox |    1 +
+ commands/ls.c              |    9 +++++----
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/commands/edit.c b/commands/edit.c
-index c2ab877..ca40d59 100644
---- a/commands/edit.c
-+++ b/commands/edit.c
-@@ -550,35 +550,25 @@ out:
+diff --git a/Documentation/commands.dox b/Documentation/commands.dox
+index 17e034a..4bcf548 100644
+--- a/Documentation/commands.dox
++++ b/Documentation/commands.dox
+@@ -17,6 +17,7 @@
+ @li @subpage gpio_for_users
+ @li @subpage tftp_command
+ @li @subpage loadenv_command
++@li @subpage ls_command
+ @li @subpage mount_command
+ @li @subpage printenv_command
+ @li @subpage protect_command
+diff --git a/commands/ls.c b/commands/ls.c
+index a02ccfe..2005178 100644
+--- a/commands/ls.c
++++ b/commands/ls.c
+@@ -194,10 +194,11 @@ static int do_ls(struct command *cmdtp, int argc, char *argv[])
+ 	return 0;
+ }
  
- static const char *edit_aliases[] = { "sedit", NULL};
- 
--static const __maybe_unused char cmd_edit_help[] =
--"Usage: (s)edit <file>\n"
--"This is a very small editor. Its only features are moving the cursor with\n"
--"the usual keys and typing characters.\n"
--"<ctrl-c> quits the editor without saving,\n"
--"<ctrl-d> quits the editor with saving the current file.\n"
--"\n"
--"If called as sedit the editor uses ansi codes to scroll the screen.\n";
-+BAREBOX_CMD_HELP_START(edit)
-+BAREBOX_CMD_HELP_USAGE("(s)edit <file>\n")
-+BAREBOX_CMD_HELP_SHORT("A small editor. <ctrl-c> is exit, <ctrl-d> exit-with-save.\n")
+-static const __maybe_unused char cmd_ls_help[] =
+-"Usage: ls [OPTION]... [FILE]...\n"
+-"List information about the FILEs (the current directory by default).\n"
+-"  -R  list subdirectories recursively\n";
++BAREBOX_CMD_HELP_START(ls)
++BAREBOX_CMD_HELP_USAGE("ls [OPTION]... [FILE]...\n")
++BAREBOX_CMD_HELP_SHORT("List information about the FILEs (the current directory by default).\n")
++BAREBOX_CMD_HELP_OPT  ("-R",  "list subdirectories recursively\n")
 +BAREBOX_CMD_HELP_END
  
--static const __maybe_unused char cmd_edit_usage[] = "edit a file";
-+/**
-+ * @page edit_command
-+
-+<p> Barebox contains a small text editor which can be used to edit
-+config files in /env. You can move the cursor around with the arrow keys
-+and type characters. </p>
-+
-+If called as sedit, the editor uses ansi codes to scroll the screen.
-+ */
- 
- BAREBOX_CMD_START(edit)
- 	.cmd		= do_edit,
- 	.aliases	= edit_aliases,
--	.usage		= cmd_edit_usage,
-+	.usage		= "Usage: (s)edit <file>",
- 	BAREBOX_CMD_HELP(cmd_edit_help)
- BAREBOX_CMD_END
- 
--
--/**
-- * @page edit_command edit (editor)
-- *
-- * Usage is: [s]edit \<file\>
-- *
-- * This is a very small editor. It's only features are moving the cursor with
-- * the usual keys and typing characters.
-- *
-- * \b \<ctrl-c\> quits the editor without saving,\n
-- * \b \<ctrl-d\> quits the editor with saving the current file.
-- *
-- * If called as \c sedit the editor uses ansi codes to scroll the screen.
-- */
+ BAREBOX_CMD_START(ls)
+ 	.cmd		= do_ls,
 -- 
 1.7.2.3
 
