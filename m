@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from tango.tkos.co.il ([62.219.50.35])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PCpq6-0007oM-2E
-	for barebox@lists.infradead.org; Mon, 01 Nov 2010 08:34:10 +0000
-From: Robert Schwebel <r.schwebel@pengutronix.de>
-Date: Mon,  1 Nov 2010 09:33:51 +0100
-Message-Id: <1288600434-6112-19-git-send-email-r.schwebel@pengutronix.de>
-In-Reply-To: <1288600434-6112-1-git-send-email-r.schwebel@pengutronix.de>
+	id 1PCq7N-0000G4-8z
+	for barebox@lists.infradead.org; Mon, 01 Nov 2010 08:51:54 +0000
+Date: Mon, 1 Nov 2010 10:51:02 +0200
+From: Baruch Siach <baruch@tkos.co.il>
+Message-ID: <20101101085102.GB19394@jasper.tkos.co.il>
 References: <1288600434-6112-1-git-send-email-r.schwebel@pengutronix.de>
+	<1288600434-6112-7-git-send-email-r.schwebel@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1288600434-6112-7-git-send-email-r.schwebel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,70 +19,68 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 18/21] doc: unify documentation for 'erase'
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 06/21] doc: add documentation for 'dfu'
+To: Robert Schwebel <r.schwebel@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Robert Schwebel <r.schwebel@pengutronix.de>
----
- commands/flash.c |   30 ++++++++++++++++--------------
- 1 files changed, 16 insertions(+), 14 deletions(-)
+Hi Robert,
 
-diff --git a/commands/flash.c b/commands/flash.c
-index 20f5cfc..c855c88 100644
---- a/commands/flash.c
-+++ b/commands/flash.c
-@@ -83,10 +83,10 @@ out:
- 	return ret;
- }
- 
--static const __maybe_unused char cmd_erase_help[] =
--"Usage: erase <device> [area]\n"
--"Erase a flash device or parts of a device if an area specification\n"
--"is given\n";
-+BAREBOX_CMD_HELP_START(erase)
-+BAREBOX_CMD_HELP_USAGE("erase <device> [area]")
-+BAREBOX_CMD_HELP_SHORT("Erase a flash device or parts of a device if an area specification is given.")
-+BAREBOX_CMD_HELP_END
- 
- BAREBOX_CMD_START(erase)
- 	.cmd		= do_flerase,
-@@ -94,16 +94,18 @@ BAREBOX_CMD_START(erase)
- 	BAREBOX_CMD_HELP(cmd_erase_help)
- BAREBOX_CMD_END
- 
--/** @page erase_command erase Erase flash memory
-- *
-- * Usage is: erase \<devicee>
-- *
-- * Erase the flash memory behind the device. It depends on the device given,
-- * what area will be erased. If the device represents the whole flash memory
-- * the whole memory will be erased. If the device represents a partition on
-- * a main flash memory, only this partition part will be erased.
-- *
-- * Refer \b addpart, \b delpart and \b devinfo for partition handling.
-+/**
-+ * @page erase_command
-+
-+<p> Erase the flash memory handled by this device. Which area will be
-+erased depends on the device: If the device represents the whole flash
-+memory, the whole memory will be erased. If the device represents a
-+partition on a main flash memory, only this partition part will be
-+erased. </p>
-+
-+Refer to \ref addpart_command, \ref delpart_command and \ref
-+devinfo_command for partition handling.
-+
-  */
- 
- static int do_protect(struct command *cmdtp, int argc, char *argv[])
+On Mon, Nov 01, 2010 at 09:33:39AM +0100, Robert Schwebel wrote:
+> Signed-off-by: Robert Schwebel <r.schwebel@pengutronix.de>
+> ---
+>  Documentation/commands.dox |    1 +
+>  commands/dfu.c             |   28 ++++++++++++++++++----------
+>  2 files changed, 19 insertions(+), 10 deletions(-)
+> 
+
+[snip]
+
+> -static const __maybe_unused char cmd_dfu_help[] =
+> -"Usage: dfu [OPTION]... description\n"
+> -"start dfu firmware update\n"
+> -" -m <str> Manufacturer string (barebox)\n"
+> -" -p <str> product string (" CONFIG_BOARDINFO ")\n"
+> -" -V <id>  vendor id\n"
+> -" -P <id>  product id\n"
+> -"description has the form\n"
+> -"device1(name1)[sr],device2(name2)[sr]\n"
+> -"where s is for save mode and r for read back of firmware\n";
+> +BAREBOX_CMD_HELP_START(dfu)
+> +BAREBOX_CMD_HELP_USAGE("dfu [OPTIONS] <description>\n")
+> +BAREBOX_CMD_HELP_SHORT("Start firmware update with the Device Firmware Update (DFU) protocol.")
+> +BAREBOX_CMD_HELP_OPT  ("-m <str>",  "Manufacturer string (barebox)\n")
+> +BAREBOX_CMD_HELP_OPT  ("-p <str>",  "product string (" CONFIG_BOARDINFO ")\n")
+> +BAREBOX_CMD_HELP_OPT  ("-V <id>",   "vendor id\n")
+> +BAREBOX_CMD_HELP_OPT  ("-P <id>",   "product id\n")
+> +BAREBOX_CMD_HELP_END
+> +
+> +/**
+> + * @page dfu_command
+> +\<description> has the following form:
+> +device1(name1)[sr],device2)[sr]
+
+Should probably be:
+device1(name1)[sr],device2(name2)[sr]
+
+baruch
+
+> +'s' means 'safe mode' (download the complete image before flashing) and
+> +'r' that readback of the firmware is allowed.
+> +
+> +\todo Add example, how to use dfu from a Linux or Windows host.
+> + */
+>  
+>  BAREBOX_CMD_START(dfu)
+>  	.cmd		= do_dfu,
+
 -- 
-1.7.2.3
-
+                                                     ~. .~   Tk Open Systems
+=}------------------------------------------------ooO--U--Ooo------------{=
+   - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
 
 _______________________________________________
 barebox mailing list
