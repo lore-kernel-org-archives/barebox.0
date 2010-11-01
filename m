@@ -1,16 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PCvZw-0005es-Oi
-	for barebox@lists.infradead.org; Mon, 01 Nov 2010 14:41:47 +0000
-Date: Mon, 1 Nov 2010 15:41:42 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20101101144142.GA6017@pengutronix.de>
-References: <1288092708-5187-1-git-send-email-jbe@pengutronix.de>
-	<1288092708-5187-9-git-send-email-jbe@pengutronix.de>
+Received: from 63.mail-out.ovh.net ([91.121.185.56])
+	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1PD0KU-0004KR-MG
+	for barebox@lists.infradead.org; Mon, 01 Nov 2010 19:46:08 +0000
+From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
+Date: Mon,  1 Nov 2010 20:46:00 +0100
+Message-Id: <1288640760-1698-1-git-send-email-eric@eukrea.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1288092708-5187-9-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,588 +15,64 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 08/12] Add a video driver for S3C2440 bases platforms
-To: Juergen Beisert <jbe@pengutronix.de>
-Cc: barebox@lists.infradead.org, Juergen Beisert <juergen@kreuzholzen.de>
+Subject: [PATCH] armlinux: pass INIRTD tag to the kernel
+To: s.hauer@pengutronix.de
+Cc: barebox@lists.infradead.org
 
-On Tue, Oct 26, 2010 at 01:31:44PM +0200, Juergen Beisert wrote:
-> From: Juergen Beisert <juergen@kreuzholzen.de>
-> 
-> Signed-off-by: Juergen Beisert <juergen@kreuzholzen.de>
-> ---
->  arch/arm/mach-s3c24xx/include/mach/fb.h |   40 +++
->  drivers/video/Kconfig                   |    6 +
->  drivers/video/Makefile                  |    1 +
->  drivers/video/s3c.c                     |  452 +++++++++++++++++++++++++++++++
->  4 files changed, 499 insertions(+), 0 deletions(-)
->  create mode 100644 arch/arm/mach-s3c24xx/include/mach/fb.h
->  create mode 100644 drivers/video/s3c.c
-> 
-> diff --git a/arch/arm/mach-s3c24xx/include/mach/fb.h b/arch/arm/mach-s3c24xx/include/mach/fb.h
-> new file mode 100644
-> index 0000000..eec6164
-> --- /dev/null
-> +++ b/arch/arm/mach-s3c24xx/include/mach/fb.h
-> @@ -0,0 +1,40 @@
-> +/*
-> + * Copyright (C) 2010 Juergen Beisert
-> + *
-> + * This program is free software; you can redistribute it and/or
-> + * modify it under the terms of the GNU General Public License as
-> + * published by the Free Software Foundation; either version 2 of
-> + * the License, or (at your option) any later version.
-> + *
-> + * This program is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> + * GNU General Public License for more details.
-> + *
-> + * You should have received a copy of the GNU General Public License
-> + * along with this program; if not, write to the Free Software
-> + * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-> + * MA 02111-1307 USA
-> + *
-> + */
-> +
-> +#ifndef __MACH_FB_H_
-> +# define __MACH_FB_H_
-> +
-> +#include <fb.h>
-> +
-> +struct s3c_fb_platform_data {
-> +
-> +	const struct fb_videomode *mode_list;
-> +	unsigned mode_cnt;
-> +
-> +	int passive_display;	/**< enable support for STN or CSTN displays */
-> +
-> +	void *framebuffer;	/**< force framebuffer base address */
-> +	unsigned size;		/**< force framebuffer size */
-> +
-> +	/** hook to enable backlight and stuff */
-> +	void (*enable)(int);
-> +};
-> +
-> +#endif /* __MACH_FB_H_ */
-> diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
-> index d7f3d01..5a5edd2 100644
-> --- a/drivers/video/Kconfig
-> +++ b/drivers/video/Kconfig
-> @@ -39,4 +39,10 @@ config DRIVER_VIDEO_IMX_IPU
->  	  Add support for the IPU framebuffer device found on
->  	  i.MX31 and i.MX35 CPUs.
->  
-> +config S3C_VIDEO
-> +	bool "S3C244x framebuffer driver"
-> +	depends on ARCH_S3C24xx
-> +	help
-> +	  Add support for the S3C244x LCD controller.
-> +
->  endif
-> diff --git a/drivers/video/Makefile b/drivers/video/Makefile
-> index 179f0c4..4287fc8 100644
-> --- a/drivers/video/Makefile
-> +++ b/drivers/video/Makefile
-> @@ -2,3 +2,4 @@ obj-$(CONFIG_VIDEO) += fb.o
->  
->  obj-$(CONFIG_DRIVER_VIDEO_IMX) += imx.o
->  obj-$(CONFIG_DRIVER_VIDEO_IMX_IPU) += imx-ipu-fb.o
-> +obj-$(CONFIG_S3C_VIDEO) += s3c.o
-> diff --git a/drivers/video/s3c.c b/drivers/video/s3c.c
-> new file mode 100644
-> index 0000000..8ae5785
-> --- /dev/null
-> +++ b/drivers/video/s3c.c
-> @@ -0,0 +1,452 @@
-> +/*
-> + * Copyright (C) 2010 Juergen Beisert
-> + *
-> + * This driver is based on a patch found in the web:
-> + * (C) Copyright 2006 by OpenMoko, Inc.
-> + * Author: Harald Welte <laforge at openmoko.org>
-> + *
-> + * This program is free software; you can redistribute it and/or
-> + * modify it under the terms of the GNU General Public License as
-> + * published by the Free Software Foundation; either version 2 of
-> + * the License, or (at your option) any later version.
-> + *
-> + * This program is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> + * GNU General Public License for more details.
-> + *
-> + * You should have received a copy of the GNU General Public License
-> + * along with this program; if not, write to the Free Software
-> + * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-> + * MA 02111-1307 USA
-> + *
-> + */
-> +
-> +/* #define DEBUG */
-> +
-> +#include <common.h>
-> +#include <init.h>
-> +#include <fb.h>
-> +#include <driver.h>
-> +#include <malloc.h>
-> +#include <errno.h>
-> +#include <asm/io.h>
-> +#include <mach/gpio.h>
-> +#include <mach/s3c24xx-generic.h>
-> +#include <mach/s3c24x0-clocks.h>
-> +#include <mach/fb.h>
-> +
-> +#define LCDCON1 0x00
-> +# define PNRMODE(x) (((x) & 3) << 5)
-> +# define BPPMODE(x) (((x) & 0xf) << 1)
-> +# define SET_CLKVAL(x) (((x) & 0x3ff) << 8)
-> +# define GET_CLKVAL(x) (((x) >> 8) & 0x3ff)
-> +# define ENVID (1 << 0)
-> +
-> +#define LCDCON2 0x04
-> +# define SET_VBPD(x) (((x) & 0xff) << 24)
-> +# define SET_LINEVAL(x) (((x) & 0x3ff) << 14)
-> +# define SET_VFPD(x) (((x) & 0xff) << 6)
-> +# define SET_VSPW(x) ((x) & 0x3f)
-> +
-> +#define LCDCON3 0x08
-> +# define SET_HBPD(x) (((x) & 0x7f) << 19)
-> +# define SET_HOZVAL(x) (((x) & 0x7ff) << 8)
-> +# define SET_HFPD(x) ((x) & 0xff)
-> +
-> +#define LCDCON4 0x0c
-> +# define SET_HSPW(x) ((x) & 0xff)
-> +
-> +#define LCDCON5 0x10
-> +# define BPP24BL (1 << 12)
-> +# define FRM565 (1 << 11)
-> +# define INV_CLK (1 << 10)
-> +# define INV_HS (1 << 9)
-> +# define INV_VS (1 << 8)
-> +# define INV_DTA (1 << 7)
-> +# define INV_DE (1 << 6)
-> +# define INV_PWREN (1 << 5)
-> +# define INV_LEND (1 << 4)	/* FIXME */
-> +# define ENA_PWREN (1 << 3)
-> +# define ENA_LEND (1 << 2)	/* FIXME */
-> +# define BSWP (1 << 1)
-> +# define HWSWP (1 << 0)
-> +
-> +#define LCDSADDR1 0x14
-> +# define SET_LCDBANK(x) (((x) & 0x1ff) << 21)
-> +# define GET_LCDBANK(x) (((x) >> 21) & 0x1ff)
-> +# define SET_LCDBASEU(x) ((x) & 0x1fffff)
-> +# define GET_LCDBASEU(x) ((x) & 0x1fffff)
-> +
-> +#define LCDSADDR2 0x18
-> +# define SET_LCDBASEL(x) ((x) & 0x1fffff)
-> +# define GET_LCDBASEL(x) ((x) & 0x1fffff)
-> +
-> +#define LCDSADDR3 0x1c
-> +# define SET_OFFSIZE(x) (((x) & 0x7ff) << 11)
-> +# define GET_OFFSIZE(x) (((x) >> 11) & 0x7ff)
-> +# define SET_PAGE_WIDTH(x) ((x) & 0x3ff)
-> +# define GET_PAGE_WIDTH(x) ((x) & 0x3ff)
-> +
-> +#define RED_LUT 0x20
-> +#define GREEN_LUT 0x24
-> +#define BLUE_LUT 0x28
-> +
-> +#define DITHMODE 0x4c
-> +
-> +#define TPAL 0x50
-> +
-> +#define LCDINTPND 0x54
-> +
-> +#define LCDSRCPND 0x58
-> +
-> +#define LCDINTMSK 0x5c
-> +# define FIWSEL (1 << 2)
-> +
-> +#define TCONSEL 0x60
-> +
-> +#define RED 0
-> +#define GREEN 1
-> +#define BLUE 2
-> +#define TRANSP 3
-> +
-> +struct s3cfb_host {
-> +	struct fb_host fb_data;
-> +	struct device_d *hw_dev;
-> +	void __iomem *base;
-> +};
-> +
-> +#define fb_info_to_s3cfb_host(x) ((struct s3cfb_host*)((x)->host))
-
-> +#define s3cfb_host_to_s3c_fb_platform_data(x) ((struct s3c_fb_platform_data*)((x)->hw_dev->platform_data))
-
-Please add a pointer to 3c_fb_platform_data to s3cfb_host and get rid of
-this define.
-
-> +
-> +/* the RGB565 true colour mode */
-> +static const struct fb_bitfield def_rgb565[] = {
-> +	[RED] = {
-> +		.offset = 11,
-> +		.length = 5,
-> +	},
-> +	[GREEN] = {
-> +		.offset = 5,
-> +		.length = 6,
-> +	},
-> +	[BLUE] = {
-> +		.offset = 0,
-> +		.length = 5,
-> +	},
-> +	[TRANSP] = {	/* no support for transparency */
-> +		.length = 0,
-> +	}
-> +};
-> +
-> +/* the RGB888 true colour mode */
-> +static const struct fb_bitfield def_rgb888[] = {
-> +	[RED] = {
-> +		.offset = 16,
-> +		.length = 8,
-> +	},
-> +	[GREEN] = {
-> +		.offset = 8,
-> +		.length = 8,
-> +	},
-> +	[BLUE] = {
-> +		.offset = 0,
-> +		.length = 8,
-> +	},
-> +	[TRANSP] = {	/* no support for transparency */
-> +		.length = 0,
-> +	}
-> +};
-> +
-> +/**
-> + * @param fb_info Framebuffer information
-> + */
-> +static void s3cfb_enable_controller(struct fb_info *fb_info)
-> +{
-> +	struct s3cfb_host *fbh = fb_info_to_s3cfb_host(fb_info);
-> +	struct s3c_fb_platform_data *pdata = s3cfb_host_to_s3c_fb_platform_data(fbh);
-> +	uint32_t con1;
-> +
-> +	pr_debug("%s called\n", __func__);
-> +
-> +	con1 = readl(fbh->base + LCDCON1);
-> +
-> +	con1 |= ENVID;
-> +
-> +	writel(con1, fbh->base + LCDCON1);
-> +
-> +	if (pdata->enable)
-> +		(pdata->enable)(1);
-> +}
-> +
-> +/**
-> + * @param fb_info Framebuffer information
-> + */
-> +static void s3cfb_disable_controller(struct fb_info *fb_info)
-> +{
-> +	struct s3cfb_host *fbh = fb_info_to_s3cfb_host(fb_info);
-> +	struct s3c_fb_platform_data *pdata = s3cfb_host_to_s3c_fb_platform_data(fbh);
-> +	uint32_t con1;
-> +
-> +	pr_debug("%s called\n", __func__);
-> +
-> +	if (pdata->enable)
-> +		(pdata->enable)(0);
-> +
-> +	con1 = readl(fbh->base + LCDCON1);
-> +
-> +	con1 &= ~ENVID;
-> +
-> +	writel(con1, fbh->base + LCDCON1);
-> +}
-> +
-> +/**
-> + * Prepare the video hardware for a specified video mode
-> + * @param fb_info Framebuffer information
-> + * @param mode The video mode description to initialize
-> + * @return 0 on success
-> + */
-> +static int s3cfb_initialize_mode(struct fb_info *fb_info, const struct fb_videomode *mode)
-> +{
-> +	struct s3cfb_host *fbh = fb_info_to_s3cfb_host(fb_info);
-> +	struct s3c_fb_platform_data *pdata = s3cfb_host_to_s3c_fb_platform_data(fbh);
-> +	unsigned size, hclk, div;
-> +	uint32_t con1, con2, con3, con4, con5 = 0;
-> +
-> +	pr_debug("%s called\n", __func__);
-> +
-> +	if (pdata->passive_display != 0) {
-> +		pr_err("Passive displays are currently not supported\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	/*
-> +	 * we need at least this amount of memory for the framebuffer
-> +	 */
-> +	size = mode->xres * mode->yres * (fb_info->bits_per_pixel >> 3);
-> +	if (fb_info->fb_dev->size != 0) {
-> +		if (size > fb_info->fb_dev->size) {
-> +			pr_err("Cannot initialize video mode '%s': Its too large. "
-> +				"Required bytes are %u, available only %u\n",
-> +				mode->name, size, fb_info->fb_dev->size);
-> +			return -EINVAL;
-> +		}
-> +	} else
-> +		fb_info->fb_dev->size = size;
-> +
-> +	/*
-> +	 * if no framebuffer memory was specified yet, allocate one,
-> +	 * and allocate more memory, on user request
-> +	 */
-> +	if (fb_info->fb_dev->map_base == 0U)
-> +		fb_info->fb_dev->map_base = (resource_size_t)xzalloc(fb_info->fb_dev->size);
-
-Honestly I don't understand what the two blocks above do. I hope this
-gets simpler once we remove the base/size arguments from
-register_framebuffer.
-
-> +
-> +	/* its useful to enable the unit's clock */
-> +	s3c244x_mod_clock(CLK_LCDC, 1);
-> +
-> +	/* ensure video output is _off_ */
-> +	writel(0x00000000, fbh->base + LCDCON1);
-> +
-> +	hclk = s3c24xx_get_hclk() / 1000U;	/* hclk in kHz */
-> +	div = hclk / PICOS2KHZ(mode->pixclock);
-> +	if (div < 3)
-> +		div  = 3;
-> +	/* pixel clock is: (hclk) / ((div + 1) * 2) */
-> +	div += 1;
-> +	div >>= 1;
-> +	div -= 1;
-> +
-> +	con1 = PNRMODE(3) | SET_CLKVAL(div);	/* PNRMODE=3 is TFT */
-> +
-> +	switch (fb_info->bits_per_pixel) {
-> +#if 0
-> +	/* TODO add CLUT based modes */
-> +	case 1:
-> +		con1 |= BPPMODE(8);
-> +		break;
-> +	case 2:
-> +		con1 |= BPPMODE(9);
-> +		break;
-> +	case 4:
-> +		con1 |= BPPMODE(10);
-> +		break;
-> +	case 8:
-> +		con1 |= BPPMODE(11);
-> +		break;
-> +#endif
-> +	case 16:
-> +		con1 |= BPPMODE(12);
-> +		con5 |= FRM565;
-> +		fb_info->red = def_rgb565[RED];
-> +		fb_info->green = def_rgb565[GREEN];
-> +		fb_info->blue = def_rgb565[BLUE];
-> +		fb_info->transp =  def_rgb565[TRANSP];
-> +		break;
-> +	case 24:
-> +		con1 |= BPPMODE(13);
-> +		con5 |= BPP24BL;	/* FIXME */
-
-Please either remove the FIXME or explain what we have to fix here.
-
-> +		fb_info->red = def_rgb888[RED];
-> +		fb_info->green = def_rgb888[GREEN];
-> +		fb_info->blue = def_rgb888[BLUE];
-> +		fb_info->transp =  def_rgb888[TRANSP];
-> +		break;
-> +	default:
-> +		pr_err("Invalid bits per pixel value: %u\n", fb_info->bits_per_pixel);
-> +		return -EINVAL;
-> +	}
-> +
-> +	/* 'normal' in register description means positive logic */
-> +	if (!(mode->sync & FB_SYNC_HOR_HIGH_ACT))
-> +		con5 |= INV_HS;
-> +	if (!(mode->sync & FB_SYNC_VERT_HIGH_ACT))
-> +		con5 |= INV_VS;
-> +	if (!(mode->sync & FB_SYNC_DE_HIGH_ACT))
-> +		con5 |= INV_DE;
-> +	if (mode->sync & FB_SYNC_CLK_INVERT)
-> +		con5 |= INV_CLK;	/* display should latch at the rising edge */
-> +	if (mode->sync & FB_SYNC_SWAP_RGB)
-> +		con5 |= HWSWP;
-> +
-> +	/* TODO power enable config via platform data */
-> +
-> +	/* vertical timing */
-> +	con2 = SET_VBPD(mode->upper_margin - 1) |
-> +		SET_LINEVAL(mode->yres - 1) |
-> +		SET_VFPD(mode->lower_margin - 1) |
-> +		SET_VSPW(mode->vsync_len - 1);
-> +
-> +	/* horizontal timing */
-> +	con3 = SET_HBPD(mode->left_margin - 1) |
-> +		SET_HOZVAL(mode->xres - 1) |
-> +		SET_HFPD(mode->right_margin - 1);
-> +	con4 = SET_HSPW(mode->hsync_len - 1);
-> +
-> +	/* basic timing setup */
-> +	writel(con1, fbh->base + LCDCON1);
-> +	pr_debug(" Writing %08X into %08X (con1)\n", con1, fbh->base + LCDCON1);
-> +	writel(con2, fbh->base + LCDCON2);
-> +	pr_debug(" Writing %08X into %08X (con2)\n", con2, fbh->base + LCDCON2);
-> +	writel(con3, fbh->base + LCDCON3);
-> +	pr_debug(" Writing %08X into %08X (con3)\n", con3, fbh->base + LCDCON3);
-> +	writel(con4, fbh->base + LCDCON4);
-> +	pr_debug(" Writing %08X into %08X (con4)\n", con4, fbh->base + LCDCON4);
-> +	writel(con5, fbh->base + LCDCON5);
-> +	pr_debug(" Writing %08X into %08X (con5)\n", con5, fbh->base + LCDCON5);
-> +
-> +	pr_debug("Setting up the fb baseadress to %08X\n", fb_info->fb_dev->map_base);
-> +
-> +	/* framebuffer memory setup */
-> +	writel(fb_info->fb_dev->map_base >> 1, fbh->base + LCDSADDR1);
-> +	size = mode->xres * (fb_info->bits_per_pixel >> 3) * (mode->yres);
-
-You already calculated this value.
-
-> +	writel(SET_LCDBASEL((fb_info->fb_dev->map_base + size) >> 1), fbh->base + LCDSADDR2);
-> +
-> +	writel(SET_OFFSIZE(0) |
-> +		SET_PAGE_WIDTH((mode->xres * fb_info->bits_per_pixel) >> 4),
-> +		fbh->base + LCDSADDR3);
-> +
-> +	writel(FIWSEL, fbh->base + LCDINTMSK);
-> +
-> +	return 0;
-> +}
-> +
-> +/**
-> + * Print some information about the current hardware state
-> + * @param hw_dev S3C video device
-> + */
-> +#ifdef CONFIG_VIDEO_INFO_VERBOSE
-> +static void s3cfb_info(struct device_d *hw_dev)
-> +{
-> +	uint32_t con1, addr1, addr2, addr3;
-> +
-> +	con1 = readl(hw_dev->map_base + LCDCON1);
-> +	addr1 = readl(hw_dev->map_base + LCDSADDR1);
-> +	addr2 = readl(hw_dev->map_base + LCDSADDR2);
-> +	addr3 = readl(hw_dev->map_base + LCDSADDR3);
-> +
-> +	printf(" Video hardware info:\n");
-> +	printf("  Video clock is running at %u Hz\n", s3c24xx_get_hclk() / ((GET_CLKVAL(con1) + 1) * 2));
-> +	printf("  Video memory bank starts at 0x%08X\n", GET_LCDBANK(addr1) << 22);
-> +	printf("  Video memory bank offset: 0x%08X\n", GET_LCDBASEU(addr1));
-> +	printf("  Video memory end: 0x%08X\n", GET_LCDBASEU(addr2));
-> +	printf("  Virtual screen offset size: %u half words\n", GET_OFFSIZE(addr3));
-> +	printf("  Virtual screen page width: %u half words\n", GET_PAGE_WIDTH(addr3));
-> +}
-> +#endif
-> +
-> +/*
-> + * There is only one video hardware instance available.
-> + * It makes no sense to dynamically allocate this data
-> + */
-> +static struct s3cfb_host host_data = {
-> +	.fb_data.fb_mode = s3cfb_initialize_mode,
-> +	.fb_data.fb_enable = s3cfb_enable_controller,
-> +	.fb_data.fb_disable = s3cfb_disable_controller,
-> +};
-> +
-> +static int s3cfb_probe(struct device_d *hw_dev)
-> +{
-> +	struct s3c_fb_platform_data *pdata = hw_dev->platform_data;
-> +	struct device_d *fb_dev;
-> +
-> +	pr_debug("%s called\n", __func__);
-> +
-> +	if (pdata == NULL) {
-> +		pr_debug("Framebuffer driver missing platform data");
-> +		return -ENODEV;
-> +	}
-> +
-> +	/* enable unit's clock */
-> +	s3c244x_mod_clock(CLK_LCDC, 1);
-> +
-> +	writel(0, hw_dev->map_base + LCDCON1);
-> +	/* off may be means high level (FIXME itlp specific) */
-> +	writel(0, hw_dev->map_base + LCDCON5);
-> +
-> +	/* disable it again until user request */
-> +	s3c244x_mod_clock(CLK_LCDC, 0);
-> +
-> +	/* add runtime hardware info */
-> +	host_data.hw_dev = hw_dev;
-> +	host_data.base = (void*)hw_dev->map_base;
-> +
-> +	/* add runtime video info */
-> +	host_data.fb_data.mode = pdata->mode_list;
-> +	host_data.fb_data.mode_cnt = pdata->mode_cnt;
-> +
-> +	fb_dev = register_framebuffer(&host_data.fb_data, pdata->framebuffer, pdata->size);
-> +	if (fb_dev == NULL) {
-> +		pr_err("Failed to register framebuffer\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static struct driver_d s3cfb_driver = {
-> +	.name	= "s3cfb",
-> +	.probe	= s3cfb_probe,
-> +#ifdef CONFIG_VIDEO_INFO_VERBOSE
-> +	.info	= s3cfb_info,
-> +#endif
-> +};
-> +
-> +static int s3cfb_init(void)
-> +{
-> +	return register_driver(&s3cfb_driver);
-> +}
-> +
-> +device_initcall(s3cfb_init);
-> +
-> +/**
-> + * The S3C244x LCD controller supports passive (CSTN/STN) and active (TFT) LC displays
-> + *
-> + * The driver itself currently supports only active TFT LC displays in the follwing manner:
-> + *
-> + *  * Palletized colours
-> + *    - 1 bpp
-> + *    - 2 bpp
-> + *    - 4 bpp
-> + *    - 8 bpp
-> + *  * True colours
-> + *    - 16 bpp
-> + *    - 24 bpp
-> + */
-> -- 
-> 1.7.2.3
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogRXJpYyBCw6luYXJkIDxlcmljQGV1a3JlYS5jb20+Ci0tLQogYXJjaC9h
+cm0vbGliL2FybWxpbnV4LmMgfCAgIDMwICsrKysrKysrKysrKysrKystLS0tLS0tLS0tLS0tLQog
+MSBmaWxlcyBjaGFuZ2VkLCAxNiBpbnNlcnRpb25zKCspLCAxNCBkZWxldGlvbnMoLSkKCmRpZmYg
+LS1naXQgYS9hcmNoL2FybS9saWIvYXJtbGludXguYyBiL2FyY2gvYXJtL2xpYi9hcm1saW51eC5j
+CmluZGV4IGY2OTBmZWYuLjAyMjIzMjcgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2xpYi9hcm1saW51
+eC5jCisrKyBiL2FyY2gvYXJtL2xpYi9hcm1saW51eC5jCkBAIC0xMzUsOCArMTM1LDcgQEAgc3Rh
+dGljIHZvaWQgc2V0dXBfc2VyaWFsX3RhZyh2b2lkKQogCX0KIH0KIAotI2lmIDAKLXN0YXRpYyB2
+b2lkIHNldHVwX2luaXRyZF90YWcodWxvbmcgaW5pdHJkX3N0YXJ0LCB1bG9uZyBpbml0cmRfZW5k
+KQorc3RhdGljIHZvaWQgc2V0dXBfaW5pdHJkX3RhZyhpbWFnZV9oZWFkZXJfdCAqaGVhZGVyKQog
+ewogCS8qIGFuIEFUQUdfSU5JVFJEIG5vZGUgdGVsbHMgdGhlIGtlcm5lbCB3aGVyZSB0aGUgY29t
+cHJlc3NlZAogCSAqIHJhbWRpc2sgY2FuIGJlIGZvdW5kLiBBVEFHX1JESU1HIGlzIGEgYmV0dGVy
+IG5hbWUsIGFjdHVhbGx5LgpAQCAtMTQ0LDEyICsxNDMsMTEgQEAgc3RhdGljIHZvaWQgc2V0dXBf
+aW5pdHJkX3RhZyh1bG9uZyBpbml0cmRfc3RhcnQsIHVsb25nIGluaXRyZF9lbmQpCiAJcGFyYW1z
+LT5oZHIudGFnID0gQVRBR19JTklUUkQyOwogCXBhcmFtcy0+aGRyLnNpemUgPSB0YWdfc2l6ZSh0
+YWdfaW5pdHJkKTsKIAotCXBhcmFtcy0+dS5pbml0cmQuc3RhcnQgPSBpbml0cmRfc3RhcnQ7Ci0J
+cGFyYW1zLT51LmluaXRyZC5zaXplID0gaW5pdHJkX2VuZCAtIGluaXRyZF9zdGFydDsKKwlwYXJh
+bXMtPnUuaW5pdHJkLnN0YXJ0ID0gaW1hZ2VfZ2V0X2xvYWQoaGVhZGVyKTsKKwlwYXJhbXMtPnUu
+aW5pdHJkLnNpemUgPSBpbWFnZV9nZXRfZGF0YV9zaXplKGhlYWRlcik7CiAKIAlwYXJhbXMgPSB0
+YWdfbmV4dChwYXJhbXMpOwogfQotI2VuZGlmCiAKIHN0YXRpYyB2b2lkIHNldHVwX2VuZF90YWcg
+KHZvaWQpCiB7CkBAIC0xNTcsMTcgKzE1NSwxNyBAQCBzdGF0aWMgdm9pZCBzZXR1cF9lbmRfdGFn
+ICh2b2lkKQogCXBhcmFtcy0+aGRyLnNpemUgPSAwOwogfQogCi1zdGF0aWMgdm9pZCBzZXR1cF90
+YWdzKHZvaWQpCitzdGF0aWMgdm9pZCBzZXR1cF90YWdzKHN0cnVjdCBpbWFnZV9kYXRhICpkYXRh
+KQogewogCWNvbnN0IGNoYXIgKmNvbW1hbmRsaW5lID0gZ2V0ZW52KCJib290YXJncyIpOwogCiAJ
+c2V0dXBfc3RhcnRfdGFnKCk7CiAJc2V0dXBfbWVtb3J5X3RhZ3MoKTsKIAlzZXR1cF9jb21tYW5k
+bGluZV90YWcoY29tbWFuZGxpbmUpOwotI2lmIDAKLQlpZiAoaW5pdHJkX3N0YXJ0ICYmIGluaXRy
+ZF9lbmQpCi0JCXNldHVwX2luaXRyZF90YWcgKGluaXRyZF9zdGFydCwgaW5pdHJkX2VuZCk7Ci0j
+ZW5kaWYKKworCWlmIChkYXRhICYmIGRhdGEtPmluaXRyZCkKKwkJc2V0dXBfaW5pdHJkX3RhZyAo
+JmRhdGEtPmluaXRyZC0+aGVhZGVyKTsKKwogCXNldHVwX3JldmlzaW9uX3RhZygpOwogCXNldHVw
+X3NlcmlhbF90YWcoKTsKIAlzZXR1cF9lbmRfdGFnKCk7CkBAIC0yMzIsMTMgKzIzMCwxNyBAQCBp
+bnQgZG9fYm9vdG1fbGludXgoc3RydWN0IGltYWdlX2RhdGEgKmRhdGEpCiAJZGVidWcoIiMjIFRy
+YW5zZmVycmluZyBjb250cm9sIHRvIExpbnV4IChhdCBhZGRyZXNzIDB4JXApIC4uLlxuIiwKIAkg
+ICAgICAgdGhlS2VybmVsKTsKIAotCXNldHVwX3RhZ3MoKTsKKwlzZXR1cF90YWdzKGRhdGEpOwog
+CiAJaWYgKHJlbG9jYXRlX2ltYWdlKGRhdGEtPm9zLCAodm9pZCAqKWltYWdlX2dldF9sb2FkKG9z
+X2hlYWRlcikpKQogCQlyZXR1cm4gLTE7CiAKKwlpZiAoZGF0YS0+aW5pdHJkKQorCQlpZiAocmVs
+b2NhdGVfaW1hZ2UoZGF0YS0+aW5pdHJkLCAodm9pZCAqKWltYWdlX2dldF9sb2FkKCZkYXRhLT5p
+bml0cmQtPmhlYWRlcikpKQorCQkJcmV0dXJuIC0xOworCiAJLyogd2UgYXNzdW1lIHRoYXQgdGhl
+IGtlcm5lbCBpcyBpbiBwbGFjZSAqLwotCXByaW50ZigiXG5TdGFydGluZyBrZXJuZWwgLi4uXG5c
+biIpOworCXByaW50ZigiXG5TdGFydGluZyBrZXJuZWwgJXMuLi5cblxuIiwgZGF0YS0+aW5pdHJk
+ID8gIndpdGggaW5pdHJkICIgOiAiIik7CiAKIAlzaHV0ZG93bl9iYXJlYm94KCk7CiAJdGhlS2Vy
+bmVsICgwLCBhcm1saW51eF9hcmNoaXRlY3R1cmUsIGFybWxpbnV4X2Jvb3RwYXJhbXMpOwpAQCAt
+MzM1LDcgKzMzNyw3IEBAIHN0YXRpYyBpbnQgZG9fYm9vdHooc3RydWN0IGNvbW1hbmQgKmNtZHRw
+LCBpbnQgYXJnYywgY2hhciAqYXJndltdKQogCiAJcHJpbnRmKCJsb2FkZWQgekltYWdlIGZyb20g
+JXMgd2l0aCBzaXplICVkXG4iLCBhcmd2WzFdLCBoZWFkZXIuZW5kKTsKIAotCXNldHVwX3RhZ3Mo
+KTsKKwlzZXR1cF90YWdzKE5VTEwpOwogCiAJc2h1dGRvd25fYmFyZWJveCgpOwogCXRoZUtlcm5l
+bCgwLCBhcm1saW51eF9hcmNoaXRlY3R1cmUsIGFybWxpbnV4X2Jvb3RwYXJhbXMpOwpAQCAtMzc5
+LDcgKzM4MSw3IEBAIHN0YXRpYyBpbnQgZG9fYm9vdHUoc3RydWN0IGNvbW1hbmQgKmNtZHRwLCBp
+bnQgYXJnYywgY2hhciAqYXJndltdKQogCWlmICghdGhlS2VybmVsKQogCQl0aGVLZXJuZWwgPSAo
+dm9pZCAqKXNpbXBsZV9zdHJ0b3VsKGFyZ3ZbMV0sIE5VTEwsIDApOwogCi0Jc2V0dXBfdGFncygp
+OworCXNldHVwX3RhZ3MoTlVMTCk7CiAKIAlzaHV0ZG93bl9iYXJlYm94KCk7CiAJdGhlS2VybmVs
+KDAsIGFybWxpbnV4X2FyY2hpdGVjdHVyZSwgYXJtbGludXhfYm9vdHBhcmFtcyk7Ci0tIAoxLjcu
+MC40CgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFy
+ZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0
+cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
