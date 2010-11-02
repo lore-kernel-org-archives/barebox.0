@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 63.mail-out.ovh.net ([91.121.185.56])
-	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1PD0PM-0004Vs-84
-	for barebox@lists.infradead.org; Mon, 01 Nov 2010 19:51:09 +0000
-From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
-Date: Mon,  1 Nov 2010 20:51:02 +0100
-Message-Id: <1288641062-3878-1-git-send-email-eric@eukrea.com>
-In-Reply-To: <20101021190623.GG28242@pengutronix.de>
-References: <20101021190623.GG28242@pengutronix.de>
-MIME-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1PDGdU-0002Xe-OX
+	for barebox@lists.infradead.org; Tue, 02 Nov 2010 13:10:51 +0000
+From: Robert Schwebel <r.schwebel@pengutronix.de>
+Date: Tue,  2 Nov 2010 14:10:32 +0100
+Message-Id: <1288703442-5032-4-git-send-email-r.schwebel@pengutronix.de>
+In-Reply-To: <1288703442-5032-1-git-send-email-r.schwebel@pengutronix.de>
+References: <1288703442-5032-1-git-send-email-r.schwebel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,39 +16,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] cpuimx35: fix warning
-To: s.hauer@pengutronix.de
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 03/13] doc: remove ..., confuses doxygen
+To: barebox@lists.infradead.org
 
-dGhpcyBwYXRjaCBmaXggdGhlIGZvbGxvd2luZyB3YXJuaW5nIDoKYXJjaC9hcm0vYm9hcmRzL2V1
-a3JlYV9jcHVpbXgzNS9mbGFzaF9oZWFkZXIuYzozMDogd2FybmluZzogIkRFU1RfQkFTRSIgcmVk
-ZWZpbmVkCmFyY2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9pbXgtZmxhc2gtaGVhZGVyLmg6
-Mjk6IG5vdGU6IHRoaXMgaXMgdGhlIGxvY2F0aW9uIG9mIHRoZSBwcmV2aW91cyBkZWZpbml0aW9u
-CgpTaWduZWQtb2ZmLWJ5OiBFcmljIELDqW5hcmQgPGVyaWNAZXVrcmVhLmNvbT4KLS0tCiBhcmNo
-L2FybS9ib2FyZHMvZXVrcmVhX2NwdWlteDM1L2ZsYXNoX2hlYWRlci5jIHwgICAgNiArKystLS0K
-IDEgZmlsZXMgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCspLCAzIGRlbGV0aW9ucygtKQoKZGlmZiAt
-LWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9ldWtyZWFfY3B1aW14MzUvZmxhc2hfaGVhZGVyLmMgYi9h
-cmNoL2FybS9ib2FyZHMvZXVrcmVhX2NwdWlteDM1L2ZsYXNoX2hlYWRlci5jCmluZGV4IDQxNjNj
-YWYuLjVhNzdjM2EgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2JvYXJkcy9ldWtyZWFfY3B1aW14MzUv
-Zmxhc2hfaGVhZGVyLmMKKysrIGIvYXJjaC9hcm0vYm9hcmRzL2V1a3JlYV9jcHVpbXgzNS9mbGFz
-aF9oZWFkZXIuYwpAQCAtMjcsMTUgKzI3LDE1IEBAIHN0cnVjdCBpbXhfZGNkX2VudHJ5IF9fZGNk
-X2VudHJ5X3NlY3Rpb24gZGNkX2VudHJ5W10gPSB7CiAJeyAucHRyX3R5cGUgPSA0LCAuYWRkciA9
-IDB4YjgwMDEwMTAsIC52YWwgPSAweDAwMDAwMDA0LCB9LAogfTsKIAotI2RlZmluZSBERVNUX0JB
-U0UgMHg4MDAwMDAwMAorI2RlZmluZSBDUFVJTVgzNV9ERVNUX0JBU0UgMHg4MDAwMDAwMAogc3Ry
-dWN0IGlteF9mbGFzaF9oZWFkZXIgX19mbGFzaF9oZWFkZXJfc2VjdGlvbiBmbGFzaF9oZWFkZXIg
-PSB7Ci0JLmFwcF9jb2RlX2p1bXBfdmVjdG9yCT0gREVTVF9CQVNFICsgMHgxMDAwLAorCS5hcHBf
-Y29kZV9qdW1wX3ZlY3Rvcgk9IENQVUlNWDM1X0RFU1RfQkFTRSArIDB4MTAwMCwKIAkuYXBwX2Nv
-ZGVfYmFya2VyCT0gQVBQX0NPREVfQkFSS0VSLAogCS5hcHBfY29kZV9jc2YJCT0gMCwKIAkuZGNk
-X3B0cl9wdHIJCT0gRkxBU0hfSEVBREVSX0JBU0UgKyBvZmZzZXRvZihzdHJ1Y3QgaW14X2ZsYXNo
-X2hlYWRlciwgZGNkKSwKIAkuc3VwZXJfcm9vdF9rZXkJCT0gMCwKIAkuZGNkCQkJPSBGTEFTSF9I
-RUFERVJfQkFTRSArIG9mZnNldG9mKHN0cnVjdCBpbXhfZmxhc2hfaGVhZGVyLCBkY2RfYmFya2Vy
-KSwKLQkuYXBwX2Rlc3QJCT0gREVTVF9CQVNFLAorCS5hcHBfZGVzdAkJPSBDUFVJTVgzNV9ERVNU
-X0JBU0UsCiAJLmRjZF9iYXJrZXIJCT0gRENEX0JBUktFUiwKIAkuZGNkX2Jsb2NrX2xlbgkJPSBz
-aXplb2YoZGNkX2VudHJ5KSwKIH07Ci0tIAoxLjcuMC40CgoKX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBs
-aXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlz
-dGluZm8vYmFyZWJveAo=
+Signed-off-by: Robert Schwebel <r.schwebel@pengutronix.de>
+---
+ commands/ls.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/commands/ls.c b/commands/ls.c
+index 2005178..4f9c408 100644
+--- a/commands/ls.c
++++ b/commands/ls.c
+@@ -195,7 +195,7 @@ static int do_ls(struct command *cmdtp, int argc, char *argv[])
+ }
+ 
+ BAREBOX_CMD_HELP_START(ls)
+-BAREBOX_CMD_HELP_USAGE("ls [OPTION]... [FILE]...\n")
++BAREBOX_CMD_HELP_USAGE("ls [OPTIONS] [FILES]\n")
+ BAREBOX_CMD_HELP_SHORT("List information about the FILEs (the current directory by default).\n")
+ BAREBOX_CMD_HELP_OPT  ("-R",  "list subdirectories recursively\n")
+ BAREBOX_CMD_HELP_END
+-- 
+1.7.2.3
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
