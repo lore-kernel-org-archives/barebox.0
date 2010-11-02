@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PDGdU-0002Xg-OR
+	id 1PDGdU-0002Xf-O3
 	for barebox@lists.infradead.org; Tue, 02 Nov 2010 13:10:55 +0000
 From: Robert Schwebel <r.schwebel@pengutronix.de>
-Date: Tue,  2 Nov 2010 14:10:35 +0100
-Message-Id: <1288703442-5032-7-git-send-email-r.schwebel@pengutronix.de>
+Date: Tue,  2 Nov 2010 14:10:33 +0100
+Message-Id: <1288703442-5032-5-git-send-email-r.schwebel@pengutronix.de>
 In-Reply-To: <1288703442-5032-1-git-send-email-r.schwebel@pengutronix.de>
 References: <1288703442-5032-1-git-send-email-r.schwebel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,107 +21,105 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/13] doc: unify documentation for 'protect' and 'unprotect'
+Subject: [PATCH 04/13] doc: unify documentation for 'mount'
 To: barebox@lists.infradead.org
 
 Signed-off-by: Robert Schwebel <r.schwebel@pengutronix.de>
 ---
- commands/flash.c |   76 ++++++++++++++++++++++++++++++++----------------------
- 1 files changed, 45 insertions(+), 31 deletions(-)
+ commands/mount.c |   78 +++++++++++++++++++++++++----------------------------
+ 1 files changed, 37 insertions(+), 41 deletions(-)
 
-diff --git a/commands/flash.c b/commands/flash.c
-index 4549f0a..c49de33 100644
---- a/commands/flash.c
-+++ b/commands/flash.c
-@@ -162,43 +162,57 @@ out:
- 	return ret;
+diff --git a/commands/mount.c b/commands/mount.c
+index 8e4388e..52d1700 100644
+--- a/commands/mount.c
++++ b/commands/mount.c
+@@ -58,49 +58,45 @@ static int do_mount(struct command *cmdtp, int argc, char *argv[])
+ 	return 0;
  }
  
--static const __maybe_unused char cmd_protect_help[] =
--"Usage: (un)protect <device> [area]\n"
--"(un)protect a flash device or parts of a device if an area specification\n"
--"is given\n";
-+BAREBOX_CMD_HELP_START(protect)
-+BAREBOX_CMD_HELP_USAGE("protect <device> [area]\n")
-+BAREBOX_CMD_HELP_SHORT("protect a flash device (or parts of a device, if an area is specified)\n")
+-static const __maybe_unused char cmd_mount_help[] =
+-"Usage: mount:         list mounted filesystems\n"
+-"or:    mount <device> <fstype> <mountpoint>\n"
+-"\n"
+-"Mount a filesystem of a given type to a mountpoint.\n"
+-"<device> can be one of /dev/* or some arbitrary string if no\n"
+-"device is needed for this driver (for example ramfs).\n"
+-"<fstype> is the filesystem driver to use. Try the 'devinfo' command\n"
+-"for a list of available drivers.\n"
+-"<mountpoint> must be an empty directory descending directly from the\n"
+-"root directory.\n";
++BAREBOX_CMD_HELP_START(mount)
++BAREBOX_CMD_HELP_USAGE("mount [<device> <fstype> <mountpoint>]\n")
++BAREBOX_CMD_HELP_SHORT("Mount a filesystem of a given type to a mountpoint.\n")
++BAREBOX_CMD_HELP_SHORT("If no argument is given, list mounted filesystems.\n")
 +BAREBOX_CMD_HELP_END
  
--BAREBOX_CMD_START(protect)
-+BAREBOX_CMD_START(erase)
- 	.cmd		= do_protect,
--	.usage		= "enable FLASH write protection",
-+	.usage		= "enable flash write protection",
- 	BAREBOX_CMD_HELP(cmd_protect_help)
- BAREBOX_CMD_END
- 
--BAREBOX_CMD_START(unprotect)
--	.cmd		= do_protect,
--	.usage		= "disable FLASH write protection",
--	BAREBOX_CMD_HELP(cmd_protect_help)
+-BAREBOX_CMD_START(mount)
+-	.cmd		= do_mount,
+-	.usage		= "mount a filesystem to a device",
+-	BAREBOX_CMD_HELP(cmd_mount_help)
 -BAREBOX_CMD_END
 +/**
-+ * @page protect_command
++ * @page mount_command
 +
-+Protect the flash memory behind the device. It depends on the device
-+given, what area will be protected. If the device represents the whole
-+flash memory the whole memory will be protected. If the device
-+represents a partition on a main flash memory, only this partition part
-+will be protected.
-+
-+Refer addpart_command, delpart_command and devinfo_command for partition
-+handling.
-+
-+\todo Rework this documentation, what is an 'area'? Explain more about
-+flashes here.
++<ul>
++<li>\<device> can be a device in /dev or some arbitrary string if no
++    device is needed for this driver, i.e. on ramfs. </li>
++<li>\<fstype> is the filesystem driver. A list of available drivers can
++    be shown with the \ref devinfo_command command.</li>
++<li>\<mountpoint> must be an empty directory, one level below the /
++    directory.</li>
++</ul>
  
--/** @page protect_command protect Protect a flash memory
+-/** @page mount_command mount
+- * Usage: mount [\<device> \<fstype> \<mountpoint>]
 - *
-- * Usage is: protect \<devicee>
+- * Mounts a filesystem of a given \<fstype> on a \<device> to a \<mountpoint>.
+- * \<device> can be one of /dev/ * or some arbitrary string if no
+- * device is needed for this driver (for example ramfs).
 - *
-- * Protect the flash memory behind the device. It depends on the device given,
-- * what area will be protected. If the device represents the whole flash memory
-- * the whole memory will be protected. If the device represents a partition on
-- * a main flash memory, only this partition part will be protected.
+- * \<fstype> is the filesystem driver to use. Try the 'devinfo' command
+- * for a list of available drivers.
 - *
-- * Refer \b addpart, \b delpart and \b devinfo for partition handling.
+- * \<mountpoint> must be an empty directory descending directly from the
+- * root directory.
   */
  
--/** @page unprotect_command unprotect Unprotect a flash memory
+-/** @page how_mount_works How mount works in barebox
 - *
-- * Usage is: unprotect \<devicee>
+- * Mounting a filesystem ontop of a device is working like devices and drivers
+- * are finding together.
 - *
-- * Unprotect the flash memory behind the device. It depends on the device given,
-- * what area will be unprotected. If the device represents the whole flash memory
-- * the whole memory will be unprotected. If the device represents a partition
-- * on a main flash memory, only this partition part will be unprotected.
+- * The mount command creates a new device with the filesystem name as the
+- * driver for this "device". So the framework is able to merge both parts
+- * together.
 - *
-- * Refer \b addpart, \b delpart and \b devinfo for partition handling.
-+BAREBOX_CMD_HELP_START(unprotect)
-+BAREBOX_CMD_HELP_USAGE("unprotect <device> [area]\n")
-+BAREBOX_CMD_HELP_SHORT("unprotect a flash device (or parts of a device, if an area is specified)\n")
-+BAREBOX_CMD_HELP_END
-+
-+BAREBOX_CMD_START(erase)
-+	.cmd		= do_unprotect,
-+	.usage		= "enable flash write protection",
-+	BAREBOX_CMD_HELP(cmd_unprotect_help)
-+BAREBOX_CMD_END
-+
+- * By the way: With this feature its impossible to accidentely remove
+- * partitions in use. A partition is internally also a device. If its mounted
+- * it will be marked as busy, so an delpart command fails, until the filesystem
+- * has been unmounted.
 +/**
-+ * @page unprotect_command
++ * @page how_mount_works How mount works in barebox
 +
-+Unprotect the flash memory behind the device. It depends on the device given,
-+what area will be unprotected. If the device represents the whole flash memory
-+the whole memory will be unprotected. If the device represents a partition
-+on a main flash memory, only this partition part will be unprotected.
++Mounting a filesystem ontop of a device is working like devices and
++drivers are finding together.
 +
-+Refer addpart_command, delpart_command and devinfo_command for partition
-+handling.
++The mount command creates a new device with the filesystem name as the
++driver for this "device". So the framework is able to merge both parts
++together.
 +
-+\todo Rework this documentation, what does it mean?
++By the way: With this feature its impossible to accidentely remove
++partitions in use. A partition is internally also a device. If its
++mounted it will be marked as busy, so an delpart command fails, until
++the filesystem has been unmounted.
 +
   */
 +
++BAREBOX_CMD_START(mount)
++	.cmd		= do_mount,
++	.usage		= "Mount a filesystem of a given type to a mountpoint or list mounted filesystems.",
++	BAREBOX_CMD_HELP(cmd_mount_help)
++BAREBOX_CMD_END
 -- 
 1.7.2.3
 
