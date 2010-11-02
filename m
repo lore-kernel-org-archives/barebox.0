@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PDKUK-0005K0-UQ
-	for barebox@lists.infradead.org; Tue, 02 Nov 2010 17:17:43 +0000
+	id 1PDKUK-0005Jo-7f
+	for barebox@lists.infradead.org; Tue, 02 Nov 2010 17:17:41 +0000
+Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.71)
+	(envelope-from <sha@pengutronix.de>) id 1PDKUH-0001lk-QU
+	for barebox@lists.infradead.org; Tue, 02 Nov 2010 18:17:33 +0100
+Received: from sha by octopus.hi.pengutronix.de with local (Exim 4.69)
+	(envelope-from <sha@pengutronix.de>) id 1PDKUH-0006VA-NW
+	for barebox@lists.infradead.org; Tue, 02 Nov 2010 18:17:33 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  2 Nov 2010 18:17:20 +0100
-Message-Id: <1288718250-24919-8-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1288718250-24919-1-git-send-email-s.hauer@pengutronix.de>
-References: <1288718250-24919-1-git-send-email-s.hauer@pengutronix.de>
+Date: Tue,  2 Nov 2010 18:17:13 +0100
+Message-Id: <1288718250-24919-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,130 +26,78 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/17] ARM pcm038: Use device functions
+Subject: device register functions for i.MX
 To: barebox <barebox@lists.infradead.org>
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/boards/pcm038/pcm038.c |   47 +++++----------------------------------
- 1 files changed, 6 insertions(+), 41 deletions(-)
+Hi all,
 
-diff --git a/arch/arm/boards/pcm038/pcm038.c b/arch/arm/boards/pcm038/pcm038.c
-index 3a9b413..1dbc6b6 100644
---- a/arch/arm/boards/pcm038/pcm038.c
-+++ b/arch/arm/boards/pcm038/pcm038.c
-@@ -43,6 +43,7 @@
- #include <usb/isp1504.h>
- #include <mach/spi.h>
- #include <mach/iomux-mx27.h>
-+#include <mach/devices-imx27.h>
- 
- #include "pll.h"
- 
-@@ -84,13 +85,6 @@ static struct fec_platform_data fec_info = {
- 	.phy_addr = 1,
- };
- 
--static struct device_d fec_dev = {
--	.id	  = -1,
--	.name     = "fec_imx",
--	.map_base = 0x1002b000,
--	.platform_data	= &fec_info,
--};
--
- static int pcm038_spi_cs[] = {GPIO_PORTD + 28};
- 
- static struct spi_imx_master pcm038_spi_0_data = {
-@@ -98,13 +92,6 @@ static struct spi_imx_master pcm038_spi_0_data = {
- 	.num_chipselect = ARRAY_SIZE(pcm038_spi_cs),
- };
- 
--static struct device_d spi_dev = {
--	.id	  = -1,
--	.name     = "imx_spi",
--	.map_base = 0x1000e000,
--	.platform_data = &pcm038_spi_0_data,
--};
--
- static struct spi_board_info pcm038_spi_board_info[] = {
- 	{
- 		.name = "mc13783",
-@@ -120,13 +107,6 @@ static struct imx_nand_platform_data nand_info = {
- 	.flash_bbt	= 1,
- };
- 
--static struct device_d nand_dev = {
--	.id	  = -1,
--	.name     = "imx_nand",
--	.map_base = 0xd8000000,
--	.platform_data	= &nand_info,
--};
--
- static struct imx_fb_videomode imxfb_mode = {
- 	.mode = {
- 		.name		= "Sharp-LQ035Q7",
-@@ -161,14 +141,6 @@ static struct imx_fb_platform_data pcm038_fb_data = {
- 	.dmacr	= 0x00020010,
- };
- 
--static struct device_d imxfb_dev = {
--	.id		= -1,
--	.name		= "imxfb",
--	.map_base	= 0x10021000,
--	.size		= 0x1000,
--	.platform_data	= &pcm038_fb_data,
--};
--
- #ifdef CONFIG_USB
- static struct device_d usbh2_dev = {
- 	.id	  = -1,
-@@ -323,13 +295,13 @@ static int pcm038_devices_init(void)
- 	gpio_direction_output(GPIO_PORTD | 28, 0);
- 	gpio_set_value(GPIO_PORTD | 28, 0);
- 	spi_register_board_info(pcm038_spi_board_info, ARRAY_SIZE(pcm038_spi_board_info));
--	register_device(&spi_dev);
-+	imx27_add_spi0(&pcm038_spi_0_data);
- 
- 	register_device(&cfi_dev);
--	register_device(&nand_dev);
-+	imx27_add_nand(&nand_info);
- 	register_device(&sdram_dev);
- 	register_device(&sram_dev);
--	register_device(&imxfb_dev);
-+	imx27_add_fb(&pcm038_fb_data);
- 
- #ifdef CONFIG_USB
- 	pcm038_usbh_init();
-@@ -339,7 +311,7 @@ static int pcm038_devices_init(void)
- 	/* Register the fec device after the PLL re-initialisation
- 	 * as the fec depends on the (now higher) ipg clock
- 	 */
--	register_device(&fec_dev);
-+	imx27_add_fec(&fec_info);
- 
- 	switch ((GPCR & GPCR_BOOT_MASK) >> GPCR_BOOT_SHIFT) {
- 	case GPCR_BOOT_8BIT_NAND_2k:
-@@ -372,16 +344,9 @@ static int pcm038_devices_init(void)
- 
- device_initcall(pcm038_devices_init);
- 
--static struct device_d pcm038_serial_device = {
--	.id	  = -1,
--	.name     = "imx_serial",
--	.map_base = IMX_UART1_BASE,
--	.size     = 4096,
--};
--
- static int pcm038_console_init(void)
- {
--	register_device(&pcm038_serial_device);
-+	imx27_add_uart0();
- 
- 	return 0;
- }
--- 
-1.7.2.3
+The following series adds device register convenience functions
+for i.MX SoCs. Thia simplifies the board support code and is also
+done to simplify adding clocks for the devices later.
 
+Sascha
+
+The following changes since commit 3d4f24ef0bc1d00577b87ec216cec61bbf34a4ec:
+
+  Merge branch 'next' (2010-11-02 18:05:32 +0100)
+
+are available in the git repository at:
+
+  git://git.pengutronix.de/git/barebox.git pu
+
+Sascha Hauer (17):
+      ARM i.MX51: Add SPBA0 base addresses
+      ARM i.MX: Add device convenience functions
+      ARM i.MX: Add header protection
+      ARM i.MX35: Add IPU base address
+      ARM pcm043: Use device functions
+      ARM pca100: Use device functions
+      ARM pcm038: Use device functions
+      ARM pcm037: Use device functions
+      ARM imx27ads: Use device functions
+      ARM imx21ads: Use device functions
+      ARM mx51 babbage: Use device functions
+      ARM neso: Use device functions
+      ARM mx35 3ds: Use device functions
+      ARM mx25 3ds: Use device functions
+      ARM eukrea cpuimx35: Use device functions
+      ARM eukrea cpuimx27: Use device functions
+      ARM eukrea cpuimx25: Use device functions
+
+ arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c |   54 +++----------------
+ arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c |   27 ++--------
+ arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c |   53 +++----------------
+ arch/arm/boards/freescale-mx25-3-stack/3stack.c   |   36 ++-----------
+ arch/arm/boards/freescale-mx35-3-stack/3stack.c   |   38 ++------------
+ arch/arm/boards/freescale-mx51-pdk/board.c        |   33 ++----------
+ arch/arm/boards/guf-neso/board.c                  |   38 ++------------
+ arch/arm/boards/imx21ads/imx21ads.c               |   29 ++---------
+ arch/arm/boards/imx27ads/imx27ads.c               |   19 +------
+ arch/arm/boards/pcm037/pcm037.c                   |   20 +------
+ arch/arm/boards/pcm038/pcm038.c                   |   47 ++--------------
+ arch/arm/boards/pcm043/pcm043.c                   |   38 ++------------
+ arch/arm/boards/phycard-i.MX27/pca100.c           |   28 ++--------
+ arch/arm/mach-imx/Makefile                        |    2 +-
+ arch/arm/mach-imx/devices.c                       |   59 +++++++++++++++++++++
+ arch/arm/mach-imx/include/mach/devices-imx21.h    |   33 ++++++++++++
+ arch/arm/mach-imx/include/mach/devices-imx25.h    |   38 +++++++++++++
+ arch/arm/mach-imx/include/mach/devices-imx27.h    |   54 +++++++++++++++++++
+ arch/arm/mach-imx/include/mach/devices-imx31.h    |   35 ++++++++++++
+ arch/arm/mach-imx/include/mach/devices-imx35.h    |   57 ++++++++++++++++++++
+ arch/arm/mach-imx/include/mach/devices-imx51.h    |   53 ++++++++++++++++++
+ arch/arm/mach-imx/include/mach/devices.h          |   17 ++++++
+ arch/arm/mach-imx/include/mach/imx35-regs.h       |    1 +
+ arch/arm/mach-imx/include/mach/imx51-regs.h       |   13 ++++-
+ arch/arm/mach-imx/include/mach/imxfb.h            |    5 ++
+ 25 files changed, 429 insertions(+), 398 deletions(-)
+ create mode 100644 arch/arm/mach-imx/devices.c
+ create mode 100644 arch/arm/mach-imx/include/mach/devices-imx21.h
+ create mode 100644 arch/arm/mach-imx/include/mach/devices-imx25.h
+ create mode 100644 arch/arm/mach-imx/include/mach/devices-imx27.h
+ create mode 100644 arch/arm/mach-imx/include/mach/devices-imx31.h
+ create mode 100644 arch/arm/mach-imx/include/mach/devices-imx35.h
+ create mode 100644 arch/arm/mach-imx/include/mach/devices-imx51.h
+ create mode 100644 arch/arm/mach-imx/include/mach/devices.h
 
 _______________________________________________
 barebox mailing list
