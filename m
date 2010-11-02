@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PDKUL-0005K6-IV
-	for barebox@lists.infradead.org; Tue, 02 Nov 2010 17:17:47 +0000
+	id 1PDKUL-0005K4-H9
+	for barebox@lists.infradead.org; Tue, 02 Nov 2010 17:17:46 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  2 Nov 2010 18:17:26 +0100
-Message-Id: <1288718250-24919-14-git-send-email-s.hauer@pengutronix.de>
+Date: Tue,  2 Nov 2010 18:17:25 +0100
+Message-Id: <1288718250-24919-13-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1288718250-24919-1-git-send-email-s.hauer@pengutronix.de>
 References: <1288718250-24919-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,115 +21,106 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 13/17] ARM mx35 3ds: Use device functions
+Subject: [PATCH 12/17] ARM neso: Use device functions
 To: barebox <barebox@lists.infradead.org>
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/freescale-mx35-3-stack/3stack.c |   38 +++--------------------
+ arch/arm/boards/guf-neso/board.c |   38 +++++---------------------------------
  1 files changed, 5 insertions(+), 33 deletions(-)
 
-diff --git a/arch/arm/boards/freescale-mx35-3-stack/3stack.c b/arch/arm/boards/freescale-mx35-3-stack/3stack.c
-index d6699cd..127bfb4 100644
---- a/arch/arm/boards/freescale-mx35-3-stack/3stack.c
-+++ b/arch/arm/boards/freescale-mx35-3-stack/3stack.c
-@@ -48,6 +48,7 @@
- #include <mach/pmic.h>
- #include <mach/imx-ipu-fb.h>
- #include <mach/generic.h>
-+#include <mach/devices-imx35.h>
+diff --git a/arch/arm/boards/guf-neso/board.c b/arch/arm/boards/guf-neso/board.c
+index 9c85c08..d371dd6 100644
+--- a/arch/arm/boards/guf-neso/board.c
++++ b/arch/arm/boards/guf-neso/board.c
+@@ -44,6 +44,7 @@
+ #include <mach/imx-nand.h>
+ #include <mach/imx-pll.h>
+ #include <mach/imxfb.h>
++#include <mach/devices-imx27.h>
  
- #include <i2c/i2c.h>
- #include <mfd/mc13892.h>
-@@ -70,13 +71,6 @@ static struct fec_platform_data fec_info = {
- 	.phy_addr	= 0x1F,
+ /* two pins are controlling the CS signals to the USB phys */
+ #define USBH2_PHY_CS_GPIO (GPIO_PORTF + 20)
+@@ -71,26 +72,12 @@ static struct fec_platform_data fec_info = {
+ 	.phy_addr = 31,
  };
  
 -static struct device_d fec_dev = {
--	.id		= -1,
--	.name		= "fec_imx",
--	.map_base	= IMX_FEC_BASE,
+-	.id	  = -1,
+-	.name     = "fec_imx",
+-	.map_base = 0x1002b000,
 -	.platform_data	= &fec_info,
 -};
 -
- static struct memory_platform_data sdram_pdata = {
- 	.name	= "ram0",
- 	.flags	= DEVFS_RDWR,
-@@ -95,13 +89,6 @@ struct imx_nand_platform_data nand_info = {
+ static struct imx_nand_platform_data nand_info = {
+ 	.width		= 1,
+ 	.hw_ecc		= 1,
  	.flash_bbt	= 1,
  };
  
 -static struct device_d nand_dev = {
--	.id		= -1,
--	.name		= "imx_nand",
--	.map_base	= IMX_NFC_BASE,
+-	.id	  = -1,
+-	.name     = "imx_nand",
+-	.map_base = 0xd8000000,
 -	.platform_data	= &nand_info,
 -};
 -
- static struct device_d smc911x_dev = {
- 	.id		= -1,
- 	.name		= "smc911x",
-@@ -149,14 +136,6 @@ static struct imx_ipu_fb_platform_data ipu_fb_data = {
- 	.bpp		= 16,
+ static struct imx_fb_videomode imxfb_mode = {
+ 	.mode = {
+ 		.name		= "CPT CLAA070LC0JCT",
+@@ -139,14 +126,6 @@ static struct imx_fb_platform_data neso_fb_data = {
+ 	.framebuffer_ovl = (void *)0xa7f00000,
  };
  
 -static struct device_d imxfb_dev = {
 -	.id		= -1,
--	.name		= "imx-ipu-fb",
--	.map_base	= 0x53fc0000,
+-	.name		= "imxfb",
+-	.map_base	= 0x10021000,
 -	.size		= 0x1000,
--	.platform_data	= &ipu_fb_data,
+-	.platform_data	= &neso_fb_data,
 -};
 -
- /*
-  * Revision to be passed to kernel. The kernel provided
-  * by freescale relies on this.
-@@ -202,7 +181,7 @@ static int f3s_devices_init(void)
- 	/*
- 	 * This platform supports NOR and NAND
- 	 */
+ #ifdef CONFIG_USB
+ 
+ static struct device_d usbh2_dev = {
+@@ -334,16 +313,16 @@ static int neso_devices_init(void)
+ 	for (i = 0; i < ARRAY_SIZE(mode); i++)
+ 		imx_gpio_mode(mode[i]);
+ 
 -	register_device(&nand_dev);
-+	imx35_add_nand(&nand_info);
- 	register_device(&cfi_dev);
- 
- 	switch ((reg >> 25) & 0x3) {
-@@ -225,11 +204,11 @@ static int f3s_devices_init(void)
- 	i2c_register_board_info(0, i2c_devices, ARRAY_SIZE(i2c_devices));
- 	register_device(&i2c_dev);
- 
--	register_device(&fec_dev);
-+	imx35_add_fec(&fec_info);
- 	register_device(&smc911x_dev);
- 
++	imx27_add_nand(&nand_info);
  	register_device(&sdram_dev);
 -	register_device(&imxfb_dev);
-+	imx35_add_fb(&ipu_fb_data);
++	imx27_add_fb(&neso_fb_data);
  
- 	armlinux_add_dram(&sdram_dev);
- 	armlinux_set_bootparams((void *)0x80000100);
-@@ -250,13 +229,6 @@ static int f3s_enable_display(void)
+ #ifdef CONFIG_USB
+ 	neso_usbh_init();
+ 	register_device(&usbh2_dev);
+ #endif
  
- late_initcall(f3s_enable_display);
+-	register_device(&fec_dev);
++	imx27_add_fec(&fec_info);
  
--static struct device_d f3s_serial_device = {
--	.id		= -1,
--	.name		= "imx_serial",
--	.map_base	= IMX_UART1_BASE,
--	.size		= 4096,
+ 	devfs_add_partition("nand0", 0x00000, 0x40000, PARTITION_FIXED, "self_raw");
+ 	dev_add_bb_dev("self_raw", "self0");
+@@ -360,16 +339,9 @@ static int neso_devices_init(void)
+ 
+ device_initcall(neso_devices_init);
+ 
+-static struct device_d neso_serial_device = {
+-	.id	  = -1,
+-	.name     = "imx_serial",
+-	.map_base = IMX_UART1_BASE,
+-	.size     = 4096,
 -};
 -
- static struct pad_desc f3s_pads[] = {
- 	MX35_PAD_FEC_TX_CLK__FEC_TX_CLK,
- 	MX35_PAD_FEC_RX_CLK__FEC_RX_CLK,
-@@ -322,7 +294,7 @@ static int f3s_console_init(void)
+ static int neso_console_init(void)
  {
- 	mxc_iomux_v3_setup_multiple_pads(f3s_pads, ARRAY_SIZE(f3s_pads));
+-	register_device(&neso_serial_device);
++	imx27_add_uart0();
  
--	register_device(&f3s_serial_device);
-+	imx35_add_uart0();
  	return 0;
  }
- 
 -- 
 1.7.2.3
 
