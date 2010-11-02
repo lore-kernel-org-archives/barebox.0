@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PDKUL-0005K2-2O
-	for barebox@lists.infradead.org; Tue, 02 Nov 2010 17:17:42 +0000
+	id 1PDKUL-0005KA-Iq
+	for barebox@lists.infradead.org; Tue, 02 Nov 2010 17:17:46 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  2 Nov 2010 18:17:21 +0100
-Message-Id: <1288718250-24919-9-git-send-email-s.hauer@pengutronix.de>
+Date: Tue,  2 Nov 2010 18:17:29 +0100
+Message-Id: <1288718250-24919-17-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1288718250-24919-1-git-send-email-s.hauer@pengutronix.de>
 References: <1288718250-24919-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,73 +21,90 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/17] ARM pcm037: Use device functions
+Subject: [PATCH 16/17] ARM eukrea cpuimx27: Use device functions
 To: barebox <barebox@lists.infradead.org>
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/pcm037/pcm037.c |   20 +++-----------------
- 1 files changed, 3 insertions(+), 17 deletions(-)
+ arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c |   27 +++-----------------
+ 1 files changed, 4 insertions(+), 23 deletions(-)
 
-diff --git a/arch/arm/boards/pcm037/pcm037.c b/arch/arm/boards/pcm037/pcm037.c
-index 89e2481..ffecec2 100644
---- a/arch/arm/boards/pcm037/pcm037.c
-+++ b/arch/arm/boards/pcm037/pcm037.c
-@@ -37,7 +37,7 @@
- #include <partition.h>
- #include <generated/mach-types.h>
- #include <mach/imx-nand.h>
--
-+#include <mach/devices-imx31.h>
+diff --git a/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c b/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
+index 62fc14e..4567cba 100644
+--- a/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
++++ b/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
+@@ -46,6 +46,7 @@
+ #include <i2c/i2c.h>
+ #include <mfd/lp3972.h>
+ #include <mach/iomux-mx27.h>
++#include <mach/devices-imx27.h>
  
- /*
-  * Up to 32MiB NOR type flash, connected to
-@@ -126,13 +126,6 @@ struct imx_nand_platform_data nand_info = {
+ static struct device_d cfi_dev = {
+ 	.id	  = -1,
+@@ -86,26 +87,12 @@ static struct fec_platform_data fec_info = {
+ 	.phy_addr = 1,
+ };
+ 
+-static struct device_d fec_dev = {
+-	.id	  = -1,
+-	.name     = "fec_imx",
+-	.map_base = 0x1002b000,
+-	.platform_data	= &fec_info,
+-};
+-
+ struct imx_nand_platform_data nand_info = {
+ 	.width = 1,
+ 	.hw_ecc = 1,
  	.flash_bbt = 1,
  };
  
 -static struct device_d nand_dev = {
 -	.id	  = -1,
 -	.name     = "imx_nand",
--	.map_base = 0xB8000000,
+-	.map_base = 0xd8000000,
 -	.platform_data	= &nand_info,
 -};
 -
- #ifdef CONFIG_USB
- static struct device_d usbotg_dev = {
- 	.id	  = -1,
-@@ -295,7 +288,7 @@ static int imx31_devices_init(void)
- 	protect_file("/dev/env0", 1);
+ #ifdef CONFIG_DRIVER_SERIAL_NS16550
+ unsigned int quad_uart_read(unsigned long base, unsigned char reg_idx)
+ {
+@@ -156,12 +143,6 @@ static struct i2c_board_info i2c_devices[] = {
+ 	},
+ };
  
- 	register_device(&sram_dev);
--	register_device(&nand_dev);
-+	imx31_add_nand(&nand_info);
- 	register_device(&network_dev);
- 
- 	register_device(&sdram0_dev);
-@@ -320,13 +313,6 @@ static int imx31_devices_init(void)
- 
- device_initcall(imx31_devices_init);
- 
--static struct device_d imx31_serial_device = {
--	.id	  = -1,
--	.name     = "imx_serial",
--	.map_base = IMX_UART1_BASE,
--	.size     = 16 * 1024,
+-static struct device_d i2c_dev = {
+-	.id		= -1,
+-	.name		= "i2c-imx",
+-	.map_base	= IMX_I2C1_BASE,
 -};
 -
- static int imx31_console_init(void)
+ #ifdef CONFIG_MMU
+ static void eukrea_cpuimx27_mmu_init(void)
  {
- 	/* init gpios for serial port */
-@@ -335,7 +321,7 @@ static int imx31_console_init(void)
- 	imx_iomux_mode(MX31_PIN_CTS1__CTS1);
- 	imx_iomux_mode(MX31_PIN_RTS1__RTS1);
+@@ -294,12 +275,12 @@ static int eukrea_cpuimx27_devices_init(void)
+ #ifdef CONFIG_EUKREA_CPUIMX27_NOR_64MB
+ 	register_device(&cfi_dev1);
+ #endif
+-	register_device(&nand_dev);
++	imx27_add_nand(&nand_info);
+ 	register_device(&sdram_dev);
  
--	register_device(&imx31_serial_device);
-+	imx31_add_uart0();
- 	return 0;
- }
+ 	PCCR0 |= PCCR0_I2C1_EN;
+ 	i2c_register_board_info(0, i2c_devices, ARRAY_SIZE(i2c_devices));
+-	register_device(&i2c_dev);
++	imx27_add_i2c0(NULL);
  
+ 	devfs_add_partition("nor0", 0x00000, 0x40000, PARTITION_FIXED, "self0");
+ 	devfs_add_partition("nor0", 0x40000, 0x20000, PARTITION_FIXED, "env0");
+@@ -359,7 +340,7 @@ static int eukrea_cpuimx27_late_init(void)
+ 	u8 reg[1];
+ #endif
+ 	console_flush();
+-	register_device(&fec_dev);
++	imx27_add_fec(&fec_info);
+ 
+ #ifdef CONFIG_I2C_LP3972
+ 	client = lp3972_get_client();
 -- 
 1.7.2.3
 
