@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PDGdU-0002Xa-NQ
+	id 1PDGdU-0002Xd-OJ
 	for barebox@lists.infradead.org; Tue, 02 Nov 2010 13:10:54 +0000
-Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.71)
-	(envelope-from <rsc@pengutronix.de>) id 1PDGdR-0007fp-1E
-	for barebox@lists.infradead.org; Tue, 02 Nov 2010 14:10:45 +0100
-Received: from rsc by octopus.hi.pengutronix.de with local (Exim 4.69)
-	(envelope-from <rsc@pengutronix.de>) id 1PDGdQ-0001Jo-VK
-	for barebox@lists.infradead.org; Tue, 02 Nov 2010 14:10:44 +0100
 From: Robert Schwebel <r.schwebel@pengutronix.de>
-Date: Tue,  2 Nov 2010 14:10:29 +0100
-Message-Id: <1288703442-5032-1-git-send-email-r.schwebel@pengutronix.de>
+Date: Tue,  2 Nov 2010 14:10:31 +0100
+Message-Id: <1288703442-5032-3-git-send-email-r.schwebel@pengutronix.de>
+In-Reply-To: <1288703442-5032-1-git-send-email-r.schwebel@pengutronix.de>
+References: <1288703442-5032-1-git-send-email-r.schwebel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,54 +21,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: documentation updates
+Subject: [PATCH 02/13] doc: unify documentation for 'loadenv'
 To: barebox@lists.infradead.org
 
-Here is the next round of documentation updates.
+Signed-off-by: Robert Schwebel <r.schwebel@pengutronix.de>
+---
+ commands/loadenv.c |   34 ++++++++++++++--------------------
+ 1 files changed, 14 insertions(+), 20 deletions(-)
 
-The following changes since commit f0e62e69a58e249e11fc33f993e4cdb95eac6ea3:
-
-  cpuimx35: fix warning (2010-11-02 09:58:47 +0100)
-
-are available in the git repository at:
-  git://git.pengutronix.de/git/rsc/barebox for-mainline-doc
-
-Robert Schwebel (13):
-      doc: remove obsolete link method for arch specification
-      doc: unify documentation for 'loadenv'
-      doc: remove ..., confuses doxygen
-      doc: unify documentation for 'mount'
-      doc: unify documentation for 'printenv'
-      doc: unify documentation for 'protect' and 'unprotect'
-      doc: unify documentation for 'saveenv'
-      doc: unify documentation for 'setenv'
-      doc: remove sh from command documentation
-      doc: unify documentation for 'linux16'
-      doc: put CPUIMX35 into the right chapter
-      doc: put babage board into the right chapter
-      doc: put cupid into the right chapter
-
- Documentation/boards.dox                        |    4 +
- Documentation/building.dox                      |   14 ++---
- Documentation/commands.dox                      |    1 -
- arch/arm/boards/freescale-mx51-pdk/mx51-pdk.dox |    2 +-
- arch/arm/boards/guf-cupid/cupid.dox             |    2 +-
- commands/flash.c                                |   76 +++++++++++++---------
- commands/linux16.c                              |   25 ++++----
- commands/loadenv.c                              |   34 ++++------
- commands/ls.c                                   |    2 +-
- commands/mount.c                                |   78 +++++++++++------------
- commands/printenv.c                             |   30 ++++-----
- commands/saveenv.c                              |   31 ++++-----
- commands/setenv.c                               |   30 ++++-----
- 13 files changed, 161 insertions(+), 168 deletions(-)
-
-Robert
+diff --git a/commands/loadenv.c b/commands/loadenv.c
+index 14fbf1e..c33c34f 100644
+--- a/commands/loadenv.c
++++ b/commands/loadenv.c
+@@ -43,28 +43,22 @@ static int do_loadenv(struct command *cmdtp, int argc, char *argv[])
+ 	return envfs_load(filename, dirname);
+ }
+ 
+-static const __maybe_unused char cmd_loadenv_help[] =
+-"Usage: loadenv [ENVFS] [DIRECTORY]\n"
+-"Load the persistent storage contained in <envfs> to the directory\n"
+-"<directory>.\n"
+-"If ommitted <directory> defaults to /env and <envfs> defaults to /dev/env0.\n"
+-"Note that envfs can only handle files. Directories are skipped silently.\n";
++BAREBOX_CMD_HELP_START(loadenv)
++BAREBOX_CMD_HELP_USAGE("loadenv [ENVFS] [DIRECTORY]\n")
++BAREBOX_CMD_HELP_SHORT("Load environment from ENVFS into DIRECTORY (default: /dev/env0 -> /env).\n")
++BAREBOX_CMD_HELP_END
++
++/**
++ * @page loadenv_command
++
++ENVFS can only handle files, directories are skipped silently.
++
++\todo This needs proper documentation. What is ENVFS, why is it FS etc. Explain the concepts.
++
++ */
+ 
+ BAREBOX_CMD_START(loadenv)
+ 	.cmd		= do_loadenv,
+-	.usage		= "load environment from persistent storage",
++	.usage		= "Load environment from ENVFS into DIRECTORY (default: /dev/env0 -> /env).",
+ 	BAREBOX_CMD_HELP(cmd_loadenv_help)
+ BAREBOX_CMD_END
+-
+-/**
+- * @page loadenv_command loadenv
+- *
+- * Usage: loadenv [\<directory>] [\<envfs>]
+- *
+- * Load the persistent storage contained in \<envfs> to the directory \<directory>.
+- *
+- * If ommitted \<directory> defaults to \c /env and \<envfs> defaults to
+- * \c /dev/env0.
+- *
+- * @note envfs can only handle files. Directories are skipped silently.
+- */
 -- 
-Pengutronix e.K.                           | Dipl.-Ing. Robert Schwebel  |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.2.3
 
 
 _______________________________________________
