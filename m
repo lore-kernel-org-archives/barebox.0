@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PDGdU-0002Xc-Ng
-	for barebox@lists.infradead.org; Tue, 02 Nov 2010 13:10:50 +0000
+	id 1PDGdU-0002Xl-No
+	for barebox@lists.infradead.org; Tue, 02 Nov 2010 13:10:51 +0000
 From: Robert Schwebel <r.schwebel@pengutronix.de>
-Date: Tue,  2 Nov 2010 14:10:30 +0100
-Message-Id: <1288703442-5032-2-git-send-email-r.schwebel@pengutronix.de>
+Date: Tue,  2 Nov 2010 14:10:36 +0100
+Message-Id: <1288703442-5032-8-git-send-email-r.schwebel@pengutronix.de>
 In-Reply-To: <1288703442-5032-1-git-send-email-r.schwebel@pengutronix.de>
 References: <1288703442-5032-1-git-send-email-r.schwebel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,55 +21,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/13] doc: remove obsolete link method for arch specification
+Subject: [PATCH 07/13] doc: unify documentation for 'saveenv'
 To: barebox@lists.infradead.org
-
-The cross_arch and cross_compile links method is obsolete and not
-available any more, so we remove it from the documentation.
 
 Signed-off-by: Robert Schwebel <r.schwebel@pengutronix.de>
 ---
- Documentation/building.dox |   14 ++++++--------
- 1 files changed, 6 insertions(+), 8 deletions(-)
+ commands/saveenv.c |   31 ++++++++++++++-----------------
+ 1 files changed, 14 insertions(+), 17 deletions(-)
 
-diff --git a/Documentation/building.dox b/Documentation/building.dox
-index 895e9ac..527ca45 100644
---- a/Documentation/building.dox
-+++ b/Documentation/building.dox
-@@ -15,19 +15,17 @@ x86_64.
+diff --git a/commands/saveenv.c b/commands/saveenv.c
+index 42ea58f..2f969fe 100644
+--- a/commands/saveenv.c
++++ b/commands/saveenv.c
+@@ -94,12 +94,10 @@ out:
+ 	return ret;
+ }
  
- \todo Find out about issues on x86_64.
+-static const __maybe_unused char cmd_saveenv_help[] =
+-"Usage: saveenv [<envfs>] [<directory>]\n"
+-"Save the files in <directory> to the persistent storage device <envfs>.\n"
+-"<envfs> is normally a block in flash, but could be any other file.\n"
+-"If ommitted <directory> defaults to /env and <envfs> defaults to /dev/env0.\n"
+-"Note that envfs can only handle files. Directories are skipped silently.\n";
++BAREBOX_CMD_HELP_START(saveenv)
++BAREBOX_CMD_HELP_USAGE("saveenv [envfs] [directory]\n")
++BAREBOX_CMD_HELP_SHORT("Save the files in <directory> to the persistent storage device <envfs>.\n")
++BAREBOX_CMD_HELP_END
  
--Selecting the architecture and the corresponding cross compiler can be
--done with two methods: You can either specify it using the environment
--variables @p ARCH and @p CROSS_COMPILE or you can create the soft links
--<i>cross_arch</i> and <i>cross_compile</i>, pointing to your
--architecture and compiler.
-+Selecting the architecture and the corresponding cross compiler is done
-+by setting the following environment variables:
+ BAREBOX_CMD_START(saveenv)
+ 	.cmd		= do_saveenv,
+@@ -108,15 +106,14 @@ BAREBOX_CMD_START(saveenv)
+ BAREBOX_CMD_END
  
--\todo How to use the links? This doesn't work!
-+- ARCH=\<architecture>
-+- CROSS_COMPILE=\<compiler-prefix>
- 
- For @p ARCH=sandbox we do not need a cross compiler, so it is sufficient
- to specify the architecture:
- 
- @code
--# ln -s arch/sandbox cross_arch
-+# export ARCH=sandbox
- @endcode
- 
- In order to configure the various aspects of @a barebox, start the
-@@ -52,7 +50,7 @@ After @a barebox is configured, we can start the compilation:
- You can use '-j \<n\>' in order to do a parallel build if you have more
- than one cpus.
- 
--If everything goes well, the result is a file called @p barebox: 
-+If everything goes well, the result is a file called @p barebox:
- 
- @code
- # ls -l barebox
+ /**
+- * @page saveenv_command saveenv
+- *
+- * Usage: saveenv [\<envfs>] [\<directory>]
+- *
+- * Save the files in \<directory> to the persistent storage device \<envfs>.
+- * \<envfs> is normally a block in flash, but could be any other file.
+- *
+- * If ommitted \<directory> defaults to \c /env and \<envfs> defaults to
+- * \c /dev/env0.
+- *
+- * @note envfs can only handle files. Directories are skipped silently.
++ * @page saveenv_command
++
++<p>\<envfs> is usually a block in flash but can be any other file. If
++ommitted, \<directory> defaults to /env and \<envfs> defaults to
++/dev/env0. Note that envfs can only handle files, directories are being
++skipped silently.</p>
++
++\todo What does 'block in flash' mean? Add example.
++
+  */
++
 -- 
 1.7.2.3
 
