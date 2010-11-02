@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PDKUK-0005Jx-D5
-	for barebox@lists.infradead.org; Tue, 02 Nov 2010 17:17:40 +0000
+	id 1PDKUL-0005K5-H3
+	for barebox@lists.infradead.org; Tue, 02 Nov 2010 17:17:45 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  2 Nov 2010 18:17:18 +0100
-Message-Id: <1288718250-24919-6-git-send-email-s.hauer@pengutronix.de>
+Date: Tue,  2 Nov 2010 18:17:24 +0100
+Message-Id: <1288718250-24919-12-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1288718250-24919-1-git-send-email-s.hauer@pengutronix.de>
 References: <1288718250-24919-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,112 +21,93 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/17] ARM pcm043: Use device functions
+Subject: [PATCH 11/17] ARM mx51 babbage: Use device functions
 To: barebox <barebox@lists.infradead.org>
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/pcm043/pcm043.c |   38 +++++---------------------------------
- 1 files changed, 5 insertions(+), 33 deletions(-)
+ arch/arm/boards/freescale-mx51-pdk/board.c |   33 ++++-----------------------
+ 1 files changed, 5 insertions(+), 28 deletions(-)
 
-diff --git a/arch/arm/boards/pcm043/pcm043.c b/arch/arm/boards/pcm043/pcm043.c
-index 5932f95..2191bc8 100644
---- a/arch/arm/boards/pcm043/pcm043.c
-+++ b/arch/arm/boards/pcm043/pcm043.c
-@@ -43,6 +43,7 @@
- #include <mach/imx-ipu-fb.h>
- #include <mach/imx-pll.h>
- #include <mach/iomux-mx35.h>
-+#include <mach/devices-imx35.h>
+diff --git a/arch/arm/boards/freescale-mx51-pdk/board.c b/arch/arm/boards/freescale-mx51-pdk/board.c
+index 5197c55..ff779ca 100644
+--- a/arch/arm/boards/freescale-mx51-pdk/board.c
++++ b/arch/arm/boards/freescale-mx51-pdk/board.c
+@@ -39,6 +39,7 @@
+ #include <mach/spi.h>
+ #include <mach/generic.h>
+ #include <mach/iomux-mx51.h>
++#include <mach/devices-imx51.h>
  
- /*
-  * Up to 32MiB NOR type flash, connected to
-@@ -59,13 +60,6 @@ static struct fec_platform_data fec_info = {
+ static struct memory_platform_data ram_pdata = {
+ 	.name = "ram0",
+@@ -57,17 +58,6 @@ static struct fec_platform_data fec_info = {
  	.xcv_type = MII100,
  };
  
 -static struct device_d fec_dev = {
--	.id	  = -1,
 -	.name     = "fec_imx",
--	.map_base = IMX_FEC_BASE,
+-	.map_base = 0x83fec000,
 -	.platform_data	= &fec_info,
 -};
 -
- static struct memory_platform_data ram_pdata = {
- 	.name = "ram0",
- 	.flags = DEVFS_RDWR,
-@@ -85,13 +79,6 @@ struct imx_nand_platform_data nand_info = {
- 	.flash_bbt = 1,
- };
- 
--static struct device_d nand_dev = {
--	.id	  = -1,
--	.name     = "imx_nand",
--	.map_base = IMX_NFC_BASE,
--	.platform_data	= &nand_info,
+-static struct device_d esdhc_dev = {
+-	.name     = "imx-esdhc",
+-	.map_base = 0x70004000,
 -};
 -
- #ifdef CONFIG_PCM043_DISPLAY_SHARP
- static struct fb_videomode pcm043_fb_mode = {
- 	/* 240x320 @ 60 Hz */
-@@ -135,14 +122,6 @@ static struct imx_ipu_fb_platform_data ipu_fb_data = {
- 	.bpp		= 16,
+ static struct pad_desc f3s_pads[] = {
+ 	MX51_PAD_EIM_EB2__FEC_MDIO,
+ 	MX51_PAD_EIM_EB3__FEC_RDATA1,
+@@ -130,13 +120,6 @@ static struct spi_imx_master spi_0_data = {
+ 	.num_chipselect = ARRAY_SIZE(spi_0_cs),
  };
  
--static struct device_d imx_ipu_fb_dev = {
--	.id		= -1,
--	.name		= "imx-ipu-fb",
--	.map_base	= 0x53fc0000,
--	.size		= 0x1000,
--	.platform_data	= &ipu_fb_data,
+-static struct device_d spi_dev = {
+-	.id       = -1,
+-	.name     = "imx_spi",
+-	.map_base = MX51_CSPI1_BASE_ADDR,
+-	.platform_data = &spi_0_data,
 -};
 -
- #ifdef CONFIG_MMU
- static int pcm043_mmu_init(void)
- {
-@@ -185,11 +164,11 @@ static int imx35_devices_init(void)
- 	else
- 		nand_info.width = 1;    /* 8 bit */
+ static const struct spi_board_info mx51_babbage_spi_board_info[] = {
+ 	{
+ 		.name = "mc13892-spi",
+@@ -268,12 +251,12 @@ static int f3s_devices_init(void)
+ 	babbage_mmu_init();
  
+ 	register_device(&sdram_dev);
 -	register_device(&fec_dev);
-+	imx35_add_fec(&fec_info);
- 	/*
- 	 * This platform supports NOR and NAND
- 	 */
--	register_device(&nand_dev);
-+	imx35_add_nand(&nand_info);
- 	register_device(&cfi_dev);
+-	register_device(&esdhc_dev);
++	imx51_add_fec(&fec_info);
++	imx51_add_mmc0(NULL);
  
- 	if ((reg & 0xc00) == 0x800) {   /* reset mode: external boot */
-@@ -210,7 +189,7 @@ static int imx35_devices_init(void)
- 	}
+ 	spi_register_board_info(mx51_babbage_spi_board_info,
+ 			ARRAY_SIZE(mx51_babbage_spi_board_info));
+-	register_device(&spi_dev);
++	imx51_add_spi0(&spi_0_data);
  
- 	register_device(&sdram0_dev);
--	register_device(&imx_ipu_fb_dev);
-+	imx35_add_fb(&ipu_fb_data);
+ 	babbage_power_init();
  
- 	armlinux_add_dram(&sdram0_dev);
- 	armlinux_set_bootparams((void *)0x80000100);
-@@ -221,13 +200,6 @@ static int imx35_devices_init(void)
+@@ -295,12 +278,6 @@ static int f3s_part_init(void)
+ }
+ late_initcall(f3s_part_init);
  
- device_initcall(imx35_devices_init);
- 
--static struct device_d imx35_serial_device = {
--	.id	  = -1,
+-static struct device_d f3s_serial_device = {
 -	.name     = "imx_serial",
--	.map_base = IMX_UART1_BASE,
--	.size     = 16 * 1024,
+-	.map_base = 0x73fbc000,
+-	.size     = 4096,
 -};
 -
- static struct pad_desc pcm043_pads[] = {
- 	MX35_PAD_FEC_TX_CLK__FEC_TX_CLK,
- 	MX35_PAD_FEC_RX_CLK__FEC_RX_CLK,
-@@ -261,7 +233,7 @@ static int imx35_console_init(void)
+ static int f3s_console_init(void)
  {
- 	mxc_iomux_v3_setup_multiple_pads(pcm043_pads, ARRAY_SIZE(pcm043_pads));
+ 	mxc_iomux_v3_setup_multiple_pads(f3s_pads, ARRAY_SIZE(f3s_pads));
+@@ -310,7 +287,7 @@ static int f3s_console_init(void)
+ 	writel(0, 0x73fa8230);
+ 	writel(0, 0x73fa8234);
  
--	register_device(&imx35_serial_device);
-+	imx35_add_uart0();
+-	register_device(&f3s_serial_device);
++	imx51_add_uart0();
  	return 0;
  }
  
