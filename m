@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 63.mail-out.ovh.net ([91.121.185.56])
-	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1PDi3f-0002jB-C4
-	for barebox@lists.infradead.org; Wed, 03 Nov 2010 18:27:40 +0000
-Message-ID: <4CD1A998.1060707@eukrea.com>
-Date: Wed, 03 Nov 2010 19:27:36 +0100
-From: =?ISO-8859-15?Q?Eric_B=E9nard?= <eric@eukrea.com>
+Received: from mail-yw0-f49.google.com ([209.85.213.49])
+	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1PDjHx-0005Nu-4j
+	for barebox@lists.infradead.org; Wed, 03 Nov 2010 19:46:30 +0000
+Received: by ywg8 with SMTP id 8so813871ywg.36
+	for <barebox@lists.infradead.org>; Wed, 03 Nov 2010 12:46:26 -0700 (PDT)
 MIME-Version: 1.0
-References: <1288800496-17480-1-git-send-email-eric@eukrea.com>
-	<20101103180234.GI6017@pengutronix.de>
-In-Reply-To: <20101103180234.GI6017@pengutronix.de>
+Date: Wed, 3 Nov 2010 20:46:25 +0100
+Message-ID: <AANLkTimYPa2XDhv4HsL6U0eK-csu4dGqiNeu2BUcLwEv@mail.gmail.com>
+From: Belisko Marek <marek.belisko@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,31 +17,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-15"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] eukrea_cpuimx35: fix flash header
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: how to get my patch to master or barebox dev cycle
+To: barebox@lists.infradead.org
 
-Hi Sascha,
+Hi,
 
-Le 03/11/2010 19:02, Sascha Hauer a =E9crit :
-> On Wed, Nov 03, 2010 at 05:08:16PM +0100, Eric B=E9nard wrote:
->> commit f0e62e69a58e249e11fc33f993e4cdb95eac6ea3 broke the header.
->>
->> Signed-off-by: Eric B=E9nard<eric@eukrea.com>
->> ---
->>   arch/arm/boards/eukrea_cpuimx35/flash_header.c |    5 +++--
->>   1 files changed, 3 insertions(+), 2 deletions(-)
->
-> I guess This one is for -master?
->
-yes, I broke this on the 1st of november so master is broken for this board.
+today I get an announce about new v2010.11.0 and I try to look to
+commits if my patch which was sent 19.10
+for mini2440 board support
+(http://lists.infradead.org/pipermail/barebox/2010-October/001881.html
+) was taken.
+Patch was commented only to add some extra functionality and I suppose
+it could be taken to
+next branch and then to master in next release. But it was not.
 
-Thanks
-Eric
+So my question is what is development cycle for barebox? Similar to
+kernel with merge window and then only release?
+
+Thanks for clarification.
+
+Best Regards,
+
+marek
+
+-- 
+as simple and primitive as possible
+-------------------------------------------------
+Marek Belisko - OPEN-NANDRA
+Freelance Developer
+
+Ruska Nova Ves 219 | Presov, 08005 Slovak Republic
+Tel: +421 915 052 184
+skype: marekwhite
+icq: 290551086
+web: http://open-nandra.com
 
 _______________________________________________
 barebox mailing list
