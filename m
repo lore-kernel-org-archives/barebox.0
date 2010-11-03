@@ -1,13 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PDKUL-0005KA-Iq
-	for barebox@lists.infradead.org; Tue, 02 Nov 2010 17:17:46 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  2 Nov 2010 18:17:29 +0100
-Message-Id: <1288718250-24919-17-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1288718250-24919-1-git-send-email-s.hauer@pengutronix.de>
-References: <1288718250-24919-1-git-send-email-s.hauer@pengutronix.de>
+Received: from 30.mail-out.ovh.net ([213.186.62.213])
+	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1PDfst-0006fj-Ck
+	for barebox@lists.infradead.org; Wed, 03 Nov 2010 16:08:24 +0000
+From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
+Date: Wed,  3 Nov 2010 17:08:16 +0100
+Message-Id: <1288800496-17480-1-git-send-email-eric@eukrea.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,100 +15,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 16/17] ARM eukrea cpuimx27: Use device functions
-To: barebox <barebox@lists.infradead.org>
+Subject: [PATCH] eukrea_cpuimx35: fix flash header
+To: s.hauer@pengutronix.de
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c |   27 +++-----------------
- 1 files changed, 4 insertions(+), 23 deletions(-)
-
-diff --git a/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c b/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
-index 62fc14e..4567cba 100644
---- a/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
-+++ b/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
-@@ -46,6 +46,7 @@
- #include <i2c/i2c.h>
- #include <mfd/lp3972.h>
- #include <mach/iomux-mx27.h>
-+#include <mach/devices-imx27.h>
- 
- static struct device_d cfi_dev = {
- 	.id	  = -1,
-@@ -86,26 +87,12 @@ static struct fec_platform_data fec_info = {
- 	.phy_addr = 1,
- };
- 
--static struct device_d fec_dev = {
--	.id	  = -1,
--	.name     = "fec_imx",
--	.map_base = 0x1002b000,
--	.platform_data	= &fec_info,
--};
--
- struct imx_nand_platform_data nand_info = {
- 	.width = 1,
- 	.hw_ecc = 1,
- 	.flash_bbt = 1,
- };
- 
--static struct device_d nand_dev = {
--	.id	  = -1,
--	.name     = "imx_nand",
--	.map_base = 0xd8000000,
--	.platform_data	= &nand_info,
--};
--
- #ifdef CONFIG_DRIVER_SERIAL_NS16550
- unsigned int quad_uart_read(unsigned long base, unsigned char reg_idx)
- {
-@@ -156,12 +143,6 @@ static struct i2c_board_info i2c_devices[] = {
- 	},
- };
- 
--static struct device_d i2c_dev = {
--	.id		= -1,
--	.name		= "i2c-imx",
--	.map_base	= IMX_I2C1_BASE,
--};
--
- #ifdef CONFIG_MMU
- static void eukrea_cpuimx27_mmu_init(void)
- {
-@@ -294,12 +275,12 @@ static int eukrea_cpuimx27_devices_init(void)
- #ifdef CONFIG_EUKREA_CPUIMX27_NOR_64MB
- 	register_device(&cfi_dev1);
- #endif
--	register_device(&nand_dev);
-+	imx27_add_nand(&nand_info);
- 	register_device(&sdram_dev);
- 
- 	PCCR0 |= PCCR0_I2C1_EN;
- 	i2c_register_board_info(0, i2c_devices, ARRAY_SIZE(i2c_devices));
--	register_device(&i2c_dev);
-+	imx27_add_i2c0(NULL);
- 
- 	devfs_add_partition("nor0", 0x00000, 0x40000, PARTITION_FIXED, "self0");
- 	devfs_add_partition("nor0", 0x40000, 0x20000, PARTITION_FIXED, "env0");
-@@ -359,7 +340,7 @@ static int eukrea_cpuimx27_late_init(void)
- 	u8 reg[1];
- #endif
- 	console_flush();
--	register_device(&fec_dev);
-+	imx27_add_fec(&fec_info);
- 
- #ifdef CONFIG_I2C_LP3972
- 	client = lp3972_get_client();
--- 
-1.7.2.3
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+Y29tbWl0IGYwZTYyZTY5YTU4ZTI0OWUxMWZjMzNmOTkzZTRjZGI5NWVhYzZlYTMgYnJva2UgdGhl
+IGhlYWRlci4KClNpZ25lZC1vZmYtYnk6IEVyaWMgQsOpbmFyZCA8ZXJpY0BldWtyZWEuY29tPgot
+LS0KIGFyY2gvYXJtL2JvYXJkcy9ldWtyZWFfY3B1aW14MzUvZmxhc2hfaGVhZGVyLmMgfCAgICA1
+ICsrKy0tCiAxIGZpbGVzIGNoYW5nZWQsIDMgaW5zZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMoLSkK
+CmRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2FyZHMvZXVrcmVhX2NwdWlteDM1L2ZsYXNoX2hlYWRl
+ci5jIGIvYXJjaC9hcm0vYm9hcmRzL2V1a3JlYV9jcHVpbXgzNS9mbGFzaF9oZWFkZXIuYwppbmRl
+eCA1YTc3YzNhLi45M2M4MzQ4IDEwMDY0NAotLS0gYS9hcmNoL2FybS9ib2FyZHMvZXVrcmVhX2Nw
+dWlteDM1L2ZsYXNoX2hlYWRlci5jCisrKyBiL2FyY2gvYXJtL2JvYXJkcy9ldWtyZWFfY3B1aW14
+MzUvZmxhc2hfaGVhZGVyLmMKQEAgLTI4LDEzICsyOCwxNCBAQCBzdHJ1Y3QgaW14X2RjZF9lbnRy
+eSBfX2RjZF9lbnRyeV9zZWN0aW9uIGRjZF9lbnRyeVtdID0gewogfTsKIAogI2RlZmluZSBDUFVJ
+TVgzNV9ERVNUX0JBU0UgMHg4MDAwMDAwMAorI2RlZmluZSBDUFVJTVgzNV9GTEFTSF9IRUFERVJf
+QkFTRSAoQ1BVSU1YMzVfREVTVF9CQVNFICsgRkxBU0hfSEVBREVSX09GRlNFVCkKIHN0cnVjdCBp
+bXhfZmxhc2hfaGVhZGVyIF9fZmxhc2hfaGVhZGVyX3NlY3Rpb24gZmxhc2hfaGVhZGVyID0gewog
+CS5hcHBfY29kZV9qdW1wX3ZlY3Rvcgk9IENQVUlNWDM1X0RFU1RfQkFTRSArIDB4MTAwMCwKIAku
+YXBwX2NvZGVfYmFya2VyCT0gQVBQX0NPREVfQkFSS0VSLAogCS5hcHBfY29kZV9jc2YJCT0gMCwK
+LQkuZGNkX3B0cl9wdHIJCT0gRkxBU0hfSEVBREVSX0JBU0UgKyBvZmZzZXRvZihzdHJ1Y3QgaW14
+X2ZsYXNoX2hlYWRlciwgZGNkKSwKKwkuZGNkX3B0cl9wdHIJCT0gQ1BVSU1YMzVfRkxBU0hfSEVB
+REVSX0JBU0UgKyBvZmZzZXRvZihzdHJ1Y3QgaW14X2ZsYXNoX2hlYWRlciwgZGNkKSwKIAkuc3Vw
+ZXJfcm9vdF9rZXkJCT0gMCwKLQkuZGNkCQkJPSBGTEFTSF9IRUFERVJfQkFTRSArIG9mZnNldG9m
+KHN0cnVjdCBpbXhfZmxhc2hfaGVhZGVyLCBkY2RfYmFya2VyKSwKKwkuZGNkCQkJPSBDUFVJTVgz
+NV9GTEFTSF9IRUFERVJfQkFTRSArIG9mZnNldG9mKHN0cnVjdCBpbXhfZmxhc2hfaGVhZGVyLCBk
+Y2RfYmFya2VyKSwKIAkuYXBwX2Rlc3QJCT0gQ1BVSU1YMzVfREVTVF9CQVNFLAogCS5kY2RfYmFy
+a2VyCQk9IERDRF9CQVJLRVIsCiAJLmRjZF9ibG9ja19sZW4JCT0gc2l6ZW9mKGRjZF9lbnRyeSks
+Ci0tIAoxLjcuMC40CgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0
+dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
