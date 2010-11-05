@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from tango.tkos.co.il ([62.219.50.35])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PEGq4-0003YS-M2
-	for barebox@lists.infradead.org; Fri, 05 Nov 2010 07:35:58 +0000
-Date: Fri, 5 Nov 2010 09:35:25 +0200
-From: Baruch Siach <baruch@tkos.co.il>
-Message-ID: <20101105073524.GF13530@tarshish>
-References: <AANLkTinWD=wYCe-w44fQNrut6mYUO9WexfRn7FA4AymV@mail.gmail.com>
+	id 1PEJ4I-0002m8-If
+	for barebox@lists.infradead.org; Fri, 05 Nov 2010 09:58:47 +0000
+Date: Fri, 5 Nov 2010 10:58:42 +0100
+From: Robert Schwebel <r.schwebel@pengutronix.de>
+Message-ID: <20101105095842.GL4233@pengutronix.de>
+References: <AANLkTi=OBTyCqTLhLjzp04714cVzF+GEm0pALiu50Z8S@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <AANLkTinWD=wYCe-w44fQNrut6mYUO9WexfRn7FA4AymV@mail.gmail.com>
+In-Reply-To: <AANLkTi=OBTyCqTLhLjzp04714cVzF+GEm0pALiu50Z8S@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,28 +22,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: fw_printenv | saveenv for barebox
-To: Belisko Marek <marek.belisko@gmail.com>
+Subject: Re: BIOS like screen for uboot
+To: Kallol Biswas <kallol@nucleodyne.com>
 Cc: barebox@lists.infradead.org
 
-Hi Belisko,
+Hi,
 
-On Fri, Nov 05, 2010 at 07:57:20AM +0100, Belisko Marek wrote:
- 
-> not check how parameters are stored by barebox but could be used
-> fw_printenv or fw_saveenv from
-> userspace to inspect barebox env (similar for u-boot)?
-> 
-> If this is not possible I'm interested in writing such a tools ;)
+On Mon, Nov 01, 2010 at 04:36:24AM -0700, Kallol Biswas wrote:
+> We have a customer request that we need to create a BIOS like screens
+> for uboot.
+>
+> For this we have cross compiled curses library under uboot but have
+> been getting error in linking phase we have expected.
+>
+> The major effort is to get termcap database into uboot.
+>
+> We have looked at the barebox port of uboot and it seems to have some
+> menu support. How good is the menu support? Can it handle different
+> terminal types?
+>
+> Is there any curses like support available in uboot? A few screen
+> shots of the barebox UI would be helpful.
 
-Such a tool already exists. See scripts/bareboxenv.c.
+You can try it yourself by switching on the 'menu' command, i.e. in the
+'sandbox' platform, which can be run on a normal linux userspace system.
 
-baruch
+If it doesn't fit your needs, we are open for any kind of contract work
+in order to get more features in.
 
+Best regards,
+Robert Schwebel
 -- 
-                                                     ~. .~   Tk Open Systems
-=}------------------------------------------------ooO--U--Ooo------------{=
-   - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
