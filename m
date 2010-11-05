@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PDlVt-0002LW-LC
-	for barebox@lists.infradead.org; Wed, 03 Nov 2010 22:09:02 +0000
-Date: Wed, 3 Nov 2010 23:08:58 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20101103220858.GJ6017@pengutronix.de>
-References: <AANLkTimYPa2XDhv4HsL6U0eK-csu4dGqiNeu2BUcLwEv@mail.gmail.com>
+Received: from mail-qw0-f49.google.com ([209.85.216.49])
+	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1PEGEm-0003KU-Kr
+	for barebox@lists.infradead.org; Fri, 05 Nov 2010 06:57:25 +0000
+Received: by qwh6 with SMTP id 6so2154595qwh.36
+	for <barebox@lists.infradead.org>; Thu, 04 Nov 2010 23:57:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <AANLkTimYPa2XDhv4HsL6U0eK-csu4dGqiNeu2BUcLwEv@mail.gmail.com>
+Date: Fri, 5 Nov 2010 07:57:20 +0100
+Message-ID: <AANLkTinWD=wYCe-w44fQNrut6mYUO9WexfRn7FA4AymV@mail.gmail.com>
+From: Belisko Marek <marek.belisko@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,41 +21,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: how to get my patch to master or barebox dev cycle
-To: Belisko Marek <marek.belisko@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: fw_printenv | saveenv for barebox
+To: barebox@lists.infradead.org
 
-Hi Marek,
+Hi,
 
-On Wed, Nov 03, 2010 at 08:46:25PM +0100, Belisko Marek wrote:
-> Hi,
-> 
-> today I get an announce about new v2010.11.0 and I try to look to
-> commits if my patch which was sent 19.10
-> for mini2440 board support
-> (http://lists.infradead.org/pipermail/barebox/2010-October/001881.html
-> ) was taken.
-> Patch was commented only to add some extra functionality and I suppose
-> it could be taken to
-> next branch and then to master in next release. But it was not.
-> 
-> So my question is what is development cycle for barebox? Similar to
-> kernel with merge window and then only release?
+not check how parameters are stored by barebox but could be used
+fw_printenv or fw_saveenv from
+userspace to inspect barebox env (similar for u-boot)?
 
-I maintain two branches, master and next. next is always open to new
-patches. After a (monthly) release I merge the next branch into master.
-The master branch only gets fixes for collateral damages caused by
-merging the next branch.
-In case of the mini2440 patch I simply forgot to handle it, sorry for
-that. I will have a look at it tomorrow.
+If this is not possible I'm interested in writing such a tools ;)
 
-Sascha
+Thanks,
+
+marek
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+as simple and primitive as possible
+-------------------------------------------------
+Marek Belisko - OPEN-NANDRA
+Freelance Developer
+
+Ruska Nova Ves 219 | Presov, 08005 Slovak Republic
+Tel: +421 915 052 184
+skype: marekwhite
+icq: 290551086
+web: http://open-nandra.com
 
 _______________________________________________
 barebox mailing list
