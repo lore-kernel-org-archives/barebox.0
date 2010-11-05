@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qw0-f49.google.com ([209.85.216.49])
-	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1PEGEm-0003KU-Kr
-	for barebox@lists.infradead.org; Fri, 05 Nov 2010 06:57:25 +0000
-Received: by qwh6 with SMTP id 6so2154595qwh.36
-	for <barebox@lists.infradead.org>; Thu, 04 Nov 2010 23:57:22 -0700 (PDT)
+Received: from tango.tkos.co.il ([62.219.50.35])
+	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1PEGq4-0003YS-M2
+	for barebox@lists.infradead.org; Fri, 05 Nov 2010 07:35:58 +0000
+Date: Fri, 5 Nov 2010 09:35:25 +0200
+From: Baruch Siach <baruch@tkos.co.il>
+Message-ID: <20101105073524.GF13530@tarshish>
+References: <AANLkTinWD=wYCe-w44fQNrut6mYUO9WexfRn7FA4AymV@mail.gmail.com>
 MIME-Version: 1.0
-Date: Fri, 5 Nov 2010 07:57:20 +0100
-Message-ID: <AANLkTinWD=wYCe-w44fQNrut6mYUO9WexfRn7FA4AymV@mail.gmail.com>
-From: Belisko Marek <marek.belisko@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <AANLkTinWD=wYCe-w44fQNrut6mYUO9WexfRn7FA4AymV@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,32 +22,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: fw_printenv | saveenv for barebox
-To: barebox@lists.infradead.org
+Subject: Re: fw_printenv | saveenv for barebox
+To: Belisko Marek <marek.belisko@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Hi,
+Hi Belisko,
 
-not check how parameters are stored by barebox but could be used
-fw_printenv or fw_saveenv from
-userspace to inspect barebox env (similar for u-boot)?
+On Fri, Nov 05, 2010 at 07:57:20AM +0100, Belisko Marek wrote:
+ 
+> not check how parameters are stored by barebox but could be used
+> fw_printenv or fw_saveenv from
+> userspace to inspect barebox env (similar for u-boot)?
+> 
+> If this is not possible I'm interested in writing such a tools ;)
 
-If this is not possible I'm interested in writing such a tools ;)
+Such a tool already exists. See scripts/bareboxenv.c.
 
-Thanks,
-
-marek
+baruch
 
 -- 
-as simple and primitive as possible
--------------------------------------------------
-Marek Belisko - OPEN-NANDRA
-Freelance Developer
-
-Ruska Nova Ves 219 | Presov, 08005 Slovak Republic
-Tel: +421 915 052 184
-skype: marekwhite
-icq: 290551086
-web: http://open-nandra.com
+                                                     ~. .~   Tk Open Systems
+=}------------------------------------------------ooO--U--Ooo------------{=
+   - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
 
 _______________________________________________
 barebox mailing list
