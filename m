@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PF3jp-0004Kq-C0
-	for barebox@lists.infradead.org; Sun, 07 Nov 2010 11:48:46 +0000
-Date: Sun, 7 Nov 2010 12:48:42 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20101107114842.GB6017@pengutronix.de>
-References: <24A9345B397CD24AA76A4E82E237956544B9560AE5@XCHTS.tmt.telital.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <24A9345B397CD24AA76A4E82E237956544B9560AE5@XCHTS.tmt.telital.com>
+Received: from moutng.kundenserver.de ([212.227.17.8])
+	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1PFZ2w-0005sR-9y
+	for barebox@lists.infradead.org; Mon, 08 Nov 2010 21:14:35 +0000
+From: Matthew Pearson <matt@tgm-solutions.com>
+Date: Mon, 08 Nov 2010 21:14:28 +0000
+Message-ID: <1289250868.2587.8.camel@aurora>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,46 +15,97 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============0747792435=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: AT91SAM9260-EK NAND Driver error
-To: Fabio Porcedda <Fabio.Porcedda@telit.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Garz & Fricke Cupid Support
+To: barebox@lists.infradead.org
 
-Hi Fabio,
 
-On Fri, Nov 05, 2010 at 06:26:43PM +0100, Fabio Porcedda wrote:
-> Hi all,
-> I have trouble reading from the nand device driver.
-> I'm using the Atmel AT91SAM9260-EK board with barebox v2010.11.0,
-> I'm using the at91sam9260ek default config with the "Atmel (AT91SAM9xxx) NAND driver" enabled .
-> 
-> When I try to access the nand device I have an error:
-> 
-> barebox:/ md -s /dev/nand0
-> err -74
-> read: error 74
+--===============0747792435==
+Content-Type: multipart/alternative; boundary="=-3obEbRTjXX51ZyvO4MRX"
 
-74 is EBADMSG which means that the checksum is wrong. Does this sector
-work with U-Boot?
-U-Boot seems to work in software ecc mode whereas barebox uses hardware
-ecc. Both have incompatible oob layouts. So either erase your nand and
-write it again with babebox (in which case U-Boot won't be able to
-access the nand) or switch barebox to software ecc (look for ecc_mode in
-your board file).
 
-Sascha
+--=-3obEbRTjXX51ZyvO4MRX
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
 
+We are working on a G&F Cupid based solution using Barebox as the
+bootloader. Currently we are using he Redboot that comes with the unit
+to download Barebox and execute it from memory, which is excellent for
+testing but not a long term solution.
+
+Does the Cupid port support executing Barebox from flash on boot in
+place of RedBoot? We have tried it a couple of times but each time has
+resulted in a bricked device. Perhaps we are doing something wrong in
+terms of the right configuration options for the bootloader? or perhaps
+how we are using RedBoot to flash it?
+
+Any hints/tips would be appreciated!
+
+Thanks,
+
+Matt
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Matthew Pearson CEng MIET MMC AMRAeS
+Chief Engineer, TGM Solutions Limited
+
+TGM Solutions Limited, Company Number 4257731, Registered in England
+Registered Office: 128-136 High Street, Edgware, Middlesex, HA8 7TT,
+United Kingdom 
+
+
+--=-3obEbRTjXX51ZyvO4MRX
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 TRANSITIONAL//EN">
+<HTML>
+<HEAD>
+  <META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=UTF-8">
+  <META NAME="GENERATOR" CONTENT="GtkHTML/3.30.3">
+</HEAD>
+<BODY>
+<FONT COLOR="#3c3c3c">We are working on a G&amp;F Cupid based solution using Barebox as the bootloader. Currently we are using he Redboot that comes with the unit to download Barebox and execute it from memory, which is excellent for testing but not a long term solution.</FONT><BR>
+<BR>
+<FONT COLOR="#3c3c3c">Does the Cupid port support executing Barebox from flash on boot in place of RedBoot? We have tried it a couple of times but each time has resulted in a bricked device. Perhaps we are doing something wrong in terms of the right configuration options for the bootloader? or perhaps how we are using RedBoot to flash it?</FONT><BR>
+<BR>
+<FONT COLOR="#3c3c3c">Any hints/tips would be appreciated!</FONT><BR>
+<BR>
+<FONT COLOR="#3c3c3c">Thanks,</FONT><BR>
+<BR>
+<FONT COLOR="#3c3c3c">Matt</FONT><BR>
+<BR>
+<TABLE CELLSPACING="0" CELLPADDING="0" WIDTH="100%">
+<TR>
+<TD>
+-- <BR>
+<B>Matthew Pearson</B><FONT SIZE="2"><FONT COLOR="#969696"> CEng MIET MMC AMRAeS</FONT></FONT><BR>
+<FONT COLOR="#3c3c3c">Chief Engineer, TGM Solutions Limited</FONT><BR>
+<BR>
+<FONT COLOR="#969696">TGM Solutions Limited, Company Number 4257731, Registered in England</FONT><BR>
+<FONT COLOR="#969696">Registered Office: 128-136 High Street, Edgware, Middlesex, HA8 7TT, United Kingdom</FONT> <BR>
+<BR>
+</TD>
+</TR>
+</TABLE>
+</BODY>
+</HTML>
+
+--=-3obEbRTjXX51ZyvO4MRX--
+
+
+
+--===============0747792435==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============0747792435==--
