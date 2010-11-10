@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from h51baff8c.k3918.sta.perspektivbredband.net ([81.186.255.140]
+	helo=fg-dc1.flatfrog.local)
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PFZME-0007Xf-9y
-	for barebox@lists.infradead.org; Mon, 08 Nov 2010 21:34:31 +0000
-Date: Mon, 8 Nov 2010 22:34:24 +0100
-From: Robert Schwebel <r.schwebel@pengutronix.de>
-Message-ID: <20101108213424.GU4233@pengutronix.de>
-References: <1289250868.2587.8.camel@aurora>
+	id 1PG6Sn-0001Bb-5f
+	for barebox@lists.infradead.org; Wed, 10 Nov 2010 08:55:29 +0000
+Message-ID: <4CDA5DF9.7050906@flatfrog.com>
+Date: Wed, 10 Nov 2010 09:55:21 +0100
+From: Orjan Friberg <of@flatfrog.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1289250868.2587.8.camel@aurora>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,45 +16,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Garz & Fricke Cupid Support
-To: Matthew Pearson <matt@tgm-solutions.com>
-Cc: barebox@lists.infradead.org
+Subject: BeagleBoard sdrc init writes reserved values
+To: barebox@lists.infradead.org
 
-Matt,
+In sdrc_init in board-beagle.c both
 
-On Mon, Nov 08, 2010 at 09:14:28PM +0000, Matthew Pearson wrote:
-> We are working on a G&F Cupid based solution using Barebox as the
-> bootloader.  Currently we are using he Redboot that comes with the
-> unit to download Barebox and execute it from memory, which is
-> excellent for testing but not a long term solution.
->
-> Does the Cupid port support executing Barebox from flash on boot in
-> place of RedBoot? We have tried it a couple of times but each time has
-> resulted in a bricked device. Perhaps we are doing something wrong in
-> terms of the right configuration options for the bootloader? or
-> perhaps how we are using RedBoot to flash it?
->
-> Any hints/tips would be appreciated!
+         writel(0x1A, SDRC_REG(SYSCONFIG));
 
-We have a little bit hacky barebox port for the CUPID (to be shown at
-the electronica in Munich, starting tomorrow), and we would surely be
-interested in some sponsoring to get the port mainlined. Please contact
-sales@pengutronix.de if you are interested.
+and
 
-Btw, the MX35 is really, really fast. It boots into Linux in less than a
-second, so that we currently are able to show a splash screen directly
-from Linux userland.
+         writel(0x18, SDRC_REG(SYSCONFIG));
 
-rsc
+sets bits 4:3 in the IDLEMODE field.  The OMAP3 TRM (spruf98k) defines 
+0x2 as the only valid value for this field, all others being marked as 
+"reserved - do not use".  board-omap3evm.c does the same thing, 
+board-sdp343x.c does not.
+
+Anyone knows where these settings come from?  Derived from an older 
+version of the TRM?  (I'm thinking there may have been a feature that 
+was discovered to be unreliable or not working as intended so it was 
+removed from the docs.)
+
+Thanks,
+Orjan
+
+
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Orjan Friberg
+FlatFrog Laboratories AB
 
 _______________________________________________
 barebox mailing list
