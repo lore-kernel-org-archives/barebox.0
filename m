@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from h51baff8c.k3918.sta.perspektivbredband.net ([81.186.255.140]
+	helo=fg-dc1.flatfrog.local)
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PGUSv-0000ij-As
-	for barebox@lists.infradead.org; Thu, 11 Nov 2010 10:33:14 +0000
-Date: Thu, 11 Nov 2010 11:32:59 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20101111103259.GY6017@pengutronix.de>
-References: <1289400839-5937-1-git-send-email-s.hauer@pengutronix.de>
-	<1289400839-5937-9-git-send-email-s.hauer@pengutronix.de>
-	<20101111052549.GB16995@jasper.tkos.co.il>
+	id 1PGVku-0004a6-OJ
+	for barebox@lists.infradead.org; Thu, 11 Nov 2010 11:55:53 +0000
+Message-ID: <4CDBD9C5.7070009@flatfrog.com>
+Date: Thu, 11 Nov 2010 12:55:49 +0100
+From: Orjan Friberg <of@flatfrog.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20101111052549.GB16995@jasper.tkos.co.il>
+References: <4CDA5DF9.7050906@flatfrog.com>
+	<20101110151106.GT6017@pengutronix.de>
+	<AANLkTikwqJckiphhidiSV=OysTQp5Jf-EWonmJTbp=Es@mail.gmail.com>
+In-Reply-To: <AANLkTikwqJckiphhidiSV=OysTQp5Jf-EWonmJTbp=Es@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,41 +20,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 08/13] mxc_nand: fix correct_data function
-To: Baruch Siach <baruch@tkos.co.il>
-Cc: barebox@lists.infradead.org
+Subject: Re: BeagleBoard sdrc init writes reserved values
+To: Anand Gadiyar <gadiyar@gmail.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi Baruch,
+On 2010-11-10 17:13, Anand Gadiyar wrote:
+>>> Anyone knows where these settings come from?  Derived from an older
+>>> version of the TRM?  (I'm thinking there may have been a feature that
+>>> was discovered to be unreliable or not working as intended so it was
+>>> removed from the docs.)
+>>
+>> I have no idea. I'm pretty sure though that the value has been copied
+>> from some version of U-Boot or Xloader.
+>>
+>
+> I agree - I think this is an accident - probably copied from older loader
+> versions and introduced in the first version that went here.
 
-On Thu, Nov 11, 2010 at 07:25:49AM +0200, Baruch Siach wrote:
-> Hi Sascha,
-> 
-> On Wed, Nov 10, 2010 at 03:53:54PM +0100, Sascha Hauer wrote:
-> > The v2 controller has a totally different mechanism to check
-> > whether the data we read had ecc errors or not. Implement this.
-> > The mechanism in the v2 controller happens to be identical to
-> > the v3 controller.
-> 
-> Does this mean that the current .correct method in not compatible with v2 
-> controllers? If so, does this bug makes any read error look like an 
-> uncorrectable error? Something else (silent corruption)?
-
-I'm afraid it's silent corruption. As I see it good crc sums can be
-detected as bad crc sums and bad crc sums can be detected as good crc
-sums if the v1 implementation is used instead of v2.
-
-Sascha
-
+Ok, thanks.  (We haven't seen any problems related to those settings, we 
+just checked them out of curiosity since we noticed there was a 
+difference between barebox/x-load/u-boot. )
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Orjan Friberg
+FlatFrog Laboratories AB
 
 _______________________________________________
 barebox mailing list
