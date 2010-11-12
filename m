@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-bw0-f49.google.com ([209.85.214.49])
 	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1PGt3d-0001cS-QL
-	for barebox@lists.infradead.org; Fri, 12 Nov 2010 12:48:46 +0000
-Received: by bwz5 with SMTP id 5so3048799bwz.36
-	for <barebox@lists.infradead.org>; Fri, 12 Nov 2010 04:48:43 -0800 (PST)
+	id 1PGtD9-0001zQ-BD
+	for barebox@lists.infradead.org; Fri, 12 Nov 2010 12:58:36 +0000
+Received: by bwz5 with SMTP id 5so3058080bwz.36
+	for <barebox@lists.infradead.org>; Fri, 12 Nov 2010 04:58:34 -0800 (PST)
 From: Marek Belisko <marek.belisko@gmail.com>
-Date: Fri, 12 Nov 2010 13:50:55 +0100
-Message-Id: <1289566255-18325-1-git-send-email-marek.belisko@gmail.com>
+Date: Fri, 12 Nov 2010 14:00:50 +0100
+Message-Id: <1289566850-20398-1-git-send-email-marek.belisko@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,34 +21,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mini2440: Fix compilation error.
+Subject: [PATCH] pcm037: Fix compilation warning.
 To: barebox@lists.infradead.org
 
-Patch fix following compilation error:
-../mini2440.c:33:28: error: asm/mach-types.h: No such file or directory
-../mini2440.c: In function 'mini2440_devices_init':
-../mini2440.c:113: error: 'MACH_TYPE_MINI2440' undeclared (first use in this function)
-../mini2440.c:113: error: (Each undeclared identifier is reported only once
-../mini2440.c:113: error: for each function it appears in.)
+This patch fix following compilation warning:
+../devices-imx31.h: In function 'imx31_add_fb':
+../devices-imx31.h:34: warning: passing argument 2 of 'imx_add_ipufb'
+from incompatible pointer type
 
 Signed-off-by: Marek Belisko <marek.belisko@gmail.com>
 ---
- arch/arm/boards/mini2440/mini2440.c |    2 +-
+ arch/arm/mach-imx/include/mach/devices-imx31.h |    2 +-
  1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/arch/arm/boards/mini2440/mini2440.c b/arch/arm/boards/mini2440/mini2440.c
-index f0d6e65..a673a5d 100644
---- a/arch/arm/boards/mini2440/mini2440.c
-+++ b/arch/arm/boards/mini2440/mini2440.c
-@@ -30,7 +30,7 @@
- #include <driver.h>
- #include <init.h>
- #include <asm/armlinux.h>
--#include <asm/mach-types.h>
-+#include <generated/mach-types.h>
- #include <partition.h>
- #include <nand.h>
- #include <asm/io.h>
+diff --git a/arch/arm/mach-imx/include/mach/devices-imx31.h b/arch/arm/mach-imx/include/mach/devices-imx31.h
+index 1f5a48a..5dcea82 100644
+--- a/arch/arm/mach-imx/include/mach/devices-imx31.h
++++ b/arch/arm/mach-imx/include/mach/devices-imx31.h
+@@ -29,7 +29,7 @@ static inline struct device_d *imx31_add_nand(struct imx_nand_platform_data *pda
+ 	return imx_add_nand((void *)0xb8000000, pdata);
+ }
+ 
+-static inline struct device_d *imx31_add_fb(struct imx_fb_platform_data *pdata)
++static inline struct device_d *imx31_add_fb(struct imx_ipu_fb_platform_data *pdata)
+ {
+ 	return imx_add_ipufb((void *)IPU_BASE, pdata);
+ }
 -- 
 1.7.1
 
