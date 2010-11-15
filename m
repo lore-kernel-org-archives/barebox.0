@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bw0-f49.google.com ([209.85.214.49])
+Received: from mail-qw0-f49.google.com ([209.85.216.49])
 	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1PHzpr-0005Kd-Ok
-	for barebox@lists.infradead.org; Mon, 15 Nov 2010 14:15:13 +0000
-Received: by bwz5 with SMTP id 5so5380483bwz.36
-	for <barebox@lists.infradead.org>; Mon, 15 Nov 2010 06:15:05 -0800 (PST)
-From: Marek Belisko <marek.belisko@gmail.com>
-Date: Mon, 15 Nov 2010 15:17:19 +0100
-Message-Id: <1289830639-26626-1-git-send-email-marek.belisko@gmail.com>
+	id 1PHzvM-0005Q5-Vd
+	for barebox@lists.infradead.org; Mon, 15 Nov 2010 14:20:53 +0000
+Received: by qwg5 with SMTP id 5so560809qwg.36
+	for <barebox@lists.infradead.org>; Mon, 15 Nov 2010 06:20:47 -0800 (PST)
+MIME-Version: 1.0
+Date: Mon, 15 Nov 2010 15:20:47 +0100
+Message-ID: <AANLkTinH6kLH99A0DgUCp3AFnrLsmcACMeTgW1s1PNKt@mail.gmail.com>
+From: Belisko Marek <marek.belisko@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,39 +17,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] serial_s3c24x0: Add missing brackets.
+Subject: sparse warnings
 To: barebox@lists.infradead.org
 
-Fucntion s3c24x0_serial_flush() could behave wrong
-because of missing brackets. Correct condition logic.
-Problem found by sparse.
+Hi,
 
-Signed-off-by: Marek Belisko <marek.belisko@gmail.com>
----
- drivers/serial/serial_s3c24x0.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+barebox compilation with C=1 produce a lot of sparse warnings.
+Mainly concerning __iomem problems with readb() and similar functions.
 
-diff --git a/drivers/serial/serial_s3c24x0.c b/drivers/serial/serial_s3c24x0.c
-index fedddd3..d7eac8f 100644
---- a/drivers/serial/serial_s3c24x0.c
-+++ b/drivers/serial/serial_s3c24x0.c
-@@ -113,7 +113,7 @@ static void s3c24x0_serial_flush(struct console_device *cdev)
- {
- 	struct device_d *dev = cdev->dev;
- 
--	while (!readb(dev->map_base + UTRSTAT) & 0x4)
-+	while (!(readb(dev->map_base + UTRSTAT) & 0x4))
- 		;
- }
- 
+Make it sense to take care or just could be omitted?
+
+thanks,
+
+marek
+
 -- 
-1.7.1
+as simple and primitive as possible
+-------------------------------------------------
+Marek Belisko - OPEN-NANDRA
+Freelance Developer
 
+Ruska Nova Ves 219 | Presov, 08005 Slovak Republic
+Tel: +421 915 052 184
+skype: marekwhite
+icq: 290551086
+web: http://open-nandra.com
 
 _______________________________________________
 barebox mailing list
