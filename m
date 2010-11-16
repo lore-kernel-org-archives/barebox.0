@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qw0-f49.google.com ([209.85.216.49])
+Received: from smtp.telit.com ([88.37.127.140])
 	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1PHzvM-0005Q5-Vd
-	for barebox@lists.infradead.org; Mon, 15 Nov 2010 14:20:53 +0000
-Received: by qwg5 with SMTP id 5so560809qwg.36
-	for <barebox@lists.infradead.org>; Mon, 15 Nov 2010 06:20:47 -0800 (PST)
+	id 1PIIkk-0002zb-Pg
+	for barebox@lists.infradead.org; Tue, 16 Nov 2010 10:27:08 +0000
+From: Fabio Porcedda <Fabio.Porcedda@telit.com>
+Date: Tue, 16 Nov 2010 11:26:46 +0100
+Message-ID: <24A9345B397CD24AA76A4E82E237956544B95BA91D@XCHTS.tmt.telital.com>
+References: <24A9345B397CD24AA76A4E82E237956544B9560AE5@XCHTS.tmt.telital.com>
+	<20101107114842.GB6017@pengutronix.de>
+In-Reply-To: <20101107114842.GB6017@pengutronix.de>
+Content-Language: en-US
 MIME-Version: 1.0
-Date: Mon, 15 Nov 2010 15:20:47 +0100
-Message-ID: <AANLkTinH6kLH99A0DgUCp3AFnrLsmcACMeTgW1s1PNKt@mail.gmail.com>
-From: Belisko Marek <marek.belisko@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,31 +23,21 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: sparse warnings
-To: barebox@lists.infradead.org
+Subject: Re: AT91SAM9260-EK NAND Driver error
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi,
+On Nov 07, 2010 at 12.49, Sascha Hauer
+> ... So either erase your nand and
+> write it again with babebox (in which case U-Boot won't be able to
+> access the nand) or switch barebox to software ecc (look for ecc_mode in
+> your board file).
 
-barebox compilation with C=1 produce a lot of sparse warnings.
-Mainly concerning __iomem problems with readb() and similar functions.
+Erasing the nand solved the problem. Thank you.
 
-Make it sense to take care or just could be omitted?
+Best regards
+Fabio Porcedda
 
-thanks,
-
-marek
-
--- 
-as simple and primitive as possible
--------------------------------------------------
-Marek Belisko - OPEN-NANDRA
-Freelance Developer
-
-Ruska Nova Ves 219 | Presov, 08005 Slovak Republic
-Tel: +421 915 052 184
-skype: marekwhite
-icq: 290551086
-web: http://open-nandra.com
 
 _______________________________________________
 barebox mailing list
