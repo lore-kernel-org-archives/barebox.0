@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp.telit.com ([88.37.127.140])
-	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1PIIkk-0002zb-Pg
-	for barebox@lists.infradead.org; Tue, 16 Nov 2010 10:27:08 +0000
-From: Fabio Porcedda <Fabio.Porcedda@telit.com>
-Date: Tue, 16 Nov 2010 11:26:46 +0100
-Message-ID: <24A9345B397CD24AA76A4E82E237956544B95BA91D@XCHTS.tmt.telital.com>
-References: <24A9345B397CD24AA76A4E82E237956544B9560AE5@XCHTS.tmt.telital.com>
-	<20101107114842.GB6017@pengutronix.de>
-In-Reply-To: <20101107114842.GB6017@pengutronix.de>
-Content-Language: en-US
+Received: from 27.mail-out.ovh.net ([91.121.30.210])
+	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1PIZdP-0005f1-Cx
+	for barebox@lists.infradead.org; Wed, 17 Nov 2010 04:28:40 +0000
+Date: Wed, 17 Nov 2010 05:25:01 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20101117042501.GE12959@game.jcrosoft.org>
 MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,21 +20,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: AT91SAM9260-EK NAND Driver error
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: x86 fix Pull request
+To: barebox@lists.infradead.org
 
-On Nov 07, 2010 at 12.49, Sascha Hauer
-> ... So either erase your nand and
-> write it again with babebox (in which case U-Boot won't be able to
-> access the nand) or switch barebox to software ecc (look for ecc_mode in
-> your board file).
+Hi,
 
-Erasing the nand solved the problem. Thank you.
+	those patches was end some times ago to fix the x86 build
 
-Best regards
-Fabio Porcedda
+	please pull
+The following changes since commit 6d2fd508d1a2f1479202a8eb80ffc71143f29874:
 
+  mini2440: Fix compilation error. (2010-11-15 09:20:34 +0100)
+
+are available in the git repository at:
+  git://git.jcrosoft.org/barebox.git x86
+
+Jean-Christophe PLAGNIOL-VILLARD (3):
+      linux16: fix cmd_tbl_t as struct command
+      x86: add 64bit host build support
+      x86: fix out of tree build support
+
+ arch/x86/Makefile           |    3 ++-
+ commands/linux16.c          |    2 +-
+ scripts/setupmbr/setupmbr.c |    4 ++--
+ 3 files changed, 5 insertions(+), 4 deletions(-)
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
