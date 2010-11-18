@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qw0-f49.google.com ([209.85.216.49])
-	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1PJ0vJ-0002ZZ-0t
-	for barebox@lists.infradead.org; Thu, 18 Nov 2010 09:37:00 +0000
-Received: by qwf6 with SMTP id 6so710487qwf.36
-	for <barebox@lists.infradead.org>; Thu, 18 Nov 2010 01:36:52 -0800 (PST)
-MIME-Version: 1.0
-In-Reply-To: <20101117091102.GS6017@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1PJ1JA-0001sO-9V
+	for barebox@lists.infradead.org; Thu, 18 Nov 2010 10:01:37 +0000
+Date: Thu, 18 Nov 2010 11:01:33 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20101118100133.GU6017@pengutronix.de>
 References: <AANLkTinH6kLH99A0DgUCp3AFnrLsmcACMeTgW1s1PNKt@mail.gmail.com>
 	<20101117091102.GS6017@pengutronix.de>
-Date: Thu, 18 Nov 2010 10:36:51 +0100
-Message-ID: <AANLkTik5032UyqFa8XUUMWGhLAeXbOZqGQ_GmZo+Bksc@mail.gmail.com>
-From: Belisko Marek <marek.belisko@gmail.com>
+	<AANLkTik5032UyqFa8XUUMWGhLAeXbOZqGQ_GmZo+Bksc@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <AANLkTik5032UyqFa8XUUMWGhLAeXbOZqGQ_GmZo+Bksc@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,40 +20,62 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: sparse warnings
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Belisko Marek <marek.belisko@gmail.com>
 Cc: barebox@lists.infradead.org
 
-SGksCgpPbiBXZWQsIE5vdiAxNywgMjAxMCBhdCAxMDoxMSBBTSwgU2FzY2hhIEhhdWVyIDxzLmhh
-dWVyQHBlbmd1dHJvbml4LmRlPiB3cm90ZToKPiBIaSBNYXJlaywKPgo+IE9uIE1vbiwgTm92IDE1
-LCAyMDEwIGF0IDAzOjIwOjQ3UE0gKzAxMDAsIEJlbGlza28gTWFyZWsgd3JvdGU6Cj4+IEhpLAo+
-Pgo+PiBiYXJlYm94IGNvbXBpbGF0aW9uIHdpdGggQz0xIHByb2R1Y2UgYSBsb3Qgb2Ygc3BhcnNl
-IHdhcm5pbmdzLgo+PiBNYWlubHkgY29uY2VybmluZyBfX2lvbWVtIHByb2JsZW1zIHdpdGggcmVh
-ZGIoKSBhbmQgc2ltaWxhciBmdW5jdGlvbnMuCj4+Cj4+IE1ha2UgaXQgc2Vuc2UgdG8gdGFrZSBj
-YXJlIG9yIGp1c3QgY291bGQgYmUgb21pdHRlZD8KPgo+IEkgdGhpbmsgaXQgbWFrZXMgc2Vuc2Ug
-dG8gd29yayBvbiB0aGlzLiBUaGVuIHdlIGNhbiBzZWUgdGhlIHVzZWZ1bAo+IHdhcm5pbmdzIGJ1
-cmllZCB1bmRlciB0aGUgX19pb21lbSB3YXJuaW5ncy4KPgo+IEkgaGFkIHRoZSBpZGVhIG9mIGFk
-ZGluZyBhCj4KPiAjZGVmaW5lIElPTUVNKGFkZHIpIMKgIMKgIMKgIMKgKCh2b2lkIF9fZm9yY2Ug
-X19pb21lbSAqKShhZGRyKSkKPgo+IGFuZCB1c2UgaXQgd2hlcmUgYXBwcm9wcmlhdGUuCk1heWJl
-IHN0dXBpZCBxdWVzdGlvbiBidXQgY291bGRuJ3QgYmUgX19pb21lbSBtZWNoYW5pc20gcmVtb3Zl
-ZCBjb21wbGV0ZWx5PwpEbyB3ZSBuZWVkIHRvIGNoZWNrIGZvciBkaWZmZXJlbnQgYWRkcmVzc19z
-cGFjZT8gSW4gbXkgb3BpbmlvbiBpdAptYWtlcyBubyBzZW5zZSBpbgpiYXJlYm94Lgo+Cj4gU2Fz
-Y2hhCj4KPiAtLQo+IFBlbmd1dHJvbml4IGUuSy4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAg
-wqAgwqAgwqAgwqAgfCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCB8
-Cj4gSW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgfCBo
-dHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyDCoHwKPiBQZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhp
-bGRlc2hlaW0sIEdlcm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgwqAgwqB8Cj4gQW10
-c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgwqAgwqAgwqAgwqAgwqAgfCBGYXg6IMKgICs0
-OS01MTIxLTIwNjkxNy01NTU1IHwKPgoKdGhhbmtzLAoKbWFyZWsKCi0tIAphcyBzaW1wbGUgYW5k
-IHByaW1pdGl2ZSBhcyBwb3NzaWJsZQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tCk1hcmVrIEJlbGlza28gLSBPUEVOLU5BTkRSQQpGcmVlbGFuY2UgRGV2
-ZWxvcGVyCgpSdXNrYSBOb3ZhIFZlcyAyMTkgfCBQcmVzb3YsIDA4MDA1IFNsb3ZhayBSZXB1Ymxp
-YwpUZWw6ICs0MjEgOTE1IDA1MiAxODQKc2t5cGU6IG1hcmVrd2hpdGUKaWNxOiAyOTA1NTEwODYK
-d2ViOiBodHRwOi8vb3Blbi1uYW5kcmEuY29tCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmlu
-ZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9i
-YXJlYm94Cg==
+On Thu, Nov 18, 2010 at 10:36:51AM +0100, Belisko Marek wrote:
+> Hi,
+> =
+
+> On Wed, Nov 17, 2010 at 10:11 AM, Sascha Hauer <s.hauer@pengutronix.de> w=
+rote:
+> > Hi Marek,
+> >
+> > On Mon, Nov 15, 2010 at 03:20:47PM +0100, Belisko Marek wrote:
+> >> Hi,
+> >>
+> >> barebox compilation with C=3D1 produce a lot of sparse warnings.
+> >> Mainly concerning __iomem problems with readb() and similar functions.
+> >>
+> >> Make it sense to take care or just could be omitted?
+> >
+> > I think it makes sense to work on this. Then we can see the useful
+> > warnings buried under the __iomem warnings.
+> >
+> > I had the idea of adding a
+> >
+> > #define IOMEM(addr) =A0 =A0 =A0 =A0((void __force __iomem *)(addr))
+> >
+> > and use it where appropriate.
+> Maybe stupid question but couldn't be __iomem mechanism removed completel=
+y?
+> Do we need to check for different address_space? In my opinion it
+> makes no sense in
+> barebox.
+
+I have a better feeling letting it in. There may be no different address
+spaces on Arm, but there are for exmample on x86.
+You can simply do a #define __iomem in include/linux/compiler.h to
+silence these kinds of warnings temporarily if you are not interested.
+I agree that at least on Arm these warnings will not reveal any real
+bugs.
+
+Sascha
+
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
