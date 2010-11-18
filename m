@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-fx0-f49.google.com ([209.85.161.49])
 	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1PJ4WI-0005au-Up
-	for barebox@lists.infradead.org; Thu, 18 Nov 2010 13:27:24 +0000
-Received: by mail-fx0-f49.google.com with SMTP id 1so1559340fxm.36
-	for <barebox@lists.infradead.org>; Thu, 18 Nov 2010 05:27:22 -0800 (PST)
+	id 1PJ4WH-0005aU-Ka
+	for barebox@lists.infradead.org; Thu, 18 Nov 2010 13:27:23 +0000
+Received: by mail-fx0-f49.google.com with SMTP id 1so1559330fxm.36
+	for <barebox@lists.infradead.org>; Thu, 18 Nov 2010 05:27:21 -0800 (PST)
 From: Marek Belisko <marek.belisko@open-nandra.com>
-Date: Thu, 18 Nov 2010 14:29:31 +0100
-Message-Id: <1290086971-5467-6-git-send-email-marek.belisko@open-nandra.com>
+Date: Thu, 18 Nov 2010 14:29:30 +0100
+Message-Id: <1290086971-5467-5-git-send-email-marek.belisko@open-nandra.com>
 In-Reply-To: <1290086971-5467-1-git-send-email-marek.belisko@open-nandra.com>
 References: <1290086971-5467-1-git-send-email-marek.belisko@open-nandra.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,119 +23,153 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/5] smc91111: Various sparse fixes.
+Subject: [PATCH 4/5] nand_s3c2410: Fix sparse warnings.
 To: barebox@lists.infradead.org
 Cc: Marek Belisko <marek.belisko@open-nandra.com>
 
-Patch fix all similar warnings found by sparse:
-drivers/net/smc91111.c:488:9:
+Patch fix following sparse warnings:
+drivers/mtd/nand/nand_s3c2410.c:125:9:
 warning: incorrect type in argument 1 (different base types)
 	expected void const volatile [noderef] <asn:2>*<noident>
-	got unsigned long [unsigned] offset
+	got unsigned long
 
 Signed-off-by: Marek Belisko <marek.belisko@open-nandra.com>
 ---
- drivers/net/smc91111.c |   40 ++++++++++++++++++++--------------------
- 1 files changed, 20 insertions(+), 20 deletions(-)
+ drivers/mtd/nand/nand_s3c2410.c |   26 +++++++++++++-------------
+ include/linux/mtd/nand.h        |    1 -
+ 2 files changed, 13 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/smc91111.c b/drivers/net/smc91111.c
-index 605a7d8..535e69a 100644
---- a/drivers/net/smc91111.c
-+++ b/drivers/net/smc91111.c
-@@ -440,20 +440,20 @@
- #define MEMORY_WAIT_TIME 16
+diff --git a/drivers/mtd/nand/nand_s3c2410.c b/drivers/mtd/nand/nand_s3c2410.c
+index b989583..fa4acf4 100644
+--- a/drivers/mtd/nand/nand_s3c2410.c
++++ b/drivers/mtd/nand/nand_s3c2410.c
+@@ -96,7 +96,7 @@ struct s3c24x0_nand_host {
+ 	struct mtd_partition	*parts;
+ 	struct device_d		*dev;
  
- struct accessors {
--	void (*ob)(unsigned, unsigned long);
--	void (*ow)(unsigned, unsigned long);
--	void (*ol)(unsigned long, unsigned long);
--	void (*osl)(unsigned long, const void*, int);
--	unsigned (*ib)(unsigned long);
--	unsigned (*iw)(unsigned long);
--	unsigned long (*il)(unsigned long);
--	void (*isl)(unsigned long, void*, int);
-+	void (*ob)(unsigned, void __iomem *);
-+	void (*ow)(unsigned, void __iomem *);
-+	void (*ol)(unsigned long, void __iomem *);
-+	void (*osl)(void __iomem *, const void  *, int);
-+	unsigned (*ib)(void __iomem *);
-+	unsigned (*iw)(void __iomem *);
-+	unsigned long (*il)(void __iomem *);
-+	void (*isl)(void __iomem *, void*, int);
+-	unsigned long		base;
++	void __iomem		*base;
  };
  
- struct smc91c111_priv {
- 	struct mii_device miidev;
- 	struct accessors a;
--	unsigned long base;
-+	void __iomem *base;
- };
- 
- #if (SMC_DEBUG > 2 )
-@@ -483,44 +483,44 @@ struct smc91c111_priv {
- 
- #define ETH_ZLEN 60
- 
--static void a_outb(unsigned value, unsigned long offset)
-+static void a_outb(unsigned value, void __iomem *offset)
+ /**
+@@ -120,7 +120,7 @@ static struct nand_ecclayout nand_hw_eccoob = {
+  * @param[in] host Base address of the NAND controller
+  * @param[in] cmd Command for NAND flash
+  */
+-static void __nand_boot_init send_cmd(unsigned long host, uint8_t cmd)
++static void __nand_boot_init send_cmd(void __iomem *host, uint8_t cmd)
  {
- 	writeb(value, offset);
+ 	writeb(cmd, host + NFCMD);
+ }
+@@ -130,7 +130,7 @@ static void __nand_boot_init send_cmd(unsigned long host, uint8_t cmd)
+  * @param[in] host Base address of the NAND controller
+  * @param[in] addr Address for the NAND flash
+  */
+-static void __nand_boot_init send_addr(unsigned long host, uint8_t addr)
++static void __nand_boot_init send_addr(void __iomem *host, uint8_t addr)
+ {
+ 	writeb(addr, host + NFADDR);
+ }
+@@ -139,7 +139,7 @@ static void __nand_boot_init send_addr(unsigned long host, uint8_t addr)
+  * Enable the NAND flash access
+  * @param[in] host Base address of the NAND controller
+  */
+-static void __nand_boot_init enable_cs(unsigned long host)
++static void __nand_boot_init enable_cs(void __iomem *host)
+ {
+ #ifdef CONFIG_CPU_S3C2410
+ 	writew(readw(host + NFCONF) & ~NFCONF_nFCE, host + NFCONF);
+@@ -153,7 +153,7 @@ static void __nand_boot_init enable_cs(unsigned long host)
+  * Disable the NAND flash access
+  * @param[in] host Base address of the NAND controller
+  */
+-static void __nand_boot_init disable_cs(unsigned long host)
++static void __nand_boot_init disable_cs(void __iomem *host)
+ {
+ #ifdef CONFIG_CPU_S3C2410
+ 	writew(readw(host + NFCONF) | NFCONF_nFCE, host + NFCONF);
+@@ -168,7 +168,7 @@ static void __nand_boot_init disable_cs(unsigned long host)
+  * @param[in] host Base address of the NAND controller
+  * @param[in] timing Timing to access the NAND memory
+  */
+-static void __nand_boot_init enable_nand_controller(unsigned long host, uint32_t timing)
++static void __nand_boot_init enable_nand_controller(void __iomem *host, uint32_t timing)
+ {
+ #ifdef CONFIG_CPU_S3C2410
+ 	writew(timing + NFCONF_EN + NFCONF_nFCE, host + NFCONF);
+@@ -183,7 +183,7 @@ static void __nand_boot_init enable_nand_controller(unsigned long host, uint32_t
+  * Diable the NAND flash controller
+  * @param[in] host Base address of the NAND controller
+  */
+-static void __nand_boot_init disable_nand_controller(unsigned long host)
++static void __nand_boot_init disable_nand_controller(void __iomem *host)
+ {
+ #ifdef CONFIG_CPU_S3C2410
+ 	writew(NFCONF_nFCE, host + NFCONF);
+@@ -359,7 +359,7 @@ static int s3c24x0_nand_probe(struct device_d *dev)
+ 		return -ENOMEM;
+ 
+ 	host->dev = dev;
+-	host->base = dev->map_base;
++	host->base = IOMEM(dev->map_base);
+ 
+ 	/* structures must be linked */
+ 	chip = &host->nand;
+@@ -375,7 +375,7 @@ static int s3c24x0_nand_probe(struct device_d *dev)
+ 	chip->chip_delay = 50;
+ 	chip->priv = host;
+ 
+-	chip->IO_ADDR_R = chip->IO_ADDR_W = (void*)(dev->map_base + NFDATA);
++	chip->IO_ADDR_R = chip->IO_ADDR_W = IOMEM(dev->map_base + NFDATA);
+ 
+ 	chip->cmd_ctrl = s3c24x0_nand_hwcontrol;
+ 	chip->dev_ready = s3c24x0_nand_devready;
+@@ -418,13 +418,13 @@ static struct driver_d s3c24x0_nand_driver = {
+ 
+ #ifdef CONFIG_S3C24XX_NAND_BOOT
+ 
+-static void __nand_boot_init wait_for_completion(unsigned long host)
++static void __nand_boot_init wait_for_completion(void __iomem *host)
+ {
+ 	while (!(readw(host + NFSTAT) & NFSTAT_BUSY))
+ 		;
  }
  
--static void a_outw(unsigned value, unsigned long offset)
-+static void a_outw(unsigned value, void __iomem *offset)
+-static void __nand_boot_init nfc_addr(unsigned long host, uint32_t offs)
++static void __nand_boot_init nfc_addr(void __iomem *host, uint32_t offs)
  {
- 	writew(value, offset);
- }
- 
--static void a_outl(unsigned long value, unsigned long offset)
-+static void a_outl(unsigned long value, void __iomem *offset)
+ 	send_addr(host, offs & 0xff);
+ 	send_addr(host, (offs >> 9) & 0xff);
+@@ -447,7 +447,7 @@ static void __nand_boot_init nfc_addr(unsigned long host, uint32_t offs)
+  */
+ void __nand_boot_init s3c24x0_nand_load_image(void *dest, int size, int page, int pagesize)
  {
- 	writel(value, offset);
- }
+-	unsigned long host = S3C24X0_NAND_BASE;
++	void __iomem *host = (void __iomem *)S3C24X0_NAND_BASE;
+ 	int i;
  
--static void a_outsl(unsigned long offset, const void *data, int count)
-+static void a_outsl(void __iomem *offset, const void *data, int count)
- {
--	writesl((void*)offset, data, count);
-+	writesl(offset, data, count);
- }
+ 	/*
+@@ -469,7 +469,7 @@ void __nand_boot_init s3c24x0_nand_load_image(void *dest, int size, int page, in
+ 		wait_for_completion(host);
+ 		/* copy one page (do *not* use readsb() here!)*/
+ 		for (i = 0; i < pagesize; i++)
+-			writeb(readb(host + NFDATA), (unsigned long)(dest + i));
++			writeb(readb(host + NFDATA), (void __iomem *)(dest + i));
+ 		disable_cs(host);
  
--static unsigned a_inb(unsigned long offset)
-+static unsigned a_inb(void __iomem *offset)
- {
- 	return readb(offset);
- }
- 
--static unsigned a_inw(unsigned long offset)
-+static unsigned a_inw(void __iomem *offset)
- {
- 	return readw(offset);
- }
- 
--static unsigned long a_inl(unsigned long offset)
-+static unsigned long a_inl(void __iomem *offset)
- {
- 	return readl(offset);
- }
- 
--static inline void a_insl(unsigned long offset, void *data, int count)
-+static inline void a_insl(void __iomem *offset, void *data, int count)
- {
--	readsl((void*)offset, data, count);
-+	readsl(offset, data, count);
- }
- 
- /* access happens via a 32 bit bus */
-@@ -1317,7 +1317,7 @@ static int smc91c111_probe(struct device_d *dev)
- 	priv->miidev.address = 0;
- 	priv->miidev.flags = 0;
- 	priv->miidev.edev = edev;
--	priv->base = dev->map_base;
-+	priv->base = IOMEM(dev->map_base);
- 
- 	smc91c111_reset(edev);
- 
+ 		page++;
+diff --git a/include/linux/mtd/nand.h b/include/linux/mtd/nand.h
+index 2befaf0..6cf2bb2 100644
+--- a/include/linux/mtd/nand.h
++++ b/include/linux/mtd/nand.h
+@@ -359,7 +359,6 @@ struct nand_buffers {
+  *			(determine if errors are correctable)
+  * @write_page:		[REPLACEABLE] High-level page write function
+  */
+-#define IOMEM(addr) ((void __force __iomem *)addr)
+ struct nand_chip {
+ 	
+ 	void __iomem	*IO_ADDR_R;
 -- 
 1.7.1
 
