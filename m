@@ -1,11 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PIzg7-0003tZ-Fl
-	for barebox@lists.infradead.org; Thu, 18 Nov 2010 08:17:12 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 18 Nov 2010 09:17:06 +0100
-Message-Id: <1290068226-9576-1-git-send-email-s.hauer@pengutronix.de>
+Received: from mail-qy0-f177.google.com ([209.85.216.177])
+	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1PIzhW-0004AH-Ak
+	for barebox@lists.infradead.org; Thu, 18 Nov 2010 08:18:39 +0000
+Received: by qyk4 with SMTP id 4so1070122qyk.15
+	for <barebox@lists.infradead.org>; Thu, 18 Nov 2010 00:18:36 -0800 (PST)
+MIME-Version: 1.0
+In-Reply-To: <20101117084405.GR6017@pengutronix.de>
+References: <1288092708-5187-1-git-send-email-jbe@pengutronix.de>
+	<20101101131946.GW6017@pengutronix.de>
+	<201011151057.01538.jbe@pengutronix.de>
+	<AANLkTi=QpyH4imNRBkwQekdq3177E5yJiAFAM5jMH=jb@mail.gmail.com>
+	<20101117084405.GR6017@pengutronix.de>
+Date: Thu, 18 Nov 2010 09:18:36 +0100
+Message-ID: <AANLkTimhJsC+aZYZsjVMkgTNDyQuAG1q+3LJaJVnJusV@mail.gmail.com>
+From: Belisko Marek <marek.belisko@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,109 +23,73 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] i.MX device macros: Fix esdhci
-To: barebox@lists.infradead.org
+Subject: Re: [PATCHv2] Add dynamic video initialization to barebox
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-The patch introducing device macros for i.MX accidently registered a
-imx-mmc device for i.MX25/35/51. It should be a imx-esdhc device. This
-patch fixes tis
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/mach-imx/devices.c                    |    5 +++++
- arch/arm/mach-imx/include/mach/devices-imx25.h |    2 +-
- arch/arm/mach-imx/include/mach/devices-imx35.h |    6 +++---
- arch/arm/mach-imx/include/mach/devices-imx51.h |    4 ++--
- arch/arm/mach-imx/include/mach/devices.h       |    1 +
- 5 files changed, 12 insertions(+), 6 deletions(-)
-
-diff --git a/arch/arm/mach-imx/devices.c b/arch/arm/mach-imx/devices.c
-index 11cf2a4..0395b0e 100644
---- a/arch/arm/mach-imx/devices.c
-+++ b/arch/arm/mach-imx/devices.c
-@@ -57,3 +57,8 @@ struct device_d *imx_add_mmc(void *base, int id, void *pdata)
- {
- 	return imx_add_device("imx-mmc", id, base, 0x1000, pdata);
- }
-+
-+struct device_d *imx_add_esdhc(void *base, int id, void *pdata)
-+{
-+	return imx_add_device("imx-esdhc", id, base, 0x1000, pdata);
-+}
-diff --git a/arch/arm/mach-imx/include/mach/devices-imx25.h b/arch/arm/mach-imx/include/mach/devices-imx25.h
-index dc7f98f..87f5ba0 100644
---- a/arch/arm/mach-imx/include/mach/devices-imx25.h
-+++ b/arch/arm/mach-imx/include/mach/devices-imx25.h
-@@ -33,6 +33,6 @@ static inline struct device_d *imx25_add_fec(struct fec_platform_data *pdata)
- 
- static inline struct device_d *imx25_add_mmc0(void *pdata)
- {
--	return imx_add_mmc((void *)0x53fb4000, 0, pdata);
-+	return imx_add_esdhc((void *)0x53fb4000, 0, pdata);
- }
- 
-diff --git a/arch/arm/mach-imx/include/mach/devices-imx35.h b/arch/arm/mach-imx/include/mach/devices-imx35.h
-index 3b2b1ff..69f4b36 100644
---- a/arch/arm/mach-imx/include/mach/devices-imx35.h
-+++ b/arch/arm/mach-imx/include/mach/devices-imx35.h
-@@ -43,15 +43,15 @@ static inline struct device_d *imx35_add_fec(struct fec_platform_data *pdata)
- 
- static inline struct device_d *imx35_add_mmc0(void *pdata)
- {
--	return imx_add_mmc((void *)IMX_SDHC1_BASE, 0, pdata);
-+	return imx_add_esdhc((void *)IMX_SDHC1_BASE, 0, pdata);
- }
- 
- static inline struct device_d *imx35_add_mmc1(void *pdata)
- {
--	return imx_add_mmc((void *)IMX_SDHC2_BASE, 1, pdata);
-+	return imx_add_esdhc((void *)IMX_SDHC2_BASE, 1, pdata);
- }
- 
- static inline struct device_d *imx35_add_mmc2(void *pdata)
- {
--	return imx_add_mmc((void *)IMX_SDHC3_BASE, 2, pdata);
-+	return imx_add_esdhc((void *)IMX_SDHC3_BASE, 2, pdata);
- }
-diff --git a/arch/arm/mach-imx/include/mach/devices-imx51.h b/arch/arm/mach-imx/include/mach/devices-imx51.h
-index ae85318..a5deb5c 100644
---- a/arch/arm/mach-imx/include/mach/devices-imx51.h
-+++ b/arch/arm/mach-imx/include/mach/devices-imx51.h
-@@ -43,12 +43,12 @@ static inline struct device_d *imx51_add_fec(struct fec_platform_data *pdata)
- 
- static inline struct device_d *imx51_add_mmc0(void *pdata)
- {
--	return imx_add_mmc((void *)MX51_MMC_SDHC1_BASE_ADDR, 0, pdata);
-+	return imx_add_esdhc((void *)MX51_MMC_SDHC1_BASE_ADDR, 0, pdata);
- }
- 
- static inline struct device_d *imx51_add_mmc1(void *pdata)
- {
--	return imx_add_mmc((void *)MX51_MMC_SDHC2_BASE_ADDR, 0, pdata);
-+	return imx_add_esdhc((void *)MX51_MMC_SDHC2_BASE_ADDR, 0, pdata);
- }
- 
- static inline struct device_d *imx51_add_nand(struct imx_nand_platform_data *pdata)
-diff --git a/arch/arm/mach-imx/include/mach/devices.h b/arch/arm/mach-imx/include/mach/devices.h
-index 677d5b5..7338ac5 100644
---- a/arch/arm/mach-imx/include/mach/devices.h
-+++ b/arch/arm/mach-imx/include/mach/devices.h
-@@ -14,4 +14,5 @@ struct device_d *imx_add_nand(void *base, struct imx_nand_platform_data *pdata);
- struct device_d *imx_add_fb(void *base, struct imx_fb_platform_data *pdata);
- struct device_d *imx_add_ipufb(void *base, struct imx_ipu_fb_platform_data *pdata);
- struct device_d *imx_add_mmc(void *base, int id, void *pdata);
-+struct device_d *imx_add_esdhc(void *base, int id, void *pdata);
- 
--- 
-1.7.2.3
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGksCgpPbiBXZWQsIE5vdiAxNywgMjAxMCBhdCA5OjQ0IEFNLCBTYXNjaGEgSGF1ZXIgPHMuaGF1
+ZXJAcGVuZ3V0cm9uaXguZGU+IHdyb3RlOgo+IE9uIE1vbiwgTm92IDE1LCAyMDEwIGF0IDExOjI1
+OjUzQU0gKzAxMDAsIEJlbGlza28gTWFyZWsgd3JvdGU6Cj4+IEhpLAo+Pgo+PiBPbiBNb24sIE5v
+diAxNSwgMjAxMCBhdCAxMDo1NyBBTSwgSnVlcmdlbiBCZWlzZXJ0IDxqYmVAcGVuZ3V0cm9uaXgu
+ZGU+IHdyb3RlOgo+PiA+IEhpIFNhc2NoYSwKPj4gPgo+PiA+IFNhc2NoYSBIYXVlciB3cm90ZToK
+Pj4gPj4gT24gVHVlLCBPY3QgMjYsIDIwMTAgYXQgMDE6MzE6MzZQTSArMDIwMCwgSnVlcmdlbiBC
+ZWlzZXJ0IHdyb3RlOgo+PiA+PiA+IEN1cnJlbnRseSBiYXJlYm94IHVzZXMgYSBmaXhlZCB2aWRl
+b21vZGUgc2V0dXAuIEV2ZXJ5dGhpbmcgaXMgY29tcGlsZWQKPj4gPj4gPiBpbi4gVGhpcyBjaGFu
+Z2UgYWRkcyB0aGUgcG9zc2liaWxpdHkgdG8gc2VsZWN0IGEgdmlkZW9tb2RlIGFjY29yZGluZyB0
+byBhCj4+ID4+ID4gY29ubmVjdGVkIGRpc3BsYXkgYXQgcnVudGltZS4gVGhlIGN1cnJlbnQgYmVo
+YXZpb3VyIGlzIHN0aWxsIHByZXNlbnQgaWYKPj4gPj4gPiBub3Qgb3RoZXJ3aXNlIGNvbmZpZ3Vy
+ZWQuIElmIGNvbmZpZ3VyZWQgZm9yIHJ1bnRpbWUgc2V0dXAsIGluaXRpYWxpemF0aW9uCj4+ID4+
+ID4gb2YgdGhlIHZpZGVvIGhhcmR3YXJlIHdpbGwgYmUgZGVsYXllZCB1bnRpbCB0aGUgcmVxdWly
+ZWQgdmlkZW9tb2RlIHdpbGwKPj4gPj4gPiBiZSBzZWxlY3RlZCBmcm9tIHRoZSBzaGVsbCBjb2Rl
+LiBJZiBtb3JlIHRoYW4gb25lIHZpZGVvbW9kZSBpcyBzdXBwb3J0ZWQKPj4gPj4gPiBieSB0aGUg
+cGxhdGZvcm0sIHJ1bm5pbmcgdGhlICdkZXZpbmZvJyBjb21tYW5kIG9uIHRoZSBmcmFtZWJ1ZmZl
+ciBkZXZpY2UKPj4gPj4gPiBzaG93cyB0aGUgc3VwcG9ydGVkIHZpZGVvbW9kZSBsaXN0LiBBZnRl
+ciBzZWxlY3RpbmcgdGhlIHZpZGVvbW9kZSwgdGhlCj4+ID4+ID4gb3V0cHV0IGNhbiBiZSBlbmFi
+bGVkLgo+PiA+Pgo+PiA+PiBHZW5lcmFsIHJlbWFya3MgYWJvdXQgdGhpcyBzZXJpZXM6Cj4+ID4+
+Cj4+ID4+IC0gUGxlYXNlIGRvIG5vdCBhZGQgY29kZSB3aXRoICcjaWYgMCcgYW5kIGFjdGl2YXRl
+IGl0IGxhdGVyLiBUaGlzIHNob3dzCj4+ID4+IMKgIHRoZSBzZXJpZXMgaGFzIHRoZSB3cm9uZyBv
+cmRlci4KPj4gPgo+PiA+IFRoaXMgd2FzIGZvciByZXZpZXcgb25seS4gSWYgSSB3b3VsZCBjaGFu
+Z2UgdGhlIGNvZGUgaW4gb25lIHN0ZXAsIHRoZSBwYXRjaCBpcwo+PiA+IHVucmVhZGFibGUuCj4+
+ID4KPj4gPj4gLSBQbGVhc2UgcmVmcmFpbiBmcm9tIGJhc2luZyB5b3VyIGludGVybmFsIGZ1bmN0
+aW9ucyBhcm91bmQgJ3N0cnVjdAo+PiA+PiDCoCBkZXZpY2VfZCcuIEJ5IGRvaW5nIHNvIHdlIGNv
+bXBsZXRleSBsb3NlIHR5cGUgc2FmZXR5IGFuZCBhdCBsZWFzdCBpbgo+PiA+PiDCoCBjYXNlIG9m
+IHRoZSBtY2kgZnJhbWV3b3JrIHdoZXJlIHRocmVlIGRpZmZlcmVudCBkZXZpY2VzIGFyZSBpbnZv
+bHZlZAo+PiA+PiDCoCB0aGlzIGxlYWRzIHRvIHVucmVhZGFibGUgYW5kIGVycm9yIHByb25lIGNv
+ZGUuCj4+ID4KPj4gPiBCdXQgSU1ITyBpbiB0aGUgY2FzZSBvZiB0aGUgTUNJIHRoZXJlIF9hcmVf
+IHRocmVlIGRldmljZXMhCj4+ID4gwqAtIFRoZSBvbmUgdGhhdCBrbm93cyBob3cgdG8gaGFuZGxl
+IGRpc2sgZHJpdmVzCj4+ID4gwqAtIFRoZSBvbmUgdGhhdCBrbm93cyB3aGF0IGEgU0QgY2FyZCBp
+cwo+PiA+IMKgLSB0aGUgb25lIHRoYXQga25vd3MgaG93IHRvIHRyYW5zZmVyIGRhdGEgZnJvbSBh
+biB0byBhbiBhdHRhY2hlZCBkZXZpY2UuCj4+ID4KPj4gPiBXaHkgdGhpcyBpcyB1bnJlYWRhYmxl
+IG9yIGVycm9yIHByb25lPyBJZiB5b3UgY29tYmluZSBhbGwgdGhlc2UgZGlmZmVyZW50Cj4+ID4g
+ZnVuY3Rpb25zIGludG8gb25lIEkgd291bGQgc2F5OiBZZXMsIHRoZSByZXN1bHQgaXMgdW5yZWFk
+YWJsZSBhbmQgZXJyb3IKPj4gPiBwcm9uZS4gQW5kIGlmIHlvdSB3b3VsZCBzYXkgZm9yIGEgYm9v
+dGxvYWRlciB0aGlzIHNlcGFyYXRlIGFwcHJvYWNoIGlzCj4+ID4gb3Zlci1lbmdpbmVlcmVkLCBJ
+IHdvdWxkIHNheTogTWF5YmUuCj4+ID4KPj4gPj4gwqAgVGhlIGZyYW1lYnVmZmVyIGNvZGUgc2hv
+dWxkIGJlIGJhc2VkIGFyb3VuZCBzdHJ1Y3QgZmJfaW5mby4KPj4gPgo+PiA+IEkgZG8gbm90IGxp
+a2UgdGhpcyBpZGVhLCBidXQgb2theS4gSW4gdGhlIG5leHQgc2VyaWVzIEkgd2lsbCBkbyBpdCBp
+biB0aGlzCj4+ID4gd2F5Lgo+PiA+Cj4+ID4+IC0gUGxlYXNlIGtlZXAgdGhlIGxpbmUgbGVuZ3Ro
+cyB3aXRoaW4gc2Vuc2libGUgbGltaXRzLgo+PiA+Cj4+ID4gU29ycnksIEkgY2hlY2tlZCBpdCB0
+aGUgbGFzdCB0aW1lLCBidXQgc29tZSBsaW5lcyBhcmUgc2xpcHBlZCB0aHJvdWdoLgo+PiBDb3Vs
+ZG4ndCBiZSBpbmNsdWRlZCBpbiBiYXJlYm94IHNjcmlwdHMgYWxzbyBjaGVja3BhdGNoLnBsIHNj
+cmlwdCBmcm9tIGtlcm5lbD8KPj4gV291bGQgYmUgbmljZSB0byBoYXZlIHByb3BlciBwYXRjaGVz
+IHdpdGgga2VybmVsIGNvZGluZyBzdHlsZS4KPgo+IFN1cmUsIHNlbmQgYSBwYXRjaCA7KQpKdXN0
+IGNoZWNrcGF0Y2gucGwgZnJvbSBrZXJuZWwgb3IgaW52ZW50IHNvbWUgbGVzcyByZXN0cmljdGl2
+ZSB0b29sIDspCmluIGUuZyAucHl0aG9uPwo+Cj4gU2FzY2hhCj4KPgo+IC0tCj4gUGVuZ3V0cm9u
+aXggZS5LLiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCB8IMKgIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHwKPiBJbmR1c3RyaWFsIExpbnV4IFNv
+bHV0aW9ucyDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXgu
+ZGUvIMKgfAo+IFBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSB8IFBo
+b25lOiArNDktNTEyMS0yMDY5MTctMCDCoCDCoHwKPiBBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBI
+UkEgMjY4NiDCoCDCoCDCoCDCoCDCoCB8IEZheDogwqAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAo+
+CgptYXJlawoKLS0gCmFzIHNpbXBsZSBhbmQgcHJpbWl0aXZlIGFzIHBvc3NpYmxlCi0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTWFyZWsgQmVsaXNrbyAt
+IE9QRU4tTkFORFJBCkZyZWVsYW5jZSBEZXZlbG9wZXIKClJ1c2thIE5vdmEgVmVzIDIxOSB8IFBy
+ZXNvdiwgMDgwMDUgU2xvdmFrIFJlcHVibGljClRlbDogKzQyMSA5MTUgMDUyIDE4NApza3lwZTog
+bWFyZWt3aGl0ZQppY3E6IDI5MDU1MTA4Ngp3ZWI6IGh0dHA6Ly9vcGVuLW5hbmRyYS5jb20KCl9f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFp
+bGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFk
+ZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
