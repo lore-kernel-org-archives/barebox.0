@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-fx0-f49.google.com ([209.85.161.49])
-	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1PJ4WF-0005au-NL
-	for barebox@lists.infradead.org; Thu, 18 Nov 2010 13:27:20 +0000
-Received: by fxm1 with SMTP id 1so1559340fxm.36
-	for <barebox@lists.infradead.org>; Thu, 18 Nov 2010 05:27:18 -0800 (PST)
-From: Marek Belisko <marek.belisko@open-nandra.com>
-Date: Thu, 18 Nov 2010 14:29:28 +0100
-Message-Id: <1290086971-5467-3-git-send-email-marek.belisko@open-nandra.com>
-In-Reply-To: <1290086971-5467-1-git-send-email-marek.belisko@open-nandra.com>
-References: <1290086971-5467-1-git-send-email-marek.belisko@open-nandra.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1PJLtv-0001wM-Qg
+	for barebox@lists.infradead.org; Fri, 19 Nov 2010 08:00:57 +0000
+Date: Fri, 19 Nov 2010 09:00:49 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20101119080049.GA6017@pengutronix.de>
+References: <20101112180228.GC13661@game.jcrosoft.org>
+	<1289585938-22813-1-git-send-email-plagnioj@jcrosoft.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1289585938-22813-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,39 +19,94 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] fs: Fix sparse warning.
-To: barebox@lists.infradead.org
-Cc: Marek Belisko <marek.belisko@open-nandra.com>
+Subject: Re: [PATCH 1/5] device: introduce resource structure to simplify
+	resource delaration
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-Patch fix following sparse warning:
-fs/fs.c:757:28: warning: dubious: !x & y
+Hi J,
 
-Signed-off-by: Marek Belisko <marek.belisko@open-nandra.com>
----
- fs/fs.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+On Fri, Nov 12, 2010 at 07:18:54PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> introdude also some helper to manager them
+> 
+> and add multi resource per device support
+> 
+> ram device: use resource structure instead of memory_platform_data
+> 
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 
-diff --git a/fs/fs.c b/fs/fs.c
-index 3b5f284..7d8dea7 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -754,7 +754,7 @@ int mount(const char *device, const char *fsname, const char *_path)
- 	}
- 
- 	fsdev = xzalloc(sizeof(struct fs_device_d));
--	if (!fs_drv->flags & FS_DRIVER_NO_DEV) {
-+	if (!(fs_drv->flags & FS_DRIVER_NO_DEV)) {
- 		fsdev->backingstore = strdup(device);
- 		if (!device) {
- 			printf("need a device for driver %s\n", fsname);
+
+You shouldn't use a resource_size_t type to access registers. This will
+lead to problems when we start to support 64bit resource sizes. Instead
+we should introduce a
+
+#define resource_size_to_iomem(size) (void __force __iomem *)(size)
+
+macro which does the conversion to a void __iomem * type. In a more
+advanced version this could also spit a warning when the resource start
+is bigger than a pointer type. As an additional plus we'll get rid of
+some sparse warnings where map_base is used for readl/writel.
+
+
+> diff --git a/arch/arm/mach-imx/devices.c b/arch/arm/mach-imx/devices.c
+> index 11cf2a4..e89f8bb 100644
+> --- a/arch/arm/mach-imx/devices.c
+> +++ b/arch/arm/mach-imx/devices.c
+> @@ -9,8 +9,8 @@ static struct device_d *imx_add_device(char *name, int id, void *base, int size,
+>  	dev = xzalloc(sizeof(*dev));
+>  	strcpy(dev->name,name);
+>  	dev->id = id;
+> -	dev->map_base = (unsigned long)base;
+> -	dev->size = size;
+> +	dev_resource_set_start(dev, (unsigned long)base);
+> +	dev_resource_set_size(dev, (unsigned long)size);
+>  	dev->platform_data = pdata;
+
+Should be a cast to resource_size_t.
+
+> diff --git a/include/driver.h b/include/driver.h
+> index b9edca0..c7dce1e 100644
+> --- a/include/driver.h
+> +++ b/include/driver.h
+> @@ -24,6 +24,7 @@
+>  #define DRIVER_H
+>  
+>  #include <linux/list.h>
+> +#include <linux/ioport.h>
+>  
+>  #define MAX_DRIVER_NAME		32
+>  #define FORMAT_DRIVER_MANE_ID	"%s%d"
+> @@ -70,11 +71,8 @@ struct device_d {
+>  	 * something like eth0 or nor0. */
+>  	int id;
+>  
+> -	resource_size_t size;
+> -
+> -	/*! For devices which are directly mapped into memory, i.e. NOR
+> -	 * Flash or SDRAM. */
+> -	resource_size_t map_base;
+> +	struct resource *resource;
+> +	int num_resources;
+>  
+>  	void *platform_data; /*! board specific information about this device */
+>  
+> @@ -184,6 +182,41 @@ static inline const char *dev_name(const struct device_d *dev)
+>  	return dev_id(dev);
+>  }
+>  
+> +/* ressource helper */
+
+s/ressource/resource/
+
 -- 
-1.7.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
