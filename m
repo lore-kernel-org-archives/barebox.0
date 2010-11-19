@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 29.mail-out.ovh.net ([87.98.216.213])
-	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1PJPFN-0005No-JR
-	for barebox@lists.infradead.org; Fri, 19 Nov 2010 11:35:18 +0000
-Date: Fri, 19 Nov 2010 12:31:35 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20101119113135.GC4216@game.jcrosoft.org>
-References: <20101112180228.GC13661@game.jcrosoft.org>
-	<1290002365-22712-1-git-send-email-plagnioj@jcrosoft.com>
-	<20101119082435.GB6017@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20101119082435.GB6017@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1PJQQq-0001af-DG
+	for barebox@lists.infradead.org; Fri, 19 Nov 2010 12:51:14 +0000
+Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.71)
+	(envelope-from <jbe@pengutronix.de>) id 1PJQQn-00076Y-1n
+	for barebox@lists.infradead.org; Fri, 19 Nov 2010 13:51:09 +0100
+Received: from jbe by octopus.hi.pengutronix.de with local (Exim 4.69)
+	(envelope-from <jbe@pengutronix.de>) id 1PJQQm-0003nA-Ti
+	for barebox@lists.infradead.org; Fri, 19 Nov 2010 13:51:08 +0100
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Fri, 19 Nov 2010 13:50:52 +0100
+Message-Id: <1290171063-28870-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,76 +21,121 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] mem: multiple resource support allow exclude a
-	resource
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCHv3] Add dynamic video initialization to barebox
+To: barebox@lists.infradead.org
 
-On 09:24 Fri 19 Nov     , Sascha Hauer wrote:
-> On Wed, Nov 17, 2010 at 02:59:24PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > introduce DEVFS_MEM_BAREBOX_ONLY for this purpose
-> > 
-> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > ---
-> >  arch/arm/lib/armlinux.c |    4 ++++
-> >  include/driver.h        |    1 +
-> >  2 files changed, 5 insertions(+), 0 deletions(-)
-> > 
-> > diff --git a/arch/arm/lib/armlinux.c b/arch/arm/lib/armlinux.c
-> > index b74c5e8..55d1401 100644
-> > --- a/arch/arm/lib/armlinux.c
-> > +++ b/arch/arm/lib/armlinux.c
-> > @@ -79,6 +79,10 @@ static void setup_memory_tags(void)
-> >  	list_for_each_entry(mem, &memory_list, list) {
-> >  		for (i = 0; i < mem->dev->num_resources; i++) {
-> >  			res = &mem->dev->resource[i];
-> > +
-> > +			if (res->flags & DEVFS_MEM_BAREBOX_ONLY)
-> > +				break;
-> 
-> Shouldn't this be a 'continue'?
-yeap
-> 
-> > +
-> >  			params->hdr.tag = ATAG_MEM;
-> >  			params->hdr.size = tag_size(tag_mem32);
-> >  
-> > diff --git a/include/driver.h b/include/driver.h
-> > index c7dce1e..e98455c 100644
-> > --- a/include/driver.h
-> > +++ b/include/driver.h
-> > @@ -354,6 +354,7 @@ ssize_t cdev_write(struct cdev *cdev, const void *buf, size_t count, ulong offse
-> >  #define DEVFS_PARTITION_READONLY	(1 << 1)
-> >  #define DEVFS_IS_PARTITION		(1 << 2)
-> >  #define DEVFS_RDWR			(1 << 3)
-> > +#define DEVFS_MEM_BAREBOX_ONLY		(1 << 4)
-> 
-> I realize this when looking at this patch: You should abuse the flags
-> field in a resource pass custom bits. The only flags in a resource should
-> be the ones defined in include/linux/ioport.h.
-> With DEVFS_RDWR you are lucky, there is a IORESOURCE_MEM_WRITEABLE flag
-> which can be used for this purpose. There is no correspondent flag for
-> DEVFS_MEM_BAREBOX_ONLY though.
-ok I'll update
-> 
-> Overall I'm not very happy with the multiple-resources-to-mem-driver
-> approach. If you are concerned with the overhead of multiple statically
-> allocated devices we could introduce a add_memory_device(char *name, void *start,
-> size_t size, unsigned long flags) function which dynamically allocates a
-> device.
-> 
-> I'm also not convinced that these few multiple statically allocated
-> devices introduce an overhead at all, I mean most boards only have
-> SDRAM (one device) and maybe an SRAM (second device).
-no preference just want to avoid multiple device but if u prefer I let it as
-is
+Currently barebox uses a fixed videomode setup. Everything is compiled in.
+This change adds the possibility to select a videomode according to a
+connected display at runtime. If more than one videomode is supported by the
+platform, running the 'devinfo' command on the framebuffer device shows the
+supported videomode list. After selecting the videomode, the output can be
+enabled.
 
-Best Regards,
-J.
+On my hardware I can connect a regular monitor, which supports more than one
+videomode. The runtime setup sequence looks like that:
+
+tx28:/ devinfo framebuffer0
+base  : 0x00000000
+size  : 0x00000000
+driver: framebuffer
+
+ Video/Mode info:
+  Video output not enabled
+ Current video mode:
+  No video mode selected yet
+ Supported video mode(s):
+  'VGA'
+  'SVGA'
+  'XGA'
+  'SXGA'
+ Parameters:
+           cdepth = 16
+             mode = <NULL>
+           enable = <NULL>
+
+tx28:/ framebuffer0.mode=SVGA
+tx28:/ bmp splash.bmp
+tx28:/ framebuffer0.enable=1
+
+After the last command the monitor shows the splash screen.
+
+Changes in revision 2 of this patch stack:
+- enabling the video output is now always required to get a picture
+- driver specific data can now be added on a per videomode base
+- documentation is adapted to the new behaviour
+
+This is revision 3 of this patch stack:
+- video output is now disabled as default, until enabled with
+  'framebuffer0.enable=1'
+- framebuffer's 'dev' and 'cdev' are now part of the 'fb_info'
+- using a fixed framebuffer location is only handled in the driver
+- hopefully fixed all long lines
+- swapping the API in '/drivers/video/fb.c' is now done in one patch
+- when adding to the final repository, still these patches should be squashed
+  to keep the result bisectable:
+     - "Bring in dynamic videomode selection at runtime"
+     - "Add verbose framebuffer device info"
+     - "Adapt the existing imx fb driver to support runtime videomode selection"
+     - "Adapt the existing imx-ipu fb driver to support runtime videomode selection"
+     - the videomode can now be setup more than once. To do so, just disable the
+       video output again and start with videomode configuration once more
+
+Note: The S3C2404 and i.MX23/i.MX28 framebuffer drivers are still for reference only.
+
+The following changes since commit 53dbaf3fc7b8371ed1e24ef96715e41d60b8ebc3:
+
+Merge branch 'master' into next (2010-11-19 09:35:15 +0100)
+
+are available in the git repository at:
+
+http://git.pengutronix.de/jbe/for_barebox_next/ next_dynamic_video_v3_for_sha
+
+Juergen Beisert (11):
+	Separate framebuffer platformdata and the videomode
+	Add more flags for sync control
+	Bring in dynamic videomode selection at runtime
+	Add verbose framebuffer device info
+	Adapt the existing imx fb driver to support runtime videomode selection
+	Adapt the existing imx-ipu fb driver to support runtime videomode selection
+	Remove variable size restrictions
+	Add doxygen documentation to the framebfuffer code
+	Provide more driver specific data in a videomode
+	Add a video driver for S3C2440 bases platforms
+	STM378x: Add video driver for this platform
+
+
+ Documentation/developers_manual.dox               |    1 +
+ Documentation/users_manual.dox                    |    1 +
+ arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c |   39 +-
+ arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c |   41 +-
+ arch/arm/boards/freescale-mx35-3-stack/3stack.c   |    2 +-
+ arch/arm/boards/guf-neso/board.c                  |   43 +-
+ arch/arm/boards/imx21ads/imx21ads.c               |   48 +-
+ arch/arm/boards/pcm038/pcm038.c                   |   42 +-
+ arch/arm/boards/pcm043/pcm043.c                   |    2 +-
+ arch/arm/mach-imx/include/mach/imx-ipu-fb.h       |   12 +-
+ arch/arm/mach-imx/include/mach/imxfb.h            |   21 +-
+ arch/arm/mach-s3c24xx/include/mach/fb.h           |   40 ++
+ arch/arm/mach-stm/include/mach/fb.h               |   33 +
+ drivers/video/Kconfig                             |   23 +
+ drivers/video/Makefile                            |    2 +
+ drivers/video/fb.c                                |  452 ++++++++++++++-
+ drivers/video/imx-ipu-fb.c                        |  217 ++++---
+ drivers/video/imx.c                               |  220 ++++---
+ drivers/video/s3c.c                               |  474 +++++++++++++++
+ drivers/video/stm.c                               |  646 +++++++++++++++++++++
+ include/fb.h                                      |  133 +++--
+ 21 files changed, 2112 insertions(+), 380 deletions(-)
+ create mode 100644 arch/arm/mach-s3c24xx/include/mach/fb.h
+ create mode 100644 arch/arm/mach-stm/include/mach/fb.h
+ create mode 100644 drivers/video/s3c.c
+ create mode 100644 drivers/video/stm.c
+
 
 _______________________________________________
 barebox mailing list
