@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PJMGt-0002GT-85
-	for barebox@lists.infradead.org; Fri, 19 Nov 2010 08:24:40 +0000
-Date: Fri, 19 Nov 2010 09:24:35 +0100
+	id 1PJMSP-0002TM-EC
+	for barebox@lists.infradead.org; Fri, 19 Nov 2010 08:36:37 +0000
+Date: Fri, 19 Nov 2010 09:36:21 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20101119082435.GB6017@pengutronix.de>
-References: <20101112180228.GC13661@game.jcrosoft.org>
-	<1290002365-22712-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20101119083621.GC6017@pengutronix.de>
+References: <1290086971-5467-1-git-send-email-marek.belisko@open-nandra.com>
+	<1290086971-5467-3-git-send-email-marek.belisko@open-nandra.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1290002365-22712-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1290086971-5467-3-git-send-email-marek.belisko@open-nandra.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,66 +23,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] mem: multiple resource support allow exclude a
-	resource
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH 2/5] fs: Fix sparse warning.
+To: Marek Belisko <marek.belisko@open-nandra.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, Nov 17, 2010 at 02:59:24PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> introduce DEVFS_MEM_BAREBOX_ONLY for this purpose
-> 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  arch/arm/lib/armlinux.c |    4 ++++
->  include/driver.h        |    1 +
->  2 files changed, 5 insertions(+), 0 deletions(-)
-> 
-> diff --git a/arch/arm/lib/armlinux.c b/arch/arm/lib/armlinux.c
-> index b74c5e8..55d1401 100644
-> --- a/arch/arm/lib/armlinux.c
-> +++ b/arch/arm/lib/armlinux.c
-> @@ -79,6 +79,10 @@ static void setup_memory_tags(void)
->  	list_for_each_entry(mem, &memory_list, list) {
->  		for (i = 0; i < mem->dev->num_resources; i++) {
->  			res = &mem->dev->resource[i];
-> +
-> +			if (res->flags & DEVFS_MEM_BAREBOX_ONLY)
-> +				break;
+On Thu, Nov 18, 2010 at 02:29:28PM +0100, Marek Belisko wrote:
+> Patch fix following sparse warning:
+> fs/fs.c:757:28: warning: dubious: !x & y
 
-Shouldn't this be a 'continue'?
-
-> +
->  			params->hdr.tag = ATAG_MEM;
->  			params->hdr.size = tag_size(tag_mem32);
->  
-> diff --git a/include/driver.h b/include/driver.h
-> index c7dce1e..e98455c 100644
-> --- a/include/driver.h
-> +++ b/include/driver.h
-> @@ -354,6 +354,7 @@ ssize_t cdev_write(struct cdev *cdev, const void *buf, size_t count, ulong offse
->  #define DEVFS_PARTITION_READONLY	(1 << 1)
->  #define DEVFS_IS_PARTITION		(1 << 2)
->  #define DEVFS_RDWR			(1 << 3)
-> +#define DEVFS_MEM_BAREBOX_ONLY		(1 << 4)
-
-I realize this when looking at this patch: You should abuse the flags
-field in a resource pass custom bits. The only flags in a resource should
-be the ones defined in include/linux/ioport.h.
-With DEVFS_RDWR you are lucky, there is a IORESOURCE_MEM_WRITEABLE flag
-which can be used for this purpose. There is no correspondent flag for
-DEVFS_MEM_BAREBOX_ONLY though.
-
-Overall I'm not very happy with the multiple-resources-to-mem-driver
-approach. If you are concerned with the overhead of multiple statically
-allocated devices we could introduce a add_memory_device(char *name, void *start,
-size_t size, unsigned long flags) function which dynamically allocates a
-device.
-
-I'm also not convinced that these few multiple statically allocated
-devices introduce an overhead at all, I mean most boards only have
-SDRAM (one device) and maybe an SRAM (second device).
+Don't be shy. You actually found a real bug. I changed the commit log a
+bit to reflect that. I added this one to master and the others to next.
 
 Sascha
+
+> 
+> Signed-off-by: Marek Belisko <marek.belisko@open-nandra.com>
+> ---
+>  fs/fs.c |    2 +-
+>  1 files changed, 1 insertions(+), 1 deletions(-)
+> 
+> diff --git a/fs/fs.c b/fs/fs.c
+> index 3b5f284..7d8dea7 100644
+> --- a/fs/fs.c
+> +++ b/fs/fs.c
+> @@ -754,7 +754,7 @@ int mount(const char *device, const char *fsname, const char *_path)
+>  	}
+>  
+>  	fsdev = xzalloc(sizeof(struct fs_device_d));
+> -	if (!fs_drv->flags & FS_DRIVER_NO_DEV) {
+> +	if (!(fs_drv->flags & FS_DRIVER_NO_DEV)) {
+>  		fsdev->backingstore = strdup(device);
+>  		if (!device) {
+>  			printf("need a device for driver %s\n", fsname);
+> -- 
+> 1.7.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
