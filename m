@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PJLtv-0001wM-Qg
-	for barebox@lists.infradead.org; Fri, 19 Nov 2010 08:00:57 +0000
-Date: Fri, 19 Nov 2010 09:00:49 +0100
+	id 1PJMGt-0002GT-85
+	for barebox@lists.infradead.org; Fri, 19 Nov 2010 08:24:40 +0000
+Date: Fri, 19 Nov 2010 09:24:35 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20101119080049.GA6017@pengutronix.de>
+Message-ID: <20101119082435.GB6017@pengutronix.de>
 References: <20101112180228.GC13661@game.jcrosoft.org>
-	<1289585938-22813-1-git-send-email-plagnioj@jcrosoft.com>
+	<1290002365-22712-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1289585938-22813-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1290002365-22712-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,84 +23,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/5] device: introduce resource structure to simplify
-	resource delaration
+Subject: Re: [PATCH 1/2] mem: multiple resource support allow exclude a
+	resource
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-Hi J,
-
-On Fri, Nov 12, 2010 at 07:18:54PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> introdude also some helper to manager them
-> 
-> and add multi resource per device support
-> 
-> ram device: use resource structure instead of memory_platform_data
+On Wed, Nov 17, 2010 at 02:59:24PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> introduce DEVFS_MEM_BAREBOX_ONLY for this purpose
 > 
 > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  arch/arm/lib/armlinux.c |    4 ++++
+>  include/driver.h        |    1 +
+>  2 files changed, 5 insertions(+), 0 deletions(-)
+> 
+> diff --git a/arch/arm/lib/armlinux.c b/arch/arm/lib/armlinux.c
+> index b74c5e8..55d1401 100644
+> --- a/arch/arm/lib/armlinux.c
+> +++ b/arch/arm/lib/armlinux.c
+> @@ -79,6 +79,10 @@ static void setup_memory_tags(void)
+>  	list_for_each_entry(mem, &memory_list, list) {
+>  		for (i = 0; i < mem->dev->num_resources; i++) {
+>  			res = &mem->dev->resource[i];
+> +
+> +			if (res->flags & DEVFS_MEM_BAREBOX_ONLY)
+> +				break;
 
+Shouldn't this be a 'continue'?
 
-You shouldn't use a resource_size_t type to access registers. This will
-lead to problems when we start to support 64bit resource sizes. Instead
-we should introduce a
-
-#define resource_size_to_iomem(size) (void __force __iomem *)(size)
-
-macro which does the conversion to a void __iomem * type. In a more
-advanced version this could also spit a warning when the resource start
-is bigger than a pointer type. As an additional plus we'll get rid of
-some sparse warnings where map_base is used for readl/writel.
-
-
-> diff --git a/arch/arm/mach-imx/devices.c b/arch/arm/mach-imx/devices.c
-> index 11cf2a4..e89f8bb 100644
-> --- a/arch/arm/mach-imx/devices.c
-> +++ b/arch/arm/mach-imx/devices.c
-> @@ -9,8 +9,8 @@ static struct device_d *imx_add_device(char *name, int id, void *base, int size,
->  	dev = xzalloc(sizeof(*dev));
->  	strcpy(dev->name,name);
->  	dev->id = id;
-> -	dev->map_base = (unsigned long)base;
-> -	dev->size = size;
-> +	dev_resource_set_start(dev, (unsigned long)base);
-> +	dev_resource_set_size(dev, (unsigned long)size);
->  	dev->platform_data = pdata;
-
-Should be a cast to resource_size_t.
-
+> +
+>  			params->hdr.tag = ATAG_MEM;
+>  			params->hdr.size = tag_size(tag_mem32);
+>  
 > diff --git a/include/driver.h b/include/driver.h
-> index b9edca0..c7dce1e 100644
+> index c7dce1e..e98455c 100644
 > --- a/include/driver.h
 > +++ b/include/driver.h
-> @@ -24,6 +24,7 @@
->  #define DRIVER_H
->  
->  #include <linux/list.h>
-> +#include <linux/ioport.h>
->  
->  #define MAX_DRIVER_NAME		32
->  #define FORMAT_DRIVER_MANE_ID	"%s%d"
-> @@ -70,11 +71,8 @@ struct device_d {
->  	 * something like eth0 or nor0. */
->  	int id;
->  
-> -	resource_size_t size;
-> -
-> -	/*! For devices which are directly mapped into memory, i.e. NOR
-> -	 * Flash or SDRAM. */
-> -	resource_size_t map_base;
-> +	struct resource *resource;
-> +	int num_resources;
->  
->  	void *platform_data; /*! board specific information about this device */
->  
-> @@ -184,6 +182,41 @@ static inline const char *dev_name(const struct device_d *dev)
->  	return dev_id(dev);
->  }
->  
-> +/* ressource helper */
+> @@ -354,6 +354,7 @@ ssize_t cdev_write(struct cdev *cdev, const void *buf, size_t count, ulong offse
+>  #define DEVFS_PARTITION_READONLY	(1 << 1)
+>  #define DEVFS_IS_PARTITION		(1 << 2)
+>  #define DEVFS_RDWR			(1 << 3)
+> +#define DEVFS_MEM_BAREBOX_ONLY		(1 << 4)
 
-s/ressource/resource/
+I realize this when looking at this patch: You should abuse the flags
+field in a resource pass custom bits. The only flags in a resource should
+be the ones defined in include/linux/ioport.h.
+With DEVFS_RDWR you are lucky, there is a IORESOURCE_MEM_WRITEABLE flag
+which can be used for this purpose. There is no correspondent flag for
+DEVFS_MEM_BAREBOX_ONLY though.
+
+Overall I'm not very happy with the multiple-resources-to-mem-driver
+approach. If you are concerned with the overhead of multiple statically
+allocated devices we could introduce a add_memory_device(char *name, void *start,
+size_t size, unsigned long flags) function which dynamically allocates a
+device.
+
+I'm also not convinced that these few multiple statically allocated
+devices introduce an overhead at all, I mean most boards only have
+SDRAM (one device) and maybe an SRAM (second device).
+
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
