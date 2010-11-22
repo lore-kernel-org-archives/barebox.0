@@ -1,18 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PKVZq-0001Gd-VO
-	for barebox@lists.infradead.org; Mon, 22 Nov 2010 12:32:59 +0000
-Received: from gallifrey.ext.pengutronix.de
-	([2001:6f8:1178:4:5054:ff:fe8d:eefb] helo=localhost)
-	by metis.ext.pengutronix.de with esmtp (Exim 4.71)
-	(envelope-from <jbe@pengutronix.de>) id 1PKVZp-0000kH-6e
-	for barebox@lists.infradead.org; Mon, 22 Nov 2010 13:32:57 +0100
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Mon, 22 Nov 2010 13:32:17 +0100
-MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <201011221332.17628.jbe@pengutronix.de>
+Received: from 26.mail-out.ovh.net ([91.121.27.225])
+	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1PKVwy-0003Bm-2G
+	for barebox@lists.infradead.org; Mon, 22 Nov 2010 12:56:53 +0000
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Mon, 22 Nov 2010 13:52:55 +0100
+Message-Id: <1290430375-8569-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,55 +14,76 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] Fix baudrate setting
+Subject: [PATCH 1/1] arm: add touchbook support
 To: barebox@lists.infradead.org
+Cc: Gregoire Gentil <gregoire@alwaysinnovating.com>
 
-This one seems still forgotten, yet.
-
-Subject: Fix baudrate setting
-
-The menu entry to set CONFIG_BAUDRATE makes no sense, if its content is not
-used. This patch makes barebox using the setting again.
-
-Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
-
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: Gregoire Gentil <gregoire@alwaysinnovating.com>
 ---
- common/console.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm/boards/omap/Kconfig        |    9 +++++++++
+ arch/arm/boards/omap/Makefile       |    1 +
+ arch/arm/boards/omap/board-beagle.c |    7 ++++++-
+ 3 files changed, 16 insertions(+), 1 deletions(-)
 
-Index: barebox-2010.10.0/common/console.c
-===================================================================
---- barebox-2010.10.0.orig/common/console.c
-+++ barebox-2010.10.0/common/console.c
-@@ -34,6 +34,7 @@
- #include <clock.h>
- #include <kfifo.h>
- #include <module.h>
-+#include <linux/stringify.h>
- #include <linux/list.h>
+diff --git a/arch/arm/boards/omap/Kconfig b/arch/arm/boards/omap/Kconfig
+index d612064..615457f 100644
+--- a/arch/arm/boards/omap/Kconfig
++++ b/arch/arm/boards/omap/Kconfig
+@@ -51,6 +51,15 @@ config MACH_BEAGLE
+ 	  help
+ 	  Say Y here if you are using Beagle Board
  
- LIST_HEAD(console_list);
-@@ -140,7 +141,7 @@ int console_register(struct console_devi
++config MACH_TOUCHBOOK
++	bool "AlwaysInnovating TouchBook"
++	select MACH_HAS_LOWLEVEL_INIT
++	select OMAP_CLOCK_ALL
++	select HAS_OMAP_NAND
++	  help
++	  Say Y here if you are using touchbook
++	  http://www.alwaysinnovating.com/touchbook/
++
+ config MACH_OMAP3EVM
+ 	bool "Texas Instrument's OMAP3 EVM"
+ 	select MACH_HAS_LOWLEVEL_INIT
+diff --git a/arch/arm/boards/omap/Makefile b/arch/arm/boards/omap/Makefile
+index 1e74e24..946d9bf 100644
+--- a/arch/arm/boards/omap/Makefile
++++ b/arch/arm/boards/omap/Makefile
+@@ -23,6 +23,7 @@
+ obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += platform.o
+ obj-$(CONFIG_MACH_OMAP343xSDP) += board-sdp343x.o
+ obj-$(CONFIG_MACH_BEAGLE) += board-beagle.o
++obj-$(CONFIG_MACH_TOUCHBOOK) += board-beagle.o
+ obj-$(CONFIG_MACH_OMAP3EVM) += board-omap3evm.o
+ obj-y += devices-gpmc-nand.o
  
- 	if (newcdev->setbrg) {
- 		dev_add_param(dev, "baudrate", console_baudrate_set, NULL, 0);
--		dev_set_param(dev, "baudrate", "115200");
-+		dev_set_param(dev, "baudrate", __stringify(CONFIG_BAUDRATE));
- 	}
+diff --git a/arch/arm/boards/omap/board-beagle.c b/arch/arm/boards/omap/board-beagle.c
+index 6de2cce..8e9ab43 100644
+--- a/arch/arm/boards/omap/board-beagle.c
++++ b/arch/arm/boards/omap/board-beagle.c
+@@ -336,7 +336,12 @@ static int beagle_devices_init(void)
  
- 	dev_add_param(dev, "active", console_std_set, NULL, 0);
-
-jbe
-
+ 	armlinux_add_dram(&sdram_dev);
+ 	armlinux_set_bootparams((void *)0x80000100);
+-	armlinux_set_architecture(MACH_TYPE_OMAP3_BEAGLE);
++
++	if (machine_is_touchbook())
++		armlinux_set_architecture(MACH_TYPE_TOUCHBOOK);
++	else
++		armlinux_set_architecture(MACH_TYPE_OMAP3_BEAGLE);
++
+ failed:
+ 	return ret;
+ }
 -- 
-Pengutronix e.K.                              | Juergen Beisert             |
-Linux Solutions for Science and Industry      | Phone: +49-8766-939 228     |
-Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
+1.7.1
+
 
 _______________________________________________
 barebox mailing list
