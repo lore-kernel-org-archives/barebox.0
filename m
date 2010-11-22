@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PKVRo-0000eM-MW
-	for barebox@lists.infradead.org; Mon, 22 Nov 2010 12:24:42 +0000
+	id 1PKVRk-0000co-Tv
+	for barebox@lists.infradead.org; Mon, 22 Nov 2010 12:24:37 +0000
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Mon, 22 Nov 2010 13:24:25 +0100
-Message-Id: <1290428665-23561-7-git-send-email-jbe@pengutronix.de>
+Date: Mon, 22 Nov 2010 13:24:22 +0100
+Message-Id: <1290428665-23561-4-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1290428665-23561-1-git-send-email-jbe@pengutronix.de>
 References: <1290428665-23561-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,98 +21,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/6] Separate i.MX23 clock handling
+Subject: [PATCH 3/6] i.MX23: Add support for the gpio commands
 To: barebox@lists.infradead.org
-
-Separate i.MX23 clock handling to simplify the addition of the upcoming i.MX28.
 
 Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 ---
- arch/arm/mach-stm/include/mach/clock-imx23.h |   36 ++++++++++++++++++++++++++
- arch/arm/mach-stm/include/mach/clock.h       |   23 ++++------------
- 2 files changed, 42 insertions(+), 17 deletions(-)
- create mode 100644 arch/arm/mach-stm/include/mach/clock-imx23.h
+ arch/arm/mach-stm/iomux-imx23.c |   38 ++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 38 insertions(+), 0 deletions(-)
 
-diff --git a/arch/arm/mach-stm/include/mach/clock-imx23.h b/arch/arm/mach-stm/include/mach/clock-imx23.h
-new file mode 100644
-index 0000000..99b0d99
---- /dev/null
-+++ b/arch/arm/mach-stm/include/mach/clock-imx23.h
-@@ -0,0 +1,36 @@
-+/*
-+ * (C) Copyright 2010 Juergen Beisert - Pengutronix
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-+ * MA 02111-1307 USA
-+ */
-+
-+#ifndef ASM_ARCH_CLOCK_IMX23_H
-+#define ASM_ARCH_CLOCK_IMX23_H
-+
-+unsigned imx_get_mpllclk(void);
-+unsigned imx_get_emiclk(void);
-+unsigned imx_get_ioclk(void);
-+unsigned imx_get_armclk(void);
-+unsigned imx_get_hclk(void);
-+unsigned imx_get_xclk(void);
-+unsigned imx_get_sspclk(unsigned);
-+unsigned imx_set_sspclk(unsigned, unsigned, int);
-+unsigned imx_set_ioclk(unsigned);
-+unsigned imx_set_lcdifclk(unsigned);
-+unsigned imx_get_lcdifclk(void);
-+
-+#endif /* ASM_ARCH_CLOCK_IMX23_H */
-+
-diff --git a/arch/arm/mach-stm/include/mach/clock.h b/arch/arm/mach-stm/include/mach/clock.h
-index 99b0d99..4d74e74 100644
---- a/arch/arm/mach-stm/include/mach/clock.h
-+++ b/arch/arm/mach-stm/include/mach/clock.h
-@@ -1,6 +1,4 @@
- /*
-- * (C) Copyright 2010 Juergen Beisert - Pengutronix
-- *
-  * This program is free software; you can redistribute it and/or
-  * modify it under the terms of the GNU General Public License as
-  * published by the Free Software Foundation; either version 2 of
-@@ -17,20 +15,11 @@
-  * MA 02111-1307 USA
-  */
+diff --git a/arch/arm/mach-stm/iomux-imx23.c b/arch/arm/mach-stm/iomux-imx23.c
+index 55e7798..88e0218 100644
+--- a/arch/arm/mach-stm/iomux-imx23.c
++++ b/arch/arm/mach-stm/iomux-imx23.c
+@@ -20,6 +20,7 @@
+ #include <common.h>
+ #include <init.h>
+ #include <gpio.h>
++#include <errno.h>
+ #include <asm/io.h>
+ #include <mach/imx-regs.h>
  
--#ifndef ASM_ARCH_CLOCK_IMX23_H
--#define ASM_ARCH_CLOCK_IMX23_H
--
--unsigned imx_get_mpllclk(void);
--unsigned imx_get_emiclk(void);
--unsigned imx_get_ioclk(void);
--unsigned imx_get_armclk(void);
--unsigned imx_get_hclk(void);
--unsigned imx_get_xclk(void);
--unsigned imx_get_sspclk(unsigned);
--unsigned imx_set_sspclk(unsigned, unsigned, int);
--unsigned imx_set_ioclk(unsigned);
--unsigned imx_set_lcdifclk(unsigned);
--unsigned imx_get_lcdifclk(void);
-+#ifndef __ASM_MACH_CLOCK_H
-+#define __ASM_MACH_CLOCK_H
- 
--#endif /* ASM_ARCH_CLOCK_IMX23_H */
-+#if defined CONFIG_ARCH_IMX23
-+# include <mach/clock-imx23.h>
-+#endif
- 
-+#endif /* __ASM_MACH_CLOCK_H */
+@@ -124,3 +125,40 @@ void imx_gpio_mode(uint32_t m)
+ 		}
+ 	}
+ }
++
++void gpio_set_value(unsigned gpio, int val)
++{
++	unsigned reg_offset;
++
++	reg_offset = calc_output_reg(gpio);
++	pr_debug("%u: Accessing %X+%X with value %X\n", gpio, IMX_IOMUXC_BASE,
++		reg_offset, 0x1 << (gpio % 32));
++	writel(0x1 << (gpio % 32),
++		IMX_IOMUXC_BASE + reg_offset + (val != 0 ? 4 : 8));
++}
++
++int gpio_direction_input(unsigned gpio)
++{
++	pr_err("Not yet supported\n");
++	return -EINVAL;
++}
++
++int gpio_direction_output(unsigned gpio, int val)
++{
++	pr_err("Not yet supported\n");
++	return -EINVAL;
++}
++
++int gpio_get_value(unsigned gpio)
++{
++	uint32_t reg;
++	unsigned reg_offset;
++
++	reg_offset = calc_input_reg(gpio);
++	reg = readl(IMX_IOMUXC_BASE + reg_offset);
++	pr_debug("%u: Accessing %X+%X with value %X->%X\n", gpio, IMX_IOMUXC_BASE,
++		reg_offset, 0x1 << (gpio % 32), reg & (0x1 << (gpio % 32)));
++	if (reg & (0x1 << (gpio % 32)))
++		return 1;
++	return 0;
++}
 -- 
 1.7.2.3
 
