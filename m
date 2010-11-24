@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qw0-f49.google.com ([209.85.216.49])
-	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1PLEcr-00057F-Hl
-	for barebox@lists.infradead.org; Wed, 24 Nov 2010 12:39:06 +0000
-Received: by qwc9 with SMTP id 9so812284qwc.36
-	for <barebox@lists.infradead.org>; Wed, 24 Nov 2010 04:39:03 -0800 (PST)
+Received: from 30.mail-out.ovh.net ([213.186.62.213])
+	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1PLGi0-0006QX-3M
+	for barebox@lists.infradead.org; Wed, 24 Nov 2010 14:52:32 +0000
+Date: Wed, 24 Nov 2010 15:48:37 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20101124144837.GI11909@game.jcrosoft.org>
+References: <AANLkTi=JJf6HyktGrsS5gscd3Yf1wc2Ef2Bb8hbrmEqd@mail.gmail.com>
 MIME-Version: 1.0
-Date: Wed, 24 Nov 2010 13:39:03 +0100
-Message-ID: <AANLkTi=JJf6HyktGrsS5gscd3Yf1wc2Ef2Bb8hbrmEqd@mail.gmail.com>
-From: Belisko Marek <marek.belisko@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <AANLkTi=JJf6HyktGrsS5gscd3Yf1wc2Ef2Bb8hbrmEqd@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,47 +22,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RFC: change map_base type
-To: barebox@lists.infradead.org
+Subject: Re: RFC: change map_base type
+To: Belisko Marek <marek.belisko@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Hi,
+On 13:39 Wed 24 Nov     , Belisko Marek wrote:
+> Hi,
+> 
+> fist sparse patches was accepted but doesn't fix all problems.
+> 
+> There is still a lot of sparse problems which complain about incorrect type
+> in functions read(bwl)/writ(bwl). Over whole codebase to this
+> functions are passed
+> u_long or u_int types which is not correct.
+> 
+> e.g. in serial drivers is used for access to registers:
+> writeb(0x07, dev->map_base + UFCON);
+> 
+> In my opinion it make no sense to use:
+> writeb(0x07, IOMEM(dev->map_base + UFCON));
+> 
+> Instead change map_base type in include/driver.h to void __iomem *map_base
+> which should fix a lot sparse problems.
+> Then only board code when device is initialized use: .map_base =
+> IOMEM(0x00000...)
+> 
+> Make it sense or there is not necessary to touch it or other way?
+it's a ressources so it's the right type as in the kernel
 
-fist sparse patches was accepted but doesn't fix all problems.
+the driver need to cast based on it's need
 
-There is still a lot of sparse problems which complain about incorrect type
-in functions read(bwl)/writ(bwl). Over whole codebase to this
-functions are passed
-u_long or u_int types which is not correct.
+as done in linux
 
-e.g. in serial drivers is used for access to registers:
-writeb(0x07, dev->map_base + UFCON);
+remember with the multi-ressource it's not anymore a base address you pass
+but any data
 
-In my opinion it make no sense to use:
-writeb(0x07, IOMEM(dev->map_base + UFCON));
-
-Instead change map_base type in include/driver.h to void __iomem *map_base
-which should fix a lot sparse problems.
-Then only board code when device is initialized use: .map_base =
-IOMEM(0x00000...)
-
-Make it sense or there is not necessary to touch it or other way?
-
-Thanks for comments,
-
-marek
-
-
--- 
-as simple and primitive as possible
--------------------------------------------------
-Marek Belisko - OPEN-NANDRA
-Freelance Developer
-
-Ruska Nova Ves 219 | Presov, 08005 Slovak Republic
-Tel: +421 915 052 184
-skype: marekwhite
-icq: 290551086
-web: http://open-nandra.com
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
