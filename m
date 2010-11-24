@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 30.mail-out.ovh.net ([213.186.62.213])
-	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1PLGi0-0006QX-3M
-	for barebox@lists.infradead.org; Wed, 24 Nov 2010 14:52:32 +0000
-Date: Wed, 24 Nov 2010 15:48:37 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20101124144837.GI11909@game.jcrosoft.org>
-References: <AANLkTi=JJf6HyktGrsS5gscd3Yf1wc2Ef2Bb8hbrmEqd@mail.gmail.com>
+Received: from mail-pv0-f177.google.com ([74.125.83.177])
+	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1PLLf1-0004Bb-Ub
+	for barebox@lists.infradead.org; Wed, 24 Nov 2010 20:09:50 +0000
+Received: by pvg7 with SMTP id 7so51901pvg.36
+	for <barebox@lists.infradead.org>; Wed, 24 Nov 2010 12:09:44 -0800 (PST)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <AANLkTi=JJf6HyktGrsS5gscd3Yf1wc2Ef2Bb8hbrmEqd@mail.gmail.com>
+In-Reply-To: <20101124144837.GI11909@game.jcrosoft.org>
+References: <AANLkTi=JJf6HyktGrsS5gscd3Yf1wc2Ef2Bb8hbrmEqd@mail.gmail.com>
+	<20101124144837.GI11909@game.jcrosoft.org>
+Date: Wed, 24 Nov 2010 21:09:43 +0100
+Message-ID: <AANLkTik_SAuEzg3WiSx1ptDejYdrCAoMjN0=SiJRya+C@mail.gmail.com>
+From: Belisko Marek <marek.belisko@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,49 +20,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: RFC: change map_base type
-To: Belisko Marek <marek.belisko@gmail.com>
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On 13:39 Wed 24 Nov     , Belisko Marek wrote:
-> Hi,
-> 
-> fist sparse patches was accepted but doesn't fix all problems.
-> 
-> There is still a lot of sparse problems which complain about incorrect type
-> in functions read(bwl)/writ(bwl). Over whole codebase to this
-> functions are passed
-> u_long or u_int types which is not correct.
-> 
-> e.g. in serial drivers is used for access to registers:
-> writeb(0x07, dev->map_base + UFCON);
-> 
-> In my opinion it make no sense to use:
-> writeb(0x07, IOMEM(dev->map_base + UFCON));
-> 
-> Instead change map_base type in include/driver.h to void __iomem *map_base
-> which should fix a lot sparse problems.
-> Then only board code when device is initialized use: .map_base =
-> IOMEM(0x00000...)
-> 
-> Make it sense or there is not necessary to touch it or other way?
-it's a ressources so it's the right type as in the kernel
-
-the driver need to cast based on it's need
-
-as done in linux
-
-remember with the multi-ressource it's not anymore a base address you pass
-but any data
-
-Best Regards,
-J.
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gV2VkLCBOb3YgMjQsIDIwMTAgYXQgMzo0OCBQTSwgSmVhbi1DaHJpc3RvcGhlIFBMQUdOSU9M
+LVZJTExBUkQKPHBsYWduaW9qQGpjcm9zb2Z0LmNvbT4gd3JvdGU6Cj4gT24gMTM6MzkgV2VkIDI0
+IE5vdiDCoCDCoCAsIEJlbGlza28gTWFyZWsgd3JvdGU6Cj4+IEhpLAo+Pgo+PiBmaXN0IHNwYXJz
+ZSBwYXRjaGVzIHdhcyBhY2NlcHRlZCBidXQgZG9lc24ndCBmaXggYWxsIHByb2JsZW1zLgo+Pgo+
+PiBUaGVyZSBpcyBzdGlsbCBhIGxvdCBvZiBzcGFyc2UgcHJvYmxlbXMgd2hpY2ggY29tcGxhaW4g
+YWJvdXQgaW5jb3JyZWN0IHR5cGUKPj4gaW4gZnVuY3Rpb25zIHJlYWQoYndsKS93cml0KGJ3bCku
+IE92ZXIgd2hvbGUgY29kZWJhc2UgdG8gdGhpcwo+PiBmdW5jdGlvbnMgYXJlIHBhc3NlZAo+PiB1
+X2xvbmcgb3IgdV9pbnQgdHlwZXMgd2hpY2ggaXMgbm90IGNvcnJlY3QuCj4+Cj4+IGUuZy4gaW4g
+c2VyaWFsIGRyaXZlcnMgaXMgdXNlZCBmb3IgYWNjZXNzIHRvIHJlZ2lzdGVyczoKPj4gd3JpdGVi
+KDB4MDcsIGRldi0+bWFwX2Jhc2UgKyBVRkNPTik7Cj4+Cj4+IEluIG15IG9waW5pb24gaXQgbWFr
+ZSBubyBzZW5zZSB0byB1c2U6Cj4+IHdyaXRlYigweDA3LCBJT01FTShkZXYtPm1hcF9iYXNlICsg
+VUZDT04pKTsKPj4KPj4gSW5zdGVhZCBjaGFuZ2UgbWFwX2Jhc2UgdHlwZSBpbiBpbmNsdWRlL2Ry
+aXZlci5oIHRvIHZvaWQgX19pb21lbSAqbWFwX2Jhc2UKPj4gd2hpY2ggc2hvdWxkIGZpeCBhIGxv
+dCBzcGFyc2UgcHJvYmxlbXMuCj4+IFRoZW4gb25seSBib2FyZCBjb2RlIHdoZW4gZGV2aWNlIGlz
+IGluaXRpYWxpemVkIHVzZTogLm1hcF9iYXNlID0KPj4gSU9NRU0oMHgwMDAwMC4uLikKPj4KPj4g
+TWFrZSBpdCBzZW5zZSBvciB0aGVyZSBpcyBub3QgbmVjZXNzYXJ5IHRvIHRvdWNoIGl0IG9yIG90
+aGVyIHdheT8KPiBpdCdzIGEgcmVzc291cmNlcyBzbyBpdCdzIHRoZSByaWdodCB0eXBlIGFzIGlu
+IHRoZSBrZXJuZWwKPgo+IHRoZSBkcml2ZXIgbmVlZCB0byBjYXN0IGJhc2VkIG9uIGl0J3MgbmVl
+ZAo+Cj4gYXMgZG9uZSBpbiBsaW51eApZb3UgYXJlIHJpZ2h0LiBMaW51cyB0eXBlIGZvciBtYXBf
+YmFzZSBpcyBzYW1lIGxpa2UgaW4gYmFyZWJveC4KQW55d2F5IGlmIHlvdSBwYXNzIHNvbWUgcmVz
+b3VyY2UgdG8gZHJpdmVyIGl0IGlzIGFsd2F5cyByZS1tYXBwZWQgYW5kCnVzZWQgcmVtYXBwZWQg
+dmFsdWUgb3ZlciBhbGwgY29kZSBmb3IgSU8gYWNjZXNzLgoKTWF5YmUgYmVzdCB3b3VsZCBiZSBj
+YXN0IG1hcF9iYXNlIGluIHByb2JlIGZ1bmN0aW9uIG9mIGRyaXZlciB3aXRoIElPTUVNKCkgbWFj
+cm8KYW5kIHRoaXMgdmFsdWUgc3RvcmUgaW4gZHJpdmVyIHN0cnVjdHVyZSBhbmQgdXNlLiBHb29k
+IGlkZWE/Cj4KPiByZW1lbWJlciB3aXRoIHRoZSBtdWx0aS1yZXNzb3VyY2UgaXQncyBub3QgYW55
+bW9yZSBhIGJhc2UgYWRkcmVzcyB5b3UgcGFzcwo+IGJ1dCBhbnkgZGF0YQo+Cj4gQmVzdCBSZWdh
+cmRzLAo+IEouCj4KCnRoYW5rcywKCm1hcmVrCgotLSAKYXMgc2ltcGxlIGFuZCBwcmltaXRpdmUg
+YXMgcG9zc2libGUKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLQpNYXJlayBCZWxpc2tvIC0gT1BFTi1OQU5EUkEKRnJlZWxhbmNlIERldmVsb3BlcgoKUnVz
+a2EgTm92YSBWZXMgMjE5IHwgUHJlc292LCAwODAwNSBTbG92YWsgUmVwdWJsaWMKVGVsOiArNDIx
+IDkxNSAwNTIgMTg0CnNreXBlOiBtYXJla3doaXRlCmljcTogMjkwNTUxMDg2CndlYjogaHR0cDov
+L29wZW4tbmFuZHJhLmNvbQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3Jn
+Cmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
