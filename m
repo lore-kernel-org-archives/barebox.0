@@ -1,19 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-qy0-f177.google.com ([209.85.216.177])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PLbG1-0003lg-9E
-	for barebox@lists.infradead.org; Thu, 25 Nov 2010 12:49:05 +0000
-Received: from gallifrey.ext.pengutronix.de
-	([2001:6f8:1178:4:5054:ff:fe8d:eefb] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.71)
-	(envelope-from <mkl@pengutronix.de>) id 1PLbFx-00031q-Oi
-	for barebox@lists.infradead.org; Thu, 25 Nov 2010 13:48:57 +0100
-Message-ID: <4CEE5B36.90309@pengutronix.de>
-Date: Thu, 25 Nov 2010 13:48:54 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+	id 1PLbnR-0005o9-Kx
+	for barebox@lists.infradead.org; Thu, 25 Nov 2010 13:23:34 +0000
+Received: by qyk27 with SMTP id 27so1097930qyk.15
+	for <barebox@lists.infradead.org>; Thu, 25 Nov 2010 05:23:32 -0800 (PST)
 MIME-Version: 1.0
+In-Reply-To: <4CEE5B36.90309@pengutronix.de>
 References: <1290688903-24955-1-git-send-email-marek.belisko@open-nandra.com>
-In-Reply-To: <1290688903-24955-1-git-send-email-marek.belisko@open-nandra.com>
+	<4CEE5B36.90309@pengutronix.de>
+Date: Thu, 25 Nov 2010 14:23:32 +0100
+Message-ID: <AANLkTi=bvrU1sMZDB56N5jAbU8Dg4vm28V773fwazYik@mail.gmail.com>
+From: Belisko Marek <marek.belisko@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,85 +20,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============2102374967=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] drivers: mci: Fix compilation warning.
-To: barebox@lists.infradead.org
+To: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---===============2102374967==
-Content-Type: multipart/signed; micalg=pgp-sha1;
- protocol="application/pgp-signature";
- boundary="------------enig5167A75D535A8F0F6EC6EE14"
-
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---------------enig5167A75D535A8F0F6EC6EE14
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-On 11/25/2010 01:41 PM, Marek Belisko wrote:
-> Fix compilation warning:
-> drivers/mci/mci-core.c:1002:
-> warning: comparison of distinct pointer types lacks a cast
->=20
-> Signed-off-by: Marek Belisko <marek.belisko@open-nandra.com>
-> ---
->  drivers/mci/mci-core.c |    2 +-
->  1 files changed, 1 insertions(+), 1 deletions(-)
->=20
-> diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-> index a8aa486..bc82201 100644
-> --- a/drivers/mci/mci-core.c
-> +++ b/drivers/mci/mci-core.c
-> @@ -999,7 +999,7 @@ static int mci_sd_read(struct device_d *disk_dev, u=
-int64_t sector_start,
->  	}
-> =20
->  	while (sector_count) {
-> -		int now =3D min(sector_count, 32);
-> +		int now =3D min(sector_count, (unsigned) 32);
-
-for raw numbers you usually add a prefix "U".
-
->  		if (sector_start > MAX_BUFFER_NUMBER) {
->  			pr_err("Cannot handle block number %lu. Too large!\n",
->  				(unsigned)sector_start);
-
-cheers, Marc
---=20
-Pengutronix e.K.                  | Marc Kleine-Budde           |
-Industrial Linux Solutions        | Phone: +49-231-2826-924     |
-Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
-
-
---------------enig5167A75D535A8F0F6EC6EE14
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.10 (GNU/Linux)
-Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org/
-
-iEYEARECAAYFAkzuWzkACgkQjTAFq1RaXHO4bQCfQkBzMfn2a6Q5a/tOA1MJ8k1v
-P94An28Q+yl5ssmh/C/ByMFHa1KbBxta
-=Z21/
------END PGP SIGNATURE-----
-
---------------enig5167A75D535A8F0F6EC6EE14--
-
-
---===============2102374967==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
-
---===============2102374967==--
+T24gVGh1LCBOb3YgMjUsIDIwMTAgYXQgMTo0OCBQTSwgTWFyYyBLbGVpbmUtQnVkZGUgPG1rbEBw
+ZW5ndXRyb25peC5kZT4gd3JvdGU6Cj4gT24gMTEvMjUvMjAxMCAwMTo0MSBQTSwgTWFyZWsgQmVs
+aXNrbyB3cm90ZToKPj4gRml4IGNvbXBpbGF0aW9uIHdhcm5pbmc6Cj4+IGRyaXZlcnMvbWNpL21j
+aS1jb3JlLmM6MTAwMjoKPj4gd2FybmluZzogY29tcGFyaXNvbiBvZiBkaXN0aW5jdCBwb2ludGVy
+IHR5cGVzIGxhY2tzIGEgY2FzdAo+Pgo+PiBTaWduZWQtb2ZmLWJ5OiBNYXJlayBCZWxpc2tvIDxt
+YXJlay5iZWxpc2tvQG9wZW4tbmFuZHJhLmNvbT4KPj4gLS0tCj4+IMKgZHJpdmVycy9tY2kvbWNp
+LWNvcmUuYyB8IMKgIMKgMiArLQo+PiDCoDEgZmlsZXMgY2hhbmdlZCwgMSBpbnNlcnRpb25zKCsp
+LCAxIGRlbGV0aW9ucygtKQo+Pgo+PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9tY2kvbWNpLWNvcmUu
+YyBiL2RyaXZlcnMvbWNpL21jaS1jb3JlLmMKPj4gaW5kZXggYThhYTQ4Ni4uYmM4MjIwMSAxMDA2
+NDQKPj4gLS0tIGEvZHJpdmVycy9tY2kvbWNpLWNvcmUuYwo+PiArKysgYi9kcml2ZXJzL21jaS9t
+Y2ktY29yZS5jCj4+IEBAIC05OTksNyArOTk5LDcgQEAgc3RhdGljIGludCBtY2lfc2RfcmVhZChz
+dHJ1Y3QgZGV2aWNlX2QgKmRpc2tfZGV2LCB1aW50NjRfdCBzZWN0b3Jfc3RhcnQsCj4+IMKgIMKg
+IMKgIH0KPj4KPj4gwqAgwqAgwqAgd2hpbGUgKHNlY3Rvcl9jb3VudCkgewo+PiAtIMKgIMKgIMKg
+IMKgIMKgIMKgIGludCBub3cgPSBtaW4oc2VjdG9yX2NvdW50LCAzMik7Cj4+ICsgwqAgwqAgwqAg
+wqAgwqAgwqAgaW50IG5vdyA9IG1pbihzZWN0b3JfY291bnQsICh1bnNpZ25lZCkgMzIpOwo+Cj4g
+Zm9yIHJhdyBudW1iZXJzIHlvdSB1c3VhbGx5IGFkZCBhIHByZWZpeCAiVSIuCkhvcGVmdWxseSB5
+b3UgbWVhbiBzdWZmaXggOikgMzJVLiBXaWxsIHJlc2VuZC4KPgo+PiDCoCDCoCDCoCDCoCDCoCDC
+oCDCoCBpZiAoc2VjdG9yX3N0YXJ0ID4gTUFYX0JVRkZFUl9OVU1CRVIpIHsKPj4gwqAgwqAgwqAg
+wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgcHJfZXJyKCJDYW5ub3QgaGFuZGxlIGJsb2NrIG51bWJl
+ciAlbHUuIFRvbyBsYXJnZSFcbiIsCj4+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
+IMKgIMKgIMKgIMKgICh1bnNpZ25lZClzZWN0b3Jfc3RhcnQpOwo+Cj4gY2hlZXJzLCBNYXJjCj4g
+LS0KPiBQZW5ndXRyb25peCBlLksuIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgfCBNYXJjIEts
+ZWluZS1CdWRkZSDCoCDCoCDCoCDCoCDCoCB8Cj4gSW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMg
+wqAgwqAgwqAgwqB8IFBob25lOiArNDktMjMxLTI4MjYtOTI0IMKgIMKgIHwKPiBWZXJ0cmV0dW5n
+IFdlc3QvRG9ydG11bmQgwqAgwqAgwqAgwqAgwqB8IEZheDogwqAgKzQ5LTUxMjEtMjA2OTE3LTU1
+NTUgfAo+IEFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2IMKgfCBodHRwOi8vd3d3LnBl
+bmd1dHJvbml4LmRlIMKgIHwKPgo+Cj4gX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX18KPiBiYXJlYm94IG1haWxpbmcgbGlzdAo+IGJhcmVib3hAbGlzdHMuaW5m
+cmFkZWFkLm9yZwo+IGh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8v
+YmFyZWJveAo+Cj4KCnRoYW5rcywKCm1hcmVrCgotLSAKYXMgc2ltcGxlIGFuZCBwcmltaXRpdmUg
+YXMgcG9zc2libGUKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLQpNYXJlayBCZWxpc2tvIC0gT1BFTi1OQU5EUkEKRnJlZWxhbmNlIERldmVsb3BlcgoKUnVz
+a2EgTm92YSBWZXMgMjE5IHwgUHJlc292LCAwODAwNSBTbG92YWsgUmVwdWJsaWMKVGVsOiArNDIx
+IDkxNSAwNTIgMTg0CnNreXBlOiBtYXJla3doaXRlCmljcTogMjkwNTUxMDg2CndlYjogaHR0cDov
+L29wZW4tbmFuZHJhLmNvbQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3Jn
+Cmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
