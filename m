@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PLXD4-0005d2-OW
-	for barebox@lists.infradead.org; Thu, 25 Nov 2010 08:29:43 +0000
-Date: Thu, 25 Nov 2010 09:29:39 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20101125082939.GM6017@pengutronix.de>
+Received: from 30.mail-out.ovh.net ([213.186.62.213])
+	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1PLZyp-00079f-NN
+	for barebox@lists.infradead.org; Thu, 25 Nov 2010 11:27:12 +0000
+Date: Thu, 25 Nov 2010 12:23:15 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20101125112315.GB26540@game.jcrosoft.org>
 References: <AANLkTi=JJf6HyktGrsS5gscd3Yf1wc2Ef2Bb8hbrmEqd@mail.gmail.com>
 	<20101124144837.GI11909@game.jcrosoft.org>
 	<AANLkTik_SAuEzg3WiSx1ptDejYdrCAoMjN0=SiJRya+C@mail.gmail.com>
@@ -20,7 +20,7 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
@@ -28,7 +28,7 @@ Subject: Re: RFC: change map_base type
 To: Belisko Marek <marek.belisko@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, Nov 24, 2010 at 09:09:43PM +0100, Belisko Marek wrote:
+On 21:09 Wed 24 Nov     , Belisko Marek wrote:
 > On Wed, Nov 24, 2010 at 3:48 PM, Jean-Christophe PLAGNIOL-VILLARD
 > <plagnioj@jcrosoft.com> wrote:
 > > On 13:39 Wed 24 Nov =A0 =A0 , Belisko Marek wrote:
@@ -68,18 +68,12 @@ base
 > Maybe best would be cast map_base in probe function of driver with IOMEM(=
 ) macro
 > and this value store in driver structure and use. Good idea?
+I agree too
 
-Yes, I like it.
+we could first apply the mutli ressource and then do this
 
-Sascha
-
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
