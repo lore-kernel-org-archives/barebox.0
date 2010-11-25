@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pv0-f177.google.com ([74.125.83.177])
-	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1PLLf1-0004Bb-Ub
-	for barebox@lists.infradead.org; Wed, 24 Nov 2010 20:09:50 +0000
-Received: by pvg7 with SMTP id 7so51901pvg.36
-	for <barebox@lists.infradead.org>; Wed, 24 Nov 2010 12:09:44 -0800 (PST)
-MIME-Version: 1.0
-In-Reply-To: <20101124144837.GI11909@game.jcrosoft.org>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1PLXD4-0005d2-OW
+	for barebox@lists.infradead.org; Thu, 25 Nov 2010 08:29:43 +0000
+Date: Thu, 25 Nov 2010 09:29:39 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20101125082939.GM6017@pengutronix.de>
 References: <AANLkTi=JJf6HyktGrsS5gscd3Yf1wc2Ef2Bb8hbrmEqd@mail.gmail.com>
 	<20101124144837.GI11909@game.jcrosoft.org>
-Date: Wed, 24 Nov 2010 21:09:43 +0100
-Message-ID: <AANLkTik_SAuEzg3WiSx1ptDejYdrCAoMjN0=SiJRya+C@mail.gmail.com>
-From: Belisko Marek <marek.belisko@gmail.com>
+	<AANLkTik_SAuEzg3WiSx1ptDejYdrCAoMjN0=SiJRya+C@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <AANLkTik_SAuEzg3WiSx1ptDejYdrCAoMjN0=SiJRya+C@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,45 +20,68 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: RFC: change map_base type
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+To: Belisko Marek <marek.belisko@gmail.com>
 Cc: barebox@lists.infradead.org
 
-T24gV2VkLCBOb3YgMjQsIDIwMTAgYXQgMzo0OCBQTSwgSmVhbi1DaHJpc3RvcGhlIFBMQUdOSU9M
-LVZJTExBUkQKPHBsYWduaW9qQGpjcm9zb2Z0LmNvbT4gd3JvdGU6Cj4gT24gMTM6MzkgV2VkIDI0
-IE5vdiDCoCDCoCAsIEJlbGlza28gTWFyZWsgd3JvdGU6Cj4+IEhpLAo+Pgo+PiBmaXN0IHNwYXJz
-ZSBwYXRjaGVzIHdhcyBhY2NlcHRlZCBidXQgZG9lc24ndCBmaXggYWxsIHByb2JsZW1zLgo+Pgo+
-PiBUaGVyZSBpcyBzdGlsbCBhIGxvdCBvZiBzcGFyc2UgcHJvYmxlbXMgd2hpY2ggY29tcGxhaW4g
-YWJvdXQgaW5jb3JyZWN0IHR5cGUKPj4gaW4gZnVuY3Rpb25zIHJlYWQoYndsKS93cml0KGJ3bCku
-IE92ZXIgd2hvbGUgY29kZWJhc2UgdG8gdGhpcwo+PiBmdW5jdGlvbnMgYXJlIHBhc3NlZAo+PiB1
-X2xvbmcgb3IgdV9pbnQgdHlwZXMgd2hpY2ggaXMgbm90IGNvcnJlY3QuCj4+Cj4+IGUuZy4gaW4g
-c2VyaWFsIGRyaXZlcnMgaXMgdXNlZCBmb3IgYWNjZXNzIHRvIHJlZ2lzdGVyczoKPj4gd3JpdGVi
-KDB4MDcsIGRldi0+bWFwX2Jhc2UgKyBVRkNPTik7Cj4+Cj4+IEluIG15IG9waW5pb24gaXQgbWFr
-ZSBubyBzZW5zZSB0byB1c2U6Cj4+IHdyaXRlYigweDA3LCBJT01FTShkZXYtPm1hcF9iYXNlICsg
-VUZDT04pKTsKPj4KPj4gSW5zdGVhZCBjaGFuZ2UgbWFwX2Jhc2UgdHlwZSBpbiBpbmNsdWRlL2Ry
-aXZlci5oIHRvIHZvaWQgX19pb21lbSAqbWFwX2Jhc2UKPj4gd2hpY2ggc2hvdWxkIGZpeCBhIGxv
-dCBzcGFyc2UgcHJvYmxlbXMuCj4+IFRoZW4gb25seSBib2FyZCBjb2RlIHdoZW4gZGV2aWNlIGlz
-IGluaXRpYWxpemVkIHVzZTogLm1hcF9iYXNlID0KPj4gSU9NRU0oMHgwMDAwMC4uLikKPj4KPj4g
-TWFrZSBpdCBzZW5zZSBvciB0aGVyZSBpcyBub3QgbmVjZXNzYXJ5IHRvIHRvdWNoIGl0IG9yIG90
-aGVyIHdheT8KPiBpdCdzIGEgcmVzc291cmNlcyBzbyBpdCdzIHRoZSByaWdodCB0eXBlIGFzIGlu
-IHRoZSBrZXJuZWwKPgo+IHRoZSBkcml2ZXIgbmVlZCB0byBjYXN0IGJhc2VkIG9uIGl0J3MgbmVl
-ZAo+Cj4gYXMgZG9uZSBpbiBsaW51eApZb3UgYXJlIHJpZ2h0LiBMaW51cyB0eXBlIGZvciBtYXBf
-YmFzZSBpcyBzYW1lIGxpa2UgaW4gYmFyZWJveC4KQW55d2F5IGlmIHlvdSBwYXNzIHNvbWUgcmVz
-b3VyY2UgdG8gZHJpdmVyIGl0IGlzIGFsd2F5cyByZS1tYXBwZWQgYW5kCnVzZWQgcmVtYXBwZWQg
-dmFsdWUgb3ZlciBhbGwgY29kZSBmb3IgSU8gYWNjZXNzLgoKTWF5YmUgYmVzdCB3b3VsZCBiZSBj
-YXN0IG1hcF9iYXNlIGluIHByb2JlIGZ1bmN0aW9uIG9mIGRyaXZlciB3aXRoIElPTUVNKCkgbWFj
-cm8KYW5kIHRoaXMgdmFsdWUgc3RvcmUgaW4gZHJpdmVyIHN0cnVjdHVyZSBhbmQgdXNlLiBHb29k
-IGlkZWE/Cj4KPiByZW1lbWJlciB3aXRoIHRoZSBtdWx0aS1yZXNzb3VyY2UgaXQncyBub3QgYW55
-bW9yZSBhIGJhc2UgYWRkcmVzcyB5b3UgcGFzcwo+IGJ1dCBhbnkgZGF0YQo+Cj4gQmVzdCBSZWdh
-cmRzLAo+IEouCj4KCnRoYW5rcywKCm1hcmVrCgotLSAKYXMgc2ltcGxlIGFuZCBwcmltaXRpdmUg
-YXMgcG9zc2libGUKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLQpNYXJlayBCZWxpc2tvIC0gT1BFTi1OQU5EUkEKRnJlZWxhbmNlIERldmVsb3BlcgoKUnVz
-a2EgTm92YSBWZXMgMjE5IHwgUHJlc292LCAwODAwNSBTbG92YWsgUmVwdWJsaWMKVGVsOiArNDIx
-IDkxNSAwNTIgMTg0CnNreXBlOiBtYXJla3doaXRlCmljcTogMjkwNTUxMDg2CndlYjogaHR0cDov
-L29wZW4tbmFuZHJhLmNvbQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3Jn
-Cmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Wed, Nov 24, 2010 at 09:09:43PM +0100, Belisko Marek wrote:
+> On Wed, Nov 24, 2010 at 3:48 PM, Jean-Christophe PLAGNIOL-VILLARD
+> <plagnioj@jcrosoft.com> wrote:
+> > On 13:39 Wed 24 Nov =A0 =A0 , Belisko Marek wrote:
+> >> Hi,
+> >>
+> >> fist sparse patches was accepted but doesn't fix all problems.
+> >>
+> >> There is still a lot of sparse problems which complain about incorrect=
+ type
+> >> in functions read(bwl)/writ(bwl). Over whole codebase to this
+> >> functions are passed
+> >> u_long or u_int types which is not correct.
+> >>
+> >> e.g. in serial drivers is used for access to registers:
+> >> writeb(0x07, dev->map_base + UFCON);
+> >>
+> >> In my opinion it make no sense to use:
+> >> writeb(0x07, IOMEM(dev->map_base + UFCON));
+> >>
+> >> Instead change map_base type in include/driver.h to void __iomem *map_=
+base
+> >> which should fix a lot sparse problems.
+> >> Then only board code when device is initialized use: .map_base =3D
+> >> IOMEM(0x00000...)
+> >>
+> >> Make it sense or there is not necessary to touch it or other way?
+> > it's a ressources so it's the right type as in the kernel
+> >
+> > the driver need to cast based on it's need
+> >
+> > as done in linux
+> You are right. Linus type for map_base is same like in barebox.
+> Anyway if you pass some resource to driver it is always re-mapped and
+> used remapped value over all code for IO access.
+> =
+
+> Maybe best would be cast map_base in probe function of driver with IOMEM(=
+) macro
+> and this value store in driver structure and use. Good idea?
+
+Yes, I like it.
+
+Sascha
+
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
