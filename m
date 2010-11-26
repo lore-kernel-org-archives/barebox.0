@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 68.mail-out.ovh.net ([91.121.185.69])
-	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1PM4VC-0003wE-9m
-	for barebox@lists.infradead.org; Fri, 26 Nov 2010 20:02:39 +0000
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 26 Nov 2010 20:58:36 +0100
-Message-Id: <1290801517-3281-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from mail-ey0-f177.google.com ([209.85.215.177])
+	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1PM4sk-0005E9-Kw
+	for barebox@lists.infradead.org; Fri, 26 Nov 2010 20:26:59 +0000
+Received: by eyd9 with SMTP id 9so1149727eyd.36
+	for <barebox@lists.infradead.org>; Fri, 26 Nov 2010 12:26:57 -0800 (PST)
+From: Marek Belisko <marek.belisko@open-nandra.com>
+Date: Fri, 26 Nov 2010 21:23:58 +0100
+Message-Id: <1290803038-7084-2-git-send-email-marek.belisko@open-nandra.com>
+In-Reply-To: <1290803038-7084-1-git-send-email-marek.belisko@open-nandra.com>
+References: <1290803038-7084-1-git-send-email-marek.belisko@open-nandra.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,27 +23,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] defaultenv/udpate: fix typo in default barebox image name
+Subject: [PATCH 2/2] scripts: Adapt checkpatch.pl for barebox.
 To: barebox@lists.infradead.org
+Cc: Marek Belisko <marek.belisko@open-nandra.com>
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Add directories from root of barebox to top_of_kernel_tree()
+function for usage of script without additional parameters.
+
+Signed-off-by: Marek Belisko <marek.belisko@open-nandra.com>
 ---
- defaultenv/bin/update |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+ scripts/checkpatch.pl |    6 +++---
+ 1 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/defaultenv/bin/update b/defaultenv/bin/update
-index 3601177..29c240b 100644
---- a/defaultenv/bin/update
-+++ b/defaultenv/bin/update
-@@ -33,7 +33,7 @@ elif [ x${type} = xrootfs ]; then
- elif [ x${type} = xbarebox ]; then
- 	image=$bareboximage
- 	if [ x${image} = x ]; then
--		imamge=barebox.bin
-+		image=barebox.bin
- 	fi
- else
- 	. /env/bin/_update_help
+diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+index e3c7fc0..151c53a 100755
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -328,9 +328,9 @@ sub top_of_kernel_tree {
+ 	my ($root) = @_;
+ 
+ 	my @tree_check = (
+-		"COPYING", "CREDITS", "Kbuild", "MAINTAINERS", "Makefile",
+-		"README", "Documentation", "arch", "include", "drivers",
+-		"fs", "init", "ipc", "kernel", "lib", "scripts",
++		"arch", "commands", "common", "COPYING", "CREDITS", "defaultenv",  
++		"Documentation", "Doxyfile", "drivers", "fs", "include", "lib",
++		"MAKEALL", "Makefile", "net", "README", "scripts", "TODO"
+ 	);
+ 
+ 	foreach my $check (@tree_check) {
 -- 
 1.7.1
 
