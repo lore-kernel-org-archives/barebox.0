@@ -1,13 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 6.76.mail-out.ovh.net ([87.98.164.52] helo=76.mail-out.ovh.net)
-	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1PM52s-0006nS-In
-	for barebox@lists.infradead.org; Fri, 26 Nov 2010 20:37:27 +0000
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 26 Nov 2010 20:58:37 +0100
-Message-Id: <1290801517-3281-2-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1290801517-3281-1-git-send-email-plagnioj@jcrosoft.com>
-References: <1290801517-3281-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1PM5cH-0007uw-NE
+	for barebox@lists.infradead.org; Fri, 26 Nov 2010 21:14:04 +0000
+Date: Fri, 26 Nov 2010 22:13:57 +0100
+From: Robert Schwebel <r.schwebel@pengutronix.de>
+Message-ID: <20101126211357.GD4233@pengutronix.de>
+References: <1290430375-8569-1-git-send-email-plagnioj@jcrosoft.com>
+	<201011221423.21188.jbe@pengutronix.de>
+	<20101122132630.GB4693@pengutronix.de>
+	<1290710678.5546.6.camel@gregoire-laptop>
+	<20101126091629.GE26540@game.jcrosoft.org>
+	<1290791055.25141.13.camel@gregoire-laptop>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1290791055.25141.13.camel@gregoire-laptop>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,52 +23,26 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] defaultenv/udpate: in xmodem mode load the data before
-	erasing
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/1] arm: add touchbook support
+To: Gregoire Gentil <gregoire@alwaysinnovating.com>
+Cc: barebox@lists.infradead.org
 
-and abort the update if loadb failed or cancelled
+On Fri, Nov 26, 2010 at 09:04:15AM -0800, Gregoire Gentil wrote:
+> I don't know if there any barebox work about such strategy...
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- defaultenv/bin/_update |    9 ++++++++-
- 1 files changed, 8 insertions(+), 1 deletions(-)
+There is:
+http://elinux.org/images/8/89/ELCE-2010-Barebox-Booting-Linux-Fast-and-Fancy.pdf
 
-diff --git a/defaultenv/bin/_update b/defaultenv/bin/_update
-index 87e6922..f736acc 100644
---- a/defaultenv/bin/_update
-+++ b/defaultenv/bin/_update
-@@ -22,6 +22,14 @@ if [ x$mode = xtftp ]; then
- 	fi
- fi
- 
-+if [ x$mode = xxmodem ]; then
-+	loadb -f $image -c
-+	if [ $? -ne 0 ] ; then
-+		echo "loadb failed or cancelled! Update aborted."
-+		exit 1
-+	fi
-+fi
-+
- unprotect $part
- 
- echo
-@@ -36,7 +44,6 @@ echo
- if [ x$mode = xtftp ]; then
- 	tftp $image $part
- else
--	loadb -f $image -c
- 	cp $image $part
- fi
- 
+rsc
 -- 
-1.7.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
