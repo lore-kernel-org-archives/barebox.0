@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from 6.76.mail-out.ovh.net ([87.98.164.52] helo=76.mail-out.ovh.net)
 	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1PM52M-0006XU-4V
-	for barebox@lists.infradead.org; Fri, 26 Nov 2010 20:36:54 +0000
+	id 1PM52s-0006nS-In
+	for barebox@lists.infradead.org; Fri, 26 Nov 2010 20:37:27 +0000
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 26 Nov 2010 20:56:26 +0100
-Message-Id: <1290801386-2932-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri, 26 Nov 2010 20:58:37 +0100
+Message-Id: <1290801517-3281-2-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1290801517-3281-1-git-send-email-plagnioj@jcrosoft.com>
+References: <1290801517-3281-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,27 +21,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] clocksource: import CLOCKSOURCE_MASK from the kernel
+Subject: [PATCH 2/2] defaultenv/udpate: in xmodem mode load the data before
+	erasing
 To: barebox@lists.infradead.org
+
+and abort the update if loadb failed or cancelled
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- include/clock.h |    2 ++
- 1 files changed, 2 insertions(+), 0 deletions(-)
+ defaultenv/bin/_update |    9 ++++++++-
+ 1 files changed, 8 insertions(+), 1 deletions(-)
 
-diff --git a/include/clock.h b/include/clock.h
-index 278f6e8..b9acdb9 100644
---- a/include/clock.h
-+++ b/include/clock.h
-@@ -3,6 +3,8 @@
- #ifndef CLOCK_H
- #define CLOCK_H
+diff --git a/defaultenv/bin/_update b/defaultenv/bin/_update
+index 87e6922..f736acc 100644
+--- a/defaultenv/bin/_update
++++ b/defaultenv/bin/_update
+@@ -22,6 +22,14 @@ if [ x$mode = xtftp ]; then
+ 	fi
+ fi
  
-+#define CLOCKSOURCE_MASK(bits) (uint64_t)((bits) < 64 ? ((1ULL<<(bits))-1) : -1)
++if [ x$mode = xxmodem ]; then
++	loadb -f $image -c
++	if [ $? -ne 0 ] ; then
++		echo "loadb failed or cancelled! Update aborted."
++		exit 1
++	fi
++fi
 +
- struct clocksource {
- 	uint32_t	shift;
- 	uint32_t	mult;
+ unprotect $part
+ 
+ echo
+@@ -36,7 +44,6 @@ echo
+ if [ x$mode = xtftp ]; then
+ 	tftp $image $part
+ else
+-	loadb -f $image -c
+ 	cp $image $part
+ fi
+ 
 -- 
 1.7.1
 
