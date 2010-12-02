@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qy0-f177.google.com ([209.85.216.177])
+Received: from h51baff8c.k3918.sta.perspektivbredband.net ([81.186.255.140]
+	helo=fg-dc1.flatfrog.local)
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1POAqE-0004Od-H4
-	for barebox@lists.infradead.org; Thu, 02 Dec 2010 15:13:03 +0000
-Received: by qyk27 with SMTP id 27so9673314qyk.15
-	for <barebox@lists.infradead.org>; Thu, 02 Dec 2010 07:13:00 -0800 (PST)
+	id 1POCDl-00057P-1G
+	for barebox@lists.infradead.org; Thu, 02 Dec 2010 16:41:26 +0000
+Message-ID: <4CF7CBD0.7080609@flatfrog.com>
+Date: Thu, 2 Dec 2010 17:39:44 +0100
+From: Orjan Friberg <of@flatfrog.com>
 MIME-Version: 1.0
-In-Reply-To: <4CF7AB25.3010604@flatfrog.com>
 References: <4CF7AB25.3010604@flatfrog.com>
-Date: Thu, 2 Dec 2010 16:13:00 +0100
-Message-ID: <AANLkTimHbFqqTZ3_oqWCTg+dYHuKA2jHqWCymmy++qTO@mail.gmail.com>
-From: Belisko Marek <marek.belisko@gmail.com>
+	<AANLkTimHbFqqTZ3_oqWCTg+dYHuKA2jHqWCymmy++qTO@mail.gmail.com>
+In-Reply-To: <AANLkTimHbFqqTZ3_oqWCTg+dYHuKA2jHqWCymmy++qTO@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,41 +19,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: Barebox on a 3730
-To: Orjan Friberg <of@flatfrog.com>
-Cc: barebox@lists.infradead.org
+To: Belisko Marek <marek.belisko@gmail.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-SGksCgpPbiBUaHUsIERlYyAyLCAyMDEwIGF0IDM6MjAgUE0sIE9yamFuIEZyaWJlcmcgPG9mQGZs
-YXRmcm9nLmNvbT4gd3JvdGU6Cj4gSGksCj4KPiBXZSBoYXZlIHN1Y2Nlc3NmdWxseSB1c2VkIEJh
-cmVib3ggYXMgYm9vdGxvYWRlciBvbiBvbmUgb2Ygb3VyIG93biBib2FyZHMKPiB3aXRoIGFuIE9N
-QVAgMzUzMC4gwqBTYW1lIGJvYXJkLCBidXQgd2l0aCBhIDM3MzAgaW5zdGVhZCAoYW5kIGEgZmV3
-IGF1eGlsaWFyeQo+IGNvbXBvbmVudHMgY2hhbmdlZCkgSSdtIGdldHRpbmcgY29tcGxldGVseSBn
-YXJibGVkIG91dHB1dCBvbiB0aGUgc2VyaWFsCj4gcG9ydC4gwqBJIHRyaWVkIGNoYW5naW5nIHRo
-ZSBiYXVkIHJhdGUgZnJvbSAxMTUyMDAgdG8gMzg0MDAgYW5kIDE5MjAwIHRvIG5vCj4gYXZhaWwu
-Ck5vdCBoYXZlIG9tYXAzNTMwIG9yIG90aGVyIGJ1dCBoYXZlIHNhbWUgaXNzdWUgd2l0aCBkaWZm
-ZXJlbnQgYm9hcmQgdHlwZS4KUHJvYmxlbSB3YXMgd2l0aCBjbG9jayBzZXR1cCBmb3Igc2VyaWFs
-LiBKdXN0IGFuIGlkZWEgY2hlY2sgaWYgY2xvY2sgaXMgY29ycmVjdAphY2NvcmRpbmcgZGF0YSBz
-aGVldC4gTWF5YmUgMzd4eCBkaWZmZXJzIGZyb20gMzV4eCA7KQo+Cj4gQW55b25lIGhlcmUgcmFt
-Ym9vdGVkIGEgMzczMCB3aXRoIGJhcmVib3g/IMKgKEp1c3QgdG8gcnVsZSBvdXQgdGhhdCBJIG5l
-ZWQgdG8KPiBkbyBhbnkgc29mdHdhcmUgY2hhbmdlcy4pCj4KPiBXaGVuIHNldHRpbmcgdGhlIGJv
-YXJkIGluIGJvb3QgbW9kZSAiNjAiIGlzIHByaW50ZWQgb24gdGhlIHNlcmlhbCBwb3J0IGJ5Cj4g
-dGhlIGJvb3QgUk9NLCB0aGUgc2FtZSB3YXkgIjQwVyIgd2FzIHByaW50ZWQgYnkgdGhlIDM1MzAg
-c28gaXQncyBub3QgbGlrZQo+IHRoZSBzZXJpYWwgcG9ydCBpc24ndCB3b3JraW5nIGF0IGFsbC4g
-wqBJIGNhbiBib290c3RyYXAgdmlhIGVpdGhlciBVU0Igb3IKPiBzZXJpYWwgcG9ydC4gwqBXZSdy
-ZSB1c2luZyB0aGUgb21hcDM1MzBfYmVhZ2xlX3Blcl91YXJ0X2RlZmNvbmZpZy4KPgo+Cj4gVGhh
-bmtzLAo+IE9yamFuCj4KPiAtLQo+IE9yamFuIEZyaWJlcmcKPiBGbGF0RnJvZyBMYWJvcmF0b3Jp
-ZXMgQUIKPgo+IF9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-Cj4gYmFyZWJveCBtYWlsaW5nIGxpc3QKPiBiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKPiBo
-dHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gKPgoKdGhh
-bmtzLAoKbWFyZWsKCi0tIAphcyBzaW1wbGUgYW5kIHByaW1pdGl2ZSBhcyBwb3NzaWJsZQotLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCk1hcmVrIEJlbGlz
-a28gLSBPUEVOLU5BTkRSQQpGcmVlbGFuY2UgRGV2ZWxvcGVyCgpSdXNrYSBOb3ZhIFZlcyAyMTkg
-fCBQcmVzb3YsIDA4MDA1IFNsb3ZhayBSZXB1YmxpYwpUZWw6ICs0MjEgOTE1IDA1MiAxODQKc2t5
-cGU6IG1hcmVrd2hpdGUKaWNxOiAyOTA1NTEwODYKd2ViOiBodHRwOi8vb3Blbi1uYW5kcmEuY29t
-CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94
-IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmlu
-ZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On 2010-12-02 16:13, Belisko Marek wrote:
+> Not have omap3530 or other but have same issue with different board type.
+> Problem was with clock setup for serial. Just an idea check if clock is correct
+> according data sheet. Maybe 37xx differs from 35xx ;)
+
+Clocking looks like it should be the same but just out of curiosity, 
+what issue did you have with the clock setup?  (What was bad, how did it 
+manifest itself.)
+
+I haven't found any 3530 vs. 3730 diffs in the uart configuration in 
+u-boot or linux (though there is a silicon errata fix in the latest 
+linux-omap-2.6 kernel related to not reading from an empty FIFO).
+
+But then again, they could potentially both be relying on the first 
+stage bootloader setting things upp correctly (and then not touching it).
+
+
+Thanks,
+Orjan
+
+-- 
+Orjan Friberg
+FlatFrog Laboratories AB
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
