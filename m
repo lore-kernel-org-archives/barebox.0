@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 30.mail-out.ovh.net ([213.186.62.213])
-	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1PODUf-00028h-5A
-	for barebox@lists.infradead.org; Thu, 02 Dec 2010 18:02:58 +0000
-Date: Thu, 2 Dec 2010 18:52:02 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20101202175202.GC4450@game.jcrosoft.org>
-References: <20101126194353.GH26540@game.jcrosoft.org>
-	<20101129205350.GZ6017@pengutronix.de>
+Received: from bear.ext.ti.com ([192.94.94.41])
+	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1PODzr-0004p7-RM
+	for barebox@lists.infradead.org; Thu, 02 Dec 2010 18:35:13 +0000
+From: "Premi, Sanjeev" <premi@ti.com>
+Date: Fri, 3 Dec 2010 00:04:59 +0530
+Message-ID: <B85A65D85D7EB246BE421B3FB0FBB5930247B9A457@dbde02.ent.ti.com>
+References: <4CF7AB25.3010604@flatfrog.com>
+	<AANLkTimHbFqqTZ3_oqWCTg+dYHuKA2jHqWCymmy++qTO@mail.gmail.com>
+	<4CF7CBD0.7080609@flatfrog.com>
+In-Reply-To: <4CF7CBD0.7080609@flatfrog.com>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20101129205350.GZ6017@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,75 +24,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/12] cfi_flash: improvment
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, Patrice Vilchez <patrice.vilchez@atmel.com>, Nicolas Ferre <nicolas.ferre@atmel.com>
+Subject: RE: Barebox on a 3730
+To: Orjan Friberg <of@flatfrog.com>, Belisko Marek <marek.belisko@gmail.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi,
-
-	update without the __raw_
-
-please pull
-The following changes since commit 4a7f56056d6aa12a0449f03eb038e4d2bf7fdd49:
-
-  scripts: Adapt checkpatch.pl for barebox. (2010-11-29 21:56:05 +0100)
-
-are available in the git repository at:
-  git://git.jcrosoft.org/barebox.git cfi
-
-Jean-Christophe PLAGNIOL-VILLARD (12):
-      cfi_flash: move intel real protect flash support to cfi_flash_intel.c
-      cfi_flash: add Atmel real protect flash support
-      cfi_flash: move flash_read_uchar from inline to noinline
-      cfi_flash: use amd and standard reset flash command at probing
-      cfi_flash: synchronize command offsets with Linux CFI driver
-      cfi_flash: update manufacturer id flash support
-      cfi_flash: Introduce read and write accessors
-      cfi_flash: Read whole QRY structure in one go
-      cfi_flash: do not reset flash when probe fails
-      cfi_flash: move reset command assigment to specific chipset init function
-      cfi_flash: introduce flash cmdset fixup
-      cfi_flash_amd: Add manufacturer-specific fixups
-
- drivers/nor/cfi_flash.c       |  303 +++++++++++++++++++----------------------
- drivers/nor/cfi_flash.h       |  120 +++++++++++++----
- drivers/nor/cfi_flash_amd.c   |  172 ++++++++++++++++++++----
- drivers/nor/cfi_flash_intel.c |   52 ++++++--
- 4 files changed, 420 insertions(+), 227 deletions(-)
-
-Best Regards,
-J.
-On 21:53 Mon 29 Nov     , Sascha Hauer wrote:
-> Hi J,
+> -----Original Message-----
+> From: barebox-bounces@lists.infradead.org 
+> [mailto:barebox-bounces@lists.infradead.org] On Behalf Of 
+> Orjan Friberg
+> Sent: Thursday, December 02, 2010 10:10 PM
+> To: Belisko Marek
+> Cc: barebox@lists.infradead.org
+> Subject: Re: Barebox on a 3730
 > 
-> On Fri, Nov 26, 2010 at 08:43:53PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > Hi,
-> > 
-> > 	the following patch series improve the current flash
-> > 	by adding the atmel flash supportm fixing some issues and factorising
-> > 	more the code
-> > 
-> > 	Found during the adding of the at91rm9200ek
-> > 
-> > please pull
-> > The following changes since commit 53dbaf3fc7b8371ed1e24ef96715e41d60b8ebc3:
-> > 
-> >   Merge branch 'master' into next (2010-11-19 09:35:15 +0100)
+> On 2010-12-02 16:13, Belisko Marek wrote:
+> > Not have omap3530 or other but have same issue with 
+> different board type.
+> > Problem was with clock setup for serial. Just an idea check 
+> if clock is correct
+> > according data sheet. Maybe 37xx differs from 35xx ;)
 > 
-> Nice. I like this series.
+> Clocking looks like it should be the same but just out of curiosity, 
+> what issue did you have with the clock setup?  (What was bad, 
+> how did it 
+> manifest itself.)
 > 
-> Can we use readl/writel instead? The __raw_ versions do not exist on
-> architectures other than ARM.
+> I haven't found any 3530 vs. 3730 diffs in the uart configuration in 
+> u-boot or linux (though there is a silicon errata fix in the latest 
+> linux-omap-2.6 kernel related to not reading from an empty FIFO).
 > 
-> Sascha
+Look for the AM37x TRM here:
+http://focus.ti.com/docs/prod/folders/print/am3715.html
+
+> But then again, they could potentially both be relying on the first 
+> stage bootloader setting things upp correctly (and then not 
+> touching it).
 > 
+> 
+> Thanks,
+> Orjan
 > 
 > -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
+> Orjan Friberg
+> FlatFrog Laboratories AB
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
