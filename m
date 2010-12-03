@@ -1,21 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from bear.ext.ti.com ([192.94.94.41])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1POUmx-0007K1-9A
-	for barebox@lists.infradead.org; Fri, 03 Dec 2010 12:30:59 +0000
-From: "Premi, Sanjeev" <premi@ti.com>
-Date: Fri, 3 Dec 2010 18:00:44 +0530
-Message-ID: <B85A65D85D7EB246BE421B3FB0FBB5930247B9A952@dbde02.ent.ti.com>
-References: <4CF7AB25.3010604@flatfrog.com>
-	<AANLkTimHbFqqTZ3_oqWCTg+dYHuKA2jHqWCymmy++qTO@mail.gmail.com>
-	<4CF7CBD0.7080609@flatfrog.com>
-	<B85A65D85D7EB246BE421B3FB0FBB5930247B9A457@dbde02.ent.ti.com>
-	<4CF89B06.3070209@flatfrog.com>
-	<AANLkTineUQPxVixwGswwxvBdZhxrqvmZ8=+rv3QynZ=8@mail.gmail.com>
-	<4CF8A582.8080003@flatfrog.com> <4CF8B454.1080202@flatfrog.com>
-In-Reply-To: <4CF8B454.1080202@flatfrog.com>
-Content-Language: en-US
+	id 1POWBm-0003zC-Ol
+	for barebox@lists.infradead.org; Fri, 03 Dec 2010 14:00:43 +0000
+Received: from gallifrey.ext.pengutronix.de
+	([2001:6f8:1178:4:5054:ff:fe8d:eefb] helo=localhost)
+	by metis.ext.pengutronix.de with esmtp (Exim 4.71)
+	(envelope-from <jbe@pengutronix.de>) id 1POWBg-0000UQ-Eg
+	for barebox@lists.infradead.org; Fri, 03 Dec 2010 15:00:36 +0100
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Fri, 3 Dec 2010 14:59:50 +0100
 MIME-Version: 1.0
+Content-Disposition: inline
+Message-Id: <201012031459.50684.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,42 +25,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: Barebox on a 3730
-To: Orjan Friberg <of@flatfrog.com>, Belisko Marek <marek.belisko@gmail.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH] STM/MCI: Fix wrong register bit
+To: barebox@lists.infradead.org
 
- 
 
-> -----Original Message-----
-> From: Orjan Friberg [mailto:of@flatfrog.com] 
-> Sent: Friday, December 03, 2010 2:42 PM
-> To: Belisko Marek; Premi, Sanjeev
-> Cc: barebox@lists.infradead.org
-> Subject: Re: Barebox on a 3730
-> 
-> On 2010-12-03 09:08, Orjan Friberg wrote:
-> > I'll take a look at arch/arm/mach-omap/omap3_clock.c.
-> 
-> Ok, that stuff looks like it's a bit out of my league.  I guess you'd 
-> need to read the TRM very carefully and/or have a JTAG 
-> debugger handy to 
-> get it right.
-> 
-> Sanjeev, if you're able to make a patch I'd be grateful.
+Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
+---
+ drivers/mci/stm378x.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Just started to refresh the repo. I do hope I can get it done
-over this weekend...
-Haven't looked at barebox sources for quite long; will give
-my best shot...
+Index: barebox-git/drivers/mci/stm378x.c
+===================================================================
+--- barebox-git.orig/drivers/mci/stm378x.c
++++ barebox-git/drivers/mci/stm378x.c
+@@ -52,7 +52,7 @@
+ # define SSP_CTRL0_SFTRST (1 << 31)
+ # define SSP_CTRL0_CLKGATE (1 << 30)
+ # define SSP_CTRL0_RUN (1 << 29)
+-# define SSP_CTRL0_LOCK_CS (1 << 29)
++# define SSP_CTRL0_LOCK_CS (1 << 27)
+ # define SSP_CTRL0_READ (1 << 25)
+ # define SSP_CTRL0_IGNORE_CRC (1 << 26)
+ # define SSP_CTRL0_DATA_XFER (1 << 24)
 
-> 
-> (On a related note, is everyone using MMC for bootstrapping?  I'm 
-> finding very little related to rambooting the 35x or 37x.)
-> 
-> -- 
-> Orjan Friberg
-> FlatFrog Laboratories AB
-> 
+-- 
+Pengutronix e.K.                              | Juergen Beisert             |
+Linux Solutions for Science and Industry      | Phone: +49-8766-939 228     |
+Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555 |
+Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
+
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
