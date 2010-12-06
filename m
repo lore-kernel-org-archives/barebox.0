@@ -1,15 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from comal.ext.ti.com ([198.47.26.152])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PPCAr-0006Dh-PT
-	for barebox@lists.infradead.org; Sun, 05 Dec 2010 10:50:34 +0000
-Date: Sun, 5 Dec 2010 11:50:28 +0100
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20101205105028.GD10693@pengutronix.de>
-References: <201012031459.50684.jbe@pengutronix.de>
+	id 1PPR0P-00084F-N5
+	for barebox@lists.infradead.org; Mon, 06 Dec 2010 02:40:47 +0000
+From: "Premi, Sanjeev" <premi@ti.com>
+Date: Mon, 6 Dec 2010 08:10:28 +0530
+Message-ID: <B85A65D85D7EB246BE421B3FB0FBB5930247B9AC02@dbde02.ent.ti.com>
+References: <4CF7AB25.3010604@flatfrog.com>
+	<AANLkTimHbFqqTZ3_oqWCTg+dYHuKA2jHqWCymmy++qTO@mail.gmail.com>
+	<4CF7CBD0.7080609@flatfrog.com>
+	<B85A65D85D7EB246BE421B3FB0FBB5930247B9A457@dbde02.ent.ti.com>
+	<4CF89B06.3070209@flatfrog.com>
+	<AANLkTineUQPxVixwGswwxvBdZhxrqvmZ8=+rv3QynZ=8@mail.gmail.com>
+	<4CF8A582.8080003@flatfrog.com> <4CF8B454.1080202@flatfrog.com>
+In-Reply-To: <4CF8B454.1080202@flatfrog.com>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <201012031459.50684.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,49 +24,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] STM/MCI: Fix wrong register bit
-To: Juergen Beisert <jbe@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: RE: Barebox on a 3730
+To: Orjan Friberg <of@flatfrog.com>, Belisko Marek <marek.belisko@gmail.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Fri, Dec 03, 2010 at 02:59:50PM +0100, Juergen Beisert wrote:
-> =
+> -----Original Message-----
+> From: Orjan Friberg [mailto:of@flatfrog.com] 
+> Sent: Friday, December 03, 2010 2:42 PM
+> To: Belisko Marek; Premi, Sanjeev
+> Cc: barebox@lists.infradead.org
+> Subject: Re: Barebox on a 3730
+> 
+> On 2010-12-03 09:08, Orjan Friberg wrote:
+> > I'll take a look at arch/arm/mach-omap/omap3_clock.c.
+> 
+> Ok, that stuff looks like it's a bit out of my league.  I guess you'd 
+> need to read the TRM very carefully and/or have a JTAG 
+> debugger handy to 
+> get it right.
+> 
+> Sanjeev, if you're able to make a patch I'd be grateful.
+> 
+Looks like I got into more than I could chew for a weekend!
 
-Maybe add something like: "The define isn't used up to now, so the wrong
-offset didn't stick out before.  For the same reason this fix isn't
-critical." to the changelog?
+I found many things missing in the process of creating the
+patch; and ended with a big lst of 'dirty' patches. I will
+be able to try them on the EVM today; but clean-up can take
+another day.
 
-Uwe
-> Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
-> ---
->  drivers/mci/stm378x.c |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> =
+If I can get the board to boot, I can send the patches to
+you off-the-list for you to get started while I clean-up;
+...if helps you.
 
-> Index: barebox-git/drivers/mci/stm378x.c
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> --- barebox-git.orig/drivers/mci/stm378x.c
-> +++ barebox-git/drivers/mci/stm378x.c
-> @@ -52,7 +52,7 @@
->  # define SSP_CTRL0_SFTRST (1 << 31)
->  # define SSP_CTRL0_CLKGATE (1 << 30)
->  # define SSP_CTRL0_RUN (1 << 29)
-> -# define SSP_CTRL0_LOCK_CS (1 << 29)
-> +# define SSP_CTRL0_LOCK_CS (1 << 27)
->  # define SSP_CTRL0_READ (1 << 25)
->  # define SSP_CTRL0_IGNORE_CRC (1 << 26)
->  # define SSP_CTRL0_DATA_XFER (1 << 24)
+~sanjeev
 
--- =
-
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-
+> (On a related note, is everyone using MMC for bootstrapping?  I'm 
+> finding very little related to rambooting the 35x or 37x.)
+> 
+> -- 
+> Orjan Friber
+> FlatFrog Laboratories AB
+> 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
