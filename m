@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 26.mail-out.ovh.net ([91.121.27.225])
-	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1PQxGw-0007kl-N5
-	for barebox@lists.infradead.org; Fri, 10 Dec 2010 07:20:08 +0000
-Date: Fri, 10 Dec 2010 07:48:41 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20101210064841.GE19897@game.jcrosoft.org>
-References: <1291959762-14350-1-git-send-email-marc@cpdesign.com.au>
+Received: from mail-qw0-f49.google.com ([209.85.216.49])
+	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1PQxIh-0007nj-QF
+	for barebox@lists.infradead.org; Fri, 10 Dec 2010 07:21:57 +0000
+Received: by qwj9 with SMTP id 9so3480887qwj.36
+	for <barebox@lists.infradead.org>; Thu, 09 Dec 2010 23:21:54 -0800 (PST)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1291959762-14350-1-git-send-email-marc@cpdesign.com.au>
+In-Reply-To: <20101210064841.GE19897@game.jcrosoft.org>
+References: <1291959762-14350-1-git-send-email-marc@cpdesign.com.au>
+	<20101210064841.GE19897@game.jcrosoft.org>
+Date: Fri, 10 Dec 2010 08:21:54 +0100
+Message-ID: <AANLkTi=H_a_S1iDZttpphv906DxB9xUdDXusYRAPyL7r@mail.gmail.com>
+From: Belisko Marek <marek.belisko@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,143 +20,120 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] arm: Introduce VPR200 board
-To: Marc Reilly <marc@cpdesign.com.au>
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On 16:42 Fri 10 Dec     , Marc Reilly wrote:
-> Starting point for the vpr200 board.
-> Very similar core hardware to mx35 3stack.
-> 
-> Signed-off-by: Marc Reilly <marc@cpdesign.com.au>
-> ---
->  arch/arm/Makefile                            |    1 +
->  arch/arm/boards/vpr200/Makefile              |    4 +
->  arch/arm/boards/vpr200/config.h              |   28 +
->  arch/arm/boards/vpr200/env/bin/_update       |   39 ++
->  arch/arm/boards/vpr200/env/bin/boot          |   67 ++
->  arch/arm/boards/vpr200/env/bin/hush_hack     |    1 +
->  arch/arm/boards/vpr200/env/bin/init          |   38 +
->  arch/arm/boards/vpr200/env/bin/update_kernel |   15 +
->  arch/arm/boards/vpr200/env/bin/update_rootfs |   20 +
-con u use the defaultenv?
->  arch/arm/boards/vpr200/env/config            |   46 ++
->  arch/arm/boards/vpr200/flash_header.c        |   46 ++
->  arch/arm/boards/vpr200/lowlevel.c            |  255 +++++++
->  arch/arm/boards/vpr200/vpr200.c              |  929 ++++++++++++++++++++++++++
->  arch/arm/boards/vpr200/vpr200.dox            |   10 +
->  arch/arm/configs/vpr200_defconfig            |   60 ++
->  arch/arm/mach-imx/Kconfig                    |   13 +
->  16 files changed, 1572 insertions(+), 0 deletions(-)
->  create mode 100644 arch/arm/boards/vpr200/Makefile
->  create mode 100644 arch/arm/boards/vpr200/config.h
->  create mode 100644 arch/arm/boards/vpr200/env/bin/_update
->  create mode 100644 arch/arm/boards/vpr200/env/bin/boot
->  create mode 100644 arch/arm/boards/vpr200/env/bin/hush_hack
->  create mode 100644 arch/arm/boards/vpr200/env/bin/init
->  create mode 100644 arch/arm/boards/vpr200/env/bin/update_kernel
->  create mode 100644 arch/arm/boards/vpr200/env/bin/update_rootfs
->  create mode 100644 arch/arm/boards/vpr200/env/config
->  create mode 100644 arch/arm/boards/vpr200/flash_header.c
->  create mode 100644 arch/arm/boards/vpr200/lowlevel.c
->  create mode 100644 arch/arm/boards/vpr200/vpr200.c
->  create mode 100644 arch/arm/boards/vpr200/vpr200.dox
->  create mode 100644 arch/arm/configs/vpr200_defconfig
-> 
-> diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-> index 9729c23..6e6be98 100644
-> --- a/arch/arm/Makefile
-> +++ b/arch/arm/Makefile
-> @@ -91,6 +91,7 @@ board-$(CONFIG_MACH_CHUMBY)			:= chumby_falconwing
->  board-$(CONFIG_MACH_FREESCALE_MX51_PDK)		:= freescale-mx51-pdk
->  board-$(CONFIG_MACH_GUF_CUPID)			:= guf-cupid
->  board-$(CONFIG_MACH_MINI2440)			:= mini2440
-> +board-$(CONFIG_MACH_VPR200)			:= vpr200
->  
->  machdirs := $(patsubst %,arch/arm/mach-%/,$(machine-y))
->  
-> +static int do_diagled(struct command *cmdtp, int argc, char *argv[])
-> +{
-> +	int color;
-> +
-> +	if (argc != 2)
-> +		return COMMAND_ERROR_USAGE;
-> +
-> +	color = simple_strtoul(argv[1], NULL, 0);
-> +	vpr_diag_set_color(color);
-> +
-> +	return 0;
-> +}
-it will be better to have a common API for led management
-> +
-> +BAREBOX_CMD_HELP_START(diagled)
-> +BAREBOX_CMD_HELP_USAGE("diagled [color]\n")
-> +BAREBOX_CMD_HELP_SHORT("Sets the color of the diagnostic LED.\n")
-> +BAREBOX_CMD_HELP_TEXT("\toff\t 0\n")
-> +BAREBOX_CMD_HELP_TEXT("\tblue\t 1\n")
-> +BAREBOX_CMD_HELP_TEXT("\tgreen\t 2\n")
-> +BAREBOX_CMD_HELP_TEXT("\taqua\t 3\n")
-> +BAREBOX_CMD_HELP_TEXT("\tred\t 4\n")
-> +BAREBOX_CMD_HELP_TEXT("\tmagenta\t 5\n")
-> +BAREBOX_CMD_HELP_TEXT("\tyellow\t 6\n")
-> +BAREBOX_CMD_HELP_TEXT("\twhite\t 7\n")
-> +BAREBOX_CMD_HELP_END
-> +
-> +BAREBOX_CMD_START(diagled)
-> +	.cmd            = do_diagled,
-> +	.usage          = "Set color of diagnositc tri-color LED",
-> +	BAREBOX_CMD_HELP(cmd_diagled_help)
-> +BAREBOX_CMD_END
-> +
-> +/* ------------------------------------------------------------------------ */
-> +
-> +static int do_waitbutton(struct command *cmdtp, int argc, char *argv[])
-> +{
-> +	int opt;
-> +	uint64_t start;
-> +	ulong timeout = 0;
-> +	uint32_t bstate;
-> +
-> +	while ((opt = getopt(argc, argv, "t:")) > 0) {
-> +		switch (opt) {
-> +		case 't':
-> +			timeout = simple_strtol(optarg, NULL, 0);
-> +			break;
-> +		}
-> +	}
-> +
-> +	start = get_time_ns();
-> +	while (!timeout || !is_timeout(start, timeout * SECOND)) {
-> +		bstate = vpr_button_state();
-> +		if (bstate) {
-> +			printf("%d\n", vpr_button_state_to_number(bstate));
-> +			return 0;
-> +		}
-> +		if (ctrlc())
-> +			return -EINTR;
-> +	}
-> +
-> +	return -ETIMEDOUT;
-> +}
-ditto here
-> +
-> +BAREBOX_CMD_HELP_START(waitbutton)
-> +BAREBOX_CMD_HELP_USAGE("waitbutton [-t]\n")
-> +BAREBOX_CMD_HELP_SHORT("Prints the button number of the next pressed button.\n")
-> +BAREBOX_CMD_HELP_OPT("-t <seconds>", "time in seconds to wait. 0 (default) is forever.")
-> +BAREBOX_CMD_HELP_END
-
-please also check your patch you have some whitespace and other too long line
-issue
-
-Best Regards,
-J.
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gRnJpLCBEZWMgMTAsIDIwMTAgYXQgNzo0OCBBTSwgSmVhbi1DaHJpc3RvcGhlIFBMQUdOSU9M
+LVZJTExBUkQKPHBsYWduaW9qQGpjcm9zb2Z0LmNvbT4gd3JvdGU6Cj4gT24gMTY6NDIgRnJpIDEw
+IERlYyDCoCDCoCAsIE1hcmMgUmVpbGx5IHdyb3RlOgo+PiBTdGFydGluZyBwb2ludCBmb3IgdGhl
+IHZwcjIwMCBib2FyZC4KPj4gVmVyeSBzaW1pbGFyIGNvcmUgaGFyZHdhcmUgdG8gbXgzNSAzc3Rh
+Y2suCj4+Cj4+IFNpZ25lZC1vZmYtYnk6IE1hcmMgUmVpbGx5IDxtYXJjQGNwZGVzaWduLmNvbS5h
+dT4KPj4gLS0tCj4+IMKgYXJjaC9hcm0vTWFrZWZpbGUgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAg
+wqAgwqAgwqAgwqAgwqAgwqB8IMKgIMKgMSArCj4+IMKgYXJjaC9hcm0vYm9hcmRzL3ZwcjIwMC9N
+YWtlZmlsZSDCoCDCoCDCoCDCoCDCoCDCoCDCoHwgwqAgwqA0ICsKPj4gwqBhcmNoL2FybS9ib2Fy
+ZHMvdnByMjAwL2NvbmZpZy5oIMKgIMKgIMKgIMKgIMKgIMKgIMKgfCDCoCAyOCArCj4+IMKgYXJj
+aC9hcm0vYm9hcmRzL3ZwcjIwMC9lbnYvYmluL191cGRhdGUgwqAgwqAgwqAgfCDCoCAzOSArKwo+
+PiDCoGFyY2gvYXJtL2JvYXJkcy92cHIyMDAvZW52L2Jpbi9ib290IMKgIMKgIMKgIMKgIMKgfCDC
+oCA2NyArKwo+PiDCoGFyY2gvYXJtL2JvYXJkcy92cHIyMDAvZW52L2Jpbi9odXNoX2hhY2sgwqAg
+wqAgfCDCoCDCoDEgKwo+PiDCoGFyY2gvYXJtL2JvYXJkcy92cHIyMDAvZW52L2Jpbi9pbml0IMKg
+IMKgIMKgIMKgIMKgfCDCoCAzOCArCj4+IMKgYXJjaC9hcm0vYm9hcmRzL3ZwcjIwMC9lbnYvYmlu
+L3VwZGF0ZV9rZXJuZWwgfCDCoCAxNSArCj4+IMKgYXJjaC9hcm0vYm9hcmRzL3ZwcjIwMC9lbnYv
+YmluL3VwZGF0ZV9yb290ZnMgfCDCoCAyMCArCj4gY29uIHUgdXNlIHRoZSBkZWZhdWx0ZW52Pwo+
+PiDCoGFyY2gvYXJtL2JvYXJkcy92cHIyMDAvZW52L2NvbmZpZyDCoCDCoCDCoCDCoCDCoCDCoHwg
+wqAgNDYgKysKPj4gwqBhcmNoL2FybS9ib2FyZHMvdnByMjAwL2ZsYXNoX2hlYWRlci5jIMKgIMKg
+IMKgIMKgfCDCoCA0NiArKwo+PiDCoGFyY2gvYXJtL2JvYXJkcy92cHIyMDAvbG93bGV2ZWwuYyDC
+oCDCoCDCoCDCoCDCoCDCoHwgwqAyNTUgKysrKysrKwo+PiDCoGFyY2gvYXJtL2JvYXJkcy92cHIy
+MDAvdnByMjAwLmMgwqAgwqAgwqAgwqAgwqAgwqAgwqB8IMKgOTI5ICsrKysrKysrKysrKysrKysr
+KysrKysrKysrCj4+IMKgYXJjaC9hcm0vYm9hcmRzL3ZwcjIwMC92cHIyMDAuZG94IMKgIMKgIMKg
+IMKgIMKgIMKgfCDCoCAxMCArCj4+IMKgYXJjaC9hcm0vY29uZmlncy92cHIyMDBfZGVmY29uZmln
+IMKgIMKgIMKgIMKgIMKgIMKgfCDCoCA2MCArKwo+PiDCoGFyY2gvYXJtL21hY2gtaW14L0tjb25m
+aWcgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqB8IMKgIDEzICsKPj4gwqAxNiBmaWxlcyBj
+aGFuZ2VkLCAxNTcyIGluc2VydGlvbnMoKyksIDAgZGVsZXRpb25zKC0pCj4+IMKgY3JlYXRlIG1v
+ZGUgMTAwNjQ0IGFyY2gvYXJtL2JvYXJkcy92cHIyMDAvTWFrZWZpbGUKPj4gwqBjcmVhdGUgbW9k
+ZSAxMDA2NDQgYXJjaC9hcm0vYm9hcmRzL3ZwcjIwMC9jb25maWcuaAo+PiDCoGNyZWF0ZSBtb2Rl
+IDEwMDY0NCBhcmNoL2FybS9ib2FyZHMvdnByMjAwL2Vudi9iaW4vX3VwZGF0ZQo+PiDCoGNyZWF0
+ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9ib2FyZHMvdnByMjAwL2Vudi9iaW4vYm9vdAo+PiDCoGNy
+ZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9ib2FyZHMvdnByMjAwL2Vudi9iaW4vaHVzaF9oYWNr
+Cj4+IMKgY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL2JvYXJkcy92cHIyMDAvZW52L2Jpbi9p
+bml0Cj4+IMKgY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL2JvYXJkcy92cHIyMDAvZW52L2Jp
+bi91cGRhdGVfa2VybmVsCj4+IMKgY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL2JvYXJkcy92
+cHIyMDAvZW52L2Jpbi91cGRhdGVfcm9vdGZzCj4+IMKgY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gv
+YXJtL2JvYXJkcy92cHIyMDAvZW52L2NvbmZpZwo+PiDCoGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNo
+L2FybS9ib2FyZHMvdnByMjAwL2ZsYXNoX2hlYWRlci5jCj4+IMKgY3JlYXRlIG1vZGUgMTAwNjQ0
+IGFyY2gvYXJtL2JvYXJkcy92cHIyMDAvbG93bGV2ZWwuYwo+PiDCoGNyZWF0ZSBtb2RlIDEwMDY0
+NCBhcmNoL2FybS9ib2FyZHMvdnByMjAwL3ZwcjIwMC5jCj4+IMKgY3JlYXRlIG1vZGUgMTAwNjQ0
+IGFyY2gvYXJtL2JvYXJkcy92cHIyMDAvdnByMjAwLmRveAo+PiDCoGNyZWF0ZSBtb2RlIDEwMDY0
+NCBhcmNoL2FybS9jb25maWdzL3ZwcjIwMF9kZWZjb25maWcKPj4KPj4gZGlmZiAtLWdpdCBhL2Fy
+Y2gvYXJtL01ha2VmaWxlIGIvYXJjaC9hcm0vTWFrZWZpbGUKPj4gaW5kZXggOTcyOWMyMy4uNmU2
+YmU5OCAxMDA2NDQKPj4gLS0tIGEvYXJjaC9hcm0vTWFrZWZpbGUKPj4gKysrIGIvYXJjaC9hcm0v
+TWFrZWZpbGUKPj4gQEAgLTkxLDYgKzkxLDcgQEAgYm9hcmQtJChDT05GSUdfTUFDSF9DSFVNQlkp
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIDo9IGNodW1ieV9mYWxjb253aW5nCj4+IMKgYm9hcmQt
+JChDT05GSUdfTUFDSF9GUkVFU0NBTEVfTVg1MV9QREspIMKgIMKgIMKgIMKgIMKgIMKgIMKgOj0g
+ZnJlZXNjYWxlLW14NTEtcGRrCj4+IMKgYm9hcmQtJChDT05GSUdfTUFDSF9HVUZfQ1VQSUQpIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIDo9IGd1Zi1jdXBpZAo+PiDCoGJvYXJkLSQo
+Q09ORklHX01BQ0hfTUlOSTI0NDApIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
+Oj0gbWluaTI0NDAKPj4gK2JvYXJkLSQoQ09ORklHX01BQ0hfVlBSMjAwKSDCoCDCoCDCoCDCoCDC
+oCDCoCDCoCDCoCDCoDo9IHZwcjIwMAo+Pgo+PiDCoG1hY2hkaXJzIDo9ICQocGF0c3Vic3QgJSxh
+cmNoL2FybS9tYWNoLSUvLCQobWFjaGluZS15KSkKPj4KPj4gK3N0YXRpYyBpbnQgZG9fZGlhZ2xl
+ZChzdHJ1Y3QgY29tbWFuZCAqY21kdHAsIGludCBhcmdjLCBjaGFyICphcmd2W10pCj4+ICt7Cj4+
+ICsgwqAgwqAgaW50IGNvbG9yOwo+PiArCj4+ICsgwqAgwqAgaWYgKGFyZ2MgIT0gMikKPj4gKyDC
+oCDCoCDCoCDCoCDCoCDCoCByZXR1cm4gQ09NTUFORF9FUlJPUl9VU0FHRTsKPj4gKwo+PiArIMKg
+IMKgIGNvbG9yID0gc2ltcGxlX3N0cnRvdWwoYXJndlsxXSwgTlVMTCwgMCk7Cj4+ICsgwqAgwqAg
+dnByX2RpYWdfc2V0X2NvbG9yKGNvbG9yKTsKPj4gKwo+PiArIMKgIMKgIHJldHVybiAwOwo+PiAr
+fQo+IGl0IHdpbGwgYmUgYmV0dGVyIHRvIGhhdmUgYSBjb21tb24gQVBJIGZvciBsZWQgbWFuYWdl
+bWVudAo+PiArCj4+ICtCQVJFQk9YX0NNRF9IRUxQX1NUQVJUKGRpYWdsZWQpCj4+ICtCQVJFQk9Y
+X0NNRF9IRUxQX1VTQUdFKCJkaWFnbGVkIFtjb2xvcl1cbiIpCj4+ICtCQVJFQk9YX0NNRF9IRUxQ
+X1NIT1JUKCJTZXRzIHRoZSBjb2xvciBvZiB0aGUgZGlhZ25vc3RpYyBMRUQuXG4iKQo+PiArQkFS
+RUJPWF9DTURfSEVMUF9URVhUKCJcdG9mZlx0IDBcbiIpCj4+ICtCQVJFQk9YX0NNRF9IRUxQX1RF
+WFQoIlx0Ymx1ZVx0IDFcbiIpCj4+ICtCQVJFQk9YX0NNRF9IRUxQX1RFWFQoIlx0Z3JlZW5cdCAy
+XG4iKQo+PiArQkFSRUJPWF9DTURfSEVMUF9URVhUKCJcdGFxdWFcdCAzXG4iKQo+PiArQkFSRUJP
+WF9DTURfSEVMUF9URVhUKCJcdHJlZFx0IDRcbiIpCj4+ICtCQVJFQk9YX0NNRF9IRUxQX1RFWFQo
+Ilx0bWFnZW50YVx0IDVcbiIpCj4+ICtCQVJFQk9YX0NNRF9IRUxQX1RFWFQoIlx0eWVsbG93XHQg
+NlxuIikKPj4gK0JBUkVCT1hfQ01EX0hFTFBfVEVYVCgiXHR3aGl0ZVx0IDdcbiIpCj4+ICtCQVJF
+Qk9YX0NNRF9IRUxQX0VORAo+PiArCj4+ICtCQVJFQk9YX0NNRF9TVEFSVChkaWFnbGVkKQo+PiAr
+IMKgIMKgIC5jbWQgwqAgwqAgwqAgwqAgwqAgwqA9IGRvX2RpYWdsZWQsCj4+ICsgwqAgwqAgLnVz
+YWdlIMKgIMKgIMKgIMKgIMKgPSAiU2V0IGNvbG9yIG9mIGRpYWdub3NpdGMgdHJpLWNvbG9yIExF
+RCIsCj4+ICsgwqAgwqAgQkFSRUJPWF9DTURfSEVMUChjbWRfZGlhZ2xlZF9oZWxwKQo+PiArQkFS
+RUJPWF9DTURfRU5ECj4+ICsKPj4gKy8qIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSAqLwo+PiArCj4+ICtzdGF0
+aWMgaW50IGRvX3dhaXRidXR0b24oc3RydWN0IGNvbW1hbmQgKmNtZHRwLCBpbnQgYXJnYywgY2hh
+ciAqYXJndltdKQo+PiArewo+PiArIMKgIMKgIGludCBvcHQ7Cj4+ICsgwqAgwqAgdWludDY0X3Qg
+c3RhcnQ7Cj4+ICsgwqAgwqAgdWxvbmcgdGltZW91dCA9IDA7Cj4+ICsgwqAgwqAgdWludDMyX3Qg
+YnN0YXRlOwo+PiArCj4+ICsgwqAgwqAgd2hpbGUgKChvcHQgPSBnZXRvcHQoYXJnYywgYXJndiwg
+InQ6IikpID4gMCkgewo+PiArIMKgIMKgIMKgIMKgIMKgIMKgIHN3aXRjaCAob3B0KSB7Cj4+ICsg
+wqAgwqAgwqAgwqAgwqAgwqAgY2FzZSAndCc6Cj4+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAg
+wqAgwqAgdGltZW91dCA9IHNpbXBsZV9zdHJ0b2wob3B0YXJnLCBOVUxMLCAwKTsKPj4gKyDCoCDC
+oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCBicmVhazsKPj4gKyDCoCDCoCDCoCDCoCDCoCDCoCB9
+Cj4+ICsgwqAgwqAgfQo+PiArCj4+ICsgwqAgwqAgc3RhcnQgPSBnZXRfdGltZV9ucygpOwo+PiAr
+IMKgIMKgIHdoaWxlICghdGltZW91dCB8fCAhaXNfdGltZW91dChzdGFydCwgdGltZW91dCAqIFNF
+Q09ORCkpIHsKPj4gKyDCoCDCoCDCoCDCoCDCoCDCoCBic3RhdGUgPSB2cHJfYnV0dG9uX3N0YXRl
+KCk7Cj4+ICsgwqAgwqAgwqAgwqAgwqAgwqAgaWYgKGJzdGF0ZSkgewo+PiArIMKgIMKgIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIHByaW50ZigiJWRcbiIsIHZwcl9idXR0b25fc3RhdGVfdG9fbnVt
+YmVyKGJzdGF0ZSkpOwo+PiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHJldHVybiAw
+Owo+PiArIMKgIMKgIMKgIMKgIMKgIMKgIH0KPj4gKyDCoCDCoCDCoCDCoCDCoCDCoCBpZiAoY3Ry
+bGMoKSkKPj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCByZXR1cm4gLUVJTlRSOwo+
+PiArIMKgIMKgIH0KPj4gKwo+PiArIMKgIMKgIHJldHVybiAtRVRJTUVET1VUOwo+PiArfQo+IGRp
+dHRvIGhlcmUKPj4gKwo+PiArQkFSRUJPWF9DTURfSEVMUF9TVEFSVCh3YWl0YnV0dG9uKQo+PiAr
+QkFSRUJPWF9DTURfSEVMUF9VU0FHRSgid2FpdGJ1dHRvbiBbLXRdXG4iKQo+PiArQkFSRUJPWF9D
+TURfSEVMUF9TSE9SVCgiUHJpbnRzIHRoZSBidXR0b24gbnVtYmVyIG9mIHRoZSBuZXh0IHByZXNz
+ZWQgYnV0dG9uLlxuIikKPj4gK0JBUkVCT1hfQ01EX0hFTFBfT1BUKCItdCA8c2Vjb25kcz4iLCAi
+dGltZSBpbiBzZWNvbmRzIHRvIHdhaXQuIDAgKGRlZmF1bHQpIGlzIGZvcmV2ZXIuIikKPj4gK0JB
+UkVCT1hfQ01EX0hFTFBfRU5ECj4KPiBwbGVhc2UgYWxzbyBjaGVjayB5b3VyIHBhdGNoIHlvdSBo
+YXZlIHNvbWUgd2hpdGVzcGFjZSBhbmQgb3RoZXIgdG9vIGxvbmcgbGluZQo+IGlzc3VlCkZZSSBj
+YW4gYmUgdXNlZCBjaGVja3BhdGNoLnBsIGluIHNjcmlwdHMgZGlyZWN0b3J5IDspCj4KPiBCZXN0
+IFJlZ2FyZHMsCj4gSi4KPgo+IF9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fCj4gYmFyZWJveCBtYWlsaW5nIGxpc3QKPiBiYXJlYm94QGxpc3RzLmluZnJhZGVh
+ZC5vcmcKPiBodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVi
+b3gKPgoKdGhhbmtzLAoKbWFyZWsKCi0tIAphcyBzaW1wbGUgYW5kIHByaW1pdGl2ZSBhcyBwb3Nz
+aWJsZQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCk1h
+cmVrIEJlbGlza28gLSBPUEVOLU5BTkRSQQpGcmVlbGFuY2UgRGV2ZWxvcGVyCgpSdXNrYSBOb3Zh
+IFZlcyAyMTkgfCBQcmVzb3YsIDA4MDA1IFNsb3ZhayBSZXB1YmxpYwpUZWw6ICs0MjEgOTE1IDA1
+MiAxODQKc2t5cGU6IG1hcmVrd2hpdGUKaWNxOiAyOTA1NTEwODYKd2ViOiBodHRwOi8vb3Blbi1u
+YW5kcmEuY29tCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+XwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDov
+L2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
