@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PS62I-00020E-US
-	for barebox@lists.infradead.org; Mon, 13 Dec 2010 10:53:55 +0000
+	id 1PS62I-00020F-Us
+	for barebox@lists.infradead.org; Mon, 13 Dec 2010 10:53:48 +0000
 Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
 	by metis.ext.pengutronix.de with esmtp (Exim 4.71)
-	(envelope-from <jbe@pengutronix.de>) id 1PS62G-0008R3-3O
+	(envelope-from <jbe@pengutronix.de>) id 1PS62G-0008R0-2m
 	for barebox@lists.infradead.org; Mon, 13 Dec 2010 11:53:40 +0100
 Received: from jbe by octopus.hi.pengutronix.de with local (Exim 4.69)
-	(envelope-from <jbe@pengutronix.de>) id 1PS62F-0002Iy-V2
+	(envelope-from <jbe@pengutronix.de>) id 1PS62F-0002Iv-UP
 	for barebox@lists.infradead.org; Mon, 13 Dec 2010 11:53:39 +0100
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Mon, 13 Dec 2010 11:53:37 +0100
-Message-Id: <1292237617-7064-15-git-send-email-jbe@pengutronix.de>
+Date: Mon, 13 Dec 2010 11:53:36 +0100
+Message-Id: <1292237617-7064-14-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1292237617-7064-1-git-send-email-jbe@pengutronix.de>
 References: <1292237617-7064-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -28,90 +28,81 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 14/14] STM378x: Add the TX28 Starterkit-5 baseboard
+Subject: [PATCH 13/14] STM378x: Add TX28 CPU module
 To: barebox@lists.infradead.org
-
-This file is to be used in conjunction with the TX28 CPU module.
 
 Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 ---
- arch/arm/boards/karo-tx28/Makefile    |    1 +
- arch/arm/boards/karo-tx28/env/config  |   47 +++++++
- arch/arm/boards/karo-tx28/tx28-stk5.c |  229 +++++++++++++++++++++++++++++++++
- arch/arm/boards/karo-tx28/tx28.c      |   37 ++++++
- arch/arm/configs/tx28stk5_defconfig   |   38 ++++++
- arch/arm/mach-stm/Kconfig             |   15 ++
- 6 files changed, 367 insertions(+), 0 deletions(-)
- create mode 100644 arch/arm/boards/karo-tx28/env/config
- create mode 100644 arch/arm/boards/karo-tx28/tx28-stk5.c
- create mode 100644 arch/arm/configs/tx28stk5_defconfig
+ Documentation/boards.dox           |    1 +
+ arch/arm/Makefile                  |    1 +
+ arch/arm/boards/karo-tx28/Makefile |    1 +
+ arch/arm/boards/karo-tx28/config.h |   16 +++++
+ arch/arm/boards/karo-tx28/tx28.c   |  119 ++++++++++++++++++++++++++++++++++++
+ arch/arm/mach-stm/Kconfig          |   16 +++++
+ 6 files changed, 154 insertions(+), 0 deletions(-)
+ create mode 100644 arch/arm/boards/karo-tx28/Makefile
+ create mode 100644 arch/arm/boards/karo-tx28/config.h
+ create mode 100644 arch/arm/boards/karo-tx28/tx28.c
 
+diff --git a/Documentation/boards.dox b/Documentation/boards.dox
+index c04e06b..8087f01 100644
+--- a/Documentation/boards.dox
++++ b/Documentation/boards.dox
+@@ -14,6 +14,7 @@ ARM type:
+ @li @subpage pcm043
+ @li @subpage imx21ads
+ @li @subpage imx27ads
++@li @subpage tx28
+ @li @subpage the3stack
+ @li @subpage mx23_evk
+ @li @subpage board_babage
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 9729c23..9d3350b 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -88,6 +88,7 @@ board-$(CONFIG_MACH_SCB9328)			:= scb9328
+ board-$(CONFIG_MACH_NESO)			:= guf-neso
+ board-$(CONFIG_MACH_MX23EVK)			:= freescale-mx23-evk
+ board-$(CONFIG_MACH_CHUMBY)			:= chumby_falconwing
++board-$(CONFIG_MACH_TX28)			:= karo-tx28
+ board-$(CONFIG_MACH_FREESCALE_MX51_PDK)		:= freescale-mx51-pdk
+ board-$(CONFIG_MACH_GUF_CUPID)			:= guf-cupid
+ board-$(CONFIG_MACH_MINI2440)			:= mini2440
 diff --git a/arch/arm/boards/karo-tx28/Makefile b/arch/arm/boards/karo-tx28/Makefile
-index 6f7e865..d80ba17 100644
---- a/arch/arm/boards/karo-tx28/Makefile
+new file mode 100644
+index 0000000..6f7e865
+--- /dev/null
 +++ b/arch/arm/boards/karo-tx28/Makefile
-@@ -1 +1,2 @@
- obj-y += tx28.o
-+obj-$(CONFIG_MACH_TX28STK5) += tx28-stk5.o
-diff --git a/arch/arm/boards/karo-tx28/env/config b/arch/arm/boards/karo-tx28/env/config
+@@ -0,0 +1 @@
++obj-y += tx28.o
+diff --git a/arch/arm/boards/karo-tx28/config.h b/arch/arm/boards/karo-tx28/config.h
 new file mode 100644
-index 0000000..9b302b8
+index 0000000..8f18fda
 --- /dev/null
-+++ b/arch/arm/boards/karo-tx28/env/config
-@@ -0,0 +1,47 @@
-+#
-+#
++++ b/arch/arm/boards/karo-tx28/config.h
+@@ -0,0 +1,16 @@
++/*
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
 +
-+machine=tx28
-+baseboard=tx28stk5
++#ifndef _CONFIG_H_
++# define _CONFIG_H_
 +
-+# use 'dhcp' to do dhcp in barebox and in kernel
-+# use 'none' if you want to skip kernel ip autoconfiguration
-+ip=dhcp
-+
-+# or set your networking parameters here
-+#eth0.ipaddr=a.b.c.d
-+#eth0.ethaddr=de:ad:be:ef:00:00
-+#eth0.netmask=a.b.c.d
-+#eth0.serverip=a.b.c.d
-+#eth0.gateway=a.b.c.d
-+
-+# can be either 'net'
-+kernel_loc=net
-+# can be either 'net' or 'initrd'
-+rootfs_loc=net
-+
-+# can be either 'jffs2' or 'ubifs'
-+rootfs_type=ubifs
-+rootfsimage=root-$machine.$rootfs_type
-+
-+# The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
-+kernelimage_type=zimage
-+kernelimage=zImage-$machine
-+#kernelimage_type=uimage
-+#kernelimage=uImage-$machine
-+#kernelimage_type=raw
-+#kernelimage=Image-$machine
-+#kernelimage_type=raw_lzo
-+#kernelimage=Image-$machine.lzo
-+
-+if [ -n $user ]; then
-+	kernelimage="$user"-"$kernelimage"
-+	nfsroot="$eth0.serverip:/home/$user/nfsroot/$machine"
-+	rootfsimage="$user"-"$rootfsimage"
-+else
-+	nfsroot="$eth0.serverip:/path/to/nfs/root"
-+fi
-+
-+autoboot_timeout=3
-+
-+bootargs="console=ttyAM0,115200 tx28_base=$baseboard"
-diff --git a/arch/arm/boards/karo-tx28/tx28-stk5.c b/arch/arm/boards/karo-tx28/tx28-stk5.c
++#endif /* _CONFIG_H_ */
+diff --git a/arch/arm/boards/karo-tx28/tx28.c b/arch/arm/boards/karo-tx28/tx28.c
 new file mode 100644
-index 0000000..a032e6a
+index 0000000..d5edf5d
 --- /dev/null
-+++ b/arch/arm/boards/karo-tx28/tx28-stk5.c
-@@ -0,0 +1,229 @@
++++ b/arch/arm/boards/karo-tx28/tx28.c
+@@ -0,0 +1,119 @@
 +/*
 + * Copyright (C) 2010 Juergen Beisert, Pengutronix <kernel@pengutronix.de>
 + *
@@ -131,339 +122,144 @@ index 0000000..a032e6a
 +#include <gpio.h>
 +#include <environment.h>
 +#include <errno.h>
-+#include <mci.h>
-+#include <fec.h>
++#include <asm/armlinux.h>
 +#include <asm/io.h>
++#include <generated/mach-types.h>
 +#include <mach/imx-regs.h>
-+#include <mach/clock.h>
-+#include <mach/mci.h>
 +
-+static struct stm_mci_platform_data mci_pdata = {
-+	.caps = MMC_MODE_4BIT | MMC_MODE_HS | MMC_MODE_HS_52MHz,
-+	.voltages = MMC_VDD_32_33 | MMC_VDD_33_34,	/* fixed to 3.3 V */
-+	.f_min = 400 * 1000,
++static struct memory_platform_data ram_pdata = {
++	.name = "ram0",
++	.flags = DEVFS_RDWR,
 +};
 +
-+static struct device_d mci_socket = {
-+	.name = "stm_mci",
-+	.map_base = IMX_SSP0_BASE,
-+	.platform_data = &mci_pdata,
++static struct device_d sdram_dev = {
++	.id = -1,
++	.name = "mem",
++	.map_base = IMX_MEMORY_BASE,
++	.size = 128 * 1024 * 1024,
++	.platform_data = &ram_pdata,
 +};
 +
-+/* PhyAD[0..2]=0, RMIISEL=1 */
-+static struct fec_platform_data fec_info = {
-+	.xcv_type = RMII,
-+	.phy_addr = 0,
-+};
++/* setup the CPU card internal signals */
++static const uint32_t tx28_pad_setup[] = {
++	/* NAND interface */
++	GPMI_D0 | VE_3_3V | PULLUP(1),
++	GPMI_D1 | VE_3_3V | PULLUP(1),
++	GPMI_D2 | VE_3_3V | PULLUP(1),
++	GPMI_D3 | VE_3_3V | PULLUP(1),
++	GPMI_D4 | VE_3_3V | PULLUP(1),
++	GPMI_D5 | VE_3_3V | PULLUP(1),
++	GPMI_D6 | VE_3_3V | PULLUP(1),
++	GPMI_D7 | VE_3_3V | PULLUP(1),
++	GPMI_READY0 | VE_3_3V | PULLUP(0),	/* external PU */
++	GPMI_RDN | VE_3_3V | PULLUP(1),
++	GPMI_WRN | VE_3_3V | BITKEEPER(1),
++	GPMI_ALE | VE_3_3V | PULLUP(1),
++	GPMI_CLE | VE_3_3V | PULLUP(1),
++	GPMI_RESETN_GPIO | VE_3_3V | GPIO_IN,	/* act as WP, external PU */
 +
-+static struct device_d fec_dev = {
-+	.name = "fec_imx",
-+	.map_base = IMX_FEC0_BASE,
-+	.platform_data = &fec_info,
-+};
-+
-+static const uint32_t tx28_starterkit_pad_setup[] = {
-+	/*
-+	 * Part II of phy's initialization
-+	 * Setup phy's mode to '111'
-+	 */
-+
-+	/*
-+	 * force the mod pins to a specific level
-+	 * '111' means: "All capable. Auto-negotiation enabled".
-+	 * For other values refer LAN8710's datasheet,
-+	 * chapter "Mode Bus - MODE[2:0]"
-+	 */
-+	ENET0_RXD0_GPIO | VE_3_3V | GPIO_OUT | GPIO_VALUE(1), /* MOD0 */
-+	ENET0_RXD1_GPIO | VE_3_3V | GPIO_OUT | GPIO_VALUE(1), /* MOD1 */
-+	ENET0_RX_EN_GPIO | VE_3_3V | GPIO_OUT | GPIO_VALUE(1), /* MOD2 */
-+
-+	/* release the reset ('mod' pins get latched) */
-+	ENET0_RX_CLK_GPIO | VE_3_3V | BITKEEPER(0) | GPIO_OUT | GPIO_VALUE(1),
-+
-+	/* right now the 'mod' pins are in their native mode */
-+	ENET0_RXD0 | VE_3_3V | PULLUP(0),
-+	ENET0_RXD1 | VE_3_3V | PULLUP(0),
-+	ENET0_RX_EN | VE_3_3V | PULLUP(0),
-+
-+	/* Debug UART, available at card connector UART1 */
-+	AUART0_CTS_DUART_RX | VE_3_3V | STRENGTH(S8MA),
-+	AUART0_RTS_DUART_TX | VE_3_3V | STRENGTH(S8MA),
-+	AUART0_RX_DUART_CTS | VE_3_3V | STRENGTH(S8MA),
-+	AUART0_TX_DUART_RTS | VE_3_3V | STRENGTH(S8MA),
-+	/* Application UART, available at connector UART2 */
-+	AUART1_RX | VE_3_3V | BITKEEPER(0),
-+	AUART1_TX | VE_3_3V | BITKEEPER(0),
-+	AUART1_CTS | VE_3_3V | PULLUP(1),
-+	AUART1_RTS | VE_3_3V | PULLUP(1),
-+	/* Application UART, available at connector FIXME */
-+	AUART2_RX | VE_3_3V | PULLUP(1),
-+	AUART2_TX | VE_3_3V | PULLUP(1),
-+	AUART2_CTS | VE_3_3V | BITKEEPER(0),
-+	AUART2_RTS | VE_3_3V | BITKEEPER(0),
-+
-+	/* MCI interface */
-+	SSP0_D0 | VE_3_3V | PULLUP(1),
-+	SSP0_D1 | VE_3_3V | PULLUP(1),
-+	SSP0_D2 | VE_3_3V | PULLUP(1),
-+	SSP0_D3 | VE_3_3V | PULLUP(1),
-+	SSP0_CMD | VE_3_3V | PULLUP(1),
-+	SSP0_CD | VE_3_3V | PULLUP(1),
-+	SSP0_SCK | VE_3_3V | BITKEEPER(0),
-+
-+	/* MCI slot power control 1 = off */
-+	PWM3_GPIO | VE_3_3V | GPIO_OUT | GPIO_VALUE(0),
-+	/* MCI write protect 1 = not protected */
-+	SSP1_SCK_GPIO | VE_3_3V | GPIO_IN,	/* FIXME pull up ? */
-+
-+	/* LED */
-+	ENET0_RXD3_GPIO | VE_3_3V | GPIO_OUT | GPIO_VALUE(1),
++	/* Network interface */
 +
 +	/*
-+	 * The backlight is on, if:
-+	 * - the PWM0 pin outputs a low level
-+	 *   * AND *
-+	 * - the LCD_ENABLE is at high level.
-+	 * In all other combinations the backlight is off.
-+	 *
-+	 * Switch it off here to avoid flickering.
++	 * Note: To setup the external phy in a manner the baseboard
++	 * supports, its configuration is divided into a small part here in
++	 * the CPU card setup and the remaining configuration in the baseboard
++	 * file.
++	 * Here: Switch on the power supply to the external phy, but keep its
++	 * reset line low.
 +	 */
-+	PWM0_GPIO | VE_3_3V | PULLUP(0) | GPIO_OUT | GPIO_VALUE(1),
 +
-+	/* LCD interface to the VGA connector */
-+	/* sync signals */
-+	LCD_WR_RWN_LCD_HSYNC | VE_3_3V | BITKEEPER(0),
-+	LCD_RD_E_LCD_VSYNC | VE_3_3V | BITKEEPER(0),
-+	LCD_CS_LCD_ENABLE | VE_3_3V | BITKEEPER(0),
-+	LCD_RS_LCD_DOTCLK | VE_3_3V | BITKEEPER(0),
-+	/* data signals */
-+	LCD_D0 | VE_3_3V | BITKEEPER(0),
-+	LCD_D1 | VE_3_3V | BITKEEPER(0),
-+	LCD_D2 | VE_3_3V | BITKEEPER(0),
-+	LCD_D3 | VE_3_3V | BITKEEPER(0),
-+	LCD_D4 | VE_3_3V | BITKEEPER(0),
-+	LCD_D5 | VE_3_3V | BITKEEPER(0),
-+	LCD_D6 | VE_3_3V | BITKEEPER(0),
-+	LCD_D7 | VE_3_3V | BITKEEPER(0),
-+	LCD_D8 | VE_3_3V | BITKEEPER(0),
-+	LCD_D9 | VE_3_3V | BITKEEPER(0),
-+	LCD_D10 | VE_3_3V | BITKEEPER(0),
-+	LCD_D11 | VE_3_3V | BITKEEPER(0),
-+	LCD_D12 | VE_3_3V | BITKEEPER(0),
-+	LCD_D13 | VE_3_3V | BITKEEPER(0),
-+	LCD_D14 | VE_3_3V | BITKEEPER(0),
-+	LCD_D15 | VE_3_3V | BITKEEPER(0),
-+	LCD_D16 | VE_3_3V | BITKEEPER(0),
-+	LCD_D17 | VE_3_3V | BITKEEPER(0),
-+	LCD_D18 | VE_3_3V | BITKEEPER(0),
-+	LCD_D19 | VE_3_3V | BITKEEPER(0),
-+	LCD_D20 | VE_3_3V | BITKEEPER(0),
-+	LCD_D21 | VE_3_3V | BITKEEPER(0),
-+	LCD_D22 | VE_3_3V | BITKEEPER(0),
-+	LCD_D23 | VE_3_3V | BITKEEPER(0),
++	/* send a "good morning" to the ext. phy 0 = reset */
++	ENET0_RX_CLK_GPIO | VE_3_3V | PULLUP(0) | GPIO_OUT | GPIO_VALUE(0),
 +
-+	/* keep display's reset at low */
-+	LCD_RESET_GPIO | VE_3_3V | GPIO_OUT | GPIO_VALUE(0),
-+	/* keep display's power off */
-+	LCD_ENABLE_GPIO | VE_3_3V | GPIO_OUT | GPIO_VALUE(0),
++	/* phy power control 1 = on */
++	PWM4_GPIO | VE_3_3V | GPIO_OUT | PULLUP(0) | GPIO_VALUE(1),
++
++	ENET_CLK | VE_3_3V | BITKEEPER(0),
++	ENET0_MDC | VE_3_3V | PULLUP(0),
++	ENET0_MDIO | VE_3_3V | PULLUP(0),
++	ENET0_TXD0 | VE_3_3V | PULLUP(0),
++	ENET0_TXD1 | VE_3_3V | PULLUP(0),
++	ENET0_TX_EN | VE_3_3V | PULLUP(0),
++	ENET0_TX_CLK | VE_3_3V | BITKEEPER(0),
++
 +};
++
++extern void base_board_init(void);
++
++static int tx28_devices_init(void)
++{
++	int i;
++
++	/* initizalize gpios */
++	for (i = 0; i < ARRAY_SIZE(tx28_pad_setup); i++)
++		imx_gpio_mode(tx28_pad_setup[i]);
++
++	register_device(&sdram_dev);
++
++	armlinux_add_dram(&sdram_dev);
++	armlinux_set_bootparams((void *)(sdram_dev.map_base + 0x100));
++	armlinux_set_architecture(MACH_TYPE_TX28);
++
++	base_board_init();
++
++	return 0;
++}
++
++device_initcall(tx28_devices_init);
 +
 +/**
-+ * Try to register an environment storage on the attached MCI card
-+ * @return 0 on success
-+ *
-+ * We rely on the existance of a usable SD card, already attached to
-+ * our system, to get a persistent memory for our environment.
-+ * If this SD card is also the boot medium, we can use the second partition
-+ * for our environment purpose (if present!).
-+ */
-+static int register_persistent_environment(void)
-+{
-+	struct cdev *cdev;
++@page tx28 KARO's TX28 CPU module
 +
-+	/*
-+	 * The TX28 STK5 has only one usable MCI card socket.
-+	 * So, we expect its name as "disk0".
-+	 */
-+	cdev = cdev_by_name("disk0");
-+	if (cdev == NULL) {
-+		pr_err("No MCI card preset\n");
-+		return -ENODEV;
-+	}
++http://www.karo-electronics.de/
 +
-+	/* MCI card is present, also a usable partition on it? */
-+	cdev = cdev_by_name("disk0.1");
-+	if (cdev == NULL) {
-+		pr_err("No second partition available\n");
-+		pr_info("Please create at least a second partition with"
-+			" 256 kiB...512 kiB in size (your choice)\n");
-+		return -ENODEV;
-+	}
++This CPU card is based on a Freescale i.MX28 CPU. The card is shipped with:
 +
-+	/* use the full partition as our persistent environment storage */
-+	return devfs_add_partition("disk0.1", 0, cdev->size,
-+					DEVFS_PARTITION_FIXED, "env0");
-+}
++- 128 MiB synchronous dynamic RAM (DDR2 type), 200 MHz support
++- 128 MiB NAND K9F1G08U0A (3.3V type)
++- PCA9554 GPIO expander
++- DS1339 RTC
++- LAN8710 Phy
 +
-+void base_board_init(void)
-+{
-+	int i, ret;
-+
-+	/* initialize gpios */
-+	for (i = 0; i < ARRAY_SIZE(tx28_starterkit_pad_setup); i++)
-+		imx_gpio_mode(tx28_starterkit_pad_setup[i]);
-+
-+	/* enable IOCLK0 to run at the PLL frequency */
-+	imx_set_ioclk(0, 480000000);
-+	/* run the SSP unit clock at 100 MHz */
-+	imx_set_sspclk(0, 100000000, 1);
-+
-+	register_device(&mci_socket);
-+
-+	imx_enable_enetclk();
-+	register_device(&fec_dev);
-+
-+	ret = register_persistent_environment();
-+	if (ret != 0)
-+		printf("Cannot create the 'env0' persistent environment "
-+				"storage (%d)\n", ret);
-+}
-+
-+static struct device_d tx28kit_serial_device = {
-+	.name     = "stm_serial",
-+	.map_base = IMX_DBGUART_BASE,
-+	.size     = 8192,
-+};
-+
-+static int tx28kit_console_init(void)
-+{
-+	return register_device(&tx28kit_serial_device);
-+}
-+
-+console_initcall(tx28kit_console_init);
-diff --git a/arch/arm/boards/karo-tx28/tx28.c b/arch/arm/boards/karo-tx28/tx28.c
-index d5edf5d..6f4ef4e 100644
---- a/arch/arm/boards/karo-tx28/tx28.c
-+++ b/arch/arm/boards/karo-tx28/tx28.c
-@@ -106,6 +106,8 @@ device_initcall(tx28_devices_init);
- /**
- @page tx28 KARO's TX28 CPU module
- 
-+@section tx28_cpu_card The CPU module
-+
- http://www.karo-electronics.de/
- 
- This CPU card is based on a Freescale i.MX28 CPU. The card is shipped with:
-@@ -116,4 +118,39 @@ This CPU card is based on a Freescale i.MX28 CPU. The card is shipped with:
- - DS1339 RTC
- - LAN8710 Phy
- 
-+@section tx28_basboards Supported baseboards
-+
-+Supported baseboards are:
-+- KARO's Starterkit 5
-+
-+@section tx28_stk5_howto How to get barebox for 'KARO's Starterkit 5'
-+
-+Using the default configuration:
-+
-+@verbatim
-+make ARCH=arm tx28stk5_defconfig
-+@endverbatim
-+
-+Build the binary image:
-+
-+@verbatim
-+make ARCH=arm CROSS_COMPILE=armv5compiler
-+@endverbatim
-+
-+@note replace the armv5compiler with your ARM v5 cross compiler.
-+
-+@note To use the result, you also need the following resources from Freescale:
-+- the 'bootlets' archive
-+- the 'elftosb2' encryption tool
-+- in the case you want to start @b barebox from an attached SD card the
-+  'sdimage' tool from Freescale's 'uuc' archive.
-+
-+@section tx28_mlayout Memory layout when barebox is running:
-+
-+- 0x40000000 start of SDRAM
-+- 0x40000100 start of kernel's boot parameters
-+  - below malloc area: stack area
-+  - below barebox: malloc area
-+- 0x47000000 start of @b barebox
-+
- */
-diff --git a/arch/arm/configs/tx28stk5_defconfig b/arch/arm/configs/tx28stk5_defconfig
-new file mode 100644
-index 0000000..17534f5
---- /dev/null
-+++ b/arch/arm/configs/tx28stk5_defconfig
-@@ -0,0 +1,38 @@
-+CONFIG_ARCH_STM=y
-+CONFIG_ARCH_IMX28=y
-+CONFIG_AEABI=y
-+CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_BROKEN=y
-+CONFIG_LONGHELP=y
-+CONFIG_CMDLINE_EDITING=y
-+CONFIG_AUTO_COMPLETE=y
-+CONFIG_PARTITION=y
-+CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
-+CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/karo-tx28/env"
-+CONFIG_DEBUG_INFO=y
-+CONFIG_CMD_EDIT=y
-+CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_SAVEENV=y
-+CONFIG_CMD_LOADENV=y
-+CONFIG_CMD_EXPORT=y
-+CONFIG_CMD_PRINTENV=y
-+CONFIG_CMD_READLINE=y
-+CONFIG_CMD_ECHO_E=y
-+CONFIG_CMD_MTEST=y
-+CONFIG_CMD_MTEST_ALTERNATIVE=y
-+CONFIG_CMD_BOOTM_ZLIB=y
-+CONFIG_CMD_BOOTM_BZLIB=y
-+CONFIG_CMD_BOOTM_SHOW_TYPE=y
-+CONFIG_CMD_RESET=y
-+CONFIG_CMD_GO=y
-+CONFIG_CMD_TIMEOUT=y
-+CONFIG_CMD_PARTITION=y
-+CONFIG_NET=y
-+CONFIG_NET_DHCP=y
-+CONFIG_NET_TFTP=y
-+CONFIG_NET_RESOLV=y
-+CONFIG_DRIVER_NET_FEC_IMX=y
-+# CONFIG_SPI is not set
-+CONFIG_MCI=y
-+CONFIG_MCI_STARTUP=y
-+CONFIG_MCI_STM378X=y
++*/
 diff --git a/arch/arm/mach-stm/Kconfig b/arch/arm/mach-stm/Kconfig
-index 824b2cf..e47d9f1 100644
+index 9a46138..824b2cf 100644
 --- a/arch/arm/mach-stm/Kconfig
 +++ b/arch/arm/mach-stm/Kconfig
-@@ -64,6 +64,21 @@ endif
+@@ -4,10 +4,12 @@ config ARCH_TEXT_BASE
+ 	hex
+ 	default 0x41000000 if MACH_MX23EVK
+ 	default 0x42000000 if MACH_CHUMBY
++	default 0x47000000 if MACH_TX28
  
- menu "Board specific settings       "
+ config BOARDINFO
+ 	default "Freescale i.MX23-EVK" if MACH_MX23EVK
+ 	default "Chumby Falconwing" if MACH_CHUMBY
++	default "Karo TX28" if MACH_TX28
  
-+if MACH_TX28
+ comment "SigmaTel/Freescale i.MX System-on-Chip"
+ 
+@@ -46,6 +48,20 @@ endchoice
+ 
+ endif
+ 
++if ARCH_IMX28
 +
 +choice
-+	prompt "TX28 Base Board Type"
++	prompt "i.MX28 Board Type"
 +
-+config MACH_TX28STK5
-+	bool "TX28-stk5"
++config MACH_TX28
++	bool "KARO tx28"
 +	help
-+	  Select this entry if you are running the TX28 CPU module on the
-+	  KARO TX28 Starterkit5.
++	  Say Y here if you are using the KARO TX28 CPU module.
 +
 +endchoice
 +
 +endif
 +
- endmenu
+ menu "Board specific settings       "
  
- endif
+ endmenu
 -- 
 1.7.2.3
 
