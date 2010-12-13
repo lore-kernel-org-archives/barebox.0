@@ -1,11 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from tango.tkos.co.il ([62.219.50.35])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PS1Sv-0000Ci-AP
-	for barebox@lists.infradead.org; Mon, 13 Dec 2010 06:00:54 +0000
-From: Baruch Siach <baruch@tkos.co.il>
-Date: Mon, 13 Dec 2010 08:00:10 +0200
-Message-Id: <13507e3e1f3a5dfa2e79be2ffcfbe6d7b9e84bb3.1292219932.git.baruch@tkos.co.il>
+	id 1PS62I-00020B-SV
+	for barebox@lists.infradead.org; Mon, 13 Dec 2010 10:53:45 +0000
+Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.71)
+	(envelope-from <jbe@pengutronix.de>) id 1PS62F-0008Qu-W1
+	for barebox@lists.infradead.org; Mon, 13 Dec 2010 11:53:40 +0100
+Received: from jbe by octopus.hi.pengutronix.de with local (Exim 4.69)
+	(envelope-from <jbe@pengutronix.de>) id 1PS62F-0002Ij-S7
+	for barebox@lists.infradead.org; Mon, 13 Dec 2010 11:53:39 +0100
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Mon, 13 Dec 2010 11:53:32 +0100
+Message-Id: <1292237617-7064-10-git-send-email-jbe@pengutronix.de>
+In-Reply-To: <1292237617-7064-1-git-send-email-jbe@pengutronix.de>
+References: <1292237617-7064-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,30 +28,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] remove redundant .gitignore entries
+Subject: [PATCH 09/14] STM378x: Adapt the serial driver to support i.MX23 and
+	i.MX28
 To: barebox@lists.infradead.org
 
-The ARCH and CROSS_COMPILE entries were introduced in commit cdfd8bdd, probably
-by mistake.
-
-Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 ---
- .gitignore |    2 --
- 1 files changed, 0 insertions(+), 2 deletions(-)
+ drivers/serial/Kconfig |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/.gitignore b/.gitignore
-index 6f04601..cdc4df0 100644
---- a/.gitignore
-+++ b/.gitignore
-@@ -34,8 +34,6 @@ barebox.netx
- barebox.map
- System.map
- Module.symvers
--ARCH
--CROSS_COMPILE
- barebox_default_env
+diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
+index 3a8882f..04d9b98 100644
+--- a/drivers/serial/Kconfig
++++ b/drivers/serial/Kconfig
+@@ -21,7 +21,7 @@ config DRIVER_SERIAL_IMX
+ config DRIVER_SERIAL_STM378X
+ 	depends on ARCH_STM
+ 	default y
+-	bool "i.MX23 serial driver"
++	bool "i.MX23/i.MX28 serial driver"
  
- #
+ config DRIVER_SERIAL_NETX
+ 	depends on ARCH_NETX
 -- 
 1.7.2.3
 
