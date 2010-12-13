@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from tango.tkos.co.il ([62.219.50.35])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PS7D9-000139-L6
-	for barebox@lists.infradead.org; Mon, 13 Dec 2010 12:09:00 +0000
-Date: Mon, 13 Dec 2010 13:08:57 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20101213120857.GH6017@pengutronix.de>
+	id 1PS7b4-0006HR-0B
+	for barebox@lists.infradead.org; Mon, 13 Dec 2010 12:33:45 +0000
+Date: Mon, 13 Dec 2010 14:33:28 +0200
+From: Baruch Siach <baruch@tkos.co.il>
+Message-ID: <20101213123328.GD5766@jasper.tkos.co.il>
 References: <13507e3e1f3a5dfa2e79be2ffcfbe6d7b9e84bb3.1292219932.git.baruch@tkos.co.il>
+	<20101213120857.GH6017@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <13507e3e1f3a5dfa2e79be2ffcfbe6d7b9e84bb3.1292219932.git.baruch@tkos.co.il>
+In-Reply-To: <20101213120857.GH6017@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,56 +24,54 @@ Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] remove redundant .gitignore entries
-To: Baruch Siach <baruch@tkos.co.il>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Baruch,
+Hi Sascha,
 
-On Mon, Dec 13, 2010 at 08:00:10AM +0200, Baruch Siach wrote:
-> The ARCH and CROSS_COMPILE entries were introduced in commit cdfd8bdd, probably
-> by mistake.
+On Mon, Dec 13, 2010 at 01:08:57PM +0100, Sascha Hauer wrote:
+> On Mon, Dec 13, 2010 at 08:00:10AM +0200, Baruch Siach wrote:
+> > The ARCH and CROSS_COMPILE entries were introduced in commit cdfd8bdd, probably
+> > by mistake.
+> 
+> 'redundant' seems to imply that these are duplicates, but they are not.
 
-'redundant' seems to imply that these are duplicates, but they are not.
-They were also not introduced by accident. I use a wrapper script for
-make which evaluates these files, so I'd like to keep them, although
-they are only for my personal use.
+English is not my native language. I couldn't come up with anything better.
 
-Sascha
+> They were also not introduced by accident. I use a wrapper script for
+> make which evaluates these files, so I'd like to keep them, although
+> they are only for my personal use.
 
-> 
-> Signed-off-by: Baruch Siach <baruch@tkos.co.il>
-> ---
->  .gitignore |    2 --
->  1 files changed, 0 insertions(+), 2 deletions(-)
-> 
-> diff --git a/.gitignore b/.gitignore
-> index 6f04601..cdc4df0 100644
-> --- a/.gitignore
-> +++ b/.gitignore
-> @@ -34,8 +34,6 @@ barebox.netx
->  barebox.map
->  System.map
->  Module.symvers
-> -ARCH
-> -CROSS_COMPILE
->  barebox_default_env
->  
->  #
-> -- 
-> 1.7.2.3
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+The .git/info/exclude file is a better place for local excludes, IMHO. I use 
+it myself for this.
+
+baruch
+
+> > Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+> > ---
+> >  .gitignore |    2 --
+> >  1 files changed, 0 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/.gitignore b/.gitignore
+> > index 6f04601..cdc4df0 100644
+> > --- a/.gitignore
+> > +++ b/.gitignore
+> > @@ -34,8 +34,6 @@ barebox.netx
+> >  barebox.map
+> >  System.map
+> >  Module.symvers
+> > -ARCH
+> > -CROSS_COMPILE
+> >  barebox_default_env
+> >  
+> >  #
+> > -- 
+> > 1.7.2.3
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+                                                     ~. .~   Tk Open Systems
+=}------------------------------------------------ooO--U--Ooo------------{=
+   - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
 
 _______________________________________________
 barebox mailing list
