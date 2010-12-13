@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pw0-f49.google.com ([209.85.160.49])
-	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1PRK3e-00004t-6h
-	for barebox@lists.infradead.org; Sat, 11 Dec 2010 07:39:55 +0000
-Received: by pwj8 with SMTP id 8so997007pwj.36
-	for <barebox@lists.infradead.org>; Fri, 10 Dec 2010 23:39:51 -0800 (PST)
-From: Marc Reilly <marc@cpdesign.com.au>
-Date: Sat, 11 Dec 2010 18:39:43 +1100
-Message-Id: <1292053183-26915-1-git-send-email-marc@cpdesign.com.au>
+Received: from tango.tkos.co.il ([62.219.50.35])
+	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1PS1Sv-0000Ci-AP
+	for barebox@lists.infradead.org; Mon, 13 Dec 2010 06:00:54 +0000
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Mon, 13 Dec 2010 08:00:10 +0200
+Message-Id: <13507e3e1f3a5dfa2e79be2ffcfbe6d7b9e84bb3.1292219932.git.baruch@tkos.co.il>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,34 +19,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] imx: add IMX_GPIO_NR macro.
+Subject: [PATCH] remove redundant .gitignore entries
 To: barebox@lists.infradead.org
 
-Simplifies specifying gpio numbers from bank/number info.
-From linux kernel.
+The ARCH and CROSS_COMPILE entries were introduced in commit cdfd8bdd, probably
+by mistake.
 
-Signed-off-by: Marc Reilly <marc@cpdesign.com.au>
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
 ---
- arch/arm/mach-imx/include/mach/imx-regs.h |    4 ++++
- 1 files changed, 4 insertions(+), 0 deletions(-)
+ .gitignore |    2 --
+ 1 files changed, 0 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/mach-imx/include/mach/imx-regs.h b/arch/arm/mach-imx/include/mach/imx-regs.h
-index 605d320..a234621 100644
---- a/arch/arm/mach-imx/include/mach/imx-regs.h
-+++ b/arch/arm/mach-imx/include/mach/imx-regs.h
-@@ -57,6 +57,10 @@
- # error "unknown i.MX soc type"
- #endif
+diff --git a/.gitignore b/.gitignore
+index 6f04601..cdc4df0 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -34,8 +34,6 @@ barebox.netx
+ barebox.map
+ System.map
+ Module.symvers
+-ARCH
+-CROSS_COMPILE
+ barebox_default_env
  
-+/* There's a off-by-one betweem the gpio bank number and the gpiochip */
-+/* range e.g. GPIO_1_5 is gpio 5 under linux */
-+#define IMX_GPIO_NR(bank, nr)		(((bank) - 1) * 32 + (nr))
-+
- #define GPIO_PIN_MASK 0x1f
- 
- #define GPIO_PORT_SHIFT 5
+ #
 -- 
-1.7.1
+1.7.2.3
 
 
 _______________________________________________
