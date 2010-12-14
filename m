@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PS8AJ-0000b9-IP
-	for barebox@lists.infradead.org; Mon, 13 Dec 2010 13:10:08 +0000
-Date: Mon, 13 Dec 2010 14:10:05 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20101213131005.GK6017@pengutronix.de>
-References: <13507e3e1f3a5dfa2e79be2ffcfbe6d7b9e84bb3.1292219932.git.baruch@tkos.co.il>
-	<20101213120857.GH6017@pengutronix.de>
-	<20101213123328.GD5766@jasper.tkos.co.il>
+Received: from smtp.telit.com ([88.37.127.140])
+	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1PSUs4-00053l-HD
+	for barebox@lists.infradead.org; Tue, 14 Dec 2010 13:24:50 +0000
+From: Fabio Porcedda <Fabio.Porcedda@telit.com>
+Date: Tue, 14 Dec 2010 14:20:37 +0100
+Message-ID: <24A9345B397CD24AA76A4E82E237956545F839C951@XCHTS.tmt.telital.com>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20101213123328.GD5766@jasper.tkos.co.il>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,38 +20,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] remove redundant .gitignore entries
-To: Baruch Siach <baruch@tkos.co.il>
-Cc: barebox@lists.infradead.org
+Subject: loady command failure
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Mon, Dec 13, 2010 at 02:33:28PM +0200, Baruch Siach wrote:
-> Hi Sascha,
-> 
-> On Mon, Dec 13, 2010 at 01:08:57PM +0100, Sascha Hauer wrote:
-> > On Mon, Dec 13, 2010 at 08:00:10AM +0200, Baruch Siach wrote:
-> > > The ARCH and CROSS_COMPILE entries were introduced in commit cdfd8bdd, probably
-> > > by mistake.
-> > 
-> > 'redundant' seems to imply that these are duplicates, but they are not.
-> 
-> English is not my native language. I couldn't come up with anything better.
-> 
-> > They were also not introduced by accident. I use a wrapper script for
-> > make which evaluates these files, so I'd like to keep them, although
-> > they are only for my personal use.
-> 
-> The .git/info/exclude file is a better place for local excludes, IMHO. I use 
-> it myself for this.
+Hi all,
+I'm using Barebox v2010.12.0 (at91sam9260ek_defconfig + loadb + loady)
+compiled with codesourcery 2010.q1 on the board Atmel AT91SAM9260-EK,
 
-Ok, works good. I applied your patch.
+the loadb command it's woking fine,
+but the loady command fails every time, with ckermit and minicom (Ubuntu 10.10):
 
-Sascha
+kermit log:"
+Retry 0: NAK on sector
+...
+Retry 0: NAK on sector
+Retry 0: Retry Count Exceeded
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Transfer incomplete
+
+*************************
+SEND-class command failed.
+ Packets sent: 166
+ Retransmissions: 0
+ Timeouts: 0
+ Damaged packets: 0
+"
+
+The loadb/loady command of U-Boot v2010.09 on the same AT91SAM9260-EK is working fine.
+
+HW/SW Configuration:
+PC: Ubuntu 10.10 + ckermit (211-14) + minicom (2.4-2ubuntu1)
+
+.kermrc:
+set line /dev/ttyS0
+set speed 115200
+set carrier-watch off
+set handshake none
+set flow-control none
+robust
+set file type bin
+set file name lit
+set rec pack 1000
+set send pack 1000
+set window 5
+
+minicom config:
+Bps/Par/Bits       : 115200 8N1
+Hardware Flow Control : No
+Software Flow Control : No
+
+
+Thanks in advance for any help
+Fabio Porcedda
+Software Devoloper - R&D Cagliari
+Telit Communications S.p.A.
 
 _______________________________________________
 barebox mailing list
