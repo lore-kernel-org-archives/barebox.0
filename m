@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by casper.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PSptk-0004Pw-2o
-	for barebox@lists.infradead.org; Wed, 15 Dec 2010 11:51:58 +0000
+	id 1PSptm-0004Q5-N8
+	for barebox@lists.infradead.org; Wed, 15 Dec 2010 11:52:01 +0000
 From: Robert Schwebel <r.schwebel@pengutronix.de>
-Date: Wed, 15 Dec 2010 12:51:43 +0100
-Message-Id: <1292413908-464-30-git-send-email-r.schwebel@pengutronix.de>
+Date: Wed, 15 Dec 2010 12:51:48 +0100
+Message-Id: <1292413908-464-35-git-send-email-r.schwebel@pengutronix.de>
 In-Reply-To: <1292413908-464-1-git-send-email-r.schwebel@pengutronix.de>
 References: <1292413908-464-1-git-send-email-r.schwebel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,83 +21,77 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 29/34] doc: add documentation for 'rarpboot' command
+Subject: [PATCH 34/34] doc: add documentation for 'md' command
 To: barebox@lists.infradead.org
 
 Signed-off-by: Robert Schwebel <r.schwebel@pengutronix.de>
 ---
  Documentation/commands.dox |    2 +-
- Doxyfile                   |    3 ++-
- commands/net.c             |   19 ++++++++++++++++---
- 3 files changed, 19 insertions(+), 5 deletions(-)
+ commands/mem.c             |   37 ++++++++++++++++++++-----------------
+ 2 files changed, 21 insertions(+), 18 deletions(-)
 
 diff --git a/Documentation/commands.dox b/Documentation/commands.dox
-index 8895e0e..7a515c5 100644
+index 7f5c4f7..1148e3d 100644
 --- a/Documentation/commands.dox
 +++ b/Documentation/commands.dox
-@@ -86,7 +86,7 @@ available in @a Barebox:
- @li @subpage pwd_command
- @li @subpage readline_command
- @li @subpage reset_command
--@li @subpage rarpboot
-+@li @subpage rarpboot_command
- @li @subpage reginfo_command
- @li @subpage rm_command
- @li @subpage rmdir_command
-diff --git a/Doxyfile b/Doxyfile
-index 89151e3..73dbb6d 100644
---- a/Doxyfile
-+++ b/Doxyfile
-@@ -1070,7 +1070,8 @@ INCLUDE_FILE_PATTERNS  =
- PREDEFINED             = \
- 			DOXYGEN_SHOULD_SKIP_THIS \
- 			CONFIG_CMD_DEVINFO \
--			CONFIG_NET_TFTP_PUSH
-+			CONFIG_NET_TFTP_PUSH \
-+			CONFIG_NET_RARP
- 
- # If the MACRO_EXPANSION and EXPAND_ONLY_PREDEF tags are set to YES then
- # this tag can be used to specify a list of macro names that should be expanded.
-diff --git a/commands/net.c b/commands/net.c
-index 938463c..3adf537 100644
---- a/commands/net.c
-+++ b/commands/net.c
-@@ -38,7 +38,7 @@
- #ifdef CONFIG_NET_RARP
- extern void RarpRequest(void);
- 
--static int do_rarpb(struct command *cmdtp, int argc, char *argv[])
-+static int do_rarpboot(struct command *cmdtp, int argc, char *argv[])
- {
- 	int size;
- 
-@@ -57,11 +57,24 @@ static int do_rarpb(struct command *cmdtp, int argc, char *argv[])
- 	return 0;
+@@ -66,7 +66,7 @@ available in @a Barebox:
+ @li @subpage login
+ @li @subpage ls_command
+ @li @subpage lsmod_command
+-@li @subpage md
++@li @subpage md_command
+ @li @subpage memcmp_command
+ @li @subpage meminfo_command
+ @li @subpage memset
+diff --git a/commands/mem.c b/commands/mem.c
+index f9f71a7..76bfa0a 100644
+--- a/commands/mem.c
++++ b/commands/mem.c
+@@ -212,24 +212,27 @@ out:
+ 	return errno;
  }
  
-+BAREBOX_CMD_HELP_START(rarpboot)
-+BAREBOX_CMD_HELP_USAGE("rarpboot [LOADADDR] [BOOTFILENAME]\n")
-+BAREBOX_CMD_HELP_SHORT("Boot an image via network using rarp/tftp protocol.\n")
+-static const __maybe_unused char cmd_md_help[] =
+-"Usage md [OPTIONS] <region>\n"
+-"display (hexdump) a memory region.\n"
+-"options:\n"
+-"  -s <file>   display file (default /dev/mem)\n"
+-"  -b          output in bytes\n"
+-"  -w          output in halfwords (16bit)\n"
+-"  -l          output in words (32bit)\n"
+-"\n"
+-"Memory regions:\n"
+-"Memory regions can be specified in two different forms: start+size\n"
+-"or start-end, If <start> is ommitted it defaults to 0. If end is ommited it\n"
+-"defaults to the end of the device, except for interactive commands like md\n"
+-"and mw for which it defaults to 0x100.\n"
+-"Sizes can be specified as decimal, or if prefixed with 0x as hexadecimal.\n"
+-"an optional suffix of k, M or G is for kibibytes, Megabytes or Gigabytes,\n"
+-"respectively\n";
+ 
++BAREBOX_CMD_HELP_START(md)
++BAREBOX_CMD_HELP_USAGE("md [OPTIONS] <region>\n")
++BAREBOX_CMD_HELP_SHORT("Display (hexdump) a memory region.\n")
++BAREBOX_CMD_HELP_OPT  ("-s <file>", "display file (default: /dev/mem)\n")
++BAREBOX_CMD_HELP_OPT  ("-b", "output in bytes\n")
++BAREBOX_CMD_HELP_OPT  ("-w", "output in halfwords (16 bit)\n")
++BAREBOX_CMD_HELP_OPT  ("-l", "output in words (32 bit)\n")
 +BAREBOX_CMD_HELP_END
 +
 +/**
-+ * @page rarpboot_command
++ * @page md_command
 +
-+\todo Discuss this command with sha. The signature looks wrong.
++<p> Memory regions can be specified in two different forms: start+size
++or start-end, If <start> is ommitted it defaults to 0. If end is ommited
++it defaults to the end of the device, except for interactive commands
++like md and mw for which it defaults to 0x100. Sizes can be specified as
++decimal, or if prefixed with 0x as hexadecimal. an optional suffix of k,
++M or G is for kibibytes, Megabytes or Gigabytes, respectively. </p>
 +
 + */
-+
- BAREBOX_CMD_START(rarpboot)
--	.cmd		= do_rarpb,
-+	.cmd		= do_rarpboot,
- 	.usage		= "boot image via network using rarp/tftp protocol",
--	BAREBOX_CMD_HELP("[loadAddress] [bootfilename]\n")
-+	BAREBOX_CMD_HELP(cmd_rarpboot_help)
- BAREBOX_CMD_END
-+
- #endif /* CONFIG_NET_RARP */
  
- static int do_ethact(struct command *cmdtp, int argc, char *argv[])
+ BAREBOX_CMD_START(md)
+ 	.cmd		= do_mem_md,
 -- 
 1.7.2.3
 
