@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by casper.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PSptk-0004Pu-2O
-	for barebox@lists.infradead.org; Wed, 15 Dec 2010 11:51:59 +0000
+	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1PSptm-0001uO-5F
+	for barebox@lists.infradead.org; Wed, 15 Dec 2010 11:52:05 +0000
 From: Robert Schwebel <r.schwebel@pengutronix.de>
-Date: Wed, 15 Dec 2010 12:51:47 +0100
-Message-Id: <1292413908-464-34-git-send-email-r.schwebel@pengutronix.de>
+Date: Wed, 15 Dec 2010 12:51:23 +0100
+Message-Id: <1292413908-464-10-git-send-email-r.schwebel@pengutronix.de>
 In-Reply-To: <1292413908-464-1-git-send-email-r.schwebel@pengutronix.de>
 References: <1292413908-464-1-git-send-email-r.schwebel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,81 +21,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 33/34] doc: add documentation for 'memcmp' command
+Subject: [PATCH 09/34] doc: add documentation for 'sleep' command
 To: barebox@lists.infradead.org
 
 Signed-off-by: Robert Schwebel <r.schwebel@pengutronix.de>
 ---
  Documentation/commands.dox |    2 +-
- commands/mem.c             |   33 +++++++++++++++++++--------------
- 2 files changed, 20 insertions(+), 15 deletions(-)
+ commands/sleep.c           |    5 +++++
+ 2 files changed, 6 insertions(+), 1 deletions(-)
 
 diff --git a/Documentation/commands.dox b/Documentation/commands.dox
-index c9a786d..7f5c4f7 100644
+index 9348743..6598002 100644
 --- a/Documentation/commands.dox
 +++ b/Documentation/commands.dox
-@@ -67,7 +67,7 @@ available in @a Barebox:
- @li @subpage ls_command
- @li @subpage lsmod_command
- @li @subpage md
--@li @subpage memcmp
-+@li @subpage memcmp_command
- @li @subpage meminfo_command
- @li @subpage memset
- @li @subpage menu
-diff --git a/commands/mem.c b/commands/mem.c
-index dc778d3..f9f71a7 100644
---- a/commands/mem.c
-+++ b/commands/mem.c
-@@ -310,7 +310,7 @@ BAREBOX_CMD_START(mw)
- 	BAREBOX_CMD_HELP(cmd_mw_help)
- BAREBOX_CMD_END
- 
--static int do_mem_cmp(struct command *cmdtp, int argc, char *argv[])
-+static int do_memcmp(struct command *cmdtp, int argc, char *argv[])
- {
- 	ulong	addr1, addr2, count = ~0;
- 	int	mode  = O_RWSIZE_1;
-@@ -400,21 +400,26 @@ out:
- 	return ret;
+@@ -93,7 +93,7 @@ available in @a Barebox:
+ @li @subpage saveenv_command
+ @li @subpage setenv_command
+ @li @subpage sh
+-@li @subpage sleep
++@li @subpage sleep_command
+ @li @subpage source
+ @li @subpage test
+ @li @subpage timeout_command
+diff --git a/commands/sleep.c b/commands/sleep.c
+index 40a3a47..972afd6 100644
+--- a/commands/sleep.c
++++ b/commands/sleep.c
+@@ -43,6 +43,11 @@ static int do_sleep(struct command *cmdtp, int argc, char *argv[])
+ 	return 0;
  }
  
--static const __maybe_unused char cmd_memcmp_help[] =
--"Usage: memcmp [OPTIONS] <addr1> <addr2> <count>\n"
--"\n"
--"options:\n"
--"  -b, -w, -l	use byte, halfword, or word accesses\n"
--"  -s <file>    source file (default /dev/mem)\n"
--"  -d <file>    destination file (default /dev/mem)\n"
--"\n"
--"Compare memory regions specified with addr1 and addr2\n"
--"of size <count> bytes. If source is a file count can\n"
--"be left unspecified in which case the whole file is\n"
--"compared\n";
-+BAREBOX_CMD_HELP_START(memcmp)
-+BAREBOX_CMD_HELP_USAGE("memcmp [OPTIONS] ADDR1 ADDR2 COUNT\n")
-+BAREBOX_CMD_HELP_SHORT("Compare memory regions ADDR1 and ADDR2 of COUNT bytes.\n")
-+BAREBOX_CMD_HELP_OPT  ("-b, -w, -l", "use byte, halfword or word accesses\n")
-+BAREBOX_CMD_HELP_OPT  ("-s <file>", "source file (default: /dev/mem)\n")
-+BAREBOX_CMD_HELP_OPT  ("-d <file>", "destination file (default: /dev/mem)\n")
++BAREBOX_CMD_HELP_START(sleep)
++BAREBOX_CMD_HELP_USAGE("sleep <n>\n")
++BAREBOX_CMD_HELP_SHORT("Delay execution for <n> seconds.\n")
 +BAREBOX_CMD_HELP_END
 +
-+/**
-+ * @page memcmp_command
-+
-+<p> If source is a file, count can be left unspecified. In this case the
-+whole file is compared.</p>
-+
-+\todo Add example.
-+
-+ */
- 
- BAREBOX_CMD_START(memcmp)
--	.cmd		= do_mem_cmp,
-+	.cmd		= do_memcmp,
- 	.usage		= "memory compare",
- 	BAREBOX_CMD_HELP(cmd_memcmp_help)
- BAREBOX_CMD_END
+ BAREBOX_CMD_START(sleep)
+ 	.cmd		= do_sleep,
+ 	.usage		= "delay execution for n seconds",
 -- 
 1.7.2.3
 
