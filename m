@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp.telit.com ([88.37.127.140])
-	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1PSUs4-00053l-HD
-	for barebox@lists.infradead.org; Tue, 14 Dec 2010 13:24:50 +0000
-From: Fabio Porcedda <Fabio.Porcedda@telit.com>
-Date: Tue, 14 Dec 2010 14:20:37 +0100
-Message-ID: <24A9345B397CD24AA76A4E82E237956545F839C951@XCHTS.tmt.telital.com>
-Content-Language: en-US
-MIME-Version: 1.0
+Received: from tango.tkos.co.il ([62.219.50.35])
+	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1PSmM5-0004gO-AF
+	for barebox@lists.infradead.org; Wed, 15 Dec 2010 08:04:58 +0000
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Wed, 15 Dec 2010 10:04:36 +0200
+Message-Id: <ddb18a8573b9f5daac2cc3d8ef53da7ee41dbbc0.1292400209.git.baruch@tkos.co.il>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,64 +14,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: loady command failure
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH] eth: fix 'warning: No MAC address set' when using EEPROM MAC
+To: barebox@lists.infradead.org
 
-Hi all,
-I'm using Barebox v2010.12.0 (at91sam9260ek_defconfig + loadb + loady)
-compiled with codesourcery 2010.q1 on the board Atmel AT91SAM9260-EK,
+When retrieving the MAC address from EEPROM, we must notify the networking core
+at eth registration time. Otherwise we get the 'No MAC address set' warning on
+the first network access, and the MAC address is set to a random value instead
+of the real one.
 
-the loadb command it's woking fine,
-but the loady command fails every time, with ckermit and minicom (Ubuntu 10.10):
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+ net/eth.c |    4 +++-
+ 1 files changed, 3 insertions(+), 1 deletions(-)
 
-kermit log:"
-Retry 0: NAK on sector
-...
-Retry 0: NAK on sector
-Retry 0: Retry Count Exceeded
+diff --git a/net/eth.c b/net/eth.c
+index 4d58191..dafd392 100644
+--- a/net/eth.c
++++ b/net/eth.c
+@@ -168,8 +168,10 @@ int eth_register(struct eth_device *edev)
+ 		dev_set_param(dev, "ethaddr", ethaddr_str);
+ 	}
+ 
+-	if (!eth_current)
++	if (!eth_current) {
+ 		eth_current = edev;
++		net_update_env();
++	}
+ 
+ 	return 0;
+ }
+-- 
+1.7.2.3
 
-Transfer incomplete
-
-*************************
-SEND-class command failed.
- Packets sent: 166
- Retransmissions: 0
- Timeouts: 0
- Damaged packets: 0
-"
-
-The loadb/loady command of U-Boot v2010.09 on the same AT91SAM9260-EK is working fine.
-
-HW/SW Configuration:
-PC: Ubuntu 10.10 + ckermit (211-14) + minicom (2.4-2ubuntu1)
-
-.kermrc:
-set line /dev/ttyS0
-set speed 115200
-set carrier-watch off
-set handshake none
-set flow-control none
-robust
-set file type bin
-set file name lit
-set rec pack 1000
-set send pack 1000
-set window 5
-
-minicom config:
-Bps/Par/Bits       : 115200 8N1
-Hardware Flow Control : No
-Software Flow Control : No
-
-
-Thanks in advance for any help
-Fabio Porcedda
-Software Devoloper - R&D Cagliari
-Telit Communications S.p.A.
 
 _______________________________________________
 barebox mailing list
