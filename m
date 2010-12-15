@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PSptm-0001uX-JG
-	for barebox@lists.infradead.org; Wed, 15 Dec 2010 11:52:08 +0000
+	by casper.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1PSptk-0004Px-2T
+	for barebox@lists.infradead.org; Wed, 15 Dec 2010 11:51:58 +0000
 From: Robert Schwebel <r.schwebel@pengutronix.de>
-Date: Wed, 15 Dec 2010 12:51:31 +0100
-Message-Id: <1292413908-464-18-git-send-email-r.schwebel@pengutronix.de>
+Date: Wed, 15 Dec 2010 12:51:39 +0100
+Message-Id: <1292413908-464-26-git-send-email-r.schwebel@pengutronix.de>
 In-Reply-To: <1292413908-464-1-git-send-email-r.schwebel@pengutronix.de>
 References: <1292413908-464-1-git-send-email-r.schwebel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,63 +21,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 17/34] doc: add documentation for 'help' command
+Subject: [PATCH 25/34] doc: add documentation for 'source' command
 To: barebox@lists.infradead.org
 
 Signed-off-by: Robert Schwebel <r.schwebel@pengutronix.de>
 ---
  Documentation/commands.dox |    2 +-
- commands/help.c            |   22 +++++++++++++++-------
- 2 files changed, 16 insertions(+), 8 deletions(-)
+ common/hush.c              |   22 ++++++++++++----------
+ 2 files changed, 13 insertions(+), 11 deletions(-)
 
 diff --git a/Documentation/commands.dox b/Documentation/commands.dox
-index cf45b14..887c58f 100644
+index 430cc52..7f4e489 100644
 --- a/Documentation/commands.dox
 +++ b/Documentation/commands.dox
-@@ -50,7 +50,7 @@ available in @a Barebox:
- @li @subpage gpio_direction_input_command
- @li @subpage gpio_direction_output_command
- @li @subpage go
--@li @subpage help
-+@li @subpage help_command
- @li @subpage host
- @li @subpage i2c_probe
- @li @subpage i2c_read
-diff --git a/commands/help.c b/commands/help.c
-index f8387bd..6d6e8e6 100644
---- a/commands/help.c
-+++ b/commands/help.c
-@@ -52,15 +52,23 @@ static int do_help(struct command * cmdtp, int argc, char *argv[])
- 	}
- }
+@@ -94,7 +94,7 @@ available in @a Barebox:
+ @li @subpage setenv_command
+ @li @subpage sh
+ @li @subpage sleep_command
+-@li @subpage source
++@li @subpage source_command
+ @li @subpage test_command
+ @li @subpage timeout_command
+ @li @subpage true_command
+diff --git a/common/hush.c b/common/hush.c
+index 77610bb..4947173 100644
+--- a/common/hush.c
++++ b/common/hush.c
+@@ -1691,21 +1691,23 @@ static int do_source(struct command *cmdtp, int argc, char *argv[])
  
--static const __maybe_unused char cmd_help_help[] =
--"Show help information (for 'command')\n"
--"'help' prints online help for the monitor commands.\n\n"
--"Without arguments, it prints a short usage message for all commands.\n\n"
--"To get detailed help information for specific commands you can type\n"
--"'help' with one or more command names as arguments.\n";
--
- static const char *help_aliases[] = { "?", NULL};
+ static const char *source_aliases[] = { ".", NULL};
  
-+BAREBOX_CMD_HELP_START(help)
-+BAREBOX_CMD_HELP_USAGE("help COMMAND\n")
-+BAREBOX_CMD_HELP_SHORT("Show help information for 'command'.\n")
+-static const __maybe_unused char cmd_source_help[] =
+-"Usage: .  filename [arguments]\n"
+-"or     source filename [arguments]\n"
+-"\n"
+-"Read  and  execute  commands  from filename in the current shell\n"
+-"environment and return the exit status of the last command  exe-\n"
+-"cuted from filename\n";
++BAREBOX_CMD_HELP_START(source)
++BAREBOX_CMD_HELP_USAGE(". FILE [ARGS], source FILE [ARGS]\n")
++BAREBOX_CMD_HELP_SHORT("Read and execute shell commands in the current shell.\n")
 +BAREBOX_CMD_HELP_END
 +
 +/**
-+ * @page help_command
-+
-+'help' prints online help for the barebox commands. Without arguments,
-+it prints a shoft usage message for all commands. To get detailed help
-+information for specific commands, you can type 'help' with one or more
-+command names as arguments.
++ * @page source_command
+ 
+-static const __maybe_unused char cmd_source_usage[] =
+-"execute shell script in current shell environment";
++The commands are executed in the current shell environment and return
++the exit status of the last command executed from FILE.
 +
 + */
-+
- BAREBOX_CMD_START(help)
- 	.cmd		= do_help,
- 	.aliases	= help_aliases,
+ 
+ BAREBOX_CMD_START(source)
+ 	.aliases	= source_aliases,
+ 	.cmd		= do_source,
+-	.usage		= cmd_source_usage,
++	.usage		= "execute shell script in current shell environment"
+ 	BAREBOX_CMD_HELP(cmd_source_help)
+ BAREBOX_CMD_END
+ 
 -- 
 1.7.2.3
 
