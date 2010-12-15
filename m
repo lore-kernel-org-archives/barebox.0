@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PSptm-0001uO-5F
-	for barebox@lists.infradead.org; Wed, 15 Dec 2010 11:52:05 +0000
+	by casper.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1PSptm-0004Q3-ND
+	for barebox@lists.infradead.org; Wed, 15 Dec 2010 11:52:02 +0000
 From: Robert Schwebel <r.schwebel@pengutronix.de>
-Date: Wed, 15 Dec 2010 12:51:23 +0100
-Message-Id: <1292413908-464-10-git-send-email-r.schwebel@pengutronix.de>
+Date: Wed, 15 Dec 2010 12:51:41 +0100
+Message-Id: <1292413908-464-28-git-send-email-r.schwebel@pengutronix.de>
 In-Reply-To: <1292413908-464-1-git-send-email-r.schwebel@pengutronix.de>
 References: <1292413908-464-1-git-send-email-r.schwebel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,44 +21,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/34] doc: add documentation for 'sleep' command
+Subject: [PATCH 27/34] doc: add documentation for 'ping' command
 To: barebox@lists.infradead.org
 
 Signed-off-by: Robert Schwebel <r.schwebel@pengutronix.de>
 ---
  Documentation/commands.dox |    2 +-
- commands/sleep.c           |    5 +++++
- 2 files changed, 6 insertions(+), 1 deletions(-)
+ net/ping.c                 |   16 ++++++++++++++++
+ 2 files changed, 17 insertions(+), 1 deletions(-)
 
 diff --git a/Documentation/commands.dox b/Documentation/commands.dox
-index 9348743..6598002 100644
+index 438d33e..9638728 100644
 --- a/Documentation/commands.dox
 +++ b/Documentation/commands.dox
-@@ -93,7 +93,7 @@ available in @a Barebox:
- @li @subpage saveenv_command
- @li @subpage setenv_command
- @li @subpage sh
--@li @subpage sleep
-+@li @subpage sleep_command
- @li @subpage source
- @li @subpage test
- @li @subpage timeout_command
-diff --git a/commands/sleep.c b/commands/sleep.c
-index 40a3a47..972afd6 100644
---- a/commands/sleep.c
-+++ b/commands/sleep.c
-@@ -43,6 +43,11 @@ static int do_sleep(struct command *cmdtp, int argc, char *argv[])
- 	return 0;
+@@ -80,7 +80,7 @@ available in @a Barebox:
+ @li @subpage nand_boot_test
+ @li @subpage nfs
+ @li @subpage passwd
+-@li @subpage ping
++@li @subpage ping_command
+ @li @subpage printenv_command
+ @li @subpage protect_command
+ @li @subpage pwd_command
+diff --git a/net/ping.c b/net/ping.c
+index d414784..c46a114 100644
+--- a/net/ping.c
++++ b/net/ping.c
+@@ -107,7 +107,23 @@ out:
+ 	return ping_state == PING_STATE_SUCCESS ? 0 : 1;
  }
  
-+BAREBOX_CMD_HELP_START(sleep)
-+BAREBOX_CMD_HELP_USAGE("sleep <n>\n")
-+BAREBOX_CMD_HELP_SHORT("Delay execution for <n> seconds.\n")
++BAREBOX_CMD_HELP_START(ping)
++BAREBOX_CMD_HELP_USAGE("ping HOST\n")
++BAREBOX_CMD_HELP_SHORT("Send ICMP echo request to network host.\n")
 +BAREBOX_CMD_HELP_END
 +
- BAREBOX_CMD_START(sleep)
- 	.cmd		= do_sleep,
- 	.usage		= "delay execution for n seconds",
++/**
++ * @page ping_command
++
++<p> HOST can be an IP address or a host name. If a host name is
++specified, barebox tries to resolve that host name and exits with a
++failure if not successful. If the host didn't answer for 10 seconds,
++ping exits with a failure. </p>
++
++ */
++
+ BAREBOX_CMD_START(ping)
+ 	.cmd		= do_ping,
+ 	.usage		= "ping <destination>",
++	BAREBOX_CMD_HELP(cmd_ping_help)
+ BAREBOX_CMD_END
 -- 
 1.7.2.3
 
