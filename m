@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by casper.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PSpu2-0004Q2-Hx
-	for barebox@lists.infradead.org; Wed, 15 Dec 2010 11:52:15 +0000
+	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1PSptm-0001uX-JG
+	for barebox@lists.infradead.org; Wed, 15 Dec 2010 11:52:08 +0000
 From: Robert Schwebel <r.schwebel@pengutronix.de>
-Date: Wed, 15 Dec 2010 12:51:46 +0100
-Message-Id: <1292413908-464-33-git-send-email-r.schwebel@pengutronix.de>
+Date: Wed, 15 Dec 2010 12:51:31 +0100
+Message-Id: <1292413908-464-18-git-send-email-r.schwebel@pengutronix.de>
 In-Reply-To: <1292413908-464-1-git-send-email-r.schwebel@pengutronix.de>
 References: <1292413908-464-1-git-send-email-r.schwebel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,59 +21,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 32/34] doc: add documentation for 'mw' command
+Subject: [PATCH 17/34] doc: add documentation for 'help' command
 To: barebox@lists.infradead.org
 
 Signed-off-by: Robert Schwebel <r.schwebel@pengutronix.de>
 ---
  Documentation/commands.dox |    2 +-
- commands/mem.c             |   20 ++++++++++++++------
- 2 files changed, 15 insertions(+), 7 deletions(-)
+ commands/help.c            |   22 +++++++++++++++-------
+ 2 files changed, 16 insertions(+), 8 deletions(-)
 
 diff --git a/Documentation/commands.dox b/Documentation/commands.dox
-index 881fc2c..c9a786d 100644
+index cf45b14..887c58f 100644
 --- a/Documentation/commands.dox
 +++ b/Documentation/commands.dox
-@@ -74,7 +74,7 @@ available in @a Barebox:
- @li @subpage mkdir_command
- @li @subpage mount_command
- @li @subpage mtest
--@li @subpage mw
-+@li @subpage mw_command
- @li @subpage mycdev
- @li @subpage nand_command
- @li @subpage nand_boot_test
-diff --git a/commands/mem.c b/commands/mem.c
-index 73bf915..dc778d3 100644
---- a/commands/mem.c
-+++ b/commands/mem.c
-@@ -289,12 +289,20 @@ static int do_mem_mw(struct command *cmdtp, int argc, char *argv[])
- 	return errno;
+@@ -50,7 +50,7 @@ available in @a Barebox:
+ @li @subpage gpio_direction_input_command
+ @li @subpage gpio_direction_output_command
+ @li @subpage go
+-@li @subpage help
++@li @subpage help_command
+ @li @subpage host
+ @li @subpage i2c_probe
+ @li @subpage i2c_read
+diff --git a/commands/help.c b/commands/help.c
+index f8387bd..6d6e8e6 100644
+--- a/commands/help.c
++++ b/commands/help.c
+@@ -52,15 +52,23 @@ static int do_help(struct command * cmdtp, int argc, char *argv[])
+ 	}
  }
  
--static const __maybe_unused char cmd_mw_help[] =
--"Usage: mw [OPTIONS] <region> <value(s)>\n"
--"Write value(s) to the specifies region.\n"
--"options:\n"
--"  -b, -w, -l	use byte, halfword, or word accesses\n"
--"  -d <file>	write file (default /dev/mem)\n";
-+BAREBOX_CMD_HELP_START(mw)
-+BAREBOX_CMD_HELP_USAGE("mw [OPTIONS] REGION VALUE(s)\n")
-+BAREBOX_CMD_HELP_SHORT("Write value(s) to the specified region.\n")
-+BAREBOX_CMD_HELP_OPT  ("-b, -w, -l", "use byte, halfword or word accesses\n")
-+BAREBOX_CMD_HELP_OPT  ("-d <file>", "write file (default: /dev/mem)\n")
+-static const __maybe_unused char cmd_help_help[] =
+-"Show help information (for 'command')\n"
+-"'help' prints online help for the monitor commands.\n\n"
+-"Without arguments, it prints a short usage message for all commands.\n\n"
+-"To get detailed help information for specific commands you can type\n"
+-"'help' with one or more command names as arguments.\n";
+-
+ static const char *help_aliases[] = { "?", NULL};
+ 
++BAREBOX_CMD_HELP_START(help)
++BAREBOX_CMD_HELP_USAGE("help COMMAND\n")
++BAREBOX_CMD_HELP_SHORT("Show help information for 'command'.\n")
 +BAREBOX_CMD_HELP_END
 +
 +/**
-+ * @page mw_command
++ * @page help_command
 +
-+\todo Add more documentation, especially an example and more info about <region>
++'help' prints online help for the barebox commands. Without arguments,
++it prints a shoft usage message for all commands. To get detailed help
++information for specific commands, you can type 'help' with one or more
++command names as arguments.
 +
 + */
 +
- 
- BAREBOX_CMD_START(mw)
- 	.cmd		= do_mem_mw,
+ BAREBOX_CMD_START(help)
+ 	.cmd		= do_help,
+ 	.aliases	= help_aliases,
 -- 
 1.7.2.3
 
