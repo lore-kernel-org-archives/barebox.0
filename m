@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by casper.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PSptk-0004Py-2R
-	for barebox@lists.infradead.org; Wed, 15 Dec 2010 11:51:57 +0000
+	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1PSpti-0001uK-LI
+	for barebox@lists.infradead.org; Wed, 15 Dec 2010 11:52:03 +0000
 From: Robert Schwebel <r.schwebel@pengutronix.de>
-Date: Wed, 15 Dec 2010 12:51:35 +0100
-Message-Id: <1292413908-464-22-git-send-email-r.schwebel@pengutronix.de>
+Date: Wed, 15 Dec 2010 12:51:19 +0100
+Message-Id: <1292413908-464-6-git-send-email-r.schwebel@pengutronix.de>
 In-Reply-To: <1292413908-464-1-git-send-email-r.schwebel@pengutronix.de>
 References: <1292413908-464-1-git-send-email-r.schwebel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,44 +21,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 21/34] doc: add documentation for 'reset' command
+Subject: [PATCH 05/34] doc: add documentation for 'usb' command
 To: barebox@lists.infradead.org
 
 Signed-off-by: Robert Schwebel <r.schwebel@pengutronix.de>
 ---
  Documentation/commands.dox |    2 +-
- commands/reset.c           |    5 +++++
- 2 files changed, 6 insertions(+), 1 deletions(-)
+ drivers/usb/core/usb.c     |   14 +++++++++++---
+ 2 files changed, 12 insertions(+), 4 deletions(-)
 
 diff --git a/Documentation/commands.dox b/Documentation/commands.dox
-index 023a559..2d3d5f2 100644
+index 07ae9d2..d5536d3 100644
 --- a/Documentation/commands.dox
 +++ b/Documentation/commands.dox
-@@ -85,7 +85,7 @@ available in @a Barebox:
- @li @subpage protect_command
- @li @subpage pwd_command
- @li @subpage readline_command
--@li @subpage reset
-+@li @subpage reset_command
- @li @subpage rarpboot
- @li @subpage reginfo
- @li @subpage rm_command
-diff --git a/commands/reset.c b/commands/reset.c
-index 46ab901..64c7f87 100644
---- a/commands/reset.c
-+++ b/commands/reset.c
-@@ -31,6 +31,11 @@ static int cmd_reset(struct command *cmdtp, int argc, char *argv[])
- 	return 1;
+@@ -105,7 +105,7 @@ available in @a Barebox:
+ @li @subpage umount_command
+ @li @subpage unlzo_command
+ @li @subpage unprotect_command
+-@li @subpage usb
++@li @subpage usb_command
+ @li @subpage version_command
+ 
+ */
+diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
+index 76e033e..38042a5 100644
+--- a/drivers/usb/core/usb.c
++++ b/drivers/usb/core/usb.c
+@@ -488,9 +488,17 @@ static int do_usb(struct command *cmdtp, int argc, char *argv[])
+ 	return 0;
  }
  
-+BAREBOX_CMD_HELP_START(reset)
-+BAREBOX_CMD_HELP_USAGE("reset\n")
-+BAREBOX_CMD_HELP_SHORT("Perform a reset on the cpu.\n")
+-static const __maybe_unused char cmd_usb_help[] =
+-"Usage: usb\n"
+-"(re-)detect USB devices\n";
++BAREBOX_CMD_HELP_START(usb)
++BAREBOX_CMD_HELP_USAGE("usb\n")
++BAREBOX_CMD_HELP_SHORT("(re-)detect USB devices.\n")
 +BAREBOX_CMD_HELP_END
 +
- BAREBOX_CMD_START(reset)
- 	.cmd		= cmd_reset,
- 	.usage		= "Perform RESET of the CPU",
++/**
++ * @page usb_command
++
++\todo add examples
++
++ */
+ 
+ BAREBOX_CMD_START(usb)
+ 	.cmd		= do_usb,
 -- 
 1.7.2.3
 
