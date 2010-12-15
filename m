@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PSpti-0001uH-Lu
-	for barebox@lists.infradead.org; Wed, 15 Dec 2010 11:51:55 +0000
+	id 1PSpti-0001uJ-Kp
+	for barebox@lists.infradead.org; Wed, 15 Dec 2010 11:51:57 +0000
 From: Robert Schwebel <r.schwebel@pengutronix.de>
-Date: Wed, 15 Dec 2010 12:51:17 +0100
-Message-Id: <1292413908-464-4-git-send-email-r.schwebel@pengutronix.de>
+Date: Wed, 15 Dec 2010 12:51:22 +0100
+Message-Id: <1292413908-464-9-git-send-email-r.schwebel@pengutronix.de>
 In-Reply-To: <1292413908-464-1-git-send-email-r.schwebel@pengutronix.de>
 References: <1292413908-464-1-git-send-email-r.schwebel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,53 +21,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/34] doc: add documentation for 'unlzo' command
+Subject: [PATCH 08/34] doc: add documentation for 'true' command
 To: barebox@lists.infradead.org
 
 Signed-off-by: Robert Schwebel <r.schwebel@pengutronix.de>
 ---
  Documentation/commands.dox |    2 +-
- commands/unlzo.c           |   14 +++++++++++---
- 2 files changed, 12 insertions(+), 4 deletions(-)
+ commands/true.c            |    5 +++++
+ 2 files changed, 6 insertions(+), 1 deletions(-)
 
 diff --git a/Documentation/commands.dox b/Documentation/commands.dox
-index 6c2f59d..cc892d4 100644
+index e25dda0..9348743 100644
 --- a/Documentation/commands.dox
 +++ b/Documentation/commands.dox
-@@ -103,7 +103,7 @@ available in @a Barebox:
- @li @subpage ubimkvol
- @li @subpage ubirmvol
- @li @subpage umount
--@li @subpage unlzo
-+@li @subpage unlzo_command
- @li @subpage unprotect_command
- @li @subpage usb
- @li @subpage version_command
-diff --git a/commands/unlzo.c b/commands/unlzo.c
-index 0b6dd4b..40225e6 100644
---- a/commands/unlzo.c
-+++ b/commands/unlzo.c
-@@ -57,9 +57,17 @@ exit_close:
- 	return ret;
+@@ -97,7 +97,7 @@ available in @a Barebox:
+ @li @subpage source
+ @li @subpage test
+ @li @subpage timeout_command
+-@li @subpage true
++@li @subpage true_command
+ @li @subpage tftp_command
+ @li @subpage ubiattach_command
+ @li @subpage ubimkvol_command
+diff --git a/commands/true.c b/commands/true.c
+index 8c77dec..d77a365 100644
+--- a/commands/true.c
++++ b/commands/true.c
+@@ -29,6 +29,11 @@ static int do_true(struct command *cmdtp, int argc, char *argv[])
+ 	return 0;
  }
  
--static const __maybe_unused char cmd_unlzo_help[] =
--"Usage: unlzo <infile> <outfile>\n"
--"Uncompress a lzo compressed file\n";
-+BAREBOX_CMD_HELP_START(unlzo)
-+BAREBOX_CMD_HELP_USAGE("unlzo <infile> <outfile>\n")
-+BAREBOX_CMD_HELP_SHORT("Uncompress a lzo compressed file.\n")
++BAREBOX_CMD_HELP_START(true)
++BAREBOX_CMD_HELP_USAGE("true\n")
++BAREBOX_CMD_HELP_SHORT("Do nothing, successfully.\n")
 +BAREBOX_CMD_HELP_END
 +
-+/**
-+ * @page unlzo_command
-+
-+\todo Add an example, how to handle LZO files in RAM.
-+
-+ */
- 
- BAREBOX_CMD_START(unlzo)
-         .cmd            = do_unlzo,
+ BAREBOX_CMD_START(true)
+ 	.cmd		= do_true,
+ 	.usage		= "do nothing, successfully",
 -- 
 1.7.2.3
 
