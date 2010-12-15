@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from tango.tkos.co.il ([62.219.50.35])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PSmM5-0004gO-AF
-	for barebox@lists.infradead.org; Wed, 15 Dec 2010 08:04:58 +0000
-From: Baruch Siach <baruch@tkos.co.il>
-Date: Wed, 15 Dec 2010 10:04:36 +0200
-Message-Id: <ddb18a8573b9f5daac2cc3d8ef53da7ee41dbbc0.1292400209.git.baruch@tkos.co.il>
+	id 1PSpti-0001uF-Lp
+	for barebox@lists.infradead.org; Wed, 15 Dec 2010 11:51:57 +0000
+From: Robert Schwebel <r.schwebel@pengutronix.de>
+Date: Wed, 15 Dec 2010 12:51:15 +0100
+Message-Id: <1292413908-464-2-git-send-email-r.schwebel@pengutronix.de>
+In-Reply-To: <1292413908-464-1-git-send-email-r.schwebel@pengutronix.de>
+References: <1292413908-464-1-git-send-email-r.schwebel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,35 +21,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] eth: fix 'warning: No MAC address set' when using EEPROM MAC
+Subject: [PATCH 01/34] doc: remove non-existing references
 To: barebox@lists.infradead.org
 
-When retrieving the MAC address from EEPROM, we must notify the networking core
-at eth registration time. Otherwise we get the 'No MAC address set' warning on
-the first network access, and the MAC address is set to a random value instead
-of the real one.
-
-Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+Signed-off-by: Robert Schwebel <r.schwebel@pengutronix.de>
 ---
- net/eth.c |    4 +++-
- 1 files changed, 3 insertions(+), 1 deletions(-)
+ arch/arm/mach-omap/syslib.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/net/eth.c b/net/eth.c
-index 4d58191..dafd392 100644
---- a/net/eth.c
-+++ b/net/eth.c
-@@ -168,8 +168,10 @@ int eth_register(struct eth_device *edev)
- 		dev_set_param(dev, "ethaddr", ethaddr_str);
- 	}
- 
--	if (!eth_current)
-+	if (!eth_current) {
- 		eth_current = edev;
-+		net_update_env();
-+	}
- 
- 	return 0;
- }
+diff --git a/arch/arm/mach-omap/syslib.c b/arch/arm/mach-omap/syslib.c
+index 2b25dc1..5757574 100644
+--- a/arch/arm/mach-omap/syslib.c
++++ b/arch/arm/mach-omap/syslib.c
+@@ -40,7 +40,7 @@
+  *
+  * Will be constant time as its generally used in bypass conditions only.
+  * This is necessary until timers are accessible. if you need timed delays
+- * use @ref mdelay or @ref udelay instead
++ * use mdelay or udelay instead
+  *
+  * @param[in] loops number of loops
+  *
 -- 
 1.7.2.3
 
