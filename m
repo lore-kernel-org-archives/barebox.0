@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PSpti-0001uG-Kk
-	for barebox@lists.infradead.org; Wed, 15 Dec 2010 11:51:57 +0000
+	id 1PSpti-0001uQ-Le
+	for barebox@lists.infradead.org; Wed, 15 Dec 2010 11:51:55 +0000
 From: Robert Schwebel <r.schwebel@pengutronix.de>
-Date: Wed, 15 Dec 2010 12:51:16 +0100
-Message-Id: <1292413908-464-3-git-send-email-r.schwebel@pengutronix.de>
+Date: Wed, 15 Dec 2010 12:51:26 +0100
+Message-Id: <1292413908-464-13-git-send-email-r.schwebel@pengutronix.de>
 In-Reply-To: <1292413908-464-1-git-send-email-r.schwebel@pengutronix.de>
 References: <1292413908-464-1-git-send-email-r.schwebel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,55 +21,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/34] doc: add documentation for 'version' command
+Subject: [PATCH 12/34] doc: add documentation for 'mkdir' command
 To: barebox@lists.infradead.org
 
 Signed-off-by: Robert Schwebel <r.schwebel@pengutronix.de>
 ---
  Documentation/commands.dox |    2 +-
- commands/version.c         |   15 ++++++++++++++-
- 2 files changed, 15 insertions(+), 2 deletions(-)
+ commands/mkdir.c           |   16 +++++++++++++---
+ 2 files changed, 14 insertions(+), 4 deletions(-)
 
 diff --git a/Documentation/commands.dox b/Documentation/commands.dox
-index 5ef7829..6c2f59d 100644
+index db3be1a..45947e9 100644
 --- a/Documentation/commands.dox
 +++ b/Documentation/commands.dox
-@@ -106,6 +106,6 @@ available in @a Barebox:
- @li @subpage unlzo
- @li @subpage unprotect_command
- @li @subpage usb
--@li @subpage version
-+@li @subpage version_command
- 
- */
-diff --git a/commands/version.c b/commands/version.c
-index 2b3ac05..baec60f 100644
---- a/commands/version.c
-+++ b/commands/version.c
-@@ -29,9 +29,22 @@ static int do_version(struct command *cmdtp, int argc, char *argv[])
- 	printf ("\n%s\n", version_string);
+@@ -71,7 +71,7 @@ available in @a Barebox:
+ @li @subpage meminfo
+ @li @subpage memset
+ @li @subpage menu
+-@li @subpage mkdir
++@li @subpage mkdir_command
+ @li @subpage mount_command
+ @li @subpage mtest
+ @li @subpage mw
+diff --git a/commands/mkdir.c b/commands/mkdir.c
+index b66795b..9e37775 100644
+--- a/commands/mkdir.c
++++ b/commands/mkdir.c
+@@ -59,9 +59,19 @@ static int do_mkdir(struct command *cmdtp, int argc, char *argv[])
  	return 0;
  }
-+BAREBOX_CMD_HELP_START(version)
-+BAREBOX_CMD_HELP_USAGE("version\n")
-+BAREBOX_CMD_HELP_SHORT("Print the Barebox version.\n")
+ 
+-static const __maybe_unused char cmd_mkdir_help[] =
+-"Usage: mkdir [directories]\n"
+-"Create new directories\n";
++BAREBOX_CMD_HELP_START(mkdir)
++BAREBOX_CMD_HELP_USAGE("mkdir DIRECTORIES\n")
++BAREBOX_CMD_HELP_SHORT("Create new directories.\n")
++BAREBOX_CMD_HELP_OPT  ("-p", "create all parent directories\n")
 +BAREBOX_CMD_HELP_END
 +
 +/**
-+ * @page version_command
++ * @page mkdir_command
 +
-+The version string follows the version information from the Linux
-+kernel, so for code coming from git you get an information about the
-+commit ID and the number of patches applied ontop of the last release.
++When called with the '-p' option, mkdir creates all non-existing parent
++directories.
 +
 + */
  
- BAREBOX_CMD_START(version)
- 	.cmd		= do_version,
--	.usage		= "print monitor version",
-+	.usage		= "print barebox version",
- BAREBOX_CMD_END
- 
+ BAREBOX_CMD_START(mkdir)
+ 	.cmd		= do_mkdir,
 -- 
 1.7.2.3
 
