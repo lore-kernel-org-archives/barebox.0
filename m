@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PSpti-0001uU-Lk
-	for barebox@lists.infradead.org; Wed, 15 Dec 2010 11:52:04 +0000
+	by casper.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1PSpu4-0004QL-Ju
+	for barebox@lists.infradead.org; Wed, 15 Dec 2010 11:52:17 +0000
 From: Robert Schwebel <r.schwebel@pengutronix.de>
-Date: Wed, 15 Dec 2010 12:51:28 +0100
-Message-Id: <1292413908-464-15-git-send-email-r.schwebel@pengutronix.de>
+Date: Wed, 15 Dec 2010 12:51:40 +0100
+Message-Id: <1292413908-464-27-git-send-email-r.schwebel@pengutronix.de>
 In-Reply-To: <1292413908-464-1-git-send-email-r.schwebel@pengutronix.de>
 References: <1292413908-464-1-git-send-email-r.schwebel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,44 +21,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 14/34] doc: add documentation for 'lsmod' command
+Subject: [PATCH 26/34] doc: add documentation for 'sh' command
 To: barebox@lists.infradead.org
 
 Signed-off-by: Robert Schwebel <r.schwebel@pengutronix.de>
 ---
  Documentation/commands.dox |    2 +-
- commands/lsmod.c           |    5 +++++
- 2 files changed, 6 insertions(+), 1 deletions(-)
+ common/hush.c              |   15 ++++++++++-----
+ 2 files changed, 11 insertions(+), 6 deletions(-)
 
 diff --git a/Documentation/commands.dox b/Documentation/commands.dox
-index 0293edc..04718b8 100644
+index 7f4e489..438d33e 100644
 --- a/Documentation/commands.dox
 +++ b/Documentation/commands.dox
-@@ -65,7 +65,7 @@ available in @a Barebox:
- @li @subpage loadxc
- @li @subpage login
- @li @subpage ls_command
--@li @subpage lsmod
-+@li @subpage lsmod_command
- @li @subpage md
- @li @subpage memcmp
- @li @subpage meminfo
-diff --git a/commands/lsmod.c b/commands/lsmod.c
-index 26d2fe4..9a90e88 100644
---- a/commands/lsmod.c
-+++ b/commands/lsmod.c
-@@ -12,6 +12,11 @@ static int do_lsmod(struct command *cmdtp, int argc, char *argv[])
- 	return 0;
+@@ -92,7 +92,7 @@ available in @a Barebox:
+ @li @subpage rmdir_command
+ @li @subpage saveenv_command
+ @li @subpage setenv_command
+-@li @subpage sh
++@li @subpage sh_command
+ @li @subpage sleep_command
+ @li @subpage source_command
+ @li @subpage test_command
+diff --git a/common/hush.c b/common/hush.c
+index 4947173..e269836 100644
+--- a/common/hush.c
++++ b/common/hush.c
+@@ -1670,14 +1670,19 @@ static int do_sh(struct command *cmdtp, int argc, char *argv[])
+ 	return execute_script(argv[1], argc - 1, argv + 1);
  }
  
-+BAREBOX_CMD_HELP_START(lsmod)
-+BAREBOX_CMD_HELP_USAGE("lsmod\n")
-+BAREBOX_CMD_HELP_SHORT("List modules.\n")
+-static const __maybe_unused char cmd_sh_help[] =
+-"Usage: sh filename [arguments]\n"
+-"\n"
+-"Execute a shell script\n";
++BAREBOX_CMD_HELP_START(sh)
++BAREBOX_CMD_HELP_USAGE("sh FILE [ARGS]\n")
++BAREBOX_CMD_HELP_SHORT("Execute a shell script.\n")
 +BAREBOX_CMD_HELP_END
 +
- BAREBOX_CMD_START(lsmod)
- 	.cmd		= do_lsmod,
- 	.usage		= "list modules",
++/**
++ * @page sh_command
++
++ */
+ 
+ BAREBOX_CMD_START(sh)
+ 	.cmd		= do_sh,
+-	.usage		= "run shell script",
++	.usage		= "execute a shell script",
+ 	BAREBOX_CMD_HELP(cmd_sh_help)
+ BAREBOX_CMD_END
+ 
 -- 
 1.7.2.3
 
