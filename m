@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PSpti-0001uQ-Le
+	id 1PSpti-0001uH-Lu
 	for barebox@lists.infradead.org; Wed, 15 Dec 2010 11:51:55 +0000
 From: Robert Schwebel <r.schwebel@pengutronix.de>
-Date: Wed, 15 Dec 2010 12:51:26 +0100
-Message-Id: <1292413908-464-13-git-send-email-r.schwebel@pengutronix.de>
+Date: Wed, 15 Dec 2010 12:51:17 +0100
+Message-Id: <1292413908-464-4-git-send-email-r.schwebel@pengutronix.de>
 In-Reply-To: <1292413908-464-1-git-send-email-r.schwebel@pengutronix.de>
 References: <1292413908-464-1-git-send-email-r.schwebel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,55 +21,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/34] doc: add documentation for 'mkdir' command
+Subject: [PATCH 03/34] doc: add documentation for 'unlzo' command
 To: barebox@lists.infradead.org
 
 Signed-off-by: Robert Schwebel <r.schwebel@pengutronix.de>
 ---
  Documentation/commands.dox |    2 +-
- commands/mkdir.c           |   16 +++++++++++++---
- 2 files changed, 14 insertions(+), 4 deletions(-)
+ commands/unlzo.c           |   14 +++++++++++---
+ 2 files changed, 12 insertions(+), 4 deletions(-)
 
 diff --git a/Documentation/commands.dox b/Documentation/commands.dox
-index db3be1a..45947e9 100644
+index 6c2f59d..cc892d4 100644
 --- a/Documentation/commands.dox
 +++ b/Documentation/commands.dox
-@@ -71,7 +71,7 @@ available in @a Barebox:
- @li @subpage meminfo
- @li @subpage memset
- @li @subpage menu
--@li @subpage mkdir
-+@li @subpage mkdir_command
- @li @subpage mount_command
- @li @subpage mtest
- @li @subpage mw
-diff --git a/commands/mkdir.c b/commands/mkdir.c
-index b66795b..9e37775 100644
---- a/commands/mkdir.c
-+++ b/commands/mkdir.c
-@@ -59,9 +59,19 @@ static int do_mkdir(struct command *cmdtp, int argc, char *argv[])
- 	return 0;
+@@ -103,7 +103,7 @@ available in @a Barebox:
+ @li @subpage ubimkvol
+ @li @subpage ubirmvol
+ @li @subpage umount
+-@li @subpage unlzo
++@li @subpage unlzo_command
+ @li @subpage unprotect_command
+ @li @subpage usb
+ @li @subpage version_command
+diff --git a/commands/unlzo.c b/commands/unlzo.c
+index 0b6dd4b..40225e6 100644
+--- a/commands/unlzo.c
++++ b/commands/unlzo.c
+@@ -57,9 +57,17 @@ exit_close:
+ 	return ret;
  }
  
--static const __maybe_unused char cmd_mkdir_help[] =
--"Usage: mkdir [directories]\n"
--"Create new directories\n";
-+BAREBOX_CMD_HELP_START(mkdir)
-+BAREBOX_CMD_HELP_USAGE("mkdir DIRECTORIES\n")
-+BAREBOX_CMD_HELP_SHORT("Create new directories.\n")
-+BAREBOX_CMD_HELP_OPT  ("-p", "create all parent directories\n")
+-static const __maybe_unused char cmd_unlzo_help[] =
+-"Usage: unlzo <infile> <outfile>\n"
+-"Uncompress a lzo compressed file\n";
++BAREBOX_CMD_HELP_START(unlzo)
++BAREBOX_CMD_HELP_USAGE("unlzo <infile> <outfile>\n")
++BAREBOX_CMD_HELP_SHORT("Uncompress a lzo compressed file.\n")
 +BAREBOX_CMD_HELP_END
 +
 +/**
-+ * @page mkdir_command
++ * @page unlzo_command
 +
-+When called with the '-p' option, mkdir creates all non-existing parent
-+directories.
++\todo Add an example, how to handle LZO files in RAM.
 +
 + */
  
- BAREBOX_CMD_START(mkdir)
- 	.cmd		= do_mkdir,
+ BAREBOX_CMD_START(unlzo)
+         .cmd            = do_unlzo,
 -- 
 1.7.2.3
 
