@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from fmmailgate03.web.de ([217.72.192.234])
+Received: from mail-qw0-f49.google.com ([209.85.216.49])
 	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1PU0WR-0001vh-SJ
-	for barebox@lists.infradead.org; Sat, 18 Dec 2010 17:24:45 +0000
-Date: Sat, 18 Dec 2010 18:24:42 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20101218172442.GM6017@pengutronix.de>
-References: <1292685309-32326-1-git-send-email-s.hauer@pengutronix.de>
-	<1292685309-32326-6-git-send-email-s.hauer@pengutronix.de>
-	<20101218164554.GC15695@game.jcrosoft.org>
+	id 1PU26k-0007kb-Ar
+	for barebox@lists.infradead.org; Sat, 18 Dec 2010 19:06:19 +0000
+Received: by qwj9 with SMTP id 9so1754983qwj.36
+	for <barebox@lists.infradead.org>; Sat, 18 Dec 2010 11:06:16 -0800 (PST)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20101218164554.GC15695@game.jcrosoft.org>
+In-Reply-To: <1292685309-32326-3-git-send-email-s.hauer@pengutronix.de>
+References: <1292685309-32326-1-git-send-email-s.hauer@pengutronix.de>
+	<1292685309-32326-3-git-send-email-s.hauer@pengutronix.de>
+Date: Sat, 18 Dec 2010 20:06:16 +0100
+Message-ID: <AANLkTimRBbntiw1dQSux6avqMYse+bSxMtYZ=gzQEvc+@mail.gmail.com>
+From: Belisko Marek <marek.belisko@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,122 +20,131 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 5/7] LED: Add led command
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH 2/7] basic LED support
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Sat, Dec 18, 2010 at 05:45:54PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 16:15 Sat 18 Dec     , Sascha Hauer wrote:
-> > This patch allows controlling LEDs via the command line.
-> > 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > ---
-> >  commands/Kconfig  |    7 ++++++
-> >  commands/Makefile |    1 +
-> >  commands/led.c    |   60 +++++++++++++++++++++++++++++++++++++++++++++++++++++
-> >  3 files changed, 68 insertions(+), 0 deletions(-)
-> >  create mode 100644 commands/led.c
-> > 
-> > diff --git a/commands/Kconfig b/commands/Kconfig
-> > index 5416073..64e08bb 100644
-> > --- a/commands/Kconfig
-> > +++ b/commands/Kconfig
-> > @@ -372,4 +372,11 @@ config CMD_I2C
-> >  	  include i2c_probe, i2c_read and i2c_write commands to communicate
-> >  	  on i2c bus.
-> >  
-> > +config CMD_LED
-> > +	bool
-> > +	depends on LED
-> > +	prompt "led command"
-> > +	help
-> > +	  include led command to control LEDs
-> > +
-> >  endmenu
-> > diff --git a/commands/Makefile b/commands/Makefile
-> > index ca30b5f..0820483 100644
-> > --- a/commands/Makefile
-> > +++ b/commands/Makefile
-> > @@ -53,3 +53,4 @@ obj-$(CONFIG_CMD_UBI)		+= ubi.o
-> >  obj-$(CONFIG_CMD_MENU)		+= menu.o
-> >  obj-$(CONFIG_CMD_PASSWD)	+= passwd.o
-> >  obj-$(CONFIG_CMD_LOGIN)		+= login.o
-> > +obj-$(CONFIG_CMD_LED)		+= led.o
-> > diff --git a/commands/led.c b/commands/led.c
-> > new file mode 100644
-> > index 0000000..ef6250f
-> > --- /dev/null
-> > +++ b/commands/led.c
-> > @@ -0,0 +1,60 @@
-> > +/*
-> > + * LED command support for barebox
-> > + *
-> > + * (C) Copyright 2010 Sascha Hauer, Pengutronix
-> > + *
-> > + * See file CREDITS for list of people who contributed to this
-> > + * project.
-> > + *
-> > + * This program is free software; you can redistribute it and/or
-> > + * modify it under the terms of the GNU General Public License as
-> > + * published by the Free Software Foundation; either version 2 of
-> > + * the License, or (at your option) any later version.
-> > + *
-> > + * This program is distributed in the hope that it will be useful,
-> > + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> > + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> > + * GNU General Public License for more details.
-> > + *
-> > + * You should have received a copy of the GNU General Public License
-> > + * along with this program; if not, write to the Free Software
-> > + * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-> > + * MA 02111-1307 USA
-> > + */
-> > +
-> > +#include <common.h>
-> > +#include <led.h>
-> > +#include <command.h>
-> > +#include <getopt.h>
-> > +#include <errno.h>
-> > +
-> > +static int do_led(struct command *cmdtp, int argc, char *argv[])
-> > +{
-> > +	unsigned long led, value;
-> > +	int ret;
-> > +
-> > +	if (argc != 3)
-> > +		return COMMAND_ERROR_USAGE;
-> > +
-> > +	led = simple_strtoul(argv[optind], NULL, 0);
-> > +	value = simple_strtoul(argv[optind + 1], NULL, 0);
-> > +
-> > +	ret = led_set_num(led, value);
-> > +	if (ret < 0) {
-> > +		perror("led");
-> > +		return 1;
-> > +	}
-> > +
-> > +	return 0;
-> > +}
-> how about list the available led?
-
-What do we want to list here? LEDs do not really have properties other
-then the max value (which is probably one for most LEDs). The number of
-LEDs would indeed be a good information to have. I also thought about
-giving the LEDs names; what do you think?
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gU2F0LCBEZWMgMTgsIDIwMTAgYXQgNDoxNSBQTSwgU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBl
+bmd1dHJvbml4LmRlPiB3cm90ZToKPiBUaGlzIHBhdGNoIGFkZHMgY29yZSBmdW5jdGlvbmFsaXR5
+IGZvciBjb250cm9sbGluZyBMRURzLgo+Cj4gU2lnbmVkLW9mZi1ieTogU2FzY2hhIEhhdWVyIDxz
+LmhhdWVyQHBlbmd1dHJvbml4LmRlPgo+IC0tLQo+IMKgZHJpdmVycy9LY29uZmlnIMKgIMKgIMKg
+fCDCoCDCoDEgKwo+IMKgZHJpdmVycy9NYWtlZmlsZSDCoCDCoCB8IMKgIMKgMSArCj4gwqBkcml2
+ZXJzL2xlZC9LY29uZmlnIMKgfCDCoCDCoDYgKysrCj4gwqBkcml2ZXJzL2xlZC9NYWtlZmlsZSB8
+IMKgIMKgMSArCj4gwqBkcml2ZXJzL2xlZC9jb3JlLmMgwqAgfCDCoDExOSArKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKwo+IMKgaW5jbHVkZS9sZWQuaCDC
+oCDCoCDCoCDCoHwgwqAgMjUgKysrKysrKysrKwo+IMKgNiBmaWxlcyBjaGFuZ2VkLCAxNTMgaW5z
+ZXJ0aW9ucygrKSwgMCBkZWxldGlvbnMoLSkKPiDCoGNyZWF0ZSBtb2RlIDEwMDY0NCBkcml2ZXJz
+L2xlZC9LY29uZmlnCj4gwqBjcmVhdGUgbW9kZSAxMDA2NDQgZHJpdmVycy9sZWQvTWFrZWZpbGUK
+PiDCoGNyZWF0ZSBtb2RlIDEwMDY0NCBkcml2ZXJzL2xlZC9jb3JlLmMKPiDCoGNyZWF0ZSBtb2Rl
+IDEwMDY0NCBpbmNsdWRlL2xlZC5oCj4KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9LY29uZmlnIGIv
+ZHJpdmVycy9LY29uZmlnCj4gaW5kZXggZDk0MDE3Yi4uODZkOGZiNSAxMDA2NDQKPiAtLS0gYS9k
+cml2ZXJzL0tjb25maWcKPiArKysgYi9kcml2ZXJzL0tjb25maWcKPiBAQCAtMTIsNSArMTIsNiBA
+QCBzb3VyY2UgImRyaXZlcnMvdmlkZW8vS2NvbmZpZyIKPiDCoHNvdXJjZSAiZHJpdmVycy9tY2kv
+S2NvbmZpZyIKPiDCoHNvdXJjZSAiZHJpdmVycy9jbGsvS2NvbmZpZyIKPiDCoHNvdXJjZSAiZHJp
+dmVycy9tZmQvS2NvbmZpZyIKPiArc291cmNlICJkcml2ZXJzL2xlZC9LY29uZmlnIgo+Cj4gwqBl
+bmRtZW51Cj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvTWFrZWZpbGUgYi9kcml2ZXJzL01ha2VmaWxl
+Cj4gaW5kZXggMjQyYTU2NC4uYjFiNDAyZiAxMDA2NDQKPiAtLS0gYS9kcml2ZXJzL01ha2VmaWxl
+Cj4gKysrIGIvZHJpdmVycy9NYWtlZmlsZQo+IEBAIC0xMCwzICsxMCw0IEBAIG9iai0kKENPTkZJ
+R19NQ0kpICs9IG1jaS8KPiDCoG9iai0kKENPTkZJR19WSURFTykgKz0gdmlkZW8vCj4gwqBvYmot
+eSDCoCs9IGNsay8KPiDCoG9iai15IMKgKz0gbWZkLwo+ICtvYmotJChDT05GSUdfTEVEKSArPSBs
+ZWQvCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbGVkL0tjb25maWcgYi9kcml2ZXJzL2xlZC9LY29u
+ZmlnCj4gbmV3IGZpbGUgbW9kZSAxMDA2NDQKPiBpbmRleCAwMDAwMDAwLi45NjQ2MjZjCj4gLS0t
+IC9kZXYvbnVsbAo+ICsrKyBiL2RyaXZlcnMvbGVkL0tjb25maWcKPiBAQCAtMCwwICsxLDYgQEAK
+PiArbWVudWNvbmZpZyBMRUQKPiArIMKgIMKgIMKgIGJvb2wgIkxFRCBzdXBwb3J0Igo+ICsKPiAr
+aWYgTEVECj4gKwo+ICtlbmRpZgo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2xlZC9NYWtlZmlsZSBi
+L2RyaXZlcnMvbGVkL01ha2VmaWxlCj4gbmV3IGZpbGUgbW9kZSAxMDA2NDQKPiBpbmRleCAwMDAw
+MDAwLi4wYzFhNmI2Cj4gLS0tIC9kZXYvbnVsbAo+ICsrKyBiL2RyaXZlcnMvbGVkL01ha2VmaWxl
+Cj4gQEAgLTAsMCArMSBAQAo+ICtvYmotJChDT05GSUdfTEVEKSArPSBjb3JlLm8KPiBkaWZmIC0t
+Z2l0IGEvZHJpdmVycy9sZWQvY29yZS5jIGIvZHJpdmVycy9sZWQvY29yZS5jCj4gbmV3IGZpbGUg
+bW9kZSAxMDA2NDQKPiBpbmRleCAwMDAwMDAwLi40YTBmMGE2Cj4gLS0tIC9kZXYvbnVsbAo+ICsr
+KyBiL2RyaXZlcnMvbGVkL2NvcmUuYwo+IEBAIC0wLDAgKzEsMTE5IEBACj4gKy8qCj4gKyAqIGNv
+cmUgTEVEIHN1cHBvcnQgZm9yIGJhcmVib3gKPiArICoKPiArICogKEMpIENvcHlyaWdodCAyMDEw
+IFNhc2NoYSBIYXVlciwgUGVuZ3V0cm9uaXgKPiArICoKPiArICogU2VlIGZpbGUgQ1JFRElUUyBm
+b3IgbGlzdCBvZiBwZW9wbGUgd2hvIGNvbnRyaWJ1dGVkIHRvIHRoaXMKPiArICogcHJvamVjdC4K
+PiArICoKPiArICogVGhpcyBwcm9ncmFtIGlzIGZyZWUgc29mdHdhcmU7IHlvdSBjYW4gcmVkaXN0
+cmlidXRlIGl0IGFuZC9vcgo+ICsgKiBtb2RpZnkgaXQgdW5kZXIgdGhlIHRlcm1zIG9mIHRoZSBH
+TlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBhcwo+ICsgKiBwdWJsaXNoZWQgYnkgdGhlIEZyZWUg
+U29mdHdhcmUgRm91bmRhdGlvbjsgZWl0aGVyIHZlcnNpb24gMiBvZgo+ICsgKiB0aGUgTGljZW5z
+ZSwgb3IgKGF0IHlvdXIgb3B0aW9uKSBhbnkgbGF0ZXIgdmVyc2lvbi4KPiArICoKPiArICogVGhp
+cyBwcm9ncmFtIGlzIGRpc3RyaWJ1dGVkIGluIHRoZSBob3BlIHRoYXQgaXQgd2lsbCBiZSB1c2Vm
+dWwsCj4gKyAqIGJ1dCBXSVRIT1VUIEFOWSBXQVJSQU5UWTsgd2l0aG91dCBldmVuIHRoZSBpbXBs
+aWVkIHdhcnJhbnR5IG9mCj4gKyAqIE1FUkNIQU5UQUJJTElUWSBvciBGSVRORVNTIEZPUiBBIFBB
+UlRJQ1VMQVIgUFVSUE9TRS4gwqBTZWUgdGhlCj4gKyAqIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNl
+bnNlIGZvciBtb3JlIGRldGFpbHMuCj4gKyAqCj4gKyAqIFlvdSBzaG91bGQgaGF2ZSByZWNlaXZl
+ZCBhIGNvcHkgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlCj4gKyAqIGFsb25nIHdp
+dGggdGhpcyBwcm9ncmFtOyBpZiBub3QsIHdyaXRlIHRvIHRoZSBGcmVlIFNvZnR3YXJlCj4gKyAq
+IEZvdW5kYXRpb24sIEluYy4sIDU5IFRlbXBsZSBQbGFjZSwgU3VpdGUgMzMwLCBCb3N0b24sCj4g
+KyAqIE1BIDAyMTExLTEzMDcgVVNBCj4gKyAqLwo+ICsKPiArI2luY2x1ZGUgPGNvbW1vbi5oPgo+
+ICsjaW5jbHVkZSA8Y29tbWFuZC5oPgo+ICsjaW5jbHVkZSA8bGludXgvbGlzdC5oPgo+ICsjaW5j
+bHVkZSA8ZXJybm8uaD4KPiArI2luY2x1ZGUgPGFzbS9ncGlvLmg+Cj4gKyNpbmNsdWRlIDxsZWQu
+aD4KPiArI2luY2x1ZGUgPHBvbGxlci5oPgpJcyBuZWNlc3NhcnkgdG8gaW5jbHVkZSBwb2xsZXIu
+aD8KTm9uIG9mIHBvbGxlciBmdW5jdGlvbiBpcyB1c2VkIHRoZXJlLgo+ICsjaW5jbHVkZSA8Y2xv
+Y2suaD4KPiArCj4gKy8qKgo+ICsgKiBAZmlsZQo+ICsgKiBAYnJpZWYgTEVEIGZyYW1ld29yawo+
+ICsgKgo+ICsgKiBUaGlzIGZpbGUgY29udGFpbnMgdGhlIGNvcmUgTEVEIGZyYW1ld29yayBmb3Ig
+YmFyZWJveC4KPiArICoKPiArICogRWFjaCBMRUQgY2FuIGJlIHNldCB0byBhIHZhbHVlIHdoZXJl
+IDAgbWVhbnMgZGlzYWJsZWQgYW5kIHZhbHVlcwo+ICsgKiA+IDAgbWVhbiBlbmFibGVkLiBMRURz
+IGNhbiBoYXZlIGRpZmZlcmVudCBlbmFibGUgdmFsdWVzIHdoZXJlIHRoZQo+ICsgKiBleGFjdCBt
+ZWFuaW5nIGRlcGVuZHMgb24gdGhlIExFRCwgZm9yIGV4YW1wbGUgYSBncGlvIGNvbnRyb2xsZWQg
+cmdiCj4gKyAqIExFRCBjYW4gaGF2ZSBlbmFibGUgdmFsdWVzIGZyb20gMSB0byA3IHdoaWNoIGNv
+cnJlc3BvbmQgdG8gZGlmZmVyZW50Cj4gKyAqIGNvbG9ycy4gdmFsdWUgY291bGQgYWxzbyBtZWFu
+IGEgYnJpZ2h0bmVzcy4KPiArICogRWFjaCBMRUQgaXMgYXNzaWduZWQgYSBudW1iZXIuIG51bWJl
+cnMgc3RhcnQgd2l0aCAwIGFuZCBhcmUgaW5jcmVhc2VkCj4gKyAqIHdpdGggZWFjaCByZWdpc3Rl
+cmVkIExFRC4gVGhlIG51bWJlciBzdGF5cyB0aGUgc2FtZSBkdXJpbmcgbGlmZWN5Y2xlLAo+ICsg
+KiBnYXBzIGJlY2F1c2Ugb2YgdW5yZWdpc3RlcmVkIExFRHMgYXJlIG5vdCBmaWxsZWQgdXAuCj4g
+KyAqLwo+ICsKPiArc3RhdGljIExJU1RfSEVBRChsZWRzKTsKPiArc3RhdGljIGludCBudW1fbGVk
+czsKPiArCj4gKy8qKgo+ICsgKiBsZWRfYnlfbnVtYmVyIC0gZ2V0IHRoZSBudW1iZXIgb2YgYSBM
+RUQKPiArICogQHBhcmFtIG51bSBudW1iZXIgb2YgdGhlIExFRCB0byByZXR1cm4KPiArICovCj4g
+K3N0cnVjdCBsZWQgKmxlZF9ieV9udW1iZXIoaW50IG51bSkKPiArewo+ICsgwqAgwqAgwqAgc3Ry
+dWN0IGxlZCAqbGVkOwo+ICsKPiArIMKgIMKgIMKgIGxpc3RfZm9yX2VhY2hfZW50cnkobGVkLCAm
+bGVkcywgbGlzdCkgewo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgaWYgKGxlZC0+bnVtID09IG51
+bSkKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHJldHVybiBsZWQ7Cj4gKyDC
+oCDCoCDCoCB9Cj4gKwo+ICsgwqAgwqAgwqAgcmV0dXJuIE5VTEw7Cj4gK30KPiArCj4gKy8qKgo+
+ICsgKiBsZWRfc2V0IC0gc2V0IHRoZSB2YWx1ZSBvZiBhIExFRAo+ICsgKiBAcGFyYW0gbGVkIMKg
+dGhlIGxlZAo+ICsgKiBAcGFyYW0gdmFsdWUgwqAgwqAgwqAgwqB0aGUgdmFsdWUgb2YgdGhlIExF
+RCAoMCBpcyBkaXNhYmxlZCkKPiArICovCj4gK2ludCBsZWRfc2V0KHN0cnVjdCBsZWQgKmxlZCwg
+dW5zaWduZWQgaW50IHZhbHVlKQo+ICt7Cj4gKyDCoCDCoCDCoCBpZiAodmFsdWUgPiBsZWQtPm1h
+eF92YWx1ZSkKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHZhbHVlID0gbGVkLT5tYXhfdmFsdWU7
+Cj4gKwo+ICsgwqAgwqAgwqAgbGVkLT5zZXQobGVkLCB2YWx1ZSk7Cj4gKwo+ICsgwqAgwqAgwqAg
+cmV0dXJuIDA7Cj4gK30KPiArCj4gKy8qKgo+ICsgKiBsZWRfc2V0X251bSAtIHNldCB0aGUgdmFs
+dWUgb2YgYSBMRUQKPiArICogQHBhcmFtIG51bSDCoHRoZSBudW1iZXIgb2YgdGhlIExFRAo+ICsg
+KiBAcGFyYW0gdmFsdWUgwqAgwqAgwqAgwqB0aGUgdmFsdWUgb2YgdGhlIExFRCAoMCBpcyBkaXNh
+YmxlZCkKPiArICovCj4gK2ludCBsZWRfc2V0X251bShpbnQgbnVtLCB1bnNpZ25lZCBpbnQgdmFs
+dWUpCj4gK3sKPiArIMKgIMKgIMKgIHN0cnVjdCBsZWQgKmxlZCA9IGxlZF9ieV9udW1iZXIobnVt
+KTsKPiArCj4gKyDCoCDCoCDCoCBpZiAoIWxlZCkKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHJl
+dHVybiAtRU5PREVWOwo+ICsKPiArIMKgIMKgIMKgIHJldHVybiBsZWRfc2V0KGxlZCwgdmFsdWUp
+Owo+ICt9Cj4gKwo+ICsvKioKPiArICogbGVkX3JlZ2lzdGVyIC0gUmVnaXN0ZXIgYSBMRUQKPiAr
+ICogQHBhcmFtIGxlZCDCoHRoZSBsZWQKPiArICovCj4gK2ludCBsZWRfcmVnaXN0ZXIoc3RydWN0
+IGxlZCAqbGVkKQo+ICt7Cj4gKyDCoCDCoCDCoCBsZWQtPm51bSA9IG51bV9sZWRzKys7Cj4gKwo+
+ICsgwqAgwqAgwqAgbGlzdF9hZGRfdGFpbCgmbGVkLT5saXN0LCAmbGVkcyk7Cj4gKwo+ICsgwqAg
+wqAgwqAgcmV0dXJuIDA7Cj4gK30KPiArCj4gKy8qKgo+ICsgKiBsZWRfdW5yZWdpc3RlciAtIFVu
+ZWdpc3RlciBhIExFRAo+ICsgKiBAcGFyYW0gbGVkIMKgdGhlIGxlZAo+ICsgKi8KPiArdm9pZCBs
+ZWRfdW5yZWdpc3RlcihzdHJ1Y3QgbGVkICpsZWQpCj4gK3sKPiArIMKgIMKgIMKgIGxpc3RfZGVs
+KCZsZWQtPmxpc3QpOwo+ICt9Cj4gZGlmZiAtLWdpdCBhL2luY2x1ZGUvbGVkLmggYi9pbmNsdWRl
+L2xlZC5oCj4gbmV3IGZpbGUgbW9kZSAxMDA2NDQKPiBpbmRleCAwMDAwMDAwLi42MmQwZDA4Cj4g
+LS0tIC9kZXYvbnVsbAo+ICsrKyBiL2luY2x1ZGUvbGVkLmgKPiBAQCAtMCwwICsxLDI1IEBACj4g
+KyNpZm5kZWYgX19MRURfSAo+ICsjZGVmaW5lIF9fTEVEX0gKPiArCj4gK3N0cnVjdCBsZWQgewo+
+ICsgwqAgwqAgwqAgdW5zaWduZWQgbG9uZyB0cmlnZXI7Cj4gKyDCoCDCoCDCoCB2b2lkICgqc2V0
+KShzdHJ1Y3QgbGVkICosIHVuc2lnbmVkIGludCB2YWx1ZSk7Cj4gKyDCoCDCoCDCoCBpbnQgbWF4
+X3ZhbHVlOwo+ICsgwqAgwqAgwqAgaW50IG51bTsKPiArIMKgIMKgIMKgIHN0cnVjdCBsaXN0X2hl
+YWQgbGlzdDsKPiArfTsKPiArCj4gK3N0cnVjdCBsZWQgKmxlZF9ieV9udW1iZXIoaW50IG5vKTsK
+PiArCj4gK3N0YXRpYyBpbmxpbmUgaW50IGxlZF9nZXRfbnVtYmVyKHN0cnVjdCBsZWQgKmxlZCkK
+PiArewo+ICsgwqAgwqAgwqAgcmV0dXJuIGxlZC0+bnVtOwo+ICt9Cj4gKwo+ICtpbnQgbGVkX3Nl
+dF9udW0oaW50IG51bSwgdW5zaWduZWQgaW50IHZhbHVlKTsKPiAraW50IGxlZF9zZXQoc3RydWN0
+IGxlZCAqbGVkLCB1bnNpZ25lZCBpbnQgdmFsdWUpOwo+ICtpbnQgbGVkX3JlZ2lzdGVyKHN0cnVj
+dCBsZWQgKmxlZCk7Cj4gK3ZvaWQgbGVkX3VucmVnaXN0ZXIoc3RydWN0IGxlZCAqbGVkKTsKPiAr
+dm9pZCBsZWRfdW5yZWdpc3RlcihzdHJ1Y3QgbGVkICpsZWQpOwo+ICsKPiArI2VuZGlmIC8qIF9f
+TEVEX0ggKi8KPiAtLQo+IDEuNy4yLjMKPgo+Cj4gX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX18KPiBiYXJlYm94IG1haWxpbmcgbGlzdAo+IGJhcmVib3hAbGlz
+dHMuaW5mcmFkZWFkLm9yZwo+IGh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlz
+dGluZm8vYmFyZWJveAo+Cgp0aGFua3MsCgptYXJlawoKLS0gCmFzIHNpbXBsZSBhbmQgcHJpbWl0
+aXZlIGFzIHBvc3NpYmxlCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0KTWFyZWsgQmVsaXNrbyAtIE9QRU4tTkFORFJBCkZyZWVsYW5jZSBEZXZlbG9wZXIK
+ClJ1c2thIE5vdmEgVmVzIDIxOSB8IFByZXNvdiwgMDgwMDUgU2xvdmFrIFJlcHVibGljClRlbDog
+KzQyMSA5MTUgMDUyIDE4NApza3lwZTogbWFyZWt3aGl0ZQppY3E6IDI5MDU1MTA4Ngp3ZWI6IGh0
+dHA6Ly9vcGVuLW5hbmRyYS5jb20KCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFk
+Lm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
