@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PTyVF-0000MK-5q
+	id 1PTyVF-0000MM-6D
 	for barebox@lists.infradead.org; Sat, 18 Dec 2010 15:15:25 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sat, 18 Dec 2010 16:15:06 +0100
-Message-Id: <1292685309-32326-5-git-send-email-s.hauer@pengutronix.de>
+Date: Sat, 18 Dec 2010 16:15:04 +0100
+Message-Id: <1292685309-32326-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1292685309-32326-1-git-send-email-s.hauer@pengutronix.de>
 References: <1292685309-32326-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,197 +21,220 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/7] LED: Add LED trigger support
+Subject: [PATCH 2/7] basic LED support
 To: barebox@lists.infradead.org
 
-This patch allows to associate LEDs with certain triggers, such
-as heartbeat or network activity.
+This patch adds core functionality for controlling LEDs.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/led/Kconfig  |    3 +++
+ drivers/Kconfig      |    1 +
+ drivers/Makefile     |    1 +
+ drivers/led/Kconfig  |    6 +++
  drivers/led/Makefile |    1 +
- include/led.h        |   26 ++++++++++++++++++++++++++
- include/net.h        |    3 +++
- lib/vsprintf.c       |    4 ++++
- net/eth.c            |   20 +++++++++++++++++++-
- net/net.c            |   21 ++++++++++++++++-----
- 7 files changed, 72 insertions(+), 6 deletions(-)
+ drivers/led/core.c   |  119 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ include/led.h        |   25 ++++++++++
+ 6 files changed, 153 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/led/Kconfig
+ create mode 100644 drivers/led/Makefile
+ create mode 100644 drivers/led/core.c
+ create mode 100644 include/led.h
 
+diff --git a/drivers/Kconfig b/drivers/Kconfig
+index d94017b..86d8fb5 100644
+--- a/drivers/Kconfig
++++ b/drivers/Kconfig
+@@ -12,5 +12,6 @@ source "drivers/video/Kconfig"
+ source "drivers/mci/Kconfig"
+ source "drivers/clk/Kconfig"
+ source "drivers/mfd/Kconfig"
++source "drivers/led/Kconfig"
+ 
+ endmenu
+diff --git a/drivers/Makefile b/drivers/Makefile
+index 242a564..b1b402f 100644
+--- a/drivers/Makefile
++++ b/drivers/Makefile
+@@ -10,3 +10,4 @@ obj-$(CONFIG_MCI) += mci/
+ obj-$(CONFIG_VIDEO) += video/
+ obj-y	+= clk/
+ obj-y	+= mfd/
++obj-$(CONFIG_LED) += led/
 diff --git a/drivers/led/Kconfig b/drivers/led/Kconfig
-index b5e2f97..d8540c5 100644
---- a/drivers/led/Kconfig
+new file mode 100644
+index 0000000..964626c
+--- /dev/null
 +++ b/drivers/led/Kconfig
-@@ -7,4 +7,7 @@ config LED_GPIO
- 	bool "gpio LED support"
- 	depends on GENERIC_GPIO
- 
-+config LED_TRIGGERS
-+	bool "LED triggers support"
+@@ -0,0 +1,6 @@
++menuconfig LED
++	bool "LED support"
 +
- endif
++if LED
++
++endif
 diff --git a/drivers/led/Makefile b/drivers/led/Makefile
-index 29b9fd5..6aafa6d 100644
---- a/drivers/led/Makefile
+new file mode 100644
+index 0000000..0c1a6b6
+--- /dev/null
 +++ b/drivers/led/Makefile
-@@ -1,2 +1,3 @@
- obj-$(CONFIG_LED) += core.o
- obj-$(CONFIG_LED_GPIO) += led-gpio.o
-+obj-$(CONFIG_LED_TRIGGERS) += led-triggers.o
-diff --git a/include/led.h b/include/led.h
-index 98b8c2e..2dc0f9d 100644
---- a/include/led.h
-+++ b/include/led.h
-@@ -22,6 +22,32 @@ int led_register(struct led *led);
- void led_unregister(struct led *led);
- void led_unregister(struct led *led);
- 
-+/* LED trigger support */
-+enum led_trigger {
-+	led_trigger_panic,
-+	led_trigger_heartbeat,
-+	led_trigger_net_rx,
-+	led_trigger_net_tx,
-+	led_trigger_net_txrx,
-+	led_trigger_max,
-+};
+@@ -0,0 +1 @@
++obj-$(CONFIG_LED) += core.o
+diff --git a/drivers/led/core.c b/drivers/led/core.c
+new file mode 100644
+index 0000000..4a0f0a6
+--- /dev/null
++++ b/drivers/led/core.c
+@@ -0,0 +1,119 @@
++/*
++ * core LED support for barebox
++ *
++ * (C) Copyright 2010 Sascha Hauer, Pengutronix
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
 +
-+#ifdef CONFIG_LED_TRIGGERS
-+int led_set_trigger(enum led_trigger trigger, struct led *led);
-+void led_trigger(enum led_trigger trigger, bool enable);
-+#else
-+static inline int led_set_trigger(enum led_trigger trigger, struct led *led)
++#include <common.h>
++#include <command.h>
++#include <linux/list.h>
++#include <errno.h>
++#include <asm/gpio.h>
++#include <led.h>
++#include <poller.h>
++#include <clock.h>
++
++/**
++ * @file
++ * @brief LED framework
++ *
++ * This file contains the core LED framework for barebox.
++ *
++ * Each LED can be set to a value where 0 means disabled and values
++ * > 0 mean enabled. LEDs can have different enable values where the
++ * exact meaning depends on the LED, for example a gpio controlled rgb
++ * LED can have enable values from 1 to 7 which correspond to different
++ * colors. value could also mean a brightness.
++ * Each LED is assigned a number. numbers start with 0 and are increased
++ * with each registered LED. The number stays the same during lifecycle,
++ * gaps because of unregistered LEDs are not filled up.
++ */
++
++static LIST_HEAD(leds);
++static int num_leds;
++
++/**
++ * led_by_number - get the number of a LED
++ * @param num number of the LED to return
++ */
++struct led *led_by_number(int num)
 +{
++	struct led *led;
++
++	list_for_each_entry(led, &leds, list) {
++		if (led->num == num)
++			return led;
++	}
++
++	return NULL;
++}
++
++/**
++ * led_set - set the value of a LED
++ * @param led	the led
++ * @param value	the value of the LED (0 is disabled)
++ */
++int led_set(struct led *led, unsigned int value)
++{
++	if (value > led->max_value)
++		value = led->max_value;
++
++	led->set(led, value);
++
 +	return 0;
 +}
 +
-+static inline void led_trigger(enum led_trigger trigger, bool enable)
++/**
++ * led_set_num - set the value of a LED
++ * @param num	the number of the LED
++ * @param value	the value of the LED (0 is disabled)
++ */
++int led_set_num(int num, unsigned int value)
 +{
++	struct led *led = led_by_number(num);
++
++	if (!led)
++		return -ENODEV;
++
++	return led_set(led, value);
 +}
-+#endif
 +
-+int led_get_trigger(enum led_trigger trigger);
-+
- /* gpio LED support */
- struct gpio_led {
- 	int gpio;
-diff --git a/include/net.h b/include/net.h
-index c695e5f..71c314e 100644
---- a/include/net.h
-+++ b/include/net.h
-@@ -18,6 +18,7 @@
- #include <malloc.h>
- #include <stdlib.h>
- #include <clock.h>
-+#include <led.h>
- #include <asm/byteorder.h>	/* for nton* / ntoh* stuff */
- 
- 
-@@ -417,4 +418,6 @@ static inline unsigned char *net_udp_get_payload(struct net_connection *con)
- int net_udp_send(struct net_connection *con, int len);
- int net_icmp_send(struct net_connection *con, int len);
- 
-+void led_trigger_network(enum led_trigger trigger, int active);
-+
- #endif /* __NET_H__ */
-diff --git a/lib/vsprintf.c b/lib/vsprintf.c
-index e2ea84d..6117337 100644
---- a/lib/vsprintf.c
-+++ b/lib/vsprintf.c
-@@ -17,6 +17,7 @@
- #include <malloc.h>
- 
- #include <common.h>
-+#include <led.h>
- #include <reloc.h>
- 
- unsigned long simple_strtoul(const char *cp,char **endp,unsigned int base)
-@@ -625,6 +626,9 @@ void __noreturn panic(const char *fmt, ...)
- 	vprintf(fmt, args);
- 	putchar('\n');
- 	va_end(args);
-+
-+	led_trigger(led_trigger_panic, 1);
-+
- #if defined (CONFIG_PANIC_HANG)
- 	hang();
- #else
-diff --git a/net/eth.c b/net/eth.c
-index a82a263..6ac4f09 100644
---- a/net/eth.c
-+++ b/net/eth.c
-@@ -77,7 +77,13 @@ int eth_send(void *packet, int length)
- 		eth_current->active = 1;
- 	}
- 
--	return eth_current->send(eth_current, packet, length);
-+	led_trigger_network(led_trigger_net_tx, 1);
-+
-+	ret = eth_current->send(eth_current, packet, length);
-+
-+	led_trigger_network(led_trigger_net_tx, 0);
-+
-+	return ret;
- }
- 
- int eth_rx(void)
-@@ -183,4 +189,16 @@ void eth_unregister(struct eth_device *edev)
- 	list_del(&edev->list);
- }
- 
-+void led_trigger_network(enum led_trigger trigger, int enable)
++/**
++ * led_register - Register a LED
++ * @param led	the led
++ */
++int led_register(struct led *led)
 +{
-+	static bool rx_active, tx_active;
- 
-+	led_trigger(trigger, enable);
++	led->num = num_leds++;
 +
-+	if (trigger == led_trigger_net_tx)
-+		tx_active = enable;
-+	if (trigger == led_trigger_net_rx)
-+		rx_active = enable;
++	list_add_tail(&led->list, &leds);
 +
-+	led_trigger(led_trigger_net_txrx, tx_active || rx_active);
++	return 0;
 +}
-diff --git a/net/net.c b/net/net.c
-index a613d1d..afd5964 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -628,19 +628,30 @@ int net_receive(unsigned char *pkt, int len)
- {
- 	struct ethernet *et = (struct ethernet *)pkt;
- 	int et_protlen = ntohs(et->et_protlen);
-+	int ret;
- 
--	if (len < ETHER_HDR_SIZE)
--		return 0;
-+	led_trigger_network(led_trigger_net_rx, 1);
 +
-+	if (len < ETHER_HDR_SIZE) {
-+		ret = 0;
-+		goto out;
-+	}
- 
- 	switch (et_protlen) {
- 	case PROT_ARP:
--		return net_handle_arp(pkt, len);
-+		ret = net_handle_arp(pkt, len);
-+		break;
- 	case PROT_IP:
--		return net_handle_ip(pkt, len);
-+		ret = net_handle_ip(pkt, len);
-+		break;
- 	default:
- 		debug("%s: got unknown protocol type: %d\n", __func__, et_protlen);
--		return 1;
-+		ret = 1;
-+		break;
- 	}
-+out:
-+	led_trigger_network(led_trigger_net_rx, 0);
-+	return ret;
- }
- 
- static int net_init(void)
++/**
++ * led_unregister - Unegister a LED
++ * @param led	the led
++ */
++void led_unregister(struct led *led)
++{
++	list_del(&led->list);
++}
+diff --git a/include/led.h b/include/led.h
+new file mode 100644
+index 0000000..62d0d08
+--- /dev/null
++++ b/include/led.h
+@@ -0,0 +1,25 @@
++#ifndef __LED_H
++#define __LED_H
++
++struct led {
++	unsigned long triger;
++	void (*set)(struct led *, unsigned int value);
++	int max_value;
++	int num;
++	struct list_head list;
++};
++
++struct led *led_by_number(int no);
++
++static inline int led_get_number(struct led *led)
++{
++	return led->num;
++}
++
++int led_set_num(int num, unsigned int value);
++int led_set(struct led *led, unsigned int value);
++int led_register(struct led *led);
++void led_unregister(struct led *led);
++void led_unregister(struct led *led);
++
++#endif /* __LED_H */
 -- 
 1.7.2.3
 
