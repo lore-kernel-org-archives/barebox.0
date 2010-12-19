@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qw0-f49.google.com ([209.85.216.49])
-	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1PU26k-0007kb-Ar
-	for barebox@lists.infradead.org; Sat, 18 Dec 2010 19:06:19 +0000
-Received: by qwj9 with SMTP id 9so1754983qwj.36
-	for <barebox@lists.infradead.org>; Sat, 18 Dec 2010 11:06:16 -0800 (PST)
-MIME-Version: 1.0
-In-Reply-To: <1292685309-32326-3-git-send-email-s.hauer@pengutronix.de>
+Received: from mail7.tpgi.com.au ([203.12.160.103])
+	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1PUQr0-000320-6J
+	for barebox@lists.infradead.org; Sun, 19 Dec 2010 21:31:43 +0000
+From: Marc Reilly <marc@cpdesign.com.au>
+Date: Mon, 20 Dec 2010 08:31:34 +1100
 References: <1292685309-32326-1-git-send-email-s.hauer@pengutronix.de>
 	<1292685309-32326-3-git-send-email-s.hauer@pengutronix.de>
-Date: Sat, 18 Dec 2010 20:06:16 +0100
-Message-ID: <AANLkTimRBbntiw1dQSux6avqMYse+bSxMtYZ=gzQEvc+@mail.gmail.com>
-From: Belisko Marek <marek.belisko@gmail.com>
+In-Reply-To: <1292685309-32326-3-git-send-email-s.hauer@pengutronix.de>
+MIME-Version: 1.0
+Message-Id: <201012200831.34131.marc@cpdesign.com.au>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,131 +18,80 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 2/7] basic LED support
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-T24gU2F0LCBEZWMgMTgsIDIwMTAgYXQgNDoxNSBQTSwgU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBl
-bmd1dHJvbml4LmRlPiB3cm90ZToKPiBUaGlzIHBhdGNoIGFkZHMgY29yZSBmdW5jdGlvbmFsaXR5
-IGZvciBjb250cm9sbGluZyBMRURzLgo+Cj4gU2lnbmVkLW9mZi1ieTogU2FzY2hhIEhhdWVyIDxz
-LmhhdWVyQHBlbmd1dHJvbml4LmRlPgo+IC0tLQo+IMKgZHJpdmVycy9LY29uZmlnIMKgIMKgIMKg
-fCDCoCDCoDEgKwo+IMKgZHJpdmVycy9NYWtlZmlsZSDCoCDCoCB8IMKgIMKgMSArCj4gwqBkcml2
-ZXJzL2xlZC9LY29uZmlnIMKgfCDCoCDCoDYgKysrCj4gwqBkcml2ZXJzL2xlZC9NYWtlZmlsZSB8
-IMKgIMKgMSArCj4gwqBkcml2ZXJzL2xlZC9jb3JlLmMgwqAgfCDCoDExOSArKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKwo+IMKgaW5jbHVkZS9sZWQuaCDC
-oCDCoCDCoCDCoHwgwqAgMjUgKysrKysrKysrKwo+IMKgNiBmaWxlcyBjaGFuZ2VkLCAxNTMgaW5z
-ZXJ0aW9ucygrKSwgMCBkZWxldGlvbnMoLSkKPiDCoGNyZWF0ZSBtb2RlIDEwMDY0NCBkcml2ZXJz
-L2xlZC9LY29uZmlnCj4gwqBjcmVhdGUgbW9kZSAxMDA2NDQgZHJpdmVycy9sZWQvTWFrZWZpbGUK
-PiDCoGNyZWF0ZSBtb2RlIDEwMDY0NCBkcml2ZXJzL2xlZC9jb3JlLmMKPiDCoGNyZWF0ZSBtb2Rl
-IDEwMDY0NCBpbmNsdWRlL2xlZC5oCj4KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9LY29uZmlnIGIv
-ZHJpdmVycy9LY29uZmlnCj4gaW5kZXggZDk0MDE3Yi4uODZkOGZiNSAxMDA2NDQKPiAtLS0gYS9k
-cml2ZXJzL0tjb25maWcKPiArKysgYi9kcml2ZXJzL0tjb25maWcKPiBAQCAtMTIsNSArMTIsNiBA
-QCBzb3VyY2UgImRyaXZlcnMvdmlkZW8vS2NvbmZpZyIKPiDCoHNvdXJjZSAiZHJpdmVycy9tY2kv
-S2NvbmZpZyIKPiDCoHNvdXJjZSAiZHJpdmVycy9jbGsvS2NvbmZpZyIKPiDCoHNvdXJjZSAiZHJp
-dmVycy9tZmQvS2NvbmZpZyIKPiArc291cmNlICJkcml2ZXJzL2xlZC9LY29uZmlnIgo+Cj4gwqBl
-bmRtZW51Cj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvTWFrZWZpbGUgYi9kcml2ZXJzL01ha2VmaWxl
-Cj4gaW5kZXggMjQyYTU2NC4uYjFiNDAyZiAxMDA2NDQKPiAtLS0gYS9kcml2ZXJzL01ha2VmaWxl
-Cj4gKysrIGIvZHJpdmVycy9NYWtlZmlsZQo+IEBAIC0xMCwzICsxMCw0IEBAIG9iai0kKENPTkZJ
-R19NQ0kpICs9IG1jaS8KPiDCoG9iai0kKENPTkZJR19WSURFTykgKz0gdmlkZW8vCj4gwqBvYmot
-eSDCoCs9IGNsay8KPiDCoG9iai15IMKgKz0gbWZkLwo+ICtvYmotJChDT05GSUdfTEVEKSArPSBs
-ZWQvCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbGVkL0tjb25maWcgYi9kcml2ZXJzL2xlZC9LY29u
-ZmlnCj4gbmV3IGZpbGUgbW9kZSAxMDA2NDQKPiBpbmRleCAwMDAwMDAwLi45NjQ2MjZjCj4gLS0t
-IC9kZXYvbnVsbAo+ICsrKyBiL2RyaXZlcnMvbGVkL0tjb25maWcKPiBAQCAtMCwwICsxLDYgQEAK
-PiArbWVudWNvbmZpZyBMRUQKPiArIMKgIMKgIMKgIGJvb2wgIkxFRCBzdXBwb3J0Igo+ICsKPiAr
-aWYgTEVECj4gKwo+ICtlbmRpZgo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2xlZC9NYWtlZmlsZSBi
-L2RyaXZlcnMvbGVkL01ha2VmaWxlCj4gbmV3IGZpbGUgbW9kZSAxMDA2NDQKPiBpbmRleCAwMDAw
-MDAwLi4wYzFhNmI2Cj4gLS0tIC9kZXYvbnVsbAo+ICsrKyBiL2RyaXZlcnMvbGVkL01ha2VmaWxl
-Cj4gQEAgLTAsMCArMSBAQAo+ICtvYmotJChDT05GSUdfTEVEKSArPSBjb3JlLm8KPiBkaWZmIC0t
-Z2l0IGEvZHJpdmVycy9sZWQvY29yZS5jIGIvZHJpdmVycy9sZWQvY29yZS5jCj4gbmV3IGZpbGUg
-bW9kZSAxMDA2NDQKPiBpbmRleCAwMDAwMDAwLi40YTBmMGE2Cj4gLS0tIC9kZXYvbnVsbAo+ICsr
-KyBiL2RyaXZlcnMvbGVkL2NvcmUuYwo+IEBAIC0wLDAgKzEsMTE5IEBACj4gKy8qCj4gKyAqIGNv
-cmUgTEVEIHN1cHBvcnQgZm9yIGJhcmVib3gKPiArICoKPiArICogKEMpIENvcHlyaWdodCAyMDEw
-IFNhc2NoYSBIYXVlciwgUGVuZ3V0cm9uaXgKPiArICoKPiArICogU2VlIGZpbGUgQ1JFRElUUyBm
-b3IgbGlzdCBvZiBwZW9wbGUgd2hvIGNvbnRyaWJ1dGVkIHRvIHRoaXMKPiArICogcHJvamVjdC4K
-PiArICoKPiArICogVGhpcyBwcm9ncmFtIGlzIGZyZWUgc29mdHdhcmU7IHlvdSBjYW4gcmVkaXN0
-cmlidXRlIGl0IGFuZC9vcgo+ICsgKiBtb2RpZnkgaXQgdW5kZXIgdGhlIHRlcm1zIG9mIHRoZSBH
-TlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBhcwo+ICsgKiBwdWJsaXNoZWQgYnkgdGhlIEZyZWUg
-U29mdHdhcmUgRm91bmRhdGlvbjsgZWl0aGVyIHZlcnNpb24gMiBvZgo+ICsgKiB0aGUgTGljZW5z
-ZSwgb3IgKGF0IHlvdXIgb3B0aW9uKSBhbnkgbGF0ZXIgdmVyc2lvbi4KPiArICoKPiArICogVGhp
-cyBwcm9ncmFtIGlzIGRpc3RyaWJ1dGVkIGluIHRoZSBob3BlIHRoYXQgaXQgd2lsbCBiZSB1c2Vm
-dWwsCj4gKyAqIGJ1dCBXSVRIT1VUIEFOWSBXQVJSQU5UWTsgd2l0aG91dCBldmVuIHRoZSBpbXBs
-aWVkIHdhcnJhbnR5IG9mCj4gKyAqIE1FUkNIQU5UQUJJTElUWSBvciBGSVRORVNTIEZPUiBBIFBB
-UlRJQ1VMQVIgUFVSUE9TRS4gwqBTZWUgdGhlCj4gKyAqIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNl
-bnNlIGZvciBtb3JlIGRldGFpbHMuCj4gKyAqCj4gKyAqIFlvdSBzaG91bGQgaGF2ZSByZWNlaXZl
-ZCBhIGNvcHkgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlCj4gKyAqIGFsb25nIHdp
-dGggdGhpcyBwcm9ncmFtOyBpZiBub3QsIHdyaXRlIHRvIHRoZSBGcmVlIFNvZnR3YXJlCj4gKyAq
-IEZvdW5kYXRpb24sIEluYy4sIDU5IFRlbXBsZSBQbGFjZSwgU3VpdGUgMzMwLCBCb3N0b24sCj4g
-KyAqIE1BIDAyMTExLTEzMDcgVVNBCj4gKyAqLwo+ICsKPiArI2luY2x1ZGUgPGNvbW1vbi5oPgo+
-ICsjaW5jbHVkZSA8Y29tbWFuZC5oPgo+ICsjaW5jbHVkZSA8bGludXgvbGlzdC5oPgo+ICsjaW5j
-bHVkZSA8ZXJybm8uaD4KPiArI2luY2x1ZGUgPGFzbS9ncGlvLmg+Cj4gKyNpbmNsdWRlIDxsZWQu
-aD4KPiArI2luY2x1ZGUgPHBvbGxlci5oPgpJcyBuZWNlc3NhcnkgdG8gaW5jbHVkZSBwb2xsZXIu
-aD8KTm9uIG9mIHBvbGxlciBmdW5jdGlvbiBpcyB1c2VkIHRoZXJlLgo+ICsjaW5jbHVkZSA8Y2xv
-Y2suaD4KPiArCj4gKy8qKgo+ICsgKiBAZmlsZQo+ICsgKiBAYnJpZWYgTEVEIGZyYW1ld29yawo+
-ICsgKgo+ICsgKiBUaGlzIGZpbGUgY29udGFpbnMgdGhlIGNvcmUgTEVEIGZyYW1ld29yayBmb3Ig
-YmFyZWJveC4KPiArICoKPiArICogRWFjaCBMRUQgY2FuIGJlIHNldCB0byBhIHZhbHVlIHdoZXJl
-IDAgbWVhbnMgZGlzYWJsZWQgYW5kIHZhbHVlcwo+ICsgKiA+IDAgbWVhbiBlbmFibGVkLiBMRURz
-IGNhbiBoYXZlIGRpZmZlcmVudCBlbmFibGUgdmFsdWVzIHdoZXJlIHRoZQo+ICsgKiBleGFjdCBt
-ZWFuaW5nIGRlcGVuZHMgb24gdGhlIExFRCwgZm9yIGV4YW1wbGUgYSBncGlvIGNvbnRyb2xsZWQg
-cmdiCj4gKyAqIExFRCBjYW4gaGF2ZSBlbmFibGUgdmFsdWVzIGZyb20gMSB0byA3IHdoaWNoIGNv
-cnJlc3BvbmQgdG8gZGlmZmVyZW50Cj4gKyAqIGNvbG9ycy4gdmFsdWUgY291bGQgYWxzbyBtZWFu
-IGEgYnJpZ2h0bmVzcy4KPiArICogRWFjaCBMRUQgaXMgYXNzaWduZWQgYSBudW1iZXIuIG51bWJl
-cnMgc3RhcnQgd2l0aCAwIGFuZCBhcmUgaW5jcmVhc2VkCj4gKyAqIHdpdGggZWFjaCByZWdpc3Rl
-cmVkIExFRC4gVGhlIG51bWJlciBzdGF5cyB0aGUgc2FtZSBkdXJpbmcgbGlmZWN5Y2xlLAo+ICsg
-KiBnYXBzIGJlY2F1c2Ugb2YgdW5yZWdpc3RlcmVkIExFRHMgYXJlIG5vdCBmaWxsZWQgdXAuCj4g
-KyAqLwo+ICsKPiArc3RhdGljIExJU1RfSEVBRChsZWRzKTsKPiArc3RhdGljIGludCBudW1fbGVk
-czsKPiArCj4gKy8qKgo+ICsgKiBsZWRfYnlfbnVtYmVyIC0gZ2V0IHRoZSBudW1iZXIgb2YgYSBM
-RUQKPiArICogQHBhcmFtIG51bSBudW1iZXIgb2YgdGhlIExFRCB0byByZXR1cm4KPiArICovCj4g
-K3N0cnVjdCBsZWQgKmxlZF9ieV9udW1iZXIoaW50IG51bSkKPiArewo+ICsgwqAgwqAgwqAgc3Ry
-dWN0IGxlZCAqbGVkOwo+ICsKPiArIMKgIMKgIMKgIGxpc3RfZm9yX2VhY2hfZW50cnkobGVkLCAm
-bGVkcywgbGlzdCkgewo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgaWYgKGxlZC0+bnVtID09IG51
-bSkKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHJldHVybiBsZWQ7Cj4gKyDC
-oCDCoCDCoCB9Cj4gKwo+ICsgwqAgwqAgwqAgcmV0dXJuIE5VTEw7Cj4gK30KPiArCj4gKy8qKgo+
-ICsgKiBsZWRfc2V0IC0gc2V0IHRoZSB2YWx1ZSBvZiBhIExFRAo+ICsgKiBAcGFyYW0gbGVkIMKg
-dGhlIGxlZAo+ICsgKiBAcGFyYW0gdmFsdWUgwqAgwqAgwqAgwqB0aGUgdmFsdWUgb2YgdGhlIExF
-RCAoMCBpcyBkaXNhYmxlZCkKPiArICovCj4gK2ludCBsZWRfc2V0KHN0cnVjdCBsZWQgKmxlZCwg
-dW5zaWduZWQgaW50IHZhbHVlKQo+ICt7Cj4gKyDCoCDCoCDCoCBpZiAodmFsdWUgPiBsZWQtPm1h
-eF92YWx1ZSkKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHZhbHVlID0gbGVkLT5tYXhfdmFsdWU7
-Cj4gKwo+ICsgwqAgwqAgwqAgbGVkLT5zZXQobGVkLCB2YWx1ZSk7Cj4gKwo+ICsgwqAgwqAgwqAg
-cmV0dXJuIDA7Cj4gK30KPiArCj4gKy8qKgo+ICsgKiBsZWRfc2V0X251bSAtIHNldCB0aGUgdmFs
-dWUgb2YgYSBMRUQKPiArICogQHBhcmFtIG51bSDCoHRoZSBudW1iZXIgb2YgdGhlIExFRAo+ICsg
-KiBAcGFyYW0gdmFsdWUgwqAgwqAgwqAgwqB0aGUgdmFsdWUgb2YgdGhlIExFRCAoMCBpcyBkaXNh
-YmxlZCkKPiArICovCj4gK2ludCBsZWRfc2V0X251bShpbnQgbnVtLCB1bnNpZ25lZCBpbnQgdmFs
-dWUpCj4gK3sKPiArIMKgIMKgIMKgIHN0cnVjdCBsZWQgKmxlZCA9IGxlZF9ieV9udW1iZXIobnVt
-KTsKPiArCj4gKyDCoCDCoCDCoCBpZiAoIWxlZCkKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHJl
-dHVybiAtRU5PREVWOwo+ICsKPiArIMKgIMKgIMKgIHJldHVybiBsZWRfc2V0KGxlZCwgdmFsdWUp
-Owo+ICt9Cj4gKwo+ICsvKioKPiArICogbGVkX3JlZ2lzdGVyIC0gUmVnaXN0ZXIgYSBMRUQKPiAr
-ICogQHBhcmFtIGxlZCDCoHRoZSBsZWQKPiArICovCj4gK2ludCBsZWRfcmVnaXN0ZXIoc3RydWN0
-IGxlZCAqbGVkKQo+ICt7Cj4gKyDCoCDCoCDCoCBsZWQtPm51bSA9IG51bV9sZWRzKys7Cj4gKwo+
-ICsgwqAgwqAgwqAgbGlzdF9hZGRfdGFpbCgmbGVkLT5saXN0LCAmbGVkcyk7Cj4gKwo+ICsgwqAg
-wqAgwqAgcmV0dXJuIDA7Cj4gK30KPiArCj4gKy8qKgo+ICsgKiBsZWRfdW5yZWdpc3RlciAtIFVu
-ZWdpc3RlciBhIExFRAo+ICsgKiBAcGFyYW0gbGVkIMKgdGhlIGxlZAo+ICsgKi8KPiArdm9pZCBs
-ZWRfdW5yZWdpc3RlcihzdHJ1Y3QgbGVkICpsZWQpCj4gK3sKPiArIMKgIMKgIMKgIGxpc3RfZGVs
-KCZsZWQtPmxpc3QpOwo+ICt9Cj4gZGlmZiAtLWdpdCBhL2luY2x1ZGUvbGVkLmggYi9pbmNsdWRl
-L2xlZC5oCj4gbmV3IGZpbGUgbW9kZSAxMDA2NDQKPiBpbmRleCAwMDAwMDAwLi42MmQwZDA4Cj4g
-LS0tIC9kZXYvbnVsbAo+ICsrKyBiL2luY2x1ZGUvbGVkLmgKPiBAQCAtMCwwICsxLDI1IEBACj4g
-KyNpZm5kZWYgX19MRURfSAo+ICsjZGVmaW5lIF9fTEVEX0gKPiArCj4gK3N0cnVjdCBsZWQgewo+
-ICsgwqAgwqAgwqAgdW5zaWduZWQgbG9uZyB0cmlnZXI7Cj4gKyDCoCDCoCDCoCB2b2lkICgqc2V0
-KShzdHJ1Y3QgbGVkICosIHVuc2lnbmVkIGludCB2YWx1ZSk7Cj4gKyDCoCDCoCDCoCBpbnQgbWF4
-X3ZhbHVlOwo+ICsgwqAgwqAgwqAgaW50IG51bTsKPiArIMKgIMKgIMKgIHN0cnVjdCBsaXN0X2hl
-YWQgbGlzdDsKPiArfTsKPiArCj4gK3N0cnVjdCBsZWQgKmxlZF9ieV9udW1iZXIoaW50IG5vKTsK
-PiArCj4gK3N0YXRpYyBpbmxpbmUgaW50IGxlZF9nZXRfbnVtYmVyKHN0cnVjdCBsZWQgKmxlZCkK
-PiArewo+ICsgwqAgwqAgwqAgcmV0dXJuIGxlZC0+bnVtOwo+ICt9Cj4gKwo+ICtpbnQgbGVkX3Nl
-dF9udW0oaW50IG51bSwgdW5zaWduZWQgaW50IHZhbHVlKTsKPiAraW50IGxlZF9zZXQoc3RydWN0
-IGxlZCAqbGVkLCB1bnNpZ25lZCBpbnQgdmFsdWUpOwo+ICtpbnQgbGVkX3JlZ2lzdGVyKHN0cnVj
-dCBsZWQgKmxlZCk7Cj4gK3ZvaWQgbGVkX3VucmVnaXN0ZXIoc3RydWN0IGxlZCAqbGVkKTsKPiAr
-dm9pZCBsZWRfdW5yZWdpc3RlcihzdHJ1Y3QgbGVkICpsZWQpOwo+ICsKPiArI2VuZGlmIC8qIF9f
-TEVEX0ggKi8KPiAtLQo+IDEuNy4yLjMKPgo+Cj4gX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX18KPiBiYXJlYm94IG1haWxpbmcgbGlzdAo+IGJhcmVib3hAbGlz
-dHMuaW5mcmFkZWFkLm9yZwo+IGh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlz
-dGluZm8vYmFyZWJveAo+Cgp0aGFua3MsCgptYXJlawoKLS0gCmFzIHNpbXBsZSBhbmQgcHJpbWl0
-aXZlIGFzIHBvc3NpYmxlCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0KTWFyZWsgQmVsaXNrbyAtIE9QRU4tTkFORFJBCkZyZWVsYW5jZSBEZXZlbG9wZXIK
-ClJ1c2thIE5vdmEgVmVzIDIxOSB8IFByZXNvdiwgMDgwMDUgU2xvdmFrIFJlcHVibGljClRlbDog
-KzQyMSA5MTUgMDUyIDE4NApza3lwZTogbWFyZWt3aGl0ZQppY3E6IDI5MDU1MTA4Ngp3ZWI6IGh0
-dHA6Ly9vcGVuLW5hbmRyYS5jb20KCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFk
-Lm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Hi Sascha,
+
+Thanks, this works well for my board. (tri colour led).
+
+Was drivers/led/led-triggers.c missing from the patch set? 
+I haven't been able to compile with trigger support...
+
+> +/**
+> + * led_register - Register a LED
+> + * @param led	the led
+> + */
+> +int led_register(struct led *led)
+> +{
+> +	led->num = num_leds++;
+> +
+> +	list_add_tail(&led->list, &leds);
+> +
+> +	return 0;
+> +}
+
+How about being able to register a led at a specific number? This means that 
+boot/init scripts that want to interact with leds don't rely on the order that 
+they are registered.
+
+I also like the suggestion of associating a name to LEDs. This may even be a 
+better fit for scripting than reserved numbering.
+
+
+> +
+> +/**
+> + * led_unregister - Unegister a LED
+> + * @param led	the led
+> + */
+> +void led_unregister(struct led *led)
+> +{
+> +	list_del(&led->list);
+> +}
+> diff --git a/include/led.h b/include/led.h
+> new file mode 100644
+> index 0000000..62d0d08
+> --- /dev/null
+> +++ b/include/led.h
+> @@ -0,0 +1,25 @@
+> +#ifndef __LED_H
+> +#define __LED_H
+> +
+> +struct led {
+> +	unsigned long triger;
+
+Spelling typo? (Should this be trigger ?)
+
+
+> +	void (*set)(struct led *, unsigned int value);
+> +	int max_value;
+> +	int num;
+> +	struct list_head list;
+> +};
+> +
+> +struct led *led_by_number(int no);
+> +
+
+
+Cheers
+Marc
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
