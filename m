@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from fmmailgate03.web.de ([217.72.192.234])
+Received: from mail-bw0-f43.google.com ([209.85.214.43])
 	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1PUgNG-0008Ut-1D
-	for barebox@lists.infradead.org; Mon, 20 Dec 2010 14:06:06 +0000
-Date: Mon, 20 Dec 2010 15:06:00 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20101220140600.GQ6017@pengutronix.de>
-References: <AANLkTimRU=-AufgJ0qXBfSSgWiHfaBbnL_e9jdTLVo22@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <AANLkTimRU=-AufgJ0qXBfSSgWiHfaBbnL_e9jdTLVo22@mail.gmail.com>
+	id 1PUgVr-000259-Uq
+	for barebox@lists.infradead.org; Mon, 20 Dec 2010 14:14:58 +0000
+Received: by bwz14 with SMTP id 14so3178851bwz.30
+	for <barebox@lists.infradead.org>; Mon, 20 Dec 2010 06:14:53 -0800 (PST)
+From: Fabio Porcedda <fabio.porcedda@telit.com>
+Date: Mon, 20 Dec 2010 15:14:37 +0100
+Message-Id: <1292854477-2842-1-git-send-email-fabio.porcedda@telit.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,35 +16,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: nand_boot_test problem
-To: Belisko Marek <marek.belisko@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2] xyzModem.c: fix 'dummy' is used uninitialized in this
+	function warning
+To: barebox@lists.infradead.org
 
-Hi Marek,
+fix this gcc 4.4 warning:
 
-On Mon, Dec 20, 2010 at 11:46:44AM +0100, Belisko Marek wrote:
-> Hi,
-> 
-> I'm trying to add support for mini2440 to boot from NAND flash.
-> I overtake boot code from u-boot and re-use a9m2410 lowlevel_init.S.
-> 
-> I could load barebox.bin to NAND flash anyway when try to test command
-> nand_boot_test 0x31fc0000 262144 512 I get no error just board is reseted.
+xyzModem.c: In function 'xyzModem_stream_open':
+xyzModem.c:564: warning: 'dummy' is used uninitialized in this function
 
-No idea. Can you add some printfs to see how far you get?
+Copied from U-Boot
 
-Sascha
+Signed-off-by: Fabio Porcedda <fabio.porcedda@telit.com>
+---
+ commands/xyzModem.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-
+diff --git a/commands/xyzModem.c b/commands/xyzModem.c
+index 1dd255d..71d7d68 100644
+--- a/commands/xyzModem.c
++++ b/commands/xyzModem.c
+@@ -492,7 +492,7 @@ int xyzModem_stream_open(connection_info_t *info, int *err)
+ 			       xyzModem_CHAR_TIMEOUT);
+ #else
+ /* TODO: CHECK ! */
+-	int dummy;
++	int dummy = 0;
+ 	xyz.__chan = &dummy;
+ #endif
+ 	xyz.len = 0;
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.3.4
+
+Changes for v2:
+   - fixed commit log message
 
 _______________________________________________
 barebox mailing list
