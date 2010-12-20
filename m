@@ -1,13 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from inx.pm.waw.pl ([195.116.170.130])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PUcVA-0000OP-7I
-	for barebox@lists.infradead.org; Mon, 20 Dec 2010 09:57:58 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 20 Dec 2010 10:53:50 +0100
-Message-Id: <1292838831-25038-8-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1292838831-25038-1-git-send-email-s.hauer@pengutronix.de>
-References: <1292838831-25038-1-git-send-email-s.hauer@pengutronix.de>
+	id 1PUoFG-0002Y4-SR
+	for barebox@lists.infradead.org; Mon, 20 Dec 2010 22:30:23 +0000
+From: Krzysztof Halasa <khc@pm.waw.pl>
+Date: Mon, 20 Dec 2010 23:30:03 +0100
+Message-ID: <m362uodqms.fsf@intrepid.localdomain>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,166 +15,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/8] LED: Add trigger command
-To: barebox <barebox@lists.infradead.org>
+Subject: my IXP4xx-related and other patches
+To: barebox@lists.infradead.org
 
-This patch allows controlling LED triggers vie the command line.
+Hello,
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- commands/Kconfig   |    8 ++++
- commands/Makefile  |    1 +
- commands/trigger.c |  107 ++++++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 116 insertions(+), 0 deletions(-)
- create mode 100644 commands/trigger.c
+I've been working a bit on IXP4xx support lately and it seems I'm at the
+point I can now boot Barebox on a Goramo Multilink routers
+(IXP425-based). It requires several patches (will post them shortly) and
+NPE microcode files from Intel (or from elsewhere, the regular non-VLAN
+microcode v. 2.4 is needed, i.e., same as with Linux).
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 64e08bb..f137f47 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -379,4 +379,12 @@ config CMD_LED
- 	help
- 	  include led command to control LEDs
- 
-+config CMD_LED_TRIGGER
-+	bool
-+	depends on LED_TRIGGERS
-+	prompt "trigger command"
-+	help
-+	  The trigger command allows to control LED triggers from the command
-+	  line.
-+
- endmenu
-diff --git a/commands/Makefile b/commands/Makefile
-index 0820483..c89adcf 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -54,3 +54,4 @@ obj-$(CONFIG_CMD_MENU)		+= menu.o
- obj-$(CONFIG_CMD_PASSWD)	+= passwd.o
- obj-$(CONFIG_CMD_LOGIN)		+= login.o
- obj-$(CONFIG_CMD_LED)		+= led.o
-+obj-$(CONFIG_CMD_LED_TRIGGER)	+= trigger.o
-diff --git a/commands/trigger.c b/commands/trigger.c
-new file mode 100644
-index 0000000..162da97
---- /dev/null
-+++ b/commands/trigger.c
-@@ -0,0 +1,107 @@
-+/*
-+ * LED trigger command support for barebox
-+ *
-+ * (C) Copyright 2010 Sascha Hauer, Pengutronix
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-+ * MA 02111-1307 USA
-+ */
-+
-+#include <common.h>
-+#include <led.h>
-+#include <command.h>
-+#include <getopt.h>
-+#include <errno.h>
-+
-+#define LED_COMMAND_SET_TRIGGER		1
-+#define LED_COMMAND_SHOW_INFO		2
-+#define	LED_COMMAND_DISABLE_TRIGGER	3
-+
-+static char *trigger_names[] = {
-+	[LED_TRIGGER_PANIC] = "panic",
-+	[LED_TRIGGER_HEARTBEAT] = "heartbeat",
-+	[LED_TRIGGER_NET_RX] = "net rx",
-+	[LED_TRIGGER_NET_TX] = "net tx",
-+	[LED_TRIGGER_NET_TXRX] = "net",
-+};
-+
-+static int do_trigger(struct command *cmdtp, int argc, char *argv[])
-+{
-+	struct led *led;
-+	int i, opt, ret = 0;
-+	int cmd = LED_COMMAND_SHOW_INFO;
-+	unsigned long trigger = 0;
-+
-+	while((opt = getopt(argc, argv, "t:d:")) > 0) {
-+		switch(opt) {
-+		case 't':
-+			trigger = simple_strtoul(optarg, NULL, 0);
-+			cmd = LED_COMMAND_SET_TRIGGER;
-+			break;
-+		case 'd':
-+			trigger = simple_strtoul(optarg, NULL, 0);
-+			cmd = LED_COMMAND_DISABLE_TRIGGER;
-+		}
-+	}
-+
-+	switch (cmd) {
-+	case LED_COMMAND_SHOW_INFO:
-+		for (i = 0; i < LED_TRIGGER_MAX; i++) {
-+			int led = led_get_trigger(i);
-+			printf("%d: %s", i, trigger_names[i]);
-+			if (led >= 0)
-+				printf(" (led %d)", led);
-+			printf("\n");
-+		}
-+		break;
-+
-+	case LED_COMMAND_DISABLE_TRIGGER:
-+		led_set_trigger(trigger, NULL);
-+		return 0;
-+	case LED_COMMAND_SET_TRIGGER:
-+		if (argc - optind != 1)
-+			return COMMAND_ERROR_USAGE;
-+		led = led_by_name_or_number(argv[optind]);
-+
-+		if (!led) {
-+			printf("no such led: %d\n", argv[optind]);
-+			return 1;
-+		}
-+
-+		ret = led_set_trigger(trigger, led);
-+		break;
-+	}
-+
-+	if (ret)
-+		printf("trigger failed: %s\n", strerror(-ret));
-+	return ret ? 1 : 0;
-+}
-+
-+BAREBOX_CMD_HELP_START(trigger)
-+BAREBOX_CMD_HELP_USAGE("trigger [OPTIONS]\n")
-+BAREBOX_CMD_HELP_SHORT("control a LED trigger. Without options the currently assigned triggers are shown.\n")
-+BAREBOX_CMD_HELP_OPT  ("-t <trigger> <led>",  "set a trigger for a led\n")
-+BAREBOX_CMD_HELP_OPT  ("-d <trigger>",  "disable a trigger\n")
-+BAREBOX_CMD_HELP_END
-+
-+BAREBOX_CMD_START(trigger)
-+	.cmd		= do_trigger,
-+	.usage		= "handle LED triggers",
-+	BAREBOX_CMD_HELP(cmd_trigger_help)
-+BAREBOX_CMD_END
-+
+The binary microcode must be appended to Barebox at correct offsets for
+the NPE driver to find it, details are in board support file
+(arch/arm/boards/multilink/multilink.c):
+
+#define BAREBOX_START        0x00000
+#define BAREBOX_LENGTH       0x34000
+#define NPE_A_START          (BAREBOX_START + BAREBOX_LENGTH)
+#define NPE_A_LENGTH         0x05000
+#define NPE_B_START          (NPE_A_START + NPE_A_LENGTH)
+#define NPE_B_LENGTH         0x03000
+#define NPE_C_START          (NPE_B_START + NPE_B_LENGTH)
+#define NPE_C_LENGTH         0x04000
+#define NPE_ENV0_START       (NPE_C_START + NPE_C_LENGTH)
+#define NPE_ENV0_LENGTH      0x20000
+
+when passed to Linux:
+Creating XXX MTD partitions on "IXP4XX-Flash.0":
+0x000000000000-0x000000034000 : "barebox"
+0x000000034000-0x000000039000 : "NPE-A"
+0x000000039000-0x00000003c000 : "NPE-B"
+0x00000003c000-0x000000040000 : "NPE-C"
+0x000000040000-0x000000060000 : "env0"
+
+User-available flash area starts at 0x60000.
+
+All this IXP4xx code is big-endian only. Too much work with LE (NPE
+coprocessors would need buffer byte swapping, flash (EXP bus) would need
+16-bit word swapping etc). Big-endian Barebox can load both LE and BE
+Linux anyway ("bootz" only at the moment).
+
+It should be easily applicable to other IXP42x-based platforms.
 -- 
-1.7.2.3
-
+Krzysztof Halasa
 
 _______________________________________________
 barebox mailing list
