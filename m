@@ -1,17 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PUh0i-0005gD-FO
-	for barebox@lists.infradead.org; Mon, 20 Dec 2010 14:46:50 +0000
+	id 1PUhIe-0003EW-JT
+	for barebox@lists.infradead.org; Mon, 20 Dec 2010 15:05:22 +0000
+Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.71)
+	(envelope-from <jbe@pengutronix.de>) id 1PUhIZ-0000U1-7p
+	for barebox@lists.infradead.org; Mon, 20 Dec 2010 16:05:15 +0100
+Received: from jbe by octopus.hi.pengutronix.de with local (Exim 4.69)
+	(envelope-from <jbe@pengutronix.de>) id 1PUhIZ-0003xJ-6M
+	for barebox@lists.infradead.org; Mon, 20 Dec 2010 16:05:15 +0100
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Mon, 20 Dec 2010 15:45:14 +0100
-References: <AANLkTimRU=-AufgJ0qXBfSSgWiHfaBbnL_e9jdTLVo22@mail.gmail.com>
-	<20101220140600.GQ6017@pengutronix.de>
-	<AANLkTimKYgm74zWiDX4LPMM1eyU+xpNxOpswAmWhUO=a@mail.gmail.com>
-In-Reply-To: <AANLkTimKYgm74zWiDX4LPMM1eyU+xpNxOpswAmWhUO=a@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <201012201545.14968.jbe@pengutronix.de>
+Date: Mon, 20 Dec 2010 16:05:00 +0100
+Message-Id: <1292857509-13881-2-git-send-email-jbe@pengutronix.de>
+In-Reply-To: <1292857509-13881-1-git-send-email-jbe@pengutronix.de>
+References: <1292857509-13881-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,26 +23,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: nand_boot_test problem
+Subject: [PATCH 01/10] Add more useful generic macros
 To: barebox@lists.infradead.org
 
-Belisko Marek wrote:
-> [...]
-> Anyway is there any work for mini2440 boot from flash in pengutronix?
+Stolen from the Linux kernel.
 
-No. I did not had the time yet.
+Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
+---
+ include/common.h |   10 ++++++++++
+ 1 files changed, 10 insertions(+), 0 deletions(-)
 
-jbe
-
+diff --git a/include/common.h b/include/common.h
+index 1bea10c..35ad7b9 100644
+--- a/include/common.h
++++ b/include/common.h
+@@ -231,4 +231,14 @@ extern const char version_string[];
+ }							\
+ )
+ 
++#define abs(x) ({                               \
++		long __x = (x);                 \
++		(__x < 0) ? -__x : __x;         \
++	})
++
++#define abs64(x) ({                             \
++		s64 __x = (x);                  \
++		(__x < 0) ? -__x : __x;         \
++	})
++
+ #endif	/* __COMMON_H_ */
 -- 
-Pengutronix e.K.                              | Juergen Beisert             |
-Linux Solutions for Science and Industry      | Phone: +49-8766-939 228     |
-Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
+1.7.2.3
+
 
 _______________________________________________
 barebox mailing list
