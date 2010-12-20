@@ -1,13 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PUcRx-0000OQ-Pk
-	for barebox@lists.infradead.org; Mon, 20 Dec 2010 09:54:44 +0000
+Received: from fmmailgate03.web.de ([217.72.192.234])
+	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1PUb6G-0002jb-CV
+	for barebox@lists.infradead.org; Mon, 20 Dec 2010 08:28:26 +0000
+Date: Mon, 20 Dec 2010 09:27:20 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 20 Dec 2010 10:53:51 +0100
-Message-Id: <1292838831-25038-9-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1292838831-25038-1-git-send-email-s.hauer@pengutronix.de>
-References: <1292838831-25038-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20101220082720.GN6017@pengutronix.de>
+References: <1292685309-32326-1-git-send-email-s.hauer@pengutronix.de>
+	<1292685309-32326-3-git-send-email-s.hauer@pengutronix.de>
+	<201012200831.34131.marc@cpdesign.com.au>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <201012200831.34131.marc@cpdesign.com.au>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,64 +20,84 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 8/8] ARM pcm043 board: Add LED support
-To: barebox <barebox@lists.infradead.org>
+Subject: Re: [PATCH 2/7] basic LED support
+To: Marc Reilly <marc@cpdesign.com.au>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/boards/pcm043/pcm043.c |   10 +++++++++-
- 1 files changed, 9 insertions(+), 1 deletions(-)
+Hi Marc,
 
-diff --git a/arch/arm/boards/pcm043/pcm043.c b/arch/arm/boards/pcm043/pcm043.c
-index 2191bc8..38f1b8f 100644
---- a/arch/arm/boards/pcm043/pcm043.c
-+++ b/arch/arm/boards/pcm043/pcm043.c
-@@ -39,6 +39,7 @@
- #include <mach/imx-nand.h>
- #include <fec.h>
- #include <fb.h>
-+#include <led.h>
- #include <asm/mmu.h>
- #include <mach/imx-ipu-fb.h>
- #include <mach/imx-pll.h>
-@@ -148,6 +149,10 @@ static int pcm043_mmu_init(void)
- postcore_initcall(pcm043_mmu_init);
- #endif
- 
-+struct gpio_led led0 = {
-+	.gpio = 1 * 32 + 6,
-+};
-+
- static int imx35_devices_init(void)
- {
- 	uint32_t reg;
-@@ -157,6 +162,8 @@ static int imx35_devices_init(void)
- 	writel(0x10000d03, CSCR_L(0));
- 	writel(0x00720900, CSCR_A(0));
- 
-+	led_gpio_register(&led0);
-+
- 	reg = readl(IMX_CCM_BASE + CCM_RCSR);
- 	/* some fuses provide us vital information about connected hardware */
- 	if (reg & 0x20000000)
-@@ -226,7 +233,8 @@ static struct pad_desc pcm043_pads[] = {
- 	MX35_PAD_RTS1__UART1_RTS,
- 	MX35_PAD_CTS1__UART1_CTS,
- 	MX35_PAD_I2C1_CLK__I2C1_SCL,
--	MX35_PAD_I2C1_DAT__I2C1_SDA
-+	MX35_PAD_I2C1_DAT__I2C1_SDA,
-+	MX35_PAD_ATA_CS0__GPIO2_6, /* LED */
- };
- 
- static int imx35_console_init(void)
+On Mon, Dec 20, 2010 at 08:31:34AM +1100, Marc Reilly wrote:
+> Hi Sascha,
+> 
+> Thanks, this works well for my board. (tri colour led).
+> 
+> Was drivers/led/led-triggers.c missing from the patch set? 
+> I haven't been able to compile with trigger support...
+
+Yes, it's missing. I'll send a new series shortly.
+
+> 
+> > +/**
+> > + * led_register - Register a LED
+> > + * @param led	the led
+> > + */
+> > +int led_register(struct led *led)
+> > +{
+> > +	led->num = num_leds++;
+> > +
+> > +	list_add_tail(&led->list, &leds);
+> > +
+> > +	return 0;
+> > +}
+> 
+> How about being able to register a led at a specific number? This means that 
+> boot/init scripts that want to interact with leds don't rely on the order that 
+> they are registered.
+> 
+> I also like the suggestion of associating a name to LEDs. This may even be a 
+> better fit for scripting than reserved numbering.
+
+I'll add a name for the LEDs
+
+> 
+> 
+> > +
+> > +/**
+> > + * led_unregister - Unegister a LED
+> > + * @param led	the led
+> > + */
+> > +void led_unregister(struct led *led)
+> > +{
+> > +	list_del(&led->list);
+> > +}
+> > diff --git a/include/led.h b/include/led.h
+> > new file mode 100644
+> > index 0000000..62d0d08
+> > --- /dev/null
+> > +++ b/include/led.h
+> > @@ -0,0 +1,25 @@
+> > +#ifndef __LED_H
+> > +#define __LED_H
+> > +
+> > +struct led {
+> > +	unsigned long triger;
+> 
+> Spelling typo? (Should this be trigger ?)
+
+Indeed. It turns out I don't need this line add all, so I removed it.
+
+Sascha
+
+
 -- 
-1.7.2.3
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
