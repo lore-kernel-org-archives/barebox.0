@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qw0-f49.google.com ([209.85.216.49])
+Received: from fmmailgate03.web.de ([217.72.192.234])
 	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1PUdGi-0000s8-BJ
-	for barebox@lists.infradead.org; Mon, 20 Dec 2010 10:47:11 +0000
-Received: by qwj9 with SMTP id 9so2734374qwj.36
-	for <barebox@lists.infradead.org>; Mon, 20 Dec 2010 02:46:44 -0800 (PST)
+	id 1PUgNG-0008Ut-1D
+	for barebox@lists.infradead.org; Mon, 20 Dec 2010 14:06:06 +0000
+Date: Mon, 20 Dec 2010 15:06:00 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20101220140600.GQ6017@pengutronix.de>
+References: <AANLkTimRU=-AufgJ0qXBfSSgWiHfaBbnL_e9jdTLVo22@mail.gmail.com>
 MIME-Version: 1.0
-Date: Mon, 20 Dec 2010 11:46:44 +0100
-Message-ID: <AANLkTimRU=-AufgJ0qXBfSSgWiHfaBbnL_e9jdTLVo22@mail.gmail.com>
-From: Belisko Marek <marek.belisko@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <AANLkTimRU=-AufgJ0qXBfSSgWiHfaBbnL_e9jdTLVo22@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,35 +22,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: nand_boot_test problem
-To: barebox@lists.infradead.org
+Subject: Re: nand_boot_test problem
+To: Belisko Marek <marek.belisko@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Hi,
+Hi Marek,
 
-I'm trying to add support for mini2440 to boot from NAND flash.
-I overtake boot code from u-boot and re-use a9m2410 lowlevel_init.S.
+On Mon, Dec 20, 2010 at 11:46:44AM +0100, Belisko Marek wrote:
+> Hi,
+> 
+> I'm trying to add support for mini2440 to boot from NAND flash.
+> I overtake boot code from u-boot and re-use a9m2410 lowlevel_init.S.
+> 
+> I could load barebox.bin to NAND flash anyway when try to test command
+> nand_boot_test 0x31fc0000 262144 512 I get no error just board is reseted.
 
-I could load barebox.bin to NAND flash anyway when try to test command
-nand_boot_test 0x31fc0000 262144 512 I get no error just board is reseted.
+No idea. Can you add some printfs to see how far you get?
 
+Sascha
 
-Any ideas?
-
-thanks,
-
-marek
 
 -- 
-as simple and primitive as possible
--------------------------------------------------
-Marek Belisko - OPEN-NANDRA
-Freelance Developer
-
-Ruska Nova Ves 219 | Presov, 08005 Slovak Republic
-Tel: +421 915 052 184
-skype: marekwhite
-icq: 290551086
-web: http://open-nandra.com
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
