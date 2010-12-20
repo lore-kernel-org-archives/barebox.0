@@ -1,21 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PUhIe-0003En-6h
-	for barebox@lists.infradead.org; Mon, 20 Dec 2010 15:05:23 +0000
+	id 1PUhIe-0003Eh-H8
+	for barebox@lists.infradead.org; Mon, 20 Dec 2010 15:05:34 +0000
 Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
 	by metis.ext.pengutronix.de with esmtp (Exim 4.71)
-	(envelope-from <jbe@pengutronix.de>) id 1PUhIZ-0000UE-Ft
+	(envelope-from <jbe@pengutronix.de>) id 1PUhIZ-0000UA-DP
 	for barebox@lists.infradead.org; Mon, 20 Dec 2010 16:05:15 +0100
 Received: from jbe by octopus.hi.pengutronix.de with local (Exim 4.69)
-	(envelope-from <jbe@pengutronix.de>) id 1PUhIZ-0003xk-BR
+	(envelope-from <jbe@pengutronix.de>) id 1PUhIZ-0003xb-9e
 	for barebox@lists.infradead.org; Mon, 20 Dec 2010 16:05:15 +0100
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Mon, 20 Dec 2010 16:05:09 +0100
-Message-Id: <1292857509-13881-11-git-send-email-jbe@pengutronix.de>
+Date: Mon, 20 Dec 2010 16:05:06 +0100
+Message-Id: <1292857509-13881-8-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1292857509-13881-1-git-send-email-jbe@pengutronix.de>
 References: <1292857509-13881-1-git-send-email-jbe@pengutronix.de>
-MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,175 +23,221 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1969491406=="
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?q?=5BPATCH=2010/10=5D=20ARM=20Chumby-Falconwing=3A=20Add=20a=20user=20for=20video=20graphics=20support=20on=20i=2EMX23?=
+Subject: [PATCH 07/10] ARM STM/i.MX: Add a pixel clock calculation routine for
+	i.MX23/i.MX28
 To: barebox@lists.infradead.org
 
---===============1969491406==
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+In order to support video graphics output on i.MX23/i.MX28 based platforms,
+a calculation routine for the pixel clock is required.
 
 Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 ---
- arch/arm/boards/chumby_falconwing/falconwing.c |   88 +++++++++++++++++------
- arch/arm/configs/chumbyone_defconfig           |    3 +
- 2 files changed, 68 insertions(+), 23 deletions(-)
+ arch/arm/mach-stm/Makefile                   |    1 +
+ arch/arm/mach-stm/imx_lcd_clk.c              |  149 ++++++++++++++++++++++++++
+ arch/arm/mach-stm/include/mach/clock-imx23.h |    2 +
+ arch/arm/mach-stm/include/mach/clock-imx28.h |    2 +
+ 4 files changed, 154 insertions(+), 0 deletions(-)
+ create mode 100644 arch/arm/mach-stm/imx_lcd_clk.c
 
-diff --git a/arch/arm/boards/chumby_falconwing/falconwing.c b/arch/arm/boards/chumby_falconwing/falconwing.c
-index 93ce7e2..f5ed133 100644
---- a/arch/arm/boards/chumby_falconwing/falconwing.c
-+++ b/arch/arm/boards/chumby_falconwing/falconwing.c
-@@ -28,6 +28,7 @@
- #include <mach/imx-regs.h>
- #include <mach/clock.h>
- #include <mach/mci.h>
-+#include <mach/fb.h>
- 
- static struct memory_platform_data ram_pdata = {
- 	.name = "ram0",
-@@ -53,6 +54,45 @@ static struct device_d mci_dev = {
- 	.platform_data = &mci_pdata,
- };
- 
-+static struct fb_videomode falconwing_vmode = {
-+	/*
-+	 * Nanovision NMA35QV65-B2-K01 (directly connected)
-+	 * Clock: 6.25 MHz
-+	 * Syncs: high active, DE low active
-+	 * Display area: 70.08 mm x 52.56 mm
-+	 */
-+	.name = "NMA35",
-+	.refresh = 60,
-+	.xres = 320,
-+	.yres = 240,
-+	.pixclock = KHZ2PICOS(6250),    /* max. 10 MHz */
-+	/* line lenght should be 64 �s */
-+	.left_margin = 28,
-+	.hsync_len = 24,
-+	.right_margin = 28,
-+	/* frame rate should be 60 Hz */
-+	.upper_margin = 8,
-+	.vsync_len = 4,
-+	.lower_margin = 8,
-+	.sync = FB_SYNC_HOR_HIGH_ACT | FB_SYNC_VERT_HIGH_ACT,
-+	.vmode = FB_VMODE_NONINTERLACED,
-+	.flag = 0,
-+};
+diff --git a/arch/arm/mach-stm/Makefile b/arch/arm/mach-stm/Makefile
+index 3c7ce09..0ff8fd1 100644
+--- a/arch/arm/mach-stm/Makefile
++++ b/arch/arm/mach-stm/Makefile
+@@ -1,3 +1,4 @@
+ obj-y += imx.o iomux-imx.o reset-imx.o
++obj-$(CONFIG_DRIVER_VIDEO_STM) += imx_lcd_clk.o
+ obj-$(CONFIG_ARCH_IMX23) += speed-imx23.o clocksource-imx23.o
+ obj-$(CONFIG_ARCH_IMX28) += speed-imx28.o clocksource-imx28.o
+diff --git a/arch/arm/mach-stm/imx_lcd_clk.c b/arch/arm/mach-stm/imx_lcd_clk.c
+new file mode 100644
+index 0000000..8938664
+--- /dev/null
++++ b/arch/arm/mach-stm/imx_lcd_clk.c
+@@ -0,0 +1,149 @@
++/*
++ * (C) Copyright 2010 Juergen Beisert - Pengutronix <kernel@pengutronix.de>
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
 +
-+static struct imx_fb_videomode fb_mode = {
-+	.mode_list = &falconwing_vmode,
-+	.mode_cnt = 1,
-+	/* the NMA35 is a 24 bit display, but only 18 bits are connected */
-+	.ld_intf_width = STMLCDIF_18BIT,
-+};
++#include <common.h>
++#include <init.h>
++#include <mach/imx-regs.h>
++#include <mach/clock.h>
++#include <asm/io.h>
 +
-+static struct device_d ldcif_dev = {
-+	.name = "stmfb",
-+	.map_base = IMX_FB_BASE,
-+	.size = 4096,
-+	.platform_data = &fb_mode,
-+};
++#ifdef CONFIG_ARCH_IMX23
 +
- static const uint32_t pad_setup[] = {
- 	/* may be not required as already done by the bootlet code */
- #if 0
-@@ -113,33 +153,34 @@ static const uint32_t pad_setup[] = {
- 	PWM0_DUART_RX | STRENGTH(S4MA),	/*  strength is TBD */
++# define HW_CLKCTRL_DIS_LCDIF 0x060
++#  define CLKCTRL_DIS_LCDIF_GATE (1 << 31)
++#  define CLKCTRL_DIS_LCDIF_BUSY (1 << 29)
++#  define MASK_DIS_LCDIF_DIV 0xfff
++#  define SET_DIS_LCDIF_DIV(x) ((x) & MASK_DIS_LCDIF_DIV)
++#  define GET_DIS_LCDIF_DIV(x) ((x) & MASK_DIS_LCDIF_DIV)
++
++# define HW_CLKCTRL_FRAC 0xf0
++#  define MASK_PIXFRAC 0x3f
++#  define GET_PIXFRAC(x) (((x) >> 16) & MASK_PIXFRAC)
++#  define SET_PIXFRAC(x) (((x) & MASK_PIXFRAC) << 16)
++#  define CLKCTRL_FRAC_CLKGATEPIX (1 << 23)
++
++# define HW_CLKCTRL_CLKSEQ 0x110
++#  define CLKCTRL_CLKSEQ_BYPASS_DIS_LCDIF (1 << 1)
++
++#endif
++
++#ifdef CONFIG_ARCH_IMX28
++
++# define HW_CLKCTRL_DIS_LCDIF 0x120
++#  define CLKCTRL_DIS_LCDIF_GATE (1 << 31)
++#  define CLKCTRL_DIS_LCDIF_BUSY (1 << 29)
++#  define MASK_DIS_LCDIF_DIV 0x1fff
++#  define SET_DIS_LCDIF_DIV(x) ((x) & MASK_DIS_LCDIF_DIV)
++#  define GET_DIS_LCDIF_DIV(x) ((x) & MASK_DIS_LCDIF_DIV)
++
++/* note: On i.MX28 this is called 'FRAC1' */
++# define HW_CLKCTRL_FRAC 0x1c0
++#  define MASK_PIXFRAC 0x3f
++#  define GET_PIXFRAC(x) ((x) & MASK_PIXFRAC)
++#  define SET_PIXFRAC(x) ((x) & MASK_PIXFRAC)
++#  define CLKCTRL_FRAC_CLKGATEPIX (1 << 7)
++
++# define HW_CLKCTRL_CLKSEQ 0x1d0
++#  define CLKCTRL_CLKSEQ_BYPASS_DIS_LCDIF (1 << 14)
++
++#endif
++
++unsigned imx_get_lcdifclk(void)
++{
++	unsigned rate = (imx_get_mpllclk() / 1000) * 18U;
++	unsigned div;
++
++	div = GET_PIXFRAC(readl(IMX_CCM_BASE + HW_CLKCTRL_FRAC));
++	if (div != 0U) {
++		rate /= div;
++		div = GET_DIS_LCDIF_DIV(readl(IMX_CCM_BASE +
++							HW_CLKCTRL_DIS_LCDIF));
++		if (div != 0U)
++			rate /= div;
++		else
++			pr_debug("LCDIF clock has divisor 0!\n");
++	} else
++		pr_debug("LCDIF clock has frac divisor 0!\n");
++
++	return rate * 1000;
++}
++
++/*
++ * The source of the pixel clock can be the external 24 MHz crystal or the
++ * internal PLL running at 480 MHz. In order to support at least VGA sized
++ * displays/resolutions this routine forces the PLL as the clock source.
++ */
++unsigned imx_set_lcdifclk(unsigned nc)
++{
++	unsigned frac, best_frac = 0, div, best_div = 0, result;
++	int delta, best_delta = 0xffffff;
++	unsigned i, parent_rate = imx_get_mpllclk() / 1000;
++	uint32_t reg;
++
++#define SH_DIV(NOM, DEN, LSH) ((((NOM) / (DEN)) << (LSH)) + \
++			DIV_ROUND_CLOSEST(((NOM) % (DEN)) << (LSH), DEN))
++#define SHIFT 4
++
++	nc /= 1000;
++	nc <<= SHIFT;
++
++	for (frac = 18; frac <= 35; ++frac) {
++		for (div = 1; div <= 255; ++div) {
++			result = DIV_ROUND_CLOSEST(parent_rate *
++						SH_DIV(18U, frac, SHIFT), div);
++			delta = nc - result;
++			if (abs(delta) < abs(best_delta)) {
++				best_delta = delta;
++				best_frac = frac;
++				best_div = div;
++			}
++		}
++	}
++
++	if (best_delta == 0xffffff) {
++		pr_debug("Unable to match the pixelclock\n");
++		return 0;
++	}
++
++	pr_debug("Programming PFD=%u,DIV=%u ref_pix=%u MHz PIXCLK=%u kHz\n",
++			best_frac, best_div, 480 * 18 / best_frac,
++			480000 * 18 / best_frac / best_div);
++
++	reg = readl(IMX_CCM_BASE + HW_CLKCTRL_FRAC) & ~MASK_PIXFRAC;
++	reg |= SET_PIXFRAC(best_frac);
++	writel(reg, IMX_CCM_BASE + HW_CLKCTRL_FRAC);
++	writel(reg & ~CLKCTRL_FRAC_CLKGATEPIX, IMX_CCM_BASE + HW_CLKCTRL_FRAC);
++
++	reg = readl(IMX_CCM_BASE + HW_CLKCTRL_DIS_LCDIF) & ~MASK_DIS_LCDIF_DIV;
++	reg &= ~CLKCTRL_DIS_LCDIF_GATE;
++	reg |= SET_DIS_LCDIF_DIV(best_div);
++	writel(reg, IMX_CCM_BASE + HW_CLKCTRL_DIS_LCDIF);
++
++	/* Wait for divider update */
++	for (i = 0; i < 10000; i++) {
++		if (!(readl(IMX_CCM_BASE + HW_CLKCTRL_DIS_LCDIF) &
++						CLKCTRL_DIS_LCDIF_BUSY))
++			break;
++	}
++
++	if (i >= 10000) {
++		pr_debug("Setting LCD clock failed\n");
++		return 0;
++	}
++
++	writel(CLKCTRL_CLKSEQ_BYPASS_DIS_LCDIF,
++		IMX_CCM_BASE + HW_CLKCTRL_CLKSEQ + BIT_CLR);
++
++	return imx_get_lcdifclk();
++}
+diff --git a/arch/arm/mach-stm/include/mach/clock-imx23.h b/arch/arm/mach-stm/include/mach/clock-imx23.h
+index bb499f2..723f343 100644
+--- a/arch/arm/mach-stm/include/mach/clock-imx23.h
++++ b/arch/arm/mach-stm/include/mach/clock-imx23.h
+@@ -22,5 +22,7 @@ unsigned imx_get_xclk(void);
+ unsigned imx_get_sspclk(unsigned);
+ unsigned imx_set_sspclk(unsigned, unsigned, int);
+ unsigned imx_set_ioclk(unsigned);
++unsigned imx_set_lcdifclk(unsigned);
++unsigned imx_get_lcdifclk(void);
  
- 	/* lcd */
--	LCD_VSYNC,	/* kernel tries with 12 mA for all LCD related pins */
--	LCD_HSYNC,
--	LCD_ENABE,
--	LCD_DOTCLOCK,
--	LCD_D17,
--	LCD_D16,
--	LCD_D15,
--	LCD_D14,
--	LCD_D13,
--	LCD_D12,
--	LCD_D11,
--	LCD_D10,
--	LCD_D9,
--	LCD_D8,
--	LCD_D7,
--	LCD_D6,
--	LCD_D5,
--	LCD_D4,
--	LCD_D3,
--	LCD_D2,
--	LCD_D1,
--	LCD_D0,
-+	LCD_VSYNC | STRENGTH(S12MA),
-+	LCD_HSYNC | STRENGTH(S12MA),
-+	LCD_ENABE | STRENGTH(S12MA),
-+	LCD_DOTCLOCK | STRENGTH(S12MA),
-+	LCD_D17 | STRENGTH(S12MA),
-+	LCD_D16 | STRENGTH(S12MA),
-+	LCD_D15 | STRENGTH(S12MA),
-+	LCD_D14 | STRENGTH(S12MA),
-+	LCD_D13 | STRENGTH(S12MA),
-+	LCD_D12 | STRENGTH(S12MA),
-+	LCD_D11 | STRENGTH(S12MA),
-+	LCD_D10 | STRENGTH(S12MA),
-+	LCD_D9 | STRENGTH(S12MA),
-+	LCD_D8 | STRENGTH(S12MA),
-+	LCD_D7 | STRENGTH(S12MA),
-+	LCD_D6 | STRENGTH(S12MA),
-+	LCD_D5 | STRENGTH(S12MA),
-+	LCD_D4 | STRENGTH(S12MA),
-+	LCD_D3 | STRENGTH(S12MA),
-+	LCD_D2 | STRENGTH(S12MA),
-+	LCD_D1 | STRENGTH(S12MA),
-+	LCD_D0 | STRENGTH(S12MA),
+ #endif /* MACH_CLOCK_IMX23_H */
+diff --git a/arch/arm/mach-stm/include/mach/clock-imx28.h b/arch/arm/mach-stm/include/mach/clock-imx28.h
+index afc9fb6..45fb043 100644
+--- a/arch/arm/mach-stm/include/mach/clock-imx28.h
++++ b/arch/arm/mach-stm/include/mach/clock-imx28.h
+@@ -22,6 +22,8 @@ unsigned imx_get_xclk(void);
+ unsigned imx_get_sspclk(unsigned);
+ unsigned imx_set_sspclk(unsigned, unsigned, int);
+ unsigned imx_set_ioclk(unsigned, unsigned);
++unsigned imx_set_lcdifclk(unsigned);
++unsigned imx_get_lcdifclk(void);
+ unsigned imx_get_fecclk(void);
+ void imx_enable_enetclk(void);
  
- 	/* LCD usage currently unknown */
- 	LCD_CS,	/* used as SPI SS */
- 	LCD_RS,	/* used as SPI CLK */
--	LCD_RESET,
-+	/* keep the display in reset state */
-+	LCD_RESET_GPIO | STRENGTH(S4MA) | GPIO_OUT | GPIO_VALUE(0),
- 	LCD_WR,	/* used as SPI MOSI */
- 
- 	/* I2C to the MMA7455L, KXTE9, AT24C08 (DCID), AT24C128B (ID EEPROM) and QN8005B */
-@@ -270,6 +311,7 @@ static int falconwing_devices_init(void)
- 	/* run the SSP unit clock at 100,000 kHz */
- 	imx_set_sspclk(0, 100000000, 1);
- 	register_device(&mci_dev);
-+	register_device(&ldcif_dev);
- 
- 	armlinux_add_dram(&sdram_dev);
- 	armlinux_set_bootparams((void*)(sdram_dev.map_base + 0x100));
-diff --git a/arch/arm/configs/chumbyone_defconfig b/arch/arm/configs/chumbyone_defconfig
-index 595b6a9..6e6623a 100644
---- a/arch/arm/configs/chumbyone_defconfig
-+++ b/arch/arm/configs/chumbyone_defconfig
-@@ -23,7 +23,10 @@ CONFIG_CMD_MTEST_ALTERNATIVE=y
- CONFIG_CMD_RESET=y
- CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_PARTITION=y
-+CONFIG_CMD_BMP=y
- # CONFIG_SPI is not set
-+CONFIG_VIDEO=y
-+CONFIG_DRIVER_VIDEO_STM=y
- CONFIG_MCI=y
- CONFIG_MCI_STARTUP=y
- CONFIG_MCI_STM378X=y
 -- 
 1.7.2.3
 
-
-
---===============1969491406==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============1969491406==--
