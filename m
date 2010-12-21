@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PUcVA-0000OO-79
-	for barebox@lists.infradead.org; Mon, 20 Dec 2010 09:57:58 +0000
+Received: from fmmailgate02.web.de ([217.72.192.227])
+	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1PUwr7-00085k-Kv
+	for barebox@lists.infradead.org; Tue, 21 Dec 2010 07:41:59 +0000
+Date: Tue, 21 Dec 2010 08:41:55 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 20 Dec 2010 10:53:45 +0100
-Message-Id: <1292838831-25038-3-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1292838831-25038-1-git-send-email-s.hauer@pengutronix.de>
-References: <1292838831-25038-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20101221074155.GU6017@pengutronix.de>
+References: <m362uodqms.fsf@intrepid.localdomain>
+	<m3tyi8carg.fsf@intrepid.localdomain>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <m3tyi8carg.fsf@intrepid.localdomain>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,193 +19,105 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/8] Add generic poll infrastructure
-To: barebox <barebox@lists.infradead.org>
+Subject: Re: [PATCH 6] ARM: support big/little endian switching in "bootz".
+To: Krzysztof Halasa <khc@pm.waw.pl>
+Cc: barebox@lists.infradead.org
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-
-Barebox does not have interrupt functionality. Nevertheless it's
-sometimes useful to periodically call functions, like for example
-a heartbeat LED or watchdog reset. Instead of cluttering the code
-with calls to these functions this patch adds a generic polling
-infrastructure. Code which might run for longer now can call
-poller_call() periodically which in turn will call all registered
-pollers.
-This patch adds a call to poller_call in two generic pathes. First
-of them is getc() which covers waiting for uart input. Second is
-ctrlc() which should be called anyway from code which might run
-for longer. So instead adding poller_call directly to your code,
-consider checking ctrlc instead which also gives additional
-convenience to the user.
-The poller code is safe against reentrancy which means that it's
-safe to call poller_call inside a poller.
-
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- common/Kconfig   |    3 +++
- common/Makefile  |    1 +
- common/console.c |    5 +++++
- common/poller.c  |   45 +++++++++++++++++++++++++++++++++++++++++++++
- include/poller.h |   31 +++++++++++++++++++++++++++++++
- 5 files changed, 85 insertions(+), 0 deletions(-)
- create mode 100644 common/poller.c
- create mode 100644 include/poller.h
-
-diff --git a/common/Kconfig b/common/Kconfig
-index 617f640..02bc67e 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -414,6 +414,9 @@ config DEFAULT_ENVIRONMENT_PATH
- 	  Relative pathes will be relative to the barebox Toplevel dir, but absolute
- 	  pathes are fine aswell.
- 
-+config POLLER
-+	bool "generic polling infrastructure"
-+
- endmenu
- 
- menu "Debugging                     "
-diff --git a/common/Makefile b/common/Makefile
-index 753455b..98c9d36 100644
---- a/common/Makefile
-+++ b/common/Makefile
-@@ -5,6 +5,7 @@ obj-$(CONFIG_OF_FLAT_TREE)	+= ft_build.o
- obj-$(CONFIG_KALLSYMS)		+= kallsyms.o
- obj-$(CONFIG_ENV_HANDLING)	+= environment.o
- obj-$(CONFIG_AUTO_COMPLETE)	+= complete.o
-+obj-$(CONFIG_POLLER)		+= poller.o
- 
- obj-y += dlmalloc.o
- obj-y += clock.o
-diff --git a/common/console.c b/common/console.c
-index 82786f2..39ead4b 100644
---- a/common/console.c
-+++ b/common/console.c
-@@ -34,6 +34,7 @@
- #include <clock.h>
- #include <kfifo.h>
- #include <module.h>
-+#include <poller.h>
- #include <linux/list.h>
- 
- LIST_HEAD(console_list);
-@@ -205,6 +206,8 @@ int getc(void)
- 	 */
- 	start = get_time_ns();
- 	while (1) {
-+		poller_call();
-+
- 		if (tstc()) {
- 			kfifo_putc(console_input_buffer, getc_raw());
- 
-@@ -397,6 +400,8 @@ EXPORT_SYMBOL(vprintf);
- /* test if ctrl-c was pressed */
- int ctrlc (void)
- {
-+	poller_call();
-+
- 	if (tstc() && getc() == 3)
- 		return 1;
- 	return 0;
-diff --git a/common/poller.c b/common/poller.c
-new file mode 100644
-index 0000000..0583a53
---- /dev/null
-+++ b/common/poller.c
-@@ -0,0 +1,45 @@
-+/*
-+ * Copyright (C) 2010 Marc Kleine-Budde <mkl@pengutronix.de>
-+ *
-+ * This file is released under the GPLv2
-+ *
-+ */
-+
-+#include <common.h>
-+#include <driver.h>
-+#include <malloc.h>
-+#include <module.h>
-+#include <param.h>
-+#include <poller.h>
-+
-+static LIST_HEAD(poller_list);
-+static int poller_active;
-+
-+int poller_register(struct poller_struct *poller)
-+{
-+	list_add_tail(&poller->list, &poller_list);
-+
-+	return 0;
-+}
-+
-+int poller_unregister(struct poller_struct *poller)
-+{
-+	list_del(&poller->list);
-+
-+	return 0;
-+}
-+
-+void poller_call(void)
-+{
-+	struct poller_struct *poller, *tmp;
-+
-+	if (poller_active)
-+		return;
-+
-+	poller_active = 1;
-+
-+	list_for_each_entry_safe(poller, tmp, &poller_list, list)
-+		poller->func(poller);
-+
-+	poller_active = 0;
-+}
-diff --git a/include/poller.h b/include/poller.h
-new file mode 100644
-index 0000000..dc98155
---- /dev/null
-+++ b/include/poller.h
-@@ -0,0 +1,31 @@
-+/*
-+ * Copyright (C) 2010 Marc Kleine-Budde <mkl@pengutronix.de>
-+ *
-+ * This file is released under the GPLv2
-+ *
-+ */
-+
-+#ifndef POLLER_H
-+#define POLLER_H
-+
-+#include <linux/list.h>
-+
-+struct poller_struct {
-+	void (*func)(struct poller_struct *poller);
-+
-+	struct list_head list;
-+};
-+
-+int poller_register(struct poller_struct *poller);
-+int poller_unregister(struct poller_struct *poller);
-+
-+
-+#ifdef CONFIG_POLLER
-+void poller_call(void);
-+#else
-+static inline void poller_call(void)
-+{
-+}
-+#endif	/* CONFIG_POLLER */
-+
-+#endif	/* !POLLER_H */
--- 
-1.7.2.3
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgS3J6eXN6dG9mLAoKT24gTW9uLCBEZWMgMjAsIDIwMTAgYXQgMTE6NTg6MTFQTSArMDEwMCwg
+S3J6eXN6dG9mIEhhbGFzYSB3cm90ZToKPiBBUk06IHN1cHBvcnQgYmlnL2xpdHRsZSBlbmRpYW4g
+c3dpdGNoaW5nIGluICJib290eiIuCj4gUGVyaGFwcyBvbmUgc2hvdWxkIG1ha2UgdGhpcyBjb25k
+aXRpb25hbD8gTW9zdGx5IGZvciBiaWctZW5kaWFuCj4gQmFyZWJveCBsb2FkaW5nIGxpdHRsZS1l
+bmRpYW4gKGUuZy4gYXJtZWwgRGViaWFuKSBMaW51eC4KCk1ha2luZyBpdCBjb25kaXRpb25hbCBj
+b3VsZCByZXF1aXJlIGEgbG90IG9mIGlmZGVmcywgbWF5YmUgeW91IGNvdWxkCmp1c3QgZG8uLi4K
+Cj4gCj4gU2lnbmVkLW9mZi1ieTogS3J6eXN6dG9mIEhhxYJhc2EgPGtoY0BwbS53YXcucGw+Cj4g
+Cj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2xpYi9hcm1saW51eC5jIGIvYXJjaC9hcm0vbGliL2Fy
+bWxpbnV4LmMKPiBpbmRleCBmODI2ZGE2Li40ZDFjNzU3IDEwMDY0NAo+IC0tLSBhL2FyY2gvYXJt
+L2xpYi9hcm1saW51eC5jCj4gKysrIGIvYXJjaC9hcm0vbGliL2FybWxpbnV4LmMKPiBAQCAtNDEs
+NiArNDEsNyBAQAo+ICAjaW5jbHVkZSA8YXNtL3NldHVwLmg+Cj4gICNpbmNsdWRlIDxhc20vYmFy
+ZWJveC1hcm0uaD4KPiAgI2luY2x1ZGUgPGFzbS9hcm1saW51eC5oPgo+ICsjaW5jbHVkZSA8YXNt
+L3N5c3RlbS5oPgo+ICAKPiAgc3RhdGljIHN0cnVjdCB0YWcgKnBhcmFtczsKPiAgc3RhdGljIGlu
+dCBhcm1saW51eF9hcmNoaXRlY3R1cmUgPSAwOwo+IEBAIC04NSw5ICs4NiwxMCBAQCBzdGF0aWMg
+dm9pZCBzZXR1cF9tZW1vcnlfdGFncyh2b2lkKQo+ICAJfQo+ICB9Cj4gIAo+IC1zdGF0aWMgdm9p
+ZCBzZXR1cF9jb21tYW5kbGluZV90YWcoY29uc3QgY2hhciAqY29tbWFuZGxpbmUpCj4gK3N0YXRp
+YyB2b2lkIHNldHVwX2NvbW1hbmRsaW5lX3RhZyhjb25zdCBjaGFyICpjb21tYW5kbGluZSwgaW50
+IHN3YXApCj4gIHsKPiAgCWNvbnN0IGNoYXIgKnA7Cj4gKwlzaXplX3Qgd29yZHM7Cj4gIAo+ICAJ
+aWYgKCFjb21tYW5kbGluZSkKPiAgCQlyZXR1cm47Cj4gQEAgLTEwMiwxMiArMTA0LDE4IEBAIHN0
+YXRpYyB2b2lkIHNldHVwX2NvbW1hbmRsaW5lX3RhZyhjb25zdCBjaGFyICpjb21tYW5kbGluZSkK
+PiAgCWlmICgqcCA9PSAnXDAnKQo+ICAJCXJldHVybjsKPiAgCj4gKwl3b3JkcyA9IChzdHJsZW4o
+cCkgKyAxIC8qIE5VTCAqLyArIDMgLyogcm91bmQgdXAgKi8pID4+IDI7Cj4gIAlwYXJhbXMtPmhk
+ci50YWcgPSBBVEFHX0NNRExJTkU7Cj4gLQlwYXJhbXMtPmhkci5zaXplID0KPiAtCSAgICAoc2l6
+ZW9mIChzdHJ1Y3QgdGFnX2hlYWRlcikgKyBzdHJsZW4ocCkgKyAxICsgNCkgPj4gMjsKPiArCXBh
+cmFtcy0+aGRyLnNpemUgPSAoc2l6ZW9mKHN0cnVjdCB0YWdfaGVhZGVyKSA+PiAyKSArIHdvcmRz
+Owo+ICAKPiAgCXN0cmNweShwYXJhbXMtPnUuY21kbGluZS5jbWRsaW5lLCBwKTsKPiAgCj4gKwlp
+ZiAoc3dhcCkgewo+ICsJCXUzMiAqY21kID0gKHUzMiAqKXBhcmFtcy0+dS5jbWRsaW5lLmNtZGxp
+bmU7Cj4gKwkJd2hpbGUgKHdvcmRzLS0pCj4gKwkJCWNtZFt3b3Jkc10gPSBzd2FiMzIoY21kW3dv
+cmRzXSk7Cj4gKwl9Cj4gKwo+ICAJcGFyYW1zID0gdGFnX25leHQocGFyYW1zKTsKPiAgfQo+ICAK
+PiBAQCAtMTU2LDEzICsxNjQsMTMgQEAgc3RhdGljIHZvaWQgc2V0dXBfZW5kX3RhZyAodm9pZCkK
+PiAgCXBhcmFtcy0+aGRyLnNpemUgPSAwOwo+ICB9Cj4gIAo+IC1zdGF0aWMgdm9pZCBzZXR1cF90
+YWdzKHN0cnVjdCBpbWFnZV9kYXRhICpkYXRhKQo+ICtzdGF0aWMgdm9pZCBzZXR1cF90YWdzKHN0
+cnVjdCBpbWFnZV9kYXRhICpkYXRhLCBpbnQgc3dhcCkKPiAgewo+ICAJY29uc3QgY2hhciAqY29t
+bWFuZGxpbmUgPSBnZXRlbnYoImJvb3RhcmdzIik7Cj4gIAo+ICAJc2V0dXBfc3RhcnRfdGFnKCk7
+Cj4gIAlzZXR1cF9tZW1vcnlfdGFncygpOwo+IC0Jc2V0dXBfY29tbWFuZGxpbmVfdGFnKGNvbW1h
+bmRsaW5lKTsKPiArCXNldHVwX2NvbW1hbmRsaW5lX3RhZyhjb21tYW5kbGluZSwgc3dhcCk7Cj4g
+IAo+ICAJaWYgKGRhdGEgJiYgZGF0YS0+aW5pdHJkKQo+ICAJCXNldHVwX2luaXRyZF90YWcgKCZk
+YXRhLT5pbml0cmQtPmhlYWRlcik7Cj4gQEAgLTIzMSw3ICsyMzksNyBAQCBzdGF0aWMgaW50IGRv
+X2Jvb3RtX2xpbnV4KHN0cnVjdCBpbWFnZV9kYXRhICpkYXRhKQo+ICAJZGVidWcoIiMjIFRyYW5z
+ZmVycmluZyBjb250cm9sIHRvIExpbnV4IChhdCBhZGRyZXNzIDB4JXApIC4uLlxuIiwKPiAgCSAg
+ICAgICB0aGVLZXJuZWwpOwo+ICAKPiAtCXNldHVwX3RhZ3MoZGF0YSk7Cj4gKwlzZXR1cF90YWdz
+KGRhdGEsIDApOwo+ICAKPiAgCWlmIChyZWxvY2F0ZV9pbWFnZShkYXRhLT5vcywgKHZvaWQgKilp
+bWFnZV9nZXRfbG9hZChvc19oZWFkZXIpKSkKPiAgCQlyZXR1cm4gLTE7Cj4gQEAgLTI5MCwxOCAr
+Mjk4LDIxIEBAIGxhdGVfaW5pdGNhbGwoYXJtbGludXhfcmVnaXN0ZXJfaW1hZ2VfaGFuZGxlcik7
+Cj4gIAo+ICAjaWZkZWYgQ09ORklHX0NNRF9CT09UWgo+ICBzdHJ1Y3QgemltYWdlX2hlYWRlciB7
+Cj4gLQl1MzIJdW5zdXNlZFs5XTsKPiArCXUzMgl1bnVzZWRbOV07Cj4gIAl1MzIJbWFnaWM7Cj4g
+IAl1MzIJc3RhcnQ7Cj4gIAl1MzIJZW5kOwo+ICB9Owo+ICAKPiArI2RlZmluZSBaSU1BR0VfTUFH
+SUMgMHgwMTZGMjgxOAo+ICsKPiAgc3RhdGljIGludCBkb19ib290eihzdHJ1Y3QgY29tbWFuZCAq
+Y21kdHAsIGludCBhcmdjLCBjaGFyICphcmd2W10pCj4gIHsKPiAgCXZvaWQgKCp0aGVLZXJuZWwp
+KGludCB6ZXJvLCBpbnQgYXJjaCwgdm9pZCAqcGFyYW1zKTsKPiAtCWludCBmZCwgcmV0Owo+ICsJ
+aW50IGZkLCByZXQsIHN3YXAgPSAwOwo+ICAJc3RydWN0IHppbWFnZV9oZWFkZXIgaGVhZGVyOwo+
+ICAJdm9pZCAqemltYWdlOwo+ICsJdTMyIGVuZDsKCiNpZmRlZiBDT05GSUdfQk9PVFpfRU5ESUFO
+RVNTX1NXQVAKCWludCBlbmFibGVfc3dhcCA9IDE7CiNlbHNlCglpbnQgZW5hYmxlX3N3YXAgPSAw
+OwojZW5kaWYKCj4gIAo+ICAJaWYgKGFyZ2MgIT0gMikgewo+ICAJCWJhcmVib3hfY21kX3VzYWdl
+KGNtZHRwKTsKPiBAQCAtMzIwLDI3ICszMzEsNTEgQEAgc3RhdGljIGludCBkb19ib290eihzdHJ1
+Y3QgY29tbWFuZCAqY21kdHAsIGludCBhcmdjLCBjaGFyICphcmd2W10pCj4gIAkJZ290byBlcnJf
+b3V0Owo+ICAJfQo+ICAKPiAtCWlmIChoZWFkZXIubWFnaWMgIT0gMHgwMTZmMjgxOCkgewo+ICsJ
+c3dpdGNoIChoZWFkZXIubWFnaWMpIHsKPiArCWNhc2Ugc3dhYjMyKFpJTUFHRV9NQUdJQyk6Cj4g
+KwkJc3dhcCA9IDE7CgoJCXN3YXAgPSBlbmFibGVfc3dhcDsKClRoaXMgc2hvdWxkIGJlIGVub3Vn
+aCBmb3IgdGhlIGNvbXBpbGVyIHRvIHRocm93IGF3YXkgbW9zdCBvdmVyaGVhZC4KCj4gKwkJLyog
+ZmFsbCB0aHJvdWdoICovCj4gKwljYXNlIFpJTUFHRV9NQUdJQzoKPiArCQlicmVhazsKPiArCWRl
+ZmF1bHQ6Cj4gIAkJcHJpbnRmKCJpbnZhbGlkIG1hZ2ljIDB4JTA4eFxuIiwgaGVhZGVyLm1hZ2lj
+KTsKPiAgCQlnb3RvIGVycl9vdXQ7Cj4gIAl9Cj4gIAo+IC0JemltYWdlID0geG1hbGxvYyhoZWFk
+ZXIuZW5kKTsKPiArCWVuZCA9IGhlYWRlci5lbmQ7Cj4gKwo+ICsJaWYgKHN3YXApCj4gKwkJZW5k
+ID0gc3dhYjMyKGVuZCk7Cj4gKwo+ICsJemltYWdlID0geG1hbGxvYyhlbmQpOwo+ICAJbWVtY3B5
+KHppbWFnZSwgJmhlYWRlciwgc2l6ZW9mKGhlYWRlcikpOwo+ICAKPiAtCXJldCA9IHJlYWQoZmQs
+IHppbWFnZSArIHNpemVvZihoZWFkZXIpLCBoZWFkZXIuZW5kIC0gc2l6ZW9mKGhlYWRlcikpOwo+
+IC0JaWYgKHJldCA8IGhlYWRlci5lbmQgLSBzaXplb2YoaGVhZGVyKSkgewo+ICsJcmV0ID0gcmVh
+ZChmZCwgemltYWdlICsgc2l6ZW9mKGhlYWRlciksIGVuZCAtIHNpemVvZihoZWFkZXIpKTsKPiAr
+CWlmIChyZXQgPCBlbmQgLSBzaXplb2YoaGVhZGVyKSkgewo+ICAJCXByaW50ZigiY291bGQgbm90
+IHJlYWQgJXNcbiIsIGFyZ3ZbMV0pOwo+ICAJCWdvdG8gZXJyX291dDE7Cj4gIAl9Cj4gIAo+ICsJ
+aWYgKHN3YXApIHsKPiArCQl2b2lkICpwdHI7Cj4gKwkJZm9yIChwdHIgPSB6aW1hZ2U7IHB0ciA8
+IHppbWFnZSArIGVuZDsgcHRyICs9IDQpCj4gKwkJCSoodTMyICopcHRyID0gc3dhYjMyKCoodTMy
+ICopcHRyKTsKPiArCX0KPiArCj4gIAl0aGVLZXJuZWwgPSB6aW1hZ2U7Cj4gIAo+IC0JcHJpbnRm
+KCJsb2FkZWQgekltYWdlIGZyb20gJXMgd2l0aCBzaXplICVkXG4iLCBhcmd2WzFdLCBoZWFkZXIu
+ZW5kKTsKPiArCXByaW50ZigibG9hZGVkIHpJbWFnZSBmcm9tICVzIHdpdGggc2l6ZSAlZFxuIiwg
+YXJndlsxXSwgZW5kKTsKPiAgCj4gLQlzZXR1cF90YWdzKE5VTEwpOwo+ICsJc2V0dXBfdGFncyhO
+VUxMLCBzd2FwKTsKPiAgCj4gIAlzaHV0ZG93bl9iYXJlYm94KCk7Cj4gKwlpZiAoc3dhcCkgewo+
+ICsJCXUzMiByZWc7Cj4gKwkJX19hc21fXyBfX3ZvbGF0aWxlX18oIm1yYyBwMTUsIDAsICUwLCBj
+MSwgYzAiIDogIj1yIiAocmVnKSk7Cj4gKwkJcmVnIF49IENSX0I7IC8qIHN3YXAgYmlnLWVuZGlh
+biBmbGFnICovCj4gKwkJX19hc21fXyBfX3ZvbGF0aWxlX18oIm1jciBwMTUsIDAsICUwLCBjMSwg
+YzAiIDo6ICJyIiAocmVnKSk7Cj4gKwl9Cj4gKwo+ICAJdGhlS2VybmVsKDAsIGFybWxpbnV4X2Fy
+Y2hpdGVjdHVyZSwgYXJtbGludXhfYm9vdHBhcmFtcyk7Cj4gIAo+ICAJcmV0dXJuIDA7Cj4gCj4g
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KPiBiYXJlYm94
+IG1haWxpbmcgbGlzdAo+IGJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwo+IGh0dHA6Ly9saXN0
+cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAoKLS0gClBlbmd1dHJvbml4
+IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICB8CkluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6
+Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVp
+bSwgR2VybWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhp
+bGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1
+NSB8CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJl
+Ym94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3Rz
+LmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
