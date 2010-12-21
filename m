@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from fmmailgate02.web.de ([217.72.192.227])
+Received: from fmmailgate01.web.de ([217.72.192.221])
 	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1PUwr7-00085k-Kv
-	for barebox@lists.infradead.org; Tue, 21 Dec 2010 07:41:59 +0000
-Date: Tue, 21 Dec 2010 08:41:55 +0100
+	id 1PUxh9-0000ic-QG
+	for barebox@lists.infradead.org; Tue, 21 Dec 2010 08:35:44 +0000
+Date: Tue, 21 Dec 2010 09:35:40 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20101221074155.GU6017@pengutronix.de>
+Message-ID: <20101221083540.GV6017@pengutronix.de>
 References: <m362uodqms.fsf@intrepid.localdomain>
-	<m3tyi8carg.fsf@intrepid.localdomain>
+	<m3oc8gcae3.fsf@intrepid.localdomain>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <m3tyi8carg.fsf@intrepid.localdomain>
+In-Reply-To: <m3oc8gcae3.fsf@intrepid.localdomain>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,105 +19,69 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 6] ARM: support big/little endian switching in "bootz".
+Subject: Re: [PATCH 10] ARM: Add support for IXP4xx CPU and for Goramo
+	Multilink router platform.
 To: Krzysztof Halasa <khc@pm.waw.pl>
 Cc: barebox@lists.infradead.org
 
-SGkgS3J6eXN6dG9mLAoKT24gTW9uLCBEZWMgMjAsIDIwMTAgYXQgMTE6NTg6MTFQTSArMDEwMCwg
-S3J6eXN6dG9mIEhhbGFzYSB3cm90ZToKPiBBUk06IHN1cHBvcnQgYmlnL2xpdHRsZSBlbmRpYW4g
-c3dpdGNoaW5nIGluICJib290eiIuCj4gUGVyaGFwcyBvbmUgc2hvdWxkIG1ha2UgdGhpcyBjb25k
-aXRpb25hbD8gTW9zdGx5IGZvciBiaWctZW5kaWFuCj4gQmFyZWJveCBsb2FkaW5nIGxpdHRsZS1l
-bmRpYW4gKGUuZy4gYXJtZWwgRGViaWFuKSBMaW51eC4KCk1ha2luZyBpdCBjb25kaXRpb25hbCBj
-b3VsZCByZXF1aXJlIGEgbG90IG9mIGlmZGVmcywgbWF5YmUgeW91IGNvdWxkCmp1c3QgZG8uLi4K
-Cj4gCj4gU2lnbmVkLW9mZi1ieTogS3J6eXN6dG9mIEhhxYJhc2EgPGtoY0BwbS53YXcucGw+Cj4g
-Cj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2xpYi9hcm1saW51eC5jIGIvYXJjaC9hcm0vbGliL2Fy
-bWxpbnV4LmMKPiBpbmRleCBmODI2ZGE2Li40ZDFjNzU3IDEwMDY0NAo+IC0tLSBhL2FyY2gvYXJt
-L2xpYi9hcm1saW51eC5jCj4gKysrIGIvYXJjaC9hcm0vbGliL2FybWxpbnV4LmMKPiBAQCAtNDEs
-NiArNDEsNyBAQAo+ICAjaW5jbHVkZSA8YXNtL3NldHVwLmg+Cj4gICNpbmNsdWRlIDxhc20vYmFy
-ZWJveC1hcm0uaD4KPiAgI2luY2x1ZGUgPGFzbS9hcm1saW51eC5oPgo+ICsjaW5jbHVkZSA8YXNt
-L3N5c3RlbS5oPgo+ICAKPiAgc3RhdGljIHN0cnVjdCB0YWcgKnBhcmFtczsKPiAgc3RhdGljIGlu
-dCBhcm1saW51eF9hcmNoaXRlY3R1cmUgPSAwOwo+IEBAIC04NSw5ICs4NiwxMCBAQCBzdGF0aWMg
-dm9pZCBzZXR1cF9tZW1vcnlfdGFncyh2b2lkKQo+ICAJfQo+ICB9Cj4gIAo+IC1zdGF0aWMgdm9p
-ZCBzZXR1cF9jb21tYW5kbGluZV90YWcoY29uc3QgY2hhciAqY29tbWFuZGxpbmUpCj4gK3N0YXRp
-YyB2b2lkIHNldHVwX2NvbW1hbmRsaW5lX3RhZyhjb25zdCBjaGFyICpjb21tYW5kbGluZSwgaW50
-IHN3YXApCj4gIHsKPiAgCWNvbnN0IGNoYXIgKnA7Cj4gKwlzaXplX3Qgd29yZHM7Cj4gIAo+ICAJ
-aWYgKCFjb21tYW5kbGluZSkKPiAgCQlyZXR1cm47Cj4gQEAgLTEwMiwxMiArMTA0LDE4IEBAIHN0
-YXRpYyB2b2lkIHNldHVwX2NvbW1hbmRsaW5lX3RhZyhjb25zdCBjaGFyICpjb21tYW5kbGluZSkK
-PiAgCWlmICgqcCA9PSAnXDAnKQo+ICAJCXJldHVybjsKPiAgCj4gKwl3b3JkcyA9IChzdHJsZW4o
-cCkgKyAxIC8qIE5VTCAqLyArIDMgLyogcm91bmQgdXAgKi8pID4+IDI7Cj4gIAlwYXJhbXMtPmhk
-ci50YWcgPSBBVEFHX0NNRExJTkU7Cj4gLQlwYXJhbXMtPmhkci5zaXplID0KPiAtCSAgICAoc2l6
-ZW9mIChzdHJ1Y3QgdGFnX2hlYWRlcikgKyBzdHJsZW4ocCkgKyAxICsgNCkgPj4gMjsKPiArCXBh
-cmFtcy0+aGRyLnNpemUgPSAoc2l6ZW9mKHN0cnVjdCB0YWdfaGVhZGVyKSA+PiAyKSArIHdvcmRz
-Owo+ICAKPiAgCXN0cmNweShwYXJhbXMtPnUuY21kbGluZS5jbWRsaW5lLCBwKTsKPiAgCj4gKwlp
-ZiAoc3dhcCkgewo+ICsJCXUzMiAqY21kID0gKHUzMiAqKXBhcmFtcy0+dS5jbWRsaW5lLmNtZGxp
-bmU7Cj4gKwkJd2hpbGUgKHdvcmRzLS0pCj4gKwkJCWNtZFt3b3Jkc10gPSBzd2FiMzIoY21kW3dv
-cmRzXSk7Cj4gKwl9Cj4gKwo+ICAJcGFyYW1zID0gdGFnX25leHQocGFyYW1zKTsKPiAgfQo+ICAK
-PiBAQCAtMTU2LDEzICsxNjQsMTMgQEAgc3RhdGljIHZvaWQgc2V0dXBfZW5kX3RhZyAodm9pZCkK
-PiAgCXBhcmFtcy0+aGRyLnNpemUgPSAwOwo+ICB9Cj4gIAo+IC1zdGF0aWMgdm9pZCBzZXR1cF90
-YWdzKHN0cnVjdCBpbWFnZV9kYXRhICpkYXRhKQo+ICtzdGF0aWMgdm9pZCBzZXR1cF90YWdzKHN0
-cnVjdCBpbWFnZV9kYXRhICpkYXRhLCBpbnQgc3dhcCkKPiAgewo+ICAJY29uc3QgY2hhciAqY29t
-bWFuZGxpbmUgPSBnZXRlbnYoImJvb3RhcmdzIik7Cj4gIAo+ICAJc2V0dXBfc3RhcnRfdGFnKCk7
-Cj4gIAlzZXR1cF9tZW1vcnlfdGFncygpOwo+IC0Jc2V0dXBfY29tbWFuZGxpbmVfdGFnKGNvbW1h
-bmRsaW5lKTsKPiArCXNldHVwX2NvbW1hbmRsaW5lX3RhZyhjb21tYW5kbGluZSwgc3dhcCk7Cj4g
-IAo+ICAJaWYgKGRhdGEgJiYgZGF0YS0+aW5pdHJkKQo+ICAJCXNldHVwX2luaXRyZF90YWcgKCZk
-YXRhLT5pbml0cmQtPmhlYWRlcik7Cj4gQEAgLTIzMSw3ICsyMzksNyBAQCBzdGF0aWMgaW50IGRv
-X2Jvb3RtX2xpbnV4KHN0cnVjdCBpbWFnZV9kYXRhICpkYXRhKQo+ICAJZGVidWcoIiMjIFRyYW5z
-ZmVycmluZyBjb250cm9sIHRvIExpbnV4IChhdCBhZGRyZXNzIDB4JXApIC4uLlxuIiwKPiAgCSAg
-ICAgICB0aGVLZXJuZWwpOwo+ICAKPiAtCXNldHVwX3RhZ3MoZGF0YSk7Cj4gKwlzZXR1cF90YWdz
-KGRhdGEsIDApOwo+ICAKPiAgCWlmIChyZWxvY2F0ZV9pbWFnZShkYXRhLT5vcywgKHZvaWQgKilp
-bWFnZV9nZXRfbG9hZChvc19oZWFkZXIpKSkKPiAgCQlyZXR1cm4gLTE7Cj4gQEAgLTI5MCwxOCAr
-Mjk4LDIxIEBAIGxhdGVfaW5pdGNhbGwoYXJtbGludXhfcmVnaXN0ZXJfaW1hZ2VfaGFuZGxlcik7
-Cj4gIAo+ICAjaWZkZWYgQ09ORklHX0NNRF9CT09UWgo+ICBzdHJ1Y3QgemltYWdlX2hlYWRlciB7
-Cj4gLQl1MzIJdW5zdXNlZFs5XTsKPiArCXUzMgl1bnVzZWRbOV07Cj4gIAl1MzIJbWFnaWM7Cj4g
-IAl1MzIJc3RhcnQ7Cj4gIAl1MzIJZW5kOwo+ICB9Owo+ICAKPiArI2RlZmluZSBaSU1BR0VfTUFH
-SUMgMHgwMTZGMjgxOAo+ICsKPiAgc3RhdGljIGludCBkb19ib290eihzdHJ1Y3QgY29tbWFuZCAq
-Y21kdHAsIGludCBhcmdjLCBjaGFyICphcmd2W10pCj4gIHsKPiAgCXZvaWQgKCp0aGVLZXJuZWwp
-KGludCB6ZXJvLCBpbnQgYXJjaCwgdm9pZCAqcGFyYW1zKTsKPiAtCWludCBmZCwgcmV0Owo+ICsJ
-aW50IGZkLCByZXQsIHN3YXAgPSAwOwo+ICAJc3RydWN0IHppbWFnZV9oZWFkZXIgaGVhZGVyOwo+
-ICAJdm9pZCAqemltYWdlOwo+ICsJdTMyIGVuZDsKCiNpZmRlZiBDT05GSUdfQk9PVFpfRU5ESUFO
-RVNTX1NXQVAKCWludCBlbmFibGVfc3dhcCA9IDE7CiNlbHNlCglpbnQgZW5hYmxlX3N3YXAgPSAw
-OwojZW5kaWYKCj4gIAo+ICAJaWYgKGFyZ2MgIT0gMikgewo+ICAJCWJhcmVib3hfY21kX3VzYWdl
-KGNtZHRwKTsKPiBAQCAtMzIwLDI3ICszMzEsNTEgQEAgc3RhdGljIGludCBkb19ib290eihzdHJ1
-Y3QgY29tbWFuZCAqY21kdHAsIGludCBhcmdjLCBjaGFyICphcmd2W10pCj4gIAkJZ290byBlcnJf
-b3V0Owo+ICAJfQo+ICAKPiAtCWlmIChoZWFkZXIubWFnaWMgIT0gMHgwMTZmMjgxOCkgewo+ICsJ
-c3dpdGNoIChoZWFkZXIubWFnaWMpIHsKPiArCWNhc2Ugc3dhYjMyKFpJTUFHRV9NQUdJQyk6Cj4g
-KwkJc3dhcCA9IDE7CgoJCXN3YXAgPSBlbmFibGVfc3dhcDsKClRoaXMgc2hvdWxkIGJlIGVub3Vn
-aCBmb3IgdGhlIGNvbXBpbGVyIHRvIHRocm93IGF3YXkgbW9zdCBvdmVyaGVhZC4KCj4gKwkJLyog
-ZmFsbCB0aHJvdWdoICovCj4gKwljYXNlIFpJTUFHRV9NQUdJQzoKPiArCQlicmVhazsKPiArCWRl
-ZmF1bHQ6Cj4gIAkJcHJpbnRmKCJpbnZhbGlkIG1hZ2ljIDB4JTA4eFxuIiwgaGVhZGVyLm1hZ2lj
-KTsKPiAgCQlnb3RvIGVycl9vdXQ7Cj4gIAl9Cj4gIAo+IC0JemltYWdlID0geG1hbGxvYyhoZWFk
-ZXIuZW5kKTsKPiArCWVuZCA9IGhlYWRlci5lbmQ7Cj4gKwo+ICsJaWYgKHN3YXApCj4gKwkJZW5k
-ID0gc3dhYjMyKGVuZCk7Cj4gKwo+ICsJemltYWdlID0geG1hbGxvYyhlbmQpOwo+ICAJbWVtY3B5
-KHppbWFnZSwgJmhlYWRlciwgc2l6ZW9mKGhlYWRlcikpOwo+ICAKPiAtCXJldCA9IHJlYWQoZmQs
-IHppbWFnZSArIHNpemVvZihoZWFkZXIpLCBoZWFkZXIuZW5kIC0gc2l6ZW9mKGhlYWRlcikpOwo+
-IC0JaWYgKHJldCA8IGhlYWRlci5lbmQgLSBzaXplb2YoaGVhZGVyKSkgewo+ICsJcmV0ID0gcmVh
-ZChmZCwgemltYWdlICsgc2l6ZW9mKGhlYWRlciksIGVuZCAtIHNpemVvZihoZWFkZXIpKTsKPiAr
-CWlmIChyZXQgPCBlbmQgLSBzaXplb2YoaGVhZGVyKSkgewo+ICAJCXByaW50ZigiY291bGQgbm90
-IHJlYWQgJXNcbiIsIGFyZ3ZbMV0pOwo+ICAJCWdvdG8gZXJyX291dDE7Cj4gIAl9Cj4gIAo+ICsJ
-aWYgKHN3YXApIHsKPiArCQl2b2lkICpwdHI7Cj4gKwkJZm9yIChwdHIgPSB6aW1hZ2U7IHB0ciA8
-IHppbWFnZSArIGVuZDsgcHRyICs9IDQpCj4gKwkJCSoodTMyICopcHRyID0gc3dhYjMyKCoodTMy
-ICopcHRyKTsKPiArCX0KPiArCj4gIAl0aGVLZXJuZWwgPSB6aW1hZ2U7Cj4gIAo+IC0JcHJpbnRm
-KCJsb2FkZWQgekltYWdlIGZyb20gJXMgd2l0aCBzaXplICVkXG4iLCBhcmd2WzFdLCBoZWFkZXIu
-ZW5kKTsKPiArCXByaW50ZigibG9hZGVkIHpJbWFnZSBmcm9tICVzIHdpdGggc2l6ZSAlZFxuIiwg
-YXJndlsxXSwgZW5kKTsKPiAgCj4gLQlzZXR1cF90YWdzKE5VTEwpOwo+ICsJc2V0dXBfdGFncyhO
-VUxMLCBzd2FwKTsKPiAgCj4gIAlzaHV0ZG93bl9iYXJlYm94KCk7Cj4gKwlpZiAoc3dhcCkgewo+
-ICsJCXUzMiByZWc7Cj4gKwkJX19hc21fXyBfX3ZvbGF0aWxlX18oIm1yYyBwMTUsIDAsICUwLCBj
-MSwgYzAiIDogIj1yIiAocmVnKSk7Cj4gKwkJcmVnIF49IENSX0I7IC8qIHN3YXAgYmlnLWVuZGlh
-biBmbGFnICovCj4gKwkJX19hc21fXyBfX3ZvbGF0aWxlX18oIm1jciBwMTUsIDAsICUwLCBjMSwg
-YzAiIDo6ICJyIiAocmVnKSk7Cj4gKwl9Cj4gKwo+ICAJdGhlS2VybmVsKDAsIGFybWxpbnV4X2Fy
-Y2hpdGVjdHVyZSwgYXJtbGludXhfYm9vdHBhcmFtcyk7Cj4gIAo+ICAJcmV0dXJuIDA7Cj4gCj4g
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KPiBiYXJlYm94
-IG1haWxpbmcgbGlzdAo+IGJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwo+IGh0dHA6Ly9saXN0
-cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAoKLS0gClBlbmd1dHJvbml4
-IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICB8CkluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6
-Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVp
-bSwgR2VybWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhp
-bGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1
-NSB8CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJl
-Ym94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3Rz
-LmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Hi Krzysztof,
+
+Nice series! I haven't got much to add.
+
+On Tue, Dec 21, 2010 at 12:06:12AM +0100, Krzysztof Halasa wrote:
+> +
+> +	devfs_add_partition("nor0", BAREBOX_START, BAREBOX_LENGTH,
+> +			    DEVFS_PARTITION_FIXED | DEVFS_PARTITION_READONLY, "barebox");
+> +	devfs_add_partition("nor0", NPE_A_START, NPE_A_LENGTH,
+> +			    DEVFS_PARTITION_FIXED | DEVFS_PARTITION_READONLY, "NPE-A");
+> +	devfs_add_partition("nor0", NPE_B_START, NPE_B_LENGTH,
+> +			    DEVFS_PARTITION_FIXED | DEVFS_PARTITION_READONLY, "NPE-B");
+> +	devfs_add_partition("nor0", NPE_C_START, NPE_C_LENGTH,
+> +			    DEVFS_PARTITION_FIXED | DEVFS_PARTITION_READONLY, "NPE-C");
+> +	devfs_add_partition("nor0", NPE_ENV0_START, NPE_ENV0_LENGTH,
+> +			    DEVFS_PARTITION_FIXED, "env0");
+
+These partitions are not on eraseblock boundaries, so I assume you use
+some script to combine barebox and firmware into a single image. Can we
+integrate this into the make system or at least add some instructions
+how to generate this image?
+
+> +
+> +#ifdef CONFIG_USE_IRQ
+> +
+> +static void (*irq_handlers[HALF_QUEUES])(void *pdev);
+> +static void *irq_pdevs[HALF_QUEUES];
+> +
+> +#undef fls
+> +static inline int fls(int x)
+> +{
+> +	int ret;
+> +	asm("clz\t%0, %1" : "=r" (ret) : "r" (x) : "cc");
+> +	ret = 32 - ret;
+> +	return ret;
+> +}
+
+fls is defined in a similar way in arch/arm/include/asm/bitops.h:
+
+#define fls(x) \
+	(__builtin_constant_p(x) ? constant_fls(x) : \
+	({ int __r; asm("clz\t%0, %1" : "=r"(__r) : "r"(x) : "cc"); 32-__r; }))
+
+Or am I missing something?
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
