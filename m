@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PV0LO-0007Km-JX
-	for barebox@lists.infradead.org; Tue, 21 Dec 2010 11:25:31 +0000
+	id 1PV0LO-0007Ko-JS
+	for barebox@lists.infradead.org; Tue, 21 Dec 2010 11:25:30 +0000
 Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
 	by metis.ext.pengutronix.de with esmtp (Exim 4.71)
-	(envelope-from <jbe@pengutronix.de>) id 1PV0LM-0007h3-I2
+	(envelope-from <jbe@pengutronix.de>) id 1PV0LM-0007h8-Kc
 	for barebox@lists.infradead.org; Tue, 21 Dec 2010 12:25:24 +0100
 Received: from jbe by octopus.hi.pengutronix.de with local (Exim 4.69)
-	(envelope-from <jbe@pengutronix.de>) id 1PV0LM-0000Qv-Fu
+	(envelope-from <jbe@pengutronix.de>) id 1PV0LM-0000R4-Hd
 	for barebox@lists.infradead.org; Tue, 21 Dec 2010 12:25:24 +0100
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Tue, 21 Dec 2010 12:25:16 +0100
-Message-Id: <1292930721-31734-5-git-send-email-jbe@pengutronix.de>
+Date: Tue, 21 Dec 2010 12:25:19 +0100
+Message-Id: <1292930721-31734-8-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1292930721-31734-1-git-send-email-jbe@pengutronix.de>
 References: <1292930721-31734-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -28,49 +28,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/9] ARM STM/i.MX: Setting the iomux needs at least 32 bit.
+Subject: [PATCH 7/9] ARM STM/i.MX: Avoid very long lines
 To: barebox@lists.infradead.org
 
 Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 ---
- arch/arm/mach-stm/include/mach/gpio.h |    4 +++-
- arch/arm/mach-stm/iomux-imx.c         |    2 +-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ arch/arm/mach-stm/iomux-imx.c |    6 ++++--
+ 1 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/mach-stm/include/mach/gpio.h b/arch/arm/mach-stm/include/mach/gpio.h
-index 5615b67..97566a2 100644
---- a/arch/arm/mach-stm/include/mach/gpio.h
-+++ b/arch/arm/mach-stm/include/mach/gpio.h
-@@ -20,6 +20,8 @@
- #ifndef __ASM_MACH_GPIO_H
- #define __ASM_MACH_GPIO_H
- 
-+#include <types.h>
-+
- #if defined CONFIG_ARCH_IMX23
- # include <mach/iomux-imx23.h>
- #endif
-@@ -27,6 +29,6 @@
- # include <mach/iomux-imx28.h>
- #endif
- 
--void imx_gpio_mode(unsigned);
-+void imx_gpio_mode(uint32_t);
- 
- #endif /* __ASM_MACH_GPIO_H */
 diff --git a/arch/arm/mach-stm/iomux-imx.c b/arch/arm/mach-stm/iomux-imx.c
-index 2ebe058..85e9684 100644
+index b9fa565..c59f0ac 100644
 --- a/arch/arm/mach-stm/iomux-imx.c
 +++ b/arch/arm/mach-stm/iomux-imx.c
-@@ -79,7 +79,7 @@ static unsigned calc_output_reg(unsigned no)
- /**
-  * @param[in] m One of the defines from iomux-mx23.h to configure *one* pin
-  */
--void imx_gpio_mode(unsigned m)
-+void imx_gpio_mode(uint32_t m)
- {
- 	uint32_t reg;
- 	unsigned gpio_pin, reg_offset;
+@@ -124,14 +124,16 @@ void imx_gpio_mode(uint32_t m)
+ 
+ 	if (PE_PRESENT(m)) {
+ 		reg_offset = calc_pullup_reg(gpio_pin);
+-		writel(0x1 << (gpio_pin % 32), IMX_IOMUXC_BASE + reg_offset + (GET_PULLUP(m) == 1 ? 4 : 8));
++		writel(0x1 << (gpio_pin % 32), IMX_IOMUXC_BASE + reg_offset +
++				(GET_PULLUP(m) == 1 ? 4 : 8));
+ 	}
+ 
+ 	if (GET_FUNC(m) == IS_GPIO) {
+ 		if (GET_GPIODIR(m) == 1) {
+ 			/* first set the output value */
+ 			reg_offset = calc_output_reg(gpio_pin);
+-			writel(0x1 << (gpio_pin % 32), IMX_IOMUXC_BASE + reg_offset + (GET_GPIOVAL(m) == 1 ? 4 : 8));
++			writel(0x1 << (gpio_pin % 32), IMX_IOMUXC_BASE +
++				reg_offset + (GET_GPIOVAL(m) == 1 ? 4 : 8));
+ 			/* then the direction */
+ 			reg_offset = calc_output_enable_reg(gpio_pin);
+ 			writel(0x1 << (gpio_pin % 32),
 -- 
 1.7.2.3
 
