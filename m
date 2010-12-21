@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from fmmailgate01.web.de ([217.72.192.221])
+Received: from fmmailgate03.web.de ([217.72.192.234])
 	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1PUy3b-0002LN-Fz
-	for barebox@lists.infradead.org; Tue, 21 Dec 2010 08:58:56 +0000
-Date: Tue, 21 Dec 2010 09:58:53 +0100
+	id 1PUyMI-0002Uh-7V
+	for barebox@lists.infradead.org; Tue, 21 Dec 2010 09:18:17 +0000
+Date: Tue, 21 Dec 2010 10:17:15 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20101221085853.GW6017@pengutronix.de>
+Message-ID: <20101221091715.GX6017@pengutronix.de>
 References: <m362uodqms.fsf@intrepid.localdomain>
-	<m3vd2ocax2.fsf@intrepid.localdomain>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <m3vd2ocax2.fsf@intrepid.localdomain>
+In-Reply-To: <m362uodqms.fsf@intrepid.localdomain>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,73 +18,76 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 5] Fix error handling with malloc, memalign etc.
-	Memalign() can't fail now.
+Subject: Re: my IXP4xx-related and other patches
 To: Krzysztof Halasa <khc@pm.waw.pl>
 Cc: barebox@lists.infradead.org
 
-T24gTW9uLCBEZWMgMjAsIDIwMTAgYXQgMTE6NTQ6NDlQTSArMDEwMCwgS3J6eXN6dG9mIEhhbGFz
-YSB3cm90ZToKPiBGaXggZXJyb3IgaGFuZGxpbmcgd2l0aCBtYWxsb2MsIG1lbWFsaWduIGV0Yy4g
-TWVtYWxpZ24oKSBjYW4ndCBmYWlsIG5vdy4KPiAKPiBUaGUgaWRlYSBpcyB0byBwYW5pYygpIHdo
-ZW4gdGhlcmUgaXMgbm8gbWVtb3J5IGF2YWlsYWJsZSBmb3Igbm9ybWFsCj4gb3BlcmF0aW9uLiBF
-eGNlcHRpb246IGNvZGUgd2hpY2ggY2FuIGNvbnN1bWUgYXJiaXRyYXJ5IGFtb3VudCBvZiBSQU0K
-PiAoZXhhbXBsZTogZmlsZXMgYWxsb2NhdGVkIGluIHJhbWZzKSBtdXN0IHJlcG9ydCBlcnJvciBp
-bnN0ZWFkIG9mCj4gcGFuaWMoKS4KPiAKPiBUaGlzIHBhdGNoIGFsc28gZml4ZXMgY29kZSB3aGlj
-aCBkaWRuJ3QgY2hlY2sgZm9yIE5VTEwgZnJvbSBtYWxsb2MoKQo+IGV0Yy4KPiAKPiBVc2FnZTog
-bWFsbG9jKCkgcmV0dXJucyBOVUxMIHdoZW4gb3V0IG9mIFJBTS4KPiB4bWFsbG9jKCksIG1lbWFs
-aWduKCkgYWx3YXlzIHJldHVybiBub24tTlVMTCBvciBwYW5pYygpLgo+IAo+IFNpZ25lZC1vZmYt
-Ynk6IEtyenlzenRvZiBIYcWCYXNhIDxraGNAcG0ud2F3LnBsPgo+IAo+IGRpZmYgLS1naXQgYS9h
-cmNoL3NhbmRib3gvb3MvY29tbW9uLmMgYi9hcmNoL3NhbmRib3gvb3MvY29tbW9uLmMKPiBpbmRl
-eCAyODdiZTBkLi44NDA5Y2E4IDEwMDY0NAo+IC0tLSBhL2FyY2gvc2FuZGJveC9vcy9jb21tb24u
-Ywo+ICsrKyBiL2FyY2gvc2FuZGJveC9vcy9jb21tb24uYwo+IEBAIC0yMjMsMTAgKzIyMyw3IEBA
-IHN0YXRpYyBpbnQgYWRkX2ltYWdlKGNoYXIgKnN0ciwgY2hhciAqbmFtZSkKPiAgCXN0cnVjdCBz
-dGF0IHM7Cj4gIAljaGFyICpvcHQ7Cj4gIAlpbnQgZmQsIHJldDsKPiAtCXN0cnVjdCBoZl9wbGF0
-Zm9ybV9kYXRhICpoZiA9IG1hbGxvYyhzaXplb2Yoc3RydWN0IGhmX3BsYXRmb3JtX2RhdGEpKTsK
-PiAtCj4gLQlpZiAoIWhmKQo+IC0JCXJldHVybiAtMTsKPiArCXN0cnVjdCBoZl9wbGF0Zm9ybV9k
-YXRhICpoZiA9IHhtYWxsb2Moc2l6ZW9mKHN0cnVjdCBoZl9wbGF0Zm9ybV9kYXRhKSk7Cj4gIAo+
-ICAJZmlsZSA9IHN0cnRvayhzdHIsICIsIik7Cj4gIAl3aGlsZSAoKG9wdCA9IHN0cnRvayhOVUxM
-LCAiLCIpKSkgewo+IEBAIC0yODUsMTEgKzI4Miw3IEBAIGludCBtYWluKGludCBhcmdjLCBjaGFy
-ICphcmd2W10pCj4gIAljaGFyIHN0cls2XTsKPiAgCWludCBmZG5vID0gMCwgZW52bm8gPSAwOwo+
-ICAKPiAtCXJhbSA9IG1hbGxvYyhtYWxsb2Nfc2l6ZSk7Cj4gLQlpZiAoIXJhbSkgewo+IC0JCXBy
-aW50ZigidW5hYmxlIHRvIGdldCBtYWxsb2Mgc3BhY2VcbiIpOwo+IC0JCWV4aXQoMSk7Cj4gLQl9
-Cj4gKwlyYW0gPSB4bWFsbG9jKG1hbGxvY19zaXplKTsKPiAgCW1lbV9tYWxsb2NfaW5pdChyYW0s
-IHJhbSArIG1hbGxvY19zaXplKTsKPiAgCj4gIAl3aGlsZSAoMSkgewoKRG9uJ3QgY2hhbmdlIHRo
-ZXNlLiBUaGlzIGlzIHRoZSBmaWxlIHdoaWNoIGNvbm5lY3RzIGJhcmVib3ggdG8gdGhlIGhvc3QK
-b24gc2FuZGJveC4gVGhpcyBpcyBub3QgdGhlIGJhcmVib3ggbWFsbG9jIGJ1dCB0aGUgZ2xpYmMg
-bWFsbG9jIHdoaWNoIGlzCmNhbGxlZCBoZXJlLgoKPiAtLS0gYS9jb21tb24vZGxtYWxsb2MuYwo+
-ICsrKyBiL2NvbW1vbi9kbG1hbGxvYy5jCj4gQEAgLTEsOSArMSw5IEBACj4gLQo+ICsjaW5jbHVk
-ZSA8Y29tbW9uLmg+Cj4gICNpbmNsdWRlIDxjb25maWcuaD4KPiAgI2luY2x1ZGUgPG1hbGxvYy5o
-Pgo+ICAjaW5jbHVkZSA8c3RyaW5nLmg+Cj4gICNpbmNsdWRlIDxtZW1fbWFsbG9jLmg+Cj4gLQo+
-ICsjaW5jbHVkZSA8eGZ1bmNzLmg+Cj4gICNpbmNsdWRlIDxzdGRpby5oPgo+ICAjaW5jbHVkZSA8
-bW9kdWxlLmg+Cj4gIAo+IEBAIC0xNjk2LDEyICsxNjk2LDEyIEBAIHZvaWQgKm1lbWFsaWduKHNp
-emVfdCBhbGlnbm1lbnQsIHNpemVfdCBieXRlcykKPiAgCWxvbmcgcmVtYWluZGVyX3NpemU7CS8q
-IGl0cyBzaXplICovCj4gIAo+ICAJaWYgKChsb25nKSBieXRlcyA8IDApCj4gLQkJcmV0dXJuIE5V
-TEw7Cj4gKwkJcGFuaWMoIm1lbWFsaWduOiByZXF1ZXN0ZWQgJWkgYnl0ZXNcbiIsIGJ5dGVzKTsK
-PiAgCj4gIAkvKiBJZiBuZWVkIGxlc3MgYWxpZ25tZW50IHRoYW4gd2UgZ2l2ZSBhbnl3YXksIGp1
-c3QgcmVsYXkgdG8gbWFsbG9jICovCj4gIAo+ICAJaWYgKGFsaWdubWVudCA8PSBNQUxMT0NfQUxJ
-R05NRU5UKQo+IC0JCXJldHVybiBtYWxsb2MoYnl0ZXMpOwo+ICsJCXJldHVybiB4bWFsbG9jKGJ5
-dGVzKTsKPiAgCj4gIAkvKiBPdGhlcndpc2UsIGVuc3VyZSB0aGF0IGl0IGlzIGF0IGxlYXN0IGEg
-bWluaW11bSBjaHVuayBzaXplICovCj4gIAo+IEBAIC0xNzExLDEwICsxNzExLDcgQEAgdm9pZCAq
-bWVtYWxpZ24oc2l6ZV90IGFsaWdubWVudCwgc2l6ZV90IGJ5dGVzKQo+ICAJLyogQ2FsbCBtYWxs
-b2Mgd2l0aCB3b3JzdCBjYXNlIHBhZGRpbmcgdG8gaGl0IGFsaWdubWVudC4gKi8KPiAgCj4gIAlu
-YiA9IHJlcXVlc3Qyc2l6ZShieXRlcyk7Cj4gLQltID0gKGNoYXIqKShtYWxsb2MgKG5iICsgYWxp
-Z25tZW50ICsgTUlOU0laRSkpOwo+IC0KPiAtCWlmICghbSkKPiAtCQlyZXR1cm4gTlVMTDsJLyog
-cHJvcGFnYXRlIGZhaWx1cmUgKi8KPiArCW0gPSAoY2hhciopKHhtYWxsb2MobmIgKyBhbGlnbm1l
-bnQgKyBNSU5TSVpFKSk7Cj4gIAo+ICAJcCA9IG1lbTJjaHVuayhtKTsKPiAgCgpJIHRoaW5rIHdl
-IHNob3VsZG4ndCB0b3VjaCBtZW1hbGlnbiBidXQgaW50cm9kdWNlIGEgeG1lbWFsaWduIGZ1bmN0
-aW9uCmluc3RlYWQuIFRoZSB4IGluIHRoZSBuYW1lIHN0cmVzc2VzIHRoYXQgdGhlIHJldHVybiB2
-YWx1ZSBkb2Vzbid0IGhhdmUKdG8gYmUgY2hlY2tlZC4gQWxzbyBpdCBnaXZlcyB0aGUgdXNlciBh
-IGNoYW5jZSBleHBsaWNpdGVseSBjYWxsIG1lbWFsaWduCmlmIGhlIHdpc2hlcyB0by4KClNhc2No
-YQoKLS0gClBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICB8CkluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAgICAg
-ICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8ClBlaW5lciBTdHIuIDYt
-OCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAg
-ICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICAr
-NDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVh
-ZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94
-Cg==
+Hi Krzysztof,
+
+On Mon, Dec 20, 2010 at 11:30:03PM +0100, Krzysztof Halasa wrote:
+> Hello,
+> 
+> I've been working a bit on IXP4xx support lately and it seems I'm at the
+> point I can now boot Barebox on a Goramo Multilink routers
+> (IXP425-based). It requires several patches (will post them shortly) and
+> NPE microcode files from Intel (or from elsewhere, the regular non-VLAN
+> microcode v. 2.4 is needed, i.e., same as with Linux).
+
+Nice ;)
+
+I applied all patches except the malloc patch and the ixp4xx core patch
+which need minor fixups.
+
+> 
+> The binary microcode must be appended to Barebox at correct offsets for
+> the NPE driver to find it, details are in board support file
+> (arch/arm/boards/multilink/multilink.c):
+> 
+> #define BAREBOX_START        0x00000
+> #define BAREBOX_LENGTH       0x34000
+> #define NPE_A_START          (BAREBOX_START + BAREBOX_LENGTH)
+> #define NPE_A_LENGTH         0x05000
+> #define NPE_B_START          (NPE_A_START + NPE_A_LENGTH)
+> #define NPE_B_LENGTH         0x03000
+> #define NPE_C_START          (NPE_B_START + NPE_B_LENGTH)
+> #define NPE_C_LENGTH         0x04000
+> #define NPE_ENV0_START       (NPE_C_START + NPE_C_LENGTH)
+> #define NPE_ENV0_LENGTH      0x20000
+> 
+> when passed to Linux:
+> Creating XXX MTD partitions on "IXP4XX-Flash.0":
+> 0x000000000000-0x000000034000 : "barebox"
+> 0x000000034000-0x000000039000 : "NPE-A"
+> 0x000000039000-0x00000003c000 : "NPE-B"
+> 0x00000003c000-0x000000040000 : "NPE-C"
+> 0x000000040000-0x000000060000 : "env0"
+
+As said in the comment to patch, we need to at least document this.
+
+> 
+> User-available flash area starts at 0x60000.
+> 
+> All this IXP4xx code is big-endian only. Too much work with LE (NPE
+> coprocessors would need buffer byte swapping, flash (EXP bus) would need
+> 16-bit word swapping etc). Big-endian Barebox can load both LE and BE
+> Linux anyway ("bootz" only at the moment).
+
+Yes, big endian is enough for now. It's good to have a big endian ARM
+machine in the tree.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
