@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PV0LO-0007Kq-Jc
-	for barebox@lists.infradead.org; Tue, 21 Dec 2010 11:25:33 +0000
+	id 1PV0LO-0007Kr-JU
+	for barebox@lists.infradead.org; Tue, 21 Dec 2010 11:25:30 +0000
 Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
 	by metis.ext.pengutronix.de with esmtp (Exim 4.71)
-	(envelope-from <jbe@pengutronix.de>) id 1PV0LM-0007hB-Lq
+	(envelope-from <jbe@pengutronix.de>) id 1PV0LM-0007h9-LX
 	for barebox@lists.infradead.org; Tue, 21 Dec 2010 12:25:24 +0100
 Received: from jbe by octopus.hi.pengutronix.de with local (Exim 4.69)
-	(envelope-from <jbe@pengutronix.de>) id 1PV0LM-0000RA-Im
+	(envelope-from <jbe@pengutronix.de>) id 1PV0LM-0000R7-IC
 	for barebox@lists.infradead.org; Tue, 21 Dec 2010 12:25:24 +0100
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Tue, 21 Dec 2010 12:25:21 +0100
-Message-Id: <1292930721-31734-10-git-send-email-jbe@pengutronix.de>
+Date: Tue, 21 Dec 2010 12:25:20 +0100
+Message-Id: <1292930721-31734-9-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1292930721-31734-1-git-send-email-jbe@pengutronix.de>
 References: <1292930721-31734-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -28,108 +28,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 9/9] ARM Chumby: Add list of available GPIOs and their meaning
+Subject: [PATCH 8/9] ARM STM/i.MX: Replace cryptic numbers
 To: barebox@lists.infradead.org
+
+Try to make the source more understandable.
 
 Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 ---
- arch/arm/boards/chumby_falconwing/falconwing.c |   85 ++++++++++++++++++++++++
- 1 files changed, 85 insertions(+), 0 deletions(-)
+ arch/arm/mach-stm/iomux-imx.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boards/chumby_falconwing/falconwing.c b/arch/arm/boards/chumby_falconwing/falconwing.c
-index f5ed133..76ff906 100644
---- a/arch/arm/boards/chumby_falconwing/falconwing.c
-+++ b/arch/arm/boards/chumby_falconwing/falconwing.c
-@@ -390,4 +390,89 @@ make ARCH=arm CROSS_COMPILE=armv5compiler
-   partition or you can do it in the classic way: mkfs on it, mount it and copy
-   all required data and programs into it.
+diff --git a/arch/arm/mach-stm/iomux-imx.c b/arch/arm/mach-stm/iomux-imx.c
+index c59f0ac..bf6165f 100644
+--- a/arch/arm/mach-stm/iomux-imx.c
++++ b/arch/arm/mach-stm/iomux-imx.c
+@@ -125,7 +125,7 @@ void imx_gpio_mode(uint32_t m)
+ 	if (PE_PRESENT(m)) {
+ 		reg_offset = calc_pullup_reg(gpio_pin);
+ 		writel(0x1 << (gpio_pin % 32), IMX_IOMUXC_BASE + reg_offset +
+-				(GET_PULLUP(m) == 1 ? 4 : 8));
++				(GET_PULLUP(m) == 1 ? BIT_SET : BIT_CLR));
+ 	}
  
-+@section gpio_falconwing Available GPIOs
-+
-+The Falconwing uses some GPIOs to control various features. With the regular
-+GPIO commands these features can be controlled at @a barebox's runtime.
-+
-+<table width="100%" border="1" cellspacing="1" cellpadding="3">
-+	<tr>
-+		<td>No</td>
-+		<td>Direction</td>
-+		<td>Function</td>
-+		<td>Reset</td>
-+		<td>Set</td>
-+	</tr>
-+	<tr>
-+		<td>8</td>
-+		<td>Output</td>
-+		<td>Switch Audio Amplifier</td>
-+		<td>Off</td>
-+		<td>On</td>
-+	</tr>
-+	<tr>
-+		<td>11</td>
-+		<td>Input</td>
-+		<td>Head Phone Detection</td>
-+		<td>TBD</td>
-+		<td>TBD</td>
-+	</tr>
-+	<tr>
-+		<td>14</td>
-+		<td>Input</td>
-+		<td>Unused (J113)</td>
-+		<td>User</td>
-+		<td>User</td>
-+	</tr>
-+	<tr>
-+		<td>15</td>
-+		<td>Input</td>
-+		<td>Unused (J114)</td>
-+		<td>User</td>
-+		<td>User</td>
-+	</tr>
-+	<tr>
-+		<td>26</td>
-+		<td>Output</td>
-+		<td>USB Power</td>
-+		<td>TBD</td>
-+		<td>TBD</td>
-+	</tr>
-+	<tr>
-+		<td>27</td>
-+		<td>Input</td>
-+		<td>Display Connected</td>
-+		<td>Display<br>Attached</td>
-+		<td>Display<br>Disconnected</td>
-+	</tr>
-+	<tr>
-+		<td>29</td>
-+		<td>Output</td>
-+		<td>USB HUB Reset</td>
-+		<td>TBD</td>
-+		<td>TBD</td>
-+	</tr>
-+	<tr>
-+		<td>50</td>
-+		<td>Output</td>
-+		<td>Display Reset</td>
-+		<td>Display<br>Reset</td>
-+		<td>Display<br>Running</td>
-+	</tr>
-+	<tr>
-+		<td>60</td>
-+		<td>Output</td>
-+		<td>Display Backlight</td>
-+		<td>Backlight<br>Off</td>
-+		<td>Backlight<br>On (100 %)</td>
-+	</tr>
-+	<tr>
-+		<td>62</td>
-+		<td>Input</td>
-+		<td>Bend</td>
-+		<td>Not pressed</td>
-+		<td>Pressed</td>
-+	</tr>
-+</table>
-+
- */
+ 	if (GET_FUNC(m) == IS_GPIO) {
+@@ -133,7 +133,7 @@ void imx_gpio_mode(uint32_t m)
+ 			/* first set the output value */
+ 			reg_offset = calc_output_reg(gpio_pin);
+ 			writel(0x1 << (gpio_pin % 32), IMX_IOMUXC_BASE +
+-				reg_offset + (GET_GPIOVAL(m) == 1 ? 4 : 8));
++				reg_offset + (GET_GPIOVAL(m) == 1 ? BIT_SET : BIT_CLR));
+ 			/* then the direction */
+ 			reg_offset = calc_output_enable_reg(gpio_pin);
+ 			writel(0x1 << (gpio_pin % 32),
 -- 
 1.7.2.3
 
