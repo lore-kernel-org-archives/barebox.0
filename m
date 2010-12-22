@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 64.mail-out.ovh.net ([91.121.185.65])
-	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1PVD9w-0004bQ-T4
-	for barebox@lists.infradead.org; Wed, 22 Dec 2010 01:06:29 +0000
-Date: Wed, 22 Dec 2010 02:01:30 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20101222010130.GG19266@game.jcrosoft.org>
+Received: from fmmailgate02.web.de ([217.72.192.227])
+	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1PVO5X-00017N-1i
+	for barebox@lists.infradead.org; Wed, 22 Dec 2010 12:46:39 +0000
+Date: Wed, 22 Dec 2010 13:46:35 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20101222124635.GC6017@pengutronix.de>
 References: <m362uodqms.fsf@intrepid.localdomain>
-	<m3lj3kca6m.fsf@intrepid.localdomain>
+	<m3oc8gcae3.fsf@intrepid.localdomain>
+	<20101222005722.GD19266@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <m3lj3kca6m.fsf@intrepid.localdomain>
+In-Reply-To: <20101222005722.GD19266@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,20 +24,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 12] Fix NOR CFI flash driver to work on big endian systems.
-To: Krzysztof Halasa <khc@pm.waw.pl>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 10] ARM: Add support for IXP4xx CPU and for Goramo
+	Multilink router platform.
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org, Krzysztof Halasa <khc@pm.waw.pl>
 
-On 00:10 Tue 21 Dec     , Krzysztof Halasa wrote:
-> Fix NOR CFI flash driver to work on big endian systems.
-> Basically this transforms the u8/u16/u32/u64 union into
-> a single u64 value.
-> 
-> Not tested on LE platform. Apply with caution.
-I'd like to test it a few this week can we wait a few before applying?
+On Wed, Dec 22, 2010 at 01:57:22AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > +
+> > +#define BAREBOX_START        0x00000
+> > +#define BAREBOX_LENGTH       0x34000
+> > +#define NPE_A_START          (BAREBOX_START + BAREBOX_LENGTH)
+> > +#define NPE_A_LENGTH         0x05000
+> > +#define NPE_B_START          (NPE_A_START + NPE_A_LENGTH)
+> > +#define NPE_B_LENGTH         0x03000
+> > +#define NPE_C_START          (NPE_B_START + NPE_B_LENGTH)
+> > +#define NPE_C_LENGTH         0x04000
+> > +#define NPE_ENV0_START       (NPE_C_START + NPE_C_LENGTH)
+> > +#define NPE_ENV0_LENGTH      0x20000
+> why not put the NPE firmware in the env?
 
-Best Regards,
-J.
+That's a good idea. This way we can tell the users to put the firmware
+to arch/arm/boards/.../env/firmware before compilation and avoid
+redistribution problems if there are any. Another plus is that the
+barebox binary is not larger than it has to be.
+The only downside is that the environment gets bigger as it duplicates
+the firmware, but even this could be avoided if we add a second (non
+environment) filesystem image.
+
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
