@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 30.mail-out.ovh.net ([213.186.62.213])
-	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1PNQaA-0007Qa-4p
-	for barebox@lists.infradead.org; Tue, 30 Nov 2010 13:49:33 +0000
-Date: Tue, 30 Nov 2010 14:44:45 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20101130134445.GB12504@game.jcrosoft.org>
-References: <20101126194353.GH26540@game.jcrosoft.org>
-	<20101129205350.GZ6017@pengutronix.de>
+Received: from mail.free-electrons.com ([88.190.12.23])
+	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1PVjoo-00023Z-A0
+	for barebox@lists.infradead.org; Thu, 23 Dec 2010 11:58:51 +0000
+Message-ID: <4D133970.7090602@free-electrons.com>
+Date: Thu, 23 Dec 2010 12:58:40 +0100
+From: Gregory CLEMENT <gregory.clement@free-electrons.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20101129205350.GZ6017@pengutronix.de>
+References: <1292930721-31734-1-git-send-email-jbe@pengutronix.de>
+	<AANLkTik0aw9XY6Lqcmwhihwgk0CW86cGEmC+Q3=Kf-mS@mail.gmail.com>
+	<201012231250.08304.jbe@pengutronix.de>
+In-Reply-To: <201012231250.08304.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,40 +19,63 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/12] cfi_flash: improvment
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, Patrice Vilchez <patrice.vilchez@atmel.com>, Nicolas Ferre <nicolas.ferre@atmel.com>
+Subject: Re: [PATCH] Add gpio command support to STM/i.MX arch
+To: Juergen Beisert <jbe@pengutronix.de>
+Cc: barebox@lists.infradead.org, Uwe Kleine-Koenig <ukl@pengutronix.de>
 
-On 21:53 Mon 29 Nov     , Sascha Hauer wrote:
-> Hi J,
-> 
-> On Fri, Nov 26, 2010 at 08:43:53PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > Hi,
-> > 
-> > 	the following patch series improve the current flash
-> > 	by adding the atmel flash supportm fixing some issues and factorising
-> > 	more the code
-> > 
-> > 	Found during the adding of the at91rm9200ek
-> > 
-> > please pull
-> > The following changes since commit 53dbaf3fc7b8371ed1e24ef96715e41d60b8ebc3:
-> > 
-> >   Merge branch 'master' into next (2010-11-19 09:35:15 +0100)
-> 
-> Nice. I like this series.
-> 
-> Can we use readl/writel instead? The __raw_ versions do not exist on
-> architectures other than ARM.
-yeah we can but __raw_ is supposed to exist on all arch IIRC
-as u which
+On 12/23/2010 12:50 PM, Juergen Beisert wrote:
+> Gregory CLEMENT wrote:
+>> [...]
+>>> are available in the git repository at:
+>>>  http://git.pengutronix.de/git/jbe/for_barebox_next/ next_stm_gpio_v3
+>>
+>> I didn't manage to get your git tree:
+>> $ git remote add -f jbe http://git.pengutronix.de/git/jbe/for_barebox_ne=
+xt
+>> Updating jbe
+>> fatal: http://git.pengutronix.de/git/jbe/for_barebox_next/info/refs
+>> not found: did you run git update-server-info on the server?
+>> error: Could not fetch jbe
+>>
+>> Indeed http://git.pengutronix.de/git/jbe/for_barebox_next/info/refs
+>> does not exist.
+>> Maybe I did something wrong or maybe be you have to run git
+>> update-server-info on the server ;)
+> =
 
-Best Regards,
-J.
+> Sorry, I'm not a git expert. But this will show the content:
+> =
+
+> http://git.pengutronix.de/?p=3Djbe/for_barebox_next;a=3Dsummary
+> =
+
+> Don't know, what's wrong.
+> =
+
+> @Uwe: ?
+> =
+
+
+The problem was that I used http protocol instead of git protocol.
+this command finally worked perfectly:
+$git remote add -f jbe git://git.pengutronix.de/git/jbe/for_barebox_next
+
+Thanks to Eric B=E9nard for his advice.
+
+
+> jbe
+
+
+-- =
+
+Gregory Clement, Free Electrons
+Kernel, drivers, real-time and embedded Linux
+development, consulting, training and support.
+http://free-electrons.com
 
 _______________________________________________
 barebox mailing list
