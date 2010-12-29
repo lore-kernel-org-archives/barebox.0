@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-iw0-f177.google.com ([209.85.214.177])
-	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PZwOb-0005kC-68
-	for barebox@lists.infradead.org; Tue, 04 Jan 2011 02:13:09 +0000
-Received: by iwn38 with SMTP id 38so14955117iwn.36
-	for <barebox@lists.infradead.org>; Mon, 03 Jan 2011 18:13:07 -0800 (PST)
+Received: from out10.bezeqint.net ([192.115.188.217])
+	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1PY3JV-0005aa-RR
+	for barebox@lists.infradead.org; Wed, 29 Dec 2010 21:12:06 +0000
+From: Boaz Ben-David <boaz.bd@wellsense-tech.com>
+Date: Wed, 29 Dec 2010 23:11:59 +0200
+Message-ID: <1xhec4ka7so7xglae2hemo2h.1293657114183@email.android.com>
+Content-Language: en-US
 MIME-Version: 1.0
-Date: Mon, 3 Jan 2011 21:13:07 -0500
-Message-ID: <AANLkTikD-fLPZJFhFyoA8RnHc56dZYmrh4Ysh37rmmY9@mail.gmail.com>
-From: Cory Walker <cwalker32@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,38 +16,30 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1154469243=="
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: Barebox on a 3730
-To: barebox@lists.infradead.org
+Subject: Re: 4096 page NAND boot support on iMX35 PDK board
+To: =?iso-8859-1?Q?Eric_B=E9nard?= <eric@eukrea.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
---===============1154469243==
-Content-Type: multipart/alternative; boundary=0022152d7f19372b270498fbcfb3
+Ok, thanks alot for the help!
 
---0022152d7f19372b270498fbcfb3
-Content-Type: text/plain; charset=ISO-8859-1
+Boaz.
 
-Any updates on this? I'd like a copy of the patch so I could test it on my
-XM.
-
---0022152d7f19372b270498fbcfb3
-Content-Type: text/html; charset=ISO-8859-1
-
-Any updates on this? I&#39;d like a copy of the patch so I could test it on my XM.
-
---0022152d7f19372b270498fbcfb3--
+Eric B=E9nard <eric@eukrea.com> wrote:
 
 
---===============1154469243==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+On 29/12/2010 22:05, Boaz Ben-David wrote:
+> external
+
+so you have to update this function to your hardware (ie : to add 4k page
+support in the nand driver).
+
+Eric
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============1154469243==--
