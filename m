@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 63.mail-out.ovh.net ([91.121.185.56])
-	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1PXTCJ-00005A-Ms
-	for barebox@lists.infradead.org; Tue, 28 Dec 2010 06:38:16 +0000
-Date: Tue, 28 Dec 2010 07:33:00 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20101228063300.GP19266@game.jcrosoft.org>
-References: <1293399652-2615-1-git-send-email-franck.jullien@gmail.com>
-	<20101227064305.GN19266@game.jcrosoft.org>
-	<AANLkTik6kuBviOejiXT_6eU2ZiaagDDMJy2Fsgc_6dk_@mail.gmail.com>
+Received: from mail-qy0-f170.google.com ([209.85.216.170])
+	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1PXtRT-0004c9-N2
+	for barebox@lists.infradead.org; Wed, 29 Dec 2010 10:39:44 +0000
+Received: by qyk10 with SMTP id 10so12627010qyk.15
+	for <barebox@lists.infradead.org>; Wed, 29 Dec 2010 02:39:36 -0800 (PST)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <AANLkTik6kuBviOejiXT_6eU2ZiaagDDMJy2Fsgc_6dk_@mail.gmail.com>
+Date: Wed, 29 Dec 2010 11:39:35 +0100
+Message-ID: <AANLkTikS9O0_kNedeaCMRLvn9eH=kCK5ThJkFAAZ6JOs@mail.gmail.com>
+From: Belisko Marek <marek.belisko@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,61 +21,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] (reformated) Allow board specific fancy banner
-To: Franck JULLIEN <franck.jullien@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: x86 compilation broken in next branch
+To: barebox@lists.infradead.org
 
->      > diff --git a/common/console.c b/common/console.c
->      > index 82786f2..8a830e3 100644
->      > --- a/common/console.c
->      > +++ b/common/console.c
->      > @@ -46,7 +46,17 @@ EXPORT_SYMBOL(console_list);
->      >  static void display_banner (void)
->      >  {
->      >       printf (RELOC("\n\n%s\n\n"), RELOC_VAR(version_string));
->      > +#ifdef CONFIG_BOARD_BANNER
->      > +#ifdef BOARD_BANNER
->      > +     printf(RELOC(BOARD_BANNER));
->      > +#else
->      > +#define VT100_YELLOW "\033[1;33m"
->      > +#define VT100_RESET  "\033[1;0m"
->      > +     printf(RELOC("Board: " VT100_YELLOW CONFIG_BOARDINFO VT100_RESET
->      "\n"));
->      why not define it in the Kconfig simply?
-> 
->      I'm sorry but I do not see why we can not do it in the defconfig
-> 
->      Best Regards,
->      J.
-> 
->    We could do it in the arch/_the_arch_/Kconfig with depends on _your_board_
->    but I don't think that the better/more generic way. Moreover, if we ask
->    for the banner in Kconfig (with a string entry), fancy escape code and/or
->    carriage return will be hard to enter manually.
->    This is for example what I use for my neek board:
->    #define BOARD_BANNER "\e[1;32m\
->    ****************************************\n\
->    *          Altera NEEK board           *\n\
->    ****************************************\
->    \e[0m\n\n"
->    However, if you want I could manage to use the Kconfig way.....
->    Best regards,
-so define completely the banner in the config.h
-no VT100.... in the console.c as diferrent boards will have different colour
+Try to play around barebox on x86 will get following error:
+ld: barebox section `.initcall.8' will not fit in region `mbr'
+ld: section .initcall.8 loaded at [0000000000000400,0000000000000407]
+overlaps section .bootstrapping loaded at
+[0000000000000400,0000000000000867]
+ld: region `mbr' overflowed by 8 bytes
+make: *** [barebox] Error 1
 
-and something like this will be better 
+thanks,
 
-#ifndef CONFIG_BOARD_BANNER
-#undef  CONFIG_BOARD_BANNER_TEXT
-#define CONFIG_BOARD_BANNER_TEXT "Board: " CONFIG_BOARDINFO "\n"
-#endif
+marek
 
-printf(RELOC(CONFIG_BOARD_BANNER_TEXT));
+-- 
+as simple and primitive as possible
+-------------------------------------------------
+Marek Belisko - OPEN-NANDRA
+Freelance Developer
 
-please keep CONFIG_xxxx for the macro even in the config.h
-
-Best Regards,
-J.
+Ruska Nova Ves 219 | Presov, 08005 Slovak Republic
+Tel: +421 915 052 184
+skype: marekwhite
+icq: 290551086
+web: http://open-nandra.com
 
 _______________________________________________
 barebox mailing list
