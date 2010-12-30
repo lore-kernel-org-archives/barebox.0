@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from comal.ext.ti.com ([198.47.26.152])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PYIu1-0000F0-Fg
-	for barebox@lists.infradead.org; Thu, 30 Dec 2010 13:50:50 +0000
+	id 1PYJBr-0000Yj-0L
+	for barebox@lists.infradead.org; Thu, 30 Dec 2010 14:09:16 +0000
 Received: from dbdp31.itg.ti.com ([172.24.170.98])
-	by comal.ext.ti.com (8.13.7/8.13.7) with ESMTP id oBUDokBX009413
+	by comal.ext.ti.com (8.13.7/8.13.7) with ESMTP id oBUE9AbB010941
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
-	for <barebox@lists.infradead.org>; Thu, 30 Dec 2010 07:50:48 -0600
+	for <barebox@lists.infradead.org>; Thu, 30 Dec 2010 08:09:12 -0600
 From: Sanjeev Premi <premi@ti.com>
-Date: Thu, 30 Dec 2010 19:19:55 +0530
-Message-Id: <1293716998-5154-3-git-send-email-premi@ti.com>
-In-Reply-To: <1293716998-5154-1-git-send-email-premi@ti.com>
-References: <1293716998-5154-1-git-send-email-premi@ti.com>
+Date: Thu, 30 Dec 2010 19:39:07 +0530
+Message-Id: <1293718147-6248-1-git-send-email-premi@ti.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,117 +23,237 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/6] omap3: Update method to detect si revision
+Subject: [PATCH] omap34x: Add suffix to DPLL tables and related function
 To: barebox@lists.infradead.org
 
-This patch ensures that all silicon revisions
-are detected. (Current implementation cannot
-detect ES1.0).
+This patch adds suffix 34x to DPLL tables and related functions to
+indicate that they are applicable to OMAP34XX only.
 
-In the process, the 'seemingly' hardcoded macros
-identifying cpu revision (e.g. CPU_ES1P1) have
-been updated to include the CPU name as well.
-(The mapping of IDCODE value to silicon revision
-may not be same across different OMAP families).
+The suffix was required to prepare for support of OMAP36XX in the
+subsequent patch series.
 
 Signed-off-by: Sanjeev Premi <premi@ti.com>
 ---
- arch/arm/mach-omap/include/mach/sys_info.h |   21 ++++++---------
- arch/arm/mach-omap/omap3_generic.c         |   38 +++++++++++++++++++++++++---
- 2 files changed, 42 insertions(+), 17 deletions(-)
+ arch/arm/mach-omap/include/mach/omap3-clock.h |    8 ++--
+ arch/arm/mach-omap/omap3_clock.c              |    8 ++--
+ arch/arm/mach-omap/omap3_clock_core.S         |   56 ++++++++++++------------
+ 3 files changed, 36 insertions(+), 36 deletions(-)
 
-diff --git a/arch/arm/mach-omap/include/mach/sys_info.h b/arch/arm/mach-omap/include/mach/sys_info.h
-index f9df51c..8b8d332 100644
---- a/arch/arm/mach-omap/include/mach/sys_info.h
-+++ b/arch/arm/mach-omap/include/mach/sys_info.h
-@@ -51,20 +51,15 @@
- #define CPU_1610	0x1610
+diff --git a/arch/arm/mach-omap/include/mach/omap3-clock.h b/arch/arm/mach-omap/include/mach/omap3-clock.h
+index 1b42500..6613645 100644
+--- a/arch/arm/mach-omap/include/mach/omap3-clock.h
++++ b/arch/arm/mach-omap/include/mach/omap3-clock.h
+@@ -125,10 +125,10 @@ struct dpll_param {
+ 	unsigned int m2;
+ };
+ /* External functions see omap3_clock_core.S */
+-extern struct dpll_param *get_mpu_dpll_param(u32);
+-extern struct dpll_param *get_iva_dpll_param(u32);
+-extern struct dpll_param *get_core_dpll_param(u32);
+-extern struct dpll_param *get_per_dpll_param(u32);
++extern struct dpll_param *get_mpu_dpll_param_34x(u32);
++extern struct dpll_param *get_iva_dpll_param_34x(u32);
++extern struct dpll_param *get_core_dpll_param_34x(u32);
++extern struct dpll_param *get_per_dpll_param_34x(u32);
  
- /**
-- * CPU revision
-+ * Define CPU revisions
+ #endif /* __ASSEMBLY__ */
+ 
+diff --git a/arch/arm/mach-omap/omap3_clock.c b/arch/arm/mach-omap/omap3_clock.c
+index dad4ed1..c5a32e9 100644
+--- a/arch/arm/mach-omap/omap3_clock.c
++++ b/arch/arm/mach-omap/omap3_clock.c
+@@ -144,7 +144,7 @@ static void get_sys_clkin_sel(u32 osc_clk, u32 *sys_clkin_sel)
   */
--#define CPU_ES1		1
--#define CPU_ES1P1	2
--#define CPU_ES1P2	3
--#define CPU_ES2		4
--#define CPU_ES2P1	5
--#define CPU_ES2P2	6
--#define CPU_ES3		7
--#define CPU_ES3P1	8
--#define CPU_ES3P2	9
--#define CPU_ES4		10
--#define CPU_ES4P1	11
--#define CPU_ES4P2	12
-+#define	cpu_revision(cpu,rev)	(((cpu) << 16) | (rev))
-+
-+#define OMAP34XX_ES1		cpu_revision(CPU_3430, 0)
-+#define OMAP34XX_ES2		cpu_revision(CPU_3430, 1)
-+#define OMAP34XX_ES2_1		cpu_revision(CPU_3430, 2)
-+#define OMAP34XX_ES3		cpu_revision(CPU_3430, 3)
-+#define OMAP34XX_ES3_1		cpu_revision(CPU_3430, 4)
- 
- #define GPMC_MUXED		1
- #define GPMC_NONMUXED		0
-diff --git a/arch/arm/mach-omap/omap3_generic.c b/arch/arm/mach-omap/omap3_generic.c
-index cd9aceb..e146780 100644
---- a/arch/arm/mach-omap/omap3_generic.c
-+++ b/arch/arm/mach-omap/omap3_generic.c
-@@ -87,20 +87,50 @@ u32 get_cpu_type(void)
- }
- 
- /**
-- * @brief Extract the OMAP ES rev
-+ * @brief Extract the OMAP ES revision
-  *
-- * @return CPU_ES version
-+ * Latest known revision is considered default.
-+ *
-+ * @return silicon version
-  */
- u32 get_cpu_rev(void)
+ static void init_core_dpll_34x(u32 cpu_rev, u32 clk_sel)
  {
- 	u32 idcode_val;
--	u32 version;
-+	u32 version, retval;
+-	struct dpll_param *dp = get_core_dpll_param(cpu_rev);
++	struct dpll_param *dp = get_core_dpll_param_34x(cpu_rev);
+ #ifdef CONFIG_OMAP3_COPY_CLOCK_SRAM
+ 	int p0, p1, p2, p3;
+ #endif
+@@ -242,7 +242,7 @@ static void init_core_dpll_34x(u32 cpu_rev, u32 clk_sel)
+  */
+ static void init_per_dpll_34x(u32 cpu_rev, u32 clk_sel)
+ {
+-	struct dpll_param *dp = get_per_dpll_param(cpu_rev);
++	struct dpll_param *dp = get_per_dpll_param_34x(cpu_rev);
  
- 	idcode_val = readl(IDCODE_REG);
+ 	dp += clk_sel;
  
- 	version = get_version(idcode_val);
+@@ -300,7 +300,7 @@ static void init_per_dpll_34x(u32 cpu_rev, u32 clk_sel)
+  */
+ static void init_mpu_dpll_34x(u32 cpu_rev, u32 clk_sel)
+ {
+-	struct dpll_param *dp = get_mpu_dpll_param(cpu_rev);
++	struct dpll_param *dp = get_mpu_dpll_param_34x(cpu_rev);
  
--	return version;
-+	/*
-+	 * On OMAP3430 ES1.0 the IDCODE register is not exposed on L4.
-+	 * Use CPU ID to check for the same.
-+	 */
-+	__asm__ __volatile__("mrc p15, 0, %0, c0, c0, 0":"=r"(retval));
-+	if ((retval & 0xf) == 0x0) {
-+		retval = OMAP34XX_ES1;
-+	} else {
-+		switch (version) {
-+		case 0: /* This field was not set in early samples */
-+		case 1:
-+			retval = OMAP34XX_ES2;
-+			break;
-+		case 2:
-+			retval = OMAP34XX_ES2_1;
-+			break;
-+		case 3:
-+			retval = OMAP34XX_ES3;
-+			break;
-+		case 4:
-+			/*
-+			 * Same as default case
-+			 */
-+		default:
-+			retval = OMAP34XX_ES3_1;
-+		}
-+	}
-+
-+	return retval;
- }
+ 	dp += clk_sel;
+ 
+@@ -325,7 +325,7 @@ static void init_mpu_dpll_34x(u32 cpu_rev, u32 clk_sel)
+  */
+ static void init_iva_dpll_34x(u32 cpu_rev, u32 clk_sel)
+ {
+-	struct dpll_param *dp = get_iva_dpll_param(cpu_rev);
++	struct dpll_param *dp = get_iva_dpll_param_34x(cpu_rev);
+ 
+ 	dp += clk_sel;
+ 
+diff --git a/arch/arm/mach-omap/omap3_clock_core.S b/arch/arm/mach-omap/omap3_clock_core.S
+index f28069a..5a1f068 100644
+--- a/arch/arm/mach-omap/omap3_clock_core.S
++++ b/arch/arm/mach-omap/omap3_clock_core.S
+@@ -212,8 +212,8 @@ pll_div_val5:
+  *
+  * The tables are defined for separately each silicon revision.
+  */
+-.globl mpu_dpll_param_es1
+-mpu_dpll_param_es1:
++.globl mpu_dpll_param_34x_es1
++mpu_dpll_param_34x_es1:
+ /*    	M	N	FREQSEL	M2	*/
+ .word	0x0FE,	0x07,	0x05,	0x01		/* 12   MHz	*/
+ .word	0x17D,	0x0C,	0x03,	0x01		/* 13   MHz	*/
+@@ -221,8 +221,8 @@ mpu_dpll_param_es1:
+ .word	0x17D,	0x19,	0x03,	0x01		/* 26   MHz	*/
+ .word	0x1FA,	0x32,	0x03,	0x01		/* 38.4 MHz	*/
+ 
+-.globl mpu_dpll_param_es2
+-mpu_dpll_param_es2:
++.globl mpu_dpll_param_34x_es2
++mpu_dpll_param_34x_es2:
+ /*    	M	N	FREQSEL	M2	*/
+ .word	0x0FA,	0x05,	0x07,	0x01		/* 12   MHz	*/
+ .word	0x1F4,	0x0C,	0x03,	0x01		/* 13   MHz	*/
+@@ -231,24 +231,24 @@ mpu_dpll_param_es2:
+ .word	0x271,	0x2F,	0x03,	0x01		/* 38.4 MHz	*/
  
  /**
+- * @brief Get address of MPU DPLL param table.
++ * @brief Get address of MPU DPLL param table (OMAP34XX).
+  *
+  * @param rev Silicon revision.
+  *
+  * @return Address of the param table
+  */
+-.globl get_mpu_dpll_param
+-get_mpu_dpll_param:
++.globl get_mpu_dpll_param_34x
++get_mpu_dpll_param_34x:
+ 	mov	r3, r0
+ 	lsl	r3, r3, #16		/* Isolate silicon revision */
+ 	lsr	r3, r3, #16
+ 	cmp	r3, #0			/* Revision 1 ? */
+-	adr	r0, mpu_dpll_param_es1
++	adr	r0, mpu_dpll_param_34x_es1
+ 	bxeq	lr
+-	adr	r0, mpu_dpll_param_es2
++	adr	r0, mpu_dpll_param_34x_es2
+ 	mov	pc, lr
+ 
+-iva_dpll_param_es1:
++iva_dpll_param_34x_es1:
+ /*    	M	N	FREQSEL	M2				*/
+ .word	0x07D,	0x05,	0x07,	0x01		/* 12   MHz	*/
+ .word	0x0FA,	0x0C,	0x03,	0x01		/* 13   MHz	*/
+@@ -256,7 +256,7 @@ iva_dpll_param_es1:
+ .word	0x07D,	0x0C,	0x07,	0x01		/* 26   MHz	*/
+ .word	0x13F,	0x30,	0x03,	0x01		/* 38.4 MHz	*/
+ 
+-iva_dpll_param_es2:
++iva_dpll_param_34x_es2:
+ /*    	M	N	FREQSEL	M2				*/
+ .word	0x0B4,	0x05,	0x07,	0x01		/* 12   MHz	*/
+ .word	0x168,	0x0C,	0x03,	0x01		/* 13   MHz	*/
+@@ -265,24 +265,24 @@ iva_dpll_param_es2:
+ .word	0x0E1,	0x17,	0x06,	0x01		/* 38.4 MHz	*/
+ 
+ /**
+- * @brief Get address of IVA DPLL param table.
++ * @brief Get address of IVA DPLL param table (OMAP34XX).
+  *
+  * @param rev Silicon revision.
+  *
+  * @return Address of the param table
+  */
+-.globl get_iva_dpll_param
+-get_iva_dpll_param:
++.globl get_iva_dpll_param_34x
++get_iva_dpll_param_34x:
+ 	mov	r3, r0
+ 	lsl	r3, r3, #16		/* Isolate silicon revision */
+ 	lsr	r3, r3, #16
+ 	cmp	r3, #0			/* Revision 1 ? */
+-	adr	r0, iva_dpll_param_es1
++	adr	r0, iva_dpll_param_34x_es1
+ 	bxeq	lr
+-	adr	r0, iva_dpll_param_es2
++	adr	r0, iva_dpll_param_34x_es2
+ 	mov	pc, lr
+ 
+-core_dpll_param_es1:
++core_dpll_param_34x_es1:
+ /*    	M	N	FREQSEL	M2				*/
+ .word	0x19F,	0x0E,	0x03,	0x01		/* 12   MHz	*/
+ .word	0x1B2,	0x10,	0x03,	0x01		/* 13   MHz	*/
+@@ -290,7 +290,7 @@ core_dpll_param_es1:
+ .word	0x1B2,	0x21,	0x03,	0x01		/* 26   MHz	*/
+ .word	0x19F,	0x2F,	0x03,	0x01		/* 38.4 MHz	*/
+ 
+-core_dpll_param_es2:
++core_dpll_param_34x_es2:
+ /*    	M	N	FREQSEL	M2				*/
+ .word	0x0A6,	0x05,	0x07,	0x01		/* 12   MHz	*/
+ .word	0x14C,	0x0C,	0x03,	0x01		/* 13   MHz	*/
+@@ -299,25 +299,25 @@ core_dpll_param_es2:
+ .word	0x19F,	0x2F,	0x03,	0x01		/* 38.4 MHz	*/
+ 
+ /**
+- * @brief Get address of CORE DPLL param table.
++ * @brief Get address of CORE DPLL param table (OMAP34XX).
+  *
+  * @param rev Silicon revision.
+  *
+  * @return Address of the param table
+  */
+-.globl get_core_dpll_param
+-get_core_dpll_param:
++.globl get_core_dpll_param_34x
++get_core_dpll_param_34x:
+ 	mov	r3, r0
+ 	lsl	r3, r3, #16		/* Isolate silicon revision */
+ 	lsr	r3, r3, #16
+ 	cmp	r3, #0			/* Revision 1 ? */
+-	adr	r0, core_dpll_param_es1
++	adr	r0, core_dpll_param_34x_es1
+ 	bxeq	lr
+-	adr	r0, core_dpll_param_es2
++	adr	r0, core_dpll_param_34x_es2
+ 	mov	pc, lr
+ 
+ /* PER DPLL values are same for both ES1 and ES2 */
+-per_dpll_param:
++per_dpll_param_34x:
+ /*    	M	N	FREQSEL	M2				*/
+ .word	0x0D8,	0x05,	0x07,	0x09		/* 12   MHz	*/
+ .word	0x1B0,	0x0C,	0x03,	0x09		/* 13   MHz	*/
+@@ -326,13 +326,13 @@ per_dpll_param:
+ .word	0x0E1,	0x13,	0x07,	0x09		/* 38.4 MHz	*/
+ 
+ /**
+- * @brief Get address of PER DPLL param table.
++ * @brief Get address of PER DPLL param table (OMAP34XX).
+  *
+  * @param rev Silicon revision (not used).
+  *
+  * @return Address of the param table
+  */
+-.globl get_per_dpll_param
+-get_per_dpll_param:
+-	adr r0, per_dpll_param
++.globl get_per_dpll_param_34x
++get_per_dpll_param_34x:
++	adr r0, per_dpll_param_34x
+ 	mov pc, lr
 -- 
 1.7.2.2
 
