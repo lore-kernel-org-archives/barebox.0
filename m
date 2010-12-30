@@ -1,20 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from out4.bezeqint.net ([192.115.188.213])
+Received: from mail-ww0-f49.google.com ([74.125.82.49])
 	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1PY3Nz-0005bv-Gh
-	for barebox@lists.infradead.org; Wed, 29 Dec 2010 21:16:44 +0000
-From: Boaz Ben-David <boaz.bd@wellsense-tech.com>
-Date: Wed, 29 Dec 2010 23:15:13 +0200
-Message-ID: <39A4B204C321D34DA3490E3B119D5A6C68BF77574A@SBS2008.wellsense.local>
-References: <39A4B204C321D34DA3490E3B119D5A6C68BF775745@SBS2008.wellsense.local>,
-	<4D1B9E92.2010403@eukrea.com>
-	<39A4B204C321D34DA3490E3B119D5A6C68BF775746@SBS2008.wellsense.local>,
-	<4D1BA102.9030509@eukrea.com>
-	<39A4B204C321D34DA3490E3B119D5A6C68BF775747@SBS2008.wellsense.local>,
-	<4D1BA3B3.1020400@eukrea.com>
-In-Reply-To: <4D1BA3B3.1020400@eukrea.com>
-Content-Language: en-US
-MIME-Version: 1.0
+	id 1PYHwr-0007aj-8M
+	for barebox@lists.infradead.org; Thu, 30 Dec 2010 12:49:41 +0000
+Received: by wwb17 with SMTP id 17so12158131wwb.18
+	for <barebox@lists.infradead.org>; Thu, 30 Dec 2010 04:49:39 -0800 (PST)
+From: Franck JULLIEN <franck.jullien@gmail.com>
+Date: Thu, 30 Dec 2010 13:49:34 +0100
+Message-Id: <1293713374-3476-1-git-send-email-franck.jullien@gmail.com>
+In-Reply-To: <20101230034811.GS19266@game.jcrosoft.org>
+References: <20101230034811.GS19266@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,32 +18,62 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: 4096 page NAND boot support on iMX35 PDK board
-To: =?iso-8859-1?Q?Eric_B=E9nard?= <eric@eukrea.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH] Add an option to set a board specific banner
+To: barebox@lists.infradead.org
 
-Ok, thanks a lot for your help I hope it won't be too complicated implement=
-ing the support...
+Allow a board specific fancy banner
 
-Boaz.
-________________________________________
-From: Eric B=E9nard [eric@eukrea.com]
-Sent: Wednesday, December 29, 2010 11:10 PM
-To: Boaz Ben-David
-Cc: barebox@lists.infradead.org
-Subject: Re: 4096 page NAND boot support on iMX35 PDK board
+---
 
-On 29/12/2010 22:05, Boaz Ben-David wrote:
-> external
+I removed the default fancy banner and do it like Jean-Christophe suggested it.
 
-so you have to update this function to your hardware (ie : to add 4k page
-support in the nand driver).
+ common/Kconfig   |    6 ++++++
+ common/console.c |    7 ++++++-
+ 2 files changed, 12 insertions(+), 1 deletions(-)
 
-Eric
+diff --git a/common/Kconfig b/common/Kconfig
+index 617f640..d32c1ce 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -248,6 +248,12 @@ config HUSH_FANCY_PROMPT
+ 	  Allow to set PS1 from the command line. PS1 can have several escaped commands
+ 	  like \h for CONFIG_BOARDINFO or \w for the current working directory.
+ 
++config BOARD_BANNER
++	bool
++	prompt "allow a board specific fancy banner"
++	help
++	  Allow to define a custom board banner (you can define CONFIG_BOARD_BANNER_TEXT in your config.h)
++
+ config HUSH_GETOPT
+ 	bool
+ 	depends on SHELL_HUSH
+diff --git a/common/console.c b/common/console.c
+index 82786f2..7caef11 100644
+--- a/common/console.c
++++ b/common/console.c
+@@ -46,7 +46,12 @@ EXPORT_SYMBOL(console_list);
+ static void display_banner (void)
+ {
+ 	printf (RELOC("\n\n%s\n\n"), RELOC_VAR(version_string));
+-	printf(RELOC("Board: " CONFIG_BOARDINFO "\n"));
++
++#ifndef CONFIG_BOARD_BANNER
++#undef  CONFIG_BOARD_BANNER_TEXT
++#define CONFIG_BOARD_BANNER_TEXT "Board: " CONFIG_BOARDINFO "\n"
++#endif
++        printf(RELOC(CONFIG_BOARD_BANNER_TEXT));
+ }
+ 
+ static int __early_initdata initialized = 0;
+-- 
+1.7.1
+
 
 _______________________________________________
 barebox mailing list
