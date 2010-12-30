@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ww0-f49.google.com ([74.125.82.49])
-	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1PYHwr-0007aj-8M
-	for barebox@lists.infradead.org; Thu, 30 Dec 2010 12:49:41 +0000
-Received: by wwb17 with SMTP id 17so12158131wwb.18
-	for <barebox@lists.infradead.org>; Thu, 30 Dec 2010 04:49:39 -0800 (PST)
-From: Franck JULLIEN <franck.jullien@gmail.com>
-Date: Thu, 30 Dec 2010 13:49:34 +0100
-Message-Id: <1293713374-3476-1-git-send-email-franck.jullien@gmail.com>
-In-Reply-To: <20101230034811.GS19266@game.jcrosoft.org>
-References: <20101230034811.GS19266@game.jcrosoft.org>
+Received: from bear.ext.ti.com ([192.94.94.41])
+	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1PYIsL-0000C3-1N
+	for barebox@lists.infradead.org; Thu, 30 Dec 2010 13:49:05 +0000
+Received: from dbdp31.itg.ti.com ([172.24.170.98])
+	by bear.ext.ti.com (8.13.7/8.13.7) with ESMTP id oBUDn0l9008353
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <barebox@lists.infradead.org>; Thu, 30 Dec 2010 07:49:02 -0600
+From: Sanjeev Premi <premi@ti.com>
+Date: Thu, 30 Dec 2010 19:18:28 +0530
+Message-Id: <1293716908-5034-1-git-send-email-premi@ti.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,56 +23,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Add an option to set a board specific banner
+Subject: [PATCH 0/6] omap3: Support for silicon revisions
 To: barebox@lists.infradead.org
 
-Allow a board specific fancy banner
+This series makes enables auto-detection of silicon revision.
+It also adds support for the OMAP3430 ES1.0 silicon as well.
 
----
+It was tested for multiple boots on the OMAP3EVM (Rev G)
+populated with ES3.1 silicon.
 
-I removed the default fancy banner and do it like Jean-Christophe suggested it.
+Sanjeev Premi (6):
+  omap3: Add macros to extract hawkeye and version
+  omap3: Detect cpu based on hawkeye
+  omap3: Update method to detect si revision
+  omap3: Add DPLL tables for silicon rev 1 and 2
+  omap3: Define separate functions for DPLL configuration
+  omap3: Select DPLL tables based on cpu revision
 
- common/Kconfig   |    6 ++++++
- common/console.c |    7 ++++++-
- 2 files changed, 12 insertions(+), 1 deletions(-)
+ arch/arm/mach-omap/include/mach/omap3-clock.h   |    8 +-
+ arch/arm/mach-omap/include/mach/omap3-silicon.h |   16 +-
+ arch/arm/mach-omap/include/mach/sys_info.h      |   26 +-
+ arch/arm/mach-omap/omap3_clock.c                |  319 +++++++++++++++--------
+ arch/arm/mach-omap/omap3_clock_core.S           |  200 ++++++++------
+ arch/arm/mach-omap/omap3_generic.c              |   60 ++++-
+ 6 files changed, 399 insertions(+), 230 deletions(-)
 
-diff --git a/common/Kconfig b/common/Kconfig
-index 617f640..d32c1ce 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -248,6 +248,12 @@ config HUSH_FANCY_PROMPT
- 	  Allow to set PS1 from the command line. PS1 can have several escaped commands
- 	  like \h for CONFIG_BOARDINFO or \w for the current working directory.
- 
-+config BOARD_BANNER
-+	bool
-+	prompt "allow a board specific fancy banner"
-+	help
-+	  Allow to define a custom board banner (you can define CONFIG_BOARD_BANNER_TEXT in your config.h)
-+
- config HUSH_GETOPT
- 	bool
- 	depends on SHELL_HUSH
-diff --git a/common/console.c b/common/console.c
-index 82786f2..7caef11 100644
---- a/common/console.c
-+++ b/common/console.c
-@@ -46,7 +46,12 @@ EXPORT_SYMBOL(console_list);
- static void display_banner (void)
- {
- 	printf (RELOC("\n\n%s\n\n"), RELOC_VAR(version_string));
--	printf(RELOC("Board: " CONFIG_BOARDINFO "\n"));
-+
-+#ifndef CONFIG_BOARD_BANNER
-+#undef  CONFIG_BOARD_BANNER_TEXT
-+#define CONFIG_BOARD_BANNER_TEXT "Board: " CONFIG_BOARDINFO "\n"
-+#endif
-+        printf(RELOC(CONFIG_BOARD_BANNER_TEXT));
- }
- 
- static int __early_initdata initialized = 0;
 -- 
-1.7.1
+1.7.2.2
 
 
 _______________________________________________
