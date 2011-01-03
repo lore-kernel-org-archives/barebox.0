@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from arroyo.ext.ti.com ([192.94.94.40])
+Received: from devils.ext.ti.com ([198.47.26.153])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PZlLi-0003W0-O4
-	for barebox@lists.infradead.org; Mon, 03 Jan 2011 14:25:28 +0000
+	id 1PZlLd-0003WQ-Vl
+	for barebox@lists.infradead.org; Mon, 03 Jan 2011 14:25:23 +0000
 Received: from dbdp31.itg.ti.com ([172.24.170.98])
-	by arroyo.ext.ti.com (8.13.7/8.13.7) with ESMTP id p03EPCGh031340
+	by devils.ext.ti.com (8.13.7/8.13.7) with ESMTP id p03EPI77012751
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
-	for <barebox@lists.infradead.org>; Mon, 3 Jan 2011 08:25:19 -0600
+	for <barebox@lists.infradead.org>; Mon, 3 Jan 2011 08:25:20 -0600
 From: Sanjeev Premi <premi@ti.com>
-Date: Mon,  3 Jan 2011 19:54:53 +0530
-Message-Id: <1294064695-10865-7-git-send-email-premi@ti.com>
+Date: Mon,  3 Jan 2011 19:54:55 +0530
+Message-Id: <1294064695-10865-9-git-send-email-premi@ti.com>
 In-Reply-To: <1294064695-10865-1-git-send-email-premi@ti.com>
 References: <1294064695-10865-1-git-send-email-premi@ti.com>
 List-Id: <barebox.lists.infradead.org>
@@ -25,77 +25,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/8] omap36x: Perform basic clock initialization
+Subject: [PATCH 8/8] omap3: Define GFX_DIV values for OMAP34xx and OMAP36xx
 To: barebox@lists.infradead.org
 
-This patch adds the basic clock initizlization for OMAP36XX.
+This patch updates the clock dividers for the graphics
+processor.
 
-Portion of this patch is based on commit:
-    29587220909e639cda4fb5a35cb5bf33aba242b9
-    at http://arago-project.org/git/projects/?p=x-load-omap3.git
+It is based on commit:
+    c4e1d9b718b65436e30422506f43fa4eb21069d3
+    at http://arago-project.org/git/projects/?p=u-boot-omap3.git
 
 Signed-off-by: Sanjeev Premi <premi@ti.com>
 ---
- arch/arm/mach-omap/omap3_clock.c |   32 ++++++++++++++++++++++++++------
- 1 files changed, 26 insertions(+), 6 deletions(-)
+ arch/arm/mach-omap/include/mach/omap3-clock.h |    3 ++-
+ arch/arm/mach-omap/omap3_clock.c              |    2 +-
+ arch/arm/mach-omap/omap3_clock_core.S         |    2 +-
+ 3 files changed, 4 insertions(+), 3 deletions(-)
 
+diff --git a/arch/arm/mach-omap/include/mach/omap3-clock.h b/arch/arm/mach-omap/include/mach/omap3-clock.h
+index cccb0da..10566e1 100644
+--- a/arch/arm/mach-omap/include/mach/omap3-clock.h
++++ b/arch/arm/mach-omap/include/mach/omap3-clock.h
+@@ -108,7 +108,8 @@
+ #define CORE_FUSB_DIV		2        /* 41.5MHz: */
+ #define CORE_L4_DIV		2        /*  83MHz : L4 */
+ #define CORE_L3_DIV		2        /* 166MHz : L3 {DDR} */
+-#define GFX_DIV			2        /*  83MHz : CM_CLKSEL_GFX */
++#define GFX_DIV_34X		3        /*  96MHz : CM_CLKSEL_GFX (OMAP34XX) */
++#define GFX_DIV_36X		5        /* 200MHz : CM_CLKSEL_GFX (OMAP36XX) */
+ #define WKUP_RSM		2        /* 41.5MHz: CM_CLKSEL_WKUP */
+ 
+ /* PER DPLL */
 diff --git a/arch/arm/mach-omap/omap3_clock.c b/arch/arm/mach-omap/omap3_clock.c
-index 492e309..1668369 100644
+index 16cbae9..3a0ab24 100644
 --- a/arch/arm/mach-omap/omap3_clock.c
 +++ b/arch/arm/mach-omap/omap3_clock.c
-@@ -554,6 +554,7 @@ static void init_iva_dpll_36x(u32 cpu_rev, u32 clk_sel)
- void prcm_init(void)
- {
- 	u32 osc_clk = 0, sys_clkin_sel = 0;
-+	u32 cpu_type = get_cpu_type();
- 	u32 cpu_rev = get_cpu_rev();
- 	u32 clk_index;
+@@ -192,7 +192,7 @@ static void init_core_dpll_34x(u32 cpu_rev, u32 clk_sel)
+ 		sr32(CM_REG(CLKSEL_CORE), 4, 2, CORE_FUSB_DIV);
+ 		sr32(CM_REG(CLKSEL_CORE), 2, 2, CORE_L4_DIV);
+ 		sr32(CM_REG(CLKSEL_CORE), 0, 2, CORE_L3_DIV);
+-		sr32(CM_REG(CLKSEL_GFX), 0, 3, GFX_DIV);
++		sr32(CM_REG(CLKSEL_GFX), 0, 3, GFX_DIV_34X);
+ 		sr32(CM_REG(CLKSEL_WKUP), 1, 2, WKUP_RSM);
  
-@@ -565,8 +566,15 @@ void prcm_init(void)
- 	/* set input crystal speed */
- 	sr32(PRM_REG(CLKSEL), 0, 3, sys_clkin_sel);
- 
--	/* If the input clock is greater than 19.2M always divide/2 */
--	if (sys_clkin_sel > 2) {
-+	/*
-+	 * OMAP3430:
-+	 *	If the input clock is greater than 19.2M always divide/2
-+	 * OMAP3630:
-+	 *	DDR corruption was observed on exit from OFF mode, when
-+	 *	sys clock is lower than 26M. As workaround, it is maintained
-+	 *	at 26M.
-+	 */
-+	if ((cpu_type != CPU_3630) && (sys_clkin_sel > 2)) {
- 		/* input clock divider */
- 		sr32(PRM_REG(CLKSRC_CTRL), 6, 2, 2);
- 		clk_index = sys_clkin_sel / 2;
-@@ -582,10 +590,22 @@ void prcm_init(void)
- 	sr32(CM_REG(CLKEN_PLL_MPU), 0, 3, PLL_LOW_POWER_BYPASS);
- 	wait_on_value((0x1 << 0), 0, CM_REG(IDLEST_PLL_MPU), LDELAY);
- 
--	init_core_dpll_34x(cpu_rev, clk_index);
--	init_per_dpll_34x(cpu_rev, clk_index);
--	init_mpu_dpll_34x(cpu_rev, clk_index);
--	init_iva_dpll_34x(cpu_rev, clk_index);
-+	if (cpu_type == CPU_3430) {
-+		init_core_dpll_34x(cpu_rev, clk_index);
-+		init_per_dpll_34x(cpu_rev, clk_index);
-+		init_mpu_dpll_34x(cpu_rev, clk_index);
-+		init_iva_dpll_34x(cpu_rev, clk_index);
-+	}
-+	else if (cpu_type == CPU_3630) {
-+		init_core_dpll_36x(cpu_rev, clk_index);
-+		init_per_dpll_36x(cpu_rev, clk_index);
-+		init_mpu_dpll_36x(cpu_rev, clk_index);
-+		init_iva_dpll_36x(cpu_rev, clk_index);
-+	}
-+	else {
-+		/* Unknown CPU */
-+		hang();
-+	}
- 
- 	/*
- 	 * Clock configuration complete. Lock MPU PLL.
+ 		/* FREQSEL (CORE_DPLL_FREQSEL): CM_CLKEN_PLL[4:7] */
+diff --git a/arch/arm/mach-omap/omap3_clock_core.S b/arch/arm/mach-omap/omap3_clock_core.S
+index eb13c2f..c8d04bb 100644
+--- a/arch/arm/mach-omap/omap3_clock_core.S
++++ b/arch/arm/mach-omap/omap3_clock_core.S
+@@ -194,7 +194,7 @@ pll_div_val3:
+ pll_div_add4:
+     .word CM_CLKSEL_GFX
+ pll_div_val4:
+-    .word (GFX_DIV << 0)
++    .word GFX_DIV_34X
+ pll_div_add5:
+     .word CM_CLKSEL1_EMU
+ pll_div_val5:
 -- 
 1.7.2.2
 
