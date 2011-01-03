@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from devils.ext.ti.com ([198.47.26.153])
+Received: from comal.ext.ti.com ([198.47.26.152])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PZlLd-0003WQ-Vl
-	for barebox@lists.infradead.org; Mon, 03 Jan 2011 14:25:23 +0000
+	id 1PZlLZ-0003UI-Dj
+	for barebox@lists.infradead.org; Mon, 03 Jan 2011 14:25:18 +0000
 Received: from dbdp31.itg.ti.com ([172.24.170.98])
-	by devils.ext.ti.com (8.13.7/8.13.7) with ESMTP id p03EPI77012751
+	by comal.ext.ti.com (8.13.7/8.13.7) with ESMTP id p03EPDcs030164
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
-	for <barebox@lists.infradead.org>; Mon, 3 Jan 2011 08:25:20 -0600
+	for <barebox@lists.infradead.org>; Mon, 3 Jan 2011 08:25:16 -0600
 From: Sanjeev Premi <premi@ti.com>
-Date: Mon,  3 Jan 2011 19:54:55 +0530
-Message-Id: <1294064695-10865-9-git-send-email-premi@ti.com>
+Date: Mon,  3 Jan 2011 19:54:54 +0530
+Message-Id: <1294064695-10865-8-git-send-email-premi@ti.com>
 In-Reply-To: <1294064695-10865-1-git-send-email-premi@ti.com>
 References: <1294064695-10865-1-git-send-email-premi@ti.com>
 List-Id: <barebox.lists.infradead.org>
@@ -25,63 +25,77 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 8/8] omap3: Define GFX_DIV values for OMAP34xx and OMAP36xx
+Subject: [PATCH 7/8] omap3: Avoid sudden change to SYS_CLK divider
 To: barebox@lists.infradead.org
 
-This patch updates the clock dividers for the graphics
-processor.
+In function get_osc_clk_speed(), the SYS_CLK divider
+was being changed 'suddenly'.
 
-It is based on commit:
-    c4e1d9b718b65436e30422506f43fa4eb21069d3
-    at http://arago-project.org/git/projects/?p=u-boot-omap3.git
+This change has cascading effect on the derived clocks,
+leading to inconsistent behavior - often a crash.
 
 Signed-off-by: Sanjeev Premi <premi@ti.com>
 ---
- arch/arm/mach-omap/include/mach/omap3-clock.h |    3 ++-
- arch/arm/mach-omap/omap3_clock.c              |    2 +-
- arch/arm/mach-omap/omap3_clock_core.S         |    2 +-
- 3 files changed, 4 insertions(+), 3 deletions(-)
+ arch/arm/mach-omap/include/mach/omap3-clock.h |    6 ++++++
+ arch/arm/mach-omap/omap3_clock.c              |   19 +++++++++++++++----
+ 2 files changed, 21 insertions(+), 4 deletions(-)
 
 diff --git a/arch/arm/mach-omap/include/mach/omap3-clock.h b/arch/arm/mach-omap/include/mach/omap3-clock.h
-index cccb0da..10566e1 100644
+index b9e2714..cccb0da 100644
 --- a/arch/arm/mach-omap/include/mach/omap3-clock.h
 +++ b/arch/arm/mach-omap/include/mach/omap3-clock.h
-@@ -108,7 +108,8 @@
- #define CORE_FUSB_DIV		2        /* 41.5MHz: */
- #define CORE_L4_DIV		2        /*  83MHz : L4 */
- #define CORE_L3_DIV		2        /* 166MHz : L3 {DDR} */
--#define GFX_DIV			2        /*  83MHz : CM_CLKSEL_GFX */
-+#define GFX_DIV_34X		3        /*  96MHz : CM_CLKSEL_GFX (OMAP34XX) */
-+#define GFX_DIV_36X		5        /* 200MHz : CM_CLKSEL_GFX (OMAP36XX) */
- #define WKUP_RSM		2        /* 41.5MHz: CM_CLKSEL_WKUP */
+@@ -92,6 +92,12 @@
+ #define PLL_FAST_RELOCK_BYPASS	6	/* CORE */
+ #define PLL_LOCK		7	/* MPU, IVA, CORE & PER */
  
- /* PER DPLL */
++/*
++ * Bit positions indicating current SYSCLK divider
++ */
++#define SYSCLK_DIV_1		(1 << 6)
++#define SYSCLK_DIV_2		(1 << 7)
++
+ /* The following configurations are OPP and SysClk value independant
+  * and hence are defined here.
+  */
 diff --git a/arch/arm/mach-omap/omap3_clock.c b/arch/arm/mach-omap/omap3_clock.c
-index 16cbae9..3a0ab24 100644
+index 1668369..16cbae9 100644
 --- a/arch/arm/mach-omap/omap3_clock.c
 +++ b/arch/arm/mach-omap/omap3_clock.c
-@@ -192,7 +192,7 @@ static void init_core_dpll_34x(u32 cpu_rev, u32 clk_sel)
- 		sr32(CM_REG(CLKSEL_CORE), 4, 2, CORE_FUSB_DIV);
- 		sr32(CM_REG(CLKSEL_CORE), 2, 2, CORE_L4_DIV);
- 		sr32(CM_REG(CLKSEL_CORE), 0, 2, CORE_L3_DIV);
--		sr32(CM_REG(CLKSEL_GFX), 0, 3, GFX_DIV);
-+		sr32(CM_REG(CLKSEL_GFX), 0, 3, GFX_DIV_34X);
- 		sr32(CM_REG(CLKSEL_WKUP), 1, 2, WKUP_RSM);
+@@ -65,12 +65,20 @@ static void per_clocks_enable(void);
+  */
+ static u32 get_osc_clk_speed(void)
+ {
+-	u32 start, cstart, cend, cdiff, val;
++	u32 start, cstart, cend, cdiff, cdiv, val;
  
- 		/* FREQSEL (CORE_DPLL_FREQSEL): CM_CLKEN_PLL[4:7] */
-diff --git a/arch/arm/mach-omap/omap3_clock_core.S b/arch/arm/mach-omap/omap3_clock_core.S
-index eb13c2f..c8d04bb 100644
---- a/arch/arm/mach-omap/omap3_clock_core.S
-+++ b/arch/arm/mach-omap/omap3_clock_core.S
-@@ -194,7 +194,7 @@ pll_div_val3:
- pll_div_add4:
-     .word CM_CLKSEL_GFX
- pll_div_val4:
--    .word (GFX_DIV << 0)
-+    .word GFX_DIV_34X
- pll_div_add5:
-     .word CM_CLKSEL1_EMU
- pll_div_val5:
+ 	val = readl(PRM_REG(CLKSRC_CTRL));
+-	/* If SYS_CLK is being divided by 2, remove for now */
+-	val = (val & (~(0x1 << 7))) | (0x1 << 6);
+-	writel(val, PRM_REG(CLKSRC_CTRL));
++
++	if (val & SYSCLK_DIV_2)
++		cdiv = 2;
++	else if (val & SYSCLK_DIV_1)
++		cdiv = 1;
++	else
++		/*
++		 * Should never reach here!
++		 * To proceed, assume divider as 1.
++		 */
++		cdiv = 1;
+ 
+ 	/* enable timer2 */
+ 	val = readl(CM_REG(CLKSEL_WKUP)) | (0x1 << 0);
+@@ -97,6 +105,9 @@ static u32 get_osc_clk_speed(void)
+ 	cend = readl(OMAP_GPTIMER1_BASE + TCRR);
+ 	cdiff = cend - cstart;	/* get elapsed ticks */
+ 
++	if (cdiv == 2)
++		cdiff *= 2;
++
+ 	/* based on number of ticks assign speed */
+ 	if (cdiff > 19000)
+ 		return S38_4M;
 -- 
 1.7.2.2
 
