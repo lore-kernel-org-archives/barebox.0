@@ -1,21 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ey0-f177.google.com ([209.85.215.177])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PZuDp-0000KI-FL
-	for barebox@lists.infradead.org; Mon, 03 Jan 2011 23:53:58 +0000
-Received: by eyd9 with SMTP id 9so7068247eyd.36
-	for <barebox@lists.infradead.org>; Mon, 03 Jan 2011 15:53:48 -0800 (PST)
-From: Peter Korsgaard <jacmet@sunsite.dk>
+	id 1Pa2ke-00019C-Oj
+	for barebox@lists.infradead.org; Tue, 04 Jan 2011 09:00:21 +0000
+Date: Tue, 4 Jan 2011 10:00:15 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20110104090015.GB11295@pengutronix.de>
 References: <20101230034811.GS19266@game.jcrosoft.org>
 	<1293713374-3476-1-git-send-email-franck.jullien@gmail.com>
 	<20110103114144.GL6017@pengutronix.de>
 	<AANLkTikS9h1PgeLFAUWPNwoZc+eaJri48q6VQ92XiNRm@mail.gmail.com>
 	<20110103135058.GB24408@pengutronix.de>
-Date: Tue, 04 Jan 2011 00:53:43 +0100
-In-Reply-To: <20110103135058.GB24408@pengutronix.de> (Sascha Hauer's message
-	of "Mon, 3 Jan 2011 14:50:58 +0100")
-Message-ID: <87wrmlbl2w.fsf@macbook.be.48ers.dk>
+	<87wrmlbl2w.fsf@macbook.be.48ers.dk>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <87wrmlbl2w.fsf@macbook.be.48ers.dk>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,39 +28,50 @@ Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] Add an option to set a board specific banner
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Peter Korsgaard <jacmet@sunsite.dk>
 Cc: barebox@lists.infradead.org
 
->>>>> "Sascha" == Sascha Hauer <s.hauer@pengutronix.de> writes:
+On Tue, Jan 04, 2011 at 12:53:43AM +0100, Peter Korsgaard wrote:
+> >>>>> "Sascha" == Sascha Hauer <s.hauer@pengutronix.de> writes:
+> 
+>  Sascha> Ok, I can see your problem. I think we should rather define a
+>  Sascha> board specific function to display a banner than a string, so
+>  Sascha> something like:
+> 
+>  Sascha> config BOARD_BANNER
+>  Sascha> 	bool
+> 
+>  Sascha> #ifdef CONFIG_BOARD_BANNER
+>  Sascha> 	display_board_banner();
+>  Sascha> #else
+>  Sascha> 	printf(RELOC("Board: " CONFIG_BOARDINFO "\n"));
+>  Sascha> #endif
+> 
+> Even better, stick:
+> 
+> #ifdef CONFIG_BOARD_BANNER
+> extern void display_board_banner(void);
+> #else
+> static inline void display_board_banner(void)
+> {
+>         printf(RELOC("Board: " CONFIG_BOARDINFO "\n"));
+> }
+> #endif
+> 
 
- Sascha> Ok, I can see your problem. I think we should rather define a
- Sascha> board specific function to display a banner than a string, so
- Sascha> something like:
+The printing of version_string is missing. We could add it to
+display_board_banner, but I really would like to keep this in a
+generic place to make sure barebox is recognizable by both users
+and automatic scripts. Or does anybody wants to fully customize
+the initial output of barebox?
 
- Sascha> config BOARD_BANNER
- Sascha> 	bool
-
- Sascha> #ifdef CONFIG_BOARD_BANNER
- Sascha> 	display_board_banner();
- Sascha> #else
- Sascha> 	printf(RELOC("Board: " CONFIG_BOARDINFO "\n"));
- Sascha> #endif
-
-Even better, stick:
-
-#ifdef CONFIG_BOARD_BANNER
-extern void display_board_banner(void);
-#else
-static inline void display_board_banner(void)
-{
-        printf(RELOC("Board: " CONFIG_BOARDINFO "\n"));
-}
-#endif
-
-And get rid of the #ifdef in the C file.
+Sascha
 
 -- 
-Bye, Peter Korsgaard
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
