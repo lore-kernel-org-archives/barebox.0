@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.free-electrons.com ([88.190.12.23])
-	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1PaA4g-0003bV-4w
-	for barebox@lists.infradead.org; Tue, 04 Jan 2011 16:49:31 +0000
-Message-ID: <4D234F8A.4070703@free-electrons.com>
-Date: Tue, 04 Jan 2011 17:49:14 +0100
-From: Gregory CLEMENT <gregory.clement@free-electrons.com>
-MIME-Version: 1.0
-References: <4D233027.9030701@free-electrons.com>
-	<201101041546.53030.jbe@pengutronix.de>
-	<4D23370A.6040203@free-electrons.com>
-	<201101041716.35288.jbe@pengutronix.de>
-In-Reply-To: <201101041716.35288.jbe@pengutronix.de>
+Received: from mail-iw0-f177.google.com ([209.85.214.177])
+	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1PaFpi-00007f-AM
+	for barebox@lists.infradead.org; Tue, 04 Jan 2011 22:58:27 +0000
+Received: by iwn38 with SMTP id 38so15836097iwn.36
+	for <barebox@lists.infradead.org>; Tue, 04 Jan 2011 14:58:25 -0800 (PST)
+From: Marc Reilly <marc@cpdesign.com.au>
+Date: Wed,  5 Jan 2011 09:57:55 +1100
+Message-Id: <1294181876-16619-1-git-send-email-marc@cpdesign.com.au>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,83 +16,26 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] ARM STM/i.MX: Allocate memory for framebuffer during
-	probe
-To: Juergen Beisert <jbe@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: imx: Put flash header position specific sections back in
+To: barebox@lists.infradead.org
 
-On 01/04/2011 05:16 PM, Juergen Beisert wrote:
-> Gregory CLEMENT wrote:
->> On 01/04/2011 03:46 PM, Juergen Beisert wrote:
->>> Gregory CLEMENT wrote:
->>>> With current code when the framebuffer is register, screen_base is not
->>>> set yet. So when we want to access framebuffer from mmap we get a
->>>> pointer to 0x0 instead of getting the pointer to the framebuffer
->>>> address. This patch fix this bug by allocating memory for framebuffer
->>>> during probe just before registering framebuffer driver.
->>>
->>> Are you sure? See below
->>
->> It was the value I get at runtime at least.
->>
->>>> Signed-off-by: Gregory CLEMENT <gregory.clement@free-electrons.com>
->>
->> [...]
->>
->>> This probe function sets up the default mode. And register_framebuffer()
->>> itself calls stmfb_activate_var() which calls stmfb_memory_mmgt(). So,
->>> when the call to register_framebuffer() returns the 'screen_base' should
->>> no longer be NULL.
->>
->> But in register_framebuffer first map_base get its value from screen_base
->> and it is only after that fb_activate_var is called. And the problem is
->> that mmap will not get screen_base but map_base and this one is set too
->> early. Extract from  register_framebuffer() in fb.c:
->>
->> 	info->cdev.dev->map_base = (unsigned long)info->screen_base;
->> map_base get its value here ------^
->> 	info->cdev.dev->size = info->cdev.size;
->>
->> 	dev = &info->dev;
->> 	dev->priv = info;
->> 	dev->id = id;
->>
->> 	sprintf(dev->name, "fb");
->>
->> 	register_device(&info->dev);
->> 	dev_add_param(dev, "enable", fb_enable_set, NULL, 0);
->> 	dev_set_param(dev, "enable", "0");
->>
->> 	if (info->num_modes && (info->mode_list != NULL) &&
->> 			(info->fbops->fb_activate_var != NULL)) {
->> 		dev_add_param(dev, "mode_name", fb_setup_mode, NULL, 0);
->> 		dev_set_param(dev, "mode_name", info->mode_list[0].name);
->> fb_activate_var is called here ------------------------^
-> 
-> And this call will call driver's stmfb_activate_var() (and(!) 
-> stmfb_memory_mmgt()).
+Hi,
 
-Yes I totally agree with this. But at this time it's too late because changing
-screen_base won't change map_base. And a call to memmap is a call to
-generic_memmap_rw which will return map_base.
-I didn't find anywhere in video driver code a place where map_base is updated, that's
-why I think that once it get its value it won't change.
+This patch adds the position specific flash_header_0xXXXX section defines 
+(and friends) so the one barebox image can support multiple boot sources, 
+for example Nor and SD. 
 
-> But I will check it again.
-> 
-> jbe
-> 
+If a board only uses one boot source, the existing generic section defines
+are simpler to use, so I've left them.
 
+Cheers
+Marc
 
--- 
-Gregory Clement, Free Electrons
-Kernel, drivers, real-time and embedded Linux
-development, consulting, training and support.
-http://free-electrons.com
 
 _______________________________________________
 barebox mailing list
