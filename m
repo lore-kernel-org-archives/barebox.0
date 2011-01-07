@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Pb9nm-00026S-PQ
-	for barebox@lists.infradead.org; Fri, 07 Jan 2011 10:44:21 +0000
+	id 1Pb9nm-00026P-4Q
+	for barebox@lists.infradead.org; Fri, 07 Jan 2011 10:44:19 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  7 Jan 2011 11:43:53 +0100
-Message-Id: <1294397044-5008-14-git-send-email-s.hauer@pengutronix.de>
+Date: Fri,  7 Jan 2011 11:43:49 +0100
+Message-Id: <1294397044-5008-10-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1294397044-5008-1-git-send-email-s.hauer@pengutronix.de>
 References: <1294397044-5008-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,36 +21,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 13/24] ipe337: fix printf compiler warnings
+Subject: [PATCH 09/24] blackfin: fix printf compiler warnings
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/blackfin/boards/ipe337/cmd_alternate.c |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
+ arch/blackfin/lib/blackfin_linux.c |    2 +-
+ arch/blackfin/lib/traps.c          |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/blackfin/boards/ipe337/cmd_alternate.c b/arch/blackfin/boards/ipe337/cmd_alternate.c
-index 2883c77..116f910 100644
---- a/arch/blackfin/boards/ipe337/cmd_alternate.c
-+++ b/arch/blackfin/boards/ipe337/cmd_alternate.c
-@@ -21,7 +21,7 @@ static int do_alternate(struct command *cmdtp, int argc, char *argv[])
+diff --git a/arch/blackfin/lib/blackfin_linux.c b/arch/blackfin/lib/blackfin_linux.c
+index eda3f4c..a20cf55 100644
+--- a/arch/blackfin/lib/blackfin_linux.c
++++ b/arch/blackfin/lib/blackfin_linux.c
+@@ -48,7 +48,7 @@ static int do_bootm_linux(struct image_data *idata)
+ 	image_header_t *os_header = &os_handle->header;
  
- 	ptr = buf;
- 	if ((*ptr) != MAGIC) {
--		printf("Wrong magic! Expected 0x%08x, got 0x%08x.\n", MAGIC, *ptr);
-+		printf("Wrong magic! Expected 0x%08x, got 0x%08lx.\n", MAGIC, *ptr);
- 		return 1;
- 	}
+ 	appl = (int (*)(char *))image_get_ep(os_header);
+-	printf("Starting Kernel at 0x%08x\n", appl);
++	printf("Starting Kernel at 0x%p\n", appl);
  
-@@ -38,7 +38,7 @@ static int do_alternate(struct command *cmdtp, int argc, char *argv[])
- 		} while (val >>= 1);
- 	}
+ 	if (relocate_image(os_handle, (void *)image_get_load(os_header)))
+ 		return -1;
+diff --git a/arch/blackfin/lib/traps.c b/arch/blackfin/lib/traps.c
+index ce479b9..14f1da9 100644
+--- a/arch/blackfin/lib/traps.c
++++ b/arch/blackfin/lib/traps.c
+@@ -81,7 +81,7 @@ static const char *trap_to_string(int trapnr)
  
--	printf("Bitcount : %d\n", bitcount);
-+	printf("Bitcount : %ld\n", bitcount);
+ void trap_c (struct pt_regs *regs)
+ {
+-	unsigned long trapnr = (regs->seqstat) & SEQSTAT_EXCAUSE;
++	uint32_t trapnr = (regs->seqstat) & SEQSTAT_EXCAUSE;
+ 	const char *str;
  
- 	free(buf);
- 	return (bitcount & 1) ? 3 : 2;
+ 	printf("Exception occured!\n\n");
 -- 
 1.7.2.3
 
