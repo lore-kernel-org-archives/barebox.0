@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Pb7n9-0006cB-2o
+	id 1Pb7n9-0006cC-2X
 	for barebox@lists.infradead.org; Fri, 07 Jan 2011 08:35:25 +0000
 Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
 	by metis.ext.pengutronix.de with esmtp (Exim 4.72)
-	(envelope-from <jbe@pengutronix.de>) id 1Pb7n5-0001hg-9z
+	(envelope-from <jbe@pengutronix.de>) id 1Pb7n5-0001hj-BY
 	for barebox@lists.infradead.org; Fri, 07 Jan 2011 09:35:19 +0100
 Received: from jbe by octopus.hi.pengutronix.de with local (Exim 4.69)
-	(envelope-from <jbe@pengutronix.de>) id 1Pb7n5-0001uK-7U
+	(envelope-from <jbe@pengutronix.de>) id 1Pb7n5-0001uQ-8e
 	for barebox@lists.infradead.org; Fri, 07 Jan 2011 09:35:19 +0100
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Fri,  7 Jan 2011 09:35:12 +0100
-Message-Id: <1294389316-6569-7-git-send-email-jbe@pengutronix.de>
+Date: Fri,  7 Jan 2011 09:35:14 +0100
+Message-Id: <1294389316-6569-9-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1294389316-6569-1-git-send-email-jbe@pengutronix.de>
 References: <1294389316-6569-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -28,27 +28,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/10] x86 Generic platform: Fix prompt name
+Subject: [PATCH 08/10] Change 'linux16' command to use getopt()
 To: barebox@lists.infradead.org
 
 Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 ---
- arch/x86/configs/generic_defconfig |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+ commands/linux16.c |   16 ++++++++++++----
+ 1 files changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/configs/generic_defconfig b/arch/x86/configs/generic_defconfig
-index ee13e5c..57161f4 100644
---- a/arch/x86/configs/generic_defconfig
-+++ b/arch/x86/configs/generic_defconfig
-@@ -2,7 +2,7 @@ CONFIG_X86_HDBOOT=y
- CONFIG_STACK_SIZE=0x7000
- CONFIG_BROKEN=y
- CONFIG_EXPERIMENTAL=y
--CONFIG_PROMPT="uboot:"
-+CONFIG_PROMPT="barebox:"
- CONFIG_LONGHELP=y
- CONFIG_GLOB=y
- CONFIG_CMDLINE_EDITING=y
+diff --git a/commands/linux16.c b/commands/linux16.c
+index 5f412e2..87245d4 100644
+--- a/commands/linux16.c
++++ b/commands/linux16.c
+@@ -28,6 +28,7 @@
+ #include <environment.h>
+ #include <fs.h>
+ #include <errno.h>
++#include <getopt.h>
+ #include <malloc.h>
+ #include <asm/syslib.h>
+ 
+@@ -153,18 +154,25 @@ struct linux_kernel_header {
+ static int do_linux16(struct command *cmdtp, int argc, char *argv[])
+ {
+ 	struct linux_kernel_header *lh = NULL;
+-	int rc;
++	int rc, opt;
+ 	unsigned setup_sects;
+ 	unsigned real_mode_size;
+ 	size_t image_size;
+ 	const char *cmdline = getenv("bootargs");
++	const char *kernel_file;
+ 
+-	if (argc < 2) {
+-		perror("linux16");
++	while((opt = getopt(argc, argv, "")) > 0) {
++		switch(opt) {
++		}
++	}
++
++	if (optind == argc) {
++		printf("No kernel filename given\n");
+ 		return 1;
+ 	}
++	kernel_file = argv[optind];
+ 
+-	lh = read_file(argv[1], &image_size);
++	lh = read_file(kernel_file, &image_size);
+ 	if (lh == NULL) {
+ 		printf("Cannot read file '%s'\n", argv[1]);
+ 		return 1;
 -- 
 1.7.2.3
 
