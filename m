@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Pb9nl-00026K-Qa
-	for barebox@lists.infradead.org; Fri, 07 Jan 2011 10:44:15 +0000
+	by casper.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1Pb9no-0003Nf-8s
+	for barebox@lists.infradead.org; Fri, 07 Jan 2011 10:44:13 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  7 Jan 2011 11:43:44 +0100
-Message-Id: <1294397044-5008-5-git-send-email-s.hauer@pengutronix.de>
+Date: Fri,  7 Jan 2011 11:44:02 +0100
+Message-Id: <1294397044-5008-23-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1294397044-5008-1-git-send-email-s.hauer@pengutronix.de>
 References: <1294397044-5008-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,27 +21,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/24] nand: fix printf compiler warnings
+Subject: [PATCH 22/24] imx-ipu-fb: fix printf compiler warnings
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/nand.c |    2 +-
+ drivers/video/imx-ipu-fb.c |    2 +-
  1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/commands/nand.c b/commands/nand.c
-index 0902f21..d3921b9 100644
---- a/commands/nand.c
-+++ b/commands/nand.c
-@@ -63,7 +63,7 @@ static ssize_t nand_bb_read(struct cdev *cdev, void *buf, size_t count,
- 			return ret;
+diff --git a/drivers/video/imx-ipu-fb.c b/drivers/video/imx-ipu-fb.c
+index c38082d..d9e1e21 100644
+--- a/drivers/video/imx-ipu-fb.c
++++ b/drivers/video/imx-ipu-fb.c
+@@ -488,7 +488,7 @@ static int sdc_init_panel(struct fb_info *info, enum pixel_fmt pixel_fmt)
+ 		div = 0x40;
+ 	}
  
- 		if (ret) {
--			printf("skipping bad block at 0x%08x\n", bb->offset);
-+			printf("skipping bad block at 0x%08lx\n", bb->offset);
- 			bb->offset += bb->info.erasesize;
- 			continue;
- 		}
+-	dev_dbg(&info->dev, "pixel clk = %u, divider %u.%u\n",
++	dev_dbg(&info->dev, "pixel clk = %lu, divider %u.%u\n",
+ 		pixel_clk, div >> 4, (div & 7) * 125);
+ 
+ 	/*
 -- 
 1.7.2.3
 
