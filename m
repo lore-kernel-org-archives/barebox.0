@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Pb7n9-0006c7-3F
-	for barebox@lists.infradead.org; Fri, 07 Jan 2011 08:35:31 +0000
+	id 1Pb7n9-0006cD-2d
+	for barebox@lists.infradead.org; Fri, 07 Jan 2011 08:35:29 +0000
 Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
 	by metis.ext.pengutronix.de with esmtp (Exim 4.72)
-	(envelope-from <jbe@pengutronix.de>) id 1Pb7n5-0001hZ-6x
+	(envelope-from <jbe@pengutronix.de>) id 1Pb7n5-0001hi-B9
 	for barebox@lists.infradead.org; Fri, 07 Jan 2011 09:35:19 +0100
 Received: from jbe by octopus.hi.pengutronix.de with local (Exim 4.69)
-	(envelope-from <jbe@pengutronix.de>) id 1Pb7n5-0001u8-5L
+	(envelope-from <jbe@pengutronix.de>) id 1Pb7n5-0001uN-81
 	for barebox@lists.infradead.org; Fri, 07 Jan 2011 09:35:19 +0100
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Fri,  7 Jan 2011 09:35:08 +0100
-Message-Id: <1294389316-6569-3-git-send-email-jbe@pengutronix.de>
+Date: Fri,  7 Jan 2011 09:35:13 +0100
+Message-Id: <1294389316-6569-8-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1294389316-6569-1-git-send-email-jbe@pengutronix.de>
 References: <1294389316-6569-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -28,300 +28,229 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/10] x86: Use the generic linker script initializing
+Subject: [PATCH 07/10] x86: Remove 'uboot' from file names
 To: barebox@lists.infradead.org
 
 Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 ---
- arch/x86/Makefile                             |    6 ++
- arch/x86/include/asm/barebox.lds.h            |  113 -------------------------
- arch/x86/lib/barebox.lds.S                    |    2 +-
- arch/x86/mach-i386/include/mach/barebox.lds.h |   99 ++++++++++++++++++++++
- include/asm-generic/barebox.lds.h             |    2 +-
- scripts/setupmbr/setupmbr.c                   |    2 +-
- 6 files changed, 108 insertions(+), 116 deletions(-)
- delete mode 100644 arch/x86/include/asm/barebox.lds.h
- create mode 100644 arch/x86/mach-i386/include/mach/barebox.lds.h
+ arch/x86/boot/Makefile          |    2 +-
+ arch/x86/boot/boot_hdisk.S      |    2 +-
+ arch/x86/boot/prepare_barebox.c |   86 +++++++++++++++++++++++++++++++++++++++
+ arch/x86/boot/prepare_uboot.c   |   86 ---------------------------------------
+ 4 files changed, 88 insertions(+), 88 deletions(-)
+ create mode 100644 arch/x86/boot/prepare_barebox.c
+ delete mode 100644 arch/x86/boot/prepare_uboot.c
 
-diff --git a/arch/x86/Makefile b/arch/x86/Makefile
-index e607b89..3b034c0 100644
---- a/arch/x86/Makefile
-+++ b/arch/x86/Makefile
-@@ -19,7 +19,13 @@ all: $(KBUILD_IMAGE)
+diff --git a/arch/x86/boot/Makefile b/arch/x86/boot/Makefile
+index b92b475..83526b6 100644
+--- a/arch/x86/boot/Makefile
++++ b/arch/x86/boot/Makefile
+@@ -6,7 +6,7 @@ CPPFLAGS += -D__I386__ -fno-strict-aliasing -m32 -g -Os -march=i386 \
  
+ obj-$(CONFIG_X86_HDBOOT)	+= boot_main.o boot_hdisk.o
  
+-obj-$(CONFIG_X86_BIOS_BRINGUP)	+= prepare_uboot.o a20.o bioscall.o regs.o tty.o pmjump.o main_entry.o
++obj-$(CONFIG_X86_BIOS_BRINGUP)	+= prepare_barebox.o a20.o bioscall.o regs.o tty.o pmjump.o main_entry.o
  
-+machdirs := $(patsubst %,arch/x86/mach-%/,$(machine-y))
+ obj-$(CONFIG_X86_VESA) += console_vesa.o
+ obj-$(CONFIG_X86_VGA) += console_vga.o
+diff --git a/arch/x86/boot/boot_hdisk.S b/arch/x86/boot/boot_hdisk.S
+index fc4c4d5..9145ef1 100644
+--- a/arch/x86/boot/boot_hdisk.S
++++ b/arch/x86/boot/boot_hdisk.S
+@@ -168,7 +168,7 @@ output_message:
  
-+ifeq ($(KBUILD_SRC),)
-+CPPFLAGS += $(patsubst %,-I%include,$(machdirs))
-+else
-+CPPFLAGS += $(patsubst %,-I$(srctree)/%include,$(machdirs))
-+endif
+ 	.section .boot_data
  
- ifneq ($(board-y),)
- BOARD  := arch/x86/boards/$(board-y)/
-diff --git a/arch/x86/include/asm/barebox.lds.h b/arch/x86/include/asm/barebox.lds.h
-deleted file mode 100644
-index 6cbf15f..0000000
---- a/arch/x86/include/asm/barebox.lds.h
-+++ /dev/null
-@@ -1,113 +0,0 @@
--/*
-- * Copyright (C) 2009 Juergen Beisert, Pengutronix
-- *
-- * This program is free software; you can redistribute it and/or
-- * modify it under the terms of the GNU General Public License as
-- * published by the Free Software Foundation; either version 2 of
-- * the License, or (at your option) any later version.
-- *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- *
-- * You should have received a copy of the GNU General Public License
-- * along with this program; if not, write to the Free Software
-- * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-- * MA 02111-1307 USA
-- *
-- */
--
--/**
-- * @file
-- * @brief Adapt linker script content in accordance to Kconfig settings
-- */
--
--#define INITCALLS			\
--	KEEP(*(.initcall.0))			\
--	KEEP(*(.initcall.1))			\
--	KEEP(*(.initcall.2))			\
--	KEEP(*(.initcall.3))			\
--	KEEP(*(.initcall.4))			\
--	KEEP(*(.initcall.5))			\
--	KEEP(*(.initcall.6))			\
--	KEEP(*(.initcall.7))
--
--#define BAREBOX_CMDS	KEEP(*(SORT_BY_NAME(.barebox_cmd*)))
--
--#define BAREBOX_SYMS	KEEP(*(__usymtab))
--
--/**
-- * Area in the MBR of the barebox basic boot code. This offset must be in
-- * accordance to the 'indirect_sector_lba' label.
-- */
--#define PATCH_AREA 400
--
--/**
-- * Offset where to store the boot drive number (BIOS number, 1 byte)
-- */
--#define PATCH_AREA_BOOT_DEV 16
--
--/**
-- * Offset where to store information about the persistant environment storage
-- * It points to an LBA number (8 bytes) and defines the first sector of this
-- * storage on disk.
-- */
--#define PATCH_AREA_PERS_START 20
--
--/**
-- * Offset where to store information about the persistant environment storage
-- * It points to a short number (2 bytes) and defines the sector count of this
-- * storage on disk.
-- */
--#define PATCH_AREA_PERS_SIZE 28
--
--/**
-- * Offset where to store information about the persistant environment storage
-- * drive number (BIOS number, 1 byte)
-- */
--#define PATCH_AREA_PERS_DRIVE 30
--
--/**
-- * Mark the persistant environment as not used
-- */
--#define PATCH_AREA_PERS_SIZE_UNUSED 0x000
--
--/**
-- * Mark a DAPS as unused/invalid
-- */
--#define MARK_DAPS_INVALID 0x0000
--
--/**
-- * Offset of the partition table in an MBR
-- */
--#define OFFSET_OF_PARTITION_TABLE 446
--
--/**
-- * Offset of the signature in an MBR
-- */
--#define OFFSET_OF_SIGNATURE 510
--
--/**
-- * Area where to store indirect sector to loop through. Keep this value
-- * in accordance to the 'indirect_area' label. Note: .
-- *
-- * @attention These addresses are real mode ones (seg:offset)
-- */
--#define INDIRECT_AREA 0x7A00
--#define INDIRECT_SEGMENT 0x0000
--
--/**
-- * Area where to load sectors from disk to. They should start after the
-- * MBR area and must be in accordance to the offset of the '.bootstrapping'
-- * section in the linker file.
-- *
-- * @attention The address must be a multiple of 512.
-- */
--#define LOAD_AREA 0x7e00
--#define LOAD_SEGMENT 0x0000
--
--/**
-- * Size of one sector.
-- */
--#define SECTOR_SIZE 512
-diff --git a/arch/x86/lib/barebox.lds.S b/arch/x86/lib/barebox.lds.S
-index 2917d2f..ca71369 100644
---- a/arch/x86/lib/barebox.lds.S
-+++ b/arch/x86/lib/barebox.lds.S
-@@ -20,7 +20,7 @@
-  */
+-notification_string:	.asciz "UBOOT2 "
++notification_string:	.asciz "BAREBOX "
+ chs_string:	.asciz "CHS "
+ jmp_string:	.asciz "JMP "
  
- #undef i386
--#include <asm/barebox.lds.h>
-+#include <asm-generic/barebox.lds.h>
- 
- OUTPUT_FORMAT("elf32-i386", "elf32-i386", "elf32-i386")
- OUTPUT_ARCH(i386)
-diff --git a/arch/x86/mach-i386/include/mach/barebox.lds.h b/arch/x86/mach-i386/include/mach/barebox.lds.h
+diff --git a/arch/x86/boot/prepare_barebox.c b/arch/x86/boot/prepare_barebox.c
 new file mode 100644
-index 0000000..81c326e
+index 0000000..a68aced
 --- /dev/null
-+++ b/arch/x86/mach-i386/include/mach/barebox.lds.h
-@@ -0,0 +1,99 @@
++++ b/arch/x86/boot/prepare_barebox.c
+@@ -0,0 +1,86 @@
++/* -*- linux-c -*- ------------------------------------------------------- *
++ *
++ *   Copyright (C) 1991, 1992 Linus Torvalds
++ *   Copyright 2007 rPath, Inc. - All Rights Reserved
++ *
++ *   This file is part of the Linux kernel, and is made available under
++ *   the terms of the GNU General Public License version 2.
++ *
++ * ----------------------------------------------------------------------- */
++
 +/*
-+ * Copyright (C) 2009 Juergen Beisert, Pengutronix
++ * Prepare the machine for transition to protected mode.
++ */
++#include <asm/segment.h>
++#include <asm/modes.h>
++#include <asm/io.h>
++#include "boot.h"
++
++/* be aware of: */
++THIS_IS_REALMODE_CODE
++
++/*
++ * While we are in flat mode, we can't handle interrupts. But we can't
++ * switch them off for ever in the PIC, because we need them again while
++ * entering real mode code again and again....
++ */
++static void __bootcode realmode_switch_hook(void)
++{
++	asm volatile("cli");
++	outb(0x80, 0x70); /* Disable NMI */
++	io_delay();
++}
++
++/*
++ * Reset IGNNE# if asserted in the FPU.
++ */
++static void __bootcode reset_coprocessor(void)
++{
++	outb(0, 0xf0);
++	io_delay();
++	outb(0, 0xf1);
++	io_delay();
++}
++
++/**
++ * Setup and register the global descriptor table (GDT)
 + *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-+ * MA 02111-1307 USA
-+ *
++ * @note This is for the first time only
 + */
++static void __bootcode setup_gdt(void)
++{
++	/* Xen HVM incorrectly stores a pointer to the gdt_ptr, instead
++	   of the gdt_ptr contents.  Thus, make it static so it will
++	   stay in memory, at least long enough that we switch to the
++	   proper kernel GDT. */
++	static struct gdt_ptr __bootdata gdt_ptr;
 +
-+/**
-+ * @file
-+ * @brief Adapt linker script content in accordance to Kconfig settings
-+ */
++	gdt_ptr.len = gdt_size - 1;
++	gdt_ptr.ptr = (uint32_t)&gdt + (ds() << 4);
 +
-+/**
-+ * Area in the MBR of the barebox basic boot code. This offset must be in
-+ * accordance to the 'indirect_sector_lba' label.
-+ */
-+#define PATCH_AREA 400
++	asm volatile("lgdtl %0" : : "m" (gdt_ptr));
++}
 +
-+/**
-+ * Offset where to store the boot drive number (BIOS number, 1 byte)
-+ */
-+#define PATCH_AREA_BOOT_DEV 16
++static char a20_message[] __bootdata = "A20 gate not responding, unable to boot...\n";
 +
-+/**
-+ * Offset where to store information about the persistant environment storage
-+ * It points to an LBA number (8 bytes) and defines the first sector of this
-+ * storage on disk.
++/*
++ * Actual invocation sequence
 + */
-+#define PATCH_AREA_PERS_START 20
++void __bootcode start_pre_uboot(void)
++{
++	/* Hook before leaving real mode, also disables interrupts */
++	realmode_switch_hook();
 +
-+/**
-+ * Offset where to store information about the persistant environment storage
-+ * It points to a short number (2 bytes) and defines the sector count of this
-+ * storage on disk.
-+ */
-+#define PATCH_AREA_PERS_SIZE 28
++	/* Enable the A20 gate */
++	if (enable_a20()) {
++		boot_puts(a20_message);
++		die();
++	}
 +
-+/**
-+ * Offset where to store information about the persistant environment storage
-+ * drive number (BIOS number, 1 byte)
-+ */
-+#define PATCH_AREA_PERS_DRIVE 30
++	/* Reset coprocessor (IGNNE#) */
++	reset_coprocessor();
 +
-+/**
-+ * Mark the persistant environment as not used
-+ */
-+#define PATCH_AREA_PERS_SIZE_UNUSED 0x000
-+
-+/**
-+ * Mark a DAPS as unused/invalid
-+ */
-+#define MARK_DAPS_INVALID 0x0000
-+
-+/**
-+ * Offset of the partition table in an MBR
-+ */
-+#define OFFSET_OF_PARTITION_TABLE 446
-+
-+/**
-+ * Offset of the signature in an MBR
-+ */
-+#define OFFSET_OF_SIGNATURE 510
-+
-+/**
-+ * Area where to store indirect sector to loop through. Keep this value
-+ * in accordance to the 'indirect_area' label. Note: .
-+ *
-+ * @attention These addresses are real mode ones (seg:offset)
-+ */
-+#define INDIRECT_AREA 0x7A00
-+#define INDIRECT_SEGMENT 0x0000
-+
-+/**
-+ * Area where to load sectors from disk to. They should start after the
-+ * MBR area and must be in accordance to the offset of the '.bootstrapping'
-+ * section in the linker file.
-+ *
-+ * @attention The address must be a multiple of 512.
-+ */
-+#define LOAD_AREA 0x7e00
-+#define LOAD_SEGMENT 0x0000
-+
-+/**
-+ * Size of one sector.
-+ */
-+#define SECTOR_SIZE 512
-diff --git a/include/asm-generic/barebox.lds.h b/include/asm-generic/barebox.lds.h
-index fc141a4..2d1dc41 100644
---- a/include/asm-generic/barebox.lds.h
-+++ b/include/asm-generic/barebox.lds.h
-@@ -1,5 +1,5 @@
- 
--#if defined CONFIG_ARCH_IMX25 || defined CONFIG_ARCH_IMX35 || defined CONFIG_ARCH_IMX51
-+#if defined CONFIG_ARCH_IMX25 || defined CONFIG_ARCH_IMX35 || defined CONFIG_ARCH_IMX51 || defined CONFIG_X86
- #include <mach/barebox.lds.h>
- #endif
- 
-diff --git a/scripts/setupmbr/setupmbr.c b/scripts/setupmbr/setupmbr.c
-index dd7f38c..74ede94 100644
---- a/scripts/setupmbr/setupmbr.c
-+++ b/scripts/setupmbr/setupmbr.c
-@@ -43,7 +43,7 @@
- 
- /* include the info from this barebox release */
- #include "../../include/generated/utsrelease.h"
--#include "../../arch/x86/include/asm/barebox.lds.h"
-+#include "../../arch/x86/mach-i386/include/mach/barebox.lds.h"
- 
- /** define to disable integrity tests and debug messages */
- #define NDEBUG
++	setup_gdt();
++	/* Actual transition to protected mode... */
++	protected_mode_jump();
++}
+diff --git a/arch/x86/boot/prepare_uboot.c b/arch/x86/boot/prepare_uboot.c
+deleted file mode 100644
+index a68aced..0000000
+--- a/arch/x86/boot/prepare_uboot.c
++++ /dev/null
+@@ -1,86 +0,0 @@
+-/* -*- linux-c -*- ------------------------------------------------------- *
+- *
+- *   Copyright (C) 1991, 1992 Linus Torvalds
+- *   Copyright 2007 rPath, Inc. - All Rights Reserved
+- *
+- *   This file is part of the Linux kernel, and is made available under
+- *   the terms of the GNU General Public License version 2.
+- *
+- * ----------------------------------------------------------------------- */
+-
+-/*
+- * Prepare the machine for transition to protected mode.
+- */
+-#include <asm/segment.h>
+-#include <asm/modes.h>
+-#include <asm/io.h>
+-#include "boot.h"
+-
+-/* be aware of: */
+-THIS_IS_REALMODE_CODE
+-
+-/*
+- * While we are in flat mode, we can't handle interrupts. But we can't
+- * switch them off for ever in the PIC, because we need them again while
+- * entering real mode code again and again....
+- */
+-static void __bootcode realmode_switch_hook(void)
+-{
+-	asm volatile("cli");
+-	outb(0x80, 0x70); /* Disable NMI */
+-	io_delay();
+-}
+-
+-/*
+- * Reset IGNNE# if asserted in the FPU.
+- */
+-static void __bootcode reset_coprocessor(void)
+-{
+-	outb(0, 0xf0);
+-	io_delay();
+-	outb(0, 0xf1);
+-	io_delay();
+-}
+-
+-/**
+- * Setup and register the global descriptor table (GDT)
+- *
+- * @note This is for the first time only
+- */
+-static void __bootcode setup_gdt(void)
+-{
+-	/* Xen HVM incorrectly stores a pointer to the gdt_ptr, instead
+-	   of the gdt_ptr contents.  Thus, make it static so it will
+-	   stay in memory, at least long enough that we switch to the
+-	   proper kernel GDT. */
+-	static struct gdt_ptr __bootdata gdt_ptr;
+-
+-	gdt_ptr.len = gdt_size - 1;
+-	gdt_ptr.ptr = (uint32_t)&gdt + (ds() << 4);
+-
+-	asm volatile("lgdtl %0" : : "m" (gdt_ptr));
+-}
+-
+-static char a20_message[] __bootdata = "A20 gate not responding, unable to boot...\n";
+-
+-/*
+- * Actual invocation sequence
+- */
+-void __bootcode start_pre_uboot(void)
+-{
+-	/* Hook before leaving real mode, also disables interrupts */
+-	realmode_switch_hook();
+-
+-	/* Enable the A20 gate */
+-	if (enable_a20()) {
+-		boot_puts(a20_message);
+-		die();
+-	}
+-
+-	/* Reset coprocessor (IGNNE#) */
+-	reset_coprocessor();
+-
+-	setup_gdt();
+-	/* Actual transition to protected mode... */
+-	protected_mode_jump();
+-}
 -- 
 1.7.2.3
 
