@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Pb9nl-00026L-TL
-	for barebox@lists.infradead.org; Fri, 07 Jan 2011 10:44:15 +0000
+	id 1Pb9nl-00026U-CF
+	for barebox@lists.infradead.org; Fri, 07 Jan 2011 10:44:11 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  7 Jan 2011 11:43:45 +0100
-Message-Id: <1294397044-5008-6-git-send-email-s.hauer@pengutronix.de>
+Date: Fri,  7 Jan 2011 11:43:54 +0100
+Message-Id: <1294397044-5008-15-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1294397044-5008-1-git-send-email-s.hauer@pengutronix.de>
 References: <1294397044-5008-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,27 +21,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/24] cdev: fix printf compiler warnings
+Subject: [PATCH 14/24] device tree: fix printf compiler warnings
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/ubi/cdev.c |    2 +-
+ common/ft_build.c |    2 +-
  1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/mtd/ubi/cdev.c b/drivers/mtd/ubi/cdev.c
-index 30b8308..5520132 100644
---- a/drivers/mtd/ubi/cdev.c
-+++ b/drivers/mtd/ubi/cdev.c
-@@ -24,7 +24,7 @@ static ssize_t ubi_volume_cdev_read(struct cdev *cdev, void *buf, size_t size,
- 	loff_t offp = offset;
- 	int usable_leb_size = vol->usable_leb_size;
+diff --git a/common/ft_build.c b/common/ft_build.c
+index 4a7ff31..4c27cfa 100644
+--- a/common/ft_build.c
++++ b/common/ft_build.c
+@@ -311,7 +311,7 @@ void ft_dump_blob(const void *bphp)
+ 		}
  
--	printf("%s: %d @ 0x%08x\n", __func__, size, offset);
-+	printf("%s: %d @ 0x%08lx\n", __func__, size, offset);
- 
- 	len = size > usable_leb_size ? usable_leb_size : size;
- 
+ 		if (tag != OF_DT_PROP) {
+-			fprintf(stderr, "%*s ** Unknown tag 0x%08x at 0x%x\n",
++			fprintf(stderr, "%*s ** Unknown tag 0x%08x at 0x%p\n",
+ 				depth * shift, "", tag, --p);
+ 			break;
+ 		}
 -- 
 1.7.2.3
 
