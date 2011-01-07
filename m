@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Pb9nm-00026T-9n
+	id 1Pb9nm-00026Q-6I
 	for barebox@lists.infradead.org; Fri, 07 Jan 2011 10:44:18 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  7 Jan 2011 11:43:50 +0100
-Message-Id: <1294397044-5008-11-git-send-email-s.hauer@pengutronix.de>
+Date: Fri,  7 Jan 2011 11:43:52 +0100
+Message-Id: <1294397044-5008-13-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1294397044-5008-1-git-send-email-s.hauer@pengutronix.de>
 References: <1294397044-5008-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,45 +21,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/24] cs8900: fix printf compiler warnings
+Subject: [PATCH 12/24] smc911x: fix printf compiler warnings
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/cs8900.c |    6 +++---
- 1 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/smc911x.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/net/cs8900.c b/drivers/net/cs8900.c
-index 8120877..b8264d7 100644
---- a/drivers/net/cs8900.c
-+++ b/drivers/net/cs8900.c
-@@ -364,7 +364,7 @@ static void cs8900_info(struct device_d *dev)
- 	struct cs8900_priv *priv = (struct cs8900_priv *)edev->priv;
- 	u16 v;
+diff --git a/drivers/net/smc911x.c b/drivers/net/smc911x.c
+index b559590..e5c0e7e 100644
+--- a/drivers/net/smc911x.c
++++ b/drivers/net/smc911x.c
+@@ -687,7 +687,7 @@ static int smc911x_probe(struct device_d *dev)
+ {
+ 	struct eth_device *edev;
+ 	struct smc911x_priv *priv;
+-	ulong val;
++	uint32_t val;
+ 	int i;
  
--	printf("%s Rev. %s (PID: 0x%04x) at 0x%08x\n", priv->chip->name,
-+	printf("%s Rev. %s (PID: 0x%04x) at 0x%p\n", priv->chip->name,
- 	       priv->product->rev_name, priv->product->product_id,
- 	       priv->regs);
- 
-@@ -399,7 +399,7 @@ static int cs8900_check_id(struct cs8900_priv *priv)
- 	u16 v;
- 	v = cs8900_ior(priv, PP_BI_VID);
- 	if (v != CRYSTAL_SEMI_EISA_ID) {
--		printf("No CS89x0 variant found at 0x%08x vid: 0x%04x\n",
-+		printf("No CS89x0 variant found at 0x%p vid: 0x%04x\n",
- 		       priv->regs, v);
- 		return -1;
- 	}
-@@ -424,7 +424,7 @@ static int cs8900_check_id(struct cs8900_priv *priv)
- 		printf("Invalid chip type %d\n", product->chip_type);
- 		goto out;
- 	}
--	printf("%s Rev. %s (PID: 0x%04x) found at 0x%08x\n", chip->name,
-+	printf("%s Rev. %s (PID: 0x%04x) found at 0x%p\n", chip->name,
- 	       product->rev_name, v, priv->regs);
- 	priv->chip = chip;
- 	priv->product = product;
+ 	debug("smc911x_eth_init()\n");
 -- 
 1.7.2.3
 
