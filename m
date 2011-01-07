@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Pb9nl-00026W-CP
-	for barebox@lists.infradead.org; Fri, 07 Jan 2011 10:44:12 +0000
+	id 1Pb9nl-00026V-BM
+	for barebox@lists.infradead.org; Fri, 07 Jan 2011 10:44:11 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  7 Jan 2011 11:43:56 +0100
-Message-Id: <1294397044-5008-17-git-send-email-s.hauer@pengutronix.de>
+Date: Fri,  7 Jan 2011 11:43:55 +0100
+Message-Id: <1294397044-5008-16-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1294397044-5008-1-git-send-email-s.hauer@pengutronix.de>
 References: <1294397044-5008-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,27 +21,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 16/24] guf-cupid: fix printf compiler warnings
+Subject: [PATCH 15/24] netx: fix printf compiler warnings
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/guf-cupid/board.c |    2 +-
+ arch/arm/mach-netx/generic.c |    2 +-
  1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/arch/arm/boards/guf-cupid/board.c b/arch/arm/boards/guf-cupid/board.c
-index 6d7a99b..e30f8e5 100644
---- a/arch/arm/boards/guf-cupid/board.c
-+++ b/arch/arm/boards/guf-cupid/board.c
-@@ -408,7 +408,7 @@ static int do_cpufreq(struct command *cmdtp, int argc, char *argv[])
- 		return COMMAND_ERROR_USAGE;
- 	}
+diff --git a/arch/arm/mach-netx/generic.c b/arch/arm/mach-netx/generic.c
+index de1e1b0..6966def 100644
+--- a/arch/arm/mach-netx/generic.c
++++ b/arch/arm/mach-netx/generic.c
+@@ -41,7 +41,7 @@ static int xc_check_ptr(int xcno, unsigned long adr, unsigned int size)
+ 	    adr + size < NETX_PA_XPEC(xcno) + XPEC_MEM_SIZE)
+ 		return 0;
  
--	printf("Switched CPU frequency to %dMHz\n", freq);
-+	printf("Switched CPU frequency to %ldMHz\n", freq);
- 
- 	return 0;
+-	printf("%s: illegal pointer %p\n",__FUNCTION__,adr);
++	printf("%s: illegal pointer 0x%08lx\n", __func__ ,adr);
+ 	return -1;
  }
+ 
 -- 
 1.7.2.3
 
