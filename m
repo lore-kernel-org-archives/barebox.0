@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from out10.bezeqint.net ([192.115.188.217])
-	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1PY3JV-0005aa-RR
-	for barebox@lists.infradead.org; Wed, 29 Dec 2010 21:12:06 +0000
-From: Boaz Ben-David <boaz.bd@wellsense-tech.com>
-Date: Wed, 29 Dec 2010 23:11:59 +0200
-Message-ID: <1xhec4ka7so7xglae2hemo2h.1293657114183@email.android.com>
-Content-Language: en-US
-MIME-Version: 1.0
+Received: from devils.ext.ti.com ([198.47.26.153])
+	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1Pb4dv-0004j1-Uu
+	for barebox@lists.infradead.org; Fri, 07 Jan 2011 05:13:40 +0000
+Received: from dbdp31.itg.ti.com ([172.24.170.98])
+	by devils.ext.ti.com (8.13.7/8.13.7) with ESMTP id p075DYR2010098
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <barebox@lists.infradead.org>; Thu, 6 Jan 2011 23:13:37 -0600
+From: Sanjeev Premi <premi@ti.com>
+Date: Fri,  7 Jan 2011 10:42:59 +0530
+Message-Id: <1294377180-19672-1-git-send-email-premi@ti.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,28 +18,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: 4096 page NAND boot support on iMX35 PDK board
-To: =?iso-8859-1?Q?Eric_B=E9nard?= <eric@eukrea.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH 0/1] nand: fix compile warnings
+To: barebox@lists.infradead.org
 
-Ok, thanks alot for the help!
+The patch fixes these compiler warnings reported by
+Cory Walker (cwalker32@gmail.com):
 
-Boaz.
+  CC      drivers/mtd/nand/nand.o
+drivers/mtd/nand/nand.c: In function 'nand_write':
+drivers/mtd/nand/nand.c:73: warning: format '%08x' expects type
+ 'unsigned int', but argument 2 has type 'ulong'
+  CC      drivers/mtd/nand/nand_ecc.o
+  CC      drivers/mtd/nand/nand_ids.o
+  CC      drivers/mtd/nand/nand_base.o
+drivers/mtd/nand/nand_base.c: In function 'nand_select_chip':
+drivers/mtd/nand/nand_base.c:170: warning: format '%s' expects t
+ype 'char *', but argument 2 has type 'int'
+drivers/mtd/nand/nand_base.c:170: warning: too few arguments for
+ format
 
-Eric B=E9nard <eric@eukrea.com> wrote:
+While fixing them, came across similar incompatible formats in
+debug() messages:
+
+drivers/mtd/nand/nand.c: In function 'nand_read':
+drivers/mtd/nand/nand.c:42: warning: format '%08x' expects type
+ 'unsigned int', but argument 2 has type 'ulong'
+drivers/mtd/nand/nand.c: In function 'nand_write':
+drivers/mtd/nand/nand.c:79: warning: format '%08x' expects type
+ 'unsigned int', but argument 2 has type 'ulong'
+drivers/mtd/nand/nand.c:85: warning: format '%d' expects type '
+int', but argument 3 has type 'long unsigned int'
+drivers/mtd/nand/nand.c:96: warning: format '%08x' expects type
+ 'unsigned int', but argument 2 has type 'ulong'
+drivers/mtd/nand/nand.c: In function 'nand_ioctl':
+drivers/mtd/nand/nand.c:117: warning: format '%08x' expects typ
+e 'unsigned int', but argument 2 has type 'long int'
+drivers/mtd/nand/nand.c:120: warning: format '%08x' expects typ
+e 'unsigned int', but argument 2 has type 'long int'
 
 
-On 29/12/2010 22:05, Boaz Ben-David wrote:
-> external
+Sanjeev Premi (1):
+  nand: Fix warnings due to incompatible format strings
 
-so you have to update this function to your hardware (ie : to add 4k page
-support in the nand driver).
+ drivers/mtd/nand/nand.c      |   14 +++++++-------
+ drivers/mtd/nand/nand_base.c |    2 +-
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
-Eric
+-- 
+1.7.2.2
+
 
 _______________________________________________
 barebox mailing list
