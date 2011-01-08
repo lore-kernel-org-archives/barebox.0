@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from inx.pm.waw.pl ([195.116.170.130])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PbW0t-0005Nj-6v
-	for barebox@lists.infradead.org; Sat, 08 Jan 2011 10:27:11 +0000
-Date: Sat, 8 Jan 2011 11:27:06 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110108102706.GF12078@pengutronix.de>
-References: <AANLkTinmrmkQgW4-EJ6O0q_5TU7tdxj0FbYFBYVfNXPq@mail.gmail.com>
+	id 1PbXim-0006Fo-AI
+	for barebox@lists.infradead.org; Sat, 08 Jan 2011 12:16:37 +0000
+From: Krzysztof Halasa <khc@pm.waw.pl>
+References: <m38vyym6k9.fsf@intrepid.localdomain>
+	<m3vd22kq8q.fsf@intrepid.localdomain>
+	<20110106233651.GB944@game.jcrosoft.org>
+Date: Sat, 08 Jan 2011 13:16:01 +0100
+In-Reply-To: <20110106233651.GB944@game.jcrosoft.org> (Jean-Christophe
+	PLAGNIOL-VILLARD's message of "Fri, 7 Jan 2011 00:36:51 +0100")
+Message-ID: <m3ei8nwpz2.fsf@intrepid.localdomain>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <AANLkTinmrmkQgW4-EJ6O0q_5TU7tdxj0FbYFBYVfNXPq@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,35 +24,96 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: USB ethernet
-To: Nataraj S Narayan <natarajsn@gmail.com>
+Subject: Re: [PATCH 3/3] ARM: Add support for IXP4xx CPU and for Goramo
+	Multilink router platform.
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-Hi Nataraj,
+Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> writes:
 
-On Sat, Jan 08, 2011 at 07:04:15AM +0000, Nataraj S Narayan wrote:
-> Hi
-> 
-> Does barebox support USB NICs like Davicom dm9601?
-> 
-> If not, is it trivial to add the support?
+>> +/* offsets from start of flash ROM = 0x50000000 */
+>> +#define CFG_ETH0_ADDRESS     0x40 /* 6 bytes */
+>                            ^^^^^
+> whitespace please use tab for indent
 
-Have a look at drivers/net/usb. Currently only asix compatible USB NICs
-are supported, but the usbnet framework is derived from the kernel, so
-it shouldn't be hard to add support for the dm9601.
+Is it the official requirement that I should use tabs for visual
+indentation (I use tabs for syntactic indentation).
 
-What board are you working on? I'm asking because at the moment we only
-have ehci support in barebox. I have ohci support aswell, but it's not
-yet merged. Lete me know if have interest in it.
+This forces anyone to display with tabs=8 (vide the discussions on
+lkml). Obviously one can decide to use tabs everywhere, I just want
+to see such decision has been taken.
 
-Sascha
+>> +static struct device_d cfi_dev = {
+>> +	.name     = "cfi_flash",
+>> +	.map_base = IXP4XX_EXP_BASE(0),
+>> +	.size     = 16 * 1024 * 1024,
+   ^^^^^^ I.e., I use tabs here.
 
+>> +#define CFG_ETH1_ADDRESS     0x46 /* 6 bytes */
+                            ^^^^^ but not here (probably).
 
+>> +#define ETH_ALEN             6
+> IIR we have a macro for it
+
+What's its name?
+
+>> +#define BAREBOX_START        0x00000
+>> +#define BAREBOX_LENGTH       0x34000
+>> +#define NPE_A_START          (BAREBOX_START + BAREBOX_LENGTH)
+>> +#define NPE_A_LENGTH         0x05000
+>> +#define NPE_B_START          (NPE_A_START + NPE_A_LENGTH)
+>> +#define NPE_B_LENGTH         0x03000
+>> +#define NPE_C_START          (NPE_B_START + NPE_B_LENGTH)
+>> +#define NPE_C_LENGTH         0x04000
+>> +#define NPE_ENV0_START       (NPE_C_START + NPE_C_LENGTH)
+>> +#define NPE_ENV0_LENGTH      0x20000
+> I prefer we use a fs to store it so we can share it Linux
+> with a cramfs at least
+
+That means creating a CRAMFS in Barebox' two read/only blocks. Will look
+at it.
+
+>> +	sdram_dev.size = __raw_readl(IXP4XX_EXP_BASE(0) + CFG_SDRAM_SIZE);
+> how about check the data before register
+
+The amount of RAM is simply stored at CFG_SDRAM_SIZE (there are boards
+with 32, 64, 128 and 256 MB). There is no way it can be invalid (it's
+written to flash with JTAG).
+
+> and if not good use the minimum memory size for the hardware design
+
+It can't be "no good". It would mean the config space is corrupted, and
+the best we could do in such case is some sort of panic(). Without the
+config space we don't know, for example, the number of SDRAM banks,
+what RAM chips are there, what are our assigned Ethernet MAC addresses
+(which is alone a sufficient reason to panic) etc.
+
+>> +static inline void qmgr_put_entry(unsigned int queue, u32 val)
+>> +{
+>> +#if DEBUG_QMGR
+>> +	BUG_ON(!qmgr_queue_descs[queue]); /* not yet requested */
+>> +
+>> +	fprintf(stderr, "Queue %s(%i) put %X\n",
+>> +		qmgr_queue_descs[queue], queue, val);
+> please use debug() instead of fprintf so no need of ifdef if no BUG_ON
+> and it will be good to be able to enable the DEBUG via Kconfig
+
+I'll look at it. Guess it will need another CONFIG_* for this.
+I'd been doing this for some time in Linux and my experience is users
+tend to select stuff like this unnecesarily. Perhaps a boot loader
+people are different than casual kernel compilers.
+
+> please avoid the #if 0
+> if no need remove it or use a CONFIG
+
+It will probably be needed when using IRQs. At this point it's obviously
+unneeded. Using CONFIG for this is pointless since it's not yet
+implemented. This code is some sort of copy of (functional) Linux
+driver.
+
+I can remove it if it's a problem, of course.
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Krzysztof Halasa
 
 _______________________________________________
 barebox mailing list
