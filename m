@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ww0-f41.google.com ([74.125.82.41])
-	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1PbSqX-0003gi-FC
-	for barebox@lists.infradead.org; Sat, 08 Jan 2011 07:04:18 +0000
-Received: by wwi18 with SMTP id 18so153981wwi.0
-	for <barebox@lists.infradead.org>; Fri, 07 Jan 2011 23:04:15 -0800 (PST)
+Received: from 26.mail-out.ovh.net ([91.121.27.225])
+	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1PbVth-0005KJ-Ej
+	for barebox@lists.infradead.org; Sat, 08 Jan 2011 10:19:46 +0000
+Date: Sat, 8 Jan 2011 11:19:36 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20110108101936.GA11726@game.jcrosoft.org>
+References: <AANLkTinmrmkQgW4-EJ6O0q_5TU7tdxj0FbYFBYVfNXPq@mail.gmail.com>
 MIME-Version: 1.0
-Date: Sat, 8 Jan 2011 07:04:15 +0000
-Message-ID: <AANLkTinmrmkQgW4-EJ6O0q_5TU7tdxj0FbYFBYVfNXPq@mail.gmail.com>
-From: Nataraj S Narayan <natarajsn@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <AANLkTinmrmkQgW4-EJ6O0q_5TU7tdxj0FbYFBYVfNXPq@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,19 +22,21 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: USB ethernet
-To: barebox@lists.infradead.org
+Subject: Re: USB ethernet
+To: Nataraj S Narayan <natarajsn@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Hi
+On 07:04 Sat 08 Jan     , Nataraj S Narayan wrote:
+> Hi
+> 
+> Does barebox support USB NICs like Davicom dm9601?
+> 
+> If not, is it trivial to add the support?
+yeah it's easy to add
+and your already have axis support
 
-Does barebox support USB NICs like Davicom dm9601?
-
-If not, is it trivial to add the support?
-
-
-regards
-
-Nataraj
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
