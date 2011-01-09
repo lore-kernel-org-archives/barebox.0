@@ -1,17 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ey0-f177.google.com ([209.85.215.177])
+Received: from inx.pm.waw.pl ([195.116.170.130])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PbriQ-0006Uc-V9
-	for barebox@lists.infradead.org; Sun, 09 Jan 2011 09:37:37 +0000
-Received: by eyd9 with SMTP id 9so9021441eyd.36
-	for <barebox@lists.infradead.org>; Sun, 09 Jan 2011 01:37:31 -0800 (PST)
-From: Peter Korsgaard <jacmet@sunsite.dk>
-References: <AANLkTinmrmkQgW4-EJ6O0q_5TU7tdxj0FbYFBYVfNXPq@mail.gmail.com>
-	<20110108101936.GA11726@game.jcrosoft.org>
-Date: Sun, 09 Jan 2011 10:37:27 +0100
-In-Reply-To: <20110108101936.GA11726@game.jcrosoft.org> (Jean-Christophe
-	PLAGNIOL-VILLARD's message of "Sat, 8 Jan 2011 11:19:36 +0100")
-Message-ID: <87wrmefmeg.fsf@macbook.be.48ers.dk>
+	id 1Pbu03-0007nF-9t
+	for barebox@lists.infradead.org; Sun, 09 Jan 2011 12:03:56 +0000
+From: Krzysztof Halasa <khc@pm.waw.pl>
+References: <m38vyym6k9.fsf@intrepid.localdomain>
+	<m3vd22kq8q.fsf@intrepid.localdomain>
+	<20110106233651.GB944@game.jcrosoft.org>
+	<m3ei8nwpz2.fsf@intrepid.localdomain>
+	<20110108135522.GG12078@pengutronix.de>
+	<m3mxnbuwlp.fsf@intrepid.localdomain>
+	<20110108181019.GC11726@game.jcrosoft.org>
+Date: Sun, 09 Jan 2011 13:03:18 +0100
+In-Reply-To: <20110108181019.GC11726@game.jcrosoft.org> (Jean-Christophe
+	PLAGNIOL-VILLARD's message of "Sat, 8 Jan 2011 19:10:19 +0100")
+Message-ID: <m38vyup9mh.fsf@intrepid.localdomain>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -25,24 +28,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: USB ethernet
+Subject: Re: [PATCH 3/3] ARM: Add support for IXP4xx CPU and for Goramo
+	Multilink router platform.
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
->>>>> "Jean-Christophe" == Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> writes:
+Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> writes:
 
- >> Does barebox support USB NICs like Davicom dm9601?
- >> 
- >> If not, is it trivial to add the support?
+> a simple link will be enough so the cramfs is the best solution, I think
+> so no data duplication and it will be more easy to update and maintain
+>
+> And we do not have to known the size of the firmware in barebox just the fs
+> location so more easy to update barebox
 
- Jean-Christophe> yeah it's easy to add
- Jean-Christophe> and your already have axis support
+Agreed. For this I have to be able to set an env variable (then
+read-only) from within the board code. How do I do it? Or should I write
+this code myself?
 
-And with the usbnet stuff it should be pretty trivial to port my dm9601
-driver.
+> I'm working a the fs support for the env with the idea to have a ro part
+> but I need more time to finish it.
 
+Yeah, though it seems a pure cramfs is better suited to my needs anyway,
+microcode isn't variable.
+
+> for the size increasement it's impact is cover by the non data duplication
+> and will be reduce againt with the envfs
+
+Not a factor for me.
 -- 
-Bye, Peter Korsgaard
+Krzysztof Halasa
 
 _______________________________________________
 barebox mailing list
