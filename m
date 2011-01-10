@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-px0-f177.google.com ([209.85.212.177])
+Received: from mail-pv0-f177.google.com ([74.125.83.177])
 	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1Pc9VN-0005ol-0W
-	for barebox@lists.infradead.org; Mon, 10 Jan 2011 04:37:18 +0000
-Received: by pxi7 with SMTP id 7so4432326pxi.36
-	for <barebox@lists.infradead.org>; Sun, 09 Jan 2011 20:37:15 -0800 (PST)
+	id 1Pc9VP-0005oP-SV
+	for barebox@lists.infradead.org; Mon, 10 Jan 2011 04:37:20 +0000
+Received: by mail-pv0-f177.google.com with SMTP id 7so3905660pvg.36
+	for <barebox@lists.infradead.org>; Sun, 09 Jan 2011 20:37:19 -0800 (PST)
 From: Marc Reilly <marc@cpdesign.com.au>
-Date: Mon, 10 Jan 2011 15:36:51 +1100
-Message-Id: <1294634212-29029-3-git-send-email-marc@cpdesign.com.au>
+Date: Mon, 10 Jan 2011 15:36:52 +1100
+Message-Id: <1294634212-29029-4-git-send-email-marc@cpdesign.com.au>
 In-Reply-To: <1294634212-29029-1-git-send-email-marc@cpdesign.com.au>
 References: <1294634212-29029-1-git-send-email-marc@cpdesign.com.au>
 List-Id: <barebox.lists.infradead.org>
@@ -23,41 +23,96 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] imx: add reg definitions for imx25 and imx35 boot source.
+Subject: [PATCH 3/3] imx(25,35): save boot location into $boot_loc env.
 To: barebox@lists.infradead.org
+
+Saves the boot source into an environment variable so env scripts
+can more easily use boot source information. We could also
+look at the extra information in the MEM_TYPE bits if needed in future,
+but this is good enough for my purposes.
+
+Note only tested on imx35. I haven't added support for any other variants
+because I'm not familiar with them. (And can't test them anyway).
 
 Signed-off-by: Marc Reilly <marc@cpdesign.com.au>
 ---
- arch/arm/mach-imx/include/mach/imx25-regs.h |    2 ++
- arch/arm/mach-imx/include/mach/imx35-regs.h |    2 ++
- 2 files changed, 4 insertions(+), 0 deletions(-)
+ arch/arm/mach-imx/Makefile |    1 +
+ arch/arm/mach-imx/boot.c   |   57 ++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 58 insertions(+), 0 deletions(-)
+ create mode 100644 arch/arm/mach-imx/boot.c
 
-diff --git a/arch/arm/mach-imx/include/mach/imx25-regs.h b/arch/arm/mach-imx/include/mach/imx25-regs.h
-index ac590d9..e01fa86 100644
---- a/arch/arm/mach-imx/include/mach/imx25-regs.h
-+++ b/arch/arm/mach-imx/include/mach/imx25-regs.h
-@@ -79,6 +79,8 @@
- #define PDR0_AUTO_CON		(1 << 0)
- #define PDR0_PER_SEL		(1 << 26)
- 
-+#define CCM_RCSR_MEM_CTRL_SHIFT	30
+diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
+index d000683..3b2deaf 100644
+--- a/arch/arm/mach-imx/Makefile
++++ b/arch/arm/mach-imx/Makefile
+@@ -11,3 +11,4 @@ obj-$(CONFIG_IMX_IIM)	+= iim.o
+ obj-$(CONFIG_NAND_IMX) += nand.o
+ obj-y += speed.o
+ obj-y += devices.o
++obj-y += boot.o
+diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
+new file mode 100644
+index 0000000..a9bce4b
+--- /dev/null
++++ b/arch/arm/mach-imx/boot.c
+@@ -0,0 +1,57 @@
++/*
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
 +
- /*
-  * Adresses and ranges of the external chip select lines
-  */
-diff --git a/arch/arm/mach-imx/include/mach/imx35-regs.h b/arch/arm/mach-imx/include/mach/imx35-regs.h
-index 75825e5..7da911b 100644
---- a/arch/arm/mach-imx/include/mach/imx35-regs.h
-+++ b/arch/arm/mach-imx/include/mach/imx35-regs.h
-@@ -79,6 +79,8 @@
- #define CCM_CGR1_SDHC1_SHIFT	26
- #define CCM_CGR2_USB_SHIFT	22
- 
-+#define CCM_RCSR_MEM_CTRL_SHIFT	25
++#include <common.h>
++#include <environment.h>
++#include <init.h>
 +
- #define PDR0_AUTO_MUX_DIV(x)	(((x) & 0x7) << 9)
- #define PDR0_CCM_PER_AHB(x)	(((x) & 0x7) << 12)
- #define PDR0_CON_MUX_DIV(x)	(((x) & 0xf) << 16)
++#include <asm/io.h>
++#include <mach/imx-regs.h>
++
++#if defined(CONFIG_ARCH_IMX25) || defined(CONFIG_ARCH_IMX35)
++static int imx_boot_save_loc(void)
++{
++	uint32_t reg;
++	reg = readl(IMX_CCM_BASE + CCM_RCSR);
++
++	switch ((reg >> CCM_RCSR_MEM_CTRL_SHIFT) & 0x3) {
++	case 0x03:		/* SD/MMC is the source */
++		setenv("boot_loc", "mmc");
++		export("boot_loc");
++		break;
++	case 0x01:		/* NAND is the source */
++		setenv("boot_loc", "nand");
++		export("boot_loc");
++		break;
++	case 0x00:		/* NOR is the source */
++		setenv("boot_loc", "nor");
++		export("boot_loc");
++		break;
++	default:
++		break;
++	}
++
++	return 0;
++}
++
++/*
++ * This can only be called after env_push_context() has been called
++ * so it is a late_initcall.
++ */
++late_initcall(imx_boot_save_loc);
++
++#endif
 -- 
 1.7.1
 
