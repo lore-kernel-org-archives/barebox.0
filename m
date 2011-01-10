@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pv0-f177.google.com ([74.125.83.177])
+Received: from mail-pz0-f49.google.com ([209.85.210.49])
 	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1Pc9VJ-0005oP-D1
-	for barebox@lists.infradead.org; Mon, 10 Jan 2011 04:37:14 +0000
-Received: by pvg7 with SMTP id 7so3905660pvg.36
-	for <barebox@lists.infradead.org>; Sun, 09 Jan 2011 20:37:12 -0800 (PST)
+	id 1Pc9VF-0005o8-Pb
+	for barebox@lists.infradead.org; Mon, 10 Jan 2011 04:37:11 +0000
+Received: by pzk30 with SMTP id 30so4139559pzk.36
+	for <barebox@lists.infradead.org>; Sun, 09 Jan 2011 20:37:07 -0800 (PST)
 From: Marc Reilly <marc@cpdesign.com.au>
-Date: Mon, 10 Jan 2011 15:36:50 +1100
-Message-Id: <1294634212-29029-2-git-send-email-marc@cpdesign.com.au>
-In-Reply-To: <1294634212-29029-1-git-send-email-marc@cpdesign.com.au>
-References: <1294634212-29029-1-git-send-email-marc@cpdesign.com.au>
+Date: Mon, 10 Jan 2011 15:36:49 +1100
+Message-Id: <1294634212-29029-1-git-send-email-marc@cpdesign.com.au>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,32 +21,21 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] Init env context a bit earlier in initalization sequence.
+Subject: imx: Save boot source into env during init
 To: barebox@lists.infradead.org
 
-Ensures subsequent init functions to export environment variables during
-init without having to rely on linking order being correct.
+Hi,
 
-Signed-off-by: Marc Reilly <marc@cpdesign.com.au>
----
- common/env.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+This series saves the boot location into an environment variable $boot_loc for 
+use in init/boot scripts etc. on imx25 and imx35.
 
-diff --git a/common/env.c b/common/env.c
-index f81bd46..b72b5d1 100644
---- a/common/env.c
-+++ b/common/env.c
-@@ -81,7 +81,7 @@ int env_push_context(void)
- 	return 0;
- }
- 
--late_initcall(env_push_context);
-+device_initcall(env_push_context);
- 
- /**
-  * FIXME
--- 
-1.7.1
+Could someone comment as to whether the first patch is strictly necessary? 
+- env_push_context() needs to be called before imx_boot_save_loc() (which 
+calls export()), and I'm not sure whether it would always be guaranteed 
+if they are both late_initcalls. I assume it comes down to linking order..
+
+Cheers,
+Marc
 
 
 _______________________________________________
