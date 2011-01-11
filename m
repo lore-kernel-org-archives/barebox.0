@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail16.tpgi.com.au ([203.12.160.231])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Pcajl-0007hK-9b
-	for barebox@lists.infradead.org; Tue, 11 Jan 2011 09:42:00 +0000
-Date: Tue, 11 Jan 2011 10:41:51 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110111094151.GO12078@pengutronix.de>
+	id 1PcbZ1-0002xd-51
+	for barebox@lists.infradead.org; Tue, 11 Jan 2011 10:34:58 +0000
+From: Marc Reilly <marc@cpdesign.com.au>
+Date: Tue, 11 Jan 2011 21:34:35 +1100
 References: <1294702816-21612-1-git-send-email-marc@cpdesign.com.au>
 	<1294702816-21612-4-git-send-email-marc@cpdesign.com.au>
+	<20110111094151.GO12078@pengutronix.de>
+In-Reply-To: <20110111094151.GO12078@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1294702816-21612-4-git-send-email-marc@cpdesign.com.au>
+Message-Id: <201101112134.35813.marc@cpdesign.com.au>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,114 +23,82 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 3/3] imx(25,35): save boot location into $boot_loc env.
-To: Marc Reilly <marc@cpdesign.com.au>
+Subject: Re: [PATCH v2 3/3] imx(25, 35): save boot location into $boot_loc env.
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jan 11, 2011 at 10:40:16AM +1100, Marc Reilly wrote:
-> Saves the boot source into an environment variable so env scripts
-> can more easily use boot source information. We could also
-> look at the extra information in the MEM_TYPE bits if needed in future,
-> but this is good enough for my purposes.
+Hi Sascha,
+
+
+> > +
+> > +#if defined(CONFIG_ARCH_IMX25) || defined(CONFIG_ARCH_IMX35)
+> > +static int imx_boot_save_loc(void)
+> > +{
+> > +	const char *bootloc = NULL;
+> > +	uint32_t reg;
+> > +
+> > +	reg = readl(IMX_CCM_BASE + CCM_RCSR);
+> > +
+> > +	switch ((reg >> CCM_RCSR_MEM_CTRL_SHIFT) & 0x3) {
+> > +	case 0x03:		/* SD/MMC, I2C, SPI is the source */
+> > +		bootloc = "expansion";
+> > +		break;
+> > +	case 0x01:		/* NAND is the source */
+> > +		bootloc = "nand";
+> > +		break;
+> > +	case 0x00:		/* NOR, OneNand is the source */
+> > +		bootloc = "weim";
+> > +		break;
+> > +	default:
+> > +		break;
+> > +	}
 > 
-> Note only tested on imx35. I haven't added support for any other variants
-> because I'm not familiar with them. (And can't test them anyway).
+> This is not exactly what I meant. Your original "nor" and "mmc" strings
+> were ok. The boards in the tree do not support booting from eeproms (am
+> I wrong?), 
+
+I don't think any existing boards have the hardware, although I think barebox 
+could handle it from a SW point of view. From memory the only source not 
+copied by out the boot rom is NOR.
+
+> so bootloc has the correct value for the boards in the tree.
+> Now with this patch we have a situation that when somebody adds a board
+> which can boot from eeprom, he will update this function and "expansion"
+> will become "mmc" or "eeprom" breaking your environment scripts.
+
+I'll do another round where I handle all of them.. (like I should have done 
+before :) 
+
+nor onenand nand mmc prom_i2c prom_spi -- do these names sound ok for 
+everyone? 
+
 > 
-> Signed-off-by: Marc Reilly <marc@cpdesign.com.au>
-> ---
->  arch/arm/mach-imx/Makefile |    1 +
->  arch/arm/mach-imx/boot.c   |   61 ++++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 62 insertions(+), 0 deletions(-)
->  create mode 100644 arch/arm/mach-imx/boot.c
+> > +
+> > +	if (bootloc) {
+> > +		setenv("boot_loc", bootloc);
+> > +		export("boot_loc");
+> > +	}
 > 
-> diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
-> index d000683..3b2deaf 100644
-> --- a/arch/arm/mach-imx/Makefile
-> +++ b/arch/arm/mach-imx/Makefile
-> @@ -11,3 +11,4 @@ obj-$(CONFIG_IMX_IIM)	+= iim.o
->  obj-$(CONFIG_NAND_IMX) += nand.o
->  obj-y += speed.o
->  obj-y += devices.o
-> +obj-y += boot.o
-> diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
-> new file mode 100644
-> index 0000000..560fc76
-> --- /dev/null
-> +++ b/arch/arm/mach-imx/boot.c
-> @@ -0,0 +1,61 @@
-> +/*
-> + * This program is free software; you can redistribute it and/or
-> + * modify it under the terms of the GNU General Public License as
-> + * published by the Free Software Foundation; either version 2 of
-> + * the License, or (at your option) any later version.
-> + *
-> + * This program is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> + * GNU General Public License for more details.
-> + *
-> + * You should have received a copy of the GNU General Public License
-> + * along with this program; if not, write to the Free Software
-> + * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-> + * MA 02111-1307 USA
-> + */
-> +
-> +#include <common.h>
-> +#include <environment.h>
-> +#include <init.h>
-> +
-> +#include <asm/io.h>
-> +#include <mach/imx-regs.h>
-> +
-> +#if defined(CONFIG_ARCH_IMX25) || defined(CONFIG_ARCH_IMX35)
-> +static int imx_boot_save_loc(void)
-> +{
-> +	const char *bootloc = NULL;
-> +	uint32_t reg;
-> +
-> +	reg = readl(IMX_CCM_BASE + CCM_RCSR);
-> +
-> +	switch ((reg >> CCM_RCSR_MEM_CTRL_SHIFT) & 0x3) {
-> +	case 0x03:		/* SD/MMC, I2C, SPI is the source */
-> +		bootloc = "expansion";
-> +		break;
-> +	case 0x01:		/* NAND is the source */
-> +		bootloc = "nand";
-> +		break;
-> +	case 0x00:		/* NOR, OneNand is the source */
-> +		bootloc = "weim";
-> +		break;
-> +	default:
-> +		break;
-> +	}
+> I just asked two collegues about the meaning of a boot_location variable
+> and they both said this would be the variable where Linux should be
+> booted from. 
 
-This is not exactly what I meant. Your original "nor" and "mmc" strings
-were ok. The boards in the tree do not support booting from eeproms (am
-I wrong?), so bootloc has the correct value for the boards in the tree.
-Now with this patch we have a situation that when somebody adds a board which
-can boot from eeprom, he will update this function and "expansion" will
-become "mmc" or "eeprom" breaking your environment scripts.
+Isn't that already kernel_loc?
 
-> +
-> +	if (bootloc) {
-> +		setenv("boot_loc", bootloc);
-> +		export("boot_loc");
-> +	}
+> Maybe barebox_location is a better name?
 
-I just asked two collegues about the meaning of a boot_location variable
-and they both said this would be the variable where Linux should be
-booted from. Maybe barebox_location is a better name?
+Then how about boot_source? (or boot_src). Or boot_media? These seem to me to 
+be a better fit, but I don't have any colleagues to bounce them off :) 
+I'm also happy with barebox_loc, so no dramas.
 
-I already took the first two patches, so you don't have to resend them.
+> 
+> I already took the first two patches, so you don't have to resend them.
 
-Sascha
+Just to check - did you take from v1 or v2? in v2 For the second patch in V2 I 
+also added the MEM_TYPE_SHIFT defines..
 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Cheers
+Marc
 
 _______________________________________________
 barebox mailing list
