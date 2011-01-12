@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PccSv-0001o4-S9
-	for barebox@lists.infradead.org; Tue, 11 Jan 2011 11:32:46 +0000
-Date: Tue, 11 Jan 2011 12:32:39 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110111113238.GR12078@pengutronix.de>
-References: <1294702816-21612-1-git-send-email-marc@cpdesign.com.au>
-	<1294702816-21612-4-git-send-email-marc@cpdesign.com.au>
-	<20110111094151.GO12078@pengutronix.de>
-	<201101112134.35813.marc@cpdesign.com.au>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <201101112134.35813.marc@cpdesign.com.au>
+Received: from mail-pz0-f49.google.com ([209.85.210.49])
+	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1PcqS7-00027N-Lu
+	for barebox@lists.infradead.org; Wed, 12 Jan 2011 02:28:50 +0000
+Received: by pzk30 with SMTP id 30so23573pzk.36
+	for <barebox@lists.infradead.org>; Tue, 11 Jan 2011 18:28:45 -0800 (PST)
+From: Marc Reilly <marc@cpdesign.com.au>
+Date: Wed, 12 Jan 2011 13:27:55 +1100
+Message-Id: <1294799275-18113-1-git-send-email-marc@cpdesign.com.au>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,108 +16,140 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 3/3] imx(25,35): save boot location into $boot_loc env.
-To: Marc Reilly <marc@cpdesign.com.au>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] imx(25,35): save boot location into $barebox_loc env.
+To: barebox@lists.infradead.org
 
-On Tue, Jan 11, 2011 at 09:34:35PM +1100, Marc Reilly wrote:
-> Hi Sascha,
-> 
-> 
-> > > +
-> > > +#if defined(CONFIG_ARCH_IMX25) || defined(CONFIG_ARCH_IMX35)
-> > > +static int imx_boot_save_loc(void)
-> > > +{
-> > > +	const char *bootloc = NULL;
-> > > +	uint32_t reg;
-> > > +
-> > > +	reg = readl(IMX_CCM_BASE + CCM_RCSR);
-> > > +
-> > > +	switch ((reg >> CCM_RCSR_MEM_CTRL_SHIFT) & 0x3) {
-> > > +	case 0x03:		/* SD/MMC, I2C, SPI is the source */
-> > > +		bootloc = "expansion";
-> > > +		break;
-> > > +	case 0x01:		/* NAND is the source */
-> > > +		bootloc = "nand";
-> > > +		break;
-> > > +	case 0x00:		/* NOR, OneNand is the source */
-> > > +		bootloc = "weim";
-> > > +		break;
-> > > +	default:
-> > > +		break;
-> > > +	}
-> > 
-> > This is not exactly what I meant. Your original "nor" and "mmc" strings
-> > were ok. The boards in the tree do not support booting from eeproms (am
-> > I wrong?), 
-> 
-> I don't think any existing boards have the hardware, although I think barebox 
-> could handle it from a SW point of view. From memory the only source not 
-> copied by out the boot rom is NOR.
-> 
-> > so bootloc has the correct value for the boards in the tree.
-> > Now with this patch we have a situation that when somebody adds a board
-> > which can boot from eeprom, he will update this function and "expansion"
-> > will become "mmc" or "eeprom" breaking your environment scripts.
-> 
-> I'll do another round where I handle all of them.. (like I should have done 
-> before :)
+Saves the boot source into an environment variable so env scripts
+can more easily use boot source information.
 
-Great. That's a good way to end this discussion with everyone being
-satisfied ;)
+Note only tested on imx35. I haven't added support for any other variants
+because I'm not familiar with them. (And can't test them anyway).
 
-> 
-> nor onenand nand mmc prom_i2c prom_spi -- do these names sound ok for 
-> everyone?
+Signed-off-by: Marc Reilly <marc@cpdesign.com.au>
+---
+ arch/arm/mach-imx/Makefile |    1 +
+ arch/arm/mach-imx/boot.c   |   95 ++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 96 insertions(+), 0 deletions(-)
+ create mode 100644 arch/arm/mach-imx/boot.c
 
-I agree with Eric about the prefixes.
-
-> 
-> > 
-> > > +
-> > > +	if (bootloc) {
-> > > +		setenv("boot_loc", bootloc);
-> > > +		export("boot_loc");
-> > > +	}
-> > 
-> > I just asked two collegues about the meaning of a boot_location variable
-> > and they both said this would be the variable where Linux should be
-> > booted from. 
-> 
-> Isn't that already kernel_loc?
-> 
-> > Maybe barebox_location is a better name?
-> 
-> Then how about boot_source? (or boot_src). Or boot_media? These seem to me to 
-> be a better fit, but I don't have any colleagues to bounce them off :)
-
-boot_source was my first idea aswell and I already asked my collegues
-about it. For them boot_source and boot_location have the same meaning.
-
-> I'm also happy with barebox_loc, so no dramas.
-
-ok, then lets go for it.
-
-> 
-> > 
-> > I already took the first two patches, so you don't have to resend them.
-> 
-> Just to check - did you take from v1 or v2? in v2 For the second patch in V2 I 
-> also added the MEM_TYPE_SHIFT defines..
-
-Oh, I took v1 I guess. I didn't realize they differ.
-
-Sascha
-
+diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
+index d000683..3b2deaf 100644
+--- a/arch/arm/mach-imx/Makefile
++++ b/arch/arm/mach-imx/Makefile
+@@ -11,3 +11,4 @@ obj-$(CONFIG_IMX_IIM)	+= iim.o
+ obj-$(CONFIG_NAND_IMX) += nand.o
+ obj-y += speed.o
+ obj-y += devices.o
++obj-y += boot.o
+diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
+new file mode 100644
+index 0000000..446a6ab
+--- /dev/null
++++ b/arch/arm/mach-imx/boot.c
+@@ -0,0 +1,95 @@
++/*
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
++
++#include <common.h>
++#include <environment.h>
++#include <init.h>
++
++#include <asm/io.h>
++#include <mach/imx-regs.h>
++
++#if defined(CONFIG_ARCH_IMX25) || defined(CONFIG_ARCH_IMX35)
++/*
++ * Saves the boot source media into the $barebox_loc enviroment variable
++ *
++ * This information is useful for barebox init scripts as we can then easily
++ * use a kernel image stored on the same media that we launch barebox with
++ * (for example).
++ *
++ * imx25 and imx35 can boot into barebox from several media such as
++ * nand, nor, mmc/sd cards, serial roms. "mmc" is used to represent several
++ * sources as its impossible to distinguish between them.
++ *
++ * Some sources such as serial roms can themselves have 3 different boot
++ * possibilities (i2c1, i2c2 etc). It is assumed that any board will
++ * only be using one of these at any one time.
++ *
++ * Note also that I suspect that the boot source pins are only sampled at
++ * power up.
++ */
++static int imx_boot_save_loc(void)
++{
++	const char *bareboxloc = NULL;
++	uint32_t reg;
++	unsigned int ctrl, type;
++
++	/* [CTRL][TYPE] */
++	const char *const locations[4][4] = {
++		{ /* CTRL = WEIM */
++			"nor",
++			0,
++			"onenand",
++			0
++		}, { /* CTRL == NAND */
++			"nand",
++			"nand",
++			"nand",
++			"nand",
++		}, { /* CTRL == ATA, (imx35 only) */
++			0,
++			0, /* might be p-ata */
++			0,
++			0,
++		}, { /* CTRL == expansion */
++			"mmc", /* note imx25 could also be: movinand, ce-ata */
++			0,
++			"i2c",
++			"spi",
++		}
++	};
++
++	reg = readl(IMX_CCM_BASE + CCM_RCSR);
++	ctrl = (reg >> CCM_RCSR_MEM_CTRL_SHIFT) & 0x3;
++	type = (reg >> CCM_RCSR_MEM_TYPE_SHIFT) & 0x3;
++
++	bareboxloc = locations[ctrl][type];
++
++	if (bareboxloc) {
++		setenv("barebox_loc", bareboxloc);
++		export("barebox_loc");
++	}
++
++	return 0;
++}
++
++/*
++ * This can only be called after env_push_context() has been called
++ * so it is a late_initcall.
++ */
++late_initcall(imx_boot_save_loc);
++
++#endif
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.1
+
 
 _______________________________________________
 barebox mailing list
