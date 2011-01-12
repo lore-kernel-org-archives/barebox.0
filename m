@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail13.tpgi.com.au ([203.12.160.181])
-	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PculZ-0001yC-2P
-	for barebox@lists.infradead.org; Wed, 12 Jan 2011 07:05:10 +0000
-From: Marc Reilly <marc@cpdesign.com.au>
-Date: Wed, 12 Jan 2011 18:04:43 +1100
-References: <1294799275-18113-1-git-send-email-marc@cpdesign.com.au>
-	<20110112025858.GD20706@game.jcrosoft.org>
-In-Reply-To: <20110112025858.GD20706@game.jcrosoft.org>
+Received: from mail-wy0-f177.google.com ([74.125.82.177])
+	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1Pcxyu-0006F1-Kr
+	for barebox@lists.infradead.org; Wed, 12 Jan 2011 10:31:12 +0000
+Received: by wyf22 with SMTP id 22so385648wyf.36
+	for <barebox@lists.infradead.org>; Wed, 12 Jan 2011 02:31:06 -0800 (PST)
 MIME-Version: 1.0
-Message-Id: <201101121804.44105.marc@cpdesign.com.au>
+Date: Wed, 12 Jan 2011 10:31:05 +0000
+Message-ID: <AANLkTim3AJb3tTuL1x1syWzt-Z1W6vcOJ16PAX_uk0j1@mail.gmail.com>
+From: Nataraj S Narayan <natarajsn@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,77 +21,124 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] imx(25,35): save boot location into $barebox_loc env.
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: Issues in compiling
+To: barebox@lists.infradead.org
+
+Hi
+
+When compiling using
+
+"make ARCH=arm CROSS_COMPILE=/software/buildroot-git/output/external-toolchain/bin/arm-none-linux-gnueabi-"
+
+where Codesourcery tool chain is the external-toolchain, getting the following:-
 
 
-> > +#include <mach/imx-regs.h>
-> > +
-> > +#if defined(CONFIG_ARCH_IMX25) || defined(CONFIG_ARCH_IMX35)
-> 
-> please move this to the Makefile
+  AS      arch/arm/cpu/cache-armv5.o
+  LD      arch/arm/cpu/built-in.o
+  LD      barebox
+common/built-in.o: In function `image_multi_getimg':
+memsize.c:(.text.image_multi_getimg+0x38): undefined reference to `__bswapsi2'
+memsize.c:(.text.image_multi_getimg+0x50): undefined reference to `__bswapsi2'
+common/built-in.o: In function `image_print_contents':
+memsize.c:(.text.image_print_contents+0x30): undefined reference to `__bswapsi2'
+memsize.c:(.text.image_print_contents+0xc8): undefined reference to `__bswapsi2'
+memsize.c:(.text.image_print_contents+0xd4): undefined reference to `__bswapsi2'
+common/built-in.o:memsize.c:(.text.image_print_contents+0xec): more
+undefined references to `__bswapsi2' follow
+make: *** [barebox] Error 1
 
-I respectfully disagree. :) Other imx will require a slightly different 
-approach to this function, the imx31 and the imx51 are both different for 
-example.
 
-So we either need to have a separate .c file for each different type and link 
-them appropriately in the Makefile, or we have a single boot.c and 
-conditionally compile.
-I think its overkill to split it up into separate files, especially seeing as 
-some code will be (hopefully) be used by multiple processors. I also think its 
-better that with one file the code with similar functionality is grouped 
-together.
+But with Buildroot internal tool chain, compiles to give barebox.bin.
 
-Hope those arguments make sense.
-> 
-> > +/*
-> > + * Saves the boot source media into the $barebox_loc enviroment variable
-> > + *
-> > + * This information is useful for barebox init scripts as we can then
-> > easily + * use a kernel image stored on the same media that we launch
-> > barebox with + * (for example).
-> > + *
-> > + * imx25 and imx35 can boot into barebox from several media such as
-> > + * nand, nor, mmc/sd cards, serial roms. "mmc" is used to represent
-> > several + * sources as its impossible to distinguish between them.
-> > + *
-> > + * Some sources such as serial roms can themselves have 3 different boot
-> > + * possibilities (i2c1, i2c2 etc). It is assumed that any board will
-> > + * only be using one of these at any one time.
-> > + *
-> > + * Note also that I suspect that the boot source pins are only sampled
-> > at + * power up.
-> > + */
-> > +static int imx_boot_save_loc(void)
-> > +{
-> > +	const char *bareboxloc = NULL;
-> > +	uint32_t reg;
-> > +	unsigned int ctrl, type;
-> > +
-> > +	/* [CTRL][TYPE] */
-> > +	const char *const locations[4][4] = {
-> 
-> 	a struct could be better not sure
 
-I couldn't think of a way where a struct would make it easier than it is... 
-suggestions?
+# /buildroot/output/staging/usr/bin/arm-linux-gcc -v
+Using built-in specs.
+Target: arm-unknown-linux-uclibcgnueabi
+Configured with: /buildroot/output/toolchain/gcc-4.4.4/configure
+--prefix=/buildroot/output/staging/usr --build=i686-pc-linux-gnu
+--host=i686-pc-linux-gnu --target=arm-unknown-linux-uclibcgnueabi
+--enable-languages=c,c++ --with-sysroot=/buildroot/output/staging
+--with-build-time-tools=/buildroot/output/staging/usr/arm-unknown-linux-uclibcgnueabi/bin
+--disable-__cxa_atexit --enable-target-optspace --with-gnu-ld
+--disable-libssp --disable-multilib --enable-tls --enable-shared
+--with-gmp=/buildroot/output/toolchain/gmp
+--with-mpfr=/buildroot/output/toolchain/mpfr --enable-threads
+--disable-decimal-float --with-float=soft --with-abi=aapcs-linux
+--with-arch=armv5te --with-tune=arm926ej-s
+--with-pkgversion='Buildroot 2010.08-git'
+--with-bugurl=http://bugs.buildroot.net/ : (reconfigured)
+/buildroot/output/toolchain/gcc-4.4.4/configure
+--prefix=/buildroot/output/staging/usr --build=i686-pc-linux-gnu
+--host=i686-pc-linux-gnu --target=arm-unknown-linux-uclibcgnueabi
+--enable-languages=c,c++ --with-sysroot=/buildroot/output/staging
+--with-build-time-tools=/buildroot/output/staging/usr/arm-unknown-linux-uclibcgnueabi/bin
+--disable-__cxa_atexit --enable-target-optspace --with-gnu-ld
+--disable-libssp --disable-multilib --enable-tls --enable-shared
+--with-gmp=/buildroot/output/toolchain/gmp
+--with-mpfr=/buildroot/output/toolchain/mpfr --enable-threads
+--disable-decimal-float --with-float=soft --with-abi=aapcs-linux
+--with-arch=armv5te --with-tune=arm926ej-s
+--with-pkgversion='Buildroot 2010.08-git'
+--with-bugurl=http://bugs.buildroot.net/ : (reconfigured)
+/buildroot/output/toolchain/gcc-4.4.4/configure
+--prefix=/buildroot/output/staging/usr --build=i686-pc-linux-gnu
+--host=i686-pc-linux-gnu --target=arm-unknown-linux-uclibcgnueabi
+--enable-languages=c,c++ --with-sysroot=/buildroot/output/staging
+--with-build-time-tools=/buildroot/output/staging/usr/arm-unknown-linux-uclibcgnueabi/bin
+--disable-__cxa_atexit --enable-target-optspace --with-gnu-ld
+--disable-libssp --disable-multilib --enable-tls --enable-shared
+--with-gmp=/buildroot/output/toolchain/gmp
+--with-mpfr=/buildroot/output/toolchain/mpfr --enable-threads
+--disable-decimal-float --with-float=soft --with-abi=aapcs-linux
+--with-arch=armv5te --with-tune=arm926ej-s
+--with-pkgversion='Buildroot 2010.08-git'
+--with-bugurl=http://bugs.buildroot.net/
+Thread model: posix
+gcc version 4.4.4 (Buildroot 2010.08-git)
 
-> 
-> > +		{ /* CTRL = WEIM */
-> > +			"nor",
-> > +			0,
-> 
-> 			NULL no?
 
-Ack, you're right.
+ # /software/buildroot-git/output/external-toolchain/bin/arm-none-linux-gnueabi-gcc
+-v
+Using built-in specs.
+COLLECT_GCC=/software/buildroot-git/output/external-toolchain/bin/arm-none-linux-gnueabi-gcc
+COLLECT_LTO_WRAPPER=/home/vignesh/software/buildroot-git/output/external-toolchain/bin/../libexec/gcc/arm-none-linux-gnueabi/4.5.1/lto-wrapper
+Target: arm-none-linux-gnueabi
+Configured with:
+/scratch/nathan/arm-lite/src/gcc-4.5-2010.09/configure
+--build=i686-pc-linux-gnu --host=i686-pc-linux-gnu
+--target=arm-none-linux-gnueabi --enable-threads --disable-libmudflap
+--disable-libssp --disable-libstdcxx-pch
+--enable-extra-sgxxlite-multilibs --with-arch=armv5te --with-gnu-as
+--with-gnu-ld --with-specs='%{save-temps: -fverbose-asm}
+%{funwind-tables|fno-unwind-tables|mabi=*|ffreestanding|nostdlib:;:-funwind-tables}
+-D__CS_SOURCERYGXX_MAJ__=2010 -D__CS_SOURCERYGXX_MIN__=9
+-D__CS_SOURCERYGXX_REV__=50 %{O2:%{!fno-remove-local-statics:
+-fremove-local-statics}}
+%{O*:%{O|O0|O1|O2|Os:;:%{!fno-remove-local-statics:
+-fremove-local-statics}}}' --enable-languages=c,c++ --enable-shared
+--enable-lto --enable-symvers=gnu --enable-__cxa_atexit
+--with-pkgversion='Sourcery G++ Lite 2010.09-50'
+--with-bugurl=https://support.codesourcery.com/GNUToolchain/
+--disable-nls --prefix=/opt/codesourcery
+--with-sysroot=/opt/codesourcery/arm-none-linux-gnueabi/libc
+--with-build-sysroot=/scratch/nathan/arm-lite/install/arm-none-linux-gnueabi/libc
+--with-gmp=/scratch/nathan/arm-lite/obj/host-libs-2010.09-50-arm-none-linux-gnueabi-i686-pc-linux-gnu/usr
+--with-mpfr=/scratch/nathan/arm-lite/obj/host-libs-2010.09-50-arm-none-linux-gnueabi-i686-pc-linux-gnu/usr
+--with-mpc=/scratch/nathan/arm-lite/obj/host-libs-2010.09-50-arm-none-linux-gnueabi-i686-pc-linux-gnu/usr
+--with-ppl=/scratch/nathan/arm-lite/obj/host-libs-2010.09-50-arm-none-linux-gnueabi-i686-pc-linux-gnu/usr
+--with-host-libstdcxx='-static-libgcc -Wl,-Bstatic,-lstdc++,-Bdynamic
+-lm' --with-cloog=/scratch/nathan/arm-lite/obj/host-libs-2010.09-50-arm-none-linux-gnueabi-i686-pc-linux-gnu/usr
+--with-libelf=/scratch/nathan/arm-lite/obj/host-libs-2010.09-50-arm-none-linux-gnueabi-i686-pc-linux-gnu/usr
+--disable-libgomp --enable-poison-system-directories
+--with-build-time-tools=/scratch/nathan/arm-lite/install/arm-none-linux-gnueabi/bin
+--with-build-time-tools=/scratch/nathan/arm-lite/install/arm-none-linux-gnueabi/bin
+Thread model: posix
+gcc version 4.5.1 (Sourcery G++ Lite 2010.09-50)
 
-Guess I'll have to have another go :) I'll let it rest for a bit and see if 
-there are any other comments.
 
-Cheers
-Marc
+regards
+
+Nataraj
 
 _______________________________________________
 barebox mailing list
