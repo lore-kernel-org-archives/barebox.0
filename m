@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PdP13-0003LO-Q5
-	for barebox@lists.infradead.org; Thu, 13 Jan 2011 15:23:10 +0000
+	id 1PdP1c-0003P5-7G
+	for barebox@lists.infradead.org; Thu, 13 Jan 2011 15:23:44 +0000
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Thu, 13 Jan 2011 16:21:45 +0100
-References: <4D233027.9030701@free-electrons.com>
-	<4D234F8A.4070703@free-electrons.com>
-	<4D2F15F4.3030300@free-electrons.com>
-In-Reply-To: <4D2F15F4.3030300@free-electrons.com>
+Date: Thu, 13 Jan 2011 16:22:20 +0100
+References: <1294389316-6569-1-git-send-email-jbe@pengutronix.de>
+	<1294389316-6569-10-git-send-email-jbe@pengutronix.de>
+	<20110107165128.GA15365@game.jcrosoft.org>
+In-Reply-To: <20110107165128.GA15365@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-Message-Id: <201101131621.45581.jbe@pengutronix.de>
+Message-Id: <201101131622.20925.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,80 +24,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] ARM STM/i.MX: Allocate memory for framebuffer during
-	probe
+Subject: Re: [PATCH 09/10] LINUX16: Add selection of the VESA video mode
 To: barebox@lists.infradead.org
 
-Gregory CLEMENT wrote:
-> On 01/04/2011 05:49 PM, Gregory CLEMENT wrote:
-> > On 01/04/2011 05:16 PM, Juergen Beisert wrote:
-> >> Gregory CLEMENT wrote:
-> >>> On 01/04/2011 03:46 PM, Juergen Beisert wrote:
-> >>>> Gregory CLEMENT wrote:
-> >>>>> With current code when the framebuffer is register, screen_base is
-> >>>>> not set yet. So when we want to access framebuffer from mmap we get a
-> >>>>> pointer to 0x0 instead of getting the pointer to the framebuffer
-> >>>>> address. This patch fix this bug by allocating memory for framebuffer
-> >>>>> during probe just before registering framebuffer driver.
-> >>>>
-> >>>> Are you sure? See below
-> >>>
-> >>> It was the value I get at runtime at least.
-> >>>
-> >>>>> Signed-off-by: Gregory CLEMENT <gregory.clement@free-electrons.com>
-> >>>
-> >>> [...]
-> >>>
-> >>>> This probe function sets up the default mode. And
-> >>>> register_framebuffer() itself calls stmfb_activate_var() which calls
-> >>>> stmfb_memory_mmgt(). So, when the call to register_framebuffer()
-> >>>> returns the 'screen_base' should no longer be NULL.
-> >>>
-> >>> But in register_framebuffer first map_base get its value from
-> >>> screen_base and it is only after that fb_activate_var is called. And
-> >>> the problem is that mmap will not get screen_base but map_base and this
-> >>> one is set too early. Extract from  register_framebuffer() in fb.c:
-> >>>
-> >>> 	info->cdev.dev->map_base = (unsigned long)info->screen_base;
-> >>> map_base get its value here ------^
-> >>> 	info->cdev.dev->size = info->cdev.size;
-> >>>
-> >>> 	dev = &info->dev;
-> >>> 	dev->priv = info;
-> >>> 	dev->id = id;
-> >>>
-> >>> 	sprintf(dev->name, "fb");
-> >>>
-> >>> 	register_device(&info->dev);
-> >>> 	dev_add_param(dev, "enable", fb_enable_set, NULL, 0);
-> >>> 	dev_set_param(dev, "enable", "0");
-> >>>
-> >>> 	if (info->num_modes && (info->mode_list != NULL) &&
-> >>> 			(info->fbops->fb_activate_var != NULL)) {
-> >>> 		dev_add_param(dev, "mode_name", fb_setup_mode, NULL, 0);
-> >>> 		dev_set_param(dev, "mode_name", info->mode_list[0].name);
-> >>> fb_activate_var is called here ------------------------^
-> >>
-> >> And this call will call driver's stmfb_activate_var() (and(!)
-> >> stmfb_memory_mmgt()).
+Jean-Christophe PLAGNIOL-VILLARD wrote:
+> >  		}
+> >  	}
 > >
-> > Yes I totally agree with this. But at this time it's too late because
-> > changing screen_base won't change map_base. And a call to memmap is a
-> > call to generic_memmap_rw which will return map_base.
-> > I didn't find anywhere in video driver code a place where map_base is
-> > updated, that's why I think that once it get its value it won't change.
+> > @@ -227,6 +243,14 @@ static int do_linux16(struct command *cmdtp, int
+> > argc, char *argv[]) goto on_error;
+> >  	}
 > >
-> >> But I will check it again.
+> > +	/*
+> > +	 * The kernel does not check for the "vga=<val>" kernel command line
+> > +	 * parameter anymore. It expects this kind of information in the
+> > +	 * boot parameters instead.
+> > +	 */
+> > +	if (vid_mode != NORMAL_VGA)
+> > +		lh->vid_mode = vid_mode;
+> > +
+> >  	/* If SETUP_SECTS is not set, set it to the default.  */
+> >  	if (setup_sects == 0) {
+> >  		printf("Fixing setup sector count\n");
+> > @@ -297,8 +321,9 @@ on_error:
+> >  }
+> >
+> >  BAREBOX_CMD_HELP_START(linux16)
+> > -BAREBOX_CMD_HELP_USAGE("linux16 <file>\n")
+> > -BAREBOX_CMD_HELP_SHORT("Boot a kernel on x86 via real mode code.\n")
+> > +BAREBOX_CMD_HELP_USAGE("linux16 <file> [-v <mode>]\n")
+> > +BAREBOX_CMD_HELP_SHORT("Boot a kernel <file> on x86 via real mode
+> > code.\n") +BAREBOX_CMD_HELP_OPT  ("-v <mode>",   "VESA video mode number
+> > or 'ask'\n") BAREBOX_CMD_HELP_END
+> >
+> >  /**
+> > @@ -307,6 +332,10 @@ BAREBOX_CMD_HELP_END
+> >  <p> Only kernel images in bzImage format are supported by now. See \ref
+> >  x86_boot_preparation for more info about how to use this command.</p>
+> >
+> > +<p> For the video mode refer the Linux kernel documentation
+> > +'Documentation/fb/vesafb.txt' for correct VESA mode numbers. If the
+> > keyword +'ask' instead of a number is given, the starting kernel will ask
+> > for a number.
 >
-> Had you had some time to check it?
+> missing </p>?
 
-Not yet, sorry.
-
-> Will you take this patch ?
-> If you have any comments I am willing to take them in account to make a new
-> version of this patch if it necessary.
-
-Maybe I can check it tomorrow.
+Hmm, do we really need the "</p>"?
 
 jbe
 
