@@ -1,18 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail16.tpgi.com.au ([203.12.160.231])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PdP3d-0003Zc-5Y
-	for barebox@lists.infradead.org; Thu, 13 Jan 2011 15:25:49 +0000
-Date: Thu, 13 Jan 2011 16:25:46 +0100
-From: Robert Schwebel <r.schwebel@pengutronix.de>
-Message-ID: <20110113152546.GT9155@pengutronix.de>
-References: <1294389316-6569-1-git-send-email-jbe@pengutronix.de>
-	<1294389316-6569-10-git-send-email-jbe@pengutronix.de>
-	<20110107165128.GA15365@game.jcrosoft.org>
-	<201101131622.20925.jbe@pengutronix.de>
+	id 1PdWrX-0004ci-DU
+	for barebox@lists.infradead.org; Thu, 13 Jan 2011 23:45:52 +0000
+From: Marc Reilly <marc@cpdesign.com.au>
+Date: Fri, 14 Jan 2011 10:45:18 +1100
+References: <1294845697-2729-1-git-send-email-eric@eukrea.com>
+In-Reply-To: <1294845697-2729-1-git-send-email-eric@eukrea.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <201101131622.20925.jbe@pengutronix.de>
+Message-Id: <201101141045.18241.marc@cpdesign.com.au>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,27 +17,63 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 09/10] LINUX16: Add selection of the VESA video mode
-To: Juergen Beisert <jbe@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] i2c-imx: sync with kernel's driver
+To: barebox@lists.infradead.org
 
-On Thu, Jan 13, 2011 at 04:22:20PM +0100, Juergen Beisert wrote:
-> Hmm, do we really need the "</p>"?
-
-<p>s should be closed with </p>.
-
-rsc
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gVGh1cnNkYXksIEphbnVhcnkgMTMsIDIwMTEgMDI6MjE6MzcgYW0gRXJpYyBCw6luYXJkIHdy
+b3RlOgo+IHN0cmFuZ2UgYmVoYXZpb3VyIHdhcyBvYnNlcnZlZCB3aXRoIGFjdHVhbCBkcml2ZXIg
+OiBidXMgbG9jaywgcHJvYmUgb2YKPiBhYnNlbnQgYWRyZXNzZXMsIHdyb25nIGRhdGEgcmVhZC4K
+PiBUaGlzIHBhdGNoIHN5bmMgdGhlIGRyaXZlciB3aXRoIGxpbnV4J3Mgb25lIGFuZCBhZnRlciBh
+IGZldyB0ZXN0cywgd2UKPiBkb24ndCBzZWUgYW55bW9yZSBzdHJhbmdlIGJlaGF2aW91ciAodGVz
+dGVkIG9uIGkuTVgyNykuCj4gCj4gU2lnbmVkLW9mZi1ieTogRXJpYyBCw6luYXJkIDxlcmljQGV1
+a3JlYS5jb20+CgpGV0lXLCBUaGlzIHBhdGNoIGRvZXNuJ3Qgc2VlbSB0byBicmVhayBhbnl0aGlu
+ZyBmb3IgbWUsIGJ1dCBJIGFsc28gd2Fzbid0IApzZWVpbmcgYW55IHByb2JsZW1zICh0aGF0IEkg
+d2FzIGF3YXJlIG9mISkuCgpDaGVlcnMsCk1hcmMKCj4gLS0tCj4gIGRyaXZlcnMvaTJjL2J1c3Nl
+cy9pMmMtaW14LmMgfCAgIDM1ICsrKysrKysrLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCj4g
+IDEgZmlsZXMgY2hhbmdlZCwgOCBpbnNlcnRpb25zKCspLCAyNyBkZWxldGlvbnMoLSkKPiAKPiBk
+aWZmIC0tZ2l0IGEvZHJpdmVycy9pMmMvYnVzc2VzL2kyYy1pbXguYyBiL2RyaXZlcnMvaTJjL2J1
+c3Nlcy9pMmMtaW14LmMKPiBpbmRleCAyNjZjYjUyLi45M2U5NzhlIDEwMDY0NAo+IC0tLSBhL2Ry
+aXZlcnMvaTJjL2J1c3Nlcy9pMmMtaW14LmMKPiArKysgYi9kcml2ZXJzL2kyYy9idXNzZXMvaTJj
+LWlteC5jCj4gQEAgLTE1MSw3ICsxNTEsNyBAQCBzdGF0aWMgaW50IGkyY19pbXhfYnVzX2J1c3ko
+c3RydWN0IGkyY19hZGFwdGVyCj4gKmFkYXB0ZXIsIGludCBmb3JfYnVzeSkgYnJlYWs7Cj4gIAkJ
+aWYgKCFmb3JfYnVzeSAmJiAhKHRlbXAgJiBJMlNSX0lCQikpCj4gIAkJCWJyZWFrOwo+IC0JCWlm
+IChpc190aW1lb3V0KHN0YXJ0LCBNU0VDT05EKSkgewo+ICsJCWlmIChpc190aW1lb3V0KHN0YXJ0
+LCA1MDAgKiBNU0VDT05EKSkgewo+ICAJCQlkZXZfZXJyKGFkYXB0ZXItPmRldiwKPiAgCQkJCSAi
+PCVzPiB0aW1lb3V0IHdhaXRpbmcgZm9yIEkyQyBidXMgJXNcbiIsCj4gIAkJCQkgX19mdW5jX18s
+Zm9yX2J1c3kgPyAiYnVzeSIgOiAibm90IGJ1c3kiKTsKPiBAQCAtMTcwLDM0ICsxNzAsMTUgQEAg
+c3RhdGljIGludCBpMmNfaW14X3RyeF9jb21wbGV0ZShzdHJ1Y3QgaTJjX2FkYXB0ZXIKPiAqYWRh
+cHRlcikgc3RhcnQgPSBnZXRfdGltZV9ucygpOwo+ICAJd2hpbGUgKDEpIHsKPiAgCQl1bnNpZ25l
+ZCBpbnQgcmVnID0gcmVhZGIoYmFzZSArIElNWF9JMkNfSTJTUik7Cj4gLQkJaWYgKHJlZyAmIEky
+U1JfSUNGKQo+IC0JCQlicmVhazsKPiAtCj4gLQkJaWYgKGlzX3RpbWVvdXQoc3RhcnQsIDEwMCAq
+IE1TRUNPTkQpKSB7Cj4gLQkJCWRldl9lcnIoYWRhcHRlci0+ZGV2LCAiPCVzPiBUWFIgdGltZW91
+dFxuIiwgX19mdW5jX18pOwo+IC0JCQlyZXR1cm4gLUVJTzsKPiAtCQl9Cj4gLQl9Cj4gLQo+IC0J
+cmV0dXJuIDA7Cj4gLX0KPiAtCj4gLXN0YXRpYyBpbnQgaTJjX2lteF93YWl0X2lpZihzdHJ1Y3Qg
+aTJjX2FkYXB0ZXIgKmFkYXB0ZXIpCj4gLXsKPiAtCXVuc2lnbmVkIGxvbmcgYmFzZSA9IGFkYXB0
+ZXItPmRldi0+bWFwX2Jhc2U7Cj4gLQl1aW50NjRfdCBzdGFydDsKPiAtCj4gLQlzdGFydCA9IGdl
+dF90aW1lX25zKCk7Cj4gLQl3aGlsZSAoMSkgewo+IC0JCXVuc2lnbmVkIGludCByZWcgPSByZWFk
+YihiYXNlICsgSU1YX0kyQ19JMlNSKTsKPiAgCQlpZiAocmVnICYgSTJTUl9JSUYpCj4gIAkJCWJy
+ZWFrOwo+IAo+ICAJCWlmIChpc190aW1lb3V0KHN0YXJ0LCAxMDAgKiBNU0VDT05EKSkgewo+IC0J
+CQlkZXZfZXJyKGFkYXB0ZXItPmRldiwgIjwlcz4gSUlGIHRpbWVvdXRcbiIsIF9fZnVuY19fKTsK
+PiArCQkJZGV2X2VycihhZGFwdGVyLT5kZXYsICI8JXM+IFRYUiB0aW1lb3V0XG4iLCBfX2Z1bmNf
+Xyk7Cj4gIAkJCXJldHVybiAtRUlPOwo+ICAJCX0KPiAgCX0KPiArCXdyaXRlYigwLCBiYXNlICsg
+SU1YX0kyQ19JMlNSKTsKPiAKPiAgCXJldHVybiAwOwo+ICB9Cj4gQEAgLTI3Nyw5ICsyNTgsMTMg
+QEAgc3RhdGljIHZvaWQgaTJjX2lteF9zdG9wKHN0cnVjdCBpMmNfYWRhcHRlciAqYWRhcHRlcikK
+PiAgCQl1ZGVsYXkoaTJjX2lteC0+ZGlzYWJsZV9kZWxheSk7Cj4gIAl9Cj4gCj4gKwlpZiAoIWky
+Y19pbXgtPnN0b3BwZWQpIHsKPiArCQlpMmNfaW14X2J1c19idXN5KGFkYXB0ZXIsIDApOwo+ICsJ
+CWkyY19pbXgtPnN0b3BwZWQgPSAxOwo+ICsJfQo+ICsKPiAgCS8qIERpc2FibGUgSTJDIGNvbnRy
+b2xsZXIsIGFuZCBmb3JjZSBvdXIgc3RhdGUgdG8gc3RvcHBlZCAqLwo+ICAJd3JpdGViKDAsIGJh
+c2UgKyBJTVhfSTJDX0kyQ1IpOwo+IC0JaTJjX2lteC0+c3RvcHBlZCA9IDE7Cj4gIH0KPiAKPiAg
+c3RhdGljIHZvaWQgaTJjX2lteF9zZXRfY2xrKHN0cnVjdCBpbXhfaTJjX3N0cnVjdCAqaTJjX2lt
+eCwKPiBAQCAtMzc5LDEwICszNjQsNiBAQCBzdGF0aWMgaW50IGkyY19pbXhfcmVhZChzdHJ1Y3Qg
+aTJjX2FkYXB0ZXIgKmFkYXB0ZXIsCj4gc3RydWN0IGkyY19tc2cgKm1zZ3MpIGlmIChyZXN1bHQp
+Cj4gIAkJcmV0dXJuIHJlc3VsdDsKPiAKPiAtCXJlc3VsdCA9IGkyY19pbXhfd2FpdF9paWYoYWRh
+cHRlcik7Cj4gLQlpZiAocmVzdWx0KQo+IC0JCXJldHVybiByZXN1bHQ7Cj4gLQo+ICAJLyogc2V0
+dXAgYnVzIHRvIHJlYWQgZGF0YSAqLwo+ICAJdGVtcCA9IHJlYWRiKGJhc2UgKyBJTVhfSTJDX0ky
+Q1IpOwo+ICAJdGVtcCAmPSB+STJDUl9NVFg7CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmlu
+ZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9i
+YXJlYm94Cg==
