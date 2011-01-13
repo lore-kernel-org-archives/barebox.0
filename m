@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 9.77.mail-out.ovh.net ([87.98.189.41] helo=77.mail-out.ovh.net)
-	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1Pd2W7-0005Zn-3J
-	for barebox@lists.infradead.org; Wed, 12 Jan 2011 15:21:44 +0000
-From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
-Date: Wed, 12 Jan 2011 16:21:37 +0100
-Message-Id: <1294845697-2729-1-git-send-email-eric@eukrea.com>
+Received: from mail.free-electrons.com ([88.190.12.23])
+	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1PdOpC-0002jQ-IL
+	for barebox@lists.infradead.org; Thu, 13 Jan 2011 15:10:55 +0000
+Message-ID: <4D2F15F4.3030300@free-electrons.com>
+Date: Thu, 13 Jan 2011 16:10:44 +0100
+From: Gregory CLEMENT <gregory.clement@free-electrons.com>
 MIME-Version: 1.0
+References: <4D233027.9030701@free-electrons.com>	<201101041546.53030.jbe@pengutronix.de>	<4D23370A.6040203@free-electrons.com>	<201101041716.35288.jbe@pengutronix.de>
+	<4D234F8A.4070703@free-electrons.com>
+In-Reply-To: <4D234F8A.4070703@free-electrons.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,58 +18,96 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] i2c-imx: sync with kernel's driver
-To: s.hauer@pengutronix.de
+Subject: Re: [PATCH 1/4] ARM STM/i.MX: Allocate memory for framebuffer during
+	probe
+To: Juergen Beisert <jbe@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-c3RyYW5nZSBiZWhhdmlvdXIgd2FzIG9ic2VydmVkIHdpdGggYWN0dWFsIGRyaXZlciA6IGJ1cyBs
-b2NrLCBwcm9iZSBvZgphYnNlbnQgYWRyZXNzZXMsIHdyb25nIGRhdGEgcmVhZC4KVGhpcyBwYXRj
-aCBzeW5jIHRoZSBkcml2ZXIgd2l0aCBsaW51eCdzIG9uZSBhbmQgYWZ0ZXIgYSBmZXcgdGVzdHMs
-IHdlCmRvbid0IHNlZSBhbnltb3JlIHN0cmFuZ2UgYmVoYXZpb3VyICh0ZXN0ZWQgb24gaS5NWDI3
-KS4KClNpZ25lZC1vZmYtYnk6IEVyaWMgQsOpbmFyZCA8ZXJpY0BldWtyZWEuY29tPgotLS0KIGRy
-aXZlcnMvaTJjL2J1c3Nlcy9pMmMtaW14LmMgfCAgIDM1ICsrKysrKysrLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tCiAxIGZpbGVzIGNoYW5nZWQsIDggaW5zZXJ0aW9ucygrKSwgMjcgZGVsZXRp
-b25zKC0pCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9pMmMvYnVzc2VzL2kyYy1pbXguYyBiL2RyaXZl
-cnMvaTJjL2J1c3Nlcy9pMmMtaW14LmMKaW5kZXggMjY2Y2I1Mi4uOTNlOTc4ZSAxMDA2NDQKLS0t
-IGEvZHJpdmVycy9pMmMvYnVzc2VzL2kyYy1pbXguYworKysgYi9kcml2ZXJzL2kyYy9idXNzZXMv
-aTJjLWlteC5jCkBAIC0xNTEsNyArMTUxLDcgQEAgc3RhdGljIGludCBpMmNfaW14X2J1c19idXN5
-KHN0cnVjdCBpMmNfYWRhcHRlciAqYWRhcHRlciwgaW50IGZvcl9idXN5KQogCQkJYnJlYWs7CiAJ
-CWlmICghZm9yX2J1c3kgJiYgISh0ZW1wICYgSTJTUl9JQkIpKQogCQkJYnJlYWs7Ci0JCWlmIChp
-c190aW1lb3V0KHN0YXJ0LCBNU0VDT05EKSkgeworCQlpZiAoaXNfdGltZW91dChzdGFydCwgNTAw
-ICogTVNFQ09ORCkpIHsKIAkJCWRldl9lcnIoYWRhcHRlci0+ZGV2LAogCQkJCSAiPCVzPiB0aW1l
-b3V0IHdhaXRpbmcgZm9yIEkyQyBidXMgJXNcbiIsCiAJCQkJIF9fZnVuY19fLGZvcl9idXN5ID8g
-ImJ1c3kiIDogIm5vdCBidXN5Iik7CkBAIC0xNzAsMzQgKzE3MCwxNSBAQCBzdGF0aWMgaW50IGky
-Y19pbXhfdHJ4X2NvbXBsZXRlKHN0cnVjdCBpMmNfYWRhcHRlciAqYWRhcHRlcikKIAlzdGFydCA9
-IGdldF90aW1lX25zKCk7CiAJd2hpbGUgKDEpIHsKIAkJdW5zaWduZWQgaW50IHJlZyA9IHJlYWRi
-KGJhc2UgKyBJTVhfSTJDX0kyU1IpOwotCQlpZiAocmVnICYgSTJTUl9JQ0YpCi0JCQlicmVhazsK
-LQotCQlpZiAoaXNfdGltZW91dChzdGFydCwgMTAwICogTVNFQ09ORCkpIHsKLQkJCWRldl9lcnIo
-YWRhcHRlci0+ZGV2LCAiPCVzPiBUWFIgdGltZW91dFxuIiwgX19mdW5jX18pOwotCQkJcmV0dXJu
-IC1FSU87Ci0JCX0KLQl9Ci0KLQlyZXR1cm4gMDsKLX0KLQotc3RhdGljIGludCBpMmNfaW14X3dh
-aXRfaWlmKHN0cnVjdCBpMmNfYWRhcHRlciAqYWRhcHRlcikKLXsKLQl1bnNpZ25lZCBsb25nIGJh
-c2UgPSBhZGFwdGVyLT5kZXYtPm1hcF9iYXNlOwotCXVpbnQ2NF90IHN0YXJ0OwotCi0Jc3RhcnQg
-PSBnZXRfdGltZV9ucygpOwotCXdoaWxlICgxKSB7Ci0JCXVuc2lnbmVkIGludCByZWcgPSByZWFk
-YihiYXNlICsgSU1YX0kyQ19JMlNSKTsKIAkJaWYgKHJlZyAmIEkyU1JfSUlGKQogCQkJYnJlYWs7
-CiAKIAkJaWYgKGlzX3RpbWVvdXQoc3RhcnQsIDEwMCAqIE1TRUNPTkQpKSB7Ci0JCQlkZXZfZXJy
-KGFkYXB0ZXItPmRldiwgIjwlcz4gSUlGIHRpbWVvdXRcbiIsIF9fZnVuY19fKTsKKwkJCWRldl9l
-cnIoYWRhcHRlci0+ZGV2LCAiPCVzPiBUWFIgdGltZW91dFxuIiwgX19mdW5jX18pOwogCQkJcmV0
-dXJuIC1FSU87CiAJCX0KIAl9CisJd3JpdGViKDAsIGJhc2UgKyBJTVhfSTJDX0kyU1IpOwogCiAJ
-cmV0dXJuIDA7CiB9CkBAIC0yNzcsOSArMjU4LDEzIEBAIHN0YXRpYyB2b2lkIGkyY19pbXhfc3Rv
-cChzdHJ1Y3QgaTJjX2FkYXB0ZXIgKmFkYXB0ZXIpCiAJCXVkZWxheShpMmNfaW14LT5kaXNhYmxl
-X2RlbGF5KTsKIAl9CiAKKwlpZiAoIWkyY19pbXgtPnN0b3BwZWQpIHsKKwkJaTJjX2lteF9idXNf
-YnVzeShhZGFwdGVyLCAwKTsKKwkJaTJjX2lteC0+c3RvcHBlZCA9IDE7CisJfQorCiAJLyogRGlz
-YWJsZSBJMkMgY29udHJvbGxlciwgYW5kIGZvcmNlIG91ciBzdGF0ZSB0byBzdG9wcGVkICovCiAJ
-d3JpdGViKDAsIGJhc2UgKyBJTVhfSTJDX0kyQ1IpOwotCWkyY19pbXgtPnN0b3BwZWQgPSAxOwog
-fQogCiBzdGF0aWMgdm9pZCBpMmNfaW14X3NldF9jbGsoc3RydWN0IGlteF9pMmNfc3RydWN0ICpp
-MmNfaW14LApAQCAtMzc5LDEwICszNjQsNiBAQCBzdGF0aWMgaW50IGkyY19pbXhfcmVhZChzdHJ1
-Y3QgaTJjX2FkYXB0ZXIgKmFkYXB0ZXIsIHN0cnVjdCBpMmNfbXNnICptc2dzKQogCWlmIChyZXN1
-bHQpCiAJCXJldHVybiByZXN1bHQ7CiAKLQlyZXN1bHQgPSBpMmNfaW14X3dhaXRfaWlmKGFkYXB0
-ZXIpOwotCWlmIChyZXN1bHQpCi0JCXJldHVybiByZXN1bHQ7Ci0KIAkvKiBzZXR1cCBidXMgdG8g
-cmVhZCBkYXRhICovCiAJdGVtcCA9IHJlYWRiKGJhc2UgKyBJTVhfSTJDX0kyQ1IpOwogCXRlbXAg
-Jj0gfkkyQ1JfTVRYOwotLSAKMS43LjMuNAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5m
-cmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2Jh
-cmVib3gK
+On 01/04/2011 05:49 PM, Gregory CLEMENT wrote:
+> On 01/04/2011 05:16 PM, Juergen Beisert wrote:
+>> Gregory CLEMENT wrote:
+>>> On 01/04/2011 03:46 PM, Juergen Beisert wrote:
+>>>> Gregory CLEMENT wrote:
+>>>>> With current code when the framebuffer is register, screen_base is not
+>>>>> set yet. So when we want to access framebuffer from mmap we get a
+>>>>> pointer to 0x0 instead of getting the pointer to the framebuffer
+>>>>> address. This patch fix this bug by allocating memory for framebuffer
+>>>>> during probe just before registering framebuffer driver.
+>>>>
+>>>> Are you sure? See below
+>>>
+>>> It was the value I get at runtime at least.
+>>>
+>>>>> Signed-off-by: Gregory CLEMENT <gregory.clement@free-electrons.com>
+>>>
+>>> [...]
+>>>
+>>>> This probe function sets up the default mode. And register_framebuffer()
+>>>> itself calls stmfb_activate_var() which calls stmfb_memory_mmgt(). So,
+>>>> when the call to register_framebuffer() returns the 'screen_base' should
+>>>> no longer be NULL.
+>>>
+>>> But in register_framebuffer first map_base get its value from screen_base
+>>> and it is only after that fb_activate_var is called. And the problem is
+>>> that mmap will not get screen_base but map_base and this one is set too
+>>> early. Extract from  register_framebuffer() in fb.c:
+>>>
+>>> 	info->cdev.dev->map_base = (unsigned long)info->screen_base;
+>>> map_base get its value here ------^
+>>> 	info->cdev.dev->size = info->cdev.size;
+>>>
+>>> 	dev = &info->dev;
+>>> 	dev->priv = info;
+>>> 	dev->id = id;
+>>>
+>>> 	sprintf(dev->name, "fb");
+>>>
+>>> 	register_device(&info->dev);
+>>> 	dev_add_param(dev, "enable", fb_enable_set, NULL, 0);
+>>> 	dev_set_param(dev, "enable", "0");
+>>>
+>>> 	if (info->num_modes && (info->mode_list != NULL) &&
+>>> 			(info->fbops->fb_activate_var != NULL)) {
+>>> 		dev_add_param(dev, "mode_name", fb_setup_mode, NULL, 0);
+>>> 		dev_set_param(dev, "mode_name", info->mode_list[0].name);
+>>> fb_activate_var is called here ------------------------^
+>>
+>> And this call will call driver's stmfb_activate_var() (and(!) 
+>> stmfb_memory_mmgt()).
+> 
+> Yes I totally agree with this. But at this time it's too late because changing
+> screen_base won't change map_base. And a call to memmap is a call to
+> generic_memmap_rw which will return map_base.
+> I didn't find anywhere in video driver code a place where map_base is updated, that's
+> why I think that once it get its value it won't change.
+> 
+>> But I will check it again.
+>>
+
+Had you had some time to check it?
+Will you take this patch ?
+If you have any comments I am willing to take them in account to make a new
+version of this patch if it necessary.
+
+Regards,
+
+>> jbe
+>>
+> 
+> 
+
+
+-- 
+Gregory Clement, Free Electrons
+Kernel, drivers, real-time and embedded Linux
+development, consulting, training and support.
+http://free-electrons.com
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
