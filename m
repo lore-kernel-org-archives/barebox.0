@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PdpgW-0006G2-Qa
-	for barebox@lists.infradead.org; Fri, 14 Jan 2011 19:51:46 +0000
-Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.72)
-	(envelope-from <sha@pengutronix.de>) id 1PdpgV-0005Z9-17
-	for barebox@lists.infradead.org; Fri, 14 Jan 2011 20:51:43 +0100
-Received: from sha by octopus.hi.pengutronix.de with local (Exim 4.69)
-	(envelope-from <sha@pengutronix.de>) id 1PdpgU-000512-WA
-	for barebox@lists.infradead.org; Fri, 14 Jan 2011 20:51:42 +0100
+	id 1PdpgX-0006G7-6H
+	for barebox@lists.infradead.org; Fri, 14 Jan 2011 19:51:48 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 14 Jan 2011 20:51:32 +0100
-Message-Id: <1295034699-18863-1-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 14 Jan 2011 20:51:37 +0100
+Message-Id: <1295034699-18863-6-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1295034699-18863-1-git-send-email-s.hauer@pengutronix.de>
+References: <1295034699-18863-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,37 +21,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: some i.MX28 related patches
+Subject: [PATCH 5/7] provide real barebox end variable
 To: barebox@lists.infradead.org
 
-The following patches make the MMU usable on the tx28 board and allow
-to pass in framebuffer addresses from platform data on i.MX28.
+Sometimes it's useful to have the memory end address barebox uses.
 
-The following changes since commit 0327e12f068471dc03577407b8f8915914c2be32:
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ include/reloc.h |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-  fb: update cdev map_base (2011-01-14 20:42:17 +0100)
-
-are available in the git repository at:
-  none ..BRANCH.NOT.VERIFIED..
-
-Sascha Hauer (7):
-      fec i.MX28: Make it work with MMU on
-      ARM tx28: Add mmu support
-      video stm/mx2x: simplify memory allocation
-      video stm/mx2x: allow to pass in fb memory from platform data
-      provide real barebox end variable
-      ARM i.MX28 tx28: use a fixed framebuffer address
-      ARM i.MX28 tx28 defconfig: enable MMU
-
- arch/arm/boards/karo-tx28/tx28-stk5.c |   12 ++++++++++++
- arch/arm/boards/karo-tx28/tx28.c      |   23 +++++++++++++++++++++++
- arch/arm/configs/tx28stk5_defconfig   |    1 +
- arch/arm/mach-stm/Kconfig             |    1 +
- arch/arm/mach-stm/include/mach/fb.h   |    3 +++
- drivers/net/fec_imx.c                 |    2 +-
- drivers/video/stm.c                   |   31 ++++++++-----------------------
- include/reloc.h                       |    2 +-
- 8 files changed, 50 insertions(+), 25 deletions(-)
+diff --git a/include/reloc.h b/include/reloc.h
+index 22cb886..a0bf15f 100644
+--- a/include/reloc.h
++++ b/include/reloc.h
+@@ -1,7 +1,7 @@
+ #ifndef __RELOC_H
+ #define __RELOC_H
+ 
+-extern unsigned long _barebox_start, _bss_start, _bss_end, _text_base;
++extern unsigned long _barebox_start, _bss_start, _bss_end, _text_base, _end;
+ 
+ #ifdef CONFIG_HAS_EARLY_INIT
+ 
+-- 
+1.7.2.3
 
 
 _______________________________________________
