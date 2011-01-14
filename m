@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PdpgX-0006G8-6O
-	for barebox@lists.infradead.org; Fri, 14 Jan 2011 19:51:50 +0000
+	id 1PdpgX-0006G5-5A
+	for barebox@lists.infradead.org; Fri, 14 Jan 2011 19:51:49 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 14 Jan 2011 20:51:38 +0100
-Message-Id: <1295034699-18863-7-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 14 Jan 2011 20:51:36 +0100
+Message-Id: <1295034699-18863-5-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1295034699-18863-1-git-send-email-s.hauer@pengutronix.de>
 References: <1295034699-18863-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,56 +21,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/7] ARM i.MX28 tx28: use a fixed framebuffer address
+Subject: [PATCH 4/7] video stm/mx2x: allow to pass in fb memory from platform
+	data
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/karo-tx28/tx28-stk5.c |   12 ++++++++++++
- 1 files changed, 12 insertions(+), 0 deletions(-)
+ arch/arm/mach-stm/include/mach/fb.h |    3 +++
+ drivers/video/stm.c                 |   11 +++++++++--
+ 2 files changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boards/karo-tx28/tx28-stk5.c b/arch/arm/boards/karo-tx28/tx28-stk5.c
-index 6de41f7..b4dd65d 100644
---- a/arch/arm/boards/karo-tx28/tx28-stk5.c
-+++ b/arch/arm/boards/karo-tx28/tx28-stk5.c
-@@ -19,6 +19,8 @@
- #include <errno.h>
- #include <mci.h>
- #include <fec.h>
-+#include <sizes.h>
-+#include <reloc.h>
- #include <asm/io.h>
- #include <mach/imx-regs.h>
- #include <mach/clock.h>
-@@ -181,11 +183,15 @@ static struct fb_videomode tx28evk_vmodes[] = {
- 	},
+diff --git a/arch/arm/mach-stm/include/mach/fb.h b/arch/arm/mach-stm/include/mach/fb.h
+index 65e3be2..2eade76 100644
+--- a/arch/arm/mach-stm/include/mach/fb.h
++++ b/arch/arm/mach-stm/include/mach/fb.h
+@@ -37,6 +37,9 @@ struct imx_fb_videomode {
+ 
+ 	unsigned dotclk_delay;	/**< refer manual HW_LCDIF_VDCTRL4 register */
+ 	unsigned ld_intf_width;	/**< refer STMLCDIF_* macros */
++
++	void *fixed_screen;	/**< if != NULL use this as framebuffer memory */
++	unsigned fixed_screen_size; /**< framebuffer memory size for fixed_screen */
  };
  
-+#define MAX_FB_SIZE SZ_2M
-+
- static struct imx_fb_videomode imxfb_mode = {
- 	.mode_list = tx28evk_vmodes,
- 	.mode_cnt = ARRAY_SIZE(tx28evk_vmodes),
- 	.dotclk_delay = 0,	/* no adaption required */
- 	.ld_intf_width = STMLCDIF_24BIT,	/* full 24 bit */
-+	.fixed_screen = (void *)(0x40000000 + SZ_128M - MAX_FB_SIZE),
-+	.fixed_screen_size = MAX_FB_SIZE,
- };
+ #endif /* __MACH_FB_H */
+diff --git a/drivers/video/stm.c b/drivers/video/stm.c
+index d2add41..fc90b6a 100644
+--- a/drivers/video/stm.c
++++ b/drivers/video/stm.c
+@@ -298,8 +298,15 @@ static int stmfb_activate_var(struct fb_info *fb_info)
+ 	size = calc_line_length(mode->xres, fb_info->bits_per_pixel) *
+ 		mode->yres;
  
- static struct device_d ldcif_dev = {
-@@ -352,6 +358,12 @@ void base_board_init(void)
- 	imx_set_sspclk(0, 100000000, 1);
- 
- 	register_device(&mci_socket);
-+
-+	if (imxfb_mode.fixed_screen < (void *)&_end) {
-+		printf("Warning: fixed_screen overlaps barebox\n");
-+		imxfb_mode.fixed_screen = NULL;
+-	fb_info->screen_base = xrealloc(fb_info->screen_base, size);
+-	fbi->memory_size = size;
++	if (pdata->fixed_screen) {
++		if (pdata->fixed_screen_size < size)
++			return -ENOMEM;
++		fb_info->screen_base = pdata->fixed_screen;
++		fbi->memory_size = pdata->fixed_screen_size;
++	} else {
++		fb_info->screen_base = xrealloc(fb_info->screen_base, size);
++		fbi->memory_size = size;
 +	}
-+
- 	register_device(&ldcif_dev);
  
- 	imx_enable_enetclk();
+ 	/** @todo ensure HCLK is active at this point of time! */
+ 
 -- 
 1.7.2.3
 
