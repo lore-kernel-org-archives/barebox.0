@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PdgDh-000312-ES
-	for barebox@lists.infradead.org; Fri, 14 Jan 2011 09:45:22 +0000
-Date: Fri, 14 Jan 2011 10:45:19 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110114094519.GH24373@pengutronix.de>
-References: <4D23313B.9040002@free-electrons.com>
-	<4D2F16E5.1020502@free-electrons.com>
+Received: from mail-wy0-f177.google.com ([74.125.82.177])
+	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1PdiLQ-0006Wl-P0
+	for barebox@lists.infradead.org; Fri, 14 Jan 2011 12:01:29 +0000
+Received: by wyf22 with SMTP id 22so2671597wyf.36
+	for <barebox@lists.infradead.org>; Fri, 14 Jan 2011 04:01:25 -0800 (PST)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <4D2F16E5.1020502@free-electrons.com>
+Date: Fri, 14 Jan 2011 12:01:25 +0000
+Message-ID: <AANLkTimz8ffNYpkHYdKVwv4=khBn=JKMwjsRQB5DEK63@mail.gmail.com>
+From: Nataraj S Narayan <natarajsn@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,45 +21,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] BMP: Add support for 32bpp video frame buffer
-To: Gregory CLEMENT <gregory.clement@free-electrons.com>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: /dev/env0 not found
+To: barebox@lists.infradead.org
 
-On Thu, Jan 13, 2011 at 04:14:45PM +0100, Gregory CLEMENT wrote:
-> On 01/04/2011 03:39 PM, Gregory CLEMENT wrote:
-> > Signed-off-by: Gregory CLEMENT <gregory.clement@free-electrons.com>
-> > ---
-> >  commands/bmp.c |    1 +
-> >  1 files changed, 1 insertions(+), 0 deletions(-)
-> > 
-> > diff --git a/commands/bmp.c b/commands/bmp.c
-> > index 5bac031..644a977 100644
-> > --- a/commands/bmp.c
-> > +++ b/commands/bmp.c
-> > @@ -25,6 +25,7 @@ static inline void set_pixel(struct fb_info *info, void *adr, int r, int g, int
-> >  		*(u16 *)adr = px;
-> >  		break;
-> >  	case 32:
-> > +		*(u32 *)adr = px;
-> >  		break;
-> >  	}
-> >  }
-> Any comments for this patch?
-> 
-> It seems pretty trivial and it works at least for me.
-> But if I missed something, let me know.
+Hi
 
-Sorry, missed it. Applied now.
+How I come I don't have /dev/env0? I am on at91sam9263ek.
 
-Thanks
- Sascha
+9263-EK:/ saveenv
+saving environment
+could not open /dev/env0: Read-only file system
+
+9263-EK:/ ls -l /dev/env0
+ls: /dev/env0: No such file or directory
+
+9263-EK:/ ls -l /dev/
+cr-------- 4294967295 zero
+crw-------       3785 defaultenv
+crw------- 4294967295 mem
+crw-------   67108864 ram0
+crw-------  268435456 nand0
+cr--------    8388608 nand_oob0
+crw-------         32 phy0
+crw------- 3851423744 nor-352321538
+9263-EK:/
 
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+regards
+
+Nataraj
 
 _______________________________________________
 barebox mailing list
