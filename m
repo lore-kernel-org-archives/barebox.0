@@ -1,11 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 26.mail-out.ovh.net ([91.121.27.225])
-	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1Pdw0r-0003CP-Hz
-	for barebox@lists.infradead.org; Sat, 15 Jan 2011 02:37:10 +0000
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sat, 15 Jan 2011 03:36:27 +0100
-Message-Id: <1295058987-15814-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1Pe7QY-0005iW-1X
+	for barebox@lists.infradead.org; Sat, 15 Jan 2011 14:48:27 +0000
+Date: Sat, 15 Jan 2011 15:48:21 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20110115144821.GB9041@pengutronix.de>
+References: <1295034699-18863-1-git-send-email-s.hauer@pengutronix.de>
+	<1295034699-18863-6-git-send-email-s.hauer@pengutronix.de>
+	<20110115015023.GA14798@game.jcrosoft.org>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20110115015023.GA14798@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,72 +20,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] versatile: add missing env/config
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 5/7] provide real barebox end variable
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- arch/arm/boards/versatile/env/config |   43 ++++++++++++++++++++++++++++++++++
- 1 files changed, 43 insertions(+), 0 deletions(-)
- create mode 100644 arch/arm/boards/versatile/env/config
+On Sat, Jan 15, 2011 at 02:50:23AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 20:51 Fri 14 Jan     , Sascha Hauer wrote:
+> > Sometimes it's useful to have the memory end address barebox uses.
+> > 
+> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > ---
+> >  include/reloc.h |    2 +-
+> >  1 files changed, 1 insertions(+), 1 deletions(-)
+> > 
+> > diff --git a/include/reloc.h b/include/reloc.h
+> > index 22cb886..a0bf15f 100644
+> > --- a/include/reloc.h
+> > +++ b/include/reloc.h
+> > @@ -1,7 +1,7 @@
+> >  #ifndef __RELOC_H
+> >  #define __RELOC_H
+> >  
+> > -extern unsigned long _barebox_start, _bss_start, _bss_end, _text_base;
+> > +extern unsigned long _barebox_start, _bss_start, _bss_end, _text_base, _end;
+> how about _barebox_end
 
-diff --git a/arch/arm/boards/versatile/env/config b/arch/arm/boards/versatile/env/config
-new file mode 100644
-index 0000000..9dec3f2
---- /dev/null
-+++ b/arch/arm/boards/versatile/env/config
-@@ -0,0 +1,43 @@
-+#!/bin/sh
-+
-+# use 'dhcp' to do dhcp in barebox and in kernel
-+# use 'none' if you want to skip kernel ip autoconfiguration
-+ip=dhcp
-+
-+# or set your networking parameters here
-+#eth0.ipaddr=a.b.c.d
-+#eth0.netmask=a.b.c.d
-+#eth0.gateway=a.b.c.d
-+#eth0.serverip=a.b.c.d
-+
-+# can be either 'net' or 'nor'
-+kernel_loc=net
-+# can be either 'net', 'nor' or 'initrd'
-+rootfs_loc=initrd
-+
-+# can be either 'jffs2' or 'ubifs'
-+rootfs_type=ubifs
-+rootfsimage=root.$rootfs_type
-+
-+# The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
-+#kernelimage_type=zimage
-+#kernelimage=zImage
-+kernelimage_type=uimage
-+kernelimage=uImage
-+#kernelimage_type=raw
-+#kernelimage=Image
-+#kernelimage_type=raw_lzo
-+#kernelimage=Image.lzo
-+
-+nfsroot="$eth0.serverip:/opt/work/busybox/arm9/rootfs_arm"
-+
-+nor_parts="256k(barebox)ro,64k(bareboxenv),1536k(kernel),-(root)"
-+rootfs_mtdblock_nor=3
-+
-+autoboot_timeout=3
-+
-+bootargs="console=ttyAMA0,115200n8 CONSOLE=/dev/ttyAMA0"
-+
-+# set a fancy prompt (if support is compiled in)
-+PS1="\e[1;31m[barebox@\h]:\w\e[0m\n# "
-+
+Agreed. I just used this name because I didn't want to change all linker
+scripts, but laziness is not a good argument for introducing a global variable
+with such a generic name.
+
+Sascha
+
 -- 
-1.7.2.3
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
