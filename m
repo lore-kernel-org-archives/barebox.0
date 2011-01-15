@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Pe7di-0006CT-E1
-	for barebox@lists.infradead.org; Sat, 15 Jan 2011 15:02:03 +0000
+	id 1Pe7hQ-0006SJ-Q6
+	for barebox@lists.infradead.org; Sat, 15 Jan 2011 15:05:53 +0000
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Sat, 15 Jan 2011 16:00:26 +0100
+Date: Sat, 15 Jan 2011 16:04:18 +0100
 References: <1295034699-18863-1-git-send-email-s.hauer@pengutronix.de>
-	<1295034699-18863-4-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1295034699-18863-4-git-send-email-s.hauer@pengutronix.de>
+	<1295034699-18863-5-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1295034699-18863-5-git-send-email-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-Message-Id: <201101151600.26944.jbe@pengutronix.de>
+Message-Id: <201101151604.18543.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,70 +23,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/7] video stm/mx2x: simplify memory allocation
+Subject: Re: [PATCH 4/7] video stm/mx2x: allow to pass in fb memory from
+	platform data
 To: barebox@lists.infradead.org
 
 Sascha Hauer wrote:
 > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 > ---
->  drivers/video/stm.c |   26 ++------------------------
->  1 files changed, 2 insertions(+), 24 deletions(-)
+>  arch/arm/mach-stm/include/mach/fb.h |    3 +++
+>  drivers/video/stm.c                 |   11 +++++++++--
+>  2 files changed, 12 insertions(+), 2 deletions(-)
 >
+> diff --git a/arch/arm/mach-stm/include/mach/fb.h
+> b/arch/arm/mach-stm/include/mach/fb.h index 65e3be2..2eade76 100644
+> --- a/arch/arm/mach-stm/include/mach/fb.h
+> +++ b/arch/arm/mach-stm/include/mach/fb.h
+> @@ -37,6 +37,9 @@ struct imx_fb_videomode {
+>
+>  	unsigned dotclk_delay;	/**< refer manual HW_LCDIF_VDCTRL4 register */
+>  	unsigned ld_intf_width;	/**< refer STMLCDIF_* macros */
+> +
+> +	void *fixed_screen;	/**< if != NULL use this as framebuffer memory */
+> +	unsigned fixed_screen_size; /**< framebuffer memory size for fixed_screen
+> */ };
+>
+>  #endif /* __MACH_FB_H */
 > diff --git a/drivers/video/stm.c b/drivers/video/stm.c
-> index f0abe4c..d2add41 100644
+> index d2add41..fc90b6a 100644
 > --- a/drivers/video/stm.c
 > +++ b/drivers/video/stm.c
-> @@ -209,24 +209,6 @@ static inline unsigned calc_line_length(unsigned ppl,
-> unsigned bpp) return (ppl * bpp) >> 3;
->  }
->
-> -static int stmfb_memory_mmgt(struct fb_info *fb_info, unsigned size)
-> -{
-> -	struct imxfb_info *fbi = fb_info->priv;
-> -
-> -	if (fbi->memory_size != 0) {
-> -		free(fb_info->screen_base);
-> -		fb_info->screen_base = NULL;
-> -		fbi->memory_size = 0;
-> -	}
-> -
-> -	if (fbi->memory_size == 0) {
-> -		fb_info->screen_base = xzalloc(size);
-> -		fbi->memory_size = size;
-> -	}
-> -
-> -	return 0;
-> -}
-> -
->  static void stmfb_enable_controller(struct fb_info *fb_info)
->  {
->  	struct imxfb_info *fbi = fb_info->priv;
-> @@ -308,7 +290,6 @@ static int stmfb_activate_var(struct fb_info *fb_info)
->  	struct imx_fb_videomode *pdata = fbi->pdata;
->  	struct fb_videomode *mode = fb_info->mode;
->  	uint32_t reg;
-> -	int ret;
->  	unsigned size;
->
->  	/*
-> @@ -317,11 +298,8 @@ static int stmfb_activate_var(struct fb_info *fb_info)
+> @@ -298,8 +298,15 @@ static int stmfb_activate_var(struct fb_info *fb_info)
 >  	size = calc_line_length(mode->xres, fb_info->bits_per_pixel) *
 >  		mode->yres;
 >
-> -	ret = stmfb_memory_mmgt(fb_info, size);
-> -	if (ret != 0) {
-> -		dev_err(fbi->hw_dev, "Cannot allocate framebuffer memory\n");
-> -		return ret;
-> -	}
-> +	fb_info->screen_base = xrealloc(fb_info->screen_base, size);
-> +	fbi->memory_size = size;
+> -	fb_info->screen_base = xrealloc(fb_info->screen_base, size);
+> -	fbi->memory_size = size;
+> +	if (pdata->fixed_screen) {
+> +		if (pdata->fixed_screen_size < size)
+> +			return -ENOMEM;
+> +		fb_info->screen_base = pdata->fixed_screen;
+> +		fbi->memory_size = pdata->fixed_screen_size;
+> +	} else {
+> +		fb_info->screen_base = xrealloc(fb_info->screen_base, size);
+> +		fbi->memory_size = size;
+> +	}
 >
 >  	/** @todo ensure HCLK is active at this point of time! */
 
-Maybe we should change here from the x-functions to an allocation routine that 
-returns NULL when there is not enough memory. When you define the malloc area 
-to small and setup an SXGA resolution with 16 bit colour depth, barebox 
-should IMHO bark with a useful error message than rebooting... 
+Here for the case a user selects a screen resolution and colour depth that 
+needs more memory than available, the routine returns with an error message 
+for the fixed sized screen and with a reboot for the dynamic allocation case.
 
 jbe
 
