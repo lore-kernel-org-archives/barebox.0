@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from 26.mail-out.ovh.net ([91.121.27.225])
 	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1Pdvqh-000397-3S
-	for barebox@lists.infradead.org; Sat, 15 Jan 2011 02:26:40 +0000
+	id 1Pdw0r-0003CP-Hz
+	for barebox@lists.infradead.org; Sat, 15 Jan 2011 02:37:10 +0000
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sat, 15 Jan 2011 03:25:54 +0100
-Message-Id: <1295058354-14732-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Sat, 15 Jan 2011 03:36:27 +0100
+Message-Id: <1295058987-15814-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,100 +19,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] at91sam9m10g45ek: add board revision support
+Subject: [PATCH] versatile: add missing env/config
 To: barebox@lists.infradead.org
-Cc: Patrice Vilchez <patrice.vilchez@atmel.com>, Nicolas Ferre <nicolas.ferre@atmel.com>
-
-we use the board revision to specify to the linux kernel the type of lcd
-we use. So we can have only one machine for those 3 boards:
- - sam9m10-ekes (LG)
- - sam9g45-ekes (LG)
- - sam9m10g45-ek (Truly)
-
-today we support 2 lcds model:
- - LG philips LB043WQ1
- - Truly TFT1N4633-E
-
-by default we select the Truly as the sam9m10g45-ek is the most common board
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: Nicolas Ferre <nicolas.ferre@atmel.com>
-Cc: Patrice Vilchez <patrice.vilchez@atmel.com>
 ---
- arch/arm/boards/at91sam9m10g45ek/init.c |   21 +++++++++++++++++++++
- arch/arm/mach-at91/Kconfig              |   15 ++++++++++++++-
- 2 files changed, 35 insertions(+), 1 deletions(-)
+ arch/arm/boards/versatile/env/config |   43 ++++++++++++++++++++++++++++++++++
+ 1 files changed, 43 insertions(+), 0 deletions(-)
+ create mode 100644 arch/arm/boards/versatile/env/config
 
-diff --git a/arch/arm/boards/at91sam9m10g45ek/init.c b/arch/arm/boards/at91sam9m10g45ek/init.c
-index bb8b7ba..77d51b7 100644
---- a/arch/arm/boards/at91sam9m10g45ek/init.c
-+++ b/arch/arm/boards/at91sam9m10g45ek/init.c
-@@ -40,6 +40,26 @@
- #include <mach/at91sam9_smc.h>
- #include <mach/sam9_smc.h>
- 
-+/*
-+ * board revision encoding
-+ * bit 0-3: lcd type
-+ *	0 => truly TFT1N4633-E (sam9m10g45-ek)
-+ *	1 => LG philips LB043WQ1 (sam9m10-ekes and sam9g45-ekes)
-+ */
-+#define HAVE_LCD_TRULY_TFT1N4633E	(0 << 0)
-+#define HAVE_LCD_LG_LB043WQ1		(1 << 0)
-+static void ek_set_board_revision(void)
-+{
-+	u32 rev;
+diff --git a/arch/arm/boards/versatile/env/config b/arch/arm/boards/versatile/env/config
+new file mode 100644
+index 0000000..9dec3f2
+--- /dev/null
++++ b/arch/arm/boards/versatile/env/config
+@@ -0,0 +1,43 @@
++#!/bin/sh
 +
-+#ifdef CONFIG_LCD_LG_LB043WQ1
-+		rev = HAVE_LCD_LG_LB043WQ1;
-+#else
-+		rev = HAVE_LCD_TRULY_TFT1N4633E;
-+#endif
-+		armlinux_set_revision(rev);
-+}
++# use 'dhcp' to do dhcp in barebox and in kernel
++# use 'none' if you want to skip kernel ip autoconfiguration
++ip=dhcp
 +
- static struct atmel_nand_data nand_pdata = {
- 	.ale		= 21,
- 	.cle		= 22,
-@@ -103,6 +123,7 @@ static int at91sam9m10g45ek_devices_init(void)
- 
- 	armlinux_set_bootparams((void *)(AT91_CHIPSELECT_6 + 0x100));
- 	armlinux_set_architecture(MACH_TYPE_AT91SAM9M10G45EK);
-+	ek_set_board_revision();
- 
- 	return 0;
- }
-diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index e5bd45e..4d35ebe 100644
---- a/arch/arm/mach-at91/Kconfig
-+++ b/arch/arm/mach-at91/Kconfig
-@@ -174,7 +174,8 @@ config MACH_AT91SAM9M10G45EK
- 	bool "Atmel AT91SAM9M10G45-EK Evaluation Kit"
- 	select HAVE_NAND_ATMEL_BUSWIDTH_16
- 	help
--	  Select this if you are using Atmel's AT91SAM9M10G45-EK Evaluation Kit.
-+	  Select this if you are using Atmel's AT91SAM9M10G45-EK Evaluation Kit
-+	  or AT91SAM9G45-EKES or AT91SAM9M10-EKES (for those 2 select the LG LCD)
- 	  <http://atmel.com/dyn/products/tools_card_v2.asp?tool_id=4735>
- 
- config MACH_PM9G45
-@@ -205,4 +206,16 @@ config AT91_HAVE_2MMC
- 	  with 2 SD/MMC Slots. This is the case for AT91SAM9G20-EK rev. C and
- 	  onwards.
- 
-+choice
-+	prompt "LCD type"
-+	depends on MACH_AT91SAM9M10G45EK
++# or set your networking parameters here
++#eth0.ipaddr=a.b.c.d
++#eth0.netmask=a.b.c.d
++#eth0.gateway=a.b.c.d
++#eth0.serverip=a.b.c.d
 +
-+config LCD_TRULY_TFT1N4633E
-+	bool "truly TFT1N4633-E"
++# can be either 'net' or 'nor'
++kernel_loc=net
++# can be either 'net', 'nor' or 'initrd'
++rootfs_loc=initrd
 +
-+config LCD_LG_LB043WQ1
-+	bool "LG philips LB043WQ1"
++# can be either 'jffs2' or 'ubifs'
++rootfs_type=ubifs
++rootfsimage=root.$rootfs_type
 +
-+endchoice
++# The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
++#kernelimage_type=zimage
++#kernelimage=zImage
++kernelimage_type=uimage
++kernelimage=uImage
++#kernelimage_type=raw
++#kernelimage=Image
++#kernelimage_type=raw_lzo
++#kernelimage=Image.lzo
 +
- endif
++nfsroot="$eth0.serverip:/opt/work/busybox/arm9/rootfs_arm"
++
++nor_parts="256k(barebox)ro,64k(bareboxenv),1536k(kernel),-(root)"
++rootfs_mtdblock_nor=3
++
++autoboot_timeout=3
++
++bootargs="console=ttyAMA0,115200n8 CONSOLE=/dev/ttyAMA0"
++
++# set a fancy prompt (if support is compiled in)
++PS1="\e[1;31m[barebox@\h]:\w\e[0m\n# "
++
 -- 
 1.7.2.3
 
