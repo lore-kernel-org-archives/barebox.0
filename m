@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Pe7QY-0005iW-1X
-	for barebox@lists.infradead.org; Sat, 15 Jan 2011 14:48:27 +0000
-Date: Sat, 15 Jan 2011 15:48:21 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110115144821.GB9041@pengutronix.de>
+	id 1Pe7di-0006CT-E1
+	for barebox@lists.infradead.org; Sat, 15 Jan 2011 15:02:03 +0000
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Sat, 15 Jan 2011 16:00:26 +0100
 References: <1295034699-18863-1-git-send-email-s.hauer@pengutronix.de>
-	<1295034699-18863-6-git-send-email-s.hauer@pengutronix.de>
-	<20110115015023.GA14798@game.jcrosoft.org>
+	<1295034699-18863-4-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1295034699-18863-4-git-send-email-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20110115015023.GA14798@game.jcrosoft.org>
+Message-Id: <201101151600.26944.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,42 +23,78 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 5/7] provide real barebox end variable
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 3/7] video stm/mx2x: simplify memory allocation
+To: barebox@lists.infradead.org
 
-On Sat, Jan 15, 2011 at 02:50:23AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 20:51 Fri 14 Jan     , Sascha Hauer wrote:
-> > Sometimes it's useful to have the memory end address barebox uses.
-> > 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > ---
-> >  include/reloc.h |    2 +-
-> >  1 files changed, 1 insertions(+), 1 deletions(-)
-> > 
-> > diff --git a/include/reloc.h b/include/reloc.h
-> > index 22cb886..a0bf15f 100644
-> > --- a/include/reloc.h
-> > +++ b/include/reloc.h
-> > @@ -1,7 +1,7 @@
-> >  #ifndef __RELOC_H
-> >  #define __RELOC_H
-> >  
-> > -extern unsigned long _barebox_start, _bss_start, _bss_end, _text_base;
-> > +extern unsigned long _barebox_start, _bss_start, _bss_end, _text_base, _end;
-> how about _barebox_end
+Sascha Hauer wrote:
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  drivers/video/stm.c |   26 ++------------------------
+>  1 files changed, 2 insertions(+), 24 deletions(-)
+>
+> diff --git a/drivers/video/stm.c b/drivers/video/stm.c
+> index f0abe4c..d2add41 100644
+> --- a/drivers/video/stm.c
+> +++ b/drivers/video/stm.c
+> @@ -209,24 +209,6 @@ static inline unsigned calc_line_length(unsigned ppl,
+> unsigned bpp) return (ppl * bpp) >> 3;
+>  }
+>
+> -static int stmfb_memory_mmgt(struct fb_info *fb_info, unsigned size)
+> -{
+> -	struct imxfb_info *fbi = fb_info->priv;
+> -
+> -	if (fbi->memory_size != 0) {
+> -		free(fb_info->screen_base);
+> -		fb_info->screen_base = NULL;
+> -		fbi->memory_size = 0;
+> -	}
+> -
+> -	if (fbi->memory_size == 0) {
+> -		fb_info->screen_base = xzalloc(size);
+> -		fbi->memory_size = size;
+> -	}
+> -
+> -	return 0;
+> -}
+> -
+>  static void stmfb_enable_controller(struct fb_info *fb_info)
+>  {
+>  	struct imxfb_info *fbi = fb_info->priv;
+> @@ -308,7 +290,6 @@ static int stmfb_activate_var(struct fb_info *fb_info)
+>  	struct imx_fb_videomode *pdata = fbi->pdata;
+>  	struct fb_videomode *mode = fb_info->mode;
+>  	uint32_t reg;
+> -	int ret;
+>  	unsigned size;
+>
+>  	/*
+> @@ -317,11 +298,8 @@ static int stmfb_activate_var(struct fb_info *fb_info)
+>  	size = calc_line_length(mode->xres, fb_info->bits_per_pixel) *
+>  		mode->yres;
+>
+> -	ret = stmfb_memory_mmgt(fb_info, size);
+> -	if (ret != 0) {
+> -		dev_err(fbi->hw_dev, "Cannot allocate framebuffer memory\n");
+> -		return ret;
+> -	}
+> +	fb_info->screen_base = xrealloc(fb_info->screen_base, size);
+> +	fbi->memory_size = size;
+>
+>  	/** @todo ensure HCLK is active at this point of time! */
 
-Agreed. I just used this name because I didn't want to change all linker
-scripts, but laziness is not a good argument for introducing a global variable
-with such a generic name.
+Maybe we should change here from the x-functions to an allocation routine that 
+returns NULL when there is not enough memory. When you define the malloc area 
+to small and setup an SXGA resolution with 16 bit colour depth, barebox 
+should IMHO bark with a useful error message than rebooting... 
 
-Sascha
+jbe
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Pengutronix e.K.                              | Juergen Beisert             |
+Linux Solutions for Science and Industry      | Phone: +49-8766-939 228     |
+Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555 |
+Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
