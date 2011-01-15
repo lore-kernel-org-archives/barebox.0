@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Pe8si-0002XJ-9H
-	for barebox@lists.infradead.org; Sat, 15 Jan 2011 16:21:37 +0000
-Date: Sat, 15 Jan 2011 17:21:34 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110115162134.GH9041@pengutronix.de>
-References: <1295058354-14732-1-git-send-email-plagnioj@jcrosoft.com>
-	<20110115152555.GE9041@pengutronix.de>
-	<20110115155035.GD14798@game.jcrosoft.org>
+Received: from mail.free-electrons.com ([88.190.12.23])
+	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1Pe9OV-0005MI-D3
+	for barebox@lists.infradead.org; Sat, 15 Jan 2011 16:54:28 +0000
+Message-ID: <4D31D138.4070105@free-electrons.com>
+Date: Sat, 15 Jan 2011 17:54:16 +0100
+From: Gregory CLEMENT <gregory.clement@free-electrons.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20110115155035.GD14798@game.jcrosoft.org>
+References: <1295034524-18722-1-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1295034524-18722-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,58 +21,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] at91sam9m10g45ek: add board revision support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org, Patrice Vilchez <patrice.vilchez@atmel.com>, Nicolas Ferre <nicolas.ferre@atmel.com>
+Subject: Re: fix framebuffer memory base address
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Sat, Jan 15, 2011 at 04:50:35PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-> > > index e5bd45e..4d35ebe 100644
-> > > --- a/arch/arm/mach-at91/Kconfig
-> > > +++ b/arch/arm/mach-at91/Kconfig
-> > > @@ -174,7 +174,8 @@ config MACH_AT91SAM9M10G45EK
-> > >  	bool "Atmel AT91SAM9M10G45-EK Evaluation Kit"
-> > >  	select HAVE_NAND_ATMEL_BUSWIDTH_16
-> > >  	help
-> > > -	  Select this if you are using Atmel's AT91SAM9M10G45-EK Evaluation Kit.
-> > > +	  Select this if you are using Atmel's AT91SAM9M10G45-EK Evaluation Kit
-> > > +	  or AT91SAM9G45-EKES or AT91SAM9M10-EKES (for those 2 select the LG LCD)
-> > >  	  <http://atmel.com/dyn/products/tools_card_v2.asp?tool_id=4735>
-> > 
-> > Isn't it better to let the user choose the exact board type here and
-> > select the display type automatically depending on the choice?
-> They are nearly the same board and the idea is to allow to specify the lcd as
-> we can change it and it's the only difference between the 3 boards,
+On 01/14/2011 08:48 PM, Sascha Hauer wrote:
+> The following should fix the framebuffer base address when multiple
+> video modes are enabled.
+> Gregory, can you please check if this obsoletes patch 1/4 you sent?
+> 
 
-Ok, fine. Note I didn't want to suggest a complete new board support,
-only the Kconfig option. The user likely knows better which board he has
-than what exact display is connected to it.
-Can you then add a help text to the display choice? Something like:
+I integrated your patch in my git tree replacing my patch 1/4. I built
+barebox, and I will test it on Monday on my board.
 
-+choice
-+       prompt "LCD type"
-+       depends on MACH_AT91SAM9M10G45EK
-+
-+config LCD_TRULY_TFT1N4633E
-+       bool "truly TFT1N4633E"
-+	help
-+	  Found on AT91SAM9M10G45-EK
-+
-+config LCD_LG_LB043WQ1
-+       bool "LG philips LB043WQ1"
-+	help
-+	  Found on AT91SAM9G45-EKES and AT91SAM9M10-EKES
-+
-+endchoice
+I didn't dare modify this file and I just touched the file related to my
+platform. But clearly your patch seems better than my solution.
 
-Sascha
+> Sascha
+> 
 
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Gregory Clement, Free Electrons
+Kernel, drivers, real-time and embedded Linux
+development, consulting, training and support.
+http://free-electrons.com
 
 _______________________________________________
 barebox mailing list
