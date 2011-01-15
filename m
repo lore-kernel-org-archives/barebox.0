@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PdpgX-0006G5-5A
-	for barebox@lists.infradead.org; Fri, 14 Jan 2011 19:51:49 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 14 Jan 2011 20:51:36 +0100
-Message-Id: <1295034699-18863-5-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1295034699-18863-1-git-send-email-s.hauer@pengutronix.de>
+Received: from 26.mail-out.ovh.net ([91.121.27.225])
+	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1PdvIJ-0002l4-2g
+	for barebox@lists.infradead.org; Sat, 15 Jan 2011 01:51:08 +0000
+Date: Sat, 15 Jan 2011 02:50:23 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20110115015023.GA14798@game.jcrosoft.org>
 References: <1295034699-18863-1-git-send-email-s.hauer@pengutronix.de>
+	<1295034699-18863-6-git-send-email-s.hauer@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1295034699-18863-6-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,60 +19,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/7] video stm/mx2x: allow to pass in fb memory from platform
-	data
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 5/7] provide real barebox end variable
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/mach-stm/include/mach/fb.h |    3 +++
- drivers/video/stm.c                 |   11 +++++++++--
- 2 files changed, 12 insertions(+), 2 deletions(-)
+On 20:51 Fri 14 Jan     , Sascha Hauer wrote:
+> Sometimes it's useful to have the memory end address barebox uses.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  include/reloc.h |    2 +-
+>  1 files changed, 1 insertions(+), 1 deletions(-)
+> 
+> diff --git a/include/reloc.h b/include/reloc.h
+> index 22cb886..a0bf15f 100644
+> --- a/include/reloc.h
+> +++ b/include/reloc.h
+> @@ -1,7 +1,7 @@
+>  #ifndef __RELOC_H
+>  #define __RELOC_H
+>  
+> -extern unsigned long _barebox_start, _bss_start, _bss_end, _text_base;
+> +extern unsigned long _barebox_start, _bss_start, _bss_end, _text_base, _end;
+how about _barebox_end
 
-diff --git a/arch/arm/mach-stm/include/mach/fb.h b/arch/arm/mach-stm/include/mach/fb.h
-index 65e3be2..2eade76 100644
---- a/arch/arm/mach-stm/include/mach/fb.h
-+++ b/arch/arm/mach-stm/include/mach/fb.h
-@@ -37,6 +37,9 @@ struct imx_fb_videomode {
- 
- 	unsigned dotclk_delay;	/**< refer manual HW_LCDIF_VDCTRL4 register */
- 	unsigned ld_intf_width;	/**< refer STMLCDIF_* macros */
-+
-+	void *fixed_screen;	/**< if != NULL use this as framebuffer memory */
-+	unsigned fixed_screen_size; /**< framebuffer memory size for fixed_screen */
- };
- 
- #endif /* __MACH_FB_H */
-diff --git a/drivers/video/stm.c b/drivers/video/stm.c
-index d2add41..fc90b6a 100644
---- a/drivers/video/stm.c
-+++ b/drivers/video/stm.c
-@@ -298,8 +298,15 @@ static int stmfb_activate_var(struct fb_info *fb_info)
- 	size = calc_line_length(mode->xres, fb_info->bits_per_pixel) *
- 		mode->yres;
- 
--	fb_info->screen_base = xrealloc(fb_info->screen_base, size);
--	fbi->memory_size = size;
-+	if (pdata->fixed_screen) {
-+		if (pdata->fixed_screen_size < size)
-+			return -ENOMEM;
-+		fb_info->screen_base = pdata->fixed_screen;
-+		fbi->memory_size = pdata->fixed_screen_size;
-+	} else {
-+		fb_info->screen_base = xrealloc(fb_info->screen_base, size);
-+		fbi->memory_size = size;
-+	}
- 
- 	/** @todo ensure HCLK is active at this point of time! */
- 
--- 
-1.7.2.3
-
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
