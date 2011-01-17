@@ -1,23 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PetJZ-0005MD-KF
-	for barebox@lists.infradead.org; Mon, 17 Jan 2011 17:56:27 +0000
-Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.72)
-	(envelope-from <sha@pengutronix.de>) id 1PetJX-00017n-Oa
-	for barebox@lists.infradead.org; Mon, 17 Jan 2011 18:56:23 +0100
-Received: from sha by octopus.hi.pengutronix.de with local (Exim 4.69)
-	(envelope-from <sha@pengutronix.de>) id 1PetJX-0000uI-NZ
-	for barebox@lists.infradead.org; Mon, 17 Jan 2011 18:56:23 +0100
-Date: Mon, 17 Jan 2011 18:56:23 +0100
+	id 1PetLn-0005hS-Vl
+	for barebox@lists.infradead.org; Mon, 17 Jan 2011 17:58:44 +0000
+Date: Mon, 17 Jan 2011 18:58:42 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110117175623.GL9041@pengutronix.de>
-References: <1295259766-19301-1-git-send-email-s.hauer@pengutronix.de>
-	<1295259766-19301-3-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20110117175842.GM9041@pengutronix.de>
+References: <1295034524-18722-1-git-send-email-s.hauer@pengutronix.de>
+	<1295034524-18722-2-git-send-email-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1295259766-19301-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1295034524-18722-2-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -30,64 +23,74 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4 v2] video stm/mx2x: allow to pass in fb memory from
-	platform data
+Subject: Re: [PATCH] fb: update cdev map_base
 To: barebox@lists.infradead.org
 
+On Fri, Jan 14, 2011 at 08:48:44PM +0100, Sascha Hauer wrote:
+> Calling fb_activate_var potentially changes the framebuffer address,
+> so we have to update the fb0 cdev afterwards.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  drivers/video/fb.c |    2 ++
+>  1 files changed, 2 insertions(+), 0 deletions(-)
+> 
+> diff --git a/drivers/video/fb.c b/drivers/video/fb.c
+> index aad0e1f..ba34b9c 100644
+> --- a/drivers/video/fb.c
+> +++ b/drivers/video/fb.c
+> @@ -79,6 +79,8 @@ static int fb_setup_mode(struct device_d *dev, struct param_d *param,
+>  
+>  	ret = info->fbops->fb_activate_var(info);
+>  
+> +	dev->map_base = (unsigned long)info->screen_base;
+> +
+>  	if (ret == 0)
+>  		dev_param_set_generic(dev, param, val);
+>  
 
+
+Unfortunately this is not enough. We also have to update xres, yres and
+size, like in the following patch:
+
+8<------------------------------------------------
+
+[PATCH 5/5] fb: When setting a mode, also update xres, yres and fb size
+
+Also, set size to 0 when setting up the framebuffer failed so that
+the user cannot write to uninitialized framebuffer memory.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
+ drivers/video/fb.c |   12 +++++++++---
+ 1 files changed, 9 insertions(+), 3 deletions(-)
 
-v2: do not forget to set the framebuffer to zero in case of platform
-    provided fb address
-
- arch/arm/mach-stm/include/mach/fb.h |    3 +++
- drivers/video/stm.c                 |   16 ++++++++++++----
- 2 files changed, 15 insertions(+), 4 deletions(-)
-
-diff --git a/arch/arm/mach-stm/include/mach/fb.h b/arch/arm/mach-stm/include/mach/fb.h
-index 65e3be2..2eade76 100644
---- a/arch/arm/mach-stm/include/mach/fb.h
-+++ b/arch/arm/mach-stm/include/mach/fb.h
-@@ -37,6 +37,9 @@ struct imx_fb_videomode {
+diff --git a/drivers/video/fb.c b/drivers/video/fb.c
+index ba34b9c..cf21c4b 100644
+--- a/drivers/video/fb.c
++++ b/drivers/video/fb.c
+@@ -77,12 +77,18 @@ static int fb_setup_mode(struct device_d *dev, struct param_d *param,
  
- 	unsigned dotclk_delay;	/**< refer manual HW_LCDIF_VDCTRL4 register */
- 	unsigned ld_intf_width;	/**< refer STMLCDIF_* macros */
-+
-+	void *fixed_screen;	/**< if != NULL use this as framebuffer memory */
-+	unsigned fixed_screen_size; /**< framebuffer memory size for fixed_screen */
- };
+ 	info->mode = &info->mode_list[mode];
  
- #endif /* __MACH_FB_H */
-diff --git a/drivers/video/stm.c b/drivers/video/stm.c
-index ecf450c..3ccb309 100644
---- a/drivers/video/stm.c
-+++ b/drivers/video/stm.c
-@@ -298,11 +298,19 @@ static int stmfb_activate_var(struct fb_info *fb_info)
- 	size = calc_line_length(mode->xres, fb_info->bits_per_pixel) *
- 		mode->yres;
+-	ret = info->fbops->fb_activate_var(info);
++	info->xres = info->mode->xres;
++	info->yres = info->mode->yres;
  
--	fb_info->screen_base = realloc(fb_info->screen_base, size);
--	if (!fb_info->screen_base)
--		return -ENOMEM;
-+	if (pdata->fixed_screen) {
-+		if (pdata->fixed_screen_size < size)
-+			return -ENOMEM;
-+		fb_info->screen_base = pdata->fixed_screen;
-+		fbi->memory_size = pdata->fixed_screen_size;
-+	} else {
-+		fb_info->screen_base = realloc(fb_info->screen_base, size);
-+		if (!fb_info->screen_base)
-+			return -ENOMEM;
-+		fbi->memory_size = size;
-+	}
-+
- 	memset(fb_info->screen_base, 0, size);
--	fbi->memory_size = size;
+-	dev->map_base = (unsigned long)info->screen_base;
++	ret = info->fbops->fb_activate_var(info);
  
- 	/** @todo ensure HCLK is active at this point of time! */
+-	if (ret == 0)
++	if (!ret) {
++		dev->map_base = (unsigned long)info->screen_base;
++		info->cdev.size = info->xres * info->yres * (info->bits_per_pixel >> 3);
++		dev->size = info->cdev.size;
+ 		dev_param_set_generic(dev, param, val);
++	} else
++		info->cdev.size = 0;
  
+ 	return ret;
+ }
 -- 
 1.7.2.3
 
