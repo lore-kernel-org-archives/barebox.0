@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([92.198.50.35])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PemEb-0004JH-Dp
-	for barebox@lists.infradead.org; Mon, 17 Jan 2011 10:22:50 +0000
+	id 1PemEb-0004JI-IZ
+	for barebox@lists.infradead.org; Mon, 17 Jan 2011 10:22:51 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 17 Jan 2011 11:22:43 +0100
-Message-Id: <1295259766-19301-2-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 17 Jan 2011 11:22:44 +0100
+Message-Id: <1295259766-19301-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1295259766-19301-1-git-send-email-s.hauer@pengutronix.de>
 References: <1295259766-19301-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,65 +21,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] video stm/mx2x: simplify memory allocation
+Subject: [PATCH 2/4] video stm/mx2x: allow to pass in fb memory from platform
+	data
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/video/stm.c |   29 +++++------------------------
- 1 files changed, 5 insertions(+), 24 deletions(-)
+ arch/arm/mach-stm/include/mach/fb.h |    3 +++
+ drivers/video/stm.c                 |   17 ++++++++++++-----
+ 2 files changed, 15 insertions(+), 5 deletions(-)
 
+diff --git a/arch/arm/mach-stm/include/mach/fb.h b/arch/arm/mach-stm/include/mach/fb.h
+index 65e3be2..2eade76 100644
+--- a/arch/arm/mach-stm/include/mach/fb.h
++++ b/arch/arm/mach-stm/include/mach/fb.h
+@@ -37,6 +37,9 @@ struct imx_fb_videomode {
+ 
+ 	unsigned dotclk_delay;	/**< refer manual HW_LCDIF_VDCTRL4 register */
+ 	unsigned ld_intf_width;	/**< refer STMLCDIF_* macros */
++
++	void *fixed_screen;	/**< if != NULL use this as framebuffer memory */
++	unsigned fixed_screen_size; /**< framebuffer memory size for fixed_screen */
+ };
+ 
+ #endif /* __MACH_FB_H */
 diff --git a/drivers/video/stm.c b/drivers/video/stm.c
-index f0abe4c..ecf450c 100644
+index ecf450c..a665850 100644
 --- a/drivers/video/stm.c
 +++ b/drivers/video/stm.c
-@@ -209,24 +209,6 @@ static inline unsigned calc_line_length(unsigned ppl, unsigned bpp)
- 	return (ppl * bpp) >> 3;
- }
- 
--static int stmfb_memory_mmgt(struct fb_info *fb_info, unsigned size)
--{
--	struct imxfb_info *fbi = fb_info->priv;
--
--	if (fbi->memory_size != 0) {
--		free(fb_info->screen_base);
--		fb_info->screen_base = NULL;
--		fbi->memory_size = 0;
--	}
--
--	if (fbi->memory_size == 0) {
--		fb_info->screen_base = xzalloc(size);
--		fbi->memory_size = size;
--	}
--
--	return 0;
--}
--
- static void stmfb_enable_controller(struct fb_info *fb_info)
- {
- 	struct imxfb_info *fbi = fb_info->priv;
-@@ -308,7 +290,6 @@ static int stmfb_activate_var(struct fb_info *fb_info)
- 	struct imx_fb_videomode *pdata = fbi->pdata;
- 	struct fb_videomode *mode = fb_info->mode;
- 	uint32_t reg;
--	int ret;
- 	unsigned size;
- 
- 	/*
-@@ -317,11 +298,11 @@ static int stmfb_activate_var(struct fb_info *fb_info)
+@@ -298,11 +298,18 @@ static int stmfb_activate_var(struct fb_info *fb_info)
  	size = calc_line_length(mode->xres, fb_info->bits_per_pixel) *
  		mode->yres;
  
--	ret = stmfb_memory_mmgt(fb_info, size);
--	if (ret != 0) {
--		dev_err(fbi->hw_dev, "Cannot allocate framebuffer memory\n");
--		return ret;
--	}
-+	fb_info->screen_base = realloc(fb_info->screen_base, size);
-+	if (!fb_info->screen_base)
-+		return -ENOMEM;
-+	memset(fb_info->screen_base, 0, size);
-+	fbi->memory_size = size;
+-	fb_info->screen_base = realloc(fb_info->screen_base, size);
+-	if (!fb_info->screen_base)
+-		return -ENOMEM;
+-	memset(fb_info->screen_base, 0, size);
+-	fbi->memory_size = size;
++	if (pdata->fixed_screen) {
++		if (pdata->fixed_screen_size < size)
++			return -ENOMEM;
++		fb_info->screen_base = pdata->fixed_screen;
++		fbi->memory_size = pdata->fixed_screen_size;
++	} else {
++		fb_info->screen_base = realloc(fb_info->screen_base, size);
++		if (!fb_info->screen_base)
++			return -ENOMEM;
++		memset(fb_info->screen_base, 0, size);
++		fbi->memory_size = size;
++	}
  
  	/** @todo ensure HCLK is active at this point of time! */
  
