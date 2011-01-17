@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-iy0-f177.google.com ([209.85.210.177])
-	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1Pexhl-0002sH-Pi
-	for barebox@lists.infradead.org; Mon, 17 Jan 2011 22:37:45 +0000
-Received: by iyj21 with SMTP id 21so5335313iyj.36
-	for <barebox@lists.infradead.org>; Mon, 17 Jan 2011 14:37:35 -0800 (PST)
+Received: from mail-iw0-f177.google.com ([209.85.214.177])
+	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1Pexi9-0002sG-P9
+	for barebox@lists.infradead.org; Mon, 17 Jan 2011 22:38:08 +0000
+Received: by iwn38 with SMTP id 38so5359779iwn.36
+	for <barebox@lists.infradead.org>; Mon, 17 Jan 2011 14:37:33 -0800 (PST)
 From: Marc Reilly <marc@cpdesign.com.au>
-Date: Tue, 18 Jan 2011 09:36:47 +1100
-Message-Id: <1295303807-19761-2-git-send-email-marc@cpdesign.com.au>
-In-Reply-To: <1295303807-19761-1-git-send-email-marc@cpdesign.com.au>
-References: <1295303807-19761-1-git-send-email-marc@cpdesign.com.au>
+Date: Tue, 18 Jan 2011 09:36:46 +1100
+Message-Id: <1295303807-19761-1-git-send-email-marc@cpdesign.com.au>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,134 +21,16 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] imx(25,35): save boot location into $barebox_loc env.
+Subject: imx25,35 save boot location V2
 To: barebox@lists.infradead.org
 
-Saves the boot source into an environment variable so env scripts
-can more easily use boot source information.
+Hi,
 
-Note only tested on imx35. I haven't added support for any other variants
-because I'm not familiar with them. (And can't test them anyway).
+There haven't been any further comments of my earlier patch for saving the boot source for imx,
+so here is version 2, it fixes up the use of 0s instead of NULLs.
 
-Signed-off-by: Marc Reilly <marc@cpdesign.com.au>
----
- arch/arm/mach-imx/Makefile |    1 +
- arch/arm/mach-imx/boot.c   |   95 ++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 96 insertions(+), 0 deletions(-)
- create mode 100644 arch/arm/mach-imx/boot.c
-
-diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
-index d000683..3b2deaf 100644
---- a/arch/arm/mach-imx/Makefile
-+++ b/arch/arm/mach-imx/Makefile
-@@ -11,3 +11,4 @@ obj-$(CONFIG_IMX_IIM)	+= iim.o
- obj-$(CONFIG_NAND_IMX) += nand.o
- obj-y += speed.o
- obj-y += devices.o
-+obj-y += boot.o
-diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
-new file mode 100644
-index 0000000..b4bf93b
---- /dev/null
-+++ b/arch/arm/mach-imx/boot.c
-@@ -0,0 +1,95 @@
-+/*
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-+ * MA 02111-1307 USA
-+ */
-+
-+#include <common.h>
-+#include <environment.h>
-+#include <init.h>
-+
-+#include <asm/io.h>
-+#include <mach/imx-regs.h>
-+
-+#if defined(CONFIG_ARCH_IMX25) || defined(CONFIG_ARCH_IMX35)
-+/*
-+ * Saves the boot source media into the $barebox_loc enviroment variable
-+ *
-+ * This information is useful for barebox init scripts as we can then easily
-+ * use a kernel image stored on the same media that we launch barebox with
-+ * (for example).
-+ *
-+ * imx25 and imx35 can boot into barebox from several media such as
-+ * nand, nor, mmc/sd cards, serial roms. "mmc" is used to represent several
-+ * sources as its impossible to distinguish between them.
-+ *
-+ * Some sources such as serial roms can themselves have 3 different boot
-+ * possibilities (i2c1, i2c2 etc). It is assumed that any board will
-+ * only be using one of these at any one time.
-+ *
-+ * Note also that I suspect that the boot source pins are only sampled at
-+ * power up.
-+ */
-+static int imx_boot_save_loc(void)
-+{
-+	const char *bareboxloc = NULL;
-+	uint32_t reg;
-+	unsigned int ctrl, type;
-+
-+	/* [CTRL][TYPE] */
-+	const char *const locations[4][4] = {
-+		{ /* CTRL = WEIM */
-+			"nor",
-+			NULL,
-+			"onenand",
-+			NULL,
-+		}, { /* CTRL == NAND */
-+			"nand",
-+			"nand",
-+			"nand",
-+			"nand",
-+		}, { /* CTRL == ATA, (imx35 only) */
-+			NULL,
-+			NULL, /* might be p-ata */
-+			NULL,
-+			NULL,
-+		}, { /* CTRL == expansion */
-+			"mmc", /* note imx25 could also be: movinand, ce-ata */
-+			NULL,
-+			"i2c",
-+			"spi",
-+		}
-+	};
-+
-+	reg = readl(IMX_CCM_BASE + CCM_RCSR);
-+	ctrl = (reg >> CCM_RCSR_MEM_CTRL_SHIFT) & 0x3;
-+	type = (reg >> CCM_RCSR_MEM_TYPE_SHIFT) & 0x3;
-+
-+	bareboxloc = locations[ctrl][type];
-+
-+	if (bareboxloc) {
-+		setenv("barebox_loc", bareboxloc);
-+		export("barebox_loc");
-+	}
-+
-+	return 0;
-+}
-+
-+/*
-+ * This can only be called after env_push_context() has been called
-+ * so it is a late_initcall.
-+ */
-+late_initcall(imx_boot_save_loc);
-+
-+#endif
--- 
-1.7.1
+Cheers
+Marc
 
 
 _______________________________________________
