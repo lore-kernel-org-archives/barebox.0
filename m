@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([92.198.50.35])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Pem92-0003Ok-Ir
-	for barebox@lists.infradead.org; Mon, 17 Jan 2011 10:17:05 +0000
+	id 1Pem92-0003Ol-M9
+	for barebox@lists.infradead.org; Mon, 17 Jan 2011 10:17:07 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 17 Jan 2011 11:16:53 +0100
-Message-Id: <1295259421-26338-2-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 17 Jan 2011 11:16:54 +0100
+Message-Id: <1295259421-26338-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1295259421-26338-1-git-send-email-s.hauer@pengutronix.de>
 References: <1295259421-26338-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,36 +21,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/9] ppc pcm030: provide _stext,
-	_text and __bss_stop in linker script
+Subject: [PATCH 2/9] blackfin: provide __bss_stop in linker script
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/ppc/boards/pcm030/barebox.lds.S |    3 +++
- 1 files changed, 3 insertions(+), 0 deletions(-)
+ arch/blackfin/boards/ipe337/barebox.lds.S |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
 
-diff --git a/arch/ppc/boards/pcm030/barebox.lds.S b/arch/ppc/boards/pcm030/barebox.lds.S
-index ab99335..21bf4a7 100644
---- a/arch/ppc/boards/pcm030/barebox.lds.S
-+++ b/arch/ppc/boards/pcm030/barebox.lds.S
-@@ -55,6 +55,8 @@ SECTIONS
-   .plt : { *(.plt) }
-   .text      :
-   {
-+    _text = .;
-+    _stext = .;
-     arch/ppc/mach-mpc5xxx/start.o	(.text)
-     *(.text*)
-     *(.got1*)
-@@ -134,6 +136,7 @@ SECTIONS
-    *(.bss*)
-    *(COMMON)
-   }
-+  __bss_stop = .;
-   _end = . ;
-   PROVIDE (end = .);
+diff --git a/arch/blackfin/boards/ipe337/barebox.lds.S b/arch/blackfin/boards/ipe337/barebox.lds.S
+index 4299b82..571eeb1 100644
+--- a/arch/blackfin/boards/ipe337/barebox.lds.S
++++ b/arch/blackfin/boards/ipe337/barebox.lds.S
+@@ -82,6 +82,7 @@ SECTIONS
+ 	. = ALIGN(4);
+ 	__bss_start = .;
+ 	.bss : { *(.bss) }
++	__bss_stop = .;
+ 	_end = .;
  }
+ 
 -- 
 1.7.2.3
 
