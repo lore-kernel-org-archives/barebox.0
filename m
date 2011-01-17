@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([92.198.50.35])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Pem92-0003Or-US
-	for barebox@lists.infradead.org; Mon, 17 Jan 2011 10:17:07 +0000
+	id 1Pem92-0003Ok-Ir
+	for barebox@lists.infradead.org; Mon, 17 Jan 2011 10:17:05 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 17 Jan 2011 11:16:58 +0100
-Message-Id: <1295259421-26338-7-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 17 Jan 2011 11:16:53 +0100
+Message-Id: <1295259421-26338-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1295259421-26338-1-git-send-email-s.hauer@pengutronix.de>
 References: <1295259421-26338-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,26 +21,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/9] ARM: remove unnecessary include
+Subject: [PATCH 1/9] ppc pcm030: provide _stext,
+	_text and __bss_stop in linker script
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/lib/arm.c |    1 -
- 1 files changed, 0 insertions(+), 1 deletions(-)
+ arch/ppc/boards/pcm030/barebox.lds.S |    3 +++
+ 1 files changed, 3 insertions(+), 0 deletions(-)
 
-diff --git a/arch/arm/lib/arm.c b/arch/arm/lib/arm.c
-index 8ac9ff4..6549118 100644
---- a/arch/arm/lib/arm.c
-+++ b/arch/arm/lib/arm.c
-@@ -3,7 +3,6 @@
- #include <mem_malloc.h>
- #include <asm/barebox-arm.h>
- #include <asm-generic/memory_layout.h>
--#include <reloc.h>
- 
- static int arm_mem_malloc_init(void)
- {
+diff --git a/arch/ppc/boards/pcm030/barebox.lds.S b/arch/ppc/boards/pcm030/barebox.lds.S
+index ab99335..21bf4a7 100644
+--- a/arch/ppc/boards/pcm030/barebox.lds.S
++++ b/arch/ppc/boards/pcm030/barebox.lds.S
+@@ -55,6 +55,8 @@ SECTIONS
+   .plt : { *(.plt) }
+   .text      :
+   {
++    _text = .;
++    _stext = .;
+     arch/ppc/mach-mpc5xxx/start.o	(.text)
+     *(.text*)
+     *(.got1*)
+@@ -134,6 +136,7 @@ SECTIONS
+    *(.bss*)
+    *(COMMON)
+   }
++  __bss_stop = .;
+   _end = . ;
+   PROVIDE (end = .);
+ }
 -- 
 1.7.2.3
 
