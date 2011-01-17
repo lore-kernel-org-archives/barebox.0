@@ -1,13 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([92.198.50.35])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PemEd-0004JL-3D
-	for barebox@lists.infradead.org; Mon, 17 Jan 2011 10:22:52 +0000
+	id 1PemEb-0004JC-C7
+	for barebox@lists.infradead.org; Mon, 17 Jan 2011 10:22:50 +0000
+Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+	(envelope-from <sha@pengutronix.de>) id 1PemEa-0007Of-2Y
+	for barebox@lists.infradead.org; Mon, 17 Jan 2011 11:22:48 +0100
+Received: from sha by octopus.hi.pengutronix.de with local (Exim 4.69)
+	(envelope-from <sha@pengutronix.de>) id 1PemEa-0007Oy-1B
+	for barebox@lists.infradead.org; Mon, 17 Jan 2011 11:22:48 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 17 Jan 2011 11:22:46 +0100
-Message-Id: <1295259766-19301-5-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1295259766-19301-1-git-send-email-s.hauer@pengutronix.de>
-References: <1295259766-19301-1-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 17 Jan 2011 11:22:42 +0100
+Message-Id: <1295259766-19301-1-git-send-email-s.hauer@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,36 +22,29 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] ARM i.MX28 tx28 defconfig: enable MMU
+Subject: i.MX28 patches v2
 To: barebox@lists.infradead.org
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/configs/tx28stk5_defconfig |    1 +
- 1 files changed, 1 insertions(+), 0 deletions(-)
-
-diff --git a/arch/arm/configs/tx28stk5_defconfig b/arch/arm/configs/tx28stk5_defconfig
-index 0851d5e..88ace35 100644
---- a/arch/arm/configs/tx28stk5_defconfig
-+++ b/arch/arm/configs/tx28stk5_defconfig
-@@ -2,6 +2,7 @@ CONFIG_ARCH_STM=y
- CONFIG_ARCH_IMX28=y
- CONFIG_AEABI=y
- CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_MMU=y
- CONFIG_MALLOC_SIZE=0x800000
- CONFIG_BROKEN=y
- CONFIG_LONGHELP=y
--- 
-1.7.2.3
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhpcyBpcyB0aGUgc2Vjb25kIHZlcnNpb24gb2YgdGhlc2UgcGF0Y2hlcyB3aXRoIHRoZSBjb21t
+ZW50cwpmcm9tIErDvHJnZW4gaW50ZWdyYXRlZCBhbmQgcmViYXNlZCBvbiB0aGUgb3RoZXIgc2Vy
+aWVzIEkganVzdApzZW50LgoKU2FzY2hhCgpUaGUgZm9sbG93aW5nIGNoYW5nZXMgc2luY2UgY29t
+bWl0IDNlODkyMjU1YjMwNzFkNGQ2MjRlZGIzZDgyOWVlZTFkNTc5ZWRjMjc6CgogIHN0YXJ0dXA6
+IG1ha2UgZGVidWcgcHJpbnRpbmcgb2YgbGlua2VyIHZhcmlhYmxlcyB3b3JrIGFnYWluICgyMDEx
+LTAxLTE3IDExOjA1OjE0ICswMTAwKQoKYXJlIGF2YWlsYWJsZSBpbiB0aGUgZ2l0IHJlcG9zaXRv
+cnkgYXQ6CiAgLi5CUkFOQ0guTk9ULlZFUklGSUVELi4KClNhc2NoYSBIYXVlciAoNCk6CiAgICAg
+IHZpZGVvIHN0bS9teDJ4OiBzaW1wbGlmeSBtZW1vcnkgYWxsb2NhdGlvbgogICAgICB2aWRlbyBz
+dG0vbXgyeDogYWxsb3cgdG8gcGFzcyBpbiBmYiBtZW1vcnkgZnJvbSBwbGF0Zm9ybSBkYXRhCiAg
+ICAgIEFSTSBpLk1YMjggdHgyODogdXNlIGEgZml4ZWQgZnJhbWVidWZmZXIgYWRkcmVzcwogICAg
+ICBBUk0gaS5NWDI4IHR4MjggZGVmY29uZmlnOiBlbmFibGUgTU1VCgogYXJjaC9hcm0vYm9hcmRz
+L2thcm8tdHgyOC90eDI4LXN0azUuYyB8ICAgMTIgKysrKysrKysrKysKIGFyY2gvYXJtL2NvbmZp
+Z3MvdHgyOHN0azVfZGVmY29uZmlnICAgfCAgICAxICsKIGFyY2gvYXJtL21hY2gtc3RtL2luY2x1
+ZGUvbWFjaC9mYi5oICAgfCAgICAzICsrCiBkcml2ZXJzL3ZpZGVvL3N0bS5jICAgICAgICAgICAg
+ICAgICAgIHwgICAzNCArKysrKysrKysrLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQogNCBmaWxlcyBj
+aGFuZ2VkLCAyNyBpbnNlcnRpb25zKCspLCAyMyBkZWxldGlvbnMoLSkKCgoKX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QK
+YmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21h
+aWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
