@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from inx.pm.waw.pl ([195.116.170.130])
-	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PeaM3-0008FU-T5
-	for barebox@lists.infradead.org; Sun, 16 Jan 2011 21:41:44 +0000
-From: Krzysztof Halasa <khc@pm.waw.pl>
-Date: Sun, 16 Jan 2011 22:40:41 +0100
-Message-ID: <m362towmqu.fsf@intrepid.localdomain>
+Received: from mail.free-electrons.com ([88.190.12.23])
+	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1PelY5-0007nE-FK
+	for barebox@lists.infradead.org; Mon, 17 Jan 2011 09:38:55 +0000
+Message-ID: <4D340E1E.3020608@free-electrons.com>
+Date: Mon, 17 Jan 2011 10:38:38 +0100
+From: Gregory CLEMENT <gregory.clement@free-electrons.com>
 MIME-Version: 1.0
+References: <1295034524-18722-1-git-send-email-s.hauer@pengutronix.de>
+	<1295034524-18722-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1295034524-18722-2-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,55 +18,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] CFI NOR flash: fix write timeout units.
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] fb: update cdev map_base
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-V3JpdGUgdGltZW91dHMgYXJlIGV4cHJlc3NlZCBpbiBtaWNyb3NlY29uZHMuIE1pbGxpc2Vjb25k
-cyBhcmUgMTAwMCB0aW1lcwpsb25nZXIgdGhhbiBtaWNyb3NlY29uZHMsIG5vdCAxMDAwIHRpbWVz
-IHNob3J0ZXIuCgpCZWZvcmUgKEludGVsIDI4RjEyOEozRDc1KToKCkNGSSBjb25mb3JtYW50IEZM
-QVNIICgxNiB4IDE2KSAgU2l6ZTogMTYgTUIgaW4gMTI4IFNlY3RvcnMKICBJbnRlbCBFeHRlbmRl
-ZCBjb21tYW5kIHNldCwgTWFudWZhY3R1cmVyIElEOiAweDg5LCBEZXZpY2UgSUQ6IDB4MTgKICBF
-cmFzZSB0aW1lb3V0OiA0MDk2IG1zLCB3cml0ZSB0aW1lb3V0OiAyNTYwMDAgbXMKICBCdWZmZXIg
-d3JpdGUgdGltZW91dDogMTAyNDAwMCBtcywgYnVmZmVyIHNpemU6IDMyIGJ5dGVzCgpBZnRlcjoK
-ICAuLi4KICBFcmFzZSB0aW1lb3V0OiA0MDk2IG1zLCB3cml0ZSB0aW1lb3V0OiAyNTYgdXMKICBC
-dWZmZXIgd3JpdGUgdGltZW91dDogMTAyNCB1cywgYnVmZmVyIHNpemU6IDMyIGJ5dGVzCgpTaWdu
-ZWQtb2ZmLWJ5OiBLcnp5c3p0b2YgSGHFgmFzYSA8a2hjQHBtLndhdy5wbD4KCmRpZmYgLS1naXQg
-YS9kcml2ZXJzL25vci9jZmlfZmxhc2guYyBiL2RyaXZlcnMvbm9yL2NmaV9mbGFzaC5jCmluZGV4
-IDExMThiNmEuLjU3Njg5ODAgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvbm9yL2NmaV9mbGFzaC5jCisr
-KyBiL2RyaXZlcnMvbm9yL2NmaV9mbGFzaC5jCkBAIC00MjQsMTQgKzQyNCwxMiBAQCBzdGF0aWMg
-dWxvbmcgZmxhc2hfZ2V0X3NpemUgKHN0cnVjdCBmbGFzaF9pbmZvICppbmZvLCB1bG9uZyBiYXNl
-KQogCQkvKiBtdWx0aXBseSB0aGUgc2l6ZSBieSB0aGUgbnVtYmVyIG9mIGNoaXBzICovCiAJCWlu
-Zm8tPnNpemUgPSAoMSA8PCBxcnkuZGV2X3NpemUpICogc2l6ZV9yYXRpbzsKIAkJaW5mby0+YnVm
-ZmVyX3NpemUgPSAoMSA8PCBsZTE2X3RvX2NwdShxcnkubWF4X2J1Zl93cml0ZV9zaXplKSk7Ci0J
-CXRtcCA9IDEgPDwgcXJ5LmJsb2NrX2VyYXNlX3RpbWVvdXRfdHlwOwotCQlpbmZvLT5lcmFzZV9i
-bGtfdG91dCA9ICh0bXAgKiAoMSA8PCBxcnkuYmxvY2tfZXJhc2VfdGltZW91dF9tYXgpKTsKLQkJ
-dG1wID0gKDEgPDwgcXJ5LmJ1Zl93cml0ZV90aW1lb3V0X3R5cCkgKgotCQkJKDEgPDwgcXJ5LmJ1
-Zl93cml0ZV90aW1lb3V0X21heCk7Ci0JCWluZm8tPmJ1ZmZlcl93cml0ZV90b3V0ID0gdG1wICog
-MTAwMDsKLQkJdG1wID0gKDEgPDwgcXJ5LndvcmRfd3JpdGVfdGltZW91dF90eXApICoKLQkJICAg
-ICAgKDEgPDwgcXJ5LndvcmRfd3JpdGVfdGltZW91dF9tYXgpOwotCQlpbmZvLT53cml0ZV90b3V0
-ID0gdG1wICogMTAwMDsKKwkJaW5mby0+ZXJhc2VfYmxrX3RvdXQgPSAxIDw8IChxcnkuYmxvY2tf
-ZXJhc2VfdGltZW91dF90eXAgKworCQkJCQkgICAgIHFyeS5ibG9ja19lcmFzZV90aW1lb3V0X21h
-eCk7CisJCWluZm8tPmJ1ZmZlcl93cml0ZV90b3V0ID0gMSA8PCAocXJ5LmJ1Zl93cml0ZV90aW1l
-b3V0X3R5cCArCisJCQkJCQlxcnkuYnVmX3dyaXRlX3RpbWVvdXRfbWF4KTsKKwkJaW5mby0+d3Jp
-dGVfdG91dCA9IDEgPDwgKHFyeS53b3JkX3dyaXRlX3RpbWVvdXRfdHlwICsKKwkJCQkJIHFyeS53
-b3JkX3dyaXRlX3RpbWVvdXRfbWF4KTsKIAkJaW5mby0+Zmxhc2hfaWQgPSBGTEFTSF9NQU5fQ0ZJ
-OwogCQlpZiAoKGluZm8tPmludGVyZmFjZSA9PSBGTEFTSF9DRklfWDhYMTYpICYmIChpbmZvLT5j
-aGlwd2lkdGggPT0gRkxBU0hfQ0ZJX0JZOCkpIHsKIAkJCWluZm8tPnBvcnR3aWR0aCA+Pj0gMTsJ
-LyogWFhYIC0gTmVlZCB0byB0ZXN0IG9uIHg4L3gxNiBpbiBwYXJhbGxlbC4gKi8KQEAgLTY5OSwx
-MSArNjk3LDExIEBAIHN0YXRpYyB2b2lkIGNmaV9pbmZvIChzdHJ1Y3QgZGV2aWNlX2QqIGRldikK
-IAlpZiAoaW5mby0+ZGV2aWNlX2lkID09IDB4N0UpIHsKIAkJcHJpbnRmKCIlMDRYIiwgaW5mby0+
-ZGV2aWNlX2lkMik7CiAJfQotCXByaW50ZiAoIlxuICBFcmFzZSB0aW1lb3V0OiAlbGQgbXMsIHdy
-aXRlIHRpbWVvdXQ6ICVsZCBtc1xuIiwKKwlwcmludGYgKCJcbiAgRXJhc2UgdGltZW91dDogJWxk
-IG1zLCB3cml0ZSB0aW1lb3V0OiAlbGQgdXNcbiIsCiAJCWluZm8tPmVyYXNlX2Jsa190b3V0LAog
-CQlpbmZvLT53cml0ZV90b3V0KTsKIAlpZiAoaW5mby0+YnVmZmVyX3NpemUgPiAxKSB7Ci0JCXBy
-aW50ZiAoIiAgQnVmZmVyIHdyaXRlIHRpbWVvdXQ6ICVsZCBtcywgYnVmZmVyIHNpemU6ICVkIGJ5
-dGVzXG4iLAorCQlwcmludGYgKCIgIEJ1ZmZlciB3cml0ZSB0aW1lb3V0OiAlbGQgdXMsIGJ1ZmZl
-ciBzaXplOiAlZCBieXRlc1xuIiwKIAkJaW5mby0+YnVmZmVyX3dyaXRlX3RvdXQsCiAJCWluZm8t
-PmJ1ZmZlcl9zaXplKTsKIAl9CgotLSAKS3J6eXN6dG9mIEhhbGFzYQoKX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFy
-ZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxt
-YW4vbGlzdGluZm8vYmFyZWJveAo=
+Hi Sascha,
+
+You can revert the patch 1/4 I sent and add my Tested-by on this one.
+
+On 01/14/2011 08:48 PM, Sascha Hauer wrote:
+> Calling fb_activate_var potentially changes the framebuffer address,
+> so we have to update the fb0 cdev afterwards.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  drivers/video/fb.c |    2 ++
+>  1 files changed, 2 insertions(+), 0 deletions(-)
+> 
+> diff --git a/drivers/video/fb.c b/drivers/video/fb.c
+> index aad0e1f..ba34b9c 100644
+> --- a/drivers/video/fb.c
+> +++ b/drivers/video/fb.c
+> @@ -79,6 +79,8 @@ static int fb_setup_mode(struct device_d *dev, struct param_d *param,
+>  
+>  	ret = info->fbops->fb_activate_var(info);
+>  
+> +	dev->map_base = (unsigned long)info->screen_base;
+> +
+>  	if (ret == 0)
+>  		dev_param_set_generic(dev, param, val);
+>  
+
+
+-- 
+Gregory Clement, Free Electrons
+Kernel, drivers, real-time and embedded Linux
+development, consulting, training and support.
+http://free-electrons.com
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
