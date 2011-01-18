@@ -1,16 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail11.tpgi.com.au ([203.12.160.161])
-	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Pextx-00047R-OG
-	for barebox@lists.infradead.org; Mon, 17 Jan 2011 22:50:20 +0000
-From: Marc Reilly <marc@cpdesign.com.au>
-Date: Tue, 18 Jan 2011 09:49:35 +1100
+Received: from mail-wy0-f177.google.com ([74.125.82.177])
+	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1Pf6JW-0003jq-QG
+	for barebox@lists.infradead.org; Tue, 18 Jan 2011 07:49:20 +0000
+Received: by wyf22 with SMTP id 22so5755148wyf.36
+	for <barebox@lists.infradead.org>; Mon, 17 Jan 2011 23:48:57 -0800 (PST)
+From: Peter Korsgaard <jacmet@sunsite.dk>
 References: <1295259766-19301-1-git-send-email-s.hauer@pengutronix.de>
 	<1295259766-19301-4-git-send-email-s.hauer@pengutronix.de>
 	<201101171159.31154.jbe@pengutronix.de>
-In-Reply-To: <201101171159.31154.jbe@pengutronix.de>
+	<201101180949.35371.marc@cpdesign.com.au>
+Date: Tue, 18 Jan 2011 08:48:50 +0100
+In-Reply-To: <201101180949.35371.marc@cpdesign.com.au> (Marc Reilly's message
+	of "Tue, 18 Jan 2011 09:49:35 +1100")
+Message-ID: <87y66i8xel.fsf@macbook.be.48ers.dk>
 MIME-Version: 1.0
-Message-Id: <201101180949.35371.marc@cpdesign.com.au>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,32 +28,21 @@ Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 3/4] ARM i.MX28 tx28: use a fixed framebuffer address
-To: barebox@lists.infradead.org
+To: Marc Reilly <marc@cpdesign.com.au>
+Cc: barebox@lists.infradead.org
 
+>>>>> "Marc" == Marc Reilly <marc@cpdesign.com.au> writes:
 
-> >  static struct imx_fb_videomode imxfb_mode = {
-> >  
-> >  	.mode_list = tx28evk_vmodes,
-> >  	.mode_cnt = ARRAY_SIZE(tx28evk_vmodes),
-> >  	.dotclk_delay = 0,	/* no adaption required */
-> >  	.ld_intf_width = STMLCDIF_24BIT,	/* full 24 bit */
-> > 
-> > +	.fixed_screen = (void *)(0x40000000 + SZ_128M - MAX_FB_SIZE),
-> > +	.fixed_screen_size = MAX_FB_SIZE,
-> > 
-> >  };
-> 
-> Question only: Any idea how we could make this setup (base address and size
-> of the fixed screen) a runtime feature? This would be a nice feature like
-> most modern BIOS also have: Make the size of the video memory shared with
-> the CPU selectable at runtime.
-> 
+Hi,
 
-Purely out of interest, what is the advantage/necessity for having the frame 
-buffer at a fixed address?
+ Marc> Purely out of interest, what is the advantage/necessity for
+ Marc> having the frame buffer at a fixed address?
 
-Cheers
-Marc
+Presumably to be able to reuse the buffer in Linux for flicker free
+booting.
+
+-- 
+Bye, Peter Korsgaard
 
 _______________________________________________
 barebox mailing list
