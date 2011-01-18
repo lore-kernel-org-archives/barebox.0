@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from tango.tkos.co.il ([62.219.50.35])
-	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PfD2x-0003b2-DO
-	for barebox@lists.infradead.org; Tue, 18 Jan 2011 15:00:41 +0000
-From: Baruch Siach <baruch@tkos.co.il>
-Date: Tue, 18 Jan 2011 16:59:12 +0200
-Message-Id: <c9830d9e4cbed1971591193bc2fb4eda5e545410.1295362711.git.baruch@tkos.co.il>
+Received: from 26.mail-out.ovh.net ([91.121.27.225])
+	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1PfDEn-00066m-7L
+	for barebox@lists.infradead.org; Tue, 18 Jan 2011 15:12:50 +0000
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Tue, 18 Jan 2011 16:11:46 +0100
+Message-Id: <1295363506-1794-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,30 +19,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] miidev: allow read/write of all registers
+Subject: [PATCH] at91sam9g45: fix ARCH_TEXT_BASE
 To: barebox@lists.infradead.org
 
-Ethernet PHY devices have 32 registers, each 16 bits wide. Thus, the size of
-the phy device should be 64 bytes.
+it's 0x73f00000 not 0x23f00000 as the other at91
 
-Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- drivers/net/miidev.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+ arch/arm/mach-at91/Kconfig |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
 
-diff --git a/drivers/net/miidev.c b/drivers/net/miidev.c
-index 343eb40..b4c6948 100644
---- a/drivers/net/miidev.c
-+++ b/drivers/net/miidev.c
-@@ -183,7 +183,7 @@ static int miidev_probe(struct device_d *dev)
- 	struct mii_device *mdev = dev->priv;
+diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+index 4d35ebe..efaa256 100644
+--- a/arch/arm/mach-at91/Kconfig
++++ b/arch/arm/mach-at91/Kconfig
+@@ -2,6 +2,7 @@ if ARCH_AT91
  
- 	mdev->cdev.name = asprintf("phy%d", dev->id);
--	mdev->cdev.size = 32;
-+	mdev->cdev.size = 64;
- 	mdev->cdev.ops = &miidev_ops;
- 	mdev->cdev.priv = mdev;
- 	mdev->cdev.dev = dev;
+ config ARCH_TEXT_BASE
+ 	hex
++	default 0x73f00000 if ARCH_AT91SAM9G45
+ 	default 0x23f00000
+ 
+ config BOARDINFO
 -- 
 1.7.2.3
 
