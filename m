@@ -1,17 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from tango.tkos.co.il ([62.219.50.35])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Pf85V-0001LZ-0o
-	for barebox@lists.infradead.org; Tue, 18 Jan 2011 09:43:00 +0000
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Tue, 18 Jan 2011 10:41:00 +0100
-References: <1295259766-19301-1-git-send-email-s.hauer@pengutronix.de>
-	<201101180949.35371.marc@cpdesign.com.au>
-	<87y66i8xel.fsf@macbook.be.48ers.dk>
-In-Reply-To: <87y66i8xel.fsf@macbook.be.48ers.dk>
-MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <201101181041.00195.jbe@pengutronix.de>
+	id 1PfD2x-0003b2-DO
+	for barebox@lists.infradead.org; Tue, 18 Jan 2011 15:00:41 +0000
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Tue, 18 Jan 2011 16:59:12 +0200
+Message-Id: <c9830d9e4cbed1971591193bc2fb4eda5e545410.1295362711.git.baruch@tkos.co.il>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,33 +14,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/4] ARM i.MX28 tx28: use a fixed framebuffer address
+Subject: [PATCH] miidev: allow read/write of all registers
 To: barebox@lists.infradead.org
 
-Peter Korsgaard wrote:
-> >>>>> "Marc" == Marc Reilly <marc@cpdesign.com.au> writes:
->
-> Hi,
->
->  Marc> Purely out of interest, what is the advantage/necessity for
->  Marc> having the frame buffer at a fixed address?
->
-> Presumably to be able to reuse the buffer in Linux for flicker free
-> booting.
+Ethernet PHY devices have 32 registers, each 16 bits wide. Thus, the size of
+the phy device should be 64 bytes.
 
-Yes.
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+ drivers/net/miidev.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-jbe
-
+diff --git a/drivers/net/miidev.c b/drivers/net/miidev.c
+index 343eb40..b4c6948 100644
+--- a/drivers/net/miidev.c
++++ b/drivers/net/miidev.c
+@@ -183,7 +183,7 @@ static int miidev_probe(struct device_d *dev)
+ 	struct mii_device *mdev = dev->priv;
+ 
+ 	mdev->cdev.name = asprintf("phy%d", dev->id);
+-	mdev->cdev.size = 32;
++	mdev->cdev.size = 64;
+ 	mdev->cdev.ops = &miidev_ops;
+ 	mdev->cdev.priv = mdev;
+ 	mdev->cdev.dev = dev;
 -- 
-Pengutronix e.K.                              | Juergen Beisert             |
-Linux Solutions for Science and Industry      | Phone: +49-8766-939 228     |
-Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
+1.7.2.3
+
 
 _______________________________________________
 barebox mailing list
