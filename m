@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Pfpv9-0007qS-1m
-	for barebox@lists.infradead.org; Thu, 20 Jan 2011 08:31:11 +0000
-Date: Thu, 20 Jan 2011 09:31:02 +0100
+	id 1PfqBj-0004ex-0J
+	for barebox@lists.infradead.org; Thu, 20 Jan 2011 08:48:19 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110120083102.GT9041@pengutronix.de>
-References: <201101191327.23492.jbe@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <201101191327.23492.jbe@pengutronix.de>
+Date: Thu, 20 Jan 2011 09:47:51 +0100
+Message-Id: <1295513272-22108-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1295513272-22108-1-git-send-email-s.hauer@pengutronix.de>
+References: <1295513272-22108-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,54 +16,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Compiling at91sam9g45 fails with NAND driver enabled
-To: Juergen Beisert <jbe@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/2] defaultenv: only try to add partitions when partition
+	description exists
+To: barebox@lists.infradead.org
 
-Hi J=FCrgen,
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ defaultenv/bin/init |    6 +++---
+ 1 files changed, 3 insertions(+), 3 deletions(-)
 
-On Wed, Jan 19, 2011 at 01:27:23PM +0100, Juergen Beisert wrote:
-> Enabling the AT91 NAND driver fails with the following error:
-> =
+diff --git a/defaultenv/bin/init b/defaultenv/bin/init
+index 96a5716..877b541 100644
+--- a/defaultenv/bin/init
++++ b/defaultenv/bin/init
+@@ -4,15 +4,15 @@ PATH=/env/bin
+ export PATH
+ 
+ . /env/config
+-if [ -e /dev/nor0 ]; then
++if [ -e /dev/nor0 -a -n "$nor_parts" ]; then
+ 	addpart /dev/nor0 $nor_parts
+ fi
+ 
+-if [ -e /dev/disk0 ]; then
++if [ -e /dev/disk0 -a -n "$disk_parts" ]; then
+ 	addpart /dev/disk0 $disk_parts
+ fi
+ 
+-if [ -e /dev/nand0 ]; then
++if [ -e /dev/nand0 -a -n "$nand_parts" ]; then
+ 	addpart /dev/nand0 $nand_parts
+ 
+ 	# Uh, oh, hush first expands wildcards and then starts executing
+-- 
+1.7.2.3
 
-> arch/arm/mach-at91/at91sam9g45_devices.c: In function 'at91_add_device_na=
-nd':
-> arch/arm/mach-at91/at91sam9g45_devices.c:101: error: 'NAND_ECC_HW' undecl=
-ared (first use in this function)
-> =
-
-> Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
-> =
-
-> diff --git a/arch/arm/mach-at91/at91sam9g45_devices.c b/arch/arm/mach-at9=
-1/at91sam9g45_devices.c
-> index ddb005a..cb88208 100644
-> --- a/arch/arm/mach-at91/at91sam9g45_devices.c
-> +++ b/arch/arm/mach-at91/at91sam9g45_devices.c
-> @@ -17,6 +17,9 @@
->  #include <mach/board.h>
->  #include <mach/gpio.h>
->  #include <mach/io.h>
-> +#if defined(CONFIG_NAND_ATMEL)
-> +#include <linux/mtd/nand.h>
-> +#endif
-
-Please do not ifdef includes. Including it unconditionally is perfectly
-fine.
-
-Sascha
-
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
