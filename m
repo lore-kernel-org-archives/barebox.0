@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Pfr6t-00040e-CI
-	for barebox@lists.infradead.org; Thu, 20 Jan 2011 09:47:24 +0000
+	id 1Pfr6t-00040m-C9
+	for barebox@lists.infradead.org; Thu, 20 Jan 2011 09:47:26 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 20 Jan 2011 10:46:52 +0100
-Message-Id: <1295516821-8988-2-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 20 Jan 2011 10:46:55 +0100
+Message-Id: <1295516821-8988-5-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1295516821-8988-1-git-send-email-s.hauer@pengutronix.de>
 References: <1295516821-8988-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,32 +21,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/10] USB ehci: Set to host mode on tt capable controllers
+Subject: [PATCH 04/10] ARM Chumby: Add MMU support
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/usb/host/ehci-hcd.c |    7 +++++++
- 1 files changed, 7 insertions(+), 0 deletions(-)
+ arch/arm/boards/chumby_falconwing/falconwing.c |   23 +++++++++++++++++++++++
+ 1 files changed, 23 insertions(+), 0 deletions(-)
 
-diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-index 802c548..15f7bfd 100644
---- a/drivers/usb/host/ehci-hcd.c
-+++ b/drivers/usb/host/ehci-hcd.c
-@@ -919,6 +919,13 @@ static int ehci_probe(struct device_d *dev)
- 	host->submit_control_msg = submit_control_msg;
- 	host->submit_bulk_msg = submit_bulk_msg;
+diff --git a/arch/arm/boards/chumby_falconwing/falconwing.c b/arch/arm/boards/chumby_falconwing/falconwing.c
+index 2887f8c..966d99b 100644
+--- a/arch/arm/boards/chumby_falconwing/falconwing.c
++++ b/arch/arm/boards/chumby_falconwing/falconwing.c
+@@ -25,6 +25,7 @@
+ #include <usb/ehci.h>
+ #include <asm/armlinux.h>
+ #include <asm/io.h>
++#include <asm/mmu.h>
+ #include <generated/mach-types.h>
+ #include <mach/imx-regs.h>
+ #include <mach/clock.h>
+@@ -264,6 +265,28 @@ static const uint32_t pad_setup[] = {
+ 	GPMI_RDY3_GPIO | GPIO_IN | PULLUP(1),
+ };
  
-+	if (ehci->flags & EHCI_HAS_TT) {
-+		/* Set to host mode */
-+		reg = ehci_readl(ehci->hcor + USBMODE);
-+		reg |= USBMODE_CM_HC;
-+		writel(reg, ehci->hcor + USBMODE);
-+	}
++#ifdef CONFIG_MMU
++static int falconwing_mmu_init(void)
++{
++	mmu_init();
 +
- 	usb_register_host(host);
- 
- 	reg = HC_VERSION(ehci_readl(&ehci->hccr->cr_capbase));
++	arm_create_section(0x40000000, 0x40000000, 64, PMD_SECT_DEF_CACHED);
++	arm_create_section(0x50000000, 0x40000000, 64, PMD_SECT_DEF_UNCACHED);
++
++	setup_dma_coherent(0x10000000);
++
++#if TEXT_BASE & (0x100000 - 1)
++#warning cannot create vector section. Adjust TEXT_BASE to a 1M boundary
++#else
++	arm_create_section(0x0,        TEXT_BASE,   1, PMD_SECT_DEF_UNCACHED);
++#endif
++	mmu_enable();
++
++	return 0;
++}
++postcore_initcall(falconwing_mmu_init);
++#endif
++
+ /**
+  * Try to register an environment storage on the attached MCI card
+  * @return 0 on success
 -- 
 1.7.2.3
 
