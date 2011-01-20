@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Pfr6t-00040k-CV
-	for barebox@lists.infradead.org; Thu, 20 Jan 2011 09:47:27 +0000
+	id 1Pfr6t-00041i-CB
+	for barebox@lists.infradead.org; Thu, 20 Jan 2011 09:47:25 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 20 Jan 2011 10:47:01 +0100
-Message-Id: <1295516821-8988-11-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 20 Jan 2011 10:46:54 +0100
+Message-Id: <1295516821-8988-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1295516821-8988-1-git-send-email-s.hauer@pengutronix.de>
 References: <1295516821-8988-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,62 +21,92 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/10] ARM chumby defconfig: update with new features
+Subject: [PATCH 03/10] ARM Chumby: Add USB support
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/configs/chumbyone_defconfig |   19 +++++++++++++++++++
- 1 files changed, 19 insertions(+), 0 deletions(-)
+ arch/arm/boards/chumby_falconwing/falconwing.c |   37 ++++++++++++++++++++++-
+ 1 files changed, 35 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/configs/chumbyone_defconfig b/arch/arm/configs/chumbyone_defconfig
-index e06ae51..33d83a8 100644
---- a/arch/arm/configs/chumbyone_defconfig
-+++ b/arch/arm/configs/chumbyone_defconfig
-@@ -2,9 +2,14 @@ CONFIG_ARCH_MXS=y
- CONFIG_MACH_CHUMBY=y
- CONFIG_AEABI=y
- CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_MMU=y
-+CONFIG_MALLOC_SIZE=0x1000000
- CONFIG_BROKEN=y
- CONFIG_PROMPT="chumby:"
- CONFIG_LONGHELP=y
-+CONFIG_GLOB=y
-+CONFIG_HUSH_FANCY_PROMPT=y
-+CONFIG_HUSH_GETOPT=y
- CONFIG_CMDLINE_EDITING=y
- CONFIG_AUTO_COMPLETE=y
- CONFIG_PARTITION=y
-@@ -18,14 +23,28 @@ CONFIG_CMD_EXPORT=y
- CONFIG_CMD_PRINTENV=y
- CONFIG_CMD_READLINE=y
- CONFIG_CMD_ECHO_E=y
-+CONFIG_CMD_MEMINFO=y
- CONFIG_CMD_MTEST=y
- CONFIG_CMD_MTEST_ALTERNATIVE=y
- CONFIG_CMD_RESET=y
-+CONFIG_CMD_GO=y
- CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_PARTITION=y
- CONFIG_CMD_BMP=y
- CONFIG_CMD_GPIO=y
-+CONFIG_NET=y
-+CONFIG_NET_DHCP=y
-+CONFIG_NET_NFS=y
-+CONFIG_NET_PING=y
-+CONFIG_NET_TFTP=y
-+CONFIG_NET_TFTP_PUSH=y
-+CONFIG_NET_NETCONSOLE=y
-+CONFIG_NET_RESOLV=y
-+CONFIG_NET_USB=y
-+CONFIG_NET_USB_ASIX=y
- # CONFIG_SPI is not set
-+CONFIG_USB=y
-+CONFIG_USB_EHCI=y
- CONFIG_VIDEO=y
- CONFIG_DRIVER_VIDEO_STM=y
- CONFIG_MCI=y
+diff --git a/arch/arm/boards/chumby_falconwing/falconwing.c b/arch/arm/boards/chumby_falconwing/falconwing.c
+index 76ff906..2887f8c 100644
+--- a/arch/arm/boards/chumby_falconwing/falconwing.c
++++ b/arch/arm/boards/chumby_falconwing/falconwing.c
+@@ -22,6 +22,7 @@
+ #include <environment.h>
+ #include <errno.h>
+ #include <mci.h>
++#include <usb/ehci.h>
+ #include <asm/armlinux.h>
+ #include <asm/io.h>
+ #include <generated/mach-types.h>
+@@ -29,6 +30,7 @@
+ #include <mach/clock.h>
+ #include <mach/mci.h>
+ #include <mach/fb.h>
++#include <mach/usb.h>
+ 
+ static struct memory_platform_data ram_pdata = {
+ 	.name = "ram0",
+@@ -197,10 +199,10 @@ static const uint32_t pad_setup[] = {
+ 	/* backlight control, to be controled by PWM, here we only want to disable it */
+ 	PWM2_GPIO | GPIO_OUT | GPIO_VALUE(0),	/* 1 enables, 0 disables the backlight */
+ 
+-	/* send a reset signal to the USB hub */
++	/* USB hub reset (active low) */
+ 	AUART1_TX_GPIO | GPIO_OUT | GPIO_VALUE(0),
+ 
+-	/* USB power disable (FIXME what level to be switched off) */
++	/* USB power (active high) */
+ 	AUART1_CTS_GPIO | GPIO_OUT | GPIO_VALUE(0),
+ 
+ 	/* Detecting if a display is connected (0 = display attached) (external pull up) */
+@@ -298,6 +300,35 @@ static int register_persistant_environment(void)
+ 	return devfs_add_partition("disk0.1", 0, cdev->size, DEVFS_PARTITION_FIXED, "env0");
+ }
+ 
++static struct ehci_platform_data chumby_usb_pdata = {
++	.flags = EHCI_HAS_TT,
++	.hccr_offset = 0x100,
++	.hcor_offset = 0x140,
++};
++
++static struct device_d usb_dev = {
++	.name		= "ehci",
++	.id		= -1,
++	.map_base	= IMX_USB_BASE,
++	.size		= 0x200,
++	.platform_data	= &chumby_usb_pdata,
++};
++
++#define GPIO_USB_HUB_RESET	29
++#define GPIO_USB_HUB_POWER	26
++
++static void falconwing_init_usb(void)
++{
++	/* power USB hub */
++	gpio_direction_output(GPIO_USB_HUB_POWER, 1);
++	mdelay(1);
++	/* bring USB hub out of reset */
++	gpio_direction_output(GPIO_USB_HUB_RESET, 1);
++
++	imx_usb_phy_enable();
++	register_device(&usb_dev);
++}
++
+ static int falconwing_devices_init(void)
+ {
+ 	int i, rc;
+@@ -313,6 +344,8 @@ static int falconwing_devices_init(void)
+ 	register_device(&mci_dev);
+ 	register_device(&ldcif_dev);
+ 
++	falconwing_init_usb();
++
+ 	armlinux_add_dram(&sdram_dev);
+ 	armlinux_set_bootparams((void*)(sdram_dev.map_base + 0x100));
+ 	armlinux_set_architecture(MACH_TYPE_CHUMBY);
 -- 
 1.7.2.3
 
