@@ -1,12 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.free-electrons.com ([88.190.12.23])
-	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1PgFK3-0003Gl-3Y
-	for barebox@lists.infradead.org; Fri, 21 Jan 2011 11:38:33 +0000
-Message-ID: <4D39700F.3030707@free-electrons.com>
-Date: Fri, 21 Jan 2011 12:37:51 +0100
-From: Gregory CLEMENT <gregory.clement@free-electrons.com>
-MIME-Version: 1.0
+Received: from 26.mail-out.ovh.net ([91.121.27.225])
+	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1Pgfg2-000888-62
+	for barebox@lists.infradead.org; Sat, 22 Jan 2011 15:46:59 +0000
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Sat, 22 Jan 2011 16:45:34 +0100
+Message-Id: <1295711134-27064-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1295058354-14732-1-git-send-email-plagnioj@jcrosoft.com>
+References: <1295058354-14732-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,84 +16,112 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/1] fb i.MX23/28: Add the reset control of LCD
-To: barebox <barebox@lists.infradead.org>, Sascha Hauer <s.hauer@pengutronix.de>
+Subject: [PATCH v2] at91sam9m10g45ek: add board revision support
+To: barebox@lists.infradead.org
+Cc: Patrice Vilchez <patrice.vilchez@atmel.com>, Nicolas Ferre <nicolas.ferre@atmel.com>
 
-Video controller of STM allow to control the reset bit of an external
-LCD controller. When reset_lcd is set, CTRL1_RESET bit is used to
-enable and disable LCD.
-Handle USE_LCD_RESET as a flag in imx_fb_platformdata.
+we use the board revision to specify to the linux kernel the type of lcd
+we use. So we can have only one machine for those 3 boards:
+ - sam9m10-ekes (LG)
+ - sam9g45-ekes (LG)
+ - sam9m10g45-ek (Truly)
 
-Signed-off-by: Gregory CLEMENT <gregory.clement@free-electrons.com>
+today we support 2 lcds model:
+ - LG philips LB043WQ1
+ - Truly TFT1N4633-E
+
+by default we select the Truly as the sam9m10g45-ek is the most common board
+
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: Nicolas Ferre <nicolas.ferre@atmel.com>
+Cc: Patrice Vilchez <patrice.vilchez@atmel.com>
 ---
- arch/arm/mach-mxs/include/mach/fb.h |    3 +++
- drivers/video/stm.c                 |   11 +++++++++++
- 2 files changed, 14 insertions(+), 0 deletions(-)
+update Kconfig as sugest by Sascha
+ arch/arm/boards/at91sam9m10g45ek/init.c |   21 +++++++++++++++++++++
+ arch/arm/mach-at91/Kconfig              |   19 ++++++++++++++++++-
+ 2 files changed, 39 insertions(+), 1 deletions(-)
 
-diff --git a/arch/arm/mach-mxs/include/mach/fb.h b/arch/arm/mach-mxs/include/mach/fb.h
-index 2b61dee..2b6825f 100644
---- a/arch/arm/mach-mxs/include/mach/fb.h
-+++ b/arch/arm/mach-mxs/include/mach/fb.h
-@@ -31,6 +31,8 @@
- /** swap RGB to BGR */
- #define FB_SYNC_SWAP_RGB	(1 << 31)
+diff --git a/arch/arm/boards/at91sam9m10g45ek/init.c b/arch/arm/boards/at91sam9m10g45ek/init.c
+index bb8b7ba..77d51b7 100644
+--- a/arch/arm/boards/at91sam9m10g45ek/init.c
++++ b/arch/arm/boards/at91sam9m10g45ek/init.c
+@@ -40,6 +40,26 @@
+ #include <mach/at91sam9_smc.h>
+ #include <mach/sam9_smc.h>
  
-+#define USE_LCD_RESET		1
++/*
++ * board revision encoding
++ * bit 0-3: lcd type
++ *	0 => truly TFT1N4633-E (sam9m10g45-ek)
++ *	1 => LG philips LB043WQ1 (sam9m10-ekes and sam9g45-ekes)
++ */
++#define HAVE_LCD_TRULY_TFT1N4633E	(0 << 0)
++#define HAVE_LCD_LG_LB043WQ1		(1 << 0)
++static void ek_set_board_revision(void)
++{
++	u32 rev;
 +
- struct imx_fb_platformdata {
- 	struct fb_videomode *mode_list;
- 	unsigned mode_cnt;
-@@ -42,6 +44,7 @@ struct imx_fb_platformdata {
- 	void *fixed_screen;	/**< if != NULL use this as framebuffer memory */
- 	unsigned fixed_screen_size; /**< framebuffer memory size for fixed_screen */
- 
-+	unsigned flags;
- 	void (*enable)(int enable); /**< hook to enable backlight */
- };
- 
-diff --git a/drivers/video/stm.c b/drivers/video/stm.c
-index 205cad1..ee2f026 100644
---- a/drivers/video/stm.c
-+++ b/drivers/video/stm.c
-@@ -48,6 +48,7 @@
- # define CTRL1_FIFO_CLEAR (1 << 21)
- # define SET_BYTE_PACKAGING(x) (((x) & 0xf) << 16)
- # define GET_BYTE_PACKAGING(x) (((x) >> 16) & 0xf)
-+# define CTRL1_RESET (1 << 0)
- 
- #ifdef CONFIG_ARCH_IMX28
- # define HW_LCDIF_CTRL2 0x20
-@@ -253,6 +254,11 @@ static void stmfb_enable_controller(struct fb_info *fb_info)
- 
- 	/* stop FIFO reset */
- 	writel(CTRL1_FIFO_CLEAR, fbi->base + HW_LCDIF_CTRL1 + BIT_CLR);
++#ifdef CONFIG_LCD_LG_LB043WQ1
++		rev = HAVE_LCD_LG_LB043WQ1;
++#else
++		rev = HAVE_LCD_TRULY_TFT1N4633E;
++#endif
++		armlinux_set_revision(rev);
++}
 +
-+	/* enable LCD using LCD_RESET signal*/
-+	if (fbi->pdata->flags & USE_LCD_RESET)
-+		writel(CTRL1_RESET,  fbi->base + HW_LCDIF_CTRL1 + BIT_SET);
-+
- 	/* start the engine right now */
- 	writel(CTRL_RUN, fbi->base + HW_LCDIF_CTRL + BIT_SET);
+ static struct atmel_nand_data nand_pdata = {
+ 	.ale		= 21,
+ 	.cle		= 22,
+@@ -103,6 +123,7 @@ static int at91sam9m10g45ek_devices_init(void)
  
-@@ -266,6 +272,11 @@ static void stmfb_disable_controller(struct fb_info *fb_info)
- 	unsigned loop;
- 	uint32_t reg;
+ 	armlinux_set_bootparams((void *)(AT91_CHIPSELECT_6 + 0x100));
+ 	armlinux_set_architecture(MACH_TYPE_AT91SAM9M10G45EK);
++	ek_set_board_revision();
  
-+
-+	/* disable LCD using LCD_RESET signal*/
-+	if (fbi->pdata->flags & USE_LCD_RESET)
-+		writel(CTRL1_RESET,  fbi->base + HW_LCDIF_CTRL1 + BIT_CLR);
-+
- 	if (fbi->pdata->enable)
- 		fbi->pdata->enable(0);
+ 	return 0;
+ }
+diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+index e5bd45e..52c5d4b 100644
+--- a/arch/arm/mach-at91/Kconfig
++++ b/arch/arm/mach-at91/Kconfig
+@@ -174,7 +174,8 @@ config MACH_AT91SAM9M10G45EK
+ 	bool "Atmel AT91SAM9M10G45-EK Evaluation Kit"
+ 	select HAVE_NAND_ATMEL_BUSWIDTH_16
+ 	help
+-	  Select this if you are using Atmel's AT91SAM9M10G45-EK Evaluation Kit.
++	  Select this if you are using Atmel's AT91SAM9M10G45-EK Evaluation Kit
++	  or AT91SAM9G45-EKES or AT91SAM9M10-EKES (for those 2 select the LG LCD)
+ 	  <http://atmel.com/dyn/products/tools_card_v2.asp?tool_id=4735>
  
+ config MACH_PM9G45
+@@ -205,4 +206,20 @@ config AT91_HAVE_2MMC
+ 	  with 2 SD/MMC Slots. This is the case for AT91SAM9G20-EK rev. C and
+ 	  onwards.
+ 
++choice
++	prompt "LCD type"
++	depends on MACH_AT91SAM9M10G45EK
++
++config LCD_TRULY_TFT1N4633E
++	bool "truly TFT1N4633-E"
++	help
++	  Found on AT91SAM9M10G45-EK
++
++config LCD_LG_LB043WQ1
++	bool "LG philips LB043WQ1"
++	help
++	  Found on AT91SAM9G45-EKES and AT91SAM9M10-EKES
++
++endchoice
++
+ endif
 -- 
-1.7.0.4
-
+1.7.2.3
 
 
 _______________________________________________
