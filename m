@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from 26.mail-out.ovh.net ([91.121.27.225])
 	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1Pi8XE-0002m5-99
+	id 1Pi8XE-0002m7-DD
 	for barebox@lists.infradead.org; Wed, 26 Jan 2011 16:47:57 +0000
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Wed, 26 Jan 2011 17:46:02 +0100
-Message-Id: <1296060364-23113-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Wed, 26 Jan 2011 17:46:04 +0100
+Message-Id: <1296060364-23113-3-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <20110126164348.GF1441@game.jcrosoft.org>
 References: <20110126164348.GF1441@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
@@ -21,54 +21,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] string: add skip_spaces support
+Subject: [PATCH 3/3] __setup test
 To: barebox@lists.infradead.org
-
-need by parse_args for the command line parsing
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- include/linux/string.h |    1 +
- lib/string.c           |   14 ++++++++++++++
- 2 files changed, 15 insertions(+), 0 deletions(-)
+ common/startup.c |   14 +++++++++++---
+ 1 files changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/string.h b/include/linux/string.h
-index 62d743e..b4b48fb 100644
---- a/include/linux/string.h
-+++ b/include/linux/string.h
-@@ -59,6 +59,7 @@ extern char * _strchr(const char *,int);
- #ifndef __HAVE_ARCH_STRRCHR
- extern char * _strrchr(const char *,int);
+diff --git a/common/startup.c b/common/startup.c
+index 98b4aab..1891cbd 100644
+--- a/common/startup.c
++++ b/common/startup.c
+@@ -105,12 +105,20 @@ device_initcall(register_default_env);
  #endif
-+extern char * skip_spaces(const char *);
- #ifndef __HAVE_ARCH_STRSTR
- extern char * _strstr(const char *,const char *);
- #endif
-diff --git a/lib/string.c b/lib/string.c
-index 77435aa..5ffb861 100644
---- a/lib/string.c
-+++ b/lib/string.c
-@@ -214,6 +214,20 @@ char * _strrchr(const char * s, int c)
- #endif
- EXPORT_SYMBOL(_strrchr);
  
-+/**
-+ * skip_spaces - Removes leading whitespace from @str.
-+ * @str: The string to be stripped.
-+ *
-+ * Returns a pointer to the first non-whitespace character in @str.
-+ */
-+char *skip_spaces(const char *str)
-+{
-+	while (isspace(*str))
-+		++str;
-+	return (char *)str;
-+}
-+EXPORT_SYMBOL(skip_spaces);
+ #ifdef CONFIG_BOOT_CMDLINE
+-static int __init bootmode(char *mode)
++static __initdata char bootmode[COMMAND_LINE_SIZE];
 +
- #ifndef __HAVE_ARCH_STRLEN
- /**
-  * strlen - Find the length of a string
++static int __init setup_bootmode(char *mode)
++{
++	strcpy(bootmode, mode);
++	return 0;
++}
++__setup("boot=", setup_bootmode);
++static int bootmode_print(void)
+ {
+-	printf("boot=%s\n", mode);
++	printf("boot=%s\n", bootmode);
+ 	return 0;
+ }
+-__setup("boot=", bootmode);
++device_initcall(bootmode_print);
+ #endif
+ 
+ static int mount_root(void)
 -- 
 1.7.2.3
 
