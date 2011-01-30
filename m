@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from susu.bendor.com.au ([203.16.199.2])
-	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1PjNqN-0007HB-Ls
-	for barebox@lists.infradead.org; Sun, 30 Jan 2011 03:20:52 +0000
-Received: from manocska.bendor.com.au (manocska.bendor.com.au [203.16.199.6])
-	by susu.bendor.com.au (Postfix) with ESMTP id 521D825FE
-	for <barebox@lists.infradead.org>; Sun, 30 Jan 2011 14:20:47 +1100 (EST)
-Date: Sun, 30 Jan 2011 14:20:47 +1100
-From: =?UTF-8?B?Wm9sdMOhbiBLw7Njc2k=?= <zoltan@bendor.com.au>
-Message-ID: <20110130142047.23c2d868@manocska.bendor.com.au>
-Mime-Version: 1.0
+Received: from mail-vx0-f177.google.com ([209.85.220.177])
+	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1PjVUv-0008Pz-CD
+	for barebox@lists.infradead.org; Sun, 30 Jan 2011 11:31:15 +0000
+Received: by vxd2 with SMTP id 2so218884vxd.36
+	for <barebox@lists.infradead.org>; Sun, 30 Jan 2011 03:31:09 -0800 (PST)
+MIME-Version: 1.0
+In-Reply-To: <20110130142047.23c2d868@manocska.bendor.com.au>
+References: <20110130142047.23c2d868@manocska.bendor.com.au>
+Date: Sun, 30 Jan 2011 03:31:07 -0800
+Message-ID: <AANLkTikU3fdA07_-n9dcUT07hkOA8TtLdZE_MSmzmfkm@mail.gmail.com>
+From: Belisko Marek <marek.belisko@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,29 +19,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Mini2440
-To: barebox@lists.infradead.org
+Subject: Re: Mini2440
+To: =?UTF-8?B?Wm9sdMOhbiBLw7Njc2k=?= <zoltan@bendor.com.au>
+Cc: barebox@lists.infradead.org
 
-Hi,
-
-I got a mini2440 board and I'd like to use barebox on it.
-Looking at the code it seems that NAND booting is not done yet,
-although almost everything is there.
-
-I wonder is anyone is actively working on it? If not, could somebody
-give me a quick crash-course on the config side of things? I would not
-mind putting together a board package, but I have no clue how the whole
-config system works.
-
-Thanks,
-
-Kocsonya
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGksCgpPbiBTYXQsIEphbiAyOSwgMjAxMSBhdCA3OjIwIFBNLCBab2x0w6FuIEvDs2NzaSA8em9s
+dGFuQGJlbmRvci5jb20uYXU+IHdyb3RlOgo+IEhpLAo+Cj4gSSBnb3QgYSBtaW5pMjQ0MCBib2Fy
+ZCBhbmQgSSdkIGxpa2UgdG8gdXNlIGJhcmVib3ggb24gaXQuCj4gTG9va2luZyBhdCB0aGUgY29k
+ZSBpdCBzZWVtcyB0aGF0IE5BTkQgYm9vdGluZyBpcyBub3QgZG9uZSB5ZXQsCj4gYWx0aG91Z2gg
+YWxtb3N0IGV2ZXJ5dGhpbmcgaXMgdGhlcmUuCj4KPiBJIHdvbmRlciBpcyBhbnlvbmUgaXMgYWN0
+aXZlbHkgd29ya2luZyBvbiBpdD8gSWYgbm90LCBjb3VsZCBzb21lYm9keQo+IGdpdmUgbWUgYSBx
+dWljayBjcmFzaC1jb3Vyc2Ugb24gdGhlIGNvbmZpZyBzaWRlIG9mIHRoaW5ncz8gSSB3b3VsZCBu
+b3QKPiBtaW5kIHB1dHRpbmcgdG9nZXRoZXIgYSBib2FyZCBwYWNrYWdlLCBidXQgSSBoYXZlIG5v
+IGNsdWUgaG93IHRoZSB3aG9sZQo+IGNvbmZpZyBzeXN0ZW0gd29ya3MuCk9uZSBndXkgZnJvbSBm
+cmllbmRseWFybSBmb3J1bSBzYWlkIGhlIGhhcyBuYW5kIGJvb3QgcGF0Y2hlcyBidXQgaG8KZG9u
+J3QgcG9zdCBpdAp5ZXQuIEknbSBhdXRob3Igb2YgYmFzaWMgbWluaTI0NDAgcG9ydCB0byBiYXJl
+Ym94IGFuZCB0cnkgdG8gd29yayBvbgpuYW5kIGJvb3RpbmcgKApzdXJyZW50bHkgYnVpbGRpbmcg
+anRhZyBkZWJ1Z2dlciA7KSkuIFdpbGwgcmVwbHkgd2hlbiBpdCB3aWxsIGJlIHJlYWR5Lgo+Cj4g
+VGhhbmtzLAo+Cj4gS29jc29ueWEKPgo+IF9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fCj4gYmFyZWJveCBtYWlsaW5nIGxpc3QKPiBiYXJlYm94QGxpc3RzLmlu
+ZnJhZGVhZC5vcmcKPiBodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZv
+L2JhcmVib3gKPgoKdGhhbmtzLAoKbWFyZWsKCi0tIAphcyBzaW1wbGUgYW5kIHByaW1pdGl2ZSBh
+cyBwb3NzaWJsZQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tCk1hcmVrIEJlbGlza28gLSBPUEVOLU5BTkRSQQpGcmVlbGFuY2UgRGV2ZWxvcGVyCgpSdXNr
+YSBOb3ZhIFZlcyAyMTkgfCBQcmVzb3YsIDA4MDA1IFNsb3ZhayBSZXB1YmxpYwpUZWw6ICs0MjEg
+OTE1IDA1MiAxODQKc2t5cGU6IG1hcmVrd2hpdGUKaWNxOiAyOTA1NTEwODYKd2ViOiBodHRwOi8v
+b3Blbi1uYW5kcmEuY29tCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcK
+aHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
