@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PjuJp-0007pF-Ek
-	for barebox@lists.infradead.org; Mon, 31 Jan 2011 14:01:26 +0000
-Date: Mon, 31 Jan 2011 15:01:23 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110131140122.GO9041@pengutronix.de>
-References: <20110131133435.GE26656@game.jcrosoft.org>
+Received: from 30.mail-out.ovh.net ([213.186.62.213])
+	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1PkW9r-0004Eh-3D
+	for barebox@lists.infradead.org; Wed, 02 Feb 2011 06:25:40 +0000
+Date: Wed, 2 Feb 2011 07:23:23 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20110202062323.GH26656@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20110131133435.GE26656@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,66 +20,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: mci/stm378x warning
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: kconfig: update
+To: barebox@lists.infradead.org
 
-On Mon, Jan 31, 2011 at 02:34:35PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> HI,
-> 
-> 	durring some night build I see this on the drivers/mci/stm378x.c
-> 
-> 	/opt/work/barebox/drivers/mci/stm378x.c: In function 'mci_request':
-> 	/opt/work/barebox/drivers/mci/stm378x.c:354: warning: 'length' may be used uninitialized in this function
-> 	/opt/work/barebox/drivers/mci/stm378x.c:354: note: 'length' was declared here
-> 
-> 	so I guess length will initialized at 0
+Hi Sascha,
 
-That's a false positive:
+please pull
+The following changes since commit a3463cc12877f6527624972c190a80ebb787a604:
 
-> static int transfer_data(struct device_d *hw_dev, struct mci_data *data)
-> {
-> 	unsigned length;
-> 
-> 	if (data != NULL) {
-> 		length = data->blocks * data->blocksize;
-> 	}
+  lib/decompress_unlzo: use fill and full to read and write data (2011-01-28 19:05:00 +0100)
 
-When we have date length gets initialized...
+are available in the git repository at:
+  git://git.jcrosoft.org/barebox.git kconfig
 
-> 
-> 	/*
-> 	 * Everything is ready for the transaction now:
-> 	 * - transfer configuration
-> 	 * - command and its parameters
-> 	 *
-> 	 * Start the transaction right now
-> 	 */
-> 	writel(SSP_CTRL0_RUN, hw_dev->map_base + HW_SSP_CTRL0 + 4);
-> 
-> 	if (data != NULL) {
+Jean-Christophe PLAGNIOL-VILLARD (1):
+      kconfig: syn with linux kernel v2.6.38-rc3
 
-...and is only used in the same case.
+ Kconfig                                    |   11 +
+ scripts/kconfig/Makefile                   |   87 +++--
+ scripts/kconfig/conf.c                     |   19 +-
+ scripts/kconfig/confdata.c                 |  159 ++++----
+ scripts/kconfig/expr.c                     |   44 ++-
+ scripts/kconfig/expr.h                     |    7 +-
+ scripts/kconfig/gconf.c                    |   20 +-
+ scripts/kconfig/gconf.glade                |    1 -
+ scripts/kconfig/kxgettext.c                |   15 +-
+ scripts/kconfig/lex.zconf.c_shipped        |    7 +-
+ scripts/kconfig/lkc.h                      |   16 +-
+ scripts/kconfig/lkc_proto.h                |    3 +
+ scripts/kconfig/lxdialog/check-lxdialog.sh |    2 +
+ scripts/kconfig/mconf.c                    |   64 ++--
+ scripts/kconfig/menu.c                     |   53 ++-
+ scripts/kconfig/nconf.c                    |  495 +++++++++++------------
+ scripts/kconfig/nconf.gui.c                |   22 +-
+ scripts/kconfig/nconf.h                    |    3 +-
+ scripts/kconfig/qconf.cc                   |  174 +++++----
+ scripts/kconfig/qconf.h                    |   76 ++--
+ scripts/kconfig/streamline_config.pl       |   43 ++-
+ scripts/kconfig/symbol.c                   |   59 +++-
+ scripts/kconfig/util.c                     |    7 +-
+ scripts/kconfig/zconf.gperf                |    1 +
+ scripts/kconfig/zconf.hash.c_shipped       |  122 +++---
+ scripts/kconfig/zconf.l                    |    7 +-
+ scripts/kconfig/zconf.tab.c_shipped        |  603 +++++++++++++++-------------
+ scripts/kconfig/zconf.y                    |   37 ++-
+ 28 files changed, 1217 insertions(+), 940 deletions(-)
+ create mode 100644 Kconfig
 
-> 		if (data->flags & MMC_DATA_READ)
-> 			return read_data(hw_dev, data->dest, length);
-> 		else
-> 			return write_data(hw_dev, data->src, length);
-> 	}
-> 
-> 	return 0;
-
-Anyway, we should silence the compiler somehow. I'll prepare a patch for
-this.
-
-Sascha
-
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
