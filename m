@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 30.70.mail-out.ovh.net ([178.33.253.226]
-	helo=70.mail-out.ovh.net)
-	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1Pkkxn-0003Ch-0S
-	for barebox@lists.infradead.org; Wed, 02 Feb 2011 22:14:11 +0000
-Message-ID: <4D49D730.3040009@eukrea.com>
-Date: Wed, 02 Feb 2011 23:14:08 +0100
-From: =?UTF-8?B?RXJpYyBCw6luYXJk?= <eric@eukrea.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1Pkl1h-0003Ga-CZ
+	for barebox@lists.infradead.org; Wed, 02 Feb 2011 22:18:14 +0000
+Message-ID: <4D49D820.9020700@pengutronix.de>
+Date: Wed, 02 Feb 2011 23:18:08 +0100
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 MIME-Version: 1.0
 References: <1296684558-16821-1-git-send-email-mkl@pengutronix.de>
-In-Reply-To: <1296684558-16821-1-git-send-email-mkl@pengutronix.de>
+	<4D49D730.3040009@eukrea.com>
+In-Reply-To: <4D49D730.3040009@eukrea.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,30 +18,74 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: multipart/mixed; boundary="===============1393529580=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] defaultenv/bin/boot: fix ubi root's name assignment
-To: Marc Kleine-Budde <mkl@pengutronix.de>
+To: =?UTF-8?B?RXJpYyBCw6luYXJk?= <eric@eukrea.com>
 Cc: barebox@lists.infradead.org
 
-T24gMDIvMDIvMjAxMSAyMzowOSwgTWFyYyBLbGVpbmUtQnVkZGUgd3JvdGU6Cj4gVGhpcyBwYXRj
-aCBmaXhlcyBhIHJlZ3Jlc3Npb24gaW50cm9kdWNlZCBpbiBjb21taXQKPiBkMTVjZmFmZWVmOGY5
-OWZmMWE0N2U3NzM2MmQwYWRmMWIwN2YyNmFlLgo+Cj4gV2hpbGUgdGhlcmUsIHVzZSAiLXoiIHRv
-IGNoZWNrIGlmIHViaXJvb3QgdmFyaWFibGUgaXMgZW1wdHkuCj4KPiBTaWduZWQtb2ZmLWJ5OiBN
-YXJjIEtsZWluZS1CdWRkZTxta2xAcGVuZ3V0cm9uaXguZGU+Cj4gQ2M6IEVyaWMgQu+/vW5hcmQ8
-ZXJpY0BldWtyZWEuY29tPgpBY2tlZC1CeTogRXJpYyBCw6luYXJkPGVyaWNAZXVrcmVhLmNvbT4K
-CmFuZCBzaGFtZSBvbiBtZSBmb3Igbm90IHRlc3RpbmcgdGhpcyBwYXJ0IC4uLgoKRXJpYwo+IC0t
-LQo+ICAgZGVmYXVsdGVudi9iaW4vYm9vdCB8ICAgIDQgKystLQo+ICAgMSBmaWxlcyBjaGFuZ2Vk
-LCAyIGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pCj4KPiBkaWZmIC0tZ2l0IGEvZGVmYXVs
-dGVudi9iaW4vYm9vdCBiL2RlZmF1bHRlbnYvYmluL2Jvb3QKPiBpbmRleCBmYTY4NzQ4Li43ODhh
-NzgxIDEwMDY0NAo+IC0tLSBhL2RlZmF1bHRlbnYvYmluL2Jvb3QKPiArKysgYi9kZWZhdWx0ZW52
-L2Jpbi9ib290Cj4gQEAgLTM0LDggKzM0LDggQEAgZWxzZQo+ICAgCWZpCj4KPiAgIAlpZiBbIHgk
-cm9vdGZzX3R5cGUgPSB4dWJpZnMgXTsgdGhlbgo+IC0JCWlmIFsgeCR1Ymlyb290ID0geCBdOyB0
-aGVuCj4gLQkJCXViaXJvb3QgPSAicm9vdCIKPiArCQlpZiBbIC16ICR1Ymlyb290IF07IHRoZW4K
-PiArCQkJdWJpcm9vdD0icm9vdCIKPiAgIAkJZmkKPiAgIAkJYm9vdGFyZ3M9IiRib290YXJncyBy
-b290PXViaTA6JHViaXJvb3QgdWJpLm10ZD0kcm9vdGZzX210ZGJsb2NrIgo+ICAgCWVsc2UKCgpf
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1h
-aWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJh
-ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
+--===============1393529580==
+Content-Type: multipart/signed; micalg=pgp-sha1;
+ protocol="application/pgp-signature";
+ boundary="------------enig8DA91A6851990F532E637A78"
+
+This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
+--------------enig8DA91A6851990F532E637A78
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+On 02/02/2011 11:14 PM, Eric B=C3=A9nard wrote:
+> On 02/02/2011 23:09, Marc Kleine-Budde wrote:
+>> This patch fixes a regression introduced in commit
+>> d15cfafeef8f99ff1a47e77362d0adf1b07f26ae.
+>>
+>> While there, use "-z" to check if ubiroot variable is empty.
+>>
+>> Signed-off-by: Marc Kleine-Budde<mkl@pengutronix.de>
+>> Cc: Eric B=EF=BF=BDnard<eric@eukrea.com>
+> Acked-By: Eric B=C3=A9nard<eric@eukrea.com>
+>=20
+> and shame on me for not testing this part ...
+
+Sascha, can you fix Eric's name, I fsck'ed it up :)
+
+Marc
+
+--=20
+Pengutronix e.K.                  | Marc Kleine-Budde           |
+Industrial Linux Solutions        | Phone: +49-231-2826-924     |
+Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
+Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
+
+
+--------------enig8DA91A6851990F532E637A78
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.10 (GNU/Linux)
+Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org/
+
+iEYEARECAAYFAk1J2CMACgkQjTAFq1RaXHObjQCgiVPm51w6KvpDexSCXBscbN0h
+srsAmweINQ5aWv3ijFUAuGcrHesJxPx5
+=l6GU
+-----END PGP SIGNATURE-----
+
+--------------enig8DA91A6851990F532E637A78--
+
+
+--===============1393529580==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============1393529580==--
