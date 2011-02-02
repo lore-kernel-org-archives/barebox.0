@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Pkkt9-00039r-Iy
-	for barebox@lists.infradead.org; Wed, 02 Feb 2011 22:09:24 +0000
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Wed,  2 Feb 2011 23:09:18 +0100
-Message-Id: <1296684558-16821-1-git-send-email-mkl@pengutronix.de>
+Received: from 30.70.mail-out.ovh.net ([178.33.253.226]
+	helo=70.mail-out.ovh.net)
+	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1Pkkxn-0003Ch-0S
+	for barebox@lists.infradead.org; Wed, 02 Feb 2011 22:14:11 +0000
+Message-ID: <4D49D730.3040009@eukrea.com>
+Date: Wed, 02 Feb 2011 23:14:08 +0100
+From: =?UTF-8?B?RXJpYyBCw6luYXJk?= <eric@eukrea.com>
 MIME-Version: 1.0
+References: <1296684558-16821-1-git-send-email-mkl@pengutronix.de>
+In-Reply-To: <1296684558-16821-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,56 +18,30 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1486407306=="
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] defaultenv/bin/boot: fix ubi root's name assignment
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] defaultenv/bin/boot: fix ubi root's name assignment
+To: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
---===============1486407306==
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-
-This patch fixes a regression introduced in commit
-d15cfafeef8f99ff1a47e77362d0adf1b07f26ae.
-
-While there, use "-z" to check if ubiroot variable is empty.
-
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: Eric B�nard <eric@eukrea.com>
----
- defaultenv/bin/boot |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/defaultenv/bin/boot b/defaultenv/bin/boot
-index fa68748..788a781 100644
---- a/defaultenv/bin/boot
-+++ b/defaultenv/bin/boot
-@@ -34,8 +34,8 @@ else
- 	fi
- 
- 	if [ x$rootfs_type = xubifs ]; then
--		if [ x$ubiroot = x ]; then
--			ubiroot = "root"
-+		if [ -z $ubiroot ]; then
-+			ubiroot="root"
- 		fi
- 		bootargs="$bootargs root=ubi0:$ubiroot ubi.mtd=$rootfs_mtdblock"
- 	else
--- 
-1.7.2.3
-
-
-
---===============1486407306==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
-
---===============1486407306==--
+T24gMDIvMDIvMjAxMSAyMzowOSwgTWFyYyBLbGVpbmUtQnVkZGUgd3JvdGU6Cj4gVGhpcyBwYXRj
+aCBmaXhlcyBhIHJlZ3Jlc3Npb24gaW50cm9kdWNlZCBpbiBjb21taXQKPiBkMTVjZmFmZWVmOGY5
+OWZmMWE0N2U3NzM2MmQwYWRmMWIwN2YyNmFlLgo+Cj4gV2hpbGUgdGhlcmUsIHVzZSAiLXoiIHRv
+IGNoZWNrIGlmIHViaXJvb3QgdmFyaWFibGUgaXMgZW1wdHkuCj4KPiBTaWduZWQtb2ZmLWJ5OiBN
+YXJjIEtsZWluZS1CdWRkZTxta2xAcGVuZ3V0cm9uaXguZGU+Cj4gQ2M6IEVyaWMgQu+/vW5hcmQ8
+ZXJpY0BldWtyZWEuY29tPgpBY2tlZC1CeTogRXJpYyBCw6luYXJkPGVyaWNAZXVrcmVhLmNvbT4K
+CmFuZCBzaGFtZSBvbiBtZSBmb3Igbm90IHRlc3RpbmcgdGhpcyBwYXJ0IC4uLgoKRXJpYwo+IC0t
+LQo+ICAgZGVmYXVsdGVudi9iaW4vYm9vdCB8ICAgIDQgKystLQo+ICAgMSBmaWxlcyBjaGFuZ2Vk
+LCAyIGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pCj4KPiBkaWZmIC0tZ2l0IGEvZGVmYXVs
+dGVudi9iaW4vYm9vdCBiL2RlZmF1bHRlbnYvYmluL2Jvb3QKPiBpbmRleCBmYTY4NzQ4Li43ODhh
+NzgxIDEwMDY0NAo+IC0tLSBhL2RlZmF1bHRlbnYvYmluL2Jvb3QKPiArKysgYi9kZWZhdWx0ZW52
+L2Jpbi9ib290Cj4gQEAgLTM0LDggKzM0LDggQEAgZWxzZQo+ICAgCWZpCj4KPiAgIAlpZiBbIHgk
+cm9vdGZzX3R5cGUgPSB4dWJpZnMgXTsgdGhlbgo+IC0JCWlmIFsgeCR1Ymlyb290ID0geCBdOyB0
+aGVuCj4gLQkJCXViaXJvb3QgPSAicm9vdCIKPiArCQlpZiBbIC16ICR1Ymlyb290IF07IHRoZW4K
+PiArCQkJdWJpcm9vdD0icm9vdCIKPiAgIAkJZmkKPiAgIAkJYm9vdGFyZ3M9IiRib290YXJncyBy
+b290PXViaTA6JHViaXJvb3QgdWJpLm10ZD0kcm9vdGZzX210ZGJsb2NrIgo+ICAgCWVsc2UKCgpf
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1h
+aWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJh
+ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
