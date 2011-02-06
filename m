@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from out6.bezeqint.net ([192.115.188.206])
+Received: from out4.bezeqint.net ([192.115.188.213])
 	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1Pm5pk-0000MC-KI
-	for barebox@lists.infradead.org; Sun, 06 Feb 2011 14:43:25 +0000
+	id 1Pm62Y-0000TP-S1
+	for barebox@lists.infradead.org; Sun, 06 Feb 2011 14:56:39 +0000
 From: Boaz Ben-David <boaz.bd@wellsense-tech.com>
-Date: Sun, 6 Feb 2011 16:43:12 +0200
-Message-ID: <39A4B204C321D34DA3490E3B119D5A6C68C006F855@SBS2008.wellsense.local>
+Date: Sun, 6 Feb 2011 16:56:33 +0200
+Message-ID: <39A4B204C321D34DA3490E3B119D5A6C68C006F856@SBS2008.wellsense.local>
 References: <39A4B204C321D34DA3490E3B119D5A6C68C006F854@SBS2008.wellsense.local>
 	<20110206143440.GA26377@tarshish>
 In-Reply-To: <20110206143440.GA26377@tarshish>
@@ -27,8 +27,11 @@ Subject: Re: Manipulating boot environment from user-space
 To: "baruch@tkos.co.il" <baruch@tkos.co.il>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-This is exactly what I was looking for, thanks.
-Now I need to make it cross-compile...
+Nevermind, simple enough...
+
+just arm-none-linux-gnueabi-gcc bareboxenv.c -o bareboxenv
+
+Thanks.
 
 On Sun, 2011-02-06 at 16:34 +0200, Baruch Siach wrote:
 > Hi Boaz,
