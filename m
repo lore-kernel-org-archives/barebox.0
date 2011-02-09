@@ -1,17 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vx0-f177.google.com ([209.85.220.177])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PnCh2-00047v-18
-	for barebox@lists.infradead.org; Wed, 09 Feb 2011 16:15:01 +0000
-Received: by vxd2 with SMTP id 2so143417vxd.36
-	for <barebox@lists.infradead.org>; Wed, 09 Feb 2011 08:14:58 -0800 (PST)
+	id 1PnDVn-0004e5-49
+	for barebox@lists.infradead.org; Wed, 09 Feb 2011 17:07:28 +0000
+Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+	(envelope-from <rsc@pengutronix.de>) id 1PnDVk-0005n9-H0
+	for barebox@lists.infradead.org; Wed, 09 Feb 2011 18:07:24 +0100
+Received: from rsc by octopus.hi.pengutronix.de with local (Exim 4.69)
+	(envelope-from <rsc@pengutronix.de>) id 1PnDVk-0000uH-C4
+	for barebox@lists.infradead.org; Wed, 09 Feb 2011 18:07:24 +0100
+Date: Wed, 9 Feb 2011 18:07:24 +0100
+From: Robert Schwebel <robert@schwebel.de>
+Message-ID: <20110209170724.GK22009@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20110209154309.GO9041@pengutronix.de>
-References: <AANLkTikbxuCpCj7Et3V20vBwBdkmHXFMmtxy+nhYu_LB@mail.gmail.com>
-	<20110209154309.GO9041@pengutronix.de>
-Date: Wed, 9 Feb 2011 17:14:58 +0100
-Message-ID: <AANLkTimS2eJ1u5mH3Bfqq3OrLSQ+UtswP4A-egg1qx-O@mail.gmail.com>
-From: Mickael Chazaux <mickael.chazaux@gmail.com>
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,36 +27,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Compile failure (as of fri Feb 4 13:50:49 2011 +0100,
-	c5dd4c4d0a6a6)
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] tx28: fix kconfig warning
+To: barebox@lists.infradead.org
 
-Hi,
+Without this patch (against next) I get this:
 
-2011/2/9 Sascha Hauer <s.hauer@pengutronix.de>:
-> Hi Mickael,
->
-> On Wed, Feb 09, 2011 at 04:26:50PM +0100, Mickael Chazaux wrote:
->> Hi,
->>
->> ARCH=arm
->> CROSS_COMPILE=/home/mc/OE/tmp/sysroots/i686-linux/usr/armv5te/bin/arm-angstrom-linux-gnueabi-
->>
->> git clone, make menuconfig, not touching anything, exit, save, make
->> gives this [1]. Seems the buildsystem tries to cross-compile stuff
->> under scripts/.
->
-> This happens when CONFIG_DEFAULT_ENVIRONMENT=y is combined with
-> CONFIG_DEFAULT_ENVIRONMENT_PATH="". This configuration is not
-> particularly useful but of course should not break the build. I haven't
-> looked deeply into it and currently do not have a fix.
-> For now disable CONFIG_DEFAULT_ENVIRONMENT or specify a (relative) path
-> to your environment directory in CONFIG_DEFAULT_ENVIRONMENT_PATH
->
-Thank you, it helps.
+rsc@thebe:barebox$ make ARCH=arm CROSS_COMPILE=<path>/arm-v5te-linux-gnueabi- menuconfig
+  HOSTCC  scripts/kconfig/lxdialog/checklist.o
+  HOSTCC  scripts/kconfig/lxdialog/inputbox.o
+  HOSTCC  scripts/kconfig/lxdialog/menubox.o
+  HOSTCC  scripts/kconfig/lxdialog/textbox.o
+  HOSTCC  scripts/kconfig/lxdialog/util.o
+  HOSTCC  scripts/kconfig/lxdialog/yesno.o
+  HOSTCC  scripts/kconfig/mconf.o
+  HOSTLD  scripts/kconfig/mconf
+scripts/kconfig/mconf Kconfig
+warning: (ARCH_IMX25 && ARCH_IMX27 && ARCH_IMX35 && ARCH_IMX51 && ARCH_IMX28) selects ARCH_HAS_FEC_IMX which has unmet direct dependencies (ARCH_IMX)
+warning: (ARCH_IMX25 && ARCH_IMX27 && ARCH_IMX35 && ARCH_IMX51 && ARCH_IMX28) selects ARCH_HAS_FEC_IMX which has unmet direct dependencies (ARCH_IMX)
 
-Mickael
+Add the option for the FEC on MX28 as well.
+
+Signed-off-by: Robert Schwebel <r.schwebel@pengutronix.de>
+---
+ arch/arm/mach-mxs/Kconfig |    3 +++
+ 1 files changed, 3 insertions(+), 0 deletions(-)
+
+diff --git a/arch/arm/mach-mxs/Kconfig b/arch/arm/mach-mxs/Kconfig
+index f9cefaf..3a19a98 100644
+--- a/arch/arm/mach-mxs/Kconfig
++++ b/arch/arm/mach-mxs/Kconfig
+@@ -61,6 +61,9 @@ config MACH_TX28
+ 
+ endchoice
+ 
++config ARCH_HAS_FEC_IMX
++	bool
++
+ endif
+ 
+ menu "Board specific settings       "
+-- 
+1.7.2.3
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
