@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PnVDU-0003Ti-Bk
-	for barebox@lists.infradead.org; Thu, 10 Feb 2011 12:01:45 +0000
-Date: Thu, 10 Feb 2011 13:01:41 +0100
+	id 1PnVLa-0003Xe-42
+	for barebox@lists.infradead.org; Thu, 10 Feb 2011 12:10:07 +0000
+Date: Thu, 10 Feb 2011 13:10:03 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110210120141.GS9041@pengutronix.de>
-References: <1297308720-26390-1-git-send-email-plagnioj@jcrosoft.com>
-	<1297308720-26390-3-git-send-email-plagnioj@jcrosoft.com>
-	<20110210071225.GP9041@pengutronix.de>
-	<20110210115014.GD11255@game.jcrosoft.org>
+Message-ID: <20110210121003.GT9041@pengutronix.de>
+References: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FEA30445A@SRV-VS06.TELEVIC.COM>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20110210115014.GD11255@game.jcrosoft.org>
+In-Reply-To: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FEA30445A@SRV-VS06.TELEVIC.COM>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,56 +22,94 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/4] driver/memmap: fix generic_memmap_rw and
-	generic_memmap_ro
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: barebox startup
+To: Vanalme Filip <F.Vanalme@TELEVIC.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Thu, Feb 10, 2011 at 12:50:14PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 08:12 Thu 10 Feb     , Sascha Hauer wrote:
-> > On Thu, Feb 10, 2011 at 04:31:59AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > we check before the RW access for generic_memmap_ro instead of
-> > > generic_memmap_rw
-> > > 
-> > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > > ---
-> > >  drivers/base/driver.c |    5 +++--
-> > >  1 files changed, 3 insertions(+), 2 deletions(-)
-> > > 
-> > > diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-> > > index ff92e44..bd7464e 100644
-> > > --- a/drivers/base/driver.c
-> > > +++ b/drivers/base/driver.c
-> > > @@ -223,8 +223,6 @@ int generic_memmap_ro(struct cdev *cdev, void **map, int flags)
-> > >  	if (!cdev->dev)
-> > >  		return -EINVAL;
-> > >  
-> > > -	if (flags & PROT_WRITE)
-> > > -		return -EACCES;
-> > >  	*map = (void *)cdev->dev->map_base;
-> > >  	return 0;
-> > >  }
-> > > @@ -234,6 +232,9 @@ int generic_memmap_rw(struct cdev *cdev, void **map, int flags)
-> > >  	if (!cdev->dev)
-> > >  		return -EINVAL;
-> > >  
-> > > +	if (flags & PROT_WRITE)
-> > > +		return -EACCES;
-> > > +
-> > 
-> > So instead of allowing write access in the read/write function we now
-> > allow it in the readonly function? I'm afraid I don't understand this.
-> PROT_WRITE means ro no?
+On Thu, Feb 10, 2011 at 10:04:26AM +0100, Vanalme Filip wrote:
+> After struggling a while with i.MX27 NAND flash controller, I was able to start Barebox. Now, I have added some device, but I am not sure that everything starts as it should.
+> This is how my devices_init function looks like now : 
+> 
+> static struct memory_platform_data ram_pdata = {
+> 	.name = "ram0",
+> 	.flags = DEVFS_RDWR,
+> };
+> 
+> static struct device_d sdram_dev = {
+> 	.id	  = -1,
+> 	.name     = "mem",
+> 	.map_base = 0xa0000000,
+> 	.size     = 128 * 1024 * 1024,  /* 128 MB SDRAM */
+> 	.platform_data = &ram_pdata,
+> };
+> 
+> static struct fec_platform_data fec_info = {
+> 	.xcv_type = MII100,
+> 	.phy_addr = 1,
+> };
 
-No. The semantics are from mmap(2):
+The phy address may be wrong, please check in the schematics/phy data
+sheet whether it is correct.
 
-	PROT_EXEC  Pages may be executed.
+> 
+> 
+> I expected to see the autoboot count-down and at least something about
+> the network initialization.  I think it probably has something to do
+> with the env/config script file. I don't know exactly how it should be
+> used. I ran ./scripts/bareboxenv -s -p 0x10000 arch/arm/imx27pdk/env
+> env.bin which created env.bin in the barebox root. Afterwards, when
+> doing a make all, I could see that there is a /env folder on my device
+> which contains the config file. I could execute that script from the
+> command line, but I suppose it should be executed automatically
+> somehow.
 
-	PROT_READ  Pages may be read.
+You should have something like the following in your config to get an
+environment:
 
-	PROT_WRITE Pages may be written.
+CONFIG_DEFAULT_ENVIRONMENT=y
+CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
+CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/karo-tx28/env"
 
-	PROT_NONE  Pages may not be accessed.
+(with karo-tx28 being your board)
+
+> 
+> 
+> For the moment, I don't have any activity on my Ethernet ports (no
+> leds on or blinking), although I added the fec device. When I execute
+> the dhcp command, I get :
+> 
+> barebox:/ dhcp
+> warning: No MAC address set. Using random address 8E:A2:E8:DD:E2:73
+> phy0: Link is up - 100/Full
+> transmission timeout
+> T transmission timeout
+> T transmission timeout
+> 
+> But, whether I connect the cable or not, it always shows "phy0:Link is up - 100/Full".
+
+Have a look at the output of md -s /dev/phy0. You should see valid phy
+registers, not 0xffffffff.
+
+> 
+> I also have a problem with the environment settings. Obviously, I can
+> set some environment variables, e.g. ipaddr=192.168.1.10 :
+> 
+> barebox:/ ipaddr=192.168.1.10
+> barebox:/ printenv
+> locals:
+> ipaddr=192.168.1.10
+> globals:
+> barebox:/ saveenv
+> saving environment
+> barebox:/
+> 
+> But, although I did a saveenv (obviously successful), the environment
+> settings disappear after resetting the board.
+
+Unlike U-Boot barebox does not save the content of environment
+variables. Instead it saves the content of /env/. So to change the ip
+address do a 'edit /env/config', saveenv. Also, the ip address is stored
+in a device variable which is accessible through eth0.ipaddr=a.b.c.d.
 
 Sascha
 
