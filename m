@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PnQhZ-0001Yh-OZ
-	for barebox@lists.infradead.org; Thu, 10 Feb 2011 07:12:30 +0000
-Date: Thu, 10 Feb 2011 08:12:25 +0100
+	id 1PnQoL-0001aF-Q3
+	for barebox@lists.infradead.org; Thu, 10 Feb 2011 07:19:30 +0000
+Date: Thu, 10 Feb 2011 08:19:27 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110210071225.GP9041@pengutronix.de>
-References: <1297308720-26390-1-git-send-email-plagnioj@jcrosoft.com>
-	<1297308720-26390-3-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20110210071927.GQ9041@pengutronix.de>
+References: <20110209170724.GK22009@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1297308720-26390-3-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20110209170724.GK22009@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,46 +22,74 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/4] driver/memmap: fix generic_memmap_rw and
-	generic_memmap_ro
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH] tx28: fix kconfig warning
+To: Robert Schwebel <robert@schwebel.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Feb 10, 2011 at 04:31:59AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> we check before the RW access for generic_memmap_ro instead of
-> generic_memmap_rw
-> 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  drivers/base/driver.c |    5 +++--
->  1 files changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-> index ff92e44..bd7464e 100644
-> --- a/drivers/base/driver.c
-> +++ b/drivers/base/driver.c
-> @@ -223,8 +223,6 @@ int generic_memmap_ro(struct cdev *cdev, void **map, int flags)
->  	if (!cdev->dev)
->  		return -EINVAL;
->  
-> -	if (flags & PROT_WRITE)
-> -		return -EACCES;
->  	*map = (void *)cdev->dev->map_base;
->  	return 0;
->  }
-> @@ -234,6 +232,9 @@ int generic_memmap_rw(struct cdev *cdev, void **map, int flags)
->  	if (!cdev->dev)
->  		return -EINVAL;
->  
-> +	if (flags & PROT_WRITE)
-> +		return -EACCES;
-> +
 
-So instead of allowing write access in the read/write function we now
-allow it in the readonly function? I'm afraid I don't understand this.
+Hi Robert,
+
+I would go with the following instead which moves the ARCH_HAS_FEC_IMX
+to drivers/net where it's accessible for all archs which need it.
 
 Sascha
 
+8<------------------------------------
+
+Without this patch (against next) I get this:
+
+rsc@thebe:barebox$ make ARCH=arm CROSS_COMPILE=<path>/arm-v5te-linux-gnueabi- menuconfig
+  HOSTCC  scripts/kconfig/lxdialog/checklist.o
+  HOSTCC  scripts/kconfig/lxdialog/inputbox.o
+  HOSTCC  scripts/kconfig/lxdialog/menubox.o
+  HOSTCC  scripts/kconfig/lxdialog/textbox.o
+  HOSTCC  scripts/kconfig/lxdialog/util.o
+  HOSTCC  scripts/kconfig/lxdialog/yesno.o
+  HOSTCC  scripts/kconfig/mconf.o
+  HOSTLD  scripts/kconfig/mconf
+scripts/kconfig/mconf Kconfig
+warning: (ARCH_IMX25 && ARCH_IMX27 && ARCH_IMX35 && ARCH_IMX51 && ARCH_IMX28) selects ARCH_HAS_FEC_IMX which has unmet direct dependencies (ARCH_IMX)
+warning: (ARCH_IMX25 && ARCH_IMX27 && ARCH_IMX35 && ARCH_IMX51 && ARCH_IMX28) selects ARCH_HAS_FEC_IMX which has unmet direct dependencies (ARCH_IMX)
+
+Add the option for the FEC on MX28 as well.
+
+Signed-off-by: Robert Schwebel <r.schwebel@pengutronix.de>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/mach-imx/Kconfig |    3 ---
+ drivers/net/Kconfig       |    3 +++
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index c9f55b5..5b8ac89 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -37,9 +37,6 @@ config BOARDINFO
+ 	default "Freescale i.MX51 PDK" if MACH_FREESCALE_MX51_PDK
+ 	default "Garz+Fricke Cupid" if MACH_GUF_CUPID
+ 
+-config ARCH_HAS_FEC_IMX
+-	bool
+-
+ config ARCH_IMX_INTERNAL_BOOT
+ 	bool "support internal boot mode"
+ 	depends on ARCH_IMX25 || ARCH_IMX35 || ARCH_IMX51
+diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
+index 69f3352..6479417 100644
+--- a/drivers/net/Kconfig
++++ b/drivers/net/Kconfig
+@@ -13,6 +13,9 @@ config HAS_AT91_ETHER
+ config HAS_NETX_ETHER
+ 	bool
+ 
++config ARCH_HAS_FEC_IMX
++	bool
++
+ config MIIDEV
+ 	bool
+ 
+-- 
+1.7.2.3
 
 -- 
 Pengutronix e.K.                           |                             |
