@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from 26.mail-out.ovh.net ([91.121.27.225])
 	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1PnNJ6-0000Vp-9C
-	for barebox@lists.infradead.org; Thu, 10 Feb 2011 03:35:02 +0000
+	id 1PnNJ6-0000Vs-9L
+	for barebox@lists.infradead.org; Thu, 10 Feb 2011 03:35:01 +0000
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu, 10 Feb 2011 04:31:57 +0100
-Message-Id: <1297308720-26390-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Thu, 10 Feb 2011 04:32:00 +0100
+Message-Id: <1297308720-26390-4-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1297308720-26390-1-git-send-email-plagnioj@jcrosoft.com>
+References: <1297308720-26390-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,35 +21,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] bus: remove dead code
+Subject: [PATCH 4/4] devices_shutdown: move remove call to bus
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- lib/bus.c |   13 -------------
- 1 files changed, 0 insertions(+), 13 deletions(-)
+ drivers/base/driver.c   |    4 ++--
+ drivers/base/platform.c |    3 ++-
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/lib/bus.c b/lib/bus.c
-index e0dd9ea..c34982e 100644
---- a/lib/bus.c
-+++ b/lib/bus.c
-@@ -43,16 +43,3 @@ struct bus_type platform_bus = {
- 	.probe = platform_probe,
- 	.remove = platform_remove,
- };
--
--#if 0
--LIST_HEAD(bus_list);
--EXPORT_SYMBOL(bus_list);
--
--int bus_register(struct bus_type *bus)
--{
--	list_add_tail(&bus->list, &bus_list);
--
--	return 0;
--}
--#endif
--
+diff --git a/drivers/base/driver.c b/drivers/base/driver.c
+index bd7464e..6ad61f7 100644
+--- a/drivers/base/driver.c
++++ b/drivers/base/driver.c
+@@ -259,8 +259,8 @@ void devices_shutdown(void)
+ 	struct device_d *dev;
+ 
+ 	list_for_each_entry(dev, &active, active) {
+-		if (dev->driver->remove)
+-			dev->driver->remove(dev);
++		if (dev->bus->remove)
++			dev->bus->remove(dev);
+ 	}
+ }
+ 
+diff --git a/drivers/base/platform.c b/drivers/base/platform.c
+index f1ee38c..e0a83b9 100644
+--- a/drivers/base/platform.c
++++ b/drivers/base/platform.c
+@@ -34,7 +34,8 @@ static int platform_probe(struct device_d *dev)
+ 
+ static void platform_remove(struct device_d *dev)
+ {
+-	dev->driver->remove(dev);
++	if (dev->driver->remove)
++		dev->driver->remove(dev);
+ }
+ 
+ struct bus_type platform_bus = {
 -- 
 1.7.2.3
 
