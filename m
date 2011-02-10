@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ip2.televic.com ([81.82.194.222])
+Received: from mail-vw0-f49.google.com ([209.85.212.49])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PnSS0-0001z9-Nv
-	for barebox@lists.infradead.org; Thu, 10 Feb 2011 09:04:33 +0000
-From: Vanalme Filip <F.Vanalme@TELEVIC.com>
-Date: Thu, 10 Feb 2011 10:04:26 +0100
-Message-ID: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FEA30445A@SRV-VS06.TELEVIC.COM>
-Content-Language: en-US
+	id 1PnUOz-0002yf-Bb
+	for barebox@lists.infradead.org; Thu, 10 Feb 2011 11:09:34 +0000
+Received: by vws5 with SMTP id 5so722072vws.36
+	for <barebox@lists.infradead.org>; Thu, 10 Feb 2011 03:09:31 -0800 (PST)
 MIME-Version: 1.0
+Date: Thu, 10 Feb 2011 12:09:31 +0100
+Message-ID: <AANLkTikb2tgLZhBYbunUG10Sz7FO3Yx_P1+5Fo0GonAD@mail.gmail.com>
+From: Mickael Chazaux <mickael.chazaux@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,200 +21,320 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: barebox startup
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: No NAND access on AT91SAM9G20-EK
+To: barebox@lists.infradead.org
 
-After struggling a while with i.MX27 NAND flash controller, I was able to start Barebox. Now, I have added some device, but I am not sure that everything starts as it should.
-This is how my devices_init function looks like now : 
+Hi,
 
-static struct memory_platform_data ram_pdata = {
-	.name = "ram0",
-	.flags = DEVFS_RDWR,
-};
+I managed to compile Barebox for AT91SAM9G20-EK, and I can run it. However
+it seems not capable of reading the NAND Flash.
 
-static struct device_d sdram_dev = {
-	.id	  = -1,
-	.name     = "mem",
-	.map_base = 0xa0000000,
-	.size     = 128 * 1024 * 1024,  /* 128 MB SDRAM */
-	.platform_data = &ram_pdata,
-};
+Output is at [1], my configuration is [2]. The "err -74" is EBADMSG, in
+line 1057 of "file drivers/mtd/nand/nand_base.c"
 
-static struct fec_platform_data fec_info = {
-	.xcv_type = MII100,
-	.phy_addr = 1,
-};
+[1]
+barebox 2011.02.0-00070-gc5dd4c4-dirty (Feb 10 2011 - 11:58:24)
 
-static struct imx_nand_platform_data nand_info = {
-    .width      = 1,
-    .hw_ecc     = 1,
-    .flash_bbt  = 1,
-};
-
-static int imx27pdk_devices_init(void)
-{
-  int i;
-
-  unsigned int mode[] = {
-      /* FEC */
-      PD0_AIN_FEC_TXD0,
-      PD1_AIN_FEC_TXD1,
-      PD2_AIN_FEC_TXD2,
-      PD3_AIN_FEC_TXD3,
-      PD4_AOUT_FEC_RX_ER,
-      PD5_AOUT_FEC_RXD1,
-      PD6_AOUT_FEC_RXD2,
-      PD7_AOUT_FEC_RXD3,
-      PD8_AF_FEC_MDIO,
-      PD9_AIN_FEC_MDC | GPIO_PUEN,
-      PD10_AOUT_FEC_CRS,
-      PD11_AOUT_FEC_TX_CLK,
-      PD12_AOUT_FEC_RXD0,
-      PD13_AOUT_FEC_RX_DV,
-      PD14_AOUT_FEC_RX_CLK,
-      PD15_AOUT_FEC_COL,
-      PD16_AIN_FEC_TX_ER,
-      PF23_AIN_FEC_TX_EN,
-      /* UART */
-      PE12_PF_UART1_TXD,
-      PE13_PF_UART1_RXD,
-      PE14_PF_UART1_CTS,
-      PE15_PF_UART1_RTS,
-      /* display */
-      PA5_PF_LSCLK,
-      PA6_PF_LD0,
-      PA7_PF_LD1,
-      PA8_PF_LD2,
-      PA9_PF_LD3,
-      PA10_PF_LD4,
-      PA11_PF_LD5,
-      PA12_PF_LD6,
-      PA13_PF_LD7,
-      PA14_PF_LD8,
-      PA15_PF_LD9,
-      PA16_PF_LD10,
-      PA17_PF_LD11,
-      PA18_PF_LD12,
-      PA19_PF_LD13,
-      PA20_PF_LD14,
-      PA21_PF_LD15,
-      PA22_PF_LD16,
-      PA23_PF_LD17,
-      PA24_PF_REV,
-      PA25_PF_CLS,
-      PA26_PF_PS,
-      PA27_PF_SPL_SPR,
-      PA28_PF_HSYNC,
-      PA29_PF_VSYNC,
-      PA30_PF_CONTRAST,
-      PA31_PF_OE_ACD,
-  };
-
-  /* initialize gpios */
-  for (i = 0; i < ARRAY_SIZE(mode); i++)
-     imx_gpio_mode(mode[i]);
-
-  register_device(&sdram_dev);
-  imx27_add_fec(&fec_info);
-  imx27_add_nand(&nand_info);
-
-  devfs_add_partition("nand0", 0x00000, 0x40000, PARTITION_FIXED, "self_raw");
-  dev_add_bb_dev("self_raw", "self0");
-
-  devfs_add_partition("nand0", 0x40000, 0x20000, PARTITION_FIXED, "env_raw");
-  dev_add_bb_dev("env_raw", "env0");
-
-
-  armlinux_add_dram(&sdram_dev);
-  armlinux_set_bootparams((void *)0xa0000100);
-
-  return 0;
-}
-
-device_initcall(imx27pdk_devices_init);
-
-
-(I used the pcm038 board as a reference. Most of the items in this function I took from that board's lowlevel function).
-
-When starting up, I get the following console output :
-
-barebox 2010.12.0-00073-gfad11e8-dirty (Feb  9 2011 - 14:09:49)
-
-Board: Freescale i.MX27 PDK 3Stack
-NAND device: Manufacturer ID: 0xec, Chip ID: 0xaa (Samsung NAND 256MiB 1,8V 8-bit)
-Bad block table found at page 131008, version 0x02
-Bad block table found at page 130944, version 0x02
-Malloc space: 0xa7b00000 -> 0xa7f00000 (size  4 MB)
-Stack space : 0xa7af8000 -> 0xa7b00000 (size 32 kB)
+Board: Atmel at91sam9g20-ek
+Clocks: CPU 792 MHz, master 132 MHz, main 18.432 MHz
+NAND device: Manufacturer ID: 0xec, Chip ID: 0xda (Samsung NAND 256MiB
+3,3V 8-bit)
+Scanning device for bad blocks
+Bad eraseblock 1621 at 0x0caa0000
+Malloc space: 0x23b00000 -> 0x23f00000 (size  4 MB)
+Stack space : 0x23af8000 -> 0x23b00000 (size 32 kB)
+err -74
+envfs: wrong magic on /dev/env0
+no valid environment found on /dev/env0. Using default environment
 running /env/bin/init...
-not found
-barebox:/
 
-This is the console output when executing the devinfo command :
+Hit any key to stop autoboot:  3
 
-barebox:/ devinfo
-devices:
-|----imx_serial0
-|----cs0
-|----ramfs0
-|----devfs0
-|----mem0 (defaultenv)
-|----mem1 (mem)
-|----mem2 (ram0)
-|----fec_imx0
-|----miidev0 (phy0)
-|----eth0
-|----imx_nand0
-|----nand0 (nand0, nand_oob0, self_raw, env_raw)
+type update_kernel [<imagename>] to update kernel into flash
+type udate_root [<imagename>] to update rootfs into flash
 
-drivers:
-imx_serial
-     ramfs
-     devfs
-   fec_imx
-    miidev
-  imx_nand
- cfi_flash
-     imxfb
-       mem
-barebox:/
+9G20-EK:/
 
+[2]
+#
+# Automatically generated make config: don't edit
+# Linux/arm 2011.02.0 Barebox Configuration
+# Thu Feb 10 11:58:15 2011
+#
+# CONFIG_BOARD_LINKER_SCRIPT is not set
+CONFIG_GENERIC_LINKER_SCRIPT=y
+CONFIG_ARM=y
 
-I expected to see the autoboot count-down and at least something about the network initialization. 
-I think it probably has something to do with the env/config script file. I don't know exactly how it should be used. I ran ./scripts/bareboxenv -s -p 0x10000 arch/arm/imx27pdk/env env.bin which created env.bin in the barebox root. Afterwards, when doing a make all, I could see that there is a /env folder on my device which contains the config file. I could execute that script from the command line, but I suppose it should be executed automatically somehow.
+#
+# System Type
+#
+CONFIG_ARCH_AT91=y
+# CONFIG_ARCH_EP93XX is not set
+# CONFIG_ARCH_IMX is not set
+# CONFIG_ARCH_MXS is not set
+# CONFIG_ARCH_NETX is not set
+# CONFIG_ARCH_NOMADIK is not set
+# CONFIG_ARCH_OMAP is not set
+# CONFIG_ARCH_S3C24xx is not set
+# CONFIG_ARCH_VERSATILE is not set
 
+#
+# Processor Type
+#
+CONFIG_CPU_32=y
+CONFIG_CPU_ARM926T=y
+CONFIG_CPU_32v5=y
 
-For the moment, I don't have any activity on my Ethernet ports (no leds on or blinking), although I added the fec device. When I execute the dhcp command, I get :
+#
+# processor features
+#
+# CONFIG_BOOT_ENDIANNESS_SWITCH is not set
+CONFIG_ARCH_TEXT_BASE=0x23f00000
+CONFIG_BOARDINFO="Atmel at91sam9g20-ek"
+CONFIG_HAVE_NAND_ATMEL_BUSWIDTH_16=y
 
-barebox:/ dhcp
-warning: No MAC address set. Using random address 8E:A2:E8:DD:E2:73
-phy0: Link is up - 100/Full
-transmission timeout
-T transmission timeout
-T transmission timeout
+#
+# Atmel AT91 System-on-Chip
+#
+# CONFIG_ARCH_AT91SAM9260 is not set
+# CONFIG_ARCH_AT91SAM9261 is not set
+# CONFIG_ARCH_AT91SAM9263 is not set
+# CONFIG_ARCH_AT91SAM9G10 is not set
+CONFIG_ARCH_AT91SAM9G20=y
+# CONFIG_ARCH_AT91SAM9G45 is not set
+CONFIG_MACH_AT91SAM9G20EK=y
 
-But, whether I connect the cable or not, it always shows "phy0:Link is up - 100/Full".
+#
+# AT91 Board Options
+#
+# CONFIG_MTD_NAND_ATMEL_BUSWIDTH_16 is not set
+# CONFIG_AT91_HAVE_2MMC is not set
+# CONFIG_AEABI is not set
 
-I also have a problem with the environment settings. Obviously, I can set some environment variables, e.g. ipaddr=192.168.1.10 :
+#
+# Arm specific settings
+#
+CONFIG_CMD_ARM_CPUINFO=y
+CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+CONFIG_DEFCONFIG_LIST="$ARCH_DEFCONFIG"
+CONFIG_GREGORIAN_CALENDER=y
+CONFIG_HAS_KALLSYMS=y
+CONFIG_HAS_MODULES=y
+CONFIG_CMD_MEMORY=y
+CONFIG_ENV_HANDLING=y
+CONFIG_GENERIC_GPIO=y
 
-barebox:/ ipaddr=192.168.1.10
-barebox:/ printenv
-locals:
-ipaddr=192.168.1.10
-globals:
-barebox:/ saveenv
-saving environment
-barebox:/
+#
+# General Settings
+#
+CONFIG_LOCALVERSION_AUTO=y
 
-But, although I did a saveenv (obviously successful), the environment settings disappear after resetting the board.
+#
+# memory layout
+#
+CONFIG_HAVE_CONFIGURABLE_TEXT_BASE=y
+CONFIG_TEXT_BASE=0x23f00000
+CONFIG_HAVE_CONFIGURABLE_MEMORY_LAYOUT=y
+CONFIG_MEMORY_LAYOUT_DEFAULT=y
+# CONFIG_MEMORY_LAYOUT_FIXED is not set
+CONFIG_STACK_SIZE=0x8000
+CONFIG_MALLOC_SIZE=0x400000
+# CONFIG_BROKEN is not set
+# CONFIG_EXPERIMENTAL is not set
+CONFIG_PROMPT="9G20-EK:"
+CONFIG_BAUDRATE=115200
+CONFIG_LONGHELP=y
+CONFIG_CBSIZE=1024
+CONFIG_MAXARGS=16
+CONFIG_SHELL_HUSH=y
+# CONFIG_SHELL_SIMPLE is not set
+CONFIG_GLOB=y
+CONFIG_PROMPT_HUSH_PS2="y"
+# CONFIG_HUSH_FANCY_PROMPT is not set
+# CONFIG_HUSH_GETOPT is not set
+CONFIG_CMDLINE_EDITING=y
+CONFIG_AUTO_COMPLETE=y
+# CONFIG_MENU is not set
+# CONFIG_PASSWORD is not set
+CONFIG_DYNAMIC_CRC_TABLE=y
+CONFIG_ERRNO_MESSAGES=y
+CONFIG_TIMESTAMP=y
+CONFIG_CONSOLE_FULL=y
+CONFIG_CONSOLE_ACTIVATE_FIRST=y
+# CONFIG_OF_FLAT_TREE is not set
+CONFIG_PARTITION=y
+CONFIG_DEFAULT_ENVIRONMENT=y
+# CONFIG_DEFAULT_ENVIRONMENT_GENERIC is not set
+CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/at91sam9260ek/env"
+# CONFIG_POLLER is not set
 
+#
+# Debugging
+#
+# CONFIG_DEBUG_INFO is not set
+CONFIG_ENABLE_FLASH_NOISE=y
+# CONFIG_ENABLE_PARTITION_NOISE is not set
+# CONFIG_ENABLE_DEVICE_NOISE is not set
 
+#
+# Commands
+#
 
-I think I might still miss something to make my board start correctly.
+#
+# scripting
+#
+CONFIG_CMD_EDIT=y
+CONFIG_CMD_SLEEP=y
+CONFIG_CMD_SAVEENV=y
+CONFIG_CMD_LOADENV=y
+CONFIG_CMD_EXPORT=y
+CONFIG_CMD_PRINTENV=y
+CONFIG_CMD_READLINE=y
+CONFIG_CMD_TRUE=y
+CONFIG_CMD_FALSE=y
+# CONFIG_CMD_LOGIN is not set
+# CONFIG_CMD_PASSWD is not set
 
-Someone can point me in the good direction ? (or point me to some doc about this)
+#
+# file commands
+#
+CONFIG_CMD_LS=y
+CONFIG_CMD_RM=y
+CONFIG_CMD_CAT=y
+CONFIG_CMD_MKDIR=y
+CONFIG_CMD_RMDIR=y
+CONFIG_CMD_CP=y
+CONFIG_CMD_PWD=y
+CONFIG_CMD_CD=y
+CONFIG_CMD_MOUNT=y
+CONFIG_CMD_UMOUNT=y
 
-Filip
+#
+# console
+#
+CONFIG_CMD_CLEAR=y
+CONFIG_CMD_ECHO=y
+# CONFIG_CMD_ECHO_E is not set
+
+#
+# memory
+#
+# CONFIG_CMD_LOADB is not set
+CONFIG_CMD_MEMINFO=y
+CONFIG_CMD_CRC=y
+# CONFIG_CMD_CRC_CMP is not set
+CONFIG_CMD_MTEST=y
+CONFIG_CMD_MTEST_ALTERNATIVE=y
+
+#
+# flash
+#
+CONFIG_CMD_FLASH=y
+# CONFIG_CMD_UBI is not set
+
+#
+# booting
+#
+CONFIG_CMD_BOOTM=y
+# CONFIG_CMD_BOOTM_ZLIB is not set
+# CONFIG_CMD_BOOTM_BZLIB is not set
+CONFIG_CMD_BOOTM_SHOW_TYPE=y
+CONFIG_CMD_BOOTZ=y
+CONFIG_CMD_BOOTU=y
+CONFIG_CMD_RESET=y
+CONFIG_CMD_GO=y
+CONFIG_CMD_TIMEOUT=y
+CONFIG_CMD_PARTITION=y
+CONFIG_CMD_TEST=y
+CONFIG_CMD_VERSION=y
+CONFIG_CMD_HELP=y
+CONFIG_CMD_DEVINFO=y
+CONFIG_CMD_GPIO=y
+# CONFIG_CMD_UNLZO is not set
+# CONFIG_CMD_I2C is not set
+CONFIG_NET=y
+CONFIG_NET_DHCP=y
+# CONFIG_NET_NFS is not set
+CONFIG_NET_PING=y
+CONFIG_NET_TFTP=y
+# CONFIG_NET_TFTP_PUSH is not set
+# CONFIG_NET_NETCONSOLE is not set
+# CONFIG_NET_RESOLV is not set
+
+#
+# Drivers
+#
+
+#
+# serial drivers
+#
+# CONFIG_DRIVER_SERIAL_ARM_DCC is not set
+# CONFIG_DRIVER_SERIAL_NS16550 is not set
+CONFIG_DRIVER_SERIAL_ATMEL=y
+CONFIG_HAS_MACB=y
+CONFIG_MIIDEV=y
+
+#
+# Network drivers
+#
+# CONFIG_DRIVER_NET_SMC911X is not set
+# CONFIG_DRIVER_NET_SMC91111 is not set
+CONFIG_DRIVER_NET_MACB=y
+
+#
+# SPI drivers
+#
+# CONFIG_SPI is not set
+CONFIG_I2C=y
+
+#
+# I2C Hardware Bus support
+#
+
+#
+# flash drivers
+#
+CONFIG_DRIVER_CFI=y
+CONFIG_DRIVER_CFI_INTEL=y
+CONFIG_DRIVER_CFI_AMD=y
+CONFIG_DRIVER_CFI_BANK_WIDTH_1=y
+CONFIG_DRIVER_CFI_BANK_WIDTH_2=y
+CONFIG_DRIVER_CFI_BANK_WIDTH_4=y
+# CONFIG_DRIVER_CFI_BANK_WIDTH_8 is not set
+CONFIG_CFI_BUFFER_WRITE=y
+CONFIG_MTD=y
+CONFIG_NAND=y
+CONFIG_NAND_ATMEL=y
+# CONFIG_MTD_NAND_VERIFY_WRITE is not set
+# CONFIG_MTD_NAND_ECC_SMC is not set
+CONFIG_MTD_NAND_IDS=y
+# CONFIG_UBI is not set
+# CONFIG_ATA is not set
+# CONFIG_USB is not set
+# CONFIG_USB_GADGET is not set
+# CONFIG_VIDEO is not set
+# CONFIG_MCI is not set
+
+#
+# MFD
+#
+# CONFIG_I2C_MC13892 is not set
+# CONFIG_I2C_MC34704 is not set
+# CONFIG_I2C_MC9SDZ60 is not set
+# CONFIG_I2C_LP3972 is not set
+# CONFIG_I2C_TWL4030 is not set
+# CONFIG_LED is not set
+
+#
+# Filesystem support
+#
+# CONFIG_FS_CRAMFS is not set
+CONFIG_FS_RAMFS=y
+CONFIG_FS_DEVFS=y
+CONFIG_CRC32=y
+# CONFIG_DIGEST is not set
+# CONFIG_GENERIC_FIND_NEXT_BIT is not set
+# CONFIG_PROCESS_ESCAPE_SEQUENCE is not set
 
 _______________________________________________
 barebox mailing list
