@@ -1,17 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vx0-f177.google.com ([209.85.220.177])
-	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PnWyl-0004jA-Jt
-	for barebox@lists.infradead.org; Thu, 10 Feb 2011 13:54:40 +0000
-Received: by vxd2 with SMTP id 2so642276vxd.36
-	for <barebox@lists.infradead.org>; Thu, 10 Feb 2011 05:54:38 -0800 (PST)
-MIME-Version: 1.0
-In-Reply-To: <20110210114858.GC11255@game.jcrosoft.org>
-References: <AANLkTikb2tgLZhBYbunUG10Sz7FO3Yx_P1+5Fo0GonAD@mail.gmail.com>
-	<20110210114858.GC11255@game.jcrosoft.org>
-Date: Thu, 10 Feb 2011 14:47:56 +0100
-Message-ID: <AANLkTik2GqQpHfbnXAOy1+uar0LwCwpX+itJbNN3x+xg@mail.gmail.com>
-From: Mickael Chazaux <mickael.chazaux@gmail.com>
+Received: from 1.26.mail-out.ovh.net ([46.105.43.121] helo=26.mail-out.ovh.net)
+	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1Pnyie-0002oJ-B3
+	for barebox@lists.infradead.org; Fri, 11 Feb 2011 19:31:54 +0000
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Fri, 11 Feb 2011 20:22:04 +0100
+Message-Id: <1297452124-22242-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,156 +14,352 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: No NAND access on AT91SAM9G20-EK
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] at91sam263ek: switch to default env
+To: barebox@lists.infradead.org
+Cc: Patrice Vilchez <patrice.vilchez@atmel.com>, Nicolas Ferre <nicolas.ferre@atmel.com>
 
-SGksCgoyMDExLzIvMTAgSmVhbi1DaHJpc3RvcGhlIFBMQUdOSU9MLVZJTExBUkQgPHBsYWduaW9q
-QGpjcm9zb2Z0LmNvbT46Cj4gSGksCj4KPiDCoCDCoCDCoCDCoHdoaWNoIGVjYyBkaWQgdSB1c2Ug
-YmVmb3JlPwoKVGhlIEVDQyB0eXBlIHVzZWQgaXMgTkFORF9FQ0NfSFcsIGRlZmluZWQgaW4gZmls
-ZQphcmNoL2FybS9ib2FyZHMvYXQ5MXNhbTkyNjBlay9pbml0LmMuIEkgcHJvZ3JhbSB0aGUgTkFO
-RCB1c2luZyBVU0IgYW5kClNBTS1CQS4gSSBkaWQgbm90IGZpbmQgYSBzZXR0aW5nIGluIFNBTS1C
-QSB0byBjaGFuZ2UgdGhlIEVDQyB0eXBlLgoKQ2hhbmdpbmcgdGhlIEVDQyB0byBOQU5EX0VDQ19O
-T05FIGluIHRoZSBhYm92ZSBtZW50aW9uZWQgZmlsZSBtYWtlcwp0aGUgTkFORCByZWFkYWJsZSBh
-bmQgbXkga2VybmVsIGJvb3RzLCBidXQgdGhpcyBiaWcgZmF0IHdhcm5pbmcgOy0pCmFwcGVhcnMg
-OiBOQU5EX0VDQ19OT05FIHNlbGVjdGVkIGJ5IGJvYXJkIGRyaXZlci4gVGhpcyBpcyBub3QKcmVj
-b21tZW5kZWQgISEKClJlZ2FyZHMsCgpNaWNrYWVsCgo+Cj4gQmVzdCBSZWdhcmRzLAo+IEouCj4g
-T24gMTI6MDkgVGh1IDEwIEZlYiDCoCDCoCAsIE1pY2thZWwgQ2hhemF1eCB3cm90ZToKPj4gSGks
-Cj4+Cj4+IEkgbWFuYWdlZCB0byBjb21waWxlIEJhcmVib3ggZm9yIEFUOTFTQU05RzIwLUVLLCBh
-bmQgSSBjYW4gcnVuIGl0LiBIb3dldmVyCj4+IGl0IHNlZW1zIG5vdCBjYXBhYmxlIG9mIHJlYWRp
-bmcgdGhlIE5BTkQgRmxhc2guCj4+Cj4+IE91dHB1dCBpcyBhdCBbMV0sIG15IGNvbmZpZ3VyYXRp
-b24gaXMgWzJdLiBUaGUgImVyciAtNzQiIGlzIEVCQURNU0csIGluCj4+IGxpbmUgMTA1NyBvZiAi
-ZmlsZSBkcml2ZXJzL210ZC9uYW5kL25hbmRfYmFzZS5jIgo+Pgo+PiBbMV0KPj4gYmFyZWJveCAy
-MDExLjAyLjAtMDAwNzAtZ2M1ZGQ0YzQtZGlydHkgKEZlYiAxMCAyMDExIC0gMTE6NTg6MjQpCj4+
-Cj4+IEJvYXJkOiBBdG1lbCBhdDkxc2FtOWcyMC1lawo+PiBDbG9ja3M6IENQVSA3OTIgTUh6LCBt
-YXN0ZXIgMTMyIE1IeiwgbWFpbiAxOC40MzIgTUh6Cj4+IE5BTkQgZGV2aWNlOiBNYW51ZmFjdHVy
-ZXIgSUQ6IDB4ZWMsIENoaXAgSUQ6IDB4ZGEgKFNhbXN1bmcgTkFORCAyNTZNaUIKPj4gMywzViA4
-LWJpdCkKPj4gU2Nhbm5pbmcgZGV2aWNlIGZvciBiYWQgYmxvY2tzCj4+IEJhZCBlcmFzZWJsb2Nr
-IDE2MjEgYXQgMHgwY2FhMDAwMAo+PiBNYWxsb2Mgc3BhY2U6IDB4MjNiMDAwMDAgLT4gMHgyM2Yw
-MDAwMCAoc2l6ZSDCoDQgTUIpCj4+IFN0YWNrIHNwYWNlIDogMHgyM2FmODAwMCAtPiAweDIzYjAw
-MDAwIChzaXplIDMyIGtCKQo+PiBlcnIgLTc0Cj4+IGVudmZzOiB3cm9uZyBtYWdpYyBvbiAvZGV2
-L2VudjAKPj4gbm8gdmFsaWQgZW52aXJvbm1lbnQgZm91bmQgb24gL2Rldi9lbnYwLiBVc2luZyBk
-ZWZhdWx0IGVudmlyb25tZW50Cj4+IHJ1bm5pbmcgL2Vudi9iaW4vaW5pdC4uLgo+Pgo+PiBIaXQg
-YW55IGtleSB0byBzdG9wIGF1dG9ib290OiDCoDMKPj4KPj4gdHlwZSB1cGRhdGVfa2VybmVsIFs8
-aW1hZ2VuYW1lPl0gdG8gdXBkYXRlIGtlcm5lbCBpbnRvIGZsYXNoCj4+IHR5cGUgdWRhdGVfcm9v
-dCBbPGltYWdlbmFtZT5dIHRvIHVwZGF0ZSByb290ZnMgaW50byBmbGFzaAo+Pgo+PiA5RzIwLUVL
-Oi8KPj4KPj4gWzJdCj4+ICMKPj4gIyBBdXRvbWF0aWNhbGx5IGdlbmVyYXRlZCBtYWtlIGNvbmZp
-ZzogZG9uJ3QgZWRpdAo+PiAjIExpbnV4L2FybSAyMDExLjAyLjAgQmFyZWJveCBDb25maWd1cmF0
-aW9uCj4+ICMgVGh1IEZlYiAxMCAxMTo1ODoxNSAyMDExCj4+ICMKPj4gIyBDT05GSUdfQk9BUkRf
-TElOS0VSX1NDUklQVCBpcyBub3Qgc2V0Cj4+IENPTkZJR19HRU5FUklDX0xJTktFUl9TQ1JJUFQ9
-eQo+PiBDT05GSUdfQVJNPXkKPj4KPj4gIwo+PiAjIFN5c3RlbSBUeXBlCj4+ICMKPj4gQ09ORklH
-X0FSQ0hfQVQ5MT15Cj4+ICMgQ09ORklHX0FSQ0hfRVA5M1hYIGlzIG5vdCBzZXQKPj4gIyBDT05G
-SUdfQVJDSF9JTVggaXMgbm90IHNldAo+PiAjIENPTkZJR19BUkNIX01YUyBpcyBub3Qgc2V0Cj4+
-ICMgQ09ORklHX0FSQ0hfTkVUWCBpcyBub3Qgc2V0Cj4+ICMgQ09ORklHX0FSQ0hfTk9NQURJSyBp
-cyBub3Qgc2V0Cj4+ICMgQ09ORklHX0FSQ0hfT01BUCBpcyBub3Qgc2V0Cj4+ICMgQ09ORklHX0FS
-Q0hfUzNDMjR4eCBpcyBub3Qgc2V0Cj4+ICMgQ09ORklHX0FSQ0hfVkVSU0FUSUxFIGlzIG5vdCBz
-ZXQKPj4KPj4gIwo+PiAjIFByb2Nlc3NvciBUeXBlCj4+ICMKPj4gQ09ORklHX0NQVV8zMj15Cj4+
-IENPTkZJR19DUFVfQVJNOTI2VD15Cj4+IENPTkZJR19DUFVfMzJ2NT15Cj4+Cj4+ICMKPj4gIyBw
-cm9jZXNzb3IgZmVhdHVyZXMKPj4gIwo+PiAjIENPTkZJR19CT09UX0VORElBTk5FU1NfU1dJVENI
-IGlzIG5vdCBzZXQKPj4gQ09ORklHX0FSQ0hfVEVYVF9CQVNFPTB4MjNmMDAwMDAKPj4gQ09ORklH
-X0JPQVJESU5GTz0iQXRtZWwgYXQ5MXNhbTlnMjAtZWsiCj4+IENPTkZJR19IQVZFX05BTkRfQVRN
-RUxfQlVTV0lEVEhfMTY9eQo+Pgo+PiAjCj4+ICMgQXRtZWwgQVQ5MSBTeXN0ZW0tb24tQ2hpcAo+
-PiAjCj4+ICMgQ09ORklHX0FSQ0hfQVQ5MVNBTTkyNjAgaXMgbm90IHNldAo+PiAjIENPTkZJR19B
-UkNIX0FUOTFTQU05MjYxIGlzIG5vdCBzZXQKPj4gIyBDT05GSUdfQVJDSF9BVDkxU0FNOTI2MyBp
-cyBub3Qgc2V0Cj4+ICMgQ09ORklHX0FSQ0hfQVQ5MVNBTTlHMTAgaXMgbm90IHNldAo+PiBDT05G
-SUdfQVJDSF9BVDkxU0FNOUcyMD15Cj4+ICMgQ09ORklHX0FSQ0hfQVQ5MVNBTTlHNDUgaXMgbm90
-IHNldAo+PiBDT05GSUdfTUFDSF9BVDkxU0FNOUcyMEVLPXkKPj4KPj4gIwo+PiAjIEFUOTEgQm9h
-cmQgT3B0aW9ucwo+PiAjCj4+ICMgQ09ORklHX01URF9OQU5EX0FUTUVMX0JVU1dJRFRIXzE2IGlz
-IG5vdCBzZXQKPj4gIyBDT05GSUdfQVQ5MV9IQVZFXzJNTUMgaXMgbm90IHNldAo+PiAjIENPTkZJ
-R19BRUFCSSBpcyBub3Qgc2V0Cj4+Cj4+ICMKPj4gIyBBcm0gc3BlY2lmaWMgc2V0dGluZ3MKPj4g
-Iwo+PiBDT05GSUdfQ01EX0FSTV9DUFVJTkZPPXkKPj4gQ09ORklHX0FSTV9PUFRJTVpFRF9TVFJJ
-TkdfRlVOQ1RJT05TPXkKPj4gQ09ORklHX0RFRkNPTkZJR19MSVNUPSIkQVJDSF9ERUZDT05GSUci
-Cj4+IENPTkZJR19HUkVHT1JJQU5fQ0FMRU5ERVI9eQo+PiBDT05GSUdfSEFTX0tBTExTWU1TPXkK
-Pj4gQ09ORklHX0hBU19NT0RVTEVTPXkKPj4gQ09ORklHX0NNRF9NRU1PUlk9eQo+PiBDT05GSUdf
-RU5WX0hBTkRMSU5HPXkKPj4gQ09ORklHX0dFTkVSSUNfR1BJTz15Cj4+Cj4+ICMKPj4gIyBHZW5l
-cmFsIFNldHRpbmdzCj4+ICMKPj4gQ09ORklHX0xPQ0FMVkVSU0lPTl9BVVRPPXkKPj4KPj4gIwo+
-PiAjIG1lbW9yeSBsYXlvdXQKPj4gIwo+PiBDT05GSUdfSEFWRV9DT05GSUdVUkFCTEVfVEVYVF9C
-QVNFPXkKPj4gQ09ORklHX1RFWFRfQkFTRT0weDIzZjAwMDAwCj4+IENPTkZJR19IQVZFX0NPTkZJ
-R1VSQUJMRV9NRU1PUllfTEFZT1VUPXkKPj4gQ09ORklHX01FTU9SWV9MQVlPVVRfREVGQVVMVD15
-Cj4+ICMgQ09ORklHX01FTU9SWV9MQVlPVVRfRklYRUQgaXMgbm90IHNldAo+PiBDT05GSUdfU1RB
-Q0tfU0laRT0weDgwMDAKPj4gQ09ORklHX01BTExPQ19TSVpFPTB4NDAwMDAwCj4+ICMgQ09ORklH
-X0JST0tFTiBpcyBub3Qgc2V0Cj4+ICMgQ09ORklHX0VYUEVSSU1FTlRBTCBpcyBub3Qgc2V0Cj4+
-IENPTkZJR19QUk9NUFQ9IjlHMjAtRUs6Igo+PiBDT05GSUdfQkFVRFJBVEU9MTE1MjAwCj4+IENP
-TkZJR19MT05HSEVMUD15Cj4+IENPTkZJR19DQlNJWkU9MTAyNAo+PiBDT05GSUdfTUFYQVJHUz0x
-Ngo+PiBDT05GSUdfU0hFTExfSFVTSD15Cj4+ICMgQ09ORklHX1NIRUxMX1NJTVBMRSBpcyBub3Qg
-c2V0Cj4+IENPTkZJR19HTE9CPXkKPj4gQ09ORklHX1BST01QVF9IVVNIX1BTMj0ieSIKPj4gIyBD
-T05GSUdfSFVTSF9GQU5DWV9QUk9NUFQgaXMgbm90IHNldAo+PiAjIENPTkZJR19IVVNIX0dFVE9Q
-VCBpcyBub3Qgc2V0Cj4+IENPTkZJR19DTURMSU5FX0VESVRJTkc9eQo+PiBDT05GSUdfQVVUT19D
-T01QTEVURT15Cj4+ICMgQ09ORklHX01FTlUgaXMgbm90IHNldAo+PiAjIENPTkZJR19QQVNTV09S
-RCBpcyBub3Qgc2V0Cj4+IENPTkZJR19EWU5BTUlDX0NSQ19UQUJMRT15Cj4+IENPTkZJR19FUlJO
-T19NRVNTQUdFUz15Cj4+IENPTkZJR19USU1FU1RBTVA9eQo+PiBDT05GSUdfQ09OU09MRV9GVUxM
-PXkKPj4gQ09ORklHX0NPTlNPTEVfQUNUSVZBVEVfRklSU1Q9eQo+PiAjIENPTkZJR19PRl9GTEFU
-X1RSRUUgaXMgbm90IHNldAo+PiBDT05GSUdfUEFSVElUSU9OPXkKPj4gQ09ORklHX0RFRkFVTFRf
-RU5WSVJPTk1FTlQ9eQo+PiAjIENPTkZJR19ERUZBVUxUX0VOVklST05NRU5UX0dFTkVSSUMgaXMg
-bm90IHNldAo+PiBDT05GSUdfREVGQVVMVF9FTlZJUk9OTUVOVF9QQVRIPSJhcmNoL2FybS9ib2Fy
-ZHMvYXQ5MXNhbTkyNjBlay9lbnYiCj4+ICMgQ09ORklHX1BPTExFUiBpcyBub3Qgc2V0Cj4+Cj4+
-ICMKPj4gIyBEZWJ1Z2dpbmcKPj4gIwo+PiAjIENPTkZJR19ERUJVR19JTkZPIGlzIG5vdCBzZXQK
-Pj4gQ09ORklHX0VOQUJMRV9GTEFTSF9OT0lTRT15Cj4+ICMgQ09ORklHX0VOQUJMRV9QQVJUSVRJ
-T05fTk9JU0UgaXMgbm90IHNldAo+PiAjIENPTkZJR19FTkFCTEVfREVWSUNFX05PSVNFIGlzIG5v
-dCBzZXQKPj4KPj4gIwo+PiAjIENvbW1hbmRzCj4+ICMKPj4KPj4gIwo+PiAjIHNjcmlwdGluZwo+
-PiAjCj4+IENPTkZJR19DTURfRURJVD15Cj4+IENPTkZJR19DTURfU0xFRVA9eQo+PiBDT05GSUdf
-Q01EX1NBVkVFTlY9eQo+PiBDT05GSUdfQ01EX0xPQURFTlY9eQo+PiBDT05GSUdfQ01EX0VYUE9S
-VD15Cj4+IENPTkZJR19DTURfUFJJTlRFTlY9eQo+PiBDT05GSUdfQ01EX1JFQURMSU5FPXkKPj4g
-Q09ORklHX0NNRF9UUlVFPXkKPj4gQ09ORklHX0NNRF9GQUxTRT15Cj4+ICMgQ09ORklHX0NNRF9M
-T0dJTiBpcyBub3Qgc2V0Cj4+ICMgQ09ORklHX0NNRF9QQVNTV0QgaXMgbm90IHNldAo+Pgo+PiAj
-Cj4+ICMgZmlsZSBjb21tYW5kcwo+PiAjCj4+IENPTkZJR19DTURfTFM9eQo+PiBDT05GSUdfQ01E
-X1JNPXkKPj4gQ09ORklHX0NNRF9DQVQ9eQo+PiBDT05GSUdfQ01EX01LRElSPXkKPj4gQ09ORklH
-X0NNRF9STURJUj15Cj4+IENPTkZJR19DTURfQ1A9eQo+PiBDT05GSUdfQ01EX1BXRD15Cj4+IENP
-TkZJR19DTURfQ0Q9eQo+PiBDT05GSUdfQ01EX01PVU5UPXkKPj4gQ09ORklHX0NNRF9VTU9VTlQ9
-eQo+Pgo+PiAjCj4+ICMgY29uc29sZQo+PiAjCj4+IENPTkZJR19DTURfQ0xFQVI9eQo+PiBDT05G
-SUdfQ01EX0VDSE89eQo+PiAjIENPTkZJR19DTURfRUNIT19FIGlzIG5vdCBzZXQKPj4KPj4gIwo+
-PiAjIG1lbW9yeQo+PiAjCj4+ICMgQ09ORklHX0NNRF9MT0FEQiBpcyBub3Qgc2V0Cj4+IENPTkZJ
-R19DTURfTUVNSU5GTz15Cj4+IENPTkZJR19DTURfQ1JDPXkKPj4gIyBDT05GSUdfQ01EX0NSQ19D
-TVAgaXMgbm90IHNldAo+PiBDT05GSUdfQ01EX01URVNUPXkKPj4gQ09ORklHX0NNRF9NVEVTVF9B
-TFRFUk5BVElWRT15Cj4+Cj4+ICMKPj4gIyBmbGFzaAo+PiAjCj4+IENPTkZJR19DTURfRkxBU0g9
-eQo+PiAjIENPTkZJR19DTURfVUJJIGlzIG5vdCBzZXQKPj4KPj4gIwo+PiAjIGJvb3RpbmcKPj4g
-Iwo+PiBDT05GSUdfQ01EX0JPT1RNPXkKPj4gIyBDT05GSUdfQ01EX0JPT1RNX1pMSUIgaXMgbm90
-IHNldAo+PiAjIENPTkZJR19DTURfQk9PVE1fQlpMSUIgaXMgbm90IHNldAo+PiBDT05GSUdfQ01E
-X0JPT1RNX1NIT1dfVFlQRT15Cj4+IENPTkZJR19DTURfQk9PVFo9eQo+PiBDT05GSUdfQ01EX0JP
-T1RVPXkKPj4gQ09ORklHX0NNRF9SRVNFVD15Cj4+IENPTkZJR19DTURfR089eQo+PiBDT05GSUdf
-Q01EX1RJTUVPVVQ9eQo+PiBDT05GSUdfQ01EX1BBUlRJVElPTj15Cj4+IENPTkZJR19DTURfVEVT
-VD15Cj4+IENPTkZJR19DTURfVkVSU0lPTj15Cj4+IENPTkZJR19DTURfSEVMUD15Cj4+IENPTkZJ
-R19DTURfREVWSU5GTz15Cj4+IENPTkZJR19DTURfR1BJTz15Cj4+ICMgQ09ORklHX0NNRF9VTkxa
-TyBpcyBub3Qgc2V0Cj4+ICMgQ09ORklHX0NNRF9JMkMgaXMgbm90IHNldAo+PiBDT05GSUdfTkVU
-PXkKPj4gQ09ORklHX05FVF9ESENQPXkKPj4gIyBDT05GSUdfTkVUX05GUyBpcyBub3Qgc2V0Cj4+
-IENPTkZJR19ORVRfUElORz15Cj4+IENPTkZJR19ORVRfVEZUUD15Cj4+ICMgQ09ORklHX05FVF9U
-RlRQX1BVU0ggaXMgbm90IHNldAo+PiAjIENPTkZJR19ORVRfTkVUQ09OU09MRSBpcyBub3Qgc2V0
-Cj4+ICMgQ09ORklHX05FVF9SRVNPTFYgaXMgbm90IHNldAo+Pgo+PiAjCj4+ICMgRHJpdmVycwo+
-PiAjCj4+Cj4+ICMKPj4gIyBzZXJpYWwgZHJpdmVycwo+PiAjCj4+ICMgQ09ORklHX0RSSVZFUl9T
-RVJJQUxfQVJNX0RDQyBpcyBub3Qgc2V0Cj4+ICMgQ09ORklHX0RSSVZFUl9TRVJJQUxfTlMxNjU1
-MCBpcyBub3Qgc2V0Cj4+IENPTkZJR19EUklWRVJfU0VSSUFMX0FUTUVMPXkKPj4gQ09ORklHX0hB
-U19NQUNCPXkKPj4gQ09ORklHX01JSURFVj15Cj4+Cj4+ICMKPj4gIyBOZXR3b3JrIGRyaXZlcnMK
-Pj4gIwo+PiAjIENPTkZJR19EUklWRVJfTkVUX1NNQzkxMVggaXMgbm90IHNldAo+PiAjIENPTkZJ
-R19EUklWRVJfTkVUX1NNQzkxMTExIGlzIG5vdCBzZXQKPj4gQ09ORklHX0RSSVZFUl9ORVRfTUFD
-Qj15Cj4+Cj4+ICMKPj4gIyBTUEkgZHJpdmVycwo+PiAjCj4+ICMgQ09ORklHX1NQSSBpcyBub3Qg
-c2V0Cj4+IENPTkZJR19JMkM9eQo+Pgo+PiAjCj4+ICMgSTJDIEhhcmR3YXJlIEJ1cyBzdXBwb3J0
-Cj4+ICMKPj4KPj4gIwo+PiAjIGZsYXNoIGRyaXZlcnMKPj4gIwo+PiBDT05GSUdfRFJJVkVSX0NG
-ST15Cj4+IENPTkZJR19EUklWRVJfQ0ZJX0lOVEVMPXkKPj4gQ09ORklHX0RSSVZFUl9DRklfQU1E
-PXkKPj4gQ09ORklHX0RSSVZFUl9DRklfQkFOS19XSURUSF8xPXkKPj4gQ09ORklHX0RSSVZFUl9D
-RklfQkFOS19XSURUSF8yPXkKPj4gQ09ORklHX0RSSVZFUl9DRklfQkFOS19XSURUSF80PXkKPj4g
-IyBDT05GSUdfRFJJVkVSX0NGSV9CQU5LX1dJRFRIXzggaXMgbm90IHNldAo+PiBDT05GSUdfQ0ZJ
-X0JVRkZFUl9XUklURT15Cj4+IENPTkZJR19NVEQ9eQo+PiBDT05GSUdfTkFORD15Cj4+IENPTkZJ
-R19OQU5EX0FUTUVMPXkKPj4gIyBDT05GSUdfTVREX05BTkRfVkVSSUZZX1dSSVRFIGlzIG5vdCBz
-ZXQKPj4gIyBDT05GSUdfTVREX05BTkRfRUNDX1NNQyBpcyBub3Qgc2V0Cj4+IENPTkZJR19NVERf
-TkFORF9JRFM9eQo+PiAjIENPTkZJR19VQkkgaXMgbm90IHNldAo+PiAjIENPTkZJR19BVEEgaXMg
-bm90IHNldAo+PiAjIENPTkZJR19VU0IgaXMgbm90IHNldAo+PiAjIENPTkZJR19VU0JfR0FER0VU
-IGlzIG5vdCBzZXQKPj4gIyBDT05GSUdfVklERU8gaXMgbm90IHNldAo+PiAjIENPTkZJR19NQ0kg
-aXMgbm90IHNldAo+Pgo+PiAjCj4+ICMgTUZECj4+ICMKPj4gIyBDT05GSUdfSTJDX01DMTM4OTIg
-aXMgbm90IHNldAo+PiAjIENPTkZJR19JMkNfTUMzNDcwNCBpcyBub3Qgc2V0Cj4+ICMgQ09ORklH
-X0kyQ19NQzlTRFo2MCBpcyBub3Qgc2V0Cj4+ICMgQ09ORklHX0kyQ19MUDM5NzIgaXMgbm90IHNl
-dAo+PiAjIENPTkZJR19JMkNfVFdMNDAzMCBpcyBub3Qgc2V0Cj4+ICMgQ09ORklHX0xFRCBpcyBu
-b3Qgc2V0Cj4+Cj4+ICMKPj4gIyBGaWxlc3lzdGVtIHN1cHBvcnQKPj4gIwo+PiAjIENPTkZJR19G
-U19DUkFNRlMgaXMgbm90IHNldAo+PiBDT05GSUdfRlNfUkFNRlM9eQo+PiBDT05GSUdfRlNfREVW
-RlM9eQo+PiBDT05GSUdfQ1JDMzI9eQo+PiAjIENPTkZJR19ESUdFU1QgaXMgbm90IHNldAo+PiAj
-IENPTkZJR19HRU5FUklDX0ZJTkRfTkVYVF9CSVQgaXMgbm90IHNldAo+PiAjIENPTkZJR19QUk9D
-RVNTX0VTQ0FQRV9TRVFVRU5DRSBpcyBub3Qgc2V0Cj4+Cj4+IF9fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fCj4+IGJhcmVib3ggbWFpbGluZyBsaXN0Cj4+IGJh
-cmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwo+PiBodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9t
-YWlsbWFuL2xpc3RpbmZvL2JhcmVib3gKPgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZy
-YWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFy
-ZWJveAo=
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: Nicolas Ferre <nicolas.ferre@atmel.com>
+Cc: Patrice Vilchez <patrice.vilchez@atmel.com>
+---
+ arch/arm/boards/at91sam9263ek/env/bin/_update      |   36 --------------
+ arch/arm/boards/at91sam9263ek/env/bin/boot         |   47 ------------------
+ arch/arm/boards/at91sam9263ek/env/bin/hush_hack    |    1 -
+ arch/arm/boards/at91sam9263ek/env/bin/init         |   38 ---------------
+ .../at91sam9263ek/env/bin/update_barebox_xmodem    |   26 ----------
+ .../arm/boards/at91sam9263ek/env/bin/update_kernel |   15 ------
+ arch/arm/boards/at91sam9263ek/env/bin/update_root  |   16 ------
+ arch/arm/boards/at91sam9263ek/env/config           |   51 ++++++++++++-------
+ arch/arm/configs/at91sam9263ek_defconfig           |    3 +-
+ 9 files changed, 34 insertions(+), 199 deletions(-)
+ delete mode 100644 arch/arm/boards/at91sam9263ek/env/bin/_update
+ delete mode 100644 arch/arm/boards/at91sam9263ek/env/bin/boot
+ delete mode 100644 arch/arm/boards/at91sam9263ek/env/bin/hush_hack
+ delete mode 100644 arch/arm/boards/at91sam9263ek/env/bin/init
+ delete mode 100644 arch/arm/boards/at91sam9263ek/env/bin/update_barebox_xmodem
+ delete mode 100644 arch/arm/boards/at91sam9263ek/env/bin/update_kernel
+ delete mode 100644 arch/arm/boards/at91sam9263ek/env/bin/update_root
+
+diff --git a/arch/arm/boards/at91sam9263ek/env/bin/_update b/arch/arm/boards/at91sam9263ek/env/bin/_update
+deleted file mode 100644
+index 014bce3..0000000
+--- a/arch/arm/boards/at91sam9263ek/env/bin/_update
++++ /dev/null
+@@ -1,36 +0,0 @@
+-#!/bin/sh
+-
+-if [ -z "$part" -o -z "$image" ]; then
+-	echo "define \$part and \$image"
+-	exit 1
+-fi
+-
+-if [ ! -e "$part" ]; then
+-	echo "Partition $part does not exist"
+-	exit 1
+-fi
+-
+-if [ $# = 1 ]; then
+-	image=$1
+-fi
+-
+-if [ x$ip = xdhcp ]; then
+-	dhcp
+-fi
+-
+-ping $eth0.serverip
+-if [ $? -ne 0 ] ; then
+-	echo "update aborted"
+-	exit 1
+-fi
+-
+-unprotect $part
+-
+-echo
+-echo "erasing partition $part"
+-erase $part
+-
+-echo
+-echo "flashing $image to $part"
+-echo
+-tftp $image $part
+diff --git a/arch/arm/boards/at91sam9263ek/env/bin/boot b/arch/arm/boards/at91sam9263ek/env/bin/boot
+deleted file mode 100644
+index 533dea7..0000000
+--- a/arch/arm/boards/at91sam9263ek/env/bin/boot
++++ /dev/null
+@@ -1,47 +0,0 @@
+-#!/bin/sh
+-
+-. /env/config
+-
+-if [ x$1 = xnand ]; then
+-	root=nand
+-	kernel=nand
+-fi
+-
+-if [ x$1 = xnet ]; then
+-	root=net
+-	kernel=net
+-fi
+-
+-if [ x$1 = xnor ]; then
+-	root=nor
+-	kernel=nor
+-fi
+-
+-if [ x$ip = xdhcp ]; then
+-	bootargs="$bootargs ip=dhcp"
+-else
+-	bootargs="$bootargs ip=$eth0.ipaddr:$eth0.serverip:$eth0.gateway:$eth0.netmask:::"
+-fi
+-
+-if [ x$root = xnand ]; then
+-	bootargs="$bootargs root=$rootpart_nand rootfstype=jffs2"
+-elif [ x$root = xnor ]; then
+-	bootargs="$bootargs root=$rootpart_nor rootfstype=jffs2"
+-else
+-	bootargs="$bootargs root=/dev/nfs nfsroot=$eth0.serverip:$nfsroot,v3,tcp"
+-fi
+-
+-bootargs="$bootargs mtdparts=physmap-flash.0:$nor_parts"
+-
+-if [ $kernel = net ]; then
+-	if [ x$ip = xdhcp ]; then
+-		dhcp
+-	fi
+-	tftp $uimage uImage || exit 1
+-	bootm uImage
+-elif [ $kernel = nor ]; then
+-	bootm /dev/nor0.kernel
+-else
+-	bootm /dev/nand0.kernel.bb
+-fi
+-
+diff --git a/arch/arm/boards/at91sam9263ek/env/bin/hush_hack b/arch/arm/boards/at91sam9263ek/env/bin/hush_hack
+deleted file mode 100644
+index 5fffa92..0000000
+--- a/arch/arm/boards/at91sam9263ek/env/bin/hush_hack
++++ /dev/null
+@@ -1 +0,0 @@
+-nand -a /dev/nand0.*
+diff --git a/arch/arm/boards/at91sam9263ek/env/bin/init b/arch/arm/boards/at91sam9263ek/env/bin/init
+deleted file mode 100644
+index eaa298d..0000000
+--- a/arch/arm/boards/at91sam9263ek/env/bin/init
++++ /dev/null
+@@ -1,38 +0,0 @@
+-#!/bin/sh
+-
+-PATH=/env/bin
+-export PATH
+-
+-. /env/config
+-if [ -e /dev/nor0 ]; then
+-	addpart /dev/nor0 $nor_parts
+-fi
+-
+-if [ -e /dev/nand0 ]; then
+-	addpart /dev/nand0 $nand_parts
+-
+-	# Uh, oh, hush first expands wildcards and then starts executing
+-	# commands. What a bug!
+-	source /env/bin/hush_hack 
+-fi
+-
+-if [ -z $eth0.ethaddr ]; then
+-	while [ -z $eth0.ethaddr ]; do
+-		readline "no MAC address set for eth0. please enter the one found on your board: " eth0.ethaddr
+-	done
+-	echo -a /env/config "eth0.ethaddr=$eth0.ethaddr"
+-fi
+-
+-echo
+-echo -n "Hit any key to stop autoboot: "
+-timeout -a $autoboot_timeout
+-if [ $? != 0 ]; then
+-	echo
+-	echo "type update_kernel nor [<imagename>] to update kernel into flash"
+-	echo "type update_root nor [<imagename>] to update rootfs into flash"
+-	echo "type update_barebox_xmodem nor to update barebox into flash"
+-	echo
+-	exit
+-fi
+-
+-boot
+diff --git a/arch/arm/boards/at91sam9263ek/env/bin/update_barebox_xmodem b/arch/arm/boards/at91sam9263ek/env/bin/update_barebox_xmodem
+deleted file mode 100644
+index 39818b5..0000000
+--- a/arch/arm/boards/at91sam9263ek/env/bin/update_barebox_xmodem
++++ /dev/null
+@@ -1,26 +0,0 @@
+-#!/bin/sh
+-
+-. /env/config
+-
+-if [ x$1 = xnand ]; then
+-	part=/dev/nand0.barebox
+-elif [ x$1 = xnor ]; then
+-	part=/dev/nor0.barebox
+-else
+-	echo "usage: $0 nor|nand"
+-	exit 1
+-fi
+-
+-loadb -f barebox.bin -c
+-
+-unprotect $part
+-echo
+-echo "erasing partition $part"
+-erase $part
+-
+-echo
+-echo "flashing barebox.bin to $part"
+-echo
+-cp barebox.bin $part
+-crc32 -f barebox.bin
+-crc32 -f $part
+diff --git a/arch/arm/boards/at91sam9263ek/env/bin/update_kernel b/arch/arm/boards/at91sam9263ek/env/bin/update_kernel
+deleted file mode 100644
+index 05c822d..0000000
+--- a/arch/arm/boards/at91sam9263ek/env/bin/update_kernel
++++ /dev/null
+@@ -1,15 +0,0 @@
+-#!/bin/sh
+-
+-. /env/config
+-
+-image=$uimage
+-if [ x$1 = xnand ]; then
+-	part=/dev/nand0.kernel.bb
+-elif [ x$1 = xnor ]; then
+-	part=/dev/nor0.kernel
+-else
+-	echo "usage: $0 nor|nand [imagename]"
+-	exit 1
+-fi
+-
+-. /env/bin/_update $2
+diff --git a/arch/arm/boards/at91sam9263ek/env/bin/update_root b/arch/arm/boards/at91sam9263ek/env/bin/update_root
+deleted file mode 100644
+index a751372..0000000
+--- a/arch/arm/boards/at91sam9263ek/env/bin/update_root
++++ /dev/null
+@@ -1,16 +0,0 @@
+-#!/bin/sh
+-
+-. /env/config
+-
+-image=$jffs2
+-if [ x$1 = xnand ]; then
+-	part=/dev/nand0.root.bb
+-elif [ x$1 = xnor ]; then
+-	part=/dev/nor0.root
+-else
+-	echo "usage: $0 nor|nand [imagename]"
+-	exit 1
+-fi
+-
+-. /env/bin/_update $2
+-
+diff --git a/arch/arm/boards/at91sam9263ek/env/config b/arch/arm/boards/at91sam9263ek/env/config
+index 4b322ad..49c4339 100644
+--- a/arch/arm/boards/at91sam9263ek/env/config
++++ b/arch/arm/boards/at91sam9263ek/env/config
+@@ -1,28 +1,41 @@
+ #!/bin/sh
+ 
+-# can be either 'net', 'nor' or 'nand''
+-kernel=net
+-root=net
+-
+-uimage=uImage
+-jffs2=root.jffs2
+-
+-autoboot_timeout=3
+-
+-nfsroot=""
+-bootargs="console=ttyS0,115200"
+-
+-nor_parts="256k(barebox)ro,64k(bareboxenv),1536k(kernel),-(root)"
+-rootpart_nor="/dev/mtdblock3"
+-
+-#nand_parts="256k(barebox)ro,64k(bareboxenv),1536k(kernel),-(root)"
+-#rootpart_nand="/dev/mtdblock7"
+-
+ # use 'dhcp' to do dhcp in barebox and in kernel
++# use 'none' if you want to skip kernel ip autoconfiguration
+ ip=dhcp
+ 
+ # or set your networking parameters here
+ #eth0.ipaddr=a.b.c.d
+ #eth0.netmask=a.b.c.d
+ #eth0.gateway=a.b.c.d
+-#eth0.serverip=192.168.23.1
++#eth0.serverip=a.b.c.d
++
++# can be either 'net' , 'nor' or 'nand'
++kernel_loc=net
++# can be either 'net', 'nor', 'nand' or 'initrd'
++rootfs_loc=net
++
++# can be either 'jffs2' or 'ubifs'
++rootfs_type=ubifs
++rootfsimage=root.$rootfs_type
++
++# The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
++#kernelimage_type=zimage
++#kernelimage=zImage
++kernelimage_type=uimage
++kernelimage=uImage
++#kernelimage_type=raw
++#kernelimage=Image
++#kernelimage_type=raw_lzo
++#kernelimage=Image.lzo
++
++nand_parts="256k(barebox)ro,64k(bareboxenv),1536k(kernel),-(root)"
++rootfs_mtdblock_nand=3
++
++autoboot_timeout=3
++
++bootargs="console=ttyS0,115200"
++
++# set a fancy prompt (if support is compiled in)
++PS1="\e[1;32mbarebox@\e[1;31m\h:\w\e[0m "
++
+diff --git a/arch/arm/configs/at91sam9263ek_defconfig b/arch/arm/configs/at91sam9263ek_defconfig
+index c92999f..3e7752a 100644
+--- a/arch/arm/configs/at91sam9263ek_defconfig
++++ b/arch/arm/configs/at91sam9263ek_defconfig
+@@ -3,9 +3,11 @@ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+ CONFIG_PROMPT="9263-EK:"
+ CONFIG_LONGHELP=y
+ CONFIG_GLOB=y
++CONFIG_HUSH_FANCY_PROMPT=y
+ CONFIG_CMDLINE_EDITING=y
+ CONFIG_AUTO_COMPLETE=y
+ CONFIG_PARTITION=y
++CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
+ CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/at91sam9263ek/env"
+ CONFIG_CMD_EDIT=y
+ CONFIG_CMD_SLEEP=y
+@@ -15,7 +17,6 @@ CONFIG_CMD_EXPORT=y
+ CONFIG_CMD_PRINTENV=y
+ CONFIG_CMD_READLINE=y
+ CONFIG_CMD_MEMINFO=y
+-CONFIG_CMD_CRC=y
+ CONFIG_CMD_MTEST=y
+ CONFIG_CMD_FLASH=y
+ CONFIG_CMD_BOOTM_ZLIB=y
+-- 
+1.7.2.3
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
