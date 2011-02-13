@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PocfC-0001Jh-NQ
-	for barebox@lists.infradead.org; Sun, 13 Feb 2011 14:11:03 +0000
+	id 1PocfC-0001Jk-NI
+	for barebox@lists.infradead.org; Sun, 13 Feb 2011 14:11:00 +0000
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Sun, 13 Feb 2011 15:10:43 +0100
-Message-Id: <1297606252-802-7-git-send-email-jbe@pengutronix.de>
+Date: Sun, 13 Feb 2011 15:10:48 +0100
+Message-Id: <1297606252-802-12-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1297606252-802-1-git-send-email-jbe@pengutronix.de>
 References: <1297606252-802-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,189 +21,181 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/15] mini2440: Add some useful documentation
+Subject: [PATCH 11/15] mini2440: Add GPIO settings
 To: barebox@lists.infradead.org
 Cc: Juergen Beisert <juergen@kreuzholzen.de>
 
 From: Juergen Beisert <juergen@kreuzholzen.de>
 
+This is required in order to enable booting from NAND, when there is no
+other first level bootlader.
+
 Signed-off-by: Juergen Beisert <juergen@kreuzholzen.de>
 ---
- arch/arm/boards/mini2440/mini2440.c |  157 +++++++++++++++++++++++++++++++++++
- 1 files changed, 157 insertions(+), 0 deletions(-)
+ arch/arm/boards/mini2440/mini2440.c |  137 +++++++++++++++++++++++++++++++++++
+ 1 files changed, 137 insertions(+), 0 deletions(-)
 
 diff --git a/arch/arm/boards/mini2440/mini2440.c b/arch/arm/boards/mini2440/mini2440.c
-index e22fbd0..17496a4 100644
+index 2aeb09e..30dff07 100644
 --- a/arch/arm/boards/mini2440/mini2440.c
 +++ b/arch/arm/boards/mini2440/mini2440.c
-@@ -64,6 +64,10 @@ static struct device_d nand_dev = {
+@@ -35,6 +35,7 @@
+ #include <nand.h>
+ #include <asm/armlinux.h>
+ #include <asm/io.h>
++#include <mach/gpio.h>
+ #include <mach/s3c24x0-iomap.h>
+ #include <mach/s3c24x0-nand.h>
+ #include <mach/s3c24xx-generic.h>
+@@ -82,12 +83,148 @@ static struct device_d dm9000_dev = {
+ 	.platform_data = &dm9000_data,
+ };
  
- /*
-  * dm9000 network controller onboard
-+ * Connected to CS line 4 and interrupt line EINT7,
-+ * data width is 16 bit
-+ * Area 1: Offset 0x300...0x303
-+ * Area 2: Offset 0x304...0x307
-  */
- static struct dm9000_platform_data dm9000_data = {
- 	.iobase   = CS4_BASE + 0x300,
-@@ -139,3 +143,156 @@ static int mini2440_console_init(void)
- }
++static const unsigned pin_usage[] = {
++	/* address bus, used by NOR, SDRAM */
++	GPA1_ADDR16,
++	GPA2_ADDR17,
++	GPA3_ADDR18,
++	GPA4_ADDR19,
++	GPA5_ADDR20,
++	GPA6_ADDR21,
++	GPA7_ADDR22,
++
++	GPA8_ADDR23_GPIO | GPIO_IN,
++	GPA9_ADDR24,	/* BA0 */
++	GPA10_ADDR25,	/* BA1 */
++	GPA11_ADDR26_GPIO | GPIO_IN,	/* not connected */
++
++	/* DM9000 requirements */
++	GPA15_NGCS4,
++	GPF7_EINT7,
++
++	/* de-activate the speaker */
++	GPB0_GPIO | GPIO_OUT | GPIO_VAL(0),
++
++	/* SD socket */
++	GPE5_SDCLK,
++	GPE6_SDCMD,
++	GPE7_SDDAT0,
++	GPE8_SDDAT1,
++	GPE9_SDDAT2,
++	GPE10_SDDAT3,
++	GPG8_GPIO | GPIO_IN,	/* change detection */
++	GPH8_GPIO | GPIO_IN,	/* write protection sense */
++
++	/* NAND requirements */
++	GPA17_CLE,
++	GPA18_ALE,
++	GPA19_NFWE,
++	GPA20_NFRE,
++	GPA21_NRSTOUT,
++	GPA22_NFCE,
++
++	/* Video out */
++	GPC0_LEND,
++	GPC1_VCLK,
++	GPC2_VLINE,
++	GPC3_VFRAME,
++	GPC4_VM,
++	GPC5_LPCOE,
++	GPC6_LPCREV,
++	GPC7_LPCREVB,
++	GPG4_LCD_PWREN,
++
++	GPC8_VD0,
++	GPC9_VD1,
++	GPC10_VD2,
++	GPC11_VD3,
++	GPC12_VD4,
++	GPC13_VD5,
++	GPC14_VD6,
++	GPC15_VD7,
++	GPD0_VD8,
++	GPD1_VD9,
++	GPD2_VD10,
++	GPD3_VD11,
++	GPD4_VD12,
++	GPD5_VD13,
++	GPD6_VD14,
++	GPD7_VD15,
++	GPD8_VD16,
++	GPD9_VD17,
++	GPD10_VD18,
++	GPD11_VD19,
++	GPD12_VD20,
++	GPD13_VD21,
++	GPD14_VD22,
++	GPD15_VD23,
++
++	/* K6 or CON12, pin 6, external pull up  */
++	GPG11_EINT19 | GPIO_IN,
++	/* K5 or CON12, pin 5*/
++	GPG7_EINT15 | GPIO_IN,
++	/* K4 or CON12, pin 4 */
++	GPG6_EINT14 | GPIO_IN,
++	/* K3 or CON12, pin 3 */
++	GPG5_EINT13 | GPIO_IN,
++	/* K2 or CON12, pin 2 */
++	GPG3_EINT11 | GPIO_IN,
++	/* K1 or CON12, pin 1, external pull up */
++	GPG0_EINT8 | GPIO_IN,
++
++	/* LED 1 1=off */
++	GPB5_GPIO | GPIO_OUT | GPIO_VAL(1),
++	/* LED 2 1=off */
++	GPB6_GPIO | GPIO_OUT | GPIO_VAL(1),
++	/* LED 3 1=off */
++	GPB7_GPIO | GPIO_OUT | GPIO_VAL(1),
++	/* LED 4 1=off */
++	GPB8_GPIO | GPIO_OUT | GPIO_VAL(1),
++
++	/* camera interface (ignore it) */
++	GPJ0_GPIO | GPIO_IN,
++	GPJ1_GPIO | GPIO_IN,
++	GPJ2_GPIO | GPIO_IN,
++	GPJ3_GPIO | GPIO_IN,
++	GPJ4_GPIO | GPIO_IN,
++	GPJ5_GPIO | GPIO_IN,
++	GPJ6_GPIO | GPIO_IN,
++	GPJ7_GPIO | GPIO_IN,
++	GPJ8_GPIO | GPIO_IN,
++	GPJ9_GPIO | GPIO_IN,
++	GPJ10_GPIO | GPIO_IN,
++	GPJ11_GPIO | GPIO_IN,
++	GPJ12_GPIO | GPIO_IN,
++
++	/* I2C bus */
++	GPE14_IICSCL,	/* external pull up */
++	GPE15_IICSDA,	/* external pull up */
++
++	GPA12_NGCS1,	/* CON5, pin 7 */
++	GPA13_NGCS2,	/* CON5, pin 8 */
++	GPA14_NGCS3,	/* CON5, pin 9 */
++	GPA16_NGCS5,	/* CON5, pin 10 */
++
++	/* UART2 (spare) */
++	GPH4_TXD1,
++	GPH5_RXD1,
++
++	/* UART3 (spare) */
++	GPH6_TXD2,
++	GPH7_RXD2,
++};
++
+ static int mini2440_devices_init(void)
+ {
+ 	uint32_t reg;
++	int i;
  
- console_initcall(mini2440_console_init);
+ 	sdram_dev.size = s3c24x0_get_memory_size();
+ 
++	/* ----------- configure the access to the outer space ---------- */
++	for (i = 0; i < ARRAY_SIZE(pin_usage); i++)
++		s3c_gpio_mode(pin_usage[i]);
 +
-+/** @page mini2440 FriendlyARM's mini2440
-+
-+This system is based on a Samsung S3C2440 CPU. The card is shipped with:
-+
-+- S3C2440\@400 MHz or 533 MHz (ARM920T/ARMv4T)
-+- 12 MHz crystal reference
-+- 32.768 kHz crystal reference
-+- SDRAM 64 MiB (one bank only)
-+   - HY57V561620 (two devices for 64 MiB to form a 32 bit bus)
-+     - 4M x 16bit x 4 Banks Mobile SDRAM
-+     - 8192 refresh cycles / 64 ms
-+     - CL2\@100 MHz
-+     - 133 MHz max
-+     - collumn address size is 9 bits
-+     - row address size is 13 bits
-+   - MT48LC16M16 (two devices for 64 MiB to form a 32 bit bus)
-+     - 4M x 16bit x 4 Banks Mobile SDRAM
-+     - commercial & industrial type
-+     - 8192 refresh cycles / 64 ms
-+     - CL2\@100 MHz
-+     - 133 MHz max
-+     - collumn address size is 9 bits
-+     - row address size is 13 bits
-+- NAND Flash 128MiB...1GiB
-+   - K9Fxx08
-+- NOR Flash (up to 22 address lines available)
-+   - AM29LV160DB, 2 MiB
-+   - SST39VF1601, 2 MiB
-+   - 16 bit data bus
-+- SD card interface, 3.3V (fixed voltage)
-+- Host and device USB interface, USB1.1 compliant
-+- UDA1341TS Audio
-+- DM9000 Ethernet interface
-+  - uses CS#4
-+  - uses EINT7
-+  - 16 bit data bus
-+- I2C interface, 100 KHz and 400 KHz
-+  - EEPROM
-+    - ST M24C08
-+    - address 0x50
-+- Speaker on GPB0 ("low" = inactive)
-+- LCD interface
-+- Touch Screen interface
-+- Camera interface
-+- I2S interface
-+- AC97 Audio-CODEC interface
-+- three serial RS232 interfaces (one with level converter)
-+- SPI interface
-+- JTAG interface
-+
-+How to get the binary image:
-+
-+Using the default configuration:
-+
-+@code
-+make ARCH=arm mini2440_defconfig
-+@endcode
-+
-+Build the binary image:
-+
-+@code
-+make ARCH=arm CROSS_COMPILE=armv4compiler
-+@endcode
-+
-+@note replace the armv4compiler with your ARM v4 cross compiler.
-+
-+How to bring in \a barebox ?
-+
-+First run it as a second stage bootloader. There are two known working ways to
-+do so:
-+
-+One way is to use the "device firmware update" feature of the 'supervivi'.
-+ - connect a terminal application to the mini2440's serial connector
-+ - switch S2 to 'boot from NOR' to boot into 'supervivi'
-+ - connect your host to the usb device connector on the mini2440
-+ - switch on your mini2440
-+ - in 'supervivi' type q (command line) then:
-+@code
-+load ram 0x31000000 \<barebox-size\> u
-+@endcode
-+ - use a tool for DFU update (for example from openkomo) to transfer the 'barebox.bin' binary
-+ - then in 'supervivi' just run
-+@code
-+go 0x31000000
-+@endcode
-+
-+A second way is to use any kind of JTAG adapter. For this case I'm using the
-+'JTAKkey tiny' from Amontec and OpenOCD. First you need an adapter for this
-+kind of Dongle as it uses a 20 pin connector with 2.54 mm grid, and the
-+mini2440 uses a 10 pin connector with 2 mm grid.
-+
-+@code
-+             Amontec JTAGkey tiny               mini2440
-+           -------------------------------------------------------
-+              VREF  1   2  n.c.             VREF  1   2  VREF
-+            TRST_N  3   4  GND            TRST_N  3   4  SRST_N
-+               TDI  5   6  GND               TDI  5   6  TDO
-+               TMS  7   8  GND               TMS  7   8  GND
-+               TCK  9  10  GND               TCK  9  10  GND
-+              n.c. 11  12  GND
-+               TDO 13  14  GND
-+            SRST_N 15  16  GND
-+              n.c. 17  18  GND
-+              n.c. 19  20  GND
-+@endcode
-+
-+Create a simple board description file. I did it this way:
-+
-+@code
-+source [find interface/jtagkey-tiny.cfg]
-+source [find target/samsung_s3c2440.cfg]
-+
-+adapter_khz 12000
-+@endcode
-+
-+And then the following steps:
-+ - connect a terminal application to the mini2440's serial connector
-+ - connect the mini2440 to a working network
-+ - switch S2 to boot from NOR to boot into 'supervivi'
-+ - switch on your mini2440
-+ - run the OpenOCD daemon configured with the file shown above
-+ - connect to the OpenOCD daemon via 'telnet'.
-+ - run the following commands to download @a barebox into your target
-+@code
-+> halt
-+> load_image \<path to the 'barebox.bin'\> 0x31000000 bin
-+> resume 0x31000000
-+@endcode
-+
-+Now @a barebox is starting from an already initialized CPU and SDRAM (done by
-+'supervivi').
-+
-+Change to your terminal console and configure the network first. Adapt the
-+following settings to your network:
-+@code
-+eth0.ipaddr=192.168.1.240
-+eth0.netmask=255.255.255.0
-+eth0.gateway=192.168.23.2
-+eth0.serverip=192.168.1.7
-+eth0.ethaddr=00:04:f3:00:06:35
-+@endcode
-+
-+A 'ping' to your TFTP server should bring a "...is alive" message now.
-+
-+We are ready now to program @a barebox into the NAND flash:
-+
-+@code
-+erase /dev/nand0.barebox.bb
-+tftp barebox.bin /dev/nand0.barebox.bb
-+@endcode
-+
-+*/
+ 	reg = readl(BWSCON);
+ 
+ 	/* CS#4 to access the network controller */
 -- 
 1.7.2.3
 
