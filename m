@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PocfC-0001JX-Na
-	for barebox@lists.infradead.org; Sun, 13 Feb 2011 14:11:01 +0000
+	id 1PocfC-0001Jb-Nq
+	for barebox@lists.infradead.org; Sun, 13 Feb 2011 14:11:04 +0000
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Sun, 13 Feb 2011 15:10:39 +0100
-Message-Id: <1297606252-802-3-git-send-email-jbe@pengutronix.de>
+Date: Sun, 13 Feb 2011 15:10:51 +0100
+Message-Id: <1297606252-802-15-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1297606252-802-1-git-send-email-jbe@pengutronix.de>
 References: <1297606252-802-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,7 +21,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/15] MACH-S3C24xx: Fix typo in UART2_SIZE macro
+Subject: [PATCH 14/15] mini2440: Remove some A9M2440 platform leftovers
 To: barebox@lists.infradead.org
 Cc: Juergen Beisert <juergen@kreuzholzen.de>
 
@@ -29,21 +29,24 @@ From: Juergen Beisert <juergen@kreuzholzen.de>
 
 Signed-off-by: Juergen Beisert <juergen@kreuzholzen.de>
 ---
- arch/arm/mach-s3c24xx/include/mach/s3c24x0-iomap.h |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+ arch/arm/boards/mini2440/env/config |    5 ++---
+ 1 files changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/mach-s3c24xx/include/mach/s3c24x0-iomap.h b/arch/arm/mach-s3c24xx/include/mach/s3c24x0-iomap.h
-index ab3dc4f..a990d80 100644
---- a/arch/arm/mach-s3c24xx/include/mach/s3c24x0-iomap.h
-+++ b/arch/arm/mach-s3c24xx/include/mach/s3c24x0-iomap.h
-@@ -88,7 +88,7 @@
- #define UART1_BASE (S3C24X0_UART_BASE)
- #define UART1_SIZE 0x4000
- #define UART2_BASE (S3C24X0_UART_BASE + 0x4000)
--#define UART3_SIZE 0x4000
-+#define UART2_SIZE 0x4000
- #define UART3_BASE (S3C24X0_UART_BASE + 0x8000)
- #define UART3_SIZE 0x4000
+diff --git a/arch/arm/boards/mini2440/env/config b/arch/arm/boards/mini2440/env/config
+index 05a2d01..3169fd9 100644
+--- a/arch/arm/boards/mini2440/env/config
++++ b/arch/arm/boards/mini2440/env/config
+@@ -4,9 +4,8 @@
+ kernel=net
+ root=net
+ 
+-#uimage=uImage-a9m2440
+-uimage=uImage
+-jffs2=root-a9m2440.jffs2
++uimage=uImage-mini2440
++jffs2=root-mini2440.jffs2
+ 
+ autoboot_timeout=3
  
 -- 
 1.7.2.3
