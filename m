@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PocfC-0001Jd-Nm
-	for barebox@lists.infradead.org; Sun, 13 Feb 2011 14:11:06 +0000
+	id 1PocfF-0001Jf-Uv
+	for barebox@lists.infradead.org; Sun, 13 Feb 2011 14:11:08 +0000
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Sun, 13 Feb 2011 15:10:41 +0100
-Message-Id: <1297606252-802-5-git-send-email-jbe@pengutronix.de>
+Date: Sun, 13 Feb 2011 15:10:40 +0100
+Message-Id: <1297606252-802-4-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1297606252-802-1-git-send-email-jbe@pengutronix.de>
 References: <1297606252-802-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,39 +21,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/15] mini2440: Be a little be pedantic with the include file
-	order
+Subject: [PATCH 03/15] MACH-S324xx: Change detection method of the second
+	SDRAM bank
 To: barebox@lists.infradead.org
 Cc: Juergen Beisert <juergen@kreuzholzen.de>
 
 From: Juergen Beisert <juergen@kreuzholzen.de>
 
----
- arch/arm/boards/mini2440/mini2440.c |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
+There is no rule how to connect the SDRAMs to the two clocks signales the CPU
+provides. Some boards are using them on a per bank base, some others on a per
+chip base. So, the check for the enabled second clock cannot be used to detect
+if the second SDRAM bank is populated.
+A better way is to check the MT bits of the second SDRAM bank register. When
+the init code sets these bits to '00' the second bank is not used for SDRAM
+and gets ignored.
 
-diff --git a/arch/arm/boards/mini2440/mini2440.c b/arch/arm/boards/mini2440/mini2440.c
-index 9639176..a3bb817 100644
---- a/arch/arm/boards/mini2440/mini2440.c
-+++ b/arch/arm/boards/mini2440/mini2440.c
-@@ -29,15 +29,15 @@
- #include <common.h>
- #include <driver.h>
- #include <init.h>
--#include <asm/armlinux.h>
- #include <generated/mach-types.h>
- #include <partition.h>
-+#include <dm9000.h>
- #include <nand.h>
-+#include <asm/armlinux.h>
- #include <asm/io.h>
- #include <mach/s3c24x0-iomap.h>
- #include <mach/s3c24x0-nand.h>
- #include <mach/s3c24xx-generic.h>
--#include <dm9000.h>
+Signed-off-by: Juergen Beisert <juergen@kreuzholzen.de>
+---
+ arch/arm/mach-s3c24xx/generic.c |    5 +++--
+ 1 files changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/mach-s3c24xx/generic.c b/arch/arm/mach-s3c24xx/generic.c
+index c04e0b6..4c7e799 100644
+--- a/arch/arm/mach-s3c24xx/generic.c
++++ b/arch/arm/mach-s3c24xx/generic.c
+@@ -181,8 +181,9 @@ int s3c24xx_dump_clocks(void)
+ 	printf("hclk:    %7d kHz\n", s3c24xx_get_hclk() / 1000);
+ 	printf("pclk:    %7d kHz\n", s3c24xx_get_pclk() / 1000);
+ 	printf("SDRAM1:   CL%d@%dMHz\n", ((readl(BANKCON6) & 0xc) >> 2) + 2, s3c24xx_get_hclk() / 1000000);
+-	if (!(readl(MISCCR) & (1 << 18)))
+-		printf("SDRAM2:   CL%d@%dMHz\n", ((readl(BANKCON7) & 0xc) >> 2) + 2, s3c24xx_get_hclk() / 1000000);
++	if ((readl(BANKCON7) & (0x3 << 15)) == (0x3 << 15))
++		printf("SDRAM2:   CL%d@%dMHz\n", ((readl(BANKCON7) & 0xc) >> 2) + 2,
++			s3c24xx_get_hclk() / 1000000);
+ 	return 0;
+ }
  
- static struct memory_platform_data ram_pdata = {
- 	.name		= "ram0",
 -- 
 1.7.2.3
 
