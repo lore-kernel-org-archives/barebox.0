@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PocfC-0001JZ-Ne
-	for barebox@lists.infradead.org; Sun, 13 Feb 2011 14:11:07 +0000
+	id 1PocfC-0001Jg-NM
+	for barebox@lists.infradead.org; Sun, 13 Feb 2011 14:11:01 +0000
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Sun, 13 Feb 2011 15:10:44 +0100
-Message-Id: <1297606252-802-8-git-send-email-jbe@pengutronix.de>
+Date: Sun, 13 Feb 2011 15:10:47 +0100
+Message-Id: <1297606252-802-11-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1297606252-802-1-git-send-email-jbe@pengutronix.de>
 References: <1297606252-802-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,53 +21,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/15] mini2440: Add PLL settings
+Subject: [PATCH 10/15] mini2440: Add SDRAM size autodetection
 To: barebox@lists.infradead.org
 Cc: Juergen Beisert <juergen@kreuzholzen.de>
 
 From: Juergen Beisert <juergen@kreuzholzen.de>
 
-This is required in order to enable booting from NAND and using the generic
-S3C2440 setup routines.
+If the SDRAM type will change in the future, only the 'config.h' must be
+adapted to the new settings. The real size will be read back from this setting.
 
 Signed-off-by: Juergen Beisert <juergen@kreuzholzen.de>
 ---
- arch/arm/boards/mini2440/config.h |   22 ++++++++++++++++++++++
- 1 files changed, 22 insertions(+), 0 deletions(-)
+ arch/arm/boards/mini2440/mini2440.c |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
 
-diff --git a/arch/arm/boards/mini2440/config.h b/arch/arm/boards/mini2440/config.h
-index a664017..1edd69c 100644
---- a/arch/arm/boards/mini2440/config.h
-+++ b/arch/arm/boards/mini2440/config.h
-@@ -26,6 +26,28 @@
-  */
- #define S3C24XX_CLOCK_REFERENCE 12000000
+diff --git a/arch/arm/boards/mini2440/mini2440.c b/arch/arm/boards/mini2440/mini2440.c
+index 46581cc..2aeb09e 100644
+--- a/arch/arm/boards/mini2440/mini2440.c
++++ b/arch/arm/boards/mini2440/mini2440.c
+@@ -48,7 +48,6 @@ static struct device_d sdram_dev = {
+ 	.id		= -1,
+ 	.name		= "mem",
+ 	.map_base	= CS6_BASE,
+-	.size		= 64 * 1024 * 1024,
+ 	.platform_data	= &ram_pdata,
+ };
  
-+/**
-+ * Define the main clock configuration to be used in register CLKDIVN
-+ *
-+ * We must limit the frequency of the connected SDRAMs with the clock ratio
-+ * setup to 1:4:8. This will result into FCLK:HCLK:PCLK = 405Mhz:102MHz:51MHz
-+ */
-+#define BOARD_SPECIFIC_CLKDIVN 0x05
+@@ -87,6 +86,8 @@ static int mini2440_devices_init(void)
+ {
+ 	uint32_t reg;
+ 
++	sdram_dev.size = s3c24x0_get_memory_size();
 +
-+/**
-+ * Define the MPLL configuration to be used in register MPLLCON
-+ *
-+ * We want the MPLL to run at 405.0 MHz
-+ */
-+#define BOARD_SPECIFIC_MPLL ((0x7f << 12) + (2 << 4) + 1)
-+
-+/**
-+ * Define the UPLL configuration to be used in register UPLLCON
-+ *
-+ * We want the UPLL to run at 48.0 MHz
-+ */
-+#define BOARD_SPECIFIC_UPLL ((0x38 << 12) + (2 << 4) + 2)
-+
- /*
-  * Flash access timings
-  * Tacls  = 0ns (but 20ns data setup time)
+ 	reg = readl(BWSCON);
+ 
+ 	/* CS#4 to access the network controller */
 -- 
 1.7.2.3
 
