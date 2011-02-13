@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PocfC-0001Jg-NM
-	for barebox@lists.infradead.org; Sun, 13 Feb 2011 14:11:01 +0000
+	id 1PocfC-0001JW-ND
+	for barebox@lists.infradead.org; Sun, 13 Feb 2011 14:11:04 +0000
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Sun, 13 Feb 2011 15:10:47 +0100
-Message-Id: <1297606252-802-11-git-send-email-jbe@pengutronix.de>
+Date: Sun, 13 Feb 2011 15:10:49 +0100
+Message-Id: <1297606252-802-13-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1297606252-802-1-git-send-email-jbe@pengutronix.de>
 References: <1297606252-802-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,41 +21,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/15] mini2440: Add SDRAM size autodetection
+Subject: [PATCH 12/15] mini2440: Add MCI support
 To: barebox@lists.infradead.org
 Cc: Juergen Beisert <juergen@kreuzholzen.de>
 
 From: Juergen Beisert <juergen@kreuzholzen.de>
 
-If the SDRAM type will change in the future, only the 'config.h' must be
-adapted to the new settings. The real size will be read back from this setting.
-
-Signed-off-by: Juergen Beisert <juergen@kreuzholzen.de>
 ---
- arch/arm/boards/mini2440/mini2440.c |    3 ++-
- 1 files changed, 2 insertions(+), 1 deletions(-)
+ arch/arm/boards/mini2440/mini2440.c |   16 ++++++++++++++++
+ 1 files changed, 16 insertions(+), 0 deletions(-)
 
 diff --git a/arch/arm/boards/mini2440/mini2440.c b/arch/arm/boards/mini2440/mini2440.c
-index 46581cc..2aeb09e 100644
+index 30dff07..b30a9e2 100644
 --- a/arch/arm/boards/mini2440/mini2440.c
 +++ b/arch/arm/boards/mini2440/mini2440.c
-@@ -48,7 +48,6 @@ static struct device_d sdram_dev = {
- 	.id		= -1,
- 	.name		= "mem",
- 	.map_base	= CS6_BASE,
--	.size		= 64 * 1024 * 1024,
- 	.platform_data	= &ram_pdata,
+@@ -33,12 +33,14 @@
+ #include <partition.h>
+ #include <dm9000.h>
+ #include <nand.h>
++#include <mci.h>
+ #include <asm/armlinux.h>
+ #include <asm/io.h>
+ #include <mach/gpio.h>
+ #include <mach/s3c24x0-iomap.h>
+ #include <mach/s3c24x0-nand.h>
+ #include <mach/s3c24xx-generic.h>
++#include <mach/mci.h>
+ 
+ static struct memory_platform_data ram_pdata = {
+ 	.name		= "ram0",
+@@ -83,6 +85,19 @@ static struct device_d dm9000_dev = {
+ 	.platform_data = &dm9000_data,
  };
  
-@@ -87,6 +86,8 @@ static int mini2440_devices_init(void)
- {
- 	uint32_t reg;
- 
-+	sdram_dev.size = s3c24x0_get_memory_size();
++static struct s3c_mci_platform_data mci_data = {
++	.caps = MMC_MODE_4BIT | MMC_MODE_HS | MMC_MODE_HS_52MHz,
++	.voltages = MMC_VDD_32_33 | MMC_VDD_33_34,
++	.gpio_detect = 232,	/* GPG8_GPIO */
++	.detect_invert = 0,
++};
 +
- 	reg = readl(BWSCON);
- 
- 	/* CS#4 to access the network controller */
++static struct device_d mci_dev = {
++	.name     = "s3c_mci",
++	.map_base = S3C2410_SDI_BASE,
++	.platform_data	= &mci_data,
++};
++
+ static const unsigned pin_usage[] = {
+ 	/* address bus, used by NOR, SDRAM */
+ 	GPA1_ADDR16,
+@@ -252,6 +267,7 @@ static int mini2440_devices_init(void)
+ 	devfs_add_partition("nand0", 0x40000, 0x20000, PARTITION_FIXED, "env_raw");
+ 	dev_add_bb_dev("env_raw", NULL);
+ #endif
++	register_device(&mci_dev);
+ 	armlinux_add_dram(&sdram_dev);
+ 	armlinux_set_bootparams((void *)sdram_dev.map_base + 0x100);
+ 	armlinux_set_architecture(MACH_TYPE_MINI2440);
 -- 
 1.7.2.3
 
