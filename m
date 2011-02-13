@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PocfC-0001JW-ND
-	for barebox@lists.infradead.org; Sun, 13 Feb 2011 14:11:04 +0000
+	id 1PocfC-0001Je-NV
+	for barebox@lists.infradead.org; Sun, 13 Feb 2011 14:11:00 +0000
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Sun, 13 Feb 2011 15:10:49 +0100
-Message-Id: <1297606252-802-13-git-send-email-jbe@pengutronix.de>
+Date: Sun, 13 Feb 2011 15:10:50 +0100
+Message-Id: <1297606252-802-14-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1297606252-802-1-git-send-email-jbe@pengutronix.de>
 References: <1297606252-802-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,63 +21,92 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/15] mini2440: Add MCI support
+Subject: [PATCH 13/15] mini2440: Add booting from NAND support
 To: barebox@lists.infradead.org
 Cc: Juergen Beisert <juergen@kreuzholzen.de>
 
 From: Juergen Beisert <juergen@kreuzholzen.de>
 
----
- arch/arm/boards/mini2440/mini2440.c |   16 ++++++++++++++++
- 1 files changed, 16 insertions(+), 0 deletions(-)
+With this patch barebox can now be booted from RAM, NOR and NAND on the
+mini2440 platform. 'CONFIG_S3C24XX_NAND_BOOT' must still be 'y' to be able to
+boot from NAND.
 
-diff --git a/arch/arm/boards/mini2440/mini2440.c b/arch/arm/boards/mini2440/mini2440.c
-index 30dff07..b30a9e2 100644
---- a/arch/arm/boards/mini2440/mini2440.c
-+++ b/arch/arm/boards/mini2440/mini2440.c
-@@ -33,12 +33,14 @@
- #include <partition.h>
- #include <dm9000.h>
- #include <nand.h>
-+#include <mci.h>
- #include <asm/armlinux.h>
- #include <asm/io.h>
- #include <mach/gpio.h>
- #include <mach/s3c24x0-iomap.h>
- #include <mach/s3c24x0-nand.h>
- #include <mach/s3c24xx-generic.h>
-+#include <mach/mci.h>
+Signed-off-by: Juergen Beisert <juergen@kreuzholzen.de>
+---
+ arch/arm/boards/mini2440/Makefile        |    2 +-
+ arch/arm/boards/mini2440/lowlevel_init.S |   39 ++++++++++++++++++++++++++++++
+ arch/arm/mach-s3c24xx/Kconfig            |    4 +++
+ 3 files changed, 44 insertions(+), 1 deletions(-)
+ create mode 100644 arch/arm/boards/mini2440/lowlevel_init.S
+
+diff --git a/arch/arm/boards/mini2440/Makefile b/arch/arm/boards/mini2440/Makefile
+index 09f7e7d..856fed0 100644
+--- a/arch/arm/boards/mini2440/Makefile
++++ b/arch/arm/boards/mini2440/Makefile
+@@ -1,2 +1,2 @@
  
- static struct memory_platform_data ram_pdata = {
- 	.name		= "ram0",
-@@ -83,6 +85,19 @@ static struct device_d dm9000_dev = {
- 	.platform_data = &dm9000_data,
- };
- 
-+static struct s3c_mci_platform_data mci_data = {
-+	.caps = MMC_MODE_4BIT | MMC_MODE_HS | MMC_MODE_HS_52MHz,
-+	.voltages = MMC_VDD_32_33 | MMC_VDD_33_34,
-+	.gpio_detect = 232,	/* GPG8_GPIO */
-+	.detect_invert = 0,
-+};
+-obj-y += mini2440.o
++obj-y += mini2440.o lowlevel_init.o
+diff --git a/arch/arm/boards/mini2440/lowlevel_init.S b/arch/arm/boards/mini2440/lowlevel_init.S
+new file mode 100644
+index 0000000..41f50cb
+--- /dev/null
++++ b/arch/arm/boards/mini2440/lowlevel_init.S
+@@ -0,0 +1,39 @@
++/*
++ * Low level initialization for the FriendlyARM mini2440 board
++ */
 +
-+static struct device_d mci_dev = {
-+	.name     = "s3c_mci",
-+	.map_base = S3C2410_SDI_BASE,
-+	.platform_data	= &mci_data,
-+};
++#include <config.h>
++#include <mach/s3c24x0-iomap.h>
 +
- static const unsigned pin_usage[] = {
- 	/* address bus, used by NOR, SDRAM */
- 	GPA1_ADDR16,
-@@ -252,6 +267,7 @@ static int mini2440_devices_init(void)
- 	devfs_add_partition("nand0", 0x40000, 0x20000, PARTITION_FIXED, "env_raw");
- 	dev_add_bb_dev("env_raw", NULL);
- #endif
-+	register_device(&mci_dev);
- 	armlinux_add_dram(&sdram_dev);
- 	armlinux_set_bootparams((void *)sdram_dev.map_base + 0x100);
- 	armlinux_set_architecture(MACH_TYPE_MINI2440);
++	.section ".text_bare_init.board_init_lowlevel","ax"
++
++/* ------------------------------------------------------------------------ */
++
++.globl board_init_lowlevel
++board_init_lowlevel:
++
++	mov r10, lr		/* save the link register */
++
++	bl s3c24x0_disable_wd
++
++	/* skip everything here if we are already running from SDRAM */
++	cmp pc, #S3C24X0_SDRAM_BASE
++	blo 1f
++	cmp pc, #S3C24X0_SDRAM_END
++	bhs 1f
++
++	mov pc, r10
++
++/* we are running from NOR or NAND/SRAM memory. Do further initialisation */
++1:
++	bl s3c24x0_pll_init
++
++	bl s3c24x0_sdram_init
++
++#ifdef CONFIG_S3C24XX_NAND_BOOT
++	mov lr, r10		/* restore the link register */
++/* up to here we are running from the internal SRAM area */
++	b s3c24x0_nand_boot	/* does return directly to our caller into SDRAM */
++#else
++	mov pc, r10
++#endif
+diff --git a/arch/arm/mach-s3c24xx/Kconfig b/arch/arm/mach-s3c24xx/Kconfig
+index 8b86d2d..33d230c 100644
+--- a/arch/arm/mach-s3c24xx/Kconfig
++++ b/arch/arm/mach-s3c24xx/Kconfig
+@@ -41,6 +41,10 @@ config MACH_A9M2440
+ config MACH_MINI2440
+ 	bool "Mini 2440"
+ 	select CPU_S3C2440
++	select MACH_HAS_LOWLEVEL_INIT
++	select MACH_DO_LOWLEVEL_INIT
++	select S3C24XX_PLL_INIT
++	select S3C24XX_SDRAM_INIT
+ 	select HAS_DM9000
+ 	help
+ 	  Say Y here if you are using Mini 2440 dev board equipped
 -- 
 1.7.2.3
 
