@@ -1,21 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PousQ-0007pg-7P
-	for barebox@lists.infradead.org; Mon, 14 Feb 2011 09:37:51 +0000
+	id 1PpLJU-00034M-IU
+	for barebox@lists.infradead.org; Tue, 15 Feb 2011 13:51:33 +0000
 Received: from gallifrey.ext.pengutronix.de
 	([2001:6f8:1178:4:5054:ff:fe8d:eefb] helo=localhost)
 	by metis.ext.pengutronix.de with esmtp (Exim 4.72)
-	(envelope-from <jbe@pengutronix.de>) id 1PousO-0002qq-B7
-	for barebox@lists.infradead.org; Mon, 14 Feb 2011 10:37:48 +0100
+	(envelope-from <jbe@pengutronix.de>) id 1PpLJR-00059i-9W
+	for barebox@lists.infradead.org; Tue, 15 Feb 2011 14:51:29 +0100
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Mon, 14 Feb 2011 10:35:45 +0100
-References: <1297606252-802-1-git-send-email-jbe@pengutronix.de>
-	<1297606252-802-15-git-send-email-jbe@pengutronix.de>
-In-Reply-To: <1297606252-802-15-git-send-email-jbe@pengutronix.de>
+Date: Tue, 15 Feb 2011 14:49:32 +0100
 MIME-Version: 1.0
 Content-Disposition: inline
-Message-Id: <201102141035.46065.jbe@pengutronix.de>
+Message-Id: <201102151449.32123.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,14 +25,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 14/15] mini2440: Remove some A9M2440 platform leftovers
+Subject: [PATCH] Generic environment: Fix assembling of the 'mtdparts' variable
 To: barebox@lists.infradead.org
 
-Hmm, arch/arm/boards/mini2440/env/config needs some additional adaption to 
-make it work with the generic environment. I will re-send a new patch for 
-this.
+The semicolon is a delimiter, not an end marker. With a trailing semicolon the
+kernel give the confusing message:
 
-jbe
+mtd: no mtd-id
+
+With this patch, a semicolon gets added on demand only.
+
+Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
+
+---
+ defaultenv/bin/boot |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+Index: barebox-2011.01.0/defaultenv/bin/boot
+===================================================================
+--- barebox-2011.01.0.orig/defaultenv/bin/boot
++++ barebox-2011.01.0/defaultenv/bin/boot
+@@ -43,11 +43,14 @@ else
+ fi
+ 
+ if [ -n $nor_parts ]; then
+-	mtdparts="${mtdparts}physmap-flash.0:${nor_parts};"
++	mtdparts="${mtdparts}physmap-flash.0:${nor_parts}"
+ fi
+ 
+ if [ -n $nand_parts ]; then
+-	mtdparts="${mtdparts}${nand_device}:${nand_parts};"
++	if [ -n ${mtdparts} ]; then
++		mtdparts="${mtdparts};"
++	fi
++	mtdparts="${mtdparts}${nand_device}:${nand_parts}"
+ fi
+ 
+ if [ -n $mtdparts ]; then
 
 -- 
 Pengutronix e.K.                              | Juergen Beisert             |
