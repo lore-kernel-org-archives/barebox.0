@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from ip2.televic.com ([81.82.194.222])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PpLJU-00034M-IU
-	for barebox@lists.infradead.org; Tue, 15 Feb 2011 13:51:33 +0000
-Received: from gallifrey.ext.pengutronix.de
-	([2001:6f8:1178:4:5054:ff:fe8d:eefb] helo=localhost)
-	by metis.ext.pengutronix.de with esmtp (Exim 4.72)
-	(envelope-from <jbe@pengutronix.de>) id 1PpLJR-00059i-9W
-	for barebox@lists.infradead.org; Tue, 15 Feb 2011 14:51:29 +0100
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Tue, 15 Feb 2011 14:49:32 +0100
+	id 1PpctZ-0005T1-V2
+	for barebox@lists.infradead.org; Wed, 16 Feb 2011 08:37:58 +0000
+From: Vanalme Filip <F.Vanalme@TELEVIC.com>
+Date: Wed, 16 Feb 2011 09:37:53 +0100
+Message-ID: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B007AF@SRV-VS06.TELEVIC.COM>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <201102151449.32123.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,49 +20,19 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Generic environment: Fix assembling of the 'mtdparts' variable
-To: barebox@lists.infradead.org
+Subject: PMIC device driver
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-The semicolon is a delimiter, not an end marker. With a trailing semicolon the
-kernel give the confusing message:
+Up till now, I could not start up the network on my i.mx27PDK board. After measuring on the device, I could see that power was missing for the PHY. Good reason, of course, for not starting up... 
+To enable the missing power, I have to adjust some registers in the PMIC device (mc13783).
+If I look into the mc13783.c file, I could see that this has similarities with Linux device drivers. So, to access the PMIC, I guess I have to do an open("/dev/pmic") and then a read or write. However, when I look to the pmic_read() and pmic_write() function, they have, besides the device pointer, buffer pointer and buffer size, an offset parameter that indicate the register within the PMIC to read/write. On the other hand, the standard read and write functions only take 3 parameters (device, buffer, buffersize). How do I pass that offset to these functions ? How do I use the PMIC device driver ?
+(Maybe this is a general Linux device driver question, but I'm not that familiar with device drivers, so...)
 
-mtd: no mtd-id
+Is it the best way to do it like this (open, read, write), or do I better call those functions directly ? (I have to set the PMIC registers in the "late_init" function of the barebox startup sequence)
 
-With this patch, a semicolon gets added on demand only.
+Filip Vanalme
 
-Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 
----
- defaultenv/bin/boot |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
-Index: barebox-2011.01.0/defaultenv/bin/boot
-===================================================================
---- barebox-2011.01.0.orig/defaultenv/bin/boot
-+++ barebox-2011.01.0/defaultenv/bin/boot
-@@ -43,11 +43,14 @@ else
- fi
- 
- if [ -n $nor_parts ]; then
--	mtdparts="${mtdparts}physmap-flash.0:${nor_parts};"
-+	mtdparts="${mtdparts}physmap-flash.0:${nor_parts}"
- fi
- 
- if [ -n $nand_parts ]; then
--	mtdparts="${mtdparts}${nand_device}:${nand_parts};"
-+	if [ -n ${mtdparts} ]; then
-+		mtdparts="${mtdparts};"
-+	fi
-+	mtdparts="${mtdparts}${nand_device}:${nand_parts}"
- fi
- 
- if [ -n $mtdparts ]; then
-
--- 
-Pengutronix e.K.                              | Juergen Beisert             |
-Linux Solutions for Science and Industry      | Phone: +49-8766-939 228     |
-Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
