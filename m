@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Pplt4-0001nU-77
+	id 1Pplt4-0001nO-6g
 	for barebox@lists.infradead.org; Wed, 16 Feb 2011 18:14:05 +0000
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Wed, 16 Feb 2011 19:13:37 +0100
-Message-Id: <1297880025-7184-13-git-send-email-jbe@pengutronix.de>
+Date: Wed, 16 Feb 2011 19:13:33 +0100
+Message-Id: <1297880025-7184-9-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1297880025-7184-1-git-send-email-jbe@pengutronix.de>
 References: <1297880025-7184-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,40 +21,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/20] mini2440: Configure debug UART pins very early
+Subject: [PATCH 08/20] mini2440: Fix a runtime warning when '.id=0' is used
 To: barebox@lists.infradead.org
 Cc: Juergen Beisert <juergen@kreuzholzen.de>
 
 From: Juergen Beisert <juergen@kreuzholzen.de>
 
-This is required in order to enable booting from NAND and to avoid any visible
-garbage on the screen until the pins are really set.
-
 Signed-off-by: Juergen Beisert <juergen@kreuzholzen.de>
 ---
- arch/arm/boards/mini2440/mini2440.c |    9 +++++++++
- 1 files changed, 9 insertions(+), 0 deletions(-)
+ arch/arm/boards/mini2440/mini2440.c |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
 
 diff --git a/arch/arm/boards/mini2440/mini2440.c b/arch/arm/boards/mini2440/mini2440.c
-index 17496a4..46581cc 100644
+index a3bb817..e22fbd0 100644
 --- a/arch/arm/boards/mini2440/mini2440.c
 +++ b/arch/arm/boards/mini2440/mini2440.c
-@@ -138,6 +138,15 @@ static struct device_d mini2440_serial_device = {
+@@ -45,6 +45,7 @@ static struct memory_platform_data ram_pdata = {
+ };
  
- static int mini2440_console_init(void)
- {
-+	/*
-+	 * configure the UART1 right now, as barebox will
-+	 * start to send data immediately
-+	 */
-+	s3c_gpio_mode(GPH0_NCTS0);
-+	s3c_gpio_mode(GPH1_NRTS0);
-+	s3c_gpio_mode(GPH2_TXD0);
-+	s3c_gpio_mode(GPH3_RXD0);
-+
- 	register_device(&mini2440_serial_device);
- 	return 0;
- }
+ static struct device_d sdram_dev = {
++	.id		= -1,
+ 	.name		= "mem",
+ 	.map_base	= CS6_BASE,
+ 	.size		= 64 * 1024 * 1024,
 -- 
 1.7.2.3
 
