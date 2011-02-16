@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Pplsz-0001nX-9I
+	id 1Pplsz-0001nN-8x
 	for barebox@lists.infradead.org; Wed, 16 Feb 2011 18:14:02 +0000
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Wed, 16 Feb 2011 19:13:40 +0100
-Message-Id: <1297880025-7184-16-git-send-email-jbe@pengutronix.de>
+Date: Wed, 16 Feb 2011 19:13:30 +0100
+Message-Id: <1297880025-7184-6-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1297880025-7184-1-git-send-email-jbe@pengutronix.de>
 References: <1297880025-7184-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,63 +21,73 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 15/20] mini2440: Add MCI support
+Subject: [PATCH 05/20] MACH-S3C2440: Fix NAND controller for this CPU
 To: barebox@lists.infradead.org
 Cc: Juergen Beisert <juergen@kreuzholzen.de>
 
 From: Juergen Beisert <juergen@kreuzholzen.de>
 
----
- arch/arm/boards/mini2440/mini2440.c |   16 ++++++++++++++++
- 1 files changed, 16 insertions(+), 0 deletions(-)
+There are a few but important differences in S3C2410 and S3C2440. This patch
+fixes them for the S3C2440 CPU.
 
-diff --git a/arch/arm/boards/mini2440/mini2440.c b/arch/arm/boards/mini2440/mini2440.c
-index 30dff07..b30a9e2 100644
---- a/arch/arm/boards/mini2440/mini2440.c
-+++ b/arch/arm/boards/mini2440/mini2440.c
-@@ -33,12 +33,14 @@
- #include <partition.h>
- #include <dm9000.h>
- #include <nand.h>
-+#include <mci.h>
- #include <asm/armlinux.h>
- #include <asm/io.h>
- #include <mach/gpio.h>
- #include <mach/s3c24x0-iomap.h>
- #include <mach/s3c24x0-nand.h>
- #include <mach/s3c24xx-generic.h>
-+#include <mach/mci.h>
+Signed-off-by: Juergen Beisert <juergen@kreuzholzen.de>
+---
+ drivers/mtd/nand/nand_s3c2410.c |   18 +++++++++++++++---
+ 1 files changed, 15 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/mtd/nand/nand_s3c2410.c b/drivers/mtd/nand/nand_s3c2410.c
+index 8a47dc6..76ea9db 100644
+--- a/drivers/mtd/nand/nand_s3c2410.c
++++ b/drivers/mtd/nand/nand_s3c2410.c
+@@ -77,14 +77,13 @@
+ #define NFCMD 0x08
+ #define NFADDR 0x0C
+ #define NFDATA 0x10
+-
+-#define NFECC 0x1C
+ #define NFSTAT 0x20
++#define NFECC 0x2C
  
- static struct memory_platform_data ram_pdata = {
- 	.name		= "ram0",
-@@ -83,6 +85,19 @@ static struct device_d dm9000_dev = {
- 	.platform_data = &dm9000_data,
- };
+ /* S3C2440 specific bits */
+ #define NFSTAT_BUSY (1)
+ #define NFCONT_nFCE (1 << 1)
+-#define NFCONF_INITECC (1 << 12)
++#define NFCONT_INITECC (1 << 4)
+ #define NFCONT_EN (1)
  
-+static struct s3c_mci_platform_data mci_data = {
-+	.caps = MMC_MODE_4BIT | MMC_MODE_HS | MMC_MODE_HS_52MHz,
-+	.voltages = MMC_VDD_32_33 | MMC_VDD_33_34,
-+	.gpio_detect = 232,	/* GPG8_GPIO */
-+	.detect_invert = 0,
-+};
-+
-+static struct device_d mci_dev = {
-+	.name     = "s3c_mci",
-+	.map_base = S3C2410_SDI_BASE,
-+	.platform_data	= &mci_data,
-+};
-+
- static const unsigned pin_usage[] = {
- 	/* address bus, used by NOR, SDRAM */
- 	GPA1_ADDR16,
-@@ -252,6 +267,7 @@ static int mini2440_devices_init(void)
- 	devfs_add_partition("nand0", 0x40000, 0x20000, PARTITION_FIXED, "env_raw");
- 	dev_add_bb_dev("env_raw", NULL);
- #endif
-+	register_device(&mci_dev);
- 	armlinux_add_dram(&sdram_dev);
- 	armlinux_set_bootparams((void *)sdram_dev.map_base + 0x100);
- 	armlinux_set_architecture(MACH_TYPE_MINI2440);
+ #endif	/* CONFIG_CPU_S3C2440 */
+@@ -272,7 +271,12 @@ static void s3c2410_nand_enable_hwecc(struct mtd_info *mtd, int mode)
+ 	struct nand_chip *nand_chip = mtd->priv;
+ 	struct s3c24x0_nand_host *host = nand_chip->priv;
+ 
++#ifdef CONFIG_CPU_S3C2410
+ 	writel(readl(host->base + NFCONF) | NFCONF_INITECC , host->base + NFCONF);
++#endif
++#ifdef CONFIG_CPU_S3C2440
++	writel(readl(host->base + NFCONT) | NFCONT_INITECC , host->base + NFCONT);
++#endif
+ }
+ 
+ static int s3c2410_nand_calculate_ecc(struct mtd_info *mtd, const uint8_t *dat, uint8_t *ecc_code)
+@@ -280,10 +284,18 @@ static int s3c2410_nand_calculate_ecc(struct mtd_info *mtd, const uint8_t *dat,
+ 	struct nand_chip *nand_chip = mtd->priv;
+ 	struct s3c24x0_nand_host *host = nand_chip->priv;
+ 
++#ifdef CONFIG_CPU_S3C2410
+ 	ecc_code[0] = readb(host->base + NFECC);
+ 	ecc_code[1] = readb(host->base + NFECC + 1);
+ 	ecc_code[2] = readb(host->base + NFECC + 2);
++#endif
++#ifdef CONFIG_CPU_S3C2440
++	unsigned long ecc = readl(host->base + NFECC);
+ 
++	ecc_code[0] = ecc;
++	ecc_code[1] = ecc >> 8;
++	ecc_code[2] = ecc >> 16;
++#endif
+ 	return 0;
+ }
+ 
 -- 
 1.7.2.3
 
