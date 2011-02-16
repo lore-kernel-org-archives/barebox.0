@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ip2.televic.com ([81.82.194.222])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PpgN6-0007D9-A7
-	for barebox@lists.infradead.org; Wed, 16 Feb 2011 12:20:41 +0000
-From: Vanalme Filip <F.Vanalme@TELEVIC.com>
-Date: Wed, 16 Feb 2011 13:20:36 +0100
-Message-ID: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B00817@SRV-VS06.TELEVIC.COM>
-Content-Language: en-US
-MIME-Version: 1.0
+	id 1Pplsz-0001nQ-9M
+	for barebox@lists.infradead.org; Wed, 16 Feb 2011 18:14:00 +0000
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Wed, 16 Feb 2011 19:13:32 +0100
+Message-Id: <1297880025-7184-8-git-send-email-jbe@pengutronix.de>
+In-Reply-To: <1297880025-7184-1-git-send-email-jbe@pengutronix.de>
+References: <1297880025-7184-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,43 +16,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: PMIC device driver
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH 07/20] mini2440: Be a little be pedantic with the include file
+	order
+To: barebox@lists.infradead.org
+Cc: Juergen Beisert <juergen@kreuzholzen.de>
 
-> -----Original Message-----
-> From: Vanalme Filip
-> Sent: woensdag 16 februari 2011 9:38
-> To: 'barebox@lists.infradead.org'
-> Subject: PMIC device driver
-> 
-> Up till now, I could not start up the network on my i.mx27PDK board. After
-> measuring on the device, I could see that power was missing for the PHY. Good
-> reason, of course, for not starting up...
-> To enable the missing power, I have to adjust some registers in the PMIC device
-> (mc13783).
-> If I look into the mc13783.c file, I could see that this has similarities with Linux
-> device drivers. So, to access the PMIC, I guess I have to do an open("/dev/pmic")
-> and then a read or write. However, when I look to the pmic_read() and pmic_write()
-> function, they have, besides the device pointer, buffer pointer and buffer size, an
-> offset parameter that indicate the register within the PMIC to read/write. On the
-> other hand, the standard read and write functions only take 3 parameters (device,
-> buffer, buffersize). How do I pass that offset to these functions ? How do I use the
-> PMIC device driver ?
-> (Maybe this is a general Linux device driver question, but I'm not that familiar with
-> device drivers, so...)
-> 
-> Is it the best way to do it like this (open, read, write), or do I better call those
-> functions directly ? (I have to set the PMIC registers in the "late_init" function of
-> the barebox startup sequence)
-> 
-> Filip Vanalme
-> 
+From: Juergen Beisert <juergen@kreuzholzen.de>
 
-[Filip] Think I found how it works. I have to use the normal read, write and lseek functions to read/write PMIC registers. The 'offset' and 'flag' parameters in read and write functions are for internal use only. Correct. When reading, an internal index is incremented. A following read starts where the previous ended. With lseek, one can move that index to address the correct register. Right ?
+Signed-off-by: Juergen Beisert <juergen@kreuzholzen.de>
+---
+ arch/arm/boards/mini2440/mini2440.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/boards/mini2440/mini2440.c b/arch/arm/boards/mini2440/mini2440.c
+index 9639176..a3bb817 100644
+--- a/arch/arm/boards/mini2440/mini2440.c
++++ b/arch/arm/boards/mini2440/mini2440.c
+@@ -29,15 +29,15 @@
+ #include <common.h>
+ #include <driver.h>
+ #include <init.h>
+-#include <asm/armlinux.h>
+ #include <generated/mach-types.h>
+ #include <partition.h>
++#include <dm9000.h>
+ #include <nand.h>
++#include <asm/armlinux.h>
+ #include <asm/io.h>
+ #include <mach/s3c24x0-iomap.h>
+ #include <mach/s3c24x0-nand.h>
+ #include <mach/s3c24xx-generic.h>
+-#include <dm9000.h>
+ 
+ static struct memory_platform_data ram_pdata = {
+ 	.name		= "ram0",
+-- 
+1.7.2.3
+
 
 _______________________________________________
 barebox mailing list
