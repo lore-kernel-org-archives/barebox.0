@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Pplsz-0001nN-8x
-	for barebox@lists.infradead.org; Wed, 16 Feb 2011 18:14:02 +0000
+	id 1Pplsz-0001nM-95
+	for barebox@lists.infradead.org; Wed, 16 Feb 2011 18:14:00 +0000
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Wed, 16 Feb 2011 19:13:30 +0100
-Message-Id: <1297880025-7184-6-git-send-email-jbe@pengutronix.de>
+Date: Wed, 16 Feb 2011 19:13:29 +0100
+Message-Id: <1297880025-7184-5-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1297880025-7184-1-git-send-email-jbe@pengutronix.de>
 References: <1297880025-7184-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,73 +21,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/20] MACH-S3C2440: Fix NAND controller for this CPU
+Subject: [PATCH 04/20] MACH-S3C24XX: Add support for flash based BBT
 To: barebox@lists.infradead.org
 Cc: Juergen Beisert <juergen@kreuzholzen.de>
 
 From: Juergen Beisert <juergen@kreuzholzen.de>
 
-There are a few but important differences in S3C2410 and S3C2440. This patch
-fixes them for the S3C2440 CPU.
+The default configuration of the current 2.6.37 kernel uses a flash based BBT.
+So, barebox must also use one, to be in sync with the kernel about bad blocks
+in the flash.
+
+Due to the used OOB layout, the generic BBT description coming with the
+framework can be used.
 
 Signed-off-by: Juergen Beisert <juergen@kreuzholzen.de>
 ---
- drivers/mtd/nand/nand_s3c2410.c |   18 +++++++++++++++---
- 1 files changed, 15 insertions(+), 3 deletions(-)
+ arch/arm/mach-s3c24xx/include/mach/s3c24x0-nand.h |    1 +
+ drivers/mtd/nand/nand_s3c2410.c                   |    6 ++++++
+ 2 files changed, 7 insertions(+), 0 deletions(-)
 
+diff --git a/arch/arm/mach-s3c24xx/include/mach/s3c24x0-nand.h b/arch/arm/mach-s3c24xx/include/mach/s3c24x0-nand.h
+index 05f9cf0..d06287e 100644
+--- a/arch/arm/mach-s3c24xx/include/mach/s3c24x0-nand.h
++++ b/arch/arm/mach-s3c24xx/include/mach/s3c24x0-nand.h
+@@ -45,6 +45,7 @@ extern void s3c24x0_nand_load_image(void*, int, int, int);
+  */
+ struct s3c24x0_nand_platform_data {
+ 	uint32_t nand_timing;	/**< value for the NFCONF register (timing bits only) */
++	char flash_bbt;	/**< force a flash based BBT */
+ };
+ 
+ /**
 diff --git a/drivers/mtd/nand/nand_s3c2410.c b/drivers/mtd/nand/nand_s3c2410.c
-index 8a47dc6..76ea9db 100644
+index fa4acf4..8a47dc6 100644
 --- a/drivers/mtd/nand/nand_s3c2410.c
 +++ b/drivers/mtd/nand/nand_s3c2410.c
-@@ -77,14 +77,13 @@
- #define NFCMD 0x08
- #define NFADDR 0x0C
- #define NFDATA 0x10
--
--#define NFECC 0x1C
- #define NFSTAT 0x20
-+#define NFECC 0x2C
+@@ -349,6 +349,7 @@ static int s3c24x0_nand_inithw(struct s3c24x0_nand_host *host)
+ static int s3c24x0_nand_probe(struct device_d *dev)
+ {
+ 	struct nand_chip *chip;
++	struct s3c24x0_nand_platform_data *pdata = dev->platform_data;
+ 	struct mtd_info *mtd;
+ 	struct s3c24x0_nand_host *host;
+ 	int ret;
+@@ -393,6 +394,11 @@ static int s3c24x0_nand_probe(struct device_d *dev)
+ 	chip->ecc.bytes = 3;
+ 	chip->ecc.layout = &nand_hw_eccoob;
  
- /* S3C2440 specific bits */
- #define NFSTAT_BUSY (1)
- #define NFCONT_nFCE (1 << 1)
--#define NFCONF_INITECC (1 << 12)
-+#define NFCONT_INITECC (1 << 4)
- #define NFCONT_EN (1)
- 
- #endif	/* CONFIG_CPU_S3C2440 */
-@@ -272,7 +271,12 @@ static void s3c2410_nand_enable_hwecc(struct mtd_info *mtd, int mode)
- 	struct nand_chip *nand_chip = mtd->priv;
- 	struct s3c24x0_nand_host *host = nand_chip->priv;
- 
-+#ifdef CONFIG_CPU_S3C2410
- 	writel(readl(host->base + NFCONF) | NFCONF_INITECC , host->base + NFCONF);
-+#endif
-+#ifdef CONFIG_CPU_S3C2440
-+	writel(readl(host->base + NFCONT) | NFCONT_INITECC , host->base + NFCONT);
-+#endif
- }
- 
- static int s3c2410_nand_calculate_ecc(struct mtd_info *mtd, const uint8_t *dat, uint8_t *ecc_code)
-@@ -280,10 +284,18 @@ static int s3c2410_nand_calculate_ecc(struct mtd_info *mtd, const uint8_t *dat,
- 	struct nand_chip *nand_chip = mtd->priv;
- 	struct s3c24x0_nand_host *host = nand_chip->priv;
- 
-+#ifdef CONFIG_CPU_S3C2410
- 	ecc_code[0] = readb(host->base + NFECC);
- 	ecc_code[1] = readb(host->base + NFECC + 1);
- 	ecc_code[2] = readb(host->base + NFECC + 2);
-+#endif
-+#ifdef CONFIG_CPU_S3C2440
-+	unsigned long ecc = readl(host->base + NFECC);
- 
-+	ecc_code[0] = ecc;
-+	ecc_code[1] = ecc >> 8;
-+	ecc_code[2] = ecc >> 16;
-+#endif
- 	return 0;
- }
- 
++	if (pdata->flash_bbt) {
++		/* use a flash based bbt */
++		chip->options |= NAND_USE_FLASH_BBT;
++	}
++
+ 	ret = s3c24x0_nand_inithw(host);
+ 	if (ret != 0)
+ 		goto on_error;
 -- 
 1.7.2.3
 
