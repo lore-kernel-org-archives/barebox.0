@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Pplsz-0001nP-9A
-	for barebox@lists.infradead.org; Wed, 16 Feb 2011 18:14:02 +0000
+	id 1Pplsz-0001nS-9E
+	for barebox@lists.infradead.org; Wed, 16 Feb 2011 18:14:04 +0000
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Wed, 16 Feb 2011 19:13:31 +0100
-Message-Id: <1297880025-7184-7-git-send-email-jbe@pengutronix.de>
+Date: Wed, 16 Feb 2011 19:13:36 +0100
+Message-Id: <1297880025-7184-12-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1297880025-7184-1-git-send-email-jbe@pengutronix.de>
 References: <1297880025-7184-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,95 +21,91 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/20] MACH-S3C2440: Speed up NAND controller for this CPU
+Subject: [PATCH 11/20] mini2440: Add SDRAM config settings
 To: barebox@lists.infradead.org
 Cc: Juergen Beisert <juergen@kreuzholzen.de>
 
 From: Juergen Beisert <juergen@kreuzholzen.de>
 
-The S3C2440 provides 32 bit access to the NAND's data. Add specific read
-routines to speed up data reading and writing.
+This is required in order to enable booting from NAND and using the generic
+S3C2440 setup routines.
 
-These routines are stolen from the Linux kernel.
+Two types of SDRAM devices are known to be shipped by FriendlyARM. This config
+should work on both of them. But it is really tested only for the HY57V561620
+type.
 
 Signed-off-by: Juergen Beisert <juergen@kreuzholzen.de>
 ---
- drivers/mtd/nand/nand_s3c2410.c |   55 +++++++++++++++++++++++++++++++++++++++
- 1 files changed, 55 insertions(+), 0 deletions(-)
+ arch/arm/boards/mini2440/config.h |   58 +++++++++++++++++++++++++++++++++++++
+ 1 files changed, 58 insertions(+), 0 deletions(-)
 
-diff --git a/drivers/mtd/nand/nand_s3c2410.c b/drivers/mtd/nand/nand_s3c2410.c
-index 76ea9db..df0b7c1 100644
---- a/drivers/mtd/nand/nand_s3c2410.c
-+++ b/drivers/mtd/nand/nand_s3c2410.c
-@@ -194,6 +194,57 @@ static void __nand_boot_init disable_nand_controller(void __iomem *host)
- 
- /* ----------------------------------------------------------------------- */
- 
-+#ifdef CONFIG_CPU_S3C2440
-+/**
-+ * Read one block of data from the NAND port
-+ * @param[in] mtd Instance data
-+ * @param[out] buf buffer to write data to
-+ * @param[in] len byte count
+diff --git a/arch/arm/boards/mini2440/config.h b/arch/arm/boards/mini2440/config.h
+index 1edd69c..1f2fb4c 100644
+--- a/arch/arm/boards/mini2440/config.h
++++ b/arch/arm/boards/mini2440/config.h
+@@ -69,4 +69,62 @@
+ #ifdef CONFIG_S3C24XX_NAND_BOOT
+ # define BOARD_DEFAULT_NAND_TIMING CALC_NFCONF_TIMING(A9M2440_TACLS, A9M2440_TWRPH0, A9M2440_TWRPH1)
+ #endif
++
++/*
++ * Needed in the generic SDRAM boot code only
 + *
-+ * This is a special block read variant for the S3C2440 CPU.
++ * SDRAM configuration
++ * Two types of SDRAM devices are common on mini2440:
++ * - Two devices of HY57V561620 to form 64 MiB in bank 6 only
++ *   - http://friendlyarm.net/dl.php?file=HY57V561620.pdf
++ * - Two devices of MT48LC16M16 to form 64 MiB in bank 6 only
++ *   - http://friendlyarm.net/dl.php?file=MT48LC16M16.pdf
++
++ * Most of the time the CPU is specified for 400 MHz only. As the CPU frequency
++ * and the SDRAM frequency are fix coupled by 4:1, the SDRAM runs at HCLCK.
++ * So, we need a 100 MHz timing setup with CL=2 for the SDRAMs.
 + */
-+static void s3c2440_nand_read_buf(struct mtd_info *mtd, uint8_t *buf, int len)
-+{
-+	struct nand_chip *nand_chip = mtd->priv;
-+	struct s3c24x0_nand_host *host = nand_chip->priv;
 +
-+	readsl(host->base + NFDATA, buf, len >> 2);
-+
-+	/* cleanup any fractional read */
-+	if (len & 3) {
-+		buf += len & ~3;
-+
-+		for (; len & 3; len--)
-+			*buf++ = readb(host->base + NFDATA);
-+	}
-+}
-+
-+/**
-+ * Write one block of data to the NAND port
-+ * @param[in] mtd Instance data
-+ * @param[out] buf buffer to read data from
-+ * @param[in] len byte count
-+ *
-+ * This is a special block write variant for the S3C2440 CPU.
++/*
++ * - ST7/WS7/DW7: reserved, this SDRAM bank is not used
++ * - ST6/WS6/DW6: 32 bit data bus (for SDRAM usage)
++ * - ST5/WS5/DW5: reserved, to be set by the board init code
++ * - ST4/WS4/DW4: reserved, to be set by the board init code
++ * - ST3/WS3/DW3: reserved, to be set by the board init code
++ * - ST2/WS2/DW2: reserved, to be set by the board init code
++ * - ST1/WS1/DW1: reserved, to be set by the board init code
++ * - DW0: not to be changed
 + */
-+static void s3c2440_nand_write_buf(struct mtd_info *mtd, const uint8_t *buf,
-+					int len)
-+{
-+	struct nand_chip *nand_chip = mtd->priv;
-+	struct s3c24x0_nand_host *host = nand_chip->priv;
++#define BOARD_SPECIFIC_BWSCON ((0x3 << 28) | (0x2 << 24) | 0x333330)
++/*
++ *  - MT = 11 (= sync dram type)
++ *  - Trcd = 00 (= CL2)
++ *  - SCAN = 01 (= 9 bit collumns)
++ */
++#define BOARD_SPECIFIC_BANKCON6 ((0x3 << 15) + (0x0 << 2) + (0x1))
++#define BOARD_SPECIFIC_BANKCON7 0 /* disabled */
++/*
++ * SDRAM refresh settings
++ *  - REFEN = 1 (= refresh enabled)
++ *  - TREFMD = 0 (= auto refresh)
++ *  - Trp = 00 (= 2 RAS precharge clocks)
++ *  - Tsrc = 01 (= 5 clocks -> row cycle time @100MHz 2+5=7 -> 70ns)
++ *  - Refresh = 2^11 + 1 - 100 * 7.8 = 2049 - 780 = 1269
++ */
++#define BOARD_SPECIFIC_REFRESH ((0x1 << 23) + (0x0 << 22) + (0x0 << 20) + (0x1 << 18) + 1269)
++/*
++ * SDRAM banksize
++ *  - BURST_EN = 1 (= burst mode enabled)
++ *  - SCKE_EN = 1 (= SDRAM SCKE enabled)
++ *  - SCLK_EN = 1 (= clock active only during accesses)
++ *  - BK67MAP = 001 (= 64 MiB)
++ */
++# define BOARD_SPECIFIC_BANKSIZE ((1 << 7) + (1 << 5) + (1 << 4) + 1)
++/*
++ * SDRAM mode register
++ * CL = 010 (= 2 clocks)
++ */
++# define BOARD_SPECIFIC_MRSRB6 (0x2 << 4)
++# define BOARD_SPECIFIC_MRSRB7 0	/* not used */
 +
-+	writesl(host->base + NFDATA, buf, len >> 2);
-+
-+	/* cleanup any fractional write */
-+	if (len & 3) {
-+		buf += len & ~3;
-+
-+		for (; len & 3; len--, buf++)
-+			writeb(*buf, host->base + NFDATA);
-+	}
-+}
-+#endif
-+
- /**
-  * Check the ECC and try to repair the data if possible
-  * @param[in] mtd_info FIXME
-@@ -390,6 +441,10 @@ static int s3c24x0_nand_probe(struct device_d *dev)
- 
- 	chip->IO_ADDR_R = chip->IO_ADDR_W = IOMEM(dev->map_base + NFDATA);
- 
-+#ifdef CONFIG_CPU_S3C2440
-+	chip->read_buf = s3c2440_nand_read_buf;
-+	chip->write_buf = s3c2440_nand_write_buf;
-+#endif
- 	chip->cmd_ctrl = s3c24x0_nand_hwcontrol;
- 	chip->dev_ready = s3c24x0_nand_devready;
- 	chip->select_chip = s3c24x0_nand_select_chip;
+ #endif /* __CONFIG_H */
 -- 
 1.7.2.3
 
