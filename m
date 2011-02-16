@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail12.tpgi.com.au ([203.12.160.162])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Pplt4-0001nY-6u
-	for barebox@lists.infradead.org; Wed, 16 Feb 2011 18:14:08 +0000
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Wed, 16 Feb 2011 19:13:42 +0100
-Message-Id: <1297880025-7184-18-git-send-email-jbe@pengutronix.de>
-In-Reply-To: <1297880025-7184-1-git-send-email-jbe@pengutronix.de>
-References: <1297880025-7184-1-git-send-email-jbe@pengutronix.de>
+	id 1Ppo4U-0002jE-Go
+	for barebox@lists.infradead.org; Wed, 16 Feb 2011 20:33:59 +0000
+From: Marc Reilly <marc@cpdesign.com.au>
+Date: Thu, 17 Feb 2011 07:34:34 +1100
+References: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B00817@SRV-VS06.TELEVIC.COM>
+In-Reply-To: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B00817@SRV-VS06.TELEVIC.COM>
+MIME-Version: 1.0
+Message-Id: <201102170734.34357.marc@cpdesign.com.au>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,46 +17,64 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 17/20] mini2440: Use a flash based BBT as the kernel also does
+Subject: Re: PMIC device driver
 To: barebox@lists.infradead.org
-Cc: Juergen Beisert <juergen@kreuzholzen.de>
+Cc: Vanalme Filip <F.Vanalme@televic.com>
 
-From: Juergen Beisert <juergen@kreuzholzen.de>
 
-The default configuration of the mini2440 in the current 2.6.37 kernel uses
-a flash based BBT. So, the barebox for the mini2440 must also use one, to be
-in sync with the kernel about bad blocks in the flash.
+Hi,
 
-Due to the used OOB layout, the generic BBT description coming with the
-framework can be used.
+> > indicate the register within the PMIC to read/write. On the other hand,
+> > the standard read and write functions only take 3 parameters (device,
+> > buffer, buffersize). How do I pass that offset to these functions ? How
+> > do I use the PMIC device driver ?
+> > (Maybe this is a general Linux device driver question, but I'm not that
+> > familiar with device drivers, so...)
 
-Signed-off-by: Juergen Beisert <juergen@kreuzholzen.de>
----
- arch/arm/boards/mini2440/mini2440.c |    3 ++-
- 1 files changed, 2 insertions(+), 1 deletions(-)
+I'd be using the pmic_read_reg and pmic_write_reg functions (they should be 
+renamed and exported first though.)
 
-diff --git a/arch/arm/boards/mini2440/mini2440.c b/arch/arm/boards/mini2440/mini2440.c
-index ae48a51..ab309a0 100644
---- a/arch/arm/boards/mini2440/mini2440.c
-+++ b/arch/arm/boards/mini2440/mini2440.c
-@@ -55,7 +55,8 @@ static struct device_d sdram_dev = {
- };
- 
- static struct s3c24x0_nand_platform_data nand_info = {
--	.nand_timing = CALC_NFCONF_TIMING(A9M2440_TACLS, A9M2440_TWRPH0, A9M2440_TWRPH1)
-+	.nand_timing = CALC_NFCONF_TIMING(A9M2440_TACLS, A9M2440_TWRPH0, A9M2440_TWRPH1),
-+	.flash_bbt = 1,	/* same as the kernel */
- };
- 
- static struct device_d nand_dev = {
--- 
-1.7.2.3
+Have a look at the mc13892 driver ..
 
+> > 
+> > Is it the best way to do it like this (open, read, write), or do I better
+> > call those functions directly ? (I have to set the PMIC registers in the
+> > "late_init" function of the barebox startup sequence)
+
+... and the freescale-mx35-3stack for example.
+
+
+> 
+> [Filip] Think I found how it works. I have to use the normal read, write
+> and lseek functions to read/write PMIC registers. 
+
+As I said above, I reckon your board code will be cleaner if you skip the file 
+I/O and use the _read_reg and _write_reg functions directly.
+
+
+> The 'offset' and 'flag'
+> parameters in read and write functions are for internal use only. Correct.
+> When reading, an internal index is incremented. A following read starts
+> where the previous ended. With lseek, one can move that index to address
+> the correct register. Right ?
+In general, yes.
+
+
+HTH,
+
+Cheers
+Marc
+
+
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
