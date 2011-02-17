@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Pq1Ji-0007Sc-IT
-	for barebox@lists.infradead.org; Thu, 17 Feb 2011 10:42:36 +0000
+	id 1Pq1Zw-0007eo-9e
+	for barebox@lists.infradead.org; Thu, 17 Feb 2011 10:59:21 +0000
 Received: from gallifrey.ext.pengutronix.de
 	([2001:6f8:1178:4:5054:ff:fe8d:eefb] helo=localhost)
 	by metis.ext.pengutronix.de with esmtp (Exim 4.72)
-	(envelope-from <jbe@pengutronix.de>) id 1Pq1Je-000462-RJ
-	for barebox@lists.infradead.org; Thu, 17 Feb 2011 11:42:30 +0100
+	(envelope-from <jbe@pengutronix.de>) id 1Pq1Zu-0004kq-Dh
+	for barebox@lists.infradead.org; Thu, 17 Feb 2011 11:59:18 +0100
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Thu, 17 Feb 2011 11:40:26 +0100
+Date: Thu, 17 Feb 2011 11:57:14 +0100
 MIME-Version: 1.0
 Content-Disposition: inline
-Message-Id: <201102171140.26674.jbe@pengutronix.de>
+Message-Id: <201102171157.14757.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,38 +25,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH]  Fix end of expression char
+Subject: How to handle more than one network device in barebox
 To: barebox@lists.infradead.org
 
-Its not a bug fix, just a clean up.
+Hi,
 
-Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
+due to the fact (all?) network device drivers in barebox are using xzalloc to 
+allocate their "struct eth_device" the embedded "struct dev's" '.id' is 
+always '0'. So the registration of a second network device fails always with
 
----
- drivers/net/fec_imx.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ register_device: already registered eth0
 
-Index: a/drivers/net/fec_imx.c
-===================================================================
---- a/drivers/net/fec_imx.c
-+++ b/drivers/net/fec_imx.c
-@@ -605,11 +605,11 @@ static int fec_probe(struct device_d *de
- 	dev->type_data = edev;
- 	fec = (struct fec_priv *)xzalloc(sizeof(*fec));
- 	edev->priv = fec;
--	edev->open = fec_open,
--	edev->init = fec_init,
--	edev->send = fec_send,
--	edev->recv = fec_recv,
--	edev->halt = fec_halt,
-+	edev->open = fec_open;
-+	edev->init = fec_init;
-+	edev->send = fec_send;
-+	edev->recv = fec_recv;
-+	edev->halt = fec_halt;
- 	edev->get_ethaddr = fec_get_hwaddr,
- 	edev->set_ethaddr = fec_set_hwaddr,
- 
+Currently there is no way to overwrite the network device's ID. If I init 
+the "edev->dev.id" with '-1', it works. But it would be nice to define the 
+network device ordering from inside the platform (and not only with the order 
+I register the base devices). And copying the ".id" from the registered base 
+device also does not work if the network devices are of different type, due 
+to the framework starts with index 0 for different names.
+
+Any ideas how to?
+
+Regards,
+Juergen
 
 -- 
 Pengutronix e.K.                              | Juergen Beisert             |
