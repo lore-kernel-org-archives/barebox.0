@@ -1,14 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail12.tpgi.com.au ([203.12.160.162])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Ppo4U-0002jE-Go
-	for barebox@lists.infradead.org; Wed, 16 Feb 2011 20:33:59 +0000
-From: Marc Reilly <marc@cpdesign.com.au>
-Date: Thu, 17 Feb 2011 07:34:34 +1100
-References: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B00817@SRV-VS06.TELEVIC.COM>
-In-Reply-To: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B00817@SRV-VS06.TELEVIC.COM>
+	id 1Pq1Ji-0007Sc-IT
+	for barebox@lists.infradead.org; Thu, 17 Feb 2011 10:42:36 +0000
+Received: from gallifrey.ext.pengutronix.de
+	([2001:6f8:1178:4:5054:ff:fe8d:eefb] helo=localhost)
+	by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+	(envelope-from <jbe@pengutronix.de>) id 1Pq1Je-000462-RJ
+	for barebox@lists.infradead.org; Thu, 17 Feb 2011 11:42:30 +0100
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Thu, 17 Feb 2011 11:40:26 +0100
 MIME-Version: 1.0
-Message-Id: <201102170734.34357.marc@cpdesign.com.au>
+Content-Disposition: inline
+Message-Id: <201102171140.26674.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,60 +25,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: PMIC device driver
+Subject: [PATCH]  Fix end of expression char
 To: barebox@lists.infradead.org
-Cc: Vanalme Filip <F.Vanalme@televic.com>
 
+Its not a bug fix, just a clean up.
 
-Hi,
+Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 
-> > indicate the register within the PMIC to read/write. On the other hand,
-> > the standard read and write functions only take 3 parameters (device,
-> > buffer, buffersize). How do I pass that offset to these functions ? How
-> > do I use the PMIC device driver ?
-> > (Maybe this is a general Linux device driver question, but I'm not that
-> > familiar with device drivers, so...)
+---
+ drivers/net/fec_imx.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-I'd be using the pmic_read_reg and pmic_write_reg functions (they should be 
-renamed and exported first though.)
+Index: a/drivers/net/fec_imx.c
+===================================================================
+--- a/drivers/net/fec_imx.c
++++ b/drivers/net/fec_imx.c
+@@ -605,11 +605,11 @@ static int fec_probe(struct device_d *de
+ 	dev->type_data = edev;
+ 	fec = (struct fec_priv *)xzalloc(sizeof(*fec));
+ 	edev->priv = fec;
+-	edev->open = fec_open,
+-	edev->init = fec_init,
+-	edev->send = fec_send,
+-	edev->recv = fec_recv,
+-	edev->halt = fec_halt,
++	edev->open = fec_open;
++	edev->init = fec_init;
++	edev->send = fec_send;
++	edev->recv = fec_recv;
++	edev->halt = fec_halt;
+ 	edev->get_ethaddr = fec_get_hwaddr,
+ 	edev->set_ethaddr = fec_set_hwaddr,
+ 
 
-Have a look at the mc13892 driver ..
-
-> > 
-> > Is it the best way to do it like this (open, read, write), or do I better
-> > call those functions directly ? (I have to set the PMIC registers in the
-> > "late_init" function of the barebox startup sequence)
-
-... and the freescale-mx35-3stack for example.
-
-
-> 
-> [Filip] Think I found how it works. I have to use the normal read, write
-> and lseek functions to read/write PMIC registers. 
-
-As I said above, I reckon your board code will be cleaner if you skip the file 
-I/O and use the _read_reg and _write_reg functions directly.
-
-
-> The 'offset' and 'flag'
-> parameters in read and write functions are for internal use only. Correct.
-> When reading, an internal index is incremented. A following read starts
-> where the previous ended. With lseek, one can move that index to address
-> the correct register. Right ?
-In general, yes.
-
-
-HTH,
-
-Cheers
-Marc
-
-
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+-- 
+Pengutronix e.K.                              | Juergen Beisert             |
+Linux Solutions for Science and Industry      | Phone: +49-8766-939 228     |
+Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555 |
+Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
