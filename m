@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 63.mail-out.ovh.net ([91.121.185.56])
-	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1Prr1N-0006BT-RX
-	for barebox@lists.infradead.org; Tue, 22 Feb 2011 12:07:14 +0000
-Date: Tue, 22 Feb 2011 13:03:12 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20110222120312.GE31436@game.jcrosoft.org>
-References: <1298374366-6956-1-git-send-email-mkl@pengutronix.de>
-	<1298374366-6956-4-git-send-email-mkl@pengutronix.de>
+Received: from ip2.televic.com ([81.82.194.222])
+	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1Prs5m-0006vv-Ec
+	for barebox@lists.infradead.org; Tue, 22 Feb 2011 13:15:51 +0000
+From: Vanalme Filip <F.Vanalme@TELEVIC.com>
+Date: Tue, 22 Feb 2011 14:15:46 +0100
+Message-ID: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B00AF4@SRV-VS06.TELEVIC.COM>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1298374366-6956-4-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,20 +20,20 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH V2 3/3] atmel_nand: add support for flash based bad
-	block table
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: barebox@lists.infradead.org, sha@pengutronix.de
+Subject: booting kernel(s)
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On 12:32 Tue 22 Feb     , Marc Kleine-Budde wrote:
-> Inspired by Simon Polette's kernel commit
-> f4fa697c26bcd9e942de26bad970f4de1da5a49b.
-> 
-> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Acked-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+On our i.MX27 based board, we would like to have two Kernels : a default kernel and a "rescue" kernel. The first one is the one that will be started normally. The latter would be used only in (the rare) case the default kernel fails to start. E.g., when we remotely update the kernel, it could be that the uploaded image gets corrupt and cannot be started anymore. In that case, we would like to fall back to a "rescue" kernel, a minimal kernel and a small application with a minimum of capabilities, i.e. with some network capabilities just to be able to upload a new image.
+We already have this feature for another device that runs U-boot. I guess this should also be possible in barebox ?
+Because it was implemented in U-boot some time ago by another company, I'm not completely sure how it is done. I think it's done with this single line in the board's configuration file :
+#define CONFIG_BOOTCOMMAND   "bootm 0x20200000;bootm 0x200A0000"
+I guess, when the first bootm command fails (due to corrupt image), it will execute the second one. If the first command is successful, the Linux kernel takes over and the second command gets never executed. Am I right ?
+I think I can do the same thing in my Barebox's boot script, can I ? Or are there other/better solutions to handle this ?
 
-Best Regards,
-J.
+
+
+Filip
+
 
 _______________________________________________
 barebox mailing list
