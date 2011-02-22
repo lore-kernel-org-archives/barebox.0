@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ip2.televic.com ([81.82.194.222])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Prs5m-0006vv-Ec
-	for barebox@lists.infradead.org; Tue, 22 Feb 2011 13:15:51 +0000
-From: Vanalme Filip <F.Vanalme@TELEVIC.com>
-Date: Tue, 22 Feb 2011 14:15:46 +0100
-Message-ID: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B00AF4@SRV-VS06.TELEVIC.COM>
-Content-Language: en-US
-MIME-Version: 1.0
+	id 1PrzfE-0003Zb-CZ
+	for barebox@lists.infradead.org; Tue, 22 Feb 2011 21:20:56 +0000
+Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+	(envelope-from <jbe@pengutronix.de>) id 1PrzfA-0001Y8-Lv
+	for barebox@lists.infradead.org; Tue, 22 Feb 2011 22:20:52 +0100
+Received: from jbe by octopus.hi.pengutronix.de with local (Exim 4.69)
+	(envelope-from <jbe@pengutronix.de>) id 1PrzfA-0008Jn-Kg
+	for barebox@lists.infradead.org; Tue, 22 Feb 2011 22:20:52 +0100
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Tue, 22 Feb 2011 22:20:48 +0100
+Message-Id: <1298409650-28408-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,23 +21,30 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: booting kernel(s)
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [RFC] Add more changes to make the mini2440 work
+To: barebox@lists.infradead.org
 
-On our i.MX27 based board, we would like to have two Kernels : a default kernel and a "rescue" kernel. The first one is the one that will be started normally. The latter would be used only in (the rare) case the default kernel fails to start. E.g., when we remotely update the kernel, it could be that the uploaded image gets corrupt and cannot be started anymore. In that case, we would like to fall back to a "rescue" kernel, a minimal kernel and a small application with a minimum of capabilities, i.e. with some network capabilities just to be able to upload a new image.
-We already have this feature for another device that runs U-boot. I guess this should also be possible in barebox ?
-Because it was implemented in U-boot some time ago by another company, I'm not completely sure how it is done. I think it's done with this single line in the board's configuration file :
-#define CONFIG_BOOTCOMMAND   "bootm 0x20200000;bootm 0x200A0000"
-I guess, when the first bootm command fails (due to corrupt image), it will execute the second one. If the first command is successful, the Linux kernel takes over and the second command gets never executed. Am I right ?
-I think I can do the same thing in my Barebox's boot script, can I ? Or are there other/better solutions to handle this ?
+It seems there are more variants of the mini2440 in the wild than I ever
+thought.
 
+If there is someone out there with a different SDRAM and NAND setting than my
+system, please test this patches on top of barebox-next. My SDRAM is of type
+Hynix HY57V561620FTP-H and my NAND is of type Samsung K9F1208U0C.
+It seems my NAND is the only type with 512 byte pages. All other possible
+NAND devices (K9F1G08UOB, K9F2G08UOB, K9K8G08U0A) are using 2048 bytes per
+page. This difference is important when booting from NAND. So, I add a menu
+entry to select 512 or 2048 bytes per page. I have no idea how to handle this
+in a different/generic way, as it's hard to detect the NAND device at this
+early point of time when the system starts after reset.
 
+Comments are welcome.
 
-Filip
+jbe
 
 
 _______________________________________________
