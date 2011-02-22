@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PrqB4-0005iz-Bu
-	for barebox@lists.infradead.org; Tue, 22 Feb 2011 11:13:11 +0000
+	id 1PrqB9-0005kD-3g
+	for barebox@lists.infradead.org; Tue, 22 Feb 2011 11:13:15 +0000
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Tue, 22 Feb 2011 12:13:04 +0100
-Message-Id: <1298373185-27624-3-git-send-email-mkl@pengutronix.de>
+Date: Tue, 22 Feb 2011 12:13:05 +0100
+Message-Id: <1298373185-27624-4-git-send-email-mkl@pengutronix.de>
 In-Reply-To: <1298373185-27624-1-git-send-email-mkl@pengutronix.de>
 References: <1298373185-27624-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,31 +21,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] at91sam9g45_devices: don't hardcode nand ecc mode
+Subject: [PATCH 3/3] atmel_nand: add support for flash based bad block table
 To: barebox@lists.infradead.org
 Cc: sha@pengutronix.de
 
-Hardware is currently not working on the at91sam9g45. So give the user a
-change to specify software ecc mode.
+Inspired by Simon Polette's the kernel commit
+f4fa697c26bcd9e942de26bad970f4de1da5a49b.
 
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/mach-at91/at91sam9g45_devices.c |    1 -
- 1 files changed, 0 insertions(+), 1 deletions(-)
+ arch/arm/mach-at91/include/mach/board.h |    1 +
+ drivers/mtd/nand/atmel_nand.c           |    5 +++++
+ 2 files changed, 6 insertions(+), 0 deletions(-)
 
-diff --git a/arch/arm/mach-at91/at91sam9g45_devices.c b/arch/arm/mach-at91/at91sam9g45_devices.c
-index 306d1e4..9e2c572 100644
---- a/arch/arm/mach-at91/at91sam9g45_devices.c
-+++ b/arch/arm/mach-at91/at91sam9g45_devices.c
-@@ -99,7 +99,6 @@ void at91_add_device_nand(struct atmel_nand_data *data)
- 		return;
+diff --git a/arch/arm/mach-at91/include/mach/board.h b/arch/arm/mach-at91/include/mach/board.h
+index 1ab05ad..34a3966 100644
+--- a/arch/arm/mach-at91/include/mach/board.h
++++ b/arch/arm/mach-at91/include/mach/board.h
+@@ -34,6 +34,7 @@ struct atmel_nand_data {
+ 	u8		ale;		/* address line number connected to ALE */
+ 	u8		cle;		/* address line number connected to CLE */
+ 	u8		bus_width_16;	/* buswidth is 16 bit */
++	u8		flash_bbt;	/* use a flash based bbt */
+ 	u8		ecc_mode;	/* NAND_ECC_* */
+ };
  
- 	data->ecc_base = (void __iomem *)(AT91_BASE_SYS + AT91_ECC);
--	data->ecc_mode = NAND_ECC_HW;
+diff --git a/drivers/mtd/nand/atmel_nand.c b/drivers/mtd/nand/atmel_nand.c
+index e8f85fc..85e4b24 100644
+--- a/drivers/mtd/nand/atmel_nand.c
++++ b/drivers/mtd/nand/atmel_nand.c
+@@ -436,6 +436,11 @@ static int __init atmel_nand_probe(struct device_d *dev)
+ 		}
+ 	}
  
- 	csa = at91_sys_read(AT91_MATRIX_EBICSA);
- 	at91_sys_write(AT91_MATRIX_EBICSA, csa | AT91_MATRIX_EBI_CS3A_SMC_SMARTMEDIA);
++	if (host->board->flash_bbt) {
++		printk(KERN_INFO "atmel_nand: Use On Flash BBT\n");
++		nand_chip->options |= NAND_USE_FLASH_BBT;
++	}
++
+ 	/* first scan to find the device and get the page size */
+ 	if (nand_scan_ident(mtd, 1)) {
+ 		res = -ENXIO;
 -- 
 1.7.2.3
 
