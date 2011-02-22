@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from 63.mail-out.ovh.net ([91.121.185.56])
 	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1Prr0l-0006A1-7q
-	for barebox@lists.infradead.org; Tue, 22 Feb 2011 12:06:36 +0000
-Date: Tue, 22 Feb 2011 13:02:28 +0100
+	id 1Prr1N-0006BT-RX
+	for barebox@lists.infradead.org; Tue, 22 Feb 2011 12:07:14 +0000
+Date: Tue, 22 Feb 2011 13:03:12 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20110222120228.GD31436@game.jcrosoft.org>
+Message-ID: <20110222120312.GE31436@game.jcrosoft.org>
 References: <1298374366-6956-1-git-send-email-mkl@pengutronix.de>
-	<1298374366-6956-3-git-send-email-mkl@pengutronix.de>
+	<1298374366-6956-4-git-send-email-mkl@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1298374366-6956-3-git-send-email-mkl@pengutronix.de>
+In-Reply-To: <1298374366-6956-4-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,19 +23,17 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH V2 2/3] at91sam9g45_devices: don't hardcode nand ecc mode
+Subject: Re: [PATCH V2 3/3] atmel_nand: add support for flash based bad
+	block table
 To: Marc Kleine-Budde <mkl@pengutronix.de>
 Cc: barebox@lists.infradead.org, sha@pengutronix.de
 
 On 12:32 Tue 22 Feb     , Marc Kleine-Budde wrote:
-> Hardware ECC is currently not working on the at91sam9g45. So give the user a
-> change to specify software ecc mode.
+> Inspired by Simon Polette's kernel commit
+> f4fa697c26bcd9e942de26bad970f4de1da5a49b.
 > 
 > Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-> Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-I prefer we detect it in the nand driver
-than the user select it
-and ise the user choice if not detection failled or forced
+Acked-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 
 Best Regards,
 J.
