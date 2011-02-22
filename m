@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PrqB9-0005kD-3g
-	for barebox@lists.infradead.org; Tue, 22 Feb 2011 11:13:15 +0000
+	id 1PrqU5-0005qh-6y
+	for barebox@lists.infradead.org; Tue, 22 Feb 2011 11:32:49 +0000
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Tue, 22 Feb 2011 12:13:05 +0100
-Message-Id: <1298373185-27624-4-git-send-email-mkl@pengutronix.de>
-In-Reply-To: <1298373185-27624-1-git-send-email-mkl@pengutronix.de>
-References: <1298373185-27624-1-git-send-email-mkl@pengutronix.de>
+Date: Tue, 22 Feb 2011 12:32:43 +0100
+Message-Id: <1298374366-6956-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,49 +19,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] atmel_nand: add support for flash based bad block table
+Subject: [PATCH V2 0/3] at91 fixes
 To: barebox@lists.infradead.org
 Cc: sha@pengutronix.de
 
-Inspired by Simon Polette's the kernel commit
-f4fa697c26bcd9e942de26bad970f4de1da5a49b.
+Hello,
 
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- arch/arm/mach-at91/include/mach/board.h |    1 +
- drivers/mtd/nand/atmel_nand.c           |    5 +++++
- 2 files changed, 6 insertions(+), 0 deletions(-)
+this patch series fixes some problems on the at91sam9g45 and adds support for
+flash based bad block table to the atmel nand driver.
 
-diff --git a/arch/arm/mach-at91/include/mach/board.h b/arch/arm/mach-at91/include/mach/board.h
-index 1ab05ad..34a3966 100644
---- a/arch/arm/mach-at91/include/mach/board.h
-+++ b/arch/arm/mach-at91/include/mach/board.h
-@@ -34,6 +34,7 @@ struct atmel_nand_data {
- 	u8		ale;		/* address line number connected to ALE */
- 	u8		cle;		/* address line number connected to CLE */
- 	u8		bus_width_16;	/* buswidth is 16 bit */
-+	u8		flash_bbt;	/* use a flash based bbt */
- 	u8		ecc_mode;	/* NAND_ECC_* */
- };
- 
-diff --git a/drivers/mtd/nand/atmel_nand.c b/drivers/mtd/nand/atmel_nand.c
-index e8f85fc..85e4b24 100644
---- a/drivers/mtd/nand/atmel_nand.c
-+++ b/drivers/mtd/nand/atmel_nand.c
-@@ -436,6 +436,11 @@ static int __init atmel_nand_probe(struct device_d *dev)
- 		}
- 	}
- 
-+	if (host->board->flash_bbt) {
-+		printk(KERN_INFO "atmel_nand: Use On Flash BBT\n");
-+		nand_chip->options |= NAND_USE_FLASH_BBT;
-+	}
-+
- 	/* first scan to find the device and get the page size */
- 	if (nand_scan_ident(mtd, 1)) {
- 		res = -ENXIO;
--- 
-1.7.2.3
+changes since V1:
+
+- fix wording in commit message
+
+The following changes since commit 58ec1a81a16a758bc6125f7736d13137c5b7e17f:
+
+  Merge branch 'tx25' into next (2011-02-18 11:11:48 +0100)
+
+are available in the git repository at:
+
+  git://git.pengutronix.de/git/mkl/barebox.git at91
+
+Juergen Beisert (1):
+      at91sam9g45_devices: fix compilation if NAND driver is enabled
+
+Marc Kleine-Budde (2):
+      at91sam9g45_devices: don't hardcode nand ecc mode
+      atmel_nand: add support for flash based bad block table
+
+ arch/arm/mach-at91/at91sam9g45_devices.c |    2 +-
+ arch/arm/mach-at91/include/mach/board.h  |    1 +
+ drivers/mtd/nand/atmel_nand.c            |    5 +++++
+ 3 files changed, 7 insertions(+), 1 deletions(-)
+
 
 
 _______________________________________________
