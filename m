@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PrqU5-0005qi-QM
-	for barebox@lists.infradead.org; Tue, 22 Feb 2011 11:32:50 +0000
+	id 1PrqU6-0005qk-6J
+	for barebox@lists.infradead.org; Tue, 22 Feb 2011 11:32:51 +0000
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Tue, 22 Feb 2011 12:32:44 +0100
-Message-Id: <1298374366-6956-2-git-send-email-mkl@pengutronix.de>
+Date: Tue, 22 Feb 2011 12:32:46 +0100
+Message-Id: <1298374366-6956-4-git-send-email-mkl@pengutronix.de>
 In-Reply-To: <1298374366-6956-1-git-send-email-mkl@pengutronix.de>
 References: <1298374366-6956-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,38 +21,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH V2 1/3] at91sam9g45_devices: fix compilation if NAND driver is
-	enabled
+Subject: [PATCH V2 3/3] atmel_nand: add support for flash based bad block table
 To: barebox@lists.infradead.org
 Cc: sha@pengutronix.de
 
-From: Juergen Beisert <jbe@pengutronix.de>
+Inspired by Simon Polette's kernel commit
+f4fa697c26bcd9e942de26bad970f4de1da5a49b.
 
-Enabling the AT91 NAND driver fails with the following error:
-
-arch/arm/mach-at91/at91sam9g45_devices.c: In function 'at91_add_device_nand':
-arch/arm/mach-at91/at91sam9g45_devices.c:101: error: 'NAND_ECC_HW' undeclared (first use in this function)
-
-Include the missing "nand.h".
-
-Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- arch/arm/mach-at91/at91sam9g45_devices.c |    1 +
- 1 files changed, 1 insertions(+), 0 deletions(-)
 
-diff --git a/arch/arm/mach-at91/at91sam9g45_devices.c b/arch/arm/mach-at91/at91sam9g45_devices.c
-index ddb005a..306d1e4 100644
---- a/arch/arm/mach-at91/at91sam9g45_devices.c
-+++ b/arch/arm/mach-at91/at91sam9g45_devices.c
-@@ -17,6 +17,7 @@
- #include <mach/board.h>
- #include <mach/gpio.h>
- #include <mach/io.h>
-+#include <linux/mtd/nand.h>
+Changes since V1:
+- better commit message
+
+ arch/arm/mach-at91/include/mach/board.h |    1 +
+ drivers/mtd/nand/atmel_nand.c           |    5 +++++
+ 2 files changed, 6 insertions(+), 0 deletions(-)
+
+diff --git a/arch/arm/mach-at91/include/mach/board.h b/arch/arm/mach-at91/include/mach/board.h
+index 1ab05ad..34a3966 100644
+--- a/arch/arm/mach-at91/include/mach/board.h
++++ b/arch/arm/mach-at91/include/mach/board.h
+@@ -34,6 +34,7 @@ struct atmel_nand_data {
+ 	u8		ale;		/* address line number connected to ALE */
+ 	u8		cle;		/* address line number connected to CLE */
+ 	u8		bus_width_16;	/* buswidth is 16 bit */
++	u8		flash_bbt;	/* use a flash based bbt */
+ 	u8		ecc_mode;	/* NAND_ECC_* */
+ };
  
- #include "generic.h"
+diff --git a/drivers/mtd/nand/atmel_nand.c b/drivers/mtd/nand/atmel_nand.c
+index e8f85fc..85e4b24 100644
+--- a/drivers/mtd/nand/atmel_nand.c
++++ b/drivers/mtd/nand/atmel_nand.c
+@@ -436,6 +436,11 @@ static int __init atmel_nand_probe(struct device_d *dev)
+ 		}
+ 	}
  
++	if (host->board->flash_bbt) {
++		printk(KERN_INFO "atmel_nand: Use On Flash BBT\n");
++		nand_chip->options |= NAND_USE_FLASH_BBT;
++	}
++
+ 	/* first scan to find the device and get the page size */
+ 	if (nand_scan_ident(mtd, 1)) {
+ 		res = -ENXIO;
 -- 
 1.7.2.3
 
