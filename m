@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PrqU5-0005qj-Uj
-	for barebox@lists.infradead.org; Tue, 22 Feb 2011 11:32:51 +0000
+	id 1PrqU5-0005qi-QM
+	for barebox@lists.infradead.org; Tue, 22 Feb 2011 11:32:50 +0000
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Tue, 22 Feb 2011 12:32:45 +0100
-Message-Id: <1298374366-6956-3-git-send-email-mkl@pengutronix.de>
+Date: Tue, 22 Feb 2011 12:32:44 +0100
+Message-Id: <1298374366-6956-2-git-send-email-mkl@pengutronix.de>
 In-Reply-To: <1298374366-6956-1-git-send-email-mkl@pengutronix.de>
 References: <1298374366-6956-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,35 +21,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH V2 2/3] at91sam9g45_devices: don't hardcode nand ecc mode
+Subject: [PATCH V2 1/3] at91sam9g45_devices: fix compilation if NAND driver is
+	enabled
 To: barebox@lists.infradead.org
 Cc: sha@pengutronix.de
 
-Hardware ECC is currently not working on the at91sam9g45. So give the user a
-change to specify software ecc mode.
+From: Juergen Beisert <jbe@pengutronix.de>
 
+Enabling the AT91 NAND driver fails with the following error:
+
+arch/arm/mach-at91/at91sam9g45_devices.c: In function 'at91_add_device_nand':
+arch/arm/mach-at91/at91sam9g45_devices.c:101: error: 'NAND_ECC_HW' undeclared (first use in this function)
+
+Include the missing "nand.h".
+
+Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
-
-Changes since V1:
-- better commit message
-
- arch/arm/mach-at91/at91sam9g45_devices.c |    1 -
- 1 files changed, 0 insertions(+), 1 deletions(-)
+ arch/arm/mach-at91/at91sam9g45_devices.c |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
 
 diff --git a/arch/arm/mach-at91/at91sam9g45_devices.c b/arch/arm/mach-at91/at91sam9g45_devices.c
-index 306d1e4..9e2c572 100644
+index ddb005a..306d1e4 100644
 --- a/arch/arm/mach-at91/at91sam9g45_devices.c
 +++ b/arch/arm/mach-at91/at91sam9g45_devices.c
-@@ -99,7 +99,6 @@ void at91_add_device_nand(struct atmel_nand_data *data)
- 		return;
+@@ -17,6 +17,7 @@
+ #include <mach/board.h>
+ #include <mach/gpio.h>
+ #include <mach/io.h>
++#include <linux/mtd/nand.h>
  
- 	data->ecc_base = (void __iomem *)(AT91_BASE_SYS + AT91_ECC);
--	data->ecc_mode = NAND_ECC_HW;
+ #include "generic.h"
  
- 	csa = at91_sys_read(AT91_MATRIX_EBICSA);
- 	at91_sys_write(AT91_MATRIX_EBICSA, csa | AT91_MATRIX_EBI_CS3A_SMC_SMARTMEDIA);
 -- 
 1.7.2.3
 
