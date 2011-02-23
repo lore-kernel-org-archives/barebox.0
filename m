@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ww0-f49.google.com ([74.125.82.49])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PsBSr-0007xj-34
-	for barebox@lists.infradead.org; Wed, 23 Feb 2011 09:56:57 +0000
-Received: by wwb29 with SMTP id 29so199641wwb.18
-	for <barebox@lists.infradead.org>; Wed, 23 Feb 2011 01:56:55 -0800 (PST)
-From: Peter Korsgaard <jacmet@sunsite.dk>
-References: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B00AF4@SRV-VS06.TELEVIC.COM>
-	<20110223090310.GG7381@pengutronix.de>
-	<20110223091652.GA339@jasper.tkos.co.il>
-Date: Wed, 23 Feb 2011 10:56:50 +0100
-In-Reply-To: <20110223091652.GA339@jasper.tkos.co.il> (Baruch Siach's message
-	of "Wed, 23 Feb 2011 11:16:52 +0200")
-Message-ID: <87y657xee5.fsf@macbook.be.48ers.dk>
+	id 1PsGXz-0002Lx-FX
+	for barebox@lists.infradead.org; Wed, 23 Feb 2011 15:22:38 +0000
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Wed, 23 Feb 2011 16:20:30 +0100
+References: <Pine.LNX.4.31.1102231440230.20973-100000@susu.bendor.com.au>
+In-Reply-To: <Pine.LNX.4.31.1102231440230.20973-100000@susu.bendor.com.au>
 MIME-Version: 1.0
+Content-Disposition: inline
+Message-Id: <201102231620.30283.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,35 +22,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: booting kernel(s)
-To: Baruch Siach <baruch@tkos.co.il>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Vanalme Filip <F.Vanalme@TELEVIC.com>
+Subject: Re: [PATCH 2/2] mini2440: Consider correct NAND page size for boot.
+To: barebox@lists.infradead.org
 
->>>>> "Baruch" == Baruch Siach <baruch@tkos.co.il> writes:
+zoltan@bendor.com.au wrote:
+> On Tue, 22 Feb 2011, Juergen Beisert wrote:
+> > From: Juergen Beisert <juergen@kreuzholzen.de>
+> >
+> > When booting from NAND, its important to know the correct page size.
+>
+> Isn't that info available as soon as SteppingStone sucked in the first 4K
+> into the internal SRAM?
+>
+> As far as I can follow the s3c2440 manual, bit 0 and the read-only bits 1
+> to 3 of the NFCONF register convey that information and these bits are set
+> by sampling a few GPIO (NCON and GPG13-GPG15) pins at reset. Supposedly
+> these pins are pulled up/low during reset so that SteppingStone itself can
+> read the boot code from the NAND.
+>
+> What am I missing?
 
- Baruch> A partial solution is to use initramfs (see the kernel
- Baruch> Documentation/filesystems/ramfs-rootfs-initramfs.txt). You can
- Baruch> mount your rootfs from the /init script of the initramfs. Then,
- Baruch> if mount fails because of a corrupt rootfs, you can mount your
- Baruch> rescue rootfs instead, or just run whatever rescue application
- Baruch> you want directly from initramfs.
+I did a look at it. On my board this register states "0110" which means:
+ - 8 bit NAND
+ - 512 bytes per page (e.g. "normal" NAND)
+ - 4 address cycles
+And this setting is all right, my flash is a K9F1208U0A.
 
-This only works if mount does a complete rootfs check, which isn't the
-case. In the typical situation of a power loss in the middle of an
-update, the superblock will normally be valid and you will only discover
-the corruption when you start accessing files.
+But Marek's board states "1110" which means:
+ - 8 bit NAND
+ - 2048 bytes per page (e.g. "advanced" NAND)
+ - 5 address cycles
+And this setting is bad, because his K9F1G08U0B uses 4 address cycles only.
+Maybe it works because the NAND ignores the 5th address cycle?
 
- Baruch> Another partial solution is a to use a hardware watchdog, and a
- Baruch> userspace watchdog ping process. Then, upon boot you may check
- Baruch> whether this is a normal power-on reset or a watchdog reset,
- Baruch> and load the appropriate kernel.
+Others here around with a mini2440? Can you send me your NAND device type and 
+the content of register 0x4e000000?
 
-That's imho a better solution, and pretty simply to implement without
-any adverse affects on the startup time, whereas the CRC checks do add
-to the startup time.
+jbe
 
 -- 
-Bye, Peter Korsgaard
+Pengutronix e.K.                              | Juergen Beisert             |
+Linux Solutions for Science and Industry      | Phone: +49-8766-939 228     |
+Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555 |
+Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
