@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 31.mail-out.ovh.net ([213.186.62.10])
-	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1Ps29A-0004fJ-Qs
-	for barebox@lists.infradead.org; Wed, 23 Feb 2011 00:00:01 +0000
-Message-ID: <4D644DFA.9070706@eukrea.com>
-Date: Wed, 23 Feb 2011 00:59:54 +0100
-From: Eric Benard <eric@eukrea.com>
+Received: from susu.bendor.com.au ([203.16.199.2])
+	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1Ps5u6-0006FG-KM
+	for barebox@lists.infradead.org; Wed, 23 Feb 2011 04:00:43 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by susu.bendor.com.au (Postfix) with ESMTP id 68F097A8
+	for <barebox@lists.infradead.org>; Wed, 23 Feb 2011 15:00:37 +1100 (EST)
+Date: Wed, 23 Feb 2011 15:00:37 +1100 (EST)
+From: <zoltan@bendor.com.au>
+In-Reply-To: <1298409650-28408-3-git-send-email-jbe@pengutronix.de>
+Message-ID: <Pine.LNX.4.31.1102231440230.20973-100000@susu.bendor.com.au>
 MIME-Version: 1.0
-References: <1296209604-29790-1-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1296209604-29790-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,41 +19,32 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] lib/decompress_unlzo: use fill and full to read and write
-	data
+Subject: Re: [PATCH 2/2] mini2440: Consider correct NAND page size for boot.
 To: barebox@lists.infradead.org
 
-Hi Jean Christophe,
+On Tue, 22 Feb 2011, Juergen Beisert wrote:
 
-On 28/01/2011 11:13, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> this will all to simplify the sync with the kernel and later easly add the
-> self decompression support to barebox
+> From: Juergen Beisert <juergen@kreuzholzen.de>
 >
-> as example with a lzo compression will reduce barebox from 180224 to 99863
-> bytes so 55.41%
-> -rwxr-xr-x 1 root root  99863 Jan 28 02:17 build/versatilepb/barebox.bin.lzo
->
-> we also reduce the binary size by 224 bytes
->
-> Old version
-> # ls -al build/versatilepb/barebox.bin
-> -rwxr-xr-x 1 root root 180468 Jan 28 02:14 build/versatilepb/barebox.bin
->
-> New version
-> # ls -al build/versatilepb/barebox*
-> -rwxr-xr-x 1 root root 180244 Jan 28 02:13 build/versatilepb/barebox.bin
->
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD<plagnioj@jcrosoft.com>
+> When booting from NAND, its important to know the correct page size.
 
-unfortunatly, this commit breaks unlzo in barebox :
-unlzo logo.bmp.lzo logo.bmp stays blocked forever
-reverting this commit unbreak the unlzo command.
+Isn't that info available as soon as SteppingStone sucked in the first 4K
+into the internal SRAM?
 
-Eric
+As far as I can follow the s3c2440 manual, bit 0 and the read-only bits 1
+to 3 of the NFCONF register convey that information and these bits are set
+by sampling a few GPIO (NCON and GPG13-GPG15) pins at reset. Supposedly
+these pins are pulled up/low during reset so that SteppingStone itself can
+read the boot code from the NAND.
+
+What am I missing?
+
+Zoltan
+
 
 _______________________________________________
 barebox mailing list
