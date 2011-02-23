@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from susu.bendor.com.au ([203.16.199.2])
-	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1Ps5u6-0006FG-KM
-	for barebox@lists.infradead.org; Wed, 23 Feb 2011 04:00:43 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by susu.bendor.com.au (Postfix) with ESMTP id 68F097A8
-	for <barebox@lists.infradead.org>; Wed, 23 Feb 2011 15:00:37 +1100 (EST)
-Date: Wed, 23 Feb 2011 15:00:37 +1100 (EST)
-From: <zoltan@bendor.com.au>
-In-Reply-To: <1298409650-28408-3-git-send-email-jbe@pengutronix.de>
-Message-ID: <Pine.LNX.4.31.1102231440230.20973-100000@susu.bendor.com.au>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1Ps99y-00074G-O0
+	for barebox@lists.infradead.org; Wed, 23 Feb 2011 07:29:19 +0000
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Wed, 23 Feb 2011 08:26:59 +0100
+References: <Pine.LNX.4.31.1102231440230.20973-100000@susu.bendor.com.au>
+In-Reply-To: <Pine.LNX.4.31.1102231440230.20973-100000@susu.bendor.com.au>
 MIME-Version: 1.0
+Content-Disposition: inline
+Message-Id: <201102230826.59603.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,25 +25,32 @@ Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 2/2] mini2440: Consider correct NAND page size for boot.
 To: barebox@lists.infradead.org
 
-On Tue, 22 Feb 2011, Juergen Beisert wrote:
-
-> From: Juergen Beisert <juergen@kreuzholzen.de>
+zoltan@bendor.com.au wrote:
+> On Tue, 22 Feb 2011, Juergen Beisert wrote:
+> > From: Juergen Beisert <juergen@kreuzholzen.de>
+> >
+> > When booting from NAND, its important to know the correct page size.
 >
-> When booting from NAND, its important to know the correct page size.
+> Isn't that info available as soon as SteppingStone sucked in the first 4K
+> into the internal SRAM?
+>
+> As far as I can follow the s3c2440 manual, bit 0 and the read-only bits 1
+> to 3 of the NFCONF register convey that information and these bits are set
+> by sampling a few GPIO (NCON and GPG13-GPG15) pins at reset. Supposedly
+> these pins are pulled up/low during reset so that SteppingStone itself can
+> read the boot code from the NAND.
+>
+> What am I missing?
 
-Isn't that info available as soon as SteppingStone sucked in the first 4K
-into the internal SRAM?
+Hmm, good idea. I will try it. Thanks for the hint.
 
-As far as I can follow the s3c2440 manual, bit 0 and the read-only bits 1
-to 3 of the NFCONF register convey that information and these bits are set
-by sampling a few GPIO (NCON and GPG13-GPG15) pins at reset. Supposedly
-these pins are pulled up/low during reset so that SteppingStone itself can
-read the boot code from the NAND.
+jbe
 
-What am I missing?
-
-Zoltan
-
+-- 
+Pengutronix e.K.                              | Juergen Beisert             |
+Linux Solutions for Science and Industry      | Phone: +49-8766-939 228     |
+Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555 |
+Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
