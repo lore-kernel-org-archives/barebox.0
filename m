@@ -1,10 +1,10 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp2-g21.free.fr ([212.27.42.2])
 	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1PsX4Q-0000sm-OZ
-	for barebox@lists.infradead.org; Thu, 24 Feb 2011 09:01:11 +0000
-Message-ID: <4D661E4F.20801@eukrea.com>
-Date: Thu, 24 Feb 2011 10:01:03 +0100
+	id 1PsX57-0000u1-1t
+	for barebox@lists.infradead.org; Thu, 24 Feb 2011 09:01:54 +0000
+Message-ID: <4D661E7A.8030605@eukrea.com>
+Date: Thu, 24 Feb 2011 10:01:46 +0100
 From: Eric Benard <eric@eukrea.com>
 MIME-Version: 1.0
 References: <4D656F66.8030501@eukrea.com>
@@ -26,8 +26,6 @@ Subject: Re: i.MX51 & MMU
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Sascha,
-
 On 24/02/2011 09:39, Sascha Hauer wrote:
 > On Wed, Feb 23, 2011 at 09:34:46PM +0100, Eric Benard wrote:
 >> Hi,
@@ -43,11 +41,9 @@ On 24/02/2011 09:39, Sascha Hauer wrote:
 > mmu setup code sniplet?
 > The babbage works with mmu enabled.
 >
-OK so the problem is on my side. For the moment the mmu part is the one of the 
-babbage. But I must investigate as I only have one DDR2 bank on this board 
-(for a 256MB total size) when the babbage has 2 (for a 512MB total size).
+btw: NAND support for i.MX51 works fine here (with a 8 bits width 2k pages 
+size NAND).
 
-Thanks,
 Eric
 
 _______________________________________________
