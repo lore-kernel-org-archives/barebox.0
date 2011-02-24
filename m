@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PsdX5-00044w-0v
+	id 1PsdX5-00044x-13
 	for barebox@lists.infradead.org; Thu, 24 Feb 2011 15:55:11 +0000
-Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.72)
-	(envelope-from <sha@pengutronix.de>) id 1PsdX2-0000vU-Nh
-	for barebox@lists.infradead.org; Thu, 24 Feb 2011 16:55:08 +0100
-Received: from sha by octopus.hi.pengutronix.de with local (Exim 4.69)
-	(envelope-from <sha@pengutronix.de>) id 1PsdX2-0002jC-MP
-	for barebox@lists.infradead.org; Thu, 24 Feb 2011 16:55:08 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 24 Feb 2011 16:55:05 +0100
-Message-Id: <1298562907-9870-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 24 Feb 2011 16:55:06 +0100
+Message-Id: <1298562907-9870-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1298562907-9870-1-git-send-email-s.hauer@pengutronix.de>
+References: <1298562907-9870-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,23 +21,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: assorted patches
+Subject: [PATCH 1/2] net: use dev_* for printing network related stuff
 To: barebox@lists.infradead.org
 
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ net/eth.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
 
-Sascha Hauer (2):
-      net: use dev_* for printing network related stuff
-      ARM i.MX: cleanup boot modes
-
- arch/arm/mach-imx/Kconfig                 |   51 +++++
- arch/arm/mach-imx/Makefile                |    1 +
- arch/arm/mach-imx/include/mach/imx-nand.h |   56 +++++-
- arch/arm/mach-imx/internal-nand-boot.c    |  269 +++++++++++++++++++++++++
- drivers/mtd/nand/Kconfig                  |   21 --
- drivers/mtd/nand/nand_imx.c               |  307 -----------------------------
- net/eth.c                                 |    4 +-
- 7 files changed, 378 insertions(+), 331 deletions(-)
- create mode 100644 arch/arm/mach-imx/internal-nand-boot.c
+diff --git a/net/eth.c b/net/eth.c
+index 9eae17c..0251e59 100644
+--- a/net/eth.c
++++ b/net/eth.c
+@@ -146,7 +146,7 @@ int eth_register(struct eth_device *edev)
+ 	unsigned char ethaddr[6];
+ 
+ 	if (!edev->get_ethaddr) {
+-		printf("no get_mac_address found for current eth device\n");
++		dev_err(dev, "no get_mac_address found for current eth device\n");
+ 		return -1;
+ 	}
+ 
+@@ -167,7 +167,7 @@ int eth_register(struct eth_device *edev)
+ 
+ 	if (edev->get_ethaddr(edev, ethaddr) == 0) {
+ 		ethaddr_to_string(ethaddr, ethaddr_str);
+-		printf("got MAC address from EEPROM: %s\n", ethaddr_str);
++		dev_info(dev, "got MAC address from EEPROM: %s\n", ethaddr_str);
+ 		dev_set_param(dev, "ethaddr", ethaddr_str);
+ 	}
+ 
+-- 
+1.7.2.3
 
 
 _______________________________________________
