@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from susu.bendor.com.au ([203.16.199.2])
+Received: from smtp2-g21.free.fr ([212.27.42.2])
 	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1PsWrL-0000nk-P2
-	for barebox@lists.infradead.org; Thu, 24 Feb 2011 08:47:41 +0000
-Date: Thu, 24 Feb 2011 19:47:37 +1100
-From: =?UTF-8?B?Wm9sdMOhbiBLw7Njc2k=?= <zoltan@bendor.com.au>
-Message-ID: <20110224194737.24b79a0e@manocska.bendor.com.au>
-In-Reply-To: <201102232308.14721.jbe@pengutronix.de>
-References: <Pine.LNX.4.31.1102231440230.20973-100000@susu.bendor.com.au>
-	<201102232308.14721.jbe@pengutronix.de>
-Mime-Version: 1.0
+	id 1PsX4Q-0000sm-OZ
+	for barebox@lists.infradead.org; Thu, 24 Feb 2011 09:01:11 +0000
+Message-ID: <4D661E4F.20801@eukrea.com>
+Date: Thu, 24 Feb 2011 10:01:03 +0100
+From: Eric Benard <eric@eukrea.com>
+MIME-Version: 1.0
+References: <4D656F66.8030501@eukrea.com>
+	<20110224083925.GO7381@pengutronix.de>
+In-Reply-To: <20110224083925.GO7381@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,38 +18,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] mini2440: Consider correct NAND page size for boot.
-To: Juergen Beisert <jbe@pengutronix.de>
+Subject: Re: i.MX51 & MMU
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, 23 Feb 2011 23:08:14 +0100
-Juergen Beisert <jbe@pengutronix.de> wrote:
+Hi Sascha,
 
-> Hi Zoltan,
-> 
-> > [..]
-> 
-> do you mean something like that?
-> 
-> From: Juergen Beisert <juergen@kreuzholzen.de>
-> Subject: mini2440: Consider correct NAND page size for boot.
-> 
-> When booting from NAND, its important to know the correct page size.
-> When the NAND is used as the boot source, four dedicated pins are
-> used to configure the correct page size and address cycle count.
-> These pins can be read back in one of the NFC registers to
-> parametrize the load function.
-> [...]
+On 24/02/2011 09:39, Sascha Hauer wrote:
+> On Wed, Feb 23, 2011 at 09:34:46PM +0100, Eric Benard wrote:
+>> Hi,
+>>
+>> has anyone recently tested barebox master on a babbage board with
+>> MMU enabled ? Here (not on a babbage, with a TO2 i.MX515 with 1 bank
+>> of DDR2), enabling MMU crash the board (which works fine with
+>> barebox with MMU disabled and with Linux 2.6.38-rc6 so the hardware
+>> seems not to be the root of the problem).
+>
+> The memory space of the i.MX51 is a bit tight. It may be that you shadow
+> registers with the dma coherent memory space. Can you please post your
+> mmu setup code sniplet?
+> The babbage works with mmu enabled.
+>
+OK so the problem is on my side. For the moment the mmu part is the one of the 
+babbage. But I must investigate as I only have one DDR2 bank on this board 
+(for a 256MB total size) when the babbage has 2 (for a 512MB total size).
 
-Yes, *exactly* like that!
-
-Best Regards,
-
-Zoltan
+Thanks,
+Eric
 
 _______________________________________________
 barebox mailing list
