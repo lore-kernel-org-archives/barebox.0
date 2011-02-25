@@ -1,16 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ip2.televic.com ([81.82.194.222])
+Received: from coyote.quickmin.net ([217.14.112.24])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PszY9-0005Kw-5M
-	for barebox@lists.infradead.org; Fri, 25 Feb 2011 15:25:46 +0000
-From: Vanalme Filip <F.Vanalme@TELEVIC.com>
-Date: Fri, 25 Feb 2011 16:25:42 +0100
-Message-ID: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B00CF8@SRV-VS06.TELEVIC.COM>
-References: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B00CD1@SRV-VS06.TELEVIC.COM>
-	<6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B00CD5@SRV-VS06.TELEVIC.COM>
-In-Reply-To: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B00CD5@SRV-VS06.TELEVIC.COM>
-Content-Language: en-US
+	id 1Pt0DI-0005iW-G1
+	for barebox@lists.infradead.org; Fri, 25 Feb 2011 16:08:17 +0000
+Received: from [10.96.97.181] (tmayer.mit.telemotive.de [10.96.97.181])
+	by alderan.mit.telemotive.de (Postfix) with ESMTP id 2831AD7850
+	for <barebox@lists.infradead.org>; Fri, 25 Feb 2011 17:08:11 +0100 (CET)
+From: Thomas Mayer <thomas.mayer@telemotive.de>
 MIME-Version: 1.0
+References: <4D665867.4010404@telemotive.de>
+	<20110224160440.GQ7381@pengutronix.de>
+	<4D677315.5090600@telemotive.de>
+	<20110225150657.GC29521@pengutronix.de>
+In-Reply-To: <20110225150657.GC29521@pengutronix.de>
+Message-ID: <4D67D3EA.9000106@telemotive.de>
+Date: Fri, 25 Feb 2011 17:08:10 +0100
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,107 +27,170 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: writing environment in NAND flash
-To: Vanalme Filip <F.Vanalme@TELEVIC.com>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: Install barebox on target
+To: barebox@lists.infradead.org
 
-> -----Original Message-----
-> From: Vanalme Filip
-> Sent: vrijdag 25 februari 2011 15:14
-> To: Vanalme Filip; barebox@lists.infradead.org
-> Subject: RE: writing environment in NAND flash
-> 
-> > -----Original Message-----
-> > From: barebox-bounces@lists.infradead.org [mailto:barebox-
-> > bounces@lists.infradead.org] On Behalf Of Vanalme Filip
-> > Sent: vrijdag 25 februari 2011 14:50
-> > To: barebox@lists.infradead.org
-> > Subject: writing environment in NAND flash
-> >
-> > I have problems to save my environment settings. Although I set e.g. the MAC
-> > address and some other values and do the saveenv command, after reset, all
-> > settings have disappeared.
-> > In the logging on the console port, I detected this :
-> > "wrong crc on env
-> > no valid environment found on /dev/env0. Using default environment"
-> >
-> > That will be, of course, the cause why the settings disappear.
-> > Further investigation with debugging enabled in nand_imx.c showed that
-> Barebox
-> > reads 4 pages when starting up (0x80..0x83). That looks OK, because the
-> > environment's size is 6156 bytes. So, indeen 4 pages needed. However, when
-> > saving the environment, I only see appear one page write, i.e. on page 0x80. Of
-> > course, when reading back the four pages, the 2nd, 3rd and 4th page have all
-> FF
-> > because they have never been written (causing a wrong CRC). Any idea why I
-> > only see 1 page write when saving the environment although the size is 6156
-> > bytes ? Any hints where to look in the sources ?
-> >
-> > Thanks in advance !
-> >
-> >
-> >
-> > Filip
-> >
-> [Filip]  Sorry for sending this message twice to the mailing list....
-> 
-> I have found the cause of this problem.
-> I have CONFIG_MTD_NAND_VERIFY_WRITE=y.
-> So, after a write, the code performs a read to verify the written data. For i.MX27, this
-> mean that the function imx_nand_very_buf() is called. Well, that function looks
-> like this :
-> 
-> static int
-> imx_nand_verify_buf (struct mtd_info *mtd, const u_char * buf, int len) {
->   return -EFAULT;
-> }
-> 
-> Yep...verification always fails... !
-> Must be a function that still is under development, no ? (although I would have
-> expected a "TODO" somewhere in that function....).
-> 
-> Two things I can do : set the configuration flag to n or add code to this function to
-> really verify the written data.
+Hi Sasha,
 
-[Filip] 
-I changed the code in nand_imx.c like this :
+thanks, I will try that.
+Today I got our real hardware. It consists of the freescale cpu board, a
+custom baseboard with a different display.
+With that I was able to start barebox completely. Network works fine,
+but I can't access the nand memory, because barebox doesn't find it at
+startup. I added all possible nand drivers to barebox, but it still
+doesn't work.
 
-* This function is used by the upper layer to verify the data in NAND Flash
- * with the data in the \b buf.
- *
- * @param       mtd     MTD structure for the NAND Flash
- * @param       buf     data to be verified
- * @param       len     length of the data to be verified
- *
- * @return      -EFAULT if error else 0
- *
- */
-static int
-imx_nand_verify_buf(struct mtd_info *mtd, const u_char * buf, int len) {
-  int i;
-  struct nand_chip *chip = mtd->priv;
-  struct imx_nand_host *host = chip->priv;
+Any idea?
 
-  for (i = 0; i < len; i++)
-  {
-    if (buf[i] != host->data_buf[i])
-    {
-      MTD_DEBUG(MTD_DEBUG_LEVEL0, "Verify failed on byte %d : 0x%0x <-> 0x%0x\n", i, buf[i], host->data_buf[i]);
-      return -EFAULT;
-    }
-  }
+--------------------------------------- u-boot output
+-----------------------------------------
+U-Boot 2009.08 (Jan 13 2010 -
+06:24:35)                                                                                                
 
-  return 0;
-}
+                                                                                                                                       
 
-It looks OK now. I can now save the environment.
+CPU:   Freescale i.MX35 at 532
+MHz                                                                                                     
 
-Maybe someone can verify if this is correct. And maybe adjust the Barebox mainline sources like that ?
+Board: MX35 3STACK 2.0
+[RST]                                                                                                           
 
-> 
-> > _______________________________________________
-> > barebox mailing list
-> > barebox@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/barebox
+I2C:  
+ready                                                                                                                           
+
+DRAM:  128
+MB                                                                                                                          
+
+Flash: 64
+MB                                                                                                                           
+
+NAND:  Manufacturer      : Samsung
+(0xec)                                                                                              
+
+Device Code       :
+0xd7                                                                                                               
+
+Cell Technology   :
+MLC                                                                                                                
+
+Chip Size         : 4
+GiB                                                                                                              
+
+Pages per Block   :
+128                                                                                                                
+
+Page Geometry     :
+4096+218                                                                                                           
+
+ECC Strength      : 8
+bits                                                                                                             
+
+ECC Size          : 512
+B                                                                                                              
+
+Data Setup Time   : 20
+ns                                                                                                              
+
+Data Hold Time    : 10
+ns                                                                                                              
+
+Address Setup Time: 25
+ns                                                                                                              
+
+GPMI Sample Delay : 6
+ns                                                                                                               
+
+tREA              :
+Unknown                                                                                                            
+
+tRLOH             :
+Unknown                                                                                                            
+
+tRHOH             :
+Unknown                                                                                                            
+
+Description       :
+K9LBG08U0D                                                                                                         
+
+Bad block table found at page 524160, version
+0x01                                                                                     
+
+Bad block table found at page 524032, version
+0x01                                                                                     
+
+2048
+MiB                                                                                                                               
+
+In:   
+serial                                                                                                                          
+
+Out:  
+serial                                                                                                                          
+
+Err:  
+serial                                                                                                                          
+
+PMIC@0x08:0x7 is
+45d0                                                                                                                  
+
+i.MX35 CPU board version
+2.0                                                                                                           
+
+Net:   FEC0
+Hit any key to stop autoboot:  0
+
+
+
+--------------------------------------- barebox output
+------------------------------------------
+barebox 2011.02.0 (Feb 25 2011 - 16:35:47)
+
+Board: Freescale MX35 3Stack
+No NAND device found!!!
+cfi_probe: cfi_flash base: 0xa0000000 size: 0x04000000
+mc13892-i2c@mc13892-i2c0: PMIC ID: 0x000045d0 [Rev: 2.0a]
+smc911x: no smc911x found on 0xb6000000 (byte_test=0x00f000f0)
+imx-ipu-fb@imx-ipu-fb0: i.MX Framebuffer driver
+mc13892-i2c@mc13892-i2c0: revision: 0x45d0
+i.MX35 PDK CPU board version 1.
+Malloc space: 0x86f00000 -> 0x87f00000 (size 16 MB)
+Stack space : 0x86ef8000 -> 0x86f00000 (size 32 kB)
+Open /dev/env0 No such file or directory
+no valid environment found on /dev/env0. Using default environment
+running /env/bin/init...
+
+
+
+regards
+Thomas
+
+
+
+Am 25.02.2011 16:06, schrieb Sascha Hauer:
+> On Fri, Feb 25, 2011 at 10:15:01AM +0100, Thomas Mayer wrote:
+>   
+>> Hi Sascha,
+>>
+>> That's not quite correct. When you use the debug + personality board you
+>> can boot directly from a mmc-card which contains bootloader, kernel and
+>> rootfs without modifications. Only if you use the single personality
+>> board, you have to modify die board a little bit.
+>>     
+> Ah, ok. I didn't know that.
+>
+>   
+>> Thanks for your short introduction. I tried to run the barebox image
+>> with u-boot and it seems to work. But after I get the following output
+>> barebox stops and do nothing.
+>>     
+> That's a bug in the support for multiple network devices. Please pull
+> the -next branch again, then it should work.
+>
+> Sascha
+>
+>
+>   
+
 
 _______________________________________________
 barebox mailing list
