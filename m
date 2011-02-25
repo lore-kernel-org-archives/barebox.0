@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ip2.televic.com ([81.82.194.222])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Psu12-0002VA-HF
-	for barebox@lists.infradead.org; Fri, 25 Feb 2011 09:31:13 +0000
+	id 1Psy3v-0004a0-4S
+	for barebox@lists.infradead.org; Fri, 25 Feb 2011 13:50:27 +0000
 From: Vanalme Filip <F.Vanalme@TELEVIC.com>
-Date: Fri, 25 Feb 2011 10:31:09 +0100
-Message-ID: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B00C9D@SRV-VS06.TELEVIC.COM>
+Date: Fri, 25 Feb 2011 14:50:22 +0100
+Message-ID: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B00CD1@SRV-VS06.TELEVIC.COM>
 Content-Language: en-US
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
@@ -36,7 +36,6 @@ Thanks in advance !
 
 
 Filip
-
 
 _______________________________________________
 barebox mailing list
