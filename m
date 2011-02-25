@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from ip2.televic.com ([81.82.194.222])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PszG0-0005Dj-3G
-	for barebox@lists.infradead.org; Fri, 25 Feb 2011 15:07:00 +0000
-Date: Fri, 25 Feb 2011 16:06:57 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110225150657.GC29521@pengutronix.de>
-References: <4D665867.4010404@telemotive.de>
-	<20110224160440.GQ7381@pengutronix.de>
-	<4D677315.5090600@telemotive.de>
+	id 1PszY9-0005Kw-5M
+	for barebox@lists.infradead.org; Fri, 25 Feb 2011 15:25:46 +0000
+From: Vanalme Filip <F.Vanalme@TELEVIC.com>
+Date: Fri, 25 Feb 2011 16:25:42 +0100
+Message-ID: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B00CF8@SRV-VS06.TELEVIC.COM>
+References: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B00CD1@SRV-VS06.TELEVIC.COM>
+	<6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B00CD5@SRV-VS06.TELEVIC.COM>
+In-Reply-To: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B00CD5@SRV-VS06.TELEVIC.COM>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <4D677315.5090600@telemotive.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,35 +23,107 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Install barebox on target
-To: Thomas Mayer <thomas.mayer@telemotive.de>
-Cc: barebox@lists.infradead.org
+Subject: RE: writing environment in NAND flash
+To: Vanalme Filip <F.Vanalme@TELEVIC.com>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Fri, Feb 25, 2011 at 10:15:01AM +0100, Thomas Mayer wrote:
-> Hi Sascha,
+> -----Original Message-----
+> From: Vanalme Filip
+> Sent: vrijdag 25 februari 2011 15:14
+> To: Vanalme Filip; barebox@lists.infradead.org
+> Subject: RE: writing environment in NAND flash
 > 
-> That's not quite correct. When you use the debug + personality board you
-> can boot directly from a mmc-card which contains bootloader, kernel and
-> rootfs without modifications. Only if you use the single personality
-> board, you have to modify die board a little bit.
+> > -----Original Message-----
+> > From: barebox-bounces@lists.infradead.org [mailto:barebox-
+> > bounces@lists.infradead.org] On Behalf Of Vanalme Filip
+> > Sent: vrijdag 25 februari 2011 14:50
+> > To: barebox@lists.infradead.org
+> > Subject: writing environment in NAND flash
+> >
+> > I have problems to save my environment settings. Although I set e.g. the MAC
+> > address and some other values and do the saveenv command, after reset, all
+> > settings have disappeared.
+> > In the logging on the console port, I detected this :
+> > "wrong crc on env
+> > no valid environment found on /dev/env0. Using default environment"
+> >
+> > That will be, of course, the cause why the settings disappear.
+> > Further investigation with debugging enabled in nand_imx.c showed that
+> Barebox
+> > reads 4 pages when starting up (0x80..0x83). That looks OK, because the
+> > environment's size is 6156 bytes. So, indeen 4 pages needed. However, when
+> > saving the environment, I only see appear one page write, i.e. on page 0x80. Of
+> > course, when reading back the four pages, the 2nd, 3rd and 4th page have all
+> FF
+> > because they have never been written (causing a wrong CRC). Any idea why I
+> > only see 1 page write when saving the environment although the size is 6156
+> > bytes ? Any hints where to look in the sources ?
+> >
+> > Thanks in advance !
+> >
+> >
+> >
+> > Filip
+> >
+> [Filip]  Sorry for sending this message twice to the mailing list....
+> 
+> I have found the cause of this problem.
+> I have CONFIG_MTD_NAND_VERIFY_WRITE=y.
+> So, after a write, the code performs a read to verify the written data. For i.MX27, this
+> mean that the function imx_nand_very_buf() is called. Well, that function looks
+> like this :
+> 
+> static int
+> imx_nand_verify_buf (struct mtd_info *mtd, const u_char * buf, int len) {
+>   return -EFAULT;
+> }
+> 
+> Yep...verification always fails... !
+> Must be a function that still is under development, no ? (although I would have
+> expected a "TODO" somewhere in that function....).
+> 
+> Two things I can do : set the configuration flag to n or add code to this function to
+> really verify the written data.
 
-Ah, ok. I didn't know that.
+[Filip] 
+I changed the code in nand_imx.c like this :
 
-> Thanks for your short introduction. I tried to run the barebox image
-> with u-boot and it seems to work. But after I get the following output
-> barebox stops and do nothing.
+* This function is used by the upper layer to verify the data in NAND Flash
+ * with the data in the \b buf.
+ *
+ * @param       mtd     MTD structure for the NAND Flash
+ * @param       buf     data to be verified
+ * @param       len     length of the data to be verified
+ *
+ * @return      -EFAULT if error else 0
+ *
+ */
+static int
+imx_nand_verify_buf(struct mtd_info *mtd, const u_char * buf, int len) {
+  int i;
+  struct nand_chip *chip = mtd->priv;
+  struct imx_nand_host *host = chip->priv;
 
-That's a bug in the support for multiple network devices. Please pull
-the -next branch again, then it should work.
+  for (i = 0; i < len; i++)
+  {
+    if (buf[i] != host->data_buf[i])
+    {
+      MTD_DEBUG(MTD_DEBUG_LEVEL0, "Verify failed on byte %d : 0x%0x <-> 0x%0x\n", i, buf[i], host->data_buf[i]);
+      return -EFAULT;
+    }
+  }
 
-Sascha
+  return 0;
+}
 
+It looks OK now. I can now save the environment.
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Maybe someone can verify if this is correct. And maybe adjust the Barebox mainline sources like that ?
+
+> 
+> > _______________________________________________
+> > barebox mailing list
+> > barebox@lists.infradead.org
+> > http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
