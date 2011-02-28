@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Ptyxm-0007pJ-V6
-	for barebox@lists.infradead.org; Mon, 28 Feb 2011 09:00:20 +0000
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Mon, 28 Feb 2011 09:57:57 +0100
-References: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B00D51@SRV-VS06.TELEVIC.COM>
-In-Reply-To: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B00D51@SRV-VS06.TELEVIC.COM>
-MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <201102280957.57164.jbe@pengutronix.de>
+	id 1Ptze2-00085w-8K
+	for barebox@lists.infradead.org; Mon, 28 Feb 2011 09:43:59 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Mon, 28 Feb 2011 10:43:50 +0100
+Message-Id: <1298886235-1769-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1298886235-1769-1-git-send-email-s.hauer@pengutronix.de>
+References: <1298886235-1769-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,101 +16,80 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: partitions
+Subject: [PATCH 2/7] mci mxs: put only once used function inline
 To: barebox@lists.infradead.org
 
-Vanalme Filip wrote:
-> I'm not that familiar with partitions in Barebox. On my i.MX27 board, I now
-> have :
->
-> barebox:/ devinfo
->
-> devices:
-> |----imx_serial0
-> |----cs0
-> |----ramfs0
-> |----devfs0
-> |----mem0 (defaultenv)
-> |----mem1 (mem)
-> |----imx_spi1
-> |----mc137830 (pmic)
-> |----mem2 (ram0)
-> |----imx_nand0
-> |----nand0 (nand0, nand_oob0, self_raw, env_raw, nand0.barebox,
-> | nand0.bareboxenv, nand0.kernel, nand0.root) ----fec_imx0
-> |----miidev0 (phy0)
-> |----eth0
->
-> drivers:
-> imx_serial
->      ramfs
->      devfs
->    fec_imx
->     miidev
->   imx_nand
->  cfi_flash
->    imx_spi
->      imxfb
->    mc13783
->        mem
-> barebox:/
->
-> and :
->
-> barebox:/ ls -l /dev
-> cr-------- 4294967295 zero
-> crw-------       6125 defaultenv
-> crw------- 4294967295 mem
-> crw-------        256 pmic
-> crw-------  134217728 ram0
-> crw-------  268435456 nand0
-> cr--------    8388608 nand_oob0
-> crw-------         32 phy0
-> crw-------     262144 self_raw
-> crw-------     262144 self0
-> crw-------     131072 env_raw
-> crw-------     131072 env0
-> crw-------     262144 nand0.barebox
-> crw-------     131072 nand0.bareboxenv
-> crw-------    2097152 nand0.kernel
-> crw-------  265945088 nand0.root
-> barebox:/
->
-> I think this looks OK.
-> However, I expected this to work (I took this from descriptions on the
-> Internet...) :
->
-> barebox:/ erase /dev/nand0.kernel.bb
-> stat /dev/nand0.kernel.bb: No such file or directory
-> barebox:/
->
-> and
->
-> barebox:/ tftp zImage /dev/nand0.kernel.bb
-> open: Read-only file system
-> barebox:/
->
->
-> Is there any documentation that handles/describes this ? (e.g. what's the
-> extension .bb ?)
+Also, rename mci_rename after the callback it implements: stm_mci_initialize.
 
-'bb' means "Bad Block", and defines a layer that is bad block aware, and can 
-handle it in a correct manner.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/mci/mxs.c |   27 ++++++++-------------------
+ 1 files changed, 8 insertions(+), 19 deletions(-)
 
-Add "CONFIG_GLOB=y" to make a script work, that add the *.bb names to all 
-existing nand partitions.
-
-jbe
-
+diff --git a/drivers/mci/mxs.c b/drivers/mci/mxs.c
+index 94b0f4a..db789e7 100644
+--- a/drivers/mci/mxs.c
++++ b/drivers/mci/mxs.c
+@@ -595,13 +595,17 @@ static void stm_mci_reset(struct device_d *hw_dev)
+ 		;
+ }
+ 
++/* ------------------------- MCI API -------------------------------------- */
++
+ /**
+- * Initialize the engine
+- * @param hw_dev Host interface instance
++ * Keep the attached MMC/SD unit in a well know state
++ * @param mci_pdata MCI platform data
+  * @param mci_dev MCI device instance
++ * @return 0 on success, negative value else
+  */
+-static int stm_mci_initialize(struct device_d *hw_dev, struct device_d *mci_dev)
++static int stm_mci_initialize(struct mci_host *mci_pdata, struct device_d *mci_dev)
+ {
++	struct device_d *hw_dev = mci_pdata->hw_dev;
+ 	struct mci_host *host = GET_MCI_PDATA(mci_dev);
+ 	struct stm_mci_host *host_data = (struct stm_mci_host*)GET_HOST_DATA(hw_dev);
+ 
+@@ -624,21 +628,6 @@ static int stm_mci_initialize(struct device_d *hw_dev, struct device_d *mci_dev)
+ 	return 0;
+ }
+ 
+-/* ------------------------- MCI API -------------------------------------- */
+-
+-/**
+- * Keep the attached MMC/SD unit in a well know state
+- * @param mci_pdata MCI platform data
+- * @param mci_dev MCI device instance
+- * @return 0 on success, negative value else
+- */
+-static int mci_reset(struct mci_host *mci_pdata, struct device_d *mci_dev)
+-{
+-	struct device_d *hw_dev = mci_pdata->hw_dev;
+-
+-	return stm_mci_initialize(hw_dev, mci_dev);
+-}
+-
+ /**
+  * Process one command to the MCI card
+  * @param mci_pdata MCI platform data
+@@ -733,7 +722,7 @@ static int stm_mci_probe(struct device_d *hw_dev)
+ 	host->hw_dev = hw_dev;
+ 	host->send_cmd = mci_request,
+ 	host->set_ios = mci_set_ios,
+-	host->init = mci_reset,
++	host->init = stm_mci_initialize,
+ 
+ 	/* feed forward the platform specific values */
+ 	host->voltages = pd->voltages;
 -- 
-Pengutronix e.K.                              | Juergen Beisert             |
-Linux Solutions for Science and Industry      | Phone: +49-8766-939 228     |
-Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
+1.7.2.3
+
 
 _______________________________________________
 barebox mailing list
