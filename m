@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Ptze2-00085z-BM
+	id 1Ptze2-000861-C8
 	for barebox@lists.infradead.org; Mon, 28 Feb 2011 09:44:01 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 28 Feb 2011 10:43:54 +0100
-Message-Id: <1298886235-1769-7-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 28 Feb 2011 10:43:55 +0100
+Message-Id: <1298886235-1769-8-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1298886235-1769-1-git-send-email-s.hauer@pengutronix.de>
 References: <1298886235-1769-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,41 +21,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/7] mci mxs: no need to call mxs_mci_setup_clock_speed in init
+Subject: [PATCH 7/7] ARM tx28stk5: limit mmc max frequency to 25MHz
 To: barebox@lists.infradead.org
 
-It will be called by set_ios anyway later. Also, do not
-alter host->clock field, this is none of our business.
+Higher frequencies do not seem to work.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mci/mxs.c |    5 ++---
- 1 files changed, 2 insertions(+), 3 deletions(-)
+ arch/arm/boards/karo-tx28/tx28-stk5.c |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/mci/mxs.c b/drivers/mci/mxs.c
-index 7f8f3f8..814eba3 100644
---- a/drivers/mci/mxs.c
-+++ b/drivers/mci/mxs.c
-@@ -615,7 +615,6 @@ static int mxs_mci_initialize(struct mci_host *host, struct device_d *mci_dev)
- 	mxs_mci_reset(mxs_mci);
+diff --git a/arch/arm/boards/karo-tx28/tx28-stk5.c b/arch/arm/boards/karo-tx28/tx28-stk5.c
+index a3f4a28..81cb80c 100644
+--- a/arch/arm/boards/karo-tx28/tx28-stk5.c
++++ b/arch/arm/boards/karo-tx28/tx28-stk5.c
+@@ -29,9 +29,10 @@
+ #include <mach/fb.h>
  
- 	/* restore the last settings */
--	host->clock = mxs_mci->clock = mxs_mci_setup_clock_speed(mxs_mci, host->clock);
- 	mxs_mci_setup_timeout(mxs_mci, 0xffff);
- 	writel(SSP_CTRL0_IGNORE_CRC |
- 		SSP_CTRL0_BUS_WIDTH(mxs_mci->bus_width),
-@@ -678,9 +677,9 @@ static void mxs_mci_set_ios(struct mci_host *host, struct device_d *mci_dev,
- 		break;
- 	}
+ static struct mxs_mci_platform_data mci_pdata = {
+-	.caps = MMC_MODE_4BIT | MMC_MODE_HS | MMC_MODE_HS_52MHz,
++	.caps = MMC_MODE_4BIT,
+ 	.voltages = MMC_VDD_32_33 | MMC_VDD_33_34,	/* fixed to 3.3 V */
+ 	.f_min = 400 * 1000,
++	.f_max = 25000000,
+ };
  
--	host->clock = mxs_mci->clock = mxs_mci_setup_clock_speed(mxs_mci, clock);
-+	mxs_mci->clock = mxs_mci_setup_clock_speed(mxs_mci, clock);
- 	pr_debug("IO settings: bus width=%d, frequency=%u Hz\n", host->bus_width,
--			host->clock);
-+			mxs_mci->clock);
- }
- 
- /* ----------------------------------------------------------------------- */
+ static struct device_d mci_socket = {
 -- 
 1.7.2.3
 
