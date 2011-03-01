@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ip2.televic.com ([81.82.194.222])
+Received: from hd5b91d02.k46641.sta.perspektivbredband.net ([213.185.29.2]
+	helo=fg-dc1.flatfrog.local)
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PuPKt-000237-HB
-	for barebox@lists.infradead.org; Tue, 01 Mar 2011 13:09:56 +0000
-From: Vanalme Filip <F.Vanalme@TELEVIC.com>
-Date: Tue, 1 Mar 2011 14:09:53 +0100
-Message-ID: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B00E67@SRV-VS06.TELEVIC.COM>
-References: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B00E60@SRV-VS06.TELEVIC.COM>
-	<6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B00E65@SRV-VS06.TELEVIC.COM>
-In-Reply-To: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B00E65@SRV-VS06.TELEVIC.COM>
-Content-Language: en-US
+	id 1PuPSG-00029h-R4
+	for barebox@lists.infradead.org; Tue, 01 Mar 2011 13:17:34 +0000
+Message-ID: <4D6CF1E8.9050104@flatfrog.com>
+Date: Tue, 1 Mar 2011 14:17:28 +0100
+From: Orjan Friberg <orjan.friberg@flatfrog.com>
 MIME-Version: 1.0
+References: <AANLkTikD-fLPZJFhFyoA8RnHc56dZYmrh4Ysh37rmmY9@mail.gmail.com>
+In-Reply-To: <AANLkTikD-fLPZJFhFyoA8RnHc56dZYmrh4Ysh37rmmY9@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,70 +18,23 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: UART
-To: Vanalme Filip <F.Vanalme@TELEVIC.com>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: Barebox on a 3730
+To: barebox@lists.infradead.org
 
-> -----Original Message-----
-> From: barebox-bounces@lists.infradead.org [mailto:barebox-
-> bounces@lists.infradead.org] On Behalf Of Vanalme Filip
-> Sent: dinsdag 1 maart 2011 13:47
-> To: barebox@lists.infradead.org
-> Subject: RE: UART
-> 
-> > -----Original Message-----
-> > From: barebox-bounces@lists.infradead.org [mailto:barebox-
-> > bounces@lists.infradead.org] On Behalf Of Vanalme Filip
-> > Sent: dinsdag 1 maart 2011 13:24
-> > To: barebox@lists.infradead.org
-> > Subject: UART
-> >
-> > (i.MX27 board)
-> >
-> > When I start a tftp transfer from the Barebox command prompt (or a ping), I
-> (almost)
-> > always first get an error message on the console output :
-> > error frame: 0xa7b058f0 0x00000882
-> > After that, the tftp seems to continue as expected. File gets transferred and looks
-> > ok.
-> > As far as I can see (in fec_imx.c), the error indicates a FIFO overrun. Seems to
-> > make no sense at the beginning of a transfer...
-> >
-> > Any idea if it's normal that this message appears at the beginning of a network
-> > related command ?
-> > I don't think it has any influence on the following communication. However,
-> > sometimes I notice some delay between executing the command and the real
-> start
-> > of the communication. Maybe there's a kind of timeout to recover from that error ?
-> >
-> [Filip]
-> It seems I don't get that "error frame" message if I execute network commands (i.e.
-> ping or tftp) immediately one after the other. The moment there are some seconds
-> between two commands, I have the message. As if invalid data is coming in during
-> "idle" condition and filling the receive buffer.
+On 2011-01-04 03:13, Cory Walker wrote:
+> Any updates on this? I'd like a copy of the patch so I could test it on
+> my XM.
 
-[Filip]  I noticed I used the wrong Subject ! Of course, it should be FEC instead of UART.... Sorry !
+FWIW, I just tried the 2011.02 tag and RAM booting works just fine on my 
+3730 board.  (I haven't kept up with the flow of patches though.)
 
-
-Meanwhile, I even noticed other problems while transferring files with tftp. Sometimes, in the middle of a transfer, file transfer stops. With a network monitoring tool, I can see that my board is still sending Acknowledgments to the server for a certain block number, but the server can't send any packet anymore to my device (Destination unreachable (Port unreachable)). The device (Barebox) stays in this condition forever (showing rotating bar) until I interrupt with ctrl-c
-
-
-> >
-> > Filip
-> >
-> >
-> > _______________________________________________
-> > barebox mailing list
-> > barebox@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/barebox
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+-- 
+Orjan Friberg
+FlatFrog Laboratories AB
 
 _______________________________________________
 barebox mailing list
