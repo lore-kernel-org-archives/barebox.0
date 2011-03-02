@@ -1,19 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from coyote.quickmin.net ([217.14.112.24])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PuiO8-00026Q-5z
-	for barebox@lists.infradead.org; Wed, 02 Mar 2011 09:30:33 +0000
-Message-ID: <4D6E0E35.5000503@pengutronix.de>
-Date: Wed, 02 Mar 2011 10:30:29 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+	id 1Puj7w-0002Ry-3O
+	for barebox@lists.infradead.org; Wed, 02 Mar 2011 10:17:53 +0000
+Received: from [10.96.97.181] (tmayer.mit.telemotive.de [10.96.97.181])
+	by alderan.mit.telemotive.de (Postfix) with ESMTP id 86A5AB73F6
+	for <barebox@lists.infradead.org>; Wed,  2 Mar 2011 11:17:45 +0100 (CET)
+From: Thomas Mayer <thomas.mayer@telemotive.de>
 MIME-Version: 1.0
-References: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B00DD7@SRV-VS06.TELEVIC.COM>	<4D6BC8C7.9090309@pengutronix.de>
-	<4D6BC95B.5030505@pengutronix.de>
-	<6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B00E08@SRV-VS06.TELEVIC.COM>
-	<6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B00E7D@SRV-VS06.TELEVIC.COM>
-	<4D6CFE93.40508@pengutronix.de>
-	<6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B00ED6@SRV-VS06.TELEVIC.COM>
-In-Reply-To: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B00ED6@SRV-VS06.TELEVIC.COM>
+References: <4D665867.4010404@telemotive.de>	<20110224160440.GQ7381@pengutronix.de>	<4D677315.5090600@telemotive.de>	<20110225150657.GC29521@pengutronix.de>	<4D67D3EA.9000106@telemotive.de>	<20110228074053.GF29521@pengutronix.de>	<20110228080923.GF2667@jasper.tkos.co.il>
+	<20110228081925.GG2667@jasper.tkos.co.il>
+In-Reply-To: <20110228081925.GG2667@jasper.tkos.co.il>
+Message-ID: <4D6E1949.3050603@telemotive.de>
+Date: Wed, 2 Mar 2011 11:17:45 +0100
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,106 +21,121 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1103727820=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: scripts
-To: Vanalme Filip <F.Vanalme@TELEVIC.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: Install barebox on target
+To: barebox@lists.infradead.org
 
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---===============1103727820==
-Content-Type: multipart/signed; micalg=pgp-sha1;
- protocol="application/pgp-signature";
- boundary="------------enigE69E93F7F05023362FF3D913"
+Hi,
+good know, I will try that.
 
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---------------enigE69E93F7F05023362FF3D913
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-On 03/02/2011 09:36 AM, Vanalme Filip wrote:
->> -----Original Message----- From: Marc Kleine-Budde
->> [mailto:mkl@pengutronix.de] Sent: dinsdag 1 maart 2011 15:12 To:
->> Vanalme Filip Cc: barebox@lists.infradead.org Subject: Re: scripts
->>=20
->> On 03/01/2011 03:06 PM, Vanalme Filip wrote: [...]
->>=20
->>> One more question about barebox scripts (I guess even scripts in=20
->>> general...). This is part of a script from another board (that I
->>> took over for my own board):
->>=20
->>> #!/bin/sh
->>>=20
->>> . /env/config
->>>=20
->>> If [ x$1 =3D xflash ]; then root=3Dflash kernel=3Dflash fi
->>>=20
->>> if [ x$1 =3D xnet ]; then root=3Dnet kernel=3Dnet fi
->>>=20
->>> why the scripts are using i.e. [ x$1 =3D xflash ] instead of just
->>> simply [ $1 =3D flash ] ?
->> Both are doing the same, no ?
->>=20
->> The shell is quite old and doesn't support that. But you're right
->> for modern shells like bash or dash.
->=20
-> [Filip] When I do : barebox:/ echo "this is \"quoted text\""
->=20
-> I get : barebox:/ this is \"quoted text\"
->=20
-> I would have expected this : barebox:/ this is "quoted text"
-
-Yeah, that's a known problem.......feel free to fix.
->=20
-> It looks like the escape character is not working as expected. When I
-> have this in my boot script : bootargs=3D"$bootargs
-> mtdparts=3D\"physmap-flash.0:$nor_parts;mxc_nand:$nand_parts\""
-
-You can remove the \". They were needed some time ago, when "mcx_nand"
-needed to be the name of the Flash Chip, which contained spaces.
-
-> Will this work correctly ? Will the mtdparts be passed correctly to=20
-> the kernel ? (I guess the escape character will remain, so I think
-> it might be an problem, no?)
-
-I once, or rather the kernel I used, had problems with the \"...
-
-cheers, Marc
-
---=20
-Pengutronix e.K.                  | Marc Kleine-Budde           |
-Industrial Linux Solutions        | Phone: +49-231-2826-924     |
-Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
+regards
+Thomas
 
 
---------------enigE69E93F7F05023362FF3D913
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
+Am 28.02.2011 09:19, schrieb Baruch Siach:
+> Hi Sascha, Thomas,
+>
+> On Mon, Feb 28, 2011 at 10:09:23AM +0200, Baruch Siach wrote:
+>   
+>> On Mon, Feb 28, 2011 at 08:40:53AM +0100, Sascha Hauer wrote:
+>>     
+>>> On Fri, Feb 25, 2011 at 05:08:10PM +0100, Thomas Mayer wrote:
+>>>       
+>>>> thanks, I will try that.
+>>>> Today I got our real hardware. It consists of the freescale cpu board, a
+>>>> custom baseboard with a different display.
+>>>> With that I was able to start barebox completely. Network works fine,
+>>>> but I can't access the nand memory, because barebox doesn't find it at
+>>>> startup. I added all possible nand drivers to barebox, but it still
+>>>> doesn't work.
+>>>>
+>>>> Any idea?
+>>>>
+>>>> --------------------------------------- u-boot output
+>>>> -----------------------------------------
+>>>> U-Boot 2009.08 (Jan 13 2010 -
+>>>>
+>>>> Page Geometry     :
+>>>> 4096+218
+>>>>         
+>>> This will cause problems. I never had a nand with 4k block size and I
+>>> doubt it will work out of the box. I don't know if that's the reason
+>>> barebox does not find no nand device at all though.
+>>>       
+>> I'm also seeing problems with a 4k page size (+218 OOB) SLC NAND flash of 
+>> Micron on i.MX25. Barebox does identify the flash chip, but can't read it 
+>> correctly.  I'm investigating the issue. So far I've found that the OOB area 
+>> is read as 0x00s instead of 0xffs, even for good blocks. This makes Barebox to 
+>> mark the whole flash as bad blocks.
+>>
+>> The Linux kernel, however, seems to work correctly with this flash when 
+>> applying a small fix to use the correct(?) nand_ecclayout.
+>>     
+> I should also add the booting from this NAND with Barebox works perfectly. I 
+> used the kernel to program Barebox into the flash.
+>
+> baruch
+>
+>   
+>>>> --------------------------------------- barebox output
+>>>> ------------------------------------------
+>>>> barebox 2011.02.0 (Feb 25 2011 - 16:35:47)
+>>>>
+>>>> Board: Freescale MX35 3Stack
+>>>> No NAND device found!!!
+>>>> cfi_probe: cfi_flash base: 0xa0000000 size: 0x04000000
+>>>> mc13892-i2c@mc13892-i2c0: PMIC ID: 0x000045d0 [Rev: 2.0a]
+>>>> smc911x: no smc911x found on 0xb6000000 (byte_test=0x00f000f0)
+>>>> imx-ipu-fb@imx-ipu-fb0: i.MX Framebuffer driver
+>>>> mc13892-i2c@mc13892-i2c0: revision: 0x45d0
+>>>> i.MX35 PDK CPU board version 1.
+>>>> Malloc space: 0x86f00000 -> 0x87f00000 (size 16 MB)
+>>>> Stack space : 0x86ef8000 -> 0x86f00000 (size 32 kB)
+>>>> Open /dev/env0 No such file or directory
+>>>> no valid environment found on /dev/env0. Using default environment
+>>>> running /env/bin/init...
+>>>>
+>>>>
+>>>>
+>>>> regards
+>>>> Thomas
+>>>>
+>>>>
+>>>>
+>>>> Am 25.02.2011 16:06, schrieb Sascha Hauer:
+>>>>         
+>>>>> On Fri, Feb 25, 2011 at 10:15:01AM +0100, Thomas Mayer wrote:
+>>>>>   
+>>>>>           
+>>>>>> Hi Sascha,
+>>>>>>
+>>>>>> That's not quite correct. When you use the debug + personality board you
+>>>>>> can boot directly from a mmc-card which contains bootloader, kernel and
+>>>>>> rootfs without modifications. Only if you use the single personality
+>>>>>> board, you have to modify die board a little bit.
+>>>>>>     
+>>>>>>             
+>>>>> Ah, ok. I didn't know that.
+>>>>>
+>>>>>   
+>>>>>           
+>>>>>> Thanks for your short introduction. I tried to run the barebox image
+>>>>>> with u-boot and it seems to work. But after I get the following output
+>>>>>> barebox stops and do nothing.
+>>>>>>     
+>>>>>>             
+>>>>> That's a bug in the support for multiple network devices. Please pull
+>>>>> the -next branch again, then it should work.
+>>>>>
+>>>>> Sascha
+>>>>>           
+>   
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.10 (GNU/Linux)
-Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org/
-
-iEYEARECAAYFAk1uDjUACgkQjTAFq1RaXHOBkgCfalfN/+V7WnDV24oKZVqa7aam
-Sv0AoJa8xBAeXvL0KpO1dEGGCZ6k0oQN
-=m47j
------END PGP SIGNATURE-----
-
---------------enigE69E93F7F05023362FF3D913--
-
-
---===============1103727820==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============1103727820==--
