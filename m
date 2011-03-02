@@ -1,23 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from tango.tkos.co.il ([62.219.50.35])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PujTN-0002dY-4l
-	for barebox@lists.infradead.org; Wed, 02 Mar 2011 10:40:02 +0000
-Date: Wed, 2 Mar 2011 12:39:49 +0200
+	id 1PujZB-0002fk-QJ
+	for barebox@lists.infradead.org; Wed, 02 Mar 2011 10:46:03 +0000
+Date: Wed, 2 Mar 2011 12:45:51 +0200
 From: Baruch Siach <baruch@tkos.co.il>
-Message-ID: <20110302103949.GA28548@jasper.tkos.co.il>
-References: <4D665867.4010404@telemotive.de>
-	<20110224160440.GQ7381@pengutronix.de>
-	<4D677315.5090600@telemotive.de>
-	<20110225150657.GC29521@pengutronix.de>
-	<4D67D3EA.9000106@telemotive.de>
-	<20110228074053.GF29521@pengutronix.de>
-	<20110228080923.GF2667@jasper.tkos.co.il>
-	<20110228081925.GG2667@jasper.tkos.co.il>
-	<4D6E1949.3050603@telemotive.de>
+Message-ID: <20110302104551.GB28548@jasper.tkos.co.il>
+References: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B00EFC@SRV-VS06.TELEVIC.COM>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <4D6E1949.3050603@telemotive.de>
+In-Reply-To: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B00EFC@SRV-VS06.TELEVIC.COM>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -30,123 +22,70 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Install barebox on target
-To: Thomas Mayer <thomas.mayer@telemotive.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: booting linux
+To: Vanalme Filip <F.Vanalme@TELEVIC.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi Thomas,
+Hi Vanalme,
 
-On Wed, Mar 02, 2011 at 11:17:45AM +0100, Thomas Mayer wrote:
-> good know, I will try that.
+On Wed, Mar 02, 2011 at 11:31:31AM +0100, Vanalme Filip wrote:
 
-Further investigation shows that the Linux kernel doesn't read (or write) the 
-OOB area correctly. This is not a problem if all you do is program the barebox 
-image into the NAND flash. However, since the kernel uses the OOB area to 
-identify the BBT (bad block table), the BBT gets corrupted. When that happens, 
-the mxc_nand .probe fails at nand_scan_tail().
+[snip]
 
-I suspect that the nandv2_hw_eccoob_largepage is wrong for 4K+218B. I'm still 
-investigating.
+> Then I do :
+> 
+> barebox:/ bootz /dev/nand0.kernel.bb
+> loaded zImage from /dev/nand0.kernel.bb with size 1777792
+> commandline: console=ttymxc0,115200 ip=dhcp root=/dev/mtdblock7 rootfstype=jffs2 mtdparts=mxc_nand:256k(barebox)ro,128k(bareboxenv),5M(kernel),-(root)
+> arch_number: 1802
+> Uncompressing Linux........................................................................................................................... done, booting the kernel.
+
+If your kernel is recent enough (2.6.33 or newer) try the following:
+
+1. Enable EARLY_PRINTK in your .config
+
+2. Add "earlyprintk" to your bootargs
+
+3. Boot the kernel
+
+Post here what you see.
 
 baruch
 
-> Am 28.02.2011 09:19, schrieb Baruch Siach:
-> > Hi Sascha, Thomas,
-> >
-> > On Mon, Feb 28, 2011 at 10:09:23AM +0200, Baruch Siach wrote:
-> >   
-> >> On Mon, Feb 28, 2011 at 08:40:53AM +0100, Sascha Hauer wrote:
-> >>     
-> >>> On Fri, Feb 25, 2011 at 05:08:10PM +0100, Thomas Mayer wrote:
-> >>>       
-> >>>> thanks, I will try that.
-> >>>> Today I got our real hardware. It consists of the freescale cpu board, a
-> >>>> custom baseboard with a different display.
-> >>>> With that I was able to start barebox completely. Network works fine,
-> >>>> but I can't access the nand memory, because barebox doesn't find it at
-> >>>> startup. I added all possible nand drivers to barebox, but it still
-> >>>> doesn't work.
-> >>>>
-> >>>> Any idea?
-> >>>>
-> >>>> --------------------------------------- u-boot output
-> >>>> -----------------------------------------
-> >>>> U-Boot 2009.08 (Jan 13 2010 -
-> >>>>
-> >>>> Page Geometry     :
-> >>>> 4096+218
-> >>>>         
-> >>> This will cause problems. I never had a nand with 4k block size and I
-> >>> doubt it will work out of the box. I don't know if that's the reason
-> >>> barebox does not find no nand device at all though.
-> >>>       
-> >> I'm also seeing problems with a 4k page size (+218 OOB) SLC NAND flash of 
-> >> Micron on i.MX25. Barebox does identify the flash chip, but can't read it 
-> >> correctly.  I'm investigating the issue. So far I've found that the OOB area 
-> >> is read as 0x00s instead of 0xffs, even for good blocks. This makes Barebox to 
-> >> mark the whole flash as bad blocks.
-> >>
-> >> The Linux kernel, however, seems to work correctly with this flash when 
-> >> applying a small fix to use the correct(?) nand_ecclayout.
-> >>     
-> > I should also add the booting from this NAND with Barebox works perfectly. I 
-> > used the kernel to program Barebox into the flash.
-> >
-> > baruch
-> >
-> >   
-> >>>> --------------------------------------- barebox output
-> >>>> ------------------------------------------
-> >>>> barebox 2011.02.0 (Feb 25 2011 - 16:35:47)
-> >>>>
-> >>>> Board: Freescale MX35 3Stack
-> >>>> No NAND device found!!!
-> >>>> cfi_probe: cfi_flash base: 0xa0000000 size: 0x04000000
-> >>>> mc13892-i2c@mc13892-i2c0: PMIC ID: 0x000045d0 [Rev: 2.0a]
-> >>>> smc911x: no smc911x found on 0xb6000000 (byte_test=0x00f000f0)
-> >>>> imx-ipu-fb@imx-ipu-fb0: i.MX Framebuffer driver
-> >>>> mc13892-i2c@mc13892-i2c0: revision: 0x45d0
-> >>>> i.MX35 PDK CPU board version 1.
-> >>>> Malloc space: 0x86f00000 -> 0x87f00000 (size 16 MB)
-> >>>> Stack space : 0x86ef8000 -> 0x86f00000 (size 32 kB)
-> >>>> Open /dev/env0 No such file or directory
-> >>>> no valid environment found on /dev/env0. Using default environment
-> >>>> running /env/bin/init...
-> >>>>
-> >>>>
-> >>>>
-> >>>> regards
-> >>>> Thomas
-> >>>>
-> >>>>
-> >>>>
-> >>>> Am 25.02.2011 16:06, schrieb Sascha Hauer:
-> >>>>         
-> >>>>> On Fri, Feb 25, 2011 at 10:15:01AM +0100, Thomas Mayer wrote:
-> >>>>>   
-> >>>>>           
-> >>>>>> Hi Sascha,
-> >>>>>>
-> >>>>>> That's not quite correct. When you use the debug + personality board you
-> >>>>>> can boot directly from a mmc-card which contains bootloader, kernel and
-> >>>>>> rootfs without modifications. Only if you use the single personality
-> >>>>>> board, you have to modify die board a little bit.
-> >>>>>>     
-> >>>>>>             
-> >>>>> Ah, ok. I didn't know that.
-> >>>>>
-> >>>>>   
-> >>>>>           
-> >>>>>> Thanks for your short introduction. I tried to run the barebox image
-> >>>>>> with u-boot and it seems to work. But after I get the following output
-> >>>>>> barebox stops and do nothing.
-> >>>>>>     
-> >>>>>>             
-> >>>>> That's a bug in the support for multiple network devices. Please pull
-> >>>>> the -next branch again, then it should work.
-> >>>>>
-> >>>>> Sascha
-> >>>>>           
+> The kernel uncompresses but never starts. Any idea why not ? Does barebox 
+> expand the kernel to the right place in SDRAM or do I have to specify that 
+> in the bootz command ?
+> I think the kernel is never started at all because I don't see any output at all. In this phase, even having a kernel crash would be great... because at least then I would know the kernel has been running for a while... ;-) 
+> 
+> I guess the image is OK because it uncompresses successfully. Maybe a problem in the bootargs that are passed to the kernel ?
+> Should I already have a /dev/mtdblock7 device in barebox's /dev ?
+> 
+> Maybe useful information :
+> 
+> barebox:/ printenv
+> locals:
+> machine=imx27pdk
+> ip=dhcp
+> kernel_loc=nand
+> rootfs_loc=nand
+> rootfs_type=jffs2
+> rootfsimage=root-jffs2
+> kernelimage_type=zimage
+> kernelimage=zImage-imx27pdk
+> nfsroot=:/path/to/nfs/root
+> autoboot_timeout=3
+> bootargs=console=ttymxc0,115200
+> nand_parts=256k(barebox)ro,128k(bareboxenv),5M(kernel),-(root)
+> rootfs_mtdblock_nand=7
+> PS1=\e[1;32mbarebox@\e[1;31m\h:\w\e[0m
+> bootfile=zImage
+> nameserver=10.0.0.44
+> domainname=televic.com
+> globals:
+> PATH=/env/bin
+> barebox:/
+> 
+> Filip
 
 -- 
                                                      ~. .~   Tk Open Systems
