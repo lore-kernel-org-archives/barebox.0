@@ -1,20 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from ip2.televic.com ([81.82.194.222])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Puogw-0005sq-EF
-	for barebox@lists.infradead.org; Wed, 02 Mar 2011 16:14:23 +0000
-Date: Wed, 2 Mar 2011 17:14:19 +0100
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20110302161419.GF22310@pengutronix.de>
-References: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B00DD7@SRV-VS06.TELEVIC.COM>
-	<4D6BC8C7.9090309@pengutronix.de> <4D6BC95B.5030505@pengutronix.de>
-	<6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B00E08@SRV-VS06.TELEVIC.COM>
-	<6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B00E7D@SRV-VS06.TELEVIC.COM>
-	<4D6CFE93.40508@pengutronix.de>
-	<20110301142024.GB13983@jasper.tkos.co.il>
+	id 1Pv7YK-0006NO-MG
+	for barebox@lists.infradead.org; Thu, 03 Mar 2011 12:22:45 +0000
+From: Vanalme Filip <F.Vanalme@TELEVIC.com>
+Date: Thu, 3 Mar 2011 13:22:41 +0100
+Message-ID: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B00FC6@SRV-VS06.TELEVIC.COM>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20110301142024.GB13983@jasper.tkos.co.il>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,87 +16,75 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: scripts
-To: Baruch Siach <baruch@tkos.co.il>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: bootargs
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Tue, Mar 01, 2011 at 04:20:25PM +0200, Baruch Siach wrote:
-> Hi Marc,
-> =
+In the current phase, I can boot the kernel, but it panics when trying to mount the root filesystem.
+I downloaded a root filesystem from the server into the dedicated NAND partition : tftp rootfs.jffs2 /dev/nand0.root.bb
+This seems to be OK.
 
-> On Tue, Mar 01, 2011 at 03:11:31PM +0100, Marc Kleine-Budde wrote:
-> > On 03/01/2011 03:06 PM, Vanalme Filip wrote:
-> > [...]
-> > =
+However, I have doubts about the bootargs I'm passing to the kernel :
 
-> > > One more question about barebox scripts (I guess even scripts in
-> > > general...). This is part of a script from another board (that I took
-> > > over for my own board):
-> > =
+commandline: console=ttymxc0,115200 ip=dhcp root=/dev/mtdblock3 rootfstype=jffs2 earlyprintk mtdparts=mxc_nand:256k(barebox)ro,128k(bareboxenv),2M(kernel),-(root)
 
-> > > #!/bin/sh
-> > > =
+Does this look OK ?
 
-> > > . /env/config
-> > > =
+These are the last lines of the console output when booting the kernel :
 
-> > > If [ x$1 =3D xflash ]; then
-> > > 	root=3Dflash
-> > > 	kernel=3Dflash
-> > > fi
-> > > =
+IP-Config: Got DHCP answer from 0.0.0.0, my address is 10.0.49.70
+IP-Config: Complete:
+     device=eth0, addr=10.0.49.70, mask=255.255.0.0, gw=10.0.127.254,
+     host=10.0.49.70, domain=televic.com, nis-domain=(none),
+     bootserver=0.0.0.0, rootserver=0.0.0.0, rootpath=
+VFS: Unable to mount root fs via NFS, trying floppy.
+List of all partitions:
+No filesystem could mount root, tried:  jffs2
+Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-block(2,0)
 
-> > > if [ x$1 =3D xnet ]; then
-> > > 	root=3Dnet
-> > > 	kernel=3Dnet
-> > > fi
-> > > =
+The line " VFS: Unable to mount root fs via NFS, trying floppy." looks incorrect to me. I do not mention NFS in my bootargs, so...
+At "List of all partitions:", shouldn't I have a list of the four partitions I mention in the bootargs ?
 
-> > > why the scripts are using i.e. [ x$1 =3D xflash ] instead of just sim=
-ply [ $1 =3D flash ] ? Both are doing the same, no ?
-> > =
+This may also be useful :
 
-> > The shell is quite old and doesn't support that. But you're right for
-> > modern shells like bash or dash.
-> =
+barebox:/ devinfo
+devices:
+|----imx_serial0
+|----cs0
+|----ramfs0
+|----devfs0
+|----mem0 (defaultenv)
+|----mem1 (mem)
+|----imx_spi1
+|----mc137830 (pmic)
+|----mem2 (ram0)
+|----imx_nand0
+|----nand0 (nand0, nand_oob0, self_raw, env_raw, nand0.barebox, nand0.bareboxenv, nand0.kernel, nand0.root) <=======
+|----fec_imx0
+|----miidev0 (phy0)
+|----eth0
 
-> I get this under bash:
-> =
+drivers:
+imx_serial
+     ramfs
+     devfs
+   fec_imx
+    miidev
+  imx_nand
+ cfi_flash
+   imx_spi
+     imxfb
+   mc13783
+       mem
 
-> $ [ $UNDEF =3D test ]
-> bash: [: =3D: unary operator expected
-> =
+(This might as well be a kernel related issue and therefor maybe not fitting in barebox's mailing list - if so, sorry...)
 
-> However '[ "$UNDEF" =3D test ]' behaves as expected under bash (but not u=
-nder =
 
-> hush, which is the shell of Barebox).
-I didn't test it, but even if a variable is defined, I guess this might
-result in trouble:
+Filip
 
-	arg=3D-n
-	[ $arg =3D flash ]
-
-(At least I remember this being the reason for using "x$arg" back when I
-worked on Solaris.)
-
-And note without quoting quite interesting things can happen, e.g.:
-
-	test -n $arg
-
-returns false if arg=3D"=3D 42".
-
-Best regards
-Uwe
-
--- =
-
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
