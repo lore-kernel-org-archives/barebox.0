@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ww0-f49.google.com ([74.125.82.49])
+Received: from mail-wy0-f177.google.com ([74.125.82.177])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PvHU3-0003NB-An
-	for barebox@lists.infradead.org; Thu, 03 Mar 2011 22:59:00 +0000
-Received: by wwj40 with SMTP id 40so1440130wwj.18
-	for <barebox@lists.infradead.org>; Thu, 03 Mar 2011 14:58:58 -0800 (PST)
+	id 1PvHU2-0003Mm-4t
+	for barebox@lists.infradead.org; Thu, 03 Mar 2011 22:58:58 +0000
+Received: by wyf23 with SMTP id 23so1676005wyf.36
+	for <barebox@lists.infradead.org>; Thu, 03 Mar 2011 14:58:57 -0800 (PST)
 From: franck.jullien@gmail.com
-Date: Thu,  3 Mar 2011 23:58:17 +0100
-Message-Id: <4d701d31.9009d80a.2cd3.5e73@mx.google.com>
+Date: Thu,  3 Mar 2011 23:58:15 +0100
+Message-Id: <4d701d30.9009d80a.2cd3.5e71@mx.google.com>
 In-Reply-To: <n>
 References: <n>
 List-Id: <barebox.lists.infradead.org>
@@ -23,30 +23,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/54] Add arch/nios2/cpu-nios2/Makefile
+Subject: [PATCH 01/54] Add arch/nios2/Kconfig
 To: barebox@lists.infradead.org
 
 From: Franck JULLIEN <franck.jullien@gmail.com>
 
-Add arch/nios2/cpu-nios2/Makefile
+Add arch/nios2/Kconfig
 
 ---
- arch/nios2/cpu-nios2/Makefile |    5 +++++
- 1 files changed, 5 insertions(+), 0 deletions(-)
- create mode 100644 arch/nios2/cpu-nios2/Makefile
+ arch/nios2/Kconfig |   39 +++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 39 insertions(+), 0 deletions(-)
+ create mode 100644 arch/nios2/Kconfig
 
-diff --git a/arch/nios2/cpu-nios2/Makefile b/arch/nios2/cpu-nios2/Makefile
+diff --git a/arch/nios2/Kconfig b/arch/nios2/Kconfig
 new file mode 100644
-index 0000000..c0ce4a6
+index 0000000..9b6fd2b
 --- /dev/null
-+++ b/arch/nios2/cpu-nios2/Makefile
-@@ -0,0 +1,5 @@
-+obj-y += start.o
-+obj-y += exceptions.o
-+obj-y += cpu.o
-+obj-$(CONFIG_USE_IRQ) += interrupts.o
-+obj-y += traps.o
-\ No newline at end of file
++++ b/arch/nios2/Kconfig
+@@ -0,0 +1,39 @@
++config NIOS2
++	bool
++	select HAS_KALLSYMS
++	select HAS_MODULES
++	select HAVE_CONFIGURABLE_MEMORY_LAYOUT
++	default y
++
++config ARCH_TEXT_BASE
++	hex
++	default 0x00000000
++		
++config BOARDINFO
++	default "Altera Generic Board" if GENERIC
++
++choice
++	prompt "Select your board"
++
++config GENERIC
++	bool "Altera Generic Board"
++	select NIOS2
++
++
++endchoice
++
++menu "Board configuration           "
++
++config EARLY_PRINTF
++	default n
++	bool "Enable early printf functions"
++	
++endmenu
++
++source common/Kconfig
++source commands/Kconfig
++source net/Kconfig
++source drivers/Kconfig
++source fs/Kconfig
++source lib/Kconfig
++
 -- 
 1.7.3.4
 
