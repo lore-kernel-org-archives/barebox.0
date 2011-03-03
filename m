@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wy0-f177.google.com ([74.125.82.177])
+Received: from mail-ww0-f49.google.com ([74.125.82.49])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PvHU6-0003OY-My
-	for barebox@lists.infradead.org; Thu, 03 Mar 2011 22:59:06 +0000
-Received: by wyf23 with SMTP id 23so1676066wyf.36
-	for <barebox@lists.infradead.org>; Thu, 03 Mar 2011 14:59:01 -0800 (PST)
+	id 1PvHUC-0003Mn-2g
+	for barebox@lists.infradead.org; Thu, 03 Mar 2011 22:59:12 +0000
+Received: by mail-ww0-f49.google.com with SMTP id 40so1440124wwj.18
+	for <barebox@lists.infradead.org>; Thu, 03 Mar 2011 14:59:07 -0800 (PST)
 From: franck.jullien@gmail.com
-Date: Thu,  3 Mar 2011 23:58:22 +0100
-Message-Id: <4d701d35.9009d80a.2cd3.5e78@mx.google.com>
+Date: Thu,  3 Mar 2011 23:58:31 +0100
+Message-Id: <4d701d3b.9009d80a.2cd3.5e82@mx.google.com>
 In-Reply-To: <n>
 References: <n>
 List-Id: <barebox.lists.infradead.org>
@@ -23,30 +23,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/54] Add arch/nios2/cpu-nios2/traps.c
+Subject: [PATCH 17/54] Add arch/nios2/boards/generic/barebox.lds.S
 To: barebox@lists.infradead.org
 
 From: Franck JULLIEN <franck.jullien@gmail.com>
 
-Add arch/nios2/cpu-nios2/traps.c
+Add arch/nios2/boards/generic/barebox.lds.S
 
 ---
- arch/nios2/cpu-nios2/traps.c |   48 ++++++++++++++++++++++++++++++++++++++++++
- 1 files changed, 48 insertions(+), 0 deletions(-)
- create mode 100644 arch/nios2/cpu-nios2/traps.c
+ arch/nios2/boards/generic/barebox.lds.S |  126 +++++++++++++++++++++++++++++++
+ 1 files changed, 126 insertions(+), 0 deletions(-)
+ create mode 100644 arch/nios2/boards/generic/barebox.lds.S
 
-diff --git a/arch/nios2/cpu-nios2/traps.c b/arch/nios2/cpu-nios2/traps.c
+diff --git a/arch/nios2/boards/generic/barebox.lds.S b/arch/nios2/boards/generic/barebox.lds.S
 new file mode 100644
-index 0000000..849fc4d
+index 0000000..6791a74
 --- /dev/null
-+++ b/arch/nios2/cpu-nios2/traps.c
-@@ -0,0 +1,48 @@
++++ b/arch/nios2/boards/generic/barebox.lds.S
+@@ -0,0 +1,126 @@
 +/*
++ * barebox - barebox.lds.S
++ *
++ * (C) Copyright 2010, Franck JULLIEN, <franck.jullien@gmail.com>
++ * This file is a mix from barebox.lds.S found in the blackfin arch
++ * and u-boot.lds from nios2 arch in u-boot.
++ * 
 + * (C) Copyright 2004, Psyent Corporation <www.psyent.com>
 + * Scott McNutt <smcnutt@psyent.com>
 + *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
++ * Copyright (c) 2005-2007 Analog Device Inc.
++ *
++ * (C) Copyright 2000-2004
++ * Wolfgang Denk, DENX Software Engineering, wd@denx.de.
++ *
 + *
 + * This program is free software; you can redistribute it and/or
 + * modify it under the terms of the GNU General Public License as
@@ -64,31 +73,100 @@ index 0000000..849fc4d
 + * MA 02111-1307 USA
 + */
 +
-+#include <asm/ptrace.h>
-+#include <common.h>
++#include <config.h>
++#include <asm-generic/barebox.lds.h>
 +
-+void trap_handler (struct pt_regs *regs)
++OUTPUT_FORMAT("elf32-littlenios2")
++OUTPUT_ARCH("nios2")
++
++SECTIONS
 +{
++	. = NIOS_SOPC_TEXT_BASE;
 +
-+	/* Just issue warning */
-+	printf ("\n\n*** WARNING: unimplemented trap @ %08x\n\n",
-+			regs->reg[29] - 4);
++	. = ALIGN(4);
++	.text      :
++	{
++		__stext = .;
++		__text = .;
++		_text = .;
++		*(.text_entry)
++		*(.text)
++	}
 +
-+}
++	. = ALIGN(4);
++	.rodata : { *(.rodata) }
 +
-+void soft_emulation (struct pt_regs *regs)
-+{
++	. = .;
++	__barebox_cmd_start = .;
++	.barebox_cmd : { BAREBOX_CMDS }
++	__barebox_cmd_end = .;
 +
-+	/* TODO: Software emulation of mul/div etc. Until this is
-+	 * implemented, generate warning and hang.
++	__barebox_initcalls_start = .;
++	.barebox_initcalls : { INITCALLS }
++	__barebox_initcalls_end = .;
++
++	___usymtab_start = .;
++	__usymtab : { BAREBOX_SYMS }
++	___usymtab_end = .;
++	
++	__etext = .;			/* End of text and rodata section */
++	
++	/* INIT DATA sections - "Small" data (see the gcc -G option)
++	 * is always gp-relative. Here we make all init data sections
++	 * adjacent to simplify the startup code -- and provide
++	 * the global pointer for gp-relative access.
 +	 */
-+	printf ("\n\n*** ERROR: unimplemented instruction @ %08x\n",
-+			regs->reg[29] - 4);
-+        
-+	hang ();
++	_data = .;
++	.data :
++	{
++	  *(.data)
++	  *(.data.*)
++	  *(.gnu.linkonce.d*)
++	}
 +
++	. = ALIGN(16);
++	_gp = .;			/* Global pointer addr */
++	PROVIDE (gp = .);
 +
++	.sdata :
++	{
++	  *(.sdata)
++	  *(.sdata.*)
++	  *(.gnu.linkonce.s.*)
++	}
++	. = ALIGN(4);
++
++	_edata = .;
++	PROVIDE (edata = .);
++
++	/* UNINIT DATA - Small uninitialized data is first so it's
++	 * adjacent to sdata and can be referenced via gp. The normal
++	 * bss follows. We keep it adjacent to simplify init code.
++	 */
++	__bss_start = .;
++	.sbss (NOLOAD) :
++	{
++	  *(.sbss)
++	  *(.sbss.*)
++	  *(.gnu.linkonce.sb.*)
++	  *(.scommon)
++	}
++	. = ALIGN(4);
++	.bss (NOLOAD) :
++	{
++	  *(.bss)
++	  *(.bss.*)
++	  *(.dynbss)
++	  *(COMMON)
++	  *(.scommon)
++	}
++	__bss_stop = .;
++
++	. = ALIGN(4);
++	_end = .;
++	PROVIDE (end = .);
 +}
++
 -- 
 1.7.3.4
 
