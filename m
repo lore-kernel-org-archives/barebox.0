@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-wy0-f177.google.com ([74.125.82.177])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PvHU9-0003Mm-Ao
-	for barebox@lists.infradead.org; Thu, 03 Mar 2011 22:59:09 +0000
-Received: by mail-wy0-f177.google.com with SMTP id 23so1676005wyf.36
-	for <barebox@lists.infradead.org>; Thu, 03 Mar 2011 14:59:05 -0800 (PST)
+	id 1PvHU6-0003OY-My
+	for barebox@lists.infradead.org; Thu, 03 Mar 2011 22:59:06 +0000
+Received: by wyf23 with SMTP id 23so1676066wyf.36
+	for <barebox@lists.infradead.org>; Thu, 03 Mar 2011 14:59:01 -0800 (PST)
 From: franck.jullien@gmail.com
-Date: Thu,  3 Mar 2011 23:58:27 +0100
-Message-Id: <4d701d38.9009d80a.2cd3.5e7d@mx.google.com>
+Date: Thu,  3 Mar 2011 23:58:22 +0100
+Message-Id: <4d701d35.9009d80a.2cd3.5e78@mx.google.com>
 In-Reply-To: <n>
 References: <n>
 List-Id: <barebox.lists.infradead.org>
@@ -23,26 +23,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 13/54] Add arch/nios2/lib/early_printf.c
+Subject: [PATCH 08/54] Add arch/nios2/cpu-nios2/traps.c
 To: barebox@lists.infradead.org
 
 From: Franck JULLIEN <franck.jullien@gmail.com>
 
-Add arch/nios2/lib/early_printf.c
+Add arch/nios2/cpu-nios2/traps.c
 
 ---
- arch/nios2/lib/early_printf.c |   60 +++++++++++++++++++++++++++++++++++++++++
- 1 files changed, 60 insertions(+), 0 deletions(-)
- create mode 100644 arch/nios2/lib/early_printf.c
+ arch/nios2/cpu-nios2/traps.c |   48 ++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 48 insertions(+), 0 deletions(-)
+ create mode 100644 arch/nios2/cpu-nios2/traps.c
 
-diff --git a/arch/nios2/lib/early_printf.c b/arch/nios2/lib/early_printf.c
+diff --git a/arch/nios2/cpu-nios2/traps.c b/arch/nios2/cpu-nios2/traps.c
 new file mode 100644
-index 0000000..3e717a5
+index 0000000..849fc4d
 --- /dev/null
-+++ b/arch/nios2/lib/early_printf.c
-@@ -0,0 +1,60 @@
++++ b/arch/nios2/cpu-nios2/traps.c
+@@ -0,0 +1,48 @@
 +/*
-+ * (C) Copyright 2011 - Franck JULLIEN <elec4fun@gmail.com>
++ * (C) Copyright 2004, Psyent Corporation <www.psyent.com>
++ * Scott McNutt <smcnutt@psyent.com>
 + *
 + * See file CREDITS for list of people who contributed to this
 + * project.
@@ -63,44 +64,31 @@ index 0000000..3e717a5
 + * MA 02111-1307 USA
 + */
 +
-+#include <stdio.h>
++#include <asm/ptrace.h>
 +#include <common.h>
-+#include <asm/nios2-io.h>
 +
-+void early_putc( char ch )
++void trap_handler (struct pt_regs *regs)
 +{
-+        static nios_uart_t *uart = (nios_uart_t *) NIOS_SOPC_UART_BASE;
 +
-+        while(!(uart->status & NIOS_UART_TRDY));
-+        uart->txdata = ch;
++	/* Just issue warning */
++	printf ("\n\n*** WARNING: unimplemented trap @ %08x\n\n",
++			regs->reg[29] - 4);
 +
 +}
 +
-+void early_puts(const char *s)
-+{
-+	while (*s != 0) 
-+	{
-+		early_putc (*s++);
-+	}
-+}
-+
-+int early_printf(const char *fmt, ...)
++void soft_emulation (struct pt_regs *regs)
 +{
 +
-+	va_list args;
-+	uint i;
-+	char printbuffer[50];
++	/* TODO: Software emulation of mul/div etc. Until this is
++	 * implemented, generate warning and hang.
++	 */
++	printf ("\n\n*** ERROR: unimplemented instruction @ %08x\n",
++			regs->reg[29] - 4);
++        
++	hang ();
 +
-+	va_start(args, fmt);
 +
-+	i = vsprintf(printbuffer, fmt, args);
-+	va_end(args);
-+
-+	early_puts(printbuffer);
-+	
-+	return 0;
 +}
-+
 -- 
 1.7.3.4
 
