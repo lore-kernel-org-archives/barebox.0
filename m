@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-wy0-f177.google.com ([74.125.82.177])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PvHU8-0003Ml-Jx
-	for barebox@lists.infradead.org; Thu, 03 Mar 2011 22:59:08 +0000
-Received: by mail-wy0-f177.google.com with SMTP id 23so1675998wyf.36
-	for <barebox@lists.infradead.org>; Thu, 03 Mar 2011 14:59:04 -0800 (PST)
+	id 1PvHU9-0003Mm-Ao
+	for barebox@lists.infradead.org; Thu, 03 Mar 2011 22:59:09 +0000
+Received: by mail-wy0-f177.google.com with SMTP id 23so1676005wyf.36
+	for <barebox@lists.infradead.org>; Thu, 03 Mar 2011 14:59:05 -0800 (PST)
 From: franck.jullien@gmail.com
-Date: Thu,  3 Mar 2011 23:58:26 +0100
-Message-Id: <4d701d37.9009d80a.2cd3.5e7c@mx.google.com>
+Date: Thu,  3 Mar 2011 23:58:27 +0100
+Message-Id: <4d701d38.9009d80a.2cd3.5e7d@mx.google.com>
 In-Reply-To: <n>
 References: <n>
 List-Id: <barebox.lists.infradead.org>
@@ -23,24 +23,24 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/54] Add arch/nios2/lib/clock.c
+Subject: [PATCH 13/54] Add arch/nios2/lib/early_printf.c
 To: barebox@lists.infradead.org
 
 From: Franck JULLIEN <franck.jullien@gmail.com>
 
-Add arch/nios2/lib/clock.c
+Add arch/nios2/lib/early_printf.c
 
 ---
- arch/nios2/lib/clock.c |   57 ++++++++++++++++++++++++++++++++++++++++++++++++
- 1 files changed, 57 insertions(+), 0 deletions(-)
- create mode 100644 arch/nios2/lib/clock.c
+ arch/nios2/lib/early_printf.c |   60 +++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 60 insertions(+), 0 deletions(-)
+ create mode 100644 arch/nios2/lib/early_printf.c
 
-diff --git a/arch/nios2/lib/clock.c b/arch/nios2/lib/clock.c
+diff --git a/arch/nios2/lib/early_printf.c b/arch/nios2/lib/early_printf.c
 new file mode 100644
-index 0000000..dd08be7
+index 0000000..3e717a5
 --- /dev/null
-+++ b/arch/nios2/lib/clock.c
-@@ -0,0 +1,57 @@
++++ b/arch/nios2/lib/early_printf.c
+@@ -0,0 +1,60 @@
 +/*
 + * (C) Copyright 2011 - Franck JULLIEN <elec4fun@gmail.com>
 + *
@@ -62,41 +62,44 @@ index 0000000..dd08be7
 + * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
 + * MA 02111-1307 USA
 + */
-+ 
++
++#include <stdio.h>
 +#include <common.h>
-+#include <clock.h>
-+#include <init.h>
 +#include <asm/nios2-io.h>
 +
-+static nios_timer_t *timer = (nios_timer_t *) NIOS_SOPC_TIMER_BASE;
-+
-+static uint64_t nios_clocksource_read(void)
++void early_putc( char ch )
 +{
-+        timer->snapl = 0x55;             /* Dummy value*/
-+	return (uint64_t)(~((((uint64_t)timer->snaph) << (uint64_t)16) + (uint64_t)timer->snapl));
++        static nios_uart_t *uart = (nios_uart_t *) NIOS_SOPC_UART_BASE;
++
++        while(!(uart->status & NIOS_UART_TRDY));
++        uart->txdata = ch;
++
 +}
 +
-+static struct clocksource cs = {
-+	.read	= nios_clocksource_read,
-+	.mask	= CLOCKSOURCE_MASK(32),
-+	.shift	= 12,
-+};
++void early_puts(const char *s)
++{
++	while (*s != 0) 
++	{
++		early_putc (*s++);
++	}
++}
 +
-+static int clocksource_init (void)
-+{      
-+        timer->control = 0;
-+        timer->periodl = 0xFFFF;
-+        timer->periodh = 0xFFFF;       
-+        timer->control = NIOS_TIMER_CONT | NIOS_TIMER_START;
++int early_printf(const char *fmt, ...)
++{
 +
-+        cs.mult = clocksource_hz2mult(NIOS_SOPC_TIMER_FREQ, cs.shift);
++	va_list args;
++	uint i;
++	char printbuffer[50];
 +
-+        init_clock(&cs);
++	va_start(args, fmt);
 +
++	i = vsprintf(printbuffer, fmt, args);
++	va_end(args);
++
++	early_puts(printbuffer);
++	
 +	return 0;
 +}
-+
-+core_initcall(clocksource_init);
 +
 -- 
 1.7.3.4
