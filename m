@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-wy0-f177.google.com ([74.125.82.177])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PvHUR-0003Oo-At
+	id 1PvHUT-0003XT-L8
 	for barebox@lists.infradead.org; Thu, 03 Mar 2011 22:59:33 +0000
-Received: by mail-wy0-f177.google.com with SMTP id 23so1676087wyf.36
-	for <barebox@lists.infradead.org>; Thu, 03 Mar 2011 14:59:23 -0800 (PST)
+Received: by wyf23 with SMTP id 23so1676366wyf.36
+	for <barebox@lists.infradead.org>; Thu, 03 Mar 2011 14:59:24 -0800 (PST)
 From: franck.jullien@gmail.com
-Date: Thu,  3 Mar 2011 23:58:53 +0100
-Message-Id: <4d701d4a.9009d80a.2cd3.5e9c@mx.google.com>
+Date: Thu,  3 Mar 2011 23:58:54 +0100
+Message-Id: <4d701d4b.9009d80a.2cd3.5e9d@mx.google.com>
 In-Reply-To: <n>
 References: <n>
 List-Id: <barebox.lists.infradead.org>
@@ -23,24 +23,24 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 39/54] Add arch/nios2/include/asm/nios2-io.h
+Subject: [PATCH 40/54] Add arch/nios2/include/asm/nios2.h
 To: barebox@lists.infradead.org
 
 From: Franck JULLIEN <franck.jullien@gmail.com>
 
-Add arch/nios2/include/asm/nios2-io.h
+Add arch/nios2/include/asm/nios2.h
 
 ---
- arch/nios2/include/asm/nios2-io.h |  182 +++++++++++++++++++++++++++++++++++++
- 1 files changed, 182 insertions(+), 0 deletions(-)
- create mode 100644 arch/nios2/include/asm/nios2-io.h
+ arch/nios2/include/asm/nios2.h |   63 ++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 63 insertions(+), 0 deletions(-)
+ create mode 100644 arch/nios2/include/asm/nios2.h
 
-diff --git a/arch/nios2/include/asm/nios2-io.h b/arch/nios2/include/asm/nios2-io.h
+diff --git a/arch/nios2/include/asm/nios2.h b/arch/nios2/include/asm/nios2.h
 new file mode 100644
-index 0000000..c20885b
+index 0000000..54954e3
 --- /dev/null
-+++ b/arch/nios2/include/asm/nios2-io.h
-@@ -0,0 +1,182 @@
++++ b/arch/nios2/include/asm/nios2.h
+@@ -0,0 +1,63 @@
 +/*
 + * (C) Copyright 2004, Psyent Corporation <www.psyent.com>
 + * Scott McNutt <smcnutt@psyent.com>
@@ -64,165 +64,46 @@ index 0000000..c20885b
 + * MA 02111-1307 USA
 + */
 +
-+/*************************************************************************
-+ * Altera Nios2 Standard Peripherals
-+ ************************************************************************/
-+
-+#ifndef __NIOS2IO_H__
-+#define __NIOS2IO_H__
++#ifndef __NIOS2_H__
++#define __NIOS2_H__
 +
 +/*------------------------------------------------------------------------
-+ * UART (http://www.altera.com/literature/ds/ds_nios_uart.pdf)
++ * Control registers -- use with wrctl() & rdctl()
 + *----------------------------------------------------------------------*/
-+typedef volatile struct nios_uart_t {
-+	unsigned	rxdata;		/* Rx data reg */
-+	unsigned	txdata;		/* Tx data reg */
-+	unsigned	status;		/* Status reg */
-+	unsigned	control;	/* Control reg */
-+	unsigned	divisor;	/* Baud rate divisor reg */
-+	unsigned	endofpacket;	/* End-of-packet reg */
-+}nios_uart_t;
-+
-+/* status register */
-+#define NIOS_UART_PE		(1 << 0)	/* parity error */
-+#define NIOS_UART_FE		(1 << 1)	/* frame error */
-+#define NIOS_UART_BRK		(1 << 2)	/* break detect */
-+#define NIOS_UART_ROE		(1 << 3)	/* rx overrun */
-+#define NIOS_UART_TOE		(1 << 4)	/* tx overrun */
-+#define NIOS_UART_TMT		(1 << 5)	/* tx empty */
-+#define NIOS_UART_TRDY		(1 << 6)	/* tx ready */
-+#define NIOS_UART_RRDY		(1 << 7)	/* rx ready */
-+#define NIOS_UART_E		(1 << 8)	/* exception */
-+#define NIOS_UART_DCTS		(1 << 10)	/* cts change */
-+#define NIOS_UART_CTS		(1 << 11)	/* cts */
-+#define NIOS_UART_EOP		(1 << 12)	/* eop detected */
-+
-+/* control register */
-+#define NIOS_UART_IPE		(1 << 0)	/* parity error int ena*/
-+#define NIOS_UART_IFE		(1 << 1)	/* frame error int ena */
-+#define NIOS_UART_IBRK		(1 << 2)	/* break detect int ena */
-+#define NIOS_UART_IROE		(1 << 3)	/* rx overrun int ena */
-+#define NIOS_UART_ITOE		(1 << 4)	/* tx overrun int ena */
-+#define NIOS_UART_ITMT		(1 << 5)	/* tx empty int ena */
-+#define NIOS_UART_ITRDY		(1 << 6)	/* tx ready int ena */
-+#define NIOS_UART_IRRDY		(1 << 7)	/* rx ready int ena */
-+#define NIOS_UART_IE		(1 << 8)	/* exception int ena */
-+#define NIOS_UART_TBRK		(1 << 9)	/* transmit break */
-+#define NIOS_UART_IDCTS		(1 << 10)	/* cts change int ena */
-+#define NIOS_UART_RTS		(1 << 11)	/* rts */
-+#define NIOS_UART_IEOP		(1 << 12)	/* eop detected int ena */
-+
++#define CTL_STATUS	0		/* Processor status reg		*/
++#define CTL_ESTATUS	1		/* Exception status reg		*/
++#define CTL_BSTATUS	2		/* Break status reg		*/
++#define CTL_IENABLE	3		/* Interrut enable reg		*/
++#define CTL_IPENDING	4		/* Interrut pending reg		*/
 +
 +/*------------------------------------------------------------------------
-+ * TIMER (http://www.altera.com/literature/ds/ds_nios_timer.pdf)
++ * Access to control regs
 + *----------------------------------------------------------------------*/
-+typedef volatile struct nios_timer_t {
-+	unsigned	status;			/* Timer status reg */
-+	unsigned	control;		/* Timer control reg */
-+	unsigned	periodl;		/* Timeout period low */
-+	unsigned	periodh;		/* Timeout period high */
-+	unsigned	snapl;			/* Snapshot low */
-+	unsigned	snaph;			/* Snapshot high */
-+}nios_timer_t;
++#define _str_(x) #x
 +
-+typedef volatile struct nios_timer_64t {
-+	unsigned	status;			/* Timer status reg */
-+	unsigned	control;		/* Timer control reg */
-+	unsigned	period0;		/* Timeout period low */
-+	unsigned	period1;		/* Timeout period high */
-+ 	unsigned	period2;		/* Timeout period low */
-+	unsigned	period3;		/* Timeout period high */   
-+	unsigned	snap0;			/* Snapshot low */
-+	unsigned	snap1;			/* Snapshot high */
-+        unsigned	snap2;			/* Snapshot low */
-+	unsigned	snap3;			/* Snapshot high */
-+}nios_timer_64t;
++#define rdctl(reg)\
++	({unsigned int val;\
++	asm volatile( "rdctl %0, ctl" _str_(reg)\
++		: "=r" (val) ); val;})
 +
-+/* status register */
-+#define NIOS_TIMER_TO		(1 << 0)	/* Timeout */
-+#define NIOS_TIMER_RUN		(1 << 1)	/* Timer running */
-+
-+/* control register */
-+#define NIOS_TIMER_ITO		(1 << 0)	/* Timeout int ena */
-+#define NIOS_TIMER_CONT		(1 << 1)	/* Continuous mode */
-+#define NIOS_TIMER_START	(1 << 2)	/* Start timer */
-+#define NIOS_TIMER_STOP		(1 << 3)	/* Stop timer */
-+
++#define wrctl(reg,val)\
++	asm volatile( "wrctl ctl" _str_(reg) ",%0"\
++		: : "r" (val))
 +
 +/*------------------------------------------------------------------------
-+ * PIO (http://www.altera.com/literature/ds/ds_nios_pio.pdf)
++ * Control reg bit masks
 + *----------------------------------------------------------------------*/
-+typedef volatile struct nios_pio_t {
-+	unsigned int	data;		/* Data value at each PIO in/out */
-+	unsigned int	direction;	/* Data direct. for each PIO bit */
-+	unsigned int	interruptmask;	/* Per-bit IRQ enable/disable */
-+	unsigned int	edgecapture;	/* Per-bit sync. edge detect & hold */
-+}nios_pio_t;
-+
-+/* direction register */
-+#define NIOS_PIO_OUT		(1)		/* PIO bit is output */
-+#define NIOS_PIO_IN		(0)		/* PIO bit is input */
-+
++#define STATUS_IE	(1<<0)		/* Interrupt enable		*/
++#define STATUS_U	(1<<1)		/* User-mode			*/
 +
 +/*------------------------------------------------------------------------
-+ * SPI (http://www.altera.com/literature/ds/ds_nios_spi.pdf)
++ * Bit-31 Cache bypass -- only valid for data access. When data cache
++ * is not implemented, bit 31 is ignored for compatibility.
 + *----------------------------------------------------------------------*/
-+typedef volatile struct nios_spi_t {
-+	unsigned	rxdata;		/* Rx data reg */
-+	unsigned	txdata;		/* Tx data reg */
-+	unsigned	status;		/* Status reg */
-+	unsigned	control;	/* Control reg */
-+	unsigned	reserved;	/* (master only) */
-+	unsigned	slaveselect;	/* SPI slave select mask (master only) */
-+}nios_spi_t;
++#define CACHE_BYPASS(a) ((a) | 0x80000000)
++#define CACHE_NO_BYPASS(a) ((a) & ~0x80000000)
 +
-+/* status register */
-+#define NIOS_SPI_ROE		(1 << 3)	/* rx overrun */
-+#define NIOS_SPI_TOE		(1 << 4)	/* tx overrun */
-+#define NIOS_SPI_TMT		(1 << 5)	/* tx empty */
-+#define NIOS_SPI_TRDY		(1 << 6)	/* tx ready */
-+#define NIOS_SPI_RRDY		(1 << 7)	/* rx ready */
-+#define NIOS_SPI_E		(1 << 8)	/* exception */
-+
-+/* control register */
-+#define NIOS_SPI_IROE		(1 << 3)	/* rx overrun int ena */
-+#define NIOS_SPI_ITOE		(1 << 4)	/* tx overrun int ena */
-+#define NIOS_SPI_ITRDY		(1 << 6)	/* tx ready int ena */
-+#define NIOS_SPI_IRRDY		(1 << 7)	/* rx ready int ena */
-+#define NIOS_SPI_IE		(1 << 8)	/* exception int ena */
-+#define NIOS_SPI_SSO		(1 << 10)	/* override SS_n output */
-+
-+/*------------------------------------------------------------------------
-+ * JTAG UART
-+ *----------------------------------------------------------------------*/
-+typedef volatile struct nios_jtag_t {
-+	unsigned	data;			/* Data register */
-+	unsigned	control;		/* Control register */
-+}nios_jtag_t;
-+
-+/* data register */
-+#define NIOS_JTAG_RVALID	(1<<15)		/* Read valid */
-+#define NIOS_JTAG_DATA(d)	((d)&0x0ff)	/* Read data */
-+#define NIOS_JTAG_RAVAIL(d)	((d)>>16)	/* Read space avail */
-+
-+/* control register */
-+#define NIOS_JTAG_RE		(1 << 0)	/* read intr enable */
-+#define NIOS_JTAG_WE		(1 << 1)	/* write intr enable */
-+#define NIOS_JTAG_RI		(1 << 8)	/* read intr pending */
-+#define NIOS_JTAG_WI		(1 << 9)	/* write intr pending*/
-+#define NIOS_JTAG_AC		(1 << 10)	/* activity indicator */
-+#define NIOS_JTAG_RRDY		(1 << 12)	/* read available */
-+#define NIOS_JTAG_WSPACE(d)	((d)>>16)	/* Write space avail */
-+
-+/*------------------------------------------------------------------------
-+ * SYSTEM ID
-+ *----------------------------------------------------------------------*/
-+typedef volatile struct nios_sysid_t {
-+	unsigned	id;			/* The system build id*/
-+	unsigned	timestamp;		/* Timestamp */
-+}nios_sysid_t;
-+
-+#endif /* __NIOS2IO_H__ */
++#endif /* __NIOS2_H__ */
 -- 
 1.7.3.4
 
