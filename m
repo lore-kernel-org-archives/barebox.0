@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-wy0-f177.google.com ([74.125.82.177])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PvHU2-0003Mm-4t
-	for barebox@lists.infradead.org; Thu, 03 Mar 2011 22:58:58 +0000
-Received: by wyf23 with SMTP id 23so1676005wyf.36
-	for <barebox@lists.infradead.org>; Thu, 03 Mar 2011 14:58:57 -0800 (PST)
+	id 1PvHU7-0003Oo-B9
+	for barebox@lists.infradead.org; Thu, 03 Mar 2011 22:59:05 +0000
+Received: by wyf23 with SMTP id 23so1676087wyf.36
+	for <barebox@lists.infradead.org>; Thu, 03 Mar 2011 14:59:02 -0800 (PST)
 From: franck.jullien@gmail.com
-Date: Thu,  3 Mar 2011 23:58:15 +0100
-Message-Id: <4d701d30.9009d80a.2cd3.5e71@mx.google.com>
+Date: Thu,  3 Mar 2011 23:58:23 +0100
+Message-Id: <4d701d35.9009d80a.2cd3.5e79@mx.google.com>
 In-Reply-To: <n>
 References: <n>
 List-Id: <barebox.lists.infradead.org>
@@ -23,62 +23,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/54] Add arch/nios2/Kconfig
+Subject: [PATCH 09/54] Add arch/nios2/lib/Makefile
 To: barebox@lists.infradead.org
 
 From: Franck JULLIEN <franck.jullien@gmail.com>
 
-Add arch/nios2/Kconfig
+Add arch/nios2/lib/Makefile
 
 ---
- arch/nios2/Kconfig |   39 +++++++++++++++++++++++++++++++++++++++
- 1 files changed, 39 insertions(+), 0 deletions(-)
- create mode 100644 arch/nios2/Kconfig
+ arch/nios2/lib/Makefile |    6 ++++++
+ 1 files changed, 6 insertions(+), 0 deletions(-)
+ create mode 100644 arch/nios2/lib/Makefile
 
-diff --git a/arch/nios2/Kconfig b/arch/nios2/Kconfig
+diff --git a/arch/nios2/lib/Makefile b/arch/nios2/lib/Makefile
 new file mode 100644
-index 0000000..9b6fd2b
+index 0000000..328ca01
 --- /dev/null
-+++ b/arch/nios2/Kconfig
-@@ -0,0 +1,39 @@
-+config NIOS2
-+	bool
-+	select HAS_KALLSYMS
-+	select HAS_MODULES
-+	select HAVE_CONFIGURABLE_MEMORY_LAYOUT
-+	default y
-+
-+config ARCH_TEXT_BASE
-+	hex
-+	default 0x00000000
-+		
-+config BOARDINFO
-+	default "Altera Generic Board" if GENERIC
-+
-+choice
-+	prompt "Select your board"
-+
-+config GENERIC
-+	bool "Altera Generic Board"
-+	select NIOS2
-+
-+
-+endchoice
-+
-+menu "Board configuration           "
-+
-+config EARLY_PRINTF
-+	default n
-+	bool "Enable early printf functions"
-+	
-+endmenu
-+
-+source common/Kconfig
-+source commands/Kconfig
-+source net/Kconfig
-+source drivers/Kconfig
-+source fs/Kconfig
-+source lib/Kconfig
++++ b/arch/nios2/lib/Makefile
+@@ -0,0 +1,6 @@
++obj-y += board.o
++obj-y += libgcc.o
++obj-y += clock.o
++obj-y += cache.o
++obj-$(CONFIG_EARLY_PRINTF) += early_printf.o
 +
 -- 
 1.7.3.4
