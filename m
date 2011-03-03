@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ww0-f49.google.com ([74.125.82.49])
+Received: from mail-wy0-f177.google.com ([74.125.82.177])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PvHUN-0003SD-Ru
-	for barebox@lists.infradead.org; Thu, 03 Mar 2011 22:59:26 +0000
-Received: by mail-ww0-f49.google.com with SMTP id 40so1440284wwj.18
-	for <barebox@lists.infradead.org>; Thu, 03 Mar 2011 14:59:19 -0800 (PST)
+	id 1PvHUG-0003Oo-LB
+	for barebox@lists.infradead.org; Thu, 03 Mar 2011 22:59:19 +0000
+Received: by mail-wy0-f177.google.com with SMTP id 23so1676087wyf.36
+	for <barebox@lists.infradead.org>; Thu, 03 Mar 2011 14:59:12 -0800 (PST)
 From: franck.jullien@gmail.com
-Date: Thu,  3 Mar 2011 23:58:48 +0100
-Message-Id: <4d701d47.9009d80a.2cd3.5e96@mx.google.com>
+Date: Thu,  3 Mar 2011 23:58:38 +0100
+Message-Id: <4d701d3f.9009d80a.2cd3.5e8b@mx.google.com>
 In-Reply-To: <n>
 References: <n>
 List-Id: <barebox.lists.infradead.org>
@@ -23,48 +23,71 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 34/54] Add arch/nios2/include/asm/getorder.h
+Subject: [PATCH 24/54] Add arch/nios2/include/asm/barebox.h
 To: barebox@lists.infradead.org
 
 From: Franck JULLIEN <franck.jullien@gmail.com>
 
-Add arch/nios2/include/asm/getorder.h
+Add arch/nios2/include/asm/barebox.h
 
 ---
- arch/nios2/include/asm/getorder.h |   24 ++++++++++++++++++++++++
- 1 files changed, 24 insertions(+), 0 deletions(-)
- create mode 100644 arch/nios2/include/asm/getorder.h
+ arch/nios2/include/asm/barebox.h |   47 ++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 47 insertions(+), 0 deletions(-)
+ create mode 100644 arch/nios2/include/asm/barebox.h
 
-diff --git a/arch/nios2/include/asm/getorder.h b/arch/nios2/include/asm/getorder.h
+diff --git a/arch/nios2/include/asm/barebox.h b/arch/nios2/include/asm/barebox.h
 new file mode 100644
-index 0000000..67e7245
+index 0000000..2fcf31c
 --- /dev/null
-+++ b/arch/nios2/include/asm/getorder.h
-@@ -0,0 +1,24 @@
-+#ifndef __ASM_GENERIC_GETORDER_H
-+#define __ASM_GENERIC_GETORDER_H
++++ b/arch/nios2/include/asm/barebox.h
+@@ -0,0 +1,47 @@
++/*
++ * barebox - barebox.h Structure declarations for board specific data
++ *
++ * Copyright (c) 2005 blackfin.uclinux.org
++ *
++ * (C) Copyright 2000-2004
++ * Wolfgang Denk, DENX Software Engineering, wd@denx.de.
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
 +
-+#ifndef __ASSEMBLY__
++#ifndef _BAREBOX_H_
++#define _BAREBOX_H_	1
 +
-+#include <linux/compiler.h>
++typedef struct bd_info {
++	int bi_baudrate;		/* serial console baudrate */
++	unsigned long bi_ip_addr;	/* IP Address */
++	unsigned char bi_enetaddr[6];	/* Ethernet adress */
++	unsigned long bi_arch_number;	/* unique id for this board */
++	unsigned long bi_boot_params;	/* where this board expects params */
++	unsigned long bi_memstart;	/* start of DRAM memory */
++	unsigned long bi_memsize;	/* size  of DRAM memory in bytes */
++	unsigned long bi_flashstart;	/* start of FLASH memory */
++	unsigned long bi_flashsize;	/* size  of FLASH memory */
++	unsigned long bi_flashoffset;	/* reserved area for startup monitor */
++} bd_t;
 +
-+/* Pure 2^n version of get_order */
-+static inline __attribute_const__ int get_order(unsigned long size)
-+{
-+	int order;
++#define bi_env_data bi_env->data
++#define bi_env_crc  bi_env->crc
 +
-+	size = (size - 1) >> (PAGE_SHIFT - 1);
-+	order = -1;
-+	do {
-+		size >>= 1;
-+		order++;
-+	} while (size);
-+	return order;
-+}
-+
-+#endif	/* __ASSEMBLY__ */
-+
-+#endif	/* __ASM_GENERIC_GETORDER_H */
++#endif	/* _BAREBOX_H_ */
 -- 
 1.7.3.4
 
