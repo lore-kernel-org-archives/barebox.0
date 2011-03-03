@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-wy0-f177.google.com ([74.125.82.177])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PvHUO-0003Ml-Ih
-	for barebox@lists.infradead.org; Thu, 03 Mar 2011 22:59:27 +0000
-Received: by mail-wy0-f177.google.com with SMTP id 23so1675998wyf.36
-	for <barebox@lists.infradead.org>; Thu, 03 Mar 2011 14:59:20 -0800 (PST)
+	id 1PvHUI-0003OY-1a
+	for barebox@lists.infradead.org; Thu, 03 Mar 2011 22:59:19 +0000
+Received: by mail-wy0-f177.google.com with SMTP id 23so1676066wyf.36
+	for <barebox@lists.infradead.org>; Thu, 03 Mar 2011 14:59:13 -0800 (PST)
 From: franck.jullien@gmail.com
-Date: Thu,  3 Mar 2011 23:58:49 +0100
-Message-Id: <4d701d47.9009d80a.2cd3.5e97@mx.google.com>
+Date: Thu,  3 Mar 2011 23:58:40 +0100
+Message-Id: <4d701d41.9009d80a.2cd3.5e8d@mx.google.com>
 In-Reply-To: <n>
 References: <n>
 List-Id: <barebox.lists.infradead.org>
@@ -23,102 +23,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 35/54] Add arch/nios2/include/asm/int-ll64.h
+Subject: [PATCH 26/54] Add arch/nios2/include/asm/bitsperlong.h
 To: barebox@lists.infradead.org
 
 From: Franck JULLIEN <franck.jullien@gmail.com>
 
-Add arch/nios2/include/asm/int-ll64.h
+Add arch/nios2/include/asm/bitsperlong.h
 
 ---
- arch/nios2/include/asm/int-ll64.h |   78 +++++++++++++++++++++++++++++++++++++
- 1 files changed, 78 insertions(+), 0 deletions(-)
- create mode 100644 arch/nios2/include/asm/int-ll64.h
+ arch/nios2/include/asm/bitsperlong.h |   32 ++++++++++++++++++++++++++++++++
+ 1 files changed, 32 insertions(+), 0 deletions(-)
+ create mode 100644 arch/nios2/include/asm/bitsperlong.h
 
-diff --git a/arch/nios2/include/asm/int-ll64.h b/arch/nios2/include/asm/int-ll64.h
+diff --git a/arch/nios2/include/asm/bitsperlong.h b/arch/nios2/include/asm/bitsperlong.h
 new file mode 100644
-index 0000000..f394147
+index 0000000..4ae54e0
 --- /dev/null
-+++ b/arch/nios2/include/asm/int-ll64.h
-@@ -0,0 +1,78 @@
++++ b/arch/nios2/include/asm/bitsperlong.h
+@@ -0,0 +1,32 @@
++#ifndef __ASM_GENERIC_BITS_PER_LONG
++#define __ASM_GENERIC_BITS_PER_LONG
++
 +/*
-+ * asm-generic/int-ll64.h
-+ *
-+ * Integer declarations for architectures which use "long long"
-+ * for 64-bit types.
++ * There seems to be no way of detecting this automatically from user
++ * space, so 64 bit architectures should override this in their
++ * bitsperlong.h. In particular, an architecture that supports
++ * both 32 and 64 bit user space must not rely on CONFIG_64BIT
++ * to decide it, but rather check a compiler provided macro.
 + */
-+
-+#ifndef _ASM_GENERIC_INT_LL64_H
-+#define _ASM_GENERIC_INT_LL64_H
-+
-+#include <asm/bitsperlong.h>
-+
-+#ifndef __ASSEMBLY__
-+/*
-+ * __xx is ok: it doesn't pollute the POSIX namespace. Use these in the
-+ * header files exported to user space
-+ */
-+
-+typedef __signed__ char __s8;
-+typedef unsigned char __u8;
-+
-+typedef __signed__ short __s16;
-+typedef unsigned short __u16;
-+
-+typedef __signed__ int __s32;
-+typedef unsigned int __u32;
-+
-+#ifdef __GNUC__
-+__extension__ typedef __signed__ long long __s64;
-+__extension__ typedef unsigned long long __u64;
-+#else
-+typedef __signed__ long long __s64;
-+typedef unsigned long long __u64;
++#ifndef __BITS_PER_LONG
++#define __BITS_PER_LONG 32
 +#endif
-+
-+#endif /* __ASSEMBLY__ */
 +
 +#ifdef __KERNEL__
 +
-+#ifndef __ASSEMBLY__
++#ifdef CONFIG_64BIT
++#define BITS_PER_LONG 64
++#else
++#define BITS_PER_LONG 32
++#endif /* CONFIG_64BIT */
 +
-+typedef signed char s8;
-+typedef unsigned char u8;
-+
-+typedef signed short s16;
-+typedef unsigned short u16;
-+
-+typedef signed int s32;
-+typedef unsigned int u32;
-+
-+typedef signed long long s64;
-+typedef unsigned long long u64;
-+
-+#define S8_C(x)  x
-+#define U8_C(x)  x ## U
-+#define S16_C(x) x
-+#define U16_C(x) x ## U
-+#define S32_C(x) x
-+#define U32_C(x) x ## U
-+#define S64_C(x) x ## LL
-+#define U64_C(x) x ## ULL
-+
-+#else /* __ASSEMBLY__ */
-+
-+#define S8_C(x)  x
-+#define U8_C(x)  x
-+#define S16_C(x) x
-+#define U16_C(x) x
-+#define S32_C(x) x
-+#define U32_C(x) x
-+#define S64_C(x) x
-+#define U64_C(x) x
-+
-+#endif /* __ASSEMBLY__ */
++/*
++ * FIXME: The check currently breaks x86-64 build, so it's
++ * temporarily disabled. Please fix x86-64 and reenable
++ */
++#if 0 && BITS_PER_LONG != __BITS_PER_LONG
++#error Inconsistent word size. Check asm/bitsperlong.h
++#endif
 +
 +#endif /* __KERNEL__ */
-+
-+#endif /* _ASM_GENERIC_INT_LL64_H */
++#endif /* __ASM_GENERIC_BITS_PER_LONG */
 -- 
 1.7.3.4
 
