@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-ww0-f49.google.com ([74.125.82.49])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PvHUB-0003QI-OV
-	for barebox@lists.infradead.org; Thu, 03 Mar 2011 22:59:15 +0000
-Received: by wwj40 with SMTP id 40so1440230wwj.18
-	for <barebox@lists.infradead.org>; Thu, 03 Mar 2011 14:59:06 -0800 (PST)
+	id 1PvHUT-0003Mn-87
+	for barebox@lists.infradead.org; Thu, 03 Mar 2011 22:59:32 +0000
+Received: by mail-ww0-f49.google.com with SMTP id 40so1440124wwj.18
+	for <barebox@lists.infradead.org>; Thu, 03 Mar 2011 14:59:24 -0800 (PST)
 From: franck.jullien@gmail.com
-Date: Thu,  3 Mar 2011 23:58:29 +0100
-Message-Id: <4d701d3a.9009d80a.2cd3.5e80@mx.google.com>
+Date: Thu,  3 Mar 2011 23:58:55 +0100
+Message-Id: <4d701d4c.9009d80a.2cd3.5e9e@mx.google.com>
 In-Reply-To: <n>
 References: <n>
 List-Id: <barebox.lists.infradead.org>
@@ -23,287 +23,155 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 15/54] Add arch/nios2/lib/longlong.h
+Subject: [PATCH 41/54] Add arch/nios2/include/asm/opcodes.h
 To: barebox@lists.infradead.org
 
 From: Franck JULLIEN <franck.jullien@gmail.com>
 
-Add arch/nios2/lib/longlong.h
+Add arch/nios2/include/asm/opcodes.h
 
 ---
- arch/nios2/lib/longlong.h |  263 +++++++++++++++++++++++++++++++++++++++++++++
- 1 files changed, 263 insertions(+), 0 deletions(-)
- create mode 100644 arch/nios2/lib/longlong.h
+ arch/nios2/include/asm/opcodes.h |  131 ++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 131 insertions(+), 0 deletions(-)
+ create mode 100644 arch/nios2/include/asm/opcodes.h
 
-diff --git a/arch/nios2/lib/longlong.h b/arch/nios2/lib/longlong.h
+diff --git a/arch/nios2/include/asm/opcodes.h b/arch/nios2/include/asm/opcodes.h
 new file mode 100644
-index 0000000..392f7e7
+index 0000000..211f8ba
 --- /dev/null
-+++ b/arch/nios2/lib/longlong.h
-@@ -0,0 +1,263 @@
-+/* longlong.h -- definitions for mixed size 32/64 bit arithmetic.
-+   Copyright (C) 1991, 1992, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2004,
-+   2005  Free Software Foundation, Inc.
++++ b/arch/nios2/include/asm/opcodes.h
+@@ -0,0 +1,131 @@
++/*
++ * (C) Copyright 2004, Psyent Corporation <www.psyent.com>
++ * Scott McNutt <smcnutt@psyent.com>
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
 +
-+   This definition file is free software; you can redistribute it
-+   and/or modify it under the terms of the GNU General Public
-+   License as published by the Free Software Foundation; either
-+   version 2, or (at your option) any later version.
++#ifndef __ASM_NIOS2_OPCODES_H_
++#define __ASM_NIOS2_OPCODES_H_
 +
-+   This definition file is distributed in the hope that it will be
-+   useful, but WITHOUT ANY WARRANTY; without even the implied
-+   warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-+   See the GNU General Public License for more details.
++#define OPCODE_OP(inst)	((inst) & 0x3f)
++#define OPCODE_OPX(inst) (((inst)>>11) & 0x3f)
++#define OPCODE_RA(inst) (((inst)>>27) & 01f)
++#define OPCODE_RB(inst) (((inst)>>22) & 01f)
++#define OPCODE_RC(inst) (((inst)>>17) & 01f)
 +
-+   You should have received a copy of the GNU General Public License
-+   along with this program; if not, write to the Free Software
-+   Foundation, Inc., 51 Franklin Street, Fifth Floor,
-+   Boston, MA 02110-1301, USA.  */
++/* I-TYPE (immediate) and J-TYPE (jump) opcodes
++ */
++#define OPCODE_CALL	0x00
++#define OPCODE_LDBU	0x03
++#define OPCODE_ADDI	0x04
++#define OPCODE_STB	0x05
++#define OPCODE_BR	0x06
++#define OPCODE_LDB	0x07
++#define OPCODE_CMPGEI	0x08
++#define OPCODE_LDHU	0x0B
++#define OPCODE_ANDI	0x0C
++#define OPCODE_STH	0x0D
++#define OPCODE_BGE	0x0E
++#define OPCODE_LDH	0x0F
++#define OPCODE_CMPLTI	0x10
++#define OPCODE_XORI	0x1C
++#define OPCODE_ORI	0x14
++#define OPCODE_STW	0x15
++#define OPCODE_BLT	0x16
++#define OPCODE_LDW	0x17
++#define OPCODE_CMPNEI	0x18
++#define OPCODE_BNE	0x1E
++#define OPCODE_CMPEQI	0x20
++#define OPCODE_LDBUIO	0x23
++#define OPCODE_MULI	0x24
++#define OPCODE_STBIO	0x25
++#define OPCODE_BEQ	0x26
++#define OPCODE_LDBIO	0x27
++#define OPCODE_CMPGEUI	0x28
++#define OPCODE_ANDHI	0x2C
++#define OPCODE_STHIO	0x2D
++#define OPCODE_BGEU	0x2E
++#define OPCODE_LDHIO	0x2F
++#define OPCODE_CMPLTUI	0x30
++#define OPCODE_CUSTOM	0x32
++#define OPCODE_INITD	0x33
++#define OPCODE_ORHI	0x34
++#define OPCODE_STWIO	0x35
++#define OPCODE_BLTU	0x36
++#define OPCODE_LDWIO	0x37
++#define OPCODE_RTYPE	0x3A
++#define OPCODE_LDHUIO	0x2B
++#define OPCODE_FLUSHD	0x3B
++#define OPCODE_XORHI	0x3C
 +
-+/* You have to define the following before including this file:
++/* R-Type (register) OPX field encodings
++ */
++#define OPCODE_ERET	0x01
++#define OPCODE_ROLI	0x02
++#define OPCODE_ROL	0x03
++#define OPCODE_FLUSHP	0x04
++#define OPCODE_RET	0x05
++#define OPCODE_NOR	0x06
++#define OPCODE_MULXUU	0x07
++#define OPCODE_CMPGE	0x08
++#define OPCODE_BRET	0x09
++#define OPCODE_ROR	0x0B
++#define OPCODE_FLUSHI	0x0C
++#define OPCODE_JMP	0x0D
++#define OPCODE_AND	0x0E
 +
-+   UWtype -- An unsigned type, default type for operations (typically a "word")
-+   UHWtype -- An unsigned type, at least half the size of UWtype.
-+   UDWtype -- An unsigned type, at least twice as large a UWtype
-+   W_TYPE_SIZE -- size in bits of UWtype
++#define OPCODE_CMPLT	0x10
++#define OPCODE_SLLI	0x12
++#define OPCODE_SLL	0x13
++#define OPCODE_OR	0x16
++#define OPCODE_MULXSU	0x17
++#define OPCODE_CMPNE	0x18
++#define OPCODE_SRLI	0x1A
++#define OPCODE_SRL	0x1B
++#define OPCODE_NEXTPC	0x1C
++#define OPCODE_CALLR	0x1D
++#define OPCODE_XOR	0x1E
++#define OPCODE_MULXSS	0x1F
 +
-+   UQItype -- Unsigned 8 bit type.
-+   SItype, USItype -- Signed and unsigned 32 bit types.
-+   DItype, UDItype -- Signed and unsigned 64 bit types.
++#define OPCODE_CMPEQ	0x20
++#define OPCODE_CMPLTU	0x30
++#define OPCODE_ADD	0x31
++#define OPCODE_DIVU	0x24
++#define OPCODE_DIV	0x25
++#define OPCODE_RDCTL	0x26
++#define OPCODE_MUL	0x27
++#define OPCODE_CMPGEU	0x28
++#define OPCODE_TRAP	0x2D
++#define OPCODE_WRCTL	0x2E
 +
-+   On a 32 bit machine UWtype should typically be USItype;
-+   on a 64 bit machine, UWtype should typically be UDItype.  */
++#define OPCODE_BREAK	0x34
++#define OPCODE_SYNC	0x36
++#define OPCODE_INITI	0x29
++#define OPCODE_SUB	0x39
++#define OPCODE_SRAI	0x3A
++#define OPCODE_SRA	0x3B
 +
-+#define __BITS4 (W_TYPE_SIZE / 4)
-+#define __ll_B ((UWtype) 1 << (W_TYPE_SIZE / 2))
-+#define __ll_lowpart(t) ((UWtype) (t) & (__ll_B - 1))
-+#define __ll_highpart(t) ((UWtype) (t) >> (W_TYPE_SIZE / 2))
++/*Full instruction encodings for R-Type, without the R's ;-)
++ *
++ * TODO: BREAK, BRET, ERET, RET, SYNC (as needed)
++ */
++#define OPC_TRAP	0x003b683a
 +
-+#ifndef W_TYPE_SIZE
-+#define W_TYPE_SIZE	32
-+#define UWtype		USItype
-+#define UHWtype		USItype
-+#define UDWtype		UDItype
-+#endif
-+
-+extern const UQItype __clz_tab[256];
-+
-+/* Define auxiliary asm macros.
-+
-+   1) umul_ppmm(high_prod, low_prod, multiplier, multiplicand) multiplies two
-+   UWtype integers MULTIPLIER and MULTIPLICAND, and generates a two UWtype
-+   word product in HIGH_PROD and LOW_PROD.
-+
-+   2) __umulsidi3(a,b) multiplies two UWtype integers A and B, and returns a
-+   UDWtype product.  This is just a variant of umul_ppmm.
-+
-+   3) udiv_qrnnd(quotient, remainder, high_numerator, low_numerator,
-+   denominator) divides a UDWtype, composed by the UWtype integers
-+   HIGH_NUMERATOR and LOW_NUMERATOR, by DENOMINATOR and places the quotient
-+   in QUOTIENT and the remainder in REMAINDER.  HIGH_NUMERATOR must be less
-+   than DENOMINATOR for correct operation.  If, in addition, the most
-+   significant bit of DENOMINATOR must be 1, then the pre-processor symbol
-+   UDIV_NEEDS_NORMALIZATION is defined to 1.
-+
-+   4) sdiv_qrnnd(quotient, remainder, high_numerator, low_numerator,
-+   denominator).  Like udiv_qrnnd but the numbers are signed.  The quotient
-+   is rounded towards 0.
-+
-+   5) count_leading_zeros(count, x) counts the number of zero-bits from the
-+   msb to the first nonzero bit in the UWtype X.  This is the number of
-+   steps X needs to be shifted left to set the msb.  Undefined for X == 0,
-+   unless the symbol COUNT_LEADING_ZEROS_0 is defined to some value.
-+
-+   6) count_trailing_zeros(count, x) like count_leading_zeros, but counts
-+   from the least significant end.
-+
-+   7) add_ssaaaa(high_sum, low_sum, high_addend_1, low_addend_1,
-+   high_addend_2, low_addend_2) adds two UWtype integers, composed by
-+   HIGH_ADDEND_1 and LOW_ADDEND_1, and HIGH_ADDEND_2 and LOW_ADDEND_2
-+   respectively.  The result is placed in HIGH_SUM and LOW_SUM.  Overflow
-+   (i.e. carry out) is not stored anywhere, and is lost.
-+
-+   8) sub_ddmmss(high_difference, low_difference, high_minuend, low_minuend,
-+   high_subtrahend, low_subtrahend) subtracts two two-word UWtype integers,
-+   composed by HIGH_MINUEND_1 and LOW_MINUEND_1, and HIGH_SUBTRAHEND_2 and
-+   LOW_SUBTRAHEND_2 respectively.  The result is placed in HIGH_DIFFERENCE
-+   and LOW_DIFFERENCE.  Overflow (i.e. carry out) is not stored anywhere,
-+   and is lost.
-+
-+   If any of these macros are left undefined for a particular CPU,
-+   C macros are used.  */
-+
-+/* The CPUs come in alphabetical order below.
-+
-+   Please add support for more CPUs here, or improve the current support
-+   for the CPUs below!
-+   (E.g. WE32100, IBM360.)  */
-+
-+/* Snipped per CPU support */
-+
-+/* If this machine has no inline assembler, use C macros.  */
-+
-+#if !defined (add_ssaaaa)
-+#define add_ssaaaa(sh, sl, ah, al, bh, bl) \
-+  do {									\
-+    UWtype __x;								\
-+    __x = (al) + (bl);							\
-+    (sh) = (ah) + (bh) + (__x < (al));					\
-+    (sl) = __x;								\
-+  } while (0)
-+#endif
-+
-+#if !defined (sub_ddmmss)
-+#define sub_ddmmss(sh, sl, ah, al, bh, bl) \
-+  do {									\
-+    UWtype __x;								\
-+    __x = (al) - (bl);							\
-+    (sh) = (ah) - (bh) - (__x > (al));					\
-+    (sl) = __x;								\
-+  } while (0)
-+#endif
-+
-+/* If we lack umul_ppmm but have smul_ppmm, define umul_ppmm in terms of
-+   smul_ppmm.  */
-+#if !defined (umul_ppmm) && defined (smul_ppmm)
-+#define umul_ppmm(w1, w0, u, v)						\
-+  do {									\
-+    UWtype __w1;							\
-+    UWtype __xm0 = (u), __xm1 = (v);					\
-+    smul_ppmm (__w1, w0, __xm0, __xm1);					\
-+    (w1) = __w1 + (-(__xm0 >> (W_TYPE_SIZE - 1)) & __xm1)		\
-+		+ (-(__xm1 >> (W_TYPE_SIZE - 1)) & __xm0);		\
-+  } while (0)
-+#endif
-+
-+/* If we still don't have umul_ppmm, define it using plain C.  */
-+#if !defined (umul_ppmm)
-+#define umul_ppmm(w1, w0, u, v)						\
-+  do {									\
-+    UWtype __x0, __x1, __x2, __x3;					\
-+    UHWtype __ul, __vl, __uh, __vh;					\
-+									\
-+    __ul = __ll_lowpart (u);						\
-+    __uh = __ll_highpart (u);						\
-+    __vl = __ll_lowpart (v);						\
-+    __vh = __ll_highpart (v);						\
-+									\
-+    __x0 = (UWtype) __ul * __vl;					\
-+    __x1 = (UWtype) __ul * __vh;					\
-+    __x2 = (UWtype) __uh * __vl;					\
-+    __x3 = (UWtype) __uh * __vh;					\
-+									\
-+    __x1 += __ll_highpart (__x0);/* this can't give carry */		\
-+    __x1 += __x2;		/* but this indeed can */		\
-+    if (__x1 < __x2)		/* did we get it? */			\
-+      __x3 += __ll_B;		/* yes, add it in the proper pos.  */	\
-+									\
-+    (w1) = __x3 + __ll_highpart (__x1);					\
-+    (w0) = __ll_lowpart (__x1) * __ll_B + __ll_lowpart (__x0);		\
-+  } while (0)
-+#endif
-+
-+#if !defined (__umulsidi3)
-+#define __umulsidi3(u, v) \
-+  ({DWunion __w;							\
-+    umul_ppmm (__w.s.high, __w.s.low, u, v);				\
-+    __w.ll; })
-+#endif
-+
-+/* Define this unconditionally, so it can be used for debugging.  */
-+#define __udiv_qrnnd_c(q, r, n1, n0, d) \
-+  do {									\
-+    UWtype __d1, __d0, __q1, __q0;					\
-+    UWtype __r1, __r0, __m;						\
-+    __d1 = __ll_highpart (d);						\
-+    __d0 = __ll_lowpart (d);						\
-+									\
-+    __r1 = (n1) % __d1;							\
-+    __q1 = (n1) / __d1;							\
-+    __m = (UWtype) __q1 * __d0;						\
-+    __r1 = __r1 * __ll_B | __ll_highpart (n0);				\
-+    if (__r1 < __m)							\
-+      {									\
-+	__q1--, __r1 += (d);						\
-+	if (__r1 >= (d)) /* i.e. we didn't get carry when adding to __r1 */\
-+	  if (__r1 < __m)						\
-+	    __q1--, __r1 += (d);					\
-+      }									\
-+    __r1 -= __m;							\
-+									\
-+    __r0 = __r1 % __d1;							\
-+    __q0 = __r1 / __d1;							\
-+    __m = (UWtype) __q0 * __d0;						\
-+    __r0 = __r0 * __ll_B | __ll_lowpart (n0);				\
-+    if (__r0 < __m)							\
-+      {									\
-+	__q0--, __r0 += (d);						\
-+	if (__r0 >= (d))						\
-+	  if (__r0 < __m)						\
-+	    __q0--, __r0 += (d);					\
-+      }									\
-+    __r0 -= __m;							\
-+									\
-+    (q) = (UWtype) __q1 * __ll_B | __q0;				\
-+    (r) = __r0;								\
-+  } while (0)
-+
-+/* If the processor has no udiv_qrnnd but sdiv_qrnnd, go through
-+   __udiv_w_sdiv (defined in libgcc or elsewhere).  */
-+#if !defined (udiv_qrnnd) && defined (sdiv_qrnnd)
-+#define udiv_qrnnd(q, r, nh, nl, d) \
-+  do {									\
-+    USItype __r;							\
-+    (q) = __udiv_w_sdiv (&__r, nh, nl, d);				\
-+    (r) = __r;								\
-+  } while (0)
-+#endif
-+
-+/* If udiv_qrnnd was not defined for this processor, use __udiv_qrnnd_c.  */
-+#if !defined (udiv_qrnnd)
-+#define UDIV_NEEDS_NORMALIZATION 1
-+#define udiv_qrnnd __udiv_qrnnd_c
-+#endif
-+
-+#if !defined (count_leading_zeros)
-+#define count_leading_zeros(count, x) \
-+  do {									\
-+    UWtype __xr = (x);							\
-+    UWtype __a;								\
-+									\
-+    if (W_TYPE_SIZE <= 32)						\
-+      {									\
-+	__a = __xr < ((UWtype)1<<2*__BITS4)				\
-+	  ? (__xr < ((UWtype)1<<__BITS4) ? 0 : __BITS4)			\
-+	  : (__xr < ((UWtype)1<<3*__BITS4) ?  2*__BITS4 : 3*__BITS4);	\
-+      }									\
-+    else								\
-+      {									\
-+	for (__a = W_TYPE_SIZE - 8; __a > 0; __a -= 8)			\
-+	  if (((__xr >> __a) & 0xff) != 0)				\
-+	    break;							\
-+      }									\
-+									\
-+    (count) = W_TYPE_SIZE - (__clz_tab[__xr >> __a] + __a);		\
-+  } while (0)
-+#define COUNT_LEADING_ZEROS_0 W_TYPE_SIZE
-+#endif
-+
-+#if !defined (count_trailing_zeros)
-+/* Define count_trailing_zeros using count_leading_zeros.  The latter might be
-+   defined in asm, but if it is not, the C version above is good enough.  */
-+#define count_trailing_zeros(count, x) \
-+  do {									\
-+    UWtype __ctz_x = (x);						\
-+    UWtype __ctz_c;							\
-+    count_leading_zeros (__ctz_c, __ctz_x & -__ctz_x);			\
-+    (count) = W_TYPE_SIZE - 1 - __ctz_c;				\
-+  } while (0)
-+#endif
-+
-+#ifndef UDIV_NEEDS_NORMALIZATION
-+#define UDIV_NEEDS_NORMALIZATION 0
-+#endif
++#endif /* __ASM_NIOS2_OPCODES_H_ */
 -- 
 1.7.3.4
 
