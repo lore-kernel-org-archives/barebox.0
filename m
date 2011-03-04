@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from metis.ext.pengutronix.de ([92.198.50.35])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PvQP8-00075r-0f
-	for barebox@lists.infradead.org; Fri, 04 Mar 2011 08:30:31 +0000
-Date: Fri, 4 Mar 2011 09:30:28 +0100
+	id 1PvQe5-0007CJ-Og
+	for barebox@lists.infradead.org; Fri, 04 Mar 2011 08:45:58 +0000
+Date: Fri, 4 Mar 2011 09:45:33 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110304083028.GC29521@pengutronix.de>
-References: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B0104E@SRV-VS06.TELEVIC.COM>
+Message-ID: <20110304084533.GD29521@pengutronix.de>
+References: <n>
+ <4d701d2f.9009d80a.2cd3.5e70@mx.google.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B0104E@SRV-VS06.TELEVIC.COM>
+In-Reply-To: <4d701d2f.9009d80a.2cd3.5e70@mx.google.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,30 +23,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: bootargs
-To: Vanalme Filip <F.Vanalme@TELEVIC.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH 00/54] New arch (NIOS2)
+To: franck.jullien@gmail.com
+Cc: barebox@lists.infradead.org
 
-On Fri, Mar 04, 2011 at 09:18:26AM +0100, Vanalme Filip wrote:
+Hi Franck,
+
+On Thu, Mar 03, 2011 at 11:58:14PM +0100, franck.jullien@gmail.com wrote:
+> From: Franck JULLIEN <franck.jullien@gmail.com>
 > 
-> I think it might have something to do with the BI-swapping issue. The
-> BI-swapping is, as far as I know, not yet implemented in the kernel's
-> NAND driver. So, if I flash the rootfs with Barebox (doing the
-> BI-swap) and then read the rootfs from within the kernel (not doing
-> the BI-swap), I will for sure have problem...
+> This is the base files of the Nios2 port. Almost everything is comming from u-boot.
+> When those files are acked, I'll post drivers and utility commands.
 
-Using 2k NAND flash on the i.MX27 will most likely lead to problems...
+Soo many patches ;). You can safely combine all these into two
+patches, one for the nios2 support and one for the generic board.
+The patches are only useful as a whole anyway, so no need to split
+them up that fine. You will hit the list limit, so give me some time
+to go to the moderator interface and and it through.
 
-> 
-> Remarkable : the Linux version I use is a version we downloaded from
-> Freescale's git repositry. In this version, we could select the
-> i.MX27PDK board. However, that board's code is obviously not
-> registering the NAND flash driver... knowing that the i.MX27PDK only
-> contains NAND-flash, this is very weird...
+I'm not through all patches, but some remarks here:
 
-Normally we do root over nfs during development, so this is not very
-surprising. As Freescale does not support the i.MX27 anymore the
-i.MX27PDK support in FSLs git kernel is probably identical to mainline.
+There is some whitespace damage all around like spaces which should be
+tabs. Also, please do not use direct pointer derefs to access registers.
+You should use readl/writel accessors for them.
+
+Thanks for doing this work. Although I don't have a nios baord, I really
+appreciate extending barebox to more architectures.
 
 Sascha
 
