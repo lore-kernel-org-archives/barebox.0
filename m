@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ip2.televic.com ([81.82.194.222])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PvUzL-0000w1-LH
-	for barebox@lists.infradead.org; Fri, 04 Mar 2011 13:24:12 +0000
+	id 1PvVO0-000176-D0
+	for barebox@lists.infradead.org; Fri, 04 Mar 2011 13:49:41 +0000
 From: Vanalme Filip <F.Vanalme@TELEVIC.com>
-Date: Fri, 4 Mar 2011 14:24:09 +0100
-Message-ID: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B010AB@SRV-VS06.TELEVIC.COM>
+Date: Fri, 4 Mar 2011 14:49:37 +0100
+Message-ID: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B010B6@SRV-VS06.TELEVIC.COM>
 References: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B0104E@SRV-VS06.TELEVIC.COM>
 	<20110304083028.GC29521@pengutronix.de>
-	<6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B0109C@SRV-VS06.TELEVIC.COM>
-	<20110304131329.GD3143@tarshish>
-In-Reply-To: <20110304131329.GD3143@tarshish>
+In-Reply-To: <20110304083028.GC29521@pengutronix.de>
 Content-Language: en-US
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
@@ -26,78 +24,47 @@ Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: RE: bootargs
-To: Baruch Siach <baruch@tkos.co.il>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
 > -----Original Message-----
-> From: Baruch Siach [mailto:baruch@tkos.co.il]
-> Sent: vrijdag 4 maart 2011 14:13
+> From: Sascha Hauer [mailto:s.hauer@pengutronix.de]
+> Sent: vrijdag 4 maart 2011 9:30
 > To: Vanalme Filip
-> Cc: Sascha Hauer; barebox@lists.infradead.org
+> Cc: barebox@lists.infradead.org
 > Subject: Re: bootargs
 > 
-> Hi Vanalme,
-> 
-> On Fri, Mar 04, 2011 at 01:54:38PM +0100, Vanalme Filip wrote:
-> > barebox 2010.12.0-00073-gfad11e8-dirty (Mar  3 2011 - 09:28:01)
+> On Fri, Mar 04, 2011 at 09:18:26AM +0100, Vanalme Filip wrote:
 > >
-> > Board: Freescale i.MX27 PDK 3Stack
-> > NAND device: Manufacturer ID: 0xec, Chip ID: 0xaa (Samsung NAND 256MiB
-> 1,8V 8-bit)
-> > Bad block table found at page 131008, version 0x01
-> > Bad block table found at page 130944, version 0x01
-> > PMIC Power
-> > Enable FEC
-> > Reset FEC
-> > Malloc space: 0xa7b00000 -> 0xa7f00000 (size  4 MB)
-> > Stack space : 0xa7af8000 -> 0xa7b00000 (size 32 kB)
-> > running /env/bin/init...
+> > I think it might have something to do with the BI-swapping issue. The
+> > BI-swapping is, as far as I know, not yet implemented in the kernel's
+> > NAND driver. So, if I flash the rootfs with Barebox (doing the
+> > BI-swap) and then read the rootfs from within the kernel (not doing
+> > the BI-swap), I will for sure have problem...
+> 
+> Using 2k NAND flash on the i.MX27 will most likely lead to problems...
+> 
 > >
-> > Hit any key to stop autoboot:  3 2 1 0
-> > loaded zImage from /dev/nand0.kernel.bb with size 1996604
-> > commandline: console=ttymxc0,115200 ip=dhcp rootfstype=jffs2 root=/dev/nfs
-> nfsroot=10.0.48.80:/tftpboot/rootfs earlyprintk
-> mtdparts=mxc_nand:256k(barebox)ro,128k(bareboxenv),2M(kernel),-(root)
+> > Remarkable : the Linux version I use is a version we downloaded from
+> > Freescale's git repositry. In this version, we could select the
+> > i.MX27PDK board. However, that board's code is obviously not
+> > registering the NAND flash driver... knowing that the i.MX27PDK only
+> > contains NAND-flash, this is very weird...
 > 
-> [snip]
+> Normally we do root over nfs during development, so this is not very
+> surprising. As Freescale does not support the i.MX27 anymore the
+> i.MX27PDK support in FSLs git kernel is probably identical to mainline.
 > 
-> Removing "rootfstype=jffs2" might help. Just a guess.
-> 
-> baruch
+> Sascha
 > 
 [Filip] 
-Unfortunately... no success. Shouldn't it be there to let the kernel know that it is a jffs2 filesystem ? Isn't this the only way the kernel can be informed about the type of filesystem ?
+I implemented the BI-swapping in mxc_nand.c (analogous to the implementation in Barebox's mxc_nand.c). With success. The kernel can now mount the root filesystem from NAND flash and ends with a prompt.
 
 Filip
-
-> > IP-Config: Got DHCP answer from 0.0.0.0, my address is 10.0.49.70
-> > IP-Config: Complete:
-> >      device=eth0, addr=10.0.49.70, mask=255.255.0.0, gw=10.0.127.254,
-> >      host=10.0.49.70, domain=televic.com, nis-domain=(none),
-> >      bootserver=0.0.0.0, rootserver=10.0.48.80, rootpath=
-> > VFS: Unable to mount root fs via NFS, trying floppy.   <======== ??
-> > List of all partitions:
-> > 1f00             256 mtdblock0  (driver?)
-> > 1f01             128 mtdblock1  (driver?)
-> > 1f02            2048 mtdblock2  (driver?)
-> > 1f03          259712 mtdblock3  (driver?)
-> > No filesystem could mount root, tried:  jffs2
-> > Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-block(2,0)
-> >
-> >
-> > I checked the kernel's configuration and I think I have all NFS related items
-> included.
-> > A showmount -e 10.0.48.80 gives me :
-> > /tftpboot/rootfs			10.0.0.0/255.255.0.0
-> > /home/user1/i.MX27/ltib/rootfs	10.0.0.0/255.255.0.0
-> >
-> > So, I guess the mounting point is correct.
-> > The bootargs also look OK to me. However, there's still something I miss here.
-> 
 > --
->                                                      ~. .~   Tk Open Systems
-> =}------------------------------------------------ooO--U--Ooo------------{=
->    - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
