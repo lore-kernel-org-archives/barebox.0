@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PwLtE-0002vf-RH
-	for barebox@lists.infradead.org; Sun, 06 Mar 2011 21:53:26 +0000
+	id 1PwLtE-0002vh-RL
+	for barebox@lists.infradead.org; Sun, 06 Mar 2011 21:53:27 +0000
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Sun,  6 Mar 2011 22:53:17 +0100
-Message-Id: <1299448398-5672-5-git-send-email-jbe@pengutronix.de>
+Date: Sun,  6 Mar 2011 22:53:14 +0100
+Message-Id: <1299448398-5672-2-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1299448398-5672-1-git-send-email-jbe@pengutronix.de>
 References: <1299448398-5672-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,39 +21,87 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/5] S3C2440/NAND: Re-enable the controller after NAND boot
-	test
+Subject: [PATCH 1/5] mini2440: Add more info about possible SDRAM and flash
+	devices
 To: barebox@lists.infradead.org
 Cc: Juergen Beisert <juergen@kreuzholzen.de>
 
 From: Juergen Beisert <juergen@kreuzholzen.de>
 
-After running the 'nand_boot_test' command, any usage of the NAND fails with
-an IO error. This happens due to the load routine disables the NAND controller
-after loading the image.
-
-This patch re-enables the NAND controller again after running the test.
+It seems there are various combinations of the mini2440 in the wild. Not only
+the SDRAM differ, but more important the NAND also differs.
 
 Signed-off-by: Juergen Beisert <juergen@kreuzholzen.de>
 ---
- drivers/mtd/nand/nand_s3c2410.c |    4 ++++
- 1 files changed, 4 insertions(+), 0 deletions(-)
+ arch/arm/boards/mini2440/mini2440.c |   54 ++++++++++++++++++++++++----------
+ 1 files changed, 38 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/mtd/nand/nand_s3c2410.c b/drivers/mtd/nand/nand_s3c2410.c
-index e298771..7d7ff46 100644
---- a/drivers/mtd/nand/nand_s3c2410.c
-+++ b/drivers/mtd/nand/nand_s3c2410.c
-@@ -611,6 +611,10 @@ static int do_nand_boot_test(struct command *cmdtp, int argc, char *argv[])
- 
- 	s3c24x0_nand_load_image(dest, size, 0);
- 
-+	/* re-enable the controller again, as this was a test only */
-+	enable_nand_controller((void *)S3C24X0_NAND_BASE,
-+				BOARD_DEFAULT_NAND_TIMING);
-+
- 	return 0;
- }
- 
+diff --git a/arch/arm/boards/mini2440/mini2440.c b/arch/arm/boards/mini2440/mini2440.c
+index ab309a0..6842a79 100644
+--- a/arch/arm/boards/mini2440/mini2440.c
++++ b/arch/arm/boards/mini2440/mini2440.c
+@@ -316,23 +316,45 @@ This system is based on a Samsung S3C2440 CPU. The card is shipped with:
+ - 12 MHz crystal reference
+ - 32.768 kHz crystal reference
+ - SDRAM 64 MiB (one bank only)
+-   - HY57V561620 (two devices for 64 MiB to form a 32 bit bus)
+-     - 4M x 16bit x 4 Banks Mobile SDRAM
+-     - 8192 refresh cycles / 64 ms
+-     - CL2\@100 MHz
+-     - 133 MHz max
+-     - collumn address size is 9 bits
+-     - row address size is 13 bits
+-   - MT48LC16M16 (two devices for 64 MiB to form a 32 bit bus)
+-     - 4M x 16bit x 4 Banks Mobile SDRAM
+-     - commercial & industrial type
+-     - 8192 refresh cycles / 64 ms
+-     - CL2\@100 MHz
+-     - 133 MHz max
+-     - collumn address size is 9 bits
+-     - row address size is 13 bits
++   - Hynix SDRAM
++    - HY57V561620FTP-H (two devices for 64 MiB to form a 32 bit bus)
++      - 4M x 16bit x 4 Banks Mobile SDRAM
++      - 8192 refresh cycles / 64 ms
++      - CL2\@100 MHz
++      - 133 MHz max
++      - collumn address size is 9 bits
++      - row address size is 13 bits
++   - Micron SDRAM
++    - MT48LC16M16A2-75IT (two devices for 64 MiB to form a 32 bit bus)
++    - MT48LC16M16A2-7E (two devices for 64 MiB to form a 32 bit bus)
++      - 4M x 16bit x 4 Banks Mobile SDRAM
++      - commercial & industrial type
++      - 8192 refresh cycles / 64 ms
++      - CL2\@100 MHz
++      - 133 MHz max
++      - collumn address size is 9 bits
++      - row address size is 13 bits
+ - NAND Flash 128MiB...1GiB
+-   - K9Fxx08
++   - K9F1208U0C
++      - VID: 0xec, DID: 0x76
++      - Samsung/64MiB 3,3V 8-bit
++      - 512 + 8 bytes per page
++      - 16 kiB block size
++   - K9F1G08UOB
++      - VID: 0xec, DID: 0xf1
++      - Samsung/128MiB 3,3V 8-bit
++      - 2048 + 64 bytes per page
++      - 128 kiB block size
++   - K9F2G08UOB
++      - VID: 0xec, DID: 0xda
++      - Samsung/256MiB 3,3V 8-bit
++      - 2048 + 64 bytes per page
++      - 128 kiB block size
++   - K9K8G08U0A
++      - VID: 0xec, DID: 0xd3
++      - Samsung/1GiB 3,3V 8-bit
++      - 2048 + 64 bytes per page
++      - 128 kiB block size
+ - NOR Flash (up to 22 address lines available)
+    - AM29LV160DB, 2 MiB
+    - SST39VF1601, 2 MiB
 -- 
 1.7.2.3
 
