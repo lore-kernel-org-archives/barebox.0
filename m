@@ -1,17 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from tango.tkos.co.il ([62.219.50.35])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PwIX9-0001kI-N8
-	for barebox@lists.infradead.org; Sun, 06 Mar 2011 18:18:24 +0000
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Sun, 6 Mar 2011 19:15:57 +0100
-References: <20110305142224.2bba1da1@manocska.bendor.com.au>
-	<201103051251.44209.jbe@pengutronix.de>
-	<20110306164311.172060@gmx.net>
-In-Reply-To: <20110306164311.172060@gmx.net>
+	id 1PwIez-0001mD-6I
+	for barebox@lists.infradead.org; Sun, 06 Mar 2011 18:26:31 +0000
+Date: Sun, 6 Mar 2011 20:26:06 +0200
+From: Baruch Siach <baruch@tkos.co.il>
+Message-ID: <20110306182606.GD16849@tarshish>
+References: <39A4B204C321D34DA3490E3B119D5A6C68C006F893@SBS2008.wellsense.local>
+	<201102271050.48537.jbe@pengutronix.de>
+	<39A4B204C321D34DA3490E3B119D5A6C68C006F894@SBS2008.wellsense.local>
+	<20110228055040.GC2667@jasper.tkos.co.il>
+	<39A4B204C321D34DA3490E3B119D5A6C68C0054F52@SBS2008.wellsense.local>
 MIME-Version: 1.0
 Content-Disposition: inline
-Message-Id: <201103061915.57929.jbe@pengutronix.de>
+In-Reply-To: <39A4B204C321D34DA3490E3B119D5A6C68C0054F52@SBS2008.wellsense.local>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,32 +26,79 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: When do patches get into the releases?
-To: barebox@lists.infradead.org
+Subject: Re: Fallback environment in barebox
+To: Itai Raab <itai.raab@wellsense-tech.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Udi Ron <udi.ron@wellsense-tech.com>
 
-Hi Dirk,
+Hi Itai,
 
-Dirk Gerdes wrote:
-> I'm trying to install barebox on my mini2440.
-> I followed the instructions in the bottom of "mini2440.c".
-> Barebox starts from Ram, but if I switch to NAND and start the board again,
-> console keeps quiet. At the moment I have no idea, what went wrong.
+On Sun, Mar 06, 2011 at 04:59:02PM +0200, Itai Raab wrote:
+> I tried doing what you explained, but it seems like Barebox startup code 
+> didn't load the environment from env1 when env0 was corrupted.
 >
-> I used the latest version from git and I got the
-> 1GB-X35 Mini2440-Board.
+> In barebox shell I could find /dev/env1 with all the data, but when the 
+> Barebox started I got:
+> 	no valid environment found on /dev/env0. Using default environment
+> 
+> Looking at the startup code (common/startup.c - is this the place?) I don't 
+> see any mechanism to load env1 when env0 fails.
 
-My bad. The current S3C2440 NAND driver only supports small page NANDs. But 
-even with support for the 'advanced' NANDs (2kiB page size) currently it 
-still does not boot from NAND... Will send my patch series, as soon the board 
-boots from NAND.
+You seem to be right. Juergen, can you explain what you meant?
 
-Juergen
+> Is it the right place to add the support or am I missing something?
+
+An alternative solution might be to use the defaultenv mechanism, and put 
+there a fall-back init script which contains the following (untested):
+
+loadenv /dev/env1
+
+Since the defaultenv init runs only when environment load from /dev/env0 fails 
+(i.e. the env0 partition is corrupted), this is actually equivalent.
+
+baruch
+
+> -----Original Message-----
+> From: Baruch Siach [mailto:baruch@tkos.co.il] 
+> Sent: Monday, February 28, 2011 7:51 AM
+> To: Boaz Ben-David
+> Cc: jbe@pengutronix.de; barebox@lists.infradead.org; Itai Raab
+> Subject: Re: Fallback environment in barebox
+> 
+> Hi Boaz,
+> 
+> On Sun, Feb 27, 2011 at 12:09:59PM +0200, Boaz Ben-David wrote:
+> > Sounds great.
+> > 
+> > Is there any documentation on how to "register" environments?
+> 
+> What Juergen meant to say is "register partitions named env0, env1, ...". The 
+> barebox startup code then automatically picks the first valid environment 
+> partition.
+> 
+> To register partitions (with bad blocks awareness) use devfs_add_partition() 
+> and then dev_add_bb_dev(). grep for "env0" under arch/ for many examples.
+> 
+> baruch
+> 
+> > On Sun, 2011-02-27 at 10:50 +0100, Juergen Beisert wrote:
+> > > Boaz Ben-David wrote:
+> > > > We want to implement a mechanism in barebox to use two environment
+> > > > partitions.
+> > > > i.e. when barebox boots it will go to the first by default and try to
+> > > > use it. If for some reason it fails
+> > > > it will boot with the second one.
+> > > >
+> > > > What is the best way to implement this in barebox and did anyone do it
+> > > > already?
+> > > 
+> > > AFAIR a mechanism like this is already present in barebox. It tries the first 
+> > > environment, checks its CRC and if it fails it tries the next, if one exists.
+> > > Just register env0, env1, .....
 
 -- 
-Pengutronix e.K.                              | Juergen Beisert             |
-Linux Solutions for Science and Industry      | Phone: +49-8766-939 228     |
-Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
+                                                     ~. .~   Tk Open Systems
+=}------------------------------------------------ooO--U--Ooo------------{=
+   - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
 
 _______________________________________________
 barebox mailing list
