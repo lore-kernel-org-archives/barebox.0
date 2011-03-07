@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PwaSN-0001f8-Db
-	for barebox@lists.infradead.org; Mon, 07 Mar 2011 13:26:40 +0000
-Received: from gallifrey.ext.pengutronix.de
-	([2001:6f8:1178:4:5054:ff:fe8d:eefb] helo=localhost)
-	by metis.ext.pengutronix.de with esmtp (Exim 4.72)
-	(envelope-from <jbe@pengutronix.de>) id 1PwaSL-0008LR-3V
-	for barebox@lists.infradead.org; Mon, 07 Mar 2011 14:26:37 +0100
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Mon, 7 Mar 2011 14:24:13 +0100
+Received: from out2.bezeqint.net ([192.115.188.208])
+	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1PwdPI-00035G-SA
+	for barebox@lists.infradead.org; Mon, 07 Mar 2011 16:35:42 +0000
+Received: from remotel.wellsense-tech.com (bzq-218-57-225.cablep.bezeqint.net
+	[81.218.57.225])
+	by out2.bezeqint.net (Postfix) with ESMTPA id BDAE9211CAC
+	for <barebox@lists.infradead.org>; Mon,  7 Mar 2011 18:35:21 +0200 (IST)
+From: Boaz Ben-David <boaz.bd@wellsense-tech.com>
+Date: Mon, 7 Mar 2011 18:35:10 +0200
+Message-ID: <39A4B204C321D34DA3490E3B119D5A6C68C006F8A2@SBS2008.wellsense.local>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <201103071424.14270.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,42 +20,63 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============2011158090=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC] S3C24xx: Fixing the NAND handling
-To: barebox@lists.infradead.org
+Subject: iMX35 3stack framebuffer problem
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Cc: Itai Raab <itai.raab@wellsense-tech.com>
 
-Hi,
+--===============2011158090==
+Content-Language: en-US
+Content-Type: multipart/alternative;
+	boundary="_000_39A4B204C321D34DA3490E3B119D5A6C68C006F8A2SBS2008wellse_"
 
-anyone here with an idea how to fix this:
+--_000_39A4B204C321D34DA3490E3B119D5A6C68C006F8A2SBS2008wellse_
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-The NAND support for the S3C24xx CPU seems totally broken in the current 
-kernel:
+SGksDQoNCldoZW4gdXNpbmcgdGhlIGlNWDM1IGZyZWVzY2FsZSAzc3RhY2sgd2UgYXJlIGhhdmlu
+ZyBzb21lIGlzc3VlcyB3aXRoIHRoZSBGQiBkcml2ZXIuDQpPbiBkZXZpY2UgYm9vdCB3ZSBlbmFi
+bGUgdGhlIGZiIHVzaW5nICJmYjAuZW5hYmxlPTEiIGFuZCB0aGVuIHRyeSB0byBib290IHRoZSBr
+ZXJuZWwgZnJvbSBuYW5kLg0KVGhlIHByb2JsZW0gaXMgdGhhdCBhZnRlciB0aGUga2VybmVsIGlz
+IGxvYWRlZCB0byBSQU0gYW5kIGV4dHJhY3RlZCB0aGUgYm9hcmQgaGFuZ3MuDQpJZiB3ZSBkbyBu
+b3QgaW5pdCB0aGUgZmIwIGRldmljZSBidXQgc2ltcGx5IGJvb3QgdGhlIGtlcm5lbCBpdCB3b3Jr
+cyBmaW5lLg0KVHJ5aW5nICJmYjAuZW5hYmxlPTAiIGJlZm9yZSBib290aW5nIGFsc28gZGlkIG5v
+dCBoZWxwLg0KRGlkIGFueW9uZSBlbmNvdW50ZXIgdGhpcyBpc3N1ZSB5ZXQgb3IgYXJlIHdlIGRv
+aW5nIHNvbWV0aGluZyB3cm9uZz8NCg0KVGhhbmtzLA0KDQpCb2F6Lg0K
 
- - the driver's local OOB layout for small page NANDs overwrites the vendors
-   bad block marker (a really bad idea!)
- - the ECC setup for large page NANDs violates NANDs partial write count (it
-   forces 8 partial writes instead of allowed 4 per 2048 byte page)
+--_000_39A4B204C321D34DA3490E3B119D5A6C68C006F8A2SBS2008wellse_
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-How to adapt barebox according to the kernel? If we do OOB and ECC setup 
-correctly in barebox, the mainline kernel cannot work with this data. If we 
-do it in the same way than the kernel, we lose the bad block markers or do 
-more writes than the manufacturer allows for reliable data security.
+PCFET0NUWVBFIEhUTUwgUFVCTElDICItLy9XM0MvL0RURCBIVE1MIDQuMCBUUkFOU0lUSU9OQUwv
+L0VOIj4KPEhUTUw+CjxIRUFEPgogIDxNRVRBIEhUVFAtRVFVSVY9IkNvbnRlbnQtVHlwZSIgQ09O
+VEVOVD0idGV4dC9odG1sOyBDSEFSU0VUPVVURi04Ij4KICA8TUVUQSBOQU1FPSJHRU5FUkFUT1Ii
+IENPTlRFTlQ9Ikd0a0hUTUwvMy4zMC4zIj4KPC9IRUFEPgo8Qk9EWT4KSGksPEJSPgo8QlI+Cldo
+ZW4gdXNpbmcgdGhlIGlNWDM1IGZyZWVzY2FsZSAzc3RhY2sgd2UgYXJlIGhhdmluZyBzb21lIGlz
+c3VlcyB3aXRoIHRoZSBGQiBkcml2ZXIuPEJSPgpPbiBkZXZpY2UgYm9vdCB3ZSBlbmFibGUgdGhl
+IGZiIHVzaW5nICZxdW90O2ZiMC5lbmFibGU9MSZxdW90OyBhbmQgdGhlbiB0cnkgdG8gYm9vdCB0
+aGUga2VybmVsIGZyb20gbmFuZC48QlI+ClRoZSBwcm9ibGVtIGlzIHRoYXQgYWZ0ZXIgdGhlIGtl
+cm5lbCBpcyBsb2FkZWQgdG8gUkFNIGFuZCBleHRyYWN0ZWQgdGhlIGJvYXJkIGhhbmdzLjxCUj4K
+SWYgd2UgZG8gbm90IGluaXQgdGhlIGZiMCBkZXZpY2UgYnV0IHNpbXBseSBib290IHRoZSBrZXJu
+ZWwgaXQgd29ya3MgZmluZS48QlI+ClRyeWluZyAmcXVvdDtmYjAuZW5hYmxlPTAmcXVvdDsgYmVm
+b3JlIGJvb3RpbmcgYWxzbyBkaWQgbm90IGhlbHAuPEJSPgpEaWQgYW55b25lIGVuY291bnRlciB0
+aGlzIGlzc3VlIHlldCBvciBhcmUgd2UgZG9pbmcgc29tZXRoaW5nIHdyb25nPzxCUj4KPEJSPgpU
+aGFua3MsPEJSPgo8QlI+CkJvYXouCjwvQk9EWT4KPC9IVE1MPgoA
 
-Changing the kernel is also hard to do, because it breaks existing software 
-installations which should just run with more recent kernels.
+--_000_39A4B204C321D34DA3490E3B119D5A6C68C006F8A2SBS2008wellse_--
 
-jbe
 
--- 
-Pengutronix e.K.                              | Juergen Beisert             |
-Linux Solutions for Science and Industry      | Phone: +49-8766-939 228     |
-Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
+--===============2011158090==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============2011158090==--
