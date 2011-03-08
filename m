@@ -1,20 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from tango.tkos.co.il ([62.219.50.35])
+Received: from mail13.tpgi.com.au ([203.12.160.181])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Px1L3-0005Q0-H3
-	for barebox@lists.infradead.org; Tue, 08 Mar 2011 18:08:55 +0000
-Date: Tue, 8 Mar 2011 20:08:36 +0200
-From: Baruch Siach <baruch@tkos.co.il>
-Message-ID: <20110308180836.GA2677@tarshish>
-References: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B01165@SRV-VS06.TELEVIC.COM>
-	<20110308054006.GA22012@jasper.tkos.co.il>
-	<6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B011E5@SRV-VS06.TELEVIC.COM>
-	<6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B0120B@SRV-VS06.TELEVIC.COM>
-	<20110308112217.GD22012@jasper.tkos.co.il>
-	<6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B01280@SRV-VS06.TELEVIC.COM>
+	id 1Px46A-0006sd-L0
+	for barebox@lists.infradead.org; Tue, 08 Mar 2011 21:05:43 +0000
+From: Marc Reilly <marc@cpdesign.com.au>
+Date: Wed, 9 Mar 2011 08:04:38 +1100
+References: <4D764613.5020708@telemotive.de>
+	<AANLkTi=CXxPuac0Jub=uyD-A0qvDMgK2UVYv++JP_X+T@mail.gmail.com>
+	<4D7651A2.90301@eukrea.com>
+In-Reply-To: <4D7651A2.90301@eukrea.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B01280@SRV-VS06.TELEVIC.COM>
+Message-Id: <201103090804.38216.marc@cpdesign.com.au>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,61 +19,68 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: test app
-To: Vanalme Filip <F.Vanalme@TELEVIC.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: Install barebox to target
+To: barebox@lists.infradead.org
 
-Hi Vanalme,
+Hi,
 
-On Tue, Mar 08, 2011 at 04:52:49PM +0100, Vanalme Filip wrote:
-> Compiling and linking seems to work well now. When I dump the .elf, I see =
+> > 2011/3/8 Thomas Mayer<thomas.mayer@telemotive.de>:
+> >> according to the cpu datasheet  the bootloader has to store at offset
+> >> 0x400 (1KByte).
+> >> I tried to dd barebox that way  but it didn't work (command: "dd
+> >> if=barebox.bin of=/dev/sdb bs=512 seek=2&&  sync&&  sync").
 
-> that the start address is 0xA7E00000. That's what I wanted.
-> However, when loading the app in ram and executing it, I see that it trie=
-s to start from 0xA0000000 (this is the base address of the RAM section) :
-> =
+sudo dd if=barebox.bin of=/dev/sde bs=512 seek=2 skip=2 && sync
 
-> barebox:/test tftp testapp.bin
-> TFTP from server 10.0.48.80 ('testapp.bin' -> 'testapp.bin')
-> =
 
-> barebox:/test cp testapp.bin /dev/ram0
-> barebox:/test go /dev/ram0
-> ## Starting application at 0xA0000000 ...
-> ?=B6/=FF'.e=A2=D3=F8=AD=F1_
-> =
+> >> I also tried to use the prebuild freescale redboot binary with mmc
+> >> support and this works.
+> >> 
+> >> Have you any idea what I'm doing wrong?
 
-> _=F8=FD=E0=F5=D2=FF=A0=EFO
->           =FFO=FF=F0z=FE=F0=F6=E0=FE=A0A'}=AE=FF
-> =F9=FD"=F5=FF?O=BFPP=BC@Y
->              }=B8m
->                =D7=B4=EF@=EF=F0x`G-/
-> =
+The flash header in the barebox image is at offset 0x400 already, so 
+effectively you are dd'ing it to 0x800 .. hence the skip=2 is also required.
 
-> =
+> >> Is it possible that a mmc binary need a special flash header to work
+> >> correctly?
 
-> Should I specify an address when executing 'go' or 'cp' ? Isn't it loadin=
-g the app always at the beginning of the RAM space, i.e. 0xA0000000 ?
+Very possible  :) 
 
-Is 0xA0000000 the beginning of you external RAM?
+Another thing to check is that your image isn't larger than 256K (or what you 
+specify in the variable that goes in __image_len_XXXXX section) 
 
-Note that in my example I used /dev/sram0 (on-chip 128K SRAM), not /dev/ram=
-0 =
+> 
+> check arch/arm/boards/eukrea_cpuimx35/flash_header.c
+> it works fine on our i.MX35 baord but I had to hack
+> CPUIMX35_FLASH_HEADER_BASE to get it working.
 
-(external DDR2 RAM).
+I remember what a PITA this is to tackle when you're getting started. Here's 
+what I use now... pardon the formatting:
 
-baruch
+struct imx_flash_header __flash_header_0x0400 sd_flash_header = {
+	.app_code_jump_vector	= TEXT_BASE + ((unsigned int)&exception_vectors - 
+TEXT_BASE),
+	.app_code_barker	= APP_CODE_BARKER,
+	.app_code_csf		= 0,
+	.dcd_ptr_ptr		= TEXT_BASE + 0x0400 + offsetof(struct imx_flash_header, 
+dcd),
+	.super_root_key		= 0,
+	.dcd			= TEXT_BASE + 0x0400 + offsetof(struct imx_flash_header, 
+dcd_barker),
+	.app_dest		= TEXT_BASE,
+	.dcd_barker		= DCD_BARKER,
+	.dcd_block_len		= sizeof(sd_dcd_entry),
+};
 
--- =
+unsigned long __image_len_0x0400 sd_barebox_len = 0x40000;
 
-                                                     ~. .~   Tk Open Systems
-=3D}------------------------------------------------ooO--U--Ooo------------=
-{=3D
-   - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
+
+Cheers
+Marc
 
 _______________________________________________
 barebox mailing list
