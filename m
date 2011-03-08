@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ip2.televic.com ([81.82.194.222])
+Received: from tango.tkos.co.il ([62.219.50.35])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Pwtrc-0000ei-J4
-	for barebox@lists.infradead.org; Tue, 08 Mar 2011 10:10:01 +0000
-From: Vanalme Filip <F.Vanalme@TELEVIC.com>
-Date: Tue, 8 Mar 2011 11:09:57 +0100
-Message-ID: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B0120B@SRV-VS06.TELEVIC.COM>
+	id 1Pwuzm-0001QQ-F9
+	for barebox@lists.infradead.org; Tue, 08 Mar 2011 11:22:32 +0000
+Date: Tue, 8 Mar 2011 13:22:18 +0200
+From: Baruch Siach <baruch@tkos.co.il>
+Message-ID: <20110308112217.GD22012@jasper.tkos.co.il>
 References: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B01165@SRV-VS06.TELEVIC.COM>
 	<20110308054006.GA22012@jasper.tkos.co.il>
 	<6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B011E5@SRV-VS06.TELEVIC.COM>
-In-Reply-To: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B011E5@SRV-VS06.TELEVIC.COM>
-Content-Language: en-US
+	<6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B0120B@SRV-VS06.TELEVIC.COM>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B0120B@SRV-VS06.TELEVIC.COM>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,67 +25,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: test app
-To: Baruch Siach <baruch@tkos.co.il>
+Subject: Re: test app
+To: Vanalme Filip <F.Vanalme@TELEVIC.com>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-> -----Original Message-----
-> From: barebox-bounces@lists.infradead.org [mailto:barebox-
-> bounces@lists.infradead.org] On Behalf Of Vanalme Filip
-> Sent: dinsdag 8 maart 2011 9:13
-> To: Baruch Siach
-> Cc: barebox@lists.infradead.org
-> Subject: RE: test app
+Hi Vanalme,
+
+On Tue, Mar 08, 2011 at 11:09:57AM +0100, Vanalme Filip wrote:
+> As a start, I just took over your Makefile and a minimal source file :
 > 
-> Thank you Baruch ! Good starting point for my test app.
+> __asm__ (".text\n"
+>         ".globl _start\n"
+>         "_start:\n"
+>         "ldr    sp, =0xA7E00000\n"
+>         "bl     main\n"
+>         "stop:\n"
+>         "b      stop\n"
+>         );
 > 
-> > -----Original Message-----
-> > From: Baruch Siach [mailto:baruch@tkos.co.il]
-> > Sent: dinsdag 8 maart 2011 6:40
-> > To: Vanalme Filip
-> > Cc: barebox@lists.infradead.org
-> > Subject: Re: test app
-> >
-> > Hi Vanalme,
-> >
-> > On Mon, Mar 07, 2011 at 02:05:32PM +0100, Vanalme Filip wrote:
-> > > We would like to have a kind of small test application, that can be
-> > > started from the barebox prompt, to do some basic tests on some hardware
-> > components.
-> > > What's the best way to do that ? E.g. can I add that test application
-> > > to the environment and would this be good practice ? Or do I better
-> > > extend the barebox commands with my own command to start the tests ?
-> > > Maybe there's an example on how to do it ?
-> >
-> > I'm using the attached program to do a simple RAM read/write test on i.MX25.
-> > This program runs on bare hardware from the internal chip SRAM, and doesn't
-> rely
-> > on the Barebox run-time code.  I only use Barebox to start this program.
-> >
-> > The program is built with the following Makefile rules:
-> >
-> > all: ramtest.bin
-> >
-> > %.bin: %.elf
-> >     ${OBJCOPY} -O binary $^ $@
-> >
-> > ramtest.elf: ramtest.c
-> >     ${CC} -Wall -Os -nostdlib $^ -o $@ -Wl,-Ttext=0x78000000
-> >
-> > Running this program from the Barebox prompt:
-> >
-> > cp ramtest.bin /dev/sram0
-> > go /dev/sram0
-> >
-> > I hope this helps.
-> >
-> > baruch
-> >
+> int main (int argc, char *argv[])
+> {
+> 	return 0;
+> }
+> 
+> I think I might still miss something because the assembler part gives me errors e.g. 
+> 	" Error: no such instruction: 'ldr sp,=0xA7E00000' "
+> 	" Error: no such instruction: 'bl main' "
+> 	" Error: no such instruction: 'b stop' "
+> 
+> Maybe a tab/space related issue ?
 
-[Filip] 
+Works for me (using the CodeSourcery toolchain):
 
-As a start, I just took over your Makefile and a minimal source file :
-
+$ cat baretest.c 
 __asm__ (".text\n"
         ".globl _start\n"
         "_start:\n"
@@ -96,26 +69,34 @@ __asm__ (".text\n"
 
 int main (int argc, char *argv[])
 {
-	return 0;
+        return 0;
 }
+$ arm-none-linux-gnueabi-gcc -Wall -Os -nostdlib baretest.c -o baretest.elf -Wl,-Ttext=0x78000000
+$ arm-none-linux-gnueabi-objdump -S baretest.elf 
 
-I think I might still miss something because the assembler part gives me errors e.g. 
-	" Error: no such instruction: 'ldr sp,=0xA7E00000' "
-	" Error: no such instruction: 'bl main' "
-	" Error: no such instruction: 'b stop' "
-
-Maybe a tab/space related issue ?
+baretest.elf:     file format elf32-littlearm
 
 
-> > --
-> >                                                      ~. .~   Tk Open Systems
-> > =}------------------------------------------------ooO--U--Ooo------------{=
-> >    - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+Disassembly of section .text:
+
+78000000 <_start>:
+78000000:   e59fd00c    ldr sp, [pc, #12]   ; 78000014 <main+0x8>
+78000004:   eb000000    bl  7800000c <main>
+
+78000008 <stop>:
+78000008:   eafffffe    b   78000008 <stop>
+
+7800000c <main>:
+7800000c:   e3a00000    mov r0, #0
+78000010:   e12fff1e    bx  lr
+78000014:   a7e00000    .word   0xa7e00000
+
+baruch
+
+-- 
+                                                     ~. .~   Tk Open Systems
+=}------------------------------------------------ooO--U--Ooo------------{=
+   - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
 
 _______________________________________________
 barebox mailing list
