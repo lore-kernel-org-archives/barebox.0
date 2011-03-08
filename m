@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Pwv2A-0001Rz-Qv
-	for barebox@lists.infradead.org; Tue, 08 Mar 2011 11:25:00 +0000
+	id 1Pwv2A-0001Rx-R4
+	for barebox@lists.infradead.org; Tue, 08 Mar 2011 11:25:02 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  8 Mar 2011 12:24:52 +0100
-Message-Id: <1299583492-29504-4-git-send-email-s.hauer@pengutronix.de>
+Date: Tue,  8 Mar 2011 12:24:50 +0100
+Message-Id: <1299583492-29504-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1299583492-29504-1-git-send-email-s.hauer@pengutronix.de>
 References: <1299583492-29504-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,261 +21,280 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] kallsyms/printk: enable symbol printing support (%pS)
+Subject: [PATCH 1/3] ARM: create a second level page table entry for the
+	exception vectors
 To: barebox@lists.infradead.org
 
-With this kallsyms finally start working at least on ARM. This
-enables us resolving addresses into symbols which is particularly
-useful in combination with stack unwinding support. As kallsyms
-now compile and work we can remove the depends on BROKEN.
+Often enough the exception vectors are not on TEXT_BASE (for example
+on i.MX SoCs in internal boot mode), so the board specific code did
+not map the exception vectors to 0x0 but whatever happens to be on
+TEXT_BASE. Also, the current section-only mapping requires the
+exception vectors to be on a 1MB boundary.
+Instead, create the possibility to create second level tables and
+use this to map a copy of the exception vectors in a board
+independent way.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- Makefile           |    2 +-
- common/Kconfig     |    3 -
- common/kallsyms.c  |  148 +++++++++++++++++++++++++++++++++++++++++++++++++++-
- include/kallsyms.h |    5 ++
- lib/vsprintf.c     |    1 +
- 5 files changed, 154 insertions(+), 5 deletions(-)
+ arch/arm/boards/chumby_falconwing/falconwing.c    |    5 --
+ arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c |    5 --
+ arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c |    5 --
+ arch/arm/boards/freescale-mx51-pdk/board.c        |    6 ---
+ arch/arm/boards/guf-cupid/board.c                 |    6 ---
+ arch/arm/boards/guf-neso/board.c                  |    5 --
+ arch/arm/boards/karo-tx28/tx28.c                  |    5 --
+ arch/arm/boards/pcm037/pcm037.c                   |    5 --
+ arch/arm/boards/pcm038/pcm038.c                   |    5 --
+ arch/arm/boards/pcm043/pcm043.c                   |    6 ---
+ arch/arm/boards/phycard-i.MX27/pca100.c           |    5 --
+ arch/arm/cpu/mmu.c                                |   48 +++++++++++++++++++++
+ 12 files changed, 48 insertions(+), 58 deletions(-)
 
-diff --git a/Makefile b/Makefile
-index 1a4a54e..55c83cc 100644
---- a/Makefile
-+++ b/Makefile
-@@ -599,7 +599,7 @@ endef
+diff --git a/arch/arm/boards/chumby_falconwing/falconwing.c b/arch/arm/boards/chumby_falconwing/falconwing.c
+index d46431c..6de8e28 100644
+--- a/arch/arm/boards/chumby_falconwing/falconwing.c
++++ b/arch/arm/boards/chumby_falconwing/falconwing.c
+@@ -292,11 +292,6 @@ static int falconwing_mmu_init(void)
  
- # Generate .S file with all kernel symbols
- quiet_cmd_kallsyms = KSYM    $@
--      cmd_kallsyms = $(NM) -g -n $< | $(KALLSYMS) > $@
-+      cmd_kallsyms = $(NM) -n $< | $(KALLSYMS) --all-symbols > $@
+ 	setup_dma_coherent(0x10000000);
  
- .tmp_kallsyms1.o .tmp_kallsyms2.o .tmp_kallsyms3.o: %.o: %.S scripts FORCE
- 	$(call if_changed_dep,as_o_S)
-diff --git a/common/Kconfig b/common/Kconfig
-index 02bc67e..9e30579 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -148,13 +148,10 @@ config MODULES
+-#if TEXT_BASE & (0x100000 - 1)
+-#warning cannot create vector section. Adjust TEXT_BASE to a 1M boundary
+-#else
+-	arm_create_section(0x0,        TEXT_BASE,   1, PMD_SECT_DEF_UNCACHED);
+-#endif
+ 	mmu_enable();
  
- config KALLSYMS
- 	depends on HAS_KALLSYMS
--	depends on BROKEN
- 	bool "kallsyms"
- 	help
- 	  With Kallsyms enabled all symbols are compiled into the barebox image.
- 	  This is useful to print a nice backtrace when an exception occurs.
--	  No architecture supports backtraces at the moment, so this option
--	  is quite useless at the moment
+ 	return 0;
+diff --git a/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c b/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
+index 4567cba..a7e9951 100644
+--- a/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
++++ b/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
+@@ -153,11 +153,6 @@ static void eukrea_cpuimx27_mmu_init(void)
  
- config RELOCATABLE
- 	depends on PPC
-diff --git a/common/kallsyms.c b/common/kallsyms.c
-index 490adb9..0218991 100644
---- a/common/kallsyms.c
-+++ b/common/kallsyms.c
-@@ -1,6 +1,7 @@
- #include <common.h>
- #include <init.h>
- #include <kallsyms.h>
-+#include <asm-generic/sections.h>
+ 	setup_dma_coherent(0x10000000);
  
- #ifndef DOXYGEN_SHOULD_SKIP_THIS
+-#if TEXT_BASE & (0x100000 - 1)
+-#warning cannot create vector section. Adjust TEXT_BASE to a 1M boundary
+-#else
+-	arm_create_section(0x0,        TEXT_BASE,   1, PMD_SECT_DEF_UNCACHED);
+-#endif
+ 	mmu_enable();
+ }
+ #else
+diff --git a/arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c b/arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c
+index f377793..73bb2e1 100644
+--- a/arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c
++++ b/arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c
+@@ -161,11 +161,6 @@ static int eukrea_cpuimx35_mmu_init(void)
  
-@@ -16,6 +17,13 @@ extern const unsigned long kallsyms_markers[] __attribute__((weak));
+ 	setup_dma_coherent(0x10000000);
  
- #endif /* DOXYGEN_SHOULD_SKIP_THIS */
+-#if TEXT_BASE & (0x100000 - 1)
+-#warning cannot create vector section. Adjust TEXT_BASE to a 1M boundary
+-#else
+-	arm_create_section(0x0,        TEXT_BASE,   1, PMD_SECT_DEF_UNCACHED);
+-#endif
+ 	mmu_enable();
  
-+static inline int is_kernel_text(unsigned long addr)
-+{
-+	if ((addr >= (unsigned long)_stext && addr <= (unsigned long)_etext))
-+		return 1;
-+	return 0;
-+}
-+
- /* expand a compressed symbol data into the resulting uncompressed string,
-    given the offset to where the symbol is in the compressed stream */
- static unsigned int kallsyms_expand_symbol(unsigned int off, char *result)
-@@ -55,6 +63,33 @@ static unsigned int kallsyms_expand_symbol(unsigned int off, char *result)
- 	return off;
+ #ifdef CONFIG_CACHE_L2X0
+diff --git a/arch/arm/boards/freescale-mx51-pdk/board.c b/arch/arm/boards/freescale-mx51-pdk/board.c
+index ff779ca..35d6153 100644
+--- a/arch/arm/boards/freescale-mx51-pdk/board.c
++++ b/arch/arm/boards/freescale-mx51-pdk/board.c
+@@ -96,12 +96,6 @@ static void babbage_mmu_init(void)
+ 
+ 	setup_dma_coherent(0x20000000);
+ 
+-#if TEXT_BASE & (0x100000 - 1)
+-#warning cannot create vector section. Adjust TEXT_BASE to a 1M boundary
+-#else
+-	arm_create_section(0x0,        TEXT_BASE,   1, PMD_SECT_DEF_UNCACHED);
+-#endif
+-
+ 	mmu_enable();
+ }
+ #else
+diff --git a/arch/arm/boards/guf-cupid/board.c b/arch/arm/boards/guf-cupid/board.c
+index e30f8e5..d04af78 100644
+--- a/arch/arm/boards/guf-cupid/board.c
++++ b/arch/arm/boards/guf-cupid/board.c
+@@ -145,12 +145,6 @@ static int cupid_mmu_init(void)
+ 
+ 	setup_dma_coherent(0x10000000);
+ 
+-#if TEXT_BASE & (0x100000 - 1)
+-#warning cannot create vector section. Adjust TEXT_BASE to a 1M boundary
+-#else
+-	arm_create_section(0x0,        TEXT_BASE,   1, PMD_SECT_DEF_UNCACHED);
+-#endif
+-
+ 	mmu_enable();
+ 
+ #ifdef CONFIG_CACHE_L2X0
+diff --git a/arch/arm/boards/guf-neso/board.c b/arch/arm/boards/guf-neso/board.c
+index d371dd6..c4b2fa1 100644
+--- a/arch/arm/boards/guf-neso/board.c
++++ b/arch/arm/boards/guf-neso/board.c
+@@ -167,11 +167,6 @@ static void neso_mmu_init(void)
+ 
+ 	setup_dma_coherent(0x10000000);
+ 
+-#if TEXT_BASE & (0x100000 - 1)
+-#warning cannot create vector section. Adjust TEXT_BASE to a 1M boundary
+-#else
+-	arm_create_section(0x0,        TEXT_BASE,   1, PMD_SECT_DEF_UNCACHED);
+-#endif
+ 	mmu_enable();
+ }
+ #else
+diff --git a/arch/arm/boards/karo-tx28/tx28.c b/arch/arm/boards/karo-tx28/tx28.c
+index 5692171..1f47a8d 100644
+--- a/arch/arm/boards/karo-tx28/tx28.c
++++ b/arch/arm/boards/karo-tx28/tx28.c
+@@ -93,11 +93,6 @@ static int tx28_mmu_init(void)
+ 
+ 	setup_dma_coherent(0x10000000);
+ 
+-#if TEXT_BASE & (0x100000 - 1)
+-#warning cannot create vector section. Adjust TEXT_BASE to a 1M boundary
+-#else
+-	arm_create_section(0x0,        TEXT_BASE,   1, PMD_SECT_DEF_UNCACHED);
+-#endif
+ 	mmu_enable();
+ 
+ 	return 0;
+diff --git a/arch/arm/boards/pcm037/pcm037.c b/arch/arm/boards/pcm037/pcm037.c
+index ffecec2..cb4ffe6 100644
+--- a/arch/arm/boards/pcm037/pcm037.c
++++ b/arch/arm/boards/pcm037/pcm037.c
+@@ -239,11 +239,6 @@ static void pcm037_mmu_init(void)
+ 
+ 	setup_dma_coherent(0x10000000);
+ 
+-#if TEXT_BASE & (0x100000 - 1)
+-#warning cannot create vector section. Adjust TEXT_BASE to a 1M boundary
+-#else
+-	arm_create_section(0x0,        TEXT_BASE,   1, PMD_SECT_DEF_UNCACHED);
+-#endif
+ 	mmu_enable();
+ 
+ #ifdef CONFIG_CACHE_L2X0
+diff --git a/arch/arm/boards/pcm038/pcm038.c b/arch/arm/boards/pcm038/pcm038.c
+index 1dbc6b6..3ca6650 100644
+--- a/arch/arm/boards/pcm038/pcm038.c
++++ b/arch/arm/boards/pcm038/pcm038.c
+@@ -179,11 +179,6 @@ static void pcm038_mmu_init(void)
+ 
+ 	setup_dma_coherent(0x10000000);
+ 
+-#if TEXT_BASE & (0x100000 - 1)
+-#warning cannot create vector section. Adjust TEXT_BASE to a 1M boundary
+-#else
+-	arm_create_section(0x0,        TEXT_BASE,   1, PMD_SECT_DEF_UNCACHED);
+-#endif
+ 	mmu_enable();
+ }
+ #else
+diff --git a/arch/arm/boards/pcm043/pcm043.c b/arch/arm/boards/pcm043/pcm043.c
+index 36bde45..7db3c83 100644
+--- a/arch/arm/boards/pcm043/pcm043.c
++++ b/arch/arm/boards/pcm043/pcm043.c
+@@ -133,12 +133,6 @@ static int pcm043_mmu_init(void)
+ 
+ 	setup_dma_coherent(0x10000000);
+ 
+-#if TEXT_BASE & (0x100000 - 1)
+-#warning cannot create vector section. Adjust TEXT_BASE to a 1M boundary
+-#else
+-	arm_create_section(0x0,        TEXT_BASE,   1, PMD_SECT_DEF_UNCACHED);
+-#endif
+-
+ 	mmu_enable();
+ 
+ #ifdef CONFIG_CACHE_L2X0
+diff --git a/arch/arm/boards/phycard-i.MX27/pca100.c b/arch/arm/boards/phycard-i.MX27/pca100.c
+index c539ea1..89c0a14 100644
+--- a/arch/arm/boards/phycard-i.MX27/pca100.c
++++ b/arch/arm/boards/phycard-i.MX27/pca100.c
+@@ -106,11 +106,6 @@ static void pca100_mmu_init(void)
+ 
+ 	setup_dma_coherent(0x10000000);
+ 
+-#if TEXT_BASE & (0x100000 - 1)
+-#warning cannot create vector section. Adjust TEXT_BASE to a 1M boundary
+-#else
+-	arm_create_section(0x0,        TEXT_BASE,   1, PMD_SECT_DEF_UNCACHED);
+-#endif
+ 	mmu_enable();
+ }
+ #else
+diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
+index df664f6..593e39c 100644
+--- a/arch/arm/cpu/mmu.c
++++ b/arch/arm/cpu/mmu.c
+@@ -24,6 +24,52 @@ void arm_create_section(unsigned long virt, unsigned long phys, int size_m,
  }
  
-+/*
-+ * Find the offset on the compressed stream given and index in the
-+ * kallsyms array.
+ /*
++ * Create a second level translation table for the given virtual address.
++ * We initially create a flat uncached mapping on it.
++ * Not yet exported, but may be later if someone finds use for it.
 + */
-+static unsigned int get_symbol_offset(unsigned long pos)
++static u32 *arm_create_pte(unsigned long virt)
 +{
-+	const u8 *name;
++	u32 *table;
 +	int i;
 +
-+	/*
-+	 * Use the closest marker we have. We have markers every 256 positions,
-+	 * so that should be close enough.
-+	 */
-+	name = &kallsyms_names[kallsyms_markers[pos >> 8]];
++	table = memalign(0x400, 0x400);
 +
-+	/*
-+	 * Sequentially scan all the symbols up to the point we're searching
-+	 * for. Every symbol is stored in a [<len>][<len> bytes of data] format,
-+	 * so we just need to add the len to the current pointer for every
-+	 * symbol we wish to skip.
-+	 */
-+	for (i = 0; i < (pos & 0xFF); i++)
-+		name = name + (*name) + 1;
++	ttb[virt] = (unsigned long)table | PMD_TYPE_TABLE;
 +
-+	return name - kallsyms_names;
-+}
++	for (i = 0; i < 256; i++)
++		table[i] = virt | PTE_TYPE_SMALL | PTE_SMALL_AP_UNO_SRW;
 +
- /* Lookup the address for this symbol. Returns 0 if not found. */
- unsigned long kallsyms_lookup_name(const char *name)
- {
-@@ -68,6 +103,117 @@ unsigned long kallsyms_lookup_name(const char *name)
- 		if (strcmp(namebuf, name) == 0)
- 			return kallsyms_addresses[i];
- 	}
--//	return module_kallsyms_lookup_name(name);
-+
-+	/* module kallsyms not yet supported */
- 	return 0;
- }
-+
-+static unsigned long get_symbol_pos(unsigned long addr,
-+				    unsigned long *symbolsize,
-+				    unsigned long *offset)
-+{
-+	unsigned long symbol_start = 0, symbol_end = 0;
-+	unsigned long i, low, high, mid;
-+
-+	/* This kernel should never had been booted. */
-+	BUG_ON(!kallsyms_addresses);
-+
-+	/* Do a binary search on the sorted kallsyms_addresses array. */
-+	low = 0;
-+	high = kallsyms_num_syms;
-+
-+	while (high - low > 1) {
-+		mid = low + (high - low) / 2;
-+		if (kallsyms_addresses[mid] <= addr)
-+			low = mid;
-+		else
-+			high = mid;
-+	}
-+
-+	/*
-+	 * Search for the first aliased symbol. Aliased
-+	 * symbols are symbols with the same address.
-+	 */
-+	while (low && kallsyms_addresses[low-1] == kallsyms_addresses[low])
-+		--low;
-+
-+	symbol_start = kallsyms_addresses[low];
-+
-+	/* Search for next non-aliased symbol. */
-+	for (i = low + 1; i < kallsyms_num_syms; i++) {
-+		if (kallsyms_addresses[i] > symbol_start) {
-+			symbol_end = kallsyms_addresses[i];
-+			break;
-+		}
-+	}
-+
-+	/* If we found no next symbol, we use the end of the section. */
-+	if (!symbol_end) {
-+		symbol_end = (unsigned long)_etext;
-+	}
-+
-+	if (symbolsize)
-+		*symbolsize = symbol_end - symbol_start;
-+	if (offset)
-+		*offset = addr - symbol_start;
-+
-+	return low;
++	return table;
 +}
 +
 +/*
-+ * Lookup an address
-+ * - modname is set to NULL if it's in the kernel.
-+ * - We guarantee that the returned name is valid until we reschedule even if.
-+ *   It resides in a module.
-+ * - We also guarantee that modname will be valid until rescheduled.
++ * We have 8 exception vectors and the table consists of absolute
++ * jumps, so we need 8 * 4 bytes for the instructions and another
++ * 8 * 4 bytes for the addresses.
 + */
-+const char *kallsyms_lookup(unsigned long addr,
-+			    unsigned long *symbolsize,
-+			    unsigned long *offset,
-+			    char **modname, char *namebuf)
++#define ARM_VECTORS_SIZE	(sizeof(u32) * 8 * 2)
++
++/*
++ * Allocate a page, map it to the zero page and copy our exception
++ * vectors there.
++ */
++static void vectors_init(void)
 +{
-+	namebuf[KSYM_NAME_LEN - 1] = 0;
-+	namebuf[0] = 0;
++	u32 *exc;
++	void *vectors;
++	extern unsigned long exception_vectors;
 +
-+	if (is_kernel_text(addr)) {
-+		unsigned long pos;
++	exc = arm_create_pte(0x0);
 +
-+		pos = get_symbol_pos(addr, symbolsize, offset);
-+		/* Grab name */
-+		kallsyms_expand_symbol(get_symbol_offset(pos), namebuf);
-+		if (modname)
-+			*modname = NULL;
-+		return namebuf;
-+	}
++	vectors = xmemalign(PAGE_SIZE, PAGE_SIZE);
++	memset(vectors, 0, PAGE_SIZE);
++	memcpy(vectors, &exception_vectors, ARM_VECTORS_SIZE);
 +
-+	/* moduled not yet supported in kallsyms */
-+	return NULL;
++	exc[0] = (u32)vectors | PTE_TYPE_SMALL | PTE_SMALL_AP_UNO_SRW;
 +}
 +
-+/* Look up a kernel symbol and return it in a text buffer. */
-+int sprint_symbol(char *buffer, unsigned long address)
-+{
-+	char *modname;
-+	const char *name;
-+	unsigned long offset, size;
-+	int len;
-+
-+	name = kallsyms_lookup(address, &size, &offset, &modname, buffer);
-+	if (!name)
-+		return sprintf(buffer, "0x%lx", address);
-+
-+	if (name != buffer)
-+		strcpy(buffer, name);
-+	len = strlen(buffer);
-+	buffer += len;
-+
-+	if (modname)
-+		len += sprintf(buffer, "+%#lx/%#lx [%s]",
-+						offset, size, modname);
-+	else
-+		len += sprintf(buffer, "+%#lx/%#lx", offset, size);
-+
-+	return len;
-+}
-+EXPORT_SYMBOL_GPL(sprint_symbol);
-+
-diff --git a/include/kallsyms.h b/include/kallsyms.h
-index 5117be2..69b84d2 100644
---- a/include/kallsyms.h
-+++ b/include/kallsyms.h
-@@ -2,6 +2,11 @@
- #define __KALLSYMS_H
++/*
+  * Prepare MMU for usage and create a flat mapping. Board
+  * code is responsible to remap the SDRAM cached
+  */
+@@ -43,6 +89,8 @@ void mmu_init(void)
  
- #define KSYM_NAME_LEN 128
-+#define KSYM_SYMBOL_LEN (sizeof("%s+%#lx/%#lx [%s]") + (KSYM_NAME_LEN - 1) + \
-+		2*(BITS_PER_LONG*3/10) + (MODULE_NAME_LEN - 1) + 1)
- unsigned long kallsyms_lookup_name(const char *name);
- 
-+/* Look up a kernel symbol and return it in a text buffer. */
-+int sprint_symbol(char *buffer, unsigned long address);
+ 	/* create a flat mapping */
+ 	arm_create_section(0, 0, 4096, PMD_SECT_AP_WRITE | PMD_SECT_AP_READ | PMD_TYPE_SECT);
 +
- #endif /* __KALLSYMS_H */
-diff --git a/lib/vsprintf.c b/lib/vsprintf.c
-index fec87ba..ccccc5d 100644
---- a/lib/vsprintf.c
-+++ b/lib/vsprintf.c
-@@ -15,6 +15,7 @@
- #include <linux/ctype.h>
- #include <asm-generic/div64.h>
- #include <malloc.h>
-+#include <kallsyms.h>
++	vectors_init();
+ }
  
- #include <common.h>
- #include <led.h>
+ /*
 -- 
 1.7.2.3
 
