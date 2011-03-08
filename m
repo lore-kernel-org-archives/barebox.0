@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from tango.tkos.co.il ([62.219.50.35])
+Received: from ip2.televic.com ([81.82.194.222])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Pwr4e-0007kb-35
-	for barebox@lists.infradead.org; Tue, 08 Mar 2011 07:11:17 +0000
-Date: Tue, 8 Mar 2011 09:10:58 +0200
-From: Baruch Siach <baruch@tkos.co.il>
-Message-ID: <20110308071058.GB22012@jasper.tkos.co.il>
-References: <39A4B204C321D34DA3490E3B119D5A6C68C006F8A2@SBS2008.wellsense.local>
-	<201103081635.29082.marc@cpdesign.com.au>
-	<39A4B204C321D34DA3490E3B119D5A6C68C006F8A4@SBS2008.wellsense.local>
+	id 1Pwsaq-00009c-Pi
+	for barebox@lists.infradead.org; Tue, 08 Mar 2011 08:50:01 +0000
+From: Vanalme Filip <F.Vanalme@TELEVIC.com>
+Date: Tue, 8 Mar 2011 09:13:10 +0100
+Message-ID: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B011E5@SRV-VS06.TELEVIC.COM>
+References: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B01165@SRV-VS06.TELEVIC.COM>
+	<20110308054006.GA22012@jasper.tkos.co.il>
+In-Reply-To: <20110308054006.GA22012@jasper.tkos.co.il>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <39A4B204C321D34DA3490E3B119D5A6C68C006F8A4@SBS2008.wellsense.local>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,51 +23,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: iMX35 3stack framebuffer problem
-To: Boaz Ben-David <boaz.bd@wellsense-tech.com>
-Cc: Itai Raab <itai.raab@wellsense-tech.com>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: RE: test app
+To: Baruch Siach <baruch@tkos.co.il>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi Boaz,
+Thank you Baruch ! Good starting point for my test app.
 
-On Tue, Mar 08, 2011 at 09:03:55AM +0200, Boaz Ben-David wrote:
-> Yes, I am using the freescale kernel unfotunately.
-> Do you know of some way to fix this (a patch for the freescale kernel
-> maybe)?
-
-A simple way to check whether this is the problems is to just disable the 
-framebuffer in the kernel build, and make sure that you can boot again.
-
-Then, the fix for this problem is to move the request_irq() call to the end of 
-the .probe routine.
-
-You should not expect any kind of support from Freescale for their released 
-Linux kernels.
-
-baruch
-
-> On Tue, 2011-03-08 at 16:35 +1100, Marc Reilly wrote:
-> > On Tuesday, March 08, 2011 03:35:10 am Boaz Ben-David wrote:
-> > > Hi,
-> > > 
-> > > When using the iMX35 freescale 3stack we are having some issues with the FB
-> > > driver. On device boot we enable the fb using "fb0.enable=1" and then try
-> > > to boot the kernel from nand. The problem is that after the kernel is
-> > > loaded to RAM and extracted the board hangs. If we do not init the fb0
-> > > device but simply boot the kernel it works fine. Trying "fb0.enable=0"
-> > > before booting also did not help.
-> > > Did anyone encounter this issue yet or are we doing something wrong?
-> > 
-> > Are you using the freescale kernel? It doesn't handle loading the IPU driver 
-> > if the IPU has been enabled previously.. (an IRQ fires before all the driver 
-> > structures have been initialized and crashes)
-> > 
-> > Cheers,
-> > Marc
-
--- 
-                                                     ~. .~   Tk Open Systems
-=}------------------------------------------------ooO--U--Ooo------------{=
-   - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
+> -----Original Message-----
+> From: Baruch Siach [mailto:baruch@tkos.co.il]
+> Sent: dinsdag 8 maart 2011 6:40
+> To: Vanalme Filip
+> Cc: barebox@lists.infradead.org
+> Subject: Re: test app
+> 
+> Hi Vanalme,
+> 
+> On Mon, Mar 07, 2011 at 02:05:32PM +0100, Vanalme Filip wrote:
+> > We would like to have a kind of small test application, that can be
+> > started from the barebox prompt, to do some basic tests on some hardware
+> components.
+> > What's the best way to do that ? E.g. can I add that test application
+> > to the environment and would this be good practice ? Or do I better
+> > extend the barebox commands with my own command to start the tests ?
+> > Maybe there's an example on how to do it ?
+> 
+> I'm using the attached program to do a simple RAM read/write test on i.MX25.
+> This program runs on bare hardware from the internal chip SRAM, and doesn't rely
+> on the Barebox run-time code.  I only use Barebox to start this program.
+> 
+> The program is built with the following Makefile rules:
+> 
+> all: ramtest.bin
+> 
+> %.bin: %.elf
+>     ${OBJCOPY} -O binary $^ $@
+> 
+> ramtest.elf: ramtest.c
+>     ${CC} -Wall -Os -nostdlib $^ -o $@ -Wl,-Ttext=0x78000000
+> 
+> Running this program from the Barebox prompt:
+> 
+> cp ramtest.bin /dev/sram0
+> go /dev/sram0
+> 
+> I hope this helps.
+> 
+> baruch
+> 
+> --
+>                                                      ~. .~   Tk Open Systems
+> =}------------------------------------------------ooO--U--Ooo------------{=
+>    - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
 
 _______________________________________________
 barebox mailing list
