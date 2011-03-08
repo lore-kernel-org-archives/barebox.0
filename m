@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PwyD6-0003NU-9D
-	for barebox@lists.infradead.org; Tue, 08 Mar 2011 14:48:33 +0000
+	id 1PwyD6-0003NP-9Z
+	for barebox@lists.infradead.org; Tue, 08 Mar 2011 14:48:30 +0000
 Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
 	by metis.ext.pengutronix.de with esmtp (Exim 4.72)
-	(envelope-from <jbe@pengutronix.de>) id 1PwyD4-0007pM-1U
-	for barebox@lists.infradead.org; Tue, 08 Mar 2011 15:48:26 +0100
+	(envelope-from <jbe@pengutronix.de>) id 1PwyD3-0007pF-TU
+	for barebox@lists.infradead.org; Tue, 08 Mar 2011 15:48:25 +0100
 Received: from jbe by octopus.hi.pengutronix.de with local (Exim 4.69)
-	(envelope-from <jbe@pengutronix.de>) id 1PwyD3-0003G0-TV
+	(envelope-from <jbe@pengutronix.de>) id 1PwyD3-0003Fl-Qe
 	for barebox@lists.infradead.org; Tue, 08 Mar 2011 15:48:25 +0100
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Tue,  8 Mar 2011 15:48:23 +0100
-Message-Id: <1299595704-11733-10-git-send-email-jbe@pengutronix.de>
+Date: Tue,  8 Mar 2011 15:48:18 +0100
+Message-Id: <1299595704-11733-5-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1299595704-11733-1-git-send-email-jbe@pengutronix.de>
 References: <1299595704-11733-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -28,95 +28,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/10] LINUX16: Add selection of the VESA video mode
+Subject: [PATCH 04/10] x86 Generic platform: Fix some typos
 To: barebox@lists.infradead.org
 
 Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 ---
- commands/linux16.c |   37 +++++++++++++++++++++++++++++++++----
- 1 files changed, 33 insertions(+), 4 deletions(-)
+ arch/x86/boards/x86_generic/generic_pc.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/commands/linux16.c b/commands/linux16.c
-index 87245d4..0cdb673 100644
---- a/commands/linux16.c
-+++ b/commands/linux16.c
-@@ -141,6 +141,10 @@ struct linux_kernel_header {
- #endif
- } __attribute__ ((packed));
- 
-+/* This is -1. Keep this value in sync with the kernel */
-+#define NORMAL_VGA	0xffff		/* 80x25 mode */
-+#define ASK_VGA		0xfffd		/* ask for it at bootup */
-+
- /**
-  * Load an x86 Linux kernel bzImage and start it
-  * @param cmdtp FIXME
-@@ -157,12 +161,24 @@ static int do_linux16(struct command *cmdtp, int argc, char *argv[])
- 	int rc, opt;
- 	unsigned setup_sects;
- 	unsigned real_mode_size;
-+	int vid_mode = NORMAL_VGA;
- 	size_t image_size;
- 	const char *cmdline = getenv("bootargs");
- 	const char *kernel_file;
- 
--	while((opt = getopt(argc, argv, "")) > 0) {
-+	while((opt = getopt(argc, argv, "v:")) > 0) {
- 		switch(opt) {
-+		case 'v':
-+			vid_mode = simple_strtoul(optarg, NULL, 0);
-+			if (vid_mode == 0) {
-+				if (!strcmp(optarg, "ask"))
-+					vid_mode = ASK_VGA;
-+				else {
-+					printf("Unknown video mode: %s\n", optarg);
-+					return 1;
-+				}
-+			}
-+			break;
- 		}
- 	}
- 
-@@ -227,6 +243,14 @@ static int do_linux16(struct command *cmdtp, int argc, char *argv[])
- 		goto on_error;
- 	}
- 
-+	/*
-+	 * The kernel does not check for the "vga=<val>" kernel command line
-+	 * parameter anymore. It expects this kind of information in the
-+	 * boot parameters instead.
-+	 */
-+	if (vid_mode != NORMAL_VGA)
-+		lh->vid_mode = vid_mode;
-+
- 	/* If SETUP_SECTS is not set, set it to the default.  */
- 	if (setup_sects == 0) {
- 		printf("Fixing setup sector count\n");
-@@ -297,16 +321,21 @@ on_error:
- }
- 
- BAREBOX_CMD_HELP_START(linux16)
--BAREBOX_CMD_HELP_USAGE("linux16 <file>\n")
--BAREBOX_CMD_HELP_SHORT("Boot a kernel on x86 via real mode code.\n")
-+BAREBOX_CMD_HELP_USAGE("linux16 <file> [-v <mode>]\n")
-+BAREBOX_CMD_HELP_SHORT("Boot a kernel <file> on x86 via real mode code.\n")
-+BAREBOX_CMD_HELP_OPT  ("-v <mode>",   "VESA video mode number or 'ask'\n")
- BAREBOX_CMD_HELP_END
+diff --git a/arch/x86/boards/x86_generic/generic_pc.c b/arch/x86/boards/x86_generic/generic_pc.c
+index b9c31aa..e156e0d 100644
+--- a/arch/x86/boards/x86_generic/generic_pc.c
++++ b/arch/x86/boards/x86_generic/generic_pc.c
+@@ -58,7 +58,7 @@ extern uint16_t pers_env_size;
+ extern uint8_t pers_env_drive;
  
  /**
-  * @page linux16_command
- 
--<p> Only kernel images in bzImage format are supported by now. See \ref
-+<p>Only kernel images in bzImage format are supported by now. See \ref
- x86_boot_preparation for more info about how to use this command.</p>
- 
-+<p>For the video mode refer the Linux kernel documentation
-+'Documentation/fb/vesafb.txt' for correct VESA mode numbers. If the keyword
-+'ask' instead of a number is given, the starting kernel will ask for a number.
-+</p>
+- * Persistant environment "not used" marker.
++ * Persistent environment "not used" marker.
+  * Note: Must be in accordance to the value the tool "setup_mbr" writes.
   */
+ #define PATCH_AREA_PERS_SIZE_UNUSED 0x000
+@@ -80,7 +80,7 @@ static int devices_init(void)
+ 				DEVFS_PARTITION_FIXED, "env0");
+ 		printf("Partition: %d\n", rc);
+ 	} else
+-		printf("No persistant storage defined\n");
++		printf("No persistent storage defined\n");
  
- BAREBOX_CMD_START(linux16)
+         return 0;
+ }
 -- 
 1.7.2.3
 
