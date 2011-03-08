@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PwvGW-0001YZ-UQ
-	for barebox@lists.infradead.org; Tue, 08 Mar 2011 11:39:49 +0000
-Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.72)
-	(envelope-from <sha@pengutronix.de>) id 1PwvGV-00072J-0y
-	for barebox@lists.infradead.org; Tue, 08 Mar 2011 12:39:47 +0100
-Received: from sha by octopus.hi.pengutronix.de with local (Exim 4.69)
-	(envelope-from <sha@pengutronix.de>) id 1PwvGU-0001Zr-WD
-	for barebox@lists.infradead.org; Tue, 08 Mar 2011 12:39:47 +0100
+	id 1PwvGW-0001Ye-Ud
+	for barebox@lists.infradead.org; Tue, 08 Mar 2011 11:39:50 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  8 Mar 2011 12:39:40 +0100
-Message-Id: <1299584385-6016-1-git-send-email-s.hauer@pengutronix.de>
+Date: Tue,  8 Mar 2011 12:39:45 +0100
+Message-Id: <1299584385-6016-6-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1299584385-6016-1-git-send-email-s.hauer@pengutronix.de>
+References: <1299584385-6016-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,28 +21,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: assorted patches
+Subject: [PATCH 5/5] trigger command: fix printf format
 To: barebox@lists.infradead.org
 
-Hi All,
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ commands/trigger.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-Some assorted patches here. Most notable probably is the increase
-of the chunk size in ramfs which greatly improves speed. The
-gpio LEDs finally get a user and modules get usable again.
-
-Sascha Hauer (5):
-      ARM scb9328: Add gpio led support
-      ramfs: increase chunk size to 4 kbyte
-      mfd/mc13892: Add missing semicolons
-      module: CONFIG_COMMAND does not exist anymore, remove ifdefs
-      trigger command: fix printf format
-
- arch/arm/boards/scb9328/scb9328.c |   24 +++++++++++++++++++++++-
- commands/trigger.c                |    2 +-
- common/module.c                   |    2 --
- drivers/mfd/mc13892.c             |    4 ++--
- fs/ramfs.c                        |    2 +-
- 5 files changed, 27 insertions(+), 7 deletions(-)
+diff --git a/commands/trigger.c b/commands/trigger.c
+index 162da97..095f96d 100644
+--- a/commands/trigger.c
++++ b/commands/trigger.c
+@@ -79,7 +79,7 @@ static int do_trigger(struct command *cmdtp, int argc, char *argv[])
+ 		led = led_by_name_or_number(argv[optind]);
+ 
+ 		if (!led) {
+-			printf("no such led: %d\n", argv[optind]);
++			printf("no such led: %s\n", argv[optind]);
+ 			return 1;
+ 		}
+ 
+-- 
+1.7.2.3
 
 
 _______________________________________________
