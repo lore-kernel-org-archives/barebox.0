@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PwemB-0003mm-6U
-	for barebox@lists.infradead.org; Mon, 07 Mar 2011 18:03:23 +0000
-Date: Mon, 7 Mar 2011 19:03:21 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110307180321.GP29521@pengutronix.de>
-References: <1299520868-30775-1-git-send-email-s.hauer@pengutronix.de>
-	<1299520868-30775-2-git-send-email-s.hauer@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1299520868-30775-2-git-send-email-s.hauer@pengutronix.de>
+Received: from susu.bendor.com.au ([203.16.199.2])
+	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1PwmLF-0006ZY-OA
+	for barebox@lists.infradead.org; Tue, 08 Mar 2011 02:08:06 +0000
+Received: from manocska.bendor.com.au (manocska.bendor.com.au [203.16.199.6])
+	by susu.bendor.com.au (Postfix) with ESMTP id 9F20F1D32
+	for <barebox@lists.infradead.org>; Tue,  8 Mar 2011 13:08:02 +1100 (EST)
+Date: Tue, 8 Mar 2011 13:08:02 +1100
+From: =?UTF-8?B?Wm9sdMOhbiBLw7Njc2k=?= <zoltan@bendor.com.au>
+Message-ID: <20110308130802.72018ed3@manocska.bendor.com.au>
+In-Reply-To: <201103071424.14270.jbe@pengutronix.de>
+References: <201103071424.14270.jbe@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,49 +24,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] ARM v7: Fix broken mmu initialization
+Subject: Re: [RFC] S3C24xx: Fixing the NAND handling
 To: barebox@lists.infradead.org
-Cc: Eric BENARD <ebenard@free.fr>
 
-Eric,
+On Mon, 7 Mar 2011 14:24:13 +0100
+Juergen Beisert <jbe@pengutronix.de> wrote:
 
-This could well be the cause of your i.MX51 mmu trouble.
 
-Sascha
-
-On Mon, Mar 07, 2011 at 07:01:06PM +0100, Sascha Hauer wrote:
-> The armv7 specific __mmu_cache_on function accidently sets
-> the page table pointer with the unitialized value of r3. It seems
-> that often enough r3 still held the correct value from a previous
-> call to mmu_init allowing this bug to remain uncovered for longer.
+>  - the driver's local OOB layout for small page NANDs overwrites the
+> vendors bad block marker (a really bad idea!)
+>  - the ECC setup for large page NANDs violates NANDs partial write
+> count (it forces 8 partial writes instead of allowed 4 per 2048 byte
+> page)
 > 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  arch/arm/cpu/cache-armv7.S |    1 -
->  1 files changed, 0 insertions(+), 1 deletions(-)
+> How to adapt barebox according to the kernel? If we do OOB and ECC
+> setup correctly in barebox, the mainline kernel cannot work with this
+> data. If we do it in the same way than the kernel, we lose the bad
+> block markers or do more writes than the manufacturer allows for
+> reliable data security.
 > 
-> diff --git a/arch/arm/cpu/cache-armv7.S b/arch/arm/cpu/cache-armv7.S
-> index 79bc243..538ab28 100644
-> --- a/arch/arm/cpu/cache-armv7.S
-> +++ b/arch/arm/cpu/cache-armv7.S
-> @@ -20,7 +20,6 @@ ENTRY(__mmu_cache_on)
->  #endif
->  		orrne	r0, r0, #1		@ MMU enabled
->  		movne	r1, #-1
-> -		mcrne	p15, 0, r3, c2, c0, 0	@ load page table pointer
->  		mcrne	p15, 0, r1, c3, c0, 0	@ load domain access control
->  #endif
->  		mcr	p15, 0, r0, c1, c0, 0	@ load control register
-> -- 
-> 1.7.2.3
-> 
-> 
+> Changing the kernel is also hard to do, because it breaks existing
+> software installations which should just run with more recent kernels.
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+I believe that kernel has to be fixed. If it is broken and violates the
+chip manufacturer's speifications, then you can't (or shouldn't) use it
+on the field anyway. In that case you have to accept that upgrading the
+kernel will mean that you also have to rewrite whatever code you have
+which depends on the *incorrect* treatment of the hardware. 
+
+Prolonging the existence of mistreatment of hardware in the name of
+backward compatibility is not a good thing, I believe.
+
+Zoltan
 
 _______________________________________________
 barebox mailing list
