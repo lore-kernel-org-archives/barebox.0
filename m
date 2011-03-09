@@ -1,16 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail13.tpgi.com.au ([203.12.160.181])
+Received: from ip2.televic.com ([81.82.194.222])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Px46A-0006sd-L0
-	for barebox@lists.infradead.org; Tue, 08 Mar 2011 21:05:43 +0000
-From: Marc Reilly <marc@cpdesign.com.au>
-Date: Wed, 9 Mar 2011 08:04:38 +1100
-References: <4D764613.5020708@telemotive.de>
-	<AANLkTi=CXxPuac0Jub=uyD-A0qvDMgK2UVYv++JP_X+T@mail.gmail.com>
-	<4D7651A2.90301@eukrea.com>
-In-Reply-To: <4D7651A2.90301@eukrea.com>
+	id 1PxElJ-0002Kt-E3
+	for barebox@lists.infradead.org; Wed, 09 Mar 2011 08:28:54 +0000
+From: Vanalme Filip <F.Vanalme@TELEVIC.com>
+Date: Wed, 9 Mar 2011 09:28:49 +0100
+Message-ID: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B012BB@SRV-VS06.TELEVIC.COM>
+References: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B01165@SRV-VS06.TELEVIC.COM>
+	<20110308054006.GA22012@jasper.tkos.co.il>
+	<6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B011E5@SRV-VS06.TELEVIC.COM>
+	<6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B0120B@SRV-VS06.TELEVIC.COM>
+	<20110308112217.GD22012@jasper.tkos.co.il>
+	<6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B01280@SRV-VS06.TELEVIC.COM>
+	<20110308180836.GA2677@tarshish>
+In-Reply-To: <20110308180836.GA2677@tarshish>
+Content-Language: en-US
 MIME-Version: 1.0
-Message-Id: <201103090804.38216.marc@cpdesign.com.au>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,68 +24,89 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Install barebox to target
-To: barebox@lists.infradead.org
+Subject: RE: test app
+To: Baruch Siach <baruch@tkos.co.il>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi,
+> -----Original Message-----
+> From: Baruch Siach [mailto:baruch@tkos.co.il]
+> Sent: dinsdag 8 maart 2011 19:09
+> To: Vanalme Filip
+> Cc: barebox@lists.infradead.org
+> Subject: Re: test app
+> =
 
-> > 2011/3/8 Thomas Mayer<thomas.mayer@telemotive.de>:
-> >> according to the cpu datasheet  the bootloader has to store at offset
-> >> 0x400 (1KByte).
-> >> I tried to dd barebox that way  but it didn't work (command: "dd
-> >> if=barebox.bin of=/dev/sdb bs=512 seek=2&&  sync&&  sync").
+> Hi Vanalme,
+> =
 
-sudo dd if=barebox.bin of=/dev/sde bs=512 seek=2 skip=2 && sync
+> On Tue, Mar 08, 2011 at 04:52:49PM +0100, Vanalme Filip wrote:
+> > Compiling and linking seems to work well now. When I dump the .elf, I s=
+ee
+> > that the start address is 0xA7E00000. That's what I wanted.
+> > However, when loading the app in ram and executing it, I see that it tr=
+ies to start
+> from 0xA0000000 (this is the base address of the RAM section) :
+> >
+> > barebox:/test tftp testapp.bin
+> > TFTP from server 10.0.48.80 ('testapp.bin' -> 'testapp.bin')
+> >
+> > barebox:/test cp testapp.bin /dev/ram0
+> > barebox:/test go /dev/ram0
+> > ## Starting application at 0xA0000000 ...
+> > ?=B6/=FF'.e=A2=D3=F8=AD=F1_
+> >
+> > _=F8=FD=E0=F5=D2=FF=A0=EFO
+> >           =FFO=FF=F0z=FE=F0=F6=E0=FE=A0A'}=AE=FF
+> > =F9=FD"=F5=FF?O=BFPP=BC@Y
+> >              }=B8m
+> >                =D7=B4=EF@=EF=F0x`G-/
+> >
+> >
+> > Should I specify an address when executing 'go' or 'cp' ? Isn't it load=
+ing the app
+> always at the beginning of the RAM space, i.e. 0xA0000000 ?
+> =
+
+> Is 0xA0000000 the beginning of you external RAM?
+
+ =
+
+[Filip]  yes.
+I meanwhile adjusted Makefile and test app source code to start from addres=
+s 0xA0000000. This seem to work well. My test app is running now.
+Because it's just a test app, I think it's OK to put it at the beginning of=
+ the external RAM (so at address 0xA0000000). No use in trying to move it t=
+o another region in the external RAM, is it ?
+
+> =
+
+> Note that in my example I used /dev/sram0 (on-chip 128K SRAM), not /dev/r=
+am0
+> (external DDR2 RAM).
+> =
+
+> baruch
+> =
 
 
-> >> I also tried to use the prebuild freescale redboot binary with mmc
-> >> support and this works.
-> >> 
-> >> Have you any idea what I'm doing wrong?
+[Filip] If I'm right (have to verify though), i.MX27 does not have any SRAM=
+ on board. So, I guess external RAM will be the only option. Because the te=
+st app resides in the external RAM, it won't be possible to test the whole =
+RAM. But I think we can live with that limitation.
 
-The flash header in the barebox image is at offset 0x400 already, so 
-effectively you are dd'ing it to 0x800 .. hence the skip=2 is also required.
+Thanks !
 
-> >> Is it possible that a mmc binary need a special flash header to work
-> >> correctly?
-
-Very possible  :) 
-
-Another thing to check is that your image isn't larger than 256K (or what you 
-specify in the variable that goes in __image_len_XXXXX section) 
-
-> 
-> check arch/arm/boards/eukrea_cpuimx35/flash_header.c
-> it works fine on our i.MX35 baord but I had to hack
-> CPUIMX35_FLASH_HEADER_BASE to get it working.
-
-I remember what a PITA this is to tackle when you're getting started. Here's 
-what I use now... pardon the formatting:
-
-struct imx_flash_header __flash_header_0x0400 sd_flash_header = {
-	.app_code_jump_vector	= TEXT_BASE + ((unsigned int)&exception_vectors - 
-TEXT_BASE),
-	.app_code_barker	= APP_CODE_BARKER,
-	.app_code_csf		= 0,
-	.dcd_ptr_ptr		= TEXT_BASE + 0x0400 + offsetof(struct imx_flash_header, 
-dcd),
-	.super_root_key		= 0,
-	.dcd			= TEXT_BASE + 0x0400 + offsetof(struct imx_flash_header, 
-dcd_barker),
-	.app_dest		= TEXT_BASE,
-	.dcd_barker		= DCD_BARKER,
-	.dcd_block_len		= sizeof(sd_dcd_entry),
-};
-
-unsigned long __image_len_0x0400 sd_barebox_len = 0x40000;
-
-
-Cheers
-Marc
+Filip
+> --
+>                                                      ~. .~   Tk Open Syst=
+ems
+> =3D}------------------------------------------------ooO--U--Ooo----------=
+--{=3D
+>    - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
 
 _______________________________________________
 barebox mailing list
