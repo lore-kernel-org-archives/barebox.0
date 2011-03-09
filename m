@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PxL8p-00059R-9A
-	for barebox@lists.infradead.org; Wed, 09 Mar 2011 15:17:36 +0000
+	id 1PxL8l-00058e-Cs
+	for barebox@lists.infradead.org; Wed, 09 Mar 2011 15:17:34 +0000
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Wed,  9 Mar 2011 16:17:23 +0100
-Message-Id: <1299683846-20616-3-git-send-email-jbe@pengutronix.de>
+Date: Wed,  9 Mar 2011 16:17:25 +0100
+Message-Id: <1299683846-20616-5-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1299683846-20616-1-git-send-email-jbe@pengutronix.de>
 References: <1299683846-20616-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,127 +21,251 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] CRC value handling and dry run mode in 'envfs_load'
+Subject: [PATCH 4/5] Add multi environment support
 To: barebox@lists.infradead.org
-Cc: Luotao Fu <l.fu@pengutronix.de>
 
-From: Luotao Fu <l.fu@pengutronix.de>
-
-In order to check if two environments contains the same content, extend the
-'envfs_load' to support a crc sum. This change is required to add support
-for multiple environments later on.
-
-* envfs_load now accepts a parameter, where the crc value of the environment
-  partition can be stored.
-* add a "dry run" mode to envfs_load. If the dirname is not set, 'envfs_load'
-  will now check only the crc values of the partition and returns without
-  writing to the file system.
-
-Signed-off-by: Luotao Fu <l.fu@pengutronix.de>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 Acked-by: Juergen Beisert <jbe@pengutronix.de>
 ---
- commands/loadenv.c    |    2 +-
- common/environment.c  |   13 +++++++++++--
- common/startup.c      |    4 ++--
- include/environment.h |    2 +-
- scripts/bareboxenv.c  |    2 +-
- 5 files changed, 16 insertions(+), 7 deletions(-)
+ commands/loadenv.c |   53 ++++++++++++++++++++++++-
+ commands/saveenv.c |  110 ++++++++++++++++++++++++++++++++-------------------
+ 2 files changed, 120 insertions(+), 43 deletions(-)
 
 diff --git a/commands/loadenv.c b/commands/loadenv.c
-index c33c34f..5f4c195 100644
+index 5f4c195..a6d93cd 100644
 --- a/commands/loadenv.c
 +++ b/commands/loadenv.c
-@@ -40,7 +40,7 @@ static int do_loadenv(struct command *cmdtp, int argc, char *argv[])
- 	else
- 		filename = argv[1];
- 	printf("loading environment from %s\n", filename);
--	return envfs_load(filename, dirname);
-+	return envfs_load(filename, dirname, NULL);
+@@ -26,8 +26,11 @@
+ #include <common.h>
+ #include <command.h>
+ #include <environment.h>
++#include <fs.h>
++#include <linux/stat.h>
+ 
+-static int do_loadenv(struct command *cmdtp, int argc, char *argv[])
++static int __maybe_unused do_single_loadenv(struct command *cmdtp, int argc,
++							char *argv[])
+ {
+ 	char *filename, *dirname;
+ 
+@@ -43,9 +46,51 @@ static int do_loadenv(struct command *cmdtp, int argc, char *argv[])
+ 	return envfs_load(filename, dirname, NULL);
  }
  
++static int __maybe_unused do_multi_loadenv(struct command *cmdtp, int argc,
++							char *argv[])
++{
++	char *dirname;
++	int rc;
++	int i = 0;
++	char file[9 + 5];	/* '/dev/env.....' */
++	struct stat file_info;
++
++	if (argc < 3)
++		dirname = "/env";
++	else
++		dirname = argv[2];
++
++	if (argc > 1) {
++		rc = envfs_load(argv[1], dirname, NULL);
++		return rc ? 1 : 0;
++	}
++
++	rc = 1;
++
++	/* default filename, loop over all /dev/env[number] till one succeeds */
++	while (1) {
++		sprintf(file, "/dev/env%d", i);
++
++		if (stat(file, &file_info) != 0)
++			break;
++
++		rc = envfs_load(file, dirname, NULL);
++		if (!rc)
++			break;
++		i++;
++	}
++
++	return rc ? 1 : 0;
++}
++
  BAREBOX_CMD_HELP_START(loadenv)
-diff --git a/common/environment.c b/common/environment.c
-index e5f24ec..eb8278f 100644
---- a/common/environment.c
-+++ b/common/environment.c
-@@ -159,13 +159,15 @@ EXPORT_SYMBOL(envfs_save);
+ BAREBOX_CMD_HELP_USAGE("loadenv [ENVFS] [DIRECTORY]\n")
+ BAREBOX_CMD_HELP_SHORT("Load environment from ENVFS into DIRECTORY (default: /dev/env0 -> /env).\n")
++#ifdef CONFIG_MULTI_ENV_HANDLING
++BAREBOX_CMD_HELP_SHORT("If more than one environment backend storage is available, and the access to\n")
++BAREBOX_CMD_HELP_SHORT("the first storage fails, this command automatically uses the next available\n")
++BAREBOX_CMD_HELP_SHORT("environment backend storage (env0 -> env1).\n")
++#endif
+ BAREBOX_CMD_HELP_END
+ 
  /**
-  * Restore the last environment into the current one
-  * @param[in] filename from where to restore
-- * @param[in] dir where to store the last content
-+ * @param[in] dir Where to store the last content. Function will return CRC
-+ * value only if 'dir' == NULL.
-+ * @param[in] crc Where to store the CRC
-  * @return 0 on success, anything else in case of failure
-  *
-  * Note: This function will also be used on the host! See note in the header
-  * of this file.
+@@ -58,7 +103,11 @@ ENVFS can only handle files, directories are skipped silently.
   */
--int envfs_load(char *filename, char *dir)
-+int envfs_load(char *filename, char *dir, int *crc)
+ 
+ BAREBOX_CMD_START(loadenv)
+-	.cmd		= do_loadenv,
++#ifdef CONFIG_MULTI_ENV_HANDLING
++	.cmd		= do_multi_loadenv,
++#else
++	.cmd		= do_single_loadenv,
++#endif
+ 	.usage		= "Load environment from ENVFS into DIRECTORY (default: /dev/env0 -> /env).",
+ 	BAREBOX_CMD_HELP(cmd_loadenv_help)
+ BAREBOX_CMD_END
+diff --git a/commands/saveenv.c b/commands/saveenv.c
+index 2f969fe..980ce7f 100644
+--- a/commands/saveenv.c
++++ b/commands/saveenv.c
+@@ -29,52 +29,22 @@
+ #include <fs.h>
+ #include <fcntl.h>
+ #include <environment.h>
++#include <linux/ctype.h>
++#include <linux/stat.h>
+ 
+-static int do_saveenv(struct command *cmdtp, int argc, char *argv[])
++static int saveenv(char *filename, char *dirname)
  {
- 	struct envfs_super super;
- 	void *buf = NULL, *buf_free = NULL;
-@@ -219,6 +221,13 @@ int envfs_load(char *filename, char *dir)
- 		goto out;
+-	int ret, fd;
+-	char *filename, *dirname;
+-
+-	printf("saving environment\n");
+-	if (argc < 3)
+-		dirname = "/env";
+-	else
+-		dirname = argv[2];
+-	if (argc < 2)
+-		filename = "/dev/env0";
+-	else
+-		filename = argv[1];
+-
+-	fd = open(filename, O_WRONLY | O_CREAT);
+-	if (fd < 0) {
+-		printf("could not open %s: %s\n", filename, errno_str());
+-		return 1;
+-	}
++	int ret = 0;
++	int fd;
+ 
+-	ret = protect(fd, ~0, 0, 0);
+-
+-	/* ENOSYS is no error here, many devices do not need it */
+-	if (ret && errno != -ENOSYS) {
+-		printf("could not unprotect %s: %s\n", filename, errno_str());
+-		close(fd);
++	ret = file_check_and_erase(filename);
++	if (ret)
+ 		return 1;
+-	}
+-
+-	ret = erase(fd, ~0, 0);
+-
+-	/* ENOSYS is no error here, many devices do not need it */
+-	if (ret && errno != -ENOSYS) {
+-		printf("could not erase %s: %s\n", filename, errno_str());
+-		close(fd);
+-		return 1;
+-	}
+-
+-	close(fd);
+ 
+ 	ret = envfs_save(filename, dirname);
+ 	if (ret) {
+ 		printf("saveenv failed\n");
+-		goto out;
++		return 1;
  	}
  
-+	if (crc != NULL)
-+		*crc = ENVFS_32(super.crc);
+ 	fd = open(filename, O_WRONLY | O_CREAT);
+@@ -88,19 +58,74 @@ static int do_saveenv(struct command *cmdtp, int argc, char *argv[])
+ 		return 1;
+ 	}
+ 
+-	ret = 0;
+-out:
+ 	close(fd);
 +
-+	/* return CRC only if dir is not set */
-+	if (!dir)
-+		goto out;
++	return 0;
++}
 +
- 	while (size) {
- 		struct envfs_inode *inode;
- 		uint32_t inode_size, inode_namelen;
-diff --git a/common/startup.c b/common/startup.c
-index c39b08e..32a8aa0 100644
---- a/common/startup.c
-+++ b/common/startup.c
-@@ -116,13 +116,13 @@ static void __maybe_unused load_default_environment(void)
- {
- #ifdef CONFIG_DEFAULT_ENVIRONMENT
- 	printf("No valid environment found. Using default environment.\n");
--	envfs_load("/dev/defaultenv", "/env");
-+	envfs_load("/dev/defaultenv", "/env", NULL);
- #endif
++static int __maybe_unused do_single_saveenv(struct command *cmdtp, int argc,
++							char *argv[])
++{
++	char *filename, *dirname;
++
++	printf("saving environment\n");
++	if (argc < 3)
++		dirname = "/env";
++	else
++		dirname = argv[2];
++	if (argc < 2)
++		filename = "/dev/env0";
++	else
++		filename = argv[1];
++
++	return saveenv(filename, dirname);
++}
++
++static int __maybe_unused do_multi_saveenv(struct command *cmdtp, int argc,
++							char *argv[])
++{
++	int ret = 0;
++	char *dirname;
++	int i = 0;
++	char file[9 + 5];
++	struct stat file_info;
++
++	printf("saving environment\n");
++	if (argc < 3)
++		dirname = "/env";
++	else
++		dirname = argv[2];
++
++	if (argc > 1)
++		return saveenv(argv[1], dirname);
++
++	/* default filename, save environment to all /dev/env[number] */
++	while (1) {
++		sprintf(file, "/dev/env%d", i);
++		if (stat(file, &file_info))
++			break;
++		ret |= saveenv(file, dirname);
++		i++;
++	}
++
+ 	return ret;
  }
  
- static int __maybe_unused init_single_envfs_load(void)
- {
--	if (envfs_load("/dev/env0", "/env"))
-+	if (envfs_load("/dev/env0", "/env", NULL))
- 		load_default_environment();
+ BAREBOX_CMD_HELP_START(saveenv)
+ BAREBOX_CMD_HELP_USAGE("saveenv [envfs] [directory]\n")
+ BAREBOX_CMD_HELP_SHORT("Save the files in <directory> to the persistent storage device <envfs>.\n")
++#ifdef CONFIG_MULTI_ENV_HANDLING
++BAREBOX_CMD_HELP_SHORT("If more than one environment backend storage is available it will get stored\n")
++BAREBOX_CMD_HELP_SHORT("in all of them in ascending order (env0 -> env1).\n")
++#endif
+ BAREBOX_CMD_HELP_END
  
- 	return 0;
-diff --git a/include/environment.h b/include/environment.h
-index 21a7ffa..2b1f5d9 100644
---- a/include/environment.h
-+++ b/include/environment.h
-@@ -50,7 +50,7 @@ int setenv(const char *, const char *);
- int env_pop_context(void);
- int env_push_context(void);
+ BAREBOX_CMD_START(saveenv)
+-	.cmd		= do_saveenv,
++#ifdef CONFIG_MULTI_ENV_HANDLING
++	.cmd		= do_multi_saveenv,
++#else
++	.cmd		= do_single_saveenv,
++#endif
+ 	.usage		= "save environment to persistent storage",
+ 	BAREBOX_CMD_HELP(cmd_saveenv_help)
+ BAREBOX_CMD_END
+@@ -112,6 +137,9 @@ BAREBOX_CMD_END
+ ommitted, \<directory> defaults to /env and \<envfs> defaults to
+ /dev/env0. Note that envfs can only handle files, directories are being
+ skipped silently.</p>
++Only if CONFIG_MULTI_ENV_HANDLING is enabled:
++If more than one environment backend storage is available it will get stored
++in all of them in ascending order (env0 -> env1).
  
--int envfs_load(char *filename, char *dirname);
-+int envfs_load(char *filename, char *dirname, int *crc);
- int envfs_save(char *filename, char *dirname);
+ \todo What does 'block in flash' mean? Add example.
  
- int export(const char *);
-diff --git a/scripts/bareboxenv.c b/scripts/bareboxenv.c
-index 5c7f10e..af012e8 100644
---- a/scripts/bareboxenv.c
-+++ b/scripts/bareboxenv.c
-@@ -186,7 +186,7 @@ int main(int argc, char *argv[])
- 
- 	if (load) {
- 		printf("loading env from file %s to %s\n", filename, dirname);
--		envfs_load(filename, dirname);
-+		envfs_load(filename, dirname, NULL);
- 	}
- 	if (save) {
- 		printf("saving contents of %s to file %s\n", dirname, filename);
 -- 
 1.7.2.3
 
