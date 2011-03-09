@@ -1,20 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1PxIEk-0003TA-61
-	for barebox@lists.infradead.org; Wed, 09 Mar 2011 12:11:31 +0000
-Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.72)
-	(envelope-from <sha@pengutronix.de>) id 1PxIEi-0003lS-1n
-	for barebox@lists.infradead.org; Wed, 09 Mar 2011 13:11:28 +0100
-Received: from sha by octopus.hi.pengutronix.de with local (Exim 4.69)
-	(envelope-from <sha@pengutronix.de>) id 1PxIEh-0001CA-UB
-	for barebox@lists.infradead.org; Wed, 09 Mar 2011 13:11:27 +0100
-Date: Wed, 9 Mar 2011 13:11:27 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110309121127.GY29521@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
+	id 1PxL8l-00058f-S5
+	for barebox@lists.infradead.org; Wed, 09 Mar 2011 15:17:32 +0000
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Wed,  9 Mar 2011 16:17:24 +0100
+Message-Id: <1299683846-20616-4-git-send-email-jbe@pengutronix.de>
+In-Reply-To: <1299683846-20616-1-git-send-email-jbe@pengutronix.de>
+References: <1299683846-20616-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,35 +16,81 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Stable release v2011.03.1
+Subject: [PATCH 3/5] Add generic routine for environment partition handling
 To: barebox@lists.infradead.org
 
-Hi all,
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Acked-by: Juergen Beisert <jbe@pengutronix.de>
+---
+ common/environment.c  |   34 ++++++++++++++++++++++++++++++++++
+ include/environment.h |    1 +
+ 2 files changed, 35 insertions(+), 0 deletions(-)
 
-We have a stable release: v2011.03.1
-
-Users of v2011.03.0 using the lzo command should upgrade to this
-version. Also all armv7 users using the mmu should upgrade to this
-version.
-
-Sascha Hauer (3):
-      ARM v7: Fix broken mmu initialization
-      Revert "lib/decompress_unlzo: use fill and full to read and write data"
-      release v2011.03.1
-
- Makefile                   |    2 +-
- arch/arm/cpu/cache-armv7.S |    1 -
- lib/decompress_unlzo.c     |  180 +++++++++++++++++++++----------------------
- 3 files changed, 89 insertions(+), 94 deletions(-)
+diff --git a/common/environment.c b/common/environment.c
+index eb8278f..3270a08 100644
+--- a/common/environment.c
++++ b/common/environment.c
+@@ -93,6 +93,40 @@ out:
+ 	return 1;
+ }
+ 
++#ifdef __BAREBOX__
++int file_check_and_erase(char *filename)
++{
++	int fd;
++	int ret;
++
++	fd = open(filename, O_WRONLY | O_CREAT);
++	if (fd < 0) {
++		printf("could not open %s: %s\n", filename, errno_str());
++		return errno;
++	}
++
++	ret = protect(fd, ~0, 0, 0);
++
++	/* ENOSYS is no error here, many devices do not need it */
++	if (ret && errno != -ENOSYS) {
++		printf("could not unprotect %s: %s\n", filename, errno_str());
++		return errno;
++	}
++
++	ret = erase(fd, ~0, 0);
++
++	/* ENOSYS is no error here, many devices do not need it */
++	if (ret && errno != -ENOSYS) {
++		printf("could not erase %s: %s\n", filename, errno_str());
++		close(fd);
++		return errno;
++	}
++
++	close(fd);
++	return 0;
++}
++#endif /* __BAREBOX__ */
++
+ /**
+  * Make the current environment persistent
+  * @param[in] filename where to store
+diff --git a/include/environment.h b/include/environment.h
+index 2b1f5d9..b2b95e0 100644
+--- a/include/environment.h
++++ b/include/environment.h
+@@ -58,6 +58,7 @@ int export(const char *);
+ struct stat;
+ int file_size_action(const char *, struct stat *, void *, int);
+ int file_save_action(const char *, struct stat *, void *, int);
++int file_check_and_erase(char *filename);
+ 
+ #endif /* __BAREBOX__ */
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.2.3
+
 
 _______________________________________________
 barebox mailing list
