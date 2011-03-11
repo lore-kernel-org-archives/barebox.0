@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from 64.mail-out.ovh.net ([91.121.185.65])
 	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1Pxqxf-0003YL-3V
+	id 1Pxqxf-0003YK-3M
 	for barebox@lists.infradead.org; Fri, 11 Mar 2011 01:16:12 +0000
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 11 Mar 2011 02:10:41 +0100
-Message-Id: <1299805841-23710-3-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri, 11 Mar 2011 02:10:40 +0100
+Message-Id: <1299805841-23710-2-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1299805841-23710-1-git-send-email-plagnioj@jcrosoft.com>
 References: <1299805841-23710-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
@@ -21,51 +21,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] at91sam9261ek: fix env location and size
+Subject: [PATCH 2/3] at91: fix missing nand_device in board config in board
+	that nand
 To: barebox@lists.infradead.org
 Cc: Patrice Vilchez <patrice.vilchez@atmel.com>, Nicolas Ferre <nicolas.ferre@atmel.com>
-
-256k(barebox)ro,128k(bareboxenv),1536k(kernel),-(root)
-
-so we will match the erase block size
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: Nicolas Ferre <nicolas.ferre@atmel.com>
 Cc: Patrice Vilchez <patrice.vilchez@atmel.com>
 ---
- arch/arm/boards/at91sam9261ek/env/config |    2 +-
- arch/arm/boards/at91sam9261ek/init.c     |    4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ arch/arm/boards/at91sam9261ek/env/config    |    1 +
+ arch/arm/boards/at91sam9263ek/env/config    |    1 +
+ arch/arm/boards/at91sam9m10g45ek/env/config |    1 +
+ arch/arm/boards/pm9g45/env/config           |    1 +
+ 4 files changed, 4 insertions(+), 0 deletions(-)
 
 diff --git a/arch/arm/boards/at91sam9261ek/env/config b/arch/arm/boards/at91sam9261ek/env/config
-index b8ca18d..733326d 100644
+index 1203705..b8ca18d 100644
 --- a/arch/arm/boards/at91sam9261ek/env/config
 +++ b/arch/arm/boards/at91sam9261ek/env/config
-@@ -30,7 +30,7 @@ kernelimage=uImage
+@@ -29,6 +29,7 @@ kernelimage=uImage
+ #kernelimage_type=raw_lzo
  #kernelimage=Image.lzo
  
- nand_device=atmel_nand
--nand_parts="256k(barebox)ro,64k(bareboxenv),1536k(kernel),-(root)"
-+nand_parts="256k(barebox)ro,128k(bareboxenv),1536k(kernel),-(root)"
++nand_device=atmel_nand
+ nand_parts="256k(barebox)ro,64k(bareboxenv),1536k(kernel),-(root)"
  rootfs_mtdblock_nand=3
  
- autoboot_timeout=3
-diff --git a/arch/arm/boards/at91sam9261ek/init.c b/arch/arm/boards/at91sam9261ek/init.c
-index 576a022..b1388e1 100644
---- a/arch/arm/boards/at91sam9261ek/init.c
-+++ b/arch/arm/boards/at91sam9261ek/init.c
-@@ -149,9 +149,9 @@ static int at91sam9261ek_devices_init(void)
- 	ek_add_device_nand();
- 	ek_add_device_dm9000();
+diff --git a/arch/arm/boards/at91sam9263ek/env/config b/arch/arm/boards/at91sam9263ek/env/config
+index 25036af..f1cb751 100644
+--- a/arch/arm/boards/at91sam9263ek/env/config
++++ b/arch/arm/boards/at91sam9263ek/env/config
+@@ -29,6 +29,7 @@ kernelimage=uImage
+ #kernelimage_type=raw_lzo
+ #kernelimage=Image.lzo
  
--	devfs_add_partition("nand0", 0x00000, 0x80000, PARTITION_FIXED, "self_raw");
-+	devfs_add_partition("nand0", 0x00000, 0x40000, PARTITION_FIXED, "self_raw");
- 	dev_add_bb_dev("self_raw", "self0");
--	devfs_add_partition("nand0", 0x40000, 0x40000, PARTITION_FIXED, "env_raw");
-+	devfs_add_partition("nand0", 0x40000, 0x20000, PARTITION_FIXED, "env_raw");
- 	dev_add_bb_dev("env_raw", "env0");
++nand_device=atmel_nand
+ nand_parts="256k(barebox)ro,64k(bareboxenv),1536k(kernel),-(root)"
+ rootfs_mtdblock_nand=3
  
- 	armlinux_set_bootparams((void *)(AT91_CHIPSELECT_1 + 0x100));
+diff --git a/arch/arm/boards/at91sam9m10g45ek/env/config b/arch/arm/boards/at91sam9m10g45ek/env/config
+index 1203705..b8ca18d 100644
+--- a/arch/arm/boards/at91sam9m10g45ek/env/config
++++ b/arch/arm/boards/at91sam9m10g45ek/env/config
+@@ -29,6 +29,7 @@ kernelimage=uImage
+ #kernelimage_type=raw_lzo
+ #kernelimage=Image.lzo
+ 
++nand_device=atmel_nand
+ nand_parts="256k(barebox)ro,64k(bareboxenv),1536k(kernel),-(root)"
+ rootfs_mtdblock_nand=3
+ 
+diff --git a/arch/arm/boards/pm9g45/env/config b/arch/arm/boards/pm9g45/env/config
+index 1203705..b8ca18d 100644
+--- a/arch/arm/boards/pm9g45/env/config
++++ b/arch/arm/boards/pm9g45/env/config
+@@ -29,6 +29,7 @@ kernelimage=uImage
+ #kernelimage_type=raw_lzo
+ #kernelimage=Image.lzo
+ 
++nand_device=atmel_nand
+ nand_parts="256k(barebox)ro,64k(bareboxenv),1536k(kernel),-(root)"
+ rootfs_mtdblock_nand=3
+ 
 -- 
 1.7.4.1
 
