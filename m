@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 64.mail-out.ovh.net ([91.121.185.65])
-	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1Pxqxf-0003YK-3M
-	for barebox@lists.infradead.org; Fri, 11 Mar 2011 01:16:12 +0000
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 11 Mar 2011 02:10:40 +0100
-Message-Id: <1299805841-23710-2-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1299805841-23710-1-git-send-email-plagnioj@jcrosoft.com>
-References: <1299805841-23710-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1PyUHG-0008Om-0Z
+	for barebox@lists.infradead.org; Sat, 12 Mar 2011 19:15:07 +0000
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Sat, 12 Mar 2011 20:14:54 +0100
+Message-Id: <1299957297-8539-4-git-send-email-jbe@pengutronix.de>
+In-Reply-To: <1299957297-8539-1-git-send-email-jbe@pengutronix.de>
+References: <1299957297-8539-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,71 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] at91: fix missing nand_device in board config in board
-	that nand
+Subject: [PATCH 3/6] S3C24xx/NFC: Remove double function setup
 To: barebox@lists.infradead.org
-Cc: Patrice Vilchez <patrice.vilchez@atmel.com>, Nicolas Ferre <nicolas.ferre@atmel.com>
+Cc: Juergen Beisert <juergen@kreuzholzen.de>
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: Nicolas Ferre <nicolas.ferre@atmel.com>
-Cc: Patrice Vilchez <patrice.vilchez@atmel.com>
+From: Juergen Beisert <juergen@kreuzholzen.de>
+
+Three lines above this setting is already done.
+
+Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 ---
- arch/arm/boards/at91sam9261ek/env/config    |    1 +
- arch/arm/boards/at91sam9263ek/env/config    |    1 +
- arch/arm/boards/at91sam9m10g45ek/env/config |    1 +
- arch/arm/boards/pm9g45/env/config           |    1 +
- 4 files changed, 4 insertions(+), 0 deletions(-)
+ drivers/mtd/nand/nand_s3c2410.c |    1 -
+ 1 files changed, 0 insertions(+), 1 deletions(-)
 
-diff --git a/arch/arm/boards/at91sam9261ek/env/config b/arch/arm/boards/at91sam9261ek/env/config
-index 1203705..b8ca18d 100644
---- a/arch/arm/boards/at91sam9261ek/env/config
-+++ b/arch/arm/boards/at91sam9261ek/env/config
-@@ -29,6 +29,7 @@ kernelimage=uImage
- #kernelimage_type=raw_lzo
- #kernelimage=Image.lzo
+diff --git a/drivers/mtd/nand/nand_s3c2410.c b/drivers/mtd/nand/nand_s3c2410.c
+index 05a6a87..94c075e 100644
+--- a/drivers/mtd/nand/nand_s3c2410.c
++++ b/drivers/mtd/nand/nand_s3c2410.c
+@@ -449,7 +449,6 @@ static int s3c24x0_nand_probe(struct device_d *dev)
+ 	chip->ecc.calculate = s3c2410_nand_calculate_ecc;
+ 	chip->ecc.correct = s3c2410_nand_correct_data;
+ 	chip->ecc.hwctl = s3c2410_nand_enable_hwecc;
+-	chip->ecc.calculate = s3c2410_nand_calculate_ecc;
  
-+nand_device=atmel_nand
- nand_parts="256k(barebox)ro,64k(bareboxenv),1536k(kernel),-(root)"
- rootfs_mtdblock_nand=3
- 
-diff --git a/arch/arm/boards/at91sam9263ek/env/config b/arch/arm/boards/at91sam9263ek/env/config
-index 25036af..f1cb751 100644
---- a/arch/arm/boards/at91sam9263ek/env/config
-+++ b/arch/arm/boards/at91sam9263ek/env/config
-@@ -29,6 +29,7 @@ kernelimage=uImage
- #kernelimage_type=raw_lzo
- #kernelimage=Image.lzo
- 
-+nand_device=atmel_nand
- nand_parts="256k(barebox)ro,64k(bareboxenv),1536k(kernel),-(root)"
- rootfs_mtdblock_nand=3
- 
-diff --git a/arch/arm/boards/at91sam9m10g45ek/env/config b/arch/arm/boards/at91sam9m10g45ek/env/config
-index 1203705..b8ca18d 100644
---- a/arch/arm/boards/at91sam9m10g45ek/env/config
-+++ b/arch/arm/boards/at91sam9m10g45ek/env/config
-@@ -29,6 +29,7 @@ kernelimage=uImage
- #kernelimage_type=raw_lzo
- #kernelimage=Image.lzo
- 
-+nand_device=atmel_nand
- nand_parts="256k(barebox)ro,64k(bareboxenv),1536k(kernel),-(root)"
- rootfs_mtdblock_nand=3
- 
-diff --git a/arch/arm/boards/pm9g45/env/config b/arch/arm/boards/pm9g45/env/config
-index 1203705..b8ca18d 100644
---- a/arch/arm/boards/pm9g45/env/config
-+++ b/arch/arm/boards/pm9g45/env/config
-@@ -29,6 +29,7 @@ kernelimage=uImage
- #kernelimage_type=raw_lzo
- #kernelimage=Image.lzo
- 
-+nand_device=atmel_nand
- nand_parts="256k(barebox)ro,64k(bareboxenv),1536k(kernel),-(root)"
- rootfs_mtdblock_nand=3
- 
+ 	/* our hardware capabilities */
+ 	chip->ecc.mode = NAND_ECC_HW;
 -- 
-1.7.4.1
+1.7.2.3
 
 
 _______________________________________________
