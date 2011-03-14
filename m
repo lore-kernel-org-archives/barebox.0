@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 7.26.mail-out.ovh.net ([46.105.40.147] helo=26.mail-out.ovh.net)
-	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1PzBhL-0002Az-Vp
-	for barebox@lists.infradead.org; Mon, 14 Mar 2011 17:36:53 +0000
-Date: Mon, 14 Mar 2011 18:31:04 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20110314173104.GC14548@game.jcrosoft.org>
+Received: from tango.tkos.co.il ([62.219.50.35])
+	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1PzC78-0002Qz-Fs
+	for barebox@lists.infradead.org; Mon, 14 Mar 2011 18:03:32 +0000
+Date: Mon, 14 Mar 2011 20:03:38 +0200
+From: Baruch Siach <baruch@tkos.co.il>
+Message-ID: <20110314180338.GA1950@nataf.siach.name>
 References: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B01165@SRV-VS06.TELEVIC.COM>
 	<20110308054006.GA22012@jasper.tkos.co.il>
 	<6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3B011E5@SRV-VS06.TELEVIC.COM>
@@ -34,32 +34,26 @@ Subject: Re: test app
 To: Vanalme Filip <F.Vanalme@TELEVIC.com>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On 15:55 Mon 14 Mar     , Vanalme Filip wrote:
+Hi Vanalme,
+
+On Mon, Mar 14, 2011 at 03:55:29PM +0100, Vanalme Filip wrote:
 > Hi,
 > =
 
 > Would I have to change a lot if I would like to use standard libraries (e=
-.g. stdio for printf and sprint) in my test app ?
-I think of two ways
+.g.  =
 
-1) you could integrate in barebox the app implentation of u-boot
-	in dir api and examples / api / =
+> stdio for printf and sprint) in my test app ?
 
-	this will allow to run application in barebox and be able to use
-	the std lib probide by barebox
+For printf you may use a standalone implementation, and just provide a putc=
+() =
 
-2) re-implement them
+routine. See the following implementations:
 
-Best Regards,
-J.
-> =
+http://www.sparetimelabs.com/tinyprintf/index.html
+http://www.menie.org/georges/embedded/
 
-> =
-
-> Filip
-> =
-
-> =
+baruch
 
 > > -----Original Message-----
 > > From: barebox-bounces@lists.infradead.org [mailto:barebox-
@@ -146,24 +140,13 @@ st app
 > > =
 
 > > Filip
-> > > --
-> > >                                                      ~. .~   Tk Open =
-Systems
-> > > =3D}------------------------------------------------ooO--U--Ooo------=
-------{=3D
-> > >    - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
-> > =
 
-> > _______________________________________________
-> > barebox mailing list
-> > barebox@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/barebox
-> =
+-- =
 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+                                                     ~. .~   Tk Open Systems
+=3D}------------------------------------------------ooO--U--Ooo------------=
+{=3D
+   - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
 
 _______________________________________________
 barebox mailing list
