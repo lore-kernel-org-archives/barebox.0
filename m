@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from tango.tkos.co.il ([62.219.50.35])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Q0DAs-0006hy-Kp
+	id 1Q0DAt-0006hz-7R
 	for barebox@lists.infradead.org; Thu, 17 Mar 2011 13:23:36 +0000
 From: Baruch Siach <baruch@tkos.co.il>
-Date: Thu, 17 Mar 2011 15:23:16 +0200
-Message-Id: <0781cdb4e6ac0ac31ebb1f45dd57cd2c9192dd02.1300368089.git.baruch@tkos.co.il>
+Date: Thu, 17 Mar 2011 15:23:17 +0200
+Message-Id: <57199e2375b3a93b4979c4387d297d2cbcb8d9b2.1300368089.git.baruch@tkos.co.il>
+In-Reply-To: <0781cdb4e6ac0ac31ebb1f45dd57cd2c9192dd02.1300368089.git.baruch@tkos.co.il>
+References: <0781cdb4e6ac0ac31ebb1f45dd57cd2c9192dd02.1300368089.git.baruch@tkos.co.il>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,32 +21,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] mtd/nand: increase page and oob size limits
+Subject: [PATCH 2/2] mtd/nand_imx: add support for page size of 4k
 To: barebox@lists.infradead.org
-
-Sync these limits with the Linux kernel. This allows support for NAND devices
-with page size of 4k.
 
 Signed-off-by: Baruch Siach <baruch@tkos.co.il>
 ---
- include/linux/mtd/nand.h |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/mtd/nand/nand_imx.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/include/linux/mtd/nand.h b/include/linux/mtd/nand.h
-index cb35fd2..0fe66e4 100644
---- a/include/linux/mtd/nand.h
-+++ b/include/linux/mtd/nand.h
-@@ -45,8 +45,8 @@ extern void nand_wait_ready(struct mtd_info *mtd);
-  * is supported now. If you add a chip with bigger oobsize/page
-  * adjust this accordingly.
-  */
--#define NAND_MAX_OOBSIZE	64
--#define NAND_MAX_PAGESIZE	2048
-+#define NAND_MAX_OOBSIZE	576
-+#define NAND_MAX_PAGESIZE	8192
+diff --git a/drivers/mtd/nand/nand_imx.c b/drivers/mtd/nand/nand_imx.c
+index 48841dc..aff636a 100644
+--- a/drivers/mtd/nand/nand_imx.c
++++ b/drivers/mtd/nand/nand_imx.c
+@@ -1013,7 +1013,7 @@ static int __init imxnd_probe(struct device_d *dev)
  
- /*
-  * Constants for hardware specific CLE/ALE/NCE function
+ 	imx_nand_set_layout(mtd->writesize, pdata->width == 2 ? 16 : 8);
+ 
+-	if (mtd->writesize == 2048) {
++	if (mtd->writesize >= 2048) {
+ 		this->ecc.layout = oob_largepage;
+ 		host->pagesize_2k = 1;
+ 		if (nfc_is_v21()) {
 -- 
 1.7.2.3
 
