@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 37.70.mail-out.ovh.net ([87.98.180.163]
-	helo=70.mail-out.ovh.net)
-	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1Q09Mb-0004mY-6e
-	for barebox@lists.infradead.org; Thu, 17 Mar 2011 09:19:26 +0000
-Message-ID: <4D81D20E.3060803@eukrea.com>
-Date: Thu, 17 Mar 2011 10:19:10 +0100
-From: =?ISO-8859-1?Q?Eric_B=E9nard?= <eric@eukrea.com>
-MIME-Version: 1.0
-References: <4D80C8AB.4040905@nextfour.com>
-In-Reply-To: <4D80C8AB.4040905@nextfour.com>
+Received: from tango.tkos.co.il ([62.219.50.35])
+	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1Q0DAs-0006hy-Kp
+	for barebox@lists.infradead.org; Thu, 17 Mar 2011 13:23:36 +0000
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Thu, 17 Mar 2011 15:23:16 +0200
+Message-Id: <0781cdb4e6ac0ac31ebb1f45dd57cd2c9192dd02.1300368089.git.baruch@tkos.co.il>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,40 +14,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: i.MX25 3-stack - over-current change on port 1 - USB host port
-	not	working
+Subject: [PATCH 1/2] mtd/nand: increase page and oob size limits
 To: barebox@lists.infradead.org
 
-Hi,
+Sync these limits with the Linux kernel. This allows support for NAND devices
+with page size of 4k.
 
-On 16/03/2011 15:26, Teemu Peltola wrote:
-> I have Freescale i.MX25 3-stack development board + debug board attached to
-> it. I have built barebox-2011.03.0 using freescale_mx25_3stack_defconfig with
-> some modifications to support NAND booting (see below). I have used
-> buildroot-2011.02 to create 2.6.38 kernel (CONFIG_MACH_MX25_3DS=y etc.) and
-> rootfs images.
->
-> When I boot these images from barebox, dmesg displays the following error
-> message constantly and USB host port does not work:
->
-> mxc-ehci mxc-ehci.1: GetStatus port:1 status cc001020 102 ACK POWER sig=se0 OCC
-> hub 1-0:1.0: over-current change on port 1
-> hub 1-0:1.0: enabling power on all ports
-> hub 1-0:1.0: state 7 ports 1 chg 0000 evt 0002
->
-> If I try to use Freescale RedBoot (mx25_3stack_redboot_TO1_1.bin from
-> L2.6.31_09.12.00_SDK_images_MX25 package) with the same kernel and rootfs, USB
-> works. Is there some initialization that is missing from barebox?
->
-if you don't need USB in barebox don't enable it. I also have problems with 
-OTG port under Linux when it's enabled under barebox. I didn't yet found time 
-to investigate.
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+ include/linux/mtd/nand.h |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
 
-Eric
+diff --git a/include/linux/mtd/nand.h b/include/linux/mtd/nand.h
+index cb35fd2..0fe66e4 100644
+--- a/include/linux/mtd/nand.h
++++ b/include/linux/mtd/nand.h
+@@ -45,8 +45,8 @@ extern void nand_wait_ready(struct mtd_info *mtd);
+  * is supported now. If you add a chip with bigger oobsize/page
+  * adjust this accordingly.
+  */
+-#define NAND_MAX_OOBSIZE	64
+-#define NAND_MAX_PAGESIZE	2048
++#define NAND_MAX_OOBSIZE	576
++#define NAND_MAX_PAGESIZE	8192
+ 
+ /*
+  * Constants for hardware specific CLE/ALE/NCE function
+-- 
+1.7.2.3
+
 
 _______________________________________________
 barebox mailing list
