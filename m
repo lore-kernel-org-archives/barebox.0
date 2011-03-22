@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qw0-f49.google.com ([209.85.216.49])
+Received: from ip2.televic.com ([81.82.194.222])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Q1vWv-0003YX-3k
-	for barebox@lists.infradead.org; Tue, 22 Mar 2011 06:57:26 +0000
-Received: by qwi2 with SMTP id 2so5115482qwi.36
-	for <barebox@lists.infradead.org>; Mon, 21 Mar 2011 23:57:23 -0700 (PDT)
-From: Jon Ringle <jon@ringle.org>
-Date: Tue, 22 Mar 2011 02:57:08 -0400
-Message-Id: <1300777028-8178-1-git-send-email-jon@ringle.org>
+	id 1Q1xA2-0004FM-Iw
+	for barebox@lists.infradead.org; Tue, 22 Mar 2011 08:41:55 +0000
+From: Vanalme Filip <F.Vanalme@TELEVIC.com>
+Date: Tue, 22 Mar 2011 09:41:50 +0100
+Message-ID: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3BF5262@SRV-VS06.TELEVIC.COM>
+References: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3BF5211@SRV-VS06.TELEVIC.COM>
+	<4D8778A6.3000503@eukrea.com>
+In-Reply-To: <4D8778A6.3000503@eukrea.com>
+Content-Language: en-US
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,48 +19,101 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] defaultenv: fix empty CONFIG_DEFAULT_ENVIRONMENT_PATH
-To: barebox@lists.infradead.org
+Subject: RE: NAND flash
+To: =?utf-8?B?RXJpYyBCw6luYXJk?= <eric@eukrea.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-if CONFIG_DEFAULT_ENVIRONMENT_PATH="" then
-$(DEFAULT_ENVIRONMENT_PATH) expands to 'defaultenv "" '
-The "" would cause every single file found in $(srctree) to be included in
-$(ENV_FILES). This would then cause scripts/mod/sumversions.c to get
-recompiled using $(CC) and fail compilation if $(CC) points to a newlib
-cross compiler
-
-Signed-off-by: Jon Ringle <jon@ringle.org>
----
- common/Makefile |    4 +++-
- 1 files changed, 3 insertions(+), 1 deletions(-)
-
-diff --git a/common/Makefile b/common/Makefile
-index 753455b..cda2ad1 100644
---- a/common/Makefile
-+++ b/common/Makefile
-@@ -30,9 +30,11 @@ ifeq ($(CONFIG_DEFAULT_ENVIRONMENT_GENERIC),y)
- DEFAULT_ENVIRONMENT_PATH = "defaultenv"
- endif
- 
-+ifneq ($(CONFIG_DEFAULT_ENVIRONMENT_PATH),"")
- DEFAULT_ENVIRONMENT_PATH += $(CONFIG_DEFAULT_ENVIRONMENT_PATH)
-+endif
- 
--ENV_FILES := $(shell cd $(srctree); for i in $(DEFAULT_ENVIRONMENT_PATH); do find $${i} -type f -exec readlink -f {} \;; done)
-+ENV_FILES := $(shell cd $(srctree); for i in $(DEFAULT_ENVIRONMENT_PATH); do find $${i} -type f -exec readlink -f '{}' \;; done)
- 
- endif # ifdef CONFIG_DEFAULT_ENVIRONMENT
- 
--- 
-1.7.0.4
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBFcmljIELDqW5hcmQgW21haWx0
+bzplcmljQGV1a3JlYS5jb21dDQo+IFNlbnQ6IG1hYW5kYWcgMjEgbWFhcnQgMjAxMSAxNzoxMQ0K
+PiBUbzogVmFuYWxtZSBGaWxpcA0KPiBDYzogYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnDQo+
+IFN1YmplY3Q6IFJlOiBOQU5EIGZsYXNoDQo+IA0KPiBIaSwNCj4gDQo+IE9uIDIxLzAzLzIwMTEg
+MTY6MTksIFZhbmFsbWUgRmlsaXAgd3JvdGU6DQo+ID4gT24gb3VyIG93biBpLk1YMjcgYmFzZWQg
+Ym9hcmRzLCB3ZSBoYXZlIE1pY3JvbiBOQU5EIGZsYXNoIG1lbW9yeQ0KPiA+IChNVDI5RjJHMDhB
+QkJFQUg0KS4gQmVzaWRlcyB0aGUgQkktc3dhcHBpbmcgcHJvYmxlbSBmb3IgMksgTkFORA0KPiBm
+bGFzaGVzLCBJIGNhbg0KPiA+IHNlZSB0aGF0IHRoaXMgY2hpcCBuZWVkcyBhbiBpbml0aWFsIHJl
+c2V0IGNvbW1hbmQgYmVmb3JlIGl0IGJlY29tZXMNCj4gPiBvcGVyYXRpb25hbC4gVGhpcyBpcyBz
+b21ldGhpbmcgdGhhdCBoYXMgdG8gYmUgZG9uZSBpbiB0aGUgZWFybHkgYm9vdCBjb2RlLCBzbw0K
+PiA+IGJlZm9yZSBsb2FkaW5nIHRoZSBmaXJzdCBwYWdlIG9mIGJvb3Rsb2FkZXIgY29kZSAodGhl
+IHJlc2V0IHNob3VsZCBiZSBzZW50DQo+ID4gYmVmb3JlIHRoZSBmaXJzdCBwYWdlIG9mIGNvZGUg
+Y2FuIGJlIHJlYWQgZnJvbSBmbGFzaCkuDQo+ID4NCj4gPiAgRnJvbSBGcmVlc2NhbGUgZG9jLCBJ
+IGZvdW5kIHRoYXQgd2UgaGF2ZSB0byBibG93IGNlcnRhaW4gZnVzZXMgdG8gbWFrZSB0aGUNCj4g
+PiBpLk1YMjcgYm9vdCBmcm9tIGludGVybmFsIFJPTS4gQWNjb3JkaW5nIHRvIHRoZSBkb2N1bWVu
+dCwgdGhlIFJPTSBjb2RlIHRha2VzDQo+ID4gY2FyZSBhYm91dCB0aGUgaW5pdGlhbCByZXNldCBi
+ZWZvcmUgbG9hZGluZyB0aGUgZmlyc3QgcGFnZSBvZiBjb2RlIGZyb20gdGhlDQo+ID4gTkFORCBm
+bGFzaC4NCj4gPg0KPiA+IEnigJltIGhvd2V2ZXIgYSBsaXR0bGUgY29uY2VybmVkIGFib3V0IHRo
+aXMgZmlndXJlIGluIHRoZSBkb2N1bWVudCA6DQo+ID4NCj4gPiBJZiBJIHVuZGVyc3RhbmQgd2Vs
+bCwgdGhpcyBzaG91bGQgYmUgdGhlIHN0cnVjdHVyZSBvZiB0aGUgMksgTkZDIGJ1ZmZlciB3aGVu
+DQo+ID4gYm9vdGluZyBmcm9tIGludGVybmFsIFJPTS4gSSBkb27igJl0IHRoaW5rIHRoaXMgd2ls
+bCBiZSB0aGUgc3RydWN0dXJlIHdoZW4NCj4gPiBsb2FkaW5nIHRoZSBmaXJzdCBwYWdlIG9mIEJh
+cmVib3ggY29kZSwgY29ycmVjdCA/DQo+ID4NCj4gPiBBbnlvbmUgZmFtaWxpYXIgd2l0aCB0aGlz
+IE1pY3JvbiBzcGVjaWZpYyBmbGFzaCBwcm9ibGVtID8gQW5kIHRoZSBjb25zZXF1ZW5jZXMNCj4g
+PiBmb3IgQmFyZWJveCA/IERvIHdlIGhhdmUgdG8gbWFrZSBtb2RpZmljYXRpb25zIGluIHRoZSBC
+YXJlYm94IGNvZGUgdG8gdGFja2xlDQo+ID4gdGhpcyA/DQo+ID4NCj4gPiAoYmVjYXVzZSB0aGUg
+RnJlZXNjYWxlIGRvY3VtZW50IGlzIHJhdGhlciBXaW5DRSByZWxhdGVkLCBJ4oCZbSBub3Qgc3Vy
+ZSB0aGlzDQo+ID4gYWxzbyBhcHBsaWVzIHRvIEJhcmVib3gvTGludXggYmFzZWQgc3lzdGVtc+KA
+pikNCj4gPg0KPiA+IEkgaG9wZSB3ZSBkaWRu4oCZdCBtYWtlIGEgYmFkIGNob2ljZSBvZiBOQU5E
+IGZsYXNoIGluIGNvbWJpbmF0aW9uIHdpdGggaS5NWDI34oCmDQo+ID8gOy0pDQo+ID4NCj4gdGhp
+cyBtYXkgYmUgdGhlIGNhc2UgYXMgdW5sZXNzIHRoaXMgaGFzIGNoYW5nZWQgcmVjZW50bHksIGZs
+YXNoIHJlcXVpcmluZyBhDQo+IHJlc2V0IGNvbW1hbmQgY2FuJ3QgYmUgdXNlZCBvbiBpLk1YMjcg
+Zm9yIG5hbmQgYm9vdCB3aXRob3V0IGV4dHJhIGxvZ2ljIGFzIHRoZQ0KPiBpbnRlcm5hbCBib290
+cm9tIGRvZXNuJ3Qgc2VuZCB0aGlzIHJlc2V0IGNvbW1hbmQuDQo+IA0KPiBFcmljDQpbRmlsaXBd
+ICBIaSBFcmljLA0KDQpBcmUgeW91IHN1cmUgYWJvdXQgdGhpcyA/DQpUaGlzIGlzIGEgZnJhZ21l
+bnQgZnJvbSBhIEZyZWVzY2FsZSBhcHBsaWNhdGlvbiBub3RlIG9uIE5BTkQgZmxhc2hlcyAoZHJh
+ZnQgdmVyc2lvbiBob3dldmVyLi4uKS4NCg0KKHRoZXJlJ3MgYSBmbG93Y2hhcnQganVzdCBhYm92
+ZSB0aGlzIGV4cGxhbmF0aW9uIC0gSSByZW1vdmVkIGl0IGJlY2F1c2UgSSB0aGluayBpdCdzIG5v
+dCB0aGF0IGltcG9ydGFudCBmb3Igbm93KQ0KDQoiVGhlIHJlZCBkYXNoIGxpbmUgaXMgdGhlIG5h
+bmQgZmxhc2ggaW50ZXJuYWwgYm9vdCBjb2RlcyByb3V0aW5lLiBUaGVyZSB3aWxsIGJlIHNvbWUg
+aW1wb3J0YW50IGNoZWNrIHBvaW50czoNCjE6SWYgQk9PVF9JTlQgZnVzZSBpcyAweDEsIFRoZSBp
+bnRlcm5hbCBib290IHdpbGwgYmUgZW5hYmxlZC4NCjI6SWYgSVJPTV9TVVBQT1JUX0VOIGZ1c2Ug
+aXMgMHgxLCBUaGUgUk9NIGNvZGVzIHdpbGwgYmUgZW5hYmxlZC4NCjM6Uk9NIGNvZGVzIHdpbGwg
+cmVhZCBHUENSIHJlZ2lzdGVyIHRvIGNoZWNrIHRoZSBib290IHBpbiBzZXR0aW5ncy4NCjQ6Uk9N
+IGNvZGVzIHdpbGwgZW5hYmxlIHRoZSBOYW5kIGZsYXNoIHN1cHBvcnQsIGFuZCBnZXQgdGhlIE5h
+bmQgZmxhc2ggSU8gYnVzIHdpZHRoIGJ5IHRoZSB2YWx1ZSBmcm9tIGJvb3QgcGluIHNldHRpbmdz
+Lg0KNTpST00gY29kZXMgd2lsbCByZWFkIEFERF9DWUNMRVsxOjBdIHRvIGdldCB0aGUgcmlnaHQg
+TmFuZCBmbGFzaCBhY2Nlc3MgY3ljbGUuDQo2OlJPTSBjb2RlcyB3aWxsIHNlbmQgTmFuZCBmbGFz
+aCByZXNldCBjb21tYW5kIHRvIE5hbmQgZmxhc2guDQogICBOb3RlOiBNaWNyb24gZmxhc2goYW5k
+IHRoZSBzYW1lIGFsbGlhbmNlIE5hbmQgZmxhc2ggbWFudWZhY3R1cmUgbmVlZCB0aGUgcmVzZXQg
+Y29tbWFuZCBiZWZvcmUgb3BlcmF0aW9uIHRoZSBmbGFzaCwgT3VyIGV4dGVybmFsIHdpbGwgbm90
+IHNlbmQgb3V0IHRoZSBjb21tYW5kLCBFbmFibGUgaW50ZXJuYWwgYm9vdCB3aWxsIGVuYWJsZSB0
+aGlzIHR5cGUgb2YgZmxhc2gpDQo3OlJPTSBjb2RlcyB3aWxsIHJlYWQgdGhlIGZpcnN0IDJLIHBh
+Z2UgZGF0dW0gZnJvbSBmbGFzaCB0byBOYW5kIGZsYXNoIGNvbnRyb2xsZXIgYnVmZmVyKEFkZHJl
+c3MgMHhkODAwMDAwMCkuDQo4OlJPTSBjb2RlcyB3aWxsIGNoZWNrIHRoZSBDU0YvRENEIHNlZ21l
+bnQsIGJ1dCBpZiB0aGUgY2hpcHNldCBIQUIgdHlwZSBpcyBlbmdpbmVlciB2ZXJzaW9uLCBJdCB3
+aWxsIGp1c3QgbG9nIHRoZSBlcnJvciBtZXNzYWdlIGFuZCBqdW1wIHRvIGxvYWQgYWRkcmVzcyBk
+aXJlY3RseSwgUGxlYXNlIGNoZWNrIGRldGFpbHMgaW4gdGhlIGZvbGxvdyBzZWN0aW9uLiINCg0K
+UmVtYXJrIGl0ZW0gNi4uLg0KDQpGcmFnbWVudCBmcm9tIGFub3RoZXIgRnJlZXNjYWxlIGRvYyA6
+IA0KDQoi4pa6T3B0aW9uIDE6IENvbm5lY3QgUE9SX0IgcmVzZXQgc2lnbmFsIHRvIE5BTkRfSW5p
+dA0K4oCiIE9ubHkgYXZhaWxhYmxlIG9uIE5BTkQgRmxhc2ggZGV2aWNlcyB0aGF0IGhhdmUgdGhl
+IE5BTkRfSW5pdCBwaW4uDQrilrpPcHRpb24gMjogVXNlIEludGVybmFsIEJvb3QgTW9kZQ0K4oCi
+IFJlcXVpcmVzIGVGdXNlcyB0byBiZSBwcm9ncmFtbWVkIHRvIGVuYWJsZSBJbnRlcm5hbCBCb290
+IE1vZGUsDQpzZWxlY3QgTkFORCBGbGFzaCBhZGRyZXNzIGN5Y2xlcyBhbmQgaVJPTSBzdXBwb3J0
+IGVuYWJsZS4NCuKAoiBBZGQgTkFORCBGbGFzaCBIZWFkZXIgdG8gTkFORCB0byBzdXBwb3J0IGlS
+T00gQm9vdC4NCuKWuk9wdGlvbiAzOiBEb3VibGUgUE9SX0IgcmVzZXQgdG8gaS5NWDI3DQrigKIg
+SW5pdGlhbCBQT1JfQiB3aWxsIGdlbmVyYXRlIGEgaGlkZGVuIFJlc2V0IGluIHRoZSBOQU5EIEZs
+YXNoIHdoZW4NCmkuTVgyNyBwZXJmb3JtcyBpbml0aWFsIE5BTkQgRmxhc2ggcmVhZCBjeWNsZS4N
+CuKAoiBSZWFzc2VydCB0aGVuIGRlYXNzZXJ0IFBPUl9CIHRvIHJlLWdlbmVyYXRlIHRoZSBpbml0
+aWFsIE5BTkQgRmxhc2gNCnJlYWQgY3ljbGUuDQrigKIgSGlkZGVuIE5BTkQgRmxhc2ggcmVzZXQg
+d2lsbCBOT1Qgb2NjdXIgc2luY2UgcG93ZXIgd2FzIG5vdCByZW1vdmVkDQpmcm9tIHRoZSBOQU5E
+IEZsYXNoLg0K4oCiIFNtYWxsIHVDIGNhbiBiZSB1c2VkIHRvIGdlbmVyYXRlIHRoZSB0aW1pbmcu
+Ig0KDQpTZWUgb3B0aW9uIDIuLi4NCg0KQXQgdGhlIG1vbWVudCwgd2UgYXJlIHdvcmtpbmcgb24g
+aS5NWDI3UERLIGJvYXJkcy4gSSBqdXN0IGNoZWNrZWQgdGhlIHZlcnNpb24gaWQgOiAyLiBUaXRs
+ZSBvZiB0aGUgYXBwbGljYXRpb24gbm90ZSA6ICJpTXgyNyBUTzIgSW50ZXJuYWwgQm9vdCIuIFNv
+LCBJIGd1ZXNzIHRoaXMgaXMgaW50ZW5kZWQgZm9yIG91ciB2ZXJzaW9uLg0KDQpJZiBJJ20gcmln
+aHQsIHlvdXIgY29tcGFueSBpcyBhbHNvIG1hbnVmYWN0dXJlciBvZiBpLk1YMjcgYmFzZWQgYm9h
+cmRzLiBUaGVyZWZvcmUsIEkgdGVuZCB0byByZWx5IG9uIHlvdXIgZXhwZXJpZW5jZSB3aXRoIHRo
+YXQgcHJvY2Vzc29yLiBNb3Jlb3ZlciwgdGhlIGFwcGxpY2F0aW9uIG5vdGUgaXMgc3RpbGwgYSAi
+ZHJhZnQiIHZlcnNpb24uLi4gT24gdGhlIG90aGVyIGhhbmQsIEZyZWVzY2FsZSBjb25maXJtZWQg
+dGhhdCB3ZSBjb3VsZCB1c2UgdGhhdCBraW5kIG9mIE1pY3JvbiBOQU5EIGZsYXNoZXMgd2l0aG91
+dCBhbnkgcHJvYmxlbS4gVGhleSBldmVuIHJldmlld2VkIG91ciBvd24gYm9hcmQgZGVzaWduIGFu
+ZCBtYWRlIG5vIHJlbWFya3Mgd2l0aCByZXNwZWN0IHRvIHRoZSBOQU5EIGZsYXNoIChubyByZW1h
+cmtzIG9uIGFkZGluZyBleHRyYSBsb2dpYyB0byBzdXBwb3J0IHRoYXQgdHlwZSBvZiBOQU5EKS4u
+Lg0KVGhpcyBpcyBhIHZlcnkgY29uZnVzaW5nIHNpdHVhdGlvbiBhbmQgaXQgbWlnaHQgcmVzdWx0
+IGluIGEgcmVkZXNpZ24gb2Ygb3VyIGJvYXJkLi4uIA0KDQpPdGhlciBmb3J1bSBtZW1iZXJzIHdp
+dGggaS5NWDI3L01pY3JvbiBOQU5EIGV4cGVyaWVuY2UgPw0KX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBs
+aXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlz
+dGluZm8vYmFyZWJveAo=
