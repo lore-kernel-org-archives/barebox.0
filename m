@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ip2.televic.com ([81.82.194.222])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Q20aM-0006F0-2A
-	for barebox@lists.infradead.org; Tue, 22 Mar 2011 12:21:20 +0000
-From: Vanalme Filip <F.Vanalme@TELEVIC.com>
-Date: Tue, 22 Mar 2011 13:21:14 +0100
-Message-ID: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3BF5296@SRV-VS06.TELEVIC.COM>
-References: <6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3BF5211@SRV-VS06.TELEVIC.COM>
-	<4D8778A6.3000503@eukrea.com>
-	<6EE7D1502C48E44E92DCADF9DD3E0DB9017FF3BF5262@SRV-VS06.TELEVIC.COM>
-	<4D886627.1040900@eukrea.com>
-In-Reply-To: <4D886627.1040900@eukrea.com>
-Content-Language: en-US
+	id 1Q2Jip-00056V-SV
+	for barebox@lists.infradead.org; Wed, 23 Mar 2011 08:47:20 +0000
+Date: Wed, 23 Mar 2011 09:47:16 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20110323084716.GC29521@pengutronix.de>
+References: <1300777028-8178-1-git-send-email-jon@ringle.org>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1300777028-8178-1-git-send-email-jon@ringle.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,87 +18,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: NAND flash
-To: =?utf-8?B?RXJpYyBCw6luYXJk?= <eric@eukrea.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH] defaultenv: fix empty CONFIG_DEFAULT_ENVIRONMENT_PATH
+To: Jon Ringle <jon@ringle.org>
+Cc: barebox@lists.infradead.org
 
-PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBFcmljIELDqW5hcmQgW21haWx0
-bzplcmljQGV1a3JlYS5jb21dDQo+IFNlbnQ6IGRpbnNkYWcgMjIgbWFhcnQgMjAxMSAxMDowNQ0K
-PiBUbzogVmFuYWxtZSBGaWxpcA0KPiBDYzogYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnDQo+
-IFN1YmplY3Q6IFJlOiBOQU5EIGZsYXNoDQo+IA0KPiBIaSBGaWxpcCwNCj4gDQo+IE9uIDIyLzAz
-LzIwMTEgMDk6NDEsIFZhbmFsbWUgRmlsaXAgd3JvdGU6DQo+ID4gQXJlIHlvdSBzdXJlIGFib3V0
-IHRoaXMgPw0KPiA+IFRoaXMgaXMgYSBmcmFnbWVudCBmcm9tIGEgRnJlZXNjYWxlIGFwcGxpY2F0
-aW9uIG5vdGUgb24gTkFORCBmbGFzaGVzIChkcmFmdA0KPiB2ZXJzaW9uIGhvd2V2ZXIuLi4pLg0K
-PiA+DQo+ID4gKHRoZXJlJ3MgYSBmbG93Y2hhcnQganVzdCBhYm92ZSB0aGlzIGV4cGxhbmF0aW9u
-IC0gSSByZW1vdmVkIGl0IGJlY2F1c2UgSSB0aGluayBpdCdzDQo+IG5vdCB0aGF0IGltcG9ydGFu
-dCBmb3Igbm93KQ0KPiA+DQo+ID4gIlRoZSByZWQgZGFzaCBsaW5lIGlzIHRoZSBuYW5kIGZsYXNo
-IGludGVybmFsIGJvb3QgY29kZXMgcm91dGluZS4gVGhlcmUgd2lsbCBiZQ0KPiBzb21lIGltcG9y
-dGFudCBjaGVjayBwb2ludHM6DQo+ID4gMTpJZiBCT09UX0lOVCBmdXNlIGlzIDB4MSwgVGhlIGlu
-dGVybmFsIGJvb3Qgd2lsbCBiZSBlbmFibGVkLg0KPiA+IDI6SWYgSVJPTV9TVVBQT1JUX0VOIGZ1
-c2UgaXMgMHgxLCBUaGUgUk9NIGNvZGVzIHdpbGwgYmUgZW5hYmxlZC4NCj4gPiAzOlJPTSBjb2Rl
-cyB3aWxsIHJlYWQgR1BDUiByZWdpc3RlciB0byBjaGVjayB0aGUgYm9vdCBwaW4gc2V0dGluZ3Mu
-DQo+ID4gNDpST00gY29kZXMgd2lsbCBlbmFibGUgdGhlIE5hbmQgZmxhc2ggc3VwcG9ydCwgYW5k
-IGdldCB0aGUgTmFuZCBmbGFzaCBJTyBidXMNCj4gd2lkdGggYnkgdGhlIHZhbHVlIGZyb20gYm9v
-dCBwaW4gc2V0dGluZ3MuDQo+ID4gNTpST00gY29kZXMgd2lsbCByZWFkIEFERF9DWUNMRVsxOjBd
-IHRvIGdldCB0aGUgcmlnaHQgTmFuZCBmbGFzaCBhY2Nlc3MNCj4gY3ljbGUuDQo+ID4gNjpST00g
-Y29kZXMgd2lsbCBzZW5kIE5hbmQgZmxhc2ggcmVzZXQgY29tbWFuZCB0byBOYW5kIGZsYXNoLg0K
-PiA+ICAgICBOb3RlOiBNaWNyb24gZmxhc2goYW5kIHRoZSBzYW1lIGFsbGlhbmNlIE5hbmQgZmxh
-c2ggbWFudWZhY3R1cmUgbmVlZCB0aGUNCj4gcmVzZXQgY29tbWFuZCBiZWZvcmUgb3BlcmF0aW9u
-IHRoZSBmbGFzaCwgT3VyIGV4dGVybmFsIHdpbGwgbm90IHNlbmQgb3V0IHRoZQ0KPiBjb21tYW5k
-LCBFbmFibGUgaW50ZXJuYWwgYm9vdCB3aWxsIGVuYWJsZSB0aGlzIHR5cGUgb2YgZmxhc2gpDQo+
-ID4gNzpST00gY29kZXMgd2lsbCByZWFkIHRoZSBmaXJzdCAySyBwYWdlIGRhdHVtIGZyb20gZmxh
-c2ggdG8gTmFuZCBmbGFzaCBjb250cm9sbGVyDQo+IGJ1ZmZlcihBZGRyZXNzIDB4ZDgwMDAwMDAp
-Lg0KPiA+IDg6Uk9NIGNvZGVzIHdpbGwgY2hlY2sgdGhlIENTRi9EQ0Qgc2VnbWVudCwgYnV0IGlm
-IHRoZSBjaGlwc2V0IEhBQiB0eXBlIGlzDQo+IGVuZ2luZWVyIHZlcnNpb24sIEl0IHdpbGwganVz
-dCBsb2cgdGhlIGVycm9yIG1lc3NhZ2UgYW5kIGp1bXAgdG8gbG9hZCBhZGRyZXNzDQo+IGRpcmVj
-dGx5LCBQbGVhc2UgY2hlY2sgZGV0YWlscyBpbiB0aGUgZm9sbG93IHNlY3Rpb24uIg0KPiA+DQo+
-ID4gUmVtYXJrIGl0ZW0gNi4uLg0KPiA+DQo+IHllcyBJIGFsc28gc2F3IHRoaXMgZG9jdW1lbnQs
-IGJ1dCBGcmVlc2NhbGUgdG9sZCB1cyBzZXZlcmFsIHRpbWVzIHRoYXQgbmFuZA0KPiBib290IG9u
-IE1pY3JvbiBmbGFzaCBpcyBub3Qgd29ya2luZyBzbyBJIGRpZG4ndCBpbnZlc3RpZ2F0ZSBtb3Jl
-IGFzIHdlIGhhdmUNCj4gTk9SIGJvb3QgYXMgYSBkZWZhdWx0IG9uIHRoaXMgcGxhdGZvcm0gLi4u
-IGFuZCBoYXZlIHN3aXRjaGVkIHRvIGkuTVgyNSAmIDM1DQo+IGZvciBuZXcgYXBwbGljYXRpb25z
-Lg0KPiANCj4gPiBGcmFnbWVudCBmcm9tIGFub3RoZXIgRnJlZXNjYWxlIGRvYyA6DQo+ID4NCj4g
-PiAi4pa6T3B0aW9uIDE6IENvbm5lY3QgUE9SX0IgcmVzZXQgc2lnbmFsIHRvIE5BTkRfSW5pdA0K
-PiA+IOKAoiBPbmx5IGF2YWlsYWJsZSBvbiBOQU5EIEZsYXNoIGRldmljZXMgdGhhdCBoYXZlIHRo
-ZSBOQU5EX0luaXQgcGluLg0KPiA+IOKWuk9wdGlvbiAyOiBVc2UgSW50ZXJuYWwgQm9vdCBNb2Rl
-DQo+ID4g4oCiIFJlcXVpcmVzIGVGdXNlcyB0byBiZSBwcm9ncmFtbWVkIHRvIGVuYWJsZSBJbnRl
-cm5hbCBCb290IE1vZGUsDQo+ID4gc2VsZWN0IE5BTkQgRmxhc2ggYWRkcmVzcyBjeWNsZXMgYW5k
-IGlST00gc3VwcG9ydCBlbmFibGUuDQo+ID4g4oCiIEFkZCBOQU5EIEZsYXNoIEhlYWRlciB0byBO
-QU5EIHRvIHN1cHBvcnQgaVJPTSBCb290Lg0KPiA+IOKWuk9wdGlvbiAzOiBEb3VibGUgUE9SX0Ig
-cmVzZXQgdG8gaS5NWDI3DQo+ID4g4oCiIEluaXRpYWwgUE9SX0Igd2lsbCBnZW5lcmF0ZSBhIGhp
-ZGRlbiBSZXNldCBpbiB0aGUgTkFORCBGbGFzaCB3aGVuDQo+ID4gaS5NWDI3IHBlcmZvcm1zIGlu
-aXRpYWwgTkFORCBGbGFzaCByZWFkIGN5Y2xlLg0KPiA+IOKAoiBSZWFzc2VydCB0aGVuIGRlYXNz
-ZXJ0IFBPUl9CIHRvIHJlLWdlbmVyYXRlIHRoZSBpbml0aWFsIE5BTkQgRmxhc2gNCj4gPiByZWFk
-IGN5Y2xlLg0KPiA+IOKAoiBIaWRkZW4gTkFORCBGbGFzaCByZXNldCB3aWxsIE5PVCBvY2N1ciBz
-aW5jZSBwb3dlciB3YXMgbm90IHJlbW92ZWQNCj4gPiBmcm9tIHRoZSBOQU5EIEZsYXNoLg0KPiA+
-IOKAoiBTbWFsbCB1QyBjYW4gYmUgdXNlZCB0byBnZW5lcmF0ZSB0aGUgdGltaW5nLiINCj4gPg0K
-PiA+IFNlZSBvcHRpb24gMi4uLg0KPiA+DQo+ID4gQXQgdGhlIG1vbWVudCwgd2UgYXJlIHdvcmtp
-bmcgb24gaS5NWDI3UERLIGJvYXJkcy4gSSBqdXN0IGNoZWNrZWQgdGhlIHZlcnNpb24NCj4gaWQg
-OiAyLiBUaXRsZSBvZiB0aGUgYXBwbGljYXRpb24gbm90ZSA6ICJpTXgyNyBUTzIgSW50ZXJuYWwg
-Qm9vdCIuIFNvLCBJIGd1ZXNzIHRoaXMgaXMNCj4gaW50ZW5kZWQgZm9yIG91ciB2ZXJzaW9uLg0K
-PiA+DQo+ID4gSWYgSSdtIHJpZ2h0LCB5b3VyIGNvbXBhbnkgaXMgYWxzbyBtYW51ZmFjdHVyZXIg
-b2YgaS5NWDI3IGJhc2VkIGJvYXJkcy4NCj4gVGhlcmVmb3JlLCBJIHRlbmQgdG8gcmVseSBvbiB5
-b3VyIGV4cGVyaWVuY2Ugd2l0aCB0aGF0IHByb2Nlc3Nvci4gTW9yZW92ZXIsIHRoZQ0KPiBhcHBs
-aWNhdGlvbiBub3RlIGlzIHN0aWxsIGEgImRyYWZ0IiB2ZXJzaW9uLi4uIE9uIHRoZSBvdGhlciBo
-YW5kLCBGcmVlc2NhbGUgY29uZmlybWVkDQo+IHRoYXQgd2UgY291bGQgdXNlIHRoYXQga2luZCBv
-ZiBNaWNyb24gTkFORCBmbGFzaGVzIHdpdGhvdXQgYW55IHByb2JsZW0uIFRoZXkNCj4gZXZlbiBy
-ZXZpZXdlZCBvdXIgb3duIGJvYXJkIGRlc2lnbiBhbmQgbWFkZSBubyByZW1hcmtzIHdpdGggcmVz
-cGVjdCB0byB0aGUNCj4gTkFORCBmbGFzaCAobm8gcmVtYXJrcyBvbiBhZGRpbmcgZXh0cmEgbG9n
-aWMgdG8gc3VwcG9ydCB0aGF0IHR5cGUgb2YgTkFORCkuLi4NCj4gPiBUaGlzIGlzIGEgdmVyeSBj
-b25mdXNpbmcgc2l0dWF0aW9uIGFuZCBpdCBtaWdodCByZXN1bHQgaW4gYSByZWRlc2lnbiBvZiBv
-dXIgYm9hcmQuLi4NCj4gPg0KPiBJJ3ZlIG5vdCB3b3JrZWQgZW5vdWdoIG9uIG5hbmQgYm9vdCBv
-biBpLk1YMjcgdG8gcHJvdmlkZSBtb3JlIGZlZWRiYWNrIGJ1dCBGU0wNCj4gJiBNaWNyb24gcmVj
-b21tZW5kZWQgdXMgdGhlIHdvcmthcm91bmQgaW1wbHlpbmcgYSBkb3VibGUgUE9SIGZvciBuYW5k
-IGJvb3QuDQo+IA0KPiBUaGUgcHJvYmxlbSBpcyB0aGF0IHNvbWV0aW1lIHdvcmthcm91bmQgc2Vu
-dCBieSBzdXBwb3J0IHRoYXQgYXJlIG5vdCBldmVuDQo+IHRlc3RlZCBhbmQgc29tZXRpbWUgdGhl
-cmUgYXJlIHRoaW5ncyBpbiB0aGUgZG9jdW1lbnRhdGlvbiB3aGljaCBhcmUgYWxzbyBub3QNCj4g
-dGVzdGVkIG9yIGV2ZW4gbm90IHByZXNlbnQgaW4gdGhlIENQVSBzbyBpdCdzIGRpZmZpY3VsdCB0
-byBrbm93IHdoZXJlIGlzIHRoZQ0KPiB0cnV0aCB3aXRob3V0IHNwZW5kaW5nIHRpbWUgb24gdGhp
-cyBwcm9ibGVtIC4uLg0KPiANCj4gRXJpYw0KW0ZpbGlwXSBUaGFua3MgRXJpYyBmb3IgeW91ciBp
-bnB1dCAhDQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpi
-YXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xp
-c3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Hi Jon,
+
+On Tue, Mar 22, 2011 at 02:57:08AM -0400, Jon Ringle wrote:
+> if CONFIG_DEFAULT_ENVIRONMENT_PATH="" then
+> $(DEFAULT_ENVIRONMENT_PATH) expands to 'defaultenv "" '
+> The "" would cause every single file found in $(srctree) to be included in
+> $(ENV_FILES). This would then cause scripts/mod/sumversions.c to get
+> recompiled using $(CC) and fail compilation if $(CC) points to a newlib
+> cross compiler
+
+Indeed an annoying bug. Applied, thanks
+
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
