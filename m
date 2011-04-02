@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-yw0-f49.google.com ([209.85.213.49])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Q62oe-0001fg-CK
-	for barebox@lists.infradead.org; Sat, 02 Apr 2011 15:32:45 +0000
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Sat, 2 Apr 2011 17:31:53 +0200
-References: <20110402224101.7c9506e8@manocska.bendor.com.au>
-In-Reply-To: <20110402224101.7c9506e8@manocska.bendor.com.au>
+	id 1Q63vy-00023m-GD
+	for barebox@lists.infradead.org; Sat, 02 Apr 2011 16:44:24 +0000
+Received: by ywe9 with SMTP id 9so1894840ywe.36
+	for <barebox@lists.infradead.org>; Sat, 02 Apr 2011 09:44:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <201104021731.53103.jbe@pengutronix.de>
+In-Reply-To: <201104021731.53103.jbe@pengutronix.de>
+References: <20110402224101.7c9506e8@manocska.bendor.com.au>
+	<201104021731.53103.jbe@pengutronix.de>
+Date: Sat, 2 Apr 2011 18:44:20 +0200
+Message-ID: <BANLkTimgnkguHY0bLCZADi0_zsOQ5MPE9A@mail.gmail.com>
+From: Belisko Marek <marek.belisko@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,156 +20,119 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: Mini2440 questions
-To: barebox@lists.infradead.org
+To: Juergen Beisert <jbe@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hi Zolt=E1n,
-
-Zolt=E1n K=F3csi wrote:
-> I've got two issues. One is barebox related:
->
-> Does the current git master branch supposed to boot from NAND?
-> Download, config (mini2440 defconfig + very little personalisation),
-> compile. Boot from NAND *is* enabled in the config.
-
-As long Sascha release a new barebox, the NAND boot feature of the mini2440=
- is =
-
-still in next. Its going to be released in the May release.
-
-So, you must still use the 'next' branch to get all S3C2440 related NAND bo=
-ot =
-
-changes.
-
-> Load to RAM and start: starts up just fine.
-> Boot from NAND: nothing.
-
-Sure. The NAND driver for the S3C2440 CPU is still broken for other NAND ty=
-pes =
-
-than small page ones.
-
-> I looked at the actual binary image with objdump -d and it seems to
-> initialise the PLL, the SDRAM controller and load the NAND into the
-> RAM, then jump onto it. All that code is within the 4K StepStone range.
-> However, nothing happens, the board is dead.
-
-Yes, because the S3C2440 NAND driver loads the wrong content from the NAND.
-
-> The other problem is not barebox related, but considering the audience
-> of the list someone might have some ideas.
->
-> Linux kernel, 2.6.37.2. Defconfig for mini2440. A fairly minimalistic
-> kernel is then configured, dev. drivers for on-board stuff are static,
-> everything else is modules. Low-level debug messages are enabled.
->
-> Booting the kernel (using vivi...) hangs, just after the console is
-> initialised:
->
-> Copy linux kernel from 0x00060000 to 0x30008000, size =3D 0x002a0000 ...
-> done
-> zImage magic =3D 0x016f2818
-> Setup linux parameters at 0x30000100
-> linux command line is: "noinitrd root=3D/dev/mtdblock3 init=3D/linuxrc
-> console=3DttySAC0,115200"
-> MACH_TYPE =3D 1999
-> NOW, Booting Linux......
-> Uncompressing Linux... done, booting the kernel.
-> s3c24xx_serial_initconsole
-> s3c24xx_serial_init_ports: initialising ports...
-> s3c24xx_serial_init_port: port=3Dc03a6378, platdev=3Dc03b9ab0
-> s3c24xx_serial_init_port: c03a6378 (hw 0)...
-> resource c0397b10 (50000000..50003fff)
-> port: map=3D50000000, mem=3Df7000000, irq=3D70 (70,71), clock=3D1
-> s3c2440_serial_resetport: port=3Dc03a6378 (50000000), cfg=3Dc03b9a24
-> s3c24xx_serial_init_port: port=3Dc03a6434, platdev=3Dc0398d00
-> s3c24xx_serial_init_port: c03a6434 (hw 1)...
-> resource c0397b48 (50004000..50007fff)
-> port: map=3D50004000, mem=3Df7004000, irq=3D73 (73,74), clock=3D1
-> s3c2440_serial_resetport: port=3Dc03a6434 (50004000), cfg=3Dc03b9a44
-> s3c24xx_serial_init_port: port=3Dc03a64f0, platdev=3Dc0398db8
-> s3c24xx_serial_init_port: c03a64f0 (hw 2)...
-> resource c0397b80 (50008000..5000bfff)
-> port: map=3D50008000, mem=3Df7008000, irq=3D76 (76,77), clock=3D1
-> s3c2440_serial_resetport: port=3Dc03a64f0 (50008000), cfg=3Dc03b9a64
-> s3c24xx_serial_init(c03a665c,c03a6628)
-> s3c2440_serial_probe: dev=3Dc03b9ab0
-> s3c24xx_serial_probe(c03b9ab0, c03a6628) 0
-> s3c24xx_serial_probe: initialising port c03a6354...
-> s3c24xx_serial_init_port: port=3Dc03a6378, platdev=3Dc03b9ab0
-> s3c24xx_serial_probe: adding port
-> s3c2440_serial_probe: dev=3Dc0398d00
-> s3c24xx_serial_probe(c0398d00, c03a6628) 1
-> s3c24xx_serial_probe: initialising port c03a6410...
-> s3c24xx_serial_init_port: port=3Dc03a6434, platdev=3Dc0398d00
-> s3c24xx_serial_probe: adding port
-> s3c2440_serial_probe: dev=3Dc0398db8
-> s3c24xx_serial_probe(c0398db8, c03a6628) 2
-> s3c24xx_serial_probe: initialising port c03a64cc...
-> s3c24xx_serial_init_port: port=3Dc03a64f0, platdev=3Dc0398db8
-> s3c24xx_serial_probe: adding port
->
-> and then nothing. A LED on the board is blinking (two blinks, maybe
-> 100ms apart, then about 200ms pause) but nothing comes out of the
-> serial port. The LCD backlight is off and there doesn't seem to be
-> either a splash image or debug info on it (console on LCD is enabled).
->
-> The build environment is the latest buildroot, 4.5.2 gcc, 0.9.31 uClibc,
-> everything is built from scratch (that's actually the aim of the whole
-> excercise, to build a working Linux system on a Mini2440 HW from clean,
-> up-to-date sources, not pre-built toolchains and pre-compiled packages
-> or binary images).
->
-> Any pointers would be highly appreciated.
-
-1) do you use the mini2440 kernel command line parameter?
-
-In the 'next' branch I added this comment into mini2440's config:
-#
-# "mini2440" kernel parameter
-# 0 .. 9 =3D screen type
-# b =3D backlight enabled
-# t =3D touch enabled
-# c =3D camera enabled
-# Note: can be "minit2440=3D " if nothing of these components are connected
-#
-bootargs=3D"console=3DttySAC0,115200 mini2440=3D0tbc"
-
-2) in 2.6.37 and 2.6.38 the serial console name is totally broken. There is=
- a =
-
-patch around to fix it.
-
-From: Darius Augulis <augulis.darius@gmail.com>
-Subject: serial: samsung: fix device name
-
-Without this patch you must use a serial UART name of "/dev/s3c2410_serial0=
-" =
-
-to make it work. Ugly.
-
-I will send you this patch offline.
-
-Regards,
-Juergen
-
--- =
-
-Pengutronix e.K.                              | Juergen Beisert            =
- |
-Linux Solutions for Science and Industry      | Phone: +49-8766-939 228    =
- |
-Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555=
- |
-Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/ =
- |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gU2F0LCBBcHIgMiwgMjAxMSBhdCA1OjMxIFBNLCBKdWVyZ2VuIEJlaXNlcnQgPGpiZUBwZW5n
+dXRyb25peC5kZT4gd3JvdGU6Cj4gSGkgWm9sdMOhbiwKPgo+IFpvbHTDoW4gS8OzY3NpIHdyb3Rl
+Ogo+PiBJJ3ZlIGdvdCB0d28gaXNzdWVzLiBPbmUgaXMgYmFyZWJveCByZWxhdGVkOgo+Pgo+PiBE
+b2VzIHRoZSBjdXJyZW50IGdpdCBtYXN0ZXIgYnJhbmNoIHN1cHBvc2VkIHRvIGJvb3QgZnJvbSBO
+QU5EPwo+PiBEb3dubG9hZCwgY29uZmlnIChtaW5pMjQ0MCBkZWZjb25maWcgKyB2ZXJ5IGxpdHRs
+ZSBwZXJzb25hbGlzYXRpb24pLAo+PiBjb21waWxlLiBCb290IGZyb20gTkFORCAqaXMqIGVuYWJs
+ZWQgaW4gdGhlIGNvbmZpZy4KPgo+IEFzIGxvbmcgU2FzY2hhIHJlbGVhc2UgYSBuZXcgYmFyZWJv
+eCwgdGhlIE5BTkQgYm9vdCBmZWF0dXJlIG9mIHRoZSBtaW5pMjQ0MCBpcwo+IHN0aWxsIGluIG5l
+eHQuIEl0cyBnb2luZyB0byBiZSByZWxlYXNlZCBpbiB0aGUgTWF5IHJlbGVhc2UuCj4KPiBTbywg
+eW91IG11c3Qgc3RpbGwgdXNlIHRoZSAnbmV4dCcgYnJhbmNoIHRvIGdldCBhbGwgUzNDMjQ0MCBy
+ZWxhdGVkIE5BTkQgYm9vdAo+IGNoYW5nZXMuCj4KPj4gTG9hZCB0byBSQU0gYW5kIHN0YXJ0OiBz
+dGFydHMgdXAganVzdCBmaW5lLgo+PiBCb290IGZyb20gTkFORDogbm90aGluZy4KPgo+IFN1cmUu
+IFRoZSBOQU5EIGRyaXZlciBmb3IgdGhlIFMzQzI0NDAgQ1BVIGlzIHN0aWxsIGJyb2tlbiBmb3Ig
+b3RoZXIgTkFORCB0eXBlcwo+IHRoYW4gc21hbGwgcGFnZSBvbmVzLgo+Cj4+IEkgbG9va2VkIGF0
+IHRoZSBhY3R1YWwgYmluYXJ5IGltYWdlIHdpdGggb2JqZHVtcCAtZCBhbmQgaXQgc2VlbXMgdG8K
+Pj4gaW5pdGlhbGlzZSB0aGUgUExMLCB0aGUgU0RSQU0gY29udHJvbGxlciBhbmQgbG9hZCB0aGUg
+TkFORCBpbnRvIHRoZQo+PiBSQU0sIHRoZW4ganVtcCBvbnRvIGl0LiBBbGwgdGhhdCBjb2RlIGlz
+IHdpdGhpbiB0aGUgNEsgU3RlcFN0b25lIHJhbmdlLgo+PiBIb3dldmVyLCBub3RoaW5nIGhhcHBl
+bnMsIHRoZSBib2FyZCBpcyBkZWFkLgo+Cj4gWWVzLCBiZWNhdXNlIHRoZSBTM0MyNDQwIE5BTkQg
+ZHJpdmVyIGxvYWRzIHRoZSB3cm9uZyBjb250ZW50IGZyb20gdGhlIE5BTkQuCj4KPj4gVGhlIG90
+aGVyIHByb2JsZW0gaXMgbm90IGJhcmVib3ggcmVsYXRlZCwgYnV0IGNvbnNpZGVyaW5nIHRoZSBh
+dWRpZW5jZQo+PiBvZiB0aGUgbGlzdCBzb21lb25lIG1pZ2h0IGhhdmUgc29tZSBpZGVhcy4KPj4K
+Pj4gTGludXgga2VybmVsLCAyLjYuMzcuMi4gRGVmY29uZmlnIGZvciBtaW5pMjQ0MC4gQSBmYWly
+bHkgbWluaW1hbGlzdGljCj4+IGtlcm5lbCBpcyB0aGVuIGNvbmZpZ3VyZWQsIGRldi4gZHJpdmVy
+cyBmb3Igb24tYm9hcmQgc3R1ZmYgYXJlIHN0YXRpYywKPj4gZXZlcnl0aGluZyBlbHNlIGlzIG1v
+ZHVsZXMuIExvdy1sZXZlbCBkZWJ1ZyBtZXNzYWdlcyBhcmUgZW5hYmxlZC4KPj4KPj4gQm9vdGlu
+ZyB0aGUga2VybmVsICh1c2luZyB2aXZpLi4uKSBoYW5ncywganVzdCBhZnRlciB0aGUgY29uc29s
+ZSBpcwo+PiBpbml0aWFsaXNlZDoKPj4KPj4gQ29weSBsaW51eCBrZXJuZWwgZnJvbSAweDAwMDYw
+MDAwIHRvIDB4MzAwMDgwMDAsIHNpemUgPSAweDAwMmEwMDAwIC4uLgo+PiBkb25lCj4+IHpJbWFn
+ZSBtYWdpYyA9IDB4MDE2ZjI4MTgKPj4gU2V0dXAgbGludXggcGFyYW1ldGVycyBhdCAweDMwMDAw
+MTAwCj4+IGxpbnV4IGNvbW1hbmQgbGluZSBpczogIm5vaW5pdHJkIHJvb3Q9L2Rldi9tdGRibG9j
+azMgaW5pdD0vbGludXhyYwo+PiBjb25zb2xlPXR0eVNBQzAsMTE1MjAwIgo+PiBNQUNIX1RZUEUg
+PSAxOTk5Cj4+IE5PVywgQm9vdGluZyBMaW51eC4uLi4uLgo+PiBVbmNvbXByZXNzaW5nIExpbnV4
+Li4uIGRvbmUsIGJvb3RpbmcgdGhlIGtlcm5lbC4KPj4gczNjMjR4eF9zZXJpYWxfaW5pdGNvbnNv
+bGUKPj4gczNjMjR4eF9zZXJpYWxfaW5pdF9wb3J0czogaW5pdGlhbGlzaW5nIHBvcnRzLi4uCj4+
+IHMzYzI0eHhfc2VyaWFsX2luaXRfcG9ydDogcG9ydD1jMDNhNjM3OCwgcGxhdGRldj1jMDNiOWFi
+MAo+PiBzM2MyNHh4X3NlcmlhbF9pbml0X3BvcnQ6IGMwM2E2Mzc4IChodyAwKS4uLgo+PiByZXNv
+dXJjZSBjMDM5N2IxMCAoNTAwMDAwMDAuLjUwMDAzZmZmKQo+PiBwb3J0OiBtYXA9NTAwMDAwMDAs
+IG1lbT1mNzAwMDAwMCwgaXJxPTcwICg3MCw3MSksIGNsb2NrPTEKPj4gczNjMjQ0MF9zZXJpYWxf
+cmVzZXRwb3J0OiBwb3J0PWMwM2E2Mzc4ICg1MDAwMDAwMCksIGNmZz1jMDNiOWEyNAo+PiBzM2My
+NHh4X3NlcmlhbF9pbml0X3BvcnQ6IHBvcnQ9YzAzYTY0MzQsIHBsYXRkZXY9YzAzOThkMDAKPj4g
+czNjMjR4eF9zZXJpYWxfaW5pdF9wb3J0OiBjMDNhNjQzNCAoaHcgMSkuLi4KPj4gcmVzb3VyY2Ug
+YzAzOTdiNDggKDUwMDA0MDAwLi41MDAwN2ZmZikKPj4gcG9ydDogbWFwPTUwMDA0MDAwLCBtZW09
+ZjcwMDQwMDAsIGlycT03MyAoNzMsNzQpLCBjbG9jaz0xCj4+IHMzYzI0NDBfc2VyaWFsX3Jlc2V0
+cG9ydDogcG9ydD1jMDNhNjQzNCAoNTAwMDQwMDApLCBjZmc9YzAzYjlhNDQKPj4gczNjMjR4eF9z
+ZXJpYWxfaW5pdF9wb3J0OiBwb3J0PWMwM2E2NGYwLCBwbGF0ZGV2PWMwMzk4ZGI4Cj4+IHMzYzI0
+eHhfc2VyaWFsX2luaXRfcG9ydDogYzAzYTY0ZjAgKGh3IDIpLi4uCj4+IHJlc291cmNlIGMwMzk3
+YjgwICg1MDAwODAwMC4uNTAwMGJmZmYpCj4+IHBvcnQ6IG1hcD01MDAwODAwMCwgbWVtPWY3MDA4
+MDAwLCBpcnE9NzYgKDc2LDc3KSwgY2xvY2s9MQo+PiBzM2MyNDQwX3NlcmlhbF9yZXNldHBvcnQ6
+IHBvcnQ9YzAzYTY0ZjAgKDUwMDA4MDAwKSwgY2ZnPWMwM2I5YTY0Cj4+IHMzYzI0eHhfc2VyaWFs
+X2luaXQoYzAzYTY2NWMsYzAzYTY2MjgpCj4+IHMzYzI0NDBfc2VyaWFsX3Byb2JlOiBkZXY9YzAz
+YjlhYjAKPj4gczNjMjR4eF9zZXJpYWxfcHJvYmUoYzAzYjlhYjAsIGMwM2E2NjI4KSAwCj4+IHMz
+YzI0eHhfc2VyaWFsX3Byb2JlOiBpbml0aWFsaXNpbmcgcG9ydCBjMDNhNjM1NC4uLgo+PiBzM2My
+NHh4X3NlcmlhbF9pbml0X3BvcnQ6IHBvcnQ9YzAzYTYzNzgsIHBsYXRkZXY9YzAzYjlhYjAKPj4g
+czNjMjR4eF9zZXJpYWxfcHJvYmU6IGFkZGluZyBwb3J0Cj4+IHMzYzI0NDBfc2VyaWFsX3Byb2Jl
+OiBkZXY9YzAzOThkMDAKPj4gczNjMjR4eF9zZXJpYWxfcHJvYmUoYzAzOThkMDAsIGMwM2E2NjI4
+KSAxCj4+IHMzYzI0eHhfc2VyaWFsX3Byb2JlOiBpbml0aWFsaXNpbmcgcG9ydCBjMDNhNjQxMC4u
+Lgo+PiBzM2MyNHh4X3NlcmlhbF9pbml0X3BvcnQ6IHBvcnQ9YzAzYTY0MzQsIHBsYXRkZXY9YzAz
+OThkMDAKPj4gczNjMjR4eF9zZXJpYWxfcHJvYmU6IGFkZGluZyBwb3J0Cj4+IHMzYzI0NDBfc2Vy
+aWFsX3Byb2JlOiBkZXY9YzAzOThkYjgKPj4gczNjMjR4eF9zZXJpYWxfcHJvYmUoYzAzOThkYjgs
+IGMwM2E2NjI4KSAyCj4+IHMzYzI0eHhfc2VyaWFsX3Byb2JlOiBpbml0aWFsaXNpbmcgcG9ydCBj
+MDNhNjRjYy4uLgo+PiBzM2MyNHh4X3NlcmlhbF9pbml0X3BvcnQ6IHBvcnQ9YzAzYTY0ZjAsIHBs
+YXRkZXY9YzAzOThkYjgKPj4gczNjMjR4eF9zZXJpYWxfcHJvYmU6IGFkZGluZyBwb3J0Cj4+Cj4+
+IGFuZCB0aGVuIG5vdGhpbmcuIEEgTEVEIG9uIHRoZSBib2FyZCBpcyBibGlua2luZyAodHdvIGJs
+aW5rcywgbWF5YmUKPj4gMTAwbXMgYXBhcnQsIHRoZW4gYWJvdXQgMjAwbXMgcGF1c2UpIGJ1dCBu
+b3RoaW5nIGNvbWVzIG91dCBvZiB0aGUKPj4gc2VyaWFsIHBvcnQuIFRoZSBMQ0QgYmFja2xpZ2h0
+IGlzIG9mZiBhbmQgdGhlcmUgZG9lc24ndCBzZWVtIHRvIGJlCj4+IGVpdGhlciBhIHNwbGFzaCBp
+bWFnZSBvciBkZWJ1ZyBpbmZvIG9uIGl0IChjb25zb2xlIG9uIExDRCBpcyBlbmFibGVkKS4KPj4K
+Pj4gVGhlIGJ1aWxkIGVudmlyb25tZW50IGlzIHRoZSBsYXRlc3QgYnVpbGRyb290LCA0LjUuMiBn
+Y2MsIDAuOS4zMSB1Q2xpYmMsCj4+IGV2ZXJ5dGhpbmcgaXMgYnVpbHQgZnJvbSBzY3JhdGNoICh0
+aGF0J3MgYWN0dWFsbHkgdGhlIGFpbSBvZiB0aGUgd2hvbGUKPj4gZXhjZXJjaXNlLCB0byBidWls
+ZCBhIHdvcmtpbmcgTGludXggc3lzdGVtIG9uIGEgTWluaTI0NDAgSFcgZnJvbSBjbGVhbiwKPj4g
+dXAtdG8tZGF0ZSBzb3VyY2VzLCBub3QgcHJlLWJ1aWx0IHRvb2xjaGFpbnMgYW5kIHByZS1jb21w
+aWxlZCBwYWNrYWdlcwo+PiBvciBiaW5hcnkgaW1hZ2VzKS4KPj4KPj4gQW55IHBvaW50ZXJzIHdv
+dWxkIGJlIGhpZ2hseSBhcHByZWNpYXRlZC4KPgo+IDEpIGRvIHlvdSB1c2UgdGhlIG1pbmkyNDQw
+IGtlcm5lbCBjb21tYW5kIGxpbmUgcGFyYW1ldGVyPwo+Cj4gSW4gdGhlICduZXh0JyBicmFuY2gg
+SSBhZGRlZCB0aGlzIGNvbW1lbnQgaW50byBtaW5pMjQ0MCdzIGNvbmZpZzoKPiAjCj4gIyAibWlu
+aTI0NDAiIGtlcm5lbCBwYXJhbWV0ZXIKPiAjIDAgLi4gOSA9IHNjcmVlbiB0eXBlCj4gIyBiID0g
+YmFja2xpZ2h0IGVuYWJsZWQKPiAjIHQgPSB0b3VjaCBlbmFibGVkCj4gIyBjID0gY2FtZXJhIGVu
+YWJsZWQKPiAjIE5vdGU6IGNhbiBiZSAibWluaXQyNDQwPSAiIGlmIG5vdGhpbmcgb2YgdGhlc2Ug
+Y29tcG9uZW50cyBhcmUgY29ubmVjdGVkCj4gIwo+IGJvb3RhcmdzPSJjb25zb2xlPXR0eVNBQzAs
+MTE1MjAwIG1pbmkyNDQwPTB0YmMiCj4KPiAyKSBpbiAyLjYuMzcgYW5kIDIuNi4zOCB0aGUgc2Vy
+aWFsIGNvbnNvbGUgbmFtZSBpcyB0b3RhbGx5IGJyb2tlbi4gVGhlcmUgaXMgYQo+IHBhdGNoIGFy
+b3VuZCB0byBmaXggaXQuCk5vdCBzdXJlIGFib3V0IHRoYXQuIEkgcG9zdCBsYXRlc3QgdXBkYXRl
+cyBsYXN0IHdlZWsgdG8gbGttbCBhbmQgc3RpbGwKdXNlIHR0eVNBQzAgYW5kCmV2ZXJ5dGhpbmcg
+Ym9vdGluZyBmaW5lIChhdCBsZWFzdCB3aXRoIDIuNi4zOSkKPgo+IEZyb206IERhcml1cyBBdWd1
+bGlzIDxhdWd1bGlzLmRhcml1c0BnbWFpbC5jb20+Cj4gU3ViamVjdDogc2VyaWFsOiBzYW1zdW5n
+OiBmaXggZGV2aWNlIG5hbWUKPgo+IFdpdGhvdXQgdGhpcyBwYXRjaCB5b3UgbXVzdCB1c2UgYSBz
+ZXJpYWwgVUFSVCBuYW1lIG9mICIvZGV2L3MzYzI0MTBfc2VyaWFsMCIKPiB0byBtYWtlIGl0IHdv
+cmsuIFVnbHkuCj4KPiBJIHdpbGwgc2VuZCB5b3UgdGhpcyBwYXRjaCBvZmZsaW5lLgo+Cj4gUmVn
+YXJkcywKPiBKdWVyZ2VuCj4KPiAtLQo+IFBlbmd1dHJvbml4IGUuSy4gwqAgwqAgwqAgwqAgwqAg
+wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqB8IEp1ZXJnZW4gQmVpc2VydCDCoCDCoCDCoCDC
+oCDCoCDCoCB8Cj4gTGludXggU29sdXRpb25zIGZvciBTY2llbmNlIGFuZCBJbmR1c3RyeSDCoCDC
+oCDCoHwgUGhvbmU6ICs0OS04NzY2LTkzOSAyMjggwqAgwqAgfAo+IFZlcnRyZXR1bmcgU3VlZC9N
+dWVuY2hlbiwgR2VybWFueSDCoCDCoCDCoCDCoCDCoCDCoCB8IEZheDogwqAgKzQ5LTUxMjEtMjA2
+OTE3LTU1NTUgfAo+IEFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2IMKgIMKgIMKgIMKg
+IMKgIMKgIMKgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyDCoHwKPgo+IF9fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCj4gYmFyZWJveCBtYWlsaW5nIGxp
+c3QKPiBiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKPiBodHRwOi8vbGlzdHMuaW5mcmFkZWFk
+Lm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gKPgoKcmVnYXJkcywKCm1hcmVrCgotLSAKYXMg
+c2ltcGxlIGFuZCBwcmltaXRpdmUgYXMgcG9zc2libGUKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpNYXJlayBCZWxpc2tvIC0gT1BFTi1OQU5EUkEKRnJl
+ZWxhbmNlIERldmVsb3BlcgoKUnVza2EgTm92YSBWZXMgMjE5IHwgUHJlc292LCAwODAwNSBTbG92
+YWsgUmVwdWJsaWMKVGVsOiArNDIxIDkxNSAwNTIgMTg0CnNreXBlOiBtYXJla3doaXRlCmljcTog
+MjkwNTUxMDg2CndlYjogaHR0cDovL29wZW4tbmFuZHJhLmNvbQoKX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJv
+eEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4v
+bGlzdGluZm8vYmFyZWJveAo=
