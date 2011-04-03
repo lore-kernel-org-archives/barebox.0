@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-ww0-f49.google.com ([74.125.82.49])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Q64K5-00026Q-Fa
-	for barebox@lists.infradead.org; Sat, 02 Apr 2011 17:09:18 +0000
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Sat, 2 Apr 2011 19:08:30 +0200
-References: <20110402224101.7c9506e8@manocska.bendor.com.au>
-	<201104021731.53103.jbe@pengutronix.de>
-	<BANLkTimgnkguHY0bLCZADi0_zsOQ5MPE9A@mail.gmail.com>
-In-Reply-To: <BANLkTimgnkguHY0bLCZADi0_zsOQ5MPE9A@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <201104021908.30996.jbe@pengutronix.de>
+	id 1Q6KUg-00047v-Tc
+	for barebox@lists.infradead.org; Sun, 03 Apr 2011 10:25:20 +0000
+Received: by wwb39 with SMTP id 39so4006165wwb.18
+	for <barebox@lists.infradead.org>; Sun, 03 Apr 2011 03:25:15 -0700 (PDT)
+From: franck.jullien@gmail.com
+Date: Sun,  3 Apr 2011 12:25:31 +0200
+Message-Id: <1301826331-18875-1-git-send-email-franck.jullien@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,111 +16,180 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Mini2440 questions
-To: Belisko Marek <marek.belisko@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] Nios2: Add Altera UART driver
+To: barebox@lists.infradead.org
 
-QmVsaXNrbyBNYXJlayB3cm90ZToKPiBPbiBTYXQsIEFwciAyLCAyMDExIGF0IDU6MzEgUE0sIEp1
-ZXJnZW4gQmVpc2VydCA8amJlQHBlbmd1dHJvbml4LmRlPiB3cm90ZToKPiA+IEhpIFpvbHTDoW4s
-Cj4gPgo+ID4gWm9sdMOhbiBLw7Njc2kgd3JvdGU6Cj4gPj4gSSd2ZSBnb3QgdHdvIGlzc3Vlcy4g
-T25lIGlzIGJhcmVib3ggcmVsYXRlZDoKPiA+Pgo+ID4+IERvZXMgdGhlIGN1cnJlbnQgZ2l0IG1h
-c3RlciBicmFuY2ggc3VwcG9zZWQgdG8gYm9vdCBmcm9tIE5BTkQ/Cj4gPj4gRG93bmxvYWQsIGNv
-bmZpZyAobWluaTI0NDAgZGVmY29uZmlnICsgdmVyeSBsaXR0bGUgcGVyc29uYWxpc2F0aW9uKSwK
-PiA+PiBjb21waWxlLiBCb290IGZyb20gTkFORCAqaXMqIGVuYWJsZWQgaW4gdGhlIGNvbmZpZy4K
-PiA+Cj4gPiBBcyBsb25nIFNhc2NoYSByZWxlYXNlIGEgbmV3IGJhcmVib3gsIHRoZSBOQU5EIGJv
-b3QgZmVhdHVyZSBvZiB0aGUKPiA+IG1pbmkyNDQwIGlzIHN0aWxsIGluIG5leHQuIEl0cyBnb2lu
-ZyB0byBiZSByZWxlYXNlZCBpbiB0aGUgTWF5IHJlbGVhc2UuCj4gPgo+ID4gU28sIHlvdSBtdXN0
-IHN0aWxsIHVzZSB0aGUgJ25leHQnIGJyYW5jaCB0byBnZXQgYWxsIFMzQzI0NDAgcmVsYXRlZCBO
-QU5ECj4gPiBib290IGNoYW5nZXMuCj4gPgo+ID4+IExvYWQgdG8gUkFNIGFuZCBzdGFydDogc3Rh
-cnRzIHVwIGp1c3QgZmluZS4KPiA+PiBCb290IGZyb20gTkFORDogbm90aGluZy4KPiA+Cj4gPiBT
-dXJlLiBUaGUgTkFORCBkcml2ZXIgZm9yIHRoZSBTM0MyNDQwIENQVSBpcyBzdGlsbCBicm9rZW4g
-Zm9yIG90aGVyIE5BTkQKPiA+IHR5cGVzIHRoYW4gc21hbGwgcGFnZSBvbmVzLgo+ID4KPiA+PiBJ
-IGxvb2tlZCBhdCB0aGUgYWN0dWFsIGJpbmFyeSBpbWFnZSB3aXRoIG9iamR1bXAgLWQgYW5kIGl0
-IHNlZW1zIHRvCj4gPj4gaW5pdGlhbGlzZSB0aGUgUExMLCB0aGUgU0RSQU0gY29udHJvbGxlciBh
-bmQgbG9hZCB0aGUgTkFORCBpbnRvIHRoZQo+ID4+IFJBTSwgdGhlbiBqdW1wIG9udG8gaXQuIEFs
-bCB0aGF0IGNvZGUgaXMgd2l0aGluIHRoZSA0SyBTdGVwU3RvbmUgcmFuZ2UuCj4gPj4gSG93ZXZl
-ciwgbm90aGluZyBoYXBwZW5zLCB0aGUgYm9hcmQgaXMgZGVhZC4KPiA+Cj4gPiBZZXMsIGJlY2F1
-c2UgdGhlIFMzQzI0NDAgTkFORCBkcml2ZXIgbG9hZHMgdGhlIHdyb25nIGNvbnRlbnQgZnJvbSB0
-aGUKPiA+IE5BTkQuCj4gPgo+ID4+IFRoZSBvdGhlciBwcm9ibGVtIGlzIG5vdCBiYXJlYm94IHJl
-bGF0ZWQsIGJ1dCBjb25zaWRlcmluZyB0aGUgYXVkaWVuY2UKPiA+PiBvZiB0aGUgbGlzdCBzb21l
-b25lIG1pZ2h0IGhhdmUgc29tZSBpZGVhcy4KPiA+Pgo+ID4+IExpbnV4IGtlcm5lbCwgMi42LjM3
-LjIuIERlZmNvbmZpZyBmb3IgbWluaTI0NDAuIEEgZmFpcmx5IG1pbmltYWxpc3RpYwo+ID4+IGtl
-cm5lbCBpcyB0aGVuIGNvbmZpZ3VyZWQsIGRldi4gZHJpdmVycyBmb3Igb24tYm9hcmQgc3R1ZmYg
-YXJlIHN0YXRpYywKPiA+PiBldmVyeXRoaW5nIGVsc2UgaXMgbW9kdWxlcy4gTG93LWxldmVsIGRl
-YnVnIG1lc3NhZ2VzIGFyZSBlbmFibGVkLgo+ID4+Cj4gPj4gQm9vdGluZyB0aGUga2VybmVsICh1
-c2luZyB2aXZpLi4uKSBoYW5ncywganVzdCBhZnRlciB0aGUgY29uc29sZSBpcwo+ID4+IGluaXRp
-YWxpc2VkOgo+ID4+Cj4gPj4gQ29weSBsaW51eCBrZXJuZWwgZnJvbSAweDAwMDYwMDAwIHRvIDB4
-MzAwMDgwMDAsIHNpemUgPSAweDAwMmEwMDAwIC4uLgo+ID4+IGRvbmUKPiA+PiB6SW1hZ2UgbWFn
-aWMgPSAweDAxNmYyODE4Cj4gPj4gU2V0dXAgbGludXggcGFyYW1ldGVycyBhdCAweDMwMDAwMTAw
-Cj4gPj4gbGludXggY29tbWFuZCBsaW5lIGlzOiAibm9pbml0cmQgcm9vdD0vZGV2L210ZGJsb2Nr
-MyBpbml0PS9saW51eHJjCj4gPj4gY29uc29sZT10dHlTQUMwLDExNTIwMCIKPiA+PiBNQUNIX1RZ
-UEUgPSAxOTk5Cj4gPj4gTk9XLCBCb290aW5nIExpbnV4Li4uLi4uCj4gPj4gVW5jb21wcmVzc2lu
-ZyBMaW51eC4uLiBkb25lLCBib290aW5nIHRoZSBrZXJuZWwuCj4gPj4gczNjMjR4eF9zZXJpYWxf
-aW5pdGNvbnNvbGUKPiA+PiBzM2MyNHh4X3NlcmlhbF9pbml0X3BvcnRzOiBpbml0aWFsaXNpbmcg
-cG9ydHMuLi4KPiA+PiBzM2MyNHh4X3NlcmlhbF9pbml0X3BvcnQ6IHBvcnQ9YzAzYTYzNzgsIHBs
-YXRkZXY9YzAzYjlhYjAKPiA+PiBzM2MyNHh4X3NlcmlhbF9pbml0X3BvcnQ6IGMwM2E2Mzc4ICho
-dyAwKS4uLgo+ID4+IHJlc291cmNlIGMwMzk3YjEwICg1MDAwMDAwMC4uNTAwMDNmZmYpCj4gPj4g
-cG9ydDogbWFwPTUwMDAwMDAwLCBtZW09ZjcwMDAwMDAsIGlycT03MCAoNzAsNzEpLCBjbG9jaz0x
-Cj4gPj4gczNjMjQ0MF9zZXJpYWxfcmVzZXRwb3J0OiBwb3J0PWMwM2E2Mzc4ICg1MDAwMDAwMCks
-IGNmZz1jMDNiOWEyNAo+ID4+IHMzYzI0eHhfc2VyaWFsX2luaXRfcG9ydDogcG9ydD1jMDNhNjQz
-NCwgcGxhdGRldj1jMDM5OGQwMAo+ID4+IHMzYzI0eHhfc2VyaWFsX2luaXRfcG9ydDogYzAzYTY0
-MzQgKGh3IDEpLi4uCj4gPj4gcmVzb3VyY2UgYzAzOTdiNDggKDUwMDA0MDAwLi41MDAwN2ZmZikK
-PiA+PiBwb3J0OiBtYXA9NTAwMDQwMDAsIG1lbT1mNzAwNDAwMCwgaXJxPTczICg3Myw3NCksIGNs
-b2NrPTEKPiA+PiBzM2MyNDQwX3NlcmlhbF9yZXNldHBvcnQ6IHBvcnQ9YzAzYTY0MzQgKDUwMDA0
-MDAwKSwgY2ZnPWMwM2I5YTQ0Cj4gPj4gczNjMjR4eF9zZXJpYWxfaW5pdF9wb3J0OiBwb3J0PWMw
-M2E2NGYwLCBwbGF0ZGV2PWMwMzk4ZGI4Cj4gPj4gczNjMjR4eF9zZXJpYWxfaW5pdF9wb3J0OiBj
-MDNhNjRmMCAoaHcgMikuLi4KPiA+PiByZXNvdXJjZSBjMDM5N2I4MCAoNTAwMDgwMDAuLjUwMDBi
-ZmZmKQo+ID4+IHBvcnQ6IG1hcD01MDAwODAwMCwgbWVtPWY3MDA4MDAwLCBpcnE9NzYgKDc2LDc3
-KSwgY2xvY2s9MQo+ID4+IHMzYzI0NDBfc2VyaWFsX3Jlc2V0cG9ydDogcG9ydD1jMDNhNjRmMCAo
-NTAwMDgwMDApLCBjZmc9YzAzYjlhNjQKPiA+PiBzM2MyNHh4X3NlcmlhbF9pbml0KGMwM2E2NjVj
-LGMwM2E2NjI4KQo+ID4+IHMzYzI0NDBfc2VyaWFsX3Byb2JlOiBkZXY9YzAzYjlhYjAKPiA+PiBz
-M2MyNHh4X3NlcmlhbF9wcm9iZShjMDNiOWFiMCwgYzAzYTY2MjgpIDAKPiA+PiBzM2MyNHh4X3Nl
-cmlhbF9wcm9iZTogaW5pdGlhbGlzaW5nIHBvcnQgYzAzYTYzNTQuLi4KPiA+PiBzM2MyNHh4X3Nl
-cmlhbF9pbml0X3BvcnQ6IHBvcnQ9YzAzYTYzNzgsIHBsYXRkZXY9YzAzYjlhYjAKPiA+PiBzM2My
-NHh4X3NlcmlhbF9wcm9iZTogYWRkaW5nIHBvcnQKPiA+PiBzM2MyNDQwX3NlcmlhbF9wcm9iZTog
-ZGV2PWMwMzk4ZDAwCj4gPj4gczNjMjR4eF9zZXJpYWxfcHJvYmUoYzAzOThkMDAsIGMwM2E2NjI4
-KSAxCj4gPj4gczNjMjR4eF9zZXJpYWxfcHJvYmU6IGluaXRpYWxpc2luZyBwb3J0IGMwM2E2NDEw
-Li4uCj4gPj4gczNjMjR4eF9zZXJpYWxfaW5pdF9wb3J0OiBwb3J0PWMwM2E2NDM0LCBwbGF0ZGV2
-PWMwMzk4ZDAwCj4gPj4gczNjMjR4eF9zZXJpYWxfcHJvYmU6IGFkZGluZyBwb3J0Cj4gPj4gczNj
-MjQ0MF9zZXJpYWxfcHJvYmU6IGRldj1jMDM5OGRiOAo+ID4+IHMzYzI0eHhfc2VyaWFsX3Byb2Jl
-KGMwMzk4ZGI4LCBjMDNhNjYyOCkgMgo+ID4+IHMzYzI0eHhfc2VyaWFsX3Byb2JlOiBpbml0aWFs
-aXNpbmcgcG9ydCBjMDNhNjRjYy4uLgo+ID4+IHMzYzI0eHhfc2VyaWFsX2luaXRfcG9ydDogcG9y
-dD1jMDNhNjRmMCwgcGxhdGRldj1jMDM5OGRiOAo+ID4+IHMzYzI0eHhfc2VyaWFsX3Byb2JlOiBh
-ZGRpbmcgcG9ydAo+ID4+Cj4gPj4gYW5kIHRoZW4gbm90aGluZy4gQSBMRUQgb24gdGhlIGJvYXJk
-IGlzIGJsaW5raW5nICh0d28gYmxpbmtzLCBtYXliZQo+ID4+IDEwMG1zIGFwYXJ0LCB0aGVuIGFi
-b3V0IDIwMG1zIHBhdXNlKSBidXQgbm90aGluZyBjb21lcyBvdXQgb2YgdGhlCj4gPj4gc2VyaWFs
-IHBvcnQuIFRoZSBMQ0QgYmFja2xpZ2h0IGlzIG9mZiBhbmQgdGhlcmUgZG9lc24ndCBzZWVtIHRv
-IGJlCj4gPj4gZWl0aGVyIGEgc3BsYXNoIGltYWdlIG9yIGRlYnVnIGluZm8gb24gaXQgKGNvbnNv
-bGUgb24gTENEIGlzIGVuYWJsZWQpLgo+ID4+Cj4gPj4gVGhlIGJ1aWxkIGVudmlyb25tZW50IGlz
-IHRoZSBsYXRlc3QgYnVpbGRyb290LCA0LjUuMiBnY2MsIDAuOS4zMSB1Q2xpYmMsCj4gPj4gZXZl
-cnl0aGluZyBpcyBidWlsdCBmcm9tIHNjcmF0Y2ggKHRoYXQncyBhY3R1YWxseSB0aGUgYWltIG9m
-IHRoZSB3aG9sZQo+ID4+IGV4Y2VyY2lzZSwgdG8gYnVpbGQgYSB3b3JraW5nIExpbnV4IHN5c3Rl
-bSBvbiBhIE1pbmkyNDQwIEhXIGZyb20gY2xlYW4sCj4gPj4gdXAtdG8tZGF0ZSBzb3VyY2VzLCBu
-b3QgcHJlLWJ1aWx0IHRvb2xjaGFpbnMgYW5kIHByZS1jb21waWxlZCBwYWNrYWdlcwo+ID4+IG9y
-IGJpbmFyeSBpbWFnZXMpLgo+ID4+Cj4gPj4gQW55IHBvaW50ZXJzIHdvdWxkIGJlIGhpZ2hseSBh
-cHByZWNpYXRlZC4KPiA+Cj4gPiAxKSBkbyB5b3UgdXNlIHRoZSBtaW5pMjQ0MCBrZXJuZWwgY29t
-bWFuZCBsaW5lIHBhcmFtZXRlcj8KPiA+Cj4gPiBJbiB0aGUgJ25leHQnIGJyYW5jaCBJIGFkZGVk
-IHRoaXMgY29tbWVudCBpbnRvIG1pbmkyNDQwJ3MgY29uZmlnOgo+ID4gIwo+ID4gIyAibWluaTI0
-NDAiIGtlcm5lbCBwYXJhbWV0ZXIKPiA+ICMgMCAuLiA5ID0gc2NyZWVuIHR5cGUKPiA+ICMgYiA9
-IGJhY2tsaWdodCBlbmFibGVkCj4gPiAjIHQgPSB0b3VjaCBlbmFibGVkCj4gPiAjIGMgPSBjYW1l
-cmEgZW5hYmxlZAo+ID4gIyBOb3RlOiBjYW4gYmUgIm1pbml0MjQ0MD0gIiBpZiBub3RoaW5nIG9m
-IHRoZXNlIGNvbXBvbmVudHMgYXJlIGNvbm5lY3RlZAo+ID4gIwo+ID4gYm9vdGFyZ3M9ImNvbnNv
-bGU9dHR5U0FDMCwxMTUyMDAgbWluaTI0NDA9MHRiYyIKPiA+Cj4gPiAyKSBpbiAyLjYuMzcgYW5k
-IDIuNi4zOCB0aGUgc2VyaWFsIGNvbnNvbGUgbmFtZSBpcyB0b3RhbGx5IGJyb2tlbi4gVGhlcmUK
-PiA+IGlzIGEgcGF0Y2ggYXJvdW5kIHRvIGZpeCBpdC4KPgo+IE5vdCBzdXJlIGFib3V0IHRoYXQu
-IEkgcG9zdCBsYXRlc3QgdXBkYXRlcyBsYXN0IHdlZWsgdG8gbGttbCBhbmQgc3RpbGwKPiB1c2Ug
-dHR5U0FDMCBhbmQgZXZlcnl0aGluZyBib290aW5nIGZpbmUgKGF0IGxlYXN0IHdpdGggMi42LjM5
-KQoKT2gsIG15IG1pc3Rha2UuIE9ubHkgaW4gMi42LjM3IGl0cyBicm9rZW4gYW5kIG5lZWRzIGEg
-cGF0Y2guIFNpbmNlIDIuNi4zOCBpdHMgCmZpeGVkLgoKSnVlcmdlbgoKLS0gClBlbmd1dHJvbml4
-IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8IEp1ZXJnZW4gQmVpc2VydCAgICAg
-ICAgICAgICB8CkxpbnV4IFNvbHV0aW9ucyBmb3IgU2NpZW5jZSBhbmQgSW5kdXN0cnkgICAgICB8
-IFBob25lOiArNDktODc2Ni05MzkgMjI4ICAgICB8ClZlcnRyZXR1bmcgU3VlZC9NdWVuY2hlbiwg
-R2VybWFueSAgICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CkFtdHNn
-ZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVu
-Z3V0cm9uaXguZGUvICB8CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcK
-aHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+From: Franck JULLIEN <franck.jullien@gmail.com>
+
+---
+ drivers/serial/Kconfig         |    5 ++
+ drivers/serial/Makefile        |   25 +++++-----
+ drivers/serial/serial_altera.c |   97 ++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 115 insertions(+), 12 deletions(-)
+ create mode 100644 drivers/serial/serial_altera.c
+
+diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
+index ffd877a..9e05f4b 100644
+--- a/drivers/serial/Kconfig
++++ b/drivers/serial/Kconfig
+@@ -43,6 +43,11 @@ config DRIVER_SERIAL_BLACKFIN
+ 	default y
+ 	bool "Blackfin serial driver"
+ 
++config DRIVER_SERIAL_ALTERA
++	depends on NIOS2
++	default y
++	bool "Altera serial driver"
++
+ config DRIVER_SERIAL_NS16550
+ 	default n
+ 	bool "NS16550 serial driver"
+diff --git a/drivers/serial/Makefile b/drivers/serial/Makefile
+index 9f0e12b..8067b74 100644
+--- a/drivers/serial/Makefile
++++ b/drivers/serial/Makefile
+@@ -4,15 +4,16 @@
+ # serial_max3100.o
+ # serial_pl010.o
+ # serial_xuartlite.o
+-obj-$(CONFIG_DRIVER_SERIAL_ARM_DCC)		+= arm_dcc.o
+-obj-$(CONFIG_SERIAL_AMBA_PL011) += amba-pl011.o
+-obj-$(CONFIG_DRIVER_SERIAL_IMX)			+= serial_imx.o
+-obj-$(CONFIG_DRIVER_SERIAL_STM378X)		+= stm-serial.o
+-obj-$(CONFIG_DRIVER_SERIAL_ATMEL)		+= atmel.o
+-obj-$(CONFIG_DRIVER_SERIAL_NETX)		+= serial_netx.o
+-obj-$(CONFIG_DRIVER_SERIAL_LINUX_COMSOLE)	+= linux_console.o
+-obj-$(CONFIG_DRIVER_SERIAL_MPC5XXX)		+= serial_mpc5xxx.o
+-obj-$(CONFIG_DRIVER_SERIAL_BLACKFIN)		+= serial_blackfin.o
+-obj-$(CONFIG_DRIVER_SERIAL_NS16550)		+= serial_ns16550.o
+-obj-$(CONFIG_DRIVER_SERIAL_PL010)		+= serial_pl010.o
+-obj-$(CONFIG_DRIVER_SERIAL_S3C24X0)		+= serial_s3c24x0.o
++obj-$(CONFIG_DRIVER_SERIAL_ARM_DCC)             += arm_dcc.o
++obj-$(CONFIG_SERIAL_AMBA_PL011)                 += amba-pl011.o
++obj-$(CONFIG_DRIVER_SERIAL_IMX)                 += serial_imx.o
++obj-$(CONFIG_DRIVER_SERIAL_STM378X)             += stm-serial.o
++obj-$(CONFIG_DRIVER_SERIAL_ATMEL)               += atmel.o
++obj-$(CONFIG_DRIVER_SERIAL_NETX)                += serial_netx.o
++obj-$(CONFIG_DRIVER_SERIAL_LINUX_COMSOLE)       += linux_console.o
++obj-$(CONFIG_DRIVER_SERIAL_MPC5XXX)             += serial_mpc5xxx.o
++obj-$(CONFIG_DRIVER_SERIAL_BLACKFIN)            += serial_blackfin.o
++obj-$(CONFIG_DRIVER_SERIAL_NS16550)             += serial_ns16550.o
++obj-$(CONFIG_DRIVER_SERIAL_PL010)               += serial_pl010.o
++obj-$(CONFIG_DRIVER_SERIAL_S3C24X0)             += serial_s3c24x0.o
++obj-$(CONFIG_DRIVER_SERIAL_ALTERA)              += serial_altera.o
+diff --git a/drivers/serial/serial_altera.c b/drivers/serial/serial_altera.c
+new file mode 100644
+index 0000000..03e48d1
+--- /dev/null
++++ b/drivers/serial/serial_altera.c
+@@ -0,0 +1,97 @@
++/*
++ * (C) Copyright 2011, Franck JULLIEN, <elec4fun@gmail.com>
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
++
++#include <common.h>
++#include <driver.h>
++#include <init.h>
++#include <malloc.h>
++#include <asm/io.h>
++#include <asm/nios2-io.h>
++
++static int altera_serial_setbaudrate(struct console_device *cdev, int baudrate)
++{
++	volatile struct nios_uart * uart = (struct nios_uart *)cdev->dev->map_base;
++	unsigned div;
++
++	div = (CPU_FREQ / baudrate) - 1;
++	writel(div, &uart->divisor);
++
++	return 0;
++}
++
++static void altera_serial_putc(struct console_device *cdev, char c)
++{
++	volatile struct nios_uart *uart = (struct nios_uart *)cdev->dev->map_base;
++
++	if (c == '\n')
++		altera_serial_putc(cdev, '\r');
++
++	while ((readl(&uart->status) & NIOS_UART_TRDY) == 0);
++	writel(c, &uart->txdata);
++}
++
++static int altera_serial_tstc(struct console_device *cdev)
++{
++	volatile struct nios_uart *uart = (struct nios_uart *)cdev->dev->map_base;
++
++	return readl(&uart->status) & NIOS_UART_RRDY;
++}
++
++static int altera_serial_getc(struct console_device *cdev)
++{
++	volatile struct nios_uart *uart = (struct nios_uart *)cdev->dev->map_base;
++
++	while (altera_serial_tstc(cdev) == 0);
++	return readl(&uart->rxdata) & 0x000000FF;
++}
++
++static int altera_serial_probe(struct device_d *dev)
++{
++	struct console_device *cdev;
++
++	cdev = malloc(sizeof(struct console_device));
++	dev->type_data = cdev;
++	cdev->dev = dev;
++	cdev->f_caps = CONSOLE_STDIN | CONSOLE_STDOUT | CONSOLE_STDERR;
++	cdev->tstc = altera_serial_tstc;
++	cdev->putc = altera_serial_putc;
++	cdev->getc = altera_serial_getc;
++	cdev->setbrg = altera_serial_setbaudrate;
++
++	console_register(cdev);
++
++	return 0;
++}
++
++static struct driver_d altera_serial_driver = {
++	.name  = "altera_serial",
++	.probe = altera_serial_probe,
++};
++
++static int altera_serial_init(void)
++{
++	register_driver(&altera_serial_driver);
++	return 0;
++}
++
++console_initcall(altera_serial_init);
++
+-- 
+1.7.0.4
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
