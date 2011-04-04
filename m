@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Q6jsw-0002T4-Uw
-	for barebox@lists.infradead.org; Mon, 04 Apr 2011 13:32:09 +0000
+	id 1Q6ko8-00038h-0i
+	for barebox@lists.infradead.org; Mon, 04 Apr 2011 14:31:13 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  4 Apr 2011 15:31:56 +0200
-Message-Id: <1301923918-28746-5-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1301923918-28746-1-git-send-email-s.hauer@pengutronix.de>
-References: <1301923918-28746-1-git-send-email-s.hauer@pengutronix.de>
+Date: Mon,  4 Apr 2011 16:31:05 +0200
+Message-Id: <1301927465-23717-6-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1301927465-23717-1-git-send-email-s.hauer@pengutronix.de>
+References: <1301927465-23717-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,107 +21,114 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/6] mtd nand omap: Pass ecc mode from platform
+Subject: [PATCH 5/5] ARM: move bootu code to its own file
 To: barebox@lists.infradead.org
-
-As we will get more ecc modes pass through the exact mode from
-the platform, not only a flag.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/omap/board-beagle.c         |    2 +-
- arch/arm/boards/omap/devices-gpmc-nand.c    |    5 +++--
- arch/arm/mach-omap/include/mach/gpmc_nand.h |   14 ++++++++------
- drivers/mtd/nand/nand_omap_gpmc.c           |    2 +-
- 4 files changed, 13 insertions(+), 10 deletions(-)
+ arch/arm/lib/Makefile   |    1 +
+ arch/arm/lib/armlinux.c |   33 ---------------------------------
+ arch/arm/lib/bootu.c    |   38 ++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 39 insertions(+), 33 deletions(-)
+ create mode 100644 arch/arm/lib/bootu.c
 
-diff --git a/arch/arm/boards/omap/board-beagle.c b/arch/arm/boards/omap/board-beagle.c
-index 6de2cce..17a349c 100644
---- a/arch/arm/boards/omap/board-beagle.c
-+++ b/arch/arm/boards/omap/board-beagle.c
-@@ -332,7 +332,7 @@ static int beagle_devices_init(void)
- 	/* WP is made high and WAIT1 active Low */
- 	gpmc_generic_init(0x10);
- #endif
--	gpmc_generic_nand_devices_init(0, 16, 1);
-+	gpmc_generic_nand_devices_init(0, 16, OMAP_ECC_HAMMING_CODE_HW_ROMCODE);
+diff --git a/arch/arm/lib/Makefile b/arch/arm/lib/Makefile
+index 8165aea..9383ae1 100644
+--- a/arch/arm/lib/Makefile
++++ b/arch/arm/lib/Makefile
+@@ -1,6 +1,7 @@
+ obj-$(CONFIG_ARM_LINUX)	+= armlinux.o
+ obj-$(CONFIG_CMD_BOOTM)	+= bootm.o
+ obj-$(CONFIG_CMD_BOOTZ)	+= bootz.o
++obj-$(CONFIG_CMD_BOOTU)	+= bootu.o
+ obj-y	+= div0.o
+ obj-y	+= findbit.o
+ obj-y	+= arm.o
+diff --git a/arch/arm/lib/armlinux.c b/arch/arm/lib/armlinux.c
+index bb4bcd3..ce1cc6b 100644
+--- a/arch/arm/lib/armlinux.c
++++ b/arch/arm/lib/armlinux.c
+@@ -231,36 +231,3 @@ void start_linux(void *adr, int swap, struct image_data *data)
  
- 	armlinux_add_dram(&sdram_dev);
- 	armlinux_set_bootparams((void *)0x80000100);
-diff --git a/arch/arm/boards/omap/devices-gpmc-nand.c b/arch/arm/boards/omap/devices-gpmc-nand.c
-index 4369aa0..c2a2b0d 100644
---- a/arch/arm/boards/omap/devices-gpmc-nand.c
-+++ b/arch/arm/boards/omap/devices-gpmc-nand.c
-@@ -84,7 +84,8 @@ static struct device_d gpmc_generic_nand_nand_device = {
-  *
-  * @return success/fail based on device funtion
-  */
--int gpmc_generic_nand_devices_init(int cs, int width, int hwecc)
-+int gpmc_generic_nand_devices_init(int cs, int width,
-+		enum gpmc_ecc_mode eccmode)
- {
- 	nand_plat.cs = cs;
- 
-@@ -94,7 +95,7 @@ int gpmc_generic_nand_devices_init(int cs, int width, int hwecc)
- 		nand_cfg.cfg[0] = GPMC_CONF1_VALx8;
- 
- 	nand_plat.device_width = width;
--	nand_plat.plat_options = hwecc ? NAND_HWECC_ENABLE : 0;
-+	nand_plat.ecc_mode = eccmode;
- 
- 	/* Configure GPMC CS before register */
- 	gpmc_cs_config(nand_plat.cs, &nand_cfg);
-diff --git a/arch/arm/mach-omap/include/mach/gpmc_nand.h b/arch/arm/mach-omap/include/mach/gpmc_nand.h
-index e23faab..a57d2a9 100644
---- a/arch/arm/mach-omap/include/mach/gpmc_nand.h
-+++ b/arch/arm/mach-omap/include/mach/gpmc_nand.h
-@@ -33,6 +33,11 @@
- #include <linux/mtd/nand.h>
- #include <linux/mtd/nand_ecc.h>
- 
-+enum gpmc_ecc_mode {
-+	OMAP_ECC_SOFT,
-+	OMAP_ECC_HAMMING_CODE_HW_ROMCODE,
-+};
-+
- /** omap nand platform data structure */
- struct gpmc_nand_platform_data {
- 	/** Chip select you want to use */
-@@ -46,6 +51,8 @@ struct gpmc_nand_platform_data {
- 	 * platform specific configs here
- 	 */
- 	unsigned short plat_options;
-+	/** ecc mode to use */
-+	enum gpmc_ecc_mode ecc_mode;
- 	/** setup any special options */
- 	unsigned int options;
- 	/** set up device access as 8,16 as per GPMC config */
-@@ -68,11 +75,6 @@ struct gpmc_nand_platform_data {
- #define NAND_WAITPOL_HIGH       (1 << 0)
- #define NAND_WAITPOL_MASK       (1 << 0)
- 
--/** plat_options: hw ecc enabled */
--#define NAND_HWECC_ENABLE       (1 << 1)
--/** plat_options: hw ecc disabled */
--#define NAND_HWECC_MASK         (1 << 1)
+ 	kernel(0, armlinux_architecture, armlinux_bootparams);
+ }
 -
--int gpmc_generic_nand_devices_init(int cs, int width, int hwecc);
-+int gpmc_generic_nand_devices_init(int cs, int width, enum gpmc_ecc_mode);
- 
- #endif				/* __ASM_OMAP_NAND_GPMC_H */
-diff --git a/drivers/mtd/nand/nand_omap_gpmc.c b/drivers/mtd/nand/nand_omap_gpmc.c
-index 7c9bc32..86fe6b9 100644
---- a/drivers/mtd/nand/nand_omap_gpmc.c
-+++ b/drivers/mtd/nand/nand_omap_gpmc.c
-@@ -548,7 +548,7 @@ static int gpmc_nand_probe(struct device_d *pdev)
- 		goto out_release_mem;
- 	}
- 
--	if (pdata->plat_options & NAND_HWECC_ENABLE) {
-+	if (pdata->ecc_mode == OMAP_ECC_HAMMING_CODE_HW_ROMCODE) {
- 		nand->ecc.layout = layout;
- 
- 		/* Program how many columns we expect+
+-#ifdef CONFIG_CMD_BOOTU
+-static int do_bootu(struct command *cmdtp, int argc, char *argv[])
+-{
+-	void (*theKernel)(int zero, int arch, void *params) = NULL;
+-	int fd;
+-
+-	if (argc != 2) {
+-		barebox_cmd_usage(cmdtp);
+-		return 1;
+-	}
+-
+-	fd = open(argv[1], O_RDONLY);
+-	if (fd > 0)
+-		theKernel = (void *)memmap(fd, PROT_READ);
+-
+-	if (!theKernel)
+-		theKernel = (void *)simple_strtoul(argv[1], NULL, 0);
+-
+-	start_linux(theKernel, 0, NULL);
+-
+-	return 1;
+-}
+-
+-static const __maybe_unused char cmd_bootu_help[] =
+-"Usage: bootu <address>\n";
+-
+-BAREBOX_CMD_START(bootu)
+-	.cmd            = do_bootu,
+-	.usage          = "bootu - start a raw linux image",
+-	BAREBOX_CMD_HELP(cmd_bootu_help)
+-BAREBOX_CMD_END
+-#endif /* CONFIG_CMD_BOOTU */
+diff --git a/arch/arm/lib/bootu.c b/arch/arm/lib/bootu.c
+new file mode 100644
+index 0000000..e97ded0
+--- /dev/null
++++ b/arch/arm/lib/bootu.c
+@@ -0,0 +1,38 @@
++#include <common.h>
++#include <command.h>
++#include <fs.h>
++#include <fcntl.h>
++#include <errno.h>
++#include <asm/armlinux.h>
++
++static int do_bootu(struct command *cmdtp, int argc, char *argv[])
++{
++	int fd;
++	void *kernel = NULL;
++
++	if (argc != 2) {
++		barebox_cmd_usage(cmdtp);
++		return 1;
++	}
++
++	fd = open(argv[1], O_RDONLY);
++	if (fd > 0)
++		kernel = (void *)memmap(fd, PROT_READ);
++
++	if (!kernel)
++		kernel = (void *)simple_strtoul(argv[1], NULL, 0);
++
++	start_linux(kernel, 0, NULL);
++
++	return 1;
++}
++
++static const __maybe_unused char cmd_bootu_help[] =
++"Usage: bootu <address>\n";
++
++BAREBOX_CMD_START(bootu)
++	.cmd            = do_bootu,
++	.usage          = "bootu - start a raw linux image",
++	BAREBOX_CMD_HELP(cmd_bootu_help)
++BAREBOX_CMD_END
++
 -- 
 1.7.2.3
 
