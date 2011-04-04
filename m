@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Q6jXQ-00025p-KS
-	for barebox@lists.infradead.org; Mon, 04 Apr 2011 13:09:53 +0000
+	id 1Q6jbb-0002C1-HE
+	for barebox@lists.infradead.org; Mon, 04 Apr 2011 13:14:08 +0000
+Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+	(envelope-from <sha@pengutronix.de>) id 1Q6jbZ-0003Ed-2h
+	for barebox@lists.infradead.org; Mon, 04 Apr 2011 15:14:05 +0200
+Received: from sha by octopus.hi.pengutronix.de with local (Exim 4.69)
+	(envelope-from <sha@pengutronix.de>) id 1Q6jbZ-0003Cj-1i
+	for barebox@lists.infradead.org; Mon, 04 Apr 2011 15:14:05 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  4 Apr 2011 15:09:43 +0200
-Message-Id: <1301922585-8144-6-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1301922585-8144-1-git-send-email-s.hauer@pengutronix.de>
-References: <1301922585-8144-1-git-send-email-s.hauer@pengutronix.de>
+Date: Mon,  4 Apr 2011 15:13:54 +0200
+Message-Id: <1301922843-12118-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,52 +26,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/7] fs: errno should be set correctly before the end of
-	functions
+Subject: On the road to omap4
 To: barebox@lists.infradead.org
 
-Otherwise we end up with errno not being set correctly
-if a filesystem driver uses the standard open/close/read/write
-functions to access its backing store.
+The following patches are done in preparation for adding omap4 support.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- fs/fs.c |    5 +++--
- 1 files changed, 3 insertions(+), 2 deletions(-)
+Sascha Hauer (9):
+      ARM omap: move uart access functions to a more generic place
+      ARM omap: rework gpio support
+      ARM omap: move devices-gpmc-nand.c to omap architecture directory
+      ARM omap: move architecture specific kconfig entries to arch part
+      ARM omap: allow to put omap boards into another directory
+      ARM omap4: fix indention in Kconfig
+      omap: rename GPMC Kconfig entry to OMAP_GPMC
+      arm omap: remove unused request/free gpio functions
+      ARM omap: make gpio support mandatory
 
-diff --git a/fs/fs.c b/fs/fs.c
-index 2f61929..f684d45 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -292,8 +292,6 @@ static int path_check_prereq(const char *path, unsigned int flags)
- 	struct stat s;
- 	unsigned int m;
- 
--	errno = 0;
--
- 	if (stat(path, &s)) {
- 		if (flags & S_UB_DOES_NOT_EXIST)
- 			return 0;
-@@ -325,6 +323,8 @@ static int path_check_prereq(const char *path, unsigned int flags)
- 		errno = -ENOTDIR;
- 		goto out;
- 	}
-+
-+	errno = 0;
- out:
- 	return errno;
- }
-@@ -800,6 +800,7 @@ int mount(const char *device, const char *fsname, const char *_path)
- 			e = e->next;
- 		e->next = entry;
- 	}
-+	errno = 0;
- out:
- 	free(path);
- 	return errno;
--- 
-1.7.2.3
-
+ arch/arm/Makefile                                  |    4 +-
+ arch/arm/boards/omap/Kconfig                       |   93 -------------
+ arch/arm/boards/omap/Makefile                      |    2 -
+ arch/arm/mach-omap/Kconfig                         |  144 ++++++++++++++------
+ arch/arm/mach-omap/Makefile                        |    4 +-
+ .../{boards/omap => mach-omap}/devices-gpmc-nand.c |    0
+ arch/arm/mach-omap/gpio.c                          |  128 ++++++------------
+ arch/arm/mach-omap/include/mach/gpio.h             |   46 ------
+ arch/arm/mach-omap/omap-uart.c                     |   36 +++++
+ arch/arm/mach-omap/omap3_generic.c                 |   34 -----
+ drivers/mtd/nand/Kconfig                           |    2 +-
+ 11 files changed, 183 insertions(+), 310 deletions(-)
+ delete mode 100644 arch/arm/boards/omap/Kconfig
+ rename arch/arm/{boards/omap => mach-omap}/devices-gpmc-nand.c (100%)
+ create mode 100644 arch/arm/mach-omap/omap-uart.c
 
 _______________________________________________
 barebox mailing list
