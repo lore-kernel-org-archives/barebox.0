@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Q6hjc-00016h-PP
-	for barebox@lists.infradead.org; Mon, 04 Apr 2011 11:14:21 +0000
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Mon, 4 Apr 2011 13:13:31 +0200
+Received: from susu.bendor.com.au ([203.16.199.2])
+	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1Q6iep-0001YG-J0
+	for barebox@lists.infradead.org; Mon, 04 Apr 2011 12:13:28 +0000
+Date: Mon, 4 Apr 2011 22:13:21 +1000
+From: =?UTF-8?B?Wm9sdMOhbiBLw7Njc2k=?= <zoltan@bendor.com.au>
+Message-ID: <20110404221321.0452b0b9@manocska.bendor.com.au>
+In-Reply-To: <201104041313.32074.jbe@pengutronix.de>
 References: <20110404210245.16f269f7@manocska.bendor.com.au>
-In-Reply-To: <20110404210245.16f269f7@manocska.bendor.com.au>
-MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <201104041313.32074.jbe@pengutronix.de>
+	<201104041313.32074.jbe@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,75 +18,56 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: More Mini2440 questions...
-To: =?iso-8859-1?q?Zolt=E1n_K=F3csi?= <zoltan@bendor.com.au>
+To: Juergen Beisert <jbe@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Zolt=E1n,
-
-Zolt=E1n K=F3csi wrote:
-> Thanks for all the answers for my previous questions!
->
-> The 'next' branch indeed boots from the NAND FLASH like a charm.
-
-\o/
-
-Just for my list of tested min2440 variants: What type of SDRAMs and NAND i=
-s =
-
-your system using? =
-
-
-> What I'm looking for now is a crash-course, or at least a pointer to
-> some web-based one, on barebox itself, from the usage point of view. I
-> created the docs and read the User's Manual, but I'm none the wiser.
-
-Authors of documentation are always welcome. But they are rare :-(
-
-> How do I boot a kernel from FLASH or via TFTP? I figured that I
-> can set the Ethernet MAC address by eth0.ethaddr=3Dxx:xx:xx:xx:xx:xx
-> (although I don't know if that actually changes the MAC) but how can I
-> save that so that next time I reset the board it is there?
-
-Take a look into the generic environment in "defaultenv/bin/". These script=
-s =
-
-are used when the system comes up. They are using the "/env/config" for =
-
-parameterization. Maybe these file will help you to understand how it works.
-
-> Same with other environment variables, such as bootargs. The command
-> 'saveenv' says that it saved the environment. According to its docs, it
-> saved it in /dev/env0. According the the docs of loadenv, that
-> command should load the saved environment, but I could not get any
-> of my changes back.
-
-So, the changes in your environment are lost after reboot? Do you see any k=
-ind =
-
-of error message (like CRC sum errors)? when barebox comes up after reset a=
-nd =
-
-tries to load the saved environment?
-
-jbe
-
--- =
-
-Pengutronix e.K.                              | Juergen Beisert            =
- |
-Linux Solutions for Science and Industry      | Phone: +49-8766-939 228    =
- |
-Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555=
- |
-Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/ =
- |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gTW9uLCA0IEFwciAyMDExIDEzOjEzOjMxICswMjAwCkp1ZXJnZW4gQmVpc2VydCA8amJlQHBl
+bmd1dHJvbml4LmRlPiB3cm90ZToKCj4gSGkgWm9sdMOhbiwKPiAKPiBab2x0w6FuIEvDs2NzaSB3
+cm90ZToKPiA+IFRoYW5rcyBmb3IgYWxsIHRoZSBhbnN3ZXJzIGZvciBteSBwcmV2aW91cyBxdWVz
+dGlvbnMhCj4gPgo+ID4gVGhlICduZXh0JyBicmFuY2ggaW5kZWVkIGJvb3RzIGZyb20gdGhlIE5B
+TkQgRkxBU0ggbGlrZSBhIGNoYXJtLgo+IAo+IFxvLwo+IAo+IEp1c3QgZm9yIG15IGxpc3Qgb2Yg
+dGVzdGVkIG1pbjI0NDAgdmFyaWFudHM6IFdoYXQgdHlwZSBvZiBTRFJBTXMgYW5kCj4gTkFORCBp
+cyB5b3VyIHN5c3RlbSB1c2luZz8gCgpUaGUgU0RSQU0gaXMgTWljcm9uIDQ4TEMxNk0xNkEyLTc1
+LCB0aGUgTkFORCBpcyBTYW1zdW5nIEs5RjFHMDhVMEIuCgpBY3R1YWxseSwgdGFraW5nIGEgbG9v
+ayBhdCB0aGUgUkFNIGRhdGFzaGVldCBvZiB0aGUgcmV2ZWFscyB0aGF0IHdpdGggYQozIGNsb2Nr
+IFJBUy0+Q0FTIGxhdGVuY3kgdGhlIGNoaXAgY2FuIGNhbiBtZXJyaWx5IHdvcmsgd2l0aCBhIDEz
+M01IegpidXMgY2xvY2ssIHNvIHRoZSBTM0MncyBGQ0xLIGNvdWxkIGJlIGJvb3N0ZWQgdXAgdG8g
+NTMyTUh6LiBBCjMwJSBzcGVlZCBpbmNyZWFzZSBpcyBub3Qgc29tZXRoaW5nIHRvIHNuZWV6ZSBv
+bi4uLgoKPlsuLi5dCj4KPiAiL2Vudi9jb25maWciIGZvciBwYXJhbWV0ZXJpemF0aW9uLiBNYXli
+ZSB0aGVzZSBmaWxlIHdpbGwgaGVscCB5b3UgdG8KPiB1bmRlcnN0YW5kIGhvdyBpdCB3b3Jrcy4K
+CkknbGwgdHJ5IG15IGJlc3R0byBncm9rIHRoZW0gOi0pCgo+IFNvLCB0aGUgY2hhbmdlcyBpbiB5
+b3VyIGVudmlyb25tZW50IGFyZSBsb3N0IGFmdGVyIHJlYm9vdD8gCgpZZXMuCgo+IERvIHlvdSBz
+ZWUgYW55IGtpbmQgb2YgZXJyb3IgbWVzc2FnZSAobGlrZSBDUkMgc3VtIGVycm9ycyk/IHdoZW4K
+PiBiYXJlYm94IGNvbWVzIHVwIGFmdGVyIHJlc2V0IGFuZCB0cmllcyB0byBsb2FkIHRoZSBzYXZl
+ZCBlbnZpcm9ubWVudD8KCk5vLiBIZXJlJ3Mgd2hhdCBnb2VzIG9uLCB3aXRoIHVuaW1wb3J0YW50
+IHN0dWZmIGRlbGV0ZWQ6CgptaW5pMjQ0MDovIHByaW50ZW52CmxvY2FsczoKbWFjaGluZT1taW5p
+MjQ0MApbLi4uXQpuZnNyb290PTovcGF0aC90by9uZnMvcm9vdApbLi4uXQpnbG9iYWxzOgpQQVRI
+PS9lbnYvYmluCgptaW5pMjQ0MDovIG5mc3Jvb3Q9L3NvbWUvb3RoZXIvcm9vdAptaW5pMjQ0MDov
+IFBBVEg9JFBBVEg6L3NvbWUvbG9jYXRpb24KbWluaTI0NDA6LyBwcmludGVudgpsb2NhbHM6Clsu
+Li5dCm5mc3Jvb3Q9L3NvbWUvb3RoZXIvcm9vdApbLi4uXQpnbG9iYWxzOgpQQVRIPS9lbnYvYmlu
+Oi9zb21lL2xvY2F0aW9uCgptaW5pMjQ0MDovIHNhdmVlbnYKc2F2aW5nIGVudmlyb25tZW50Cgpt
+aW5pMjQ0MDovIHJlc2V0CgoKYmFyZWJveCAyMDExLjAzLjAtMDAwODEtZzY0MDIxNzEgKEFwciAg
+MyAyMDExIC0gMTE6MTI6MTEpCgpCb2FyZDogTWluaSAyNDQwCnJlZ2lzdGVyZWQgbmV0Y29uc29s
+ZSBhcyBjczEKTkFORCBkZXZpY2U6IE1hbnVmYWN0dXJlciBJRDogMHhlYywgQ2hpcCBJRDogMHhm
+MSAoU2Ftc3VuZyBOQU5EIDEyOE1pQgozLDNWIDgtYml0KSAKQmFkIGJsb2NrIHRhYmxlIGZvdW5k
+IGF0IHBhZ2UgNjU0NzIsIHZlcnNpb24gMHgwMQpCYWQgYmxvY2sgdGFibGUgZm91bmQgYXQgcGFn
+ZSA2NTQwOCwgdmVyc2lvbiAweDAxCmRtOTAwMCBpL286IDB4MjAwMDAzMDAsIGlkOiAweDkwMDAw
+YTQ2IApldGhAZXRoMDogZ290IE1BQyBhZGRyZXNzIGZyb20gRUVQUk9NOiAwMDowMDowMDowMDow
+MDowMApyZWZjbGs6ICAgIDEyMDAwIGtIegptcGxsOiAgICAgNDA1MDAwIGtIegp1cGxsOiAgICAg
+IDQ4MDAwIGtIegpmY2xrOiAgICAgNDA1MDAwIGtIegpoY2xrOiAgICAgMTAxMjUwIGtIegpwY2xr
+OiAgICAgIDUwNjI1IGtIegpTRFJBTTE6ICAgQ0wyQDEwMU1IegpNYWxsb2Mgc3BhY2U6IDB4MzNh
+MDAwMDAgLT4gMHgzM2UwMDAwMCAoc2l6ZSAgNCBNQikKU3RhY2sgc3BhY2UgOiAweDMzOWY4MDAw
+IC0+IDB4MzNhMDAwMDAgKHNpemUgMzIga0IpCnJ1bm5pbmcgL2Vudi9iaW4vaW5pdC4uLgoKSGl0
+IGFueSBrZXkgdG8gc3RvcCBhdXRvYm9vdDogIDMKCnR5cGUgdXBkYXRlX2tlcm5lbCBbPGltYWdl
+bmFtZT5dIHRvIHVwZGF0ZSBrZXJuZWwgaW50byBmbGFzaAp0eXBlIHVwZGF0ZV9yb290IFs8aW1h
+Z2VuYW1lPl0gdG8gdXBkYXRlIHJvb3RmcyBpbnRvIGZsYXNoCgptaW5pMjQ0MDovIHByaW50ZW52
+CmxvY2FsczoKWy4uLl0KbmZzcm9vdD06L3BhdGgvdG8vbmZzL3Jvb3QKWy4uLl0KZ2xvYmFsczoK
+UEFUSD0vZW52L2JpbgptaW5pMjQ0MDovIAoKTm8gZXJyb3IgbWVzc2FnZSwgbm90aGluZy4gCgpa
+b2x0YW4KCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJh
+cmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlz
+dHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
