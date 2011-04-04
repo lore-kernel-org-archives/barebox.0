@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Q6ko7-00038f-Um
-	for barebox@lists.infradead.org; Mon, 04 Apr 2011 14:31:13 +0000
+	id 1Q6l3F-0003Tr-6w
+	for barebox@lists.infradead.org; Mon, 04 Apr 2011 14:46:55 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  4 Apr 2011 16:31:03 +0200
-Message-Id: <1301927465-23717-4-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1301927465-23717-1-git-send-email-s.hauer@pengutronix.de>
-References: <1301927465-23717-1-git-send-email-s.hauer@pengutronix.de>
+Date: Mon,  4 Apr 2011 16:46:38 +0200
+Message-Id: <1301928401-13571-7-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1301928401-13571-1-git-send-email-s.hauer@pengutronix.de>
+References: <1301928401-13571-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,216 +21,243 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] ARM: move bootm code to its own file
+Subject: [PATCH 06/12] nand: factor out software ecc support to seperate file
 To: barebox@lists.infradead.org
+
+in order to make it optional later.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/lib/Makefile   |    1 +
- arch/arm/lib/armlinux.c |   80 ----------------------------------------
- arch/arm/lib/bootm.c    |   92 +++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 93 insertions(+), 80 deletions(-)
- create mode 100644 arch/arm/lib/bootm.c
+ drivers/mtd/nand/Makefile     |    2 +-
+ drivers/mtd/nand/nand.h       |    1 +
+ drivers/mtd/nand/nand_base.c  |   75 +--------------------------------
+ drivers/mtd/nand/nand_swecc.c |   94 +++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 97 insertions(+), 75 deletions(-)
+ create mode 100644 drivers/mtd/nand/nand_swecc.c
 
-diff --git a/arch/arm/lib/Makefile b/arch/arm/lib/Makefile
-index 899c391..bb1c202 100644
---- a/arch/arm/lib/Makefile
-+++ b/arch/arm/lib/Makefile
-@@ -1,4 +1,5 @@
- obj-$(CONFIG_ARM_LINUX)	+= armlinux.o
-+obj-$(CONFIG_CMD_BOOTM)	+= bootm.o
- obj-y	+= div0.o
- obj-y	+= findbit.o
- obj-y	+= arm.o
-diff --git a/arch/arm/lib/armlinux.c b/arch/arm/lib/armlinux.c
-index 15b92f9..a37f710 100644
---- a/arch/arm/lib/armlinux.c
-+++ b/arch/arm/lib/armlinux.c
-@@ -232,86 +232,6 @@ void start_linux(void *adr, int swap, struct image_data *data)
- 	kernel(0, armlinux_architecture, armlinux_bootparams);
+diff --git a/drivers/mtd/nand/Makefile b/drivers/mtd/nand/Makefile
+index ffd3be1..c99633c 100644
+--- a/drivers/mtd/nand/Makefile
++++ b/drivers/mtd/nand/Makefile
+@@ -1,6 +1,6 @@
+ 
+ # Generic NAND options
+-obj-$(CONFIG_NAND)			+= nand.o nand_ecc.o nand_hwecc.o
++obj-$(CONFIG_NAND)			+= nand.o nand_ecc.o nand_hwecc.o nand_swecc.o
+ obj-$(CONFIG_MTD_NAND_IDS)		+= nand_ids.o
+ obj-$(CONFIG_NAND)			+= nand_base.o nand_bbt.o
+ 
+diff --git a/drivers/mtd/nand/nand.h b/drivers/mtd/nand/nand.h
+index 39cf135..70d0ba9 100644
+--- a/drivers/mtd/nand/nand.h
++++ b/drivers/mtd/nand/nand.h
+@@ -9,5 +9,6 @@ int nand_write_oob_std(struct mtd_info *mtd, struct nand_chip *chip,
+ 			      int page);
+ 
+ void nand_init_ecc_hw(struct nand_chip *chip);
++void nand_init_ecc_soft(struct nand_chip *chip);
+ 
+ #endif /* __NAND_H */
+diff --git a/drivers/mtd/nand/nand_base.c b/drivers/mtd/nand/nand_base.c
+index 1923d26..ea34da9 100644
+--- a/drivers/mtd/nand/nand_base.c
++++ b/drivers/mtd/nand/nand_base.c
+@@ -687,46 +687,6 @@ static int nand_read_page_raw(struct mtd_info *mtd, struct nand_chip *chip,
  }
  
--#ifdef CONFIG_CMD_BOOTM
--static int do_bootm_linux(struct image_data *data)
+ /**
+- * nand_read_page_swecc - [REPLACABLE] software ecc based page read function
+- * @mtd:	mtd info structure
+- * @chip:	nand chip info structure
+- * @buf:	buffer to store read data
+- */
+-static int nand_read_page_swecc(struct mtd_info *mtd, struct nand_chip *chip,
+-				uint8_t *buf)
 -{
--	void (*theKernel)(int zero, int arch, void *params);
--	image_header_t *os_header = &data->os->header;
+-	int i, eccsize = chip->ecc.size;
+-	int eccbytes = chip->ecc.bytes;
+-	int eccsteps = chip->ecc.steps;
+-	uint8_t *p = buf;
+-	uint8_t *ecc_calc = chip->buffers->ecccalc;
+-	uint8_t *ecc_code = chip->buffers->ecccode;
+-	uint32_t *eccpos = chip->ecc.layout->eccpos;
 -
--	if (image_get_type(os_header) == IH_TYPE_MULTI) {
--		printf("Multifile images not handled at the moment\n");
--		return -1;
+-	chip->ecc.read_page_raw(mtd, chip, buf);
+-
+-	for (i = 0; eccsteps; eccsteps--, i += eccbytes, p += eccsize)
+-		chip->ecc.calculate(mtd, p, &ecc_calc[i]);
+-
+-	for (i = 0; i < chip->ecc.total; i++)
+-		ecc_code[i] = chip->oob_poi[eccpos[i]];
+-
+-	eccsteps = chip->ecc.steps;
+-	p = buf;
+-
+-	for (i = 0 ; eccsteps; eccsteps--, i += eccbytes, p += eccsize) {
+-		int stat;
+-
+-		stat = chip->ecc.correct(mtd, p, &ecc_code[i], &ecc_calc[i]);
+-		if (stat < 0)
+-			mtd->ecc_stats.failed++;
+-		else
+-			mtd->ecc_stats.corrected += stat;
 -	}
--
--	if (armlinux_architecture == 0) {
--		printf("arm architecture not set. Please specify with -a option\n");
--		return -1;
--	}
--
--	if (!armlinux_bootparams) {
--		printf("Bootparams not set. Please fix your board code\n");
--		return -1;
--	}
--
--	theKernel = (void *)image_get_ep(os_header);
--
--	debug("## Transferring control to Linux (at address 0x%p) ...\n",
--	       theKernel);
--
--	if (relocate_image(data->os, (void *)image_get_load(os_header)))
--		return -1;
--
--	if (data->initrd)
--		if (relocate_image(data->initrd, (void *)image_get_load(&data->initrd->header)))
--			return -1;
--
--	/* we assume that the kernel is in place */
--	printf("\nStarting kernel %s...\n\n", data->initrd ? "with initrd " : "");
--
--	start_linux(theKernel, 0, data);
--
--	return -1;
+-	return 0;
 -}
 -
--static int image_handle_cmdline_parse(struct image_data *data, int opt,
--		char *optarg)
+-/**
+  * nand_read_page_syndrome - [REPLACABLE] hardware ecc syndrom based page read
+  * @mtd:	mtd info structure
+  * @chip:	nand chip info structure
+@@ -1284,32 +1244,6 @@ static void nand_write_page_raw(struct mtd_info *mtd, struct nand_chip *chip,
+ }
+ 
+ /**
+- * nand_write_page_swecc - [REPLACABLE] software ecc based page write function
+- * @mtd:	mtd info structure
+- * @chip:	nand chip info structure
+- * @buf:	data buffer
+- */
+-static void nand_write_page_swecc(struct mtd_info *mtd, struct nand_chip *chip,
+-				  const uint8_t *buf)
 -{
--	int ret = 1;
+-	int i, eccsize = chip->ecc.size;
+-	int eccbytes = chip->ecc.bytes;
+-	int eccsteps = chip->ecc.steps;
+-	uint8_t *ecc_calc = chip->buffers->ecccalc;
+-	const uint8_t *p = buf;
+-	uint32_t *eccpos = chip->ecc.layout->eccpos;
 -
--	switch (opt) {
--	case 'a':
--		armlinux_architecture = simple_strtoul(optarg, NULL, 0);
--		ret = 0;
--		break;
--	case 'R':
--		system_rev = simple_strtoul(optarg, NULL, 0);
--		ret = 0;
--		break;
--	default:
--		break;
--	}
+-	/* Software ecc calculation */
+-	for (i = 0; eccsteps; eccsteps--, i += eccbytes, p += eccsize)
+-		chip->ecc.calculate(mtd, p, &ecc_calc[i]);
 -
--	return ret;
+-	for (i = 0; i < chip->ecc.total; i++)
+-		chip->oob_poi[eccpos[i]] = ecc_calc[i];
+-
+-	chip->ecc.write_page_raw(mtd, chip, buf);
 -}
 -
--static struct image_handler handler = {
--	.cmdline_options = "a:R:",
--	.cmdline_parse = image_handle_cmdline_parse,
--	.help_string = " -a <arch>        use architecture number <arch>\n"
--		       " -R <system_rev>  use system revison <system_rev>\n",
--
--	.bootm = do_bootm_linux,
--	.image_type = IH_OS_LINUX,
--};
--
--static int armlinux_register_image_handler(void)
--{
--	return register_image_handler(&handler);
--}
--
--late_initcall(armlinux_register_image_handler);
--#endif /* CONFIG_CMD_BOOTM */
--
- #ifdef CONFIG_CMD_BOOTZ
- struct zimage_header {
- 	u32	unused[9];
-diff --git a/arch/arm/lib/bootm.c b/arch/arm/lib/bootm.c
+-/**
+  * nand_write_page_syndrome - [REPLACABLE] hardware ecc syndrom based page write
+  * @mtd:	mtd info structure
+  * @chip:	nand chip info structure
+@@ -2312,14 +2246,7 @@ int nand_scan_tail(struct mtd_info *mtd)
+ 		break;
+ 
+ 	case NAND_ECC_SOFT:
+-		chip->ecc.calculate = nand_calculate_ecc;
+-		chip->ecc.correct = nand_correct_data;
+-		chip->ecc.read_page = nand_read_page_swecc;
+-		chip->ecc.write_page = nand_write_page_swecc;
+-		chip->ecc.read_oob = nand_read_oob_std;
+-		chip->ecc.write_oob = nand_write_oob_std;
+-		chip->ecc.size = 256;
+-		chip->ecc.bytes = 3;
++		nand_init_ecc_soft(chip);
+ 		break;
+ 
+ 	case NAND_ECC_NONE:
+diff --git a/drivers/mtd/nand/nand_swecc.c b/drivers/mtd/nand/nand_swecc.c
 new file mode 100644
-index 0000000..b09fe70
+index 0000000..93511cb
 --- /dev/null
-+++ b/arch/arm/lib/bootm.c
-@@ -0,0 +1,92 @@
-+#include <boot.h>
++++ b/drivers/mtd/nand/nand_swecc.c
+@@ -0,0 +1,94 @@
 +#include <common.h>
-+#include <command.h>
-+#include <driver.h>
-+#include <environment.h>
-+#include <image.h>
-+#include <zlib.h>
-+#include <init.h>
-+#include <fs.h>
-+#include <linux/list.h>
-+#include <xfuncs.h>
-+#include <malloc.h>
-+#include <fcntl.h>
 +#include <errno.h>
-+
++#include <clock.h>
++#include <linux/mtd/mtd.h>
++#include <linux/mtd/nand.h>
++#include <linux/err.h>
++#include <linux/mtd/nand_ecc.h>
 +#include <asm/byteorder.h>
-+#include <asm/global_data.h>
-+#include <asm/setup.h>
-+#include <asm/barebox-arm.h>
-+#include <asm/armlinux.h>
-+#include <asm/system.h>
++#include <asm/io.h>
++#include <malloc.h>
 +
-+static int do_bootm_linux(struct image_data *data)
++#include "nand.h"
++
++/**
++ * nand_read_page_swecc - [REPLACABLE] software ecc based page read function
++ * @mtd:	mtd info structure
++ * @chip:	nand chip info structure
++ * @buf:	buffer to store read data
++ */
++static int nand_read_page_swecc(struct mtd_info *mtd, struct nand_chip *chip,
++				uint8_t *buf)
 +{
-+	void (*theKernel)(int zero, int arch, void *params);
-+	image_header_t *os_header = &data->os->header;
++	int i, eccsize = chip->ecc.size;
++	int eccbytes = chip->ecc.bytes;
++	int eccsteps = chip->ecc.steps;
++	uint8_t *p = buf;
++	uint8_t *ecc_calc = chip->buffers->ecccalc;
++	uint8_t *ecc_code = chip->buffers->ecccode;
++	uint32_t *eccpos = chip->ecc.layout->eccpos;
 +
-+	if (image_get_type(os_header) == IH_TYPE_MULTI) {
-+		printf("Multifile images not handled at the moment\n");
-+		return -1;
++	chip->ecc.read_page_raw(mtd, chip, buf);
++
++	for (i = 0; eccsteps; eccsteps--, i += eccbytes, p += eccsize)
++		chip->ecc.calculate(mtd, p, &ecc_calc[i]);
++
++	for (i = 0; i < chip->ecc.total; i++)
++		ecc_code[i] = chip->oob_poi[eccpos[i]];
++
++	eccsteps = chip->ecc.steps;
++	p = buf;
++
++	for (i = 0 ; eccsteps; eccsteps--, i += eccbytes, p += eccsize) {
++		int stat;
++
++		stat = chip->ecc.correct(mtd, p, &ecc_code[i], &ecc_calc[i]);
++		if (stat < 0)
++			mtd->ecc_stats.failed++;
++		else
++			mtd->ecc_stats.corrected += stat;
 +	}
-+
-+	theKernel = (void *)image_get_ep(os_header);
-+
-+	debug("## Transferring control to Linux (at address 0x%p) ...\n",
-+	       theKernel);
-+
-+	if (relocate_image(data->os, (void *)image_get_load(os_header)))
-+		return -1;
-+
-+	if (data->initrd)
-+		if (relocate_image(data->initrd, (void *)image_get_load(&data->initrd->header)))
-+			return -1;
-+
-+	/* we assume that the kernel is in place */
-+	printf("\nStarting kernel %s...\n\n", data->initrd ? "with initrd " : "");
-+
-+	start_linux(theKernel, 0, data);
-+
-+	return -1;
++	return 0;
 +}
 +
-+static int image_handle_cmdline_parse(struct image_data *data, int opt,
-+		char *optarg)
++/**
++ * nand_write_page_swecc - [REPLACABLE] software ecc based page write function
++ * @mtd:	mtd info structure
++ * @chip:	nand chip info structure
++ * @buf:	data buffer
++ */
++#ifdef CONFIG_NAND_WRITE
++static void nand_write_page_swecc(struct mtd_info *mtd, struct nand_chip *chip,
++				  const uint8_t *buf)
 +{
-+	int ret = 1;
-+	int no;
++	int i, eccsize = chip->ecc.size;
++	int eccbytes = chip->ecc.bytes;
++	int eccsteps = chip->ecc.steps;
++	uint8_t *ecc_calc = chip->buffers->ecccalc;
++	const uint8_t *p = buf;
++	uint32_t *eccpos = chip->ecc.layout->eccpos;
 +
-+	switch (opt) {
-+	case 'a':
-+		no = simple_strtoul(optarg, NULL, 0);
-+		armlinux_set_architecture(no);
-+		ret = 0;
-+		break;
-+	case 'R':
-+		no = simple_strtoul(optarg, NULL, 0);
-+		armlinux_set_revision(no);
-+		ret = 0;
-+		break;
-+	default:
-+		break;
-+	}
++	/* Software ecc calculation */
++	for (i = 0; eccsteps; eccsteps--, i += eccbytes, p += eccsize)
++		chip->ecc.calculate(mtd, p, &ecc_calc[i]);
 +
-+	return ret;
++	for (i = 0; i < chip->ecc.total; i++)
++		chip->oob_poi[eccpos[i]] = ecc_calc[i];
++
++	chip->ecc.write_page_raw(mtd, chip, buf);
 +}
++#endif
 +
-+static struct image_handler handler = {
-+	.cmdline_options = "a:R:",
-+	.cmdline_parse = image_handle_cmdline_parse,
-+	.help_string = " -a <arch>        use architecture number <arch>\n"
-+		       " -R <system_rev>  use system revison <system_rev>\n",
-+
-+	.bootm = do_bootm_linux,
-+	.image_type = IH_OS_LINUX,
-+};
-+
-+static int armlinux_register_image_handler(void)
++void nand_init_ecc_soft(struct nand_chip *chip)
 +{
-+	return register_image_handler(&handler);
++	chip->ecc.calculate = nand_calculate_ecc;
++	chip->ecc.correct = nand_correct_data;
++	chip->ecc.read_page = nand_read_page_swecc;
++	chip->ecc.read_oob = nand_read_oob_std;
++#ifdef CONFIG_NAND_WRITE
++	chip->ecc.write_page = nand_write_page_swecc;
++	chip->ecc.write_oob = nand_write_oob_std;
++#endif
++	chip->ecc.size = 256;
++	chip->ecc.bytes = 3;
 +}
-+
-+late_initcall(armlinux_register_image_handler);
 -- 
 1.7.2.3
 
