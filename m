@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Q6is3-0001eY-Na
-	for barebox@lists.infradead.org; Mon, 04 Apr 2011 12:27:09 +0000
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Mon, 4 Apr 2011 14:26:24 +0200
-References: <20110404210245.16f269f7@manocska.bendor.com.au>
-	<201104041313.32074.jbe@pengutronix.de>
-	<20110404221321.0452b0b9@manocska.bendor.com.au>
-In-Reply-To: <20110404221321.0452b0b9@manocska.bendor.com.au>
+	id 1Q6jGq-0001sQ-3D
+	for barebox@lists.infradead.org; Mon, 04 Apr 2011 12:52:45 +0000
+Message-ID: <4D99BF11.5000404@pengutronix.de>
+Date: Mon, 04 Apr 2011 14:52:33 +0200
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <201104041426.24763.jbe@pengutronix.de>
+References: <20110404210245.16f269f7@manocska.bendor.com.au>	<201104041313.32074.jbe@pengutronix.de>	<20110404221321.0452b0b9@manocska.bendor.com.au>
+	<201104041426.24763.jbe@pengutronix.de>
+In-Reply-To: <201104041426.24763.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,58 +18,68 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============1992481171=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: More Mini2440 questions...
-To: =?utf-8?q?Zolt=C3=A1n_K=C3=B3csi?= <zoltan@bendor.com.au>
+To: Juergen Beisert <jbe@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-SGkgWm9sdMOhbiwKClpvbHTDoW4gS8OzY3NpIHdyb3RlOgo+IE9uIE1vbiwgNCBBcHIgMjAxMSAx
-MzoxMzozMSArMDIwMAo+Cj4gSnVlcmdlbiBCZWlzZXJ0IDxqYmVAcGVuZ3V0cm9uaXguZGU+IHdy
-b3RlOgo+ID4gSGkgWm9sdMOhbiwKPiA+Cj4gPiBab2x0w6FuIEvDs2NzaSB3cm90ZToKPiA+ID4g
-VGhhbmtzIGZvciBhbGwgdGhlIGFuc3dlcnMgZm9yIG15IHByZXZpb3VzIHF1ZXN0aW9ucyEKPiA+
-ID4KPiA+ID4gVGhlICduZXh0JyBicmFuY2ggaW5kZWVkIGJvb3RzIGZyb20gdGhlIE5BTkQgRkxB
-U0ggbGlrZSBhIGNoYXJtLgo+ID4KPiA+IFxvLwo+ID4KPiA+IEp1c3QgZm9yIG15IGxpc3Qgb2Yg
-dGVzdGVkIG1pbjI0NDAgdmFyaWFudHM6IFdoYXQgdHlwZSBvZiBTRFJBTXMgYW5kCj4gPiBOQU5E
-IGlzIHlvdXIgc3lzdGVtIHVzaW5nPwo+Cj4gVGhlIFNEUkFNIGlzIE1pY3JvbiA0OExDMTZNMTZB
-Mi03NSwgdGhlIE5BTkQgaXMgU2Ftc3VuZyBLOUYxRzA4VTBCLgo+Cj4gQWN0dWFsbHksIHRha2lu
-ZyBhIGxvb2sgYXQgdGhlIFJBTSBkYXRhc2hlZXQgb2YgdGhlIHJldmVhbHMgdGhhdCB3aXRoIGEK
-PiAzIGNsb2NrIFJBUy0+Q0FTIGxhdGVuY3kgdGhlIGNoaXAgY2FuIGNhbiBtZXJyaWx5IHdvcmsg
-d2l0aCBhIDEzM01Iego+IGJ1cyBjbG9jaywgc28gdGhlIFMzQydzIEZDTEsgY291bGQgYmUgYm9v
-c3RlZCB1cCB0byA1MzJNSHouIEEKPiAzMCUgc3BlZWQgaW5jcmVhc2UgaXMgbm90IHNvbWV0aGlu
-ZyB0byBzbmVlemUgb24uLi4KCllvdSBjYW4gdHJ5LiBCdXQgd2hlbiBJIHJlYWQgdGhlIGRhdGFz
-aGVldCwgbW9zdCBvZiB0aGUgdGltZSB0aGV5IG9ubHkgdGFsayAKYWJvdXQgNDAwIE1IeiBtYXgu
-IENQVSBjbG9jaywgYW5kIG5ldmVyIGFib3V0IDUzMyBNSHogYW55IG1vcmUuCgpCVFc6IFRoZSBh
-dmVyYWdlIGRhdGEgdGhyb3VnaHB1dCBvZiBhIFNEUkFNIHJ1bm5pbmcgYXQgMTMzIE1IeiBAIENM
-MyBpcyBsb3dlciAKdGhhbiBvZiBhIFNEUkFNIHJ1bm5pbmcgYXQgMTAwIE1IeiBAIENMMi4gVGhl
-IENMMyBodXJ0cyBtb3JlIHRoYW4geW91IHdpbGwgCndpbiB3aXRoIHRoZSBpbmNyZWFzZWQgY2xv
-Y2suCiAKPiA+Wy4uLl0KPiA+Cj4gPiAiL2Vudi9jb25maWciIGZvciBwYXJhbWV0ZXJpemF0aW9u
-LiBNYXliZSB0aGVzZSBmaWxlIHdpbGwgaGVscCB5b3UgdG8KPiA+IHVuZGVyc3RhbmQgaG93IGl0
-IHdvcmtzLgo+Cj4gSSdsbCB0cnkgbXkgYmVzdHRvIGdyb2sgdGhlbSA6LSkKPgo+ID4gU28sIHRo
-ZSBjaGFuZ2VzIGluIHlvdXIgZW52aXJvbm1lbnQgYXJlIGxvc3QgYWZ0ZXIgcmVib290Pwo+Cj4g
-WWVzLgo+Cj4gPiBEbyB5b3Ugc2VlIGFueSBraW5kIG9mIGVycm9yIG1lc3NhZ2UgKGxpa2UgQ1JD
-IHN1bSBlcnJvcnMpPyB3aGVuCj4gPiBiYXJlYm94IGNvbWVzIHVwIGFmdGVyIHJlc2V0IGFuZCB0
-cmllcyB0byBsb2FkIHRoZSBzYXZlZCBlbnZpcm9ubWVudD8KPgo+IE5vLiBIZXJlJ3Mgd2hhdCBn
-b2VzIG9uLCB3aXRoIHVuaW1wb3J0YW50IHN0dWZmIGRlbGV0ZWQ6Cj4KPiBtaW5pMjQ0MDovIHBy
-aW50ZW52Cj4gbG9jYWxzOgo+IG1hY2hpbmU9bWluaTI0NDAKPiBbLi4uXQo+IG5mc3Jvb3Q9Oi9w
-YXRoL3RvL25mcy9yb290Cj4gWy4uLl0KPiBnbG9iYWxzOgo+IFBBVEg9L2Vudi9iaW4KPgo+IG1p
-bmkyNDQwOi8gbmZzcm9vdD0vc29tZS9vdGhlci9yb290Cj4gbWluaTI0NDA6LyBQQVRIPSRQQVRI
-Oi9zb21lL2xvY2F0aW9uCj4gbWluaTI0NDA6LyBwcmludGVudgo+IGxvY2FsczoKPiBbLi4uXQo+
-IG5mc3Jvb3Q9L3NvbWUvb3RoZXIvcm9vdAo+IFsuLi5dCj4gZ2xvYmFsczoKPiBQQVRIPS9lbnYv
-YmluOi9zb21lL2xvY2F0aW9uCj4KPiBtaW5pMjQ0MDovIHNhdmVlbnYKPiBzYXZpbmcgZW52aXJv
-bm1lbnQKCkFoaCwgbm8gSSBzZWUgdGhlIHByb2JsZW06IFlvdSBkaWQgbm90IGNoYW5nZSBhbnl0
-aGluZyBpbiB0aGUgZW52aXJvbm1lbnQuIFlvdSAKYXJlIHVzaW5nIGJhcmVib3gsIG5vdCB1LWJv
-b3QhCgpUcnkgdG8gZWRpdCB0aGUgL2Vudi9jb25maWcgZmlsZSBhdCB5b3VyIG1pbmkyNDQwIGlu
-c3RlYWQ6CgptaW5pMjQ0MDovIGVkaXQgL2Vudi9jb25maWcKbWluaTI0NDA6LyBzYXZlZW52CgpU
-aGluayBpbiBzY3JpcHRzIG5vdywgbm90IGluIGVudmlyb25tZW50IHZhcmlhYmxlcyBhbnkgbW9y
-ZS4KClJlZ2FyZHMsCkp1ZXJnZW4KCi0tIApQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgfCBKdWVyZ2VuIEJlaXNlcnQgICAgICAgICAgICAgfApMaW51eCBTb2x1
-dGlvbnMgZm9yIFNjaWVuY2UgYW5kIEluZHVzdHJ5ICAgICAgfCBQaG9uZTogKzQ5LTg3NjYtOTM5
-IDIyOCAgICAgfApWZXJ0cmV0dW5nIFN1ZWQvTXVlbmNoZW4sIEdlcm1hbnkgICAgICAgICAgICAg
-fCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfApBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBI
-UkEgMjY4NiAgICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfAoKX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWls
-aW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRl
-YWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
+--===============1992481171==
+Content-Type: multipart/signed; micalg=pgp-sha1;
+ protocol="application/pgp-signature";
+ boundary="------------enig5A9C6CBB2C1123B7E3449414"
+
+This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
+--------------enig5A9C6CBB2C1123B7E3449414
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+On 04/04/2011 02:26 PM, Juergen Beisert wrote:
+
+> mini2440:/ edit /env/config
+
+exit+save with Ctrl+d
+just exit with Ctrl+c
+
+> mini2440:/ saveenv
+
+Marc
+
+--=20
+Pengutronix e.K.                  | Marc Kleine-Budde           |
+Industrial Linux Solutions        | Phone: +49-231-2826-924     |
+Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
+Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
+
+
+--------------enig5A9C6CBB2C1123B7E3449414
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.10 (GNU/Linux)
+Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org/
+
+iEYEARECAAYFAk2ZvxUACgkQjTAFq1RaXHN3yACdF0eKjj1vlmbRv9u8ckpL9Eex
+AF4An1DDKL9gija4ArFDFJY211uN5O8u
+=fr0S
+-----END PGP SIGNATURE-----
+
+--------------enig5A9C6CBB2C1123B7E3449414--
+
+
+--===============1992481171==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============1992481171==--
