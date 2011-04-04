@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Q6jbb-0002C2-QU
-	for barebox@lists.infradead.org; Mon, 04 Apr 2011 13:14:12 +0000
+	id 1Q6jbc-0002C7-52
+	for barebox@lists.infradead.org; Mon, 04 Apr 2011 13:14:17 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  4 Apr 2011 15:13:55 +0200
-Message-Id: <1301922843-12118-2-git-send-email-s.hauer@pengutronix.de>
+Date: Mon,  4 Apr 2011 15:14:00 +0200
+Message-Id: <1301922843-12118-7-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1301922843-12118-1-git-send-email-s.hauer@pengutronix.de>
 References: <1301922843-12118-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,114 +21,89 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/9] ARM omap: move uart access functions to a more generic
-	place
+Subject: [PATCH 6/9] ARM omap4: fix indention in Kconfig
 To: barebox@lists.infradead.org
-
-These functions can be used on omap4 aswell, so move them to
-omap.c
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-omap/Makefile        |    1 +
- arch/arm/mach-omap/omap-uart.c     |   36 ++++++++++++++++++++++++++++++++++++
- arch/arm/mach-omap/omap3_generic.c |   34 ----------------------------------
- 3 files changed, 37 insertions(+), 34 deletions(-)
- create mode 100644 arch/arm/mach-omap/omap-uart.c
+ arch/arm/mach-omap/Kconfig |   56 ++++++++++++++++++++++----------------------
+ 1 files changed, 28 insertions(+), 28 deletions(-)
 
-diff --git a/arch/arm/mach-omap/Makefile b/arch/arm/mach-omap/Makefile
-index 57bab99..fe2d626 100644
---- a/arch/arm/mach-omap/Makefile
-+++ b/arch/arm/mach-omap/Makefile
-@@ -25,3 +25,4 @@ obj-$(CONFIG_ARCH_OMAP3) += omap3_core.o omap3_generic.o
- obj-$(CONFIG_OMAP3_CLOCK_CONFIG) += omap3_clock_core.o omap3_clock.o
- obj-$(CONFIG_GPMC) += gpmc.o
- obj-$(CONFIG_GPIO) += gpio.o
-+obj-y += omap-uart.o
-diff --git a/arch/arm/mach-omap/omap-uart.c b/arch/arm/mach-omap/omap-uart.c
-new file mode 100644
-index 0000000..477452d
---- /dev/null
-+++ b/arch/arm/mach-omap/omap-uart.c
-@@ -0,0 +1,36 @@
-+#include <common.h>
-+#include <asm/io.h>
-+
-+/**
-+ * @brief Uart port register read function for OMAP3
-+ *
-+ * @param base base address of UART
-+ * @param reg_idx register index
-+ *
-+ * @return character read from register
-+ */
-+unsigned int omap_uart_read(unsigned long base, unsigned char reg_idx)
-+{
-+	unsigned int *reg_addr = (unsigned int *)base;
-+	reg_addr += reg_idx;
-+	return readb(reg_addr);
-+}
-+EXPORT_SYMBOL(omap_uart_read);
-+
-+/**
-+ * @brief Uart port register write function for OMAP3
-+ *
-+ * @param val value to write
-+ * @param base base address of UART
-+ * @param reg_idx register index
-+ *
-+ * @return void
-+ */
-+void omap_uart_write(unsigned int val, unsigned long base,
-+		     unsigned char reg_idx)
-+{
-+	unsigned int *reg_addr = (unsigned int *)base;
-+	reg_addr += reg_idx;
-+	writeb(val, reg_addr);
-+}
-+EXPORT_SYMBOL(omap_uart_write);
-diff --git a/arch/arm/mach-omap/omap3_generic.c b/arch/arm/mach-omap/omap3_generic.c
-index 843143b..c1940d2 100644
---- a/arch/arm/mach-omap/omap3_generic.c
-+++ b/arch/arm/mach-omap/omap3_generic.c
-@@ -483,37 +483,3 @@ void a_init(void)
- #endif
+diff --git a/arch/arm/mach-omap/Kconfig b/arch/arm/mach-omap/Kconfig
+index a13fb1c..ec576a1 100644
+--- a/arch/arm/mach-omap/Kconfig
++++ b/arch/arm/mach-omap/Kconfig
+@@ -39,38 +39,38 @@ config ARCH_OMAP3
  
- }
+ endchoice
+ 
+- ### Generic Clock configurations to be enabled by Mach - invisible to enable.
+- config OMAP_CLOCK_UART
+- 	bool
+- config OMAP_CLOCK_UART2
+- 	bool
+- config OMAP_CLOCK_UART3
+- 	bool
+- config OMAP_CLOCK_I2C
+- 	bool
 -
--/**
-- * @brief Uart port register read function for OMAP3
-- *
-- * @param base base address of UART
-- * @param reg_idx register index
-- *
-- * @return character read from register
-- */
--unsigned int omap_uart_read(unsigned long base, unsigned char reg_idx)
--{
--	unsigned int *reg_addr = (unsigned int *)base;
--	reg_addr += reg_idx;
--	return readb(reg_addr);
--}
--EXPORT_SYMBOL(omap_uart_read);
+- # Blind enable all possible clocks.. think twice before you do this.
+- config OMAP_CLOCK_ALL
+- 	bool
 -
--/**
-- * @brief Uart port register write function for OMAP3
-- *
-- * @param val value to write
-- * @param base base address of UART
-- * @param reg_idx register index
-- *
-- * @return void
-- */
--void omap_uart_write(unsigned int val, unsigned long base,
--		     unsigned char reg_idx)
--{
--	unsigned int *reg_addr = (unsigned int *)base;
--	reg_addr += reg_idx;
--	writeb(val, reg_addr);
--}
--EXPORT_SYMBOL(omap_uart_write);
+- config OMAP_CLOCK_SOURCE_S32K
+- 	bool
+-
+- config OMAP3_CLOCK_CONFIG
+- 	prompt "Clock Configuration"
+- 	bool
+- 	depends on ARCH_OMAP3
+- 	default y
+- 	help
+- 	  Say Y here if you like to have OMAP3 Clock configuration done.
+-
+- config OMAP3_COPY_CLOCK_SRAM
+- 	prompt "SRAM copy of Clock code"
+- 	bool
+- 	depends on OMAP3_CLOCK_CONFIG
+- 	default y
+- 	help
+- 	  Say Y here if you like to have initial OMAP3 Clock configuration done from SRAM.
++### Generic Clock configurations to be enabled by Mach - invisible to enable.
++config OMAP_CLOCK_UART
++	bool
++config OMAP_CLOCK_UART2
++	bool
++config OMAP_CLOCK_UART3
++	bool
++config OMAP_CLOCK_I2C
++	bool
++
++# Blind enable all possible clocks.. think twice before you do this.
++config OMAP_CLOCK_ALL
++	bool
++
++config OMAP_CLOCK_SOURCE_S32K
++	bool
++
++config OMAP3_CLOCK_CONFIG
++	prompt "Clock Configuration"
++	bool
++	depends on ARCH_OMAP3
++	default y
++	help
++	  Say Y here if you like to have OMAP3 Clock configuration done.
++
++config OMAP3_COPY_CLOCK_SRAM
++	prompt "SRAM copy of Clock code"
++	bool
++	depends on OMAP3_CLOCK_CONFIG
++	default y
++	help
++	  Say Y here if you like to have initial OMAP3 Clock configuration done from SRAM.
+ 
+ config GPMC
+ 	prompt "Support for GPMC configuration"
 -- 
 1.7.2.3
 
