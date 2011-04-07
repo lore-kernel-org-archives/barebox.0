@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from coyote.quickmin.net ([217.14.112.24])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Q7PM5-0004mN-CK
-	for barebox@lists.infradead.org; Wed, 06 Apr 2011 09:48:54 +0000
-Date: Wed, 6 Apr 2011 11:48:50 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110406094850.GN7285@pengutronix.de>
-References: <1301867100-13020-1-git-send-email-franck.jullien@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1301867100-13020-1-git-send-email-franck.jullien@gmail.com>
+	id 1Q7k5t-00057i-Fv
+	for barebox@lists.infradead.org; Thu, 07 Apr 2011 07:57:34 +0000
+From: Thomas Mayer <thomas.mayer@telemotive.de>
+Message-ID: <1302163039-29861-1-git-send-email-thomas.mayer@telemotive.de>
+Date: Thu, 7 Apr 2011 09:57:19 +0200
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,103 +14,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Nios2: Add Altera TSE MAC driver
-To: franck.jullien@gmail.com
-Cc: barebox@lists.infradead.org
-
-Hi,
-
-Several comments inline...
-
-Sascha
-
-On Sun, Apr 03, 2011 at 11:45:00PM +0200, franck.jullien@gmail.com wrote:
-> +
-> +static int tse_get_ethaddr(struct eth_device *edev, unsigned char *m)
-> +{
-> +/* If there is already a MAC address configured when barebox starts (??), use it */
-> +#ifdef THERE_IS_A_DEFAULT_MAC_ADDR_IN_TSE
-> +	struct altera_tse_priv *priv = edev->priv;
-> +	struct alt_tse_mac *mac_dev = priv->mac_dev;
-> +
-> +	m[5] = (readl(&mac_dev->mac_addr_1) >> 8) && 0xFF;
-> +	m[4] = (readl(&mac_dev->mac_addr_1))      && 0xFF;
-> +	m[3] = (readl(mac_dev->mac_addr_0) >> 24) && 0xFF;
-> +	m[2] = (readl(mac_dev->mac_addr_0) >> 16) && 0xFF;
-> +	m[1] = (readl(mac_dev->mac_addr_0) >>  8) && 0xFF;
-> +	m[0] = (readl(mac_dev->mac_addr_0))       && 0xFF;
-> +
-> +	return 0;
-> +#else
-> +	return -1;
-> +#endif
-> +}
-
-This function should return the mac address from eeprom (if there is
-one). Otherwise you can return the mac address programmed into the
-controler, but should check this with is_valid_ether(). Hm,
-is_valid_ether() should probably rather be called from the network
-layer.
+Subject: [PATCH 1/1] freescale-mx35-3-stack: Add mmc0
+To: barebox@lists.infradead.org
 
 
-> +
-> +static void tse_eth_halt(struct eth_device *edev)
-> +{
-> +
-> +}
+Signed-off-by: Thomas Mayer <thomas.mayer@telemotive.de>
+---
+ arch/arm/boards/freescale-mx35-3-stack/3stack.c |    4 ++++
+ 1 files changed, 4 insertions(+), 0 deletions(-)
 
-You should quiesce the DMA controller here. Otherwise there might be bad
-surprises once Linux starts.
-
-> +/* Phy init code */
-> +static int init_phy(struct eth_device *edev)
-> +{
-> +	struct altera_tse_priv *priv = edev->priv;
-> +	struct phy_info *curphy;
-> +
-> +	/* Get the cmd structure corresponding to the attached
-> +	 * PHY */
-> +	curphy = get_phy_info(edev);
-> +
-> +	if (curphy == NULL) {
-> +		priv->phyinfo = NULL;
-> +		return 0;
-> +	} else
-> +		debug("%s found\n", curphy->name);
-> +
-> +	priv->phyinfo = curphy;
-> +
-> +	phy_run_commands(priv, priv->phyinfo->config);
-> +
-> +	return 1;
-> +}
-
-Is this phy initialization necessary? The phy support in barebox should
-initialize the phy correctly already.
-
-Sascha
-
-> +
-> +	miidev->read = tse_phy_read;
-> +	miidev->write = tse_phy_write;
-> +#ifndef NIOS_SOPC_PHY_ADDR
-> +	miidev->address = -1;
-> +#else
-> +	miidev->address = NIOS_SOPC_PHY_ADDR;
-> +#endif
-
-This should be passed with platform data instead of using ifdefs.
-
-
+diff --git a/arch/arm/boards/freescale-mx35-3-stack/3stack.c b/arch/arm/boards/freescale-mx35-3-stack/3stack.c
+index 127bfb4..a4cbbe1 100644
+--- a/arch/arm/boards/freescale-mx35-3-stack/3stack.c
++++ b/arch/arm/boards/freescale-mx35-3-stack/3stack.c
+@@ -199,6 +199,10 @@ static int f3s_devices_init(void)
+ 		break;
+ 	}
+ 
++#ifdef CONFIG_MCI_IMX_ESDHC
++	imx35_add_mmc0(NULL);
++#endif
++
+ 	set_silicon_rev(imx_silicon_revision());
+ 
+ 	i2c_register_board_info(0, i2c_devices, ARRAY_SIZE(i2c_devices));
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.1
+
 
 _______________________________________________
 barebox mailing list
