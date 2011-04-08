@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Q8Co6-0000ro-CX
+	id 1Q8Co6-0000rn-CT
 	for barebox@lists.infradead.org; Fri, 08 Apr 2011 14:37:08 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  8 Apr 2011 16:36:49 +0200
-Message-Id: <1302273422-6987-4-git-send-email-s.hauer@pengutronix.de>
+Date: Fri,  8 Apr 2011 16:36:48 +0200
+Message-Id: <1302273422-6987-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1302273422-6987-1-git-send-email-s.hauer@pengutronix.de>
 References: <1302273422-6987-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,48 +21,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/16] ubi: do not use filep
+Subject: [PATCH 02/16] mci: make it compile without info support
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/ubi/cdev.c |    8 +-------
- 1 files changed, 1 insertions(+), 7 deletions(-)
+ drivers/mci/mci-core.c |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
 
-diff --git a/drivers/mtd/ubi/cdev.c b/drivers/mtd/ubi/cdev.c
-index 5520132..46e1cb5 100644
---- a/drivers/mtd/ubi/cdev.c
-+++ b/drivers/mtd/ubi/cdev.c
-@@ -9,7 +9,6 @@ struct ubi_volume_cdev_priv {
- 	struct ubi_device *ubi;
- 	struct ubi_volume *vol;
- 	int updating;
--	unsigned long mode;
+diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
+index f3d975d..8fd948c 100644
+--- a/drivers/mci/mci-core.c
++++ b/drivers/mci/mci-core.c
+@@ -1338,7 +1338,9 @@ on_error:
+ static struct driver_d mci_driver = {
+ 	.name	= "mci",
+ 	.probe	= mci_probe,
++#ifdef CONFIG_MCI_INFO
+ 	.info	= mci_info,
++#endif
  };
  
- static ssize_t ubi_volume_cdev_read(struct cdev *cdev, void *buf, size_t size,
-@@ -86,12 +85,7 @@ static int ubi_volume_cdev_open(struct cdev *cdev, struct filep *f)
- {
- 	struct ubi_volume_cdev_priv *priv = cdev->priv;
- 
--	/* only allow read or write, but not both */
--	if ((f->flags & O_ACCMODE) == O_RDWR)
--		return -EINVAL;
--
- 	priv->updating = 0;
--	priv->mode = f->flags & O_ACCMODE;
- 
- 	return 0;
- }
-@@ -132,7 +126,7 @@ static off_t ubi_volume_cdev_lseek(struct cdev *cdev, off_t ofs)
- 	struct ubi_volume_cdev_priv *priv = cdev->priv;
- 
- 	/* We can only update ubi volumes sequentially */
--	if (priv->mode == O_WRONLY)
-+	if (priv->updating)
- 		return -EINVAL;
- 
- 	return ofs;
+ static int mci_init(void)
 -- 
 1.7.2.3
 
