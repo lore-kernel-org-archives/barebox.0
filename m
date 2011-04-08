@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Q8D6k-000196-RT
-	for barebox@lists.infradead.org; Fri, 08 Apr 2011 14:56:28 +0000
+	id 1Q8D6k-000191-Fw
+	for barebox@lists.infradead.org; Fri, 08 Apr 2011 14:56:23 +0000
+Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+	(envelope-from <sha@pengutronix.de>) id 1Q8D6i-0006SN-Pq
+	for barebox@lists.infradead.org; Fri, 08 Apr 2011 16:56:20 +0200
+Received: from sha by octopus.hi.pengutronix.de with local (Exim 4.69)
+	(envelope-from <sha@pengutronix.de>) id 1Q8D6i-000301-Op
+	for barebox@lists.infradead.org; Fri, 08 Apr 2011 16:56:20 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  8 Apr 2011 16:56:16 +0200
-Message-Id: <1302274579-11158-6-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1302274579-11158-1-git-send-email-s.hauer@pengutronix.de>
-References: <1302274579-11158-1-git-send-email-s.hauer@pengutronix.de>
+Date: Fri,  8 Apr 2011 16:56:11 +0200
+Message-Id: <1302274579-11158-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,186 +26,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/8] malloc: put common memory functions to seperate file
+Subject: Size reduction patches
 To: barebox@lists.infradead.org
 
-These functions are needed independently of the specific
-malloc implementation, so move them out.
+The following patches aim to make a smaller barebox possible. They
+make several things like command handling, having a shell or having
+a fullblown malloc support configurable.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- common/Makefile   |    1 +
- common/dlmalloc.c |   50 -------------------------------------
- common/memory.c   |   71 +++++++++++++++++++++++++++++++++++++++++++++++++++++
- include/malloc.h  |    1 +
- 4 files changed, 73 insertions(+), 50 deletions(-)
+Sascha Hauer (12):
+      add block support
+      ata: use block support
+      ata: make write support optional
+      mci: make write support optional
+      env: Make environment variable support optional
+      make command support optional
+      add noshell support
+      arm: compile icache command only when command support is present
+      malloc: put common memory functions to seperate file
+      add dummy_malloc functions
+      ARM: make exception handling optional
+      nand: make reading oob optional
+
+ arch/arm/Kconfig              |    5 +
+ arch/arm/cpu/Makefile         |    4 +-
+ arch/arm/cpu/cpu.c            |    3 +-
+ arch/arm/cpu/start.c          |   10 ++
+ commands/Kconfig              |   13 ++-
+ common/Kconfig                |   42 +++++++-
+ common/Makefile               |    9 +-
+ common/block.c                |  263 +++++++++++++++++++++++++++++++++++++++++
+ common/dlmalloc.c             |   50 --------
+ common/dummy_malloc.c         |   26 ++++
+ common/memory.c               |   71 +++++++++++
+ common/startup.c              |    5 +-
+ drivers/ata/Kconfig           |    5 +
+ drivers/ata/disk_drive.c      |  196 ++++++------------------------
+ drivers/mci/Kconfig           |    5 +
+ drivers/mci/mci-core.c        |    6 +
+ drivers/mtd/nand/Kconfig      |    5 +
+ drivers/mtd/nand/nand.c       |   42 ++++++--
+ drivers/mtd/nand/nand_base.c  |    9 ++-
+ drivers/mtd/nand/nand_hwecc.c |    2 +
+ fs/Makefile                   |    2 +-
+ include/block.h               |   32 +++++
+ include/environment.h         |   12 ++
+ include/malloc.h              |    1 +
+ 24 files changed, 591 insertions(+), 227 deletions(-)
+ create mode 100644 common/block.c
+ create mode 100644 common/dummy_malloc.c
  create mode 100644 common/memory.c
-
-diff --git a/common/Makefile b/common/Makefile
-index 6a04460..aa2c222 100644
---- a/common/Makefile
-+++ b/common/Makefile
-@@ -8,6 +8,7 @@ obj-$(CONFIG_AUTO_COMPLETE)	+= complete.o
- obj-$(CONFIG_POLLER)		+= poller.o
- obj-$(CONFIG_BLOCK)		+= block.o
- 
-+obj-y += memory.o
- obj-y += dlmalloc.o
- obj-y += clock.o
- obj-y += version.o
-diff --git a/common/dlmalloc.c b/common/dlmalloc.c
-index ff63fbe..f9e1828 100644
---- a/common/dlmalloc.c
-+++ b/common/dlmalloc.c
-@@ -882,56 +882,6 @@ static mbinptr av_[NAV * 2 + 2] = {
- 
- /* ----------------------------------------------------------------------- */
- 
--/*
-- * Begin and End of memory area for malloc(), and current "brk"
-- */
--static ulong malloc_start;
--static ulong malloc_end;
--static ulong malloc_brk;
--
--ulong mem_malloc_start(void)
--{
--	return malloc_start;
--}
--
--ulong mem_malloc_end(void)
--{
--	return malloc_end;
--}
--
--void mem_malloc_init(void *start, void *end)
--{
--	malloc_start = (ulong)start;
--	malloc_end = (ulong)end;
--	malloc_brk = malloc_start;
--}
--
--static void *sbrk_no_zero(ptrdiff_t increment)
--{
--	ulong old = malloc_brk;
--	ulong new = old + increment;
--
--	if ((new < malloc_start) || (new > malloc_end))
--		return NULL;
--
--	malloc_brk = new;
--
--	return (void *)old;
--}
--
--static void *sbrk(ptrdiff_t increment)
--{
--	void *old = sbrk_no_zero(increment);
--
--	/* Only clear increment, if valid address was returned */
--	if (old != NULL)
--		memset(old, 0, increment);
--
--	return old;
--}
--
--/* ----------------------------------------------------------------------- */
--
- /*  Other static bookkeeping data */
- 
- /* variables holding tunable values */
-diff --git a/common/memory.c b/common/memory.c
-new file mode 100644
-index 0000000..8f4a768
---- /dev/null
-+++ b/common/memory.c
-@@ -0,0 +1,71 @@
-+/*
-+ * memory.c
-+ *
-+ * Copyright (c) 2011 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-+ */
-+
-+#include <common.h>
-+
-+/*
-+ * Begin and End of memory area for malloc(), and current "brk"
-+ */
-+static unsigned long malloc_start;
-+static unsigned long malloc_end;
-+static unsigned long malloc_brk;
-+
-+unsigned long mem_malloc_start(void)
-+{
-+	return malloc_start;
-+}
-+
-+unsigned long mem_malloc_end(void)
-+{
-+	return malloc_end;
-+}
-+
-+void mem_malloc_init(void *start, void *end)
-+{
-+	malloc_start = (unsigned long)start;
-+	malloc_end = (unsigned long)end;
-+	malloc_brk = malloc_start;
-+}
-+
-+static void *sbrk_no_zero(ptrdiff_t increment)
-+{
-+	unsigned long old = malloc_brk;
-+	unsigned long new = old + increment;
-+
-+	if ((new < malloc_start) || (new > malloc_end))
-+		return NULL;
-+
-+	malloc_brk = new;
-+
-+	return (void *)old;
-+}
-+
-+void *sbrk(ptrdiff_t increment)
-+{
-+	void *old = sbrk_no_zero(increment);
-+
-+	/* Only clear increment, if valid address was returned */
-+	if (old != NULL)
-+		memset(old, 0, increment);
-+
-+	return old;
-+}
-diff --git a/include/malloc.h b/include/malloc.h
-index 4b0567e..7b9b062 100644
---- a/include/malloc.h
-+++ b/include/malloc.h
-@@ -18,6 +18,7 @@ size_t malloc_usable_size(void*);
- void malloc_stats(void);
- int mallopt(int, int);
- struct mallinfo mallinfo(void);
-+void *sbrk(ptrdiff_t increment);
- 
- #endif
- 
--- 
-1.7.2.3
-
+ create mode 100644 include/block.h
 
 _______________________________________________
 barebox mailing list
