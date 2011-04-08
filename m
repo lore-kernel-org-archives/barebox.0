@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from 63.mail-out.ovh.net ([91.121.185.56])
 	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1Q8BvJ-0000Qu-1O
-	for barebox@lists.infradead.org; Fri, 08 Apr 2011 13:40:30 +0000
-Date: Fri, 8 Apr 2011 15:32:30 +0200
+	id 1Q8Bzp-0000SO-Hs
+	for barebox@lists.infradead.org; Fri, 08 Apr 2011 13:45:10 +0000
+Date: Fri, 8 Apr 2011 15:37:13 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20110408133230.GB13978@game.jcrosoft.org>
-References: <1302257948-18174-1-git-send-email-mkl@pengutronix.de>
-	<1302257948-18174-3-git-send-email-mkl@pengutronix.de>
+Message-ID: <20110408133713.GC13978@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1302257948-18174-3-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,19 +20,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/7] defaultenv: boot: add backwards compatibility for
-	kernel_loc=net
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: barebox@lists.infradead.org, sha@pengutronix.de
+Subject: [PATCH 0/4] defaultenv boot updates 
+To: barebox@lists.infradead.org
 
-On 12:19 Fri 08 Apr     , Marc Kleine-Budde wrote:
-> Since commit 9eac282024c55fc13970189d6ace61f884917538, the boot script
-> doesn't understand kernel_loc=net anymore. This patch adds backwards
-> compatibility so that the kernel is loaded from tftp as before.
-> 
-> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-> ---
-please wait I'm switching boot to getopt and make more frendly
+HI,
+
+	this following patch series make boot script more configurable
+
+
+The following changes since commit 8dfebf96d79aa8e37c2299af8c02a84d30f5e9e7:
+
+  Merge branch 'nand-pu' into next (2011-04-06 09:21:56 +0200)
+
+are available in the git repository at:
+
+  game ..BRANCH.NOT.VERIFIED..
+
+Jean-Christophe PLAGNIOL-VILLARD (4):
+      defaultenv/boot: switch to getopt
+      defaultenv/boot: add -k and -t option to specify the kernel location and image type
+      defaultenv/boot: add -r and -T option to select rootfs location and type
+      defaultenv/boot: add -i option to select the ip mode
+
+ defaultenv/bin/boot      |   52 ++++++++++++++++++++++++++++++++++++++++++---
+ defaultenv/bin/boot_help |   36 +++++++++++++++++++++++++++++++
+ 2 files changed, 84 insertions(+), 4 deletions(-)
+ create mode 100644 defaultenv/bin/boot_help
 
 Best Regards,
 J.
