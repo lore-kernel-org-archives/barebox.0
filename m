@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from coyote.quickmin.net ([217.14.112.24])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Q87pv-0006kn-Aj
-	for barebox@lists.infradead.org; Fri, 08 Apr 2011 09:18:40 +0000
-Received: from [10.96.97.181] (tmayer.mit.telemotive.de [10.96.97.181])
-	by alderan.mit.telemotive.de (Postfix) with ESMTP id 048C4F7673
-	for <barebox@lists.infradead.org>;
-	Fri,  8 Apr 2011 11:18:36 +0200 (CEST)
-From: Thomas Mayer <thomas.mayer@telemotive.de>
-MIME-Version: 1.0
-Message-ID: <4D9ED2EC.8070406@telemotive.de>
-Date: Fri, 8 Apr 2011 11:18:36 +0200
+	id 1Q88mr-00079e-Tv
+	for barebox@lists.infradead.org; Fri, 08 Apr 2011 10:19:35 +0000
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Date: Fri,  8 Apr 2011 12:19:03 +0200
+Message-Id: <1302257948-18174-3-git-send-email-mkl@pengutronix.de>
+In-Reply-To: <1302257948-18174-1-git-send-email-mkl@pengutronix.de>
+References: <1302257948-18174-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,32 +16,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Update barebox on mmc without touching partition table
-To: barebox@lists.infradead.org
+Subject: [PATCH 2/7] defaultenv: boot: add backwards compatibility for
+	kernel_loc=net
+To: sha@pengutronix.de
+Cc: barebox@lists.infradead.org
 
-Hi,
+Since commit 9eac282024c55fc13970189d6ace61f884917538, the boot script
+doesn't understand kernel_loc=net anymore. This patch adds backwards
+compatibility so that the kernel is loaded from tftp as before.
 
-to copy barebox to a mmc I use the command "dd if=barebox.bin 
-of=/dev/sdb bs=512 seek=2 skip=2 && sync". So I don't touch the first 
-0x400 bytes with contains the partition table and everything is fine.
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ defaultenv/bin/boot |    4 ++++
+ 1 files changed, 4 insertions(+), 0 deletions(-)
 
-But I want to write a little script to update barebox itself via tftp. 
-So I create a partition "/dev/self0" (0x00000 to 0x40000) and update 
-barebox with "tftp barebox.bin /dev/self0". The problem is that barebox 
-write the first 0x400 bytes too and overwrite the partition table .
-
-Is there any way to "seek" and "skip" with barebox?
-
-
-Regards,
-Thomas
-
-
-
+diff --git a/defaultenv/bin/boot b/defaultenv/bin/boot
+index c97a396..6649c57 100644
+--- a/defaultenv/bin/boot
++++ b/defaultenv/bin/boot
+@@ -2,6 +2,10 @@
+ 
+ . /env/config
+ 
++if [ x$kernel_loc = xnet ]; then
++	kernel_loc=tftp
++fi
++
+ if [ x$1 = xnand ]; then
+ 	rootfs_loc=nand
+ 	kernel_loc=nand
+-- 
+1.7.4.1
 
 
 _______________________________________________
