@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from 63.mail-out.ovh.net ([91.121.185.56])
 	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1Q8C2i-0000Uy-SS
-	for barebox@lists.infradead.org; Fri, 08 Apr 2011 13:48:10 +0000
+	id 1Q8C4O-0000WB-6F
+	for barebox@lists.infradead.org; Fri, 08 Apr 2011 13:49:52 +0000
+Date: Fri, 8 Apr 2011 15:41:56 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri,  8 Apr 2011 15:40:08 +0200
-Message-Id: <1302270008-21346-4-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <20110408133713.GC13978@game.jcrosoft.org>
-References: <20110408133713.GC13978@game.jcrosoft.org>
+Message-ID: <20110408134156.GE13978@game.jcrosoft.org>
+References: <1302257948-18174-1-git-send-email-mkl@pengutronix.de>
+	<1302257948-18174-8-git-send-email-mkl@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1302257948-18174-8-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,65 +19,24 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] defaultenv/boot: add -i option to select the ip mode
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 7/7] defaultenv: add config template
+To: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: barebox@lists.infradead.org, sha@pengutronix.de
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- defaultenv/bin/boot      |    4 +++-
- defaultenv/bin/boot_help |    3 ++-
- 2 files changed, 5 insertions(+), 2 deletions(-)
+On 12:19 Fri 08 Apr     , Marc Kleine-Budde wrote:
+> This patch add a config template to the defaultenv.
+> 
+> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+> ---
+>  defaultenv/config |   67 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+this should go to doc?
 
-diff --git a/defaultenv/bin/boot b/defaultenv/bin/boot
-index bae73d4..a020cd3 100644
---- a/defaultenv/bin/boot
-+++ b/defaultenv/bin/boot
-@@ -6,7 +6,7 @@ opt_mode=""
- opt_kernel_loc=""
- opt_rootfs_loc=""
- 
--while getopt "hm:k:t:r:T:" Option
-+while getopt "hm:k:t:r:T:i:" Option
- do
- if [ ${Option} = m ]; then
- 	opt_mode=${OPTARG}
-@@ -18,6 +18,8 @@ elif [ ${Option} = r ]; then
- 	opt_rootfs_loc=${OPTARG}
- elif [ ${Option} = T ]; then
- 	rootfs_type=${OPTARG}
-+elif [ ${Option} = i ]; then
-+	ip=${OPTARG}
- else
- 	. /env/bin/boot_help
- 	exit 0
-diff --git a/defaultenv/bin/boot_help b/defaultenv/bin/boot_help
-index 41b5353..8e00977 100644
---- a/defaultenv/bin/boot_help
-+++ b/defaultenv/bin/boot_help
-@@ -1,6 +1,6 @@
- #!/bin/sh
- 
--echo "usage: boot [-m <mode>] [-k <kernel location>] [-t <kernel image type] [-r <rootfs location>] [-T <rootfs type>]"
-+echo "usage: boot [-m <mode>] [-k <kernel location>] [-t <kernel image type] [-r <rootfs location>] [-T <rootfs type>] [-i <ip mode>]"
- echo "boot."
- echo ""
- echo "options"
-@@ -15,6 +15,7 @@ echo " -k      kernel location tftp, nfs, nand, nor"
- echo " -t      kernel image type uimage, zimage, raw or raw_lzo"
- echo " -r      rootfs location nfs, nand, nor, initrd"
- echo " -T      rootfs type ubi, jffs2, ext2, etc..."
-+echo " -i      ip mode dhcp, none, static"
- echo ""
- echo ""
- echo "default is"
--- 
-1.7.4.1
-
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
