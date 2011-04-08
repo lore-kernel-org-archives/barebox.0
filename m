@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Q8Co6-0000rr-Gs
-	for barebox@lists.infradead.org; Fri, 08 Apr 2011 14:37:18 +0000
+	id 1Q8Co7-0000rv-6g
+	for barebox@lists.infradead.org; Fri, 08 Apr 2011 14:37:22 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  8 Apr 2011 16:36:52 +0200
-Message-Id: <1302273422-6987-7-git-send-email-s.hauer@pengutronix.de>
+Date: Fri,  8 Apr 2011 16:36:55 +0200
+Message-Id: <1302273422-6987-10-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1302273422-6987-1-git-send-email-s.hauer@pengutronix.de>
 References: <1302273422-6987-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,486 +21,889 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/16] devfs: factor out core devfs functionality
+Subject: [PATCH 09/16] nand: remove unused nand_util file
 To: barebox@lists.infradead.org
-
-This makes it possible to compile without devfs. devfs_create/devfs_remove
-is used by drivers and thus must still be present even without devfs support.
-Also, this patch adds cdev_open/cdev_close/cdev_flush/cdev_ioctl calls to
-work with devices without using the file api.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- fs/Makefile      |    1 +
- fs/devfs-core.c  |  236 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
- fs/devfs.c       |  167 +-------------------------------------
- include/driver.h |    5 +
- 4 files changed, 244 insertions(+), 165 deletions(-)
- create mode 100644 fs/devfs-core.c
+ drivers/mtd/nand/Makefile    |    1 -
+ drivers/mtd/nand/nand_util.c |  858 ------------------------------------------
+ 2 files changed, 0 insertions(+), 859 deletions(-)
+ delete mode 100644 drivers/mtd/nand/nand_util.c
 
-diff --git a/fs/Makefile b/fs/Makefile
-index 228af6e..4aa92ef 100644
---- a/fs/Makefile
-+++ b/fs/Makefile
-@@ -1,4 +1,5 @@
- obj-$(CONFIG_FS_CRAMFS)	+= cramfs/
- obj-$(CONFIG_FS_RAMFS)	+= ramfs.o
-+obj-y			+= devfs-core.o
- obj-$(CONFIG_FS_DEVFS)	+= devfs.o
- obj-y	+= fs.o
-diff --git a/fs/devfs-core.c b/fs/devfs-core.c
-new file mode 100644
-index 0000000..519e18e
---- /dev/null
-+++ b/fs/devfs-core.c
-@@ -0,0 +1,236 @@
-+/*
-+ * devfs.c - a device file system for barebox
-+ *
-+ * Copyright (c) 2011 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-+ */
-+#include <common.h>
-+#include <driver.h>
-+#include <errno.h>
-+#include <malloc.h>
-+#include <ioctl.h>
-+#include <linux/err.h>
-+#include <linux/mtd/mtd.h>
-+
-+LIST_HEAD(cdev_list);
-+
-+struct cdev *cdev_by_name(const char *filename)
-+{
-+	struct cdev *cdev;
-+
-+	list_for_each_entry(cdev, &cdev_list, list) {
-+		if (!strcmp(cdev->name, filename))
-+			return cdev;
-+	}
-+	return NULL;
-+}
-+
-+struct cdev *cdev_open(const char *name, unsigned long flags)
-+{
-+	struct cdev *cdev = cdev_by_name(name);
-+	int ret;
-+
-+	if (!cdev)
-+		return NULL;
-+
-+	if (cdev->ops->open) {
-+		ret = cdev->ops->open(cdev);
-+		if (ret)
-+			return NULL;
-+	}
-+
-+	return cdev;
-+}
-+
-+void cdev_close(struct cdev *cdev)
-+{
-+	if (cdev->ops->close)
-+		cdev->ops->close(cdev);
-+}
-+
-+ssize_t cdev_read(struct cdev *cdev, void *buf, size_t count, ulong offset, ulong flags)
-+{
-+	if (!cdev->ops->read)
-+		return -ENOSYS;
-+
-+	return cdev->ops->read(cdev, buf, count, cdev->offset +offset, flags);
-+}
-+
-+ssize_t cdev_write(struct cdev *cdev, const void *buf, size_t count, ulong offset, ulong flags)
-+{
-+	if (!cdev->ops->write)
-+		return -ENOSYS;
-+
-+	return cdev->ops->write(cdev, buf, count, cdev->offset + offset, flags);
-+}
-+
-+int cdev_flush(struct cdev *cdev)
-+{
-+	if (!cdev->ops->flush)
-+		return 0;
-+
-+	return cdev->ops->flush(cdev);
-+}
-+
-+static int partition_ioctl(struct cdev *cdev, int request, void *buf)
-+{
-+	size_t offset;
-+	struct mtd_info_user *user = buf;
-+
-+	switch (request) {
-+	case MEMSETBADBLOCK:
-+	case MEMGETBADBLOCK:
-+		offset = (off_t)buf;
-+		offset += cdev->offset;
-+		return cdev->ops->ioctl(cdev, request, (void *)offset);
-+	case MEMGETINFO:
-+		if (cdev->mtd) {
-+			user->type	= cdev->mtd->type;
-+			user->flags	= cdev->mtd->flags;
-+			user->size	= cdev->mtd->size;
-+			user->erasesize	= cdev->mtd->erasesize;
-+			user->oobsize	= cdev->mtd->oobsize;
-+			user->mtd	= cdev->mtd;
-+			/* The below fields are obsolete */
-+			user->ecctype	= -1;
-+			user->eccsize	= 0;
-+			return 0;
-+		}
-+		if (!cdev->ops->ioctl)
-+			return -EINVAL;
-+		return cdev->ops->ioctl(cdev, request, buf);
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+int cdev_ioctl(struct cdev *cdev, int request, void *buf)
-+{
-+	if (cdev->flags & DEVFS_IS_PARTITION)
-+		return partition_ioctl(cdev, request, buf);
-+
-+	if (!cdev->ops->ioctl)
-+		return -EINVAL;
-+
-+	return cdev->ops->ioctl(cdev, request, buf);
-+}
-+
-+int cdev_erase(struct cdev *cdev, size_t count, unsigned long offset)
-+{
-+	if (!cdev->ops->erase)
-+		return -ENOSYS;
-+
-+	return cdev->ops->erase(cdev, count, cdev->offset + offset);
-+}
-+
-+int devfs_create(struct cdev *new)
-+{
-+	struct cdev *cdev;
-+
-+	cdev = cdev_by_name(new->name);
-+	if (cdev)
-+		return -EEXIST;
-+
-+	list_add_tail(&new->list, &cdev_list);
-+	if (new->dev)
-+		list_add_tail(&new->devices_list, &new->dev->cdevs);
-+
-+	return 0;
-+}
-+
-+int devfs_remove(struct cdev *cdev)
-+{
-+	if (cdev->open)
-+		return -EBUSY;
-+
-+	list_del(&cdev->list);
-+	if (cdev->dev)
-+		list_del(&cdev->devices_list);
-+
-+	return 0;
-+}
-+
-+int devfs_add_partition(const char *devname, unsigned long offset, size_t size,
-+		int flags, const char *name)
-+{
-+	struct cdev *cdev, *new;
-+
-+	cdev = cdev_by_name(name);
-+	if (cdev)
-+		return -EEXIST;
-+
-+	cdev = cdev_by_name(devname);
-+	if (!cdev)
-+		return -ENOENT;
-+
-+	if (offset + size > cdev->size)
-+		return -EINVAL;
-+
-+	new = xzalloc(sizeof (*new));
-+	new->name = strdup(name);
-+	new->ops = cdev->ops;
-+	new->priv = cdev->priv;
-+	new->size = size;
-+	new->offset = offset + cdev->offset;
-+	new->dev = cdev->dev;
-+	new->flags = flags | DEVFS_IS_PARTITION;
-+
-+#ifdef CONFIG_PARTITION_NEED_MTD
-+	if (cdev->mtd) {
-+		new->mtd = mtd_add_partition(cdev->mtd, offset, size, flags, name);
-+		if (IS_ERR(new->mtd)) {
-+			int ret = PTR_ERR(new->mtd);
-+			free(new);
-+			return ret;
-+		}
-+	}
-+#endif
-+
-+	devfs_create(new);
-+
-+	return 0;
-+}
-+
-+int devfs_del_partition(const char *name)
-+{
-+	struct cdev *cdev;
-+	int ret;
-+
-+	cdev = cdev_by_name(name);
-+	if (!cdev)
-+		return -ENOENT;
-+
-+	if (!(cdev->flags & DEVFS_IS_PARTITION))
-+		return -EINVAL;
-+	if (cdev->flags & DEVFS_PARTITION_FIXED)
-+		return -EPERM;
-+
-+#ifdef CONFIG_PARTITION_NEED_MTD
-+	if (cdev->mtd)
-+		mtd_del_partition(cdev->mtd);
-+#endif
-+
-+	ret = devfs_remove(cdev);
-+	if (ret)
-+		return ret;
-+
-+	free(cdev->name);
-+	free(cdev);
-+
-+	return 0;
-+}
-diff --git a/fs/devfs.c b/fs/devfs.c
-index f82fddd..07ca16c 100644
---- a/fs/devfs.c
-+++ b/fs/devfs.c
-@@ -36,34 +36,7 @@
- #include <linux/mtd/mtd-abi.h>
- #include <partition.h>
- 
--static LIST_HEAD(cdev_list);
+diff --git a/drivers/mtd/nand/Makefile b/drivers/mtd/nand/Makefile
+index fb92f89..3a31bc1 100644
+--- a/drivers/mtd/nand/Makefile
++++ b/drivers/mtd/nand/Makefile
+@@ -15,4 +15,3 @@ obj-$(CONFIG_NAND_IMX)			+= nand_imx.o
+ obj-$(CONFIG_NAND_OMAP_GPMC)		+= nand_omap_gpmc.o nand_omap_bch_decoder.o
+ obj-$(CONFIG_NAND_ATMEL)		+= atmel_nand.o
+ obj-$(CONFIG_NAND_S3C24X0)		+= nand_s3c2410.o
+-#obj-$(CONFIG_NAND)			+= nand_util.o
+diff --git a/drivers/mtd/nand/nand_util.c b/drivers/mtd/nand/nand_util.c
+deleted file mode 100644
+index d57294e..0000000
+--- a/drivers/mtd/nand/nand_util.c
++++ /dev/null
+@@ -1,858 +0,0 @@
+-/*
+- * drivers/nand/nand_util.c
+- *
+- * Copyright (C) 2006 by Weiss-Electronic GmbH.
+- * All rights reserved.
+- *
+- * @author:	Guido Classen <clagix@gmail.com>
+- * @descr:	NAND Flash support
+- * @references: borrowed heavily from Linux mtd-utils code:
+- *		flash_eraseall.c by Arcom Control System Ltd
+- *		nandwrite.c by Steven J. Hill (sjhill@realitydiluted.com)
+- *			       and Thomas Gleixner (tglx@linutronix.de)
+- *
+- * See file CREDITS for list of people who contributed to this
+- * project.
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License version
+- * 2 as published by the Free Software Foundation.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+- * MA 02111-1307 USA
+- *
+- */
 -
--struct cdev *cdev_by_name(const char *filename)
+-#include <common.h>
+-#include <command.h>
+-#include <watchdog.h>
+-#include <malloc.h>
+-
+-#include <nand.h>
+-//#include <jffs2/jffs2.h>
+-
+-typedef struct erase_info erase_info_t;
+-typedef struct mtd_info	  mtd_info_t;
+-
+-/* support only for native endian JFFS2 */
+-#define cpu_to_je16(x) (x)
+-#define cpu_to_je32(x) (x)
+-
+-/*****************************************************************************/
+-static int nand_block_bad_scrub(struct mtd_info *mtd, loff_t ofs, int getchip)
 -{
--	struct cdev *cdev;
--
--	list_for_each_entry(cdev, &cdev_list, list) {
--		if (!strcmp(cdev->name, filename))
--			return cdev;
--	}
--	return NULL;
+-	return 0;
 -}
 -
--ssize_t cdev_read(struct cdev *cdev, void *buf, size_t count, ulong offset, ulong flags)
+-/**
+- * nand_erase_opts: - erase NAND flash with support for various options
+- *		      (jffs2 formating)
+- *
+- * @param meminfo	NAND device to erase
+- * @param opts		options,  @see struct nand_erase_options
+- * @return		0 in case of success
+- *
+- * This code is ported from flash_eraseall.c from Linux mtd utils by
+- * Arcom Control System Ltd.
+- */
+-int nand_erase_opts(nand_info_t *meminfo, const nand_erase_options_t *opts)
 -{
--	if (!cdev->ops->read)
--		return -ENOSYS;
+-	struct jffs2_unknown_node cleanmarker;
+-	int clmpos = 0;
+-	int clmlen = 8;
+-	erase_info_t erase;
+-	ulong erase_length;
+-	int isNAND;
+-	int bbtest = 1;
+-	int result;
+-	int percent_complete = -1;
+-	int (*nand_block_bad_old)(struct mtd_info *, loff_t, int) = NULL;
+-	const char *mtd_device = meminfo->name;
 -
--	return cdev->ops->read(cdev, buf, count, cdev->offset +offset, flags);
--}
+-	memset(&erase, 0, sizeof(erase));
 -
--ssize_t cdev_write(struct cdev *cdev, const void *buf, size_t count, ulong offset, ulong flags)
--{
--	if (!cdev->ops->write)
--		return -ENOSYS;
+-	erase.mtd = meminfo;
+-	erase.len  = meminfo->erasesize;
+-	erase.addr = opts->offset;
+-	erase_length = opts->length;
 -
--	return cdev->ops->write(cdev, buf, count, cdev->offset + offset, flags);
--}
-+extern struct list_head cdev_list;
- 
- static int devfs_read(struct device_d *_dev, FILE *f, void *buf, size_t size)
- {
-@@ -179,49 +152,11 @@ static int devfs_flush(struct device_d *_dev, FILE *f)
- 	return 0;
- }
- 
--static int partition_ioctl(struct cdev *cdev, int request, void *buf)
--{
--	size_t offset;
--	struct mtd_info_user *user = buf;
+-	isNAND = meminfo->type == MTD_NANDFLASH ? 1 : 0;
 -
--	switch (request) {
--	case MEMSETBADBLOCK:
--	case MEMGETBADBLOCK:
--		offset = (off_t)buf;
--		offset += cdev->offset;
--		return cdev->ops->ioctl(cdev, request, (void *)offset);
--	case MEMGETINFO:
--		if (cdev->mtd) {
--			user->type	= cdev->mtd->type;
--			user->flags	= cdev->mtd->flags;
--			user->size	= cdev->mtd->size;
--			user->erasesize	= cdev->mtd->erasesize;
--			user->oobsize	= cdev->mtd->oobsize;
--			user->mtd	= cdev->mtd;
--			/* The below fields are obsolete */
--			user->ecctype	= -1;
--			user->eccsize	= 0;
--			return 0;
+-	if (opts->jffs2) {
+-		cleanmarker.magic = cpu_to_je16 (JFFS2_MAGIC_BITMASK);
+-		cleanmarker.nodetype = cpu_to_je16 (JFFS2_NODETYPE_CLEANMARKER);
+-		if (isNAND) {
+-			struct nand_oobinfo *oobinfo = &meminfo->oobinfo;
+-
+-			/* check for autoplacement */
+-			if (oobinfo->useecc == MTD_NANDECC_AUTOPLACE) {
+-				/* get the position of the free bytes */
+-				if (!oobinfo->oobfree[0][1]) {
+-					printf(" Eeep. Autoplacement selected "
+-					       "and no empty space in oob\n");
+-					return -1;
+-				}
+-				clmpos = oobinfo->oobfree[0][0];
+-				clmlen = oobinfo->oobfree[0][1];
+-				if (clmlen > 8)
+-					clmlen = 8;
+-			} else {
+-				/* legacy mode */
+-				switch (meminfo->oobsize) {
+-				case 8:
+-					clmpos = 6;
+-					clmlen = 2;
+-					break;
+-				case 16:
+-					clmpos = 8;
+-					clmlen = 8;
+-					break;
+-				case 64:
+-					clmpos = 16;
+-					clmlen = 8;
+-					break;
+-				}
+-			}
+-
+-			cleanmarker.totlen = cpu_to_je32(8);
+-		} else {
+-			cleanmarker.totlen =
+-				cpu_to_je32(sizeof(struct jffs2_unknown_node));
 -		}
--		if (!cdev->ops->ioctl)
--			return -EINVAL;
--		return cdev->ops->ioctl(cdev, request, buf);
--	default:
--		return -EINVAL;
+-		cleanmarker.hdr_crc =  cpu_to_je32(
+-			crc32_no_comp(0, (unsigned char *) &cleanmarker,
+-				      sizeof(struct jffs2_unknown_node) - 4));
 -	}
--}
 -
- static int devfs_ioctl(struct device_d *_dev, FILE *f, int request, void *buf)
- {
- 	struct cdev *cdev = f->inode;
- 
--	if (cdev->flags & DEVFS_IS_PARTITION)
--		return partition_ioctl(cdev, request, buf);
+-	/* scrub option allows to erase badblock. To prevent internal
+-	 * check from erase() method, set block check method to dummy
+-	 * and disable bad block table while erasing.
+-	 */
+-	if (opts->scrub) {
+-		struct nand_chip *priv_nand = meminfo->priv;
 -
--	if (!cdev->ops->ioctl)
--		return -EINVAL;
+-		nand_block_bad_old = priv_nand->block_bad;
+-		priv_nand->block_bad = nand_block_bad_scrub;
+-		/* we don't need the bad block table anymore...
+-		 * after scrub, there are no bad blocks left!
+-		 */
+-		if (priv_nand->bbt) {
+-			kfree(priv_nand->bbt);
+-		}
+-		priv_nand->bbt = NULL;
+-	}
 -
--	return cdev->ops->ioctl(cdev, request, buf);
-+	return cdev_ioctl(cdev, request, buf);
- }
- 
- static int devfs_truncate(struct device_d *dev, FILE *f, ulong size)
-@@ -322,101 +257,3 @@ static int devfs_init(void)
- }
- 
- coredevice_initcall(devfs_init);
+-	for (;
+-	     erase.addr < opts->offset + erase_length;
+-	     erase.addr += meminfo->erasesize) {
 -
--int devfs_create(struct cdev *new)
--{
--	struct cdev *cdev;
+-		WATCHDOG_RESET ();
 -
--	cdev = cdev_by_name(new->name);
--	if (cdev)
--		return -EEXIST;
+-		if (!opts->scrub && bbtest) {
+-			int ret = meminfo->block_isbad(meminfo, erase.addr);
+-			if (ret > 0) {
+-				if (!opts->quiet)
+-					printf("\rSkipping bad block at  "
+-					       "0x%08x                   "
+-					       "                         \n",
+-					       erase.addr);
+-				continue;
 -
--	list_add_tail(&new->list, &cdev_list);
--	if (new->dev)
--		list_add_tail(&new->devices_list, &new->dev->cdevs);
+-			} else if (ret < 0) {
+-				printf("\n%s: MTD get bad block failed: %d\n",
+-				       mtd_device,
+-				       ret);
+-				return -1;
+-			}
+-		}
 -
--	return 0;
--}
+-		result = meminfo->erase(meminfo, &erase);
+-		if (result != 0) {
+-			printf("\n%s: MTD Erase failure: %d\n",
+-			       mtd_device, result);
+-			continue;
+-		}
 -
--int devfs_remove(struct cdev *cdev)
--{
--	if (cdev->open)
--		return -EBUSY;
+-		/* format for JFFS2 ? */
+-		if (opts->jffs2) {
 -
--	list_del(&cdev->list);
--	if (cdev->dev)
--		list_del(&cdev->devices_list);
+-			/* write cleanmarker */
+-			if (isNAND) {
+-				size_t written;
+-				result = meminfo->write_oob(meminfo,
+-							    erase.addr + clmpos,
+-							    clmlen,
+-							    &written,
+-							    (unsigned char *)
+-							    &cleanmarker);
+-				if (result != 0) {
+-					printf("\n%s: MTD writeoob failure: %d\n",
+-					       mtd_device, result);
+-					continue;
+-				}
+-			} else {
+-				printf("\n%s: this erase routine only supports"
+-				       " NAND devices!\n",
+-				       mtd_device);
+-			}
+-		}
 -
--	return 0;
--}
+-		if (!opts->quiet) {
+-			int percent = (int)
+-				((unsigned long long)
+-				 (erase.addr+meminfo->erasesize-opts->offset)
+-				 * 100 / erase_length);
 -
--int devfs_add_partition(const char *devname, unsigned long offset, size_t size,
--		int flags, const char *name)
--{
--	struct cdev *cdev, *new;
+-			/* output progress message only at whole percent
+-			 * steps to reduce the number of messages printed
+-			 * on (slow) serial consoles
+-			 */
+-			if (percent != percent_complete) {
+-				percent_complete = percent;
 -
--	cdev = cdev_by_name(name);
--	if (cdev)
--		return -EEXIST;
+-				printf("\rErasing at 0x%x -- %3d%% complete.",
+-				       erase.addr, percent);
 -
--	cdev = cdev_by_name(devname);
--	if (!cdev)
--		return -ENOENT;
--
--	if (offset + size > cdev->size)
--		return -EINVAL;
--
--	new = xzalloc(sizeof (*new));
--	new->name = strdup(name);
--	new->ops = cdev->ops;
--	new->priv = cdev->priv;
--	new->size = size;
--	new->offset = offset + cdev->offset;
--	new->dev = cdev->dev;
--	new->flags = flags | DEVFS_IS_PARTITION;
--
--#ifdef CONFIG_PARTITION_NEED_MTD
--	if (cdev->mtd) {
--		new->mtd = mtd_add_partition(cdev->mtd, offset, size, flags, name);
--		if (IS_ERR(new->mtd)) {
--			int ret = PTR_ERR(new->mtd);
--			free(new);
--			return ret;
+-				if (opts->jffs2 && result == 0)
+-					printf(" Cleanmarker written at 0x%x.",
+-					       erase.addr);
+-			}
 -		}
 -	}
--#endif
+-	if (!opts->quiet)
+-		printf("\n");
 -
--	devfs_create(new);
+-	if (nand_block_bad_old) {
+-		struct nand_chip *priv_nand = meminfo->priv;
+-
+-		priv_nand->block_bad = nand_block_bad_old;
+-		priv_nand->scan_bbt(meminfo);
+-	}
 -
 -	return 0;
 -}
 -
--int devfs_del_partition(const char *name)
+-#define MAX_PAGE_SIZE	2048
+-#define MAX_OOB_SIZE	64
+-
+-/*
+- * buffer array used for writing data
+- */
+-static unsigned char data_buf[MAX_PAGE_SIZE];
+-static unsigned char oob_buf[MAX_OOB_SIZE];
+-
+-/* OOB layouts to pass into the kernel as default */
+-static struct nand_oobinfo none_oobinfo = {
+-	.useecc = MTD_NANDECC_OFF,
+-};
+-
+-static struct nand_oobinfo jffs2_oobinfo = {
+-	.useecc = MTD_NANDECC_PLACE,
+-	.eccbytes = 6,
+-	.eccpos = { 0, 1, 2, 3, 6, 7 }
+-};
+-
+-static struct nand_oobinfo yaffs_oobinfo = {
+-	.useecc = MTD_NANDECC_PLACE,
+-	.eccbytes = 6,
+-	.eccpos = { 8, 9, 10, 13, 14, 15}
+-};
+-
+-static struct nand_oobinfo autoplace_oobinfo = {
+-	.useecc = MTD_NANDECC_AUTOPLACE
+-};
+-
+-/**
+- * nand_write_opts: - write image to NAND flash with support for various options
+- *
+- * @param meminfo	NAND device to erase
+- * @param opts		write options (@see nand_write_options)
+- * @return		0 in case of success
+- *
+- * This code is ported from nandwrite.c from Linux mtd utils by
+- * Steven J. Hill and Thomas Gleixner.
+- */
+-int nand_write_opts(nand_info_t *meminfo, const nand_write_options_t *opts)
 -{
--	struct cdev *cdev;
--	int ret;
+-	int imglen = 0;
+-	int pagelen;
+-	int baderaseblock;
+-	int blockstart = -1;
+-	loff_t offs;
+-	int readlen;
+-	int oobinfochanged = 0;
+-	int percent_complete = -1;
+-	struct nand_oobinfo old_oobinfo;
+-	ulong mtdoffset = opts->offset;
+-	ulong erasesize_blockalign;
+-	u_char *buffer = opts->buffer;
+-	size_t written;
+-	int result;
 -
--	cdev = cdev_by_name(name);
--	if (!cdev)
--		return -ENOENT;
+-	if (opts->pad && opts->writeoob) {
+-		printf("Can't pad when oob data is present.\n");
+-		return -1;
+-	}
 -
--	if (!(cdev->flags & DEVFS_IS_PARTITION))
--		return -EINVAL;
--	if (cdev->flags & DEVFS_PARTITION_FIXED)
--		return -EPERM;
+-	/* set erasesize to specified number of blocks - to match
+-	 * jffs2 (virtual) block size */
+-	if (opts->blockalign == 0) {
+-		erasesize_blockalign = meminfo->erasesize;
+-	} else {
+-		erasesize_blockalign = meminfo->erasesize * opts->blockalign;
+-	}
 -
--#ifdef CONFIG_PARTITION_NEED_MTD
--	if (cdev->mtd)
--		mtd_del_partition(cdev->mtd);
--#endif
+-	/* make sure device page sizes are valid */
+-	if (!(meminfo->oobsize == 16 && meminfo->oobblock == 512)
+-	    && !(meminfo->oobsize == 8 && meminfo->oobblock == 256)
+-	    && !(meminfo->oobsize == 64 && meminfo->oobblock == 2048)) {
+-		printf("Unknown flash (not normal NAND)\n");
+-		return -1;
+-	}
 -
--	ret = devfs_remove(cdev);
--	if (ret)
--		return ret;
+-	/* read the current oob info */
+-	memcpy(&old_oobinfo, &meminfo->oobinfo, sizeof(old_oobinfo));
 -
--	free(cdev->name);
--	free(cdev);
+-	/* write without ecc? */
+-	if (opts->noecc) {
+-		memcpy(&meminfo->oobinfo, &none_oobinfo,
+-		       sizeof(meminfo->oobinfo));
+-		oobinfochanged = 1;
+-	}
 -
+-	/* autoplace ECC? */
+-	if (opts->autoplace && (old_oobinfo.useecc != MTD_NANDECC_AUTOPLACE)) {
+-
+-		memcpy(&meminfo->oobinfo, &autoplace_oobinfo,
+-		       sizeof(meminfo->oobinfo));
+-		oobinfochanged = 1;
+-	}
+-
+-	/* force OOB layout for jffs2 or yaffs? */
+-	if (opts->forcejffs2 || opts->forceyaffs) {
+-		struct nand_oobinfo *oobsel =
+-			opts->forcejffs2 ? &jffs2_oobinfo : &yaffs_oobinfo;
+-
+-		if (meminfo->oobsize == 8) {
+-			if (opts->forceyaffs) {
+-				printf("YAFSS cannot operate on "
+-				       "256 Byte page size\n");
+-				goto restoreoob;
+-			}
+-			/* Adjust number of ecc bytes */
+-			jffs2_oobinfo.eccbytes = 3;
+-		}
+-
+-		memcpy(&meminfo->oobinfo, oobsel, sizeof(meminfo->oobinfo));
+-	}
+-
+-	/* get image length */
+-	imglen = opts->length;
+-	pagelen = meminfo->oobblock
+-		+ ((opts->writeoob != 0) ? meminfo->oobsize : 0);
+-
+-	/* check, if file is pagealigned */
+-	if ((!opts->pad) && ((imglen % pagelen) != 0)) {
+-		printf("Input block length is not page aligned\n");
+-		goto restoreoob;
+-	}
+-
+-	/* check, if length fits into device */
+-	if (((imglen / pagelen) * meminfo->oobblock)
+-	     > (meminfo->size - opts->offset)) {
+-		printf("Image %d bytes, NAND page %d bytes, "
+-		       "OOB area %u bytes, device size %u bytes\n",
+-		       imglen, pagelen, meminfo->oobblock, meminfo->size);
+-		printf("Input block does not fit into device\n");
+-		goto restoreoob;
+-	}
+-
+-	if (!opts->quiet)
+-		printf("\n");
+-
+-	/* get data from input and write to the device */
+-	while (imglen && (mtdoffset < meminfo->size)) {
+-
+-		WATCHDOG_RESET ();
+-
+-		/*
+-		 * new eraseblock, check for bad block(s). Stay in the
+-		 * loop to be sure if the offset changes because of
+-		 * a bad block, that the next block that will be
+-		 * written to is also checked. Thus avoiding errors if
+-		 * the block(s) after the skipped block(s) is also bad
+-		 * (number of blocks depending on the blockalign
+-		 */
+-		while (blockstart != (mtdoffset & (~erasesize_blockalign+1))) {
+-			blockstart = mtdoffset & (~erasesize_blockalign+1);
+-			offs = blockstart;
+-			baderaseblock = 0;
+-
+-			/* check all the blocks in an erase block for
+-			 * bad blocks */
+-			do {
+-				int ret = meminfo->block_isbad(meminfo, offs);
+-
+-				if (ret < 0) {
+-					printf("Bad block check failed\n");
+-					goto restoreoob;
+-				}
+-				if (ret == 1) {
+-					baderaseblock = 1;
+-					if (!opts->quiet)
+-						printf("\rBad block at 0x%lx "
+-						       "in erase block from "
+-						       "0x%x will be skipped\n",
+-						       (long) offs,
+-						       blockstart);
+-				}
+-
+-				if (baderaseblock) {
+-					mtdoffset = blockstart
+-						+ erasesize_blockalign;
+-				}
+-				offs +=	 erasesize_blockalign
+-					/ opts->blockalign;
+-			} while (offs < blockstart + erasesize_blockalign);
+-		}
+-
+-		readlen = meminfo->oobblock;
+-		if (opts->pad && (imglen < readlen)) {
+-			readlen = imglen;
+-			memset(data_buf + readlen, 0xff,
+-			       meminfo->oobblock - readlen);
+-		}
+-
+-		/* read page data from input memory buffer */
+-		memcpy(data_buf, buffer, readlen);
+-		buffer += readlen;
+-
+-		if (opts->writeoob) {
+-			/* read OOB data from input memory block, exit
+-			 * on failure */
+-			memcpy(oob_buf, buffer, meminfo->oobsize);
+-			buffer += meminfo->oobsize;
+-
+-			/* write OOB data first, as ecc will be placed
+-			 * in there*/
+-			result = meminfo->write_oob(meminfo,
+-						    mtdoffset,
+-						    meminfo->oobsize,
+-						    &written,
+-						    (unsigned char *)
+-						    &oob_buf);
+-
+-			if (result != 0) {
+-				printf("\nMTD writeoob failure: %d\n",
+-				       result);
+-				goto restoreoob;
+-			}
+-			imglen -= meminfo->oobsize;
+-		}
+-
+-		/* write out the page data */
+-		result = meminfo->write(meminfo,
+-					mtdoffset,
+-					meminfo->oobblock,
+-					&written,
+-					(unsigned char *) &data_buf);
+-
+-		if (result != 0) {
+-			printf("writing NAND page at offset 0x%lx failed\n",
+-			       mtdoffset);
+-			goto restoreoob;
+-		}
+-		imglen -= readlen;
+-
+-		if (!opts->quiet) {
+-			int percent = (int)
+-				((unsigned long long)
+-				 (opts->length-imglen) * 100
+-				 / opts->length);
+-			/* output progress message only at whole percent
+-			 * steps to reduce the number of messages printed
+-			 * on (slow) serial consoles
+-			 */
+-			if (percent != percent_complete) {
+-				printf("\rWriting data at 0x%x "
+-				       "-- %3d%% complete.",
+-				       mtdoffset, percent);
+-				percent_complete = percent;
+-			}
+-		}
+-
+-		mtdoffset += meminfo->oobblock;
+-	}
+-
+-	if (!opts->quiet)
+-		printf("\n");
+-
+-restoreoob:
+-	if (oobinfochanged) {
+-		memcpy(&meminfo->oobinfo, &old_oobinfo,
+-		       sizeof(meminfo->oobinfo));
+-	}
+-
+-	if (imglen > 0) {
+-		printf("Data did not fit into device, due to bad blocks\n");
+-		return -1;
+-	}
+-
+-	/* return happy */
 -	return 0;
 -}
 -
-diff --git a/include/driver.h b/include/driver.h
-index 14ccc6d..6a4d45e 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -315,8 +315,13 @@ struct cdev {
- int devfs_create(struct cdev *);
- int devfs_remove(struct cdev *);
- struct cdev *cdev_by_name(const char *filename);
-+struct cdev *cdev_open(const char *name, unsigned long flags);
-+void cdev_close(struct cdev *cdev);
-+int cdev_flush(struct cdev *cdev);
- ssize_t cdev_read(struct cdev *cdev, void *buf, size_t count, ulong offset, ulong flags);
- ssize_t cdev_write(struct cdev *cdev, const void *buf, size_t count, ulong offset, ulong flags);
-+int cdev_ioctl(struct cdev *cdev, int cmd, void *buf);
-+int cdev_erase(struct cdev *cdev, size_t count, unsigned long offset);
- 
- #define DEVFS_PARTITION_FIXED		(1 << 0)
- #define DEVFS_PARTITION_READONLY	(1 << 1)
+-/**
+- * nand_read_opts: - read image from NAND flash with support for various options
+- *
+- * @param meminfo	NAND device to erase
+- * @param opts		read options (@see struct nand_read_options)
+- * @return		0 in case of success
+- *
+- */
+-int nand_read_opts(nand_info_t *meminfo, const nand_read_options_t *opts)
+-{
+-	int imglen = opts->length;
+-	int pagelen;
+-	int baderaseblock;
+-	int blockstart = -1;
+-	int percent_complete = -1;
+-	loff_t offs;
+-	size_t readlen;
+-	ulong mtdoffset = opts->offset;
+-	u_char *buffer = opts->buffer;
+-	int result;
+-
+-	/* make sure device page sizes are valid */
+-	if (!(meminfo->oobsize == 16 && meminfo->oobblock == 512)
+-	    && !(meminfo->oobsize == 8 && meminfo->oobblock == 256)
+-	    && !(meminfo->oobsize == 64 && meminfo->oobblock == 2048)) {
+-		printf("Unknown flash (not normal NAND)\n");
+-		return -1;
+-	}
+-
+-	pagelen = meminfo->oobblock
+-		+ ((opts->readoob != 0) ? meminfo->oobsize : 0);
+-
+-	/* check, if length is not larger than device */
+-	if (((imglen / pagelen) * meminfo->oobblock)
+-	     > (meminfo->size - opts->offset)) {
+-		printf("Image %d bytes, NAND page %d bytes, "
+-		       "OOB area %u bytes, device size %u bytes\n",
+-		       imglen, pagelen, meminfo->oobblock, meminfo->size);
+-		printf("Input block is larger than device\n");
+-		return -1;
+-	}
+-
+-	if (!opts->quiet)
+-		printf("\n");
+-
+-	/* get data from input and write to the device */
+-	while (imglen && (mtdoffset < meminfo->size)) {
+-
+-		WATCHDOG_RESET ();
+-
+-		/*
+-		 * new eraseblock, check for bad block(s). Stay in the
+-		 * loop to be sure if the offset changes because of
+-		 * a bad block, that the next block that will be
+-		 * written to is also checked. Thus avoiding errors if
+-		 * the block(s) after the skipped block(s) is also bad
+-		 * (number of blocks depending on the blockalign
+-		 */
+-		while (blockstart != (mtdoffset & (~meminfo->erasesize+1))) {
+-			blockstart = mtdoffset & (~meminfo->erasesize+1);
+-			offs = blockstart;
+-			baderaseblock = 0;
+-
+-			/* check all the blocks in an erase block for
+-			 * bad blocks */
+-			do {
+-				int ret = meminfo->block_isbad(meminfo, offs);
+-
+-				if (ret < 0) {
+-					printf("Bad block check failed\n");
+-					return -1;
+-				}
+-				if (ret == 1) {
+-					baderaseblock = 1;
+-					if (!opts->quiet)
+-						printf("\rBad block at 0x%lx "
+-						       "in erase block from "
+-						       "0x%x will be skipped\n",
+-						       (long) offs,
+-						       blockstart);
+-				}
+-
+-				if (baderaseblock) {
+-					mtdoffset = blockstart
+-						+ meminfo->erasesize;
+-				}
+-				offs +=	 meminfo->erasesize;
+-
+-			} while (offs < blockstart + meminfo->erasesize);
+-		}
+-
+-
+-		/* read page data to memory buffer */
+-		result = meminfo->read(meminfo,
+-				       mtdoffset,
+-				       meminfo->oobblock,
+-				       &readlen,
+-				       (unsigned char *) &data_buf);
+-
+-		if (result != 0) {
+-			printf("reading NAND page at offset 0x%lx failed\n",
+-			       mtdoffset);
+-			return -1;
+-		}
+-
+-		if (imglen < readlen) {
+-			readlen = imglen;
+-		}
+-
+-		memcpy(buffer, data_buf, readlen);
+-		buffer += readlen;
+-		imglen -= readlen;
+-
+-		if (opts->readoob) {
+-			result = meminfo->read_oob(meminfo,
+-						   mtdoffset,
+-						   meminfo->oobsize,
+-						   &readlen,
+-						   (unsigned char *)
+-						   &oob_buf);
+-
+-			if (result != 0) {
+-				printf("\nMTD readoob failure: %d\n",
+-				       result);
+-				return -1;
+-			}
+-
+-
+-			if (imglen < readlen) {
+-				readlen = imglen;
+-			}
+-
+-			memcpy(buffer, oob_buf, readlen);
+-
+-			buffer += readlen;
+-			imglen -= readlen;
+-		}
+-
+-		if (!opts->quiet) {
+-			int percent = (int)
+-				((unsigned long long)
+-				 (opts->length-imglen) * 100
+-				 / opts->length);
+-			/* output progress message only at whole percent
+-			 * steps to reduce the number of messages printed
+-			 * on (slow) serial consoles
+-			 */
+-			if (percent != percent_complete) {
+-			if (!opts->quiet)
+-				printf("\rReading data from 0x%x "
+-				       "-- %3d%% complete.",
+-				       mtdoffset, percent);
+-				percent_complete = percent;
+-			}
+-		}
+-
+-		mtdoffset += meminfo->oobblock;
+-	}
+-
+-	if (!opts->quiet)
+-		printf("\n");
+-
+-	if (imglen > 0) {
+-		printf("Could not read entire image due to bad blocks\n");
+-		return -1;
+-	}
+-
+-	/* return happy */
+-	return 0;
+-}
+-
+-/******************************************************************************
+- * Support for locking / unlocking operations of some NAND devices
+- *****************************************************************************/
+-
+-#define NAND_CMD_LOCK		0x2a
+-#define NAND_CMD_LOCK_TIGHT	0x2c
+-#define NAND_CMD_UNLOCK1	0x23
+-#define NAND_CMD_UNLOCK2	0x24
+-#define NAND_CMD_LOCK_STATUS	0x7a
+-
+-/**
+- * nand_lock: Set all pages of NAND flash chip to the LOCK or LOCK-TIGHT
+- *	      state
+- *
+- * @param meminfo	nand mtd instance
+- * @param tight		bring device in lock tight mode
+- *
+- * @return		0 on success, -1 in case of error
+- *
+- * The lock / lock-tight command only applies to the whole chip. To get some
+- * parts of the chip lock and others unlocked use the following sequence:
+- *
+- * - Lock all pages of the chip using nand_lock(mtd, 0) (or the lockpre pin)
+- * - Call nand_unlock() once for each consecutive area to be unlocked
+- * - If desired: Bring the chip to the lock-tight state using nand_lock(mtd, 1)
+- *
+- *   If the device is in lock-tight state software can't change the
+- *   current active lock/unlock state of all pages. nand_lock() / nand_unlock()
+- *   calls will fail. It is only posible to leave lock-tight state by
+- *   an hardware signal (low pulse on _WP pin) or by power down.
+- */
+-int nand_lock(nand_info_t *meminfo, int tight)
+-{
+-	int ret = 0;
+-	int status;
+-	struct nand_chip *this = meminfo->priv;
+-
+-	/* select the NAND device */
+-	this->select_chip(meminfo, 0);
+-
+-	this->cmdfunc(meminfo,
+-		      (tight ? NAND_CMD_LOCK_TIGHT : NAND_CMD_LOCK),
+-		      -1, -1);
+-
+-	/* call wait ready function */
+-	status = this->waitfunc(meminfo, this, FL_WRITING);
+-
+-	/* see if device thinks it succeeded */
+-	if (status & 0x01) {
+-		ret = -1;
+-	}
+-
+-	/* de-select the NAND device */
+-	this->select_chip(meminfo, -1);
+-	return ret;
+-}
+-
+-/**
+- * nand_get_lock_status: - query current lock state from one page of NAND
+- *			   flash
+- *
+- * @param meminfo	nand mtd instance
+- * @param offset	page address to query (muss be page aligned!)
+- *
+- * @return		-1 in case of error
+- *			>0 lock status:
+- *			  bitfield with the following combinations:
+- *			  NAND_LOCK_STATUS_TIGHT: page in tight state
+- *			  NAND_LOCK_STATUS_LOCK:  page locked
+- *			  NAND_LOCK_STATUS_UNLOCK: page unlocked
+- *
+- */
+-int nand_get_lock_status(nand_info_t *meminfo, ulong offset)
+-{
+-	int ret = 0;
+-	int chipnr;
+-	int page;
+-	struct nand_chip *this = meminfo->priv;
+-
+-	/* select the NAND device */
+-	chipnr = (int)(offset >> this->chip_shift);
+-	this->select_chip(meminfo, chipnr);
+-
+-
+-	if ((offset & (meminfo->oobblock - 1)) != 0) {
+-		printf ("nand_get_lock_status: "
+-			"Start address must be beginning of "
+-			"nand page!\n");
+-		ret = -1;
+-		goto out;
+-	}
+-
+-	/* check the Lock Status */
+-	page = (int)(offset >> this->page_shift);
+-	this->cmdfunc(meminfo, NAND_CMD_LOCK_STATUS, -1, page & this->pagemask);
+-
+-	ret = this->read_byte(meminfo) & (NAND_LOCK_STATUS_TIGHT
+-					  | NAND_LOCK_STATUS_LOCK
+-					  | NAND_LOCK_STATUS_UNLOCK);
+-
+- out:
+-	/* de-select the NAND device */
+-	this->select_chip(meminfo, -1);
+-	return ret;
+-}
+-
+-/**
+- * nand_unlock: - Unlock area of NAND pages
+- *		  only one consecutive area can be unlocked at one time!
+- *
+- * @param meminfo	nand mtd instance
+- * @param start		start byte address
+- * @param length	number of bytes to unlock (must be a multiple of
+- *			page size nand->oobblock)
+- *
+- * @return		0 on success, -1 in case of error
+- */
+-int nand_unlock(nand_info_t *meminfo, ulong start, ulong length)
+-{
+-	int ret = 0;
+-	int chipnr;
+-	int status;
+-	int page;
+-	struct nand_chip *this = meminfo->priv;
+-	printf ("nand_unlock: start: %08x, length: %d!\n",
+-		(int)start, (int)length);
+-
+-	/* select the NAND device */
+-	chipnr = (int)(start >> this->chip_shift);
+-	this->select_chip(meminfo, chipnr);
+-
+-	/* check the WP bit */
+-	this->cmdfunc(meminfo, NAND_CMD_STATUS, -1, -1);
+-	if ((this->read_byte(meminfo) & 0x80) == 0) {
+-		printf ("nand_unlock: Device is write protected!\n");
+-		ret = -1;
+-		goto out;
+-	}
+-
+-	if ((start & (meminfo->oobblock - 1)) != 0) {
+-		printf ("nand_unlock: Start address must be beginning of "
+-			"nand page!\n");
+-		ret = -1;
+-		goto out;
+-	}
+-
+-	if (length == 0 || (length & (meminfo->oobblock - 1)) != 0) {
+-		printf ("nand_unlock: Length must be a multiple of nand page "
+-			"size!\n");
+-		ret = -1;
+-		goto out;
+-	}
+-
+-	/* submit address of first page to unlock */
+-	page = (int)(start >> this->page_shift);
+-	this->cmdfunc(meminfo, NAND_CMD_UNLOCK1, -1, page & this->pagemask);
+-
+-	/* submit ADDRESS of LAST page to unlock */
+-	page += (int)(length >> this->page_shift) - 1;
+-	this->cmdfunc(meminfo, NAND_CMD_UNLOCK2, -1, page & this->pagemask);
+-
+-	/* call wait ready function */
+-	status = this->waitfunc(meminfo, this, FL_WRITING);
+-	/* see if device thinks it succeeded */
+-	if (status & 0x01) {
+-		/* there was an error */
+-		ret = -1;
+-		goto out;
+-	}
+-
+- out:
+-	/* de-select the NAND device */
+-	this->select_chip(meminfo, -1);
+-	return ret;
+-}
+-
 -- 
 1.7.2.3
 
