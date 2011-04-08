@@ -1,15 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Q85OI-00062h-78
-	for barebox@lists.infradead.org; Fri, 08 Apr 2011 06:41:59 +0000
-Date: Fri, 8 Apr 2011 08:41:56 +0200
+	id 1Q85jU-00066D-21
+	for barebox@lists.infradead.org; Fri, 08 Apr 2011 07:03:53 +0000
+Date: Fri, 8 Apr 2011 09:03:48 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110408064155.GR7285@pengutronix.de>
-References: <1302163039-29861-1-git-send-email-thomas.mayer@telemotive.de>
+Message-ID: <20110408070348.GT7285@pengutronix.de>
+References: <39A4B204C321D34DA3490E3B119D5A6C68C006F893@SBS2008.wellsense.local>
+	<20110306182606.GD16849@tarshish>
+	<201103081637.47812.jbe@pengutronix.de>
+	<201103091200.16339.jbe@pengutronix.de>
+	<39A4B204C321D34DA3490E3B119D5A6C68C006F8BB@SBS2008.wellsense.local>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1302163039-29861-1-git-send-email-thomas.mayer@telemotive.de>
+In-Reply-To: <39A4B204C321D34DA3490E3B119D5A6C68C006F8BB@SBS2008.wellsense.local>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,33 +26,21 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] freescale-mx35-3-stack: Add mmc0
-To: Thomas Mayer <thomas.mayer@telemotive.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: Fallback environment in barebox
+To: Boaz Ben-David <boaz.bd@wellsense-tech.com>
+Cc: Udi Ron <udi.ron@wellsense-tech.com>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi Thomas,
-
-On Thu, Apr 07, 2011 at 09:57:19AM +0200, Thomas Mayer wrote:
+On Sun, Mar 27, 2011 at 10:58:05AM +0200, Boaz Ben-David wrote:
+> Hi,
 > 
-> Signed-off-by: Thomas Mayer <thomas.mayer@telemotive.de>
-> ---
->  arch/arm/boards/freescale-mx35-3-stack/3stack.c |    4 ++++
->  1 files changed, 4 insertions(+), 0 deletions(-)
-> 
-> diff --git a/arch/arm/boards/freescale-mx35-3-stack/3stack.c b/arch/arm/boards/freescale-mx35-3-stack/3stack.c
-> index 127bfb4..a4cbbe1 100644
-> --- a/arch/arm/boards/freescale-mx35-3-stack/3stack.c
-> +++ b/arch/arm/boards/freescale-mx35-3-stack/3stack.c
-> @@ -199,6 +199,10 @@ static int f3s_devices_init(void)
->  		break;
->  	}
->  
-> +#ifdef CONFIG_MCI_IMX_ESDHC
-> +	imx35_add_mmc0(NULL);
-> +#endif
+> A general question regarding environment but not limited to.
+> If we have an environment partition on a NAND device which has 4 blocks
+> of 512K, and a block becomes bad when writing to it, does barebox handle
+> it and writes to the next block?
 
-No ifdef here, please. Registering a device without a driver available
-doesn't hurt, except for a few bytes of binary space.
+No barebox currently does not do this. You would have to do this
+manually on the command line (which of course is not very convenient in
+production).
 
 Sascha
 
