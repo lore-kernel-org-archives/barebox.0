@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Q9IHT-0006QQ-KA
-	for barebox@lists.infradead.org; Mon, 11 Apr 2011 14:40:02 +0000
+	id 1Q9IHS-0006QD-U1
+	for barebox@lists.infradead.org; Mon, 11 Apr 2011 14:39:59 +0000
+Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+	(envelope-from <sha@pengutronix.de>) id 1Q9IHR-0000vN-2p
+	for barebox@lists.infradead.org; Mon, 11 Apr 2011 16:39:53 +0200
+Received: from sha by octopus.hi.pengutronix.de with local (Exim 4.69)
+	(envelope-from <sha@pengutronix.de>) id 1Q9IHR-0007u8-1U
+	for barebox@lists.infradead.org; Mon, 11 Apr 2011 16:39:53 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 11 Apr 2011 16:39:51 +0200
-Message-Id: <1302532791-20664-13-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1302532791-20664-1-git-send-email-s.hauer@pengutronix.de>
-References: <1302532791-20664-1-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 11 Apr 2011 16:39:39 +0200
+Message-Id: <1302532791-20664-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,62 +26,93 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/12] ARM beagle board: add xload defconfig
+Subject: OMAP4 support
 To: barebox@lists.infradead.org
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/configs/omap3530_beagle_xload_defconfig |   38 ++++++++++++++++++++++
- 1 files changed, 38 insertions(+), 0 deletions(-)
+
+The following finally adds omap4 support along with panda and pcm049 board
+support. Also included in this series are updates to the beagle board
+to make a xloader image suitable for booting from nand and mmc.
+
+Sascha Hauer (12):
+      ARM omap: Add omap signGP tool and possibility to build ift images
+      mci omap: hsmmc is also found on the omap3
+      ARM omap: make sr32 a static inline function
+      ARM omap: Add omap4 support
+      ARM omap: add xload helper functions
+      ARM omap4: panda board support
+      add panda defconfigs
+      ARM omap4: Add pcm049 board support
+      ARM: add pcm049 defconfigs
+      ARM omap beagle: Add noshell support for booting from MMC
+      ARM omap beagle: update defconfig
+      ARM beagle board: add xload defconfig
+
+ arch/arm/Makefile                                |   10 +
+ arch/arm/boards/omap/board-beagle.c              |   42 +++
+ arch/arm/boards/panda/Makefile                   |    1 +
+ arch/arm/boards/panda/board.c                    |  230 ++++++++++++
+ arch/arm/boards/panda/config.h                   |    1 +
+ arch/arm/boards/panda/env/config                 |   45 +++
+ arch/arm/boards/panda/lowlevel.c                 |  121 +++++++
+ arch/arm/boards/panda/mux.c                      |  257 +++++++++++++
+ arch/arm/boards/pcm049/Makefile                  |    1 +
+ arch/arm/boards/pcm049/board.c                   |  200 ++++++++++
+ arch/arm/boards/pcm049/config.h                  |    1 +
+ arch/arm/boards/pcm049/env/bin/nand_bootstrap    |   31 ++
+ arch/arm/boards/pcm049/env/config                |   53 +++
+ arch/arm/boards/pcm049/lowlevel.c                |  127 +++++++
+ arch/arm/boards/pcm049/mux.c                     |  254 +++++++++++++
+ arch/arm/configs/omap3530_beagle_defconfig       |   15 +-
+ arch/arm/configs/omap3530_beagle_xload_defconfig |   38 ++
+ arch/arm/configs/panda_defconfig                 |   60 +++
+ arch/arm/configs/panda_xload_defconfig           |   26 ++
+ arch/arm/configs/pcm049_defconfig                |   57 +++
+ arch/arm/configs/pcm049_xload_defconfig          |   40 ++
+ arch/arm/mach-omap/Kconfig                       |   37 ++-
+ arch/arm/mach-omap/Makefile                      |    3 +-
+ arch/arm/mach-omap/gpio.c                        |   18 +
+ arch/arm/mach-omap/include/mach/omap4-clock.h    |  320 ++++++++++++++++
+ arch/arm/mach-omap/include/mach/omap4-mux.h      |  344 ++++++++++++++++++
+ arch/arm/mach-omap/include/mach/omap4-silicon.h  |  179 +++++++++
+ arch/arm/mach-omap/include/mach/silicon.h        |    3 +
+ arch/arm/mach-omap/include/mach/syslib.h         |   23 ++-
+ arch/arm/mach-omap/include/mach/xload.h          |   16 +
+ arch/arm/mach-omap/omap3_generic.c               |   14 +
+ arch/arm/mach-omap/omap4_clock.c                 |  380 +++++++++++++++++++
+ arch/arm/mach-omap/omap4_generic.c               |  420 ++++++++++++++++++++++
+ arch/arm/mach-omap/syslib.c                      |   20 -
+ arch/arm/mach-omap/xload.c                       |   54 +++
+ drivers/mci/Kconfig                              |    2 +-
+ scripts/Makefile                                 |    1 +
+ scripts/omap_signGP.c                            |  313 ++++++++++++++++
+ 38 files changed, 3731 insertions(+), 26 deletions(-)
+ create mode 100644 arch/arm/boards/panda/Makefile
+ create mode 100644 arch/arm/boards/panda/board.c
+ create mode 100644 arch/arm/boards/panda/config.h
+ create mode 100644 arch/arm/boards/panda/env/config
+ create mode 100644 arch/arm/boards/panda/lowlevel.c
+ create mode 100644 arch/arm/boards/panda/mux.c
+ create mode 100644 arch/arm/boards/pcm049/Makefile
+ create mode 100644 arch/arm/boards/pcm049/board.c
+ create mode 100644 arch/arm/boards/pcm049/config.h
+ create mode 100644 arch/arm/boards/pcm049/env/bin/nand_bootstrap
+ create mode 100644 arch/arm/boards/pcm049/env/config
+ create mode 100644 arch/arm/boards/pcm049/lowlevel.c
+ create mode 100644 arch/arm/boards/pcm049/mux.c
  create mode 100644 arch/arm/configs/omap3530_beagle_xload_defconfig
-
-diff --git a/arch/arm/configs/omap3530_beagle_xload_defconfig b/arch/arm/configs/omap3530_beagle_xload_defconfig
-new file mode 100644
-index 0000000..58a2309
---- /dev/null
-+++ b/arch/arm/configs/omap3530_beagle_xload_defconfig
-@@ -0,0 +1,38 @@
-+CONFIG_ARCH_OMAP=y
-+# CONFIG_OMAP3_COPY_CLOCK_SRAM is not set
-+CONFIG_OMAP_BUILD_IFT=y
-+CONFIG_MACH_BEAGLE=y
-+CONFIG_AEABI=y
-+# CONFIG_CMD_ARM_CPUINFO is not set
-+# CONFIG_ARM_EXCEPTIONS is not set
-+CONFIG_TEXT_BASE=0x40200000
-+CONFIG_MEMORY_LAYOUT_FIXED=y
-+CONFIG_STACK_BASE=0x87BF7F10
-+CONFIG_MALLOC_BASE=0x87BFFF10
-+CONFIG_MALLOC_DUMMY=y
-+CONFIG_PROMPT="X-load Beagle>"
-+CONFIG_SHELL_NONE=y
-+# CONFIG_ERRNO_MESSAGES is not set
-+# CONFIG_TIMESTAMP is not set
-+# CONFIG_CONSOLE_FULL is not set
-+# CONFIG_DEFAULT_ENVIRONMENT is not set
-+CONFIG_DRIVER_SERIAL_NS16550=y
-+CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
-+# CONFIG_SPI is not set
-+CONFIG_MTD=y
-+CONFIG_NAND=y
-+# CONFIG_NAND_WRITE is not set
-+# CONFIG_NAND_ECC_SOFT is not set
-+# CONFIG_NAND_ECC_HW_SYNDROME is not set
-+# CONFIG_NAND_ECC_HW_NONE is not set
-+# CONFIG_NAND_INFO is not set
-+# CONFIG_NAND_BBT is not set
-+# CONFIG_NAND_READ_OOB is not set
-+CONFIG_NAND_OMAP_GPMC=y
-+CONFIG_MCI=y
-+CONFIG_MCI_STARTUP=y
-+# CONFIG_MCI_WRITE is not set
-+CONFIG_MCI_OMAP_HSMMC=y
-+# CONFIG_FS_RAMFS is not set
-+# CONFIG_FS_DEVFS is not set
-+CONFIG_FS_FAT=y
--- 
-1.7.2.3
-
+ create mode 100644 arch/arm/configs/panda_defconfig
+ create mode 100644 arch/arm/configs/panda_xload_defconfig
+ create mode 100644 arch/arm/configs/pcm049_defconfig
+ create mode 100644 arch/arm/configs/pcm049_xload_defconfig
+ create mode 100644 arch/arm/mach-omap/include/mach/omap4-clock.h
+ create mode 100644 arch/arm/mach-omap/include/mach/omap4-mux.h
+ create mode 100644 arch/arm/mach-omap/include/mach/omap4-silicon.h
+ create mode 100644 arch/arm/mach-omap/include/mach/xload.h
+ create mode 100644 arch/arm/mach-omap/omap4_clock.c
+ create mode 100644 arch/arm/mach-omap/omap4_generic.c
+ create mode 100644 arch/arm/mach-omap/xload.c
+ create mode 100644 scripts/omap_signGP.c
 
 _______________________________________________
 barebox mailing list
