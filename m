@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Q9Hwy-000666-Me
-	for barebox@lists.infradead.org; Mon, 11 Apr 2011 14:18:46 +0000
+	id 1Q9I1H-0006Bc-Bg
+	for barebox@lists.infradead.org; Mon, 11 Apr 2011 14:23:11 +0000
+Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+	(envelope-from <sha@pengutronix.de>) id 1Q9I1F-0000DY-T9
+	for barebox@lists.infradead.org; Mon, 11 Apr 2011 16:23:09 +0200
+Received: from sha by octopus.hi.pengutronix.de with local (Exim 4.69)
+	(envelope-from <sha@pengutronix.de>) id 1Q9I1F-0006bM-S4
+	for barebox@lists.infradead.org; Mon, 11 Apr 2011 16:23:09 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 11 Apr 2011 16:18:39 +0200
-Message-Id: <1302531521-7439-6-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1302531521-7439-1-git-send-email-s.hauer@pengutronix.de>
-References: <1302531521-7439-1-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 11 Apr 2011 16:23:08 +0200
+Message-Id: <1302531789-25169-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,44 +26,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/7] kfifo: kfifo_put takes a const buffer
+Subject: FAT filesystem support
 To: barebox@lists.infradead.org
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- include/kfifo.h |    2 +-
- lib/kfifo.c     |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+The following adds FAT read/write support to barebox.
 
-diff --git a/include/kfifo.h b/include/kfifo.h
-index 6f8be10..3eb03cb 100644
---- a/include/kfifo.h
-+++ b/include/kfifo.h
-@@ -43,7 +43,7 @@ void kfifo_free(struct kfifo *fifo);
-  * bytes copied.
-  */
- unsigned int kfifo_put(struct kfifo *fifo,
--				unsigned char *buffer, unsigned int len);
-+				const unsigned char *buffer, unsigned int len);
- 
- /**
-  * kfifo_get - gets some data from the FIFO
-diff --git a/lib/kfifo.c b/lib/kfifo.c
-index bf5cee1..27d44e9 100644
---- a/lib/kfifo.c
-+++ b/lib/kfifo.c
-@@ -96,7 +96,7 @@ void kfifo_free(struct kfifo *fifo)
-  *
-  */
- unsigned int kfifo_put(struct kfifo *fifo,
--			 unsigned char *buffer, unsigned int len)
-+			 const unsigned char *buffer, unsigned int len)
- {
- 	unsigned int l;
- 
--- 
-1.7.2.3
+Sascha Hauer (1):
+      fs: add fat filesystem support
 
+ fs/Kconfig       |    2 +
+ fs/Makefile      |    1 +
+ fs/fat/Kconfig   |   15 +
+ fs/fat/Makefile  |    1 +
+ fs/fat/diskio.h  |   78 ++
+ fs/fat/fat.c     |  434 +++++++++
+ fs/fat/ff.c      | 2761 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ fs/fat/ff.h      |  239 +++++
+ fs/fat/ffconf.h  |  145 +++
+ fs/fat/integer.h |   28 +
+ 10 files changed, 3704 insertions(+), 0 deletions(-)
+ create mode 100644 fs/fat/Kconfig
+ create mode 100644 fs/fat/Makefile
+ create mode 100644 fs/fat/diskio.h
+ create mode 100644 fs/fat/fat.c
+ create mode 100644 fs/fat/ff.c
+ create mode 100644 fs/fat/ff.h
+ create mode 100644 fs/fat/ffconf.h
+ create mode 100644 fs/fat/integer.h
 
 _______________________________________________
 barebox mailing list
