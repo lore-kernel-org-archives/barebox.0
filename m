@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Q9Bdn-0003X4-7q
-	for barebox@lists.infradead.org; Mon, 11 Apr 2011 07:34:32 +0000
-Date: Mon, 11 Apr 2011 09:34:28 +0200
+	id 1Q9BkH-0003Zv-OY
+	for barebox@lists.infradead.org; Mon, 11 Apr 2011 07:41:14 +0000
+Date: Mon, 11 Apr 2011 09:41:09 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110411073428.GD7285@pengutronix.de>
-References: <4DA2AC28.3050802@selea.com>
+Message-ID: <20110411074109.GE7285@pengutronix.de>
+References: <1302273422-6987-1-git-send-email-s.hauer@pengutronix.de>
+	<1302273422-6987-15-git-send-email-s.hauer@pengutronix.de>
+	<201104101433.44722.marc@cpdesign.com.au>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <4DA2AC28.3050802@selea.com>
+In-Reply-To: <201104101433.44722.marc@cpdesign.com.au>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,36 +24,72 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: imx25 3 stack problem
-To: Omar Pighi <pighi@selea.com>
+Subject: Re: [PATCH 14/16] ARM: compile in image size and magic into
+	barebox image
+To: Marc Reilly <marc@cpdesign.com.au>
 Cc: barebox@lists.infradead.org
 
-Hi Omar,
+Hi Marc,
 
-On Mon, Apr 11, 2011 at 09:22:16AM +0200, Omar Pighi wrote:
+On Sun, Apr 10, 2011 at 02:33:44PM +1000, Marc Reilly wrote:
 > Hi,
 > 
-> I downloaded the last version of barebox and using the tolchain
-> downloaded from pengutronix (not the last one).
-> i compiled with ARCH=arm and CROSS_COMPILER=....
-> i configured it with make menuconfig
-> than make
-> put it on the nand flash using the ATK toolkit.
-> try to boot (from NAND flash )but nothing happen....
-> the hardware is working because if i do the same with the u-boot
-> included with the BSP from freescale it works fine.
-> reading the mailing list a lot of people is using barebox on imx25 , so
-> it is my fault.... but what i can check? to fix it?
+> > This is useful to detect a barebox image and to be able
+> > to copy only the image size if barebox is stored on
+> > raw partitions which are bigger than the image.
+> > 
+> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > ---
+> >  arch/arm/cpu/start.c           |    6 ++++++
+> >  arch/arm/lib/barebox.lds.S     |    1 +
+> >  include/asm-generic/sections.h |    3 +++
+> >  3 files changed, 10 insertions(+), 0 deletions(-)
+> > 
+> > diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
+> > index e0fb712..ddb65e8 100644
+> > --- a/arch/arm/cpu/start.c
+> > +++ b/arch/arm/cpu/start.c
+> > @@ -38,6 +38,12 @@ void __naked __section(.text_entry)
+> > exception_vectors(void) "ldr pc, =not_used\n"			/* (reserved) */
+> >  		"ldr pc, =irq\n"			/* irq (interrupt) */
+> >  		"ldr pc, =fiq\n"			/* fiq (fast interrupt) */
+> > +		".word 0x65726162\n"			/* 'BARE' */
+> > +		".word 0x00786f62\n"			/* 'BOX' */
 
-First thing to check is if barebox runs as second stage loader. Flash
-U-Boot back to your board, load barebox.bin to ram and jump to this
-address using U-Boots 'go' command.
-The i.MX processors support internal and external boot modes. barebox
-expects the board to be in internal boot mode. Are your jumpers set
-correctly for this mode?
+I just see that the comment is wrong. It's actually in lower case
+letters.
+
+> > +		".word _text\n"				/* text base. If copied there,
+> > +							 * barebox can skip relocation
+> > +							 */
+> > +		".word _barebox_image_size\n"		/* image size to copy */
+> >  	);
+> >  }
+> 
+> I like this, is there a way to include a version string/info also?
+> 
+> (The aim is to be able to derive the barebox version of an image from just 
+> reading the file).
+
+Should be possible. One problem might be that the length of the version
+string is variable, so if we put it here, it must be the piece of
+information here.
+
+> > +extern void *_barebox_image_size;
+> > +
+> > +#define barebox_image_size	(unsigned int)&_barebox_image_size
+> 
+> I don't understand this line. Did you mean something like:
+> 
+> #define barebox_image_size *((unsigned int *)_barebox_image_size)
+> 
+> Or am I missing something?
+
+_barebox_image_size is filled in by the linker. It can be seen as a
+pointer which address corresponds to the image size. I know this looks
+strange and I don't really like this. Maybe it can be done better?
 
 Sascha
- 
 
 -- 
 Pengutronix e.K.                           |                             |
