@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Q9IHT-0006QI-7E
-	for barebox@lists.infradead.org; Mon, 11 Apr 2011 14:39:59 +0000
+	id 1Q9IHT-0006QH-5c
+	for barebox@lists.infradead.org; Mon, 11 Apr 2011 14:39:57 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 11 Apr 2011 16:39:44 +0200
-Message-Id: <1302532791-20664-6-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 11 Apr 2011 16:39:42 +0200
+Message-Id: <1302532791-20664-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1302532791-20664-1-git-send-email-s.hauer@pengutronix.de>
 References: <1302532791-20664-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,173 +21,84 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/12] ARM omap: add xload helper functions
+Subject: [PATCH 03/12] ARM omap: make sr32 a static inline function
 To: barebox@lists.infradead.org
 
-Add some common xload helper functions to determine the boot source
-on omap3/4 and to load images from mmc and nand.
+This generates smaller code.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-omap/Makefile             |    2 +-
- arch/arm/mach-omap/include/mach/xload.h |   16 +++++++++
- arch/arm/mach-omap/omap3_generic.c      |   14 ++++++++
- arch/arm/mach-omap/omap4_generic.c      |   14 ++++++++
- arch/arm/mach-omap/xload.c              |   54 +++++++++++++++++++++++++++++++
- 5 files changed, 99 insertions(+), 1 deletions(-)
- create mode 100644 arch/arm/mach-omap/include/mach/xload.h
- create mode 100644 arch/arm/mach-omap/xload.c
+ arch/arm/mach-omap/include/mach/syslib.h |   23 ++++++++++++++++++++++-
+ arch/arm/mach-omap/syslib.c              |   20 --------------------
+ 2 files changed, 22 insertions(+), 21 deletions(-)
 
-diff --git a/arch/arm/mach-omap/Makefile b/arch/arm/mach-omap/Makefile
-index 9c31456..a4b9a55 100644
---- a/arch/arm/mach-omap/Makefile
-+++ b/arch/arm/mach-omap/Makefile
-@@ -25,4 +25,4 @@ obj-$(CONFIG_ARCH_OMAP3) += omap3_core.o omap3_generic.o
- obj-$(CONFIG_ARCH_OMAP4) += omap4_generic.o omap4_clock.o
- obj-$(CONFIG_OMAP3_CLOCK_CONFIG) += omap3_clock_core.o omap3_clock.o
- obj-$(CONFIG_OMAP_GPMC) += gpmc.o devices-gpmc-nand.o
--obj-y += omap-uart.o gpio.o
-+obj-y += omap-uart.o gpio.o xload.o
-diff --git a/arch/arm/mach-omap/include/mach/xload.h b/arch/arm/mach-omap/include/mach/xload.h
-new file mode 100644
-index 0000000..844b57f
---- /dev/null
-+++ b/arch/arm/mach-omap/include/mach/xload.h
-@@ -0,0 +1,16 @@
-+#ifndef _MACH_XLOAD_H
-+#define _MACH_XLOAD_H
+diff --git a/arch/arm/mach-omap/include/mach/syslib.h b/arch/arm/mach-omap/include/mach/syslib.h
+index c89f50b..6a7044a 100644
+--- a/arch/arm/mach-omap/include/mach/syslib.h
++++ b/arch/arm/mach-omap/include/mach/syslib.h
+@@ -30,9 +30,30 @@
+  */
+ #ifndef __ASM_ARCH_OMAP_SYSLIB_H_
+ #define __ASM_ARCH_OMAP_SYSLIB_H_
++#include <asm/io.h>
+ 
+ /** System Independent functions */
+-void sr32(u32 addr, u32 start_bit, u32 num_bits, u32 value);
 +
-+void *omap_xload_boot_nand(int offset, int size);
-+void *omap_xload_boot_mmc(void);
++/**
++ * @brief clear & set a value in a bit range for a 32 bit address
++ *
++ * @param[in] addr Address to set/read from
++ * @param[in] start_bit Where to put the value
++ * @param[in] num_bits number of bits the value should be set
++ * @param[in] value the value to set
++ *
++ * @return void
++ */
++static inline void sr32(u32 addr, u32 start_bit, u32 num_bits, u32 value)
++{
++	u32 tmp, msk = 0;
++	msk = 1 << num_bits;
++	--msk;
++	tmp = readl(addr) & ~(msk << start_bit);
++	tmp |=  value << start_bit;
++	writel(tmp, addr);
++}
 +
-+enum omap_boot_src {
-+	OMAP_BOOTSRC_UNKNOWN,
-+	OMAP_BOOTSRC_MMC1,
-+	OMAP_BOOTSRC_NAND,
-+};
-+
-+enum omap_boot_src omap3_bootsrc(void);
-+enum omap_boot_src omap4_bootsrc(void);
-+
-+#endif /* _MACH_XLOAD_H */
-diff --git a/arch/arm/mach-omap/omap3_generic.c b/arch/arm/mach-omap/omap3_generic.c
-index c1940d2..661a971 100644
---- a/arch/arm/mach-omap/omap3_generic.c
-+++ b/arch/arm/mach-omap/omap3_generic.c
-@@ -46,6 +46,7 @@
- #include <mach/wdt.h>
- #include <mach/sys_info.h>
- #include <mach/syslib.h>
-+#include <mach/xload.h>
+ u32 wait_on_value(u32 read_bit_mask, u32 match_value, u32 read_addr, u32 bound);
+ void sdelay(unsigned long loops);
+ 
+diff --git a/arch/arm/mach-omap/syslib.c b/arch/arm/mach-omap/syslib.c
+index 2b25dc1..677de6a 100644
+--- a/arch/arm/mach-omap/syslib.c
++++ b/arch/arm/mach-omap/syslib.c
+@@ -53,26 +53,6 @@ void sdelay(unsigned long loops)
+ }
  
  /**
-  * @brief Reset the CPU
-@@ -483,3 +484,16 @@ void a_init(void)
- #endif
- 
- }
-+
-+#define OMAP3_TRACING_VECTOR1 0x4020ffb4
-+
-+enum omap_boot_src omap3_bootsrc(void)
-+{
-+	u32 bootsrc = readl(OMAP3_TRACING_VECTOR1);
-+
-+	if (bootsrc & (1 << 2))
-+		return OMAP_BOOTSRC_NAND;
-+	if (bootsrc & (1 << 6))
-+		return OMAP_BOOTSRC_MMC1;
-+	return OMAP_BOOTSRC_UNKNOWN;
-+}
-diff --git a/arch/arm/mach-omap/omap4_generic.c b/arch/arm/mach-omap/omap4_generic.c
-index 45e6c86..e4838e9 100644
---- a/arch/arm/mach-omap/omap4_generic.c
-+++ b/arch/arm/mach-omap/omap4_generic.c
-@@ -5,6 +5,7 @@
- #include <mach/omap4-silicon.h>
- #include <mach/omap4-clock.h>
- #include <mach/syslib.h>
-+#include <mach/xload.h>
- 
- void __noreturn reset_cpu(unsigned long addr)
- {
-@@ -404,3 +405,16 @@ static int omap_vector_init(void)
- 	return 0;
- }
- core_initcall(omap_vector_init);
-+
-+#define OMAP4_TRACING_VECTOR3 0x4030d048
-+
-+enum omap_boot_src omap4_bootsrc(void)
-+{
-+	u32 bootsrc = readl(OMAP4_TRACING_VECTOR3);
-+
-+	if (bootsrc & (1 << 3))
-+		return OMAP_BOOTSRC_NAND;
-+	if (bootsrc & (1 << 5))
-+		return OMAP_BOOTSRC_MMC1;
-+	return OMAP_BOOTSRC_UNKNOWN;
-+}
-diff --git a/arch/arm/mach-omap/xload.c b/arch/arm/mach-omap/xload.c
-new file mode 100644
-index 0000000..216b9b5
---- /dev/null
-+++ b/arch/arm/mach-omap/xload.c
-@@ -0,0 +1,54 @@
-+#include <common.h>
-+#include <partition.h>
-+#include <nand.h>
-+#include <driver.h>
-+#include <linux/mtd/mtd.h>
-+#include <fs.h>
-+#include <fcntl.h>
-+#include <mach/xload.h>
-+#include <sizes.h>
-+
-+void *omap_xload_boot_nand(int offset, int size)
-+{
-+	int ret;
-+	void *to = xmalloc(size);
-+	struct cdev *cdev;
-+
-+	devfs_add_partition("nand0", offset, size, PARTITION_FIXED, "x");
-+	dev_add_bb_dev("x", "bbx");
-+
-+	cdev = cdev_open("bbx", O_RDONLY);
-+	if (!cdev) {
-+		printf("failed to open nand\n");
-+		return NULL;
-+	}
-+
-+	ret = cdev_read(cdev, to, size, 0, 0);
-+	if (ret != size) {
-+		printf("failed to read from nand\n");
-+		return NULL;
-+	}
-+
-+	return to;
-+}
-+
-+void *omap_xload_boot_mmc(void)
-+{
-+	int ret;
-+	void *buf;
-+	int len;
-+
-+	ret = mount("disk0.0", "fat", "/");
-+	if (ret) {
-+		printf("mounting sd card failed with %d\n", ret);
-+		return NULL;
-+	}
-+
-+	buf = read_file("/barebox.bin", &len);
-+	if (!buf) {
-+		printf("could not read barebox.bin from sd card\n");
-+		return NULL;
-+	}
-+
-+	return buf;
-+}
+- * @brief clear & set a value in a bit range for a 32 bit address
+- *
+- * @param[in] addr Address to set/read from
+- * @param[in] start_bit Where to put the value
+- * @param[in] num_bits number of bits the value should be set
+- * @param[in] value the value to set
+- *
+- * @return void
+- */
+-void sr32(u32 addr, u32 start_bit, u32 num_bits, u32 value)
+-{
+-	u32 tmp, msk = 0;
+-	msk = 1 << num_bits;
+-	--msk;
+-	tmp = readl(addr) & ~(msk << start_bit);
+-	tmp |=  value << start_bit;
+-	writel(tmp, addr);
+-}
+-
+-/**
+  * @brief common routine to allow waiting for changes in volatile regs.
+  *
+  * @param[in] read_bit_mask  the bit mask to read
 -- 
 1.7.2.3
 
