@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Q9IHT-0006QK-AL
-	for barebox@lists.infradead.org; Mon, 11 Apr 2011 14:39:59 +0000
+	id 1Q9IHT-0006QF-4B
+	for barebox@lists.infradead.org; Mon, 11 Apr 2011 14:40:02 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 11 Apr 2011 16:39:46 +0200
-Message-Id: <1302532791-20664-8-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 11 Apr 2011 16:39:40 +0200
+Message-Id: <1302532791-20664-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1302532791-20664-1-git-send-email-s.hauer@pengutronix.de>
 References: <1302532791-20664-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,115 +21,387 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/12] add panda defconfigs
+Subject: [PATCH 01/12] ARM omap: Add omap signGP tool and possibility to build
+	ift images
 To: barebox@lists.infradead.org
+
+The tool is needed to build images suitable for omap processors
+to load from mmc or nand.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/configs/panda_defconfig       |   60 ++++++++++++++++++++++++++++++++
- arch/arm/configs/panda_xload_defconfig |   26 ++++++++++++++
- 2 files changed, 86 insertions(+), 0 deletions(-)
- create mode 100644 arch/arm/configs/panda_defconfig
- create mode 100644 arch/arm/configs/panda_xload_defconfig
+ arch/arm/Makefile          |    8 +
+ arch/arm/mach-omap/Kconfig |    4 +
+ scripts/Makefile           |    1 +
+ scripts/omap_signGP.c      |  313 ++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 326 insertions(+), 0 deletions(-)
+ create mode 100644 scripts/omap_signGP.c
 
-diff --git a/arch/arm/configs/panda_defconfig b/arch/arm/configs/panda_defconfig
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 108bd5e..fa1677c 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -134,6 +134,14 @@ ifeq ($(machine-y),netx)
+ KBUILD_IMAGE := barebox.netx
+ endif
+ 
++barebox.bin.ift: barebox.bin
++	@echo "  IFT    " $@
++	$(Q)scripts/omap_signGP barebox.bin $(TEXT_BASE) 1
++
++ifeq ($(CONFIG_OMAP_BUILD_IFT),y)
++KBUILD_IMAGE := barebox.bin.ift
++endif
++
+ all: $(KBUILD_IMAGE)
+ 
+ archprepare: maketools
+diff --git a/arch/arm/mach-omap/Kconfig b/arch/arm/mach-omap/Kconfig
+index d171a6f..351c469 100644
+--- a/arch/arm/mach-omap/Kconfig
++++ b/arch/arm/mach-omap/Kconfig
+@@ -83,6 +83,10 @@ config OMAP_GPMC
+ 	  Controller(GPMC). GPMC allows you to configure devices such as NOR,
+ 	  NAND, OneNAND etc.
+ 
++config OMAP_BUILD_IFT
++	prompt "build ift binary"
++	bool
++
+ config ARCH_TEXT_BASE
+ 	hex
+ 	default 0x80e80000 if MACH_OMAP343xSDP
+diff --git a/scripts/Makefile b/scripts/Makefile
+index be8e3e0..d6ea48c 100644
+--- a/scripts/Makefile
++++ b/scripts/Makefile
+@@ -9,6 +9,7 @@ hostprogs-y                      += bin2c
+ hostprogs-y                      += mkimage
+ hostprogs-y                      += bareboxenv
+ hostprogs-$(CONFIG_ARCH_NETX)    += gen_netx_image
++hostprogs-$(CONFIG_ARCH_OMAP)    += omap_signGP
+ 
+ always		:= $(hostprogs-y) $(hostprogs-m)
+ 
+diff --git a/scripts/omap_signGP.c b/scripts/omap_signGP.c
 new file mode 100644
-index 0000000..38cc958
+index 0000000..d20d357
 --- /dev/null
-+++ b/arch/arm/configs/panda_defconfig
-@@ -0,0 +1,60 @@
-+CONFIG_ARCH_OMAP=y
-+CONFIG_ARCH_OMAP4=y
-+CONFIG_AEABI=y
-+CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_ARM_UNWIND=y
-+CONFIG_MMU=y
-+CONFIG_TEXT_BASE=0x8f000000
-+CONFIG_MALLOC_SIZE=0x2000000
-+CONFIG_KALLSYMS=y
-+CONFIG_PROMPT="barebox> "
-+CONFIG_LONGHELP=y
-+CONFIG_GLOB=y
-+CONFIG_HUSH_FANCY_PROMPT=y
-+CONFIG_HUSH_GETOPT=y
-+CONFIG_CMDLINE_EDITING=y
-+CONFIG_AUTO_COMPLETE=y
-+# CONFIG_TIMESTAMP is not set
-+CONFIG_PARTITION=y
-+CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
-+CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/pcm049/env"
-+CONFIG_CMD_EDIT=y
-+CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_SAVEENV=y
-+CONFIG_CMD_LOADENV=y
-+CONFIG_CMD_EXPORT=y
-+CONFIG_CMD_PRINTENV=y
-+CONFIG_CMD_READLINE=y
-+CONFIG_CMD_ECHO_E=y
-+CONFIG_CMD_LOADB=y
-+CONFIG_CMD_FLASH=y
-+# CONFIG_CMD_BOOTM is not set
-+CONFIG_CMD_RESET=y
-+CONFIG_CMD_GO=y
-+CONFIG_CMD_TIMEOUT=y
-+CONFIG_CMD_PARTITION=y
-+CONFIG_CMD_GPIO=y
-+CONFIG_CMD_UNLZO=y
-+CONFIG_NET=y
-+CONFIG_NET_DHCP=y
-+CONFIG_NET_NFS=y
-+CONFIG_NET_PING=y
-+CONFIG_NET_TFTP=y
-+CONFIG_NET_TFTP_PUSH=y
-+CONFIG_DRIVER_SERIAL_NS16550=y
-+CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
-+CONFIG_NET_USB=y
-+CONFIG_NET_USB_SMSC95XX=y
-+# CONFIG_SPI is not set
-+CONFIG_MTD=y
-+CONFIG_NAND=y
-+CONFIG_NAND_OMAP_GPMC=y
-+CONFIG_UBI=y
-+CONFIG_USB=y
-+CONFIG_USB_EHCI=y
-+CONFIG_MCI=y
-+CONFIG_MCI_STARTUP=y
-+CONFIG_MCI_OMAP_HSMMC=y
-+CONFIG_FS_FAT=y
-+CONFIG_FS_FAT_WRITE=y
-+CONFIG_FS_FAT_LFN=y
-diff --git a/arch/arm/configs/panda_xload_defconfig b/arch/arm/configs/panda_xload_defconfig
-new file mode 100644
-index 0000000..24452a6
---- /dev/null
-+++ b/arch/arm/configs/panda_xload_defconfig
-@@ -0,0 +1,26 @@
-+CONFIG_ARCH_OMAP=y
-+CONFIG_ARCH_OMAP4=y
-+# CONFIG_OMAP_GPMC is not set
-+CONFIG_OMAP_BUILD_IFT=y
-+CONFIG_AEABI=y
-+# CONFIG_CMD_ARM_CPUINFO is not set
-+CONFIG_TEXT_BASE=0x40300000
-+CONFIG_MEMORY_LAYOUT_FIXED=y
-+CONFIG_STACK_BASE=0x8f000000
-+CONFIG_MALLOC_BASE=0x84000000
-+CONFIG_MALLOC_SIZE=0x2000000
-+CONFIG_PROMPT="barebox> "
-+CONFIG_SHELL_NONE=y
-+# CONFIG_ERRNO_MESSAGES is not set
-+# CONFIG_TIMESTAMP is not set
-+# CONFIG_CONSOLE_FULL is not set
-+CONFIG_PARTITION=y
-+# CONFIG_DEFAULT_ENVIRONMENT is not set
-+# CONFIG_COMMAND_SUPPORT is not set
-+CONFIG_DRIVER_SERIAL_NS16550=y
-+CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
-+# CONFIG_SPI is not set
-+CONFIG_MCI=y
-+CONFIG_MCI_STARTUP=y
-+CONFIG_MCI_OMAP_HSMMC=y
-+CONFIG_FS_FAT=y
++++ b/scripts/omap_signGP.c
+@@ -0,0 +1,313 @@
++/**
++ * signGP.c - Read the x-load.bin file and write out the x-load.bin.ift file
++ *
++ * The signed image is the original pre-pended with the size of the image
++ * and the load address.  If not entered on command line, file name is
++ * assumed to be x-load.bin in current directory and load address is
++ * 0x40200800.
++ *
++ * Copyright (C) 2010 Texas Instruments Incorporated - http://www.ti.com
++ *
++ * This program is free software: you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2  of
++ * the License as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
++ */
++
++#include <stdio.h>
++#include <errno.h>
++#include <stdlib.h>
++#include <fcntl.h>
++#include <sys/stat.h>
++#include <string.h>
++#include <malloc.h>
++#include <linux/types.h>
++
++#undef CH_WITH_CHRAM
++struct chsettings {
++	__u32 section_key;
++	__u8 valid;
++	__u8 version;
++	__u16 reserved;
++	__u32 flags;
++} __attribute__ ((__packed__));
++
++/*    __u32  cm_clksel_core;
++    __u32  reserved1;
++    __u32  cm_autoidle_dpll_mpu;
++    __u32  cm_clksel_dpll_mpu;
++    __u32  cm_div_m2_dpll_mpu;
++    __u32  cm_autoidle_dpll_core;
++    __u32  cm_clksel_dpll_core;
++    __u32  cm_div_m2_dpll_core;
++    __u32  cm_div_m3_dpll_core;
++    __u32  cm_div_m4_dpll_core;
++    __u32  cm_div_m5_dpll_core;
++    __u32  cm_div_m6_dpll_core;
++    __u32  cm_div_m7_dpll_core;
++    __u32  cm_autoidle_dpll_per;
++    __u32  cm_clksel_dpll_per;
++    __u32  cm_div_m2_dpll_per;
++    __u32  cm_div_m3_dpll_per;
++    __u32  cm_div_m4_dpll_per;
++    __u32  cm_div_m5_dpll_per;
++    __u32  cm_div_m6_dpll_per;
++    __u32  cm_div_m7_dpll_per;
++    __u32  cm_autoidle_dpll_usb;
++    __u32  cm_clksel_dpll_usb;
++    __u32  cm_div_m2_dpll_usb;
++}*/
++
++struct gp_header {
++	__u32 size;
++	__u32 load_addr;
++} __attribute__ ((__packed__));
++
++struct ch_toc {
++	__u32 section_offset;
++	__u32 section_size;
++	__u8 unused[12];
++	__u8 section_name[12];
++} __attribute__ ((__packed__));
++
++struct chram {
++	/* CHRAM */
++	__u32 section_key_chr;
++	__u8 section_disable_chr;
++	__u8 pad_chr[3];
++	/* EMIF1 */
++	__u32 config_emif1;
++	__u32 refresh_emif1;
++	__u32 tim1_emif1;
++	__u32 tim2_emif1;
++	__u32 tim3_emif1;
++	__u32 pwrControl_emif1;
++	__u32 phy_cntr1_emif1;
++	__u32 phy_cntr2_emif1;
++	__u8 modereg1_emif1;
++	__u8 modereg2_emif1;
++	__u8 modereg3_emif1;
++	__u8 pad_emif1;
++	/* EMIF2 */
++	__u32 config_emif2;
++	__u32 refresh_emif2;
++	__u32 tim1_emif2;
++	__u32 tim2_emif2;
++	__u32 tim3_emif2;
++	__u32 pwrControl_emif2;
++	__u32 phy_cntr1_emif2;
++	__u32 phy_cntr2_emif2;
++	__u8 modereg1_emif2;
++	__u8 modereg2_emif2;
++	__u8 modereg3_emif2;
++	__u8 pad_emif2;
++
++	__u32 dmm_lisa_map;
++	__u8 flags;
++	__u8 pad[3];
++} __attribute__ ((__packed__));
++
++
++struct ch_chsettings_chram {
++	struct ch_toc toc_chsettings;
++	struct ch_toc toc_chram;
++	struct ch_toc toc_terminator;
++	struct chsettings section_chsettings;
++	struct chram section_chram;
++	__u8 padding1[512 -
++		    (sizeof(struct ch_toc) * 3 +
++		     sizeof(struct chsettings) + sizeof(struct chram))];
++	/* struct gp_header gpheader; */
++} __attribute__ ((__packed__));
++
++struct ch_chsettings_nochram {
++	struct ch_toc toc_chsettings;
++	struct ch_toc toc_terminator;
++	struct chsettings section_chsettings;
++	__u8 padding1[512 -
++		    (sizeof(struct ch_toc) * 2 +
++		     sizeof(struct chsettings))];
++	/* struct gp_header gpheader; */
++} __attribute__ ((__packed__));
++
++
++#ifdef CH_WITH_CHRAM
++static const struct ch_chsettings_chram config_header = {
++	/* CHSETTINGS TOC */
++	{sizeof(struct ch_toc) * 4,
++	 sizeof(struct chsettings),
++	 "",
++	 {"CHSETTINGS"}
++	 },
++	/* CHRAM TOC */
++	{sizeof(struct ch_toc) * 4 + sizeof(struct chsettings),
++	 sizeof(struct chram),
++	 "",
++	 {"CHRAM"}
++	 },
++	/* toc terminator */
++	{0xFFFFFFFF,
++	 0xFFFFFFFF,
++	 {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
++	  0xFF},
++	 {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
++	  0xFF}
++	 },
++	/* CHSETTINGS section */
++	{
++	 0xC0C0C0C1,
++	 0,
++	 1,
++	 0,
++	 0},
++	/* CHRAM section */
++	{
++	 0xc0c0c0c2,
++	 0x01,
++	 {0x00, 0x00, 0x00},
++
++	 /* EMIF1 */
++	 0x80800eb2,
++	 0x00000010,
++	 0x110d1624,
++	 0x3058161b,
++	 0x030060b2,
++	 0x00000200,
++	 0x901ff416,
++	 0x00000000,
++	 0x23,
++	 0x01,
++	 0x02,
++	 0x00,
++
++	 /* EMIF2 */
++	 0x80800eb2,
++	 0x000002ba,
++	 0x110d1624,
++	 0x3058161b,
++	 0x03006542,
++	 0x00000200,
++	 0x901ff416,
++	 0x00000000,
++	 0x23,
++	 0x01,
++	 0x02,
++	 0x00,
++
++	 /* LISA map */
++	 0x80700100,
++	 0x05,
++	 {0x00, 0x00, 0x00},
++	 },
++	""
++};
++#else
++static struct ch_chsettings_nochram config_header
++	__attribute__((section(".config_header"))) = {
++	/* CHSETTINGS TOC */
++	{(sizeof(struct ch_toc)) * 2,
++	 sizeof(struct chsettings),
++	 "",
++	 {"CHSETTINGS"}
++	 },
++	/* toc terminator */
++	{0xFFFFFFFF,
++	 0xFFFFFFFF,
++	 {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
++	  0xFF},
++	 {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
++	  0xFF}
++	 },
++	/* CHSETTINGS section */
++	{
++	 0xC0C0C0C1,
++	 0,
++	 1,
++	 0,
++	 0},
++	""
++};
++#endif
++
++
++#define err(...) do { int save_errno = errno; \
++                      fprintf(stderr, __VA_ARGS__); \
++                      errno = save_errno; \
++                    } while (0);
++#define pdie(func, ...) do { perror(func); exit(1); } while (0);
++
++int main(int argc, char *argv[])
++{
++	int	i;
++	char	ifname[FILENAME_MAX], ofname[FILENAME_MAX], ch;
++	FILE	*ifile, *ofile;
++	unsigned long	loadaddr, len;
++	struct stat	sinfo;
++	int ch_add = 0;
++
++
++	/* Default to x-load.bin and 0x40200800. */
++	strcpy(ifname, "x-load.bin");
++	loadaddr = 0x40200800;
++
++	if ((argc == 2) || (argc == 3) || (argc == 4))
++		strcpy(ifname, argv[1]);
++
++	if ((argc == 3) || (argc == 4))
++		loadaddr = strtoul(argv[2], NULL, 16);
++
++	if (argc == 4)
++		ch_add = strtoul(argv[3], NULL, 16);
++
++	/* Form the output file name. */
++	strcpy(ofname, ifname);
++	strcat(ofname, ".ift");
++
++	/* Open the input file. */
++	ifile = fopen(ifname, "rb");
++	if (ifile == NULL) {
++		err("Cannot open %s\n", ifname);
++		pdie("fopen");
++	}
++
++	/* Get file length. */
++	stat(ifname, &sinfo);
++	len = sinfo.st_size;
++
++	/* Open the output file and write it. */
++	ofile = fopen(ofname, "wb");
++	if (ofile == NULL) {
++		fclose(ifile);
++		err("Cannot open %s\n", ofname);
++		pdie("fopen");
++	}
++
++	if (ch_add)
++		if (fwrite(&config_header, 1, 512, ofile) <= 0)
++			pdie("fwrite");
++
++	if (fwrite(&len, 1, 4, ofile) <= 0)
++		pdie("fwrite");
++	if (fwrite(&loadaddr, 1, 4, ofile) <= 0)
++		pdie("fwrite");
++	for (i = 0; i < len; i++) {
++		if (fread(&ch, 1, 1, ifile) <= 0)
++		    pdie("fread");
++		if (fwrite(&ch, 1, 1, ofile) <= 0)
++		    pdie("fwrite");
++	}
++
++	if (fclose(ifile))
++		perror("warning: fclose");
++	if (fclose(ofile))
++		perror("warning: fclose");
++
++	return 0;
++}
 -- 
 1.7.2.3
 
