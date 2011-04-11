@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wy0-f177.google.com ([74.125.82.177])
+Received: from mail-ww0-f49.google.com ([74.125.82.49])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Q9P1q-00025g-CW
-	for barebox@lists.infradead.org; Mon, 11 Apr 2011 21:52:15 +0000
-Received: by wyb28 with SMTP id 28so6435305wyb.36
-	for <barebox@lists.infradead.org>; Mon, 11 Apr 2011 14:52:12 -0700 (PDT)
+	id 1Q9P1r-00025h-B9
+	for barebox@lists.infradead.org; Mon, 11 Apr 2011 21:52:16 +0000
+Received: by wwb39 with SMTP id 39so5424138wwb.18
+	for <barebox@lists.infradead.org>; Mon, 11 Apr 2011 14:52:13 -0700 (PDT)
 From: franck.jullien@gmail.com
-Date: Mon, 11 Apr 2011 23:52:06 +0200
-Message-Id: <1302558729-3298-1-git-send-email-franck.jullien@gmail.com>
+Date: Mon, 11 Apr 2011 23:52:07 +0200
+Message-Id: <1302558729-3298-2-git-send-email-franck.jullien@gmail.com>
+In-Reply-To: <1302558729-3298-1-git-send-email-franck.jullien@gmail.com>
+References: <1302558729-3298-1-git-send-email-franck.jullien@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,27 +23,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/3] Add Altera TSE driver
+Subject: [PATCH 1/3] Fix coding style in driver/net/Makefile
 To: barebox@lists.infradead.org
 
 From: Franck JULLIEN <franck.jullien@gmail.com>
 
-In this version I removed the PHY address auto-detect functions.
-Thus, the address has to be passed via platform_data.
+Signed-off-by: Franck JULLIEN <franck.jullien@gmail.com>
+---
+ drivers/net/Makefile |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
 
-Franck JULLIEN (3):
-  Fix coding style in driver/net/Makefile
-  [v3] Nios2: Add Altera TSE driver
-  Add platform data to the mac device
-
- arch/nios2/boards/generic/generic.c |   11 +-
- drivers/net/Kconfig                 |   16 +
- drivers/net/Makefile                |    5 +-
- drivers/net/altera_tse.c            |  579 +++++++++++++++++++++++++++++++++++
- drivers/net/altera_tse.h            |  303 ++++++++++++++++++
- 5 files changed, 908 insertions(+), 6 deletions(-)
- create mode 100644 drivers/net/altera_tse.c
- create mode 100644 drivers/net/altera_tse.h
+diff --git a/drivers/net/Makefile b/drivers/net/Makefile
+index 96d3d32..ab23d22 100644
+--- a/drivers/net/Makefile
++++ b/drivers/net/Makefile
+@@ -1,7 +1,7 @@
+-obj-$(CONFIG_DRIVER_NET_CS8900)	        += cs8900.o
++obj-$(CONFIG_DRIVER_NET_CS8900)		+= cs8900.o
+ obj-$(CONFIG_DRIVER_NET_SMC911X)	+= smc911x.o
+ obj-$(CONFIG_DRIVER_NET_SMC91111)	+= smc91111.o
+-obj-$(CONFIG_DRIVER_NET_DM9000)	        += dm9000.o
++obj-$(CONFIG_DRIVER_NET_DM9000)		+= dm9000.o
+ obj-$(CONFIG_DRIVER_NET_NETX)		+= netx_eth.o
+ obj-$(CONFIG_DRIVER_NET_AT91_ETHER)	+= at91_ether.o
+ obj-$(CONFIG_DRIVER_NET_MPC5200)	+= fec_mpc5200.o
+-- 
+1.7.0.4
 
 
 _______________________________________________
