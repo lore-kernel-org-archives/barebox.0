@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1Q9IHT-0006QP-KG
-	for barebox@lists.infradead.org; Mon, 11 Apr 2011 14:40:02 +0000
+	id 1Q9IHT-0006QK-AL
+	for barebox@lists.infradead.org; Mon, 11 Apr 2011 14:39:59 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 11 Apr 2011 16:39:49 +0200
-Message-Id: <1302532791-20664-11-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 11 Apr 2011 16:39:46 +0200
+Message-Id: <1302532791-20664-8-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1302532791-20664-1-git-send-email-s.hauer@pengutronix.de>
 References: <1302532791-20664-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,106 +21,115 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/12] ARM omap beagle: Add noshell support for booting from
-	MMC
+Subject: [PATCH 07/12] add panda defconfigs
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/omap/board-beagle.c |   42 +++++++++++++++++++++++++++++++++++
- arch/arm/mach-omap/Kconfig          |    1 +
- 2 files changed, 43 insertions(+), 0 deletions(-)
+ arch/arm/configs/panda_defconfig       |   60 ++++++++++++++++++++++++++++++++
+ arch/arm/configs/panda_xload_defconfig |   26 ++++++++++++++
+ 2 files changed, 86 insertions(+), 0 deletions(-)
+ create mode 100644 arch/arm/configs/panda_defconfig
+ create mode 100644 arch/arm/configs/panda_xload_defconfig
 
-diff --git a/arch/arm/boards/omap/board-beagle.c b/arch/arm/boards/omap/board-beagle.c
-index 17a349c..ced3df7 100644
---- a/arch/arm/boards/omap/board-beagle.c
-+++ b/arch/arm/boards/omap/board-beagle.c
-@@ -56,6 +56,7 @@
- #include <console.h>
- #include <init.h>
- #include <driver.h>
-+#include <sizes.h>
- #include <asm/io.h>
- #include <ns16550.h>
- #include <asm/armlinux.h>
-@@ -72,6 +73,7 @@
- #include <i2c/i2c.h>
- #include <linux/err.h>
- #include <usb/ehci.h>
-+#include <mach/xload.h>
- #include "board.h"
- 
- /******************** Board Boot Time *******************/
-@@ -313,6 +315,13 @@ static struct i2c_board_info i2c_devices[] = {
- 	},
- };
- 
-+static struct device_d hsmmc_dev = {
-+	.id = -1,
-+	.name = "omap-hsmmc",
-+	.map_base = 0x4809C000,
-+	.size = SZ_4K,
-+};
-+
- static int beagle_devices_init(void)
- {
- 	int ret;
-@@ -334,6 +343,8 @@ static int beagle_devices_init(void)
- #endif
- 	gpmc_generic_nand_devices_init(0, 16, OMAP_ECC_HAMMING_CODE_HW_ROMCODE);
- 
-+	register_device(&hsmmc_dev);
-+
- 	armlinux_add_dram(&sdram_dev);
- 	armlinux_set_bootparams((void *)0x80000100);
- 	armlinux_set_architecture(MACH_TYPE_OMAP3_BEAGLE);
-@@ -341,3 +352,34 @@ failed:
- 	return ret;
- }
- device_initcall(beagle_devices_init);
-+
-+#ifdef CONFIG_SHELL_NONE
-+
-+int run_shell(void)
-+{
-+	int (*func)(void) = NULL;
-+
-+	switch (omap3_bootsrc()) {
-+	case OMAP_BOOTSRC_MMC1:
-+		printf("booting from MMC1\n");
-+		func = omap_xload_boot_mmc();
-+		break;
-+	case OMAP_BOOTSRC_UNKNOWN:
-+		printf("unknown boot source. Fall back to nand\n");
-+	case OMAP_BOOTSRC_NAND:
-+		printf("booting from NAND\n");
-+		func = omap_xload_boot_nand(SZ_128K, SZ_256K);
-+		break;
-+	}
-+
-+	if (!func) {
-+		printf("booting failed\n");
-+		while (1);
-+	}
-+
-+	shutdown_barebox();
-+	func();
-+
-+	while (1);
-+}
-+#endif
-diff --git a/arch/arm/mach-omap/Kconfig b/arch/arm/mach-omap/Kconfig
-index 13966cf..f256310 100644
---- a/arch/arm/mach-omap/Kconfig
-+++ b/arch/arm/mach-omap/Kconfig
-@@ -123,6 +123,7 @@ config MACH_BEAGLE
- 	bool "Texas Instrument's Beagle Board"
- 	select MACH_HAS_LOWLEVEL_INIT
- 	select OMAP_CLOCK_ALL
-+	select HAVE_NOSHELL
- 	select HAS_OMAP_NAND
- 	depends on ARCH_OMAP3
- 	  help
+diff --git a/arch/arm/configs/panda_defconfig b/arch/arm/configs/panda_defconfig
+new file mode 100644
+index 0000000..38cc958
+--- /dev/null
++++ b/arch/arm/configs/panda_defconfig
+@@ -0,0 +1,60 @@
++CONFIG_ARCH_OMAP=y
++CONFIG_ARCH_OMAP4=y
++CONFIG_AEABI=y
++CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
++CONFIG_ARM_UNWIND=y
++CONFIG_MMU=y
++CONFIG_TEXT_BASE=0x8f000000
++CONFIG_MALLOC_SIZE=0x2000000
++CONFIG_KALLSYMS=y
++CONFIG_PROMPT="barebox> "
++CONFIG_LONGHELP=y
++CONFIG_GLOB=y
++CONFIG_HUSH_FANCY_PROMPT=y
++CONFIG_HUSH_GETOPT=y
++CONFIG_CMDLINE_EDITING=y
++CONFIG_AUTO_COMPLETE=y
++# CONFIG_TIMESTAMP is not set
++CONFIG_PARTITION=y
++CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
++CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/pcm049/env"
++CONFIG_CMD_EDIT=y
++CONFIG_CMD_SLEEP=y
++CONFIG_CMD_SAVEENV=y
++CONFIG_CMD_LOADENV=y
++CONFIG_CMD_EXPORT=y
++CONFIG_CMD_PRINTENV=y
++CONFIG_CMD_READLINE=y
++CONFIG_CMD_ECHO_E=y
++CONFIG_CMD_LOADB=y
++CONFIG_CMD_FLASH=y
++# CONFIG_CMD_BOOTM is not set
++CONFIG_CMD_RESET=y
++CONFIG_CMD_GO=y
++CONFIG_CMD_TIMEOUT=y
++CONFIG_CMD_PARTITION=y
++CONFIG_CMD_GPIO=y
++CONFIG_CMD_UNLZO=y
++CONFIG_NET=y
++CONFIG_NET_DHCP=y
++CONFIG_NET_NFS=y
++CONFIG_NET_PING=y
++CONFIG_NET_TFTP=y
++CONFIG_NET_TFTP_PUSH=y
++CONFIG_DRIVER_SERIAL_NS16550=y
++CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
++CONFIG_NET_USB=y
++CONFIG_NET_USB_SMSC95XX=y
++# CONFIG_SPI is not set
++CONFIG_MTD=y
++CONFIG_NAND=y
++CONFIG_NAND_OMAP_GPMC=y
++CONFIG_UBI=y
++CONFIG_USB=y
++CONFIG_USB_EHCI=y
++CONFIG_MCI=y
++CONFIG_MCI_STARTUP=y
++CONFIG_MCI_OMAP_HSMMC=y
++CONFIG_FS_FAT=y
++CONFIG_FS_FAT_WRITE=y
++CONFIG_FS_FAT_LFN=y
+diff --git a/arch/arm/configs/panda_xload_defconfig b/arch/arm/configs/panda_xload_defconfig
+new file mode 100644
+index 0000000..24452a6
+--- /dev/null
++++ b/arch/arm/configs/panda_xload_defconfig
+@@ -0,0 +1,26 @@
++CONFIG_ARCH_OMAP=y
++CONFIG_ARCH_OMAP4=y
++# CONFIG_OMAP_GPMC is not set
++CONFIG_OMAP_BUILD_IFT=y
++CONFIG_AEABI=y
++# CONFIG_CMD_ARM_CPUINFO is not set
++CONFIG_TEXT_BASE=0x40300000
++CONFIG_MEMORY_LAYOUT_FIXED=y
++CONFIG_STACK_BASE=0x8f000000
++CONFIG_MALLOC_BASE=0x84000000
++CONFIG_MALLOC_SIZE=0x2000000
++CONFIG_PROMPT="barebox> "
++CONFIG_SHELL_NONE=y
++# CONFIG_ERRNO_MESSAGES is not set
++# CONFIG_TIMESTAMP is not set
++# CONFIG_CONSOLE_FULL is not set
++CONFIG_PARTITION=y
++# CONFIG_DEFAULT_ENVIRONMENT is not set
++# CONFIG_COMMAND_SUPPORT is not set
++CONFIG_DRIVER_SERIAL_NS16550=y
++CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
++# CONFIG_SPI is not set
++CONFIG_MCI=y
++CONFIG_MCI_STARTUP=y
++CONFIG_MCI_OMAP_HSMMC=y
++CONFIG_FS_FAT=y
 -- 
 1.7.2.3
 
