@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-ew0-f49.google.com ([209.85.215.49])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1QBsZ9-0006B0-6b
-	for barebox@lists.infradead.org; Mon, 18 Apr 2011 17:48:52 +0000
-Date: Mon, 18 Apr 2011 19:48:45 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110418174845.GO14770@pengutronix.de>
-References: <F384D1288827C547A75DEBA2647D64BA172BA39F6B@MILEXCH1.ds.jdsu.net>
-	<20110418072941.GH14770@pengutronix.de>
-	<4DAC52C2.9020201@selea.com>
+	id 1QBt1B-0006PV-Hx
+	for barebox@lists.infradead.org; Mon, 18 Apr 2011 18:17:50 +0000
+Received: by ewy3 with SMTP id 3so1685152ewy.36
+	for <barebox@lists.infradead.org>; Mon, 18 Apr 2011 11:17:47 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <4DAC52C2.9020201@selea.com>
+Date: Mon, 18 Apr 2011 12:17:47 -0600
+Message-ID: <BANLkTi=FxqCsR1vY_p_i-XVB8g-niciODA@mail.gmail.com>
+From: Marko Milutinovic <markomilutin@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,45 +17,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============1519746776=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: again on enviroment and partition problems
-To: Omar Pighi <pighi@selea.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: New MACH Addition
+To: barebox@lists.infradead.org
 
-On Mon, Apr 18, 2011 at 05:03:30PM +0200, Omar Pighi wrote:
-> reading here:
-> http://www.spinics.net/lists/u-boot-v2/msg02944.html
-> 
-> it seems that now it works and save enviroments with correct crc.
-> but when i triy to ypdate_kernel it says_
-> partition dev/nand0.kernel.bb not found... no one .bb partition has been
-> created.
-> it should be done by hush_hack but it doesn't.
-> 
-> reading here:
-> http://www.spinics.net/lists/u-boot-v2/msg02957.html
-> 
-> but "CONFIG_GLOB=y"
-> 
-> I cannot find it in any kconfig file... so it is not possible to set
-> using menuconfig... should i add by hand. this means something missin in
-> the kconfigs...
+--===============1519746776==
+Content-Type: multipart/alternative; boundary=0016e65aef329bc6d604a13568f5
 
-CONFIG_GLOB depends on CONFIG_SHELL_HUSH. Could it be that hush is not 
-enabled in you config?
+--0016e65aef329bc6d604a13568f5
+Content-Type: text/plain; charset=UTF-8
 
-Sascha
+Hello,
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+I recently ported barebox to a platform using an old AT91 chip (at91m55800a,
+ARM7TDMI core). There is already a MACH_AT91 folder but this chip is
+sufficiently different that I just made a new folder MACH_AT91_legacy. This
+was just a test project for me to get familiar with using barebox.
+
+I'm just wondering if there is any value in me merging in the code for this?
+I realize it's a pretty old chipset, but I'm finding barebox very useful and
+would like to contribute to it.
+
+Thanks,
+Marko
+
+--0016e65aef329bc6d604a13568f5
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+Hello,<div><br>I recently ported barebox to a platform using an old AT91 ch=
+ip (at91m55800a, ARM7TDMI core). There is already a MACH_AT91 folder but th=
+is chip is sufficiently different that I just made a new folder MACH_AT91_l=
+egacy. This was just a test project for me to get familiar with using bareb=
+ox.=C2=A0</div>
+<div><br></div><div>I&#39;m just wondering if there is any value in me merg=
+ing in the code for this? I realize it&#39;s a pretty old chipset, but I&#3=
+9;m finding barebox very useful and would like to contribute to it.=C2=A0</=
+div>
+<div><br></div><div>Thanks,</div><div>Marko</div>
+
+--0016e65aef329bc6d604a13568f5--
+
+
+--===============1519746776==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============1519746776==--
