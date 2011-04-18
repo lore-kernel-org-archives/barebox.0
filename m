@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1QBiu1-0000KQ-1d
-	for barebox@lists.infradead.org; Mon, 18 Apr 2011 07:29:50 +0000
-Date: Mon, 18 Apr 2011 09:29:41 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110418072941.GH14770@pengutronix.de>
-References: <F384D1288827C547A75DEBA2647D64BA172BA39F6B@MILEXCH1.ds.jdsu.net>
+Received: from exprod7og114.obsmtp.com ([64.18.2.215])
+	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1QBl9M-0001f5-LF
+	for barebox@lists.infradead.org; Mon, 18 Apr 2011 09:53:49 +0000
+From: Greg Topmiller <Greg.Topmiller@jdsu.com>
+Date: Mon, 18 Apr 2011 02:44:16 -0700
+Message-ID: <F384D1288827C547A75DEBA2647D64BA172AE7EABC@MILEXCH1.ds.jdsu.net>
+References: <F384D1288827C547A75DEBA2647D64BA172BA39F6B@MILEXCH1.ds.jdsu.net>,
+	<20110418072941.GH14770@pengutronix.de>
+In-Reply-To: <20110418072941.GH14770@pengutronix.de>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <F384D1288827C547A75DEBA2647D64BA172BA39F6B@MILEXCH1.ds.jdsu.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,10 +23,25 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Imx51 processor hangs when we do an md 0xf0000000 (memory
+Subject: RE: Imx51 processor hangs when we do an md 0xf0000000 (memory
 	display) in u-boot
-To: Greg Topmiller <Greg.Topmiller@jdsu.com>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+
+Thank you for your response.
+
+Is there any way we can put code in u-boot to handle the abort?
+
+Thanks,
+
+Greg
+
+________________________________________
+From: Sascha Hauer [s.hauer@pengutronix.de]
+Sent: Monday, April 18, 2011 3:29 AM
+To: Greg Topmiller
+Cc: barebox@lists.infradead.org
+Subject: Re: Imx51 processor hangs when we do an md 0xf0000000 (memory display) in u-boot
 
 On Sat, Apr 16, 2011 at 11:14:13AM -0700, Greg Topmiller wrote:
 > We're are using the Freescale release L2.6.31_MX51_SDK_0912_Image and
@@ -45,12 +61,11 @@ Accessing reserved memory can result in a abort.
 
 Sascha
 
--- 
+--
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
