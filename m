@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 30.mail-out.ovh.net ([213.186.62.213])
-	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1QCCdv-0006Sj-Nr
-	for barebox@lists.infradead.org; Tue, 19 Apr 2011 15:15:08 +0000
-Date: Tue, 19 Apr 2011 17:06:11 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20110419150611.GA19199@game.jcrosoft.org>
-References: <BANLkTi=FxqCsR1vY_p_i-XVB8g-niciODA@mail.gmail.com>
+Received: from coyote.quickmin.net ([217.14.112.24])
+	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1QCV5g-0006vz-0A
+	for barebox@lists.infradead.org; Wed, 20 Apr 2011 10:57:00 +0000
+Received: from [10.96.97.181] (tmayer.mit.telemotive.de [10.96.97.181])
+	by alderan.mit.telemotive.de (Postfix) with ESMTP id 0AEC9F77DF
+	for <barebox@lists.infradead.org>;
+	Wed, 20 Apr 2011 12:56:52 +0200 (CEST)
+From: Thomas Mayer <thomas.mayer@telemotive.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <BANLkTi=FxqCsR1vY_p_i-XVB8g-niciODA@mail.gmail.com>
+Message-ID: <4DAEBBF4.30805@telemotive.de>
+Date: Wed, 20 Apr 2011 12:56:52 +0200
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,30 +19,27 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: New MACH Addition
-To: Marko Milutinovic <markomilutin@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: i.MX35 3-stack use only 128MB RAM
+To: barebox@lists.infradead.org
 
-On 12:17 Mon 18 Apr     , Marko Milutinovic wrote:
->    Hello,
->    I recently ported barebox to a platform using an old AT91 chip
->    (at91m55800a, ARM7TDMI core). There is already a MACH_AT91 folder but this
->    chip is sufficiently different that I just made a new folder
->    MACH_AT91_legacy. This was just a test project for me to get familiar with
->    using barebox.A 
-wow really old
+Hi,
 
-I do not even known if I've a board somewhere
+I read in the freescale documentation "U-Boot for i.MX35 based Designs" 
+that the i.MX35 3-stack board has 256MB SDRAM, but we can use only 128MB 
+because the second chip select isn't configured. Depending on the 
+circuit diagrams I think "CSD1" isn't configured.
+I looked already in the datasheet of the cpu, but I couldn't found a 
+solution for this problem.
 
-new MACH non please you need to integrate in the at91
-as we also support at91x40 also
+Have anybody ever tried to enable this second chip select?
 
-Best Regards,
-J.
+
+Regards,
+Thomas
 
 _______________________________________________
 barebox mailing list
