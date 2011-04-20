@@ -1,16 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mailout-de.gmx.net ([213.165.64.22])
-	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1QCWTW-0007la-AR
-	for barebox@lists.infradead.org; Wed, 20 Apr 2011 12:25:44 +0000
-Message-ID: <4DAED0C1.1060602@gmx.de>
-Date: Wed, 20 Apr 2011 14:25:37 +0200
-From: Thomas Mayer <tm.telemotive@gmx.de>
-MIME-Version: 1.0
-References: <4DAEBBF4.30805@telemotive.de>	<39A4B204C321D34DA3490E3B119D5A6C6967ED8015@SBS2008.wellsense.local>,
+Received: from out7.bezeqint.net ([192.115.188.214])
+	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1QCWXO-0007oA-9a
+	for barebox@lists.infradead.org; Wed, 20 Apr 2011 12:29:44 +0000
+From: Boaz Ben-David <boaz.bd@wellsense-tech.com>
+Date: Wed, 20 Apr 2011 15:28:43 +0300
+Message-ID: <39A4B204C321D34DA3490E3B119D5A6C6967ED8017@SBS2008.wellsense.local>
+References: <4DAEBBF4.30805@telemotive.de>
+	<39A4B204C321D34DA3490E3B119D5A6C6967ED8015@SBS2008.wellsense.local>,
 	<4DAECC5D.8060808@gmx.de>
-	<39A4B204C321D34DA3490E3B119D5A6C6967ED8016@SBS2008.wellsense.local>
-In-Reply-To: <39A4B204C321D34DA3490E3B119D5A6C6967ED8016@SBS2008.wellsense.local>
+	<39A4B204C321D34DA3490E3B119D5A6C6967ED8016@SBS2008.wellsense.local>,
+	<4DAED0C1.1060602@gmx.de>
+In-Reply-To: <4DAED0C1.1060602@gmx.de>
+Content-Language: en-US
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,12 +22,29 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: i.MX35 3-stack use only 128MB RAM
+Subject: RE: i.MX35 3-stack use only 128MB RAM
+To: Thomas Mayer <tm.telemotive@gmx.de>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+
+Shit happens (:
+
+
+Boaz Ben-David
+R&D Engineer
+
+Tel: +972.2.6470.700Mob: +972.54.678.1511Email: boaz.bd@wellsense-tech.com
+www.themapsystem.com
+
+
+ Please consider the impact on the environment before printing this e-mail and/or the attachment(s).
+________________________________________
+From: barebox-bounces@lists.infradead.org [barebox-bounces@lists.infradead.org] On Behalf Of Thomas Mayer [tm.telemotive@gmx.de]
+Sent: Wednesday, April 20, 2011 3:25 PM
 To: barebox@lists.infradead.org
+Subject: Re: i.MX35 3-stack use only 128MB RAM
 
 Hi,
 
@@ -322,6 +342,11 @@ Am 20.04.2011 14:10, schrieb Boaz Ben-David:
 > http://lists.infradead.org/mailman/listinfo/barebox
 >
 
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
