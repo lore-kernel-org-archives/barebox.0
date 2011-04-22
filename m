@@ -1,19 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from out7.bezeqint.net ([192.115.188.214])
-	by canuck.infradead.org with esmtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1QCWXO-0007oA-9a
-	for barebox@lists.infradead.org; Wed, 20 Apr 2011 12:29:44 +0000
-From: Boaz Ben-David <boaz.bd@wellsense-tech.com>
-Date: Wed, 20 Apr 2011 15:28:43 +0300
-Message-ID: <39A4B204C321D34DA3490E3B119D5A6C6967ED8017@SBS2008.wellsense.local>
-References: <4DAEBBF4.30805@telemotive.de>
-	<39A4B204C321D34DA3490E3B119D5A6C6967ED8015@SBS2008.wellsense.local>,
-	<4DAECC5D.8060808@gmx.de>
-	<39A4B204C321D34DA3490E3B119D5A6C6967ED8016@SBS2008.wellsense.local>,
-	<4DAED0C1.1060602@gmx.de>
-In-Reply-To: <4DAED0C1.1060602@gmx.de>
-Content-Language: en-US
+Received: from mail-iy0-f177.google.com ([209.85.210.177])
+	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+	id 1QDIWX-0001zw-TD
+	for barebox@lists.infradead.org; Fri, 22 Apr 2011 15:44:03 +0000
+Received: by iyb39 with SMTP id 39so685936iyb.36
+	for <barebox@lists.infradead.org>; Fri, 22 Apr 2011 08:43:59 -0700 (PDT)
 MIME-Version: 1.0
+From: MJ <mjainp@gmail.com>
+Date: Fri, 22 Apr 2011 21:13:39 +0530
+Message-ID: <BANLkTik_geZ4hpcXTdN81DEgcOeqRZT8UA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,327 +21,133 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: i.MX35 3-stack use only 128MB RAM
-To: Thomas Mayer <tm.telemotive@gmx.de>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>
-
-Shit happens (:
-
-
-Boaz Ben-David
-R&D Engineer
-
-Tel: +972.2.6470.700Mob: +972.54.678.1511Email: boaz.bd@wellsense-tech.com
-www.themapsystem.com
-
-
- Please consider the impact on the environment before printing this e-mail and/or the attachment(s).
-________________________________________
-From: barebox-bounces@lists.infradead.org [barebox-bounces@lists.infradead.org] On Behalf Of Thomas Mayer [tm.telemotive@gmx.de]
-Sent: Wednesday, April 20, 2011 3:25 PM
+Subject: Sandbox Segfaults
 To: barebox@lists.infradead.org
-Subject: Re: i.MX35 3-stack use only 128MB RAM
 
 Hi,
 
-the fact that Freescale's support really supports is new for me... :D :D
-I heard/read so many times that I shouldn't expect support from freescale.
+I was trying sandbox for x86 host machine from latest git repo of
+barebox (master branch) and it segfaults when ran with following
+command line arguments,
 
-Regards,
-Thomas
+./barebox -e env.bin -i cramfs.bin
 
+I have read initial documentation to create env.bin and small
+filesystem. Attached is patch that fixes segfault problem but is not
+helpful in creating environment and mounting filesystem.
 
-Am 20.04.2011 14:10, schrieb Boaz Ben-David:
-> Hi,
->
-> I'm glad it's helpful to you.
-> I don't want to take the credit here, I forgot to write this is
-> the procedure we got from Freescale's support when we contacted them.
-> Sorry for not mentioning this at first, I thought I did... (:
->
->
-> Boaz Ben-David
-> R&D Engineer
->
-> Tel: +972.2.6470.700Mob: +972.54.678.1511Email: boaz.bd@wellsense-tech.com
-> www.themapsystem.com
->
->
->   Please consider the impact on the environment before printing this e-mail and/or the attachment(s).
-> ________________________________________
-> From: barebox-bounces@lists.infradead.org [barebox-bounces@lists.infradead.org] On Behalf Of Thomas Mayer [tm.telemotive@gmx.de]
-> Sent: Wednesday, April 20, 2011 3:06 PM
-> To: barebox@lists.infradead.org
-> Subject: Re: i.MX35 3-stack use only 128MB RAM
->
-> Hi,
->
-> wow this was a really quick and good answer, thanks a lot!
-> I will test it and try to adapt it to barebox too.
->
->
-> Regards,
-> Thomas
->
->
-> Am 20.04.2011 13:20, schrieb Boaz Ben-David:
->> Hi,
->>
->> This is the procedure for modifying Redboot to support 256MB of RAM in Redboot, you can adapt it to barebox:
->>
->> How to extend RAM for Linux on MX35PDK
->> =======================================
->>
->> Tested on: redboot_200910, MX35PDK green board, MX35 TO2, DDR2, SDK1.5
->>
->> The current redboot images enable just half of the physically available DDR2 memory (128MB on MX35PDK).
->> This is due to the fact that redboot is only enabling SDCS0 (BANK0) and not SDCS1.
->> It seems that there was a little bug in redboot which has prevented the enablement of SDCS1 and so
->> nobody has tried this again. Physically the bank1 is working properly on MX35PDK CPU module.
->>
->> Step0
->> =====
->>
->> Check memory size of existing redboot on your MX35PDK
->>
->> under redboot check memory on SDCS1 which is mapped physically to 0x90000000.
->> You may also use 0x08000000 which is the first virtual address on SDCS1.
->> Note in redboot, the virtual address 0x80000000 is mapped to physical address 0x80000000 non cashable.
->> Virtual Address 0x0 is mapped to physical address 0x80000000 cashable.
->> The virtual address 0x90000000 is not in the MMU table. That is why we receive a "illegal memory address" error message.
->>    This is not a memory exception because no memory transaction has  taken place.
->> See also below...
->>
->>
->> RedBoot>   dump -b 0x90000000
->> 90000000: ** command abort - illegal memory access?
->> RedBoot>   dump -b 0x08000000
->> 08000000: ** command abort - illegal memory access?
->> RedBoot>   dump -b 0x07ffff00
->> 07FFFF00: FF FF FF FF FF FF FF FF  FF FF FF FF FF FF FF FF  |................|
->> 07FFFF10: FF FF FF FF FF FF FF FF  FF FF FF FF FF FF FF FF  |................|
->>
->> After booting linux use command "free":
->>
->> root@freescale ~$ free
->>                 total         used         free       shared      buffers
->>     Mem:       126140         9920       116220            0            0
->>    Swap:            0            0            0
->> Total:       126140         9920       116220
->>
->> You have about 128MB free memory. But not 256MB.
->>
->>
->> Step 1
->> ======
->>
->> We will edit and recompile redboot. For this you may untar the redboot_200910.tgz archive in the linux BSP source
->> on your linux host.
->> Unpack redboot and configure the build process as described in
->> redboot_200910/doc/redboot_mx35.pdf Chapter 6
->>
->> You should be able to run successfully:
->>
->>               ecosconfig new mx35_3stack redboot
->>               ecosconfig import $ECOS_REPOSITORY/hal/arm/mx35/3stack/current/misc/redboot_ROMRAM.ecm
->>               ecosconfig tree
->>               make
->>
->> Step 2
->> ======
->>
->> We will know edit some redboot source files as discribed below. Look at the comment
->> "// by michael for 256MB".
->>
->>
->> ~/redboot_200910/src/ecos/packages/hal/arm/mx35/3stack/current/include/pkgconf/mlt_arm_board_romram.h
->>
->> #ifndef __ASSEMBLER__
->> #include<cyg/infra/cyg_type.h>
->> #include<stddef.h>
->>
->> #endif
->> #define CYGMEM_REGION_ram (0x00000000)
->> #define CYGMEM_REGION_ram_SIZE (0x0FF00000) // by michael for 256MB
->> #define CYGMEM_REGION_ram_ATTR (CYGMEM_REGION_ATTR_R | CYGMEM_REGION_ATTR_W)
->> #define CYGMEM_REGION_rom (0x87F00000)
->> #define CYGMEM_REGION_rom_SIZE (0x100000)
->> #define CYGMEM_REGION_rom_ATTR (CYGMEM_REGION_ATTR_R)
->> #ifndef __ASSEMBLER__
->> extern char CYG_LABEL_NAME (__heap1) [];
->> #endif
->> #define CYGMEM_SECTION_heap1 (CYG_LABEL_NAME (__heap1))
->> #define CYGMEM_SECTION_heap1_SIZE (CYGMEM_REGION_ram_SIZE - (size_t) CYG_LABEL_NAME (__heap1))
->>
->>
->> ~/redboot_200910/src/ecos/packages/hal/arm/mx35/3stack/current/include/hal_plaform_setup.h line 712:
->>
->>          ldr r0, ESDCTL_BASE_W
->> /* deleted by michael
->>           mov r3, #0x2000
->>           str r3, [r0, #0x0]
->>           ldr r2, ROM_VER_ADDR_W
->>           ldr r4, [r2]
->>           cmp r4, #0x1
->>           streq r3, [r0, #0x8]
->> */
->>    mov r12, #0x00
->>    mov r2, #0x0 // DDR2
->>    mov r1, #RAM_BANK0_BASE
->>    bl setup_sdram_bank
->>    cmp r3, #0x0
->> 3: bne 3b  // loop forever if bank0 is not OK
->>
->> /* do not repeat with mDDR settings. We know we have DDR2 (r2=0)
->>    cmp r3, #0x0
->>    orreq r12, r12, #1
->>    eorne r2, r2, #0x1
->>    blne setup_sdram_bank
->> */
->> #if 1 // do the same for bank1
->>    /* CSD1 */
->>    mov r12, #0x00
->>    mov r2, #0x0 // DDR2
->>    mov r1, #RAM_BANK1_BASE
->>    bl setup_sdram_bank
->>    cmp r3, #0x0
->> 4: bne 4b  //loop forever if bank1 is not OK
->>
->>
->> /* do not try with mDDR again for bank1. we know we have DDR2
->>    beq 1b
->>    eorne r2, r2, #0x1
->>    blne setup_sdram_bank
->>    orr r12, r12, #1
->> 1:
->> */
->> #endif
->>
->> ~/redboot_200910/src/ecos/packages/hal/arm/mx35/3stack/current/include/fsl_board.h
->>
->> /* MX35 3-Stack SDRAM is from 0x90000000, 64M */
->> #define SDRAM_BASE_ADDR             CSD0_BASE_ADDR
->> //#define SDRAM_SIZE                  0x08000000
->> #define SDRAM_SIZE                  0x10000000   // by michael for 256MB
->> #define RAM_BANK0_BASE              CSD0_BASE_ADDR
->> #define RAM_BANK1_BASE              CSD1_BASE_ADDR
->>
->>
->> ~/redboot_200910/src/ecos/packages/hal/arm/mx35/3stack/current/src/board_misc.c
->>
->>      /*              Actual   Virtual  Size   Attributes                                                    Function  */
->>       /*              Base     Base     MB     cached?           buffered?        access permissions                 */
->>       /*              xxx00000 xxx00000                                                                                */
->>       X_ARM_MMU_SECTION(0x000, 0xF00,   0x1,   ARM_UNCACHEABLE, ARM_UNBUFFERABLE, ARM_ACCESS_PERM_RW_RW); /* ROM */
->>       X_ARM_MMU_SECTION(0x100, 0x100,   0x1,   ARM_UNCACHEABLE, ARM_UNBUFFERABLE, ARM_ACCESS_PERM_RW_RW); /* iRAM */
->>       X_ARM_MMU_SECTION(0x300, 0x300,   0x1,   ARM_UNCACHEABLE, ARM_UNBUFFERABLE, ARM_ACCESS_PERM_RW_RW); /* L2CC */
->>       X_ARM_MMU_SECTION(0x400, 0x400,   0x400, ARM_UNCACHEABLE, ARM_UNBUFFERABLE, ARM_ACCESS_PERM_RW_RW); /* Internal Regsisters upto SDRAM*/
->>       X_ARM_MMU_SECTION(0x800, 0x000,   0x80,  ARM_CACHEABLE,   ARM_BUFFERABLE,   ARM_ACCESS_PERM_RW_RW); /* SDRAM 0:128M*/
->>       X_ARM_MMU_SECTION(0x800, 0x800,   0x80,  ARM_CACHEABLE,   ARM_BUFFERABLE,   ARM_ACCESS_PERM_RW_RW); /* SDRAM 0:128M*/
->>       X_ARM_MMU_SECTION(0x800, 0x880,   0x80,  ARM_UNCACHEABLE, ARM_UNBUFFERABLE, ARM_ACCESS_PERM_RW_RW); /* SDRAM 0:128M*/
->>       // start by michael for 256MB. Enter new MMU entries for SDCS1
->>       X_ARM_MMU_SECTION(0x900, 0x080,   0x80,  ARM_CACHEABLE,   ARM_BUFFERABLE,   ARM_ACCESS_PERM_RW_RW); /* SDRAM 1:128M*/
->>       X_ARM_MMU_SECTION(0x900, 0x900,   0x80,  ARM_CACHEABLE,   ARM_BUFFERABLE,   ARM_ACCESS_PERM_RW_RW); /* SDRAM 1:128M*/
->>       X_ARM_MMU_SECTION(0x900, 0x980,   0x80,  ARM_CACHEABLE,   ARM_BUFFERABLE,   ARM_ACCESS_PERM_RW_RW); /* SDRAM 1:128M*/
->>       // end by michael for 256MB
->>       X_ARM_MMU_SECTION(0xA00, 0xA00,   0x40,  ARM_CACHEABLE,   ARM_BUFFERABLE,   ARM_ACCESS_PERM_RW_RW); /* Flash */
->>       X_ARM_MMU_SECTION(0xB00, 0xB00,   0x20,  ARM_CACHEABLE,   ARM_BUFFERABLE,   ARM_ACCESS_PERM_RW_RW); /* PSRAM */
->>       X_ARM_MMU_SECTION(0xB20, 0xB20,   0x1E0, ARM_UNCACHEABLE, ARM_UNBUFFERABLE,ARM_ACCESS_PERM_RW_RW); /* ESDCTL, WEIM, M3IF, EMI, NFC, External I/O */
->>
->>
->> Step 4
->> ======
->>
->> rebuild redboot. Now it comes:
->>
->> The make scripte does not recognize any changes in hal_platform_setup.h file because this file is been used to build
->> the lib "vectors". This is not in the dependencies of the make script. It is either not removed by "make clean".
->> You have to remove the vectors.o by hand.
->>
->> So to properly rebuild redboot you need to:
->>
->> cd ~/redboot_200910/src/ecos
->> rm install/lib/vectors.*
->> make
->> cp install/bin/redboot.bin ~/shared_folder/redboot_mx35_TO2_256MB.bin # if you have a VMWare and use a shared_folder in ~/shared_folder
->>
->>
->> Step 5
->> ======
->>
->> Flash new redboot to MX35PDK using ATK1.6. You do not need to erase the NAND flash. So, you keep the
->> same fconfig settings. Do not forget the BBT tick!
->>
->>
->> Step 6
->> ======
->>
->> Check the new memories:
->>
->> RedBoot>   dump -b 0x90000000
->> 90000000: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
->> 90000010: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
->>
->>
->> root@freescale ~$ free
->>                 total         used         free       shared      buffers
->>     Mem:       256088        10040       246048            0            0
->>    Swap:            0            0            0
->> Total:       256088        10040       246048
->>
->>
->>
->>
->> Boaz Ben-David
->> R&D Engineer
->>
->> Tel: +972.2.6470.700Mob: +972.54.678.1511Email: boaz.bd@wellsense-tech.com
->> www.themapsystem.com
->>
->>
->>    Please consider the impact on the environment before printing this e-mail and/or the attachment(s).
->> ________________________________________
->> From: barebox-bounces@lists.infradead.org [barebox-bounces@lists.infradead.org] On Behalf Of Thomas Mayer [thomas.mayer@telemotive.de]
->> Sent: Wednesday, April 20, 2011 1:56 PM
->> To: barebox@lists.infradead.org
->> Subject: i.MX35 3-stack use only 128MB RAM
->>
->> Hi,
->>
->> I read in the freescale documentation "U-Boot for i.MX35 based Designs"
->> that the i.MX35 3-stack board has 256MB SDRAM, but we can use only 128MB
->> because the second chip select isn't configured. Depending on the
->> circuit diagrams I think "CSD1" isn't configured.
->> I looked already in the datasheet of the cpu, but I couldn't found a
->> solution for this problem.
->>
->> Have anybody ever tried to enable this second chip select?
->>
->>
->> Regards,
->> Thomas
->>
->> _______________________________________________
->> barebox mailing list
->> barebox@lists.infradead.org
->> http://lists.infradead.org/mailman/listinfo/barebox
->>
->> _______________________________________________
->> barebox mailing list
->> barebox@lists.infradead.org
->> http://lists.infradead.org/mailman/listinfo/barebox
->>
->
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
->
+diff --git a/arch/sandbox/board/hostfile.c b/arch/sandbox/board/hostfile.c
+index 38a52a8..52212f7 100644
+--- a/arch/sandbox/board/hostfile.c
++++ b/arch/sandbox/board/hostfile.c
+@@ -107,7 +107,8 @@ int barebox_register_filedev(struct hf_platform_data *hf)
+
+        dev->platform_data = hf;
+
+-       strcpy(dev->name, "hostfile");
++       /* Registering 2 devices with same name creates problem? */
++       strcpy(dev->name, hf->filename);
+        dev->size = hf->size;
+        dev->map_base = hf->map_base;
 
 
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+Strace log for problem
+=================
+
+execve("./barebox", ["./barebox", "-e", "env.bin", "-i",
+"cramfs.bin"], [/* 22 vars */]) = 0
+brk(0)                                  = 0x216d1000
+access("/etc/ld.so.nohwcap", F_OK)      = -1 ENOENT (No such file or directory)
+mmap2(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1,
+0) = 0xa3f000
+access("/etc/ld.so.preload", R_OK)      = -1 ENOENT (No such file or directory)
+open("/etc/ld.so.cache", O_RDONLY)      = 3
+fstat64(3, {st_mode=S_IFREG|0644, st_size=61576, ...}) = 0
+mmap2(NULL, 61576, PROT_READ, MAP_PRIVATE, 3, 0) = 0x141000
+close(3)                                = 0
+access("/etc/ld.so.nohwcap", F_OK)      = -1 ENOENT (No such file or directory)
+open("/lib/tls/i686/cmov/librt.so.1", O_RDONLY) = 3
+read(3, "\177ELF\1\1\1\0\0\0\0\0\0\0\0\0\3\0\3\0\1\0\0\0\300\30\0\0004\0\0\0"...,
+512) = 512
+fstat64(3, {st_mode=S_IFREG|0644, st_size=30684, ...}) = 0
+mmap2(NULL, 33364, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3,
+0) = 0xe49000
+mmap2(0xe50000, 8192, PROT_READ|PROT_WRITE,
+MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x6) = 0xe50000
+close(3)                                = 0
+access("/etc/ld.so.nohwcap", F_OK)      = -1 ENOENT (No such file or directory)
+open("/lib/tls/i686/cmov/libpthread.so.0", O_RDONLY) = 3
+read(3, "\177ELF\1\1\1\0\0\0\0\0\0\0\0\0\3\0\3\0\1\0\0\0
+J\0\0004\0\0\0"..., 512) = 512
+fstat64(3, {st_mode=S_IFREG|0755, st_size=117086, ...}) = 0
+mmap2(NULL, 98792, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3,
+0) = 0x4cb000
+mmap2(0x4e0000, 8192, PROT_READ|PROT_WRITE,
+MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x14) = 0x4e0000
+mmap2(0x4e2000, 4584, PROT_READ|PROT_WRITE,
+MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x4e2000
+close(3)                                = 0
+access("/etc/ld.so.nohwcap", F_OK)      = -1 ENOENT (No such file or directory)
+open("/lib/tls/i686/cmov/libc.so.6", O_RDONLY) = 3
+read(3, "\177ELF\1\1\1\0\0\0\0\0\0\0\0\0\3\0\3\0\1\0\0\0000m\1\0004\0\0\0"...,
+512) = 512
+fstat64(3, {st_mode=S_IFREG|0755, st_size=1405508, ...}) = 0
+mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1,
+0) = 0xbad000
+mmap2(NULL, 1415592, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE,
+3, 0) = 0x28e000
+mprotect(0x3e1000, 4096, PROT_NONE)     = 0
+mmap2(0x3e2000, 12288, PROT_READ|PROT_WRITE,
+MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x153) = 0x3e2000
+mmap2(0x3e5000, 10664, PROT_READ|PROT_WRITE,
+MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x3e5000
+close(3)                                = 0
+mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1,
+0) = 0xbda000
+set_thread_area({entry_number:-1 -> 6, base_addr:0xbda6c0,
+limit:1048575, seg_32bit:1, contents:0, read_exec_only:0,
+limit_in_pages:1, seg_not_present:0, useable:1}) = 0
+mprotect(0x3e2000, 8192, PROT_READ)     = 0
+mprotect(0x4e0000, 4096, PROT_READ)     = 0
+mprotect(0xe50000, 4096, PROT_READ)     = 0
+mprotect(0x28c000, 4096, PROT_READ)     = 0
+munmap(0x141000, 61576)                 = 0
+set_tid_address(0xbda728)               = 9951
+set_robust_list(0xbda730, 0xc)          = 0
+futex(0xbf9bb9c0, FUTEX_WAKE_PRIVATE, 1) = 0
+futex(0xbf9bb9c0, FUTEX_WAIT_BITSET_PRIVATE|FUTEX_CLOCK_REALTIME, 1,
+NULL, bf9bb9d0) = -1 EAGAIN (Resource temporarily unavailable)
+rt_sigaction(SIGRTMIN, {0x4cf410, [], SA_SIGINFO}, NULL, 8) = 0
+rt_sigaction(SIGRT_1, {0x4cf8f0, [], SA_RESTART|SA_SIGINFO}, NULL, 8) = 0
+rt_sigprocmask(SIG_UNBLOCK, [RTMIN RT_1], NULL, 8) = 0
+getrlimit(RLIMIT_STACK, {rlim_cur=8192*1024, rlim_max=RLIM_INFINITY}) = 0
+uname({sys="Linux", node="mjain-laptop", ...}) = 0
+mmap2(NULL, 8392704, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS,
+-1, 0) = 0xe52000
+brk(0)                                  = 0x216d1000
+brk(0x216f2000)                         = 0x216f2000
+fstat64(1, {st_mode=S_IFCHR|0600, st_rdev=makedev(136, 0), ...}) = 0
+mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1,
+0) = 0xa0c000
+write(1, "add file env.bin()\n", 19add file env.bin()
+)    = 19
+open("env.bin", O_RDWR)                 = 3
+fstat64(3, {st_mode=S_IFREG|0644, st_size=65536, ...}) = 0
+mmap2(NULL, 65536, PROT_READ|PROT_WRITE, MAP_SHARED, 3, 0) = 0x110000
+write(1, "add file cramfs.bin()\n", 22add file cramfs.bin()
+) = 22
+open("cramfs.bin", O_RDWR)              = 4
+fstat64(4, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
+mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_SHARED, 4, 0) = 0x120000
+--- SIGSEGV (Segmentation fault) @ 0 (0) ---
++++ killed by SIGSEGV +++
+Segmentation fault
+
+
+I would appreciate any kind help offered.
+
+Thanks,
+MJ
 
 _______________________________________________
 barebox mailing list
