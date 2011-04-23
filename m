@@ -1,18 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from 30.mail-out.ovh.net ([213.186.62.213])
 	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
-	id 1QDSXb-0005N9-Vx
-	for barebox@lists.infradead.org; Sat, 23 Apr 2011 02:25:52 +0000
-Date: Sat, 23 Apr 2011 04:16:35 +0200
+	id 1QDVAu-0005dF-67
+	for barebox@lists.infradead.org; Sat, 23 Apr 2011 05:14:33 +0000
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20110423021635.GD23775@game.jcrosoft.org>
-References: <20110408133713.GC13978@game.jcrosoft.org>
-	<20110411101601.GG7285@pengutronix.de>
-	<20110411101752.GC18925@game.jcrosoft.org>
-	<20110411105550.GH7285@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20110411105550.GH7285@pengutronix.de>
+Date: Sat, 23 Apr 2011 07:05:18 +0200
+Message-Id: <1303535118-4737-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,102 +14,71 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/4] defaultenv boot updates
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] arm: add support to generate uImage
+To: barebox@lists.infradead.org
 
-HI,
+so barebox could be loaded as kernel by itself
 
-	until this new way will be available can we have those patch
-	integrated?
+add LOAD_TEXT_BASE to specify the load address
 
-Best Regards,
-J.
-On 12:55 Mon 11 Apr     , Sascha Hauer wrote:
-> Hi J,
-> 
-> On Mon, Apr 11, 2011 at 12:17:52PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > On 12:16 Mon 11 Apr     , Sascha Hauer wrote:
-> > > Hi,
-> > > 
-> > > On Fri, Apr 08, 2011 at 03:37:13PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > > HI,
-> > > > 
-> > > > 	this following patch series make boot script more configurable
-> > > > 
-> > > > 
-> > > 
-> > > I'm getting the impression that we stretch the capabilities of our shell
-> > > way beyond its limits. We started with booting from nand/nor/net and
-> > > added mmc cards later. Still this is not flexible enough to handle
-> > > images for example on a fat filesystem, not to mention different kernels
-> > > on one medium.
-> > > 
-> > > I was thinking about this topic a bit, and my idea currently is
-> > > to add a command with which we can build a list of images. An image can
-> > > be a kernel or a filesystem image. Each image can be associated with
-> > > a bootarg snippet and a command to execute to access this image.
-> > > 
-> > I like the idea
-> > 
-> > as we can be multiple user of the same harware so it will simplify it
-> > 
-> > > Altogether this could look like this:
-> > > 
-> > > linux [OPTIONS]
-> > > 
-> > >  -a <name>    add a new image
-> > >  -f <file>    path to image
-> > >  -b <bootarg> kernel bootargs to append for this image
-> > >  -z           This is a zImage
-> > >  -u           This is a uImage
-> > >  -r <adr>     This is a raw kernel image to be started at address <adr>
-> > >  -l           The image is lzo compressed
-> > -C <compression>
-> > >  -i           Show currently registered images
-> > -l for list
-> > >  -d           delete all registered images
-> > -d too delete all :(
-> > 
-> > I think -d should delete only one
-> > -D for all
-> 
-> Ok.
-> 
-> > > 
-> > > 
-> > > example:
-> > > 
-> > > barebox@Phytec phyCORE pcm049:/ linux -a kernel.nand -f /dev/nand0.kernel.bb -z
-> > > barebox@Phytec phyCORE pcm049:/ linux -a kernel.mmc -f /dev/disk0.1 -c "mci0.probe=1" -r 0x80008000 -l
-> > what is this -c ?
-> 
-> -c specifies a command to be executed when this file is to be accessed.
-> If you have network on a USB ethernet dongle for example, you want to
-> delay the probing until it is really used. So you could provide a script
-> here which calls "usb; dhcp" or something like that.
-> For a fat filesystem on a mmc card it could be
-> 
-> "mci0.probe=1; mkdir /fat; mount /dev/disk0.1 fat /fat"
-> 
-> > I like the idea
-> > 
-> > but we should use the menu to manage it?
-> 
-> I think it should always work without the menu, but of course it's nice
-> to integrate it into the menu also.
-> 
-> Sascha
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ arch/arm/Makefile |   15 +++++++++++++++
+ common/Kconfig    |    7 +++++++
+ 2 files changed, 22 insertions(+), 0 deletions(-)
+
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 108bd5e..f0ec667 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -134,6 +134,21 @@ ifeq ($(machine-y),netx)
+ KBUILD_IMAGE := barebox.netx
+ endif
+ 
++MKIMAGE		:= $(objtree)/scripts/mkimage
++
++quiet_cmd_uimage = UIMAGE  $@
++      cmd_uimage = $(MKIMAGE) -A arm -O linux -T kernel \
++		   -C none -a $(BAREBOX_LOAD) -e $(BAREBOX_ENTRY) \
++		   -n 'Barebox-$(KERNELRELEASE)' -d $< $@
++
++uImage: $(MKIMAGE)
++uImage: BAREBOX_LOAD=$(CONFIG_LOAD_TEXT_BASE)
++uImage: BAREBOX_ENTRY=$(CONFIG_TEXT_BASE)
++
++uImage: barebox.bin
++	$(call if_changed,uimage,none)
++	@echo '  Image $@ is ready'
++
+ all: $(KBUILD_IMAGE)
+ 
+ archprepare: maketools
+diff --git a/common/Kconfig b/common/Kconfig
+index 9e30579..50995d3 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -80,6 +80,13 @@ config TEXT_BASE
+ 	help
+ 	  The Address barebox gets linked at.
+ 
++config LOAD_TEXT_BASE
++	prompt "LOAD_TEXT_BASE"
++	hex
++	default TEXT_BASE
++	help
++	  The Address barebox gets load at as a uImage
++
+ config HAVE_CONFIGURABLE_MEMORY_LAYOUT
+ 	bool
+ 
+-- 
+1.7.4.1
+
 
 _______________________________________________
 barebox mailing list
