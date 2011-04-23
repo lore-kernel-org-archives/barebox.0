@@ -1,14 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-iy0-f177.google.com ([209.85.210.177])
-	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1QDIWX-0001zw-TD
-	for barebox@lists.infradead.org; Fri, 22 Apr 2011 15:44:03 +0000
-Received: by iyb39 with SMTP id 39so685936iyb.36
-	for <barebox@lists.infradead.org>; Fri, 22 Apr 2011 08:43:59 -0700 (PDT)
+Received: from 30.mail-out.ovh.net ([213.186.62.213])
+	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1QDSXb-0005N9-Vx
+	for barebox@lists.infradead.org; Sat, 23 Apr 2011 02:25:52 +0000
+Date: Sat, 23 Apr 2011 04:16:35 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20110423021635.GD23775@game.jcrosoft.org>
+References: <20110408133713.GC13978@game.jcrosoft.org>
+	<20110411101601.GG7285@pengutronix.de>
+	<20110411101752.GC18925@game.jcrosoft.org>
+	<20110411105550.GH7285@pengutronix.de>
 MIME-Version: 1.0
-From: MJ <mjainp@gmail.com>
-Date: Fri, 22 Apr 2011 21:13:39 +0530
-Message-ID: <BANLkTik_geZ4hpcXTdN81DEgcOeqRZT8UA@mail.gmail.com>
+Content-Disposition: inline
+In-Reply-To: <20110411105550.GH7285@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,133 +25,98 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Sandbox Segfaults
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 0/4] defaultenv boot updates
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hi,
+HI,
 
-I was trying sandbox for x86 host machine from latest git repo of
-barebox (master branch) and it segfaults when ran with following
-command line arguments,
+	until this new way will be available can we have those patch
+	integrated?
 
-./barebox -e env.bin -i cramfs.bin
-
-I have read initial documentation to create env.bin and small
-filesystem. Attached is patch that fixes segfault problem but is not
-helpful in creating environment and mounting filesystem.
-
-diff --git a/arch/sandbox/board/hostfile.c b/arch/sandbox/board/hostfile.c
-index 38a52a8..52212f7 100644
---- a/arch/sandbox/board/hostfile.c
-+++ b/arch/sandbox/board/hostfile.c
-@@ -107,7 +107,8 @@ int barebox_register_filedev(struct hf_platform_data *hf)
-
-        dev->platform_data = hf;
-
--       strcpy(dev->name, "hostfile");
-+       /* Registering 2 devices with same name creates problem? */
-+       strcpy(dev->name, hf->filename);
-        dev->size = hf->size;
-        dev->map_base = hf->map_base;
-
-
-Strace log for problem
-=================
-
-execve("./barebox", ["./barebox", "-e", "env.bin", "-i",
-"cramfs.bin"], [/* 22 vars */]) = 0
-brk(0)                                  = 0x216d1000
-access("/etc/ld.so.nohwcap", F_OK)      = -1 ENOENT (No such file or directory)
-mmap2(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1,
-0) = 0xa3f000
-access("/etc/ld.so.preload", R_OK)      = -1 ENOENT (No such file or directory)
-open("/etc/ld.so.cache", O_RDONLY)      = 3
-fstat64(3, {st_mode=S_IFREG|0644, st_size=61576, ...}) = 0
-mmap2(NULL, 61576, PROT_READ, MAP_PRIVATE, 3, 0) = 0x141000
-close(3)                                = 0
-access("/etc/ld.so.nohwcap", F_OK)      = -1 ENOENT (No such file or directory)
-open("/lib/tls/i686/cmov/librt.so.1", O_RDONLY) = 3
-read(3, "\177ELF\1\1\1\0\0\0\0\0\0\0\0\0\3\0\3\0\1\0\0\0\300\30\0\0004\0\0\0"...,
-512) = 512
-fstat64(3, {st_mode=S_IFREG|0644, st_size=30684, ...}) = 0
-mmap2(NULL, 33364, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3,
-0) = 0xe49000
-mmap2(0xe50000, 8192, PROT_READ|PROT_WRITE,
-MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x6) = 0xe50000
-close(3)                                = 0
-access("/etc/ld.so.nohwcap", F_OK)      = -1 ENOENT (No such file or directory)
-open("/lib/tls/i686/cmov/libpthread.so.0", O_RDONLY) = 3
-read(3, "\177ELF\1\1\1\0\0\0\0\0\0\0\0\0\3\0\3\0\1\0\0\0
-J\0\0004\0\0\0"..., 512) = 512
-fstat64(3, {st_mode=S_IFREG|0755, st_size=117086, ...}) = 0
-mmap2(NULL, 98792, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3,
-0) = 0x4cb000
-mmap2(0x4e0000, 8192, PROT_READ|PROT_WRITE,
-MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x14) = 0x4e0000
-mmap2(0x4e2000, 4584, PROT_READ|PROT_WRITE,
-MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x4e2000
-close(3)                                = 0
-access("/etc/ld.so.nohwcap", F_OK)      = -1 ENOENT (No such file or directory)
-open("/lib/tls/i686/cmov/libc.so.6", O_RDONLY) = 3
-read(3, "\177ELF\1\1\1\0\0\0\0\0\0\0\0\0\3\0\3\0\1\0\0\0000m\1\0004\0\0\0"...,
-512) = 512
-fstat64(3, {st_mode=S_IFREG|0755, st_size=1405508, ...}) = 0
-mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1,
-0) = 0xbad000
-mmap2(NULL, 1415592, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE,
-3, 0) = 0x28e000
-mprotect(0x3e1000, 4096, PROT_NONE)     = 0
-mmap2(0x3e2000, 12288, PROT_READ|PROT_WRITE,
-MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x153) = 0x3e2000
-mmap2(0x3e5000, 10664, PROT_READ|PROT_WRITE,
-MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x3e5000
-close(3)                                = 0
-mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1,
-0) = 0xbda000
-set_thread_area({entry_number:-1 -> 6, base_addr:0xbda6c0,
-limit:1048575, seg_32bit:1, contents:0, read_exec_only:0,
-limit_in_pages:1, seg_not_present:0, useable:1}) = 0
-mprotect(0x3e2000, 8192, PROT_READ)     = 0
-mprotect(0x4e0000, 4096, PROT_READ)     = 0
-mprotect(0xe50000, 4096, PROT_READ)     = 0
-mprotect(0x28c000, 4096, PROT_READ)     = 0
-munmap(0x141000, 61576)                 = 0
-set_tid_address(0xbda728)               = 9951
-set_robust_list(0xbda730, 0xc)          = 0
-futex(0xbf9bb9c0, FUTEX_WAKE_PRIVATE, 1) = 0
-futex(0xbf9bb9c0, FUTEX_WAIT_BITSET_PRIVATE|FUTEX_CLOCK_REALTIME, 1,
-NULL, bf9bb9d0) = -1 EAGAIN (Resource temporarily unavailable)
-rt_sigaction(SIGRTMIN, {0x4cf410, [], SA_SIGINFO}, NULL, 8) = 0
-rt_sigaction(SIGRT_1, {0x4cf8f0, [], SA_RESTART|SA_SIGINFO}, NULL, 8) = 0
-rt_sigprocmask(SIG_UNBLOCK, [RTMIN RT_1], NULL, 8) = 0
-getrlimit(RLIMIT_STACK, {rlim_cur=8192*1024, rlim_max=RLIM_INFINITY}) = 0
-uname({sys="Linux", node="mjain-laptop", ...}) = 0
-mmap2(NULL, 8392704, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS,
--1, 0) = 0xe52000
-brk(0)                                  = 0x216d1000
-brk(0x216f2000)                         = 0x216f2000
-fstat64(1, {st_mode=S_IFCHR|0600, st_rdev=makedev(136, 0), ...}) = 0
-mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1,
-0) = 0xa0c000
-write(1, "add file env.bin()\n", 19add file env.bin()
-)    = 19
-open("env.bin", O_RDWR)                 = 3
-fstat64(3, {st_mode=S_IFREG|0644, st_size=65536, ...}) = 0
-mmap2(NULL, 65536, PROT_READ|PROT_WRITE, MAP_SHARED, 3, 0) = 0x110000
-write(1, "add file cramfs.bin()\n", 22add file cramfs.bin()
-) = 22
-open("cramfs.bin", O_RDWR)              = 4
-fstat64(4, {st_mode=S_IFREG|0644, st_size=4096, ...}) = 0
-mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_SHARED, 4, 0) = 0x120000
---- SIGSEGV (Segmentation fault) @ 0 (0) ---
-+++ killed by SIGSEGV +++
-Segmentation fault
-
-
-I would appreciate any kind help offered.
-
-Thanks,
-MJ
+Best Regards,
+J.
+On 12:55 Mon 11 Apr     , Sascha Hauer wrote:
+> Hi J,
+> 
+> On Mon, Apr 11, 2011 at 12:17:52PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > On 12:16 Mon 11 Apr     , Sascha Hauer wrote:
+> > > Hi,
+> > > 
+> > > On Fri, Apr 08, 2011 at 03:37:13PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > > HI,
+> > > > 
+> > > > 	this following patch series make boot script more configurable
+> > > > 
+> > > > 
+> > > 
+> > > I'm getting the impression that we stretch the capabilities of our shell
+> > > way beyond its limits. We started with booting from nand/nor/net and
+> > > added mmc cards later. Still this is not flexible enough to handle
+> > > images for example on a fat filesystem, not to mention different kernels
+> > > on one medium.
+> > > 
+> > > I was thinking about this topic a bit, and my idea currently is
+> > > to add a command with which we can build a list of images. An image can
+> > > be a kernel or a filesystem image. Each image can be associated with
+> > > a bootarg snippet and a command to execute to access this image.
+> > > 
+> > I like the idea
+> > 
+> > as we can be multiple user of the same harware so it will simplify it
+> > 
+> > > Altogether this could look like this:
+> > > 
+> > > linux [OPTIONS]
+> > > 
+> > >  -a <name>    add a new image
+> > >  -f <file>    path to image
+> > >  -b <bootarg> kernel bootargs to append for this image
+> > >  -z           This is a zImage
+> > >  -u           This is a uImage
+> > >  -r <adr>     This is a raw kernel image to be started at address <adr>
+> > >  -l           The image is lzo compressed
+> > -C <compression>
+> > >  -i           Show currently registered images
+> > -l for list
+> > >  -d           delete all registered images
+> > -d too delete all :(
+> > 
+> > I think -d should delete only one
+> > -D for all
+> 
+> Ok.
+> 
+> > > 
+> > > 
+> > > example:
+> > > 
+> > > barebox@Phytec phyCORE pcm049:/ linux -a kernel.nand -f /dev/nand0.kernel.bb -z
+> > > barebox@Phytec phyCORE pcm049:/ linux -a kernel.mmc -f /dev/disk0.1 -c "mci0.probe=1" -r 0x80008000 -l
+> > what is this -c ?
+> 
+> -c specifies a command to be executed when this file is to be accessed.
+> If you have network on a USB ethernet dongle for example, you want to
+> delay the probing until it is really used. So you could provide a script
+> here which calls "usb; dhcp" or something like that.
+> For a fat filesystem on a mmc card it could be
+> 
+> "mci0.probe=1; mkdir /fat; mount /dev/disk0.1 fat /fat"
+> 
+> > I like the idea
+> > 
+> > but we should use the menu to manage it?
+> 
+> I think it should always work without the menu, but of course it's nice
+> to integrate it into the menu also.
+> 
+> Sascha
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
