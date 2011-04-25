@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-iy0-f177.google.com ([209.85.210.177])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1QEK6n-000731-HP
-	for barebox@lists.infradead.org; Mon, 25 Apr 2011 11:37:47 +0000
-Date: Mon, 25 Apr 2011 13:37:35 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110425113735.GE14770@pengutronix.de>
-References: <1303535118-4737-1-git-send-email-plagnioj@jcrosoft.com>
+	id 1QEKda-0007Kp-Bq
+	for barebox@lists.infradead.org; Mon, 25 Apr 2011 12:11:38 +0000
+Received: by iyb39 with SMTP id 39so2244186iyb.36
+	for <barebox@lists.infradead.org>; Mon, 25 Apr 2011 05:11:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1303535118-4737-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20110425102355.GD14770@pengutronix.de>
+References: <BANLkTik_geZ4hpcXTdN81DEgcOeqRZT8UA@mail.gmail.com>
+	<20110425102355.GD14770@pengutronix.de>
+From: MJ <mjainp@gmail.com>
+Date: Mon, 25 Apr 2011 17:41:12 +0530
+Message-ID: <BANLkTikxEZBqRd4ZarR8cTo9KxYRuq99mA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,78 +24,23 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] arm: add support to generate uImage
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: Sandbox Segfaults
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Sat, Apr 23, 2011 at 07:05:18AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> so barebox could be loaded as kernel by itself
-> 
-> add LOAD_TEXT_BASE to specify the load address
-> 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  arch/arm/Makefile |   15 +++++++++++++++
->  common/Kconfig    |    7 +++++++
->  2 files changed, 22 insertions(+), 0 deletions(-)
-> 
-> diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-> index 108bd5e..f0ec667 100644
-> --- a/arch/arm/Makefile
-> +++ b/arch/arm/Makefile
-> @@ -134,6 +134,21 @@ ifeq ($(machine-y),netx)
->  KBUILD_IMAGE := barebox.netx
->  endif
->  
-> +MKIMAGE		:= $(objtree)/scripts/mkimage
-> +
-> +quiet_cmd_uimage = UIMAGE  $@
-> +      cmd_uimage = $(MKIMAGE) -A arm -O linux -T kernel \
-> +		   -C none -a $(BAREBOX_LOAD) -e $(BAREBOX_ENTRY) \
-> +		   -n 'Barebox-$(KERNELRELEASE)' -d $< $@
-> +
-> +uImage: $(MKIMAGE)
-> +uImage: BAREBOX_LOAD=$(CONFIG_LOAD_TEXT_BASE)
-> +uImage: BAREBOX_ENTRY=$(CONFIG_TEXT_BASE)
-> +
-> +uImage: barebox.bin
-> +	$(call if_changed,uimage,none)
-> +	@echo '  Image $@ is ready'
-> +
->  all: $(KBUILD_IMAGE)
->  
->  archprepare: maketools
-> diff --git a/common/Kconfig b/common/Kconfig
-> index 9e30579..50995d3 100644
-> --- a/common/Kconfig
-> +++ b/common/Kconfig
-> @@ -80,6 +80,13 @@ config TEXT_BASE
->  	help
->  	  The Address barebox gets linked at.
->  
-> +config LOAD_TEXT_BASE
-> +	prompt "LOAD_TEXT_BASE"
-> +	hex
-> +	default TEXT_BASE
-> +	help
-> +	  The Address barebox gets load at as a uImage
-> +
+On Mon, Apr 25, 2011 at 3:53 PM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
 
-No, please don't. When you load barebox with itself you end up
-overwriting the running barebox with the just loaded image if using
-TEXT_BASE here.
-barebox can be started from any address in SDRAM. Isn't there a
-mechanism to support this with the uImage format? The U-Boot guys have
-the same problem with ARM_PATCH_PHYS_VIRT in the kernel aswell, so I
-assume this is already solved in some way, no?
+[...]
 
-Sascha
+>
+> Please try again with the latest master branch. I fixed this issue with
+> the following:
+
+Thanks. That worked.
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Thanks,
+MJ
 
 _______________________________________________
 barebox mailing list
