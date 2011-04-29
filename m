@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vx0-f177.google.com ([209.85.220.177])
+Received: from mail-vw0-f49.google.com ([209.85.212.49])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1QFqx4-00048g-AU
-	for barebox@lists.infradead.org; Fri, 29 Apr 2011 16:54:02 +0000
-Received: by vxd2 with SMTP id 2so3616460vxd.36
-	for <barebox@lists.infradead.org>; Fri, 29 Apr 2011 09:53:57 -0700 (PDT)
+	id 1QFsaI-00050l-Uk
+	for barebox@lists.infradead.org; Fri, 29 Apr 2011 18:38:35 +0000
+Received: by vws8 with SMTP id 8so3696894vws.36
+	for <barebox@lists.infradead.org>; Fri, 29 Apr 2011 11:38:33 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <201104291749.59855.pgsellmann@portner-elektronik.at>
-References: <201104291749.59855.pgsellmann@portner-elektronik.at>
-Date: Fri, 29 Apr 2011 18:53:56 +0200
-Message-ID: <BANLkTikLyRxNbyNsVxk5Jm-3rdb0mESmEQ@mail.gmail.com>
+In-Reply-To: <20110429093019.GH13104@game.jcrosoft.org>
+References: <BANLkTimBTzBWeLg5qGg+riW2VYruF5W8Mg@mail.gmail.com>
+	<20110429082536.GD13104@game.jcrosoft.org>
+	<BANLkTi=3jajUaQ=iBsS-iiWipaH5Wy-WJQ@mail.gmail.com>
+	<20110429093019.GH13104@game.jcrosoft.org>
+Date: Fri, 29 Apr 2011 20:38:33 +0200
+Message-ID: <BANLkTin_1GZCPjmKMAOdMH-jH85PEa-7Rg@mail.gmail.com>
 From: Belisko Marek <marek.belisko@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,64 +22,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [bug] commands/loads.c:31: fatal error: exports.h: No such file
-	or directory
-To: Peter Gsellmann <pgsellmann@portner-elektronik.at>
+Subject: Re: MAKEALL problem
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-Hi,
-
-On Fri, Apr 29, 2011 at 5:49 PM, Peter Gsellmann
-<pgsellmann@portner-elektronik.at> wrote:
-> Trying to compile barebox for the AT91SAM9260EK, found this error.
-> Compiler is gcc version 4.4.1 (Sourcery G++ Lite 2010q1-188)
->
-> steps to reproduce:
-> export ARCH=arm
-> export CROSS_COMPILE=arm-none-eabi-
-> make
->
->
-> Is the 'loads' command ready for inclusion or would
-> # CONFIG_CMD_LOADS is not set
-> be better?
-You enabled in config CONFIG_BROKEN which visible you the loads
-command. This code is broken so even not compilable.
-Disable Prompt for broken or incomplete code in General settings
-and will compile without problems (of course without loads command)
->
->
-> Thanks for any advice,
-> Peter
->
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
->
->
-
-regards,
-
-marek
-
--- 
-as simple and primitive as possible
--------------------------------------------------
-Marek Belisko - OPEN-NANDRA
-Freelance Developer
-
-Ruska Nova Ves 219 | Presov, 08005 Slovak Republic
-Tel: +421 915 052 184
-skype: marekwhite
-icq: 290551086
-web: http://open-nandra.com
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gRnJpLCBBcHIgMjksIDIwMTEgYXQgMTE6MzAgQU0sIEplYW4tQ2hyaXN0b3BoZSBQTEFHTklP
+TC1WSUxMQVJECjxwbGFnbmlvakBqY3Jvc29mdC5jb20+IHdyb3RlOgo+IE9uIDEwOjQ3IEZyaSAy
+OSBBcHIgwqAgwqAgLCBCZWxpc2tvIE1hcmVrIHdyb3RlOgo+PiBISSwKPj4KPj4gT24gRnJpLCBB
+cHIgMjksIDIwMTEgYXQgMTA6MjUgQU0sIEplYW4tQ2hyaXN0b3BoZSBQTEFHTklPTC1WSUxMQVJE
+Cj4+IDxwbGFnbmlvakBqY3Jvc29mdC5jb20+IHdyb3RlOgo+PiA+IE9uIDA5OjA2IEZyaSAyOSBB
+cHIgwqAgwqAgLCBCZWxpc2tvIE1hcmVrIHdyb3RlOgo+PiA+PiBIaSwKPj4gPj4KPj4gPj4gY3Vy
+cmVudCBIRUFEOiAxNjVhMWU5MWY5MTc4ZjE2MGJjMzRjMDBlMWQ1YjM1NmNmMDIyYTAwIG1ha2Ug
+dGhpcyBwcm9ibGVtOgo+PiA+Pgo+PiA+PiBDUk9TU19DT01QSUxFPWFybS1ub25lLWxpbnV4LWdu
+dWVhYmktIEFSQ0g9YXJtIC4vTUFLRUFMTAo+PiA+PiBCdWlsZGluZyBhcm0gYTltMjQxMF9kZWZj
+b25maWcKPj4gPj4gQ29uZmlndXJlOiAuL01BS0VBTEw6IDI2NjogQmFkIHN1YnN0aXR1dGlvbgo+
+PiA+Pgo+PiA+PiAtLS0tLS0tLS0tLS0tLS0tLS0tLS0gU1VNTUFSWSAtLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tCj4+ID4+IGRlZmNvbmZpZ3MgY29tcGlsZWQ6IDAKPj4gPj4gY29tcGlsZWQg
+aW4gwqAgMTBzCj4+ID4+IC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0KPj4gPj4KPj4gPj4gQW0gSSBtaXNzaW5nIHNvbWV0aGluZyBvciBp
+dCdzIHJlYWxseSBicm9rZW4/Cj4+ID4gbm8gSSB1c2UgaXQgZXZyZXlkYXkgb24gYmFyZWJveCBv
+ciBsaW51eAo+PiA+Cj4+ID4gd2hpY2ggc2hlbGwgYXJlIHlvdSB1c2luZwo+PiBHTk9NRSBUZXJt
+aW5hbCAyLjMyLjEKPiBpdCdzIHlvdXIgdGVybWluYWwKPgo+IHdoaWNoIHNoZWxsIHNoL2Jhc2gv
+ZGFzaC9vdGhlcnM/CkFmdGVyIHNvbWUgZ29vZ2xpbmcgYW5kIGNoZWNrIE1BS0VBTEwgd2l0aCBj
+aGVja2Jhc2hpc20gc2NyaXB0IHRoaXMKcGF0Y2ggZml4IG15IHByb2JsZW0gKHdvcmsgZmluZSBv
+biBVYnVudHUpOgoKMS4gUElQRVNUQVRVUyBpcyBiYXNoaXNtIGJ1dCBoYXJkIHRvIHJlcGxhY2Ug
+d2l0aCBzb21ldGhpbmcgdmFsdWFibGUgaW4gZGFzaApzIG9qdXN0IHJlbW92ZSBiYXNoIGFycmF5
+IGhhbmRsaW5nCgoyLiBzb3VyY2UgaXMgYWxzbyBiYXNoaXNtLiBmaXggaXQgd2l0aCAuIHJlcGxh
+Y2VtZW50LgoKZGlmZiAtLWdpdCBhL01BS0VBTEwgYi9NQUtFQUxMCmluZGV4IGU5ODdkZTIuLjZj
+MGQwMTcgMTAwNzU1Ci0tLSBhL01BS0VBTEwKKysrIGIvTUFLRUFMTApAQCAtNzcsNyArNzcsNyBA
+QCBzdGF0cygpIHsKIH0KCiBjaGVja19waXBlX3N0YXR1cygpIHsKLSAgICAgICBmb3IgaSBpbiAi
+JHtQSVBFU1RBVFVTW0BdfSIKKyAgICAgICBmb3IgaSBpbiAke1BJUEVTVEFUVVN9CiAgICAgICAg
+ZG8KICAgICAgICAgICAgICAgIFsgJGkgLWd0IDAgXSAmJiByZXR1cm4gMQogICAgICAgIGRvbmUK
+QEAgLTIzNCw3ICsyMzQsNyBAQCB0aGVuCiAgICAgICAgICAgICAgICBDT05GSUc9Ii4vJHtDT05G
+SUd9IgogICAgICAgIGZpCgotICAgICAgIHNvdXJjZSAiJHtDT05GSUd9IgorICAgICAgIC4gIiR7
+Q09ORklHfSIKIGZpCgogWyAtZCAiJHtMT0dESVJ9IiBdIHx8IG1rZGlyICR7TE9HRElSfSB8fCBl
+eGl0IDEKCgo+Cj4gQmVzdCBSZWdhcmRzLAo+IEouCj4KCnJlZ2FyZHMsCgptYXJlawoKLS0gCmFz
+IHNpbXBsZSBhbmQgcHJpbWl0aXZlIGFzIHBvc3NpYmxlCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTWFyZWsgQmVsaXNrbyAtIE9QRU4tTkFORFJBCkZy
+ZWVsYW5jZSBEZXZlbG9wZXIKClJ1c2thIE5vdmEgVmVzIDIxOSB8IFByZXNvdiwgMDgwMDUgU2xv
+dmFrIFJlcHVibGljClRlbDogKzQyMSA5MTUgMDUyIDE4NApza3lwZTogbWFyZWt3aGl0ZQppY3E6
+IDI5MDU1MTA4Ngp3ZWI6IGh0dHA6Ly9vcGVuLW5hbmRyYS5jb20KCl9fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVi
+b3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFu
+L2xpc3RpbmZvL2JhcmVib3gK
