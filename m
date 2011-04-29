@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vw0-f49.google.com ([209.85.212.49])
-	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1QFjMi-0007mw-U9
-	for barebox@lists.infradead.org; Fri, 29 Apr 2011 08:47:57 +0000
-Received: by vws8 with SMTP id 8so3216703vws.36
-	for <barebox@lists.infradead.org>; Fri, 29 Apr 2011 01:47:55 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20110429082536.GD13104@game.jcrosoft.org>
+Received: from 29.mail-out.ovh.net ([87.98.216.213])
+	by canuck.infradead.org with smtp (Exim 4.72 #1 (Red Hat Linux))
+	id 1QFkBE-00087O-O5
+	for barebox@lists.infradead.org; Fri, 29 Apr 2011 09:40:09 +0000
+Date: Fri, 29 Apr 2011 11:30:19 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20110429093019.GH13104@game.jcrosoft.org>
 References: <BANLkTimBTzBWeLg5qGg+riW2VYruF5W8Mg@mail.gmail.com>
 	<20110429082536.GD13104@game.jcrosoft.org>
-Date: Fri, 29 Apr 2011 10:47:54 +0200
-Message-ID: <BANLkTi=3jajUaQ=iBsS-iiWipaH5Wy-WJQ@mail.gmail.com>
-From: Belisko Marek <marek.belisko@gmail.com>
+	<BANLkTi=3jajUaQ=iBsS-iiWipaH5Wy-WJQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <BANLkTi=3jajUaQ=iBsS-iiWipaH5Wy-WJQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,32 +20,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: MAKEALL problem
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+To: Belisko Marek <marek.belisko@gmail.com>
 Cc: barebox@lists.infradead.org
 
-SEksCgpPbiBGcmksIEFwciAyOSwgMjAxMSBhdCAxMDoyNSBBTSwgSmVhbi1DaHJpc3RvcGhlIFBM
-QUdOSU9MLVZJTExBUkQKPHBsYWduaW9qQGpjcm9zb2Z0LmNvbT4gd3JvdGU6Cj4gT24gMDk6MDYg
-RnJpIDI5IEFwciDCoCDCoCAsIEJlbGlza28gTWFyZWsgd3JvdGU6Cj4+IEhpLAo+Pgo+PiBjdXJy
-ZW50IEhFQUQ6IDE2NWExZTkxZjkxNzhmMTYwYmMzNGMwMGUxZDViMzU2Y2YwMjJhMDAgbWFrZSB0
-aGlzIHByb2JsZW06Cj4+Cj4+IENST1NTX0NPTVBJTEU9YXJtLW5vbmUtbGludXgtZ251ZWFiaS0g
-QVJDSD1hcm0gLi9NQUtFQUxMCj4+IEJ1aWxkaW5nIGFybSBhOW0yNDEwX2RlZmNvbmZpZwo+PiBD
-b25maWd1cmU6IC4vTUFLRUFMTDogMjY2OiBCYWQgc3Vic3RpdHV0aW9uCj4+Cj4+IC0tLS0tLS0t
-LS0tLS0tLS0tLS0tLSBTVU1NQVJZIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KPj4gZGVm
-Y29uZmlncyBjb21waWxlZDogMAo+PiBjb21waWxlZCBpbiDCoCAxMHMKPj4gLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQo+Pgo+PiBBbSBJ
-IG1pc3Npbmcgc29tZXRoaW5nIG9yIGl0J3MgcmVhbGx5IGJyb2tlbj8KPiBubyBJIHVzZSBpdCBl
-dnJleWRheSBvbiBiYXJlYm94IG9yIGxpbnV4Cj4KPiB3aGljaCBzaGVsbCBhcmUgeW91IHVzaW5n
-CkdOT01FIFRlcm1pbmFsIDIuMzIuMQo+Cj4gQmVzdCBSZWdhcmRzLAo+IEouCj4KCnJlZ2FyZHMs
-CgptYXJlawoKLS0gCmFzIHNpbXBsZSBhbmQgcHJpbWl0aXZlIGFzIHBvc3NpYmxlCi0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTWFyZWsgQmVsaXNrbyAt
-IE9QRU4tTkFORFJBCkZyZWVsYW5jZSBEZXZlbG9wZXIKClJ1c2thIE5vdmEgVmVzIDIxOSB8IFBy
-ZXNvdiwgMDgwMDUgU2xvdmFrIFJlcHVibGljClRlbDogKzQyMSA5MTUgMDUyIDE4NApza3lwZTog
-bWFyZWt3aGl0ZQppY3E6IDI5MDU1MTA4Ngp3ZWI6IGh0dHA6Ly9vcGVuLW5hbmRyYS5jb20KCl9f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFp
-bGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFk
-ZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On 10:47 Fri 29 Apr     , Belisko Marek wrote:
+> HI,
+> =
+
+> On Fri, Apr 29, 2011 at 10:25 AM, Jean-Christophe PLAGNIOL-VILLARD
+> <plagnioj@jcrosoft.com> wrote:
+> > On 09:06 Fri 29 Apr =A0 =A0 , Belisko Marek wrote:
+> >> Hi,
+> >>
+> >> current HEAD: 165a1e91f9178f160bc34c00e1d5b356cf022a00 make this probl=
+em:
+> >>
+> >> CROSS_COMPILE=3Darm-none-linux-gnueabi- ARCH=3Darm ./MAKEALL
+> >> Building arm a9m2410_defconfig
+> >> Configure: ./MAKEALL: 266: Bad substitution
+> >>
+> >> --------------------- SUMMARY ----------------------------
+> >> defconfigs compiled: 0
+> >> compiled in =A0 10s
+> >> ----------------------------------------------------------
+> >>
+> >> Am I missing something or it's really broken?
+> > no I use it evreyday on barebox or linux
+> >
+> > which shell are you using
+> GNOME Terminal 2.32.1
+it's your terminal
+
+which shell sh/bash/dash/others?
+
+Best Regards,
+J.
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
