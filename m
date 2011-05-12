@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-yx0-f177.google.com ([209.85.213.177])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1QKP07-0007gF-LT
-	for barebox@lists.infradead.org; Thu, 12 May 2011 06:03:56 +0000
-Date: Thu, 12 May 2011 08:03:49 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110512060349.GO30963@pengutronix.de>
-References: <BANLkTimK4n3A4HN9yLWrmgXcwhFgJrCCbw@mail.gmail.com>
+	id 1QKQae-0008S6-OR
+	for barebox@lists.infradead.org; Thu, 12 May 2011 07:45:49 +0000
+Received: by yxh35 with SMTP id 35so512661yxh.36
+	for <barebox@lists.infradead.org>; Thu, 12 May 2011 00:45:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <BANLkTimK4n3A4HN9yLWrmgXcwhFgJrCCbw@mail.gmail.com>
+In-Reply-To: <20110512060349.GO30963@pengutronix.de>
+References: <BANLkTimK4n3A4HN9yLWrmgXcwhFgJrCCbw@mail.gmail.com>
+	<20110512060349.GO30963@pengutronix.de>
+Date: Thu, 12 May 2011 09:45:43 +0200
+Message-ID: <BANLkTik7uQDgPAvPG71dUmrH_0m-7hmL-w@mail.gmail.com>
+From: Yegor Yefremov <yegorslists@googlemail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,37 +25,33 @@ Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: AM3517EVM port
-To: Yegor Yefremov <yegorslists@googlemail.com>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Yegor,
+Hi Sascha,
 
-On Thu, May 12, 2011 at 12:06:15AM +0200, Yegor Yefremov wrote:
-> Hello,
-> 
-> has anyone ported AM3517EVM board or other omap3517 based board to
-> barebox? I couldn't find any patches.
+>> has anyone ported AM3517EVM board or other omap3517 based board to
+>> barebox? I couldn't find any patches.
+>
+> No, I am not aware of any patches for this. How different is the
+> omap3517 from the one on the beagle board?
 
-No, I am not aware of any patches for this. How different is the
-omap3517 from the one on the beagle board?
+I hope it is not so different. But in the first line OMAP3517 is
+industrial grade SoC with built-in Ethernet and CAN support. I took
+beagle port as a template and try to port the stuff from TI's u-boot.
 
-> 
-> The second question is about OMAP boot procedure. Can I just rename
-> barebox to u-boot.bin and let it be loaded by x-loader?
+>> The second question is about OMAP boot procedure. Can I just rename
+>> barebox to u-boot.bin and let it be loaded by x-loader?
+>
+> More specifically barebox.bin to u-boot.bin, yes. This at least works on
+> the beagle and panda boards. barebox can also act as an x-loader aswell
+> (in which case it loads barebox.bin as second stage). See the *xload*
+> defconfigs.
 
-More specifically barebox.bin to u-boot.bin, yes. This at least works on
-the beagle and panda boards. barebox can also act as an x-loader aswell
-(in which case it loads barebox.bin as second stage). See the *xload*
-defconfigs.
+O.K. I see. Thank you for your help.
 
-Regards
- Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Regards,
+Yegor
 
 _______________________________________________
 barebox mailing list
