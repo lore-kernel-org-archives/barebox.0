@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from dinosaur.yandex.ru ([77.88.34.8])
+Received: from mail-bw0-f49.google.com ([209.85.214.49])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1QKsSu-0002nZ-QP
-	for barebox@lists.infradead.org; Fri, 13 May 2011 13:31:38 +0000
-Received: from [87.250.249.239] (dhcp249-239.yandex.net [87.250.249.239])
-	by dinosaur.yandex.ru (Postfix) with ESMTP id A06572E825
-	for <barebox@lists.infradead.org>; Fri, 13 May 2011 17:31:32 +0400 (MSD)
-Message-ID: <4DCD32B4.9090606@yandex-team.ru>
-Date: Fri, 13 May 2011 19:31:32 +0600
-From: Alexey Galakhov <agalakhov@yandex-team.ru>
+	id 1QKsoB-0002w1-OP
+	for barebox@lists.infradead.org; Fri, 13 May 2011 13:53:36 +0000
+Received: by bwz1 with SMTP id 1so2734512bwz.36
+	for <barebox@lists.infradead.org>; Fri, 13 May 2011 06:53:33 -0700 (PDT)
+Message-ID: <4DCD37D9.5020408@gmail.com>
+Date: Fri, 13 May 2011 19:53:29 +0600
+From: Alexey Galakhov <agalakhov@gmail.com>
 MIME-Version: 1.0
+References: <4DCD32B4.9090606@yandex-team.ru>
+In-Reply-To: <4DCD32B4.9090606@yandex-team.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,47 +23,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: loadb and loady do not work
+Subject: [PATCH] fix console fifo (and loadb/loady commands)
 To: barebox@lists.infradead.org
 
-Hi,
+This patch fixes loadb and loady commands. tstc() should return true if
+console_input_buffer is not empty.
 
-I just switched from u-boot to barebox on a MINI2440 board and found
-that I'm unable to use both loadb and loady. I used loady with u-boot
-and it worked fine. Looks like barebox does not listen to the incoming data.
-
-mini2440:/ loady -c
-## Ready for binary (ymodem) download to 0x00000000 offset on image.bin
-device at 115200 bps...
-C
-*** file: uImage
-sb -vv uImage
-Sending: uImage
-Ymodem sectors/kbytes sent:   0/ 0kRetry 0: NAK on sector
-Retry 0: NAK on sector
-Retry 0: NAK on sector
-Retry 0: NAK on sector
-(etc up to timeout)
-
-mini2440:/ loadb -c
-## Ready for binary (kermit) download to 0x00000000 offset on image.bin
-device at 115200 bps...
-
-*** file: uImage
-gkermit -iXvs uImage
-G-Kermit CU-1.00, Columbia University, 1999-12-25
-Escape back to your local Kermit and give a RECEIVE command.
-
-KERMIT READY TO SEND...
+diff -udp ./common/console.c.orig ./common/console.c
+--- ./common/console.c.orig    2011-05-06 13:30:20.000000000 +0600
++++ ./common/console.c    2011-05-13 19:42:12.000000000 +0600
+@@ -195,6 +195,20 @@ static int getc_raw(void)
+     }
+ }
+ 
++static int tstc_raw(void)
++{
++    struct console_device *cdev;
++
++    for_each_console(cdev) {
++        if (!(cdev->f_active & CONSOLE_STDIN))
++            continue;
++        if (cdev->tstc(cdev))
++            return 1;
++    }
++
++    return 0;
++}
++
+ int getc(void)
+ {
+     unsigned char ch;
+@@ -209,7 +223,7 @@ int getc(void)
+     while (1) {
+         poller_call();
+ 
+-        if (tstc()) {
++        if (tstc_raw()) {
+             kfifo_putc(console_input_buffer, getc_raw());
+ 
+             start = get_time_ns();
+@@ -236,16 +250,7 @@ EXPORT_SYMBOL(fgetc);
+ 
+ int tstc(void)
+ {
+-    struct console_device *cdev;
 -
-*** exit status: 1
+-    for_each_console(cdev) {
+-        if (!(cdev->f_active & CONSOLE_STDIN))
+-            continue;
+-        if (cdev->tstc(cdev))
+-            return 1;
+-    }
+-
+-    return 0;
++    return kfifo_len(console_input_buffer) || tstc_raw();
+ }
+ EXPORT_SYMBOL(tstc);
+ 
 
-I tried to debug it by adding a simple echo test and I think I found the
-problem. tstc() may return false even if there are bytes in input
-buffer. Thus getc() may sleep even if the buffer is full!
-
---
-Alex
 
 _______________________________________________
 barebox mailing list
