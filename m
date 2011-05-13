@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yx0-f177.google.com ([209.85.213.177])
+Received: from dinosaur.yandex.ru ([77.88.34.8])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1QKQae-0008S6-OR
-	for barebox@lists.infradead.org; Thu, 12 May 2011 07:45:49 +0000
-Received: by yxh35 with SMTP id 35so512661yxh.36
-	for <barebox@lists.infradead.org>; Thu, 12 May 2011 00:45:43 -0700 (PDT)
+	id 1QKsSu-0002nZ-QP
+	for barebox@lists.infradead.org; Fri, 13 May 2011 13:31:38 +0000
+Received: from [87.250.249.239] (dhcp249-239.yandex.net [87.250.249.239])
+	by dinosaur.yandex.ru (Postfix) with ESMTP id A06572E825
+	for <barebox@lists.infradead.org>; Fri, 13 May 2011 17:31:32 +0400 (MSD)
+Message-ID: <4DCD32B4.9090606@yandex-team.ru>
+Date: Fri, 13 May 2011 19:31:32 +0600
+From: Alexey Galakhov <agalakhov@yandex-team.ru>
 MIME-Version: 1.0
-In-Reply-To: <20110512060349.GO30963@pengutronix.de>
-References: <BANLkTimK4n3A4HN9yLWrmgXcwhFgJrCCbw@mail.gmail.com>
-	<20110512060349.GO30963@pengutronix.de>
-Date: Thu, 12 May 2011 09:45:43 +0200
-Message-ID: <BANLkTik7uQDgPAvPG71dUmrH_0m-7hmL-w@mail.gmail.com>
-From: Yegor Yefremov <yegorslists@googlemail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,34 +22,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: AM3517EVM port
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: loadb and loady do not work
+To: barebox@lists.infradead.org
 
-Hi Sascha,
+Hi,
 
->> has anyone ported AM3517EVM board or other omap3517 based board to
->> barebox? I couldn't find any patches.
->
-> No, I am not aware of any patches for this. How different is the
-> omap3517 from the one on the beagle board?
+I just switched from u-boot to barebox on a MINI2440 board and found
+that I'm unable to use both loadb and loady. I used loady with u-boot
+and it worked fine. Looks like barebox does not listen to the incoming data.
 
-I hope it is not so different. But in the first line OMAP3517 is
-industrial grade SoC with built-in Ethernet and CAN support. I took
-beagle port as a template and try to port the stuff from TI's u-boot.
+mini2440:/ loady -c
+## Ready for binary (ymodem) download to 0x00000000 offset on image.bin
+device at 115200 bps...
+C
+*** file: uImage
+sb -vv uImage
+Sending: uImage
+Ymodem sectors/kbytes sent:   0/ 0kRetry 0: NAK on sector
+Retry 0: NAK on sector
+Retry 0: NAK on sector
+Retry 0: NAK on sector
+(etc up to timeout)
 
->> The second question is about OMAP boot procedure. Can I just rename
->> barebox to u-boot.bin and let it be loaded by x-loader?
->
-> More specifically barebox.bin to u-boot.bin, yes. This at least works on
-> the beagle and panda boards. barebox can also act as an x-loader aswell
-> (in which case it loads barebox.bin as second stage). See the *xload*
-> defconfigs.
+mini2440:/ loadb -c
+## Ready for binary (kermit) download to 0x00000000 offset on image.bin
+device at 115200 bps...
 
-O.K. I see. Thank you for your help.
+*** file: uImage
+gkermit -iXvs uImage
+G-Kermit CU-1.00, Columbia University, 1999-12-25
+Escape back to your local Kermit and give a RECEIVE command.
 
-Regards,
-Yegor
+KERMIT READY TO SEND...
+-
+*** exit status: 1
+
+I tried to debug it by adding a simple echo test and I think I found the
+problem. tstc() may return false even if there are bytes in input
+buffer. Thus getc() may sleep even if the buffer is full!
+
+--
+Alex
 
 _______________________________________________
 barebox mailing list
