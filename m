@@ -1,13 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wy0-f177.google.com ([74.125.82.177])
+Received: from mail-ww0-f41.google.com ([74.125.82.41])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1QLMOf-0003xR-VT
-	for barebox@lists.infradead.org; Sat, 14 May 2011 21:29:15 +0000
-Received: by wyb28 with SMTP id 28so3373333wyb.36
-	for <barebox@lists.infradead.org>; Sat, 14 May 2011 14:29:11 -0700 (PDT)
+	id 1QLMiz-00044S-4I
+	for barebox@lists.infradead.org; Sat, 14 May 2011 21:50:14 +0000
+Received: by wwi18 with SMTP id 18so1554438wwi.0
+	for <barebox@lists.infradead.org>; Sat, 14 May 2011 14:50:10 -0700 (PDT)
 From: Peter Korsgaard <jacmet@sunsite.dk>
-Date: Sat, 14 May 2011 23:29:04 +0200
-Message-Id: <1305408544-29710-1-git-send-email-jacmet@sunsite.dk>
+References: <04EB6ACBB90C8844892BE0B9828F13C8018734BA036D@SRVSBS.airtag.local>
+	<20110513172252.GZ30963@pengutronix.de>
+	<87d3jlkbb0.fsf@macbook.be.48ers.dk>
+	<20110514171607.GA30963@pengutronix.de>
+Date: Sat, 14 May 2011 23:50:07 +0200
+In-Reply-To: <20110514171607.GA30963@pengutronix.de> (Sascha Hauer's message
+	of "Sat, 14 May 2011 19:16:07 +0200")
+Message-ID: <874o4xj6k0.fsf@macbook.be.48ers.dk>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,56 +23,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Fix sandbox ./barebox --help by reverting 6b082cfe (fix
-	printf warnings)
-To: barebox@lists.infradead.org, mkl@pengutronix.de
+Subject: Re: crc32 command
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-While getting rid of all the format(barebox_printf) warnings was nice,
-it caused the printf calls in arch/sandbox/os/common.c to get directed
-to the barebox versions rather than the libc ones causing a crash:
+>>>>> "Sascha" == Sascha Hauer <s.hauer@pengutronix.de> writes:
 
-E.G. before this revert:
-nm -a barebox|grep -w printf
-0000000000404fa3 T print
+Hi,
 
-And after:
-nm -a barebox|grep -w printf
-U printf@@GLIBC_2.2.5
+ >> The crc32 command is largely legacy from u-boot. Would there be interest
+ >> in a cksum command (it's afaik just like the normal crc32 except it also
+ >> uses the length) or md5/sha1/sha256sum? We have all the infrastructure,
+ >> so it should be easy to add.
 
-Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
----
- include/stdio.h |    5 -----
- 1 files changed, 0 insertions(+), 5 deletions(-)
+ Sascha> md5sum would be very useful. Would it add much to the binary space?
 
-diff --git a/include/stdio.h b/include/stdio.h
-index 9b1f161..c824764 100644
---- a/include/stdio.h
-+++ b/include/stdio.h
-@@ -8,9 +8,6 @@
-  * STDIO based functions (can always be used)
-  */
- 
--#define ORIG_printf	printf
--#undef printf
--
- /* serial stuff */
- void	serial_printf(const char *fmt, ...) __attribute__ ((format(printf, 1, 2)));
- 
-@@ -63,6 +60,4 @@ int	fputc(int file, const char c);
- int	ftstc(int file);
- int	fgetc(int file);
- 
--#define printf			ORIG_printf
--
- #endif /* __STDIO_H */
+I don't think so. I did a quick little proof of concept implementation
+(which would work for any algorithm supported by the digest stuff) and
+it ended up like:
+
+ size lib/md5.o common/digest.o commands/md5.o
+   text	   data	    bss	    dec	    hex	filename
+   2841	    152	      0	   2993	    bb1	lib/md5.o
+    339	     16	      0	    355	    163	common/digest.o
+    969	      0	      0	    969	    3c9	commands/md5.o
+
+So less than 1K if you already use md5/digest for something else,
+otherwise ~4K.
+
+I'll clean up the code a bit more and send a patch.
+
 -- 
-1.7.4.4
-
+Bye, Peter Korsgaard
 
 _______________________________________________
 barebox mailing list
