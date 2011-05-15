@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wy0-f177.google.com ([74.125.82.177])
+Received: from mail-ww0-f49.google.com ([74.125.82.49])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1QLh5J-0000HF-Jc
-	for barebox@lists.infradead.org; Sun, 15 May 2011 19:34:38 +0000
-Received: by wyb28 with SMTP id 28so3786457wyb.36
-	for <barebox@lists.infradead.org>; Sun, 15 May 2011 12:34:36 -0700 (PDT)
+	id 1QLh5N-0000IU-IJ
+	for barebox@lists.infradead.org; Sun, 15 May 2011 19:34:43 +0000
+Received: by wwb39 with SMTP id 39so3294638wwb.18
+	for <barebox@lists.infradead.org>; Sun, 15 May 2011 12:34:39 -0700 (PDT)
 From: franck.jullien@gmail.com
-Date: Sun, 15 May 2011 21:34:28 +0200
-Message-Id: <1305488072-1765-2-git-send-email-franck.jullien@gmail.com>
+Date: Sun, 15 May 2011 21:34:32 +0200
+Message-Id: <1305488072-1765-6-git-send-email-franck.jullien@gmail.com>
 In-Reply-To: <1305488072-1765-1-git-send-email-franck.jullien@gmail.com>
 References: <1305488072-1765-1-git-send-email-franck.jullien@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,43 +23,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/5] [Nios2]: Update generic env/config
+Subject: [PATCH 5/5] [Nios2]: Fix dma mapping end address
 To: barebox@lists.infradead.org
 
 From: Franck JULLIEN <franck.jullien@gmail.com>
 
-This adds kernel_loc, kernelimage_type and bootargs to the
-generic board environment. This allows the generic board
-to boot linux on the example I'll provide on my website.
+The flush_dcache_range function takes an absolute end address
+so we have to add start address to the second parameter.
 
 Signed-off-by: Franck JULLIEN <franck.jullien@gmail.com>
 ---
- arch/nios2/boards/generic/env/config |    5 +++++
- 1 files changed, 5 insertions(+), 0 deletions(-)
+ arch/nios2/include/asm/dma-mapping.h |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/arch/nios2/boards/generic/env/config b/arch/nios2/boards/generic/env/config
-index df7d09e..5d23098 100644
---- a/arch/nios2/boards/generic/env/config
-+++ b/arch/nios2/boards/generic/env/config
-@@ -4,6 +4,9 @@
- kernel=flash
- root=flash
- 
-+kernel_loc=nor
-+kernelimage_type=uimage
-+
- # use 'dhcp' todo dhcp in barebox and in kernel
- ip=none
- 
-@@ -11,6 +14,8 @@ autoboot_timeout=3
- 
- nor_parts="256k(barebox),128k(env),4M(kernel),-(rootfs)"
- 
-+bootargs="console=ttyS0,9600"
-+
- # set a fancy prompt (if support is compiled in)
- PS1="\e[1;33mbarebox@\e[1;32mgeneric:\w\e[0m "
- 
+diff --git a/arch/nios2/include/asm/dma-mapping.h b/arch/nios2/include/asm/dma-mapping.h
+index 49ebf79..5b70f4c 100644
+--- a/arch/nios2/include/asm/dma-mapping.h
++++ b/arch/nios2/include/asm/dma-mapping.h
+@@ -15,7 +15,7 @@ static inline void *dma_alloc_coherent(size_t len, unsigned long *handle)
+ 	void *addr = malloc(len + DCACHE_LINE_SIZE);
+ 	if (!addr)
+ 		return 0;
+-	flush_dcache_range((unsigned long)addr, len + DCACHE_LINE_SIZE);
++	flush_dcache_range((unsigned long)addr,(unsigned long)addr + len + DCACHE_LINE_SIZE);
+ 	*handle = ((unsigned long)addr +
+ 		   (DCACHE_LINE_SIZE - 1)) &
+ 		~(DCACHE_LINE_SIZE - 1) & ~(IO_REGION_BASE);
 -- 
 1.7.0.4
 
