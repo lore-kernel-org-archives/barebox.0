@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-wy0-f177.google.com ([74.125.82.177])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1QLh5J-0000HE-JU
-	for barebox@lists.infradead.org; Sun, 15 May 2011 19:34:38 +0000
-Received: by wyb28 with SMTP id 28so3786453wyb.36
-	for <barebox@lists.infradead.org>; Sun, 15 May 2011 12:34:35 -0700 (PDT)
+	id 1QLh5K-0000HE-LJ
+	for barebox@lists.infradead.org; Sun, 15 May 2011 19:34:39 +0000
+Received: by mail-wy0-f177.google.com with SMTP id 28so3786453wyb.36
+	for <barebox@lists.infradead.org>; Sun, 15 May 2011 12:34:38 -0700 (PDT)
 From: franck.jullien@gmail.com
-Date: Sun, 15 May 2011 21:34:27 +0200
-Message-Id: <1305488072-1765-1-git-send-email-franck.jullien@gmail.com>
+Date: Sun, 15 May 2011 21:34:31 +0200
+Message-Id: <1305488072-1765-5-git-send-email-franck.jullien@gmail.com>
+In-Reply-To: <1305488072-1765-1-git-send-email-franck.jullien@gmail.com>
+References: <1305488072-1765-1-git-send-email-franck.jullien@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,26 +23,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/5] [Nios2]: Differents fixes
+Subject: [PATCH 4/5] [Nios2]: Fix compiler warning
 To: barebox@lists.infradead.org
 
 From: Franck JULLIEN <franck.jullien@gmail.com>
 
-There is some minor fixes.
+Fix incompatible pointer type warning.
 
-Franck JULLIEN (5):
-  [Nios2]: Update generic env/config
-  [Nios2]: Fix typo in generic.c
-  [Nios2]: Change system frequency in generic board
-  [Nios2]: Fix compiler warning
-  [Nios2]: Fix dma mapping end address
+Signed-off-by: Franck JULLIEN <franck.jullien@gmail.com>
+---
+ drivers/net/altera_tse.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
- arch/nios2/boards/generic/env/config  |    5 +++++
- arch/nios2/boards/generic/generic.c   |    4 ++--
- arch/nios2/boards/generic/nios_sopc.h |   12 ++++++------
- arch/nios2/include/asm/dma-mapping.h  |    2 +-
- drivers/net/altera_tse.c              |    2 +-
- 5 files changed, 15 insertions(+), 10 deletions(-)
+diff --git a/drivers/net/altera_tse.c b/drivers/net/altera_tse.c
+index d922a9a..ac8cd2d 100644
+--- a/drivers/net/altera_tse.c
++++ b/drivers/net/altera_tse.c
+@@ -526,7 +526,7 @@ static int tse_probe(struct device_d *dev)
+ 	tx_desc = (struct alt_sgdma_descriptor *)NIOS_SOPC_TSE_DESC_MEM_BASE;
+ 	rx_desc = tx_desc + 2;
+ #else
+-	tx_desc = dma_alloc_coherent(sizeof(*tx_desc) * (3 + PKTBUFSRX), &dma_handle);
++	tx_desc = dma_alloc_coherent(sizeof(*tx_desc) * (3 + PKTBUFSRX), (unsigned long *)&dma_handle);
+ 	rx_desc = tx_desc + 2;
+ 
+ 	if (!tx_desc) {
+-- 
+1.7.0.4
 
 
 _______________________________________________
