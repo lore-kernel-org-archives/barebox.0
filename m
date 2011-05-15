@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-wy0-f177.google.com ([74.125.82.177])
 	by canuck.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
-	id 1QLh5K-0000HE-LJ
-	for barebox@lists.infradead.org; Sun, 15 May 2011 19:34:39 +0000
-Received: by mail-wy0-f177.google.com with SMTP id 28so3786453wyb.36
-	for <barebox@lists.infradead.org>; Sun, 15 May 2011 12:34:38 -0700 (PDT)
+	id 1QLh5J-0000HF-Jc
+	for barebox@lists.infradead.org; Sun, 15 May 2011 19:34:38 +0000
+Received: by wyb28 with SMTP id 28so3786457wyb.36
+	for <barebox@lists.infradead.org>; Sun, 15 May 2011 12:34:36 -0700 (PDT)
 From: franck.jullien@gmail.com
-Date: Sun, 15 May 2011 21:34:31 +0200
-Message-Id: <1305488072-1765-5-git-send-email-franck.jullien@gmail.com>
+Date: Sun, 15 May 2011 21:34:28 +0200
+Message-Id: <1305488072-1765-2-git-send-email-franck.jullien@gmail.com>
 In-Reply-To: <1305488072-1765-1-git-send-email-franck.jullien@gmail.com>
 References: <1305488072-1765-1-git-send-email-franck.jullien@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,31 +23,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/5] [Nios2]: Fix compiler warning
+Subject: [PATCH 1/5] [Nios2]: Update generic env/config
 To: barebox@lists.infradead.org
 
 From: Franck JULLIEN <franck.jullien@gmail.com>
 
-Fix incompatible pointer type warning.
+This adds kernel_loc, kernelimage_type and bootargs to the
+generic board environment. This allows the generic board
+to boot linux on the example I'll provide on my website.
 
 Signed-off-by: Franck JULLIEN <franck.jullien@gmail.com>
 ---
- drivers/net/altera_tse.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+ arch/nios2/boards/generic/env/config |    5 +++++
+ 1 files changed, 5 insertions(+), 0 deletions(-)
 
-diff --git a/drivers/net/altera_tse.c b/drivers/net/altera_tse.c
-index d922a9a..ac8cd2d 100644
---- a/drivers/net/altera_tse.c
-+++ b/drivers/net/altera_tse.c
-@@ -526,7 +526,7 @@ static int tse_probe(struct device_d *dev)
- 	tx_desc = (struct alt_sgdma_descriptor *)NIOS_SOPC_TSE_DESC_MEM_BASE;
- 	rx_desc = tx_desc + 2;
- #else
--	tx_desc = dma_alloc_coherent(sizeof(*tx_desc) * (3 + PKTBUFSRX), &dma_handle);
-+	tx_desc = dma_alloc_coherent(sizeof(*tx_desc) * (3 + PKTBUFSRX), (unsigned long *)&dma_handle);
- 	rx_desc = tx_desc + 2;
+diff --git a/arch/nios2/boards/generic/env/config b/arch/nios2/boards/generic/env/config
+index df7d09e..5d23098 100644
+--- a/arch/nios2/boards/generic/env/config
++++ b/arch/nios2/boards/generic/env/config
+@@ -4,6 +4,9 @@
+ kernel=flash
+ root=flash
  
- 	if (!tx_desc) {
++kernel_loc=nor
++kernelimage_type=uimage
++
+ # use 'dhcp' todo dhcp in barebox and in kernel
+ ip=none
+ 
+@@ -11,6 +14,8 @@ autoboot_timeout=3
+ 
+ nor_parts="256k(barebox),128k(env),4M(kernel),-(rootfs)"
+ 
++bootargs="console=ttyS0,9600"
++
+ # set a fancy prompt (if support is compiled in)
+ PS1="\e[1;33mbarebox@\e[1;32mgeneric:\w\e[0m "
+ 
 -- 
 1.7.0.4
 
