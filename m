@@ -1,20 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wy0-f177.google.com ([74.125.82.177])
-	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QMQWS-0002TG-3Q
-	for barebox@lists.infradead.org; Tue, 17 May 2011 20:05:41 +0000
-Received: by wyb28 with SMTP id 28so841384wyb.36
-	for <barebox@lists.infradead.org>; Tue, 17 May 2011 13:05:38 -0700 (PDT)
-From: Peter Korsgaard <jacmet@sunsite.dk>
-References: <1305634253-29141-1-git-send-email-jacmet@sunsite.dk>
-	<20110517123013.GF2737@game.jcrosoft.org>
-	<87ei3xh3qp.fsf@macbook.be.48ers.dk>
-	<20110517170923.GG30963@pengutronix.de>
-Date: Tue, 17 May 2011 22:05:34 +0200
-In-Reply-To: <20110517170923.GG30963@pengutronix.de> (Sascha Hauer's message
-	of "Tue, 17 May 2011 19:09:23 +0200")
-Message-ID: <87oc31f5yp.fsf@macbook.be.48ers.dk>
+Received: from 64.mail-out.ovh.net ([91.121.185.65])
+	by canuck.infradead.org with smtp (Exim 4.76 #1 (Red Hat Linux))
+	id 1QMZAj-0006V0-64
+	for barebox@lists.infradead.org; Wed, 18 May 2011 05:19:50 +0000
+Date: Wed, 18 May 2011 07:08:26 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20110518050826.GG18699@game.jcrosoft.org>
+References: <1305662741-7509-1-git-send-email-jacmet@sunsite.dk>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1305662741-7509-1-git-send-email-jacmet@sunsite.dk>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,53 +22,125 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] commands: add md5/sha1/sha256sum commands using the
+Subject: Re: [PATCHv2] commands: add md5/sha1/sha256sum commands using the
 	digest api
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Peter Korsgaard <jacmet@sunsite.dk>
 Cc: barebox@lists.infradead.org
 
->>>>> "Sascha" == Sascha Hauer <s.hauer@pengutronix.de> writes:
+> +
+> +	data = xmalloc(d->length);
+we realloc a buffer here where we alloc one in file_digest
+and not free it before calling print_digest
+> +	d->final(d, data);
+> +
+> +	for (i=0; i<d->length; i++)
+> +		printf("%02x", data[i]);
+> +
+> +	free(data);
+> +}
+> +
+> +static int file_digest(struct digest *d, char *filename,
+> +		       ulong start, ulong size)
+> +{
+> +	ulong len = 0;
+> +	int fd, now, ret = 0;
+> +	char *buf;
+> +
+> +	d->init(d);
+> +
+> +	fd = open(filename, O_RDONLY);
+> +	if (fd < 0) {
+> +		perror(filename);
+> +		return fd;
+> +	}
+> +
+> +	if (start > 0) {
+> +		ret = lseek(fd, start, SEEK_SET);
+> +		if (ret == -1) {
+> +			perror("lseek");
+> +			goto out;
+> +		}
+> +	}
+> +
+> +	buf = xmalloc(4096);
+do we really need to allocate the buffer everytime?
+> +
+> +	while (size) {
+> +		now = min((ulong)4096, size);
+> +		now = read(fd, buf, now);
+> +		if (now < 0) {
+> +			ret = now;
+> +			perror("read");
+> +			goto out_free;
+> +		}
+> +		if (!now)
+> +			break;
+> +
+> +		if (ctrlc()) {
+> +			ret = -EINTR;
+> +			goto out_free;
+> +		}
+> +
+> +		d->update(d, buf, now);
+> +		size -= now;
+> +		len += now;
+> +	}
+> +
+> +	print_digest(d);
+> +	printf("  %s\t0x%08lx ... 0x%08lx\n", filename, start, start + len);
+> +
+> +out_free:
+> +	free(buf);
+> +out:
+> +	close(fd);
+> +
+> +	return ret;
+> +}
+> +
+> +static int do_digest(char *algorithm, int argc, char *argv[])
+> +{
+> +	struct digest *d;
+> +	int ret = 0;
+> +
+> +	d = digest_get_by_name(algorithm);
+> +	BUG_ON(!d);
+> +
+> +	if (argc < 2)
+> +		return COMMAND_ERROR_USAGE;
+> +
+> +	argv++;
+> +	while (*argv) {
+> +		char *filename = "/dev/mem";
+> +		ulong start = 0, size = ~0;
+		ulong so so if we want to support 64bit vfs we need to use an
+		other type
+> +
+> +		/* arguments are either file, file+area or area */
+> +		if (parse_area_spec(*argv, &start, &size)) {
+> +			filename = *argv;
+> +			if (argv[1] && !parse_area_spec(argv[1], &start, &size))
+> +				argv++;
+> +		}
+> +
+> +		if (file_digest(d, filename, start, size) < 0)
+> +			ret = 1;
+> +
+> +		argv++;
+> +	}
+> +
+> +	return ret;
+> +}
+> +
+> +#ifdef CONFIG_CMD_MD5SUM
+> +
+> +static int do_md5(struct command *cmdtp, int argc, char *argv[])
+> +{
+> +	return do_digest("md5", argc, argv);
+pass the cmdtp will be good
+I agree it's not necessary now but I think it's a good practice
 
-Hi,
-
- >> commands/mem.c: buf = xmalloc(RW_BUF_SIZE);
-
- Sascha> And I am perfectly fine with this at least for fixed small length
- Sascha> allocations. And I consider 4096 bytes small enough.
-
-Ok, good.
-
- >> Maybe. I wanted something automatic rather than a series of strcmp
- >> checks, but feel free to suggest something else.
-
- Sascha> You could use three different functions called by the command
- Sascha> descriptors and pass a string with the digest name to do_digest.
-
-Ok, will change.
-
- Jean-Christophe> do we really need to stop if ine of them is not availlable
-
- >> I don't feel strongly about it, but it seems the simplest solution.
-
- Sascha> How about printing an error and continue? That's what my host md5sum
- Sascha> does.
-
-Ok, will change.
-
- Jean-Christophe> and we should check the getc to be able to interrupt it
- >> 
- >> crc doesn't do that either, but ok - I can add a ctrlc() check in the
- >> main loop.
-
- Sascha> It's good practice. It's nice being able to interrupt if this
- Sascha> command is accidently being called on a veray large file.
-
-Ok, will change.
-
-I'll send a v2 shortly.
-
--- 
-Bye, Peter Korsgaard
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
