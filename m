@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 64.mail-out.ovh.net ([91.121.185.65])
-	by canuck.infradead.org with smtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1QMbh6-0007Ji-45
-	for barebox@lists.infradead.org; Wed, 18 May 2011 08:01:24 +0000
-Date: Wed, 18 May 2011 09:50:00 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20110518075000.GD15292@game.jcrosoft.org>
-References: <1305662741-7509-1-git-send-email-jacmet@sunsite.dk>
-	<20110518050826.GG18699@game.jcrosoft.org>
-	<87boz0fpmz.fsf@macbook.be.48ers.dk>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+	id 1QMbtJ-0007NL-Hs
+	for barebox@lists.infradead.org; Wed, 18 May 2011 08:14:02 +0000
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Wed, 18 May 2011 10:12:36 +0200
+References: <1305650641-15125-1-git-send-email-agalakhov@gmail.com>
+	<20110517180316.GH30963@pengutronix.de>
+In-Reply-To: <20110517180316.GH30963@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <87boz0fpmz.fsf@macbook.be.48ers.dk>
+Message-Id: <201105181012.36600.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,33 +23,146 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCHv2] commands: add md5/sha1/sha256sum commands using the
-	digest api
-To: Peter Korsgaard <jacmet@sunsite.dk>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] Add support for Samsung S3C24x0 framebuffer.
+To: barebox@lists.infradead.org
 
- 
->  >> +	buf = xmalloc(4096);
-> 
->  Jean-Christophe> do we really need to allocate the buffer everytime?
-> 
-> Not really, but it's simpler to do like this. It's only once per file so
-> hardly a performance issue.
-> 
->  >> +	while (*argv) {
->  >> +		char *filename = "/dev/mem";
->  >> +		ulong start = 0, size = ~0;
-> 
->  Jean-Christophe> ulong so so if we want to support 64bit vfs we need to
->  Jean-Christophe> use an other type
-> 
-> ulong is what parse_area_spec and the other memory commands use.
-Just note that the file size could be more than 32bit
-and uze size_t or ssize_t make more sense in my mind
-of we can use loff_t
+Sascha Hauer wrote:
+> Hi Alex,
+>
+> On Tue, May 17, 2011 at 10:44:00PM +0600, Alex Galakhov wrote:
+> > Heavily based on original Juergen Beisert's code.
+> >
+> > Signed-off-by: Alex Galakhov <agalakhov@gmail.com>
+> > ---
+> >  arch/arm/mach-s3c24xx/include/mach/fb.h |   59 ++++
+> >  drivers/video/Kconfig                   |   13 +
+> >  drivers/video/Makefile                  |    1 +
+> >  drivers/video/s3c.c                     |  451
+> > +++++++++++++++++++++++++++++++ 4 files changed, 524 insertions(+), 0
+> > deletions(-)
+> >  create mode 100644 arch/arm/mach-s3c24xx/include/mach/fb.h
+> >  create mode 100644 drivers/video/s3c.c
+>
+> The patch looks mostly fine, only small nitpicks follow.
+>
+> > diff --git a/arch/arm/mach-s3c24xx/include/mach/fb.h
+> > b/arch/arm/mach-s3c24xx/include/mach/fb.h new file mode 100644
+> > index 0000000..05e013a
+> > --- /dev/null
+> > +++ b/arch/arm/mach-s3c24xx/include/mach/fb.h
+> > +
+> > +/**
+> > + * @param fb_info Framebuffer information
+> > + */
+> > +static void s3cfb_enable_controller(struct fb_info *fb_info)
+> > +{
+> > +	struct s3cfb_info *fbi = fb_info->priv;
+> > +	uint32_t con1;
+> > +
+> > +	con1 = readl(fbi->base + LCDCON1);
+> > +
+> > +	con1 |= ENVID;
+> > +
+> > +	writel(con1, fbi->base + LCDCON1);
+> > +
+> > +	if (fbi->enable)
+> > +		(fbi->enable)(1);
+>
+> unneeded brackets.
 
-Best Regards,
-J.
+Seem my old code.
+
+> > +}
+> > +
+> > +/**
+> > + * @param fb_info Framebuffer information
+> > + */
+> > +static void s3cfb_disable_controller(struct fb_info *fb_info)
+> > +{
+> > +	struct s3cfb_info *fbi = fb_info->priv;
+> > +	uint32_t con1;
+> > +
+> > +	if (fbi->enable)
+> > +		(fbi->enable)(0);
+>
+> ditto
+>
+> > +
+> > +	con1 = readl(fbi->base + LCDCON1);
+> > +
+> > +	con1 &= ~ENVID;
+> > +
+> > +	writel(con1, fbi->base + LCDCON1);
+> > +}
+> > +
+> > +/**
+> > + * Prepare the video hardware for a specified video mode
+> > + * @param fb_info Framebuffer information
+> > + * @param mode The video mode description to initialize
+> > + * @return 0 on success
+> > + */
+> > +static int s3cfb_activate_var(struct fb_info *fb_info)
+> > +{
+> > +	struct s3cfb_info *fbi = fb_info->priv;
+> > +	struct fb_videomode *mode = fb_info->mode;
+> > +	unsigned size, hclk, div;
+> > +	uint32_t con1, con2, con3, con4, con5 = 0;
+> > +
+> > +	if (fbi->passive_display != 0) {
+> > +		pr_err("Passive displays are currently not supported\n");
+>
+> dev_err please (some more follow).
+>
+> > +
+> > +	switch (fb_info->bits_per_pixel) {
+> > +#if 0
+> > +	/* TODO add CLUT based modes */
+> > +	case 1:
+> > +		con1 |= BPPMODE(8);
+> > +		break;
+> > +	case 2:
+> > +		con1 |= BPPMODE(9);
+> > +		break;
+> > +	case 4:
+> > +		con1 |= BPPMODE(10);
+> > +		break;
+> > +	case 8:
+> > +		con1 |= BPPMODE(11);
+> > +		break;
+> > +#endif
+>
+> I think we can remove this dead code. I see no reason to add clut
+> support. If someone needs it, I think this missing snippet is the least
+> of his problems.
+>
+> > +
+> > +/**
+> > + * The S3C244x LCD controller supports passive (CSTN/STN) and active
+> > (TFT) LC displays + *
+> > + * The driver itself currently supports only active TFT LC displays in
+> > the follwing manner: + *
+> > + *  * Palletized colours
+> > + *    - 1 bpp
+> > + *    - 2 bpp
+> > + *    - 4 bpp
+> > + *    - 8 bpp
+>
+> This doesn't seem to be true, right?
+>
+> > + *  * True colours
+> > + *    - 16 bpp
+> > + *    - 24 bpp
+> > + */
+
+Its unfinished out of date. Alex should update or remove it.
+
+jbe
+
+-- 
+Pengutronix e.K.                              | Juergen Beisert             |
+Linux Solutions for Science and Industry      | Phone: +49-5121-206917-5128 |
+Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555 |
+Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
