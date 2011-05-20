@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from gateway.hbm.com ([213.157.30.2] helo=hbmntx5.hbm.com)
-	by casper.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1QNOUN-00065Y-1Y
-	for barebox@lists.infradead.org; Fri, 20 May 2011 12:07:32 +0000
-Content-Class: urn:content-classes:message
-From: "Tim Sander" <tim.sander@hbm.com>
-Date: Fri, 20 May 2011 14:07:08 +0200
+Received: from 7.26.mail-out.ovh.net ([46.105.40.147] helo=26.mail-out.ovh.net)
+	by canuck.infradead.org with smtp (Exim 4.76 #1 (Red Hat Linux))
+	id 1QNPYa-00076d-HL
+	for barebox@lists.infradead.org; Fri, 20 May 2011 13:15:57 +0000
+Message-ID: <4DD66946.4050906@eukrea.com>
+Date: Fri, 20 May 2011 15:14:46 +0200
+From: =?ISO-8859-1?Q?Eric_B=E9nard?= <eric@eukrea.com>
 MIME-Version: 1.0
-Message-ID: <201105201407.08429.tim.sander@hbm.com>
+References: <201105201407.08429.tim.sander@hbm.com>
+In-Reply-To: <201105201407.08429.tim.sander@hbm.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,43 +17,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: GPIO Support on pcm043
-To: barebox@lists.infradead.org
+Subject: Re: GPIO Support on pcm043
+To: Tim Sander <tim.sander@hbm.com>
+Cc: barebox@lists.infradead.org
 
-Hi
+Hi Tim,
 
-I just tried (for i in `seq 0 96`)
-gpio_set_direction $i 1
-and 
-gpio_set_direction $i 0
+On 20/05/2011 14:07, Tim Sander wrote:
+> I just tried (for i in `seq 0 96`)
+> gpio_set_direction $i 1
+> and
+> gpio_set_direction $i 0
+>
+> on a barebox for pcm043 with gpio support compiled in.
+> But no LED was lighting up.
+>
+> Is there some obvious error on my side or is there no gpio
+> support for pcm043? At least there seems to be support for
+> the gpio ports on imx?
+>
+> Any hints?
 
-on a barebox for pcm043 with gpio support compiled in.
-But no LED was lighting up. 
+you first need to configure the mux of the pins to GPIO mode, then you can use 
+them as gpio.
 
-Is there some obvious error on my side or is there no gpio
-support for pcm043? At least there seems to be support for
-the gpio ports on imx?
-
-Any hints?
-Thanks
-Tim
-
-Hottinger Baldwin Messtechnik GmbH, Im Tiefen See 45, 64293 Darmstadt, Germany | www.hbm.com 
-
-Registered as GmbH (German limited liability corporation) in the commercial register at the local court of Darmstadt, HRB 1147  
-Company domiciled in Darmstadt | CEO: Andreas Huellhorst | Chairman of the board: James Charles Webster
-
-Als Gesellschaft mit beschraenkter Haftung eingetragen im Handelsregister des Amtsgerichts Darmstadt unter HRB 1147 
-Sitz der Gesellschaft: Darmstadt | Geschaeftsfuehrung: Andreas Huellhorst | Aufsichtsratsvorsitzender: James Charles Webster
-
-The information in this email is confidential. It is intended solely for the addressee. If you are not the intended recipient, please let me know and delete this email.
-
-Die in dieser E-Mail enthaltene Information ist vertraulich und lediglich fur den Empfaenger bestimmt. Sollten Sie nicht der eigentliche Empfaenger sein, informieren Sie mich bitte kurz und loeschen diese E-Mail.
-
+Eric
 
 _______________________________________________
 barebox mailing list
