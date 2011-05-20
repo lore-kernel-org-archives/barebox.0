@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from gateway.hbm.com ([213.157.30.2] helo=hbmntx5.hbm.com)
-	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1QNPK5-0006Si-52
-	for barebox@lists.infradead.org; Fri, 20 May 2011 13:00:57 +0000
+	by casper.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+	id 1QNOUN-00065Y-1Y
+	for barebox@lists.infradead.org; Fri, 20 May 2011 12:07:32 +0000
 Content-Class: urn:content-classes:message
 From: "Tim Sander" <tim.sander@hbm.com>
-Date: Fri, 20 May 2011 15:00:50 +0200
+Date: Fri, 20 May 2011 14:07:08 +0200
 MIME-Version: 1.0
-Message-ID: <201105201500.50593.tim.sander@hbm.com>
+Message-ID: <201105201407.08429.tim.sander@hbm.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,42 +20,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fix genenv when using svn based enviroment directory
+Subject: GPIO Support on pcm043
 To: barebox@lists.infradead.org
 
 Hi
 
-When setting the default env of barebox to a svn directory the build stops
-with questions on removal and the barebox env is polluted with svn files.
+I just tried (for i in `seq 0 96`)
+gpio_set_direction $i 1
+and 
+gpio_set_direction $i 0
 
-The patch below fixes that.
+on a barebox for pcm043 with gpio support compiled in.
+But no LED was lighting up. 
 
-Tested with 2011.03.1. Newer versions don't boot anymore on my pcm043 :-(.
+Is there some obvious error on my side or is there no gpio
+support for pcm043? At least there seems to be support for
+the gpio ports on imx?
 
-Signed-off-by: Tim Sander <tim.sander@hbm.com>
-
----
- scripts/genenv |    4 +++-
- 1 files changed, 3 insertions(+), 1 deletions(-)
-
-diff --git a/scripts/genenv b/scripts/genenv
-index de8b4f1..c6bcd4b 100755
---- a/scripts/genenv
-+++ b/scripts/genenv
-@@ -13,7 +13,9 @@ tempdir=$(mktemp -d)
- for i in $*; do
-        cp -r $i/* $tempdir
- done
-+find $tempdir -name .svn |xargs rm -r
-+
- $objtree/scripts/bareboxenv -s $tempdir $objtree/barebox_default_env
- 
--rm -r $tempdir
-+rm -rf $tempdir
- 
--- 
-1.7.0.4
-
+Any hints?
+Thanks
+Tim
 
 Hottinger Baldwin Messtechnik GmbH, Im Tiefen See 45, 64293 Darmstadt, Germany | www.hbm.com 
 
