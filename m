@@ -1,13 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from gateway.hbm.com ([213.157.30.2] helo=hbmntx5.hbm.com)
 	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1QOPrg-0001ct-7s
-	for barebox@lists.infradead.org; Mon, 23 May 2011 07:47:49 +0000
+	id 1QOSFo-0003uf-VC
+	for barebox@lists.infradead.org; Mon, 23 May 2011 10:20:53 +0000
 Content-Class: urn:content-classes:message
 From: "Tim Sander" <tim.sander@hbm.com>
-Date: Mon, 23 May 2011 09:47:40 +0200
+Date: Mon, 23 May 2011 12:20:45 +0200
+References: <201105201407.08429.tim.sander@hbm.com>
+	<201105201530.20237.tim.sander@hbm.com>
+	<20110523071256.GC20715@pengutronix.de>
+In-Reply-To: <20110523071256.GC20715@pengutronix.de>
 MIME-Version: 1.0
-Message-ID: <201105230947.40484.tim.sander@hbm.com>
+Message-ID: <201105231220.45663.tim.sander@hbm.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,64 +24,22 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Re: [PATCH] fix genenv when using svn based enviroment
-	directory
-In-Reply-To: <20110523072159.GE20715@pengutronix.de>
-To: barebox@lists.infradead.org
+Subject: Re: GPIO Support on pcm043
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hi Sascha
-> >  $objtree/scripts/bareboxenv -s $tempdir $objtree/barebox_default_env
-> > =
+Hi
 
-> > -rm -r $tempdir
-> > +rm -rf $tempdir
-> =
-
-> Is this second change intended? If yes, why?
-If the barebox environment managed with subversion there are some read only =
-
-directories within this dir, which make rm wait for a confirmation, which i=
-s =
-
-more annoying when building with ptxdist.
-
-But i made this change before the first one, i just checked that the -f opt=
-ion =
-
-is not needed anymore since the environment clobbering .svn directories hav=
+Thanks for your help guys! I just noticed i had two mux entries per pad. Th=
 e =
 
-been removed earlier.
+last had overriden my first settings. Its now working as intended, sorry fo=
+r =
 
-So the more minimalistic patch version is attached below.
-Best Regards
+the noise.
+
+Best regards
 Tim
-
-
-Signed-of-by: Tim Sander <tim.sander@hbm.com>
----
- scripts/genenv |    2 ++
- 1 files changed, 2 insertions(+), 0 deletions(-)
-
-diff --git a/scripts/genenv b/scripts/genenv
-index de8b4f1..65c074e 100755
---- a/scripts/genenv
-+++ b/scripts/genenv
-@@ -13,6 +13,8 @@ tempdir=3D$(mktemp -d)
- for i in $*; do
-        cp -r $i/* $tempdir
- done
-+find $tempdir -name .svn |xargs rm -r
-+
- $objtree/scripts/bareboxenv -s $tempdir $objtree/barebox_default_env
- =
-
- rm -r $tempdir
--- =
-
-1.7.0.4
-
-PS: Forgot the list in reply, this is the manual forward.
 
 Hottinger Baldwin Messtechnik GmbH, Im Tiefen See 45, 64293 Darmstadt, Germ=
 any | www.hbm.com =
