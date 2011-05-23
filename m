@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QOPJy-0001T2-Oc
-	for barebox@lists.infradead.org; Mon, 23 May 2011 07:12:59 +0000
-Date: Mon, 23 May 2011 09:12:56 +0200
+	id 1QOPSj-0001W3-DM
+	for barebox@lists.infradead.org; Mon, 23 May 2011 07:22:02 +0000
+Date: Mon, 23 May 2011 09:21:59 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110523071256.GC20715@pengutronix.de>
-References: <201105201407.08429.tim.sander@hbm.com>
-	<4DD66946.4050906@eukrea.com>
-	<201105201530.20237.tim.sander@hbm.com>
+Message-ID: <20110523072159.GE20715@pengutronix.de>
+References: <201105201500.50593.tim.sander@hbm.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <201105201530.20237.tim.sander@hbm.com>
+In-Reply-To: <201105201500.50593.tim.sander@hbm.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,38 +22,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: GPIO Support on pcm043
+Subject: Re: [PATCH] fix genenv when using svn based enviroment directory
 To: Tim Sander <tim.sander@hbm.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, May 20, 2011 at 03:30:19PM +0200, Tim Sander wrote:
-> Hi Eric
+Hi Tim,
+
+On Fri, May 20, 2011 at 03:00:50PM +0200, Tim Sander wrote:
+> Hi
 > 
-> Thanks for your answer
-> > > Is there some obvious error on my side or is there no gpio
-> > > support for pcm043? At least there seems to be support for
-> > > the gpio ports on imx?
-> > > Any hints?
-> > 
-> > you first need to configure the mux of the pins to GPIO mode, then you can
-> > use them as gpio.
-> After tripping into that trap multiple times, i've already checked that, but
-> forgot to mention it:
-> static struct pad_desc pcm043_pads[] = {
-> 	...
->         MX35_PAD_D3_CLS__GPIO1_4,
->         MX35_PAD_D3_SPL__GPIO1_5,
-> 	...
+> When setting the default env of barebox to a svn directory the build stops
+> with questions on removal and the barebox env is polluted with svn files.
+> 
+> The patch below fixes that.
+> 
+> Tested with 2011.03.1. Newer versions don't boot anymore on my pcm043 :-(.
+> 
+> Signed-off-by: Tim Sander <tim.sander@hbm.com>
+> 
+> ---
+>  scripts/genenv |    4 +++-
+>  1 files changed, 3 insertions(+), 1 deletions(-)
+> 
+> diff --git a/scripts/genenv b/scripts/genenv
+> index de8b4f1..c6bcd4b 100755
+> --- a/scripts/genenv
+> +++ b/scripts/genenv
+> @@ -13,7 +13,9 @@ tempdir=$(mktemp -d)
+>  for i in $*; do
+>         cp -r $i/* $tempdir
+>  done
+> +find $tempdir -name .svn |xargs rm -r
+> +
+>  $objtree/scripts/bareboxenv -s $tempdir $objtree/barebox_default_env
+>  
+> -rm -r $tempdir
+> +rm -rf $tempdir
 
-Have you checked that you chose the correct iomux setup? These
-particular pins can be routed to three different pads each:
-
-#define MX35_PAD_CAPTURE__GPIO1_4	IOMUX_PAD(0x328, 0x004, 5, 0x850, 0, NO_PAD_CTRL)
-#define MX35_PAD_SCKR__GPIO1_4		IOMUX_PAD(0x584, 0x140, 5, 0x850, 1, NO_PAD_CTRL)
-#define MX35_PAD_D3_CLS__GPIO1_4	IOMUX_PAD(0x68c, 0x228, 5, 0x850, 2, NO_PAD_CTRL)
-#define MX35_PAD_COMPARE__GPIO1_5	IOMUX_PAD(0x32c, 0x008, 5, 0x854, 0, NO_PAD_CTRL)
-#define MX35_PAD_FSR__GPIO1_5		IOMUX_PAD(0x588, 0x144, 5, 0x854, 1, NO_PAD_CTRL)
-#define MX35_PAD_D3_SPL__GPIO1_5	IOMUX_PAD(0x690, 0x22c, 5, 0x854, 2, NO_PAD_CTRL)
+Is this second change intended? If yes, why?
 
 Sascha
 
