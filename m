@@ -1,18 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QOsHl-0008PK-IL
-	for barebox@lists.infradead.org; Tue, 24 May 2011 14:08:39 +0000
-Received: from gallifrey.ext.pengutronix.de
-	([2001:6f8:1178:4:5054:ff:fe8d:eefb] helo=localhost)
-	by metis.ext.pengutronix.de with esmtp (Exim 4.72)
-	(envelope-from <jbe@pengutronix.de>) id 1QOsHj-00005t-2f
-	for barebox@lists.infradead.org; Tue, 24 May 2011 16:08:35 +0200
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Tue, 24 May 2011 16:07:21 +0200
-MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <201105241607.21271.jbe@pengutronix.de>
+Received: from mail.phycard.co.uk ([217.6.246.34] helo=root.phytec.de)
+	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+	id 1QPDLr-000211-JL
+	for barebox@lists.infradead.org; Wed, 25 May 2011 12:38:16 +0000
+From: Teresa Gamez <T.Gamez@phytec.de>
+In-Reply-To: <201011251752.42159.jbe@pengutronix.de>
+References: <201011251752.42159.jbe@pengutronix.de>
+Date: Wed, 25 May 2011 14:39:59 +0200
+Message-ID: <1306327199.22033.168.camel@lws-gamez>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,68 +21,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH/master] Always initialize oob_poi before writing OOB data
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] phyCORE-i.MX27: Keep frequency multiplier enabled to
+	be able to do a warmstart
+To: Juergen Beisert <jbe@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-The following patch came across the mtd mailing list today. I thinks its also 
-valid for barebox (it handles a special corner case, but maybe it can hit us, 
-too):
+Are there any reasons why this patch was not added to the barebox?
+It works fine for us.
 
-In nand_do_write_ops() code it is possible for a caller to provide
-ops.oobbuf populated and ops.mode == MTD_OOB_AUTO, which currently
-means that the chip->oob_poi buffer isn't initialised to all 0xFF.
-The nand_fill_oob() method then carries out the task of copying
-the provided OOB data to oob_poi, but with MTD_OOB_AUTO it skips
-areas marked as unavailable by the layout struct, including the
-bad block marker bytes.
+Teresa 
 
-An example of this causing issues is when the last OOB data read
-was from the start of a bad block where the markers are not 0xFF,
-and the caller wishes to write new OOB data at the beginning of
-another block. In this scenario the caller would provide OOB data,
-but nand_fill_oob() would skip the bad block marker bytes in
-oob_poi before copying the OOB data provided by the caller.
-This means that when the OOB data is written back to NAND,
-the block is inadvertently marked as bad without the caller knowing.
-This has been witnessed when using YAFFS2 where tags are stored
-in the OOB.
-
-This patch changes the code so that oob_poi is always initialised
-to 0xFF to make sure no left over data is inadvertently written
-back to OOB data.
-
-The comment above is for the linux kernel, but the same is valid for barebox
-and CPUs writing the OOB date controlled in software (like the Samsung
-S3C2440 does).
-
-Signed-off-by: Adam Thomson <adam.thomson@alcatel-lucent.com>
-Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
----
-
-diff --git a/drivers/mtd/nand/nand_write.c b/drivers/mtd/nand/nand_write.c
-index 89dc47b..376d2a9 100644
---- a/drivers/mtd/nand/nand_write.c
-+++ b/drivers/mtd/nand/nand_write.c
-@@ -303,9 +303,9 @@ int nand_do_write_ops(struct mtd_info *mtd, loff_t to,
- 	    (chip->pagebuf << chip->page_shift) < (to + ops->len))
- 		chip->pagebuf = -1;
- 
--	/* If we're not given explicit OOB data, let it be 0xFF */
--	if (likely(!oob))
--		memset(chip->oob_poi, 0xff, mtd->oobsize);
-+	/* Initialize to all 0xFF, to avoid the possibility of
-+	   left over OOB data from a previous OOB read. */
-+	memset(chip->oob_poi, 0xff, mtd->oobsize);
- 
- 	while(1) {
- 		int bytes = mtd->writesize;
+Am Donnerstag, den 25.11.2010, 17:52 +0100 schrieb Juergen Beisert:
+> commit 7d25a0552dd3a4b65412ae1cbf8f9ca8a88b5d27
+> Author: Juergen Beisert <jbe@pengutronix.de>
+> Date:   Thu Nov 25 17:49:11 2010 +0100
+> 
+>     Keep frequency multiplier enabled to be able to do a warmstart
+>     
+>     The wachtdog's reset does only reset the ARM core, not the whole silicon.
+>     But the PLLs seems to do some strange things: It seems they switch back to
+>     the low frequency reference when the watchdog barks. But in the case the
+>     frequency multiplier is off (not used due to 26 MHz reference usage) the
+>     machine stops, because the PLLs are stopping due to the lack of a reference
+>     frequency. As the power on reset will set the FPM_EN bit again, a power cycle
+>     brings the machine back to life.
+>     By keeping the frequency multiplier enabled, also a warmstart triggered by the
+>     watchdog can restart the machine now.
+>     
+>     Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
+> 
+> diff --git a/arch/arm/boards/pcm038/pll.h b/arch/arm/boards/pcm038/pll.h
+> index 13a7989..15b94cf 100644
+> --- a/arch/arm/boards/pcm038/pll.h
+> +++ b/arch/arm/boards/pcm038/pll.h
+> @@ -36,6 +36,7 @@
+>  		CSCR_MCU_SEL | /* 26 MHz reference */ \
+>  		CSCR_ARM_DIV(0) | /* CPU runs at MPLL/3 clock */ \
+>  		CSCR_AHB_DIV(1) | /* AHB runs at MPLL/6 clock */ \
+> +		CSCR_FPM_EN | \
+>  		CSCR_SPEN |		\
+>  		CSCR_MPEN)
+>  
+> @@ -51,6 +52,7 @@
+>  		CSCR_ARM_SRC_MPLL | /* use main MPLL clock */ \
+>  		CSCR_ARM_DIV(0) | /* CPU run at full MPLL clock */ \
+>  		CSCR_AHB_DIV(1) | /* AHB runs at MPLL/6 clock */ \
+> +		CSCR_FPM_EN | /* do not disable it! */ \
+>  		CSCR_SPEN |		\
+>  		CSCR_MPEN)
+>  
+> 
 
 
--- 
-Pengutronix e.K.                              | Juergen Beisert             |
-Linux Solutions for Science and Industry      | Phone: +49-5121-206917-5128 |
-Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
