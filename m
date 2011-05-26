@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ww0-f49.google.com ([74.125.82.49])
+Received: from metis.ext.pengutronix.de ([92.198.50.35])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QPVX7-0006NO-46
-	for barebox@lists.infradead.org; Thu, 26 May 2011 08:03:06 +0000
-Received: by wwb39 with SMTP id 39so338062wwb.18
-	for <barebox@lists.infradead.org>; Thu, 26 May 2011 01:03:02 -0700 (PDT)
-From: Peter Korsgaard <jacmet@sunsite.dk>
-References: <1305408544-29710-1-git-send-email-jacmet@sunsite.dk>
-Date: Thu, 26 May 2011 10:02:57 +0200
-In-Reply-To: <1305408544-29710-1-git-send-email-jacmet@sunsite.dk> (Peter
-	Korsgaard's message of "Sat, 14 May 2011 23:29:04 +0200")
-Message-ID: <87ei3lriry.fsf@macbook.be.48ers.dk>
+	id 1QPgQh-0001ig-Px
+	for barebox@lists.infradead.org; Thu, 26 May 2011 19:41:15 +0000
+Received: from gallifrey.ext.pengutronix.de
+	([2001:6f8:1178:4:5054:ff:fe8d:eefb] helo=localhost)
+	by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+	(envelope-from <jbe@pengutronix.de>) id 1QPgQB-0004V6-Ig
+	for barebox@lists.infradead.org; Thu, 26 May 2011 21:40:39 +0200
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Thu, 26 May 2011 21:39:12 +0200
 MIME-Version: 1.0
+Content-Disposition: inline
+Message-Id: <201105262139.12927.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,58 +25,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Fix sandbox ./barebox --help by reverting 6b082cfe (fix
-	printf warnings)
-To: barebox@lists.infradead.org, s.hauer@pengutronix.de
+Subject: [Patch/master] pr_warn() must be pr_warning() instead
+To: barebox@lists.infradead.org
 
->>>>> "Peter" == Peter Korsgaard <jacmet@sunsite.dk> writes:
+Fixing the following warning and error message:
+[...]
+drivers/mci/mci-core.c: In function 'mci_card_probe':
+drivers/mci/mci-core.c:1195:3: warning: implicit declaration of function 'pr_warn'
+[...]
+drivers/built-in.o: In function `mci_card_probe':
+/home/jb/work/Pengutronix/barebox-development/barebox-git/drivers/mci/mci-core.c:1195: undefined reference to `pr_warn'
 
- Peter> While getting rid of all the format(barebox_printf) warnings was nice,
- Peter> it caused the printf calls in arch/sandbox/os/common.c to get directed
- Peter> to the barebox versions rather than the libc ones causing a crash:
-
- Peter> E.G. before this revert:
- Peter> nm -a barebox|grep -w printf
- Peter> 0000000000404fa3 T print
-
- Peter> And after:
- Peter> nm -a barebox|grep -w printf
- Peter> U printf@@GLIBC_2.2.5
-
- Peter> Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
-
-Ping?
-
- Peter> ---
- Peter>  include/stdio.h |    5 -----
- Peter>  1 files changed, 0 insertions(+), 5 deletions(-)
-
- Peter> diff --git a/include/stdio.h b/include/stdio.h
- Peter> index 9b1f161..c824764 100644
- Peter> --- a/include/stdio.h
- Peter> +++ b/include/stdio.h
- Peter> @@ -8,9 +8,6 @@
- Peter>   * STDIO based functions (can always be used)
- Peter>   */
- 
- Peter> -#define ORIG_printf	printf
- Peter> -#undef printf
- Peter> -
- Peter>  /* serial stuff */
- Peter>  void	serial_printf(const char *fmt, ...) __attribute__ ((format(printf, 1, 2)));
- 
- Peter> @@ -63,6 +60,4 @@ int	fputc(int file, const char c);
- Peter>  int	ftstc(int file);
- Peter>  int	fgetc(int file);
- 
- Peter> -#define printf			ORIG_printf
- Peter> -
- Peter>  #endif /* __STDIO_H */
- Peter> -- 
- Peter> 1.7.4.4
+diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
+index a06c997..79c5e82 100644
+--- a/drivers/mci/mci-core.c
++++ b/drivers/mci/mci-core.c
+@@ -1192,7 +1192,7 @@ static int mci_card_probe(struct device_d *mci_dev)
+ 	/* reset the card */
+ 	rc = mci_go_idle(mci_dev);
+ 	if (rc) {
+-		pr_warn("Cannot reset the SD/MMC card\n");
++		pr_warning("Cannot reset the SD/MMC card\n");
+ 		goto on_error;
+ 	}
 
 -- 
-Bye, Peter Korsgaard
+Pengutronix e.K.                              | Juergen Beisert             |
+Linux Solutions for Science and Industry      | Phone: +49-5121-206917-5128 |
+Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555 |
+Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
