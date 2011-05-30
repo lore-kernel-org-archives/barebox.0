@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 10.26.mail-out.ovh.net ([46.105.47.155]
-	helo=26.mail-out.ovh.net)
-	by canuck.infradead.org with smtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1QQzKi-000732-FO
-	for barebox@lists.infradead.org; Mon, 30 May 2011 10:04:25 +0000
-Date: Mon, 30 May 2011 11:51:18 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20110530095118.GG12442@game.jcrosoft.org>
-References: <4DE355F0.1020502@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <4DE355F0.1020502@gmail.com>
+Received: from mail-px0-f171.google.com ([209.85.212.171])
+	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+	id 1QR9uX-0003oe-Uc
+	for barebox@lists.infradead.org; Mon, 30 May 2011 21:22:06 +0000
+Received: by pxi7 with SMTP id 7so2807518pxi.16
+	for <barebox@lists.infradead.org>; Mon, 30 May 2011 14:22:03 -0700 (PDT)
+From: Vikram Narayanan <vikram186@gmail.com>
+Date: Tue, 31 May 2011 02:51:45 +0530
+Message-ID: <1306790505.10548.6.camel@ubuntu.ubuntu-domain>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,37 +21,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: guruplug/dreamplug porting
-To: Carlo Caione <carlo.caione@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] Helper function clocksource_khz2mult in clock.c
+To: barebox@lists.infradead.org
 
-On 10:31 Mon 30 May     , Carlo Caione wrote:
-> Hi,
-> I was wondering how feasible it is to port barebox on
-> guruplug/dreamplug marvell-based boards.
-> The most noticeable problem for me is the initialization part in asm
-> (I'm not an asm junkie).
-so write it in c
+Hi,
 
-a lots of us do so, Sascha or I mostly write the lowlevel init in C now
-as example the generic lowlevel arm init is done in C now
+Won't this helper function be a good one to add in the clock.c code?
+Taken from the kernel file "include/linux/clocksource.h"
+If it can be, please find below the patch.
+---
+diff --git a/common/clock.c b/common/clock.c
+index 15df0ab..b07b449 100644
+--- a/common/clock.c
++++ b/common/clock.c
+@@ -57,6 +57,31 @@ uint64_t get_time_ns(void)
+ EXPORT_SYMBOL(get_time_ns);
+ 
+ /**
++ * clocksource_khz2mult - calculates mult from khz and shift
++ * @khz:		Clocksource frequency in KHz
++ * @shift_constant:	Clocksource shift factor
++ *
++ * Helper functions that converts a khz counter frequency to a
+timsource
++ * multiplier, given the clocksource shift value
++ */
++static inline u32 clocksource_khz2mult(u32 khz, u32 shift_constant)
++{
++	/*  khz = cyc/(Million ns)
++	 *  mult/2^shift  = ns/cyc
++	 *  mult = ns/cyc * 2^shift
++	 *  mult = 1Million/khz * 2^shift
++	 *  mult = 1000000 * 2^shift / khz
++	 *  mult = (1000000<<shift) / khz
++	 */
++	u64 tmp = ((u64)1000000) << shift_constant;
++
++	tmp += khz/2; /* round for do_div */
++	do_div(tmp, khz);
++
++	return (u32)tmp;
++}
++
++/**
+  * clocksource_hz2mult - calculates mult from hz and shift
+  * @hz:                 Clocksource frequency in Hz
+  * @shift_constant:     Clocksource shift factor
 
-I did it recently on at91rm9200
-and will update the at91sam9 to c also
-> Is it possible to reuse the arm code (asm)
-mostly you can copy it but you will have to put it in the right section
-> in the current version of barebox or at least to take it from u-boot
-> sources (according to uboot conf files, uboot uses the arm926ejs as
-> CPU for the guruplug)?
-First do more simple, use barebox as a second stage start by u-boot and then
-write the lowloevel init
+-
+Thanks,
+Vikram
 
-in barebox we do not have one lowlevel init per armvx but one generic one
-so normally the only assembly you could have to write is the
-board_lowlevel_init which can be written in C anynway
 
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
