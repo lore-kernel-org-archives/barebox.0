@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wy0-f177.google.com ([74.125.82.177])
-	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QQxt7-0006PL-VM
-	for barebox@lists.infradead.org; Mon, 30 May 2011 08:31:50 +0000
-Received: by wyb28 with SMTP id 28so3249306wyb.36
-	for <barebox@lists.infradead.org>; Mon, 30 May 2011 01:31:46 -0700 (PDT)
-Message-ID: <4DE355F0.1020502@gmail.com>
-Date: Mon, 30 May 2011 10:31:44 +0200
-From: Carlo Caione <carlo.caione@gmail.com>
+Received: from 10.26.mail-out.ovh.net ([46.105.47.155]
+	helo=26.mail-out.ovh.net)
+	by canuck.infradead.org with smtp (Exim 4.76 #1 (Red Hat Linux))
+	id 1QQzKi-000732-FO
+	for barebox@lists.infradead.org; Mon, 30 May 2011 10:04:25 +0000
+Date: Mon, 30 May 2011 11:51:18 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20110530095118.GG12442@game.jcrosoft.org>
+References: <4DE355F0.1020502@gmail.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <4DE355F0.1020502@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,26 +19,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: guruplug/dreamplug porting
-To: barebox@lists.infradead.org
+Subject: Re: guruplug/dreamplug porting
+To: Carlo Caione <carlo.caione@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Hi,
-I was wondering how feasible it is to port barebox on guruplug/dreamplug 
-marvell-based boards.
-The most noticeable problem for me is the initialization part in asm 
-(I'm not an asm junkie). Is it possible to reuse the arm code (asm) in 
-the current version of barebox or at least to take it from u-boot 
-sources (according to uboot conf files, uboot uses the arm926ejs as CPU 
-for the guruplug)?
+On 10:31 Mon 30 May     , Carlo Caione wrote:
+> Hi,
+> I was wondering how feasible it is to port barebox on
+> guruplug/dreamplug marvell-based boards.
+> The most noticeable problem for me is the initialization part in asm
+> (I'm not an asm junkie).
+so write it in c
 
-Regards,
+a lots of us do so, Sascha or I mostly write the lowlevel init in C now
+as example the generic lowlevel arm init is done in C now
 
---
-Carlo Caione
+I did it recently on at91rm9200
+and will update the at91sam9 to c also
+> Is it possible to reuse the arm code (asm)
+mostly you can copy it but you will have to put it in the right section
+> in the current version of barebox or at least to take it from u-boot
+> sources (according to uboot conf files, uboot uses the arm926ejs as
+> CPU for the guruplug)?
+First do more simple, use barebox as a second stage start by u-boot and then
+write the lowloevel init
+
+in barebox we do not have one lowlevel init per armvx but one generic one
+so normally the only assembly you could have to write is the
+board_lowlevel_init which can be written in C anynway
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
