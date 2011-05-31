@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-px0-f171.google.com ([209.85.212.171])
+Received: from mail-ww0-f49.google.com ([74.125.82.49])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QR9uX-0003oe-Uc
-	for barebox@lists.infradead.org; Mon, 30 May 2011 21:22:06 +0000
-Received: by pxi7 with SMTP id 7so2807518pxi.16
-	for <barebox@lists.infradead.org>; Mon, 30 May 2011 14:22:03 -0700 (PDT)
-From: Vikram Narayanan <vikram186@gmail.com>
-Date: Tue, 31 May 2011 02:51:45 +0530
-Message-ID: <1306790505.10548.6.camel@ubuntu.ubuntu-domain>
-Mime-Version: 1.0
+	id 1QRQOK-0005St-OS
+	for barebox@lists.infradead.org; Tue, 31 May 2011 14:58:00 +0000
+Received: by wwb39 with SMTP id 39so3899340wwb.18
+	for <barebox@lists.infradead.org>; Tue, 31 May 2011 07:57:53 -0700 (PDT)
+From: Hubert Feurstein <h.feurstein@gmail.com>
+Date: Tue, 31 May 2011 16:57:37 +0200
+Message-Id: <1306853857-23946-1-git-send-email-h.feurstein@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,61 +16,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Helper function clocksource_khz2mult in clock.c
+Subject: [PATCH] mci-core: add missing newline in debug message
 To: barebox@lists.infradead.org
 
-Hi,
-
-Won't this helper function be a good one to add in the clock.c code?
-Taken from the kernel file "include/linux/clocksource.h"
-If it can be, please find below the patch.
+Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
 ---
-diff --git a/common/clock.c b/common/clock.c
-index 15df0ab..b07b449 100644
---- a/common/clock.c
-+++ b/common/clock.c
-@@ -57,6 +57,31 @@ uint64_t get_time_ns(void)
- EXPORT_SYMBOL(get_time_ns);
+ drivers/mci/mci-core.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
+index a06c997..1c16cf1 100644
+--- a/drivers/mci/mci-core.c
++++ b/drivers/mci/mci-core.c
+@@ -957,7 +957,7 @@ static int mci_sd_write(struct device_d *disk_dev, uint64_t sector_start,
+ 	struct mci *mci = GET_MCI_DATA(mci_dev);
+ 	int rc;
  
- /**
-+ * clocksource_khz2mult - calculates mult from khz and shift
-+ * @khz:		Clocksource frequency in KHz
-+ * @shift_constant:	Clocksource shift factor
-+ *
-+ * Helper functions that converts a khz counter frequency to a
-timsource
-+ * multiplier, given the clocksource shift value
-+ */
-+static inline u32 clocksource_khz2mult(u32 khz, u32 shift_constant)
-+{
-+	/*  khz = cyc/(Million ns)
-+	 *  mult/2^shift  = ns/cyc
-+	 *  mult = ns/cyc * 2^shift
-+	 *  mult = 1Million/khz * 2^shift
-+	 *  mult = 1000000 * 2^shift / khz
-+	 *  mult = (1000000<<shift) / khz
-+	 */
-+	u64 tmp = ((u64)1000000) << shift_constant;
-+
-+	tmp += khz/2; /* round for do_div */
-+	do_div(tmp, khz);
-+
-+	return (u32)tmp;
-+}
-+
-+/**
-  * clocksource_hz2mult - calculates mult from hz and shift
-  * @hz:                 Clocksource frequency in Hz
-  * @shift_constant:     Clocksource shift factor
-
--
-Thanks,
-Vikram
-
+-	pr_debug("%s: Write %u block(s), starting at %u",
++	pr_debug("%s: Write %u block(s), starting at %u\n",
+ 		__func__, sector_count, (unsigned)sector_start);
+ 
+ 	if (mci->write_bl_len != 512) {
+-- 
+1.7.1
 
 
 _______________________________________________
