@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 29.mail-out.ovh.net ([87.98.216.213])
-	by canuck.infradead.org with smtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1QSAau-0000da-4M
-	for barebox@lists.infradead.org; Thu, 02 Jun 2011 16:18:00 +0000
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu,  2 Jun 2011 18:05:17 +0200
-Message-Id: <1307030717-8642-1-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1306928926-11086-1-git-send-email-h.feurstein@gmail.com>
-References: <1306928926-11086-1-git-send-email-h.feurstein@gmail.com>
+Received: from mail-pw0-f49.google.com ([209.85.160.49])
+	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+	id 1QSOPN-0008TA-QZ
+	for barebox@lists.infradead.org; Fri, 03 Jun 2011 07:03:03 +0000
+Received: by pwi8 with SMTP id 8so1191424pwi.36
+	for <barebox@lists.infradead.org>; Fri, 03 Jun 2011 00:02:57 -0700 (PDT)
+From: "Marc Reilly" <marc@cpdesign.com.au>
+References: <1307029887-7091-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1307029887-7091-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri, 3 Jun 2011 17:02:54 +1000
+Message-ID: <001801cc21bc$4677db10$d3679130$@cpdesign.com.au>
+MIME-Version: 1.0
+Content-Language: en-au
+Reply-To: marc@cpdesign.com.au
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,71 +21,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] at91sam9263ek: add mci1 support
-To: barebox@lists.infradead.org
+Subject: RE: [PATCH] import linux __iowrite32/64_copy support
+To: 'Jean-Christophe PLAGNIOL-VILLARD' <plagnioj@jcrosoft.com>, barebox@lists.infradead.org
 
-enable fat support
+Hi,
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- arch/arm/boards/at91sam9263ek/init.c     |   16 ++++++++++++++++
- arch/arm/configs/at91sam9263ek_defconfig |    5 +++++
- 2 files changed, 21 insertions(+), 0 deletions(-)
+<snip>
 
-diff --git a/arch/arm/boards/at91sam9263ek/init.c b/arch/arm/boards/at91sam9263ek/init.c
-index 8448866..9a763b3 100644
---- a/arch/arm/boards/at91sam9263ek/init.c
-+++ b/arch/arm/boards/at91sam9263ek/init.c
-@@ -99,6 +99,21 @@ static struct at91_ether_platform_data macb_pdata = {
- 	.phy_addr = 0,
- };
- 
-+#if defined(CONFIG_MCI_ATMEL)
-+static struct atmel_mci_platform_data __initdata ek_mci_data = {
-+	.bus_width	= 4,
-+	.detect_pin	= AT91_PIN_PE18,
-+	.wp_pin		= AT91_PIN_PE19,
-+};
-+
-+static void ek_add_device_mci(void)
-+{
-+	at91_add_device_mci(1, &ek_mci_data);
-+}
-+#else
-+static void ek_add_device_mci(void) {}
-+#endif
-+
- static int at91sam9263ek_devices_init(void)
- {
- 	/*
-@@ -113,6 +128,7 @@ static int at91sam9263ek_devices_init(void)
- 	ek_add_device_nand();
- 	at91_add_device_eth(&macb_pdata);
- 	register_device(&cfi_dev);
-+	ek_add_device_mci();
- 
- #if defined(CONFIG_DRIVER_CFI) || defined(CONFIG_DRIVER_CFI_OLD)
- 	devfs_add_partition("nor0", 0x00000, 0x40000, PARTITION_FIXED, "self");
-diff --git a/arch/arm/configs/at91sam9263ek_defconfig b/arch/arm/configs/at91sam9263ek_defconfig
-index 271f7b2..308f0cd 100644
---- a/arch/arm/configs/at91sam9263ek_defconfig
-+++ b/arch/arm/configs/at91sam9263ek_defconfig
-@@ -40,3 +40,8 @@ CONFIG_MTD=y
- CONFIG_NAND=y
- CONFIG_NAND_ATMEL=y
- CONFIG_UBI=y
-+CONFIG_MCI=y
-+CONFIG_MCI_ATMEL=y
-+CONFIG_FS_FAT=y
-+CONFIG_FS_FAT_WRITE=y
-+CONFIG_FS_FAT_LFN=y
--- 
-1.7.4.1
+> +/**
+> + * __iowrite64_copy - copy data to MMIO space, in 64-bit or 32-bit
+> +units
+> + * @to: destination, in MMIO space (must be 64-bit aligned)
+> + * @from: source (must be 64-bit aligned)
+> + * @count: number of 64-bit quantities to copy
+> + *
+> + * Copy data from kernel space to MMIO space, in units of 32 or 64 bits
+> +at a
+> + * time.  Order of access is not guaranteed, nor is a memory barrier
+> + * performed afterwards.
+> + */
+> +void __attribute__((weak)) __iowrite64_copy(void __iomem *to,
+> +					    const void *from,
+> +					    size_t count)
+> +{
+> +#ifdef CONFIG_64BIT
+> +	u64 __iomem *dst = to;
+> +	const u64 *src = from;
+> +	const u64 *end = src + count;
+> +
+> +	while (src < end)
+> +		__raw_writeq(*src++, dst++);
+> +#else
+> +	__iowrite32_copy(to, from, count * 2); #endif }
+> +
+> +EXPORT_SYMBOL_GPL(__iowrite64_copy);
+> --
+
+Is this missing #endif  for CONFIG_64BIT ?
+
+
+Cheers
+Marc
 
 
 _______________________________________________
