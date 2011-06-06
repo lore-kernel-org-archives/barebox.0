@@ -1,20 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 5.97.mail-out.ovh.net ([188.165.48.85] helo=97.mail-out.ovh.net)
+Received: from 23.97.mail-out.ovh.net ([87.98.169.92] helo=97.mail-out.ovh.net)
 	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1QTXKl-0001xf-0a
-	for barebox@lists.infradead.org; Mon, 06 Jun 2011 10:46:59 +0000
+	id 1QTXlM-0002Lz-V0
+	for barebox@lists.infradead.org; Mon, 06 Jun 2011 11:14:29 +0000
 Received: from mail185.ha.ovh.net (b9.ovh.net [213.186.33.59])
-	by 97.mail-out.ovh.net (Postfix) with SMTP id A42634B2214
+	by 97.mail-out.ovh.net (Postfix) with SMTP id 922FE4B217D
 	for <barebox@lists.infradead.org>;
-	Mon,  6 Jun 2011 12:47:16 +0200 (CEST)
-Date: Mon, 6 Jun 2011 12:33:55 +0200
+	Mon,  6 Jun 2011 13:14:46 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20110606103355.GF11298@game.jcrosoft.org>
-References: <1307351484-5159-1-git-send-email-plagnioj@jcrosoft.com>
-	<20110606095813.GE23771@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20110606095813.GE23771@pengutronix.de>
+Date: Mon,  6 Jun 2011 13:01:23 +0200
+Message-Id: <1307358084-16231-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,47 +18,89 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2 v2] complete: add device name complete support
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/2 v3] complete: add device name complete support for devinfo
+To: barebox@lists.infradead.org
 
-On 11:58 Mon 06 Jun     , Sascha Hauer wrote:
-> On Mon, Jun 06, 2011 at 11:11:23AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > ---
-> >  common/complete.c |   24 ++++++++++++++++++++++++
-> >  1 files changed, 24 insertions(+), 0 deletions(-)
-> 
-> Sorry, this does not work. Pressing eth<TAB> on an empty command
-> line expands to
-> 
-> ethact (correct, this is a command)
-> eth0   (almost correct, it misses the '=')
-> 
-> 'ls <TAB>' expands to
-> 
-> ls env/ (correct, this is a directory)
-> ls eth0 (incorrect, no valid expansion)
-> 
-> 'ls n<TAB> expands to
-> 
-> ls nand0     (incorrect, this is a device name and can't be used here=
-> ls nfsroot=  (incorrect, no valid expansion)
-> 
-> Please check the context in which you are calling the different complete
-> functions like I suggested in my comment to the last patch.
-if devinfo it's valid
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ common/complete.c |   40 ++++++++++++++++++++++++++++++++++------
+ 1 files changed, 34 insertions(+), 6 deletions(-)
 
-for the var evaluation we can use them when we want
+v3:
 
-ok I check
+	just complete the device name for devinfo
+
+	the evaluation and param device setting will be add later
 
 Best Regards,
 J.
+
+diff --git a/common/complete.c b/common/complete.c
+index 46ba871..c3a05f1 100644
+--- a/common/complete.c
++++ b/common/complete.c
+@@ -84,6 +84,27 @@ static int command_complete(struct string_list *sl, char *instr)
+ 	return 0;
+ }
+ 
++static int device_complete(struct string_list *sl, char *instr)
++{
++	struct device_d *dev;
++	char cmd[128];
++	int len, len2;
++
++	len = strlen(instr);
++
++	for_each_device(dev) {
++		if (!strncmp(instr, dev_name(dev), len)) {
++			len2 = strlen(dev_name(dev));
++			strcpy(cmd, dev_name(dev));
++			cmd[len2] = ' ';
++			cmd[len2 + 1] = 0;
++			string_list_add(sl, cmd);
++		}
++	}
++
++	return 0;
++}
++
+ static int tab_pressed = 0;
+ 
+ void complete_reset(void)
+@@ -117,12 +138,19 @@ int complete(char *instr, char **outstr)
+ 	instr = t;
+ 
+ 	/* get the completion possibilities */
+-	if ((t = strrchr(t, ' '))) {
+-		t++;
+-		file_complete(&sl, t);
+-		instr = t;
+-	} else
+-		command_complete(&sl, instr);
++	if (!strcmp(instr, "devinfo ")) {
++		device_complete(&sl, instr + 8);
++	} else {
++		if ((t = strrchr(t, ' '))) {
++			t++;
++			file_complete(&sl, t);
++			instr = t;
++		} else {
++			command_complete(&sl, instr);
++		}
++	}
++
++	device_complete(&sl, instr);
+ 
+ 	pos = strlen(instr);
+ 
+-- 
+1.7.4.1
+
 
 _______________________________________________
 barebox mailing list
