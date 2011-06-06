@@ -1,20 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 97.mail-out.ovh.net ([91.121.185.90])
+Received: from 28.97.mail-out.ovh.net ([87.98.186.139]
+	helo=97.mail-out.ovh.net)
 	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1QTW8B-0008WP-9H
-	for barebox@lists.infradead.org; Mon, 06 Jun 2011 09:29:55 +0000
+	id 1QTWAu-00005u-Dc
+	for barebox@lists.infradead.org; Mon, 06 Jun 2011 09:32:45 +0000
 Received: from mail185.ha.ovh.net (b9.ovh.net [213.186.33.59])
-	by 97.mail-out.ovh.net (Postfix) with SMTP id 63121421775
+	by 97.mail-out.ovh.net (Postfix) with SMTP id 193264AA21E
 	for <barebox@lists.infradead.org>;
-	Mon,  6 Jun 2011 11:30:11 +0200 (CEST)
-Date: Mon, 6 Jun 2011 11:16:51 +0200
+	Mon,  6 Jun 2011 11:33:02 +0200 (CEST)
+Date: Mon, 6 Jun 2011 11:19:41 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20110606091651.GD11298@game.jcrosoft.org>
-References: <1307029887-7091-1-git-send-email-plagnioj@jcrosoft.com>
-	<20110606062214.GT23771@pengutronix.de>
+Message-ID: <20110606091941.GE11298@game.jcrosoft.org>
+References: <4DE355F0.1020502@gmail.com>
+	<20110530095118.GG12442@game.jcrosoft.org>
+	<4DEC8CE4.8070104@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20110606062214.GT23771@pengutronix.de>
+In-Reply-To: <4DEC8CE4.8070104@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,25 +29,21 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] import linux __iowrite32/64_copy support
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: guruplug/dreamplug porting
+To: Carlo Caione <carlo.caione@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On 08:22 Mon 06 Jun     , Sascha Hauer wrote:
-> Hi J,
+On 10:16 Mon 06 Jun     , Carlo Caione wrote:
+> On 30/05/2011 11:51, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> >so write it in c
+> >
+> >a lots of us do so, Sascha or I mostly write the lowlevel init in C now
+> >as example the generic lowlevel arm init is done in C now
+> >
+> >I did it recently on at91rm9200
 > 
-> On Thu, Jun 02, 2011 at 05:51:27PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > ---
-> >  include/linux/io.h |   27 ++++++++++++++++++++
-> >  lib/Makefile       |    1 +
-> >  lib/iomap_copy.c   |   70 ++++++++++++++++++++++++++++++++++++++++++++++++++++
-> 
-> No general obejctions, but without users this is quite uninteresting.
-> Please repost this along with the first user.
-the mci support for atmel we will speed to memcpy
-
-I'll use it also on the framebuffer console support later
+> Is it available in git repository?
+in the next branch
 
 Best Regards,
 J.
