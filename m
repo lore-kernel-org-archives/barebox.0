@@ -1,23 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 13.97.mail-out.ovh.net ([87.98.173.128]
-	helo=97.mail-out.ovh.net)
+Received: from 7.97.mail-out.ovh.net ([46.105.44.230] helo=97.mail-out.ovh.net)
 	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1QTXrH-0002Sm-TJ
-	for barebox@lists.infradead.org; Mon, 06 Jun 2011 11:20:37 +0000
+	id 1QTYbI-000390-Lu
+	for barebox@lists.infradead.org; Mon, 06 Jun 2011 12:08:09 +0000
 Received: from mail185.ha.ovh.net (b9.ovh.net [213.186.33.59])
-	by 97.mail-out.ovh.net (Postfix) with SMTP id 0333A4A68DB
+	by 97.mail-out.ovh.net (Postfix) with SMTP id 6930142141E
 	for <barebox@lists.infradead.org>;
-	Mon,  6 Jun 2011 13:20:54 +0200 (CEST)
-Date: Mon, 6 Jun 2011 13:07:32 +0200
+	Mon,  6 Jun 2011 14:08:26 +0200 (CEST)
+Date: Mon, 6 Jun 2011 13:55:05 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20110606110732.GG11298@game.jcrosoft.org>
-References: <20110601054500.GA32751@game.jcrosoft.org>
-	<1306928926-11086-1-git-send-email-h.feurstein@gmail.com>
-	<20110602160400.GG32751@game.jcrosoft.org>
-	<BANLkTikRx9gNs7jLkL1+A7WUoLewTp9JhQ@mail.gmail.com>
+Message-ID: <20110606115505.GA16937@game.jcrosoft.org>
+References: <1307358084-16231-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <BANLkTikRx9gNs7jLkL1+A7WUoLewTp9JhQ@mail.gmail.com>
+In-Reply-To: <1307358084-16231-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,37 +22,79 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] mci: add Atmel AT91 MCI driver
-To: Hubert Feurstein <h.feurstein@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2 v3] complete: add device name complete support for
+	devinfo
+To: barebox@lists.infradead.org
 
-On 09:43 Mon 06 Jun     , Hubert Feurstein wrote:
-> 2011/6/2 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>:
-> > On 13:48 Wed 01 Jun =A0 =A0 , Hubert Feurstein wrote:
-> [snip]
-> > I've test it on at91sam9263ek and work fine
-> Great, good to hear ;) I'll add also support for at91sam9m10g45ek
-> later in an extra commit.
-> >
-> > please fix the following comments
-> > Acked-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> >
-> [snip]
-> >> +/* Multimedia Card Interface */
-> >> +struct atmel_mci_platform_data {
-> >> +     unsigned bus_width;
-> >> +     unsigned host_caps; /* MCI_MODE_* from mci.h */
-> >> +     unsigned detect_pin;
-> >> +     unsigned wp_pin;
-> >> +};
-> >we can have 2 slot but you allow only one
-> Would it be ok to add the second slot in an extra commit?
-ok
+On 13:01 Mon 06 Jun     , Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+ignore wrong version
 
+>  common/complete.c |   40 ++++++++++++++++++++++++++++++++++------
+>  1 files changed, 34 insertions(+), 6 deletions(-)
+> 
+> v3:
+> 
+> 	just complete the device name for devinfo
+> 
+> 	the evaluation and param device setting will be add later
+> 
+> Best Regards,
+> J.
+> 
+> diff --git a/common/complete.c b/common/complete.c
+> index 46ba871..c3a05f1 100644
+> --- a/common/complete.c
+> +++ b/common/complete.c
+> @@ -84,6 +84,27 @@ static int command_complete(struct string_list *sl, char *instr)
+>  	return 0;
+>  }
+>  
+> +static int device_complete(struct string_list *sl, char *instr)
+> +{
+> +	struct device_d *dev;
+> +	char cmd[128];
+> +	int len, len2;
+> +
+> +	len = strlen(instr);
+> +
+> +	for_each_device(dev) {
+> +		if (!strncmp(instr, dev_name(dev), len)) {
+> +			len2 = strlen(dev_name(dev));
+> +			strcpy(cmd, dev_name(dev));
+> +			cmd[len2] = ' ';
+> +			cmd[len2 + 1] = 0;
+> +			string_list_add(sl, cmd);
+> +		}
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+>  static int tab_pressed = 0;
+>  
+>  void complete_reset(void)
+> @@ -117,12 +138,19 @@ int complete(char *instr, char **outstr)
+>  	instr = t;
+>  
+>  	/* get the completion possibilities */
+> -	if ((t = strrchr(t, ' '))) {
+> -		t++;
+> -		file_complete(&sl, t);
+> -		instr = t;
+> -	} else
+> -		command_complete(&sl, instr);
+> +	if (!strcmp(instr, "devinfo ")) {
+> +		device_complete(&sl, instr + 8);
+here should be
+	if (!strncmp(instr, "devinfo ", 8)) {
+		instr += 8;
+		device_complete(&sl, instr);
 Best Regards,
 J.
 
