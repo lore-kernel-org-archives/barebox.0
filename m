@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ww0-f49.google.com ([74.125.82.49])
-	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QTgHr-0005OF-3m
-	for barebox@lists.infradead.org; Mon, 06 Jun 2011 20:20:37 +0000
-Received: by wwb39 with SMTP id 39so3301860wwb.18
-	for <barebox@lists.infradead.org>; Mon, 06 Jun 2011 13:20:32 -0700 (PDT)
-From: franck.jullien@gmail.com
-Date: Mon,  6 Jun 2011 22:20:31 +0200
-Message-Id: <1307391631-22558-1-git-send-email-franck.jullien@gmail.com>
+Received: from 13.97.mail-out.ovh.net ([87.98.173.128]
+	helo=97.mail-out.ovh.net)
+	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+	id 1QU9A0-0004Li-EM
+	for barebox@lists.infradead.org; Wed, 08 Jun 2011 03:10:25 +0000
+Received: from mail185.ha.ovh.net (b9.ovh.net [213.186.33.59])
+	by 97.mail-out.ovh.net (Postfix) with SMTP id 0836842103B
+	for <barebox@lists.infradead.org>;
+	Wed,  8 Jun 2011 05:10:50 +0200 (CEST)
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Wed,  8 Jun 2011 04:57:09 +0200
+Message-Id: <1307501829-23014-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,158 +24,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCHv2] [Nios2]: Add Altera JTAG UART driver
+Subject: [PATCH] move driver and bus code to drivers/base
 To: barebox@lists.infradead.org
 
-From: Franck Jullien <franck.jullien@gmail.com>
-
-Add Altera JTAG UART driver
-
-I removed the CONFIG_ALTERA_JTAG_UART_BYPASS.
-
-Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- drivers/serial/Kconfig              |    5 ++
- drivers/serial/Makefile             |    1 +
- drivers/serial/serial_altera_jtag.c |  102 +++++++++++++++++++++++++++++++++++
- 3 files changed, 108 insertions(+), 0 deletions(-)
- create mode 100644 drivers/serial/serial_altera_jtag.c
+ drivers/Makefile                         |    1 +
+ drivers/base/Makefile                    |    2 ++
+ {lib => drivers/base}/driver.c           |    0
+ lib/bus.c => drivers/base/platform_bus.c |    0
+ lib/Makefile                             |    2 --
+ 5 files changed, 3 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/base/Makefile
+ rename {lib => drivers/base}/driver.c (100%)
+ rename lib/bus.c => drivers/base/platform_bus.c (100%)
 
-diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
-index 9e05f4b..b8ae475 100644
---- a/drivers/serial/Kconfig
-+++ b/drivers/serial/Kconfig
-@@ -48,6 +48,11 @@ config DRIVER_SERIAL_ALTERA
- 	default y
- 	bool "Altera serial driver"
- 
-+config DRIVER_SERIAL_ALTERA_JTAG
-+	depends on NIOS2
-+	default n
-+	bool "Altera JTAG serial driver"
-+
- config DRIVER_SERIAL_NS16550
- 	default n
- 	bool "NS16550 serial driver"
-diff --git a/drivers/serial/Makefile b/drivers/serial/Makefile
-index df9e705..8b56d15 100644
---- a/drivers/serial/Makefile
-+++ b/drivers/serial/Makefile
-@@ -17,3 +17,4 @@ obj-$(CONFIG_DRIVER_SERIAL_NS16550)		+= serial_ns16550.o
- obj-$(CONFIG_DRIVER_SERIAL_PL010)		+= serial_pl010.o
- obj-$(CONFIG_DRIVER_SERIAL_S3C24X0)		+= serial_s3c24x0.o
- obj-$(CONFIG_DRIVER_SERIAL_ALTERA)		+= serial_altera.o
-+obj-$(CONFIG_DRIVER_SERIAL_ALTERA_JTAG)		+= serial_altera_jtag.o
-diff --git a/drivers/serial/serial_altera_jtag.c b/drivers/serial/serial_altera_jtag.c
+diff --git a/drivers/Makefile b/drivers/Makefile
+index b1b402f..9a90434 100644
+--- a/drivers/Makefile
++++ b/drivers/Makefile
+@@ -1,3 +1,4 @@
++obj-y	+= base/
+ obj-y	+= net/
+ obj-y	+= serial/
+ obj-y	+= mtd/
+diff --git a/drivers/base/Makefile b/drivers/base/Makefile
 new file mode 100644
-index 0000000..73d4bf8
+index 0000000..f96ae22
 --- /dev/null
-+++ b/drivers/serial/serial_altera_jtag.c
-@@ -0,0 +1,102 @@
-+/*
-+ * (C) Copyright 2004, Psyent Corporation <www.psyent.com>
-+ * Scott McNutt <smcnutt@psyent.com>
-+ *
-+ * (C) Copyright 2011 - Franck JULLIEN <elec4fun@gmail.com>
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-+ * MA 02111-1307 USA
-+ */
-+
-+#include <common.h>
-+#include <driver.h>
-+#include <init.h>
-+#include <malloc.h>
-+#include <asm/io.h>
-+#include <asm/nios2-io.h>
-+
-+static int altera_serial_jtag_setbaudrate(struct console_device *cdev, int baudrate)
-+{
-+	return 0;
-+}
-+
-+static void altera_serial_jtag_putc(struct console_device *cdev, char c)
-+{
-+	struct nios_jtag *jtag = (struct nios_jtag *)cdev->dev->map_base;
-+	uint32_t st;
-+
-+	while (1) {
-+		st = readl(&jtag->control);
-+		if (NIOS_JTAG_WSPACE(st))
-+			break;
-+	}
-+
-+	writel(c, &jtag->data);
-+}
-+
-+static int altera_serial_jtag_tstc(struct console_device *cdev)
-+{
-+	struct nios_jtag *jtag = (struct nios_jtag *)cdev->dev->map_base;
-+
-+	return readl(&jtag->control) & NIOS_JTAG_RRDY;
-+}
-+
-+static int altera_serial_jtag_getc(struct console_device *cdev)
-+{
-+	struct nios_jtag *jtag = (struct nios_jtag *)cdev->dev->map_base;
-+	uint32_t val;
-+
-+	while (1) {
-+		val = readl(&jtag->data);
-+		if (val & NIOS_JTAG_RVALID)
-+			break;
-+	}
-+
-+	return val & 0xFF;
-+}
-+
-+static int altera_serial_jtag_probe(struct device_d *dev) {
-+
-+	struct console_device *cdev;
-+
-+	cdev = malloc(sizeof(struct console_device));
-+	dev->type_data = cdev;
-+	cdev->dev = dev;
-+	cdev->f_caps = CONSOLE_STDIN | CONSOLE_STDOUT | CONSOLE_STDERR;
-+	cdev->tstc = altera_serial_jtag_tstc;
-+	cdev->putc = altera_serial_jtag_putc;
-+	cdev->getc = altera_serial_jtag_getc;
-+	cdev->setbrg = altera_serial_jtag_setbaudrate;
-+
-+	console_register(cdev);
-+
-+	return 0;
-+}
-+
-+static struct driver_d altera_serial_jtag_driver = {
-+	.name = "altera_serial_jtag",
-+	.probe = altera_serial_jtag_probe,
-+};
-+
-+static int altera_serial_jtag_init(void)
-+{
-+	return register_driver(&altera_serial_jtag_driver);
-+}
-+
-+console_initcall(altera_serial_jtag_init);
-+
++++ b/drivers/base/Makefile
+@@ -0,0 +1,2 @@
++obj-y	+= driver.o
++obj-y	+= platform_bus.o
+diff --git a/lib/driver.c b/drivers/base/driver.c
+similarity index 100%
+rename from lib/driver.c
+rename to drivers/base/driver.c
+diff --git a/lib/bus.c b/drivers/base/platform_bus.c
+similarity index 100%
+rename from lib/bus.c
+rename to drivers/base/platform_bus.c
+diff --git a/lib/Makefile b/lib/Makefile
+index 8b986d2..d96cfe7 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -5,8 +5,6 @@ obj-y			+= string.o
+ obj-y			+= vsprintf.o
+ obj-y			+= div64.o
+ obj-y			+= misc.o
+-obj-y			+= driver.o
+-obj-y			+= bus.o
+ obj-y			+= parameter.o
+ obj-y			+= xfuncs.o
+ obj-y			+= getopt.o
 -- 
-1.7.0.4
+1.7.4.1
 
 
 _______________________________________________
