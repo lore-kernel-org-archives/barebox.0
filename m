@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 13.97.mail-out.ovh.net ([87.98.173.128]
+Received: from 18.97.mail-out.ovh.net ([178.33.44.185]
 	helo=97.mail-out.ovh.net)
 	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1QU9A0-0004Li-EM
-	for barebox@lists.infradead.org; Wed, 08 Jun 2011 03:10:25 +0000
+	id 1QU9Bh-0004Mc-09
+	for barebox@lists.infradead.org; Wed, 08 Jun 2011 03:12:09 +0000
 Received: from mail185.ha.ovh.net (b9.ovh.net [213.186.33.59])
-	by 97.mail-out.ovh.net (Postfix) with SMTP id 0836842103B
+	by 97.mail-out.ovh.net (Postfix) with SMTP id 804D14A6258
 	for <barebox@lists.infradead.org>;
-	Wed,  8 Jun 2011 05:10:50 +0200 (CEST)
+	Wed,  8 Jun 2011 05:12:34 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Wed,  8 Jun 2011 04:57:09 +0200
-Message-Id: <1307501829-23014-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Wed,  8 Jun 2011 04:58:56 +0200
+Message-Id: <1307501936-23279-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,59 +24,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] move driver and bus code to drivers/base
+Subject: [PATCH] at91sam9263ek: fix env location and size
 To: barebox@lists.infradead.org
+
+256k(barebox)ro,128k(bareboxenv),1536k(kernel),-(root)
+
+so we will match the erase block size
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- drivers/Makefile                         |    1 +
- drivers/base/Makefile                    |    2 ++
- {lib => drivers/base}/driver.c           |    0
- lib/bus.c => drivers/base/platform_bus.c |    0
- lib/Makefile                             |    2 --
- 5 files changed, 3 insertions(+), 2 deletions(-)
- create mode 100644 drivers/base/Makefile
- rename {lib => drivers/base}/driver.c (100%)
- rename lib/bus.c => drivers/base/platform_bus.c (100%)
+ arch/arm/boards/at91sam9263ek/env/config |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/Makefile b/drivers/Makefile
-index b1b402f..9a90434 100644
---- a/drivers/Makefile
-+++ b/drivers/Makefile
-@@ -1,3 +1,4 @@
-+obj-y	+= base/
- obj-y	+= net/
- obj-y	+= serial/
- obj-y	+= mtd/
-diff --git a/drivers/base/Makefile b/drivers/base/Makefile
-new file mode 100644
-index 0000000..f96ae22
---- /dev/null
-+++ b/drivers/base/Makefile
-@@ -0,0 +1,2 @@
-+obj-y	+= driver.o
-+obj-y	+= platform_bus.o
-diff --git a/lib/driver.c b/drivers/base/driver.c
-similarity index 100%
-rename from lib/driver.c
-rename to drivers/base/driver.c
-diff --git a/lib/bus.c b/drivers/base/platform_bus.c
-similarity index 100%
-rename from lib/bus.c
-rename to drivers/base/platform_bus.c
-diff --git a/lib/Makefile b/lib/Makefile
-index 8b986d2..d96cfe7 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -5,8 +5,6 @@ obj-y			+= string.o
- obj-y			+= vsprintf.o
- obj-y			+= div64.o
- obj-y			+= misc.o
--obj-y			+= driver.o
--obj-y			+= bus.o
- obj-y			+= parameter.o
- obj-y			+= xfuncs.o
- obj-y			+= getopt.o
+diff --git a/arch/arm/boards/at91sam9263ek/env/config b/arch/arm/boards/at91sam9263ek/env/config
+index f1cb751..4e29232 100644
+--- a/arch/arm/boards/at91sam9263ek/env/config
++++ b/arch/arm/boards/at91sam9263ek/env/config
+@@ -30,7 +30,7 @@ kernelimage=uImage
+ #kernelimage=Image.lzo
+ 
+ nand_device=atmel_nand
+-nand_parts="256k(barebox)ro,64k(bareboxenv),1536k(kernel),-(root)"
++nand_parts="256k(barebox)ro,128k(bareboxenv),1536k(kernel),-(root)"
+ rootfs_mtdblock_nand=3
+ 
+ autoboot_timeout=3
 -- 
 1.7.4.1
 
