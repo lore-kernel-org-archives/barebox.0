@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.visioncatalog.com ([217.6.246.34] helo=root.phytec.de)
+Received: from 10.97.mail-out.ovh.net ([178.33.249.221]
+	helo=97.mail-out.ovh.net)
 	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1QUZwU-0001k0-Mx
-	for barebox@lists.infradead.org; Thu, 09 Jun 2011 07:46:15 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
-	by root.phytec.de (Postfix) with ESMTP id C59F8BF0CC
+	id 1QUglz-00005e-N8
+	for barebox@lists.infradead.org; Thu, 09 Jun 2011 15:03:52 +0000
+Received: from mail185.ha.ovh.net (b9.ovh.net [213.186.33.59])
+	by 97.mail-out.ovh.net (Postfix) with SMTP id A61384E215C
 	for <barebox@lists.infradead.org>;
-	Thu,  9 Jun 2011 09:48:58 +0200 (CEST)
-From: Teresa Gamez <T.Gamez@phytec.de>
-Date: Thu, 09 Jun 2011 09:45:31 +0200
-Message-ID: <1307605531.3146.1386.camel@lws-gamez>
-Mime-Version: 1.0
+	Thu,  9 Jun 2011 17:04:22 +0200 (CEST)
+Date: Thu, 9 Jun 2011 16:50:28 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20110609145028.GH17584@game.jcrosoft.org>
+MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,29 +21,81 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] [defaultenv/bin/_update] Check return values of erase and
-	tftp/cp
+Subject: pull request complete support
 To: barebox@lists.infradead.org
-Cc: J.Kilb@phytec.de
 
-VGhlIF91cGRhdGUgc2NyaXB0IGRvZXMgbm90IGNoZWNrIHRoZSByZXR1cm4gdmFsdWUgb2YgZXJh
-c2luZyBhIHBhcnRpdG9uIG9yCmZsYXNoaW5nIHRoZSBpbWFnZSB0byB0aGUgZGV2aWNlLiBBZGRl
-ZCB0aGlzIGNoZWNrIHRvIGdldCBhIGV2YWx1YWJsZSByZXR1cm4KdmFsdWUgZnJvbSB0aGUgdXBk
-YXRlIHNjcmlwdC4KClNpZ25lZC1vZmYtYnk6IFRlcmVzYSBHw6FtZXogPHQuZ2FtZXpAcGh5dGVj
-LmRlPgotLS0KIGRlZmF1bHRlbnYvYmluL191cGRhdGUgfCAgICA2ICsrKy0tLQogMSBmaWxlcyBj
-aGFuZ2VkLCAzIGluc2VydGlvbnMoKyksIDMgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvZGVm
-YXVsdGVudi9iaW4vX3VwZGF0ZSBiL2RlZmF1bHRlbnYvYmluL191cGRhdGUKaW5kZXggZjczNmFj
-Yy4uMWJjYjcxYyAxMDA2NDQKLS0tIGEvZGVmYXVsdGVudi9iaW4vX3VwZGF0ZQorKysgYi9kZWZh
-dWx0ZW52L2Jpbi9fdXBkYXRlCkBAIC0zNSwxNiArMzUsMTYgQEAgdW5wcm90ZWN0ICRwYXJ0CiBl
-Y2hvCiBlY2hvICJlcmFzaW5nIHBhcnRpdGlvbiAkcGFydCIKIGVjaG8KLWVyYXNlICRwYXJ0Citl
-cmFzZSAkcGFydCB8fCBleGl0IDEKIAogZWNobwogZWNobyAiZmxhc2hpbmcgJGltYWdlIHRvICRw
-YXJ0IgogZWNobwogCiBpZiBbIHgkbW9kZSA9IHh0ZnRwIF07IHRoZW4KLQl0ZnRwICRpbWFnZSAk
-cGFydAorCXRmdHAgJGltYWdlICRwYXJ0IHx8IGV4aXQgMQogZWxzZQotCWNwICRpbWFnZSAkcGFy
-dAorCWNwICRpbWFnZSAkcGFydCB8fCBleGl0IDEKIGZpCiAKIHByb3RlY3QgJHBhcnQKLS0gCjEu
-Ny4wLjQKCgoKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-XwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDov
-L2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Hi,
+
+	This patch series add the support of the complete for :
+	- var and device param (set and get)
+	- generic command complete framework
+	- devinfo
+	- help
+	- empty command complete
+	- eth interface
+
+	this will also include the move driver and bus code to drivers/base
+	patch as this series depend on it
+
+	Please pull
+The following changes since commit 6e27bfb15e4e2446753fe9affcc3128772205cec:
+
+  Merge branch 'next' (2011-06-06 11:29:45 +0200)
+
+are available in the git repository at:
+
+  git://uboot.jcrosoft.org/barebox.git complete
+
+Jean-Christophe PLAGNIOL-VILLARD (7):
+      move driver and bus code to drivers/base
+      complete: add var and device param complete support
+      complete: add generic command complete framework
+      complete: add device name complete support for devinfo
+      complete: add help complete support
+      complete: add empty complete support
+      complete: add eth interface complete support
+
+ arch/arm/cpu/cpuinfo.c                   |    2 +
+ arch/arm/mach-imx/speed.c                |    2 +
+ arch/arm/mach-mxs/imx.c                  |    2 +
+ commands/clear.c                         |    2 +
+ commands/false.c                         |    2 +
+ commands/help.c                          |    2 +
+ commands/login.c                         |    2 +
+ commands/lsmod.c                         |    2 +
+ commands/meminfo.c                       |    2 +
+ commands/net.c                           |    2 +
+ commands/passwd.c                        |    2 +
+ commands/pwd.c                           |    2 +
+ commands/reginfo.c                       |    2 +
+ commands/reset.c                         |    2 +
+ commands/true.c                          |    2 +
+ commands/usb.c                           |    2 +
+ commands/version.c                       |    2 +
+ common/complete.c                        |  183 ++++++++++++++++++++++++++++--
+ drivers/Makefile                         |    1 +
+ drivers/base/Makefile                    |    2 +
+ {lib => drivers/base}/driver.c           |    2 +
+ lib/bus.c => drivers/base/platform_bus.c |    0
+ drivers/usb/gadget/u_serial.c            |    2 +
+ include/command.h                        |    8 ++
+ include/complete.h                       |    7 +
+ lib/Makefile                             |    2 -
+ net/dhcp.c                               |    2 +
+ net/eth.c                                |   23 ++++
+ 28 files changed, 253 insertions(+), 13 deletions(-)
+ create mode 100644 drivers/base/Makefile
+ rename {lib => drivers/base}/driver.c (99%)
+ rename lib/bus.c => drivers/base/platform_bus.c (100%)
+
+Best Regards,
+J.
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
