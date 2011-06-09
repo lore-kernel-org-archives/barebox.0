@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 29.97.mail-out.ovh.net ([87.98.174.141]
-	helo=97.mail-out.ovh.net)
-	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1QUjmL-0003yX-3n
-	for barebox@lists.infradead.org; Thu, 09 Jun 2011 18:16:26 +0000
-Received: from mail185.ha.ovh.net (b9.ovh.net [213.186.33.59])
-	by 97.mail-out.ovh.net (Postfix) with SMTP id A91E54A7326
-	for <barebox@lists.infradead.org>;
-	Thu,  9 Jun 2011 20:16:58 +0200 (CEST)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu,  9 Jun 2011 20:03:04 +0200
-Message-Id: <1307642584-23695-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from mail-vx0-f177.google.com ([209.85.220.177])
+	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+	id 1QUnzV-00075e-Mk
+	for barebox@lists.infradead.org; Thu, 09 Jun 2011 22:46:18 +0000
+Received: by vxd2 with SMTP id 2so2119152vxd.36
+	for <barebox@lists.infradead.org>; Thu, 09 Jun 2011 15:46:14 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <20110609145028.GH17584@game.jcrosoft.org>
+References: <20110609145028.GH17584@game.jcrosoft.org>
+Date: Fri, 10 Jun 2011 00:46:13 +0200
+Message-ID: <BANLkTikwVwFUzZFRUJCS72SxmNSjw-KRtw@mail.gmail.com>
+From: Hubert Feurstein <h.feurstein@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,248 +19,138 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC PATCH] cammand/gpio: switch to getopt
-To: barebox@lists.infradead.org
+Subject: Re: pull request complete support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-this will simplify the implementation and save 296 bytes
+Hi Jean-Christophe,
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- commands/gpio.c |  162 ++++++++++++++++++++++--------------------------------
- 1 files changed, 66 insertions(+), 96 deletions(-)
+I've tested it in the sandbox and get an access violation when I type
+"dev<TAB>". Here is the backtrace:
 
-diff --git a/commands/gpio.c b/commands/gpio.c
-index 073c9d3..af1fd39 100644
---- a/commands/gpio.c
-+++ b/commands/gpio.c
-@@ -19,113 +19,83 @@
- #include <command.h>
- #include <errno.h>
- #include <gpio.h>
-+#include <getopt.h>
- 
--static int do_gpio_get_value(struct command *cmdtp, int argc, char *argv[])
-+static int do_gpio(struct command *cmdtp, int argc, char *argv[])
- {
--	int gpio, value;
-+	int opt;
-+	int gpio = -1;
-+	int value = -1;
-+	int mode = -1;
-+	int ret = 0;
- 
--	if (argc < 2)
-+	if (!argc)
- 		return COMMAND_ERROR_USAGE;
- 
--	gpio = simple_strtoul(argv[1], NULL, 0);
--
--	value = gpio_get_value(gpio);
--	if (value < 0)
-+	while((opt = getopt(argc, argv, "g:oiS:G")) > 0) {
-+		switch(opt) {
-+		case 'g':
-+			gpio = simple_strtoul(optarg, NULL, 0);
-+			break;
-+		case 'o':
-+			mode = 1;
-+			break;
-+		case 'i':
-+			mode = 2;
-+			break;
-+		case 'G':
-+			mode = 3;
-+			value = 0;
-+			break;
-+		case 'S':
-+			if (mode != 1)
-+				mode = 4;
-+			value = simple_strtoul(optarg, NULL, 0);
-+			break;
-+
-+		}
-+	}
-+
-+	if (gpio < 0 || mode < 0 || value < 0)
- 		return 1;
- 
--	return value;
--}
--
--BAREBOX_CMD_HELP_START(gpio_get_value)
--BAREBOX_CMD_HELP_USAGE("gpio_get_value <gpio>\n")
--BAREBOX_CMD_HELP_SHORT("get the value of an gpio input pin\n")
--BAREBOX_CMD_HELP_END
--
--BAREBOX_CMD_START(gpio_get_value)
--	.cmd		= do_gpio_get_value,
--	.usage		= "return value of a gpio pin",
--	BAREBOX_CMD_HELP(cmd_gpio_get_value_help)
--BAREBOX_CMD_END
--
--static int do_gpio_set_value(struct command *cmdtp, int argc, char *argv[])
--{
--	int gpio, value;
--
--	if (argc < 3)
--		return COMMAND_ERROR_USAGE;
--
--	gpio = simple_strtoul(argv[1], NULL, 0);
--	value = simple_strtoul(argv[2], NULL, 0);
--
--	gpio_set_value(gpio, value);
--
--	return 0;
--}
--
--BAREBOX_CMD_HELP_START(gpio_set_value)
--BAREBOX_CMD_HELP_USAGE("gpio_set_value <gpio> <value>\n")
--BAREBOX_CMD_HELP_SHORT("set the value of an gpio output pin\n")
--BAREBOX_CMD_HELP_END
--
--BAREBOX_CMD_START(gpio_set_value)
--	.cmd		= do_gpio_set_value,
--	.usage		= "set a gpio's output value",
--	BAREBOX_CMD_HELP(cmd_gpio_set_value_help)
--BAREBOX_CMD_END
--
--static int do_gpio_direction_input(struct command *cmdtp, int argc, char *argv[])
--{
--	int gpio, ret;
--
--	if (argc < 2)
--		return COMMAND_ERROR_USAGE;
--
--	gpio = simple_strtoul(argv[1], NULL, 0);
--
--	ret = gpio_direction_input(gpio);
--	if (ret)
--		return 1;
--
--	return 0;
--}
--
--BAREBOX_CMD_HELP_START(gpio_direction_input)
--BAREBOX_CMD_HELP_USAGE("gpio_direction_input <gpio>\n")
--BAREBOX_CMD_HELP_SHORT("set direction of a gpio pin to input\n")
--BAREBOX_CMD_HELP_END
--
--BAREBOX_CMD_START(gpio_direction_input)
--	.cmd		= do_gpio_direction_input,
--	.usage		= "set direction of a gpio pin to input",
--	BAREBOX_CMD_HELP(cmd_gpio_direction_input_help)
--BAREBOX_CMD_END
--
--static int do_gpio_direction_output(struct command *cmdtp, int argc, char *argv[])
--{
--	int gpio, value, ret;
--
--	if (argc < 3)
--		return COMMAND_ERROR_USAGE;
--
--	gpio = simple_strtoul(argv[1], NULL, 0);
--	value = simple_strtoul(argv[2], NULL, 0);
-+	switch (mode) {
-+	case 1:
-+		ret = gpio_direction_input(gpio);
-+		break;
-+	case 2:
-+		ret = gpio_direction_output(gpio, value);
-+		break;
-+	case 3:
-+		value = gpio_get_value(gpio);
-+		if (value < 0)
-+			return 1;
-+		return value;
-+	case 4:
-+		gpio_set_value(gpio, value);
-+		break;
-+	}
- 
--	ret = gpio_direction_output(gpio, value);
- 	if (ret)
- 		return 1;
- 
- 	return 0;
- }
- 
--BAREBOX_CMD_HELP_START(gpio_direction_output)
--BAREBOX_CMD_HELP_USAGE("gpio_direction_output <gpio> <value>\n")
--BAREBOX_CMD_HELP_SHORT("set direction of a gpio pin to output\n")
-+BAREBOX_CMD_HELP_START(gpio)
-+BAREBOX_CMD_HELP_USAGE("gpio -g <gpio> [-o|-i] [-g|-s <value>]\n")
-+BAREBOX_CMD_HELP_SHORT("gpio management\n")
-+BAREBOX_CMD_HELP_OPT  ("-g <gpio>",	"gpio number\n")
-+BAREBOX_CMD_HELP_OPT  ("-o",		"output mode (you need to specify a value\n")
-+BAREBOX_CMD_HELP_OPT  ("-i",		"input mode\n")
-+BAREBOX_CMD_HELP_OPT  ("-G",		"get value\n")
-+BAREBOX_CMD_HELP_OPT  ("-S",		"set value\n")
- BAREBOX_CMD_HELP_END
- 
--BAREBOX_CMD_START(gpio_direction_output)
--	.cmd		= do_gpio_direction_output,
--	.usage		= "set direction of a gpio pin to output",
--	BAREBOX_CMD_HELP(cmd_gpio_direction_output_help)
-+BAREBOX_CMD_START(gpio)
-+	.cmd		= do_gpio,
-+	.usage		= "gpio management",
-+	BAREBOX_CMD_HELP(cmd_gpio_help)
- BAREBOX_CMD_END
- 
- /**
-@@ -133,7 +103,7 @@ BAREBOX_CMD_END
- 
- @section regular_gpio General usage information
- 
--These commands are available if the symbol @b CONFIG_GENERIC_GPIO and @b
-+The gpio command are available if the symbol @b CONFIG_GENERIC_GPIO and @b
- CONFIG_CMD_GPIO are enabled in Kconfig.
- 
- @note All gpio related commands take a number to identify the pad. This
-@@ -143,7 +113,7 @@ between @b barebox releases.
- 
- @section gpio_dir_out Use Pad as GPIO Output
- @verbatim
--# gpio_direction_output <gpio_no> <initial_value>
-+# gpio -g <gpio_no> -S <initial_value>
- @endverbatim
- - gpio_no: Architecture dependend GPIO number
- - initial_value: Output value
-@@ -155,7 +125,7 @@ available), this command may silently fail. </p>
- 
- @section gpio_dir_in Use Pad as GPIO Input
- @verbatim
--# gpio_direction_input <gpio_no>
-+# gpio -g <gpio_no> -i
- @endverbatim
- - gpio_no: Architecture dependent GPIO number
- 
-@@ -164,7 +134,7 @@ this command may silently fail. </p>
- 
- @section gpio_get_value Read Input Value from GPIO Pin
- @verbatim
--# gpio_get_value <gpio_no>
-+# gpio -g <gpio_no> -G
- @endverbatim
- 
- <p> Reads the current value of a GPIO pin and return the value as a
-@@ -178,7 +148,7 @@ fail and return garbage. </p>
- 
- @section gpio_set_value Set Output Value on GPIO Pin
- @verbatim
--# gpio_set_value <gpio_no> <value>
-+# gpio -g <gpio_no> -S <value>
- @endverbatim
- - gpio_no: Architecture dependent GPIO number
- - value: Output value
--- 
-1.7.4.1
+#0  0x0040dd1b in strlen (s=3D0x0) at lib/string.c:228
+#1  0x00404652 in device_param_complete (begin=3D0 '\000',
+dev=3D0xb763fa94, sl=3D0xbfffefe0, instr=3D0x0) at common/complete.c:115
+#2  0x00404a24 in env_param_complete (sl=3D0xbfffefe0, instr=3D0x426160
+"dev", eval=3D0) at common/complete.c:209
+#3  0x00404c59 in complete (instr=3D0x426160 "dev", outstr=3D0xbffff064)
+at common/complete.c:282
+#4  0x00415687 in readline (prompt=3D0x426ac0 "barebox:/ ", buf=3D0x426160
+"dev", len=3D1024) at lib/readline.c:209
+#5  0x00401363 in get_user_input (i=3D0xbffff1c8) at common/hush.c:414
+#6  0x004014c2 in file_get (i=3D0xbffff1c8) at common/hush.c:463
+#7  0x00402e4f in parse_stream (dest=3D0xbffff154, ctx=3D0xbffff198,
+input=3D0xbffff1c8, end_trigger=3D10) at common/hush.c:1278
+#8  0x00402fd2 in parse_stream_outer (ctx=3D0xbffff198, inp=3D0xbffff1c8,
+flag=3D2) at common/hush.c:1428
+#9  0x00403770 in run_shell () at common/hush.c:1647
+#10 0x00407d6a in start_barebox () at common/startup.c:167
+#11 0x0041f082 in main ()
 
+Best Regards
+Hubert
+
+2011/6/9 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>:
+> Hi,
+>
+> =A0 =A0 =A0 =A0This patch series add the support of the complete for :
+> =A0 =A0 =A0 =A0- var and device param (set and get)
+> =A0 =A0 =A0 =A0- generic command complete framework
+> =A0 =A0 =A0 =A0- devinfo
+> =A0 =A0 =A0 =A0- help
+> =A0 =A0 =A0 =A0- empty command complete
+> =A0 =A0 =A0 =A0- eth interface
+>
+> =A0 =A0 =A0 =A0this will also include the move driver and bus code to dri=
+vers/base
+> =A0 =A0 =A0 =A0patch as this series depend on it
+>
+> =A0 =A0 =A0 =A0Please pull
+> The following changes since commit 6e27bfb15e4e2446753fe9affcc3128772205c=
+ec:
+>
+> =A0Merge branch 'next' (2011-06-06 11:29:45 +0200)
+>
+> are available in the git repository at:
+>
+> =A0git://uboot.jcrosoft.org/barebox.git complete
+>
+> Jean-Christophe PLAGNIOL-VILLARD (7):
+> =A0 =A0 =A0move driver and bus code to drivers/base
+> =A0 =A0 =A0complete: add var and device param complete support
+> =A0 =A0 =A0complete: add generic command complete framework
+> =A0 =A0 =A0complete: add device name complete support for devinfo
+> =A0 =A0 =A0complete: add help complete support
+> =A0 =A0 =A0complete: add empty complete support
+> =A0 =A0 =A0complete: add eth interface complete support
+>
+> =A0arch/arm/cpu/cpuinfo.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 | =A0 =A02 +
+> =A0arch/arm/mach-imx/speed.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0| =A0 =A02 +
+> =A0arch/arm/mach-mxs/imx.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0| =A0 =A02 +
+> =A0commands/clear.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 | =A0=
+ =A02 +
+> =A0commands/false.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 | =A0=
+ =A02 +
+> =A0commands/help.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0| =
+=A0 =A02 +
+> =A0commands/login.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 | =A0=
+ =A02 +
+> =A0commands/lsmod.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 | =A0=
+ =A02 +
+> =A0commands/meminfo.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 | =A0 =
+=A02 +
+> =A0commands/net.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 | =
+=A0 =A02 +
+> =A0commands/passwd.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0| =A0=
+ =A02 +
+> =A0commands/pwd.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 | =
+=A0 =A02 +
+> =A0commands/reginfo.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 | =A0 =
+=A02 +
+> =A0commands/reset.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 | =A0=
+ =A02 +
+> =A0commands/true.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0| =
+=A0 =A02 +
+> =A0commands/usb.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 | =
+=A0 =A02 +
+> =A0commands/version.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 | =A0 =
+=A02 +
+> =A0common/complete.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0| =A0=
+183 ++++++++++++++++++++++++++++--
+> =A0drivers/Makefile =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 | =A0=
+ =A01 +
+> =A0drivers/base/Makefile =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0| =A0 =A0=
+2 +
+> =A0{lib =3D> drivers/base}/driver.c =A0 =A0 =A0 =A0 =A0 | =A0 =A02 +
+> =A0lib/bus.c =3D> drivers/base/platform_bus.c | =A0 =A00
+> =A0drivers/usb/gadget/u_serial.c =A0 =A0 =A0 =A0 =A0 =A0| =A0 =A02 +
+> =A0include/command.h =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0| =A0=
+ =A08 ++
+> =A0include/complete.h =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 | =A0 =
+=A07 +
+> =A0lib/Makefile =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 |=
+ =A0 =A02 -
+> =A0net/dhcp.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
+ | =A0 =A02 +
+> =A0net/eth.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0| =A0 23 ++++
+> =A028 files changed, 253 insertions(+), 13 deletions(-)
+> =A0create mode 100644 drivers/base/Makefile
+> =A0rename {lib =3D> drivers/base}/driver.c (99%)
+> =A0rename lib/bus.c =3D> drivers/base/platform_bus.c (100%)
+>
+> Best Regards,
+> J.
+>
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+>
 
 _______________________________________________
 barebox mailing list
