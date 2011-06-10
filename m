@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QUvfP-0001hK-So
+	id 1QUvfP-0001hJ-Sk
 	for barebox@lists.infradead.org; Fri, 10 Jun 2011 06:58:05 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 10 Jun 2011 08:57:53 +0200
-Message-Id: <1307689073-9559-3-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 10 Jun 2011 08:57:52 +0200
+Message-Id: <1307689073-9559-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1307689073-9559-1-git-send-email-s.hauer@pengutronix.de>
 References: <1307689073-9559-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,69 +21,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] stringlist: implement string_list_asprintf
+Subject: [PATCH 1/2] stringlist: use seperately allocated string.
 To: barebox@lists.infradead.org
 
-Useful for allocating a string list entry on the fly.
+Allocate the string in string list seperately instead of
+embedding a zero length string into struct stringlist.
+Besides looking cleaner this allows us to implement a
+string_list_asprintf.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/stringlist.h |    1 +
- lib/stringlist.c     |   22 ++++++++++++++++++++++
- 2 files changed, 23 insertions(+), 0 deletions(-)
+ include/stringlist.h |    6 ++++--
+ lib/stringlist.c     |    6 +++---
+ 2 files changed, 7 insertions(+), 5 deletions(-)
 
 diff --git a/include/stringlist.h b/include/stringlist.h
-index 86edcf0..1e2616d 100644
+index 3453e9a..86edcf0 100644
 --- a/include/stringlist.h
 +++ b/include/stringlist.h
-@@ -9,6 +9,7 @@ struct string_list {
+@@ -5,7 +5,7 @@
+ 
+ struct string_list {
+ 	struct list_head list;
+-	char str[0];
++	char *str;
  };
  
  int string_list_add(struct string_list *sl, char *str);
-+int string_list_asprintf(struct string_list *sl, const char *fmt, ...);
- void string_list_print_by_column(struct string_list *sl);
+@@ -20,8 +20,10 @@ static inline void string_list_free(struct string_list *sl)
+ {
+ 	struct string_list *entry, *safe;
  
- static inline void string_list_init(struct string_list *sl)
+-	list_for_each_entry_safe(entry, safe, &sl->list, list)
++	list_for_each_entry_safe(entry, safe, &sl->list, list) {
++		free(entry->str);
+ 		free(entry);
++	}
+ }
+ 
+ #endif /* __STRING_H */
 diff --git a/lib/stringlist.c b/lib/stringlist.c
-index 3c8ecec..1015cac 100644
+index 9ccf8fa..3c8ecec 100644
 --- a/lib/stringlist.c
 +++ b/lib/stringlist.c
-@@ -1,6 +1,7 @@
+@@ -1,15 +1,15 @@
  #include <common.h>
  #include <xfuncs.h>
  #include <malloc.h>
-+#include <errno.h>
- #include <xfuncs.h>
++#include <xfuncs.h>
  #include <stringlist.h>
  
-@@ -16,6 +17,27 @@ int string_list_add(struct string_list *sl, char *str)
- 	return 0;
- }
- 
-+int string_list_asprintf(struct string_list *sl, const char *fmt, ...)
-+{
-+	struct string_list *new;
-+	va_list args;
-+
-+	new = xmalloc(sizeof(*new));
-+
-+	va_start(args, fmt);
-+
-+	new->str = asprintf(fmt, args);
-+
-+	va_end(args);
-+
-+	if (!new->str) {
-+		free(new);
-+		return -ENOMEM;
-+	}
-+
-+	return 0;
-+}
-+
- void string_list_print_by_column(struct string_list *sl)
+ int string_list_add(struct string_list *sl, char *str)
  {
- 	int len = 0, num, i;
+ 	struct string_list *new;
+ 
+-	new = xmalloc(sizeof(struct string_list) + strlen(str) + 1);
+-
+-	strcpy(new->str, str);
++	new = xmalloc(sizeof(*new));
++	new->str = xstrdup(str);
+ 
+ 	list_add_tail(&new->list, &sl->list);
+ 
 -- 
 1.7.5.3
 
