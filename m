@@ -1,22 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 18.97.mail-out.ovh.net ([178.33.44.185]
+Received: from 13.97.mail-out.ovh.net ([87.98.173.128]
 	helo=97.mail-out.ovh.net)
 	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1QUqg4-0008J7-DF
-	for barebox@lists.infradead.org; Fri, 10 Jun 2011 01:38:25 +0000
+	id 1QUqkL-0008Kt-VC
+	for barebox@lists.infradead.org; Fri, 10 Jun 2011 01:42:51 +0000
 Received: from mail185.ha.ovh.net (b9.ovh.net [213.186.33.59])
-	by 97.mail-out.ovh.net (Postfix) with SMTP id 011C84A73E0
+	by 97.mail-out.ovh.net (Postfix) with SMTP id 4AB7D4A7675
 	for <barebox@lists.infradead.org>;
-	Fri, 10 Jun 2011 03:38:58 +0200 (CEST)
-Date: Fri, 10 Jun 2011 03:25:02 +0200
+	Fri, 10 Jun 2011 03:43:25 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20110610012502.GM17584@game.jcrosoft.org>
-References: <20110609145028.GH17584@game.jcrosoft.org>
-	<BANLkTikwVwFUzZFRUJCS72SxmNSjw-KRtw@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="UHN/qo2QbUvPLonB"
-Content-Disposition: inline
-In-Reply-To: <BANLkTikwVwFUzZFRUJCS72SxmNSjw-KRtw@mail.gmail.com>
+Date: Fri, 10 Jun 2011 03:29:27 +0200
+Message-Id: <1307669367-3129-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1307631354-5553-1-git-send-email-plagnioj@jcrosoft.com>
+References: <1307631354-5553-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,95 +21,170 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: pull request complete support
-To: Hubert Feurstein <h.feurstein@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2] complete: add var and device param complete support
+To: barebox@lists.infradead.org
 
+with $xx or xx= or if device $xx.yy or xx.yy=
 
---UHN/qo2QbUvPLonB
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+v2:
 
-On 00:46 Fri 10 Jun     , Hubert Feurstein wrote:
-> Hi Jean-Christophe,
-> 
-> I've tested it in the sandbox and get an access violation when I type
-> "dev<TAB>". Here is the backtrace:
-> 
-> #0  0x0040dd1b in strlen (s=0x0) at lib/string.c:228
-> #1  0x00404652 in device_param_complete (begin=0 '\000',
-> dev=0xb763fa94, sl=0xbfffefe0, instr=0x0) at common/complete.c:115
-> #2  0x00404a24 in env_param_complete (sl=0xbfffefe0, instr=0x426160
-> "dev", eval=0) at common/complete.c:209
-> #3  0x00404c59 in complete (instr=0x426160 "dev", outstr=0xbffff064)
-> at common/complete.c:282
-> #4  0x00415687 in readline (prompt=0x426ac0 "barebox:/ ", buf=0x426160
-> "dev", len=1024) at lib/readline.c:209
-> #5  0x00401363 in get_user_input (i=0xbffff1c8) at common/hush.c:414
-> #6  0x004014c2 in file_get (i=0xbffff1c8) at common/hush.c:463
-> #7  0x00402e4f in parse_stream (dest=0xbffff154, ctx=0xbffff198,
-> input=0xbffff1c8, end_trigger=10) at common/hush.c:1278
-> #8  0x00402fd2 in parse_stream_outer (ctx=0xbffff198, inp=0xbffff1c8,
-> flag=2) at common/hush.c:1428
-> #9  0x00403770 in run_shell () at common/hush.c:1647
-> #10 0x00407d6a in start_barebox () at common/startup.c:167
-> #11 0x0041f082 in main ()
-
-try with this patch
+make the call device_param_complete safe
 
 Best Regards,
 J.
-
---UHN/qo2QbUvPLonB
-Content-Type: text/x-diff; charset=us-ascii
-Content-Disposition: attachment; filename="p.patch"
+ common/complete.c |  112 ++++++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 files changed, 111 insertions(+), 1 deletions(-)
 
 diff --git a/common/complete.c b/common/complete.c
-index 586a7eb..f9c05b4 100644
+index 46ba871..5f1df74 100644
 --- a/common/complete.c
 +++ b/common/complete.c
-@@ -88,6 +88,9 @@ int device_complete(struct string_list *sl, char *instr)
- 	char cmd[128];
- 	int len, len2;
+@@ -27,6 +27,7 @@
+ #include <libgen.h>
+ #include <command.h>
+ #include <stringlist.h>
++#include <environment.h>
  
-+	if (!instr)
-+		instr = "";
+ static int file_complete(struct string_list *sl, char *instr)
+ {
+@@ -84,6 +85,111 @@ static int command_complete(struct string_list *sl, char *instr)
+ 	return 0;
+ }
+ 
++static int device_param_complete(char begin, struct device_d *dev,
++				 struct string_list *sl, char *instr)
++{
++	struct param_d *param;
++	char cmd[128];
++	char *tmp = cmd;
++	int len, len2;
 +
- 	len = strlen(instr);
- 
- 	for_each_device(dev) {
-@@ -112,6 +115,9 @@ static int device_param_complete(char begin, struct device_d *dev,
- 	char *tmp = cmd;
- 	int len, len2;
- 
-+	if (!instr)
-+		instr = "";
++	len = strlen(instr);
++	if (begin) {
++		tmp[0] = begin;
++		tmp++;
++	}
++	strcpy(tmp, dev_name(dev));
++	len2 = strlen(dev_name(dev));
++	tmp += len2;
++	tmp[0] = '.';
++	tmp++;
 +
- 	len = strlen(instr);
- 	if (begin) {
- 		tmp[0] = begin;
-@@ -156,6 +162,9 @@ static int env_param_complete(struct string_list *sl, char *instr, int eval)
- 	int len, len2;
- 	char end = '=';
- 
-+	if (!instr)
-+		instr = "";
++	list_for_each_entry(param, &dev->parameters, list) {
++		memset(tmp, 0x0, 128 - (int)(tmp - cmd));
++		if (!strncmp(instr, param->name, len)) {
++			strcpy(tmp, param->name);
++			len2 = strlen(param->name);
++			if (begin)
++				tmp[len2] = ' ';
++			else
++				tmp[len2] = '=';
++			tmp[len2 + 1] = 0;
++			string_list_add(sl, cmd);
++		}
++	}
 +
- 	if (eval) {
- 		cmd[0] = '$';
- 		tmp++;
++	return 0;
++}
++
++static int env_param_complete(struct string_list *sl, char *instr, int eval)
++{
++	struct device_d *dev;
++	struct variable_d *var;
++	struct env_context *c, *current_c;
++	char cmd[128];
++	char *instr_param;
++	char *tmp = cmd;
++	int len, len2;
++	char end = '=';
++
++	if (eval) {
++		cmd[0] = '$';
++		tmp++;
++		end = ' ';
++	}
++
++	instr_param = strrchr(instr, '.');
++	len = strlen(instr);
++
++	current_c = get_current_context();
++	var = current_c->local->next;
++	while (var) {
++		if (!strncmp(instr, var_name(var), len)) {
++			len2 = strlen(var_name(var));
++			strcpy(tmp, var_name(var));
++			tmp[len2] = end;
++			tmp[len2 + 1] = 0;
++			string_list_add(sl, cmd);
++		}
++		var = var->next;
++	}
++
++	c = get_current_context();
++	while(c) {
++		var = c->global->next;
++		while (var) {
++			if (!strncmp(instr, var_name(var), len)) {
++				len2 = strlen(var_name(var));
++				strcpy(tmp, var_name(var));
++				tmp[len2] = end;
++				tmp[len2 + 1] = 0;
++				string_list_add(sl, cmd);
++			}
++			var = var->next;
++		}
++		c = c->parent;
++	}
++
++	if (instr_param) {
++		len = (instr_param - instr);
++		instr_param++;
++	} else {
++		len = strlen(instr);
++		instr_param = "";
++	}
++
++	for_each_device(dev) {
++		if (!strncmp(instr, dev_name(dev), len)) {
++			if (eval)
++				device_param_complete('$', dev, sl, instr_param);
++			else
++				device_param_complete(0, dev, sl, instr_param);
++		}
++	}
++
++	return 0;
++}
++
+ static int tab_pressed = 0;
+ 
+ void complete_reset(void)
+@@ -121,8 +227,12 @@ int complete(char *instr, char **outstr)
+ 		t++;
+ 		file_complete(&sl, t);
+ 		instr = t;
+-	} else
++	} else {
+ 		command_complete(&sl, instr);
++		env_param_complete(&sl, instr, 0);
++	}
++	if (*instr == '$')
++		env_param_complete(&sl, instr + 1, 1);
+ 
+ 	pos = strlen(instr);
+ 
+-- 
+1.7.4.1
 
---UHN/qo2QbUvPLonB
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---UHN/qo2QbUvPLonB--
