@@ -1,21 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 29.97.mail-out.ovh.net ([87.98.174.141]
-	helo=97.mail-out.ovh.net)
-	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1QUwKs-000228-83
-	for barebox@lists.infradead.org; Fri, 10 Jun 2011 07:40:55 +0000
-Received: from mail185.ha.ovh.net (b9.ovh.net [213.186.33.59])
-	by 97.mail-out.ovh.net (Postfix) with SMTP id 7565C4A7982
-	for <barebox@lists.infradead.org>;
-	Fri, 10 Jun 2011 09:41:30 +0200 (CEST)
-Date: Fri, 10 Jun 2011 09:27:29 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20110610072729.GA3037@game.jcrosoft.org>
-References: <201106081149.40298.tim.sander@hbm.com>
-	<20110610070950.GQ23771@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+	id 1QUwdv-00029g-D0
+	for barebox@lists.infradead.org; Fri, 10 Jun 2011 08:00:36 +0000
+Date: Fri, 10 Jun 2011 10:00:32 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20110610080032.GV23771@pengutronix.de>
+References: <1307631354-5553-1-git-send-email-plagnioj@jcrosoft.com>
+	<1307669367-3129-1-git-send-email-plagnioj@jcrosoft.com>
+	<20110610065349.GO23771@pengutronix.de>
+	<20110610070342.GP17584@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20110610070950.GQ23771@pengutronix.de>
+In-Reply-To: <20110610070342.GP17584@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,34 +25,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Read out version of barebox
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, Tim Sander <tim.sander@hbm.com>
+Subject: Re: [PATCH v2] complete: add var and device param complete support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-On 09:09 Fri 10 Jun     , Sascha Hauer wrote:
-> Hi Tim,
-> 
-> On Wed, Jun 08, 2011 at 11:49:40AM +0200, Tim Sander wrote:
-> > Hi
+On Fri, Jun 10, 2011 at 09:03:42AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > >  
+> > > +static int device_param_complete(char begin, struct device_d *dev,
+> > > +				 struct string_list *sl, char *instr)
+> > > +{
+> > > +	struct param_d *param;
+> > > +	char cmd[128];
+> > > +	char *tmp = cmd;
+> > > +	int len, len2;
+> > > +
+> > > +	len = strlen(instr);
+> > > +	if (begin) {
+> > > +		tmp[0] = begin;
+> > > +		tmp++;
+> > > +	}
+> > > +	strcpy(tmp, dev_name(dev));
+> > > +	len2 = strlen(dev_name(dev));
+> > > +	tmp += len2;
+> > > +	tmp[0] = '.';
+> > > +	tmp++;
+> > > +
+> > > +	list_for_each_entry(param, &dev->parameters, list) {
+> > > +		memset(tmp, 0x0, 128 - (int)(tmp - cmd));
+> > > +		if (!strncmp(instr, param->name, len)) {
+> > > +			strcpy(tmp, param->name);
+> > > +			len2 = strlen(param->name);
+> > > +			if (begin)
+> > > +				tmp[len2] = ' ';
+> > > +			else
+> > > +				tmp[len2] = '=';
+> > > +			tmp[len2 + 1] = 0;
+> > > +			string_list_add(sl, cmd);
+> > > +		}
+> > > +	}
 > > 
-> > I'd like to read out the version string of barebox out of flash. Any idea how 
-> > to do this?
-> 
-> Short answer: No.
-> 
-> We recently added a magic value to the barebox binary which adds at
-> least a 'barebox' string so that you can at least recognize that
-> there is a barebox in flash. I couldn't convince the linker though
-> to add the version string at some fixed location.
-> 
-> (Note this is all Arm specific atm)
-IIRC we can do so via --build-id
+> > The fixed length arrays might overflow. Maybe not in this function, but
+> > when this becomes a template maybe in other functions. Looking at it
+> > this code could really improve with sprintf, more specifically
+> > string_list_asprintf. I'll post a patch in a minute.
+> can we do it in a second step?
 
-but we need to update the lds to .note.*
-or more precisely .note.gnu.build-id
+No, this creates more work for all of us. Consider your code may have
+bugs, then by applying this patch we will expose them to the users which
+will cause bug reports we have to work on. Then we switch to
+string_list_asprintf which may have bugs aswell.
 
-Best Regards,
-J.
+I know you have limited time and for this reason you want to see your
+patches upstream asap, but this can't be the excuse for delaying
+cleanups as we *all* have limited time.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
