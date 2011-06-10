@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vw0-f49.google.com ([209.85.212.49])
-	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QUxGb-0002OX-MV
-	for barebox@lists.infradead.org; Fri, 10 Jun 2011 08:40:36 +0000
-Received: by vws8 with SMTP id 8so2520219vws.36
-	for <barebox@lists.infradead.org>; Fri, 10 Jun 2011 01:40:31 -0700 (PDT)
-MIME-Version: 1.0
-Date: Fri, 10 Jun 2011 10:40:31 +0200
-Message-ID: <BANLkTikb0k8c6-80BU4Nju2M1apCis_G1g@mail.gmail.com>
-From: Hubert Feurstein <h.feurstein@gmail.com>
+Received: from mail.phycard.co.uk ([217.6.246.34] helo=root.phytec.de)
+	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+	id 1QUyFx-000387-DN
+	for barebox@lists.infradead.org; Fri, 10 Jun 2011 09:43:58 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+	by root.phytec.de (Postfix) with ESMTP id D9086BF0CE
+	for <barebox@lists.infradead.org>;
+	Fri, 10 Jun 2011 11:46:42 +0200 (CEST)
+From: Jan Weitzel <j.weitzel@phytec.de>
+Date: Fri, 10 Jun 2011 11:43:49 +0200
+Message-Id: <1307699029-10771-1-git-send-email-j.weitzel@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,53 +18,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Pull request: Atmel MCI Support
+Subject: [PATCH] pcm049: use gpmc_generic_init
 To: barebox@lists.infradead.org
 
-Hi,
+If booting from NAND GPMC_IRQ_ENABLE is not cleared, causing crash if kernel
+request the gpmc irq. gpmc_generic_init clears GPMC_IRQ_ENABLE
 
-all changes regarding the atmel-mci-support can be pulled from the
-following repository.
+Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
+---
+ arch/arm/boards/pcm049/board.c |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
 
-The following changes since commit 885266ac7220a538be2a48f94e8abbe61bab25b1:
+diff --git a/arch/arm/boards/pcm049/board.c b/arch/arm/boards/pcm049/board.c
+index a33a877..2303a9c 100644
+--- a/arch/arm/boards/pcm049/board.c
++++ b/arch/arm/boards/pcm049/board.c
+@@ -145,6 +145,8 @@ static int pcm049_devices_init(void)
+ 	register_device(&sram_dev);
+ 	register_device(&hsmmc_dev);
+ 
++	gpmc_generic_init(0x10);
++
+ 	pcm049_network_init();
+ 
+ 	gpmc_generic_nand_devices_init(0, 8, OMAP_ECC_BCH8_CODE_HW);
+-- 
+1.7.0.4
 
-  Merge branch 'master' of git://git.pengutronix.de/git/barebox
-(2011-06-10 09:30:36 +0200)
-
-are available in the git repository at:
-
-  git://gitorious.org/hfe-repos/barebox.git atmel-mci-support
-
-Hubert Feurstein (2):
-      mci: add Atmel AT91 MCI driver
-      at91sam9m10g45ek: add mci0 support
-
-Jean-Christophe PLAGNIOL-VILLARD (1):
-      at91sam9263ek: add mci1 support
-
- arch/arm/boards/at91sam9263ek/init.c        |   16 +
- arch/arm/boards/at91sam9m10g45ek/init.c     |    8 +
- arch/arm/configs/at91sam9263ek_defconfig    |    5 +
- arch/arm/configs/at91sam9m10g45ek_defconfig |    5 +
- arch/arm/mach-at91/at91sam9260_devices.c    |   50 +++
- arch/arm/mach-at91/at91sam9261_devices.c    |   50 +++
- arch/arm/mach-at91/at91sam9263_devices.c    |   78 +++++
- arch/arm/mach-at91/at91sam9g45_devices.c    |   91 +++++
- arch/arm/mach-at91/include/mach/board.h     |   10 +
- drivers/mci/Kconfig                         |    7 +
- drivers/mci/Makefile                        |    1 +
- drivers/mci/at91_mci.h                      |  121 +++++++
- drivers/mci/atmel_mci.c                     |  494 +++++++++++++++++++++++++++
- 13 files changed, 936 insertions(+), 0 deletions(-)
- create mode 100644 drivers/mci/at91_mci.h
- create mode 100644 drivers/mci/atmel_mci.c
-
-Best Regards
-Hubert
 
 _______________________________________________
 barebox mailing list
