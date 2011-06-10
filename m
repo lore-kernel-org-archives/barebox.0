@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QUvbP-0001gM-OH
-	for barebox@lists.infradead.org; Fri, 10 Jun 2011 06:53:56 +0000
-Date: Fri, 10 Jun 2011 08:53:49 +0200
+	id 1QUvfP-0001hK-So
+	for barebox@lists.infradead.org; Fri, 10 Jun 2011 06:58:05 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110610065349.GO23771@pengutronix.de>
-References: <1307631354-5553-1-git-send-email-plagnioj@jcrosoft.com>
-	<1307669367-3129-1-git-send-email-plagnioj@jcrosoft.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1307669367-3129-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri, 10 Jun 2011 08:57:53 +0200
+Message-Id: <1307689073-9559-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1307689073-9559-1-git-send-email-s.hauer@pengutronix.de>
+References: <1307689073-9559-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,89 +16,77 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] complete: add var and device param complete support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/2] stringlist: implement string_list_asprintf
+To: barebox@lists.infradead.org
 
-On Fri, Jun 10, 2011 at 03:29:27AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> with $xx or xx= or if device $xx.yy or xx.yy=
-> 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
-> v2:
-> 
-> make the call device_param_complete safe
-> 
-> Best Regards,
-> J.
->  common/complete.c |  112 ++++++++++++++++++++++++++++++++++++++++++++++++++++-
->  1 files changed, 111 insertions(+), 1 deletions(-)
-> 
-> diff --git a/common/complete.c b/common/complete.c
-> index 46ba871..5f1df74 100644
-> --- a/common/complete.c
-> +++ b/common/complete.c
-> @@ -27,6 +27,7 @@
->  #include <libgen.h>
->  #include <command.h>
->  #include <stringlist.h>
-> +#include <environment.h>
->  
->  static int file_complete(struct string_list *sl, char *instr)
->  {
-> @@ -84,6 +85,111 @@ static int command_complete(struct string_list *sl, char *instr)
->  	return 0;
->  }
->  
-> +static int device_param_complete(char begin, struct device_d *dev,
-> +				 struct string_list *sl, char *instr)
-> +{
-> +	struct param_d *param;
-> +	char cmd[128];
-> +	char *tmp = cmd;
-> +	int len, len2;
-> +
-> +	len = strlen(instr);
-> +	if (begin) {
-> +		tmp[0] = begin;
-> +		tmp++;
-> +	}
-> +	strcpy(tmp, dev_name(dev));
-> +	len2 = strlen(dev_name(dev));
-> +	tmp += len2;
-> +	tmp[0] = '.';
-> +	tmp++;
-> +
-> +	list_for_each_entry(param, &dev->parameters, list) {
-> +		memset(tmp, 0x0, 128 - (int)(tmp - cmd));
-> +		if (!strncmp(instr, param->name, len)) {
-> +			strcpy(tmp, param->name);
-> +			len2 = strlen(param->name);
-> +			if (begin)
-> +				tmp[len2] = ' ';
-> +			else
-> +				tmp[len2] = '=';
-> +			tmp[len2 + 1] = 0;
-> +			string_list_add(sl, cmd);
-> +		}
-> +	}
+Useful for allocating a string list entry on the fly.
 
-The fixed length arrays might overflow. Maybe not in this function, but
-when this becomes a template maybe in other functions. Looking at it
-this code could really improve with sprintf, more specifically
-string_list_asprintf. I'll post a patch in a minute.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ include/stringlist.h |    1 +
+ lib/stringlist.c     |   22 ++++++++++++++++++++++
+ 2 files changed, 23 insertions(+), 0 deletions(-)
 
-Sascha
-
+diff --git a/include/stringlist.h b/include/stringlist.h
+index 86edcf0..1e2616d 100644
+--- a/include/stringlist.h
++++ b/include/stringlist.h
+@@ -9,6 +9,7 @@ struct string_list {
+ };
+ 
+ int string_list_add(struct string_list *sl, char *str);
++int string_list_asprintf(struct string_list *sl, const char *fmt, ...);
+ void string_list_print_by_column(struct string_list *sl);
+ 
+ static inline void string_list_init(struct string_list *sl)
+diff --git a/lib/stringlist.c b/lib/stringlist.c
+index 3c8ecec..1015cac 100644
+--- a/lib/stringlist.c
++++ b/lib/stringlist.c
+@@ -1,6 +1,7 @@
+ #include <common.h>
+ #include <xfuncs.h>
+ #include <malloc.h>
++#include <errno.h>
+ #include <xfuncs.h>
+ #include <stringlist.h>
+ 
+@@ -16,6 +17,27 @@ int string_list_add(struct string_list *sl, char *str)
+ 	return 0;
+ }
+ 
++int string_list_asprintf(struct string_list *sl, const char *fmt, ...)
++{
++	struct string_list *new;
++	va_list args;
++
++	new = xmalloc(sizeof(*new));
++
++	va_start(args, fmt);
++
++	new->str = asprintf(fmt, args);
++
++	va_end(args);
++
++	if (!new->str) {
++		free(new);
++		return -ENOMEM;
++	}
++
++	return 0;
++}
++
+ void string_list_print_by_column(struct string_list *sl)
+ {
+ 	int len = 0, num, i;
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.5.3
+
 
 _______________________________________________
 barebox mailing list
