@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wy0-f177.google.com ([74.125.82.177])
+Received: from mail-vw0-f49.google.com ([209.85.212.49])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QUxDe-0002N7-MH
-	for barebox@lists.infradead.org; Fri, 10 Jun 2011 08:37:31 +0000
-Received: by wyb28 with SMTP id 28so2286827wyb.36
-	for <barebox@lists.infradead.org>; Fri, 10 Jun 2011 01:37:28 -0700 (PDT)
+	id 1QUxGb-0002OX-MV
+	for barebox@lists.infradead.org; Fri, 10 Jun 2011 08:40:36 +0000
+Received: by vws8 with SMTP id 8so2520219vws.36
+	for <barebox@lists.infradead.org>; Fri, 10 Jun 2011 01:40:31 -0700 (PDT)
+MIME-Version: 1.0
+Date: Fri, 10 Jun 2011 10:40:31 +0200
+Message-ID: <BANLkTikb0k8c6-80BU4Nju2M1apCis_G1g@mail.gmail.com>
 From: Hubert Feurstein <h.feurstein@gmail.com>
-Date: Fri, 10 Jun 2011 10:37:14 +0200
-Message-Id: <1307695034-11536-1-git-send-email-h.feurstein@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,70 +17,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] at91sam9m10g45ek: add mci0 support
+Subject: Pull request: Atmel MCI Support
 To: barebox@lists.infradead.org
 
-and enable fat support
+Hi,
 
-Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
-Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- arch/arm/boards/at91sam9m10g45ek/init.c     |    8 ++++++++
- arch/arm/configs/at91sam9m10g45ek_defconfig |    5 +++++
- 2 files changed, 13 insertions(+), 0 deletions(-)
+all changes regarding the atmel-mci-support can be pulled from the
+following repository.
 
-diff --git a/arch/arm/boards/at91sam9m10g45ek/init.c b/arch/arm/boards/at91sam9m10g45ek/init.c
-index 77d51b7..4f79e42 100644
---- a/arch/arm/boards/at91sam9m10g45ek/init.c
-+++ b/arch/arm/boards/at91sam9m10g45ek/init.c
-@@ -22,6 +22,7 @@
+The following changes since commit 885266ac7220a538be2a48f94e8abbe61bab25b1:
 
- #include <common.h>
- #include <net.h>
-+#include <mci.h>
- #include <init.h>
- #include <environment.h>
- #include <asm/armlinux.h>
-@@ -110,11 +111,18 @@ static struct at91_ether_platform_data macb_pdata = {
- 	.phy_addr = 0,
- };
+  Merge branch 'master' of git://git.pengutronix.de/git/barebox
+(2011-06-10 09:30:36 +0200)
 
-+static struct atmel_mci_platform_data mci0_pdata = {
-+	.bus_width	= 4,
-+	.host_caps	= MMC_MODE_HS,
-+	.detect_pin	= AT91_PIN_PD10,
-+};
-+
- static int at91sam9m10g45ek_devices_init(void)
- {
- 	at91_add_device_sdram(128 * 1024 * 1024);
- 	ek_add_device_nand();
- 	at91_add_device_eth(&macb_pdata);
-+	at91_add_device_mci(0, &mci0_pdata);
+are available in the git repository at:
 
- 	devfs_add_partition("nand0", 0x00000, 0x80000, PARTITION_FIXED, "self_raw");
- 	dev_add_bb_dev("self_raw", "self0");
-diff --git a/arch/arm/configs/at91sam9m10g45ek_defconfig b/arch/arm/configs/at91sam9m10g45ek_defconfig
-index e1c6cef..deca884 100644
---- a/arch/arm/configs/at91sam9m10g45ek_defconfig
-+++ b/arch/arm/configs/at91sam9m10g45ek_defconfig
-@@ -53,3 +53,8 @@ CONFIG_CFI_BUFFER_WRITE=y
- CONFIG_MTD=y
- CONFIG_NAND=y
- CONFIG_UBI=y
-+CONFIG_MCI=y
-+CONFIG_MCI_WRITE=y
-+CONFIG_MCI_ATMEL=y
-+CONFIG_FS_FAT=y
-+CONFIG_FS_FAT_WRITE=y
---
-1.7.1
+  git://gitorious.org/hfe-repos/barebox.git atmel-mci-support
 
+Hubert Feurstein (2):
+      mci: add Atmel AT91 MCI driver
+      at91sam9m10g45ek: add mci0 support
+
+Jean-Christophe PLAGNIOL-VILLARD (1):
+      at91sam9263ek: add mci1 support
+
+ arch/arm/boards/at91sam9263ek/init.c        |   16 +
+ arch/arm/boards/at91sam9m10g45ek/init.c     |    8 +
+ arch/arm/configs/at91sam9263ek_defconfig    |    5 +
+ arch/arm/configs/at91sam9m10g45ek_defconfig |    5 +
+ arch/arm/mach-at91/at91sam9260_devices.c    |   50 +++
+ arch/arm/mach-at91/at91sam9261_devices.c    |   50 +++
+ arch/arm/mach-at91/at91sam9263_devices.c    |   78 +++++
+ arch/arm/mach-at91/at91sam9g45_devices.c    |   91 +++++
+ arch/arm/mach-at91/include/mach/board.h     |   10 +
+ drivers/mci/Kconfig                         |    7 +
+ drivers/mci/Makefile                        |    1 +
+ drivers/mci/at91_mci.h                      |  121 +++++++
+ drivers/mci/atmel_mci.c                     |  494 +++++++++++++++++++++++++++
+ 13 files changed, 936 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/mci/at91_mci.h
+ create mode 100644 drivers/mci/atmel_mci.c
+
+Best Regards
+Hubert
 
 _______________________________________________
 barebox mailing list
