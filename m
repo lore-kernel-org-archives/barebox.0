@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 5.27.mail-out.ovh.net ([46.105.44.170] helo=27.mail-out.ovh.net)
-	by canuck.infradead.org with smtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1QVNX3-0006U3-ON
-	for barebox@lists.infradead.org; Sat, 11 Jun 2011 12:43:18 +0000
-Date: Fri, 10 Jun 2011 13:29:48 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20110610112948.GC3037@game.jcrosoft.org>
-References: <1307695034-11536-1-git-send-email-h.feurstein@gmail.com>
+Received: from mail-vx0-f177.google.com ([209.85.220.177])
+	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+	id 1QVRSn-0007j4-KA
+	for barebox@lists.infradead.org; Sat, 11 Jun 2011 16:55:10 +0000
+Received: by vxd2 with SMTP id 2so3707387vxd.36
+	for <barebox@lists.infradead.org>; Sat, 11 Jun 2011 09:55:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1307695034-11536-1-git-send-email-h.feurstein@gmail.com>
+Date: Sat, 11 Jun 2011 18:55:04 +0200
+Message-ID: <BANLkTiny8AFTWDyP_BqMJWrc=bf5aKBePw@mail.gmail.com>
+From: Pinco Pallino <pinco.doublec.pallino@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,58 +17,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] at91sam9m10g45ek: add mci0 support
-To: Hubert Feurstein <h.feurstein@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: reset and addresses
+To: barebox@lists.infradead.org
 
-On 10:37 Fri 10 Jun     , Hubert Feurstein wrote:
-> and enable fat support
-> 
-> Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
-> Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  arch/arm/boards/at91sam9m10g45ek/init.c     |    8 ++++++++
->  arch/arm/configs/at91sam9m10g45ek_defconfig |    5 +++++
->  2 files changed, 13 insertions(+), 0 deletions(-)
-> 
-> diff --git a/arch/arm/boards/at91sam9m10g45ek/init.c b/arch/arm/boards/at91sam9m10g45ek/init.c
-> index 77d51b7..4f79e42 100644
-> --- a/arch/arm/boards/at91sam9m10g45ek/init.c
-> +++ b/arch/arm/boards/at91sam9m10g45ek/init.c
-> @@ -22,6 +22,7 @@
-> 
->  #include <common.h>
->  #include <net.h>
-> +#include <mci.h>
->  #include <init.h>
->  #include <environment.h>
->  #include <asm/armlinux.h>
-> @@ -110,11 +111,18 @@ static struct at91_ether_platform_data macb_pdata = {
->  	.phy_addr = 0,
->  };
-> 
-> +static struct atmel_mci_platform_data mci0_pdata = {
-> +	.bus_width	= 4,
-> +	.host_caps	= MMC_MODE_HS,
-> +	.detect_pin	= AT91_PIN_PD10,
-> +};
-> +
->  static int at91sam9m10g45ek_devices_init(void)
->  {
->  	at91_add_device_sdram(128 * 1024 * 1024);
->  	ek_add_device_nand();
->  	at91_add_device_eth(&macb_pdata);
-> +	at91_add_device_mci(0, &mci0_pdata);
-please do the same as I did on 9263ek
+Hi,
+I was trying to understand the initialization code for the ARM
+architecture, but there is something troubling me about addresses and
+relocation.
 
-only add the device if the driver is enable
+1) As far as I understood from linker script (barebox.lds.S) and start
+file (start.c), the barebox binary file is created to be allocated in
+RAM, properly setting TEXT_BASE. For example, for at91rm9200 TEXT_BASE
+is set to 0x23f00000 (ARM region). Here is also .text_entry section
+with the exception vector table, so the link address of the reset
+routine is actually 0x23f00000. Now the runtime address of the reset
+routine has to be 0x00000000. How is this achieved? I mean, =A0where is
+the information saying that the code in the ELF at 0x23f00000, has to
+be runtime at address 0x00000000? In general how can I know where is
+my code is being executed runtime?
+BTW, is for this reason in the guide you claim "Code running
+immediately after reset runs at an address it is not linked to:
+"runtime address !=3D link address""?
 
-Best Regards,
-J.
+2) Why should I relocate the exception table as seen in
+at91rm9200_lowlevel_init.c? Is this done in case barebox is being
+executed by another bootloader?
+
+3) Why do we set the SP to STACK_BASE + STACK_SIZE - 16 and not just STACK_=
+BASE?
+
+I'm aware that these are quite noob questions and I apologize, but
+there is no other place  to ask.
+
+Thank you.
 
 _______________________________________________
 barebox mailing list
