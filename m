@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bw0-f49.google.com ([209.85.214.49])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QVsuY-0000Id-Jh
-	for barebox@lists.infradead.org; Sun, 12 Jun 2011 22:13:40 +0000
-Received: by bwz1 with SMTP id 1so4625837bwz.36
-	for <barebox@lists.infradead.org>; Sun, 12 Jun 2011 15:13:32 -0700 (PDT)
-From: Hubert Feurstein <h.feurstein@gmail.com>
-Date: Mon, 13 Jun 2011 00:12:31 +0200
-Message-Id: <1307916751-5882-1-git-send-email-h.feurstein@gmail.com>
-In-Reply-To: <20110610112948.GC3037@game.jcrosoft.org>
-References: <20110610112948.GC3037@game.jcrosoft.org>
+	id 1QW3OY-0003cs-7M
+	for barebox@lists.infradead.org; Mon, 13 Jun 2011 09:25:19 +0000
+Date: Mon, 13 Jun 2011 11:25:11 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20110613092511.GZ23771@pengutronix.de>
+References: <BANLkTiny8AFTWDyP_BqMJWrc=bf5aKBePw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <BANLkTiny8AFTWDyP_BqMJWrc=bf5aKBePw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,79 +18,77 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] at91sam9m10g45ek: add mci0 support
-To: barebox@lists.infradead.org
+Subject: Re: reset and addresses
+To: Pinco Pallino <pinco.doublec.pallino@gmail.com>
+Cc: barebox@lists.infradead.org
 
-enable fat support
+Hi Pinco,
 
-Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
-Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- arch/arm/boards/at91sam9m10g45ek/init.c     |   17 +++++++++++++++++
- arch/arm/configs/at91sam9m10g45ek_defconfig |    5 +++++
- 2 files changed, 22 insertions(+), 0 deletions(-)
+On Sat, Jun 11, 2011 at 06:55:04PM +0200, Pinco Pallino wrote:
+> Hi,
+> I was trying to understand the initialization code for the ARM
+> architecture, but there is something troubling me about addresses and
+> relocation.
+> =
 
-diff --git a/arch/arm/boards/at91sam9m10g45ek/init.c b/arch/arm/boards/at91sam9m10g45ek/init.c
-index 77d51b7..dcd2fe6 100644
---- a/arch/arm/boards/at91sam9m10g45ek/init.c
-+++ b/arch/arm/boards/at91sam9m10g45ek/init.c
-@@ -22,6 +22,7 @@
- 
- #include <common.h>
- #include <net.h>
-+#include <mci.h>
- #include <init.h>
- #include <environment.h>
- #include <asm/armlinux.h>
-@@ -110,11 +111,27 @@ static struct at91_ether_platform_data macb_pdata = {
- 	.phy_addr = 0,
- };
- 
-+#if defined(CONFIG_MCI_ATMEL)
-+static struct atmel_mci_platform_data ek_mci_data = {
-+	.bus_width	= 4,
-+	.host_caps	= MMC_MODE_HS,
-+	.detect_pin	= AT91_PIN_PD10,
-+};
-+
-+static void ek_add_device_mci(void)
-+{
-+	at91_add_device_mci(0, &ek_mci_data);
-+}
-+#else
-+static void ek_add_device_mci(void) {}
-+#endif
-+
- static int at91sam9m10g45ek_devices_init(void)
- {
- 	at91_add_device_sdram(128 * 1024 * 1024);
- 	ek_add_device_nand();
- 	at91_add_device_eth(&macb_pdata);
-+	ek_add_device_mci();
- 
- 	devfs_add_partition("nand0", 0x00000, 0x80000, PARTITION_FIXED, "self_raw");
- 	dev_add_bb_dev("self_raw", "self0");
-diff --git a/arch/arm/configs/at91sam9m10g45ek_defconfig b/arch/arm/configs/at91sam9m10g45ek_defconfig
-index e1c6cef..deca884 100644
---- a/arch/arm/configs/at91sam9m10g45ek_defconfig
-+++ b/arch/arm/configs/at91sam9m10g45ek_defconfig
-@@ -53,3 +53,8 @@ CONFIG_CFI_BUFFER_WRITE=y
- CONFIG_MTD=y
- CONFIG_NAND=y
- CONFIG_UBI=y
-+CONFIG_MCI=y
-+CONFIG_MCI_WRITE=y
-+CONFIG_MCI_ATMEL=y
-+CONFIG_FS_FAT=y
-+CONFIG_FS_FAT_WRITE=y
--- 
-1.7.4.1
+> 1) As far as I understood from linker script (barebox.lds.S) and start
+> file (start.c), the barebox binary file is created to be allocated in
+> RAM, properly setting TEXT_BASE. For example, for at91rm9200 TEXT_BASE
+> is set to 0x23f00000 (ARM region). Here is also .text_entry section
+> with the exception vector table, so the link address of the reset
+> routine is actually 0x23f00000. Now the runtime address of the reset
+> routine has to be 0x00000000. How is this achieved? I mean, =A0where is
+> the information saying that the code in the ELF at 0x23f00000, has to
+> be runtime at address 0x00000000? In general how can I know where is
+> my code is being executed runtime?
 
+It is executed where you copy and start it.
+
+> BTW, is for this reason in the guide you claim "Code running
+> immediately after reset runs at an address it is not linked to:
+> "runtime address !=3D link address""?
+
+Yes. The startup code is position independent. It can be executed
+anywhere in memory. The startup code copies the barebox image to
+the correct address and jumps there.
+
+> =
+
+> 2) Why should I relocate the exception table as seen in
+> at91rm9200_lowlevel_init.c? Is this done in case barebox is being
+> executed by another bootloader?
+
+Arm expects the exception table to be at 0x0. In order for exceptions
+to be trapped correctly we have to copy the exception table there. Most
+Arm SoCs do not have RAM at this address, so we use the MMU to map a
+page of SDRAM there.
+
+> =
+
+> 3) Why do we set the SP to STACK_BASE + STACK_SIZE - 16 and not just STAC=
+K_BASE?
+
+The upper space is reserved for the exception stack.
+
+> =
+
+> I'm aware that these are quite noob questions and I apologize, but
+> there is no other place  to ask.
+
+These are no noob questions at all.
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
