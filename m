@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ww0-f49.google.com ([74.125.82.49])
+Received: from mail-vw0-f49.google.com ([209.85.212.49])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QXD3K-0008Je-TN
-	for barebox@lists.infradead.org; Thu, 16 Jun 2011 13:56:11 +0000
-Received: by wwb39 with SMTP id 39so1129868wwb.18
-	for <barebox@lists.infradead.org>; Thu, 16 Jun 2011 06:56:07 -0700 (PDT)
+	id 1QXF9K-0001kW-JU
+	for barebox@lists.infradead.org; Thu, 16 Jun 2011 16:10:34 +0000
+Received: by vws8 with SMTP id 8so330148vws.36
+	for <barebox@lists.infradead.org>; Thu, 16 Jun 2011 09:10:28 -0700 (PDT)
+MIME-Version: 1.0
+Date: Thu, 16 Jun 2011 18:10:28 +0200
+Message-ID: <BANLkTikhnzMKmHfhBENqThq-jjagxGo8aw@mail.gmail.com>
 From: Hubert Feurstein <h.feurstein@gmail.com>
-Date: Thu, 16 Jun 2011 15:55:56 +0200
-Message-Id: <1308232556-12394-1-git-send-email-h.feurstein@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,57 +17,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] macb: add support for board specific get_ethaddr function
-To: barebox@lists.infradead.org
+Subject: [PULL REQUEST] Atmel MCI Support
+To: s.hauer@pengutronix.de, barebox@lists.infradead.org
 
-Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
-Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- arch/arm/mach-at91/include/mach/board.h |    2 ++
- drivers/net/macb.c                      |    2 +-
- 2 files changed, 3 insertions(+), 1 deletions(-)
+Hi Sascha,
 
-diff --git a/arch/arm/mach-at91/include/mach/board.h b/arch/arm/mach-at91/include/mach/board.h
-index 89c1746..89caebb 100644
---- a/arch/arm/mach-at91/include/mach/board.h
-+++ b/arch/arm/mach-at91/include/mach/board.h
-@@ -21,6 +21,7 @@
- #ifndef __ASM_ARCH_BOARD_H
- #define __ASM_ARCH_BOARD_H
+I've seen that you have already applied commit
+"at91sam9m10g45ek: add mci0 support" (dfa3d6613cc21b2b1787c2633b929f58a62fd14f)
+in your next-branch.
 
-+#include <net.h>
- #include <linux/mtd/mtd.h>
+Please pull also the other atmel-mci changes. Otherwise the above mentioned
+commit is useless for it's own. I've prepared a new tree for you, so that
+you don't run into conflicts.
 
- void atmel_nand_load_image(void *dest, int size, int pagesize, int blocksize);
-@@ -47,6 +48,7 @@ void at91_add_device_nand(struct atmel_nand_data *data);
- struct at91_ether_platform_data {
- 	unsigned int flags;
- 	int phy_addr;
-+	int (*get_ethaddr)(struct eth_device*, unsigned char *adr);
- };
+Best regards
+Hubert
 
- void at91_add_device_eth(struct at91_ether_platform_data *data);
-diff --git a/drivers/net/macb.c b/drivers/net/macb.c
-index df3b6af..bc6618b 100644
---- a/drivers/net/macb.c
-+++ b/drivers/net/macb.c
-@@ -431,7 +431,7 @@ static int macb_probe(struct device_d *dev)
- 	edev->send = macb_send;
- 	edev->recv = macb_recv;
- 	edev->halt = macb_halt;
--	edev->get_ethaddr = macb_get_ethaddr;
-+	edev->get_ethaddr = pdata->get_ethaddr ? pdata->get_ethaddr : macb_get_ethaddr;
- 	edev->set_ethaddr = macb_set_ethaddr;
+The following changes since commit 21536365bb0326f1962bb3da310cec7033fa9d0c:
 
- 	macb->miidev.read = macb_phy_read;
---
-1.7.4.1
+  update: add xload (2011-06-11 10:53:04 +0200)
 
+are available in the git repository at:
+  git://gitorious.org/hfe-repos/barebox.git atmel-mci-support-3
+
+Hubert Feurstein (2):
+      mci: add Atmel AT91 MCI driver
+      at91sam9m10g45ek: update mci0 support
+
+Jean-Christophe PLAGNIOL-VILLARD (1):
+      at91sam9263ek: add mci1 support
+
+ arch/arm/boards/at91sam9263ek/init.c     |   16 +
+ arch/arm/boards/at91sam9m10g45ek/init.c  |   14 +-
+ arch/arm/configs/at91sam9263ek_defconfig |    5 +
+ arch/arm/mach-at91/at91sam9260_devices.c |   50 +++
+ arch/arm/mach-at91/at91sam9261_devices.c |   50 +++
+ arch/arm/mach-at91/at91sam9263_devices.c |   78 +++++
+ arch/arm/mach-at91/at91sam9g45_devices.c |   91 ++++++
+ arch/arm/mach-at91/include/mach/board.h  |   10 +
+ drivers/mci/Kconfig                      |    7 +
+ drivers/mci/Makefile                     |    1 +
+ drivers/mci/at91_mci.h                   |  121 ++++++++
+ drivers/mci/atmel_mci.c                  |  494 ++++++++++++++++++++++++++++++
+ 12 files changed, 935 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/mci/at91_mci.h
+ create mode 100644 drivers/mci/atmel_mci.c
 
 _______________________________________________
 barebox mailing list
