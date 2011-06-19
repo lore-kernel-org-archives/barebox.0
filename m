@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vw0-f49.google.com ([209.85.212.49])
+Received: from mail-wy0-f177.google.com ([74.125.82.177])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QXegs-0000pg-0E
-	for barebox@lists.infradead.org; Fri, 17 Jun 2011 19:26:51 +0000
-Received: by vws8 with SMTP id 8so1475649vws.36
-	for <barebox@lists.infradead.org>; Fri, 17 Jun 2011 12:26:47 -0700 (PDT)
-MIME-Version: 1.0
-Date: Fri, 17 Jun 2011 21:26:46 +0200
-Message-ID: <BANLkTi=DFpLyEQwe62KSjYUn+pGPxPe1CQ@mail.gmail.com>
-From: Belisko Marek <marek.belisko@gmail.com>
+	id 1QYKi4-0004I7-62
+	for barebox@lists.infradead.org; Sun, 19 Jun 2011 16:18:52 +0000
+Received: by wyf23 with SMTP id 23so2299119wyf.36
+	for <barebox@lists.infradead.org>; Sun, 19 Jun 2011 09:18:48 -0700 (PDT)
+From: Carlo Caione <carlo.caione@gmail.com>
+Date: Sun, 19 Jun 2011 18:18:44 +0200
+Message-Id: <91BC1EFE-8DED-47F9-9027-DA5140A1A73E@gmail.com>
+Mime-Version: 1.0 (Apple Message framework v1084)
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,47 +21,17 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: booting pandaboard rev A2 problems
+Subject: shift and clocksource
 To: barebox@lists.infradead.org
 
 Hi,
+I was looking in the sources for time keeping. Why the shift field of the clocksource structure is always set to 10?
+Also using the clocks_calc_mult_shift() in kernel sources I obtain different values for the shift variable.
 
-I'm trying to boot barebox on Panda rev. A2.
+Best regards,
 
-I make panda_xload_defconfig compile and put to FAT SD card partition
-ranamed barebox.bin to u-boot.bin (MLO reads u-boot.bin by default).
-
-Barebox start but after printing revision number is stuck. I add some
-printks and
-seems it hang in omap_hsmmc_probe funtion after mci_register(&hsmmc->mci) call.
-
-I try with 2 SD cards and non of them is working.
-
-Also try to load to flash partition only barebox.bin.itf + barebox.bin
-but this setup also
-doesn't work. AFAIU itf add some data before barebox to be possible to
-boot directly without
-x-loader. When run_shell is called barebox.bin should be copied do
-DDRAM and run.
-
-Any ideas what should I check.
-
-Thanks in advance,
-
-marek
-
-
--- 
-as simple and primitive as possible
--------------------------------------------------
-Marek Belisko - OPEN-NANDRA
-Freelance Developer
-
-Ruska Nova Ves 219 | Presov, 08005 Slovak Republic
-Tel: +421 915 052 184
-skype: marekwhite
-icq: 290551086
-web: http://open-nandra.com
+--
+Carlo Caione
 
 _______________________________________________
 barebox mailing list
