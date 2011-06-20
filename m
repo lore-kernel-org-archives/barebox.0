@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QYYEK-0000sE-TI
-	for barebox@lists.infradead.org; Mon, 20 Jun 2011 06:45:08 +0000
-Date: Mon, 20 Jun 2011 08:45:01 +0200
+	id 1QYYXe-0000wL-2L
+	for barebox@lists.infradead.org; Mon, 20 Jun 2011 07:05:03 +0000
+Date: Mon, 20 Jun 2011 09:04:58 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110620064501.GL23771@pengutronix.de>
-References: <1308211963-4384-1-git-send-email-h.feurstein@gmail.com>
+Message-ID: <20110620070458.GN23771@pengutronix.de>
+References: <BANLkTi=DFpLyEQwe62KSjYUn+pGPxPe1CQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1308211963-4384-1-git-send-email-h.feurstein@gmail.com>
+In-Reply-To: <BANLkTi=DFpLyEQwe62KSjYUn+pGPxPe1CQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,111 +22,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC PATCH] spi: add at25 spi eeprom driver
-To: Hubert Feurstein <h.feurstein@gmail.com>
+Subject: Re: booting pandaboard rev A2 problems
+To: Belisko Marek <marek.belisko@gmail.com>
 Cc: barebox@lists.infradead.org
 
-Hi Hubert,
+Hi Marek,
 
-On Thu, Jun 16, 2011 at 10:12:43AM +0200, Hubert Feurstein wrote:
->  obj-y	+= mfd/
->  obj-$(CONFIG_LED) += led/
-> +obj-y	+= misc/
-> diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
-
-I think we should move the driver up to drivers/eeprom and skip the
-'misc'. The kernel guys like to get rid of it also.
-
-> +
-> +		/* Wait for non-busy status */
-> +		start_time = get_time_ns();
-> +
-> +		retries = 0;
-> +		do {
-> +
-> +			sr = spi_w8r8(at25->spi, AT25_RDSR);
-> +			if (sr < 0 || (sr & AT25_SR_nRDY)) {
-> +				dev_dbg(at25->cdev.dev,
-> +					"rdsr --> %d (%02x)\n", sr, sr);
-> +				mdelay(1);
-> +				continue;
-> +			}
-> +			if (!(sr & AT25_SR_nRDY))
-> +				break;
-> +		} while (retries++ < 3 || !is_timeout(start_time, EE_TIMEOUT));
-
-I don't understand this. The loop is limited by retries++ < 3. Why this
-additional is_timeout? Is this the same in the kernel?
-
-> +static int at25_init(void)
-> +{
-> +	register_driver(&at25_driver);
-> +	return 0;
-> +}
-> +
-> +device_initcall(at25_init);
-> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-> index 4560259..6456897 100644
-> --- a/drivers/spi/spi.c
-> +++ b/drivers/spi/spi.c
-> @@ -75,6 +75,7 @@ struct spi_device *spi_new_device(struct spi_master *master,
->  	proxy->chip_select = chip->chip_select;
->  	proxy->max_speed_hz = chip->max_speed_hz;
->  	proxy->mode = chip->mode;
-> +	proxy->dev.platform_data = chip->platform_data;
-
-This should be a seperate patch.
-
->  	strcpy(proxy->dev.name, chip->name);
->  	proxy->dev.type_data = proxy;
->  	status = register_device(&proxy->dev);
-> @@ -194,3 +195,44 @@ int spi_sync(struct spi_device *spi, struct spi_message *message)
->  	return spi->master->transfer(spi, message);
->  }
+On Fri, Jun 17, 2011 at 09:26:46PM +0200, Belisko Marek wrote:
+> Hi,
 > 
-> +/**
-> + * spi_write_then_read - SPI synchronous write followed by read
-> + * @spi: device with which data will be exchanged
-> + * @txbuf: data to be written
-> + * @n_tx: size of txbuf, in bytes
-> + * @rxbuf: buffer into which data will be read
-> + * @n_rx: size of rxbuf, in bytes
-> + * Context: can sleep
-> + *
-> + * This performs a half duplex MicroWire style transaction with the
-> + * device, sending txbuf and then reading rxbuf.  The return value
-> + * is zero for success, else a negative errno status code.
-> + * This call may only be used from a context that may sleep.
-> + */
-> +int spi_write_then_read(struct spi_device *spi,
-> +		const void *txbuf, unsigned n_tx,
-> +		void *rxbuf, unsigned n_rx)
-> +{
-> +	int			status;
-> +	struct spi_message	message;
-> +	struct spi_transfer	x[2];
-> +
-> +	spi_message_init(&message);
-> +	memset(x, 0, sizeof x);
-> +	if (n_tx) {
-> +		x[0].len = n_tx;
-> +		spi_message_add_tail(&x[0], &message);
-> +	}
-> +	if (n_rx) {
-> +		x[1].len = n_rx;
-> +		spi_message_add_tail(&x[1], &message);
-> +	}
-> +
-> +	x[0].tx_buf = txbuf;
-> +	x[1].rx_buf = rxbuf;
-> +
-> +	/* do the i/o */
-> +	status = spi_sync(spi, &message);
-> +	return status;
-> +}
-> +EXPORT_SYMBOL(spi_write_then_read);
+> I'm trying to boot barebox on Panda rev. A2.
 
-Also a seperate patch.
+Hm, I don't know the revision of our panda board. I'll have a look
+later, it may be different.
+
+> 
+> I make panda_xload_defconfig compile and put to FAT SD card partition
+> ranamed barebox.bin to u-boot.bin (MLO reads u-boot.bin by default).
+
+I'm a bit confused. The binary resulting from xload_defconfig is
+supposed to replace MLO.  There are two panda defconfig in the tree, one
+for xloader replacement and one regular full blown config.
+
+> 
+> Barebox start but after printing revision number is stuck. I add some
+> printks and
+> seems it hang in omap_hsmmc_probe funtion after mci_register(&hsmmc->mci) call.
+> 
+> I try with 2 SD cards and non of them is working.
+> 
+> Also try to load to flash partition only barebox.bin.itf + barebox.bin
+> but this setup also
+> doesn't work. AFAIU itf add some data before barebox to be possible to
+> boot directly without
+> x-loader. When run_shell is called barebox.bin should be copied do
+> DDRAM and run.
+
+Ok, let's try to sort things a bit.
+does panda_xload_defconfig barebox.bin.itf copied as MLO to the SD card
+produce any output?
+Does panda_defconfig copied as u-boot.bin to the SD card work or does it
+behave like you described above?
 
 Sascha
 
