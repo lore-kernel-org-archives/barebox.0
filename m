@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QYZ2t-0001GN-2c
-	for barebox@lists.infradead.org; Mon, 20 Jun 2011 07:37:20 +0000
-Date: Mon, 20 Jun 2011 09:37:15 +0200
+	id 1QYco6-0007u2-1y
+	for barebox@lists.infradead.org; Mon, 20 Jun 2011 11:38:20 +0000
+Date: Mon, 20 Jun 2011 13:38:13 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110620073715.GR23771@pengutronix.de>
-References: <1308211963-4384-1-git-send-email-h.feurstein@gmail.com>
-	<20110620064501.GL23771@pengutronix.de>
-	<BANLkTi=2s_PWjLeNNEaOigRWfKg7JmYMtg@mail.gmail.com>
+Message-ID: <20110620113813.GS23771@pengutronix.de>
+References: <BANLkTi=DFpLyEQwe62KSjYUn+pGPxPe1CQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <BANLkTi=2s_PWjLeNNEaOigRWfKg7JmYMtg@mail.gmail.com>
+In-Reply-To: <BANLkTi=DFpLyEQwe62KSjYUn+pGPxPe1CQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,78 +18,68 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC PATCH] spi: add at25 spi eeprom driver
-To: Hubert Feurstein <h.feurstein@gmail.com>
+Subject: Re: booting pandaboard rev A2 problems
+To: Belisko Marek <marek.belisko@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Jun 20, 2011 at 09:23:40AM +0200, Hubert Feurstein wrote:
-> Hi Sascha,
-> =
+On Fri, Jun 17, 2011 at 09:26:46PM +0200, Belisko Marek wrote:
+> Hi,
+> 
+> I'm trying to boot barebox on Panda rev. A2.
 
-> 2011/6/20 Sascha Hauer <s.hauer@pengutronix.de>:
-> > Hi Hubert,
-> >
-> > On Thu, Jun 16, 2011 at 10:12:43AM +0200, Hubert Feurstein wrote:
-> >> =A0obj-y =A0 =A0 =A0 =A0+=3D mfd/
-> >> =A0obj-$(CONFIG_LED) +=3D led/
-> >> +obj-y =A0 =A0 =A0 =A0+=3D misc/
-> >> diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
-> >
-> > I think we should move the driver up to drivers/eeprom and skip the
-> > 'misc'. The kernel guys like to get rid of it also.
-> >
-> OK
-> =
-
-> >> +
-> >> + =A0 =A0 =A0 =A0 =A0 =A0 /* Wait for non-busy status */
-> >> + =A0 =A0 =A0 =A0 =A0 =A0 start_time =3D get_time_ns();
-> >> +
-> >> + =A0 =A0 =A0 =A0 =A0 =A0 retries =3D 0;
-> >> + =A0 =A0 =A0 =A0 =A0 =A0 do {
-> >> +
-> >> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 sr =3D spi_w8r8(at25->spi, A=
-T25_RDSR);
-> >> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (sr < 0 || (sr & AT25_SR_=
-nRDY)) {
-> >> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_dbg(at25=
-->cdev.dev,
-> >> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0 "rdsr --> %d (%02x)\n", sr, sr);
-> >> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 mdelay(1);
-
-We can remove this mdelay. In the kernel it makes sense to use msleep to
-give the cpu a chance to sleep. In barebox we are polling anyway, so we
-can better poll the status register instead of the timer register. This
-gives us the chance to bail out here after 1.1ms instead of 1, 2, ...
-
-> >> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 continue;
-> >> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 }
-> >> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (!(sr & AT25_SR_nRDY))
-> >> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 break;
-> >> + =A0 =A0 =A0 =A0 =A0 =A0 } while (retries++ < 3 || !is_timeout(start_=
-time, EE_TIMEOUT));
-> >
-> > I don't understand this. The loop is limited by retries++ < 3. Why this
-> > additional is_timeout? Is this the same in the kernel?
-> >
-> Hmm, I don't know why we have both here. I simply ported the kernel code.
-
-Looking at it again it seems like 'poll for EE_TIMEOUT ms but at least
-three times'. I think we can skip the retries and just poll for
-EE_TIMEOUT ms. The most important thing about timeouts is that we bail
-out after reasonable time to give the user a chance to continue without
-this driver and to give him a clue where it hangs. The exact amount
-of time we poll is not really important.
+Just checked, our panda is rev c3. Maybe you should hunt for differences
+in the lowlevel startup code in TIs Xloader which I have not proted
+correctly to barebox.
 
 Sascha
 
--- =
+> 
+> I make panda_xload_defconfig compile and put to FAT SD card partition
+> ranamed barebox.bin to u-boot.bin (MLO reads u-boot.bin by default).
+> 
+> Barebox start but after printing revision number is stuck. I add some
+> printks and
+> seems it hang in omap_hsmmc_probe funtion after mci_register(&hsmmc->mci) call.
+> 
+> I try with 2 SD cards and non of them is working.
+> 
+> Also try to load to flash partition only barebox.bin.itf + barebox.bin
+> but this setup also
+> doesn't work. AFAIU itf add some data before barebox to be possible to
+> boot directly without
+> x-loader. When run_shell is called barebox.bin should be copied do
+> DDRAM and run.
+> 
+> Any ideas what should I check.
+> 
+> Thanks in advance,
+> 
+> marek
+> 
+> 
+> -- 
+> as simple and primitive as possible
+> -------------------------------------------------
+> Marek Belisko - OPEN-NANDRA
+> Freelance Developer
+> 
+> Ruska Nova Ves 219 | Presov, 08005 Slovak Republic
+> Tel: +421 915 052 184
+> skype: marekwhite
+> icq: 290551086
+> web: http://open-nandra.com
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
+-- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
