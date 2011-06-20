@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vw0-f49.google.com ([209.85.212.49])
+Received: from mail-fx0-f49.google.com ([209.85.161.49])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QYilF-0007YJ-7u
-	for barebox@lists.infradead.org; Mon, 20 Jun 2011 17:59:46 +0000
-Received: by vws8 with SMTP id 8so3185905vws.36
-	for <barebox@lists.infradead.org>; Mon, 20 Jun 2011 10:59:41 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20110620070458.GN23771@pengutronix.de>
-References: <BANLkTi=DFpLyEQwe62KSjYUn+pGPxPe1CQ@mail.gmail.com>
-	<20110620070458.GN23771@pengutronix.de>
-Date: Mon, 20 Jun 2011 19:59:41 +0200
-Message-ID: <BANLkTikzpeidMmzF_EP5ho+DJT=8_vnsZw@mail.gmail.com>
-From: Belisko Marek <marek.belisko@gmail.com>
+	id 1QYmJG-0002xe-Vy
+	for barebox@lists.infradead.org; Mon, 20 Jun 2011 21:47:12 +0000
+Received: by fxm14 with SMTP id 14so881030fxm.36
+	for <barebox@lists.infradead.org>; Mon, 20 Jun 2011 14:47:00 -0700 (PDT)
+From: Hubert Feurstein <h.feurstein@gmail.com>
+Date: Mon, 20 Jun 2011 23:46:32 +0200
+Message-Id: <1308606394-7510-1-git-send-email-h.feurstein@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,59 +16,56 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: booting pandaboard rev A2 problems
-To: Sascha Hauer <s.hauer@pengutronix.de>, J.Weitzel@phytec.de
-Cc: barebox@lists.infradead.org
+Subject: [RFC PATCH 1/3] spi: add platform_data pointer to spi_board_info
+To: barebox@lists.infradead.org
 
-SGkgU2FzY2hhLAoKT24gTW9uLCBKdW4gMjAsIDIwMTEgYXQgOTowNCBBTSwgU2FzY2hhIEhhdWVy
-IDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPiB3cm90ZToKPiBIaSBNYXJlaywKPgo+IE9uIEZyaSwg
-SnVuIDE3LCAyMDExIGF0IDA5OjI2OjQ2UE0gKzAyMDAsIEJlbGlza28gTWFyZWsgd3JvdGU6Cj4+
-IEhpLAo+Pgo+PiBJJ20gdHJ5aW5nIHRvIGJvb3QgYmFyZWJveCBvbiBQYW5kYSByZXYuIEEyLgo+
-Cj4gSG0sIEkgZG9uJ3Qga25vdyB0aGUgcmV2aXNpb24gb2Ygb3VyIHBhbmRhIGJvYXJkLiBJJ2xs
-IGhhdmUgYSBsb29rCj4gbGF0ZXIsIGl0IG1heSBiZSBkaWZmZXJlbnQuCj4KPj4KPj4gSSBtYWtl
-IHBhbmRhX3hsb2FkX2RlZmNvbmZpZyBjb21waWxlIGFuZCBwdXQgdG8gRkFUIFNEIGNhcmQgcGFy
-dGl0aW9uCj4+IHJhbmFtZWQgYmFyZWJveC5iaW4gdG8gdS1ib290LmJpbiAoTUxPIHJlYWRzIHUt
-Ym9vdC5iaW4gYnkgZGVmYXVsdCkuCj4KPiBJJ20gYSBiaXQgY29uZnVzZWQuIFRoZSBiaW5hcnkg
-cmVzdWx0aW5nIGZyb20geGxvYWRfZGVmY29uZmlnIGlzCj4gc3VwcG9zZWQgdG8gcmVwbGFjZSBN
-TE8uIMKgVGhlcmUgYXJlIHR3byBwYW5kYSBkZWZjb25maWcgaW4gdGhlIHRyZWUsIG9uZQo+IGZv
-ciB4bG9hZGVyIHJlcGxhY2VtZW50IGFuZCBvbmUgcmVndWxhciBmdWxsIGJsb3duIGNvbmZpZy4K
-Pgo+Pgo+PiBCYXJlYm94IHN0YXJ0IGJ1dCBhZnRlciBwcmludGluZyByZXZpc2lvbiBudW1iZXIg
-aXMgc3R1Y2suIEkgYWRkIHNvbWUKPj4gcHJpbnRrcyBhbmQKPj4gc2VlbXMgaXQgaGFuZyBpbiBv
-bWFwX2hzbW1jX3Byb2JlIGZ1bnRpb24gYWZ0ZXIgbWNpX3JlZ2lzdGVyKCZoc21tYy0+bWNpKSBj
-YWxsLgo+Pgo+PiBJIHRyeSB3aXRoIDIgU0QgY2FyZHMgYW5kIG5vbiBvZiB0aGVtIGlzIHdvcmtp
-bmcuCj4+Cj4+IEFsc28gdHJ5IHRvIGxvYWQgdG8gZmxhc2ggcGFydGl0aW9uIG9ubHkgYmFyZWJv
-eC5iaW4uaXRmICsgYmFyZWJveC5iaW4KPj4gYnV0IHRoaXMgc2V0dXAgYWxzbwo+PiBkb2Vzbid0
-IHdvcmsuIEFGQUlVIGl0ZiBhZGQgc29tZSBkYXRhIGJlZm9yZSBiYXJlYm94IHRvIGJlIHBvc3Np
-YmxlIHRvCj4+IGJvb3QgZGlyZWN0bHkgd2l0aG91dAo+PiB4LWxvYWRlci4gV2hlbiBydW5fc2hl
-bGwgaXMgY2FsbGVkIGJhcmVib3guYmluIHNob3VsZCBiZSBjb3BpZWQgZG8KPj4gRERSQU0gYW5k
-IHJ1bi4KPgo+IE9rLCBsZXQncyB0cnkgdG8gc29ydCB0aGluZ3MgYSBiaXQuCj4gZG9lcyBwYW5k
-YV94bG9hZF9kZWZjb25maWcgYmFyZWJveC5iaW4uaXRmIGNvcGllZCBhcyBNTE8gdG8gdGhlIFNE
-IGNhcmQKPiBwcm9kdWNlIGFueSBvdXRwdXQ/Cj4gRG9lcyBwYW5kYV9kZWZjb25maWcgY29waWVk
-IGFzIHUtYm9vdC5iaW4gdG8gdGhlIFNEIGNhcmQgd29yayBvciBkb2VzIGl0Cj4gYmVoYXZlIGxp
-a2UgeW91IGRlc2NyaWJlZCBhYm92ZT8KV2VsbCBJIGNyZWF0ZSBiYXJlYm94LmJpbi5pdGYgd2l0
-aCB4bG9hZGVyX2RlZmNvbmZpZyBjb3B5IHRvIFNEIGNhcmQKcmVuYW1lZCB0byBNTE8uCkNyZWF0
-ZSBiYXJlYm94LmJpbiBjb3B5IHRvIFNEIGNhcmQuCk91dHB1dCB3aGljaCBJIGdvdCBpczoKCmJh
-cmVib3ggMjAxMS4wNC4wLTAwMTU4LWcyMTUzNjM2LWRpcnR5IChKdW4gMjAgMjAxMSAtIDE5OjUw
-OjIzKQoKQm9hcmQ6IFRleGFzIEluc3RydW1lbnQncyBQYW5kYQpQYW5kYUJvYXJkIFJldmlzaW9u
-OiAwMDMKb21hcF9tbWNfcHJvYmUgPC0gZGVidWcgd2hlcmUgaXQganVzdCBoYW5nLgoKQEphbjog
-V2hpY2ggYm9hcmQgcmV2aXNpb24geW91IGhhdmU/CkkgaGF2ZSBiYWQgZmVlbGluZyBpdCBoYXMg
-c29tZXRoaW5nIHRvIGRvIHdpdGggU0QgY2FyZHMgd2hpY2ggSSBoYXZlPwoKVGhhbmtzIGZvciBy
-ZXBsaWVzLgoKPgo+IFNhc2NoYQo+Cj4gLS0KPiBQZW5ndXRyb25peCBlLksuIMKgIMKgIMKgIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHwgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAg
-wqAgwqAgwqAgwqAgwqAgfAo+IEluZHVzdHJpYWwgTGludXggU29sdXRpb25zIMKgIMKgIMKgIMKg
-IMKgIMKgIMKgIMKgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gwqB8Cj4gUGVpbmVyIFN0
-ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkx
-Ny0wIMKgIMKgfAo+IEFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2IMKgIMKgIMKgIMKg
-IMKgIHwgRmF4OiDCoCArNDktNTEyMS0yMDY5MTctNTU1NSB8Cj4KCnJlZ2FyZHMsCgptYXJlawoK
-LS0gCmFzIHNpbXBsZSBhbmQgcHJpbWl0aXZlIGFzIHBvc3NpYmxlCi0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTWFyZWsgQmVsaXNrbyAtIE9QRU4tTkFO
-RFJBCkZyZWVsYW5jZSBEZXZlbG9wZXIKClJ1c2thIE5vdmEgVmVzIDIxOSB8IFByZXNvdiwgMDgw
-MDUgU2xvdmFrIFJlcHVibGljClRlbDogKzQyMSA5MTUgMDUyIDE4NApza3lwZTogbWFyZWt3aGl0
-ZQppY3E6IDI5MDU1MTA4Ngp3ZWI6IGh0dHA6Ly9vcGVuLW5hbmRyYS5jb20KCl9fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0
-CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9t
-YWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+In the spi layer this pointer will be assigned to the
+platform_data pointer of the new spi device, thus it can
+be accessed in the drivers 'probe' handler.
+
+Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
+---
+ drivers/spi/spi.c |    1 +
+ include/spi/spi.h |    4 ++--
+ 2 files changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 4560259..588c263 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -75,6 +75,7 @@ struct spi_device *spi_new_device(struct spi_master *master,
+ 	proxy->chip_select = chip->chip_select;
+ 	proxy->max_speed_hz = chip->max_speed_hz;
+ 	proxy->mode = chip->mode;
++	proxy->dev.platform_data = chip->platform_data;
+ 	strcpy(proxy->dev.name, chip->name);
+ 	proxy->dev.type_data = proxy;
+ 	status = register_device(&proxy->dev);
+diff --git a/include/spi/spi.h b/include/spi/spi.h
+index 8dce8db..c76f3b7 100644
+--- a/include/spi/spi.h
++++ b/include/spi/spi.h
+@@ -14,8 +14,8 @@ struct spi_board_info {
+ 	/* mode becomes spi_device.mode, and is essential for chips
+ 	 * where the default of SPI_CS_HIGH = 0 is wrong.
+ 	 */
+-	u8		mode;
+-
++	u8	mode;
++	void	*platform_data;
+ };
+ 
+ /**
+-- 
+1.7.4.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
