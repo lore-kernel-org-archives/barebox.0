@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-vw0-f49.google.com ([209.85.212.49])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QYco6-0007u2-1y
-	for barebox@lists.infradead.org; Mon, 20 Jun 2011 11:38:20 +0000
-Date: Mon, 20 Jun 2011 13:38:13 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110620113813.GS23771@pengutronix.de>
-References: <BANLkTi=DFpLyEQwe62KSjYUn+pGPxPe1CQ@mail.gmail.com>
+	id 1QYilF-0007YJ-7u
+	for barebox@lists.infradead.org; Mon, 20 Jun 2011 17:59:46 +0000
+Received: by vws8 with SMTP id 8so3185905vws.36
+	for <barebox@lists.infradead.org>; Mon, 20 Jun 2011 10:59:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <BANLkTi=DFpLyEQwe62KSjYUn+pGPxPe1CQ@mail.gmail.com>
+In-Reply-To: <20110620070458.GN23771@pengutronix.de>
+References: <BANLkTi=DFpLyEQwe62KSjYUn+pGPxPe1CQ@mail.gmail.com>
+	<20110620070458.GN23771@pengutronix.de>
+Date: Mon, 20 Jun 2011 19:59:41 +0200
+Message-ID: <BANLkTikzpeidMmzF_EP5ho+DJT=8_vnsZw@mail.gmail.com>
+From: Belisko Marek <marek.belisko@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,74 +20,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: booting pandaboard rev A2 problems
-To: Belisko Marek <marek.belisko@gmail.com>
+To: Sascha Hauer <s.hauer@pengutronix.de>, J.Weitzel@phytec.de
 Cc: barebox@lists.infradead.org
 
-On Fri, Jun 17, 2011 at 09:26:46PM +0200, Belisko Marek wrote:
-> Hi,
-> 
-> I'm trying to boot barebox on Panda rev. A2.
-
-Just checked, our panda is rev c3. Maybe you should hunt for differences
-in the lowlevel startup code in TIs Xloader which I have not proted
-correctly to barebox.
-
-Sascha
-
-> 
-> I make panda_xload_defconfig compile and put to FAT SD card partition
-> ranamed barebox.bin to u-boot.bin (MLO reads u-boot.bin by default).
-> 
-> Barebox start but after printing revision number is stuck. I add some
-> printks and
-> seems it hang in omap_hsmmc_probe funtion after mci_register(&hsmmc->mci) call.
-> 
-> I try with 2 SD cards and non of them is working.
-> 
-> Also try to load to flash partition only barebox.bin.itf + barebox.bin
-> but this setup also
-> doesn't work. AFAIU itf add some data before barebox to be possible to
-> boot directly without
-> x-loader. When run_shell is called barebox.bin should be copied do
-> DDRAM and run.
-> 
-> Any ideas what should I check.
-> 
-> Thanks in advance,
-> 
-> marek
-> 
-> 
-> -- 
-> as simple and primitive as possible
-> -------------------------------------------------
-> Marek Belisko - OPEN-NANDRA
-> Freelance Developer
-> 
-> Ruska Nova Ves 219 | Presov, 08005 Slovak Republic
-> Tel: +421 915 052 184
-> skype: marekwhite
-> icq: 290551086
-> web: http://open-nandra.com
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgU2FzY2hhLAoKT24gTW9uLCBKdW4gMjAsIDIwMTEgYXQgOTowNCBBTSwgU2FzY2hhIEhhdWVy
+IDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPiB3cm90ZToKPiBIaSBNYXJlaywKPgo+IE9uIEZyaSwg
+SnVuIDE3LCAyMDExIGF0IDA5OjI2OjQ2UE0gKzAyMDAsIEJlbGlza28gTWFyZWsgd3JvdGU6Cj4+
+IEhpLAo+Pgo+PiBJJ20gdHJ5aW5nIHRvIGJvb3QgYmFyZWJveCBvbiBQYW5kYSByZXYuIEEyLgo+
+Cj4gSG0sIEkgZG9uJ3Qga25vdyB0aGUgcmV2aXNpb24gb2Ygb3VyIHBhbmRhIGJvYXJkLiBJJ2xs
+IGhhdmUgYSBsb29rCj4gbGF0ZXIsIGl0IG1heSBiZSBkaWZmZXJlbnQuCj4KPj4KPj4gSSBtYWtl
+IHBhbmRhX3hsb2FkX2RlZmNvbmZpZyBjb21waWxlIGFuZCBwdXQgdG8gRkFUIFNEIGNhcmQgcGFy
+dGl0aW9uCj4+IHJhbmFtZWQgYmFyZWJveC5iaW4gdG8gdS1ib290LmJpbiAoTUxPIHJlYWRzIHUt
+Ym9vdC5iaW4gYnkgZGVmYXVsdCkuCj4KPiBJJ20gYSBiaXQgY29uZnVzZWQuIFRoZSBiaW5hcnkg
+cmVzdWx0aW5nIGZyb20geGxvYWRfZGVmY29uZmlnIGlzCj4gc3VwcG9zZWQgdG8gcmVwbGFjZSBN
+TE8uIMKgVGhlcmUgYXJlIHR3byBwYW5kYSBkZWZjb25maWcgaW4gdGhlIHRyZWUsIG9uZQo+IGZv
+ciB4bG9hZGVyIHJlcGxhY2VtZW50IGFuZCBvbmUgcmVndWxhciBmdWxsIGJsb3duIGNvbmZpZy4K
+Pgo+Pgo+PiBCYXJlYm94IHN0YXJ0IGJ1dCBhZnRlciBwcmludGluZyByZXZpc2lvbiBudW1iZXIg
+aXMgc3R1Y2suIEkgYWRkIHNvbWUKPj4gcHJpbnRrcyBhbmQKPj4gc2VlbXMgaXQgaGFuZyBpbiBv
+bWFwX2hzbW1jX3Byb2JlIGZ1bnRpb24gYWZ0ZXIgbWNpX3JlZ2lzdGVyKCZoc21tYy0+bWNpKSBj
+YWxsLgo+Pgo+PiBJIHRyeSB3aXRoIDIgU0QgY2FyZHMgYW5kIG5vbiBvZiB0aGVtIGlzIHdvcmtp
+bmcuCj4+Cj4+IEFsc28gdHJ5IHRvIGxvYWQgdG8gZmxhc2ggcGFydGl0aW9uIG9ubHkgYmFyZWJv
+eC5iaW4uaXRmICsgYmFyZWJveC5iaW4KPj4gYnV0IHRoaXMgc2V0dXAgYWxzbwo+PiBkb2Vzbid0
+IHdvcmsuIEFGQUlVIGl0ZiBhZGQgc29tZSBkYXRhIGJlZm9yZSBiYXJlYm94IHRvIGJlIHBvc3Np
+YmxlIHRvCj4+IGJvb3QgZGlyZWN0bHkgd2l0aG91dAo+PiB4LWxvYWRlci4gV2hlbiBydW5fc2hl
+bGwgaXMgY2FsbGVkIGJhcmVib3guYmluIHNob3VsZCBiZSBjb3BpZWQgZG8KPj4gRERSQU0gYW5k
+IHJ1bi4KPgo+IE9rLCBsZXQncyB0cnkgdG8gc29ydCB0aGluZ3MgYSBiaXQuCj4gZG9lcyBwYW5k
+YV94bG9hZF9kZWZjb25maWcgYmFyZWJveC5iaW4uaXRmIGNvcGllZCBhcyBNTE8gdG8gdGhlIFNE
+IGNhcmQKPiBwcm9kdWNlIGFueSBvdXRwdXQ/Cj4gRG9lcyBwYW5kYV9kZWZjb25maWcgY29waWVk
+IGFzIHUtYm9vdC5iaW4gdG8gdGhlIFNEIGNhcmQgd29yayBvciBkb2VzIGl0Cj4gYmVoYXZlIGxp
+a2UgeW91IGRlc2NyaWJlZCBhYm92ZT8KV2VsbCBJIGNyZWF0ZSBiYXJlYm94LmJpbi5pdGYgd2l0
+aCB4bG9hZGVyX2RlZmNvbmZpZyBjb3B5IHRvIFNEIGNhcmQKcmVuYW1lZCB0byBNTE8uCkNyZWF0
+ZSBiYXJlYm94LmJpbiBjb3B5IHRvIFNEIGNhcmQuCk91dHB1dCB3aGljaCBJIGdvdCBpczoKCmJh
+cmVib3ggMjAxMS4wNC4wLTAwMTU4LWcyMTUzNjM2LWRpcnR5IChKdW4gMjAgMjAxMSAtIDE5OjUw
+OjIzKQoKQm9hcmQ6IFRleGFzIEluc3RydW1lbnQncyBQYW5kYQpQYW5kYUJvYXJkIFJldmlzaW9u
+OiAwMDMKb21hcF9tbWNfcHJvYmUgPC0gZGVidWcgd2hlcmUgaXQganVzdCBoYW5nLgoKQEphbjog
+V2hpY2ggYm9hcmQgcmV2aXNpb24geW91IGhhdmU/CkkgaGF2ZSBiYWQgZmVlbGluZyBpdCBoYXMg
+c29tZXRoaW5nIHRvIGRvIHdpdGggU0QgY2FyZHMgd2hpY2ggSSBoYXZlPwoKVGhhbmtzIGZvciBy
+ZXBsaWVzLgoKPgo+IFNhc2NoYQo+Cj4gLS0KPiBQZW5ndXRyb25peCBlLksuIMKgIMKgIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHwgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAg
+wqAgwqAgwqAgwqAgwqAgfAo+IEluZHVzdHJpYWwgTGludXggU29sdXRpb25zIMKgIMKgIMKgIMKg
+IMKgIMKgIMKgIMKgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gwqB8Cj4gUGVpbmVyIFN0
+ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkx
+Ny0wIMKgIMKgfAo+IEFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2IMKgIMKgIMKgIMKg
+IMKgIHwgRmF4OiDCoCArNDktNTEyMS0yMDY5MTctNTU1NSB8Cj4KCnJlZ2FyZHMsCgptYXJlawoK
+LS0gCmFzIHNpbXBsZSBhbmQgcHJpbWl0aXZlIGFzIHBvc3NpYmxlCi0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTWFyZWsgQmVsaXNrbyAtIE9QRU4tTkFO
+RFJBCkZyZWVsYW5jZSBEZXZlbG9wZXIKClJ1c2thIE5vdmEgVmVzIDIxOSB8IFByZXNvdiwgMDgw
+MDUgU2xvdmFrIFJlcHVibGljClRlbDogKzQyMSA5MTUgMDUyIDE4NApza3lwZTogbWFyZWt3aGl0
+ZQppY3E6IDI5MDU1MTA4Ngp3ZWI6IGh0dHA6Ly9vcGVuLW5hbmRyYS5jb20KCl9fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0
+CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9t
+YWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
