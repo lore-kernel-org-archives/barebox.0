@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wy0-f177.google.com ([74.125.82.177])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QYKi4-0004I7-62
-	for barebox@lists.infradead.org; Sun, 19 Jun 2011 16:18:52 +0000
-Received: by wyf23 with SMTP id 23so2299119wyf.36
-	for <barebox@lists.infradead.org>; Sun, 19 Jun 2011 09:18:48 -0700 (PDT)
-From: Carlo Caione <carlo.caione@gmail.com>
-Date: Sun, 19 Jun 2011 18:18:44 +0200
-Message-Id: <91BC1EFE-8DED-47F9-9027-DA5140A1A73E@gmail.com>
-Mime-Version: 1.0 (Apple Message framework v1084)
+	id 1QYXvx-0000i0-7n
+	for barebox@lists.infradead.org; Mon, 20 Jun 2011 06:26:06 +0000
+Date: Mon, 20 Jun 2011 08:25:59 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20110620062559.GJ23771@pengutronix.de>
+References: <91BC1EFE-8DED-47F9-9027-DA5140A1A73E@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <91BC1EFE-8DED-47F9-9027-DA5140A1A73E@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,17 +22,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: shift and clocksource
-To: barebox@lists.infradead.org
+Subject: Re: shift and clocksource
+To: Carlo Caione <carlo.caione@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Hi,
-I was looking in the sources for time keeping. Why the shift field of the clocksource structure is always set to 10?
-Also using the clocks_calc_mult_shift() in kernel sources I obtain different values for the shift variable.
+Hi Carlo,
 
-Best regards,
+On Sun, Jun 19, 2011 at 06:18:44PM +0200, Carlo Caione wrote:
+> Hi,
+> I was looking in the sources for time keeping. Why the shift field of
+> the clocksource structure is always set to 10?  Also using the
+> clocks_calc_mult_shift() in kernel sources I obtain different values
+> for the shift variable.
 
---
-Carlo Caione
+The value 10 is copied from the initial clocksource. We should add
+clocks_calc_mult_shift() to barebox and use it there also.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
