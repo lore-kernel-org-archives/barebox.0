@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QYY2k-0000nA-Fj
-	for barebox@lists.infradead.org; Mon, 20 Jun 2011 06:33:07 +0000
-Date: Mon, 20 Jun 2011 08:33:03 +0200
+	id 1QYYEK-0000sE-TI
+	for barebox@lists.infradead.org; Mon, 20 Jun 2011 06:45:08 +0000
+Date: Mon, 20 Jun 2011 08:45:01 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110620063303.GK23771@pengutronix.de>
-References: <6F2524F76379064FB8CB9CEE698D56DA8D40EB1725@IN-MSG-01.amer.actel.com>
+Message-ID: <20110620064501.GL23771@pengutronix.de>
+References: <1308211963-4384-1-git-send-email-h.feurstein@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <6F2524F76379064FB8CB9CEE698D56DA8D40EB1725@IN-MSG-01.amer.actel.com>
+In-Reply-To: <1308211963-4384-1-git-send-email-h.feurstein@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,26 +22,113 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: sandbox compilation problem
-To: "Murthy, Ramana" <Ramana.Murthy@microsemi.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [RFC PATCH] spi: add at25 spi eeprom driver
+To: Hubert Feurstein <h.feurstein@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Hi Murthy,
+Hi Hubert,
 
-On Wed, Jun 15, 2011 at 03:58:51PM +0530, Murthy, Ramana wrote:
-> Hi,
+On Thu, Jun 16, 2011 at 10:12:43AM +0200, Hubert Feurstein wrote:
+>  obj-y	+= mfd/
+>  obj-$(CONFIG_LED) += led/
+> +obj-y	+= misc/
+> diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
+
+I think we should move the driver up to drivers/eeprom and skip the
+'misc'. The kernel guys like to get rid of it also.
+
+> +
+> +		/* Wait for non-busy status */
+> +		start_time = get_time_ns();
+> +
+> +		retries = 0;
+> +		do {
+> +
+> +			sr = spi_w8r8(at25->spi, AT25_RDSR);
+> +			if (sr < 0 || (sr & AT25_SR_nRDY)) {
+> +				dev_dbg(at25->cdev.dev,
+> +					"rdsr --> %d (%02x)\n", sr, sr);
+> +				mdelay(1);
+> +				continue;
+> +			}
+> +			if (!(sr & AT25_SR_nRDY))
+> +				break;
+> +		} while (retries++ < 3 || !is_timeout(start_time, EE_TIMEOUT));
+
+I don't understand this. The loop is limited by retries++ < 3. Why this
+additional is_timeout? Is this the same in the kernel?
+
+> +static int at25_init(void)
+> +{
+> +	register_driver(&at25_driver);
+> +	return 0;
+> +}
+> +
+> +device_initcall(at25_init);
+> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+> index 4560259..6456897 100644
+> --- a/drivers/spi/spi.c
+> +++ b/drivers/spi/spi.c
+> @@ -75,6 +75,7 @@ struct spi_device *spi_new_device(struct spi_master *master,
+>  	proxy->chip_select = chip->chip_select;
+>  	proxy->max_speed_hz = chip->max_speed_hz;
+>  	proxy->mode = chip->mode;
+> +	proxy->dev.platform_data = chip->platform_data;
+
+This should be a seperate patch.
+
+>  	strcpy(proxy->dev.name, chip->name);
+>  	proxy->dev.type_data = proxy;
+>  	status = register_device(&proxy->dev);
+> @@ -194,3 +195,44 @@ int spi_sync(struct spi_device *spi, struct spi_message *message)
+>  	return spi->master->transfer(spi, message);
+>  }
 > 
-> I am trying to build sandbox for ARCH=sandbox, facing below errors. I
-> am not sure if the build environment is the problem?  Do I need to
-> have linux source code include paths to build this successfully?
+> +/**
+> + * spi_write_then_read - SPI synchronous write followed by read
+> + * @spi: device with which data will be exchanged
+> + * @txbuf: data to be written
+> + * @n_tx: size of txbuf, in bytes
+> + * @rxbuf: buffer into which data will be read
+> + * @n_rx: size of rxbuf, in bytes
+> + * Context: can sleep
+> + *
+> + * This performs a half duplex MicroWire style transaction with the
+> + * device, sending txbuf and then reading rxbuf.  The return value
+> + * is zero for success, else a negative errno status code.
+> + * This call may only be used from a context that may sleep.
+> + */
+> +int spi_write_then_read(struct spi_device *spi,
+> +		const void *txbuf, unsigned n_tx,
+> +		void *rxbuf, unsigned n_rx)
+> +{
+> +	int			status;
+> +	struct spi_message	message;
+> +	struct spi_transfer	x[2];
+> +
+> +	spi_message_init(&message);
+> +	memset(x, 0, sizeof x);
+> +	if (n_tx) {
+> +		x[0].len = n_tx;
+> +		spi_message_add_tail(&x[0], &message);
+> +	}
+> +	if (n_rx) {
+> +		x[1].len = n_rx;
+> +		spi_message_add_tail(&x[1], &message);
+> +	}
+> +
+> +	x[0].tx_buf = txbuf;
+> +	x[1].rx_buf = rxbuf;
+> +
+> +	/* do the i/o */
+> +	status = spi_sync(spi, &message);
+> +	return status;
+> +}
+> +EXPORT_SYMBOL(spi_write_then_read);
 
-Please do a 'make sandbox_defconfig' and try again. The loads command
-does not make much sense on sandbox and shouldn't be compiled (Of course
-it shouldn't break the build also, I hope I'll have a look there soon, I
-just realized the sandbox is broken on the -next branch aswell.
+Also a seperate patch.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
