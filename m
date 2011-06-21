@@ -1,13 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-fx0-f49.google.com ([209.85.161.49])
+Received: from mail-gy0-f177.google.com ([209.85.160.177])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QZ8UG-0004Ig-UX
-	for barebox@lists.infradead.org; Tue, 21 Jun 2011 21:27:57 +0000
-Received: by fxm14 with SMTP id 14so317924fxm.36
-	for <barebox@lists.infradead.org>; Tue, 21 Jun 2011 14:27:52 -0700 (PDT)
+	id 1QZ8rE-0004Qi-Kl
+	for barebox@lists.infradead.org; Tue, 21 Jun 2011 21:51:42 +0000
+Received: by gyh4 with SMTP id 4so106064gyh.36
+	for <barebox@lists.infradead.org>; Tue, 21 Jun 2011 14:51:35 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <20110621125612.GV7881@game.jcrosoft.org>
+References: <1308232556-12394-1-git-send-email-h.feurstein@gmail.com>
+	<20110621125612.GV7881@game.jcrosoft.org>
+Date: Tue, 21 Jun 2011 23:51:35 +0200
+Message-ID: <BANLkTin-bmxQooWJAp7sRBU6bimNx0ogYA@mail.gmail.com>
 From: Hubert Feurstein <h.feurstein@gmail.com>
-Date: Tue, 21 Jun 2011 23:27:26 +0200
-Message-Id: <1308691646-5724-1-git-send-email-h.feurstein@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,35 +20,29 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] atmel-mci: fix wrong pointer cast
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] macb: add support for board specific get_ethaddr function
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
----
- drivers/mci/atmel_mci.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+2011/6/21 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>:
+>> @@ -47,6 +48,7 @@ void at91_add_device_nand(struct atmel_nand_data *data=
+);
+>> =A0struct at91_ether_platform_data {
+>> =A0 =A0 =A0 unsigned int flags;
+>> =A0 =A0 =A0 int phy_addr;
+>> + =A0 =A0 int (*get_ethaddr)(struct eth_device*, unsigned char *adr);
+> can we find a generic way?
+a generic way would be to simply call
+'dev_set_param(get_device_by_name("eth0"), "ethaddr", macbuffer)'
+somewhere after at91_add_device_eth(...) in your init. Then you don't
+need the callback at all to setup the mac-address.
 
-diff --git a/drivers/mci/atmel_mci.c b/drivers/mci/atmel_mci.c
-index 980aa24..49a7851 100644
---- a/drivers/mci/atmel_mci.c
-+++ b/drivers/mci/atmel_mci.c
-@@ -456,7 +456,7 @@ static int mci_probe(struct device_d *hw_dev)
- 	else if (pd->bus_width == 8)
- 		host->mci.host_caps |= MMC_MODE_8BIT;
- 
--	host->base = (struct atmel_mci_regs *)hw_dev->map_base;
-+	host->base = (void __iomem *)hw_dev->map_base;
- 	host->hw_dev = hw_dev;
- 	hw_dev->priv = host;
- 	host->clk = clk_get(hw_dev, "mci_clk");
--- 
-1.7.4.1
-
+Best Regards
+Hubert
 
 _______________________________________________
 barebox mailing list
