@@ -1,15 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QZ9Lf-0004nI-Vv
-	for barebox@lists.infradead.org; Tue, 21 Jun 2011 22:23:08 +0000
-Date: Wed, 22 Jun 2011 00:23:04 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110621222304.GD6069@pengutronix.de>
-References: <1308694216-6221-1-git-send-email-h.feurstein@gmail.com>
+Received: from 98.mail-out.ovh.net ([91.121.185.91])
+	by casper.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+	id 1QZHmQ-0005AO-01
+	for barebox@lists.infradead.org; Wed, 22 Jun 2011 07:23:19 +0000
+Received: from mail31.ha.ovh.net (b7.ovh.net [213.186.33.57])
+	by 98.mail-out.ovh.net (Postfix) with SMTP id 0C0DD4B68B6
+	for <barebox@lists.infradead.org>;
+	Wed, 22 Jun 2011 09:22:56 +0200 (CEST)
+Date: Wed, 22 Jun 2011 09:08:45 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20110622070845.GY7881@game.jcrosoft.org>
+References: <1308232556-12394-1-git-send-email-h.feurstein@gmail.com>
+	<20110621125612.GV7881@game.jcrosoft.org>
+	<BANLkTin-bmxQooWJAp7sRBU6bimNx0ogYA@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1308694216-6221-1-git-send-email-h.feurstein@gmail.com>
+In-Reply-To: <BANLkTin-bmxQooWJAp7sRBU6bimNx0ogYA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,85 +24,32 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC PATCH] atmel-mci: fix initialization of 8bit-bus-width-mode
-	for at91sam9g45
+Subject: Re: [PATCH] macb: add support for board specific get_ethaddr function
 To: Hubert Feurstein <h.feurstein@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, Jun 22, 2011 at 12:10:16AM +0200, Hubert Feurstein wrote:
-> When the bus_width was set to 8, then only one data-line has been initialized.
-> 
-> Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
+On 23:51 Tue 21 Jun     , Hubert Feurstein wrote:
+> 2011/6/21 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>:
+> >> @@ -47,6 +48,7 @@ void at91_add_device_nand(struct atmel_nand_data *da=
+ta);
+> >> =A0struct at91_ether_platform_data {
+> >> =A0 =A0 =A0 unsigned int flags;
+> >> =A0 =A0 =A0 int phy_addr;
+> >> + =A0 =A0 int (*get_ethaddr)(struct eth_device*, unsigned char *adr);
+> > can we find a generic way?
+> a generic way would be to simply call
+> 'dev_set_param(get_device_by_name("eth0"), "ethaddr", macbuffer)'
+> somewhere after at91_add_device_eth(...) in your init. Then you don't
+> need the callback at all to setup the mac-address.
+I more in mind an api to update the get/set_ethaddr without specific hookin
+each driver
 
-applied to -next
-
-Sascha
-
-> Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> Cc: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  It seems that nobody tried the 8bit mode yet, because this init-bug is present in the
->  linux kernel as well. 
-> 
->  @Sascha: I assume the mci-host-driver should set both bits (MMC_MODE_4BIT and MMC_MODE_8BIT)
->  when bus_width == 8 ???
-> 
->  arch/arm/mach-at91/at91sam9g45_devices.c |    4 ++--
->  drivers/mci/atmel_mci.c                  |    4 ++--
->  2 files changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/arm/mach-at91/at91sam9g45_devices.c b/arch/arm/mach-at91/at91sam9g45_devices.c
-> index dc01705..a474bd7 100644
-> --- a/arch/arm/mach-at91/at91sam9g45_devices.c
-> +++ b/arch/arm/mach-at91/at91sam9g45_devices.c
-> @@ -285,7 +285,7 @@ void at91_add_device_mci(short mmc_id, struct atmel_mci_platform_data *data)
->  
->  		/* DAT0, maybe DAT1..DAT3 and maybe DAT4..DAT7 */
->  		at91_set_A_periph(AT91_PIN_PA2, 1);
-> -		if (data->bus_width == 4) {
-> +		if (data->bus_width >= 4) {
->  			at91_set_A_periph(AT91_PIN_PA3, 1);
->  			at91_set_A_periph(AT91_PIN_PA4, 1);
->  			at91_set_A_periph(AT91_PIN_PA5, 1);
-> @@ -310,7 +310,7 @@ void at91_add_device_mci(short mmc_id, struct atmel_mci_platform_data *data)
->  
->  		/* DAT0, maybe DAT1..DAT3 and maybe DAT4..DAT7 */
->  		at91_set_A_periph(AT91_PIN_PA23, 1);
-> -		if (data->bus_width == 4) {
-> +		if (data->bus_width >= 4) {
->  			at91_set_A_periph(AT91_PIN_PA24, 1);
->  			at91_set_A_periph(AT91_PIN_PA25, 1);
->  			at91_set_A_periph(AT91_PIN_PA26, 1);
-> diff --git a/drivers/mci/atmel_mci.c b/drivers/mci/atmel_mci.c
-> index 49a7851..d8bcf81 100644
-> --- a/drivers/mci/atmel_mci.c
-> +++ b/drivers/mci/atmel_mci.c
-> @@ -451,9 +451,9 @@ static int mci_probe(struct device_d *hw_dev)
->  	host->mci.init = mci_reset;
->  
->  	host->mci.host_caps = pd->host_caps;
-> -	if (pd->bus_width == 4)
-> +	if (pd->bus_width >= 4)
->  		host->mci.host_caps |= MMC_MODE_4BIT;
-> -	else if (pd->bus_width == 8)
-> +	if (pd->bus_width == 8)
->  		host->mci.host_caps |= MMC_MODE_8BIT;
->  
->  	host->base = (void __iomem *)hw_dev->map_base;
-> -- 
-> 1.7.4.1
-> 
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
