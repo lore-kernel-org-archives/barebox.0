@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ww0-f41.google.com ([74.125.82.41])
-	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QapOX-0005jV-79
-	for barebox@lists.infradead.org; Sun, 26 Jun 2011 13:29:03 +0000
-Received: by wwi14 with SMTP id 14so1474360wwi.0
-	for <barebox@lists.infradead.org>; Sun, 26 Jun 2011 06:28:55 -0700 (PDT)
+Received: from mail-ey0-f177.google.com ([209.85.215.177])
+	by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+	id 1Qas3B-0005vs-Jp
+	for barebox@lists.infradead.org; Sun, 26 Jun 2011 16:19:11 +0000
+Received: by eyh6 with SMTP id 6so1515918eyh.36
+	for <barebox@lists.infradead.org>; Sun, 26 Jun 2011 09:16:24 -0700 (PDT)
 MIME-Version: 1.0
-Date: Sun, 26 Jun 2011 17:28:54 +0400
-Message-ID: <BANLkTiny4P64rwkOYxvpqNtZkRy5Ys+1-w@mail.gmail.com>
-From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Sun, 26 Jun 2011 09:16:24 -0700
+Message-ID: <BANLkTikjQPPzar_CmJsoh9=2BOGOUY83Vg@mail.gmail.com>
+From: "drscott can't tell" <drscott50s@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,82 +17,94 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============1844163532=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: See MIPS barebox run: step-by-step instruction
+Subject: booting issues with PandaBoard
 To: barebox@lists.infradead.org
 
-Hi!
+--===============1844163532==
+Content-Type: multipart/alternative; boundary=0016364c6e9d8f86bd04a69fc1ab
+
+--0016364c6e9d8f86bd04a69fc1ab
+Content-Type: text/plain; charset=ISO-8859-1
+
+I have more data to add regarding the PandaBoard boot issue referenced by
+Belisko Marek:
+
+1.  In our group we have two PandaBoards - both rev A3 but bought 1 1/2
+months apart.  The latest PandaBoard boots just fine with the stock June
+barebox.  The earlier board does not.
+2.  All of the comments below are relative to the earlier A3 board...
+3. If I copy MLO from the Angstrom distribution and then compile using
+panda_defconfig and copy barebox.bin as u-boot.bin - barebox hangs after
+displaying board revision (03).
+4. Using panda_defconfig and if I comment out the two lines:
+     //register_device(&hsmmc_dev);
+    //panda_ehci_init();
+in board.c then barebox boots up properly, obviously without usb and sd card
+support:
+5. If I rebuild same image using panda_xload_defconfig and copy the
+barebox.bin.ift as MLO and the generated barebox.bin to the card, the
+booting hangs after following displayed:
+
+barebox 2011.06.0 (Jun 26 2011 - 08:45:43)
+
+Board: Texas Instrument's Panda
+PandaBoard Revision: 003
+Malloc space: 0x84000000 -> 0x86000000 (size 32 MB)
+Stack space : 0x8f000000 -> 0x8f008000 (size 32 kB)
+
+It would appear to me that there is a subtle startup issue between MLO
+startup and barebox startup.  The fact that one board behaves properly and
+the other doesn't at the same rev level indicates some sort of 'on the edge'
+in-stability.  I will feed back any other findings as I test more...
+
+Scott Tilden, PhD
+U of Arizona
+
+--0016364c6e9d8f86bd04a69fc1ab
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+I have more data to add regarding the PandaBoard boot issue referenced by B=
+elisko Marek:<br><br>1.=A0 In our group we have two PandaBoards - both rev =
+A3 but bought 1 1/2 months apart.=A0 The latest PandaBoard boots just fine =
+with the stock June barebox.=A0 The earlier board does not.<br>
+2.=A0 All of the comments below are relative to the earlier A3 board...<br>=
+3. If I copy MLO from the Angstrom distribution and then compile using pand=
+a_defconfig and copy barebox.bin as u-boot.bin - barebox hangs after displa=
+ying board revision (03).<br>
+4. Using panda_defconfig and if I comment out the two lines:<br>=A0=A0=A0=
+=A0 //register_device(&amp;hsmmc_dev);<br>
+=A0=A0=A0 //panda_ehci_init();<br>in board.c then barebox boots up properly=
+, obviously without usb and sd card support:<br>5. If I rebuild same image =
+using panda_xload_defconfig and copy the barebox.bin.ift as MLO and the gen=
+erated barebox.bin to the card, the booting hangs after following displayed=
+:<br>
+<br>barebox 2011.06.0 (Jun 26 2011 - 08:45:43)<br><br>Board: Texas Instrume=
+nt&#39;s Panda<br>PandaBoard Revision: 003<br>Malloc space: 0x84000000 -&gt=
+; 0x86000000 (size 32 MB)<br>Stack space : 0x8f000000 -&gt; 0x8f008000 (siz=
+e 32 kB)<br>
+<br>It would appear to me that there is a subtle startup issue between MLO =
+startup and barebox startup.=A0 The fact that one board behaves properly an=
+d the other doesn&#39;t at the same rev level indicates some sort of &#39;o=
+n the edge&#39; in-stability.=A0 I will feed back any other findings as I t=
+est more...<br>
+<br>Scott Tilden, PhD<br>U of Arizona<br>
+
+--0016364c6e9d8f86bd04a69fc1ab--
 
 
-I have made small instruction to run mips barebox under qemu:
-
-0. Change dir to barebox sources
-
-   $ cd barebox.mips.git
-
-1. Apply patches (already posted to barebox@lists.infradead.org)
-    0001-include-linux-stat.h-make-MIPS-arch-possible.patch
-    0002-Add-MIPS-arch-support-to-barebox.patch
-
-2. Configure & build barebox.bin
-
-   $ cp arch/mips/configs/generic_defconfig .config
-   $ make oldconfig ARCH=mips
-   $ make ARCH=mips CROSS_COMPILE=<your mips cross-compiler prefix>
-
-3. Get qemu. My qemu:
-
-   $ qemu-system-mips --version
-   QEMU emulator version 0.14.0 (Debian 0.14.0+dfsg-5.1), Copyright
-(c) 2003-2008 Fabrice Bellard
-
-4. Run barebox under qemu:
-
-   $ qemu-system-mips -M malta -m 128 -bios ./barebox.bin -nodefaults
--serial stdio -nographic
-
-or
-
-   $ qemu-system-mips64 -M malta -m 128 -bios ./barebox.bin
--nodefaults -serial stdio -nographic
-
-4. Have fun!
-
-Here is my barebox log.
-
-barebox 2011.06.0-00012-gcc4a295 (Jun 26 2011 - 16:40:30)
-
-Board: qemu malta
-registered netconsole as cs1
-Malloc space: 0xa0800000 -> 0xa0900000 (size  1 MB)
-Open /dev/env0 No such file or directory
-running /env/bin/init...
-not found
-uboot:/ devinfo
-devices:
-|----serial_ns165500
-|----cs0
-|----ramfs0
-|----devfs0
-|----mem0 (mem)
-|----cs1
-
-drivers:
-serial_ns16550
-     ramfs
-     devfs
-       mem
-    cramfs
-uboot:/
-
-----
-Best regards,
-  Antony Pavlov
+--===============1844163532==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============1844163532==--
