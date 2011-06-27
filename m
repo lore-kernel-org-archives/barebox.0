@@ -1,13 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-fx0-f43.google.com ([209.85.161.43])
+Received: from mail-ww0-f49.google.com ([74.125.82.49])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1Qb62T-0001wA-Ei
-	for barebox@lists.infradead.org; Mon, 27 Jun 2011 07:15:23 +0000
-Received: by fxg17 with SMTP id 17so1448420fxg.16
-	for <barebox@lists.infradead.org>; Mon, 27 Jun 2011 00:15:15 -0700 (PDT)
+	id 1Qb6Br-0001xO-1U
+	for barebox@lists.infradead.org; Mon, 27 Jun 2011 07:25:05 +0000
+Received: by wwf22 with SMTP id 22so3223516wwf.18
+	for <barebox@lists.infradead.org>; Mon, 27 Jun 2011 00:24:57 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <20110627060433.GH17355@game.jcrosoft.org>
+References: <BANLkTiny4P64rwkOYxvpqNtZkRy5Ys+1-w@mail.gmail.com>
+	<20110627060433.GH17355@game.jcrosoft.org>
+Date: Mon, 27 Jun 2011 11:24:57 +0400
+Message-ID: <BANLkTi=JGJ+hQUW+1WXGdgpCDkKNH9WMHg@mail.gmail.com>
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon, 27 Jun 2011 11:15:08 +0400
-Message-Id: <1309158909-19978-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,97 +20,32 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] include/linux/stat.h: make MIPS arch possible.
-To: barebox@lists.infradead.org
-Cc: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: See MIPS barebox run: step-by-step instruction
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- include/linux/stat.h |   56 ++++++++++++++++++++++++-------------------------
- 1 files changed, 27 insertions(+), 29 deletions(-)
+On 27/06/2011, Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> wrote:
+> On 17:28 Sun 26 Jun     , Antony Pavlov wrote:
 
-diff --git a/include/linux/stat.h b/include/linux/stat.h
-index 10103d4..c12ff57 100644
---- a/include/linux/stat.h
-+++ b/include/linux/stat.h
-@@ -65,34 +65,7 @@ struct stat {
- 	unsigned long  	__unused5;
- };
- 
--#else
--
--struct stat {
--	unsigned short st_dev;
--	unsigned short __pad1;
--	unsigned long st_ino;
--	unsigned short st_mode;
--	unsigned short st_nlink;
--	unsigned short st_uid;
--	unsigned short st_gid;
--	unsigned short st_rdev;
--	unsigned short __pad2;
--	unsigned long  st_size;
--	unsigned long  st_blksize;
--	unsigned long  st_blocks;
--	unsigned long  st_atime;
--	unsigned long  __unused1;
--	unsigned long  st_mtime;
--	unsigned long  __unused2;
--	unsigned long  st_ctime;
--	unsigned long  __unused3;
--	unsigned long  __unused4;
--	unsigned long  __unused5;
--};
--
--#endif	/* __ARM__ */
--
--#if defined (__MIPS__)
-+#elif defined(__MIPS__)
- 
- struct stat {
- 	dev_t           st_dev;
-@@ -121,7 +94,32 @@ struct stat {
- 	long            st_pad4[14];
- };
- 
--#endif	/* __MIPS__ */
-+#else
-+
-+struct stat {
-+	unsigned short st_dev;
-+	unsigned short __pad1;
-+	unsigned long st_ino;
-+	unsigned short st_mode;
-+	unsigned short st_nlink;
-+	unsigned short st_uid;
-+	unsigned short st_gid;
-+	unsigned short st_rdev;
-+	unsigned short __pad2;
-+	unsigned long  st_size;
-+	unsigned long  st_blksize;
-+	unsigned long  st_blocks;
-+	unsigned long  st_atime;
-+	unsigned long  __unused1;
-+	unsigned long  st_mtime;
-+	unsigned long  __unused2;
-+	unsigned long  st_ctime;
-+	unsigned long  __unused3;
-+	unsigned long  __unused4;
-+	unsigned long  __unused5;
-+};
-+
-+#endif	/* __ARM__ */
- 
- #ifdef __cplusplus
- }
--- 
-1.7.5.4
+>> I have made small instruction to run mips barebox under qemu:
+>>
+>> 0. Change dir to barebox sources
+>>
+>>    $ cd barebox.mips.git
+>>
+>> 1. Apply patches (already posted to barebox@lists.infradead.org)
+>>     0001-include-linux-stat.h-make-MIPS-arch-possible.patch
+>>     0002-Add-MIPS-arch-support-to-barebox.patch
+> can not see the second patch
 
+I have resent the both patches.
+
+Best regards,
+  Antony Pavlov
 
 _______________________________________________
 barebox mailing list
