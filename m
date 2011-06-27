@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1Qb8IX-00039t-OH
-	for barebox@lists.infradead.org; Mon, 27 Jun 2011 09:40:06 +0000
-Date: Mon, 27 Jun 2011 11:39:57 +0200
+	id 1Qb8dL-0003QC-1E
+	for barebox@lists.infradead.org; Mon, 27 Jun 2011 10:01:39 +0000
+Date: Mon, 27 Jun 2011 12:01:31 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110627093957.GW6069@pengutronix.de>
-References: <BANLkTi=brEnBzO_PityzMz6J5-JMwPa+xQ@mail.gmail.com>
+Message-ID: <20110627100131.GC6069@pengutronix.de>
+References: <1309158909-19978-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <BANLkTi=brEnBzO_PityzMz6J5-JMwPa+xQ@mail.gmail.com>
+In-Reply-To: <1309158909-19978-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,29 +22,108 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: can't send patch to maillist
+Subject: Re: [PATCH 1/2] include/linux/stat.h: make MIPS arch possible.
 To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox <barebox@lists.infradead.org>
+Cc: barebox@lists.infradead.org
 
-Hi Antony,
-
-On Mon, Jun 27, 2011 at 11:49:05AM +0400, Antony Pavlov wrote:
-> Hi!
+On Mon, Jun 27, 2011 at 11:15:08AM +0400, Antony Pavlov wrote:
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> ---
+>  include/linux/stat.h |   56 ++++++++++++++++++++++++-------------------------
+>  1 files changed, 27 insertions(+), 29 deletions(-)
 > 
->  I have sent two patches to maillist via git send-email:
->    0001-include-linux-stat.h-make-MIPS-arch-possible.patch
->    0002-Add-MIPS-arch-support-to-barebox.patch
-> 
->  The first patch is small (<2 K), but the second is grand (>100 K).
-> The first patch received successfully, but the second is not.
-> My second attempt to send the patches has the same result.
+> diff --git a/include/linux/stat.h b/include/linux/stat.h
 
-Mips support. Nice ;)
-
-The list limit is at 100k. Maybe you move arch/mips/include/asm/mipsregs.h
-to a seperate patch. This should make the results small enough.
+This version of include/linux/stat.h is copied from Linux in the Stone
+Age. It only has ifdefs to support architecture specific userspace formats
+of this struct. We should remove all ifdefs and just use a common
+version of struct stat for all architectures.
+So please just remove all code inside __PPC__ and __MIPS__ in this file.
 
 Sascha
+
+> index 10103d4..c12ff57 100644
+> --- a/include/linux/stat.h
+> +++ b/include/linux/stat.h
+> @@ -65,34 +65,7 @@ struct stat {
+>  	unsigned long  	__unused5;
+>  };
+>  
+> -#else
+> -
+> -struct stat {
+> -	unsigned short st_dev;
+> -	unsigned short __pad1;
+> -	unsigned long st_ino;
+> -	unsigned short st_mode;
+> -	unsigned short st_nlink;
+> -	unsigned short st_uid;
+> -	unsigned short st_gid;
+> -	unsigned short st_rdev;
+> -	unsigned short __pad2;
+> -	unsigned long  st_size;
+> -	unsigned long  st_blksize;
+> -	unsigned long  st_blocks;
+> -	unsigned long  st_atime;
+> -	unsigned long  __unused1;
+> -	unsigned long  st_mtime;
+> -	unsigned long  __unused2;
+> -	unsigned long  st_ctime;
+> -	unsigned long  __unused3;
+> -	unsigned long  __unused4;
+> -	unsigned long  __unused5;
+> -};
+> -
+> -#endif	/* __ARM__ */
+> -
+> -#if defined (__MIPS__)
+> +#elif defined(__MIPS__)
+>  
+>  struct stat {
+>  	dev_t           st_dev;
+> @@ -121,7 +94,32 @@ struct stat {
+>  	long            st_pad4[14];
+>  };
+>  
+> -#endif	/* __MIPS__ */
+> +#else
+> +
+> +struct stat {
+> +	unsigned short st_dev;
+> +	unsigned short __pad1;
+> +	unsigned long st_ino;
+> +	unsigned short st_mode;
+> +	unsigned short st_nlink;
+> +	unsigned short st_uid;
+> +	unsigned short st_gid;
+> +	unsigned short st_rdev;
+> +	unsigned short __pad2;
+> +	unsigned long  st_size;
+> +	unsigned long  st_blksize;
+> +	unsigned long  st_blocks;
+> +	unsigned long  st_atime;
+> +	unsigned long  __unused1;
+> +	unsigned long  st_mtime;
+> +	unsigned long  __unused2;
+> +	unsigned long  st_ctime;
+> +	unsigned long  __unused3;
+> +	unsigned long  __unused4;
+> +	unsigned long  __unused5;
+> +};
+> +
+> +#endif	/* __ARM__ */
+>  
+>  #ifdef __cplusplus
+>  }
+> -- 
+> 1.7.5.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
