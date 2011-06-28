@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wy0-f177.google.com ([74.125.82.177])
-	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QbaR0-0003JA-4o
-	for barebox@lists.infradead.org; Tue, 28 Jun 2011 15:42:43 +0000
-Received: by wyf23 with SMTP id 23so283045wyf.36
-	for <barebox@lists.infradead.org>; Tue, 28 Jun 2011 08:42:39 -0700 (PDT)
+Received: from b-pb-sasl-quonix.pobox.com ([208.72.237.35] helo=smtp.pobox.com)
+	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+	id 1Qbb4N-00043o-E0
+	for barebox@lists.infradead.org; Tue, 28 Jun 2011 16:23:24 +0000
+Message-ID: <4E09FFF6.8020603@pobox.com>
+Date: Wed, 29 Jun 2011 01:23:18 +0900
+From: Shinya Kuribayashi <skuribay@pobox.com>
 MIME-Version: 1.0
-In-Reply-To: <4E09EE10.1050607@pobox.com>
 References: <1309194834-2292-1-git-send-email-antonynpavlov@gmail.com>
 	<1309194834-2292-2-git-send-email-antonynpavlov@gmail.com>
-	<4E09EE10.1050607@pobox.com>
-Date: Tue, 28 Jun 2011 19:42:39 +0400
-Message-ID: <BANLkTi=wKBoMJX=XsmWAnYqoACye46xj4A@mail.gmail.com>
-From: Antony Pavlov <antonynpavlov@gmail.com>
+	<20110628051134.GN17355@game.jcrosoft.org>
+	<BANLkTim9Dx3uuE-3v33PdmpSpv9K30zhcA@mail.gmail.com>
+	<20110628132907.GP17355@game.jcrosoft.org>
+In-Reply-To: <20110628132907.GP17355@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,78 +21,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 2/2] Add MIPS arch support to barebox
-To: Shinya Kuribayashi <skuribay@pobox.com>
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On 28 June 2011 19:06, Shinya Kuribayashi <skuribay@pobox.com> wrote:
-> On 6/28/11 2:13 AM, Antony Pavlov wrote:
+Thanks Jean for bringing up old stuff :-), and nice to see the first
+(workable) MIPS port of barebox this time, Antony.
+
+>> Is it runnable at all?
+
+Not at all, unfortunately.
+
+>> I think, that Shinya's concepts can be used in the future, but they
+>> are very complex for initial mips support.
 >>
->> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
->> new file mode 100644
->> index 0000000..10c0fbb
->> --- /dev/null
->> +++ b/arch/mips/Kconfig
->> @@ -0,0 +1,55 @@
->
-> [...]
->>
->> +source arch/mips/mach-qemu/Kconfig
->> +
->> +choice
->> + =A0 =A0 =A0 prompt "Bring up type"
->> +
->> + =A0 =A0 =A0 config MIPS_NATIVE_BRINGUP
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 bool "native"
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 help
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0Barebox will act as a native bootlo=
-ader. This includes
->> all the
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0required initialization needed to b=
-ring up a piece of
->> hardware.
->> +
->> +endchoice
->
-> Native bringup / native bootloader should be replaced with
-> something more appropriate or descriptive.
+>> IMHO, the Shinya's code is redundant (>  200K ) --- initial support
+>> must be as small as possible.
 
-I think that there is no need of this option in initial mips support.
+I didn't care about code size, complexity, workable or not (ok, this is
+important) when I was working on it.  What did care about is its boot
+design.Having a glance at your head.S, compute_offset part looks good.
+That's a part of what I have in mind, and implemented as ADR macro in
+my prototype.
 
-In my everyday practice with the barebox-like firmware I use two
-different type of firmware:
-  * firmware, burned to the ROM (native bringup), this is principal
-modus vivendi for firmware;
-  * RAM-loadable firmware. This type of firmware is usable in case of
-board damage or critical error of ROM firmware. Also RAM-loadable
-firmware usable for testing of new version of firmware.
-
-I think it is desirable to add this parameter in the future.
-
->> diff --git a/arch/mips/boot/entry.c b/arch/mips/boot/entry.c
->> new file mode 100644
->> index 0000000..98d954e
->> --- /dev/null
->> +++ b/arch/mips/boot/entry.c
->> @@ -0,0 +1,80 @@
->> +/*
->> + * (C) Copyright 2000-2006
->> + * Wolfgang Denk, DENX Software Engineering, wd@denx.de.
->
-> Which part in this file belongs to Wolfgang? =A0I don't see any, and
-> recommend you to replace with yours.
->
-
-Hmm. You are right.
-
--- =
-
-Best regards,
-=A0 Antony Pavlov
+I'll write a lot more some other day.
 
 _______________________________________________
 barebox mailing list
