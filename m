@@ -1,11 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QbVBg-0005p9-TC
-	for barebox@lists.infradead.org; Tue, 28 Jun 2011 10:06:33 +0000
-Date: Tue, 28 Jun 2011 12:06:29 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110628100629.GJ6069@pengutronix.de>
+Received: from 19.98.mail-out.ovh.net ([188.165.44.250]
+	helo=98.mail-out.ovh.net)
+	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+	id 1QbYaG-0001SO-13
+	for barebox@lists.infradead.org; Tue, 28 Jun 2011 13:44:09 +0000
+Received: from mail31.ha.ovh.net (b7.ovh.net [213.186.33.57])
+	by 98.mail-out.ovh.net (Postfix) with SMTP id 3AF7E4B3DDB
+	for <barebox@lists.infradead.org>;
+	Tue, 28 Jun 2011 15:43:44 +0200 (CEST)
+Date: Tue, 28 Jun 2011 15:29:07 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20110628132907.GP17355@game.jcrosoft.org>
 References: <1309194834-2292-1-git-send-email-antonynpavlov@gmail.com>
 	<1309194834-2292-2-git-send-email-antonynpavlov@gmail.com>
 	<20110628051134.GN17355@game.jcrosoft.org>
@@ -29,7 +34,7 @@ Subject: Re: [PATCH 2/2] Add MIPS arch support to barebox
 To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jun 28, 2011 at 01:37:46PM +0400, Antony Pavlov wrote:
+On 13:37 Tue 28 Jun     , Antony Pavlov wrote:
 > On 28/06/2011, Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> wrote:
 > > On 21:13 Mon 27 Jun     , Antony Pavlov wrote:
 > >> Only supported board is qemu malta:
@@ -58,9 +63,6 @@ On Tue, Jun 28, 2011 at 01:37:46PM +0400, Antony Pavlov wrote:
 > 
 > IMHO, the Shinya's code is redundant (> 200K ) --- initial support
 > must be as small as possible.
-
-+1 for starting small.
-
 > 
 > The file Kconfig is overcomplicated. Many variables are really unused:
 >  DMA_NONCOHERENT,
@@ -75,17 +77,13 @@ On Tue, Jun 28, 2011 at 01:37:46PM +0400, Antony Pavlov wrote:
 > 
 > But now I see, that I can make my mips support better --- split big
 > patch and make some parts of code configurable.
+in Shinya-san work the init code is really more clean than u-boot and the
+Makefile too and other part
 
-I forgot to say, it's good to split the board support and the
-architecture support.
+I think you can merge both o have a good mips implementation
 
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
