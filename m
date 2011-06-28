@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-wy0-f177.google.com ([74.125.82.177])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QbUJd-0004xP-K1
-	for barebox@lists.infradead.org; Tue, 28 Jun 2011 09:10:43 +0000
-Received: by wyf23 with SMTP id 23so4642205wyf.36
-	for <barebox@lists.infradead.org>; Tue, 28 Jun 2011 02:10:38 -0700 (PDT)
+	id 1QbUjs-0005BY-SX
+	for barebox@lists.infradead.org; Tue, 28 Jun 2011 09:37:49 +0000
+Received: by wyf23 with SMTP id 23so12566wyf.36
+	for <barebox@lists.infradead.org>; Tue, 28 Jun 2011 02:37:47 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20110628072147.GG6069@pengutronix.de>
+In-Reply-To: <20110628051134.GN17355@game.jcrosoft.org>
 References: <1309194834-2292-1-git-send-email-antonynpavlov@gmail.com>
 	<1309194834-2292-2-git-send-email-antonynpavlov@gmail.com>
-	<20110628072147.GG6069@pengutronix.de>
-Date: Tue, 28 Jun 2011 13:03:36 +0400
-Message-ID: <BANLkTi=MjbrK7EKMv7=u7S+M2bju4umBZA@mail.gmail.com>
+	<20110628051134.GN17355@game.jcrosoft.org>
+Date: Tue, 28 Jun 2011 13:37:46 +0400
+Message-ID: <BANLkTim9Dx3uuE-3v33PdmpSpv9K30zhcA@mail.gmail.com>
 From: Antony Pavlov <antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -26,73 +26,51 @@ Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 2/2] Add MIPS arch support to barebox
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On 28/06/2011, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> On Mon, Jun 27, 2011 at 09:13:54PM +0400, Antony Pavlov wrote:
+On 28/06/2011, Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> wrote:
+> On 21:13 Mon 27 Jun     , Antony Pavlov wrote:
 >> Only supported board is qemu malta:
 >>   * barebox works in uncached memory;
 >>   * no peripherals support, but serial port.
->>
->> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 >
-> Looks mostly good, some comments inline.
-
-...
-
->>
->> diff --git a/arch/mips/boards/malta/serial.c
->> b/arch/mips/boards/malta/serial.c
->> new file mode 100644
->> index 0000000..b3ade0c
->> --- /dev/null
->> +++ b/arch/mips/boards/malta/serial.c
-...
+> please take a look on here
+> http://git.jcrosoft.org/git?p=barebox.git;a=shortlog;h=refs/heads/mips
 >
-> The whole file is inside CONFIG_DRIVER_SERIAL_NS16550, so you can do
-> a obj-$(CONFIG_DRIVER_SERIAL_NS16550) += serial.o in the Makefile
-> instead.
-
-Ok.
-
-
->> diff --git a/arch/mips/configs/malta_defconfig
->> b/arch/mips/configs/malta_defconfig
+> the work start by Shinya Kuribayashi to support mips and barebox
 >
-> Please generate your defconfig file with make savedefconfig
-
-I have know nothing about savedefconfig. I will use it.
-
->> +/**
->> + * @file
->> + * @brief mips posix types
->> + *
->> + * Minimal set to make all the other header files copied from the Linxu
->> kernel happy
->
-> s/Linxu/Linux/
+> maybe you can merge both
 >
 
-I did't used spell checker, but I must do.
+I took a look on it.
 
-:)
+I can build 'qemu' target with default config, but I can't see
+any output in emulator.
 
-...
+I can't even build 'malta' target with default config.
 
->> +void reset_cpu(ulong addr)
->> +{
->> +	/** How to reset the machine? */
->
-> I don't know either. We should add some printf here until we know.
->
+Is it runnable at all?
 
-qemu malta board has magic register to reset the machine
-(see "SOFTRES Register" in qemu.git/hw/mips_malta.c).
+I think, that Shinya's concepts can be used in the future, but they
+are very complex for initial mips support.
 
-For other board we can easily jump to start of bootrom. I think it is
-possible in th future to introduce option to configure reset_cpu()'s
-behavior.
+IMHO, the Shinya's code is redundant (> 200K ) --- initial support
+must be as small as possible.
+
+The file Kconfig is overcomplicated. Many variables are really unused:
+ DMA_NONCOHERENT,
+ SWAP_IO_SPACE
+ HW_HAS_PCI
+ SYS_SUPPORTS_{32,64}BIT_KERNEL
+ SYS_SUPPORTS_ARBIT_HZ
+  and others
+
+In other hand the options ARCH_TEXT_BASE and CPU_BIG_ENDIAN are useful
+just now, but I have missed them.
+
+But now I see, that I can make my mips support better --- split big
+patch and make some parts of code configurable.
 
 -- 
 Best regards,
