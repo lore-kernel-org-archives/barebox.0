@@ -1,23 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 19.98.mail-out.ovh.net ([188.165.44.250]
-	helo=98.mail-out.ovh.net)
+Received: from b-pb-sasl-quonix.pobox.com ([208.72.237.35] helo=smtp.pobox.com)
 	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1QbYaG-0001SO-13
-	for barebox@lists.infradead.org; Tue, 28 Jun 2011 13:44:09 +0000
-Received: from mail31.ha.ovh.net (b7.ovh.net [213.186.33.57])
-	by 98.mail-out.ovh.net (Postfix) with SMTP id 3AF7E4B3DDB
-	for <barebox@lists.infradead.org>;
-	Tue, 28 Jun 2011 15:43:44 +0200 (CEST)
-Date: Tue, 28 Jun 2011 15:29:07 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20110628132907.GP17355@game.jcrosoft.org>
+	id 1QbZsc-0002kj-Mv
+	for barebox@lists.infradead.org; Tue, 28 Jun 2011 15:07:11 +0000
+Message-ID: <4E09EE10.1050607@pobox.com>
+Date: Wed, 29 Jun 2011 00:06:56 +0900
+From: Shinya Kuribayashi <skuribay@pobox.com>
+MIME-Version: 1.0
 References: <1309194834-2292-1-git-send-email-antonynpavlov@gmail.com>
 	<1309194834-2292-2-git-send-email-antonynpavlov@gmail.com>
-	<20110628051134.GN17355@game.jcrosoft.org>
-	<BANLkTim9Dx3uuE-3v33PdmpSpv9K30zhcA@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <BANLkTim9Dx3uuE-3v33PdmpSpv9K30zhcA@mail.gmail.com>
+In-Reply-To: <1309194834-2292-2-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,64 +18,165 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 2/2] Add MIPS arch support to barebox
 To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On 13:37 Tue 28 Jun     , Antony Pavlov wrote:
-> On 28/06/2011, Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> wrote:
-> > On 21:13 Mon 27 Jun     , Antony Pavlov wrote:
-> >> Only supported board is qemu malta:
-> >>   * barebox works in uncached memory;
-> >>   * no peripherals support, but serial port.
-> >
-> > please take a look on here
-> > http://git.jcrosoft.org/git?p=barebox.git;a=shortlog;h=refs/heads/mips
-> >
-> > the work start by Shinya Kuribayashi to support mips and barebox
-> >
-> > maybe you can merge both
-> >
-> 
-> I took a look on it.
-> 
-> I can build 'qemu' target with default config, but I can't see
-> any output in emulator.
-> 
-> I can't even build 'malta' target with default config.
-> 
-> Is it runnable at all?
-> 
-> I think, that Shinya's concepts can be used in the future, but they
-> are very complex for initial mips support.
-> 
-> IMHO, the Shinya's code is redundant (> 200K ) --- initial support
-> must be as small as possible.
-> 
-> The file Kconfig is overcomplicated. Many variables are really unused:
->  DMA_NONCOHERENT,
->  SWAP_IO_SPACE
->  HW_HAS_PCI
->  SYS_SUPPORTS_{32,64}BIT_KERNEL
->  SYS_SUPPORTS_ARBIT_HZ
->   and others
-> 
-> In other hand the options ARCH_TEXT_BASE and CPU_BIG_ENDIAN are useful
-> just now, but I have missed them.
-> 
-> But now I see, that I can make my mips support better --- split big
-> patch and make some parts of code configurable.
-in Shinya-san work the init code is really more clean than u-boot and the
-Makefile too and other part
+On 6/28/11 2:13 AM, Antony Pavlov wrote:
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> new file mode 100644
+> index 0000000..10c0fbb
+> --- /dev/null
+> +++ b/arch/mips/Kconfig
+> @@ -0,0 +1,55 @@
+[...]
+> +source arch/mips/mach-qemu/Kconfig
+> +
+> +choice
+> +	prompt "Bring up type"
+> +
+> +	config MIPS_NATIVE_BRINGUP
+> +		bool "native"
+> +		help
+> +		   Barebox will act as a native bootloader. This includes all the
+> +		   required initialization needed to bring up a piece of hardware.
+> +
+> +endchoice
 
-I think you can merge both o have a good mips implementation
+Native bringup / native bootloader should be replaced with
+something more appropriate or descriptive.
 
-Best Regards,
-J.
+> +source arch/mips/boot/Kconfig
+> +
+> +source common/Kconfig
+> +source commands/Kconfig
+> +source net/Kconfig
+> +source drivers/Kconfig
+> +source fs/Kconfig
+> +source lib/Kconfig
+> diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+> new file mode 100644
+> index 0000000..60d88e5
+> --- /dev/null
+> +++ b/arch/mips/Makefile
+> @@ -0,0 +1,51 @@
+> +CPPFLAGS += -D__MIPS__ -fno-strict-aliasing -fno-merge-constants
+> +
+> +CPPFLAGS += -march=mips64 -P -EB -mno-abicalls
+> +CPPFLAGS += -Wall -Wmissing-prototypes -Wstrict-prototypes \
+> +	    -Wno-uninitialized -Wno-format -Wno-main
+> +#CPPFLAGS += -save-temps
+
+it's good thing to take 64-bit support into account from the beginning.
+
+> diff --git a/arch/mips/boot/entry.c b/arch/mips/boot/entry.c
+> new file mode 100644
+> index 0000000..98d954e
+> --- /dev/null
+> +++ b/arch/mips/boot/entry.c
+> @@ -0,0 +1,80 @@
+> +/*
+> + * (C) Copyright 2000-2006
+> + * Wolfgang Denk, DENX Software Engineering, wd@denx.de.
+
+Which part in this file belongs to Wolfgang?  I don't see any, and
+recommend you to replace with yours.
+
+> + * See file CREDITS for list of people who contributed to this
+> + * project.
+> + *
+> + * This program is free software; you can redistribute it and/or
+> + * modify it under the terms of the GNU General Public License as
+> + * published by the Free Software Foundation; either version 2 of
+> + * the License, or (at your option) any later version.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + *
+> + * You should have received a copy of the GNU General Public License
+> + * along with this program; if not, write to the Free Software
+> + * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+> + * MA 02111-1307 USA
+> + */
+> +
+> +#include<debug_ll.h>
+> +#include<common.h>
+> +#include<init.h>
+> +#include<asm-generic/memory_layout.h>
+> +
+> +#include<asm/io.h>
+> +
+> +#include<string.h>
+> +
+> +/* These symbols are generated by the linker */
+> +extern long __bss_start;
+> +extern long __bss_end;
+> +
+> +extern void start_barebox(void);
+> +
+> +/************************************************************************
+> + *
+> + * This is the first part of the initialization sequence: we are now
+> + * running from ROM.
+> + *
+> + ************************************************************************
+> + */
+> +
+> +void board_init_in_rom(void *rom, void *ram)
+> +{
+> +	int i;
+> +	int * a, *b;
+> +#define ROM_SIZE	512 * 1024
+> +
+> +	a = rom;
+> +	b = ram;
+> +
+> +	for (i = ROM_SIZE; i>  0; i-=sizeof(int)) {
+> +		*b = *a;
+> +		a++;
+> +		b++;
+> +	}
+> +}
+> +
+> +/************************************************************************
+> + *
+> + * This is the next part if the initialization sequence: we are now
+> + * running from RAM and have a "normal" C environment, i. e. global
+> + * data can be written, BSS has been cleared, the stack size in not
+> + * that critical any more, etc.
+> + *
+> + ************************************************************************
+> + */
+> +
+> +void board_init_in_ram()
+> +{
+> +	/* clear the BSS first */
+> +	memset(&__bss_start, 0x00,&__bss_end -&__bss_start);
+> +
+> +	/* Initialization complete - start the monitor */
+> +	start_barebox();
+> +}
+> diff --git a/arch/mips/boot/head.S b/arch/mips/boot/head.S
+> new file mode 100644
+> index 0000000..f5712b8
+> --- /dev/null
+> +++ b/arch/mips/boot/head.S
+> @@ -0,0 +1,233 @@
+> +/*
+> + * Startup Code for MIPS32 CPU-core
+> + *
+> + * Copyright (c) 2003	Wolfgang Denk<wd@denx.de>
+> + * Further modifications by Antony Pavlov
+
+Hmm, not really, and stopped reviewing here.  I might be able to
+give a thorough review, but don't have any spare time these days.
+
 
 _______________________________________________
 barebox mailing list
