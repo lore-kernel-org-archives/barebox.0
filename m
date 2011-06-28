@@ -1,13 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bw0-f49.google.com ([209.85.214.49])
-	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QbFR6-0002SG-Ig
-	for barebox@lists.infradead.org; Mon, 27 Jun 2011 17:17:25 +0000
-Received: by bwf12 with SMTP id 12so2051605bwf.36
-	for <barebox@lists.infradead.org>; Mon, 27 Jun 2011 10:17:22 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon, 27 Jun 2011 21:13:53 +0400
-Message-Id: <1309194834-2292-1-git-send-email-antonynpavlov@gmail.com>
+Received: from 28.98.mail-out.ovh.net ([87.98.167.241]
+	helo=98.mail-out.ovh.net)
+	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+	id 1QbQoi-0001Vt-RO
+	for barebox@lists.infradead.org; Tue, 28 Jun 2011 05:26:34 +0000
+Received: from mail31.ha.ovh.net (b7.ovh.net [213.186.33.57])
+	by 98.mail-out.ovh.net (Postfix) with SMTP id E21E74B3B7A
+	for <barebox@lists.infradead.org>;
+	Tue, 28 Jun 2011 07:26:09 +0200 (CEST)
+Date: Tue, 28 Jun 2011 07:11:34 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20110628051134.GN17355@game.jcrosoft.org>
+References: <1309194834-2292-1-git-send-email-antonynpavlov@gmail.com>
+	<1309194834-2292-2-git-send-email-antonynpavlov@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1309194834-2292-2-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,101 +24,100 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] include/linux/stat.h: make struct stat unified
-To: barebox@lists.infradead.org
-Cc: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH 2/2] Add MIPS arch support to barebox
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-This unification make MIPS arch possible.
+On 21:13 Mon 27 Jun     , Antony Pavlov wrote:
+> Only supported board is qemu malta:
+>   * barebox works in uncached memory;
+>   * no peripherals support, but serial port.
+Hi
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- include/linux/stat.h |   58 --------------------------------------------------
- 1 files changed, 0 insertions(+), 58 deletions(-)
+I try to compile but does not work on mipsel toolchains
 
-diff --git a/include/linux/stat.h b/include/linux/stat.h
-index 10103d4..bc7dce4 100644
---- a/include/linux/stat.h
-+++ b/include/linux/stat.h
-@@ -42,31 +42,6 @@ extern "C" {
- #define S_IWOTH 00002		/* read permission for other */
- #define S_IXOTH 00001		/* execute/search permission for other */
- 
--#ifdef	__PPC__
--
--struct stat {
--	dev_t		st_dev;		/* file system id */
--	ino_t		st_ino;		/* file id */
--	mode_t		st_mode;	/* ownership/protection */
--	nlink_t		st_nlink;	/* number of links */
--	uid_t 		st_uid;		/* user id */
--	gid_t 		st_gid;		/* group id */
--	dev_t		st_rdev;
--	off_t		st_size;	/* file size in # of bytes */
--	unsigned long  	st_blksize;	/* block size */
--	unsigned long  	st_blocks;	/* file size in # of blocks */
--	unsigned long  	st_atime;	/* time file was last accessed */
--	unsigned long  	__unused1;
--	unsigned long  	st_mtime;	/* time file was last modified */
--	unsigned long  	__unused2;
--	unsigned long  	st_ctime;	/* time file status was last changed */
--	unsigned long  	__unused3;
--	unsigned long  	__unused4;
--	unsigned long  	__unused5;
--};
--
--#else
--
- struct stat {
- 	unsigned short st_dev;
- 	unsigned short __pad1;
-@@ -90,39 +65,6 @@ struct stat {
- 	unsigned long  __unused5;
- };
- 
--#endif	/* __ARM__ */
--
--#if defined (__MIPS__)
--
--struct stat {
--	dev_t           st_dev;
--	long            st_pad1[3];
--	ino_t           st_ino;
--	mode_t          st_mode;
--	nlink_t         st_nlink;
--	uid_t           st_uid;
--	gid_t           st_gid;
--	dev_t           st_rdev;
--	long            st_pad2[2];
--	off_t           st_size;
--	long            st_pad3;
--	/*
--	 * Actually this should be timestruc_t st_atime, st_mtime and st_ctime
--	 * but we don't have it under Linux.
--	 */
--	time_t          st_atime;
--	long            reserved0;
--	time_t          st_mtime;
--	long            reserved1;
--	time_t          st_ctime;
--	long            reserved2;
--	long            st_blksize;
--	long            st_blocks;
--	long            st_pad4[14];
--};
--
--#endif	/* __MIPS__ */
--
- #ifdef __cplusplus
- }
- #endif
--- 
-1.7.5.4
+please take a look on here
+http://git.jcrosoft.org/git?p=barebox.git;a=shortlog;h=refs/heads/mips
 
+the work start by Shinya Kuribayashi to support mips and barebox
+
+maybe you can merge both
+
+# make O=build/malta -j9 -s
+  GEN     /opt/work/barebox/build/malta/Makefile
+common/Kconfig:91:warning: 'TEXT_BASE': number is invalid
+  GEN     /opt/work/barebox/build/malta/Makefile
+  CHK     include/generated/version.h
+  UPD     include/generated/version.h
+  CHK     include/generated/utsrelease.h
+  SYMLINK include/config.h -> arch/mips/boards/malta//config.h
+  SYMLINK include/asm -> include/asm-mips
+  UPD     include/generated/utsrelease.h
+  Using /opt/work/barebox as source for kernel
+/opt/work/barebox/common/memory.c:33: warning: no previous prototype for 'mem_malloc_start'
+/opt/work/barebox/common/memory.c:38: warning: no previous prototype for 'mem_malloc_end'
+/opt/work/barebox/common/memory.c:43: warning: no previous prototype for 'mem_malloc_init'
+/opt/work/barebox/common/memory.c:63: warning: no previous prototype for 'sbrk'
+/opt/work/barebox/lib/string.c:437: warning: no previous prototype for 'bcopy'
+mipsel-unknown-linux-gnu-ld: drivers/serial/serial_ns16550.o: compiled for a big endian system and target is little endian
+mipsel-unknown-linux-gnu-ld: drivers/serial/serial_ns16550.o: endianness incompatible with that of the selected emulation
+mipsel-unknown-linux-gnu-ld: failed to merge target specific data of file drivers/serial/serial_ns16550.o
+make[3]: *** [drivers/serial/built-in.o] Error 1
+make[2]: *** [drivers/serial] Error 2
+make[2]: *** Waiting for unfinished jobs....
+make[1]: *** [drivers] Error 2
+make[1]: *** Waiting for unfinished jobs....
+mipsel-unknown-linux-gnu-ld: net/dhcp.o: compiled for a big endian system and target is little endian
+mipsel-unknown-linux-gnu-ld: net/dhcp.o: endianness incompatible with that of the selected emulation
+mipsel-unknown-linux-gnu-ld: failed to merge target specific data of file net/dhcp.o
+mipsel-unknown-linux-gnu-ld: net/eth.o: compiled for a big endian system and target is little endian
+mipsel-unknown-linux-gnu-ld: net/eth.o: endianness incompatible with that of the selected emulation
+mipsel-unknown-linux-gnu-ld: failed to merge target specific data of file net/eth.o
+mipsel-unknown-linux-gnu-ld: net/net.o: compiled for a big endian system and target is little endian
+mipsel-unknown-linux-gnu-ld: net/net.o: endianness incompatible with that of the selected emulation
+mipsel-unknown-linux-gnu-ld: failed to merge target specific data of file net/net.o
+mipsel-unknown-linux-gnu-ld: net/tftp.o: compiled for a big endian system and target is little endian
+mipsel-unknown-linux-gnu-ld: net/tftp.o: endianness incompatible with that of the selected emulation
+mipsel-unknown-linux-gnu-ld: failed to merge target specific data of file net/tftp.o
+mipsel-unknown-linux-gnu-ld: net/ping.o: compiled for a big endian system and target is little endian
+mipsel-unknown-linux-gnu-ld: net/ping.o: endianness incompatible with that of the selected emulation
+mipsel-unknown-linux-gnu-ld: failed to merge target specific data of file net/ping.o
+mipsel-unknown-linux-gnu-ld: net/netconsole.o: compiled for a big endian system and target is little endian
+mipsel-unknown-linux-gnu-ld: net/netconsole.o: endianness incompatible with that of the selected emulation
+mipsel-unknown-linux-gnu-ld: failed to merge target specific data of file net/netconsole.o
+make[2]: *** [net/built-in.o] Error 1
+make[1]: *** [net] Error 2
+mipsel-unknown-linux-gnu-ld: common/hush.o: compiled for a big endian system and target is little endian
+mipsel-unknown-linux-gnu-ld: common/hush.o: endianness incompatible with that of the selected emulation
+mipsel-unknown-linux-gnu-ld: failed to merge target specific data of file common/hush.o
+mipsel-unknown-linux-gnu-ld: common/date.o: compiled for a big endian system and target is little endian
+mipsel-unknown-linux-gnu-ld: common/date.o: endianness incompatible with that of the selected emulation
+mipsel-unknown-linux-gnu-ld: failed to merge target specific data of file common/date.o
+mipsel-unknown-linux-gnu-ld: common/environment.o: compiled for a big endian system and target is little endian
+mipsel-unknown-linux-gnu-ld: common/environment.o: endianness incompatible with that of the selected emulation
+mipsel-unknown-linux-gnu-ld: failed to merge target specific data of file common/environment.o
+mipsel-unknown-linux-gnu-ld: common/complete.o: compiled for a big endian system and target is little endian
+mipsel-unknown-linux-gnu-ld: common/complete.o: endianness incompatible with that of the selected emulation
+mipsel-unknown-linux-gnu-ld: failed to merge target specific data of file common/complete.o
+mipsel-unknown-linux-gnu-ld: common/poller.o: compiled for a big endian system and target is little endian
+mipsel-unknown-linux-gnu-ld: common/poller.o: endianness incompatible with that of the selected emulation
+mipsel-unknown-linux-gnu-ld: failed to merge target specific data of file common/poller.o
+mipsel-unknown-linux-gnu-ld: common/memory.o: compiled for a big endian system and target is little endian
+mipsel-unknown-linux-gnu-ld: common/memory.o: endianness incompatible with that of the selected emulation
+mipsel-unknown-linux-gnu-ld: failed to merge target specific data of file common/memory.o
+mipsel-unknown-linux-gnu-ld: common/dlmalloc.o: compiled for a big endian system and target is little endian
+mipsel-unknown-linux-gnu-ld: common/dlmalloc.o: endianness incompatible with that of the selected emulation
+mipsel-unknown-linux-gnu-ld: failed to merge target specific data of file common/dlmalloc.o
+mipsel-unknown-linux-gnu-ld: common/clock.o: compiled for a big endian system and target is little endian
+mipsel-unknown-linux-gnu-ld: common/clock.o: endianness incompatible with that of the selected emulation
+mipsel-unknown-linux-gnu-ld: failed to merge target specific data of file common/clock.o
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
