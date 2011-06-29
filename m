@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pz0-f49.google.com ([209.85.210.49])
+Received: from mail-wy0-f177.google.com ([74.125.82.177])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QbeGw-0005dZ-1K
-	for barebox@lists.infradead.org; Tue, 28 Jun 2011 19:48:34 +0000
-Received: by pzk28 with SMTP id 28so404708pzk.36
-	for <barebox@lists.infradead.org>; Tue, 28 Jun 2011 12:48:28 -0700 (PDT)
+	id 1QblJW-0001yB-2o
+	for barebox@lists.infradead.org; Wed, 29 Jun 2011 03:19:43 +0000
+Received: by wyf23 with SMTP id 23so703203wyf.36
+	for <barebox@lists.infradead.org>; Tue, 28 Jun 2011 20:19:32 -0700 (PDT)
 MIME-Version: 1.0
-From: Kamel BOUHARA <k.bouhara@gmail.com>
-Date: Tue, 28 Jun 2011 21:42:18 +0200
-Message-ID: <BANLkTinPzaNGkUeZ9e34B=w+NWLR-zXjUA@mail.gmail.com>
+Date: Wed, 29 Jun 2011 07:19:32 +0400
+Message-ID: <BANLkTim4Zii2mrHBXjk-4CQo2Fy9uiOqVg@mail.gmail.com>
+From: Antony Pavlov <antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,49 +17,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1006863307=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: 
-To: barebox@lists.infradead.org
+Subject: add mips support: a new attempt
+To: barebox <barebox@lists.infradead.org>
 
---===============1006863307==
-Content-Type: multipart/alternative; boundary=bcaec53aedd6c769c404a6cade88
+Hi, All!
 
---bcaec53aedd6c769c404a6cade88
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
+Thanks for positive feedback!
 
---=20
-__________________________________
-*Kamel BOUHARA*
-7 rue Jules C=E9sar
-02100 SAINT-QUENTIN
-06.17.83.29.04
+I'am going to post new series of patches.
 
---bcaec53aedd6c769c404a6cade88
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
+I tried to take into account the feedback, so new patches have many fixes.
+The structure of directories was changed.
+The big patch was splitted.
 
-<br clear=3D"all"><br>-- <br>__________________________________<br><i><font=
- face=3D"&#39;comic sans ms&#39;, sans-serif">Kamel BOUHARA</font></i><div>=
-7 rue Jules C=E9sar<div>02100 SAINT-QUENTIN<br>06.17.83.29.04<br><br></div>=
-</div>
+But the head.S file was not changed. I will try describe why.
+I'am working on a initial mips support. The initial architecture
+support must be as simple as possible. The MIPS architecture make
+possible start barebox from RAM without virtual memory, cache and
+exception handlers support.
+So my assembler initialization is very simple. BSS initialization and
+copying from ROM to RAM transfered to C-code and I don't see any
+reason to change this.
 
-<br>
-
---bcaec53aedd6c769c404a6cade88--
-
-
---===============1006863307==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+-- 
+Best regards,
+  Antony Pavlov
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============1006863307==--
