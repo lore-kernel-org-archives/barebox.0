@@ -1,20 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 27.98.mail-out.ovh.net ([178.33.105.219]
+Received: from 16.98.mail-out.ovh.net ([87.98.174.207]
 	helo=98.mail-out.ovh.net)
 	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1Qc7bi-0000Ze-9Z
-	for barebox@lists.infradead.org; Thu, 30 Jun 2011 03:07:59 +0000
+	id 1Qc7hP-0000b1-8p
+	for barebox@lists.infradead.org; Thu, 30 Jun 2011 03:13:52 +0000
 Received: from mail31.ha.ovh.net (b7.ovh.net [213.186.33.57])
-	by 98.mail-out.ovh.net (Postfix) with SMTP id 33FAC4B2162
+	by 98.mail-out.ovh.net (Postfix) with SMTP id D536954E618
 	for <barebox@lists.infradead.org>;
-	Thu, 30 Jun 2011 05:07:33 +0200 (CEST)
-Date: Thu, 30 Jun 2011 04:52:51 +0200
+	Thu, 30 Jun 2011 05:13:26 +0200 (CEST)
+Date: Thu, 30 Jun 2011 04:58:44 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20110630025251.GJ17355@game.jcrosoft.org>
+Message-ID: <20110630025844.GK17355@game.jcrosoft.org>
 References: <1309317858-11861-1-git-send-email-antonynpavlov@gmail.com>
+	<1309317858-11861-3-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1309317858-11861-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1309317858-11861-3-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,138 +28,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] Add MIPS arch support to barebox
+Subject: Re: [PATCH 3/4] MIPS: add qemu malta board support to barebox
 To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-> @@ -0,0 +1,32 @@
-> +/*
-> + * Copyright (C) 2011 Antony Pavlov <antonynpavlov@gmail.com>
-> + *
-> + * This program is free software; you can redistribute it and/or
-> + * modify it under the terms of the GNU General Public License as
-> + * published by the Free Software Foundation; either version 2 of
-> + * the License, or (at your option) any later version.
-> + *
-> + * This program is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> + * GNU General Public License for more details.
-> + *
-> + * You should have received a copy of the GNU General Public License
-> + * along with this program; if not, write to the Free Software
-> + * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-> + * MA 02111-1307 USA
-> + *
-> + */
 > +
-> +/**
-> + * @file
-> + * @brief Resetting an CPU
-> + */
-> +
-> +#include <common.h>
-> +
-> +void __noreturn reset_cpu(ulong addr)
+> +/** to work with the 8250 UART driver implementation we need this function */
+> +static unsigned int malta_uart_read(unsigned long base, unsigned char reg_idx)
 > +{
-> +	mips_machine_restart();
+> +	return readb((char *)base + reg_idx);
 > +}
-> +EXPORT_SYMBOL(reset_cpu);
-no need of this manage it at machine level
-> diff --git a/arch/mips/include/asm/types.h b/arch/mips/include/asm/types.h
-> new file mode 100644
-> index 0000000..5c1e2de
-> --- /dev/null
-> +++ b/arch/mips/include/asm/types.h
-> @@ -0,0 +1,44 @@
-> +/*
-> + * This program is free software; you can redistribute it and/or
-> + * modify it under the terms of the GNU General Public License as
-> + * published by the Free Software Foundation; either version 2 of
-> + * the License, or (at your option) any later version.
-> + *
-> + * This program is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> + * GNU General Public License for more details.
-> + *
-> + * You should have received a copy of the GNU General Public License
-> + * along with this program; if not, write to the Free Software
-> + * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-> + * MA 02111-1307 USA
-> + *
-> + */
 > +
-> +#ifndef __ASM_MIPS_TYPES_H
-> +#define __ASM_MIPS_TYPES_H
-> +
-> +#ifndef __ASSEMBLY__
-> +
-> +typedef __signed__ char __s8;
-> +typedef unsigned char __u8;
-> +
-> +typedef __signed__ short __s16;
-> +typedef unsigned short __u16;
-> +
-> +typedef __signed__ int __s32;
-> +typedef unsigned int __u32;
-> +
-> +typedef __signed__ long long __s64;
-> +typedef unsigned long long __u64;
-> +
-> +typedef unsigned char u8;
-> +
-can we factorize
-it's copy across arch
-> +typedef unsigned short u16;
-> +
-> +typedef unsigned int u32;
-> +
-> +#endif /* __ASSEMBLY__ */
-> +
-> +#endif /* __ASM_MIPS_TYPES_H */
-> diff --git a/arch/mips/include/mach/debug_ll.h b/arch/mips/include/mach/debug_ll.h
-> new file mode 100644
-> index 0000000..9fff7be
-> --- /dev/null
-> +++ b/arch/mips/lib/memory.c
-> @@ -0,0 +1,34 @@
-> +/*
-> + * Copyright (c) 2011 Antony Pavlov <antonynpavlov@gmail.com>
-> + * See file CREDITS for list of people who contributed to this project.
-> + *
-> + * This file is part of barebox.
-> + *
-> + * This program is free software; you can redistribute it and/or
-> + * modify it under the terms of the GNU General Public License as
-> + * published by the Free Software Foundation; either version 2 of
-> + * the License, or (at your option) any later version.
-> + *
-> + * This program is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> + * GNU General Public License for more details.
-> + *
-> + * You should have received a copy of the GNU General Public License
-> + * along with this program; if not, write to the Free Software
-> + * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-> + * MA 02111-1307 USA
-> + */
-> +
-> +#include <common.h>
-> +#include <init.h>
-> +#include <mem_malloc.h>
-> +#include <asm-generic/memory_layout.h>
-> +
-> +static int mips_mem_malloc_init(void)
+> +/** to work with the 8250 UART driver implementation we need this function */
+> +static void malta_uart_write(unsigned int val, unsigned long base, unsigned char reg_idx)
 > +{
-> +	mem_malloc_init((void *)MALLOC_BASE,
-> +			(void *)(MALLOC_BASE + MALLOC_SIZE));
-> +	return 0;
+> +	writeb(val, (char *)base + reg_idx);
 > +}
-> +core_initcall(mips_mem_malloc_init);
-can we factorise this code this is the same on arm, m68k, blackfin too
-
+> +
+> +static struct NS16550_plat serial_plat = {
+> +       .clock = 1843200, /* no matter */
+why no matter?
+> +       .f_caps = CONSOLE_STDIN | CONSOLE_STDOUT | CONSOLE_STDERR,
+> +       .reg_read = malta_uart_read,
+> +       .reg_write = malta_uart_write,
+plewase tab for indent
+> +};
+> +
+> +/* we are expecting always one serial interface */
+> +static struct device_d generic_malta_serial_device = {
+> +       .name = "serial_ns16550",
+> +       .map_base = DEBUG_LL_UART_ADDR,
+> +       .size = 8,
+> +       .platform_data = (void *)&serial_plat,
+> +};
+> +
+> +static int malta_console_init(void)
+> +{
+> +       /* Register the serial port */
+> +       return register_device(&generic_malta_serial_device);
+> +}
+> +console_initcall(malta_console_init);
+> diff --git a/arch/mips/configs/qemu-malta_defconfig b/arch/mips/configs/qemu-malta_defconfig
+> new file mode 100644
+> index 0000000..507df8a
+> --- /dev/null
+> +++ b/arch/mips/configs/qemu-malta_defconfig
+> @@ -0,0 +1,46 @@
+> +CONFIG_STACK_SIZE=0x7000
+> +CONFIG_BROKEN=y
+> +CONFIG_EXPERIMENTAL=y
+> +CONFIG_PROMPT="uboot:"
+barebox
+> +CONFIG_LONGHELP=y
+> +CONFIG_HUSH_FANCY_PROMPT=y
+> +CONFIG_HUSH_GETOPT=y
+> +CONFIG_CMDLINE_EDITING=y
+> +CONFIG_AUTO_COMPLETE=y
+> +CONFIG_MENU=y
+> +CONFIG_PASSWORD=y
+> +CONFIG_PARTITION=y
+> +# CONFIG_DEFAULT_ENVIRONMENT is not set
 Best Regards,
 J.
 
