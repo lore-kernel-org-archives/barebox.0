@@ -1,18 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QdfVX-0005tE-8b
-	for barebox@lists.infradead.org; Mon, 04 Jul 2011 09:32:00 +0000
-Date: Mon, 4 Jul 2011 11:31:55 +0200
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20110704093155.GI4338@pengutronix.de>
-References: <20110704051347.GJ28000@game.jcrosoft.org>
-	<20110704075925.GD4338@pengutronix.de>
-	<CAB9v_DHtGHydZUxn6rJi7RZ_ZZ7encjz=E9TJeL0gwm02TQscw@mail.gmail.com>
-	<20110704090853.GF4338@pengutronix.de>
+Received: from 31.mail-out.ovh.net ([213.186.62.10])
+	by canuck.infradead.org with smtp (Exim 4.76 #1 (Red Hat Linux))
+	id 1QcRpR-0000f2-9d
+	for barebox@lists.infradead.org; Fri, 01 Jul 2011 00:43:31 +0000
+Received: from mail31.ha.ovh.net (b7.ovh.net [213.186.33.57])
+	by 98.mail-out.ovh.net (Postfix) with SMTP id E5FB14B22A3
+	for <barebox@lists.infradead.org>;
+	Fri,  1 Jul 2011 02:43:01 +0200 (CEST)
+Date: Fri, 1 Jul 2011 02:28:15 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20110701002815.GC14408@game.jcrosoft.org>
+References: <1309426364-22124-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20110704090853.GF4338@pengutronix.de>
+In-Reply-To: <1309426364-22124-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,48 +22,125 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: mach-versatile: debug_ll.h licenc
-To: Alexey Zaytsev <alexey.zaytsev@gmail.com>
+Subject: Re: [PATCH 1/3 v3] Add MIPS arch support to barebox
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Jul 04, 2011 at 11:08:53AM +0200, Uwe Kleine-K=F6nig wrote:
-> On Mon, Jul 04, 2011 at 12:58:34PM +0400, Alexey Zaytsev wrote:
-> > 2011/7/4 Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>:
-> > > On Mon, Jul 04, 2011 at 07:13:47AM +0200, Jean-Christophe PLAGNIOL-VI=
-LLARD wrote:
-> > >> Hi,
-> > >>
-> > >> =A0 =A0 =A0 ./arch/arm/mach-versatile/include/mach/debug_ll.h
-> > >> =A0 =A0 =A0 Can you put this file under gpl v2 or later
-> > >>
-> > >> =A0 =A0 =A0 Barebox is GPLv2 Only project
-> > > INAL, but I think this is not a problem. Barebox itself just doesn't
-> > > make use of the possibility to use a later version of the GPL. Still =
-you
-> > > can pick that file out of barebox and use it in a GPL v3 project.
-> > >
-> > > But maybe I just didn't get what you intended with your mail.
-> > =
+> + *
+> + * Copyright (c) 2003	Wolfgang Denk <wd@denx.de>
+no need if u use the relocate and stack setup of Shinya-san
+> + * Further modifications by Antony Pavlov
+> + * Used code written by Shinya Kuribayashi <skuribay@pobox.com>
+> + *
+> + * See file CREDITS for list of people who contributed to this
+> + * project.
+> + *
+> + * This program is free software; you can redistribute it and/or
+> + * modify it under the terms of the GNU General Public License as
+> + * published by the Free Software Foundation; either version 2 of
+> + * the License, or (at your option) any later version.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + *
+> + * You should have received a copy of the GNU General Public License
+> + * along with this program; if not, write to the Free Software
+> + * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+> + * MA 02111-1307 USA
+> + */
+> +
+> +#include <asm/regdef.h>
+> +#include <asm/mipsregs.h>
+> +#include <asm-generic/memory_layout.h>
+> +
+> +	.set noreorder
+> +        .text
+> +	.section ".text_bare_init"
+> +        .globl _start
+> +	.align 4
+> +
+> +_start:
+here the EXPORT
 
-> > This is a problem. If some files are gpl 2 only, and others are gpl 3
-> > only, you can't distribute the result, as the licenses are not
-> > compatible.
-> We're not talking about "gpl v3 only" (or "v3 or later") here. Including a
-> "v2 or later" header in a "v2 only" .c file should be no problem.
-Ah, OK, I misread Jean-Christophe's question "Can you put this file
-under gpl v2 or later" as "Is currently put under gpl v2 or later".
+IIRC we will need to preserve ra for NMI case
 
-Sorry for the noise,
-Uwe
+please use the comment of Shinya-san they are realy good
+> +	/* Clear watch registers */
+> +	mtc0	zero, CP0_WATCHLO
+> +	mtc0	zero, CP0_WATCHHI
+> +
+> +	/* STATUS register: disable interrupts */
+> +	mfc0	k0, CP0_STATUS
+> +	li	k1, ~ST0_IE
+> +	and	k0, k1
+> +	mtc0	k0, CP0_STATUS
+> +
+> +	/* CAUSE register */
+> +	mtc0	zero, CP0_CAUSE
+> +
+> +	/* Init Timer */
+> +	mtc0	zero, CP0_COUNT
+> +	mtc0	zero, CP0_COMPARE
+> +
+> +	/* Compute _start load address */
+> +	bal	compute_load_address
+> +	 nop
+> +
+> +compute_load_address:
+why don't you use the relocate from Shinya-san?
+> +	move	a0, ra
+> +	and	a0, 0xffff0000		/* Mask off lower bits: a0 <- load address (souce start) */
+> +
+> +	la	a1, _start		/* RAM start address */
+> +
+> +	la	t0, _start
+> +	la	t1, __bss_start
+> +	subu	t2, t1, t0			# t2 <- size of barebox
+> +	addu	a2, a0, t2			# a2 <- source end address
+> +
+> +copy_to_link_address:
+> +	b	2f
+> +	sltu	v0, a0, a2
+> +1:	addiu	a0, a0, 4
+> +	sw	v0, (a1)
+> +	addiu	a1, a1, 4
+> +	sltu	v0, a0, a2
+> +2:	bnezl	v0, 1b
+> +	lw	v0, (a0)
+> +
+> +clear_bss:
+> +	la	t0, __bss_start
+> +	sw	zero, (t0)
+> +	la	t1, _end - 4
+> +1:
+> +	addiu	t0, 4
+> +	sw	zero, (t0)
+> +	bne	t0, t1, 1b
+> +	 nop
+> +
+> +stack_setup:
+his stack setup is more clean
+> +	la	sp, STACK_BASE + STACK_SIZE
+> +	addiu	sp, -32			# init stack pointer
+> +
+> +	la	v0, start_barebox
+> +        jal     v0
+> +	 nop
+> +
+> +	/* No return */
+> +
+> +__error:
+> +	b __error
+> +	 nop
 
--- =
-
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
