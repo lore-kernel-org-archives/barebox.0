@@ -1,22 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 22.98.mail-out.ovh.net ([178.32.115.197]
+Received: from 17.98.mail-out.ovh.net ([188.165.43.167]
 	helo=98.mail-out.ovh.net)
 	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1Qd3YU-00070F-KM
-	for barebox@lists.infradead.org; Sat, 02 Jul 2011 17:00:31 +0000
+	id 1Qd3ZY-000716-B0
+	for barebox@lists.infradead.org; Sat, 02 Jul 2011 17:01:37 +0000
 Received: from mail31.ha.ovh.net (b7.ovh.net [213.186.33.57])
-	by 98.mail-out.ovh.net (Postfix) with SMTP id 88FC34B2DB0
+	by 98.mail-out.ovh.net (Postfix) with SMTP id E455A4B2DB0
 	for <barebox@lists.infradead.org>;
-	Sat,  2 Jul 2011 18:59:59 +0200 (CEST)
-Date: Sat, 2 Jul 2011 18:45:00 +0200
+	Sat,  2 Jul 2011 19:01:08 +0200 (CEST)
+Date: Sat, 2 Jul 2011 18:46:00 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20110702164500.GA28000@game.jcrosoft.org>
+Message-ID: <20110702164600.GB28000@game.jcrosoft.org>
 References: <1309317858-11861-1-git-send-email-antonynpavlov@gmail.com>
-	<1309317858-11861-2-git-send-email-antonynpavlov@gmail.com>
-	<4E0F2E23.4000801@pobox.com>
+	<4E0F2158.4050505@pobox.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <4E0F2E23.4000801@pobox.com>
+In-Reply-To: <4E0F2158.4050505@pobox.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,58 +28,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/4] MIPS: add Malta machine support to barebox
+Subject: Re: [PATCH 1/4] Add MIPS arch support to barebox
 To: Shinya Kuribayashi <skuribay@pobox.com>
 Cc: barebox@lists.infradead.org
 
-On 23:41 Sat 02 Jul     , Shinya Kuribayashi wrote:
+On 22:47 Sat 02 Jul     , Shinya Kuribayashi wrote:
 > On 6/29/11 12:24 PM, Antony Pavlov wrote:
-> >The machines use big-endian mode.
-> >Only supported peripheral is serial port.
-> >
+> >Barebox can use only uncached memory.
+> 
+> In addition to super-summarized one-liner commit log, I'd like to see
+> the reason why it is.
+> 
 > >Signed-off-by: Antony Pavlov<antonynpavlov@gmail.com>
 > >---
-> >  arch/mips/Kconfig                                |   13 ++++++++
-> >  arch/mips/Makefile                               |    2 +
-> >  arch/mips/mach-mti-malta/Kconfig                 |   20 ++++++++++++
-> >  arch/mips/mach-mti-malta/Makefile                |    1 +
-> >  arch/mips/mach-mti-malta/include/mach/hardware.h |   32 +++++++++++++++++++
-> >  arch/mips/mach-mti-malta/reset.c                 |   36 ++++++++++++++++++++++
-> >  6 files changed, 104 insertions(+), 0 deletions(-)
-> >  create mode 100644 arch/mips/mach-mti-malta/Kconfig
-> >  create mode 100644 arch/mips/mach-mti-malta/Makefile
-> >  create mode 100644 arch/mips/mach-mti-malta/include/mach/hardware.h
-> >  create mode 100644 arch/mips/mach-mti-malta/reset.c
+> >  arch/mips/Kconfig                   |   54 ++
+> >  arch/mips/Makefile                  |   63 +++
+> >  arch/mips/boot/Makefile             |    5 +
+> >  arch/mips/boot/entry.c              |   79 +++
+> >  arch/mips/boot/head.S               |  233 ++++++++
+> >  arch/mips/boot/reset.c              |   32 ++
 > 
-> Just mach-malta would be good?  I don't want to see two '-' hyphens.
+> Is there any reason why head.S, not start.S?  Other archs in the tree
+> name it start*.[cS].
 > 
-> I'm working on the ARM kernel these days, and find mach/plat-based
-> categorizing technique useful/promising, and this is a good opportunity
-> to try in this MIPS support (even if the Linux/MIPS kernel doesn't).
+> >  arch/mips/include/asm/barebox.h     |   24 +
+> >  arch/mips/include/asm/bitops.h      |   32 ++
+> >  arch/mips/include/asm/byteorder.h   |   30 +
+> >  arch/mips/include/asm/common.h      |   29 +
+> >  arch/mips/include/asm/elf.h         |   30 +
+> >  arch/mips/include/asm/io.h          |   73 +++
+> >  arch/mips/include/asm/mipsregs.h    |  988 +++++++++++++++++++++++++++++++++++
+> >  arch/mips/include/asm/module.h      |   36 ++
+> >  arch/mips/include/asm/posix_types.h |   48 ++
+> >  arch/mips/include/asm/regdef.h      |  100 ++++
+> >  arch/mips/include/asm/sections.h    |    1 +
+> >  arch/mips/include/asm/sgidefs.h     |   44 ++
+> >  arch/mips/include/asm/string.h      |   31 ++
+> >  arch/mips/include/asm/swab.h        |   59 ++
+> >  arch/mips/include/asm/types.h       |   44 ++
+> >  arch/mips/include/mach/debug_ll.h   |   35 ++
 > 
-> >diff --git a/arch/mips/mach-mti-malta/include/mach/hardware.h b/arch/mips/mach-mti-malta/include/mach/hardware.h
-> >new file mode 100644
-> >index 0000000..f476355
-> >--- /dev/null
-> >+++ b/arch/mips/mach-mti-malta/include/mach/hardware.h
-> >@@ -0,0 +1,32 @@
-> >+/*
-> >+ * Copyright (c) 2011 Antony Pavlov<antonynpavlov@gmail.com>
-> >+ * See file CREDITS for list of people who contributed to this project.
-> >+ *
-> >+ * This file is part of barebox.
-> >+ *
-> >+ * barebox is free software: you can redistribute it and/or modify
-> >+ * it under the terms of the GNU General Public License as published by
-> >+ * the Free Software Foundation, either version 3 of the License, or
-> >+ * (at your option) any later version.
+> And I would like to know where these kernel headers from.  If it's the
+> Linux kernel, which version they're based on, and what modifications are
+> made for barebox.  Such information is useful when we add/remove bits in
+> the future.  This is why I did for my patches in this regard in a careful
+> manner.
 > 
-> GPLv3?  I'm not sure which GPL version should be applied to barebox,
-> but as it's highly based on the Linux kernel technology, GPLv2 (or
-> later) would be the case.
-Barebox is GPLv2 Only project
+> If it's from U-Boot tree,it's bad idea and let's redo from the scratch.
+> Starting small is good, starting based on U-Boot is not good in any area.
 
-So Nack GPLv3
+100% agreed
 
 Best Regards,
 J.
