@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from b-pb-sasl-quonix.pobox.com ([208.72.237.35] helo=smtp.pobox.com)
 	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1Qd0XY-0006Aw-FZ
-	for barebox@lists.infradead.org; Sat, 02 Jul 2011 13:47:21 +0000
-Message-ID: <4E0F2158.4050505@pobox.com>
-Date: Sat, 02 Jul 2011 22:47:04 +0900
+	id 1Qd1OC-0006TQ-Uz
+	for barebox@lists.infradead.org; Sat, 02 Jul 2011 14:41:45 +0000
+Message-ID: <4E0F2E23.4000801@pobox.com>
+Date: Sat, 02 Jul 2011 23:41:39 +0900
 From: Shinya Kuribayashi <skuribay@pobox.com>
 MIME-Version: 1.0
 References: <1309317858-11861-1-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1309317858-11861-1-git-send-email-antonynpavlov@gmail.com>
+	<1309317858-11861-2-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1309317858-11861-2-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,63 +22,55 @@ Content-Transfer-Encoding: 7bit
 Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] Add MIPS arch support to barebox
+Subject: Re: [PATCH 2/4] MIPS: add Malta machine support to barebox
 To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
 On 6/29/11 12:24 PM, Antony Pavlov wrote:
-> Barebox can use only uncached memory.
-
-In addition to super-summarized one-liner commit log, I'd like to see
-the reason why it is.
-
+> The machines use big-endian mode.
+> Only supported peripheral is serial port.
+>
 > Signed-off-by: Antony Pavlov<antonynpavlov@gmail.com>
 > ---
->   arch/mips/Kconfig                   |   54 ++
->   arch/mips/Makefile                  |   63 +++
->   arch/mips/boot/Makefile             |    5 +
->   arch/mips/boot/entry.c              |   79 +++
->   arch/mips/boot/head.S               |  233 ++++++++
->   arch/mips/boot/reset.c              |   32 ++
+>   arch/mips/Kconfig                                |   13 ++++++++
+>   arch/mips/Makefile                               |    2 +
+>   arch/mips/mach-mti-malta/Kconfig                 |   20 ++++++++++++
+>   arch/mips/mach-mti-malta/Makefile                |    1 +
+>   arch/mips/mach-mti-malta/include/mach/hardware.h |   32 +++++++++++++++++++
+>   arch/mips/mach-mti-malta/reset.c                 |   36 ++++++++++++++++++++++
+>   6 files changed, 104 insertions(+), 0 deletions(-)
+>   create mode 100644 arch/mips/mach-mti-malta/Kconfig
+>   create mode 100644 arch/mips/mach-mti-malta/Makefile
+>   create mode 100644 arch/mips/mach-mti-malta/include/mach/hardware.h
+>   create mode 100644 arch/mips/mach-mti-malta/reset.c
 
-Is there any reason why head.S, not start.S?  Other archs in the tree
-name it start*.[cS].
+Just mach-malta would be good?  I don't want to see two '-' hyphens.
 
->   arch/mips/include/asm/barebox.h     |   24 +
->   arch/mips/include/asm/bitops.h      |   32 ++
->   arch/mips/include/asm/byteorder.h   |   30 +
->   arch/mips/include/asm/common.h      |   29 +
->   arch/mips/include/asm/elf.h         |   30 +
->   arch/mips/include/asm/io.h          |   73 +++
->   arch/mips/include/asm/mipsregs.h    |  988 +++++++++++++++++++++++++++++++++++
->   arch/mips/include/asm/module.h      |   36 ++
->   arch/mips/include/asm/posix_types.h |   48 ++
->   arch/mips/include/asm/regdef.h      |  100 ++++
->   arch/mips/include/asm/sections.h    |    1 +
->   arch/mips/include/asm/sgidefs.h     |   44 ++
->   arch/mips/include/asm/string.h      |   31 ++
->   arch/mips/include/asm/swab.h        |   59 ++
->   arch/mips/include/asm/types.h       |   44 ++
->   arch/mips/include/mach/debug_ll.h   |   35 ++
+I'm working on the ARM kernel these days, and find mach/plat-based
+categorizing technique useful/promising, and this is a good opportunity
+to try in this MIPS support (even if the Linux/MIPS kernel doesn't).
 
-And I would like to know where these kernel headers from.  If it's the
-Linux kernel, which version they're based on, and what modifications are
-made for barebox.  Such information is useful when we add/remove bits in
-the future.  This is why I did for my patches in this regard in a careful
-manner.
+> diff --git a/arch/mips/mach-mti-malta/include/mach/hardware.h b/arch/mips/mach-mti-malta/include/mach/hardware.h
+> new file mode 100644
+> index 0000000..f476355
+> --- /dev/null
+> +++ b/arch/mips/mach-mti-malta/include/mach/hardware.h
+> @@ -0,0 +1,32 @@
+> +/*
+> + * Copyright (c) 2011 Antony Pavlov<antonynpavlov@gmail.com>
+> + * See file CREDITS for list of people who contributed to this project.
+> + *
+> + * This file is part of barebox.
+> + *
+> + * barebox is free software: you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License as published by
+> + * the Free Software Foundation, either version 3 of the License, or
+> + * (at your option) any later version.
 
-If it's from U-Boot tree,it's bad idea and let's redo from the scratch.
-Starting small is good, starting based on U-Boot is not good in any area.
+GPLv3?  I'm not sure which GPL version should be applied to barebox,
+but as it's highly based on the Linux kernel technology, GPLv2 (or
+later) would be the case.
 
->   arch/mips/lib/Makefile              |    6 +
->   arch/mips/lib/ashldi3.c             |   27 +
->   arch/mips/lib/ashrdi3.c             |   29 +
->   arch/mips/lib/barebox.lds.S         |   76 +++
->   arch/mips/lib/csrc-r4k.c            |   50 ++
->   arch/mips/lib/libgcc.h              |   25 +
->   arch/mips/lib/lshrdi3.c             |   27 +
->   arch/mips/lib/memory.c              |   34 ++
->   30 files changed, 2344 insertions(+), 0 deletions(-)
 
 _______________________________________________
 barebox mailing list
