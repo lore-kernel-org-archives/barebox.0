@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-fx0-f43.google.com ([209.85.161.43])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QdTfi-0004Sa-3M
-	for barebox@lists.infradead.org; Sun, 03 Jul 2011 20:53:42 +0000
-Received: by fxg17 with SMTP id 17so4167232fxg.16
-	for <barebox@lists.infradead.org>; Sun, 03 Jul 2011 13:53:37 -0700 (PDT)
+	id 1QdTft-0004Sa-Gg
+	for barebox@lists.infradead.org; Sun, 03 Jul 2011 20:53:54 +0000
+Received: by mail-fx0-f43.google.com with SMTP id 17so4167232fxg.16
+	for <barebox@lists.infradead.org>; Sun, 03 Jul 2011 13:53:53 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon,  4 Jul 2011 00:53:02 +0400
-Message-Id: <1309726383-17932-2-git-send-email-antonynpavlov@gmail.com>
+Date: Mon,  4 Jul 2011 00:53:03 +0400
+Message-Id: <1309726383-17932-3-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1309726383-17932-1-git-send-email-antonynpavlov@gmail.com>
 References: <1309726383-17932-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,33 +23,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] lib/readline.c: fix unused-but-set-variable gcc warning
+Subject: [PATCH] NiosII: fix typo in cpu/exceptions.S
 To: barebox@lists.infradead.org
 
 ---
- lib/readline.c |    2 --
- 1 files changed, 0 insertions(+), 2 deletions(-)
+ arch/nios2/cpu/exceptions.S |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/lib/readline.c b/lib/readline.c
-index a3e1de9..5717a17 100644
---- a/lib/readline.c
-+++ b/lib/readline.c
-@@ -176,7 +176,6 @@ int readline(const char *prompt, char *buf, int len)
- {
- 	unsigned long num = 0;
- 	unsigned long eol_num = 0;
--	unsigned long rlen;
- 	unsigned wlen;
- 	int ichar;
- 	int insert = 1;
-@@ -191,7 +190,6 @@ int readline(const char *prompt, char *buf, int len)
- 	puts (prompt);
+diff --git a/arch/nios2/cpu/exceptions.S b/arch/nios2/cpu/exceptions.S
+index a949372..8e024ce 100644
+--- a/arch/nios2/cpu/exceptions.S
++++ b/arch/nios2/cpu/exceptions.S
+@@ -122,7 +122,7 @@ _exception:
+ 	mov     r4, sp  /* ptr to regs */
+ 	callr   r3
  
- 	while (1) {
--		rlen = 1;
- 		ichar = read_key();
- 
- 		if ((ichar == '\n') || (ichar == '\r')) {
+-	/* Restore regsisters and return from exception*/
++	/* Restore registers and return from exception */
+ _exception_return:
+ 	ldw     r1, 4(sp)
+ 	ldw     r2, 8(sp)
 -- 
 1.7.5.4
 
