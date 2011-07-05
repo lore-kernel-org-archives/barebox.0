@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ww0-f49.google.com ([74.125.82.49])
-	by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QeDu9-0008Mz-A0
-	for barebox@lists.infradead.org; Tue, 05 Jul 2011 22:15:41 +0000
-Received: by wwf22 with SMTP id 22so4655408wwf.18
-	for <barebox@lists.infradead.org>; Tue, 05 Jul 2011 15:14:49 -0700 (PDT)
+Received: from mail-wy0-f177.google.com ([74.125.82.177])
+	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+	id 1QeDzl-0003fl-V1
+	for barebox@lists.infradead.org; Tue, 05 Jul 2011 22:21:30 +0000
+Received: by wyf23 with SMTP id 23so5440016wyf.36
+	for <barebox@lists.infradead.org>; Tue, 05 Jul 2011 15:21:25 -0700 (PDT)
 From: franck.jullien@gmail.com
-Date: Wed,  6 Jul 2011 00:14:49 +0200
-Message-Id: <1309904090-9100-2-git-send-email-franck.jullien@gmail.com>
+Date: Wed,  6 Jul 2011 00:14:50 +0200
+Message-Id: <1309904090-9100-3-git-send-email-franck.jullien@gmail.com>
 In-Reply-To: <1309904090-9100-1-git-send-email-franck.jullien@gmail.com>
 References: <1309904090-9100-1-git-send-email-franck.jullien@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,31 +23,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] spi: unregister dev if master->setup fails
+Subject: [PATCH] Nios2: Compile bootm only if needed
 To: barebox@lists.infradead.org
 
 From: Franck Jullien <franck.jullien@gmail.com>
 
-If the device setup executed by the spi master fails,
-unregister the created device.
+Fix an error when bootm support is not choosen during
+the configuration.
 
 Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
 ---
- drivers/spi/spi.c |    1 +
- 1 files changed, 1 insertions(+), 0 deletions(-)
+ arch/nios2/lib/Makefile |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 6456897..aefb916 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -91,6 +91,7 @@ struct spi_device *spi_new_device(struct spi_master *master,
- 	return proxy;
+diff --git a/arch/nios2/lib/Makefile b/arch/nios2/lib/Makefile
+index fc9d4d7..3affc45 100644
+--- a/arch/nios2/lib/Makefile
++++ b/arch/nios2/lib/Makefile
+@@ -2,6 +2,6 @@ obj-y                      += board.o
+ obj-y                      += libgcc.o
+ obj-y                      += clock.o
+ obj-y                      += cache.o
+-obj-y                      += bootm.o
++obj-$(CONFIG_CMD_BOOTM)    += bootm.o
+ obj-$(CONFIG_EARLY_PRINTF) += early_printf.o
  
- fail:
-+	unregister_device(&proxy->dev);
- 	free(proxy);
- 	return NULL;
- }
 -- 
 1.7.0.4
 
