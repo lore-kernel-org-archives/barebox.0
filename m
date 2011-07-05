@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 16.mo1.mail-out.ovh.net ([178.33.104.224]
-	helo=mo1.mail-out.ovh.net)
-	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1Qdyr7-0006Mf-Ph
-	for barebox@lists.infradead.org; Tue, 05 Jul 2011 06:11:34 +0000
-Received: from mail31.ha.ovh.net (b7.ovh.net [213.186.33.57])
-	by mo1.mail-out.ovh.net (Postfix) with SMTP id 6E66E100C78A
-	for <barebox@lists.infradead.org>;
-	Tue,  5 Jul 2011 08:11:45 +0200 (CEST)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Tue,  5 Jul 2011 07:55:57 +0200
-Message-Id: <1309845357-12285-4-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1309845357-12285-1-git-send-email-plagnioj@jcrosoft.com>
-References: <1309845357-12285-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from mail-fx0-f43.google.com ([209.85.161.43])
+	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+	id 1QdzyO-00078a-2D
+	for barebox@lists.infradead.org; Tue, 05 Jul 2011 07:23:08 +0000
+Received: by fxg17 with SMTP id 17so5095684fxg.16
+	for <barebox@lists.infradead.org>; Tue, 05 Jul 2011 00:23:05 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Tue,  5 Jul 2011 11:22:51 +0400
+Message-Id: <1309850571-8360-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,73 +21,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] password: fix command support as module
+Subject: [PATCH] x86: fix typo in include/asm/posix_types.h
 To: barebox@lists.infradead.org
 
-add missing EXPORT_SYMBOL for nan static function
-
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- common/password.c |    7 +++++++
- 1 files changed, 7 insertions(+), 0 deletions(-)
+ arch/x86/include/asm/posix_types.h |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/common/password.c b/common/password.c
-index cf36970..20e398f 100644
---- a/common/password.c
-+++ b/common/password.c
-@@ -87,6 +87,7 @@ int password(unsigned char *passwd, size_t length, int flags)
- 		}
- 	} while(1);
- }
-+EXPORT_SYMBOL(password);
+diff --git a/arch/x86/include/asm/posix_types.h b/arch/x86/include/asm/posix_types.h
+index 9278681..00c9256 100644
+--- a/arch/x86/include/asm/posix_types.h
++++ b/arch/x86/include/asm/posix_types.h
+@@ -20,7 +20,7 @@
+  * @file
+  * @brief x86 posix types
+  *
+- * Minimal set to make all the other header files copied from the Linxu kernel happy
++ * Minimal set to make all the other header files copied from the Linux kernel happy
+  */
  
- int is_passwd_enable(void)
- {
-@@ -101,11 +102,13 @@ int is_passwd_enable(void)
- 
- 	return 1;
- }
-+EXPORT_SYMBOL(is_passwd_enable);
- 
- int passwd_disable(void)
- {
- 	return unlink(PASSWD_FILE);
- }
-+EXPORT_SYMBOL(passwd_disable);
- 
- static unsigned char to_digit(unsigned char c)
- {
-@@ -167,6 +170,7 @@ exit:
- 
- 	return ret;
- }
-+EXPORT_SYMBOL(read_passwd);
- 
- int write_passwd(unsigned char *sum, size_t length)
- {
-@@ -215,6 +219,7 @@ exit:
- 
- 	return ret;
- }
-+EXPORT_SYMBOL(write_passwd);
- 
- int check_passwd(unsigned char* passwd, size_t length)
- {
-@@ -258,6 +263,7 @@ err1:
- 
- 	return ret;
- }
-+EXPORT_SYMBOL(check_passwd);
- 
- int set_passwd(unsigned char* passwd, size_t length)
- {
-@@ -284,3 +290,4 @@ int set_passwd(unsigned char* passwd, size_t length)
- 
- 	return ret;
- }
-+EXPORT_SYMBOL(set_passwd);
+ #ifndef _ASM_X86_POSIX_TYPES_H
 -- 
-1.7.4.1
+1.7.5.4
 
 
 _______________________________________________
