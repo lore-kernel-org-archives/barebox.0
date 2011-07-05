@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bw0-f49.google.com ([209.85.214.49])
-	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1Qe2Jg-0003bI-9s
-	for barebox@lists.infradead.org; Tue, 05 Jul 2011 09:53:24 +0000
-Received: by bwf12 with SMTP id 12so5981950bwf.36
-	for <barebox@lists.infradead.org>; Tue, 05 Jul 2011 02:53:14 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue,  5 Jul 2011 13:52:47 +0400
-Message-Id: <1309859569-11119-10-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1309859569-11119-1-git-send-email-antonynpavlov@gmail.com>
-References: <1309859569-11119-1-git-send-email-antonynpavlov@gmail.com>
+Received: from mail-ww0-f49.google.com ([74.125.82.49])
+	by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+	id 1QeDu9-0008Mz-A0
+	for barebox@lists.infradead.org; Tue, 05 Jul 2011 22:15:41 +0000
+Received: by wwf22 with SMTP id 22so4655408wwf.18
+	for <barebox@lists.infradead.org>; Tue, 05 Jul 2011 15:14:49 -0700 (PDT)
+From: franck.jullien@gmail.com
+Date: Wed,  6 Jul 2011 00:14:49 +0200
+Message-Id: <1309904090-9100-2-git-send-email-franck.jullien@gmail.com>
+In-Reply-To: <1309904090-9100-1-git-send-email-franck.jullien@gmail.com>
+References: <1309904090-9100-1-git-send-email-franck.jullien@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,225 +23,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/12 v4-draft] MIPS: add Malta machine support to barebox
+Subject: [PATCH] spi: unregister dev if master->setup fails
 To: barebox@lists.infradead.org
 
-The machine uses only big-endian mode.
-Only supported peripheral is serial port.
-The machine supports only MIPS32 CPUs.
+From: Franck Jullien <franck.jullien@gmail.com>
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+If the device setup executed by the spi master fails,
+unregister the created device.
+
+Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
 ---
- arch/mips/Kconfig                            |   21 +++++++++++++++
- arch/mips/Makefile                           |    2 +
- arch/mips/mach-malta/Kconfig                 |   15 +++++++++++
- arch/mips/mach-malta/Makefile                |    1 +
- arch/mips/mach-malta/include/mach/debug_ll.h |   35 +++++++++++++++++++++++++
- arch/mips/mach-malta/include/mach/hardware.h |   32 +++++++++++++++++++++++
- arch/mips/mach-malta/reset.c                 |   36 ++++++++++++++++++++++++++
- 7 files changed, 142 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/mach-malta/Kconfig
- create mode 100644 arch/mips/mach-malta/Makefile
- create mode 100644 arch/mips/mach-malta/include/mach/debug_ll.h
- create mode 100644 arch/mips/mach-malta/include/mach/hardware.h
- create mode 100644 arch/mips/mach-malta/reset.c
+ drivers/spi/spi.c |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index f35aa8c..d5e05cc 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -21,6 +21,27 @@ config GENERIC_LINKER_SCRIPT
- 	bool
- 	default y
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 6456897..aefb916 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -91,6 +91,7 @@ struct spi_device *spi_new_device(struct spi_master *master,
+ 	return proxy;
  
-+menu "Machine selection"
-+
-+choice
-+	prompt "System type"
-+	default MACH_MIPS_MALTA
-+
-+config MACH_MIPS_MALTA
-+	bool "MIPS Malta"
-+	select CSRC_R4K_LIB
-+	select DRIVER_SERIAL_NS16550
-+	select SYS_HAS_CPU_MIPS32_R1
-+	select SYS_HAS_CPU_MIPS32_R2
-+	select SYS_SUPPORTS_32BIT_KERNEL
-+	select SYS_SUPPORTS_BIG_ENDIAN
-+
-+endchoice
-+
-+source arch/mips/mach-malta/Kconfig
-+
-+endmenu
-+
- #
- # Endianess selection.  Sufficiently obscure so many users don't know what to
- # answer,so we try hard to limit the available choices.  Also the use of a
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index 34ac8ad..7a88c2a 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -34,6 +34,8 @@ endif
- 
- LDFLAGS_barebox += -nostdlib
- 
-+machine-$(CONFIG_MACH_MIPS_MALTA)	:= malta
-+
- machdirs := $(patsubst %,arch/mips/mach-%/,$(machine-y))
- 
- ifeq ($(KBUILD_SRC),)
-diff --git a/arch/mips/mach-malta/Kconfig b/arch/mips/mach-malta/Kconfig
-new file mode 100644
-index 0000000..c2ee6f3
---- /dev/null
-+++ b/arch/mips/mach-malta/Kconfig
-@@ -0,0 +1,15 @@
-+if MACH_MIPS_MALTA
-+
-+config ARCH_TEXT_BASE
-+        hex
-+        default 0xa0800000
-+
-+config DEBUG_LL
-+	bool "DEBUG_LL messages"
-+
-+choice
-+	prompt "Board type"
-+
-+endchoice
-+
-+endif
-diff --git a/arch/mips/mach-malta/Makefile b/arch/mips/mach-malta/Makefile
-new file mode 100644
-index 0000000..f3cc668
---- /dev/null
-+++ b/arch/mips/mach-malta/Makefile
-@@ -0,0 +1 @@
-+obj-y += reset.o
-diff --git a/arch/mips/mach-malta/include/mach/debug_ll.h b/arch/mips/mach-malta/include/mach/debug_ll.h
-new file mode 100644
-index 0000000..64ae2eb
---- /dev/null
-+++ b/arch/mips/mach-malta/include/mach/debug_ll.h
-@@ -0,0 +1,35 @@
-+/*
-+ * Copyright (C) 2011 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ * This file is part of barebox.
-+ * See file CREDITS for list of people who contributed to this project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-+ */
-+
-+/** @file
-+ *  This File contains declaration for early output support
-+ */
-+#ifndef __INCLUDE_ARCH_DEBUG_LL_H__
-+#define   __INCLUDE_ARCH_DEBUG_LL_H__
-+
-+#include <asm/io.h>
-+#include <mach/hardware.h>
-+
-+extern __inline__ void putc( char ch )
-+{
-+	writeb(ch, DEBUG_LL_UART_ADDR);
-+}
-+
-+#endif  /* __INCLUDE_ARCH_DEBUG_LL_H__ */
-diff --git a/arch/mips/mach-malta/include/mach/hardware.h b/arch/mips/mach-malta/include/mach/hardware.h
-new file mode 100644
-index 0000000..f827cc3
---- /dev/null
-+++ b/arch/mips/mach-malta/include/mach/hardware.h
-@@ -0,0 +1,32 @@
-+/*
-+ * Copyright (C) 2011 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ * This file is part of barebox.
-+ * See file CREDITS for list of people who contributed to this project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-+ */
-+
-+#ifndef __INCLUDE_ARCH_HARDWARE_H__
-+#define   __INCLUDE_ARCH_HARDWARE_H__
-+
-+#define DEBUG_LL_UART_ADDR	0xb00003f8
-+
-+/*
-+ * Reset register.
-+ */
-+#define SOFTRES_REG	0xbf000500
-+#define GORESET		0x42
-+
-+#endif  /* __INCLUDE_ARCH_HARDWARE_H__ */
-diff --git a/arch/mips/mach-malta/reset.c b/arch/mips/mach-malta/reset.c
-new file mode 100644
-index 0000000..2818e7c
---- /dev/null
-+++ b/arch/mips/mach-malta/reset.c
-@@ -0,0 +1,36 @@
-+/*
-+ * Copyright (C) 2011 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ * This file is part of barebox.
-+ * See file CREDITS for list of people who contributed to this project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-+ */
-+
-+/**
-+ * @file
-+ * @brief Resetting an malta board
-+ */
-+
-+#include <common.h>
-+#include <asm/io.h>
-+#include <mach/hardware.h>
-+
-+void __noreturn reset_cpu(ulong addr)
-+{
-+	__raw_writel(GORESET, (char *)SOFTRES_REG);
-+	while (1);
-+	/*NOTREACHED*/
-+}
-+EXPORT_SYMBOL(reset_cpu);
+ fail:
++	unregister_device(&proxy->dev);
+ 	free(proxy);
+ 	return NULL;
+ }
 -- 
-1.7.5.4
+1.7.0.4
 
 
 _______________________________________________
