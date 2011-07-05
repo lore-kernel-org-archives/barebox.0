@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-bw0-f49.google.com ([209.85.214.49])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1Qe2JY-0003Z4-IR
+	id 1Qe2JZ-0003Z5-4h
 	for barebox@lists.infradead.org; Tue, 05 Jul 2011 09:53:11 +0000
-Received: by bwf12 with SMTP id 12so5981855bwf.36
-	for <barebox@lists.infradead.org>; Tue, 05 Jul 2011 02:53:04 -0700 (PDT)
+Received: by bwf12 with SMTP id 12so5981878bwf.36
+	for <barebox@lists.infradead.org>; Tue, 05 Jul 2011 02:53:07 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue,  5 Jul 2011 13:52:39 +0400
-Message-Id: <1309859569-11119-2-git-send-email-antonynpavlov@gmail.com>
+Date: Tue,  5 Jul 2011 13:52:40 +0400
+Message-Id: <1309859569-11119-3-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1309859569-11119-1-git-send-email-antonynpavlov@gmail.com>
 References: <1309859569-11119-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,160 +23,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/12 v4-draft] MIPS: import libgcc-related files from
-	linux-2.6.39
+Subject: [PATCH 03/12 v4-draft] MIPS: update libgcc-related files for barebox
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/lib/ashldi3.c |   29 +++++++++++++++++++++++++++++
- arch/mips/lib/ashrdi3.c |   31 +++++++++++++++++++++++++++++++
- arch/mips/lib/libgcc.h  |   25 +++++++++++++++++++++++++
- arch/mips/lib/lshrdi3.c |   29 +++++++++++++++++++++++++++++
- 4 files changed, 114 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/lib/ashldi3.c
- create mode 100644 arch/mips/lib/ashrdi3.c
- create mode 100644 arch/mips/lib/libgcc.h
- create mode 100644 arch/mips/lib/lshrdi3.c
+ arch/mips/lib/ashldi3.c |    2 +-
+ arch/mips/lib/ashrdi3.c |    2 +-
+ arch/mips/lib/lshrdi3.c |    2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/arch/mips/lib/ashldi3.c b/arch/mips/lib/ashldi3.c
-new file mode 100644
-index 0000000..beb80f3
---- /dev/null
+index beb80f3..1626891 100644
+--- a/arch/mips/lib/ashldi3.c
 +++ b/arch/mips/lib/ashldi3.c
-@@ -0,0 +1,29 @@
-+#include <linux/module.h>
-+
-+#include "libgcc.h"
-+
-+long long __ashldi3(long long u, word_type b)
-+{
-+	DWunion uu, w;
-+	word_type bm;
-+
-+	if (b == 0)
-+		return u;
-+
-+	uu.ll = u;
-+	bm = 32 - b;
-+
-+	if (bm <= 0) {
-+		w.s.low = 0;
-+		w.s.high = (unsigned int) uu.s.low << -bm;
-+	} else {
-+		const unsigned int carries = (unsigned int) uu.s.low >> bm;
-+
-+		w.s.low = (unsigned int) uu.s.low << b;
-+		w.s.high = ((unsigned int) uu.s.high << b) | carries;
-+	}
-+
-+	return w.ll;
-+}
-+
-+EXPORT_SYMBOL(__ashldi3);
+@@ -1,4 +1,4 @@
+-#include <linux/module.h>
++#include <module.h>
+ 
+ #include "libgcc.h"
+ 
 diff --git a/arch/mips/lib/ashrdi3.c b/arch/mips/lib/ashrdi3.c
-new file mode 100644
-index 0000000..c884a91
---- /dev/null
+index c884a91..28f5074 100644
+--- a/arch/mips/lib/ashrdi3.c
 +++ b/arch/mips/lib/ashrdi3.c
-@@ -0,0 +1,31 @@
-+#include <linux/module.h>
-+
-+#include "libgcc.h"
-+
-+long long __ashrdi3(long long u, word_type b)
-+{
-+	DWunion uu, w;
-+	word_type bm;
-+
-+	if (b == 0)
-+		return u;
-+
-+	uu.ll = u;
-+	bm = 32 - b;
-+
-+	if (bm <= 0) {
-+		/* w.s.high = 1..1 or 0..0 */
-+		w.s.high =
-+		    uu.s.high >> 31;
-+		w.s.low = uu.s.high >> -bm;
-+	} else {
-+		const unsigned int carries = (unsigned int) uu.s.high << bm;
-+
-+		w.s.high = uu.s.high >> b;
-+		w.s.low = ((unsigned int) uu.s.low >> b) | carries;
-+	}
-+
-+	return w.ll;
-+}
-+
-+EXPORT_SYMBOL(__ashrdi3);
-diff --git a/arch/mips/lib/libgcc.h b/arch/mips/lib/libgcc.h
-new file mode 100644
-index 0000000..05909d5
---- /dev/null
-+++ b/arch/mips/lib/libgcc.h
-@@ -0,0 +1,25 @@
-+#ifndef __ASM_LIBGCC_H
-+#define __ASM_LIBGCC_H
-+
-+#include <asm/byteorder.h>
-+
-+typedef int word_type __attribute__ ((mode (__word__)));
-+
-+#ifdef __BIG_ENDIAN
-+struct DWstruct {
-+	int high, low;
-+};
-+#elif defined(__LITTLE_ENDIAN)
-+struct DWstruct {
-+	int low, high;
-+};
-+#else
-+#error I feel sick.
-+#endif
-+
-+typedef union {
-+	struct DWstruct s;
-+	long long ll;
-+} DWunion;
-+
-+#endif /* __ASM_LIBGCC_H */
+@@ -1,4 +1,4 @@
+-#include <linux/module.h>
++#include <module.h>
+ 
+ #include "libgcc.h"
+ 
 diff --git a/arch/mips/lib/lshrdi3.c b/arch/mips/lib/lshrdi3.c
-new file mode 100644
-index 0000000..dcf8d68
---- /dev/null
+index dcf8d68..989ec8b 100644
+--- a/arch/mips/lib/lshrdi3.c
 +++ b/arch/mips/lib/lshrdi3.c
-@@ -0,0 +1,29 @@
-+#include <linux/module.h>
-+
-+#include "libgcc.h"
-+
-+long long __lshrdi3(long long u, word_type b)
-+{
-+	DWunion uu, w;
-+	word_type bm;
-+
-+	if (b == 0)
-+		return u;
-+
-+	uu.ll = u;
-+	bm = 32 - b;
-+
-+	if (bm <= 0) {
-+		w.s.high = 0;
-+		w.s.low = (unsigned int) uu.s.high >> -bm;
-+	} else {
-+		const unsigned int carries = (unsigned int) uu.s.high << bm;
-+
-+		w.s.high = (unsigned int) uu.s.high >> b;
-+		w.s.low = ((unsigned int) uu.s.low >> b) | carries;
-+	}
-+
-+	return w.ll;
-+}
-+
-+EXPORT_SYMBOL(__lshrdi3);
+@@ -1,4 +1,4 @@
+-#include <linux/module.h>
++#include <module.h>
+ 
+ #include "libgcc.h"
+ 
 -- 
 1.7.5.4
 
