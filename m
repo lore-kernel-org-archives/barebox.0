@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-bw0-f49.google.com ([209.85.214.49])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1Qe2Jd-0003Z5-Cs
-	for barebox@lists.infradead.org; Tue, 05 Jul 2011 09:53:17 +0000
-Received: by mail-bw0-f49.google.com with SMTP id 12so5981878bwf.36
-	for <barebox@lists.infradead.org>; Tue, 05 Jul 2011 02:53:13 -0700 (PDT)
+	id 1Qe2Jg-0003Z6-7r
+	for barebox@lists.infradead.org; Tue, 05 Jul 2011 09:53:21 +0000
+Received: by mail-bw0-f49.google.com with SMTP id 12so5981901bwf.36
+	for <barebox@lists.infradead.org>; Tue, 05 Jul 2011 02:53:15 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue,  5 Jul 2011 13:52:45 +0400
-Message-Id: <1309859569-11119-8-git-send-email-antonynpavlov@gmail.com>
+Date: Tue,  5 Jul 2011 13:52:48 +0400
+Message-Id: <1309859569-11119-11-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1309859569-11119-1-git-send-email-antonynpavlov@gmail.com>
 References: <1309859569-11119-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,28 +23,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/12 v4-draft] MIPS: import header files from
-	barebox-2011.06.0 arch/x86
+Subject: [PATCH 11/12 v4-draft] MIPS: add qemu malta board support to barebox
 To: barebox@lists.infradead.org
 
-Changes in header files:
- * s/X86/MIPS/
- * s/Linxu/Linux/
+The only supported peripheral is ns16550 serial port.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/include/asm/posix_types.h |   48 +++++++++++++++++++++++++++++++++++
- arch/mips/include/asm/sections.h    |    1 +
- 2 files changed, 49 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/include/asm/posix_types.h
- create mode 100644 arch/mips/include/asm/sections.h
+ arch/mips/Makefile                     |    1 +
+ arch/mips/boards/qemu-malta/Kconfig    |    2 +
+ arch/mips/boards/qemu-malta/Makefile   |    1 +
+ arch/mips/boards/qemu-malta/config.h   |   19 ++++++++++
+ arch/mips/boards/qemu-malta/serial.c   |   61 ++++++++++++++++++++++++++++++++
+ arch/mips/configs/qemu-malta_defconfig |   45 +++++++++++++++++++++++
+ arch/mips/mach-malta/Kconfig           |    5 +++
+ 7 files changed, 134 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/boards/qemu-malta/Kconfig
+ create mode 100644 arch/mips/boards/qemu-malta/Makefile
+ create mode 100644 arch/mips/boards/qemu-malta/config.h
+ create mode 100644 arch/mips/boards/qemu-malta/serial.c
+ create mode 100644 arch/mips/configs/qemu-malta_defconfig
 
-diff --git a/arch/mips/include/asm/posix_types.h b/arch/mips/include/asm/posix_types.h
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index 7a88c2a..3fa3c3f 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -35,6 +35,7 @@ endif
+ LDFLAGS_barebox += -nostdlib
+ 
+ machine-$(CONFIG_MACH_MIPS_MALTA)	:= malta
++board-$(CONFIG_BOARD_QEMU_MALTA)	:= qemu-malta
+ 
+ machdirs := $(patsubst %,arch/mips/mach-%/,$(machine-y))
+ 
+diff --git a/arch/mips/boards/qemu-malta/Kconfig b/arch/mips/boards/qemu-malta/Kconfig
 new file mode 100644
-index 0000000..60ea7a7
+index 0000000..ab93116
 --- /dev/null
-+++ b/arch/mips/include/asm/posix_types.h
-@@ -0,0 +1,48 @@
++++ b/arch/mips/boards/qemu-malta/Kconfig
+@@ -0,0 +1,2 @@
++config BOARDINFO
++	default "qemu malta"
+diff --git a/arch/mips/boards/qemu-malta/Makefile b/arch/mips/boards/qemu-malta/Makefile
+new file mode 100644
+index 0000000..ff1a655
+--- /dev/null
++++ b/arch/mips/boards/qemu-malta/Makefile
+@@ -0,0 +1 @@
++obj-$(CONFIG_DRIVER_SERIAL_NS16550) += serial.o
+diff --git a/arch/mips/boards/qemu-malta/config.h b/arch/mips/boards/qemu-malta/config.h
+new file mode 100644
+index 0000000..eb4ab08
+--- /dev/null
++++ b/arch/mips/boards/qemu-malta/config.h
+@@ -0,0 +1,19 @@
 +/*
 + * This program is free software; you can redistribute it and/or
 + * modify it under the terms of the GNU General Public License as
@@ -63,43 +95,141 @@ index 0000000..60ea7a7
 + *
 + */
 +
-+/**
-+ * @file
-+ * @brief mips posix types
++/* nothing special yet */
+diff --git a/arch/mips/boards/qemu-malta/serial.c b/arch/mips/boards/qemu-malta/serial.c
+new file mode 100644
+index 0000000..4f14d72
+--- /dev/null
++++ b/arch/mips/boards/qemu-malta/serial.c
+@@ -0,0 +1,61 @@
++/*
++ * Copyright (C) 2011 Antony Pavlov <antonynpavlov@gmail.com>
 + *
-+ * Minimal set to make all the other header files copied from the Linux kernel happy
++ * This file is part of barebox.
++ * See file CREDITS for list of people who contributed to this project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 + */
 +
-+#ifndef _ASM_MIPS_POSIX_TYPES_H
-+#define _ASM_MIPS_POSIX_TYPES_H
++#include <common.h>
++#include <types.h>
++#include <driver.h>
++#include <init.h>
++#include <ns16550.h>
++#include <mach/hardware.h>
++#include <asm/io.h>
 +
-+typedef unsigned long	__kernel_ino_t;
-+typedef unsigned short	__kernel_mode_t;
-+typedef unsigned short	__kernel_nlink_t;
-+typedef long		__kernel_off_t;
-+typedef int		__kernel_pid_t;
-+typedef unsigned int	__kernel_size_t;
-+typedef int		__kernel_ssize_t;
-+typedef int		__kernel_ptrdiff_t;
-+typedef long		__kernel_time_t;
-+typedef long		__kernel_suseconds_t;
-+typedef long		__kernel_clock_t;
-+typedef int		__kernel_daddr_t;
-+typedef char *		__kernel_caddr_t;
-+typedef unsigned short	__kernel_uid16_t;
-+typedef unsigned short	__kernel_gid16_t;
-+typedef unsigned int	__kernel_uid32_t;
-+typedef unsigned int	__kernel_gid32_t;
-+typedef long long	__kernel_loff_t;
++/** to work with the 8250 UART driver implementation we need this function */
++static unsigned int malta_uart_read(unsigned long base, unsigned char reg_idx)
++{
++	return __raw_readb((char *)base + reg_idx);
++}
 +
-+#endif /* _ASM_MIPS_POSIX_TYPES_H */
-diff --git a/arch/mips/include/asm/sections.h b/arch/mips/include/asm/sections.h
++/** to work with the 8250 UART driver implementation we need this function */
++static void malta_uart_write(unsigned int val, unsigned long base, unsigned char reg_idx)
++{
++	__raw_writeb(val, (char *)base + reg_idx);
++}
++
++static struct NS16550_plat serial_plat = {
++	.clock = 1843200, /* no matter */
++	.f_caps = CONSOLE_STDIN | CONSOLE_STDOUT | CONSOLE_STDERR,
++	.reg_read = malta_uart_read,
++	.reg_write = malta_uart_write,
++};
++
++/* we are expecting always one serial interface */
++static struct device_d generic_malta_serial_device = {
++	.name = "serial_ns16550",
++	.map_base = DEBUG_LL_UART_ADDR,
++	.size = 8,
++	.platform_data = (void *)&serial_plat,
++};
++
++static int malta_console_init(void)
++{
++	/* Register the serial port */
++	return register_device(&generic_malta_serial_device);
++}
++console_initcall(malta_console_init);
+diff --git a/arch/mips/configs/qemu-malta_defconfig b/arch/mips/configs/qemu-malta_defconfig
 new file mode 100644
-index 0000000..2b8c516
+index 0000000..9be8662
 --- /dev/null
-+++ b/arch/mips/include/asm/sections.h
-@@ -0,0 +1 @@
-+#include <asm-generic/sections.h>
++++ b/arch/mips/configs/qemu-malta_defconfig
+@@ -0,0 +1,45 @@
++CONFIG_STACK_SIZE=0x7000
++CONFIG_BROKEN=y
++CONFIG_EXPERIMENTAL=y
++CONFIG_LONGHELP=y
++CONFIG_HUSH_FANCY_PROMPT=y
++CONFIG_HUSH_GETOPT=y
++CONFIG_CMDLINE_EDITING=y
++CONFIG_AUTO_COMPLETE=y
++CONFIG_MENU=y
++CONFIG_PASSWORD=y
++CONFIG_PARTITION=y
++# CONFIG_DEFAULT_ENVIRONMENT is not set
++CONFIG_POLLER=y
++CONFIG_DEBUG_INFO=y
++CONFIG_CMD_EDIT=y
++CONFIG_CMD_SLEEP=y
++CONFIG_CMD_SAVEENV=y
++CONFIG_CMD_LOADENV=y
++CONFIG_CMD_EXPORT=y
++CONFIG_CMD_PRINTENV=y
++CONFIG_CMD_READLINE=y
++CONFIG_CMD_MENU=y
++CONFIG_CMD_MENU_MANAGEMENT=y
++CONFIG_CMD_ECHO_E=y
++CONFIG_CMD_LOADB=y
++CONFIG_CMD_MEMINFO=y
++CONFIG_CMD_CRC=y
++CONFIG_CMD_CRC_CMP=y
++CONFIG_CMD_MD5SUM=y
++CONFIG_CMD_SHA1SUM=y
++CONFIG_CMD_SHA256SUM=y
++CONFIG_CMD_MTEST=y
++CONFIG_CMD_FLASH=y
++CONFIG_CMD_RESET=y
++CONFIG_CMD_GO=y
++CONFIG_CMD_TIMEOUT=y
++CONFIG_CMD_PARTITION=y
++CONFIG_NET=y
++CONFIG_NET_DHCP=y
++CONFIG_NET_PING=y
++CONFIG_NET_TFTP=y
++CONFIG_NET_NETCONSOLE=y
++# CONFIG_SPI is not set
++CONFIG_MTD=y
++CONFIG_FS_CRAMFS=y
+diff --git a/arch/mips/mach-malta/Kconfig b/arch/mips/mach-malta/Kconfig
+index c2ee6f3..ca5b879 100644
+--- a/arch/mips/mach-malta/Kconfig
++++ b/arch/mips/mach-malta/Kconfig
+@@ -10,6 +10,11 @@ config DEBUG_LL
+ choice
+ 	prompt "Board type"
+ 
++config BOARD_QEMU_MALTA
++	bool "qemu malta"
++
+ endchoice
+ 
++source arch/mips/boards/qemu-malta/Kconfig
++
+ endif
 -- 
 1.7.5.4
 
