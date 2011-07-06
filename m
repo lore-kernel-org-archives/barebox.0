@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QeNQp-0005LM-If
-	for barebox@lists.infradead.org; Wed, 06 Jul 2011 08:26:04 +0000
-Date: Wed, 6 Jul 2011 10:26:00 +0200
+	id 1QeNUj-0005QB-7e
+	for barebox@lists.infradead.org; Wed, 06 Jul 2011 08:30:06 +0000
+Date: Wed, 6 Jul 2011 10:30:02 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110706082600.GR6069@pengutronix.de>
-References: <1309904090-9100-1-git-send-email-franck.jullien@gmail.com>
+Message-ID: <20110706083002.GS6069@pengutronix.de>
+References: <1309859569-11119-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1309904090-9100-1-git-send-email-franck.jullien@gmail.com>
+In-Reply-To: <1309859569-11119-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,58 +22,205 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] spi: add bits_per_word to proxy structure
-To: franck.jullien@gmail.com
+Subject: Re: [PATCH 01/12 v4-draft] MIPS: initial commit: add empty but
+	required header files
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-All applied to master.
+Antony,
 
-Thanks
- Sascha
+I am fine with this series. Given that everybody else is happy we could
+apply it.
 
-On Wed, Jul 06, 2011 at 12:14:48AM +0200, franck.jullien@gmail.com wrote:
-> From: Franck Jullien <franck.jullien@gmail.com>
-> 
-> During the creation of a new spi device, we need to
-> have the possiblility to give the bits_per_word value
-> to master->setup.
-> 
-> As a matter of fact, spi master could check the spi
-> device bits_per_word and compare this value against its
-> capabilities.
-> 
-> Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
+Sascha
+
+On Tue, Jul 05, 2011 at 01:52:38PM +0400, Antony Pavlov wrote:
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 > ---
->  drivers/spi/spi.c |    1 +
->  include/spi/spi.h |    1 +
->  2 files changed, 2 insertions(+), 0 deletions(-)
+>  arch/mips/include/asm/barebox.h |   24 ++++++++++++++++++++++++
+>  arch/mips/include/asm/bitops.h  |   32 ++++++++++++++++++++++++++++++++
+>  arch/mips/include/asm/common.h  |   29 +++++++++++++++++++++++++++++
+>  arch/mips/include/asm/module.h  |   24 ++++++++++++++++++++++++
+>  arch/mips/include/asm/string.h  |   31 +++++++++++++++++++++++++++++++
+>  5 files changed, 140 insertions(+), 0 deletions(-)
+>  create mode 100644 arch/mips/include/asm/barebox.h
+>  create mode 100644 arch/mips/include/asm/bitops.h
+>  create mode 100644 arch/mips/include/asm/common.h
+>  create mode 100644 arch/mips/include/asm/module.h
+>  create mode 100644 arch/mips/include/asm/string.h
 > 
-> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-> index 6456897..5f3272b 100644
-> --- a/drivers/spi/spi.c
-> +++ b/drivers/spi/spi.c
-> @@ -75,6 +75,7 @@ struct spi_device *spi_new_device(struct spi_master *master,
->  	proxy->chip_select = chip->chip_select;
->  	proxy->max_speed_hz = chip->max_speed_hz;
->  	proxy->mode = chip->mode;
-> +	proxy->bits_per_word = chip->bits_per_word;
->  	proxy->dev.platform_data = chip->platform_data;
->  	strcpy(proxy->dev.name, chip->name);
->  	proxy->dev.type_data = proxy;
-> diff --git a/include/spi/spi.h b/include/spi/spi.h
-> index ac2013a..948e050 100644
-> --- a/include/spi/spi.h
-> +++ b/include/spi/spi.h
-> @@ -15,6 +15,7 @@ struct spi_board_info {
->  	 * where the default of SPI_CS_HIGH = 0 is wrong.
->  	 */
->  	u8	mode;
-> +	u8	bits_per_word;
->  	void	*platform_data;
->  };
->  
+> diff --git a/arch/mips/include/asm/barebox.h b/arch/mips/include/asm/barebox.h
+> new file mode 100644
+> index 0000000..b42c9ff
+> --- /dev/null
+> +++ b/arch/mips/include/asm/barebox.h
+> @@ -0,0 +1,24 @@
+> +/*
+> + * This program is free software; you can redistribute it and/or
+> + * modify it under the terms of the GNU General Public License as
+> + * published by the Free Software Foundation; either version 2 of
+> + * the License, or (at your option) any later version.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + *
+> + * You should have received a copy of the GNU General Public License
+> + * along with this program; if not, write to the Free Software
+> + * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+> + * MA 02111-1307 USA
+> + *
+> + */
+> +
+> +#ifndef _ASM_MIPS_BAREBOX_H_
+> +#define _ASM_MIPS_BAREBOX_H_
+> +
+> +/* nothing special yet */
+> +
+> +#endif /* _ASM_MIPS_BAREBOX_H_ */
+> diff --git a/arch/mips/include/asm/bitops.h b/arch/mips/include/asm/bitops.h
+> new file mode 100644
+> index 0000000..36d34b6
+> --- /dev/null
+> +++ b/arch/mips/include/asm/bitops.h
+> @@ -0,0 +1,32 @@
+> +/*
+> + * This program is free software; you can redistribute it and/or
+> + * modify it under the terms of the GNU General Public License as
+> + * published by the Free Software Foundation; either version 2 of
+> + * the License, or (at your option) any later version.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + *
+> + * You should have received a copy of the GNU General Public License
+> + * along with this program; if not, write to the Free Software
+> + * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+> + * MA 02111-1307 USA
+> + *
+> + */
+> +
+> +/**
+> + * @file
+> + * @brief mips bit operations
+> + *
+> + * This file is required only to make all sources happy including
+> + * 'linux/bitops.h'
+> + */
+> +
+> +#ifndef _ASM_MIPS_BITOPS_H_
+> +#define _ASM_MIPS_BITOPS_H_
+> +
+> +/* nothing special yet */
+> +
+> +#endif /* _ASM_MIPS_BITOPS_H_ */
+> diff --git a/arch/mips/include/asm/common.h b/arch/mips/include/asm/common.h
+> new file mode 100644
+> index 0000000..e37b6c5
+> --- /dev/null
+> +++ b/arch/mips/include/asm/common.h
+> @@ -0,0 +1,29 @@
+> +/*
+> + * This program is free software; you can redistribute it and/or
+> + * modify it under the terms of the GNU General Public License as
+> + * published by the Free Software Foundation; either version 2 of
+> + * the License, or (at your option) any later version.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + *
+> + * You should have received a copy of the GNU General Public License
+> + * along with this program; if not, write to the Free Software
+> + * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+> + * MA 02111-1307 USA
+> + *
+> + */
+> +
+> +/**
+> + * @file
+> + * @brief mips common declarations
+> + */
+> +
+> +#ifndef _ASM_MIPS_COMMON_H_
+> +#define _ASM_MIPS_COMMON_H_
+> +
+> +/* nothing special yet */
+> +
+> +#endif /* _ASM_MIPS_COMMON_H_ */
+> diff --git a/arch/mips/include/asm/module.h b/arch/mips/include/asm/module.h
+> new file mode 100644
+> index 0000000..3046220
+> --- /dev/null
+> +++ b/arch/mips/include/asm/module.h
+> @@ -0,0 +1,24 @@
+> +/*
+> + * This program is free software; you can redistribute it and/or
+> + * modify it under the terms of the GNU General Public License as
+> + * published by the Free Software Foundation; either version 2 of
+> + * the License, or (at your option) any later version.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + *
+> + * You should have received a copy of the GNU General Public License
+> + * along with this program; if not, write to the Free Software
+> + * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+> + * MA 02111-1307 USA
+> + *
+> + */
+> +
+> +#ifndef _ASM_MIPS_MODULE_H_
+> +#define _ASM_MIPS_MODULE_H_
+> +
+> +/* nothing special yet */
+> +
+> +#endif /* _ASM_MIPS_MODULE_H_ */
+> diff --git a/arch/mips/include/asm/string.h b/arch/mips/include/asm/string.h
+> new file mode 100644
+> index 0000000..9e334a2
+> --- /dev/null
+> +++ b/arch/mips/include/asm/string.h
+> @@ -0,0 +1,31 @@
+> +/*
+> + * This program is free software; you can redistribute it and/or
+> + * modify it under the terms of the GNU General Public License as
+> + * published by the Free Software Foundation; either version 2 of
+> + * the License, or (at your option) any later version.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + *
+> + * You should have received a copy of the GNU General Public License
+> + * along with this program; if not, write to the Free Software
+> + * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+> + * MA 02111-1307 USA
+> + *
+> + */
+> +
+> +/**
+> + * @file
+> + * @brief mips specific string optimizations
+> + *
+> + * Thanks to the Linux kernel here we can add many micro optimized string
+> + * functions. But currently it makes no sense, to do so.
+> + */
+> +#ifndef __ASM_MIPS_STRING_H
+> +#define __ASM_MIPS_STRING_H
+> +
+> +/* nothing special yet */
+> +
+> +#endif
 > -- 
-> 1.7.0.4
+> 1.7.5.4
 > 
 > 
 > _______________________________________________
