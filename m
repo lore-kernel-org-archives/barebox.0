@@ -1,14 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-iy0-f177.google.com ([209.85.210.177])
+Received: from mut-gw.mut-group.com ([212.144.235.26]
+	helo=mut-fw.mut-group.com)
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QgtKR-0000w6-6y
-	for barebox@lists.infradead.org; Wed, 13 Jul 2011 06:53:56 +0000
-Received: by iyn15 with SMTP id 15so6247748iyn.36
-	for <barebox@lists.infradead.org>; Tue, 12 Jul 2011 23:53:43 -0700 (PDT)
+	id 1Qhcgc-0001va-1w
+	for barebox@lists.infradead.org; Fri, 15 Jul 2011 07:19:47 +0000
+Received: from [192.168.20.11] (port=24268 helo=zcom02.mut-group.com)
+	by mut-fw.mut-group.com with esmtp (Exim 4.69)
+	(envelope-from <msuthe@mut-group.com>) id 1QhcPN-00020B-1G
+	for barebox@lists.infradead.org; Fri, 15 Jul 2011 09:01:57 +0200
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-Date: Wed, 13 Jul 2011 12:23:43 +0530
-Message-ID: <CAEhpT-VKNYVHHJnz3XKUBOGK3tSqBM=FXwK1ym0uue8ny6dFBA@mail.gmail.com>
-From: Calvin Johnson <linux.cj@gmail.com>
+Date: Fri, 15 Jul 2011 09:13:41 +0200
+Message-ID: <D08CBAE0A98EB548B293DA79621E27110425C059@zcom02.mut-group.com>
+From: "Matthias Suthe" <msuthe@mut-group.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,120 +21,241 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0534298345=="
+Content-Type: multipart/mixed; boundary="===============1390773394=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: ARM security extension is not available with current barebox
+Subject: Sandbox Segfault
 To: barebox@lists.infradead.org
 
---===============0534298345==
-Content-Type: multipart/alternative; boundary=0016e645abae965f3b04a7ede0c1
+This is a multi-part message in MIME format.
 
---0016e645abae965f3b04a7ede0c1
-Content-Type: text/plain; charset=ISO-8859-1
+--===============1390773394==
+Content-class: urn:content-classes:message
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01CC42BE.B9D59C27"
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01CC42BE.B9D59C27
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 
 Hi,
 
-While trying to compile barebox for ARM processor with TrustZone
-security extension, the assembler complained about unsupported ARM
-instruction "SMC".
------------------------------------
- {standard input}: Assembler messages:
-{standard input}:12: Error: selected processor does not support ARM mode
-`smc #0'
------------------------------------
+=20
 
-On searching online I found the following link which explains the solution.
-https://lists.yoctoproject.org/pipermail/poky/2011-May/005939.html
+I'm trying to start barebox is described in the First Steps chapter of
+the barebox documentation, but I get a segfault.
+
+=20
+
+I followed the User's Manual step by step and now I try to run=20
+./barebox -e env.bin -i cramfs.bin
+=20
+Did I maybe miss something when creating the cramfs.bin? Do I need to
+put files into somedir?
+I'm using barebox-2011.05.0
+OS: Debian 6.0.1 (squeeze)=20
+Kernel: Linux 2.6.32-5-686-bigmem
+=20
+
+Neither this patch:
+
+--- a/arch/sandbox/board/hostfile.c
++++ b/arch/sandbox/board/hostfile.c
+@@ -107,7 +107,8 @@ int barebox_register_filedev(struct hf_platform_data
+*hf)
+=20
+        dev->platform_data =3D hf;
+=20
+-       strcpy(dev->name, "hostfile");
++       /* Registering 2 devices with same name creates problem? */
++       strcpy(dev->name, hf->filename);
+        dev->size =3D hf->size;
+        dev->map_base =3D hf->map_base;
+
+Nor this patch:
+
+--- a/arch/sandbox/board/hostfile.c
++++ b/arch/sandbox/board/hostfile.c
+@@ -109,6 +109,7 @@ int barebox_register_filedev(struct hf_platform_data
+*hf)
+=20
+        strcpy(dev->name, "hostfile");
+        dev->size =3D hf->size;
++       dev->id =3D -1;
+        dev->map_base =3D hf->map_base;
+=20
+        return register_device(dev);
+
+help.
+
+=20
+
+I would be grateful for any help.
+
+=20
+
+=20
+
+With kind regards
+
+=20
+
+Matthias Suthe
+
+=20
 
 
-I feel that we may have to bring ARM TrustZone security extension support to
-barebox at least as a conditional compilation option, as this may be widely
-used in ARM based embedded systems.
-
-In order to resolve my issue, I just had to make a minor change
-to arch/arm/Makefile
-
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index 6201a9b..b0bc8b9 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -15,11 +15,12 @@ endif
-
- comma = ,
-
-+
- # This selects which instruction set is used.
- # Note that GCC does not numerically define an architecture version
- # macro, but instead defines a whole series of macros which makes
- # testing for a specific architecture or later rather impossible.
--arch-$(CONFIG_CPU_32v7)                :=-D__LINUX_ARM_ARCH__=7 $(call
-cc-option,-march=armv7-a,-march=armv5t -Wa$(comma)-march=armv7-a)
-+arch-$(CONFIG_CPU_32v7)                :=-D__LINUX_ARM_ARCH__=7 $(call
-cc-option,-march=armv7-a+sec,-march=armv5t -Wa$(comma)-march=armv7-a+sec)
- arch-$(CONFIG_CPU_32v6)            :=-D__LINUX_ARM_ARCH__=6 $(call
-cc-option,-march=armv6,-march=armv5t -Wa$(comma)-march=armv6)
- arch-$(CONFIG_CPU_32v5)                :=-D__LINUX_ARM_ARCH__=5 $(call
-cc-option,-march=armv5te,-march=armv4t)
- arch-$(CONFIG_CPU_32v4T)       :=-D__LINUX_ARM_ARCH__=4 -march=armv4t
-
-As I'm new to barebox, I'm not sure whether this change will break
-something. It would be good if experts can have look at the link provided
-and submit a patch.
-
-Thanks,
-Calvin
-
---0016e645abae965f3b04a7ede0c1
-Content-Type: text/html; charset=ISO-8859-1
+------_=_NextPart_001_01CC42BE.B9D59C27
+Content-Type: text/html;
+	charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 
-Hi,<div><br></div><div>While trying to compile barebox for ARM processor wi=
-th TrustZone security=A0extension, the assembler complained about unsupport=
-ed ARM instruction &quot;SMC&quot;.</div><div>-----------------------------=
-------</div>
-<div>=A0{standard input}: Assembler messages:</div><div>{standard input}:12=
-: Error: selected processor does not support ARM mode `smc #0&#39;</div><di=
-v>-----------------------------------</div><div><br></div><div>On searching=
- online I found the following link which explains the solution.</div>
-<div><a href=3D"https://lists.yoctoproject.org/pipermail/poky/2011-May/0059=
-39.html">https://lists.yoctoproject.org/pipermail/poky/2011-May/005939.html=
-</a></div><div><br></div><div><br></div><div>I feel that we may have to bri=
-ng ARM TrustZone security extension support to barebox at least as a condit=
-ional compilation option, as this may be widely used in ARM based embedded =
-systems.</div>
-<div><br></div><div>In order to resolve my issue, I just had to make a mino=
-r change to=A0arch/arm/Makefile</div><div><br></div><div><div>diff --git a/=
-arch/arm/Makefile b/arch/arm/Makefile</div><div>index 6201a9b..b0bc8b9 1006=
-44</div>
-<div>--- a/arch/arm/Makefile</div><div>+++ b/arch/arm/Makefile</div><div>@@=
- -15,11 +15,12 @@ endif</div><div><br></div><div>=A0comma =3D ,</div><div><=
-br></div><div>+</div><div>=A0# This selects which instruction set is used.<=
-/div>
-<div>=A0# Note that GCC does not numerically define an architecture version=
-</div><div>=A0# macro, but instead defines a whole series of macros which m=
-akes</div><div>=A0# testing for a specific architecture or later rather imp=
-ossible.</div>
-<div>-arch-$(CONFIG_CPU_32v7) =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0:=3D-D__LINUX_=
-ARM_ARCH__=3D7 $(call cc-option,-march=3Darmv7-a,-march=3Darmv5t -Wa$(comma=
-)-march=3Darmv7-a)</div><div>+arch-$(CONFIG_CPU_32v7) =A0 =A0 =A0 =A0 =A0 =
-=A0 =A0 =A0:=3D-D__LINUX_ARM_ARCH__=3D7 $(call cc-option,-march=3Darmv7-a+s=
-ec,-march=3Darmv5t -Wa$(comma)-march=3Darmv7-a+sec)</div>
-<div>=A0arch-$(CONFIG_CPU_32v6) =A0 =A0 =A0 =A0 =A0 =A0:=3D-D__LINUX_ARM_AR=
-CH__=3D6 $(call cc-option,-march=3Darmv6,-march=3Darmv5t -Wa$(comma)-march=
-=3Darmv6)</div><div>=A0arch-$(CONFIG_CPU_32v5) =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0:=3D-D__LINUX_ARM_ARCH__=3D5 $(call cc-option,-march=3Darmv5te,-march=3D=
-armv4t)</div>
-<div>=A0arch-$(CONFIG_CPU_32v4T) =A0 =A0 =A0 :=3D-D__LINUX_ARM_ARCH__=3D4 -=
-march=3Darmv4t</div></div><div><br></div><div>As I&#39;m new to barebox, I&=
-#39;m not sure whether this change will break something. It would be good i=
-f experts can have look at the link provided and submit a patch.</div>
-<div><br></div><div>Thanks,</div><div>Calvin</div><div><br></div>
+<html xmlns:v=3D"urn:schemas-microsoft-com:vml" =
+xmlns:o=3D"urn:schemas-microsoft-com:office:office" =
+xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns:m=3D"http://schemas.microsoft.com/office/2004/12/omml" =
+xmlns=3D"http://www.w3.org/TR/REC-html40"><head><meta =
+http-equiv=3DContent-Type content=3D"text/html; =
+charset=3Dus-ascii"><meta name=3DGenerator content=3D"Microsoft Word 12 =
+(filtered medium)"><style><!--
+/* Font Definitions */
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+/* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:11.0pt;
+	font-family:"Calibri","sans-serif";}
+a:link, span.MsoHyperlink
+	{mso-style-priority:99;
+	color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{mso-style-priority:99;
+	color:purple;
+	text-decoration:underline;}
+pre
+	{mso-style-priority:99;
+	mso-style-link:"HTML Vorformatiert Zchn";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+span.E-MailFormatvorlage17
+	{mso-style-type:personal-compose;
+	font-family:"Calibri","sans-serif";
+	color:windowtext;}
+span.HTMLVorformatiertZchn
+	{mso-style-name:"HTML Vorformatiert Zchn";
+	mso-style-priority:99;
+	mso-style-link:"HTML Vorformatiert";
+	font-family:"Courier New";}
+span.preprocessor
+	{mso-style-name:preprocessor;}
+.MsoChpDefault
+	{mso-style-type:export-only;}
+@page WordSection1
+	{size:612.0pt 792.0pt;
+	margin:70.85pt 70.85pt 2.0cm 70.85pt;}
+div.WordSection1
+	{page:WordSection1;}
+--></style><!--[if gte mso 9]><xml>
+<o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
+</xml><![endif]--><!--[if gte mso 9]><xml>
+<o:shapelayout v:ext=3D"edit">
+<o:idmap v:ext=3D"edit" data=3D"1" />
+</o:shapelayout></xml><![endif]--></head><body lang=3DDE link=3Dblue =
+vlink=3Dpurple><div class=3DWordSection1><p =
+class=3DMsoNormal>Hi,<o:p></o:p></p><p =
+class=3DMsoNormal><o:p>&nbsp;</o:p></p><p class=3DMsoNormal><span =
+lang=3DEN-US>I&#8217;m trying to start barebox is described in the First =
+Steps chapter of the barebox documentation, but I get a =
+segfault.<o:p></o:p></span></p><p class=3DMsoNormal><span =
+lang=3DEN-US><o:p>&nbsp;</o:p></span></p><pre><span lang=3DEN-US =
+style=3D'font-size:11.0pt;font-family:"Calibri","sans-serif"'>I followed =
+the User&#8217;s Manual step by step and now I try to run =
+<o:p></o:p></span></pre><pre>./barebox -e env.bin -i =
+cramfs.bin<o:p></o:p></pre><pre><span =
+style=3D'font-size:11.0pt'><o:p>&nbsp;</o:p></span></pre><pre><span =
+lang=3DEN-US =
+style=3D'font-size:11.0pt;font-family:"Calibri","sans-serif"'>Did I =
+maybe miss something when creating the cramfs.bin? Do I need to put =
+files into somedir?<o:p></o:p></span></pre><pre><span lang=3DEN-US =
+style=3D'font-size:11.0pt;font-family:"Calibri","sans-serif"'>I&#8217;m =
+using barebox-2011.05.0<o:p></o:p></span></pre><pre><span lang=3DEN-US =
+style=3D'font-size:11.0pt;font-family:"Calibri","sans-serif"'>OS: Debian =
+6.0.1 (squeeze) <o:p></o:p></span></pre><pre><span lang=3DEN-US =
+style=3D'font-size:11.0pt;font-family:"Calibri","sans-serif"'>Kernel: =
+Linux 2.6.32-5-686-bigmem<o:p></o:p></span></pre><pre><span lang=3DEN-US =
+style=3D'font-size:11.0pt;font-family:"Calibri","sans-serif"'><o:p>&nbsp;=
+</o:p></span></pre><p class=3DMsoNormal><span lang=3DEN-US>Neither this =
+patch:<o:p></o:p></span></p><pre><span lang=3DEN-US>--- =
+a/arch/sandbox/board/hostfile.c<o:p></o:p></span></pre><pre><span =
+lang=3DEN-US>+++ =
+b/arch/sandbox/board/hostfile.c<o:p></o:p></span></pre><pre><span =
+lang=3DEN-US>@@ -107,7 +107,8 @@ int barebox_register_filedev(struct =
+hf_platform_data *hf)<o:p></o:p></span></pre><pre><span =
+lang=3DEN-US><o:p>&nbsp;</o:p></span></pre><pre><span =
+lang=3DEN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+dev-&gt;platform_data =3D hf;<o:p></o:p></span></pre><pre><span =
+lang=3DEN-US><o:p>&nbsp;</o:p></span></pre><pre><span =
+lang=3DEN-US>-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; strcpy(dev-&gt;name, =
+&quot;hostfile&quot;);<o:p></o:p></span></pre><pre><span =
+lang=3DEN-US>+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* Registering 2 =
+devices with same name creates problem? =
+*/<o:p></o:p></span></pre><pre><span =
+lang=3DEN-US>+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; strcpy(dev-&gt;name, =
+hf-&gt;filename);<o:p></o:p></span></pre><pre><span =
+lang=3DEN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dev-&gt;size =3D =
+hf-&gt;size;<o:p></o:p></span></pre><pre><span =
+lang=3DEN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dev-&gt;map_base =
+=3D hf-&gt;map_base;<o:p></o:p></span></pre><p class=3DMsoNormal><span =
+lang=3DEN-US>Nor this patch:<o:p></o:p></span></p><pre><span =
+lang=3DEN-US>--- =
+a/arch/sandbox/board/hostfile.c<o:p></o:p></span></pre><pre><span =
+lang=3DEN-US>+++ =
+b/arch/sandbox/board/hostfile.c<o:p></o:p></span></pre><pre><span =
+lang=3DEN-US>@@ -109,6 +109,7 @@ int barebox_register_filedev(struct =
+hf_platform_data *hf)<o:p></o:p></span></pre><pre><span lang=3DEN-US> =
+<o:p></o:p></span></pre><pre><span =
+lang=3DEN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+strcpy(dev-&gt;name, =
+&quot;hostfile&quot;);<o:p></o:p></span></pre><pre><span lang=3DEN-US> =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dev-&gt;size =3D =
+hf-&gt;size;<o:p></o:p></span></pre><pre><span =
+lang=3DEN-US>+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dev-&gt;id =3D =
+-1;<o:p></o:p></span></pre><pre><span lang=3DEN-US> =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dev-&gt;map_base =3D =
+hf-&gt;map_base;<o:p></o:p></span></pre><pre><span lang=3DEN-US> =
+<o:p></o:p></span></pre><pre><span =
+lang=3DEN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return =
+register_device(dev);<o:p></o:p></span></pre><p class=3DMsoNormal><span =
+lang=3DEN-US>help.<o:p></o:p></span></p><p class=3DMsoNormal><span =
+lang=3DEN-US><o:p>&nbsp;</o:p></span></p><p class=3DMsoNormal><span =
+lang=3DEN-US>I would be grateful for any help.<o:p></o:p></span></p><p =
+class=3DMsoNormal><span lang=3DEN-US><o:p>&nbsp;</o:p></span></p><p =
+class=3DMsoNormal><span lang=3DEN-US><o:p>&nbsp;</o:p></span></p><p =
+class=3DMsoNormal><span =
+style=3D'font-size:10.0pt;font-family:"Arial","sans-serif"'>With kind =
+regards<o:p></o:p></span></p><p class=3DMsoNormal><span =
+style=3D'font-size:10.0pt;font-family:"Arial","sans-serif"'><o:p>&nbsp;</=
+o:p></span></p><p class=3DMsoNormal><span lang=3DEN-US =
+style=3D'font-size:10.0pt;font-family:"Arial","sans-serif"'>Matthias =
+Suthe</span><span =
+style=3D'font-size:10.0pt;font-family:"Arial","sans-serif"'><o:p></o:p></=
+span></p><p class=3DMsoNormal><o:p>&nbsp;</o:p></p></div></body></html>
+------_=_NextPart_001_01CC42BE.B9D59C27--
 
---0016e645abae965f3b04a7ede0c1--
 
-
---===============0534298345==
+--===============1390773394==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -141,4 +266,4 @@ barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
 
---===============0534298345==--
+--===============1390773394==--
