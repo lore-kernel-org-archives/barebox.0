@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-gy0-f177.google.com ([209.85.160.177])
+Received: from mail-yw0-f49.google.com ([209.85.213.49])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QhzvG-0006Wm-2m
-	for barebox@lists.infradead.org; Sat, 16 Jul 2011 08:08:26 +0000
-Received: by gyh4 with SMTP id 4so922377gyh.36
-	for <barebox@lists.infradead.org>; Sat, 16 Jul 2011 01:08:19 -0700 (PDT)
+	id 1Qi0fo-0000My-IT
+	for barebox@lists.infradead.org; Sat, 16 Jul 2011 08:56:33 +0000
+Received: by ywf9 with SMTP id 9so929030ywf.36
+	for <barebox@lists.infradead.org>; Sat, 16 Jul 2011 01:56:28 -0700 (PDT)
 MIME-Version: 1.0
 From: Vikram Narayanan <vikram186@gmail.com>
-Date: Sat, 16 Jul 2011 13:37:49 +0530
-Message-ID: <CAHwEkO2Zy7KN_9_ja_a+rCyxiDovHDWu5oZW8yGrUFxFjiLWMA@mail.gmail.com>
+Date: Sat, 16 Jul 2011 14:25:58 +0530
+Message-ID: <CAHwEkO0Oh258fshA5ptndeN+x79_nt=ayEwLPsxvL45YvN5mog@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,16 +21,17 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: XIP support in barebox
+Subject: Using clocks_calc_mult_shift
 To: barebox@lists.infradead.org
 
 Hi,
 
-Is there any support available for creating execute in place (XIP)
-images in barebox?
+Why are there lot of hardcoded mult/shift values inside the code.
+Can't they be changed with clocks_calc_mult_shift?
+Is it not changed purposely?
+If not, I will send patches removing the hardcoded mult/shift values.
 
--
-Thanks,
+TIA,
 Vikram
 
 _______________________________________________
