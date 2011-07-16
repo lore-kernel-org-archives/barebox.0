@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pz0-f43.google.com ([209.85.210.43])
+Received: from mail-gy0-f177.google.com ([209.85.160.177])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1Qhzpf-0006Rd-EH
-	for barebox@lists.infradead.org; Sat, 16 Jul 2011 08:02:44 +0000
-Received: by pzk1 with SMTP id 1so2688501pzk.30
-	for <barebox@lists.infradead.org>; Sat, 16 Jul 2011 01:02:30 -0700 (PDT)
+	id 1QhzvG-0006Wm-2m
+	for barebox@lists.infradead.org; Sat, 16 Jul 2011 08:08:26 +0000
+Received: by gyh4 with SMTP id 4so922377gyh.36
+	for <barebox@lists.infradead.org>; Sat, 16 Jul 2011 01:08:19 -0700 (PDT)
+MIME-Version: 1.0
 From: Vikram Narayanan <vikram186@gmail.com>
-Date: Sat, 16 Jul 2011 13:32:09 +0530
-Message-ID: <1310803330.2562.13.camel@ubuntu.ubuntu-domain>
-Mime-Version: 1.0
+Date: Sat, 16 Jul 2011 13:37:49 +0530
+Message-ID: <CAHwEkO2Zy7KN_9_ja_a+rCyxiDovHDWu5oZW8yGrUFxFjiLWMA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,41 +21,17 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] checks for return value during the initcall
+Subject: XIP support in barebox
 To: barebox@lists.infradead.org
 
 Hi,
 
-This patch checks for the return value, if there is no memory allocated in the getc_buffer_flush initcall.
+Is there any support available for creating execute in place (XIP)
+images in barebox?
 
-Signed-off-by: Vikram Narayanan<vikram186@gmail.com>
----
-diff --git a/common/console.c b/common/console.c
-index d60e57f..c502638 100644
---- a/common/console.c
-+++ b/common/console.c
-@@ -37,6 +37,7 @@
- #include <poller.h>
- #include <linux/list.h>
- #include <linux/stringify.h>
-+#include <errno.h>
- 
- LIST_HEAD(console_list);
- EXPORT_SYMBOL(console_list);
-@@ -118,6 +119,8 @@ static int getc_buffer_flush(void)
- {
- 	console_input_buffer = kfifo_alloc(1024);
- 	console_output_buffer = kfifo_alloc(1024);
-+	if(!console_input_buffer || !console_output_buffer)
-+		return ENOMEM;
- 	return 0;
- }
- 
--- 
+-
 Thanks,
 Vikram
-
-
 
 _______________________________________________
 barebox mailing list
