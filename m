@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-vw0-f49.google.com ([209.85.212.49])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QiTUv-0007lB-JD
-	for barebox@lists.infradead.org; Sun, 17 Jul 2011 15:43:14 +0000
-Date: Sun, 17 Jul 2011 17:43:11 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110717154311.GS6069@pengutronix.de>
-References: <1310790512-32022-1-git-send-email-plagnioj@jcrosoft.com>
+	id 1QiTp7-0007ps-Qh
+	for barebox@lists.infradead.org; Sun, 17 Jul 2011 16:04:06 +0000
+Received: by vws8 with SMTP id 8so2174144vws.36
+	for <barebox@lists.infradead.org>; Sun, 17 Jul 2011 09:03:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1310790512-32022-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20110717152224.GO6069@pengutronix.de>
+References: <CAHwEkO2Zy7KN_9_ja_a+rCyxiDovHDWu5oZW8yGrUFxFjiLWMA@mail.gmail.com>
+	<20110717152224.GO6069@pengutronix.de>
+From: Vikram Narayanan <vikram186@gmail.com>
+Date: Sun, 17 Jul 2011 21:33:29 +0530
+Message-ID: <CAHwEkO2csr82Bkxm64mTp=Vqh_5vnphvQq5XPTK_LMg9s8UBjA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,59 +20,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] at91sam9263ek: fix env location and size
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org, Patrice Vilchez <patrice.vilchez@atmel.com>, Nicolas Ferre <nicolas.ferre@atmel.com>
+Subject: Re: XIP support in barebox
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Sat, Jul 16, 2011 at 06:28:31AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> 256k(barebox)ro,128k(bareboxenv),1536k(kernel),-(root)
-> 
-> so we will match the erase block size
+On Sun, Jul 17, 2011 at 8:52 PM, Sascha Hauer <s.hauer@pengutronix.de> wrot=
+e:
+> Hi Vikram,
+>
+> On Sat, Jul 16, 2011 at 01:37:49PM +0530, Vikram Narayanan wrote:
+>> Hi,
+>>
+>> Is there any support available for creating execute in place (XIP)
+>> images in barebox?
+>
+> Why would we need support for creating XIP images? What we need is
+> support for booting XIP images. barebox does not support this atm, but I
+> think adding support for it should be simple.
+Thanks for the answer. Patching the code from uClinux's XIP stuff
+would be fine I think.
+Is that right?
 
-Applied to master.
-
-Sascha
-
-> 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> Cc: Nicolas Ferre <nicolas.ferre@atmel.com>
-> Cc: Patrice Vilchez <patrice.vilchez@atmel.com>
-> ---
->  arch/arm/boards/at91sam9263ek/env/config |    2 +-
->  1 files changed, 1 insertions(+), 1 deletions(-)
-> 
-> diff --git a/arch/arm/boards/at91sam9263ek/env/config b/arch/arm/boards/at91sam9263ek/env/config
-> index f1cb751..4e29232 100644
-> --- a/arch/arm/boards/at91sam9263ek/env/config
-> +++ b/arch/arm/boards/at91sam9263ek/env/config
-> @@ -30,7 +30,7 @@ kernelimage=uImage
->  #kernelimage=Image.lzo
->  
->  nand_device=atmel_nand
-> -nand_parts="256k(barebox)ro,64k(bareboxenv),1536k(kernel),-(root)"
-> +nand_parts="256k(barebox)ro,128k(bareboxenv),1536k(kernel),-(root)"
->  rootfs_mtdblock_nand=3
->  
->  autoboot_timeout=3
-> -- 
-> 1.7.5.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+-
+Thanks,
+Vikram
+>
+> Sascha
+>
+> --
+> Pengutronix e.K. =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 | =
+=A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 |
+> Industrial Linux Solutions =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 | http://www.p=
+engutronix.de/ =A0|
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0 =A0=
+ =A0|
+> Amtsgericht Hildesheim, HRA 2686 =A0 =A0 =A0 =A0 =A0 | Fax: =A0 +49-5121-=
+206917-5555 |
+>
 
 _______________________________________________
 barebox mailing list
