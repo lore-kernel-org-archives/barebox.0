@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QiTAt-0007dR-1T
-	for barebox@lists.infradead.org; Sun, 17 Jul 2011 15:22:32 +0000
-Date: Sun, 17 Jul 2011 17:22:24 +0200
+	id 1QiTGg-0007eT-C9
+	for barebox@lists.infradead.org; Sun, 17 Jul 2011 15:28:31 +0000
+Date: Sun, 17 Jul 2011 17:28:27 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110717152224.GO6069@pengutronix.de>
-References: <CAHwEkO2Zy7KN_9_ja_a+rCyxiDovHDWu5oZW8yGrUFxFjiLWMA@mail.gmail.com>
+Message-ID: <20110717152827.GP6069@pengutronix.de>
+References: <1310813132-4151-1-git-send-email-plagnioj@jcrosoft.com>
+	<1310813132-4151-7-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAHwEkO2Zy7KN_9_ja_a+rCyxiDovHDWu5oZW8yGrUFxFjiLWMA@mail.gmail.com>
+In-Reply-To: <1310813132-4151-7-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,21 +23,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: XIP support in barebox
-To: Vikram Narayanan <vikram186@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 7/7] dm9200: use "struct resource" instead of platform_data
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org, Patrice Vilchez <patrice.vilchez@atmel.com>, Nicolas Ferre <nicolas.ferre@atmel.com>
 
-Hi Vikram,
-
-On Sat, Jul 16, 2011 at 01:37:49PM +0530, Vikram Narayanan wrote:
-> Hi,
+On Sat, Jul 16, 2011 at 12:45:32PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> drop iobase and iodata in favor of resources
 > 
-> Is there any support available for creating execute in place (XIP)
-> images in barebox?
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> Cc: Nicolas Ferre <nicolas.ferre@atmel.com>
+> Cc: Patrice Vilchez <patrice.vilchez@atmel.com>
+> ---
+>  arch/arm/boards/at91sam9261ek/init.c            |    8 +++++---
+>  arch/arm/boards/mini2440/env/welcome_en.bmp.lzo |  Bin 0 -> 26285 bytes
+>  arch/arm/boards/mini2440/mini2440.c             |   17 +++++++++++++----
+>  arch/arm/boards/pm9261/init.c                   |    8 +++++---
+>  arch/arm/boards/scb9328/scb9328.c               |   23 ++++++++++++++++-------
+>  drivers/net/dm9000.c                            |   10 ++++++++--
+>  include/dm9000.h                                |    2 --
+>  7 files changed, 47 insertions(+), 21 deletions(-)
+>  create mode 100644 arch/arm/boards/mini2440/env/welcome_en.bmp.lzo
+> 
+> diff --git a/arch/arm/boards/at91sam9261ek/init.c b/arch/arm/boards/at91sam9261ek/init.c
+> index 3def38e..4e52ab8 100644
+> --- a/arch/arm/boards/at91sam9261ek/init.c
+> +++ b/arch/arm/boards/at91sam9261ek/init.c
+> @@ -89,8 +89,6 @@ static void ek_add_device_nand(void)
+>   */
+>  #if defined(CONFIG_DRIVER_NET_DM9000)
+>  static struct dm9000_platform_data dm9000_data = {
+> -	.iobase		= AT91_CHIPSELECT_2,
+> -	.iodata		= AT91_CHIPSELECT_2 + 4,
+>  	.buswidth	= DM9000_WIDTH_16,
+>  	.srom		= 0,
+>  };
+> @@ -98,7 +96,11 @@ static struct dm9000_platform_data dm9000_data = {
+>  static struct resource dm9000_resources[] = {
+>  	[0] = {
+>  		.start	= AT91_CHIPSELECT_2,
+> -		.size	= 8,
+> +		.size	= 4,
+> +	},
+> +	[1] = {
+> +		.start	= AT91_CHIPSELECT_2 + 4,
+> +		.size	= 4,
+>  	},
+>  };
+>  
+> diff --git a/arch/arm/boards/mini2440/env/welcome_en.bmp.lzo b/arch/arm/boards/mini2440/env/welcome_en.bmp.lzo
 
-Why would we need support for creating XIP images? What we need is
-support for booting XIP images. barebox does not support this atm, but I
-think adding support for it should be simple.
+Ups ;)
 
 Sascha
 
