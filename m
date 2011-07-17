@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-fx0-f43.google.com ([209.85.161.43])
-	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QiWW7-0008Gf-2G
-	for barebox@lists.infradead.org; Sun, 17 Jul 2011 18:56:39 +0000
-Received: by fxg17 with SMTP id 17so4414648fxg.16
-	for <barebox@lists.infradead.org>; Sun, 17 Jul 2011 11:56:30 -0700 (PDT)
+	by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+	id 1QiWXu-0000Mr-QO
+	for barebox@lists.infradead.org; Sun, 17 Jul 2011 18:58:31 +0000
+Received: by fxg17 with SMTP id 17so4414702fxg.16
+	for <barebox@lists.infradead.org>; Sun, 17 Jul 2011 11:56:34 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sun, 17 Jul 2011 22:56:24 +0400
-Message-Id: <1310928985-30940-1-git-send-email-antonynpavlov@gmail.com>
+Date: Sun, 17 Jul 2011 22:56:25 +0400
+Message-Id: <1310928985-30940-2-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1310928985-30940-1-git-send-email-antonynpavlov@gmail.com>
+References: <1310928985-30940-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,38 +23,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] debug_ll.h: add PUTS_LL() function
+Subject: [PATCH 2/2] startup.c: make DEBUG_LL output more useful
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- include/debug_ll.h |   10 ++++++++++
- 1 files changed, 10 insertions(+), 0 deletions(-)
+ common/startup.c |    6 +++++-
+ 1 files changed, 5 insertions(+), 1 deletions(-)
 
-diff --git a/include/debug_ll.h b/include/debug_ll.h
-index e99ae7d..87aa083 100644
---- a/include/debug_ll.h
-+++ b/include/debug_ll.h
-@@ -35,9 +35,19 @@
- 			     ch = ((v >> (i*4)) & 0xf);\
- 			     ch += (ch >= 10) ? 'a' - 10 : '0';\
- 			     PUTC_LL (ch); }})
-+
-+static __inline__ void PUTS_LL(char * str)
-+{
-+	while (*str) {
-+		PUTC_LL(*str);
-+		str++;
-+	}
-+}
-+
- #else
- # define PUTC_LL(c) do {} while (0)
- # define PUTHEX_LL(v) do {} while (0)
-+# define PUTS_LL(c) do {} while (0)
+diff --git a/common/startup.c b/common/startup.c
+index 00bc9a0..f8efa08 100644
+--- a/common/startup.c
++++ b/common/startup.c
+@@ -134,13 +134,17 @@ void start_barebox (void)
  
- #endif
+ 	for (initcall = __barebox_initcalls_start;
+ 			initcall < __barebox_initcalls_end; initcall++) {
++		PUTS_LL("<<");
+ 		PUTHEX_LL(*initcall);
+-		PUTC_LL('\n');
+ 		result = (*initcall)();
++		PUTC_LL('>');
+ 		if (result)
+ 			hang();
++		PUTS_LL(">\r\n");
+ 	}
  
++	PUTS_LL("initcalls done\r\n");
++
+ 	display_meminfo();
+ 
+ #ifdef CONFIG_ENV_HANDLING
 -- 
 1.7.5.4
 
