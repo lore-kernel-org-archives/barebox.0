@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vw0-f49.google.com ([209.85.212.49])
+Received: from mail-fx0-f43.google.com ([209.85.161.43])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QiTp7-0007ps-Qh
-	for barebox@lists.infradead.org; Sun, 17 Jul 2011 16:04:06 +0000
-Received: by vws8 with SMTP id 8so2174144vws.36
-	for <barebox@lists.infradead.org>; Sun, 17 Jul 2011 09:03:59 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20110717152224.GO6069@pengutronix.de>
-References: <CAHwEkO2Zy7KN_9_ja_a+rCyxiDovHDWu5oZW8yGrUFxFjiLWMA@mail.gmail.com>
-	<20110717152224.GO6069@pengutronix.de>
-From: Vikram Narayanan <vikram186@gmail.com>
-Date: Sun, 17 Jul 2011 21:33:29 +0530
-Message-ID: <CAHwEkO2csr82Bkxm64mTp=Vqh_5vnphvQq5XPTK_LMg9s8UBjA@mail.gmail.com>
+	id 1QiWW7-0008Gf-2G
+	for barebox@lists.infradead.org; Sun, 17 Jul 2011 18:56:39 +0000
+Received: by fxg17 with SMTP id 17so4414648fxg.16
+	for <barebox@lists.infradead.org>; Sun, 17 Jul 2011 11:56:30 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Sun, 17 Jul 2011 22:56:24 +0400
+Message-Id: <1310928985-30940-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,47 +16,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: XIP support in barebox
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/2] debug_ll.h: add PUTS_LL() function
+To: barebox@lists.infradead.org
 
-On Sun, Jul 17, 2011 at 8:52 PM, Sascha Hauer <s.hauer@pengutronix.de> wrot=
-e:
-> Hi Vikram,
->
-> On Sat, Jul 16, 2011 at 01:37:49PM +0530, Vikram Narayanan wrote:
->> Hi,
->>
->> Is there any support available for creating execute in place (XIP)
->> images in barebox?
->
-> Why would we need support for creating XIP images? What we need is
-> support for booting XIP images. barebox does not support this atm, but I
-> think adding support for it should be simple.
-Thanks for the answer. Patching the code from uClinux's XIP stuff
-would be fine I think.
-Is that right?
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ include/debug_ll.h |   10 ++++++++++
+ 1 files changed, 10 insertions(+), 0 deletions(-)
 
--
-Thanks,
-Vikram
->
-> Sascha
->
-> --
-> Pengutronix e.K. =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 | =
-=A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 |
-> Industrial Linux Solutions =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 | http://www.p=
-engutronix.de/ =A0|
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0 =A0=
- =A0|
-> Amtsgericht Hildesheim, HRA 2686 =A0 =A0 =A0 =A0 =A0 | Fax: =A0 +49-5121-=
-206917-5555 |
->
+diff --git a/include/debug_ll.h b/include/debug_ll.h
+index e99ae7d..87aa083 100644
+--- a/include/debug_ll.h
++++ b/include/debug_ll.h
+@@ -35,9 +35,19 @@
+ 			     ch = ((v >> (i*4)) & 0xf);\
+ 			     ch += (ch >= 10) ? 'a' - 10 : '0';\
+ 			     PUTC_LL (ch); }})
++
++static __inline__ void PUTS_LL(char * str)
++{
++	while (*str) {
++		PUTC_LL(*str);
++		str++;
++	}
++}
++
+ #else
+ # define PUTC_LL(c) do {} while (0)
+ # define PUTHEX_LL(v) do {} while (0)
++# define PUTS_LL(c) do {} while (0)
+ 
+ #endif
+ 
+-- 
+1.7.5.4
+
 
 _______________________________________________
 barebox mailing list
