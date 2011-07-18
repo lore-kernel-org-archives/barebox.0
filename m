@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-iy0-f177.google.com ([209.85.210.177])
+Received: from mail-vw0-f49.google.com ([209.85.212.49])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QioMN-0006Ot-1E
-	for barebox@lists.infradead.org; Mon, 18 Jul 2011 13:59:47 +0000
-Received: by iyn15 with SMTP id 15so3504159iyn.36
-	for <barebox@lists.infradead.org>; Mon, 18 Jul 2011 06:59:43 -0700 (PDT)
+	id 1Qireq-0008PM-GP
+	for barebox@lists.infradead.org; Mon, 18 Jul 2011 17:31:08 +0000
+Received: by vws8 with SMTP id 8so2890407vws.36
+	for <barebox@lists.infradead.org>; Mon, 18 Jul 2011 10:30:57 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20110718133508.GB5247@game.jcrosoft.org>
-References: <1310994370-28444-1-git-send-email-antonynpavlov@gmail.com>
-	<CAJfOKByNkqH8UKB6OU_rh67oG3c43=fW_7wRa=+Lc0Rf7HrcBw@mail.gmail.com>
-	<20110718133508.GB5247@game.jcrosoft.org>
-Date: Mon, 18 Jul 2011 15:59:43 +0200
-Message-ID: <CAJfOKBxE6Oy=oY6eXr+7VJESTVQ9ZPb-vt6o4LyCg+5OKo2B=g@mail.gmail.com>
-From: Franck JULLIEN <franck.jullien@gmail.com>
+In-Reply-To: <20110718044640.GJ20678@game.jcrosoft.org>
+References: <1310803330.2562.13.camel@ubuntu.ubuntu-domain>
+	<20110718044640.GJ20678@game.jcrosoft.org>
+From: Vikram Narayanan <vikram186@gmail.com>
+Date: Mon, 18 Jul 2011 23:00:27 +0530
+Message-ID: <CAHwEkO1N2ESbo294moLofBt2ezrxTg+wMH4-zoTQ7oxXYD+FEA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,19 +24,48 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 1/2] debug_ll.h: add PUTS_LL() function
+Subject: Re: [PATCH] checks for return value during the initcall
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-2011/7/18 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+On Mon, Jul 18, 2011 at 10:16 AM, Jean-Christophe PLAGNIOL-VILLARD
+<plagnioj@jcrosoft.com> wrote:
 >
-> On 15:26 Mon 18 Jul =A0 =A0 , Franck JULLIEN wrote:
-> Franck could you stop to post in HTML and port in text/plain
+> On 13:32 Sat 16 Jul =A0 =A0 , Vikram Narayanan wrote:
+> > Hi,
+> >
+> > This patch checks for the return value, if there is no memory allocated=
+ in the getc_buffer_flush initcall.
+> >
+> > Signed-off-by: Vikram Narayanan<vikram186@gmail.com>
+> > ---
+> > diff --git a/common/console.c b/common/console.c
+> > index d60e57f..c502638 100644
+> > --- a/common/console.c
+> > +++ b/common/console.c
+> > @@ -37,6 +37,7 @@
+> > =A0#include <poller.h>
+> > =A0#include <linux/list.h>
+> > =A0#include <linux/stringify.h>
+> > +#include <errno.h>
+> >
+> > =A0LIST_HEAD(console_list);
+> > =A0EXPORT_SYMBOL(console_list);
+> > @@ -118,6 +119,8 @@ static int getc_buffer_flush(void)
+> > =A0{
+> > =A0 =A0 =A0 console_input_buffer =3D kfifo_alloc(1024);
+> > =A0 =A0 =A0 console_output_buffer =3D kfifo_alloc(1024);
+> > + =A0 =A0 if(!console_input_buffer || !console_output_buffer)
+> > + =A0 =A0 =A0 =A0 =A0 =A0 return ENOMEM;
+> return -ENOMEM;
 >
+> and a DEBUG_LL message is important here for debug
+Sure. That would be good. Shall I wait for the PUTS_LL to be added to the g=
+it?
 
-Sorry my bad. I know you already asked to Antony to do so
-and I thought I wasn't concerned :)
-
+-
+Thanks,
+Vikram
 > Best Regards,
 > J.
 
