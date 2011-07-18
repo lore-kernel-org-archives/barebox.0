@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QihUi-0002Go-5Z
-	for barebox@lists.infradead.org; Mon, 18 Jul 2011 06:39:57 +0000
-Date: Mon, 18 Jul 2011 08:39:50 +0200
+	id 1QihZI-0002Hr-2I
+	for barebox@lists.infradead.org; Mon, 18 Jul 2011 06:44:45 +0000
+Date: Mon, 18 Jul 2011 08:44:37 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110718063950.GD20587@pengutronix.de>
-References: <1309861164-11327-1-git-send-email-antonynpavlov@gmail.com>
-	<20110715084218.GM6069@pengutronix.de>
-	<CAA4bVAEYusniJ5DYrzgtEqr7kQ8zWOnybPwN2ZmZge8J3HYqfQ@mail.gmail.com>
+Message-ID: <20110718064437.GE20587@pengutronix.de>
+References: <CAM9uW_7pYJS1jzPxcCPphPgMi=ckstKm8=_6dsrCRn3Bp-sCXw@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAA4bVAEYusniJ5DYrzgtEqr7kQ8zWOnybPwN2ZmZge8J3HYqfQ@mail.gmail.com>
+In-Reply-To: <CAM9uW_7pYJS1jzPxcCPphPgMi=ckstKm8=_6dsrCRn3Bp-sCXw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,33 +22,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v1-very-draft 1/5] barebox draft pci support
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: Nand MTD IOError -5
+To: Kamel BOUHARA <k.bouhara@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Jul 15, 2011 at 02:15:34PM +0400, Antony Pavlov wrote:
-> On 15 July 2011 12:42, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+On Fri, Jul 15, 2011 at 01:21:21PM +0200, Kamel BOUHARA wrote:
+> Hello,
 > 
-> > I finally found some time to look at this. Having pci support for
-> > barebox would be great.
-> >
-> > It seems what missing in this patch is the integration into the
-> > barebox device infrastructure. barebox already has an idea about
-> > bus_type which is used for USB. a bus can have its own match
-> > function to implement id based driver<->device matching. You would
-> > need a struct device_d member in struct pci_device.
-> >
-> > As for the resource part Jean Christophe already started to convert
-> > barebox from struct device_d->base to use real resources like
-> > the Linux Kernel.
+> Im having a trouble with my Nand Flash device wich is a 512MiB Micron with
+> 4GB capacity.
+> I get io error -5 for any erase/write operation on it like this :
 > 
-> Absens of real resouces is painful.
-> 
-> If Jean Christophe started work on resources, where I can see it?
+>  barebox@Phytec phyCard-i.MX27:/ update -t barebox -d nand
 
-I think you just motivated him to repost his work ;)
+Is this really a phycard or have you just used it as a template for your
+board?
+
+> 
+> phy0: Link is up - 100/Full
+> host 192.168.0.2 is alive
+> > erasing partition /dev/nand0.barebox.bb
+> >
+> erase: I/O error
+> 
+> flashing barebox.bin to /dev/nand0.barebox.bb
+> TFTP from server 192.168.0.2 ('barebox.bin' -> '/dev/nand0.barebox.bb')
+>         write: I/O error
+> tftp failed: error -5
+> And here is the device init at the boot runtime:
+> NAND device: Manufacturer ID: 0x2c, Chip ID: 0xac (Micron NAND 512MiB 1,8V
+> 8-bi)
+> 
+> nand_read_bbt: Bad block at 0x17840000
+> 
+> nand_read_bbt: Bad block at 0x17860000
+> 
+> nand_read_bbt: Bad block at 0x1f0c0000
+> 
+> nand_read_bbt: Bad block at 0x1f0e0000
+> 
+> nand_read_bbt: Bad block at 0x1f6c0000
+> 
+> nand_read_bbt: Bad block at 0x1f6e0000
+> 
+> So it seems tge device is detect and bbt are correctly calculated...
+> Any idea of what could be the problem ?
+
+Sorry, no idea. It just looks there are quite many bad blocks. Does it
+work under Linux?
 
 Sascha
+
+
 
 -- 
 Pengutronix e.K.                           |                             |
