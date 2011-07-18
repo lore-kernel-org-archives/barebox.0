@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 15.mo4.mail-out.ovh.net ([91.121.62.11]
+Received: from 14.mo4.mail-out.ovh.net ([46.105.40.29]
 	helo=mo4.mail-out.ovh.net)
 	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1QinZd-0005wx-3u
-	for barebox@lists.infradead.org; Mon, 18 Jul 2011 13:09:29 +0000
+	id 1QinbX-0005yC-Ur
+	for barebox@lists.infradead.org; Mon, 18 Jul 2011 13:11:28 +0000
 Received: from mail187.ha.ovh.net (b9.ovh.net [213.186.33.59])
-	by mo4.mail-out.ovh.net (Postfix) with SMTP id 29C3CFF9884
+	by mo4.mail-out.ovh.net (Postfix) with SMTP id 5AAE5FFA7A5
 	for <barebox@lists.infradead.org>;
-	Mon, 18 Jul 2011 15:09:50 +0200 (CEST)
-Date: Mon, 18 Jul 2011 14:52:41 +0200
+	Mon, 18 Jul 2011 15:11:51 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20110718125241.GA5247@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Mon, 18 Jul 2011 14:54:33 +0200
+Message-Id: <1310993678-7563-5-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1310993678-7563-1-git-send-email-plagnioj@jcrosoft.com>
+References: <1310993678-7563-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,71 +21,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PULL] Add multi resource support
+Subject: [PATCH 05/10] atmel_mci: switch to "struct resource"
 To: barebox@lists.infradead.org
 
-Hi,
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ drivers/mci/atmel_mci.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-	you will found here the support of the multiple resource support
-	and the start of the switch to it
+diff --git a/drivers/mci/atmel_mci.c b/drivers/mci/atmel_mci.c
+index d8bcf81..70041ba 100644
+--- a/drivers/mci/atmel_mci.c
++++ b/drivers/mci/atmel_mci.c
+@@ -456,7 +456,7 @@ static int mci_probe(struct device_d *hw_dev)
+ 	if (pd->bus_width == 8)
+ 		host->mci.host_caps |= MMC_MODE_8BIT;
+ 
+-	host->base = (void __iomem *)hw_dev->map_base;
++	host->base = (void __iomem *)hw_dev->resource[0].start;
+ 	host->hw_dev = hw_dev;
+ 	hw_dev->priv = host;
+ 	host->clk = clk_get(hw_dev, "mci_clk");
+-- 
+1.7.5.4
 
-	done fully on at91 and nomadik
-
-The following changes since commit f4f952faa4047bfeb80ba6b960d331724807d52a:
-
-  serial_ns16550: remove legacy code copied from U-Boot v1 (2011-07-17 17:42:21 +0200)
-
-are available in the git repository at:
-  git://uboot.jcrosoft.org/barebox.git resource
-
-Jean-Christophe PLAGNIOL-VILLARD (10):
-      device: introduce resource structure to simplify resource declaration
-      at91: switch to all resource declaration to "struct resource"
-      at91/serial: switch to "struct resource"
-      macb: switch to "struct resource"
-      atmel_mci: switch to "struct resource"
-      atmel_nand: switch to "struct resource"
-      dm9200: use "struct resource" instead of platform_data
-      nomadik: switch to all resource declaration to "struct resource"
-      nomadik_nand: use "struct resource" instead of platform_data
-      amba-pl011: switch to "struct resource"
-
- arch/arm/boards/at91rm9200ek/init.c       |    9 ++-
- arch/arm/boards/at91sam9261ek/init.c      |   17 +++-
- arch/arm/boards/at91sam9263ek/init.c      |   11 ++-
- arch/arm/boards/mini2440/mini2440.c       |   17 +++-
- arch/arm/boards/mmccpu/init.c             |   10 ++-
- arch/arm/boards/nhk8815/setup.c           |   29 ++++++-
- arch/arm/boards/pm9261/init.c             |   17 +++-
- arch/arm/boards/pm9263/init.c             |   11 ++-
- arch/arm/boards/scb9328/scb9328.c         |   23 ++++--
- arch/arm/mach-at91/at91rm9200_devices.c   |   88 +++++++++++++++++----
- arch/arm/mach-at91/at91sam9260_devices.c  |  121 +++++++++++++++++++++++-----
- arch/arm/mach-at91/at91sam9261_devices.c  |   77 +++++++++++++++----
- arch/arm/mach-at91/at91sam9263_devices.c  |  101 +++++++++++++++++++-----
- arch/arm/mach-at91/at91sam9g45_devices.c  |  110 +++++++++++++++++++++-----
- arch/arm/mach-nomadik/8815.c              |   33 +++++++--
- arch/arm/mach-nomadik/include/mach/nand.h |    3 -
- drivers/mci/atmel_mci.c                   |    2 +-
- drivers/mtd/nand/atmel_nand.c             |    2 +-
- drivers/mtd/nand/nomadik_nand.c           |    8 +-
- drivers/net/dm9000.c                      |   10 ++-
- drivers/net/macb.c                        |    4 +-
- drivers/serial/amba-pl011.c               |   28 ++++---
- drivers/serial/atmel.c                    |   27 ++++---
- include/dm9000.h                          |    2 -
- include/driver.h                          |    4 +
- include/linux/ioport.h                    |  115 +++++++++++++++++++++++++++
- lib/driver.c                              |   19 +++++
- 27 files changed, 729 insertions(+), 169 deletions(-)
- create mode 100644 include/linux/ioport.h
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
