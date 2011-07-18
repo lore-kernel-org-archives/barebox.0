@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QihZI-0002Hr-2I
-	for barebox@lists.infradead.org; Mon, 18 Jul 2011 06:44:45 +0000
-Date: Mon, 18 Jul 2011 08:44:37 +0200
+	id 1Qihb3-0002Ip-6K
+	for barebox@lists.infradead.org; Mon, 18 Jul 2011 06:46:33 +0000
+Date: Mon, 18 Jul 2011 08:46:26 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110718064437.GE20587@pengutronix.de>
-References: <CAM9uW_7pYJS1jzPxcCPphPgMi=ckstKm8=_6dsrCRn3Bp-sCXw@mail.gmail.com>
+Message-ID: <20110718064626.GF20587@pengutronix.de>
+References: <1310928985-30940-1-git-send-email-antonynpavlov@gmail.com>
+	<1310928985-30940-2-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAM9uW_7pYJS1jzPxcCPphPgMi=ckstKm8=_6dsrCRn3Bp-sCXw@mail.gmail.com>
+In-Reply-To: <1310928985-30940-2-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,58 +23,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Nand MTD IOError -5
-To: Kamel BOUHARA <k.bouhara@gmail.com>
+Subject: Re: [PATCH 2/2] startup.c: make DEBUG_LL output more useful
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Jul 15, 2011 at 01:21:21PM +0200, Kamel BOUHARA wrote:
-> Hello,
+On Sun, Jul 17, 2011 at 10:56:25PM +0400, Antony Pavlov wrote:
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> ---
+>  common/startup.c |    6 +++++-
+>  1 files changed, 5 insertions(+), 1 deletions(-)
 > 
-> Im having a trouble with my Nand Flash device wich is a 512MiB Micron with
-> 4GB capacity.
-> I get io error -5 for any erase/write operation on it like this :
-> 
->  barebox@Phytec phyCard-i.MX27:/ update -t barebox -d nand
+> diff --git a/common/startup.c b/common/startup.c
+> index 00bc9a0..f8efa08 100644
+> --- a/common/startup.c
+> +++ b/common/startup.c
+> @@ -134,13 +134,17 @@ void start_barebox (void)
+>  
+>  	for (initcall = __barebox_initcalls_start;
+>  			initcall < __barebox_initcalls_end; initcall++) {
+> +		PUTS_LL("<<");
+>  		PUTHEX_LL(*initcall);
+> -		PUTC_LL('\n');
+>  		result = (*initcall)();
+> +		PUTC_LL('>');
+>  		if (result)
+>  			hang();
+> +		PUTS_LL(">\r\n");
 
-Is this really a phycard or have you just used it as a template for your
-board?
-
-> 
-> phy0: Link is up - 100/Full
-> host 192.168.0.2 is alive
-> > erasing partition /dev/nand0.barebox.bb
-> >
-> erase: I/O error
-> 
-> flashing barebox.bin to /dev/nand0.barebox.bb
-> TFTP from server 192.168.0.2 ('barebox.bin' -> '/dev/nand0.barebox.bb')
->         write: I/O error
-> tftp failed: error -5
-> And here is the device init at the boot runtime:
-> NAND device: Manufacturer ID: 0x2c, Chip ID: 0xac (Micron NAND 512MiB 1,8V
-> 8-bi)
-> 
-> nand_read_bbt: Bad block at 0x17840000
-> 
-> nand_read_bbt: Bad block at 0x17860000
-> 
-> nand_read_bbt: Bad block at 0x1f0c0000
-> 
-> nand_read_bbt: Bad block at 0x1f0e0000
-> 
-> nand_read_bbt: Bad block at 0x1f6c0000
-> 
-> nand_read_bbt: Bad block at 0x1f6e0000
-> 
-> So it seems tge device is detect and bbt are correctly calculated...
-> Any idea of what could be the problem ?
-
-Sorry, no idea. It just looks there are quite many bad blocks. Does it
-work under Linux?
+Looks mostly good. Can we to the \n -> \r\n conversion in PUTS_LL
+instead?
 
 Sascha
 
-
+>  	}
+>  
+> +	PUTS_LL("initcalls done\r\n");
+> +
+>  	display_meminfo();
+>  
+>  #ifdef CONFIG_ENV_HANDLING
+> -- 
+> 1.7.5.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
