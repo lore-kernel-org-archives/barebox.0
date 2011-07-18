@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QiuyT-0001OC-2L
-	for barebox@lists.infradead.org; Mon, 18 Jul 2011 21:03:33 +0000
-Date: Mon, 18 Jul 2011 23:03:28 +0200
+	id 1Qiuza-0001PN-U2
+	for barebox@lists.infradead.org; Mon, 18 Jul 2011 21:04:47 +0000
+Date: Mon, 18 Jul 2011 23:04:40 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110718210328.GJ20587@pengutronix.de>
+Message-ID: <20110718210440.GK20587@pengutronix.de>
 References: <1310994370-28444-1-git-send-email-antonynpavlov@gmail.com>
-	<CAJfOKByNkqH8UKB6OU_rh67oG3c43=fW_7wRa=+Lc0Rf7HrcBw@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAJfOKByNkqH8UKB6OU_rh67oG3c43=fW_7wRa=+Lc0Rf7HrcBw@mail.gmail.com>
+In-Reply-To: <1310994370-28444-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,29 +23,57 @@ Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH v2 1/2] debug_ll.h: add PUTS_LL() function
-To: Franck JULLIEN <franck.jullien@gmail.com>
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Jul 18, 2011 at 03:26:33PM +0200, Franck JULLIEN wrote:
-> 2011/7/18 Antony Pavlov <antonynpavlov@gmail.com>
-> 
-> 
-> 
-> Hello,
-> 
-> Could we add an entry for CONFIG_DEBUG_LL in the debugging menu
-> (common/Kconfig) ?
-> This file makes barebox not compile if we are not on arm arch due to the
-> <mach/debug_ll.h> inclusion.
-> 
-> I know it's not related to your patch :)
+On Mon, Jul 18, 2011 at 05:06:09PM +0400, Antony Pavlov wrote:
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 
-Patches that make the lowlevel debug stuff more generally useful
-are very welcome. It's not nice to have to modify the code to make
-it work, but I couldn't find the energy to do something about it.
+Applied both to next.
 
-Sascha
+Thanks
+ Sascha
 
+> ---
+>  include/debug_ll.h |   13 +++++++++++++
+>  1 files changed, 13 insertions(+), 0 deletions(-)
+> 
+> diff --git a/include/debug_ll.h b/include/debug_ll.h
+> index e99ae7d..6b1b174 100644
+> --- a/include/debug_ll.h
+> +++ b/include/debug_ll.h
+> @@ -35,9 +35,22 @@
+>  			     ch = ((v >> (i*4)) & 0xf);\
+>  			     ch += (ch >= 10) ? 'a' - 10 : '0';\
+>  			     PUTC_LL (ch); }})
+> +
+> +static __inline__ void PUTS_LL(char * str)
+> +{
+> +	while (*str) {
+> +		if (*str == '\n') {
+> +			PUTC_LL('\r');
+> +		}
+> +		PUTC_LL(*str);
+> +		str++;
+> +	}
+> +}
+> +
+>  #else
+>  # define PUTC_LL(c) do {} while (0)
+>  # define PUTHEX_LL(v) do {} while (0)
+> +# define PUTS_LL(c) do {} while (0)
+>  
+>  #endif
+>  
+> -- 
+> 1.7.5.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
