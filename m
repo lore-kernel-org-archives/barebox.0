@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QihHL-0002Ck-BY
-	for barebox@lists.infradead.org; Mon, 18 Jul 2011 06:26:10 +0000
-Date: Mon, 18 Jul 2011 08:26:01 +0200
+	id 1QihHZ-0002DX-Bg
+	for barebox@lists.infradead.org; Mon, 18 Jul 2011 06:26:25 +0000
+Date: Mon, 18 Jul 2011 08:26:19 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110718062601.GA20587@pengutronix.de>
-References: <1310813132-4151-1-git-send-email-plagnioj@jcrosoft.com>
-	<20110717153745.GQ6069@pengutronix.de>
-	<20110718044347.GI20678@game.jcrosoft.org>
+Message-ID: <20110718062619.GB20587@pengutronix.de>
+References: <1310812921-3685-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20110718044347.GI20678@game.jcrosoft.org>
+In-Reply-To: <1310812921-3685-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,72 +22,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/7] device: introduce resource structure to simplify
-	resource declaration
+Subject: Re: [PATCH] fix: commands/bootm.c:346:2: warning: statement with no
+	effect
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org, Patrice Vilchez <patrice.vilchez@atmel.com>, Nicolas Ferre <nicolas.ferre@atmel.com>
+Cc: barebox@lists.infradead.org
 
-On Mon, Jul 18, 2011 at 06:43:47AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > +#endif /* __ASSEMBLY__ */
-> > > +#endif	/* _LINUX_IOPORT_H */
-> > > diff --git a/lib/driver.c b/lib/driver.c
-> > > index 4c10a49..ee5e850 100644
-> > > --- a/lib/driver.c
-> > > +++ b/lib/driver.c
-> > > @@ -103,6 +103,15 @@ int register_device(struct device_d *new_device)
-> > >  {
-> > >  	struct driver_d *drv;
-> > >  
-> > > +	/* if no map_base available use the first resource if available
-> > > +	 * so we do not need to duplicate it
-> > > +	 * Temporary fixup until we get rid of map_base and size
-> > > +	 */
-> > > +	if (new_device->map_base == 0 && new_device->resource) {
-> > > +		new_device->map_base = new_device->resource[0].start;
-> > > +		new_device->size = new_device->resource[0].size;
-> > > +	}
-> > 
-> > I think we don't need this. What we need though is the other way round:
-> > 
-> > 	if (new_device->map_base) {
-> > 		dev_warn(new_device, "uses map_base. Please convert to use resources\n")
-> > 		new_device->resource = xzalloc(sizeof(struct resource));
-> > 		new_device->resource[0].start = new_device->map_base;
-> > 		new_device->resource[0].size = new_device->size;
-> > 	}
-> > 
-> > This way all devices have resources, we can convert the drivers and
-> > devices to use resources one by one.
-> ok for the warning
-> 
-> but if we do not keep the map_base uptodate the core device drivers will be
-> broken so if no map_base is specified we must update it with the first
-> resource
+On Sat, Jul 16, 2011 at 12:42:01PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> convert enable_interrupts() and disable_interrupts() to static inline
+> if no IRQ supoprt enable
 
-You're right.
-
-> 
-> how about this
-> 
-> 	if (new_device->map_base) {
-> 		if (new_device->resource) {
-> 			dev_err(new_device, "map_base and resource specifed\n");
-> 			return -EIO;
-> 		}
-> 		dev_warn(new_device, "uses map_base. Please convert to use resources\n")
-> 		new_device->resource = xzalloc(sizeof(struct resource));
-> 		new_device->resource[0].start = new_device->map_base;
-> 		new_device->resource[0].size = new_device->size;
-> 		new_device->numresources = 1;
-> 	} else if (new_device->resource) {
-> 		new_device->map_base = new_device->resource[0].start;
-> 		new_device->size = new_device->resource[0].size;
-> 	}
-
-Ok, this looks good.
+Applied to master
 
 Sascha
 
+> 
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  include/common.h |   10 ++++++++--
+>  1 files changed, 8 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/common.h b/include/common.h
+> index 491bc98..f3353c8 100644
+> --- a/include/common.h
+> +++ b/include/common.h
+> @@ -116,8 +116,14 @@ void	irq_free_handler   (int);
+>  void	enable_interrupts  (void);
+>  int	disable_interrupts (void);
+>  #else
+> -#define enable_interrupts() do {} while (0)
+> -#define disable_interrupts() 0
+> +static inline void enable_interrupts(void)
+> +{
+> +}
+> +
+> +static inline int disable_interrupts(void)
+> +{
+> +	return 0;
+> +}
+>  #endif
+>  
+>  /* lib_$(ARCH)/time.c */
+> -- 
+> 1.7.5.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
