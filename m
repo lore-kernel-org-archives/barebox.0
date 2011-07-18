@@ -1,21 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 5.mo4.mail-out.ovh.net ([188.165.44.50]
-	helo=mo4.mail-out.ovh.net)
+Received: from mo4.mail-out.ovh.net ([178.32.228.4])
 	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1QifwR-0001Xh-HW
-	for barebox@lists.infradead.org; Mon, 18 Jul 2011 05:00:28 +0000
+	id 1QifzG-0001Yd-1j
+	for barebox@lists.infradead.org; Mon, 18 Jul 2011 05:03:22 +0000
 Received: from mail187.ha.ovh.net (b9.ovh.net [213.186.33.59])
-	by mo4.mail-out.ovh.net (Postfix) with SMTP id DE861FF9A55
+	by mo4.mail-out.ovh.net (Postfix) with SMTP id A3A08FF9A55
 	for <barebox@lists.infradead.org>;
-	Mon, 18 Jul 2011 07:00:52 +0200 (CEST)
-Date: Mon, 18 Jul 2011 06:43:47 +0200
+	Mon, 18 Jul 2011 07:03:47 +0200 (CEST)
+Date: Mon, 18 Jul 2011 06:46:40 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20110718044347.GI20678@game.jcrosoft.org>
-References: <1310813132-4151-1-git-send-email-plagnioj@jcrosoft.com>
-	<20110717153745.GQ6069@pengutronix.de>
+Message-ID: <20110718044640.GJ20678@game.jcrosoft.org>
+References: <1310803330.2562.13.camel@ubuntu.ubuntu-domain>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20110717153745.GQ6069@pengutronix.de>
+In-Reply-To: <1310803330.2562.13.camel@ubuntu.ubuntu-domain>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,63 +26,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/7] device: introduce resource structure to simplify
-	resource declaration
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, Patrice Vilchez <patrice.vilchez@atmel.com>, Nicolas Ferre <nicolas.ferre@atmel.com>
+Subject: Re: [PATCH] checks for return value during the initcall
+To: Vikram Narayanan <vikram186@gmail.com>
+Cc: barebox@lists.infradead.org
 
-> > +#endif /* __ASSEMBLY__ */
-> > +#endif	/* _LINUX_IOPORT_H */
-> > diff --git a/lib/driver.c b/lib/driver.c
-> > index 4c10a49..ee5e850 100644
-> > --- a/lib/driver.c
-> > +++ b/lib/driver.c
-> > @@ -103,6 +103,15 @@ int register_device(struct device_d *new_device)
-> >  {
-> >  	struct driver_d *drv;
-> >  
-> > +	/* if no map_base available use the first resource if available
-> > +	 * so we do not need to duplicate it
-> > +	 * Temporary fixup until we get rid of map_base and size
-> > +	 */
-> > +	if (new_device->map_base == 0 && new_device->resource) {
-> > +		new_device->map_base = new_device->resource[0].start;
-> > +		new_device->size = new_device->resource[0].size;
-> > +	}
+On 13:32 Sat 16 Jul     , Vikram Narayanan wrote:
+> Hi,
 > 
-> I think we don't need this. What we need though is the other way round:
+> This patch checks for the return value, if there is no memory allocated in the getc_buffer_flush initcall.
 > 
-> 	if (new_device->map_base) {
-> 		dev_warn(new_device, "uses map_base. Please convert to use resources\n")
-> 		new_device->resource = xzalloc(sizeof(struct resource));
-> 		new_device->resource[0].start = new_device->map_base;
-> 		new_device->resource[0].size = new_device->size;
-> 	}
-> 
-> This way all devices have resources, we can convert the drivers and
-> devices to use resources one by one.
-ok for the warning
+> Signed-off-by: Vikram Narayanan<vikram186@gmail.com>
+> ---
+> diff --git a/common/console.c b/common/console.c
+> index d60e57f..c502638 100644
+> --- a/common/console.c
+> +++ b/common/console.c
+> @@ -37,6 +37,7 @@
+>  #include <poller.h>
+>  #include <linux/list.h>
+>  #include <linux/stringify.h>
+> +#include <errno.h>
+>  
+>  LIST_HEAD(console_list);
+>  EXPORT_SYMBOL(console_list);
+> @@ -118,6 +119,8 @@ static int getc_buffer_flush(void)
+>  {
+>  	console_input_buffer = kfifo_alloc(1024);
+>  	console_output_buffer = kfifo_alloc(1024);
+> +	if(!console_input_buffer || !console_output_buffer)
+> +		return ENOMEM;
+return -ENOMEM;
 
-but if we do not keep the map_base uptodate the core device drivers will be
-broken so if no map_base is specified we must update it with the first
-resource
-
-how about this
-
-	if (new_device->map_base) {
-		if (new_device->resource) {
-			dev_err(new_device, "map_base and resource specifed\n");
-			return -EIO;
-		}
-		dev_warn(new_device, "uses map_base. Please convert to use resources\n")
-		new_device->resource = xzalloc(sizeof(struct resource));
-		new_device->resource[0].start = new_device->map_base;
-		new_device->resource[0].size = new_device->size;
-		new_device->numresources = 1;
-	} else if (new_device->resource) {
-		new_device->map_base = new_device->resource[0].start;
-		new_device->size = new_device->resource[0].size;
-	}
+and a DEBUG_LL message is important here for debug
 
 Best Regards,
 J.
