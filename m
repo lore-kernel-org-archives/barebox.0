@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1Qj80I-0008Tn-8G
-	for barebox@lists.infradead.org; Tue, 19 Jul 2011 10:58:23 +0000
-Date: Tue, 19 Jul 2011 12:58:14 +0200
+	id 1Qj822-0008Uk-AI
+	for barebox@lists.infradead.org; Tue, 19 Jul 2011 11:00:07 +0000
+Date: Tue, 19 Jul 2011 13:00:02 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110719105814.GN20587@pengutronix.de>
+Message-ID: <20110719110002.GO20587@pengutronix.de>
 References: <1311064803-6305-1-git-send-email-s.hauer@pengutronix.de>
-	<1311064803-6305-3-git-send-email-s.hauer@pengutronix.de>
-	<20110719101155.GD5727@game.jcrosoft.org>
+	<1311064803-6305-4-git-send-email-s.hauer@pengutronix.de>
+	<20110719101347.GE5727@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20110719101155.GD5727@game.jcrosoft.org>
+In-Reply-To: <20110719101347.GE5727@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,89 +24,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 02/19] device: Add a dev_request_mem_region function
+Subject: Re: [PATCH 03/19] add a add_mem_device function
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jul 19, 2011 at 12:11:55PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+On Tue, Jul 19, 2011 at 12:13:47PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
 > On 10:39 Tue 19 Jul     , Sascha Hauer wrote:
-> > We might want to add real resource tracking later. Also
-> > The first resource may not be a IORESOURCE_MEM at all.
-> > For these reasons introduce a wrapper function for
-> > driver so that they do not have to fiddle with resources
-> > directly.
+> > Add a helper function for boards to register their memory
+> > devices. This makes the board code smaller and also helps
+> > getting rid of map_base.
 > > 
 > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 > > ---
-> >  include/driver.h |   14 ++++++++++++++
-> >  lib/driver.c     |   16 ++++++++++++++++
-> >  2 files changed, 30 insertions(+), 0 deletions(-)
+> >  commands/mem.c   |   25 +++++++++++++++++++++++++
+> >  include/driver.h |    6 ++++++
+> >  2 files changed, 31 insertions(+), 0 deletions(-)
 > > 
-> > diff --git a/include/driver.h b/include/driver.h
-> > index ed3df16..0fc254d 100644
-> > --- a/include/driver.h
-> > +++ b/include/driver.h
-> > @@ -188,6 +188,20 @@ static inline const char *dev_name(const struct device_d *dev)
-> >  	return dev_id(dev);
-> >  }
+> > diff --git a/commands/mem.c b/commands/mem.c
+> > index 8df5f0a..745eec4 100644
+> > --- a/commands/mem.c
+> > +++ b/commands/mem.c
+> > @@ -587,6 +587,31 @@ static struct file_operations memops = {
+> >  	.lseek = dev_lseek_default,
+> >  };
 > >  
-> > +/*
-> > + * get register base 'num' for a device
-> > + */
-> > +void __iomem *dev_get_mem_region(struct device_d *dev, int num);
-> > +
-> > +/*
-> > + * exlusively request register base 'num' for a device
-> > + */
-> > +static inline void __iomem *dev_request_mem_region(struct device_d *dev, int num)
+> > +struct device_d *add_mem_device(const char *name, unsigned long start, size_t size,
+> > +		unsigned int flags)
 > > +{
-> > +	/* no resource tracking yet */
-> > +	return dev_get_mem_region(dev, num);
-> > +}
+> > +	struct device_d *dev;
+> > +	struct memory_platform_data *pdata;
 > > +
-> >  /* linear list over all available devices
-> >   */
-> >  extern struct list_head device_list;
-> > diff --git a/lib/driver.c b/lib/driver.c
-> > index 95e42d5..50f065a 100644
-> > --- a/lib/driver.c
-> > +++ b/lib/driver.c
-> > @@ -233,6 +233,22 @@ int register_driver(struct driver_d *drv)
-> >  }
-> >  EXPORT_SYMBOL(register_driver);
-> >  
-> > +void __iomem *dev_get_mem_region(struct device_d *dev, int num)
-> > +{
-> > +	int i, n = 0;
+> > +	dev = xzalloc(sizeof(*dev));
+> > +	strcpy(dev->name, "mem");
+> > +	dev->id = -1;
+> > +	dev->resource = xzalloc(sizeof(struct resource));
+> > +	dev->num_resources = 1;
+> > +	dev->resource[0].start = start;
+> > +	dev->resource[0].size = size;
+> > +	dev->resource[0].flags = IORESOURCE_MEM;
+> > +	pdata = xzalloc(sizeof(*pdata));
+> > +	dev->platform_data = pdata;
 > > +
-> can we check num < dev->num_resources to
+> > +	pdata->flags = flags;
+> > +	pdata->name = xstrdup(name);
+> can we drop the name here and use the resource name instead
 
-This is done implicitly in the loop below.
+I think so, yes.
 
-> > +	for (i = 0; i < dev->num_resources; i++) {
-> > +		struct resource *res = &dev->resource[i];
-> > +		if ((res->flags & IORESOURCE_TYPE_BITS) == IORESOURCE_MEM) {
-> resource_type here
+> 
+> I think we can drop the platfrom_data too
 
-ok
-
-> > +			if (n == num)
-> > +				return (void __force __iomem *)res->start;
-> > +			n++;
-> > +		}
-> > +	}
-> > +
-> > +	return NULL;
-> > +}
-> EXPORT_SYMBOL too
-
-ok
+This is still needed for the rw/ro flag (though it seems this is not
+handled)
 
 Sascha
-> 
-> Best Regards,
-> J.
-> 
+
 
 -- 
 Pengutronix e.K.                           |                             |
