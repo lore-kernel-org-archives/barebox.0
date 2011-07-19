@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1Qj5qg-0006l4-5h
-	for barebox@lists.infradead.org; Tue, 19 Jul 2011 08:40:28 +0000
+	by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+	id 1Qj5qk-0000eW-3k
+	for barebox@lists.infradead.org; Tue, 19 Jul 2011 08:40:23 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 19 Jul 2011 10:39:58 +0200
-Message-Id: <1311064803-6305-15-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 19 Jul 2011 10:39:59 +0200
+Message-Id: <1311064803-6305-16-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1311064803-6305-1-git-send-email-s.hauer@pengutronix.de>
 References: <1311064803-6305-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,27 +21,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 14/19] video i.MX ipu: convert to struct resource
+Subject: [PATCH 15/19] i.MX devices: convert to struct resource
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/video/imx-ipu-fb.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+ arch/arm/mach-imx/devices.c |    7 +++++--
+ 1 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/video/imx-ipu-fb.c b/drivers/video/imx-ipu-fb.c
-index d9e1e21..5ae8c4b 100644
---- a/drivers/video/imx-ipu-fb.c
-+++ b/drivers/video/imx-ipu-fb.c
-@@ -858,7 +858,7 @@ static int imxfb_probe(struct device_d *dev)
- 	fbi = xzalloc(sizeof(*fbi));
- 	info = &fbi->info;
+diff --git a/arch/arm/mach-imx/devices.c b/arch/arm/mach-imx/devices.c
+index 0395b0e..6503c30 100644
+--- a/arch/arm/mach-imx/devices.c
++++ b/arch/arm/mach-imx/devices.c
+@@ -9,8 +9,11 @@ static struct device_d *imx_add_device(char *name, int id, void *base, int size,
+ 	dev = xzalloc(sizeof(*dev));
+ 	strcpy(dev->name,name);
+ 	dev->id = id;
+-	dev->map_base = (unsigned long)base;
+-	dev->size = size;
++	dev->resource = xzalloc(sizeof(struct resource));
++	dev->resource[0].start = (resource_size_t)base;
++	dev->resource[0].size = size;
++	dev->resource[0].flags = IORESOURCE_MEM;
++	dev->num_resources = 1;
+ 	dev->platform_data = pdata;
  
--	fbi->regs = (void *)dev->map_base;
-+	fbi->regs = dev_request_mem_region(dev, 0);
- 	fbi->dev = dev;
- 	info->priv = fbi;
- 	info->fbops = &imxfb_ops;
+ 	register_device(dev);
 -- 
 1.7.5.4
 
