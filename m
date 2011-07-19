@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1Qj5qg-0006l9-6g
+	id 1Qj5qg-0006lC-5K
 	for barebox@lists.infradead.org; Tue, 19 Jul 2011 08:40:30 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 19 Jul 2011 10:39:57 +0200
-Message-Id: <1311064803-6305-14-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 19 Jul 2011 10:39:53 +0200
+Message-Id: <1311064803-6305-10-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1311064803-6305-1-git-send-email-s.hauer@pengutronix.de>
 References: <1311064803-6305-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,27 +21,130 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 13/19] spi i.MX: convert to struct resource
+Subject: [PATCH 09/19] i2c i.MX: convert to struct resource
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/spi/imx_spi.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+ drivers/i2c/busses/i2c-imx.c |   28 +++++++++++++++++-----------
+ 1 files changed, 17 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/spi/imx_spi.c b/drivers/spi/imx_spi.c
-index 1857d6c..bbe2789 100644
---- a/drivers/spi/imx_spi.c
-+++ b/drivers/spi/imx_spi.c
-@@ -379,7 +379,7 @@ static int imx_spi_probe(struct device_d *dev)
- 	imx->chipselect = spi_imx_devtype_data[version].chipselect;
- 	imx->xchg_single = spi_imx_devtype_data[version].xchg_single;
- 	imx->init = spi_imx_devtype_data[version].init;
--	imx->regs = (void __iomem *)dev->map_base;
-+	imx->regs = dev_request_mem_region(dev, 0);
+diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+index 93e978e..aaed8c4 100644
+--- a/drivers/i2c/busses/i2c-imx.c
++++ b/drivers/i2c/busses/i2c-imx.c
+@@ -102,6 +102,7 @@ static u16 i2c_clk_div[50][2] = {
+ };
  
- 	imx->init(imx);
+ struct imx_i2c_struct {
++	void __iomem		*base;
+ 	struct i2c_adapter	adapter;
+ 	unsigned int 		disable_delay;
+ 	int			stopped;
+@@ -140,7 +141,8 @@ static inline void i2c_imx_dump_reg(struct i2c_adapter *adapter)
  
+ static int i2c_imx_bus_busy(struct i2c_adapter *adapter, int for_busy)
+ {
+-	unsigned long base = adapter->dev->map_base;
++	struct imx_i2c_struct *i2c_imx = to_imx_i2c_struct(adapter);
++	void __iomem *base = i2c_imx->base;
+ 	uint64_t start;
+ 	unsigned int temp;
+ 
+@@ -164,7 +166,8 @@ static int i2c_imx_bus_busy(struct i2c_adapter *adapter, int for_busy)
+ 
+ static int i2c_imx_trx_complete(struct i2c_adapter *adapter)
+ {
+-	unsigned long base = adapter->dev->map_base;
++	struct imx_i2c_struct *i2c_imx = to_imx_i2c_struct(adapter);
++	void __iomem *base = i2c_imx->base;
+ 	uint64_t start;
+ 
+ 	start = get_time_ns();
+@@ -185,7 +188,8 @@ static int i2c_imx_trx_complete(struct i2c_adapter *adapter)
+ 
+ static int i2c_imx_acked(struct i2c_adapter *adapter)
+ {
+-	unsigned long base = adapter->dev->map_base;
++	struct imx_i2c_struct *i2c_imx = to_imx_i2c_struct(adapter);
++	void __iomem *base = i2c_imx->base;
+ 	uint64_t start;
+ 
+ 	start = get_time_ns();
+@@ -206,7 +210,7 @@ static int i2c_imx_acked(struct i2c_adapter *adapter)
+ static int i2c_imx_start(struct i2c_adapter *adapter)
+ {
+ 	struct imx_i2c_struct *i2c_imx = to_imx_i2c_struct(adapter);
+-	unsigned long base = adapter->dev->map_base;
++	void __iomem *base = i2c_imx->base;
+ 	unsigned int temp = 0;
+ 	int result;
+ 
+@@ -238,7 +242,7 @@ static int i2c_imx_start(struct i2c_adapter *adapter)
+ static void i2c_imx_stop(struct i2c_adapter *adapter)
+ {
+ 	struct imx_i2c_struct *i2c_imx = to_imx_i2c_struct(adapter);
+-	unsigned long base = adapter->dev->map_base;
++	void __iomem *base = i2c_imx->base;
+ 	unsigned int temp = 0;
+ 
+ 	if (!i2c_imx->stopped) {
+@@ -306,7 +310,8 @@ static void i2c_imx_set_clk(struct imx_i2c_struct *i2c_imx,
+ 
+ static int i2c_imx_write(struct i2c_adapter *adapter, struct i2c_msg *msgs)
+ {
+-	unsigned long base = adapter->dev->map_base;
++	struct imx_i2c_struct *i2c_imx = to_imx_i2c_struct(adapter);
++	void __iomem *base = i2c_imx->base;
+ 	int i, result;
+ 
+ 	dev_dbg(adapter->dev,
+@@ -343,7 +348,7 @@ static int i2c_imx_write(struct i2c_adapter *adapter, struct i2c_msg *msgs)
+ static int i2c_imx_read(struct i2c_adapter *adapter, struct i2c_msg *msgs)
+ {
+ 	struct imx_i2c_struct *i2c_imx = to_imx_i2c_struct(adapter);
+-	unsigned long base = adapter->dev->map_base;
++	void __iomem *base = i2c_imx->base;
+ 	int i, result;
+ 	unsigned int temp;
+ 
+@@ -411,7 +416,8 @@ static int i2c_imx_read(struct i2c_adapter *adapter, struct i2c_msg *msgs)
+ static int i2c_imx_xfer(struct i2c_adapter *adapter,
+ 			struct i2c_msg *msgs, int num)
+ {
+-	unsigned long base = adapter->dev->map_base;
++	struct imx_i2c_struct *i2c_imx = to_imx_i2c_struct(adapter);
++	void __iomem *base = i2c_imx->base;
+ 	unsigned int i, temp;
+ 	int result;
+ 
+@@ -453,7 +459,6 @@ static int __init i2c_imx_probe(struct device_d *pdev)
+ {
+ 	struct imx_i2c_struct *i2c_imx;
+ 	struct i2c_platform_data *pdata;
+-	unsigned long base = pdev->map_base;
+ 	int ret;
+ 
+ 	pdata = pdev->platform_data;
+@@ -464,6 +469,7 @@ static int __init i2c_imx_probe(struct device_d *pdev)
+ 	i2c_imx->adapter.master_xfer = i2c_imx_xfer;
+ 	i2c_imx->adapter.nr = pdev->id;
+ 	i2c_imx->adapter.dev = pdev;
++	i2c_imx->base = dev_request_mem_region(pdev, 0);
+ 
+ 	/* Set up clock divider */
+ 	if (pdata && pdata->bitrate)
+@@ -472,8 +478,8 @@ static int __init i2c_imx_probe(struct device_d *pdev)
+ 		i2c_imx_set_clk(i2c_imx, IMX_I2C_BIT_RATE);
+ 
+ 	/* Set up chip registers to defaults */
+-	writeb(0, base + IMX_I2C_I2CR);
+-	writeb(0, base + IMX_I2C_I2SR);
++	writeb(0, i2c_imx->base + IMX_I2C_I2CR);
++	writeb(0, i2c_imx->base + IMX_I2C_I2SR);
+ 
+ 	/* Add I2C adapter */
+ 	ret = i2c_add_numbered_adapter(&i2c_imx->adapter);
 -- 
 1.7.5.4
 
