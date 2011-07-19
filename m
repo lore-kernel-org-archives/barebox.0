@@ -1,17 +1,23 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-iw0-f177.google.com ([209.85.214.177])
-	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QjA7i-0001sl-9U
-	for barebox@lists.infradead.org; Tue, 19 Jul 2011 13:14:12 +0000
-Received: by iwn35 with SMTP id 35so4567635iwn.36
-	for <barebox@lists.infradead.org>; Tue, 19 Jul 2011 06:14:04 -0700 (PDT)
+Received: from 9.mo4.mail-out.ovh.net ([46.105.40.176]
+	helo=mo4.mail-out.ovh.net)
+	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+	id 1QjAGF-00021b-Cf
+	for barebox@lists.infradead.org; Tue, 19 Jul 2011 13:23:05 +0000
+Received: from mail187.ha.ovh.net (b9.ovh.net [213.186.33.59])
+	by mo4.mail-out.ovh.net (Postfix) with SMTP id 848ADFFAC56
+	for <barebox@lists.infradead.org>;
+	Tue, 19 Jul 2011 15:23:23 +0200 (CEST)
+Date: Tue, 19 Jul 2011 15:06:06 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20110719130606.GH5727@game.jcrosoft.org>
+References: <1311064803-6305-1-git-send-email-s.hauer@pengutronix.de>
+	<1311064803-6305-4-git-send-email-s.hauer@pengutronix.de>
+	<20110719101347.GE5727@game.jcrosoft.org>
+	<20110719110002.GO20587@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20110718210440.GK20587@pengutronix.de>
-References: <1310994370-28444-1-git-send-email-antonynpavlov@gmail.com>
-	<20110718210440.GK20587@pengutronix.de>
-Date: Tue, 19 Jul 2011 15:14:03 +0200
-Message-ID: <CAJfOKBzxdZJh7Sguoe=pQqbw=_4ebBpjnF=BgOzwZ6HD9inY2w@mail.gmail.com>
-From: Franck JULLIEN <franck.jullien@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <20110719110002.GO20587@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,88 +26,67 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 1/2] debug_ll.h: add PUTS_LL() function
+Subject: Re: [PATCH 03/19] add a add_mem_device function
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-2011/7/18 Sascha Hauer <s.hauer@pengutronix.de>:
-> On Mon, Jul 18, 2011 at 05:06:09PM +0400, Antony Pavlov wrote:
->> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
->
-> Applied both to next.
->
-> Thanks
-> =A0Sascha
->
->> ---
->> =A0include/debug_ll.h | =A0 13 +++++++++++++
->> =A01 files changed, 13 insertions(+), 0 deletions(-)
->>
->> diff --git a/include/debug_ll.h b/include/debug_ll.h
->> index e99ae7d..6b1b174 100644
->> --- a/include/debug_ll.h
->> +++ b/include/debug_ll.h
->> @@ -35,9 +35,22 @@
->> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0ch =3D ((v >> (i*=
-4)) & 0xf);\
->> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0ch +=3D (ch >=3D =
-10) ? 'a' - 10 : '0';\
->> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0PUTC_LL (ch); }})
->> +
->> +static __inline__ void PUTS_LL(char * str)
->> +{
->> + =A0 =A0 while (*str) {
->> + =A0 =A0 =A0 =A0 =A0 =A0 if (*str =3D=3D '\n') {
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 PUTC_LL('\r');
->> + =A0 =A0 =A0 =A0 =A0 =A0 }
->> + =A0 =A0 =A0 =A0 =A0 =A0 PUTC_LL(*str);
->> + =A0 =A0 =A0 =A0 =A0 =A0 str++;
->> + =A0 =A0 }
->> +}
->> +
->> =A0#else
->> =A0# define PUTC_LL(c) do {} while (0)
->> =A0# define PUTHEX_LL(v) do {} while (0)
->> +# define PUTS_LL(c) do {} while (0)
->>
->> =A0#endif
->>
+On 13:00 Tue 19 Jul     , Sascha Hauer wrote:
+> On Tue, Jul 19, 2011 at 12:13:47PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > On 10:39 Tue 19 Jul     , Sascha Hauer wrote:
+> > > Add a helper function for boards to register their memory
+> > > devices. This makes the board code smaller and also helps
+> > > getting rid of map_base.
+> > > 
+> > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > > ---
+> > >  commands/mem.c   |   25 +++++++++++++++++++++++++
+> > >  include/driver.h |    6 ++++++
+> > >  2 files changed, 31 insertions(+), 0 deletions(-)
+> > > 
+> > > diff --git a/commands/mem.c b/commands/mem.c
+> > > index 8df5f0a..745eec4 100644
+> > > --- a/commands/mem.c
+> > > +++ b/commands/mem.c
+> > > @@ -587,6 +587,31 @@ static struct file_operations memops = {
+> > >  	.lseek = dev_lseek_default,
+> > >  };
+> > >  
+> > > +struct device_d *add_mem_device(const char *name, unsigned long start, size_t size,
+> > > +		unsigned int flags)
+> > > +{
+> > > +	struct device_d *dev;
+> > > +	struct memory_platform_data *pdata;
+> > > +
+> > > +	dev = xzalloc(sizeof(*dev));
+> > > +	strcpy(dev->name, "mem");
+> > > +	dev->id = -1;
+> > > +	dev->resource = xzalloc(sizeof(struct resource));
+> > > +	dev->num_resources = 1;
+> > > +	dev->resource[0].start = start;
+> > > +	dev->resource[0].size = size;
+> > > +	dev->resource[0].flags = IORESOURCE_MEM;
+> > > +	pdata = xzalloc(sizeof(*pdata));
+> > > +	dev->platform_data = pdata;
+> > > +
+> > > +	pdata->flags = flags;
+> > > +	pdata->name = xstrdup(name);
+> > can we drop the name here and use the resource name instead
+> 
+> I think so, yes.
+> 
+> > 
+> > I think we can drop the platfrom_data too
+> 
+> This is still needed for the rw/ro flag (though it seems this is not
+> handled)
+I agree so we need to pass via flags also and maybe extend it
 
-Is there any reason for not using vsprintf in a printf_ll function
-which would use puts_ll / putc_ll ??
-
-Franck.
-
-
->> --
->> 1.7.5.4
->>
->>
->> _______________________________________________
->> barebox mailing list
->> barebox@lists.infradead.org
->> http://lists.infradead.org/mailman/listinfo/barebox
->>
->
-> --
-> Pengutronix e.K. =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 | =
-=A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 |
-> Industrial Linux Solutions =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 | http://www.p=
-engutronix.de/ =A0|
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0 =A0=
- =A0|
-> Amtsgericht Hildesheim, HRA 2686 =A0 =A0 =A0 =A0 =A0 | Fax: =A0 +49-5121-=
-206917-5555 |
->
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
->
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
