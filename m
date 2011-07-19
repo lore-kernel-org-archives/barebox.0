@@ -2,15 +2,15 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 16.mo4.mail-out.ovh.net ([188.165.55.104]
 	helo=mo4.mail-out.ovh.net)
 	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1QjEBa-0005Bb-Dn
+	id 1QjEBa-0005Ba-Dc
 	for barebox@lists.infradead.org; Tue, 19 Jul 2011 17:34:25 +0000
 Received: from mail187.ha.ovh.net (b9.ovh.net [213.186.33.59])
-	by mo4.mail-out.ovh.net (Postfix) with SMTP id C7328FF9844
+	by mo4.mail-out.ovh.net (Postfix) with SMTP id ABB3FFF97FF
 	for <barebox@lists.infradead.org>;
 	Tue, 19 Jul 2011 19:34:50 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Tue, 19 Jul 2011 19:17:24 +0200
-Message-Id: <1311095849-16071-3-git-send-email-plagnioj@jcrosoft.com>
+Date: Tue, 19 Jul 2011 19:17:23 +0200
+Message-Id: <1311095849-16071-2-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1311095849-16071-1-git-send-email-plagnioj@jcrosoft.com>
 References: <1311095849-16071-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
@@ -26,65 +26,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/8] dm9000: switch to dev_request_mem_region
+Subject: [PATCH 2/8] atmel/drivers: switch to dev_request_mem_region
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/boards/mini2440/mini2440.c |    2 ++
- arch/arm/boards/scb9328/scb9328.c   |    2 ++
- drivers/net/dm9000.c                |    4 ++--
- 3 files changed, 6 insertions(+), 2 deletions(-)
+ drivers/mci/atmel_mci.c       |    2 +-
+ drivers/mtd/nand/atmel_nand.c |    2 +-
+ drivers/net/macb.c            |    2 +-
+ drivers/serial/atmel.c        |    2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/boards/mini2440/mini2440.c b/arch/arm/boards/mini2440/mini2440.c
-index 2bdc2ca..2d27b00 100644
---- a/arch/arm/boards/mini2440/mini2440.c
-+++ b/arch/arm/boards/mini2440/mini2440.c
-@@ -71,10 +71,12 @@ static struct resource dm9000_resources[] = {
- 	[0] = {
- 		.start	= CS4_BASE + 0x300,
- 		.size	= 4,
-+		.flags	= IORESOURCE_MEM,
- 	},
- 	[1] = {
- 		.start	= CS4_BASE + 0x304,
- 		.size	= 4,
-+		.flags	= IORESOURCE_MEM,
- 	},
- };
+diff --git a/drivers/mci/atmel_mci.c b/drivers/mci/atmel_mci.c
+index 70041ba..b4489dd 100644
+--- a/drivers/mci/atmel_mci.c
++++ b/drivers/mci/atmel_mci.c
+@@ -456,7 +456,7 @@ static int mci_probe(struct device_d *hw_dev)
+ 	if (pd->bus_width == 8)
+ 		host->mci.host_caps |= MMC_MODE_8BIT;
  
-diff --git a/arch/arm/boards/scb9328/scb9328.c b/arch/arm/boards/scb9328/scb9328.c
-index dc818ce..2fe8236 100644
---- a/arch/arm/boards/scb9328/scb9328.c
-+++ b/arch/arm/boards/scb9328/scb9328.c
-@@ -50,10 +50,12 @@ static struct resource dm9000_resources[] = {
- 	[0] = {
- 		.start	= 0x16000000,
- 		.size	= 4,
-+		.flags	= IORESOURCE_MEM,
- 	},
- 	[1] = {
- 		.start	= 0x16000004,
- 		.size	= 4,
-+		.flags	= IORESOURCE_MEM,
- 	},
- };
+-	host->base = (void __iomem *)hw_dev->resource[0].start;
++	host->base = dev_request_mem_region(hw_dev, 0);
+ 	host->hw_dev = hw_dev;
+ 	hw_dev->priv = host;
+ 	host->clk = clk_get(hw_dev, "mci_clk");
+diff --git a/drivers/mtd/nand/atmel_nand.c b/drivers/mtd/nand/atmel_nand.c
+index 937bb70..f79be9a 100644
+--- a/drivers/mtd/nand/atmel_nand.c
++++ b/drivers/mtd/nand/atmel_nand.c
+@@ -381,7 +381,7 @@ static int __init atmel_nand_probe(struct device_d *dev)
+ 	if (!host)
+ 		return -ENOMEM;
  
-diff --git a/drivers/net/dm9000.c b/drivers/net/dm9000.c
-index 708801d..b867d21 100644
---- a/drivers/net/dm9000.c
-+++ b/drivers/net/dm9000.c
-@@ -501,8 +501,8 @@ static int dm9000_probe(struct device_d *dev)
+-	host->io_base = (void __iomem *)dev->resource[0].start;
++	host->io_base = dev_request_mem_region(dev, 0);
  
- 	priv = edev->priv;
- 	priv->buswidth = pdata->buswidth;
--	priv->iodata = (void __iomem *)dev->resource[1].start;
--	priv->iobase = (void __iomem *)dev->resource[0].start;
-+	priv->iodata = dev_request_mem_region(dev, 1);
-+	priv->iobase = dev_request_mem_region(dev, 0);
- 	priv->srom = pdata->srom;
+ 	mtd = &host->mtd;
+ 	nand_chip = &host->nand_chip;
+diff --git a/drivers/net/macb.c b/drivers/net/macb.c
+index e030154..95ad3d7 100644
+--- a/drivers/net/macb.c
++++ b/drivers/net/macb.c
+@@ -446,7 +446,7 @@ static int macb_probe(struct device_d *dev)
+ 	macb->rx_ring = xmalloc(CFG_MACB_RX_RING_SIZE * sizeof(struct macb_dma_desc));
+ 	macb->tx_ring = xmalloc(sizeof(struct macb_dma_desc));
  
- 	edev->init = dm9000_init_dev;
+-	macb->regs = (void __iomem *)dev->resource[0].start;
++	macb->regs = dev_request_mem_region(dev, 0);
+ 
+ 	/*
+ 	 * Do some basic initialization so that we at least can talk
+diff --git a/drivers/serial/atmel.c b/drivers/serial/atmel.c
+index d8713b3..ff0e75e 100644
+--- a/drivers/serial/atmel.c
++++ b/drivers/serial/atmel.c
+@@ -375,7 +375,7 @@ static int atmel_serial_init_port(struct console_device *cdev)
+ 	struct device_d *dev = cdev->dev;
+ 	struct atmel_uart_port *uart = to_atmel_uart_port(cdev);
+ 
+-	uart->base = (void __iomem *)dev->resource[0].start;
++	uart->base = dev_request_mem_region(dev, 0);
+ 	uart->clk = clk_get(dev, "usart");
+ 	clk_enable(uart->clk);
+ 	uart->uartclk = clk_get_rate(uart->clk);
 -- 
 1.7.5.4
 
