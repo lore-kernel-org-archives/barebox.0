@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 2.mo4.mail-out.ovh.net ([46.105.72.36]
+Received: from 14.mo4.mail-out.ovh.net ([46.105.40.29]
 	helo=mo4.mail-out.ovh.net)
 	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1QjD7X-0003tt-31
+	id 1QjD7X-0003ur-5u
 	for barebox@lists.infradead.org; Tue, 19 Jul 2011 16:26:14 +0000
 Received: from mail187.ha.ovh.net (b9.ovh.net [213.186.33.59])
-	by mo4.mail-out.ovh.net (Postfix) with SMTP id 795ACFFA7A9
+	by mo4.mail-out.ovh.net (Postfix) with SMTP id 02842FFA659
 	for <barebox@lists.infradead.org>;
-	Tue, 19 Jul 2011 18:26:35 +0200 (CEST)
+	Tue, 19 Jul 2011 18:26:37 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Tue, 19 Jul 2011 18:09:01 +0200
-Message-Id: <1311091752-9114-5-git-send-email-plagnioj@jcrosoft.com>
+Date: Tue, 19 Jul 2011 18:09:11 +0200
+Message-Id: <1311091752-9114-15-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <20110719160758.GK5727@game.jcrosoft.org>
 References: <20110719160758.GK5727@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
@@ -26,39 +26,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/16] mem_read/write: use resources
+Subject: [PATCH 15/16] i.MX devices: convert to struct resource
 To: barebox@lists.infradead.org
 
 From: Sascha Hauer <s.hauer@pengutronix.de>
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- fs/fs.c |    5 ++---
- 1 files changed, 2 insertions(+), 3 deletions(-)
+ arch/arm/mach-imx/devices.c |    7 +++++--
+ 1 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/fs/fs.c b/fs/fs.c
-index e71d5a2..bcc6ff4 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -1048,8 +1048,7 @@ ssize_t mem_read(struct cdev *cdev, void *buf, size_t count, ulong offset, ulong
- 	dev = cdev->dev;
+diff --git a/arch/arm/mach-imx/devices.c b/arch/arm/mach-imx/devices.c
+index 0395b0e..6503c30 100644
+--- a/arch/arm/mach-imx/devices.c
++++ b/arch/arm/mach-imx/devices.c
+@@ -9,8 +9,11 @@ static struct device_d *imx_add_device(char *name, int id, void *base, int size,
+ 	dev = xzalloc(sizeof(*dev));
+ 	strcpy(dev->name,name);
+ 	dev->id = id;
+-	dev->map_base = (unsigned long)base;
+-	dev->size = size;
++	dev->resource = xzalloc(sizeof(struct resource));
++	dev->resource[0].start = (resource_size_t)base;
++	dev->resource[0].size = size;
++	dev->resource[0].flags = IORESOURCE_MEM;
++	dev->num_resources = 1;
+ 	dev->platform_data = pdata;
  
- 	size = min((ulong)count, dev->size - offset);
--	debug("mem_read: dev->map_base: %p size: %d offset: %d\n",dev->map_base, size, offset);
--	memcpy_sz(buf, (void *)(dev->map_base + offset), size, flags & O_RWSIZE_MASK);
-+	memcpy_sz(buf, dev_get_mem_region(dev, 0) + offset, size, flags & O_RWSIZE_MASK);
- 	return size;
- }
- EXPORT_SYMBOL(mem_read);
-@@ -1064,7 +1063,7 @@ ssize_t mem_write(struct cdev *cdev, const void *buf, size_t count, ulong offset
- 	dev = cdev->dev;
- 
- 	size = min((ulong)count, dev->size - offset);
--	memcpy_sz((void *)(dev->map_base + offset), buf, size, flags & O_RWSIZE_MASK);
-+	memcpy_sz(dev_get_mem_region(dev, 0) + offset, buf, size, flags & O_RWSIZE_MASK);
- 	return size;
- }
- EXPORT_SYMBOL(mem_write);
+ 	register_device(dev);
 -- 
 1.7.5.4
 
