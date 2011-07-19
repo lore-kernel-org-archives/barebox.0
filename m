@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-fx0-f43.google.com ([209.85.161.43])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QjI0e-0000PC-2r
-	for barebox@lists.infradead.org; Tue, 19 Jul 2011 21:39:25 +0000
-Received: by mail-fx0-f43.google.com with SMTP id 17so555743fxg.16
-	for <barebox@lists.infradead.org>; Tue, 19 Jul 2011 14:39:19 -0700 (PDT)
+	id 1QjI0g-0000S6-M5
+	for barebox@lists.infradead.org; Tue, 19 Jul 2011 21:39:32 +0000
+Received: by fxg17 with SMTP id 17so555901fxg.16
+	for <barebox@lists.infradead.org>; Tue, 19 Jul 2011 14:39:21 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed, 20 Jul 2011 01:39:01 +0400
-Message-Id: <1311111546-888-10-git-send-email-antonynpavlov@gmail.com>
+Date: Wed, 20 Jul 2011 01:39:03 +0400
+Message-Id: <1311111546-888-12-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1311111546-888-1-git-send-email-antonynpavlov@gmail.com>
 References: <1311111546-888-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,82 +23,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v7 10/15] MIPS: add Malta machine support to barebox
+Subject: [PATCH v7 12/15] MIPS: add initial BCM47xx-based boards support
 To: barebox@lists.infradead.org
-
-The machine uses only big-endian mode.
-Only supported peripheral is serial port.
-The machine supports only MIPS32 CPUs.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/Kconfig                            |   22 ++++++++++++++
- arch/mips/Makefile                           |    2 +
- arch/mips/mach-malta/Kconfig                 |   12 ++++++++
- arch/mips/mach-malta/Makefile                |    1 +
- arch/mips/mach-malta/include/mach/debug_ll.h |   40 ++++++++++++++++++++++++++
- arch/mips/mach-malta/include/mach/hardware.h |   32 ++++++++++++++++++++
- arch/mips/mach-malta/reset.c                 |   36 +++++++++++++++++++++++
- 7 files changed, 145 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/mach-malta/Kconfig
- create mode 100644 arch/mips/mach-malta/Makefile
- create mode 100644 arch/mips/mach-malta/include/mach/debug_ll.h
- create mode 100644 arch/mips/mach-malta/include/mach/hardware.h
- create mode 100644 arch/mips/mach-malta/reset.c
+ arch/mips/Kconfig                              |   10 ++++++
+ arch/mips/Makefile                             |    2 +
+ arch/mips/mach-bcm47xx/Kconfig                 |   12 +++++++
+ arch/mips/mach-bcm47xx/Makefile                |    1 +
+ arch/mips/mach-bcm47xx/include/mach/debug_ll.h |   40 ++++++++++++++++++++++++
+ arch/mips/mach-bcm47xx/include/mach/hardware.h |   32 +++++++++++++++++++
+ arch/mips/mach-bcm47xx/reset.c                 |   36 +++++++++++++++++++++
+ 7 files changed, 133 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/mach-bcm47xx/Kconfig
+ create mode 100644 arch/mips/mach-bcm47xx/Makefile
+ create mode 100644 arch/mips/mach-bcm47xx/include/mach/debug_ll.h
+ create mode 100644 arch/mips/mach-bcm47xx/include/mach/hardware.h
+ create mode 100644 arch/mips/mach-bcm47xx/reset.c
 
 diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index b6d2c5e..a84d469 100644
+index a84d469..50d734a 100644
 --- a/arch/mips/Kconfig
 +++ b/arch/mips/Kconfig
-@@ -21,6 +21,28 @@ config GENERIC_LINKER_SCRIPT
- 	bool
- 	default y
+@@ -37,9 +37,19 @@ config MACH_MIPS_MALTA
+ 	select SYS_SUPPORTS_BIG_ENDIAN
+ 	select HAS_DEBUG_LL
  
-+menu "Machine selection"
-+
-+choice
-+	prompt "System type"
-+	default MACH_MIPS_MALTA
-+
-+config MACH_MIPS_MALTA
-+	bool "MIPS Malta"
++config MACH_MIPS_BCM47XX
++	bool "Broadcom BCM47xx-based boards"
 +	select CSRC_R4K_LIB
 +	select DRIVER_SERIAL_NS16550
 +	select SYS_HAS_CPU_MIPS32_R1
-+	select SYS_HAS_CPU_MIPS32_R2
 +	select SYS_SUPPORTS_32BIT_KERNEL
-+	select SYS_SUPPORTS_BIG_ENDIAN
++	select SYS_SUPPORTS_LITTLE_ENDIAN
 +	select HAS_DEBUG_LL
 +
-+endchoice
-+
-+source arch/mips/mach-malta/Kconfig
-+
-+endmenu
-+
- #
- # Endianess selection.  Sufficiently obscure so many users don't know what to
- # answer,so we try hard to limit the available choices.  Also the use of a
+ endchoice
+ 
+ source arch/mips/mach-malta/Kconfig
++source arch/mips/mach-bcm47xx/Kconfig
+ 
+ endmenu
+ 
 diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index ce46233..cd5d364 100644
+index ca6aa56..b3554d2 100644
 --- a/arch/mips/Makefile
 +++ b/arch/mips/Makefile
-@@ -34,6 +34,8 @@ endif
+@@ -37,6 +37,8 @@ LDFLAGS_barebox += -nostdlib
+ machine-$(CONFIG_MACH_MIPS_MALTA)	:= malta
+ board-$(CONFIG_BOARD_QEMU_MALTA)	:= qemu-malta
  
- LDFLAGS_barebox += -nostdlib
- 
-+machine-$(CONFIG_MACH_MIPS_MALTA)	:= malta
++machine-$(CONFIG_MACH_MIPS_BCM47XX)	:= bcm47xx
 +
  machdirs := $(patsubst %,arch/mips/mach-%/,$(machine-y))
  
  ifeq ($(KBUILD_SRC),)
-diff --git a/arch/mips/mach-malta/Kconfig b/arch/mips/mach-malta/Kconfig
+diff --git a/arch/mips/mach-bcm47xx/Kconfig b/arch/mips/mach-bcm47xx/Kconfig
 new file mode 100644
-index 0000000..6076a13
+index 0000000..5143a15
 --- /dev/null
-+++ b/arch/mips/mach-malta/Kconfig
++++ b/arch/mips/mach-bcm47xx/Kconfig
 @@ -0,0 +1,12 @@
-+if MACH_MIPS_MALTA
++if MACH_MIPS_BCM47XX
 +
 +config ARCH_TEXT_BASE
 +	hex
@@ -110,18 +97,18 @@ index 0000000..6076a13
 +endchoice
 +
 +endif
-diff --git a/arch/mips/mach-malta/Makefile b/arch/mips/mach-malta/Makefile
+diff --git a/arch/mips/mach-bcm47xx/Makefile b/arch/mips/mach-bcm47xx/Makefile
 new file mode 100644
 index 0000000..f3cc668
 --- /dev/null
-+++ b/arch/mips/mach-malta/Makefile
++++ b/arch/mips/mach-bcm47xx/Makefile
 @@ -0,0 +1 @@
 +obj-y += reset.o
-diff --git a/arch/mips/mach-malta/include/mach/debug_ll.h b/arch/mips/mach-malta/include/mach/debug_ll.h
+diff --git a/arch/mips/mach-bcm47xx/include/mach/debug_ll.h b/arch/mips/mach-bcm47xx/include/mach/debug_ll.h
 new file mode 100644
 index 0000000..32d13c1
 --- /dev/null
-+++ b/arch/mips/mach-malta/include/mach/debug_ll.h
++++ b/arch/mips/mach-bcm47xx/include/mach/debug_ll.h
 @@ -0,0 +1,40 @@
 +/*
 + * Copyright (C) 2011 Antony Pavlov <antonynpavlov@gmail.com>
@@ -163,11 +150,11 @@ index 0000000..32d13c1
 +}
 +
 +#endif  /* __INCLUDE_ARCH_DEBUG_LL_H__ */
-diff --git a/arch/mips/mach-malta/include/mach/hardware.h b/arch/mips/mach-malta/include/mach/hardware.h
+diff --git a/arch/mips/mach-bcm47xx/include/mach/hardware.h b/arch/mips/mach-bcm47xx/include/mach/hardware.h
 new file mode 100644
-index 0000000..f827cc3
+index 0000000..703e7f7
 --- /dev/null
-+++ b/arch/mips/mach-malta/include/mach/hardware.h
++++ b/arch/mips/mach-bcm47xx/include/mach/hardware.h
 @@ -0,0 +1,32 @@
 +/*
 + * Copyright (C) 2011 Antony Pavlov <antonynpavlov@gmail.com>
@@ -192,7 +179,7 @@ index 0000000..f827cc3
 +#ifndef __INCLUDE_ARCH_HARDWARE_H__
 +#define   __INCLUDE_ARCH_HARDWARE_H__
 +
-+#define DEBUG_LL_UART_ADDR	0xb00003f8
++#define DEBUG_LL_UART_ADDR	0xb8000300
 +
 +/*
 + * Reset register.
@@ -201,11 +188,11 @@ index 0000000..f827cc3
 +#define GORESET		0x42
 +
 +#endif  /* __INCLUDE_ARCH_HARDWARE_H__ */
-diff --git a/arch/mips/mach-malta/reset.c b/arch/mips/mach-malta/reset.c
+diff --git a/arch/mips/mach-bcm47xx/reset.c b/arch/mips/mach-bcm47xx/reset.c
 new file mode 100644
 index 0000000..2818e7c
 --- /dev/null
-+++ b/arch/mips/mach-malta/reset.c
++++ b/arch/mips/mach-bcm47xx/reset.c
 @@ -0,0 +1,36 @@
 +/*
 + * Copyright (C) 2011 Antony Pavlov <antonynpavlov@gmail.com>
