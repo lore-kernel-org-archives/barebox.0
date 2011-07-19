@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1Qj5qg-0006lC-5K
-	for barebox@lists.infradead.org; Tue, 19 Jul 2011 08:40:30 +0000
+	id 1Qj5qg-0006lB-6n
+	for barebox@lists.infradead.org; Tue, 19 Jul 2011 08:40:33 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 19 Jul 2011 10:39:53 +0200
-Message-Id: <1311064803-6305-10-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 19 Jul 2011 10:40:01 +0200
+Message-Id: <1311064803-6305-18-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1311064803-6305-1-git-send-email-s.hauer@pengutronix.de>
 References: <1311064803-6305-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,130 +21,87 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/19] i2c i.MX: convert to struct resource
+Subject: [PATCH 17/19] ARM pcm038: use add_mem_device helper
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/i2c/busses/i2c-imx.c |   28 +++++++++++++++++-----------
- 1 files changed, 17 insertions(+), 11 deletions(-)
+ arch/arm/boards/pcm038/pcm038.c |   34 +++++-----------------------------
+ 1 files changed, 5 insertions(+), 29 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
-index 93e978e..aaed8c4 100644
---- a/drivers/i2c/busses/i2c-imx.c
-+++ b/drivers/i2c/busses/i2c-imx.c
-@@ -102,6 +102,7 @@ static u16 i2c_clk_div[50][2] = {
+diff --git a/arch/arm/boards/pcm038/pcm038.c b/arch/arm/boards/pcm038/pcm038.c
+index 3ca6650..6cb96f1 100644
+--- a/arch/arm/boards/pcm038/pcm038.c
++++ b/arch/arm/boards/pcm038/pcm038.c
+@@ -34,6 +34,7 @@
+ #include <fcntl.h>
+ #include <nand.h>
+ #include <command.h>
++#include <sizes.h>
+ #include <spi/spi.h>
+ #include <asm/io.h>
+ #include <mach/imx-nand.h>
+@@ -54,32 +55,6 @@ static struct device_d cfi_dev = {
+ 	.size     = 32 * 1024 * 1024,
  };
  
- struct imx_i2c_struct {
-+	void __iomem		*base;
- 	struct i2c_adapter	adapter;
- 	unsigned int 		disable_delay;
- 	int			stopped;
-@@ -140,7 +141,8 @@ static inline void i2c_imx_dump_reg(struct i2c_adapter *adapter)
- 
- static int i2c_imx_bus_busy(struct i2c_adapter *adapter, int for_busy)
+-static struct memory_platform_data ram_pdata = {
+-	.name = "ram0",
+-	.flags = DEVFS_RDWR,
+-};
+-
+-static struct device_d sdram_dev = {
+-	.id	  = -1,
+-	.name     = "mem",
+-	.map_base = 0xa0000000,
+-	.size     = 128 * 1024 * 1024,
+-	.platform_data = &ram_pdata,
+-};
+-
+-static struct memory_platform_data sram_pdata = {
+-	.name = "sram0",
+-	.flags = DEVFS_RDWR,
+-};
+-
+-static struct device_d sram_dev = {
+-	.id	  = -1,
+-	.name     = "mem",
+-	.map_base = 0xc8000000,
+-	.size     = 512 * 1024, /* Can be up to 2MiB */
+-	.platform_data = &sram_pdata,
+-};
+-
+ static struct fec_platform_data fec_info = {
+ 	.xcv_type = MII100,
+ 	.phy_addr = 1,
+@@ -191,6 +166,7 @@ static int pcm038_devices_init(void)
  {
--	unsigned long base = adapter->dev->map_base;
-+	struct imx_i2c_struct *i2c_imx = to_imx_i2c_struct(adapter);
-+	void __iomem *base = i2c_imx->base;
- 	uint64_t start;
- 	unsigned int temp;
+ 	int i;
+ 	char *envdev;
++	struct device_d *sdramdev;
  
-@@ -164,7 +166,8 @@ static int i2c_imx_bus_busy(struct i2c_adapter *adapter, int for_busy)
+ 	unsigned int mode[] = {
+ 		PD0_AIN_FEC_TXD0,
+@@ -294,8 +270,8 @@ static int pcm038_devices_init(void)
  
- static int i2c_imx_trx_complete(struct i2c_adapter *adapter)
- {
--	unsigned long base = adapter->dev->map_base;
-+	struct imx_i2c_struct *i2c_imx = to_imx_i2c_struct(adapter);
-+	void __iomem *base = i2c_imx->base;
- 	uint64_t start;
+ 	register_device(&cfi_dev);
+ 	imx27_add_nand(&nand_info);
+-	register_device(&sdram_dev);
+-	register_device(&sram_dev);
++	sdramdev = add_mem_device("ram0", 0xa0000000, SZ_128M, DEVFS_RDWR);
++	add_mem_device("sram0", 0xc8000000, SZ_512K, DEVFS_RDWR);
+ 	imx27_add_fb(&pcm038_fb_data);
  
- 	start = get_time_ns();
-@@ -185,7 +188,8 @@ static int i2c_imx_trx_complete(struct i2c_adapter *adapter)
+ #ifdef CONFIG_USB
+@@ -330,7 +306,7 @@ static int pcm038_devices_init(void)
  
- static int i2c_imx_acked(struct i2c_adapter *adapter)
- {
--	unsigned long base = adapter->dev->map_base;
-+	struct imx_i2c_struct *i2c_imx = to_imx_i2c_struct(adapter);
-+	void __iomem *base = i2c_imx->base;
- 	uint64_t start;
+ 	printf("Using environment in %s Flash\n", envdev);
  
- 	start = get_time_ns();
-@@ -206,7 +210,7 @@ static int i2c_imx_acked(struct i2c_adapter *adapter)
- static int i2c_imx_start(struct i2c_adapter *adapter)
- {
- 	struct imx_i2c_struct *i2c_imx = to_imx_i2c_struct(adapter);
--	unsigned long base = adapter->dev->map_base;
-+	void __iomem *base = i2c_imx->base;
- 	unsigned int temp = 0;
- 	int result;
+-	armlinux_add_dram(&sdram_dev);
++	armlinux_add_dram(sdramdev);
+ 	armlinux_set_bootparams((void *)0xa0000100);
+ 	armlinux_set_architecture(MACH_TYPE_PCM038);
  
-@@ -238,7 +242,7 @@ static int i2c_imx_start(struct i2c_adapter *adapter)
- static void i2c_imx_stop(struct i2c_adapter *adapter)
- {
- 	struct imx_i2c_struct *i2c_imx = to_imx_i2c_struct(adapter);
--	unsigned long base = adapter->dev->map_base;
-+	void __iomem *base = i2c_imx->base;
- 	unsigned int temp = 0;
- 
- 	if (!i2c_imx->stopped) {
-@@ -306,7 +310,8 @@ static void i2c_imx_set_clk(struct imx_i2c_struct *i2c_imx,
- 
- static int i2c_imx_write(struct i2c_adapter *adapter, struct i2c_msg *msgs)
- {
--	unsigned long base = adapter->dev->map_base;
-+	struct imx_i2c_struct *i2c_imx = to_imx_i2c_struct(adapter);
-+	void __iomem *base = i2c_imx->base;
- 	int i, result;
- 
- 	dev_dbg(adapter->dev,
-@@ -343,7 +348,7 @@ static int i2c_imx_write(struct i2c_adapter *adapter, struct i2c_msg *msgs)
- static int i2c_imx_read(struct i2c_adapter *adapter, struct i2c_msg *msgs)
- {
- 	struct imx_i2c_struct *i2c_imx = to_imx_i2c_struct(adapter);
--	unsigned long base = adapter->dev->map_base;
-+	void __iomem *base = i2c_imx->base;
- 	int i, result;
- 	unsigned int temp;
- 
-@@ -411,7 +416,8 @@ static int i2c_imx_read(struct i2c_adapter *adapter, struct i2c_msg *msgs)
- static int i2c_imx_xfer(struct i2c_adapter *adapter,
- 			struct i2c_msg *msgs, int num)
- {
--	unsigned long base = adapter->dev->map_base;
-+	struct imx_i2c_struct *i2c_imx = to_imx_i2c_struct(adapter);
-+	void __iomem *base = i2c_imx->base;
- 	unsigned int i, temp;
- 	int result;
- 
-@@ -453,7 +459,6 @@ static int __init i2c_imx_probe(struct device_d *pdev)
- {
- 	struct imx_i2c_struct *i2c_imx;
- 	struct i2c_platform_data *pdata;
--	unsigned long base = pdev->map_base;
- 	int ret;
- 
- 	pdata = pdev->platform_data;
-@@ -464,6 +469,7 @@ static int __init i2c_imx_probe(struct device_d *pdev)
- 	i2c_imx->adapter.master_xfer = i2c_imx_xfer;
- 	i2c_imx->adapter.nr = pdev->id;
- 	i2c_imx->adapter.dev = pdev;
-+	i2c_imx->base = dev_request_mem_region(pdev, 0);
- 
- 	/* Set up clock divider */
- 	if (pdata && pdata->bitrate)
-@@ -472,8 +478,8 @@ static int __init i2c_imx_probe(struct device_d *pdev)
- 		i2c_imx_set_clk(i2c_imx, IMX_I2C_BIT_RATE);
- 
- 	/* Set up chip registers to defaults */
--	writeb(0, base + IMX_I2C_I2CR);
--	writeb(0, base + IMX_I2C_I2SR);
-+	writeb(0, i2c_imx->base + IMX_I2C_I2CR);
-+	writeb(0, i2c_imx->base + IMX_I2C_I2SR);
- 
- 	/* Add I2C adapter */
- 	ret = i2c_add_numbered_adapter(&i2c_imx->adapter);
 -- 
 1.7.5.4
 
