@@ -1,23 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 9.mo4.mail-out.ovh.net ([46.105.40.176]
-	helo=mo4.mail-out.ovh.net)
-	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1QjAGF-00021b-Cf
-	for barebox@lists.infradead.org; Tue, 19 Jul 2011 13:23:05 +0000
-Received: from mail187.ha.ovh.net (b9.ovh.net [213.186.33.59])
-	by mo4.mail-out.ovh.net (Postfix) with SMTP id 848ADFFAC56
-	for <barebox@lists.infradead.org>;
-	Tue, 19 Jul 2011 15:23:23 +0200 (CEST)
-Date: Tue, 19 Jul 2011 15:06:06 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20110719130606.GH5727@game.jcrosoft.org>
-References: <1311064803-6305-1-git-send-email-s.hauer@pengutronix.de>
-	<1311064803-6305-4-git-send-email-s.hauer@pengutronix.de>
-	<20110719101347.GE5727@game.jcrosoft.org>
-	<20110719110002.GO20587@pengutronix.de>
+Received: from mail-ww0-f49.google.com ([74.125.82.49])
+	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+	id 1QjAXD-0002CB-Gx
+	for barebox@lists.infradead.org; Tue, 19 Jul 2011 13:40:32 +0000
+Received: by wwf22 with SMTP id 22so3032820wwf.18
+	for <barebox@lists.infradead.org>; Tue, 19 Jul 2011 06:40:23 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20110719110002.GO20587@pengutronix.de>
+In-Reply-To: <1310813132-4151-1-git-send-email-plagnioj@jcrosoft.com>
+References: <1310813132-4151-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Tue, 19 Jul 2011 17:40:22 +0400
+Message-ID: <CAA4bVAHUF+VuSPgr1EBt1uCP+r5AnHvsw19-cJ1UNWwHKxNfWw@mail.gmail.com>
+From: Antony Pavlov <antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -30,63 +23,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 03/19] add a add_mem_device function
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/7] device: introduce resource structure to simplify
+	resource declaration
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org, Patrice Vilchez <patrice.vilchez@atmel.com>, Nicolas Ferre <nicolas.ferre@atmel.com>
 
-On 13:00 Tue 19 Jul     , Sascha Hauer wrote:
-> On Tue, Jul 19, 2011 at 12:13:47PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > On 10:39 Tue 19 Jul     , Sascha Hauer wrote:
-> > > Add a helper function for boards to register their memory
-> > > devices. This makes the board code smaller and also helps
-> > > getting rid of map_base.
-> > > 
-> > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > > ---
-> > >  commands/mem.c   |   25 +++++++++++++++++++++++++
-> > >  include/driver.h |    6 ++++++
-> > >  2 files changed, 31 insertions(+), 0 deletions(-)
-> > > 
-> > > diff --git a/commands/mem.c b/commands/mem.c
-> > > index 8df5f0a..745eec4 100644
-> > > --- a/commands/mem.c
-> > > +++ b/commands/mem.c
-> > > @@ -587,6 +587,31 @@ static struct file_operations memops = {
-> > >  	.lseek = dev_lseek_default,
-> > >  };
-> > >  
-> > > +struct device_d *add_mem_device(const char *name, unsigned long start, size_t size,
-> > > +		unsigned int flags)
-> > > +{
-> > > +	struct device_d *dev;
-> > > +	struct memory_platform_data *pdata;
-> > > +
-> > > +	dev = xzalloc(sizeof(*dev));
-> > > +	strcpy(dev->name, "mem");
-> > > +	dev->id = -1;
-> > > +	dev->resource = xzalloc(sizeof(struct resource));
-> > > +	dev->num_resources = 1;
-> > > +	dev->resource[0].start = start;
-> > > +	dev->resource[0].size = size;
-> > > +	dev->resource[0].flags = IORESOURCE_MEM;
-> > > +	pdata = xzalloc(sizeof(*pdata));
-> > > +	dev->platform_data = pdata;
-> > > +
-> > > +	pdata->flags = flags;
-> > > +	pdata->name = xstrdup(name);
-> > can we drop the name here and use the resource name instead
-> 
-> I think so, yes.
-> 
-> > 
-> > I think we can drop the platfrom_data too
-> 
-> This is still needed for the rw/ro flag (though it seems this is not
-> handled)
-I agree so we need to pass via flags also and maybe extend it
+On 16/07/2011, Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> wrote:
+> and add multi resource per device support
+>
+> for now we keep the old map_base and size temporary but will switch all of
+> the used step by step to them resource way
+>
+> and mirror the first resource to the map_base and size if available
+>
 
-Best Regards,
-J.
+> +++ b/include/linux/ioport.h
+...
+> +struct resource {
+> +	resource_size_t start;
+> +	resource_size_t size;
+> +	const char *name;
+> +	unsigned long flags;
+> +};
+
+In linux-2.6.39/include/linux/ioport.h:
+
+struct resource {
+        resource_size_t start;
+        resource_size_t end;
+        const char *name;
+        unsigned long flags;
+        struct resource *parent, *sibling, *child;
+};
+
+So there is incompatability: barebox has 'size' field, but linux  has
+'end' field instead.
+
+Can you comment this, please?
+
+-- 
+Best regards,
+  Antony Pavlov
 
 _______________________________________________
 barebox mailing list
