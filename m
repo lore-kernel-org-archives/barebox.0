@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 14.mo4.mail-out.ovh.net ([46.105.40.29]
+Received: from 3.mo4.mail-out.ovh.net ([46.105.57.129]
 	helo=mo4.mail-out.ovh.net)
 	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1QjD7X-0003tv-5q
-	for barebox@lists.infradead.org; Tue, 19 Jul 2011 16:26:18 +0000
+	id 1QjD7X-0003v4-Mk
+	for barebox@lists.infradead.org; Tue, 19 Jul 2011 16:26:19 +0000
 Received: from mail187.ha.ovh.net (b9.ovh.net [213.186.33.59])
-	by mo4.mail-out.ovh.net (Postfix) with SMTP id 6AE0AFFA7A0
+	by mo4.mail-out.ovh.net (Postfix) with SMTP id 8F370FFA6E3
 	for <barebox@lists.infradead.org>;
-	Tue, 19 Jul 2011 18:26:35 +0200 (CEST)
+	Tue, 19 Jul 2011 18:26:37 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Tue, 19 Jul 2011 18:09:05 +0200
-Message-Id: <1311091752-9114-9-git-send-email-plagnioj@jcrosoft.com>
+Date: Tue, 19 Jul 2011 18:09:12 +0200
+Message-Id: <1311091752-9114-16-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <20110719160758.GK5727@game.jcrosoft.org>
 References: <20110719160758.GK5727@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
@@ -26,132 +26,113 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/16] i2c i.MX: convert to struct resource
+Subject: [PATCH 16/16] cfi: convert to struct resource
 To: barebox@lists.infradead.org
 
 From: Sascha Hauer <s.hauer@pengutronix.de>
 
+This is the non invasive approach. All this type casting
+shows this driver should be really cleaned up (or retired)
+
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/i2c/busses/i2c-imx.c |   28 +++++++++++++++++-----------
- 1 files changed, 17 insertions(+), 11 deletions(-)
+ drivers/nor/cfi_flash.c |   36 +++++++++++++++++-------------------
+ 1 files changed, 17 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
-index 93e978e..aaed8c4 100644
---- a/drivers/i2c/busses/i2c-imx.c
-+++ b/drivers/i2c/busses/i2c-imx.c
-@@ -102,6 +102,7 @@ static u16 i2c_clk_div[50][2] = {
- };
- 
- struct imx_i2c_struct {
-+	void __iomem		*base;
- 	struct i2c_adapter	adapter;
- 	unsigned int 		disable_delay;
- 	int			stopped;
-@@ -140,7 +141,8 @@ static inline void i2c_imx_dump_reg(struct i2c_adapter *adapter)
- 
- static int i2c_imx_bus_busy(struct i2c_adapter *adapter, int for_busy)
+diff --git a/drivers/nor/cfi_flash.c b/drivers/nor/cfi_flash.c
+index 39c2bf1..c995962 100644
+--- a/drivers/nor/cfi_flash.c
++++ b/drivers/nor/cfi_flash.c
+@@ -283,7 +283,7 @@ static int flash_detect_cfi (struct flash_info *info, struct cfi_qry *qry)
+ /*
+  * The following code cannot be run from FLASH!
+  */
+-static ulong flash_get_size (struct flash_info *info, ulong base)
++static ulong flash_get_size (struct flash_info *info)
  {
--	unsigned long base = adapter->dev->map_base;
-+	struct imx_i2c_struct *i2c_imx = to_imx_i2c_struct(adapter);
-+	void __iomem *base = i2c_imx->base;
- 	uint64_t start;
- 	unsigned int temp;
+ 	int i, j;
+ 	flash_sect_t sect_cnt;
+@@ -295,6 +295,7 @@ static ulong flash_get_size (struct flash_info *info, ulong base)
+ 	int erase_region_count;
+ 	int cur_offset = 0;
+ 	struct cfi_qry qry;
++	unsigned long base = (unsigned long)info->base;
  
-@@ -164,7 +166,8 @@ static int i2c_imx_bus_busy(struct i2c_adapter *adapter, int for_busy)
+ 	memset(&qry, 0, sizeof(qry));
  
- static int i2c_imx_trx_complete(struct i2c_adapter *adapter)
- {
--	unsigned long base = adapter->dev->map_base;
-+	struct imx_i2c_struct *i2c_imx = to_imx_i2c_struct(adapter);
-+	void __iomem *base = i2c_imx->base;
- 	uint64_t start;
+@@ -464,8 +465,9 @@ static int __cfi_erase(struct cdev *cdev, size_t count, unsigned long offset,
  
- 	start = get_time_ns();
-@@ -185,7 +188,8 @@ static int i2c_imx_trx_complete(struct i2c_adapter *adapter)
+ 	debug("%s: erase 0x%08lx (size %d)\n", __func__, offset, count);
  
- static int i2c_imx_acked(struct i2c_adapter *adapter)
- {
--	unsigned long base = adapter->dev->map_base;
-+	struct imx_i2c_struct *i2c_imx = to_imx_i2c_struct(adapter);
-+	void __iomem *base = i2c_imx->base;
- 	uint64_t start;
+-        start = find_sector(finfo, cdev->dev->map_base + offset);
+-        end   = find_sector(finfo, cdev->dev->map_base + offset + count - 1);
++        start = find_sector(finfo, (unsigned long)finfo->base + offset);
++        end   = find_sector(finfo, (unsigned long)finfo->base + offset +
++			count - 1);
  
- 	start = get_time_ns();
-@@ -206,7 +210,7 @@ static int i2c_imx_acked(struct i2c_adapter *adapter)
- static int i2c_imx_start(struct i2c_adapter *adapter)
- {
- 	struct imx_i2c_struct *i2c_imx = to_imx_i2c_struct(adapter);
--	unsigned long base = adapter->dev->map_base;
-+	void __iomem *base = i2c_imx->base;
- 	unsigned int temp = 0;
- 	int result;
+ 	if (verbose)
+ 		init_progression_bar(end - start);
+@@ -633,11 +635,11 @@ static int cfi_protect(struct cdev *cdev, size_t count, unsigned long offset, in
+ 	int i, ret = 0;
+ 	const char *action = (prot? "protect" : "unprotect");
  
-@@ -238,7 +242,7 @@ static int i2c_imx_start(struct i2c_adapter *adapter)
- static void i2c_imx_stop(struct i2c_adapter *adapter)
- {
- 	struct imx_i2c_struct *i2c_imx = to_imx_i2c_struct(adapter);
--	unsigned long base = adapter->dev->map_base;
-+	void __iomem *base = i2c_imx->base;
- 	unsigned int temp = 0;
+-	printf("%s: %s 0x%08lx (size %d)\n", __FUNCTION__,
+-	       action, cdev->dev->map_base + offset, count);
++	printf("%s: %s 0x%p (size %d)\n", __func__,
++	       action, finfo->base + offset, count);
  
- 	if (!i2c_imx->stopped) {
-@@ -306,7 +310,8 @@ static void i2c_imx_set_clk(struct imx_i2c_struct *i2c_imx,
+-	start = find_sector(finfo, cdev->dev->map_base + offset);
+-	end   = find_sector(finfo, cdev->dev->map_base + offset + count - 1);
++	start = find_sector(finfo, (unsigned long)finfo->base + offset);
++	end   = find_sector(finfo, (unsigned long)finfo->base + offset + count - 1);
  
- static int i2c_imx_write(struct i2c_adapter *adapter, struct i2c_msg *msgs)
- {
--	unsigned long base = adapter->dev->map_base;
-+	struct imx_i2c_struct *i2c_imx = to_imx_i2c_struct(adapter);
-+	void __iomem *base = i2c_imx->base;
- 	int i, result;
+ 	for (i = start; i <= end; i++) {
+ 		ret = flash_real_protect (finfo, i, prot);
+@@ -654,10 +656,10 @@ static ssize_t cfi_write(struct cdev *cdev, const void *buf, size_t count, unsig
+         struct flash_info *finfo = (struct flash_info *)cdev->priv;
+         int ret;
  
- 	dev_dbg(adapter->dev,
-@@ -343,7 +348,7 @@ static int i2c_imx_write(struct i2c_adapter *adapter, struct i2c_msg *msgs)
- static int i2c_imx_read(struct i2c_adapter *adapter, struct i2c_msg *msgs)
- {
- 	struct imx_i2c_struct *i2c_imx = to_imx_i2c_struct(adapter);
--	unsigned long base = adapter->dev->map_base;
-+	void __iomem *base = i2c_imx->base;
- 	int i, result;
- 	unsigned int temp;
+-	debug("cfi_write: buf=0x%p addr=0x%08lx count=0x%08x\n",buf, cdev->dev->map_base + offset, count);
++	debug("cfi_write: buf=0x%p addr=0x%08lx count=0x%08x\n",buf, finfo->base + offset, count);
  
-@@ -411,7 +416,8 @@ static int i2c_imx_read(struct i2c_adapter *adapter, struct i2c_msg *msgs)
- static int i2c_imx_xfer(struct i2c_adapter *adapter,
- 			struct i2c_msg *msgs, int num)
- {
--	unsigned long base = adapter->dev->map_base;
-+	struct imx_i2c_struct *i2c_imx = to_imx_i2c_struct(adapter);
-+	void __iomem *base = i2c_imx->base;
- 	unsigned int i, temp;
- 	int result;
+-        ret = write_buff (finfo, buf, cdev->dev->map_base + offset, count);
+-        return ret == 0 ? count : -1;
++	ret = write_buff(finfo, buf, (unsigned long)finfo->base + offset, count);
++	return ret == 0 ? count : -1;
+ }
  
-@@ -453,7 +459,6 @@ static int __init i2c_imx_probe(struct device_d *pdev)
- {
- 	struct imx_i2c_struct *i2c_imx;
- 	struct i2c_platform_data *pdata;
--	unsigned long base = pdev->map_base;
- 	int ret;
+ static void cfi_info (struct device_d* dev)
+@@ -978,18 +980,11 @@ static int cfi_probe (struct device_d *dev)
  
- 	pdata = pdev->platform_data;
-@@ -464,6 +469,7 @@ static int __init i2c_imx_probe(struct device_d *pdev)
- 	i2c_imx->adapter.master_xfer = i2c_imx_xfer;
- 	i2c_imx->adapter.nr = pdev->id;
- 	i2c_imx->adapter.dev = pdev;
-+	i2c_imx->base = dev_request_mem_region(pdev, 0);
+ 	dev->priv = (void *)info;
  
- 	/* Set up clock divider */
- 	if (pdata && pdata->bitrate)
-@@ -472,8 +478,8 @@ static int __init i2c_imx_probe(struct device_d *pdev)
- 		i2c_imx_set_clk(i2c_imx, IMX_I2C_BIT_RATE);
+-	printf("cfi_probe: %s base: 0x%08x size: 0x%08x\n", dev->name, dev->map_base, dev->size);
+-
+ 	/* Init: no FLASHes known */
+ 	info->flash_id = FLASH_UNKNOWN;
+ 	info->cmd_reset = FLASH_CMD_RESET;
+-	info->size = flash_get_size(info, dev->map_base);
+-	info->base = (void __iomem *)dev->map_base;
+-
+-	if (dev->size == 0) {
+-		printf("cfi_probe: size : 0x%08lx\n", info->size);
+-		dev->size = info->size;
+-	}
++	info->base = dev_request_mem_region(dev, 0);
++	info->size = flash_get_size(info);
  
- 	/* Set up chip registers to defaults */
--	writeb(0, base + IMX_I2C_I2CR);
--	writeb(0, base + IMX_I2C_I2SR);
-+	writeb(0, i2c_imx->base + IMX_I2C_I2CR);
-+	writeb(0, i2c_imx->base + IMX_I2C_I2SR);
+ 	if (info->flash_id == FLASH_UNKNOWN) {
+ 		printf ("## Unknown FLASH on Bank at 0x%08x - Size = 0x%08lx = %ld MB\n",
+@@ -997,6 +992,9 @@ static int cfi_probe (struct device_d *dev)
+ 		return -ENODEV;
+ 	}
  
- 	/* Add I2C adapter */
- 	ret = i2c_add_numbered_adapter(&i2c_imx->adapter);
++	dev_info(dev, "found cfi flash at %p, size %ld\n",
++			info->base, info->size);
++
+ 	info->cdev.name = asprintf("nor%d", dev->id);
+ 	info->cdev.size = info->size;
+ 	info->cdev.dev = dev;
 -- 
 1.7.5.4
 
