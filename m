@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QjQde-00065w-0K
-	for barebox@lists.infradead.org; Wed, 20 Jul 2011 06:52:15 +0000
-Date: Wed, 20 Jul 2011 08:51:59 +0200
+	id 1QjQpk-00069J-QZ
+	for barebox@lists.infradead.org; Wed, 20 Jul 2011 07:04:43 +0000
+Date: Wed, 20 Jul 2011 09:04:36 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110720065159.GQ20587@pengutronix.de>
-References: <1310994370-28444-1-git-send-email-antonynpavlov@gmail.com>
-	<20110718210440.GK20587@pengutronix.de>
-	<CAJfOKBzxdZJh7Sguoe=pQqbw=_4ebBpjnF=BgOzwZ6HD9inY2w@mail.gmail.com>
+Message-ID: <20110720070436.GR20587@pengutronix.de>
+References: <CAM9uW_57ecdoGWdV9pqNjBfkCo5xS-R1zkY910_yvBLKHEYzxQ@mail.gmail.com>
+	<20110712135443.GW6069@pengutronix.de>
+	<20110712135816.GY6069@pengutronix.de>
+	<CAM9uW_6-dGAXi0vKp8Ghg5gXhQ_0ORy2x3mDOTK4-T8LOmMELg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAJfOKBzxdZJh7Sguoe=pQqbw=_4ebBpjnF=BgOzwZ6HD9inY2w@mail.gmail.com>
+In-Reply-To: <CAM9uW_6-dGAXi0vKp8Ghg5gXhQ_0ORy2x3mDOTK4-T8LOmMELg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,72 +21,104 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 1/2] debug_ll.h: add PUTS_LL() function
-To: Franck JULLIEN <franck.jullien@gmail.com>
+Subject: Re: FEC Not working with imx27 based board
+To: Kamel BOUHARA <k.bouhara@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jul 19, 2011 at 03:14:03PM +0200, Franck JULLIEN wrote:
-> 2011/7/18 Sascha Hauer <s.hauer@pengutronix.de>:
-> > On Mon, Jul 18, 2011 at 05:06:09PM +0400, Antony Pavlov wrote:
-> >> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> >
-> > Applied both to next.
-> >
-> > Thanks
-> > =A0Sascha
-> >
-> >> ---
-> >> =A0include/debug_ll.h | =A0 13 +++++++++++++
-> >> =A01 files changed, 13 insertions(+), 0 deletions(-)
-> >>
-> >> diff --git a/include/debug_ll.h b/include/debug_ll.h
-> >> index e99ae7d..6b1b174 100644
-> >> --- a/include/debug_ll.h
-> >> +++ b/include/debug_ll.h
-> >> @@ -35,9 +35,22 @@
-> >> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0ch =3D ((v >> (=
-i*4)) & 0xf);\
-> >> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0ch +=3D (ch >=
-=3D 10) ? 'a' - 10 : '0';\
-> >> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0PUTC_LL (ch); }=
-})
-> >> +
-> >> +static __inline__ void PUTS_LL(char * str)
-> >> +{
-> >> + =A0 =A0 while (*str) {
-> >> + =A0 =A0 =A0 =A0 =A0 =A0 if (*str =3D=3D '\n') {
-> >> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 PUTC_LL('\r');
-> >> + =A0 =A0 =A0 =A0 =A0 =A0 }
-> >> + =A0 =A0 =A0 =A0 =A0 =A0 PUTC_LL(*str);
-> >> + =A0 =A0 =A0 =A0 =A0 =A0 str++;
-> >> + =A0 =A0 }
-> >> +}
-> >> +
-> >> =A0#else
-> >> =A0# define PUTC_LL(c) do {} while (0)
-> >> =A0# define PUTHEX_LL(v) do {} while (0)
-> >> +# define PUTS_LL(c) do {} while (0)
-> >>
-> >> =A0#endif
-> >>
-> =
+On Tue, Jul 19, 2011 at 06:33:26PM +0200, Kamel BOUHARA wrote:
+> Yes I've set the correct adress and it's why I don't have fffff like on the
+> phytec.
+> But in fact I had to change the fec_get_hwadrr() to make it work with my
+> board :
+> 
+> static int fec_get_hwaddr(struct eth_device *dev, unsigned char *mac)
+> 
+> {
+> 
+>  int i;
+> 
+>  int uninitialized = 0;
+> 
+> 
+> >  for (i=0;i<6;i++) {
+> 
+>  mac[6-1-i] = readl(&IIM_BANK_REG(0,(IIM0_MAC+i)));
+> 
+>  }
+> 
+> 
+> >  /* uninitialized if all 00 */
+> 
+>  if ((mac[0] == 0) && (mac[1] == 0) && (mac[2] == 0) &&
+> 
+>             (mac[3] == 0) && (mac[4] == 0) && (mac[5] == 0))
+> 
+>                 uninitialized = 1;
+> 
+> 
+> >  /* uninitialized if all FF (could be safe) */
+> 
+>         if ((mac[0] == 0xff) && (mac[1] == 0xff) && (mac[2] == 0xff) &&
+> 
+>      (mac[3] == 0xff) && (mac[4] == 0xff) && (mac[5] == 0xff))
+> 
+>          uninitialized = 1;
+> 
+> 
+> >  return uninitialized;
+> 
+> }
 
-> Is there any reason for not using vsprintf in a printf_ll function
-> which would use puts_ll / putc_ll ??
+Please generate proper diffs. I can't really read this.
 
-You would at least need a writable string buffer. I'd rather like to
-keep the ll functions as simple as possible. Otherwise you end up
-debugging the debug functions while hunting some lowlevel problem.
+> 
+> 
+> Before this change it wasn't the case, I had no mac adress in barebox
+> start...
+
+fec_get_hwaddr error value in which case the core will generate a random
+mac address. Looking at the code the driver seems to do this wihtout
+changes.
+
+> I also added a specific reset :
+> 
+> void fec_reset()
+> {
+>         int i=0;
+>     /*  FEC RESET */
+>     imx_gpio_mode(CFG_ETHPHY_RST | GPIO_OUT | GPIO_PUEN | GPIO_GPIO);
+>     printf("Before PHY reset\n");
+>     GPIO_CLEAR(CFG_ETHPHY_RST);
+>     udelay(200);
+>     GPIO_SET(CFG_ETHPHY_RST);
+>     printf("After PHY reset\n");
+> 
+> }
+> 
+> And then I call it in the fec_probe() to ensure the fec is reset properly
+> before settings.
+> I already tested the fec on u-boot and it works fine, so i tought it can
+> help me with barebox but it seems there are some differences between codes.
+> 
+> For now Im trying to see if it can be a cpu frequence problem because I have
+> an errata on the pll that shifts all my frequencies and so I have to adjust
+> them in the lowlevelinit...
+> 
+> So I would like to know if the clock initialization is taking effect if I
+> boot from RAM ? Do I have t boot from flash ?
+
+the pll setup code is in your board, so it's in your hands.
+
+Some PLL settings are safer to run from Flash or internal RAM instead of
+SDRAM.
 
 Sascha
 
-
--- =
-
+-- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
