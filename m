@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QjojJ-00010Q-HM
-	for barebox@lists.infradead.org; Thu, 21 Jul 2011 08:35:42 +0000
+	id 1QkDjg-0003Wy-Tm
+	for barebox@lists.infradead.org; Fri, 22 Jul 2011 11:17:41 +0000
+Received: from gallifrey.ext.pengutronix.de
+	([2001:6f8:1178:4:5054:ff:fe8d:eefb] helo=localhost)
+	by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+	(envelope-from <jbe@pengutronix.de>) id 1QkDjc-0006dO-O0
+	for barebox@lists.infradead.org; Fri, 22 Jul 2011 13:17:36 +0200
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Thu, 21 Jul 2011 10:34:27 +0200
-References: <CAA4bVAGTD7BQxa-wh=i8iiZX33aQOR3g1O5o7_G6XQkYCgShnw@mail.gmail.com>
-	<20110721031224.GL15388@game.jcrosoft.org>
-	<20110721062818.GU20587@pengutronix.de>
-In-Reply-To: <20110721062818.GU20587@pengutronix.de>
+Date: Fri, 22 Jul 2011 13:16:35 +0200
 MIME-Version: 1.0
 Content-Disposition: inline
-Message-Id: <201107211034.27574.jbe@pengutronix.de>
+Message-Id: <201107221316.35943.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,55 +25,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: serial_ns16550 driver question
+Subject: DHCP and NFSroot/TFTP
 To: barebox@lists.infradead.org
 
-Sascha Hauer wrote:
-> On Thu, Jul 21, 2011 at 05:12:24AM +0200, Jean-Christophe PLAGNIOL-VILLARD 
-wrote:
-> > On 22:31 Wed 20 Jul     , Sascha Hauer wrote:
-> > > On Wed, Jul 20, 2011 at 11:51:04PM +0400, Antony Pavlov wrote:
-> > > > Hi!
-> > > >
-> > > > In include/ns16550.h we have:
-> > > >
-> > > > struct NS16550_plat {
-> > > >         unsigned int clock;
-> > > >         unsigned char f_caps;
-> > > >         /**
-> > > >          * register read access capability
-> > > >          */
-> > > >         unsigned int (*reg_read) (unsigned long base, unsigned char
-> > > > reg_offset); /**
-> > > >          * register write access capability
-> > > >          */
-> > > >         void (*reg_write) (unsigned int val, unsigned long base,
-> > > >                                     unsigned char reg_offset);
-> > > > };
-> > > >
-> > > > Why reg_read and reg_write's argument base has type unsigned long?
-> > > > IMHO pointer type (void * or char *)  is more natural.
-> > >
-> > > You're right, I also wondered about this recently when looking at a
-> > > patch on the list. I would also rather see void __iomem *. The problem
-> > > is that this driver is also used on X86 which uses inb/outb which take
-> > > an integer argument.
-> > > The Linux driver works around this by having a membase and a iobase
-> > > field along with different register accessors. While being cleaner
-> > > I'm unsure if we want to go this way.
-> >
-> > we can do it via resoure and the flasgs IORESOURCE_MEM_8BIT,
-> > IORESOURCE_MEM_168BITi etc..
->
-> Yes, but this does not solve the problem with different accessor
-> functions (and their argument type).
+Hi,
 
-Why not adapt the x86 inb/outb function to the same arguments types than other 
-archs are using for their memory mapped access? We are in Barebox, not in the 
-kernel. I think we can do so, without damaging something in our _small_ x86 
-Barebox world.
+for the case someone uses DHCP for her/his network configuration in Barebox,
+there is a race with the setup of some variables used for the NFS root.
 
-jbe
+The following patch fixes it, but maybe there are better solutions than that.
+
+------------------------------------------------------------------------------
+
+Setting up NFS root/TFTP related variables is successfull only if the network
+interface is already configured. For the case someone is using DHCP, this
+fails, because all these vars are still empty. Changing the order when the
+DHCP is done solves the issue.
+
+Signed off by: Juergen Beisert <jbe@pengutronix.de>
+
+---
+ defaultenv/bin/boot |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+Index: barebox-2011.05.0/defaultenv/bin/boot
+===================================================================
+--- barebox-2011.05.0.orig/defaultenv/bin/boot
++++ barebox-2011.05.0/defaultenv/bin/boot
+@@ -18,6 +18,9 @@ fi
+ 
+ if [ x$ip = xdhcp ]; then
+ 	bootargs="$bootargs ip=dhcp"
++	if [ x$kernel_loc = xnfs ] || [ x$kernel_loc = xtftp ]; then
++		dhcp
++	fi
+ elif [ x$ip = xnone ]; then
+ 	bootargs="$bootargs ip=none"
+ else
+@@ -75,9 +78,6 @@ if [ ! -e /dev/ram0.kernel ]; then
+ fi
+ 
+ if [ x$kernel_loc = xnfs ] || [ x$kernel_loc = xtftp ]; then
+-	if [ x$ip = xdhcp ]; then
+-		dhcp
+-	fi
+ 	if [ $kernelimage_type = uimage ]; then
+ 		netload="/dev/ram0.kernel"
+ 	elif [ $kernelimage_type = zimage ]; then
+
+Juergen
 
 -- 
 Pengutronix e.K.                              | Juergen Beisert             |
