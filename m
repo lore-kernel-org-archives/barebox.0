@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 19.mo3.mail-out.ovh.net ([178.32.98.231]
+Received: from 12.mo3.mail-out.ovh.net ([188.165.41.191]
 	helo=mo3.mail-out.ovh.net)
 	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1Ql0GA-0002v1-Tr
-	for barebox@lists.infradead.org; Sun, 24 Jul 2011 15:06:28 +0000
+	id 1Ql0GB-0002v2-P4
+	for barebox@lists.infradead.org; Sun, 24 Jul 2011 15:06:30 +0000
 Received: from mail191.ha.ovh.net (b9.ovh.net [213.186.33.59])
-	by mo3.mail-out.ovh.net (Postfix) with SMTP id A970EFFA2F8
+	by mo3.mail-out.ovh.net (Postfix) with SMTP id 3E604FFA2F3
 	for <barebox@lists.infradead.org>;
 	Sun, 24 Jul 2011 17:07:13 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sun, 24 Jul 2011 16:49:02 +0200
-Message-Id: <1311518949-6990-5-git-send-email-plagnioj@jcrosoft.com>
+Date: Sun, 24 Jul 2011 16:48:59 +0200
+Message-Id: <1311518949-6990-2-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <20110724144441.GA10295@game.jcrosoft.org>
 References: <20110724144441.GA10295@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
@@ -26,45 +26,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/12 v2] imx/devices: switch to add_generic_device
+Subject: [PATCH 02/12] drivers: move resource generic management to
+	driver/base/resource.c
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/mach-imx/devices.c |   19 +++----------------
- 1 files changed, 3 insertions(+), 16 deletions(-)
+ common/Makefile                         |    1 -
+ drivers/base/Makefile                   |    1 +
+ common/mem.c => drivers/base/resource.c |    0
+ 3 files changed, 1 insertions(+), 1 deletions(-)
+ rename common/mem.c => drivers/base/resource.c (100%)
 
-diff --git a/arch/arm/mach-imx/devices.c b/arch/arm/mach-imx/devices.c
-index 6503c30..5b062f5 100644
---- a/arch/arm/mach-imx/devices.c
-+++ b/arch/arm/mach-imx/devices.c
-@@ -2,23 +2,10 @@
- #include <driver.h>
- #include <mach/devices.h>
+diff --git a/common/Makefile b/common/Makefile
+index 27aebae..9fed2ae 100644
+--- a/common/Makefile
++++ b/common/Makefile
+@@ -9,7 +9,6 @@ obj-$(CONFIG_POLLER)		+= poller.o
+ obj-$(CONFIG_BLOCK)		+= block.o
  
--static struct device_d *imx_add_device(char *name, int id, void *base, int size, void *pdata)
-+static inline struct device_d *imx_add_device(char *name, int id, void *base, int size, void *pdata)
- {
--	struct device_d *dev;
--
--	dev = xzalloc(sizeof(*dev));
--	strcpy(dev->name,name);
--	dev->id = id;
--	dev->resource = xzalloc(sizeof(struct resource));
--	dev->resource[0].start = (resource_size_t)base;
--	dev->resource[0].size = size;
--	dev->resource[0].flags = IORESOURCE_MEM;
--	dev->num_resources = 1;
--	dev->platform_data = pdata;
--
--	register_device(dev);
--
--	return 0;
-+	return add_generic_device(name, id, NULL, (resource_size_t)base, size,
-+				  IORESOURCE_MEM, pdata);
- }
- 
- struct device_d *imx_add_fec(void *base, struct fec_platform_data *pdata)
+ obj-y += memory.o
+-obj-y += mem.o
+ obj-$(CONFIG_MALLOC_DLMALLOC) += dlmalloc.o
+ obj-$(CONFIG_MALLOC_DUMMY) += dummy_malloc.o
+ obj-y += clock.o
+diff --git a/drivers/base/Makefile b/drivers/base/Makefile
+index 2d94723..957ca5a 100644
+--- a/drivers/base/Makefile
++++ b/drivers/base/Makefile
+@@ -1,2 +1,3 @@
+ obj-y	+= driver.o
+ obj-y	+= platform.o
++obj-y	+= resource.o
+diff --git a/common/mem.c b/drivers/base/resource.c
+similarity index 100%
+rename from common/mem.c
+rename to drivers/base/resource.c
 -- 
 1.7.5.4
 
