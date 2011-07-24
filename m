@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-fx0-f43.google.com ([209.85.161.43])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1Ql4G0-000508-5z
-	for barebox@lists.infradead.org; Sun, 24 Jul 2011 19:22:35 +0000
-Received: by fxg17 with SMTP id 17so6336895fxg.16
-	for <barebox@lists.infradead.org>; Sun, 24 Jul 2011 12:22:30 -0700 (PDT)
+	id 1Ql4G0-0004yr-FM
+	for barebox@lists.infradead.org; Sun, 24 Jul 2011 19:22:36 +0000
+Received: by mail-fx0-f43.google.com with SMTP id 17so6336780fxg.16
+	for <barebox@lists.infradead.org>; Sun, 24 Jul 2011 12:22:32 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sun, 24 Jul 2011 23:22:13 +0400
-Message-Id: <1311535336-4534-5-git-send-email-antonynpavlov@gmail.com>
+Date: Sun, 24 Jul 2011 23:22:14 +0400
+Message-Id: <1311535336-4534-6-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1311535336-4534-1-git-send-email-antonynpavlov@gmail.com>
 References: <1311535336-4534-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,89 +23,93 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/10] MIPS: add qemu malta board support to barebox
+Subject: [PATCH 07/10] MIPS: add initial BCM47xx-based boards support
 To: barebox@lists.infradead.org
-
-The only supported peripheral is ns16550 serial port.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/Makefile                     |    1 +
- arch/mips/boards/qemu-malta/Kconfig    |    6 ++++
- arch/mips/boards/qemu-malta/Makefile   |    1 +
- arch/mips/boards/qemu-malta/config.h   |   19 +++++++++++
- arch/mips/boards/qemu-malta/serial.c   |   52 ++++++++++++++++++++++++++++++++
- arch/mips/configs/qemu-malta_defconfig |   45 +++++++++++++++++++++++++++
- arch/mips/mach-malta/Kconfig           |    5 +++
- 7 files changed, 129 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/boards/qemu-malta/Kconfig
- create mode 100644 arch/mips/boards/qemu-malta/Makefile
- create mode 100644 arch/mips/boards/qemu-malta/config.h
- create mode 100644 arch/mips/boards/qemu-malta/serial.c
- create mode 100644 arch/mips/configs/qemu-malta_defconfig
+ arch/mips/Kconfig                              |   10 ++++++
+ arch/mips/Makefile                             |    2 +
+ arch/mips/mach-bcm47xx/Kconfig                 |   12 +++++++
+ arch/mips/mach-bcm47xx/Makefile                |    1 +
+ arch/mips/mach-bcm47xx/include/mach/debug_ll.h |   40 ++++++++++++++++++++++++
+ arch/mips/mach-bcm47xx/include/mach/hardware.h |   32 +++++++++++++++++++
+ arch/mips/mach-bcm47xx/reset.c                 |   36 +++++++++++++++++++++
+ 7 files changed, 133 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/mach-bcm47xx/Kconfig
+ create mode 100644 arch/mips/mach-bcm47xx/Makefile
+ create mode 100644 arch/mips/mach-bcm47xx/include/mach/debug_ll.h
+ create mode 100644 arch/mips/mach-bcm47xx/include/mach/hardware.h
+ create mode 100644 arch/mips/mach-bcm47xx/reset.c
 
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index a84d469..50d734a 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -37,9 +37,19 @@ config MACH_MIPS_MALTA
+ 	select SYS_SUPPORTS_BIG_ENDIAN
+ 	select HAS_DEBUG_LL
+ 
++config MACH_MIPS_BCM47XX
++	bool "Broadcom BCM47xx-based boards"
++	select CSRC_R4K_LIB
++	select DRIVER_SERIAL_NS16550
++	select SYS_HAS_CPU_MIPS32_R1
++	select SYS_SUPPORTS_32BIT_KERNEL
++	select SYS_SUPPORTS_LITTLE_ENDIAN
++	select HAS_DEBUG_LL
++
+ endchoice
+ 
+ source arch/mips/mach-malta/Kconfig
++source arch/mips/mach-bcm47xx/Kconfig
+ 
+ endmenu
+ 
 diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index cd5d364..ca6aa56 100644
+index ca6aa56..b3554d2 100644
 --- a/arch/mips/Makefile
 +++ b/arch/mips/Makefile
-@@ -35,6 +35,7 @@ endif
- LDFLAGS_barebox += -nostdlib
- 
+@@ -37,6 +37,8 @@ LDFLAGS_barebox += -nostdlib
  machine-$(CONFIG_MACH_MIPS_MALTA)	:= malta
-+board-$(CONFIG_BOARD_QEMU_MALTA)	:= qemu-malta
+ board-$(CONFIG_BOARD_QEMU_MALTA)	:= qemu-malta
  
++machine-$(CONFIG_MACH_MIPS_BCM47XX)	:= bcm47xx
++
  machdirs := $(patsubst %,arch/mips/mach-%/,$(machine-y))
  
-diff --git a/arch/mips/boards/qemu-malta/Kconfig b/arch/mips/boards/qemu-malta/Kconfig
+ ifeq ($(KBUILD_SRC),)
+diff --git a/arch/mips/mach-bcm47xx/Kconfig b/arch/mips/mach-bcm47xx/Kconfig
 new file mode 100644
-index 0000000..6d86c14
+index 0000000..5143a15
 --- /dev/null
-+++ b/arch/mips/boards/qemu-malta/Kconfig
-@@ -0,0 +1,6 @@
-+if BOARD_QEMU_MALTA
++++ b/arch/mips/mach-bcm47xx/Kconfig
+@@ -0,0 +1,12 @@
++if MACH_MIPS_BCM47XX
 +
-+config BOARDINFO
-+	default "qemu malta"
++config ARCH_TEXT_BASE
++	hex
++	default 0xa0800000
++
++choice
++	prompt "Board type"
++
++endchoice
 +
 +endif
-diff --git a/arch/mips/boards/qemu-malta/Makefile b/arch/mips/boards/qemu-malta/Makefile
+diff --git a/arch/mips/mach-bcm47xx/Makefile b/arch/mips/mach-bcm47xx/Makefile
 new file mode 100644
-index 0000000..ff1a655
+index 0000000..f3cc668
 --- /dev/null
-+++ b/arch/mips/boards/qemu-malta/Makefile
++++ b/arch/mips/mach-bcm47xx/Makefile
 @@ -0,0 +1 @@
-+obj-$(CONFIG_DRIVER_SERIAL_NS16550) += serial.o
-diff --git a/arch/mips/boards/qemu-malta/config.h b/arch/mips/boards/qemu-malta/config.h
++obj-y += reset.o
+diff --git a/arch/mips/mach-bcm47xx/include/mach/debug_ll.h b/arch/mips/mach-bcm47xx/include/mach/debug_ll.h
 new file mode 100644
-index 0000000..eb4ab08
+index 0000000..32d13c1
 --- /dev/null
-+++ b/arch/mips/boards/qemu-malta/config.h
-@@ -0,0 +1,19 @@
-+/*
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-+ * MA 02111-1307 USA
-+ *
-+ */
-+
-+/* nothing special yet */
-diff --git a/arch/mips/boards/qemu-malta/serial.c b/arch/mips/boards/qemu-malta/serial.c
-new file mode 100644
-index 0000000..57a74fa
---- /dev/null
-+++ b/arch/mips/boards/qemu-malta/serial.c
-@@ -0,0 +1,52 @@
++++ b/arch/mips/mach-bcm47xx/include/mach/debug_ll.h
+@@ -0,0 +1,40 @@
 +/*
 + * Copyright (C) 2011 Antony Pavlov <antonynpavlov@gmail.com>
 + *
@@ -126,105 +130,106 @@ index 0000000..57a74fa
 + * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 + */
 +
-+#include <common.h>
-+#include <types.h>
-+#include <driver.h>
-+#include <init.h>
-+#include <ns16550.h>
-+#include <mach/hardware.h>
++/** @file
++ *  This File contains declaration for early output support
++ */
++#ifndef __INCLUDE_ARCH_DEBUG_LL_H__
++#define   __INCLUDE_ARCH_DEBUG_LL_H__
++
 +#include <asm/io.h>
-+#include <asm/common.h>
++#include <mach/hardware.h>
 +
-+NS16550_READ_WRITE_UART_FUNC(malta, 0, 0)
++#define rbr		0
++#define lsr		5
++#define LSR_THRE	0x20	/* Xmit holding register empty */
 +
-+static struct NS16550_plat serial_plat = {
-+	.clock = 1843200, /* no matter */
-+	.f_caps = CONSOLE_STDIN | CONSOLE_STDOUT | CONSOLE_STDERR,
-+	.reg_read = malta_uart_read,
-+	.reg_write = malta_uart_write,
-+};
-+
-+/* we are expecting always one serial interface */
-+static struct device_d generic_malta_serial_device = {
-+	.name = "serial_ns16550",
-+	.map_base = DEBUG_LL_UART_ADDR,
-+	.size = 8,
-+	.platform_data = (void *)&serial_plat,
-+};
-+
-+static int malta_console_init(void)
++static __inline__ void putc(char ch)
 +{
-+	/* Register the serial port */
-+	return register_device(&generic_malta_serial_device);
++	while (!(__raw_readb(DEBUG_LL_UART_ADDR + lsr) & LSR_THRE));
++	__raw_writeb(ch, DEBUG_LL_UART_ADDR + rbr);
 +}
-+console_initcall(malta_console_init);
-diff --git a/arch/mips/configs/qemu-malta_defconfig b/arch/mips/configs/qemu-malta_defconfig
++
++#endif  /* __INCLUDE_ARCH_DEBUG_LL_H__ */
+diff --git a/arch/mips/mach-bcm47xx/include/mach/hardware.h b/arch/mips/mach-bcm47xx/include/mach/hardware.h
 new file mode 100644
-index 0000000..9be8662
+index 0000000..703e7f7
 --- /dev/null
-+++ b/arch/mips/configs/qemu-malta_defconfig
-@@ -0,0 +1,45 @@
-+CONFIG_STACK_SIZE=0x7000
-+CONFIG_BROKEN=y
-+CONFIG_EXPERIMENTAL=y
-+CONFIG_LONGHELP=y
-+CONFIG_HUSH_FANCY_PROMPT=y
-+CONFIG_HUSH_GETOPT=y
-+CONFIG_CMDLINE_EDITING=y
-+CONFIG_AUTO_COMPLETE=y
-+CONFIG_MENU=y
-+CONFIG_PASSWORD=y
-+CONFIG_PARTITION=y
-+# CONFIG_DEFAULT_ENVIRONMENT is not set
-+CONFIG_POLLER=y
-+CONFIG_DEBUG_INFO=y
-+CONFIG_CMD_EDIT=y
-+CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_SAVEENV=y
-+CONFIG_CMD_LOADENV=y
-+CONFIG_CMD_EXPORT=y
-+CONFIG_CMD_PRINTENV=y
-+CONFIG_CMD_READLINE=y
-+CONFIG_CMD_MENU=y
-+CONFIG_CMD_MENU_MANAGEMENT=y
-+CONFIG_CMD_ECHO_E=y
-+CONFIG_CMD_LOADB=y
-+CONFIG_CMD_MEMINFO=y
-+CONFIG_CMD_CRC=y
-+CONFIG_CMD_CRC_CMP=y
-+CONFIG_CMD_MD5SUM=y
-+CONFIG_CMD_SHA1SUM=y
-+CONFIG_CMD_SHA256SUM=y
-+CONFIG_CMD_MTEST=y
-+CONFIG_CMD_FLASH=y
-+CONFIG_CMD_RESET=y
-+CONFIG_CMD_GO=y
-+CONFIG_CMD_TIMEOUT=y
-+CONFIG_CMD_PARTITION=y
-+CONFIG_NET=y
-+CONFIG_NET_DHCP=y
-+CONFIG_NET_PING=y
-+CONFIG_NET_TFTP=y
-+CONFIG_NET_NETCONSOLE=y
-+# CONFIG_SPI is not set
-+CONFIG_MTD=y
-+CONFIG_FS_CRAMFS=y
-diff --git a/arch/mips/mach-malta/Kconfig b/arch/mips/mach-malta/Kconfig
-index 6076a13..8e0666c 100644
---- a/arch/mips/mach-malta/Kconfig
-+++ b/arch/mips/mach-malta/Kconfig
-@@ -7,6 +7,11 @@ config ARCH_TEXT_BASE
- choice
- 	prompt "Board type"
- 
-+config BOARD_QEMU_MALTA
-+	bool "qemu malta"
++++ b/arch/mips/mach-bcm47xx/include/mach/hardware.h
+@@ -0,0 +1,32 @@
++/*
++ * Copyright (C) 2011 Antony Pavlov <antonynpavlov@gmail.com>
++ *
++ * This file is part of barebox.
++ * See file CREDITS for list of people who contributed to this project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ */
 +
- endchoice
- 
-+source arch/mips/boards/qemu-malta/Kconfig
++#ifndef __INCLUDE_ARCH_HARDWARE_H__
++#define   __INCLUDE_ARCH_HARDWARE_H__
 +
- endif
++#define DEBUG_LL_UART_ADDR	0xb8000300
++
++/*
++ * Reset register.
++ */
++#define SOFTRES_REG	0xbf000500
++#define GORESET		0x42
++
++#endif  /* __INCLUDE_ARCH_HARDWARE_H__ */
+diff --git a/arch/mips/mach-bcm47xx/reset.c b/arch/mips/mach-bcm47xx/reset.c
+new file mode 100644
+index 0000000..2818e7c
+--- /dev/null
++++ b/arch/mips/mach-bcm47xx/reset.c
+@@ -0,0 +1,36 @@
++/*
++ * Copyright (C) 2011 Antony Pavlov <antonynpavlov@gmail.com>
++ *
++ * This file is part of barebox.
++ * See file CREDITS for list of people who contributed to this project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ */
++
++/**
++ * @file
++ * @brief Resetting an malta board
++ */
++
++#include <common.h>
++#include <asm/io.h>
++#include <mach/hardware.h>
++
++void __noreturn reset_cpu(ulong addr)
++{
++	__raw_writel(GORESET, (char *)SOFTRES_REG);
++	while (1);
++	/*NOTREACHED*/
++}
++EXPORT_SYMBOL(reset_cpu);
 -- 
 1.7.5.4
 
