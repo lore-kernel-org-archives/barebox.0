@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-fx0-f43.google.com ([209.85.161.43])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1Ql449-0004vd-Gg
-	for barebox@lists.infradead.org; Sun, 24 Jul 2011 19:10:18 +0000
-Received: by fxg17 with SMTP id 17so6328863fxg.16
-	for <barebox@lists.infradead.org>; Sun, 24 Jul 2011 12:10:14 -0700 (PDT)
+	id 1Ql4Fr-0004yr-Vp
+	for barebox@lists.infradead.org; Sun, 24 Jul 2011 19:22:25 +0000
+Received: by fxg17 with SMTP id 17so6336780fxg.16
+	for <barebox@lists.infradead.org>; Sun, 24 Jul 2011 12:22:20 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sun, 24 Jul 2011 23:09:53 +0400
-Message-Id: <1311534602-4415-1-git-send-email-antonynpavlov@gmail.com>
+Date: Sun, 24 Jul 2011 23:22:09 +0400
+Message-Id: <1311535336-4534-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,194 +21,159 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/10] MIPS: initial commit: add empty but required header
-	files
+Subject: [PATCH 02/10] MIPS: import libgcc-related files from linux-2.6.39
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/include/asm/barebox.h |   24 ++++++++++++++++++++++++
- arch/mips/include/asm/bitops.h  |   32 ++++++++++++++++++++++++++++++++
- arch/mips/include/asm/common.h  |   29 +++++++++++++++++++++++++++++
- arch/mips/include/asm/module.h  |   24 ++++++++++++++++++++++++
- arch/mips/include/asm/string.h  |   31 +++++++++++++++++++++++++++++++
- 5 files changed, 140 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/include/asm/barebox.h
- create mode 100644 arch/mips/include/asm/bitops.h
- create mode 100644 arch/mips/include/asm/common.h
- create mode 100644 arch/mips/include/asm/module.h
- create mode 100644 arch/mips/include/asm/string.h
+ arch/mips/lib/ashldi3.c |   29 +++++++++++++++++++++++++++++
+ arch/mips/lib/ashrdi3.c |   31 +++++++++++++++++++++++++++++++
+ arch/mips/lib/libgcc.h  |   25 +++++++++++++++++++++++++
+ arch/mips/lib/lshrdi3.c |   29 +++++++++++++++++++++++++++++
+ 4 files changed, 114 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/lib/ashldi3.c
+ create mode 100644 arch/mips/lib/ashrdi3.c
+ create mode 100644 arch/mips/lib/libgcc.h
+ create mode 100644 arch/mips/lib/lshrdi3.c
 
-diff --git a/arch/mips/include/asm/barebox.h b/arch/mips/include/asm/barebox.h
+diff --git a/arch/mips/lib/ashldi3.c b/arch/mips/lib/ashldi3.c
 new file mode 100644
-index 0000000..b42c9ff
+index 0000000..1626891
 --- /dev/null
-+++ b/arch/mips/include/asm/barebox.h
-@@ -0,0 +1,24 @@
-+/*
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-+ * MA 02111-1307 USA
-+ *
-+ */
-+
-+#ifndef _ASM_MIPS_BAREBOX_H_
-+#define _ASM_MIPS_BAREBOX_H_
-+
-+/* nothing special yet */
-+
-+#endif /* _ASM_MIPS_BAREBOX_H_ */
-diff --git a/arch/mips/include/asm/bitops.h b/arch/mips/include/asm/bitops.h
-new file mode 100644
-index 0000000..36d34b6
---- /dev/null
-+++ b/arch/mips/include/asm/bitops.h
-@@ -0,0 +1,32 @@
-+/*
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-+ * MA 02111-1307 USA
-+ *
-+ */
-+
-+/**
-+ * @file
-+ * @brief mips bit operations
-+ *
-+ * This file is required only to make all sources happy including
-+ * 'linux/bitops.h'
-+ */
-+
-+#ifndef _ASM_MIPS_BITOPS_H_
-+#define _ASM_MIPS_BITOPS_H_
-+
-+/* nothing special yet */
-+
-+#endif /* _ASM_MIPS_BITOPS_H_ */
-diff --git a/arch/mips/include/asm/common.h b/arch/mips/include/asm/common.h
-new file mode 100644
-index 0000000..e37b6c5
---- /dev/null
-+++ b/arch/mips/include/asm/common.h
++++ b/arch/mips/lib/ashldi3.c
 @@ -0,0 +1,29 @@
-+/*
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-+ * MA 02111-1307 USA
-+ *
-+ */
++#include <module.h>
 +
-+/**
-+ * @file
-+ * @brief mips common declarations
-+ */
++#include "libgcc.h"
 +
-+#ifndef _ASM_MIPS_COMMON_H_
-+#define _ASM_MIPS_COMMON_H_
++long long __ashldi3(long long u, word_type b)
++{
++	DWunion uu, w;
++	word_type bm;
 +
-+/* nothing special yet */
++	if (b == 0)
++		return u;
 +
-+#endif /* _ASM_MIPS_COMMON_H_ */
-diff --git a/arch/mips/include/asm/module.h b/arch/mips/include/asm/module.h
++	uu.ll = u;
++	bm = 32 - b;
++
++	if (bm <= 0) {
++		w.s.low = 0;
++		w.s.high = (unsigned int) uu.s.low << -bm;
++	} else {
++		const unsigned int carries = (unsigned int) uu.s.low >> bm;
++
++		w.s.low = (unsigned int) uu.s.low << b;
++		w.s.high = ((unsigned int) uu.s.high << b) | carries;
++	}
++
++	return w.ll;
++}
++
++EXPORT_SYMBOL(__ashldi3);
+diff --git a/arch/mips/lib/ashrdi3.c b/arch/mips/lib/ashrdi3.c
 new file mode 100644
-index 0000000..3046220
+index 0000000..28f5074
 --- /dev/null
-+++ b/arch/mips/include/asm/module.h
-@@ -0,0 +1,24 @@
-+/*
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-+ * MA 02111-1307 USA
-+ *
-+ */
-+
-+#ifndef _ASM_MIPS_MODULE_H_
-+#define _ASM_MIPS_MODULE_H_
-+
-+/* nothing special yet */
-+
-+#endif /* _ASM_MIPS_MODULE_H_ */
-diff --git a/arch/mips/include/asm/string.h b/arch/mips/include/asm/string.h
-new file mode 100644
-index 0000000..9e334a2
---- /dev/null
-+++ b/arch/mips/include/asm/string.h
++++ b/arch/mips/lib/ashrdi3.c
 @@ -0,0 +1,31 @@
-+/*
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-+ * MA 02111-1307 USA
-+ *
-+ */
++#include <module.h>
 +
-+/**
-+ * @file
-+ * @brief mips specific string optimizations
-+ *
-+ * Thanks to the Linux kernel here we can add many micro optimized string
-+ * functions. But currently it makes no sense, to do so.
-+ */
-+#ifndef __ASM_MIPS_STRING_H
-+#define __ASM_MIPS_STRING_H
++#include "libgcc.h"
 +
-+/* nothing special yet */
++long long __ashrdi3(long long u, word_type b)
++{
++	DWunion uu, w;
++	word_type bm;
 +
++	if (b == 0)
++		return u;
++
++	uu.ll = u;
++	bm = 32 - b;
++
++	if (bm <= 0) {
++		/* w.s.high = 1..1 or 0..0 */
++		w.s.high =
++		    uu.s.high >> 31;
++		w.s.low = uu.s.high >> -bm;
++	} else {
++		const unsigned int carries = (unsigned int) uu.s.high << bm;
++
++		w.s.high = uu.s.high >> b;
++		w.s.low = ((unsigned int) uu.s.low >> b) | carries;
++	}
++
++	return w.ll;
++}
++
++EXPORT_SYMBOL(__ashrdi3);
+diff --git a/arch/mips/lib/libgcc.h b/arch/mips/lib/libgcc.h
+new file mode 100644
+index 0000000..05909d5
+--- /dev/null
++++ b/arch/mips/lib/libgcc.h
+@@ -0,0 +1,25 @@
++#ifndef __ASM_LIBGCC_H
++#define __ASM_LIBGCC_H
++
++#include <asm/byteorder.h>
++
++typedef int word_type __attribute__ ((mode (__word__)));
++
++#ifdef __BIG_ENDIAN
++struct DWstruct {
++	int high, low;
++};
++#elif defined(__LITTLE_ENDIAN)
++struct DWstruct {
++	int low, high;
++};
++#else
++#error I feel sick.
 +#endif
++
++typedef union {
++	struct DWstruct s;
++	long long ll;
++} DWunion;
++
++#endif /* __ASM_LIBGCC_H */
+diff --git a/arch/mips/lib/lshrdi3.c b/arch/mips/lib/lshrdi3.c
+new file mode 100644
+index 0000000..989ec8b
+--- /dev/null
++++ b/arch/mips/lib/lshrdi3.c
+@@ -0,0 +1,29 @@
++#include <module.h>
++
++#include "libgcc.h"
++
++long long __lshrdi3(long long u, word_type b)
++{
++	DWunion uu, w;
++	word_type bm;
++
++	if (b == 0)
++		return u;
++
++	uu.ll = u;
++	bm = 32 - b;
++
++	if (bm <= 0) {
++		w.s.high = 0;
++		w.s.low = (unsigned int) uu.s.high >> -bm;
++	} else {
++		const unsigned int carries = (unsigned int) uu.s.high << bm;
++
++		w.s.high = (unsigned int) uu.s.high >> b;
++		w.s.low = ((unsigned int) uu.s.low >> b) | carries;
++	}
++
++	return w.ll;
++}
++
++EXPORT_SYMBOL(__lshrdi3);
 -- 
 1.7.5.4
 
