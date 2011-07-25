@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-fx0-f43.google.com ([209.85.161.43])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QlJvx-00056z-Ns
-	for barebox@lists.infradead.org; Mon, 25 Jul 2011 12:07:01 +0000
-Received: by mail-fx0-f43.google.com with SMTP id 17so7107666fxg.16
-	for <barebox@lists.infradead.org>; Mon, 25 Jul 2011 05:06:53 -0700 (PDT)
+	id 1QlJvz-00059Y-NU
+	for barebox@lists.infradead.org; Mon, 25 Jul 2011 12:07:00 +0000
+Received: by fxg17 with SMTP id 17so7107807fxg.16
+	for <barebox@lists.infradead.org>; Mon, 25 Jul 2011 05:06:54 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon, 25 Jul 2011 16:06:38 +0400
-Message-Id: <1311595600-20091-11-git-send-email-antonynpavlov@gmail.com>
+Date: Mon, 25 Jul 2011 16:06:39 +0400
+Message-Id: <1311595600-20091-12-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1311595600-20091-1-git-send-email-antonynpavlov@gmail.com>
 References: <1311595600-20091-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,101 +23,93 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v8 11/12] MIPS: add D-Link DIR-320 documentation
+Subject: [PATCH v8 12/12] MIPS: add draft cpuinfo command
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- Documentation/boards.dox                         |    1 +
- arch/mips/boards/dlink-dir-320/dlink-dir-320.dox |   38 ++++++++++++++++++++++
- arch/mips/mach-bcm47xx/mach-bcm47xx.dox          |    7 ++++
- arch/mips/mach-mips.dox                          |    4 ++
- 4 files changed, 50 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/boards/dlink-dir-320/dlink-dir-320.dox
- create mode 100644 arch/mips/mach-bcm47xx/mach-bcm47xx.dox
+ arch/mips/Kconfig       |   11 +++++++++++
+ arch/mips/lib/Makefile  |    2 ++
+ arch/mips/lib/cpuinfo.c |   38 ++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 51 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/lib/cpuinfo.c
 
-diff --git a/Documentation/boards.dox b/Documentation/boards.dox
-index 17771c6..d610971 100644
---- a/Documentation/boards.dox
-+++ b/Documentation/boards.dox
-@@ -47,6 +47,7 @@ x86 type:
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 50d734a..8970470 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -208,6 +208,17 @@ config 64BIT
  
- MIPS type:
+ endchoice
  
-+@li @subpage dlink_dir_320
- @li @subpage qemu_malta
- 
- */
-diff --git a/arch/mips/boards/dlink-dir-320/dlink-dir-320.dox b/arch/mips/boards/dlink-dir-320/dlink-dir-320.dox
++menu "MIPS specific settings        "
++
++config CMD_MIPS_CPUINFO
++	bool "cpuinfo command"
++	default y
++	help
++	  Say yes here to get a cpuinfo command to show some
++	  information about the cpu model.
++
++endmenu
++
+ source common/Kconfig
+ source commands/Kconfig
+ source net/Kconfig
+diff --git a/arch/mips/lib/Makefile b/arch/mips/lib/Makefile
+index 67e4e8a..45fe920 100644
+--- a/arch/mips/lib/Makefile
++++ b/arch/mips/lib/Makefile
+@@ -4,3 +4,5 @@ obj-y += lshrdi3.o
+ obj-y += ashldi3.o
+ obj-y += ashrdi3.o
+ obj-y += memory.o
++
++obj-$(CONFIG_CMD_MIPS_CPUINFO) += cpuinfo.o
+diff --git a/arch/mips/lib/cpuinfo.c b/arch/mips/lib/cpuinfo.c
 new file mode 100644
-index 0000000..d0f5869
+index 0000000..7bdb02b
 --- /dev/null
-+++ b/arch/mips/boards/dlink-dir-320/dlink-dir-320.dox
++++ b/arch/mips/lib/cpuinfo.c
 @@ -0,0 +1,38 @@
-+/** @page dlink_dir_320 D-Link DIR-320 wireless router
++/*
++ * cpuinfo - show information about MIPS CPU
++ *
++ * Copyright (C) 2011 Antony Pavlov <antonynpavlov@gmail.com>
++ *
++ * This file is part of barebox.
++ * See file CREDITS for list of people who contributed to this project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ */
 +
-+The router has
-+@li BCM5354 SoC;
-+@li 32 MiB SDRAM;
-+@li 4 MiB NOR type Flash Memory;
-+@li RS232 serial interface (LV-TTL levels on board!);
-+@li 1xUSB interface;
-+@li 4 + 1 ethernet interfaces;
-+@li 802.11b/g (WiFi) interface;
-+@li JTAG interface;
-+@li 5 LEDs;
-+@li 2 buttons.
++#include <common.h>
++#include <command.h>
++#include <asm/mipsregs.h>
 +
-+The router uses CFE as firmware.
++static int do_cpuinfo(struct command *cmdtp, int argc, char *argv[])
++{
++	printf("CP0_PRID = 0x%08x\n", read_c0_prid());
++	printf("CP0_CONFIG = 0x%08x\n", read_c0_config());
 +
-+Barebox can be started from CFE using tftp.
-+You must setup tftp-server on host 192.168.0.1.
-+Put your barebox.bin to tftp-server directory
-+(usual /tftpboot or /srv/tftp).
-+Connect your DIR-320 to your tftp-server network via
-+one of four <LAN> sockets.
++	return 0;
++}
 +
-+Next, setup network on DIR-320 and run barebox.bin, e.g.:
-+@verbatim
-+CFE> ifconfig eth0 -addr=192.168.0.99
-+CFE> boot -tftp -addr=a0800000 -raw 192.168.0.1:barebox.bin
-+@endverbatim
-+
-+DIR-320 links:
-+@li http://www.dlink.com.au/products/?pid=768
-+@li http://wiki.openwrt.org/toh/d-link/dir-320
-+
-+CFE links:
-+@li http://www.broadcom.com/support/communications_processors/downloads.php#cfe
-+@li http://www.linux-mips.org/wiki/CFE
-+
-+*/
-diff --git a/arch/mips/mach-bcm47xx/mach-bcm47xx.dox b/arch/mips/mach-bcm47xx/mach-bcm47xx.dox
-new file mode 100644
-index 0000000..04ccf03
---- /dev/null
-+++ b/arch/mips/mach-bcm47xx/mach-bcm47xx.dox
-@@ -0,0 +1,7 @@
-+/** @page dev_bcm47xx_mach BCM47xx in barebox
-+
-+@section bcm47xx_boards BCM47xx-based boards
-+
-+@li @subpage dlink_dir_320
-+
-+*/
-diff --git a/arch/mips/mach-mips.dox b/arch/mips/mach-mips.dox
-index 50dbbd2..9bcec13 100644
---- a/arch/mips/mach-mips.dox
-+++ b/arch/mips/mach-mips.dox
-@@ -54,4 +54,8 @@ ISBN-13: 978-0120884216
- @subsection mach_mips_malta_info Malta boards
- 
- @li @subpage dev_malta_mach
-+
-+@subsection mach_bcm47xx_info BCM47xx-based boards
-+
-+@li @subpage dev_bcm47xx_mach
- */
++BAREBOX_CMD_START(cpuinfo)
++	.cmd            = do_cpuinfo,
++	.usage          = "Show info about CPU",
++BAREBOX_CMD_END
 -- 
 1.7.5.4
 
