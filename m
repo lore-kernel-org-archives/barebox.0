@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ey0-f170.google.com ([209.85.215.170])
+Received: from mail-ew0-f49.google.com ([209.85.215.49])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QlJvt-000570-O1
-	for barebox@lists.infradead.org; Mon, 25 Jul 2011 12:06:54 +0000
-Received: by eyd10 with SMTP id 10so4562885eyd.29
-	for <barebox@lists.infradead.org>; Mon, 25 Jul 2011 05:06:47 -0700 (PDT)
+	id 1QlJvv-000575-0F
+	for barebox@lists.infradead.org; Mon, 25 Jul 2011 12:06:57 +0000
+Received: by ewy3 with SMTP id 3so2954475ewy.36
+	for <barebox@lists.infradead.org>; Mon, 25 Jul 2011 05:06:49 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon, 25 Jul 2011 16:06:32 +0400
-Message-Id: <1311595600-20091-5-git-send-email-antonynpavlov@gmail.com>
+Date: Mon, 25 Jul 2011 16:06:33 +0400
+Message-Id: <1311595600-20091-6-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1311595600-20091-1-git-send-email-antonynpavlov@gmail.com>
 References: <1311595600-20091-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,88 +23,226 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v8 05/12] MIPS: add documentation
+Subject: [PATCH v8 06/12] MIPS: add Malta machine support to barebox
 To: barebox@lists.infradead.org
+
+The machine uses only big-endian mode.
+Only supported peripheral is serial port.
+The machine supports only MIPS32 CPUs.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/architecture.dox   |    1 +
- arch/mips/mach-mips.dox |   54 +++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 55 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/mach-mips.dox
+ arch/mips/Kconfig                            |   22 ++++++++++++++
+ arch/mips/Makefile                           |    2 +
+ arch/mips/mach-malta/Kconfig                 |   12 ++++++++
+ arch/mips/mach-malta/Makefile                |    1 +
+ arch/mips/mach-malta/include/mach/debug_ll.h |   40 ++++++++++++++++++++++++++
+ arch/mips/mach-malta/include/mach/hardware.h |   32 ++++++++++++++++++++
+ arch/mips/mach-malta/reset.c                 |   36 +++++++++++++++++++++++
+ 7 files changed, 145 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/mach-malta/Kconfig
+ create mode 100644 arch/mips/mach-malta/Makefile
+ create mode 100644 arch/mips/mach-malta/include/mach/debug_ll.h
+ create mode 100644 arch/mips/mach-malta/include/mach/hardware.h
+ create mode 100644 arch/mips/mach-malta/reset.c
 
-diff --git a/arch/architecture.dox b/arch/architecture.dox
-index 67e2c38..2d2cf05 100644
---- a/arch/architecture.dox
-+++ b/arch/architecture.dox
-@@ -86,6 +86,7 @@ TODO
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index b6d2c5e..a84d469 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -21,6 +21,28 @@ config GENERIC_LINKER_SCRIPT
+ 	bool
+ 	default y
  
- @li @subpage dev_arm_mach
- @li @subpage dev_bf_mach
-+@li @subpage dev_mips_mach
- @li @subpage dev_ppc_mach
- @li @subpage dev_x86_mach
++menu "Machine selection"
++
++choice
++	prompt "System type"
++	default MACH_MIPS_MALTA
++
++config MACH_MIPS_MALTA
++	bool "MIPS Malta"
++	select CSRC_R4K_LIB
++	select DRIVER_SERIAL_NS16550
++	select SYS_HAS_CPU_MIPS32_R1
++	select SYS_HAS_CPU_MIPS32_R2
++	select SYS_SUPPORTS_32BIT_KERNEL
++	select SYS_SUPPORTS_BIG_ENDIAN
++	select HAS_DEBUG_LL
++
++endchoice
++
++source arch/mips/mach-malta/Kconfig
++
++endmenu
++
+ #
+ # Endianess selection.  Sufficiently obscure so many users don't know what to
+ # answer,so we try hard to limit the available choices.  Also the use of a
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index ce46233..cd5d364 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -34,6 +34,8 @@ endif
  
-diff --git a/arch/mips/mach-mips.dox b/arch/mips/mach-mips.dox
+ LDFLAGS_barebox += -nostdlib
+ 
++machine-$(CONFIG_MACH_MIPS_MALTA)	:= malta
++
+ machdirs := $(patsubst %,arch/mips/mach-%/,$(machine-y))
+ 
+ ifeq ($(KBUILD_SRC),)
+diff --git a/arch/mips/mach-malta/Kconfig b/arch/mips/mach-malta/Kconfig
 new file mode 100644
-index 0000000..018fc44
+index 0000000..6076a13
 --- /dev/null
-+++ b/arch/mips/mach-mips.dox
-@@ -0,0 +1,54 @@
-+/* This document is intended to provide the developer with information
-+ * how to integrate a new CPU (MACH) into this part of the barebox tree
++++ b/arch/mips/mach-malta/Kconfig
+@@ -0,0 +1,12 @@
++if MACH_MIPS_MALTA
++
++config ARCH_TEXT_BASE
++	hex
++	default 0xa0800000
++
++choice
++	prompt "Board type"
++
++endchoice
++
++endif
+diff --git a/arch/mips/mach-malta/Makefile b/arch/mips/mach-malta/Makefile
+new file mode 100644
+index 0000000..f3cc668
+--- /dev/null
++++ b/arch/mips/mach-malta/Makefile
+@@ -0,0 +1 @@
++obj-y += reset.o
+diff --git a/arch/mips/mach-malta/include/mach/debug_ll.h b/arch/mips/mach-malta/include/mach/debug_ll.h
+new file mode 100644
+index 0000000..32d13c1
+--- /dev/null
++++ b/arch/mips/mach-malta/include/mach/debug_ll.h
+@@ -0,0 +1,40 @@
++/*
++ * Copyright (C) 2011 Antony Pavlov <antonynpavlov@gmail.com>
++ *
++ * This file is part of barebox.
++ * See file CREDITS for list of people who contributed to this project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 + */
 +
-+/** @page dev_mips_mach MIPS based CPU (MACH) into the tree
++/** @file
++ *  This File contains declaration for early output support
++ */
++#ifndef __INCLUDE_ARCH_DEBUG_LL_H__
++#define   __INCLUDE_ARCH_DEBUG_LL_H__
 +
-+@section mach_mips_reset What's happens when the reset signal is gone
++#include <asm/io.h>
++#include <mach/hardware.h>
 +
-+Barebox normally must be linked to RAM region, cached region KSEG0 is preferred.
-+This make possible to run fast (because cache used) and skip MMU support.
++#define rbr		0
++#define lsr		5
++#define LSR_THRE	0x20	/* Xmit holding register empty */
 +
-+After reset MIPS CPU starting to fetch instructions from 0xBFC00000.
++static __inline__ void putc(char ch)
++{
++	while (!(__raw_readb(DEBUG_LL_UART_ADDR + lsr) & LSR_THRE));
++	__raw_writeb(ch, DEBUG_LL_UART_ADDR + rbr);
++}
 +
-+@note Code running immediately after reset runs at an address it is not linked
-+      to: "runtime address != link address". You should only use branches and
-+      do not refer to fixed data. This implies the use of assembler code only.
-+      After MIPS CPU reset cache and MMU are in random state. They are unusable.
++#endif  /* __INCLUDE_ARCH_DEBUG_LL_H__ */
+diff --git a/arch/mips/mach-malta/include/mach/hardware.h b/arch/mips/mach-malta/include/mach/hardware.h
+new file mode 100644
+index 0000000..f827cc3
+--- /dev/null
++++ b/arch/mips/mach-malta/include/mach/hardware.h
+@@ -0,0 +1,32 @@
++/*
++ * Copyright (C) 2011 Antony Pavlov <antonynpavlov@gmail.com>
++ *
++ * This file is part of barebox.
++ * See file CREDITS for list of people who contributed to this project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ */
 +
-+barebox MIPS initialisation sequence:
++#ifndef __INCLUDE_ARCH_HARDWARE_H__
++#define   __INCLUDE_ARCH_HARDWARE_H__
 +
-+ * set the CP0 STATUS register to some known and sensible state.
-+Now you can load and store reliably in uncached space.
++#define DEBUG_LL_UART_ADDR	0xb00003f8
 +
-+ * call a function \<mach_init_lowlevel\> (if not disabled).
-+do some special things required only on specific CPU
-+ (e. g. init RAM controller, disable watchdog)
++/*
++ * Reset register.
++ */
++#define SOFTRES_REG	0xbf000500
++#define GORESET		0x42
 +
-+ * call a function \<board_init_lowlevel\> (if not disable).
-+do some special things required only on specific board
-+ (e. g. setup GPIO to required state).
++#endif  /* __INCLUDE_ARCH_HARDWARE_H__ */
+diff --git a/arch/mips/mach-malta/reset.c b/arch/mips/mach-malta/reset.c
+new file mode 100644
+index 0000000..2818e7c
+--- /dev/null
++++ b/arch/mips/mach-malta/reset.c
+@@ -0,0 +1,36 @@
++/*
++ * Copyright (C) 2011 Antony Pavlov <antonynpavlov@gmail.com>
++ *
++ * This file is part of barebox.
++ * See file CREDITS for list of people who contributed to this project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ */
 +
-+   ** It is desirable to have some debug code to make some contact
-+ with the outside world from assembler code
-+(e.g. debug_ll-like functions to write to rs232 console).
++/**
++ * @file
++ * @brief Resetting an malta board
++ */
 +
-+ * check integrity of barebox RAM execute location;
-+ * copy barebox to RAM execute location;
++#include <common.h>
++#include <asm/io.h>
++#include <mach/hardware.h>
 +
-+ * configure cache;
-+
-+ * setup stack;
-+
-+   ** after this point you can call a standard C routine.
-+
-+ * setup exception vectors in RAM;
-+ * setup CP0 STATUS to switch exception vector address to RAM;
-+
-+ * call start_barebox()
-+
-+Further reading:
-+ * Dominic Sweetman, See MIPS Run, Morgan Kaufmann, 2nd edition, 2006
-+ISBN-13: 978-0120884216
-+
-+*/
++void __noreturn reset_cpu(ulong addr)
++{
++	__raw_writel(GORESET, (char *)SOFTRES_REG);
++	while (1);
++	/*NOTREACHED*/
++}
++EXPORT_SYMBOL(reset_cpu);
 -- 
 1.7.5.4
 
