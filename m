@@ -1,13 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-fx0-f43.google.com ([209.85.161.43])
-	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1Ql4GF-000508-VN
-	for barebox@lists.infradead.org; Sun, 24 Jul 2011 19:22:49 +0000
-Received: by mail-fx0-f43.google.com with SMTP id 17so6336895fxg.16
-	for <barebox@lists.infradead.org>; Sun, 24 Jul 2011 12:22:47 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sun, 24 Jul 2011 23:22:44 +0400
-Message-Id: <1311535364-4577-1-git-send-email-antonynpavlov@gmail.com>
+Received: from 5.mo3.mail-out.ovh.net ([87.98.178.36]
+	helo=mo3.mail-out.ovh.net)
+	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+	id 1QlBc6-0000g3-Ay
+	for barebox@lists.infradead.org; Mon, 25 Jul 2011 03:13:51 +0000
+Received: from mail191.ha.ovh.net (b9.ovh.net [213.186.33.59])
+	by mo3.mail-out.ovh.net (Postfix) with SMTP id 4F27A10048FD
+	for <barebox@lists.infradead.org>;
+	Mon, 25 Jul 2011 05:14:38 +0200 (CEST)
+Date: Mon, 25 Jul 2011 04:56:33 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20110725025633.GB10295@game.jcrosoft.org>
+References: <1311535336-4534-1-git-send-email-antonynpavlov@gmail.com>
+	<1311535336-4534-5-git-send-email-antonynpavlov@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1311535336-4534-5-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,98 +24,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/10] MIPS: add documentation
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 06/10] MIPS: add qemu malta board support to barebox
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/architecture.dox   |    1 +
- arch/mips/mach-mips.dox |   56 +++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 57 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/mach-mips.dox
+> +
+> +NS16550_READ_WRITE_UART_FUNC(malta, 0, 0)
+> +
+> +static struct NS16550_plat serial_plat = {
+> +	.clock = 1843200, /* no matter */
+> +	.f_caps = CONSOLE_STDIN | CONSOLE_STDOUT | CONSOLE_STDERR,
+> +	.reg_read = malta_uart_read,
+> +	.reg_write = malta_uart_write,
+> +};
+> +
+> +/* we are expecting always one serial interface */
+> +static struct device_d generic_malta_serial_device = {
+> +	.name = "serial_ns16550",
+> +	.map_base = DEBUG_LL_UART_ADDR,
+> +	.size = 8,
+> +	.platform_data = (void *)&serial_plat,
+> +};
+please rebase this against next branch
 
-diff --git a/arch/architecture.dox b/arch/architecture.dox
-index 67e2c38..2d2cf05 100644
---- a/arch/architecture.dox
-+++ b/arch/architecture.dox
-@@ -86,6 +86,7 @@ TODO
- 
- @li @subpage dev_arm_mach
- @li @subpage dev_bf_mach
-+@li @subpage dev_mips_mach
- @li @subpage dev_ppc_mach
- @li @subpage dev_x86_mach
- 
-diff --git a/arch/mips/mach-mips.dox b/arch/mips/mach-mips.dox
-new file mode 100644
-index 0000000..0ee3d63
---- /dev/null
-+++ b/arch/mips/mach-mips.dox
-@@ -0,0 +1,56 @@
-+/* This document is intended to provide the developer with information
-+ * how to integrate a new CPU (MACH) into this part of the barebox tree
-+ */
-+
-+/** @page dev_mips_mach MIPS based CPU (MACH) into the tree
-+
-+FIXME
-+
-+@section mach_mips_reset What's happens when the reset signal is gone
-+
-+Barebox normally must be linked to RAM region, cached region KSEG0 is preferred.
-+This make possible to run fast (because cache used) and skip MMU support.
-+
-+After reset MIPS CPU starting to fetch instructions from 0xBFC00000.
-+
-+@note Code running immediately after reset runs at an address it is not linked
-+      to: "runtime address != link address". You should only use branches and
-+      do not refer to fixed data. This implies the use of assembler code only.
-+      After MIPS CPU reset cache and MMU are in random state. They are unusable.
-+
-+barebox MIPS initialisation sequence:
-+
-+ * set the CP0 STATUS register to some known and sensible state.
-+Now you can load and store reliably in uncached space.
-+
-+ * call a function \<mach_init_lowlevel\> (if not disabled).
-+do some special things required only on specific CPU
-+ (e. g. init RAM controller, disable watchdog)
-+
-+ * call a function \<board_init_lowlevel\> (if not disable).
-+do some special things required only on specific board
-+ (e. g. setup GPIO to required state).
-+
-+   ** It is desirable to have some debug code to make some contact
-+ with the outside world from assembler code
-+(e.g. debug_ll-like functions to write to rs232 console).
-+
-+ * check integity of barebox RAM execute location;
-+ * copy barebox to RAM execute location;
-+
-+ * configure cache;
-+
-+ * setup stack;
-+
-+   ** after ths point you can call a standard C routine.
-+
-+ * setup exception vectors in RAM;
-+ * setup CP0 STATUS to switch exception vector address to RAM;
-+
-+ * call start_barebox()
-+
-+Futher reading:
-+ * Dominic Sweetman, See MIPS Run, Morgan Kaufmann, 2nd edition, 2006
-+ISBN-13: 978-0120884216
-+
-+*/
--- 
-1.7.5.4
+map_base and size are depricated
 
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
