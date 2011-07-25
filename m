@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-fx0-f43.google.com ([209.85.161.43])
+Received: from mail-ew0-f49.google.com ([209.85.215.49])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QlJvw-00058U-Uw
-	for barebox@lists.infradead.org; Mon, 25 Jul 2011 12:06:59 +0000
-Received: by fxg17 with SMTP id 17so7107753fxg.16
-	for <barebox@lists.infradead.org>; Mon, 25 Jul 2011 05:06:51 -0700 (PDT)
+	id 1QlJvx-00058z-V9
+	for barebox@lists.infradead.org; Mon, 25 Jul 2011 12:07:02 +0000
+Received: by ewy3 with SMTP id 3so2954504ewy.36
+	for <barebox@lists.infradead.org>; Mon, 25 Jul 2011 05:06:52 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon, 25 Jul 2011 16:06:36 +0400
-Message-Id: <1311595600-20091-9-git-send-email-antonynpavlov@gmail.com>
+Date: Mon, 25 Jul 2011 16:06:37 +0400
+Message-Id: <1311595600-20091-10-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1311595600-20091-1-git-send-email-antonynpavlov@gmail.com>
 References: <1311595600-20091-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,93 +23,93 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v8 09/12] MIPS: add initial BCM47xx-based boards support
+Subject: [PATCH v8 10/12] MIPS: add initial D-Link DIR-320 wireless router
+	support
 To: barebox@lists.infradead.org
+
+Can be started from CFE using tftp, e.g.:
+
+  CFE> ifconfig eth0 -addr=192.168.0.99
+  CFE> boot -tftp -addr=a0800000 -raw 192.168.0.1:barebox.bin
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/Kconfig                              |   10 ++++++
- arch/mips/Makefile                             |    2 +
- arch/mips/mach-bcm47xx/Kconfig                 |   12 +++++++
- arch/mips/mach-bcm47xx/Makefile                |    1 +
- arch/mips/mach-bcm47xx/include/mach/debug_ll.h |   40 ++++++++++++++++++++++++
- arch/mips/mach-bcm47xx/include/mach/hardware.h |   32 +++++++++++++++++++
- arch/mips/mach-bcm47xx/reset.c                 |   36 +++++++++++++++++++++
- 7 files changed, 133 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/mach-bcm47xx/Kconfig
- create mode 100644 arch/mips/mach-bcm47xx/Makefile
- create mode 100644 arch/mips/mach-bcm47xx/include/mach/debug_ll.h
- create mode 100644 arch/mips/mach-bcm47xx/include/mach/hardware.h
- create mode 100644 arch/mips/mach-bcm47xx/reset.c
+ arch/mips/Makefile                        |    1 +
+ arch/mips/boards/dlink-dir-320/Kconfig    |    6 +++
+ arch/mips/boards/dlink-dir-320/Makefile   |    1 +
+ arch/mips/boards/dlink-dir-320/config.h   |   19 +++++++++
+ arch/mips/boards/dlink-dir-320/serial.c   |   61 +++++++++++++++++++++++++++++
+ arch/mips/configs/dlink-dir-320_defconfig |   46 ++++++++++++++++++++++
+ arch/mips/mach-bcm47xx/Kconfig            |    5 ++
+ 7 files changed, 139 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/boards/dlink-dir-320/Kconfig
+ create mode 100644 arch/mips/boards/dlink-dir-320/Makefile
+ create mode 100644 arch/mips/boards/dlink-dir-320/config.h
+ create mode 100644 arch/mips/boards/dlink-dir-320/serial.c
+ create mode 100644 arch/mips/configs/dlink-dir-320_defconfig
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index a84d469..50d734a 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -37,9 +37,19 @@ config MACH_MIPS_MALTA
- 	select SYS_SUPPORTS_BIG_ENDIAN
- 	select HAS_DEBUG_LL
- 
-+config MACH_MIPS_BCM47XX
-+	bool "Broadcom BCM47xx-based boards"
-+	select CSRC_R4K_LIB
-+	select DRIVER_SERIAL_NS16550
-+	select SYS_HAS_CPU_MIPS32_R1
-+	select SYS_SUPPORTS_32BIT_KERNEL
-+	select SYS_SUPPORTS_LITTLE_ENDIAN
-+	select HAS_DEBUG_LL
-+
- endchoice
- 
- source arch/mips/mach-malta/Kconfig
-+source arch/mips/mach-bcm47xx/Kconfig
- 
- endmenu
- 
 diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index ca6aa56..b3554d2 100644
+index b3554d2..86b4b80 100644
 --- a/arch/mips/Makefile
 +++ b/arch/mips/Makefile
-@@ -37,6 +37,8 @@ LDFLAGS_barebox += -nostdlib
- machine-$(CONFIG_MACH_MIPS_MALTA)	:= malta
+@@ -38,6 +38,7 @@ machine-$(CONFIG_MACH_MIPS_MALTA)	:= malta
  board-$(CONFIG_BOARD_QEMU_MALTA)	:= qemu-malta
  
-+machine-$(CONFIG_MACH_MIPS_BCM47XX)	:= bcm47xx
-+
+ machine-$(CONFIG_MACH_MIPS_BCM47XX)	:= bcm47xx
++board-$(CONFIG_BOARD_DLINK_DIR320)	:= dlink-dir-320
+ 
  machdirs := $(patsubst %,arch/mips/mach-%/,$(machine-y))
  
- ifeq ($(KBUILD_SRC),)
-diff --git a/arch/mips/mach-bcm47xx/Kconfig b/arch/mips/mach-bcm47xx/Kconfig
+diff --git a/arch/mips/boards/dlink-dir-320/Kconfig b/arch/mips/boards/dlink-dir-320/Kconfig
 new file mode 100644
-index 0000000..5143a15
+index 0000000..0393d04
 --- /dev/null
-+++ b/arch/mips/mach-bcm47xx/Kconfig
-@@ -0,0 +1,12 @@
-+if MACH_MIPS_BCM47XX
++++ b/arch/mips/boards/dlink-dir-320/Kconfig
+@@ -0,0 +1,6 @@
++if BOARD_DLINK_DIR320
 +
-+config ARCH_TEXT_BASE
-+	hex
-+	default 0xa0800000
-+
-+choice
-+	prompt "Board type"
-+
-+endchoice
++config BOARDINFO
++	default "D-Link DIR-320"
 +
 +endif
-diff --git a/arch/mips/mach-bcm47xx/Makefile b/arch/mips/mach-bcm47xx/Makefile
+diff --git a/arch/mips/boards/dlink-dir-320/Makefile b/arch/mips/boards/dlink-dir-320/Makefile
 new file mode 100644
-index 0000000..f3cc668
+index 0000000..ff1a655
 --- /dev/null
-+++ b/arch/mips/mach-bcm47xx/Makefile
++++ b/arch/mips/boards/dlink-dir-320/Makefile
 @@ -0,0 +1 @@
-+obj-y += reset.o
-diff --git a/arch/mips/mach-bcm47xx/include/mach/debug_ll.h b/arch/mips/mach-bcm47xx/include/mach/debug_ll.h
++obj-$(CONFIG_DRIVER_SERIAL_NS16550) += serial.o
+diff --git a/arch/mips/boards/dlink-dir-320/config.h b/arch/mips/boards/dlink-dir-320/config.h
 new file mode 100644
-index 0000000..32d13c1
+index 0000000..eb4ab08
 --- /dev/null
-+++ b/arch/mips/mach-bcm47xx/include/mach/debug_ll.h
-@@ -0,0 +1,40 @@
++++ b/arch/mips/boards/dlink-dir-320/config.h
+@@ -0,0 +1,19 @@
++/*
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ *
++ */
++
++/* nothing special yet */
+diff --git a/arch/mips/boards/dlink-dir-320/serial.c b/arch/mips/boards/dlink-dir-320/serial.c
+new file mode 100644
+index 0000000..4ddecec
+--- /dev/null
++++ b/arch/mips/boards/dlink-dir-320/serial.c
+@@ -0,0 +1,61 @@
 +/*
 + * Copyright (C) 2011 Antony Pavlov <antonynpavlov@gmail.com>
 + *
@@ -128,108 +128,117 @@ index 0000000..32d13c1
 + * You should have received a copy of the GNU General Public License
 + * along with this program; if not, write to the Free Software
 + * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-+ */
-+
-+/** @file
-+ *  This File contains declaration for early output support
-+ */
-+#ifndef __INCLUDE_ARCH_DEBUG_LL_H__
-+#define   __INCLUDE_ARCH_DEBUG_LL_H__
-+
-+#include <asm/io.h>
-+#include <mach/hardware.h>
-+
-+#define rbr		0
-+#define lsr		5
-+#define LSR_THRE	0x20	/* Xmit holding register empty */
-+
-+static __inline__ void putc(char ch)
-+{
-+	while (!(__raw_readb(DEBUG_LL_UART_ADDR + lsr) & LSR_THRE));
-+	__raw_writeb(ch, DEBUG_LL_UART_ADDR + rbr);
-+}
-+
-+#endif  /* __INCLUDE_ARCH_DEBUG_LL_H__ */
-diff --git a/arch/mips/mach-bcm47xx/include/mach/hardware.h b/arch/mips/mach-bcm47xx/include/mach/hardware.h
-new file mode 100644
-index 0000000..703e7f7
---- /dev/null
-+++ b/arch/mips/mach-bcm47xx/include/mach/hardware.h
-@@ -0,0 +1,32 @@
-+/*
-+ * Copyright (C) 2011 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ * This file is part of barebox.
-+ * See file CREDITS for list of people who contributed to this project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-+ */
-+
-+#ifndef __INCLUDE_ARCH_HARDWARE_H__
-+#define   __INCLUDE_ARCH_HARDWARE_H__
-+
-+#define DEBUG_LL_UART_ADDR	0xb8000300
-+
-+/*
-+ * Reset register.
-+ */
-+#define SOFTRES_REG	0xbf000500
-+#define GORESET		0x42
-+
-+#endif  /* __INCLUDE_ARCH_HARDWARE_H__ */
-diff --git a/arch/mips/mach-bcm47xx/reset.c b/arch/mips/mach-bcm47xx/reset.c
-new file mode 100644
-index 0000000..2818e7c
---- /dev/null
-+++ b/arch/mips/mach-bcm47xx/reset.c
-@@ -0,0 +1,36 @@
-+/*
-+ * Copyright (C) 2011 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ * This file is part of barebox.
-+ * See file CREDITS for list of people who contributed to this project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-+ */
-+
-+/**
-+ * @file
-+ * @brief Resetting an malta board
 + */
 +
 +#include <common.h>
-+#include <asm/io.h>
++#include <types.h>
++#include <driver.h>
++#include <init.h>
++#include <ns16550.h>
 +#include <mach/hardware.h>
++#include <asm/io.h>
++#include <asm/common.h>
 +
-+void __noreturn reset_cpu(ulong addr)
++NS16550_READ_WRITE_UART_FUNC(dir320, 0, 0)
++
++static struct NS16550_plat serial_plat = {
++	.clock = 25804800,
++	.f_caps = CONSOLE_STDIN | CONSOLE_STDOUT | CONSOLE_STDERR,
++	.reg_read = dir320_uart_read,
++	.reg_write = dir320_uart_write,
++};
++
++static struct resource uart0_resources[] = {
++	[0] = {
++		.start	= DEBUG_LL_UART_ADDR,
++		.size	= 8,
++		.flags	= IORESOURCE_MEM,
++	},
++};
++
++/* we are expecting always one serial interface */
++static struct device_d dir320_serial_device = {
++	.name = "serial_ns16550",
++	.id = 0,
++	.num_resources	= ARRAY_SIZE(uart0_resources),
++	.resource	= uart0_resources,
++	.platform_data = (void *)&serial_plat,
++};
++
++static int dir320_console_init(void)
 +{
-+	__raw_writel(GORESET, (char *)SOFTRES_REG);
-+	while (1);
-+	/*NOTREACHED*/
++	/* Register the serial port */
++	return register_device(&dir320_serial_device);
 +}
-+EXPORT_SYMBOL(reset_cpu);
++console_initcall(dir320_console_init);
+diff --git a/arch/mips/configs/dlink-dir-320_defconfig b/arch/mips/configs/dlink-dir-320_defconfig
+new file mode 100644
+index 0000000..ca86a36
+--- /dev/null
++++ b/arch/mips/configs/dlink-dir-320_defconfig
+@@ -0,0 +1,46 @@
++CONFIG_MACH_MIPS_BCM47XX=y
++CONFIG_STACK_SIZE=0x7000
++CONFIG_BROKEN=y
++CONFIG_EXPERIMENTAL=y
++CONFIG_LONGHELP=y
++CONFIG_HUSH_FANCY_PROMPT=y
++CONFIG_HUSH_GETOPT=y
++CONFIG_CMDLINE_EDITING=y
++CONFIG_AUTO_COMPLETE=y
++CONFIG_MENU=y
++CONFIG_PASSWORD=y
++CONFIG_PARTITION=y
++# CONFIG_DEFAULT_ENVIRONMENT is not set
++CONFIG_POLLER=y
++CONFIG_DEBUG_INFO=y
++CONFIG_CMD_EDIT=y
++CONFIG_CMD_SLEEP=y
++CONFIG_CMD_SAVEENV=y
++CONFIG_CMD_LOADENV=y
++CONFIG_CMD_EXPORT=y
++CONFIG_CMD_PRINTENV=y
++CONFIG_CMD_READLINE=y
++CONFIG_CMD_MENU=y
++CONFIG_CMD_MENU_MANAGEMENT=y
++CONFIG_CMD_ECHO_E=y
++CONFIG_CMD_LOADB=y
++CONFIG_CMD_MEMINFO=y
++CONFIG_CMD_CRC=y
++CONFIG_CMD_CRC_CMP=y
++CONFIG_CMD_MD5SUM=y
++CONFIG_CMD_SHA1SUM=y
++CONFIG_CMD_SHA256SUM=y
++CONFIG_CMD_MTEST=y
++CONFIG_CMD_FLASH=y
++CONFIG_CMD_RESET=y
++CONFIG_CMD_GO=y
++CONFIG_CMD_TIMEOUT=y
++CONFIG_CMD_PARTITION=y
++CONFIG_NET=y
++CONFIG_NET_DHCP=y
++CONFIG_NET_PING=y
++CONFIG_NET_TFTP=y
++CONFIG_NET_NETCONSOLE=y
++# CONFIG_SPI is not set
++CONFIG_MTD=y
++CONFIG_FS_CRAMFS=y
+diff --git a/arch/mips/mach-bcm47xx/Kconfig b/arch/mips/mach-bcm47xx/Kconfig
+index 5143a15..d0df0fd 100644
+--- a/arch/mips/mach-bcm47xx/Kconfig
++++ b/arch/mips/mach-bcm47xx/Kconfig
+@@ -7,6 +7,11 @@ config ARCH_TEXT_BASE
+ choice
+ 	prompt "Board type"
+ 
++config BOARD_DLINK_DIR320
++	bool "D-Link DIR-320"
++
+ endchoice
+ 
++source arch/mips/boards/dlink-dir-320/Kconfig
++
+ endif
 -- 
 1.7.5.4
 
