@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ww0-f41.google.com ([74.125.82.41])
+Received: from mail-wy0-f177.google.com ([74.125.82.177])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QlRAb-0003ui-AD
-	for barebox@lists.infradead.org; Mon, 25 Jul 2011 19:50:30 +0000
-Received: by wwi14 with SMTP id 14so1590625wwi.0
-	for <barebox@lists.infradead.org>; Mon, 25 Jul 2011 12:50:26 -0700 (PDT)
+	id 1QlRAY-0003u7-Sa
+	for barebox@lists.infradead.org; Mon, 25 Jul 2011 19:50:28 +0000
+Received: by wyf23 with SMTP id 23so4015777wyf.36
+	for <barebox@lists.infradead.org>; Mon, 25 Jul 2011 12:50:25 -0700 (PDT)
 From: franck.jullien@gmail.com
-Date: Mon, 25 Jul 2011 21:50:19 +0200
-Message-Id: <1311623420-30234-4-git-send-email-franck.jullien@gmail.com>
+Date: Mon, 25 Jul 2011 21:50:18 +0200
+Message-Id: <1311623420-30234-3-git-send-email-franck.jullien@gmail.com>
 In-Reply-To: <1311623420-30234-1-git-send-email-franck.jullien@gmail.com>
 References: <1311623420-30234-1-git-send-email-franck.jullien@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,55 +23,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] nios2/serial_altera.c: switch to ressources
+Subject: [PATCH 2/4] nios2/altera_tse.c: switch to ressources
 To: barebox@lists.infradead.org
 
 From: Franck Jullien <franck.jullien@gmail.com>
 
 Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
 ---
- drivers/serial/serial_altera.c |    8 ++++----
- 1 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/altera_tse.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/serial/serial_altera.c b/drivers/serial/serial_altera.c
-index 54c7178..c0a8356 100644
---- a/drivers/serial/serial_altera.c
-+++ b/drivers/serial/serial_altera.c
-@@ -29,7 +29,7 @@
+diff --git a/drivers/net/altera_tse.c b/drivers/net/altera_tse.c
+index ac8cd2d..4298739 100644
+--- a/drivers/net/altera_tse.c
++++ b/drivers/net/altera_tse.c
+@@ -510,7 +510,7 @@ static int tse_probe(struct device_d *dev)
+ 	dev->type_data = edev;
+ 	edev->priv = (struct altera_tse_priv *)(edev + 1);
  
- static int altera_serial_setbaudrate(struct console_device *cdev, int baudrate)
- {
--	struct nios_uart *uart = (struct nios_uart *)cdev->dev->map_base;
-+	struct nios_uart *uart = (struct nios_uart *)dev_request_mem_region(cdev->dev, 0);
- 	uint16_t div;
+-	edev->iobase = dev->map_base;
++	edev->iobase = (int)dev_request_mem_region(dev, 0);
  
- 	div = (CPU_FREQ / baudrate) - 1;
-@@ -40,7 +40,7 @@ static int altera_serial_setbaudrate(struct console_device *cdev, int baudrate)
+ 	priv = edev->priv;
  
- static void altera_serial_putc(struct console_device *cdev, char c)
- {
--	struct nios_uart *uart = (struct nios_uart *)cdev->dev->map_base;
-+	struct nios_uart *uart = (struct nios_uart *)dev_request_mem_region(cdev->dev, 0);
+@@ -539,7 +539,7 @@ static int tse_probe(struct device_d *dev)
+ 	memset(rx_desc, 0, (sizeof *rx_desc) * (PKTBUFSRX + 1)); 
+ 	memset(tx_desc, 0, (sizeof *tx_desc) * 2);
  
- 	while ((readw(&uart->status) & NIOS_UART_TRDY) == 0);
- 
-@@ -49,14 +49,14 @@ static void altera_serial_putc(struct console_device *cdev, char c)
- 
- static int altera_serial_tstc(struct console_device *cdev)
- {
--	struct nios_uart *uart = (struct nios_uart *)cdev->dev->map_base;
-+	struct nios_uart *uart = (struct nios_uart *)dev_request_mem_region(cdev->dev, 0);
- 
- 	return readw(&uart->status) & NIOS_UART_RRDY;
- }
- 
- static int altera_serial_getc(struct console_device *cdev)
- {
--	struct nios_uart *uart = (struct nios_uart *)cdev->dev->map_base;
-+	struct nios_uart *uart = (struct nios_uart *)dev_request_mem_region(cdev->dev, 0);
- 
- 	while (altera_serial_tstc(cdev) == 0);
- 
+-	priv->mac_dev = (struct alt_tse_mac *)dev->map_base;
++	priv->mac_dev = (struct alt_tse_mac *)dev_request_mem_region(dev, 0);
+ 	priv->sgdma_rx = (struct alt_sgdma_registers *)NIOS_SOPC_SGDMA_RX_BASE;
+ 	priv->sgdma_tx = (struct alt_sgdma_registers *)NIOS_SOPC_SGDMA_TX_BASE;
+ 	priv->rx_desc = rx_desc;
 -- 
 1.7.1
 
