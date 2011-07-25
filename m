@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wy0-f177.google.com ([74.125.82.177])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QlGra-0002fK-VD
-	for barebox@lists.infradead.org; Mon, 25 Jul 2011 08:50:11 +0000
-Received: by wyf23 with SMTP id 23so3493193wyf.36
-	for <barebox@lists.infradead.org>; Mon, 25 Jul 2011 01:50:06 -0700 (PDT)
+	id 1QlHQv-0002rN-6j
+	for barebox@lists.infradead.org; Mon, 25 Jul 2011 09:26:42 +0000
+Date: Mon, 25 Jul 2011 11:26:28 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20110725092628.GX20587@pengutronix.de>
+References: <1311488305-29960-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20110725025751.GC10295@game.jcrosoft.org>
-References: <1311535336-4534-1-git-send-email-antonynpavlov@gmail.com>
-	<1311535336-4534-7-git-send-email-antonynpavlov@gmail.com>
-	<20110725025751.GC10295@game.jcrosoft.org>
-Date: Mon, 25 Jul 2011 12:50:06 +0400
-Message-ID: <CAA4bVAGHxrNbq-UvcuTyyuLVxyQg-Q5Do+CMt114PgiQ53dR9w@mail.gmail.com>
-From: Antony Pavlov <antonynpavlov@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <1311488305-29960-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,41 +22,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 08/10] MIPS: add initial D-Link DIR-320 wireless router
-	support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH] DRIVER_SERIAL_LINUX_CONSOLE: fix misprint
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On 25/07/2011, Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> wrote:
-> On 23:22 Sun 24 Jul     , Antony Pavlov wrote:
+It took me some time to see the actual change ;)
 
-Thanks for your notes.
+Applied to -next.
 
->> Can be started from CFE using tftp, e.g.:
->>
->>   CFE> ifconfig eth0 -addr=192.168.0.99
->>   CFE> boot -tftp -addr=a0800000 -raw 192.168.0.1:barebox.bin
-> how abaut put this in doxygen?
+Sascha
 
-You are right.
-
->> +
->> +/* we are expecting always one serial interface */
->> +static struct device_d dir320_serial_device = {
->> +	.name = "serial_ns16550",
->> +	.map_base = DEBUG_LL_UART_ADDR,
->> +	.size = 8,
->> +	.platform_data = (void *)&serial_plat,
->> +};
-> please rebase this against next branch
->
-> map_base and size are depricated
-
-Ok
+On Sun, Jul 24, 2011 at 10:18:25AM +0400, Antony Pavlov wrote:
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> ---
+>  drivers/serial/Kconfig  |    2 +-
+>  drivers/serial/Makefile |    2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
+> index b8ae475..c2bee79 100644
+> --- a/drivers/serial/Kconfig
+> +++ b/drivers/serial/Kconfig
+> @@ -28,7 +28,7 @@ config DRIVER_SERIAL_NETX
+>  	default y
+>  	bool "Netx serial driver"
+>  
+> -config DRIVER_SERIAL_LINUX_COMSOLE
+> +config DRIVER_SERIAL_LINUX_CONSOLE
+>  	depends on LINUX
+>  	default y
+>  	bool "linux console driver"
+> diff --git a/drivers/serial/Makefile b/drivers/serial/Makefile
+> index 8b56d15..411b8c5 100644
+> --- a/drivers/serial/Makefile
+> +++ b/drivers/serial/Makefile
+> @@ -10,7 +10,7 @@ obj-$(CONFIG_DRIVER_SERIAL_IMX)			+= serial_imx.o
+>  obj-$(CONFIG_DRIVER_SERIAL_STM378X)		+= stm-serial.o
+>  obj-$(CONFIG_DRIVER_SERIAL_ATMEL)		+= atmel.o
+>  obj-$(CONFIG_DRIVER_SERIAL_NETX)		+= serial_netx.o
+> -obj-$(CONFIG_DRIVER_SERIAL_LINUX_COMSOLE)	+= linux_console.o
+> +obj-$(CONFIG_DRIVER_SERIAL_LINUX_CONSOLE)	+= linux_console.o
+>  obj-$(CONFIG_DRIVER_SERIAL_MPC5XXX)		+= serial_mpc5xxx.o
+>  obj-$(CONFIG_DRIVER_SERIAL_BLACKFIN)		+= serial_blackfin.o
+>  obj-$(CONFIG_DRIVER_SERIAL_NS16550)		+= serial_ns16550.o
+> -- 
+> 1.7.5.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
-Best regards,
-  Antony Pavlov
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
