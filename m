@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-fx0-f43.google.com ([209.85.161.43])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QlJvz-00059Y-NU
-	for barebox@lists.infradead.org; Mon, 25 Jul 2011 12:07:00 +0000
-Received: by fxg17 with SMTP id 17so7107807fxg.16
-	for <barebox@lists.infradead.org>; Mon, 25 Jul 2011 05:06:54 -0700 (PDT)
+	id 1QlJvw-00058U-Uw
+	for barebox@lists.infradead.org; Mon, 25 Jul 2011 12:06:59 +0000
+Received: by fxg17 with SMTP id 17so7107753fxg.16
+	for <barebox@lists.infradead.org>; Mon, 25 Jul 2011 05:06:51 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon, 25 Jul 2011 16:06:39 +0400
-Message-Id: <1311595600-20091-12-git-send-email-antonynpavlov@gmail.com>
+Date: Mon, 25 Jul 2011 16:06:36 +0400
+Message-Id: <1311595600-20091-9-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1311595600-20091-1-git-send-email-antonynpavlov@gmail.com>
 References: <1311595600-20091-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,58 +23,94 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v8 12/12] MIPS: add draft cpuinfo command
+Subject: [PATCH v8 09/12] MIPS: add initial BCM47xx-based boards support
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/Kconfig       |   11 +++++++++++
- arch/mips/lib/Makefile  |    2 ++
- arch/mips/lib/cpuinfo.c |   38 ++++++++++++++++++++++++++++++++++++++
- 3 files changed, 51 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/lib/cpuinfo.c
+ arch/mips/Kconfig                              |   10 ++++++
+ arch/mips/Makefile                             |    2 +
+ arch/mips/mach-bcm47xx/Kconfig                 |   12 +++++++
+ arch/mips/mach-bcm47xx/Makefile                |    1 +
+ arch/mips/mach-bcm47xx/include/mach/debug_ll.h |   40 ++++++++++++++++++++++++
+ arch/mips/mach-bcm47xx/include/mach/hardware.h |   32 +++++++++++++++++++
+ arch/mips/mach-bcm47xx/reset.c                 |   36 +++++++++++++++++++++
+ 7 files changed, 133 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/mach-bcm47xx/Kconfig
+ create mode 100644 arch/mips/mach-bcm47xx/Makefile
+ create mode 100644 arch/mips/mach-bcm47xx/include/mach/debug_ll.h
+ create mode 100644 arch/mips/mach-bcm47xx/include/mach/hardware.h
+ create mode 100644 arch/mips/mach-bcm47xx/reset.c
 
 diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 50d734a..8970470 100644
+index a84d469..50d734a 100644
 --- a/arch/mips/Kconfig
 +++ b/arch/mips/Kconfig
-@@ -208,6 +208,17 @@ config 64BIT
+@@ -37,9 +37,19 @@ config MACH_MIPS_MALTA
+ 	select SYS_SUPPORTS_BIG_ENDIAN
+ 	select HAS_DEBUG_LL
  
++config MACH_MIPS_BCM47XX
++	bool "Broadcom BCM47xx-based boards"
++	select CSRC_R4K_LIB
++	select DRIVER_SERIAL_NS16550
++	select SYS_HAS_CPU_MIPS32_R1
++	select SYS_SUPPORTS_32BIT_KERNEL
++	select SYS_SUPPORTS_LITTLE_ENDIAN
++	select HAS_DEBUG_LL
++
  endchoice
  
-+menu "MIPS specific settings        "
+ source arch/mips/mach-malta/Kconfig
++source arch/mips/mach-bcm47xx/Kconfig
+ 
+ endmenu
+ 
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index ca6aa56..b3554d2 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -37,6 +37,8 @@ LDFLAGS_barebox += -nostdlib
+ machine-$(CONFIG_MACH_MIPS_MALTA)	:= malta
+ board-$(CONFIG_BOARD_QEMU_MALTA)	:= qemu-malta
+ 
++machine-$(CONFIG_MACH_MIPS_BCM47XX)	:= bcm47xx
 +
-+config CMD_MIPS_CPUINFO
-+	bool "cpuinfo command"
-+	default y
-+	help
-+	  Say yes here to get a cpuinfo command to show some
-+	  information about the cpu model.
-+
-+endmenu
-+
- source common/Kconfig
- source commands/Kconfig
- source net/Kconfig
-diff --git a/arch/mips/lib/Makefile b/arch/mips/lib/Makefile
-index 67e4e8a..45fe920 100644
---- a/arch/mips/lib/Makefile
-+++ b/arch/mips/lib/Makefile
-@@ -4,3 +4,5 @@ obj-y += lshrdi3.o
- obj-y += ashldi3.o
- obj-y += ashrdi3.o
- obj-y += memory.o
-+
-+obj-$(CONFIG_CMD_MIPS_CPUINFO) += cpuinfo.o
-diff --git a/arch/mips/lib/cpuinfo.c b/arch/mips/lib/cpuinfo.c
+ machdirs := $(patsubst %,arch/mips/mach-%/,$(machine-y))
+ 
+ ifeq ($(KBUILD_SRC),)
+diff --git a/arch/mips/mach-bcm47xx/Kconfig b/arch/mips/mach-bcm47xx/Kconfig
 new file mode 100644
-index 0000000..7bdb02b
+index 0000000..5143a15
 --- /dev/null
-+++ b/arch/mips/lib/cpuinfo.c
-@@ -0,0 +1,38 @@
++++ b/arch/mips/mach-bcm47xx/Kconfig
+@@ -0,0 +1,12 @@
++if MACH_MIPS_BCM47XX
++
++config ARCH_TEXT_BASE
++	hex
++	default 0xa0800000
++
++choice
++	prompt "Board type"
++
++endchoice
++
++endif
+diff --git a/arch/mips/mach-bcm47xx/Makefile b/arch/mips/mach-bcm47xx/Makefile
+new file mode 100644
+index 0000000..f3cc668
+--- /dev/null
++++ b/arch/mips/mach-bcm47xx/Makefile
+@@ -0,0 +1 @@
++obj-y += reset.o
+diff --git a/arch/mips/mach-bcm47xx/include/mach/debug_ll.h b/arch/mips/mach-bcm47xx/include/mach/debug_ll.h
+new file mode 100644
+index 0000000..32d13c1
+--- /dev/null
++++ b/arch/mips/mach-bcm47xx/include/mach/debug_ll.h
+@@ -0,0 +1,40 @@
 +/*
-+ * cpuinfo - show information about MIPS CPU
-+ *
 + * Copyright (C) 2011 Antony Pavlov <antonynpavlov@gmail.com>
 + *
 + * This file is part of barebox.
@@ -94,22 +130,106 @@ index 0000000..7bdb02b
 + * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 + */
 +
-+#include <common.h>
-+#include <command.h>
-+#include <asm/mipsregs.h>
++/** @file
++ *  This File contains declaration for early output support
++ */
++#ifndef __INCLUDE_ARCH_DEBUG_LL_H__
++#define   __INCLUDE_ARCH_DEBUG_LL_H__
 +
-+static int do_cpuinfo(struct command *cmdtp, int argc, char *argv[])
++#include <asm/io.h>
++#include <mach/hardware.h>
++
++#define rbr		0
++#define lsr		5
++#define LSR_THRE	0x20	/* Xmit holding register empty */
++
++static __inline__ void putc(char ch)
 +{
-+	printf("CP0_PRID = 0x%08x\n", read_c0_prid());
-+	printf("CP0_CONFIG = 0x%08x\n", read_c0_config());
-+
-+	return 0;
++	while (!(__raw_readb(DEBUG_LL_UART_ADDR + lsr) & LSR_THRE));
++	__raw_writeb(ch, DEBUG_LL_UART_ADDR + rbr);
 +}
 +
-+BAREBOX_CMD_START(cpuinfo)
-+	.cmd            = do_cpuinfo,
-+	.usage          = "Show info about CPU",
-+BAREBOX_CMD_END
++#endif  /* __INCLUDE_ARCH_DEBUG_LL_H__ */
+diff --git a/arch/mips/mach-bcm47xx/include/mach/hardware.h b/arch/mips/mach-bcm47xx/include/mach/hardware.h
+new file mode 100644
+index 0000000..703e7f7
+--- /dev/null
++++ b/arch/mips/mach-bcm47xx/include/mach/hardware.h
+@@ -0,0 +1,32 @@
++/*
++ * Copyright (C) 2011 Antony Pavlov <antonynpavlov@gmail.com>
++ *
++ * This file is part of barebox.
++ * See file CREDITS for list of people who contributed to this project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ */
++
++#ifndef __INCLUDE_ARCH_HARDWARE_H__
++#define   __INCLUDE_ARCH_HARDWARE_H__
++
++#define DEBUG_LL_UART_ADDR	0xb8000300
++
++/*
++ * Reset register.
++ */
++#define SOFTRES_REG	0xbf000500
++#define GORESET		0x42
++
++#endif  /* __INCLUDE_ARCH_HARDWARE_H__ */
+diff --git a/arch/mips/mach-bcm47xx/reset.c b/arch/mips/mach-bcm47xx/reset.c
+new file mode 100644
+index 0000000..2818e7c
+--- /dev/null
++++ b/arch/mips/mach-bcm47xx/reset.c
+@@ -0,0 +1,36 @@
++/*
++ * Copyright (C) 2011 Antony Pavlov <antonynpavlov@gmail.com>
++ *
++ * This file is part of barebox.
++ * See file CREDITS for list of people who contributed to this project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ */
++
++/**
++ * @file
++ * @brief Resetting an malta board
++ */
++
++#include <common.h>
++#include <asm/io.h>
++#include <mach/hardware.h>
++
++void __noreturn reset_cpu(ulong addr)
++{
++	__raw_writel(GORESET, (char *)SOFTRES_REG);
++	while (1);
++	/*NOTREACHED*/
++}
++EXPORT_SYMBOL(reset_cpu);
 -- 
 1.7.5.4
 
