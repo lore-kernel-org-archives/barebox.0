@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-fx0-f43.google.com ([209.85.161.43])
+Received: from mail-ey0-f170.google.com ([209.85.215.170])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QlJvv-00057W-EN
-	for barebox@lists.infradead.org; Mon, 25 Jul 2011 12:06:56 +0000
-Received: by fxg17 with SMTP id 17so7107719fxg.16
-	for <barebox@lists.infradead.org>; Mon, 25 Jul 2011 05:06:49 -0700 (PDT)
+	id 1QlJvt-000570-O1
+	for barebox@lists.infradead.org; Mon, 25 Jul 2011 12:06:54 +0000
+Received: by eyd10 with SMTP id 10so4562885eyd.29
+	for <barebox@lists.infradead.org>; Mon, 25 Jul 2011 05:06:47 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon, 25 Jul 2011 16:06:34 +0400
-Message-Id: <1311595600-20091-7-git-send-email-antonynpavlov@gmail.com>
+Date: Mon, 25 Jul 2011 16:06:32 +0400
+Message-Id: <1311595600-20091-5-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1311595600-20091-1-git-send-email-antonynpavlov@gmail.com>
 References: <1311595600-20091-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,217 +23,88 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v8 07/12] MIPS: add qemu malta board support to barebox
+Subject: [PATCH v8 05/12] MIPS: add documentation
 To: barebox@lists.infradead.org
-
-The only supported peripheral is ns16550 serial port.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/Makefile                     |    1 +
- arch/mips/boards/qemu-malta/Kconfig    |    6 +++
- arch/mips/boards/qemu-malta/Makefile   |    1 +
- arch/mips/boards/qemu-malta/config.h   |   19 ++++++++++
- arch/mips/boards/qemu-malta/serial.c   |   61 ++++++++++++++++++++++++++++++++
- arch/mips/configs/qemu-malta_defconfig |   45 +++++++++++++++++++++++
- arch/mips/mach-malta/Kconfig           |    5 +++
- 7 files changed, 138 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/boards/qemu-malta/Kconfig
- create mode 100644 arch/mips/boards/qemu-malta/Makefile
- create mode 100644 arch/mips/boards/qemu-malta/config.h
- create mode 100644 arch/mips/boards/qemu-malta/serial.c
- create mode 100644 arch/mips/configs/qemu-malta_defconfig
+ arch/architecture.dox   |    1 +
+ arch/mips/mach-mips.dox |   54 +++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 55 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/mach-mips.dox
 
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index cd5d364..ca6aa56 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -35,6 +35,7 @@ endif
- LDFLAGS_barebox += -nostdlib
+diff --git a/arch/architecture.dox b/arch/architecture.dox
+index 67e2c38..2d2cf05 100644
+--- a/arch/architecture.dox
++++ b/arch/architecture.dox
+@@ -86,6 +86,7 @@ TODO
  
- machine-$(CONFIG_MACH_MIPS_MALTA)	:= malta
-+board-$(CONFIG_BOARD_QEMU_MALTA)	:= qemu-malta
+ @li @subpage dev_arm_mach
+ @li @subpage dev_bf_mach
++@li @subpage dev_mips_mach
+ @li @subpage dev_ppc_mach
+ @li @subpage dev_x86_mach
  
- machdirs := $(patsubst %,arch/mips/mach-%/,$(machine-y))
- 
-diff --git a/arch/mips/boards/qemu-malta/Kconfig b/arch/mips/boards/qemu-malta/Kconfig
+diff --git a/arch/mips/mach-mips.dox b/arch/mips/mach-mips.dox
 new file mode 100644
-index 0000000..6d86c14
+index 0000000..018fc44
 --- /dev/null
-+++ b/arch/mips/boards/qemu-malta/Kconfig
-@@ -0,0 +1,6 @@
-+if BOARD_QEMU_MALTA
-+
-+config BOARDINFO
-+	default "qemu malta"
-+
-+endif
-diff --git a/arch/mips/boards/qemu-malta/Makefile b/arch/mips/boards/qemu-malta/Makefile
-new file mode 100644
-index 0000000..ff1a655
---- /dev/null
-+++ b/arch/mips/boards/qemu-malta/Makefile
-@@ -0,0 +1 @@
-+obj-$(CONFIG_DRIVER_SERIAL_NS16550) += serial.o
-diff --git a/arch/mips/boards/qemu-malta/config.h b/arch/mips/boards/qemu-malta/config.h
-new file mode 100644
-index 0000000..eb4ab08
---- /dev/null
-+++ b/arch/mips/boards/qemu-malta/config.h
-@@ -0,0 +1,19 @@
-+/*
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-+ * MA 02111-1307 USA
-+ *
++++ b/arch/mips/mach-mips.dox
+@@ -0,0 +1,54 @@
++/* This document is intended to provide the developer with information
++ * how to integrate a new CPU (MACH) into this part of the barebox tree
 + */
 +
-+/* nothing special yet */
-diff --git a/arch/mips/boards/qemu-malta/serial.c b/arch/mips/boards/qemu-malta/serial.c
-new file mode 100644
-index 0000000..901cb2a
---- /dev/null
-+++ b/arch/mips/boards/qemu-malta/serial.c
-@@ -0,0 +1,61 @@
-+/*
-+ * Copyright (C) 2011 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ * This file is part of barebox.
-+ * See file CREDITS for list of people who contributed to this project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-+ */
++/** @page dev_mips_mach MIPS based CPU (MACH) into the tree
 +
-+#include <common.h>
-+#include <types.h>
-+#include <driver.h>
-+#include <init.h>
-+#include <ns16550.h>
-+#include <mach/hardware.h>
-+#include <asm/io.h>
-+#include <asm/common.h>
++@section mach_mips_reset What's happens when the reset signal is gone
 +
-+NS16550_READ_WRITE_UART_FUNC(malta, 0, 0)
++Barebox normally must be linked to RAM region, cached region KSEG0 is preferred.
++This make possible to run fast (because cache used) and skip MMU support.
 +
-+static struct NS16550_plat serial_plat = {
-+	.clock = 1843200, /* no matter */
-+	.f_caps = CONSOLE_STDIN | CONSOLE_STDOUT | CONSOLE_STDERR,
-+	.reg_read = malta_uart_read,
-+	.reg_write = malta_uart_write,
-+};
++After reset MIPS CPU starting to fetch instructions from 0xBFC00000.
 +
-+static struct resource uart0_resources[] = {
-+	[0] = {
-+		.start	= DEBUG_LL_UART_ADDR,
-+		.size	= 8,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+};
++@note Code running immediately after reset runs at an address it is not linked
++      to: "runtime address != link address". You should only use branches and
++      do not refer to fixed data. This implies the use of assembler code only.
++      After MIPS CPU reset cache and MMU are in random state. They are unusable.
 +
-+/* we are expecting always one serial interface */
-+static struct device_d generic_malta_serial_device = {
-+	.name = "serial_ns16550",
-+	.id = 0,
-+	.num_resources	= ARRAY_SIZE(uart0_resources),
-+	.resource	= uart0_resources,
-+	.platform_data = (void *)&serial_plat,
-+};
++barebox MIPS initialisation sequence:
 +
-+static int malta_console_init(void)
-+{
-+	/* Register the serial port */
-+	return register_device(&generic_malta_serial_device);
-+}
-+console_initcall(malta_console_init);
-diff --git a/arch/mips/configs/qemu-malta_defconfig b/arch/mips/configs/qemu-malta_defconfig
-new file mode 100644
-index 0000000..9be8662
---- /dev/null
-+++ b/arch/mips/configs/qemu-malta_defconfig
-@@ -0,0 +1,45 @@
-+CONFIG_STACK_SIZE=0x7000
-+CONFIG_BROKEN=y
-+CONFIG_EXPERIMENTAL=y
-+CONFIG_LONGHELP=y
-+CONFIG_HUSH_FANCY_PROMPT=y
-+CONFIG_HUSH_GETOPT=y
-+CONFIG_CMDLINE_EDITING=y
-+CONFIG_AUTO_COMPLETE=y
-+CONFIG_MENU=y
-+CONFIG_PASSWORD=y
-+CONFIG_PARTITION=y
-+# CONFIG_DEFAULT_ENVIRONMENT is not set
-+CONFIG_POLLER=y
-+CONFIG_DEBUG_INFO=y
-+CONFIG_CMD_EDIT=y
-+CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_SAVEENV=y
-+CONFIG_CMD_LOADENV=y
-+CONFIG_CMD_EXPORT=y
-+CONFIG_CMD_PRINTENV=y
-+CONFIG_CMD_READLINE=y
-+CONFIG_CMD_MENU=y
-+CONFIG_CMD_MENU_MANAGEMENT=y
-+CONFIG_CMD_ECHO_E=y
-+CONFIG_CMD_LOADB=y
-+CONFIG_CMD_MEMINFO=y
-+CONFIG_CMD_CRC=y
-+CONFIG_CMD_CRC_CMP=y
-+CONFIG_CMD_MD5SUM=y
-+CONFIG_CMD_SHA1SUM=y
-+CONFIG_CMD_SHA256SUM=y
-+CONFIG_CMD_MTEST=y
-+CONFIG_CMD_FLASH=y
-+CONFIG_CMD_RESET=y
-+CONFIG_CMD_GO=y
-+CONFIG_CMD_TIMEOUT=y
-+CONFIG_CMD_PARTITION=y
-+CONFIG_NET=y
-+CONFIG_NET_DHCP=y
-+CONFIG_NET_PING=y
-+CONFIG_NET_TFTP=y
-+CONFIG_NET_NETCONSOLE=y
-+# CONFIG_SPI is not set
-+CONFIG_MTD=y
-+CONFIG_FS_CRAMFS=y
-diff --git a/arch/mips/mach-malta/Kconfig b/arch/mips/mach-malta/Kconfig
-index 6076a13..8e0666c 100644
---- a/arch/mips/mach-malta/Kconfig
-+++ b/arch/mips/mach-malta/Kconfig
-@@ -7,6 +7,11 @@ config ARCH_TEXT_BASE
- choice
- 	prompt "Board type"
- 
-+config BOARD_QEMU_MALTA
-+	bool "qemu malta"
++ * set the CP0 STATUS register to some known and sensible state.
++Now you can load and store reliably in uncached space.
 +
- endchoice
- 
-+source arch/mips/boards/qemu-malta/Kconfig
++ * call a function \<mach_init_lowlevel\> (if not disabled).
++do some special things required only on specific CPU
++ (e. g. init RAM controller, disable watchdog)
 +
- endif
++ * call a function \<board_init_lowlevel\> (if not disable).
++do some special things required only on specific board
++ (e. g. setup GPIO to required state).
++
++   ** It is desirable to have some debug code to make some contact
++ with the outside world from assembler code
++(e.g. debug_ll-like functions to write to rs232 console).
++
++ * check integrity of barebox RAM execute location;
++ * copy barebox to RAM execute location;
++
++ * configure cache;
++
++ * setup stack;
++
++   ** after this point you can call a standard C routine.
++
++ * setup exception vectors in RAM;
++ * setup CP0 STATUS to switch exception vector address to RAM;
++
++ * call start_barebox()
++
++Further reading:
++ * Dominic Sweetman, See MIPS Run, Morgan Kaufmann, 2nd edition, 2006
++ISBN-13: 978-0120884216
++
++*/
 -- 
 1.7.5.4
 
