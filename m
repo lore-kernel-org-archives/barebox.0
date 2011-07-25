@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ww0-f49.google.com ([74.125.82.49])
+Received: from mail-wy0-f177.google.com ([74.125.82.177])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QlGkh-0002dM-Tj
-	for barebox@lists.infradead.org; Mon, 25 Jul 2011 08:43:04 +0000
-Received: by wwf22 with SMTP id 22so2798607wwf.18
-	for <barebox@lists.infradead.org>; Mon, 25 Jul 2011 01:43:00 -0700 (PDT)
+	id 1QlGra-0002fK-VD
+	for barebox@lists.infradead.org; Mon, 25 Jul 2011 08:50:11 +0000
+Received: by wyf23 with SMTP id 23so3493193wyf.36
+	for <barebox@lists.infradead.org>; Mon, 25 Jul 2011 01:50:06 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20110725025843.GD10295@game.jcrosoft.org>
+In-Reply-To: <20110725025751.GC10295@game.jcrosoft.org>
 References: <1311535336-4534-1-git-send-email-antonynpavlov@gmail.com>
-	<1311535336-4534-8-git-send-email-antonynpavlov@gmail.com>
-	<20110725025843.GD10295@game.jcrosoft.org>
-Date: Mon, 25 Jul 2011 12:42:59 +0400
-Message-ID: <CAA4bVAGyvhG-S74ewjPKhO93YVFiPSm+HLfXJKxG040L6B0D4Q@mail.gmail.com>
+	<1311535336-4534-7-git-send-email-antonynpavlov@gmail.com>
+	<20110725025751.GC10295@game.jcrosoft.org>
+Date: Mon, 25 Jul 2011 12:50:06 +0400
+Message-ID: <CAA4bVAGHxrNbq-UvcuTyyuLVxyQg-Q5Do+CMt114PgiQ53dR9w@mail.gmail.com>
 From: Antony Pavlov <antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -25,35 +25,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 09/10] MIPS: add draft cpuinfo command
+Subject: Re: [PATCH 08/10] MIPS: add initial D-Link DIR-320 wireless router
+	support
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
 On 25/07/2011, Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> wrote:
 > On 23:22 Sun 24 Jul     , Antony Pavlov wrote:
->> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
->> ---
->>  arch/mips/Kconfig       |   11 +++++++++++
->>  arch/mips/lib/Makefile  |    3 +++
->>  arch/mips/lib/cpuinfo.c |   38 ++++++++++++++++++++++++++++++++++++++
->>  3 files changed, 52 insertions(+), 0 deletions(-)
->>  create mode 100644 arch/mips/lib/cpuinfo.c
+
+Thanks for your notes.
+
+>> Can be started from CFE using tftp, e.g.:
 >>
-...
->> --- a/arch/mips/lib/Makefile
->> +++ b/arch/mips/lib/Makefile
->> @@ -4,3 +4,6 @@ obj-y += lshrdi3.o
->>  obj-y += ashldi3.o
->>  obj-y += ashrdi3.o
->>  obj-y += memory.o
+>>   CFE> ifconfig eth0 -addr=192.168.0.99
+>>   CFE> boot -tftp -addr=a0800000 -raw 192.168.0.1:barebox.bin
+> how abaut put this in doxygen?
+
+You are right.
+
 >> +
->> +#obj-$(CONFIG_CMD_MIPS_CPUINFO) += cpuinfo.o
->> +obj-y += cpuinfo.o
-> ??
+>> +/* we are expecting always one serial interface */
+>> +static struct device_d dir320_serial_device = {
+>> +	.name = "serial_ns16550",
+>> +	.map_base = DEBUG_LL_UART_ADDR,
+>> +	.size = 8,
+>> +	.platform_data = (void *)&serial_plat,
+>> +};
+> please rebase this against next branch
+>
+> map_base and size are depricated
 
-Ups ...
-
-I'm going to fix it.
+Ok
 
 -- 
 Best regards,
