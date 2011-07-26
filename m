@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-ew0-f49.google.com ([209.85.215.49])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1Qlbs6-0001lq-HE
-	for barebox@lists.infradead.org; Tue, 26 Jul 2011 07:16:07 +0000
-Received: by ewy3 with SMTP id 3so170047ewy.36
-	for <barebox@lists.infradead.org>; Tue, 26 Jul 2011 00:16:04 -0700 (PDT)
+	id 1Qlbtp-0001pe-Ba
+	for barebox@lists.infradead.org; Tue, 26 Jul 2011 07:17:54 +0000
+Received: by ewy3 with SMTP id 3so171431ewy.36
+	for <barebox@lists.infradead.org>; Tue, 26 Jul 2011 00:17:51 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue, 26 Jul 2011 11:16:00 +0400
-Message-Id: <1311664560-18006-1-git-send-email-antonynpavlov@gmail.com>
+Date: Tue, 26 Jul 2011 11:17:45 +0400
+Message-Id: <1311664665-18050-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1311655236-6684-1-git-send-email-plagnioj@jcrosoft.com>
+References: <1311655236-6684-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,60 +23,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Calculate SUBARCH in common makefile
+Subject: [PATCH] MIPS: try to select cross-compiler (if not set)
 To: barebox@lists.infradead.org
-
-This patch make possible to use SUBARCH no only
-in sandbox makefile.
-
-E.g. this patch make possible CROSS_COMPILER variable
-autoconstruction for mips architecture.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- Makefile              |   12 ++++++++++++
- arch/sandbox/Makefile |    5 -----
- 2 files changed, 12 insertions(+), 5 deletions(-)
+ arch/mips/Makefile     |   15 +++++++++++++++
+ scripts/Kbuild.include |   11 +++++++++++
+ 2 files changed, 26 insertions(+), 0 deletions(-)
 
-diff --git a/Makefile b/Makefile
-index 38dc3b0..ce1f72d 100644
---- a/Makefile
-+++ b/Makefile
-@@ -145,6 +145,18 @@ VPATH		:= $(srctree)$(if $(KBUILD_EXTMOD),:$(KBUILD_EXTMOD))
- 
- export srctree objtree VPATH
- 
-+# SUBARCH tells the usermode build what the underlying arch is.  That is set
-+# first, and if a usermode build is happening, the "ARCH=um" on the command
-+# line overrides the setting of ARCH below.  If a native build is happening,
-+# then ARCH is assigned, getting whatever value it gets normally, and
-+# SUBARCH is subsequently ignored.
-+
-+SUBARCH := $(shell uname -m | sed -e s/i.86/i386/ -e s/sun4u/sparc64/ \
-+				  -e s/arm.*/arm/ -e s/sa110/arm/ \
-+				  -e s/s390x/s390/ -e s/parisc64/parisc/ \
-+				  -e s/ppc.*/powerpc/ -e s/mips.*/mips/ \
-+				  -e s/sh[234].*/sh/ )
-+
- # Cross compiling and selecting different set of gcc/bin-utils
- # ---------------------------------------------------------------------------
- #
-diff --git a/arch/sandbox/Makefile b/arch/sandbox/Makefile
-index 4ca17ed..e7afda3 100644
---- a/arch/sandbox/Makefile
-+++ b/arch/sandbox/Makefile
-@@ -32,11 +32,6 @@ else
- CPPFLAGS += $(patsubst %,-I$(srctree)/%include,$(machdirs))
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index 1ec2107..4d635c6 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -17,6 +17,21 @@ else
+ 64bit-emul		= elf64btsmip
  endif
  
--SUBARCH := $(shell uname -m | sed -e s/i.86/i386/ -e s/sun4u/sparc64/ \
--				  -e s/arm.*/arm/ -e s/sa110/arm/ \
--				  -e s/s390x/s390/ -e s/parisc64/parisc/ \
--				  -e s/ppc.*/powerpc/ -e s/mips.*/mips/ )
--
- ifeq ($(SUBARCH),x86_64)
- ELF_ARCH   := i386:x86-64
- ELF_FORMAT := elf64-x86-64
++ifdef CONFIG_32BIT
++tool-archpref		= $(32bit-tool-archpref)
++UTS_MACHINE		:= mips
++endif
++ifdef CONFIG_64BIT
++tool-archpref		= $(64bit-tool-archpref)
++UTS_MACHINE		:= mips64
++endif
++
++ifneq ($(SUBARCH),$(ARCH))
++  ifeq ($(CROSS_COMPILE),)
++    CROSS_COMPILE := $(call cc-cross-prefix, $(tool-archpref)-linux-  $(tool-archpref)-linux-gnu-  $(tool-archpref)-unknown-linux-gnu-)
++  endif
++endif
++
+ CPPFLAGS += -D__MIPS__ -fno-strict-aliasing -fno-merge-constants
+ 
+ cflags-y += -G 0 -mno-abicalls -fno-pic -pipe
+diff --git a/scripts/Kbuild.include b/scripts/Kbuild.include
+index 95e7746..0e6e2c7 100644
+--- a/scripts/Kbuild.include
++++ b/scripts/Kbuild.include
+@@ -56,6 +56,17 @@ endef
+ # gcc support functions
+ # See documentation in Documentation/kbuild/makefiles.txt
+ 
++# cc-cross-prefix
++# Usage: CROSS_COMPILE := $(call cc-cross-prefix, m68k-linux-gnu- m68k-linux-)
++# Return first prefix where a prefix$(CC) is found in PATH.
++# If no $(CC) found in PATH with listed prefixes return nothing
++cc-cross-prefix =  \
++	$(word 1, $(foreach c,$(1),                                   \
++		$(shell set -e;                                       \
++		if (which $(strip $(c))$(CC)) > /dev/null 2>&1 ; then \
++			echo $(c);                                    \
++		fi)))
++
+ # output directory for tests below
+ TMPOUT := $(if $(KBUILD_EXTMOD),$(firstword $(KBUILD_EXTMOD))/)
+ 
 -- 
 1.7.5.4
 
