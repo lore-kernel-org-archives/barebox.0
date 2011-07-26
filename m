@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-ey0-f170.google.com ([209.85.215.170])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1Qlge9-0004eb-JZ
-	for barebox@lists.infradead.org; Tue, 26 Jul 2011 12:22:02 +0000
-Date: Tue, 26 Jul 2011 14:21:57 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110726122157.GM20587@pengutronix.de>
-References: <1311655236-6684-1-git-send-email-plagnioj@jcrosoft.com>
+	id 1Qli7p-0006JQ-63
+	for barebox@lists.infradead.org; Tue, 26 Jul 2011 13:56:46 +0000
+Received: by eyd10 with SMTP id 10so952511eyd.29
+	for <barebox@lists.infradead.org>; Tue, 26 Jul 2011 06:56:42 -0700 (PDT)
+Message-ID: <4E2EC796.7070408@googlemail.com>
+Date: Tue, 26 Jul 2011 15:56:38 +0200
+From: Andre Naujoks <nautsch2@googlemail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1311655236-6684-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,53 +21,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mips: fix mipsel toolchains support to compile
-	BIG_ENDIAN board
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: barebox compilation with gcc 4.5.2 and ptxdist
+To: barebox@lists.infradead.org
 
-On Tue, Jul 26, 2011 at 06:40:36AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  arch/mips/Makefile |   42 ++++++++++++++++++++++++++++++++++++++----
->  1 files changed, 38 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-> index 86b4b80..72434d4 100644
-> --- a/arch/mips/Makefile
-> +++ b/arch/mips/Makefile
-> @@ -1,20 +1,54 @@
-> +#
-> +# Select the object file format to substitute into the linker script.
-> +#
-> +ifdef CONFIG_CPU_LITTLE_ENDIAN
-> +32bit-tool-archpref	= mipsel
-> +64bit-tool-archpref	= mips64el
-> +32bit-bfd		= elf32-tradlittlemips
-> +64bit-bfd		= elf64-tradlittlemips
-> +32bit-emul		= elf32ltsmip
-> +64bit-emul		= elf64ltsmip
-> +else
-> +32bit-tool-archpref	= mips
-> +64bit-tool-archpref	= mips64
-> +32bit-bfd		= elf32-tradbigmips
-> +64bit-bfd		= elf64-tradbigmips
-> +32bit-emul		= elf32btsmip
-> +64bit-emul		= elf64btsmip
-> +endif
+Hello.
 
-I'm not convinced that introducing magic for finding a cross toolchain
-is a good idea. The corresponding kernel code goes back to the pre
-2.6.12 era and I think it wouldn't find its way mainline nowadays.
+We are currently trying to compile a barebox with the git version of
+ptxdist and the git version of the OSELAS generic Toolchain for powerpc.
 
-Sascha
+Also the current 2011.07.0 release of barebox.
+
+We are having some problems during the build, which I think are a result
+of some changes in gcc's optimizations (since 4.4.something). GCC uses
+some functions on the ppc platform to optimze the size of the resulting
+binary, which are only present in the libgcc.a.
+
+The compile stage works fine up tp the last linker step:
+
+  CC      arch/ppc/lib/time.o
+  AS      arch/ppc/lib/misc.o
+  CC      arch/ppc/lib/ppclinux.o
+  CC      arch/ppc/lib/board_data.o
+  LD      arch/ppc/lib/built-in.o
+  LD      barebox
+common/built-in.o: In function `mapset':
+hush.c:(.text.mapset+0x44): undefined reference to `_restgpr_30_x'
+common/built-in.o: In function `syntax_err':
+hush.c:(.text.syntax_err+0x34): undefined reference to `_restgpr_30_x'
+common/built-in.o: In function `done_command':
+hush.c:(.text.done_command+0x94): undefined reference to `_restgpr_29_x'
+common/built-in.o: In function `done_pipe':
+hush.c:(.text.done_pipe+0x5c): undefined reference to `_restgpr_29_x'
+common/built-in.o: In function `is_assignment':
+hush.c:(.text.is_assignment+0x8c): undefined reference to `_restgpr_27_x'
+common/built-in.o: In function `b_addchr':
+hush.c:(.text.b_addchr+0x8c): undefined reference to `_restgpr_28_x'
+common/built-in.o: In function `b_addqchr':
+hush.c:(.text.b_addqchr+0x78): undefined reference to `_restgpr_29_x'
+...
 
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+This goes on for a few pages.
+
+As far as I can see, the possibilities I have here, is to either
+integrate the missing functions out of the gcc sources into barebox, or
+make barebox link with libgcc, which seems surprisingly difficult, due
+to the unfamiliar (to me) build process. A simple LDFLAGS_barebox+=-l..
+-L.. did not help here.
+
+Am I right with this assumption, or am I missing something else here?
+
+Any help would really be appreciated.
+
+Regards
+  Andre Naujoks
 
 _______________________________________________
 barebox mailing list
