@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-ey0-f170.google.com ([209.85.215.170])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1Qlnv9-0003GE-Cn
-	for barebox@lists.infradead.org; Tue, 26 Jul 2011 20:08:04 +0000
-Received: by eyd10 with SMTP id 10so1591113eyd.29
-	for <barebox@lists.infradead.org>; Tue, 26 Jul 2011 13:08:01 -0700 (PDT)
+	id 1QlnvA-0003GE-Pw
+	for barebox@lists.infradead.org; Tue, 26 Jul 2011 20:08:06 +0000
+Received: by mail-ey0-f170.google.com with SMTP id 10so1591113eyd.29
+	for <barebox@lists.infradead.org>; Tue, 26 Jul 2011 13:08:04 -0700 (PDT)
 From: franck.jullien@gmail.com
-Date: Tue, 26 Jul 2011 22:07:54 +0200
-Message-Id: <1311710877-13004-2-git-send-email-franck.jullien@gmail.com>
+Date: Tue, 26 Jul 2011 22:07:56 +0200
+Message-Id: <1311710877-13004-4-git-send-email-franck.jullien@gmail.com>
 In-Reply-To: <1311710877-13004-1-git-send-email-franck.jullien@gmail.com>
 References: <1311710877-13004-1-git-send-email-franck.jullien@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,77 +23,88 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] nios2/generic.c: Add resources for altera TSE
+Subject: [PATCH 3/4] nios2/serial_altera: Switch to resources
 To: barebox@lists.infradead.org
 
 From: Franck Jullien <franck.jullien@gmail.com>
 
-This patch adds resources for the Altera TSE driver as
-this driver has been moved to resources usage.
-
-The serial device also uses resources declared with the helps
-of add_generic_device.
-
 Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
 ---
- arch/nios2/boards/generic/generic.c |   31 ++++++++++++++++++++++---------
- 1 files changed, 22 insertions(+), 9 deletions(-)
+ drivers/serial/serial_altera.c |   31 ++++++++++++++++++++++++++-----
+ 1 files changed, 26 insertions(+), 5 deletions(-)
 
-diff --git a/arch/nios2/boards/generic/generic.c b/arch/nios2/boards/generic/generic.c
-index 089715b..49c1d7c 100644
---- a/arch/nios2/boards/generic/generic.c
-+++ b/arch/nios2/boards/generic/generic.c
-@@ -6,20 +6,32 @@
+diff --git a/drivers/serial/serial_altera.c b/drivers/serial/serial_altera.c
+index 54c7178..1148564 100644
+--- a/drivers/serial/serial_altera.c
++++ b/drivers/serial/serial_altera.c
+@@ -27,9 +27,17 @@
+ #include <asm/io.h>
+ #include <asm/nios2-io.h>
  
- static int phy_address = 1;
- 
-+static struct resource mac_resources[] = {
-+	[0] = {
-+		.start	= NIOS_SOPC_TSE_BASE,
-+		.size	= 0x400,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+	[1] = {
-+		.start	= NIOS_SOPC_SGDMA_RX_BASE,
-+		.size	= 0x40,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+	[2] = {
-+		.start	= NIOS_SOPC_SGDMA_TX_BASE,
-+		.size	= 0x40,
-+		.flags	= IORESOURCE_MEM,
-+	},
++struct altera_serial_priv {
++	struct console_device cdev;
++	void __iomem *regs;
 +};
 +
- static struct device_d mac_dev = {
- 	.id            = -1,
- 	.name          = "altera_tse",
--	.map_base      = NIOS_SOPC_TSE_BASE,
--	.size          = 0x00000400,
-+	.num_resources = ARRAY_SIZE(mac_resources),
-+	.resource      = mac_resources,
- 	.platform_data = &phy_address,
- };
- 
--static struct device_d altera_serial_device = {
--	.id       = -1,
--	.name     = "altera_serial",
--	.map_base = NIOS_SOPC_UART_BASE,
--};
--
- /*
- static struct device_d epcs_flash_device = {
- 	.id       = -1,
-@@ -49,7 +61,8 @@ device_initcall(generic_devices_init);
- 
- static int altera_console_init(void)
+ static int altera_serial_setbaudrate(struct console_device *cdev, int baudrate)
  {
--	register_device(&altera_serial_device);
-+	add_generic_device("altera_serial", -1, NULL, NIOS_SOPC_UART_BASE, 0x20,
-+			   IORESOURCE_MEM, NULL);
+-	struct nios_uart *uart = (struct nios_uart *)cdev->dev->map_base;
++	struct altera_serial_priv *priv = container_of(cdev,
++		struct altera_serial_priv, cdev);
++
++	struct nios_uart *uart = priv->regs;
+ 	uint16_t div;
  
- 	return 0;
+ 	div = (CPU_FREQ / baudrate) - 1;
+@@ -40,7 +48,10 @@ static int altera_serial_setbaudrate(struct console_device *cdev, int baudrate)
+ 
+ static void altera_serial_putc(struct console_device *cdev, char c)
+ {
+-	struct nios_uart *uart = (struct nios_uart *)cdev->dev->map_base;
++	struct altera_serial_priv *priv = container_of(cdev,
++		struct altera_serial_priv, cdev);
++
++	struct nios_uart *uart = priv->regs;
+ 
+ 	while ((readw(&uart->status) & NIOS_UART_TRDY) == 0);
+ 
+@@ -49,14 +60,20 @@ static void altera_serial_putc(struct console_device *cdev, char c)
+ 
+ static int altera_serial_tstc(struct console_device *cdev)
+ {
+-	struct nios_uart *uart = (struct nios_uart *)cdev->dev->map_base;
++	struct altera_serial_priv *priv = container_of(cdev,
++		struct altera_serial_priv, cdev);
++
++	struct nios_uart *uart = priv->regs;
+ 
+ 	return readw(&uart->status) & NIOS_UART_RRDY;
  }
+ 
+ static int altera_serial_getc(struct console_device *cdev)
+ {
+-	struct nios_uart *uart = (struct nios_uart *)cdev->dev->map_base;
++	struct altera_serial_priv *priv = container_of(cdev,
++		struct altera_serial_priv, cdev);
++
++	struct nios_uart *uart = priv->regs;
+ 
+ 	while (altera_serial_tstc(cdev) == 0);
+ 
+@@ -66,8 +83,12 @@ static int altera_serial_getc(struct console_device *cdev)
+ static int altera_serial_probe(struct device_d *dev)
+ {
+ 	struct console_device *cdev;
++	struct altera_serial_priv *priv;
++
++	priv = xmalloc(sizeof(*priv));
++	cdev = &priv->cdev;
+ 
+-	cdev = xmalloc(sizeof(struct console_device));
++	priv->regs = dev_request_mem_region(dev, 0);
+ 	dev->type_data = cdev;
+ 	cdev->dev = dev;
+ 	cdev->f_caps = CONSOLE_STDIN | CONSOLE_STDOUT | CONSOLE_STDERR;
 -- 
 1.7.6
 
