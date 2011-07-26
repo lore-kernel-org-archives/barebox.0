@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ey0-f170.google.com ([209.85.215.170])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1Qli7p-0006JQ-63
-	for barebox@lists.infradead.org; Tue, 26 Jul 2011 13:56:46 +0000
-Received: by eyd10 with SMTP id 10so952511eyd.29
-	for <barebox@lists.infradead.org>; Tue, 26 Jul 2011 06:56:42 -0700 (PDT)
-Message-ID: <4E2EC796.7070408@googlemail.com>
-Date: Tue, 26 Jul 2011 15:56:38 +0200
-From: Andre Naujoks <nautsch2@googlemail.com>
+	id 1QliV8-0006fW-9T
+	for barebox@lists.infradead.org; Tue, 26 Jul 2011 14:20:51 +0000
+Message-ID: <4E2ECD3A.1060509@pengutronix.de>
+Date: Tue, 26 Jul 2011 16:20:42 +0200
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 MIME-Version: 1.0
+References: <4E2EC796.7070408@googlemail.com>
+In-Reply-To: <4E2EC796.7070408@googlemail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,66 +17,118 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============0892638882=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: barebox compilation with gcc 4.5.2 and ptxdist
-To: barebox@lists.infradead.org
+Subject: Re: barebox compilation with gcc 4.5.2 and ptxdist
+To: Andre Naujoks <nautsch2@googlemail.com>
+Cc: barebox@lists.infradead.org
 
-Hello.
+This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
+--===============0892638882==
+Content-Type: multipart/signed; micalg=pgp-sha1;
+ protocol="application/pgp-signature";
+ boundary="------------enig49BDA5F8884B032E7DFE2626"
 
-We are currently trying to compile a barebox with the git version of
-ptxdist and the git version of the OSELAS generic Toolchain for powerpc.
+This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
+--------------enig49BDA5F8884B032E7DFE2626
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
 
-Also the current 2011.07.0 release of barebox.
+On 07/26/2011 03:56 PM, Andre Naujoks wrote:
+> Hello.
+>=20
+> We are currently trying to compile a barebox with the git version of
+> ptxdist and the git version of the OSELAS generic Toolchain for powerpc=
+=2E
+>=20
+> Also the current 2011.07.0 release of barebox.
+>=20
+> We are having some problems during the build, which I think are a resul=
+t
+> of some changes in gcc's optimizations (since 4.4.something). GCC uses
+> some functions on the ppc platform to optimze the size of the resulting=
 
-We are having some problems during the build, which I think are a result
-of some changes in gcc's optimizations (since 4.4.something). GCC uses
-some functions on the ppc platform to optimze the size of the resulting
-binary, which are only present in the libgcc.a.
+> binary, which are only present in the libgcc.a.
+>=20
+> The compile stage works fine up tp the last linker step:
+>=20
+>   CC      arch/ppc/lib/time.o
+>   AS      arch/ppc/lib/misc.o
+>   CC      arch/ppc/lib/ppclinux.o
+>   CC      arch/ppc/lib/board_data.o
+>   LD      arch/ppc/lib/built-in.o
+>   LD      barebox
+> common/built-in.o: In function `mapset':
+> hush.c:(.text.mapset+0x44): undefined reference to `_restgpr_30_x'
+> common/built-in.o: In function `syntax_err':
+> hush.c:(.text.syntax_err+0x34): undefined reference to `_restgpr_30_x'
+> common/built-in.o: In function `done_command':
+> hush.c:(.text.done_command+0x94): undefined reference to `_restgpr_29_x=
+'
+> common/built-in.o: In function `done_pipe':
+> hush.c:(.text.done_pipe+0x5c): undefined reference to `_restgpr_29_x'
+> common/built-in.o: In function `is_assignment':
+> hush.c:(.text.is_assignment+0x8c): undefined reference to `_restgpr_27_=
+x'
+> common/built-in.o: In function `b_addchr':
+> hush.c:(.text.b_addchr+0x8c): undefined reference to `_restgpr_28_x'
+> common/built-in.o: In function `b_addqchr':
+> hush.c:(.text.b_addqchr+0x78): undefined reference to `_restgpr_29_x'
+> ...
+>=20
+>=20
+> This goes on for a few pages.
+>=20
+> As far as I can see, the possibilities I have here, is to either
+> integrate the missing functions out of the gcc sources into barebox, or=
 
-The compile stage works fine up tp the last linker step:
+> make barebox link with libgcc, which seems surprisingly difficult, due
+> to the unfamiliar (to me) build process. A simple LDFLAGS_barebox+=3D-l=
+=2E.
+> -L.. did not help here.
+>=20
+> Am I right with this assumption, or am I missing something else here?
 
-  CC      arch/ppc/lib/time.o
-  AS      arch/ppc/lib/misc.o
-  CC      arch/ppc/lib/ppclinux.o
-  CC      arch/ppc/lib/board_data.o
-  LD      arch/ppc/lib/built-in.o
-  LD      barebox
-common/built-in.o: In function `mapset':
-hush.c:(.text.mapset+0x44): undefined reference to `_restgpr_30_x'
-common/built-in.o: In function `syntax_err':
-hush.c:(.text.syntax_err+0x34): undefined reference to `_restgpr_30_x'
-common/built-in.o: In function `done_command':
-hush.c:(.text.done_command+0x94): undefined reference to `_restgpr_29_x'
-common/built-in.o: In function `done_pipe':
-hush.c:(.text.done_pipe+0x5c): undefined reference to `_restgpr_29_x'
-common/built-in.o: In function `is_assignment':
-hush.c:(.text.is_assignment+0x8c): undefined reference to `_restgpr_27_x'
-common/built-in.o: In function `b_addchr':
-hush.c:(.text.b_addchr+0x8c): undefined reference to `_restgpr_28_x'
-common/built-in.o: In function `b_addqchr':
-hush.c:(.text.b_addqchr+0x78): undefined reference to `_restgpr_29_x'
-...
+We don't want to link barebox against libgcc, that's bad style. I
+suggest to port arch/powerpc/lib/crtsavres.S from the linux kernel to
+barebox.
+
+cheers, Marc
+
+--=20
+Pengutronix e.K.                  | Marc Kleine-Budde           |
+Industrial Linux Solutions        | Phone: +49-231-2826-924     |
+Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
+Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
 
 
-This goes on for a few pages.
+--------------enig49BDA5F8884B032E7DFE2626
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
 
-As far as I can see, the possibilities I have here, is to either
-integrate the missing functions out of the gcc sources into barebox, or
-make barebox link with libgcc, which seems surprisingly difficult, due
-to the unfamiliar (to me) build process. A simple LDFLAGS_barebox+=-l..
--L.. did not help here.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.10 (GNU/Linux)
+Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org/
 
-Am I right with this assumption, or am I missing something else here?
+iEYEARECAAYFAk4uzT0ACgkQjTAFq1RaXHM44QCfS9CxKpRwFQ4zrKi9uN8GBtPv
+TTcAn19kJ/ndt1CZNf/16R9vGUVLOn+M
+=Fsk9
+-----END PGP SIGNATURE-----
 
-Any help would really be appreciated.
+--------------enig49BDA5F8884B032E7DFE2626--
 
-Regards
-  Andre Naujoks
+
+--===============0892638882==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============0892638882==--
