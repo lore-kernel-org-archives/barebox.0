@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ew0-f49.google.com ([209.85.215.49])
+Received: from mail-dy0-f49.google.com ([209.85.220.49])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QlmMp-0001oF-T0
-	for barebox@lists.infradead.org; Tue, 26 Jul 2011 18:28:32 +0000
-Received: by ewy3 with SMTP id 3so848974ewy.36
-	for <barebox@lists.infradead.org>; Tue, 26 Jul 2011 11:28:28 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue, 26 Jul 2011 22:28:23 +0400
-Message-Id: <1311704903-32404-1-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1311655236-6684-1-git-send-email-plagnioj@jcrosoft.com>
-References: <1311655236-6684-1-git-send-email-plagnioj@jcrosoft.com>
+	id 1Qlnv8-0003GC-HS
+	for barebox@lists.infradead.org; Tue, 26 Jul 2011 20:08:03 +0000
+Received: by dye8 with SMTP id 8so35102dye.36
+	for <barebox@lists.infradead.org>; Tue, 26 Jul 2011 13:07:59 -0700 (PDT)
+From: franck.jullien@gmail.com
+Date: Tue, 26 Jul 2011 22:07:53 +0200
+Message-Id: <1311710877-13004-1-git-send-email-franck.jullien@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,48 +21,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] MIPS: fix fix mipsel toolchains support to compile BIG_ENDIAN
-	board
+Subject: [PATCH v2] Switch nios2 devices to resources
 To: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/mips/Makefile |   10 +---------
- 1 files changed, 1 insertions(+), 9 deletions(-)
+From: Franck Jullien <franck.jullien@gmail.com>
 
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index 72434d4..43b8ae6 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -2,17 +2,9 @@
- # Select the object file format to substitute into the linker script.
- #
- ifdef CONFIG_CPU_LITTLE_ENDIAN
--32bit-tool-archpref	= mipsel
--64bit-tool-archpref	= mips64el
--32bit-bfd		= elf32-tradlittlemips
--64bit-bfd		= elf64-tradlittlemips
- 32bit-emul		= elf32ltsmip
- 64bit-emul		= elf64ltsmip
- else
--32bit-tool-archpref	= mips
--64bit-tool-archpref	= mips64
--32bit-bfd		= elf32-tradbigmips
--64bit-bfd		= elf64-tradbigmips
- 32bit-emul		= elf32btsmip
- 64bit-emul		= elf64btsmip
- endif
-@@ -43,7 +35,7 @@ cflags-y += $(shell $(CC) -dumpmachine |grep -q 'mips.*el-.*' && echo -EB $(unde
- ldflags-y += $(shell $(CC) -dumpmachine |grep -q 'mips.*el-.*' && echo -EB )
- endif
- 
--ifdef CONFIG_CPU_BIG_ENDIAN
-+ifdef CONFIG_CPU_LITTLE_ENDIAN
- cflags-y += $(shell $(CC) -dumpmachine |grep -q 'mips.*el-.*' || echo -EL $(undef-all) $(predef-le))
- ldflags-y += $(shell $(CC) -dumpmachine |grep -q 'mips.*el-.*' || echo -EL )
- endif
+Switch nios2 devices to resources usage.
+
+Franck Jullien (4):
+  nios2/generic.c: Add resources for altera TSE
+  nios2/altera_tse: Switch to resources
+  nios2/serial_altera: Switch to resources
+  nios2/altera_serial_jtag: Switch to resources
+
+ arch/nios2/boards/generic/generic.c |   31 ++++++++++++-----
+ drivers/net/altera_tse.c            |   63 ++++++++++++++++------------------
+ drivers/net/altera_tse.h            |   15 +++-----
+ drivers/serial/serial_altera.c      |   31 ++++++++++++++---
+ drivers/serial/serial_altera_jtag.c |   27 +++++++++++++--
+ 5 files changed, 106 insertions(+), 61 deletions(-)
+
 -- 
-1.7.5.4
+1.7.6
 
 
 _______________________________________________
