@@ -1,14 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ww0-f49.google.com ([74.125.82.49])
-	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1Qm2HK-0004Um-4P
-	for barebox@lists.infradead.org; Wed, 27 Jul 2011 11:27:54 +0000
-Received: by wwf22 with SMTP id 22so888295wwf.18
-	for <barebox@lists.infradead.org>; Wed, 27 Jul 2011 04:27:50 -0700 (PDT)
+Received: from 17.mo4.mail-out.ovh.net ([46.105.41.16]
+	helo=mo4.mail-out.ovh.net)
+	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+	id 1Qm3Y2-0006QB-9l
+	for barebox@lists.infradead.org; Wed, 27 Jul 2011 12:49:14 +0000
+Received: from mail182.ha.ovh.net (b6.ovh.net [213.186.33.56])
+	by mo4.mail-out.ovh.net (Postfix) with SMTP id 95678FF9F15
+	for <barebox@lists.infradead.org>;
+	Wed, 27 Jul 2011 14:49:58 +0200 (CEST)
+Date: Wed, 27 Jul 2011 14:31:44 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20110727123144.GM10037@game.jcrosoft.org>
+References: <CAA4bVAHQpMR8eetVhtR3eSqc3RTT77pQFTS9UCzDMw9YzhqP1Q@mail.gmail.com>
 MIME-Version: 1.0
-Date: Wed, 27 Jul 2011 15:27:50 +0400
-Message-ID: <CAA4bVAHQpMR8eetVhtR3eSqc3RTT77pQFTS9UCzDMw9YzhqP1Q@mail.gmail.com>
-From: Antony Pavlov <antonynpavlov@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <CAA4bVAHQpMR8eetVhtR3eSqc3RTT77pQFTS9UCzDMw9YzhqP1Q@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,25 +23,26 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: ioports.h is unused
-To: barebox <barebox@lists.infradead.org>
+Subject: Re: ioports.h is unused
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox <barebox@lists.infradead.org>
 
-Hi!
+On 15:27 Wed 27 Jul     , Antony Pavlov wrote:
+> Hi!
+> 
+> File include/ioports.h is unused.
+> 
+> "grep -RHn ioports" in barebox tree give no results.
+> 
+> Can we remove it?
+yes
 
-File include/ioports.h is unused.
-
-"grep -RHn ioports" in barebox tree give no results.
-
-Can we remove it?
-
--- =
-
-Best regards,
-=A0 Antony Pavlov
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
