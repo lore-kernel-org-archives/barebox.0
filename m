@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QmOKi-0001Yp-On
-	for barebox@lists.infradead.org; Thu, 28 Jul 2011 11:01:07 +0000
+	id 1QmOKi-0001Yq-Og
+	for barebox@lists.infradead.org; Thu, 28 Jul 2011 11:01:09 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 28 Jul 2011 13:00:45 +0200
-Message-Id: <1311850847-5140-2-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 28 Jul 2011 13:00:46 +0200
+Message-Id: <1311850847-5140-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1311850847-5140-1-git-send-email-s.hauer@pengutronix.de>
 References: <1311850847-5140-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,1893 +21,1963 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] mx51: rename clock-imx51.h -> clock-imx51_53.h
+Subject: [PATCH 2/3] ARM: add support for the i.MX53
 To: barebox@lists.infradead.org
 
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-...and update all users. The header file can be used on mx51 and mx53.
-
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/eukrea_cpuimx51/lowlevel_init.S    |  110 ++--
- arch/arm/boards/freescale-mx51-pdk/lowlevel_init.S |  110 ++--
- arch/arm/mach-imx/include/mach/clock-imx51.h       |  696 --------------------
- arch/arm/mach-imx/include/mach/clock-imx51_53.h    |  619 +++++++++++++++++
- arch/arm/mach-imx/speed-imx51.c                    |   60 +-
- 5 files changed, 759 insertions(+), 836 deletions(-)
- delete mode 100644 arch/arm/mach-imx/include/mach/clock-imx51.h
- create mode 100644 arch/arm/mach-imx/include/mach/clock-imx51_53.h
+ arch/arm/mach-imx/Kconfig                         |   25 +-
+ arch/arm/mach-imx/Makefile                        |    1 +
+ arch/arm/mach-imx/imx53.c                         |   45 +
+ arch/arm/mach-imx/include/mach/clock-imx51_53.h   |    4 +
+ arch/arm/mach-imx/include/mach/devices-imx53.h    |   58 +
+ arch/arm/mach-imx/include/mach/iim.h              |    5 +
+ arch/arm/mach-imx/include/mach/imx-flash-header.h |   52 +
+ arch/arm/mach-imx/include/mach/imx-regs.h         |    4 +-
+ arch/arm/mach-imx/include/mach/imx53-regs.h       |  139 +++
+ arch/arm/mach-imx/include/mach/iomux-mx53.h       | 1203 +++++++++++++++++++++
+ arch/arm/mach-imx/speed-imx53.c                   |  204 ++++
+ drivers/mci/Kconfig                               |    2 +-
+ drivers/serial/serial_imx.c                       |    3 +-
+ drivers/spi/Kconfig                               |    2 +-
+ drivers/spi/imx_spi.c                             |    2 +-
+ include/asm-generic/barebox.lds.h                 |    2 +-
+ 16 files changed, 1742 insertions(+), 9 deletions(-)
+ create mode 100644 arch/arm/mach-imx/imx53.c
+ create mode 100644 arch/arm/mach-imx/include/mach/devices-imx53.h
+ create mode 100644 arch/arm/mach-imx/include/mach/imx53-regs.h
+ create mode 100644 arch/arm/mach-imx/include/mach/iomux-mx53.h
+ create mode 100644 arch/arm/mach-imx/speed-imx53.c
 
-diff --git a/arch/arm/boards/eukrea_cpuimx51/lowlevel_init.S b/arch/arm/boards/eukrea_cpuimx51/lowlevel_init.S
-index 793104c..0b3726f 100644
---- a/arch/arm/boards/eukrea_cpuimx51/lowlevel_init.S
-+++ b/arch/arm/boards/eukrea_cpuimx51/lowlevel_init.S
-@@ -19,29 +19,29 @@
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index f99fcb3..33a329b 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -50,8 +50,8 @@ choice
+ 	  used to setup SDRAM. The internal ROM code then initializes SDRAM
+ 	  using the register/value table, loads the whole barebox image to
+ 	  SDRAM and starts it. The internal boot mode is available on newer
+-	  i.MX processors (i.MX25, i.MX35 and i.MX51). and supports booting
+-	  from NOR, NAND, MMC/SD and serial ROMs.
++	  i.MX processors (i.MX25, i.MX35, i.MX51 and i.MX53). and supports
++	  booting from NOR, NAND, MMC/SD and serial ROMs.
+ 	  The external boot mode only supports booting from NAND and NOR. With
+ 	  NOR flash the image is just started in NOR flash. With NAND flash
+ 	  the NAND controller loads the first 2kbyte from NAND into the NAND
+@@ -62,7 +62,7 @@ choice
  
- #include <config.h>
- #include <mach/imx-regs.h>
--#include <mach/clock-imx51.h>
-+#include <mach/clock-imx51_53.h>
+ config ARCH_IMX_INTERNAL_BOOT
+ 	bool "support internal boot mode"
+-	depends on ARCH_IMX25 || ARCH_IMX35 || ARCH_IMX51
++	depends on ARCH_IMX25 || ARCH_IMX35 || ARCH_IMX51 || ARCH_IMX53
  
- #define ROM_SI_REV_OFFSET                   0x48
+ config ARCH_IMX_EXTERNAL_BOOT
+ 	bool "support external boot mode"
+@@ -154,6 +154,11 @@ config ARCH_IMX51
+ 	select CPU_V7
+ 	select ARCH_HAS_FEC_IMX
  
- .macro setup_pll pll, freq
- 	ldr r2, =\pll
- 	ldr r1, =0x00001232
--	str r1, [r2, #MX51_PLL_DP_CTL] /* Set DPLL ON (set UPEN bit): BRMO=1 */
-+	str r1, [r2, #MX5_PLL_DP_CTL] /* Set DPLL ON (set UPEN bit): BRMO=1 */
- 	mov r1, #0x2
--	str r1, [r2, #MX51_PLL_DP_CONFIG] /* Enable auto-restart AREN bit */
-+	str r1, [r2, #MX5_PLL_DP_CONFIG] /* Enable auto-restart AREN bit */
++config ARCH_IMX53
++	bool "i.MX53"
++	select CPU_V7
++	select ARCH_HAS_FEC_IMX
++
+ endchoice
  
--	str r3, [r2, #MX51_PLL_DP_OP]
--	str r3, [r2, #MX51_PLL_DP_HFS_OP]
-+	str r3, [r2, #MX5_PLL_DP_OP]
-+	str r3, [r2, #MX5_PLL_DP_HFS_OP]
+ # ----------------------------------------------------------
+@@ -397,6 +402,20 @@ endchoice
  
--	str r4, [r2, #MX51_PLL_DP_MFD]
--	str r4, [r2, #MX51_PLL_DP_HFS_MFD]
-+	str r4, [r2, #MX5_PLL_DP_MFD]
-+	str r4, [r2, #MX5_PLL_DP_HFS_MFD]
+ endif
  
--	str r5, [r2, #MX51_PLL_DP_MFN]
--	str r5, [r2, #MX51_PLL_DP_HFS_MFN]
-+	str r5, [r2, #MX5_PLL_DP_MFN]
-+	str r5, [r2, #MX5_PLL_DP_HFS_MFN]
++# ----------------------------------------------------------
++
++if ARCH_IMX53
++
++choice
++
++	prompt "i.MX53 Board Type"
++
++endchoice
++
++endif
++
++# ----------------------------------------------------------
++
+ menu "Board specific settings       "
  
- 	ldr r1, =0x00001232
--	str r1, [r2, #MX51_PLL_DP_CTL]
--1:	ldr r1, [r2, #MX51_PLL_DP_CTL]
-+	str r1, [r2, #MX5_PLL_DP_CTL]
-+1:	ldr r1, [r2, #MX5_PLL_DP_CTL]
- 	ands r1, r1, #0x1
- 	beq 1b
- .endm
-@@ -80,67 +80,67 @@ board_init_lowlevel:
- 
- 	/* Gate of clocks to the peripherals first */
- 	ldr r1, =0x3FFFFFFF
--	str r1, [r0, #MX51_CCM_CCGR0]
-+	str r1, [r0, #MX5_CCM_CCGR0]
- 	ldr r1, =0x0
--	str r1, [r0, #MX51_CCM_CCGR1]
--	str r1, [r0, #MX51_CCM_CCGR2]
--	str r1, [r0, #MX51_CCM_CCGR3]
-+	str r1, [r0, #MX5_CCM_CCGR1]
-+	str r1, [r0, #MX5_CCM_CCGR2]
-+	str r1, [r0, #MX5_CCM_CCGR3]
- 
- 	ldr r1, =0x00030000
--	str r1, [r0, #MX51_CCM_CCGR4]
-+	str r1, [r0, #MX5_CCM_CCGR4]
- 	ldr r1, =0x00FFF030
--	str r1, [r0, #MX51_CCM_CCGR5]
-+	str r1, [r0, #MX5_CCM_CCGR5]
- 	ldr r1, =0x00000300
--	str r1, [r0, #MX51_CCM_CCGR6]
-+	str r1, [r0, #MX5_CCM_CCGR6]
- 
- 	/* Disable IPU and HSC dividers */
- 	mov r1, #0x60000
--	str r1, [r0, #MX51_CCM_CCDR]
-+	str r1, [r0, #MX5_CCM_CCDR]
- 
- #ifdef IMX51_TO_2
- 	/* Make sure to switch the DDR away from PLL 1 */
- 	ldr r1, =0x19239145
--	str r1, [r0, #MX51_CCM_CBCDR]
-+	str r1, [r0, #MX5_CCM_CBCDR]
- 	/* make sure divider effective */
--1:	ldr r1, [r0, #MX51_CCM_CDHIPR]
-+1:	ldr r1, [r0, #MX5_CCM_CDHIPR]
- 	cmp r1, #0x0
- 	bne 1b
- #endif
- 
- 	/* Switch ARM to step clock */
- 	mov r1, #0x4
--	str r1, [r0, #MX51_CCM_CCSR]
-+	str r1, [r0, #MX5_CCM_CCSR]
- 
--	mov r3, #MX51_PLL_DP_OP_800
--	mov r4, #MX51_PLL_DP_MFD_800
--	mov r5, #MX51_PLL_DP_MFN_800
-+	mov r3, #MX5_PLL_DP_OP_800
-+	mov r4, #MX5_PLL_DP_MFD_800
-+	mov r5, #MX5_PLL_DP_MFN_800
- 	setup_pll MX51_PLL1_BASE_ADDR
- 
--	mov r3, #MX51_PLL_DP_OP_665
--	mov r4, #MX51_PLL_DP_MFD_665
--	mov r5, #MX51_PLL_DP_MFN_665
-+	mov r3, #MX5_PLL_DP_OP_665
-+	mov r4, #MX5_PLL_DP_MFD_665
-+	mov r5, #MX5_PLL_DP_MFN_665
- 	setup_pll MX51_PLL3_BASE_ADDR
- 
- 	/* Switch peripheral to PLL 3 */
- 	ldr r1, =0x000010C0
--	str r1, [r0, #MX51_CCM_CBCMR]
-+	str r1, [r0, #MX5_CCM_CBCMR]
- 	ldr r1, =0x13239145
--	str r1, [r0, #MX51_CCM_CBCDR]
-+	str r1, [r0, #MX5_CCM_CBCDR]
- 
--	mov r3, #MX51_PLL_DP_OP_665
--	mov r4, #MX51_PLL_DP_MFD_665
--	mov r5, #MX51_PLL_DP_MFN_665
-+	mov r3, #MX5_PLL_DP_OP_665
-+	mov r4, #MX5_PLL_DP_MFD_665
-+	mov r5, #MX5_PLL_DP_MFN_665
- 	setup_pll MX51_PLL2_BASE_ADDR
- 
- 	/* Switch peripheral to PLL2 */
- 	ldr r1, =0x19239145
--	str r1, [r0, #MX51_CCM_CBCDR]
-+	str r1, [r0, #MX5_CCM_CBCDR]
- 	ldr r1, =0x000020C0
--	str r1, [r0, #MX51_CCM_CBCMR]
-+	str r1, [r0, #MX5_CCM_CBCMR]
- 
--	mov r3, #MX51_PLL_DP_OP_216
--	mov r4, #MX51_PLL_DP_MFD_216
--	mov r5, #MX51_PLL_DP_MFN_216
-+	mov r3, #MX5_PLL_DP_OP_216
-+	mov r4, #MX5_PLL_DP_MFD_216
-+	mov r5, #MX5_PLL_DP_MFN_216
- 	setup_pll MX51_PLL3_BASE_ADDR
- 
- 	/* Set the platform clock dividers */
-@@ -154,52 +154,52 @@ board_init_lowlevel:
- 	cmp r3, #0x10
- 	movls r1, #0x1
- 	movhi r1, #0
--	str r1, [r0, #MX51_CCM_CACRR]
-+	str r1, [r0, #MX5_CCM_CACRR]
- 
- 	/* Switch ARM back to PLL 1 */
- 	mov r1, #0
--	str r1, [r0,  #MX51_CCM_CCSR]
-+	str r1, [r0,  #MX5_CCM_CCSR]
- 
-         /* setup the rest */
-         /* Use lp_apm (24MHz) source for perclk */
- #ifdef IMX51_TO_2
-         ldr r1, =0x000020C2
--        str r1, [r0, #MX51_CCM_CBCMR]
-+        str r1, [r0, #MX5_CCM_CBCMR]
-         // ddr clock from PLL 1, all perclk dividers are 1 since using 24MHz
-         ldr r1, =0x59239100
--        str r1, [r0, #MX51_CCM_CBCDR]
-+        str r1, [r0, #MX5_CCM_CBCDR]
- #else
-         ldr r1, =0x0000E3C2
--        str r1, [r0, #MX51_CCM_CBCMR]
-+        str r1, [r0, #MX5_CCM_CBCMR]
-         // emi=ahb, all perclk dividers are 1 since using 24MHz
-         // DDR divider=6 to have 665/6=110MHz
-         ldr r1, =0x013B9100
--        str r1, [r0, #MX51_CCM_CBCDR]
-+        str r1, [r0, #MX5_CCM_CBCDR]
- #endif
- 
-         /* Restore the default values in the Gate registers */
-         ldr r1, =0xFFFFFFFF
--        str r1, [r0, #MX51_CCM_CCGR0]
--        str r1, [r0, #MX51_CCM_CCGR1]
--        str r1, [r0, #MX51_CCM_CCGR2]
--        str r1, [r0, #MX51_CCM_CCGR3]
--        str r1, [r0, #MX51_CCM_CCGR4]
--        str r1, [r0, #MX51_CCM_CCGR5]
--        str r1, [r0, #MX51_CCM_CCGR6]
-+        str r1, [r0, #MX5_CCM_CCGR0]
-+        str r1, [r0, #MX5_CCM_CCGR1]
-+        str r1, [r0, #MX5_CCM_CCGR2]
-+        str r1, [r0, #MX5_CCM_CCGR3]
-+        str r1, [r0, #MX5_CCM_CCGR4]
-+        str r1, [r0, #MX5_CCM_CCGR5]
-+        str r1, [r0, #MX5_CCM_CCGR6]
- 
-         /* Use PLL 2 for UART's, get 66.5MHz from it */
-         ldr r1, =0xA5A2A020
--        str r1, [r0, #MX51_CCM_CSCMR1]
-+        str r1, [r0, #MX5_CCM_CSCMR1]
-         ldr r1, =0x00C30321
--        str r1, [r0, #MX51_CCM_CSCDR1]
-+        str r1, [r0, #MX5_CCM_CSCDR1]
- 
-         /* make sure divider effective */
--    1:  ldr r1, [r0, #MX51_CCM_CDHIPR]
-+    1:  ldr r1, [r0, #MX5_CCM_CDHIPR]
-         cmp r1, #0x0
-         bne 1b
- 
- 	mov r1, #0x0
--	str r1, [r0, #MX51_CCM_CCDR]
-+	str r1, [r0, #MX5_CCM_CCDR]
- 
- 	writel(0x1, 0x73fa8074)
- 	ldr	r0, =0x73f88000
-diff --git a/arch/arm/boards/freescale-mx51-pdk/lowlevel_init.S b/arch/arm/boards/freescale-mx51-pdk/lowlevel_init.S
-index 793104c..0b3726f 100644
---- a/arch/arm/boards/freescale-mx51-pdk/lowlevel_init.S
-+++ b/arch/arm/boards/freescale-mx51-pdk/lowlevel_init.S
-@@ -19,29 +19,29 @@
- 
- #include <config.h>
- #include <mach/imx-regs.h>
--#include <mach/clock-imx51.h>
-+#include <mach/clock-imx51_53.h>
- 
- #define ROM_SI_REV_OFFSET                   0x48
- 
- .macro setup_pll pll, freq
- 	ldr r2, =\pll
- 	ldr r1, =0x00001232
--	str r1, [r2, #MX51_PLL_DP_CTL] /* Set DPLL ON (set UPEN bit): BRMO=1 */
-+	str r1, [r2, #MX5_PLL_DP_CTL] /* Set DPLL ON (set UPEN bit): BRMO=1 */
- 	mov r1, #0x2
--	str r1, [r2, #MX51_PLL_DP_CONFIG] /* Enable auto-restart AREN bit */
-+	str r1, [r2, #MX5_PLL_DP_CONFIG] /* Enable auto-restart AREN bit */
- 
--	str r3, [r2, #MX51_PLL_DP_OP]
--	str r3, [r2, #MX51_PLL_DP_HFS_OP]
-+	str r3, [r2, #MX5_PLL_DP_OP]
-+	str r3, [r2, #MX5_PLL_DP_HFS_OP]
- 
--	str r4, [r2, #MX51_PLL_DP_MFD]
--	str r4, [r2, #MX51_PLL_DP_HFS_MFD]
-+	str r4, [r2, #MX5_PLL_DP_MFD]
-+	str r4, [r2, #MX5_PLL_DP_HFS_MFD]
- 
--	str r5, [r2, #MX51_PLL_DP_MFN]
--	str r5, [r2, #MX51_PLL_DP_HFS_MFN]
-+	str r5, [r2, #MX5_PLL_DP_MFN]
-+	str r5, [r2, #MX5_PLL_DP_HFS_MFN]
- 
- 	ldr r1, =0x00001232
--	str r1, [r2, #MX51_PLL_DP_CTL]
--1:	ldr r1, [r2, #MX51_PLL_DP_CTL]
-+	str r1, [r2, #MX5_PLL_DP_CTL]
-+1:	ldr r1, [r2, #MX5_PLL_DP_CTL]
- 	ands r1, r1, #0x1
- 	beq 1b
- .endm
-@@ -80,67 +80,67 @@ board_init_lowlevel:
- 
- 	/* Gate of clocks to the peripherals first */
- 	ldr r1, =0x3FFFFFFF
--	str r1, [r0, #MX51_CCM_CCGR0]
-+	str r1, [r0, #MX5_CCM_CCGR0]
- 	ldr r1, =0x0
--	str r1, [r0, #MX51_CCM_CCGR1]
--	str r1, [r0, #MX51_CCM_CCGR2]
--	str r1, [r0, #MX51_CCM_CCGR3]
-+	str r1, [r0, #MX5_CCM_CCGR1]
-+	str r1, [r0, #MX5_CCM_CCGR2]
-+	str r1, [r0, #MX5_CCM_CCGR3]
- 
- 	ldr r1, =0x00030000
--	str r1, [r0, #MX51_CCM_CCGR4]
-+	str r1, [r0, #MX5_CCM_CCGR4]
- 	ldr r1, =0x00FFF030
--	str r1, [r0, #MX51_CCM_CCGR5]
-+	str r1, [r0, #MX5_CCM_CCGR5]
- 	ldr r1, =0x00000300
--	str r1, [r0, #MX51_CCM_CCGR6]
-+	str r1, [r0, #MX5_CCM_CCGR6]
- 
- 	/* Disable IPU and HSC dividers */
- 	mov r1, #0x60000
--	str r1, [r0, #MX51_CCM_CCDR]
-+	str r1, [r0, #MX5_CCM_CCDR]
- 
- #ifdef IMX51_TO_2
- 	/* Make sure to switch the DDR away from PLL 1 */
- 	ldr r1, =0x19239145
--	str r1, [r0, #MX51_CCM_CBCDR]
-+	str r1, [r0, #MX5_CCM_CBCDR]
- 	/* make sure divider effective */
--1:	ldr r1, [r0, #MX51_CCM_CDHIPR]
-+1:	ldr r1, [r0, #MX5_CCM_CDHIPR]
- 	cmp r1, #0x0
- 	bne 1b
- #endif
- 
- 	/* Switch ARM to step clock */
- 	mov r1, #0x4
--	str r1, [r0, #MX51_CCM_CCSR]
-+	str r1, [r0, #MX5_CCM_CCSR]
- 
--	mov r3, #MX51_PLL_DP_OP_800
--	mov r4, #MX51_PLL_DP_MFD_800
--	mov r5, #MX51_PLL_DP_MFN_800
-+	mov r3, #MX5_PLL_DP_OP_800
-+	mov r4, #MX5_PLL_DP_MFD_800
-+	mov r5, #MX5_PLL_DP_MFN_800
- 	setup_pll MX51_PLL1_BASE_ADDR
- 
--	mov r3, #MX51_PLL_DP_OP_665
--	mov r4, #MX51_PLL_DP_MFD_665
--	mov r5, #MX51_PLL_DP_MFN_665
-+	mov r3, #MX5_PLL_DP_OP_665
-+	mov r4, #MX5_PLL_DP_MFD_665
-+	mov r5, #MX5_PLL_DP_MFN_665
- 	setup_pll MX51_PLL3_BASE_ADDR
- 
- 	/* Switch peripheral to PLL 3 */
- 	ldr r1, =0x000010C0
--	str r1, [r0, #MX51_CCM_CBCMR]
-+	str r1, [r0, #MX5_CCM_CBCMR]
- 	ldr r1, =0x13239145
--	str r1, [r0, #MX51_CCM_CBCDR]
-+	str r1, [r0, #MX5_CCM_CBCDR]
- 
--	mov r3, #MX51_PLL_DP_OP_665
--	mov r4, #MX51_PLL_DP_MFD_665
--	mov r5, #MX51_PLL_DP_MFN_665
-+	mov r3, #MX5_PLL_DP_OP_665
-+	mov r4, #MX5_PLL_DP_MFD_665
-+	mov r5, #MX5_PLL_DP_MFN_665
- 	setup_pll MX51_PLL2_BASE_ADDR
- 
- 	/* Switch peripheral to PLL2 */
- 	ldr r1, =0x19239145
--	str r1, [r0, #MX51_CCM_CBCDR]
-+	str r1, [r0, #MX5_CCM_CBCDR]
- 	ldr r1, =0x000020C0
--	str r1, [r0, #MX51_CCM_CBCMR]
-+	str r1, [r0, #MX5_CCM_CBCMR]
- 
--	mov r3, #MX51_PLL_DP_OP_216
--	mov r4, #MX51_PLL_DP_MFD_216
--	mov r5, #MX51_PLL_DP_MFN_216
-+	mov r3, #MX5_PLL_DP_OP_216
-+	mov r4, #MX5_PLL_DP_MFD_216
-+	mov r5, #MX5_PLL_DP_MFN_216
- 	setup_pll MX51_PLL3_BASE_ADDR
- 
- 	/* Set the platform clock dividers */
-@@ -154,52 +154,52 @@ board_init_lowlevel:
- 	cmp r3, #0x10
- 	movls r1, #0x1
- 	movhi r1, #0
--	str r1, [r0, #MX51_CCM_CACRR]
-+	str r1, [r0, #MX5_CCM_CACRR]
- 
- 	/* Switch ARM back to PLL 1 */
- 	mov r1, #0
--	str r1, [r0,  #MX51_CCM_CCSR]
-+	str r1, [r0,  #MX5_CCM_CCSR]
- 
-         /* setup the rest */
-         /* Use lp_apm (24MHz) source for perclk */
- #ifdef IMX51_TO_2
-         ldr r1, =0x000020C2
--        str r1, [r0, #MX51_CCM_CBCMR]
-+        str r1, [r0, #MX5_CCM_CBCMR]
-         // ddr clock from PLL 1, all perclk dividers are 1 since using 24MHz
-         ldr r1, =0x59239100
--        str r1, [r0, #MX51_CCM_CBCDR]
-+        str r1, [r0, #MX5_CCM_CBCDR]
- #else
-         ldr r1, =0x0000E3C2
--        str r1, [r0, #MX51_CCM_CBCMR]
-+        str r1, [r0, #MX5_CCM_CBCMR]
-         // emi=ahb, all perclk dividers are 1 since using 24MHz
-         // DDR divider=6 to have 665/6=110MHz
-         ldr r1, =0x013B9100
--        str r1, [r0, #MX51_CCM_CBCDR]
-+        str r1, [r0, #MX5_CCM_CBCDR]
- #endif
- 
-         /* Restore the default values in the Gate registers */
-         ldr r1, =0xFFFFFFFF
--        str r1, [r0, #MX51_CCM_CCGR0]
--        str r1, [r0, #MX51_CCM_CCGR1]
--        str r1, [r0, #MX51_CCM_CCGR2]
--        str r1, [r0, #MX51_CCM_CCGR3]
--        str r1, [r0, #MX51_CCM_CCGR4]
--        str r1, [r0, #MX51_CCM_CCGR5]
--        str r1, [r0, #MX51_CCM_CCGR6]
-+        str r1, [r0, #MX5_CCM_CCGR0]
-+        str r1, [r0, #MX5_CCM_CCGR1]
-+        str r1, [r0, #MX5_CCM_CCGR2]
-+        str r1, [r0, #MX5_CCM_CCGR3]
-+        str r1, [r0, #MX5_CCM_CCGR4]
-+        str r1, [r0, #MX5_CCM_CCGR5]
-+        str r1, [r0, #MX5_CCM_CCGR6]
- 
-         /* Use PLL 2 for UART's, get 66.5MHz from it */
-         ldr r1, =0xA5A2A020
--        str r1, [r0, #MX51_CCM_CSCMR1]
-+        str r1, [r0, #MX5_CCM_CSCMR1]
-         ldr r1, =0x00C30321
--        str r1, [r0, #MX51_CCM_CSCDR1]
-+        str r1, [r0, #MX5_CCM_CSCDR1]
- 
-         /* make sure divider effective */
--    1:  ldr r1, [r0, #MX51_CCM_CDHIPR]
-+    1:  ldr r1, [r0, #MX5_CCM_CDHIPR]
-         cmp r1, #0x0
-         bne 1b
- 
- 	mov r1, #0x0
--	str r1, [r0, #MX51_CCM_CCDR]
-+	str r1, [r0, #MX5_CCM_CCDR]
- 
- 	writel(0x1, 0x73fa8074)
- 	ldr	r0, =0x73f88000
-diff --git a/arch/arm/mach-imx/include/mach/clock-imx51.h b/arch/arm/mach-imx/include/mach/clock-imx51.h
-deleted file mode 100644
-index 0dee7c3..0000000
---- a/arch/arm/mach-imx/include/mach/clock-imx51.h
-+++ /dev/null
-@@ -1,696 +0,0 @@
--/*
-- * Copyright 2008-2009 Freescale Semiconductor, Inc. All Rights Reserved.
-- */
--
--/*
-- * The code contained herein is licensed under the GNU General Public
-- * License. You may obtain a copy of the GNU General Public License
-- * Version 2 or later at the following locations:
-- *
-- * http://www.opensource.org/licenses/gpl-license.html
-- * http://www.gnu.org/copyleft/gpl.html
-- */
--#ifndef __ARCH_ARM_MACH_MX51_CRM_REGS_H__
--#define __ARCH_ARM_MACH_MX51_CRM_REGS_H__
--
--/* PLL Register Offsets */
--#define MX51_PLL_DP_CTL			0x00
--#define MX51_PLL_DP_CONFIG		0x04
--#define MX51_PLL_DP_OP			0x08
--#define MX51_PLL_DP_MFD			0x0C
--#define MX51_PLL_DP_MFN			0x10
--#define MX51_PLL_DP_MFNMINUS		0x14
--#define MX51_PLL_DP_MFNPLUS		0x18
--#define MX51_PLL_DP_HFS_OP		0x1C
--#define MX51_PLL_DP_HFS_MFD		0x20
--#define MX51_PLL_DP_HFS_MFN		0x24
--#define MX51_PLL_DP_MFN_TOGC		0x28
--#define MX51_PLL_DP_DESTAT		0x2c
--
--/* PLL Register Bit definitions */
--#define MX51_PLL_DP_CTL_MUL_CTRL		0x2000
--#define MX51_PLL_DP_CTL_DPDCK0_2_EN	0x1000
--#define MX51_PLL_DP_CTL_DPDCK0_2_OFFSET	12
--#define MX51_PLL_DP_CTL_ADE		0x800
--#define MX51_PLL_DP_CTL_REF_CLK_DIV	0x400
--#define MX51_PLL_DP_CTL_REF_CLK_SEL_MASK	(3 << 8)
--#define MX51_PLL_DP_CTL_REF_CLK_SEL_OFFSET	8
--#define MX51_PLL_DP_CTL_HFSM		0x80
--#define MX51_PLL_DP_CTL_PRE		0x40
--#define MX51_PLL_DP_CTL_UPEN		0x20
--#define MX51_PLL_DP_CTL_RST		0x10
--#define MX51_PLL_DP_CTL_RCP		0x8
--#define MX51_PLL_DP_CTL_PLM		0x4
--#define MX51_PLL_DP_CTL_BRM0		0x2
--#define MX51_PLL_DP_CTL_LRF		0x1
--
--#define MX51_PLL_DP_CONFIG_BIST		0x8
--#define MX51_PLL_DP_CONFIG_SJC_CE	0x4
--#define MX51_PLL_DP_CONFIG_AREN		0x2
--#define MX51_PLL_DP_CONFIG_LDREQ		0x1
--
--#define MX51_PLL_DP_OP_MFI_OFFSET	4
--#define MX51_PLL_DP_OP_MFI_MASK		(0xF << 4)
--#define MX51_PLL_DP_OP_PDF_OFFSET	0
--#define MX51_PLL_DP_OP_PDF_MASK		0xF
--
--#define MX51_PLL_DP_MFD_OFFSET		0
--#define MX51_PLL_DP_MFD_MASK		0x07FFFFFF
--
--#define MX51_PLL_DP_MFN_OFFSET		0x0
--#define MX51_PLL_DP_MFN_MASK		0x07FFFFFF
--
--#define MX51_PLL_DP_MFN_TOGC_TOG_DIS	(1 << 17)
--#define MX51_PLL_DP_MFN_TOGC_TOG_EN	(1 << 16)
--#define MX51_PLL_DP_MFN_TOGC_CNT_OFFSET	0x0
--#define MX51_PLL_DP_MFN_TOGC_CNT_MASK	0xFFFF
--
--#define MX51_PLL_DP_DESTAT_TOG_SEL	(1 << 31)
--#define MX51_PLL_DP_DESTAT_MFN		0x07FFFFFF
--
--/* Assuming 24MHz input clock with doubler ON */
--/*                            MFI         PDF */
--#define MX51_PLL_DP_OP_850	((8 << 4) + ((1 - 1)  << 0))
--#define MX51_PLL_DP_MFD_850	(48 - 1)
--#define MX51_PLL_DP_MFN_850	41
--
--#define MX51_PLL_DP_OP_800	((8 << 4) + ((1 - 1)  << 0))
--#define MX51_PLL_DP_MFD_800	(3 - 1)
--#define MX51_PLL_DP_MFN_800	1
--
--#define MX51_PLL_DP_OP_700	((7 << 4) + ((1 - 1)  << 0))
--#define MX51_PLL_DP_MFD_700	(24 - 1)
--#define MX51_PLL_DP_MFN_700	7
--
--#define MX51_PLL_DP_OP_665	((6 << 4) + ((1 - 1)  << 0))
--#define MX51_PLL_DP_MFD_665	(96 - 1)
--#define MX51_PLL_DP_MFN_665	89
--
--#define MX51_PLL_DP_OP_532	((5 << 4) + ((1 - 1)  << 0))
--#define MX51_PLL_DP_MFD_532	(24 - 1)
--#define MX51_PLL_DP_MFN_532	13
--
--#define MX51_PLL_DP_OP_400	((8 << 4) + ((2 - 1)  << 0))
--#define MX51_PLL_DP_MFD_400	(3 - 1)
--#define MX51_PLL_DP_MFN_400	1
--
--#define MX51_PLL_DP_OP_216	((6 << 4) + ((3 - 1)  << 0))
--#define MX51_PLL_DP_MFD_216	(4 - 1)
--#define MX51_PLL_DP_MFN_216	3
--
--/* Register addresses of CCM*/
--#define MX51_CCM_CCR		0x00
--#define MX51_CCM_CCDR		0x04
--#define MX51_CCM_CSR		0x08
--#define MX51_CCM_CCSR		0x0C
--#define MX51_CCM_CACRR		0x10
--#define MX51_CCM_CBCDR		0x14
--#define MX51_CCM_CBCMR		0x18
--#define MX51_CCM_CSCMR1		0x1C
--#define MX51_CCM_CSCMR2		0x20
--#define MX51_CCM_CSCDR1		0x24
--#define MX51_CCM_CS1CDR		0x28
--#define MX51_CCM_CS2CDR		0x2C
--#define MX51_CCM_CDCDR		0x30
--#define MX51_CCM_CHSCDR		0x34
--#define MX51_CCM_CSCDR2		0x38
--#define MX51_CCM_CSCDR3		0x3C
--#define MX51_CCM_CSCDR4		0x40
--#define MX51_CCM_CWDR		0x44
--#define MX51_CCM_CDHIPR		0x48
--#define MX51_CCM_CDCR		0x4C
--#define MX51_CCM_CTOR		0x50
--#define MX51_CCM_CLPCR		0x54
--#define MX51_CCM_CISR		0x58
--#define MX51_CCM_CIMR		0x5C
--#define MX51_CCM_CCOSR		0x60
--#define MX51_CCM_CGPR		0x64
--#define MX51_CCM_CCGR0		0x68
--#define MX51_CCM_CCGR1		0x6C
--#define MX51_CCM_CCGR2		0x70
--#define MX51_CCM_CCGR3		0x74
--#define MX51_CCM_CCGR4		0x78
--#define MX51_CCM_CCGR5		0x7C
--#define MX51_CCM_CCGR6		0x80
--#define MX51_CCM_CMEOR		0x84
--
--/* Define the bits in register CCR */
--#define MX51_CCM_CCR_COSC_EN		(1 << 12)
--#define MX51_CCM_CCR_FPM_MULT_MASK	(1 << 11)
--#define MX51_CCM_CCR_CAMP2_EN		(1 << 10)
--#define MX51_CCM_CCR_CAMP1_EN		(1 << 9)
--#define MX51_CCM_CCR_FPM_EN		(1 << 8)
--#define MX51_CCM_CCR_OSCNT_OFFSET	(0)
--#define MX51_CCM_CCR_OSCNT_MASK	(0xFF)
--
--/* Define the bits in register CCDR */
--#define MX51_CCM_CCDR_HSC_HS_MASK	(0x1 << 18)
--#define MX51_CCM_CCDR_IPU_HS_MASK	(0x1 << 17)
--#define MX51_CCM_CCDR_EMI_HS_MASK	(0x1 << 16)
--
--/* Define the bits in register CSR */
--#define MX51_CCM_CSR_COSR_READY	(1 << 5)
--#define MX51_CCM_CSR_LVS_VALUE		(1 << 4)
--#define MX51_CCM_CSR_CAMP2_READY	(1 << 3)
--#define MX51_CCM_CSR_CAMP1_READY	(1 << 2)
--#define MX51_CCM_CSR_FPM_READY	(1 << 1)
--#define MX51_CCM_CSR_REF_EN_B		(1 << 0)
--
--/* Define the bits in register CCSR */
--#define MX51_CCM_CCSR_LP_APM_SEL		(0x1 << 9)
--#define MX51_CCM_CCSR_STEP_SEL_OFFSET		(7)
--#define MX51_CCM_CCSR_STEP_SEL_MASK		(0x3 << 7)
--#define MX51_CCM_CCSR_PLL2_PODF_OFFSET	(5)
--#define MX51_CCM_CCSR_PLL2_PODF_MASK		(0x3 << 5)
--#define MX51_CCM_CCSR_PLL3_PODF_OFFSET	(3)
--#define MX51_CCM_CCSR_PLL3_PODF_MASK		(0x3 << 3)
--#define MX51_CCM_CCSR_PLL1_SW_CLK_SEL		(1 << 2)
--#define MX51_CCM_CCSR_PLL2_SW_CLK_SEL		(1 << 1)
--#define MX51_CCM_CCSR_PLL3_SW_CLK_SEL		(1 << 0)
--
--/* Define the bits in register CACRR */
--#define MX51_CCM_CACRR_ARM_PODF_OFFSET	(0)
--#define MX51_CCM_CACRR_ARM_PODF_MASK		(0x7)
--
--/* Define the bits in register CBCDR */
--#define MX51_CCM_CBCDR_EMI_CLK_SEL			(0x1 << 26)
--#define MX51_CCM_CBCDR_PERIPH_CLK_SEL			(0x1 << 25)
--#define MX51_CCM_CBCDR_DDR_HF_SEL_OFFSET		(30)
--#define MX51_CCM_CBCDR_DDR_HF_SEL			(0x1 << 30)
--#define MX51_CCM_CBCDR_DDR_PODF_OFFSET		(27)
--#define MX51_CCM_CBCDR_DDR_PODF_MASK			(0x7 << 27)
--#define MX51_CCM_CBCDR_EMI_PODF_OFFSET		(22)
--#define MX51_CCM_CBCDR_EMI_PODF_MASK			(0x7 << 22)
--#define MX51_CCM_CBCDR_AXI_B_PODF_OFFSET		(19)
--#define MX51_CCM_CBCDR_AXI_B_PODF_MASK		(0x7 << 19)
--#define MX51_CCM_CBCDR_AXI_A_PODF_OFFSET		(16)
--#define MX51_CCM_CBCDR_AXI_A_PODF_MASK		(0x7 << 16)
--#define MX51_CCM_CBCDR_NFC_PODF_OFFSET		(13)
--#define MX51_CCM_CBCDR_NFC_PODF_MASK			(0x7 << 13)
--#define MX51_CCM_CBCDR_AHB_PODF_OFFSET		(10)
--#define MX51_CCM_CBCDR_AHB_PODF_MASK			(0x7 << 10)
--#define MX51_CCM_CBCDR_IPG_PODF_OFFSET		(8)
--#define MX51_CCM_CBCDR_IPG_PODF_MASK			(0x3 << 8)
--#define MX51_CCM_CBCDR_PERCLK_PRED1_OFFSET		(6)
--#define MX51_CCM_CBCDR_PERCLK_PRED1_MASK		(0x3 << 6)
--#define MX51_CCM_CBCDR_PERCLK_PRED2_OFFSET		(3)
--#define MX51_CCM_CBCDR_PERCLK_PRED2_MASK		(0x7 << 3)
--#define MX51_CCM_CBCDR_PERCLK_PODF_OFFSET		(0)
--#define MX51_CCM_CBCDR_PERCLK_PODF_MASK		(0x7)
--
--/* Define the bits in register CBCMR */
--#define MX51_CCM_CBCMR_VPU_AXI_CLK_SEL_OFFSET	(14)
--#define MX51_CCM_CBCMR_VPU_AXI_CLK_SEL_MASK		(0x3 << 14)
--#define MX51_CCM_CBCMR_PERIPH_CLK_SEL_OFFSET		(12)
--#define MX51_CCM_CBCMR_PERIPH_CLK_SEL_MASK		(0x3 << 12)
--#define MX51_CCM_CBCMR_DDR_CLK_SEL_OFFSET		(10)
--#define MX51_CCM_CBCMR_DDR_CLK_SEL_MASK		(0x3 << 10)
--#define MX51_CCM_CBCMR_ARM_AXI_CLK_SEL_OFFSET	(8)
--#define MX51_CCM_CBCMR_ARM_AXI_CLK_SEL_MASK		(0x3 << 8)
--#define MX51_CCM_CBCMR_IPU_HSP_CLK_SEL_OFFSET	(6)
--#define MX51_CCM_CBCMR_IPU_HSP_CLK_SEL_MASK		(0x3 << 6)
--#define MX51_CCM_CBCMR_GPU_CLK_SEL_OFFSET		(4)
--#define MX51_CCM_CBCMR_GPU_CLK_SEL_MASK		(0x3 << 4)
--#define MX51_CCM_CBCMR_GPU2D_CLK_SEL_OFFSET        (14)
--#define MX51_CCM_CBCMR_GPU2D_CLK_SEL_MASK      (0x3 << 14)
--#define MX51_CCM_CBCMR_PERCLK_LP_APM_CLK_SEL		(0x1 << 1)
--#define MX51_CCM_CBCMR_PERCLK_IPG_CLK_SEL		(0x1 << 0)
--
--/* Define the bits in register CSCMR1 */
--#define MX51_CCM_CSCMR1_SSI_EXT2_CLK_SEL_OFFSET		(30)
--#define MX51_CCM_CSCMR1_SSI_EXT2_CLK_SEL_MASK		(0x3 << 30)
--#define MX51_CCM_CSCMR1_SSI_EXT1_CLK_SEL_OFFSET		(28)
--#define MX51_CCM_CSCMR1_SSI_EXT1_CLK_SEL_MASK		(0x3 << 28)
--#define MX51_CCM_CSCMR1_USB_PHY_CLK_SEL_OFFSET		(26)
--#define MX51_CCM_CSCMR1_USB_PHY_CLK_SEL			(0x1 << 26)
--#define MX51_CCM_CSCMR1_UART_CLK_SEL_OFFSET			(24)
--#define MX51_CCM_CSCMR1_UART_CLK_SEL_MASK			(0x3 << 24)
--#define MX51_CCM_CSCMR1_USBOH3_CLK_SEL_OFFSET		(22)
--#define MX51_CCM_CSCMR1_USBOH3_CLK_SEL_MASK			(0x3 << 22)
--#define MX51_CCM_CSCMR1_ESDHC1_MSHC1_CLK_SEL_OFFSET	(20)
--#define MX51_CCM_CSCMR1_ESDHC1_MSHC1_CLK_SEL_MASK		(0x3 << 20)
--#define MX51_CCM_CSCMR1_ESDHC3_CLK_SEL			(0x1 << 19)
--#define MX51_CCM_CSCMR1_ESDHC4_CLK_SEL			(0x1 << 18)
--#define MX51_CCM_CSCMR1_ESDHC2_MSHC2_CLK_SEL_OFFSET	(16)
--#define MX51_CCM_CSCMR1_ESDHC2_MSHC2_CLK_SEL_MASK		(0x3 << 16)
--#define MX51_CCM_CSCMR1_SSI1_CLK_SEL_OFFSET			(14)
--#define MX51_CCM_CSCMR1_SSI1_CLK_SEL_MASK			(0x3 << 14)
--#define MX51_CCM_CSCMR1_SSI2_CLK_SEL_OFFSET			(12)
--#define MX51_CCM_CSCMR1_SSI2_CLK_SEL_MASK			(0x3 << 12)
--#define MX51_CCM_CSCMR1_SSI3_CLK_SEL				(0x1 << 11)
--#define MX51_CCM_CSCMR1_VPU_RCLK_SEL				(0x1 << 10)
--#define MX51_CCM_CSCMR1_SSI_APM_CLK_SEL_OFFSET		(8)
--#define MX51_CCM_CSCMR1_SSI_APM_CLK_SEL_MASK		(0x3 << 8)
--#define MX51_CCM_CSCMR1_TVE_CLK_SEL				(0x1 << 7)
--#define MX51_CCM_CSCMR1_TVE_EXT_CLK_SEL			(0x1 << 6)
--#define MX51_CCM_CSCMR1_CSPI_CLK_SEL_OFFSET			(4)
--#define MX51_CCM_CSCMR1_CSPI_CLK_SEL_MASK			(0x3 << 4)
--#define MX51_CCM_CSCMR1_SPDIF_CLK_SEL_OFFSET			(2)
--#define MX51_CCM_CSCMR1_SPDIF_CLK_SEL_MASK			(0x3 << 2)
--#define MX51_CCM_CSCMR1_SSI_EXT2_COM_CLK_SEL			(0x1 << 1)
--#define MX51_CCM_CSCMR1_SSI_EXT1_COM_CLK_SEL			(0x1)
--
--/* Define the bits in register CSCMR2 */
--#define MX51_CCM_CSCMR2_DI_CLK_SEL_OFFSET(n)		(26+n*3)
--#define MX51_CCM_CSCMR2_DI_CLK_SEL_MASK(n)		(0x7 << (26+n*3))
--#define MX51_CCM_CSCMR2_CSI_MCLK2_CLK_SEL_OFFSET	(24)
--#define MX51_CCM_CSCMR2_CSI_MCLK2_CLK_SEL_MASK	(0x3 << 24)
--#define MX51_CCM_CSCMR2_CSI_MCLK1_CLK_SEL_OFFSET	(22)
--#define MX51_CCM_CSCMR2_CSI_MCLK1_CLK_SEL_MASK	(0x3 << 22)
--#define MX51_CCM_CSCMR2_ESC_CLK_SEL_OFFSET		(20)
--#define MX51_CCM_CSCMR2_ESC_CLK_SEL_MASK		(0x3 << 20)
--#define MX51_CCM_CSCMR2_HSC2_CLK_SEL_OFFSET		(18)
--#define MX51_CCM_CSCMR2_HSC2_CLK_SEL_MASK		(0x3 << 18)
--#define MX51_CCM_CSCMR2_HSC1_CLK_SEL_OFFSET		(16)
--#define MX51_CCM_CSCMR2_HSC1_CLK_SEL_MASK		(0x3 << 16)
--#define MX51_CCM_CSCMR2_HSI2C_CLK_SEL_OFFSET		(14)
--#define MX51_CCM_CSCMR2_HSI2C_CLK_SEL_MASK		(0x3 << 14)
--#define MX51_CCM_CSCMR2_FIRI_CLK_SEL_OFFSET		(12)
--#define MX51_CCM_CSCMR2_FIRI_CLK_SEL_MASK		(0x3 << 12)
--#define MX51_CCM_CSCMR2_SIM_CLK_SEL_OFFSET		(10)
--#define MX51_CCM_CSCMR2_SIM_CLK_SEL_MASK		(0x3 << 10)
--#define MX51_CCM_CSCMR2_SLIMBUS_COM			(0x1 << 9)
--#define MX51_CCM_CSCMR2_SLIMBUS_CLK_SEL_OFFSET	(6)
--#define MX51_CCM_CSCMR2_SLIMBUS_CLK_SEL_MASK		(0x7 << 6)
--#define MX51_CCM_CSCMR2_SPDIF1_COM			(1 << 5)
--#define MX51_CCM_CSCMR2_SPDIF0_COM			(1 << 4)
--#define MX51_CCM_CSCMR2_SPDIF1_CLK_SEL_OFFSET	(2)
--#define MX51_CCM_CSCMR2_SPDIF1_CLK_SEL_MASK		(0x3 << 2)
--#define MX51_CCM_CSCMR2_SPDIF0_CLK_SEL_OFFSET	(0)
--#define MX51_CCM_CSCMR2_SPDIF0_CLK_SEL_MASK		(0x3)
--
--/* Define the bits in register CSCDR1 */
--#define MX51_CCM_CSCDR1_ESDHC2_MSHC2_CLK_PRED_OFFSET	(22)
--#define MX51_CCM_CSCDR1_ESDHC2_MSHC2_CLK_PRED_MASK		(0x7 << 22)
--#define MX51_CCM_CSCDR1_ESDHC2_MSHC2_CLK_PODF_OFFSET	(19)
--#define MX51_CCM_CSCDR1_ESDHC2_MSHC2_CLK_PODF_MASK		(0x7 << 19)
--#define MX51_CCM_CSCDR1_ESDHC1_MSHC1_CLK_PRED_OFFSET	(16)
--#define MX51_CCM_CSCDR1_ESDHC1_MSHC1_CLK_PRED_MASK		(0x7 << 16)
--#define MX51_CCM_CSCDR1_PGC_CLK_PODF_OFFSET			(14)
--#define MX51_CCM_CSCDR1_PGC_CLK_PODF_MASK			(0x3 << 14)
--#define MX51_CCM_CSCDR1_ESDHC1_MSHC1_CLK_PODF_OFFSET	(11)
--#define MX51_CCM_CSCDR1_ESDHC1_MSHC1_CLK_PODF_MASK		(0x7 << 11)
--#define MX51_CCM_CSCDR1_USBOH3_CLK_PRED_OFFSET		(8)
--#define MX51_CCM_CSCDR1_USBOH3_CLK_PRED_MASK		(0x7 << 8)
--#define MX51_CCM_CSCDR1_USBOH3_CLK_PODF_OFFSET		(6)
--#define MX51_CCM_CSCDR1_USBOH3_CLK_PODF_MASK		(0x3 << 6)
--#define MX51_CCM_CSCDR1_UART_CLK_PRED_OFFSET		(3)
--#define MX51_CCM_CSCDR1_UART_CLK_PRED_MASK			(0x7 << 3)
--#define MX51_CCM_CSCDR1_UART_CLK_PODF_OFFSET		(0)
--#define MX51_CCM_CSCDR1_UART_CLK_PODF_MASK			(0x7)
--
--/* Define the bits in register CS1CDR and CS2CDR */
--#define MX51_CCM_CS1CDR_SSI_EXT1_CLK_PRED_OFFSET	(22)
--#define MX51_CCM_CS1CDR_SSI_EXT1_CLK_PRED_MASK	(0x7 << 22)
--#define MX51_CCM_CS1CDR_SSI_EXT1_CLK_PODF_OFFSET	(16)
--#define MX51_CCM_CS1CDR_SSI_EXT1_CLK_PODF_MASK	(0x3F << 16)
--#define MX51_CCM_CS1CDR_SSI1_CLK_PRED_OFFSET		(6)
--#define MX51_CCM_CS1CDR_SSI1_CLK_PRED_MASK		(0x7 << 6)
--#define MX51_CCM_CS1CDR_SSI1_CLK_PODF_OFFSET		(0)
--#define MX51_CCM_CS1CDR_SSI1_CLK_PODF_MASK		(0x3F)
--
--#define MX51_CCM_CS2CDR_SSI_EXT2_CLK_PRED_OFFSET	(22)
--#define MX51_CCM_CS2CDR_SSI_EXT2_CLK_PRED_MASK	(0x7 << 22)
--#define MX51_CCM_CS2CDR_SSI_EXT2_CLK_PODF_OFFSET	(16)
--#define MX51_CCM_CS2CDR_SSI_EXT2_CLK_PODF_MASK	(0x3F << 16)
--#define MX51_CCM_CS2CDR_SSI2_CLK_PRED_OFFSET		(6)
--#define MX51_CCM_CS2CDR_SSI2_CLK_PRED_MASK		(0x7 << 6)
--#define MX51_CCM_CS2CDR_SSI2_CLK_PODF_OFFSET		(0)
--#define MX51_CCM_CS2CDR_SSI2_CLK_PODF_MASK		(0x3F)
--
--/* Define the bits in register CDCDR */
--#define MX51_CCM_CDCDR_TVE_CLK_PRED_OFFSET		(28)
--#define MX51_CCM_CDCDR_TVE_CLK_PRED_MASK		(0x7 << 28)
--#define MX51_CCM_CDCDR_SPDIF0_CLK_PRED_OFFSET	(25)
--#define MX51_CCM_CDCDR_SPDIF0_CLK_PRED_MASK		(0x7 << 25)
--#define MX51_CCM_CDCDR_SPDIF0_CLK_PODF_OFFSET	(19)
--#define MX51_CCM_CDCDR_SPDIF0_CLK_PODF_MASK		(0x3F << 19)
--#define MX51_CCM_CDCDR_SPDIF1_CLK_PRED_OFFSET	(16)
--#define MX51_CCM_CDCDR_SPDIF1_CLK_PRED_MASK		(0x7 << 16)
--#define MX51_CCM_CDCDR_SPDIF1_CLK_PODF_OFFSET	(9)
--#define MX51_CCM_CDCDR_SPDIF1_CLK_PODF_MASK		(0x3F << 9)
--#define MX51_CCM_CDCDR_DI_CLK_PRED_OFFSET		(6)
--#define MX51_CCM_CDCDR_DI_CLK_PRED_MASK		(0x7 << 6)
--#define MX51_CCM_CDCDR_USB_PHY_PRED_OFFSET		(3)
--#define MX51_CCM_CDCDR_USB_PHY_PRED_MASK		(0x7 << 3)
--#define MX51_CCM_CDCDR_USB_PHY_PODF_OFFSET		(0)
--#define MX51_CCM_CDCDR_USB_PHY_PODF_MASK		(0x7)
--
--/* Define the bits in register CHSCCDR */
--#define MX51_CCM_CHSCCDR_ESC_CLK_PRED_OFFSET		(12)
--#define MX51_CCM_CHSCCDR_ESC_CLK_PRED_MASK		(0x7 << 12)
--#define MX51_CCM_CHSCCDR_ESC_CLK_PODF_OFFSET	(6)
--#define MX51_CCM_CHSCCDR_ESC_CLK_PODF_MASK		(0x3F << 6)
--#define MX51_CCM_CHSCCDR_HSC2_CLK_PODF_OFFSET	(3)
--#define MX51_CCM_CHSCCDR_HSC2_CLK_PODF_MASK		(0x7 << 3)
--#define MX51_CCM_CHSCCDR_HSC1_CLK_PODF_OFFSET	(0)
--#define MX51_CCM_CHSCCDR_HSC1_CLK_PODF_MASK		(0x7)
--
--/* Define the bits in register CSCDR2 */
--#define MX51_CCM_CSCDR2_CSPI_CLK_PRED_OFFSET		(25)
--#define MX51_CCM_CSCDR2_CSPI_CLK_PRED_MASK		(0x7 << 25)
--#define MX51_CCM_CSCDR2_CSPI_CLK_PODF_OFFSET		(19)
--#define MX51_CCM_CSCDR2_CSPI_CLK_PODF_MASK		(0x3F << 19)
--#define MX51_CCM_CSCDR2_SIM_CLK_PRED_OFFSET		(16)
--#define MX51_CCM_CSCDR2_SIM_CLK_PRED_MASK		(0x7 << 16)
--#define MX51_CCM_CSCDR2_SIM_CLK_PODF_OFFSET		(9)
--#define MX51_CCM_CSCDR2_SIM_CLK_PODF_MASK		(0x3F << 9)
--#define MX51_CCM_CSCDR2_SLIMBUS_CLK_PRED_OFFSET	(6)
--#define MX51_CCM_CSCDR2_SLIMBUS_PRED_MASK		(0x7 << 6)
--#define MX51_CCM_CSCDR2_SLIMBUS_PODF_OFFSET		(0)
--#define MX51_CCM_CSCDR2_SLIMBUS_PODF_MASK		(0x3F)
--
--/* Define the bits in register CSCDR3 */
--#define MX51_CCM_CSCDR3_HSI2C_CLK_PRED_OFFSET	(16)
--#define MX51_CCM_CSCDR3_HSI2C_CLK_PRED_MASK		(0x7 << 16)
--#define MX51_CCM_CSCDR3_HSI2C_CLK_PODF_OFFSET	(9)
--#define MX51_CCM_CSCDR3_HSI2C_CLK_PODF_MASK		(0x3F << 9)
--#define MX51_CCM_CSCDR3_FIRI_CLK_PRED_OFFSET		(6)
--#define MX51_CCM_CSCDR3_FIRI_CLK_PRED_MASK		(0x7 << 6)
--#define MX51_CCM_CSCDR3_FIRI_CLK_PODF_OFFSET		(0)
--#define MX51_CCM_CSCDR3_FIRI_CLK_PODF_MASK		(0x3F)
--
--/* Define the bits in register CSCDR4 */
--#define MX51_CCM_CSCDR4_CSI_MCLK2_CLK_PRED_OFFSET	(16)
--#define MX51_CCM_CSCDR4_CSI_MCLK2_CLK_PRED_MASK	(0x7 << 16)
--#define MX51_CCM_CSCDR4_CSI_MCLK2_CLK_PODF_OFFSET	(9)
--#define MX51_CCM_CSCDR4_CSI_MCLK2_CLK_PODF_MASK	(0x3F << 9)
--#define MX51_CCM_CSCDR4_CSI_MCLK1_CLK_PRED_OFFSET	(6)
--#define MX51_CCM_CSCDR4_CSI_MCLK1_CLK_PRED_MASK	(0x7 << 6)
--#define MX51_CCM_CSCDR4_CSI_MCLK1_CLK_PODF_OFFSET	(0)
--#define MX51_CCM_CSCDR4_CSI_MCLK1_CLK_PODF_MASK	(0x3F)
--
--/* Define the bits in register CDHIPR */
--#define MX51_CCM_CDHIPR_ARM_PODF_BUSY			(1 << 16)
--#define MX51_CCM_CDHIPR_DDR_HF_CLK_SEL_BUSY		(1 << 8)
--#define MX51_CCM_CDHIPR_DDR_PODF_BUSY			(1 << 7)
--#define MX51_CCM_CDHIPR_EMI_CLK_SEL_BUSY			(1 << 6)
--#define MX51_CCM_CDHIPR_PERIPH_CLK_SEL_BUSY		(1 << 5)
--#define MX51_CCM_CDHIPR_NFC_IPG_INT_MEM_PODF_BUSY	(1 << 4)
--#define MX51_CCM_CDHIPR_AHB_PODF_BUSY			(1 << 3)
--#define MX51_CCM_CDHIPR_EMI_PODF_BUSY			(1 << 2)
--#define MX51_CCM_CDHIPR_AXI_B_PODF_BUSY			(1 << 1)
--#define MX51_CCM_CDHIPR_AXI_A_PODF_BUSY			(1 << 0)
--
--/* Define the bits in register CDCR */
--#define MX51_CCM_CDCR_ARM_FREQ_SHIFT_DIVIDER			(0x1 << 2)
--#define MX51_CCM_CDCR_PERIPH_CLK_DVFS_PODF_OFFSET		(0)
--#define MX51_CCM_CDCR_PERIPH_CLK_DVFS_PODF_MASK		(0x3)
--
--/* Define the bits in register CLPCR */
--#define MX51_CCM_CLPCR_BYPASS_HSC_LPM_HS		(0x1 << 23)
--#define MX51_CCM_CLPCR_BYPASS_SCC_LPM_HS		(0x1 << 22)
--#define MX51_CCM_CLPCR_BYPASS_MAX_LPM_HS		(0x1 << 21)
--#define MX51_CCM_CLPCR_BYPASS_SDMA_LPM_HS		(0x1 << 20)
--#define MX51_CCM_CLPCR_BYPASS_EMI_LPM_HS		(0x1 << 19)
--#define MX51_CCM_CLPCR_BYPASS_IPU_LPM_HS		(0x1 << 18)
--#define MX51_CCM_CLPCR_BYPASS_RTIC_LPM_HS		(0x1 << 17)
--#define MX51_CCM_CLPCR_BYPASS_RNGC_LPM_HS		(0x1 << 16)
--#define MX51_CCM_CLPCR_COSC_PWRDOWN			(0x1 << 11)
--#define MX51_CCM_CLPCR_STBY_COUNT_OFFSET		(9)
--#define MX51_CCM_CLPCR_STBY_COUNT_MASK		(0x3 << 9)
--#define MX51_CCM_CLPCR_VSTBY				(0x1 << 8)
--#define MX51_CCM_CLPCR_DIS_REF_OSC			(0x1 << 7)
--#define MX51_CCM_CLPCR_SBYOS				(0x1 << 6)
--#define MX51_CCM_CLPCR_ARM_CLK_DIS_ON_LPM		(0x1 << 5)
--#define MX51_CCM_CLPCR_LPSR_CLK_SEL_OFFSET		(3)
--#define MX51_CCM_CLPCR_LPSR_CLK_SEL_MASK		(0x3 << 3)
--#define MX51_CCM_CLPCR_LPM_OFFSET			(0)
--#define MX51_CCM_CLPCR_LPM_MASK			(0x3)
--
--/* Define the bits in register CISR */
--#define MX51_CCM_CISR_ARM_PODF_LOADED			(0x1 << 25)
--#define MX51_CCM_CISR_NFC_IPG_INT_MEM_PODF_LOADED		(0x1 << 21)
--#define MX51_CCM_CISR_AHB_PODF_LOADED			(0x1 << 20)
--#define MX51_CCM_CISR_EMI_PODF_LOADED				(0x1 << 19)
--#define MX51_CCM_CISR_AXI_B_PODF_LOADED			(0x1 << 18)
--#define MX51_CCM_CISR_AXI_A_PODF_LOADED			(0x1 << 17)
--#define MX51_CCM_CISR_DIVIDER_LOADED				(0x1 << 16)
--#define MX51_CCM_CISR_COSC_READY				(0x1 << 6)
--#define MX51_CCM_CISR_CKIH2_READY				(0x1 << 5)
--#define MX51_CCM_CISR_CKIH_READY				(0x1 << 4)
--#define MX51_CCM_CISR_FPM_READY				(0x1 << 3)
--#define MX51_CCM_CISR_LRF_PLL3					(0x1 << 2)
--#define MX51_CCM_CISR_LRF_PLL2					(0x1 << 1)
--#define MX51_CCM_CISR_LRF_PLL1					(0x1)
--
--/* Define the bits in register CIMR */
--#define MX51_CCM_CIMR_MASK_ARM_PODF_LOADED		(0x1 << 25)
--#define MX51_CCM_CIMR_MASK_NFC_IPG_INT_MEM_PODF_LOADED	(0x1 << 21)
--#define MX51_CCM_CIMR_MASK_EMI_PODF_LOADED		(0x1 << 20)
--#define MX51_CCM_CIMR_MASK_AXI_C_PODF_LOADED		(0x1 << 19)
--#define MX51_CCM_CIMR_MASK_AXI_B_PODF_LOADED		(0x1 << 18)
--#define MX51_CCM_CIMR_MASK_AXI_A_PODF_LOADED		(0x1 << 17)
--#define MX51_CCM_CIMR_MASK_DIVIDER_LOADED		(0x1 << 16)
--#define MX51_CCM_CIMR_MASK_COSC_READY			(0x1 << 5)
--#define MX51_CCM_CIMR_MASK_CKIH_READY			(0x1 << 4)
--#define MX51_CCM_CIMR_MASK_FPM_READY			(0x1 << 3)
--#define MX51_CCM_CIMR_MASK_LRF_PLL3			(0x1 << 2)
--#define MX51_CCM_CIMR_MASK_LRF_PLL2			(0x1 << 1)
--#define MX51_CCM_CIMR_MASK_LRF_PLL1			(0x1)
--
--/* Define the bits in register CCOSR */
--#define MX51_CCM_CCOSR_CKO2_EN_OFFSET			(0x1 << 24)
--#define MX51_CCM_CCOSR_CKO2_DIV_OFFSET			(21)
--#define MX51_CCM_CCOSR_CKO2_DIV_MASK			(0x7 << 21)
--#define MX51_CCM_CCOSR_CKO2_SEL_OFFSET			(16)
--#define MX51_CCM_CCOSR_CKO2_SEL_MASK			(0x1F << 16)
--#define MX51_CCM_CCOSR_CKOL_EN				(0x1 << 7)
--#define MX51_CCM_CCOSR_CKOL_DIV_OFFSET			(4)
--#define MX51_CCM_CCOSR_CKOL_DIV_MASK			(0x7 << 4)
--#define MX51_CCM_CCOSR_CKOL_SEL_OFFSET			(0)
--#define MX51_CCM_CCOSR_CKOL_SEL_MASK			(0xF)
--
--/* Define the bits in registers CGPR */
--#define MX51_CCM_CGPR_EFUSE_PROG_SUPPLY_GATE		(0x1 << 4)
--#define MX51_CCM_CGPR_FPM_SEL				(0x1 << 3)
--#define MX51_CCM_CGPR_VL_L2BIST_CLKDIV_OFFSET		(0)
--#define MX51_CCM_CGPR_VL_L2BIST_CLKDIV_MASK		(0x7)
--
--/* Define the bits in registers CCGRx */
--#define MX51_CCM_CCGR_CG_MASK				0x3
--#define MX51_CCM_CCGR_MOD_OFF				0x0
--#define MX51_CCM_CCGR_MOD_ON				0x3
--#define MX51_CCM_CCGR_MOD_IDLE				0x1
--
--#define MX51_CCM_CCGR0_CG15_OFFSET			30
--#define MX51_CCM_CCGR0_CG15_MASK			(0x3 << 30)
--#define MX51_CCM_CCGR0_CG14_OFFSET			28
--#define MX51_CCM_CCGR0_CG14_MASK			(0x3 << 28)
--#define MX51_CCM_CCGR0_CG13_OFFSET			26
--#define MX51_CCM_CCGR0_CG13_MASK			(0x3 << 26)
--#define MX51_CCM_CCGR0_CG12_OFFSET			24
--#define MX51_CCM_CCGR0_CG12_MASK			(0x3 << 24)
--#define MX51_CCM_CCGR0_CG11_OFFSET			22
--#define MX51_CCM_CCGR0_CG11_MASK			(0x3 << 22)
--#define MX51_CCM_CCGR0_CG10_OFFSET			20
--#define MX51_CCM_CCGR0_CG10_MASK			(0x3 << 20)
--#define MX51_CCM_CCGR0_CG9_OFFSET			18
--#define MX51_CCM_CCGR0_CG9_MASK			(0x3 << 18)
--#define MX51_CCM_CCGR0_CG8_OFFSET			16
--#define MX51_CCM_CCGR0_CG8_MASK			(0x3 << 16)
--#define MX51_CCM_CCGR0_CG7_OFFSET			14
--#define MX51_CCM_CCGR0_CG6_OFFSET			12
--#define MX51_CCM_CCGR0_CG5_OFFSET			10
--#define MX51_CCM_CCGR0_CG5_MASK			(0x3 << 10)
--#define MX51_CCM_CCGR0_CG4_OFFSET			8
--#define MX51_CCM_CCGR0_CG4_MASK			(0x3 << 8)
--#define MX51_CCM_CCGR0_CG3_OFFSET			6
--#define MX51_CCM_CCGR0_CG3_MASK			(0x3 << 6)
--#define MX51_CCM_CCGR0_CG2_OFFSET			4
--#define MX51_CCM_CCGR0_CG2_MASK			(0x3 << 4)
--#define MX51_CCM_CCGR0_CG1_OFFSET			2
--#define MX51_CCM_CCGR0_CG1_MASK			(0x3 << 2)
--#define MX51_CCM_CCGR0_CG0_OFFSET			0
--#define MX51_CCM_CCGR0_CG0_MASK			0x3
--
--#define MX51_CCM_CCGR1_CG15_OFFSET			30
--#define MX51_CCM_CCGR1_CG14_OFFSET			28
--#define MX51_CCM_CCGR1_CG13_OFFSET			26
--#define MX51_CCM_CCGR1_CG12_OFFSET			24
--#define MX51_CCM_CCGR1_CG11_OFFSET			22
--#define MX51_CCM_CCGR1_CG10_OFFSET			20
--#define MX51_CCM_CCGR1_CG9_OFFSET			18
--#define MX51_CCM_CCGR1_CG8_OFFSET			16
--#define MX51_CCM_CCGR1_CG7_OFFSET			14
--#define MX51_CCM_CCGR1_CG6_OFFSET			12
--#define MX51_CCM_CCGR1_CG5_OFFSET			10
--#define MX51_CCM_CCGR1_CG4_OFFSET			8
--#define MX51_CCM_CCGR1_CG3_OFFSET			6
--#define MX51_CCM_CCGR1_CG2_OFFSET			4
--#define MX51_CCM_CCGR1_CG1_OFFSET			2
--#define MX51_CCM_CCGR1_CG0_OFFSET			0
--
--#define MX51_CCM_CCGR2_CG15_OFFSET			30
--#define MX51_CCM_CCGR2_CG14_OFFSET			28
--#define MX51_CCM_CCGR2_CG13_OFFSET			26
--#define MX51_CCM_CCGR2_CG12_OFFSET			24
--#define MX51_CCM_CCGR2_CG11_OFFSET			22
--#define MX51_CCM_CCGR2_CG10_OFFSET			20
--#define MX51_CCM_CCGR2_CG9_OFFSET			18
--#define MX51_CCM_CCGR2_CG8_OFFSET			16
--#define MX51_CCM_CCGR2_CG7_OFFSET			14
--#define MX51_CCM_CCGR2_CG6_OFFSET			12
--#define MX51_CCM_CCGR2_CG5_OFFSET			10
--#define MX51_CCM_CCGR2_CG4_OFFSET			8
--#define MX51_CCM_CCGR2_CG3_OFFSET			6
--#define MX51_CCM_CCGR2_CG2_OFFSET			4
--#define MX51_CCM_CCGR2_CG1_OFFSET			2
--#define MX51_CCM_CCGR2_CG0_OFFSET			0
--
--#define MX51_CCM_CCGR3_CG15_OFFSET			30
--#define MX51_CCM_CCGR3_CG14_OFFSET			28
--#define MX51_CCM_CCGR3_CG13_OFFSET			26
--#define MX51_CCM_CCGR3_CG12_OFFSET			24
--#define MX51_CCM_CCGR3_CG11_OFFSET			22
--#define MX51_CCM_CCGR3_CG10_OFFSET			20
--#define MX51_CCM_CCGR3_CG9_OFFSET			18
--#define MX51_CCM_CCGR3_CG8_OFFSET			16
--#define MX51_CCM_CCGR3_CG7_OFFSET			14
--#define MX51_CCM_CCGR3_CG6_OFFSET			12
--#define MX51_CCM_CCGR3_CG5_OFFSET			10
--#define MX51_CCM_CCGR3_CG4_OFFSET			8
--#define MX51_CCM_CCGR3_CG3_OFFSET			6
--#define MX51_CCM_CCGR3_CG2_OFFSET			4
--#define MX51_CCM_CCGR3_CG1_OFFSET			2
--#define MX51_CCM_CCGR3_CG0_OFFSET			0
--
--#define MX51_CCM_CCGR4_CG15_OFFSET			30
--#define MX51_CCM_CCGR4_CG14_OFFSET			28
--#define MX51_CCM_CCGR4_CG13_OFFSET			26
--#define MX51_CCM_CCGR4_CG12_OFFSET			24
--#define MX51_CCM_CCGR4_CG11_OFFSET			22
--#define MX51_CCM_CCGR4_CG10_OFFSET			20
--#define MX51_CCM_CCGR4_CG9_OFFSET			18
--#define MX51_CCM_CCGR4_CG8_OFFSET			16
--#define MX51_CCM_CCGR4_CG7_OFFSET			14
--#define MX51_CCM_CCGR4_CG6_OFFSET			12
--#define MX51_CCM_CCGR4_CG5_OFFSET			10
--#define MX51_CCM_CCGR4_CG4_OFFSET			8
--#define MX51_CCM_CCGR4_CG3_OFFSET			6
--#define MX51_CCM_CCGR4_CG2_OFFSET			4
--#define MX51_CCM_CCGR4_CG1_OFFSET			2
--#define MX51_CCM_CCGR4_CG0_OFFSET			0
--
--#define MX51_CCM_CCGR5_CG15_OFFSET			30
--#define MX51_CCM_CCGR5_CG14_OFFSET			28
--#define MX51_CCM_CCGR5_CG14_MASK			(0x3 << 28)
--#define MX51_CCM_CCGR5_CG13_OFFSET			26
--#define MX51_CCM_CCGR5_CG13_MASK			(0x3 << 26)
--#define MX51_CCM_CCGR5_CG12_OFFSET			24
--#define MX51_CCM_CCGR5_CG12_MASK			(0x3 << 24)
--#define MX51_CCM_CCGR5_CG11_OFFSET			22
--#define MX51_CCM_CCGR5_CG11_MASK			(0x3 << 22)
--#define MX51_CCM_CCGR5_CG10_OFFSET			20
--#define MX51_CCM_CCGR5_CG10_MASK			(0x3 << 20)
--#define MX51_CCM_CCGR5_CG9_OFFSET			18
--#define MX51_CCM_CCGR5_CG9_MASK			(0x3 << 18)
--#define MX51_CCM_CCGR5_CG8_OFFSET			16
--#define MX51_CCM_CCGR5_CG8_MASK			(0x3 << 16)
--#define MX51_CCM_CCGR5_CG7_OFFSET			14
--#define MX51_CCM_CCGR5_CG7_MASK			(0x3 << 14)
--#define MX51_CCM_CCGR5_CG6_OFFSET			12
--#define MX51_CCM_CCGR5_CG5_OFFSET			10
--#define MX51_CCM_CCGR5_CG4_OFFSET			8
--#define MX51_CCM_CCGR5_CG3_OFFSET			6
--#define MX51_CCM_CCGR5_CG2_OFFSET			4
--#define MX51_CCM_CCGR5_CG2_MASK			(0x3 << 4)
--#define MX51_CCM_CCGR5_CG1_OFFSET			2
--#define MX51_CCM_CCGR5_CG0_OFFSET			0
--#define MX51_CCM_CCGR6_CG7_OFFSET            14
--#define MX51_CCM_CCGR6_CG7_MASK          (0x3 << 14)
--#define MX51_CCM_CCGR6_CG6_OFFSET			12
--#define MX51_CCM_CCGR6_CG6_MASK			(0x3 << 12)
--#define MX51_CCM_CCGR6_CG5_OFFSET			10
--#define MX51_CCM_CCGR6_CG5_MASK			(0x3 << 10)
--#define MX51_CCM_CCGR6_CG4_OFFSET			8
--#define MX51_CCM_CCGR6_CG4_MASK			(0x3 << 8)
--#define MX51_CCM_CCGR6_CG3_OFFSET			6
--#define MX51_CCM_CCGR6_CG2_OFFSET			4
--#define MX51_CCM_CCGR6_CG1_OFFSET			2
--#define MX51_CCM_CCGR6_CG0_OFFSET			0
--
--/* CORTEXA8 platform */
--#define MX51_CORTEXA8_PLAT_PVID		(MX51_CORTEXA8_BASE + 0x0)
--#define MX51_CORTEXA8_PLAT_GPC		(MX51_CORTEXA8_BASE + 0x4)
--#define MX51_CORTEXA8_PLAT_PIC		(MX51_CORTEXA8_BASE + 0x8)
--#define MX51_CORTEXA8_PLAT_LPC		(MX51_CORTEXA8_BASE + 0xC)
--#define MX51_CORTEXA8_PLAT_NEON_LPC	(MX51_CORTEXA8_BASE + 0x10)
--#define MX51_CORTEXA8_PLAT_ICGC		(MX51_CORTEXA8_BASE + 0x14)
--#define MX51_CORTEXA8_PLAT_AMC		(MX51_CORTEXA8_BASE + 0x18)
--#define MX51_CORTEXA8_PLAT_NMC		(MX51_CORTEXA8_BASE + 0x20)
--#define MX51_CORTEXA8_PLAT_NMS		(MX51_CORTEXA8_BASE + 0x24)
--
--/* DVFS CORE */
--#define MX51_DVFSTHRS		(MX51_DVFS_CORE_BASE + 0x00)
--#define MX51_DVFSCOUN		(MX51_DVFS_CORE_BASE + 0x04)
--#define MX51_DVFSSIG1		(MX51_DVFS_CORE_BASE + 0x08)
--#define MX51_DVFSSIG0		(MX51_DVFS_CORE_BASE + 0x0C)
--#define MX51_DVFSGPC0		(MX51_DVFS_CORE_BASE + 0x10)
--#define MX51_DVFSGPC1		(MX51_DVFS_CORE_BASE + 0x14)
--#define MX51_DVFSGPBT		(MX51_DVFS_CORE_BASE + 0x18)
--#define MX51_DVFSEMAC		(MX51_DVFS_CORE_BASE + 0x1C)
--#define MX51_DVFSCNTR		(MX51_DVFS_CORE_BASE + 0x20)
--#define MX51_DVFSLTR0_0		(MX51_DVFS_CORE_BASE + 0x24)
--#define MX51_DVFSLTR0_1		(MX51_DVFS_CORE_BASE + 0x28)
--#define MX51_DVFSLTR1_0		(MX51_DVFS_CORE_BASE + 0x2C)
--#define MX51_DVFSLTR1_1		(MX51_DVFS_CORE_BASE + 0x30)
--#define MX51_DVFSPT0 		(MX51_DVFS_CORE_BASE + 0x34)
--#define MX51_DVFSPT1 		(MX51_DVFS_CORE_BASE + 0x38)
--#define MX51_DVFSPT2 		(MX51_DVFS_CORE_BASE + 0x3C)
--#define MX51_DVFSPT3 		(MX51_DVFS_CORE_BASE + 0x40)
--
--/* GPC */
--#define MX51_GPC_CNTR		(MX51_GPC_BASE + 0x0)
--#define MX51_GPC_PGR		(MX51_GPC_BASE + 0x4)
--#define MX51_GPC_VCR		(MX51_GPC_BASE + 0x8)
--#define MX51_GPC_ALL_PU		(MX51_GPC_BASE + 0xC)
--#define MX51_GPC_NEON		(MX51_GPC_BASE + 0x10)
--#define MX51_GPC_PGR_ARMPG_OFFSET	8
--#define MX51_GPC_PGR_ARMPG_MASK		(3 << 8)
--
--/* PGC */
--#define MX51_PGC_IPU_PGCR	(MX51_PGC_IPU_BASE + 0x0)
--#define MX51_PGC_IPU_PGSR	(MX51_PGC_IPU_BASE + 0xC)
--#define MX51_PGC_VPU_PGCR	(MX51_PGC_VPU_BASE + 0x0)
--#define MX51_PGC_VPU_PGSR	(MX51_PGC_VPU_BASE + 0xC)
--#define MX51_PGC_GPU_PGCR	(MX51_PGC_GPU_BASE + 0x0)
--#define MX51_PGC_GPU_PGSR	(MX51_PGC_GPU_BASE + 0xC)
--
--#define MX51_PGCR_PCR		1
--#define MX51_SRPGCR_PCR		1
--#define MX51_EMPGCR_PCR		1
--#define MX51_PGSR_PSR		1
--
--
--#define MX51_CORTEXA8_PLAT_LPC_DSM	(1 << 0)
--#define MX51_CORTEXA8_PLAT_LPC_DBG_DSM	(1 << 1)
--
--/* SRPG */
--#define MX51_SRPG_NEON_SRPGCR	(MX51_SRPG_NEON_BASE + 0x0)
--#define MX51_SRPG_NEON_PUPSCR	(MX51_SRPG_NEON_BASE + 0x4)
--#define MX51_SRPG_NEON_PDNSCR	(MX51_SRPG_NEON_BASE + 0x8)
--
--#define MX51_SRPG_ARM_SRPGCR	(MX51_SRPG_ARM_BASE + 0x0)
--#define MX51_SRPG_ARM_PUPSCR	(MX51_SRPG_ARM_BASE + 0x4)
--#define MX51_SRPG_ARM_PDNSCR	(MX51_SRPG_ARM_BASE + 0x8)
--
--#define MX51_SRPG_EMPGC0_SRPGCR	(MX51_SRPG_EMPGC0_BASE + 0x0)
--#define MX51_SRPG_EMPGC0_PUPSCR	(MX51_SRPG_EMPGC0_BASE + 0x4)
--#define MX51_SRPG_EMPGC0_PDNSCR	(MX51_SRPG_EMPGC0_BASE + 0x8)
--
--#define MX51_SRPG_EMPGC1_SRPGCR	(MX51_SRPG_EMPGC1_BASE + 0x0)
--#define MX51_SRPG_EMPGC1_PUPSCR	(MX51_SRPG_EMPGC1_BASE + 0x4)
--#define MX51_SRPG_EMPGC1_PDNSCR	(MX51_SRPG_EMPGC1_BASE + 0x8)
--
--#define MX51_SRPG_MEGAMIX_SRPGCR		(MX51_SRPG_MEGAMIX_BASE + 0x0)
--#define MX51_SRPG_MEGAMIX_PUPSCR		(MX51_SRPG_MEGAMIX_BASE + 0x4)
--#define MX51_SRPG_MEGAMIX_PDNSCR		(MX51_SRPG_MEGAMIX_BASE + 0x8)
--
--#define MX51_SRPGC_EMI_SRPGCR	(MX51_SRPGC_EMI_BASE + 0x0)
--#define MX51_SRPGC_EMI_PUPSCR	(MX51_SRPGC_EMI_BASE + 0x4)
--#define MX51_SRPGC_EMI_PDNSCR	(MX51_SRPGC_EMI_BASE + 0x8)
--
--#endif				/* __ARCH_ARM_MACH_MX51_CRM_REGS_H__ */
--
--
-diff --git a/arch/arm/mach-imx/include/mach/clock-imx51_53.h b/arch/arm/mach-imx/include/mach/clock-imx51_53.h
+ if MACH_PCM043
+diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
+index 5fcaac9..0b3b781 100644
+--- a/arch/arm/mach-imx/Makefile
++++ b/arch/arm/mach-imx/Makefile
+@@ -6,6 +6,7 @@ obj-$(CONFIG_ARCH_IMX27) += speed-imx27.o imx27.o iomux-v1.o
+ obj-$(CONFIG_ARCH_IMX31) += speed-imx31.o imx31.o iomux-v2.o
+ obj-$(CONFIG_ARCH_IMX35) += speed-imx35.o imx35.o iomux-v3.o
+ obj-$(CONFIG_ARCH_IMX51) += speed-imx51.o imx51.o iomux-v3.o
++obj-$(CONFIG_ARCH_IMX53) += speed-imx53.o imx53.o iomux-v3.o
+ obj-$(CONFIG_IMX_CLKO)	+= clko.o
+ obj-$(CONFIG_IMX_IIM)	+= iim.o
+ obj-$(CONFIG_NAND_IMX) += nand.o
+diff --git a/arch/arm/mach-imx/imx53.c b/arch/arm/mach-imx/imx53.c
 new file mode 100644
-index 0000000..89aa5e2
+index 0000000..7a822c2
 --- /dev/null
-+++ b/arch/arm/mach-imx/include/mach/clock-imx51_53.h
-@@ -0,0 +1,619 @@
++++ b/arch/arm/mach-imx/imx53.c
+@@ -0,0 +1,45 @@
 +/*
-+ * Copyright 2008-2009 Freescale Semiconductor, Inc. All Rights Reserved.
-+ */
-+
-+/*
-+ * The code contained herein is licensed under the GNU General Public
-+ * License. You may obtain a copy of the GNU General Public License
-+ * Version 2 or later at the following locations:
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
 + *
-+ * http://www.opensource.org/licenses/gpl-license.html
-+ * http://www.gnu.org/copyleft/gpl.html
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
 + */
-+#ifndef __ARCH_ARM_MACH_MX51_CRM_REGS_H__
-+#define __ARCH_ARM_MACH_MX51_CRM_REGS_H__
 +
-+/* PLL Register Offsets */
-+#define MX5_PLL_DP_CTL			0x00
-+#define MX5_PLL_DP_CONFIG		0x04
-+#define MX5_PLL_DP_OP			0x08
-+#define MX5_PLL_DP_MFD			0x0C
-+#define MX5_PLL_DP_MFN			0x10
-+#define MX5_PLL_DP_MFNMINUS		0x14
-+#define MX5_PLL_DP_MFNPLUS		0x18
-+#define MX5_PLL_DP_HFS_OP		0x1C
-+#define MX5_PLL_DP_HFS_MFD		0x20
-+#define MX5_PLL_DP_HFS_MFN		0x24
-+#define MX5_PLL_DP_MFN_TOGC		0x28
-+#define MX5_PLL_DP_DESTAT		0x2c
++#include <init.h>
++#include <common.h>
++#include <asm/io.h>
++#include <sizes.h>
++#include <mach/imx53-regs.h>
 +
-+/* PLL Register Bit definitions */
-+#define MX5_PLL_DP_CTL_MUL_CTRL		0x2000
-+#define MX5_PLL_DP_CTL_DPDCK0_2_EN	0x1000
-+#define MX5_PLL_DP_CTL_DPDCK0_2_OFFSET	12
-+#define MX5_PLL_DP_CTL_ADE		0x800
-+#define MX5_PLL_DP_CTL_REF_CLK_DIV	0x400
-+#define MX5_PLL_DP_CTL_REF_CLK_SEL_MASK	(3 << 8)
-+#define MX5_PLL_DP_CTL_REF_CLK_SEL_OFFSET	8
-+#define MX5_PLL_DP_CTL_HFSM		0x80
-+#define MX5_PLL_DP_CTL_PRE		0x40
-+#define MX5_PLL_DP_CTL_UPEN		0x20
-+#define MX5_PLL_DP_CTL_RST		0x10
-+#define MX5_PLL_DP_CTL_RCP		0x8
-+#define MX5_PLL_DP_CTL_PLM		0x4
-+#define MX5_PLL_DP_CTL_BRM0		0x2
-+#define MX5_PLL_DP_CTL_LRF		0x1
++#include "gpio.h"
 +
-+#define MX5_PLL_DP_CONFIG_BIST		0x8
-+#define MX5_PLL_DP_CONFIG_SJC_CE	0x4
-+#define MX5_PLL_DP_CONFIG_AREN		0x2
-+#define MX5_PLL_DP_CONFIG_LDREQ		0x1
++void *imx_gpio_base[] = {
++	(void *)MX53_GPIO1_BASE_ADDR,
++	(void *)MX53_GPIO2_BASE_ADDR,
++	(void *)MX53_GPIO3_BASE_ADDR,
++	(void *)MX53_GPIO4_BASE_ADDR,
++	(void *)MX53_GPIO5_BASE_ADDR,
++	(void *)MX53_GPIO6_BASE_ADDR,
++	(void *)MX53_GPIO7_BASE_ADDR,
++};
 +
-+#define MX5_PLL_DP_OP_MFI_OFFSET	4
-+#define MX5_PLL_DP_OP_MFI_MASK		(0xF << 4)
-+#define MX5_PLL_DP_OP_PDF_OFFSET	0
-+#define MX5_PLL_DP_OP_PDF_MASK		0xF
++int imx_gpio_count = ARRAY_SIZE(imx_gpio_base) * 32;
 +
-+#define MX5_PLL_DP_MFD_OFFSET		0
-+#define MX5_PLL_DP_MFD_MASK		0x07FFFFFF
++static int imx53_init(void)
++{
++	add_generic_device("imx_iim", 0, NULL, MX53_IIM_BASE_ADDR, SZ_4K,
++			IORESOURCE_MEM, NULL);
 +
-+#define MX5_PLL_DP_MFN_OFFSET		0x0
-+#define MX5_PLL_DP_MFN_MASK		0x07FFFFFF
-+
-+#define MX5_PLL_DP_MFN_TOGC_TOG_DIS	(1 << 17)
-+#define MX5_PLL_DP_MFN_TOGC_TOG_EN	(1 << 16)
-+#define MX5_PLL_DP_MFN_TOGC_CNT_OFFSET	0x0
-+#define MX5_PLL_DP_MFN_TOGC_CNT_MASK	0xFFFF
-+
-+#define MX5_PLL_DxP_DESTAT_TOG_SEL	(1 << 31)
-+#define MX5_PLL_DP_DESTAT_MFN		0x07FFFFFF
-+
-+/* Register addresses of CCM */
-+#define MX5_CCM_CCR		0x00
-+#define MX5_CCM_CCDR		0x04
-+#define MX5_CCM_CSR		0x08
-+#define MX5_CCM_CCSR		0x0C
-+#define MX5_CCM_CACRR		0x10
-+#define MX5_CCM_CBCDR		0x14
-+#define MX5_CCM_CBCMR		0x18
-+#define MX5_CCM_CSCMR1		0x1C
-+#define MX5_CCM_CSCMR2		0x20
-+#define MX5_CCM_CSCDR1		0x24
-+#define MX5_CCM_CS1CDR		0x28
-+#define MX5_CCM_CS2CDR		0x2C
-+#define MX5_CCM_CDCDR		0x30
-+#define MX5_CCM_CHSCDR		0x34
-+#define MX5_CCM_CSCDR2		0x38
-+#define MX5_CCM_CSCDR3		0x3C
-+#define MX5_CCM_CSCDR4		0x40
-+#define MX5_CCM_CWDR		0x44
-+#define MX5_CCM_CDHIPR		0x48
-+#define MX5_CCM_CDCR		0x4C
-+#define MX5_CCM_CTOR		0x50
-+#define MX5_CCM_CLPCR		0x54
-+#define MX5_CCM_CISR		0x58
-+#define MX5_CCM_CIMR		0x5C
-+#define MX5_CCM_CCOSR		0x60
-+#define MX5_CCM_CGPR		0x64
-+#define MX5_CCM_CCGR0		0x68
-+#define MX5_CCM_CCGR1		0x6C
-+#define MX5_CCM_CCGR2		0x70
-+#define MX5_CCM_CCGR3		0x74
-+#define MX5_CCM_CCGR4		0x78
-+#define MX5_CCM_CCGR5		0x7C
-+#define MX5_CCM_CCGR6		0x80
-+#define MX5_CCM_CMEOR		0x84
-+
-+/* Define the bits in register CCR */
-+#define MX5_CCM_CCR_COSC_EN		(1 << 12)
-+#define MX5_CCM_CCR_FPM_MULT_MASK	(1 << 11)
-+#define MX5_CCM_CCR_CAMP2_EN		(1 << 10)
-+#define MX5_CCM_CCR_CAMP1_EN		(1 << 9)
-+#define MX5_CCM_CCR_FPM_EN		(1 << 8)
-+#define MX5_CCM_CCR_OSCNT_OFFSET	(0)
-+#define MX5_CCM_CCR_OSCNT_MASK	(0xFF)
-+
-+/* Define the bits in register CCDR */
-+#define MX5_CCM_CCDR_HSC_HS_MASK	(0x1 << 18)
-+#define MX5_CCM_CCDR_IPU_HS_MASK	(0x1 << 17)
-+#define MX5_CCM_CCDR_EMI_HS_MASK	(0x1 << 16)
-+
-+/* Define the bits in register CSR */
-+#define MX5_CCM_CSR_COSR_READY	(1 << 5)
-+#define MX5_CCM_CSR_LVS_VALUE	(1 << 4)
-+#define MX5_CCM_CSR_CAMP2_READY	(1 << 3)
-+#define MX5_CCM_CSR_CAMP1_READY	(1 << 2)
-+#define MX5_CCM_CSR_FPM_READY	(1 << 1)
-+#define MX5_CCM_CSR_REF_EN_B	(1 << 0)
-+
-+/* Define the bits in register CCSR */
-+#define MX5_CCM_CCSR_LP_APM_SEL		(0x1 << 9)
-+#define MX5_CCM_CCSR_STEP_SEL_OFFSET	(7)
-+#define MX5_CCM_CCSR_STEP_SEL_MASK	(0x3 << 7)
-+#define MX5_CCM_CCSR_STEP_SEL_LP_APM	   0
-+#define MX5_CCM_CCSR_STEP_SEL_PLL1_BYPASS  1 /* Only when JTAG connected? */
-+#define MX5_CCM_CCSR_STEP_SEL_PLL2_DIVIDED 2
-+#define MX5_CCM_CCSR_STEP_SEL_PLL3_DIVIDED 3
-+#define MX5_CCM_CCSR_PLL2_PODF_OFFSET	(5)
-+#define MX5_CCM_CCSR_PLL2_PODF_MASK	(0x3 << 5)
-+#define MX5_CCM_CCSR_PLL3_PODF_OFFSET	(3)
-+#define MX5_CCM_CCSR_PLL3_PODF_MASK	(0x3 << 3)
-+#define MX5_CCM_CCSR_PLL1_SW_CLK_SEL	(1 << 2) /* 0: pll1_main_clk,
-+						    1: step_clk */
-+#define MX5_CCM_CCSR_PLL2_SW_CLK_SEL	(1 << 1)
-+#define MX5_CCM_CCSR_PLL3_SW_CLK_SEL	(1 << 0)
-+
-+/* Define the bits in register CACRR */
-+#define MX5_CCM_CACRR_ARM_PODF_OFFSET	(0)
-+#define MX5_CCM_CACRR_ARM_PODF_MASK	(0x7)
-+
-+/* Define the bits in register CBCDR */
-+#define MX5_CCM_CBCDR_EMI_CLK_SEL		(0x1 << 26)
-+#define MX5_CCM_CBCDR_PERIPH_CLK_SEL		(0x1 << 25)
-+#define MX5_CCM_CBCDR_DDR_HF_SEL_OFFSET		(30)
-+#define MX5_CCM_CBCDR_DDR_HF_SEL		(0x1 << 30)
-+#define MX5_CCM_CBCDR_DDR_PODF_OFFSET		(27)
-+#define MX5_CCM_CBCDR_DDR_PODF_MASK		(0x7 << 27)
-+#define MX5_CCM_CBCDR_EMI_PODF_OFFSET		(22)
-+#define MX5_CCM_CBCDR_EMI_PODF_MASK		(0x7 << 22)
-+#define MX5_CCM_CBCDR_AXI_B_PODF_OFFSET		(19)
-+#define MX5_CCM_CBCDR_AXI_B_PODF_MASK		(0x7 << 19)
-+#define MX5_CCM_CBCDR_AXI_A_PODF_OFFSET		(16)
-+#define MX5_CCM_CBCDR_AXI_A_PODF_MASK		(0x7 << 16)
-+#define MX5_CCM_CBCDR_NFC_PODF_OFFSET		(13)
-+#define MX5_CCM_CBCDR_NFC_PODF_MASK		(0x7 << 13)
-+#define MX5_CCM_CBCDR_AHB_PODF_OFFSET		(10)
-+#define MX5_CCM_CBCDR_AHB_PODF_MASK		(0x7 << 10)
-+#define MX5_CCM_CBCDR_IPG_PODF_OFFSET		(8)
-+#define MX5_CCM_CBCDR_IPG_PODF_MASK		(0x3 << 8)
-+#define MX5_CCM_CBCDR_PERCLK_PRED1_OFFSET	(6)
-+#define MX5_CCM_CBCDR_PERCLK_PRED1_MASK		(0x3 << 6)
-+#define MX5_CCM_CBCDR_PERCLK_PRED2_OFFSET	(3)
-+#define MX5_CCM_CBCDR_PERCLK_PRED2_MASK		(0x7 << 3)
-+#define MX5_CCM_CBCDR_PERCLK_PODF_OFFSET	(0)
-+#define MX5_CCM_CBCDR_PERCLK_PODF_MASK		(0x7)
-+
-+/* Define the bits in register CBCMR */
-+#define MX5_CCM_CBCMR_VPU_AXI_CLK_SEL_OFFSET	(14)
-+#define MX5_CCM_CBCMR_VPU_AXI_CLK_SEL_MASK	(0x3 << 14)
-+#define MX5_CCM_CBCMR_PERIPH_CLK_SEL_OFFSET	(12)
-+#define MX5_CCM_CBCMR_PERIPH_CLK_SEL_MASK	(0x3 << 12)
-+#define MX5_CCM_CBCMR_DDR_CLK_SEL_OFFSET	(10)
-+#define MX5_CCM_CBCMR_DDR_CLK_SEL_MASK		(0x3 << 10)
-+#define MX5_CCM_CBCMR_ARM_AXI_CLK_SEL_OFFSET	(8)
-+#define MX5_CCM_CBCMR_ARM_AXI_CLK_SEL_MASK	(0x3 << 8)
-+#define MX5_CCM_CBCMR_IPU_HSP_CLK_SEL_OFFSET	(6)
-+#define MX5_CCM_CBCMR_IPU_HSP_CLK_SEL_MASK	(0x3 << 6)
-+#define MX5_CCM_CBCMR_GPU_CLK_SEL_OFFSET	(4)
-+#define MX5_CCM_CBCMR_GPU_CLK_SEL_MASK		(0x3 << 4)
-+#define MX5_CCM_CBCMR_GPU2D_CLK_SEL_OFFSET	(14)
-+#define MX5_CCM_CBCMR_GPU2D_CLK_SEL_MASK	(0x3 << 14)
-+#define MX5_CCM_CBCMR_PERCLK_LP_APM_CLK_SEL	(0x1 << 1)
-+#define MX5_CCM_CBCMR_PERCLK_IPG_CLK_SEL	(0x1 << 0)
-+
-+/* Define the bits in register CSCMR1 */
-+#define MX5_CCM_CSCMR1_SSI_EXT2_CLK_SEL_OFFSET		(30)
-+#define MX5_CCM_CSCMR1_SSI_EXT2_CLK_SEL_MASK		(0x3 << 30)
-+#define MX5_CCM_CSCMR1_SSI_EXT1_CLK_SEL_OFFSET		(28)
-+#define MX5_CCM_CSCMR1_SSI_EXT1_CLK_SEL_MASK		(0x3 << 28)
-+#define MX5_CCM_CSCMR1_USB_PHY_CLK_SEL_OFFSET		(26)
-+#define MX5_CCM_CSCMR1_USB_PHY_CLK_SEL			(0x1 << 26)
-+#define MX5_CCM_CSCMR1_UART_CLK_SEL_OFFSET		(24)
-+#define MX5_CCM_CSCMR1_UART_CLK_SEL_MASK		(0x3 << 24)
-+#define MX5_CCM_CSCMR1_USBOH3_CLK_SEL_OFFSET		(22)
-+#define MX5_CCM_CSCMR1_USBOH3_CLK_SEL_MASK		(0x3 << 22)
-+#define MX5_CCM_CSCMR1_ESDHC1_MSHC1_CLK_SEL_OFFSET	(20)
-+#define MX5_CCM_CSCMR1_ESDHC1_MSHC1_CLK_SEL_MASK	(0x3 << 20)
-+#define MX5_CCM_CSCMR1_ESDHC3_CLK_SEL			(0x1 << 19)
-+#define MX5_CCM_CSCMR1_ESDHC2_MSHC2_MX53_CLK_SEL	(0x1 << 19)
-+#define MX5_CCM_CSCMR1_ESDHC4_CLK_SEL			(0x1 << 18)
-+#define MX5_CCM_CSCMR1_ESDHC2_MSHC2_CLK_SEL_OFFSET	(16)
-+#define MX5_CCM_CSCMR1_ESDHC2_MSHC2_CLK_SEL_MASK	(0x3 << 16)
-+#define MX5_CCM_CSCMR1_ESDHC3_MX53_CLK_SEL_OFFSET	(16)
-+#define MX5_CCM_CSCMR1_ESDHC3_MX53_CLK_SEL_MASK		(0x3 << 16)
-+#define MX5_CCM_CSCMR1_SSI1_CLK_SEL_OFFSET		(14)
-+#define MX5_CCM_CSCMR1_SSI1_CLK_SEL_MASK		(0x3 << 14)
-+#define MX5_CCM_CSCMR1_SSI2_CLK_SEL_OFFSET		(12)
-+#define MX5_CCM_CSCMR1_SSI2_CLK_SEL_MASK		(0x3 << 12)
-+#define MX5_CCM_CSCMR1_SSI3_CLK_SEL			(0x1 << 11)
-+#define MX5_CCM_CSCMR1_VPU_RCLK_SEL			(0x1 << 10)
-+#define MX5_CCM_CSCMR1_SSI_APM_CLK_SEL_OFFSET		(8)
-+#define MX5_CCM_CSCMR1_SSI_APM_CLK_SEL_MASK		(0x3 << 8)
-+#define MX5_CCM_CSCMR1_TVE_CLK_SEL			(0x1 << 7)
-+#define MX5_CCM_CSCMR1_TVE_EXT_CLK_SEL			(0x1 << 6)
-+#define MX5_CCM_CSCMR1_CSPI_CLK_SEL_OFFSET		(4)
-+#define MX5_CCM_CSCMR1_CSPI_CLK_SEL_MASK		(0x3 << 4)
-+#define MX5_CCM_CSCMR1_SPDIF_CLK_SEL_OFFSET		(2)
-+#define MX5_CCM_CSCMR1_SPDIF_CLK_SEL_MASK		(0x3 << 2)
-+#define MX5_CCM_CSCMR1_SSI_EXT2_COM_CLK_SEL		(0x1 << 1)
-+#define MX5_CCM_CSCMR1_SSI_EXT1_COM_CLK_SEL		(0x1)
-+
-+/* Define the bits in register CSCMR2 */
-+#define MX5_CCM_CSCMR2_DI_CLK_SEL_OFFSET(n)		(26+n*3)
-+#define MX5_CCM_CSCMR2_DI_CLK_SEL_MASK(n)		(0x7 << (26+n*3))
-+#define MX5_CCM_CSCMR2_CSI_MCLK2_CLK_SEL_OFFSET		(24)
-+#define MX5_CCM_CSCMR2_CSI_MCLK2_CLK_SEL_MASK		(0x3 << 24)
-+#define MX5_CCM_CSCMR2_CSI_MCLK1_CLK_SEL_OFFSET		(22)
-+#define MX5_CCM_CSCMR2_CSI_MCLK1_CLK_SEL_MASK		(0x3 << 22)
-+#define MX5_CCM_CSCMR2_ESC_CLK_SEL_OFFSET		(20)
-+#define MX5_CCM_CSCMR2_ESC_CLK_SEL_MASK			(0x3 << 20)
-+#define MX5_CCM_CSCMR2_HSC2_CLK_SEL_OFFSET		(18)
-+#define MX5_CCM_CSCMR2_HSC2_CLK_SEL_MASK		(0x3 << 18)
-+#define MX5_CCM_CSCMR2_HSC1_CLK_SEL_OFFSET		(16)
-+#define MX5_CCM_CSCMR2_HSC1_CLK_SEL_MASK		(0x3 << 16)
-+#define MX5_CCM_CSCMR2_HSI2C_CLK_SEL_OFFSET		(14)
-+#define MX5_CCM_CSCMR2_HSI2C_CLK_SEL_MASK		(0x3 << 14)
-+#define MX5_CCM_CSCMR2_FIRI_CLK_SEL_OFFSET		(12)
-+#define MX5_CCM_CSCMR2_FIRI_CLK_SEL_MASK		(0x3 << 12)
-+#define MX5_CCM_CSCMR2_SIM_CLK_SEL_OFFSET		(10)
-+#define MX5_CCM_CSCMR2_SIM_CLK_SEL_MASK			(0x3 << 10)
-+#define MX5_CCM_CSCMR2_SLIMBUS_COM			(0x1 << 9)
-+#define MX5_CCM_CSCMR2_SLIMBUS_CLK_SEL_OFFSET		(6)
-+#define MX5_CCM_CSCMR2_SLIMBUS_CLK_SEL_MASK		(0x7 << 6)
-+#define MX5_CCM_CSCMR2_SPDIF1_COM			(1 << 5)
-+#define MX5_CCM_CSCMR2_SPDIF0_COM			(1 << 4)
-+#define MX5_CCM_CSCMR2_SPDIF1_CLK_SEL_OFFSET		(2)
-+#define MX5_CCM_CSCMR2_SPDIF1_CLK_SEL_MASK		(0x3 << 2)
-+#define MX5_CCM_CSCMR2_SPDIF0_CLK_SEL_OFFSET		(0)
-+#define MX5_CCM_CSCMR2_SPDIF0_CLK_SEL_MASK		(0x3)
-+
-+/* Define the bits in register CSCDR1 */
-+#define MX5_CCM_CSCDR1_ESDHC2_MSHC2_CLK_PRED_OFFSET	(22)
-+#define MX5_CCM_CSCDR1_ESDHC2_MSHC2_CLK_PRED_MASK	(0x7 << 22)
-+#define MX5_CCM_CSCDR1_ESDHC2_MSHC2_CLK_PODF_OFFSET	(19)
-+#define MX5_CCM_CSCDR1_ESDHC2_MSHC2_CLK_PODF_MASK	(0x7 << 19)
-+#define MX5_CCM_CSCDR1_ESDHC3_MX53_CLK_PRED_OFFSET	(22)
-+#define MX5_CCM_CSCDR1_ESDHC3_MX53_CLK_PRED_MASK	(0x7 << 22)
-+#define MX5_CCM_CSCDR1_ESDHC3_MX53_CLK_PODF_OFFSET	(19)
-+#define MX5_CCM_CSCDR1_ESDHC3_MX53_CLK_PODF_MASK	(0x7 << 19)
-+#define MX5_CCM_CSCDR1_ESDHC1_MSHC1_CLK_PRED_OFFSET	(16)
-+#define MX5_CCM_CSCDR1_ESDHC1_MSHC1_CLK_PRED_MASK	(0x7 << 16)
-+#define MX5_CCM_CSCDR1_PGC_CLK_PODF_OFFSET		(14)
-+#define MX5_CCM_CSCDR1_PGC_CLK_PODF_MASK		(0x3 << 14)
-+#define MX5_CCM_CSCDR1_ESDHC1_MSHC1_CLK_PODF_OFFSET	(11)
-+#define MX5_CCM_CSCDR1_ESDHC1_MSHC1_CLK_PODF_MASK	(0x7 << 11)
-+#define MX5_CCM_CSCDR1_USBOH3_CLK_PRED_OFFSET		(8)
-+#define MX5_CCM_CSCDR1_USBOH3_CLK_PRED_MASK		(0x7 << 8)
-+#define MX5_CCM_CSCDR1_USBOH3_CLK_PODF_OFFSET		(6)
-+#define MX5_CCM_CSCDR1_USBOH3_CLK_PODF_MASK		(0x3 << 6)
-+#define MX5_CCM_CSCDR1_UART_CLK_PRED_OFFSET		(3)
-+#define MX5_CCM_CSCDR1_UART_CLK_PRED_MASK		(0x7 << 3)
-+#define MX5_CCM_CSCDR1_UART_CLK_PODF_OFFSET		(0)
-+#define MX5_CCM_CSCDR1_UART_CLK_PODF_MASK		(0x7)
-+
-+/* Define the bits in register CS1CDR and CS2CDR */
-+#define MX5_CCM_CS1CDR_SSI_EXT1_CLK_PRED_OFFSET		(22)
-+#define MX5_CCM_CS1CDR_SSI_EXT1_CLK_PRED_MASK		(0x7 << 22)
-+#define MX5_CCM_CS1CDR_SSI_EXT1_CLK_PODF_OFFSET		(16)
-+#define MX5_CCM_CS1CDR_SSI_EXT1_CLK_PODF_MASK		(0x3F << 16)
-+#define MX5_CCM_CS1CDR_SSI1_CLK_PRED_OFFSET		(6)
-+#define MX5_CCM_CS1CDR_SSI1_CLK_PRED_MASK		(0x7 << 6)
-+#define MX5_CCM_CS1CDR_SSI1_CLK_PODF_OFFSET		(0)
-+#define MX5_CCM_CS1CDR_SSI1_CLK_PODF_MASK		(0x3F)
-+
-+#define MX5_CCM_CS2CDR_SSI_EXT2_CLK_PRED_OFFSET		(22)
-+#define MX5_CCM_CS2CDR_SSI_EXT2_CLK_PRED_MASK		(0x7 << 22)
-+#define MX5_CCM_CS2CDR_SSI_EXT2_CLK_PODF_OFFSET		(16)
-+#define MX5_CCM_CS2CDR_SSI_EXT2_CLK_PODF_MASK		(0x3F << 16)
-+#define MX5_CCM_CS2CDR_SSI2_CLK_PRED_OFFSET		(6)
-+#define MX5_CCM_CS2CDR_SSI2_CLK_PRED_MASK		(0x7 << 6)
-+#define MX5_CCM_CS2CDR_SSI2_CLK_PODF_OFFSET		(0)
-+#define MX5_CCM_CS2CDR_SSI2_CLK_PODF_MASK		(0x3F)
-+
-+/* Define the bits in register CDCDR */
-+#define MX5_CCM_CDCDR_TVE_CLK_PRED_OFFSET		(28)
-+#define MX5_CCM_CDCDR_TVE_CLK_PRED_MASK			(0x7 << 28)
-+#define MX5_CCM_CDCDR_SPDIF0_CLK_PRED_OFFSET		(25)
-+#define MX5_CCM_CDCDR_SPDIF0_CLK_PRED_MASK		(0x7 << 25)
-+#define MX5_CCM_CDCDR_SPDIF0_CLK_PODF_OFFSET		(19)
-+#define MX5_CCM_CDCDR_SPDIF0_CLK_PODF_MASK		(0x3F << 19)
-+#define MX5_CCM_CDCDR_SPDIF1_CLK_PRED_OFFSET		(16)
-+#define MX5_CCM_CDCDR_SPDIF1_CLK_PRED_MASK		(0x7 << 16)
-+#define MX5_CCM_CDCDR_SPDIF1_CLK_PODF_OFFSET		(9)
-+#define MX5_CCM_CDCDR_SPDIF1_CLK_PODF_MASK		(0x3F << 9)
-+#define MX5_CCM_CDCDR_DI_CLK_PRED_OFFSET		(6)
-+#define MX5_CCM_CDCDR_DI_CLK_PRED_MASK			(0x7 << 6)
-+#define MX5_CCM_CDCDR_USB_PHY_PRED_OFFSET		(3)
-+#define MX5_CCM_CDCDR_USB_PHY_PRED_MASK			(0x7 << 3)
-+#define MX5_CCM_CDCDR_USB_PHY_PODF_OFFSET		(0)
-+#define MX5_CCM_CDCDR_USB_PHY_PODF_MASK			(0x7)
-+
-+/* Define the bits in register CHSCCDR */
-+#define MX5_CCM_CHSCCDR_ESC_CLK_PRED_OFFSET		(12)
-+#define MX5_CCM_CHSCCDR_ESC_CLK_PRED_MASK		(0x7 << 12)
-+#define MX5_CCM_CHSCCDR_ESC_CLK_PODF_OFFSET		(6)
-+#define MX5_CCM_CHSCCDR_ESC_CLK_PODF_MASK		(0x3F << 6)
-+#define MX5_CCM_CHSCCDR_HSC2_CLK_PODF_OFFSET		(3)
-+#define MX5_CCM_CHSCCDR_HSC2_CLK_PODF_MASK		(0x7 << 3)
-+#define MX5_CCM_CHSCCDR_HSC1_CLK_PODF_OFFSET		(0)
-+#define MX5_CCM_CHSCCDR_HSC1_CLK_PODF_MASK		(0x7)
-+
-+/* Define the bits in register CSCDR2 */
-+#define MX5_CCM_CSCDR2_CSPI_CLK_PRED_OFFSET		(25)
-+#define MX5_CCM_CSCDR2_CSPI_CLK_PRED_MASK		(0x7 << 25)
-+#define MX5_CCM_CSCDR2_CSPI_CLK_PODF_OFFSET		(19)
-+#define MX5_CCM_CSCDR2_CSPI_CLK_PODF_MASK		(0x3F << 19)
-+#define MX5_CCM_CSCDR2_SIM_CLK_PRED_OFFSET		(16)
-+#define MX5_CCM_CSCDR2_SIM_CLK_PRED_MASK		(0x7 << 16)
-+#define MX5_CCM_CSCDR2_SIM_CLK_PODF_OFFSET		(9)
-+#define MX5_CCM_CSCDR2_SIM_CLK_PODF_MASK		(0x3F << 9)
-+#define MX5_CCM_CSCDR2_SLIMBUS_CLK_PRED_OFFSET		(6)
-+#define MX5_CCM_CSCDR2_SLIMBUS_PRED_MASK		(0x7 << 6)
-+#define MX5_CCM_CSCDR2_SLIMBUS_PODF_OFFSET		(0)
-+#define MX5_CCM_CSCDR2_SLIMBUS_PODF_MASK		(0x3F)
-+
-+/* Define the bits in register CSCDR3 */
-+#define MX5_CCM_CSCDR3_HSI2C_CLK_PRED_OFFSET		(16)
-+#define MX5_CCM_CSCDR3_HSI2C_CLK_PRED_MASK		(0x7 << 16)
-+#define MX5_CCM_CSCDR3_HSI2C_CLK_PODF_OFFSET		(9)
-+#define MX5_CCM_CSCDR3_HSI2C_CLK_PODF_MASK		(0x3F << 9)
-+#define MX5_CCM_CSCDR3_FIRI_CLK_PRED_OFFSET		(6)
-+#define MX5_CCM_CSCDR3_FIRI_CLK_PRED_MASK		(0x7 << 6)
-+#define MX5_CCM_CSCDR3_FIRI_CLK_PODF_OFFSET		(0)
-+#define MX5_CCM_CSCDR3_FIRI_CLK_PODF_MASK		(0x3F)
-+
-+/* Define the bits in register CSCDR4 */
-+#define MX5_CCM_CSCDR4_CSI_MCLK2_CLK_PRED_OFFSET	(16)
-+#define MX5_CCM_CSCDR4_CSI_MCLK2_CLK_PRED_MASK		(0x7 << 16)
-+#define MX5_CCM_CSCDR4_CSI_MCLK2_CLK_PODF_OFFSET	(9)
-+#define MX5_CCM_CSCDR4_CSI_MCLK2_CLK_PODF_MASK		(0x3F << 9)
-+#define MX5_CCM_CSCDR4_CSI_MCLK1_CLK_PRED_OFFSET	(6)
-+#define MX5_CCM_CSCDR4_CSI_MCLK1_CLK_PRED_MASK		(0x7 << 6)
-+#define MX5_CCM_CSCDR4_CSI_MCLK1_CLK_PODF_OFFSET	(0)
-+#define MX5_CCM_CSCDR4_CSI_MCLK1_CLK_PODF_MASK		(0x3F)
-+
-+/* Define the bits in register CDHIPR */
-+#define MX5_CCM_CDHIPR_ARM_PODF_BUSY			(1 << 16)
-+#define MX5_CCM_CDHIPR_DDR_HF_CLK_SEL_BUSY		(1 << 8)
-+#define MX5_CCM_CDHIPR_DDR_PODF_BUSY			(1 << 7)
-+#define MX5_CCM_CDHIPR_EMI_CLK_SEL_BUSY			(1 << 6)
-+#define MX5_CCM_CDHIPR_PERIPH_CLK_SEL_BUSY		(1 << 5)
-+#define MX5_CCM_CDHIPR_NFC_IPG_INT_MEM_PODF_BUSY	(1 << 4)
-+#define MX5_CCM_CDHIPR_AHB_PODF_BUSY			(1 << 3)
-+#define MX5_CCM_CDHIPR_EMI_PODF_BUSY			(1 << 2)
-+#define MX5_CCM_CDHIPR_AXI_B_PODF_BUSY			(1 << 1)
-+#define MX5_CCM_CDHIPR_AXI_A_PODF_BUSY			(1 << 0)
-+
-+/* Define the bits in register CDCR */
-+#define MX5_CCM_CDCR_ARM_FREQ_SHIFT_DIVIDER		(0x1 << 2)
-+#define MX5_CCM_CDCR_PERIPH_CLK_DVFS_PODF_OFFSET	(0)
-+#define MX5_CCM_CDCR_PERIPH_CLK_DVFS_PODF_MASK		(0x3)
-+
-+/* Define the bits in register CLPCR */
-+#define MX5_CCM_CLPCR_BYPASS_HSC_LPM_HS		(0x1 << 23)
-+#define MX5_CCM_CLPCR_BYPASS_SCC_LPM_HS		(0x1 << 22)
-+#define MX51_CCM_CLPCR_BYPASS_MAX_LPM_HS		(0x1 << 21)
-+#define MX53_CCM_CLPCR_BYPASS_MAX_LPM_HS		(0x1 << 25)
-+#define MX5_CCM_CLPCR_BYPASS_SDMA_LPM_HS	(0x1 << 20)
-+#define MX5_CCM_CLPCR_BYPASS_EMI_LPM_HS		(0x1 << 19)
-+#define MX5_CCM_CLPCR_BYPASS_IPU_LPM_HS		(0x1 << 18)
-+#define MX5_CCM_CLPCR_BYPASS_RTIC_LPM_HS	(0x1 << 17)
-+#define MX5_CCM_CLPCR_BYPASS_RNGC_LPM_HS	(0x1 << 16)
-+#define MX5_CCM_CLPCR_COSC_PWRDOWN		(0x1 << 11)
-+#define MX5_CCM_CLPCR_STBY_COUNT_OFFSET		(9)
-+#define MX5_CCM_CLPCR_STBY_COUNT_MASK		(0x3 << 9)
-+#define MX5_CCM_CLPCR_VSTBY			(0x1 << 8)
-+#define MX5_CCM_CLPCR_DIS_REF_OSC		(0x1 << 7)
-+#define MX5_CCM_CLPCR_SBYOS			(0x1 << 6)
-+#define MX5_CCM_CLPCR_ARM_CLK_DIS_ON_LPM	(0x1 << 5)
-+#define MX5_CCM_CLPCR_LPSR_CLK_SEL_OFFSET	(3)
-+#define MX5_CCM_CLPCR_LPSR_CLK_SEL_MASK		(0x3 << 3)
-+#define MX5_CCM_CLPCR_LPM_OFFSET		(0)
-+#define MX5_CCM_CLPCR_LPM_MASK			(0x3)
-+
-+/* Define the bits in register CISR */
-+#define MX5_CCM_CISR_ARM_PODF_LOADED			(0x1 << 25)
-+#define MX5_CCM_CISR_NFC_IPG_INT_MEM_PODF_LOADED	(0x1 << 21)
-+#define MX5_CCM_CISR_AHB_PODF_LOADED			(0x1 << 20)
-+#define MX5_CCM_CISR_EMI_PODF_LOADED			(0x1 << 19)
-+#define MX5_CCM_CISR_AXI_B_PODF_LOADED			(0x1 << 18)
-+#define MX5_CCM_CISR_AXI_A_PODF_LOADED			(0x1 << 17)
-+#define MX5_CCM_CISR_DIVIDER_LOADED			(0x1 << 16)
-+#define MX5_CCM_CISR_COSC_READY				(0x1 << 6)
-+#define MX5_CCM_CISR_CKIH2_READY			(0x1 << 5)
-+#define MX5_CCM_CISR_CKIH_READY				(0x1 << 4)
-+#define MX5_CCM_CISR_FPM_READY				(0x1 << 3)
-+#define MX5_CCM_CISR_LRF_PLL3				(0x1 << 2)
-+#define MX5_CCM_CISR_LRF_PLL2				(0x1 << 1)
-+#define MX5_CCM_CISR_LRF_PLL1				(0x1)
-+
-+/* Define the bits in register CIMR */
-+#define MX5_CCM_CIMR_MASK_ARM_PODF_LOADED		(0x1 << 25)
-+#define MX5_CCM_CIMR_MASK_NFC_IPG_INT_MEM_PODF_LOADED	(0x1 << 21)
-+#define MX5_CCM_CIMR_MASK_EMI_PODF_LOADED		(0x1 << 20)
-+#define MX5_CCM_CIMR_MASK_AXI_C_PODF_LOADED		(0x1 << 19)
-+#define MX5_CCM_CIMR_MASK_AXI_B_PODF_LOADED		(0x1 << 18)
-+#define MX5_CCM_CIMR_MASK_AXI_A_PODF_LOADED		(0x1 << 17)
-+#define MX5_CCM_CIMR_MASK_DIVIDER_LOADED		(0x1 << 16)
-+#define MX5_CCM_CIMR_MASK_COSC_READY			(0x1 << 5)
-+#define MX5_CCM_CIMR_MASK_CKIH_READY			(0x1 << 4)
-+#define MX5_CCM_CIMR_MASK_FPM_READY			(0x1 << 3)
-+#define MX5_CCM_CIMR_MASK_LRF_PLL3			(0x1 << 2)
-+#define MX5_CCM_CIMR_MASK_LRF_PLL2			(0x1 << 1)
-+#define MX5_CCM_CIMR_MASK_LRF_PLL1			(0x1)
-+
-+/* Define the bits in register CCOSR */
-+#define MX5_CCM_CCOSR_CKO2_EN_OFFSET			(0x1 << 24)
-+#define MX5_CCM_CCOSR_CKO2_DIV_OFFSET			(21)
-+#define MX5_CCM_CCOSR_CKO2_DIV_MASK			(0x7 << 21)
-+#define MX5_CCM_CCOSR_CKO2_SEL_OFFSET			(16)
-+#define MX5_CCM_CCOSR_CKO2_SEL_MASK			(0x1F << 16)
-+#define MX5_CCM_CCOSR_CKOL_EN				(0x1 << 7)
-+#define MX5_CCM_CCOSR_CKOL_DIV_OFFSET			(4)
-+#define MX5_CCM_CCOSR_CKOL_DIV_MASK			(0x7 << 4)
-+#define MX5_CCM_CCOSR_CKOL_SEL_OFFSET			(0)
-+#define MX5_CCM_CCOSR_CKOL_SEL_MASK			(0xF)
-+
-+/* Define the bits in registers CGPR */
-+#define MX5_CCM_CGPR_EFUSE_PROG_SUPPLY_GATE		(0x1 << 4)
-+#define MX5_CCM_CGPR_FPM_SEL				(0x1 << 3)
-+#define MX5_CCM_CGPR_VL_L2BIST_CLKDIV_OFFSET		(0)
-+#define MX5_CCM_CGPR_VL_L2BIST_CLKDIV_MASK		(0x7)
-+
-+/* Define the bits in registers CCGRx */
-+#define MX5_CCM_CCGRx_CG_MASK				0x3
-+#define MX5_CCM_CCGRx_MOD_OFF				0x0
-+#define MX5_CCM_CCGRx_MOD_ON				0x3
-+#define MX5_CCM_CCGRx_MOD_IDLE				0x1
-+
-+#define MX5_CCM_CCGRx_CG15_MASK				(0x3 << 30)
-+#define MX5_CCM_CCGRx_CG14_MASK				(0x3 << 28)
-+#define MX5_CCM_CCGRx_CG13_MASK				(0x3 << 26)
-+#define MX5_CCM_CCGRx_CG12_MASK				(0x3 << 24)
-+#define MX5_CCM_CCGRx_CG11_MASK				(0x3 << 22)
-+#define MX5_CCM_CCGRx_CG10_MASK				(0x3 << 20)
-+#define MX5_CCM_CCGRx_CG9_MASK				(0x3 << 18)
-+#define MX5_CCM_CCGRx_CG8_MASK				(0x3 << 16)
-+#define MX5_CCM_CCGRx_CG5_MASK				(0x3 << 10)
-+#define MX5_CCM_CCGRx_CG4_MASK				(0x3 << 8)
-+#define MX5_CCM_CCGRx_CG3_MASK				(0x3 << 6)
-+#define MX5_CCM_CCGRx_CG2_MASK				(0x3 << 4)
-+#define MX5_CCM_CCGRx_CG1_MASK				(0x3 << 2)
-+#define MX5_CCM_CCGRx_CG0_MASK				(0x3 << 0)
-+
-+#define MX5_CCM_CCGRx_CG15_OFFSET			30
-+#define MX5_CCM_CCGRx_CG14_OFFSET			28
-+#define MX5_CCM_CCGRx_CG13_OFFSET			26
-+#define MX5_CCM_CCGRx_CG12_OFFSET			24
-+#define MX5_CCM_CCGRx_CG11_OFFSET			22
-+#define MX5_CCM_CCGRx_CG10_OFFSET			20
-+#define MX5_CCM_CCGRx_CG9_OFFSET			18
-+#define MX5_CCM_CCGRx_CG8_OFFSET			16
-+#define MX5_CCM_CCGRx_CG7_OFFSET			14
-+#define MX5_CCM_CCGRx_CG6_OFFSET			12
-+#define MX5_CCM_CCGRx_CG5_OFFSET			10
-+#define MX5_CCM_CCGRx_CG4_OFFSET			8
-+#define MX5_CCM_CCGRx_CG3_OFFSET			6
-+#define MX5_CCM_CCGRx_CG2_OFFSET			4
-+#define MX5_CCM_CCGRx_CG1_OFFSET			2
-+#define MX5_CCM_CCGRx_CG0_OFFSET			0
-+
-+#define MX5_DPTC_LP_BASE	(MX51_GPC_BASE + 0x80)
-+#define MX5_DPTC_GP_BASE	(MX51_GPC_BASE + 0x100)
-+#define MX5_DVFS_CORE_BASE	(MX51_GPC_BASE + 0x180)
-+#define MX5_DPTC_PER_BASE	(MX51_GPC_BASE + 0x1C0)
-+#define MX5_PGC_IPU_BASE	(MX51_GPC_BASE + 0x220)
-+#define MX5_PGC_VPU_BASE	(MX51_GPC_BASE + 0x240)
-+#define MX5_PGC_GPU_BASE	(MX51_GPC_BASE + 0x260)
-+#define MX5_SRPG_NEON_BASE	(MX51_GPC_BASE + 0x280)
-+#define MX5_SRPG_ARM_BASE	(MX51_GPC_BASE + 0x2A0)
-+#define MX5_SRPG_EMPGC0_BASE	(MX51_GPC_BASE + 0x2C0)
-+#define MX5_SRPG_EMPGC1_BASE	(MX51_GPC_BASE + 0x2D0)
-+#define MX5_SRPG_MEGAMIX_BASE	(MX51_GPC_BASE + 0x2E0)
-+#define MX5_SRPG_EMI_BASE	(MX51_GPC_BASE + 0x300)
-+
-+/* CORTEXA8 platform */
-+#define MX5_CORTEXA8_PLAT_PVID		(MX51_CORTEXA8_BASE + 0x0)
-+#define MX5_CORTEXA8_PLAT_GPC		(MX51_CORTEXA8_BASE + 0x4)
-+#define MX5_CORTEXA8_PLAT_PIC		(MX51_CORTEXA8_BASE + 0x8)
-+#define MX5_CORTEXA8_PLAT_LPC		(MX51_CORTEXA8_BASE + 0xC)
-+#define MX5_CORTEXA8_PLAT_NEON_LPC	(MX51_CORTEXA8_BASE + 0x10)
-+#define MX5_CORTEXA8_PLAT_ICGC		(MX51_CORTEXA8_BASE + 0x14)
-+#define MX5_CORTEXA8_PLAT_AMC		(MX51_CORTEXA8_BASE + 0x18)
-+#define MX5_CORTEXA8_PLAT_NMC		(MX51_CORTEXA8_BASE + 0x20)
-+#define MX5_CORTEXA8_PLAT_NMS		(MX51_CORTEXA8_BASE + 0x24)
-+
-+/* DVFS CORE */
-+#define MX5_DVFSTHRS		(MX5_DVFS_CORE_BASE + 0x00)
-+#define MX5_DVFSCOUN		(MX5_DVFS_CORE_BASE + 0x04)
-+#define MX5_DVFSSIG1		(MX5_DVFS_CORE_BASE + 0x08)
-+#define MX5_DVFSSIG0		(MX5_DVFS_CORE_BASE + 0x0C)
-+#define MX5_DVFSGPC0		(MX5_DVFS_CORE_BASE + 0x10)
-+#define MX5_DVFSGPC1		(MX5_DVFS_CORE_BASE + 0x14)
-+#define MX5_DVFSGPBT		(MX5_DVFS_CORE_BASE + 0x18)
-+#define MX5_DVFSEMAC		(MX5_DVFS_CORE_BASE + 0x1C)
-+#define MX5_DVFSCNTR		(MX5_DVFS_CORE_BASE + 0x20)
-+#define MX5_DVFSLTR0_0		(MX5_DVFS_CORE_BASE + 0x24)
-+#define MX5_DVFSLTR0_1		(MX5_DVFS_CORE_BASE + 0x28)
-+#define MX5_DVFSLTR1_0		(MX5_DVFS_CORE_BASE + 0x2C)
-+#define MX5_DVFSLTR1_1		(MX5_DVFS_CORE_BASE + 0x30)
-+#define MX5_DVFSPT0 		(MX5_DVFS_CORE_BASE + 0x34)
-+#define MX5_DVFSPT1 		(MX5_DVFS_CORE_BASE + 0x38)
-+#define MX5_DVFSPT2 		(MX5_DVFS_CORE_BASE + 0x3C)
-+#define MX5_DVFSPT3 		(MX5_DVFS_CORE_BASE + 0x40)
-+
-+/* GPC */
-+#define MX5_GPC_CNTR		(MX51_GPC_BASE + 0x0)
-+#define MX5_GPC_PGR		(MX51_GPC_BASE + 0x4)
-+#define MX5_GPC_VCR		(MX51_GPC_BASE + 0x8)
-+#define MX5_GPC_ALL_PU		(MX51_GPC_BASE + 0xC)
-+#define MX5_GPC_NEON		(MX51_GPC_BASE + 0x10)
-+#define MX5_GPC_PGR_ARMPG_OFFSET	8
-+#define MX5_GPC_PGR_ARMPG_MASK		(3 << 8)
-+
-+/* PGC */
-+#define MX5_PGC_IPU_PGCR	(MX5_PGC_IPU_BASE + 0x0)
-+#define MX5_PGC_IPU_PGSR	(MX5_PGC_IPU_BASE + 0xC)
-+#define MX5_PGC_VPU_PGCR	(MX5_PGC_VPU_BASE + 0x0)
-+#define MX5_PGC_VPU_PGSR	(MX5_PGC_VPU_BASE + 0xC)
-+#define MX5_PGC_GPU_PGCR	(MX5_PGC_GPU_BASE + 0x0)
-+#define MX5_PGC_GPU_PGSR	(MX5_PGC_GPU_BASE + 0xC)
-+
-+#define MX5_PGCR_PCR		1
-+#define MX5_SRPGCR_PCR		1
-+#define MX5_EMPGCR_PCR		1
-+#define MX5_PGSR_PSR		1
-+
-+
-+#define MX5_CORTEXA8_PLAT_LPC_DSM	(1 << 0)
-+#define MX5_CORTEXA8_PLAT_LPC_DBG_DSM	(1 << 1)
-+
-+/* SRPG */
-+#define MX5_SRPG_NEON_SRPGCR	(MX5_SRPG_NEON_BASE + 0x0)
-+#define MX5_SRPG_NEON_PUPSCR	(MX5_SRPG_NEON_BASE + 0x4)
-+#define MX5_SRPG_NEON_PDNSCR	(MX5_SRPG_NEON_BASE + 0x8)
-+
-+#define MX5_SRPG_ARM_SRPGCR	(MX5_SRPG_ARM_BASE + 0x0)
-+#define MX5_SRPG_ARM_PUPSCR	(MX5_SRPG_ARM_BASE + 0x4)
-+#define MX5_SRPG_ARM_PDNSCR	(MX5_SRPG_ARM_BASE + 0x8)
-+
-+#define MX5_SRPG_EMPGC0_SRPGCR	(MX5_SRPG_EMPGC0_BASE + 0x0)
-+#define MX5_SRPG_EMPGC0_PUPSCR	(MX5_SRPG_EMPGC0_BASE + 0x4)
-+#define MX5_SRPG_EMPGC0_PDNSCR	(MX5_SRPG_EMPGC0_BASE + 0x8)
-+
-+#define MX5_SRPG_EMPGC1_SRPGCR	(MX5_SRPG_EMPGC1_BASE + 0x0)
-+#define MX5_SRPG_EMPGC1_PUPSCR	(MX5_SRPG_EMPGC1_BASE + 0x4)
-+#define MX5_SRPG_EMPGC1_PDNSCR	(MX5_SRPG_EMPGC1_BASE + 0x8)
-+
-+#define MX5_SRPG_MEGAMIX_SRPGCR		(MX5_SRPG_MEGAMIX_BASE + 0x0)
-+#define MX5_SRPG_MEGAMIX_PUPSCR		(MX5_SRPG_MEGAMIX_BASE + 0x4)
-+#define MX5_SRPG_MEGAMIX_PDNSCR		(MX5_SRPG_MEGAMIX_BASE + 0x8)
-+
-+#define MX5_SRPGC_EMI_SRPGCR	(MX5_SRPGC_EMI_BASE + 0x0)
-+#define MX5_SRPGC_EMI_PUPSCR	(MX5_SRPGC_EMI_BASE + 0x4)
-+#define MX5_SRPGC_EMI_PDNSCR	(MX5_SRPGC_EMI_BASE + 0x8)
-+
-+
-+/* Assuming 24MHz input clock with doubler ON */
-+/*                            MFI         PDF */
-+#define MX5_PLL_DP_OP_850	((8 << 4) + ((1 - 1)  << 0))
-+#define MX5_PLL_DP_MFD_850	(48 - 1)
-+#define MX5_PLL_DP_MFN_850	41
-+
-+#define MX5_PLL_DP_OP_800	((8 << 4) + ((1 - 1)  << 0))
-+#define MX5_PLL_DP_MFD_800	(3 - 1)
-+#define MX5_PLL_DP_MFN_800	1
-+
-+#define MX5_PLL_DP_OP_700	((7 << 4) + ((1 - 1)  << 0))
-+#define MX5_PLL_DP_MFD_700	(24 - 1)
-+#define MX5_PLL_DP_MFN_700	7
-+
-+#define MX5_PLL_DP_OP_665	((6 << 4) + ((1 - 1)  << 0))
-+#define MX5_PLL_DP_MFD_665	(96 - 1)
-+#define MX5_PLL_DP_MFN_665	89
-+
-+#define MX5_PLL_DP_OP_532	((5 << 4) + ((1 - 1)  << 0))
-+#define MX5_PLL_DP_MFD_532	(24 - 1)
-+#define MX5_PLL_DP_MFN_532	13
-+
-+#define MX5_PLL_DP_OP_400	((8 << 4) + ((2 - 1)  << 0))
-+#define MX5_PLL_DP_MFD_400	(3 - 1)
-+#define MX5_PLL_DP_MFN_400	1
-+
-+#define MX5_PLL_DP_OP_216	((6 << 4) + ((3 - 1)  << 0))
-+#define MX5_PLL_DP_MFD_216	(4 - 1)
-+#define MX5_PLL_DP_MFN_216	3
-+
-+#endif				/* __ARCH_ARM_MACH_MX51_CRM_REGS_H__ */
-+
-+
-diff --git a/arch/arm/mach-imx/speed-imx51.c b/arch/arm/mach-imx/speed-imx51.c
-index 9983297..f1fb74c 100644
---- a/arch/arm/mach-imx/speed-imx51.c
-+++ b/arch/arm/mach-imx/speed-imx51.c
-@@ -2,7 +2,7 @@
- #include <asm/io.h>
- #include <asm-generic/div64.h>
- #include <mach/imx51-regs.h>
--#include "mach/clock-imx51.h"
-+#include <mach/clock-imx51_53.h>
++	return 0;
++}
++coredevice_initcall(imx53_init);
+diff --git a/arch/arm/mach-imx/include/mach/clock-imx51_53.h b/arch/arm/mach-imx/include/mach/clock-imx51_53.h
+index 89aa5e2..34ca1bb 100644
+--- a/arch/arm/mach-imx/include/mach/clock-imx51_53.h
++++ b/arch/arm/mach-imx/include/mach/clock-imx51_53.h
+@@ -586,6 +586,10 @@
  
- static u32 ccm_readl(u32 ofs)
+ /* Assuming 24MHz input clock with doubler ON */
+ /*                            MFI         PDF */
++#define MX5_PLL_DP_OP_1000	((10 << 4) + ((1 - 1)  << 0))
++#define MX5_PLL_DP_MFD_1000	(12 - 1)
++#define MX5_PLL_DP_MFN_1000	5
++
+ #define MX5_PLL_DP_OP_850	((8 << 4) + ((1 - 1)  << 0))
+ #define MX5_PLL_DP_MFD_850	(48 - 1)
+ #define MX5_PLL_DP_MFN_850	41
+diff --git a/arch/arm/mach-imx/include/mach/devices-imx53.h b/arch/arm/mach-imx/include/mach/devices-imx53.h
+new file mode 100644
+index 0000000..41572a7
+--- /dev/null
++++ b/arch/arm/mach-imx/include/mach/devices-imx53.h
+@@ -0,0 +1,58 @@
++
++#include <mach/devices.h>
++
++static inline struct device_d *imx53_add_spi0(struct spi_imx_master *pdata)
++{
++	return imx_add_spi((void *)MX53_ECSPI1_BASE_ADDR, 0, pdata);
++}
++
++static inline struct device_d *imx53_add_spi1(struct spi_imx_master *pdata)
++{
++	return imx_add_spi((void *)MX53_ECSPI2_BASE_ADDR, 1, pdata);
++}
++
++static inline struct device_d *imx53_add_i2c0(struct i2c_platform_data *pdata)
++{
++	return imx_add_i2c((void *)MX53_I2C1_BASE_ADDR, 0, pdata);
++}
++
++static inline struct device_d *imx53_add_i2c1(struct i2c_platform_data *pdata)
++{
++	return imx_add_i2c((void *)MX53_I2C2_BASE_ADDR, 1, pdata);
++}
++
++static inline struct device_d *imx53_add_uart0(void)
++{
++	return imx_add_uart((void *)MX53_UART1_BASE_ADDR, 0);
++}
++
++static inline struct device_d *imx53_add_uart1(void)
++{
++	return imx_add_uart((void *)MX53_UART2_BASE_ADDR, 1);
++}
++
++static inline struct device_d *imx53_add_fec(struct fec_platform_data *pdata)
++{
++	return imx_add_fec((void *)MX53_FEC_BASE_ADDR, pdata);
++}
++
++static inline struct device_d *imx53_add_mmc0(void *pdata)
++{
++	return imx_add_esdhc((void *)MX53_ESDHC1_BASE_ADDR, 0, pdata);
++}
++
++static inline struct device_d *imx53_add_mmc1(void *pdata)
++{
++	return imx_add_esdhc((void *)MX53_ESDHC2_BASE_ADDR, 0, pdata);
++}
++
++static inline struct device_d *imx53_add_mmc2(void *pdata)
++{
++	return imx_add_esdhc((void *)MX53_ESDHC3_BASE_ADDR, 0, pdata);
++}
++
++static inline struct device_d *imx53_add_nand(struct imx_nand_platform_data *pdata)
++{
++	return imx_add_nand((void *)MX53_NFC_AXI_BASE_ADDR, pdata);
++}
++
+diff --git a/arch/arm/mach-imx/include/mach/iim.h b/arch/arm/mach-imx/include/mach/iim.h
+index f74b415..87aec65 100644
+--- a/arch/arm/mach-imx/include/mach/iim.h
++++ b/arch/arm/mach-imx/include/mach/iim.h
+@@ -70,6 +70,11 @@ static inline int imx51_iim_register_fec_ethaddr(void)
+ 	return 0;
+ }
+ 
++static inline int imx53_iim_register_fec_ethaddr(void)
++{
++	return imx51_iim_register_fec_ethaddr();
++}
++
+ static inline int imx25_iim_register_fec_ethaddr(void)
  {
-@@ -31,30 +31,30 @@ static unsigned long pll_get_rate(void __iomem *pllbase)
- 	u64 temp;
- 	unsigned long parent_rate;
+ 	int ret;
+diff --git a/arch/arm/mach-imx/include/mach/imx-flash-header.h b/arch/arm/mach-imx/include/mach/imx-flash-header.h
+index b8f5176..8744262 100644
+--- a/arch/arm/mach-imx/include/mach/imx-flash-header.h
++++ b/arch/arm/mach-imx/include/mach/imx-flash-header.h
+@@ -49,6 +49,11 @@ struct imx_dcd_entry {
+ 	unsigned long val;
+ };
  
--	dp_ctl = readl(pllbase + MX51_PLL_DP_CTL);
++struct imx_dcd_v2_entry {
++	__be32 addr;
++	__be32 val;
++};
++
+ #define DCD_BARKER	0xb17219e9
+ 
+ struct imx_rsa_public_key {
+@@ -73,4 +78,51 @@ struct imx_flash_header {
+ 	unsigned long			dcd_block_len;
+ };
+ 
++#define IVT_HEADER_TAG		0xd1
++#define IVT_VERSION		0x40
++
++#define DCD_HEADER_TAG		0xd2
++#define DCD_VERSION		0x40
++
++#define DCD_COMMAND_WRITE_TAG	0xcc
++#define DCD_COMMAND_WRITE_PARAM	0x04
++
++struct imx_ivt_header {
++	uint8_t tag;
++	__be16 length;
++	uint8_t version;
++} __attribute__((packed));
++
++struct imx_dcd_command {
++	uint8_t tag;
++	__be16 length;
++	uint8_t param;
++} __attribute__((packed));
++
++struct imx_dcd {
++	struct imx_ivt_header header;
++	struct imx_dcd_command command;
++};
++
++struct imx_boot_data {
++	uint32_t start;
++	uint32_t size;
++	uint32_t plugin;
++};
++
++struct imx_flash_header_v2 {
++	struct imx_ivt_header header;
++
++	uint32_t entry;
++	uint32_t reserved1;
++	uint32_t dcd_ptr;
++	uint32_t boot_data_ptr;
++	uint32_t self;
++	uint32_t csf;
++	uint32_t reserved2;
++
++	struct imx_boot_data boot_data;
++	struct imx_dcd dcd;
++};
++
+ #endif /* __MACH_FLASH_HEADER_H */
+diff --git a/arch/arm/mach-imx/include/mach/imx-regs.h b/arch/arm/mach-imx/include/mach/imx-regs.h
+index a234621..a272dda 100644
+--- a/arch/arm/mach-imx/include/mach/imx-regs.h
++++ b/arch/arm/mach-imx/include/mach/imx-regs.h
+@@ -52,7 +52,9 @@
+ #elif defined CONFIG_ARCH_IMX25
+ # include <mach/imx25-regs.h>
+ #elif defined CONFIG_ARCH_IMX51
+-#include <mach/imx51-regs.h>
++# include <mach/imx51-regs.h>
++#elif defined CONFIG_ARCH_IMX53
++# include <mach/imx53-regs.h>
+ #else
+ # error "unknown i.MX soc type"
+ #endif
+diff --git a/arch/arm/mach-imx/include/mach/imx53-regs.h b/arch/arm/mach-imx/include/mach/imx53-regs.h
+new file mode 100644
+index 0000000..8fefc54
+--- /dev/null
++++ b/arch/arm/mach-imx/include/mach/imx53-regs.h
+@@ -0,0 +1,139 @@
++#ifndef __MACH_IMX53_REGS_H
++#define __MACH_IMX53_REGS_H
++
++#define IMX_TIM1_BASE			0X53FA0000
++#define IMX_WDT_BASE			0X53F98000
++#define IMX_IOMUXC_BASE			0X53FA8000
++
++#define GPT_TCTL	0x00
++#define GPT_TPRER	0x04
++#define GPT_TCMP	0x10
++#define GPT_TCR		0x1c
++#define GPT_TCN		0x24
++#define GPT_TSTAT	0x08
++
++/* Part 2: Bitfields */
++#define TCTL_SWR	(1<<15)	/* Software reset */
++#define TCTL_FRR	(1<<9)	/* Freerun / restart */
++#define TCTL_CAP	(3<<6)	/* Capture Edge */
++#define TCTL_OM		(1<<5)	/* output mode */
++#define TCTL_IRQEN	(1<<4)	/* interrupt enable */
++#define TCTL_CLKSOURCE	(6)	/* Clock source bit position */
++#define TCTL_TEN	(1)	/* Timer enable */
++#define TPRER_PRES	(0xff)	/* Prescale */
++#define TSTAT_CAPT	(1<<1)	/* Capture event */
++#define TSTAT_COMP	(1)	/* Compare event */
++
++#define MX53_IROM_BASE_ADDR	0x0
++
++/*
++ * SPBA global module enabled #0
++ */
++#define MX53_SPBA0_BASE_ADDR		0x50000000
++#define MX53_SPBA0_SIZE		SZ_1M
++
++#define MX53_ESDHC1_BASE_ADDR	(MX53_SPBA0_BASE_ADDR + 0x00004000)
++#define MX53_ESDHC2_BASE_ADDR	(MX53_SPBA0_BASE_ADDR + 0x00008000)
++#define MX53_UART3_BASE_ADDR		(MX53_SPBA0_BASE_ADDR + 0x0000C000)
++#define MX53_ECSPI1_BASE_ADDR		(MX53_SPBA0_BASE_ADDR + 0x00010000)
++#define MX53_SSI2_BASE_ADDR		(MX53_SPBA0_BASE_ADDR + 0x00014000)
++#define MX53_ESDHC3_BASE_ADDR	(MX53_SPBA0_BASE_ADDR + 0x00020000)
++#define MX53_ESDHC4_BASE_ADDR	(MX53_SPBA0_BASE_ADDR + 0x00024000)
++#define MX53_SPDIF_BASE_ADDR		(MX53_SPBA0_BASE_ADDR + 0x00028000)
++#define MX53_ASRC_BASE_ADDR		(MX53_SPBA0_BASE_ADDR + 0x0002C000)
++#define MX53_ATA_DMA_BASE_ADDR	(MX53_SPBA0_BASE_ADDR + 0x00030000)
++#define MX53_SLIM_DMA_BASE_ADDR	(MX53_SPBA0_BASE_ADDR + 0x00034000)
++#define MX53_HSI2C_DMA_BASE_ADDR	(MX53_SPBA0_BASE_ADDR + 0x00038000)
++#define MX53_SPBA_CTRL_BASE_ADDR	(MX53_SPBA0_BASE_ADDR + 0x0003C000)
++
++/*
++ * AIPS 1
++ */
++#define MX53_AIPS1_BASE_ADDR 	0x53F00000
++#define MX53_AIPS1_SIZE		SZ_1M
++
++#define MX53_OTG_BASE_ADDR	(MX53_AIPS1_BASE_ADDR + 0x00080000)
++#define MX53_GPIO1_BASE_ADDR	(MX53_AIPS1_BASE_ADDR + 0x00084000)
++#define MX53_GPIO2_BASE_ADDR	(MX53_AIPS1_BASE_ADDR + 0x00088000)
++#define MX53_GPIO3_BASE_ADDR	(MX53_AIPS1_BASE_ADDR + 0x0008C000)
++#define MX53_GPIO4_BASE_ADDR	(MX53_AIPS1_BASE_ADDR + 0x00090000)
++#define MX53_KPP_BASE_ADDR	(MX53_AIPS1_BASE_ADDR + 0x00094000)
++#define MX53_WDOG1_BASE_ADDR	(MX53_AIPS1_BASE_ADDR + 0x00098000)
++#define MX53_WDOG2_BASE_ADDR	(MX53_AIPS1_BASE_ADDR + 0x0009C000)
++#define MX53_GPT1_BASE_ADDR	(MX53_AIPS1_BASE_ADDR + 0x000A0000)
++#define MX53_SRTC_BASE_ADDR	(MX53_AIPS1_BASE_ADDR + 0x000A4000)
++#define MX53_IOMUXC_BASE_ADDR	(MX53_AIPS1_BASE_ADDR + 0x000A8000)
++#define MX53_EPIT1_BASE_ADDR	(MX53_AIPS1_BASE_ADDR + 0x000AC000)
++#define MX53_EPIT2_BASE_ADDR	(MX53_AIPS1_BASE_ADDR + 0x000B0000)
++#define MX53_PWM1_BASE_ADDR	(MX53_AIPS1_BASE_ADDR + 0x000B4000)
++#define MX53_PWM2_BASE_ADDR	(MX53_AIPS1_BASE_ADDR + 0x000B8000)
++#define MX53_UART1_BASE_ADDR	(MX53_AIPS1_BASE_ADDR + 0x000BC000)
++#define MX53_UART2_BASE_ADDR	(MX53_AIPS1_BASE_ADDR + 0x000C0000)
++#define MX53_SRC_BASE_ADDR	(MX53_AIPS1_BASE_ADDR + 0x000D0000)
++#define MX53_CCM_BASE_ADDR	(MX53_AIPS1_BASE_ADDR + 0x000D4000)
++#define MX53_GPC_BASE_ADDR	(MX53_AIPS1_BASE_ADDR + 0x000D8000)
++#define MX53_GPIO5_BASE_ADDR	(MX53_AIPS1_BASE_ADDR + 0x000DC000)
++#define MX53_GPIO6_BASE_ADDR	(MX53_AIPS1_BASE_ADDR + 0x000E0000)
++#define MX53_GPIO7_BASE_ADDR	(MX53_AIPS1_BASE_ADDR + 0x000E4000)
++#define MX53_ATA_BASE_ADDR	(MX53_AIPS1_BASE_ADDR + 0x000E8000)
++#define MX53_I2C3_BASE_ADDR	(MX53_AIPS1_BASE_ADDR + 0x000EC000)
++#define MX53_UART4_BASE_ADDR	(MX53_AIPS1_BASE_ADDR + 0x000F0000)
++
++/*
++ * AIPS 2
++ */
++#define MX53_AIPS2_BASE_ADDR		0x63F00000
++#define MX53_AIPS2_SIZE			SZ_1M
++
++#define MX53_PLL1_BASE_ADDR	(MX53_AIPS2_BASE_ADDR + 0x00080000)
++#define MX53_PLL2_BASE_ADDR	(MX53_AIPS2_BASE_ADDR + 0x00084000)
++#define MX53_PLL3_BASE_ADDR	(MX53_AIPS2_BASE_ADDR + 0x00088000)
++#define MX53_PLL4_BASE_ADDR	(MX53_AIPS2_BASE_ADDR + 0x0008C000)
++#define MX53_UART5_BASE_ADDR	(MX53_AIPS2_BASE_ADDR + 0x00090000)
++#define MX53_AHBMAX_BASE_ADDR	(MX53_AIPS2_BASE_ADDR + 0x00094000)
++#define MX53_IIM_BASE_ADDR	(MX53_AIPS2_BASE_ADDR + 0x00098000)
++#define MX53_CSU_BASE_ADDR	(MX53_AIPS2_BASE_ADDR + 0x0009C000)
++#define MX53_ARM_BASE_ADDR	(MX53_AIPS2_BASE_ADDR + 0x000A0000)
++#define MX53_OWIRE_BASE_ADDR	(MX53_AIPS2_BASE_ADDR + 0x000A4000)
++#define MX53_FIRI_BASE_ADDR	(MX53_AIPS2_BASE_ADDR + 0x000A8000)
++#define MX53_ECSPI2_BASE_ADDR	(MX53_AIPS2_BASE_ADDR + 0x000AC000)
++#define MX53_SDMA_BASE_ADDR	(MX53_AIPS2_BASE_ADDR + 0x000B0000)
++#define MX53_SCC_BASE_ADDR	(MX53_AIPS2_BASE_ADDR + 0x000B4000)
++#define MX53_ROMCP_BASE_ADDR	(MX53_AIPS2_BASE_ADDR + 0x000B8000)
++#define MX53_RTIC_BASE_ADDR	(MX53_AIPS2_BASE_ADDR + 0x000BC000)
++#define MX53_CSPI_BASE_ADDR	(MX53_AIPS2_BASE_ADDR + 0x000C0000)
++#define MX53_I2C2_BASE_ADDR	(MX53_AIPS2_BASE_ADDR + 0x000C4000)
++#define MX53_I2C1_BASE_ADDR	(MX53_AIPS2_BASE_ADDR + 0x000C8000)
++#define MX53_SSI1_BASE_ADDR	(MX53_AIPS2_BASE_ADDR + 0x000CC000)
++#define MX53_AUDMUX_BASE_ADDR	(MX53_AIPS2_BASE_ADDR + 0x000D0000)
++#define MX53_RTC_BASE_ADDR	(MX53_AIPS2_BASE_ADDR + 0x000D4000)
++#define MX53_M4IF_BASE_ADDR	(MX53_AIPS2_BASE_ADDR + 0x000D8000)
++#define MX53_ESDCTL_BASE_ADDR	(MX53_AIPS2_BASE_ADDR + 0x000D9000)
++#define MX53_WEIM_BASE_ADDR	(MX53_AIPS2_BASE_ADDR + 0x000DA000)
++#define MX53_NFC_BASE_ADDR	(MX53_AIPS2_BASE_ADDR + 0x000DB000)
++#define MX53_EMI_BASE_ADDR	(MX53_AIPS2_BASE_ADDR + 0x000DBF00)
++#define MX53_MIPI_HSC_BASE_ADDR	(MX53_AIPS2_BASE_ADDR + 0x000DC000)
++#define MX53_MLB_BASE_ADDR	(MX53_AIPS2_BASE_ADDR + 0x000E4000)
++#define MX53_SSI3_BASE_ADDR	(MX53_AIPS2_BASE_ADDR + 0x000E8000)
++#define MX53_FEC_BASE_ADDR	(MX53_AIPS2_BASE_ADDR + 0x000EC000)
++#define MX53_TVE_BASE_ADDR	(MX53_AIPS2_BASE_ADDR + 0x000F0000)
++#define MX53_VPU_BASE_ADDR	(MX53_AIPS2_BASE_ADDR + 0x000F4000)
++#define MX53_SAHARA_BASE_ADDR	(MX53_AIPS2_BASE_ADDR + 0x000F8000)
++#define MX53_PTP_BASE_ADDR	(MX53_AIPS2_BASE_ADDR + 0x000FC000)
++
++#define MX53_NFC_AXI_BASE_ADDR	0xF7FF0000
++
++/*
++ * Memory regions and CS
++ */
++#define MX53_CSD0_BASE_ADDR		0x70000000
++#define MX53_CSD1_BASE_ADDR		0xB0000000
++#define MX53_CS0_BASE_ADDR		0xF0000000
++#define MX53_CS1_32MB_BASE_ADDR		0xF2000000
++#define MX53_CS1_64MB_BASE_ADDR		0xF4000000
++#define MX53_CS2_64MB_BASE_ADDR		0xF4000000
++#define MX53_CS2_96MB_BASE_ADDR		0xF6000000
++#define MX53_CS3_BASE_ADDR		0xF6000000
++
++#endif /* __MACH_IMX53_REGS_H */
++
+diff --git a/arch/arm/mach-imx/include/mach/iomux-mx53.h b/arch/arm/mach-imx/include/mach/iomux-mx53.h
+new file mode 100644
+index 0000000..87a9deb
+--- /dev/null
++++ b/arch/arm/mach-imx/include/mach/iomux-mx53.h
+@@ -0,0 +1,1203 @@
++/*
++ * Copyright (C) 2010-2011 Freescale Semiconductor, Inc. All Rights Reserved.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License along
++ * with this program; if not, write to the Free Software Foundation, Inc..
++ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
++ */
++
++#ifndef __MACH_IOMUX_MX53_H__
++#define __MACH_IOMUX_MX53_H__
++
++#include <mach/iomux-v3.h>
++
++/* These 2 defines are for pins that may not have a mux register, but could
++ * have a pad setting register, and vice-versa. */
++#define NON_PAD_I	0x00
++
++#define MX53_UART_PAD_CTRL	(PAD_CTL_PKE | PAD_CTL_PUE | PAD_CTL_DSE_HIGH | PAD_CTL_SRE_FAST | PAD_CTL_HYS)
++#define MX53_SDHC_PAD_CTRL 	(PAD_CTL_HYS | PAD_CTL_PKE | PAD_CTL_PUE | PAD_CTL_PUS_47K_UP | PAD_CTL_DSE_HIGH | PAD_CTL_SRE_FAST)
++
++#define MX53_PAD_GPIO_19__KPP_COL_5			IOMUX_PAD(0x348, 0x20, 0, 0x840, 0, 0)
++#define MX53_PAD_GPIO_19__GPIO4_5			IOMUX_PAD(0x348, 0x20, 1, 0x0, 0, 0)
++#define MX53_PAD_GPIO_19__CCM_CLKO			IOMUX_PAD(0x348, 0x20, 2, 0x0, 0, 0)
++#define MX53_PAD_GPIO_19__SPDIF_OUT1			IOMUX_PAD(0x348, 0x20, 3, 0x0, 0, 0)
++#define MX53_PAD_GPIO_19__RTC_CE_RTC_EXT_TRIG2		IOMUX_PAD(0x348, 0x20, 4, 0x0, 0, 0)
++#define MX53_PAD_GPIO_19__ECSPI1_RDY			IOMUX_PAD(0x348, 0x20, 5, 0x0, 0, 0)
++#define MX53_PAD_GPIO_19__FEC_TDATA_3			IOMUX_PAD(0x348, 0x20, 6, 0x0, 0, 0)
++#define MX53_PAD_GPIO_19__SRC_INT_BOOT			IOMUX_PAD(0x348, 0x20,7, 0x0, 0, 0)
++#define MX53_PAD_KEY_COL0__KPP_COL_0			IOMUX_PAD(0x34C, 0x24, o, 0x0, 0, 0)
++#define MX53_PAD_KEY_COL0__GPIO4_6			IOMUX_PAD(0x34C, 0x24, 1, 0x0, 0, 0)
++#define MX53_PAD_KEY_COL0__AUDMUX_AUD5_TXC		IOMUX_PAD(0x34C, 0x24, 2, 0x758, 0, 0)
++#define MX53_PAD_KEY_COL0__UART4_TXD_MUX		IOMUX_PAD(0x34C, 0x24, 4, 0x890, 0, 0)
++#define MX53_PAD_KEY_COL0__ECSPI1_SCLK			IOMUX_PAD(0x34C, 0x24, 5, 0x79C, 0, 0)
++#define MX53_PAD_KEY_COL0__FEC_RDATA_3			IOMUX_PAD(0x34C, 0x24, 6, 0x0, 0, 0)
++#define MX53_PAD_KEY_COL0__SRC_ANY_PU_RST		IOMUX_PAD(0x34C, 0x24, 7, 0x0, 0, 0)
++#define MX53_PAD_KEY_ROW0__KPP_ROW_0			IOMUX_PAD(0x350, 0x28, 0, 0x0, 0, 0)
++#define MX53_PAD_KEY_ROW0__GPIO4_7			IOMUX_PAD(0x350, 0x28, 1, 0x0, 0, 0)
++#define MX53_PAD_KEY_ROW0__AUDMUX_AUD5_TXD		IOMUX_PAD(0x350, 0x28, 2, 0x74C, 0, 0)
++#define MX53_PAD_KEY_ROW0__UART4_RXD_MUX		IOMUX_PAD(0x350, 0x28, 4, 0x890, 1, 0)
++#define MX53_PAD_KEY_ROW0__ECSPI1_MOSI			IOMUX_PAD(0x350, 0x28, 5, 0x7A4, 0, 0)
++#define MX53_PAD_KEY_ROW0__FEC_TX_ER			IOMUX_PAD(0x350, 0x28, 6, 0x0, 0, 0)
++#define MX53_PAD_KEY_COL1__KPP_COL_1			IOMUX_PAD(0x354, 0x2C, 0, 0x0, 0, 0)
++#define MX53_PAD_KEY_COL1__GPIO4_8			IOMUX_PAD(0x354, 0x2C, 1, 0x0, 0, 0)
++#define MX53_PAD_KEY_COL1__AUDMUX_AUD5_TXFS		IOMUX_PAD(0x354, 0x2C, 2, 0x75C, 0, 0)
++#define MX53_PAD_KEY_COL1__UART5_TXD_MUX		IOMUX_PAD(0x354, 0x2C, 4, 0x898, 0, 0)
++#define MX53_PAD_KEY_COL1__ECSPI1_MISO			IOMUX_PAD(0x354, 0x2C, 5, 0x7A0, 0, 0)
++#define MX53_PAD_KEY_COL1__FEC_RX_CLK			IOMUX_PAD(0x354, 0x2C, 6, 0x808, 0, 0)
++#define MX53_PAD_KEY_COL1__USBPHY1_TXREADY		IOMUX_PAD(0x354, 0x2C, 7, 0x0, 0, 0)
++#define MX53_PAD_KEY_ROW1__KPP_ROW_1			IOMUX_PAD(0x358, 0x30, 0, 0x0, 0, 0)
++#define MX53_PAD_KEY_ROW1__GPIO4_9			IOMUX_PAD(0x358, 0x30, 1, 0x0, 0, 0)
++#define MX53_PAD_KEY_ROW1__AUDMUX_AUD5_RXD		IOMUX_PAD(0x358, 0x30, 2, 0x748, 0, 0)
++#define MX53_PAD_KEY_ROW1__UART5_RXD_MUX		IOMUX_PAD(0x358, 0x30, 4, 0x898, 1, 0)
++#define MX53_PAD_KEY_ROW1__ECSPI1_SS0			IOMUX_PAD(0x358, 0x30, 5, 0x7A8, 0, 0)
++#define MX53_PAD_KEY_ROW1__FEC_COL			IOMUX_PAD(0x358, 0x30, 6, 0x800, 0, 0)
++#define MX53_PAD_KEY_ROW1__USBPHY1_RXVALID		IOMUX_PAD(0x358, 0x30, 7, 0x0, 0, 0)
++#define MX53_PAD_KEY_COL2__KPP_COL_2			IOMUX_PAD(0x35C, 0x34, 0, 0x0, 0, 0)
++#define MX53_PAD_KEY_COL2__GPIO4_10			IOMUX_PAD(0x35C, 0x34, 1, 0x0, 0, 0)
++#define MX53_PAD_KEY_COL2__CAN1_TXCAN			IOMUX_PAD(0x35C, 0x34, 2, 0x0, 0, 0)
++#define MX53_PAD_KEY_COL2__FEC_MDIO			IOMUX_PAD(0x35C, 0x34, 4, 0x804, 0, 0)
++#define MX53_PAD_KEY_COL2__ECSPI1_SS1			IOMUX_PAD(0x35C, 0x34, 5, 0x7AC, 0, 0)
++#define MX53_PAD_KEY_COL2__FEC_RDATA_2			IOMUX_PAD(0x35C, 0x34, 6, 0x0, 0, 0)
++#define MX53_PAD_KEY_COL2__USBPHY1_RXACTIVE		IOMUX_PAD(0x35C, 0x34, 7, 0x0, 0, 0)
++#define MX53_PAD_KEY_ROW2__KPP_ROW_2			IOMUX_PAD(0x360, 0x38, 0, 0x0, 0, 0)
++#define MX53_PAD_KEY_ROW2__GPIO4_11			IOMUX_PAD(0x360, 0x38, 1, 0x0, 0, 0)
++#define MX53_PAD_KEY_ROW2__CAN1_RXCAN			IOMUX_PAD(0x360, 0x38, 2, 0x760, 0, 0)
++#define MX53_PAD_KEY_ROW2__FEC_MDC			IOMUX_PAD(0x360, 0x38, 4, 0x0, 0, 0)
++#define MX53_PAD_KEY_ROW2__ECSPI1_SS2			IOMUX_PAD(0x360, 0x38, 5, 0x7B0, 0, 0)
++#define MX53_PAD_KEY_ROW2__FEC_TDATA_2			IOMUX_PAD(0x360, 0x38, 6, 0x0, 0, 0)
++#define MX53_PAD_KEY_ROW2__USBPHY1_RXERROR		IOMUX_PAD(0x360, 0x38, 7, 0x0, 0, 0)
++#define MX53_PAD_KEY_COL3__KPP_COL_3			IOMUX_PAD(0x364, 0x3C, 0, 0x0, 0, 0)
++#define MX53_PAD_KEY_COL3__GPIO4_12			IOMUX_PAD(0x364, 0x3C, 1, 0x0, 0, 0)
++#define MX53_PAD_KEY_COL3__USBOH3_H2_DP			IOMUX_PAD(0x364, 0x3C, 2, 0x0, 0, 0)
++#define MX53_PAD_KEY_COL3__SPDIF_IN1			IOMUX_PAD(0x364, 0x3C, 3, 0x870, 0, 0)
++#define MX53_PAD_KEY_COL3__I2C2_SCL			IOMUX_PAD(0x364, 0x3C, 4 | IOMUX_CONFIG_SION, 0x81C, 0, 0)
++#define MX53_PAD_KEY_COL3__ECSPI1_SS3			IOMUX_PAD(0x364, 0x3C, 5, 0x7B4, 0, 0)
++#define MX53_PAD_KEY_COL3__FEC_CRS			IOMUX_PAD(0x364, 0x3C, 6, 0x0, 0, 0)
++#define MX53_PAD_KEY_COL3__USBPHY1_SIECLOCK		IOMUX_PAD(0x364, 0x3C, 7, 0x0, 0, 0)
++#define MX53_PAD_KEY_ROW3__KPP_ROW_3			IOMUX_PAD(0x368, 0x40, 0, 0x0, 0, 0)
++#define MX53_PAD_KEY_ROW3__GPIO4_13			IOMUX_PAD(0x368, 0x40, 1, 0x0, 0, 0)
++#define MX53_PAD_KEY_ROW3__USBOH3_H2_DM			IOMUX_PAD(0x368, 0x40, 2, 0x0, 0, 0)
++#define MX53_PAD_KEY_ROW3__CCM_ASRC_EXT_CLK		IOMUX_PAD(0x368, 0x40, 3, 0x768, 0, 0)
++#define MX53_PAD_KEY_ROW3__I2C2_SDA			IOMUX_PAD(0x368, 0x40, 4 | IOMUX_CONFIG_SION, 0x820, 0, 0)
++#define MX53_PAD_KEY_ROW3__OSC32K_32K_OUT		IOMUX_PAD(0x368, 0x40, 5, 0x0, 0, 0)
++#define MX53_PAD_KEY_ROW3__CCM_PLL4_BYP			IOMUX_PAD(0x368, 0x40, 6, 0x77C, 0, 0)
++#define MX53_PAD_KEY_ROW3__USBPHY1_LINESTATE_0		IOMUX_PAD(0x368, 0x40, 7, 0x0, 0, 0)
++#define MX53_PAD_KEY_COL4__KPP_COL_4			IOMUX_PAD(0x36C, 0x44, 0, 0x0, 0, 0)
++#define MX53_PAD_KEY_COL4__GPIO4_14			IOMUX_PAD(0x36C, 0x44, 1, 0x0, 0, 0)
++#define MX53_PAD_KEY_COL4__CAN2_TXCAN			IOMUX_PAD(0x36C, 0x44, 2, 0x0, 0, 0)
++#define MX53_PAD_KEY_COL4__IPU_SISG_4			IOMUX_PAD(0x36C, 0x44, 3, 0x0, 0, 0)
++#define MX53_PAD_KEY_COL4__UART5_RTS			IOMUX_PAD(0x36C, 0x44, 4, 0x894, 0, 0)
++#define MX53_PAD_KEY_COL4__USBOH3_USBOTG_OC		IOMUX_PAD(0x36C, 0x44, 5, 0x89C, 0, 0)
++#define MX53_PAD_KEY_COL4__USBPHY1_LINESTATE_1		IOMUX_PAD(0x36C, 0x44, 7, 0x0, 0, 0)
++#define MX53_PAD_KEY_ROW4__KPP_ROW_4			IOMUX_PAD(0x370, 0x48, 0, 0x0, 0, 0)
++#define MX53_PAD_KEY_ROW4__GPIO4_15			IOMUX_PAD(0x370, 0x48, 1, 0x0, 0, 0)
++#define MX53_PAD_KEY_ROW4__CAN2_RXCAN			IOMUX_PAD(0x370, 0x48, 2, 0x764, 0, 0)
++#define MX53_PAD_KEY_ROW4__IPU_SISG_5			IOMUX_PAD(0x370, 0x48, 3, 0x0, 0, 0)
++#define MX53_PAD_KEY_ROW4__UART5_CTS			IOMUX_PAD(0x370, 0x48, 4, 0x894, 1, 0)
++#define MX53_PAD_KEY_ROW4__USBOH3_USBOTG_PWR		IOMUX_PAD(0x370, 0x48, 5, 0x0, 0, 0)
++#define MX53_PAD_KEY_ROW4__USBPHY1_VBUSVALID		IOMUX_PAD(0x370, 0x48, 7, 0x0, 0, 0)
++#define MX53_PAD_DI0_DISP_CLK__IPU_DI0_DISP_CLK		IOMUX_PAD(0x378, 0x4C, 0, 0x0, 0, 0)
++#define MX53_PAD_DI0_DISP_CLK__GPIO4_16			IOMUX_PAD(0x378, 0x4C, 1, 0x0, 0, 0)
++#define MX53_PAD_DI0_DISP_CLK__USBOH3_USBH2_DIR		IOMUX_PAD(0x378, 0x4C, 2, 0x0, 0, 0)
++#define MX53_PAD_DI0_DISP_CLK__SDMA_DEBUG_CORE_STATE_0	IOMUX_PAD(0x378, 0x4C, 5, 0x0, 0, 0)
++#define MX53_PAD_DI0_DISP_CLK__EMI_EMI_DEBUG_0		IOMUX_PAD(0x378, 0x4C, 6, 0x0, 0, 0)
++#define MX53_PAD_DI0_DISP_CLK__USBPHY1_AVALID		IOMUX_PAD(0x378, 0x4C, 7, 0x0, 0, 0)
++#define MX53_PAD_DI0_PIN15__IPU_DI0_PIN15		IOMUX_PAD(0x37C, 0x50, 0, 0x0, 0, 0)
++#define MX53_PAD_DI0_PIN15__GPIO4_17			IOMUX_PAD(0x37C, 0x50, 1, 0x0, 0, 0)
++#define MX53_PAD_DI0_PIN15__AUDMUX_AUD6_TXC		IOMUX_PAD(0x37C, 0x50, 2, 0x0, 0, 0)
++#define MX53_PAD_DI0_PIN15__SDMA_DEBUG_CORE_STATE_1	IOMUX_PAD(0x37C, 0x50, 5, 0x0, 0, 0)
++#define MX53_PAD_DI0_PIN15__EMI_EMI_DEBUG_1		IOMUX_PAD(0x37C, 0x50, 6, 0x0, 0, 0)
++#define MX53_PAD_DI0_PIN15__USBPHY1_BVALID		IOMUX_PAD(0x37C, 0x50, 7, 0x0, 0, 0)
++#define MX53_PAD_DI0_PIN2__IPU_DI0_PIN2			IOMUX_PAD(0x380, 0x54, 0, 0x0, 0, 0)
++#define MX53_PAD_DI0_PIN2__GPIO4_18			IOMUX_PAD(0x380, 0x54, 1, 0x0, 0, 0)
++#define MX53_PAD_DI0_PIN2__AUDMUX_AUD6_TXD		IOMUX_PAD(0x380, 0x54, 2, 0x0, 0, 0)
++#define MX53_PAD_DI0_PIN2__SDMA_DEBUG_CORE_STATE_2	IOMUX_PAD(0x380, 0x54, 5, 0x0, 0, 0)
++#define MX53_PAD_DI0_PIN2__EMI_EMI_DEBUG_2		IOMUX_PAD(0x380, 0x54, 6, 0x0, 0, 0)
++#define MX53_PAD_DI0_PIN2__USBPHY1_ENDSESSION		IOMUX_PAD(0x380, 0x54, 7, 0x0, 0, 0)
++#define MX53_PAD_DI0_PIN3__IPU_DI0_PIN3			IOMUX_PAD(0x384, 0x58, 0, 0x0, 0, 0)
++#define MX53_PAD_DI0_PIN3__GPIO4_19			IOMUX_PAD(0x384, 0x58, 1, 0x0, 0, 0)
++#define MX53_PAD_DI0_PIN3__AUDMUX_AUD6_TXFS		IOMUX_PAD(0x384, 0x58, 2, 0x0, 0, 0)
++#define MX53_PAD_DI0_PIN3__SDMA_DEBUG_CORE_STATE_3	IOMUX_PAD(0x384, 0x58, 5, 0x0, 0, 0)
++#define MX53_PAD_DI0_PIN3__EMI_EMI_DEBUG_3		IOMUX_PAD(0x384, 0x58, 6, 0x0, 0, 0)
++#define MX53_PAD_DI0_PIN3__USBPHY1_IDDIG		IOMUX_PAD(0x384, 0x58, 7, 0x0, 0, 0)
++#define MX53_PAD_DI0_PIN4__IPU_DI0_PIN4			IOMUX_PAD(0x388, 0x5C, 0, 0x0, 0, 0)
++#define MX53_PAD_DI0_PIN4__GPIO4_20			IOMUX_PAD(0x388, 0x5C, 1, 0x0, 0, 0)
++#define MX53_PAD_DI0_PIN4__AUDMUX_AUD6_RXD		IOMUX_PAD(0x388, 0x5C, 2, 0x0, 0, 0)
++#define MX53_PAD_DI0_PIN4__ESDHC1_WP			IOMUX_PAD(0x388, 0x5C, 3, 0x7FC, 0, 0)
++#define MX53_PAD_DI0_PIN4__SDMA_DEBUG_YIELD		IOMUX_PAD(0x388, 0x5C, 5, 0x0, 0, 0)
++#define MX53_PAD_DI0_PIN4__EMI_EMI_DEBUG_4		IOMUX_PAD(0x388, 0x5C, 6, 0x0, 0, 0)
++#define MX53_PAD_DI0_PIN4__USBPHY1_HOSTDISCONNECT	IOMUX_PAD(0x388, 0x5C, 7, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT0__IPU_DISP0_DAT_0		IOMUX_PAD(0x38C, 0x60, 0, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT0__GPIO4_21			IOMUX_PAD(0x38C, 0x60, 1, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT0__CSPI_SCLK			IOMUX_PAD(0x38C, 0x60, 2, 0x780, 0, 0)
++#define MX53_PAD_DISP0_DAT0__USBOH3_USBH2_DATA_0	IOMUX_PAD(0x38C, 0x60, 3, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT0__SDMA_DEBUG_CORE_RUN	IOMUX_PAD(0x38C, 0x60, 5, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT0__EMI_EMI_DEBUG_5		IOMUX_PAD(0x38C, 0x60, 6, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT0__USBPHY2_TXREADY		IOMUX_PAD(0x38C, 0x60, 7, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT1__IPU_DISP0_DAT_1		IOMUX_PAD(0x390, 0x64, 0, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT1__GPIO4_22			IOMUX_PAD(0x390, 0x64, 1, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT1__CSPI_MOSI			IOMUX_PAD(0x390, 0x64, 2, 0x788, 0, 0)
++#define MX53_PAD_DISP0_DAT1__USBOH3_USBH2_DATA_1	IOMUX_PAD(0x390, 0x64, 3, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT1__SDMA_DEBUG_EVENT_CHANNEL_SEL	IOMUX_PAD(0x390, 0x64, 5, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT1__EMI_EMI_DEBUG_6		IOMUX_PAD(0x390, 0x64, 6, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT1__USBPHY2_RXVALID		IOMUX_PAD(0x390, 0x64, 7, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT2__IPU_DISP0_DAT_2		IOMUX_PAD(0x394, 0x68, 0, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT2__GPIO4_23			IOMUX_PAD(0x394, 0x68, 1, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT2__CSPI_MISO			IOMUX_PAD(0x394, 0x68, 2, 0x784, 0, 0)
++#define MX53_PAD_DISP0_DAT2__USBOH3_USBH2_DATA_2	IOMUX_PAD(0x394, 0x68, 3, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT2__SDMA_DEBUG_MODE		IOMUX_PAD(0x394, 0x68, 5, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT2__EMI_EMI_DEBUG_7		IOMUX_PAD(0x394, 0x68, 6, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT2__USBPHY2_RXACTIVE		IOMUX_PAD(0x394, 0x68, 7, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT3__IPU_DISP0_DAT_3		IOMUX_PAD(0x398, 0x6C, 0, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT3__GPIO4_24			IOMUX_PAD(0x398, 0x6C, 1, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT3__CSPI_SS0			IOMUX_PAD(0x398, 0x6C, 2, 0x78C, 0, 0)
++#define MX53_PAD_DISP0_DAT3__USBOH3_USBH2_DATA_3	IOMUX_PAD(0x398, 0x6C, 3, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT3__SDMA_DEBUG_BUS_ERROR	IOMUX_PAD(0x398, 0x6C, 5, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT3__EMI_EMI_DEBUG_8		IOMUX_PAD(0x398, 0x6C, 6, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT3__USBPHY2_RXERROR		IOMUX_PAD(0x398, 0x6C, 7, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT4__IPU_DISP0_DAT_4		IOMUX_PAD(0x39C, 0x70, 0, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT4__GPIO4_25			IOMUX_PAD(0x39C, 0x70, 1, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT4__CSPI_SS1			IOMUX_PAD(0x39C, 0x70, 2, 0x790, 0, 0)
++#define MX53_PAD_DISP0_DAT4__USBOH3_USBH2_DATA_4	IOMUX_PAD(0x39C, 0x70, 3, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT4__SDMA_DEBUG_BUS_RWB		IOMUX_PAD(0x39C, 0x70, 5, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT4__EMI_EMI_DEBUG_9		IOMUX_PAD(0x39C, 0x70, 6, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT4__USBPHY2_SIECLOCK		IOMUX_PAD(0x39C, 0x70, 7, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT5__IPU_DISP0_DAT_5		IOMUX_PAD(0x3A0, 0x74, 0, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT5__GPIO4_26			IOMUX_PAD(0x3A0, 0x74, 1, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT5__CSPI_SS2			IOMUX_PAD(0x3A0, 0x74, 2, 0x794, 0, 0)
++#define MX53_PAD_DISP0_DAT5__USBOH3_USBH2_DATA_5	IOMUX_PAD(0x3A0, 0x74, 3, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT5__SDMA_DEBUG_MATCHED_DMBUS	IOMUX_PAD(0x3A0, 0x74, 5, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT5__EMI_EMI_DEBUG_10		IOMUX_PAD(0x3A0, 0x74, 6, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT5__USBPHY2_LINESTATE_0	IOMUX_PAD(0x3A0, 0x74, 7, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT6__IPU_DISP0_DAT_6		IOMUX_PAD(0x3A4, 0x78, 0, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT6__GPIO4_27			IOMUX_PAD(0x3A4, 0x78, 1, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT6__CSPI_SS3			IOMUX_PAD(0x3A4, 0x78, 2, 0x798, 0, 0)
++#define MX53_PAD_DISP0_DAT6__USBOH3_USBH2_DATA_6	IOMUX_PAD(0x3A4, 0x78, 3, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT6__SDMA_DEBUG_RTBUFFER_WRITE	IOMUX_PAD(0x3A4, 0x78, 5, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT6__EMI_EMI_DEBUG_11		IOMUX_PAD(0x3A4, 0x78, 6, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT6__USBPHY2_LINESTATE_1	IOMUX_PAD(0x3A4, 0x78, 7, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT7__IPU_DISP0_DAT_7		IOMUX_PAD(0x3A8, 0x7C, 0, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT7__GPIO4_28			IOMUX_PAD(0x3A8, 0x7C, 1, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT7__CSPI_RDY			IOMUX_PAD(0x3A8, 0x7C, 2, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT7__USBOH3_USBH2_DATA_7	IOMUX_PAD(0x3A8, 0x7C, 3, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT7__SDMA_DEBUG_EVENT_CHANNEL_0	IOMUX_PAD(0x3A8, 0x7C, 5, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT7__EMI_EMI_DEBUG_12		IOMUX_PAD(0x3A8, 0x7C, 6, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT7__USBPHY2_VBUSVALID		IOMUX_PAD(0x3A8, 0x7C, 7, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT8__IPU_DISP0_DAT_8		IOMUX_PAD(0x3AC, 0x80, 0, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT8__GPIO4_29			IOMUX_PAD(0x3AC, 0x80, 1, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT8__PWM1_PWMO			IOMUX_PAD(0x3AC, 0x80, 2, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT8__WDOG1_WDOG_B		IOMUX_PAD(0x3AC, 0x80, 3, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT8__SDMA_DEBUG_EVENT_CHANNEL_1	IOMUX_PAD(0x3AC, 0x80, 5, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT8__EMI_EMI_DEBUG_13		IOMUX_PAD(0x3AC, 0x80, 6, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT8__USBPHY2_AVALID		IOMUX_PAD(0x3AC, 0x80, 7, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT9__IPU_DISP0_DAT_9		IOMUX_PAD(0x3B0, 0x84, 0, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT9__GPIO4_30			IOMUX_PAD(0x3B0, 0x84, 1, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT9__PWM2_PWMO			IOMUX_PAD(0x3B0, 0x84, 2, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT9__WDOG2_WDOG_B		IOMUX_PAD(0x3B0, 0x84, 3, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT9__SDMA_DEBUG_EVENT_CHANNEL_2	IOMUX_PAD(0x3B0, 0x84, 5, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT9__EMI_EMI_DEBUG_14		IOMUX_PAD(0x3B0, 0x84, 6, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT9__USBPHY2_VSTATUS_0		IOMUX_PAD(0x3B0, 0x84, 7, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT10__IPU_DISP0_DAT_10		IOMUX_PAD(0x3B4, 0x88, 0, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT10__GPIO4_31			IOMUX_PAD(0x3B4, 0x88, 1, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT10__USBOH3_USBH2_STP		IOMUX_PAD(0x3B4, 0x88, 2, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT10__SDMA_DEBUG_EVENT_CHANNEL_3	IOMUX_PAD(0x3B4, 0x88, 5, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT10__EMI_EMI_DEBUG_15		IOMUX_PAD(0x3B4, 0x88, 6, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT10__USBPHY2_VSTATUS_1		IOMUX_PAD(0x3B4, 0x88, 7, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT11__IPU_DISP0_DAT_11		IOMUX_PAD(0x3B8, 0x8C, 0, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT11__GPIO5_5			IOMUX_PAD(0x3B8, 0x8C, 1, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT11__USBOH3_USBH2_NXT		IOMUX_PAD(0x3B8, 0x8C, 2, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT11__SDMA_DEBUG_EVENT_CHANNEL_4	IOMUX_PAD(0x3B8, 0x8C, 5, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT11__EMI_EMI_DEBUG_16		IOMUX_PAD(0x3B8, 0x8C, 6, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT11__USBPHY2_VSTATUS_2		IOMUX_PAD(0x3B8, 0x8C, 7, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT12__IPU_DISP0_DAT_12		IOMUX_PAD(0x3BC, 0x90, 0, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT12__GPIO5_6			IOMUX_PAD(0x3BC, 0x90, 1, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT12__USBOH3_USBH2_CLK		IOMUX_PAD(0x3BC, 0x90, 2, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT12__SDMA_DEBUG_EVENT_CHANNEL_5	IOMUX_PAD(0x3BC, 0x90, 5, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT12__EMI_EMI_DEBUG_17		IOMUX_PAD(0x3BC, 0x90, 6, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT12__USBPHY2_VSTATUS_3		IOMUX_PAD(0x3BC, 0x90, 7, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT13__IPU_DISP0_DAT_13		IOMUX_PAD(0x3C0, 0x94, 0, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT13__GPIO5_7			IOMUX_PAD(0x3C0, 0x94, 1, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT13__AUDMUX_AUD5_RXFS		IOMUX_PAD(0x3C0, 0x94, 3, 0x754, 0, 0)
++#define MX53_PAD_DISP0_DAT13__SDMA_DEBUG_EVT_CHN_LINES_0	IOMUX_PAD(0x3C0, 0x94, 5, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT13__EMI_EMI_DEBUG_18		IOMUX_PAD(0x3C0, 0x94, 6, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT13__USBPHY2_VSTATUS_4		IOMUX_PAD(0x3C0, 0x94, 7, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT14__IPU_DISP0_DAT_14		IOMUX_PAD(0x3C4, 0x98, 0, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT14__GPIO5_8			IOMUX_PAD(0x3C4, 0x98, 1, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT14__AUDMUX_AUD5_RXC		IOMUX_PAD(0x3C4, 0x98, 3, 0x750, 0, 0)
++#define MX53_PAD_DISP0_DAT14__SDMA_DEBUG_EVT_CHN_LINES_1	IOMUX_PAD(0x3C4, 0x98, 5, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT14__EMI_EMI_DEBUG_19		IOMUX_PAD(0x3C4, 0x98, 6, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT14__USBPHY2_VSTATUS_5		IOMUX_PAD(0x3C4, 0x98, 7, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT15__IPU_DISP0_DAT_15		IOMUX_PAD(0x3C8, 0x9C, 0, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT15__GPIO5_9			IOMUX_PAD(0x3C8, 0x9C, 1, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT15__ECSPI1_SS1		IOMUX_PAD(0x3C8, 0x9C, 2, 0x7AC, 1, 0)
++#define MX53_PAD_DISP0_DAT15__ECSPI2_SS1		IOMUX_PAD(0x3C8, 0x9C, 3, 0x7C8, 0, 0)
++#define MX53_PAD_DISP0_DAT15__SDMA_DEBUG_EVT_CHN_LINES_2	IOMUX_PAD(0x3C8, 0x9C, 5, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT15__EMI_EMI_DEBUG_20		IOMUX_PAD(0x3C8, 0x9C, 6, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT15__USBPHY2_VSTATUS_6		IOMUX_PAD(0x3C8, 0x9C, 7, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT16__IPU_DISP0_DAT_16		IOMUX_PAD(0x3CC, 0xA0, 0, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT16__GPIO5_10			IOMUX_PAD(0x3CC, 0xA0, 1, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT16__ECSPI2_MOSI		IOMUX_PAD(0x3CC, 0xA0, 2, 0x7C0, 0, 0)
++#define MX53_PAD_DISP0_DAT16__AUDMUX_AUD5_TXC		IOMUX_PAD(0x3CC, 0xA0, 3, 0x758, 1, 0)
++#define MX53_PAD_DISP0_DAT16__SDMA_EXT_EVENT_0		IOMUX_PAD(0x3CC, 0xA0, 4, 0x868, 0, 0)
++#define MX53_PAD_DISP0_DAT16__SDMA_DEBUG_EVT_CHN_LINES_3	IOMUX_PAD(0x3CC, 0xA0, 5, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT16__EMI_EMI_DEBUG_21		IOMUX_PAD(0x3CC, 0xA0, 6, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT16__USBPHY2_VSTATUS_7		IOMUX_PAD(0x3CC, 0xA0, 7, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT17__IPU_DISP0_DAT_17		IOMUX_PAD(0x3D0, 0xA4, 0, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT17__GPIO5_11			IOMUX_PAD(0x3D0, 0xA4, 1, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT17__ECSPI2_MISO		IOMUX_PAD(0x3D0, 0xA4, 2, 0x7BC, 0, 0)
++#define MX53_PAD_DISP0_DAT17__AUDMUX_AUD5_TXD		IOMUX_PAD(0x3D0, 0xA4, 3, 0x74C, 1, 0)
++#define MX53_PAD_DISP0_DAT17__SDMA_EXT_EVENT_1		IOMUX_PAD(0x3D0, 0xA4, 4, 0x86C, 0, 0)
++#define MX53_PAD_DISP0_DAT17__SDMA_DEBUG_EVT_CHN_LINES_4	IOMUX_PAD(0x3D0, 0xA4, 5, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT17__EMI_EMI_DEBUG_22		IOMUX_PAD(0x3D0, 0xA4, 6, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT18__IPU_DISP0_DAT_18		IOMUX_PAD(0x3D4, 0xA8, 0, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT18__GPIO5_12			IOMUX_PAD(0x3D4, 0xA8, 1, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT18__ECSPI2_SS0		IOMUX_PAD(0x3D4, 0xA8, 2, 0x7C4, 0, 0)
++#define MX53_PAD_DISP0_DAT18__AUDMUX_AUD5_TXFS		IOMUX_PAD(0x3D4, 0xA8, 3, 0x75C, 1, 0)
++#define MX53_PAD_DISP0_DAT18__AUDMUX_AUD4_RXFS		IOMUX_PAD(0x3D4, 0xA8, 4, 0x73C, 0, 0)
++#define MX53_PAD_DISP0_DAT18__SDMA_DEBUG_EVT_CHN_LINES_5	IOMUX_PAD(0x3D4, 0xA8, 5, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT18__EMI_EMI_DEBUG_23		IOMUX_PAD(0x3D4, 0xA8, 6, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT18__EMI_WEIM_CS_2		IOMUX_PAD(0x3D4, 0xA8, 7, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT19__IPU_DISP0_DAT_19		IOMUX_PAD(0x3D8, 0xAC, 0, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT19__GPIO5_13			IOMUX_PAD(0x3D8, 0xAC, 1, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT19__ECSPI2_SCLK		IOMUX_PAD(0x3D8, 0xAC, 2, 0x7B8, 0, 0)
++#define MX53_PAD_DISP0_DAT19__AUDMUX_AUD5_RXD		IOMUX_PAD(0x3D8, 0xAC, 3, 0x748, 1, 0)
++#define MX53_PAD_DISP0_DAT19__AUDMUX_AUD4_RXC		IOMUX_PAD(0x3D8, 0xAC, 4, 0x738, 0, 0)
++#define MX53_PAD_DISP0_DAT19__SDMA_DEBUG_EVT_CHN_LINES_6	IOMUX_PAD(0x3D8, 0xAC, 5, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT19__EMI_EMI_DEBUG_24		IOMUX_PAD(0x3D8, 0xAC, 6, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT19__EMI_WEIM_CS_3		IOMUX_PAD(0x3D8, 0xAC, 7, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT20__IPU_DISP0_DAT_20		IOMUX_PAD(0x3DC, 0xB0, 0, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT20__GPIO5_14			IOMUX_PAD(0x3DC, 0xB0, 1, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT20__ECSPI1_SCLK		IOMUX_PAD(0x3DC, 0xB0, 2, 0x79C, 1, 0)
++#define MX53_PAD_DISP0_DAT20__AUDMUX_AUD4_TXC		IOMUX_PAD(0x3DC, 0xB0, 3, 0x740, 0, 0)
++#define MX53_PAD_DISP0_DAT20__SDMA_DEBUG_EVT_CHN_LINES_7	IOMUX_PAD(0x3DC, 0xB0, 5, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT20__EMI_EMI_DEBUG_25		IOMUX_PAD(0x3DC, 0xB0, 6, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT20__SATA_PHY_TDI		IOMUX_PAD(0x3DC, 0xB0, 7, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT21__IPU_DISP0_DAT_21		IOMUX_PAD(0x3E0, 0xB4, 0, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT21__GPIO5_15			IOMUX_PAD(0x3E0, 0xB4, 1, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT21__ECSPI1_MOSI		IOMUX_PAD(0x3E0, 0xB4, 2, 0x7A4, 1, 0)
++#define MX53_PAD_DISP0_DAT21__AUDMUX_AUD4_TXD		IOMUX_PAD(0x3E0, 0xB4, 3, 0x734, 0, 0)
++#define MX53_PAD_DISP0_DAT21__SDMA_DEBUG_BUS_DEVICE_0	IOMUX_PAD(0x3E0, 0xB4, 5, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT21__EMI_EMI_DEBUG_26		IOMUX_PAD(0x3E0, 0xB4, 6, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT21__SATA_PHY_TDO		IOMUX_PAD(0x3E0, 0xB4, 7, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT22__IPU_DISP0_DAT_22		IOMUX_PAD(0x3E4, 0xB8, 0, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT22__GPIO5_16			IOMUX_PAD(0x3E4, 0xB8, 1, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT22__ECSPI1_MISO		IOMUX_PAD(0x3E4, 0xB8, 2, 0x7A0, 1, 0)
++#define MX53_PAD_DISP0_DAT22__AUDMUX_AUD4_TXFS		IOMUX_PAD(0x3E4, 0xB8, 3, 0x744, 0, 0)
++#define MX53_PAD_DISP0_DAT22__SDMA_DEBUG_BUS_DEVICE_1	IOMUX_PAD(0x3E4, 0xB8, 5, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT22__EMI_EMI_DEBUG_27		IOMUX_PAD(0x3E4, 0xB8, 6, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT22__SATA_PHY_TCK		IOMUX_PAD(0x3E4, 0xB8, 7, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT23__IPU_DISP0_DAT_23		IOMUX_PAD(0x3E8, 0xBC, 0, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT23__GPIO5_17			IOMUX_PAD(0x3E8, 0xBC, 1, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT23__ECSPI1_SS0		IOMUX_PAD(0x3E8, 0xBC, 2, 0x7A8, 1, 0)
++#define MX53_PAD_DISP0_DAT23__AUDMUX_AUD4_RXD		IOMUX_PAD(0x3E8, 0xBC, 3, 0x730, 0, 0)
++#define MX53_PAD_DISP0_DAT23__SDMA_DEBUG_BUS_DEVICE_2	IOMUX_PAD(0x3E8, 0xBC, 5, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT23__EMI_EMI_DEBUG_28		IOMUX_PAD(0x3E8, 0xBC, 6, 0x0, 0, 0)
++#define MX53_PAD_DISP0_DAT23__SATA_PHY_TMS		IOMUX_PAD(0x3E8, 0xBC, 7, 0x0, 0, 0)
++#define MX53_PAD_CSI0_PIXCLK__IPU_CSI0_PIXCLK		IOMUX_PAD(0x3EC, 0xC0, 0, 0x0, 0, 0)
++#define MX53_PAD_CSI0_PIXCLK__GPIO5_18			IOMUX_PAD(0x3EC, 0xC0, 1, 0x0, 0, 0)
++#define MX53_PAD_CSI0_PIXCLK__SDMA_DEBUG_PC_0		IOMUX_PAD(0x3EC, 0xC0, 5, 0x0, 0, 0)
++#define MX53_PAD_CSI0_PIXCLK__EMI_EMI_DEBUG_29		IOMUX_PAD(0x3EC, 0xC0, 6, 0x0, 0, 0)
++#define MX53_PAD_CSI0_MCLK__IPU_CSI0_HSYNC		IOMUX_PAD(0x3F0, 0xC4, 0, 0x0, 0, 0)
++#define MX53_PAD_CSI0_MCLK__GPIO5_19			IOMUX_PAD(0x3F0, 0xC4, 1, 0x0, 0, 0)
++#define MX53_PAD_CSI0_MCLK__CCM_CSI0_MCLK		IOMUX_PAD(0x3F0, 0xC4, 2, 0x0, 0, 0)
++#define MX53_PAD_CSI0_MCLK__SDMA_DEBUG_PC_1		IOMUX_PAD(0x3F0, 0xC4, 5, 0x0, 0, 0)
++#define MX53_PAD_CSI0_MCLK__EMI_EMI_DEBUG_30		IOMUX_PAD(0x3F0, 0xC4, 6, 0x0, 0, 0)
++#define MX53_PAD_CSI0_MCLK__TPIU_TRCTL			IOMUX_PAD(0x3F0, 0xC4, 7, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DATA_EN__IPU_CSI0_DATA_EN		IOMUX_PAD(0x3F4, 0xC8, 0, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DATA_EN__GPIO5_20			IOMUX_PAD(0x3F4, 0xC8, 1, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DATA_EN__SDMA_DEBUG_PC_2		IOMUX_PAD(0x3F4, 0xC8, 5, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DATA_EN__EMI_EMI_DEBUG_31		IOMUX_PAD(0x3F4, 0xC8, 6, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DATA_EN__TPIU_TRCLK		IOMUX_PAD(0x3F4, 0xC8, 7, 0x0, 0, 0)
++#define MX53_PAD_CSI0_VSYNC__IPU_CSI0_VSYNC		IOMUX_PAD(0x3F8, 0xCC, 0, 0x0, 0, 0)
++#define MX53_PAD_CSI0_VSYNC__GPIO5_21			IOMUX_PAD(0x3F8, 0xCC, 1, 0x0, 0, 0)
++#define MX53_PAD_CSI0_VSYNC__SDMA_DEBUG_PC_3		IOMUX_PAD(0x3F8, 0xCC, 5, 0x0, 0, 0)
++#define MX53_PAD_CSI0_VSYNC__EMI_EMI_DEBUG_32		IOMUX_PAD(0x3F8, 0xCC, 6, 0x0, 0, 0)
++#define MX53_PAD_CSI0_VSYNC__TPIU_TRACE_0		IOMUX_PAD(0x3F8, 0xCC, 7, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT4__IPU_CSI0_D_4		IOMUX_PAD(0x3FC, 0xD0, 0, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT4__GPIO5_22			IOMUX_PAD(0x3FC, 0xD0, 1, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT4__KPP_COL_5			IOMUX_PAD(0x3FC, 0xD0, 2, 0x840, 1, 0)
++#define MX53_PAD_CSI0_DAT4__ECSPI1_SCLK			IOMUX_PAD(0x3FC, 0xD0, 3, 0x79C, 2, 0)
++#define MX53_PAD_CSI0_DAT4__USBOH3_USBH3_STP		IOMUX_PAD(0x3FC, 0xD0, 4, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT4__AUDMUX_AUD3_TXC		IOMUX_PAD(0x3FC, 0xD0, 5, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT4__EMI_EMI_DEBUG_33		IOMUX_PAD(0x3FC, 0xD0, 6, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT4__TPIU_TRACE_1		IOMUX_PAD(0x3FC, 0xD0, 7, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT5__IPU_CSI0_D_5		IOMUX_PAD(0x400, 0xD4, 0, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT5__GPIO5_23			IOMUX_PAD(0x400, 0xD4, 1, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT5__KPP_ROW_5			IOMUX_PAD(0x400, 0xD4, 2, 0x84C, 0, 0)
++#define MX53_PAD_CSI0_DAT5__ECSPI1_MOSI			IOMUX_PAD(0x400, 0xD4, 3, 0x7A4, 2, 0)
++#define MX53_PAD_CSI0_DAT5__USBOH3_USBH3_NXT		IOMUX_PAD(0x400, 0xD4, 4, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT5__AUDMUX_AUD3_TXD		IOMUX_PAD(0x400, 0xD4, 5, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT5__EMI_EMI_DEBUG_34		IOMUX_PAD(0x400, 0xD4, 6, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT5__TPIU_TRACE_2		IOMUX_PAD(0x400, 0xD4, 7, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT6__IPU_CSI0_D_6		IOMUX_PAD(0x404, 0xD8, 0, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT6__GPIO5_24			IOMUX_PAD(0x404, 0xD8, 1, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT6__KPP_COL_6			IOMUX_PAD(0x404, 0xD8, 2, 0x844, 0, 0)
++#define MX53_PAD_CSI0_DAT6__ECSPI1_MISO			IOMUX_PAD(0x404, 0xD8, 3, 0x7A0, 2, 0)
++#define MX53_PAD_CSI0_DAT6__USBOH3_USBH3_CLK		IOMUX_PAD(0x404, 0xD8, 4, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT6__AUDMUX_AUD3_TXFS		IOMUX_PAD(0x404, 0xD8, 5, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT6__EMI_EMI_DEBUG_35		IOMUX_PAD(0x404, 0xD8, 6, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT6__TPIU_TRACE_3		IOMUX_PAD(0x404, 0xD8, 7, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT7__IPU_CSI0_D_7		IOMUX_PAD(0x408, 0xDC, 0, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT7__GPIO5_25			IOMUX_PAD(0x408, 0xDC, 1, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT7__KPP_ROW_6			IOMUX_PAD(0x408, 0xDC, 2, 0x850, 0, 0)
++#define MX53_PAD_CSI0_DAT7__ECSPI1_SS0			IOMUX_PAD(0x408, 0xDC, 3, 0x7A8, 2, 0)
++#define MX53_PAD_CSI0_DAT7__USBOH3_USBH3_DIR		IOMUX_PAD(0x408, 0xDC, 4, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT7__AUDMUX_AUD3_RXD		IOMUX_PAD(0x408, 0xDC, 5, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT7__EMI_EMI_DEBUG_36		IOMUX_PAD(0x408, 0xDC, 6, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT7__TPIU_TRACE_4		IOMUX_PAD(0x408, 0xDC, 7, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT8__IPU_CSI0_D_8		IOMUX_PAD(0x40C, 0xE0, 0, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT8__GPIO5_26			IOMUX_PAD(0x40C, 0xE0, 1, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT8__KPP_COL_7			IOMUX_PAD(0x40C, 0xE0, 2, 0x848, 0, 0)
++#define MX53_PAD_CSI0_DAT8__ECSPI2_SCLK			IOMUX_PAD(0x40C, 0xE0, 3, 0x7B8, 1, 0)
++#define MX53_PAD_CSI0_DAT8__USBOH3_USBH3_OC		IOMUX_PAD(0x40C, 0xE0, 4, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT8__I2C1_SDA			IOMUX_PAD(0x40C, 0xE0, 5 | IOMUX_CONFIG_SION, 0x818, 0, 0)
++#define MX53_PAD_CSI0_DAT8__EMI_EMI_DEBUG_37		IOMUX_PAD(0x40C, 0xE0, 6, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT8__TPIU_TRACE_5		IOMUX_PAD(0x40C, 0xE0, 7, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT9__IPU_CSI0_D_9		IOMUX_PAD(0x410, 0xE4, 0, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT9__GPIO5_27			IOMUX_PAD(0x410, 0xE4, 1, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT9__KPP_ROW_7			IOMUX_PAD(0x410, 0xE4, 2, 0x854, 0, 0)
++#define MX53_PAD_CSI0_DAT9__ECSPI2_MOSI			IOMUX_PAD(0x410, 0xE4, 3, 0x7C0, 1, 0)
++#define MX53_PAD_CSI0_DAT9__USBOH3_USBH3_PWR		IOMUX_PAD(0x410, 0xE4, 4, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT9__I2C1_SCL			IOMUX_PAD(0x410, 0xE4, 5 | IOMUX_CONFIG_SION, 0x814, 0, 0)
++#define MX53_PAD_CSI0_DAT9__EMI_EMI_DEBUG_38		IOMUX_PAD(0x410, 0xE4, 6, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT9__TPIU_TRACE_6		IOMUX_PAD(0x410, 0xE4, 7, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT10__IPU_CSI0_D_10		IOMUX_PAD(0x414, 0xE8, 0, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT10__GPIO5_28			IOMUX_PAD(0x414, 0xE8, 1, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT10__UART1_TXD_MUX		IOMUX_PAD(0x414, 0xE8, 2, 0x878, 0, MX53_UART_PAD_CTRL)
++#define MX53_PAD_CSI0_DAT10__ECSPI2_MISO		IOMUX_PAD(0x414, 0xE8, 3, 0x7BC, 1, 0)
++#define MX53_PAD_CSI0_DAT10__AUDMUX_AUD3_RXC		IOMUX_PAD(0x414, 0xE8, 4, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT10__SDMA_DEBUG_PC_4		IOMUX_PAD(0x414, 0xE8, 5, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT10__EMI_EMI_DEBUG_39		IOMUX_PAD(0x414, 0xE8, 6, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT10__TPIU_TRACE_7		IOMUX_PAD(0x414, 0xE8, 7, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT11__IPU_CSI0_D_11		IOMUX_PAD(0x418, 0xEC, 0, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT11__GPIO5_29			IOMUX_PAD(0x418, 0xEC, 1, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT11__UART1_RXD_MUX		IOMUX_PAD(0x418, 0xEC, 2, 0x878, 1, MX53_UART_PAD_CTRL)
++#define MX53_PAD_CSI0_DAT11__ECSPI2_SS0			IOMUX_PAD(0x418, 0xEC, 3, 0x7C4, 1, 0)
++#define MX53_PAD_CSI0_DAT11__AUDMUX_AUD3_RXFS		IOMUX_PAD(0x418, 0xEC, 4, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT11__SDMA_DEBUG_PC_5		IOMUX_PAD(0x418, 0xEC, 5, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT11__EMI_EMI_DEBUG_40		IOMUX_PAD(0x418, 0xEC, 6, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT11__TPIU_TRACE_8		IOMUX_PAD(0x418, 0xEC, 7, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT12__IPU_CSI0_D_12		IOMUX_PAD(0x41C, 0xF0, 0, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT12__GPIO5_30			IOMUX_PAD(0x41C, 0xF0, 1, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT12__UART4_TXD_MUX		IOMUX_PAD(0x41C, 0xF0, 2, 0x890, 2, 0)
++#define MX53_PAD_CSI0_DAT12__USBOH3_USBH3_DATA_0	IOMUX_PAD(0x41C, 0xF0, 4, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT12__SDMA_DEBUG_PC_6		IOMUX_PAD(0x41C, 0xF0, 5, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT12__EMI_EMI_DEBUG_41		IOMUX_PAD(0x41C, 0xF0, 6, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT12__TPIU_TRACE_9		IOMUX_PAD(0x41C, 0xF0, 7, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT13__IPU_CSI0_D_13		IOMUX_PAD(0x420, 0xF4, 0, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT13__GPIO5_31			IOMUX_PAD(0x420, 0xF4, 1, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT13__UART4_RXD_MUX		IOMUX_PAD(0x420, 0xF4, 2, 0x890, 3, 0)
++#define MX53_PAD_CSI0_DAT13__USBOH3_USBH3_DATA_1	IOMUX_PAD(0x420, 0xF4, 4, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT13__SDMA_DEBUG_PC_7		IOMUX_PAD(0x420, 0xF4, 5, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT13__EMI_EMI_DEBUG_42		IOMUX_PAD(0x420, 0xF4, 6, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT13__TPIU_TRACE_10		IOMUX_PAD(0x420, 0xF4, 7, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT14__IPU_CSI0_D_14		IOMUX_PAD(0x424, 0xF8, 0, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT14__GPIO6_0			IOMUX_PAD(0x424, 0xF8, 1, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT14__UART5_TXD_MUX		IOMUX_PAD(0x424, 0xF8, 2, 0x898, 2, 0)
++#define MX53_PAD_CSI0_DAT14__USBOH3_USBH3_DATA_2	IOMUX_PAD(0x424, 0xF8, 4, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT14__SDMA_DEBUG_PC_8		IOMUX_PAD(0x424, 0xF8, 5, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT14__EMI_EMI_DEBUG_43		IOMUX_PAD(0x424, 0xF8, 6, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT14__TPIU_TRACE_11		IOMUX_PAD(0x424, 0xF8, 7, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT15__IPU_CSI0_D_15		IOMUX_PAD(0x428, 0xFC, 0, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT15__GPIO6_1			IOMUX_PAD(0x428, 0xFC, 1, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT15__UART5_RXD_MUX		IOMUX_PAD(0x428, 0xFC, 2, 0x898, 3, 0)
++#define MX53_PAD_CSI0_DAT15__USBOH3_USBH3_DATA_3	IOMUX_PAD(0x428, 0xFC, 4, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT15__SDMA_DEBUG_PC_9		IOMUX_PAD(0x428, 0xFC, 5, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT15__EMI_EMI_DEBUG_44		IOMUX_PAD(0x428, 0xFC, 6, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT15__TPIU_TRACE_12		IOMUX_PAD(0x428, 0xFC, 7, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT16__IPU_CSI0_D_16		IOMUX_PAD(0x42C, 0x100, 0, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT16__GPIO6_2			IOMUX_PAD(0x42C, 0x100, 1, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT16__UART4_RTS			IOMUX_PAD(0x42C, 0x100, 2, 0x88C, 0, 0)
++#define MX53_PAD_CSI0_DAT16__USBOH3_USBH3_DATA_4	IOMUX_PAD(0x42C, 0x100, 4, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT16__SDMA_DEBUG_PC_10		IOMUX_PAD(0x42C, 0x100, 5, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT16__EMI_EMI_DEBUG_45		IOMUX_PAD(0x42C, 0x100, 6, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT16__TPIU_TRACE_13		IOMUX_PAD(0x42C, 0x100, 7, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT17__IPU_CSI0_D_17		IOMUX_PAD(0x430, 0x104, 0, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT17__GPIO6_3			IOMUX_PAD(0x430, 0x104, 1, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT17__UART4_CTS			IOMUX_PAD(0x430, 0x104, 2, 0x88C, 1, 0)
++#define MX53_PAD_CSI0_DAT17__USBOH3_USBH3_DATA_5	IOMUX_PAD(0x430, 0x104, 4, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT17__SDMA_DEBUG_PC_11		IOMUX_PAD(0x430, 0x104, 5, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT17__EMI_EMI_DEBUG_46		IOMUX_PAD(0x430, 0x104, 6, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT17__TPIU_TRACE_14		IOMUX_PAD(0x430, 0x104, 7, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT18__IPU_CSI0_D_18		IOMUX_PAD(0x434, 0x108, 0, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT18__GPIO6_4			IOMUX_PAD(0x434, 0x108, 1, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT18__UART5_RTS			IOMUX_PAD(0x434, 0x108, 2, 0x894, 2, 0)
++#define MX53_PAD_CSI0_DAT18__USBOH3_USBH3_DATA_6	IOMUX_PAD(0x434, 0x108, 4, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT18__SDMA_DEBUG_PC_12		IOMUX_PAD(0x434, 0x108, 5, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT18__EMI_EMI_DEBUG_47		IOMUX_PAD(0x434, 0x108, 6, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT18__TPIU_TRACE_15		IOMUX_PAD(0x434, 0x108, 7, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT19__IPU_CSI0_D_19		IOMUX_PAD(0x438, 0x10C, 0, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT19__GPIO6_5			IOMUX_PAD(0x438, 0x10C, 1, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT19__UART5_CTS			IOMUX_PAD(0x438, 0x10C, 2, 0x894, 3, 0)
++#define MX53_PAD_CSI0_DAT19__USBOH3_USBH3_DATA_7	IOMUX_PAD(0x438, 0x10C, 4, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT19__SDMA_DEBUG_PC_13		IOMUX_PAD(0x438, 0x10C, 5, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT19__EMI_EMI_DEBUG_48		IOMUX_PAD(0x438, 0x10C, 6, 0x0, 0, 0)
++#define MX53_PAD_CSI0_DAT19__USBPHY2_BISTOK		IOMUX_PAD(0x438, 0x10C, 7, 0x0, 0, 0)
++#define MX53_PAD_EIM_A25__EMI_WEIM_A_25			IOMUX_PAD(0x458, 0x110, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_A25__GPIO5_2			IOMUX_PAD(0x458, 0x110, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_A25__ECSPI2_RDY			IOMUX_PAD(0x458, 0x110, 2, 0x0, 0, 0)
++#define MX53_PAD_EIM_A25__IPU_DI1_PIN12			IOMUX_PAD(0x458, 0x110, 3, 0x0, 0, 0)
++#define MX53_PAD_EIM_A25__CSPI_SS1			IOMUX_PAD(0x458, 0x110, 4, 0x790, 1, 0)
++#define MX53_PAD_EIM_A25__IPU_DI0_D1_CS			IOMUX_PAD(0x458, 0x110, 6, 0x0, 0, 0)
++#define MX53_PAD_EIM_A25__USBPHY1_BISTOK		IOMUX_PAD(0x458, 0x110, 7, 0x0, 0, 0)
++#define MX53_PAD_EIM_EB2__EMI_WEIM_EB_2			IOMUX_PAD(0x45C, 0x114, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_EB2__GPIO2_30			IOMUX_PAD(0x45C, 0x114, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_EB2__CCM_DI1_EXT_CLK		IOMUX_PAD(0x45C, 0x114, 2, 0x76C, 0, 0)
++#define MX53_PAD_EIM_EB2__IPU_SER_DISP1_CS		IOMUX_PAD(0x45C, 0x114, 3, 0x0, 0, 0)
++#define MX53_PAD_EIM_EB2__ECSPI1_SS0			IOMUX_PAD(0x45C, 0x114, 4, 0x7A8, 3, 0)
++#define MX53_PAD_EIM_EB2__I2C2_SCL			IOMUX_PAD(0x45C, 0x114, 5 | IOMUX_CONFIG_SION, 0x81C, 1, 0)
++#define MX53_PAD_EIM_D16__EMI_WEIM_D_16			IOMUX_PAD(0x460, 0x118, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_D16__GPIO3_16			IOMUX_PAD(0x460, 0x118, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_D16__IPU_DI0_PIN5			IOMUX_PAD(0x460, 0x118, 2, 0x0, 0, 0)
++#define MX53_PAD_EIM_D16__IPU_DISPB1_SER_CLK		IOMUX_PAD(0x460, 0x118, 3, 0x0, 0, 0)
++#define MX53_PAD_EIM_D16__ECSPI1_SCLK			IOMUX_PAD(0x460, 0x118, 4, 0x79C, 3, 0)
++#define MX53_PAD_EIM_D16__I2C2_SDA			IOMUX_PAD(0x460, 0x118, 5, 0x820, 1, 0)
++#define MX53_PAD_EIM_D17__EMI_WEIM_D_17			IOMUX_PAD(0x464, 0x11C, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_D17__GPIO3_17			IOMUX_PAD(0x464, 0x11C, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_D17__IPU_DI0_PIN6			IOMUX_PAD(0x464, 0x11C, 2, 0x0, 0, 0)
++#define MX53_PAD_EIM_D17__IPU_DISPB1_SER_DIN		IOMUX_PAD(0x464, 0x11C, 3, 0x830, 0, 0)
++#define MX53_PAD_EIM_D17__ECSPI1_MISO			IOMUX_PAD(0x464, 0x11C, 4, 0x7A0, 3, 0)
++#define MX53_PAD_EIM_D17__I2C3_SCL			IOMUX_PAD(0x464, 0x11C, 5, 0x824, 0, 0)
++#define MX53_PAD_EIM_D18__EMI_WEIM_D_18			IOMUX_PAD(0x468, 0x120, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_D18__GPIO3_18			IOMUX_PAD(0x468, 0x120, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_D18__IPU_DI0_PIN7			IOMUX_PAD(0x468, 0x120, 2, 0x0, 0, 0)
++#define MX53_PAD_EIM_D18__IPU_DISPB1_SER_DIO		IOMUX_PAD(0x468, 0x120, 3, 0x830, 1, 0)
++#define MX53_PAD_EIM_D18__ECSPI1_MOSI			IOMUX_PAD(0x468, 0x120, 4, 0x7A4, 3, 0)
++#define MX53_PAD_EIM_D18__I2C3_SDA			IOMUX_PAD(0x468, 0x120, 5, 0x828, 0, 0)
++#define MX53_PAD_EIM_D18__IPU_DI1_D0_CS			IOMUX_PAD(0x468, 0x120, 6, 0x0, 0, 0)
++#define MX53_PAD_EIM_D19__EMI_WEIM_D_19			IOMUX_PAD(0x46C, 0x124, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_D19__GPIO3_19			IOMUX_PAD(0x46C, 0x124, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_D19__IPU_DI0_PIN8			IOMUX_PAD(0x46C, 0x124, 2, 0x0, 0, 0)
++#define MX53_PAD_EIM_D19__IPU_DISPB1_SER_RS		IOMUX_PAD(0x46C, 0x124, 3, 0x0, 0, 0)
++#define MX53_PAD_EIM_D19__ECSPI1_SS1			IOMUX_PAD(0x46C, 0x124, 4, 0x7AC, 2, 0)
++#define MX53_PAD_EIM_D19__EPIT1_EPITO			IOMUX_PAD(0x46C, 0x124, 5, 0x0, 0, 0)
++#define MX53_PAD_EIM_D19__UART1_CTS			IOMUX_PAD(0x46C, 0x124, 6, 0x874, 0, 0)
++#define MX53_PAD_EIM_D19__USBOH3_USBH2_OC		IOMUX_PAD(0x46C, 0x124, 7, 0x8A4, 0, 0)
++#define MX53_PAD_EIM_D20__EMI_WEIM_D_20			IOMUX_PAD(0x470, 0x128, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_D20__GPIO3_20			IOMUX_PAD(0x470, 0x128, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_D20__IPU_DI0_PIN16			IOMUX_PAD(0x470, 0x128, 2, 0x0, 0, 0)
++#define MX53_PAD_EIM_D20__IPU_SER_DISP0_CS		IOMUX_PAD(0x470, 0x128, 3, 0x0, 0, 0)
++#define MX53_PAD_EIM_D20__CSPI_SS0			IOMUX_PAD(0x470, 0x128, 4, 0x78C, 1, 0)
++#define MX53_PAD_EIM_D20__EPIT2_EPITO			IOMUX_PAD(0x470, 0x128, 5, 0x0, 0, 0)
++#define MX53_PAD_EIM_D20__UART1_RTS			IOMUX_PAD(0x470, 0x128, 6, 0x874, 1, 0)
++#define MX53_PAD_EIM_D20__USBOH3_USBH2_PWR		IOMUX_PAD(0x470, 0x128, 7, 0x0, 0, 0)
++#define MX53_PAD_EIM_D21__EMI_WEIM_D_21			IOMUX_PAD(0x474, 0x12C, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_D21__GPIO3_21			IOMUX_PAD(0x474, 0x12C, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_D21__IPU_DI0_PIN17			IOMUX_PAD(0x474, 0x12C, 2, 0x0, 0, 0)
++#define MX53_PAD_EIM_D21__IPU_DISPB0_SER_CLK		IOMUX_PAD(0x474, 0x12C, 3, 0x0, 0, 0)
++#define MX53_PAD_EIM_D21__CSPI_SCLK			IOMUX_PAD(0x474, 0x12C, 4, 0x780, 1, 0)
++#define MX53_PAD_EIM_D21__I2C1_SCL			IOMUX_PAD(0x474, 0x12C, 5, 0x814, 1, 0)
++#define MX53_PAD_EIM_D21__USBOH3_USBOTG_OC		IOMUX_PAD(0x474, 0x12C, 6, 0x89C, 1, 0)
++#define MX53_PAD_EIM_D22__EMI_WEIM_D_22			IOMUX_PAD(0x478, 0x130, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_D22__GPIO3_22			IOMUX_PAD(0x478, 0x130, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_D22__IPU_DI0_PIN1			IOMUX_PAD(0x478, 0x130, 2, 0x0, 0, 0)
++#define MX53_PAD_EIM_D22__IPU_DISPB0_SER_DIN		IOMUX_PAD(0x478, 0x130, 3, 0x82C, 0, 0)
++#define MX53_PAD_EIM_D22__CSPI_MISO			IOMUX_PAD(0x478, 0x130, 4, 0x784, 1, 0)
++#define MX53_PAD_EIM_D22__USBOH3_USBOTG_PWR		IOMUX_PAD(0x478, 0x130, 6, 0x0, 0, 0)
++#define MX53_PAD_EIM_D23__EMI_WEIM_D_23			IOMUX_PAD(0x47C, 0x134, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_D23__GPIO3_23			IOMUX_PAD(0x47C, 0x134, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_D23__UART3_CTS			IOMUX_PAD(0x47C, 0x134, 2, 0x884, 0, 0)
++#define MX53_PAD_EIM_D23__UART1_DCD			IOMUX_PAD(0x47C, 0x134, 3, 0x0, 0, 0)
++#define MX53_PAD_EIM_D23__IPU_DI0_D0_CS			IOMUX_PAD(0x47C, 0x134, 4, 0x0, 0, 0)
++#define MX53_PAD_EIM_D23__IPU_DI1_PIN2			IOMUX_PAD(0x47C, 0x134, 5, 0x0, 0, 0)
++#define MX53_PAD_EIM_D23__IPU_CSI1_DATA_EN		IOMUX_PAD(0x47C, 0x134, 6, 0x834, 0, 0)
++#define MX53_PAD_EIM_D23__IPU_DI1_PIN14			IOMUX_PAD(0x47C, 0x134, 7, 0x0, 0, 0)
++#define MX53_PAD_EIM_EB3__EMI_WEIM_EB_3			IOMUX_PAD(0x480, 0x138, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_EB3__GPIO2_31			IOMUX_PAD(0x480, 0x138, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_EB3__UART3_RTS			IOMUX_PAD(0x480, 0x138, 2, 0x884, 1, 0)
++#define MX53_PAD_EIM_EB3__UART1_RI			IOMUX_PAD(0x480, 0x138, 3, 0x0, 0, 0)
++#define MX53_PAD_EIM_EB3__IPU_DI1_PIN3			IOMUX_PAD(0x480, 0x138, 5, 0x0, 0, 0)
++#define MX53_PAD_EIM_EB3__IPU_CSI1_HSYNC		IOMUX_PAD(0x480, 0x138, 6, 0x838, 0, 0)
++#define MX53_PAD_EIM_EB3__IPU_DI1_PIN16			IOMUX_PAD(0x480, 0x138, 7, 0x0, 0, 0)
++#define MX53_PAD_EIM_D24__EMI_WEIM_D_24			IOMUX_PAD(0x484, 0x13C, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_D24__GPIO3_24			IOMUX_PAD(0x484, 0x13C, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_D24__UART3_TXD_MUX			IOMUX_PAD(0x484, 0x13C, 2, 0x888, 0, 0)
++#define MX53_PAD_EIM_D24__ECSPI1_SS2			IOMUX_PAD(0x484, 0x13C, 3, 0x7B0, 1, 0)
++#define MX53_PAD_EIM_D24__CSPI_SS2			IOMUX_PAD(0x484, 0x13C, 4, 0x794, 1, 0)
++#define MX53_PAD_EIM_D24__AUDMUX_AUD5_RXFS		IOMUX_PAD(0x484, 0x13C, 5, 0x754, 1, 0)
++#define MX53_PAD_EIM_D24__ECSPI2_SS2			IOMUX_PAD(0x484, 0x13C, 6, 0x0, 0, 0)
++#define MX53_PAD_EIM_D24__UART1_DTR			IOMUX_PAD(0x484, 0x13C, 7, 0x0, 0, 0)
++#define MX53_PAD_EIM_D25__EMI_WEIM_D_25			IOMUX_PAD(0x488, 0x140, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_D25__GPIO3_25			IOMUX_PAD(0x488, 0x140, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_D25__UART3_RXD_MUX			IOMUX_PAD(0x488, 0x140, 2, 0x888, 1, 0)
++#define MX53_PAD_EIM_D25__ECSPI1_SS3			IOMUX_PAD(0x488, 0x140, 3, 0x7B4, 1, 0)
++#define MX53_PAD_EIM_D25__CSPI_SS3			IOMUX_PAD(0x488, 0x140, 4, 0x798, 1, 0)
++#define MX53_PAD_EIM_D25__AUDMUX_AUD5_RXC		IOMUX_PAD(0x488, 0x140, 5, 0x750, 1, 0)
++#define MX53_PAD_EIM_D25__ECSPI2_SS3			IOMUX_PAD(0x488, 0x140, 6, 0x0, 0, 0)
++#define MX53_PAD_EIM_D25__UART1_DSR			IOMUX_PAD(0x488, 0x140, 7, 0x0, 0, 0)
++#define MX53_PAD_EIM_D26__EMI_WEIM_D_26			IOMUX_PAD(0x48C, 0x144, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_D26__GPIO3_26			IOMUX_PAD(0x48C, 0x144, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_D26__UART2_TXD_MUX			IOMUX_PAD(0x48C, 0x144, 2, 0x880, 0, 0)
++#define MX53_PAD_EIM_D26__FIRI_RXD			IOMUX_PAD(0x48C, 0x144, 3, 0x80C, 0, 0)
++#define MX53_PAD_EIM_D26__IPU_CSI0_D_1			IOMUX_PAD(0x48C, 0x144, 4, 0x0, 0, 0)
++#define MX53_PAD_EIM_D26__IPU_DI1_PIN11			IOMUX_PAD(0x48C, 0x144, 5, 0x0, 0, 0)
++#define MX53_PAD_EIM_D26__IPU_SISG_2			IOMUX_PAD(0x48C, 0x144, 6, 0x0, 0, 0)
++#define MX53_PAD_EIM_D26__IPU_DISP1_DAT_22		IOMUX_PAD(0x48C, 0x144, 7, 0x0, 0, 0)
++#define MX53_PAD_EIM_D27__EMI_WEIM_D_27			IOMUX_PAD(0x490, 0x148, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_D27__GPIO3_27			IOMUX_PAD(0x490, 0x148, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_D27__UART2_RXD_MUX			IOMUX_PAD(0x490, 0x148, 2, 0x880, 1, 0)
++#define MX53_PAD_EIM_D27__FIRI_TXD			IOMUX_PAD(0x490, 0x148, 3, 0x0, 0, 0)
++#define MX53_PAD_EIM_D27__IPU_CSI0_D_0			IOMUX_PAD(0x490, 0x148, 4, 0x0, 0, 0)
++#define MX53_PAD_EIM_D27__IPU_DI1_PIN13			IOMUX_PAD(0x490, 0x148, 5, 0x0, 0, 0)
++#define MX53_PAD_EIM_D27__IPU_SISG_3			IOMUX_PAD(0x490, 0x148, 6, 0x0, 0, 0)
++#define MX53_PAD_EIM_D27__IPU_DISP1_DAT_23		IOMUX_PAD(0x490, 0x148, 7, 0x0, 0, 0)
++#define MX53_PAD_EIM_D28__EMI_WEIM_D_28			IOMUX_PAD(0x494, 0x14C, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_D28__GPIO3_28			IOMUX_PAD(0x494, 0x14C, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_D28__UART2_CTS			IOMUX_PAD(0x494, 0x14C, 2, 0x87C, 0, 0)
++#define MX53_PAD_EIM_D28__IPU_DISPB0_SER_DIO		IOMUX_PAD(0x494, 0x14C, 3, 0x82C, 1, 0)
++#define MX53_PAD_EIM_D28__CSPI_MOSI			IOMUX_PAD(0x494, 0x14C, 4, 0x788, 1, 0)
++#define MX53_PAD_EIM_D28__I2C1_SDA			IOMUX_PAD(0x494, 0x14C, 5, 0x818, 1, 0)
++#define MX53_PAD_EIM_D28__IPU_EXT_TRIG			IOMUX_PAD(0x494, 0x14C, 6, 0x0, 0, 0)
++#define MX53_PAD_EIM_D28__IPU_DI0_PIN13			IOMUX_PAD(0x494, 0x14C, 7, 0x0, 0, 0)
++#define MX53_PAD_EIM_D29__EMI_WEIM_D_29			IOMUX_PAD(0x498, 0x150, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_D29__GPIO3_29			IOMUX_PAD(0x498, 0x150, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_D29__UART2_RTS			IOMUX_PAD(0x498, 0x150, 2, 0x87C, 1, 0)
++#define MX53_PAD_EIM_D29__IPU_DISPB0_SER_RS		IOMUX_PAD(0x498, 0x150, 3, 0x0, 0, 0)
++#define MX53_PAD_EIM_D29__CSPI_SS0			IOMUX_PAD(0x498, 0x150, 4, 0x78C, 2, 0)
++#define MX53_PAD_EIM_D29__IPU_DI1_PIN15			IOMUX_PAD(0x498, 0x150, 5, 0x0, 0, 0)
++#define MX53_PAD_EIM_D29__IPU_CSI1_VSYNC		IOMUX_PAD(0x498, 0x150, 6, 0x83C, 0, 0)
++#define MX53_PAD_EIM_D29__IPU_DI0_PIN14			IOMUX_PAD(0x498, 0x150, 7, 0x0, 0, 0)
++#define MX53_PAD_EIM_D30__EMI_WEIM_D_30			IOMUX_PAD(0x49C, 0x154, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_D30__GPIO3_30			IOMUX_PAD(0x49C, 0x154, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_D30__UART3_CTS			IOMUX_PAD(0x49C, 0x154, 2, 0x884, 2, 0)
++#define MX53_PAD_EIM_D30__IPU_CSI0_D_3			IOMUX_PAD(0x49C, 0x154, 3, 0x0, 0, 0)
++#define MX53_PAD_EIM_D30__IPU_DI0_PIN11			IOMUX_PAD(0x49C, 0x154, 4, 0x0, 0, 0)
++#define MX53_PAD_EIM_D30__IPU_DISP1_DAT_21		IOMUX_PAD(0x49C, 0x154, 5, 0x0, 0, 0)
++#define MX53_PAD_EIM_D30__USBOH3_USBH1_OC		IOMUX_PAD(0x49C, 0x154, 6, 0x8A0, 0, 0)
++#define MX53_PAD_EIM_D30__USBOH3_USBH2_OC		IOMUX_PAD(0x49C, 0x154, 7, 0x8A4, 1, 0)
++#define MX53_PAD_EIM_D31__EMI_WEIM_D_31			IOMUX_PAD(0x4A0, 0x158, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_D31__GPIO3_31			IOMUX_PAD(0x4A0, 0x158, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_D31__UART3_RTS			IOMUX_PAD(0x4A0, 0x158, 2, 0x884, 3, 0)
++#define MX53_PAD_EIM_D31__IPU_CSI0_D_2			IOMUX_PAD(0x4A0, 0x158, 3, 0x0, 0, 0)
++#define MX53_PAD_EIM_D31__IPU_DI0_PIN12			IOMUX_PAD(0x4A0, 0x158, 4, 0x0, 0, 0)
++#define MX53_PAD_EIM_D31__IPU_DISP1_DAT_20		IOMUX_PAD(0x4A0, 0x158, 5, 0x0, 0, 0)
++#define MX53_PAD_EIM_D31__USBOH3_USBH1_PWR		IOMUX_PAD(0x4A0, 0x158, 6, 0x0, 0, 0)
++#define MX53_PAD_EIM_D31__USBOH3_USBH2_PWR		IOMUX_PAD(0x4A0, 0x158, 7, 0x0, 0, 0)
++#define MX53_PAD_EIM_A24__EMI_WEIM_A_24			IOMUX_PAD(0x4A8, 0x15C, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_A24__GPIO5_4			IOMUX_PAD(0x4A8, 0x15C, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_A24__IPU_DISP1_DAT_19		IOMUX_PAD(0x4A8, 0x15C, 2, 0x0, 0, 0)
++#define MX53_PAD_EIM_A24__IPU_CSI1_D_19			IOMUX_PAD(0x4A8, 0x15C, 3, 0x0, 0, 0)
++#define MX53_PAD_EIM_A24__IPU_SISG_2			IOMUX_PAD(0x4A8, 0x15C, 6, 0x0, 0, 0)
++#define MX53_PAD_EIM_A24__USBPHY2_BVALID		IOMUX_PAD(0x4A8, 0x15C, 7, 0x0, 0, 0)
++#define MX53_PAD_EIM_A23__EMI_WEIM_A_23			IOMUX_PAD(0x4AC, 0x160, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_A23__GPIO6_6			IOMUX_PAD(0x4AC, 0x160, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_A23__IPU_DISP1_DAT_18		IOMUX_PAD(0x4AC, 0x160, 2, 0x0, 0, 0)
++#define MX53_PAD_EIM_A23__IPU_CSI1_D_18			IOMUX_PAD(0x4AC, 0x160, 3, 0x0, 0, 0)
++#define MX53_PAD_EIM_A23__IPU_SISG_3			IOMUX_PAD(0x4AC, 0x160, 6, 0x0, 0, 0)
++#define MX53_PAD_EIM_A23__USBPHY2_ENDSESSION		IOMUX_PAD(0x4AC, 0x160, 7, 0x0, 0, 0)
++#define MX53_PAD_EIM_A22__EMI_WEIM_A_22			IOMUX_PAD(0x4B0, 0x164, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_A22__GPIO2_16			IOMUX_PAD(0x4B0, 0x164, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_A22__IPU_DISP1_DAT_17		IOMUX_PAD(0x4B0, 0x164, 2, 0x0, 0, 0)
++#define MX53_PAD_EIM_A22__IPU_CSI1_D_17			IOMUX_PAD(0x4B0, 0x164, 3, 0x0, 0, 0)
++#define MX53_PAD_EIM_A22__SRC_BT_CFG1_7			IOMUX_PAD(0x4B0, 0x164, 7, 0x0, 0, 0)
++#define MX53_PAD_EIM_A21__EMI_WEIM_A_21			IOMUX_PAD(0x4B4, 0x168, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_A21__GPIO2_17			IOMUX_PAD(0x4B4, 0x168, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_A21__IPU_DISP1_DAT_16		IOMUX_PAD(0x4B4, 0x168, 2, 0x0, 0, 0)
++#define MX53_PAD_EIM_A21__IPU_CSI1_D_16			IOMUX_PAD(0x4B4, 0x168, 3, 0x0, 0, 0)
++#define MX53_PAD_EIM_A21__SRC_BT_CFG1_6			IOMUX_PAD(0x4B4, 0x168, 7, 0x0, 0, 0)
++#define MX53_PAD_EIM_A20__EMI_WEIM_A_20			IOMUX_PAD(0x4B8, 0x16C, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_A20__GPIO2_18			IOMUX_PAD(0x4B8, 0x16C, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_A20__IPU_DISP1_DAT_15		IOMUX_PAD(0x4B8, 0x16C, 2, 0x0, 0, 0)
++#define MX53_PAD_EIM_A20__IPU_CSI1_D_15			IOMUX_PAD(0x4B8, 0x16C, 3, 0x0, 0, 0)
++#define MX53_PAD_EIM_A20__SRC_BT_CFG1_5			IOMUX_PAD(0x4B8, 0x16C, 7, 0x0, 0, 0)
++#define MX53_PAD_EIM_A19__EMI_WEIM_A_19			IOMUX_PAD(0x4BC, 0x170, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_A19__GPIO2_19			IOMUX_PAD(0x4BC, 0x170, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_A19__IPU_DISP1_DAT_14		IOMUX_PAD(0x4BC, 0x170, 2, 0x0, 0, 0)
++#define MX53_PAD_EIM_A19__IPU_CSI1_D_14			IOMUX_PAD(0x4BC, 0x170, 3, 0x0, 0, 0)
++#define MX53_PAD_EIM_A19__SRC_BT_CFG1_4			IOMUX_PAD(0x4BC, 0x170, 7, 0x0, 0, 0)
++#define MX53_PAD_EIM_A18__EMI_WEIM_A_18			IOMUX_PAD(0x4C0, 0x174, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_A18__GPIO2_20			IOMUX_PAD(0x4C0, 0x174, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_A18__IPU_DISP1_DAT_13		IOMUX_PAD(0x4C0, 0x174, 2, 0x0, 0, 0)
++#define MX53_PAD_EIM_A18__IPU_CSI1_D_13			IOMUX_PAD(0x4C0, 0x174, 3, 0x0, 0, 0)
++#define MX53_PAD_EIM_A18__SRC_BT_CFG1_3			IOMUX_PAD(0x4C0, 0x174, 7, 0x0, 0, 0)
++#define MX53_PAD_EIM_A17__EMI_WEIM_A_17			IOMUX_PAD(0x4C4, 0x178, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_A17__GPIO2_21			IOMUX_PAD(0x4C4, 0x178, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_A17__IPU_DISP1_DAT_12		IOMUX_PAD(0x4C4, 0x178, 2, 0x0, 0, 0)
++#define MX53_PAD_EIM_A17__IPU_CSI1_D_12			IOMUX_PAD(0x4C4, 0x178, 3, 0x0, 0, 0)
++#define MX53_PAD_EIM_A17__SRC_BT_CFG1_2			IOMUX_PAD(0x4C4, 0x178, 7, 0x0, 0, 0)
++#define MX53_PAD_EIM_A16__EMI_WEIM_A_16			IOMUX_PAD(0x4C8, 0x17C, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_A16__GPIO2_22			IOMUX_PAD(0x4C8, 0x17C, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_A16__IPU_DI1_DISP_CLK		IOMUX_PAD(0x4C8, 0x17C, 2, 0x0, 0, 0)
++#define MX53_PAD_EIM_A16__IPU_CSI1_PIXCLK		IOMUX_PAD(0x4C8, 0x17C, 3, 0x0, 0, 0)
++#define MX53_PAD_EIM_A16__SRC_BT_CFG1_1			IOMUX_PAD(0x4C8, 0x17C, 7, 0x0, 0, 0)
++#define MX53_PAD_EIM_CS0__EMI_WEIM_CS_0			IOMUX_PAD(0x4CC, 0x180, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_CS0__GPIO2_23			IOMUX_PAD(0x4CC, 0x180, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_CS0__ECSPI2_SCLK			IOMUX_PAD(0x4CC, 0x180, 2, 0x7B8, 2, 0)
++#define MX53_PAD_EIM_CS0__IPU_DI1_PIN5			IOMUX_PAD(0x4CC, 0x180, 3, 0x0, 0, 0)
++#define MX53_PAD_EIM_CS1__EMI_WEIM_CS_1			IOMUX_PAD(0x4D0, 0x184, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_CS1__GPIO2_24			IOMUX_PAD(0x4D0, 0x184, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_CS1__ECSPI2_MOSI			IOMUX_PAD(0x4D0, 0x184, 2, 0x7C0, 2, 0)
++#define MX53_PAD_EIM_CS1__IPU_DI1_PIN6			IOMUX_PAD(0x4D0, 0x184, 3, 0x0, 0, 0)
++#define MX53_PAD_EIM_OE__EMI_WEIM_OE			IOMUX_PAD(0x4D4, 0x188, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_OE__GPIO2_25			IOMUX_PAD(0x4D4, 0x188, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_OE__ECSPI2_MISO			IOMUX_PAD(0x4D4, 0x188, 2, 0x7BC, 2, 0)
++#define MX53_PAD_EIM_OE__IPU_DI1_PIN7			IOMUX_PAD(0x4D4, 0x188, 3, 0x0, 0, 0)
++#define MX53_PAD_EIM_OE__USBPHY2_IDDIG			IOMUX_PAD(0x4D4, 0x188, 7, 0x0, 0, 0)
++#define MX53_PAD_EIM_RW__EMI_WEIM_RW			IOMUX_PAD(0x4D8, 0x18C, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_RW__GPIO2_26			IOMUX_PAD(0x4D8, 0x18C, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_RW__ECSPI2_SS0			IOMUX_PAD(0x4D8, 0x18C, 2, 0x7C4, 2, 0)
++#define MX53_PAD_EIM_RW__IPU_DI1_PIN8			IOMUX_PAD(0x4D8, 0x18C, 3, 0x0, 0, 0)
++#define MX53_PAD_EIM_RW__USBPHY2_HOSTDISCONNECT		IOMUX_PAD(0x4D8, 0x18C, 7, 0x0, 0, 0)
++#define MX53_PAD_EIM_LBA__EMI_WEIM_LBA			IOMUX_PAD(0x4DC, 0x190, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_LBA__GPIO2_27			IOMUX_PAD(0x4DC, 0x190, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_LBA__ECSPI2_SS1			IOMUX_PAD(0x4DC, 0x190, 2, 0x7C8, 1, 0)
++#define MX53_PAD_EIM_LBA__IPU_DI1_PIN17			IOMUX_PAD(0x4DC, 0x190, 3, 0x0, 0, 0)
++#define MX53_PAD_EIM_LBA__SRC_BT_CFG1_0			IOMUX_PAD(0x4DC, 0x190, 7, 0x0, 0, 0)
++#define MX53_PAD_EIM_EB0__EMI_WEIM_EB_0			IOMUX_PAD(0x4E4, 0x194, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_EB0__GPIO2_28			IOMUX_PAD(0x4E4, 0x194, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_EB0__IPU_DISP1_DAT_11		IOMUX_PAD(0x4E4, 0x194, 3, 0x0, 0, 0)
++#define MX53_PAD_EIM_EB0__IPU_CSI1_D_11			IOMUX_PAD(0x4E4, 0x194, 4, 0x0, 0, 0)
++#define MX53_PAD_EIM_EB0__GPC_PMIC_RDY			IOMUX_PAD(0x4E4, 0x194, 5, 0x810, 0, 0)
++#define MX53_PAD_EIM_EB0__SRC_BT_CFG2_7			IOMUX_PAD(0x4E4, 0x194, 7, 0x0, 0, 0)
++#define MX53_PAD_EIM_EB1__EMI_WEIM_EB_1			IOMUX_PAD(0x4E8, 0x198, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_EB1__GPIO2_29			IOMUX_PAD(0x4E8, 0x198, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_EB1__IPU_DISP1_DAT_10		IOMUX_PAD(0x4E8, 0x198, 3, 0x0, 0, 0)
++#define MX53_PAD_EIM_EB1__IPU_CSI1_D_10			IOMUX_PAD(0x4E8, 0x198, 4, 0x0, 0, 0)
++#define MX53_PAD_EIM_EB1__SRC_BT_CFG2_6			IOMUX_PAD(0x4E8, 0x198, 7, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA0__EMI_NAND_WEIM_DA_0		IOMUX_PAD(0x4EC, 0x19C, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA0__GPIO3_0			IOMUX_PAD(0x4EC, 0x19C, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA0__IPU_DISP1_DAT_9		IOMUX_PAD(0x4EC, 0x19C, 3, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA0__IPU_CSI1_D_9			IOMUX_PAD(0x4EC, 0x19C, 4, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA0__SRC_BT_CFG2_5			IOMUX_PAD(0x4EC, 0x19C, 7, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA1__EMI_NAND_WEIM_DA_1		IOMUX_PAD(0x4F0, 0x1A0, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA1__GPIO3_1			IOMUX_PAD(0x4F0, 0x1A0, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA1__IPU_DISP1_DAT_8		IOMUX_PAD(0x4F0, 0x1A0, 3, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA1__IPU_CSI1_D_8			IOMUX_PAD(0x4F0, 0x1A0, 4, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA1__SRC_BT_CFG2_4			IOMUX_PAD(0x4F0, 0x1A0, 7, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA2__EMI_NAND_WEIM_DA_2		IOMUX_PAD(0x4F4, 0x1A4, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA2__GPIO3_2			IOMUX_PAD(0x4F4, 0x1A4, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA2__IPU_DISP1_DAT_7		IOMUX_PAD(0x4F4, 0x1A4, 3, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA2__IPU_CSI1_D_7			IOMUX_PAD(0x4F4, 0x1A4, 4, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA2__SRC_BT_CFG2_3			IOMUX_PAD(0x4F4, 0x1A4, 7, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA3__EMI_NAND_WEIM_DA_3		IOMUX_PAD(0x4F8, 0x1A8, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA3__GPIO3_3			IOMUX_PAD(0x4F8, 0x1A8, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA3__IPU_DISP1_DAT_6		IOMUX_PAD(0x4F8, 0x1A8, 3, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA3__IPU_CSI1_D_6			IOMUX_PAD(0x4F8, 0x1A8, 4, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA3__SRC_BT_CFG2_2			IOMUX_PAD(0x4F8, 0x1A8, 7, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA4__EMI_NAND_WEIM_DA_4		IOMUX_PAD(0x4FC, 0x1AC, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA4__GPIO3_4			IOMUX_PAD(0x4FC, 0x1AC, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA4__IPU_DISP1_DAT_5		IOMUX_PAD(0x4FC, 0x1AC, 3, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA4__IPU_CSI1_D_5			IOMUX_PAD(0x4FC, 0x1AC, 4, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA4__SRC_BT_CFG3_7			IOMUX_PAD(0x4FC, 0x1AC, 7, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA5__EMI_NAND_WEIM_DA_5		IOMUX_PAD(0x500, 0x1B0, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA5__GPIO3_5			IOMUX_PAD(0x500, 0x1B0, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA5__IPU_DISP1_DAT_4		IOMUX_PAD(0x500, 0x1B0, 3, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA5__IPU_CSI1_D_4			IOMUX_PAD(0x500, 0x1B0, 4, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA5__SRC_BT_CFG3_6			IOMUX_PAD(0x500, 0x1B0, 17, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA6__EMI_NAND_WEIM_DA_6		IOMUX_PAD(0x504, 0x1B4, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA6__GPIO3_6			IOMUX_PAD(0x504, 0x1B4, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA6__IPU_DISP1_DAT_3		IOMUX_PAD(0x504, 0x1B4, 3, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA6__IPU_CSI1_D_3			IOMUX_PAD(0x504, 0x1B4, 4, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA6__SRC_BT_CFG3_5			IOMUX_PAD(0x504, 0x1B4, 7, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA7__EMI_NAND_WEIM_DA_7		IOMUX_PAD(0x508, 0x1B8, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA7__GPIO3_7			IOMUX_PAD(0x508, 0x1B8, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA7__IPU_DISP1_DAT_2		IOMUX_PAD(0x508, 0x1B8, 3, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA7__IPU_CSI1_D_2			IOMUX_PAD(0x508, 0x1B8, 4, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA7__SRC_BT_CFG3_4			IOMUX_PAD(0x508, 0x1B8, 7, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA8__EMI_NAND_WEIM_DA_8		IOMUX_PAD(0x50C, 0x1BC, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA8__GPIO3_8			IOMUX_PAD(0x50C, 0x1BC, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA8__IPU_DISP1_DAT_1		IOMUX_PAD(0x50C, 0x1BC, 3, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA8__IPU_CSI1_D_1			IOMUX_PAD(0x50C, 0x1BC, 4, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA8__SRC_BT_CFG3_3			IOMUX_PAD(0x50C, 0x1BC, 7, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA9__EMI_NAND_WEIM_DA_9		IOMUX_PAD(0x510, 0x1C0, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA9__GPIO3_9			IOMUX_PAD(0x510, 0x1C0, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA9__IPU_DISP1_DAT_0		IOMUX_PAD(0x510, 0x1C0, 3, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA9__IPU_CSI1_D_0			IOMUX_PAD(0x510, 0x1C0, 4, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA9__SRC_BT_CFG3_2			IOMUX_PAD(0x510, 0x1C0, 7, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA10__EMI_NAND_WEIM_DA_10		IOMUX_PAD(0x514, 0x1C4, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA10__GPIO3_10			IOMUX_PAD(0x514, 0x1C4, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA10__IPU_DI1_PIN15		IOMUX_PAD(0x514, 0x1C4, 3, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA10__IPU_CSI1_DATA_EN		IOMUX_PAD(0x514, 0x1C4, 4, 0x834, 1, 0)
++#define MX53_PAD_EIM_DA10__SRC_BT_CFG3_1		IOMUX_PAD(0x514, 0x1C4, 7, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA11__EMI_NAND_WEIM_DA_11		IOMUX_PAD(0x518, 0x1C8, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA11__GPIO3_11			IOMUX_PAD(0x518, 0x1C8, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA11__IPU_DI1_PIN2			IOMUX_PAD(0x518, 0x1C8, 3, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA11__IPU_CSI1_HSYNC		IOMUX_PAD(0x518, 0x1C8, 4, 0x838, 1, 0)
++#define MX53_PAD_EIM_DA12__EMI_NAND_WEIM_DA_12		IOMUX_PAD(0x51C, 0x1CC, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA12__GPIO3_12			IOMUX_PAD(0x51C, 0x1CC, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA12__IPU_DI1_PIN3			IOMUX_PAD(0x51C, 0x1CC, 3, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA12__IPU_CSI1_VSYNC		IOMUX_PAD(0x51C, 0x1CC, 4, 0x83C, 1, 0)
++#define MX53_PAD_EIM_DA13__EMI_NAND_WEIM_DA_13		IOMUX_PAD(0x520, 0x1D0, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA13__GPIO3_13			IOMUX_PAD(0x520, 0x1D0, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA13__IPU_DI1_D0_CS		IOMUX_PAD(0x520, 0x1D0, 3, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA13__CCM_DI1_EXT_CLK		IOMUX_PAD(0x520, 0x1D0, 4, 0x76C, 1, 0)
++#define MX53_PAD_EIM_DA14__EMI_NAND_WEIM_DA_14		IOMUX_PAD(0x524, 0x1D4, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA14__GPIO3_14			IOMUX_PAD(0x524, 0x1D4, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA14__IPU_DI1_D1_CS		IOMUX_PAD(0x524, 0x1D4, 3, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA14__CCM_DI0_EXT_CLK		IOMUX_PAD(0x524, 0x1D4, 4, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA15__EMI_NAND_WEIM_DA_15		IOMUX_PAD(0x528, 0x1D8, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA15__GPIO3_15			IOMUX_PAD(0x528, 0x1D8, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA15__IPU_DI1_PIN1			IOMUX_PAD(0x528, 0x1D8, 3, 0x0, 0, 0)
++#define MX53_PAD_EIM_DA15__IPU_DI1_PIN4			IOMUX_PAD(0x528, 0x1D8, 4, 0x0, 0, 0)
++#define MX53_PAD_NANDF_WE_B__EMI_NANDF_WE_B		IOMUX_PAD(0x52C, 0x1DC, 0, 0x0, 0, 0)
++#define MX53_PAD_NANDF_WE_B__GPIO6_12			IOMUX_PAD(0x52C, 0x1DC, 1, 0x0, 0, 0)
++#define MX53_PAD_NANDF_RE_B__EMI_NANDF_RE_B		IOMUX_PAD(0x530, 0x1E0, 0, 0x0, 0, 0)
++#define MX53_PAD_NANDF_RE_B__GPIO6_13			IOMUX_PAD(0x530, 0x1E0, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_WAIT__EMI_WEIM_WAIT		IOMUX_PAD(0x534, 0x1E4, 0, 0x0, 0, 0)
++#define MX53_PAD_EIM_WAIT__GPIO5_0			IOMUX_PAD(0x534, 0x1E4, 1, 0x0, 0, 0)
++#define MX53_PAD_EIM_WAIT__EMI_WEIM_DTACK_B		IOMUX_PAD(0x534, 0x1E4, 2, 0x0, 0, 0)
++#define MX53_PAD_LVDS1_TX3_P__GPIO6_22			IOMUX_PAD(NON_PAD_I, 0x1EC, 0, 0x0, 0, 0)
++#define MX53_PAD_LVDS1_TX3_P__LDB_LVDS1_TX3		IOMUX_PAD(NON_PAD_I, 0x1EC, 1, 0x0, 0, 0)
++#define MX53_PAD_LVDS1_TX2_P__GPIO6_24			IOMUX_PAD(NON_PAD_I, 0x1F0, 0, 0x0, 0, 0)
++#define MX53_PAD_LVDS1_TX2_P__LDB_LVDS1_TX2		IOMUX_PAD(NON_PAD_I, 0x1F0, 1, 0x0, 0, 0)
++#define MX53_PAD_LVDS1_CLK_P__GPIO6_26			IOMUX_PAD(NON_PAD_I, 0x1F4, 0, 0x0, 0, 0)
++#define MX53_PAD_LVDS1_CLK_P__LDB_LVDS1_CLK		IOMUX_PAD(NON_PAD_I, 0x1F4, 1, 0x0, 0, 0)
++#define MX53_PAD_LVDS1_TX1_P__GPIO6_28			IOMUX_PAD(NON_PAD_I, 0x1F8, 0, 0x0, 0, 0)
++#define MX53_PAD_LVDS1_TX1_P__LDB_LVDS1_TX1		IOMUX_PAD(NON_PAD_I, 0x1F8, 1, 0x0, 0, 0)
++#define MX53_PAD_LVDS1_TX0_P__GPIO6_30			IOMUX_PAD(NON_PAD_I, 0x1FC, 0, 0x0, 0, 0)
++#define MX53_PAD_LVDS1_TX0_P__LDB_LVDS1_TX0		IOMUX_PAD(NON_PAD_I, 0x1FC, 1, 0x0, 0, 0)
++#define MX53_PAD_LVDS0_TX3_P__GPIO7_22			IOMUX_PAD(NON_PAD_I, 0x200, 0, 0x0, 0, 0)
++#define MX53_PAD_LVDS0_TX3_P__LDB_LVDS0_TX3		IOMUX_PAD(NON_PAD_I, 0x200, 1, 0x0, 0, 0)
++#define MX53_PAD_LVDS0_CLK_P__GPIO7_24			IOMUX_PAD(NON_PAD_I, 0x204, 0, 0x0, 0, 0)
++#define MX53_PAD_LVDS0_CLK_P__LDB_LVDS0_CLK		IOMUX_PAD(NON_PAD_I, 0x204, 1, 0x0, 0, 0)
++#define MX53_PAD_LVDS0_TX2_P__GPIO7_26			IOMUX_PAD(NON_PAD_I, 0x208, 0, 0x0, 0, 0)
++#define MX53_PAD_LVDS0_TX2_P__LDB_LVDS0_TX2		IOMUX_PAD(NON_PAD_I, 0x208, 1, 0x0, 0, 0)
++#define MX53_PAD_LVDS0_TX1_P__GPIO7_28			IOMUX_PAD(NON_PAD_I, 0x20C, 0, 0x0, 0, 0)
++#define MX53_PAD_LVDS0_TX1_P__LDB_LVDS0_TX1		IOMUX_PAD(NON_PAD_I, 0x20C, 1, 0x0, 0, 0)
++#define MX53_PAD_LVDS0_TX0_P__GPIO7_30			IOMUX_PAD(NON_PAD_I, 0x210, 0, 0x0, 0, 0)
++#define MX53_PAD_LVDS0_TX0_P__LDB_LVDS0_TX0		IOMUX_PAD(NON_PAD_I, 0x210, 1, 0x0, 0, 0)
++#define MX53_PAD_GPIO_10__GPIO4_0			IOMUX_PAD(0x540, 0x214, 0, 0x0, 0, 0)
++#define MX53_PAD_GPIO_10__OSC32k_32K_OUT		IOMUX_PAD(0x540, 0x214, 1, 0x0, 0, 0)
++#define MX53_PAD_GPIO_11__GPIO4_1			IOMUX_PAD(0x544, 0x218, 0, 0x0, 0, 0)
++#define MX53_PAD_GPIO_12__GPIO4_2			IOMUX_PAD(0x548, 0x21C, 0, 0x0, 0, 0)
++#define MX53_PAD_GPIO_13__GPIO4_3			IOMUX_PAD(0x54C, 0x220, 0, 0x0, 0, 0)
++#define MX53_PAD_GPIO_14__GPIO4_4			IOMUX_PAD(0x550, 0x224, 0, 0x0, 0, 0)
++#define MX53_PAD_NANDF_CLE__EMI_NANDF_CLE		IOMUX_PAD(0x5A0, 0x228, 0, 0x0, 0, 0)
++#define MX53_PAD_NANDF_CLE__GPIO6_7			IOMUX_PAD(0x5A0, 0x228, 1, 0x0, 0, 0)
++#define MX53_PAD_NANDF_CLE__USBPHY1_VSTATUS_0		IOMUX_PAD(0x5A0, 0x228, 7, 0x0, 0, 0)
++#define MX53_PAD_NANDF_ALE__EMI_NANDF_ALE		IOMUX_PAD(0x5A4, 0x22C, 0, 0x0, 0, 0)
++#define MX53_PAD_NANDF_ALE__GPIO6_8			IOMUX_PAD(0x5A4, 0x22C, 1, 0x0, 0, 0)
++#define MX53_PAD_NANDF_ALE__USBPHY1_VSTATUS_1		IOMUX_PAD(0x5A4, 0x22C, 7, 0x0, 0, 0)
++#define MX53_PAD_NANDF_WP_B__EMI_NANDF_WP_B		IOMUX_PAD(0x5A8, 0x230, 0, 0x0, 0, 0)
++#define MX53_PAD_NANDF_WP_B__GPIO6_9			IOMUX_PAD(0x5A8, 0x230, 1, 0x0, 0, 0)
++#define MX53_PAD_NANDF_WP_B__USBPHY1_VSTATUS_2		IOMUX_PAD(0x5A8, 0x230, 7, 0x0, 0, 0)
++#define MX53_PAD_NANDF_RB0__EMI_NANDF_RB_0		IOMUX_PAD(0x5AC, 0x234, 0, 0x0, 0, 0)
++#define MX53_PAD_NANDF_RB0__GPIO6_10			IOMUX_PAD(0x5AC, 0x234, 1, 0x0, 0, 0)
++#define MX53_PAD_NANDF_RB0__USBPHY1_VSTATUS_3		IOMUX_PAD(0x5AC, 0x234, 7, 0x0, 0, 0)
++#define MX53_PAD_NANDF_CS0__EMI_NANDF_CS_0		IOMUX_PAD(0x5B0, 0x238, 0, 0x0, 0, 0)
++#define MX53_PAD_NANDF_CS0__GPIO6_11			IOMUX_PAD(0x5B0, 0x238, 1, 0x0, 0, 0)
++#define MX53_PAD_NANDF_CS0__USBPHY1_VSTATUS_4		IOMUX_PAD(0x5B0, 0x238, 7, 0x0, 0, 0)
++#define MX53_PAD_NANDF_CS1__EMI_NANDF_CS_1		IOMUX_PAD(0x5B4, 0x23C, 0, 0x0, 0, 0)
++#define MX53_PAD_NANDF_CS1__GPIO6_14			IOMUX_PAD(0x5B4, 0x23C, 1, 0x0, 0, 0)
++#define MX53_PAD_NANDF_CS1__MLB_MLBCLK			IOMUX_PAD(0x5B4, 0x23C, 6, 0x858, 0, 0)
++#define MX53_PAD_NANDF_CS1__USBPHY1_VSTATUS_5		IOMUX_PAD(0x5B4, 0x23C, 7, 0x0, 0, 0)
++#define MX53_PAD_NANDF_CS2__EMI_NANDF_CS_2		IOMUX_PAD(0x5B8, 0x240, 0, 0x0, 0, 0)
++#define MX53_PAD_NANDF_CS2__GPIO6_15			IOMUX_PAD(0x5B8, 0x240, 1, 0x0, 0, 0)
++#define MX53_PAD_NANDF_CS2__IPU_SISG_0			IOMUX_PAD(0x5B8, 0x240, 2, 0x0, 0, 0)
++#define MX53_PAD_NANDF_CS2__ESAI1_TX0			IOMUX_PAD(0x5B8, 0x240, 3, 0x7E4, 0, 0)
++#define MX53_PAD_NANDF_CS2__EMI_WEIM_CRE		IOMUX_PAD(0x5B8, 0x240, 4, 0x0, 0, 0)
++#define MX53_PAD_NANDF_CS2__CCM_CSI0_MCLK		IOMUX_PAD(0x5B8, 0x240, 5, 0x0, 0, 0)
++#define MX53_PAD_NANDF_CS2__MLB_MLBSIG			IOMUX_PAD(0x5B8, 0x240, 6, 0x860, 0, 0)
++#define MX53_PAD_NANDF_CS2__USBPHY1_VSTATUS_6		IOMUX_PAD(0x5B8, 0x240, 7, 0x0, 0, 0)
++#define MX53_PAD_NANDF_CS3__EMI_NANDF_CS_3		IOMUX_PAD(0x5BC, 0x244, 0, 0x0, 0, 0)
++#define MX53_PAD_NANDF_CS3__GPIO6_16			IOMUX_PAD(0x5BC, 0x244, 1, 0x0, 0, 0)
++#define MX53_PAD_NANDF_CS3__IPU_SISG_1			IOMUX_PAD(0x5BC, 0x244, 2, 0x0, 0, 0)
++#define MX53_PAD_NANDF_CS3__ESAI1_TX1			IOMUX_PAD(0x5BC, 0x244, 3, 0x7E8, 0, 0)
++#define MX53_PAD_NANDF_CS3__EMI_WEIM_A_26		IOMUX_PAD(0x5BC, 0x244, 4, 0x0, 0, 0)
++#define MX53_PAD_NANDF_CS3__MLB_MLBDAT			IOMUX_PAD(0x5BC, 0x244, 6, 0x85C, 0, 0)
++#define MX53_PAD_NANDF_CS3__USBPHY1_VSTATUS_7		IOMUX_PAD(0x5BC, 0x244, 7, 0x0, 0, 0)
++#define MX53_PAD_FEC_MDIO__FEC_MDIO			IOMUX_PAD(0x5C4, 0x248, 0, 0x804, 1, 0)
++#define MX53_PAD_FEC_MDIO__GPIO1_22			IOMUX_PAD(0x5C4, 0x248, 1, 0x0, 0, 0)
++#define MX53_PAD_FEC_MDIO__ESAI1_SCKR			IOMUX_PAD(0x5C4, 0x248, 2, 0x7DC, 0, 0)
++#define MX53_PAD_FEC_MDIO__FEC_COL			IOMUX_PAD(0x5C4, 0x248, 3, 0x800, 1, 0)
++#define MX53_PAD_FEC_MDIO__RTC_CE_RTC_PS2		IOMUX_PAD(0x5C4, 0x248, 4, 0x0, 0, 0)
++#define MX53_PAD_FEC_MDIO__SDMA_DEBUG_BUS_DEVICE_3	IOMUX_PAD(0x5C4, 0x248, 5, 0x0, 0, 0)
++#define MX53_PAD_FEC_MDIO__EMI_EMI_DEBUG_49		IOMUX_PAD(0x5C4, 0x248, 6, 0x0, 0, 0)
++#define MX53_PAD_FEC_REF_CLK__FEC_TX_CLK		IOMUX_PAD(0x5C8, 0x24C, 0, 0x0, 0, 0)
++#define MX53_PAD_FEC_REF_CLK__GPIO1_23			IOMUX_PAD(0x5C8, 0x24C, 1, 0x0, 0, 0)
++#define MX53_PAD_FEC_REF_CLK__ESAI1_FSR			IOMUX_PAD(0x5C8, 0x24C, 2, 0x7CC, 0, 0)
++#define MX53_PAD_FEC_REF_CLK__SDMA_DEBUG_BUS_DEVICE_4	IOMUX_PAD(0x5C8, 0x24C, 5, 0x0, 0, 0)
++#define MX53_PAD_FEC_REF_CLK__EMI_EMI_DEBUG_50		IOMUX_PAD(0x5C8, 0x24C, 6, 0x0, 0, 0)
++#define MX53_PAD_FEC_RX_ER__FEC_RX_ER			IOMUX_PAD(0x5CC, 0x250, 0, 0x0, 0, 0)
++#define MX53_PAD_FEC_RX_ER__GPIO1_24			IOMUX_PAD(0x5CC, 0x250, 1, 0x0, 0, 0)
++#define MX53_PAD_FEC_RX_ER__ESAI1_HCKR			IOMUX_PAD(0x5CC, 0x250, 2, 0x7D4, 0, 0)
++#define MX53_PAD_FEC_RX_ER__FEC_RX_CLK			IOMUX_PAD(0x5CC, 0x250, 3, 0x808, 1, 0)
++#define MX53_PAD_FEC_RX_ER__RTC_CE_RTC_PS3		IOMUX_PAD(0x5CC, 0x250, 4, 0x0, 0, 0)
++#define MX53_PAD_FEC_CRS_DV__FEC_RX_DV			IOMUX_PAD(0x5D0, 0x254, 0, 0x0, 0, 0)
++#define MX53_PAD_FEC_CRS_DV__GPIO1_25			IOMUX_PAD(0x5D0, 0x254, 1, 0x0, 0, 0)
++#define MX53_PAD_FEC_CRS_DV__ESAI1_SCKT			IOMUX_PAD(0x5D0, 0x254, 2, 0x7E0, 0, 0)
++#define MX53_PAD_FEC_RXD1__FEC_RDATA_1			IOMUX_PAD(0x5D4, 0x258, 0, 0x0, 0, 0)
++#define MX53_PAD_FEC_RXD1__GPIO1_26			IOMUX_PAD(0x5D4, 0x258, 1, 0x0, 0, 0)
++#define MX53_PAD_FEC_RXD1__ESAI1_FST			IOMUX_PAD(0x5D4, 0x258, 2, 0x7D0, 0, 0)
++#define MX53_PAD_FEC_RXD1__MLB_MLBSIG			IOMUX_PAD(0x5D4, 0x258, 3, 0x860, 1, 0)
++#define MX53_PAD_FEC_RXD1__RTC_CE_RTC_PS1		IOMUX_PAD(0x5D4, 0x258, 4, 0x0, 0, 0)
++#define MX53_PAD_FEC_RXD0__FEC_RDATA_0			IOMUX_PAD(0x5D8, 0x25C, 0, 0x0, 0, 0)
++#define MX53_PAD_FEC_RXD0__GPIO1_27			IOMUX_PAD(0x5D8, 0x25C, 1, 0x0, 0, 0)
++#define MX53_PAD_FEC_RXD0__ESAI1_HCKT			IOMUX_PAD(0x5D8, 0x25C, 2, 0x7D8, 0, 0)
++#define MX53_PAD_FEC_RXD0__OSC32k_32K_OUT		IOMUX_PAD(0x5D8, 0x25C, 3, 0x0, 0, 0)
++#define MX53_PAD_FEC_TX_EN__FEC_TX_EN			IOMUX_PAD(0x5DC, 0x260, 0, 0x0, 0, 0)
++#define MX53_PAD_FEC_TX_EN__GPIO1_28			IOMUX_PAD(0x5DC, 0x260, 1, 0x0, 0, 0)
++#define MX53_PAD_FEC_TX_EN__ESAI1_TX3_RX2		IOMUX_PAD(0x5DC, 0x260, 2, 0x7F0, 0, 0)
++#define MX53_PAD_FEC_TXD1__FEC_TDATA_1			IOMUX_PAD(0x5E0, 0x264, 0, 0x0, 0, 0)
++#define MX53_PAD_FEC_TXD1__GPIO1_29			IOMUX_PAD(0x5E0, 0x264, 1, 0x0, 0, 0)
++#define MX53_PAD_FEC_TXD1__ESAI1_TX2_RX3		IOMUX_PAD(0x5E0, 0x264, 2, 0x7EC, 0, 0)
++#define MX53_PAD_FEC_TXD1__MLB_MLBCLK			IOMUX_PAD(0x5E0, 0x264, 3, 0x858, 1, 0)
++#define MX53_PAD_FEC_TXD1__RTC_CE_RTC_PRSC_CLK		IOMUX_PAD(0x5E0, 0x264, 4, 0x0, 0, 0)
++#define MX53_PAD_FEC_TXD0__FEC_TDATA_0			IOMUX_PAD(0x5E4, 0x268, 0, 0x0, 0, 0)
++#define MX53_PAD_FEC_TXD0__GPIO1_30			IOMUX_PAD(0x5E4, 0x268, 1, 0x0, 0, 0)
++#define MX53_PAD_FEC_TXD0__ESAI1_TX4_RX1		IOMUX_PAD(0x5E4, 0x268, 2, 0x7F4, 0, 0)
++#define MX53_PAD_FEC_TXD0__USBPHY2_DATAOUT_0		IOMUX_PAD(0x5E4, 0x268, 7, 0x0, 0, 0)
++#define MX53_PAD_FEC_MDC__FEC_MDC			IOMUX_PAD(0x5E8, 0x26C, 0, 0x0, 0, 0)
++#define MX53_PAD_FEC_MDC__GPIO1_31			IOMUX_PAD(0x5E8, 0x26C, 1, 0x0, 0, 0)
++#define MX53_PAD_FEC_MDC__ESAI1_TX5_RX0			IOMUX_PAD(0x5E8, 0x26C, 2, 0x7F8, 0, 0)
++#define MX53_PAD_FEC_MDC__MLB_MLBDAT			IOMUX_PAD(0x5E8, 0x26C, 3, 0x85C, 1, 0)
++#define MX53_PAD_FEC_MDC__RTC_CE_RTC_ALARM1_TRIG	IOMUX_PAD(0x5E8, 0x26C, 4, 0x0, 0, 0)
++#define MX53_PAD_FEC_MDC__USBPHY2_DATAOUT_1		IOMUX_PAD(0x5E8, 0x26C, 7, 0x0, 0, 0)
++#define MX53_PAD_PATA_DIOW__PATA_DIOW			IOMUX_PAD(0x5F0, 0x270, 0, 0x0, 0, 0)
++#define MX53_PAD_PATA_DIOW__GPIO6_17			IOMUX_PAD(0x5F0, 0x270, 1, 0x0, 0, 0)
++#define MX53_PAD_PATA_DIOW__UART1_TXD_MUX		IOMUX_PAD(0x5F0, 0x270, 3, 0x878, 2, MX53_UART_PAD_CTRL)
++#define MX53_PAD_PATA_DIOW__USBPHY2_DATAOUT_2		IOMUX_PAD(0x5F0, 0x270, 7, 0x0, 0, 0)
++#define MX53_PAD_PATA_DMACK__PATA_DMACK			IOMUX_PAD(0x5F4, 0x274, 0, 0x0, 0, 0)
++#define MX53_PAD_PATA_DMACK__GPIO6_18			IOMUX_PAD(0x5F4, 0x274, 1, 0x0, 0, 0)
++#define MX53_PAD_PATA_DMACK__UART1_RXD_MUX		IOMUX_PAD(0x5F4, 0x274, 3, 0x878, 3, MX53_UART_PAD_CTRL)
++#define MX53_PAD_PATA_DMACK__USBPHY2_DATAOUT_3		IOMUX_PAD(0x5F4, 0x274, 7, 0x0, 0, 0)
++#define MX53_PAD_PATA_DMARQ__PATA_DMARQ			IOMUX_PAD(0x5F8, 0x278, 0, 0x0, 0, 0)
++#define MX53_PAD_PATA_DMARQ__GPIO7_0			IOMUX_PAD(0x5F8, 0x278, 1, 0x0, 0, 0)
++#define MX53_PAD_PATA_DMARQ__UART2_TXD_MUX		IOMUX_PAD(0x5F8, 0x278, 3, 0x880, 2, MX53_UART_PAD_CTRL)
++#define MX53_PAD_PATA_DMARQ__CCM_CCM_OUT_0		IOMUX_PAD(0x5F8, 0x278, 5, 0x0, 0, 0)
++#define MX53_PAD_PATA_DMARQ__USBPHY2_DATAOUT_4		IOMUX_PAD(0x5F8, 0x278, 7, 0x0, 0, 0)
++#define MX53_PAD_PATA_BUFFER_EN__PATA_BUFFER_EN		IOMUX_PAD(0x5FC, 0x27C, 0, 0x0, 0, 0)
++#define MX53_PAD_PATA_BUFFER_EN__GPIO7_1		IOMUX_PAD(0x5FC, 0x27C, 1, 0x0, 0, 0)
++#define MX53_PAD_PATA_BUFFER_EN__UART2_RXD_MUX		IOMUX_PAD(0x5FC, 0x27C, 3, 0x880, 3, MX53_UART_PAD_CTRL)
++#define MX53_PAD_PATA_BUFFER_EN__CCM_CCM_OUT_1		IOMUX_PAD(0x5FC, 0x27C, 5, 0x0, 0, 0)
++#define MX53_PAD_PATA_BUFFER_EN__USBPHY2_DATAOUT_5	IOMUX_PAD(0x5FC, 0x27C, 7, 0x0, 0, 0)
++#define MX53_PAD_PATA_INTRQ__PATA_INTRQ			IOMUX_PAD(0x600, 0x280, 0, 0x0, 0, 0)
++#define MX53_PAD_PATA_INTRQ__GPIO7_2			IOMUX_PAD(0x600, 0x280, 1, 0x0, 0, 0)
++#define MX53_PAD_PATA_INTRQ__UART2_CTS			IOMUX_PAD(0x600, 0x280, 3, 0x87C, 2, MX53_UART_PAD_CTRL)
++#define MX53_PAD_PATA_INTRQ__CAN1_TXCAN			IOMUX_PAD(0x600, 0x280, 4, 0x0, 0, 0)
++#define MX53_PAD_PATA_INTRQ__CCM_CCM_OUT_2		IOMUX_PAD(0x600, 0x280, 5, 0x0, 0, 0)
++#define MX53_PAD_PATA_INTRQ__USBPHY2_DATAOUT_6		IOMUX_PAD(0x600, 0x280, 7, 0x0, 0, 0)
++#define MX53_PAD_PATA_DIOR__PATA_DIOR			IOMUX_PAD(0x604, 0x284, 0, 0x0, 0, 0)
++#define MX53_PAD_PATA_DIOR__GPIO7_3			IOMUX_PAD(0x604, 0x284, 1, 0x0, 0, 0)
++#define MX53_PAD_PATA_DIOR__UART2_RTS			IOMUX_PAD(0x604, 0x284, 3, 0x87C, 3, MX53_UART_PAD_CTRL)
++#define MX53_PAD_PATA_DIOR__CAN1_RXCAN			IOMUX_PAD(0x604, 0x284, 4, 0x760, 1, 0)
++#define MX53_PAD_PATA_DIOR__USBPHY2_DATAOUT_7		IOMUX_PAD(0x604, 0x284, 7, 0x0, 0, 0)
++#define MX53_PAD_PATA_RESET_B__PATA_PATA_RESET_B	IOMUX_PAD(0x608, 0x288, 0, 0x0, 0, 0)
++#define MX53_PAD_PATA_RESET_B__GPIO7_4			IOMUX_PAD(0x608, 0x288, 1, 0x0, 0, 0)
++#define MX53_PAD_PATA_RESET_B__ESDHC3_CMD		IOMUX_PAD(0x608, 0x288, 2, 0x0, 0, MX53_SDHC_PAD_CTRL)
++#define MX53_PAD_PATA_RESET_B__UART1_CTS		IOMUX_PAD(0x608, 0x288, 3, 0x874, 2, 0)
++#define MX53_PAD_PATA_RESET_B__CAN2_TXCAN		IOMUX_PAD(0x608, 0x288, 4, 0x0, 0, 0)
++#define MX53_PAD_PATA_RESET_B__USBPHY1_DATAOUT_0	IOMUX_PAD(0x608, 0x288, 7, 0x0, 0, 0)
++#define MX53_PAD_PATA_IORDY__PATA_IORDY			IOMUX_PAD(0x60C, 0x28C, 0, 0x0, 0, 0)
++#define MX53_PAD_PATA_IORDY__GPIO7_5			IOMUX_PAD(0x60C, 0x28C, 1, 0x0, 0, 0)
++#define MX53_PAD_PATA_IORDY__ESDHC3_CLK			IOMUX_PAD(0x60C, 0x28C, 2, 0x0, 0, MX53_SDHC_PAD_CTRL)
++#define MX53_PAD_PATA_IORDY__UART1_RTS			IOMUX_PAD(0x60C, 0x28C, 3, 0x874, 3, 0)
++#define MX53_PAD_PATA_IORDY__CAN2_RXCAN			IOMUX_PAD(0x60C, 0x28C, 4, 0x764, 1, 0)
++#define MX53_PAD_PATA_IORDY__USBPHY1_DATAOUT_1		IOMUX_PAD(0x60C, 0x28C, 7, 0x0, 0, 0)
++#define MX53_PAD_PATA_DA_0__PATA_DA_0			IOMUX_PAD(0x610, 0x290, 0, 0x0, 0, 0)
++#define MX53_PAD_PATA_DA_0__GPIO7_6			IOMUX_PAD(0x610, 0x290, 1, 0x0, 0, 0)
++#define MX53_PAD_PATA_DA_0__ESDHC3_RST			IOMUX_PAD(0x610, 0x290, 2, 0x0, 0, 0)
++#define MX53_PAD_PATA_DA_0__OWIRE_LINE			IOMUX_PAD(0x610, 0x290, 4, 0x864, 0, 0)
++#define MX53_PAD_PATA_DA_0__USBPHY1_DATAOUT_2		IOMUX_PAD(0x610, 0x290, 7, 0x0, 0, 0)
++#define MX53_PAD_PATA_DA_1__PATA_DA_1			IOMUX_PAD(0x614, 0x294, 0, 0x0, 0, 0)
++#define MX53_PAD_PATA_DA_1__GPIO7_7			IOMUX_PAD(0x614, 0x294, 1, 0x0, 0, 0)
++#define MX53_PAD_PATA_DA_1__ESDHC4_CMD			IOMUX_PAD(0x614, 0x294, 2, 0x0, 0, MX53_SDHC_PAD_CTRL)
++#define MX53_PAD_PATA_DA_1__UART3_CTS			IOMUX_PAD(0x614, 0x294, 4, 0x884, 4, MX53_UART_PAD_CTRL)
++#define MX53_PAD_PATA_DA_1__USBPHY1_DATAOUT_3		IOMUX_PAD(0x614, 0x294, 7, 0x0, 0, 0)
++#define MX53_PAD_PATA_DA_2__PATA_DA_2			IOMUX_PAD(0x618, 0x298, 0, 0x0, 0, 0)
++#define MX53_PAD_PATA_DA_2__GPIO7_8			IOMUX_PAD(0x618, 0x298, 1, 0x0, 0, 0)
++#define MX53_PAD_PATA_DA_2__ESDHC4_CLK			IOMUX_PAD(0x618, 0x298, 2, 0x0, 0, MX53_SDHC_PAD_CTRL)
++#define MX53_PAD_PATA_DA_2__UART3_RTS			IOMUX_PAD(0x618, 0x298, 4, 0x884, 5, MX53_UART_PAD_CTRL)
++#define MX53_PAD_PATA_DA_2__USBPHY1_DATAOUT_4		IOMUX_PAD(0x618, 0x298, 7, 0x0, 0, 0)
++#define MX53_PAD_PATA_CS_0__PATA_CS_0			IOMUX_PAD(0x61C, 0x29C, 0, 0x0, 0, 0)
++#define MX53_PAD_PATA_CS_0__GPIO7_9			IOMUX_PAD(0x61C, 0x29C, 1, 0x0, 0, 0)
++#define MX53_PAD_PATA_CS_0__UART3_TXD_MUX		IOMUX_PAD(0x61C, 0x29C, 4, 0x888, 2, MX53_UART_PAD_CTRL)
++#define MX53_PAD_PATA_CS_0__USBPHY1_DATAOUT_5		IOMUX_PAD(0x61C, 0x29C, 7, 0x0, 0, 0)
++#define MX53_PAD_PATA_CS_1__PATA_CS_1			IOMUX_PAD(0x620, 0x2A0, 0, 0x0, 0, 0)
++#define MX53_PAD_PATA_CS_1__GPIO7_10			IOMUX_PAD(0x620, 0x2A0, 1, 0x0, 0, 0)
++#define MX53_PAD_PATA_CS_1__UART3_RXD_MUX		IOMUX_PAD(0x620, 0x2A0, 4, 0x888, 3, MX53_UART_PAD_CTRL)
++#define MX53_PAD_PATA_CS_1__USBPHY1_DATAOUT_6		IOMUX_PAD(0x620, 0x2A0, 7, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA0__PATA_DATA_0		IOMUX_PAD(0x628, 0x2A4, 0, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA0__GPIO2_0			IOMUX_PAD(0x628, 0x2A4, 1, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA0__EMI_NANDF_D_0		IOMUX_PAD(0x628, 0x2A4, 3, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA0__ESDHC3_DAT4		IOMUX_PAD(0x628, 0x2A4, 4, 0x0, 0, MX53_SDHC_PAD_CTRL)
++#define MX53_PAD_PATA_DATA0__GPU3d_GPU_DEBUG_OUT_0	IOMUX_PAD(0x628, 0x2A4, 5, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA0__IPU_DIAG_BUS_0		IOMUX_PAD(0x628, 0x2A4, 6, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA0__USBPHY1_DATAOUT_7		IOMUX_PAD(0x628, 0x2A4, 7, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA1__PATA_DATA_1		IOMUX_PAD(0x62C, 0x2A8, 0, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA1__GPIO2_1			IOMUX_PAD(0x62C, 0x2A8, 1, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA1__EMI_NANDF_D_1		IOMUX_PAD(0x62C, 0x2A8, 3, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA1__ESDHC3_DAT5		IOMUX_PAD(0x62C, 0x2A8, 4, 0x0, 0, MX53_SDHC_PAD_CTRL)
++#define MX53_PAD_PATA_DATA1__GPU3d_GPU_DEBUG_OUT_1	IOMUX_PAD(0x62C, 0x2A8, 5, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA1__IPU_DIAG_BUS_1		IOMUX_PAD(0x62C, 0x2A8, 6, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA2__PATA_DATA_2		IOMUX_PAD(0x630, 0x2AC, 0, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA2__GPIO2_2			IOMUX_PAD(0x630, 0x2AC, 1, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA2__EMI_NANDF_D_2		IOMUX_PAD(0x630, 0x2AC, 3, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA2__ESDHC3_DAT6		IOMUX_PAD(0x630, 0x2AC, 4, 0x0, 0, MX53_SDHC_PAD_CTRL)
++#define MX53_PAD_PATA_DATA2__GPU3d_GPU_DEBUG_OUT_2	IOMUX_PAD(0x630, 0x2AC, 5, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA2__IPU_DIAG_BUS_2		IOMUX_PAD(0x630, 0x2AC, 6, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA3__PATA_DATA_3		IOMUX_PAD(0x634, 0x2B0, 0, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA3__GPIO2_3			IOMUX_PAD(0x634, 0x2B0, 1, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA3__EMI_NANDF_D_3		IOMUX_PAD(0x634, 0x2B0, 3, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA3__ESDHC3_DAT7		IOMUX_PAD(0x634, 0x2B0, 4, 0x0, 0, MX53_SDHC_PAD_CTRL)
++#define MX53_PAD_PATA_DATA3__GPU3d_GPU_DEBUG_OUT_3	IOMUX_PAD(0x634, 0x2B0, 5, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA3__IPU_DIAG_BUS_3		IOMUX_PAD(0x634, 0x2B0, 6, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA4__PATA_DATA_4		IOMUX_PAD(0x638, 0x2B4, 0, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA4__GPIO2_4			IOMUX_PAD(0x638, 0x2B4, 1, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA4__EMI_NANDF_D_4		IOMUX_PAD(0x638, 0x2B4, 3, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA4__ESDHC4_DAT4		IOMUX_PAD(0x638, 0x2B4, 4, 0x0, 0, MX53_SDHC_PAD_CTRL)
++#define MX53_PAD_PATA_DATA4__GPU3d_GPU_DEBUG_OUT_4	IOMUX_PAD(0x638, 0x2B4, 5, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA4__IPU_DIAG_BUS_4		IOMUX_PAD(0x638, 0x2B4, 6, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA5__PATA_DATA_5		IOMUX_PAD(0x63C, 0x2B8, 0, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA5__GPIO2_5			IOMUX_PAD(0x63C, 0x2B8, 1, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA5__EMI_NANDF_D_5		IOMUX_PAD(0x63C, 0x2B8, 3, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA5__ESDHC4_DAT5		IOMUX_PAD(0x63C, 0x2B8, 4, 0x0, 0, MX53_SDHC_PAD_CTRL)
++#define MX53_PAD_PATA_DATA5__GPU3d_GPU_DEBUG_OUT_5	IOMUX_PAD(0x63C, 0x2B8, 5, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA5__IPU_DIAG_BUS_5		IOMUX_PAD(0x63C, 0x2B8, 6, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA6__PATA_DATA_6		IOMUX_PAD(0x640, 0x2BC, 0, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA6__GPIO2_6			IOMUX_PAD(0x640, 0x2BC, 1, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA6__EMI_NANDF_D_6		IOMUX_PAD(0x640, 0x2BC, 3, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA6__ESDHC4_DAT6		IOMUX_PAD(0x640, 0x2BC, 4, 0x0, 0, MX53_SDHC_PAD_CTRL)
++#define MX53_PAD_PATA_DATA6__GPU3d_GPU_DEBUG_OUT_6	IOMUX_PAD(0x640, 0x2BC, 5, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA6__IPU_DIAG_BUS_6		IOMUX_PAD(0x640, 0x2BC, 6, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA7__PATA_DATA_7		IOMUX_PAD(0x644, 0x2C0, 0, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA7__GPIO2_7			IOMUX_PAD(0x644, 0x2C0, 1, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA7__EMI_NANDF_D_7		IOMUX_PAD(0x644, 0x2C0, 3, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA7__ESDHC4_DAT7		IOMUX_PAD(0x644, 0x2C0, 4, 0x0, 0, MX53_SDHC_PAD_CTRL)
++#define MX53_PAD_PATA_DATA7__GPU3d_GPU_DEBUG_OUT_7	IOMUX_PAD(0x644, 0x2C0, 5, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA7__IPU_DIAG_BUS_7		IOMUX_PAD(0x644, 0x2C0, 6, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA8__PATA_DATA_8		IOMUX_PAD(0x648, 0x2C4, 0, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA8__GPIO2_8			IOMUX_PAD(0x648, 0x2C4, 1, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA8__ESDHC1_DAT4		IOMUX_PAD(0x648, 0x2C4, 2, 0x0, 0, MX53_SDHC_PAD_CTRL)
++#define MX53_PAD_PATA_DATA8__EMI_NANDF_D_8		IOMUX_PAD(0x648, 0x2C4, 3, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA8__ESDHC3_DAT0		IOMUX_PAD(0x648, 0x2C4, 4, 0x0, 0, MX53_SDHC_PAD_CTRL)
++#define MX53_PAD_PATA_DATA8__GPU3d_GPU_DEBUG_OUT_8	IOMUX_PAD(0x648, 0x2C4, 5, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA8__IPU_DIAG_BUS_8		IOMUX_PAD(0x648, 0x2C4, 6, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA9__PATA_DATA_9		IOMUX_PAD(0x64C, 0x2C8, 0, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA9__GPIO2_9			IOMUX_PAD(0x64C, 0x2C8, 1, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA9__ESDHC1_DAT5		IOMUX_PAD(0x64C, 0x2C8, 2, 0x0, 0, MX53_SDHC_PAD_CTRL)
++#define MX53_PAD_PATA_DATA9__EMI_NANDF_D_9		IOMUX_PAD(0x64C, 0x2C8, 3, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA9__ESDHC3_DAT1		IOMUX_PAD(0x64C, 0x2C8, 4, 0x0, 0, MX53_SDHC_PAD_CTRL)
++#define MX53_PAD_PATA_DATA9__GPU3d_GPU_DEBUG_OUT_9	IOMUX_PAD(0x64C, 0x2C8, 5, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA9__IPU_DIAG_BUS_9		IOMUX_PAD(0x64C, 0x2C8, 6, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA10__PATA_DATA_10		IOMUX_PAD(0x650, 0x2CC, 0, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA10__GPIO2_10			IOMUX_PAD(0x650, 0x2CC, 1, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA10__ESDHC1_DAT6		IOMUX_PAD(0x650, 0x2CC, 2, 0x0, 0, MX53_SDHC_PAD_CTRL)
++#define MX53_PAD_PATA_DATA10__EMI_NANDF_D_10		IOMUX_PAD(0x650, 0x2CC, 3, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA10__ESDHC3_DAT2		IOMUX_PAD(0x650, 0x2CC, 4, 0x0, 0, MX53_SDHC_PAD_CTRL)
++#define MX53_PAD_PATA_DATA10__GPU3d_GPU_DEBUG_OUT_10	IOMUX_PAD(0x650, 0x2CC, 5, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA10__IPU_DIAG_BUS_10		IOMUX_PAD(0x650, 0x2CC, 6, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA11__PATA_DATA_11		IOMUX_PAD(0x654, 0x2D0, 0, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA11__GPIO2_11			IOMUX_PAD(0x654, 0x2D0, 1, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA11__ESDHC1_DAT7		IOMUX_PAD(0x654, 0x2D0, 2, 0x0, 0, MX53_SDHC_PAD_CTRL)
++#define MX53_PAD_PATA_DATA11__EMI_NANDF_D_11		IOMUX_PAD(0x654, 0x2D0, 3, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA11__ESDHC3_DAT3		IOMUX_PAD(0x654, 0x2D0, 4, 0x0, 0, MX53_SDHC_PAD_CTRL)
++#define MX53_PAD_PATA_DATA11__GPU3d_GPU_DEBUG_OUT_11	IOMUX_PAD(0x654, 0x2D0, 5, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA11__IPU_DIAG_BUS_11		IOMUX_PAD(0x654, 0x2D0, 6, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA12__PATA_DATA_12		IOMUX_PAD(0x658, 0x2D4, 0, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA12__GPIO2_12			IOMUX_PAD(0x658, 0x2D4, 1, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA12__ESDHC2_DAT4		IOMUX_PAD(0x658, 0x2D4, 2, 0x0, 0, MX53_SDHC_PAD_CTRL)
++#define MX53_PAD_PATA_DATA12__EMI_NANDF_D_12		IOMUX_PAD(0x658, 0x2D4, 3, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA12__ESDHC4_DAT0		IOMUX_PAD(0x658, 0x2D4, 4, 0x0, 0, MX53_SDHC_PAD_CTRL)
++#define MX53_PAD_PATA_DATA12__GPU3d_GPU_DEBUG_OUT_12	IOMUX_PAD(0x658, 0x2D4, 5, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA12__IPU_DIAG_BUS_12		IOMUX_PAD(0x658, 0x2D4, 6, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA13__PATA_DATA_13		IOMUX_PAD(0x65C, 0x2D8, 0, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA13__GPIO2_13			IOMUX_PAD(0x65C, 0x2D8, 1, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA13__ESDHC2_DAT5		IOMUX_PAD(0x65C, 0x2D8, 2, 0x0, 0, MX53_SDHC_PAD_CTRL)
++#define MX53_PAD_PATA_DATA13__EMI_NANDF_D_13		IOMUX_PAD(0x65C, 0x2D8, 3, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA13__ESDHC4_DAT1		IOMUX_PAD(0x65C, 0x2D8, 4, 0x0, 0, MX53_SDHC_PAD_CTRL)
++#define MX53_PAD_PATA_DATA13__GPU3d_GPU_DEBUG_OUT_13	IOMUX_PAD(0x65C, 0x2D8, 5, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA13__IPU_DIAG_BUS_13		IOMUX_PAD(0x65C, 0x2D8, 6, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA14__PATA_DATA_14		IOMUX_PAD(0x660, 0x2DC, 0, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA14__GPIO2_14			IOMUX_PAD(0x660, 0x2DC, 1, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA14__ESDHC2_DAT6		IOMUX_PAD(0x660, 0x2DC, 2, 0x0, 0, MX53_SDHC_PAD_CTRL)
++#define MX53_PAD_PATA_DATA14__EMI_NANDF_D_14		IOMUX_PAD(0x660, 0x2DC, 3, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA14__ESDHC4_DAT2		IOMUX_PAD(0x660, 0x2DC, 4, 0x0, 0, MX53_SDHC_PAD_CTRL)
++#define MX53_PAD_PATA_DATA14__GPU3d_GPU_DEBUG_OUT_14	IOMUX_PAD(0x660, 0x2DC, 5, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA14__IPU_DIAG_BUS_14		IOMUX_PAD(0x660, 0x2DC, 6, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA15__PATA_DATA_15		IOMUX_PAD(0x664, 0x2E0, 0, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA15__GPIO2_15			IOMUX_PAD(0x664, 0x2E0, 1, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA15__ESDHC2_DAT7		IOMUX_PAD(0x664, 0x2E0, 2, 0x0, 0, MX53_SDHC_PAD_CTRL)
++#define MX53_PAD_PATA_DATA15__EMI_NANDF_D_15		IOMUX_PAD(0x664, 0x2E0, 3, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA15__ESDHC4_DAT3		IOMUX_PAD(0x664, 0x2E0, 4, 0x0, 0, MX53_SDHC_PAD_CTRL)
++#define MX53_PAD_PATA_DATA15__GPU3d_GPU_DEBUG_OUT_15	IOMUX_PAD(0x664, 0x2E0, 5, 0x0, 0, 0)
++#define MX53_PAD_PATA_DATA15__IPU_DIAG_BUS_15		IOMUX_PAD(0x664, 0x2E0, 6, 0x0, 0, 0)
++#define MX53_PAD_SD1_DATA0__ESDHC1_DAT0			IOMUX_PAD(0x66C, 0x2E4, 0, 0x0, 0, MX53_SDHC_PAD_CTRL)
++#define MX53_PAD_SD1_DATA0__GPIO1_16			IOMUX_PAD(0x66C, 0x2E4, 1, 0x0, 0, 0)
++#define MX53_PAD_SD1_DATA0__GPT_CAPIN1			IOMUX_PAD(0x66C, 0x2E4, 3, 0x0, 0, 0)
++#define MX53_PAD_SD1_DATA0__CSPI_MISO			IOMUX_PAD(0x66C, 0x2E4, 5, 0x784, 2, 0)
++#define MX53_PAD_SD1_DATA0__CCM_PLL3_BYP		IOMUX_PAD(0x66C, 0x2E4, 7, 0x778, 0, 0)
++#define MX53_PAD_SD1_DATA1__ESDHC1_DAT1			IOMUX_PAD(0x670, 0x2E8, 0, 0x0, 0, MX53_SDHC_PAD_CTRL)
++#define MX53_PAD_SD1_DATA1__GPIO1_17			IOMUX_PAD(0x670, 0x2E8, 1, 0x0, 0, 0)
++#define MX53_PAD_SD1_DATA1__GPT_CAPIN2			IOMUX_PAD(0x670, 0x2E8, 3, 0x0, 0, 0)
++#define MX53_PAD_SD1_DATA1__CSPI_SS0			IOMUX_PAD(0x670, 0x2E8, 5, 0x78C, 3, 0)
++#define MX53_PAD_SD1_DATA1__CCM_PLL4_BYP		IOMUX_PAD(0x670, 0x2E8, 7, 0x77C, 1, 0)
++#define MX53_PAD_SD1_CMD__ESDHC1_CMD			IOMUX_PAD(0x674, 0x2EC,	IOMUX_CONFIG_SION, 0x0, 0, MX53_SDHC_PAD_CTRL)
++#define MX53_PAD_SD1_CMD__GPIO1_18			IOMUX_PAD(0x674, 0x2EC, 1, 0x0, 0, 0)
++#define MX53_PAD_SD1_CMD__GPT_CMPOUT1			IOMUX_PAD(0x674, 0x2EC, 3, 0x0, 0, 0)
++#define MX53_PAD_SD1_CMD__CSPI_MOSI			IOMUX_PAD(0x674, 0x2EC, 5, 0x788, 2, 0)
++#define MX53_PAD_SD1_CMD__CCM_PLL1_BYP			IOMUX_PAD(0x674, 0x2EC, 7, 0x770, 0, 0)
++#define MX53_PAD_SD1_DATA2__ESDHC1_DAT2			IOMUX_PAD(0x678, 0x2F0, 0, 0x0, 0, MX53_SDHC_PAD_CTRL)
++#define MX53_PAD_SD1_DATA2__GPIO1_19			IOMUX_PAD(0x678, 0x2F0, 1, 0x0, 0, 0)
++#define MX53_PAD_SD1_DATA2__GPT_CMPOUT2			IOMUX_PAD(0x678, 0x2F0, 2, 0x0, 0, 0)
++#define MX53_PAD_SD1_DATA2__PWM2_PWMO			IOMUX_PAD(0x678, 0x2F0, 3, 0x0, 0, 0)
++#define MX53_PAD_SD1_DATA2__WDOG1_WDOG_B		IOMUX_PAD(0x678, 0x2F0, 4, 0x0, 0, 0)
++#define MX53_PAD_SD1_DATA2__CSPI_SS1			IOMUX_PAD(0x678, 0x2F0, 5, 0x790, 2, 0)
++#define MX53_PAD_SD1_DATA2__WDOG1_WDOG_RST_B_DEB	IOMUX_PAD(0x678, 0x2F0, 6, 0x0, 0, 0)
++#define MX53_PAD_SD1_DATA2__CCM_PLL2_BYP		IOMUX_PAD(0x678, 0x2F0, 7, 0x774, 0, 0)
++#define MX53_PAD_SD1_CLK__ESDHC1_CLK			IOMUX_PAD(0x67C, 0x2F4, 0, 0x0, 0, MX53_SDHC_PAD_CTRL)
++#define MX53_PAD_SD1_CLK__GPIO1_20			IOMUX_PAD(0x67C, 0x2F4, 1, 0x0, 0, 0)
++#define MX53_PAD_SD1_CLK__OSC32k_32K_OUT		IOMUX_PAD(0x67C, 0x2F4, 2, 0x0, 0, 0)
++#define MX53_PAD_SD1_CLK__GPT_CLKIN			IOMUX_PAD(0x67C, 0x2F4, 3, 0x0, 0, 0)
++#define MX53_PAD_SD1_CLK__CSPI_SCLK			IOMUX_PAD(0x67C, 0x2F4, 5, 0x780, 2, 0)
++#define MX53_PAD_SD1_CLK__SATA_PHY_DTB_0		IOMUX_PAD(0x67C, 0x2F4, 7, 0x0, 0, 0)
++#define MX53_PAD_SD1_DATA3__ESDHC1_DAT3			IOMUX_PAD(0x680, 0x2F8, 0, 0x0, 0, MX53_SDHC_PAD_CTRL)
++#define MX53_PAD_SD1_DATA3__GPIO1_21			IOMUX_PAD(0x680, 0x2F8, 1, 0x0, 0, 0)
++#define MX53_PAD_SD1_DATA3__GPT_CMPOUT3			IOMUX_PAD(0x680, 0x2F8, 2, 0x0, 0, 0)
++#define MX53_PAD_SD1_DATA3__PWM1_PWMO			IOMUX_PAD(0x680, 0x2F8, 3, 0x0, 0, 0)
++#define MX53_PAD_SD1_DATA3__WDOG2_WDOG_B		IOMUX_PAD(0x680, 0x2F8, 4, 0x0, 0, 0)
++#define MX53_PAD_SD1_DATA3__CSPI_SS2			IOMUX_PAD(0x680, 0x2F8, 5, 0x794, 2, 0)
++#define MX53_PAD_SD1_DATA3__WDOG2_WDOG_RST_B_DEB	IOMUX_PAD(0x680, 0x2F8, 6, 0x0, 0, 0)
++#define MX53_PAD_SD1_DATA3__SATA_PHY_DTB_1		IOMUX_PAD(0x680, 0x2F8, 7, 0x0, 0, 0)
++#define MX53_PAD_SD2_CLK__ESDHC2_CLK			IOMUX_PAD(0x688, 0x2FC, 0, 0x0, 0, MX53_SDHC_PAD_CTRL)
++#define MX53_PAD_SD2_CLK__GPIO1_10			IOMUX_PAD(0x688, 0x2FC, 1, 0x0, 0, 0)
++#define MX53_PAD_SD2_CLK__KPP_COL_5			IOMUX_PAD(0x688, 0x2FC, 2, 0x840, 2, 0)
++#define MX53_PAD_SD2_CLK__AUDMUX_AUD4_RXFS		IOMUX_PAD(0x688, 0x2FC, 3, 0x73C, 1, 0)
++#define MX53_PAD_SD2_CLK__CSPI_SCLK			IOMUX_PAD(0x688, 0x2FC, 5, 0x780, 3, 0)
++#define MX53_PAD_SD2_CLK__SCC_RANDOM_V			IOMUX_PAD(0x688, 0x2FC, 7, 0x0, 0, 0)
++#define MX53_PAD_SD2_CMD__ESDHC2_CMD			IOMUX_PAD(0x68C, 0x300, 0, 0x0, 0, MX53_SDHC_PAD_CTRL)
++#define MX53_PAD_SD2_CMD__GPIO1_11			IOMUX_PAD(0x68C, 0x300, 1, 0x0, 0, 0)
++#define MX53_PAD_SD2_CMD__KPP_ROW_5			IOMUX_PAD(0x68C, 0x300, 2, 0x84C, 1, 0)
++#define MX53_PAD_SD2_CMD__AUDMUX_AUD4_RXC		IOMUX_PAD(0x68C, 0x300, 3, 0x738, 1, 0)
++#define MX53_PAD_SD2_CMD__CSPI_MOSI			IOMUX_PAD(0x68C, 0x300, 5, 0x788, 3, 0)
++#define MX53_PAD_SD2_CMD__SCC_RANDOM			IOMUX_PAD(0x68C, 0x300, 7, 0x0, 0, 0)
++#define MX53_PAD_SD2_DATA3__ESDHC2_DAT3			IOMUX_PAD(0x690, 0x304, 0, 0x0, 0, MX53_SDHC_PAD_CTRL)
++#define MX53_PAD_SD2_DATA3__GPIO1_12			IOMUX_PAD(0x690, 0x304, 1, 0x0, 0, 0)
++#define MX53_PAD_SD2_DATA3__KPP_COL_6			IOMUX_PAD(0x690, 0x304, 2, 0x844, 1, 0)
++#define MX53_PAD_SD2_DATA3__AUDMUX_AUD4_TXC		IOMUX_PAD(0x690, 0x304, 3, 0x740, 1, 0)
++#define MX53_PAD_SD2_DATA3__CSPI_SS2			IOMUX_PAD(0x690, 0x304, 5, 0x794, 3, 0)
++#define MX53_PAD_SD2_DATA3__SJC_DONE			IOMUX_PAD(0x690, 0x304, 7, 0x0, 0, 0)
++#define MX53_PAD_SD2_DATA2__ESDHC2_DAT2			IOMUX_PAD(0x694, 0x308, 0, 0x0, 0, MX53_SDHC_PAD_CTRL)
++#define MX53_PAD_SD2_DATA2__GPIO1_13			IOMUX_PAD(0x694, 0x308, 1, 0x0, 0, 0)
++#define MX53_PAD_SD2_DATA2__KPP_ROW_6			IOMUX_PAD(0x694, 0x308, 2, 0x850, 1, 0)
++#define MX53_PAD_SD2_DATA2__AUDMUX_AUD4_TXD		IOMUX_PAD(0x694, 0x308, 3, 0x734, 1, 0)
++#define MX53_PAD_SD2_DATA2__CSPI_SS1			IOMUX_PAD(0x694, 0x308, 5, 0x790, 3, 0)
++#define MX53_PAD_SD2_DATA2__SJC_FAIL			IOMUX_PAD(0x694, 0x308, 7, 0x0, 0, 0)
++#define MX53_PAD_SD2_DATA1__ESDHC2_DAT1			IOMUX_PAD(0x698, 0x30C, 0, 0x0, 0, MX53_SDHC_PAD_CTRL)
++#define MX53_PAD_SD2_DATA1__GPIO1_14			IOMUX_PAD(0x698, 0x30C, 1, 0x0, 0, 0)
++#define MX53_PAD_SD2_DATA1__KPP_COL_7			IOMUX_PAD(0x698, 0x30C, 2, 0x848, 1, 0)
++#define MX53_PAD_SD2_DATA1__AUDMUX_AUD4_TXFS		IOMUX_PAD(0x698, 0x30C, 3, 0x744, 0, 0)
++#define MX53_PAD_SD2_DATA1__CSPI_SS0			IOMUX_PAD(0x698, 0x30C, 5, 0x78C, 4, 0)
++#define MX53_PAD_SD2_DATA1__RTIC_SEC_VIO		IOMUX_PAD(0x698, 0x30C, 7, 0x0, 0, 0)
++#define MX53_PAD_SD2_DATA0__ESDHC2_DAT0			IOMUX_PAD(0x69C, 0x310, 0, 0x0, 0, MX53_SDHC_PAD_CTRL)
++#define MX53_PAD_SD2_DATA0__GPIO1_15			IOMUX_PAD(0x69C, 0x310, 1, 0x0, 0, 0)
++#define MX53_PAD_SD2_DATA0__KPP_ROW_7			IOMUX_PAD(0x69C, 0x310, 2, 0x854, 1, 0)
++#define MX53_PAD_SD2_DATA0__AUDMUX_AUD4_RXD		IOMUX_PAD(0x69C, 0x310, 3, 0x730, 1, 0)
++#define MX53_PAD_SD2_DATA0__CSPI_MISO			IOMUX_PAD(0x69C, 0x310, 5, 0x784, 3, 0)
++#define MX53_PAD_SD2_DATA0__RTIC_DONE_INT		IOMUX_PAD(0x69C, 0x310, 7, 0x0, 0, 0)
++#define MX53_PAD_GPIO_0__CCM_CLKO			IOMUX_PAD(0x6A4, 0x314, 0, 0x0, 0, 0)
++#define MX53_PAD_GPIO_0__GPIO1_0			IOMUX_PAD(0x6A4, 0x314, 1, 0x0, 0, 0)
++#define MX53_PAD_GPIO_0__KPP_COL_5			IOMUX_PAD(0x6A4, 0x314, 2, 0x840, 3, 0)
++#define MX53_PAD_GPIO_0__CCM_SSI_EXT1_CLK		IOMUX_PAD(0x6A4, 0x314, 3, 0x0, 0, 0)
++#define MX53_PAD_GPIO_0__EPIT1_EPITO			IOMUX_PAD(0x6A4, 0x314, 4, 0x0, 0, 0)
++#define MX53_PAD_GPIO_0__SRTC_ALARM_DEB			IOMUX_PAD(0x6A4, 0x314, 5, 0x0, 0, 0)
++#define MX53_PAD_GPIO_0__USBOH3_USBH1_PWR		IOMUX_PAD(0x6A4, 0x314, 6, 0x0, 0, 0)
++#define MX53_PAD_GPIO_0__CSU_TD				IOMUX_PAD(0x6A4, 0x314, 7, 0x0, 0, 0)
++#define MX53_PAD_GPIO_1__ESAI1_SCKR			IOMUX_PAD(0x6A8, 0x318, 0, 0x7DC, 1, 0)
++#define MX53_PAD_GPIO_1__GPIO1_1			IOMUX_PAD(0x6A8, 0x318, 1, 0x0, 0, 0)
++#define MX53_PAD_GPIO_1__KPP_ROW_5			IOMUX_PAD(0x6A8, 0x318, 2, 0x84C, 2, 0)
++#define MX53_PAD_GPIO_1__CCM_SSI_EXT2_CLK		IOMUX_PAD(0x6A8, 0x318, 3, 0x0, 0, 0)
++#define MX53_PAD_GPIO_1__PWM2_PWMO			IOMUX_PAD(0x6A8, 0x318, 4, 0x0, 0, 0)
++#define MX53_PAD_GPIO_1__WDOG2_WDOG_B			IOMUX_PAD(0x6A8, 0x318, 5, 0x0, 0, 0)
++#define MX53_PAD_GPIO_1__ESDHC1_CD			IOMUX_PAD(0x6A8, 0x318, 6, 0x0, 0, 0)
++#define MX53_PAD_GPIO_1__SRC_TESTER_ACK			IOMUX_PAD(0x6A8, 0x318, 7, 0x0, 0, 0)
++#define MX53_PAD_GPIO_9__ESAI1_FSR			IOMUX_PAD(0x6AC, 0x31C, 0, 0x7CC, 1, 0)
++#define MX53_PAD_GPIO_9__GPIO1_9			IOMUX_PAD(0x6AC, 0x31C, 1, 0x0, 0, 0)
++#define MX53_PAD_GPIO_9__KPP_COL_6			IOMUX_PAD(0x6AC, 0x31C, 2, 0x844, 2, 0)
++#define MX53_PAD_GPIO_9__CCM_REF_EN_B			IOMUX_PAD(0x6AC, 0x31C, 3, 0x0, 0, 0)
++#define MX53_PAD_GPIO_9__PWM1_PWMO			IOMUX_PAD(0x6AC, 0x31C, 4, 0x0, 0, 0)
++#define MX53_PAD_GPIO_9__WDOG1_WDOG_B			IOMUX_PAD(0x6AC, 0x31C, 5, 0x0, 0, 0)
++#define MX53_PAD_GPIO_9__ESDHC1_WP			IOMUX_PAD(0x6AC, 0x31C, 6, 0x7FC, 1, 0)
++#define MX53_PAD_GPIO_9__SCC_FAIL_STATE			IOMUX_PAD(0x6AC, 0x31C, 7, 0x0, 0, 0)
++#define MX53_PAD_GPIO_3__ESAI1_HCKR			IOMUX_PAD(0x6B0, 0x320, 0, 0x7D4, 1, 0)
++#define MX53_PAD_GPIO_3__GPIO1_3			IOMUX_PAD(0x6B0, 0x320, 1, 0x0, 0, 0)
++#define MX53_PAD_GPIO_3__I2C3_SCL			IOMUX_PAD(0x6B0, 0x320, 2 | IOMUX_CONFIG_SION, 0x824, 1, 0)
++#define MX53_PAD_GPIO_3__DPLLIP1_TOG_EN			IOMUX_PAD(0x6B0, 0x320, 3, 0x0, 0, 0)
++#define MX53_PAD_GPIO_3__CCM_CLKO2			IOMUX_PAD(0x6B0, 0x320, 4, 0x0, 0, 0)
++#define MX53_PAD_GPIO_3__OBSERVE_MUX_OBSRV_INT_OUT0	IOMUX_PAD(0x6B0, 0x320, 5, 0x0, 0, 0)
++#define MX53_PAD_GPIO_3__USBOH3_USBH1_OC		IOMUX_PAD(0x6B0, 0x320, 6, 0x8A0, 1, 0)
++#define MX53_PAD_GPIO_3__MLB_MLBCLK			IOMUX_PAD(0x6B0, 0x320, 7, 0x858, 2, 0)
++#define MX53_PAD_GPIO_6__ESAI1_SCKT			IOMUX_PAD(0x6B4, 0x324, 0, 0x7E0, 1, 0)
++#define MX53_PAD_GPIO_6__GPIO1_6			IOMUX_PAD(0x6B4, 0x324, 1, 0x0, 0, 0)
++#define MX53_PAD_GPIO_6__I2C3_SDA			IOMUX_PAD(0x6B4, 0x324, 2 | IOMUX_CONFIG_SION, 0x828, 1, 0)
++#define MX53_PAD_GPIO_6__CCM_CCM_OUT_0			IOMUX_PAD(0x6B4, 0x324, 3, 0x0, 0, 0)
++#define MX53_PAD_GPIO_6__CSU_CSU_INT_DEB		IOMUX_PAD(0x6B4, 0x324, 4, 0x0, 0, 0)
++#define MX53_PAD_GPIO_6__OBSERVE_MUX_OBSRV_INT_OUT1	IOMUX_PAD(0x6B4, 0x324, 5, 0x0, 0, 0)
++#define MX53_PAD_GPIO_6__ESDHC2_LCTL			IOMUX_PAD(0x6B4, 0x324, 6, 0x0, 0, 0)
++#define MX53_PAD_GPIO_6__MLB_MLBSIG			IOMUX_PAD(0x6B4, 0x324, 7, 0x860, 2, 0)
++#define MX53_PAD_GPIO_2__ESAI1_FST			IOMUX_PAD(0x6B8, 0x328, 0, 0x7D0, 1, 0)
++#define MX53_PAD_GPIO_2__GPIO1_2			IOMUX_PAD(0x6B8, 0x328, 1, 0x0, 0, 0)
++#define MX53_PAD_GPIO_2__KPP_ROW_6			IOMUX_PAD(0x6B8, 0x328, 2, 0x850, 2, 0)
++#define MX53_PAD_GPIO_2__CCM_CCM_OUT_1			IOMUX_PAD(0x6B8, 0x328, 3, 0x0, 0, 0)
++#define MX53_PAD_GPIO_2__CSU_CSU_ALARM_AUT_0		IOMUX_PAD(0x6B8, 0x328, 4, 0x0, 0, 0)
++#define MX53_PAD_GPIO_2__OBSERVE_MUX_OBSRV_INT_OUT2	IOMUX_PAD(0x6B8, 0x328, 5, 0x0, 0, 0)
++#define MX53_PAD_GPIO_2__ESDHC2_WP			IOMUX_PAD(0x6B8, 0x328, 6, 0x0, 0, 0)
++#define MX53_PAD_GPIO_2__MLB_MLBDAT			IOMUX_PAD(0x6B8, 0x328, 7, 0x85C, 2, 0)
++#define MX53_PAD_GPIO_4__ESAI1_HCKT			IOMUX_PAD(0x6BC, 0x32C, 0, 0x7D8, 1, 0)
++#define MX53_PAD_GPIO_4__GPIO1_4			IOMUX_PAD(0x6BC, 0x32C, 1, 0x0, 0, 0)
++#define MX53_PAD_GPIO_4__KPP_COL_7			IOMUX_PAD(0x6BC, 0x32C, 2, 0x848, 2, 0)
++#define MX53_PAD_GPIO_4__CCM_CCM_OUT_2			IOMUX_PAD(0x6BC, 0x32C, 3, 0x0, 0, 0)
++#define MX53_PAD_GPIO_4__CSU_CSU_ALARM_AUT_1		IOMUX_PAD(0x6BC, 0x32C, 4, 0x0, 0, 0)
++#define MX53_PAD_GPIO_4__OBSERVE_MUX_OBSRV_INT_OUT3	IOMUX_PAD(0x6BC, 0x32C, 5, 0x0, 0, 0)
++#define MX53_PAD_GPIO_4__ESDHC2_CD			IOMUX_PAD(0x6BC, 0x32C, 6, 0x0, 0, 0)
++#define MX53_PAD_GPIO_4__SCC_SEC_STATE			IOMUX_PAD(0x6BC, 0x32C, 7, 0x0, 0, 0)
++#define MX53_PAD_GPIO_5__ESAI1_TX2_RX3			IOMUX_PAD(0x6C0, 0x330, 0, 0x7EC, 1, 0)
++#define MX53_PAD_GPIO_5__GPIO1_5			IOMUX_PAD(0x6C0, 0x330, 1, 0x0, 0, 0)
++#define MX53_PAD_GPIO_5__KPP_ROW_7			IOMUX_PAD(0x6C0, 0x330, 2, 0x854, 2, 0)
++#define MX53_PAD_GPIO_5__CCM_CLKO			IOMUX_PAD(0x6C0, 0x330, 3, 0x0, 0, 0)
++#define MX53_PAD_GPIO_5__CSU_CSU_ALARM_AUT_2		IOMUX_PAD(0x6C0, 0x330, 4, 0x0, 0, 0)
++#define MX53_PAD_GPIO_5__OBSERVE_MUX_OBSRV_INT_OUT4	IOMUX_PAD(0x6C0, 0x330, 5, 0x0, 0, 0)
++#define MX53_PAD_GPIO_5__I2C3_SCL			IOMUX_PAD(0x6C0, 0x330, 6, 0x824, 2, 0)
++#define MX53_PAD_GPIO_5__CCM_PLL1_BYP			IOMUX_PAD(0x6C0, 0x330, 7, 0x770, 1, 0)
++#define MX53_PAD_GPIO_7__ESAI1_TX4_RX1			IOMUX_PAD(0x6C4, 0x334, 0, 0x7F4, 1, 0)
++#define MX53_PAD_GPIO_7__GPIO1_7			IOMUX_PAD(0x6C4, 0x334, 1, 0x0, 0, 0)
++#define MX53_PAD_GPIO_7__EPIT1_EPITO			IOMUX_PAD(0x6C4, 0x334, 2, 0x0, 0, 0)
++#define MX53_PAD_GPIO_7__CAN1_TXCAN			IOMUX_PAD(0x6C4, 0x334, 3, 0x0, 0, 0)
++#define MX53_PAD_GPIO_7__UART2_TXD_MUX			IOMUX_PAD(0x6C4, 0x334, 4, 0x880, 4, 0)
++#define MX53_PAD_GPIO_7__FIRI_RXD			IOMUX_PAD(0x6C4, 0x334, 5, 0x80C, 1, 0)
++#define MX53_PAD_GPIO_7__SPDIF_PLOCK			IOMUX_PAD(0x6C4, 0x334, 6, 0x0, 0, 0)
++#define MX53_PAD_GPIO_7__CCM_PLL2_BYP			IOMUX_PAD(0x6C4, 0x334, 7, 0x774, 1, 0)
++#define MX53_PAD_GPIO_8__ESAI1_TX5_RX0			IOMUX_PAD(0x6C8, 0x338, 0, 0x7F8, 1, 0)
++#define MX53_PAD_GPIO_8__GPIO1_8			IOMUX_PAD(0x6C8, 0x338, 1, 0x0, 0, 0)
++#define MX53_PAD_GPIO_8__EPIT2_EPITO			IOMUX_PAD(0x6C8, 0x338, 2, 0x0, 0, 0)
++#define MX53_PAD_GPIO_8__CAN1_RXCAN			IOMUX_PAD(0x6C8, 0x338, 3, 0x760, 3, 0)
++#define MX53_PAD_GPIO_8__UART2_RXD_MUX			IOMUX_PAD(0x6C8, 0x338, 4, 0x880, 5, 0)
++#define MX53_PAD_GPIO_8__FIRI_TXD			IOMUX_PAD(0x6C8, 0x338, 5, 0x0, 0, 0)
++#define MX53_PAD_GPIO_8__SPDIF_SRCLK			IOMUX_PAD(0x6C8, 0x338, 6, 0x0, 0, 0)
++#define MX53_PAD_GPIO_8__CCM_PLL3_BYP			IOMUX_PAD(0x6C8, 0x338, 7, 0x778, 1, 0)
++#define MX53_PAD_GPIO_16__ESAI1_TX3_RX2			IOMUX_PAD(0x6CC, 0x33C, 0, 0x7F0, 1, 0)
++#define MX53_PAD_GPIO_16__GPIO7_11			IOMUX_PAD(0x6CC, 0x33C, 1, 0x0, 0, 0)
++#define MX53_PAD_GPIO_16__TZIC_PWRFAIL_INT		IOMUX_PAD(0x6CC, 0x33C, 2, 0x0, 0, 0)
++#define MX53_PAD_GPIO_16__RTC_CE_RTC_EXT_TRIG1		IOMUX_PAD(0x6CC, 0x33C, 4, 0x0, 0, 0)
++#define MX53_PAD_GPIO_16__SPDIF_IN1			IOMUX_PAD(0x6CC, 0x33C, 5, 0x870, 1, 0)
++#define MX53_PAD_GPIO_16__I2C3_SDA			IOMUX_PAD(0x6CC, 0x33C, 6 | IOMUX_CONFIG_SION, 0x828, 2, 0)
++#define MX53_PAD_GPIO_16__SJC_DE_B			IOMUX_PAD(0x6CC, 0x33C, 7, 0x0, 0, 0)
++#define MX53_PAD_GPIO_17__ESAI1_TX0			IOMUX_PAD(0x6D0, 0x340, 0, 0x7E4, 1, 0)
++#define MX53_PAD_GPIO_17__GPIO7_12			IOMUX_PAD(0x6D0, 0x340, 1, 0x0, 0, 0)
++#define MX53_PAD_GPIO_17__SDMA_EXT_EVENT_0		IOMUX_PAD(0x6D0, 0x340, 2, 0x868, 1, 0)
++#define MX53_PAD_GPIO_17__GPC_PMIC_RDY			IOMUX_PAD(0x6D0, 0x340, 3, 0x810, 1, 0)
++#define MX53_PAD_GPIO_17__RTC_CE_RTC_FSV_TRIG		IOMUX_PAD(0x6D0, 0x340, 4, 0x0, 0, 0)
++#define MX53_PAD_GPIO_17__SPDIF_OUT1			IOMUX_PAD(0x6D0, 0x340, 5, 0x0, 0, 0)
++#define MX53_PAD_GPIO_17__IPU_SNOOP2			IOMUX_PAD(0x6D0, 0x340, 6, 0x0, 0, 0)
++#define MX53_PAD_GPIO_17__SJC_JTAG_ACT			IOMUX_PAD(0x6D0, 0x340, 7, 0x0, 0, 0)
++#define MX53_PAD_GPIO_18__ESAI1_TX1			IOMUX_PAD(0x6D4, 0x344, 0, 0x7E8, 1, 0)
++#define MX53_PAD_GPIO_18__GPIO7_13			IOMUX_PAD(0x6D4, 0x344, 1, 0x0, 0, 0)
++#define MX53_PAD_GPIO_18__SDMA_EXT_EVENT_1		IOMUX_PAD(0x6D4, 0x344, 2, 0x86C, 1, 0)
++#define MX53_PAD_GPIO_18__OWIRE_LINE			IOMUX_PAD(0x6D4, 0x344, 3, 0x864, 1, 0)
++#define MX53_PAD_GPIO_18__RTC_CE_RTC_ALARM2_TRIG	IOMUX_PAD(0x6D4, 0x344, 4, 0x0, 0, 0)
++#define MX53_PAD_GPIO_18__CCM_ASRC_EXT_CLK		IOMUX_PAD(0x6D4, 0x344, 5, 0x768, 1, 0)
++#define MX53_PAD_GPIO_18__ESDHC1_LCTL			IOMUX_PAD(0x6D4, 0x344, 6, 0x0, 0, 0)
++#define MX53_PAD_GPIO_18__SRC_SYSTEM_RST		IOMUX_PAD(0x6D4, 0x344, 7, 0x0, 0, 0)
++
++#endif	/* __MACH_IOMUX_MX53_H__ */
+diff --git a/arch/arm/mach-imx/speed-imx53.c b/arch/arm/mach-imx/speed-imx53.c
+new file mode 100644
+index 0000000..7b099f5
+--- /dev/null
++++ b/arch/arm/mach-imx/speed-imx53.c
+@@ -0,0 +1,204 @@
++#include <common.h>
++#include <asm/io.h>
++#include <asm-generic/div64.h>
++#include <mach/imx-regs.h>
++#include "mach/clock-imx51_53.h"
++
++static u32 ccm_readl(u32 ofs)
++{
++	return readl(MX53_CCM_BASE_ADDR + ofs);
++}
++
++static unsigned long ckil_get_rate(void)
++{
++	return 32768;
++}
++
++static unsigned long osc_get_rate(void)
++{
++	return 24000000;
++}
++
++static unsigned long fpm_get_rate(void)
++{
++	return ckil_get_rate() * 512;
++}
++
++static unsigned long pll_get_rate(void __iomem *pllbase)
++{
++	long mfi, mfn, mfd, pdf, ref_clk, mfn_abs;
++	unsigned long dp_op, dp_mfd, dp_mfn, dp_ctl, pll_hfsm, dbl;
++	u64 temp;
++	unsigned long parent_rate;
++
 +	dp_ctl = readl(pllbase + MX5_PLL_DP_CTL);
- 
--	if ((dp_ctl & MX51_PLL_DP_CTL_REF_CLK_SEL_MASK) == 0)
++
 +	if ((dp_ctl & MX5_PLL_DP_CTL_REF_CLK_SEL_MASK) == 0)
- 		parent_rate = fpm_get_rate();
- 	else
- 		parent_rate = osc_get_rate();
- 
--	pll_hfsm = dp_ctl & MX51_PLL_DP_CTL_HFSM;
--	dbl = dp_ctl & MX51_PLL_DP_CTL_DPDCK0_2_EN;
++		parent_rate = fpm_get_rate();
++	else
++		parent_rate = osc_get_rate();
++
 +	pll_hfsm = dp_ctl & MX5_PLL_DP_CTL_HFSM;
 +	dbl = dp_ctl & MX5_PLL_DP_CTL_DPDCK0_2_EN;
- 
- 	if (pll_hfsm == 0) {
--		dp_op = readl(pllbase + MX51_PLL_DP_OP);
--		dp_mfd = readl(pllbase + MX51_PLL_DP_MFD);
--		dp_mfn = readl(pllbase + MX51_PLL_DP_MFN);
++
++	if (pll_hfsm == 0) {
 +		dp_op = readl(pllbase + MX5_PLL_DP_OP);
 +		dp_mfd = readl(pllbase + MX5_PLL_DP_MFD);
 +		dp_mfn = readl(pllbase + MX5_PLL_DP_MFN);
- 	} else {
--		dp_op = readl(pllbase + MX51_PLL_DP_HFS_OP);
--		dp_mfd = readl(pllbase + MX51_PLL_DP_HFS_MFD);
--		dp_mfn = readl(pllbase + MX51_PLL_DP_HFS_MFN);
++	} else {
 +		dp_op = readl(pllbase + MX5_PLL_DP_HFS_OP);
 +		dp_mfd = readl(pllbase + MX5_PLL_DP_HFS_MFD);
 +		dp_mfn = readl(pllbase + MX5_PLL_DP_HFS_MFN);
- 	}
--	pdf = dp_op & MX51_PLL_DP_OP_PDF_MASK;
--	mfi = (dp_op & MX51_PLL_DP_OP_MFI_MASK) >> MX51_PLL_DP_OP_MFI_OFFSET;
++	}
 +	pdf = dp_op & MX5_PLL_DP_OP_PDF_MASK;
 +	mfi = (dp_op & MX5_PLL_DP_OP_MFI_MASK) >> MX5_PLL_DP_OP_MFI_OFFSET;
- 	mfi = (mfi <= 5) ? 5 : mfi;
--	mfd = dp_mfd & MX51_PLL_DP_MFD_MASK;
--	mfn = mfn_abs = dp_mfn & MX51_PLL_DP_MFN_MASK;
++	mfi = (mfi <= 5) ? 5 : mfi;
 +	mfd = dp_mfd & MX5_PLL_DP_MFD_MASK;
 +	mfn = mfn_abs = dp_mfn & MX5_PLL_DP_MFN_MASK;
- 	/* Sign extend to 32-bits */
- 	if (mfn >= 0x04000000) {
- 		mfn |= 0xFC000000;
-@@ -117,11 +117,11 @@ unsigned long imx_get_uartclk(void)
- 
- 	parent_rate = pll2_sw_get_rate();
- 
--	reg = ccm_readl(MX51_CCM_CSCDR1);
--	prediv = ((reg & MX51_CCM_CSCDR1_UART_CLK_PRED_MASK) >>
--		  MX51_CCM_CSCDR1_UART_CLK_PRED_OFFSET) + 1;
--	podf = ((reg & MX51_CCM_CSCDR1_UART_CLK_PODF_MASK) >>
--		MX51_CCM_CSCDR1_UART_CLK_PODF_OFFSET) + 1;
++	/* Sign extend to 32-bits */
++	if (mfn >= 0x04000000) {
++		mfn |= 0xFC000000;
++		mfn_abs = -mfn;
++	}
++
++	ref_clk = 2 * parent_rate;
++	if (dbl != 0)
++		ref_clk *= 2;
++
++	ref_clk /= (pdf + 1);
++	temp = (u64)ref_clk * mfn_abs;
++	do_div(temp, mfd + 1);
++	if (mfn < 0)
++		temp = -temp;
++	temp = (ref_clk * mfi) + temp;
++
++	return temp;
++}
++
++static unsigned long pll1_main_get_rate(void)
++{
++	return pll_get_rate((void __iomem *)MX53_PLL1_BASE_ADDR);
++}
++
++static unsigned long pll2_sw_get_rate(void)
++{
++	return pll_get_rate((void __iomem *)MX53_PLL2_BASE_ADDR);
++}
++
++static unsigned long pll3_sw_get_rate(void)
++{
++	return pll_get_rate((void __iomem *)MX53_PLL3_BASE_ADDR);
++}
++
++static unsigned long pll4_sw_get_rate(void)
++{
++	return pll_get_rate((void __iomem *)MX53_PLL4_BASE_ADDR);
++}
++
++static unsigned long get_rate_select(int select,
++	unsigned long (* get_rate1)(void),
++	unsigned long (* get_rate2)(void),
++	unsigned long (* get_rate3)(void),
++	unsigned long (* get_rate4)(void))
++{
++	switch (select) {
++	case 0:
++		return get_rate1() ? get_rate1() : 0;
++	case 1:
++		return get_rate2() ? get_rate2() : 0;
++	case 2:
++		return get_rate3 ? get_rate3() : 0;
++	case 3:
++		return get_rate4 ? get_rate4() : 0;
++	}
++
++	return 0;
++}
++
++unsigned long imx_get_uartclk(void)
++{
++	u32 reg, prediv, podf;
++	unsigned long parent_rate;
++
++	reg = ccm_readl(MX5_CCM_CSCMR1);
++	reg &= MX5_CCM_CSCMR1_UART_CLK_SEL_MASK;
++	reg >>= MX5_CCM_CSCMR1_UART_CLK_SEL_OFFSET;
++
++	parent_rate = get_rate_select(reg,
++			pll1_main_get_rate,
++			pll2_sw_get_rate,
++			pll3_sw_get_rate,
++			pll4_sw_get_rate);
++
 +	reg = ccm_readl(MX5_CCM_CSCDR1);
 +	prediv = ((reg & MX5_CCM_CSCDR1_UART_CLK_PRED_MASK) >>
 +		  MX5_CCM_CSCDR1_UART_CLK_PRED_OFFSET) + 1;
 +	podf = ((reg & MX5_CCM_CSCDR1_UART_CLK_PODF_MASK) >>
 +		MX5_CCM_CSCDR1_UART_CLK_PODF_OFFSET) + 1;
- 
- 	return parent_rate / (prediv * podf);
- }
-@@ -130,7 +130,7 @@ static unsigned long imx_get_ahbclk(void)
- {
- 	u32 reg, div;
- 
--	reg = ccm_readl(MX51_CCM_CBCDR);
++
++	return parent_rate / (prediv * podf);
++}
++
++static unsigned long imx_get_ahbclk(void)
++{
++	u32 reg, div;
++
 +	reg = ccm_readl(MX5_CCM_CBCDR);
- 	div = ((reg >> 10) & 0x7) + 1;
- 
- 	return pll2_sw_get_rate() / div;
-@@ -140,7 +140,7 @@ unsigned long imx_get_ipgclk(void)
- {
- 	u32 reg, div;
- 
--	reg = ccm_readl(MX51_CCM_CBCDR);
++	div = ((reg >> 10) & 0x7) + 1;
++
++	return pll2_sw_get_rate() / div;
++}
++
++unsigned long imx_get_ipgclk(void)
++{
++	u32 reg, div;
++
 +	reg = ccm_readl(MX5_CCM_CBCDR);
- 	div = ((reg >> 8) & 0x3) + 1;
- 
- 	return imx_get_ahbclk() / div;
-@@ -160,20 +160,20 @@ unsigned long imx_get_mmcclk(void)
- {
- 	u32 reg, prediv, podf, rate;
- 
--	reg = ccm_readl(MX51_CCM_CSCMR1);
--	reg &= MX51_CCM_CSCMR1_ESDHC1_MSHC1_CLK_SEL_MASK;
--	reg >>= MX51_CCM_CSCMR1_ESDHC1_MSHC1_CLK_SEL_OFFSET;
++	div = ((reg >> 8) & 0x3) + 1;
++
++	return imx_get_ahbclk() / div;
++}
++
++unsigned long imx_get_gptclk(void)
++{
++	return imx_get_ipgclk();
++}
++
++unsigned long imx_get_fecclk(void)
++{
++	return imx_get_ipgclk();
++}
++
++unsigned long imx_get_mmcclk(void)
++{
++	u32 reg, prediv, podf, rate;
++
 +	reg = ccm_readl(MX5_CCM_CSCMR1);
 +	reg &= MX5_CCM_CSCMR1_ESDHC1_MSHC1_CLK_SEL_MASK;
 +	reg >>= MX5_CCM_CSCMR1_ESDHC1_MSHC1_CLK_SEL_OFFSET;
- 	rate = get_rate_select(reg,
- 			pll1_main_get_rate,
- 			pll2_sw_get_rate,
- 			pll3_sw_get_rate,
- 			NULL);
- 
--	reg = ccm_readl(MX51_CCM_CSCDR1);
--	prediv = ((reg & MX51_CCM_CSCDR1_ESDHC1_MSHC1_CLK_PRED_MASK) >>
--			MX51_CCM_CSCDR1_ESDHC1_MSHC1_CLK_PRED_OFFSET) + 1;
--	podf = ((reg & MX51_CCM_CSCDR1_ESDHC1_MSHC1_CLK_PODF_MASK) >>
--			MX51_CCM_CSCDR1_ESDHC1_MSHC1_CLK_PODF_OFFSET) + 1;
++	rate = get_rate_select(reg,
++			pll1_main_get_rate,
++			pll2_sw_get_rate,
++			pll3_sw_get_rate,
++			pll4_sw_get_rate);
++
 +	reg = ccm_readl(MX5_CCM_CSCDR1);
 +	prediv = ((reg & MX5_CCM_CSCDR1_ESDHC1_MSHC1_CLK_PRED_MASK) >>
 +			MX5_CCM_CSCDR1_ESDHC1_MSHC1_CLK_PRED_OFFSET) + 1;
 +	podf = ((reg & MX5_CCM_CSCDR1_ESDHC1_MSHC1_CLK_PODF_MASK) >>
 +			MX5_CCM_CSCDR1_ESDHC1_MSHC1_CLK_PODF_OFFSET) + 1;
++
++	return rate / (prediv * podf);
++}
++
++void imx_dump_clocks(void)
++{
++	printf("pll1: %ld\n", pll1_main_get_rate());
++	printf("pll2: %ld\n", pll2_sw_get_rate());
++	printf("pll3: %ld\n", pll3_sw_get_rate());
++	printf("pll4: %ld\n", pll4_sw_get_rate());
++	printf("uart: %ld\n", imx_get_uartclk());
++	printf("ipg:  %ld\n", imx_get_ipgclk());
++	printf("fec:  %ld\n", imx_get_fecclk());
++	printf("gpt:  %ld\n", imx_get_gptclk());
++}
+diff --git a/drivers/mci/Kconfig b/drivers/mci/Kconfig
+index 7b71b99..0d5a0e0 100644
+--- a/drivers/mci/Kconfig
++++ b/drivers/mci/Kconfig
+@@ -55,7 +55,7 @@ config MCI_IMX
  
- 	return rate / (prediv * podf);
- }
+ config MCI_IMX_ESDHC
+ 	bool "i.MX esdhc"
+-	depends on ARCH_IMX25 || ARCH_IMX35 || ARCH_IMX51
++	depends on ARCH_IMX25 || ARCH_IMX35 || ARCH_IMX51 || ARCH_IMX53
+ 	help
+ 	  Enable this entry to add support to read and write SD cards on a
+ 	  Freescale i.MX25/35/51 based system.
+diff --git a/drivers/serial/serial_imx.c b/drivers/serial/serial_imx.c
+index 8593efe..e3edac9 100644
+--- a/drivers/serial/serial_imx.c
++++ b/drivers/serial/serial_imx.c
+@@ -161,7 +161,8 @@
+ # define	UCR4_VAL UCR4_CTSTL_32
+ #endif
+ #if defined CONFIG_ARCH_IMX31 || defined CONFIG_ARCH_IMX35 || \
+-	defined CONFIG_ARCH_IMX25 || defined CONFIG_ARCH_IMX51
++	defined CONFIG_ARCH_IMX25 || defined CONFIG_ARCH_IMX51 || \
++	defined CONFIG_ARCH_IMX53
+ # define	UCR1_VAL (0)
+ # define	UCR3_VAL (0x700 | UCR3_RXDMUXSEL)
+ # define	UCR4_VAL UCR4_CTSTL_32
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index a88e179..9ab03f6 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -16,7 +16,7 @@ config DRIVER_SPI_IMX_0_0
+ 
+ config DRIVER_SPI_IMX_2_3
+ 	bool
+-	depends on ARCH_IMX51
++	depends on ARCH_IMX51 || ARCH_IMX53
+ 	default y
+ 
+ endmenu
+diff --git a/drivers/spi/imx_spi.c b/drivers/spi/imx_spi.c
+index bbe2789..6dc41b9 100644
+--- a/drivers/spi/imx_spi.c
++++ b/drivers/spi/imx_spi.c
+@@ -373,7 +373,7 @@ static int imx_spi_probe(struct device_d *dev)
+ 		version = SPI_IMX_VER_0_0;
+ #endif
+ #ifdef CONFIG_DRIVER_SPI_IMX_2_3
+-	if (cpu_is_mx51())
++	if (cpu_is_mx51() || cpu_is_mx53())
+ 		version = SPI_IMX_VER_2_3;
+ #endif
+ 	imx->chipselect = spi_imx_devtype_data[version].chipselect;
+diff --git a/include/asm-generic/barebox.lds.h b/include/asm-generic/barebox.lds.h
+index 2d1dc41..842e52c 100644
+--- a/include/asm-generic/barebox.lds.h
++++ b/include/asm-generic/barebox.lds.h
+@@ -1,5 +1,5 @@
+ 
+-#if defined CONFIG_ARCH_IMX25 || defined CONFIG_ARCH_IMX35 || defined CONFIG_ARCH_IMX51 || defined CONFIG_X86
++#if defined CONFIG_ARCH_IMX25 || defined CONFIG_ARCH_IMX35 || defined CONFIG_ARCH_IMX51 || defined CONFIG_ARCH_IMX53 || defined CONFIG_X86
+ #include <mach/barebox.lds.h>
+ #endif
+ 
 -- 
 1.7.5.4
 
