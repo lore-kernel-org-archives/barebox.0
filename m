@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QmNTj-0000qP-E0
-	for barebox@lists.infradead.org; Thu, 28 Jul 2011 10:06:08 +0000
+	id 1QmNTj-0000qN-EP
+	for barebox@lists.infradead.org; Thu, 28 Jul 2011 10:06:09 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 28 Jul 2011 12:06:00 +0200
-Message-Id: <1311847560-22946-5-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 28 Jul 2011 12:05:58 +0200
+Message-Id: <1311847560-22946-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1311847560-22946-1-git-send-email-s.hauer@pengutronix.de>
 References: <1311847560-22946-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,49 +21,122 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] ARM i.MX51 babbage: set fec ethernet address from IIM
+Subject: [PATCH 2/4] net: Add a possibility for boards to give network devices
+	a MAC address
 To: barebox@lists.infradead.org
+
+MAC addresses are sometimes stored at unusual places. This
+patch makes it possible to give a MAC address to a ethernet
+device id. This is independent of the device actually being
+present.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/freescale-mx51-pdk/board.c |    5 ++++-
- 1 files changed, 4 insertions(+), 1 deletions(-)
+ include/net.h |    6 +++++
+ net/eth.c     |   59 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 64 insertions(+), 1 deletions(-)
 
-diff --git a/arch/arm/boards/freescale-mx51-pdk/board.c b/arch/arm/boards/freescale-mx51-pdk/board.c
-index d0b8b89..c763719 100644
---- a/arch/arm/boards/freescale-mx51-pdk/board.c
-+++ b/arch/arm/boards/freescale-mx51-pdk/board.c
-@@ -19,7 +19,6 @@
+diff --git a/include/net.h b/include/net.h
+index 31bf6a2..7fee6fe 100644
+--- a/include/net.h
++++ b/include/net.h
+@@ -57,6 +57,12 @@ int eth_send(void *packet, int length);	   /* Send a packet		*/
+ int eth_rx(void);			/* Check for received packets	*/
+ void eth_halt(void);			/* stop SCC			*/
+ 
++/* associate a MAC address to a ethernet device. Should be called by
++ * board code for boards which store their MAC address at some unusual
++ * place.
++ */
++void eth_register_ethaddr(int ethid, const char *ethaddr);
++
+ /*
+  *	Ethernet header
   */
+diff --git a/net/eth.c b/net/eth.c
+index c5b346c..2a801f5 100644
+--- a/net/eth.c
++++ b/net/eth.c
+@@ -34,6 +34,52 @@ static struct eth_device *eth_current;
  
- #include <common.h>
--#include <net.h>
- #include <init.h>
- #include <environment.h>
- #include <mach/imx-regs.h>
-@@ -40,6 +39,7 @@
- #include <mach/generic.h>
- #include <mach/iomux-mx51.h>
- #include <mach/devices-imx51.h>
-+#include <mach/iim.h>
+ static LIST_HEAD(netdev_list);
  
- static struct fec_platform_data fec_info = {
- 	.xcv_type = MII100,
-@@ -230,11 +230,14 @@ static void babbage_power_init(void)
- static int f3s_devices_init(void)
++struct eth_ethaddr {
++	struct list_head list;
++	u8 ethaddr[6];
++	int ethid;
++};
++
++static LIST_HEAD(ethaddr_list);
++
++static int eth_get_registered_ethaddr(int ethid, void *buf)
++{
++	struct eth_ethaddr *addr;
++
++	list_for_each_entry(addr, &ethaddr_list, list) {
++		if (addr->ethid == ethid) {
++			memcpy(buf, addr->ethaddr, 6);
++			return 0;
++		}
++	}
++	return -EINVAL;
++}
++
++static void eth_drop_ethaddr(int ethid)
++{
++	struct eth_ethaddr *addr, *tmp;
++
++	list_for_each_entry_safe(addr, tmp, &ethaddr_list, list) {
++		if (addr->ethid == ethid) {
++			list_del(&addr->list);
++			free(addr);
++			return;
++		}
++	}
++}
++
++void eth_register_ethaddr(int ethid, const char *ethaddr)
++{
++	struct eth_ethaddr *addr;
++
++	eth_drop_ethaddr(ethid);
++
++	addr = xzalloc(sizeof(*addr));
++	addr->ethid = ethid;
++	memcpy(addr->ethaddr, ethaddr, 6);
++	list_add_tail(&addr->list, &ethaddr_list);
++}
++
+ void eth_set_current(struct eth_device *eth)
  {
- 	struct device_d *sdram_dev;
-+
- 	babbage_mmu_init();
+ 	if (eth_current && eth_current->active) {
+@@ -144,6 +190,7 @@ int eth_register(struct eth_device *edev)
+         struct device_d *dev = &edev->dev;
+ 	unsigned char ethaddr_str[20];
+ 	unsigned char ethaddr[6];
++	int ret, found = 0;
  
- 	sdram_dev = add_mem_device("ram0", 0x90000000, 512 * 1024 * 1024,
- 				   IORESOURCE_MEM_WRITEABLE);
- 	armlinux_add_dram(sdram_dev);
-+
-+	imx51_iim_register_fec_ethaddr();
- 	imx51_add_fec(&fec_info);
- 	imx51_add_mmc0(NULL);
+ 	if (!edev->get_ethaddr) {
+ 		dev_err(dev, "no get_mac_address found for current eth device\n");
+@@ -165,7 +212,17 @@ int eth_register(struct eth_device *edev)
  
+ 	list_add_tail(&edev->list, &netdev_list);
+ 
+-	if (edev->get_ethaddr(edev, ethaddr) == 0) {
++	ret = eth_get_registered_ethaddr(dev->id, ethaddr);
++	if (!ret)
++		found = 1;
++
++	if (!found) {
++		ret = edev->get_ethaddr(edev, ethaddr);
++		if (!ret)
++			found = 1;
++	}
++
++	if (found) {
+ 		ethaddr_to_string(ethaddr, ethaddr_str);
+ 		if (is_valid_ether_addr(ethaddr)) {
+ 			dev_info(dev, "got MAC address from EEPROM: %s\n", ethaddr_str);
 -- 
 1.7.5.4
 
