@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.x-arc.co.uk ([217.6.246.34] helo=root.phytec.de)
-	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1QmQQ1-0002va-LH
-	for barebox@lists.infradead.org; Thu, 28 Jul 2011 13:14:30 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
-	by root.phytec.de (Postfix) with ESMTP id B7F4FBF0E6
-	for <barebox@lists.infradead.org>;
-	Thu, 28 Jul 2011 15:17:53 +0200 (CEST)
-From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
-Date: Thu, 28 Jul 2011 15:14:14 +0200
-Message-Id: <1311858854-23434-2-git-send-email-t.gamez@phytec.de>
-In-Reply-To: <1311858854-23434-1-git-send-email-t.gamez@phytec.de>
-References: <1311858854-23434-1-git-send-email-t.gamez@phytec.de>
+Received: from mail-fx0-f49.google.com ([209.85.161.49])
+	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+	id 1QmQRF-0002xf-5h
+	for barebox@lists.infradead.org; Thu, 28 Jul 2011 13:15:46 +0000
+Received: by fxd20 with SMTP id 20so1490418fxd.36
+	for <barebox@lists.infradead.org>; Thu, 28 Jul 2011 06:15:38 -0700 (PDT)
+Message-ID: <4E3160F6.3090105@googlemail.com>
+Date: Thu, 28 Jul 2011 15:15:34 +0200
+From: Andre Naujoks <nautsch2@googlemail.com>
 MIME-Version: 1.0
+References: <4E2EC796.7070408@googlemail.com> <4E2ECD3A.1060509@pengutronix.de>
+	<4E2FB2D8.4000306@googlemail.com> <4E2FDF54.6000804@googlemail.com>
+	<20110728115234.GV20587@pengutronix.de>
+In-Reply-To: <20110728115234.GV20587@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,37 +21,94 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] ARM pcm043: Use PDR0 to change cpu freq
-To: barebox@lists.infradead.org
+Subject: Re: barebox compilation with gcc 4.5.2 and ptxdist
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-SW5zdGVhZCBvZiBjaGFuZ2luZyB0aGUgTVBDVEwgdG8gc2V0IGFuIG90aGVyIGNwdSBmcmVxdWVu
-Y3ksCnVzZSB0aGUgcG9zdCBkaXZpZGVyLgoKVGhpcyBwcmV2ZW50cyBmcmVlemluZyB3aGVuIGNo
-YW5naW5nIHRoZSBjbG9jayBmcm9tIDM5OU1IeiB0byA1MzJNSHouCgpTaWduZWQtb2ZmLWJ5OiBU
-ZXJlc2EgR8OhbWV6IDx0LmdhbWV6QHBoeXRlYy5kZT4KLS0tCiBhcmNoL2FybS9ib2FyZHMvcGNt
-MDQzL3BjbTA0My5jIHwgICAgOCArKysrLS0tLQogMSBmaWxlcyBjaGFuZ2VkLCA0IGluc2VydGlv
-bnMoKyksIDQgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL3BjbTA0
-My9wY20wNDMuYyBiL2FyY2gvYXJtL2JvYXJkcy9wY20wNDMvcGNtMDQzLmMKaW5kZXggM2JkNjQw
-Mi4uODYyOWFlNiAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vYm9hcmRzL3BjbTA0My9wY20wNDMuYwor
-KysgYi9hcmNoL2FybS9ib2FyZHMvcGNtMDQzL3BjbTA0My5jCkBAIC0zMDgsOCArMzA4LDggQEAg
-c3RhdGljIGludCBwY20wNDNfY29yZV9zZXR1cCh2b2lkKQogCiBjb3JlX2luaXRjYWxsKHBjbTA0
-M19jb3JlX3NldHVwKTsKIAotI2RlZmluZSBNUENUTF9QQVJBTV8zOTkgICAgIChJTVhfUExMX1BE
-KDApIHwgSU1YX1BMTF9NRkQoMTUpIHwgSU1YX1BMTF9NRkkoOCkgfCBJTVhfUExMX01GTig1KSkK
-LSNkZWZpbmUgTVBDVExfUEFSQU1fNTMyICAgICAoKDEgPDwgMzEpIHwgSU1YX1BMTF9QRCgwKSB8
-IElNWF9QTExfTUZEKDExKSB8IElNWF9QTExfTUZJKDExKSB8IElNWF9QTExfTUZOKDEpKQorI2Rl
-ZmluZQlDQ01fUERSMF9QQVJBTV8zOTkJKCgxIDw8IDEyKSB8ICgxIDw8IDE2KSkKKyNkZWZpbmUJ
-Q0NNX1BEUjBfUEFSQU1fNTMyCSgxIDw8IDEyKQogCiBzdGF0aWMgaW50IGRvX2NwdWZyZXEoc3Ry
-dWN0IGNvbW1hbmQgKmNtZHRwLCBpbnQgYXJnYywgY2hhciAqYXJndltdKQogewpAQCAtMzIyLDEw
-ICszMjIsMTAgQEAgc3RhdGljIGludCBkb19jcHVmcmVxKHN0cnVjdCBjb21tYW5kICpjbWR0cCwg
-aW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkKIAogCXN3aXRjaCAoZnJlcSkgewogCWNhc2UgMzk5Ogot
-CQl3cml0ZWwoTVBDVExfUEFSQU1fMzk5LCBJTVhfQ0NNX0JBU0UgKyBDQ01fTVBDVEwpOworCQl3
-cml0ZWwoQ0NNX1BEUjBfUEFSQU1fMzk5LCBJTVhfQ0NNX0JBU0UgKyBDQ01fUERSMCk7CiAJCWJy
-ZWFrOwogCWNhc2UgNTMyOgotCQl3cml0ZWwoTVBDVExfUEFSQU1fNTMyLCBJTVhfQ0NNX0JBU0Ug
-KyBDQ01fTVBDVEwpOworCQl3cml0ZWwoQ0NNX1BEUjBfUEFSQU1fNTMyLCBJTVhfQ0NNX0JBU0Ug
-KyBDQ01fUERSMCk7CiAJCWJyZWFrOwogCWRlZmF1bHQ6CiAJCXJldHVybiBDT01NQU5EX0VSUk9S
-X1VTQUdFOwotLSAKMS43LjAuNAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFk
-Lm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Am 28.07.2011 13:52, schrieb Sascha Hauer:
+> On Wed, Jul 27, 2011 at 11:50:12AM +0200, Andre Naujoks wrote:
+>> Am 27.07.2011 08:40, schrieb Andre Naujoks:
+>>> Am 26.07.2011 16:20, schrieb Marc Kleine-Budde:
+>>>> On 07/26/2011 03:56 PM, Andre Naujoks wrote:
+>>>>> Hello.
+>>>>>
+>>>>> We are currently trying to compile a barebox with the git version of
+>>>>> ptxdist and the git version of the OSELAS generic Toolchain for powerpc.
+>>>>>
+>>>>> Also the current 2011.07.0 release of barebox.
+>>>>>
+>>>>> We are having some problems during the build, which I think are a result
+>>>>> of some changes in gcc's optimizations (since 4.4.something). GCC uses
+>>>>> some functions on the ppc platform to optimze the size of the resulting
+>>>>> binary, which are only present in the libgcc.a.
+>>>>>
+>>>>> The compile stage works fine up tp the last linker step:
+>>>>>
+>>>>>   CC      arch/ppc/lib/time.o
+>>>>>   AS      arch/ppc/lib/misc.o
+>>>>>   CC      arch/ppc/lib/ppclinux.o
+>>>>>   CC      arch/ppc/lib/board_data.o
+>>>>>   LD      arch/ppc/lib/built-in.o
+>>>>>   LD      barebox
+>>>>> common/built-in.o: In function `mapset':
+>>>>> hush.c:(.text.mapset+0x44): undefined reference to `_restgpr_30_x'
+>>>>> common/built-in.o: In function `syntax_err':
+>>>>> hush.c:(.text.syntax_err+0x34): undefined reference to `_restgpr_30_x'
+>>>>> common/built-in.o: In function `done_command':
+>>>>> hush.c:(.text.done_command+0x94): undefined reference to `_restgpr_29_x'
+>>>>> common/built-in.o: In function `done_pipe':
+>>>>> hush.c:(.text.done_pipe+0x5c): undefined reference to `_restgpr_29_x'
+>>>>> common/built-in.o: In function `is_assignment':
+>>>>> hush.c:(.text.is_assignment+0x8c): undefined reference to `_restgpr_27_x'
+>>>>> common/built-in.o: In function `b_addchr':
+>>>>> hush.c:(.text.b_addchr+0x8c): undefined reference to `_restgpr_28_x'
+>>>>> common/built-in.o: In function `b_addqchr':
+>>>>> hush.c:(.text.b_addqchr+0x78): undefined reference to `_restgpr_29_x'
+>>>>> ...
+>>>>>
+>>>>>
+>>>>> This goes on for a few pages.
+>>>>>
+>>>>> As far as I can see, the possibilities I have here, is to either
+>>>>> integrate the missing functions out of the gcc sources into barebox, or
+>>>>> make barebox link with libgcc, which seems surprisingly difficult, due
+>>>>> to the unfamiliar (to me) build process. A simple LDFLAGS_barebox+=-l..
+>>>>> -L.. did not help here.
+>>>>>
+>>>>> Am I right with this assumption, or am I missing something else here?
+>>>>
+>>>> We don't want to link barebox against libgcc, that's bad style. I
+>>>> suggest to port arch/powerpc/lib/crtsavres.S from the linux kernel to
+>>>> barebox.
+>>>
+>>> Thanks. I will give this a shot and see how far I get. If it works I
+>>> will come back with a patch.
+>>
+>> Hi.
+>>
+>> With a little help from a collegue, we came up with the patches in the
+>> followong mails. Basically the kernel files without the 64 bit parts.
+>>
+>> The second patch was another part of libgcc, which seemed to fit best in
+>> the misc.S file, which was already present.
+> 
+> Applied to -master.
+
+Thats great. Thanks!
+
+Andre
+
+> 
+> Thanks
+>  Sascha
+> 
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
