@@ -1,20 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 19.mo4.mail-out.ovh.net ([87.98.179.66]
-	helo=mo4.mail-out.ovh.net)
-	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1QmHVy-0005Vk-9w
-	for barebox@lists.infradead.org; Thu, 28 Jul 2011 03:44:03 +0000
-Received: from mail182.ha.ovh.net (b6.ovh.net [213.186.33.56])
-	by mo4.mail-out.ovh.net (Postfix) with SMTP id 4BEC8FF92E4
-	for <barebox@lists.infradead.org>;
-	Thu, 28 Jul 2011 05:44:47 +0200 (CEST)
-Date: Thu, 28 Jul 2011 05:26:28 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20110728032628.GO10037@game.jcrosoft.org>
-References: <tencent_007DD9B267EFA78546EC81C6@qq.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <tencent_007DD9B267EFA78546EC81C6@qq.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+	id 1QmLUB-0007fl-Oi
+	for barebox@lists.infradead.org; Thu, 28 Jul 2011 07:58:30 +0000
+Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+	(envelope-from <sha@pengutronix.de>) id 1QmLU5-0003hS-KY
+	for barebox@lists.infradead.org; Thu, 28 Jul 2011 09:58:21 +0200
+Received: from sha by octopus.hi.pengutronix.de with local (Exim 4.76)
+	(envelope-from <sha@pengutronix.de>) id 1QmLU5-0002pO-JR
+	for barebox@lists.infradead.org; Thu, 28 Jul 2011 09:58:21 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 28 Jul 2011 09:58:15 +0200
+Message-Id: <1311839900-10389-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,28 +21,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: mtd debug patch
-To: =?utf-8?B?5paX56C06IuN56m3?= <154554381@qq.com>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: fixes for -next
+To: barebox@lists.infradead.org
 
-SEksCgpwbGVhc2Ugbm8gSFRNTApPbiAxMDo0MSBUaHUgMjggSnVsICAgICAsIOaWl+egtOiLjeep
-tyB3cm90ZToKPiAgICBGcm9tIDk3ZjY1ZmYyMjAwN2Y3ZTMwMDNjMzMzNTg2ZDdiZmEyZDM3ZjYy
-NjggTW9uIFNlcCAxNyAwMDowMDowMCAyMDAxCj4gICAgRnJvbTogYnl0ZW1hbiA8d2FuZ2NoZW4y
-MDExQGdtYWlsLmNvbT4KcGxlYXNlIHVzZSBhIHJlYWwgbmFtZQo+ICAgIERhdGU6IFRodSwgMjgg
-SnVsIDIwMTEgMTA6NDA6MTIgKzA4MDAKPiAgICBTdWJqZWN0OiBbUEFUQ0hdIG10ZCBkZWJ1ZyBt
-ZXNzYWdlIHBhdGNoCgpTT0IgaGVyZT4gCj4gICAgLS0tCj4gICAgIGNvbW1vbi9LY29uZmlnIHwg
-ICAxMyArKysrKysrKysrKystCj4gICAgIDEgZmlsZXMgY2hhbmdlZCwgMTIgaW5zZXJ0aW9ucygr
-KSwgMSBkZWxldGlvbnMoLSkKPiAKPiAgICBkaWZmIC0tZ2l0IGEvY29tbW9uL0tjb25maWcgYi9j
-b21tb24vS2NvbmZpZwo+ICAgIGluZGV4IDdkMjM2N2IuLmJjM2E1NzYgMTAwNjQ0Cj4gICAgLS0t
-IGEvY29tbW9uL0tjb25maWcKPiAgICArKysgYi9jb21tb24vS2NvbmZpZwo+ICAgIEBAIC00ODEs
-NSArNDgxLDE2IEBAIGNvbmZpZyBFTkFCTEVfREVWSUNFX05PSVNFCj4gICAgICBwcm9tcHQgInZl
-cmJvc2UgZGV2aWNlIGhhbmRsaW5nIgo+ICAgICAgaGVscAo+ICAgICAgICBFbmFibGUgdGhpcyB0
-byBnZXQgbm9pc3kgZGV2aWNlIGhhbmRsaW5nIHJvdXRpbmVzCj4gICAgLQo+ICAgICtjb25maWcg
-TVREX0RFQlVHCnBsZWFzZSBtb3ZlIHRoaXMgdG8gZHJpdmVycy9tdGQKCkJlc3QgUmVnYXJkcywK
-Si4KCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVi
-b3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMu
-aW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+The following has some cleanups and fixes for next.
+
+3/5 fixes a longstanding bug in barebox which possibly affected
+everyone. It triggered for me when Jean-Christophe moved some
+files around to drivers/base. This changed the link order and
+then some data in the fec driver got corrupted which then stopped
+working. This one is also intended to go to master.
+The other patches fix some regression introduced in the next branch.
+
+Sascha Hauer (5):
+      net: remove unused fields from struct eth_device
+      ARM i.MX: Add missing cpu_is_mx53()
+      Fix memory corruption bug in dev_id()
+      fix typo
+      mci: do not use unitialized resource
+
+ arch/arm/mach-imx/include/mach/generic.h |    6 ++++++
+ drivers/base/driver.c                    |    4 ++--
+ drivers/mci/mci-core.c                   |    3 +--
+ include/driver.h                         |    2 +-
+ include/net.h                            |    2 --
+ 5 files changed, 10 insertions(+), 7 deletions(-)
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
