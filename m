@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QmQqm-0004CV-Hu
-	for barebox@lists.infradead.org; Thu, 28 Jul 2011 13:42:11 +0000
+	id 1QmQqm-0004CS-GA
+	for barebox@lists.infradead.org; Thu, 28 Jul 2011 13:42:09 +0000
+Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+	(envelope-from <sha@pengutronix.de>) id 1QmQqk-0007ly-8O
+	for barebox@lists.infradead.org; Thu, 28 Jul 2011 15:42:06 +0200
+Received: from sha by octopus.hi.pengutronix.de with local (Exim 4.76)
+	(envelope-from <sha@pengutronix.de>) id 1QmQqk-0007lm-6n
+	for barebox@lists.infradead.org; Thu, 28 Jul 2011 15:42:06 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 28 Jul 2011 15:41:56 +0200
-Message-Id: <1311860524-28566-4-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1311860524-28566-1-git-send-email-s.hauer@pengutronix.de>
-References: <1311860524-28566-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 28 Jul 2011 15:41:53 +0200
+Message-Id: <1311860524-28566-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,74 +26,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/11] serial pl010: get rid of map_base
+Subject: more switches to resources
 To: barebox@lists.infradead.org
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/serial/serial_pl010.c |   11 ++++++-----
- 1 files changed, 6 insertions(+), 5 deletions(-)
+Sascha Hauer (11):
+      serial netx: get rid of map_base
+      serial s3c: get rid of map_base
+      serial pl010: get rid of map_base
+      serial stm: get rid of map_base
+      serial mpc5xxx: get rid of map_base
+      smc911x: use dev_* instead of printf
+      smc911x: switch to use resources
+      smc911x: embed eth_device into priv
+      ARM pcm037: Fix wrong sdram base
+      smc91111: switch to resources
+      fec_mpc5200: switch to resources
 
-diff --git a/drivers/serial/serial_pl010.c b/drivers/serial/serial_pl010.c
-index 7923ebb..9f7b7d3 100644
---- a/drivers/serial/serial_pl010.c
-+++ b/drivers/serial/serial_pl010.c
-@@ -37,7 +37,7 @@
- 
- static int pl010_setbaudrate(struct console_device *cdev, int baudrate)
- {
--	struct pl010_struct *pl010 = (struct pl010_struct *)cdev->dev->map_base;
-+	struct pl010_struct *pl010 = cdev->dev->priv;
- 	unsigned int divisor;
- 
- 	switch (baudrate) {
-@@ -76,7 +76,7 @@ static int pl010_setbaudrate(struct console_device *cdev, int baudrate)
- 
- static int pl010_init_port(struct console_device *cdev)
- {
--	struct pl010_struct *pl010 = (struct pl010_struct *)cdev->dev->map_base;
-+	struct pl010_struct *pl010 = cdev->dev->priv;
- 
- 	/*
- 	 * First, disable everything.
-@@ -99,7 +99,7 @@ static int pl010_init_port(struct console_device *cdev)
- 
- static void pl010_putc(struct console_device *cdev, char c)
- {
--	struct pl010_struct *pl010 = (struct pl010_struct *)cdev->dev->map_base;
-+	struct pl010_struct *pl010 = cdev->dev->priv;
- 
- 	/* Wait until there is space in the FIFO */
- 	while (readl(&pl010->flag) & UART_PL010_FR_TXFF)
-@@ -111,7 +111,7 @@ static void pl010_putc(struct console_device *cdev, char c)
- 
- static int pl010_getc(struct console_device *cdev)
- {
--	struct pl010_struct *pl010 = (struct pl010_struct *)cdev->dev->map_base;
-+	struct pl010_struct *pl010 = cdev->dev->priv;
- 	unsigned int data;
- 
- 	/* Wait until there is data in the FIFO */
-@@ -132,7 +132,7 @@ static int pl010_getc(struct console_device *cdev)
- 
- static int pl010_tstc(struct console_device *cdev)
- {
--	struct pl010_struct *pl010 = (struct pl010_struct *)cdev->dev->map_base;
-+	struct pl010_struct *pl010 = cdev->dev->priv;
- 
- 	return !(readl(&pl010->flag) & UART_PL010_FR_RXFE);
- }
-@@ -143,6 +143,7 @@ static int pl010_probe(struct device_d *dev)
- 
- 	cdev = xmalloc(sizeof(struct console_device));
- 	dev->type_data = cdev;
-+	dev->priv = dev_request_mem_region(dev, 0);
- 	cdev->dev = dev;
- 	cdev->f_caps = CONSOLE_STDIN | CONSOLE_STDOUT | CONSOLE_STDERR;
- 	cdev->tstc = pl010_tstc;
--- 
-1.7.5.4
-
+ arch/arm/boards/pcm037/pcm037.c |    2 +-
+ drivers/net/cs8900.c            |    2 +-
+ drivers/net/fec_mpc5200.c       |    2 +-
+ drivers/net/smc91111.c          |    2 +-
+ drivers/net/smc911x.c           |   42 ++++++++---------
+ drivers/serial/serial_mpc5xxx.c |   11 +++--
+ drivers/serial/serial_netx.c    |   37 ++++++++-------
+ drivers/serial/serial_pl010.c   |   11 +++--
+ drivers/serial/serial_s3c24x0.c |   31 ++++++++-----
+ drivers/serial/stm-serial.c     |   94 ++++++++++++++++++++-------------------
+ 10 files changed, 122 insertions(+), 112 deletions(-)
 
 _______________________________________________
 barebox mailing list
