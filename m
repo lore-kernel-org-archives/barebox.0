@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 14.mo4.mail-out.ovh.net ([46.105.40.29]
+Received: from 4.mo4.mail-out.ovh.net ([178.32.98.131]
 	helo=mo4.mail-out.ovh.net)
 	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1Qmpl0-0005s8-JD
-	for barebox@lists.infradead.org; Fri, 29 Jul 2011 16:17:53 +0000
+	id 1Qmpl0-0005sD-9D
+	for barebox@lists.infradead.org; Fri, 29 Jul 2011 16:17:54 +0000
 Received: from mail182.ha.ovh.net (b6.ovh.net [213.186.33.56])
-	by mo4.mail-out.ovh.net (Postfix) with SMTP id 5C876FFA717
+	by mo4.mail-out.ovh.net (Postfix) with SMTP id 2EB45FFA7D9
 	for <barebox@lists.infradead.org>;
-	Fri, 29 Jul 2011 18:18:39 +0200 (CEST)
+	Fri, 29 Jul 2011 18:18:40 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 29 Jul 2011 17:59:38 +0200
-Message-Id: <1311955207-22372-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri, 29 Jul 2011 17:59:43 +0200
+Message-Id: <1311955207-22372-6-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <20110729155356.GF25658@game.jcrosoft.org>
 References: <20110729155356.GF25658@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
@@ -26,35 +26,135 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/23] eukrea_cpuimx35: fix warning: 'usbotg_dev' defined but
-	not used
+Subject: [PATCH 3/7] dm9000: replace DM9000_WIDTH_8/16/32 by
+	IORESOURCE_MEM_8/16/32BIT
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c |    2 ++
- 1 files changed, 2 insertions(+), 0 deletions(-)
+ arch/arm/boards/at91sam9261ek/init.c |    2 +-
+ arch/arm/boards/mini2440/mini2440.c  |    2 +-
+ arch/arm/boards/pm9261/init.c        |    2 +-
+ arch/arm/boards/scb9328/scb9328.c    |    2 +-
+ drivers/net/dm9000.c                 |   12 ++++++------
+ include/dm9000.h                     |    4 ----
+ 6 files changed, 10 insertions(+), 14 deletions(-)
 
-diff --git a/arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c b/arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c
-index d1de495..7f941cc 100644
---- a/arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c
-+++ b/arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c
-@@ -126,6 +126,7 @@ static struct device_d usbh2_dev = {
+diff --git a/arch/arm/boards/at91sam9261ek/init.c b/arch/arm/boards/at91sam9261ek/init.c
+index 4009523..812b399 100644
+--- a/arch/arm/boards/at91sam9261ek/init.c
++++ b/arch/arm/boards/at91sam9261ek/init.c
+@@ -89,7 +89,7 @@ static void ek_add_device_nand(void)
+  */
+ #if defined(CONFIG_DRIVER_NET_DM9000)
+ static struct dm9000_platform_data dm9000_data = {
+-	.buswidth	= DM9000_WIDTH_16,
++	.buswidth	= IORESOURCE_MEM_16BIT,
+ 	.srom		= 0,
  };
- #endif
  
-+#ifdef CONFIG_USB_GADGET
- static struct fsl_usb2_platform_data usb_pdata = {
- 	.operating_mode	= FSL_USB2_DR_DEVICE,
- 	.phy_mode	= FSL_USB2_PHY_UTMI,
-@@ -137,6 +138,7 @@ static struct device_d usbotg_dev = {
- 	.size     = 0x200,
- 	.platform_data = &usb_pdata,
+diff --git a/arch/arm/boards/mini2440/mini2440.c b/arch/arm/boards/mini2440/mini2440.c
+index 2d27b00..634e035 100644
+--- a/arch/arm/boards/mini2440/mini2440.c
++++ b/arch/arm/boards/mini2440/mini2440.c
+@@ -63,7 +63,7 @@ static struct device_d nand_dev = {
+  * Area 2: Offset 0x304...0x307
+  */
+ static struct dm9000_platform_data dm9000_data = {
+-	.buswidth = DM9000_WIDTH_16,
++	.buswidth = IORESOURCE_MEM_16BIT,
+ 	.srom     = 1,
  };
-+#endif
  
- #ifdef CONFIG_MMU
- static int eukrea_cpuimx35_mmu_init(void)
+diff --git a/arch/arm/boards/pm9261/init.c b/arch/arm/boards/pm9261/init.c
+index 1059aec..fa21e24 100644
+--- a/arch/arm/boards/pm9261/init.c
++++ b/arch/arm/boards/pm9261/init.c
+@@ -89,7 +89,7 @@ static void pm_add_device_nand(void)
+  */
+ #if defined(CONFIG_DRIVER_NET_DM9000)
+ static struct dm9000_platform_data dm9000_data = {
+-	.buswidth	= DM9000_WIDTH_16,
++	.buswidth	= IORESOURCE_MEM_16BIT,
+ 	.srom		= 1,
+ };
+ 
+diff --git a/arch/arm/boards/scb9328/scb9328.c b/arch/arm/boards/scb9328/scb9328.c
+index d49eaff..47aa8ce 100644
+--- a/arch/arm/boards/scb9328/scb9328.c
++++ b/arch/arm/boards/scb9328/scb9328.c
+@@ -34,7 +34,7 @@
+ #include <led.h>
+ 
+ static struct dm9000_platform_data dm9000_data = {
+-	.buswidth = DM9000_WIDTH_16,
++	.buswidth = IORESOURCE_MEM_16BIT,
+ 	.srom     = 1,
+ };
+ 
+diff --git a/drivers/net/dm9000.c b/drivers/net/dm9000.c
+index b867d21..691d877 100644
+--- a/drivers/net/dm9000.c
++++ b/drivers/net/dm9000.c
+@@ -294,16 +294,16 @@ static int dm9000_eth_send (struct eth_device *edev,
+ 	writeb(DM9000_MWCMD, priv->iobase);
+ 
+ 	switch (priv->buswidth) {
+-	case DM9000_WIDTH_8:
++	case IORESOURCE_MEM_8BIT:
+ 		for (i = 0; i < length; i++)
+ 			writeb(data_ptr[i] & 0xff, priv->iodata);
+ 		break;
+-	case DM9000_WIDTH_16:
++	case IORESOURCE_MEM_16BIT:
+ 		tmplen = (length + 1) / 2;
+ 		for (i = 0; i < tmplen; i++)
+ 			writew(((u16 *)data_ptr)[i], priv->iodata);
+ 		break;
+-	case DM9000_WIDTH_32:
++	case IORESOURCE_MEM_32BIT:
+ 		tmplen = (length + 3) / 4;
+ 		for (i = 0; i < tmplen; i++)
+ 			writel(((u32 *) data_ptr)[i], priv->iodata);
+@@ -371,20 +371,20 @@ static int dm9000_eth_rx (struct eth_device *edev)
+ 	/* Move data from DM9000 */
+ 	/* Read received packet from RX SRAM */
+ 	switch (priv->buswidth) {
+-	case DM9000_WIDTH_8:
++	case IORESOURCE_MEM_8BIT:
+ 		RxStatus = readb(priv->iodata) + (readb(priv->iodata) << 8);
+ 		RxLen = readb(priv->iodata) + (readb(priv->iodata) << 8);
+ 		for (i = 0; i < RxLen; i++)
+ 			rdptr[i] = readb(priv->iodata);
+ 		break;
+-	case DM9000_WIDTH_16:
++	case IORESOURCE_MEM_16BIT:
+ 		RxStatus = readw(priv->iodata);
+ 		RxLen = readw(priv->iodata);
+ 		tmplen = (RxLen + 1) / 2;
+ 		for (i = 0; i < tmplen; i++)
+ 			((u16 *) rdptr)[i] = readw(priv->iodata);
+ 		break;
+-	case DM9000_WIDTH_32:
++	case IORESOURCE_MEM_32BIT:
+ 		tmpdata = readl(priv->iodata);
+ 		RxStatus = tmpdata;
+ 		RxLen = tmpdata >> 16;
+diff --git a/include/dm9000.h b/include/dm9000.h
+index 0991ab5..c4618f1 100644
+--- a/include/dm9000.h
++++ b/include/dm9000.h
+@@ -2,10 +2,6 @@
+ #ifndef __DM9000_H__
+ #define __DM9000_H__
+ 
+-#define DM9000_WIDTH_8		1
+-#define DM9000_WIDTH_16		2
+-#define DM9000_WIDTH_32		3
+-
+ struct dm9000_platform_data {
+ 	int buswidth;
+ 	int srom;
 -- 
 1.7.5.4
 
