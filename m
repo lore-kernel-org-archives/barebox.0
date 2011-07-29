@@ -2,15 +2,15 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 4.mo4.mail-out.ovh.net ([178.32.98.131]
 	helo=mo4.mail-out.ovh.net)
 	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1Qmpl2-0005tf-3l
-	for barebox@lists.infradead.org; Fri, 29 Jul 2011 16:17:57 +0000
+	id 1Qmpl3-0005ug-DQ
+	for barebox@lists.infradead.org; Fri, 29 Jul 2011 16:17:58 +0000
 Received: from mail182.ha.ovh.net (b6.ovh.net [213.186.33.56])
-	by mo4.mail-out.ovh.net (Postfix) with SMTP id 999BEFFA7F3
+	by mo4.mail-out.ovh.net (Postfix) with SMTP id 1E91DFFA80C
 	for <barebox@lists.infradead.org>;
-	Fri, 29 Jul 2011 18:18:40 +0200 (CEST)
+	Fri, 29 Jul 2011 18:18:41 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 29 Jul 2011 17:59:45 +0200
-Message-Id: <1311955207-22372-8-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri, 29 Jul 2011 17:59:48 +0200
+Message-Id: <1311955207-22372-11-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <20110729155356.GF25658@game.jcrosoft.org>
 References: <20110729155356.GF25658@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
@@ -26,135 +26,132 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/23] dm9000: replace DM9000_WIDTH_8/16/32 by
-	IORESOURCE_MEM_8/16/32BIT
+Subject: [PATCH 6/7] omap: switch to add_generic_device
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/boards/at91sam9261ek/init.c |    2 +-
- arch/arm/boards/mini2440/mini2440.c  |    2 +-
- arch/arm/boards/pm9261/init.c        |    2 +-
- arch/arm/boards/scb9328/scb9328.c    |    2 +-
- drivers/net/dm9000.c                 |   12 ++++++------
- include/dm9000.h                     |    4 ----
- 6 files changed, 10 insertions(+), 14 deletions(-)
+ arch/arm/boards/omap/board-beagle.c    |   30 ++++++------------------------
+ arch/arm/boards/omap/board-sdp343x.c   |    1 -
+ arch/arm/mach-omap/devices-gpmc-nand.c |   13 +++----------
+ 3 files changed, 9 insertions(+), 35 deletions(-)
 
-diff --git a/arch/arm/boards/at91sam9261ek/init.c b/arch/arm/boards/at91sam9261ek/init.c
-index 4009523..812b399 100644
---- a/arch/arm/boards/at91sam9261ek/init.c
-+++ b/arch/arm/boards/at91sam9261ek/init.c
-@@ -89,7 +89,7 @@ static void ek_add_device_nand(void)
-  */
- #if defined(CONFIG_DRIVER_NET_DM9000)
- static struct dm9000_platform_data dm9000_data = {
--	.buswidth	= DM9000_WIDTH_16,
-+	.buswidth	= IORESOURCE_MEM_16BIT,
- 	.srom		= 0,
+diff --git a/arch/arm/boards/omap/board-beagle.c b/arch/arm/boards/omap/board-beagle.c
+index adf0b94..8f868ad 100644
+--- a/arch/arm/boards/omap/board-beagle.c
++++ b/arch/arm/boards/omap/board-beagle.c
+@@ -242,14 +242,6 @@ static struct NS16550_plat serial_plat = {
+ 	.reg_write = omap_uart_write,
  };
  
-diff --git a/arch/arm/boards/mini2440/mini2440.c b/arch/arm/boards/mini2440/mini2440.c
-index 2d27b00..634e035 100644
---- a/arch/arm/boards/mini2440/mini2440.c
-+++ b/arch/arm/boards/mini2440/mini2440.c
-@@ -63,7 +63,7 @@ static struct device_d nand_dev = {
-  * Area 2: Offset 0x304...0x307
-  */
- static struct dm9000_platform_data dm9000_data = {
--	.buswidth = DM9000_WIDTH_16,
-+	.buswidth = IORESOURCE_MEM_16BIT,
- 	.srom     = 1,
- };
- 
-diff --git a/arch/arm/boards/pm9261/init.c b/arch/arm/boards/pm9261/init.c
-index 1059aec..fa21e24 100644
---- a/arch/arm/boards/pm9261/init.c
-+++ b/arch/arm/boards/pm9261/init.c
-@@ -89,7 +89,7 @@ static void pm_add_device_nand(void)
-  */
- #if defined(CONFIG_DRIVER_NET_DM9000)
- static struct dm9000_platform_data dm9000_data = {
--	.buswidth	= DM9000_WIDTH_16,
-+	.buswidth	= IORESOURCE_MEM_16BIT,
- 	.srom		= 1,
- };
- 
-diff --git a/arch/arm/boards/scb9328/scb9328.c b/arch/arm/boards/scb9328/scb9328.c
-index cf72ef4..4c0ed02 100644
---- a/arch/arm/boards/scb9328/scb9328.c
-+++ b/arch/arm/boards/scb9328/scb9328.c
-@@ -35,7 +35,7 @@
- #include <mach/devices-imx1.h>
- 
- static struct dm9000_platform_data dm9000_data = {
--	.buswidth = DM9000_WIDTH_16,
-+	.buswidth = IORESOURCE_MEM_16BIT,
- 	.srom     = 1,
- };
- 
-diff --git a/drivers/net/dm9000.c b/drivers/net/dm9000.c
-index b867d21..691d877 100644
---- a/drivers/net/dm9000.c
-+++ b/drivers/net/dm9000.c
-@@ -294,16 +294,16 @@ static int dm9000_eth_send (struct eth_device *edev,
- 	writeb(DM9000_MWCMD, priv->iobase);
- 
- 	switch (priv->buswidth) {
--	case DM9000_WIDTH_8:
-+	case IORESOURCE_MEM_8BIT:
- 		for (i = 0; i < length; i++)
- 			writeb(data_ptr[i] & 0xff, priv->iodata);
- 		break;
--	case DM9000_WIDTH_16:
-+	case IORESOURCE_MEM_16BIT:
- 		tmplen = (length + 1) / 2;
- 		for (i = 0; i < tmplen; i++)
- 			writew(((u16 *)data_ptr)[i], priv->iodata);
- 		break;
--	case DM9000_WIDTH_32:
-+	case IORESOURCE_MEM_32BIT:
- 		tmplen = (length + 3) / 4;
- 		for (i = 0; i < tmplen; i++)
- 			writel(((u32 *) data_ptr)[i], priv->iodata);
-@@ -371,20 +371,20 @@ static int dm9000_eth_rx (struct eth_device *edev)
- 	/* Move data from DM9000 */
- 	/* Read received packet from RX SRAM */
- 	switch (priv->buswidth) {
--	case DM9000_WIDTH_8:
-+	case IORESOURCE_MEM_8BIT:
- 		RxStatus = readb(priv->iodata) + (readb(priv->iodata) << 8);
- 		RxLen = readb(priv->iodata) + (readb(priv->iodata) << 8);
- 		for (i = 0; i < RxLen; i++)
- 			rdptr[i] = readb(priv->iodata);
- 		break;
--	case DM9000_WIDTH_16:
-+	case IORESOURCE_MEM_16BIT:
- 		RxStatus = readw(priv->iodata);
- 		RxLen = readw(priv->iodata);
- 		tmplen = (RxLen + 1) / 2;
- 		for (i = 0; i < tmplen; i++)
- 			((u16 *) rdptr)[i] = readw(priv->iodata);
- 		break;
--	case DM9000_WIDTH_32:
-+	case IORESOURCE_MEM_32BIT:
- 		tmpdata = readl(priv->iodata);
- 		RxStatus = tmpdata;
- 		RxLen = tmpdata >> 16;
-diff --git a/include/dm9000.h b/include/dm9000.h
-index 0991ab5..c4618f1 100644
---- a/include/dm9000.h
-+++ b/include/dm9000.h
-@@ -2,10 +2,6 @@
- #ifndef __DM9000_H__
- #define __DM9000_H__
- 
--#define DM9000_WIDTH_8		1
--#define DM9000_WIDTH_16		2
--#define DM9000_WIDTH_32		3
+-static struct device_d beagle_serial_device = {
+-	.id = -1,
+-	.name = "serial_ns16550",
+-	.map_base = OMAP_UART3_BASE,
+-	.size = 1024,
+-	.platform_data = (void *)&serial_plat,
+-};
 -
- struct dm9000_platform_data {
- 	int buswidth;
- 	int srom;
+ /**
+  * @brief UART serial port initialization - remember to enable COM clocks in
+  * arch
+@@ -259,7 +251,8 @@ static struct device_d beagle_serial_device = {
+ static int beagle_console_init(void)
+ {
+ 	/* Register the serial port */
+-	return register_device(&beagle_serial_device);
++	return !!add_generic_device("serial_ns16550", -1, NULL, OMAP_UART3_BASE, 1024,
++			   IORESOURCE_MEM, &serial_plat);
+ }
+ console_initcall(beagle_console_init);
+ #endif /* CONFIG_DRIVER_SERIAL_NS16550 */
+@@ -280,25 +273,12 @@ static struct ehci_platform_data ehci_pdata = {
+ };
+ #endif /* CONFIG_USB_EHCI_OMAP */
+ 
+-static struct device_d i2c_dev = {
+-	.id		= -1,
+-	.name		= "i2c-omap",
+-	.map_base	= OMAP_I2C1_BASE,
+-};
+-
+ static struct i2c_board_info i2c_devices[] = {
+ 	{
+ 		I2C_BOARD_INFO("twl4030", 0x48),
+ 	},
+ };
+ 
+-static struct device_d hsmmc_dev = {
+-	.id = -1,
+-	.name = "omap-hsmmc",
+-	.map_base = 0x4809C000,
+-	.size = SZ_4K,
+-};
+-
+ static int beagle_devices_init(void)
+ {
+ 	struct device_d *sdram_dev;
+@@ -310,7 +290,8 @@ static int beagle_devices_init(void)
+ 	armlinux_add_dram(sdram_dev);
+ 
+ 	i2c_register_board_info(0, i2c_devices, ARRAY_SIZE(i2c_devices));
+-	register_device(&i2c_dev);
++	add_generic_device("i2c-omap", -1, NULL, 0x4809C000, SZ_4K,
++			   IORESOURCE_MEM, NULL);
+ 
+ #ifdef CONFIG_USB_EHCI_OMAP
+ 	if (ehci_omap_init(&omap_ehci_pdata) >= 0)
+@@ -323,7 +304,8 @@ static int beagle_devices_init(void)
+ #endif
+ 	gpmc_generic_nand_devices_init(0, 16, OMAP_ECC_HAMMING_CODE_HW_ROMCODE);
+ 
+-	register_device(&hsmmc_dev);
++	add_generic_device("omap-hsmmc", -1, NULL, OMAP_I2C1_BASE, 0,
++			   IORESOURCE_MEM, NULL);
+ 
+ 	armlinux_set_bootparams((void *)0x80000100);
+ 	armlinux_set_architecture(MACH_TYPE_OMAP3_BEAGLE);
+diff --git a/arch/arm/boards/omap/board-sdp343x.c b/arch/arm/boards/omap/board-sdp343x.c
+index 04aa302..360766a 100644
+--- a/arch/arm/boards/omap/board-sdp343x.c
++++ b/arch/arm/boards/omap/board-sdp343x.c
+@@ -647,7 +647,6 @@ static int sdp3430_flash_init(void)
+ static int sdp3430_devices_init(void)
+ {
+ 	struct device_d *sdram_dev;
+-	int ret;
+ 
+ 	sdram_dev = add_mem_device("ram0", 0x80000000, 128 * 1024 * 1024,
+ 				   IORESOURCE_MEM_WRITEABLE);
+diff --git a/arch/arm/mach-omap/devices-gpmc-nand.c b/arch/arm/mach-omap/devices-gpmc-nand.c
+index c2a2b0d..bf409a7 100644
+--- a/arch/arm/mach-omap/devices-gpmc-nand.c
++++ b/arch/arm/mach-omap/devices-gpmc-nand.c
+@@ -70,15 +70,6 @@ static struct gpmc_nand_platform_data nand_plat = {
+ 	.priv = (void *)&nand_cfg,
+ };
+ 
+-/** NAND device definition */
+-static struct device_d gpmc_generic_nand_nand_device = {
+-	.id = -1,
+-	.name = "gpmc_nand",
+-	.map_base = OMAP_GPMC_BASE,
+-	.size = 1024 * 4,	/* GPMC size */
+-	.platform_data = (void *)&nand_plat,
+-};
+-
+ /**
+  * @brief gpmc_generic_nand_devices_init - init generic nand device
+  *
+@@ -99,5 +90,7 @@ int gpmc_generic_nand_devices_init(int cs, int width,
+ 
+ 	/* Configure GPMC CS before register */
+ 	gpmc_cs_config(nand_plat.cs, &nand_cfg);
+-	return register_device(&gpmc_generic_nand_nand_device);
++
++	return !!add_generic_device("gpmc_nand", -1, NULL, OMAP_GPMC_BASE, 1024 * 4,
++			   IORESOURCE_MEM, &nand_plat);
+ }
 -- 
 1.7.5.4
 
