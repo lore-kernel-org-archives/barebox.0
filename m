@@ -2,15 +2,15 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 4.mo4.mail-out.ovh.net ([178.32.98.131]
 	helo=mo4.mail-out.ovh.net)
 	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1Qmpkz-0005sA-Tg
-	for barebox@lists.infradead.org; Fri, 29 Jul 2011 16:17:52 +0000
+	id 1Qmpl0-0005sC-6U
+	for barebox@lists.infradead.org; Fri, 29 Jul 2011 16:17:53 +0000
 Received: from mail182.ha.ovh.net (b6.ovh.net [213.186.33.56])
-	by mo4.mail-out.ovh.net (Postfix) with SMTP id A0E84FFA75C
+	by mo4.mail-out.ovh.net (Postfix) with SMTP id 0FDBCFFA7CB
 	for <barebox@lists.infradead.org>;
-	Fri, 29 Jul 2011 18:18:39 +0200 (CEST)
+	Fri, 29 Jul 2011 18:18:40 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 29 Jul 2011 17:59:40 +0200
-Message-Id: <1311955207-22372-3-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri, 29 Jul 2011 17:59:42 +0200
+Message-Id: <1311955207-22372-5-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <20110729155356.GF25658@game.jcrosoft.org>
 References: <20110729155356.GF25658@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
@@ -26,7 +26,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/7] devinfo: switch to resource
+Subject: [PATCH 03/23] devinfo: switch to resource
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
@@ -35,10 +35,10 @@ Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
  1 files changed, 13 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-index 3efb538..1bb74ee 100644
+index 3069c49..4ceb346 100644
 --- a/drivers/base/driver.c
 +++ b/drivers/base/driver.c
-@@ -340,6 +340,8 @@ static int do_devinfo(struct command *cmdtp, int argc, char *argv[])
+@@ -339,6 +339,8 @@ static int do_devinfo(struct command *cmdtp, int argc, char *argv[])
  	struct device_d *dev;
  	struct driver_d *drv;
  	struct param_d *param;
@@ -47,7 +47,7 @@ index 3efb538..1bb74ee 100644
  
  	if (argc == 1) {
  		printf("devices:\n");
-@@ -360,9 +362,17 @@ static int do_devinfo(struct command *cmdtp, int argc, char *argv[])
+@@ -359,9 +361,17 @@ static int do_devinfo(struct command *cmdtp, int argc, char *argv[])
  			return -1;
  		}
  
