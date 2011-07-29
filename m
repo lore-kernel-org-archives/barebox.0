@@ -2,15 +2,15 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 18.mo4.mail-out.ovh.net ([188.165.54.143]
 	helo=mo4.mail-out.ovh.net)
 	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1QmplA-0005wv-Mo
+	id 1QmplD-0005xk-Op
 	for barebox@lists.infradead.org; Fri, 29 Jul 2011 16:18:06 +0000
 Received: from mail182.ha.ovh.net (b6.ovh.net [213.186.33.56])
-	by mo4.mail-out.ovh.net (Postfix) with SMTP id 074A3FFA7CB
+	by mo4.mail-out.ovh.net (Postfix) with SMTP id 1E67BFFA837
 	for <barebox@lists.infradead.org>;
 	Fri, 29 Jul 2011 18:18:44 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 29 Jul 2011 17:59:55 +0200
-Message-Id: <1311955207-22372-18-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri, 29 Jul 2011 17:59:56 +0200
+Message-Id: <1311955207-22372-19-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <20110729155356.GF25658@game.jcrosoft.org>
 References: <20110729155356.GF25658@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
@@ -26,69 +26,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/23] pcm030: switch to resources
+Subject: [PATCH 12/23] ipe337: switch to resources
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/ppc/boards/pcm030/pcm030.c |   30 ++++++------------------------
- 1 files changed, 6 insertions(+), 24 deletions(-)
+ arch/blackfin/boards/ipe337/ipe337.c |   20 ++++----------------
+ 1 files changed, 4 insertions(+), 16 deletions(-)
 
-diff --git a/arch/ppc/boards/pcm030/pcm030.c b/arch/ppc/boards/pcm030/pcm030.c
-index 0f09d3e..ba59bfe 100644
---- a/arch/ppc/boards/pcm030/pcm030.c
-+++ b/arch/ppc/boards/pcm030/pcm030.c
-@@ -41,19 +41,13 @@ static struct mpc5xxx_fec_platform_data fec_info = {
- 	.xcv_type = MII100,
- };
+diff --git a/arch/blackfin/boards/ipe337/ipe337.c b/arch/blackfin/boards/ipe337/ipe337.c
+index 4430f3b..ee642d1 100644
+--- a/arch/blackfin/boards/ipe337/ipe337.c
++++ b/arch/blackfin/boards/ipe337/ipe337.c
+@@ -5,13 +5,6 @@
+ #include <partition.h>
+ #include <fs.h>
  
--struct device_d eth_dev = {
--	.id		= -1,
--	.name		= "fec_mpc5xxx",
--	.map_base	= MPC5XXX_FEC,
--	.platform_data	= &fec_info,
--};
--
- static int devices_init (void)
- {
- 	add_cfi_flash_device(-1, 0xff000000, 16 * 1024 * 1024, 0);
- 	add_mem_device("ram0", 0x0, 64 * 1024 * 1024,
- 		       IORESOURCE_MEM_WRITEABLE);
--	register_device(&eth_dev);
-+	add_generic_device("fec_mpc5xxx", -1, NULL, MPC5XXX_FEC, 0,
-+			   IORESOURCE_MEM, &fec_info);
- 
- 	devfs_add_partition("nor0", 0x00f00000, 0x40000, PARTITION_FIXED, "self0");
- 	devfs_add_partition("nor0", 0x00f60000, 0x20000, PARTITION_FIXED, "env0");
-@@ -63,24 +57,12 @@ static int devices_init (void)
- 
- device_initcall(devices_init);
- 
--static struct device_d psc3 = {
+-static struct device_d smc911x_dev = {
 -	.id	  = -1,
--	.name     = "mpc5xxx_serial",
--	.map_base = MPC5XXX_PSC3,
+-	.name     = "smc911x",
+-	.map_base = 0x24000000,
 -	.size     = 4096,
 -};
 -
--static struct device_d psc6 = {
+ static int ipe337_devices_init(void) {
+ 	add_cfi_flash_device(-1, 0x20000000, 32 * 1024 * 1024, 0);
+ 	add_mem_device("ram0", 0x0, 128 * 1024 * 1024,
+@@ -23,7 +16,8 @@ static int ipe337_devices_init(void) {
+ 	mdelay(100);
+ 	*pFIO0_FLAG_S = (1<<12);
+ 
+-	register_device(&smc911x_dev);
++	add_generic_device("smc911x", -1, NULL, 0x24000000, 4096,
++			   IORESOURCE_MEM, NULL);
+ 
+ 	devfs_add_partition("nor0", 0x00000, 0x20000, PARTITION_FIXED, "self0");
+ 	devfs_add_partition("nor0", 0x20000, 0x20000, PARTITION_FIXED, "env0");
+@@ -35,16 +29,10 @@ static int ipe337_devices_init(void) {
+ 
+ device_initcall(ipe337_devices_init);
+ 
+-static struct device_d blackfin_serial_device = {
 -	.id	  = -1,
--	.name     = "mpc5xxx_serial",
--	.map_base = MPC5XXX_PSC6,
+-	.name     = "blackfin_serial",
+-	.map_base = 0,
 -	.size     = 4096,
 -};
 -
- static int console_init(void)
+ static int blackfin_console_init(void)
  {
--	register_device(&psc3);
--	register_device(&psc6);
-+	add_generic_device("mpc5xxx_serial", -1, NULL, MPC5XXX_PSC3, 4096,
+-	register_device(&blackfin_serial_device);
++	add_generic_device("blackfin_serial", -1, NULL, 0, 4096,
 +			   IORESOURCE_MEM, NULL);
-+	add_generic_device("mpc5xxx_serial", -1, NULL, MPC5XXX_PSC6, 4096,
-+			   IORESOURCE_MEM, NULL);
+ 
  	return 0;
  }
- 
 -- 
 1.7.5.4
 
