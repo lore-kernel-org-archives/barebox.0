@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 4.mo4.mail-out.ovh.net ([178.32.98.131]
+Received: from 14.mo4.mail-out.ovh.net ([46.105.40.29]
 	helo=mo4.mail-out.ovh.net)
 	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1Qmpl0-0005sC-6U
+	id 1Qmpl0-0005s8-JD
 	for barebox@lists.infradead.org; Fri, 29 Jul 2011 16:17:53 +0000
 Received: from mail182.ha.ovh.net (b6.ovh.net [213.186.33.56])
-	by mo4.mail-out.ovh.net (Postfix) with SMTP id 0FDBCFFA7CB
+	by mo4.mail-out.ovh.net (Postfix) with SMTP id 5C876FFA717
 	for <barebox@lists.infradead.org>;
-	Fri, 29 Jul 2011 18:18:40 +0200 (CEST)
+	Fri, 29 Jul 2011 18:18:39 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 29 Jul 2011 17:59:42 +0200
-Message-Id: <1311955207-22372-5-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri, 29 Jul 2011 17:59:38 +0200
+Message-Id: <1311955207-22372-1-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <20110729155356.GF25658@game.jcrosoft.org>
 References: <20110729155356.GF25658@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
@@ -26,48 +26,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/23] devinfo: switch to resource
+Subject: [PATCH 01/23] eukrea_cpuimx35: fix warning: 'usbotg_dev' defined but
+	not used
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- drivers/base/driver.c |   16 +++++++++++++---
- 1 files changed, 13 insertions(+), 3 deletions(-)
+ arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
 
-diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-index 3069c49..4ceb346 100644
---- a/drivers/base/driver.c
-+++ b/drivers/base/driver.c
-@@ -339,6 +339,8 @@ static int do_devinfo(struct command *cmdtp, int argc, char *argv[])
- 	struct device_d *dev;
- 	struct driver_d *drv;
- 	struct param_d *param;
-+	int i;
-+	struct resource *res;
+diff --git a/arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c b/arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c
+index d1de495..7f941cc 100644
+--- a/arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c
++++ b/arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c
+@@ -126,6 +126,7 @@ static struct device_d usbh2_dev = {
+ };
+ #endif
  
- 	if (argc == 1) {
- 		printf("devices:\n");
-@@ -359,9 +361,17 @@ static int do_devinfo(struct command *cmdtp, int argc, char *argv[])
- 			return -1;
- 		}
++#ifdef CONFIG_USB_GADGET
+ static struct fsl_usb2_platform_data usb_pdata = {
+ 	.operating_mode	= FSL_USB2_DR_DEVICE,
+ 	.phy_mode	= FSL_USB2_PHY_UTMI,
+@@ -137,6 +138,7 @@ static struct device_d usbotg_dev = {
+ 	.size     = 0x200,
+ 	.platform_data = &usb_pdata,
+ };
++#endif
  
--		printf("base  : 0x%08x\nsize  : 0x%08x\ndriver: %s\n\n",
--			dev->map_base, dev->size,
--			dev->driver ? 
-+		printf("resources:\n");
-+		for (i = 0; i < dev->num_resources; i++) {
-+			res = &dev->resource[i];
-+			printf("num   : %d\n", i);
-+			if (res->name)
-+				printf("name  : %s\n", res->name);
-+			printf("start : 0x%08x\nsize  : 0x%08x\n",
-+			       res->start, res->size);
-+		}
-+
-+		printf("driver: %s\n\n", dev->driver ?
- 				dev->driver->name : "none");
- 
- 		if (dev->driver)
+ #ifdef CONFIG_MMU
+ static int eukrea_cpuimx35_mmu_init(void)
 -- 
 1.7.5.4
 
