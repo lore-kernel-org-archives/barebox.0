@@ -2,15 +2,15 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 4.mo4.mail-out.ovh.net ([178.32.98.131]
 	helo=mo4.mail-out.ovh.net)
 	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1Qmpl0-0005sD-9D
-	for barebox@lists.infradead.org; Fri, 29 Jul 2011 16:17:54 +0000
+	id 1Qmpl2-0005tf-3l
+	for barebox@lists.infradead.org; Fri, 29 Jul 2011 16:17:57 +0000
 Received: from mail182.ha.ovh.net (b6.ovh.net [213.186.33.56])
-	by mo4.mail-out.ovh.net (Postfix) with SMTP id 2EB45FFA7D9
+	by mo4.mail-out.ovh.net (Postfix) with SMTP id 999BEFFA7F3
 	for <barebox@lists.infradead.org>;
 	Fri, 29 Jul 2011 18:18:40 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 29 Jul 2011 17:59:43 +0200
-Message-Id: <1311955207-22372-6-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri, 29 Jul 2011 17:59:45 +0200
+Message-Id: <1311955207-22372-8-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <20110729155356.GF25658@game.jcrosoft.org>
 References: <20110729155356.GF25658@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
@@ -26,7 +26,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/7] dm9000: replace DM9000_WIDTH_8/16/32 by
+Subject: [PATCH 04/23] dm9000: replace DM9000_WIDTH_8/16/32 by
 	IORESOURCE_MEM_8/16/32BIT
 To: barebox@lists.infradead.org
 
@@ -80,11 +80,11 @@ index 1059aec..fa21e24 100644
  };
  
 diff --git a/arch/arm/boards/scb9328/scb9328.c b/arch/arm/boards/scb9328/scb9328.c
-index d49eaff..47aa8ce 100644
+index cf72ef4..4c0ed02 100644
 --- a/arch/arm/boards/scb9328/scb9328.c
 +++ b/arch/arm/boards/scb9328/scb9328.c
-@@ -34,7 +34,7 @@
- #include <led.h>
+@@ -35,7 +35,7 @@
+ #include <mach/devices-imx1.h>
  
  static struct dm9000_platform_data dm9000_data = {
 -	.buswidth = DM9000_WIDTH_16,
