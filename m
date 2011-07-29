@@ -2,15 +2,15 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 15.mo4.mail-out.ovh.net ([91.121.62.11]
 	helo=mo4.mail-out.ovh.net)
 	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1QmgHQ-000401-Ec
-	for barebox@lists.infradead.org; Fri, 29 Jul 2011 06:10:43 +0000
+	id 1QmgHQ-0003zy-EE
+	for barebox@lists.infradead.org; Fri, 29 Jul 2011 06:10:44 +0000
 Received: from mail182.ha.ovh.net (b6.ovh.net [213.186.33.56])
-	by mo4.mail-out.ovh.net (Postfix) with SMTP id 873F6FFA2F0
+	by mo4.mail-out.ovh.net (Postfix) with SMTP id EE19EFFA2E6
 	for <barebox@lists.infradead.org>;
-	Fri, 29 Jul 2011 08:11:26 +0200 (CEST)
+	Fri, 29 Jul 2011 08:11:25 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 29 Jul 2011 07:52:57 +0200
-Message-Id: <1311918777-26719-7-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri, 29 Jul 2011 07:52:53 +0200
+Message-Id: <1311918777-26719-3-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1311918777-26719-1-git-send-email-plagnioj@jcrosoft.com>
 References: <1311918777-26719-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
@@ -26,110 +26,135 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/7] fb: switch to "struct resource"
+Subject: [PATCH 3/7] dm9000: replace DM9000_WIDTH_8/16/32 by
+	IORESOURCE_MEM_8/16/32BIT
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- drivers/video/fb.c  |   16 ++++++++++------
- drivers/video/s3c.c |   16 +++++++++-------
- drivers/video/stm.c |    2 +-
- 3 files changed, 20 insertions(+), 14 deletions(-)
+ arch/arm/boards/at91sam9261ek/init.c |    2 +-
+ arch/arm/boards/mini2440/mini2440.c  |    2 +-
+ arch/arm/boards/pm9261/init.c        |    2 +-
+ arch/arm/boards/scb9328/scb9328.c    |    2 +-
+ drivers/net/dm9000.c                 |   12 ++++++------
+ include/dm9000.h                     |    4 ----
+ 6 files changed, 10 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/video/fb.c b/drivers/video/fb.c
-index 85db904..0be465f 100644
---- a/drivers/video/fb.c
-+++ b/drivers/video/fb.c
-@@ -84,9 +84,9 @@ static int fb_setup_mode(struct device_d *dev, struct param_d *param,
- 	ret = info->fbops->fb_activate_var(info);
+diff --git a/arch/arm/boards/at91sam9261ek/init.c b/arch/arm/boards/at91sam9261ek/init.c
+index 4009523..812b399 100644
+--- a/arch/arm/boards/at91sam9261ek/init.c
++++ b/arch/arm/boards/at91sam9261ek/init.c
+@@ -89,7 +89,7 @@ static void ek_add_device_nand(void)
+  */
+ #if defined(CONFIG_DRIVER_NET_DM9000)
+ static struct dm9000_platform_data dm9000_data = {
+-	.buswidth	= DM9000_WIDTH_16,
++	.buswidth	= IORESOURCE_MEM_16BIT,
+ 	.srom		= 0,
+ };
  
- 	if (!ret) {
--		dev->map_base = (unsigned long)info->screen_base;
-+		dev->resource[0].start = (resource_size_t)info->screen_base;
- 		info->cdev.size = info->xres * info->yres * (info->bits_per_pixel >> 3);
--		dev->size = info->cdev.size;
-+		dev->resource[0].size = info->cdev.size;
- 		dev_param_set_generic(dev, param, val);
- 	} else
- 		info->cdev.size = 0;
-@@ -107,15 +107,19 @@ int register_framebuffer(struct fb_info *info)
- 	int id = get_free_deviceid("fb");
- 	struct device_d *dev;
+diff --git a/arch/arm/boards/mini2440/mini2440.c b/arch/arm/boards/mini2440/mini2440.c
+index 2d27b00..634e035 100644
+--- a/arch/arm/boards/mini2440/mini2440.c
++++ b/arch/arm/boards/mini2440/mini2440.c
+@@ -63,7 +63,7 @@ static struct device_d nand_dev = {
+  * Area 2: Offset 0x304...0x307
+  */
+ static struct dm9000_platform_data dm9000_data = {
+-	.buswidth = DM9000_WIDTH_16,
++	.buswidth = IORESOURCE_MEM_16BIT,
+ 	.srom     = 1,
+ };
  
-+	dev = &info->dev;
-+
- 	info->cdev.ops = &fb_ops;
- 	info->cdev.name = asprintf("fb%d", id);
- 	info->cdev.size = info->xres * info->yres * (info->bits_per_pixel >> 3);
--	info->cdev.dev = &info->dev;
-+	info->cdev.dev = dev;
- 	info->cdev.priv = info;
--	info->cdev.dev->map_base = (unsigned long)info->screen_base;
--	info->cdev.dev->size = info->cdev.size;
-+	dev->resource = xzalloc(sizeof(struct resource));
-+	dev->resource[0].start = (resource_size_t)info->screen_base;
-+	dev->resource[0].size = info->cdev.size;
-+	dev->resource[0].flags = IORESOURCE_MEM;
-+	dev->num_resources = 1;
+diff --git a/arch/arm/boards/pm9261/init.c b/arch/arm/boards/pm9261/init.c
+index 1059aec..fa21e24 100644
+--- a/arch/arm/boards/pm9261/init.c
++++ b/arch/arm/boards/pm9261/init.c
+@@ -89,7 +89,7 @@ static void pm_add_device_nand(void)
+  */
+ #if defined(CONFIG_DRIVER_NET_DM9000)
+ static struct dm9000_platform_data dm9000_data = {
+-	.buswidth	= DM9000_WIDTH_16,
++	.buswidth	= IORESOURCE_MEM_16BIT,
+ 	.srom		= 1,
+ };
  
--	dev = &info->dev;
- 	dev->priv = info;
- 	dev->id = id;
+diff --git a/arch/arm/boards/scb9328/scb9328.c b/arch/arm/boards/scb9328/scb9328.c
+index d49eaff..47aa8ce 100644
+--- a/arch/arm/boards/scb9328/scb9328.c
++++ b/arch/arm/boards/scb9328/scb9328.c
+@@ -34,7 +34,7 @@
+ #include <led.h>
  
-diff --git a/drivers/video/s3c.c b/drivers/video/s3c.c
-index 3715499..d079fde 100644
---- a/drivers/video/s3c.c
-+++ b/drivers/video/s3c.c
-@@ -331,11 +331,12 @@ static int s3cfb_activate_var(struct fb_info *fb_info)
- static void s3cfb_info(struct device_d *hw_dev)
- {
- 	uint32_t con1, addr1, addr2, addr3;
-+	struct s3cfb_info *fbi = hw_dev->priv;
+ static struct dm9000_platform_data dm9000_data = {
+-	.buswidth = DM9000_WIDTH_16,
++	.buswidth = IORESOURCE_MEM_16BIT,
+ 	.srom     = 1,
+ };
  
--	con1 = readl(hw_dev->map_base + LCDCON1);
--	addr1 = readl(hw_dev->map_base + LCDSADDR1);
--	addr2 = readl(hw_dev->map_base + LCDSADDR2);
--	addr3 = readl(hw_dev->map_base + LCDSADDR3);
-+	con1 = readl(fbi->base + LCDCON1);
-+	addr1 = readl(fbi->base + LCDSADDR1);
-+	addr2 = readl(fbi->base + LCDSADDR2);
-+	addr3 = readl(fbi->base + LCDSADDR3);
+diff --git a/drivers/net/dm9000.c b/drivers/net/dm9000.c
+index b867d21..691d877 100644
+--- a/drivers/net/dm9000.c
++++ b/drivers/net/dm9000.c
+@@ -294,16 +294,16 @@ static int dm9000_eth_send (struct eth_device *edev,
+ 	writeb(DM9000_MWCMD, priv->iobase);
  
- 	printf(" Video hardware info:\n");
- 	printf("  Video clock is running at %u Hz\n", s3c24xx_get_hclk() / ((GET_CLKVAL(con1) + 1) * 2));
-@@ -371,15 +372,16 @@ static int s3cfb_probe(struct device_d *hw_dev)
- 	if (! pdata)
- 		return -ENODEV;
+ 	switch (priv->buswidth) {
+-	case DM9000_WIDTH_8:
++	case IORESOURCE_MEM_8BIT:
+ 		for (i = 0; i < length; i++)
+ 			writeb(data_ptr[i] & 0xff, priv->iodata);
+ 		break;
+-	case DM9000_WIDTH_16:
++	case IORESOURCE_MEM_16BIT:
+ 		tmplen = (length + 1) / 2;
+ 		for (i = 0; i < tmplen; i++)
+ 			writew(((u16 *)data_ptr)[i], priv->iodata);
+ 		break;
+-	case DM9000_WIDTH_32:
++	case IORESOURCE_MEM_32BIT:
+ 		tmplen = (length + 3) / 4;
+ 		for (i = 0; i < tmplen; i++)
+ 			writel(((u32 *) data_ptr)[i], priv->iodata);
+@@ -371,20 +371,20 @@ static int dm9000_eth_rx (struct eth_device *edev)
+ 	/* Move data from DM9000 */
+ 	/* Read received packet from RX SRAM */
+ 	switch (priv->buswidth) {
+-	case DM9000_WIDTH_8:
++	case IORESOURCE_MEM_8BIT:
+ 		RxStatus = readb(priv->iodata) + (readb(priv->iodata) << 8);
+ 		RxLen = readb(priv->iodata) + (readb(priv->iodata) << 8);
+ 		for (i = 0; i < RxLen; i++)
+ 			rdptr[i] = readb(priv->iodata);
+ 		break;
+-	case DM9000_WIDTH_16:
++	case IORESOURCE_MEM_16BIT:
+ 		RxStatus = readw(priv->iodata);
+ 		RxLen = readw(priv->iodata);
+ 		tmplen = (RxLen + 1) / 2;
+ 		for (i = 0; i < tmplen; i++)
+ 			((u16 *) rdptr)[i] = readw(priv->iodata);
+ 		break;
+-	case DM9000_WIDTH_32:
++	case IORESOURCE_MEM_32BIT:
+ 		tmpdata = readl(priv->iodata);
+ 		RxStatus = tmpdata;
+ 		RxLen = tmpdata >> 16;
+diff --git a/include/dm9000.h b/include/dm9000.h
+index 0991ab5..c4618f1 100644
+--- a/include/dm9000.h
++++ b/include/dm9000.h
+@@ -2,10 +2,6 @@
+ #ifndef __DM9000_H__
+ #define __DM9000_H__
  
--	writel(0, hw_dev->map_base + LCDCON1);
--	writel(0, hw_dev->map_base + LCDCON5); /* FIXME not 0 for some displays */
-+	fbi.base = dev_request_mem_region(hw_dev, 0);
-+	writel(0, fbi.base + LCDCON1);
-+	writel(0, fbi.base + LCDCON5); /* FIXME not 0 for some displays */
- 
- 	/* just init */
- 	fbi.info.priv = &fbi;
- 
- 	/* add runtime hardware info */
- 	fbi.hw_dev = hw_dev;
--	fbi.base = (void*)hw_dev->map_base;
-+	hw_dev->priv = &fbi;
- 
- 	/* add runtime video info */
- 	fbi.info.mode_list = pdata->mode_list;
-diff --git a/drivers/video/stm.c b/drivers/video/stm.c
-index ee2f026..78acad7 100644
---- a/drivers/video/stm.c
-+++ b/drivers/video/stm.c
-@@ -488,7 +488,7 @@ static int stmfb_probe(struct device_d *hw_dev)
- 
- 	/* add runtime hardware info */
- 	fbi.hw_dev = hw_dev;
--	fbi.base = (void *)hw_dev->map_base;
-+	fbi.base = dev_request_mem_region(hw_dev, 0);
- 	fbi.pdata = pdata;
- 
- 	/* add runtime video info */
+-#define DM9000_WIDTH_8		1
+-#define DM9000_WIDTH_16		2
+-#define DM9000_WIDTH_32		3
+-
+ struct dm9000_platform_data {
+ 	int buswidth;
+ 	int srom;
 -- 
 1.7.5.4
 
