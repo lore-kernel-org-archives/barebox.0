@@ -1,22 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 7.mo4.mail-out.ovh.net ([178.33.253.54]
+Received: from 5.mo4.mail-out.ovh.net ([188.165.44.50]
 	helo=mo4.mail-out.ovh.net)
 	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1QmmHg-0001r2-M1
-	for barebox@lists.infradead.org; Fri, 29 Jul 2011 12:35:21 +0000
+	id 1QmnW5-0003Mq-NY
+	for barebox@lists.infradead.org; Fri, 29 Jul 2011 13:54:18 +0000
 Received: from mail182.ha.ovh.net (b6.ovh.net [213.186.33.56])
-	by mo4.mail-out.ovh.net (Postfix) with SMTP id D7DF3FFA536
+	by mo4.mail-out.ovh.net (Postfix) with SMTP id 79310FF9687
 	for <barebox@lists.infradead.org>;
-	Fri, 29 Jul 2011 14:36:07 +0200 (CEST)
-Date: Fri, 29 Jul 2011 14:17:39 +0200
+	Fri, 29 Jul 2011 15:55:05 +0200 (CEST)
+Date: Fri, 29 Jul 2011 15:36:36 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20110729121739.GC25658@game.jcrosoft.org>
+Message-ID: <20110729133636.GD25658@game.jcrosoft.org>
 References: <1311918777-26719-1-git-send-email-plagnioj@jcrosoft.com>
-	<1311918777-26719-5-git-send-email-plagnioj@jcrosoft.com>
-	<20110729095237.GA20587@pengutronix.de>
+	<1311918777-26719-6-git-send-email-plagnioj@jcrosoft.com>
+	<CAJfOKBwDVwExXnqFss8gC0EkwG9qzdJhEB8qHuK2oCwjwuvrCQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20110729095237.GA20587@pengutronix.de>
+In-Reply-To: <CAJfOKBwDVwExXnqFss8gC0EkwG9qzdJhEB8qHuK2oCwjwuvrCQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,45 +25,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 5/7] resource: introduce add_usb_ehci_device to
-	register echi device
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 6/7] omap: switch to add_generic_device
+To: Franck JULLIEN <franck.jullien@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On 11:52 Fri 29 Jul     , Sascha Hauer wrote:
-> On Fri, Jul 29, 2011 at 07:52:55AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > pass the hccr and hcor register base via resource
-> > 
-> > instroduce add_generic_usb_echi_device with hccr = base + 0x100 and
-> > hcor = base + 0x140
-> > 
+On 09:07 Fri 29 Jul     , Franck JULLIEN wrote:
+> Hi Jean-Christophe,
+> =
+
+> 2011/7/29 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>:
 > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 > > ---
-> 
-> Overall this looks better than my i.MX specific patch for ehci. I'll
-> drop mine.
-> 
-> > 
-> > diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-> > index 844dc1d..54856a3 100644
-> > --- a/drivers/usb/host/ehci-hcd.c
-> > +++ b/drivers/usb/host/ehci-hcd.c
-> > @@ -900,20 +900,22 @@ static int ehci_probe(struct device_d *dev)
-> >  	host = &ehci->host;
-> >  	dev->priv = ehci;
-> >  
-> > -	if (pdata) {
-> > +	/* default to EHCI_HAS_TT to not change behaviour of boards
-> > +	 * with platform_data
-> > +	 */
-> 
-> Maybe you can fix this comment on the way: It should be 'without
-> platform_data'
-ok
+> > =A0arch/arm/boards/omap/board-beagle.c =A0 =A0| =A0 30 ++++++----------=
+--------------
+> > =A0arch/arm/boards/omap/board-sdp343x.c =A0 | =A0 =A01 -
+> > =A0arch/arm/mach-omap/devices-gpmc-nand.c | =A0 13 +++----------
+> > =A03 files changed, 9 insertions(+), 35 deletions(-)
+> >
+> > diff --git a/arch/arm/boards/omap/board-beagle.c b/arch/arm/boards/omap=
+/board-beagle.c
+> > index adf0b94..8f868ad 100644
+> > --- a/arch/arm/boards/omap/board-beagle.c
+> > +++ b/arch/arm/boards/omap/board-beagle.c
+> > @@ -242,14 +242,6 @@ static struct NS16550_plat serial_plat =3D {
+> > =A0 =A0 =A0 =A0.reg_write =3D omap_uart_write,
+> > =A0};
+> >
+> > -static struct device_d beagle_serial_device =3D {
+> > - =A0 =A0 =A0 .id =3D -1,
+> > - =A0 =A0 =A0 .name =3D "serial_ns16550",
+> > - =A0 =A0 =A0 .map_base =3D OMAP_UART3_BASE,
+> > - =A0 =A0 =A0 .size =3D 1024,
+> > - =A0 =A0 =A0 .platform_data =3D (void *)&serial_plat,
+> > -};
+> > -
+> > =A0/**
+> > =A0* @brief UART serial port initialization - remember to enable COM cl=
+ocks in
+> > =A0* arch
+> > @@ -259,7 +251,8 @@ static struct device_d beagle_serial_device =3D {
+> > =A0static int beagle_console_init(void)
+> > =A0{
+> > =A0 =A0 =A0 =A0/* Register the serial port */
+> > - =A0 =A0 =A0 return register_device(&beagle_serial_device);
+> > + =A0 =A0 =A0 return !!add_generic_device("serial_ns16550", -1, NULL, O=
+MAP_UART3_BASE, 1024,
+> =
+
+> Is this a double "!" in front of add_generic_device ??
+yes 1! only
 
 Best Regards,
 J.
