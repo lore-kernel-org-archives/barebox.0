@@ -2,15 +2,15 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 18.mo4.mail-out.ovh.net ([188.165.54.143]
 	helo=mo4.mail-out.ovh.net)
 	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1Qmpl4-0005uf-GL
+	id 1Qmpl4-0005uj-GC
 	for barebox@lists.infradead.org; Fri, 29 Jul 2011 16:18:03 +0000
 Received: from mail182.ha.ovh.net (b6.ovh.net [213.186.33.56])
-	by mo4.mail-out.ovh.net (Postfix) with SMTP id 33E8DFFA786
+	by mo4.mail-out.ovh.net (Postfix) with SMTP id A142FFFA81F
 	for <barebox@lists.infradead.org>;
 	Fri, 29 Jul 2011 18:18:43 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 29 Jul 2011 17:59:50 +0200
-Message-Id: <1311955207-22372-13-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri, 29 Jul 2011 17:59:52 +0200
+Message-Id: <1311955207-22372-15-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <20110729155356.GF25658@game.jcrosoft.org>
 References: <20110729155356.GF25658@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
@@ -26,7 +26,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/7] fb: switch to "struct resource"
+Subject: [PATCH 08/23] fb: switch to "struct resource"
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
