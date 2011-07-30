@@ -1,18 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 4.mo4.mail-out.ovh.net ([178.32.98.131]
-	helo=mo4.mail-out.ovh.net)
-	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1Qmpl2-0005tg-4J
-	for barebox@lists.infradead.org; Fri, 29 Jul 2011 16:17:59 +0000
-Received: from mail182.ha.ovh.net (b6.ovh.net [213.186.33.56])
-	by mo4.mail-out.ovh.net (Postfix) with SMTP id B7610FFA800
-	for <barebox@lists.infradead.org>;
-	Fri, 29 Jul 2011 18:18:40 +0200 (CEST)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 29 Jul 2011 17:59:46 +0200
-Message-Id: <1311955207-22372-9-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <20110729155356.GF25658@game.jcrosoft.org>
-References: <20110729155356.GF25658@game.jcrosoft.org>
+Received: from smtpbg55.qq.com ([64.71.138.44])
+	by casper.infradead.org with smtp (Exim 4.76 #1 (Red Hat Linux))
+	id 1Qmxm4-0004G7-8n
+	for barebox@lists.infradead.org; Sat, 30 Jul 2011 00:51:36 +0000
+From: "=?gbk?B?trfGxrLUx+4=?=" <154554381@qq.com>
+Mime-Version: 1.0
+Date: Sat, 30 Jul 2011 08:50:29 +0800
+Message-ID: <tencent_174322B459F4DC8500C86EAE@qq.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,355 +15,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============0360499089=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/23] dm9000: introduce add_dm9000_device to register dm9000
-	device
-To: barebox@lists.infradead.org
+Subject: please help me with barebox  start yaffs2 rootfs
+To: =?gbk?B?YmFyZWJveA==?= <barebox@lists.infradead.org>
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- arch/arm/boards/at91sam9261ek/init.c |   25 +-------------
- arch/arm/boards/mini2440/mini2440.c  |   24 +-------------
- arch/arm/boards/pm9261/init.c        |   26 ++-------------
- arch/arm/boards/scb9328/scb9328.c    |   25 +-------------
- drivers/base/resource.c              |   57 +++++++++++++++++++++++++++++++--
- drivers/net/dm9000.c                 |    3 +-
- include/dm9000.h                     |    1 -
- include/driver.h                     |   11 ++++++
- 8 files changed, 75 insertions(+), 97 deletions(-)
+This is a multi-part message in MIME format.
 
-diff --git a/arch/arm/boards/at91sam9261ek/init.c b/arch/arm/boards/at91sam9261ek/init.c
-index 812b399..627202f 100644
---- a/arch/arm/boards/at91sam9261ek/init.c
-+++ b/arch/arm/boards/at91sam9261ek/init.c
-@@ -89,31 +89,9 @@ static void ek_add_device_nand(void)
-  */
- #if defined(CONFIG_DRIVER_NET_DM9000)
- static struct dm9000_platform_data dm9000_data = {
--	.buswidth	= IORESOURCE_MEM_16BIT,
- 	.srom		= 0,
- };
- 
--static struct resource dm9000_resources[] = {
--	[0] = {
--		.start	= AT91_CHIPSELECT_2,
--		.size	= 4,
--		.flags	= IORESOURCE_MEM,
--	},
--	[1] = {
--		.start	= AT91_CHIPSELECT_2 + 4,
--		.size	= 4,
--		.flags	= IORESOURCE_MEM,
--	},
--};
--
--static struct device_d dm9000_dev = {
--	.id		= 0,
--	.name		= "dm9000",
--	.num_resources	= ARRAY_SIZE(dm9000_resources),
--	.resource	= dm9000_resources,
--	.platform_data	= &dm9000_data,
--};
--
- /*
-  * SMC timings for the DM9000.
-  * Note: These timings were calculated for MASTER_CLOCK = 100000000 according to the DM9000 timings.
-@@ -147,7 +125,8 @@ static void __init ek_add_device_dm9000(void)
- 	/* Configure Interrupt pin as input, no pull-up */
- 	at91_set_gpio_input(AT91_PIN_PC11, 0);
- 
--	register_device(&dm9000_dev);
-+	add_dm9000_device(0, AT91_CHIPSELECT_2, AT91_CHIPSELECT_2 + 4,
-+			  IORESOURCE_MEM_16BIT, &dm9000_data);
- }
- #else
- static void __init ek_add_device_dm9000(void) {}
-diff --git a/arch/arm/boards/mini2440/mini2440.c b/arch/arm/boards/mini2440/mini2440.c
-index 634e035..dbf7503 100644
---- a/arch/arm/boards/mini2440/mini2440.c
-+++ b/arch/arm/boards/mini2440/mini2440.c
-@@ -63,30 +63,9 @@ static struct device_d nand_dev = {
-  * Area 2: Offset 0x304...0x307
-  */
- static struct dm9000_platform_data dm9000_data = {
--	.buswidth = IORESOURCE_MEM_16BIT,
- 	.srom     = 1,
- };
- 
--static struct resource dm9000_resources[] = {
--	[0] = {
--		.start	= CS4_BASE + 0x300,
--		.size	= 4,
--		.flags	= IORESOURCE_MEM,
--	},
--	[1] = {
--		.start	= CS4_BASE + 0x304,
--		.size	= 4,
--		.flags	= IORESOURCE_MEM,
--	},
--};
--
--static struct device_d dm9000_dev = {
--	.name     = "dm9000",
--	.num_resources	= ARRAY_SIZE(dm9000_resources),
--	.resource	= dm9000_resources,
--	.platform_data = &dm9000_data,
--};
--
- static struct s3c_mci_platform_data mci_data = {
- 	.caps = MMC_MODE_4BIT | MMC_MODE_HS | MMC_MODE_HS_52MHz,
- 	.voltages = MMC_VDD_32_33 | MMC_VDD_33_34,
-@@ -332,7 +311,8 @@ static int mini2440_devices_init(void)
- 				   IORESOURCE_MEM_WRITEABLE);
- 	armlinux_add_dram(sdram_dev);
- 
--	register_device(&dm9000_dev);
-+	add_dm9000_device(0, CS4_BASE + 0x300, CS4_BASE + 0x304,
-+			  IORESOURCE_MEM_16BIT, &dm9000_data);
- #ifdef CONFIG_NAND
- 	/* ----------- add some vital partitions -------- */
- 	devfs_del_partition("self_raw");
-diff --git a/arch/arm/boards/pm9261/init.c b/arch/arm/boards/pm9261/init.c
-index fa21e24..783a404 100644
---- a/arch/arm/boards/pm9261/init.c
-+++ b/arch/arm/boards/pm9261/init.c
-@@ -89,31 +89,9 @@ static void pm_add_device_nand(void)
-  */
- #if defined(CONFIG_DRIVER_NET_DM9000)
- static struct dm9000_platform_data dm9000_data = {
--	.buswidth	= IORESOURCE_MEM_16BIT,
- 	.srom		= 1,
- };
- 
--static struct resource dm9000_resources[] = {
--	[0] = {
--		.start	= AT91_CHIPSELECT_2,
--		.size	= 4,
--		.flags	= IORESOURCE_MEM,
--	},
--	[1] = {
--		.start	= AT91_CHIPSELECT_2 + 4,
--		.size	= 4,
--		.flags	= IORESOURCE_MEM,
--	},
--};
--
--static struct device_d dm9000_dev = {
--	.id		= 0,
--	.name		= "dm9000",
--	.num_resources	= ARRAY_SIZE(dm9000_resources),
--	.resource	= dm9000_resources,
--	.platform_data	= &dm9000_data,
--};
--
- /*
-  * SMC timings for the DM9000.
-  * Note: These timings were calculated for MASTER_CLOCK = 100000000 according to the DM9000 timings.
-@@ -141,7 +119,8 @@ static void __init pm_add_device_dm9000(void)
- 	/* Configure chip-select 2 (DM9000) */
- 	sam9_smc_configure(2, &dm9000_smc_config);
- 
--	register_device(&dm9000_dev);
-+	add_dm9000_device(0, AT91_CHIPSELECT_2, AT91_CHIPSELECT_2 + 4,
-+			  IORESOURCE_MEM_16BIT, &dm9000_data);
- }
- #else
- static void __init ek_add_device_dm9000(void) {}
-@@ -151,6 +130,7 @@ static int pm9261_devices_init(void)
- {
- 	at91_add_device_sdram(64 * 1024 * 1024);
- 	pm_add_device_nand();
-+	pm_add_device_dm9000();
- 	add_cfi_flash_device(0, AT91_CHIPSELECT_0, 4 * 1024 * 1024, 0);
- 
- 	devfs_add_partition("nor0", 0x00000, 0x40000, PARTITION_FIXED, "self");
-diff --git a/arch/arm/boards/scb9328/scb9328.c b/arch/arm/boards/scb9328/scb9328.c
-index 4c0ed02..5c52af9 100644
---- a/arch/arm/boards/scb9328/scb9328.c
-+++ b/arch/arm/boards/scb9328/scb9328.c
-@@ -35,31 +35,9 @@
- #include <mach/devices-imx1.h>
- 
- static struct dm9000_platform_data dm9000_data = {
--	.buswidth = IORESOURCE_MEM_16BIT,
- 	.srom     = 1,
- };
- 
--static struct resource dm9000_resources[] = {
--	[0] = {
--		.start	= 0x16000000,
--		.size	= 4,
--		.flags	= IORESOURCE_MEM,
--	},
--	[1] = {
--		.start	= 0x16000004,
--		.size	= 4,
--		.flags	= IORESOURCE_MEM,
--	},
--};
--
--static struct device_d dm9000_dev = {
--	.id		= -1,
--	.name		= "dm9000",
--	.num_resources	= ARRAY_SIZE(dm9000_resources),
--	.resource	= dm9000_resources,
--	.platform_data	= &dm9000_data,
--};
--
- struct gpio_led leds[] = {
- 	{
- 		.gpio = 32 + 21,
-@@ -107,7 +85,8 @@ static int scb9328_devices_init(void)
- 	sdram_dev = add_mem_device("ram0", 0x08000000, 16 * 1024 * 1024,
- 				   IORESOURCE_MEM_WRITEABLE);
- 	armlinux_add_dram(sdram_dev);
--	register_device(&dm9000_dev);
-+	add_dm9000_device(-1, 0x16000000, 0x16000004,
-+			  IORESOURCE_MEM_16BIT, &dm9000_data);
- 
- 	devfs_add_partition("nor0", 0x00000, 0x40000, PARTITION_FIXED, "self0");
- 	devfs_add_partition("nor0", 0x40000, 0x20000, PARTITION_FIXED, "env0");
-diff --git a/drivers/base/resource.c b/drivers/base/resource.c
-index f0450d3..98fc68a 100644
---- a/drivers/base/resource.c
-+++ b/drivers/base/resource.c
-@@ -25,15 +25,25 @@
- #include <driver.h>
- #include <xfuncs.h>
- 
--struct device_d *add_generic_device(const char* devname, int id, const char *resname,
--		resource_size_t start, resource_size_t size, unsigned int flags,
--		void *pdata)
-+static struct device_d *alloc_device(const char* devname, int id, void *pdata)
- {
- 	struct device_d *dev;
- 
- 	dev = xzalloc(sizeof(*dev));
- 	strcpy(dev->name, devname);
- 	dev->id = id;
-+	dev->platform_data = pdata;
-+
-+	return dev;
-+}
-+
-+struct device_d *add_generic_device(const char* devname, int id, const char *resname,
-+		resource_size_t start, resource_size_t size, unsigned int flags,
-+		void *pdata)
-+{
-+	struct device_d *dev;
-+
-+	dev = alloc_device(devname, id, pdata);
- 	dev->resource = xzalloc(sizeof(struct resource));
- 	dev->num_resources = 1;
- 	if (resname)
-@@ -41,10 +51,49 @@ struct device_d *add_generic_device(const char* devname, int id, const char *res
- 	dev->resource[0].start = start;
- 	dev->resource[0].size = size;
- 	dev->resource[0].flags = flags;
--	dev->platform_data = pdata;
- 
- 	register_device(dev);
- 
- 	return dev;
- }
- EXPORT_SYMBOL(add_generic_device);
-+
-+#ifdef CONFIG_DRIVER_NET_DM9000
-+struct device_d *add_dm9000_device(int id, resource_size_t base,
-+		resource_size_t data, int flags, void *pdata)
-+{
-+	struct device_d *dev;
-+	resource_size_t size;
-+
-+	dev = alloc_device("dm9000", id, pdata);
-+	dev->resource = xzalloc(sizeof(struct resource) * 2);
-+	dev->num_resources = 2;
-+
-+	switch (flags) {
-+	case IORESOURCE_MEM_32BIT:
-+		size = 8;
-+		break;
-+	case IORESOURCE_MEM_16BIT:
-+		size = 4;
-+		break;
-+	case IORESOURCE_MEM_8BIT:
-+		size = 2;
-+		break;
-+	default:
-+		printf("dm9000: memory width flag missing\n");
-+		return NULL;
-+	}
-+
-+	dev->resource[0].start = base;
-+	dev->resource[0].size = size;
-+	dev->resource[0].flags = IORESOURCE_MEM | flags;
-+	dev->resource[1].start = data;
-+	dev->resource[1].size = size;
-+	dev->resource[1].flags = IORESOURCE_MEM | flags;
-+
-+	register_device(dev);
-+
-+	return dev;
-+}
-+EXPORT_SYMBOL(add_dm9000_device);
-+#endif
-diff --git a/drivers/net/dm9000.c b/drivers/net/dm9000.c
-index 691d877..be14317 100644
---- a/drivers/net/dm9000.c
-+++ b/drivers/net/dm9000.c
-@@ -500,7 +500,8 @@ static int dm9000_probe(struct device_d *dev)
- 	pdata = dev->platform_data;
- 
- 	priv = edev->priv;
--	priv->buswidth = pdata->buswidth;
-+
-+	priv->buswidth = dev->resource[0].flags & IORESOURCE_MEM_TYPE_MASK;
- 	priv->iodata = dev_request_mem_region(dev, 1);
- 	priv->iobase = dev_request_mem_region(dev, 0);
- 	priv->srom = pdata->srom;
-diff --git a/include/dm9000.h b/include/dm9000.h
-index c4618f1..a9a4635 100644
---- a/include/dm9000.h
-+++ b/include/dm9000.h
-@@ -3,7 +3,6 @@
- #define __DM9000_H__
- 
- struct dm9000_platform_data {
--	int buswidth;
- 	int srom;
- };
- 
-diff --git a/include/driver.h b/include/driver.h
-index 9f00754..38c0bca 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -235,6 +235,17 @@ static inline struct device_d *add_ns16550_device(int id, resource_size_t start,
- 				  IORESOURCE_MEM, pdata);
- }
- 
-+#ifdef CONFIG_DRIVER_NET_DM9000
-+struct device_d *add_dm9000_device(int id, resource_size_t base,
-+		resource_size_t data, int flags, void *pdata);
-+#else
-+static inline struct device_d *add_dm9000_device(int id, resource_size_t base,
-+		resource_size_t data, int flags, void *pdata)
-+{
-+	return NULL;
-+}
-+#endif
-+
- /* linear list over all available devices
-  */
- extern struct list_head device_list;
--- 
-1.7.5.4
+--===============0360499089==
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_4E335555_086A6780_404D6406"
+Content-Transfer-Encoding: 8Bit
 
+This is a multi-part message in MIME format.
+
+------=_NextPart_4E335555_086A6780_404D6406
+Content-Type: text/plain;
+	charset="gbk"
+Content-Transfer-Encoding: base64
+
+aGkNCg0KaSB1c2Uga2VybmVsIDIuNi4xOSBhbmQgcm9vdGZzICBvZiB5YWZmczIgDQoNCmhv
+dyBpIGNhbiBzdGFydCB5YWZmczJyb290ZnMgYnkgYmFyZWJveCwgd2hldGhlciBpIG1ha2Ug
+eWFmZnMyIGltYWdlIGZpbGUgd2l0aCBta3lhZmZzMmltYWcgdG9vbD8NCnNvbWUgb25lIGNh
+biB0ZWxsIG1lIHRoZSBkZXRhaWwgPyB0aGFua3M=
+
+------=_NextPart_4E335555_086A6780_404D6406
+Content-Type: text/html;
+	charset="gbk"
+Content-Transfer-Encoding: base64
+
+aGk8YnI+PGJyPmkgdXNlIGtlcm5lbCAyLjYuMTkgYW5kIHJvb3RmcyZuYnNwOyBvZiB5YWZm
+czIgPGJyPjxicj5ob3cgaSBjYW4gc3RhcnQgeWFmZnMycm9vdGZzIGJ5IGJhcmVib3gsIHdo
+ZXRoZXIgaSBtYWtlIHlhZmZzMiBpbWFnZSBmaWxlIHdpdGggbWt5YWZmczJpbWFnIHRvb2w/
+PGJyPnNvbWUgb25lIGNhbiB0ZWxsIG1lIHRoZSBkZXRhaWwgPyB0aGFua3M8YnI+
+
+------=_NextPart_4E335555_086A6780_404D6406--
+
+
+
+--===============0360499089==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============0360499089==--
