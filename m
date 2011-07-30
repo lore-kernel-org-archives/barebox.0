@@ -1,12 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtpbg55.qq.com ([64.71.138.44])
-	by casper.infradead.org with smtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1Qmxm4-0004G7-8n
-	for barebox@lists.infradead.org; Sat, 30 Jul 2011 00:51:36 +0000
-From: "=?gbk?B?trfGxrLUx+4=?=" <154554381@qq.com>
-Mime-Version: 1.0
-Date: Sat, 30 Jul 2011 08:50:29 +0800
-Message-ID: <tencent_174322B459F4DC8500C86EAE@qq.com>
+Received: from 18.mo4.mail-out.ovh.net ([188.165.54.143]
+	helo=mo4.mail-out.ovh.net)
+	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+	id 1Qn0KG-0001jB-FI
+	for barebox@lists.infradead.org; Sat, 30 Jul 2011 03:34:57 +0000
+Received: from mail182.ha.ovh.net (b6.ovh.net [213.186.33.56])
+	by mo4.mail-out.ovh.net (Postfix) with SMTP id CBC44FF9FB9
+	for <barebox@lists.infradead.org>;
+	Sat, 30 Jul 2011 05:35:45 +0200 (CEST)
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Sat, 30 Jul 2011 05:17:03 +0200
+Message-Id: <1311995831-25350-2-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20110729155356.GF25658@game.jcrosoft.org>
+References: <20110729155356.GF25658@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,54 +21,81 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0360499089=="
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: please help me with barebox  start yaffs2 rootfs
-To: =?gbk?B?YmFyZWJveA==?= <barebox@lists.infradead.org>
+Subject: [PATCH 15/23] edb93xx: switch to resource
+To: barebox@lists.infradead.org
 
-This is a multi-part message in MIME format.
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ arch/arm/boards/edb93xx/edb93xx.c |   25 +++++++------------------
+ 1 files changed, 7 insertions(+), 18 deletions(-)
 
---===============0360499089==
-Content-Type: multipart/alternative;
-	boundary="----=_NextPart_4E335555_086A6780_404D6406"
-Content-Transfer-Encoding: 8Bit
+diff --git a/arch/arm/boards/edb93xx/edb93xx.c b/arch/arm/boards/edb93xx/edb93xx.c
+index b169db6..7f9e647 100644
+--- a/arch/arm/boards/edb93xx/edb93xx.c
++++ b/arch/arm/boards/edb93xx/edb93xx.c
+@@ -34,15 +34,6 @@
+ 
+ #define DEVCFG_U1EN (1 << 18)
+ 
+-/*
+- * Up to 32MiB NOR type flash, connected to
+- * CS line 6, data width is 16 bit
+- */
+-static struct device_d eth_dev = {
+-	.id	  = -1,
+-	.name     = "ep93xx_eth",
+-};
+-
+ static int ep93xx_devices_init(void)
+ {
+ 	struct device_d *sdram_dev;
+@@ -81,7 +72,11 @@ static int ep93xx_devices_init(void)
+ 	armlinux_add_dram(sdram_dev);
+ #endif
+ 
+-	register_device(&eth_dev);
++	/*
++	 * Up to 32MiB NOR type flash, connected to
++	 * CS line 6, data width is 16 bit
++	 */
++	add_generic_device("ep93xx_eth", -1, NULL, 0, 0, IORESOURCE_MEM, NULL);
+ 
+ 	armlinux_set_bootparams((void *)CONFIG_EP93XX_SDRAM_BANK0_BASE + 0x100);
+ 
+@@ -92,13 +87,6 @@ static int ep93xx_devices_init(void)
+ 
+ device_initcall(ep93xx_devices_init);
+ 
+-static struct device_d edb93xx_serial_device = {
+-	.id	  = -1,
+-	.name     = "pl010_serial",
+-	.map_base = UART1_BASE,
+-	.size     = 4096,
+-};
+-
+ static int edb93xx_console_init(void)
+ {
+ 	struct syscon_regs *syscon = (struct syscon_regs *)SYSCON_BASE;
+@@ -117,7 +105,8 @@ static int edb93xx_console_init(void)
+ 	writel(0xAA, &syscon->sysswlock);
+ 	writel(value, &syscon->devicecfg);
+ 
+-	register_device(&edb93xx_serial_device);
++	add_generic_device("pl010_serial", -1, NULL, UART1_BASE, 4096,
++			   IORESOURCE_MEM, NULL);
+ 
+ 	return 0;
+ }
+-- 
+1.7.5.4
 
-This is a multi-part message in MIME format.
-
-------=_NextPart_4E335555_086A6780_404D6406
-Content-Type: text/plain;
-	charset="gbk"
-Content-Transfer-Encoding: base64
-
-aGkNCg0KaSB1c2Uga2VybmVsIDIuNi4xOSBhbmQgcm9vdGZzICBvZiB5YWZmczIgDQoNCmhv
-dyBpIGNhbiBzdGFydCB5YWZmczJyb290ZnMgYnkgYmFyZWJveCwgd2hldGhlciBpIG1ha2Ug
-eWFmZnMyIGltYWdlIGZpbGUgd2l0aCBta3lhZmZzMmltYWcgdG9vbD8NCnNvbWUgb25lIGNh
-biB0ZWxsIG1lIHRoZSBkZXRhaWwgPyB0aGFua3M=
-
-------=_NextPart_4E335555_086A6780_404D6406
-Content-Type: text/html;
-	charset="gbk"
-Content-Transfer-Encoding: base64
-
-aGk8YnI+PGJyPmkgdXNlIGtlcm5lbCAyLjYuMTkgYW5kIHJvb3RmcyZuYnNwOyBvZiB5YWZm
-czIgPGJyPjxicj5ob3cgaSBjYW4gc3RhcnQgeWFmZnMycm9vdGZzIGJ5IGJhcmVib3gsIHdo
-ZXRoZXIgaSBtYWtlIHlhZmZzMiBpbWFnZSBmaWxlIHdpdGggbWt5YWZmczJpbWFnIHRvb2w/
-PGJyPnNvbWUgb25lIGNhbiB0ZWxsIG1lIHRoZSBkZXRhaWwgPyB0aGFua3M8YnI+
-
-------=_NextPart_4E335555_086A6780_404D6406--
-
-
-
---===============0360499089==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============0360499089==--
