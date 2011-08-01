@@ -1,20 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QnoG3-0000BE-GP
-	for barebox@lists.infradead.org; Mon, 01 Aug 2011 08:53:56 +0000
-Date: Mon, 1 Aug 2011 10:53:51 +0200
+	id 1QnoVc-0004md-6N
+	for barebox@lists.infradead.org; Mon, 01 Aug 2011 09:10:01 +0000
+Date: Mon, 1 Aug 2011 11:09:56 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110801085351.GF31404@pengutronix.de>
-References: <20110729155356.GF25658@game.jcrosoft.org>
-	<1311995831-25350-8-git-send-email-plagnioj@jcrosoft.com>
-	<20110801073240.GE20587@pengutronix.de>
-	<20110801074721.GB6255@game.jcrosoft.org>
-	<20110801080902.GB31404@pengutronix.de>
-	<20110801080301.GC6255@game.jcrosoft.org>
+Message-ID: <20110801090956.GG31404@pengutronix.de>
+References: <1312175092-26164-1-git-send-email-plagnioj@jcrosoft.com>
+	<20110801080530.GA31404@pengutronix.de>
+	<20110801080545.GD6255@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20110801080301.GC6255@game.jcrosoft.org>
+In-Reply-To: <20110801080545.GD6255@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,54 +24,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 21/23] mci-core: switch to resource
+Subject: Re: [PATCH] arm: introduce arm_add_mem_device to register dram device
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Aug 01, 2011 at 10:03:01AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 10:09 Mon 01 Aug     , Sascha Hauer wrote:
-> > On Mon, Aug 01, 2011 at 09:47:21AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > On 09:32 Mon 01 Aug     , Sascha Hauer wrote:
-> > > > On Sat, Jul 30, 2011 at 05:17:09AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > > > > ---
-> > > > >  drivers/mci/mci-core.c |    2 +-
-> > > > >  1 files changed, 1 insertions(+), 1 deletions(-)
-> > > > > 
-> > > > > diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-> > > > > index 3cf364c..c03885b 100644
-> > > > > --- a/drivers/mci/mci-core.c
-> > > > > +++ b/drivers/mci/mci-core.c
-> > > > > @@ -1231,7 +1231,7 @@ static int mci_card_probe(struct device_d *mci_dev)
-> > > > >  	p->priv = mci_dev;
-> > > > >  
-> > > > >  	strcpy(disk_dev->name, "disk");
-> > > > > -	disk_dev->size = mci->capacity;
-> > > > > +	disk_dev->resource[0].size = mci->capacity;
-> > > > >  	disk_dev->platform_data = p;
-> > > > 
-> > > > Resources for a device must be allocated. I already fixed this once with
-> > > > the following. Please do not reintroduce this bug again.
-> > > > 
-> > > > (and honestly, this registering of the "disk" device is just a crude way
-> > > > of passing around data in a void pointer. The real solution for this is
-> > > > to just add a register_ata_interface() function instead of registering a
-> > > > device.)
-> > > agreed I plan to get rid of this but first need to fininsh the map_base frop
+On Mon, Aug 01, 2011 at 10:05:45AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 10:05 Mon 01 Aug     , Sascha Hauer wrote:
+> > On Mon, Aug 01, 2011 at 07:04:52AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > this will automaticaly register the device to armlinux_add_dram
 > > > 
-> > > but as we drop map_base and size so we need to do like this
+> > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > > ---
+> > > diff --git a/include/driver.h b/include/driver.h
+> > > index b011f98..0faafe3 100644
+> > > --- a/include/driver.h
+> > > +++ b/include/driver.h
+> > > @@ -214,6 +214,11 @@ static inline struct device_d *add_mem_device(const char *name, resource_size_t
+> > >  				  IORESOURCE_MEM | flags, NULL);
+> > >  }
+> > >  
+> > > +#ifdef CONFIG_ARM
+> > > +struct device_d *arm_add_mem_device(const char* name, resource_size_t start,
+> > > +				    resource_size_t size);
+> > > +#endif
+> > > +
 > > 
-> > Ok, but please allocate the space for the resource then.
+> > No ifdefs around function declarations please. Also, this should
+> > go somewhere under arch/arm/include.
+> armlinux?
 > > 
-> > I thought about using mapping the vector page to the top of the memory
-> > space. Then we could get proper NULL pointer deref aborts to catch
-> > things like this.
-> can we can we do it in a second patch?
+> > BTW this conflicts with my mmu series I recently sent. Having this
+> > arm_add_mem_device function is a good thing, but now one of us has
+> > to do his series again :(
+> 
+> > For the mmu to just work on all boards I need a place where I know
+> > that all memory has been registered. For this I wanted to introduce
+> > a memory_initcall (we could also reuse console_initcall, but I thought
+> > having a dedicated initcall is cleaner). Then I could initialize the
+> > mmu in a later initcall.
+> I known but I wish we drop the mmu_init in the board at all
+> and manage it in a generic part
 
-This was just an idea not a call for action :)
+That's my goal aswell, but the mmu init needs to be done when the memory
+is registered but still no driver uses dma_alloc_coherent. Currently
+this place does not exist since every board does the memory registration
+at some random place.
+The mmu code can't remap sdram without knowing where it is.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
