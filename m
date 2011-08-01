@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 12.mo4.mail-out.ovh.net ([178.33.104.253]
+Received: from 20.mo4.mail-out.ovh.net ([46.105.33.73]
 	helo=mo4.mail-out.ovh.net)
 	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1QnsqM-0003go-76
-	for barebox@lists.infradead.org; Mon, 01 Aug 2011 13:47:45 +0000
+	id 1QnsqK-0003gQ-FI
+	for barebox@lists.infradead.org; Mon, 01 Aug 2011 13:47:42 +0000
 Received: from mail182.ha.ovh.net (b6.ovh.net [213.186.33.56])
-	by mo4.mail-out.ovh.net (Postfix) with SMTP id A75BAFFA5CB
+	by mo4.mail-out.ovh.net (Postfix) with SMTP id 4B272FFA5B2
 	for <barebox@lists.infradead.org>;
-	Mon,  1 Aug 2011 15:48:36 +0200 (CEST)
+	Mon,  1 Aug 2011 15:48:35 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon,  1 Aug 2011 15:29:39 +0200
-Message-Id: <1312205383-13266-5-git-send-email-plagnioj@jcrosoft.com>
+Date: Mon,  1 Aug 2011 15:29:37 +0200
+Message-Id: <1312205383-13266-3-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <20110801132643.GH6255@game.jcrosoft.org>
 References: <20110801132643.GH6255@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
@@ -26,78 +26,177 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/9] ARM: pass size to dma_free_coherent
+Subject: [PATCH 3/9] ARM: move armlinux_add_dram to location which is always
+	compiled
 To: barebox@lists.infradead.org
 
 From: Sascha Hauer <s.hauer@pengutronix.de>
 
-We'll need it later once we remap dma memory.
+We want to use the memory banks later in the MMU which is
+independent of Linux, so move this to a location which is
+always compiled.
+
+Also, make the memory bank list global and add an iterator
+for it.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/mmu.c           |    2 +-
- arch/arm/include/asm/mmu.h   |    9 +++++++--
- drivers/usb/gadget/fsl_udc.c |    2 +-
- 3 files changed, 9 insertions(+), 4 deletions(-)
+ arch/arm/cpu/cpu.c              |   14 ++++++++++++++
+ arch/arm/include/asm/armlinux.h |    7 ++-----
+ arch/arm/include/asm/memory.h   |   34 ++++++++++++++++++----------------
+ arch/arm/lib/armlinux.c         |   19 ++-----------------
+ 4 files changed, 36 insertions(+), 38 deletions(-)
+ rewrite arch/arm/include/asm/memory.h (79%)
 
-diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index 8465d1a..bb067e3 100644
---- a/arch/arm/cpu/mmu.c
-+++ b/arch/arm/cpu/mmu.c
-@@ -155,7 +155,7 @@ void *phys_to_virt(unsigned long phys)
- 	return (void *)(phys + dma_coherent_offset);
+diff --git a/arch/arm/cpu/cpu.c b/arch/arm/cpu/cpu.c
+index cf30789..3df0c0f 100644
+--- a/arch/arm/cpu/cpu.c
++++ b/arch/arm/cpu/cpu.c
+@@ -30,6 +30,7 @@
+ #include <cache.h>
+ #include <asm/mmu.h>
+ #include <asm/system.h>
++#include <asm/memory.h>
+ 
+ /**
+  * Enable processor's instruction cache
+@@ -89,6 +90,19 @@ void arch_shutdown(void)
+ #endif
  }
  
--void dma_free_coherent(void *mem)
-+void dma_free_coherent(void *mem, size_t size)
- {
- 	free(mem - dma_coherent_offset);
- }
-diff --git a/arch/arm/include/asm/mmu.h b/arch/arm/include/asm/mmu.h
-index d96c728..9ebc2cd 100644
---- a/arch/arm/include/asm/mmu.h
-+++ b/arch/arm/include/asm/mmu.h
-@@ -17,7 +17,7 @@ void setup_dma_coherent(unsigned long offset);
- 
- #ifdef CONFIG_MMU
- void *dma_alloc_coherent(size_t size);
--void dma_free_coherent(void *mem);
-+void dma_free_coherent(void *mem, size_t size);
- 
- void dma_clean_range(unsigned long, unsigned long);
- void dma_flush_range(unsigned long, unsigned long);
-@@ -26,12 +26,17 @@ unsigned long virt_to_phys(void *virt);
- void *phys_to_virt(unsigned long phys);
- 
- #else
-+static inline int mmu_init(void)
++LIST_HEAD(memory_list);
++
++void armlinux_add_dram(struct device_d *dev)
 +{
-+	return -EINVAL;
++	struct arm_memory *mem = xzalloc(sizeof(*mem));
++
++	mem->dev = dev;
++	mem->start = dev->resource[0].start;
++	mem->size = dev->resource[0].size;
++
++	list_add_tail(&mem->list, &memory_list);
 +}
 +
- static inline void *dma_alloc_coherent(size_t size)
+ /**
+  * @page arm_boot_preparation Linux Preparation on ARM
+  *
+diff --git a/arch/arm/include/asm/armlinux.h b/arch/arm/include/asm/armlinux.h
+index f76cca8..bb25f9a 100644
+--- a/arch/arm/include/asm/armlinux.h
++++ b/arch/arm/include/asm/armlinux.h
+@@ -1,11 +1,12 @@
+ #ifndef __ARCH_ARMLINUX_H
+ #define __ARCH_ARMLINUX_H
+ 
++#include <asm/memory.h>
++
+ #if defined CONFIG_CMD_BOOTM || defined CONFIG_CMD_BOOTZ || \
+ 	defined CONFIG_CMD_BOOTU
+ void armlinux_set_bootparams(void *params);
+ void armlinux_set_architecture(int architecture);
+-void armlinux_add_dram(struct device_d *dev);
+ void armlinux_set_revision(unsigned int);
+ void armlinux_set_serial(u64);
+ #else
+@@ -17,10 +18,6 @@ static inline void armlinux_set_architecture(int architecture)
  {
- 	return xmemalign(4096, size);
  }
  
--static inline void dma_free_coherent(void *mem)
-+static inline void dma_free_coherent(void *mem, size_t size)
+-static inline void armlinux_add_dram(struct device_d *dev)
+-{
+-}
+-
+ static inline void armlinux_set_revision(unsigned int rev)
  {
- 	free(mem);
  }
-diff --git a/drivers/usb/gadget/fsl_udc.c b/drivers/usb/gadget/fsl_udc.c
-index c321e8f..1e4d4b0 100644
---- a/drivers/usb/gadget/fsl_udc.c
-+++ b/drivers/usb/gadget/fsl_udc.c
-@@ -560,7 +560,7 @@ static void done(struct fsl_ep *ep, struct fsl_req *req, int status)
- 		if (j != req->dtd_count - 1) {
- 			next_td = curr_td->next_td_virt;
- 		}
--		dma_free_coherent(curr_td);
-+		dma_free_coherent(curr_td, sizeof(struct ep_td_struct));
- 	}
+diff --git a/arch/arm/include/asm/memory.h b/arch/arm/include/asm/memory.h
+dissimilarity index 79%
+index f746bc2..93c2fe6 100644
+--- a/arch/arm/include/asm/memory.h
++++ b/arch/arm/include/asm/memory.h
+@@ -1,16 +1,18 @@
+-/*
+- *  linux/include/asm-arm/memory.h
+- *
+- *  Copyright (C) 2000-2002 Russell King
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License version 2 as
+- * published by the Free Software Foundation.
+- *
+- *  Note: this file should not be included by non-asm/.h files
+- */
+-#ifndef __ASM_ARM_MEMORY_H
+-#define __ASM_ARM_MEMORY_H
+-
+-
+-#endif	/* __ASM_ARM_MEMORY_H */
++#ifndef __ASM_ARM_MEMORY_H
++#define __ASM_ARM_MEMORY_H
++
++struct arm_memory {
++	struct list_head list;
++	struct device_d *dev;
++	u32 *ptes;
++	unsigned long start;
++	unsigned long size;
++};
++
++extern struct list_head memory_list;
++
++void armlinux_add_dram(struct device_d *dev);
++
++#define for_each_sdram_bank(mem)	list_for_each_entry(mem, &memory_list, list)
++
++#endif	/* __ASM_ARM_MEMORY_H */
+diff --git a/arch/arm/lib/armlinux.c b/arch/arm/lib/armlinux.c
+index e35e45d..c8ed402 100644
+--- a/arch/arm/lib/armlinux.c
++++ b/arch/arm/lib/armlinux.c
+@@ -42,6 +42,7 @@
+ #include <asm/barebox-arm.h>
+ #include <asm/armlinux.h>
+ #include <asm/system.h>
++#include <asm/memory.h>
  
- 	dma_inv_range((unsigned long)req->req.buf,
+ static struct tag *params;
+ static int armlinux_architecture = 0;
+@@ -64,18 +65,11 @@ static void setup_start_tag(void)
+ 	params = tag_next(params);
+ }
+ 
+-struct arm_memory {
+-	struct list_head list;
+-	struct device_d *dev;
+-};
+-
+-static LIST_HEAD(memory_list);
+-
+ static void setup_memory_tags(void)
+ {
+ 	struct arm_memory *mem;
+ 
+-	list_for_each_entry(mem, &memory_list, list) {
++	for_each_sdram_bank(mem) {
+ 		params->hdr.tag = ATAG_MEM;
+ 		params->hdr.size = tag_size(tag_mem32);
+ 
+@@ -196,15 +190,6 @@ void armlinux_set_architecture(int architecture)
+ 	armlinux_architecture = architecture;
+ }
+ 
+-void armlinux_add_dram(struct device_d *dev)
+-{
+-	struct arm_memory *mem = xzalloc(sizeof(*mem));
+-
+-	mem->dev = dev;
+-
+-	list_add_tail(&mem->list, &memory_list);
+-}
+-
+ void armlinux_set_revision(unsigned int rev)
+ {
+ 	system_rev = rev;
 -- 
 1.7.5.4
 
