@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 10.mo4.mail-out.ovh.net ([188.165.33.109]
+Received: from 20.mo4.mail-out.ovh.net ([46.105.33.73]
 	helo=mo4.mail-out.ovh.net)
 	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1QnsqM-0003hR-PP
-	for barebox@lists.infradead.org; Mon, 01 Aug 2011 13:47:51 +0000
+	id 1QnsqK-0003gO-FA
+	for barebox@lists.infradead.org; Mon, 01 Aug 2011 13:47:53 +0000
 Received: from mail182.ha.ovh.net (b6.ovh.net [213.186.33.56])
-	by mo4.mail-out.ovh.net (Postfix) with SMTP id 7BAD0FFA5E8
+	by mo4.mail-out.ovh.net (Postfix) with SMTP id BA721FFA5BA
 	for <barebox@lists.infradead.org>;
-	Mon,  1 Aug 2011 15:48:37 +0200 (CEST)
+	Mon,  1 Aug 2011 15:48:34 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon,  1 Aug 2011 15:29:43 +0200
-Message-Id: <1312205383-13266-9-git-send-email-plagnioj@jcrosoft.com>
+Date: Mon,  1 Aug 2011 15:29:35 +0200
+Message-Id: <1312205383-13266-1-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <20110801132643.GH6255@game.jcrosoft.org>
 References: <20110801132643.GH6255@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
@@ -26,566 +26,919 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 9/9 v2] ARM boards: remove now unnecessary mmu calls
+Subject: [PATCH 1/9 v2] arm: introduce arm_add_mem_device to register dram
+	device
 To: barebox@lists.infradead.org
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+this will automaticaly register the device to armlinux_add_dram
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/boards/chumby_falconwing/falconwing.c    |   10 ----
- arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c |   10 ----
- arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c |   10 ----
- arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c |   20 +++-----
- arch/arm/boards/eukrea_cpuimx51/eukrea_cpuimx51.c |   16 ------
- arch/arm/boards/freescale-mx51-pdk/board.c        |   10 ----
- arch/arm/boards/freescale-mx53-loco/board.c       |   12 -----
- arch/arm/boards/guf-cupid/board.c                 |   20 +++-----
- arch/arm/boards/guf-neso/board.c                  |   10 ----
- arch/arm/boards/karo-tx25/board.c                 |   12 -----
- arch/arm/boards/karo-tx28/tx28.c                  |   10 ----
- arch/arm/boards/panda/board.c                     |    8 ---
- arch/arm/boards/pcm037/pcm037.c                   |   20 +++-----
- arch/arm/boards/pcm038/pcm038.c                   |   10 ----
- arch/arm/boards/pcm043/pcm043.c                   |   21 +++-----
- arch/arm/boards/pcm049/board.c                    |    9 ---
- arch/arm/boards/phycard-i.MX27/pca100.c           |   10 ----
- arch/arm/boards/scb9328/env/config                |   56 +++++++++++++++++++++
- arch/arm/cpu/mmu.c                                |    3 +-
- arch/arm/include/asm/mmu.h                        |    7 ---
- 20 files changed, 86 insertions(+), 198 deletions(-)
- create mode 100644 arch/arm/boards/scb9328/env/config
+ arch/arm/boards/a9m2410/a9m2410.c                 |    4 +--
+ arch/arm/boards/a9m2440/a9m2440.c                 |    4 +--
+ arch/arm/boards/chumby_falconwing/falconwing.c    |    4 +--
+ arch/arm/boards/edb93xx/edb93xx.c                 |   26 ++++++--------------
+ arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c |    6 +----
+ arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c |    5 +---
+ arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c |    6 +----
+ arch/arm/boards/eukrea_cpuimx51/eukrea_cpuimx51.c |    6 +----
+ arch/arm/boards/freescale-mx23-evk/mx23-evk.c     |    4 +--
+ arch/arm/boards/freescale-mx25-3-stack/3stack.c   |   10 ++-----
+ arch/arm/boards/freescale-mx35-3-stack/3stack.c   |    5 +---
+ arch/arm/boards/freescale-mx51-pdk/board.c        |    6 +----
+ arch/arm/boards/freescale-mx53-loco/board.c       |   11 +-------
+ arch/arm/boards/guf-cupid/board.c                 |    5 +---
+ arch/arm/boards/guf-neso/board.c                  |    5 +---
+ arch/arm/boards/imx21ads/imx21ads.c               |    5 +---
+ arch/arm/boards/imx27ads/imx27ads.c               |    5 +---
+ arch/arm/boards/karo-tx25/board.c                 |   10 +------
+ arch/arm/boards/karo-tx28/tx28.c                  |    4 +--
+ arch/arm/boards/mini2440/mini2440.c               |    4 +--
+ arch/arm/boards/netx/netx.c                       |    6 +----
+ arch/arm/boards/omap/board-beagle.c               |    9 +------
+ arch/arm/boards/omap/board-omap3evm.c             |    8 +-----
+ arch/arm/boards/omap/board-sdp343x.c              |    7 +-----
+ arch/arm/boards/panda/board.c                     |    6 +----
+ arch/arm/boards/pcm037/pcm037.c                   |   10 +------
+ arch/arm/boards/pcm038/pcm038.c                   |    5 +---
+ arch/arm/boards/pcm043/pcm043.c                   |    5 +---
+ arch/arm/boards/pcm049/board.c                    |    6 +----
+ arch/arm/boards/phycard-i.MX27/pca100.c           |    5 +---
+ arch/arm/boards/scb9328/scb9328.c                 |    5 +---
+ arch/arm/include/asm/armlinux.h                   |    3 ++
+ arch/arm/mach-at91/at91rm9200_devices.c           |    6 +----
+ arch/arm/mach-at91/at91sam9260_devices.c          |    6 +----
+ arch/arm/mach-at91/at91sam9261_devices.c          |    6 +----
+ arch/arm/mach-at91/at91sam9263_devices.c          |    6 +----
+ arch/arm/mach-at91/at91sam9g45_devices.c          |    6 +----
+ arch/arm/mach-nomadik/8815.c                      |    6 +----
+ arch/arm/mach-versatile/core.c                    |    6 +----
+ drivers/base/resource.c                           |   15 ++++++++++++
+ 40 files changed, 68 insertions(+), 199 deletions(-)
 
+diff --git a/arch/arm/boards/a9m2410/a9m2410.c b/arch/arm/boards/a9m2410/a9m2410.c
+index 64fabd2..b249a1d 100644
+--- a/arch/arm/boards/a9m2410/a9m2410.c
++++ b/arch/arm/boards/a9m2410/a9m2410.c
+@@ -124,8 +124,7 @@ static int a9m2410_devices_init(void)
+ 	/* ----------- the devices the boot loader should work with -------- */
+ 	add_generic_device("s3c24x0_nand", -1, NULL, S3C24X0_NAND_BASE, 0,
+ 			   IORESOURCE_MEM, &nand_info);
+-	sdram_dev = add_mem_device("ram0", CS6_BASE, size,
+-				   IORESOURCE_MEM_WRITEABLE);
++	sdram_dev = arm_add_mem_device("ram0", CS6_BASE, size);
+ 	/*
+ 	 * SMSC 91C111 network controller on the baseboard
+ 	 * connected to CS line 1 and interrupt line
+@@ -143,7 +142,6 @@ static int a9m2410_devices_init(void)
+ 	dev_add_bb_dev("env_raw", "env0");
+ #endif
+ 
+-	armlinux_add_dram(sdram_dev);
+ 	armlinux_set_bootparams(dev_get_mem_region(sdram_dev, 0) + 0x100);
+ 	armlinux_set_architecture(MACH_TYPE_A9M2410);
+ 
+diff --git a/arch/arm/boards/a9m2440/a9m2440.c b/arch/arm/boards/a9m2440/a9m2440.c
+index d52f4c2..c5b467a 100644
+--- a/arch/arm/boards/a9m2440/a9m2440.c
++++ b/arch/arm/boards/a9m2440/a9m2440.c
+@@ -128,8 +128,7 @@ static int a9m2440_devices_init(void)
+ 	/* ----------- the devices the boot loader should work with -------- */
+ 	add_generic_device("s3c24x0_nand", -1, NULL, S3C24X0_NAND_BASE, 0,
+ 			   IORESOURCE_MEM, &nand_info);
+-	sdram_dev = add_mem_device("ram0", CS6_BASE, s3c24x0_get_memory_size(),
+-				   IORESOURCE_MEM_WRITEABLE);
++	sdram_dev = arm_add_mem_device("ram0", CS6_BASE, s3c24x0_get_memory_size());
+ 	/*
+ 	 * cs8900 network controller onboard
+ 	 * Connected to CS line 5 + A24 and interrupt line EINT9,
+@@ -146,7 +145,6 @@ static int a9m2440_devices_init(void)
+ 	devfs_add_partition("nand0", 0x40000, 0x20000, PARTITION_FIXED, "env_raw");
+ 	dev_add_bb_dev("env_raw", "env0");
+ #endif
+-	armlinux_add_dram(sdram_dev);
+ 	armlinux_set_bootparams(dev_get_mem_region(sdram_dev, 0) + 0x100);
+ 	armlinux_set_architecture(MACH_TYPE_A9M2440);
+ 
 diff --git a/arch/arm/boards/chumby_falconwing/falconwing.c b/arch/arm/boards/chumby_falconwing/falconwing.c
-index b20dd74..1c66eb2 100644
+index 69c3a61..06916f0 100644
 --- a/arch/arm/boards/chumby_falconwing/falconwing.c
 +++ b/arch/arm/boards/chumby_falconwing/falconwing.c
-@@ -265,16 +265,6 @@ static int falconwing_mem_init(void)
- {
- 	arm_add_mem_device("ram0", IMX_MEMORY_BASE, 64 * 1024 * 1024);
+@@ -339,8 +339,7 @@ static int falconwing_devices_init(void)
+ 	for (i = 0; i < ARRAY_SIZE(pad_setup); i++)
+ 		imx_gpio_mode(pad_setup[i]);
  
--#ifdef CONFIG_MMU
--	mmu_init();
+-	sdram_dev = add_mem_device("ram0", IMX_MEMORY_BASE, 64 * 1024 * 1024,
+-				   IORESOURCE_MEM_WRITEABLE);
++	sdram_dev = arm_add_mem_device("ram0", IMX_MEMORY_BASE, 64 * 1024 * 1024);
+ 	imx_set_ioclk(480000000); /* enable IOCLK to run at the PLL frequency */
+ 	/* run the SSP unit clock at 100,000 kHz */
+ 	imx_set_sspclk(0, 100000000, 1);
+@@ -351,7 +350,6 @@ static int falconwing_devices_init(void)
+ 
+ 	falconwing_init_usb();
+ 
+-	armlinux_add_dram(sdram_dev);
+ 	armlinux_set_bootparams(dev_get_mem_region(sdram_dev, 0) + 0x100);
+ 	armlinux_set_architecture(MACH_TYPE_CHUMBY);
+ 
+diff --git a/arch/arm/boards/edb93xx/edb93xx.c b/arch/arm/boards/edb93xx/edb93xx.c
+index 7f9e647..fd838bf 100644
+--- a/arch/arm/boards/edb93xx/edb93xx.c
++++ b/arch/arm/boards/edb93xx/edb93xx.c
+@@ -36,8 +36,6 @@
+ 
+ static int ep93xx_devices_init(void)
+ {
+-	struct device_d *sdram_dev;
 -
--	arm_create_section(0x40000000, 0x40000000, 64, PMD_SECT_DEF_CACHED);
--	arm_create_section(0x50000000, 0x40000000, 64, PMD_SECT_DEF_UNCACHED);
--
--	setup_dma_coherent(0x10000000);
--
--	mmu_enable();
--#endif
- 	return 0;
- }
- mem_initcall(falconwing_mem_init);
+ 	add_cfi_flash_device(-1, 0x60000000, EDB93XX_CFI_FLASH_SIZE, 0);
+ 
+ 	/*
+@@ -49,27 +47,19 @@ static int ep93xx_devices_init(void)
+ 
+ 	protect_file("/dev/env0", 1);
+ 
+-	sdram_dev = add_mem_device("ram0", CONFIG_EP93XX_SDRAM_BANK0_BASE,
+-				   CONFIG_EP93XX_SDRAM_BANK0_SIZE,
+-				   IORESOURCE_MEM_WRITEABLE);
+-	armlinux_add_dram(sdram_dev);
++	arm_add_mem_device("ram0", CONFIG_EP93XX_SDRAM_BANK0_BASE,
++				   CONFIG_EP93XX_SDRAM_BANK0_SIZE);
+ #if (CONFIG_EP93XX_SDRAM_NUM_BANKS >= 2)
+-	sdram_dev = add_mem_device("ram1", CONFIG_EP93XX_SDRAM_BANK1_BASE,
+-				   CONFIG_EP93XX_SDRAM_BANK1_SIZE,
+-				   IORESOURCE_MEM_WRITEABLE);
+-	armlinux_add_dram(sdram_dev);
++	arm_add_mem_device("ram1", CONFIG_EP93XX_SDRAM_BANK1_BASE,
++				   CONFIG_EP93XX_SDRAM_BANK1_SIZE);
+ #endif
+ #if (CONFIG_EP93XX_SDRAM_NUM_BANKS >= 3)
+-	sdram_dev = add_mem_device("ram2", CONFIG_EP93XX_SDRAM_BANK2_BASE,
+-				   CONFIG_EP93XX_SDRAM_BANK2_SIZE,
+-				   IORESOURCE_MEM_WRITEABLE);
+-	armlinux_add_dram(sdram_dev);
++	arm_add_mem_device("ram2", CONFIG_EP93XX_SDRAM_BANK2_BASE,
++				   CONFIG_EP93XX_SDRAM_BANK2_SIZE);
+ #endif
+ #if (CONFIG_EP93XX_SDRAM_NUM_BANKS == 4)
+-	sdram_dev = add_mem_device("ram3", CONFIG_EP93XX_SDRAM_BANK3_BASE,
+-				   CONFIG_EP93XX_SDRAM_BANK2_SIZE,
+-				   IORESOURCE_MEM_WRITEABLE);
+-	armlinux_add_dram(sdram_dev);
++	arm_add_mem_device("ram3", CONFIG_EP93XX_SDRAM_BANK3_BASE,
++				   CONFIG_EP93XX_SDRAM_BANK2_SIZE);
+ #endif
+ 
+ 	/*
 diff --git a/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c b/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
-index 5c07597..1c54202 100644
+index aeeed17..e188fab 100644
 --- a/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
 +++ b/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
-@@ -160,16 +160,6 @@ static int eukrea_cpuimx25_mem_init(void)
- {
- 	arm_add_mem_device("ram0", IMX_SDRAM_CS0, 64 * 1024 * 1024);
+@@ -230,8 +230,6 @@ static struct pad_desc eukrea_cpuimx25_pads[] = {
  
--#ifdef CONFIG_MMU
--	mmu_init();
+ static int eukrea_cpuimx25_devices_init(void)
+ {
+-	struct device_d *sdram_dev;
 -
--	arm_create_section(0x80000000, 0x80000000, 128, PMD_SECT_DEF_CACHED);
--	arm_create_section(0x90000000, 0x80000000, 128, PMD_SECT_DEF_UNCACHED);
--
--	setup_dma_coherent(0x10000000);
--
--	mmu_enable();
--#endif
- 	return 0;
- }
- mem_initcall(eukrea_cpuimx25_mem_init);
+ 	eukrea_cpuimx25_mmu_init();
+ 
+ 	mxc_iomux_v3_setup_multiple_pads(eukrea_cpuimx25_pads,
+@@ -253,9 +251,7 @@ static int eukrea_cpuimx25_devices_init(void)
+ 		PARTITION_FIXED, "env_raw");
+ 	dev_add_bb_dev("env_raw", "env0");
+ 
+-	sdram_dev = add_mem_device("ram0", IMX_SDRAM_CS0, 64 * 1024 * 1024,
+-				   IORESOURCE_MEM_WRITEABLE);
+-	armlinux_add_dram(sdram_dev);
++	arm_add_mem_device("ram0", IMX_SDRAM_CS0, 64 * 1024 * 1024);
+ 
+ 	/* enable LCD */
+ 	gpio_direction_output(26, 1);
 diff --git a/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c b/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
-index ac886fa..a5aadac 100644
+index b38decf..e42ad7c 100644
 --- a/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
 +++ b/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
-@@ -92,16 +92,6 @@ static int eukrea_cpuimx27_mem_init(void)
- {
- 	arm_add_mem_device("ram0", 0xa0000000, SDRAM0 * 1024 * 1024);
+@@ -134,7 +134,6 @@ static struct imx_fb_platform_data eukrea_cpuimx27_fb_data = {
  
--#ifdef CONFIG_MMU
--	mmu_init();
--
--	arm_create_section(0xa0000000, 0xa0000000, 128, PMD_SECT_DEF_CACHED);
--	arm_create_section(0xb0000000, 0xa0000000, 128, PMD_SECT_DEF_UNCACHED);
--
--	setup_dma_coherent(0x10000000);
--
--	mmu_enable();
--#endif
- 	return 0;
- }
- mem_initcall(eukrea_cpuimx27_mem_init);
+ static int eukrea_cpuimx27_devices_init(void)
+ {
+-	struct device_d *sdram_dev;
+ 	char *envdev = "no";
+ 	int i;
+ 
+@@ -209,9 +208,7 @@ static int eukrea_cpuimx27_devices_init(void)
+ 	add_cfi_flash_device(-1, 0xC2000000, 32 * 1024 * 1024, 0);
+ #endif
+ 	imx27_add_nand(&nand_info);
+-	sdram_dev = add_mem_device("ram0", 0xa0000000, SDRAM0 * 1024 * 1024,
+-				   IORESOURCE_MEM_WRITEABLE);
+-	armlinux_add_dram(sdram_dev);
++	arm_add_mem_device("ram0", 0xa0000000, SDRAM0 * 1024 * 1024);
+ 
+ 	PCCR0 |= PCCR0_I2C1_EN;
+ 	i2c_register_board_info(0, i2c_devices, ARRAY_SIZE(i2c_devices));
 diff --git a/arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c b/arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c
-index 02df444..426445f 100644
+index 53e5bad..29b9edf 100644
 --- a/arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c
 +++ b/arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c
-@@ -130,23 +130,17 @@ static int eukrea_cpuimx35_mem_init(void)
- {
- 	arm_add_mem_device("ram0", IMX_SDRAM_CS0, 128 * 1024 * 1024);
- 
--#ifdef CONFIG_MMU
--	mmu_init();
--
--	arm_create_section(0x80000000, 0x80000000, 128, PMD_SECT_DEF_CACHED);
--	arm_create_section(0x90000000, 0x80000000, 128, PMD_SECT_DEF_UNCACHED);
--
--	setup_dma_coherent(0x10000000);
--
--	mmu_enable();
-+	return 0;
-+}
-+mem_initcall(eukrea_cpuimx35_mem_init);
- 
--#ifdef CONFIG_CACHE_L2X0
-+static int eukrea_cpuimx35_mmu_init(void)
-+{
- 	l2x0_init((void __iomem *)0x30000000, 0x00030024, 0x00000000);
--#endif
--#endif
-+
- 	return 0;
- }
--mem_initcall(eukrea_cpuimx35_mem_init);
-+postmmu_initcall(eukrea_cpuimx35_mmu_init);
+@@ -148,8 +148,6 @@ postcore_initcall(eukrea_cpuimx35_mmu_init);
  
  static int eukrea_cpuimx35_devices_init(void)
  {
+-	struct device_d *sdram_dev;
+-
+ 	imx35_add_nand(&nand_info);
+ 
+ 	devfs_add_partition("nand0", 0x00000, 0x40000, PARTITION_FIXED, "self_raw");
+@@ -159,9 +157,7 @@ static int eukrea_cpuimx35_devices_init(void)
+ 
+ 	imx35_add_fec(&fec_info);
+ 
+-	sdram_dev = add_mem_device("ram0", IMX_SDRAM_CS0, 128 * 1024 * 1024,
+-				   IORESOURCE_MEM_WRITEABLE);
+-	armlinux_add_dram(sdram_dev);
++	arm_add_mem_device("ram0", IMX_SDRAM_CS0, 128 * 1024 * 1024);
+ 	imx35_add_fb(&ipu_fb_data);
+ 
+ 	imx35_add_i2c0(NULL);
 diff --git a/arch/arm/boards/eukrea_cpuimx51/eukrea_cpuimx51.c b/arch/arm/boards/eukrea_cpuimx51/eukrea_cpuimx51.c
-index b6fce93..727db29 100644
+index 4d281f4..2510e07 100644
 --- a/arch/arm/boards/eukrea_cpuimx51/eukrea_cpuimx51.c
 +++ b/arch/arm/boards/eukrea_cpuimx51/eukrea_cpuimx51.c
-@@ -97,22 +97,6 @@ static int eukrea_cpuimx51_mem_init(void)
- {
- 	arm_add_mem_device("ram0", 0x90000000, 256 * 1024 * 1024);
+@@ -119,13 +119,9 @@ static void eukrea_cpuimx51_mmu_init(void)
  
--#ifdef CONFIG_MMU
--	mmu_init();
+ static int eukrea_cpuimx51_devices_init(void)
+ {
+-	struct device_d *sdram_dev;
 -
--	arm_create_section(0x90000000, 0x90000000, 256, PMD_SECT_DEF_CACHED);
--	arm_create_section(0xa0000000, 0x90000000, 256, PMD_SECT_DEF_UNCACHED);
+ 	eukrea_cpuimx51_mmu_init();
+ 
+-	sdram_dev = add_mem_device("ram0", 0x90000000, 256 * 1024 * 1024,
+-				   IORESOURCE_MEM_WRITEABLE);
+-	armlinux_add_dram(sdram_dev);
++	arm_add_mem_device("ram0", 0x90000000, 256 * 1024 * 1024);
+ 	imx51_add_fec(&fec_info);
+ #ifdef CONFIG_MCI_IMX_ESDHC
+ 	imx51_add_mmc0(NULL);
+diff --git a/arch/arm/boards/freescale-mx23-evk/mx23-evk.c b/arch/arm/boards/freescale-mx23-evk/mx23-evk.c
+index f9f85fa..7e23e9a 100644
+--- a/arch/arm/boards/freescale-mx23-evk/mx23-evk.c
++++ b/arch/arm/boards/freescale-mx23-evk/mx23-evk.c
+@@ -29,9 +29,7 @@ static int mx23_evk_devices_init(void)
+ {
+ 	struct device_d *sdram_dev;
+ 
+-	sdram_dev = add_mem_device("ram0", IMX_MEMORY_BASE, 32 * 1024 * 1024,
+-				   IORESOURCE_MEM_WRITEABLE);
+-	armlinux_add_dram(sdram_dev);
++	sdram_dev = arm_add_mem_device("ram0", IMX_MEMORY_BASE, 32 * 1024 * 1024);
+ 	armlinux_set_bootparams(dev_get_mem_region(sdram_dev, 0) + 0x100);
+ 	armlinux_set_architecture(MACH_TYPE_MX23EVK);
+ 
+diff --git a/arch/arm/boards/freescale-mx25-3-stack/3stack.c b/arch/arm/boards/freescale-mx25-3-stack/3stack.c
+index 3902ccf..b142232 100644
+--- a/arch/arm/boards/freescale-mx25-3-stack/3stack.c
++++ b/arch/arm/boards/freescale-mx25-3-stack/3stack.c
+@@ -194,8 +194,6 @@ late_initcall(imx25_3ds_fec_init);
+ 
+ static int imx25_devices_init(void)
+ {
+-	struct device_d *sdram_dev;
 -
--	setup_dma_coherent(0x10000000);
--
--#if TEXT_BASE & (0x100000 - 1)
--#warning cannot create vector section. Adjust TEXT_BASE to a 1M boundary
--#else
--	arm_create_section(0x0,        TEXT_BASE,   1, PMD_SECT_DEF_UNCACHED);
--#endif
--
--	mmu_enable();
--#endif
- 	return 0;
- }
- mem_initcall(eukrea_cpuimx51_mem_init);
+ #ifdef CONFIG_USB
+ 	/* USB does not work yet. Don't know why. Maybe
+ 	 * the CPLD has to be initialized.
+@@ -218,17 +216,15 @@ static int imx25_devices_init(void)
+ 	devfs_add_partition("nand0", 0x40000, 0x20000, PARTITION_FIXED, "env_raw");
+ 	dev_add_bb_dev("env_raw", "env0");
+ 
+-	sdram_dev = add_mem_device("ram0", IMX_SDRAM_CS0, 
+ #if defined CONFIG_FREESCALE_MX25_3STACK_SDRAM_64MB_DDR2
+-	64 * 1024 * 1024,
++#define SDRAM_SIZE	64 * 1024 * 1024
+ #elif defined CONFIG_FREESCALE_MX25_3STACK_SDRAM_128MB_MDDR
+-	128 * 1024 * 1024,
++#define SDRAM_SIZE	128 * 1024 * 1024
+ #else
+ #error "Unsupported SDRAM type"
+ #endif
+-				   IORESOURCE_MEM_WRITEABLE);
++	arm_add_mem_device("ram0", IMX_SDRAM_CS0, SDRAM_SIZE);
+ 	add_mem_device("sram0", 0x78000000, 128 * 1024, IORESOURCE_MEM_WRITEABLE);
+-	armlinux_add_dram(sdram_dev);
+ 
+ 	i2c_register_board_info(0, i2c_devices, ARRAY_SIZE(i2c_devices));
+ 	imx25_add_i2c0(NULL);
+diff --git a/arch/arm/boards/freescale-mx35-3-stack/3stack.c b/arch/arm/boards/freescale-mx35-3-stack/3stack.c
+index e513439..27d4e83 100644
+--- a/arch/arm/boards/freescale-mx35-3-stack/3stack.c
++++ b/arch/arm/boards/freescale-mx35-3-stack/3stack.c
+@@ -132,7 +132,6 @@ static void set_board_rev(int rev)
+ static int f3s_devices_init(void)
+ {
+ 	uint32_t reg;
+-	struct device_d *sdram_dev;
+ 
+ 	/* CS0: Nor Flash */
+ 	writel(0x0000cf03, CSCR_U(0));
+@@ -178,9 +177,7 @@ static int f3s_devices_init(void)
+ 
+ 	imx35_add_mmc0(NULL);
+ 
+-	sdram_dev = add_mem_device("ram0", IMX_SDRAM_CS0, 124 * 1024 * 1024,
+-				   IORESOURCE_MEM_WRITEABLE);
+-	armlinux_add_dram(sdram_dev);
++	arm_add_mem_device("ram0", IMX_SDRAM_CS0, 124 * 1024 * 1024);
+ 	imx35_add_fb(&ipu_fb_data);
+ 
+ 	armlinux_set_bootparams((void *)0x80000100);
 diff --git a/arch/arm/boards/freescale-mx51-pdk/board.c b/arch/arm/boards/freescale-mx51-pdk/board.c
-index f347657..d6472df 100644
+index b205a23..509e3c4 100644
 --- a/arch/arm/boards/freescale-mx51-pdk/board.c
 +++ b/arch/arm/boards/freescale-mx51-pdk/board.c
-@@ -77,16 +77,6 @@ static int babbage_mem_init(void)
- {
- 	arm_add_mem_device("ram0", 0x90000000, 512 * 1024 * 1024);
+@@ -227,13 +227,9 @@ static void babbage_power_init(void)
  
--#ifdef CONFIG_MMU
--	mmu_init();
+ static int f3s_devices_init(void)
+ {
+-	struct device_d *sdram_dev;
 -
--	arm_create_section(0x90000000, 0x90000000, 512, PMD_SECT_DEF_CACHED);
--	arm_create_section(0xb0000000, 0x90000000, 512, PMD_SECT_DEF_UNCACHED);
--
--	setup_dma_coherent(0x20000000);
--
--	mmu_enable();
--#endif
- 	return 0;
- }
- mem_initcall(babbage_mem_init);
+ 	babbage_mmu_init();
+ 
+-	sdram_dev = add_mem_device("ram0", 0x90000000, 512 * 1024 * 1024,
+-				   IORESOURCE_MEM_WRITEABLE);
+-	armlinux_add_dram(sdram_dev);
++	arm_add_mem_device("ram0", 0x90000000, 512 * 1024 * 1024);
+ 
+ 	imx51_iim_register_fec_ethaddr();
+ 	imx51_add_fec(&fec_info);
 diff --git a/arch/arm/boards/freescale-mx53-loco/board.c b/arch/arm/boards/freescale-mx53-loco/board.c
-index 92cff01..b5240f4 100644
+index e3db7f3..8ffe964 100644
 --- a/arch/arm/boards/freescale-mx53-loco/board.c
 +++ b/arch/arm/boards/freescale-mx53-loco/board.c
-@@ -78,18 +78,6 @@ static int loco_mem_init(void)
- 	arm_add_mem_device("ram0", 0x70000000, SZ_512M);
- 	arm_add_mem_device("ram1", 0xb0000000, SZ_512M);
+@@ -104,17 +104,10 @@ static void loco_fec_reset(void)
  
--#ifdef CONFIG_MMU
--	mmu_init();
+ static int loco_devices_init(void)
+ {
+-	struct device_d *sdram_dev;
 -
--	arm_create_section(0x70000000, 0x70000000, 512, PMD_SECT_DEF_CACHED);
--	arm_create_section(0x90000000, 0x70000000, 512, PMD_SECT_DEF_UNCACHED);
--	arm_create_section(0xb0000000, 0xb0000000, 512, PMD_SECT_DEF_CACHED);
--	arm_create_section(0xd0000000, 0xb0000000, 512, PMD_SECT_DEF_UNCACHED);
+ 	loco_mmu_init();
+ 
+-	sdram_dev = add_mem_device("ram0", 0x70000000, SZ_512M,
+-				   IORESOURCE_MEM_WRITEABLE);
+-	armlinux_add_dram(sdram_dev);
 -
--	setup_dma_coherent(0x20000000);
--
--	mmu_enable();
--#endif
- 	return 0;
- }
- mem_initcall(loco_mem_init);
+-	sdram_dev = add_mem_device("ram1", 0xb0000000, SZ_512M,
+-				   IORESOURCE_MEM_WRITEABLE);
+-	armlinux_add_dram(sdram_dev);
++	arm_add_mem_device("ram0", 0x70000000, SZ_512M);
++	arm_add_mem_device("ram1", 0xb0000000, SZ_512M);
+ 
+ 	imx51_iim_register_fec_ethaddr();
+ 	imx53_add_fec(&fec_info);
 diff --git a/arch/arm/boards/guf-cupid/board.c b/arch/arm/boards/guf-cupid/board.c
-index 134f377..706707d 100644
+index 6906f0a..d66afac 100644
 --- a/arch/arm/boards/guf-cupid/board.c
 +++ b/arch/arm/boards/guf-cupid/board.c
-@@ -100,23 +100,17 @@ static int cupid_mem_init(void)
- {
- 	arm_add_mem_device("ram0", IMX_SDRAM_CS0, 128 * 1024 * 1024);
- 
--#ifdef CONFIG_MMU
--	mmu_init();
--
--	arm_create_section(0x80000000, 0x80000000, 128, PMD_SECT_DEF_CACHED);
--	arm_create_section(0x90000000, 0x80000000, 128, PMD_SECT_DEF_UNCACHED);
--
--	setup_dma_coherent(0x10000000);
--
--	mmu_enable();
-+	return 0;
-+}
-+mem_initcall(cupid_mem_init);
- 
--#ifdef CONFIG_CACHE_L2X0
-+static int cupid_mmu_init(void)
-+{
- 	l2x0_init((void __iomem *)0x30000000, 0x00030024, 0x00000000);
--#endif
--#endif
-+
- 	return 0;
- }
--mem_initcall(cupid_mem_init);
-+postmmu_initcall(cupid_mmu_init);
- 
+@@ -119,7 +119,6 @@ postcore_initcall(cupid_mmu_init);
  static int cupid_devices_init(void)
  {
+ 	uint32_t reg;
+-	struct device_d *sdram_dev;
+ 
+ 	gpio_direction_output(GPIO_LCD_ENABLE, 0);
+ 	gpio_direction_output(GPIO_LCD_BACKLIGHT, 0);
+@@ -139,9 +138,7 @@ static int cupid_devices_init(void)
+ 	devfs_add_partition("nand0", 0x40000, 0x80000, PARTITION_FIXED, "env_raw");
+ 	dev_add_bb_dev("env_raw", "env0");
+ 
+-	sdram_dev = add_mem_device("ram0", IMX_SDRAM_CS0, 128 * 1024 * 1024,
+-				   IORESOURCE_MEM_WRITEABLE);
+-	armlinux_add_dram(sdram_dev);
++	arm_add_mem_device("ram0", IMX_SDRAM_CS0, 128 * 1024 * 1024);
+ 	imx35_add_fb(&ipu_fb_data);
+ 	imx35_add_mmc0(NULL);
+ 
 diff --git a/arch/arm/boards/guf-neso/board.c b/arch/arm/boards/guf-neso/board.c
-index 3517a5d..446b333 100644
+index f3a4635..6486f3a 100644
 --- a/arch/arm/boards/guf-neso/board.c
 +++ b/arch/arm/boards/guf-neso/board.c
-@@ -140,16 +140,6 @@ static int neso_mem_init(void)
+@@ -157,7 +157,6 @@ static void neso_mmu_init(void)
+ static int neso_devices_init(void)
  {
- 	arm_add_mem_device("ram0", 0xa0000000, 128 * 1024 * 1024);
+ 	int i;
+-	struct device_d *sdram_dev;
  
--#ifdef CONFIG_MMU
--	mmu_init();
--
--	arm_create_section(0xa0000000, 0xa0000000, 128, PMD_SECT_DEF_CACHED);
--	arm_create_section(0xb0000000, 0xa0000000, 128, PMD_SECT_DEF_UNCACHED);
--
--	setup_dma_coherent(0x10000000);
--
--	mmu_enable();
--#endif
- 	return 0;
- }
- mem_initcall(neso_mem_init);
+ 	unsigned int mode[] = {
+ 		/* UART1 */
+@@ -289,9 +288,7 @@ static int neso_devices_init(void)
+ 		imx_gpio_mode(mode[i]);
+ 
+ 	imx27_add_nand(&nand_info);
+-	sdram_dev = add_mem_device("ram0", 0xa0000000, 128 * 1024 * 1024,
+-				   IORESOURCE_MEM_WRITEABLE);
+-	armlinux_add_dram(sdram_dev);
++	arm_add_mem_device("ram0", 0xa0000000, 128 * 1024 * 1024);
+ 	imx27_add_fb(&neso_fb_data);
+ 
+ #ifdef CONFIG_USB
+diff --git a/arch/arm/boards/imx21ads/imx21ads.c b/arch/arm/boards/imx21ads/imx21ads.c
+index 2661064..b449279 100644
+--- a/arch/arm/boards/imx21ads/imx21ads.c
++++ b/arch/arm/boards/imx21ads/imx21ads.c
+@@ -118,7 +118,6 @@ core_initcall(imx21ads_timing_init);
+ static int mx21ads_devices_init(void)
+ {
+ 	int i;
+-	struct device_d *sdram_dev;
+ 	unsigned int mode[] = {
+ 		PA5_PF_LSCLK,
+ 		PA6_PF_LD0,
+@@ -158,9 +157,7 @@ static int mx21ads_devices_init(void)
+ 		imx_gpio_mode(mode[i]);
+ 
+ 	add_cfi_flash_device(-1, 0xC8000000, 32 * 1024 * 1024, 0);
+-	sdram_dev = add_mem_device("ram0", 0xc0000000, 64 * 1024 * 1024,
+-				   IORESOURCE_MEM_WRITEABLE);
+-	armlinux_add_dram(sdram_dev);
++	arm_add_mem_device("ram0", 0xc0000000, 64 * 1024 * 1024);
+ 	imx21_add_nand(&nand_info);
+ 	add_generic_device("cs8900", -1, NULL,	IMX_CS1_BASE, 0x1000,
+ 			IORESOURCE_MEM, NULL);
+diff --git a/arch/arm/boards/imx27ads/imx27ads.c b/arch/arm/boards/imx27ads/imx27ads.c
+index db49aac..299b2ea 100644
+--- a/arch/arm/boards/imx27ads/imx27ads.c
++++ b/arch/arm/boards/imx27ads/imx27ads.c
+@@ -77,7 +77,6 @@ core_initcall(imx27ads_timing_init);
+ static int mx27ads_devices_init(void)
+ {
+ 	int i;
+-	struct device_d *sdram_dev;
+ 	unsigned int mode[] = {
+ 		PD0_AIN_FEC_TXD0,
+ 		PD1_AIN_FEC_TXD1,
+@@ -109,9 +108,7 @@ static int mx27ads_devices_init(void)
+ 
+ 	add_cfi_flash_device(-1, 0xC0000000, 32 * 1024 * 1024, 0);
+ 
+-	sdram_dev = add_mem_device("ram0", 0xa0000000, 128 * 1024 * 1024,
+-				   IORESOURCE_MEM_WRITEABLE);
+-	armlinux_add_dram(sdram_dev);
++	arm_add_mem_device("ram0", 0xa0000000, 128 * 1024 * 1024);
+ 	imx27_add_fec(&fec_info);
+ 	devfs_add_partition("nor0", 0x00000, 0x20000, PARTITION_FIXED, "self0");
+ 	devfs_add_partition("nor0", 0x20000, 0x20000, PARTITION_FIXED, "env0");
 diff --git a/arch/arm/boards/karo-tx25/board.c b/arch/arm/boards/karo-tx25/board.c
-index a01fa3c..22bc27a 100644
+index e4a9aeb..4e5eafa 100644
 --- a/arch/arm/boards/karo-tx25/board.c
 +++ b/arch/arm/boards/karo-tx25/board.c
-@@ -59,18 +59,6 @@ static int tx25_mem_init(void)
+@@ -118,8 +118,6 @@ static void noinline gpio_fec_active(void)
+ 
+ static int tx25_devices_init(void)
+ {
+-	struct device_d *sdram_dev;
+-
+ 	gpio_fec_active();
+ 
+ 	imx25_iim_register_fec_ethaddr();
+@@ -136,12 +134,8 @@ static int tx25_devices_init(void)
+ 	devfs_add_partition("nand0", 0x40000, 0x80000, PARTITION_FIXED, "env_raw");
+ 	dev_add_bb_dev("env_raw", "env0");
+ 
+-	sdram_dev = add_mem_device("ram0", IMX_SDRAM_CS0, 32 * 1024 * 1024,
+-				   IORESOURCE_MEM_WRITEABLE);
+-	armlinux_add_dram(sdram_dev);
+-	sdram_dev = add_mem_device("ram0", IMX_SDRAM_CS1, 32 * 1024 * 1024,
+-				   IORESOURCE_MEM_WRITEABLE);
+-	armlinux_add_dram(sdram_dev);
++	arm_add_mem_device("ram0", IMX_SDRAM_CS0, 32 * 1024 * 1024);
++	arm_add_mem_device("ram0", IMX_SDRAM_CS1, 32 * 1024 * 1024);
  	add_mem_device("ram0", 0x78000000, 128 * 1024,
  				   IORESOURCE_MEM_WRITEABLE);
  
--#ifdef CONFIG_MMU
--	mmu_init();
--
--	arm_create_section(0x80000000, 0x80000000, 32, PMD_SECT_DEF_CACHED);
--	arm_create_section(0x82000000, 0x80000000, 32, PMD_SECT_DEF_UNCACHED);
--	arm_create_section(0x90000000, 0x90000000, 32, PMD_SECT_DEF_CACHED);
--	arm_create_section(0x92000000, 0x90000000, 32, PMD_SECT_DEF_UNCACHED);
--
--	setup_dma_coherent(0x02000000);
--
--	mmu_enable();
--#endif
- 	return 0;
- }
- mem_initcall(tx25_mem_init);
 diff --git a/arch/arm/boards/karo-tx28/tx28.c b/arch/arm/boards/karo-tx28/tx28.c
-index d6e3f9c..def388a 100644
+index b9d5454..095835b 100644
 --- a/arch/arm/boards/karo-tx28/tx28.c
 +++ b/arch/arm/boards/karo-tx28/tx28.c
-@@ -74,16 +74,6 @@ static int tx28_mem_init(void)
- {
- 	arm_add_mem_device("ram0", IMX_MEMORY_BASE, 128 * 1024 * 1024);
+@@ -96,9 +96,7 @@ static int tx28_devices_init(void)
+ 	for (i = 0; i < ARRAY_SIZE(tx28_pad_setup); i++)
+ 		imx_gpio_mode(tx28_pad_setup[i]);
  
--#ifdef CONFIG_MMU
--	mmu_init();
+-	sdram_dev = add_mem_device("ram0", IMX_MEMORY_BASE, 128 * 1024 * 1024,
+-				   IORESOURCE_MEM_WRITEABLE);
+-	armlinux_add_dram(sdram_dev);
++	sdram_dev = arm_add_mem_device("ram0", IMX_MEMORY_BASE, 128 * 1024 * 1024);
+ 	armlinux_set_bootparams(dev_get_mem_region(sdram_dev, 0) + 0x100);
+ 	armlinux_set_architecture(MACH_TYPE_TX28);
+ 
+diff --git a/arch/arm/boards/mini2440/mini2440.c b/arch/arm/boards/mini2440/mini2440.c
+index c6b4932..df7e617 100644
+--- a/arch/arm/boards/mini2440/mini2440.c
++++ b/arch/arm/boards/mini2440/mini2440.c
+@@ -290,9 +290,7 @@ static int mini2440_devices_init(void)
+ 	add_generic_device("s3c24x0_nand", -1, NULL, S3C24X0_NAND_BASE, 0,
+ 			   IORESOURCE_MEM, &nand_info);
+ 
+-	sdram_dev = add_mem_device("ram0", CS6_BASE, s3c24x0_get_memory_size(),
+-				   IORESOURCE_MEM_WRITEABLE);
+-	armlinux_add_dram(sdram_dev);
++	sdram_dev = arm_add_mem_device("ram0", CS6_BASE, s3c24x0_get_memory_size());
+ 
+ 	add_dm9000_device(0, CS4_BASE + 0x300, CS4_BASE + 0x304,
+ 			  IORESOURCE_MEM_16BIT, &dm9000_data);
+diff --git a/arch/arm/boards/netx/netx.c b/arch/arm/boards/netx/netx.c
+index 65681aa..e9b834a 100644
+--- a/arch/arm/boards/netx/netx.c
++++ b/arch/arm/boards/netx/netx.c
+@@ -39,13 +39,9 @@ struct netx_eth_platform_data eth1_data = {
+ };
+ 
+ static int netx_devices_init(void) {
+-	struct device_d *sdram_dev;
 -
--	arm_create_section(0x40000000, 0x40000000, 128, PMD_SECT_DEF_CACHED);
--	arm_create_section(0x50000000, 0x40000000, 128, PMD_SECT_DEF_UNCACHED);
+ 	add_cfi_flash_device(-1, 0xC0000000, 32 * 1024 * 1024, 0);
+ 
+-	sdram_dev = add_mem_device("ram0", 0x80000000, 64 * 1024 * 1024,
+-				   IORESOURCE_MEM_WRITEABLE);
+-	armlinux_add_dram(sdram_dev);
++	arm_add_mem_device("ram0", 0x80000000, 64 * 1024 * 1024);
+ 	add_generic_device("netx-eth", -1, NULL, 0, 0, IORESOURCE_MEM, &eth0_data);
+ 	add_generic_device("netx-eth", -1, NULL, 0, 0, IORESOURCE_MEM, &eth1_data);
+ 
+diff --git a/arch/arm/boards/omap/board-beagle.c b/arch/arm/boards/omap/board-beagle.c
+index e12e2fe..4602631 100644
+--- a/arch/arm/boards/omap/board-beagle.c
++++ b/arch/arm/boards/omap/board-beagle.c
+@@ -280,14 +280,7 @@ static struct i2c_board_info i2c_devices[] = {
+ 
+ static int beagle_devices_init(void)
+ {
+-	struct device_d *sdram_dev;
 -
--	setup_dma_coherent(0x10000000);
+-	sdram_dev = add_mem_device("ram0", 0x80000000, 128 * 1024 * 1024,
+-				   IORESOURCE_MEM_WRITEABLE);
+-	if (!sdram_dev)
+-		return -EIO;
+-	armlinux_add_dram(sdram_dev);
 -
--	mmu_enable();
--#endif
- 	return 0;
++	arm_add_mem_device("ram0", 0x80000000, 128 * 1024 * 1024);
+ 	i2c_register_board_info(0, i2c_devices, ARRAY_SIZE(i2c_devices));
+ 	add_generic_device("i2c-omap", -1, NULL, 0x4809C000, SZ_4K,
+ 			   IORESOURCE_MEM, NULL);
+diff --git a/arch/arm/boards/omap/board-omap3evm.c b/arch/arm/boards/omap/board-omap3evm.c
+index 8b5c9b3..68d971b 100644
+--- a/arch/arm/boards/omap/board-omap3evm.c
++++ b/arch/arm/boards/omap/board-omap3evm.c
+@@ -237,13 +237,7 @@ console_initcall(omap3evm_init_console);
+ 
+ static int omap3evm_init_devices(void)
+ {
+-	struct device_d *sdram_dev;
+-
+-	sdram_dev = add_mem_device("ram0", 0x80000000, 128 * 1024 * 1024,
+-				   IORESOURCE_MEM_WRITEABLE);
+-	if (!sdram_dev)
+-		return -EIO;
+-	armlinux_add_dram(sdram_dev);
++	arm_add_mem_device("ram0", 0x80000000, 128 * 1024 * 1024);
+ 
+ #ifdef CONFIG_GPMC
+ 	/*
+diff --git a/arch/arm/boards/omap/board-sdp343x.c b/arch/arm/boards/omap/board-sdp343x.c
+index 7c6df05..8fcae12 100644
+--- a/arch/arm/boards/omap/board-sdp343x.c
++++ b/arch/arm/boards/omap/board-sdp343x.c
+@@ -638,13 +638,8 @@ static int sdp3430_flash_init(void)
+ 
+ static int sdp3430_devices_init(void)
+ {
+-	struct device_d *sdram_dev;
++	arm_add_mem_device("ram0", 0x80000000, 128 * 1024 * 1024);
+ 
+-	sdram_dev = add_mem_device("ram0", 0x80000000, 128 * 1024 * 1024,
+-				   IORESOURCE_MEM_WRITEABLE);
+-	if (!sdram_dev)
+-		return -EIO;
+-	armlinux_add_dram(sdram_dev);
+ 	return sdp3430_flash_init();
  }
- mem_initcall(tx28_mem_init);
+ 
 diff --git a/arch/arm/boards/panda/board.c b/arch/arm/boards/panda/board.c
-index 696d44a..1303c47 100644
+index deded28..e27f0a4 100644
 --- a/arch/arm/boards/panda/board.c
 +++ b/arch/arm/boards/panda/board.c
-@@ -48,14 +48,6 @@ static int panda_mem_init(void)
- {
- 	arm_add_mem_device("ram0", 0x80000000, SZ_1G);
+@@ -113,8 +113,6 @@ static void __init panda_boardrev_init(void)
  
--#ifdef CONFIG_MMU
--	mmu_init();
+ static int panda_devices_init(void)
+ {
+-	struct device_d *sdram_dev;
 -
--	arm_create_section(0x80000000, 0x80000000, 256, PMD_SECT_DEF_CACHED);
--	arm_create_section(0x90000000, 0x80000000, 256, PMD_SECT_DEF_UNCACHED);
--
--	mmu_enable();
--#endif
- 	return 0;
- }
- mem_initcall(panda_mem_init);
+ 	panda_boardrev_init();
+ 
+ 	if (gpio_get_value(182)) {
+@@ -141,9 +139,7 @@ static int panda_devices_init(void)
+ 		sr32(OMAP44XX_SCRM_ALTCLKSRC, 2, 2, 0x3);
+ 	}
+ 
+-	sdram_dev = add_mem_device("ram0", 0x80000000, SZ_1G,
+-				   IORESOURCE_MEM_WRITEABLE);
+-	armlinux_add_dram(sdram_dev);
++	arm_add_mem_device("ram0", 0x80000000, SZ_1G);
+ 	add_generic_device("omap-hsmmc", -1, NULL, 0x4809C100, SZ_4K,
+ 			   IORESOURCE_MEM, NULL);
+ 	panda_ehci_init();
 diff --git a/arch/arm/boards/pcm037/pcm037.c b/arch/arm/boards/pcm037/pcm037.c
-index a026f23..85f004f 100644
+index f4b4444..56db9a8 100644
 --- a/arch/arm/boards/pcm037/pcm037.c
 +++ b/arch/arm/boards/pcm037/pcm037.c
-@@ -153,23 +153,17 @@ static int pcm037_mem_init(void)
- 	arm_add_mem_device("ram1", IMX_SDRAM_CS1, SDRAM1 * 1024 * 1024);
- #endif
- 
--#ifdef CONFIG_MMU
--	mmu_init();
--
--	arm_create_section(0x80000000, 0x80000000, 128, PMD_SECT_DEF_CACHED);
--	arm_create_section(0x90000000, 0x80000000, 128, PMD_SECT_DEF_UNCACHED);
--
--	setup_dma_coherent(0x10000000);
--
--	mmu_enable();
-+	return 0;
-+}
-+mem_initcall(pcm037_mem_init);
- 
--#ifdef CONFIG_CACHE_L2X0
-+static int pcm037_mmu_init(void)
-+{
- 	l2x0_init((void __iomem *)0x30000000, 0x00030024, 0x00000000);
--#endif
--#endif
-+
- 	return 0;
- }
--mem_initcall(pcm037_mem_init);
-+postmmu_initcall(pcm037_mmu_init);
+@@ -170,8 +170,6 @@ static void pcm037_mmu_init(void)
  
  static int imx31_devices_init(void)
  {
+-	struct device_d *sdram_dev;
+-
+ 	pcm037_mmu_init();
+ 
+ 	__REG(CSCR_U(0)) = 0x0000cf03; /* CS0: Nor Flash */
+@@ -221,13 +219,9 @@ static int imx31_devices_init(void)
+ 	add_generic_device("smc911x", -1, NULL,	IMX_CS1_BASE, IMX_CS1_RANGE,
+ 			IORESOURCE_MEM, NULL);
+ 
+-	sdram_dev = add_mem_device("ram0", IMX_SDRAM_CS0, SDRAM0 * 1024 * 1024,
+-				   IORESOURCE_MEM_WRITEABLE);
+-	armlinux_add_dram(sdram_dev);
++	arm_add_mem_device("ram0", IMX_SDRAM_CS0, SDRAM0 * 1024 * 1024);
+ #ifndef CONFIG_PCM037_SDRAM_BANK1_NONE
+-	sdram_dev = add_mem_device("ram1", IMX_SDRAM_CS1, SDRAM1 * 1024 * 1024,
+-				   IORESOURCE_MEM_WRITEABLE);
+-	armlinux_add_dram(sdram_dev);
++	arm_add_mem_device("ram1", IMX_SDRAM_CS1, SDRAM1 * 1024 * 1024);
+ #endif
+ #ifdef CONFIG_USB
+ 	pcm037_usb_init();
 diff --git a/arch/arm/boards/pcm038/pcm038.c b/arch/arm/boards/pcm038/pcm038.c
-index 9588b9b..4db50fe 100644
+index 02c3dba..bf15cfd 100644
 --- a/arch/arm/boards/pcm038/pcm038.c
 +++ b/arch/arm/boards/pcm038/pcm038.c
-@@ -135,16 +135,6 @@ static int pcm038_mem_init(void)
+@@ -151,7 +151,6 @@ static int pcm038_devices_init(void)
+ {
+ 	int i;
+ 	char *envdev;
+-	struct device_d *sdram_dev;
  
+ 	unsigned int mode[] = {
+ 		PD0_AIN_FEC_TXD0,
+@@ -255,9 +254,7 @@ static int pcm038_devices_init(void)
+ 
+ 	add_cfi_flash_device(-1, 0xC0000000, 32 * 1024 * 1024, 0);
+ 	imx27_add_nand(&nand_info);
+-	sdram_dev = add_mem_device("ram0", 0xa0000000, 128 * 1024 * 1024,
+-				   IORESOURCE_MEM_WRITEABLE);
+-	armlinux_add_dram(sdram_dev);
++	arm_add_mem_device("ram0", 0xa0000000, 128 * 1024 * 1024);
  	add_mem_device("ram0", 0xc8000000, 512 * 1024, /* Can be up to 2MiB */
  				   IORESOURCE_MEM_WRITEABLE);
--#ifdef CONFIG_MMU
--	mmu_init();
--
--	arm_create_section(0xa0000000, 0xa0000000, 128, PMD_SECT_DEF_CACHED);
--	arm_create_section(0xb0000000, 0xa0000000, 128, PMD_SECT_DEF_UNCACHED);
--
--	setup_dma_coherent(0x10000000);
--
--	mmu_enable();
--#endif
- 	return 0;
- }
- mem_initcall(pcm038_mem_init);
+ 	imx27_add_fb(&pcm038_fb_data);
 diff --git a/arch/arm/boards/pcm043/pcm043.c b/arch/arm/boards/pcm043/pcm043.c
-index 10d319f..966899a 100644
+index 3bd6402..0f25354 100644
 --- a/arch/arm/boards/pcm043/pcm043.c
 +++ b/arch/arm/boards/pcm043/pcm043.c
-@@ -103,24 +103,17 @@ static int pcm043_mem_init(void)
+@@ -125,7 +125,6 @@ struct gpio_led led0 = {
+ 
+ static int imx35_devices_init(void)
  {
- 	arm_add_mem_device("ram0", IMX_SDRAM_CS0, 128 * 1024 * 1024);
+-	struct device_d *sdram_dev;
+ 	uint32_t reg;
  
--#ifdef CONFIG_MMU
--	mmu_init();
--
--	arm_create_section(0x80000000, 0x80000000, 128, PMD_SECT_DEF_CACHED);
--	arm_create_section(0x90000000, 0x80000000, 128, PMD_SECT_DEF_UNCACHED);
--
--	setup_dma_coherent(0x10000000);
--
--	mmu_enable();
--
--#ifdef CONFIG_CACHE_L2X0
--	l2x0_init((void __iomem *)0x30000000, 0x00030024, 0x00000000);
--#endif
--#endif
- 	return 0;
- }
- mem_initcall(pcm043_mem_init);
+ 	/* CS0: Nor Flash */
+@@ -171,9 +170,7 @@ static int imx35_devices_init(void)
+ 	}
  
-+static int pcm043_mmu_init(void)
-+{
-+	l2x0_init((void __iomem *)0x30000000, 0x00030024, 0x00000000);
-+
-+	return 0;
-+}
-+postmmu_initcall(pcm043_mmu_init);
  
- struct gpio_led led0 = {
- 	.gpio = 1 * 32 + 6,
+-	sdram_dev = add_mem_device("ram0", IMX_SDRAM_CS0, 128 * 1024 * 1024,
+-				   IORESOURCE_MEM_WRITEABLE);
+-	armlinux_add_dram(sdram_dev);
++	arm_add_mem_device("ram0", IMX_SDRAM_CS0, 128 * 1024 * 1024);
+ 	imx35_add_fb(&ipu_fb_data);
+ 
+ 	armlinux_set_bootparams((void *)0x80000100);
 diff --git a/arch/arm/boards/pcm049/board.c b/arch/arm/boards/pcm049/board.c
-index 83eb9be..502e121 100644
+index d3f1310..20419a3 100644
 --- a/arch/arm/boards/pcm049/board.c
 +++ b/arch/arm/boards/pcm049/board.c
-@@ -60,15 +60,6 @@ static int pcm049_mem_init(void)
+@@ -93,11 +93,7 @@ static void pcm049_network_init(void)
  
- 	add_mem_device("sram0", 0x40300000, 48 * 1024,
+ static int pcm049_devices_init(void)
+ {
+-	struct device_d *sdram_dev;
+-
+-	sdram_dev = add_mem_device("ram0", 0x80000000, SZ_512M,
+-				   IORESOURCE_MEM_WRITEABLE);
+-	armlinux_add_dram(sdram_dev);
++	arm_add_mem_device("ram0", 0x80000000, SZ_512M);
+ 	add_mem_device("ram0", 0x40300000, 48 * 1024,
  				   IORESOURCE_MEM_WRITEABLE);
--#ifdef CONFIG_MMU
--	mmu_init();
--
--	arm_create_section(0x80000000, 0x80000000, 256, PMD_SECT_DEF_CACHED);
--	/* warning: This shadows the second half of our ram */
--	arm_create_section(0x90000000, 0x80000000, 256, PMD_SECT_DEF_UNCACHED);
--
--	mmu_enable();
--#endif
- 	return 0;
- }
- mem_initcall(pcm049_mem_init);
+ 	add_generic_device("omap-hsmmc", -1, NULL, 0x4809C100, SZ_4K,
 diff --git a/arch/arm/boards/phycard-i.MX27/pca100.c b/arch/arm/boards/phycard-i.MX27/pca100.c
-index 3c2a0e4..f285466 100644
+index 9a10a9d..68f972a 100644
 --- a/arch/arm/boards/phycard-i.MX27/pca100.c
 +++ b/arch/arm/boards/phycard-i.MX27/pca100.c
-@@ -73,16 +73,6 @@ static int pca100_mem_init(void)
+@@ -123,7 +123,6 @@ static int pca100_devices_init(void)
  {
- 	arm_add_mem_device("ram0", 0xa0000000, 128 * 1024 * 1024);
- 
--#ifdef CONFIG_MMU
--	mmu_init();
--
--	arm_create_section(0xa0000000, 0xa0000000, 128, PMD_SECT_DEF_CACHED);
--	arm_create_section(0xb0000000, 0xa0000000, 128, PMD_SECT_DEF_UNCACHED);
--
--	setup_dma_coherent(0x10000000);
--
--	mmu_enable();
--#endif
- 	return 0;
- }
- mem_initcall(pca100_mem_init);
-diff --git a/arch/arm/boards/scb9328/env/config b/arch/arm/boards/scb9328/env/config
-new file mode 100644
-index 0000000..d0f3f25
---- /dev/null
-+++ b/arch/arm/boards/scb9328/env/config
-@@ -0,0 +1,56 @@
-+#!/bin/sh
-+
-+machine=scb9328
-+eth0.serverip=
-+user=
-+
-+# use 'dhcp' to do dhcp in barebox and in kernel
-+# use 'none' if you want to skip kernel ip autoconfiguration
-+ip=dhcp
-+
-+# or set your networking parameters here
-+#eth0.ipaddr=a.b.c.d
-+#eth0.netmask=a.b.c.d
-+#eth0.gateway=a.b.c.d
-+#eth0.serverip=a.b.c.d
-+
-+# can be either 'net', 'nor' or 'nand'
-+kernel_loc=net
-+# can be either 'net', 'nor', 'nand' or 'initrd'
-+rootfs_loc=net
-+
-+# can be either 'jffs2' or 'ubifs'
-+rootfs_type=ubifs
-+rootfsimage=root-$machine.$rootfs_type
-+
-+# The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
-+kernelimage_type=zimage
-+kernelimage=zImage-$machine
-+#kernelimage_type=uimage
-+#kernelimage=uImage-$machine
-+#kernelimage_type=raw
-+#kernelimage=Image-$machine
-+#kernelimage_type=raw_lzo
-+#kernelimage=Image-$machine.lzo
-+
-+if [ -n $user ]; then
-+	kernelimage="$user"-"$kernelimage"
-+	nfsroot="$eth0.serverip:/home/$user/nfsroot/$machine"
-+	rootfsimage="$user"-"$rootfsimage"
-+else
-+	nfsroot="$eth0.serverip:/path/to/nfs/root"
-+fi
-+
-+autoboot_timeout=3
-+
-+bootargs="console=ttymxc0,115200"
-+
-+nor_parts="256k(barebox)ro,128k(bareboxenv),2M(kernel),-(root)"
-+rootfs_mtdblock_nor=3
-+
-+nand_parts="256k(barebox)ro,128k(bareboxenv),2M(kernel),-(root)"
-+rootfs_mtdblock_nand=7
-+
-+# set a fancy prompt (if support is compiled in)
-+PS1="\e[1;32mbarebox@\e[1;31m\h:\w\e[0m "
-+
-diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index 53ba51a..ad63358 100644
---- a/arch/arm/cpu/mmu.c
-+++ b/arch/arm/cpu/mmu.c
-@@ -170,7 +170,7 @@ static void vectors_init(void)
- /*
-  * Prepare MMU for usage enable it.
-  */
--int mmu_init(void)
-+static int mmu_init(void)
- {
- 	struct arm_memory *mem;
  	int i;
-@@ -217,6 +217,7 @@ int mmu_init(void)
+ 	struct device_d *nand;
+-	struct device_d *sdram_dev;
  
- 	return 0;
- }
-+mmu_initcall(mmu_init);
+ 	unsigned int mode[] = {
+ 		PD0_AIN_FEC_TXD0,
+@@ -198,9 +197,7 @@ static int pca100_devices_init(void)
+ 		imx_gpio_mode(mode[i]);
  
- struct outer_cache_fns outer_cache;
+ 	imx27_add_nand(&nand_info);
+-	sdram_dev = add_mem_device("ram0", 0xa0000000, 128 * 1024 * 1024,
+-				   IORESOURCE_MEM_WRITEABLE);
+-	armlinux_add_dram(sdram_dev);
++	arm_add_mem_device("ram0", 0xa0000000, 128 * 1024 * 1024);
+ 	imx27_add_fec(&fec_info);
+ 	imx27_add_mmc0(NULL);
  
-diff --git a/arch/arm/include/asm/mmu.h b/arch/arm/include/asm/mmu.h
-index b1aa781..9ca5e2a 100644
---- a/arch/arm/include/asm/mmu.h
-+++ b/arch/arm/include/asm/mmu.h
-@@ -24,8 +24,6 @@ static inline void setup_dma_coherent(unsigned long offset)
- }
- 
- #ifdef CONFIG_MMU
--int mmu_init(void);
--
- void *dma_alloc_coherent(size_t size);
- void dma_free_coherent(void *mem, size_t size);
- 
-@@ -36,11 +34,6 @@ unsigned long virt_to_phys(void *virt);
- void *phys_to_virt(unsigned long phys);
- 
- #else
--static inline int mmu_init(void)
--{
--	return -EINVAL;
--}
--
- static inline void *dma_alloc_coherent(size_t size)
+diff --git a/arch/arm/boards/scb9328/scb9328.c b/arch/arm/boards/scb9328/scb9328.c
+index 5c52af9..68a39bf 100644
+--- a/arch/arm/boards/scb9328/scb9328.c
++++ b/arch/arm/boards/scb9328/scb9328.c
+@@ -53,7 +53,6 @@ struct gpio_led leds[] = {
+ static int scb9328_devices_init(void)
  {
- 	return xmemalign(4096, size);
+ 	int i;
+-	struct device_d *sdram_dev;
+ 
+ 	imx_gpio_mode(PA23_PF_CS5);
+ 	imx_gpio_mode(GPIO_PORTB | GPIO_GPIO | GPIO_OUT | 21);
+@@ -82,9 +81,7 @@ static int scb9328_devices_init(void)
+ 	CS5L = 0x00000D03;
+ 
+ 	add_cfi_flash_device(-1, 0x10000000, 16 * 1024 * 1024, 0);
+-	sdram_dev = add_mem_device("ram0", 0x08000000, 16 * 1024 * 1024,
+-				   IORESOURCE_MEM_WRITEABLE);
+-	armlinux_add_dram(sdram_dev);
++	arm_add_mem_device("ram0", 0x08000000, 16 * 1024 * 1024);
+ 	add_dm9000_device(-1, 0x16000000, 0x16000004,
+ 			  IORESOURCE_MEM_16BIT, &dm9000_data);
+ 
+diff --git a/arch/arm/include/asm/armlinux.h b/arch/arm/include/asm/armlinux.h
+index 3cab209..f76cca8 100644
+--- a/arch/arm/include/asm/armlinux.h
++++ b/arch/arm/include/asm/armlinux.h
+@@ -34,4 +34,7 @@ struct image_data;
+ 
+ void start_linux(void *adr, int swap, struct image_data *data);
+ 
++struct device_d *arm_add_mem_device(const char* name, resource_size_t start,
++				    resource_size_t size);
++
+ #endif /* __ARCH_ARMLINUX_H */
+diff --git a/arch/arm/mach-at91/at91rm9200_devices.c b/arch/arm/mach-at91/at91rm9200_devices.c
+index 289f2c3..84605e4 100644
+--- a/arch/arm/mach-at91/at91rm9200_devices.c
++++ b/arch/arm/mach-at91/at91rm9200_devices.c
+@@ -22,11 +22,7 @@
+ 
+ void at91_add_device_sdram(u32 size)
+ {
+-	struct device_d *sdram_dev;
+-
+-	sdram_dev = add_mem_device("ram0", AT91_CHIPSELECT_1, size,
+-				   IORESOURCE_MEM_WRITEABLE);
+-	armlinux_add_dram(sdram_dev);
++	arm_add_mem_device("ram0", AT91_CHIPSELECT_1, size);
+ }
+ 
+ /* --------------------------------------------------------------------
+diff --git a/arch/arm/mach-at91/at91sam9260_devices.c b/arch/arm/mach-at91/at91sam9260_devices.c
+index 468f00d..5c1bbbe 100644
+--- a/arch/arm/mach-at91/at91sam9260_devices.c
++++ b/arch/arm/mach-at91/at91sam9260_devices.c
+@@ -23,11 +23,7 @@
+ 
+ void at91_add_device_sdram(u32 size)
+ {
+-	struct device_d *sdram_dev;
+-
+-	sdram_dev = add_mem_device("ram0", AT91_CHIPSELECT_1, size,
+-				   IORESOURCE_MEM_WRITEABLE);
+-	armlinux_add_dram(sdram_dev);
++	arm_add_mem_device("ram0", AT91_CHIPSELECT_1, size);
+ }
+ 
+ #if defined(CONFIG_DRIVER_NET_MACB)
+diff --git a/arch/arm/mach-at91/at91sam9261_devices.c b/arch/arm/mach-at91/at91sam9261_devices.c
+index 1e741fd..4985cf1 100644
+--- a/arch/arm/mach-at91/at91sam9261_devices.c
++++ b/arch/arm/mach-at91/at91sam9261_devices.c
+@@ -23,11 +23,7 @@
+ 
+ void at91_add_device_sdram(u32 size)
+ {
+-	struct device_d *sdram_dev;
+-
+-	sdram_dev = add_mem_device("ram0", AT91_CHIPSELECT_1, size,
+-				   IORESOURCE_MEM_WRITEABLE);
+-	armlinux_add_dram(sdram_dev);
++	arm_add_mem_device("ram0", AT91_CHIPSELECT_1, size);
+ }
+ 
+ #if defined(CONFIG_NAND_ATMEL)
+diff --git a/arch/arm/mach-at91/at91sam9263_devices.c b/arch/arm/mach-at91/at91sam9263_devices.c
+index 07bd02f..540220e 100644
+--- a/arch/arm/mach-at91/at91sam9263_devices.c
++++ b/arch/arm/mach-at91/at91sam9263_devices.c
+@@ -23,11 +23,7 @@
+ 
+ void at91_add_device_sdram(u32 size)
+ {
+-	struct device_d *sdram_dev;
+-
+-	sdram_dev = add_mem_device("ram0", AT91_CHIPSELECT_1, size,
+-				   IORESOURCE_MEM_WRITEABLE);
+-	armlinux_add_dram(sdram_dev);
++	arm_add_mem_device("ram0", AT91_CHIPSELECT_1, size);
+ }
+ 
+ #if defined(CONFIG_DRIVER_NET_MACB)
+diff --git a/arch/arm/mach-at91/at91sam9g45_devices.c b/arch/arm/mach-at91/at91sam9g45_devices.c
+index 4d55e22..2cd5a95 100644
+--- a/arch/arm/mach-at91/at91sam9g45_devices.c
++++ b/arch/arm/mach-at91/at91sam9g45_devices.c
+@@ -23,11 +23,7 @@
+ 
+ void at91_add_device_sdram(u32 size)
+ {
+-	struct device_d *sdram_dev;
+-
+-	sdram_dev = add_mem_device("ram0", AT91_CHIPSELECT_6, size,
+-				   IORESOURCE_MEM_WRITEABLE);
+-	armlinux_add_dram(sdram_dev);
++	arm_add_mem_device("ram0", AT91_CHIPSELECT_6, size);
+ }
+ 
+ #if defined(CONFIG_DRIVER_NET_MACB)
+diff --git a/arch/arm/mach-nomadik/8815.c b/arch/arm/mach-nomadik/8815.c
+index f2b8fd0..bcc3406 100644
+--- a/arch/arm/mach-nomadik/8815.c
++++ b/arch/arm/mach-nomadik/8815.c
+@@ -33,11 +33,7 @@ static struct clk st8815_clk_48 = {
+ 
+ void st8815_add_device_sdram(u32 size)
+ {
+-	struct device_d *sdram_dev;
+-
+-	sdram_dev = add_mem_device("ram0", 0x00000000, size,
+-				   IORESOURCE_MEM_WRITEABLE);
+-	armlinux_add_dram(sdram_dev);
++	arm_add_mem_device("ram0", 0x00000000, size);
+ }
+ 
+ void st8815_register_uart(unsigned id)
+diff --git a/arch/arm/mach-versatile/core.c b/arch/arm/mach-versatile/core.c
+index 249d97a..28582f7 100644
+--- a/arch/arm/mach-versatile/core.c
++++ b/arch/arm/mach-versatile/core.c
+@@ -44,11 +44,7 @@
+ 
+ void versatile_add_sdram(u32 size)
+ {
+-	struct device_d *sdram_dev;
+-
+-	sdram_dev = add_mem_device("ram0", 0x00000000, size,
+-				   IORESOURCE_MEM_WRITEABLE);
+-	armlinux_add_dram(sdram_dev);
++	arm_add_mem_device("ram0", 0x00000000, size);
+ }
+ 
+ struct clk {
+diff --git a/drivers/base/resource.c b/drivers/base/resource.c
+index 5fc705f..175beb9 100644
+--- a/drivers/base/resource.c
++++ b/drivers/base/resource.c
+@@ -118,3 +118,18 @@ struct device_d *add_usb_ehci_device(int id, resource_size_t hccr,
+ }
+ EXPORT_SYMBOL(add_usb_ehci_device);
+ #endif
++
++#ifdef CONFIG_ARM
++#include <asm/armlinux.h>
++
++struct device_d *arm_add_mem_device(const char* name, resource_size_t start,
++				    resource_size_t size)
++{
++	struct device_d *dev;
++
++	dev = add_mem_device(name, start, size, IORESOURCE_MEM_WRITEABLE);
++	armlinux_add_dram(dev);
++
++	return dev;
++}
++#endif
 -- 
 1.7.5.4
 
