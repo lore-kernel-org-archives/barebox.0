@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 20.mo4.mail-out.ovh.net ([46.105.33.73]
+Received: from 18.mo4.mail-out.ovh.net ([188.165.54.143]
 	helo=mo4.mail-out.ovh.net)
 	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1QnsqK-0003gP-FE
-	for barebox@lists.infradead.org; Mon, 01 Aug 2011 13:47:41 +0000
+	id 1QnsqK-0003gR-T0
+	for barebox@lists.infradead.org; Mon, 01 Aug 2011 13:47:42 +0000
 Received: from mail182.ha.ovh.net (b6.ovh.net [213.186.33.56])
-	by mo4.mail-out.ovh.net (Postfix) with SMTP id ECD24FFA5BC
+	by mo4.mail-out.ovh.net (Postfix) with SMTP id 6C4E1FFA5C6
 	for <barebox@lists.infradead.org>;
-	Mon,  1 Aug 2011 15:48:34 +0200 (CEST)
+	Mon,  1 Aug 2011 15:48:35 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon,  1 Aug 2011 15:29:36 +0200
-Message-Id: <1312205383-13266-2-git-send-email-plagnioj@jcrosoft.com>
+Date: Mon,  1 Aug 2011 15:29:38 +0200
+Message-Id: <1312205383-13266-4-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <20110801132643.GH6255@game.jcrosoft.org>
 References: <20110801132643.GH6255@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
@@ -26,30 +26,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/9] ARM cache l2x0: depend on MMU
+Subject: [PATCH 4/9] ARM l2x0: make init function static inline if l2 is not
+	available
 To: barebox@lists.infradead.org
 
 From: Sascha Hauer <s.hauer@pengutronix.de>
 
-l2x0 cache support does not work without MMU, so depend
-on it in Kconfig.
+So that the ifdeffery can be moved out of the board code.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/Kconfig |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+ arch/arm/include/asm/mmu.h |    6 ++++++
+ 1 files changed, 6 insertions(+), 0 deletions(-)
 
-diff --git a/arch/arm/cpu/Kconfig b/arch/arm/cpu/Kconfig
-index 8ee7d6c..5337c46 100644
---- a/arch/arm/cpu/Kconfig
-+++ b/arch/arm/cpu/Kconfig
-@@ -87,5 +87,5 @@ config ARCH_HAS_L2X0
+diff --git a/arch/arm/include/asm/mmu.h b/arch/arm/include/asm/mmu.h
+index f235448..d96c728 100644
+--- a/arch/arm/include/asm/mmu.h
++++ b/arch/arm/include/asm/mmu.h
+@@ -60,7 +60,13 @@ static inline void dma_inv_range(unsigned long s, unsigned long e)
  
- config CACHE_L2X0
- 	bool "Enable L2x0 PrimeCell"
--	depends on ARCH_HAS_L2X0
-+	depends on MMU && ARCH_HAS_L2X0
+ #endif
  
++#ifdef CONFIG_CACHE_L2X0
+ void __init l2x0_init(void __iomem *base, __u32 aux_val, __u32 aux_mask);
++#else
++static inline void __init l2x0_init(void __iomem *base, __u32 aux_val, __u32 aux_mask)
++{
++}
++#endif
+ 
+ struct outer_cache_fns {
+ 	void (*inv_range)(unsigned long, unsigned long);
 -- 
 1.7.5.4
 
