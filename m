@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 2.mo4.mail-out.ovh.net ([46.105.72.36]
+Received: from 10.mo4.mail-out.ovh.net ([188.165.33.109]
 	helo=mo4.mail-out.ovh.net)
 	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1QnsqM-0003hQ-MK
-	for barebox@lists.infradead.org; Mon, 01 Aug 2011 13:47:48 +0000
+	id 1QnsqM-0003hR-PP
+	for barebox@lists.infradead.org; Mon, 01 Aug 2011 13:47:51 +0000
 Received: from mail182.ha.ovh.net (b6.ovh.net [213.186.33.56])
-	by mo4.mail-out.ovh.net (Postfix) with SMTP id 480ECFFA5DC
+	by mo4.mail-out.ovh.net (Postfix) with SMTP id 7BAD0FFA5E8
 	for <barebox@lists.infradead.org>;
 	Mon,  1 Aug 2011 15:48:37 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon,  1 Aug 2011 15:29:42 +0200
-Message-Id: <1312205383-13266-8-git-send-email-plagnioj@jcrosoft.com>
+Date: Mon,  1 Aug 2011 15:29:43 +0200
+Message-Id: <1312205383-13266-9-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <20110801132643.GH6255@game.jcrosoft.org>
 References: <20110801132643.GH6255@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
@@ -26,337 +26,566 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 8/9] ARM: rework MMU support
+Subject: [PATCH 9/9 v2] ARM boards: remove now unnecessary mmu calls
 To: barebox@lists.infradead.org
 
 From: Sascha Hauer <s.hauer@pengutronix.de>
 
-In barebox we used 1MiB sections to map our SDRAM cachable. This
-has the drawback that we have to map our sdram twice: cached for
-normal sdram and uncached for DMA operations. As address space gets
-sparse on newer systems we are sometines unable to find a suitably
-big enough area for the dma coherent space.
-
-This patch changes the MMU code to use second level page tables.
-With it we can implement dma_alloc_coherent as normal malloc, we
-just have to remap the allocated area uncached afterwards and map
-it cached again after free().
-
-This makes arm_create_section(), setup_dma_coherent() and mmu_enable()
-noops.
-
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/cpu/mmu.c         |  175 ++++++++++++++++++++++++++++++++++++--------
- arch/arm/include/asm/mmu.h |   20 ++++-
- include/common.h           |    1 +
- 3 files changed, 161 insertions(+), 35 deletions(-)
+ arch/arm/boards/chumby_falconwing/falconwing.c    |   10 ----
+ arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c |   10 ----
+ arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c |   10 ----
+ arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c |   20 +++-----
+ arch/arm/boards/eukrea_cpuimx51/eukrea_cpuimx51.c |   16 ------
+ arch/arm/boards/freescale-mx51-pdk/board.c        |   10 ----
+ arch/arm/boards/freescale-mx53-loco/board.c       |   12 -----
+ arch/arm/boards/guf-cupid/board.c                 |   20 +++-----
+ arch/arm/boards/guf-neso/board.c                  |   10 ----
+ arch/arm/boards/karo-tx25/board.c                 |   12 -----
+ arch/arm/boards/karo-tx28/tx28.c                  |   10 ----
+ arch/arm/boards/panda/board.c                     |    8 ---
+ arch/arm/boards/pcm037/pcm037.c                   |   20 +++-----
+ arch/arm/boards/pcm038/pcm038.c                   |   10 ----
+ arch/arm/boards/pcm043/pcm043.c                   |   21 +++-----
+ arch/arm/boards/pcm049/board.c                    |    9 ---
+ arch/arm/boards/phycard-i.MX27/pca100.c           |   10 ----
+ arch/arm/boards/scb9328/env/config                |   56 +++++++++++++++++++++
+ arch/arm/cpu/mmu.c                                |    3 +-
+ arch/arm/include/asm/mmu.h                        |    7 ---
+ 20 files changed, 86 insertions(+), 198 deletions(-)
+ create mode 100644 arch/arm/boards/scb9328/env/config
 
+diff --git a/arch/arm/boards/chumby_falconwing/falconwing.c b/arch/arm/boards/chumby_falconwing/falconwing.c
+index b20dd74..1c66eb2 100644
+--- a/arch/arm/boards/chumby_falconwing/falconwing.c
++++ b/arch/arm/boards/chumby_falconwing/falconwing.c
+@@ -265,16 +265,6 @@ static int falconwing_mem_init(void)
+ {
+ 	arm_add_mem_device("ram0", IMX_MEMORY_BASE, 64 * 1024 * 1024);
+ 
+-#ifdef CONFIG_MMU
+-	mmu_init();
+-
+-	arm_create_section(0x40000000, 0x40000000, 64, PMD_SECT_DEF_CACHED);
+-	arm_create_section(0x50000000, 0x40000000, 64, PMD_SECT_DEF_UNCACHED);
+-
+-	setup_dma_coherent(0x10000000);
+-
+-	mmu_enable();
+-#endif
+ 	return 0;
+ }
+ mem_initcall(falconwing_mem_init);
+diff --git a/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c b/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
+index 5c07597..1c54202 100644
+--- a/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
++++ b/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
+@@ -160,16 +160,6 @@ static int eukrea_cpuimx25_mem_init(void)
+ {
+ 	arm_add_mem_device("ram0", IMX_SDRAM_CS0, 64 * 1024 * 1024);
+ 
+-#ifdef CONFIG_MMU
+-	mmu_init();
+-
+-	arm_create_section(0x80000000, 0x80000000, 128, PMD_SECT_DEF_CACHED);
+-	arm_create_section(0x90000000, 0x80000000, 128, PMD_SECT_DEF_UNCACHED);
+-
+-	setup_dma_coherent(0x10000000);
+-
+-	mmu_enable();
+-#endif
+ 	return 0;
+ }
+ mem_initcall(eukrea_cpuimx25_mem_init);
+diff --git a/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c b/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
+index ac886fa..a5aadac 100644
+--- a/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
++++ b/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
+@@ -92,16 +92,6 @@ static int eukrea_cpuimx27_mem_init(void)
+ {
+ 	arm_add_mem_device("ram0", 0xa0000000, SDRAM0 * 1024 * 1024);
+ 
+-#ifdef CONFIG_MMU
+-	mmu_init();
+-
+-	arm_create_section(0xa0000000, 0xa0000000, 128, PMD_SECT_DEF_CACHED);
+-	arm_create_section(0xb0000000, 0xa0000000, 128, PMD_SECT_DEF_UNCACHED);
+-
+-	setup_dma_coherent(0x10000000);
+-
+-	mmu_enable();
+-#endif
+ 	return 0;
+ }
+ mem_initcall(eukrea_cpuimx27_mem_init);
+diff --git a/arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c b/arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c
+index 02df444..426445f 100644
+--- a/arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c
++++ b/arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c
+@@ -130,23 +130,17 @@ static int eukrea_cpuimx35_mem_init(void)
+ {
+ 	arm_add_mem_device("ram0", IMX_SDRAM_CS0, 128 * 1024 * 1024);
+ 
+-#ifdef CONFIG_MMU
+-	mmu_init();
+-
+-	arm_create_section(0x80000000, 0x80000000, 128, PMD_SECT_DEF_CACHED);
+-	arm_create_section(0x90000000, 0x80000000, 128, PMD_SECT_DEF_UNCACHED);
+-
+-	setup_dma_coherent(0x10000000);
+-
+-	mmu_enable();
++	return 0;
++}
++mem_initcall(eukrea_cpuimx35_mem_init);
+ 
+-#ifdef CONFIG_CACHE_L2X0
++static int eukrea_cpuimx35_mmu_init(void)
++{
+ 	l2x0_init((void __iomem *)0x30000000, 0x00030024, 0x00000000);
+-#endif
+-#endif
++
+ 	return 0;
+ }
+-mem_initcall(eukrea_cpuimx35_mem_init);
++postmmu_initcall(eukrea_cpuimx35_mmu_init);
+ 
+ static int eukrea_cpuimx35_devices_init(void)
+ {
+diff --git a/arch/arm/boards/eukrea_cpuimx51/eukrea_cpuimx51.c b/arch/arm/boards/eukrea_cpuimx51/eukrea_cpuimx51.c
+index b6fce93..727db29 100644
+--- a/arch/arm/boards/eukrea_cpuimx51/eukrea_cpuimx51.c
++++ b/arch/arm/boards/eukrea_cpuimx51/eukrea_cpuimx51.c
+@@ -97,22 +97,6 @@ static int eukrea_cpuimx51_mem_init(void)
+ {
+ 	arm_add_mem_device("ram0", 0x90000000, 256 * 1024 * 1024);
+ 
+-#ifdef CONFIG_MMU
+-	mmu_init();
+-
+-	arm_create_section(0x90000000, 0x90000000, 256, PMD_SECT_DEF_CACHED);
+-	arm_create_section(0xa0000000, 0x90000000, 256, PMD_SECT_DEF_UNCACHED);
+-
+-	setup_dma_coherent(0x10000000);
+-
+-#if TEXT_BASE & (0x100000 - 1)
+-#warning cannot create vector section. Adjust TEXT_BASE to a 1M boundary
+-#else
+-	arm_create_section(0x0,        TEXT_BASE,   1, PMD_SECT_DEF_UNCACHED);
+-#endif
+-
+-	mmu_enable();
+-#endif
+ 	return 0;
+ }
+ mem_initcall(eukrea_cpuimx51_mem_init);
+diff --git a/arch/arm/boards/freescale-mx51-pdk/board.c b/arch/arm/boards/freescale-mx51-pdk/board.c
+index f347657..d6472df 100644
+--- a/arch/arm/boards/freescale-mx51-pdk/board.c
++++ b/arch/arm/boards/freescale-mx51-pdk/board.c
+@@ -77,16 +77,6 @@ static int babbage_mem_init(void)
+ {
+ 	arm_add_mem_device("ram0", 0x90000000, 512 * 1024 * 1024);
+ 
+-#ifdef CONFIG_MMU
+-	mmu_init();
+-
+-	arm_create_section(0x90000000, 0x90000000, 512, PMD_SECT_DEF_CACHED);
+-	arm_create_section(0xb0000000, 0x90000000, 512, PMD_SECT_DEF_UNCACHED);
+-
+-	setup_dma_coherent(0x20000000);
+-
+-	mmu_enable();
+-#endif
+ 	return 0;
+ }
+ mem_initcall(babbage_mem_init);
+diff --git a/arch/arm/boards/freescale-mx53-loco/board.c b/arch/arm/boards/freescale-mx53-loco/board.c
+index 92cff01..b5240f4 100644
+--- a/arch/arm/boards/freescale-mx53-loco/board.c
++++ b/arch/arm/boards/freescale-mx53-loco/board.c
+@@ -78,18 +78,6 @@ static int loco_mem_init(void)
+ 	arm_add_mem_device("ram0", 0x70000000, SZ_512M);
+ 	arm_add_mem_device("ram1", 0xb0000000, SZ_512M);
+ 
+-#ifdef CONFIG_MMU
+-	mmu_init();
+-
+-	arm_create_section(0x70000000, 0x70000000, 512, PMD_SECT_DEF_CACHED);
+-	arm_create_section(0x90000000, 0x70000000, 512, PMD_SECT_DEF_UNCACHED);
+-	arm_create_section(0xb0000000, 0xb0000000, 512, PMD_SECT_DEF_CACHED);
+-	arm_create_section(0xd0000000, 0xb0000000, 512, PMD_SECT_DEF_UNCACHED);
+-
+-	setup_dma_coherent(0x20000000);
+-
+-	mmu_enable();
+-#endif
+ 	return 0;
+ }
+ mem_initcall(loco_mem_init);
+diff --git a/arch/arm/boards/guf-cupid/board.c b/arch/arm/boards/guf-cupid/board.c
+index 134f377..706707d 100644
+--- a/arch/arm/boards/guf-cupid/board.c
++++ b/arch/arm/boards/guf-cupid/board.c
+@@ -100,23 +100,17 @@ static int cupid_mem_init(void)
+ {
+ 	arm_add_mem_device("ram0", IMX_SDRAM_CS0, 128 * 1024 * 1024);
+ 
+-#ifdef CONFIG_MMU
+-	mmu_init();
+-
+-	arm_create_section(0x80000000, 0x80000000, 128, PMD_SECT_DEF_CACHED);
+-	arm_create_section(0x90000000, 0x80000000, 128, PMD_SECT_DEF_UNCACHED);
+-
+-	setup_dma_coherent(0x10000000);
+-
+-	mmu_enable();
++	return 0;
++}
++mem_initcall(cupid_mem_init);
+ 
+-#ifdef CONFIG_CACHE_L2X0
++static int cupid_mmu_init(void)
++{
+ 	l2x0_init((void __iomem *)0x30000000, 0x00030024, 0x00000000);
+-#endif
+-#endif
++
+ 	return 0;
+ }
+-mem_initcall(cupid_mem_init);
++postmmu_initcall(cupid_mmu_init);
+ 
+ static int cupid_devices_init(void)
+ {
+diff --git a/arch/arm/boards/guf-neso/board.c b/arch/arm/boards/guf-neso/board.c
+index 3517a5d..446b333 100644
+--- a/arch/arm/boards/guf-neso/board.c
++++ b/arch/arm/boards/guf-neso/board.c
+@@ -140,16 +140,6 @@ static int neso_mem_init(void)
+ {
+ 	arm_add_mem_device("ram0", 0xa0000000, 128 * 1024 * 1024);
+ 
+-#ifdef CONFIG_MMU
+-	mmu_init();
+-
+-	arm_create_section(0xa0000000, 0xa0000000, 128, PMD_SECT_DEF_CACHED);
+-	arm_create_section(0xb0000000, 0xa0000000, 128, PMD_SECT_DEF_UNCACHED);
+-
+-	setup_dma_coherent(0x10000000);
+-
+-	mmu_enable();
+-#endif
+ 	return 0;
+ }
+ mem_initcall(neso_mem_init);
+diff --git a/arch/arm/boards/karo-tx25/board.c b/arch/arm/boards/karo-tx25/board.c
+index a01fa3c..22bc27a 100644
+--- a/arch/arm/boards/karo-tx25/board.c
++++ b/arch/arm/boards/karo-tx25/board.c
+@@ -59,18 +59,6 @@ static int tx25_mem_init(void)
+ 	add_mem_device("ram0", 0x78000000, 128 * 1024,
+ 				   IORESOURCE_MEM_WRITEABLE);
+ 
+-#ifdef CONFIG_MMU
+-	mmu_init();
+-
+-	arm_create_section(0x80000000, 0x80000000, 32, PMD_SECT_DEF_CACHED);
+-	arm_create_section(0x82000000, 0x80000000, 32, PMD_SECT_DEF_UNCACHED);
+-	arm_create_section(0x90000000, 0x90000000, 32, PMD_SECT_DEF_CACHED);
+-	arm_create_section(0x92000000, 0x90000000, 32, PMD_SECT_DEF_UNCACHED);
+-
+-	setup_dma_coherent(0x02000000);
+-
+-	mmu_enable();
+-#endif
+ 	return 0;
+ }
+ mem_initcall(tx25_mem_init);
+diff --git a/arch/arm/boards/karo-tx28/tx28.c b/arch/arm/boards/karo-tx28/tx28.c
+index d6e3f9c..def388a 100644
+--- a/arch/arm/boards/karo-tx28/tx28.c
++++ b/arch/arm/boards/karo-tx28/tx28.c
+@@ -74,16 +74,6 @@ static int tx28_mem_init(void)
+ {
+ 	arm_add_mem_device("ram0", IMX_MEMORY_BASE, 128 * 1024 * 1024);
+ 
+-#ifdef CONFIG_MMU
+-	mmu_init();
+-
+-	arm_create_section(0x40000000, 0x40000000, 128, PMD_SECT_DEF_CACHED);
+-	arm_create_section(0x50000000, 0x40000000, 128, PMD_SECT_DEF_UNCACHED);
+-
+-	setup_dma_coherent(0x10000000);
+-
+-	mmu_enable();
+-#endif
+ 	return 0;
+ }
+ mem_initcall(tx28_mem_init);
+diff --git a/arch/arm/boards/panda/board.c b/arch/arm/boards/panda/board.c
+index 696d44a..1303c47 100644
+--- a/arch/arm/boards/panda/board.c
++++ b/arch/arm/boards/panda/board.c
+@@ -48,14 +48,6 @@ static int panda_mem_init(void)
+ {
+ 	arm_add_mem_device("ram0", 0x80000000, SZ_1G);
+ 
+-#ifdef CONFIG_MMU
+-	mmu_init();
+-
+-	arm_create_section(0x80000000, 0x80000000, 256, PMD_SECT_DEF_CACHED);
+-	arm_create_section(0x90000000, 0x80000000, 256, PMD_SECT_DEF_UNCACHED);
+-
+-	mmu_enable();
+-#endif
+ 	return 0;
+ }
+ mem_initcall(panda_mem_init);
+diff --git a/arch/arm/boards/pcm037/pcm037.c b/arch/arm/boards/pcm037/pcm037.c
+index a026f23..85f004f 100644
+--- a/arch/arm/boards/pcm037/pcm037.c
++++ b/arch/arm/boards/pcm037/pcm037.c
+@@ -153,23 +153,17 @@ static int pcm037_mem_init(void)
+ 	arm_add_mem_device("ram1", IMX_SDRAM_CS1, SDRAM1 * 1024 * 1024);
+ #endif
+ 
+-#ifdef CONFIG_MMU
+-	mmu_init();
+-
+-	arm_create_section(0x80000000, 0x80000000, 128, PMD_SECT_DEF_CACHED);
+-	arm_create_section(0x90000000, 0x80000000, 128, PMD_SECT_DEF_UNCACHED);
+-
+-	setup_dma_coherent(0x10000000);
+-
+-	mmu_enable();
++	return 0;
++}
++mem_initcall(pcm037_mem_init);
+ 
+-#ifdef CONFIG_CACHE_L2X0
++static int pcm037_mmu_init(void)
++{
+ 	l2x0_init((void __iomem *)0x30000000, 0x00030024, 0x00000000);
+-#endif
+-#endif
++
+ 	return 0;
+ }
+-mem_initcall(pcm037_mem_init);
++postmmu_initcall(pcm037_mmu_init);
+ 
+ static int imx31_devices_init(void)
+ {
+diff --git a/arch/arm/boards/pcm038/pcm038.c b/arch/arm/boards/pcm038/pcm038.c
+index 9588b9b..4db50fe 100644
+--- a/arch/arm/boards/pcm038/pcm038.c
++++ b/arch/arm/boards/pcm038/pcm038.c
+@@ -135,16 +135,6 @@ static int pcm038_mem_init(void)
+ 
+ 	add_mem_device("ram0", 0xc8000000, 512 * 1024, /* Can be up to 2MiB */
+ 				   IORESOURCE_MEM_WRITEABLE);
+-#ifdef CONFIG_MMU
+-	mmu_init();
+-
+-	arm_create_section(0xa0000000, 0xa0000000, 128, PMD_SECT_DEF_CACHED);
+-	arm_create_section(0xb0000000, 0xa0000000, 128, PMD_SECT_DEF_UNCACHED);
+-
+-	setup_dma_coherent(0x10000000);
+-
+-	mmu_enable();
+-#endif
+ 	return 0;
+ }
+ mem_initcall(pcm038_mem_init);
+diff --git a/arch/arm/boards/pcm043/pcm043.c b/arch/arm/boards/pcm043/pcm043.c
+index 10d319f..966899a 100644
+--- a/arch/arm/boards/pcm043/pcm043.c
++++ b/arch/arm/boards/pcm043/pcm043.c
+@@ -103,24 +103,17 @@ static int pcm043_mem_init(void)
+ {
+ 	arm_add_mem_device("ram0", IMX_SDRAM_CS0, 128 * 1024 * 1024);
+ 
+-#ifdef CONFIG_MMU
+-	mmu_init();
+-
+-	arm_create_section(0x80000000, 0x80000000, 128, PMD_SECT_DEF_CACHED);
+-	arm_create_section(0x90000000, 0x80000000, 128, PMD_SECT_DEF_UNCACHED);
+-
+-	setup_dma_coherent(0x10000000);
+-
+-	mmu_enable();
+-
+-#ifdef CONFIG_CACHE_L2X0
+-	l2x0_init((void __iomem *)0x30000000, 0x00030024, 0x00000000);
+-#endif
+-#endif
+ 	return 0;
+ }
+ mem_initcall(pcm043_mem_init);
+ 
++static int pcm043_mmu_init(void)
++{
++	l2x0_init((void __iomem *)0x30000000, 0x00030024, 0x00000000);
++
++	return 0;
++}
++postmmu_initcall(pcm043_mmu_init);
+ 
+ struct gpio_led led0 = {
+ 	.gpio = 1 * 32 + 6,
+diff --git a/arch/arm/boards/pcm049/board.c b/arch/arm/boards/pcm049/board.c
+index 83eb9be..502e121 100644
+--- a/arch/arm/boards/pcm049/board.c
++++ b/arch/arm/boards/pcm049/board.c
+@@ -60,15 +60,6 @@ static int pcm049_mem_init(void)
+ 
+ 	add_mem_device("sram0", 0x40300000, 48 * 1024,
+ 				   IORESOURCE_MEM_WRITEABLE);
+-#ifdef CONFIG_MMU
+-	mmu_init();
+-
+-	arm_create_section(0x80000000, 0x80000000, 256, PMD_SECT_DEF_CACHED);
+-	/* warning: This shadows the second half of our ram */
+-	arm_create_section(0x90000000, 0x80000000, 256, PMD_SECT_DEF_UNCACHED);
+-
+-	mmu_enable();
+-#endif
+ 	return 0;
+ }
+ mem_initcall(pcm049_mem_init);
+diff --git a/arch/arm/boards/phycard-i.MX27/pca100.c b/arch/arm/boards/phycard-i.MX27/pca100.c
+index 3c2a0e4..f285466 100644
+--- a/arch/arm/boards/phycard-i.MX27/pca100.c
++++ b/arch/arm/boards/phycard-i.MX27/pca100.c
+@@ -73,16 +73,6 @@ static int pca100_mem_init(void)
+ {
+ 	arm_add_mem_device("ram0", 0xa0000000, 128 * 1024 * 1024);
+ 
+-#ifdef CONFIG_MMU
+-	mmu_init();
+-
+-	arm_create_section(0xa0000000, 0xa0000000, 128, PMD_SECT_DEF_CACHED);
+-	arm_create_section(0xb0000000, 0xa0000000, 128, PMD_SECT_DEF_UNCACHED);
+-
+-	setup_dma_coherent(0x10000000);
+-
+-	mmu_enable();
+-#endif
+ 	return 0;
+ }
+ mem_initcall(pca100_mem_init);
+diff --git a/arch/arm/boards/scb9328/env/config b/arch/arm/boards/scb9328/env/config
+new file mode 100644
+index 0000000..d0f3f25
+--- /dev/null
++++ b/arch/arm/boards/scb9328/env/config
+@@ -0,0 +1,56 @@
++#!/bin/sh
++
++machine=scb9328
++eth0.serverip=
++user=
++
++# use 'dhcp' to do dhcp in barebox and in kernel
++# use 'none' if you want to skip kernel ip autoconfiguration
++ip=dhcp
++
++# or set your networking parameters here
++#eth0.ipaddr=a.b.c.d
++#eth0.netmask=a.b.c.d
++#eth0.gateway=a.b.c.d
++#eth0.serverip=a.b.c.d
++
++# can be either 'net', 'nor' or 'nand'
++kernel_loc=net
++# can be either 'net', 'nor', 'nand' or 'initrd'
++rootfs_loc=net
++
++# can be either 'jffs2' or 'ubifs'
++rootfs_type=ubifs
++rootfsimage=root-$machine.$rootfs_type
++
++# The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
++kernelimage_type=zimage
++kernelimage=zImage-$machine
++#kernelimage_type=uimage
++#kernelimage=uImage-$machine
++#kernelimage_type=raw
++#kernelimage=Image-$machine
++#kernelimage_type=raw_lzo
++#kernelimage=Image-$machine.lzo
++
++if [ -n $user ]; then
++	kernelimage="$user"-"$kernelimage"
++	nfsroot="$eth0.serverip:/home/$user/nfsroot/$machine"
++	rootfsimage="$user"-"$rootfsimage"
++else
++	nfsroot="$eth0.serverip:/path/to/nfs/root"
++fi
++
++autoboot_timeout=3
++
++bootargs="console=ttymxc0,115200"
++
++nor_parts="256k(barebox)ro,128k(bareboxenv),2M(kernel),-(root)"
++rootfs_mtdblock_nor=3
++
++nand_parts="256k(barebox)ro,128k(bareboxenv),2M(kernel),-(root)"
++rootfs_mtdblock_nand=7
++
++# set a fancy prompt (if support is compiled in)
++PS1="\e[1;32mbarebox@\e[1;31m\h:\w\e[0m "
++
 diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index bb067e3..53ba51a 100644
+index 53ba51a..ad63358 100644
 --- a/arch/arm/cpu/mmu.c
 +++ b/arch/arm/cpu/mmu.c
-@@ -1,10 +1,13 @@
- #include <common.h>
- #include <init.h>
- #include <asm/mmu.h>
-+#include <errno.h>
-+#include <sizes.h>
-+#include <asm/memory.h>
- 
- static unsigned long *ttb;
- 
--void arm_create_section(unsigned long virt, unsigned long phys, int size_m,
-+static void create_section(unsigned long virt, unsigned long phys, int size_m,
- 		unsigned int flags)
- {
- 	int i;
-@@ -24,6 +27,23 @@ void arm_create_section(unsigned long virt, unsigned long phys, int size_m,
- }
- 
+@@ -170,7 +170,7 @@ static void vectors_init(void)
  /*
-+ * Do it the simple way for now and invalidate the entire
-+ * tlb
-+ */
-+static inline void tlb_invalidate(void)
-+{
-+	asm volatile (
-+		"mov	r0, #0\n"
-+		"mcr	p15, 0, r0, c7, c10, 4;	@ drain write buffer\n"
-+		"mcr	p15, 0, r0, c8, c6, 0;  @ invalidate D TLBs\n"
-+		"mcr	p15, 0, r0, c8, c5, 0;  @ invalidate I TLBs\n"
-+		:
-+		:
-+		: "r0"
-+	);
-+}
-+
-+/*
-  * Create a second level translation table for the given virtual address.
-  * We initially create a flat uncached mapping on it.
-  * Not yet exported, but may be later if someone finds use for it.
-@@ -43,6 +63,84 @@ static u32 *arm_create_pte(unsigned long virt)
- 	return table;
- }
- 
-+static void remap_range(void *_start, size_t size, uint32_t flags)
-+{
-+	u32 pteentry;
-+	struct arm_memory *mem;
-+	unsigned long start = (unsigned long)_start;
-+	u32 *p;
-+	int numentries, i;
-+
-+	for_each_sdram_bank(mem) {
-+		if (start >= mem->start && start < mem->start + mem->size)
-+			goto found;
-+	}
-+
-+	BUG();
-+	return;
-+
-+found:
-+	pteentry = (start - mem->start) >> PAGE_SHIFT;
-+
-+	numentries = size >> PAGE_SHIFT;
-+
-+	p = mem->ptes + pteentry;
-+
-+	for (i = 0; i < numentries; i++) {
-+		p[i] &= ~(PTE_BUFFERABLE | PTE_CACHEABLE);
-+		p[i] |= flags;
-+	}
-+
-+	dma_flush_range((unsigned long)p,
-+			(unsigned long)p + numentries * sizeof(u32));
-+
-+	tlb_invalidate();
-+}
-+
-+/*
-+ * remap the memory bank described by mem cachable and
-+ * bufferable
-+ */
-+static int arm_mmu_remap_sdram(struct arm_memory *mem)
-+{
-+	unsigned long phys = (unsigned long)mem->start;
-+	unsigned long ttb_start = phys >> 20;
-+	unsigned long ttb_end = (phys + mem->size) >> 20;
-+	unsigned long num_ptes = mem->size >> 10;
-+	int i, pte;
-+
-+	debug("remapping SDRAM from 0x%08lx (size 0x%08lx)\n",
-+			phys, mem->size);
-+
-+	/*
-+	 * We replace each 1MiB section in this range with second level page
-+	 * tables, therefore we must have 1Mib aligment here.
-+	 */
-+	if ((phys & (SZ_1M - 1)) || (mem->size & (SZ_1M - 1)))
-+		return -EINVAL;
-+
-+	mem->ptes = memalign(0x400, num_ptes * sizeof(u32));
-+
-+	debug("ptes: 0x%p ttb_start: 0x%08lx ttb_end: 0x%08lx\n",
-+			mem->ptes, ttb_start, ttb_end);
-+
-+	for (i = 0; i < num_ptes; i++) {
-+		mem->ptes[i] = (phys + i * 4096) | PTE_TYPE_SMALL |
-+			PTE_SMALL_AP_URW_SRW | PTE_BUFFERABLE | PTE_CACHEABLE;
-+	}
-+
-+	pte = 0;
-+
-+	for (i = ttb_start; i < ttb_end; i++) {
-+		ttb[i] = (unsigned long)(&mem->ptes[pte]) | PMD_TYPE_TABLE |
-+			(0 << 4);
-+		pte += 256;
-+	}
-+
-+	tlb_invalidate();
-+
-+	return 0;
-+}
- /*
-  * We have 8 exception vectors and the table consists of absolute
-  * jumps, so we need 8 * 4 bytes for the instructions and another
-@@ -70,15 +168,17 @@ static void vectors_init(void)
- }
- 
- /*
-- * Prepare MMU for usage and create a flat mapping. Board
-- * code is responsible to remap the SDRAM cached
-+ * Prepare MMU for usage enable it.
+  * Prepare MMU for usage enable it.
   */
--void mmu_init(void)
-+int mmu_init(void)
+-int mmu_init(void)
++static int mmu_init(void)
  {
-+	struct arm_memory *mem;
+ 	struct arm_memory *mem;
  	int i;
+@@ -217,6 +217,7 @@ int mmu_init(void)
  
- 	ttb = memalign(0x10000, 0x4000);
- 
-+	debug("ttb: 0x%p\n", ttb);
-+
- 	/* Set the ttb register */
- 	asm volatile ("mcr  p15,0,%0,c2,c0,0" : : "r"(ttb) /*:*/);
- 
-@@ -86,23 +186,36 @@ void mmu_init(void)
- 	i = 0x3;
- 	asm volatile ("mcr  p15,0,%0,c3,c0,0" : : "r"(i) /*:*/);
- 
--	/* create a flat mapping */
--	arm_create_section(0, 0, 4096, PMD_SECT_AP_WRITE | PMD_SECT_AP_READ | PMD_TYPE_SECT);
-+	/* create a flat mapping using 1MiB sections */
-+	create_section(0, 0, 4096, PMD_SECT_AP_WRITE | PMD_SECT_AP_READ |
-+			PMD_TYPE_SECT);
- 
- 	vectors_init();
--}
- 
--/*
-- * enable the MMU. Should be called after mmu_init()
-- */
--void mmu_enable(void)
--{
-+	/*
-+	 * First remap sdram cached using sections.
-+	 * This is to speed up the generation of 2nd level page tables
-+	 * below
-+	 */
-+	for_each_sdram_bank(mem)
-+		create_section(mem->start, mem->start, mem->size >> 20,
-+				PMD_SECT_DEF_CACHED);
-+
- 	asm volatile (
- 		"bl __mmu_cache_on;"
- 		:
- 		:
- 		: "r0", "r1", "r2", "r3", "r6", "r10", "r12", "cc", "memory"
-         );
-+
-+	/*
-+	 * Now that we have the MMU and caches on remap sdram again using
-+	 * page tables
-+	 */
-+	for_each_sdram_bank(mem)
-+		arm_mmu_remap_sdram(mem);
-+
-+	return 0;
+ 	return 0;
  }
++mmu_initcall(mmu_init);
  
  struct outer_cache_fns outer_cache;
-@@ -125,39 +238,41 @@ void mmu_disable(void)
- 	);
- }
  
--/*
-- * For boards which need coherent memory for DMA. The idea
-- * is simple: Setup a uncached section containing your SDRAM
-- * and call setup_dma_coherent() with the offset between the
-- * cached and the uncached section. dma_alloc_coherent() then
-- * works using normal malloc but returns the corresponding
-- * pointer in the uncached area.
-- */
--static unsigned long dma_coherent_offset;
--
--void setup_dma_coherent(unsigned long offset)
--{
--	dma_coherent_offset = offset;
--}
-+#define PAGE_ALIGN(s) ((s) + PAGE_SIZE - 1) & ~(PAGE_SIZE - 1);
- 
- void *dma_alloc_coherent(size_t size)
- {
--	return xmemalign(4096, size) + dma_coherent_offset;
-+	void *ret;
-+
-+	size = PAGE_ALIGN(size);
-+	ret = xmemalign(4096, size);
-+
-+#ifdef CONFIG_MMU
-+	dma_inv_range((unsigned long)ret, (unsigned long)ret + size);
-+
-+	remap_range(ret, size, 0);
-+#endif
-+
-+	return ret;
- }
- 
- unsigned long virt_to_phys(void *virt)
- {
--	return (unsigned long)virt - dma_coherent_offset;
-+	return (unsigned long)virt;
- }
- 
- void *phys_to_virt(unsigned long phys)
- {
--	return (void *)(phys + dma_coherent_offset);
-+	return (void *)phys;
- }
- 
- void dma_free_coherent(void *mem, size_t size)
- {
--	free(mem - dma_coherent_offset);
-+#ifdef CONFIG_MMU
-+	remap_range(mem, size, PTE_BUFFERABLE | PTE_CACHEABLE);
-+#endif
-+
-+	free(mem);
- }
- 
- void dma_clean_range(unsigned long start, unsigned long end)
 diff --git a/arch/arm/include/asm/mmu.h b/arch/arm/include/asm/mmu.h
-index 9ebc2cd..b1aa781 100644
+index b1aa781..9ca5e2a 100644
 --- a/arch/arm/include/asm/mmu.h
 +++ b/arch/arm/include/asm/mmu.h
-@@ -3,19 +3,29 @@
- 
- #include <asm/pgtable.h>
- #include <malloc.h>
-+#include <errno.h>
- 
- #define PMD_SECT_DEF_UNCACHED (PMD_SECT_AP_WRITE | PMD_SECT_AP_READ | PMD_TYPE_SECT)
- #define PMD_SECT_DEF_CACHED (PMD_SECT_WB | PMD_SECT_DEF_UNCACHED)
- 
--void mmu_init(void);
--void mmu_enable(void);
-+struct arm_memory;
-+
-+static inline void mmu_enable(void)
-+{
-+}
- void mmu_disable(void);
--void arm_create_section(unsigned long virt, unsigned long phys, int size_m,
--		unsigned int flags);
-+static inline void arm_create_section(unsigned long virt, unsigned long phys, int size_m,
-+		unsigned int flags)
-+{
-+}
- 
--void setup_dma_coherent(unsigned long offset);
-+static inline void setup_dma_coherent(unsigned long offset)
-+{
-+}
+@@ -24,8 +24,6 @@ static inline void setup_dma_coherent(unsigned long offset)
+ }
  
  #ifdef CONFIG_MMU
-+int mmu_init(void);
-+
+-int mmu_init(void);
+-
  void *dma_alloc_coherent(size_t size);
  void dma_free_coherent(void *mem, size_t size);
  
-diff --git a/include/common.h b/include/common.h
-index f3353c8..0ce4a70 100644
---- a/include/common.h
-+++ b/include/common.h
-@@ -221,6 +221,7 @@ int run_shell(void);
- #define ULLONG_MAX	(~0ULL)
+@@ -36,11 +34,6 @@ unsigned long virt_to_phys(void *virt);
+ void *phys_to_virt(unsigned long phys);
  
- #define PAGE_SIZE	4096
-+#define PAGE_SHIFT	12
- 
- int memory_display(char *addr, ulong offs, ulong nbytes, int size);
- 
+ #else
+-static inline int mmu_init(void)
+-{
+-	return -EINVAL;
+-}
+-
+ static inline void *dma_alloc_coherent(size_t size)
+ {
+ 	return xmemalign(4096, size);
 -- 
 1.7.5.4
 
