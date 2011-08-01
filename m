@@ -1,22 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 8.mo4.mail-out.ovh.net ([188.165.33.112]
-	helo=mo4.mail-out.ovh.net)
-	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1QnnUz-00087W-I9
-	for barebox@lists.infradead.org; Mon, 01 Aug 2011 08:05:18 +0000
-Received: from mail182.ha.ovh.net (b6.ovh.net [213.186.33.56])
-	by mo4.mail-out.ovh.net (Postfix) with SMTP id 05817FF9DE5
-	for <barebox@lists.infradead.org>;
-	Mon,  1 Aug 2011 10:06:11 +0200 (CEST)
-Date: Mon, 1 Aug 2011 09:47:21 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20110801074721.GB6255@game.jcrosoft.org>
-References: <20110729155356.GF25658@game.jcrosoft.org>
-	<1311995831-25350-8-git-send-email-plagnioj@jcrosoft.com>
-	<20110801073240.GE20587@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+	id 1QnnVF-000886-1N
+	for barebox@lists.infradead.org; Mon, 01 Aug 2011 08:05:35 +0000
+Date: Mon, 1 Aug 2011 10:05:30 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20110801080530.GA31404@pengutronix.de>
+References: <1312175092-26164-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20110801073240.GE20587@pengutronix.de>
+In-Reply-To: <1312175092-26164-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,42 +22,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 21/23] mci-core: switch to resource
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH] arm: introduce arm_add_mem_device to register dram device
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On 09:32 Mon 01 Aug     , Sascha Hauer wrote:
-> On Sat, Jul 30, 2011 at 05:17:09AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > ---
-> >  drivers/mci/mci-core.c |    2 +-
-> >  1 files changed, 1 insertions(+), 1 deletions(-)
-> > 
-> > diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-> > index 3cf364c..c03885b 100644
-> > --- a/drivers/mci/mci-core.c
-> > +++ b/drivers/mci/mci-core.c
-> > @@ -1231,7 +1231,7 @@ static int mci_card_probe(struct device_d *mci_dev)
-> >  	p->priv = mci_dev;
-> >  
-> >  	strcpy(disk_dev->name, "disk");
-> > -	disk_dev->size = mci->capacity;
-> > +	disk_dev->resource[0].size = mci->capacity;
-> >  	disk_dev->platform_data = p;
+On Mon, Aug 01, 2011 at 07:04:52AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> this will automaticaly register the device to armlinux_add_dram
 > 
-> Resources for a device must be allocated. I already fixed this once with
-> the following. Please do not reintroduce this bug again.
-> 
-> (and honestly, this registering of the "disk" device is just a crude way
-> of passing around data in a void pointer. The real solution for this is
-> to just add a register_ata_interface() function instead of registering a
-> device.)
-agreed I plan to get rid of this but first need to fininsh the map_base frop
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+> diff --git a/include/driver.h b/include/driver.h
+> index b011f98..0faafe3 100644
+> --- a/include/driver.h
+> +++ b/include/driver.h
+> @@ -214,6 +214,11 @@ static inline struct device_d *add_mem_device(const char *name, resource_size_t
+>  				  IORESOURCE_MEM | flags, NULL);
+>  }
+>  
+> +#ifdef CONFIG_ARM
+> +struct device_d *arm_add_mem_device(const char* name, resource_size_t start,
+> +				    resource_size_t size);
+> +#endif
+> +
 
-but as we drop map_base and size so we need to do like this
+No ifdefs around function declarations please. Also, this should
+go somewhere under arch/arm/include.
 
-Best Regards,
-J.
+BTW this conflicts with my mmu series I recently sent. Having this
+arm_add_mem_device function is a good thing, but now one of us has
+to do his series again :(
+For the mmu to just work on all boards I need a place where I know
+that all memory has been registered. For this I wanted to introduce
+a memory_initcall (we could also reuse console_initcall, but I thought
+having a dedicated initcall is cleaner). Then I could initialize the
+mmu in a later initcall.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
