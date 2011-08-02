@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-fx0-f49.google.com ([209.85.161.49])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1Qo95P-0006de-Mb
-	for barebox@lists.infradead.org; Tue, 02 Aug 2011 07:08:20 +0000
-Received: by fxd20 with SMTP id 20so7320975fxd.36
-	for <barebox@lists.infradead.org>; Tue, 02 Aug 2011 00:08:16 -0700 (PDT)
+	id 1Qo95k-0006de-F5
+	for barebox@lists.infradead.org; Tue, 02 Aug 2011 07:08:40 +0000
+Received: by mail-fx0-f49.google.com with SMTP id 20so7320975fxd.36
+	for <barebox@lists.infradead.org>; Tue, 02 Aug 2011 00:08:40 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue,  2 Aug 2011 11:08:08 +0400
-Message-Id: <1312268888-16657-1-git-send-email-antonynpavlov@gmail.com>
+Date: Tue,  2 Aug 2011 11:08:36 +0400
+Message-Id: <1312268916-16694-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,49 +21,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] commands/led.c: fix return codes
+Subject: [PATCH] commands/led.c: check registered LEDs
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- commands/led.c |    8 ++++----
- 1 files changed, 4 insertions(+), 4 deletions(-)
+ commands/led.c |    6 ++++++
+ 1 files changed, 6 insertions(+), 0 deletions(-)
 
 diff --git a/commands/led.c b/commands/led.c
-index 360ce7c..afb3fd3 100644
+index afb3fd3..774ba31 100644
 --- a/commands/led.c
 +++ b/commands/led.c
-@@ -45,7 +45,7 @@ static int do_led(struct command *cmdtp, int argc, char *argv[])
- 					led->max_value);
- 			i++;
- 		}
--		return 0;
-+		return COMMAND_SUCCESS;
- 	}
+@@ -37,6 +37,12 @@ static int do_led(struct command *cmdtp, int argc, char *argv[])
+ 	if (argc == 1) {
+ 		int i = 0;
  
- 	if (argc != 3)
-@@ -54,7 +54,7 @@ static int do_led(struct command *cmdtp, int argc, char *argv[])
- 	led = led_by_name_or_number(argv[1]);
- 	if (!led) {
- 		printf("no such LED: %s\n", argv[1]);
--		return 1;
-+		return COMMAND_ERROR;
- 	}
++		led = led_by_number(i);
++		if (!led) {
++			printf("no registered LEDs\n");
++			return COMMAND_ERROR;
++		}
++
+ 		printf("registered LEDs:\n");
  
- 	value = simple_strtoul(argv[optind + 1], NULL, 0);
-@@ -62,10 +62,10 @@ static int do_led(struct command *cmdtp, int argc, char *argv[])
- 	ret = led_set(led, value);
- 	if (ret < 0) {
- 		perror("led");
--		return 1;
-+		return COMMAND_ERROR;
- 	}
- 
--	return 0;
-+	return COMMAND_SUCCESS;
- }
- 
- /**
+ 		while ((led = led_by_number(i))) {
 -- 
 1.7.5.4
 
