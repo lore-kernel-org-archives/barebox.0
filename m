@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-fx0-f49.google.com ([209.85.161.49])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QoXU0-0005xL-5P
-	for barebox@lists.infradead.org; Wed, 03 Aug 2011 09:11:20 +0000
-Received: by mail-fx0-f49.google.com with SMTP id 20so924936fxd.36
-	for <barebox@lists.infradead.org>; Wed, 03 Aug 2011 02:11:19 -0700 (PDT)
+	id 1QoXU5-0005yh-Bn
+	for barebox@lists.infradead.org; Wed, 03 Aug 2011 09:11:26 +0000
+Received: by fxd20 with SMTP id 20so925324fxd.36
+	for <barebox@lists.infradead.org>; Wed, 03 Aug 2011 02:11:24 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed,  3 Aug 2011 13:10:51 +0400
-Message-Id: <1312362661-31340-2-git-send-email-antonynpavlov@gmail.com>
+Date: Wed,  3 Aug 2011 13:10:54 +0400
+Message-Id: <1312362661-31340-5-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1312362661-31340-1-git-send-email-antonynpavlov@gmail.com>
 References: <1312362661-31340-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,156 +23,88 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v9 02/12] MIPS: import libgcc-related files from linux-2.6.39
+Subject: [PATCH v9 05/12] MIPS: add documentation
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/lib/ashldi3.c |   28 ++++++++++++++++++++++++++++
- arch/mips/lib/ashrdi3.c |   30 ++++++++++++++++++++++++++++++
- arch/mips/lib/libgcc.h  |   25 +++++++++++++++++++++++++
- arch/mips/lib/lshrdi3.c |   28 ++++++++++++++++++++++++++++
- 4 files changed, 111 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/lib/ashldi3.c
- create mode 100644 arch/mips/lib/ashrdi3.c
- create mode 100644 arch/mips/lib/libgcc.h
- create mode 100644 arch/mips/lib/lshrdi3.c
+ arch/architecture.dox   |    1 +
+ arch/mips/mach-mips.dox |   54 +++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 55 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/mach-mips.dox
 
-diff --git a/arch/mips/lib/ashldi3.c b/arch/mips/lib/ashldi3.c
+diff --git a/arch/architecture.dox b/arch/architecture.dox
+index 67e2c38..2d2cf05 100644
+--- a/arch/architecture.dox
++++ b/arch/architecture.dox
+@@ -86,6 +86,7 @@ TODO
+ 
+ @li @subpage dev_arm_mach
+ @li @subpage dev_bf_mach
++@li @subpage dev_mips_mach
+ @li @subpage dev_ppc_mach
+ @li @subpage dev_x86_mach
+ 
+diff --git a/arch/mips/mach-mips.dox b/arch/mips/mach-mips.dox
 new file mode 100644
-index 0000000..cbdbcbb
+index 0000000..018fc44
 --- /dev/null
-+++ b/arch/mips/lib/ashldi3.c
-@@ -0,0 +1,28 @@
-+#include <module.h>
++++ b/arch/mips/mach-mips.dox
+@@ -0,0 +1,54 @@
++/* This document is intended to provide the developer with information
++ * how to integrate a new CPU (MACH) into this part of the barebox tree
++ */
 +
-+#include "libgcc.h"
++/** @page dev_mips_mach MIPS based CPU (MACH) into the tree
 +
-+long long __ashldi3(long long u, word_type b)
-+{
-+	DWunion uu, w;
-+	word_type bm;
++@section mach_mips_reset What's happens when the reset signal is gone
 +
-+	if (b == 0)
-+		return u;
++Barebox normally must be linked to RAM region, cached region KSEG0 is preferred.
++This make possible to run fast (because cache used) and skip MMU support.
 +
-+	uu.ll = u;
-+	bm = 32 - b;
++After reset MIPS CPU starting to fetch instructions from 0xBFC00000.
 +
-+	if (bm <= 0) {
-+		w.s.low = 0;
-+		w.s.high = (unsigned int) uu.s.low << -bm;
-+	} else {
-+		const unsigned int carries = (unsigned int) uu.s.low >> bm;
++@note Code running immediately after reset runs at an address it is not linked
++      to: "runtime address != link address". You should only use branches and
++      do not refer to fixed data. This implies the use of assembler code only.
++      After MIPS CPU reset cache and MMU are in random state. They are unusable.
 +
-+		w.s.low = (unsigned int) uu.s.low << b;
-+		w.s.high = ((unsigned int) uu.s.high << b) | carries;
-+	}
++barebox MIPS initialisation sequence:
 +
-+	return w.ll;
-+}
-+EXPORT_SYMBOL(__ashldi3);
-diff --git a/arch/mips/lib/ashrdi3.c b/arch/mips/lib/ashrdi3.c
-new file mode 100644
-index 0000000..928d6d9
---- /dev/null
-+++ b/arch/mips/lib/ashrdi3.c
-@@ -0,0 +1,30 @@
-+#include <module.h>
++ * set the CP0 STATUS register to some known and sensible state.
++Now you can load and store reliably in uncached space.
 +
-+#include "libgcc.h"
++ * call a function \<mach_init_lowlevel\> (if not disabled).
++do some special things required only on specific CPU
++ (e. g. init RAM controller, disable watchdog)
 +
-+long long __ashrdi3(long long u, word_type b)
-+{
-+	DWunion uu, w;
-+	word_type bm;
++ * call a function \<board_init_lowlevel\> (if not disable).
++do some special things required only on specific board
++ (e. g. setup GPIO to required state).
 +
-+	if (b == 0)
-+		return u;
++   ** It is desirable to have some debug code to make some contact
++ with the outside world from assembler code
++(e.g. debug_ll-like functions to write to rs232 console).
 +
-+	uu.ll = u;
-+	bm = 32 - b;
++ * check integrity of barebox RAM execute location;
++ * copy barebox to RAM execute location;
 +
-+	if (bm <= 0) {
-+		/* w.s.high = 1..1 or 0..0 */
-+		w.s.high =
-+		    uu.s.high >> 31;
-+		w.s.low = uu.s.high >> -bm;
-+	} else {
-+		const unsigned int carries = (unsigned int) uu.s.high << bm;
++ * configure cache;
 +
-+		w.s.high = uu.s.high >> b;
-+		w.s.low = ((unsigned int) uu.s.low >> b) | carries;
-+	}
++ * setup stack;
 +
-+	return w.ll;
-+}
-+EXPORT_SYMBOL(__ashrdi3);
-diff --git a/arch/mips/lib/libgcc.h b/arch/mips/lib/libgcc.h
-new file mode 100644
-index 0000000..05909d5
---- /dev/null
-+++ b/arch/mips/lib/libgcc.h
-@@ -0,0 +1,25 @@
-+#ifndef __ASM_LIBGCC_H
-+#define __ASM_LIBGCC_H
++   ** after this point you can call a standard C routine.
 +
-+#include <asm/byteorder.h>
++ * setup exception vectors in RAM;
++ * setup CP0 STATUS to switch exception vector address to RAM;
 +
-+typedef int word_type __attribute__ ((mode (__word__)));
++ * call start_barebox()
 +
-+#ifdef __BIG_ENDIAN
-+struct DWstruct {
-+	int high, low;
-+};
-+#elif defined(__LITTLE_ENDIAN)
-+struct DWstruct {
-+	int low, high;
-+};
-+#else
-+#error I feel sick.
-+#endif
++Further reading:
++ * Dominic Sweetman, See MIPS Run, Morgan Kaufmann, 2nd edition, 2006
++ISBN-13: 978-0120884216
 +
-+typedef union {
-+	struct DWstruct s;
-+	long long ll;
-+} DWunion;
-+
-+#endif /* __ASM_LIBGCC_H */
-diff --git a/arch/mips/lib/lshrdi3.c b/arch/mips/lib/lshrdi3.c
-new file mode 100644
-index 0000000..74a4846
---- /dev/null
-+++ b/arch/mips/lib/lshrdi3.c
-@@ -0,0 +1,28 @@
-+#include <module.h>
-+
-+#include "libgcc.h"
-+
-+long long __lshrdi3(long long u, word_type b)
-+{
-+	DWunion uu, w;
-+	word_type bm;
-+
-+	if (b == 0)
-+		return u;
-+
-+	uu.ll = u;
-+	bm = 32 - b;
-+
-+	if (bm <= 0) {
-+		w.s.high = 0;
-+		w.s.low = (unsigned int) uu.s.high >> -bm;
-+	} else {
-+		const unsigned int carries = (unsigned int) uu.s.high << bm;
-+
-+		w.s.high = (unsigned int) uu.s.high >> b;
-+		w.s.low = ((unsigned int) uu.s.low >> b) | carries;
-+	}
-+
-+	return w.ll;
-+}
-+EXPORT_SYMBOL(__lshrdi3);
++*/
 -- 
 1.7.5.4
 
