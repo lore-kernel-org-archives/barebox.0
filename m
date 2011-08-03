@@ -1,19 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ww0-f49.google.com ([74.125.82.49])
+Received: from mail-wy0-f177.google.com ([74.125.82.177])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QoboY-0002Xy-Eq
-	for barebox@lists.infradead.org; Wed, 03 Aug 2011 13:48:51 +0000
-Received: by wwf22 with SMTP id 22so590928wwf.18
-	for <barebox@lists.infradead.org>; Wed, 03 Aug 2011 06:48:48 -0700 (PDT)
+	id 1QobtO-0002aM-3z
+	for barebox@lists.infradead.org; Wed, 03 Aug 2011 13:53:51 +0000
+Received: by wyg19 with SMTP id 19so262280wyg.36
+	for <barebox@lists.infradead.org>; Wed, 03 Aug 2011 06:53:47 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20110803120648.GR31404@pengutronix.de>
-References: <1312360122-26499-1-git-send-email-antonynpavlov@gmail.com>
-	<1312360122-26499-2-git-send-email-antonynpavlov@gmail.com>
-	<20110803102244.GQ31404@pengutronix.de>
-	<CAA4bVAGnCxcaF9+Toh13VEzKxET+nW3dvbk5La9zRsnMnot9CA@mail.gmail.com>
-	<20110803120648.GR31404@pengutronix.de>
-Date: Wed, 3 Aug 2011 17:48:48 +0400
-Message-ID: <CAA4bVAGdwCK9Z+hWcq-cq6rj+RqTTKGeqh5SK4rwPhHEsfVdFw@mail.gmail.com>
+In-Reply-To: <20110803125446.GC24730@game.jcrosoft.org>
+References: <1312362661-31340-1-git-send-email-antonynpavlov@gmail.com>
+	<1312362661-31340-4-git-send-email-antonynpavlov@gmail.com>
+	<20110803125446.GC24730@game.jcrosoft.org>
+Date: Wed, 3 Aug 2011 17:53:46 +0400
+Message-ID: <CAA4bVAGVD7YaOfMhhiE-eKJoXz3Vh+ar6oNCGBOb2wrm1U7V1A@mail.gmail.com>
 From: Antony Pavlov <antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -27,41 +25,50 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH very-draft] add ifconfig command
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH v9 04/12] MIPS: add common MIPS stuff
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On 3 August 2011 16:06, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> On Wed, Aug 03, 2011 at 04:01:08PM +0400, Antony Pavlov wrote:
->> On 3 August 2011 14:22, Sascha Hauer <s.hauer@pengutronix.de> wrote:
->> > On Wed, Aug 03, 2011 at 12:28:42PM +0400, Antony Pavlov wrote:
->> >> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
->> >> ---
->> >> =A0commands/Kconfig =A0 =A0| =A0 =A06 +++
->> >> =A0commands/Makefile =A0 | =A0 =A01 +
->> >> =A0commands/ifconfig.c | =A0 97 +++++++++++++++++++++++++++++++++++++=
-++++++++++++++
->> >> =A03 files changed, 104 insertions(+), 0 deletions(-)
->> >> =A0create mode 100644 commands/ifconfig.c
->> >
->> > Right now I don't see the reason to add a ifconfig command. Why not use
->> > devinfo eth0?
+On 3 August 2011 16:54, Jean-Christophe PLAGNIOL-VILLARD
+<plagnioj@jcrosoft.com> wrote:
+>> index e37b6c5..2b3227a 100644
+>> --- a/arch/mips/include/asm/common.h
+>> +++ b/arch/mips/include/asm/common.h
+>> @@ -24,6 +24,17 @@
+>> =A0#ifndef _ASM_MIPS_COMMON_H_
+>> =A0#define _ASM_MIPS_COMMON_H_
 >>
->> I don't use dhcp.
->> I use enhanced version of ifconfig to setup eth0 parameters
->> (ipaddr, netmask etc).
->>
->> Have we a command to make dev_set_param() on any device?
+>> -/* nothing special yet */
+>> +#define NS16550_READ_WRITE_UART_FUNC(pfx, shift, offset) \
+>> +static unsigned int pfx ##_uart_read(unsigned long base, \
+>> + =A0 =A0 =A0 =A0 =A0 =A0 unsigned char reg_idx) \
+>> +{ =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0\
+>> + =A0 =A0 return __raw_readb((char *)base + (reg_idx << shift) + offset)=
+; \
+>> +} =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0\
+>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 \
+>> +static void pfx ##_uart_write(unsigned int val, unsigned long base, \
+>> + =A0 =A0 =A0 =A0 =A0 =A0 unsigned char reg_idx) \
+>> +{ =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0\
+>> + =A0 =A0 __raw_writeb(val, (char *)base + (reg_idx << shift) + offset);=
+ =A0\
+>> +} =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0\
+> you can drop this
 >
-> Not directly command, but you can set it on the command line. Device
-> parameters are just like normal shell variables:
->
-> barebox:/ eth0.ipaddr=3D192.168.2.18
-> barebox:/ echo $eth0.ipaddr
-> 192.168.2.18
-> barebox:/
+> add the following patch instead as will need readb/w/l and writeb/w/l for
+> cfi support anyway
 
-Thank a lot!
+Unfortunately, I can't drop it just now. But I will try to drop it in
+nearest future. Apropos, cfi does not work for me just now either.
+
+> otherwise lokks very good
+
+Thanks!
 
 -- =
 
