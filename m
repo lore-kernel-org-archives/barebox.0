@@ -1,11 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1Qodjw-0003jK-0U
-	for barebox@lists.infradead.org; Wed, 03 Aug 2011 15:52:13 +0000
-Date: Wed, 3 Aug 2011 17:52:08 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110803155208.GT31404@pengutronix.de>
+Received: from 17.mo3.mail-out.ovh.net ([87.98.178.58]
+	helo=mo3.mail-out.ovh.net)
+	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+	id 1Qoeh9-0004br-8T
+	for barebox@lists.infradead.org; Wed, 03 Aug 2011 16:53:24 +0000
+Received: from mail191.ha.ovh.net (b9.ovh.net [213.186.33.59])
+	by mo3.mail-out.ovh.net (Postfix) with SMTP id 651A6FFBF0E
+	for <barebox@lists.infradead.org>;
+	Wed,  3 Aug 2011 18:54:29 +0200 (CEST)
+Date: Wed, 3 Aug 2011 18:35:14 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20110803163514.GD24730@game.jcrosoft.org>
 References: <CAA4bVAGcGr9Xv1RTMBbzYDxhcq+xrUeZCCvDJMDZ04cjVsPhZw@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
@@ -26,7 +31,7 @@ Subject: Re: problem in serial_ns16550.c
 To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox <barebox@lists.infradead.org>
 
-On Wed, Aug 03, 2011 at 07:35:18PM +0400, Antony Pavlov wrote:
+On 19:35 Wed 03 Aug     , Antony Pavlov wrote:
 > Hi!
 > 
 > IMHO there is a problem in ns16550_probe() (see
@@ -68,25 +73,10 @@ On Wed, Aug 03, 2011 at 07:35:18PM +0400, Antony Pavlov wrote:
 > As a result, if add_ns16550_device() take IORESOURCE_MEM_8BIT, and
 > plat->reg_read == NULL, plat->reg_write == NULL then ns16550_probe()
 > will return -EINVAL.
+yeah we can drop the check simply
 
-Ok, then we have to check for the existence of plat->reg_read/write
-first. If the exist, we have to skip further IORESOURCE_MEM_xBIT checks.
-If they don't exist we do whatever IORESOURCE_MEM_xBIT indicates.
-
-That only leaves the problem that if a user registers a ns16550 driver
-without reg_read/write and does not care about resource types either
-the driver defaults to 8 bit mmio accesses, but I think we can live with
-that.
-
-Sascha
-
-
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
