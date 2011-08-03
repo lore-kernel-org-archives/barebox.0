@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-fx0-f49.google.com ([209.85.161.49])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QoXU7-0005yz-1z
-	for barebox@lists.infradead.org; Wed, 03 Aug 2011 09:11:31 +0000
-Received: by fxd20 with SMTP id 20so925361fxd.36
-	for <barebox@lists.infradead.org>; Wed, 03 Aug 2011 02:11:25 -0700 (PDT)
+	id 1QoXU8-0005xL-OK
+	for barebox@lists.infradead.org; Wed, 03 Aug 2011 09:11:33 +0000
+Received: by mail-fx0-f49.google.com with SMTP id 20so924936fxd.36
+	for <barebox@lists.infradead.org>; Wed, 03 Aug 2011 02:11:28 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed,  3 Aug 2011 13:10:56 +0400
-Message-Id: <1312362661-31340-7-git-send-email-antonynpavlov@gmail.com>
+Date: Wed,  3 Aug 2011 13:10:59 +0400
+Message-Id: <1312362661-31340-10-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1312362661-31340-1-git-send-email-antonynpavlov@gmail.com>
 References: <1312362661-31340-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,63 +23,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v9 07/12] MIPS: add qemu malta board support to barebox
+Subject: [PATCH v9 10/12] MIPS: add initial D-Link DIR-320 wireless router
+	support
 To: barebox@lists.infradead.org
 
-The only supported peripheral is ns16550 serial port.
+Can be started from CFE using tftp, e.g.:
+
+  CFE> ifconfig eth0 -addr=192.168.0.99
+  CFE> boot -tftp -addr=a0800000 -raw 192.168.0.1:barebox.bin
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/Makefile                     |    1 +
- arch/mips/boards/qemu-malta/Kconfig    |    6 +++
- arch/mips/boards/qemu-malta/Makefile   |    1 +
- arch/mips/boards/qemu-malta/config.h   |   19 +++++++++++
- arch/mips/boards/qemu-malta/serial.c   |   47 ++++++++++++++++++++++++++
- arch/mips/configs/qemu-malta_defconfig |   56 ++++++++++++++++++++++++++++++++
- arch/mips/mach-malta/Kconfig           |    5 +++
- 7 files changed, 135 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/boards/qemu-malta/Kconfig
- create mode 100644 arch/mips/boards/qemu-malta/Makefile
- create mode 100644 arch/mips/boards/qemu-malta/config.h
- create mode 100644 arch/mips/boards/qemu-malta/serial.c
- create mode 100644 arch/mips/configs/qemu-malta_defconfig
+ arch/mips/Makefile                        |    1 +
+ arch/mips/boards/dlink-dir-320/Kconfig    |    6 ++++
+ arch/mips/boards/dlink-dir-320/Makefile   |    1 +
+ arch/mips/boards/dlink-dir-320/config.h   |   19 +++++++++++
+ arch/mips/boards/dlink-dir-320/serial.c   |   47 +++++++++++++++++++++++++++++
+ arch/mips/configs/dlink-dir-320_defconfig |   46 ++++++++++++++++++++++++++++
+ arch/mips/mach-bcm47xx/Kconfig            |    5 +++
+ 7 files changed, 125 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/boards/dlink-dir-320/Kconfig
+ create mode 100644 arch/mips/boards/dlink-dir-320/Makefile
+ create mode 100644 arch/mips/boards/dlink-dir-320/config.h
+ create mode 100644 arch/mips/boards/dlink-dir-320/serial.c
+ create mode 100644 arch/mips/configs/dlink-dir-320_defconfig
 
 diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index 678c2b5..99b38ab 100644
+index 122181f..43b8ae6 100644
 --- a/arch/mips/Makefile
 +++ b/arch/mips/Makefile
-@@ -61,6 +61,7 @@ endif
- LDFLAGS_barebox += -nostdlib
+@@ -64,6 +64,7 @@ machine-$(CONFIG_MACH_MIPS_MALTA)	:= malta
+ board-$(CONFIG_BOARD_QEMU_MALTA)	:= qemu-malta
  
- machine-$(CONFIG_MACH_MIPS_MALTA)	:= malta
-+board-$(CONFIG_BOARD_QEMU_MALTA)	:= qemu-malta
+ machine-$(CONFIG_MACH_MIPS_BCM47XX)	:= bcm47xx
++board-$(CONFIG_BOARD_DLINK_DIR320)	:= dlink-dir-320
  
  machdirs := $(patsubst %,arch/mips/mach-%/,$(machine-y))
  
-diff --git a/arch/mips/boards/qemu-malta/Kconfig b/arch/mips/boards/qemu-malta/Kconfig
+diff --git a/arch/mips/boards/dlink-dir-320/Kconfig b/arch/mips/boards/dlink-dir-320/Kconfig
 new file mode 100644
-index 0000000..6d86c14
+index 0000000..0393d04
 --- /dev/null
-+++ b/arch/mips/boards/qemu-malta/Kconfig
++++ b/arch/mips/boards/dlink-dir-320/Kconfig
 @@ -0,0 +1,6 @@
-+if BOARD_QEMU_MALTA
++if BOARD_DLINK_DIR320
 +
 +config BOARDINFO
-+	default "qemu malta"
++	default "D-Link DIR-320"
 +
 +endif
-diff --git a/arch/mips/boards/qemu-malta/Makefile b/arch/mips/boards/qemu-malta/Makefile
+diff --git a/arch/mips/boards/dlink-dir-320/Makefile b/arch/mips/boards/dlink-dir-320/Makefile
 new file mode 100644
 index 0000000..ff1a655
 --- /dev/null
-+++ b/arch/mips/boards/qemu-malta/Makefile
++++ b/arch/mips/boards/dlink-dir-320/Makefile
 @@ -0,0 +1 @@
 +obj-$(CONFIG_DRIVER_SERIAL_NS16550) += serial.o
-diff --git a/arch/mips/boards/qemu-malta/config.h b/arch/mips/boards/qemu-malta/config.h
+diff --git a/arch/mips/boards/dlink-dir-320/config.h b/arch/mips/boards/dlink-dir-320/config.h
 new file mode 100644
 index 0000000..eb4ab08
 --- /dev/null
-+++ b/arch/mips/boards/qemu-malta/config.h
++++ b/arch/mips/boards/dlink-dir-320/config.h
 @@ -0,0 +1,19 @@
 +/*
 + * This program is free software; you can redistribute it and/or
@@ -100,11 +104,11 @@ index 0000000..eb4ab08
 + */
 +
 +/* nothing special yet */
-diff --git a/arch/mips/boards/qemu-malta/serial.c b/arch/mips/boards/qemu-malta/serial.c
+diff --git a/arch/mips/boards/dlink-dir-320/serial.c b/arch/mips/boards/dlink-dir-320/serial.c
 new file mode 100644
-index 0000000..63522ed
+index 0000000..eb80659
 --- /dev/null
-+++ b/arch/mips/boards/qemu-malta/serial.c
++++ b/arch/mips/boards/dlink-dir-320/serial.c
 @@ -0,0 +1,47 @@
 +/*
 + * Copyright (C) 2011 Antony Pavlov <antonynpavlov@gmail.com>
@@ -135,16 +139,16 @@ index 0000000..63522ed
 +#include <asm/io.h>
 +#include <asm/common.h>
 +
-+NS16550_READ_WRITE_UART_FUNC(malta, 0, 0)
++NS16550_READ_WRITE_UART_FUNC(dir320, 0, 0)
 +
 +static struct NS16550_plat serial_plat = {
-+	.clock = 1843200, /* no matter for emulated port */
++	.clock = 25804800,
 +	.shift = 0,
-+	.reg_read = malta_uart_read,
-+	.reg_write = malta_uart_write,
++	.reg_read = dir320_uart_read,
++	.reg_write = dir320_uart_write,
 +};
 +
-+static int malta_console_init(void)
++static int dir320_console_init(void)
 +{
 +	/* Register the serial port */
 +	add_ns16550_device(-1, DEBUG_LL_UART_ADDR, 8,
@@ -152,13 +156,14 @@ index 0000000..63522ed
 +
 +	return 0;
 +}
-+console_initcall(malta_console_init);
-diff --git a/arch/mips/configs/qemu-malta_defconfig b/arch/mips/configs/qemu-malta_defconfig
++console_initcall(dir320_console_init);
+diff --git a/arch/mips/configs/dlink-dir-320_defconfig b/arch/mips/configs/dlink-dir-320_defconfig
 new file mode 100644
-index 0000000..7df5a79
+index 0000000..ca86a36
 --- /dev/null
-+++ b/arch/mips/configs/qemu-malta_defconfig
-@@ -0,0 +1,56 @@
++++ b/arch/mips/configs/dlink-dir-320_defconfig
+@@ -0,0 +1,46 @@
++CONFIG_MACH_MIPS_BCM47XX=y
 +CONFIG_STACK_SIZE=0x7000
 +CONFIG_BROKEN=y
 +CONFIG_EXPERIMENTAL=y
@@ -168,6 +173,7 @@ index 0000000..7df5a79
 +CONFIG_CMDLINE_EDITING=y
 +CONFIG_AUTO_COMPLETE=y
 +CONFIG_MENU=y
++CONFIG_PASSWORD=y
 +CONFIG_PARTITION=y
 +# CONFIG_DEFAULT_ENVIRONMENT is not set
 +CONFIG_POLLER=y
@@ -181,10 +187,8 @@ index 0000000..7df5a79
 +CONFIG_CMD_READLINE=y
 +CONFIG_CMD_MENU=y
 +CONFIG_CMD_MENU_MANAGEMENT=y
-+CONFIG_CMD_PASSWD=y
 +CONFIG_CMD_ECHO_E=y
 +CONFIG_CMD_LOADB=y
-+CONFIG_CMD_LOADY=y
 +CONFIG_CMD_MEMINFO=y
 +CONFIG_CMD_CRC=y
 +CONFIG_CMD_CRC_CMP=y
@@ -193,42 +197,32 @@ index 0000000..7df5a79
 +CONFIG_CMD_SHA256SUM=y
 +CONFIG_CMD_MTEST=y
 +CONFIG_CMD_FLASH=y
-+CONFIG_CMD_BOOTM_ZLIB=y
-+CONFIG_CMD_BOOTM_BZLIB=y
-+CONFIG_CMD_BOOTM_SHOW_TYPE=y
 +CONFIG_CMD_RESET=y
 +CONFIG_CMD_GO=y
 +CONFIG_CMD_TIMEOUT=y
 +CONFIG_CMD_PARTITION=y
-+CONFIG_CMD_UNLZO=y
 +CONFIG_NET=y
 +CONFIG_NET_DHCP=y
-+CONFIG_NET_NFS=y
 +CONFIG_NET_PING=y
 +CONFIG_NET_TFTP=y
-+CONFIG_NET_TFTP_PUSH=y
 +CONFIG_NET_NETCONSOLE=y
-+CONFIG_NET_RESOLV=y
 +# CONFIG_SPI is not set
 +CONFIG_MTD=y
 +CONFIG_FS_CRAMFS=y
-+CONFIG_FS_FAT=y
-+CONFIG_FS_FAT_WRITE=y
-+CONFIG_FS_FAT_LFN=y
-diff --git a/arch/mips/mach-malta/Kconfig b/arch/mips/mach-malta/Kconfig
-index 6076a13..8e0666c 100644
---- a/arch/mips/mach-malta/Kconfig
-+++ b/arch/mips/mach-malta/Kconfig
+diff --git a/arch/mips/mach-bcm47xx/Kconfig b/arch/mips/mach-bcm47xx/Kconfig
+index 5143a15..d0df0fd 100644
+--- a/arch/mips/mach-bcm47xx/Kconfig
++++ b/arch/mips/mach-bcm47xx/Kconfig
 @@ -7,6 +7,11 @@ config ARCH_TEXT_BASE
  choice
  	prompt "Board type"
  
-+config BOARD_QEMU_MALTA
-+	bool "qemu malta"
++config BOARD_DLINK_DIR320
++	bool "D-Link DIR-320"
 +
  endchoice
  
-+source arch/mips/boards/qemu-malta/Kconfig
++source arch/mips/boards/dlink-dir-320/Kconfig
 +
  endif
 -- 
