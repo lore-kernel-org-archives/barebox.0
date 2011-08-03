@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QoVfp-0004qm-RT
-	for barebox@lists.infradead.org; Wed, 03 Aug 2011 07:15:28 +0000
+	id 1QoVfp-0004qk-Ri
+	for barebox@lists.infradead.org; Wed, 03 Aug 2011 07:15:29 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed,  3 Aug 2011 09:15:01 +0200
-Message-Id: <1312355701-18867-5-git-send-email-s.hauer@pengutronix.de>
+Date: Wed,  3 Aug 2011 09:14:58 +0200
+Message-Id: <1312355701-18867-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1312355701-18867-1-git-send-email-s.hauer@pengutronix.de>
 References: <1312355701-18867-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,203 +21,356 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] remove now unnecessary HAVE_MMU from Kconfig
+Subject: [PATCH 1/4] ARM: rework MMU support
 To: barebox@lists.infradead.org
 
-MMU now can be enabled on every ARM board, so remove
-the dependency.
+In barebox we used 1MiB sections to map our SDRAM cachable. This
+has the drawback that we have to map our sdram twice: cached for
+normal sdram and uncached for DMA operations. As address space gets
+sparse on newer systems we are sometines unable to find a suitably
+big enough area for the dma coherent space.
+
+This patch changes the MMU code to use second level page tables.
+With it we can implement dma_alloc_coherent as normal malloc, we
+just have to remap the allocated area uncached afterwards and map
+it cached again after free().
+
+This makes arm_create_section(), setup_dma_coherent() and mmu_enable()
+noops.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/Kconfig  |   28 +++++++---------------------
- arch/arm/mach-mxs/Kconfig  |    2 --
- arch/arm/mach-omap/Kconfig |    2 --
- common/Kconfig             |    4 ----
- 4 files changed, 7 insertions(+), 29 deletions(-)
+ arch/arm/cpu/mmu.c         |  189 ++++++++++++++++++++++++++++++++++++--------
+ arch/arm/include/asm/mmu.h |   20 ++++-
+ include/common.h           |    1 +
+ 3 files changed, 173 insertions(+), 37 deletions(-)
 
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index e661142..8dc6a24 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -182,7 +182,6 @@ config MACH_SCB9328
- 	select HAS_DM9000
- 	select HAS_CFI
- 	select MACH_HAS_LOWLEVEL_INIT
--	select HAVE_MMU
- 	help
- 	  Say Y here if you are using the Synertronixx scb9328 board
+diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
+index bb067e3..26ce915 100644
+--- a/arch/arm/cpu/mmu.c
++++ b/arch/arm/cpu/mmu.c
+@@ -1,10 +1,13 @@
+ #include <common.h>
+ #include <init.h>
+ #include <asm/mmu.h>
++#include <errno.h>
++#include <sizes.h>
++#include <asm/memory.h>
  
-@@ -222,7 +221,6 @@ choice
- config MACH_EUKREA_CPUIMX25
- 	bool "Eukrea CPUIMX25"
- 	select MACH_HAS_LOWLEVEL_INIT
--	select HAVE_MMU
- 	help
- 	  Say Y here if you are using the Eukrea Electromatique's CPUIMX25
- 	  equipped with a Freescale i.MX25 Processor
-@@ -240,7 +238,6 @@ config MACH_FREESCALE_MX25_3STACK
- config MACH_TX25
- 	bool "Ka-Ro TX25"
- 	select MACH_HAS_LOWLEVEL_INIT
--	select HAVE_MMU
- 	help
- 	  Say Y here if you are using the Ka-Ro tx25 board
+ static unsigned long *ttb;
  
-@@ -259,7 +256,6 @@ choice
- config MACH_EUKREA_CPUIMX27
- 	bool "EUKREA CPUIMX27"
- 	select HAS_CFI
--	select HAVE_MMU
- 	select MACH_HAS_LOWLEVEL_INIT
- 	help
- 	  Say Y here if you are using Eukrea's CPUIMX27 equipped
-@@ -276,7 +272,6 @@ config MACH_IMX27ADS
- config MACH_PCA100
- 	bool "phyCard-i.MX27"
- 	select MACH_HAS_LOWLEVEL_INIT
--	select HAVE_MMU
- 	help
- 	  Say Y here if you are using Phytec's phyCard-i.MX27 (pca100) equipped
- 	  with a Freescale i.MX27 Processor
-@@ -288,7 +283,6 @@ config MACH_PCM038
- 	select SPI
- 	select DRIVER_SPI_IMX
- 	select DRIVER_SPI_MC13783
--	select HAVE_MMU
- 	help
- 	  Say Y here if you are using Phytec's phyCORE-i.MX27 (pcm038) equipped
- 	  with a Freescale i.MX27 Processor
-@@ -296,7 +290,6 @@ config MACH_PCM038
- config MACH_NESO
- 	bool "Garz+Fricke Neso"
- 	select MACH_HAS_LOWLEVEL_INIT
--	select HAVE_MMU
- 	help
- 	  Say Y here if you are using the Garz+Fricke Neso board equipped
- 	  with a Freescale i.MX27 Processor
-@@ -316,7 +309,6 @@ choice
- config MACH_PCM037
- 	bool "phyCORE-i.MX31"
- 	select MACH_HAS_LOWLEVEL_INIT
--	select HAVE_MMU
- 	select USB_ISP1504 if USB
- 	select ARCH_HAS_L2X0
- 	help
-@@ -337,7 +329,6 @@ choice
+-void arm_create_section(unsigned long virt, unsigned long phys, int size_m,
++static void create_section(unsigned long virt, unsigned long phys, int size_m,
+ 		unsigned int flags)
+ {
+ 	int i;
+@@ -24,6 +27,33 @@ void arm_create_section(unsigned long virt, unsigned long phys, int size_m,
+ }
  
- config MACH_EUKREA_CPUIMX35
- 	bool "EUKREA CPUIMX35"
--	select HAVE_MMU
- 	select MACH_HAS_LOWLEVEL_INIT
- 	select ARCH_HAS_L2X0
- 	help
-@@ -357,21 +348,19 @@ config MACH_FREESCALE_MX35_3STACK
- 	  with a Freescale i.MX35 Processor
+ /*
++ * Do it the simple way for now and invalidate the entire
++ * tlb
++ */
++static inline void tlb_invalidate(void)
++{
++	asm volatile (
++		"mov	r0, #0\n"
++		"mcr	p15, 0, r0, c7, c10, 4;	@ drain write buffer\n"
++		"mcr	p15, 0, r0, c8, c6, 0;  @ invalidate D TLBs\n"
++		"mcr	p15, 0, r0, c8, c5, 0;  @ invalidate I TLBs\n"
++		:
++		:
++		: "r0"
++	);
++}
++
++#ifdef CONFIG_CPU_V7
++#define PTE_FLAGS_CACHED (PTE_EXT_TEX(1) | PTE_BUFFERABLE | PTE_CACHEABLE)
++#define PTE_FLAGS_UNCACHED (0)
++#else
++#define PTE_FLAGS_CACHED (PTE_SMALL_AP_UNO_SRW | PTE_BUFFERABLE | PTE_CACHEABLE)
++#define PTE_FLAGS_UNCACHED PTE_SMALL_AP_UNO_SRW
++#endif
++
++#define PTE_MASK ((1 << 12) - 1)
++
++/*
+  * Create a second level translation table for the given virtual address.
+  * We initially create a flat uncached mapping on it.
+  * Not yet exported, but may be later if someone finds use for it.
+@@ -38,11 +68,89 @@ static u32 *arm_create_pte(unsigned long virt)
+ 	ttb[virt] = (unsigned long)table | PMD_TYPE_TABLE;
  
- config MACH_PCM043
--        bool "phyCORE-i.MX35"
--        select HAS_CFI
--	select HAVE_MMU
-+	bool "phyCORE-i.MX35"
-+	select HAS_CFI
- 	select MACH_HAS_LOWLEVEL_INIT
- 	select ARCH_HAS_L2X0
--        help
--          Say Y here if you are using Phytec's phyCORE-i.MX35 (pcm043) equipped
--          with a Freescale i.MX35 Processor
-+	help
-+	  Say Y here if you are using Phytec's phyCORE-i.MX35 (pcm043) equipped
-+	  with a Freescale i.MX35 Processor
+ 	for (i = 0; i < 256; i++)
+-		table[i] = virt | PTE_TYPE_SMALL | PTE_SMALL_AP_UNO_SRW;
++		table[i] = virt | PTE_TYPE_SMALL | PTE_FLAGS_UNCACHED;
  
- config MACH_GUF_CUPID
--        bool "Garz+Fricke Cupid"
--	select HAVE_MMU
-+	bool "Garz+Fricke Cupid"
- 	select MACH_HAS_LOWLEVEL_INIT
- 	select ARCH_HAS_L2X0
--        help
-+	help
- 	  Say Y here if you are using the Garz+Fricke Neso board equipped
- 	  with a Freescale i.MX35 Processor
+ 	return table;
+ }
  
-@@ -389,12 +378,10 @@ choice
++static void remap_range(void *_start, size_t size, uint32_t flags)
++{
++	u32 pteentry;
++	struct arm_memory *mem;
++	unsigned long start = (unsigned long)_start;
++	u32 *p;
++	int numentries, i;
++
++	for_each_sdram_bank(mem) {
++		if (start >= mem->start && start < mem->start + mem->size)
++			goto found;
++	}
++
++	BUG();
++	return;
++
++found:
++	pteentry = (start - mem->start) >> PAGE_SHIFT;
++
++	numentries = size >> PAGE_SHIFT;
++
++	p = mem->ptes + pteentry;
++
++	for (i = 0; i < numentries; i++) {
++		p[i] &= ~PTE_MASK;
++		p[i] |= flags | PTE_TYPE_SMALL;
++	}
++
++	dma_flush_range((unsigned long)p,
++			(unsigned long)p + numentries * sizeof(u32));
++
++	tlb_invalidate();
++}
++
++/*
++ * remap the memory bank described by mem cachable and
++ * bufferable
++ */
++static int arm_mmu_remap_sdram(struct arm_memory *mem)
++{
++	unsigned long phys = (unsigned long)mem->start;
++	unsigned long ttb_start = phys >> 20;
++	unsigned long ttb_end = (phys + mem->size) >> 20;
++	unsigned long num_ptes = mem->size >> 10;
++	int i, pte;
++
++	debug("remapping SDRAM from 0x%08lx (size 0x%08lx)\n",
++			phys, mem->size);
++
++	/*
++	 * We replace each 1MiB section in this range with second level page
++	 * tables, therefore we must have 1Mib aligment here.
++	 */
++	if ((phys & (SZ_1M - 1)) || (mem->size & (SZ_1M - 1)))
++		return -EINVAL;
++
++	mem->ptes = memalign(0x400, num_ptes * sizeof(u32));
++
++	debug("ptes: 0x%p ttb_start: 0x%08lx ttb_end: 0x%08lx\n",
++			mem->ptes, ttb_start, ttb_end);
++
++	for (i = 0; i < num_ptes; i++) {
++		mem->ptes[i] = (phys + i * 4096) | PTE_TYPE_SMALL |
++			PTE_FLAGS_CACHED;
++	}
++
++	pte = 0;
++
++	for (i = ttb_start; i < ttb_end; i++) {
++		ttb[i] = (unsigned long)(&mem->ptes[pte]) | PMD_TYPE_TABLE |
++			(0 << 4);
++		pte += 256;
++	}
++
++	tlb_invalidate();
++
++	return 0;
++}
+ /*
+  * We have 8 exception vectors and the table consists of absolute
+  * jumps, so we need 8 * 4 bytes for the instructions and another
+@@ -66,19 +174,21 @@ static void vectors_init(void)
+ 	memset(vectors, 0, PAGE_SIZE);
+ 	memcpy(vectors, &exception_vectors, ARM_VECTORS_SIZE);
  
- config MACH_FREESCALE_MX51_PDK
- 	bool "Freescale i.MX51 PDK"
--	select HAVE_MMU
- 	select MACH_HAS_LOWLEVEL_INIT
+-	exc[0] = (u32)vectors | PTE_TYPE_SMALL | PTE_SMALL_AP_UNO_SRW;
++	exc[0] = (u32)vectors | PTE_TYPE_SMALL | PTE_FLAGS_CACHED;
+ }
  
- config MACH_EUKREA_CPUIMX51SD
- 	bool "EUKREA CPUIMX51"
--	select HAVE_MMU
- 	select MACH_HAS_LOWLEVEL_INIT
- 	help
- 	  Say Y here if you are using Eukrea's CPUIMX51 equipped
-@@ -414,7 +401,6 @@ choice
+ /*
+- * Prepare MMU for usage and create a flat mapping. Board
+- * code is responsible to remap the SDRAM cached
++ * Prepare MMU for usage enable it.
+  */
+-void mmu_init(void)
++int mmu_init(void)
+ {
++	struct arm_memory *mem;
+ 	int i;
  
- config MACH_FREESCALE_MX53_LOCO
- 	bool "Freescale i.MX53 LOCO"
--	select HAVE_MMU
- 	select MACH_HAS_LOWLEVEL_INIT
+ 	ttb = memalign(0x10000, 0x4000);
  
- endchoice
-diff --git a/arch/arm/mach-mxs/Kconfig b/arch/arm/mach-mxs/Kconfig
-index f9cefaf..caef7e0 100644
---- a/arch/arm/mach-mxs/Kconfig
-+++ b/arch/arm/mach-mxs/Kconfig
-@@ -39,7 +39,6 @@ config MACH_MX23EVK
++	debug("ttb: 0x%p\n", ttb);
++
+ 	/* Set the ttb register */
+ 	asm volatile ("mcr  p15,0,%0,c2,c0,0" : : "r"(ttb) /*:*/);
  
- config MACH_CHUMBY
- 	bool "Chumby Falconwing"
--	select HAVE_MMU
- 	help
- 	  Say Y here if you are using the "chumby one" aka falconwing from
- 	  Chumby Industries
-@@ -55,7 +54,6 @@ choice
+@@ -86,23 +196,36 @@ void mmu_init(void)
+ 	i = 0x3;
+ 	asm volatile ("mcr  p15,0,%0,c3,c0,0" : : "r"(i) /*:*/);
  
- config MACH_TX28
- 	bool "KARO tx28"
--	select HAVE_MMU
- 	help
- 	  Say Y here if you are using the KARO TX28 CPU module.
+-	/* create a flat mapping */
+-	arm_create_section(0, 0, 4096, PMD_SECT_AP_WRITE | PMD_SECT_AP_READ | PMD_TYPE_SECT);
++	/* create a flat mapping using 1MiB sections */
++	create_section(0, 0, 4096, PMD_SECT_AP_WRITE | PMD_SECT_AP_READ |
++			PMD_TYPE_SECT);
  
-diff --git a/arch/arm/mach-omap/Kconfig b/arch/arm/mach-omap/Kconfig
-index f256310..1174df0 100644
---- a/arch/arm/mach-omap/Kconfig
-+++ b/arch/arm/mach-omap/Kconfig
-@@ -140,7 +140,6 @@ config MACH_OMAP3EVM
+ 	vectors_init();
+-}
  
- config MACH_PANDA
- 	bool "Texas Instrument's Panda Board"
--	select HAVE_MMU
- 	select HAVE_NOSHELL
- 	select MACH_HAS_LOWLEVEL_INIT
- 	help
-@@ -148,7 +147,6 @@ config MACH_PANDA
+-/*
+- * enable the MMU. Should be called after mmu_init()
+- */
+-void mmu_enable(void)
+-{
++	/*
++	 * First remap sdram cached using sections.
++	 * This is to speed up the generation of 2nd level page tables
++	 * below
++	 */
++	for_each_sdram_bank(mem)
++		create_section(mem->start, mem->start, mem->size >> 20,
++				PMD_SECT_DEF_CACHED);
++
+ 	asm volatile (
+ 		"bl __mmu_cache_on;"
+ 		:
+ 		:
+ 		: "r0", "r1", "r2", "r3", "r6", "r10", "r12", "cc", "memory"
+         );
++
++	/*
++	 * Now that we have the MMU and caches on remap sdram again using
++	 * page tables
++	 */
++	for_each_sdram_bank(mem)
++		arm_mmu_remap_sdram(mem);
++
++	return 0;
+ }
  
- config MACH_PCM049
- 	bool "Phytec phyCORE pcm049"
--	select HAVE_MMU
- 	select HAVE_NOSHELL
- 	depends on ARCH_OMAP4
- 	select MACH_HAS_LOWLEVEL_INIT
-diff --git a/common/Kconfig b/common/Kconfig
-index 382b407..422d185 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -70,12 +70,8 @@ config ENVIRONMENT_VARIABLES
+ struct outer_cache_fns outer_cache;
+@@ -125,39 +248,41 @@ void mmu_disable(void)
+ 	);
+ }
  
- menu "memory layout                 "
- 
--config HAVE_MMU
--	bool
+-/*
+- * For boards which need coherent memory for DMA. The idea
+- * is simple: Setup a uncached section containing your SDRAM
+- * and call setup_dma_coherent() with the offset between the
+- * cached and the uncached section. dma_alloc_coherent() then
+- * works using normal malloc but returns the corresponding
+- * pointer in the uncached area.
+- */
+-static unsigned long dma_coherent_offset;
 -
- config MMU
- 	bool "Enable MMU"
--	depends on HAVE_MMU
- 	help
- 	  Saying yes here enables the MMU. This is useful on some architectures
- 	  to enable the data cache which depends on the MMU. See Documentation/mmu.txt
+-void setup_dma_coherent(unsigned long offset)
+-{
+-	dma_coherent_offset = offset;
+-}
++#define PAGE_ALIGN(s) ((s) + PAGE_SIZE - 1) & ~(PAGE_SIZE - 1);
+ 
+ void *dma_alloc_coherent(size_t size)
+ {
+-	return xmemalign(4096, size) + dma_coherent_offset;
++	void *ret;
++
++	size = PAGE_ALIGN(size);
++	ret = xmemalign(4096, size);
++
++#ifdef CONFIG_MMU
++	dma_inv_range((unsigned long)ret, (unsigned long)ret + size);
++
++	remap_range(ret, size, PTE_FLAGS_UNCACHED);
++#endif
++
++	return ret;
+ }
+ 
+ unsigned long virt_to_phys(void *virt)
+ {
+-	return (unsigned long)virt - dma_coherent_offset;
++	return (unsigned long)virt;
+ }
+ 
+ void *phys_to_virt(unsigned long phys)
+ {
+-	return (void *)(phys + dma_coherent_offset);
++	return (void *)phys;
+ }
+ 
+ void dma_free_coherent(void *mem, size_t size)
+ {
+-	free(mem - dma_coherent_offset);
++#ifdef CONFIG_MMU
++	remap_range(mem, size, PTE_FLAGS_CACHED);
++#endif
++
++	free(mem);
+ }
+ 
+ void dma_clean_range(unsigned long start, unsigned long end)
+diff --git a/arch/arm/include/asm/mmu.h b/arch/arm/include/asm/mmu.h
+index 9ebc2cd..b1aa781 100644
+--- a/arch/arm/include/asm/mmu.h
++++ b/arch/arm/include/asm/mmu.h
+@@ -3,19 +3,29 @@
+ 
+ #include <asm/pgtable.h>
+ #include <malloc.h>
++#include <errno.h>
+ 
+ #define PMD_SECT_DEF_UNCACHED (PMD_SECT_AP_WRITE | PMD_SECT_AP_READ | PMD_TYPE_SECT)
+ #define PMD_SECT_DEF_CACHED (PMD_SECT_WB | PMD_SECT_DEF_UNCACHED)
+ 
+-void mmu_init(void);
+-void mmu_enable(void);
++struct arm_memory;
++
++static inline void mmu_enable(void)
++{
++}
+ void mmu_disable(void);
+-void arm_create_section(unsigned long virt, unsigned long phys, int size_m,
+-		unsigned int flags);
++static inline void arm_create_section(unsigned long virt, unsigned long phys, int size_m,
++		unsigned int flags)
++{
++}
+ 
+-void setup_dma_coherent(unsigned long offset);
++static inline void setup_dma_coherent(unsigned long offset)
++{
++}
+ 
+ #ifdef CONFIG_MMU
++int mmu_init(void);
++
+ void *dma_alloc_coherent(size_t size);
+ void dma_free_coherent(void *mem, size_t size);
+ 
+diff --git a/include/common.h b/include/common.h
+index f3353c8..0ce4a70 100644
+--- a/include/common.h
++++ b/include/common.h
+@@ -221,6 +221,7 @@ int run_shell(void);
+ #define ULLONG_MAX	(~0ULL)
+ 
+ #define PAGE_SIZE	4096
++#define PAGE_SHIFT	12
+ 
+ int memory_display(char *addr, ulong offs, ulong nbytes, int size);
+ 
 -- 
 1.7.5.4
 
