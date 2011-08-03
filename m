@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-ww0-f49.google.com ([74.125.82.49])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QoVtC-00056T-AE
-	for barebox@lists.infradead.org; Wed, 03 Aug 2011 07:29:15 +0000
-Date: Wed, 3 Aug 2011 09:29:10 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110803072910.GO31404@pengutronix.de>
-References: <1312268888-16657-1-git-send-email-antonynpavlov@gmail.com>
+	id 1QoWo5-0005Xc-6g
+	for barebox@lists.infradead.org; Wed, 03 Aug 2011 08:28:01 +0000
+Received: by wwf22 with SMTP id 22so395254wwf.18
+	for <barebox@lists.infradead.org>; Wed, 03 Aug 2011 01:27:56 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1312268888-16657-1-git-send-email-antonynpavlov@gmail.com>
+Date: Wed, 3 Aug 2011 12:27:55 +0400
+Message-ID: <CAA4bVAHpjs3Q-+Qx3ym-f4DeQ4HPgFJdai9z2izJETFbp0Y7AQ@mail.gmail.com>
+From: Antony Pavlov <antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,80 +17,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] commands/led.c: fix return codes
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: network-related <<very draft>> patches
+To: barebox <barebox@lists.infradead.org>
 
-On Tue, Aug 02, 2011 at 11:08:08AM +0400, Antony Pavlov wrote:
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
->  commands/led.c |    8 ++++----
->  1 files changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/commands/led.c b/commands/led.c
+Hi!
 
-As of now noone uses the COMMAND_ERROR/COMMAND_SUCCESS macros.
-I'm not sure they are the way to go anyway. What I would rather
-like to see is that commands can return the standard error
-values, but this requires changes in hush.c (and the simple
-parser), because hush currently has its own (strange) way
-of interpreting return codes.
+Some time ago I have posted the PCI support patches.
+Now I working on it improvement.
 
-Sascha
+Although the code for PCI has many hacks and inconsistency, I have some suc=
+cess.
+I have made PCI address management and succesufully ported 8139too
+driver from linux-3.0: it is even possible to run mips barebox under
+qemu and get a 600K file by tftp via emulated PCI Realtek 8139
+adapter.
 
-> index 360ce7c..afb3fd3 100644
-> --- a/commands/led.c
-> +++ b/commands/led.c
-> @@ -45,7 +45,7 @@ static int do_led(struct command *cmdtp, int argc, char *argv[])
->  					led->max_value);
->  			i++;
->  		}
-> -		return 0;
-> +		return COMMAND_SUCCESS;
->  	}
->  
->  	if (argc != 3)
-> @@ -54,7 +54,7 @@ static int do_led(struct command *cmdtp, int argc, char *argv[])
->  	led = led_by_name_or_number(argv[1]);
->  	if (!led) {
->  		printf("no such LED: %s\n", argv[1]);
-> -		return 1;
-> +		return COMMAND_ERROR;
->  	}
->  
->  	value = simple_strtoul(argv[optind + 1], NULL, 0);
-> @@ -62,10 +62,10 @@ static int do_led(struct command *cmdtp, int argc, char *argv[])
->  	ret = led_set(led, value);
->  	if (ret < 0) {
->  		perror("led");
-> -		return 1;
-> +		return COMMAND_ERROR;
->  	}
->  
-> -	return 0;
-> +	return COMMAND_SUCCESS;
->  }
->  
->  /**
-> -- 
-> 1.7.5.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+I have found that barebox lack some instrument for network debugging
+(may be I'am wrong?).
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+I planning to post today some useful (but <<very draft>>)
+network-related patches.
+
+-- =
+
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
