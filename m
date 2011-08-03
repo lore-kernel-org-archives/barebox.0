@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-fx0-f49.google.com ([209.85.161.49])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QoWtp-0005er-EA
-	for barebox@lists.infradead.org; Wed, 03 Aug 2011 08:33:58 +0000
-Received: by fxd20 with SMTP id 20so888597fxd.36
-	for <barebox@lists.infradead.org>; Wed, 03 Aug 2011 01:33:56 -0700 (PDT)
+	id 1QoXTn-0005xL-Se
+	for barebox@lists.infradead.org; Wed, 03 Aug 2011 09:11:09 +0000
+Received: by fxd20 with SMTP id 20so924936fxd.36
+	for <barebox@lists.infradead.org>; Wed, 03 Aug 2011 02:11:04 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed,  3 Aug 2011 12:33:52 +0400
-Message-Id: <1312360432-26595-1-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <20110803072910.GO31404@pengutronix.de>
-References: <20110803072910.GO31404@pengutronix.de>
+Date: Wed,  3 Aug 2011 13:10:50 +0400
+Message-Id: <1312362661-31340-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,27 +21,194 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] commands/led.c: fix return code
+Subject: [PATCH v9 01/12] MIPS: initial commit: add empty but required header
+	files
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- commands/led.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+ arch/mips/include/asm/barebox.h |   24 ++++++++++++++++++++++++
+ arch/mips/include/asm/bitops.h  |   32 ++++++++++++++++++++++++++++++++
+ arch/mips/include/asm/common.h  |   29 +++++++++++++++++++++++++++++
+ arch/mips/include/asm/module.h  |   24 ++++++++++++++++++++++++
+ arch/mips/include/asm/string.h  |   31 +++++++++++++++++++++++++++++++
+ 5 files changed, 140 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/include/asm/barebox.h
+ create mode 100644 arch/mips/include/asm/bitops.h
+ create mode 100644 arch/mips/include/asm/common.h
+ create mode 100644 arch/mips/include/asm/module.h
+ create mode 100644 arch/mips/include/asm/string.h
 
-diff --git a/commands/led.c b/commands/led.c
-index 7fd9d44..6bda797 100644
---- a/commands/led.c
-+++ b/commands/led.c
-@@ -40,7 +40,7 @@ static int do_led(struct command *cmdtp, int argc, char *argv[])
- 		led = led_by_number(i);
- 		if (!led) {
- 			printf("no registered LEDs\n");
--			return COMMAND_ERROR;
-+			return 1;
- 		}
- 
- 		printf("registered LEDs:\n");
+diff --git a/arch/mips/include/asm/barebox.h b/arch/mips/include/asm/barebox.h
+new file mode 100644
+index 0000000..b42c9ff
+--- /dev/null
++++ b/arch/mips/include/asm/barebox.h
+@@ -0,0 +1,24 @@
++/*
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ *
++ */
++
++#ifndef _ASM_MIPS_BAREBOX_H_
++#define _ASM_MIPS_BAREBOX_H_
++
++/* nothing special yet */
++
++#endif /* _ASM_MIPS_BAREBOX_H_ */
+diff --git a/arch/mips/include/asm/bitops.h b/arch/mips/include/asm/bitops.h
+new file mode 100644
+index 0000000..36d34b6
+--- /dev/null
++++ b/arch/mips/include/asm/bitops.h
+@@ -0,0 +1,32 @@
++/*
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ *
++ */
++
++/**
++ * @file
++ * @brief mips bit operations
++ *
++ * This file is required only to make all sources happy including
++ * 'linux/bitops.h'
++ */
++
++#ifndef _ASM_MIPS_BITOPS_H_
++#define _ASM_MIPS_BITOPS_H_
++
++/* nothing special yet */
++
++#endif /* _ASM_MIPS_BITOPS_H_ */
+diff --git a/arch/mips/include/asm/common.h b/arch/mips/include/asm/common.h
+new file mode 100644
+index 0000000..e37b6c5
+--- /dev/null
++++ b/arch/mips/include/asm/common.h
+@@ -0,0 +1,29 @@
++/*
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ *
++ */
++
++/**
++ * @file
++ * @brief mips common declarations
++ */
++
++#ifndef _ASM_MIPS_COMMON_H_
++#define _ASM_MIPS_COMMON_H_
++
++/* nothing special yet */
++
++#endif /* _ASM_MIPS_COMMON_H_ */
+diff --git a/arch/mips/include/asm/module.h b/arch/mips/include/asm/module.h
+new file mode 100644
+index 0000000..3046220
+--- /dev/null
++++ b/arch/mips/include/asm/module.h
+@@ -0,0 +1,24 @@
++/*
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ *
++ */
++
++#ifndef _ASM_MIPS_MODULE_H_
++#define _ASM_MIPS_MODULE_H_
++
++/* nothing special yet */
++
++#endif /* _ASM_MIPS_MODULE_H_ */
+diff --git a/arch/mips/include/asm/string.h b/arch/mips/include/asm/string.h
+new file mode 100644
+index 0000000..9e334a2
+--- /dev/null
++++ b/arch/mips/include/asm/string.h
+@@ -0,0 +1,31 @@
++/*
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ *
++ */
++
++/**
++ * @file
++ * @brief mips specific string optimizations
++ *
++ * Thanks to the Linux kernel here we can add many micro optimized string
++ * functions. But currently it makes no sense, to do so.
++ */
++#ifndef __ASM_MIPS_STRING_H
++#define __ASM_MIPS_STRING_H
++
++/* nothing special yet */
++
++#endif
 -- 
 1.7.5.4
 
