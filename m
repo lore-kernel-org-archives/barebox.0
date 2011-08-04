@@ -1,20 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 6.mo3.mail-out.ovh.net ([188.165.43.173]
-	helo=mo3.mail-out.ovh.net)
-	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1QomJ0-0007yb-Dp
-	for barebox@lists.infradead.org; Thu, 04 Aug 2011 01:00:59 +0000
-Received: from mail191.ha.ovh.net (b9.ovh.net [213.186.33.59])
-	by mo3.mail-out.ovh.net (Postfix) with SMTP id BB235FFB04A
-	for <barebox@lists.infradead.org>;
-	Thu,  4 Aug 2011 03:02:06 +0200 (CEST)
-Date: Thu, 4 Aug 2011 02:42:50 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20110804004250.GH24730@game.jcrosoft.org>
-References: <1312396666-23348-1-git-send-email-antonynpavlov@gmail.com>
+Received: from mail-ww0-f41.google.com ([74.125.82.41])
+	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+	id 1QopxH-0000DJ-8U
+	for barebox@lists.infradead.org; Thu, 04 Aug 2011 04:54:48 +0000
+Received: by wwj26 with SMTP id 26so652576wwj.0
+	for <barebox@lists.infradead.org>; Wed, 03 Aug 2011 21:54:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1312396666-23348-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <20110804003702.GF24730@game.jcrosoft.org>
+References: <1312396666-23348-1-git-send-email-antonynpavlov@gmail.com>
+	<1312396666-23348-2-git-send-email-antonynpavlov@gmail.com>
+	<20110804003702.GF24730@game.jcrosoft.org>
+Date: Thu, 4 Aug 2011 08:54:43 +0400
+Message-ID: <CAA4bVAFg_JROsx88dAFUmfVamLPB-Ui-vguCmtb2bz1pk0y7AQ@mail.gmail.com>
+From: Antony Pavlov <antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,138 +21,69 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] serial_ns16550: move switch from ns16550_{read,
-	write}() to ns16550_probe()
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/2] serial_ns16550: use 'struct device_d *' instead of
+	'struct console_device *'
+To: barebox <barebox@lists.infradead.org>
 
-On 22:37 Wed 03 Aug     , Antony Pavlov wrote:
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
->  drivers/serial/serial_ns16550.c |   87 ++++++++++++++++++++++++---------------
->  1 files changed, 54 insertions(+), 33 deletions(-)
-> 
-> diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
-> index 4ed2671..ec93750 100644
-> --- a/drivers/serial/serial_ns16550.c
-> +++ b/drivers/serial/serial_ns16550.c
-> @@ -48,6 +48,23 @@
->  
->  /*********** Private Functions **********************************/
->  
-> +#define NS16550_READ_WRITE_UART_FUNC(pfx, cmdr, cmdw, mask) \
-> +static unsigned int ns16550_generic_##pfx##_read(unsigned long base, \
-> +		unsigned char reg_idx)		\
-> +{						\
-> +	return cmdr((char *)base + reg_idx);	\
-> +}						\
-> +						\
-> +static void ns16550_generic_##pfx##_write(unsigned int val, unsigned long base, \
-> +		unsigned char reg_idx)			\
-> +{							\
-> +	cmdw((mask val), (char *)base + reg_idx);	\
-> +}
-> +
-> +NS16550_READ_WRITE_UART_FUNC(8bit, readb, writeb, 0xff &)
-> +NS16550_READ_WRITE_UART_FUNC(16bit, readw, writew, 0xffff &)
-> +NS16550_READ_WRITE_UART_FUNC(32bit, readl, writel, )
-> +
->  /**
->   * @brief read register
->   *
-> @@ -60,22 +77,10 @@ static uint32_t ns16550_read(struct console_device *cdev, uint32_t off)
->  {
->  	struct device_d *dev = cdev->dev;
->  	struct NS16550_plat *plat = (struct NS16550_plat *)dev->platform_data;
-> -	int width = dev->resource[0].flags & IORESOURCE_MEM_TYPE_MASK;
->  
->  	off <<= plat->shift;
->  
-> -	if (plat->reg_read)
-> -		return plat->reg_read((unsigned long)dev->priv, off);
-> -
-> -	switch (width) {
-> -	case IORESOURCE_MEM_8BIT:
-> -		return readb(dev->priv + off);
-> -	case IORESOURCE_MEM_16BIT:
-> -		return readw(dev->priv + off);
-> -	case IORESOURCE_MEM_32BIT:
-> -		return readl(dev->priv + off);
-> -	}
-> -	return -1;
-> +	return plat->reg_read((unsigned long)dev->priv, off);
->  }
->  
->  /**
-> @@ -90,26 +95,10 @@ static void ns16550_write(struct console_device *cdev, uint32_t val,
->  {
->  	struct device_d *dev = cdev->dev;
->  	struct NS16550_plat *plat = (struct NS16550_plat *)dev->platform_data;
-> -	int width = dev->resource[0].flags & IORESOURCE_MEM_TYPE_MASK;
->  
->  	off <<= plat->shift;
->  
-> -	if (plat->reg_write) {
-> -		plat->reg_write(val, (unsigned long)dev->priv, off);
-> -		return;
-> -	}
-> -
-> -	switch (width) {
-> -	case IORESOURCE_MEM_8BIT:
-> -		writeb(val & 0xff, dev->priv + off);
-> -		break;
-> -	case IORESOURCE_MEM_16BIT:
-> -		writew(val & 0xffff, dev->priv + off);
-> -		break;
-> -	case IORESOURCE_MEM_32BIT:
-> -		writel(val, dev->priv + off);
-> -		break;
-> -	}
-> +	plat->reg_write(val, (unsigned long)dev->priv, off);
-no it must stay void __iomem*
+On 4 August 2011 04:37, Jean-Christophe PLAGNIOL-VILLARD
+<plagnioj@jcrosoft.com> wrote:
+> On 22:37 Wed 03 Aug =A0 =A0 , Antony Pavlov wrote:
+>> ns16550_read() and ns16550_write() functions are private functions
+>> of the driver so there is no need to pass them 'struct console_device *'
+>> pointer to get private device data.
+>>
+>> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+>> ---
 
+> Does not simplify the code
+>
+> does not see the need
 
->  }
->  
->  /**
-> @@ -239,9 +228,41 @@ static int ns16550_probe(struct device_d *dev)
->  	/* we do expect platform specific data */
->  	if (plat == NULL)
->  		return -EINVAL;
-> -	if (!(dev->resource[0].flags & IORESOURCE_MEM_TYPE_MASK) &&
-> -	    ((plat->reg_read == NULL) || (plat->reg_write == NULL)))
-> -		return -EINVAL;
-we need to apply the fix fix and then change the behavior
+Just the opposite!
 
-for bisect
-> +
-> +	if (plat->reg_read == NULL) {
-> +		int width = dev->resource[0].flags & IORESOURCE_MEM_TYPE_MASK;
-> +
-> +		switch (width) {
-> +		default:
-> +		case IORESOURCE_MEM_8BIT:
-> +			plat->reg_read = ns16550_generic_8bit_read;
-> +			break;
-> +		case IORESOURCE_MEM_16BIT:
-> +			plat->reg_read = ns16550_generic_16bit_read;
-> +			break;
-> +		case IORESOURCE_MEM_32BIT:
-> +			plat->reg_read = ns16550_generic_32bit_read;
-> +			break;
-> +		}
-> +	}
-> +
-> +	if (plat->reg_write == NULL) {
-> +		int width = dev->resource[0].flags & IORESOURCE_MEM_TYPE_MASK;
-why do it twice?
+Without this patch we do the operation 'dev =3D cdev->dev' at _EVERY
+SINGLE CALL_ of ns16550_read/ns16550_write.
 
-Best Regards,
-J.
+In the driver, only in ns16550_tstc() we have single call of
+ns16550_read(). In all other places we have multiple
+ns16550_read/ns16550_write. So we can move 'dev =3D cdev->dev'
+to caller without any damage.
+
+Moreover, in ns16550_putc() we have cycle:
+----
+while ((ns16550_read(dev, lsr) & LSR_THRE) =3D=3D 0) ;
+----
+On every cycle loop we do 'dev =3D cdev->dev' !
+
+Disassemble the compiled barebox and you will see that you have many
+memory memory accesses at the entrance to the
+ns16550_read/ns16550_write functions.
+
+So, removing this 'dev =3D cdev->dev' we remove one memory access.
+
+This is a real optimization!
+
+Also, confirmation of this patch comes from simple logic.
+
+Simple question.
+Have we need of 'console_device *cdev' pointer in
+ns16550_read/ns16550_write at all?
+
+My answer is 'No'.
+
+Console_device is very high-level abstraction structure, but
+ns16550_read/ns16550_write functions work at the low-level.
+They work with the private driver data, but cdev can't directly supply
+this private data.
+
+-- =
+
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
