@@ -1,13 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-fx0-f49.google.com ([209.85.161.49])
-	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QojQA-000717-84
-	for barebox@lists.infradead.org; Wed, 03 Aug 2011 21:56:12 +0000
-Received: by fxd20 with SMTP id 20so1727952fxd.36
-	for <barebox@lists.infradead.org>; Wed, 03 Aug 2011 14:56:04 -0700 (PDT)
-From: Marek Belisko <marek.belisko@open-nandra.com>
-Date: Wed,  3 Aug 2011 23:55:57 +0200
-Message-Id: <1312408558-21782-1-git-send-email-marek.belisko@open-nandra.com>
+Received: from 20.mo3.mail-out.ovh.net ([178.33.47.94]
+	helo=mo3.mail-out.ovh.net)
+	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+	id 1QomDP-0007we-5V
+	for barebox@lists.infradead.org; Thu, 04 Aug 2011 00:55:11 +0000
+Received: from mail191.ha.ovh.net (b9.ovh.net [213.186.33.59])
+	by mo3.mail-out.ovh.net (Postfix) with SMTP id 1A241FFB0C9
+	for <barebox@lists.infradead.org>;
+	Thu,  4 Aug 2011 02:56:19 +0200 (CEST)
+Date: Thu, 4 Aug 2011 02:37:02 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20110804003702.GF24730@game.jcrosoft.org>
+References: <1312396666-23348-1-git-send-email-antonynpavlov@gmail.com>
+	<1312396666-23348-2-git-send-email-antonynpavlov@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1312396666-23348-2-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,46 +24,28 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH-next] ARM: Fix compilation error.
-To: barebox@lists.infradead.org
-Cc: Marek Belisko <marek.belisko@open-nandra.com>
+Subject: Re: [PATCH 2/2] serial_ns16550: use 'struct device_d *' instead of
+	'struct console_device *'
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Fix following error:
-arch/arm/include/asm/mmu.h:29:19: error: conflicting types for 'mmu_init'
-arch/arm/include/asm/mmu.h:10:6: note: previous declaration of 'mmu_init' was here
-arch/arm/include/asm/mmu.h: In function 'mmu_init':
-arch/arm/include/asm/mmu.h:31:10: error: 'EINVAL' undeclared (first use in this function)
-arch/arm/include/asm/mmu.h:31:10: note: each undeclared identifier is reported only once for each function it appears in
+On 22:37 Wed 03 Aug     , Antony Pavlov wrote:
+> ns16550_read() and ns16550_write() functions are private functions
+> of the driver so there is no need to pass them 'struct console_device *'
+> pointer to get private device data.
+> 
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> ---
+Does not simplify the code
 
-Signed-off-by: Marek Belisko <marek.belisko@open-nandra.com>
----
- arch/arm/include/asm/mmu.h |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
+does not see the need
 
-diff --git a/arch/arm/include/asm/mmu.h b/arch/arm/include/asm/mmu.h
-index 9ebc2cd..a121165 100644
---- a/arch/arm/include/asm/mmu.h
-+++ b/arch/arm/include/asm/mmu.h
-@@ -26,9 +26,9 @@ unsigned long virt_to_phys(void *virt);
- void *phys_to_virt(unsigned long phys);
- 
- #else
--static inline int mmu_init(void)
-+inline void mmu_init(void)
- {
--	return -EINVAL;
-+
- }
- 
- static inline void *dma_alloc_coherent(size_t size)
--- 
-1.7.4.1
-
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
