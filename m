@@ -1,20 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 15.mo3.mail-out.ovh.net ([87.98.150.177]
+Received: from 6.mo3.mail-out.ovh.net ([188.165.43.173]
 	helo=mo3.mail-out.ovh.net)
 	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1QomEW-0007xQ-HU
-	for barebox@lists.infradead.org; Thu, 04 Aug 2011 00:56:21 +0000
+	id 1QomJ0-0007yb-Dp
+	for barebox@lists.infradead.org; Thu, 04 Aug 2011 01:00:59 +0000
 Received: from mail191.ha.ovh.net (b9.ovh.net [213.186.33.59])
-	by mo3.mail-out.ovh.net (Postfix) with SMTP id B8E0FFFB0C9
+	by mo3.mail-out.ovh.net (Postfix) with SMTP id BB235FFB04A
 	for <barebox@lists.infradead.org>;
-	Thu,  4 Aug 2011 02:57:28 +0200 (CEST)
-Date: Thu, 4 Aug 2011 02:38:11 +0200
+	Thu,  4 Aug 2011 03:02:06 +0200 (CEST)
+Date: Thu, 4 Aug 2011 02:42:50 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20110804003811.GG24730@game.jcrosoft.org>
-References: <1312408558-21782-1-git-send-email-marek.belisko@open-nandra.com>
+Message-ID: <20110804004250.GH24730@game.jcrosoft.org>
+References: <1312396666-23348-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1312408558-21782-1-git-send-email-marek.belisko@open-nandra.com>
+In-Reply-To: <1312396666-23348-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,21 +27,131 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH-next] ARM: Fix compilation error.
-To: Marek Belisko <marek.belisko@open-nandra.com>
+Subject: Re: [PATCH 1/2] serial_ns16550: move switch from ns16550_{read,
+	write}() to ns16550_probe()
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On 23:55 Wed 03 Aug     , Marek Belisko wrote:
-> Fix following error:
-> arch/arm/include/asm/mmu.h:29:19: error: conflicting types for 'mmu_init'
-> arch/arm/include/asm/mmu.h:10:6: note: previous declaration of 'mmu_init' was here
-> arch/arm/include/asm/mmu.h: In function 'mmu_init':
-> arch/arm/include/asm/mmu.h:31:10: error: 'EINVAL' undeclared (first use in this function)
-> arch/arm/include/asm/mmu.h:31:10: note: each undeclared identifier is reported only once for each function it appears in
-> 
-> Signed-off-by: Marek Belisko <marek.belisko@open-nandra.com>
+On 22:37 Wed 03 Aug     , Antony Pavlov wrote:
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 > ---
-we are goind to it anyway
+>  drivers/serial/serial_ns16550.c |   87 ++++++++++++++++++++++++---------------
+>  1 files changed, 54 insertions(+), 33 deletions(-)
+> 
+> diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
+> index 4ed2671..ec93750 100644
+> --- a/drivers/serial/serial_ns16550.c
+> +++ b/drivers/serial/serial_ns16550.c
+> @@ -48,6 +48,23 @@
+>  
+>  /*********** Private Functions **********************************/
+>  
+> +#define NS16550_READ_WRITE_UART_FUNC(pfx, cmdr, cmdw, mask) \
+> +static unsigned int ns16550_generic_##pfx##_read(unsigned long base, \
+> +		unsigned char reg_idx)		\
+> +{						\
+> +	return cmdr((char *)base + reg_idx);	\
+> +}						\
+> +						\
+> +static void ns16550_generic_##pfx##_write(unsigned int val, unsigned long base, \
+> +		unsigned char reg_idx)			\
+> +{							\
+> +	cmdw((mask val), (char *)base + reg_idx);	\
+> +}
+> +
+> +NS16550_READ_WRITE_UART_FUNC(8bit, readb, writeb, 0xff &)
+> +NS16550_READ_WRITE_UART_FUNC(16bit, readw, writew, 0xffff &)
+> +NS16550_READ_WRITE_UART_FUNC(32bit, readl, writel, )
+> +
+>  /**
+>   * @brief read register
+>   *
+> @@ -60,22 +77,10 @@ static uint32_t ns16550_read(struct console_device *cdev, uint32_t off)
+>  {
+>  	struct device_d *dev = cdev->dev;
+>  	struct NS16550_plat *plat = (struct NS16550_plat *)dev->platform_data;
+> -	int width = dev->resource[0].flags & IORESOURCE_MEM_TYPE_MASK;
+>  
+>  	off <<= plat->shift;
+>  
+> -	if (plat->reg_read)
+> -		return plat->reg_read((unsigned long)dev->priv, off);
+> -
+> -	switch (width) {
+> -	case IORESOURCE_MEM_8BIT:
+> -		return readb(dev->priv + off);
+> -	case IORESOURCE_MEM_16BIT:
+> -		return readw(dev->priv + off);
+> -	case IORESOURCE_MEM_32BIT:
+> -		return readl(dev->priv + off);
+> -	}
+> -	return -1;
+> +	return plat->reg_read((unsigned long)dev->priv, off);
+>  }
+>  
+>  /**
+> @@ -90,26 +95,10 @@ static void ns16550_write(struct console_device *cdev, uint32_t val,
+>  {
+>  	struct device_d *dev = cdev->dev;
+>  	struct NS16550_plat *plat = (struct NS16550_plat *)dev->platform_data;
+> -	int width = dev->resource[0].flags & IORESOURCE_MEM_TYPE_MASK;
+>  
+>  	off <<= plat->shift;
+>  
+> -	if (plat->reg_write) {
+> -		plat->reg_write(val, (unsigned long)dev->priv, off);
+> -		return;
+> -	}
+> -
+> -	switch (width) {
+> -	case IORESOURCE_MEM_8BIT:
+> -		writeb(val & 0xff, dev->priv + off);
+> -		break;
+> -	case IORESOURCE_MEM_16BIT:
+> -		writew(val & 0xffff, dev->priv + off);
+> -		break;
+> -	case IORESOURCE_MEM_32BIT:
+> -		writel(val, dev->priv + off);
+> -		break;
+> -	}
+> +	plat->reg_write(val, (unsigned long)dev->priv, off);
+no it must stay void __iomem*
+
+
+>  }
+>  
+>  /**
+> @@ -239,9 +228,41 @@ static int ns16550_probe(struct device_d *dev)
+>  	/* we do expect platform specific data */
+>  	if (plat == NULL)
+>  		return -EINVAL;
+> -	if (!(dev->resource[0].flags & IORESOURCE_MEM_TYPE_MASK) &&
+> -	    ((plat->reg_read == NULL) || (plat->reg_write == NULL)))
+> -		return -EINVAL;
+we need to apply the fix fix and then change the behavior
+
+for bisect
+> +
+> +	if (plat->reg_read == NULL) {
+> +		int width = dev->resource[0].flags & IORESOURCE_MEM_TYPE_MASK;
+> +
+> +		switch (width) {
+> +		default:
+> +		case IORESOURCE_MEM_8BIT:
+> +			plat->reg_read = ns16550_generic_8bit_read;
+> +			break;
+> +		case IORESOURCE_MEM_16BIT:
+> +			plat->reg_read = ns16550_generic_16bit_read;
+> +			break;
+> +		case IORESOURCE_MEM_32BIT:
+> +			plat->reg_read = ns16550_generic_32bit_read;
+> +			break;
+> +		}
+> +	}
+> +
+> +	if (plat->reg_write == NULL) {
+> +		int width = dev->resource[0].flags & IORESOURCE_MEM_TYPE_MASK;
+why do it twice?
 
 Best Regards,
 J.
