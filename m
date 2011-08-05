@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-fx0-f49.google.com ([209.85.161.49])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QpI7G-0005ep-If
-	for barebox@lists.infradead.org; Fri, 05 Aug 2011 10:59:04 +0000
-Received: by fxd20 with SMTP id 20so263551fxd.36
-	for <barebox@lists.infradead.org>; Fri, 05 Aug 2011 03:58:57 -0700 (PDT)
+	id 1QpI7I-0005cf-JY
+	for barebox@lists.infradead.org; Fri, 05 Aug 2011 10:59:07 +0000
+Received: by mail-fx0-f49.google.com with SMTP id 20so263425fxd.36
+	for <barebox@lists.infradead.org>; Fri, 05 Aug 2011 03:59:00 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Fri,  5 Aug 2011 14:58:38 +0400
-Message-Id: <1312541922-696-9-git-send-email-antonynpavlov@gmail.com>
+Date: Fri,  5 Aug 2011 14:58:42 +0400
+Message-Id: <1312541922-696-13-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1312541922-696-1-git-send-email-antonynpavlov@gmail.com>
 References: <1312541922-696-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,81 +23,93 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/12] MIPS: add qemu-malta documentation
+Subject: [PATCH 12/12] MIPS: add draft cpuinfo command
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- Documentation/boards.dox                   |    5 +++++
- arch/mips/boards/qemu-malta/qemu-malta.dox |   15 +++++++++++++++
- arch/mips/mach-malta/mach-malta.dox        |    7 +++++++
- arch/mips/mach-mips.dox                    |    3 +++
- 4 files changed, 30 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/boards/qemu-malta/qemu-malta.dox
- create mode 100644 arch/mips/mach-malta/mach-malta.dox
+ arch/mips/Kconfig       |   11 +++++++++++
+ arch/mips/lib/Makefile  |    2 ++
+ arch/mips/lib/cpuinfo.c |   38 ++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 51 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/lib/cpuinfo.c
 
-diff --git a/Documentation/boards.dox b/Documentation/boards.dox
-index 4070d31..798c4be 100644
---- a/Documentation/boards.dox
-+++ b/Documentation/boards.dox
-@@ -45,6 +45,11 @@ x86 type:
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 50d734a..8970470 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -208,6 +208,17 @@ config 64BIT
  
- @li @subpage generic_pc
+ endchoice
  
++menu "MIPS specific settings        "
 +
-+MIPS type:
++config CMD_MIPS_CPUINFO
++	bool "cpuinfo command"
++	default y
++	help
++	  Say yes here to get a cpuinfo command to show some
++	  information about the cpu model.
 +
-+@li @subpage qemu_malta
++endmenu
 +
- */
- 
- /* TODO
-diff --git a/arch/mips/boards/qemu-malta/qemu-malta.dox b/arch/mips/boards/qemu-malta/qemu-malta.dox
+ source common/Kconfig
+ source commands/Kconfig
+ source net/Kconfig
+diff --git a/arch/mips/lib/Makefile b/arch/mips/lib/Makefile
+index 67e4e8a..45fe920 100644
+--- a/arch/mips/lib/Makefile
++++ b/arch/mips/lib/Makefile
+@@ -4,3 +4,5 @@ obj-y += lshrdi3.o
+ obj-y += ashldi3.o
+ obj-y += ashrdi3.o
+ obj-y += memory.o
++
++obj-$(CONFIG_CMD_MIPS_CPUINFO) += cpuinfo.o
+diff --git a/arch/mips/lib/cpuinfo.c b/arch/mips/lib/cpuinfo.c
 new file mode 100644
-index 0000000..2e03636
+index 0000000..7bdb02b
 --- /dev/null
-+++ b/arch/mips/boards/qemu-malta/qemu-malta.dox
-@@ -0,0 +1,15 @@
-+/** @page qemu_malta QEmu malta emulated board
++++ b/arch/mips/lib/cpuinfo.c
+@@ -0,0 +1,38 @@
++/*
++ * cpuinfo - show information about MIPS CPU
++ *
++ * Copyright (C) 2011 Antony Pavlov <antonynpavlov@gmail.com>
++ *
++ * This file is part of barebox.
++ * See file CREDITS for list of people who contributed to this project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ */
 +
-+Specific to this emulated board is, it does not require any setup code to bring the SDRAM and RS232 up.
++#include <common.h>
++#include <command.h>
++#include <asm/mipsregs.h>
 +
-+Emulator run string:
-+@verbatim
-+qemu-system-mips -nodefaults -M malta -m 256 -nographic -serial stdio -monitor null -bios barebox.bin
-+@endverbatim
++static int do_cpuinfo(struct command *cmdtp, int argc, char *argv[])
++{
++	printf("CP0_PRID = 0x%08x\n", read_c0_prid());
++	printf("CP0_CONFIG = 0x%08x\n", read_c0_config());
 +
-+Links:
-+@li http://www.mips.com/products/development-kits/malta/
-+@li http://www.linux-mips.org/wiki/Mips_Malta
-+@li http://www.qemu.org/
++	return 0;
++}
 +
-+*/
-diff --git a/arch/mips/mach-malta/mach-malta.dox b/arch/mips/mach-malta/mach-malta.dox
-new file mode 100644
-index 0000000..85351e1
---- /dev/null
-+++ b/arch/mips/mach-malta/mach-malta.dox
-@@ -0,0 +1,7 @@
-+/** @page dev_malta_mach MIPS Malta in barebox
-+
-+@section malta_boards MIPS Malta boards
-+
-+@li @subpage qemu_malta
-+
-+*/
-diff --git a/arch/mips/mach-mips.dox b/arch/mips/mach-mips.dox
-index 018fc44..50dbbd2 100644
---- a/arch/mips/mach-mips.dox
-+++ b/arch/mips/mach-mips.dox
-@@ -51,4 +51,7 @@ Further reading:
-  * Dominic Sweetman, See MIPS Run, Morgan Kaufmann, 2nd edition, 2006
- ISBN-13: 978-0120884216
- 
-+@subsection mach_mips_malta_info Malta boards
-+
-+@li @subpage dev_malta_mach
- */
++BAREBOX_CMD_START(cpuinfo)
++	.cmd            = do_cpuinfo,
++	.usage          = "Show info about CPU",
++BAREBOX_CMD_END
 -- 
 1.7.5.4
 
