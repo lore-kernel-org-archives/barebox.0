@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-fx0-f49.google.com ([209.85.161.49])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QpI7A-0005cf-48
-	for barebox@lists.infradead.org; Fri, 05 Aug 2011 10:58:54 +0000
-Received: by fxd20 with SMTP id 20so263425fxd.36
-	for <barebox@lists.infradead.org>; Fri, 05 Aug 2011 03:58:51 -0700 (PDT)
+	id 1QpI7D-0005cf-AU
+	for barebox@lists.infradead.org; Fri, 05 Aug 2011 10:58:59 +0000
+Received: by mail-fx0-f49.google.com with SMTP id 20so263425fxd.36
+	for <barebox@lists.infradead.org>; Fri, 05 Aug 2011 03:58:54 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Fri,  5 Aug 2011 14:58:32 +0400
-Message-Id: <1312541922-696-3-git-send-email-antonynpavlov@gmail.com>
+Date: Fri,  5 Aug 2011 14:58:36 +0400
+Message-Id: <1312541922-696-7-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1312541922-696-1-git-send-email-antonynpavlov@gmail.com>
 References: <1312541922-696-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,156 +23,226 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/12] MIPS: import libgcc-related files from linux-2.6.39
+Subject: [PATCH 06/12] MIPS: add Malta machine support to barebox
 To: barebox@lists.infradead.org
+
+The machine uses only big-endian mode.
+Only supported peripheral is serial port.
+The machine supports only MIPS32 CPUs.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/lib/ashldi3.c |   28 ++++++++++++++++++++++++++++
- arch/mips/lib/ashrdi3.c |   30 ++++++++++++++++++++++++++++++
- arch/mips/lib/libgcc.h  |   25 +++++++++++++++++++++++++
- arch/mips/lib/lshrdi3.c |   28 ++++++++++++++++++++++++++++
- 4 files changed, 111 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/lib/ashldi3.c
- create mode 100644 arch/mips/lib/ashrdi3.c
- create mode 100644 arch/mips/lib/libgcc.h
- create mode 100644 arch/mips/lib/lshrdi3.c
+ arch/mips/Kconfig                            |   22 ++++++++++++++
+ arch/mips/Makefile                           |    2 +
+ arch/mips/mach-malta/Kconfig                 |   12 ++++++++
+ arch/mips/mach-malta/Makefile                |    1 +
+ arch/mips/mach-malta/include/mach/debug_ll.h |   40 ++++++++++++++++++++++++++
+ arch/mips/mach-malta/include/mach/hardware.h |   32 ++++++++++++++++++++
+ arch/mips/mach-malta/reset.c                 |   36 +++++++++++++++++++++++
+ 7 files changed, 145 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/mach-malta/Kconfig
+ create mode 100644 arch/mips/mach-malta/Makefile
+ create mode 100644 arch/mips/mach-malta/include/mach/debug_ll.h
+ create mode 100644 arch/mips/mach-malta/include/mach/hardware.h
+ create mode 100644 arch/mips/mach-malta/reset.c
 
-diff --git a/arch/mips/lib/ashldi3.c b/arch/mips/lib/ashldi3.c
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index b6d2c5e..a84d469 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -21,6 +21,28 @@ config GENERIC_LINKER_SCRIPT
+ 	bool
+ 	default y
+ 
++menu "Machine selection"
++
++choice
++	prompt "System type"
++	default MACH_MIPS_MALTA
++
++config MACH_MIPS_MALTA
++	bool "MIPS Malta"
++	select CSRC_R4K_LIB
++	select DRIVER_SERIAL_NS16550
++	select SYS_HAS_CPU_MIPS32_R1
++	select SYS_HAS_CPU_MIPS32_R2
++	select SYS_SUPPORTS_32BIT_KERNEL
++	select SYS_SUPPORTS_BIG_ENDIAN
++	select HAS_DEBUG_LL
++
++endchoice
++
++source arch/mips/mach-malta/Kconfig
++
++endmenu
++
+ #
+ # Endianess selection.  Sufficiently obscure so many users don't know what to
+ # answer,so we try hard to limit the available choices.  Also the use of a
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index 4cb5498..678c2b5 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -60,6 +60,8 @@ endif
+ 
+ LDFLAGS_barebox += -nostdlib
+ 
++machine-$(CONFIG_MACH_MIPS_MALTA)	:= malta
++
+ machdirs := $(patsubst %,arch/mips/mach-%/,$(machine-y))
+ 
+ ifeq ($(KBUILD_SRC),)
+diff --git a/arch/mips/mach-malta/Kconfig b/arch/mips/mach-malta/Kconfig
 new file mode 100644
-index 0000000..cbdbcbb
+index 0000000..6076a13
 --- /dev/null
-+++ b/arch/mips/lib/ashldi3.c
-@@ -0,0 +1,28 @@
-+#include <module.h>
++++ b/arch/mips/mach-malta/Kconfig
+@@ -0,0 +1,12 @@
++if MACH_MIPS_MALTA
 +
-+#include "libgcc.h"
++config ARCH_TEXT_BASE
++	hex
++	default 0xa0800000
 +
-+long long __ashldi3(long long u, word_type b)
++choice
++	prompt "Board type"
++
++endchoice
++
++endif
+diff --git a/arch/mips/mach-malta/Makefile b/arch/mips/mach-malta/Makefile
+new file mode 100644
+index 0000000..f3cc668
+--- /dev/null
++++ b/arch/mips/mach-malta/Makefile
+@@ -0,0 +1 @@
++obj-y += reset.o
+diff --git a/arch/mips/mach-malta/include/mach/debug_ll.h b/arch/mips/mach-malta/include/mach/debug_ll.h
+new file mode 100644
+index 0000000..32d13c1
+--- /dev/null
++++ b/arch/mips/mach-malta/include/mach/debug_ll.h
+@@ -0,0 +1,40 @@
++/*
++ * Copyright (C) 2011 Antony Pavlov <antonynpavlov@gmail.com>
++ *
++ * This file is part of barebox.
++ * See file CREDITS for list of people who contributed to this project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ */
++
++/** @file
++ *  This File contains declaration for early output support
++ */
++#ifndef __INCLUDE_ARCH_DEBUG_LL_H__
++#define   __INCLUDE_ARCH_DEBUG_LL_H__
++
++#include <asm/io.h>
++#include <mach/hardware.h>
++
++#define rbr		0
++#define lsr		5
++#define LSR_THRE	0x20	/* Xmit holding register empty */
++
++static __inline__ void putc(char ch)
 +{
-+	DWunion uu, w;
-+	word_type bm;
-+
-+	if (b == 0)
-+		return u;
-+
-+	uu.ll = u;
-+	bm = 32 - b;
-+
-+	if (bm <= 0) {
-+		w.s.low = 0;
-+		w.s.high = (unsigned int) uu.s.low << -bm;
-+	} else {
-+		const unsigned int carries = (unsigned int) uu.s.low >> bm;
-+
-+		w.s.low = (unsigned int) uu.s.low << b;
-+		w.s.high = ((unsigned int) uu.s.high << b) | carries;
-+	}
-+
-+	return w.ll;
++	while (!(__raw_readb(DEBUG_LL_UART_ADDR + lsr) & LSR_THRE));
++	__raw_writeb(ch, DEBUG_LL_UART_ADDR + rbr);
 +}
-+EXPORT_SYMBOL(__ashldi3);
-diff --git a/arch/mips/lib/ashrdi3.c b/arch/mips/lib/ashrdi3.c
++
++#endif  /* __INCLUDE_ARCH_DEBUG_LL_H__ */
+diff --git a/arch/mips/mach-malta/include/mach/hardware.h b/arch/mips/mach-malta/include/mach/hardware.h
 new file mode 100644
-index 0000000..928d6d9
+index 0000000..f827cc3
 --- /dev/null
-+++ b/arch/mips/lib/ashrdi3.c
-@@ -0,0 +1,30 @@
-+#include <module.h>
++++ b/arch/mips/mach-malta/include/mach/hardware.h
+@@ -0,0 +1,32 @@
++/*
++ * Copyright (C) 2011 Antony Pavlov <antonynpavlov@gmail.com>
++ *
++ * This file is part of barebox.
++ * See file CREDITS for list of people who contributed to this project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ */
 +
-+#include "libgcc.h"
++#ifndef __INCLUDE_ARCH_HARDWARE_H__
++#define   __INCLUDE_ARCH_HARDWARE_H__
 +
-+long long __ashrdi3(long long u, word_type b)
++#define DEBUG_LL_UART_ADDR	0xb00003f8
++
++/*
++ * Reset register.
++ */
++#define SOFTRES_REG	0xbf000500
++#define GORESET		0x42
++
++#endif  /* __INCLUDE_ARCH_HARDWARE_H__ */
+diff --git a/arch/mips/mach-malta/reset.c b/arch/mips/mach-malta/reset.c
+new file mode 100644
+index 0000000..2818e7c
+--- /dev/null
++++ b/arch/mips/mach-malta/reset.c
+@@ -0,0 +1,36 @@
++/*
++ * Copyright (C) 2011 Antony Pavlov <antonynpavlov@gmail.com>
++ *
++ * This file is part of barebox.
++ * See file CREDITS for list of people who contributed to this project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ */
++
++/**
++ * @file
++ * @brief Resetting an malta board
++ */
++
++#include <common.h>
++#include <asm/io.h>
++#include <mach/hardware.h>
++
++void __noreturn reset_cpu(ulong addr)
 +{
-+	DWunion uu, w;
-+	word_type bm;
-+
-+	if (b == 0)
-+		return u;
-+
-+	uu.ll = u;
-+	bm = 32 - b;
-+
-+	if (bm <= 0) {
-+		/* w.s.high = 1..1 or 0..0 */
-+		w.s.high =
-+		    uu.s.high >> 31;
-+		w.s.low = uu.s.high >> -bm;
-+	} else {
-+		const unsigned int carries = (unsigned int) uu.s.high << bm;
-+
-+		w.s.high = uu.s.high >> b;
-+		w.s.low = ((unsigned int) uu.s.low >> b) | carries;
-+	}
-+
-+	return w.ll;
++	__raw_writel(GORESET, (char *)SOFTRES_REG);
++	while (1);
++	/*NOTREACHED*/
 +}
-+EXPORT_SYMBOL(__ashrdi3);
-diff --git a/arch/mips/lib/libgcc.h b/arch/mips/lib/libgcc.h
-new file mode 100644
-index 0000000..05909d5
---- /dev/null
-+++ b/arch/mips/lib/libgcc.h
-@@ -0,0 +1,25 @@
-+#ifndef __ASM_LIBGCC_H
-+#define __ASM_LIBGCC_H
-+
-+#include <asm/byteorder.h>
-+
-+typedef int word_type __attribute__ ((mode (__word__)));
-+
-+#ifdef __BIG_ENDIAN
-+struct DWstruct {
-+	int high, low;
-+};
-+#elif defined(__LITTLE_ENDIAN)
-+struct DWstruct {
-+	int low, high;
-+};
-+#else
-+#error I feel sick.
-+#endif
-+
-+typedef union {
-+	struct DWstruct s;
-+	long long ll;
-+} DWunion;
-+
-+#endif /* __ASM_LIBGCC_H */
-diff --git a/arch/mips/lib/lshrdi3.c b/arch/mips/lib/lshrdi3.c
-new file mode 100644
-index 0000000..74a4846
---- /dev/null
-+++ b/arch/mips/lib/lshrdi3.c
-@@ -0,0 +1,28 @@
-+#include <module.h>
-+
-+#include "libgcc.h"
-+
-+long long __lshrdi3(long long u, word_type b)
-+{
-+	DWunion uu, w;
-+	word_type bm;
-+
-+	if (b == 0)
-+		return u;
-+
-+	uu.ll = u;
-+	bm = 32 - b;
-+
-+	if (bm <= 0) {
-+		w.s.high = 0;
-+		w.s.low = (unsigned int) uu.s.high >> -bm;
-+	} else {
-+		const unsigned int carries = (unsigned int) uu.s.high << bm;
-+
-+		w.s.high = (unsigned int) uu.s.high >> b;
-+		w.s.low = ((unsigned int) uu.s.low >> b) | carries;
-+	}
-+
-+	return w.ll;
-+}
-+EXPORT_SYMBOL(__lshrdi3);
++EXPORT_SYMBOL(reset_cpu);
 -- 
 1.7.5.4
 
