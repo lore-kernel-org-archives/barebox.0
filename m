@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QpDxb-0000hT-71
-	for barebox@lists.infradead.org; Fri, 05 Aug 2011 06:32:45 +0000
-Date: Fri, 5 Aug 2011 08:32:37 +0200
+	id 1QpE8V-0000jT-J8
+	for barebox@lists.infradead.org; Fri, 05 Aug 2011 06:44:02 +0000
+Date: Fri, 5 Aug 2011 08:43:55 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110805063237.GA31404@pengutronix.de>
-References: <1312389389-9255-1-git-send-email-plagnioj@jcrosoft.com>
-	<1312486653-19494-1-git-send-email-plagnioj@jcrosoft.com>
-	<CAA4bVAHfPQKx3w0ge_iy6daXpr7Yg2WHtGyBZc86o+vzzgOVMw@mail.gmail.com>
+Message-ID: <20110805064355.GB31404@pengutronix.de>
+References: <1312468508-9205-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAA4bVAHfPQKx3w0ge_iy6daXpr7Yg2WHtGyBZc86o+vzzgOVMw@mail.gmail.com>
+In-Reply-To: <1312468508-9205-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,82 +18,376 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ns16550: switch platform_data to drivers private data
+Subject: Re: [PATCH] serial_ns16550: switch to ns16550_priv structure
 To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-T24gRnJpLCBBdWcgMDUsIDIwMTEgYXQgMTI6NTg6MzJBTSArMDQwMCwgQW50b255IFBhdmxvdiB3
-cm90ZToKPiBPbiA0IEF1Z3VzdCAyMDExIDIzOjM3LCBKZWFuLUNocmlzdG9waGUgUExBR05JT0wt
-VklMTEFSRAo+IDxwbGFnbmlvakBqY3Jvc29mdC5jb20+IHdyb3RlOgo+IAo+ID4gLS0tIGEvZHJp
-dmVycy9zZXJpYWwvc2VyaWFsX25zMTY1NTAuYwo+ID4gKysrIGIvZHJpdmVycy9zZXJpYWwvc2Vy
-aWFsX25zMTY1NTAuYwo+ID4gQEAgLTQ4LDYgKzQ4LDU1IEBACj4gPgo+ID4gwqAvKioqKioqKioq
-KiogUHJpdmF0ZSBGdW5jdGlvbnMgKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKi8K
-PiA+Cj4gPiArLyoKPiA+ICsgKiBXZSB3cmFwIG91ciBwb3J0IHN0cnVjdHVyZSBhcm91bmQgdGhl
-IGdlbmVyaWMgY29uc29sZV9kZXZpY2UuCj4gPiArICovCj4gPiArc3RydWN0IG5zMTY1NTBfdWFy
-dF9wb3J0IHsKPiA+ICsgwqAgwqAgwqAgdm9pZCBfX2lvbWVtICpiYXNlOwo+ID4gKyDCoCDCoCDC
-oCB1aW50MzJfdCBzaGlmdDsKPiA+ICsgwqAgwqAgwqAgdWludDMyX3QgY2xvY2s7Cj4gPiArIMKg
-IMKgIMKgIHVpbnQzMl90ICgqcmVhZCkodm9pZCBfX2lvbWVtICpiYXNlLCB1aW50OF90IG9mZik7
-Cj4gPiArIMKgIMKgIMKgIHZvaWQgKCp3cml0ZSkodWludDMyX3QgdmFsLCB2b2lkIF9faW9tZW0g
-KmJhc2UsIHVpbnQ4X3Qgb2ZmKTsKPiA+ICsKPiA+ICsgwqAgwqAgwqAgc3RydWN0IGNvbnNvbGVf
-ZGV2aWNlIHVhcnQ7Cj4gCj4gICAgICAgICAgIG5pY2UgdHJpY2sgOikpKQo+IAo+ICAgICAgICAg
-ICBCdXQgd2h5IHRoZSBuYW1lIGlzICd1YXJ0Jywgbm90ICdjZGV2Jz8KPiA+ICt9Owo+IAo+IEFz
-IGEgcnVsZSwgc3RydWN0dXJlIGRlY2xhcmF0aW9ucyBnbyB0byBoZWFkZXIgZmlsZXMuCgpBbmQg
-YXMgYW5vdGhlciBydWxlLCBsb2NhbGx5IHVzZWQgc3RydWN0IChhbmQgYWxzbyBkZWZpbmVzKSBn
-byB0byB0aGUgQwpmaWxlLgoKPiAKPiA+ICsKPiA+ICtzdGF0aWMgdWludDMyX3QgbnMxNjU1MF9y
-ZWFkYih2b2lkIF9faW9tZW0gKmJhc2UsIHVpbnQ4X3Qgb2ZmKQo+ID4gK3sKPiA+ICsgwqAgwqAg
-wqAgcmV0dXJuIHJlYWRiKGJhc2UgKyBvZmYpOwo+IAo+ICB3YXJuaW5nOiBwb2ludGVyIG9mIHR5
-cGUg4oCYdm9pZCAq4oCZIHVzZWQgaW4gYXJpdGhtZXRpYwoKSG9uZXN0bHksIEkgY2FuIGZpbmQg
-bm90aGluZyB3cm9uZyBpbiB2b2lkICogYXJpdGhtZXRpYy4gVGhlCmFsdGVybmF0aXZlcyBsaWtl
-IGNhc3RpbmcgdG8vZnJvbSB1bnNpZ25lZCBsb25nIGFyZSBtdWNoIHdvcnNlLgoKPiAKPiAKPiA+
-IC1zdGF0aWMgdW5zaWduZWQgaW50IG5zMTY1NTBfY2FsY19kaXZpc29yKHN0cnVjdCBjb25zb2xl
-X2RldmljZSAqY2RldiwKPiA+ICtzdGF0aWMgdW5zaWduZWQgaW50IG5zMTY1NTBfY2FsY19kaXZp
-c29yKHN0cnVjdCBuczE2NTUwX3VhcnRfcG9ydCAqdWFydCwKPiA+IMKgIMKgIMKgIMKgIMKgIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHVuc2lnbmVkIGludCBi
-YXVkcmF0ZSkKPiA+IMKgewo+ID4gLSDCoCDCoCDCoCBzdHJ1Y3QgTlMxNjU1MF9wbGF0ICpwbGF0
-ID0gKHN0cnVjdCBOUzE2NTUwX3BsYXQgKikKPiA+IC0gwqAgwqAgwqAgwqAgwqAgY2Rldi0+ZGV2
-LT5wbGF0Zm9ybV9kYXRhOwo+ID4gLSDCoCDCoCDCoCB1bnNpZ25lZCBpbnQgY2xrID0gcGxhdC0+
-Y2xvY2s7Cj4gPiAtCj4gPiAtIMKgIMKgIMKgIHJldHVybiAoY2xrIC8gTU9ERV9YX0RJViAvIGJh
-dWRyYXRlKTsKPiA+IC0KPiA+ICsgwqAgwqAgwqAgcmV0dXJuICh1YXJ0LT5jbG9jayAvIE1PREVf
-WF9ESVYgLyBiYXVkcmF0ZSk7Cj4gPiDCoH0KPiAKPiBpbmxpbmU/CgpUaGUgY29tcGlsZXIgY2Fu
-IGRlY2lkZSB0aGlzIGZvciBpdHNlbGYuCgo+IAo+IAo+ID4gKyDCoCDCoCDCoCBpZiAoIXBsYXQt
-PnJlZ19yZWFkKSB7Cj4gPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHN3aXRjaCAod2lkdGgpIHsK
-PiA+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgY2FzZSBJT1JFU09VUkNFX01FTV84QklUOgo+ID4g
-KyDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCB1YXJ0LT5yZWFkID0gbnMxNjU1MF9y
-ZWFkYjsKPiA+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgYnJlYWs7Cj4gPiAr
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIGNhc2UgSU9SRVNPVVJDRV9NRU1fMTZCSVQ6Cj4gPiArIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHVhcnQtPnJlYWQgPSBuczE2NTUwX3JlYWR3
-Owo+ID4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCBicmVhazsKPiA+ICsgwqAg
-wqAgwqAgwqAgwqAgwqAgwqAgY2FzZSBJT1JFU09VUkNFX01FTV8zMkJJVDoKPiA+ICsgwqAgwqAg
-wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgdWFydC0+cmVhZCA9IG5zMTY1NTBfcmVhZGw7Cj4g
-PiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIGJyZWFrOwo+ID4gKyDCoCDCoCDC
-oCDCoCDCoCDCoCDCoCB9Cj4gPiArIMKgIMKgIMKgIH0gZWxzZSB7Cj4gPiArIMKgIMKgIMKgIMKg
-IMKgIMKgIMKgIHVhcnQtPnJlYWQgPSBwbGF0LT5yZWdfcmVhZDsKPiA+ICsgwqAgwqAgwqAgfQo+
-IAo+IEluIHRoaXMgaWYgdGhlICdlbHNlJyBibG9jayBpcyB2ZXJ5IHNob3J0LiAnaWYnIGJsb2Nr
-IGlzIG11Y2ggbG9uZ2VyLgo+IFN3YXBwaW5nIG9mIHRoZW0gd2lsbCBpbXByb3ZlIHJlYWRhYmls
-aXR5LgoKSSBkb24ndCBjYXJlIG11Y2guIElmIGFueXRoaW5nLCBJIHdvdWxkIHNheSB0aGF0IHBv
-c2l0aXZlIGxvZ2ljIGlzCmVhc2llciB0byByZWFkLgoKPiAKPiA+ICsgwqAgwqAgwqAgaWYgKCFw
-bGF0LT5yZWdfd3JpdGUpIHsKPiA+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgc3dpdGNoICh3aWR0
-aCkgewo+ID4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCBjYXNlIElPUkVTT1VSQ0VfTUVNXzhCSVQ6
-Cj4gPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHVhcnQtPndyaXRlID0gbnMx
-NjU1MF93cml0ZWI7Cj4gPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIGJyZWFr
-Owo+ID4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCBjYXNlIElPUkVTT1VSQ0VfTUVNXzE2QklUOgo+
-ID4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCB1YXJ0LT53cml0ZSA9IG5zMTY1
-NTBfd3JpdGV3Owo+ID4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCBicmVhazsK
-PiA+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgY2FzZSBJT1JFU09VUkNFX01FTV8zMkJJVDoKPiA+
-ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgdWFydC0+d3JpdGUgPSBuczE2NTUw
-X3dyaXRlbDsKPiA+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgYnJlYWs7Cj4g
-PiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIH0KPiA+ICsgwqAgwqAgwqAgfSBlbHNlIHsKPiA+ICsg
-wqAgwqAgwqAgwqAgwqAgwqAgwqAgdWFydC0+d3JpdGUgPSBwbGF0LT5yZWdfd3JpdGU7Cj4gPiAr
-IMKgIMKgIMKgIH0KPiAKPiB3aHkgZG8gaXQgdHdpY2U/Cgo6KQoKU2FzY2hhCgoKLS0gClBlbmd1
-dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICB8CkluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8
-IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGls
-ZGVzaGVpbSwgR2VybWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJp
-Y2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5
-MTctNTU1NSB8CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-XwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDov
-L2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Antony, Jean,
+
+Please stop fighting battles, there's enough work for all of us ;)
+
+On Thu, Aug 04, 2011 at 06:35:08PM +0400, Antony Pavlov wrote:
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> ---
+>  drivers/serial/serial_ns16550.c |  181 +++++++++++++++++++++++----------------
+>  drivers/serial/serial_ns16550.h |   16 ++++
+>  2 files changed, 123 insertions(+), 74 deletions(-)
+> 
+> diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
+> index 36d39cd..a9f565e 100644
+> --- a/drivers/serial/serial_ns16550.c
+> +++ b/drivers/serial/serial_ns16550.c
+> @@ -48,6 +48,42 @@
+>  
+>  /*********** Private Functions **********************************/
+>  
+> +static unsigned int ns16550_generic_readb(unsigned long base,
+> +		unsigned char reg_idx)
+> +{
+> +	return readb((char *)base + reg_idx);
+> +}
+
+Try building this with sparse enabled (make C=1):
+
+  CHECK   drivers/serial/serial_ns16550.c
+drivers/serial/serial_ns16550.c:54:16: warning: incorrect type in argument 1 (different address spaces)
+drivers/serial/serial_ns16550.c:54:16:    expected void const volatile [noderef] <asn:2>*<noident>
+drivers/serial/serial_ns16550.c:54:16:    got char *
+drivers/serial/serial_ns16550.c:60:9: warning: incorrect type in argument 1 (different address spaces)
+drivers/serial/serial_ns16550.c:60:9:    expected void const volatile [noderef] <asn:2>*<noident>
+drivers/serial/serial_ns16550.c:60:9:    got char *
+drivers/serial/serial_ns16550.c:66:16: warning: incorrect type in argument 1 (different address spaces)
+drivers/serial/serial_ns16550.c:66:16:    expected void const volatile [noderef] <asn:2>*<noident>
+drivers/serial/serial_ns16550.c:66:16:    got char *
+drivers/serial/serial_ns16550.c:72:9: warning: incorrect type in argument 1 (different address spaces)
+drivers/serial/serial_ns16550.c:72:9:    expected void const volatile [noderef] <asn:2>*<noident>
+drivers/serial/serial_ns16550.c:72:9:    got char *
+drivers/serial/serial_ns16550.c:78:16: warning: incorrect type in argument 1 (different address spaces)
+drivers/serial/serial_ns16550.c:78:16:    expected void const volatile [noderef] <asn:2>*<noident>
+drivers/serial/serial_ns16550.c:78:16:    got char *
+drivers/serial/serial_ns16550.c:84:9: warning: incorrect type in argument 1 (different address spaces)
+drivers/serial/serial_ns16550.c:84:9:    expected void const volatile [noderef] <asn:2>*<noident>
+drivers/serial/serial_ns16550.c:84:9:    got char *
+
+> +
+> +static void ns16550_generic_writeb(unsigned int val, unsigned long base,
+> +		unsigned char reg_idx)
+> +{
+> +	writeb((0xff & val), (char *)base + reg_idx);
+> +}
+> +
+> +static unsigned int ns16550_generic_readw(unsigned long base,
+> +		unsigned char reg_idx)
+> +{
+> +	return readw((char *)base + reg_idx);
+> +}
+> +
+> +static void ns16550_generic_writew(unsigned int val, unsigned long base,
+> +		unsigned char reg_idx)
+> +{
+> +	writew((0xffff & val), (char *)base + reg_idx);
+> +}
+> +
+> +static unsigned int ns16550_generic_readl(unsigned long base,
+> +		unsigned char reg_idx)
+> +{
+> +	return readl((char *)base + reg_idx);
+> +}
+> +
+> +static void ns16550_generic_writel(unsigned int val, unsigned long base,
+> +		unsigned char reg_idx)
+> +{
+> +	writel(val, (char *)base + reg_idx);
+> +}
+> +
+>  /**
+>   * @brief read register
+>   *
+> @@ -56,26 +92,9 @@
+>   *
+>   * @return value
+>   */
+> -static uint32_t ns16550_read(struct console_device *cdev, uint32_t off)
+> +static inline uint32_t ns16550_read(struct ns16550_priv *priv, uint32_t off)
+>  {
+> -	struct device_d *dev = cdev->dev;
+> -	struct NS16550_plat *plat = (struct NS16550_plat *)dev->platform_data;
+> -	int width = dev->resource[0].flags & IORESOURCE_MEM_TYPE_MASK;
+> -
+> -	off <<= plat->shift;
+> -
+> -	if (plat->reg_read)
+> -		return plat->reg_read((unsigned long)dev->priv, off);
+> -
+> -	switch (width) {
+> -	case IORESOURCE_MEM_8BIT:
+> -		return readb(dev->priv + off);
+> -	case IORESOURCE_MEM_16BIT:
+> -		return readw(dev->priv + off);
+> -	case IORESOURCE_MEM_32BIT:
+> -		return readl(dev->priv + off);
+> -	}
+> -	return -1;
+> +	return priv->reg_read((unsigned long)priv->base, off << priv->shift);
+>  }
+>  
+>  /**
+> @@ -85,31 +104,10 @@ static uint32_t ns16550_read(struct console_device *cdev, uint32_t off)
+>   * @param[in] offset
+>   * @param[in] val
+>   */
+> -static void ns16550_write(struct console_device *cdev, uint32_t val,
+> +static inline void ns16550_write(struct ns16550_priv *priv, uint32_t val,
+>  			  uint32_t off)
+>  {
+> -	struct device_d *dev = cdev->dev;
+> -	struct NS16550_plat *plat = (struct NS16550_plat *)dev->platform_data;
+> -	int width = dev->resource[0].flags & IORESOURCE_MEM_TYPE_MASK;
+> -
+> -	off <<= plat->shift;
+> -
+> -	if (plat->reg_write) {
+> -		plat->reg_write(val, (unsigned long)dev->priv, off);
+> -		return;
+> -	}
+> -
+> -	switch (width) {
+> -	case IORESOURCE_MEM_8BIT:
+> -		writeb(val & 0xff, dev->priv + off);
+> -		break;
+> -	case IORESOURCE_MEM_16BIT:
+> -		writew(val & 0xffff, dev->priv + off);
+> -		break;
+> -	case IORESOURCE_MEM_32BIT:
+> -		writel(val, dev->priv + off);
+> -		break;
+> -	}
+> +	priv->reg_write(val, (unsigned long)priv->base, off << priv->shift);
+>  }
+>  
+>  /**
+> @@ -120,15 +118,12 @@ static void ns16550_write(struct console_device *cdev, uint32_t val,
+>   *
+>   * @return divisor to be set
+>   */
+> -static unsigned int ns16550_calc_divisor(struct console_device *cdev,
+> +static unsigned int ns16550_calc_divisor(struct ns16550_priv *priv,
+>  					 unsigned int baudrate)
+>  {
+> -	struct NS16550_plat *plat = (struct NS16550_plat *)
+> -	    cdev->dev->platform_data;
+> -	unsigned int clk = plat->clock;
+> +	unsigned int clk = priv->clock;
+>  
+>  	return (clk / MODE_X_DIV / baudrate);
+> -
+>  }
+>  
+>  /**
+> @@ -136,26 +131,26 @@ static unsigned int ns16550_calc_divisor(struct console_device *cdev,
+>   *
+>   * @param[in] cdev pointer to console device
+>   */
+> -static void ns16550_serial_init_port(struct console_device *cdev)
+> +static void ns16550_serial_init_port(struct ns16550_priv *priv)
+>  {
+>  	unsigned int baud_divisor;
+>  
+>  	/* Setup the serial port with the defaults first */
+> -	baud_divisor = ns16550_calc_divisor(cdev, CONFIG_BAUDRATE);
+> +	baud_divisor = ns16550_calc_divisor(priv, CONFIG_BAUDRATE);
+>  
+>  	/* initializing the device for the first time */
+> -	ns16550_write(cdev, 0x00, ier);
+> +	ns16550_write(priv, 0x00, ier);
+>  #ifdef CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS
+> -	ns16550_write(cdev, 0x07, mdr1);	/* Disable */
+> +	ns16550_write(priv, 0x07, mdr1);	/* Disable */
+>  #endif
+> -	ns16550_write(cdev, LCR_BKSE | LCRVAL, lcr);
+> -	ns16550_write(cdev, baud_divisor & 0xFF, dll);
+> -	ns16550_write(cdev, (baud_divisor >> 8) & 0xff, dlm);
+> -	ns16550_write(cdev, LCRVAL, lcr);
+> -	ns16550_write(cdev, MCRVAL, mcr);
+> -	ns16550_write(cdev, FCRVAL, fcr);
+> +	ns16550_write(priv, LCR_BKSE | LCRVAL, lcr);
+> +	ns16550_write(priv, baud_divisor & 0xFF, dll);
+> +	ns16550_write(priv, (baud_divisor >> 8) & 0xff, dlm);
+> +	ns16550_write(priv, LCRVAL, lcr);
+> +	ns16550_write(priv, MCRVAL, mcr);
+> +	ns16550_write(priv, FCRVAL, fcr);
+>  #ifdef CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS
+> -	ns16550_write(cdev, 0x00,  mdr1);
+> +	ns16550_write(priv, 0x00, mdr1);
+>  #endif
+>  }
+>  
+> @@ -169,9 +164,11 @@ static void ns16550_serial_init_port(struct console_device *cdev)
+>   */
+>  static void ns16550_putc(struct console_device *cdev, char c)
+>  {
+> +	struct ns16550_priv *priv = cdev->dev->priv;
+> +
+>  	/* Loop Doing Nothing */
+> -	while ((ns16550_read(cdev, lsr) & LSR_THRE) == 0) ;
+> -	ns16550_write(cdev, c, thr);
+> +	while ((ns16550_read(priv, lsr) & LSR_THRE) == 0) ;
+> +	ns16550_write(priv, c, thr);
+>  }
+>  
+>  /**
+> @@ -183,9 +180,12 @@ static void ns16550_putc(struct console_device *cdev, char c)
+>   */
+>  static int ns16550_getc(struct console_device *cdev)
+>  {
+> +	struct ns16550_priv *priv = cdev->dev->priv;
+> +
+>  	/* Loop Doing Nothing */
+> -	while ((ns16550_read(cdev, lsr) & LSR_DR) == 0) ;
+> -	return ns16550_read(cdev, rbr);
+> +	while ((ns16550_read(priv, lsr) & LSR_DR) == 0) ;
+> +
+> +	return ns16550_read(priv, rbr);
+>  }
+>  
+>  /**
+> @@ -197,7 +197,9 @@ static int ns16550_getc(struct console_device *cdev)
+>   */
+>  static int ns16550_tstc(struct console_device *cdev)
+>  {
+> -	return ((ns16550_read(cdev, lsr) & LSR_DR) != 0);
+> +	struct ns16550_priv *priv = cdev->dev->priv;
+> +
+> +	return ((ns16550_read(priv, lsr) & LSR_DR) != 0);
+>  }
+>  
+>  /**
+> @@ -210,15 +212,16 @@ static int ns16550_tstc(struct console_device *cdev)
+>   */
+>  static int ns16550_setbaudrate(struct console_device *cdev, int baud_rate)
+>  {
+> -	unsigned int baud_divisor = ns16550_calc_divisor(cdev, baud_rate);
+> -
+> -	ns16550_write(cdev, 0x00, ier);
+> -	ns16550_write(cdev, LCR_BKSE, lcr);
+> -	ns16550_write(cdev, baud_divisor & 0xff, dll);
+> -	ns16550_write(cdev, (baud_divisor >> 8) & 0xff, dlm);
+> -	ns16550_write(cdev, LCRVAL, lcr);
+> -	ns16550_write(cdev, MCRVAL, mcr);
+> -	ns16550_write(cdev, FCRVAL, fcr);
+> +	struct ns16550_priv *priv = cdev->dev->priv;
+> +	unsigned int baud_divisor = ns16550_calc_divisor(priv, baud_rate);
+> +
+> +	ns16550_write(priv, 0x00, ier);
+> +	ns16550_write(priv, LCR_BKSE, lcr);
+> +	ns16550_write(priv, baud_divisor & 0xff, dll);
+> +	ns16550_write(priv, (baud_divisor >> 8) & 0xff, dlm);
+> +	ns16550_write(priv, LCRVAL, lcr);
+> +	ns16550_write(priv, MCRVAL, mcr);
+> +	ns16550_write(priv, FCRVAL, fcr);
+>  	return 0;
+>  }
+>  
+> @@ -235,11 +238,11 @@ static int ns16550_probe(struct device_d *dev)
+>  {
+>  	struct console_device *cdev;
+>  	struct NS16550_plat *plat = (struct NS16550_plat *)dev->platform_data;
+> +	struct ns16550_priv *priv;
+>  
+>  	/* we do expect platform specific data */
+>  	if (plat == NULL)
+>  		return -EINVAL;
+> -	dev->priv = dev_request_mem_region(dev, 0);
+>  
+>  	cdev = xzalloc(sizeof(*cdev));
+>  
+> @@ -254,7 +257,37 @@ static int ns16550_probe(struct device_d *dev)
+>  	cdev->getc = ns16550_getc;
+>  	cdev->setbrg = ns16550_setbaudrate;
+>  
+> -	ns16550_serial_init_port(cdev);
+> +	priv = xzalloc(sizeof(struct ns16550_priv));
+> +	dev->priv = priv;
+> +	priv->base = dev_request_mem_region(dev, 0);
+> +
+> +	if (plat->reg_read != NULL && plat->reg_write != NULL) {
+> +		priv->reg_read = plat->reg_read;
+> +		priv->reg_write = plat->reg_write;
+> +	} else {
+> +		int width = dev->resource[0].flags & IORESOURCE_MEM_TYPE_MASK;
+> +
+> +		switch (width) {
+> +		default:
+> +		case IORESOURCE_MEM_8BIT:
+> +			priv->reg_read = ns16550_generic_readb;
+> +			priv->reg_write = ns16550_generic_writeb;
+> +			break;
+> +		case IORESOURCE_MEM_16BIT:
+> +			priv->reg_read = ns16550_generic_readw;
+> +			priv->reg_write = ns16550_generic_writew;
+> +			break;
+> +		case IORESOURCE_MEM_32BIT:
+> +			priv->reg_read = ns16550_generic_readl;
+> +			priv->reg_write = ns16550_generic_writel;
+> +			break;
+> +		}
+> +	}
+> +
+> +	priv->clock = plat->clock;
+> +	priv->shift = plat->shift;
+> +
+> +	ns16550_serial_init_port(priv);
+>  
+>  	return console_register(cdev);
+>  }
+> diff --git a/drivers/serial/serial_ns16550.h b/drivers/serial/serial_ns16550.h
+> index db8fe64..538d522 100644
+> --- a/drivers/serial/serial_ns16550.h
+> +++ b/drivers/serial/serial_ns16550.h
+> @@ -29,6 +29,22 @@
+>  #ifndef __SERIAL_NS16550__H
+>  #define  __SERIAL_NS16550__H
+>  
+> +struct ns16550_priv {
+> +	unsigned char __iomem *base;
+> +	/**
+> +	 * register read access capability
+> +	 */
+> +	unsigned int (*reg_read) (unsigned long base, unsigned char reg_offset);
+> +	/**
+> +	 * register write access capability
+> +	 */
+> +	void (*reg_write) (unsigned int val, unsigned long base,
+> +				    unsigned char reg_offset);
+> +
+> +	int shift;
+> +	unsigned int clock;
+> +};
+> +
+>  /** Register offset definitions
+>   * platform implementation needs to translate this
+>   */
+> -- 
+> 1.7.5.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
