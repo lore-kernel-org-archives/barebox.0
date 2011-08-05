@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wy0-f177.google.com ([74.125.82.177])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1Qp500-0004zl-Fw
-	for barebox@lists.infradead.org; Thu, 04 Aug 2011 20:58:37 +0000
-Received: by wyg19 with SMTP id 19so1524279wyg.36
-	for <barebox@lists.infradead.org>; Thu, 04 Aug 2011 13:58:32 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <1312486653-19494-1-git-send-email-plagnioj@jcrosoft.com>
+	id 1QpDxb-0000hT-71
+	for barebox@lists.infradead.org; Fri, 05 Aug 2011 06:32:45 +0000
+Date: Fri, 5 Aug 2011 08:32:37 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20110805063237.GA31404@pengutronix.de>
 References: <1312389389-9255-1-git-send-email-plagnioj@jcrosoft.com>
 	<1312486653-19494-1-git-send-email-plagnioj@jcrosoft.com>
-Date: Fri, 5 Aug 2011 00:58:32 +0400
-Message-ID: <CAA4bVAHfPQKx3w0ge_iy6daXpr7Yg2WHtGyBZc86o+vzzgOVMw@mail.gmail.com>
-From: Antony Pavlov <antonynpavlov@gmail.com>
+	<CAA4bVAHfPQKx3w0ge_iy6daXpr7Yg2WHtGyBZc86o+vzzgOVMw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAA4bVAHfPQKx3w0ge_iy6daXpr7Yg2WHtGyBZc86o+vzzgOVMw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,117 +20,82 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] ns16550: switch platform_data to drivers private data
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On 4 August 2011 23:37, Jean-Christophe PLAGNIOL-VILLARD
-<plagnioj@jcrosoft.com> wrote:
-
-> --- a/drivers/serial/serial_ns16550.c
-> +++ b/drivers/serial/serial_ns16550.c
-> @@ -48,6 +48,55 @@
->
-> =A0/*********** Private Functions **********************************/
->
-> +/*
-> + * We wrap our port structure around the generic console_device.
-> + */
-> +struct ns16550_uart_port {
-> + =A0 =A0 =A0 void __iomem *base;
-> + =A0 =A0 =A0 uint32_t shift;
-> + =A0 =A0 =A0 uint32_t clock;
-> + =A0 =A0 =A0 uint32_t (*read)(void __iomem *base, uint8_t off);
-> + =A0 =A0 =A0 void (*write)(uint32_t val, void __iomem *base, uint8_t off=
-);
-> +
-> + =A0 =A0 =A0 struct console_device uart;
-
-          nice trick :)))
-
-          But why the name is 'uart', not 'cdev'?
-> +};
-
-As a rule, structure declarations go to header files.
-
-> +
-> +static uint32_t ns16550_readb(void __iomem *base, uint8_t off)
-> +{
-> + =A0 =A0 =A0 return readb(base + off);
-
- warning: pointer of type =91void *=92 used in arithmetic
-
-
-> -static unsigned int ns16550_calc_divisor(struct console_device *cdev,
-> +static unsigned int ns16550_calc_divisor(struct ns16550_uart_port *uart,
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0 =A0 unsigned int baudrate)
-> =A0{
-> - =A0 =A0 =A0 struct NS16550_plat *plat =3D (struct NS16550_plat *)
-> - =A0 =A0 =A0 =A0 =A0 cdev->dev->platform_data;
-> - =A0 =A0 =A0 unsigned int clk =3D plat->clock;
-> -
-> - =A0 =A0 =A0 return (clk / MODE_X_DIV / baudrate);
-> -
-> + =A0 =A0 =A0 return (uart->clock / MODE_X_DIV / baudrate);
-> =A0}
-
-inline?
-
-
-> + =A0 =A0 =A0 if (!plat->reg_read) {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 switch (width) {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 case IORESOURCE_MEM_8BIT:
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 uart->read =3D ns16550_read=
-b;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 break;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 case IORESOURCE_MEM_16BIT:
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 uart->read =3D ns16550_read=
-w;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 break;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 case IORESOURCE_MEM_32BIT:
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 uart->read =3D ns16550_read=
-l;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 break;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 }
-> + =A0 =A0 =A0 } else {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 uart->read =3D plat->reg_read;
-> + =A0 =A0 =A0 }
-
-In this if the 'else' block is very short. 'if' block is much longer.
-Swapping of them will improve readability.
-
-> + =A0 =A0 =A0 if (!plat->reg_write) {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 switch (width) {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 case IORESOURCE_MEM_8BIT:
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 uart->write =3D ns16550_wri=
-teb;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 break;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 case IORESOURCE_MEM_16BIT:
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 uart->write =3D ns16550_wri=
-tew;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 break;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 case IORESOURCE_MEM_32BIT:
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 uart->write =3D ns16550_wri=
-tel;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 break;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 }
-> + =A0 =A0 =A0 } else {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 uart->write =3D plat->reg_write;
-> + =A0 =A0 =A0 }
-
-why do it twice?
-
--- =
-
-Best regards,
-=A0 Antony Pavlov
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gRnJpLCBBdWcgMDUsIDIwMTEgYXQgMTI6NTg6MzJBTSArMDQwMCwgQW50b255IFBhdmxvdiB3
+cm90ZToKPiBPbiA0IEF1Z3VzdCAyMDExIDIzOjM3LCBKZWFuLUNocmlzdG9waGUgUExBR05JT0wt
+VklMTEFSRAo+IDxwbGFnbmlvakBqY3Jvc29mdC5jb20+IHdyb3RlOgo+IAo+ID4gLS0tIGEvZHJp
+dmVycy9zZXJpYWwvc2VyaWFsX25zMTY1NTAuYwo+ID4gKysrIGIvZHJpdmVycy9zZXJpYWwvc2Vy
+aWFsX25zMTY1NTAuYwo+ID4gQEAgLTQ4LDYgKzQ4LDU1IEBACj4gPgo+ID4gwqAvKioqKioqKioq
+KiogUHJpdmF0ZSBGdW5jdGlvbnMgKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKi8K
+PiA+Cj4gPiArLyoKPiA+ICsgKiBXZSB3cmFwIG91ciBwb3J0IHN0cnVjdHVyZSBhcm91bmQgdGhl
+IGdlbmVyaWMgY29uc29sZV9kZXZpY2UuCj4gPiArICovCj4gPiArc3RydWN0IG5zMTY1NTBfdWFy
+dF9wb3J0IHsKPiA+ICsgwqAgwqAgwqAgdm9pZCBfX2lvbWVtICpiYXNlOwo+ID4gKyDCoCDCoCDC
+oCB1aW50MzJfdCBzaGlmdDsKPiA+ICsgwqAgwqAgwqAgdWludDMyX3QgY2xvY2s7Cj4gPiArIMKg
+IMKgIMKgIHVpbnQzMl90ICgqcmVhZCkodm9pZCBfX2lvbWVtICpiYXNlLCB1aW50OF90IG9mZik7
+Cj4gPiArIMKgIMKgIMKgIHZvaWQgKCp3cml0ZSkodWludDMyX3QgdmFsLCB2b2lkIF9faW9tZW0g
+KmJhc2UsIHVpbnQ4X3Qgb2ZmKTsKPiA+ICsKPiA+ICsgwqAgwqAgwqAgc3RydWN0IGNvbnNvbGVf
+ZGV2aWNlIHVhcnQ7Cj4gCj4gICAgICAgICAgIG5pY2UgdHJpY2sgOikpKQo+IAo+ICAgICAgICAg
+ICBCdXQgd2h5IHRoZSBuYW1lIGlzICd1YXJ0Jywgbm90ICdjZGV2Jz8KPiA+ICt9Owo+IAo+IEFz
+IGEgcnVsZSwgc3RydWN0dXJlIGRlY2xhcmF0aW9ucyBnbyB0byBoZWFkZXIgZmlsZXMuCgpBbmQg
+YXMgYW5vdGhlciBydWxlLCBsb2NhbGx5IHVzZWQgc3RydWN0IChhbmQgYWxzbyBkZWZpbmVzKSBn
+byB0byB0aGUgQwpmaWxlLgoKPiAKPiA+ICsKPiA+ICtzdGF0aWMgdWludDMyX3QgbnMxNjU1MF9y
+ZWFkYih2b2lkIF9faW9tZW0gKmJhc2UsIHVpbnQ4X3Qgb2ZmKQo+ID4gK3sKPiA+ICsgwqAgwqAg
+wqAgcmV0dXJuIHJlYWRiKGJhc2UgKyBvZmYpOwo+IAo+ICB3YXJuaW5nOiBwb2ludGVyIG9mIHR5
+cGUg4oCYdm9pZCAq4oCZIHVzZWQgaW4gYXJpdGhtZXRpYwoKSG9uZXN0bHksIEkgY2FuIGZpbmQg
+bm90aGluZyB3cm9uZyBpbiB2b2lkICogYXJpdGhtZXRpYy4gVGhlCmFsdGVybmF0aXZlcyBsaWtl
+IGNhc3RpbmcgdG8vZnJvbSB1bnNpZ25lZCBsb25nIGFyZSBtdWNoIHdvcnNlLgoKPiAKPiAKPiA+
+IC1zdGF0aWMgdW5zaWduZWQgaW50IG5zMTY1NTBfY2FsY19kaXZpc29yKHN0cnVjdCBjb25zb2xl
+X2RldmljZSAqY2RldiwKPiA+ICtzdGF0aWMgdW5zaWduZWQgaW50IG5zMTY1NTBfY2FsY19kaXZp
+c29yKHN0cnVjdCBuczE2NTUwX3VhcnRfcG9ydCAqdWFydCwKPiA+IMKgIMKgIMKgIMKgIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHVuc2lnbmVkIGludCBi
+YXVkcmF0ZSkKPiA+IMKgewo+ID4gLSDCoCDCoCDCoCBzdHJ1Y3QgTlMxNjU1MF9wbGF0ICpwbGF0
+ID0gKHN0cnVjdCBOUzE2NTUwX3BsYXQgKikKPiA+IC0gwqAgwqAgwqAgwqAgwqAgY2Rldi0+ZGV2
+LT5wbGF0Zm9ybV9kYXRhOwo+ID4gLSDCoCDCoCDCoCB1bnNpZ25lZCBpbnQgY2xrID0gcGxhdC0+
+Y2xvY2s7Cj4gPiAtCj4gPiAtIMKgIMKgIMKgIHJldHVybiAoY2xrIC8gTU9ERV9YX0RJViAvIGJh
+dWRyYXRlKTsKPiA+IC0KPiA+ICsgwqAgwqAgwqAgcmV0dXJuICh1YXJ0LT5jbG9jayAvIE1PREVf
+WF9ESVYgLyBiYXVkcmF0ZSk7Cj4gPiDCoH0KPiAKPiBpbmxpbmU/CgpUaGUgY29tcGlsZXIgY2Fu
+IGRlY2lkZSB0aGlzIGZvciBpdHNlbGYuCgo+IAo+IAo+ID4gKyDCoCDCoCDCoCBpZiAoIXBsYXQt
+PnJlZ19yZWFkKSB7Cj4gPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHN3aXRjaCAod2lkdGgpIHsK
+PiA+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgY2FzZSBJT1JFU09VUkNFX01FTV84QklUOgo+ID4g
+KyDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCB1YXJ0LT5yZWFkID0gbnMxNjU1MF9y
+ZWFkYjsKPiA+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgYnJlYWs7Cj4gPiAr
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIGNhc2UgSU9SRVNPVVJDRV9NRU1fMTZCSVQ6Cj4gPiArIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHVhcnQtPnJlYWQgPSBuczE2NTUwX3JlYWR3
+Owo+ID4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCBicmVhazsKPiA+ICsgwqAg
+wqAgwqAgwqAgwqAgwqAgwqAgY2FzZSBJT1JFU09VUkNFX01FTV8zMkJJVDoKPiA+ICsgwqAgwqAg
+wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgdWFydC0+cmVhZCA9IG5zMTY1NTBfcmVhZGw7Cj4g
+PiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIGJyZWFrOwo+ID4gKyDCoCDCoCDC
+oCDCoCDCoCDCoCDCoCB9Cj4gPiArIMKgIMKgIMKgIH0gZWxzZSB7Cj4gPiArIMKgIMKgIMKgIMKg
+IMKgIMKgIMKgIHVhcnQtPnJlYWQgPSBwbGF0LT5yZWdfcmVhZDsKPiA+ICsgwqAgwqAgwqAgfQo+
+IAo+IEluIHRoaXMgaWYgdGhlICdlbHNlJyBibG9jayBpcyB2ZXJ5IHNob3J0LiAnaWYnIGJsb2Nr
+IGlzIG11Y2ggbG9uZ2VyLgo+IFN3YXBwaW5nIG9mIHRoZW0gd2lsbCBpbXByb3ZlIHJlYWRhYmls
+aXR5LgoKSSBkb24ndCBjYXJlIG11Y2guIElmIGFueXRoaW5nLCBJIHdvdWxkIHNheSB0aGF0IHBv
+c2l0aXZlIGxvZ2ljIGlzCmVhc2llciB0byByZWFkLgoKPiAKPiA+ICsgwqAgwqAgwqAgaWYgKCFw
+bGF0LT5yZWdfd3JpdGUpIHsKPiA+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgc3dpdGNoICh3aWR0
+aCkgewo+ID4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCBjYXNlIElPUkVTT1VSQ0VfTUVNXzhCSVQ6
+Cj4gPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHVhcnQtPndyaXRlID0gbnMx
+NjU1MF93cml0ZWI7Cj4gPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIGJyZWFr
+Owo+ID4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCBjYXNlIElPUkVTT1VSQ0VfTUVNXzE2QklUOgo+
+ID4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCB1YXJ0LT53cml0ZSA9IG5zMTY1
+NTBfd3JpdGV3Owo+ID4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCBicmVhazsK
+PiA+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgY2FzZSBJT1JFU09VUkNFX01FTV8zMkJJVDoKPiA+
+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgdWFydC0+d3JpdGUgPSBuczE2NTUw
+X3dyaXRlbDsKPiA+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgYnJlYWs7Cj4g
+PiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIH0KPiA+ICsgwqAgwqAgwqAgfSBlbHNlIHsKPiA+ICsg
+wqAgwqAgwqAgwqAgwqAgwqAgwqAgdWFydC0+d3JpdGUgPSBwbGF0LT5yZWdfd3JpdGU7Cj4gPiAr
+IMKgIMKgIMKgIH0KPiAKPiB3aHkgZG8gaXQgdHdpY2U/Cgo6KQoKU2FzY2hhCgoKLS0gClBlbmd1
+dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICB8CkluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8
+IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGls
+ZGVzaGVpbSwgR2VybWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJp
+Y2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5
+MTctNTU1NSB8CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+XwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDov
+L2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
