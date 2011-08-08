@@ -1,20 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 6.mo3.mail-out.ovh.net ([188.165.43.173]
+Received: from 16.mo3.mail-out.ovh.net ([188.165.56.217]
 	helo=mo3.mail-out.ovh.net)
 	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1QqXIx-00035G-9M
-	for barebox@lists.infradead.org; Mon, 08 Aug 2011 21:24:12 +0000
+	id 1QqXUG-00039q-S9
+	for barebox@lists.infradead.org; Mon, 08 Aug 2011 21:35:53 +0000
 Received: from mail191.ha.ovh.net (b9.ovh.net [213.186.33.59])
-	by mo3.mail-out.ovh.net (Postfix) with SMTP id 1E093FFB44C
+	by mo3.mail-out.ovh.net (Postfix) with SMTP id DDC05FFB2BE
 	for <barebox@lists.infradead.org>;
-	Mon,  8 Aug 2011 23:24:16 +0200 (CEST)
-Date: Mon, 8 Aug 2011 23:05:36 +0200
+	Mon,  8 Aug 2011 23:35:57 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20110808210536.GB22213@game.jcrosoft.org>
-References: <CAA4bVAHyTDdjUy+xUsKWqXQWwyKh0iX_TTE=fqC=K_jPqZjGEQ@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAA4bVAHyTDdjUy+xUsKWqXQWwyKh0iX_TTE=fqC=K_jPqZjGEQ@mail.gmail.com>
+Date: Mon,  8 Aug 2011 23:17:14 +0200
+Message-Id: <1312838236-646-3-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1312838236-646-1-git-send-email-plagnioj@jcrosoft.com>
+References: <1312838236-646-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,71 +21,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: versatilepb board support is broken
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: [PATCH 3/5] at91sam9261ek: fix missing ecc type
+To: barebox@lists.infradead.org
 
-On 23:49 Mon 08 Aug     , Antony Pavlov wrote:
-> Hi!
-> =
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ arch/arm/boards/at91sam9261ek/init.c |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
 
-> The following patch breaks qemu versatilepb board support:
-> =
+diff --git a/arch/arm/boards/at91sam9261ek/init.c b/arch/arm/boards/at91sam9261ek/init.c
+index 69111a0..73b411a 100644
+--- a/arch/arm/boards/at91sam9261ek/init.c
++++ b/arch/arm/boards/at91sam9261ek/init.c
+@@ -43,6 +43,7 @@ static struct atmel_nand_data nand_pdata = {
+ 	.ale		= 22,
+ 	.cle		= 21,
+ /*	.det_pin	= ... not connected */
++	.ecc_mode	= NAND_ECC_SOFT,
+ 	.rdy_pin	= AT91_PIN_PC15,
+ 	.enable_pin	= AT91_PIN_PC14,
+ #if defined(CONFIG_MTD_NAND_ATMEL_BUSWIDTH_16)
+-- 
+1.7.5.4
 
-> c0ff8f7f47fa10b2e683cb0452f659c97aec186f
->     versatile: switch to add_generic_device
-> =
-
-> The problem is in serial port initialization.
-> =
-
-> As versatilepb use only one serial port, this hack make barebox workable
-> again (of course it is not a good solution).
-> =
-
-> --- a/arch/arm/mach-versatile/core.c
-> +++ b/arch/arm/mach-versatile/core.c
-> @@ -156,6 +156,7 @@ void versatile_register_uart(unsigned id)
->  	switch (id) {
->  	case 0:
->  		start =3D VERSATILE_UART0_BASE;
-I found the issue too
-
-but you need to fix all uart
-
-see my patch
-
-Best Regards,
-J.
-> +		vpb_clk_create(&ref_clk_24, "uart-pl0110");
->  		break;
->  	case 1:
->  		start =3D VERSATILE_UART1_BASE;
-> @@ -171,7 +172,6 @@ void versatile_register_uart(unsigned id)
->  	}
->  	dev =3D add_generic_device("uart-pl011", id, NULL, start, 4096,
->  			   IORESOURCE_MEM, NULL);
-> -	vpb_clk_create(&ref_clk_24, dev_name(dev));
->  }
-> =
-
->  void __noreturn reset_cpu (unsigned long ignored)
-> =
-
-> -- =
-
-> Best regards,
-> =A0 Antony Pavlov
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
