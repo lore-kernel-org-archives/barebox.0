@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QqJbr-0001Ew-Iv
-	for barebox@lists.infradead.org; Mon, 08 Aug 2011 06:46:50 +0000
+	id 1QqJbr-0001F0-N1
+	for barebox@lists.infradead.org; Mon, 08 Aug 2011 06:46:51 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  8 Aug 2011 08:46:39 +0200
-Message-Id: <1312786003-14734-5-git-send-email-s.hauer@pengutronix.de>
+Date: Mon,  8 Aug 2011 08:46:43 +0200
+Message-Id: <1312786003-14734-9-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1312786003-14734-1-git-send-email-s.hauer@pengutronix.de>
 References: <1312786003-14734-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,73 +21,121 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/8] ARM: remove unused exception
+Subject: [PATCH 8/8] ARM: some cleanup in interrupts.c
 To: barebox@lists.infradead.org
 
-The exception vector at 0x14 is not used on arm, so no need
-to bind this address to a exception handler. Remove the
-corresponding code
+- Don't call panic with "resetting CPU...". Depending on the
+  configuration the system might also hang.
+- panic does not return, so no need to call reset_cpu afterwards
+- bundle show_regs and panic into a seperate functions to not have
+  to call both functions from each exception handler
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/exceptions.S |    5 -----
- arch/arm/cpu/interrupts.c |   13 -------------
- arch/arm/cpu/start.c      |    2 +-
- 3 files changed, 1 insertions(+), 19 deletions(-)
+ arch/arm/cpu/interrupts.c |   43 +++++++++++++++++++++----------------------
+ 1 files changed, 21 insertions(+), 22 deletions(-)
 
-diff --git a/arch/arm/cpu/exceptions.S b/arch/arm/cpu/exceptions.S
-index 4741bb8..a879755 100644
---- a/arch/arm/cpu/exceptions.S
-+++ b/arch/arm/cpu/exceptions.S
-@@ -136,11 +136,6 @@ data_abort:
- 	bl 	do_data_abort
- 
- 	.align	5
--.globl not_used
--not_used:
--	get_bad_stack
--	bad_save_user_regs
--	bl 	do_not_used
- 
- .globl irq
- .globl fiq
 diff --git a/arch/arm/cpu/interrupts.c b/arch/arm/cpu/interrupts.c
-index 5168921..68b2931 100644
+index 0c21bc1..3d2077f 100644
 --- a/arch/arm/cpu/interrupts.c
 +++ b/arch/arm/cpu/interrupts.c
-@@ -173,19 +173,6 @@ void do_data_abort (struct pt_regs *pt_regs)
- }
+@@ -30,15 +30,6 @@
+ #include <asm/unwind.h>
  
  /**
-- * The CPU catches a not-used(?) abort.
-- * @param[in] pt_regs Register set content when the accident happens
-- *
-- * FIXME: What does it mean, why is reset the only solution?
+- * FIXME
 - */
--void do_not_used (struct pt_regs *pt_regs)
+-static void bad_mode (void)
 -{
--	printf ("not used\n");
--	show_regs (pt_regs);
--	bad_mode ();
+-	panic ("Resetting CPU ...\n");
+-	reset_cpu (0);
 -}
 -
 -/**
-  * The CPU catches a fast interrupt request.
-  * @param[in] pt_regs Register set content when the interrupt happens
-  *
-diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
-index f20ce74..5e09300 100644
---- a/arch/arm/cpu/start.c
-+++ b/arch/arm/cpu/start.c
-@@ -36,7 +36,7 @@ void __naked __section(.text_entry) exception_vectors(void)
- 		"ldr pc, =software_interrupt\n"		/* software interrupt (SWI) */
- 		"ldr pc, =prefetch_abort\n"		/* prefetch abort */
- 		"ldr pc, =data_abort\n"			/* data abort */
--		"ldr pc, =not_used\n"			/* (reserved) */
-+		"1: bne 1b\n"				/* (reserved) */
- 		"ldr pc, =irq\n"			/* irq (interrupt) */
- 		"ldr pc, =fiq\n"			/* fiq (fast interrupt) */
- #else
+  * Display current register set content
+  * @param[in] regs Guess what
+  */
+@@ -82,6 +73,13 @@ void show_regs (struct pt_regs *regs)
+ #endif
+ }
+ 
++static void __noreturn do_exception(struct pt_regs *pt_regs)
++{
++	show_regs(pt_regs);
++
++	panic("");
++}
++
+ /**
+  * The CPU runs into an undefined instruction. That really should not happen!
+  * @param[in] pt_regs Register set content when the accident happens
+@@ -89,8 +87,7 @@ void show_regs (struct pt_regs *regs)
+ void do_undefined_instruction (struct pt_regs *pt_regs)
+ {
+ 	printf ("undefined instruction\n");
+-	show_regs (pt_regs);
+-	bad_mode ();
++	do_exception(pt_regs);
+ }
+ 
+ /**
+@@ -103,8 +100,7 @@ void do_undefined_instruction (struct pt_regs *pt_regs)
+ void do_software_interrupt (struct pt_regs *pt_regs)
+ {
+ 	printf ("software interrupt\n");
+-	show_regs (pt_regs);
+-	bad_mode ();
++	do_exception(pt_regs);
+ }
+ 
+ /**
+@@ -116,8 +112,7 @@ void do_software_interrupt (struct pt_regs *pt_regs)
+ void do_prefetch_abort (struct pt_regs *pt_regs)
+ {
+ 	printf ("prefetch abort\n");
+-	show_regs (pt_regs);
+-	bad_mode ();
++	do_exception(pt_regs);
+ }
+ 
+ /**
+@@ -128,9 +123,15 @@ void do_prefetch_abort (struct pt_regs *pt_regs)
+  */
+ void do_data_abort (struct pt_regs *pt_regs)
+ {
+-	printf ("data abort\n");
+-	show_regs (pt_regs);
+-	bad_mode ();
++	u32 far;
++
++	asm volatile ("mrc     p15, 0, %0, c6, c0, 0" : "=r" (far) : : "cc");
++
++	printf("unable to handle %s at address 0x%08x\n",
++			far < PAGE_SIZE ? "NULL pointer dereference" :
++			"paging request", far);
++
++	do_exception(pt_regs);
+ }
+ 
+ /**
+@@ -142,8 +143,7 @@ void do_data_abort (struct pt_regs *pt_regs)
+ void do_fiq (struct pt_regs *pt_regs)
+ {
+ 	printf ("fast interrupt request\n");
+-	show_regs (pt_regs);
+-	bad_mode ();
++	do_exception(pt_regs);
+ }
+ 
+ /**
+@@ -155,6 +155,5 @@ void do_fiq (struct pt_regs *pt_regs)
+ void do_irq (struct pt_regs *pt_regs)
+ {
+ 	printf ("interrupt request\n");
+-	show_regs (pt_regs);
+-	bad_mode ();
++	do_exception(pt_regs);
+ }
 -- 
 1.7.5.4
 
