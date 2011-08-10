@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wy0-f177.google.com ([74.125.82.177])
+Received: from mail-ww0-f49.google.com ([74.125.82.49])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1Qr6ry-0004Fg-G1
-	for barebox@lists.infradead.org; Wed, 10 Aug 2011 11:22:43 +0000
-Received: by wyh11 with SMTP id 11so770583wyh.36
-	for <barebox@lists.infradead.org>; Wed, 10 Aug 2011 04:22:39 -0700 (PDT)
+	id 1Qr6vE-0004Pn-BM
+	for barebox@lists.infradead.org; Wed, 10 Aug 2011 11:26:04 +0000
+Received: by wwf10 with SMTP id 10so688550wwf.18
+	for <barebox@lists.infradead.org>; Wed, 10 Aug 2011 04:26:03 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20110808210536.GB22213@game.jcrosoft.org>
-References: <CAA4bVAHyTDdjUy+xUsKWqXQWwyKh0iX_TTE=fqC=K_jPqZjGEQ@mail.gmail.com>
-	<20110808210536.GB22213@game.jcrosoft.org>
-Date: Wed, 10 Aug 2011 15:22:38 +0400
-Message-ID: <CAA4bVAEpBaHrb_WOV4z+Y6eotO2AhR8R3B17kx_Xa9-=rd4VPA@mail.gmail.com>
+Date: Wed, 10 Aug 2011 15:26:03 +0400
+Message-ID: <CAA4bVAHiiKqQjbF3y95t8203oc+-nk3FF=3Aww1GjD+KcfBxNg@mail.gmail.com>
 From: Antony Pavlov <antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -24,36 +21,34 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: versatilepb board support is broken
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: arch x86 is broken in -next
+To: barebox <barebox@lists.infradead.org>
 
-On 9 August 2011 01:05, Jean-Christophe PLAGNIOL-VILLARD
-<plagnioj@jcrosoft.com> wrote:
-> On 23:49 Mon 08 Aug =A0 =A0 , Antony Pavlov wrote:
->> Hi!
->>
->> The following patch breaks qemu versatilepb board support:
->>
->> c0ff8f7f47fa10b2e683cb0452f659c97aec186f
->> =A0 =A0 versatile: switch to add_generic_device
->>
->> The problem is in serial port initialization.
->>
->> As versatilepb use only one serial port, this hack make barebox workable
->> again (of course it is not a good solution).
->>
->> --- a/arch/arm/mach-versatile/core.c
->> +++ b/arch/arm/mach-versatile/core.c
->> @@ -156,6 +156,7 @@ void versatile_register_uart(unsigned id)
->> =A0 =A0 =A0 switch (id) {
->> =A0 =A0 =A0 case 0:
->> =A0 =A0 =A0 =A0 =A0 =A0 =A0 start =3D VERSATILE_UART0_BASE;
-> I found the issue too
->
-> but you need to fix all uart
+Hi!
 
-It was not a fix, it was a DIRTY HACK (but it was very illustrative). :)))
+I have tryed to build x86 barebox.
+
+$ make ARCH=3Dx86 generic_defconfig
+...
+$ make ARCH=3Dx86 CROSS_COMPILE=3Di686-pc-linux-gnu-
+...
+  CC      drivers/ata/disk_drive.o
+drivers/ata/disk_drive.c: In function 'disk_probe':
+drivers/ata/disk_drive.c:193: error: 'struct device_d' has no member
+named 'size'
+drivers/ata/disk_drive.c:195: error: 'struct device_d' has no member
+named 'size'
+drivers/ata/disk_drive.c:197: error: 'struct device_d' has no member
+named 'size'
+
+after ATA disabling in .config I have got this:
+...
+ CC      arch/x86/boards/x86_generic/generic_pc.o
+arch/x86/boards/x86_generic/generic_pc.c:36: error: unknown field
+'size' specified in initializer
+arch/x86/boards/x86_generic/generic_pc.c: In function 'devices_init':
+arch/x86/boards/x86_generic/generic_pc.c:57: error: 'sdram_dev'
+undeclared (first use in this function)
 
 -- =
 
