@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 5.mo3.mail-out.ovh.net ([87.98.178.36]
-	helo=mo3.mail-out.ovh.net)
-	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1Qr6k1-00046c-A5
-	for barebox@lists.infradead.org; Wed, 10 Aug 2011 11:14:30 +0000
-Received: from mail191.ha.ovh.net (b9.ovh.net [213.186.33.59])
-	by mo3.mail-out.ovh.net (Postfix) with SMTP id 1BBF4FFCD84
-	for <barebox@lists.infradead.org>;
-	Wed, 10 Aug 2011 13:06:05 +0200 (CEST)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Wed, 10 Aug 2011 12:47:10 +0200
-Message-Id: <1312973230-27870-3-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1312973230-27870-1-git-send-email-plagnioj@jcrosoft.com>
-References: <1312973230-27870-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from mail-wy0-f177.google.com ([74.125.82.177])
+	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+	id 1Qr6ry-0004Fg-G1
+	for barebox@lists.infradead.org; Wed, 10 Aug 2011 11:22:43 +0000
+Received: by wyh11 with SMTP id 11so770583wyh.36
+	for <barebox@lists.infradead.org>; Wed, 10 Aug 2011 04:22:39 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <20110808210536.GB22213@game.jcrosoft.org>
+References: <CAA4bVAHyTDdjUy+xUsKWqXQWwyKh0iX_TTE=fqC=K_jPqZjGEQ@mail.gmail.com>
+	<20110808210536.GB22213@game.jcrosoft.org>
+Date: Wed, 10 Aug 2011 15:22:38 +0400
+Message-ID: <CAA4bVAEpBaHrb_WOV4z+Y6eotO2AhR8R3B17kx_Xa9-=rd4VPA@mail.gmail.com>
+From: Antony Pavlov <antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,114 +20,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] defaultenv: add login autoboot support
-To: barebox@lists.infradead.org
+Subject: Re: versatilepb board support is broken
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox <barebox@lists.infradead.org>
 
-if the login command is enable and a password set use login with timeout
-to stop the boot
+On 9 August 2011 01:05, Jean-Christophe PLAGNIOL-VILLARD
+<plagnioj@jcrosoft.com> wrote:
+> On 23:49 Mon 08 Aug =A0 =A0 , Antony Pavlov wrote:
+>> Hi!
+>>
+>> The following patch breaks qemu versatilepb board support:
+>>
+>> c0ff8f7f47fa10b2e683cb0452f659c97aec186f
+>> =A0 =A0 versatile: switch to add_generic_device
+>>
+>> The problem is in serial port initialization.
+>>
+>> As versatilepb use only one serial port, this hack make barebox workable
+>> again (of course it is not a good solution).
+>>
+>> --- a/arch/arm/mach-versatile/core.c
+>> +++ b/arch/arm/mach-versatile/core.c
+>> @@ -156,6 +156,7 @@ void versatile_register_uart(unsigned id)
+>> =A0 =A0 =A0 switch (id) {
+>> =A0 =A0 =A0 case 0:
+>> =A0 =A0 =A0 =A0 =A0 =A0 =A0 start =3D VERSATILE_UART0_BASE;
+> I found the issue too
+>
+> but you need to fix all uart
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- common/Makefile                    |   10 ++++++----
- defaultenv/common/bin/boot_timeout |   10 ++++++++++
- defaultenv/common/bin/init         |    9 +--------
- defaultenv/login/bin/boot_timeout  |   15 +++++++++++++++
- 4 files changed, 32 insertions(+), 12 deletions(-)
- create mode 100644 defaultenv/common/bin/boot_timeout
- create mode 100644 defaultenv/login/bin/boot_timeout
+It was not a fix, it was a DIRTY HACK (but it was very illustrative). :)))
 
-diff --git a/common/Makefile b/common/Makefile
-index 531000a..5eeb944 100644
---- a/common/Makefile
-+++ b/common/Makefile
-@@ -32,19 +32,21 @@ $(obj)/startup.o: include/generated/barebox_default_env.h
- $(obj)/env.o: include/generated/barebox_default_env.h
- 
- ifeq ($(CONFIG_DEFAULT_ENVIRONMENT_GENERIC),y)
--DEFAULT_ENVIRONMENT_PATH = "defaultenv/common"
-+DEFAULT_ENVIRONMENT_PATH-y = "defaultenv/common"
-+
-+DEFAULT_ENVIRONMENT_PATH-$(CONFIG_CMD_LOGIN) += "defaultenv/login"
- endif
- 
- ifneq ($(CONFIG_DEFAULT_ENVIRONMENT_PATH),"")
--DEFAULT_ENVIRONMENT_PATH += $(CONFIG_DEFAULT_ENVIRONMENT_PATH)
-+DEFAULT_ENVIRONMENT_PATH-y += $(CONFIG_DEFAULT_ENVIRONMENT_PATH)
- endif
- 
--ENV_FILES := $(shell cd $(srctree); for i in $(DEFAULT_ENVIRONMENT_PATH); do find $${i} -type f -exec readlink -f '{}' \;; done)
-+ENV_FILES := $(shell cd $(srctree); for i in $(DEFAULT_ENVIRONMENT_PATH-y); do find $${i} -type f -exec readlink -f '{}' \;; done)
- 
- endif # ifdef CONFIG_DEFAULT_ENVIRONMENT
- 
- barebox_default_env: $(ENV_FILES)
--	$(Q)$(srctree)/scripts/genenv $(srctree) $(objtree) $(DEFAULT_ENVIRONMENT_PATH)
-+	$(Q)$(srctree)/scripts/genenv $(srctree) $(objtree) $(DEFAULT_ENVIRONMENT_PATH-y)
- 
- include/generated/barebox_default_env.h: barebox_default_env
- 	$(Q)cat $< | $(objtree)/scripts/bin2c default_environment > $@
-diff --git a/defaultenv/common/bin/boot_timeout b/defaultenv/common/bin/boot_timeout
-new file mode 100644
-index 0000000..a469ef3
---- /dev/null
-+++ b/defaultenv/common/bin/boot_timeout
-@@ -0,0 +1,10 @@
-+. /env/config
-+
-+echo
-+echo -n "Hit any key to stop autoboot: "
-+timeout -a $autoboot_timeout
-+if [ $? != 0 ]; then
-+	exit
-+fi
-+
-+boot
-diff --git a/defaultenv/common/bin/init b/defaultenv/common/bin/init
-index b66f7d9..5c4ea00 100644
---- a/defaultenv/common/bin/init
-+++ b/defaultenv/common/bin/init
-@@ -24,11 +24,4 @@ if [ -f /env/bin/init_board ]; then
- 	/env/bin/init_board
- fi
- 
--echo
--echo -n "Hit any key to stop autoboot: "
--timeout -a $autoboot_timeout
--if [ $? != 0 ]; then
--	exit
--fi
--
--boot
-+boot_timeout
-diff --git a/defaultenv/login/bin/boot_timeout b/defaultenv/login/bin/boot_timeout
-new file mode 100644
-index 0000000..96a7690
---- /dev/null
-+++ b/defaultenv/login/bin/boot_timeout
-@@ -0,0 +1,15 @@
-+. /env/config
-+
-+echo
-+echo -n "Login in ${autoboot_timeout}s to stop autoboot: "
-+echo
-+login -t $autoboot_timeout
-+
-+echo
-+echo -n "Hit any key to stop autoboot: "
-+timeout -a $autoboot_timeout
-+if [ $? != 0 ]; then
-+	exit
-+fi
-+
-+boot
--- 
-1.7.5.4
+-- =
 
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
