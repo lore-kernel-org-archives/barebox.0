@@ -1,22 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 4.mo3.mail-out.ovh.net ([178.33.46.10]
+Received: from 16.mo3.mail-out.ovh.net ([188.165.56.217]
 	helo=mo3.mail-out.ovh.net)
 	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1Qr6ZX-0003wJ-BC
-	for barebox@lists.infradead.org; Wed, 10 Aug 2011 11:03:40 +0000
+	id 1Qr6jy-00046M-Om
+	for barebox@lists.infradead.org; Wed, 10 Aug 2011 11:14:27 +0000
 Received: from mail191.ha.ovh.net (b9.ovh.net [213.186.33.59])
-	by mo3.mail-out.ovh.net (Postfix) with SMTP id 344FA1020232
+	by mo3.mail-out.ovh.net (Postfix) with SMTP id F10DDFFCD82
 	for <barebox@lists.infradead.org>;
-	Wed, 10 Aug 2011 13:03:45 +0200 (CEST)
-Date: Wed, 10 Aug 2011 12:44:54 +0200
+	Wed, 10 Aug 2011 13:06:04 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20110810104454.GT22213@game.jcrosoft.org>
-References: <1312838236-646-1-git-send-email-plagnioj@jcrosoft.com>
-	<1312838236-646-2-git-send-email-plagnioj@jcrosoft.com>
-	<20110810073000.GV31404@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20110810073000.GV31404@pengutronix.de>
+Date: Wed, 10 Aug 2011 12:47:09 +0200
+Message-Id: <1312973230-27870-2-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1312973230-27870-1-git-send-email-plagnioj@jcrosoft.com>
+References: <1312973230-27870-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,43 +21,73 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/5] arm_dcc: fix missing switch to resource
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/3] defaultenv: move common env to defaultenv/common
+To: barebox@lists.infradead.org
 
-On 09:30 Wed 10 Aug     , Sascha Hauer wrote:
-> On Mon, Aug 08, 2011 at 11:17:13PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > ---
-> >  drivers/serial/arm_dcc.c |    1 -
-> >  1 files changed, 0 insertions(+), 1 deletions(-)
-> > 
-> > diff --git a/drivers/serial/arm_dcc.c b/drivers/serial/arm_dcc.c
-> > index 0199da3..e1066ab 100644
-> > --- a/drivers/serial/arm_dcc.c
-> > +++ b/drivers/serial/arm_dcc.c
-> > @@ -157,7 +157,6 @@ static struct driver_d arm_dcc_driver = {
-> >  static struct device_d arm_dcc_device = {
-> >  	.id	= -1,
-> >  	.name	= "arm_dcc",
-> > -	.size	= 4096,
-> >  };
-> >  
-> >  static int arm_dcc_init(void)
-> 
-> I suppose this one is for master?
-the 5 are for the master
+this will allow later to add custom part depending on option
 
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ common/Makefile                          |    2 +-
+ defaultenv/{ => common}/bin/_update      |    0
+ defaultenv/{ => common}/bin/_update_help |    0
+ defaultenv/{ => common}/bin/boot         |    0
+ defaultenv/{ => common}/bin/hush_hack    |    0
+ defaultenv/{ => common}/bin/init         |    0
+ defaultenv/{ => common}/bin/update       |    0
+ 7 files changed, 1 insertions(+), 1 deletions(-)
+ rename defaultenv/{ => common}/bin/_update (100%)
+ rename defaultenv/{ => common}/bin/_update_help (100%)
+ rename defaultenv/{ => common}/bin/boot (100%)
+ rename defaultenv/{ => common}/bin/hush_hack (100%)
+ rename defaultenv/{ => common}/bin/init (100%)
+ rename defaultenv/{ => common}/bin/update (100%)
 
-as the at91, nomadik and verstaile can not run without them
+diff --git a/common/Makefile b/common/Makefile
+index 9fed2ae..531000a 100644
+--- a/common/Makefile
++++ b/common/Makefile
+@@ -32,7 +32,7 @@ $(obj)/startup.o: include/generated/barebox_default_env.h
+ $(obj)/env.o: include/generated/barebox_default_env.h
+ 
+ ifeq ($(CONFIG_DEFAULT_ENVIRONMENT_GENERIC),y)
+-DEFAULT_ENVIRONMENT_PATH = "defaultenv"
++DEFAULT_ENVIRONMENT_PATH = "defaultenv/common"
+ endif
+ 
+ ifneq ($(CONFIG_DEFAULT_ENVIRONMENT_PATH),"")
+diff --git a/defaultenv/bin/_update b/defaultenv/common/bin/_update
+similarity index 100%
+rename from defaultenv/bin/_update
+rename to defaultenv/common/bin/_update
+diff --git a/defaultenv/bin/_update_help b/defaultenv/common/bin/_update_help
+similarity index 100%
+rename from defaultenv/bin/_update_help
+rename to defaultenv/common/bin/_update_help
+diff --git a/defaultenv/bin/boot b/defaultenv/common/bin/boot
+similarity index 100%
+rename from defaultenv/bin/boot
+rename to defaultenv/common/bin/boot
+diff --git a/defaultenv/bin/hush_hack b/defaultenv/common/bin/hush_hack
+similarity index 100%
+rename from defaultenv/bin/hush_hack
+rename to defaultenv/common/bin/hush_hack
+diff --git a/defaultenv/bin/init b/defaultenv/common/bin/init
+similarity index 100%
+rename from defaultenv/bin/init
+rename to defaultenv/common/bin/init
+diff --git a/defaultenv/bin/update b/defaultenv/common/bin/update
+similarity index 100%
+rename from defaultenv/bin/update
+rename to defaultenv/common/bin/update
+-- 
+1.7.5.4
 
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
