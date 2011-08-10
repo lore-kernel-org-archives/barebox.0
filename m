@@ -1,24 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 4.mo3.mail-out.ovh.net ([178.33.46.10]
-	helo=mo3.mail-out.ovh.net)
-	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1QrD1g-0002Du-RJ
-	for barebox@lists.infradead.org; Wed, 10 Aug 2011 17:57:10 +0000
-Received: from mail191.ha.ovh.net (b9.ovh.net [213.186.33.59])
-	by mo3.mail-out.ovh.net (Postfix) with SMTP id ACD6C1015121
-	for <barebox@lists.infradead.org>;
-	Wed, 10 Aug 2011 19:57:17 +0200 (CEST)
-Date: Wed, 10 Aug 2011 19:38:22 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20110810173822.GX22213@game.jcrosoft.org>
-References: <1312838236-646-1-git-send-email-plagnioj@jcrosoft.com>
-	<1312838236-646-2-git-send-email-plagnioj@jcrosoft.com>
-	<20110810073000.GV31404@pengutronix.de>
-	<20110810104454.GT22213@game.jcrosoft.org>
-	<20110810125328.GY31404@pengutronix.de>
+Received: from mail-wy0-f177.google.com ([74.125.82.177])
+	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+	id 1QrFKJ-0003Ze-FP
+	for barebox@lists.infradead.org; Wed, 10 Aug 2011 20:24:32 +0000
+Received: by wyh11 with SMTP id 11so1212412wyh.36
+	for <barebox@lists.infradead.org>; Wed, 10 Aug 2011 13:24:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20110810125328.GY31404@pengutronix.de>
+Date: Thu, 11 Aug 2011 00:24:27 +0400
+Message-ID: <CAA4bVAH7aOUcCC0aHWLorE_FAaeBdnUvQcj8d3ZCH4W+ko7adA@mail.gmail.com>
+From: Antony Pavlov <antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,47 +17,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/5] arm_dcc: fix missing switch to resource
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [RFC] add Tegra support to barebox
+To: barebox <barebox@lists.infradead.org>
 
-On 14:53 Wed 10 Aug     , Sascha Hauer wrote:
-> On Wed, Aug 10, 2011 at 12:44:54PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > On 09:30 Wed 10 Aug     , Sascha Hauer wrote:
-> > > On Mon, Aug 08, 2011 at 11:17:13PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > > > ---
-> > > >  drivers/serial/arm_dcc.c |    1 -
-> > > >  1 files changed, 0 insertions(+), 1 deletions(-)
-> > > > 
-> > > > diff --git a/drivers/serial/arm_dcc.c b/drivers/serial/arm_dcc.c
-> > > > index 0199da3..e1066ab 100644
-> > > > --- a/drivers/serial/arm_dcc.c
-> > > > +++ b/drivers/serial/arm_dcc.c
-> > > > @@ -157,7 +157,6 @@ static struct driver_d arm_dcc_driver = {
-> > > >  static struct device_d arm_dcc_device = {
-> > > >  	.id	= -1,
-> > > >  	.name	= "arm_dcc",
-> > > > -	.size	= 4096,
-> > > >  };
-> > > >  
-> > > >  static int arm_dcc_init(void)
-> > > 
-> > > I suppose this one is for master?
-> > the 5 are for the master
-> > 
-> > 
-> > as the at91, nomadik and verstaile can not run without them
-> 
-> Ok, applied.
-tks
+Hi!
 
-Best Regards,
-J.
+I have a Toshiba AC100 smartbook. It is based on Nvidia Tegra 250 T20 chip.
+I want to port barebox to it.
+
+I have successfully built and run u-boot for AC100 from
+https://github.com/chpec/uboot-ac100.git. This u-boot version has lcd,
+serial port and USB support.
+There is another tegra support u-boot branch:
+https://github.com/muromec/uboot-tegra.git
+Also linux has satisfactory tegra support.
+
+I want to discuss source file organization for Tegra and AC100 support
+in the barebox.
+AFAIK tegra is not resemble to current arm machines, supported by barebox.
+
+For example, this is the comment from barebox tegra source code:
+
+/*
+ * Tegra2 uses 2 separate CPUs - the AVP (ARM7TDMI) and the CPU (dual A9s).
+ * U-Boot runs on the AVP first, setting things up for the CPU (PLLs,
+ * muxes, clocks, clamps, etc.). Then the AVP halts, and expects the CPU
+ * to pick up its reset vector, which points here.
+ */
+
+I propose such file structure:
+
+  arch/arm/
+  arch/arm/boards/toshiba_ac100
+  arch/arm/mach-tegra
+
+Has anybody any objections or comments?
+
+-- =
+
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
