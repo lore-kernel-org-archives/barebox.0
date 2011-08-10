@@ -1,14 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ww0-f49.google.com ([74.125.82.49])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1Qr6vE-0004Pn-BM
-	for barebox@lists.infradead.org; Wed, 10 Aug 2011 11:26:04 +0000
-Received: by wwf10 with SMTP id 10so688550wwf.18
-	for <barebox@lists.infradead.org>; Wed, 10 Aug 2011 04:26:03 -0700 (PDT)
+	id 1Qr8Hr-0002fg-2l
+	for barebox@lists.infradead.org; Wed, 10 Aug 2011 12:53:31 +0000
+Date: Wed, 10 Aug 2011 14:53:28 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20110810125328.GY31404@pengutronix.de>
+References: <1312838236-646-1-git-send-email-plagnioj@jcrosoft.com>
+	<1312838236-646-2-git-send-email-plagnioj@jcrosoft.com>
+	<20110810073000.GV31404@pengutronix.de>
+	<20110810104454.GT22213@game.jcrosoft.org>
 MIME-Version: 1.0
-Date: Wed, 10 Aug 2011 15:26:03 +0400
-Message-ID: <CAA4bVAHiiKqQjbF3y95t8203oc+-nk3FF=3Aww1GjD+KcfBxNg@mail.gmail.com>
-From: Antony Pavlov <antonynpavlov@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <20110810104454.GT22213@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,43 +21,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: arch x86 is broken in -next
-To: barebox <barebox@lists.infradead.org>
+Subject: Re: [PATCH 2/5] arm_dcc: fix missing switch to resource
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-Hi!
+On Wed, Aug 10, 2011 at 12:44:54PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 09:30 Wed 10 Aug     , Sascha Hauer wrote:
+> > On Mon, Aug 08, 2011 at 11:17:13PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > > ---
+> > >  drivers/serial/arm_dcc.c |    1 -
+> > >  1 files changed, 0 insertions(+), 1 deletions(-)
+> > > 
+> > > diff --git a/drivers/serial/arm_dcc.c b/drivers/serial/arm_dcc.c
+> > > index 0199da3..e1066ab 100644
+> > > --- a/drivers/serial/arm_dcc.c
+> > > +++ b/drivers/serial/arm_dcc.c
+> > > @@ -157,7 +157,6 @@ static struct driver_d arm_dcc_driver = {
+> > >  static struct device_d arm_dcc_device = {
+> > >  	.id	= -1,
+> > >  	.name	= "arm_dcc",
+> > > -	.size	= 4096,
+> > >  };
+> > >  
+> > >  static int arm_dcc_init(void)
+> > 
+> > I suppose this one is for master?
+> the 5 are for the master
+> 
+> 
+> as the at91, nomadik and verstaile can not run without them
 
-I have tryed to build x86 barebox.
+Ok, applied.
 
-$ make ARCH=3Dx86 generic_defconfig
-...
-$ make ARCH=3Dx86 CROSS_COMPILE=3Di686-pc-linux-gnu-
-...
-  CC      drivers/ata/disk_drive.o
-drivers/ata/disk_drive.c: In function 'disk_probe':
-drivers/ata/disk_drive.c:193: error: 'struct device_d' has no member
-named 'size'
-drivers/ata/disk_drive.c:195: error: 'struct device_d' has no member
-named 'size'
-drivers/ata/disk_drive.c:197: error: 'struct device_d' has no member
-named 'size'
+Sascha
 
-after ATA disabling in .config I have got this:
-...
- CC      arch/x86/boards/x86_generic/generic_pc.o
-arch/x86/boards/x86_generic/generic_pc.c:36: error: unknown field
-'size' specified in initializer
-arch/x86/boards/x86_generic/generic_pc.c: In function 'devices_init':
-arch/x86/boards/x86_generic/generic_pc.c:57: error: 'sdram_dev'
-undeclared (first use in this function)
 
--- =
-
-Best regards,
-=A0 Antony Pavlov
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
