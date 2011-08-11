@@ -1,24 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 6.mo3.mail-out.ovh.net ([188.165.43.173]
+Received: from 18.mo3.mail-out.ovh.net ([87.98.172.162]
 	helo=mo3.mail-out.ovh.net)
 	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1QrXHd-0001Zp-32
-	for barebox@lists.infradead.org; Thu, 11 Aug 2011 15:34:57 +0000
+	id 1QrXTd-0001rm-EG
+	for barebox@lists.infradead.org; Thu, 11 Aug 2011 15:47:22 +0000
 Received: from mail191.ha.ovh.net (b9.ovh.net [213.186.33.59])
-	by mo3.mail-out.ovh.net (Postfix) with SMTP id 0F525FF839B
+	by mo3.mail-out.ovh.net (Postfix) with SMTP id 20F0DFFA561
 	for <barebox@lists.infradead.org>;
-	Thu, 11 Aug 2011 17:24:57 +0200 (CEST)
-Date: Thu, 11 Aug 2011 17:05:58 +0200
+	Thu, 11 Aug 2011 17:47:32 +0200 (CEST)
+Date: Thu, 11 Aug 2011 17:28:32 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20110811150558.GF22213@game.jcrosoft.org>
-References: <1312838236-646-1-git-send-email-plagnioj@jcrosoft.com>
-	<1312838236-646-2-git-send-email-plagnioj@jcrosoft.com>
-	<20110810073000.GV31404@pengutronix.de>
-	<20110810104454.GT22213@game.jcrosoft.org>
-	<20110810125328.GY31404@pengutronix.de>
+Message-ID: <20110811152832.GH22213@game.jcrosoft.org>
+References: <201108111445.05457.jbe@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20110810125328.GY31404@pengutronix.de>
+In-Reply-To: <201108111445.05457.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -31,48 +27,23 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/5] arm_dcc: fix missing switch to resource
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [barebox-next] Enabling SPI support for the PCM043 platform
+To: Juergen Beisert <jbe@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 14:53 Wed 10 Aug     , Sascha Hauer wrote:
-> On Wed, Aug 10, 2011 at 12:44:54PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > On 09:30 Wed 10 Aug     , Sascha Hauer wrote:
-> > > On Mon, Aug 08, 2011 at 11:17:13PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > > > ---
-> > > >  drivers/serial/arm_dcc.c |    1 -
-> > > >  1 files changed, 0 insertions(+), 1 deletions(-)
-> > > > 
-> > > > diff --git a/drivers/serial/arm_dcc.c b/drivers/serial/arm_dcc.c
-> > > > index 0199da3..e1066ab 100644
-> > > > --- a/drivers/serial/arm_dcc.c
-> > > > +++ b/drivers/serial/arm_dcc.c
-> > > > @@ -157,7 +157,6 @@ static struct driver_d arm_dcc_driver = {
-> > > >  static struct device_d arm_dcc_device = {
-> > > >  	.id	= -1,
-> > > >  	.name	= "arm_dcc",
-> > > > -	.size	= 4096,
-> > > >  };
-> > > >  
-> > > >  static int arm_dcc_init(void)
-> > > 
-> > > I suppose this one is for master?
-> > the 5 are for the master
-> > 
-> > 
-> > as the at91, nomadik and verstaile can not run without them
+On 14:45 Thu 11 Aug     , Juergen Beisert wrote:
+> Hi,
 > 
-> Ok, applied.
-I did a mistake for nomadif and versatile I send the wrong patch
+> when I enable the SPI support for the "pcm043_defconfig" the build ends with:
+> 
+>   CC      drivers/spi/imx_spi.o
+> drivers/spi/imx_spi.c:111:1: error: expected identifier before '}' token
+> 
+> This is because the enum list is empty. Can someone tell me, what I have to 
+> add in the "/drivers/spi/Kconfig" to make it work in i.MX35?
 
-it's DEV_ID not CON_id to use
-
-I send 3 new patch to fix this
-
-at91 work fine
-
-sorry
+you need to add the support of the chip select, xchg_single and init for
+imx31/35 as IIRC they share the same IP
 
 Best Regards,
 J.
