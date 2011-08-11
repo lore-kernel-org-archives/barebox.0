@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QrUeQ-0005kj-16
-	for barebox@lists.infradead.org; Thu, 11 Aug 2011 12:46:19 +0000
-Received: from gallifrey.ext.pengutronix.de
-	([2001:6f8:1178:4:5054:ff:fe8d:eefb] helo=localhost)
-	by metis.ext.pengutronix.de with esmtp (Exim 4.72)
-	(envelope-from <jbe@pengutronix.de>) id 1QrUeL-0003nQ-KV
-	for barebox@lists.infradead.org; Thu, 11 Aug 2011 14:46:13 +0200
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Thu, 11 Aug 2011 14:45:05 +0200
-MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <201108111445.05457.jbe@pengutronix.de>
+Received: from 8.mo3.mail-out.ovh.net ([87.98.172.249]
+	helo=mo3.mail-out.ovh.net)
+	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+	id 1QrX8t-0001JN-UY
+	for barebox@lists.infradead.org; Thu, 11 Aug 2011 15:25:56 +0000
+Received: from mail191.ha.ovh.net (b9.ovh.net [213.186.33.59])
+	by mo3.mail-out.ovh.net (Postfix) with SMTP id 1D8B310085FF
+	for <barebox@lists.infradead.org>;
+	Thu, 11 Aug 2011 17:26:05 +0200 (CEST)
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Thu, 11 Aug 2011 17:07:04 +0200
+Message-Id: <1313075225-27280-2-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1313075225-27280-1-git-send-email-plagnioj@jcrosoft.com>
+References: <1313075225-27280-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,30 +21,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [barebox-next] Enabling SPI support for the PCM043 platform
+Subject: [PATCH 2/3] nomadik: fix static allocation clkdev
 To: barebox@lists.infradead.org
 
-Hi,
+it's DEV_ID not CON_ID
 
-when I enable the SPI support for the "pcm043_defconfig" the build ends with:
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ arch/arm/mach-nomadik/8815.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
 
-  CC      drivers/spi/imx_spi.o
-drivers/spi/imx_spi.c:111:1: error: expected identifier before '}' token
-
-This is because the enum list is empty. Can someone tell me, what I have to 
-add in the "/drivers/spi/Kconfig" to make it work in i.MX35?
-
-jbe
-
+diff --git a/arch/arm/mach-nomadik/8815.c b/arch/arm/mach-nomadik/8815.c
+index 3138045..69aacd5 100644
+--- a/arch/arm/mach-nomadik/8815.c
++++ b/arch/arm/mach-nomadik/8815.c
+@@ -37,8 +37,8 @@ void st8815_add_device_sdram(u32 size)
+ }
+ 
+ static struct clk_lookup clocks_lookups[] = {
+-	CLKDEV_CON_ID("uart-pl0110", &st8815_clk_48),
+-	CLKDEV_CON_ID("uart-pl0111", &st8815_clk_48),
++	CLKDEV_DEV_ID("uart-pl0110", &st8815_clk_48),
++	CLKDEV_DEV_ID("uart-pl0111", &st8815_clk_48),
+ };
+ 
+ static int st8815_clkdev_init(void)
 -- 
-Pengutronix e.K.                              | Juergen Beisert             |
-Linux Solutions for Science and Industry      | Phone: +49-5121-206917-5128 |
-Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
+1.7.5.4
+
 
 _______________________________________________
 barebox mailing list
