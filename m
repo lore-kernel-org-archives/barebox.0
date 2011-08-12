@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ey0-f171.google.com ([209.85.215.171])
+Received: from mail-vx0-f177.google.com ([209.85.220.177])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1Qrrme-0001fr-Qf
-	for barebox@lists.infradead.org; Fri, 12 Aug 2011 13:28:21 +0000
-Received: by eyg24 with SMTP id 24so3157325eyg.30
-	for <barebox@lists.infradead.org>; Fri, 12 Aug 2011 06:28:17 -0700 (PDT)
+	id 1Qrrwf-0001pr-5m
+	for barebox@lists.infradead.org; Fri, 12 Aug 2011 13:38:42 +0000
+Received: by vxj2 with SMTP id 2so2902062vxj.36
+	for <barebox@lists.infradead.org>; Fri, 12 Aug 2011 06:38:37 -0700 (PDT)
 MIME-Version: 1.0
-Date: Fri, 12 Aug 2011 17:28:17 +0400
-Message-ID: <CAA4bVAFYh0z-DCYbB8WoZZkBHszDHjmrYAF2D89drCSvSdCKZQ@mail.gmail.com>
-From: Antony Pavlov <antonynpavlov@gmail.com>
+In-Reply-To: <CAK8HZO+mfyaj9CPUB+nOzppz_+=o5xzpgsDOofV=1jF9rcR2yQ@mail.gmail.com>
+References: <CAK8HZO+mfyaj9CPUB+nOzppz_+=o5xzpgsDOofV=1jF9rcR2yQ@mail.gmail.com>
+Date: Fri, 12 Aug 2011 13:38:37 +0000
+Message-ID: <CAK8HZOL36gu_PNR6OFuqsFb+LD==9igWYOPFT9+T4GUwxLNtyA@mail.gmail.com>
+From: Nataraj S Narayan <natarajsn@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,60 +23,110 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC] arm naming inconsistance
-To: barebox <barebox@lists.infradead.org>
+Subject: Re: at91sam9263ek, few issues
+To: barebox@lists.infradead.org
 
-Hi!
+Hi
 
-Barebox has an hierarchy for supported stuff:
+Changed nand_chip_delay =3D50 from 20 in
+./drivers/mtd/nand/atmel_nand.c, and presently getting:-
 
- arch -> mach
+barebox@Atmel at91sam9263-ek:/ ubiattach /dev/nand0.root
+UBI: attaching mtd0 to ubi0
+UBI: physical eraseblock size:   131072 bytes (128 KiB)
+UBI: logical eraseblock size:    126976 bytes
+UBI: smallest flash I/O unit:    2048
+UBI: VID header offset:          2048 (aligned 2048)
+UBI: data offset:                4096
+registering /dev/ubi0
+UBI: attached mtd0 to ubi0
+UBI: MTD device name:            "nand0.root"
+UBI: MTD device size:            254 MiB
+UBI: number of good PEBs:        2028
+UBI: number of bad PEBs:         5
+UBI: max. allowed volumes:       128
+UBI: wear-leveling threshold:    4096
+UBI: number of internal volumes: 1
+UBI: number of user volumes:     0
+UBI: available PEBs:             2004
+UBI: total number of reserved PEBs: 24
+UBI: number of PEBs reserved for bad PEB handling: 20
+UBI: max/mean erase counter: 1/1
 
-    arch \in {arm, x86, nios2 ...}
+But further giving a
 
- for arch=3Darm, mach \in { at91, ims, msx, ... versatile }
+barebox@Atmel at91sam9263-ek:/ tftp rootfs1.ubif /dev/ubi0
+TFTP from server 192.168.0.110 ('rootfs1.ubif' -> '/dev/ubi0')
+        write: No space left on device
 
- Also there is the 'board', the lowest level of hierarchy.
+tftp failed: error -28
 
- E.g. for mach=3Dat91, board \in { at91sam9m10g45ek, pm9263 ...}
+Btw , which is the irc channel of Barebox?
 
-But there are strange things in arch/arm/Kconfig and
-arch/arm/cpu/start.c:
+regards
 
-#ifdef CONFIG_ARCH_HAS_LOWLEVEL_INIT
-        arch_init_lowlevel();
-#endif
+Nataraj
 
-At the first glance all ok: if arch has lowlevel init, the do
-arch_init_lowlevel().
-But arch_init_lowlevel() is not __per-arch__ function, but
-__per-mach__ function!
-It is used in at91 and omap mach.
-
-#ifdef CONFIG_MACH_DO_LOWLEVEL_INIT
-        board_init_lowlevel();
-#endif
-
-Here we have a more bizarre thing: if __mach__ do low level init then
-do __board__ low level init!
-
-In arch/arm/Kconfig we have the same strange things:
-
-config ARCH_VERSATILE
-        bool "ARM Versatile boards (ARM926EJ-S)"
-        select CPU_ARM926T
-
-But versatile is not arch, it's a mach!
-
-By this examples one can see that the conception of architecture
-('arch') is mixed up with the conception of machine ('mach').
-
-Can anybody explain this?
-
--- =
-
-Best regards,
-=A0 Antony Pavlov
+On Fri, Aug 12, 2011 at 6:45 AM, Nataraj S Narayan <natarajsn@gmail.com> wr=
+ote:
+> Hi
+>
+> The following is the gist of issues seen, =A0namely
+>
+> =A01. unable to saveenv
+> =A02. =A0ubiattach issue.
+>
+> I am using NAND device: Manufacturer ID: 0xec, Chip ID: 0xda (Samsung
+> NAND 256MiB 3,3V 8-bit).
+>
+> Please help
+>
+> regards
+>
+> Nataraj
+>
+> barebox@Atmel at91sam9263-ek:/ =A0eth0.serverip=3D192.168.0.110
+> barebox@Atmel at91sam9263-ek:/ eth0.ipaddr=3D192.168.0.105
+>
+> barebox@Atmel at91sam9263-ek:/ saveenv
+> saving environment
+> could not open /dev/env0: Read-only file system
+>
+> barebox@Atmel at91sam9263-ek:/ printenv
+> locals:
+> ip=3Ddhcp
+> kernel_loc=3Dtftp
+> rootfs_loc=3Dnet
+> rootfs_type=3Dubifs
+> rootfsimage=3Droot.ubifs
+> kernelimage_type=3Duimage
+> kernelimage=3DuImage
+> nand_device=3Datmel_nand
+> nand_parts=3D256k(barebox)ro,128k(bareboxenv),1536k(kernel),-(root)
+> rootfs_mtdblock_nand=3D3
+> autoboot_timeout=3D3
+> bootargs=3Dconsole=3DttyS0,115200
+> PS1=3D\e[1;32mbarebox@\e[1;31m\h:\w\e[0m
+> globals:
+> PATH=3D/env/bin
+>
+>
+>
+>
+> barebox@Atmel at91sam9263-ek:/ ubiattach dev/nand0.root
+> UBI: attaching mtd0 to ubi0
+> UBI: physical eraseblock size: =A0 131072 bytes (128 KiB)
+> UBI: logical eraseblock size: =A0 =A0126976 bytes
+> UBI: smallest flash I/O unit: =A0 =A02048
+> UBI: VID header offset: =A0 =A0 =A0 =A0 =A02048 (aligned 2048)
+> UBI: data offset: =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A04096
+> UBI error: ubi_io_read: error -74 while reading 64 bytes from PEB 0:0,
+> read 64 bytes
+> UBI error: ubi_io_read: error -74 while reading 64 bytes from PEB
+> 476:0, read 64 bytes
+> UBI error: ubi_io_read: error -74 while reading 64 bytes from PEB
+> 489:0, read 64 bytes
+>
 
 _______________________________________________
 barebox mailing list
