@@ -1,20 +1,24 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-iy0-f171.google.com ([209.85.210.171])
-	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QrrP1-0001Qp-Pi
-	for barebox@lists.infradead.org; Fri, 12 Aug 2011 13:03:58 +0000
-Received: by iyf13 with SMTP id 13so1683713iyf.16
-	for <barebox@lists.infradead.org>; Fri, 12 Aug 2011 06:03:51 -0700 (PDT)
+Received: from 14.mo3.mail-out.ovh.net ([188.165.43.98]
+	helo=mo3.mail-out.ovh.net)
+	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+	id 1QrrTC-0001Sm-Vs
+	for barebox@lists.infradead.org; Fri, 12 Aug 2011 13:08:15 +0000
+Received: from mail191.ha.ovh.net (b9.ovh.net [213.186.33.59])
+	by mo3.mail-out.ovh.net (Postfix) with SMTP id 5C6CDFF8A30
+	for <barebox@lists.infradead.org>;
+	Fri, 12 Aug 2011 15:08:27 +0200 (CEST)
+Date: Fri, 12 Aug 2011 14:49:21 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20110812124921.GC1916@game.jcrosoft.org>
+References: <1313076601-30078-1-git-send-email-plagnioj@jcrosoft.com>
+	<1313078124-32663-1-git-send-email-plagnioj@jcrosoft.com>
+	<20110812064249.GI31404@pengutronix.de>
+	<20110812093635.GB1916@game.jcrosoft.org>
+	<20110812121044.GO31404@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20110812121912.GP31404@pengutronix.de>
-References: <1312226629-12064-1-git-send-email-franck.jullien@gmail.com>
-	<CAJfOKBw4fhTJ4J4u4c9PrTQr3wk_7b28spGAvc3iA=D55OnVYA@mail.gmail.com>
-	<20110812072418.GK31404@pengutronix.de>
-	<CAJfOKBycP5pHX2e1gFe+kgsHJQmsYYzbX6=8+p4pWwV-AVGAAA@mail.gmail.com>
-	<20110812121912.GP31404@pengutronix.de>
-Date: Fri, 12 Aug 2011 15:03:51 +0200
-Message-ID: <CAJfOKByP75OVwgrdkSMiqr_xkQthrD_--rpQNeC9101umKx5Kg@mail.gmail.com>
-From: Franck JULLIEN <franck.jullien@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <20110812121044.GO31404@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,60 +27,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH][v2] nios2: Add Altera SPI master driver
+Subject: Re: [PATCH v2] imx_spi: drop non usefull ifdef
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-2011/8/12 Sascha Hauer <s.hauer@pengutronix.de>:
-> On Fri, Aug 12, 2011 at 11:40:07AM +0200, Franck JULLIEN wrote:
->> Hello,
->>
->> 2011/8/12 Sascha Hauer <s.hauer@pengutronix.de>:
->> > On Thu, Aug 11, 2011 at 09:35:30PM +0200, Franck JULLIEN wrote:
->> >> 2011/8/1 Franck Jullien <franck.jullien@gmail.com>:
->> >> > From: Franck Jullien <franck.jullien@gmail.com>
->> >> >
->> >> >
->> >>
->> >> Hello,
->> >>
->> >> any chance to get this one in next ?
->> >
->> > Generally yes. Care to update this according to the last comments I
->> > made?
->> >
->>
->> Yes I did sir :)
->
-> Indeed, the patch in the mail you were replying to is updated according
-> my comments. It seems the original mail is lost somewhere on the way.
-> It's neither in my inbox nor in the list archive, that's why I thought
-> you are refering to the first version. Same with the SPI flash driver.
->
-> Can you please send the patches once again?
->
+On 14:10 Fri 12 Aug     , Sascha Hauer wrote:
+> On Fri, Aug 12, 2011 at 11:36:35AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > On 08:42 Fri 12 Aug     , Sascha Hauer wrote:
+> > > On Thu, Aug 11, 2011 at 05:55:24PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > > drop CONFIG_DRIVER_SPI_IMX_<version>
+> > > > 
+> > > > +	if (cpu_is_mx51() || cpu_is_mx53()) {
+> > > > +		imx->chipselect = cspi_2_3_chipselect;
+> > > > +		imx->xchg_single = cspi_2_3_xchg_single;
+> > > > +		imx->init = cspi_2_3_init;
+> > > > +	}
+> > > 
+> > > Please keep structs to the SoC specific data. We might want to add
+> > > device tree support in the future, then we'll need pointers to
+> > > SoC specific data.
+> > 
+> > DT in barebox?
+> > 
+> > So so it will increase the size a lot not sure it's really usefull
+> 
+> We'll need limited device tree support anyway soon. When Shawn continues
+> I won't be able to boot my boards soon without OF. Then I at least want
+> to be able to adjust the command line (which is embedded in the device
+> tree)
+> 
+> Of course this adds to the binary size, but it's not huge. I'm currently
+> experimenting with this and so far it looks promising. Anyway, it will
+> be completely optional for people who don't want it.
+I take a look too but my key point is do we nned the DT for internal use
 
-Ok I'll do that when I'm back from holidays (2 weeks).
-
-Franck.
-
-> Sascha
->
->
-> --
-> Pengutronix e.K. =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 | =
-=A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 |
-> Industrial Linux Solutions =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 | http://www.p=
-engutronix.de/ =A0|
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0 =A0=
- =A0|
-> Amtsgericht Hildesheim, HRA 2686 =A0 =A0 =A0 =A0 =A0 | Fax: =A0 +49-5121-=
-206917-5555 |
->
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
