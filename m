@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vx0-f177.google.com ([209.85.220.177])
-	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1Qrrwf-0001pr-5m
-	for barebox@lists.infradead.org; Fri, 12 Aug 2011 13:38:42 +0000
-Received: by vxj2 with SMTP id 2so2902062vxj.36
-	for <barebox@lists.infradead.org>; Fri, 12 Aug 2011 06:38:37 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <CAK8HZO+mfyaj9CPUB+nOzppz_+=o5xzpgsDOofV=1jF9rcR2yQ@mail.gmail.com>
-References: <CAK8HZO+mfyaj9CPUB+nOzppz_+=o5xzpgsDOofV=1jF9rcR2yQ@mail.gmail.com>
-Date: Fri, 12 Aug 2011 13:38:37 +0000
-Message-ID: <CAK8HZOL36gu_PNR6OFuqsFb+LD==9igWYOPFT9+T4GUwxLNtyA@mail.gmail.com>
-From: Nataraj S Narayan <natarajsn@gmail.com>
+Received: from 20.mo3.mail-out.ovh.net ([178.33.47.94]
+	helo=mo3.mail-out.ovh.net)
+	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+	id 1Qrs8q-00024x-HY
+	for barebox@lists.infradead.org; Fri, 12 Aug 2011 13:51:17 +0000
+Received: from mail191.ha.ovh.net (b9.ovh.net [213.186.33.59])
+	by mo3.mail-out.ovh.net (Postfix) with SMTP id 4B70BFFB211
+	for <barebox@lists.infradead.org>;
+	Fri, 12 Aug 2011 15:51:27 +0200 (CEST)
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Fri, 12 Aug 2011 15:32:07 +0200
+Message-Id: <1313155927-30300-2-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1313155927-30300-1-git-send-email-plagnioj@jcrosoft.com>
+References: <1313155927-30300-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,114 +21,111 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: at91sam9263ek, few issues
+Subject: [PATCH 2/2] imx: convert cpu_is to IS_BUILTIN
 To: barebox@lists.infradead.org
 
-Hi
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ arch/arm/mach-imx/include/mach/generic.h |   82 ++++++++----------------------
+ 1 files changed, 21 insertions(+), 61 deletions(-)
+ rewrite arch/arm/mach-imx/include/mach/generic.h (73%)
 
-Changed nand_chip_delay =3D50 from 20 in
-./drivers/mtd/nand/atmel_nand.c, and presently getting:-
+diff --git a/arch/arm/mach-imx/include/mach/generic.h b/arch/arm/mach-imx/include/mach/generic.h
+dissimilarity index 73%
+index 8ff04fb..54a6bd3 100644
+--- a/arch/arm/mach-imx/include/mach/generic.h
++++ b/arch/arm/mach-imx/include/mach/generic.h
+@@ -1,61 +1,21 @@
+-
+-int imx_silicon_revision(void);
+-#define IMX27_CHIP_REVISION_1_0   0
+-#define IMX27_CHIP_REVISION_2_0   1
+-
+-#define IMX35_CHIP_REVISION_1_0   0x10
+-#define IMX35_CHIP_REVISION_2_0   0x20
+-
+-u64 imx_uid(void);
+-
+-
+-#ifdef CONFIG_ARCH_IMX1
+-#define cpu_is_mx1()	(1)
+-#else
+-#define cpu_is_mx1()	(0)
+-#endif
+-
+-#ifdef CONFIG_ARCH_IMX21
+-#define cpu_is_mx21()	(1)
+-#else
+-#define cpu_is_mx21()	(0)
+-#endif
+-
+-#ifdef CONFIG_ARCH_IMX25
+-#define cpu_is_mx25()	(1)
+-#else
+-#define cpu_is_mx25()	(0)
+-#endif
+-
+-#ifdef CONFIG_ARCH_IMX27
+-#define cpu_is_mx27()	(1)
+-#else
+-#define cpu_is_mx27()	(0)
+-#endif
+-
+-#ifdef CONFIG_ARCH_IMX31
+-#define cpu_is_mx31()	(1)
+-#else
+-#define cpu_is_mx31()	(0)
+-#endif
+-
+-#ifdef CONFIG_ARCH_IMX35
+-#define cpu_is_mx35()	(1)
+-#else
+-#define cpu_is_mx35()	(0)
+-#endif
+-
+-#ifdef CONFIG_ARCH_IMX51
+-#define cpu_is_mx51()	(1)
+-#else
+-#define cpu_is_mx51()	(0)
+-#endif
+-
+-#ifdef CONFIG_ARCH_IMX53
+-#define cpu_is_mx53()	(1)
+-#else
+-#define cpu_is_mx53()	(0)
+-#endif
+-
+-#define cpu_is_mx23()	(0)
+-#define cpu_is_mx28()	(0)
++
++int imx_silicon_revision(void);
++#define IMX27_CHIP_REVISION_1_0   0
++#define IMX27_CHIP_REVISION_2_0   1
++
++#define IMX35_CHIP_REVISION_1_0   0x10
++#define IMX35_CHIP_REVISION_2_0   0x20
++
++u64 imx_uid(void);
++
++
++#define cpu_is_mx1()	IS_BUILTIN(CONFIG_ARCH_IMX1)
++#define cpu_is_mx21()	IS_BUILTIN(CONFIG_ARCH_IMX21)
++#define cpu_is_mx25()	IS_BUILTIN(CONFIG_ARCH_IMX25)
++#define cpu_is_mx27()	IS_BUILTIN(CONFIG_ARCH_IMX27)
++#define cpu_is_mx31()	IS_BUILTIN(CONFIG_ARCH_IMX31)
++#define cpu_is_mx35()	IS_BUILTIN(CONFIG_ARCH_IMX35)
++#define cpu_is_mx51()	IS_BUILTIN(CONFIG_ARCH_IMX51)
++#define cpu_is_mx53()	IS_BUILTIN(CONFIG_ARCH_IMX53)
++#define cpu_is_mx23()	(0)
++#define cpu_is_mx28()	(0)
+-- 
+1.7.5.4
 
-barebox@Atmel at91sam9263-ek:/ ubiattach /dev/nand0.root
-UBI: attaching mtd0 to ubi0
-UBI: physical eraseblock size:   131072 bytes (128 KiB)
-UBI: logical eraseblock size:    126976 bytes
-UBI: smallest flash I/O unit:    2048
-UBI: VID header offset:          2048 (aligned 2048)
-UBI: data offset:                4096
-registering /dev/ubi0
-UBI: attached mtd0 to ubi0
-UBI: MTD device name:            "nand0.root"
-UBI: MTD device size:            254 MiB
-UBI: number of good PEBs:        2028
-UBI: number of bad PEBs:         5
-UBI: max. allowed volumes:       128
-UBI: wear-leveling threshold:    4096
-UBI: number of internal volumes: 1
-UBI: number of user volumes:     0
-UBI: available PEBs:             2004
-UBI: total number of reserved PEBs: 24
-UBI: number of PEBs reserved for bad PEB handling: 20
-UBI: max/mean erase counter: 1/1
-
-But further giving a
-
-barebox@Atmel at91sam9263-ek:/ tftp rootfs1.ubif /dev/ubi0
-TFTP from server 192.168.0.110 ('rootfs1.ubif' -> '/dev/ubi0')
-        write: No space left on device
-
-tftp failed: error -28
-
-Btw , which is the irc channel of Barebox?
-
-regards
-
-Nataraj
-
-On Fri, Aug 12, 2011 at 6:45 AM, Nataraj S Narayan <natarajsn@gmail.com> wr=
-ote:
-> Hi
->
-> The following is the gist of issues seen, =A0namely
->
-> =A01. unable to saveenv
-> =A02. =A0ubiattach issue.
->
-> I am using NAND device: Manufacturer ID: 0xec, Chip ID: 0xda (Samsung
-> NAND 256MiB 3,3V 8-bit).
->
-> Please help
->
-> regards
->
-> Nataraj
->
-> barebox@Atmel at91sam9263-ek:/ =A0eth0.serverip=3D192.168.0.110
-> barebox@Atmel at91sam9263-ek:/ eth0.ipaddr=3D192.168.0.105
->
-> barebox@Atmel at91sam9263-ek:/ saveenv
-> saving environment
-> could not open /dev/env0: Read-only file system
->
-> barebox@Atmel at91sam9263-ek:/ printenv
-> locals:
-> ip=3Ddhcp
-> kernel_loc=3Dtftp
-> rootfs_loc=3Dnet
-> rootfs_type=3Dubifs
-> rootfsimage=3Droot.ubifs
-> kernelimage_type=3Duimage
-> kernelimage=3DuImage
-> nand_device=3Datmel_nand
-> nand_parts=3D256k(barebox)ro,128k(bareboxenv),1536k(kernel),-(root)
-> rootfs_mtdblock_nand=3D3
-> autoboot_timeout=3D3
-> bootargs=3Dconsole=3DttyS0,115200
-> PS1=3D\e[1;32mbarebox@\e[1;31m\h:\w\e[0m
-> globals:
-> PATH=3D/env/bin
->
->
->
->
-> barebox@Atmel at91sam9263-ek:/ ubiattach dev/nand0.root
-> UBI: attaching mtd0 to ubi0
-> UBI: physical eraseblock size: =A0 131072 bytes (128 KiB)
-> UBI: logical eraseblock size: =A0 =A0126976 bytes
-> UBI: smallest flash I/O unit: =A0 =A02048
-> UBI: VID header offset: =A0 =A0 =A0 =A0 =A02048 (aligned 2048)
-> UBI: data offset: =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A04096
-> UBI error: ubi_io_read: error -74 while reading 64 bytes from PEB 0:0,
-> read 64 bytes
-> UBI error: ubi_io_read: error -74 while reading 64 bytes from PEB
-> 476:0, read 64 bytes
-> UBI error: ubi_io_read: error -74 while reading 64 bytes from PEB
-> 489:0, read 64 bytes
->
 
 _______________________________________________
 barebox mailing list
