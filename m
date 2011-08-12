@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vw0-f49.google.com ([209.85.212.49])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QrlUY-0001U2-OB
-	for barebox@lists.infradead.org; Fri, 12 Aug 2011 06:45:15 +0000
-Received: by vws8 with SMTP id 8so2669055vws.36
-	for <barebox@lists.infradead.org>; Thu, 11 Aug 2011 23:45:13 -0700 (PDT)
+	id 1Qrm6Q-0002Hn-No
+	for barebox@lists.infradead.org; Fri, 12 Aug 2011 07:24:23 +0000
+Date: Fri, 12 Aug 2011 09:24:19 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20110812072418.GK31404@pengutronix.de>
+References: <1312226629-12064-1-git-send-email-franck.jullien@gmail.com>
+	<CAJfOKBw4fhTJ4J4u4c9PrTQr3wk_7b28spGAvc3iA=D55OnVYA@mail.gmail.com>
 MIME-Version: 1.0
-Date: Fri, 12 Aug 2011 06:45:13 +0000
-Message-ID: <CAK8HZO+mfyaj9CPUB+nOzppz_+=o5xzpgsDOofV=1jF9rcR2yQ@mail.gmail.com>
-From: Nataraj S Narayan <natarajsn@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <CAJfOKBw4fhTJ4J4u4c9PrTQr3wk_7b28spGAvc3iA=D55OnVYA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,66 +23,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: at91sam9263ek, few issues
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH][v2] nios2: Add Altera SPI master driver
+To: Franck JULLIEN <franck.jullien@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Hi
+On Thu, Aug 11, 2011 at 09:35:30PM +0200, Franck JULLIEN wrote:
+> 2011/8/1 Franck Jullien <franck.jullien@gmail.com>:
+> > From: Franck Jullien <franck.jullien@gmail.com>
+> >
+> >
+> 
+> Hello,
+> 
+> any chance to get this one in next ?
 
-The following is the gist of issues seen,  namely
+Generally yes. Care to update this according to the last comments I
+made?
 
- 1. unable to saveenv
- 2.  ubiattach issue.
-
-I am using NAND device: Manufacturer ID: 0xec, Chip ID: 0xda (Samsung
-NAND 256MiB 3,3V 8-bit).
-
-Please help
-
-regards
-
-Nataraj
-
-barebox@Atmel at91sam9263-ek:/  eth0.serverip=192.168.0.110
-barebox@Atmel at91sam9263-ek:/ eth0.ipaddr=192.168.0.105
-
-barebox@Atmel at91sam9263-ek:/ saveenv
-saving environment
-could not open /dev/env0: Read-only file system
-
-barebox@Atmel at91sam9263-ek:/ printenv
-locals:
-ip=dhcp
-kernel_loc=tftp
-rootfs_loc=net
-rootfs_type=ubifs
-rootfsimage=root.ubifs
-kernelimage_type=uimage
-kernelimage=uImage
-nand_device=atmel_nand
-nand_parts=256k(barebox)ro,128k(bareboxenv),1536k(kernel),-(root)
-rootfs_mtdblock_nand=3
-autoboot_timeout=3
-bootargs=console=ttyS0,115200
-PS1=\e[1;32mbarebox@\e[1;31m\h:\w\e[0m
-globals:
-PATH=/env/bin
+Sascha
 
 
-
-
-barebox@Atmel at91sam9263-ek:/ ubiattach dev/nand0.root
-UBI: attaching mtd0 to ubi0
-UBI: physical eraseblock size:   131072 bytes (128 KiB)
-UBI: logical eraseblock size:    126976 bytes
-UBI: smallest flash I/O unit:    2048
-UBI: VID header offset:          2048 (aligned 2048)
-UBI: data offset:                4096
-UBI error: ubi_io_read: error -74 while reading 64 bytes from PEB 0:0,
-read 64 bytes
-UBI error: ubi_io_read: error -74 while reading 64 bytes from PEB
-476:0, read 64 bytes
-UBI error: ubi_io_read: error -74 while reading 64 bytes from PEB
-489:0, read 64 bytes
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
