@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QrqZc-0000uI-6y
-	for barebox@lists.infradead.org; Fri, 12 Aug 2011 12:10:50 +0000
-Date: Fri, 12 Aug 2011 14:10:44 +0200
+	id 1Qrqho-00010I-0j
+	for barebox@lists.infradead.org; Fri, 12 Aug 2011 12:19:16 +0000
+Date: Fri, 12 Aug 2011 14:19:12 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110812121044.GO31404@pengutronix.de>
-References: <1313076601-30078-1-git-send-email-plagnioj@jcrosoft.com>
-	<1313078124-32663-1-git-send-email-plagnioj@jcrosoft.com>
-	<20110812064249.GI31404@pengutronix.de>
-	<20110812093635.GB1916@game.jcrosoft.org>
+Message-ID: <20110812121912.GP31404@pengutronix.de>
+References: <1312226629-12064-1-git-send-email-franck.jullien@gmail.com>
+	<CAJfOKBw4fhTJ4J4u4c9PrTQr3wk_7b28spGAvc3iA=D55OnVYA@mail.gmail.com>
+	<20110812072418.GK31404@pengutronix.de>
+	<CAJfOKBycP5pHX2e1gFe+kgsHJQmsYYzbX6=8+p4pWwV-AVGAAA@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20110812093635.GB1916@game.jcrosoft.org>
+In-Reply-To: <CAJfOKBycP5pHX2e1gFe+kgsHJQmsYYzbX6=8+p4pWwV-AVGAAA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,39 +25,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] imx_spi: drop non usefull ifdef
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH][v2] nios2: Add Altera SPI master driver
+To: Franck JULLIEN <franck.jullien@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Aug 12, 2011 at 11:36:35AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 08:42 Fri 12 Aug     , Sascha Hauer wrote:
-> > On Thu, Aug 11, 2011 at 05:55:24PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > drop CONFIG_DRIVER_SPI_IMX_<version>
-> > > 
-> > > +	if (cpu_is_mx51() || cpu_is_mx53()) {
-> > > +		imx->chipselect = cspi_2_3_chipselect;
-> > > +		imx->xchg_single = cspi_2_3_xchg_single;
-> > > +		imx->init = cspi_2_3_init;
-> > > +	}
-> > 
-> > Please keep structs to the SoC specific data. We might want to add
-> > device tree support in the future, then we'll need pointers to
-> > SoC specific data.
+On Fri, Aug 12, 2011 at 11:40:07AM +0200, Franck JULLIEN wrote:
+> Hello,
 > 
-> DT in barebox?
+> 2011/8/12 Sascha Hauer <s.hauer@pengutronix.de>:
+> > On Thu, Aug 11, 2011 at 09:35:30PM +0200, Franck JULLIEN wrote:
+> >> 2011/8/1 Franck Jullien <franck.jullien@gmail.com>:
+> >> > From: Franck Jullien <franck.jullien@gmail.com>
+> >> >
+> >> >
+> >>
+> >> Hello,
+> >>
+> >> any chance to get this one in next ?
+> >
+> > Generally yes. Care to update this according to the last comments I
+> > made?
+> >
 > 
-> So so it will increase the size a lot not sure it's really usefull
+> Yes I did sir :)
 
-We'll need limited device tree support anyway soon. When Shawn continues
-I won't be able to boot my boards soon without OF. Then I at least want
-to be able to adjust the command line (which is embedded in the device
-tree)
+Indeed, the patch in the mail you were replying to is updated according
+my comments. It seems the original mail is lost somewhere on the way.
+It's neither in my inbox nor in the list archive, that's why I thought
+you are refering to the first version. Same with the SPI flash driver.
 
-Of course this adds to the binary size, but it's not huge. I'm currently
-experimenting with this and so far it looks promising. Anyway, it will
-be completely optional for people who don't want it.
+Can you please send the patches once again?
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
