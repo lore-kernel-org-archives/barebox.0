@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pv0-f177.google.com ([74.125.83.177])
-	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QjDLw-0004Bq-Rc
-	for barebox@lists.infradead.org; Tue, 19 Jul 2011 16:41:05 +0000
-Received: by pvg20 with SMTP id 20so4752890pvg.36
-	for <barebox@lists.infradead.org>; Tue, 19 Jul 2011 09:40:55 -0700 (PDT)
+Received: from out4.bezeqint.net ([192.115.188.213])
+	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+	id 1QsTth-0006wW-Mw
+	for barebox@lists.infradead.org; Sun, 14 Aug 2011 06:10:11 +0000
+Message-ID: <4E47669F.7020902@wellsense-tech.com>
+Date: Sun, 14 Aug 2011 09:09:35 +0300
+From: Boaz Ben-David <boaz.bd@wellsense-tech.com>
 MIME-Version: 1.0
-In-Reply-To: <CAM9uW_7ynAvvm_y_k0LiO5dzkuji1i4CYJvn6pZ7heNeQ6P=5A@mail.gmail.com>
-References: <CAM9uW_7pYJS1jzPxcCPphPgMi=ckstKm8=_6dsrCRn3Bp-sCXw@mail.gmail.com>
-	<20110718064437.GE20587@pengutronix.de>
-	<CAM9uW_7ynAvvm_y_k0LiO5dzkuji1i4CYJvn6pZ7heNeQ6P=5A@mail.gmail.com>
-From: Kamel BOUHARA <k.bouhara@gmail.com>
-Date: Tue, 19 Jul 2011 18:40:35 +0200
-Message-ID: <CAM9uW_5koAxxk8Jgqe7_sEzCd0FNzb7d=KOBTaayT6GvqOMhhA@mail.gmail.com>
+References: <1299683846-20616-1-git-send-email-jbe@pengutronix.de>
+	<1299683846-20616-6-git-send-email-jbe@pengutronix.de>
+In-Reply-To: <1299683846-20616-6-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,289 +18,189 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1167546245=="
+Content-Type: multipart/mixed; boundary="===============0409704949=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Fwd: Nand MTD IOError -5
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 5/5] Add multi environment support
+To: Juergen Beisert <jbe@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Luotao Fu <l.fu@pengutronix.de>
 
---===============1167546245==
-Content-Type: multipart/alternative; boundary=bcaec51dd16f9415ef04a86ec794
+--===============0409704949==
+Content-Type: text/html; charset="ISO-8859-1"
+Content-Transfer-Encoding: 7bit
 
---bcaec51dd16f9415ef04a86ec794
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html style="direction: ltr;">
+  <head>
+    <meta content="text/html; charset=ISO-8859-1"
+      http-equiv="Content-Type">
+    <title></title>
+    <style>body p { margin-bottom: 0cm; margin-top: 0pt; } </style>
+  </head>
+  <body style="direction: ltr;"
+    bidimailui-detected-decoding-type="latin-charset" bgcolor="#ffffff"
+    text="#000000">
+    On 03/09/11 17:17, Juergen Beisert wrote:
+    <blockquote
+      cite="mid:1299683846-20616-6-git-send-email-jbe@pengutronix.de"
+      type="cite">
+      <pre wrap="">From: Luotao Fu <a class="moz-txt-link-rfc2396E" href="mailto:l.fu@pengutronix.de">&lt;l.fu@pengutronix.de&gt;</a>
 
----------- Forwarded message ----------
-From: Kamel BOUHARA <k.bouhara@gmail.com>
-Date: 2011/7/19
-Subject: Re: Nand MTD IOError -5
-To: Sascha Hauer <s.hauer@pengutronix.de>
+We can deal with multiple environments now in our barebox. With this option
+enabled barebox will scan all environment partions on start up and load the
+environment from the first loadable environment partition it finds. Also it will
+check the content of all environment parttions and autmotically synchronize
+content of any outdated partition.
 
+Signed-off-by: Luotao Fu <a class="moz-txt-link-rfc2396E" href="mailto:l.fu@pengutronix.de">&lt;l.fu@pengutronix.de&gt;</a>
+Acked-by: Juergen Beisert <a class="moz-txt-link-rfc2396E" href="mailto:jbe@pengutronix.de">&lt;jbe@pengutronix.de&gt;</a>
+---
+ common/Kconfig   |   11 +++++++++
+ common/startup.c |   63 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 74 insertions(+), 0 deletions(-)
 
-2011/7/18 Sascha Hauer <s.hauer@pengutronix.de>
->
->> On Fri, Jul 15, 2011 at 01:21:21PM +0200, Kamel BOUHARA wrote:
->> > Hello,
->> >
->> > Im having a trouble with my Nand Flash device wich is a 512MiB Micron
->> with
->> > 4GB capacity.
->> > I get io error -5 for any erase/write operation on it like this :
->> >
->> >  barebox@Phytec phyCard-i.MX27:/ update -t barebox -d nand
->>
->> Is this really a phycard or have you just used it as a template for your
->> board?
->
->
-No, it's not Im using it as a template because the fec,  I've also post for
-it here :http://lists.infradead.org/pipermail/barebox/2011-July/003802.html
-
-Sorry, no idea. It just looks there are quite many bad blocks. Does it
-> work under Linux?
-
-
-It doesn't work on Linux or u-boot, same error,  maybe I missed somethink, =
-I
-will look to make it work on u-boot with advanced nand command first
-maybe...
-
-Thanks anyway ! :/
-
-2011/7/18 Sascha Hauer <s.hauer@pengutronix.de>
-
-> On Fri, Jul 15, 2011 at 01:21:21PM +0200, Kamel BOUHARA wrote:
-> > Hello,
-> >
-> > Im having a trouble with my Nand Flash device wich is a 512MiB Micron
-> with
-> > 4GB capacity.
-> > I get io error -5 for any erase/write operation on it like this :
-> >
-> >  barebox@Phytec phyCard-i.MX27:/ update -t barebox -d nand
->
-> Is this really a phycard or have you just used it as a template for your
-> board?
->
-> >
-> > phy0: Link is up - 100/Full
-> > host 192.168.0.2 is alive
-> > > erasing partition /dev/nand0.barebox.bb
-> > >
-> > erase: I/O error
-> >
-> > flashing barebox.bin to /dev/nand0.barebox.bb
-> > TFTP from server 192.168.0.2 ('barebox.bin' -> '/dev/nand0.barebox.bb')
-> >         write: I/O error
-> > tftp failed: error -5
-> > And here is the device init at the boot runtime:
-> > NAND device: Manufacturer ID: 0x2c, Chip ID: 0xac (Micron NAND 512MiB
-> 1,8V
-> > 8-bi)
-> >
-> > nand_read_bbt: Bad block at 0x17840000
-> >
-> > nand_read_bbt: Bad block at 0x17860000
-> >
-> > nand_read_bbt: Bad block at 0x1f0c0000
-> >
-> > nand_read_bbt: Bad block at 0x1f0e0000
-> >
-> > nand_read_bbt: Bad block at 0x1f6c0000
-> >
-> > nand_read_bbt: Bad block at 0x1f6e0000
-> >
-> > So it seems tge device is detect and bbt are correctly calculated...
-> > Any idea of what could be the problem ?
->
-> Sorry, no idea. It just looks there are quite many bad blocks. Does it
-> work under Linux?
->
-> Sascha
->
->
->
-> --
-> Pengutronix e.K.                           |                             =
-|
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  =
-|
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    =
-|
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 =
-|
->
-
-
-
---=20
-__________________________________
-*Kamel BOUHARA*
-7 rue Jules C=E9sar
-02100 SAINT-QUENTIN
-06.17.83.29.04
-
-
-
-
-
---=20
-__________________________________
-*Kamel BOUHARA*
-7 rue Jules C=E9sar
-02100 SAINT-QUENTIN
-06.17.83.29.04
-
---bcaec51dd16f9415ef04a86ec794
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-<br><br><div class=3D"gmail_quote">---------- Forwarded message ----------<=
-br>From: <b class=3D"gmail_sendername">Kamel BOUHARA</b> <span dir=3D"ltr">=
-&lt;<a href=3D"mailto:k.bouhara@gmail.com">k.bouhara@gmail.com</a>&gt;</spa=
-n><br>
-
-Date: 2011/7/19<br>Subject: Re: Nand MTD IOError -5<br>To: Sascha Hauer &lt=
-;<a href=3D"mailto:s.hauer@pengutronix.de">s.hauer@pengutronix.de</a>&gt;<b=
-r><br><br><div class=3D"im"><blockquote class=3D"gmail_quote" style=3D"marg=
-in-top:0px;margin-right:0px;margin-bottom:0px;margin-left:0.8ex;border-left=
--width:1px;border-left-color:rgb(204, 204, 204);border-left-style:solid;pad=
-ding-left:1ex">
-
-
-2011/7/18 Sascha Hauer=A0<span dir=3D"ltr">&lt;<a href=3D"mailto:s.hauer@pe=
-ngutronix.de" target=3D"_blank">s.hauer@pengutronix.de</a>&gt;</span><br><b=
-lockquote class=3D"gmail_quote" style=3D"margin-top:0px;margin-right:0px;ma=
-rgin-bottom:0px;margin-left:0.8ex;border-left-width:1px;border-left-color:r=
-gb(204, 204, 204);border-left-style:solid;padding-left:1ex">
-
-
-
-<div>On Fri, Jul 15, 2011 at 01:21:21PM +0200, Kamel BOUHARA wrote:<br>&gt;=
- Hello,<br>&gt;<br>&gt; Im having a trouble with my Nand Flash device wich =
-is a 512MiB Micron with<br>&gt; 4GB capacity.<br>&gt; I get io error -5 for=
- any erase/write operation on it like this :<br>
-
-
-
-&gt;<br>&gt; =A0barebox@Phytec phyCard-i.MX27:/ update -t barebox -d nand<b=
-r><br></div>Is this really a phycard or have you just used it as a template=
- for your<br>board?</blockquote></blockquote><div><br></div></div><div>No, =
-it&#39;s not Im using it as a template because the fec, =A0I&#39;ve also po=
-st for it here :<a href=3D"http://lists.infradead.org/pipermail/barebox/201=
-1-July/003802.html" target=3D"_blank">http://lists.infradead.org/pipermail/=
-barebox/2011-July/003802.html</a></div>
-
-<div class=3D"im">
-<div><br></div><blockquote class=3D"gmail_quote" style=3D"margin-top:0px;ma=
-rgin-right:0px;margin-bottom:0px;margin-left:0.8ex;border-left-width:1px;bo=
-rder-left-color:rgb(204, 204, 204);border-left-style:solid;padding-left:1ex=
-">
-
-
-Sorry, no idea. It just looks there are quite many bad blocks. Does it<br>w=
-ork under Linux?</blockquote><div><br></div></div><div>It doesn&#39;t work =
-on Linux or u-boot, same error, =A0maybe I missed somethink, I will look to=
- make it work on u-boot with advanced nand command first maybe...</div>
+diff --git a/common/Kconfig b/common/Kconfig
+index 02bc67e..272f146 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -53,6 +53,17 @@ config LOCALVERSION_AUTO
+ 
+ 	  which is done within the script "scripts/setlocalversion".)
+ 
++config MULTI_ENV_HANDLING
++	select ENV_HANDLING
++	bool "Enable handling multiple environment partitions"
++	help
++	  Barebox can handle multiple environments. With this option enabled,
++	  barebox will scan all environment partions on start up and
++	  load the environment from the first loadable environment partition
++	  it finds. Also it will check if the content of all environment
++	  partitions are synchronized and automatically synchronize content of
++	  the outdated partition.
++
+ config BOARDINFO
+ 	string
+ 
+diff --git a/common/startup.c b/common/startup.c
+index 32a8aa0..759d694 100644
+--- a/common/startup.c
++++ b/common/startup.c
+@@ -128,8 +128,71 @@ static int __maybe_unused init_single_envfs_load(void)
+ 	return 0;
+ }
+ 
++static int __maybe_unused init_multi_envfs_load(void)
++{
++	char *dirname = "/env";
++	char file[9 + 5];	/* '/dev/env.....' */
++	int i = 0, j = 0, no_more_parts = 0;
++	int crc = 0, crc_ref = 0;
++	int rc;
++	struct stat file_info;
++
++	while (1) {
++		sprintf(file, "/dev/env%d", i);
++
++		if (stat(file, &amp;file_info) != 0) {
++			no_more_parts = 1;
++			break;
++		}
++
++		/* first loadable environment is considered to be
++		 * reference */
++		if (envfs_load(file, dirname, &amp;crc_ref) == 0)
++			break;
++
++		i++;
++	}
++
++	/* no loadable environment partition found */
++	if (no_more_parts == 1) {
++		load_default_environment();
++		goto out;
++	}
++
++	/* Now try to restore, if any, the previous failed partitions */
++	for (j = 0; j &lt; i; j++) {
++		sprintf(file, "/dev/env%d", j);
++		if (envfs_save(file, dirname))
++			printf("failed to sync environment on %s\n", file);
++	}
++
++	/* proceed to scan further env partitions */
++	while (1) {
++		i++;
++		sprintf(file, "/dev/env%d", i);
++
++		if (stat(file, &amp;file_info) != 0)
++			break;
++
++		/* sync partition if loading failed or crc mismatch with
++		 * the reference */
++		rc = envfs_load(file, NULL, &amp;crc);
++		if (rc != 0 || crc != crc_ref) {
++			if (envfs_save(file, dirname))
++				printf("failed to sync environment on %s\n",
++						file);
++		}
++	}
++out:
++	return 0;
++}
++
+ #ifdef CONFIG_ENV_HANDLING
++# ifdef CONFIG_MULTI_ENV_HANDLING
++late_initcall(init_multi_envfs_load);
++# else
+ late_initcall(init_single_envfs_load);
++# endif
+ #endif
+ 
+ void start_barebox (void)
+</pre>
+    </blockquote>
+    <br>
+    Using this patch on a iMX35 variant I noticed a problem with the
+    envs recovery.<br>
+    If on boot we have a broken env partition and we need to recover it
+    from a working one, don't we <br>
+    have to first erase the partition?<br>
+    As I was testing this I got I/O error from the partition after
+    recovery which went away when I added an erasure of the <br>
+    partition before writing to it.<br>
+    <br>
+    Boaz.<br>
+    <br>
+    <div class="moz-signature">
+      <div class="moz-signature">
+        <div class="moz-signature">
+          <div>
+            <table class="x_MsoNormalTable" border="0" cellpadding="0"
+              cellspacing="0">
+              <tbody>
+                <tr>
+                  <td style="padding: 0cm;"><br>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding: 0cm;"><br>
+                  </td>
+                </tr>
+                <tr style="height: 0.75pt;">
+                  <td style="padding: 0cm; height: 0.75pt;"><br>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
 
 
-<div><br></div><div>Thanks anyway ! :/</div><div><div></div><div class=3D"h=
-5"><div>=A0</div>
-<div class=3D"gmail_quote">2011/7/18 Sascha Hauer <span dir=3D"ltr">&lt;<a =
-href=3D"mailto:s.hauer@pengutronix.de" target=3D"_blank">s.hauer@pengutroni=
-x.de</a>&gt;</span><br><blockquote class=3D"gmail_quote" style=3D"margin:0 =
-0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">
-
-
-
-<div>On Fri, Jul 15, 2011 at 01:21:21PM +0200, Kamel BOUHARA wrote:<br>
-&gt; Hello,<br>
-&gt;<br>
-&gt; Im having a trouble with my Nand Flash device wich is a 512MiB Micron =
-with<br>
-&gt; 4GB capacity.<br>
-&gt; I get io error -5 for any erase/write operation on it like this :<br>
-&gt;<br>
-&gt; =A0barebox@Phytec phyCard-i.MX27:/ update -t barebox -d nand<br>
-<br>
-</div>Is this really a phycard or have you just used it as a template for y=
-our<br>
-board?<br>
-<div><br>
-&gt;<br>
-&gt; phy0: Link is up - 100/Full<br>
-&gt; host 192.168.0.2 is alive<br>
-&gt; &gt; erasing partition /dev/<a href=3D"http://nand0.barebox.bb" target=
-=3D"_blank">nand0.barebox.bb</a><br>
-&gt; &gt;<br>
-&gt; erase: I/O error<br>
-&gt;<br>
-&gt; flashing barebox.bin to /dev/<a href=3D"http://nand0.barebox.bb" targe=
-t=3D"_blank">nand0.barebox.bb</a><br>
-&gt; TFTP from server 192.168.0.2 (&#39;barebox.bin&#39; -&gt; &#39;/dev/<a=
- href=3D"http://nand0.barebox.bb" target=3D"_blank">nand0.barebox.bb</a>&#3=
-9;)<br>
-&gt; =A0 =A0 =A0 =A0 write: I/O error<br>
-&gt; tftp failed: error -5<br>
-&gt; And here is the device init at the boot runtime:<br>
-&gt; NAND device: Manufacturer ID: 0x2c, Chip ID: 0xac (Micron NAND 512MiB =
-1,8V<br>
-&gt; 8-bi)<br>
-&gt;<br>
-</div><div>&gt; nand_read_bbt: Bad block at 0x17840000<br>
-&gt;<br>
-&gt; nand_read_bbt: Bad block at 0x17860000<br>
-&gt;<br>
-&gt; nand_read_bbt: Bad block at 0x1f0c0000<br>
-&gt;<br>
-&gt; nand_read_bbt: Bad block at 0x1f0e0000<br>
-&gt;<br>
-&gt; nand_read_bbt: Bad block at 0x1f6c0000<br>
-&gt;<br>
-&gt; nand_read_bbt: Bad block at 0x1f6e0000<br>
-&gt;<br>
-&gt; So it seems tge device is detect and bbt are correctly calculated...<b=
-r>
-&gt; Any idea of what could be the problem ?<br>
-<br>
-</div>Sorry, no idea. It just looks there are quite many bad blocks. Does i=
-t<br>
-work under Linux?<br>
-<br>
-Sascha<br>
-<font color=3D"#888888"><br>
-<br>
-<br>
---<br>
-Pengutronix e.K. =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 | =A0 =
-=A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 |<br>
-Industrial Linux Solutions =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 | <a href=3D"htt=
-p://www.pengutronix.de/" target=3D"_blank">http://www.pengutronix.de/</a> =
-=A0|<br>
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0 =A0 =
-=A0|<br>
-Amtsgericht Hildesheim, HRA 2686 =A0 =A0 =A0 =A0 =A0 | Fax: =A0 +49-5121-20=
-6917-5555 |<br>
-</font></blockquote></div><br><br clear=3D"all"><br></div></div><div><div><=
-/div><div class=3D"h5">-- <br>__________________________________<br><i><fon=
-t face=3D"&#39;comic sans ms&#39;, sans-serif">Kamel BOUHARA</font></i><div=
->
-
-7 rue Jules C=E9sar<div>02100 SAINT-QUENTIN<br>
-
-06.17.83.29.04<br><br></div></div><br>
-</div></div></div><br><br clear=3D"all"><br>-- <br>________________________=
-__________<br><i><font face=3D"&#39;comic sans ms&#39;, sans-serif">Kamel B=
-OUHARA</font></i><div>7 rue Jules C=E9sar<div>02100 SAINT-QUENTIN<br>06.17.=
-83.29.04<br>
-
-<br></div></div><br>
-
---bcaec51dd16f9415ef04a86ec794--
-
-
---===============1167546245==
+--===============0409704949==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -314,4 +211,4 @@ barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
 
---===============1167546245==--
+--===============0409704949==--
