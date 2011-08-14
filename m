@@ -1,20 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QrvSC-0004hw-2k
-	for barebox@lists.infradead.org; Fri, 12 Aug 2011 17:23:29 +0000
-Date: Fri, 12 Aug 2011 19:23:22 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110812172322.GQ31404@pengutronix.de>
-References: <1313076601-30078-1-git-send-email-plagnioj@jcrosoft.com>
-	<1313078124-32663-1-git-send-email-plagnioj@jcrosoft.com>
-	<20110812064249.GI31404@pengutronix.de>
-	<20110812093635.GB1916@game.jcrosoft.org>
-	<20110812121044.GO31404@pengutronix.de>
-	<20110812124921.GC1916@game.jcrosoft.org>
+Received: from out7.bezeqint.net ([192.115.188.214])
+	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+	id 1QsTwl-0006x9-5h
+	for barebox@lists.infradead.org; Sun, 14 Aug 2011 06:13:20 +0000
+Message-ID: <4E47675F.2040706@wellsense-tech.com>
+Date: Sun, 14 Aug 2011 09:12:47 +0300
+From: Boaz Ben-David <boaz.bd@wellsense-tech.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20110812124921.GC1916@game.jcrosoft.org>
+References: <1299683846-20616-1-git-send-email-jbe@pengutronix.de>
+	<1299683846-20616-6-git-send-email-jbe@pengutronix.de>
+In-Reply-To: <1299683846-20616-6-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,62 +18,144 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] imx_spi: drop non usefull ifdef
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 5/5] Add multi environment support
+To: Juergen Beisert <jbe@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Luotao Fu <l.fu@pengutronix.de>
 
-On Fri, Aug 12, 2011 at 02:49:21PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 14:10 Fri 12 Aug     , Sascha Hauer wrote:
-> > On Fri, Aug 12, 2011 at 11:36:35AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > On 08:42 Fri 12 Aug     , Sascha Hauer wrote:
-> > > > On Thu, Aug 11, 2011 at 05:55:24PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > > > drop CONFIG_DRIVER_SPI_IMX_<version>
-> > > > > 
-> > > > > +	if (cpu_is_mx51() || cpu_is_mx53()) {
-> > > > > +		imx->chipselect = cspi_2_3_chipselect;
-> > > > > +		imx->xchg_single = cspi_2_3_xchg_single;
-> > > > > +		imx->init = cspi_2_3_init;
-> > > > > +	}
-> > > > 
-> > > > Please keep structs to the SoC specific data. We might want to add
-> > > > device tree support in the future, then we'll need pointers to
-> > > > SoC specific data.
-> > > 
-> > > DT in barebox?
-> > > 
-> > > So so it will increase the size a lot not sure it's really usefull
-> > 
-> > We'll need limited device tree support anyway soon. When Shawn continues
-> > I won't be able to boot my boards soon without OF. Then I at least want
-> > to be able to adjust the command line (which is embedded in the device
-> > tree)
-> > 
-> > Of course this adds to the binary size, but it's not huge. I'm currently
-> > experimenting with this and so far it looks promising. Anyway, it will
-> > be completely optional for people who don't want it.
-> I take a look too but my key point is do we nned the DT for internal use
+On 03/09/11 17:17, Juergen Beisert wrote:
+> From: Luotao Fu<l.fu@pengutronix.de>
+>
+> We can deal with multiple environments now in our barebox. With this option
+> enabled barebox will scan all environment partions on start up and load the
+> environment from the first loadable environment partition it finds. Also it will
+> check the content of all environment parttions and autmotically synchronize
+> content of any outdated partition.
+>
+> Signed-off-by: Luotao Fu<l.fu@pengutronix.de>
+> Acked-by: Juergen Beisert<jbe@pengutronix.de>
+> ---
+>   common/Kconfig   |   11 +++++++++
+>   common/startup.c |   63 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>   2 files changed, 74 insertions(+), 0 deletions(-)
+>
+> diff --git a/common/Kconfig b/common/Kconfig
+> index 02bc67e..272f146 100644
+> --- a/common/Kconfig
+> +++ b/common/Kconfig
+> @@ -53,6 +53,17 @@ config LOCALVERSION_AUTO
+>
+>   	  which is done within the script "scripts/setlocalversion".)
+>
+> +config MULTI_ENV_HANDLING
+> +	select ENV_HANDLING
+> +	bool "Enable handling multiple environment partitions"
+> +	help
+> +	  Barebox can handle multiple environments. With this option enabled,
+> +	  barebox will scan all environment partions on start up and
+> +	  load the environment from the first loadable environment partition
+> +	  it finds. Also it will check if the content of all environment
+> +	  partitions are synchronized and automatically synchronize content of
+> +	  the outdated partition.
+> +
+>   config BOARDINFO
+>   	string
+>
+> diff --git a/common/startup.c b/common/startup.c
+> index 32a8aa0..759d694 100644
+> --- a/common/startup.c
+> +++ b/common/startup.c
+> @@ -128,8 +128,71 @@ static int __maybe_unused init_single_envfs_load(void)
+>   	return 0;
+>   }
+>
+> +static int __maybe_unused init_multi_envfs_load(void)
+> +{
+> +	char *dirname = "/env";
+> +	char file[9 + 5];	/* '/dev/env.....' */
+> +	int i = 0, j = 0, no_more_parts = 0;
+> +	int crc = 0, crc_ref = 0;
+> +	int rc;
+> +	struct stat file_info;
+> +
+> +	while (1) {
+> +		sprintf(file, "/dev/env%d", i);
+> +
+> +		if (stat(file,&file_info) != 0) {
+> +			no_more_parts = 1;
+> +			break;
+> +		}
+> +
+> +		/* first loadable environment is considered to be
+> +		 * reference */
+> +		if (envfs_load(file, dirname,&crc_ref) == 0)
+> +			break;
+> +
+> +		i++;
+> +	}
+> +
+> +	/* no loadable environment partition found */
+> +	if (no_more_parts == 1) {
+> +		load_default_environment();
+> +		goto out;
+> +	}
+> +
+> +	/* Now try to restore, if any, the previous failed partitions */
+> +	for (j = 0; j<  i; j++) {
+> +		sprintf(file, "/dev/env%d", j);
+> +		if (envfs_save(file, dirname))
+> +			printf("failed to sync environment on %s\n", file);
+> +	}
+> +
+> +	/* proceed to scan further env partitions */
+> +	while (1) {
+> +		i++;
+> +		sprintf(file, "/dev/env%d", i);
+> +
+> +		if (stat(file,&file_info) != 0)
+> +			break;
+> +
+> +		/* sync partition if loading failed or crc mismatch with
+> +		 * the reference */
+> +		rc = envfs_load(file, NULL,&crc);
+> +		if (rc != 0 || crc != crc_ref) {
+> +			if (envfs_save(file, dirname))
+> +				printf("failed to sync environment on %s\n",
+> +						file);
+> +		}
+> +	}
+> +out:
+> +	return 0;
+> +}
+> +
+>   #ifdef CONFIG_ENV_HANDLING
+> +# ifdef CONFIG_MULTI_ENV_HANDLING
+> +late_initcall(init_multi_envfs_load);
+> +# else
+>   late_initcall(init_single_envfs_load);
+> +# endif
+>   #endif
+>
+>   void start_barebox (void)
 
-No we don't. But then again, in the dt there is also the description for
-nand/nor partitions and maybe MAC addresses. It's quite painful to keep
-these in sync with barebox when there's no association between the
-device tree and the barebox devices.
-I think the most additional code for is needed to be able to get basic OF
-suppport (dump the tree, update bootargs and memory parameters).
-Integrating it fully into barebox is only a small step then.
+Using this patch on a iMX35 variant I noticed a problem with the envs 
+recovery.
+If on boot we have a broken env partition and we need to recover it from 
+a working one, don't we
+have to first erase the partition?
+As I was testing this I got I/O error from the partition after recovery 
+which went away when I added an erasure of the
+partition before writing to it.
 
-But let's see, as said, I'm in early experimental stage.
+Boaz.
 
-Sascha
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+
+
 
 _______________________________________________
 barebox mailing list
