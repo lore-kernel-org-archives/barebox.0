@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1Qssof-00069I-MG
-	for barebox@lists.infradead.org; Mon, 15 Aug 2011 08:46:43 +0000
+	id 1Qssof-00069J-Md
+	for barebox@lists.infradead.org; Mon, 15 Aug 2011 08:46:42 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 15 Aug 2011 10:46:27 +0200
-Message-Id: <1313397992-3065-3-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 15 Aug 2011 10:46:28 +0200
+Message-Id: <1313397992-3065-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1313397992-3065-1-git-send-email-s.hauer@pengutronix.de>
 References: <1313397992-3065-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,199 +21,184 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/7] net: make the ethernet device a child of the hardware
-	device
+Subject: [PATCH 3/7] net mii: add a parent pointer to miidevs and set it to
+	the hardware device
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/altera_tse.c  |    1 +
- drivers/net/at91_ether.c  |    1 +
- drivers/net/cs8900.c      |    1 +
- drivers/net/dm9000.c      |    1 +
- drivers/net/ep93xx.c      |    1 +
- drivers/net/fec_imx.c     |    1 +
- drivers/net/fec_mpc5200.c |    1 +
- drivers/net/macb.c        |    1 +
- drivers/net/netx_eth.c    |    1 +
- drivers/net/smc91111.c    |    1 +
- drivers/net/smc911x.c     |    1 +
- drivers/net/usb/usbnet.c  |    1 +
- include/net.h             |    1 +
- net/eth.c                 |    4 ++++
- 14 files changed, 17 insertions(+), 0 deletions(-)
+ drivers/net/altera_tse.c   |    1 +
+ drivers/net/dm9000.c       |    1 +
+ drivers/net/ep93xx.c       |    1 +
+ drivers/net/fec_imx.c      |    1 +
+ drivers/net/fec_mpc5200.c  |    1 +
+ drivers/net/macb.c         |    1 +
+ drivers/net/miidev.c       |    2 ++
+ drivers/net/netx_eth.c     |    1 +
+ drivers/net/smc91111.c     |    1 +
+ drivers/net/smc911x.c      |    1 +
+ drivers/net/usb/asix.c     |    1 +
+ drivers/net/usb/smsc95xx.c |    1 +
+ include/miidev.h           |    1 +
+ 13 files changed, 14 insertions(+), 0 deletions(-)
 
 diff --git a/drivers/net/altera_tse.c b/drivers/net/altera_tse.c
-index e7dabda..ac8dea4 100644
+index ac8dea4..7e456c7 100644
 --- a/drivers/net/altera_tse.c
 +++ b/drivers/net/altera_tse.c
-@@ -518,6 +518,7 @@ static int tse_probe(struct device_d *dev)
- 	edev->halt = tse_eth_halt;
- 	edev->get_ethaddr = tse_get_ethaddr;
- 	edev->set_ethaddr = tse_set_ethaddr;
-+	edev->parent = dev;
+@@ -549,6 +549,7 @@ static int tse_probe(struct device_d *dev)
+ 	miidev->write = tse_phy_write;
+ 	miidev->flags = 0;
+ 	miidev->edev = edev;
++	miidev->parent = dev;
  
- #ifdef CONFIG_TSE_USE_DEDICATED_DESC_MEM
- 	tx_desc = dev_request_mem_region(dev, 3);
-diff --git a/drivers/net/at91_ether.c b/drivers/net/at91_ether.c
-index d5e26a1..8d0b43b 100644
---- a/drivers/net/at91_ether.c
-+++ b/drivers/net/at91_ether.c
-@@ -272,6 +272,7 @@ static int at91rm9200_eth_init (struct device_d *dev)
- 	edev->halt = at91rm9200_eth_halt;
- 	edev->get_ethaddr = at91rm9200_get_ethaddr;
- 	edev->set_ethaddr = at91rm9200_set_ethaddr;
-+	edev->parent = dev;
- 
- 	p_mac = AT91C_BASE_EMAC;
- 
-diff --git a/drivers/net/cs8900.c b/drivers/net/cs8900.c
-index d954e39..33afc5e 100644
---- a/drivers/net/cs8900.c
-+++ b/drivers/net/cs8900.c
-@@ -458,6 +458,7 @@ static int cs8900_probe(struct device_d *dev)
- 	edev->halt = cs8900_halt;
- 	edev->get_ethaddr = cs8900_get_ethaddr;
- 	edev->set_ethaddr = cs8900_set_ethaddr;
-+	edev->parent = dev;
- 
- 	eth_register(edev);
- 	return 0;
+ 	if (dev->platform_data != NULL)
+ 		miidev->address = *((int8_t *)(dev->platform_data));
 diff --git a/drivers/net/dm9000.c b/drivers/net/dm9000.c
-index be14317..98134ce 100644
+index 98134ce..e9ec61b 100644
 --- a/drivers/net/dm9000.c
 +++ b/drivers/net/dm9000.c
-@@ -513,6 +513,7 @@ static int dm9000_probe(struct device_d *dev)
- 	edev->halt = dm9000_eth_halt;
- 	edev->set_ethaddr = dm9000_set_ethaddr;
- 	edev->get_ethaddr = dm9000_get_ethaddr;
-+	edev->parent = dev;
+@@ -541,6 +541,7 @@ static int dm9000_probe(struct device_d *dev)
+ 	priv->miidev.address = 0;
+ 	priv->miidev.flags = 0;
+ 	priv->miidev.edev = edev;
++	priv->miidev.parent = dev;
  
- 	/* RESET device */
- 	dm9000_reset(priv);
+ 	mii_register(&priv->miidev);
+ 	eth_register(edev);
 diff --git a/drivers/net/ep93xx.c b/drivers/net/ep93xx.c
-index 7821cd2..55848cf 100644
+index 55848cf..954ec78 100644
 --- a/drivers/net/ep93xx.c
 +++ b/drivers/net/ep93xx.c
-@@ -497,6 +497,7 @@ static int ep93xx_eth_probe(struct device_d *dev)
- 	edev->halt = ep93xx_eth_halt;
- 	edev->get_ethaddr = ep93xx_eth_get_ethaddr;
- 	edev->set_ethaddr = ep93xx_eth_set_ethaddr;
-+	edev->parent = dev;
- 
- 	priv->miidev.read = ep93xx_phy_read;
+@@ -503,6 +503,7 @@ static int ep93xx_eth_probe(struct device_d *dev)
  	priv->miidev.write = ep93xx_phy_write;
+ 	priv->miidev.address = 0;
+ 	priv->miidev.flags = 0;
++	priv->miidev.parent = dev;
+ 
+ 	priv->tx_dq.base = calloc(NUMTXDESC,
+ 				sizeof(struct tx_descriptor));
 diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
-index 8b4f439..bbce2b6 100644
+index bbce2b6..3b0f266 100644
 --- a/drivers/net/fec_imx.c
 +++ b/drivers/net/fec_imx.c
-@@ -612,6 +612,7 @@ static int fec_probe(struct device_d *dev)
- 	edev->halt = fec_halt;
- 	edev->get_ethaddr = fec_get_hwaddr;
- 	edev->set_ethaddr = fec_set_hwaddr;
-+	edev->parent = dev;
+@@ -645,6 +645,7 @@ static int fec_probe(struct device_d *dev)
+ 		fec->miidev.address = pdata->phy_addr;
+ 		fec->miidev.flags = pdata->xcv_type == MII10 ? MIIDEV_FORCE_10 : 0;
+ 		fec->miidev.edev = edev;
++		fec->miidev.parent = dev;
  
- 	fec->regs = dev_request_mem_region(dev, 0);
- 
+ 		mii_register(&fec->miidev);
+ 	}
 diff --git a/drivers/net/fec_mpc5200.c b/drivers/net/fec_mpc5200.c
-index 310d70d..84be3c7 100644
+index 84be3c7..403aad5 100644
 --- a/drivers/net/fec_mpc5200.c
 +++ b/drivers/net/fec_mpc5200.c
-@@ -672,6 +672,7 @@ int mpc5xxx_fec_probe(struct device_d *dev)
- 	edev->halt = mpc5xxx_fec_halt;
- 	edev->get_ethaddr = mpc5xxx_fec_get_ethaddr;
- 	edev->set_ethaddr = mpc5xxx_fec_set_ethaddr;
-+	edev->parent = dev;
+@@ -688,6 +688,7 @@ int mpc5xxx_fec_probe(struct device_d *dev)
+ 		fec->miidev.address = CONFIG_PHY_ADDR;
+ 		fec->miidev.flags = pdata->xcv_type == MII10 ? MIIDEV_FORCE_10 : 0;
+ 		fec->miidev.edev = edev;
++		fec->miidev.parent = dev;
  
- 	fec->eth = dev_request_mem_region(dev, 0);
- 	fec->tbdBase = (FEC_TBD *)FEC_BD_BASE;
+ 		mii_register(&fec->miidev);
+ 	}
 diff --git a/drivers/net/macb.c b/drivers/net/macb.c
-index 95ad3d7..435fa28 100644
+index 435fa28..898cf3d 100644
 --- a/drivers/net/macb.c
 +++ b/drivers/net/macb.c
-@@ -433,6 +433,7 @@ static int macb_probe(struct device_d *dev)
- 	edev->halt = macb_halt;
- 	edev->get_ethaddr = pdata->get_ethaddr ? pdata->get_ethaddr : macb_get_ethaddr;
- 	edev->set_ethaddr = macb_set_ethaddr;
-+	edev->parent = dev;
+@@ -441,6 +441,7 @@ static int macb_probe(struct device_d *dev)
+ 	macb->miidev.flags = pdata->flags & AT91SAM_ETHER_FORCE_LINK ?
+ 		MIIDEV_FORCE_LINK : 0;
+ 	macb->miidev.edev = edev;
++	macb->miidev.parent = dev;
+ 	macb->flags = pdata->flags;
  
- 	macb->miidev.read = macb_phy_read;
- 	macb->miidev.write = macb_phy_write;
+ 	macb->rx_buffer = xmalloc(CFG_MACB_RX_BUFFER_SIZE); 
+diff --git a/drivers/net/miidev.c b/drivers/net/miidev.c
+index fa9d79e..501a4f8 100644
+--- a/drivers/net/miidev.c
++++ b/drivers/net/miidev.c
+@@ -210,6 +210,8 @@ int mii_register(struct mii_device *mdev)
+ 	mdev->dev.priv = mdev;
+ 	mdev->dev.id = -1;
+ 	strcpy(mdev->dev.name, "miidev");
++	if (mdev->parent)
++		dev_add_child(mdev->parent, &mdev->dev);
+ 
+ 	return register_device(&mdev->dev);
+ }
 diff --git a/drivers/net/netx_eth.c b/drivers/net/netx_eth.c
-index fd40f62..fd09983 100644
+index fd09983..5503bc9 100644
 --- a/drivers/net/netx_eth.c
 +++ b/drivers/net/netx_eth.c
-@@ -258,6 +258,7 @@ static int netx_eth_probe(struct device_d *dev)
- 	edev->halt = netx_eth_halt;
- 	edev->get_ethaddr = netx_eth_get_ethaddr;
- 	edev->set_ethaddr = netx_eth_set_ethaddr;
-+	edev->parent = dev;
- 
- 	priv->miidev.read = netx_miidev_read;
+@@ -264,6 +264,7 @@ static int netx_eth_probe(struct device_d *dev)
  	priv->miidev.write = netx_miidev_write;
+ 	priv->miidev.address = 0;
+ 	priv->miidev.flags = 0;
++	priv->miidev.parent = dev;
+ 
+ 	netx_eth_init_phy();
+ 	mii_register(&priv->miidev);
 diff --git a/drivers/net/smc91111.c b/drivers/net/smc91111.c
-index 1c1ffea..edb0f68 100644
+index edb0f68..2313aae 100644
 --- a/drivers/net/smc91111.c
 +++ b/drivers/net/smc91111.c
-@@ -1311,6 +1311,7 @@ static int smc91c111_probe(struct device_d *dev)
- 	edev->halt = smc91c111_eth_halt;
- 	edev->get_ethaddr = smc91c111_get_ethaddr;
- 	edev->set_ethaddr = smc91c111_set_ethaddr;
-+	edev->parent = dev;
+@@ -1318,6 +1318,7 @@ static int smc91c111_probe(struct device_d *dev)
+ 	priv->miidev.address = 0;
+ 	priv->miidev.flags = 0;
+ 	priv->miidev.edev = edev;
++	priv->miidev.parent = dev;
+ 	priv->base = dev_request_mem_region(dev, 0);
  
- 	priv->miidev.read = smc91c111_phy_read;
- 	priv->miidev.write = smc91c111_phy_write;
+ 	smc91c111_reset(edev);
 diff --git a/drivers/net/smc911x.c b/drivers/net/smc911x.c
-index 8c6f9fc..45d24ad 100644
+index 45d24ad..fba61c4 100644
 --- a/drivers/net/smc911x.c
 +++ b/drivers/net/smc911x.c
-@@ -725,6 +725,7 @@ static int smc911x_probe(struct device_d *dev)
- 	edev->halt = smc911x_eth_halt;
- 	edev->get_ethaddr = smc911x_get_ethaddr;
- 	edev->set_ethaddr = smc911x_set_ethaddr;
-+	edev->parent = dev;
+@@ -732,6 +732,7 @@ static int smc911x_probe(struct device_d *dev)
+ 	priv->miidev.address = 1;
+ 	priv->miidev.flags = 0;
+ 	priv->miidev.edev = edev;
++	priv->miidev.parent = dev;
+ 	priv->base = base;
  
- 	priv->miidev.read = smc911x_phy_read;
- 	priv->miidev.write = smc911x_phy_write;
-diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-index cd658ed..5ffd7a6 100644
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -206,6 +206,7 @@ int usbnet_probe(struct usb_device *usbdev, const struct usb_device_id *prod)
- 	edev->recv = usbnet_recv,
- 	edev->halt = usbnet_halt,
- 	edev->priv = undev;
-+	edev->parent = &usbdev->dev;
+ 	smc911x_reset(edev);
+diff --git a/drivers/net/usb/asix.c b/drivers/net/usb/asix.c
+index d148925..be5a170 100644
+--- a/drivers/net/usb/asix.c
++++ b/drivers/net/usb/asix.c
+@@ -474,6 +474,7 @@ static int asix_init_mii(struct usbnet *dev)
+ 	dev->miidev.address = asix_get_phy_addr(dev);
+ 	dev->miidev.flags = 0;
+ 	dev->miidev.edev = &dev->edev;
++	dev->miidev.parent = &dev->udev->dev;
  
- 	info = (struct driver_info *)prod->driver_info;
- 	undev->driver_info = info;
-diff --git a/include/net.h b/include/net.h
-index 1272f23..d0f8341 100644
---- a/include/net.h
-+++ b/include/net.h
-@@ -43,6 +43,7 @@ struct eth_device {
- 	void *priv;
+ 	return mii_register(&dev->miidev);
+ }
+diff --git a/drivers/net/usb/smsc95xx.c b/drivers/net/usb/smsc95xx.c
+index ae137fb..b518992 100644
+--- a/drivers/net/usb/smsc95xx.c
++++ b/drivers/net/usb/smsc95xx.c
+@@ -444,6 +444,7 @@ static int smsc95xx_phy_initialize(struct usbnet *dev)
+ 	dev->miidev.address = 1; /* FIXME: asix_get_phy_addr(dev); */
+ 	dev->miidev.flags = 0;
+ 	dev->miidev.edev = &dev->edev;
++	dev->miidev.parent = &dev->udev->dev;
+ //	dev->miidev.name = dev->edev.name;
  
+ 	/* reset phy and wait for reset to complete */
+diff --git a/include/miidev.h b/include/miidev.h
+index 6f653d9..21727ef 100644
+--- a/include/miidev.h
++++ b/include/miidev.h
+@@ -33,6 +33,7 @@
+ 
+ struct mii_device {
  	struct device_d dev;
 +	struct device_d *parent;
  
- 	struct list_head list;
- };
-diff --git a/net/eth.c b/net/eth.c
-index 2a801f5..621cb59 100644
---- a/net/eth.c
-+++ b/net/eth.c
-@@ -199,6 +199,10 @@ int eth_register(struct eth_device *edev)
- 
- 	strcpy(edev->dev.name, "eth");
- 	edev->dev.id = -1;
-+
-+	if (edev->parent)
-+		dev_add_child(edev->parent, &edev->dev);
-+
- 	register_device(&edev->dev);
- 
- 	dev->type_data = edev;
+ 	int address;	/* The address the phy has on the bus */
+ 	int	(*read) (struct mii_device *dev, int addr, int reg);
 -- 
 1.7.5.4
 
