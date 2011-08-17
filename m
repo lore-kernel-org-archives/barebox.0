@@ -1,21 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 5.mo3.mail-out.ovh.net ([87.98.178.36]
-	helo=mo3.mail-out.ovh.net)
-	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1QtM2Y-0006rV-Ga
-	for barebox@lists.infradead.org; Tue, 16 Aug 2011 15:58:55 +0000
-Received: from mail191.ha.ovh.net (b9.ovh.net [213.186.33.59])
-	by mo3.mail-out.ovh.net (Postfix) with SMTP id 72898FF9A36
-	for <barebox@lists.infradead.org>;
-	Tue, 16 Aug 2011 17:59:15 +0200 (CEST)
-Date: Tue, 16 Aug 2011 17:39:39 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20110816153939.GE28201@game.jcrosoft.org>
-References: <1313397992-3065-1-git-send-email-s.hauer@pengutronix.de>
-	<1313397992-3065-6-git-send-email-s.hauer@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+	id 1Qtaih-0007RP-Sa
+	for barebox@lists.infradead.org; Wed, 17 Aug 2011 07:39:25 +0000
+Date: Wed, 17 Aug 2011 09:39:21 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20110817073921.GI31404@pengutronix.de>
+References: <20110812090653.GN31404@pengutronix.de>
+	<1313140916.4361@milas.spb.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1313397992-3065-6-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1313140916.4361@milas.spb.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,36 +23,82 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 5/7] mci: parent fixups
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: I2C support to PCM-038 board
+To: shc@milas.spb.ru
 Cc: barebox@lists.infradead.org
 
-On 10:46 Mon 15 Aug     , Sascha Hauer wrote:
-> Make the mci host a child of the hardware device and the disk
-> a child of the mci host.
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  drivers/mci/atmel_mci.c  |    1 +
->  drivers/mci/imx-esdhc.c  |    1 +
->  drivers/mci/imx.c        |    1 +
->  drivers/mci/mci-core.c   |    5 ++++-
->  drivers/mci/omap_hsmmc.c |    1 +
->  5 files changed, 8 insertions(+), 1 deletions(-)
-> 
-> diff --git a/drivers/mci/atmel_mci.c b/drivers/mci/atmel_mci.c
-> index b4489dd..47e3924 100644
-> --- a/drivers/mci/atmel_mci.c
-> +++ b/drivers/mci/atmel_mci.c
-> @@ -449,6 +449,7 @@ static int mci_probe(struct device_d *hw_dev)
->  	host->mci.send_cmd = mci_request;
->  	host->mci.set_ios = mci_set_ios;
->  	host->mci.init = mci_reset;
-> +	host->mci.hw_dev = dev;
-it's hw_dev here
+On Fri, Aug 12, 2011 at 01:21:56PM +0400, shc@milas.spb.ru wrote:
+> Sascha Hauer <s.hauer@pengutronix.de> wrote ..
+> > On Thu, Aug 11, 2011 at 02:37:05PM +0400, Alexander Shiyan wrote:
+> > > Hello.
+> > > 
+> > > Please review and apply this simple patch.
+> ...
+> > Please remove the #ifdef CONFIG_I2C
+> OK.
 
-Best Regards,
-J.
+Applied, thanks
+ Sascha
+
+> 
+> diff -urN barebox-v2011.08.0.orig/arch/arm/boards/pcm038/pcm038.c barebox-v2011.08.0/arch/arm/boards/pcm038/pcm038.c
+> --- barebox-v2011.08.0.orig/arch/arm/boards/pcm038/pcm038.c	2011-08-04 16:42:13.000000000 +0400
+> +++ barebox-v2011.08.0/arch/arm/boards/pcm038/pcm038.c	2011-08-12 13:11:20.000000000 +0400
+> @@ -40,6 +40,7 @@
+>  #include <mach/imx-pll.h>
+>  #include <mach/imxfb.h>
+>  #include <asm/mmu.h>
+> +#include <i2c/i2c.h>
+>  #include <usb/isp1504.h>
+>  #include <mach/spi.h>
+>  #include <mach/iomux-mx27.h>
+> @@ -261,6 +262,12 @@
+>  		PD23_AF_USBH2_DATA2,
+>  		PD24_AF_USBH2_DATA1,
+>  		PD26_AF_USBH2_DATA5,
+> +		/* I2C1 */
+> +		PD17_PF_I2C_DATA | GPIO_PUEN,
+> +		PD18_PF_I2C_CLK,
+> +		/* I2C2 */
+> +		PC5_PF_I2C2_SDA,
+> +		PC6_PF_I2C2_SCL,
+>  	};
+> 
+>  	pcm038_mmu_init();
+> @@ -298,6 +305,10 @@
+>  	register_device(&sram_dev);
+>  	imx27_add_fb(&pcm038_fb_data);
+> 
+> +	PCCR0 |= PCCR0_I2C1_EN | PCCR0_I2C2_EN;
+> +	imx27_add_i2c0(NULL);
+> +	imx27_add_i2c1(NULL);
+> +
+>  #ifdef CONFIG_USB
+>  	pcm038_usbh_init();
+>  	register_device(&usbh2_dev);
+> diff -urN barebox-v2011.08.0.orig/arch/arm/mach-imx/include/mach/devices-imx27.h barebox-v2011.08.0/arch/arm/mach-imx/include/mach/devices-imx27.h
+> --- barebox-v2011.08.0.orig/arch/arm/mach-imx/include/mach/devices-imx27.h	2011-08-04 16:42:13.000000000 +0400
+> +++ barebox-v2011.08.0/arch/arm/mach-imx/include/mach/devices-imx27.h	2011-08-11 11:20:26.000000000 +0400
+> @@ -11,6 +11,11 @@
+>  	return imx_add_i2c((void *)IMX_I2C1_BASE, 0, pdata);
+>  }
+> 
+> +static inline struct device_d *imx27_add_i2c1(struct i2c_platform_data *pdata)
+> +{
+> +	return imx_add_i2c((void *)IMX_I2C2_BASE, 1, pdata);
+> +}
+> +
+>  static inline struct device_d *imx27_add_uart0(void)
+>  {
+>  	return imx_add_uart((void *)IMX_UART1_BASE, 0);
+> 
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
