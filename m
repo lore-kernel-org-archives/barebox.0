@@ -1,22 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 13.mo3.mail-out.ovh.net ([188.165.33.202]
-	helo=mo3.mail-out.ovh.net)
-	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1QtwNI-00032c-9a
-	for barebox@lists.infradead.org; Thu, 18 Aug 2011 06:46:45 +0000
-Received: from mail191.ha.ovh.net (b9.ovh.net [213.186.33.59])
-	by mo3.mail-out.ovh.net (Postfix) with SMTP id E1C26FFCEEA
-	for <barebox@lists.infradead.org>;
-	Thu, 18 Aug 2011 08:47:07 +0200 (CEST)
-Date: Thu, 18 Aug 2011 08:27:20 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20110818062720.GA21635@game.jcrosoft.org>
-References: <1313397992-3065-1-git-send-email-s.hauer@pengutronix.de>
-	<1313472967-19324-1-git-send-email-plagnioj@jcrosoft.com>
-	<20110818052620.GP31404@pengutronix.de>
+Received: from mail-vx0-f177.google.com ([209.85.220.177])
+	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+	id 1QuiTo-0000hm-5Q
+	for barebox@lists.infradead.org; Sat, 20 Aug 2011 10:08:40 +0000
+Received: by vxj2 with SMTP id 2so3846251vxj.36
+	for <barebox@lists.infradead.org>; Sat, 20 Aug 2011 03:08:36 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20110818052620.GP31404@pengutronix.de>
+Date: Sat, 20 Aug 2011 10:08:36 +0000
+Message-ID: <CAK8HZOLNN4pdfbHXq40-Zngz3Dnx6hfUkW3n92jxhOHS0DbOaA@mail.gmail.com>
+From: Nataraj S Narayan <natarajsn@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,57 +21,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] device: update id support to allow device without id
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: tftp or nfs?
+To: barebox@lists.infradead.org
 
-On 07:26 Thu 18 Aug     , Sascha Hauer wrote:
-> On Tue, Aug 16, 2011 at 07:36:04AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > as in linux use -1 for this
-> > 
-> > as example on bus we may have only one device so no need to have
-> > devname<number>
-> > 
-> > for automatic id use -2 now
-> > udpate all the device that use -1 to -2
-> > 
-> > device that really want -1 will have to update later
-> > 
-> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > ---
-> > diff --git a/arch/arm/boards/a9m2410/a9m2410.c b/arch/arm/boards/a9m2410/a9m2410.c
-> > index 44ac44b..0d26da9 100644
-> > --- a/arch/arm/boards/a9m2410/a9m2410.c
-> > +++ b/arch/arm/boards/a9m2410/a9m2410.c
-> > @@ -131,14 +131,14 @@ static int a9m2410_devices_init(void)
-> >  	writel(reg, MISCCR);
-> >  
-> >  	/* ----------- the devices the boot loader should work with -------- */
-> > -	add_generic_device("s3c24x0_nand", -1, NULL, S3C24X0_NAND_BASE, 0,
-> > +	add_generic_device("s3c24x0_nand", -2, NULL, S3C24X0_NAND_BASE, 0,
-> >  			   IORESOURCE_MEM, &nand_info);
-> 
-> -1 has a special meaning without being a define, but we should not
-> introduce another arbitrary numbered special meaning.
-we can add a proper define
+Hi
 
-> 
-> But I don't think we want this anyway. In a later patch you convert
-> all drivers/devices to platform_*_register without having a
-> platform_device. If we want to go this way we should go it all the
-> way and have a struct platform_device which embeds a struct device_d.
-> The 'id' field would then be a part of the platform_device rather
-> than the device itself.
-> The 'id' field is only present because we have no better way of
-> numbering the instances of devices on a platform bus. With PCI/USB
-> devices this numbering would come from the position on the bus.
-I chosse to do it in two step for platfrom_device
+Unable to download and write a 30Mb ubifs file over tftp.  Any other
+preferred method of writing to ubi volume?
 
-I first switch everyone to the function and then introduce the new struct
-I've not yet finish completly the new struct but it's on its way
+Usb mass store doesn't mount.
 
-Best Regards,
-J.
+regards
+
+Nataraj
+
+barebox@Atmel at91sam9263-ek:/ tftp rootfs.ubifs /dev/ubi0.root
+warning: No MAC address set. Using random address 4A:01:CD:DA:A9:3C
+phy0: Link is up - 100/Full
+TFTP from server 192.168.0.110 ('rootfs.ubifs' -> '/dev/ubi0.root')
+        #################################################UBI error: ubi_io_writs
+UBI warning: ubi_eba_write_leb: failed to write data to PEB 603189552
+UBI warning: ubi_ro_mode: switch to read-only mode
+Couldnt or partially wrote data
+write: Invalid argument
+
+tftp failed: error -22
 
 _______________________________________________
 barebox mailing list
