@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-ww0-f49.google.com ([74.125.82.49])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QusMv-00045j-HU
-	for barebox@lists.infradead.org; Sat, 20 Aug 2011 20:42:14 +0000
-Message-ID: <4E501C1A.5090003@pengutronix.de>
-Date: Sat, 20 Aug 2011 22:42:02 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+	id 1QvDNm-0005PX-Gi
+	for barebox@lists.infradead.org; Sun, 21 Aug 2011 19:08:31 +0000
+Received: by wwf10 with SMTP id 10so3338433wwf.18
+	for <barebox@lists.infradead.org>; Sun, 21 Aug 2011 12:08:26 -0700 (PDT)
 MIME-Version: 1.0
-References: <CAK8HZOLNN4pdfbHXq40-Zngz3Dnx6hfUkW3n92jxhOHS0DbOaA@mail.gmail.com>
-In-Reply-To: <CAK8HZOLNN4pdfbHXq40-Zngz3Dnx6hfUkW3n92jxhOHS0DbOaA@mail.gmail.com>
+Date: Sun, 21 Aug 2011 23:08:25 +0400
+Message-ID: <CAA4bVAFnVrs0Q7hkgmmDGJK5FKRNt--UJZ5Y_j2+_c+bzX47pA@mail.gmail.com>
+From: Antony Pavlov <antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,88 +17,30 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1519057803=="
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: tftp or nfs?
-To: Nataraj S Narayan <natarajsn@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [RFC] fix loads command
+To: barebox <barebox@lists.infradead.org>
 
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---===============1519057803==
-Content-Type: multipart/signed; micalg=pgp-sha1;
- protocol="application/pgp-signature";
- boundary="------------enig28F7907B917BE8CBD78FE1D1"
+Hi!
 
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---------------enig28F7907B917BE8CBD78FE1D1
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
+  I have fixed loads command (it works on my mips board), but there
+are some questions:
 
-On 08/20/2011 12:08 PM, Nataraj S Narayan wrote:
-> Unable to download and write a 30Mb ubifs file over tftp.  Any other
-> preferred method of writing to ubi volume?
->=20
-> Usb mass store doesn't mount.
->=20
-> regards
->=20
-> Nataraj
->=20
-> barebox@Atmel at91sam9263-ek:/ tftp rootfs.ubifs /dev/ubi0.root
-> warning: No MAC address set. Using random address 4A:01:CD:DA:A9:3C
-> phy0: Link is up - 100/Full
-> TFTP from server 192.168.0.110 ('rootfs.ubifs' -> '/dev/ubi0.root')
->         #################################################UBI error: ubi=
-_io_writs
-> UBI warning: ubi_eba_write_leb: failed to write data to PEB 603189552
+  Do we need CONFIG_LOADS_BAUD_CHANGE option?
+  Is there any reason to use getopt syntax for loads (see barebox's
+loadb command for example)?
 
-your PED (physical erase block) 603189552 seems to have a problem....
-Although the number itself is quite big: 603.189.552.
+  I'm waiting for your comments.
 
-Boot Linux and reformat the ubi.
+-- =
 
-> UBI warning: ubi_ro_mode: switch to read-only mode
-> Couldnt or partially wrote data
-> write: Invalid argument
->=20
-> tftp failed: error -22
-
-cheers, Marc
-
---=20
-Pengutronix e.K.                  | Marc Kleine-Budde           |
-Industrial Linux Solutions        | Phone: +49-231-2826-924     |
-Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
-
-
---------------enig28F7907B917BE8CBD78FE1D1
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.10 (GNU/Linux)
-Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org/
-
-iEYEARECAAYFAk5QHB4ACgkQjTAFq1RaXHNpOgCffptE3LrEGEJdjXl+yJve9r/6
-v0gAnifpp1iDuFz4ghxhKvyCe36e0B+x
-=zIFE
------END PGP SIGNATURE-----
-
---------------enig28F7907B917BE8CBD78FE1D1--
-
-
---===============1519057803==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============1519057803==--
