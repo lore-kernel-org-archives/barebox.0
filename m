@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-ww0-f49.google.com ([74.125.82.49])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QvYH9-00033o-At
-	for barebox@lists.infradead.org; Mon, 22 Aug 2011 17:27:04 +0000
-Date: Mon, 22 Aug 2011 19:27:01 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110822172700.GB31404@pengutronix.de>
-References: <1314021065-10784-1-git-send-email-t.gamez@phytec.de>
+	id 1QvZMJ-0003oe-Jf
+	for barebox@lists.infradead.org; Mon, 22 Aug 2011 18:36:29 +0000
+Received: by wwf10 with SMTP id 10so3964593wwf.18
+	for <barebox@lists.infradead.org>; Mon, 22 Aug 2011 11:36:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1314021065-10784-1-git-send-email-t.gamez@phytec.de>
+In-Reply-To: <20110822065844.GW31404@pengutronix.de>
+References: <1313953720-31008-1-git-send-email-antonynpavlov@gmail.com>
+	<20110822065844.GW31404@pengutronix.de>
+Date: Mon, 22 Aug 2011 22:36:24 +0400
+Message-ID: <CAA4bVAHLeVzJsi1CQE3w-QV91d-m9DdD88m9K=jXGq7GvhAO=w@mail.gmail.com>
+From: Antony Pavlov <antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,97 +20,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCHv2 1/2] ARM pcm043: Use PDR0 to change cpu freq
-To: Teresa =?iso-8859-15?Q?G=E1mez?= <t.gamez@phytec.de>
+Subject: Re: [RFC-PATCH] Fix loads command
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Teresa,
+On 22 August 2011 10:58, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> Hi Antony,
+>
+> On Sun, Aug 21, 2011 at 11:08:40PM +0400, Antony Pavlov wrote:
+>> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+>> ---
+>> =A0commands/Kconfig =A0| =A0 =A07 +-
+>> =A0commands/Makefile | =A0 =A01 -
+>> =A0commands/loads.c =A0| =A0295 ++++++++++++++++++++++++++++++----------=
+-------------
+>> =A0common/Makefile =A0 | =A0 =A01 +
+>> =A04 files changed, 171 insertions(+), 133 deletions(-)
+>
+> There seem to be many whitespace cleanups in this patch. Can you please
+> post a seperate patch for these for easier review?
 
-On Mon, Aug 22, 2011 at 03:51:04PM +0200, Teresa G=E1mez wrote:
-> Instead of changing the MPCTL to set an other cpu frequency,
-> use the post divider.
-> =
+...
 
-> This prevents freezing when changing the clock from 399MHz to 532MHz.
+> A good start would be to cleanup the coding style and to make it compile
+> again.
 
-Originally this command was meant for debugging purposes. The pcm043
-comes up with 532MHz and there should be no need to change the
-frequency. I remember that some boards are able to run barebox with
-532MHz but don't manage to start the kernel with this frequency. Also I
-have one board which does not run with 532MHz at all, but I think it's
-an early development sample.
-Is there a need to run boards with a lower frequency than they are able
-to do? Otherwise, if some boards are not stable at the default 532MHz
-I suggest we should also lower the default to 399MHz.
+I shall send the new patch series in a few minutes.
 
-Sascha
+This patch series will make loads compile again and fix coding style /
+compiler's warning.
 
-> =
-
-> Signed-off-by: Teresa G=E1mez <t.gamez@phytec.de>
-> ---
->  arch/arm/boards/pcm043/pcm043.c |    8 ++++----
->  1 files changed, 4 insertions(+), 4 deletions(-)
-> =
-
-> diff --git a/arch/arm/boards/pcm043/pcm043.c b/arch/arm/boards/pcm043/pcm=
-043.c
-> index 966899a..5cd6432 100644
-> --- a/arch/arm/boards/pcm043/pcm043.c
-> +++ b/arch/arm/boards/pcm043/pcm043.c
-> @@ -301,8 +301,8 @@ static int pcm043_core_setup(void)
->  =
-
->  core_initcall(pcm043_core_setup);
->  =
-
-> -#define MPCTL_PARAM_399     (IMX_PLL_PD(0) | IMX_PLL_MFD(15) | IMX_PLL_M=
-FI(8) | IMX_PLL_MFN(5))
-> -#define MPCTL_PARAM_532     ((1 << 31) | IMX_PLL_PD(0) | IMX_PLL_MFD(11)=
- | IMX_PLL_MFI(11) | IMX_PLL_MFN(1))
-> +#define CCM_PDR0_PARAM_399	((1 << 12) | (1 << 16))
-> +#define CCM_PDR0_PARAM_532	(1 << 12)
->  =
-
->  static int do_cpufreq(struct command *cmdtp, int argc, char *argv[])
->  {
-> @@ -315,10 +315,10 @@ static int do_cpufreq(struct command *cmdtp, int ar=
-gc, char *argv[])
->  =
-
->  	switch (freq) {
->  	case 399:
-> -		writel(MPCTL_PARAM_399, IMX_CCM_BASE + CCM_MPCTL);
-> +		writel(CCM_PDR0_PARAM_399, IMX_CCM_BASE + CCM_PDR0);
->  		break;
->  	case 532:
-> -		writel(MPCTL_PARAM_532, IMX_CCM_BASE + CCM_MPCTL);
-> +		writel(CCM_PDR0_PARAM_532, IMX_CCM_BASE + CCM_PDR0);
->  		break;
->  	default:
->  		return COMMAND_ERROR_USAGE;
-> -- =
-
-> 1.7.0.4
-> =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+For simplicity baudrate switching code was removed.
+We can add it in the future. Also it isn't very difficult to switch
+from direct memory writing to file descriptor writing.
 
 -- =
 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
