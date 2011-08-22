@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-fx0-f49.google.com ([209.85.161.49])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QvZVR-0003vw-S9
-	for barebox@lists.infradead.org; Mon, 22 Aug 2011 18:45:55 +0000
-Received: by mail-fx0-f49.google.com with SMTP id 20so4552946fxd.36
-	for <barebox@lists.infradead.org>; Mon, 22 Aug 2011 11:45:53 -0700 (PDT)
+	id 1QvZVT-0003vc-Mc
+	for barebox@lists.infradead.org; Mon, 22 Aug 2011 18:45:56 +0000
+Received: by mail-fx0-f49.google.com with SMTP id 20so4552908fxd.36
+	for <barebox@lists.infradead.org>; Mon, 22 Aug 2011 11:45:55 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon, 22 Aug 2011 22:45:36 +0400
-Message-Id: <1314038738-32189-4-git-send-email-antonynpavlov@gmail.com>
+Date: Mon, 22 Aug 2011 22:45:37 +0400
+Message-Id: <1314038738-32189-5-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1314038738-32189-1-git-send-email-antonynpavlov@gmail.com>
 References: <1314038738-32189-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,29 +23,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] commands/loads.c: fix compiler's warning
+Subject: [PATCH 4/5] commands/loads.c: make do_* functions static
 To: barebox@lists.infradead.org
-
-Fix 'assignment discards qualifiers from pointer target type' warning.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- commands/loads.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+ commands/loads.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/commands/loads.c b/commands/loads.c
-index 71fdeba..6aef557 100644
+index 6aef557..396406c 100644
 --- a/commands/loads.c
 +++ b/commands/loads.c
-@@ -45,7 +45,7 @@ int do_load_serial(struct command *cmdtp, int argc, char *argv[])
+@@ -40,7 +40,7 @@ static int save_serial (ulong offset, ulong size);
+ static int write_record (char *buf);
+ #endif /* CONFIG_CMD_SAVES */
+ 
+-int do_load_serial(struct command *cmdtp, int argc, char *argv[])
++static int do_load_serial(struct command *cmdtp, int argc, char *argv[])
+ {
  	ulong offset = 0;
  	ulong addr;
- 	int i;
--	char *env_echo;
-+	const char *env_echo;
- 	int rcode = 0;
+@@ -177,7 +177,7 @@ read_record (char *buf, ulong len)
+ }
  
- 	if (((env_echo = getenv("loads_echo")) != NULL) && (*env_echo == '1')) {
+ #ifdef CONFIG_CMD_SAVES
+-int do_save_serial(struct command *cmdtp, int argc, char *argv[])
++static int do_save_serial(struct command *cmdtp, int argc, char *argv[])
+ {
+ 	ulong offset = 0;
+ 	ulong size   = 0;
 -- 
 1.7.5.4
 
