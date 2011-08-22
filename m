@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vx0-f177.google.com ([209.85.220.177])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QvN1v-0008C3-0Q
-	for barebox@lists.infradead.org; Mon, 22 Aug 2011 05:26:36 +0000
-Received: by vxj2 with SMTP id 2so4722051vxj.36
-	for <barebox@lists.infradead.org>; Sun, 21 Aug 2011 22:26:31 -0700 (PDT)
+	id 1QvOTF-0000T8-6U
+	for barebox@lists.infradead.org; Mon, 22 Aug 2011 06:58:54 +0000
+Date: Mon, 22 Aug 2011 08:58:44 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20110822065844.GW31404@pengutronix.de>
+References: <1313953720-31008-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <4E501C1A.5090003@pengutronix.de>
-References: <CAK8HZOLNN4pdfbHXq40-Zngz3Dnx6hfUkW3n92jxhOHS0DbOaA@mail.gmail.com>
-	<4E501C1A.5090003@pengutronix.de>
-Date: Mon, 22 Aug 2011 05:26:30 +0000
-Message-ID: <CAK8HZO+b3eRwCawDwnU_CjMPSinuW1d8QcOSBt_7wE15WRa=vg@mail.gmail.com>
-From: Nataraj S Narayan <natarajsn@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <1313953720-31008-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,97 +18,61 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: tftp or nfs?
-To: Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: Re: [RFC-PATCH] Fix loads command
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-Hi Marc
+Hi Antony,
 
-Is it a tough job to add 'ubiformat' to barebox?  Also a ubifsmount?
+On Sun, Aug 21, 2011 at 11:08:40PM +0400, Antony Pavlov wrote:
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> ---
+>  commands/Kconfig  |    7 +-
+>  commands/Makefile |    1 -
+>  commands/loads.c  |  295 ++++++++++++++++++++++++++++++-----------------------
+>  common/Makefile   |    1 +
+>  4 files changed, 171 insertions(+), 133 deletions(-)
 
-I have been getting hell lots of ubi errors in Linux also.
+There seem to be many whitespace cleanups in this patch. Can you please
+post a seperate patch for these for easier review?
+I think the baudrate change can be made in unconditionally.
 
-These began when I changed a from Micron Nand to Samsung Nand. We have
-been trying to change the 'wait states' in the kernel code. But still
-the same issues.
+I don't know if you are interested in doing this and I don't mind at
+all if you don't, but for a full fixing of these commands I would
+suggest the following:
 
-regards
+- There should be an internal C API for each load/save function for
+  noninteractive use.
+- Instead of writing to some sdram offset the commands should write
+  to a file descriptor.
+- There should be no more than one positional argument to each command.
 
-Nataraj
+A good start would be to cleanup the coding style and to make it compile
+again.
 
-NAND 0device: Manufacturer ID: x2c, Chip ID: 0xda (Micron NAND 256MiB
-3,3V 8-bit)
+I just saw that you copied baudrate switching code from loadb.c. It
+tries to get the current baudrate with:
 
-NAND device: Manufacturer ID: 0xec, Chip ID: 0xda (Samsung NAND 256MiB
-3,3V 8-bit) AT91 NAND: 8-bit
+(int)simple_strtoul(dev_get_param(&cdev->class_dev, "baudrate"), NULL, 10);
 
-UBI error: ubi_io_read: error -74 (ECC error) while reading 129024
-bytes from PEB 517:2048, read 129024 bytes
-usb 1-1: new full speed USB device number 2 using at91_ohci
-UBIFS: recovery needed
-uncorrectable error :
-uncorrectable error :
-uncorrectable error :
-uncorrectable error :
-uncorrectable error :
-uncorrectable error :
-uncorrectable error :
-uncorrectable error :
-uncorrectable error :
-uncorrectable error :
-uncorrectable error :
-uncorrectable error :
-UBI error: ubi_io_read: error -74 (ECC error) while reading 106496
-bytes from PEB 782:2048, read 106496 bytes
-UBIFS error (pid 1): ubifs_recover_leb: LEB 225 scanning failed
-VFS: Cannot open root device "ubi0:root" or unknown-block(0,0)
-On Sat, Aug 20, 2011 at 8:42 PM, Marc Kleine-Budde <mkl@pengutronix.de> wro=
-te:
-> On 08/20/2011 12:08 PM, Nataraj S Narayan wrote:
->> Unable to download and write a 30Mb ubifs file over tftp. =A0Any other
->> preferred method of writing to ubi volume?
->>
->> Usb mass store doesn't mount.
->>
->> regards
->>
->> Nataraj
->>
->> barebox@Atmel at91sam9263-ek:/ tftp rootfs.ubifs /dev/ubi0.root
->> warning: No MAC address set. Using random address 4A:01:CD:DA:A9:3C
->> phy0: Link is up - 100/Full
->> TFTP from server 192.168.0.110 ('rootfs.ubifs' -> '/dev/ubi0.root')
->> =A0 =A0 =A0 =A0 #################################################UBI err=
-or: ubi_io_writs
->> UBI warning: ubi_eba_write_leb: failed to write data to PEB 603189552
->
-> your PED (physical erase block) 603189552 seems to have a problem....
-> Although the number itself is quite big: 603.189.552.
->
-> Boot Linux and reformat the ubi.
->
->> UBI warning: ubi_ro_mode: switch to read-only mode
->> Couldnt or partially wrote data
->> write: Invalid argument
->>
->> tftp failed: error -22
->
-> cheers, Marc
->
-> --
-> Pengutronix e.K. =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0| Marc Kleine-Budde =
-=A0 =A0 =A0 =A0 =A0 |
-> Industrial Linux Solutions =A0 =A0 =A0 =A0| Phone: +49-231-2826-924 =A0 =
-=A0 |
-> Vertretung West/Dortmund =A0 =A0 =A0 =A0 =A0| Fax: =A0 +49-5121-206917-55=
-55 |
-> Amtsgericht Hildesheim, HRA 2686 =A0| http://www.pengutronix.de =A0 |
->
->
+I wonder if it wouldn't be simpler not to change the baudrate when
+no baudrate change is requested.
+
+Another thing: since the loads stuff depends on broken and obviously was
+never used since U-Boot it would also be acceptable to remove it
+completely and to do a fresh start.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
