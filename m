@@ -1,13 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-fx0-f49.google.com ([209.85.161.49])
+Received: from mail-vx0-f177.google.com ([209.85.220.177])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QvFH3-00060E-22
-	for barebox@lists.infradead.org; Sun, 21 Aug 2011 21:09:42 +0000
-Received: by fxd20 with SMTP id 20so3856667fxd.36
-	for <barebox@lists.infradead.org>; Sun, 21 Aug 2011 14:09:36 -0700 (PDT)
-From: Hubert Feurstein <h.feurstein@gmail.com>
-Date: Sun, 21 Aug 2011 23:08:57 +0200
-Message-Id: <1313960937-15271-1-git-send-email-h.feurstein@gmail.com>
+	id 1QvN1v-0008C3-0Q
+	for barebox@lists.infradead.org; Mon, 22 Aug 2011 05:26:36 +0000
+Received: by vxj2 with SMTP id 2so4722051vxj.36
+	for <barebox@lists.infradead.org>; Sun, 21 Aug 2011 22:26:31 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <4E501C1A.5090003@pengutronix.de>
+References: <CAK8HZOLNN4pdfbHXq40-Zngz3Dnx6hfUkW3n92jxhOHS0DbOaA@mail.gmail.com>
+	<4E501C1A.5090003@pengutronix.de>
+Date: Mon, 22 Aug 2011 05:26:30 +0000
+Message-ID: <CAK8HZO+b3eRwCawDwnU_CjMPSinuW1d8QcOSBt_7wE15WRa=vg@mail.gmail.com>
+From: Nataraj S Narayan <natarajsn@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,89 +20,97 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] at91: add missing clkdev changes for at91sam9g45
-To: barebox@lists.infradead.org
+Subject: Re: tftp or nfs?
+To: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-This fixes the following compile errors
-  arch/arm/mach-at91/at91sam9g45.c:185:3: error: 'ohci_clk' undeclared here (not in a function)
-  arch/arm/mach-at91/at91sam9g45.c:186:3: error: 'tcb1_clk' undeclared here (not in a function)
-  arch/arm/mach-at91/at91sam9g45_devices.c: In function 'at91_add_device_mci':
-  arch/arm/mach-at91/at91sam9g45_devices.c:258:2: warning: implicit declaration of function 'at91_clock_associate'
-    [...]
-  arch/arm/mach-at91/built-in.o: In function `at91_add_device_mci':
-  sam9_smc.c:(.text.at91_add_device_mci+0x1d0): undefined reference to `at91_clock_associate'
-which were introduced in commit:
-  "at91: swtich to clkdev" (ae19fe26cc230bc38238c2d66b8f464761286316)
+Hi Marc
 
-Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
-Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- arch/arm/mach-at91/at91sam9g45.c         |    3 ---
- arch/arm/mach-at91/at91sam9g45_devices.c |    7 +------
- 2 files changed, 1 insertions(+), 9 deletions(-)
+Is it a tough job to add 'ubiformat' to barebox?  Also a ubifsmount?
 
-diff --git a/arch/arm/mach-at91/at91sam9g45.c b/arch/arm/mach-at91/at91sam9g45.c
-index d4c27f8..f1139da 100644
---- a/arch/arm/mach-at91/at91sam9g45.c
-+++ b/arch/arm/mach-at91/at91sam9g45.c
-@@ -181,9 +181,6 @@ static struct clk *periph_clocks[] __initdata = {
- 	&isi_clk,
- 	&udphs_clk,
- 	&mmc1_clk,
--	// irq0
--	&ohci_clk,
--	&tcb1_clk,
- };
- 
- static struct clk_lookup periph_clocks_lookups[] = {
-diff --git a/arch/arm/mach-at91/at91sam9g45_devices.c b/arch/arm/mach-at91/at91sam9g45_devices.c
-index f6e1eb4..022f3e1 100644
---- a/arch/arm/mach-at91/at91sam9g45_devices.c
-+++ b/arch/arm/mach-at91/at91sam9g45_devices.c
-@@ -188,8 +188,6 @@ void at91_register_uart(unsigned id, unsigned pins)
- void at91_add_device_mci(short mmc_id, struct atmel_mci_platform_data *data)
- {
- 	resource_size_t start;
--	struct device_d *dev;
--	char* clk_name;
- 
- 	if (!data)
- 		return;
-@@ -209,7 +207,6 @@ void at91_add_device_mci(short mmc_id, struct atmel_mci_platform_data *data)
- 
- 	if (mmc_id == 0) {		/* MCI0 */
- 		start = AT91SAM9G45_BASE_MCI0;
--		clk_name = "mci0_clk";
- 		/* CLK */
- 		at91_set_A_periph(AT91_PIN_PA0, 0);
- 
-@@ -231,7 +228,6 @@ void at91_add_device_mci(short mmc_id, struct atmel_mci_platform_data *data)
- 		}
- 	} else {			/* MCI1 */
- 		start = AT91SAM9G45_BASE_MCI1;
--		clk_name = "mci1_clk";
- 		/* CLK */
- 		at91_set_A_periph(AT91_PIN_PA31, 0);
- 
-@@ -253,9 +249,8 @@ void at91_add_device_mci(short mmc_id, struct atmel_mci_platform_data *data)
- 		}
- 	}
- 
--	dev = add_generic_device("atmel_mci", mmc_id, NULL, start, 4096,
-+	add_generic_device("atmel_mci", mmc_id, NULL, start, 4096,
- 			   IORESOURCE_MEM, data);
--	at91_clock_associate(clk_name, dev, "mci_clk");
- }
- #else
- void at91_add_device_mci(short mmc_id, struct atmel_mci_platform_data *data) {}
--- 
-1.7.4.1
+I have been getting hell lots of ubi errors in Linux also.
 
+These began when I changed a from Micron Nand to Samsung Nand. We have
+been trying to change the 'wait states' in the kernel code. But still
+the same issues.
+
+regards
+
+Nataraj
+
+NAND 0device: Manufacturer ID: x2c, Chip ID: 0xda (Micron NAND 256MiB
+3,3V 8-bit)
+
+NAND device: Manufacturer ID: 0xec, Chip ID: 0xda (Samsung NAND 256MiB
+3,3V 8-bit) AT91 NAND: 8-bit
+
+UBI error: ubi_io_read: error -74 (ECC error) while reading 129024
+bytes from PEB 517:2048, read 129024 bytes
+usb 1-1: new full speed USB device number 2 using at91_ohci
+UBIFS: recovery needed
+uncorrectable error :
+uncorrectable error :
+uncorrectable error :
+uncorrectable error :
+uncorrectable error :
+uncorrectable error :
+uncorrectable error :
+uncorrectable error :
+uncorrectable error :
+uncorrectable error :
+uncorrectable error :
+uncorrectable error :
+UBI error: ubi_io_read: error -74 (ECC error) while reading 106496
+bytes from PEB 782:2048, read 106496 bytes
+UBIFS error (pid 1): ubifs_recover_leb: LEB 225 scanning failed
+VFS: Cannot open root device "ubi0:root" or unknown-block(0,0)
+On Sat, Aug 20, 2011 at 8:42 PM, Marc Kleine-Budde <mkl@pengutronix.de> wro=
+te:
+> On 08/20/2011 12:08 PM, Nataraj S Narayan wrote:
+>> Unable to download and write a 30Mb ubifs file over tftp. =A0Any other
+>> preferred method of writing to ubi volume?
+>>
+>> Usb mass store doesn't mount.
+>>
+>> regards
+>>
+>> Nataraj
+>>
+>> barebox@Atmel at91sam9263-ek:/ tftp rootfs.ubifs /dev/ubi0.root
+>> warning: No MAC address set. Using random address 4A:01:CD:DA:A9:3C
+>> phy0: Link is up - 100/Full
+>> TFTP from server 192.168.0.110 ('rootfs.ubifs' -> '/dev/ubi0.root')
+>> =A0 =A0 =A0 =A0 #################################################UBI err=
+or: ubi_io_writs
+>> UBI warning: ubi_eba_write_leb: failed to write data to PEB 603189552
+>
+> your PED (physical erase block) 603189552 seems to have a problem....
+> Although the number itself is quite big: 603.189.552.
+>
+> Boot Linux and reformat the ubi.
+>
+>> UBI warning: ubi_ro_mode: switch to read-only mode
+>> Couldnt or partially wrote data
+>> write: Invalid argument
+>>
+>> tftp failed: error -22
+>
+> cheers, Marc
+>
+> --
+> Pengutronix e.K. =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0| Marc Kleine-Budde =
+=A0 =A0 =A0 =A0 =A0 |
+> Industrial Linux Solutions =A0 =A0 =A0 =A0| Phone: +49-231-2826-924 =A0 =
+=A0 |
+> Vertretung West/Dortmund =A0 =A0 =A0 =A0 =A0| Fax: =A0 +49-5121-206917-55=
+55 |
+> Amtsgericht Hildesheim, HRA 2686 =A0| http://www.pengutronix.de =A0 |
+>
+>
 
 _______________________________________________
 barebox mailing list
