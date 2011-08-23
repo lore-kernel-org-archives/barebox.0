@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycard.co.uk ([217.6.246.34] helo=root.phytec.de)
-	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1QvnK5-00054n-Pz
-	for barebox@lists.infradead.org; Tue, 23 Aug 2011 09:31:06 +0000
-From: Teresa Gamez <T.Gamez@phytec.de>
-In-Reply-To: <20110822172700.GB31404@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+	id 1QvoSK-0006Tg-6A
+	for barebox@lists.infradead.org; Tue, 23 Aug 2011 10:43:41 +0000
+Date: Tue, 23 Aug 2011 12:43:36 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20110823104336.GI31404@pengutronix.de>
 References: <1314021065-10784-1-git-send-email-t.gamez@phytec.de>
 	<20110822172700.GB31404@pengutronix.de>
-Date: Tue, 23 Aug 2011 11:31:02 +0200
-Message-ID: <1314091862.3389.63.camel@lws-gamez>
-Mime-Version: 1.0
+	<1314091862.3389.63.camel@lws-gamez>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1314091862.3389.63.camel@lws-gamez>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,66 +20,139 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCHv2 1/2] ARM pcm043: Use PDR0 to change cpu freq
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Teresa Gamez <T.Gamez@phytec.de>
 Cc: barebox@lists.infradead.org
 
-QW0gTW9udGFnLCBkZW4gMjIuMDguMjAxMSwgMTk6MjcgKzAyMDAgc2NocmllYiBTYXNjaGEgSGF1
-ZXI6Cj4gSGkgVGVyZXNhLAo+IAo+IE9uIE1vbiwgQXVnIDIyLCAyMDExIGF0IDAzOjUxOjA0UE0g
-KzAyMDAsIFRlcmVzYSBHw6FtZXogd3JvdGU6Cj4gPiBJbnN0ZWFkIG9mIGNoYW5naW5nIHRoZSBN
-UENUTCB0byBzZXQgYW4gb3RoZXIgY3B1IGZyZXF1ZW5jeSwKPiA+IHVzZSB0aGUgcG9zdCBkaXZp
-ZGVyLgo+ID4gCj4gPiBUaGlzIHByZXZlbnRzIGZyZWV6aW5nIHdoZW4gY2hhbmdpbmcgdGhlIGNs
-b2NrIGZyb20gMzk5TUh6IHRvIDUzMk1Iei4KPiAKPiBPcmlnaW5hbGx5IHRoaXMgY29tbWFuZCB3
-YXMgbWVhbnQgZm9yIGRlYnVnZ2luZyBwdXJwb3Nlcy4gVGhlIHBjbTA0Mwo+IGNvbWVzIHVwIHdp
-dGggNTMyTUh6IGFuZCB0aGVyZSBzaG91bGQgYmUgbm8gbmVlZCB0byBjaGFuZ2UgdGhlCj4gZnJl
-cXVlbmN5LiBJIHJlbWVtYmVyIHRoYXQgc29tZSBib2FyZHMgYXJlIGFibGUgdG8gcnVuIGJhcmVi
-b3ggd2l0aAo+IDUzMk1IeiBidXQgZG9uJ3QgbWFuYWdlIHRvIHN0YXJ0IHRoZSBrZXJuZWwgd2l0
-aCB0aGlzIGZyZXF1ZW5jeS4gQWxzbyBJCj4gaGF2ZSBvbmUgYm9hcmQgd2hpY2ggZG9lcyBub3Qg
-cnVuIHdpdGggNTMyTUh6IGF0IGFsbCwgYnV0IEkgdGhpbmsgaXQncwo+IGFuIGVhcmx5IGRldmVs
-b3BtZW50IHNhbXBsZS4KPiBJcyB0aGVyZSBhIG5lZWQgdG8gcnVuIGJvYXJkcyB3aXRoIGEgbG93
-ZXIgZnJlcXVlbmN5IHRoYW4gdGhleSBhcmUgYWJsZQo+IHRvIGRvPyBPdGhlcndpc2UsIGlmIHNv
-bWUgYm9hcmRzIGFyZSBub3Qgc3RhYmxlIGF0IHRoZSBkZWZhdWx0IDUzMk1Iego+IEkgc3VnZ2Vz
-dCB3ZSBzaG91bGQgYWxzbyBsb3dlciB0aGUgZGVmYXVsdCB0byAzOTlNSHouCgpZZXMsIHRoZXJl
-IHdoZXJlIGRpZmZlcmVudCBwcm9ibGVtcyB3aXRoIG9sZGVyIGkuTVgzNSBtb2R1bGVzIHNvIHRo
-YXQgdGhlCmZyZXF1ZW5jeSB3YXMgbG93ZXJlZCB0byAzOTlNSHouIApGb3IgdGhlIHJldmlzaW9u
-IDEzMTUuNCB3ZSBtYWRlIHNvbWUgUENCIG9wdGltaXphdGlvbnMgdG8gcnVuIHRoZSBwY20wNDMK
-c2FmZSB3aXRoIDUzMk1Iei4gQWRkaXRpb25hbGx5IHdlIHN3aXRjaGVkIHRoZSBzaWxpY29uIHJl
-dmlzaW9uIHRvIFRPIDIuMS4gClNvIGl0IGlzIGVuc3VyZWQgdGhhdCBhbGwgcGNtMDQzIHdpdGgg
-Pj0gVE8gMi4xIHJ1biB3aXRoIDUzMk1Iei4gCkZvciB0aGF0IGNhc2Ugd2UgbWFkZSBhIHBhdGNo
-IChmb3IgdS1ib290LXYyKSB0aGF0IGNoZWNrcyB0aGUgc2lsaWNvbiByZXZpc2lvbgphbmQgc2V0
-cyB1cCB0aGUgZnJlcXVlbmN5IHBvc3QgZGl2aWRlciBhY2NvcmRpbmdseS4gCkknbGwgdXBkYXRl
-IHRoZSBwYXRjaCBhbmQgc2VuZCBpdC4KClRlcmVzYQoKPiAKPiBTYXNjaGEKPiAKPiA+IAo+ID4g
-U2lnbmVkLW9mZi1ieTogVGVyZXNhIEfDoW1leiA8dC5nYW1lekBwaHl0ZWMuZGU+Cj4gPiAtLS0K
-PiA+ICBhcmNoL2FybS9ib2FyZHMvcGNtMDQzL3BjbTA0My5jIHwgICAgOCArKysrLS0tLQo+ID4g
-IDEgZmlsZXMgY2hhbmdlZCwgNCBpbnNlcnRpb25zKCspLCA0IGRlbGV0aW9ucygtKQo+ID4gCj4g
-PiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL3BjbTA0My9wY20wNDMuYyBiL2FyY2gvYXJt
-L2JvYXJkcy9wY20wNDMvcGNtMDQzLmMKPiA+IGluZGV4IDk2Njg5OWEuLjVjZDY0MzIgMTAwNjQ0
-Cj4gPiAtLS0gYS9hcmNoL2FybS9ib2FyZHMvcGNtMDQzL3BjbTA0My5jCj4gPiArKysgYi9hcmNo
-L2FybS9ib2FyZHMvcGNtMDQzL3BjbTA0My5jCj4gPiBAQCAtMzAxLDggKzMwMSw4IEBAIHN0YXRp
-YyBpbnQgcGNtMDQzX2NvcmVfc2V0dXAodm9pZCkKPiA+ICAKPiA+ICBjb3JlX2luaXRjYWxsKHBj
-bTA0M19jb3JlX3NldHVwKTsKPiA+ICAKPiA+IC0jZGVmaW5lIE1QQ1RMX1BBUkFNXzM5OSAgICAg
-KElNWF9QTExfUEQoMCkgfCBJTVhfUExMX01GRCgxNSkgfCBJTVhfUExMX01GSSg4KSB8IElNWF9Q
-TExfTUZOKDUpKQo+ID4gLSNkZWZpbmUgTVBDVExfUEFSQU1fNTMyICAgICAoKDEgPDwgMzEpIHwg
-SU1YX1BMTF9QRCgwKSB8IElNWF9QTExfTUZEKDExKSB8IElNWF9QTExfTUZJKDExKSB8IElNWF9Q
-TExfTUZOKDEpKQo+ID4gKyNkZWZpbmUgQ0NNX1BEUjBfUEFSQU1fMzk5CSgoMSA8PCAxMikgfCAo
-MSA8PCAxNikpCj4gPiArI2RlZmluZSBDQ01fUERSMF9QQVJBTV81MzIJKDEgPDwgMTIpCj4gPiAg
-Cj4gPiAgc3RhdGljIGludCBkb19jcHVmcmVxKHN0cnVjdCBjb21tYW5kICpjbWR0cCwgaW50IGFy
-Z2MsIGNoYXIgKmFyZ3ZbXSkKPiA+ICB7Cj4gPiBAQCAtMzE1LDEwICszMTUsMTAgQEAgc3RhdGlj
-IGludCBkb19jcHVmcmVxKHN0cnVjdCBjb21tYW5kICpjbWR0cCwgaW50IGFyZ2MsIGNoYXIgKmFy
-Z3ZbXSkKPiA+ICAKPiA+ICAJc3dpdGNoIChmcmVxKSB7Cj4gPiAgCWNhc2UgMzk5Ogo+ID4gLQkJ
-d3JpdGVsKE1QQ1RMX1BBUkFNXzM5OSwgSU1YX0NDTV9CQVNFICsgQ0NNX01QQ1RMKTsKPiA+ICsJ
-CXdyaXRlbChDQ01fUERSMF9QQVJBTV8zOTksIElNWF9DQ01fQkFTRSArIENDTV9QRFIwKTsKPiA+
-ICAJCWJyZWFrOwo+ID4gIAljYXNlIDUzMjoKPiA+IC0JCXdyaXRlbChNUENUTF9QQVJBTV81MzIs
-IElNWF9DQ01fQkFTRSArIENDTV9NUENUTCk7Cj4gPiArCQl3cml0ZWwoQ0NNX1BEUjBfUEFSQU1f
-NTMyLCBJTVhfQ0NNX0JBU0UgKyBDQ01fUERSMCk7Cj4gPiAgCQlicmVhazsKPiA+ICAJZGVmYXVs
-dDoKPiA+ICAJCXJldHVybiBDT01NQU5EX0VSUk9SX1VTQUdFOwo+ID4gLS0gCj4gPiAxLjcuMC40
-Cj4gPiAKPiA+IAo+ID4gX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX18KPiA+IGJhcmVib3ggbWFpbGluZyBsaXN0Cj4gPiBiYXJlYm94QGxpc3RzLmluZnJhZGVh
-ZC5vcmcKPiA+IGh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFy
-ZWJveAo+IAoKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-XwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDov
-L2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On Tue, Aug 23, 2011 at 11:31:02AM +0200, Teresa Gamez wrote:
+> Am Montag, den 22.08.2011, 19:27 +0200 schrieb Sascha Hauer:
+> > Hi Teresa,
+> > =
+
+> > On Mon, Aug 22, 2011 at 03:51:04PM +0200, Teresa G=E1mez wrote:
+> > > Instead of changing the MPCTL to set an other cpu frequency,
+> > > use the post divider.
+> > > =
+
+> > > This prevents freezing when changing the clock from 399MHz to 532MHz.
+> > =
+
+> > Originally this command was meant for debugging purposes. The pcm043
+> > comes up with 532MHz and there should be no need to change the
+> > frequency. I remember that some boards are able to run barebox with
+> > 532MHz but don't manage to start the kernel with this frequency. Also I
+> > have one board which does not run with 532MHz at all, but I think it's
+> > an early development sample.
+> > Is there a need to run boards with a lower frequency than they are able
+> > to do? Otherwise, if some boards are not stable at the default 532MHz
+> > I suggest we should also lower the default to 399MHz.
+> =
+
+> Yes, there where different problems with older i.MX35 modules so that the
+> frequency was lowered to 399MHz. =
+
+> For the revision 1315.4 we made some PCB optimizations to run the pcm043
+> safe with 532MHz. Additionally we switched the silicon revision to TO 2.1=
+. =
+
+> So it is ensured that all pcm043 with >=3D TO 2.1 run with 532MHz. =
+
+> For that case we made a patch (for u-boot-v2) that checks the silicon rev=
+ision
+> and sets up the frequency post divider accordingly. =
+
+> I'll update the patch and send it.
+
+Thanks. This looks like a sane solution.
+
+Sascha
+
+> =
+
+> Teresa
+> =
+
+> > =
+
+> > Sascha
+> > =
+
+> > > =
+
+> > > Signed-off-by: Teresa G=E1mez <t.gamez@phytec.de>
+> > > ---
+> > >  arch/arm/boards/pcm043/pcm043.c |    8 ++++----
+> > >  1 files changed, 4 insertions(+), 4 deletions(-)
+> > > =
+
+> > > diff --git a/arch/arm/boards/pcm043/pcm043.c b/arch/arm/boards/pcm043=
+/pcm043.c
+> > > index 966899a..5cd6432 100644
+> > > --- a/arch/arm/boards/pcm043/pcm043.c
+> > > +++ b/arch/arm/boards/pcm043/pcm043.c
+> > > @@ -301,8 +301,8 @@ static int pcm043_core_setup(void)
+> > >  =
+
+> > >  core_initcall(pcm043_core_setup);
+> > >  =
+
+> > > -#define MPCTL_PARAM_399     (IMX_PLL_PD(0) | IMX_PLL_MFD(15) | IMX_P=
+LL_MFI(8) | IMX_PLL_MFN(5))
+> > > -#define MPCTL_PARAM_532     ((1 << 31) | IMX_PLL_PD(0) | IMX_PLL_MFD=
+(11) | IMX_PLL_MFI(11) | IMX_PLL_MFN(1))
+> > > +#define CCM_PDR0_PARAM_399	((1 << 12) | (1 << 16))
+> > > +#define CCM_PDR0_PARAM_532	(1 << 12)
+> > >  =
+
+> > >  static int do_cpufreq(struct command *cmdtp, int argc, char *argv[])
+> > >  {
+> > > @@ -315,10 +315,10 @@ static int do_cpufreq(struct command *cmdtp, in=
+t argc, char *argv[])
+> > >  =
+
+> > >  	switch (freq) {
+> > >  	case 399:
+> > > -		writel(MPCTL_PARAM_399, IMX_CCM_BASE + CCM_MPCTL);
+> > > +		writel(CCM_PDR0_PARAM_399, IMX_CCM_BASE + CCM_PDR0);
+> > >  		break;
+> > >  	case 532:
+> > > -		writel(MPCTL_PARAM_532, IMX_CCM_BASE + CCM_MPCTL);
+> > > +		writel(CCM_PDR0_PARAM_532, IMX_CCM_BASE + CCM_PDR0);
+> > >  		break;
+> > >  	default:
+> > >  		return COMMAND_ERROR_USAGE;
+> > > -- =
+
+> > > 1.7.0.4
+> > > =
+
+> > > =
+
+> > > _______________________________________________
+> > > barebox mailing list
+> > > barebox@lists.infradead.org
+> > > http://lists.infradead.org/mailman/listinfo/barebox
+> > =
+
+> =
+
+> =
+
+> =
+
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
