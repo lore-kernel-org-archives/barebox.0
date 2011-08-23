@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QvkZL-0002pU-Fr
-	for barebox@lists.infradead.org; Tue, 23 Aug 2011 06:34:40 +0000
-Date: Tue, 23 Aug 2011 08:34:36 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110823063436.GF31404@pengutronix.de>
-References: <1314038738-32189-1-git-send-email-antonynpavlov@gmail.com>
-	<1314038738-32189-2-git-send-email-antonynpavlov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1314038738-32189-2-git-send-email-antonynpavlov@gmail.com>
+Received: from mail.phycard.co.uk ([217.6.246.34] helo=root.phytec.de)
+	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+	id 1QvnK5-00054n-Pz
+	for barebox@lists.infradead.org; Tue, 23 Aug 2011 09:31:06 +0000
+From: Teresa Gamez <T.Gamez@phytec.de>
+In-Reply-To: <20110822172700.GB31404@pengutronix.de>
+References: <1314021065-10784-1-git-send-email-t.gamez@phytec.de>
+	<20110822172700.GB31404@pengutronix.de>
+Date: Tue, 23 Aug 2011 11:31:02 +0200
+Message-ID: <1314091862.3389.63.camel@lws-gamez>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,227 +18,66 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/5] remove LOADS_BAUD_CHANGE from broken commands/loads.c
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCHv2 1/2] ARM pcm043: Use PDR0 to change cpu freq
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Antony,
-
-I applied this series to next. Definately a step in the right direction.
-
-Sascha
-
-On Mon, Aug 22, 2011 at 10:45:34PM +0400, Antony Pavlov wrote:
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
->  commands/loads.c |  109 +-----------------------------------------------------
->  1 files changed, 1 insertions(+), 108 deletions(-)
-> 
-> diff --git a/commands/loads.c b/commands/loads.c
-> index c6617a4..2672c39 100644
-> --- a/commands/loads.c
-> +++ b/commands/loads.c
-> @@ -47,11 +47,6 @@ int do_load_serial(struct command *cmdtp, int argc, char *argv[])
->  	int i;
->  	char *env_echo;
->  	int rcode = 0;
-> -#ifdef	CFG_LOADS_BAUD_CHANGE
-> -	int load_baudrate, current_baudrate;
-> -
-> -	load_baudrate = current_baudrate = gd->baudrate;
-> -#endif
->  
->  	if (((env_echo = getenv("loads_echo")) != NULL) && (*env_echo == '1')) {
->  		do_echo = 1;
-> @@ -59,34 +54,9 @@ int do_load_serial(struct command *cmdtp, int argc, char *argv[])
->  		do_echo = 0;
->  	}
->  
-> -#ifdef	CFG_LOADS_BAUD_CHANGE
-> -	if (argc >= 2) {
-> -		offset = simple_strtoul(argv[1], NULL, 16);
-> -	}
-> -	if (argc == 3) {
-> -		load_baudrate = (int)simple_strtoul(argv[2], NULL, 10);
-> -
-> -		/* default to current baudrate */
-> -		if (load_baudrate == 0)
-> -			load_baudrate = current_baudrate;
-> -	}
-> -	if (load_baudrate != current_baudrate) {
-> -		printf ("## Switch baudrate to %d bps and press ENTER ...\n",
-> -			load_baudrate);
-> -		udelay(50000);
-> -		gd->baudrate = load_baudrate;
-> -		serial_setbrg ();
-> -		udelay(50000);
-> -		for (;;) {
-> -			if (getc() == '\r')
-> -				break;
-> -		}
-> -	}
-> -#else	/* ! CFG_LOADS_BAUD_CHANGE */
->  	if (argc == 2) {
->  		offset = simple_strtoul(argv[1], NULL, 16);
->  	}
-> -#endif	/* CFG_LOADS_BAUD_CHANGE */
->  
->  	printf ("## Ready for S-Record download ...\n");
->  
-> @@ -112,20 +82,6 @@ int do_load_serial(struct command *cmdtp, int argc, char *argv[])
->  		load_addr = addr;
->  	}
->  
-> -#ifdef	CFG_LOADS_BAUD_CHANGE
-> -	if (load_baudrate != current_baudrate) {
-> -		printf ("## Switch baudrate to %d bps and press ESC ...\n",
-> -			current_baudrate);
-> -		udelay (50000);
-> -		gd->baudrate = current_baudrate;
-> -		serial_setbrg ();
-> -		udelay (50000);
-> -		for (;;) {
-> -			if (getc() == 0x1B) /* ESC */
-> -				break;
-> -		}
-> -	}
-> -#endif
->  	return rcode;
->  }
->  
-> @@ -234,43 +190,14 @@ int do_save_serial(struct command *cmdtp, int flag, int argc, char *argv[])
->  {
->  	ulong offset = 0;
->  	ulong size   = 0;
-> -#ifdef	CFG_LOADS_BAUD_CHANGE
-> -	int save_baudrate, current_baudrate;
-> -
-> -	save_baudrate = current_baudrate = gd->baudrate;
-> -#endif
->  
->  	if (argc >= 2) {
->  		offset = simple_strtoul(argv[1], NULL, 16);
->  	}
-> -#ifdef	CFG_LOADS_BAUD_CHANGE
-> -	if (argc >= 3) {
-> -		size = simple_strtoul(argv[2], NULL, 16);
-> -	}
-> -	if (argc == 4) {
-> -		save_baudrate = (int)simple_strtoul(argv[3], NULL, 10);
->  
-> -		/* default to current baudrate */
-> -		if (save_baudrate == 0)
-> -			save_baudrate = current_baudrate;
-> -	}
-> -	if (save_baudrate != current_baudrate) {
-> -		printf ("## Switch baudrate to %d bps and press ENTER ...\n",
-> -			save_baudrate);
-> -		udelay(50000);
-> -		gd->baudrate = save_baudrate;
-> -		serial_setbrg ();
-> -		udelay(50000);
-> -		for (;;) {
-> -			if (getc() == '\r')
-> -				break;
-> -		}
-> -	}
-> -#else	/* ! CFG_LOADS_BAUD_CHANGE */
->  	if (argc == 3) {
->  		size = simple_strtoul(argv[2], NULL, 16);
->  	}
-> -#endif	/* CFG_LOADS_BAUD_CHANGE */
->  
->  	printf ("## Ready for S-Record upload, press ENTER to proceed ...\n");
->  	for (;;) {
-> @@ -282,20 +209,7 @@ int do_save_serial(struct command *cmdtp, int flag, int argc, char *argv[])
->  	} else {
->  		printf ("## S-Record upload complete\n");
->  	}
-> -#ifdef	CFG_LOADS_BAUD_CHANGE
-> -	if (save_baudrate != current_baudrate) {
-> -		printf ("## Switch baudrate to %d bps and press ESC ...\n",
-> -			(int)current_baudrate);
-> -		udelay (50000);
-> -		gd->baudrate = current_baudrate;
-> -		serial_setbrg ();
-> -		udelay (50000);
-> -		for (;;) {
-> -			if (getc() == 0x1B) /* ESC */
-> -				break;
-> -		}
-> -	}
-> -#endif
-> +
->  	return 0;
->  }
->  
-> @@ -376,23 +290,12 @@ write_record (char *buf)
->  }
->  # endif /* CFG_CMD_SAVES */
->  
-> -#ifdef	CFG_LOADS_BAUD_CHANGE
-> -BAREBOX_CMD(
-> -	loads, 3, 0,	do_load_serial,
-> -	"loads   - load S-Record file over serial line\n",
-> -	"[ off ] [ baud ]\n"
-> -	"    - load S-Record file over serial line"
-> -	" with offset 'off' and baudrate 'baud'\n"
-> -);
-> -
-> -#else	/* ! CFG_LOADS_BAUD_CHANGE */
->  BAREBOX_CMD(
->  	loads, 2, 0,	do_load_serial,
->  	"loads   - load S-Record file over serial line\n",
->  	"[ off ]\n"
->  	"    - load S-Record file over serial line with offset 'off'\n"
->  );
-> -#endif	/* CFG_LOADS_BAUD_CHANGE */
->  
->  /*
->   * SAVES always requires LOADS support, but not vice versa
-> @@ -400,21 +303,11 @@ BAREBOX_CMD(
->  
->  
->  #if (CONFIG_COMMANDS & CFG_CMD_SAVES)
-> -#ifdef	CFG_LOADS_BAUD_CHANGE
-> -BAREBOX_CMD(
-> -	saves, 4, 0,	do_save_serial,
-> -	"saves   - save S-Record file over serial line\n",
-> -	"[ off ] [size] [ baud ]\n"
-> -	"    - save S-Record file over serial line"
-> -	" with offset 'off', size 'size' and baudrate 'baud'\n"
-> -);
-> -#else	/* ! CFG_LOADS_BAUD_CHANGE */
->  BAREBOX_CMD(
->  	saves, 3, 0,	do_save_serial,
->  	"saves   - save S-Record file over serial line\n",
->  	"[ off ] [size]\n"
->  	"    - save S-Record file over serial line with offset 'off' and size 'size'\n"
->  );
-> -#endif	/* CFG_LOADS_BAUD_CHANGE */
->  #endif	/* CFG_CMD_SAVES */
->  
-> -- 
-> 1.7.5.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QW0gTW9udGFnLCBkZW4gMjIuMDguMjAxMSwgMTk6MjcgKzAyMDAgc2NocmllYiBTYXNjaGEgSGF1
+ZXI6Cj4gSGkgVGVyZXNhLAo+IAo+IE9uIE1vbiwgQXVnIDIyLCAyMDExIGF0IDAzOjUxOjA0UE0g
+KzAyMDAsIFRlcmVzYSBHw6FtZXogd3JvdGU6Cj4gPiBJbnN0ZWFkIG9mIGNoYW5naW5nIHRoZSBN
+UENUTCB0byBzZXQgYW4gb3RoZXIgY3B1IGZyZXF1ZW5jeSwKPiA+IHVzZSB0aGUgcG9zdCBkaXZp
+ZGVyLgo+ID4gCj4gPiBUaGlzIHByZXZlbnRzIGZyZWV6aW5nIHdoZW4gY2hhbmdpbmcgdGhlIGNs
+b2NrIGZyb20gMzk5TUh6IHRvIDUzMk1Iei4KPiAKPiBPcmlnaW5hbGx5IHRoaXMgY29tbWFuZCB3
+YXMgbWVhbnQgZm9yIGRlYnVnZ2luZyBwdXJwb3Nlcy4gVGhlIHBjbTA0Mwo+IGNvbWVzIHVwIHdp
+dGggNTMyTUh6IGFuZCB0aGVyZSBzaG91bGQgYmUgbm8gbmVlZCB0byBjaGFuZ2UgdGhlCj4gZnJl
+cXVlbmN5LiBJIHJlbWVtYmVyIHRoYXQgc29tZSBib2FyZHMgYXJlIGFibGUgdG8gcnVuIGJhcmVi
+b3ggd2l0aAo+IDUzMk1IeiBidXQgZG9uJ3QgbWFuYWdlIHRvIHN0YXJ0IHRoZSBrZXJuZWwgd2l0
+aCB0aGlzIGZyZXF1ZW5jeS4gQWxzbyBJCj4gaGF2ZSBvbmUgYm9hcmQgd2hpY2ggZG9lcyBub3Qg
+cnVuIHdpdGggNTMyTUh6IGF0IGFsbCwgYnV0IEkgdGhpbmsgaXQncwo+IGFuIGVhcmx5IGRldmVs
+b3BtZW50IHNhbXBsZS4KPiBJcyB0aGVyZSBhIG5lZWQgdG8gcnVuIGJvYXJkcyB3aXRoIGEgbG93
+ZXIgZnJlcXVlbmN5IHRoYW4gdGhleSBhcmUgYWJsZQo+IHRvIGRvPyBPdGhlcndpc2UsIGlmIHNv
+bWUgYm9hcmRzIGFyZSBub3Qgc3RhYmxlIGF0IHRoZSBkZWZhdWx0IDUzMk1Iego+IEkgc3VnZ2Vz
+dCB3ZSBzaG91bGQgYWxzbyBsb3dlciB0aGUgZGVmYXVsdCB0byAzOTlNSHouCgpZZXMsIHRoZXJl
+IHdoZXJlIGRpZmZlcmVudCBwcm9ibGVtcyB3aXRoIG9sZGVyIGkuTVgzNSBtb2R1bGVzIHNvIHRo
+YXQgdGhlCmZyZXF1ZW5jeSB3YXMgbG93ZXJlZCB0byAzOTlNSHouIApGb3IgdGhlIHJldmlzaW9u
+IDEzMTUuNCB3ZSBtYWRlIHNvbWUgUENCIG9wdGltaXphdGlvbnMgdG8gcnVuIHRoZSBwY20wNDMK
+c2FmZSB3aXRoIDUzMk1Iei4gQWRkaXRpb25hbGx5IHdlIHN3aXRjaGVkIHRoZSBzaWxpY29uIHJl
+dmlzaW9uIHRvIFRPIDIuMS4gClNvIGl0IGlzIGVuc3VyZWQgdGhhdCBhbGwgcGNtMDQzIHdpdGgg
+Pj0gVE8gMi4xIHJ1biB3aXRoIDUzMk1Iei4gCkZvciB0aGF0IGNhc2Ugd2UgbWFkZSBhIHBhdGNo
+IChmb3IgdS1ib290LXYyKSB0aGF0IGNoZWNrcyB0aGUgc2lsaWNvbiByZXZpc2lvbgphbmQgc2V0
+cyB1cCB0aGUgZnJlcXVlbmN5IHBvc3QgZGl2aWRlciBhY2NvcmRpbmdseS4gCkknbGwgdXBkYXRl
+IHRoZSBwYXRjaCBhbmQgc2VuZCBpdC4KClRlcmVzYQoKPiAKPiBTYXNjaGEKPiAKPiA+IAo+ID4g
+U2lnbmVkLW9mZi1ieTogVGVyZXNhIEfDoW1leiA8dC5nYW1lekBwaHl0ZWMuZGU+Cj4gPiAtLS0K
+PiA+ICBhcmNoL2FybS9ib2FyZHMvcGNtMDQzL3BjbTA0My5jIHwgICAgOCArKysrLS0tLQo+ID4g
+IDEgZmlsZXMgY2hhbmdlZCwgNCBpbnNlcnRpb25zKCspLCA0IGRlbGV0aW9ucygtKQo+ID4gCj4g
+PiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL3BjbTA0My9wY20wNDMuYyBiL2FyY2gvYXJt
+L2JvYXJkcy9wY20wNDMvcGNtMDQzLmMKPiA+IGluZGV4IDk2Njg5OWEuLjVjZDY0MzIgMTAwNjQ0
+Cj4gPiAtLS0gYS9hcmNoL2FybS9ib2FyZHMvcGNtMDQzL3BjbTA0My5jCj4gPiArKysgYi9hcmNo
+L2FybS9ib2FyZHMvcGNtMDQzL3BjbTA0My5jCj4gPiBAQCAtMzAxLDggKzMwMSw4IEBAIHN0YXRp
+YyBpbnQgcGNtMDQzX2NvcmVfc2V0dXAodm9pZCkKPiA+ICAKPiA+ICBjb3JlX2luaXRjYWxsKHBj
+bTA0M19jb3JlX3NldHVwKTsKPiA+ICAKPiA+IC0jZGVmaW5lIE1QQ1RMX1BBUkFNXzM5OSAgICAg
+KElNWF9QTExfUEQoMCkgfCBJTVhfUExMX01GRCgxNSkgfCBJTVhfUExMX01GSSg4KSB8IElNWF9Q
+TExfTUZOKDUpKQo+ID4gLSNkZWZpbmUgTVBDVExfUEFSQU1fNTMyICAgICAoKDEgPDwgMzEpIHwg
+SU1YX1BMTF9QRCgwKSB8IElNWF9QTExfTUZEKDExKSB8IElNWF9QTExfTUZJKDExKSB8IElNWF9Q
+TExfTUZOKDEpKQo+ID4gKyNkZWZpbmUgQ0NNX1BEUjBfUEFSQU1fMzk5CSgoMSA8PCAxMikgfCAo
+MSA8PCAxNikpCj4gPiArI2RlZmluZSBDQ01fUERSMF9QQVJBTV81MzIJKDEgPDwgMTIpCj4gPiAg
+Cj4gPiAgc3RhdGljIGludCBkb19jcHVmcmVxKHN0cnVjdCBjb21tYW5kICpjbWR0cCwgaW50IGFy
+Z2MsIGNoYXIgKmFyZ3ZbXSkKPiA+ICB7Cj4gPiBAQCAtMzE1LDEwICszMTUsMTAgQEAgc3RhdGlj
+IGludCBkb19jcHVmcmVxKHN0cnVjdCBjb21tYW5kICpjbWR0cCwgaW50IGFyZ2MsIGNoYXIgKmFy
+Z3ZbXSkKPiA+ICAKPiA+ICAJc3dpdGNoIChmcmVxKSB7Cj4gPiAgCWNhc2UgMzk5Ogo+ID4gLQkJ
+d3JpdGVsKE1QQ1RMX1BBUkFNXzM5OSwgSU1YX0NDTV9CQVNFICsgQ0NNX01QQ1RMKTsKPiA+ICsJ
+CXdyaXRlbChDQ01fUERSMF9QQVJBTV8zOTksIElNWF9DQ01fQkFTRSArIENDTV9QRFIwKTsKPiA+
+ICAJCWJyZWFrOwo+ID4gIAljYXNlIDUzMjoKPiA+IC0JCXdyaXRlbChNUENUTF9QQVJBTV81MzIs
+IElNWF9DQ01fQkFTRSArIENDTV9NUENUTCk7Cj4gPiArCQl3cml0ZWwoQ0NNX1BEUjBfUEFSQU1f
+NTMyLCBJTVhfQ0NNX0JBU0UgKyBDQ01fUERSMCk7Cj4gPiAgCQlicmVhazsKPiA+ICAJZGVmYXVs
+dDoKPiA+ICAJCXJldHVybiBDT01NQU5EX0VSUk9SX1VTQUdFOwo+ID4gLS0gCj4gPiAxLjcuMC40
+Cj4gPiAKPiA+IAo+ID4gX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX18KPiA+IGJhcmVib3ggbWFpbGluZyBsaXN0Cj4gPiBiYXJlYm94QGxpc3RzLmluZnJhZGVh
+ZC5vcmcKPiA+IGh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFy
+ZWJveAo+IAoKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+XwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDov
+L2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
