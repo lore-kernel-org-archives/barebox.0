@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ww0-f41.google.com ([74.125.82.41])
-	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1Qvs9V-00040W-K4
-	for barebox@lists.infradead.org; Tue, 23 Aug 2011 14:40:31 +0000
-Received: by wwj26 with SMTP id 26so3441168wwj.0
-	for <barebox@lists.infradead.org>; Tue, 23 Aug 2011 07:40:25 -0700 (PDT)
+Received: from gateway.hbm.com ([213.157.30.2] helo=hbmntx5.hbm.com)
+	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+	id 1Qvs9y-000427-Tp
+	for barebox@lists.infradead.org; Tue, 23 Aug 2011 14:40:59 +0000
+Content-Class: urn:content-classes:message
+From: "Tim Sander" <tim.sander@hbm.com>
+Date: Tue, 23 Aug 2011 16:40:34 +0200
+References: <201108231421.42868.tim.sander@hbm.com>
+	<1314105745.3389.123.camel@lws-gamez>
+In-Reply-To: <1314105745.3389.123.camel@lws-gamez>
 MIME-Version: 1.0
-Date: Tue, 23 Aug 2011 18:40:24 +0400
-Message-ID: <CAA4bVAFi6B9fsNYn8KLor0_ObZVc2GmxXtwpeuaAC1N7Vt9H+Q@mail.gmail.com>
-From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-ID: <201108231640.35115.tim.sander@hbm.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,38 +19,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC] reference errors in OMAP documetation
-To: barebox <barebox@lists.infradead.org>
+Subject: Re: RFC: arm pcm043 1315.6 IM950 timing (Numonyx Axcell Errata)
+To: Teresa Gamez <T.Gamez@phytec.de>
+Cc: barebox@lists.infradead.org
 
-Hi!
-
-I posted this message some times ago, but nobody commented it.
-So I reposting it.
-
-
-I found some file reference errors in OMAP documentation.
-
-I have made the patch, but I can't send it via git-send-email:
-some lines in dox file are too long.
-
-Here is the patch, please look at it:
-
-http://prizma.bmstu.ru/~antony/barebox/0001-ARM-fix-formatting-and-file-ref=
-erences-in-documentat.patch
-
-I think, it's better reformat OMAP documentation to avoid long lines
-troubles problems in the future.
-
--- =
-
-Best regards,
-=A0 Antony Pavlov
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgVGVyZXNhCj4gSSdtIHJpZ2h0IG5vdyB3b3JraW5nIG9uIHVwZGF0aW5nIHRoZSBwY20wNDMg
+YmFyZWJveCB0byB3b3JrIHdpdGgKPiBuZXcgaGFyZHdhcmUgcmV2aXNpb25zLiBJbmNsdWRpbmcg
+dXBkYXRlcyBmb3IgTk9SIEZsYXNoIHN1cHBvcnQuClRoZXNlIGFyZSBnb29kIG5ld3MuIAoKPiBJ
+IGhhdmUgYWxzbyBtYWRlIGEgcGF0Y2ggcXVpdGUgc2ltaWxhciB0byB5b3Vycy4gVGhpcyBwcm9i
+bGVtIHNlZW1zCj4gdG8gb2NjdXIgb25seSB3aXRoIE5PUiBGbGFzaGVzIGhhdmluZyBhIGRhdGUg
+Y29kZSBhcm91bmQgMzkvMjAxMCBhbmQKPiBlYXJsaWVyLiBJdCB0b29rIG1lIHNvbWUgdGltZSB0
+byBmaW5kIGEgbW9kdWxlIHdoaWNoIGRvZXMgaGF2ZSB0aGlzCj4gcHJvYmxlbSAoSSBqdXN0IGdv
+dCBpdCB0b2RheSBhbmQgaGF2ZSBub3QgY2hlY2tlZCBpdCB5ZXQpLgo+IE9uIG5ld2VyIE5PUiBG
+bGFzaGVzIEkgY291bGQgbm90IHNlZSBhbnkgYWZmZWN0L2FkdmFudGFnZSB3aXRoIHRoaXMKPiB3
+b3JrYXJvdW5kLiBJJ2xsIHRlc3QgeW91ciBwYXRjaCB3aXRoIHRoaXMgbW9kdWxlLgpJdCBzZWVt
+cyBhcyBpZiB3ZSBnb3Qgc3VjaCBhIHZlcnNpb24uIEkgY2FuIHdyaXRlIHBhcnRpdGlvbnMgd2l0
+aCB0ZnRwIHZpYSAKbmV0d29yayBidXQgaSBjYW4ndCBkbyBhIHNhdmVlbnYgZXZlbiB3aXRoIG15
+IHBhdGNoLiBTbyBpIGd1ZXNzIGl0cyBub3QKd29ya2luZyBhcyBpIGhvcGVkIGZvci4gSSBndWVz
+cyBzaW5jZSBzYXZlZW52IGRvZXMgYW4gdW5wcm90ZWN0IGNvcHkgcHJvdGVjdAppdHNlbGYgaXQg
+dHJpZ2dlcnMgdGhlIGVycmF0YSBmb3IgdGhlc2Ugbm9yIGNoaXBzOgpjZmlfcHJvdGVjdDogdW5w
+cm90ZWN0IDB4YTAwNDAwMDAgKHNpemUgMTMxMDcyKQpGbGFzaCBidWZmZXIgd3JpdGUgZXJyb3Ig
+YXQgYWRkcmVzcyBhMDA0MDAwMApDb21tYW5kIFNlcXVlbmNlIEVycm9yLgpjZmlfcHJvdGVjdDog
+cHJvdGVjdCAweGEwMDQwMDAwIChzaXplIDEzMTA3MikKCj4gQnV0IGFkZGluZyB0aGlzIHdvcmth
+cm91bmQgd2lsbCBub3QgYmUgZW5vdWdoIHRvIHN1cHBvcnQgbmV3ZXIgTk9SIGZsYXNoZXMuCj4g
+VGhlIENTIHZhbHVlcyBuZWVkIHRvIGJlIGNoYW5nZWQgYW5kIHN1cHBvcnQgZm9yIHUzMiBjb21t
+YW5kcyBoYXZlIHRvCj4gYmUgYWRkZWQgdG8gY2ZpX2ZsYXNoLiBJJ2xsIHNlbmQgcGF0Y2hlcyB0
+aGUgbmV4dCBkYXlzLgoKQXMgZm9yIHRoZSB1MzIgc3VwcG9ydCwgaXNuJ3QgZXZlcnl0aGluZyBp
+biBwbGFjZSB3aXRoOgpDT05GSUdfRFJJVkVSX0NGSV9CQU5LX1dJRFRIXzQ9eQoKRG8geW91IGhh
+dmUgc29tZSBDUyB2YWx1ZXMgZm9yIG1lIHRvIHRlc3Qgd2l0aD8KCkkndmUgZ290IHRoZSBpbXBy
+ZXNzaW9uIHRoYXQgd3JpdGVzIG9uIHRoZSA2NE1iIG5vciBwY20wNDMgYXJlIG11Y2ggZmFzdGVy
+IAp0aGFuIHRoZSBvbGQgaHcgcmV2aXNpb25zIHdpdGggMzJNYiBub3IuCgpCZXN0IHJlZ2FyZHMK
+VGltCgpIb3R0aW5nZXIgQmFsZHdpbiBNZXNzdGVjaG5payBHbWJILCBJbSBUaWVmZW4gU2VlIDQ1
+LCA2NDI5MyBEYXJtc3RhZHQsIEdlcm1hbnkgfCB3d3cuaGJtLmNvbSAKClJlZ2lzdGVyZWQgYXMg
+R21iSCAoR2VybWFuIGxpbWl0ZWQgbGlhYmlsaXR5IGNvcnBvcmF0aW9uKSBpbiB0aGUgY29tbWVy
+Y2lhbCByZWdpc3RlciBhdCB0aGUgbG9jYWwgY291cnQgb2YgRGFybXN0YWR0LCBIUkIgMTE0NyAg
+CkNvbXBhbnkgZG9taWNpbGVkIGluIERhcm1zdGFkdCB8IENFTzogQW5kcmVhcyBIdWVsbGhvcnN0
+IHwgQ2hhaXJtYW4gb2YgdGhlIGJvYXJkOiBKYW1lcyBDaGFybGVzIFdlYnN0ZXIKCkFscyBHZXNl
+bGxzY2hhZnQgbWl0IGJlc2NocmFlbmt0ZXIgSGFmdHVuZyBlaW5nZXRyYWdlbiBpbSBIYW5kZWxz
+cmVnaXN0ZXIgZGVzIEFtdHNnZXJpY2h0cyBEYXJtc3RhZHQgdW50ZXIgSFJCIDExNDcgClNpdHog
+ZGVyIEdlc2VsbHNjaGFmdDogRGFybXN0YWR0IHwgR2VzY2hhZWZ0c2Z1ZWhydW5nOiBBbmRyZWFz
+IEh1ZWxsaG9yc3QgfCBBdWZzaWNodHNyYXRzdm9yc2l0emVuZGVyOiBKYW1lcyBDaGFybGVzIFdl
+YnN0ZXIKClRoZSBpbmZvcm1hdGlvbiBpbiB0aGlzIGVtYWlsIGlzIGNvbmZpZGVudGlhbC4gSXQg
+aXMgaW50ZW5kZWQgc29sZWx5IGZvciB0aGUgYWRkcmVzc2VlLiBJZiB5b3UgYXJlIG5vdCB0aGUg
+aW50ZW5kZWQgcmVjaXBpZW50LCBwbGVhc2UgbGV0IG1lIGtub3cgYW5kIGRlbGV0ZSB0aGlzIGVt
+YWlsLgoKRGllIGluIGRpZXNlciBFLU1haWwgZW50aGFsdGVuZSBJbmZvcm1hdGlvbiBpc3QgdmVy
+dHJhdWxpY2ggdW5kIGxlZGlnbGljaCBmw7xyIGRlbiBFbXBmYWVuZ2VyIGJlc3RpbW10LiBTb2xs
+dGVuIFNpZSBuaWNodCBkZXIgZWlnZW50bGljaGUgRW1wZmFlbmdlciBzZWluLCBpbmZvcm1pZXJl
+biBTaWUgbWljaCBiaXR0ZSBrdXJ6IHVuZCBsb2VzY2hlbiBkaWVzZSBFLU1haWwuCgoKX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5n
+IGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQu
+b3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
