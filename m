@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QvoSK-0006Tg-6A
-	for barebox@lists.infradead.org; Tue, 23 Aug 2011 10:43:41 +0000
-Date: Tue, 23 Aug 2011 12:43:36 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110823104336.GI31404@pengutronix.de>
-References: <1314021065-10784-1-git-send-email-t.gamez@phytec.de>
-	<20110822172700.GB31404@pengutronix.de>
-	<1314091862.3389.63.camel@lws-gamez>
+Received: from gateway.hbm.com ([213.157.30.2] helo=hbmntx5.hbm.com)
+	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+	id 1Qvpzd-0007Xi-72
+	for barebox@lists.infradead.org; Tue, 23 Aug 2011 12:22:21 +0000
+Content-Class: urn:content-classes:message
+From: "Tim Sander" <tim.sander@hbm.com>
+Date: Tue, 23 Aug 2011 14:21:42 +0200
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1314091862.3389.63.camel@lws-gamez>
+Message-ID: <201108231421.42868.tim.sander@hbm.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,137 +16,131 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCHv2 1/2] ARM pcm043: Use PDR0 to change cpu freq
-To: Teresa Gamez <T.Gamez@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: RFC: arm pcm043 1315.6 IM950 timing (Numonyx Axcell Errata)
+To: barebox@lists.infradead.org
 
-On Tue, Aug 23, 2011 at 11:31:02AM +0200, Teresa Gamez wrote:
-> Am Montag, den 22.08.2011, 19:27 +0200 schrieb Sascha Hauer:
-> > Hi Teresa,
-> > =
+Hi
 
-> > On Mon, Aug 22, 2011 at 03:51:04PM +0200, Teresa G=E1mez wrote:
-> > > Instead of changing the MPCTL to set an other cpu frequency,
-> > > use the post divider.
-> > > =
+I just found out that Phytec has some patches in its BSP and i think especially the patches
+IM590_cfi_workaround for "Numonyx Axcell P33/P30 Specification Update" make me a little nervous.
 
-> > > This prevents freezing when changing the clock from 399MHz to 532MHz.
-> > =
+We had some Problems getting the latest HW Revision of PCM043 (1315.6) up and
+running and so i found these patches. I have ported some other patches i found
+(which i will send later today) but i don't know enough about CFI to apply this patch
+logically to the barebox tree nevertheless heres my educated guess:
+(I am not sure if the patch belongs into intel CFI but since Numonyx has been owned by
+intel partly...)
 
-> > Originally this command was meant for debugging purposes. The pcm043
-> > comes up with 532MHz and there should be no need to change the
-> > frequency. I remember that some boards are able to run barebox with
-> > 532MHz but don't manage to start the kernel with this frequency. Also I
-> > have one board which does not run with 532MHz at all, but I think it's
-> > an early development sample.
-> > Is there a need to run boards with a lower frequency than they are able
-> > to do? Otherwise, if some boards are not stable at the default 532MHz
-> > I suggest we should also lower the default to 399MHz.
-> =
+commit bfa486c0bd90055222b4a2702bfb0d6a0fe59d8e
+Author: Tim Sander <tim.sander@hbm.com>
+Date:   Tue Aug 23 14:03:49 2011 +0200
 
-> Yes, there where different problems with older i.MX35 modules so that the
-> frequency was lowered to 399MHz. =
+    IM590 cfi workaround
 
-> For the revision 1315.4 we made some PCB optimizations to run the pcm043
-> safe with 532MHz. Additionally we switched the silicon revision to TO 2.1=
-. =
-
-> So it is ensured that all pcm043 with >=3D TO 2.1 run with 532MHz. =
-
-> For that case we made a patch (for u-boot-v2) that checks the silicon rev=
-ision
-> and sets up the frequency post divider accordingly. =
-
-> I'll update the patch and send it.
-
-Thanks. This looks like a sane solution.
-
-Sascha
-
-> =
-
-> Teresa
-> =
-
-> > =
-
-> > Sascha
-> > =
-
-> > > =
-
-> > > Signed-off-by: Teresa G=E1mez <t.gamez@phytec.de>
-> > > ---
-> > >  arch/arm/boards/pcm043/pcm043.c |    8 ++++----
-> > >  1 files changed, 4 insertions(+), 4 deletions(-)
-> > > =
-
-> > > diff --git a/arch/arm/boards/pcm043/pcm043.c b/arch/arm/boards/pcm043=
-/pcm043.c
-> > > index 966899a..5cd6432 100644
-> > > --- a/arch/arm/boards/pcm043/pcm043.c
-> > > +++ b/arch/arm/boards/pcm043/pcm043.c
-> > > @@ -301,8 +301,8 @@ static int pcm043_core_setup(void)
-> > >  =
-
-> > >  core_initcall(pcm043_core_setup);
-> > >  =
-
-> > > -#define MPCTL_PARAM_399     (IMX_PLL_PD(0) | IMX_PLL_MFD(15) | IMX_P=
-LL_MFI(8) | IMX_PLL_MFN(5))
-> > > -#define MPCTL_PARAM_532     ((1 << 31) | IMX_PLL_PD(0) | IMX_PLL_MFD=
-(11) | IMX_PLL_MFI(11) | IMX_PLL_MFN(1))
-> > > +#define CCM_PDR0_PARAM_399	((1 << 12) | (1 << 16))
-> > > +#define CCM_PDR0_PARAM_532	(1 << 12)
-> > >  =
-
-> > >  static int do_cpufreq(struct command *cmdtp, int argc, char *argv[])
-> > >  {
-> > > @@ -315,10 +315,10 @@ static int do_cpufreq(struct command *cmdtp, in=
-t argc, char *argv[])
-> > >  =
-
-> > >  	switch (freq) {
-> > >  	case 399:
-> > > -		writel(MPCTL_PARAM_399, IMX_CCM_BASE + CCM_MPCTL);
-> > > +		writel(CCM_PDR0_PARAM_399, IMX_CCM_BASE + CCM_PDR0);
-> > >  		break;
-> > >  	case 532:
-> > > -		writel(MPCTL_PARAM_532, IMX_CCM_BASE + CCM_MPCTL);
-> > > +		writel(CCM_PDR0_PARAM_532, IMX_CCM_BASE + CCM_PDR0);
-> > >  		break;
-> > >  	default:
-> > >  		return COMMAND_ERROR_USAGE;
-> > > -- =
-
-> > > 1.7.0.4
-> > > =
-
-> > > =
-
-> > > _______________________________________________
-> > > barebox mailing list
-> > > barebox@lists.infradead.org
-> > > http://lists.infradead.org/mailman/listinfo/barebox
-> > =
-
-> =
-
-> =
-
-> =
+diff --git a/drivers/nor/cfi_flash_intel.c b/drivers/nor/cfi_flash_intel.c
+index c3cbad5..30a54e6 100644
+--- a/drivers/nor/cfi_flash_intel.c
++++ b/drivers/nor/cfi_flash_intel.c
+@@ -132,12 +132,30 @@ static int intel_flash_status_check (struct flash_info *info, flash_sect_t secto
+ static int intel_flash_real_protect (struct flash_info *info, long sector, int prot)
+ {
+        flash_write_cmd (info, sector, 0, FLASH_CMD_CLEAR_STATUS);
++       //flash_write_cmd (info, sector, 0, FLASH_CMD_PROTECT);
++       /*
++       * see errata called
++       * "Numonyx Axcell P33/P30 Specification Update" :)
++       */
++       flash_write_cmd (info, sector, 0, FLASH_CMD_READ_ID);
++       flash_isequal (info, sector, FLASH_OFFSET_PROTECT, prot);
++       /*
++       * cmd must come before FLASH_CMD_PROTECT + 20us
++       * Disable interrupts which might cause a timeout here.
++       */
++#ifdef CONFIG_USE_IRQ
++       int flag = disable_interrupts ();
++#endif
+        flash_write_cmd (info, sector, 0, FLASH_CMD_PROTECT);
+        if (prot)
+                flash_write_cmd (info, sector, 0, FLASH_CMD_PROTECT_SET);
+        else
+                flash_write_cmd (info, sector, 0, FLASH_CMD_PROTECT_CLEAR);
+-
++       
++#ifdef CONFIG_USE_IRQ
++       if(flag)
++               enable_interrupts();
++#endif
+        return 0;
+ }
 
 
--- =
+This patch is against u-boot-v2-rc10 *not* againts barebox as reference. It is taken from the 
+PD10.1.2 BSP for PCM043.
+Index: u-boot-2.0.0-rc10/drivers/nor/cfi_flash.c        
+===================================================================
+--- u-boot-2.0.0-rc10.orig/drivers/nor/cfi_flash.c  2011-01-28 10:52:14.881458149 +0100
++++ u-boot-2.0.0-rc10/drivers/nor/cfi_flash.c   2011-01-28 11:09:40.241981535 +0100
+@@ -599,14 +599,34 @@
+ static int flash_real_protect (flash_info_t * info, long sector, int prot)
+ {
+    int retcode = 0;
++   unsigned short cmd;
 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+    flash_write_cmd (info, sector, 0, FLASH_CMD_CLEAR_STATUS);
+-   flash_write_cmd (info, sector, 0, FLASH_CMD_PROTECT);
++   /*
++    * see errata called
++    * "Numonyx Axcell P33/P30 Specification Update" :)
++    */
++   flash_write_cmd (info, sector, 0, FLASH_CMD_READ_ID);
++   flash_isequal (info, sector, FLASH_OFFSET_PROTECT, prot);
++   /*
++    * cmd must come before FLASH_CMD_PROTECT + 20us
++    * Disable interrupts which might cause a timeout here.
++    */
++#ifdef CONFIG_USE_IRQ
++   int flag = disable_interrupts ();
++#endif
+    if (prot)
+-       flash_write_cmd (info, sector, 0, FLASH_CMD_PROTECT_SET);
++       cmd = FLASH_CMD_PROTECT_SET;
+    else
+-       flash_write_cmd (info, sector, 0, FLASH_CMD_PROTECT_CLEAR);
++       cmd = FLASH_CMD_PROTECT_CLEAR;
+
++   flash_write_cmd (info, sector, 0, FLASH_CMD_PROTECT);
++   flash_write_cmd (info, sector, 0, cmd);
++#ifdef CONFIG_USE_IRQ
++   /* re-enable interrupts if necessary */
++   if (flag)
++       enable_interrupts ();
++#endif
+    if ((retcode =
+         flash_full_status_check (info, sector, info->erase_blk_tout,
+                      prot ? "protect" : "unprotect")) == 0) {
+
+--
+Please CC as i'm not subscribed to the list.
+
+Best regards
+Tim
+
+Hottinger Baldwin Messtechnik GmbH, Im Tiefen See 45, 64293 Darmstadt, Germany | www.hbm.com 
+
+Registered as GmbH (German limited liability corporation) in the commercial register at the local court of Darmstadt, HRB 1147  
+Company domiciled in Darmstadt | CEO: Andreas Huellhorst | Chairman of the board: James Charles Webster
+
+Als Gesellschaft mit beschraenkter Haftung eingetragen im Handelsregister des Amtsgerichts Darmstadt unter HRB 1147 
+Sitz der Gesellschaft: Darmstadt | Geschaeftsfuehrung: Andreas Huellhorst | Aufsichtsratsvorsitzender: James Charles Webster
+
+The information in this email is confidential. It is intended solely for the addressee. If you are not the intended recipient, please let me know and delete this email.
+
+Die in dieser E-Mail enthaltene Information ist vertraulich und lediglich fur den Empfaenger bestimmt. Sollten Sie nicht der eigentliche Empfaenger sein, informieren Sie mich bitte kurz und loeschen diese E-Mail.
+
 
 _______________________________________________
 barebox mailing list
