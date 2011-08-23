@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vw0-f49.google.com ([209.85.212.49])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1Qvk8H-0002Au-2S
-	for barebox@lists.infradead.org; Tue, 23 Aug 2011 06:06:41 +0000
-Received: by vws8 with SMTP id 8so5543470vws.36
-	for <barebox@lists.infradead.org>; Mon, 22 Aug 2011 23:06:37 -0700 (PDT)
+	id 1QvkU8-0002ih-Nc
+	for barebox@lists.infradead.org; Tue, 23 Aug 2011 06:29:18 +0000
+Date: Tue, 23 Aug 2011 08:29:12 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20110823062912.GD31404@pengutronix.de>
+References: <CAK8HZO+gSazgxyNQ1eDCWXEg820mXTZwdAZ7CricBN4SjDkj_A@mail.gmail.com>
 MIME-Version: 1.0
-Date: Tue, 23 Aug 2011 06:06:37 +0000
-Message-ID: <CAK8HZO+gSazgxyNQ1eDCWXEg820mXTZwdAZ7CricBN4SjDkj_A@mail.gmail.com>
-From: Nataraj S Narayan <natarajsn@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <CAK8HZO+gSazgxyNQ1eDCWXEg820mXTZwdAZ7CricBN4SjDkj_A@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,77 +22,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: ubifs: u-boot vs barebox
-To: barebox@lists.infradead.org
+Subject: Re: ubifs: u-boot vs barebox
+To: Nataraj S Narayan <natarajsn@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Hi Sascha
+On Tue, Aug 23, 2011 at 06:06:37AM +0000, Nataraj S Narayan wrote:
+> Hi Sascha
+> 
+> I am able to boot a ubifs filesystem in barebox, after writing the
+> file system in u-boot. But the reverse doesn't work.
+> 
+> After a
+> 
+> ubiattach /dev/nand0.data;
+> ubimkvol /dev/ubi0 data 0
+> tftp rootfs.ubifs.nat /dev/ubi0.data
+> 
+> in barebox,  I replaced barebox with u-boot, keeping the same kernel
+> and FS, which of course didn't  boot giving me:-
+> 
+>  corrupted PEBs are: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19
+> 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 43
+> UBIFS error (pid 1): ubifs_get_sb: cannot open "ubi0:data", error -19
 
-I am able to boot a ubifs filesystem in barebox, after writing the
-file system in u-boot. But the reverse doesn't work.
+I really suspect your nand driver is broken. Sorry, I have no idea what
+is going wrong here, but the ubi code is derived from the kernel, I
+don't expect these kinds of bugs here.
 
-After a
+You should first make sure that you have a working kernel. You have ubi
+errors there aswell, right? I would expect that the kernel driver and
+ubi layer is in better shape, also the audience will be bigger if
+something is going wrong in the kernel.
 
-ubiattach /dev/nand0.data;
-ubimkvol /dev/ubi0 data 0
-tftp rootfs.ubifs.nat /dev/ubi0.data
-
-in barebox,  I replaced barebox with u-boot, keeping the same kernel
-and FS, which of course didn't  boot giving me:-
-
- corrupted PEBs are: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19
-20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 43
-UBIFS error (pid 1): ubifs_get_sb: cannot open "ubi0:data", error -19
-
-
-
-U-Boot> ubi part data
-
-BI: fixable bit-flip detected at PEB 1514
-UBI: fixable bit-flip detected at PEB 1515
-UBI: fixable bit-flip detected at PEB 1516
-UBI: fixable bit-flip detected at PEB 1517
-UBI: fixable bit-flip detected at PEB 1518
-UBI: fixable bit-flip detected at PEB 1519
-UBI: fixable bit-flip detected at PEB 1520
-UBI: fixable bit-flip detected at PEB 1521
-UBI: fixable bit-flip detected at PEB 1522
-UBI: fixable bit-flip detected at PEB 1523
-UBI: fixable bit-flip detected at PEB 1524
-UBI: fixable bit-flip detected at PEB 1525
-UBI: fixable bit-flip detected at PEB 1526
-UBI: fixable bit-flip detected at PEB 1527
-UBI: fixable bit-flip detected at PEB 1528
-UBI: fixable bit-flip detected at PEB 1529
-UBI: fixable bit-flip detected at PEB 1530
-UBI: fixable bit-flip detected at PEB 1531
-UBI: fixable bit-flip detected at PEB 1532
-UBI: fixable bit-flip detected at PEB 1533
-UBI: fixable bit-flip detected at PEB 1534
-UBI: fixable bit-flip detected at PEB 1535
-UBI: fixable bit-flip detected at PEB 1536
-UBI: fixable bit-flip detected at PEB 1537
-UBI: fixable bit-flip detected at PEB 1538
-UBI: fixable bit-flip detected at PEB 1539
-UBI: fixable bit-flip detected at PEB 1540
-UBI: fixable bit-flip detected at PEB 1541
-UBI: fixable bit-flip detected at PEB 1542
-UBI: fixable bit-flip detected at PEB 1543
-UBI error: ubi_read_volume_table: the layout volume was not found
-UBI error: ubi_init: cannot attach mtd1
-UBI error: ubi_init: UBI error: cannot initialize UBI, error -22
-UBI init error -22
-exit not allowed from main input shell.
-Clancor> <INTERRUPT>
+Sascha
 
 
-Am I missing any steps? I wrote the FS using  the following in u-boot.
-
-tftp 0x21400000 rootfs.ubifs ;ubi write 0x21400000 data 0x1b90000
-
-
-regards
-
-Nataraj
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
