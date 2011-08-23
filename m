@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from gateway.hbm.com ([213.157.30.2] helo=hbmntx5.hbm.com)
-	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1Qvs9y-000427-Tp
-	for barebox@lists.infradead.org; Tue, 23 Aug 2011 14:40:59 +0000
-Content-Class: urn:content-classes:message
-From: "Tim Sander" <tim.sander@hbm.com>
-Date: Tue, 23 Aug 2011 16:40:34 +0200
-References: <201108231421.42868.tim.sander@hbm.com>
-	<1314105745.3389.123.camel@lws-gamez>
-In-Reply-To: <1314105745.3389.123.camel@lws-gamez>
-MIME-Version: 1.0
-Message-ID: <201108231640.35115.tim.sander@hbm.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+	id 1Qvshy-0004oH-KK
+	for barebox@lists.infradead.org; Tue, 23 Aug 2011 15:16:07 +0000
+Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+	(envelope-from <sha@pengutronix.de>) id 1Qvshw-0000Hm-5A
+	for barebox@lists.infradead.org; Tue, 23 Aug 2011 17:16:04 +0200
+Received: from sha by octopus.hi.pengutronix.de with local (Exim 4.76)
+	(envelope-from <sha@pengutronix.de>) id 1Qvshw-00071Q-3c
+	for barebox@lists.infradead.org; Tue, 23 Aug 2011 17:16:04 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue, 23 Aug 2011 17:16:01 +0200
+Message-Id: <1314112562-26525-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,57 +21,24 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: RFC: arm pcm043 1315.6 IM950 timing (Numonyx Axcell Errata)
-To: Teresa Gamez <T.Gamez@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] support Arm Linux images with CONFIG_AUTO_ZRELADDR
+To: barebox@lists.infradead.org
 
-SGkgVGVyZXNhCj4gSSdtIHJpZ2h0IG5vdyB3b3JraW5nIG9uIHVwZGF0aW5nIHRoZSBwY20wNDMg
-YmFyZWJveCB0byB3b3JrIHdpdGgKPiBuZXcgaGFyZHdhcmUgcmV2aXNpb25zLiBJbmNsdWRpbmcg
-dXBkYXRlcyBmb3IgTk9SIEZsYXNoIHN1cHBvcnQuClRoZXNlIGFyZSBnb29kIG5ld3MuIAoKPiBJ
-IGhhdmUgYWxzbyBtYWRlIGEgcGF0Y2ggcXVpdGUgc2ltaWxhciB0byB5b3Vycy4gVGhpcyBwcm9i
-bGVtIHNlZW1zCj4gdG8gb2NjdXIgb25seSB3aXRoIE5PUiBGbGFzaGVzIGhhdmluZyBhIGRhdGUg
-Y29kZSBhcm91bmQgMzkvMjAxMCBhbmQKPiBlYXJsaWVyLiBJdCB0b29rIG1lIHNvbWUgdGltZSB0
-byBmaW5kIGEgbW9kdWxlIHdoaWNoIGRvZXMgaGF2ZSB0aGlzCj4gcHJvYmxlbSAoSSBqdXN0IGdv
-dCBpdCB0b2RheSBhbmQgaGF2ZSBub3QgY2hlY2tlZCBpdCB5ZXQpLgo+IE9uIG5ld2VyIE5PUiBG
-bGFzaGVzIEkgY291bGQgbm90IHNlZSBhbnkgYWZmZWN0L2FkdmFudGFnZSB3aXRoIHRoaXMKPiB3
-b3JrYXJvdW5kLiBJJ2xsIHRlc3QgeW91ciBwYXRjaCB3aXRoIHRoaXMgbW9kdWxlLgpJdCBzZWVt
-cyBhcyBpZiB3ZSBnb3Qgc3VjaCBhIHZlcnNpb24uIEkgY2FuIHdyaXRlIHBhcnRpdGlvbnMgd2l0
-aCB0ZnRwIHZpYSAKbmV0d29yayBidXQgaSBjYW4ndCBkbyBhIHNhdmVlbnYgZXZlbiB3aXRoIG15
-IHBhdGNoLiBTbyBpIGd1ZXNzIGl0cyBub3QKd29ya2luZyBhcyBpIGhvcGVkIGZvci4gSSBndWVz
-cyBzaW5jZSBzYXZlZW52IGRvZXMgYW4gdW5wcm90ZWN0IGNvcHkgcHJvdGVjdAppdHNlbGYgaXQg
-dHJpZ2dlcnMgdGhlIGVycmF0YSBmb3IgdGhlc2Ugbm9yIGNoaXBzOgpjZmlfcHJvdGVjdDogdW5w
-cm90ZWN0IDB4YTAwNDAwMDAgKHNpemUgMTMxMDcyKQpGbGFzaCBidWZmZXIgd3JpdGUgZXJyb3Ig
-YXQgYWRkcmVzcyBhMDA0MDAwMApDb21tYW5kIFNlcXVlbmNlIEVycm9yLgpjZmlfcHJvdGVjdDog
-cHJvdGVjdCAweGEwMDQwMDAwIChzaXplIDEzMTA3MikKCj4gQnV0IGFkZGluZyB0aGlzIHdvcmth
-cm91bmQgd2lsbCBub3QgYmUgZW5vdWdoIHRvIHN1cHBvcnQgbmV3ZXIgTk9SIGZsYXNoZXMuCj4g
-VGhlIENTIHZhbHVlcyBuZWVkIHRvIGJlIGNoYW5nZWQgYW5kIHN1cHBvcnQgZm9yIHUzMiBjb21t
-YW5kcyBoYXZlIHRvCj4gYmUgYWRkZWQgdG8gY2ZpX2ZsYXNoLiBJJ2xsIHNlbmQgcGF0Y2hlcyB0
-aGUgbmV4dCBkYXlzLgoKQXMgZm9yIHRoZSB1MzIgc3VwcG9ydCwgaXNuJ3QgZXZlcnl0aGluZyBp
-biBwbGFjZSB3aXRoOgpDT05GSUdfRFJJVkVSX0NGSV9CQU5LX1dJRFRIXzQ9eQoKRG8geW91IGhh
-dmUgc29tZSBDUyB2YWx1ZXMgZm9yIG1lIHRvIHRlc3Qgd2l0aD8KCkkndmUgZ290IHRoZSBpbXBy
-ZXNzaW9uIHRoYXQgd3JpdGVzIG9uIHRoZSA2NE1iIG5vciBwY20wNDMgYXJlIG11Y2ggZmFzdGVy
-IAp0aGFuIHRoZSBvbGQgaHcgcmV2aXNpb25zIHdpdGggMzJNYiBub3IuCgpCZXN0IHJlZ2FyZHMK
-VGltCgpIb3R0aW5nZXIgQmFsZHdpbiBNZXNzdGVjaG5payBHbWJILCBJbSBUaWVmZW4gU2VlIDQ1
-LCA2NDI5MyBEYXJtc3RhZHQsIEdlcm1hbnkgfCB3d3cuaGJtLmNvbSAKClJlZ2lzdGVyZWQgYXMg
-R21iSCAoR2VybWFuIGxpbWl0ZWQgbGlhYmlsaXR5IGNvcnBvcmF0aW9uKSBpbiB0aGUgY29tbWVy
-Y2lhbCByZWdpc3RlciBhdCB0aGUgbG9jYWwgY291cnQgb2YgRGFybXN0YWR0LCBIUkIgMTE0NyAg
-CkNvbXBhbnkgZG9taWNpbGVkIGluIERhcm1zdGFkdCB8IENFTzogQW5kcmVhcyBIdWVsbGhvcnN0
-IHwgQ2hhaXJtYW4gb2YgdGhlIGJvYXJkOiBKYW1lcyBDaGFybGVzIFdlYnN0ZXIKCkFscyBHZXNl
-bGxzY2hhZnQgbWl0IGJlc2NocmFlbmt0ZXIgSGFmdHVuZyBlaW5nZXRyYWdlbiBpbSBIYW5kZWxz
-cmVnaXN0ZXIgZGVzIEFtdHNnZXJpY2h0cyBEYXJtc3RhZHQgdW50ZXIgSFJCIDExNDcgClNpdHog
-ZGVyIEdlc2VsbHNjaGFmdDogRGFybXN0YWR0IHwgR2VzY2hhZWZ0c2Z1ZWhydW5nOiBBbmRyZWFz
-IEh1ZWxsaG9yc3QgfCBBdWZzaWNodHNyYXRzdm9yc2l0emVuZGVyOiBKYW1lcyBDaGFybGVzIFdl
-YnN0ZXIKClRoZSBpbmZvcm1hdGlvbiBpbiB0aGlzIGVtYWlsIGlzIGNvbmZpZGVudGlhbC4gSXQg
-aXMgaW50ZW5kZWQgc29sZWx5IGZvciB0aGUgYWRkcmVzc2VlLiBJZiB5b3UgYXJlIG5vdCB0aGUg
-aW50ZW5kZWQgcmVjaXBpZW50LCBwbGVhc2UgbGV0IG1lIGtub3cgYW5kIGRlbGV0ZSB0aGlzIGVt
-YWlsLgoKRGllIGluIGRpZXNlciBFLU1haWwgZW50aGFsdGVuZSBJbmZvcm1hdGlvbiBpc3QgdmVy
-dHJhdWxpY2ggdW5kIGxlZGlnbGljaCBmw7xyIGRlbiBFbXBmYWVuZ2VyIGJlc3RpbW10LiBTb2xs
-dGVuIFNpZSBuaWNodCBkZXIgZWlnZW50bGljaGUgRW1wZmFlbmdlciBzZWluLCBpbmZvcm1pZXJl
-biBTaWUgbWljaCBiaXR0ZSBrdXJ6IHVuZCBsb2VzY2hlbiBkaWVzZSBFLU1haWwuCgoKX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5n
-IGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQu
-b3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+This is needed to make sure images will be located in the first
+128MB of SDRAM as required by this kernel option.
+
+Sascha Hauer (1):
+      ARM linux: support Linux images with CONFIG_AUTO_ZRELADDR
+
+ arch/arm/lib/bootz.c |   59 +++++++++++++++++++++++++++++++++++++------------
+ 1 files changed, 44 insertions(+), 15 deletions(-)
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
