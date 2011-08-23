@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QvkU8-0002ih-Nc
-	for barebox@lists.infradead.org; Tue, 23 Aug 2011 06:29:18 +0000
-Date: Tue, 23 Aug 2011 08:29:12 +0200
+	id 1QvkZL-0002pU-Fr
+	for barebox@lists.infradead.org; Tue, 23 Aug 2011 06:34:40 +0000
+Date: Tue, 23 Aug 2011 08:34:36 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110823062912.GD31404@pengutronix.de>
-References: <CAK8HZO+gSazgxyNQ1eDCWXEg820mXTZwdAZ7CricBN4SjDkj_A@mail.gmail.com>
+Message-ID: <20110823063436.GF31404@pengutronix.de>
+References: <1314038738-32189-1-git-send-email-antonynpavlov@gmail.com>
+	<1314038738-32189-2-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAK8HZO+gSazgxyNQ1eDCWXEg820mXTZwdAZ7CricBN4SjDkj_A@mail.gmail.com>
+In-Reply-To: <1314038738-32189-2-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,40 +23,215 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: ubifs: u-boot vs barebox
-To: Nataraj S Narayan <natarajsn@gmail.com>
+Subject: Re: [PATCH 1/5] remove LOADS_BAUD_CHANGE from broken commands/loads.c
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Aug 23, 2011 at 06:06:37AM +0000, Nataraj S Narayan wrote:
-> Hi Sascha
-> 
-> I am able to boot a ubifs filesystem in barebox, after writing the
-> file system in u-boot. But the reverse doesn't work.
-> 
-> After a
-> 
-> ubiattach /dev/nand0.data;
-> ubimkvol /dev/ubi0 data 0
-> tftp rootfs.ubifs.nat /dev/ubi0.data
-> 
-> in barebox,  I replaced barebox with u-boot, keeping the same kernel
-> and FS, which of course didn't  boot giving me:-
-> 
->  corrupted PEBs are: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19
-> 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 43
-> UBIFS error (pid 1): ubifs_get_sb: cannot open "ubi0:data", error -19
+Hi Antony,
 
-I really suspect your nand driver is broken. Sorry, I have no idea what
-is going wrong here, but the ubi code is derived from the kernel, I
-don't expect these kinds of bugs here.
-
-You should first make sure that you have a working kernel. You have ubi
-errors there aswell, right? I would expect that the kernel driver and
-ubi layer is in better shape, also the audience will be bigger if
-something is going wrong in the kernel.
+I applied this series to next. Definately a step in the right direction.
 
 Sascha
 
+On Mon, Aug 22, 2011 at 10:45:34PM +0400, Antony Pavlov wrote:
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> ---
+>  commands/loads.c |  109 +-----------------------------------------------------
+>  1 files changed, 1 insertions(+), 108 deletions(-)
+> 
+> diff --git a/commands/loads.c b/commands/loads.c
+> index c6617a4..2672c39 100644
+> --- a/commands/loads.c
+> +++ b/commands/loads.c
+> @@ -47,11 +47,6 @@ int do_load_serial(struct command *cmdtp, int argc, char *argv[])
+>  	int i;
+>  	char *env_echo;
+>  	int rcode = 0;
+> -#ifdef	CFG_LOADS_BAUD_CHANGE
+> -	int load_baudrate, current_baudrate;
+> -
+> -	load_baudrate = current_baudrate = gd->baudrate;
+> -#endif
+>  
+>  	if (((env_echo = getenv("loads_echo")) != NULL) && (*env_echo == '1')) {
+>  		do_echo = 1;
+> @@ -59,34 +54,9 @@ int do_load_serial(struct command *cmdtp, int argc, char *argv[])
+>  		do_echo = 0;
+>  	}
+>  
+> -#ifdef	CFG_LOADS_BAUD_CHANGE
+> -	if (argc >= 2) {
+> -		offset = simple_strtoul(argv[1], NULL, 16);
+> -	}
+> -	if (argc == 3) {
+> -		load_baudrate = (int)simple_strtoul(argv[2], NULL, 10);
+> -
+> -		/* default to current baudrate */
+> -		if (load_baudrate == 0)
+> -			load_baudrate = current_baudrate;
+> -	}
+> -	if (load_baudrate != current_baudrate) {
+> -		printf ("## Switch baudrate to %d bps and press ENTER ...\n",
+> -			load_baudrate);
+> -		udelay(50000);
+> -		gd->baudrate = load_baudrate;
+> -		serial_setbrg ();
+> -		udelay(50000);
+> -		for (;;) {
+> -			if (getc() == '\r')
+> -				break;
+> -		}
+> -	}
+> -#else	/* ! CFG_LOADS_BAUD_CHANGE */
+>  	if (argc == 2) {
+>  		offset = simple_strtoul(argv[1], NULL, 16);
+>  	}
+> -#endif	/* CFG_LOADS_BAUD_CHANGE */
+>  
+>  	printf ("## Ready for S-Record download ...\n");
+>  
+> @@ -112,20 +82,6 @@ int do_load_serial(struct command *cmdtp, int argc, char *argv[])
+>  		load_addr = addr;
+>  	}
+>  
+> -#ifdef	CFG_LOADS_BAUD_CHANGE
+> -	if (load_baudrate != current_baudrate) {
+> -		printf ("## Switch baudrate to %d bps and press ESC ...\n",
+> -			current_baudrate);
+> -		udelay (50000);
+> -		gd->baudrate = current_baudrate;
+> -		serial_setbrg ();
+> -		udelay (50000);
+> -		for (;;) {
+> -			if (getc() == 0x1B) /* ESC */
+> -				break;
+> -		}
+> -	}
+> -#endif
+>  	return rcode;
+>  }
+>  
+> @@ -234,43 +190,14 @@ int do_save_serial(struct command *cmdtp, int flag, int argc, char *argv[])
+>  {
+>  	ulong offset = 0;
+>  	ulong size   = 0;
+> -#ifdef	CFG_LOADS_BAUD_CHANGE
+> -	int save_baudrate, current_baudrate;
+> -
+> -	save_baudrate = current_baudrate = gd->baudrate;
+> -#endif
+>  
+>  	if (argc >= 2) {
+>  		offset = simple_strtoul(argv[1], NULL, 16);
+>  	}
+> -#ifdef	CFG_LOADS_BAUD_CHANGE
+> -	if (argc >= 3) {
+> -		size = simple_strtoul(argv[2], NULL, 16);
+> -	}
+> -	if (argc == 4) {
+> -		save_baudrate = (int)simple_strtoul(argv[3], NULL, 10);
+>  
+> -		/* default to current baudrate */
+> -		if (save_baudrate == 0)
+> -			save_baudrate = current_baudrate;
+> -	}
+> -	if (save_baudrate != current_baudrate) {
+> -		printf ("## Switch baudrate to %d bps and press ENTER ...\n",
+> -			save_baudrate);
+> -		udelay(50000);
+> -		gd->baudrate = save_baudrate;
+> -		serial_setbrg ();
+> -		udelay(50000);
+> -		for (;;) {
+> -			if (getc() == '\r')
+> -				break;
+> -		}
+> -	}
+> -#else	/* ! CFG_LOADS_BAUD_CHANGE */
+>  	if (argc == 3) {
+>  		size = simple_strtoul(argv[2], NULL, 16);
+>  	}
+> -#endif	/* CFG_LOADS_BAUD_CHANGE */
+>  
+>  	printf ("## Ready for S-Record upload, press ENTER to proceed ...\n");
+>  	for (;;) {
+> @@ -282,20 +209,7 @@ int do_save_serial(struct command *cmdtp, int flag, int argc, char *argv[])
+>  	} else {
+>  		printf ("## S-Record upload complete\n");
+>  	}
+> -#ifdef	CFG_LOADS_BAUD_CHANGE
+> -	if (save_baudrate != current_baudrate) {
+> -		printf ("## Switch baudrate to %d bps and press ESC ...\n",
+> -			(int)current_baudrate);
+> -		udelay (50000);
+> -		gd->baudrate = current_baudrate;
+> -		serial_setbrg ();
+> -		udelay (50000);
+> -		for (;;) {
+> -			if (getc() == 0x1B) /* ESC */
+> -				break;
+> -		}
+> -	}
+> -#endif
+> +
+>  	return 0;
+>  }
+>  
+> @@ -376,23 +290,12 @@ write_record (char *buf)
+>  }
+>  # endif /* CFG_CMD_SAVES */
+>  
+> -#ifdef	CFG_LOADS_BAUD_CHANGE
+> -BAREBOX_CMD(
+> -	loads, 3, 0,	do_load_serial,
+> -	"loads   - load S-Record file over serial line\n",
+> -	"[ off ] [ baud ]\n"
+> -	"    - load S-Record file over serial line"
+> -	" with offset 'off' and baudrate 'baud'\n"
+> -);
+> -
+> -#else	/* ! CFG_LOADS_BAUD_CHANGE */
+>  BAREBOX_CMD(
+>  	loads, 2, 0,	do_load_serial,
+>  	"loads   - load S-Record file over serial line\n",
+>  	"[ off ]\n"
+>  	"    - load S-Record file over serial line with offset 'off'\n"
+>  );
+> -#endif	/* CFG_LOADS_BAUD_CHANGE */
+>  
+>  /*
+>   * SAVES always requires LOADS support, but not vice versa
+> @@ -400,21 +303,11 @@ BAREBOX_CMD(
+>  
+>  
+>  #if (CONFIG_COMMANDS & CFG_CMD_SAVES)
+> -#ifdef	CFG_LOADS_BAUD_CHANGE
+> -BAREBOX_CMD(
+> -	saves, 4, 0,	do_save_serial,
+> -	"saves   - save S-Record file over serial line\n",
+> -	"[ off ] [size] [ baud ]\n"
+> -	"    - save S-Record file over serial line"
+> -	" with offset 'off', size 'size' and baudrate 'baud'\n"
+> -);
+> -#else	/* ! CFG_LOADS_BAUD_CHANGE */
+>  BAREBOX_CMD(
+>  	saves, 3, 0,	do_save_serial,
+>  	"saves   - save S-Record file over serial line\n",
+>  	"[ off ] [size]\n"
+>  	"    - save S-Record file over serial line with offset 'off' and size 'size'\n"
+>  );
+> -#endif	/* CFG_LOADS_BAUD_CHANGE */
+>  #endif	/* CFG_CMD_SAVES */
+>  
+> -- 
+> 1.7.5.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
