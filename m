@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.visioncatalog.com ([217.6.246.34] helo=root.phytec.de)
-	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1QwCWg-0003RC-Jc
-	for barebox@lists.infradead.org; Wed, 24 Aug 2011 12:25:48 +0000
-From: Teresa Gamez <T.Gamez@phytec.de>
-In-Reply-To: <201108241207.28142.tim.sander@hbm.com>
-References: <201108231421.42868.tim.sander@hbm.com>
-	<201108231640.35115.tim.sander@hbm.com>
-	<1314176069.3389.274.camel@lws-gamez>
-	<201108241207.28142.tim.sander@hbm.com>
-Date: Wed, 24 Aug 2011 14:25:50 +0200
-Message-ID: <1314188750.3389.494.camel@lws-gamez>
-Mime-Version: 1.0
+Received: from mail-ww0-f49.google.com ([74.125.82.49])
+	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+	id 1QwETV-0000tE-Hu
+	for barebox@lists.infradead.org; Wed, 24 Aug 2011 14:30:38 +0000
+Received: by wwf10 with SMTP id 10so877921wwf.18
+	for <barebox@lists.infradead.org>; Wed, 24 Aug 2011 07:30:36 -0700 (PDT)
+MIME-Version: 1.0
+Date: Wed, 24 Aug 2011 18:30:35 +0400
+Message-ID: <CAA4bVAEHnV+d8JMXqTKtNWKdvfmXaS=S8S=KQBPRTQhbt8EnJg@mail.gmail.com>
+From: Antony Pavlov <antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,49 +17,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: RFC: arm pcm043 1315.6 IM950 timing (Numonyx Axcell Errata)
-To: Tim Sander <tim.sander@hbm.com>
-Cc: barebox@lists.infradead.org
+Subject: add_usb_ehci_device() don't set resource size
+To: barebox <barebox@lists.infradead.org>
 
-QW0gTWl0dHdvY2gsIGRlbiAyNC4wOC4yMDExLCAxMjowNyArMDIwMCBzY2hyaWViIFRpbSBTYW5k
-ZXI6Cj4gSGkgVGVyZXNhCj4gPiBJZiBvbmx5IHNhdmluZyB0aGUgZW52aXJvbm1lbnQgbWFrZXMg
-eW91IHRyb3VibGUgaXQgbG9va3MgbW9yZSBsaWtlCj4gPiB0aGUgcHJvYmxlbSBvZiBtaXNzaW5n
-IHN1cHBvcnQgZm9yIHUzMiBjb21tYW5kcy4KPiA+IEFzIGZhciBhcyBJIHVuZGVyc3RhbmQgdGhp
-cywgdGhlIGJ1ZmZlciBzaXplIG9mIHRoZSBOT1IgZmxhc2hlcyB3aGVyZQo+ID4gaGlnaGx5IGlu
-Y3JlYXNlZC4gOGJpdCBmb3IgdGhlIHNpemUgb2YgZGF0YSB0aGF0IGNhbiBiZSB3cml0dGVuIHRv
-IHRoZQo+ID4gYnVmZmVyIGlzIG5vdCBlbm91Z2guIFNpbmNlIHRmdHAgc2VuZHMgdGhlIGRhdGEg
-aW4gc21hbGxlciBwYWNrYWdlcywKPiA+IHdyaXRpbmcgc3RpbGwgd29ya3Mgd2hlbiBmbGFzaGlu
-ZyBrZXJuZWwvcm9vdGZzLiBCdXQgZmFpbHMgd2hlbiBzYXZpbmcKPiA+IHRoZSBlbnZpcm9ubWVu
-dC4KPiBPaywgd2UgaGF2ZSBhIHBjbSAwNDMgYm9hcmQgaHcgcmV2LiAxMzE1LjYgd2l0aCA2NE1i
-IG9mIE5PciBGbGFzaC4KPiBTbyB3ZSBoYXZlIHBsZW50eSBvZiAxMzE1LjQgcmV2cyBvdmVyIGhl
-cmUgd2l0aCAzMk1iIHdoaWNoIHdvcmsgd2l0aAo+IGEgMjAxMS4wNCBiYXJlYm94IHdpdGhvdXQg
-cHJvYmxlbXMuCj4gCj4gVGhlIGZsYXNoIGNoaXAgaXMgYW4gaW50ZWwgKG51bW9ueXg/KSAgNTEy
-UDMzVEYuCgpJIHdvcmsgd2l0aCBhbiAzMk1CIE5PUiBGbGFzaCAoUEMyOEYyNTZQMzNCRkUpIHdo
-aWNoIGlzIHRoZSBzdGFuZGFyZCBraXQKc2V0dXAuIEkgZG9uJ3Qga25vdyBvZiB0aGUgQ1MwIHNl
-dHRpbmdzIGZpdCBmb3IgeW91ciBmbGFzaC4gCgo+IAo+ID4gUGF0Y2hlcyBmb2xsb3cuIFBsZWFz
-ZSB0ZXN0IHRoZW0uCj4gV2lsbCB0ZXN0LgoKVGhhbmtzLgoKVGVyZXNhCgo+IAo+IEJlc3QgcmVn
-YXJkcwo+IFRpbQo+IAo+IEhvdHRpbmdlciBCYWxkd2luIE1lc3N0ZWNobmlrIEdtYkgsIEltIFRp
-ZWZlbiBTZWUgNDUsIDY0MjkzIERhcm1zdGFkdCwgR2VybWFueSB8IHd3dy5oYm0uY29tIAo+IAo+
-IFJlZ2lzdGVyZWQgYXMgR21iSCAoR2VybWFuIGxpbWl0ZWQgbGlhYmlsaXR5IGNvcnBvcmF0aW9u
-KSBpbiB0aGUgY29tbWVyY2lhbCByZWdpc3RlciBhdCB0aGUgbG9jYWwgY291cnQgb2YgRGFybXN0
-YWR0LCBIUkIgMTE0NyAgCj4gQ29tcGFueSBkb21pY2lsZWQgaW4gRGFybXN0YWR0IHwgQ0VPOiBB
-bmRyZWFzIEh1ZWxsaG9yc3QgfCBDaGFpcm1hbiBvZiB0aGUgYm9hcmQ6IEphbWVzIENoYXJsZXMg
-V2Vic3Rlcgo+IAo+IEFscyBHZXNlbGxzY2hhZnQgbWl0IGJlc2NocmFlbmt0ZXIgSGFmdHVuZyBl
-aW5nZXRyYWdlbiBpbSBIYW5kZWxzcmVnaXN0ZXIgZGVzIEFtdHNnZXJpY2h0cyBEYXJtc3RhZHQg
-dW50ZXIgSFJCIDExNDcgCj4gU2l0eiBkZXIgR2VzZWxsc2NoYWZ0OiBEYXJtc3RhZHQgfCBHZXNj
-aGFlZnRzZnVlaHJ1bmc6IEFuZHJlYXMgSHVlbGxob3JzdCB8IEF1ZnNpY2h0c3JhdHN2b3JzaXR6
-ZW5kZXI6IEphbWVzIENoYXJsZXMgV2Vic3Rlcgo+IAo+IFRoZSBpbmZvcm1hdGlvbiBpbiB0aGlz
-IGVtYWlsIGlzIGNvbmZpZGVudGlhbC4gSXQgaXMgaW50ZW5kZWQgc29sZWx5IGZvciB0aGUgYWRk
-cmVzc2VlLiBJZiB5b3UgYXJlIG5vdCB0aGUgaW50ZW5kZWQgcmVjaXBpZW50LCBwbGVhc2UgbGV0
-IG1lIGtub3cgYW5kIGRlbGV0ZSB0aGlzIGVtYWlsLgo+IAo+IERpZSBpbiBkaWVzZXIgRS1NYWls
-IGVudGhhbHRlbmUgSW5mb3JtYXRpb24gaXN0IHZlcnRyYXVsaWNoIHVuZCBsZWRpZ2xpY2ggZsO8
-ciBkZW4gRW1wZmFlbmdlciBiZXN0aW1tdC4gU29sbHRlbiBTaWUgbmljaHQgZGVyIGVpZ2VudGxp
-Y2hlIEVtcGZhZW5nZXIgc2VpbiwgaW5mb3JtaWVyZW4gU2llIG1pY2ggYml0dGUga3VyeiB1bmQg
-bG9lc2NoZW4gZGllc2UgRS1NYWlsLgo+IAoKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmlu
-ZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9i
-YXJlYm94Cg==
+Hi!
+
+add_usb_ehci_device() don't set resource size, it only set start address:
+
+struct device_d *add_usb_ehci_device(int id, resource_size_t hccr,
+                resource_size_t hcor, void *pdata)
+{
+        struct device_d *dev;
+
+        dev =3D alloc_device("ehci", id, pdata);
+        dev->resource =3D xzalloc(sizeof(struct resource) * 2);
+        dev->num_resources =3D 2;
+        dev->resource[0].start =3D hccr;
+        dev->resource[0].flags =3D IORESOURCE_MEM;
+        dev->resource[1].start =3D hcor;
+        dev->resource[1].flags =3D IORESOURCE_MEM;
+
+        register_device(dev);
+
+        return dev;
+}
+
+So on my Tegra board I have this:
+
+toshiba ac100> / devinfo ehci0
+resources:
+num   : 0
+start : 0xc5000100
+size  : 0x00000000
+        ^^^^^^^^^^
+num   : 1
+start : 0xc5000140
+size  : 0x00000000
+        ^^^^^^^^^^
+driver: ehci
+
+-- =
+
+Best regards,
+=A0 Antony Pavlov
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
