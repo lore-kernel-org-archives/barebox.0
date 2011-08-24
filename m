@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1Qw8x3-0006wC-0X
-	for barebox@lists.infradead.org; Wed, 24 Aug 2011 08:36:46 +0000
-Date: Wed, 24 Aug 2011 10:36:41 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110824083641.GY31404@pengutronix.de>
-References: <1314144664-2752-1-git-send-email-festevam@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1314144664-2752-1-git-send-email-festevam@gmail.com>
+Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
+	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+	id 1Qw9E9-00072E-OC
+	for barebox@lists.infradead.org; Wed, 24 Aug 2011 08:54:27 +0000
+From: Teresa Gamez <T.Gamez@phytec.de>
+In-Reply-To: <201108231640.35115.tim.sander@hbm.com>
+References: <201108231421.42868.tim.sander@hbm.com>
+	<1314105745.3389.123.camel@lws-gamez>
+	<201108231640.35115.tim.sander@hbm.com>
+Date: Wed, 24 Aug 2011 10:54:29 +0200
+Message-ID: <1314176069.3389.274.camel@lws-gamez>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,71 +19,68 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: mx53loco: Fix DD3 initialization
-To: Fabio Estevam <festevam@gmail.com>
-Cc: Fabio Estevam <fabio.estevam@freescale.com>, barebox@lists.infradead.org
+Subject: Re: RFC: arm pcm043 1315.6 IM950 timing (Numonyx Axcell Errata)
+To: Tim Sander <tim.sander@hbm.com>
+Cc: barebox@lists.infradead.org
 
-Hi Fabio,
-
-Welcome to barebox ;)
-
-On Tue, Aug 23, 2011 at 09:11:04PM -0300, Fabio Estevam wrote:
-> Updated mx53 ddr3 script in order to align with the latest Freescale version from July 8, 2011:
-> 
-> -change ESDREF[REF_SEL]=01 (for 32KHz), from incorrect setting of 00 (64KHz)
-> 
-> -change DDR3 MR0 write to "setmem /32 0x63fd901c = 0x052080b0" from "0x092080b0". 
-> 
-> This changes write recovery from 8 clocks to 6 clocks(in line with ESDCFG1[tWR])
-> 
-> Signed-off-by: Fabio Estevam <fabio.estevam@freescale.com>
-
-Applied to master.
-
-Sascha
-
-> ---
->  arch/arm/boards/freescale-mx53-loco/flash_header.c |    6 +++---
->  1 files changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/arm/boards/freescale-mx53-loco/flash_header.c b/arch/arm/boards/freescale-mx53-loco/flash_header.c
-> index d6ff898..490e223 100644
-> --- a/arch/arm/boards/freescale-mx53-loco/flash_header.c
-> +++ b/arch/arm/boards/freescale-mx53-loco/flash_header.c
-> @@ -63,14 +63,14 @@ struct imx_dcd_v2_entry __dcd_entry_section dcd_entry[] = {
->  	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00008032), },
->  	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00008033), },
->  	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00028031), },
-> -	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x092080b0), },
-> +	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x052080b0), },
->  	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x04008040), },
->  	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x0000803a), },
->  	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x0000803b), },
->  	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00028039), },
-> -	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x09208138), },
-> +	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x05208138), },
->  	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x04008048), },
-> -	{ .addr = cpu_to_be32(0x63fd9020), .val = cpu_to_be32(0x00001800), },
-> +	{ .addr = cpu_to_be32(0x63fd9020), .val = cpu_to_be32(0x00005800), },
->  	{ .addr = cpu_to_be32(0x63fd9040), .val = cpu_to_be32(0x04b80003), },
->  	{ .addr = cpu_to_be32(0x63fd9058), .val = cpu_to_be32(0x00022227), },
->  	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00000000), },
-> -- 
-> 1.7.1
-> 
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8gVGltLAoKQW0gRGllbnN0YWcsIGRlbiAyMy4wOC4yMDExLCAxNjo0MCArMDIwMCBzY2hy
+aWViIFRpbSBTYW5kZXI6Cj4gSGkgVGVyZXNhCj4gPiBJJ20gcmlnaHQgbm93IHdvcmtpbmcgb24g
+dXBkYXRpbmcgdGhlIHBjbTA0MyBiYXJlYm94IHRvIHdvcmsgd2l0aAo+ID4gbmV3IGhhcmR3YXJl
+IHJldmlzaW9ucy4gSW5jbHVkaW5nIHVwZGF0ZXMgZm9yIE5PUiBGbGFzaCBzdXBwb3J0Lgo+IFRo
+ZXNlIGFyZSBnb29kIG5ld3MuIAo+IAo+ID4gSSBoYXZlIGFsc28gbWFkZSBhIHBhdGNoIHF1aXRl
+IHNpbWlsYXIgdG8geW91cnMuIFRoaXMgcHJvYmxlbSBzZWVtcwo+ID4gdG8gb2NjdXIgb25seSB3
+aXRoIE5PUiBGbGFzaGVzIGhhdmluZyBhIGRhdGUgY29kZSBhcm91bmQgMzkvMjAxMCBhbmQKPiA+
+IGVhcmxpZXIuIEl0IHRvb2sgbWUgc29tZSB0aW1lIHRvIGZpbmQgYSBtb2R1bGUgd2hpY2ggZG9l
+cyBoYXZlIHRoaXMKPiA+IHByb2JsZW0gKEkganVzdCBnb3QgaXQgdG9kYXkgYW5kIGhhdmUgbm90
+IGNoZWNrZWQgaXQgeWV0KS4KPiA+IE9uIG5ld2VyIE5PUiBGbGFzaGVzIEkgY291bGQgbm90IHNl
+ZSBhbnkgYWZmZWN0L2FkdmFudGFnZSB3aXRoIHRoaXMKPiA+IHdvcmthcm91bmQuIEknbGwgdGVz
+dCB5b3VyIHBhdGNoIHdpdGggdGhpcyBtb2R1bGUuCj4gSXQgc2VlbXMgYXMgaWYgd2UgZ290IHN1
+Y2ggYSB2ZXJzaW9uLiBJIGNhbiB3cml0ZSBwYXJ0aXRpb25zIHdpdGggdGZ0cCB2aWEgCj4gbmV0
+d29yayBidXQgaSBjYW4ndCBkbyBhIHNhdmVlbnYgZXZlbiB3aXRoIG15IHBhdGNoLiBTbyBpIGd1
+ZXNzIGl0cyBub3QKPiB3b3JraW5nIGFzIGkgaG9wZWQgZm9yLiBJIGd1ZXNzIHNpbmNlIHNhdmVl
+bnYgZG9lcyBhbiB1bnByb3RlY3QgY29weSBwcm90ZWN0Cj4gaXRzZWxmIGl0IHRyaWdnZXJzIHRo
+ZSBlcnJhdGEgZm9yIHRoZXNlIG5vciBjaGlwczoKPiBjZmlfcHJvdGVjdDogdW5wcm90ZWN0IDB4
+YTAwNDAwMDAgKHNpemUgMTMxMDcyKQo+IEZsYXNoIGJ1ZmZlciB3cml0ZSBlcnJvciBhdCBhZGRy
+ZXNzIGEwMDQwMDAwCj4gQ29tbWFuZCBTZXF1ZW5jZSBFcnJvci4KPiBjZmlfcHJvdGVjdDogcHJv
+dGVjdCAweGEwMDQwMDAwIChzaXplIDEzMTA3MikKCklmIG9ubHkgc2F2aW5nIHRoZSBlbnZpcm9u
+bWVudCBtYWtlcyB5b3UgdHJvdWJsZSBpdCBsb29rcyBtb3JlIGxpa2UKdGhlIHByb2JsZW0gb2Yg
+bWlzc2luZyBzdXBwb3J0IGZvciB1MzIgY29tbWFuZHMuCkFzIGZhciBhcyBJIHVuZGVyc3RhbmQg
+dGhpcywgdGhlIGJ1ZmZlciBzaXplIG9mIHRoZSBOT1IgZmxhc2hlcyB3aGVyZQpoaWdobHkgaW5j
+cmVhc2VkLiA4Yml0IGZvciB0aGUgc2l6ZSBvZiBkYXRhIHRoYXQgY2FuIGJlIHdyaXR0ZW4gdG8g
+dGhlCmJ1ZmZlciBpcyBub3QgZW5vdWdoLiBTaW5jZSB0ZnRwIHNlbmRzIHRoZSBkYXRhIGluIHNt
+YWxsZXIgcGFja2FnZXMsCndyaXRpbmcgc3RpbGwgd29ya3Mgd2hlbiBmbGFzaGluZyBrZXJuZWwv
+cm9vdGZzLiBCdXQgZmFpbHMgd2hlbiBzYXZpbmcKdGhlIGVudmlyb25tZW50LiAgCgo+IAo+ID4g
+QnV0IGFkZGluZyB0aGlzIHdvcmthcm91bmQgd2lsbCBub3QgYmUgZW5vdWdoIHRvIHN1cHBvcnQg
+bmV3ZXIgTk9SIGZsYXNoZXMuCj4gPiBUaGUgQ1MgdmFsdWVzIG5lZWQgdG8gYmUgY2hhbmdlZCBh
+bmQgc3VwcG9ydCBmb3IgdTMyIGNvbW1hbmRzIGhhdmUgdG8KPiA+IGJlIGFkZGVkIHRvIGNmaV9m
+bGFzaC4gSSdsbCBzZW5kIHBhdGNoZXMgdGhlIG5leHQgZGF5cy4KPiAKPiBBcyBmb3IgdGhlIHUz
+MiBzdXBwb3J0LCBpc24ndCBldmVyeXRoaW5nIGluIHBsYWNlIHdpdGg6Cj4gQ09ORklHX0RSSVZF
+Ul9DRklfQkFOS19XSURUSF80PXkKPiAKPiBEbyB5b3UgaGF2ZSBzb21lIENTIHZhbHVlcyBmb3Ig
+bWUgdG8gdGVzdCB3aXRoPwo+IAoKUGF0Y2hlcyBmb2xsb3cuIFBsZWFzZSB0ZXN0IHRoZW0uCgpU
+ZXJlc2EKCj4gSSd2ZSBnb3QgdGhlIGltcHJlc3Npb24gdGhhdCB3cml0ZXMgb24gdGhlIDY0TWIg
+bm9yIHBjbTA0MyBhcmUgbXVjaCBmYXN0ZXIgCj4gdGhhbiB0aGUgb2xkIGh3IHJldmlzaW9ucyB3
+aXRoIDMyTWIgbm9yLgo+IAo+IEJlc3QgcmVnYXJkcwo+IFRpbQo+IAo+IEhvdHRpbmdlciBCYWxk
+d2luIE1lc3N0ZWNobmlrIEdtYkgsIEltIFRpZWZlbiBTZWUgNDUsIDY0MjkzIERhcm1zdGFkdCwg
+R2VybWFueSB8IHd3dy5oYm0uY29tIAo+IAo+IFJlZ2lzdGVyZWQgYXMgR21iSCAoR2VybWFuIGxp
+bWl0ZWQgbGlhYmlsaXR5IGNvcnBvcmF0aW9uKSBpbiB0aGUgY29tbWVyY2lhbCByZWdpc3RlciBh
+dCB0aGUgbG9jYWwgY291cnQgb2YgRGFybXN0YWR0LCBIUkIgMTE0NyAgCj4gQ29tcGFueSBkb21p
+Y2lsZWQgaW4gRGFybXN0YWR0IHwgQ0VPOiBBbmRyZWFzIEh1ZWxsaG9yc3QgfCBDaGFpcm1hbiBv
+ZiB0aGUgYm9hcmQ6IEphbWVzIENoYXJsZXMgV2Vic3Rlcgo+IAo+IEFscyBHZXNlbGxzY2hhZnQg
+bWl0IGJlc2NocmFlbmt0ZXIgSGFmdHVuZyBlaW5nZXRyYWdlbiBpbSBIYW5kZWxzcmVnaXN0ZXIg
+ZGVzIEFtdHNnZXJpY2h0cyBEYXJtc3RhZHQgdW50ZXIgSFJCIDExNDcgCj4gU2l0eiBkZXIgR2Vz
+ZWxsc2NoYWZ0OiBEYXJtc3RhZHQgfCBHZXNjaGFlZnRzZnVlaHJ1bmc6IEFuZHJlYXMgSHVlbGxo
+b3JzdCB8IEF1ZnNpY2h0c3JhdHN2b3JzaXR6ZW5kZXI6IEphbWVzIENoYXJsZXMgV2Vic3Rlcgo+
+IAo+IFRoZSBpbmZvcm1hdGlvbiBpbiB0aGlzIGVtYWlsIGlzIGNvbmZpZGVudGlhbC4gSXQgaXMg
+aW50ZW5kZWQgc29sZWx5IGZvciB0aGUgYWRkcmVzc2VlLiBJZiB5b3UgYXJlIG5vdCB0aGUgaW50
+ZW5kZWQgcmVjaXBpZW50LCBwbGVhc2UgbGV0IG1lIGtub3cgYW5kIGRlbGV0ZSB0aGlzIGVtYWls
+Lgo+IAo+IERpZSBpbiBkaWVzZXIgRS1NYWlsIGVudGhhbHRlbmUgSW5mb3JtYXRpb24gaXN0IHZl
+cnRyYXVsaWNoIHVuZCBsZWRpZ2xpY2ggZsO8ciBkZW4gRW1wZmFlbmdlciBiZXN0aW1tdC4gU29s
+bHRlbiBTaWUgbmljaHQgZGVyIGVpZ2VudGxpY2hlIEVtcGZhZW5nZXIgc2VpbiwgaW5mb3JtaWVy
+ZW4gU2llIG1pY2ggYml0dGUga3VyeiB1bmQgbG9lc2NoZW4gZGllc2UgRS1NYWlsLgo+IAoKCgpf
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1h
+aWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJh
+ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
