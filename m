@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QwGIp-0003GP-Q8
-	for barebox@lists.infradead.org; Wed, 24 Aug 2011 16:27:44 +0000
-Date: Wed, 24 Aug 2011 18:27:40 +0200
+	id 1QwGND-0003Ip-Rb
+	for barebox@lists.infradead.org; Wed, 24 Aug 2011 16:32:16 +0000
+Date: Wed, 24 Aug 2011 18:32:13 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110824162740.GH31404@pengutronix.de>
-References: <CAA4bVAEHnV+d8JMXqTKtNWKdvfmXaS=S8S=KQBPRTQhbt8EnJg@mail.gmail.com>
+Message-ID: <20110824163213.GI31404@pengutronix.de>
+References: <CAA4bVAFi6B9fsNYn8KLor0_ObZVc2GmxXtwpeuaAC1N7Vt9H+Q@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAA4bVAEHnV+d8JMXqTKtNWKdvfmXaS=S8S=KQBPRTQhbt8EnJg@mail.gmail.com>
+In-Reply-To: <CAA4bVAFi6B9fsNYn8KLor0_ObZVc2GmxXtwpeuaAC1N7Vt9H+Q@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,32 +22,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: add_usb_ehci_device() don't set resource size
+Subject: Re: [RFC] reference errors in OMAP documetation
 To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox <barebox@lists.infradead.org>
 
-On Wed, Aug 24, 2011 at 06:30:35PM +0400, Antony Pavlov wrote:
+On Tue, Aug 23, 2011 at 06:40:24PM +0400, Antony Pavlov wrote:
 > Hi!
 > 
-> add_usb_ehci_device() don't set resource size, it only set start address:
-
-Yeah, the resource size is barely handled in barebox. Even if they
-exist, most if not all drivers do not check it.
-
-> So on my Tegra board I have this:
+> I posted this message some times ago, but nobody commented it.
+> So I reposting it.
 > 
-> toshiba ac100> / devinfo ehci0
-> resources:
-> num   : 0
-> start : 0xc5000100
-> size  : 0x00000000
->         ^^^^^^^^^^
-> num   : 1
-> start : 0xc5000140
-> size  : 0x00000000
->         ^^^^^^^^^^
+> 
+> I found some file reference errors in OMAP documentation.
+> 
+> I have made the patch, but I can't send it via git-send-email:
+> some lines in dox file are too long.
+> 
+> Here is the patch, please look at it:
+> 
+> http://prizma.bmstu.ru/~antony/barebox/0001-ARM-fix-formatting-and-file-references-in-documentat.patch
 
-This does not look good, patches welcome.
+I just added a wiki account for you, let me know if this works.
+
+We could add a developer/arm/omap page in the wiki with the correct
+version of the text. There are some parts in it I don't exactly agree
+with, for example the policy to put all omap boards into
+arch/arm/boards/omap. The panda board does not do so and really the
+other boards shouldn't do it aswell.
+Originally Nishanth said that all omap boards are so similar that
+the code should be in a single directory. I did not realize it
+at that time, having common code is a good thing, but it should go
+to arch/arm/mach-omap and the board code still in arch/arm/boards/<name>
 
 Sascha
 
