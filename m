@@ -1,13 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-fx0-f49.google.com ([209.85.161.49])
-	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QwAYW-0000Ml-3x
-	for barebox@lists.infradead.org; Wed, 24 Aug 2011 10:19:35 +0000
-Received: by fxd20 with SMTP id 20so1086692fxd.36
-	for <barebox@lists.infradead.org>; Wed, 24 Aug 2011 03:19:29 -0700 (PDT)
-From: franck.jullien@gmail.com
-Date: Wed, 24 Aug 2011 12:19:23 +0200
-Message-Id: <1314181164-7478-1-git-send-email-franck.jullien@gmail.com>
+Received: from mail.visioncatalog.com ([217.6.246.34] helo=root.phytec.de)
+	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+	id 1QwCWg-0003RC-Jc
+	for barebox@lists.infradead.org; Wed, 24 Aug 2011 12:25:48 +0000
+From: Teresa Gamez <T.Gamez@phytec.de>
+In-Reply-To: <201108241207.28142.tim.sander@hbm.com>
+References: <201108231421.42868.tim.sander@hbm.com>
+	<201108231640.35115.tim.sander@hbm.com>
+	<1314176069.3389.274.camel@lws-gamez>
+	<201108241207.28142.tim.sander@hbm.com>
+Date: Wed, 24 Aug 2011 14:25:50 +0200
+Message-ID: <1314188750.3389.494.camel@lws-gamez>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,313 +20,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] nios2: Add Altera SPI master driver
-To: barebox@lists.infradead.org
+Subject: Re: RFC: arm pcm043 1315.6 IM950 timing (Numonyx Axcell Errata)
+To: Tim Sander <tim.sander@hbm.com>
+Cc: barebox@lists.infradead.org
 
-From: Franck Jullien <franck.jullien@gmail.com>
-
-Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
----
- arch/nios2/include/asm/spi.h |   21 ++++
- drivers/spi/Kconfig          |    5 +
- drivers/spi/Makefile         |    1 +
- drivers/spi/altera_spi.c     |  227 ++++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 254 insertions(+), 0 deletions(-)
- create mode 100644 arch/nios2/include/asm/spi.h
- create mode 100644 drivers/spi/altera_spi.c
-
-diff --git a/arch/nios2/include/asm/spi.h b/arch/nios2/include/asm/spi.h
-new file mode 100644
-index 0000000..4e576b9
---- /dev/null
-+++ b/arch/nios2/include/asm/spi.h
-@@ -0,0 +1,21 @@
-+#ifndef __ALTERA_SPI_H_
-+#define __ALTERA_SPI_H_
-+
-+#include <spi/spi.h>
-+
-+struct spi_altera_master {
-+	int	num_chipselect;
-+	int	spi_mode;
-+	int	databits;
-+	int	speed;
-+};
-+
-+struct altera_spi {
-+	struct spi_master	master;
-+	int			databits;
-+	int			speed;
-+	int			mode;
-+	void __iomem		*regs;
-+};
-+
-+#endif /*__ALTERA_SPI_H_*/
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 9ab03f6..c72493c 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -19,4 +19,9 @@ config DRIVER_SPI_IMX_2_3
- 	depends on ARCH_IMX51 || ARCH_IMX53
- 	default y
- 
-+config DRIVER_SPI_ALTERA
-+	bool "Altera SPI Master driver"
-+	depends on NIOS2
-+	depends on SPI
-+
- endmenu
-diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-index b2b2f67..90e141d 100644
---- a/drivers/spi/Makefile
-+++ b/drivers/spi/Makefile
-@@ -1,2 +1,3 @@
- obj-$(CONFIG_SPI) += spi.o
- obj-$(CONFIG_DRIVER_SPI_IMX) += imx_spi.o
-+obj-$(CONFIG_DRIVER_SPI_ALTERA) += altera_spi.o
-diff --git a/drivers/spi/altera_spi.c b/drivers/spi/altera_spi.c
-new file mode 100644
-index 0000000..7f1b9b2
---- /dev/null
-+++ b/drivers/spi/altera_spi.c
-@@ -0,0 +1,227 @@
-+/*
-+ * (C) Copyright 2011 - Franck JULLIEN <elec4fun@gmail.com>
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-+ * MA 02111-1307 USA
-+ *
-+ */
-+
-+#include <common.h>
-+#include <init.h>
-+#include <driver.h>
-+#include <spi/spi.h>
-+#include <asm/io.h>
-+#include <asm/spi.h>
-+#include <asm/nios2-io.h>
-+
-+static int altera_spi_setup(struct spi_device *spi)
-+{
-+	struct spi_master *master = spi->master;
-+	struct device_d spi_dev = spi->dev;
-+	struct altera_spi *altera_spi = container_of(master, struct altera_spi, master);
-+
-+	if (spi->bits_per_word != altera_spi->databits) {
-+		dev_err(master->dev, " master doesn't support %d bits per word requested by %s\n",
-+			spi->bits_per_word, spi_dev.name);
-+		return -1;
-+	}
-+
-+	if ((spi->mode & (SPI_CPHA | SPI_CPOL)) != altera_spi->mode) {
-+		dev_err(master->dev, " master doesn't support SPI_MODE%d requested by %s\n",
-+			spi->mode & (SPI_CPHA | SPI_CPOL), spi_dev.name);
-+		return -1;
-+	}
-+
-+	if (spi->max_speed_hz < altera_spi->speed) {
-+		dev_err(master->dev, " frequency is too high for %s\n", spi_dev.name);
-+		return -1;
-+	}
-+
-+	dev_dbg(master->dev, " mode 0x%08x, bits_per_word: %d, speed: %d\n",
-+		spi->mode, spi->bits_per_word, altera_spi->speed);
-+
-+	return 0;
-+}
-+
-+
-+static unsigned int altera_spi_xchg_single(struct altera_spi *altera_spi, unsigned int data)
-+{
-+	struct nios_spi *nios_spi = altera_spi->regs;
-+
-+	while (!(readl(&nios_spi->status) & NIOS_SPI_TRDY));
-+	writel(data, &nios_spi->txdata);
-+
-+	while (!(readl(&nios_spi->status) & NIOS_SPI_RRDY));
-+
-+	return readl(&nios_spi->rxdata);
-+}
-+
-+/*
-+ * When using SPI_CS_HIGH devices, only one device is allowed to be
-+ * connected to the Altera SPI master. This limitation is due to the
-+ * emulation of an active high CS by writing 0 to the slaveselect register
-+ * (this produce a '1' to all CS pins).
-+ */
-+
-+static void altera_spi_cs_active(struct spi_device *spi)
-+{
-+	struct altera_spi *altera_spi = container_of(spi->master, struct altera_spi, master);
-+	struct nios_spi *nios_spi = altera_spi->regs;
-+	uint32_t tmp;
-+
-+	if (spi->mode & SPI_CS_HIGH) {
-+		tmp = readw(&nios_spi->control);
-+		writew(tmp & ~NIOS_SPI_SSO, &nios_spi->control);
-+		writel(0, &nios_spi->slaveselect);
-+	} else {
-+		writel(1 << spi->chip_select, &nios_spi->slaveselect);
-+		tmp = readl(&nios_spi->control);
-+		writel(tmp | NIOS_SPI_SSO, &nios_spi->control);
-+	}
-+}
-+
-+static void altera_spi_cs_inactive(struct spi_device *spi)
-+{
-+	struct altera_spi *altera_spi = container_of(spi->master, struct altera_spi, master);
-+	struct nios_spi *nios_spi = altera_spi->regs;
-+	uint32_t tmp;
-+
-+	if (spi->mode & SPI_CS_HIGH) {
-+		writel(1 << spi->chip_select, &nios_spi->slaveselect);
-+		tmp = readl(&nios_spi->control);
-+		writel(tmp | NIOS_SPI_SSO, &nios_spi->control);
-+	} else {
-+		tmp = readw(&nios_spi->control);
-+		writew(tmp & ~NIOS_SPI_SSO, &nios_spi->control);
-+	}
-+}
-+
-+static unsigned altera_spi_do_xfer(struct spi_device *spi, struct spi_transfer *t)
-+{
-+	struct altera_spi *altera_spi = container_of(spi->master, struct altera_spi, master);
-+	int word_len = spi->bits_per_word;
-+	unsigned retval = 0;
-+	u32 txval;
-+	u32 rxval;
-+
-+	word_len = spi->bits_per_word;
-+
-+	if (word_len <= 8) {
-+		const u8 *txbuf = t->tx_buf;
-+		u8 *rxbuf = t->rx_buf;
-+		int i = 0;
-+
-+		while (i < t->len) {
-+			txval = txbuf ? txbuf[i] : 0;
-+			rxval = altera_spi_xchg_single(altera_spi, txval);
-+			if (rxbuf)
-+				rxbuf[i] = rxval;
-+			i++;
-+			retval++;
-+		}
-+	} else if (word_len <= 16) {
-+		const u16 *txbuf = t->tx_buf;
-+		u16 *rxbuf = t->rx_buf;
-+		int i = 0;
-+
-+		while (i < t->len >> 1) {
-+			txval = txbuf ? txbuf[i] : 0;
-+			rxval = altera_spi_xchg_single(altera_spi, txval);
-+			if (rxbuf)
-+				rxbuf[i] = rxval;
-+			i++;
-+			retval += 2;
-+		}
-+	} else if (word_len <= 32) {
-+		const u32 *txbuf = t->tx_buf;
-+		u32 *rxbuf = t->rx_buf;
-+		int i = 0;
-+
-+		while (i < t->len >> 2) {
-+			txval = txbuf ? txbuf[i] : 0;
-+			rxval = altera_spi_xchg_single(altera_spi, txval);
-+			if (rxbuf)
-+				rxbuf[i] = rxval;
-+			i++;
-+			retval += 4;
-+		}
-+	}
-+
-+	return retval;
-+}
-+
-+static int altera_spi_transfer(struct spi_device *spi, struct spi_message *mesg)
-+{
-+	struct altera_spi *altera_spi = container_of(spi->master, struct altera_spi, master);
-+	struct nios_spi *nios_spi = altera_spi->regs;
-+	struct spi_transfer *t;
-+
-+	altera_spi_cs_active(spi);
-+
-+	mesg->actual_length = 0;
-+
-+	list_for_each_entry(t, &mesg->transfers, transfer_list) {
-+		mesg->actual_length += altera_spi_do_xfer(spi, t);
-+	}
-+
-+	/* Wait the end of any pending transfert */
-+	while ((readl(&nios_spi->status) & NIOS_SPI_TMT) == 0);
-+
-+	altera_spi_cs_inactive(spi);
-+
-+	return 0;
-+}
-+
-+static int altera_spi_probe(struct device_d *dev)
-+{
-+	struct spi_master *master;
-+	struct altera_spi *altera_spi;
-+	struct spi_altera_master *pdata = dev->platform_data;
-+	struct nios_spi *nios_spi;
-+
-+	altera_spi = xzalloc(sizeof(*altera_spi));
-+
-+	master = &altera_spi->master;
-+	master->dev = dev;
-+
-+	master->setup = altera_spi_setup;
-+	master->transfer = altera_spi_transfer;
-+	master->num_chipselect = pdata->num_chipselect;
-+
-+	altera_spi->regs = dev_request_mem_region(dev, 0);
-+	altera_spi->databits = pdata->databits;
-+	altera_spi->speed = pdata->speed;
-+	altera_spi->mode = pdata->spi_mode;
-+
-+	nios_spi = altera_spi->regs;
-+	writel(0, &nios_spi->slaveselect);
-+	writel(0, &nios_spi->control);
-+
-+	spi_register_master(master);
-+
-+	return 0;
-+}
-+
-+static struct driver_d altera_spi_driver = {
-+	.name  = "altera_spi",
-+	.probe = altera_spi_probe,
-+};
-+
-+static int altera_spi_driver_init(void)
-+{
-+	return register_driver(&altera_spi_driver);
-+}
-+
-+device_initcall(altera_spi_driver_init);
--- 
-1.7.6
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QW0gTWl0dHdvY2gsIGRlbiAyNC4wOC4yMDExLCAxMjowNyArMDIwMCBzY2hyaWViIFRpbSBTYW5k
+ZXI6Cj4gSGkgVGVyZXNhCj4gPiBJZiBvbmx5IHNhdmluZyB0aGUgZW52aXJvbm1lbnQgbWFrZXMg
+eW91IHRyb3VibGUgaXQgbG9va3MgbW9yZSBsaWtlCj4gPiB0aGUgcHJvYmxlbSBvZiBtaXNzaW5n
+IHN1cHBvcnQgZm9yIHUzMiBjb21tYW5kcy4KPiA+IEFzIGZhciBhcyBJIHVuZGVyc3RhbmQgdGhp
+cywgdGhlIGJ1ZmZlciBzaXplIG9mIHRoZSBOT1IgZmxhc2hlcyB3aGVyZQo+ID4gaGlnaGx5IGlu
+Y3JlYXNlZC4gOGJpdCBmb3IgdGhlIHNpemUgb2YgZGF0YSB0aGF0IGNhbiBiZSB3cml0dGVuIHRv
+IHRoZQo+ID4gYnVmZmVyIGlzIG5vdCBlbm91Z2guIFNpbmNlIHRmdHAgc2VuZHMgdGhlIGRhdGEg
+aW4gc21hbGxlciBwYWNrYWdlcywKPiA+IHdyaXRpbmcgc3RpbGwgd29ya3Mgd2hlbiBmbGFzaGlu
+ZyBrZXJuZWwvcm9vdGZzLiBCdXQgZmFpbHMgd2hlbiBzYXZpbmcKPiA+IHRoZSBlbnZpcm9ubWVu
+dC4KPiBPaywgd2UgaGF2ZSBhIHBjbSAwNDMgYm9hcmQgaHcgcmV2LiAxMzE1LjYgd2l0aCA2NE1i
+IG9mIE5PciBGbGFzaC4KPiBTbyB3ZSBoYXZlIHBsZW50eSBvZiAxMzE1LjQgcmV2cyBvdmVyIGhl
+cmUgd2l0aCAzMk1iIHdoaWNoIHdvcmsgd2l0aAo+IGEgMjAxMS4wNCBiYXJlYm94IHdpdGhvdXQg
+cHJvYmxlbXMuCj4gCj4gVGhlIGZsYXNoIGNoaXAgaXMgYW4gaW50ZWwgKG51bW9ueXg/KSAgNTEy
+UDMzVEYuCgpJIHdvcmsgd2l0aCBhbiAzMk1CIE5PUiBGbGFzaCAoUEMyOEYyNTZQMzNCRkUpIHdo
+aWNoIGlzIHRoZSBzdGFuZGFyZCBraXQKc2V0dXAuIEkgZG9uJ3Qga25vdyBvZiB0aGUgQ1MwIHNl
+dHRpbmdzIGZpdCBmb3IgeW91ciBmbGFzaC4gCgo+IAo+ID4gUGF0Y2hlcyBmb2xsb3cuIFBsZWFz
+ZSB0ZXN0IHRoZW0uCj4gV2lsbCB0ZXN0LgoKVGhhbmtzLgoKVGVyZXNhCgo+IAo+IEJlc3QgcmVn
+YXJkcwo+IFRpbQo+IAo+IEhvdHRpbmdlciBCYWxkd2luIE1lc3N0ZWNobmlrIEdtYkgsIEltIFRp
+ZWZlbiBTZWUgNDUsIDY0MjkzIERhcm1zdGFkdCwgR2VybWFueSB8IHd3dy5oYm0uY29tIAo+IAo+
+IFJlZ2lzdGVyZWQgYXMgR21iSCAoR2VybWFuIGxpbWl0ZWQgbGlhYmlsaXR5IGNvcnBvcmF0aW9u
+KSBpbiB0aGUgY29tbWVyY2lhbCByZWdpc3RlciBhdCB0aGUgbG9jYWwgY291cnQgb2YgRGFybXN0
+YWR0LCBIUkIgMTE0NyAgCj4gQ29tcGFueSBkb21pY2lsZWQgaW4gRGFybXN0YWR0IHwgQ0VPOiBB
+bmRyZWFzIEh1ZWxsaG9yc3QgfCBDaGFpcm1hbiBvZiB0aGUgYm9hcmQ6IEphbWVzIENoYXJsZXMg
+V2Vic3Rlcgo+IAo+IEFscyBHZXNlbGxzY2hhZnQgbWl0IGJlc2NocmFlbmt0ZXIgSGFmdHVuZyBl
+aW5nZXRyYWdlbiBpbSBIYW5kZWxzcmVnaXN0ZXIgZGVzIEFtdHNnZXJpY2h0cyBEYXJtc3RhZHQg
+dW50ZXIgSFJCIDExNDcgCj4gU2l0eiBkZXIgR2VzZWxsc2NoYWZ0OiBEYXJtc3RhZHQgfCBHZXNj
+aGFlZnRzZnVlaHJ1bmc6IEFuZHJlYXMgSHVlbGxob3JzdCB8IEF1ZnNpY2h0c3JhdHN2b3JzaXR6
+ZW5kZXI6IEphbWVzIENoYXJsZXMgV2Vic3Rlcgo+IAo+IFRoZSBpbmZvcm1hdGlvbiBpbiB0aGlz
+IGVtYWlsIGlzIGNvbmZpZGVudGlhbC4gSXQgaXMgaW50ZW5kZWQgc29sZWx5IGZvciB0aGUgYWRk
+cmVzc2VlLiBJZiB5b3UgYXJlIG5vdCB0aGUgaW50ZW5kZWQgcmVjaXBpZW50LCBwbGVhc2UgbGV0
+IG1lIGtub3cgYW5kIGRlbGV0ZSB0aGlzIGVtYWlsLgo+IAo+IERpZSBpbiBkaWVzZXIgRS1NYWls
+IGVudGhhbHRlbmUgSW5mb3JtYXRpb24gaXN0IHZlcnRyYXVsaWNoIHVuZCBsZWRpZ2xpY2ggZsO8
+ciBkZW4gRW1wZmFlbmdlciBiZXN0aW1tdC4gU29sbHRlbiBTaWUgbmljaHQgZGVyIGVpZ2VudGxp
+Y2hlIEVtcGZhZW5nZXIgc2VpbiwgaW5mb3JtaWVyZW4gU2llIG1pY2ggYml0dGUga3VyeiB1bmQg
+bG9lc2NoZW4gZGllc2UgRS1NYWlsLgo+IAoKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmlu
+ZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9i
+YXJlYm94Cg==
