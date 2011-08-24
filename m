@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QwGUu-0003U8-PU
-	for barebox@lists.infradead.org; Wed, 24 Aug 2011 16:40:13 +0000
-Date: Wed, 24 Aug 2011 18:40:10 +0200
+	id 1QwGaM-0003cV-3s
+	for barebox@lists.infradead.org; Wed, 24 Aug 2011 16:45:50 +0000
+Date: Wed, 24 Aug 2011 18:45:47 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110824164010.GL31404@pengutronix.de>
-References: <1314176210-22849-1-git-send-email-t.gamez@phytec.de>
+Message-ID: <20110824164547.GM31404@pengutronix.de>
+References: <1314181164-7478-1-git-send-email-franck.jullien@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1314176210-22849-1-git-send-email-t.gamez@phytec.de>
+In-Reply-To: <1314181164-7478-1-git-send-email-franck.jullien@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,32 +18,27 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM pcm043: New NOR Flash CS0 values
-To: Teresa =?iso-8859-15?Q?G=E1mez?= <t.gamez@phytec.de>
+Subject: Re: [PATCH v2] nios2: Add Altera SPI master driver
+To: franck.jullien@gmail.com
 Cc: barebox@lists.infradead.org
 
-On Wed, Aug 24, 2011 at 10:56:50AM +0200, Teresa G=E1mez wrote:
-> Set new CS0 values for new NOR-Flashes (28F256P33BF).
-> These values also work with older flashes (28F256P33B).
-> =
 
-> Also removed unnecessary setup of CSO in the core_init call.
-> =
+Applied this series to next
 
-> Signed-off-by: Teresa G=E1mez <t.gamez@phytec.de>
 
-Applied for next. Shouldn't hurt to have this already in place when
-the other cfi patch is ready.
+On Wed, Aug 24, 2011 at 12:19:23PM +0200, franck.jullien@gmail.com wrote:
+> +
+> +	/* Wait the end of any pending transfert */
+
+And fixed this little typo on the fly.
 
 Sascha
 
-
--- =
-
+-- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
