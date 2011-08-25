@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from gateway.hbm.com ([213.157.30.2] helo=hbmntx5.hbm.com)
-	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1QwbNF-0004gC-Cy
-	for barebox@lists.infradead.org; Thu, 25 Aug 2011 14:57:42 +0000
-Content-Class: urn:content-classes:message
-From: "Tim Sander" <tim.sander@hbm.com>
-Date: Thu, 25 Aug 2011 16:57:14 +0200
-References: <201108231421.42868.tim.sander@hbm.com>
-	<201108231701.21401.tim.sander@hbm.com>
-	<1314270042.3389.608.camel@lws-gamez>
-In-Reply-To: <1314270042.3389.608.camel@lws-gamez>
+Received: from mail-gy0-f177.google.com ([209.85.160.177])
+	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+	id 1QwjXM-0002OR-06
+	for barebox@lists.infradead.org; Thu, 25 Aug 2011 23:40:40 +0000
+Received: by gyh20 with SMTP id 20so2601407gyh.36
+	for <barebox@lists.infradead.org>; Thu, 25 Aug 2011 16:40:37 -0700 (PDT)
+Message-ID: <4E56DD74.4070102@gmail.com>
+Date: Thu, 25 Aug 2011 16:40:36 -0700
+From: Carlo Caione <carlo.caione@gmail.com>
 MIME-Version: 1.0
-Message-ID: <201108251657.14899.tim.sander@hbm.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,51 +17,76 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Patch test results was (Re: RFC: arm pcm043 1315.6 IM950 timing
-	(Numonyx Axcell Errata))
-To: Teresa Gamez <T.Gamez@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] Autocomplete fix
+To: barebox@lists.infradead.org
 
-SGkgVGVyZXNhCj4gZGlkIHRoZSBwYXRjaGVzIGhlbHA/CkFoIGkgbWlzc2VkIHRoZXNlLCBwbGVh
-c2UgQ0MgbmV4dCB0aW1lIGFzIGknbSBub3Qgb24gdGhlIGxpc3QuCgpTbyB0aGVzZSBwYXRjaGVz
-IGdldCBteQpUZXN0ZWQtYnk6IFRpbSBTYW5kZXIgPHRpbS5zYW5kZXJAaGJtLmNvbT4KCkkgYW0g
-dXNpbmc6CltQQVRDSF0gcGNtIG1lbW9yeSBmaXgKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcv
-cGlwZXJtYWlsL2JhcmVib3gvMjAxMS1BdWd1c3QvMDA0NDUwLmh0bWwKbmVlZGVkIHRvIGdldCBv
-dXIgMTMxNS42ICByZXZpc2lvbiB0byB3b3JrLgoKW1BBVENIXSBBUk0gcGNtMDQzOiBDaGVjayBz
-aWxpY29uIHJldmlzaW9uIHRvIHNldCB1cCBjcHUgZnJlcSBjb3JyZWN0Cmh0dHA6Ly9saXN0cy5p
-bmZyYWRlYWQub3JnL3BpcGVybWFpbC9iYXJlYm94LzIwMTEtQXVndXN0LzAwNDQzOC5odG1sCmRp
-ZG4ndCBzZWUgYW55IGVmZmVjdC4gCgpbUEFUQ0hdIGNmaV9mbGFzaDogc3VwcG9ydCBvZiB1MzIg
-Y21kCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL3BpcGVybWFpbC9iYXJlYm94LzIwMTEtQXVn
-dXN0LzAwNDQ1NC5odG1sCgpbUEFUQ0hdIEFSTSBwY20wNDM6IE5ldyBOT1IgRmxhc2ggQ1MwIHZh
-bHVlcwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9waXBlcm1haWwvYmFyZWJveC8yMDExLUF1
-Z3VzdC8wMDQ0NTUuaHRtbAppdCBzZWVtcyBhcyB0aGlzIGhlbHBzIHdpdGggdGhlIG5ldyBmbGFz
-aCBjaGlwcyB3aGljaCBhcmUgYWxzbyBtb3VudGVkIG9uIG91ciAKMTMxNS40IGJvYXJkIHJldmlz
-aW9ucy4gU2F2ZWVudiB3b3JrcyB3aXRoIHRoZXNlIGJvYXJkcy4KClRoZXNlIHBhdGNoZXMgYXJl
-IHByb2dyZXNzIGluIHRoZSByaWdodCBkaXJlY3Rpb24uIEkgdGVzdGVkIHdpdGggMTMxNS4yLCAK
-MTMxNS40IGFuZCAxMzE1LjYuIEFsbCBzZWVtIHRvIHBhc3Mgc2F2ZWVudiBhbmQgZmxhc2hpbmcg
-b3VyIGZpcm13YXJlLgoKRXNwZWNpYWxseSB0aGUgb2xkIDEzMTUuMiBodyByZXZpc2lvbiBoYWQg
-c29tZSBwcm9ibGVtcyB3aGljaCBhcmUgYWxzbyAKcmVzb2x2ZWQgd2l0aCB0aGUgYWJvdmUgcGF0
-Y2hlcy4KCkJlc3QgcmVnYXJkcwpUaW0KCkhvdHRpbmdlciBCYWxkd2luIE1lc3N0ZWNobmlrIEdt
-YkgsIEltIFRpZWZlbiBTZWUgNDUsIDY0MjkzIERhcm1zdGFkdCwgR2VybWFueSB8IHd3dy5oYm0u
-Y29tIAoKUmVnaXN0ZXJlZCBhcyBHbWJIIChHZXJtYW4gbGltaXRlZCBsaWFiaWxpdHkgY29ycG9y
-YXRpb24pIGluIHRoZSBjb21tZXJjaWFsIHJlZ2lzdGVyIGF0IHRoZSBsb2NhbCBjb3VydCBvZiBE
-YXJtc3RhZHQsIEhSQiAxMTQ3ICAKQ29tcGFueSBkb21pY2lsZWQgaW4gRGFybXN0YWR0IHwgQ0VP
-OiBBbmRyZWFzIEh1ZWxsaG9yc3QgfCBDaGFpcm1hbiBvZiB0aGUgYm9hcmQ6IEphbWVzIENoYXJs
-ZXMgV2Vic3RlcgoKQWxzIEdlc2VsbHNjaGFmdCBtaXQgYmVzY2hyYWVua3RlciBIYWZ0dW5nIGVp
-bmdldHJhZ2VuIGltIEhhbmRlbHNyZWdpc3RlciBkZXMgQW10c2dlcmljaHRzIERhcm1zdGFkdCB1
-bnRlciBIUkIgMTE0NyAKU2l0eiBkZXIgR2VzZWxsc2NoYWZ0OiBEYXJtc3RhZHQgfCBHZXNjaGFl
-ZnRzZnVlaHJ1bmc6IEFuZHJlYXMgSHVlbGxob3JzdCB8IEF1ZnNpY2h0c3JhdHN2b3JzaXR6ZW5k
-ZXI6IEphbWVzIENoYXJsZXMgV2Vic3RlcgoKVGhlIGluZm9ybWF0aW9uIGluIHRoaXMgZW1haWwg
-aXMgY29uZmlkZW50aWFsLiBJdCBpcyBpbnRlbmRlZCBzb2xlbHkgZm9yIHRoZSBhZGRyZXNzZWUu
-IElmIHlvdSBhcmUgbm90IHRoZSBpbnRlbmRlZCByZWNpcGllbnQsIHBsZWFzZSBsZXQgbWUga25v
-dyBhbmQgZGVsZXRlIHRoaXMgZW1haWwuCgpEaWUgaW4gZGllc2VyIEUtTWFpbCBlbnRoYWx0ZW5l
-IEluZm9ybWF0aW9uIGlzdCB2ZXJ0cmF1bGljaCB1bmQgbGVkaWdsaWNoIGbDvHIgZGVuIEVtcGZh
-ZW5nZXIgYmVzdGltbXQuIFNvbGx0ZW4gU2llIG5pY2h0IGRlciBlaWdlbnRsaWNoZSBFbXBmYWVu
-Z2VyIHNlaW4sIGluZm9ybWllcmVuIFNpZSBtaWNoIGJpdHRlIGt1cnogdW5kIGxvZXNjaGVuIGRp
-ZXNlIEUtTWFpbC4KCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0
-cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Autocomplete fixed: now working also to autocomplete file names as first 
+argument.
+
+i.e.:
+
+# ./en<TAB> completes to # ./env/
+
+Signed-off-by: Carlo Caione <carlo.caione@gmail.com>
+---
+  common/complete.c |   13 +++++++++----
+  1 files changed, 9 insertions(+), 4 deletions(-)
+
+diff --git a/common/complete.c b/common/complete.c
+index 46ba871..543e649 100644
+--- a/common/complete.c
++++ b/common/complete.c
+@@ -71,6 +71,7 @@ static int command_complete(struct string_list *sl, 
+char *instr)
+  {
+  	struct command *cmdtp;
+  	char cmd[128];
++	int found = 0;
+
+  	for_each_command(cmdtp) {
+  		if (!strncmp(instr, cmdtp->name, strlen(instr))) {
+@@ -78,10 +79,11 @@ static int command_complete(struct string_list *sl, 
+char *instr)
+  			cmd[strlen(cmdtp->name)] = ' ';
+  			cmd[strlen(cmdtp->name) + 1] = 0;
+  			string_list_add(sl, cmd);
++			found = 1;
+  		}
+  	}
+
+-	return 0;
++	return(found);
+  }
+
+  static int tab_pressed = 0;
+@@ -116,13 +118,16 @@ int complete(char *instr, char **outstr)
+
+  	instr = t;
+
+-	/* get the completion possibilities */
+  	if ((t = strrchr(t, ' '))) {
+  		t++;
+  		file_complete(&sl, t);
+  		instr = t;
+-	} else
+-		command_complete(&sl, instr);
++	} else {
++		if(!command_complete(&sl, instr)){	
++			file_complete(&sl, instr);
++		}
++	}
++		
+
+  	pos = strlen(instr);
+
+-- 
+1.7.6.1
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
