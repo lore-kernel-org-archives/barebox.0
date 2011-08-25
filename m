@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QwXCw-00082n-F5
-	for barebox@lists.infradead.org; Thu, 25 Aug 2011 10:30:49 +0000
-Date: Thu, 25 Aug 2011 12:30:43 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110825103043.GT31404@pengutronix.de>
-References: <CAA4bVAFYh0z-DCYbB8WoZZkBHszDHjmrYAF2D89drCSvSdCKZQ@mail.gmail.com>
+Received: from mail.microcatalog.org.uk ([217.6.246.34] helo=root.phytec.de)
+	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+	id 1QwYTw-00017R-9c
+	for barebox@lists.infradead.org; Thu, 25 Aug 2011 11:52:25 +0000
+From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
+Date: Thu, 25 Aug 2011 13:52:12 +0200
+Message-Id: <1314273132-4060-1-git-send-email-t.gamez@phytec.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAA4bVAFYh0z-DCYbB8WoZZkBHszDHjmrYAF2D89drCSvSdCKZQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,94 +15,117 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] arm naming inconsistance
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: [PATCHv2] cfi_flash: support of u32 cmd
+To: s.hauer@pengutronix.de
+Cc: barebox@lists.infradead.org
 
-On Fri, Aug 12, 2011 at 05:28:17PM +0400, Antony Pavlov wrote:
-> Hi!
-> 
-> Barebox has an hierarchy for supported stuff:
-> 
->  arch -> mach
-> 
->     arch \in {arm, x86, nios2 ...}
-> 
->  for arch=arm, mach \in { at91, ims, msx, ... versatile }
-> 
->  Also there is the 'board', the lowest level of hierarchy.
-> 
->  E.g. for mach=at91, board \in { at91sam9m10g45ek, pm9263 ...}
-> 
-> But there are strange things in arch/arm/Kconfig and
-> arch/arm/cpu/start.c:
-> 
-> #ifdef CONFIG_ARCH_HAS_LOWLEVEL_INIT
->         arch_init_lowlevel();
-> #endif
-> 
-> At the first glance all ok: if arch has lowlevel init, the do
-> arch_init_lowlevel().
-> But arch_init_lowlevel() is not __per-arch__ function, but
-> __per-mach__ function!
-> It is used in at91 and omap mach.
-
-for the at91rm9200 the arch_init_lowlevel() simply should go away.
-It sets up the exception vectors which is now done by the mmu code
-anyway, at least if it'S enabled. If not, the code should still go
-somewhere else. At this early stage we can't do anything with
-exceptions since printf is not working.
-
-For Omap this function looks indeed architecture specific (Soc specific
-would be a better name, architecture is used for far too many things)
-Most of the things here look rather useless. It should be cleaned up
-and SoC specific bits should be moved to arch/arm/mach-omap
-CONFIG_OMAP3_COPY_CLOCK_SRAM isn't set in any configuration and I have
-now idea why I should enable this option. The cache invalidation is
-repeated in the generic code.
-
-> 
-> #ifdef CONFIG_MACH_DO_LOWLEVEL_INIT
->         board_init_lowlevel();
-> #endif
-> 
-> Here we have a more bizarre thing: if __mach__ do low level init then
-> do __board__ low level init!
-> 
-> In arch/arm/Kconfig we have the same strange things:
-> 
-> config ARCH_VERSATILE
->         bool "ARM Versatile boards (ARM926EJ-S)"
->         select CPU_ARM926T
-> 
-> But versatile is not arch, it's a mach!
-> 
-> By this examples one can see that the conception of architecture
-> ('arch') is mixed up with the conception of machine ('mach').
-
-The confusion about architecture and machine has a long tradition.
-Arguably an architecture is ARM or x86, but in the arm world
-architecture is often used for what we better call SoCs. Sometimes
-MACH is used for different SoCs aswell (in the kernel we had MACH_MX21
-and MACH_MX27 for a long time, or in both the kernel we have
-arch/arm/mach-* instead of arch/arm/soc-*). We should better generally
-use 'SoC' and 'board' to make clear what we mean. Mass renaming this
-stuff is not a good idea, but at least we should use the right words
-in email conversation.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U29tZSBOT1IgZmxhc2ggY2hpcHMgaGF2ZSBjb21tYW5kcyB3aXRoIGxlbmd0aCBncmVhdGVyIHRo
+YW4gdGhlIG1heGltdW0KdmFsdWUgc2l6ZSBvZiB1Y2hhci4KCkJhc2VkIG9uIGFuIFUtQm9vdCBQ
+YXRjaCBieSBWYXNpbGl5IExlb2VuZW5rbyA8dmFzaWxpeS5sZW9uZW5rb0BtYWlsLnJ1PgoKT25s
+eSB0ZXN0ZWQgd2l0aCBsaXR0bGUgZW5kaWFuIG9uIGFuIGludGVsIGNmaV9mbGFzaC4KClNpZ25l
+ZC1vZmYtYnk6IFRlcmVzYSBHw6FtZXogPHQuZ2FtZXpAcGh5dGVjLmRlPgotLS0KIGRyaXZlcnMv
+bm9yL2NmaV9mbGFzaC5jICAgICAgIHwgICAzNSArKysrKysrKysrKysrKysrKysrKysrKysrKy0t
+LS0tLS0tLQogZHJpdmVycy9ub3IvY2ZpX2ZsYXNoLmggICAgICAgfCAgIDExICsrKysrKystLS0t
+CiBkcml2ZXJzL25vci9jZmlfZmxhc2hfYW1kLmMgICB8ICAgIDggKysrKy0tLS0KIGRyaXZlcnMv
+bm9yL2NmaV9mbGFzaF9pbnRlbC5jIHwgICAgMiArLQogNCBmaWxlcyBjaGFuZ2VkLCAzOCBpbnNl
+cnRpb25zKCspLCAxOCBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9kcml2ZXJzL25vci9jZmlf
+Zmxhc2guYyBiL2RyaXZlcnMvbm9yL2NmaV9mbGFzaC5jCmluZGV4IDQ2MWIwZTYuLjdiMjVhZGIg
+MTAwNjQ0Ci0tLSBhL2RyaXZlcnMvbm9yL2NmaV9mbGFzaC5jCisrKyBiL2RyaXZlcnMvbm9yL2Nm
+aV9mbGFzaC5jCkBAIC04MjAsMjAgKzgyMCwzNSBAQCBpbnQgZmxhc2hfZ2VuZXJpY19zdGF0dXNf
+Y2hlY2sgKHN0cnVjdCBmbGFzaF9pbmZvICppbmZvLCBmbGFzaF9zZWN0X3Qgc2VjdG9yLAogLyoK
+ICAqIG1ha2UgYSBwcm9wZXIgc2l6ZWQgY29tbWFuZCBiYXNlZCBvbiB0aGUgcG9ydCBhbmQgY2hp
+cCB3aWR0aHMKICAqLwotdm9pZCBmbGFzaF9tYWtlX2NtZChzdHJ1Y3QgZmxhc2hfaW5mbyAqaW5m
+bywgdTggY21kLCBjZml3b3JkX3QgKmNtZGJ1ZikKK3ZvaWQgZmxhc2hfbWFrZV9jbWQoc3RydWN0
+IGZsYXNoX2luZm8gKmluZm8sIHUzMiBjbWQsIGNmaXdvcmRfdCAqY21kYnVmKQogewotCWNmaXdv
+cmRfdCByZXN1bHQgPSAwOwotCWludCBpID0gaW5mby0+cG9ydHdpZHRoIC8gaW5mby0+Y2hpcHdp
+ZHRoOworCWludCBpOworCWludCBjcF9vZmZzZXQ7CisJaW50IGN3b3JkX29mZnNldDsKKwl1Y2hh
+ciB2YWw7CisJdWNoYXIgKmNwOworCisJKmNtZGJ1ZiA9IDA7CisJY3AgPSAodWNoYXIgKiljbWRi
+dWY7CiAKLQl3aGlsZSAoaS0tKQotCQlyZXN1bHQgPSAocmVzdWx0IDw8ICg4ICogaW5mby0+Y2hp
+cHdpZHRoKSkgfCBjbWQ7Ci0JKmNtZGJ1ZiA9IHJlc3VsdDsKKwlmb3IgKGkgPSBpbmZvLT5wb3J0
+d2lkdGg7IGkgPiAwOyBpLS0pIHsKKwkJY3dvcmRfb2Zmc2V0ID0gKGluZm8tPnBvcnR3aWR0aC1p
+KSAlIGluZm8tPmNoaXB3aWR0aDsKKyNpZiBfX0JZVEVfT1JERVIgPT0gX19MSVRUTEVfRU5ESUFO
+CisJCWNwX29mZnNldCA9IGluZm8tPnBvcnR3aWR0aCAtIGk7CisJCXZhbCA9ICooKHVjaGFyICop
+JmNtZCArIGN3b3JkX29mZnNldCk7CisjZWxzZQorCQljcF9vZmZzZXQgPSBpIC0gMTsKKwkJdmFs
+ID0gKigodWNoYXIgKikmY21kICsgc2l6ZW9mKHUzMikgLSBjd29yZF9vZmZzZXQgLSAxKTsKKyNl
+bmRpZgorCWNwW2NwX29mZnNldF0gPSAoY3dvcmRfb2Zmc2V0ID49IHNpemVvZih1MzIpKSA/IDB4
+MDAgOiB2YWw7CisJfQogfQogCiAvKgogICogV3JpdGUgYSBwcm9wZXIgc2l6ZWQgY29tbWFuZCB0
+byB0aGUgY29ycmVjdCBhZGRyZXNzCiAgKi8KLXZvaWQgZmxhc2hfd3JpdGVfY21kIChzdHJ1Y3Qg
+Zmxhc2hfaW5mbyAqaW5mbywgZmxhc2hfc2VjdF90IHNlY3QsIHVpbnQgb2Zmc2V0LCB1Y2hhciBj
+bWQpCit2b2lkIGZsYXNoX3dyaXRlX2NtZChzdHJ1Y3QgZmxhc2hfaW5mbyAqaW5mbywgZmxhc2hf
+c2VjdF90IHNlY3QsCisJCQkJdWludCBvZmZzZXQsIHUzMiBjbWQpCiB7CiAKIAl1Y2hhciAqYWRk
+cjsKQEAgLTg0NSw3ICs4NjAsOCBAQCB2b2lkIGZsYXNoX3dyaXRlX2NtZCAoc3RydWN0IGZsYXNo
+X2luZm8gKmluZm8sIGZsYXNoX3NlY3RfdCBzZWN0LCB1aW50IG9mZnNldCwgdQogCWZsYXNoX3dy
+aXRlX3dvcmQoaW5mbywgY3dvcmQsIGFkZHIpOwogfQogCi1pbnQgZmxhc2hfaXNlcXVhbCAoc3Ry
+dWN0IGZsYXNoX2luZm8gKmluZm8sIGZsYXNoX3NlY3RfdCBzZWN0LCB1aW50IG9mZnNldCwgdWNo
+YXIgY21kKQoraW50IGZsYXNoX2lzZXF1YWwoc3RydWN0IGZsYXNoX2luZm8gKmluZm8sIGZsYXNo
+X3NlY3RfdCBzZWN0LAorCQkJCXVpbnQgb2Zmc2V0LCB1MzIgY21kKQogewogCXZvaWQgKmFkZHI7
+CiAJY2Zpd29yZF90IGN3b3JkOwpAQCAtODgyLDcgKzg5OCw4IEBAIGludCBmbGFzaF9pc2VxdWFs
+IChzdHJ1Y3QgZmxhc2hfaW5mbyAqaW5mbywgZmxhc2hfc2VjdF90IHNlY3QsIHVpbnQgb2Zmc2V0
+LCB1Y2hhCiAJcmV0dXJuIHJldHZhbDsKIH0KIAotaW50IGZsYXNoX2lzc2V0IChzdHJ1Y3QgZmxh
+c2hfaW5mbyAqaW5mbywgZmxhc2hfc2VjdF90IHNlY3QsIHVpbnQgb2Zmc2V0LCB1Y2hhciBjbWQp
+CitpbnQgZmxhc2hfaXNzZXQoc3RydWN0IGZsYXNoX2luZm8gKmluZm8sIGZsYXNoX3NlY3RfdCBz
+ZWN0LAorCQkJCXVpbnQgb2Zmc2V0LCB1MzIgY21kKQogewogCXZvaWQgKmFkZHIgPSBmbGFzaF9t
+YWtlX2FkZHIgKGluZm8sIHNlY3QsIG9mZnNldCk7CiAJY2Zpd29yZF90IGN3b3JkOwpkaWZmIC0t
+Z2l0IGEvZHJpdmVycy9ub3IvY2ZpX2ZsYXNoLmggYi9kcml2ZXJzL25vci9jZmlfZmxhc2guaApp
+bmRleCA5MDk4MDIxLi4zMmRjYzhjIDEwMDY0NAotLS0gYS9kcml2ZXJzL25vci9jZmlfZmxhc2gu
+aAorKysgYi9kcml2ZXJzL25vci9jZmlfZmxhc2guaApAQCAtMjMxLDE2ICsyMzEsMTkgQEAgZXh0
+ZXJuIHN0cnVjdCBjZmlfY21kX3NldCBjZmlfY21kX3NldF9hbWQ7CiAjZGVmaW5lIENGSV9GTEFT
+SF9TSElGVF9XSURUSAkzCiAvKiBQcm90b3R5cGVzICovCiAKLWludCBmbGFzaF9pc3NldCAoc3Ry
+dWN0IGZsYXNoX2luZm8gKmluZm8sIGZsYXNoX3NlY3RfdCBzZWN0LCB1aW50IG9mZnNldCwgdWNo
+YXIgY21kKTsKLXZvaWQgZmxhc2hfd3JpdGVfY21kIChzdHJ1Y3QgZmxhc2hfaW5mbyAqaW5mbywg
+Zmxhc2hfc2VjdF90IHNlY3QsIHVpbnQgb2Zmc2V0LCB1Y2hhciBjbWQpOworaW50IGZsYXNoX2lz
+c2V0KHN0cnVjdCBmbGFzaF9pbmZvICppbmZvLCBmbGFzaF9zZWN0X3Qgc2VjdCwKKwkJCQl1aW50
+IG9mZnNldCwgdTMyIGNtZCk7Cit2b2lkIGZsYXNoX3dyaXRlX2NtZChzdHJ1Y3QgZmxhc2hfaW5m
+byAqaW5mbywgZmxhc2hfc2VjdF90IHNlY3QsCisJCQkJdWludCBvZmZzZXQsIHUzMiBjbWQpOwog
+Zmxhc2hfc2VjdF90IGZpbmRfc2VjdG9yIChzdHJ1Y3QgZmxhc2hfaW5mbyAqaW5mbywgdWxvbmcg
+YWRkcik7CiBpbnQgZmxhc2hfc3RhdHVzX2NoZWNrIChzdHJ1Y3QgZmxhc2hfaW5mbyAqaW5mbywg
+Zmxhc2hfc2VjdF90IHNlY3RvciwKIAkJCSAgICAgICB1aW50NjRfdCB0b3V0LCBjaGFyICpwcm9t
+cHQpOwogaW50IGZsYXNoX2dlbmVyaWNfc3RhdHVzX2NoZWNrIChzdHJ1Y3QgZmxhc2hfaW5mbyAq
+aW5mbywgZmxhc2hfc2VjdF90IHNlY3RvciwKIAkJCSAgICAgICB1aW50NjRfdCB0b3V0LCBjaGFy
+ICpwcm9tcHQpOwogCi1pbnQgZmxhc2hfaXNlcXVhbCAoc3RydWN0IGZsYXNoX2luZm8gKmluZm8s
+IGZsYXNoX3NlY3RfdCBzZWN0LCB1aW50IG9mZnNldCwgdWNoYXIgY21kKTsKLXZvaWQgZmxhc2hf
+bWFrZV9jbWQoc3RydWN0IGZsYXNoX2luZm8gKmluZm8sIHVjaGFyIGNtZCwgY2Zpd29yZF90ICpj
+bWRidWYpOworaW50IGZsYXNoX2lzZXF1YWwoc3RydWN0IGZsYXNoX2luZm8gKmluZm8sIGZsYXNo
+X3NlY3RfdCBzZWN0LAorCQkJCXVpbnQgb2Zmc2V0LCB1MzIgY21kKTsKK3ZvaWQgZmxhc2hfbWFr
+ZV9jbWQoc3RydWN0IGZsYXNoX2luZm8gKmluZm8sIHUzMiBjbWQsIGNmaXdvcmRfdCAqY21kYnVm
+KTsKIAogc3RhdGljIGlubGluZSB2b2lkIGZsYXNoX3dyaXRlOCh1OCB2YWx1ZSwgdm9pZCAqYWRk
+cikKIHsKZGlmZiAtLWdpdCBhL2RyaXZlcnMvbm9yL2NmaV9mbGFzaF9hbWQuYyBiL2RyaXZlcnMv
+bm9yL2NmaV9mbGFzaF9hbWQuYwppbmRleCBiMWQ3MDcwLi40NWM1OWI5IDEwMDY0NAotLS0gYS9k
+cml2ZXJzL25vci9jZmlfZmxhc2hfYW1kLmMKKysrIGIvZHJpdmVycy9ub3IvY2ZpX2ZsYXNoX2Ft
+ZC5jCkBAIC0xNDIsMjggKzE0MiwyOCBAQCBzdGF0aWMgaW50IGFtZF9mbGFzaF93cml0ZV9jZmli
+dWZmZXIgKHN0cnVjdCBmbGFzaF9pbmZvICppbmZvLCB1bG9uZyBkZXN0LCBjb25zdAogCiAJaWYg
+KGJhbmt3aWR0aF9pc18xKGluZm8pKSB7CiAJCWNudCA9IGxlbjsKLQkJZmxhc2hfd3JpdGVfY21k
+IChpbmZvLCBzZWN0b3IsIDAsICAodWNoYXIpIGNudCAtIDEpOworCQlmbGFzaF93cml0ZV9jbWQo
+aW5mbywgc2VjdG9yLCAwLCAodTMyKWNudCAtIDEpOwogCQl3aGlsZSAoY250LS0gPiAwKSB7CiAJ
+CQlmbGFzaF93cml0ZTgoZmxhc2hfcmVhZDgoc3JjKSwgZHN0KTsKIAkJCXNyYyArPSAxLCBkc3Qg
+Kz0gMTsKIAkJfQogCX0gZWxzZSBpZiAoYmFua3dpZHRoX2lzXzIoaW5mbykpIHsKIAkJY250ID0g
+bGVuID4+IDE7Ci0JCWZsYXNoX3dyaXRlX2NtZCAoaW5mbywgc2VjdG9yLCAwLCAgKHVjaGFyKSBj
+bnQgLSAxKTsKKwkJZmxhc2hfd3JpdGVfY21kKGluZm8sIHNlY3RvciwgMCwgKHUzMiljbnQgLSAx
+KTsKIAkJd2hpbGUgKGNudC0tID4gMCkgewogCQkJZmxhc2hfd3JpdGUxNihmbGFzaF9yZWFkMTYo
+c3JjKSwgZHN0KTsKIAkJCXNyYyArPSAyLCBkc3QgKz0gMjsKIAkJfQogCX0gZWxzZSBpZiAoYmFu
+a3dpZHRoX2lzXzQoaW5mbykpIHsKIAkJY250ID0gbGVuID4+IDI7Ci0JCWZsYXNoX3dyaXRlX2Nt
+ZCAoaW5mbywgc2VjdG9yLCAwLCAgKHVjaGFyKSBjbnQgLSAxKTsKKwkJZmxhc2hfd3JpdGVfY21k
+KGluZm8sIHNlY3RvciwgMCwgKHUzMiljbnQgLSAxKTsKIAkJd2hpbGUgKGNudC0tID4gMCkgewog
+CQkJZmxhc2hfd3JpdGUzMihmbGFzaF9yZWFkMzIoc3JjKSwgZHN0KTsKIAkJCXNyYyArPSA0LCBk
+c3QgKz0gNDsKIAkJfQogCX0gZWxzZSBpZiAoYmFua3dpZHRoX2lzXzgoaW5mbykpIHsKIAkJY250
+ID0gbGVuID4+IDM7Ci0JCWZsYXNoX3dyaXRlX2NtZCAoaW5mbywgc2VjdG9yLCAwLCAgKHVjaGFy
+KSBjbnQgLSAxKTsKKwkJZmxhc2hfd3JpdGVfY21kKGluZm8sIHNlY3RvciwgMCwgKHUzMiljbnQg
+LSAxKTsKIAkJd2hpbGUgKGNudC0tID4gMCkgewogCQkJZmxhc2hfd3JpdGU2NChmbGFzaF9yZWFk
+NjQoc3JjKSwgZHN0KTsKIAkJCXNyYyArPSA4LCBkc3QgKz0gODsKZGlmZiAtLWdpdCBhL2RyaXZl
+cnMvbm9yL2NmaV9mbGFzaF9pbnRlbC5jIGIvZHJpdmVycy9ub3IvY2ZpX2ZsYXNoX2ludGVsLmMK
+aW5kZXggYzNjYmFkNS4uNjMxOGNmZSAxMDA2NDQKLS0tIGEvZHJpdmVycy9ub3IvY2ZpX2ZsYXNo
+X2ludGVsLmMKKysrIGIvZHJpdmVycy9ub3IvY2ZpX2ZsYXNoX2ludGVsLmMKQEAgLTcwLDcgKzcw
+LDcgQEAgc3RhdGljIGludCBpbnRlbF9mbGFzaF93cml0ZV9jZmlidWZmZXIgKHN0cnVjdCBmbGFz
+aF9pbmZvICppbmZvLCB1bG9uZyBkZXN0LCBjb24KIAkvKiByZWR1Y2UgdGhlIG51bWJlciBvZiBs
+b29wcyBieSB0aGUgd2lkdGggb2YgdGhlIHBvcnQJKi8KIAljbnQgPSBsZW4gPj4gKGluZm8tPnBv
+cnR3aWR0aCAtIDEpOwogCi0JZmxhc2hfd3JpdGVfY21kIChpbmZvLCBzZWN0b3IsIDAsICh1Y2hh
+cikgY250IC0gMSk7CisJZmxhc2hfd3JpdGVfY21kKGluZm8sIHNlY3RvciwgMCwgKHUzMiljbnQg
+LSAxKTsKIAl3aGlsZSAoY250LS0gPiAwKSB7CiAJCWlmIChiYW5rd2lkdGhfaXNfMShpbmZvKSkg
+ewogCQkJZmxhc2hfd3JpdGU4KGZsYXNoX3JlYWQ4KHNyYyksIGRzdCk7Ci0tIAoxLjcuMC40CgoK
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBt
+YWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZy
+YWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
