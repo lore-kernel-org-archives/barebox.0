@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QwWlZ-0007fo-Iz
-	for barebox@lists.infradead.org; Thu, 25 Aug 2011 10:02:30 +0000
-Date: Thu, 25 Aug 2011 12:02:27 +0200
+	id 1QwXCw-00082n-F5
+	for barebox@lists.infradead.org; Thu, 25 Aug 2011 10:30:49 +0000
+Date: Thu, 25 Aug 2011 12:30:43 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110825100227.GA4128@pengutronix.de>
-References: <201011251752.42159.jbe@pengutronix.de>
+Message-ID: <20110825103043.GT31404@pengutronix.de>
+References: <CAA4bVAFYh0z-DCYbB8WoZZkBHszDHjmrYAF2D89drCSvSdCKZQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <201011251752.42159.jbe@pengutronix.de>
+In-Reply-To: <CAA4bVAFYh0z-DCYbB8WoZZkBHszDHjmrYAF2D89drCSvSdCKZQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,67 +22,82 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] phyCORE-i.MX27: Keep frequency multiplier enabled to be
-	able to do a warmstart
-To: Juergen Beisert <jbe@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [RFC] arm naming inconsistance
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox <barebox@lists.infradead.org>
 
-On Thu, Nov 25, 2010 at 05:52:42PM +0100, Juergen Beisert wrote:
-> commit 7d25a0552dd3a4b65412ae1cbf8f9ca8a88b5d27
-> Author: Juergen Beisert <jbe@pengutronix.de>
-> Date:   Thu Nov 25 17:49:11 2010 +0100
+On Fri, Aug 12, 2011 at 05:28:17PM +0400, Antony Pavlov wrote:
+> Hi!
 > 
->     Keep frequency multiplier enabled to be able to do a warmstart
->     
->     The wachtdog's reset does only reset the ARM core, not the whole silicon.
->     But the PLLs seems to do some strange things: It seems they switch back to
->     the low frequency reference when the watchdog barks. But in the case the
->     frequency multiplier is off (not used due to 26 MHz reference usage) the
->     machine stops, because the PLLs are stopping due to the lack of a reference
->     frequency. As the power on reset will set the FPM_EN bit again, a power cycle
->     brings the machine back to life.
->     By keeping the frequency multiplier enabled, also a warmstart triggered by the
->     watchdog can restart the machine now.
->     
->     Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
+> Barebox has an hierarchy for supported stuff:
+> 
+>  arch -> mach
+> 
+>     arch \in {arm, x86, nios2 ...}
+> 
+>  for arch=arm, mach \in { at91, ims, msx, ... versatile }
+> 
+>  Also there is the 'board', the lowest level of hierarchy.
+> 
+>  E.g. for mach=at91, board \in { at91sam9m10g45ek, pm9263 ...}
+> 
+> But there are strange things in arch/arm/Kconfig and
+> arch/arm/cpu/start.c:
+> 
+> #ifdef CONFIG_ARCH_HAS_LOWLEVEL_INIT
+>         arch_init_lowlevel();
+> #endif
+> 
+> At the first glance all ok: if arch has lowlevel init, the do
+> arch_init_lowlevel().
+> But arch_init_lowlevel() is not __per-arch__ function, but
+> __per-mach__ function!
+> It is used in at91 and omap mach.
 
-Applied to master. Maintainer was asleep for a long long time.
+for the at91rm9200 the arch_init_lowlevel() simply should go away.
+It sets up the exception vectors which is now done by the mmu code
+anyway, at least if it'S enabled. If not, the code should still go
+somewhere else. At this early stage we can't do anything with
+exceptions since printf is not working.
+
+For Omap this function looks indeed architecture specific (Soc specific
+would be a better name, architecture is used for far too many things)
+Most of the things here look rather useless. It should be cleaned up
+and SoC specific bits should be moved to arch/arm/mach-omap
+CONFIG_OMAP3_COPY_CLOCK_SRAM isn't set in any configuration and I have
+now idea why I should enable this option. The cache invalidation is
+repeated in the generic code.
+
+> 
+> #ifdef CONFIG_MACH_DO_LOWLEVEL_INIT
+>         board_init_lowlevel();
+> #endif
+> 
+> Here we have a more bizarre thing: if __mach__ do low level init then
+> do __board__ low level init!
+> 
+> In arch/arm/Kconfig we have the same strange things:
+> 
+> config ARCH_VERSATILE
+>         bool "ARM Versatile boards (ARM926EJ-S)"
+>         select CPU_ARM926T
+> 
+> But versatile is not arch, it's a mach!
+> 
+> By this examples one can see that the conception of architecture
+> ('arch') is mixed up with the conception of machine ('mach').
+
+The confusion about architecture and machine has a long tradition.
+Arguably an architecture is ARM or x86, but in the arm world
+architecture is often used for what we better call SoCs. Sometimes
+MACH is used for different SoCs aswell (in the kernel we had MACH_MX21
+and MACH_MX27 for a long time, or in both the kernel we have
+arch/arm/mach-* instead of arch/arm/soc-*). We should better generally
+use 'SoC' and 'board' to make clear what we mean. Mass renaming this
+stuff is not a good idea, but at least we should use the right words
+in email conversation.
 
 Sascha
-
-> 
-> diff --git a/arch/arm/boards/pcm038/pll.h b/arch/arm/boards/pcm038/pll.h
-> index 13a7989..15b94cf 100644
-> --- a/arch/arm/boards/pcm038/pll.h
-> +++ b/arch/arm/boards/pcm038/pll.h
-> @@ -36,6 +36,7 @@
->  		CSCR_MCU_SEL | /* 26 MHz reference */ \
->  		CSCR_ARM_DIV(0) | /* CPU runs at MPLL/3 clock */ \
->  		CSCR_AHB_DIV(1) | /* AHB runs at MPLL/6 clock */ \
-> +		CSCR_FPM_EN | \
->  		CSCR_SPEN |		\
->  		CSCR_MPEN)
->  
-> @@ -51,6 +52,7 @@
->  		CSCR_ARM_SRC_MPLL | /* use main MPLL clock */ \
->  		CSCR_ARM_DIV(0) | /* CPU run at full MPLL clock */ \
->  		CSCR_AHB_DIV(1) | /* AHB runs at MPLL/6 clock */ \
-> +		CSCR_FPM_EN | /* do not disable it! */ \
->  		CSCR_SPEN |		\
->  		CSCR_MPEN)
->  
-> 
-> -- 
-> Pengutronix e.K.                              | Juergen Beisert             |
-> Linux Solutions for Science and Industry      | Phone: +49-8766-939 228     |
-> Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555 |
-> Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
