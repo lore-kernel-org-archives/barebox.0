@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QwWcZ-0007Yt-Eq
-	for barebox@lists.infradead.org; Thu, 25 Aug 2011 09:53:12 +0000
-Date: Thu, 25 Aug 2011 11:53:09 +0200
+	id 1QwWlZ-0007fo-Iz
+	for barebox@lists.infradead.org; Thu, 25 Aug 2011 10:02:30 +0000
+Date: Thu, 25 Aug 2011 12:02:27 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110825095309.GS31404@pengutronix.de>
-References: <201108250415.p7P4FmPE009300@home.pavel.comp>
+Message-ID: <20110825100227.GA4128@pengutronix.de>
+References: <201011251752.42159.jbe@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <201108250415.p7P4FmPE009300@home.pavel.comp>
+In-Reply-To: <201011251752.42159.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,39 +22,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] iomux-mx25: fix MDIO pin configuration
-To: Paul Fertser <fercerpav@gmail.com>
+Subject: Re: [PATCH] phyCORE-i.MX27: Keep frequency multiplier enabled to be
+	able to do a warmstart
+To: Juergen Beisert <jbe@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Aug 24, 2011 at 04:30:59PM +0400, Paul Fertser wrote:
-> According to the datasheet, PUE is not effective without PKE set.
+On Thu, Nov 25, 2010 at 05:52:42PM +0100, Juergen Beisert wrote:
+> commit 7d25a0552dd3a4b65412ae1cbf8f9ca8a88b5d27
+> Author: Juergen Beisert <jbe@pengutronix.de>
+> Date:   Thu Nov 25 17:49:11 2010 +0100
 > 
-> Signed-off-by: Paul Fertser <fercerpav@gmail.com>
+>     Keep frequency multiplier enabled to be able to do a warmstart
+>     
+>     The wachtdog's reset does only reset the ARM core, not the whole silicon.
+>     But the PLLs seems to do some strange things: It seems they switch back to
+>     the low frequency reference when the watchdog barks. But in the case the
+>     frequency multiplier is off (not used due to 26 MHz reference usage) the
+>     machine stops, because the PLLs are stopping due to the lack of a reference
+>     frequency. As the power on reset will set the FPM_EN bit again, a power cycle
+>     brings the machine back to life.
+>     By keeping the frequency multiplier enabled, also a warmstart triggered by the
+>     watchdog can restart the machine now.
+>     
+>     Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 
-Applied to master.
+Applied to master. Maintainer was asleep for a long long time.
 
 Sascha
 
-> ---
->  arch/arm/mach-imx/include/mach/iomux-mx25.h |    2 +-
->  1 files changed, 1 insertions(+), 1 deletions(-)
 > 
-> diff --git a/arch/arm/mach-imx/include/mach/iomux-mx25.h b/arch/arm/mach-imx/include/mach/iomux-mx25.h
-> index e636c7f..ae29323 100644
-> --- a/arch/arm/mach-imx/include/mach/iomux-mx25.h
-> +++ b/arch/arm/mach-imx/include/mach/iomux-mx25.h
-> @@ -425,7 +425,7 @@
->  #define MX25_PAD_FEC_MDC__AUD4_TXD	IOMUX_PAD(0x3c0, 0x1c8, 0x02, 0x464, 1, NO_PAD_CTRL)
->  #define MX25_PAD_FEC_MDC__GPIO_3_5	IOMUX_PAD(0x3c0, 0x1c8, 0x05, 0, 0, NO_PAD_CTRL)
+> diff --git a/arch/arm/boards/pcm038/pll.h b/arch/arm/boards/pcm038/pll.h
+> index 13a7989..15b94cf 100644
+> --- a/arch/arm/boards/pcm038/pll.h
+> +++ b/arch/arm/boards/pcm038/pll.h
+> @@ -36,6 +36,7 @@
+>  		CSCR_MCU_SEL | /* 26 MHz reference */ \
+>  		CSCR_ARM_DIV(0) | /* CPU runs at MPLL/3 clock */ \
+>  		CSCR_AHB_DIV(1) | /* AHB runs at MPLL/6 clock */ \
+> +		CSCR_FPM_EN | \
+>  		CSCR_SPEN |		\
+>  		CSCR_MPEN)
 >  
-> -#define MX25_PAD_FEC_MDIO__FEC_MDIO	IOMUX_PAD(0x3c4, 0x1cc, 0x00, 0, 0, PAD_CTL_HYS | PAD_CTL_PUS_22K_UP | PAD_CTL_PUE)
-> +#define MX25_PAD_FEC_MDIO__FEC_MDIO	IOMUX_PAD(0x3c4, 0x1cc, 0x00, 0, 0, PAD_CTL_HYS | PAD_CTL_PUS_22K_UP | PAD_CTL_PUE | PAD_CTL_PKE)
->  #define MX25_PAD_FEC_MDIO__AUD4_RXD	IOMUX_PAD(0x3c4, 0x1cc, 0x02, 0x460, 1, NO_PAD_CTRL)
->  #define MX25_PAD_FEC_MDIO__GPIO_3_6	IOMUX_PAD(0x3c4, 0x1cc, 0x05, 0, 0, NO_PAD_CTRL)
+> @@ -51,6 +52,7 @@
+>  		CSCR_ARM_SRC_MPLL | /* use main MPLL clock */ \
+>  		CSCR_ARM_DIV(0) | /* CPU run at full MPLL clock */ \
+>  		CSCR_AHB_DIV(1) | /* AHB runs at MPLL/6 clock */ \
+> +		CSCR_FPM_EN | /* do not disable it! */ \
+>  		CSCR_SPEN |		\
+>  		CSCR_MPEN)
 >  
+> 
 > -- 
-> 1.7.2.3
-> 
+> Pengutronix e.K.                              | Juergen Beisert             |
+> Linux Solutions for Science and Industry      | Phone: +49-8766-939 228     |
+> Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555 |
+> Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
 > 
 > _______________________________________________
 > barebox mailing list
