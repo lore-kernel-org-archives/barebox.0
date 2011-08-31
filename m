@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vw0-f49.google.com ([209.85.212.49])
-	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1QydJm-0007k9-D8
-	for barebox@lists.infradead.org; Wed, 31 Aug 2011 05:26:30 +0000
-Received: by vws8 with SMTP id 8so362103vws.36
-	for <barebox@lists.infradead.org>; Tue, 30 Aug 2011 22:26:27 -0700 (PDT)
+Received: from exprod5og114.obsmtp.com ([64.18.0.28])
+	by canuck.infradead.org with smtps (Exim 4.76 #1 (Red Hat Linux))
+	id 1Qyn3a-0003xn-4e
+	for barebox@lists.infradead.org; Wed, 31 Aug 2011 15:50:27 +0000
+Received: from corgarff.edi.gefes.com (corgarff.edi.gefes.com [3.26.68.194])
+	by doyen.ramix-uk.cho.ge.com (Postfix) with ESMTP id 0D0A7C81C5
+	for <barebox@lists.infradead.org>; Wed, 31 Aug 2011 16:50:20 +0100 (BST)
+Message-ID: <4E5E583B.4070302@ge.com>
+Date: Wed, 31 Aug 2011 16:50:19 +0100
+From: Renaud Barbier <renaud.barbier@ge.com>
 MIME-Version: 1.0
-Date: Wed, 31 Aug 2011 10:56:27 +0530
-Message-ID: <CAK8HZOKkrqgfJrq8n4y+RP06vYryHeMKuurwMoyfeqvvcow4jg@mail.gmail.com>
-From: Nataraj S Narayan <natarajsn@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,28 +18,24 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: current ecc mode
+Subject: Hello world
 To: barebox@lists.infradead.org
 
-Hi
+Hello,
+I just loaded barebox on a beagle board and I am experimenting with it.
 
-barebox@Atmel at91sam9263-ek:/ devinfo nand0
-base  : 0x00000000
-size  : 0x00000000
-driver: none
+I was wondering how I could load and execute a simple hello world program.
 
-Parameters:
-            size = 268435456
+It looks like I would have to use a module.
 
-Any way to display the ecc mode ? Hardware or software?
+Could somebody give me some pointers?
 
-regards
-
-Nataraj
+Cheers,
+Renaud
 
 _______________________________________________
 barebox mailing list
