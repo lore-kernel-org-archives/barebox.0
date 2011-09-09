@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.tricorecenter.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.phycard.co.uk ([217.6.246.34] helo=root.phytec.de)
 	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1R1zvL-00017d-Ur
-	for barebox@lists.infradead.org; Fri, 09 Sep 2011 12:11:12 +0000
+	id 1R1zvM-00017g-7Q
+	for barebox@lists.infradead.org; Fri, 09 Sep 2011 12:11:13 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
-	by root.phytec.de (Postfix) with ESMTP id 757E9BF0E7
+	by root.phytec.de (Postfix) with ESMTP id 956D5BF0E9
 	for <barebox@lists.infradead.org>;
-	Fri,  9 Sep 2011 14:15:09 +0200 (CEST)
+	Fri,  9 Sep 2011 14:15:15 +0200 (CEST)
 From: Juergen Kilb <J.Kilb@phytec.de>
-Date: Fri, 9 Sep 2011 14:10:53 +0200
-Message-Id: <1315570256-28614-1-git-send-email-J.Kilb@phytec.de>
+Date: Fri, 9 Sep 2011 14:10:55 +0200
+Message-Id: <1315570256-28614-3-git-send-email-J.Kilb@phytec.de>
+In-Reply-To: <1315570256-28614-1-git-send-email-J.Kilb@phytec.de>
+References: <1315570256-28614-1-git-send-email-J.Kilb@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,47 +25,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Add Reset Support for omap3.
+Subject: [PATCH] Added helper function to get CS1 base address.
 To: barebox@lists.infradead.org
-Cc: Juergen Kilb <j.kilb@phytec.de>
+Cc: Juergen Kilb <J.Kilb@phytec.de>
 
-Inspired from reset_cpu in omap4_generic.c.
+This helper function can be used for automatic
+SDDR configuration based on register settings
+made by a previously first stage bootloader
+i.e. x-loader.
 
-Signed-off-by: Juergen Kilb <j.kilb@phytec.de>
+Signed-off-by: Juergen Kilb <J.Kilb@phytec.de>
 ---
- arch/arm/mach-omap/include/mach/omap3-silicon.h |    3 +++
- arch/arm/mach-omap/omap3_generic.c              |    5 +++--
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ arch/arm/mach-omap/include/mach/sys_info.h |    1 +
+ arch/arm/mach-omap/omap3_generic.c         |   19 +++++++++++++++++++
+ 2 files changed, 20 insertions(+), 0 deletions(-)
 
-diff --git a/arch/arm/mach-omap/include/mach/omap3-silicon.h b/arch/arm/mach-omap/include/mach/omap3-silicon.h
-index 0e6a45f..67f7747 100644
---- a/arch/arm/mach-omap/include/mach/omap3-silicon.h
-+++ b/arch/arm/mach-omap/include/mach/omap3-silicon.h
-@@ -132,5 +132,8 @@
- #define OMAP_SDRC_CS0		0x80000000
- #define OMAP_SDRC_CS1		0xA0000000
- 
-+/* PRM */
-+#define PRM_RSTCTRL_RESET       0x04
-+
- #endif /* __ASM_ARCH_OMAP3_H */
- 
+diff --git a/arch/arm/mach-omap/include/mach/sys_info.h b/arch/arm/mach-omap/include/mach/sys_info.h
+index f557068..f0594bf 100644
+--- a/arch/arm/mach-omap/include/mach/sys_info.h
++++ b/arch/arm/mach-omap/include/mach/sys_info.h
+@@ -91,6 +91,7 @@
+ u32 get_cpu_type(void);
+ u32 get_cpu_rev(void);
+ u32 get_sdr_cs_size(u32 offset);
++u32 get_sdr_cs1_base(void);
+ inline u32 get_sysboot_value(void);
+ u32 get_gpmc0_base(void);
+ u32 get_base(void);
 diff --git a/arch/arm/mach-omap/omap3_generic.c b/arch/arm/mach-omap/omap3_generic.c
-index 661a971..9627a6b 100644
+index 9627a6b..7468441 100644
 --- a/arch/arm/mach-omap/omap3_generic.c
 +++ b/arch/arm/mach-omap/omap3_generic.c
-@@ -59,8 +59,9 @@
-  */
- void __noreturn reset_cpu(unsigned long addr)
- {
--	/* FIXME: Enable WDT and cause reset */
--	hang();
-+	writel(PRM_RSTCTRL_RESET, PRM_REG(RSTCTRL));
-+
-+	while (1);
+@@ -178,7 +178,26 @@ u32 get_sdr_cs_size(u32 offset)
+ 	size *= 2 * (1024 * 1024);	/* find size in MB */
+ 	return size;
  }
- EXPORT_SYMBOL(reset_cpu);
++EXPORT_SYMBOL(get_sdr_cs_size);
++/**
++ * @brief base address of chip select 1 (cs0 is defined at 0x80000000)
++ *
++ * @return return the CS1 base address.
++ */
++u32 get_sdr_cs1_base(void)
++{
++	u32 base;
++	u32 cs_cfg;
  
++	cs_cfg = readl(SDRC_REG(CS_CFG));
++	/* get ram size field */
++	base = (cs_cfg & 0x0000000F) << 2; /* get CS1STARTHIGH */
++	base = base | ((cs_cfg & 0x00000300) >> 8); /* get CS1STARTLOW */
++	base = base << 25;
++	base += 0x80000000;
++	return base;
++}
++EXPORT_SYMBOL(get_sdr_cs1_base);
+ /**
+  * @brief Get the initial SYSBOOT value
+  *
 -- 
 1.7.0.4
 
