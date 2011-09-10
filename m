@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycore.de ([217.6.246.34] helo=root.phytec.de)
-	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1R1zvM-00017e-1h
-	for barebox@lists.infradead.org; Fri, 09 Sep 2011 12:11:13 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
-	by root.phytec.de (Postfix) with ESMTP id 80FE3BF0E8
-	for <barebox@lists.infradead.org>;
-	Fri,  9 Sep 2011 14:15:12 +0200 (CEST)
-From: Juergen Kilb <J.Kilb@phytec.de>
-Date: Fri, 9 Sep 2011 14:10:54 +0200
-Message-Id: <1315570256-28614-2-git-send-email-J.Kilb@phytec.de>
-In-Reply-To: <1315570256-28614-1-git-send-email-J.Kilb@phytec.de>
-References: <1315570256-28614-1-git-send-email-J.Kilb@phytec.de>
+Received: from mail-yw0-f49.google.com ([209.85.213.49])
+	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+	id 1R2EGJ-0002NH-Md
+	for barebox@lists.infradead.org; Sat, 10 Sep 2011 03:29:48 +0000
+Received: by ywp17 with SMTP id 17so2310468ywp.36
+	for <barebox@lists.infradead.org>; Fri, 09 Sep 2011 20:29:45 -0700 (PDT)
+MIME-Version: 1.0
+Date: Fri, 9 Sep 2011 23:29:45 -0400
+Message-ID: <CAMwGMjyne+ixbgzJ3_KJ9+=qHK+kGQgQGqL06stVvv-GQ6PYow@mail.gmail.com>
+From: Jon Ringle <jon@ringle.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,97 +17,128 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Add omap_hsmmc platform data.
+Subject: barebox nand ignoring bad eraseblocks or read/write
 To: barebox@lists.infradead.org
-Cc: Juergen Kilb <J.Kilb@phytec.de>
 
-Add platform data to specify maximum frequency of hsmmc interface
-which can be restricted due to external level shifters.
+I have a NAND device with a few bad eraseblocks, which is not
+uncommon. I figured that barebox would properly handle avoiding the
+bad eraseblocks.
+So I was surprised when I discovered that this is not entirely the
+case when I #define DEBUG at the top of nand.c. erase seems to honor
+the bad eraseblocks, but write still silently uses the bad erase block
+and read fails when it reads the bad eraseblock at 0x001e0000. Am I
+missing something?
 
-Signed-off-by: Juergen Kilb <J.Kilb@phytec.de>
----
- arch/arm/mach-omap/include/mach/omap_hsmmc.h |   28 ++++++++++++++++++++++++++
- drivers/mci/omap_hsmmc.c                     |   10 ++++++++-
- 2 files changed, 37 insertions(+), 1 deletions(-)
- create mode 100644 arch/arm/mach-omap/include/mach/omap_hsmmc.h
 
-diff --git a/arch/arm/mach-omap/include/mach/omap_hsmmc.h b/arch/arm/mach-omap/include/mach/omap_hsmmc.h
-new file mode 100644
-index 0000000..a15f8e6
---- /dev/null
-+++ b/arch/arm/mach-omap/include/mach/omap_hsmmc.h
-@@ -0,0 +1,28 @@
-+/**
-+ * @file
-+ * @brief This file contains exported structure for OMAP hsmmc
-+ *
-+ * FileName: include/asm-arm/arch-omap/omap_hsmmc.h
-+ *
-+ * OMAP3 and OMAP4 has a MMC/SD controller embedded.
-+ * This file provides the platform data structure required to
-+ * addapt to platform specialities.
-+ */
-+/*
-+ * (C) Copyright 2011
-+ * Phytec Messtechnik GmbH, <www.phytec.de>
-+ * Juergen Kilb <j.kilb@phytec.de>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
-+ */
-+
-+#ifndef __ASM_OMAP_HSMMC_H
-+#define  __ASM_OMAP_HSMMC_H
-+
-+/** omapmmc platform data structure */
-+struct omap_hsmmc_platform_data {
-+	unsigned f_max;         /* host interface upper limit */
-+};
-+#endif /* __ASM_OMAP_HSMMC_H */
-diff --git a/drivers/mci/omap_hsmmc.c b/drivers/mci/omap_hsmmc.c
-index 5fdf445..bf8d4a9 100644
---- a/drivers/mci/omap_hsmmc.c
-+++ b/drivers/mci/omap_hsmmc.c
-@@ -31,6 +31,8 @@
- #include <errno.h>
- #include <asm/io.h>
- 
-+#include <mach/omap_hsmmc.h>
-+
- struct hsmmc {
- 	unsigned char res1[0x10];
- 	unsigned int sysconfig;		/* 0x10 */
-@@ -549,6 +551,7 @@ static void mmc_set_ios(struct mci_host *mci, struct device_d *dev,
- static int omap_mmc_probe(struct device_d *dev)
- {
- 	struct omap_hsmmc *hsmmc;
-+	struct omap_hsmmc_platform_data *pdata;
- 
- 	hsmmc = xzalloc(sizeof(*hsmmc));
- 
-@@ -564,7 +567,12 @@ static int omap_mmc_probe(struct device_d *dev)
- 	hsmmc->mci.voltages = MMC_VDD_32_33 | MMC_VDD_33_34;
- 
- 	hsmmc->mci.f_min = 400000;
--	hsmmc->mci.f_max = 52000000;
-+
-+	pdata = (struct omap_hsmmc_platform_data *)dev->platform_data;
-+	if (pdata->f_max)
-+		hsmmc->mci.f_max = pdata->f_max;
-+	else
-+		hsmmc->mci.f_max = 52000000;
- 
- 	mci_register(&hsmmc->mci);
- 
--- 
-1.7.0.4
+NAND device: Manufacturer ID: 0xec, Chip ID: 0xf1 (Samsung NAND 128MiB
+3,3V 8-bit)
+Scanning device for bad blocks
+Bad eraseblock 15 at 0x001e0000
+Bad eraseblock 279 at 0x022e0000
+Bad eraseblock 507 at 0x03f60000
+Bad eraseblock 874 at 0x06d40000
+<...snip...>
 
+[barebox]: / update -t kernel -d nand -m mem -f 0x81000000
+
+erasing partition /dev/nand0.kernel_bb
+
+erase 393216 131072
+erase 524288 131072
+erase 655360 131072
+erase 786432 131072
+erase 917504 131072
+erase 1048576 131072
+erase 1179648 131072
+erase 1310720 131072
+erase 1441792 131072
+erase 1572864 131072
+erase 1703936 131072
+erase 1835008 131072
+erase 1966080 131072
+Skipping bad block at 0x001e0000
+erase 2097152 131072
+<...snip...>
+erase 8650752 131072
+
+flashing 0x81000000 to /dev/nand0.kernel_bb
+
+write: 0x00060000 0x00001000
+offset: 0x00060000 now: 0x00000800 retlen: 0x00000800
+offset: 0x00060800 now: 0x00000800 retlen: 0x00000800
+write: 0x00061000 0x00001000
+offset: 0x00061000 now: 0x00000800 retlen: 0x00000800
+offset: 0x00061800 now: 0x00000800 retlen: 0x00000800
+<...snip...>
+write: 0x001e0000 0x00001000
+offset: 0x001e0000 now: 0x00000800 retlen: 0x00000800
+offset: 0x001e0800 now: 0x00000800 retlen: 0x00000800
+write: 0x001e1000 0x00001000
+offset: 0x001e1000 now: 0x00000800 retlen: 0x00000800
+offset: 0x001e1800 now: 0x00000800 retlen: 0x00000800
+write: 0x001e2000 0x00001000
+offset: 0x001e2000 now: 0x00000800 retlen: 0x00000800
+offset: 0x001e2800 now: 0x00000800 retlen: 0x00000800
+write: 0x001e3000 0x00001000
+offset: 0x001e3000 now: 0x00000800 retlen: 0x00000800
+offset: 0x001e3800 now: 0x00000800 retlen: 0x00000800
+write: 0x001e4000 0x00001000
+offset: 0x001e4000 now: 0x00000800 retlen: 0x00000800
+offset: 0x001e4800 now: 0x00000800 retlen: 0x00000800
+write: 0x001e5000 0x00001000
+offset: 0x001e5000 now: 0x00000800 retlen: 0x00000800
+offset: 0x001e5800 now: 0x00000800 retlen: 0x00000800
+write: 0x001e6000 0x00001000
+offset: 0x001e6000 now: 0x00000800 retlen: 0x00000800
+offset: 0x001e6800 now: 0x00000800 retlen: 0x00000800
+write: 0x001e7000 0x00001000
+offset: 0x001e7000 now: 0x00000800 retlen: 0x00000800
+offset: 0x001e7800 now: 0x00000800 retlen: 0x00000800
+write: 0x001e8000 0x00001000
+offset: 0x001e8000 now: 0x00000800 retlen: 0x00000800
+offset: 0x001e8800 now: 0x00000800 retlen: 0x00000800
+write: 0x001e9000 0x00001000
+offset: 0x001e9000 now: 0x00000800 retlen: 0x00000800
+offset: 0x001e9800 now: 0x00000800 retlen: 0x00000800
+write: 0x001ea000 0x00001000
+offset: 0x001ea000 now: 0x00000800 retlen: 0x00000800
+offset: 0x001ea800 now: 0x00000800 retlen: 0x00000800
+write: 0x001eb000 0x00001000
+offset: 0x001eb000 now: 0x00000800 retlen: 0x00000800
+offset: 0x001eb800 now: 0x00000800 retlen: 0x00000800
+write: 0x001ec000 0x00001000
+offset: 0x001ec000 now: 0x00000800 retlen: 0x00000800
+offset: 0x001ec800 now: 0x00000800 retlen: 0x00000800
+write: 0x001ed000 0x00001000
+offset: 0x001ed000 now: 0x00000800 retlen: 0x00000800
+offset: 0x001ed800 now: 0x00000800 retlen: 0x00000800
+write: 0x001ee000 0x00001000
+offset: 0x001ee000 now: 0x00000800 retlen: 0x00000800
+offset: 0x001ee800 now: 0x00000800 retlen: 0x00000800
+write: 0x001ef000 0x00001000
+offset: 0x001ef000 now: 0x00000800 retlen: 0x00000800
+offset: 0x001ef800 now: 0x00000800 retlen: 0x00000800
+write: 0x001f0000 0x00001000
+offset: 0x001f0000 now: 0x00000800 retlen: 0x00000800
+offset: 0x001f0800 now: 0x00000800 retlen: 0x00000800
+<...snip...>
+write: 0x0085f000 0x00001000
+offset: 0x0085f000 now: 0x00000800 retlen: 0x00000800
+offset: 0x0085f800 now: 0x00000800 retlen: 0x00000800
+[barebox]:
+[barebox]: / md5sum /dev/nand0.kernel_bb 0+4159380
+nand_read: 0x00060000 0x00001000
+nand_read: 0x00061000 0x00001000
+<...snip...>
+nand_read: 0x001df000 0x00001000
+nand_read: 0x001e0000 0x00001000
+err -74
+read: error 74
+[barebox]: /
 
 _______________________________________________
 barebox mailing list
