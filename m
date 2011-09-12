@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-bw0-f49.google.com ([209.85.214.49])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1R33i0-0007QU-BE
-	for barebox@lists.infradead.org; Mon, 12 Sep 2011 10:25:48 +0000
+	id 1R33iE-0007QU-4l
+	for barebox@lists.infradead.org; Mon, 12 Sep 2011 10:26:02 +0000
 Received: by mail-bw0-f49.google.com with SMTP id t2so2850975bka.36
-	for <barebox@lists.infradead.org>; Mon, 12 Sep 2011 03:25:48 -0700 (PDT)
+	for <barebox@lists.infradead.org>; Mon, 12 Sep 2011 03:26:01 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon, 12 Sep 2011 14:25:46 +0400
-Message-Id: <1315823146-11632-1-git-send-email-antonynpavlov@gmail.com>
+Date: Mon, 12 Sep 2011 14:26:00 +0400
+Message-Id: <1315823160-11664-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,35 +21,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] usb.c: warning on USB_MAXINTERFACES overflow
+Subject: [PATCH] ehci-hcd.c: handle EHCI_HAS_TT in ehci_reset() during startup
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- drivers/usb/core/usb.c |   10 ++++++++++
- 1 files changed, 10 insertions(+), 0 deletions(-)
+ drivers/usb/host/ehci-hcd.c |    9 ++-------
+ 1 files changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
-index b01a797..5dc8afe 100644
---- a/drivers/usb/core/usb.c
-+++ b/drivers/usb/core/usb.c
-@@ -207,6 +207,16 @@ static int usb_parse_config(struct usb_device *dev, unsigned char *buffer, int c
- 			     &buffer[index])->bInterfaceNumber != curr_if_num) {
- 				/* this is a new interface, copy new desc */
- 				ifno = dev->config.no_of_if;
-+				/* if ifno > USB_MAXINTERFACES, then
-+				 * next memcpy() will corrupt dev->config
-+				 */
-+				if (ifno > USB_MAXINTERFACES) {
-+					printf("ifno = %d > "
-+						"USB_MAXINTERFACES = %d !\n",
-+						ifno,
-+						USB_MAXINTERFACES);
-+					break;
-+				}
- 				dev->config.no_of_if++;
- 				memcpy(&dev->config.if_desc[ifno],
- 					&buffer[index], buffer[index]);
+diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
+index 60fc181..883dc07 100644
+--- a/drivers/usb/host/ehci-hcd.c
++++ b/drivers/usb/host/ehci-hcd.c
+@@ -921,15 +921,10 @@ static int ehci_probe(struct device_d *dev)
+ 	host->submit_control_msg = submit_control_msg;
+ 	host->submit_bulk_msg = submit_bulk_msg;
+ 
+-	if (ehci->flags & EHCI_HAS_TT) {
+-		/* Set to host mode */
+-		reg = ehci_readl(ehci->hcor + USBMODE);
+-		reg |= USBMODE_CM_HC;
+-		writel(reg, ehci->hcor + USBMODE);
+-	}
+-
+ 	usb_register_host(host);
+ 
++	ehci_reset(ehci);
++
+ 	reg = HC_VERSION(ehci_readl(&ehci->hccr->cr_capbase));
+ 	dev_info(dev, "USB EHCI %x.%02x\n", reg >> 8, reg & 0xff);
+ 
 -- 
 1.7.5.4
 
