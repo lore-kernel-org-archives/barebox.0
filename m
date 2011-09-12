@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-bw0-f49.google.com ([209.85.214.49])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1R33dn-0007Ls-I3
-	for barebox@lists.infradead.org; Mon, 12 Sep 2011 10:21:28 +0000
-Date: Mon, 12 Sep 2011 12:21:25 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110912102125.GS31404@pengutronix.de>
-References: <3c14dbb81191e6dcf1ecc7ef799834f52ad5f10a.1314685868.git.fercerpav@gmail.com>
-	<6a487d727c7d0e29b35276f5780fd91e116f79d8.1314685868.git.fercerpav@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <6a487d727c7d0e29b35276f5780fd91e116f79d8.1314685868.git.fercerpav@gmail.com>
+	id 1R33hm-0007QU-Bb
+	for barebox@lists.infradead.org; Mon, 12 Sep 2011 10:25:35 +0000
+Received: by bkat2 with SMTP id t2so2850975bka.36
+	for <barebox@lists.infradead.org>; Mon, 12 Sep 2011 03:25:31 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Mon, 12 Sep 2011 14:25:23 +0400
+Message-Id: <1315823123-11600-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,68 +16,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] imx25: imx_spi: support CSPI v0.7 as found on i.MX25
-To: Paul Fertser <fercerpav@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] generate barebox.srec
+To: barebox@lists.infradead.org
 
-On Tue, Aug 30, 2011 at 10:30:51AM +0400, Paul Fertser wrote:
-> +
-> +#if 0
-> +/* MX1, MX31, MX35, MX51 CSPI */
-> +static unsigned int spi_imx_clkdiv_2(unsigned int fin,
-> +		unsigned int fspi)
-> +{
-> +	int i, div = 4;
-> +
-> +	for (i = 0; i < 7; i++) {
-> +		if (fspi * div >= fin)
-> +			return i;
-> +		div <<= 1;
-> +	}
-> +
-> +	return 7;
-> +}
-> +#endif
-> +
-> +static void cspi_0_7_chipselect(struct spi_device *spi, int is_active)
-> +{
-> +	struct spi_master *master = spi->master;
-> +	struct imx_spi *imx = container_of(master, struct imx_spi, master);
-> +	void __iomem *base = imx->regs;
-> +	unsigned int cs = 0;
-> +	int gpio = imx->cs_array[spi->chip_select];
-> +	unsigned int reg = CSPI_0_7_CTRL_ENABLE | CSPI_0_7_CTRL_MASTER;
-> +
-> +	if (spi->mode & SPI_CS_HIGH)
-> +		cs = 1;
-> +
-> +	if (!is_active) {
-> +		if (gpio >= 0)
-> +			gpio_set_value(gpio, !cs);
-> +		return;
-> +	}
-> +
-> +#if 0
-> +	reg |= spi_imx_clkdiv_2(166000000, spi->max_speed_hz) <<
-> +	  CSPI_0_7_CTRL_DR_SHIFT;
-> +#endif
-> +	reg |= 7 << CSPI_0_7_CTRL_DR_SHIFT; /* slowest speed */
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ .gitignore |    1 +
+ Makefile   |    3 +++
+ 2 files changed, 4 insertions(+), 0 deletions(-)
 
-Can we fix this before merging it? Are there any problems with faster
-speeds?
-
-Sascha
-
-
+diff --git a/.gitignore b/.gitignore
+index 84d9f73..cc1f2e2 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -31,6 +31,7 @@ cross_compile
+ barebox
+ barebox.S
+ barebox.bin
++barebox.srec
+ barebox.netx
+ barebox.map
+ System.map
+diff --git a/Makefile b/Makefile
+index c100d24..5843db5 100644
+--- a/Makefile
++++ b/Makefile
+@@ -689,6 +689,9 @@ barebox: $(barebox-lds) $(barebox-head) $(barebox-common) $(kallsyms.o) FORCE
+ 	$(call if_changed_rule,barebox__)
+ 	$(Q)rm -f .old_version
+ 
++barebox.srec: barebox
++	$(OBJCOPY) -O srec $< $@
++
+ # The actual objects are generated when descending,
+ # make sure no implicit rule kicks in
+ $(sort $(barebox-head) $(barebox-common) ) $(barebox-lds): $(barebox-dirs) ;
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.5.4
+
 
 _______________________________________________
 barebox mailing list
