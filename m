@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from tango.tkos.co.il ([62.219.50.35])
-	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1R3Rhg-0007N8-Km
-	for barebox@lists.infradead.org; Tue, 13 Sep 2011 12:03:09 +0000
-Date: Tue, 13 Sep 2011 15:03:01 +0300
-From: Baruch Siach <baruch@tkos.co.il>
-Message-ID: <20110913120301.GB25206@sapphire.tkos.co.il>
-References: <E78BBE677EB9144B8F0A0A29674CD533489C0CDC8A@SRV-VS06.TELEVIC.COM>
-	<20110913114353.GA25206@sapphire.tkos.co.il>
-	<E78BBE677EB9144B8F0A0A29674CD533489C0CDCAF@SRV-VS06.TELEVIC.COM>
+Received: from out6.bezeqint.net ([192.115.188.206])
+	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+	id 1R3RmL-0007O8-8G
+	for barebox@lists.infradead.org; Tue, 13 Sep 2011 12:07:54 +0000
+Message-ID: <4E6F4774.5010800@wellsense-tech.com>
+Date: Tue, 13 Sep 2011 15:07:16 +0300
+From: Boaz Ben-David <boaz.bd@wellsense-tech.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <E78BBE677EB9144B8F0A0A29674CD533489C0CDCAF@SRV-VS06.TELEVIC.COM>
+References: <4E6E0F25.7060403@wellsense-tech.com>
+	<4E6F1B57.7060507@wellsense-tech.com>
+	<4E6F1F11.6070206@pengutronix.de>
+	<4E6F270A.2040902@wellsense-tech.com>
+	<4E6F4604.7040501@pengutronix.de>
+In-Reply-To: <4E6F4604.7040501@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,52 +21,67 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: tftp to flash from linux
-To: Vanhauwaert Wouter <W.Vanhauwaert@TELEVIC.com>
+Subject: Re: bareboxenv usage
+To: Marc Kleine-Budde <mkl@pengutronix.de>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi Wouter,
+On 09/13/11 15:01, Marc Kleine-Budde wrote:
+> On 09/13/2011 11:48 AM, Boaz Ben-David wrote:
+>> On 09/13/11 12:14, Marc Kleine-Budde wrote:
+>>> On 09/13/2011 10:59 AM, Boaz Ben-David wrote:
+>>>> All I am asking is: do I need to use /dev/mtdblock or /dev/mtd when
+>>>> loading and saving envs
+>>> neither nor - loadenv&   saveenv are not bad block aware. In barebox you
+>>> use the .bb devices, which are bad block are, under linux use nandwrite
+>>> + nanddump to write or read data from the nand into a file. Then use
+>>> loadenv/saveenv.
+>>>
+>>> cheers, Marc
+>>>
+>> Hi,
+>>
+>>
+>> Thanks for the reply.
+>>
+>> First question, please tell me if these sequences are correct:
+> basically yes....but
+>
+>> In Linux:
+>>
+>> - Read:
+>>
+>> 1.nanddump from the mtd device to a file.
+> read the nanddump help text, you need to skip bad blocks
+>
+>> 2.bareboxenv -l the file dumped.
+>>
+>> -Write:
+>>
+>> 1.bareboxenv -s from source directory to a file
+>>
+>> 2.nandwrite that file to the mtd device.
+> use padding
+>
+> cheers, Marc
+>
 
-On Tue, Sep 13, 2011 at 01:50:42PM +0200, Vanhauwaert Wouter wrote:
-> Yes, I already thought that this nandwrite command can be used for writing. 
-> But problem is I get the image via tftp and my RAM is to little to store it 
-> temporary.  So I have to write it directly to flash. Can I combine this 
-> nandwrite and tftp in any way? I'm using busybox
+Hi,
 
-The nandwrite utility (and also the Busybox version) reads data from standard 
-input in the absence of file argument. You can pipe the data stream from the 
-network directly to nandwrite.
 
-baruch
+This was psuedo command line (:
 
-> -----Original Message-----
-> From: Baruch Siach [mailto:baruch@tkos.co.il] 
-> Sent: dinsdag 13 september 2011 13:44
-> To: Vanhauwaert Wouter
-> Cc: barebox@lists.infradead.org
-> Subject: Re: tftp to flash from linux
-> 
-> Hi Wouter,
-> 
-> On Tue, Sep 13, 2011 at 01:36:31PM +0200, Vanhauwaert Wouter wrote:
-> > To update our platform from within a booted linux, we need tftp to 
-> > write to the nand-flash (another partition) directly.
-> > Which one do I use? /dev/mtdx or /dev/mtdblockx? And what happens with 
-> > bad blocks here? Are these bad-block aware?
-> 
-> Use the nandwrite utility from the mtd-utils package (there's also a Busybox 
-> version), and a/dev/mtdx.
-> 
-> baruch
+Of course I will use padding and skip bb...
 
--- 
-                                                     ~. .~   Tk Open Systems
-=}------------------------------------------------ooO--U--Ooo------------{=
-   - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
+
+Thanks,
+
+
+Boaz.
+
 
 _______________________________________________
 barebox mailing list
