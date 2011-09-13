@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ip2.televic.com ([81.82.194.222])
+Received: from tango.tkos.co.il ([62.219.50.35])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1R3Mdi-0004GQ-SB
-	for barebox@lists.infradead.org; Tue, 13 Sep 2011 06:38:39 +0000
-From: Vanhauwaert Wouter <W.Vanhauwaert@TELEVIC.com>
-Date: Tue, 13 Sep 2011 08:38:35 +0200
-Message-ID: <E78BBE677EB9144B8F0A0A29674CD533489BE99B51@SRV-VS06.TELEVIC.COM>
-Content-Language: en-US
+	id 1R3Mlf-0004Np-SI
+	for barebox@lists.infradead.org; Tue, 13 Sep 2011 06:46:52 +0000
+Date: Tue, 13 Sep 2011 09:46:38 +0300
+From: Baruch Siach <baruch@tkos.co.il>
+Message-ID: <20110913064638.GA17392@sapphire.tkos.co.il>
+References: <E78BBE677EB9144B8F0A0A29674CD533489BE99B51@SRV-VS06.TELEVIC.COM>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <E78BBE677EB9144B8F0A0A29674CD533489BE99B51@SRV-VS06.TELEVIC.COM>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,29 +18,32 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: interface between barebox and linux
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: interface between barebox and linux
+To: Vanhauwaert Wouter <W.Vanhauwaert@TELEVIC.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-SGVsbG8sDQoNCkZvciBteSBlbWJlZGRlZCBhcHBsaWNhdGlvbiwgSSB3YW50IHRvIGJlIGFibGUg
-dG8gc2VsZWN0IGZyb20gd2l0aGluIExpbnV4IHdoaWNoIGtlcm5lbC1wYXJ0aXRpb24gdG8gYm9v
-dCBuZXh0IHRpbWUuIA0KRm9yIHRoaXMgSSBuZWVkIHNvbWUgbWVjaGFuaXNtIHRvIHN0b3JlIHNv
-bWUgdmFyaWFibGUgd2hpY2ggaXMgcmVhZGFibGUgZnJvbSB3aXRoaW4gYmFyZWJveCwgYnV0IHdo
-aWNoIGNhbiBiZSBzZXQgZnJvbSB3aXRoaW4gbGludXguDQpNeSBmaXJzdCB0aG91Z2h0IHdhcyB0
-byBhZGQgYW4gZXh0cmEgcGFydGl0aW9uLCBidXQgYXBwYXJlbnRseSwgYmFyZWJveCBkb2VzbuKA
-mXQgc3VwcG9ydCBhbnkgb2YgdGhlIG5hbmQtZmlsZXN5c3RlbXMgKG9ubHkgY3JhbWZzLCBidXQg
-dGhpcyBpcyByZWFkb25seSkNCk15IHNlY29uZCB0aG91Z2h0IHdhcyB0byBqdXN0IHJlYWRpbiB0
-aGUgYmFyZSBjb250ZW50IG9mIHRoZSBiYXJlYm94ZW52IHBhcnRpdGlvbiwgbWFuaXB1bGF0ZSBp
-dCBhIGJpdCwgYW5kIHdyaXRlIGl0IGJhY2ssIGJ1dCB0aGVuIGNvbWVzIHRoZSBjcmMtY2hlY2sg
-aW4gY2hhcmdl4oCmDQpTbyBkb2VzIHNvbWVib2R5IGhhdmUgYW55IGlkZWEgaG93IEkgY2FuIGZp
-eCB0aGlzPw0KDQpGb3IgYSBzZWNvbmQgdGhpbmcsIEkgbmVlZCB0byB1c2UgdGhlIGNvbnRlbnQg
-b2YgYSBmaWxlIGluIGEgYmFyZWJveCBzY3JpcHQuIEJ1dCBjb2RlIGxpa2U6DQoNCiMhL2Jpbi9z
-aA0KdGVtcCA9IGBjYXQgL3Rlc3RmaWxlYA0KZWNobyAkdGVtcA0KDQrih6ggT3V0cHV0OiBgY2F0
-DQoNCkluIHN0ZWFkIG9mIHRoZSBjb250ZW50IG9mIC90ZXN0ZmlsZS4gSeKAmW0gbm90IGFibGUg
-dG8gZml4IGl04oCmDQoNCkdydHosDQpXb3V0ZXINCg0KX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0
-cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGlu
-Zm8vYmFyZWJveAo=
+Hi Wouter,
+
+On Tue, Sep 13, 2011 at 08:38:35AM +0200, Vanhauwaert Wouter wrote:
+> For my embedded application, I want to be able to select from within Linux 
+> which kernel-partition to boot next time.  For this I need some mechanism to 
+> store some variable which is readable from within barebox, but which can be 
+> set from within linux.
+
+See scripts/bareboxenv.c in the source tree.
+
+baruch
+
+-- 
+                                                     ~. .~   Tk Open Systems
+=}------------------------------------------------ooO--U--Ooo------------{=
+   - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
