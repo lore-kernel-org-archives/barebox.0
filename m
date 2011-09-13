@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ew0-f43.google.com ([209.85.215.43])
+Received: from mail-fx0-f49.google.com ([209.85.161.49])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1R3WPi-0004bH-J4
-	for barebox@lists.infradead.org; Tue, 13 Sep 2011 17:04:51 +0000
-Received: by ewy20 with SMTP id 20so564166ewy.16
-	for <barebox@lists.infradead.org>; Tue, 13 Sep 2011 10:04:47 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <CAA4bVAGbz4aDRgRbKDj6OqDhSdXBb9KK5nRNjfDfyW5NM=Dh4w@mail.gmail.com>
-References: <1315823160-11664-1-git-send-email-antonynpavlov@gmail.com>
-	<20110913073419.GX31404@pengutronix.de>
-	<CAA4bVAGbz4aDRgRbKDj6OqDhSdXBb9KK5nRNjfDfyW5NM=Dh4w@mail.gmail.com>
-Date: Tue, 13 Sep 2011 21:04:47 +0400
-Message-ID: <CAA4bVAGiQ9AyRc3-GPaet6uwGcETpFcbi=OMAYi0uNdc_JonZA@mail.gmail.com>
-From: Antony Pavlov <antonynpavlov@gmail.com>
+	id 1R3Yyc-0007Az-8g
+	for barebox@lists.infradead.org; Tue, 13 Sep 2011 19:49:03 +0000
+Received: by fxg7 with SMTP id 7so1036765fxg.36
+	for <barebox@lists.infradead.org>; Tue, 13 Sep 2011 12:49:00 -0700 (PDT)
+From: Hubert Feurstein <h.feurstein@gmail.com>
+Date: Tue, 13 Sep 2011 21:48:08 +0200
+Message-Id: <1315943288-3724-1-git-send-email-h.feurstein@gmail.com>
+In-Reply-To: <20110913144238.GC28104@game.jcrosoft.org>
+References: <20110913144238.GC28104@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,74 +18,103 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ehci-hcd.c: handle EHCI_HAS_TT in ehci_reset() during
-	startup
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2] at91: add spi clock connection id entries
+To: barebox@lists.infradead.org, plagnioj@jcrosoft.com
 
-On 13 September 2011 16:14, Antony Pavlov <antonynpavlov@gmail.com> wrote:
-> On 13 September 2011 11:34, Sascha Hauer <s.hauer@pengutronix.de> wrote:
->> On Mon, Sep 12, 2011 at 02:26:00PM +0400, Antony Pavlov wrote:
->>> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
->>> ---
->>> =A0drivers/usb/host/ehci-hcd.c | =A0 =A09 ++-------
->>> =A01 files changed, 2 insertions(+), 7 deletions(-)
->>>
->>> diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
->>> index 60fc181..883dc07 100644
->>> --- a/drivers/usb/host/ehci-hcd.c
->>> +++ b/drivers/usb/host/ehci-hcd.c
->>> @@ -921,15 +921,10 @@ static int ehci_probe(struct device_d *dev)
->>> =A0 =A0 =A0 host->submit_control_msg =3D submit_control_msg;
->>> =A0 =A0 =A0 host->submit_bulk_msg =3D submit_bulk_msg;
->>>
->>> - =A0 =A0 if (ehci->flags & EHCI_HAS_TT) {
->>> - =A0 =A0 =A0 =A0 =A0 =A0 /* Set to host mode */
->>> - =A0 =A0 =A0 =A0 =A0 =A0 reg =3D ehci_readl(ehci->hcor + USBMODE);
->>> - =A0 =A0 =A0 =A0 =A0 =A0 reg |=3D USBMODE_CM_HC;
->>> - =A0 =A0 =A0 =A0 =A0 =A0 writel(reg, ehci->hcor + USBMODE);
->>> - =A0 =A0 }
->>> -
->>> =A0 =A0 =A0 usb_register_host(host);
->>>
->>> + =A0 =A0 ehci_reset(ehci);
->>> +
->>
->> ehci_reset is called from ehci_init. Isn't that enough or do we have to
->> call it explicitely here?
->
-> I suppose it's preferable reset the controller after changing "host
-> controller mode" bit (USBMODE_CM_HC). Let's check the file
-> drivers/usb/host/ehci-hcd.c from linux kernel sources, in ehci_reset()
-> we have:
->
-> =A0 =A0if (ehci_is_TDI(ehci))
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0tdi_reset (ehci);
->
+Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
+---
+ Changed commit message.
 
-May be this "patch" (linux-style) will be better?
+ arch/arm/mach-at91/at91sam9260.c |    7 +++++++
+ arch/arm/mach-at91/at91sam9261.c |    7 +++++++
+ arch/arm/mach-at91/at91sam9263.c |    2 ++
+ arch/arm/mach-at91/at91sam9g45.c |    2 ++
+ 4 files changed, 18 insertions(+), 0 deletions(-)
 
-      host->submit_control_msg =3D submit_control_msg;
-      host->submit_bulk_msg =3D submit_bulk_msg;
+diff --git a/arch/arm/mach-at91/at91sam9260.c b/arch/arm/mach-at91/at91sam9260.c
+index c1f08e7..3af5747 100644
+--- a/arch/arm/mach-at91/at91sam9260.c
++++ b/arch/arm/mach-at91/at91sam9260.c
+@@ -169,6 +169,11 @@ static struct clk *periph_clocks[] = {
+ 	// irq0 .. irq2
+ };
+ 
++static struct clk_lookup periph_clocks_lookups[] = {
++	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi0", &spi0_clk),
++	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi1", &spi1_clk),
++};
++
+ static struct clk_lookup usart_clocks_lookups[] = {
+ 	CLKDEV_CON_DEV_ID("usart", "atmel_usart0", &mck),
+ 	CLKDEV_CON_DEV_ID("usart", "atmel_usart1", &usart0_clk),
+@@ -203,6 +208,8 @@ static void __init at91sam9260_register_clocks(void)
+ 	for (i = 0; i < ARRAY_SIZE(periph_clocks); i++)
+ 		clk_register(periph_clocks[i]);
+ 
++	clkdev_add_table(periph_clocks_lookups,
++			 ARRAY_SIZE(periph_clocks_lookups));
+ 	clkdev_add_table(usart_clocks_lookups,
+ 			 ARRAY_SIZE(usart_clocks_lookups));
+ 
+diff --git a/arch/arm/mach-at91/at91sam9261.c b/arch/arm/mach-at91/at91sam9261.c
+index fbb8058..b1e09ef 100644
+--- a/arch/arm/mach-at91/at91sam9261.c
++++ b/arch/arm/mach-at91/at91sam9261.c
+@@ -133,6 +133,11 @@ static struct clk *periph_clocks[] = {
+ 	// irq0 .. irq2
+ };
+ 
++static struct clk_lookup periph_clocks_lookups[] = {
++	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi0", &spi0_clk),
++	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi1", &spi1_clk),
++};
++
+ static struct clk_lookup usart_clocks_lookups[] = {
+ 	CLKDEV_CON_DEV_ID("usart", "atmel_usart0", &mck),
+ 	CLKDEV_CON_DEV_ID("usart", "atmel_usart1", &usart0_clk),
+@@ -190,6 +195,8 @@ static void at91sam9261_register_clocks(void)
+ 	for (i = 0; i < ARRAY_SIZE(periph_clocks); i++)
+ 		clk_register(periph_clocks[i]);
+ 
++	clkdev_add_table(periph_clocks_lookups,
++			 ARRAY_SIZE(periph_clocks_lookups));
+ 	clkdev_add_table(usart_clocks_lookups,
+ 			 ARRAY_SIZE(usart_clocks_lookups));
+ 
+diff --git a/arch/arm/mach-at91/at91sam9263.c b/arch/arm/mach-at91/at91sam9263.c
+index 12a7868..df2df7e 100644
+--- a/arch/arm/mach-at91/at91sam9263.c
++++ b/arch/arm/mach-at91/at91sam9263.c
+@@ -166,6 +166,8 @@ static struct clk *periph_clocks[] = {
+ static struct clk_lookup periph_clocks_lookups[] = {
+ 	CLKDEV_CON_DEV_ID("mci_clk", "at91_mci0", &mmc0_clk),
+ 	CLKDEV_CON_DEV_ID("mci_clk", "at91_mci1", &mmc1_clk),
++	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi0", &spi0_clk),
++	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi1", &spi1_clk),
+ };
+ 
+ static struct clk_lookup usart_clocks_lookups[] = {
+diff --git a/arch/arm/mach-at91/at91sam9g45.c b/arch/arm/mach-at91/at91sam9g45.c
+index d4c27f8..9c478cd 100644
+--- a/arch/arm/mach-at91/at91sam9g45.c
++++ b/arch/arm/mach-at91/at91sam9g45.c
+@@ -191,6 +191,8 @@ static struct clk_lookup periph_clocks_lookups[] = {
+ 	CLKDEV_CON_ID("ohci_clk", &uhphs_clk),
+ 	CLKDEV_CON_DEV_ID("mci_clk", "atmel_mci0", &mmc0_clk),
+ 	CLKDEV_CON_DEV_ID("mci_clk", "atmel_mci1", &mmc1_clk),
++	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi0", &spi0_clk),
++	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi1", &spi1_clk),
+ };
+ 
+ static struct clk_lookup usart_clocks_lookups[] = {
+-- 
+1.7.4.1
 
-      if (ehci->flags & EHCI_HAS_TT) {
--             /* Set to host mode */
--             reg =3D ehci_readl(ehci->hcor + USBMODE);
--             reg |=3D USBMODE_CM_HC;
--             writel(reg, ehci->hcor + USBMODE);
-+             ehci_reset(ehci);
-      }
-
-      usb_register_host(host);
-
--- =
-
-Best regards,
-=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
