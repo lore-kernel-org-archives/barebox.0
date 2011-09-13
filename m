@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-fx0-f49.google.com ([209.85.161.49])
+Received: from ip2.televic.com ([81.82.194.222])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1R3DhQ-00007x-GE
-	for barebox@lists.infradead.org; Mon, 12 Sep 2011 21:05:53 +0000
-Received: by fxg7 with SMTP id 7so1583648fxg.36
-	for <barebox@lists.infradead.org>; Mon, 12 Sep 2011 14:05:50 -0700 (PDT)
-From: Hubert Feurstein <h.feurstein@gmail.com>
-Date: Mon, 12 Sep 2011 23:05:21 +0200
-Message-Id: <1315861521-32604-1-git-send-email-h.feurstein@gmail.com>
-In-Reply-To: <20110912024629.GA28104@game.jcrosoft.org>
-References: <20110912024629.GA28104@game.jcrosoft.org>
+	id 1R3Mdi-0004GQ-SB
+	for barebox@lists.infradead.org; Tue, 13 Sep 2011 06:38:39 +0000
+From: Vanhauwaert Wouter <W.Vanhauwaert@TELEVIC.com>
+Date: Tue, 13 Sep 2011 08:38:35 +0200
+Message-ID: <E78BBE677EB9144B8F0A0A29674CD533489BE99B51@SRV-VS06.TELEVIC.COM>
+Content-Language: en-US
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,103 +16,29 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] at91: add spi fake clock entries
-To: barebox@lists.infradead.org, plagnioj@jcrosoft.com
+Subject: interface between barebox and linux
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
----
- arch/arm/mach-at91/at91sam9260.c |    7 +++++++
- arch/arm/mach-at91/at91sam9261.c |    7 +++++++
- arch/arm/mach-at91/at91sam9263.c |    2 ++
- arch/arm/mach-at91/at91sam9g45.c |    2 ++
- 4 files changed, 18 insertions(+), 0 deletions(-)
-
-diff --git a/arch/arm/mach-at91/at91sam9260.c b/arch/arm/mach-at91/at91sam9260.c
-index c1f08e7..3af5747 100644
---- a/arch/arm/mach-at91/at91sam9260.c
-+++ b/arch/arm/mach-at91/at91sam9260.c
-@@ -169,6 +169,11 @@ static struct clk *periph_clocks[] = {
- 	// irq0 .. irq2
- };
- 
-+static struct clk_lookup periph_clocks_lookups[] = {
-+	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi0", &spi0_clk),
-+	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi1", &spi1_clk),
-+};
-+
- static struct clk_lookup usart_clocks_lookups[] = {
- 	CLKDEV_CON_DEV_ID("usart", "atmel_usart0", &mck),
- 	CLKDEV_CON_DEV_ID("usart", "atmel_usart1", &usart0_clk),
-@@ -203,6 +208,8 @@ static void __init at91sam9260_register_clocks(void)
- 	for (i = 0; i < ARRAY_SIZE(periph_clocks); i++)
- 		clk_register(periph_clocks[i]);
- 
-+	clkdev_add_table(periph_clocks_lookups,
-+			 ARRAY_SIZE(periph_clocks_lookups));
- 	clkdev_add_table(usart_clocks_lookups,
- 			 ARRAY_SIZE(usart_clocks_lookups));
- 
-diff --git a/arch/arm/mach-at91/at91sam9261.c b/arch/arm/mach-at91/at91sam9261.c
-index fbb8058..b1e09ef 100644
---- a/arch/arm/mach-at91/at91sam9261.c
-+++ b/arch/arm/mach-at91/at91sam9261.c
-@@ -133,6 +133,11 @@ static struct clk *periph_clocks[] = {
- 	// irq0 .. irq2
- };
- 
-+static struct clk_lookup periph_clocks_lookups[] = {
-+	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi0", &spi0_clk),
-+	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi1", &spi1_clk),
-+};
-+
- static struct clk_lookup usart_clocks_lookups[] = {
- 	CLKDEV_CON_DEV_ID("usart", "atmel_usart0", &mck),
- 	CLKDEV_CON_DEV_ID("usart", "atmel_usart1", &usart0_clk),
-@@ -190,6 +195,8 @@ static void at91sam9261_register_clocks(void)
- 	for (i = 0; i < ARRAY_SIZE(periph_clocks); i++)
- 		clk_register(periph_clocks[i]);
- 
-+	clkdev_add_table(periph_clocks_lookups,
-+			 ARRAY_SIZE(periph_clocks_lookups));
- 	clkdev_add_table(usart_clocks_lookups,
- 			 ARRAY_SIZE(usart_clocks_lookups));
- 
-diff --git a/arch/arm/mach-at91/at91sam9263.c b/arch/arm/mach-at91/at91sam9263.c
-index 12a7868..df2df7e 100644
---- a/arch/arm/mach-at91/at91sam9263.c
-+++ b/arch/arm/mach-at91/at91sam9263.c
-@@ -166,6 +166,8 @@ static struct clk *periph_clocks[] = {
- static struct clk_lookup periph_clocks_lookups[] = {
- 	CLKDEV_CON_DEV_ID("mci_clk", "at91_mci0", &mmc0_clk),
- 	CLKDEV_CON_DEV_ID("mci_clk", "at91_mci1", &mmc1_clk),
-+	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi0", &spi0_clk),
-+	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi1", &spi1_clk),
- };
- 
- static struct clk_lookup usart_clocks_lookups[] = {
-diff --git a/arch/arm/mach-at91/at91sam9g45.c b/arch/arm/mach-at91/at91sam9g45.c
-index d4c27f8..9c478cd 100644
---- a/arch/arm/mach-at91/at91sam9g45.c
-+++ b/arch/arm/mach-at91/at91sam9g45.c
-@@ -191,6 +191,8 @@ static struct clk_lookup periph_clocks_lookups[] = {
- 	CLKDEV_CON_ID("ohci_clk", &uhphs_clk),
- 	CLKDEV_CON_DEV_ID("mci_clk", "atmel_mci0", &mmc0_clk),
- 	CLKDEV_CON_DEV_ID("mci_clk", "atmel_mci1", &mmc1_clk),
-+	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi0", &spi0_clk),
-+	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi1", &spi1_clk),
- };
- 
- static struct clk_lookup usart_clocks_lookups[] = {
--- 
-1.7.4.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8sDQoNCkZvciBteSBlbWJlZGRlZCBhcHBsaWNhdGlvbiwgSSB3YW50IHRvIGJlIGFibGUg
+dG8gc2VsZWN0IGZyb20gd2l0aGluIExpbnV4IHdoaWNoIGtlcm5lbC1wYXJ0aXRpb24gdG8gYm9v
+dCBuZXh0IHRpbWUuIA0KRm9yIHRoaXMgSSBuZWVkIHNvbWUgbWVjaGFuaXNtIHRvIHN0b3JlIHNv
+bWUgdmFyaWFibGUgd2hpY2ggaXMgcmVhZGFibGUgZnJvbSB3aXRoaW4gYmFyZWJveCwgYnV0IHdo
+aWNoIGNhbiBiZSBzZXQgZnJvbSB3aXRoaW4gbGludXguDQpNeSBmaXJzdCB0aG91Z2h0IHdhcyB0
+byBhZGQgYW4gZXh0cmEgcGFydGl0aW9uLCBidXQgYXBwYXJlbnRseSwgYmFyZWJveCBkb2VzbuKA
+mXQgc3VwcG9ydCBhbnkgb2YgdGhlIG5hbmQtZmlsZXN5c3RlbXMgKG9ubHkgY3JhbWZzLCBidXQg
+dGhpcyBpcyByZWFkb25seSkNCk15IHNlY29uZCB0aG91Z2h0IHdhcyB0byBqdXN0IHJlYWRpbiB0
+aGUgYmFyZSBjb250ZW50IG9mIHRoZSBiYXJlYm94ZW52IHBhcnRpdGlvbiwgbWFuaXB1bGF0ZSBp
+dCBhIGJpdCwgYW5kIHdyaXRlIGl0IGJhY2ssIGJ1dCB0aGVuIGNvbWVzIHRoZSBjcmMtY2hlY2sg
+aW4gY2hhcmdl4oCmDQpTbyBkb2VzIHNvbWVib2R5IGhhdmUgYW55IGlkZWEgaG93IEkgY2FuIGZp
+eCB0aGlzPw0KDQpGb3IgYSBzZWNvbmQgdGhpbmcsIEkgbmVlZCB0byB1c2UgdGhlIGNvbnRlbnQg
+b2YgYSBmaWxlIGluIGEgYmFyZWJveCBzY3JpcHQuIEJ1dCBjb2RlIGxpa2U6DQoNCiMhL2Jpbi9z
+aA0KdGVtcCA9IGBjYXQgL3Rlc3RmaWxlYA0KZWNobyAkdGVtcA0KDQrih6ggT3V0cHV0OiBgY2F0
+DQoNCkluIHN0ZWFkIG9mIHRoZSBjb250ZW50IG9mIC90ZXN0ZmlsZS4gSeKAmW0gbm90IGFibGUg
+dG8gZml4IGl04oCmDQoNCkdydHosDQpXb3V0ZXINCg0KX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0
+cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGlu
+Zm8vYmFyZWJveAo=
