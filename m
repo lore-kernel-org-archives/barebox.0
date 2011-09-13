@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1R3Rcl-0007FZ-33
-	for barebox@lists.infradead.org; Tue, 13 Sep 2011 11:58:04 +0000
-Message-ID: <4E6F4542.70408@pengutronix.de>
-Date: Tue, 13 Sep 2011 13:57:54 +0200
+	id 1R3Ren-0007Gz-7U
+	for barebox@lists.infradead.org; Tue, 13 Sep 2011 12:00:10 +0000
+Message-ID: <4E6F45C3.6040803@pengutronix.de>
+Date: Tue, 13 Sep 2011 14:00:03 +0200
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 MIME-Version: 1.0
-References: <E78BBE677EB9144B8F0A0A29674CD533489C0CDC8A@SRV-VS06.TELEVIC.COM>	<20110913114353.GA25206@sapphire.tkos.co.il>
-	<E78BBE677EB9144B8F0A0A29674CD533489C0CDCAF@SRV-VS06.TELEVIC.COM>
-In-Reply-To: <E78BBE677EB9144B8F0A0A29674CD533489C0CDCAF@SRV-VS06.TELEVIC.COM>
+References: <4E6E0F25.7060403@wellsense-tech.com>	<4E6F1B57.7060507@wellsense-tech.com>	<4E6F1F11.6070206@pengutronix.de>
+	<4E6F270A.2040902@wellsense-tech.com>
+	<4E6F3DA8.40904@wellsense-tech.com>
+In-Reply-To: <4E6F3DA8.40904@wellsense-tech.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,43 +19,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1914375216=="
+Content-Type: multipart/mixed; boundary="===============1074651134=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: tftp to flash from linux
-To: Vanhauwaert Wouter <W.Vanhauwaert@TELEVIC.com>
+Subject: Re: bareboxenv usage
+To: Boaz Ben-David <boaz.bd@wellsense-tech.com>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
 This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---===============1914375216==
+--===============1074651134==
 Content-Type: multipart/signed; micalg=pgp-sha1;
  protocol="application/pgp-signature";
- boundary="------------enig6EF7EDAE52FDFBBF074498D3"
+ boundary="------------enig20D5BDBCE21319ECC246BABB"
 
 This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---------------enig6EF7EDAE52FDFBBF074498D3
+--------------enig20D5BDBCE21319ECC246BABB
 Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: quoted-printable
 
-Hello Vanhauwaert,
+On 09/13/2011 01:25 PM, Boaz Ben-David wrote:
+> There's something I don't get.
+>=20
+> If loadenv/saveenv are not bad-block aware, why are they used in barebo=
+x
+> by default?
 
-please don't reply to an existing thread if you start a new topic!
+They operate on bad block aware devices (in barebox) by default.
 
-On 09/13/2011 01:50 PM, Vanhauwaert Wouter wrote:
-> Yes, I already thought that this nandwrite command can be used for
-> writing. But problem is I get the image via tftp and my RAM is to
-> little to store it temporary. So I have to write it directly to
-> flash. Can I combine this nandwrite and tftp in any way? I'm using
-> busybox
+> When the system boots envfs_load is used to load the environment from
+> /dev/env0 or whatever.
+>=20
+> If /dev/env0 is not bad-block aware device (like the bb devices) this
+> means this could fail because of
+> a bad block in the env partition. Am I right?
 
-You need a tftp client that supports writing to stdout and a nandwrite
-that supports reading from stdin.
-
-Than it's the usual
-
-tftp $server $file | nandwrite /dev/mtdfoo -
-
-You probably need to pad the input file with '-p'
+Nope - the raw NAND is usually attached as "/dev/env0_raw" and the bad
+block aware device as "/dev/env0".
 
 cheers, Marc
 
@@ -65,7 +65,7 @@ Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
 Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
 
 
---------------enig6EF7EDAE52FDFBBF074498D3
+--------------enig20D5BDBCE21319ECC246BABB
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: OpenPGP digital signature
 Content-Disposition: attachment; filename="signature.asc"
@@ -74,15 +74,15 @@ Content-Disposition: attachment; filename="signature.asc"
 Version: GnuPG v1.4.10 (GNU/Linux)
 Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org/
 
-iEYEARECAAYFAk5vRUIACgkQjTAFq1RaXHMnyQCbBtSihlPIH9c0z5AMiUayR29a
-zSQAn2ln/winhmUUw6RDe/F2uQtzYF7D
-=fG8e
+iEYEARECAAYFAk5vRcMACgkQjTAFq1RaXHPA1gCgj1/n49cU1UZMFvPFcTcKdtV7
+HtkAmgM3TLw7eDjwfRSnD8rDzN9e6nwV
+=5u3Q
 -----END PGP SIGNATURE-----
 
---------------enig6EF7EDAE52FDFBBF074498D3--
+--------------enig20D5BDBCE21319ECC246BABB--
 
 
---===============1914375216==
+--===============1074651134==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -93,4 +93,4 @@ barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
 
---===============1914375216==--
+--===============1074651134==--
