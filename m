@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from tango.tkos.co.il ([62.219.50.35])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1R3Mlf-0004Np-SI
-	for barebox@lists.infradead.org; Tue, 13 Sep 2011 06:46:52 +0000
-Date: Tue, 13 Sep 2011 09:46:38 +0300
-From: Baruch Siach <baruch@tkos.co.il>
-Message-ID: <20110913064638.GA17392@sapphire.tkos.co.il>
-References: <E78BBE677EB9144B8F0A0A29674CD533489BE99B51@SRV-VS06.TELEVIC.COM>
+	id 1R3NTg-0004lV-SI
+	for barebox@lists.infradead.org; Tue, 13 Sep 2011 07:32:21 +0000
+Date: Tue, 13 Sep 2011 09:32:15 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20110913073215.GV31404@pengutronix.de>
+References: <1315823123-11600-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <E78BBE677EB9144B8F0A0A29674CD533489BE99B51@SRV-VS06.TELEVIC.COM>
+In-Reply-To: <1315823123-11600-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,26 +22,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: interface between barebox and linux
-To: Vanhauwaert Wouter <W.Vanhauwaert@TELEVIC.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH] generate barebox.srec
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Hi Wouter,
+On Mon, Sep 12, 2011 at 02:25:23PM +0400, Antony Pavlov wrote:
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 
-On Tue, Sep 13, 2011 at 08:38:35AM +0200, Vanhauwaert Wouter wrote:
-> For my embedded application, I want to be able to select from within Linux 
-> which kernel-partition to boot next time.  For this I need some mechanism to 
-> store some variable which is readable from within barebox, but which can be 
-> set from within linux.
+Applied to next.
 
-See scripts/bareboxenv.c in the source tree.
+Sascha
 
-baruch
+> ---
+>  .gitignore |    1 +
+>  Makefile   |    3 +++
+>  2 files changed, 4 insertions(+), 0 deletions(-)
+> 
+> diff --git a/.gitignore b/.gitignore
+> index 84d9f73..cc1f2e2 100644
+> --- a/.gitignore
+> +++ b/.gitignore
+> @@ -31,6 +31,7 @@ cross_compile
+>  barebox
+>  barebox.S
+>  barebox.bin
+> +barebox.srec
+>  barebox.netx
+>  barebox.map
+>  System.map
+> diff --git a/Makefile b/Makefile
+> index c100d24..5843db5 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -689,6 +689,9 @@ barebox: $(barebox-lds) $(barebox-head) $(barebox-common) $(kallsyms.o) FORCE
+>  	$(call if_changed_rule,barebox__)
+>  	$(Q)rm -f .old_version
+>  
+> +barebox.srec: barebox
+> +	$(OBJCOPY) -O srec $< $@
+> +
+>  # The actual objects are generated when descending,
+>  # make sure no implicit rule kicks in
+>  $(sort $(barebox-head) $(barebox-common) ) $(barebox-lds): $(barebox-dirs) ;
+> -- 
+> 1.7.5.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
-                                                     ~. .~   Tk Open Systems
-=}------------------------------------------------ooO--U--Ooo------------{=
-   - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
