@@ -1,14 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from exprod5og113.obsmtp.com ([64.18.0.26])
-	by canuck.infradead.org with smtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1R3p3J-0001zF-TE
-	for barebox@lists.infradead.org; Wed, 14 Sep 2011 12:59:00 +0000
-Received: from corgarff.edi.gefes.com (corgarff.edi.gefes.com [3.26.68.194])
-	by doyen.ramix-uk.cho.ge.com (Postfix) with ESMTP id BEA26C81C5
-	for <barebox@lists.infradead.org>; Wed, 14 Sep 2011 13:58:50 +0100 (BST)
-Message-ID: <4E70A50A.4080001@ge.com>
-Date: Wed, 14 Sep 2011 13:58:50 +0100
-From: Renaud Barbier <renaud.barbier@ge.com>
+Received: from ip2.televic.com ([81.82.194.222])
+	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+	id 1R3qzW-0003jY-CR
+	for barebox@lists.infradead.org; Wed, 14 Sep 2011 15:03:10 +0000
+From: Vanhauwaert Wouter <W.Vanhauwaert@TELEVIC.com>
+Date: Wed, 14 Sep 2011 17:03:07 +0200
+Message-ID: <E78BBE677EB9144B8F0A0A29674CD533489C0CE326@SRV-VS06.TELEVIC.COM>
+References: <E78BBE677EB9144B8F0A0A29674CD533489C0CDC8A@SRV-VS06.TELEVIC.COM>
+	<20110913114353.GA25206@sapphire.tkos.co.il>
+	<E78BBE677EB9144B8F0A0A29674CD533489C0CDCAF@SRV-VS06.TELEVIC.COM>
+	<4E6F4542.70408@pengutronix.de>
+In-Reply-To: <4E6F4542.70408@pengutronix.de>
+Content-Language: en-US
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -18,48 +21,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: start_barebox
-To: barebox@lists.infradead.org
+Subject: RE: tftp to flash from linux
+To: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-I was wondering whether there is an error in the function start_barebox
-  below at line 119 and 122.
-Is not it missing the RELOC macro?
+> please don't reply to an existing thread if you start a new topic!
+> 
 
-"memcpy(RELOC(&__early_init_data_begin), init_data_ptr" and
+Ok (did I do that?)
 
-   init_data_ptr = RELOC(&__early_init_data_begin);
+> You need a tftp client that supports writing to stdout and a nandwrite that
+> supports reading from stdin.
+> 
+> Than it's the usual
+> 
+> tftp $server $file | nandwrite /dev/mtdfoo -
+> 
 
+I try 
+	mx27iat# tftp -g -l /proc/self/fd/1 -r zImage_iat_3.0.11_0.02-dbg1 10.0.56.4 | nandwrite -p /dev/mtd4 -
 
-void start_barebox (void)
-  108 {
-  109         initcall_t *initcall;
-  110         int result;
-  111 #ifdef CONFIG_COMMAND_SUPPORT
-  112         struct stat s;
-  113 #endif
-  114
-  115 #ifdef CONFIG_HAS_EARLY_INIT
-  116         /* We are running from RAM now, copy early initdata from
-  117          * early RAM to RAM
-  118          */
-  119         memcpy(&__early_init_data_begin, init_data_ptr,
-  120                         (ulong)&__early_init_data_end -
-  121                         (ulong)&__early_init_data_begin);
-  122         init_data_ptr = &__early_init_data_begin;
-  123 #endif /* CONFIG_HAS_EARLY_INIT */
-  124
-
--- 
-Renaud Barbier
-14, Links Place
-3/2 great Michael House
-Edinburgh, EH67EN
-Tel: +44 131 561 3532
-
+But this doesn't work. Gives some output, from which:
+	open input file: No such file or directory
+The same command without the pipe at the end works (output to stdout)
+ 
 
 _______________________________________________
 barebox mailing list
