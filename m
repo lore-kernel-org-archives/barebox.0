@@ -1,20 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 6.mo2.mail-out.ovh.net ([87.98.165.38]
+Received: from 7.mo2.mail-out.ovh.net ([188.165.48.182]
 	helo=mo2.mail-out.ovh.net)
 	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1R4C6C-0003bb-Bt
-	for barebox@lists.infradead.org; Thu, 15 Sep 2011 13:35:29 +0000
+	id 1R4C7p-0003dH-4O
+	for barebox@lists.infradead.org; Thu, 15 Sep 2011 13:37:09 +0000
 Received: from mail240.ha.ovh.net (b6.ovh.net [213.186.33.56])
-	by mo2.mail-out.ovh.net (Postfix) with SMTP id 992F8DCDA49
+	by mo2.mail-out.ovh.net (Postfix) with SMTP id 126C7DCD505
 	for <barebox@lists.infradead.org>;
-	Thu, 15 Sep 2011 15:36:32 +0200 (CEST)
-Date: Thu, 15 Sep 2011 15:13:35 +0200
+	Thu, 15 Sep 2011 15:38:14 +0200 (CEST)
+Date: Thu, 15 Sep 2011 15:15:15 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20110915131335.GH28104@game.jcrosoft.org>
-References: <1313960937-15271-1-git-send-email-h.feurstein@gmail.com>
+Message-ID: <20110915131515.GI28104@game.jcrosoft.org>
+References: <1316034631-26970-1-git-send-email-h.feurstein@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1313960937-15271-1-git-send-email-h.feurstein@gmail.com>
+In-Reply-To: <1316034631-26970-1-git-send-email-h.feurstein@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,27 +27,24 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] at91: add missing clkdev changes for at91sam9g45
+Subject: Re: [PATCH 1/2] at91sam9260ek: fix broken defconfig
 To: Hubert Feurstein <h.feurstein@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On 23:08 Sun 21 Aug     , Hubert Feurstein wrote:
-> This fixes the following compile errors
->   arch/arm/mach-at91/at91sam9g45.c:185:3: error: 'ohci_clk' undeclared here (not in a function)
->   arch/arm/mach-at91/at91sam9g45.c:186:3: error: 'tcb1_clk' undeclared here (not in a function)
->   arch/arm/mach-at91/at91sam9g45_devices.c: In function 'at91_add_device_mci':
->   arch/arm/mach-at91/at91sam9g45_devices.c:258:2: warning: implicit declaration of function 'at91_clock_associate'
->     [...]
->   arch/arm/mach-at91/built-in.o: In function `at91_add_device_mci':
->   sam9_smc.c:(.text.at91_add_device_mci+0x1d0): undefined reference to `at91_clock_associate'
-> which were introduced in commit:
->   "at91: swtich to clkdev" (ae19fe26cc230bc38238c2d66b8f464761286316)
+On 23:10 Wed 14 Sep     , Hubert Feurstein wrote:
+> The defconfig was broken in commit
+> 
+>   cbf46b2 "at91: Support for at91rm9200: core chip & board support"
+> 
+> because ARCH_AT91RM9200 was added before ARCH_AT91SAM9260 in Kconfig.
+in fact it's due to savedefconfig that remove the entry when we switch to the
+new format not to the add of the rm9200 support
+
+so please update the commit
 > 
 > Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
 > Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-I've a similar patch too
-
-please merge the fix of ALL remove of the at91_clock_assocaite in one commit
+Acked-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 
 Best Regards,
 J.
