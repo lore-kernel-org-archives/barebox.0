@@ -1,21 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ip2.televic.com ([81.82.194.222])
+Received: from mail-bw0-f49.google.com ([209.85.214.49])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1R48Qv-0008DZ-9U
-	for barebox@lists.infradead.org; Thu, 15 Sep 2011 09:40:37 +0000
-From: Vanhauwaert Wouter <W.Vanhauwaert@TELEVIC.com>
-Date: Thu, 15 Sep 2011 11:40:32 +0200
-Message-ID: <E78BBE677EB9144B8F0A0A29674CD533489C0CE5F5@SRV-VS06.TELEVIC.COM>
-References: <E78BBE677EB9144B8F0A0A29674CD533489C0CDC8A@SRV-VS06.TELEVIC.COM>
-	<20110913114353.GA25206@sapphire.tkos.co.il>
-	<E78BBE677EB9144B8F0A0A29674CD533489C0CDCAF@SRV-VS06.TELEVIC.COM>
-	<4E6F4542.70408@pengutronix.de>
-	<E78BBE677EB9144B8F0A0A29674CD533489C0CE326@SRV-VS06.TELEVIC.COM>
-	<20110914164353.GA27520@sapphire.tkos.co.il>
-	<E78BBE677EB9144B8F0A0A29674CD533489C0CE54B@SRV-VS06.TELEVIC.COM>
-In-Reply-To: <E78BBE677EB9144B8F0A0A29674CD533489C0CE54B@SRV-VS06.TELEVIC.COM>
-Content-Language: en-US
-MIME-Version: 1.0
+	id 1R4AFM-0001rz-4X
+	for barebox@lists.infradead.org; Thu, 15 Sep 2011 11:36:48 +0000
+Received: by mail-bw0-f49.google.com with SMTP id t2so2734926bka.36
+	for <barebox@lists.infradead.org>; Thu, 15 Sep 2011 04:36:47 -0700 (PDT)
+Message-Id: <3e59cfc265c6623c3a5c6013991ed667111fc1df.1316086518.git.fercerpav@gmail.com>
+In-Reply-To: <560194a56016e7562eb1e50f68a58ff6f6e069a7.1316086518.git.fercerpav@gmail.com>
+References: <560194a56016e7562eb1e50f68a58ff6f6e069a7.1316086518.git.fercerpav@gmail.com>
+From: Paul Fertser <fercerpav@gmail.com>
+Date: Thu, 15 Sep 2011 15:31:45 +0400
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,32 +18,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: tftp to flash from linux
-To: Vanhauwaert Wouter <W.Vanhauwaert@TELEVIC.com>, Baruch Siach <baruch@tkos.co.il>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH 2/2] m25p80: use proper erasesize for SECT_4K devices
+To: barebox@lists.infradead.org
+Cc: Franck JULLIEN <elec4fun@gmail.com>
 
-> Doesn't work:
-> 
-> mx27iat# mkfifo nand_pipe
-> mx27iat# tftp -g -l nand_pipe -r output 10.56.114 | nandwrite -p /dev/mtd4
-> nand_pipe
-> tftp: using blksize 512MTD_open
-> MTD_ioctl
+This fixes a bug that causes only the first 4K out of every 64K to be
+erased on SECT_4K devices.
 
-I did some further testing, and apparantly, the nandwrite closes after writing 1 buffer
-Did the test with one console "nandwrite -p /dev/mtd4 nand_pipe" and from another echo this is a test > nand_pipe:
+Signed-off-by: Paul Fertser <fercerpav@gmail.com>
+---
+ drivers/nor/m25p80.c |    5 ++++-
+ 1 files changed, 4 insertions(+), 1 deletions(-)
 
-mx27iat# nandwrite -p /dev/mtd4 nand_pipe
-MTD_open
-MTD_ioctl
-Writing data to block 0MTD_ioctl
+diff --git a/drivers/nor/m25p80.c b/drivers/nor/m25p80.c
+index 6f650a5..31193cf 100644
+--- a/drivers/nor/m25p80.c
++++ b/drivers/nor/m25p80.c
+@@ -760,7 +760,10 @@ static int m25p_probe(struct device_d *dev)
+ 	flash->name = (char *)id->name;
+ 	flash->info = info;
+ 	flash->size = info->sector_size * info->n_sectors;
+-	flash->erasesize = info->sector_size;
++	if (info->flags & SECT_4K)
++		flash->erasesize = 4096;
++	else
++		flash->erasesize = info->sector_size;
+ 	flash->cdev.size = info->sector_size * info->n_sectors;
+ 	flash->cdev.dev = dev;
+ 	flash->cdev.ops = &m25p80_ops;
+-- 
+1.7.2.3
 
-MTD_write
-MTD_close
 
 _______________________________________________
 barebox mailing list
