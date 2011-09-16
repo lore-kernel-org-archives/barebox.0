@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mo2.mail-out.ovh.net ([178.32.228.2])
+Received: from 4.mo2.mail-out.ovh.net ([87.98.172.75]
+	helo=mo2.mail-out.ovh.net)
 	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1R4Xnf-0007fi-OR
+	id 1R4Xnf-0007fj-Oi
 	for barebox@lists.infradead.org; Fri, 16 Sep 2011 12:45:48 +0000
 Received: from mail240.ha.ovh.net (b6.ovh.net [213.186.33.56])
-	by mo2.mail-out.ovh.net (Postfix) with SMTP id EF19DDD3420
+	by mo2.mail-out.ovh.net (Postfix) with SMTP id 73E4CDD3405
 	for <barebox@lists.infradead.org>;
-	Fri, 16 Sep 2011 14:46:52 +0200 (CEST)
+	Fri, 16 Sep 2011 14:46:53 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 16 Sep 2011 14:23:43 +0200
-Message-Id: <1316175828-19748-2-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri, 16 Sep 2011 14:23:44 +0200
+Message-Id: <1316175828-19748-3-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1316175828-19748-1-git-send-email-plagnioj@jcrosoft.com>
 References: <1316175828-19748-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
@@ -25,45 +26,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/7] at91: fix cpu clock speed display
+Subject: [PATCH 3/7] at91: Fix uhpck clock rate in upll case
 To: barebox@lists.infradead.org
+
+from linux
+commit 8251544f9e28058e54c4f35b7cd13b0d191d7555
+Author: Ryan Mallon <ryan@bluewatersys.com>
+
+The uhpck clock should be divided from the utmi clock, not its parent
+(main). This change is mostly cosmetic as the uhpck rate value is not
+used anywhere except for the debugfs clock output.
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/mach-at91/clock.c |    7 +++++--
- 1 files changed, 5 insertions(+), 2 deletions(-)
+ arch/arm/mach-at91/clock.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
 diff --git a/arch/arm/mach-at91/clock.c b/arch/arm/mach-at91/clock.c
-index 528994f..c9c32b2 100644
+index c9c32b2..0406382 100644
 --- a/arch/arm/mach-at91/clock.c
 +++ b/arch/arm/mach-at91/clock.c
-@@ -535,6 +535,7 @@ static void at91_upll_usbfs_clock_init(unsigned long main_clock)
+@@ -530,7 +530,7 @@ static void at91_upll_usbfs_clock_init(unsigned long main_clock)
+ 	/* Now set uhpck values */
+ 	uhpck.parent = &utmi_clk;
+ 	uhpck.pmc_mask = AT91SAM926x_PMC_UHP;
+-	uhpck.rate_hz = utmi_clk.parent->rate_hz;
++	uhpck.rate_hz = utmi_clk.rate_hz;
+ 	uhpck.rate_hz /= 1 + ((at91_sys_read(AT91_PMC_USB) & AT91_PMC_OHCIUSBDIV) >> 8);
  }
- 
- static int pll_overclock = 0;
-+static u32 cpu_freq = 0;
- 
- int at91_clock_init(unsigned long main_clock)
- {
-@@ -622,6 +623,8 @@ int at91_clock_init(unsigned long main_clock)
- 		mck.rate_hz = freq / (1 << ((mckr & AT91_PMC_MDIV) >> 8));      /* mdiv */
- 	}
- 
-+	cpu_freq = freq;
-+
- 	/* Register the PMC's standard clocks */
- 	for (i = 0; i < ARRAY_SIZE(standard_pmc_clocks); i++)
- 		at91_clk_add(standard_pmc_clocks[i]);
-@@ -649,8 +652,8 @@ static int at91_clock_display(void)
- 	if (pll_overclock)
- 		pr_info("Clocks: PLLA overclocked, %ld MHz\n", plla.rate_hz / 1000000);
- 
--	printf("Clocks: CPU %lu MHz, master %u MHz, main %u.%03u MHz\n",
--		mck.parent->rate_hz / 1000000, (unsigned) mck.rate_hz / 1000000,
-+	printf("Clocks: CPU %u MHz, master %u MHz, main %u.%03u MHz\n",
-+		cpu_freq / 1000000, (unsigned) mck.rate_hz / 1000000,
- 		(unsigned) main_clk.rate_hz / 1000000,
- 		((unsigned) main_clk.rate_hz % 1000000) / 1000);
  
 -- 
 1.7.5.4
