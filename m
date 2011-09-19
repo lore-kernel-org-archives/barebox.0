@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 16.mo1.mail-out.ovh.net ([178.33.104.224]
+Received: from 19.mo1.mail-out.ovh.net ([178.32.97.206]
 	helo=mo1.mail-out.ovh.net)
 	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1R5d6x-0000VZ-95
-	for barebox@lists.infradead.org; Mon, 19 Sep 2011 12:38:15 +0000
+	id 1R5d6x-0000W2-0Y
+	for barebox@lists.infradead.org; Mon, 19 Sep 2011 12:38:14 +0000
 Received: from mail179.ha.ovh.net (b9.ovh.net [213.186.33.59])
-	by mo1.mail-out.ovh.net (Postfix) with SMTP id B3E5D10140A2
+	by mo1.mail-out.ovh.net (Postfix) with SMTP id D8ACD10142D5
 	for <barebox@lists.infradead.org>;
-	Mon, 19 Sep 2011 14:39:00 +0200 (CEST)
+	Mon, 19 Sep 2011 14:39:01 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon, 19 Sep 2011 14:15:43 +0200
-Message-Id: <1316434549-15243-6-git-send-email-plagnioj@jcrosoft.com>
+Date: Mon, 19 Sep 2011 14:15:45 +0200
+Message-Id: <1316434549-15243-8-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1316434549-15243-1-git-send-email-plagnioj@jcrosoft.com>
 References: <1316434549-15243-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
@@ -26,222 +26,99 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/12] at91: nand switch ecc base to resource
+Subject: [PATCH 08/12] usb: honour timeout fields
 To: barebox@lists.infradead.org
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- arch/arm/boards/at91sam9260ek/init.c     |    2 --
- arch/arm/boards/at91sam9261ek/init.c     |    1 -
- arch/arm/boards/at91sam9263ek/init.c     |    2 --
- arch/arm/boards/pm9263/init.c            |    2 --
- arch/arm/mach-at91/at91sam9260_devices.c |   17 +++++++++++++++--
- arch/arm/mach-at91/at91sam9263_devices.c |   17 +++++++++++++++--
- arch/arm/mach-at91/at91sam9g45_devices.c |   20 +++++++++++++++-----
- arch/arm/mach-at91/include/mach/board.h  |    1 -
- drivers/mtd/nand/atmel_nand.c            |    8 ++++----
- 9 files changed, 49 insertions(+), 21 deletions(-)
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-diff --git a/arch/arm/boards/at91sam9260ek/init.c b/arch/arm/boards/at91sam9260ek/init.c
-index e4b98bf..8fab557 100644
---- a/arch/arm/boards/at91sam9260ek/init.c
-+++ b/arch/arm/boards/at91sam9260ek/init.c
-@@ -63,8 +63,6 @@ static struct atmel_nand_data nand_pdata = {
- 	.ale		= 21,
- 	.cle		= 22,
- /*	.det_pin	= ... not connected */
--	.ecc_base	= (void __iomem *)(AT91_BASE_SYS + AT91_ECC),
--	.ecc_mode	= NAND_ECC_SOFT,
- 	.rdy_pin	= AT91_PIN_PC13,
- 	.enable_pin	= AT91_PIN_PC14,
- #if defined(CONFIG_MTD_NAND_ATMEL_BUSWIDTH_16)
-diff --git a/arch/arm/boards/at91sam9261ek/init.c b/arch/arm/boards/at91sam9261ek/init.c
-index 73b411a..69111a0 100644
---- a/arch/arm/boards/at91sam9261ek/init.c
-+++ b/arch/arm/boards/at91sam9261ek/init.c
-@@ -43,7 +43,6 @@ static struct atmel_nand_data nand_pdata = {
- 	.ale		= 22,
- 	.cle		= 21,
- /*	.det_pin	= ... not connected */
--	.ecc_mode	= NAND_ECC_SOFT,
- 	.rdy_pin	= AT91_PIN_PC15,
- 	.enable_pin	= AT91_PIN_PC14,
- #if defined(CONFIG_MTD_NAND_ATMEL_BUSWIDTH_16)
-diff --git a/arch/arm/boards/at91sam9263ek/init.c b/arch/arm/boards/at91sam9263ek/init.c
-index 9e0981f..278e312 100644
---- a/arch/arm/boards/at91sam9263ek/init.c
-+++ b/arch/arm/boards/at91sam9263ek/init.c
-@@ -44,8 +44,6 @@ static struct atmel_nand_data nand_pdata = {
- 	.ale		= 21,
- 	.cle		= 22,
- /*	.det_pin	= ... not connected */
--	.ecc_base	= (void __iomem *)(AT91_BASE_SYS + AT91_ECC0),
--	.ecc_mode	= NAND_ECC_SOFT,
- 	.rdy_pin	= AT91_PIN_PA22,
- 	.enable_pin	= AT91_PIN_PD15,
- #if defined(CONFIG_MTD_NAND_ATMEL_BUSWIDTH_16)
-diff --git a/arch/arm/boards/pm9263/init.c b/arch/arm/boards/pm9263/init.c
-index a1fe0cd..8f451e8 100644
---- a/arch/arm/boards/pm9263/init.c
-+++ b/arch/arm/boards/pm9263/init.c
-@@ -43,8 +43,6 @@ static struct atmel_nand_data nand_pdata = {
- 	.ale		= 21,
- 	.cle		= 22,
- /*	.det_pin	= ... not connected */
--	.ecc_base	= (void __iomem *)(AT91_BASE_SYS + AT91_ECC0),
--	.ecc_mode	= NAND_ECC_SOFT,
- 	.rdy_pin	= AT91_PIN_PB30,
- 	.enable_pin	= AT91_PIN_PD15,
- #if defined(CONFIG_MTD_NAND_ATMEL_BUSWIDTH_16)
-diff --git a/arch/arm/mach-at91/at91sam9260_devices.c b/arch/arm/mach-at91/at91sam9260_devices.c
-index 4540f4b..4607646 100644
---- a/arch/arm/mach-at91/at91sam9260_devices.c
-+++ b/arch/arm/mach-at91/at91sam9260_devices.c
-@@ -63,6 +63,19 @@ void at91_add_device_eth(struct at91_ether_platform_data *data) {}
- #endif
- 
- #if defined(CONFIG_NAND_ATMEL)
-+static struct resource nand_resources[] = {
-+	[0] = {
-+		.start	= AT91_CHIPSELECT_3,
-+		.size	= SZ_256M,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+	[1] = {
-+		.start	= AT91_BASE_SYS + AT91_ECC,
-+		.size	= 512,
-+		.flags	= IORESOURCE_MEM,
-+	}
-+};
-+
- void at91_add_device_nand(struct atmel_nand_data *data)
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/usb/core/usb.c      |   18 +++++-------------
+ drivers/usb/host/ehci-hcd.c |    4 ++--
+ include/usb/usb.h           |    4 ++--
+ 3 files changed, 9 insertions(+), 17 deletions(-)
+
+diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
+index 24fa94a..ff60fea 100644
+--- a/drivers/usb/core/usb.c
++++ b/drivers/usb/core/usb.c
+@@ -531,6 +531,7 @@ int usb_control_msg(struct usb_device *dev, unsigned int pipe,
+ 			void *data, unsigned short size, int timeout)
  {
- 	unsigned long csa;
-@@ -85,8 +98,8 @@ void at91_add_device_nand(struct atmel_nand_data *data)
- 	if (data->det_pin)
- 		at91_set_gpio_input(data->det_pin, 1);
+ 	struct usb_host *host = dev->host;
++	int ret;
  
--	add_generic_device("atmel_nand", 0, NULL, AT91_CHIPSELECT_3, 0x10,
--			   IORESOURCE_MEM, data);
-+	add_generic_device_res("atmel_nand", 0, nand_resources,
-+			       ARRAY_SIZE(nand_resources), data);
- }
- #else
- void at91_add_device_nand(struct atmel_nand_data *data) {}
-diff --git a/arch/arm/mach-at91/at91sam9263_devices.c b/arch/arm/mach-at91/at91sam9263_devices.c
-index c7ae45a..f5058dc 100644
---- a/arch/arm/mach-at91/at91sam9263_devices.c
-+++ b/arch/arm/mach-at91/at91sam9263_devices.c
-@@ -62,6 +62,19 @@ void at91_add_device_eth(struct at91_ether_platform_data *data) {}
- #endif
+ 	if ((timeout == 0) && (!asynch_allowed)) {
+ 		/* request for a asynch control pipe is not allowed */
+@@ -548,18 +549,9 @@ int usb_control_msg(struct usb_device *dev, unsigned int pipe,
+ 		   request, requesttype, value, index, size);
+ 	dev->status = USB_ST_NOT_PROC; /*not yet processed */
  
- #if defined(CONFIG_NAND_ATMEL)
-+static struct resource nand_resources[] = {
-+	[0] = {
-+		.start	= AT91_CHIPSELECT_3,
-+		.size	= SZ_256M,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+	[1] = {
-+		.start	= AT91_BASE_SYS + AT91_ECC0,
-+		.size	= 512,
-+		.flags	= IORESOURCE_MEM,
-+	}
-+};
-+
- void at91_add_device_nand(struct atmel_nand_data *data)
- {
- 	unsigned long csa;
-@@ -84,8 +97,8 @@ void at91_add_device_nand(struct atmel_nand_data *data)
- 	if (data->det_pin)
- 		at91_set_gpio_input(data->det_pin, 1);
- 
--	add_generic_device("atmel_nand", -1, NULL, AT91_CHIPSELECT_3, 0x10,
--			   IORESOURCE_MEM, data);
-+	add_generic_device_res("atmel_nand", -1, nand_resources,
-+			       ARRAY_SIZE(nand_resources), data);
- }
- #else
- void at91_add_device_nand(struct atmel_nand_data *data) {}
-diff --git a/arch/arm/mach-at91/at91sam9g45_devices.c b/arch/arm/mach-at91/at91sam9g45_devices.c
-index e18682b..8bc1104 100644
---- a/arch/arm/mach-at91/at91sam9g45_devices.c
-+++ b/arch/arm/mach-at91/at91sam9g45_devices.c
-@@ -63,6 +63,19 @@ void at91_add_device_eth(struct at91_ether_platform_data *data) {}
- #endif
- 
- #if defined(CONFIG_NAND_ATMEL)
-+static struct resource nand_resources[] = {
-+	[0] = {
-+		.start	= AT91_CHIPSELECT_3,
-+		.size	= SZ_256M,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+	[1] = {
-+		.start	= AT91_BASE_SYS + AT91_ECC,
-+		.size	= 512,
-+		.flags	= IORESOURCE_MEM,
-+	}
-+};
-+
- void at91_add_device_nand(struct atmel_nand_data *data)
- {
- 	unsigned long csa;
-@@ -70,9 +83,6 @@ void at91_add_device_nand(struct atmel_nand_data *data)
- 	if (!data)
- 		return;
- 
--	data->ecc_base = (void __iomem *)(AT91_BASE_SYS + AT91_ECC);
--	data->ecc_mode	= NAND_ECC_SOFT;
+-	host->submit_control_msg(dev, pipe, data, size, &setup_packet);
+-	if (timeout == 0)
+-		return (int)size;
 -
- 	csa = at91_sys_read(AT91_MATRIX_EBICSA);
- 	at91_sys_write(AT91_MATRIX_EBICSA, csa | AT91_MATRIX_EBI_CS3A_SMC_SMARTMEDIA);
+-	if (dev->status != 0) {
+-		/*
+-		 * Let's wait a while for the timeout to elapse.
+-		 * It has no real use, but it keeps the interface happy.
+-		 */
+-		wait_ms(timeout);
+-		return -1;
+-	}
++	ret = host->submit_control_msg(dev, pipe, data, size, &setup_packet, timeout);
++	if (ret)
++		return ret;
  
-@@ -88,8 +98,8 @@ void at91_add_device_nand(struct atmel_nand_data *data)
- 	if (data->det_pin)
- 		at91_set_gpio_input(data->det_pin, 1);
- 
--	add_generic_device("atmel_nand", -1, NULL, AT91_CHIPSELECT_3, 0x10,
--			   IORESOURCE_MEM, data);
-+	add_generic_device_res("atmel_nand", -1, nand_resources,
-+			       ARRAY_SIZE(nand_resources), data);
+ 	return dev->act_len;
  }
- #else
- void at91_add_device_nand(struct atmel_nand_data *data) {}
-diff --git a/arch/arm/mach-at91/include/mach/board.h b/arch/arm/mach-at91/include/mach/board.h
-index 2adc035..f970ad8 100644
---- a/arch/arm/mach-at91/include/mach/board.h
-+++ b/arch/arm/mach-at91/include/mach/board.h
-@@ -29,7 +29,6 @@ void atmel_nand_load_image(void *dest, int size, int pagesize, int blocksize);
+@@ -579,7 +571,7 @@ int usb_bulk_msg(struct usb_device *dev, unsigned int pipe,
+ 		return -1;
  
-  /* NAND / SmartMedia */
- struct atmel_nand_data {
--	void __iomem	*ecc_base;
- 	u8		enable_pin;	/* chip enable */
- 	u8		det_pin;	/* card detect */
- 	u8		rdy_pin;	/* ready/busy */
-diff --git a/drivers/mtd/nand/atmel_nand.c b/drivers/mtd/nand/atmel_nand.c
-index f79be9a..0710407 100644
---- a/drivers/mtd/nand/atmel_nand.c
-+++ b/drivers/mtd/nand/atmel_nand.c
-@@ -399,13 +399,13 @@ static int __init atmel_nand_probe(struct device_d *dev)
- 	if (host->board->rdy_pin)
- 		nand_chip->dev_ready = atmel_nand_device_ready;
+ 	dev->status = USB_ST_NOT_PROC; /* not yet processed */
+-	ret = host->submit_bulk_msg(dev, pipe, data, len);
++	ret = host->submit_bulk_msg(dev, pipe, data, len, timeout);
+ 	if (ret)
+ 		return ret;
  
--	nand_chip->ecc.mode = pdata->ecc_mode;
-+	nand_chip->ecc.mode = NAND_ECC_SOFT;
+diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
+index 60fc181..828c5d9 100644
+--- a/drivers/usb/host/ehci-hcd.c
++++ b/drivers/usb/host/ehci-hcd.c
+@@ -850,7 +850,7 @@ static int ehci_init(struct usb_host *host)
  
- 	if (pdata->ecc_mode == NAND_ECC_HW) {
--		if (!pdata->ecc_base)
--			return -ENODEV;
-+		host->ecc = dev_request_mem_region(dev, 1);
+ static int
+ submit_bulk_msg(struct usb_device *dev, unsigned long pipe, void *buffer,
+-		int length)
++		int length, int timeout)
+ {
  
--		host->ecc = pdata->ecc_base;
-+		if (!host->ecc)
-+			return -ENODEV;
+ 	if (usb_pipetype(pipe) != PIPE_BULK) {
+@@ -862,7 +862,7 @@ submit_bulk_msg(struct usb_device *dev, unsigned long pipe, void *buffer,
  
- 		nand_chip->ecc.mode = NAND_ECC_HW;
- 		nand_chip->ecc.calculate = atmel_nand_calculate;
+ static int
+ submit_control_msg(struct usb_device *dev, unsigned long pipe, void *buffer,
+-		   int length, struct devrequest *setup)
++		   int length, struct devrequest *setup, int timeout)
+ {
+ 	struct usb_host *host = dev->host;
+ 	struct ehci_priv *ehci = to_ehci(host);
+diff --git a/include/usb/usb.h b/include/usb/usb.h
+index 6ef9977..6715786 100644
+--- a/include/usb/usb.h
++++ b/include/usb/usb.h
+@@ -205,9 +205,9 @@ struct usb_host {
+ 	int (*init)(struct usb_host *);
+ 	int (*exit)(struct usb_host *);
+ 	int (*submit_bulk_msg)(struct usb_device *dev, unsigned long pipe,
+-			void *buffer, int transfer_len);
++			void *buffer, int transfer_len, int timeout);
+ 	int (*submit_control_msg)(struct usb_device *dev, unsigned long pipe, void *buffer,
+-			int transfer_len, struct devrequest *setup);
++			int transfer_len, struct devrequest *setup, int timeout);
+ 	int (*submit_int_msg)(struct usb_device *dev, unsigned long pipe, void *buffer,
+ 			int transfer_len, int interval);
+ 	void (*usb_event_poll)(void);
 -- 
 1.7.5.4
 
