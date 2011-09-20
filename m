@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ip2.televic.com ([81.82.194.222])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1R61GF-0006Y9-AW
-	for barebox@lists.infradead.org; Tue, 20 Sep 2011 14:25:24 +0000
-From: =?iso-8859-1?Q?Lambrecht_J=FCrgen?= <J.Lambrecht@TELEVIC.com>
-Date: Tue, 20 Sep 2011 16:25:18 +0200
-Message-ID: <4E78A24E.7080000@televic.com>
+	id 1R65kq-0003N3-C5
+	for barebox@lists.infradead.org; Tue, 20 Sep 2011 19:13:17 +0000
+Date: Tue, 20 Sep 2011 21:13:13 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20110920191313.GZ31404@pengutronix.de>
+References: <1316434549-15243-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1316434549-15243-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,79 +18,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: ubiattach error
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH 01/12 v2] arm: export arch_number to env
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-Hello,
+Applied this series to next.
 
-When I want to run 'ubiattach' I get this error:
+Sascha
 
-barebox:/dev erase nand0.root1.bb
-Skipping bad block at 0x08000000
-Skipping bad block at 0x08020000
-barebox:/dev ubiattach nand0.root1
-UBI: attaching mtd0 to ubi0
-UBI: physical eraseblock size:   131072 bytes (128 KiB)
-UBI: logical eraseblock size:    129024 bytes
-UBI: smallest flash I/O unit:    2048
-UBI: sub-page size:              512
-UBI: VID header offset:          512 (aligned 512)
-UBI: data offset:                2048
-UBI: empty MTD device detected
-UBI: create volume table (copy #1)
-UBI error: ubi_io_write: error -5 while writing 512 bytes to PEB 0:512, =
+On Mon, Sep 19, 2011 at 02:15:38PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> so we can dynamise the boot depending on the machine
+> 
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  arch/arm/lib/armlinux.c |    7 +++++++
+>  1 files changed, 7 insertions(+), 0 deletions(-)
+> 
+> diff --git a/arch/arm/lib/armlinux.c b/arch/arm/lib/armlinux.c
+> index 5bdbb92..25b0f2a 100644
+> --- a/arch/arm/lib/armlinux.c
+> +++ b/arch/arm/lib/armlinux.c
+> @@ -186,7 +186,14 @@ void armlinux_set_bootparams(void *params)
+>  
+>  void armlinux_set_architecture(int architecture)
+>  {
+> +	char *arch_number = asprintf("%d", architecture);
+> +
+>  	armlinux_architecture = architecture;
+> +
+> +	setenv("arch_number", arch_number);
+> +	export("arch_number");
+> +
+> +	kfree(arch_number);
+>  }
+>  
+>  void armlinux_set_revision(unsigned int rev)
+> -- 
+> 1.7.5.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
-written 0 bytes
-UBI error: ubi_io_write: error -5 while writing 512 bytes to PEB 1:512, =
-
-written 0 bytes
-UBI error: ubi_io_write: error -5 while writing 512 bytes to PEB 2:512, =
-
-written 0 bytes
-UBI error: ubi_io_write: error -5 while writing 512 bytes to PEB 3:512, =
-
-written 0 bytes
-UBI error: ubi_io_write: error -5 while writing 512 bytes to PEB 4:512, =
-
-written 0 bytes
-UBI error: ubi_io_write: error -5 while writing 512 bytes to PEB 5:512, =
-
-written 0 bytes
-failed to attach: I/O error
-------------------------------------------------------------------
-- I use a imx27, and our HW is based on the imx27pdk.
-- We use the BI-swap solution to work around the nand flash HW bug (2kB =
-
-pages are load in 512 chunks, mangling the spare area) (so =
-
-drivers/mtd/nand/nand_imx.c is patched).
-- I see UBI detects a sub-page size of 512B, what does that mean?
-   Because in the UBI menu config "drivers - mtd - NAND - select nand =
-
-pagesize you want to support booting from", I must take '2048 byte page =
-
-size'; with '512 byte and 2048 byte pagesize' selected the board does =
-
-not boot.
-- I use LTIB from CVS (not the freescale one), that I have patched =
-
-according to the imx28 BSP from freescale to support UBI
-
-Kind regards,
-J=FCrgen
-
--- =
-
-J=FCrgen Lambrecht
-R&D Associate
-Tel: +32 (0)51 303045    Fax: +32 (0)51 310670
-http://www.televic-rail.com
-Televic Rail NV - Leo Bekaertlaan 1 - 8870 Izegem - Belgium
-Company number 0825.539.581 - RPR Kortrijk
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
