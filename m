@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1R5ub4-0008QN-8N
-	for barebox@lists.infradead.org; Tue, 20 Sep 2011 07:18:27 +0000
-Date: Tue, 20 Sep 2011 09:18:22 +0200
+	id 1R5urX-0008Vr-QJ
+	for barebox@lists.infradead.org; Tue, 20 Sep 2011 07:35:28 +0000
+Date: Tue, 20 Sep 2011 09:35:26 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110920071822.GS31404@pengutronix.de>
-References: <1316105827-3495-1-git-send-email-h.feurstein@gmail.com>
+Message-ID: <20110920073526.GT31404@pengutronix.de>
+References: <1316037832-3536-1-git-send-email-antonynpavlov@gmail.com>
+	<20110919085627.GD31404@pengutronix.de>
+	<CAA4bVAFdJoDbAUGqiYLvRUJnpdMpHsC1FgZD7vgxeC2zy4EhUQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1316105827-3495-1-git-send-email-h.feurstein@gmail.com>
+In-Reply-To: <CAA4bVAFdJoDbAUGqiYLvRUJnpdMpHsC1FgZD7vgxeC2zy4EhUQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,116 +20,78 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] at91: add spi clock connection id entries
-To: Hubert Feurstein <h.feurstein@gmail.com>
+Subject: Re: [RFC PATCH 1/3] add tlsf memory allocator
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-Jean-Christophe,
+On Mon, Sep 19, 2011 at 10:24:54PM +0400, Antony Pavlov wrote:
+> On 19 September 2011 12:56, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> > Hi Antony,
+> >
+> > On Thu, Sep 15, 2011 at 02:03:50AM +0400, Antony Pavlov wrote:
+> >> got from svn https://www.gii.upv.es/svn/tlsf/trunk@70
+> >>
+> >> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> >> ---
+> >> =A0common/tlsf.c =A0| 1024 +++++++++++++++++++++++++++++++++++++++++++=
++++++++++++++
+> >> =A0include/tlsf.h | =A0 39 +++
+> >> =A02 files changed, 1063 insertions(+), 0 deletions(-)
+> >> =A0create mode 100644 common/tlsf.c
+> >> =A0create mode 100644 include/tlsf.h
+> >
+> > What's the advantages of this memory allocator? One thing I see is that
+> > this one has support for memory pools which is nice to have. Are there
+> > more advantages?
+> =
 
-Are you ok with these?
+> I need some time to answer this question.
+> =
+
+> I have successfully used tlsf for some time in different projects
+> (e.g. I have used tlsf in my own version of PMON2000).
+> =
+
+> I have found that the barebox has an unusable menu "malloc type",
+> there I have found only dmalloc (yes, I know, there is very simple
+> malloc too). So I said to myself "Why not to add tlsf to this
+> menu?"...
+
+Yes, why not ;)
+
+> =
+
+> I have a reason, but, it is not very strict reason of course: tlsf is
+> a more recent, and last updated May 2010.
+
+I am generally open to a new malloc implementation. As said, the
+possibility to have memory pools is very useful in some cases. dlmalloc
+has newer versions though aswell and newer versions also have memory
+pools, but...
+
+> =
+
+> > How is the binary size compared to dlmalloc?
+> =
+
+> The binary size is the same.
+
+...Newer versions of dlmalloc are bigger in binary space.
+
+A good selling point for this allocator might be that it's fast (if it
+is)
+
+Maybe we can give it a try. First we need a working memalign function of
+course.
 
 Sascha
 
-On Thu, Sep 15, 2011 at 06:57:05PM +0200, Hubert Feurstein wrote:
-> Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
-> ---
->  arch/arm/mach-at91/at91sam9260.c |    7 +++++++
->  arch/arm/mach-at91/at91sam9261.c |    7 +++++++
->  arch/arm/mach-at91/at91sam9263.c |    2 ++
->  arch/arm/mach-at91/at91sam9g45.c |    2 ++
->  4 files changed, 18 insertions(+), 0 deletions(-)
-> 
-> diff --git a/arch/arm/mach-at91/at91sam9260.c b/arch/arm/mach-at91/at91sam9260.c
-> index c1f08e7..3af5747 100644
-> --- a/arch/arm/mach-at91/at91sam9260.c
-> +++ b/arch/arm/mach-at91/at91sam9260.c
-> @@ -169,6 +169,11 @@ static struct clk *periph_clocks[] = {
->  	// irq0 .. irq2
->  };
->  
-> +static struct clk_lookup periph_clocks_lookups[] = {
-> +	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi0", &spi0_clk),
-> +	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi1", &spi1_clk),
-> +};
-> +
->  static struct clk_lookup usart_clocks_lookups[] = {
->  	CLKDEV_CON_DEV_ID("usart", "atmel_usart0", &mck),
->  	CLKDEV_CON_DEV_ID("usart", "atmel_usart1", &usart0_clk),
-> @@ -203,6 +208,8 @@ static void __init at91sam9260_register_clocks(void)
->  	for (i = 0; i < ARRAY_SIZE(periph_clocks); i++)
->  		clk_register(periph_clocks[i]);
->  
-> +	clkdev_add_table(periph_clocks_lookups,
-> +			 ARRAY_SIZE(periph_clocks_lookups));
->  	clkdev_add_table(usart_clocks_lookups,
->  			 ARRAY_SIZE(usart_clocks_lookups));
->  
-> diff --git a/arch/arm/mach-at91/at91sam9261.c b/arch/arm/mach-at91/at91sam9261.c
-> index fbb8058..b1e09ef 100644
-> --- a/arch/arm/mach-at91/at91sam9261.c
-> +++ b/arch/arm/mach-at91/at91sam9261.c
-> @@ -133,6 +133,11 @@ static struct clk *periph_clocks[] = {
->  	// irq0 .. irq2
->  };
->  
-> +static struct clk_lookup periph_clocks_lookups[] = {
-> +	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi0", &spi0_clk),
-> +	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi1", &spi1_clk),
-> +};
-> +
->  static struct clk_lookup usart_clocks_lookups[] = {
->  	CLKDEV_CON_DEV_ID("usart", "atmel_usart0", &mck),
->  	CLKDEV_CON_DEV_ID("usart", "atmel_usart1", &usart0_clk),
-> @@ -190,6 +195,8 @@ static void at91sam9261_register_clocks(void)
->  	for (i = 0; i < ARRAY_SIZE(periph_clocks); i++)
->  		clk_register(periph_clocks[i]);
->  
-> +	clkdev_add_table(periph_clocks_lookups,
-> +			 ARRAY_SIZE(periph_clocks_lookups));
->  	clkdev_add_table(usart_clocks_lookups,
->  			 ARRAY_SIZE(usart_clocks_lookups));
->  
-> diff --git a/arch/arm/mach-at91/at91sam9263.c b/arch/arm/mach-at91/at91sam9263.c
-> index 12a7868..df2df7e 100644
-> --- a/arch/arm/mach-at91/at91sam9263.c
-> +++ b/arch/arm/mach-at91/at91sam9263.c
-> @@ -166,6 +166,8 @@ static struct clk *periph_clocks[] = {
->  static struct clk_lookup periph_clocks_lookups[] = {
->  	CLKDEV_CON_DEV_ID("mci_clk", "at91_mci0", &mmc0_clk),
->  	CLKDEV_CON_DEV_ID("mci_clk", "at91_mci1", &mmc1_clk),
-> +	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi0", &spi0_clk),
-> +	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi1", &spi1_clk),
->  };
->  
->  static struct clk_lookup usart_clocks_lookups[] = {
-> diff --git a/arch/arm/mach-at91/at91sam9g45.c b/arch/arm/mach-at91/at91sam9g45.c
-> index d4c27f8..9c478cd 100644
-> --- a/arch/arm/mach-at91/at91sam9g45.c
-> +++ b/arch/arm/mach-at91/at91sam9g45.c
-> @@ -191,6 +191,8 @@ static struct clk_lookup periph_clocks_lookups[] = {
->  	CLKDEV_CON_ID("ohci_clk", &uhphs_clk),
->  	CLKDEV_CON_DEV_ID("mci_clk", "atmel_mci0", &mmc0_clk),
->  	CLKDEV_CON_DEV_ID("mci_clk", "atmel_mci1", &mmc1_clk),
-> +	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi0", &spi0_clk),
-> +	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi1", &spi1_clk),
->  };
->  
->  static struct clk_lookup usart_clocks_lookups[] = {
-> -- 
-> 1.7.4.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+-- =
 
--- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
