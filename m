@@ -1,20 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 13.mo4.mail-out.ovh.net ([178.33.251.8]
-	helo=mo4.mail-out.ovh.net)
-	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1R60hh-0006DX-VT
-	for barebox@lists.infradead.org; Tue, 20 Sep 2011 13:49:43 +0000
-Received: from mail34.ha.ovh.net (b7.ovh.net [213.186.33.57])
-	by mo4.mail-out.ovh.net (Postfix) with SMTP id 6490310084A8
-	for <barebox@lists.infradead.org>;
-	Tue, 20 Sep 2011 15:50:11 +0200 (CEST)
-Date: Tue, 20 Sep 2011 15:27:21 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20110920132721.GC24966@game.jcrosoft.org>
-References: <1316105827-3495-1-git-send-email-h.feurstein@gmail.com>
+Received: from ip2.televic.com ([81.82.194.222])
+	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+	id 1R61GF-0006Y9-AW
+	for barebox@lists.infradead.org; Tue, 20 Sep 2011 14:25:24 +0000
+From: =?iso-8859-1?Q?Lambrecht_J=FCrgen?= <J.Lambrecht@TELEVIC.com>
+Date: Tue, 20 Sep 2011 16:25:18 +0200
+Message-ID: <4E78A24E.7080000@televic.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1316105827-3495-1-git-send-email-h.feurstein@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,111 +15,79 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] at91: add spi clock connection id entries
-To: Hubert Feurstein <h.feurstein@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: ubiattach error
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Acked-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Hello,
 
-Best Regards,
-J.
-On 18:57 Thu 15 Sep     , Hubert Feurstein wrote:
-> Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
-> ---
->  arch/arm/mach-at91/at91sam9260.c |    7 +++++++
->  arch/arm/mach-at91/at91sam9261.c |    7 +++++++
->  arch/arm/mach-at91/at91sam9263.c |    2 ++
->  arch/arm/mach-at91/at91sam9g45.c |    2 ++
->  4 files changed, 18 insertions(+), 0 deletions(-)
-> 
-> diff --git a/arch/arm/mach-at91/at91sam9260.c b/arch/arm/mach-at91/at91sam9260.c
-> index c1f08e7..3af5747 100644
-> --- a/arch/arm/mach-at91/at91sam9260.c
-> +++ b/arch/arm/mach-at91/at91sam9260.c
-> @@ -169,6 +169,11 @@ static struct clk *periph_clocks[] = {
->  	// irq0 .. irq2
->  };
->  
-> +static struct clk_lookup periph_clocks_lookups[] = {
-> +	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi0", &spi0_clk),
-> +	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi1", &spi1_clk),
-> +};
-> +
->  static struct clk_lookup usart_clocks_lookups[] = {
->  	CLKDEV_CON_DEV_ID("usart", "atmel_usart0", &mck),
->  	CLKDEV_CON_DEV_ID("usart", "atmel_usart1", &usart0_clk),
-> @@ -203,6 +208,8 @@ static void __init at91sam9260_register_clocks(void)
->  	for (i = 0; i < ARRAY_SIZE(periph_clocks); i++)
->  		clk_register(periph_clocks[i]);
->  
-> +	clkdev_add_table(periph_clocks_lookups,
-> +			 ARRAY_SIZE(periph_clocks_lookups));
->  	clkdev_add_table(usart_clocks_lookups,
->  			 ARRAY_SIZE(usart_clocks_lookups));
->  
-> diff --git a/arch/arm/mach-at91/at91sam9261.c b/arch/arm/mach-at91/at91sam9261.c
-> index fbb8058..b1e09ef 100644
-> --- a/arch/arm/mach-at91/at91sam9261.c
-> +++ b/arch/arm/mach-at91/at91sam9261.c
-> @@ -133,6 +133,11 @@ static struct clk *periph_clocks[] = {
->  	// irq0 .. irq2
->  };
->  
-> +static struct clk_lookup periph_clocks_lookups[] = {
-> +	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi0", &spi0_clk),
-> +	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi1", &spi1_clk),
-> +};
-> +
->  static struct clk_lookup usart_clocks_lookups[] = {
->  	CLKDEV_CON_DEV_ID("usart", "atmel_usart0", &mck),
->  	CLKDEV_CON_DEV_ID("usart", "atmel_usart1", &usart0_clk),
-> @@ -190,6 +195,8 @@ static void at91sam9261_register_clocks(void)
->  	for (i = 0; i < ARRAY_SIZE(periph_clocks); i++)
->  		clk_register(periph_clocks[i]);
->  
-> +	clkdev_add_table(periph_clocks_lookups,
-> +			 ARRAY_SIZE(periph_clocks_lookups));
->  	clkdev_add_table(usart_clocks_lookups,
->  			 ARRAY_SIZE(usart_clocks_lookups));
->  
-> diff --git a/arch/arm/mach-at91/at91sam9263.c b/arch/arm/mach-at91/at91sam9263.c
-> index 12a7868..df2df7e 100644
-> --- a/arch/arm/mach-at91/at91sam9263.c
-> +++ b/arch/arm/mach-at91/at91sam9263.c
-> @@ -166,6 +166,8 @@ static struct clk *periph_clocks[] = {
->  static struct clk_lookup periph_clocks_lookups[] = {
->  	CLKDEV_CON_DEV_ID("mci_clk", "at91_mci0", &mmc0_clk),
->  	CLKDEV_CON_DEV_ID("mci_clk", "at91_mci1", &mmc1_clk),
-> +	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi0", &spi0_clk),
-> +	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi1", &spi1_clk),
->  };
->  
->  static struct clk_lookup usart_clocks_lookups[] = {
-> diff --git a/arch/arm/mach-at91/at91sam9g45.c b/arch/arm/mach-at91/at91sam9g45.c
-> index d4c27f8..9c478cd 100644
-> --- a/arch/arm/mach-at91/at91sam9g45.c
-> +++ b/arch/arm/mach-at91/at91sam9g45.c
-> @@ -191,6 +191,8 @@ static struct clk_lookup periph_clocks_lookups[] = {
->  	CLKDEV_CON_ID("ohci_clk", &uhphs_clk),
->  	CLKDEV_CON_DEV_ID("mci_clk", "atmel_mci0", &mmc0_clk),
->  	CLKDEV_CON_DEV_ID("mci_clk", "atmel_mci1", &mmc1_clk),
-> +	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi0", &spi0_clk),
-> +	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi1", &spi1_clk),
->  };
->  
->  static struct clk_lookup usart_clocks_lookups[] = {
-> -- 
-> 1.7.4.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+When I want to run 'ubiattach' I get this error:
+
+barebox:/dev erase nand0.root1.bb
+Skipping bad block at 0x08000000
+Skipping bad block at 0x08020000
+barebox:/dev ubiattach nand0.root1
+UBI: attaching mtd0 to ubi0
+UBI: physical eraseblock size:   131072 bytes (128 KiB)
+UBI: logical eraseblock size:    129024 bytes
+UBI: smallest flash I/O unit:    2048
+UBI: sub-page size:              512
+UBI: VID header offset:          512 (aligned 512)
+UBI: data offset:                2048
+UBI: empty MTD device detected
+UBI: create volume table (copy #1)
+UBI error: ubi_io_write: error -5 while writing 512 bytes to PEB 0:512, =
+
+written 0 bytes
+UBI error: ubi_io_write: error -5 while writing 512 bytes to PEB 1:512, =
+
+written 0 bytes
+UBI error: ubi_io_write: error -5 while writing 512 bytes to PEB 2:512, =
+
+written 0 bytes
+UBI error: ubi_io_write: error -5 while writing 512 bytes to PEB 3:512, =
+
+written 0 bytes
+UBI error: ubi_io_write: error -5 while writing 512 bytes to PEB 4:512, =
+
+written 0 bytes
+UBI error: ubi_io_write: error -5 while writing 512 bytes to PEB 5:512, =
+
+written 0 bytes
+failed to attach: I/O error
+------------------------------------------------------------------
+- I use a imx27, and our HW is based on the imx27pdk.
+- We use the BI-swap solution to work around the nand flash HW bug (2kB =
+
+pages are load in 512 chunks, mangling the spare area) (so =
+
+drivers/mtd/nand/nand_imx.c is patched).
+- I see UBI detects a sub-page size of 512B, what does that mean?
+   Because in the UBI menu config "drivers - mtd - NAND - select nand =
+
+pagesize you want to support booting from", I must take '2048 byte page =
+
+size'; with '512 byte and 2048 byte pagesize' selected the board does =
+
+not boot.
+- I use LTIB from CVS (not the freescale one), that I have patched =
+
+according to the imx28 BSP from freescale to support UBI
+
+Kind regards,
+J=FCrgen
+
+-- =
+
+J=FCrgen Lambrecht
+R&D Associate
+Tel: +32 (0)51 303045    Fax: +32 (0)51 310670
+http://www.televic-rail.com
+Televic Rail NV - Leo Bekaertlaan 1 - 8870 Izegem - Belgium
+Company number 0825.539.581 - RPR Kortrijk
 
 _______________________________________________
 barebox mailing list
