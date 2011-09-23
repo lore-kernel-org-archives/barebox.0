@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1R71zc-0004P3-04
-	for barebox@lists.infradead.org; Fri, 23 Sep 2011 09:24:30 +0000
+	id 1R71zb-0004P4-WD
+	for barebox@lists.infradead.org; Fri, 23 Sep 2011 09:24:31 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 23 Sep 2011 11:24:18 +0200
-Message-Id: <1316769860-24549-11-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 23 Sep 2011 11:24:17 +0200
+Message-Id: <1316769860-24549-10-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1316769860-24549-1-git-send-email-s.hauer@pengutronix.de>
 References: <1316769860-24549-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,112 +21,177 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/12] ARM mmu: find second level descriptors by walking the
-	page table
+Subject: [PATCH 09/12] rename include/mem_malloc.h to include/memory.h
 To: barebox@lists.infradead.org
 
-By doing this we can remove the ptes field in struct arm_memory
-which won't be present in a generic memory bank structure anymore.
+Which is a better name and also better to collect other
+things.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/mmu.c            |   39 ++++++++++++++++++++-------------------
- arch/arm/include/asm/memory.h |    1 -
- 2 files changed, 20 insertions(+), 20 deletions(-)
+ arch/arm/lib/arm.c              |    2 +-
+ arch/blackfin/lib/board.c       |    2 +-
+ arch/mips/lib/memory.c          |    2 +-
+ arch/nios2/lib/board.c          |    2 +-
+ arch/ppc/boards/pcm030/pcm030.c |    2 +-
+ arch/ppc/lib/board.c            |    2 +-
+ arch/x86/lib/memory.c           |    2 +-
+ common/dlmalloc.c               |    2 +-
+ common/startup.c                |    2 +-
+ include/mem_malloc.h            |   10 ----------
+ include/memory.h                |   10 ++++++++++
+ 11 files changed, 19 insertions(+), 19 deletions(-)
+ delete mode 100644 include/mem_malloc.h
+ create mode 100644 include/memory.h
 
-diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index b669349..6fa600f 100644
---- a/arch/arm/cpu/mmu.c
-+++ b/arch/arm/cpu/mmu.c
-@@ -76,28 +76,28 @@ static u32 *arm_create_pte(unsigned long virt)
- 	return table;
- }
+diff --git a/arch/arm/lib/arm.c b/arch/arm/lib/arm.c
+index 6549118..c85aae1 100644
+--- a/arch/arm/lib/arm.c
++++ b/arch/arm/lib/arm.c
+@@ -1,6 +1,6 @@
+ #include <common.h>
+ #include <init.h>
+-#include <mem_malloc.h>
++#include <memory.h>
+ #include <asm/barebox-arm.h>
+ #include <asm-generic/memory_layout.h>
  
-+static u32 *find_pte(unsigned long adr)
-+{
-+	u32 *table;
-+
-+	if ((ttb[adr >> 20] & PMD_TYPE_MASK) != PMD_TYPE_TABLE)
-+		BUG();
-+
-+	/* find the coarse page table base address */
-+	table = (u32 *)(ttb[adr >> 20] & ~0x3ff);
-+
-+	/* find second level descriptor */
-+	return &table[(adr >> PAGE_SHIFT) & 0xff];
-+}
-+
- static void remap_range(void *_start, size_t size, uint32_t flags)
- {
--	u32 pteentry;
--	struct arm_memory *mem;
- 	unsigned long start = (unsigned long)_start;
- 	u32 *p;
- 	int numentries, i;
+diff --git a/arch/blackfin/lib/board.c b/arch/blackfin/lib/board.c
+index 581947b..d1b39fa 100644
+--- a/arch/blackfin/lib/board.c
++++ b/arch/blackfin/lib/board.c
+@@ -31,7 +31,7 @@
+ #include <net.h>
+ #include <init.h>
+ #include <environment.h>
+-#include <mem_malloc.h>
++#include <memory.h>
+ #include <asm/cpu.h>
+ #include <asm-generic/memory_layout.h>
  
--	for_each_sdram_bank(mem) {
--		if (start >= mem->start && start < mem->start + mem->size)
--			goto found;
--	}
+diff --git a/arch/mips/lib/memory.c b/arch/mips/lib/memory.c
+index 23a995c..ad9f6a6 100644
+--- a/arch/mips/lib/memory.c
++++ b/arch/mips/lib/memory.c
+@@ -20,7 +20,7 @@
+ 
+ #include <common.h>
+ #include <init.h>
+-#include <mem_malloc.h>
++#include <memory.h>
+ #include <asm-generic/memory_layout.h>
+ 
+ static int mips_mem_malloc_init(void)
+diff --git a/arch/nios2/lib/board.c b/arch/nios2/lib/board.c
+index 7cbff40..07f045b 100644
+--- a/arch/nios2/lib/board.c
++++ b/arch/nios2/lib/board.c
+@@ -23,7 +23,7 @@
+ #include <common.h>
+ #include <malloc.h>
+ #include <init.h>
+-#include <mem_malloc.h>
++#include <memory.h>
+ #include <asm-generic/memory_layout.h>
+ #include <cache.h>
+ 
+diff --git a/arch/ppc/boards/pcm030/pcm030.c b/arch/ppc/boards/pcm030/pcm030.c
+index 3c2db4e..d3b7094 100644
+--- a/arch/ppc/boards/pcm030/pcm030.c
++++ b/arch/ppc/boards/pcm030/pcm030.c
+@@ -34,7 +34,7 @@
+ #include <mach/fec.h>
+ #include <types.h>
+ #include <partition.h>
+-#include <mem_malloc.h>
++#include <memory.h>
+ #include <reloc.h>
+ 
+ static struct mpc5xxx_fec_platform_data fec_info = {
+diff --git a/arch/ppc/lib/board.c b/arch/ppc/lib/board.c
+index 7f8118e..798c386 100644
+--- a/arch/ppc/lib/board.c
++++ b/arch/ppc/lib/board.c
+@@ -26,7 +26,7 @@
+ #include <watchdog.h>
+ #include <command.h>
+ #include <malloc.h>
+-#include <mem_malloc.h>
++#include <memory.h>
+ #include <init.h>
+ #include <net.h>
+ #include <reloc.h>
+diff --git a/arch/x86/lib/memory.c b/arch/x86/lib/memory.c
+index 9496d22..fa7bc03 100644
+--- a/arch/x86/lib/memory.c
++++ b/arch/x86/lib/memory.c
+@@ -27,7 +27,7 @@
+ 
+ #include <init.h>
+ #include <stdio.h>
+-#include <mem_malloc.h>
++#include <memory.h>
+ #include <asm/syslib.h>
+ #include <asm-generic/memory_layout.h>
+ 
+diff --git a/common/dlmalloc.c b/common/dlmalloc.c
+index f9e1828..7ad368e 100644
+--- a/common/dlmalloc.c
++++ b/common/dlmalloc.c
+@@ -2,7 +2,7 @@
+ #include <config.h>
+ #include <malloc.h>
+ #include <string.h>
+-#include <mem_malloc.h>
++#include <memory.h>
+ 
+ #include <stdio.h>
+ #include <module.h>
+diff --git a/common/startup.c b/common/startup.c
+index bf67aef..7a1b602 100644
+--- a/common/startup.c
++++ b/common/startup.c
+@@ -33,7 +33,7 @@
+ #include <init.h>
+ #include <command.h>
+ #include <malloc.h>
+-#include <mem_malloc.h>
++#include <memory.h>
+ #include <debug_ll.h>
+ #include <fs.h>
+ #include <linux/stat.h>
+diff --git a/include/mem_malloc.h b/include/mem_malloc.h
+deleted file mode 100644
+index 67b19d7..0000000
+--- a/include/mem_malloc.h
++++ /dev/null
+@@ -1,10 +0,0 @@
+-#ifndef __MEM_MALLOC_H
+-#define __MEM_MALLOC_H
 -
--	BUG();
--	return;
+-#include <linux/types.h>
 -
--found:
--	pteentry = (start - mem->start) >> PAGE_SHIFT;
+-void mem_malloc_init(void *start, void *end);
+-ulong mem_malloc_start(void);
+-ulong mem_malloc_end(void);
 -
- 	numentries = size >> PAGE_SHIFT;
--
--	p = mem->ptes + pteentry;
-+	p = find_pte(start);
- 
- 	for (i = 0; i < numentries; i++) {
- 		p[i] &= ~PTE_MASK;
-@@ -121,6 +121,7 @@ static int arm_mmu_remap_sdram(struct arm_memory *mem)
- 	unsigned long ttb_end = (phys + mem->size) >> 20;
- 	unsigned long num_ptes = mem->size >> 10;
- 	int i, pte;
-+	u32 *ptes;
- 
- 	debug("remapping SDRAM from 0x%08lx (size 0x%08lx)\n",
- 			phys, mem->size);
-@@ -132,20 +133,20 @@ static int arm_mmu_remap_sdram(struct arm_memory *mem)
- 	if ((phys & (SZ_1M - 1)) || (mem->size & (SZ_1M - 1)))
- 		return -EINVAL;
- 
--	mem->ptes = memalign(0x400, num_ptes * sizeof(u32));
-+	ptes = memalign(0x400, num_ptes * sizeof(u32));
- 
- 	debug("ptes: 0x%p ttb_start: 0x%08lx ttb_end: 0x%08lx\n",
--			mem->ptes, ttb_start, ttb_end);
-+			ptes, ttb_start, ttb_end);
- 
- 	for (i = 0; i < num_ptes; i++) {
--		mem->ptes[i] = (phys + i * 4096) | PTE_TYPE_SMALL |
-+		ptes[i] = (phys + i * 4096) | PTE_TYPE_SMALL |
- 			PTE_FLAGS_CACHED;
- 	}
- 
- 	pte = 0;
- 
- 	for (i = ttb_start; i < ttb_end; i++) {
--		ttb[i] = (unsigned long)(&mem->ptes[pte]) | PMD_TYPE_TABLE |
-+		ttb[i] = (unsigned long)(&ptes[pte]) | PMD_TYPE_TABLE |
- 			(0 << 4);
- 		pte += 256;
- 	}
-diff --git a/arch/arm/include/asm/memory.h b/arch/arm/include/asm/memory.h
-index 93c2fe6..0729886 100644
---- a/arch/arm/include/asm/memory.h
-+++ b/arch/arm/include/asm/memory.h
-@@ -4,7 +4,6 @@
- struct arm_memory {
- 	struct list_head list;
- 	struct device_d *dev;
--	u32 *ptes;
- 	unsigned long start;
- 	unsigned long size;
- };
+-#endif
+diff --git a/include/memory.h b/include/memory.h
+new file mode 100644
+index 0000000..67b19d7
+--- /dev/null
++++ b/include/memory.h
+@@ -0,0 +1,10 @@
++#ifndef __MEM_MALLOC_H
++#define __MEM_MALLOC_H
++
++#include <linux/types.h>
++
++void mem_malloc_init(void *start, void *end);
++ulong mem_malloc_start(void);
++ulong mem_malloc_end(void);
++
++#endif
 -- 
 1.7.6.3
 
