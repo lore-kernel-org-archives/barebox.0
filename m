@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1R71zb-0004Ox-ED
-	for barebox@lists.infradead.org; Fri, 23 Sep 2011 09:24:26 +0000
+	id 1R71zb-0004P5-W3
+	for barebox@lists.infradead.org; Fri, 23 Sep 2011 09:24:29 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 23 Sep 2011 11:24:11 +0200
-Message-Id: <1316769860-24549-4-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 23 Sep 2011 11:24:19 +0200
+Message-Id: <1316769860-24549-12-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1316769860-24549-1-git-send-email-s.hauer@pengutronix.de>
 References: <1316769860-24549-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,73 +21,82 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/12] arm: use asm-generic/io.h
+Subject: [PATCH 11/12] introduce generic memory bank handling
 To: barebox@lists.infradead.org
+
+On arm we have the concept of memory banks which can
+be registered and iterated over. This is useful for
+other architectures aswell, so add some generic infrastructure
+for this.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/include/asm/io.h |   49 +--------------------------------------------
- 1 files changed, 1 insertions(+), 48 deletions(-)
+ common/memory.c  |   18 ++++++++++++++++++
+ include/memory.h |   15 +++++++++++++++
+ 2 files changed, 33 insertions(+), 0 deletions(-)
 
-diff --git a/arch/arm/include/asm/io.h b/arch/arm/include/asm/io.h
-index e8e82f6..ab78be3 100644
---- a/arch/arm/include/asm/io.h
-+++ b/arch/arm/include/asm/io.h
-@@ -1,53 +1,6 @@
--/*
-- *  linux/include/asm-arm/io.h
-- *
-- *  Copyright (C) 1996-2000 Russell King
-- *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License version 2 as
-- * published by the Free Software Foundation.
-- *
-- * Modifications:
-- *  16-Sep-1996	RMK	Inlined the inx/outx functions & optimised for both
-- *			constant addresses and variable addresses.
-- *  04-Dec-1997	RMK	Moved a lot of this stuff to the new architecture
-- *			specific IO header files.
-- *  27-Mar-1999	PJB	Second parameter of memcpy_toio is const..
-- *  04-Apr-1999	PJB	Added check_signature.
-- *  12-Dec-1999	RMK	More cleanups
-- *  18-Jun-2000 RMK	Removed virt_to_* and friends definitions
-- */
--
--/**
-- * @file
-- * @brief ARM IO access functions
-- */
--
- #ifndef __ASM_ARM_IO_H
- #define __ASM_ARM_IO_H
+diff --git a/common/memory.c b/common/memory.c
+index 8f4a768..4d59f15 100644
+--- a/common/memory.c
++++ b/common/memory.c
+@@ -21,6 +21,7 @@
+  */
  
--#define __raw_writeb(v,a)	(__chk_io_ptr(a), *(volatile unsigned char __force  *)(a) = (v))
--#define __raw_writew(v,a)	(__chk_io_ptr(a), *(volatile unsigned short __force *)(a) = (v))
--#define __raw_writel(v,a)	(__chk_io_ptr(a), *(volatile unsigned int __force   *)(a) = (v))
--
--#define __raw_readb(a)		(__chk_io_ptr(a), *(volatile unsigned char __force  *)(a))
--#define __raw_readw(a)		(__chk_io_ptr(a), *(volatile unsigned short __force *)(a))
--#define __raw_readl(a)		(__chk_io_ptr(a), *(volatile unsigned int __force   *)(a))
--
--#define writeb(v,a) __raw_writeb(v,a)
--#define writew(v,a) __raw_writew(v,a)
--#define writel(v,a) __raw_writel(v,a)
--
--#define readb(a) __raw_readb(a)
--#define readw(a) __raw_readw(a)
--#define readl(a) __raw_readl(a)
--
--/* for the ARM architecture the string functions are library based */
--extern void writesb(void __iomem*, const void*, int);
--extern void writesw(void __iomem*, const void*, int);
--extern void writesl(void __iomem*, const void*, int);
--extern void readsb(const void __iomem*, void*, int);
--extern void readsw(const void __iomem*, void*, int);
--extern void readsl(const void __iomem*, void*, int);
-+#include <asm-generic/io.h>
+ #include <common.h>
++#include <memory.h>
  
- #endif	/* __ASM_ARM_IO_H */
+ /*
+  * Begin and End of memory area for malloc(), and current "brk"
+@@ -69,3 +70,20 @@ void *sbrk(ptrdiff_t increment)
+ 
+ 	return old;
+ }
++
++LIST_HEAD(memory_banks);
++
++void barebox_add_memory_bank(const char *name, resource_size_t start,
++				    resource_size_t size)
++{
++	struct memory_bank *bank = xzalloc(sizeof(*bank));
++	struct device_d *dev;
++
++	dev = add_mem_device(name, start, size, IORESOURCE_MEM_WRITEABLE);
++
++	bank->dev = dev;
++	bank->start = start;
++	bank->size = size;
++
++	list_add_tail(&bank->list, &memory_banks);
++}
+diff --git a/include/memory.h b/include/memory.h
+index 67b19d7..cb185af 100644
+--- a/include/memory.h
++++ b/include/memory.h
+@@ -2,9 +2,24 @@
+ #define __MEM_MALLOC_H
+ 
+ #include <linux/types.h>
++#include <linux/list.h>
+ 
+ void mem_malloc_init(void *start, void *end);
+ ulong mem_malloc_start(void);
+ ulong mem_malloc_end(void);
+ 
++struct memory_bank {
++	struct list_head list;
++	struct device_d *dev;
++	unsigned long start;
++	unsigned long size;
++};
++
++extern struct list_head memory_banks;
++
++void barebox_add_memory_bank(const char *name, resource_size_t start,
++				    resource_size_t size);
++
++#define for_each_memory_bank(mem)	list_for_each_entry(mem, &memory_banks, list)
++
+ #endif
 -- 
 1.7.6.3
 
