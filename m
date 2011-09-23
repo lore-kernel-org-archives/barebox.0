@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ip2.televic.com ([81.82.194.222])
-	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1R76Jh-0001Ah-Qg
-	for barebox@lists.infradead.org; Fri, 23 Sep 2011 14:01:26 +0000
-From: =?iso-8859-1?Q?Lambrecht_J=FCrgen?= <J.Lambrecht@TELEVIC.com>
-Date: Fri, 23 Sep 2011 16:01:22 +0200
-Message-ID: <4E7C9132.4060606@televic.com>
-References: <4E78A24E.7080000@televic.com>
-In-Reply-To: <4E78A24E.7080000@televic.com>
-MIME-Version: 1.0
+Received: from mail.visioncatalog.com ([217.6.246.34] helo=root.phytec.de)
+	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+	id 1R76Nk-0001Fl-0K
+	for barebox@lists.infradead.org; Fri, 23 Sep 2011 14:05:37 +0000
+From: Teresa Gamez <T.Gamez@phytec.de>
+In-Reply-To: <20110923092606.GK31404@pengutronix.de>
+References: <1316769860-24549-1-git-send-email-s.hauer@pengutronix.de>
+	<1316769860-24549-9-git-send-email-s.hauer@pengutronix.de>
+	<20110923092606.GK31404@pengutronix.de>
+Date: Fri, 23 Sep 2011 16:05:29 +0200
+Message-ID: <1316786729.3656.96.camel@lws-gamez>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,96 +19,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: ubiattach error
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH 08/12] cfi flash: fix flash_make_cmd for big endian access
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On 09/20/2011 04:25 PM, Lambrecht J=FCrgen wrote:
->
-> Hello,
->
-> When I want to run 'ubiattach' I get this error:
->
-> barebox:/dev erase nand0.root1.bb
-> Skipping bad block at 0x08000000
-> Skipping bad block at 0x08020000
-> barebox:/dev ubiattach nand0.root1
->
-first do 'ubiformat' in linux or flash an ubi image. Then you can attach =
-
-to it.
-Mark: you can only attach 1 mtd0
-
-After a lot of reading and trial-and-error, now I understand ubi and ubifs.
-
-Juergen
->
-> UBI: attaching mtd0 to ubi0
-> UBI: physical eraseblock size:   131072 bytes (128 KiB)
-> UBI: logical eraseblock size:    129024 bytes
-> UBI: smallest flash I/O unit:    2048
-> UBI: sub-page size:              512
-> UBI: VID header offset:          512 (aligned 512)
-> UBI: data offset:                2048
-> UBI: empty MTD device detected
-> UBI: create volume table (copy #1)
-> UBI error: ubi_io_write: error -5 while writing 512 bytes to PEB 0:512,
-> written 0 bytes
-> UBI error: ubi_io_write: error -5 while writing 512 bytes to PEB 1:512,
-> written 0 bytes
-> UBI error: ubi_io_write: error -5 while writing 512 bytes to PEB 2:512,
-> written 0 bytes
-> UBI error: ubi_io_write: error -5 while writing 512 bytes to PEB 3:512,
-> written 0 bytes
-> UBI error: ubi_io_write: error -5 while writing 512 bytes to PEB 4:512,
-> written 0 bytes
-> UBI error: ubi_io_write: error -5 while writing 512 bytes to PEB 5:512,
-> written 0 bytes
-> failed to attach: I/O error
-> ------------------------------------------------------------------
-> - I use a imx27, and our HW is based on the imx27pdk.
-> - We use the BI-swap solution to work around the nand flash HW bug (2kB
-> pages are load in 512 chunks, mangling the spare area) (so
-> drivers/mtd/nand/nand_imx.c is patched).
-> - I see UBI detects a sub-page size of 512B, what does that mean?
->    Because in the UBI menu config "drivers - mtd - NAND - select nand
-> pagesize you want to support booting from", I must take '2048 byte page
-> size'; with '512 byte and 2048 byte pagesize' selected the board does
-> not boot.
-> - I use LTIB from CVS (not the freescale one), that I have patched
-> according to the imx28 BSP from freescale to support UBI
->
-> Kind regards,
-> J=FCrgen
->
-> --
-> J=FCrgen Lambrecht
-> R&D Associate
-> Tel: +32 (0)51 303045    Fax: +32 (0)51 310670
-> http://www.televic-rail.com
-> Televic Rail NV - Leo Bekaertlaan 1 - 8870 Izegem - Belgium
-> Company number 0825.539.581 - RPR Kortrijk
->
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
->
-
-
--- =
-
-J=FCrgen Lambrecht
-R&D Associate
-Tel: +32 (0)51 303045    Fax: +32 (0)51 310670
-http://www.televic-rail.com
-Televic Rail NV - Leo Bekaertlaan 1 - 8870 Izegem - Belgium
-Company number 0825.539.581 - RPR Kortrijk
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8gU2FzY2hhLAoKQW0gRnJlaXRhZywgZGVuIDIzLjA5LjIwMTEsIDExOjI2ICswMjAwIHNj
+aHJpZWIgU2FzY2hhIEhhdWVyOgo+IEhpIFRlcmVzYSwKPiAKPiBPbiBGcmksIFNlcCAyMywgMjAx
+MSBhdCAxMToyNDoxNkFNICswMjAwLCBTYXNjaGEgSGF1ZXIgd3JvdGU6Cj4gPiBUaGlzIGlzIGJy
+b2tlbiBvbiBiaWcgZW5kaWFuIHN5c3RlbXMgc2luY2U6Cj4gPiAKPiA+IDk0M2IyNzEgY2ZpX2Zs
+YXNoOiBzdXBwb3J0IG9mIHUzMiBjbWQKPiA+IAo+ID4gSSBsb29rZWQgb3ZlciBpdCBhbmQgSSAq
+dGhpbmsqIHRoYXQgdGhlIGZ1bmN0aW9uIHdhcyBjb3JyZWN0Cj4gPiBmb3IgYm90aCBiaWcgYW5k
+IGxpdHRsZSBlbmRpYW4gc3lzdGVtcyBiZWZvcmUgdGhpcyBwYXRjaC4KPiA+IFRvIHN1cHBvcnQg
+dTMyIGNtZCB3ZSBvbmx5IGhhdmUgdG8gY2hhbmdlIHRoZSBkYXRhIHR5cGUgb2YKPiA+IHRoZSBj
+b21tYW5kIGZyb20gdTggdG8gdTMyLgo+IAo+IENhbiB5b3UgcGxlYXNlIHRlc3QgaWYgdGhpcyBw
+YXRjaCB3b3JrcyBvbiB5b3VyIHU4LWlzLW5vdC1lbm91Z2gKPiBmbGFzaD8KClN1Y2Nlc3NmdWxs
+eSB0ZXN0ZWQgd2l0aCBhIHU4LWlzLW5vdC1lbm91Z2ggZmxhc2ggKDI4RjI1NlAzM0JGKSBvbiBh
+CnBoeUNPUkUtaS5NWDM1LgoKVGVyZXNhCgo+IAo+IFNhc2NoYQo+IAo+ID4gCj4gPiBTaWduZWQt
+b2ZmLWJ5OiBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+Cj4gPiBDYzogVGVy
+ZXNhIEfDoW1leiA8dC5nYW1lekBwaHl0ZWMuZGU+Cj4gPiAtLS0KPiA+ICBkcml2ZXJzL25vci9j
+ZmlfZmxhc2guYyB8ICAgMjQgKysrKystLS0tLS0tLS0tLS0tLS0tLS0tCj4gPiAgMSBmaWxlcyBj
+aGFuZ2VkLCA1IGluc2VydGlvbnMoKyksIDE5IGRlbGV0aW9ucygtKQo+ID4gCj4gPiBkaWZmIC0t
+Z2l0IGEvZHJpdmVycy9ub3IvY2ZpX2ZsYXNoLmMgYi9kcml2ZXJzL25vci9jZmlfZmxhc2guYwo+
+ID4gaW5kZXggZjliOTZjNS4uNjU0ZTY0NyAxMDA2NDQKPiA+IC0tLSBhL2RyaXZlcnMvbm9yL2Nm
+aV9mbGFzaC5jCj4gPiArKysgYi9kcml2ZXJzL25vci9jZmlfZmxhc2guYwo+ID4gQEAgLTgyMiwy
+NiArODIyLDEyIEBAIGludCBmbGFzaF9nZW5lcmljX3N0YXR1c19jaGVjayAoc3RydWN0IGZsYXNo
+X2luZm8gKmluZm8sIGZsYXNoX3NlY3RfdCBzZWN0b3IsCj4gPiAgICovCj4gPiAgdm9pZCBmbGFz
+aF9tYWtlX2NtZChzdHJ1Y3QgZmxhc2hfaW5mbyAqaW5mbywgdTMyIGNtZCwgY2Zpd29yZF90ICpj
+bWRidWYpCj4gPiAgewo+ID4gLQlpbnQgaTsKPiA+IC0JaW50IGNwX29mZnNldDsKPiA+IC0JaW50
+IGN3b3JkX29mZnNldDsKPiA+IC0JdWNoYXIgdmFsOwo+ID4gLQl1Y2hhciAqY3A7Cj4gPiAtCj4g
+PiAtCSpjbWRidWYgPSAwOwo+ID4gLQljcCA9ICh1Y2hhciAqKWNtZGJ1ZjsKPiA+ICsJY2Zpd29y
+ZF90IHJlc3VsdCA9IDA7Cj4gPiArCWludCBpID0gaW5mby0+cG9ydHdpZHRoIC8gaW5mby0+Y2hp
+cHdpZHRoOwo+ID4gIAo+ID4gLQlmb3IgKGkgPSBpbmZvLT5wb3J0d2lkdGg7IGkgPiAwOyBpLS0p
+IHsKPiA+IC0JCWN3b3JkX29mZnNldCA9IChpbmZvLT5wb3J0d2lkdGgtaSkgJSBpbmZvLT5jaGlw
+d2lkdGg7Cj4gPiAtI2lmIF9fQllURV9PUkRFUiA9PSBfX0xJVFRMRV9FTkRJQU4KPiA+IC0JCWNw
+X29mZnNldCA9IGluZm8tPnBvcnR3aWR0aCAtIGk7Cj4gPiAtCQl2YWwgPSAqKCh1Y2hhciAqKSZj
+bWQgKyBjd29yZF9vZmZzZXQpOwo+ID4gLSNlbHNlCj4gPiAtCQljcF9vZmZzZXQgPSBpIC0gMTsK
+PiA+IC0JCXZhbCA9ICooKHVjaGFyICopJmNtZCArIHNpemVvZih1MzIpIC0gY3dvcmRfb2Zmc2V0
+IC0gMSk7Cj4gPiAtI2VuZGlmCj4gPiAtCWNwW2NwX29mZnNldF0gPSAoY3dvcmRfb2Zmc2V0ID49
+IHNpemVvZih1MzIpKSA/IDB4MDAgOiB2YWw7Cj4gPiAtCX0KPiA+ICsJd2hpbGUgKGktLSkKPiA+
+ICsJCXJlc3VsdCA9IChyZXN1bHQgPDwgKDggKiBpbmZvLT5jaGlwd2lkdGgpKSB8IGNtZDsKPiA+
+ICsJKmNtZGJ1ZiA9IHJlc3VsdDsKPiA+ICB9Cj4gPiAgCj4gPiAgLyoKPiA+IC0tIAo+ID4gMS43
+LjYuMwo+ID4gCj4gPiAKPiAKCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQu
+b3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
