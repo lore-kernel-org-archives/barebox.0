@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.visioncatalog.com ([217.6.246.34] helo=root.phytec.de)
-	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1R76Nk-0001Fl-0K
-	for barebox@lists.infradead.org; Fri, 23 Sep 2011 14:05:37 +0000
-From: Teresa Gamez <T.Gamez@phytec.de>
-In-Reply-To: <20110923092606.GK31404@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+	id 1R76jK-0001au-Fq
+	for barebox@lists.infradead.org; Fri, 23 Sep 2011 14:27:55 +0000
+Date: Fri, 23 Sep 2011 16:27:52 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20110923142752.GL31404@pengutronix.de>
 References: <1316769860-24549-1-git-send-email-s.hauer@pengutronix.de>
 	<1316769860-24549-9-git-send-email-s.hauer@pengutronix.de>
 	<20110923092606.GK31404@pengutronix.de>
-Date: Fri, 23 Sep 2011 16:05:29 +0200
-Message-ID: <1316786729.3656.96.camel@lws-gamez>
-Mime-Version: 1.0
+	<1316786729.3656.96.camel@lws-gamez>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1316786729.3656.96.camel@lws-gamez>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,50 +21,132 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 08/12] cfi flash: fix flash_make_cmd for big endian access
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Teresa Gamez <T.Gamez@phytec.de>
 Cc: barebox@lists.infradead.org
 
-SGVsbG8gU2FzY2hhLAoKQW0gRnJlaXRhZywgZGVuIDIzLjA5LjIwMTEsIDExOjI2ICswMjAwIHNj
-aHJpZWIgU2FzY2hhIEhhdWVyOgo+IEhpIFRlcmVzYSwKPiAKPiBPbiBGcmksIFNlcCAyMywgMjAx
-MSBhdCAxMToyNDoxNkFNICswMjAwLCBTYXNjaGEgSGF1ZXIgd3JvdGU6Cj4gPiBUaGlzIGlzIGJy
-b2tlbiBvbiBiaWcgZW5kaWFuIHN5c3RlbXMgc2luY2U6Cj4gPiAKPiA+IDk0M2IyNzEgY2ZpX2Zs
-YXNoOiBzdXBwb3J0IG9mIHUzMiBjbWQKPiA+IAo+ID4gSSBsb29rZWQgb3ZlciBpdCBhbmQgSSAq
-dGhpbmsqIHRoYXQgdGhlIGZ1bmN0aW9uIHdhcyBjb3JyZWN0Cj4gPiBmb3IgYm90aCBiaWcgYW5k
-IGxpdHRsZSBlbmRpYW4gc3lzdGVtcyBiZWZvcmUgdGhpcyBwYXRjaC4KPiA+IFRvIHN1cHBvcnQg
-dTMyIGNtZCB3ZSBvbmx5IGhhdmUgdG8gY2hhbmdlIHRoZSBkYXRhIHR5cGUgb2YKPiA+IHRoZSBj
-b21tYW5kIGZyb20gdTggdG8gdTMyLgo+IAo+IENhbiB5b3UgcGxlYXNlIHRlc3QgaWYgdGhpcyBw
-YXRjaCB3b3JrcyBvbiB5b3VyIHU4LWlzLW5vdC1lbm91Z2gKPiBmbGFzaD8KClN1Y2Nlc3NmdWxs
-eSB0ZXN0ZWQgd2l0aCBhIHU4LWlzLW5vdC1lbm91Z2ggZmxhc2ggKDI4RjI1NlAzM0JGKSBvbiBh
-CnBoeUNPUkUtaS5NWDM1LgoKVGVyZXNhCgo+IAo+IFNhc2NoYQo+IAo+ID4gCj4gPiBTaWduZWQt
-b2ZmLWJ5OiBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+Cj4gPiBDYzogVGVy
-ZXNhIEfDoW1leiA8dC5nYW1lekBwaHl0ZWMuZGU+Cj4gPiAtLS0KPiA+ICBkcml2ZXJzL25vci9j
-ZmlfZmxhc2guYyB8ICAgMjQgKysrKystLS0tLS0tLS0tLS0tLS0tLS0tCj4gPiAgMSBmaWxlcyBj
-aGFuZ2VkLCA1IGluc2VydGlvbnMoKyksIDE5IGRlbGV0aW9ucygtKQo+ID4gCj4gPiBkaWZmIC0t
-Z2l0IGEvZHJpdmVycy9ub3IvY2ZpX2ZsYXNoLmMgYi9kcml2ZXJzL25vci9jZmlfZmxhc2guYwo+
-ID4gaW5kZXggZjliOTZjNS4uNjU0ZTY0NyAxMDA2NDQKPiA+IC0tLSBhL2RyaXZlcnMvbm9yL2Nm
-aV9mbGFzaC5jCj4gPiArKysgYi9kcml2ZXJzL25vci9jZmlfZmxhc2guYwo+ID4gQEAgLTgyMiwy
-NiArODIyLDEyIEBAIGludCBmbGFzaF9nZW5lcmljX3N0YXR1c19jaGVjayAoc3RydWN0IGZsYXNo
-X2luZm8gKmluZm8sIGZsYXNoX3NlY3RfdCBzZWN0b3IsCj4gPiAgICovCj4gPiAgdm9pZCBmbGFz
-aF9tYWtlX2NtZChzdHJ1Y3QgZmxhc2hfaW5mbyAqaW5mbywgdTMyIGNtZCwgY2Zpd29yZF90ICpj
-bWRidWYpCj4gPiAgewo+ID4gLQlpbnQgaTsKPiA+IC0JaW50IGNwX29mZnNldDsKPiA+IC0JaW50
-IGN3b3JkX29mZnNldDsKPiA+IC0JdWNoYXIgdmFsOwo+ID4gLQl1Y2hhciAqY3A7Cj4gPiAtCj4g
-PiAtCSpjbWRidWYgPSAwOwo+ID4gLQljcCA9ICh1Y2hhciAqKWNtZGJ1ZjsKPiA+ICsJY2Zpd29y
-ZF90IHJlc3VsdCA9IDA7Cj4gPiArCWludCBpID0gaW5mby0+cG9ydHdpZHRoIC8gaW5mby0+Y2hp
-cHdpZHRoOwo+ID4gIAo+ID4gLQlmb3IgKGkgPSBpbmZvLT5wb3J0d2lkdGg7IGkgPiAwOyBpLS0p
-IHsKPiA+IC0JCWN3b3JkX29mZnNldCA9IChpbmZvLT5wb3J0d2lkdGgtaSkgJSBpbmZvLT5jaGlw
-d2lkdGg7Cj4gPiAtI2lmIF9fQllURV9PUkRFUiA9PSBfX0xJVFRMRV9FTkRJQU4KPiA+IC0JCWNw
-X29mZnNldCA9IGluZm8tPnBvcnR3aWR0aCAtIGk7Cj4gPiAtCQl2YWwgPSAqKCh1Y2hhciAqKSZj
-bWQgKyBjd29yZF9vZmZzZXQpOwo+ID4gLSNlbHNlCj4gPiAtCQljcF9vZmZzZXQgPSBpIC0gMTsK
-PiA+IC0JCXZhbCA9ICooKHVjaGFyICopJmNtZCArIHNpemVvZih1MzIpIC0gY3dvcmRfb2Zmc2V0
-IC0gMSk7Cj4gPiAtI2VuZGlmCj4gPiAtCWNwW2NwX29mZnNldF0gPSAoY3dvcmRfb2Zmc2V0ID49
-IHNpemVvZih1MzIpKSA/IDB4MDAgOiB2YWw7Cj4gPiAtCX0KPiA+ICsJd2hpbGUgKGktLSkKPiA+
-ICsJCXJlc3VsdCA9IChyZXN1bHQgPDwgKDggKiBpbmZvLT5jaGlwd2lkdGgpKSB8IGNtZDsKPiA+
-ICsJKmNtZGJ1ZiA9IHJlc3VsdDsKPiA+ICB9Cj4gPiAgCj4gPiAgLyoKPiA+IC0tIAo+ID4gMS43
-LjYuMwo+ID4gCj4gPiAKPiAKCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQu
-b3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Fri, Sep 23, 2011 at 04:05:29PM +0200, Teresa Gamez wrote:
+> Hello Sascha,
+> =
+
+> Am Freitag, den 23.09.2011, 11:26 +0200 schrieb Sascha Hauer:
+> > Hi Teresa,
+> > =
+
+> > On Fri, Sep 23, 2011 at 11:24:16AM +0200, Sascha Hauer wrote:
+> > > This is broken on big endian systems since:
+> > > =
+
+> > > 943b271 cfi_flash: support of u32 cmd
+> > > =
+
+> > > I looked over it and I *think* that the function was correct
+> > > for both big and little endian systems before this patch.
+> > > To support u32 cmd we only have to change the data type of
+> > > the command from u8 to u32.
+> > =
+
+> > Can you please test if this patch works on your u8-is-not-enough
+> > flash?
+> =
+
+> Successfully tested with a u8-is-not-enough flash (28F256P33BF) on a
+> phyCORE-i.MX35.
+
+Nice, thanks. I can't test this with such a flash on a big endian
+machine, but I'm confident that the patch does the right thing.
+Famous last words...
+
+Sascha
+
+
+> =
+
+> Teresa
+> =
+
+> > =
+
+> > Sascha
+> > =
+
+> > > =
+
+> > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > > Cc: Teresa G=E1mez <t.gamez@phytec.de>
+> > > ---
+> > >  drivers/nor/cfi_flash.c |   24 +++++-------------------
+> > >  1 files changed, 5 insertions(+), 19 deletions(-)
+> > > =
+
+> > > diff --git a/drivers/nor/cfi_flash.c b/drivers/nor/cfi_flash.c
+> > > index f9b96c5..654e647 100644
+> > > --- a/drivers/nor/cfi_flash.c
+> > > +++ b/drivers/nor/cfi_flash.c
+> > > @@ -822,26 +822,12 @@ int flash_generic_status_check (struct flash_in=
+fo *info, flash_sect_t sector,
+> > >   */
+> > >  void flash_make_cmd(struct flash_info *info, u32 cmd, cfiword_t *cmd=
+buf)
+> > >  {
+> > > -	int i;
+> > > -	int cp_offset;
+> > > -	int cword_offset;
+> > > -	uchar val;
+> > > -	uchar *cp;
+> > > -
+> > > -	*cmdbuf =3D 0;
+> > > -	cp =3D (uchar *)cmdbuf;
+> > > +	cfiword_t result =3D 0;
+> > > +	int i =3D info->portwidth / info->chipwidth;
+> > >  =
+
+> > > -	for (i =3D info->portwidth; i > 0; i--) {
+> > > -		cword_offset =3D (info->portwidth-i) % info->chipwidth;
+> > > -#if __BYTE_ORDER =3D=3D __LITTLE_ENDIAN
+> > > -		cp_offset =3D info->portwidth - i;
+> > > -		val =3D *((uchar *)&cmd + cword_offset);
+> > > -#else
+> > > -		cp_offset =3D i - 1;
+> > > -		val =3D *((uchar *)&cmd + sizeof(u32) - cword_offset - 1);
+> > > -#endif
+> > > -	cp[cp_offset] =3D (cword_offset >=3D sizeof(u32)) ? 0x00 : val;
+> > > -	}
+> > > +	while (i--)
+> > > +		result =3D (result << (8 * info->chipwidth)) | cmd;
+> > > +	*cmdbuf =3D result;
+> > >  }
+> > >  =
+
+> > >  /*
+> > > -- =
+
+> > > 1.7.6.3
+> > > =
+
+> > > =
+
+> > =
+
+> =
+
+> =
+
+> =
+
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
