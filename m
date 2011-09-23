@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1R71zb-0004P1-Jr
-	for barebox@lists.infradead.org; Fri, 23 Sep 2011 09:24:26 +0000
+	id 1R71zb-0004Oz-G7
+	for barebox@lists.infradead.org; Fri, 23 Sep 2011 09:24:25 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 23 Sep 2011 11:24:15 +0200
-Message-Id: <1316769860-24549-8-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 23 Sep 2011 11:24:13 +0200
+Message-Id: <1316769860-24549-6-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1316769860-24549-1-git-send-email-s.hauer@pengutronix.de>
 References: <1316769860-24549-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,30 +21,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/12] ppc pcm030: remove puts in early init
+Subject: [PATCH 05/12] add cpu native ordered io accessors
 To: barebox@lists.infradead.org
 
-puts does not work at this stage, so remove it.
+There are no generic native ordered io accessors. This sometimes
+leads to
+
+	v = in_be32(a);
+	v = readl(a);
+
+in generic drivers. Instead, use io accessors which are explicitely
+native ordered.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/ppc/boards/pcm030/pcm030.c |    3 +--
- 1 files changed, 1 insertions(+), 2 deletions(-)
+ include/io.h |   17 +++++++++++++++++
+ 1 files changed, 17 insertions(+), 0 deletions(-)
 
-diff --git a/arch/ppc/boards/pcm030/pcm030.c b/arch/ppc/boards/pcm030/pcm030.c
-index ba59bfe..3c2db4e 100644
---- a/arch/ppc/boards/pcm030/pcm030.c
-+++ b/arch/ppc/boards/pcm030/pcm030.c
-@@ -171,8 +171,7 @@ long int initdram (int board_type)
- 		} else {
- 			*(vu_long *)MPC5XXX_SDRAM_CS0CFG = 0; /* disabled */
- 		}
--	} else
--		puts(RELOC("skipping sdram initialization\n"));
-+	}
+diff --git a/include/io.h b/include/io.h
+index 8eb56b0..39b5e61 100644
+--- a/include/io.h
++++ b/include/io.h
+@@ -3,4 +3,21 @@
  
- 	/* retrieve size of memory connected to SDRAM CS0 */
- 	dramsize = *(vu_long *)MPC5XXX_SDRAM_CS0CFG & 0xFF;
+ #include <asm/io.h>
+ 
++/* cpu_read/cpu_write: cpu native io accessors */
++#if __BYTE_ORDER == __BIG_ENDIAN
++#define cpu_readb(a)		readb(a)
++#define cpu_readw(a)		in_be16(a)
++#define cpu_readl(a)		in_be32(a)
++#define cpu_writeb(v, a)	writeb((v), (a))
++#define cpu_writew(v, a)	out_be16((a), (v))
++#define cpu_writel(v, a)	out_be32((a), (v))
++#else
++#define cpu_readb(a)		readb(a)
++#define cpu_readw(a)		readw(a)
++#define cpu_readl(a)		readl(a)
++#define cpu_writeb(v, a)	writeb((v), (a))
++#define cpu_writew(v, a)	writew((v), (a))
++#define cpu_writel(v, a)	writel((v), (a))
++#endif
++
+ #endif /* __IO_H */
 -- 
 1.7.6.3
 
