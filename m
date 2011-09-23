@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1R71zb-0004Oz-G7
-	for barebox@lists.infradead.org; Fri, 23 Sep 2011 09:24:25 +0000
+	id 1R71zb-0004P2-SY
+	for barebox@lists.infradead.org; Fri, 23 Sep 2011 09:24:27 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 23 Sep 2011 11:24:13 +0200
-Message-Id: <1316769860-24549-6-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 23 Sep 2011 11:24:16 +0200
+Message-Id: <1316769860-24549-9-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1316769860-24549-1-git-send-email-s.hauer@pengutronix.de>
 References: <1316769860-24549-1-git-send-email-s.hauer@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,59 +17,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/12] add cpu native ordered io accessors
+Subject: [PATCH 08/12] cfi flash: fix flash_make_cmd for big endian access
 To: barebox@lists.infradead.org
 
-There are no generic native ordered io accessors. This sometimes
-leads to
-
-	v = in_be32(a);
-	v = readl(a);
-
-in generic drivers. Instead, use io accessors which are explicitely
-native ordered.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- include/io.h |   17 +++++++++++++++++
- 1 files changed, 17 insertions(+), 0 deletions(-)
-
-diff --git a/include/io.h b/include/io.h
-index 8eb56b0..39b5e61 100644
---- a/include/io.h
-+++ b/include/io.h
-@@ -3,4 +3,21 @@
- 
- #include <asm/io.h>
- 
-+/* cpu_read/cpu_write: cpu native io accessors */
-+#if __BYTE_ORDER == __BIG_ENDIAN
-+#define cpu_readb(a)		readb(a)
-+#define cpu_readw(a)		in_be16(a)
-+#define cpu_readl(a)		in_be32(a)
-+#define cpu_writeb(v, a)	writeb((v), (a))
-+#define cpu_writew(v, a)	out_be16((a), (v))
-+#define cpu_writel(v, a)	out_be32((a), (v))
-+#else
-+#define cpu_readb(a)		readb(a)
-+#define cpu_readw(a)		readw(a)
-+#define cpu_readl(a)		readl(a)
-+#define cpu_writeb(v, a)	writeb((v), (a))
-+#define cpu_writew(v, a)	writew((v), (a))
-+#define cpu_writel(v, a)	writel((v), (a))
-+#endif
-+
- #endif /* __IO_H */
--- 
-1.7.6.3
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhpcyBpcyBicm9rZW4gb24gYmlnIGVuZGlhbiBzeXN0ZW1zIHNpbmNlOgoKOTQzYjI3MSBjZmlf
+Zmxhc2g6IHN1cHBvcnQgb2YgdTMyIGNtZAoKSSBsb29rZWQgb3ZlciBpdCBhbmQgSSAqdGhpbmsq
+IHRoYXQgdGhlIGZ1bmN0aW9uIHdhcyBjb3JyZWN0CmZvciBib3RoIGJpZyBhbmQgbGl0dGxlIGVu
+ZGlhbiBzeXN0ZW1zIGJlZm9yZSB0aGlzIHBhdGNoLgpUbyBzdXBwb3J0IHUzMiBjbWQgd2Ugb25s
+eSBoYXZlIHRvIGNoYW5nZSB0aGUgZGF0YSB0eXBlIG9mCnRoZSBjb21tYW5kIGZyb20gdTggdG8g
+dTMyLgoKU2lnbmVkLW9mZi1ieTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRl
+PgpDYzogVGVyZXNhIEfDoW1leiA8dC5nYW1lekBwaHl0ZWMuZGU+Ci0tLQogZHJpdmVycy9ub3Iv
+Y2ZpX2ZsYXNoLmMgfCAgIDI0ICsrKysrLS0tLS0tLS0tLS0tLS0tLS0tLQogMSBmaWxlcyBjaGFu
+Z2VkLCA1IGluc2VydGlvbnMoKyksIDE5IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZl
+cnMvbm9yL2NmaV9mbGFzaC5jIGIvZHJpdmVycy9ub3IvY2ZpX2ZsYXNoLmMKaW5kZXggZjliOTZj
+NS4uNjU0ZTY0NyAxMDA2NDQKLS0tIGEvZHJpdmVycy9ub3IvY2ZpX2ZsYXNoLmMKKysrIGIvZHJp
+dmVycy9ub3IvY2ZpX2ZsYXNoLmMKQEAgLTgyMiwyNiArODIyLDEyIEBAIGludCBmbGFzaF9nZW5l
+cmljX3N0YXR1c19jaGVjayAoc3RydWN0IGZsYXNoX2luZm8gKmluZm8sIGZsYXNoX3NlY3RfdCBz
+ZWN0b3IsCiAgKi8KIHZvaWQgZmxhc2hfbWFrZV9jbWQoc3RydWN0IGZsYXNoX2luZm8gKmluZm8s
+IHUzMiBjbWQsIGNmaXdvcmRfdCAqY21kYnVmKQogewotCWludCBpOwotCWludCBjcF9vZmZzZXQ7
+Ci0JaW50IGN3b3JkX29mZnNldDsKLQl1Y2hhciB2YWw7Ci0JdWNoYXIgKmNwOwotCi0JKmNtZGJ1
+ZiA9IDA7Ci0JY3AgPSAodWNoYXIgKiljbWRidWY7CisJY2Zpd29yZF90IHJlc3VsdCA9IDA7CisJ
+aW50IGkgPSBpbmZvLT5wb3J0d2lkdGggLyBpbmZvLT5jaGlwd2lkdGg7CiAKLQlmb3IgKGkgPSBp
+bmZvLT5wb3J0d2lkdGg7IGkgPiAwOyBpLS0pIHsKLQkJY3dvcmRfb2Zmc2V0ID0gKGluZm8tPnBv
+cnR3aWR0aC1pKSAlIGluZm8tPmNoaXB3aWR0aDsKLSNpZiBfX0JZVEVfT1JERVIgPT0gX19MSVRU
+TEVfRU5ESUFOCi0JCWNwX29mZnNldCA9IGluZm8tPnBvcnR3aWR0aCAtIGk7Ci0JCXZhbCA9ICoo
+KHVjaGFyICopJmNtZCArIGN3b3JkX29mZnNldCk7Ci0jZWxzZQotCQljcF9vZmZzZXQgPSBpIC0g
+MTsKLQkJdmFsID0gKigodWNoYXIgKikmY21kICsgc2l6ZW9mKHUzMikgLSBjd29yZF9vZmZzZXQg
+LSAxKTsKLSNlbmRpZgotCWNwW2NwX29mZnNldF0gPSAoY3dvcmRfb2Zmc2V0ID49IHNpemVvZih1
+MzIpKSA/IDB4MDAgOiB2YWw7Ci0JfQorCXdoaWxlIChpLS0pCisJCXJlc3VsdCA9IChyZXN1bHQg
+PDwgKDggKiBpbmZvLT5jaGlwd2lkdGgpKSB8IGNtZDsKKwkqY21kYnVmID0gcmVzdWx0OwogfQog
+CiAvKgotLSAKMS43LjYuMwoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9y
+ZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
