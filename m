@@ -1,18 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bw0-f49.google.com ([209.85.214.49])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1R66wx-0004k7-9m
-	for barebox@lists.infradead.org; Tue, 20 Sep 2011 20:29:52 +0000
-Received: by bkat2 with SMTP id t2so1016903bka.36
-	for <barebox@lists.infradead.org>; Tue, 20 Sep 2011 13:29:48 -0700 (PDT)
-Date: Wed, 21 Sep 2011 00:29:01 +0400
-From: Paul Fertser <fercerpav@gmail.com>
-Message-ID: <20110920202901.GS3579@home.lan>
-References: <560194a56016e7562eb1e50f68a58ff6f6e069a7.1316086518.git.fercerpav@gmail.com>
-	<20110920193121.GA31404@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20110920193121.GA31404@pengutronix.de>
+	id 1R6zhr-0003DZ-Np
+	for barebox@lists.infradead.org; Fri, 23 Sep 2011 06:57:56 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Fri, 23 Sep 2011 08:57:43 +0200
+Message-Id: <1316761066-29811-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,40 +14,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] m25p80: add additional sanity checks for erasure
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, Franck JULLIEN <elec4fun@gmail.com>
+Subject: USB mass storage support
+To: barebox@lists.infradead.org
 
-On Tue, Sep 20, 2011 at 09:31:21PM +0200, Sascha Hauer wrote:
-> On Thu, Sep 15, 2011 at 03:27:36PM +0400, Paul Fertser wrote:
-> > This guards for the cases where the initial offset or byte count is
-> > not aligned with regard to erase block size, thus making it impossible
-> > for erase to do any harm to the nearby sectors.
-> 
-> I'm unsure about this one. The other flash drivers allow to erase areas
-> which are not eraseblock aligned. Maybe we should instead add a
-> cdev->erasesize field. Then we can add this check in the generic code
-> and fix this for all drivers.
+Hi,
 
-I guess i was too surprised by seeing an endless loop when i tried to
-erase an area of the wrong size (the counter underflowed) to think
-about it in a less narrow-minded way, sorry, you're right of course.
+The following adds USB mass storage support to barebox. The patches
+are from Rosen Kolev, I am just sending these patches for him because
+git send-email does not work for him (yet).
 
-Talking about generalisation, shouldn't the m25p80 driver be hooked
-into the mtd subsystem to allow running ubi on top of it? By the
-cursory look it seems to be doable without much effort.
+Sascha
 
-Another question: should i repost this early (questionable) series you
-seem to have missed[1]?
+Rosen Kolev (3):
+      Modified timeout in the ehci-hcd USB host driver.
+      Extended USB device matching.
+      USB mass storage device driver initial implementation
 
-[1] http://lists.infradead.org/pipermail/barebox/2011-August/004483.html
--- 
-Be free, use free (http://www.gnu.org/philosophy/free-sw.html) software!
-mailto:fercerpav@gmail.com
+ drivers/usb/Kconfig             |    2 +
+ drivers/usb/Makefile            |    1 +
+ drivers/usb/core/usb.c          |   34 +++
+ drivers/usb/host/ehci-hcd.c     |    5 +-
+ drivers/usb/storage/Kconfig     |    2 +
+ drivers/usb/storage/Makefile    |    4 +
+ drivers/usb/storage/transport.c |  251 ++++++++++++++++
+ drivers/usb/storage/transport.h |   95 ++++++
+ drivers/usb/storage/usb.c       |  619 +++++++++++++++++++++++++++++++++++++++
+ drivers/usb/storage/usb.h       |   96 ++++++
+ include/scsi.h                  |  208 +++++++++++++
+ include/usb/usb.h               |   22 ++
+ 12 files changed, 1337 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/usb/storage/Kconfig
+ create mode 100644 drivers/usb/storage/Makefile
+ create mode 100644 drivers/usb/storage/transport.c
+ create mode 100644 drivers/usb/storage/transport.h
+ create mode 100644 drivers/usb/storage/usb.c
+ create mode 100644 drivers/usb/storage/usb.h
+ create mode 100644 include/scsi.h
+
 
 _______________________________________________
 barebox mailing list
