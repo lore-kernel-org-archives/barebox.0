@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1R6zuH-0003Hs-6L
-	for barebox@lists.infradead.org; Fri, 23 Sep 2011 07:10:46 +0000
-Date: Fri, 23 Sep 2011 09:10:42 +0200
-From: Robert Schwebel <r.schwebel@pengutronix.de>
-Message-ID: <20110923071042.GI28791@pengutronix.de>
-References: <1316761066-29811-1-git-send-email-s.hauer@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1316761066-29811-1-git-send-email-s.hauer@pengutronix.de>
+	id 1R71zb-0004Oy-F6
+	for barebox@lists.infradead.org; Fri, 23 Sep 2011 09:24:24 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Fri, 23 Sep 2011 11:24:12 +0200
+Message-Id: <1316769860-24549-5-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1316769860-24549-1-git-send-email-s.hauer@pengutronix.de>
+References: <1316769860-24549-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,30 +16,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: USB mass storage support
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 04/12] Jean-christophe, more careful please
+To: barebox@lists.infradead.org
 
-On Fri, Sep 23, 2011 at 08:57:43AM +0200, Sascha Hauer wrote:
-> The following adds USB mass storage support to barebox. The patches
-> are from Rosen Kolev, I am just sending these patches for him because
-> git send-email does not work for him (yet).
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/base/resource.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-This is great - it was one of the last missing features before world
-domination :-)
-
-The Signed-off-bys are missing.
-
-rsc
+diff --git a/drivers/base/resource.c b/drivers/base/resource.c
+index f6c429f..0da1680 100644
+--- a/drivers/base/resource.c
++++ b/drivers/base/resource.c
+@@ -109,7 +109,7 @@ EXPORT_SYMBOL(add_dm9000_device);
+ struct device_d *add_usb_ehci_device(int id, resource_size_t hccr,
+ 		resource_size_t hcor, void *pdata)
+ {
+-	resource_size_t *res;
++	struct resource *res;
+ 
+ 	res = xzalloc(sizeof(struct resource) * 2);
+ 	res[0].start = hccr;
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.6.3
+
 
 _______________________________________________
 barebox mailing list
