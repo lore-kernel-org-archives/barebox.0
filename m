@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1R7viT-0006c6-F5
-	for barebox@lists.infradead.org; Sun, 25 Sep 2011 20:54:26 +0000
+	id 1R7viT-0006bz-Em
+	for barebox@lists.infradead.org; Sun, 25 Sep 2011 20:54:28 +0000
 From: Wolfram Sang <w.sang@pengutronix.de>
-Date: Sun, 25 Sep 2011 22:54:12 +0200
-Message-Id: <1316984054-31295-10-git-send-email-w.sang@pengutronix.de>
+Date: Sun, 25 Sep 2011 22:54:05 +0200
+Message-Id: <1316984054-31295-3-git-send-email-w.sang@pengutronix.de>
 In-Reply-To: <1316984054-31295-1-git-send-email-w.sang@pengutronix.de>
 References: <1316984054-31295-1-git-send-email-w.sang@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,30 +21,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/11] net: getenv_ip: check return value of string_to_ip
+Subject: [PATCH 02/11] defaultenv: boot: add backwards compatibility for
+	kernel_loc=net
 To: barebox@lists.infradead.org
 
-Return 0 if we encounter an error.
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
+Since commit 9eac282024c55fc13970189d6ace61f884917538, the boot script
+doesn't understand kernel_loc=net anymore. This patch adds backwards
+compatibility so that the kernel is loaded from tftp as before.
+
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
 ---
- net/net.c |    3 ++-
- 1 files changed, 2 insertions(+), 1 deletions(-)
+ defaultenv/bin/boot |    4 ++++
+ 1 files changed, 4 insertions(+), 0 deletions(-)
 
-diff --git a/net/net.c b/net/net.c
-index 3578118..8416861 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -136,7 +136,8 @@ IPaddr_t getenv_ip(const char *name)
- 	if (!var)
- 		return 0;
+diff --git a/defaultenv/bin/boot b/defaultenv/bin/boot
+index c97a396..6649c57 100644
+--- a/defaultenv/bin/boot
++++ b/defaultenv/bin/boot
+@@ -2,6 +2,10 @@
  
--	string_to_ip(var, &ip);
-+	if (string_to_ip(var, &ip))
-+		return 0;
+ . /env/config
  
- 	return ip;
- }
++if [ x$kernel_loc = xnet ]; then
++	kernel_loc=tftp
++fi
++
+ if [ x$1 = xnand ]; then
+ 	rootfs_loc=nand
+ 	kernel_loc=nand
 -- 
 1.7.5.4
 
