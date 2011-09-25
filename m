@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bw0-f49.google.com ([209.85.214.49])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1R7MJ2-00079h-Hu
-	for barebox@lists.infradead.org; Sat, 24 Sep 2011 07:05:49 +0000
-Received: by bkat2 with SMTP id t2so5096016bka.36
-	for <barebox@lists.infradead.org>; Sat, 24 Sep 2011 00:05:44 -0700 (PDT)
-From: Paul Fertser <fercerpav@gmail.com>
-Date: Sat, 24 Sep 2011 11:04:46 +0400
-Message-Id: <1316847886-3542-1-git-send-email-fercerpav@gmail.com>
+	id 1R7viT-0006c1-Ez
+	for barebox@lists.infradead.org; Sun, 25 Sep 2011 20:54:28 +0000
+From: Wolfram Sang <w.sang@pengutronix.de>
+Date: Sun, 25 Sep 2011 22:54:07 +0200
+Message-Id: <1316984054-31295-5-git-send-email-w.sang@pengutronix.de>
+In-Reply-To: <1316984054-31295-1-git-send-email-w.sang@pengutronix.de>
+References: <1316984054-31295-1-git-send-email-w.sang@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,34 +21,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] login: correct a typo in command description
+Subject: [PATCH 04/11] defaultenv: boot: add serverip to static ip
+	configuration
 To: barebox@lists.infradead.org
-Cc: Paul Fertser <fercerpav@gmail.com>
 
-Signed-off-by: Paul Fertser <fercerpav@gmail.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+
+If a (different) server is supplied to the "nfsroot" parameter, the kernel
+will choose that one.
+
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
 ---
- commands/login.c |    6 +++---
- 1 files changed, 3 insertions(+), 3 deletions(-)
+ defaultenv/bin/boot |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/commands/login.c b/commands/login.c
-index 610fb9e..3f6d308 100644
---- a/commands/login.c
-+++ b/commands/login.c
-@@ -71,9 +71,9 @@ static int do_login(struct command *cmdtp, int argc, char *argv[])
- }
+diff --git a/defaultenv/bin/boot b/defaultenv/bin/boot
+index 3514961..4284308 100644
+--- a/defaultenv/bin/boot
++++ b/defaultenv/bin/boot
+@@ -25,7 +25,7 @@ if [ x$ip = xdhcp ]; then
+ elif [ x$ip = xnone ]; then
+ 	bootargs="$bootargs ip=none"
+ else
+-	bootargs="$bootargs ip=$eth0.ipaddr::$eth0.gateway:$eth0.netmask::eth0:"
++	bootargs="$bootargs ip=$eth0.ipaddr:$eth0.serverip:$eth0.gateway:$eth0.netmask::eth0:"
+ fi
  
- static const __maybe_unused char cmd_login_help[] =
--"Usage: login [[-t timeout] <command>]\n"
--"If a timeout is specified and expired the command will be executed\n"
--"by default boot\n"
-+"Usage: login [-t timeout [<command>]]\n"
-+"If a timeout is specified and expired the command will be executed;\n"
-+"\"boot\" by default\n"
- ;
  
- BAREBOX_CMD_START(login)
 -- 
-1.7.3.4
+1.7.5.4
 
 
 _______________________________________________
