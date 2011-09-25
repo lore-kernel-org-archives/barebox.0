@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1R7viT-0006c2-FH
-	for barebox@lists.infradead.org; Sun, 25 Sep 2011 20:54:28 +0000
+	id 1R7viT-0006by-Et
+	for barebox@lists.infradead.org; Sun, 25 Sep 2011 20:54:30 +0000
 From: Wolfram Sang <w.sang@pengutronix.de>
-Date: Sun, 25 Sep 2011 22:54:08 +0200
-Message-Id: <1316984054-31295-6-git-send-email-w.sang@pengutronix.de>
+Date: Sun, 25 Sep 2011 22:54:04 +0200
+Message-Id: <1316984054-31295-2-git-send-email-w.sang@pengutronix.de>
 In-Reply-To: <1316984054-31295-1-git-send-email-w.sang@pengutronix.de>
 References: <1316984054-31295-1-git-send-email-w.sang@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,7 +21,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/11] defaultenv: boot: add support to boot from disk
+Subject: [PATCH 01/11] defaultenv: simplify scripting
 To: barebox@lists.infradead.org
 
 From: Marc Kleine-Budde <mkl@pengutronix.de>
@@ -29,44 +29,60 @@ From: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
 ---
- defaultenv/bin/boot |    9 ++++++++-
- 1 files changed, 8 insertions(+), 1 deletions(-)
+ defaultenv/bin/boot   |    2 +-
+ defaultenv/bin/update |    8 ++++----
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/defaultenv/bin/boot b/defaultenv/bin/boot
-index 4284308..652ae0c 100644
+index de4fa24..c97a396 100644
 --- a/defaultenv/bin/boot
 +++ b/defaultenv/bin/boot
-@@ -18,6 +18,9 @@ elif [ x$1 = xnfs ]; then
- elif [ x$1 = xtftp ]; then
- 	rootfs_loc=net
- 	kernel_loc=tftp
-+elif [ x$1 = xdisk ]; then
-+	rootfs_loc=disk
-+	kernel_loc=disk
+@@ -74,7 +74,7 @@ if [ ! -e /dev/ram0.kernel ]; then
+ 	addpart /dev/ram0 8M@8M(kernel)
  fi
  
- if [ x$ip = xdhcp ]; then
-@@ -31,6 +34,8 @@ fi
- 
- if [ x$rootfs_loc = xnet ]; then
- 	bootargs="$bootargs root=/dev/nfs nfsroot=$nfsroot,v3,tcp noinitrd"
-+elif [ x$rootfs_loc = xdisk ]; then
-+	bootargs="$bootargs root=/dev/$rootfs_part_linux_dev rootfstype=$rootfs_type noinitrd rootwait"
- elif [ x$rootfs_loc = xinitrd ]; then
- 	bootargs="$bootargs root=/dev/ram0 rdinit=/sbin/init"
- else
-@@ -100,8 +105,10 @@ elif [ x$kernel_loc = xnor ]; then
- 	kdev="/dev/nor0.kernel"
- elif [ x$kernel_loc = xnand ]; then
- 	kdev="/dev/nand0.kernel.bb"
-+elif [ x$kernel_loc = xdisk ]; then
-+	kdev="/dev/$kernel_part"
- else
--	echo "error: set kernel_loc to one of 'nfs', 'tftp', 'nand' or 'nor'"
-+	echo "error: set kernel_loc to one of 'tftp', 'nfs', 'nand', 'nor' or 'disk'"
+-if [ x$kernel_loc = xnfs ] || [ x$kernel_loc = xtftp ]; then
++if [ x$kernel_loc = xnfs -o x$kernel_loc = xtftp ]; then
+ 	if [ x$ip = xdhcp ]; then
+ 		dhcp
+ 	fi
+diff --git a/defaultenv/bin/update b/defaultenv/bin/update
+index 55ac10b..6fd5e4c 100644
+--- a/defaultenv/bin/update
++++ b/defaultenv/bin/update
+@@ -32,12 +32,12 @@ elif [ x${type} = xrootfs ]; then
+ 	type=root
+ elif [ x${type} = xbarebox ]; then
+ 	image=$bareboximage
+-	if [ x${image} = x ]; then
++	if [ -z ${image} ]; then
+ 		image=barebox.bin
+ 	fi
+ elif [ x${type} = xbareboxenv ]; then
+ 	image=$bareboxenvimage
+-	if [ x${image} = x ]; then
++	if [ -z ${image} ]; then
+ 		image=bareboxenv.bin
+ 	fi
+ elif [ x${type} = xxload ]; then
+@@ -47,7 +47,7 @@ else
  	exit 1
  fi
  
+-if [ x${imagename} != x ]; then
++if [ -n ${imagename} ]; then
+ 	image=${imagename}
+ fi
+ 
+@@ -60,7 +60,7 @@ else
+ 	exit 1
+ fi
+ 
+-if [ x${mode} != xtftp ] && [ x${mode} != xxmodem ] ; then
++if [ x${mode} != xtftp -a x${mode} != xxmodem ] ; then
+ 	echo "unsupported mode ${mode}."
+ 	. /env/bin/_update_help
+ 	exit 1
 -- 
 1.7.5.4
 
