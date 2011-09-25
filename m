@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1R7viX-0006c0-Qp
-	for barebox@lists.infradead.org; Sun, 25 Sep 2011 20:54:31 +0000
+	id 1R7viW-0006c4-FM
+	for barebox@lists.infradead.org; Sun, 25 Sep 2011 20:54:32 +0000
 From: Wolfram Sang <w.sang@pengutronix.de>
-Date: Sun, 25 Sep 2011 22:54:06 +0200
-Message-Id: <1316984054-31295-4-git-send-email-w.sang@pengutronix.de>
+Date: Sun, 25 Sep 2011 22:54:10 +0200
+Message-Id: <1316984054-31295-8-git-send-email-w.sang@pengutronix.de>
 In-Reply-To: <1316984054-31295-1-git-send-email-w.sang@pengutronix.de>
 References: <1316984054-31295-1-git-send-email-w.sang@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,33 +21,93 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/11] defaultenv: boot: add eth0 to ip configuration
+Subject: [PATCH 07/11] defaultenv: add config template
 To: barebox@lists.infradead.org
 
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-When passing a fixed IP to the kernel set it explicit to eth0. Otherwise
-on systems with more than one interface dhcp might be used.
+This patch add a config template to the defaultenv.
 
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
 ---
- defaultenv/bin/boot |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+ defaultenv/config |   67 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 67 insertions(+), 0 deletions(-)
+ create mode 100644 defaultenv/config
 
-diff --git a/defaultenv/bin/boot b/defaultenv/bin/boot
-index 6649c57..3514961 100644
---- a/defaultenv/bin/boot
-+++ b/defaultenv/bin/boot
-@@ -25,7 +25,7 @@ if [ x$ip = xdhcp ]; then
- elif [ x$ip = xnone ]; then
- 	bootargs="$bootargs ip=none"
- else
--	bootargs="$bootargs ip=$eth0.ipaddr::$eth0.gateway:$eth0.netmask:::"
-+	bootargs="$bootargs ip=$eth0.ipaddr::$eth0.gateway:$eth0.netmask::eth0:"
- fi
- 
- 
+diff --git a/defaultenv/config b/defaultenv/config
+new file mode 100644
+index 0000000..c2fe6ce
+--- /dev/null
++++ b/defaultenv/config
+@@ -0,0 +1,67 @@
++#!/bin/sh
++
++machine=FIXME
++#user=
++
++# use 'dhcp' to do dhcp in barebox and in kernel
++# use 'none' if you want to skip kernel ip autoconfiguration
++ip=dhcp
++
++# or set your networking parameters here
++#eth0.ipaddr=a.b.c.d
++#eth0.netmask=a.b.c.d
++#eth0.serverip=a.b.c.d
++#eth0.gateway=a.b.c.d
++#eth0.ethaddr=de:ad:be:ef:00:00
++
++# can be either 'tftp', 'nfs', 'nand', 'nor' or 'disk'
++kernel_loc=tftp
++# can be either 'net', 'nand', 'nor', 'disk' or 'initrd'
++rootfs_loc=net
++
++# for flash based rootfs: 'jffs2' or 'ubifs'
++# in case of disk any regular filesystem like 'ext2', 'ext3', 'reiserfs'
++rootfs_type=ubifs
++# where is the rootfs in case of 'rootfs_loc=disk' (linux name)
++rootfs_part_linux_dev=mmcblk0p4
++rootfsimage=rootfs-${machine}.$rootfs_type
++
++# where is the kernel image in case of 'kernel_loc=disk'
++kernel_part=disk0.2
++
++# The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
++kernelimage_type=zimage
++kernelimage=zImage-$machine
++#kernelimage_type=uimage
++#kernelimage=uImage-$machine
++#kernelimage_type=raw
++#kernelimage=Image-$machine
++#kernelimage_type=raw_lzo
++#kernelimage=Image-$machine.lzo
++
++bareboximage=barebox-${machine}.bin
++bareboxenvimage=barebox-${machine}.bin
++
++if [ -n $user ]; then
++	bareboximage="$user"-"$bareboximage"
++	bareboxenvimage="$user"-"$bareboxenvimage"
++	kernelimage="$user"-"$kernelimage"
++	rootfsimage="$user"-"$rootfsimage"
++	nfsroot="/home/$user/nfsroot/$machine"
++else
++	nfsroot="/path/to/nfs/root"
++fi
++
++autoboot_timeout=3
++
++bootargs="console=ttyFIXME,115200"
++
++nor_parts="256k(barebox)ro,128k(bareboxenv),3M(kernel),-(root)"
++rootfs_mtdblock_nor=3
++
++nand_parts="256k(barebox)ro,128k(bareboxenv),3M(kernel),-(root)"
++nand_device="FIXME"
++rootfs_mtdblock_nand=7
++
++# set a fancy prompt (if support is compiled in)
++PS1="\e[1;32mbarebox@\e[1;31m\h:\w\e[0m "
 -- 
 1.7.5.4
 
