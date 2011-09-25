@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1R7viT-0006by-Et
-	for barebox@lists.infradead.org; Sun, 25 Sep 2011 20:54:30 +0000
+	id 1R7viX-0006c0-Qp
+	for barebox@lists.infradead.org; Sun, 25 Sep 2011 20:54:31 +0000
 From: Wolfram Sang <w.sang@pengutronix.de>
-Date: Sun, 25 Sep 2011 22:54:04 +0200
-Message-Id: <1316984054-31295-2-git-send-email-w.sang@pengutronix.de>
+Date: Sun, 25 Sep 2011 22:54:06 +0200
+Message-Id: <1316984054-31295-4-git-send-email-w.sang@pengutronix.de>
 In-Reply-To: <1316984054-31295-1-git-send-email-w.sang@pengutronix.de>
 References: <1316984054-31295-1-git-send-email-w.sang@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,68 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/11] defaultenv: simplify scripting
+Subject: [PATCH 03/11] defaultenv: boot: add eth0 to ip configuration
 To: barebox@lists.infradead.org
 
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 
+When passing a fixed IP to the kernel set it explicit to eth0. Otherwise
+on systems with more than one interface dhcp might be used.
+
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
 ---
- defaultenv/bin/boot   |    2 +-
- defaultenv/bin/update |    8 ++++----
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ defaultenv/bin/boot |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
 diff --git a/defaultenv/bin/boot b/defaultenv/bin/boot
-index de4fa24..c97a396 100644
+index 6649c57..3514961 100644
 --- a/defaultenv/bin/boot
 +++ b/defaultenv/bin/boot
-@@ -74,7 +74,7 @@ if [ ! -e /dev/ram0.kernel ]; then
- 	addpart /dev/ram0 8M@8M(kernel)
+@@ -25,7 +25,7 @@ if [ x$ip = xdhcp ]; then
+ elif [ x$ip = xnone ]; then
+ 	bootargs="$bootargs ip=none"
+ else
+-	bootargs="$bootargs ip=$eth0.ipaddr::$eth0.gateway:$eth0.netmask:::"
++	bootargs="$bootargs ip=$eth0.ipaddr::$eth0.gateway:$eth0.netmask::eth0:"
  fi
  
--if [ x$kernel_loc = xnfs ] || [ x$kernel_loc = xtftp ]; then
-+if [ x$kernel_loc = xnfs -o x$kernel_loc = xtftp ]; then
- 	if [ x$ip = xdhcp ]; then
- 		dhcp
- 	fi
-diff --git a/defaultenv/bin/update b/defaultenv/bin/update
-index 55ac10b..6fd5e4c 100644
---- a/defaultenv/bin/update
-+++ b/defaultenv/bin/update
-@@ -32,12 +32,12 @@ elif [ x${type} = xrootfs ]; then
- 	type=root
- elif [ x${type} = xbarebox ]; then
- 	image=$bareboximage
--	if [ x${image} = x ]; then
-+	if [ -z ${image} ]; then
- 		image=barebox.bin
- 	fi
- elif [ x${type} = xbareboxenv ]; then
- 	image=$bareboxenvimage
--	if [ x${image} = x ]; then
-+	if [ -z ${image} ]; then
- 		image=bareboxenv.bin
- 	fi
- elif [ x${type} = xxload ]; then
-@@ -47,7 +47,7 @@ else
- 	exit 1
- fi
  
--if [ x${imagename} != x ]; then
-+if [ -n ${imagename} ]; then
- 	image=${imagename}
- fi
- 
-@@ -60,7 +60,7 @@ else
- 	exit 1
- fi
- 
--if [ x${mode} != xtftp ] && [ x${mode} != xxmodem ] ; then
-+if [ x${mode} != xtftp -a x${mode} != xxmodem ] ; then
- 	echo "unsupported mode ${mode}."
- 	. /env/bin/_update_help
- 	exit 1
 -- 
 1.7.5.4
 
