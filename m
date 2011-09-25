@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1R7viV-0006c8-AG
-	for barebox@lists.infradead.org; Sun, 25 Sep 2011 20:54:31 +0000
+	id 1R7viV-0006c7-TI
+	for barebox@lists.infradead.org; Sun, 25 Sep 2011 20:54:30 +0000
 From: Wolfram Sang <w.sang@pengutronix.de>
-Date: Sun, 25 Sep 2011 22:54:14 +0200
-Message-Id: <1316984054-31295-12-git-send-email-w.sang@pengutronix.de>
+Date: Sun, 25 Sep 2011 22:54:13 +0200
+Message-Id: <1316984054-31295-11-git-send-email-w.sang@pengutronix.de>
 In-Reply-To: <1316984054-31295-1-git-send-email-w.sang@pengutronix.de>
 References: <1316984054-31295-1-git-send-email-w.sang@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,56 +21,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/11] net: dhcp: introduce global serverip variable
+Subject: [PATCH 10/11] defaultenv: place eth0.ethaddr more visibly
 To: barebox@lists.infradead.org
 
-Sometimes, the TFTP/NFS server is different from the DHCP server. To handle
-such situations, a global 'serverip' variable is introduced. If present and set
-with a valid IP address, it will be used instead of the address returned by the
-DHCP server.
+The config file looks like you just need to set ethaddr when you do
+static IP. This is misleading, so put the setting to a more prominent
+place.
 
 Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
 ---
- defaultenv/config |    3 ++-
- net/dhcp.c        |    7 +++++--
- 2 files changed, 7 insertions(+), 3 deletions(-)
+ defaultenv/config |    4 +++-
+ 1 files changed, 3 insertions(+), 1 deletions(-)
 
 diff --git a/defaultenv/config b/defaultenv/config
-index 0aaead5..235deca 100644
+index c2fe6ce..0aaead5 100644
 --- a/defaultenv/config
 +++ b/defaultenv/config
-@@ -9,11 +9,12 @@ machine=FIXME
+@@ -3,6 +3,9 @@
+ machine=FIXME
+ #user=
+ 
++# Enter MAC address here if not retrieved automatically
++#eth0.ethaddr=de:ad:be:ef:00:00
++
  # use 'dhcp' to do dhcp in barebox and in kernel
  # use 'none' if you want to skip kernel ip autoconfiguration
  ip=dhcp
-+# IP of the TFTP/NFS-server. If empty (or invalid), DHCP server will be used
-+#serverip=a.b.c.d
- 
- # or set your networking parameters here
- #eth0.ipaddr=a.b.c.d
+@@ -12,7 +15,6 @@ ip=dhcp
  #eth0.netmask=a.b.c.d
--#eth0.serverip=a.b.c.d
+ #eth0.serverip=a.b.c.d
  #eth0.gateway=a.b.c.d
+-#eth0.ethaddr=de:ad:be:ef:00:00
  
  # can be either 'tftp', 'nfs', 'nand', 'nor' or 'disk'
-diff --git a/net/dhcp.c b/net/dhcp.c
-index d1781bc..899c873 100644
---- a/net/dhcp.c
-+++ b/net/dhcp.c
-@@ -113,8 +113,11 @@ static void bootp_copy_net_params(struct bootp *bp)
- 	tmp_ip = net_read_ip(&bp->bp_yiaddr);
- 	net_set_ip(tmp_ip);
- 
--	tmp_ip = net_read_ip(&bp->bp_siaddr);
--	if (tmp_ip != 0)
-+	tmp_ip = getenv_ip("serverip");
-+	if (!tmp_ip)
-+		tmp_ip = net_read_ip(&bp->bp_siaddr);
-+
-+	if (tmp_ip)
- 		net_set_serverip(tmp_ip);
- 
- 	if (strlen(bp->bp_file) > 0)
+ kernel_loc=tftp
 -- 
 1.7.5.4
 
