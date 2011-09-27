@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1R8T1o-0001mv-Dg
-	for barebox@lists.infradead.org; Tue, 27 Sep 2011 08:28:44 +0000
+	id 1R8T1o-0001n0-Cp
+	for barebox@lists.infradead.org; Tue, 27 Sep 2011 08:28:46 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 27 Sep 2011 10:28:24 +0200
-Message-Id: <1317112109-23311-10-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 27 Sep 2011 10:28:28 +0200
+Message-Id: <1317112109-23311-14-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1317112109-23311-1-git-send-email-s.hauer@pengutronix.de>
 References: <1317112109-23311-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,41 +21,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/14] ppc: hardcode sdram base to 0x0
+Subject: [PATCH 13/14] ppc mpc5200: remove bus clock switching from generic
+	code
 To: barebox@lists.infradead.org
+
+The only user (pcm030) already setups the bus clocks in
+its board code.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/ppc/lib/board_data.c        |    2 +-
- arch/ppc/mach-mpc5xxx/cpu_init.c |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/ppc/mach-mpc5xxx/cpu_init.c |   15 ---------------
+ 1 files changed, 0 insertions(+), 15 deletions(-)
 
-diff --git a/arch/ppc/lib/board_data.c b/arch/ppc/lib/board_data.c
-index b28830f..ff9f0d0 100644
---- a/arch/ppc/lib/board_data.c
-+++ b/arch/ppc/lib/board_data.c
-@@ -4,7 +4,7 @@ int init_board_data(bd_t *bd)
- {
- 	cpu_init_board_data(bd);
- 
--	bd->bi_memstart  = CFG_SDRAM_BASE;	/* start of  DRAM memory	*/
-+	bd->bi_memstart  = 0;	/* start of  DRAM memory	*/
- //	bd->bi_memsize   = gd->ram_size;	/* size  of  DRAM memory in bytes */ /* FIXME */
- 
- #ifdef CONFIG_IP860
 diff --git a/arch/ppc/mach-mpc5xxx/cpu_init.c b/arch/ppc/mach-mpc5xxx/cpu_init.c
-index bf0a5bd..021091e 100644
+index 021091e..0c17d95 100644
 --- a/arch/ppc/mach-mpc5xxx/cpu_init.c
 +++ b/arch/ppc/mach-mpc5xxx/cpu_init.c
-@@ -142,7 +142,7 @@ int cpu_init(void)
- 
- 	/* Enable snooping for RAM */
+@@ -144,21 +144,6 @@ int cpu_init(void)
  	*(vu_long *)(MPC5XXX_XLBARB + 0x40) |= (1 << 15);
--	*(vu_long *)(MPC5XXX_XLBARB + 0x70) = CFG_SDRAM_BASE | 0x1d;
-+	*(vu_long *)(MPC5XXX_XLBARB + 0x70) = 0 | 0x1d;
+ 	*(vu_long *)(MPC5XXX_XLBARB + 0x70) = 0 | 0x1d;
  
- # if defined(CFG_IPBSPEED_133)
- 	/* Motorola reports IPB should better run at 133 MHz. */
+-# if defined(CFG_IPBSPEED_133)
+-	/* Motorola reports IPB should better run at 133 MHz. */
+-	*(vu_long *)MPC5XXX_ADDECR |= 1;
+-	/* pci_clk_sel = 0x02, ipb_clk_sel = 0x00; */
+-	addecr = *(vu_long *)MPC5XXX_CDM_CFG;
+-	addecr &= ~0x103;
+-#  if defined(CFG_PCISPEED_66)
+-	/* pci_clk_sel = 0x01 -> IPB_CLK/2 */
+-	addecr |= 0x01;
+-#  else
+-	/* pci_clk_sel = 0x02 -> XLB_CLK/4 = IPB_CLK/4 */
+-	addecr |= 0x02;
+-#  endif /* CFG_PCISPEED_66 */
+-	*(vu_long *)MPC5XXX_CDM_CFG = addecr;
+-# endif	/* CFG_IPBSPEED_133 */
+ 	/* Configure the XLB Arbiter */
+ 	*(vu_long *)MPC5XXX_XLBARB_MPRIEN = 0xff;
+ 	*(vu_long *)MPC5XXX_XLBARB_MPRIVAL = 0x11111111;
 -- 
 1.7.6.3
 
