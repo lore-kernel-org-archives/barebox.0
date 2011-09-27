@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1R8T1o-0001n1-Dn
+	id 1R8T1o-0001ms-Da
 	for barebox@lists.infradead.org; Tue, 27 Sep 2011 08:28:41 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 27 Sep 2011 10:28:29 +0200
-Message-Id: <1317112109-23311-15-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 27 Sep 2011 10:28:23 +0200
+Message-Id: <1317112109-23311-9-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1317112109-23311-1-git-send-email-s.hauer@pengutronix.de>
 References: <1317112109-23311-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,103 +21,127 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 14/14] pcm030: cleanup config.h
+Subject: [PATCH 08/14] pcm030: use new functionality
 To: barebox@lists.infradead.org
 
-Remove several now unnecessary defines.
+We introduced several new functions to ease our life
+on ppc, use themn on the pcm030:
+
+- setup iomux and bus clocks in board code
+- add sdram memory according to detected size
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/ppc/boards/pcm030/config.h |   66 +-------------------------------------
- 1 files changed, 2 insertions(+), 64 deletions(-)
+ arch/ppc/boards/pcm030/pcm030.c |   55 +++++++++++++++++----------------------
+ include/common.h                |    2 +-
+ 2 files changed, 25 insertions(+), 32 deletions(-)
 
-diff --git a/arch/ppc/boards/pcm030/config.h b/arch/ppc/boards/pcm030/config.h
-index a772ee6..e8064d2 100644
---- a/arch/ppc/boards/pcm030/config.h
-+++ b/arch/ppc/boards/pcm030/config.h
-@@ -29,80 +29,18 @@
+diff --git a/arch/ppc/boards/pcm030/pcm030.c b/arch/ppc/boards/pcm030/pcm030.c
+index f408c3d..d1d84d2 100644
+--- a/arch/ppc/boards/pcm030/pcm030.c
++++ b/arch/ppc/boards/pcm030/pcm030.c
+@@ -43,9 +43,18 @@ static struct mpc5xxx_fec_platform_data fec_info = {
  
- #include <mach/mpc5xxx.h>
- 
--/* #define DEBUG */
--
--/*------------------------------------------------------------------------------------------------------------------------------------------------------
--High Level Configuration Options
--(easy to change)
-- ------------------------------------------------------------------------------------------------------------------------------------------------------*/
--#define CONFIG_MPC5200_DDR	1	/* (with DDR-SDRAM) */
- #define CFG_MPC5XXX_CLKIN	33333333 /* ... running at 33.333333MHz */
--#define BOOTFLAG_COLD		0x01	/* Normal Power-On: Boot from FLASH  */
--#define BOOTFLAG_WARM		0x02	/* Software reboot	     */
--
--/*------------------------------------------------------------------------------------------------------------------------------------------------------
--Serial console configuration
-- ------------------------------------------------------------------------------------------------------------------------------------------------------*/
--
--#if (TEXT_BASE == 0xFF000000)		/* Boot low */
--#define CFG_LOWBOOT		1
--#endif
--/* RAMBOOT will be defined automatically in memory section */
--
--/*------------------------------------------------------------------------------------------------------------------------------------------------------
--IPB Bus clocking configuration.
-- ------------------------------------------------------------------------------------------------------------------------------------------------------*/
--#define  CFG_IPBSPEED_133		/* define for 133MHz speed */
--#if defined(CFG_IPBSPEED_133)
--/*
-- * PCI Bus clocking configuration
-- *
-- * Actually a PCI Clock of 66 MHz is only set (in cpu_init.c) if
-- * CFG_IPBSPEED_133 is defined. This is because a PCI Clock of 66 MHz yet hasn't
-- * been tested with a IPB Bus Clock of 66 MHz.
-- */
--#define CFG_PCISPEED_66		/* define for 66MHz speed */
--#else
--#undef CFG_PCISPEED_66			/* for 33MHz speed */
--#endif
- 
--/* we only use CS-Boot */
--#define CFG_BOOTCS_START	0xFF000000
--#define CFG_BOOTCS_SIZE		0x01000000
--
--#if CONFIG_MACH_PHYCORE_MPC5200B_TINY_REV == 1
--#define CFG_BOOTCS_CFG		0x0008FD00
--#else
--#define CFG_BOOTCS_CFG		0x00083800
--#endif
--
--/*------------------------------------------------------------------------------------------------------------------------------------------------------
--  Memory map
-- ------------------------------------------------------------------------------------------------------------------------------------------------------*/
--#define CFG_MBAR		0xF0000000 /* MBAR hast to be switched by other bootloader or debugger config  */
--#define CFG_SDRAM_BASE		0x00000000
--
--/* Use SRAM until RAM will be available */
--#define CFG_INIT_RAM_ADDR	MPC5XXX_SRAM
--#define CFG_INIT_RAM_SIZE	MPC5XXX_SRAM_SIZE	/* End of used area in DPRAM */
--#define CONFIG_EARLY_INITDATA_SIZE 0x100
--
--#define CFG_BOOTMAPSZ		(8 << 20)	/* Initial Memory map for Linux */
--
--/*------------------------------------------------------------------------------------------------------------------------------------------------------
-- GPIO configuration
-- ------------------------------------------------------------------------------------------------------------------------------------------------------*/
- #define CFG_GPS_PORT_CONFIG	0x00558c10 /* PSC6=UART, PSC3=UART ; Ether=100MBit with MD */
- 
--/*------------------------------------------------------------------------------------------------------------------------------------------------------
-- Various low-level settings
-- ------------------------------------------------------------------------------------------------------------------------------------------------------*/
- #define CFG_HID0_INIT		HID0_ICE | HID0_ICFI
- #define CFG_HID0_FINAL		HID0_ICE
- 
- #define CFG_CS_BURST		0x00000000
- #define CFG_CS_DEADCYCLE	0x33333333
- 
-+#define CFG_BOOTMAPSZ		(8 << 20) /* Initial Memory map for Linux */
+ static int devices_init (void)
+ {
+-	add_cfi_flash_device(-1, 0xff000000, 16 * 1024 * 1024, 0);
+-	add_mem_device("ram0", 0x0, 64 * 1024 * 1024,
+-		       IORESOURCE_MEM_WRITEABLE);
++	unsigned long sdramsize;
 +
- #define OF_CPU			"PowerPC,5200@0"
- #define OF_TBCLK		CFG_MPC5XXX_CLKIN
- #define OF_SOC                  "soc5200@f0000000"
++	/*
++	 * Flash can be 16MB or 32MB, setup for the last 32MB no matter
++	 * what we find later.
++	 */
++	mpc5200_setup_cs(MPC5200_BOOTCS, 0xfe000000, SZ_32M, 0x0001dd00);
++	add_cfi_flash_device(-1, 0xfe000000, 32 * 1024 * 1024, 0);
++
++	sdramsize = mpc5200_get_sdram_size(0) + mpc5200_get_sdram_size(1);
++	barebox_add_memory_bank("ram0", 0x0, sdramsize);
++
+ 	add_generic_device("fec_mpc5xxx", -1, NULL, MPC5XXX_FEC, 0,
+ 			   IORESOURCE_MEM, &fec_info);
+ 
+@@ -109,19 +118,21 @@ static void sdram_start (int hi_addr)
+ 	__asm__ volatile ("sync");
+ }
+ 
+-/*
+- * ATTENTION: Although partially referenced initdram does NOT make real use
+- *            use of CFG_SDRAM_BASE. The code does not work if CFG_SDRAM_BASE
+- *            is something else than 0x00000000.
+- */
+-
+-long int initdram (int board_type)
++void initdram (int board_type)
+ {
+ 	ulong dramsize = 0;
+-	ulong dramsize2 = 0;
+ 
+ 	ulong test1, test2;
+ 
++	/* Setup pin multiplexing */
++
++	/* PSC6=UART, PSC3=UART ; Ether=100MBit with MD */
++	*(vu_long *)MPC5XXX_GPS_PORT_CONFIG = 0x00558c10;
++	*(vu_long *)MPC5XXX_CS_BURST = 0x00000000;
++	*(vu_long *)MPC5XXX_CS_DEADCYCLE = 0x33333333;
++
++	mpc5200_setup_bus_clocks(1, 4);
++
+ 	if (get_pc() > SZ_128M) {
+ 		/* setup SDRAM chip selects */
+ 		*(vu_long *)MPC5XXX_SDRAM_CS0CFG = 0x0000001b;/* 256MB at 0x0 */
+@@ -141,9 +152,9 @@ long int initdram (int board_type)
+ 
+ 		/* find RAM size using SDRAM CS0 only */
+ 		sdram_start(0);
+-		test1 = get_ram_size((ulong *)CFG_SDRAM_BASE, 0x10000000);
++		test1 = get_ram_size((ulong *)0, 0x10000000);
+ 		sdram_start(1);
+-		test2 = get_ram_size((ulong *)CFG_SDRAM_BASE, 0x10000000);
++		test2 = get_ram_size((ulong *)0, 0x10000000);
+ 		if (test1 > test2) {
+ 			sdram_start(0);
+ 			dramsize = test1;
+@@ -163,24 +174,6 @@ long int initdram (int board_type)
+ 			*(vu_long *)MPC5XXX_SDRAM_CS0CFG = 0; /* disabled */
+ 		}
+ 	}
+-
+-	/* retrieve size of memory connected to SDRAM CS0 */
+-	dramsize = *(vu_long *)MPC5XXX_SDRAM_CS0CFG & 0xFF;
+-	if (dramsize >= 0x13) {
+-		dramsize = (1 << (dramsize - 0x13)) << 20;
+-	} else {
+-		dramsize = 0;
+-	}
+-
+-	/* retrieve size of memory connected to SDRAM CS1 */
+-	dramsize2 = *(vu_long *)MPC5XXX_SDRAM_CS1CFG & 0xFF;
+-	if (dramsize2 >= 0x13) {
+-		dramsize2 = (1 << (dramsize2 - 0x13)) << 20;
+-	} else {
+-		dramsize2 = 0;
+-	}
+-
+-	return dramsize + dramsize2;
+ }
+ 
+ #if defined(CONFIG_OF_FLAT_TREE) && defined(CONFIG_OF_BOARD_SETUP)
+diff --git a/include/common.h b/include/common.h
+index 0ce4a70..e34bbea 100644
+--- a/include/common.h
++++ b/include/common.h
+@@ -94,7 +94,7 @@ void __noreturn hang (void);
+ void __noreturn panic(const char *fmt, ...);
+ 
+ /* */
+-long int initdram (int);
++void initdram (int);
+ char *size_human_readable(ulong size);
+ 
+ /* common/main.c */
 -- 
 1.7.6.3
 
