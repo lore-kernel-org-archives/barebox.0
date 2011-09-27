@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1R8T1o-0001mU-E8
-	for barebox@lists.infradead.org; Tue, 27 Sep 2011 08:28:43 +0000
-Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.72)
-	(envelope-from <sha@pengutronix.de>) id 1R8T1i-0005Wa-MF
-	for barebox@lists.infradead.org; Tue, 27 Sep 2011 10:28:30 +0200
-Received: from sha by octopus.hi.pengutronix.de with local (Exim 4.76)
-	(envelope-from <sha@pengutronix.de>) id 1R8T1i-00066R-Jw
-	for barebox@lists.infradead.org; Tue, 27 Sep 2011 10:28:30 +0200
+	id 1R8T1o-0001mv-Dg
+	for barebox@lists.infradead.org; Tue, 27 Sep 2011 08:28:44 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 27 Sep 2011 10:28:15 +0200
-Message-Id: <1317112109-23311-1-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 27 Sep 2011 10:28:24 +0200
+Message-Id: <1317112109-23311-10-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1317112109-23311-1-git-send-email-s.hauer@pengutronix.de>
+References: <1317112109-23311-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,50 +21,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: more ppc and pcm030 cleanup
+Subject: [PATCH 09/14] ppc: hardcode sdram base to 0x0
 To: barebox@lists.infradead.org
 
-Sascha Hauer (14):
-      ppc: remove mgt5100 support from code
-      ppc: add a get_pc() function
-      remove EARLY_INIT and EARLY_CONSOLE support
-      ppc mpc5200: add function to determine configured sdram size
-      ppc mpc5200: add function to configure a chipselect
-      ppc mpc5200: add function to setup bus clocks
-      ppc mpc5200b: cleanup lowlevel startup
-      pcm030: use new functionality
-      ppc: hardcode sdram base to 0x0
-      mpc5200: hardcode MBAR to 0xf0000000
-      mpc5200: hardcode internal sram for initram
-      pcm030: fix /dev/self0 and /dev/env0
-      ppc mpc5200: remove bus clock switching from generic code
-      pcm030: cleanup config.h
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/ppc/lib/board_data.c        |    2 +-
+ arch/ppc/mach-mpc5xxx/cpu_init.c |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
- arch/arm/boards/karo-tx28/tx28-stk5.c        |    1 -
- arch/mips/lib/barebox.lds.S                  |    4 -
- arch/ppc/Kconfig                             |    9 --
- arch/ppc/boards/pcm030/barebox.lds.S         |    4 -
- arch/ppc/boards/pcm030/config.h              |   66 +-------------
- arch/ppc/boards/pcm030/pcm030.c              |   80 +++++++---------
- arch/ppc/include/asm/common.h                |   19 ++++
- arch/ppc/lib/board.c                         |    3 -
- arch/ppc/lib/board_data.c                    |    2 +-
- arch/ppc/mach-mpc5xxx/Kconfig                |    3 -
- arch/ppc/mach-mpc5xxx/cpu.c                  |  132 ++++++++++++++++++++++++--
- arch/ppc/mach-mpc5xxx/cpu_init.c             |   35 +------
- arch/ppc/mach-mpc5xxx/include/mach/mpc5xxx.h |   12 +++
- arch/ppc/mach-mpc5xxx/start.S                |  100 ++++----------------
- common/Kconfig                               |   17 ----
- common/console.c                             |   36 +-------
- common/startup.c                             |   28 ------
- common/version.c                             |    5 +-
- drivers/serial/serial_mpc5xxx.c              |   25 -----
- include/common.h                             |    2 +-
- include/linux/ctype.h                        |    3 +-
- include/reloc.h                              |   62 ------------
- lib/vsprintf.c                               |    1 -
- 23 files changed, 225 insertions(+), 424 deletions(-)
- delete mode 100644 include/reloc.h
+diff --git a/arch/ppc/lib/board_data.c b/arch/ppc/lib/board_data.c
+index b28830f..ff9f0d0 100644
+--- a/arch/ppc/lib/board_data.c
++++ b/arch/ppc/lib/board_data.c
+@@ -4,7 +4,7 @@ int init_board_data(bd_t *bd)
+ {
+ 	cpu_init_board_data(bd);
+ 
+-	bd->bi_memstart  = CFG_SDRAM_BASE;	/* start of  DRAM memory	*/
++	bd->bi_memstart  = 0;	/* start of  DRAM memory	*/
+ //	bd->bi_memsize   = gd->ram_size;	/* size  of  DRAM memory in bytes */ /* FIXME */
+ 
+ #ifdef CONFIG_IP860
+diff --git a/arch/ppc/mach-mpc5xxx/cpu_init.c b/arch/ppc/mach-mpc5xxx/cpu_init.c
+index bf0a5bd..021091e 100644
+--- a/arch/ppc/mach-mpc5xxx/cpu_init.c
++++ b/arch/ppc/mach-mpc5xxx/cpu_init.c
+@@ -142,7 +142,7 @@ int cpu_init(void)
+ 
+ 	/* Enable snooping for RAM */
+ 	*(vu_long *)(MPC5XXX_XLBARB + 0x40) |= (1 << 15);
+-	*(vu_long *)(MPC5XXX_XLBARB + 0x70) = CFG_SDRAM_BASE | 0x1d;
++	*(vu_long *)(MPC5XXX_XLBARB + 0x70) = 0 | 0x1d;
+ 
+ # if defined(CFG_IPBSPEED_133)
+ 	/* Motorola reports IPB should better run at 133 MHz. */
+-- 
+1.7.6.3
+
 
 _______________________________________________
 barebox mailing list
