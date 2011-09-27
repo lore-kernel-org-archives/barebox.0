@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail2.gnudd.com ([213.203.150.91] helo=mail.gnudd.com)
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1R8HTG-0000Sv-L0
-	for barebox@lists.infradead.org; Mon, 26 Sep 2011 20:08:12 +0000
-Date: Mon, 26 Sep 2011 22:08:00 +0200
-From: Alessandro Rubini <rubini-list@gnudd.com>
-Message-ID: <20110926200800.GA13501@mail.gnudd.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <4E80A8D1.3040507@gmail.com>
-References: <4E80A8D1.3040507@gmail.com> 
+	id 1R8T1o-0001mg-Dt
+	for barebox@lists.infradead.org; Tue, 27 Sep 2011 08:28:40 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue, 27 Sep 2011 10:28:17 +0200
+Message-Id: <1317112109-23311-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1317112109-23311-1-git-send-email-s.hauer@pengutronix.de>
+References: <1317112109-23311-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,25 +16,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Barebox on real mobile phone
-To: it050021@gmail.com
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 02/14] ppc: add a get_pc() function
+To: barebox@lists.infradead.org
 
-> I wonder that there are any mobile phone running on market with barebox 
-> inside?
+Useful to determine whether sdram has to be setup or not.
 
-I don't know about phones, but I have a gigabit switch with barebox. Not
-on the market, yet, but it will be in 3 months. Or you can build yours,
-as it's open hardware (http://www.ohwr.org/projects/white-rabbit).
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/ppc/include/asm/common.h |   17 +++++++++++++++++
+ 1 files changed, 17 insertions(+), 0 deletions(-)
 
-I planned to send patches yesterday, but I'm late with other related
-tasks.  Actually, the PM9G45 stuff worked almost out of the box.
+diff --git a/arch/ppc/include/asm/common.h b/arch/ppc/include/asm/common.h
+index 96de5c6..26876c7 100644
+--- a/arch/ppc/include/asm/common.h
++++ b/arch/ppc/include/asm/common.h
+@@ -21,4 +21,21 @@ void	trap_init     (ulong);
+ int cpu_init_board_data(bd_t *bd);
+ int init_board_data(bd_t *bd);
+ 
++static inline unsigned long get_pc(void)
++{
++	unsigned long pc;
++
++	__asm__ __volatile__(
++		"	mflr    0\n"
++		"	bl	1f\n"
++		"1:\n"
++		"	mflr    %0\n"
++		"	mtlr    0\n"
++		: "=r" (pc)
++                :
++                : "0", "memory");
++
++	return pc;
++}
++
+ #endif /* __ASM_COMMON_H */
+-- 
+1.7.6.3
 
-/alessandro
 
 _______________________________________________
 barebox mailing list
