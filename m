@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1R8T1o-0001n0-Cp
-	for barebox@lists.infradead.org; Tue, 27 Sep 2011 08:28:46 +0000
+	id 1R8T1o-0001mz-DF
+	for barebox@lists.infradead.org; Tue, 27 Sep 2011 08:28:44 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 27 Sep 2011 10:28:28 +0200
-Message-Id: <1317112109-23311-14-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 27 Sep 2011 10:28:27 +0200
+Message-Id: <1317112109-23311-13-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1317112109-23311-1-git-send-email-s.hauer@pengutronix.de>
 References: <1317112109-23311-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,44 +21,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 13/14] ppc mpc5200: remove bus clock switching from generic
-	code
+Subject: [PATCH 12/14] pcm030: fix /dev/self0 and /dev/env0
 To: barebox@lists.infradead.org
 
-The only user (pcm030) already setups the bus clocks in
-its board code.
+/dev/self0 and /dev/env0 are in the last MB of nor flash. The
+offset depends on the size of the flash, so detect this at
+runtime.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/ppc/mach-mpc5xxx/cpu_init.c |   15 ---------------
- 1 files changed, 0 insertions(+), 15 deletions(-)
+ arch/ppc/boards/pcm030/pcm030.c |   14 +++++++++++---
+ 1 files changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/arch/ppc/mach-mpc5xxx/cpu_init.c b/arch/ppc/mach-mpc5xxx/cpu_init.c
-index 021091e..0c17d95 100644
---- a/arch/ppc/mach-mpc5xxx/cpu_init.c
-+++ b/arch/ppc/mach-mpc5xxx/cpu_init.c
-@@ -144,21 +144,6 @@ int cpu_init(void)
- 	*(vu_long *)(MPC5XXX_XLBARB + 0x40) |= (1 << 15);
- 	*(vu_long *)(MPC5XXX_XLBARB + 0x70) = 0 | 0x1d;
+diff --git a/arch/ppc/boards/pcm030/pcm030.c b/arch/ppc/boards/pcm030/pcm030.c
+index d1d84d2..61fb116 100644
+--- a/arch/ppc/boards/pcm030/pcm030.c
++++ b/arch/ppc/boards/pcm030/pcm030.c
+@@ -36,6 +36,8 @@
+ #include <partition.h>
+ #include <memory.h>
+ #include <sizes.h>
++#include <linux/stat.h>
++#include <fs.h>
  
--# if defined(CFG_IPBSPEED_133)
--	/* Motorola reports IPB should better run at 133 MHz. */
--	*(vu_long *)MPC5XXX_ADDECR |= 1;
--	/* pci_clk_sel = 0x02, ipb_clk_sel = 0x00; */
--	addecr = *(vu_long *)MPC5XXX_CDM_CFG;
--	addecr &= ~0x103;
--#  if defined(CFG_PCISPEED_66)
--	/* pci_clk_sel = 0x01 -> IPB_CLK/2 */
--	addecr |= 0x01;
--#  else
--	/* pci_clk_sel = 0x02 -> XLB_CLK/4 = IPB_CLK/4 */
--	addecr |= 0x02;
--#  endif /* CFG_PCISPEED_66 */
--	*(vu_long *)MPC5XXX_CDM_CFG = addecr;
--# endif	/* CFG_IPBSPEED_133 */
- 	/* Configure the XLB Arbiter */
- 	*(vu_long *)MPC5XXX_XLBARB_MPRIEN = 0xff;
- 	*(vu_long *)MPC5XXX_XLBARB_MPRIVAL = 0x11111111;
+ static struct mpc5xxx_fec_platform_data fec_info = {
+ 	.xcv_type = MII100,
+@@ -44,12 +46,14 @@ static struct mpc5xxx_fec_platform_data fec_info = {
+ static int devices_init (void)
+ {
+ 	unsigned long sdramsize;
++	struct stat s;
++	int ret;
+ 
+ 	/*
+ 	 * Flash can be 16MB or 32MB, setup for the last 32MB no matter
+ 	 * what we find later.
+ 	 */
+-	mpc5200_setup_cs(MPC5200_BOOTCS, 0xfe000000, SZ_32M, 0x0001dd00);
++	mpc5200_setup_cs(MPC5200_BOOTCS, 0xfe000000, SZ_32M, 0x0008fd00);
+ 	add_cfi_flash_device(-1, 0xfe000000, 32 * 1024 * 1024, 0);
+ 
+ 	sdramsize = mpc5200_get_sdram_size(0) + mpc5200_get_sdram_size(1);
+@@ -58,8 +62,12 @@ static int devices_init (void)
+ 	add_generic_device("fec_mpc5xxx", -1, NULL, MPC5XXX_FEC, 0,
+ 			   IORESOURCE_MEM, &fec_info);
+ 
+-	devfs_add_partition("nor0", 0x00f00000, 0x40000, PARTITION_FIXED, "self0");
+-	devfs_add_partition("nor0", 0x00f60000, 0x20000, PARTITION_FIXED, "env0");
++	ret = stat("/dev/nor0", &s);
++	if (ret)
++		return 0;
++
++	devfs_add_partition("nor0", s.st_size - SZ_1M, SZ_512K, PARTITION_FIXED, "self0");
++	devfs_add_partition("nor0", s.st_size - SZ_512K, SZ_512K, PARTITION_FIXED, "env0");
+ 
+ 	return 0;
+ }
 -- 
 1.7.6.3
 
