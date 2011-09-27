@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1R8T1o-0001mo-DS
+	id 1R8T1o-0001mU-E8
 	for barebox@lists.infradead.org; Tue, 27 Sep 2011 08:28:43 +0000
+Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+	(envelope-from <sha@pengutronix.de>) id 1R8T1i-0005Wa-MF
+	for barebox@lists.infradead.org; Tue, 27 Sep 2011 10:28:30 +0200
+Received: from sha by octopus.hi.pengutronix.de with local (Exim 4.76)
+	(envelope-from <sha@pengutronix.de>) id 1R8T1i-00066R-Jw
+	for barebox@lists.infradead.org; Tue, 27 Sep 2011 10:28:30 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 27 Sep 2011 10:28:19 +0200
-Message-Id: <1317112109-23311-5-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1317112109-23311-1-git-send-email-s.hauer@pengutronix.de>
-References: <1317112109-23311-1-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 27 Sep 2011 10:28:15 +0200
+Message-Id: <1317112109-23311-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,58 +26,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/14] ppc mpc5200: add function to determine configured sdram
-	size
+Subject: more ppc and pcm030 cleanup
 To: barebox@lists.infradead.org
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/ppc/mach-mpc5xxx/cpu.c                  |   17 +++++++++++++++++
- arch/ppc/mach-mpc5xxx/include/mach/mpc5xxx.h |    3 +++
- 2 files changed, 20 insertions(+), 0 deletions(-)
+Sascha Hauer (14):
+      ppc: remove mgt5100 support from code
+      ppc: add a get_pc() function
+      remove EARLY_INIT and EARLY_CONSOLE support
+      ppc mpc5200: add function to determine configured sdram size
+      ppc mpc5200: add function to configure a chipselect
+      ppc mpc5200: add function to setup bus clocks
+      ppc mpc5200b: cleanup lowlevel startup
+      pcm030: use new functionality
+      ppc: hardcode sdram base to 0x0
+      mpc5200: hardcode MBAR to 0xf0000000
+      mpc5200: hardcode internal sram for initram
+      pcm030: fix /dev/self0 and /dev/env0
+      ppc mpc5200: remove bus clock switching from generic code
+      pcm030: cleanup config.h
 
-diff --git a/arch/ppc/mach-mpc5xxx/cpu.c b/arch/ppc/mach-mpc5xxx/cpu.c
-index 391c705..cf2ca2f 100644
---- a/arch/ppc/mach-mpc5xxx/cpu.c
-+++ b/arch/ppc/mach-mpc5xxx/cpu.c
-@@ -113,3 +113,20 @@ int cpu_init_board_data(bd_t *bd)
- 	bd->bi_pcifreq = get_pci_clock();
- 	return 0;
- }
-+
-+unsigned long mpc5200_get_sdram_size(unsigned int cs)
-+{
-+	unsigned long size;
-+
-+	if (cs > 1)
-+		return 0;
-+
-+	/* retrieve size of memory connected to SDRAM CS0 */
-+	size = *(vu_long *)(MPC5XXX_SDRAM_CS0CFG + (cs * 4)) & 0xFF;
-+	if (size >= 0x13)
-+		size = (1 << (size - 0x13)) << 20;
-+	else
-+		size = 0;
-+
-+	return size;
-+}
-diff --git a/arch/ppc/mach-mpc5xxx/include/mach/mpc5xxx.h b/arch/ppc/mach-mpc5xxx/include/mach/mpc5xxx.h
-index d7d0811..aad2418 100644
---- a/arch/ppc/mach-mpc5xxx/include/mach/mpc5xxx.h
-+++ b/arch/ppc/mach-mpc5xxx/include/mach/mpc5xxx.h
-@@ -779,6 +779,9 @@ struct mpc5xxx_mscan {
- /* function prototypes */
- void loadtask(int basetask, int tasks);
- 
-+/* retrieve configured sdram size connected to a chipselect */
-+unsigned long mpc5200_get_sdram_size(unsigned int cs);
-+
- #endif /* __ASSEMBLY__ */
- 
- #endif /* __ASMPPC_MPC5XXX_H */
--- 
-1.7.6.3
-
+ arch/arm/boards/karo-tx28/tx28-stk5.c        |    1 -
+ arch/mips/lib/barebox.lds.S                  |    4 -
+ arch/ppc/Kconfig                             |    9 --
+ arch/ppc/boards/pcm030/barebox.lds.S         |    4 -
+ arch/ppc/boards/pcm030/config.h              |   66 +-------------
+ arch/ppc/boards/pcm030/pcm030.c              |   80 +++++++---------
+ arch/ppc/include/asm/common.h                |   19 ++++
+ arch/ppc/lib/board.c                         |    3 -
+ arch/ppc/lib/board_data.c                    |    2 +-
+ arch/ppc/mach-mpc5xxx/Kconfig                |    3 -
+ arch/ppc/mach-mpc5xxx/cpu.c                  |  132 ++++++++++++++++++++++++--
+ arch/ppc/mach-mpc5xxx/cpu_init.c             |   35 +------
+ arch/ppc/mach-mpc5xxx/include/mach/mpc5xxx.h |   12 +++
+ arch/ppc/mach-mpc5xxx/start.S                |  100 ++++----------------
+ common/Kconfig                               |   17 ----
+ common/console.c                             |   36 +-------
+ common/startup.c                             |   28 ------
+ common/version.c                             |    5 +-
+ drivers/serial/serial_mpc5xxx.c              |   25 -----
+ include/common.h                             |    2 +-
+ include/linux/ctype.h                        |    3 +-
+ include/reloc.h                              |   62 ------------
+ lib/vsprintf.c                               |    1 -
+ 23 files changed, 225 insertions(+), 424 deletions(-)
+ delete mode 100644 include/reloc.h
 
 _______________________________________________
 barebox mailing list
