@@ -1,12 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ip2.televic.com ([81.82.194.222])
+Received: from mail-bw0-f49.google.com ([209.85.214.49])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1R8pYr-0003hu-EB
-	for barebox@lists.infradead.org; Wed, 28 Sep 2011 08:32:14 +0000
-From: =?iso-8859-1?Q?Lambrecht_J=FCrgen?= <J.Lambrecht@TELEVIC.com>
-Date: Wed, 28 Sep 2011 10:32:02 +0200
-Message-ID: <4E82DB82.2000505@televic.com>
-MIME-Version: 1.0
+	id 1R8qGg-0005jU-Js
+	for barebox@lists.infradead.org; Wed, 28 Sep 2011 09:17:31 +0000
+Received: by bkat2 with SMTP id t2so9378109bka.36
+	for <barebox@lists.infradead.org>; Wed, 28 Sep 2011 02:17:27 -0700 (PDT)
+From: Paul Fertser <fercerpav@gmail.com>
+Date: Wed, 28 Sep 2011 13:16:57 +0400
+Message-Id: <1317201418-3290-1-git-send-email-fercerpav@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,118 +16,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: howto boot kernel from ubi volume?
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH 1/2] mach-imx: iim: clarify documentation
+To: barebox@lists.infradead.org
+Cc: Paul Fertser <fercerpav@gmail.com>
 
-Hello,
+This adds additional Kconfig help to clarify the way to use barebox
+for eFuses handling.
 
-Because a NAND flash is not reliable, I don't want to write the kernel =
+Signed-off-by: Paul Fertser <fercerpav@gmail.com>
+---
+ arch/arm/mach-imx/Kconfig |   10 ++++++++++
+ 1 files changed, 10 insertions(+), 0 deletions(-)
 
-image raw to flash.
-Instead, I want to put it in an UBI volume.
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 8dc6a24..8d5bd74 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -497,6 +497,12 @@ config IMX_IIM
+ 	  Device driver for the IC Identification Module (IIM) fusebox. Use the 
+ 	  regular md/mw commands to program and read the fusebox.
+ 
++	  Fuses are grouped in "rows", 8 bits per row. When using md/mw commands,
++	  employ the -b switch and consider the region to be specifying the "Fuse
++	  Row Index" rather than "Fuse Row Offset" (which is FRI * 4). You should
++	  consult the documentation for your chip for more elaborate description,
++	  including the eFuse map, e.g. see AN3682 for i.MX25.
++
+ config IMX_IIM_FUSE_BLOW
+ 	bool "IIM fuses blow support"
+ 	depends on IMX_IIM
+@@ -507,6 +513,10 @@ config IMX_IIM_FUSE_BLOW
+ 	  Warning: blown fuses can not be unblown. Using this option may damage
+ 	  your CPU, or make it unbootalbe. Use with care.
+ 
++	  Before being actually able to blow the fuses, you need to explicitely
++	  enable it:
++	  	 imx_iim0.permanent_write_enable=1
++
+ endmenu
+ 
+ endif
+-- 
+1.7.3.4
 
-* The currently running kernel is written in barebox to =
-
-/dev/nand0.kernel.bb, and the ubi rootfs image to /dev/nand0.root.bb; I =
-
-have a free partition in /dev/nand0.diag.bb.
-* So I in a running kernel (v3.0-rc6) I formatted an ubi partition (on =
-
-that nand0.diag.bb mtd3), and created 2 volumes (kernel and rootfs). =
-
-Then I tftp'd a zImage to the kernel volume - the same zImage that is =
-
-currently running.
-* Then in barebox: 'barebox:/dev ubiattach nand0.diag' gives:
-UBI: attaching mtd0 to ubi0
-UBI: physical eraseblock size:   131072 bytes (128 KiB)
-UBI: logical eraseblock size:    129024 bytes
-UBI: smallest flash I/O unit:    2048
-UBI: sub-page size:              512
-UBI: VID header offset:          512 (aligned 512)
-UBI: data offset:                2048
-registering /dev/ubi0
-registering kernel as /dev/ubi0.kernel
-registering rootfs as /dev/ubi0.rootfs
-UBI: attached mtd0 to ubi0
-UBI: MTD device name:            "nand0.diag"
-UBI: MTD device size:            48 MiB
-UBI: number of good PEBs:        384
-UBI: number of bad PEBs:         0
-UBI: max. allowed volumes:       128
-UBI: wear-leveling threshold:    4096
-UBI: number of internal volumes: 1
-UBI: number of user volumes:     2
-UBI: available PEBs:             3
-UBI: total number of reserved PEBs: 381
-UBI: number of PEBs reserved for bad PEB handling: 3
-UBI: max/mean erase counter: 19/0
-* Then I set bootargs correct
-* Then 'barebox:/dev bootz ubi0.kernel' gives:
-ubi_volume_cdev_read: 48 @ 0x00000000
-invalid magic 0x0001f800
-
-Why is that?
-My barebox version is 2010.12.0.
-Could it be because the mtd-utils used in linux is 1.4.6 (both on the =
-
-target and the host (my laptop)), and the one in barebox is older?
-
-FYI: When I create an empty ubi volume in linux, and try to tftp to it =
-
-in barebox, I get this error:
-(and the same error with ubimkvol)
-
-barebox:/ tftp zImage /dev/ubi0.kernel
-error frame: 0xa3b05828 0x00000882
-TFTP from server 10.0.56.4 ('zImage' -> '/dev/ubi0.kernel')
-         UBI error: ubi_io_write: error -5 while writing 512 bytes to =
-
-PEB 0:512, written 0 bytes
-UBI warning: ubi_eba_write_leb: failed to write VID header to LEB =
-
-2147479551:0, PEB 0
-UBI: try another PEB
-UBI error: ubi_io_write: error -5 while writing 512 bytes to PEB 0:512, =
-
-written 0 bytes
-UBI warning: ubi_eba_write_leb: failed to write VID header to LEB =
-
-2147479551:0, PEB 0
-UBI: try another PEB
-UBI error: ubi_io_write: error -5 while writing 512 bytes to PEB 0:512, =
-
-written 0 bytes
-UBI warning: ubi_eba_write_leb: failed to write VID header to LEB =
-
-2147479551:0, PEB 0
-UBI: try another PEB
-UBI error: ubi_io_write: error -5 while writing 512 bytes to PEB 0:512, =
-
-written 0 bytes
-UBI warning: ubi_eba_write_leb: failed to write VID header to LEB =
-
-2147479551:0, PEB 0
-UBI warning: ubi_ro_mode: switch to read-only mode
-Cannot start volume update
-write: Read-only file system
-\
-tftp failed: error -30
-
-
-Kind regards,
-J=FCrgen
-
-J=FCrgen Lambrecht
-R&D Associate
-Tel: +32 (0)51 303045    Fax: +32 (0)51 310670
-http://www.televic-rail.com
-Televic Rail NV - Leo Bekaertlaan 1 - 8870 Izegem - Belgium
-Company number 0825.539.581 - RPR Kortrijk
 
 _______________________________________________
 barebox mailing list
