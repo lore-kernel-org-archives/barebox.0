@@ -1,17 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1R8ssl-0001C5-3J
-	for barebox@lists.infradead.org; Wed, 28 Sep 2011 12:04:59 +0000
+	id 1R8tiG-0001ww-PA
+	for barebox@lists.infradead.org; Wed, 28 Sep 2011 12:58:13 +0000
+Received: from gallifrey.ext.pengutronix.de
+	([2001:6f8:1178:4:5054:ff:fe8d:eefb] helo=localhost)
+	by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+	(envelope-from <jbe@pengutronix.de>) id 1R8tiE-0007cj-S6
+	for barebox@lists.infradead.org; Wed, 28 Sep 2011 14:58:10 +0200
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Wed, 28 Sep 2011 14:04:55 +0200
-References: <201109281208.11561.jbe@pengutronix.de>
-	<201109281212.10811.jbe@pengutronix.de>
-	<20110928115316.GX31404@pengutronix.de>
-In-Reply-To: <20110928115316.GX31404@pengutronix.de>
+Date: Wed, 28 Sep 2011 14:58:08 +0200
+References: <201109281216.14413.jbe@pengutronix.de>
+In-Reply-To: <201109281216.14413.jbe@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-Message-Id: <201109281404.56132.jbe@pengutronix.de>
+Message-Id: <201109281458.09005.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,41 +27,19 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] S3C24xx/GPIO: Fix compile time warning
+Subject: Re: Anybody working on Samsung S3C64xx support
 To: barebox@lists.infradead.org
 
-Sascha Hauer wrote:
-> On Wed, Sep 28, 2011 at 12:12:10PM +0200, Juergen Beisert wrote:
-> > Without this patch the compiler spits a warning:
-> >
-> > arch/arm/mach-s3c24xx/gpio-s3c24x0.c: In function 'gpio_is_valid':
-> > arch/arm/mach-s3c24xx/gpio-s3c24x0.c:176:11: warning: unused variable
-> > 'reg' arch/arm/mach-s3c24xx/gpio-s3c24x0.c:174:11: warning: unused
-> > variable 'bit'
-> >
-> > Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
-> >
-> > ---
-> >  arch/arm/mach-s3c24xx/gpio-s3c24x0.c |    2 --
-> >  1 file changed, 2 deletions(-)
-> >
-> > Index: barebox-git/arch/arm/mach-s3c24xx/gpio-s3c24x0.c
-> > ===================================================================
-> > --- barebox-git.orig/arch/arm/mach-s3c24xx/gpio-s3c24x0.c
-> > +++ barebox-git/arch/arm/mach-s3c24xx/gpio-s3c24x0.c
-> > @@ -170,9 +170,7 @@ void s3c_gpio_mode(unsigned gpio_mode)
-> >  int gpio_is_valid(int gpio)
-> >  {
-> >  	unsigned group = gpio >> 5;
-> > -	unsigned bit = gpio % 32;
-> >  	unsigned offset;
-> > -	uint32_t reg;
->
-> Both patches do not apply. We do not have a gpio_is_valid() function
-> in this file.
+Myself wrote:
+> is anybody working on Barebox support for the ARM11 based S3C6410 CPU from
+> Samsung (just to be sure to not re-invent the wheel)?
 
-Arrghh, you are right. /me should use the correct branch...
+When adding the S3C6410 CPU support: Should I try to extend the existing 
+S3C24xx family (its uses an ARMv4 core) with the ARMv6 core S3C64xx family, 
+or better a separate mach-* directory? Both CPUs sharing some peripherals, 
+but with many little differences (known from i.MX...)
 
+Regards,
 Juergen
 
 -- 
