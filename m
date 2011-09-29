@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-wy0-f177.google.com ([74.125.82.177])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1R9Dqy-0008J5-2g
-	for barebox@lists.infradead.org; Thu, 29 Sep 2011 10:28:42 +0000
-Date: Thu, 29 Sep 2011 12:28:29 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20110929102829.GG31404@pengutronix.de>
-References: <560194a56016e7562eb1e50f68a58ff6f6e069a7.1316086518.git.fercerpav@gmail.com>
-	<20110920193121.GA31404@pengutronix.de>
-	<20110920202901.GS3579@home.lan>
+	id 1R9H0g-0002Cj-6F
+	for barebox@lists.infradead.org; Thu, 29 Sep 2011 13:50:50 +0000
+Received: by wyi11 with SMTP id 11so255506wyi.36
+	for <barebox@lists.infradead.org>; Thu, 29 Sep 2011 06:50:40 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20110920202901.GS3579@home.lan>
+In-Reply-To: <20110928071559.GW31404@pengutronix.de>
+References: <1316761066-29811-1-git-send-email-s.hauer@pengutronix.de>
+	<20110928071559.GW31404@pengutronix.de>
+Date: Thu, 29 Sep 2011 17:50:40 +0400
+Message-ID: <CAA4bVAE6DSfAmZnrHLAaMOP2KZkjfqfRZZo8XrQkAG5FsMt_zQ@mail.gmail.com>
+From: Antony Pavlov <antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,60 +20,58 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] m25p80: add additional sanity checks for erasure
-To: Paul Fertser <fercerpav@gmail.com>
-Cc: barebox@lists.infradead.org, Franck JULLIEN <elec4fun@gmail.com>
+Subject: Re: USB mass storage support
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hi Paul,
+On 28 September 2011 11:15, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> On Fri, Sep 23, 2011 at 08:57:43AM +0200, Sascha Hauer wrote:
+>> Hi,
+>>
+>> The following adds USB mass storage support to barebox. The patches
+>> are from Rosen Kolev, I am just sending these patches for him because
+>> git send-email does not work for him (yet).
+>>
+>> Sascha
+>>
+>> Rosen Kolev (3):
+>> =A0 =A0 =A0 Modified timeout in the ehci-hcd USB host driver.
+>> =A0 =A0 =A0 Extended USB device matching.
+>> =A0 =A0 =A0 USB mass storage device driver initial implementation
+>
+> I merged this as-is. There are still some minor things like CamelCase
+> function names but overall This looked to good to not merge it ;)
 
-Sorry for the delay.
+This patches have no "Signed-off-by :" label.
 
-On Wed, Sep 21, 2011 at 12:29:01AM +0400, Paul Fertser wrote:
-> On Tue, Sep 20, 2011 at 09:31:21PM +0200, Sascha Hauer wrote:
-> > On Thu, Sep 15, 2011 at 03:27:36PM +0400, Paul Fertser wrote:
-> > > This guards for the cases where the initial offset or byte count is
-> > > not aligned with regard to erase block size, thus making it impossible
-> > > for erase to do any harm to the nearby sectors.
-> > 
-> > I'm unsure about this one. The other flash drivers allow to erase areas
-> > which are not eraseblock aligned. Maybe we should instead add a
-> > cdev->erasesize field. Then we can add this check in the generic code
-> > and fix this for all drivers.
-> 
-> I guess i was too surprised by seeing an endless loop when i tried to
-> erase an area of the wrong size (the counter underflowed) to think
-> about it in a less narrow-minded way, sorry, you're right of course.
-> 
-> Talking about generalisation, shouldn't the m25p80 driver be hooked
-> into the mtd subsystem to allow running ubi on top of it? By the
-> cursory look it seems to be doable without much effort.
+I have tried them with 2 USB-flash drives on my Tegra board:
 
-Yes, it probably should. The cfi driver also is not a mtd driver but
-has some mtd glue code. Maybe the same approach (even better the same
-code) can be used here.
+toshiba ac100> / usb
+USB: scanning bus for devices...
+Bus 001 Device 003: ID 0bdb:190a F3307
+Bus 001 Device 004: ID 0bda:58f2 USB Camera
+Bus 001 Device 006: ID 8564:1000 Mass Storage Device
+disk@disk0: Failed to register partition disk0.1 (-22)
+Bus 001 Device 007: ID 067b:2303 USB-Serial Controller
+Bus 001 Device 008: ID 8564:1000 Mass Storage Device
+register_device: already registered disk0
+Bus 001 Device 009: ID 2001:3c05 DUB-E100
+eth@eth0: got MAC address from EEPROM: 1C:7E:E5:0F:E1:14
+Bus 001 Device 005: ID 05e3:0660 USB2.0 Hub
+Bus 001 Device 002: ID 0424:2513
+Bus 001 Device 001: ID 0000:0000 EHCI Host Controller
+9 USB Device(s) found
 
-> 
-> Another question: should i repost this early (questionable) series you
-> seem to have missed[1]?
-> 
-> [1] http://lists.infradead.org/pipermail/barebox/2011-August/004483.html
+Can we register more that one disk?
 
-Not necessary, I just applied it.
+-- =
 
-Thanks
- Sascha
-
-
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
