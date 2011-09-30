@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.amk-drives.bg ([213.91.234.2])
-	by canuck.infradead.org with smtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1R9IVh-0004K1-4M
-	for barebox@lists.infradead.org; Thu, 29 Sep 2011 15:26:57 +0000
-Message-ID: <4E848E39.2050106@amk-drives.bg>
-Date: Thu, 29 Sep 2011 18:26:49 +0300
-From: Rosen Kolev <rosen.kolev@amk-drives.bg>
+Received: from ip2.televic.com ([81.82.194.222])
+	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+	id 1R9dMt-000539-Io
+	for barebox@lists.infradead.org; Fri, 30 Sep 2011 13:43:13 +0000
+From: =?iso-8859-1?Q?Lambrecht_J=FCrgen?= <J.Lambrecht@TELEVIC.com>
+Date: Fri, 30 Sep 2011 15:43:05 +0200
+Message-ID: <4E85C769.6020204@televic.com>
+References: <4E82DB82.2000505@televic.com>
+In-Reply-To: <4E82DB82.2000505@televic.com>
 MIME-Version: 1.0
-References: <1316761066-29811-1-git-send-email-s.hauer@pengutronix.de>
-	<20110928071559.GW31404@pengutronix.de>
-	<CAA4bVAE6DSfAmZnrHLAaMOP2KZkjfqfRZZo8XrQkAG5FsMt_zQ@mail.gmail.com>
-In-Reply-To: <CAA4bVAE6DSfAmZnrHLAaMOP2KZkjfqfRZZo8XrQkAG5FsMt_zQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,48 +17,128 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: USB mass storage support
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: howto boot kernel from ubi volume?
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-SGkgQW50b255LAoKT24gMjkuOS4yMDExINCzLiAxNjo1MCDRhy4sIEFudG9ueSBQYXZsb3Ygd3Jv
-dGU6Cj4gT24gMjggU2VwdGVtYmVyIDIwMTEgMTE6MTUsIFNhc2NoYSBIYXVlcjxzLmhhdWVyQHBl
-bmd1dHJvbml4LmRlPiAgd3JvdGU6Cj4+IE9uIEZyaSwgU2VwIDIzLCAyMDExIGF0IDA4OjU3OjQz
-QU0gKzAyMDAsIFNhc2NoYSBIYXVlciB3cm90ZToKPj4+IEhpLAo+Pj4KPj4+IFRoZSBmb2xsb3dp
-bmcgYWRkcyBVU0IgbWFzcyBzdG9yYWdlIHN1cHBvcnQgdG8gYmFyZWJveC4gVGhlIHBhdGNoZXMK
-Pj4+IGFyZSBmcm9tIFJvc2VuIEtvbGV2LCBJIGFtIGp1c3Qgc2VuZGluZyB0aGVzZSBwYXRjaGVz
-IGZvciBoaW0gYmVjYXVzZQo+Pj4gZ2l0IHNlbmQtZW1haWwgZG9lcyBub3Qgd29yayBmb3IgaGlt
-ICh5ZXQpLgo+Pj4KPj4+IFNhc2NoYQo+Pj4KPj4+IFJvc2VuIEtvbGV2ICgzKToKPj4+ICAgICAg
-ICBNb2RpZmllZCB0aW1lb3V0IGluIHRoZSBlaGNpLWhjZCBVU0IgaG9zdCBkcml2ZXIuCj4+PiAg
-ICAgICAgRXh0ZW5kZWQgVVNCIGRldmljZSBtYXRjaGluZy4KPj4+ICAgICAgICBVU0IgbWFzcyBz
-dG9yYWdlIGRldmljZSBkcml2ZXIgaW5pdGlhbCBpbXBsZW1lbnRhdGlvbgo+PiBJIG1lcmdlZCB0
-aGlzIGFzLWlzLiBUaGVyZSBhcmUgc3RpbGwgc29tZSBtaW5vciB0aGluZ3MgbGlrZSBDYW1lbENh
-c2UKPj4gZnVuY3Rpb24gbmFtZXMgYnV0IG92ZXJhbGwgVGhpcyBsb29rZWQgdG8gZ29vZCB0byBu
-b3QgbWVyZ2UgaXQgOykKPiBUaGlzIHBhdGNoZXMgaGF2ZSBubyAiU2lnbmVkLW9mZi1ieSA6IiBs
-YWJlbC4KPgo+IEkgaGF2ZSB0cmllZCB0aGVtIHdpdGggMiBVU0ItZmxhc2ggZHJpdmVzIG9uIG15
-IFRlZ3JhIGJvYXJkOgo+Cj4gdG9zaGliYSBhYzEwMD4gIC8gdXNiCj4gVVNCOiBzY2FubmluZyBi
-dXMgZm9yIGRldmljZXMuLi4KPiBCdXMgMDAxIERldmljZSAwMDM6IElEIDBiZGI6MTkwYSBGMzMw
-Nwo+IEJ1cyAwMDEgRGV2aWNlIDAwNDogSUQgMGJkYTo1OGYyIFVTQiBDYW1lcmEKPiBCdXMgMDAx
-IERldmljZSAwMDY6IElEIDg1NjQ6MTAwMCBNYXNzIFN0b3JhZ2UgRGV2aWNlCj4gZGlza0BkaXNr
-MDogRmFpbGVkIHRvIHJlZ2lzdGVyIHBhcnRpdGlvbiBkaXNrMC4xICgtMjIpCj4gQnVzIDAwMSBE
-ZXZpY2UgMDA3OiBJRCAwNjdiOjIzMDMgVVNCLVNlcmlhbCBDb250cm9sbGVyCj4gQnVzIDAwMSBE
-ZXZpY2UgMDA4OiBJRCA4NTY0OjEwMDAgTWFzcyBTdG9yYWdlIERldmljZQo+IHJlZ2lzdGVyX2Rl
-dmljZTogYWxyZWFkeSByZWdpc3RlcmVkIGRpc2swCj4gQnVzIDAwMSBEZXZpY2UgMDA5OiBJRCAy
-MDAxOjNjMDUgRFVCLUUxMDAKPiBldGhAZXRoMDogZ290IE1BQyBhZGRyZXNzIGZyb20gRUVQUk9N
-OiAxQzo3RTpFNTowRjpFMToxNAo+IEJ1cyAwMDEgRGV2aWNlIDAwNTogSUQgMDVlMzowNjYwIFVT
-QjIuMCBIdWIKPiBCdXMgMDAxIERldmljZSAwMDI6IElEIDA0MjQ6MjUxMwo+IEJ1cyAwMDEgRGV2
-aWNlIDAwMTogSUQgMDAwMDowMDAwIEVIQ0kgSG9zdCBDb250cm9sbGVyCj4gOSBVU0IgRGV2aWNl
-KHMpIGZvdW5kCj4KPiBDYW4gd2UgcmVnaXN0ZXIgbW9yZSB0aGF0IG9uZSBkaXNrPwo+CldlIHdl
-cmUgc3VwcG9zZWQgdG8sIGJ1dCB5b3UgaGF2ZSBqdXN0IGZvdW5kIGFuIG9taXNzaW9uLiBJbiBm
-dW5jdGlvbiAKdXNiX3N0b3JfYWRkX2Jsa2RldigpLCB3ZSBuZWVkICJwZGV2LT5pZCA9IC0xOyIs
-IGUuZy4gcmlnaHQgYWZ0ZXIgInBkZXYgCj0gJnBibGtfZGV2LT5kZXY7Ii4KClRoZSBmaXJzdCBl
-cnJvciwgIkZhaWxlZCB0byByZWdpc3RlciBwYXJ0aXRpb24uLi4iLCBwcm9iYWJseSBoYXMgCnNv
-bWV0aGluZyB0byBkbyB3aXRoIHRoZSBwYXJ0aXRpb24gdGFibGUuIEtlZXAgaW4gbWluZCB0aGF0
-IHRoZSBkaXNrIApkcml2ZXIgY3VycmVudGx5IHN1cHBvcnRzIHVwIHRvIDJHQiBwYXJ0aXRpb25z
-LgoKUmVnYXJkcywKUm9zZW4KCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5v
-cmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On 09/28/2011 10:32 AM, Lambrecht J=FCrgen wrote:
+>
+> Hello,
+>
+> Because a NAND flash is not reliable, I don't want to write the kernel
+> image raw to flash.
+> Instead, I want to put it in an UBI volume.
+>
+> * The currently running kernel is written in barebox to
+> /dev/nand0.kernel.bb, and the ubi rootfs image to /dev/nand0.root.bb; I
+> have a free partition in /dev/nand0.diag.bb.
+> * So I in a running kernel (v3.0-rc6) I formatted an ubi partition (on
+> that nand0.diag.bb mtd3), and created 2 volumes (kernel and rootfs).
+> Then I tftp'd a zImage to the kernel volume - the same zImage that is
+> currently running.
+> * Then in barebox: 'barebox:/dev ubiattach nand0.diag' gives:
+> UBI: attaching mtd0 to ubi0
+> UBI: physical eraseblock size:   131072 bytes (128 KiB)
+> UBI: logical eraseblock size:    129024 bytes
+> UBI: smallest flash I/O unit:    2048
+> UBI: sub-page size:              512
+> UBI: VID header offset:          512 (aligned 512)
+> UBI: data offset:                2048
+> registering /dev/ubi0
+> registering kernel as /dev/ubi0.kernel
+> registering rootfs as /dev/ubi0.rootfs
+> UBI: attached mtd0 to ubi0
+> UBI: MTD device name:            "nand0.diag"
+> UBI: MTD device size:            48 MiB
+> UBI: number of good PEBs:        384
+> UBI: number of bad PEBs:         0
+> UBI: max. allowed volumes:       128
+> UBI: wear-leveling threshold:    4096
+> UBI: number of internal volumes: 1
+> UBI: number of user volumes:     2
+> UBI: available PEBs:             3
+> UBI: total number of reserved PEBs: 381
+> UBI: number of PEBs reserved for bad PEB handling: 3
+> UBI: max/mean erase counter: 19/0
+> * Then I set bootargs correct
+> * Then 'barebox:/dev bootz ubi0.kernel' gives:
+> ubi_volume_cdev_read: 48 @ 0x00000000
+> invalid magic 0x0001f800
+>
+> Why is that?
+> My barebox version is 2010.12.0.
+> Could it be because the mtd-utils used in linux is 1.4.6 (both on the
+> target and the host (my laptop)), and the one in barebox is older?
+>
+> FYI: When I create an empty ubi volume in linux, and try to tftp to it
+> in barebox, I get this error:
+> (and the same error with ubimkvol)
+>
+> barebox:/ tftp zImage /dev/ubi0.kernel
+> error frame: 0xa3b05828 0x00000882
+> TFTP from server 10.0.56.4 ('zImage' -> '/dev/ubi0.kernel')
+>          UBI error: ubi_io_write: error -5 while writing 512 bytes to
+> PEB 0:512, written 0 bytes
+>
+Maybe this is the answer here.  I will try it out next week.
+http://www.linux-mtd.infradead.org/faq/ubi.html#L_subpage_verify_fail
+
+Juergen
+>
+> UBI warning: ubi_eba_write_leb: failed to write VID header to LEB
+> 2147479551:0, PEB 0
+> UBI: try another PEB
+> UBI error: ubi_io_write: error -5 while writing 512 bytes to PEB 0:512,
+> written 0 bytes
+> UBI warning: ubi_eba_write_leb: failed to write VID header to LEB
+> 2147479551:0, PEB 0
+> UBI: try another PEB
+> UBI error: ubi_io_write: error -5 while writing 512 bytes to PEB 0:512,
+> written 0 bytes
+> UBI warning: ubi_eba_write_leb: failed to write VID header to LEB
+> 2147479551:0, PEB 0
+> UBI: try another PEB
+> UBI error: ubi_io_write: error -5 while writing 512 bytes to PEB 0:512,
+> written 0 bytes
+> UBI warning: ubi_eba_write_leb: failed to write VID header to LEB
+> 2147479551:0, PEB 0
+> UBI warning: ubi_ro_mode: switch to read-only mode
+> Cannot start volume update
+> write: Read-only file system
+> \
+> tftp failed: error -30
+>
+>
+> Kind regards,
+> J=FCrgen
+>
+> J=FCrgen Lambrecht
+> R&D Associate
+> Tel: +32 (0)51 303045    Fax: +32 (0)51 310670
+> http://www.televic-rail.com
+> Televic Rail NV - Leo Bekaertlaan 1 - 8870 Izegem - Belgium
+> Company number 0825.539.581 - RPR Kortrijk
+>
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+>
+
+
+-- =
+
+J=FCrgen Lambrecht
+R&D Associate
+Tel: +32 (0)51 303045    Fax: +32 (0)51 310670
+http://www.televic-rail.com
+Televic Rail NV - Leo Bekaertlaan 1 - 8870 Izegem - Belgium
+Company number 0825.539.581 - RPR Kortrijk
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
