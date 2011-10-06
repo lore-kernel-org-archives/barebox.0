@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1RBlkN-0003Ie-Ed
-	for barebox@lists.infradead.org; Thu, 06 Oct 2011 11:04:16 +0000
-Date: Thu, 6 Oct 2011 13:04:11 +0200
+	id 1RBllx-0003KB-20
+	for barebox@lists.infradead.org; Thu, 06 Oct 2011 11:05:53 +0000
+Date: Thu, 6 Oct 2011 13:05:50 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20111006110410.GU31404@pengutronix.de>
+Message-ID: <20111006110550.GV31404@pengutronix.de>
 References: <1317305076-3334-1-git-send-email-antonynpavlov@gmail.com>
-	<1317305076-3334-5-git-send-email-antonynpavlov@gmail.com>
+	<1317305076-3334-6-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1317305076-3334-5-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1317305076-3334-6-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,38 +23,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC PATCH 4/6] arm: cpuinfo: Cortex-A9 dirty hack
+Subject: Re: [RFC PATCH 5/6] toshiba-ac100: add USB host support
 To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, Sep 29, 2011 at 06:04:34PM +0400, Antony Pavlov wrote:
+On Thu, Sep 29, 2011 at 06:04:35PM +0400, Antony Pavlov wrote:
 > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 > ---
->  arch/arm/cpu/cpuinfo.c |   10 +++++++++-
->  1 files changed, 9 insertions(+), 1 deletions(-)
+>  arch/arm/boards/toshiba-ac100/board.c |   18 ++++++++++++++++++
+>  1 files changed, 18 insertions(+), 0 deletions(-)
 > 
-> diff --git a/arch/arm/cpu/cpuinfo.c b/arch/arm/cpu/cpuinfo.c
-> index e19b8de..25d2c3f 100644
-> --- a/arch/arm/cpu/cpuinfo.c
-> +++ b/arch/arm/cpu/cpuinfo.c
-> @@ -101,7 +101,15 @@ static int do_cpuinfo(struct command *cmdtp, int argc, char *argv[])
->  			if (arch > 0 && arch < 8)
->  				architecture = post_arm7_archs[arch - 1];
->  			else
-> -				architecture = "Unknown";
-> +				/*
-> +				 * see Cortex-A9 Technical Reference Manual:
-> +				 *  Main ID Register value fixed to 0x411fc090
-> +				 */
-> +				if (mainid == 0x411fc090) {
-> +					architecture = "Cortex-A9";
-> +				} else {
-> +					architecture = "Unknown";
-> +				}
+> diff --git a/arch/arm/boards/toshiba-ac100/board.c b/arch/arm/boards/toshiba-ac100/board.c
+> index e3a5eba..3fd720d 100644
+> --- a/arch/arm/boards/toshiba-ac100/board.c
+> +++ b/arch/arm/boards/toshiba-ac100/board.c
+> @@ -24,6 +24,8 @@
+>  #include <init.h>
+>  #include <asm/armlinux.h>
+>  #include <sizes.h>
+> +#include <usb/ehci.h>
+> +#include <mach/iomap.h>
+>  
+>  static int ac100_mem_init(void)
+>  {
+> @@ -32,3 +34,19 @@ static int ac100_mem_init(void)
+>  	return 0;
+>  }
+>  mem_initcall(ac100_mem_init);
+> +
+> +#ifdef CONFIG_USB_EHCI
+> +static struct ehci_platform_data ehci_pdata = {
+> +	.flags = EHCI_HAS_TT,
+> +};
+> +#endif
+> +
+> +static int ac100_devices_init(void)
+> +{
+> +#ifdef CONFIG_USB_EHCI
+> +	add_generic_usb_ehci_device(-1, TEGRA_USB3_BASE, &ehci_pdata);
+> +#endif
 
-For Cortex-A8 it seems to be 0x412fc085. Aybe you can have a look at
-arch/arm/kernel/setup.c in the kernel to see how it's done there. Would
-be good to catch the Cortex-A8 aswell with this patch.
+Can we skip the ifdefs? I think the few additional bytes do not
+outweigh better readability of the source code.
 
 Sascha
 
