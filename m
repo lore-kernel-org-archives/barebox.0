@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1RBijm-0002AY-EG
-	for barebox@lists.infradead.org; Thu, 06 Oct 2011 07:51:27 +0000
-Date: Thu, 6 Oct 2011 09:51:18 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20111006075118.GS31404@pengutronix.de>
-References: <4E8C6F3D.40308@ge.com>
+Received: from mail.free-electrons.com ([88.190.12.23])
+	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+	id 1RBixC-0002Dw-GJ
+	for barebox@lists.infradead.org; Thu, 06 Oct 2011 08:05:19 +0000
+Received: from [192.168.0.14] (tra42-5-83-152-246-54.fbx.proxad.net
+	[83.152.246.54])
+	by mail.free-electrons.com (Postfix) with ESMTPA id 30A33206
+	for <barebox@lists.infradead.org>;
+	Thu,  6 Oct 2011 10:05:07 +0200 (CEST)
+Message-ID: <4E8D6133.8080604@free-electrons.com>
+Date: Thu, 06 Oct 2011 10:05:07 +0200
+From: Gregory CLEMENT <gregory.clement@free-electrons.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <4E8C6F3D.40308@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,32 +24,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: bootm
-To: Renaud Barbier <renaud.barbier@ge.com>
-Cc: barebox@lists.infradead.org
+Subject: [RFC/PATCH 0/2]  Backlight support
+To: barebox <barebox@lists.infradead.org>
 
-On Wed, Oct 05, 2011 at 03:52:45PM +0100, Renaud Barbier wrote:
-> Hello,
-> I am looking for information on how to boot Linux with a device tree.
-> 
-> Basically, I have a  uImage and a device tree(dtb) and with U-boot I
-> used to do:
-> bootm uImage_address -- dtb_address
-> 
-> How does it work with barebox?
+This patch set is a RFC about a backlight framework. The purpose of
+this framework is mainly to allow to add easily a support for a
+backlight with the possibility of setting brightness directly from the
+barebox shell using the brightness parameter.
 
-As Jean-Christophe pointed out the architecture is important. On
-Arm we do not have devicetree support in any official tree, but
-I already have patches.
+An implementation is provided for i.MX23 by using the PWM. It was
+tested on a custom i.MX23 base board.
 
-Sascha
+All this commits are done to be applied on top of this git repository :
 
+  git://git.pengutronix.de/git/barebox.git master
+
+The HEAD of this git repository, when I created this patch, was:
+commit 71e806048e5a370fbcabf5441de33bd3f083903a
+login: correct a typo in command description
+
+Gregory CLEMENT (2):
+  backlight: Add backlight framework to support backlight driver
+  backlight: mxs: Add backlight support for i.MX23
+
+ arch/arm/mach-mxs/include/mach/backlight.h |   19 ++++
+ drivers/video/Kconfig                      |    3 +-
+ drivers/video/Makefile                     |    2 +
+ drivers/video/backlight/Kconfig            |   16 ++++
+ drivers/video/backlight/Makefile           |    3 +
+ drivers/video/backlight/backlight-mxs.c    |  136 ++++++++++++++++++++++++++++
+ drivers/video/backlight/backlight.c        |   85 +++++++++++++++++
+ include/backlight.h                        |   21 +++++
+ 8 files changed, 284 insertions(+), 1 deletions(-)
+ create mode 100644 arch/arm/mach-mxs/include/mach/backlight.h
+ create mode 100644 drivers/video/backlight/Kconfig
+ create mode 100644 drivers/video/backlight/Makefile
+ create mode 100644 drivers/video/backlight/backlight-mxs.c
+ create mode 100644 drivers/video/backlight/backlight.c
+ create mode 100644 include/backlight.h
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.4.1
+
+
 
 _______________________________________________
 barebox mailing list
