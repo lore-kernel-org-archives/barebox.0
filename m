@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 6.mo2.mail-out.ovh.net ([87.98.165.38]
-	helo=mo2.mail-out.ovh.net)
-	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1RBXOa-0005mr-FT
-	for barebox@lists.infradead.org; Wed, 05 Oct 2011 19:44:49 +0000
-Received: from mail180.ha.ovh.net (b6.ovh.net [213.186.33.56])
-	by mo2.mail-out.ovh.net (Postfix) with SMTP id 36125DCBB63
-	for <barebox@lists.infradead.org>;
-	Wed,  5 Oct 2011 21:37:41 +0200 (CEST)
-Date: Wed, 5 Oct 2011 21:12:20 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20111005191220.GH20621@game.jcrosoft.org>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+	id 1RBijm-0002AY-EG
+	for barebox@lists.infradead.org; Thu, 06 Oct 2011 07:51:27 +0000
+Date: Thu, 6 Oct 2011 09:51:18 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20111006075118.GS31404@pengutronix.de>
 References: <4E8C6F3D.40308@ge.com>
 MIME-Version: 1.0
 Content-Disposition: inline
@@ -31,7 +26,7 @@ Subject: Re: bootm
 To: Renaud Barbier <renaud.barbier@ge.com>
 Cc: barebox@lists.infradead.org
 
-On 15:52 Wed 05 Oct     , Renaud Barbier wrote:
+On Wed, Oct 05, 2011 at 03:52:45PM +0100, Renaud Barbier wrote:
 > Hello,
 > I am looking for information on how to boot Linux with a device tree.
 > 
@@ -40,16 +35,19 @@ On 15:52 Wed 05 Oct     , Renaud Barbier wrote:
 > bootm uImage_address -- dtb_address
 > 
 > How does it work with barebox?
-which architecture do you work on ARM/PPC?
 
-on Arm  I'm working on Mutli uImage support but I've not yet add the DTB
-support
+As Jean-Christophe pointed out the architecture is important. On
+Arm we do not have devicetree support in any official tree, but
+I already have patches.
 
-but you need to understand that on Barebox we do not use address but file
-and in the case of the multi image index
+Sascha
 
-Best Regards,
-J.
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
