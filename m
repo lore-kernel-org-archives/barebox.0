@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from tango.tkos.co.il ([62.219.50.35])
+Received: from mail-ww0-f49.google.com ([74.125.82.49])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1RBnho-0004JZ-Vl
-	for barebox@lists.infradead.org; Thu, 06 Oct 2011 13:09:46 +0000
-Date: Thu, 6 Oct 2011 15:09:34 +0200
-From: Baruch Siach <baruch@tkos.co.il>
-Message-ID: <20111006130934.GC1494@sapphire.tkos.co.il>
-References: <4E8C6F3D.40308@ge.com> <20111006075118.GS31404@pengutronix.de>
-	<4E8D870B.8050207@ge.com>
+	id 1RBsoi-00011h-0n
+	for barebox@lists.infradead.org; Thu, 06 Oct 2011 18:37:12 +0000
+Received: by wwp14 with SMTP id 14so3189720wwp.18
+	for <barebox@lists.infradead.org>; Thu, 06 Oct 2011 11:37:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <4E8D870B.8050207@ge.com>
+In-Reply-To: <20111006110410.GU31404@pengutronix.de>
+References: <1317305076-3334-1-git-send-email-antonynpavlov@gmail.com>
+	<1317305076-3334-5-git-send-email-antonynpavlov@gmail.com>
+	<20111006110410.GU31404@pengutronix.de>
+Date: Thu, 6 Oct 2011 22:32:26 +0400
+Message-ID: <CAA4bVAFeJq-CkJ8tMOXvMfH8NwgsGPV_QCtLfuRU-WRAsZdfRQ@mail.gmail.com>
+From: Antony Pavlov <antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,49 +21,76 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: bootm
-To: Renaud Barbier <renaud.barbier@ge.com>
+Subject: Re: [RFC PATCH 4/6] arm: cpuinfo: Cortex-A9 dirty hack
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Renaud,
+On 6 October 2011 15:04, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> On Thu, Sep 29, 2011 at 06:04:34PM +0400, Antony Pavlov wrote:
+>> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+>> ---
+>> =A0arch/arm/cpu/cpuinfo.c | =A0 10 +++++++++-
+>> =A01 files changed, 9 insertions(+), 1 deletions(-)
+>>
+>> diff --git a/arch/arm/cpu/cpuinfo.c b/arch/arm/cpu/cpuinfo.c
+>> index e19b8de..25d2c3f 100644
+>> --- a/arch/arm/cpu/cpuinfo.c
+>> +++ b/arch/arm/cpu/cpuinfo.c
+>> @@ -101,7 +101,15 @@ static int do_cpuinfo(struct command *cmdtp, int ar=
+gc, char *argv[])
+>> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (arch > 0 && arch < 8)
+>> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 architecture=
+ =3D post_arm7_archs[arch - 1];
+>> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 else
+>> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 architecture =
+=3D "Unknown";
+>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 /*
+>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0* see Corte=
+x-A9 Technical Reference Manual:
+>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0* =A0Main I=
+D Register value fixed to 0x411fc090
+>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0*/
+>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (mainid =3D=
+=3D 0x411fc090) {
+>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0 architecture =3D "Cortex-A9";
+>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 } else {
+>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0 architecture =3D "Unknown";
+>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 }
+>
+> For Cortex-A8 it seems to be 0x412fc085. Aybe you can have a look at
+> arch/arm/kernel/setup.c in the kernel to see how it's done there. Would
+> be good to catch the Cortex-A8 aswell with this patch.
+>
 
-On Thu, Oct 06, 2011 at 11:46:35AM +0100, Renaud Barbier wrote:
-> It would be for a ppc.
-> 
-> I am evaluating barebox on a mpc8544.
+Sorry, but now I think that my patch is completely wrong.
+The "Cortex A9" in __CPU core name__, not an __architecture name__.
+Really, "Cortex A9" has the "ARM v7" architecture.
 
-Can you share your experience with running Barebox on this e500 based chip?  
-Have you added anything to the generic arch/ppc/ code?
+I will fix my patch using linux/arch/arm/kernel/setup.c as a model.
 
-I'm currently working with an e500 based chip (P1011), so I'm very much 
-interested in your experience.
+To show cpu name we will need something like struct proc_info_list in linux:
 
-baruch
+struct cpu_ids {
+    u32 cpu_id;
+    u32 cpu_id_mask;
+    const char *cpu_name;
+} cpu_ids[] =3D {
+ { 0x410fc050, 0xff0ffff0, "Cortex A5", },
+ { 0x410fc090, 0xff0ffff0, "Cortex A9", },
+ { 0x410fc0f0, 0xff0ffff0, "Cortex A15", },
+  ...
+}
 
-> On 06/10/11 08:51, Sascha Hauer wrote:
-> >On Wed, Oct 05, 2011 at 03:52:45PM +0100, Renaud Barbier wrote:
-> >>Hello,
-> >>I am looking for information on how to boot Linux with a device tree.
-> >>
-> >>Basically, I have a  uImage and a device tree(dtb) and with U-boot I
-> >>used to do:
-> >>bootm uImage_address -- dtb_address
-> >>
-> >>How does it work with barebox?
-> >As Jean-Christophe pointed out the architecture is important. On
-> >Arm we do not have devicetree support in any official tree, but
-> >I already have patches.
-> >
-> >Sascha
+-- =
 
--- 
-                                                     ~. .~   Tk Open Systems
-=}------------------------------------------------ooO--U--Ooo------------{=
-   - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
