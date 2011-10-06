@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from tango.tkos.co.il ([62.219.50.35])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1RBnBq-00041L-9W
-	for barebox@lists.infradead.org; Thu, 06 Oct 2011 12:36:43 +0000
-Date: Thu, 6 Oct 2011 14:36:39 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20111006123639.GY31404@pengutronix.de>
+	id 1RBnho-0004JZ-Vl
+	for barebox@lists.infradead.org; Thu, 06 Oct 2011 13:09:46 +0000
+Date: Thu, 6 Oct 2011 15:09:34 +0200
+From: Baruch Siach <baruch@tkos.co.il>
+Message-ID: <20111006130934.GC1494@sapphire.tkos.co.il>
 References: <4E8C6F3D.40308@ge.com> <20111006075118.GS31404@pengutronix.de>
 	<4E8D870B.8050207@ge.com>
 MIME-Version: 1.0
@@ -27,25 +27,41 @@ Subject: Re: bootm
 To: Renaud Barbier <renaud.barbier@ge.com>
 Cc: barebox@lists.infradead.org
 
+Hi Renaud,
+
 On Thu, Oct 06, 2011 at 11:46:35AM +0100, Renaud Barbier wrote:
-> Thanks.
 > It would be for a ppc.
 > 
 > I am evaluating barebox on a mpc8544.
 
-In this case it's bootm -o /some/blob /some/uImage
+Can you share your experience with running Barebox on this e500 based chip?  
+Have you added anything to the generic arch/ppc/ code?
 
-Note that this is likely to change in the near future as I'm working
-on oftree support for ARM and will integrate libfdt then.
+I'm currently working with an e500 based chip (P1011), so I'm very much 
+interested in your experience.
 
-Sascha
+baruch
 
+> On 06/10/11 08:51, Sascha Hauer wrote:
+> >On Wed, Oct 05, 2011 at 03:52:45PM +0100, Renaud Barbier wrote:
+> >>Hello,
+> >>I am looking for information on how to boot Linux with a device tree.
+> >>
+> >>Basically, I have a  uImage and a device tree(dtb) and with U-boot I
+> >>used to do:
+> >>bootm uImage_address -- dtb_address
+> >>
+> >>How does it work with barebox?
+> >As Jean-Christophe pointed out the architecture is important. On
+> >Arm we do not have devicetree support in any official tree, but
+> >I already have patches.
+> >
+> >Sascha
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+                                                     ~. .~   Tk Open Systems
+=}------------------------------------------------ooO--U--Ooo------------{=
+   - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
 
 _______________________________________________
 barebox mailing list
