@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ww0-f49.google.com ([74.125.82.49])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1RBsoi-00011h-0n
-	for barebox@lists.infradead.org; Thu, 06 Oct 2011 18:37:12 +0000
-Received: by wwp14 with SMTP id 14so3189720wwp.18
-	for <barebox@lists.infradead.org>; Thu, 06 Oct 2011 11:37:07 -0700 (PDT)
+	id 1RCAGf-0007nD-MU
+	for barebox@lists.infradead.org; Fri, 07 Oct 2011 13:15:18 +0000
+Date: Fri, 7 Oct 2011 15:15:08 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20111007131508.GD31404@pengutronix.de>
+References: <4E8D6133.8080604@free-electrons.com>
 MIME-Version: 1.0
-In-Reply-To: <20111006110410.GU31404@pengutronix.de>
-References: <1317305076-3334-1-git-send-email-antonynpavlov@gmail.com>
-	<1317305076-3334-5-git-send-email-antonynpavlov@gmail.com>
-	<20111006110410.GU31404@pengutronix.de>
-Date: Thu, 6 Oct 2011 22:32:26 +0400
-Message-ID: <CAA4bVAFeJq-CkJ8tMOXvMfH8NwgsGPV_QCtLfuRU-WRAsZdfRQ@mail.gmail.com>
-From: Antony Pavlov <antonynpavlov@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <4E8D6133.8080604@free-electrons.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,76 +18,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC PATCH 4/6] arm: cpuinfo: Cortex-A9 dirty hack
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [RFC/PATCH 0/2]  Backlight support
+To: Gregory CLEMENT <gregory.clement@free-electrons.com>
+Cc: barebox <barebox@lists.infradead.org>
 
-On 6 October 2011 15:04, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> On Thu, Sep 29, 2011 at 06:04:34PM +0400, Antony Pavlov wrote:
->> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
->> ---
->> =A0arch/arm/cpu/cpuinfo.c | =A0 10 +++++++++-
->> =A01 files changed, 9 insertions(+), 1 deletions(-)
->>
->> diff --git a/arch/arm/cpu/cpuinfo.c b/arch/arm/cpu/cpuinfo.c
->> index e19b8de..25d2c3f 100644
->> --- a/arch/arm/cpu/cpuinfo.c
->> +++ b/arch/arm/cpu/cpuinfo.c
->> @@ -101,7 +101,15 @@ static int do_cpuinfo(struct command *cmdtp, int ar=
-gc, char *argv[])
->> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (arch > 0 && arch < 8)
->> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 architecture=
- =3D post_arm7_archs[arch - 1];
->> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 else
->> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 architecture =
-=3D "Unknown";
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 /*
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0* see Corte=
-x-A9 Technical Reference Manual:
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0* =A0Main I=
-D Register value fixed to 0x411fc090
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0*/
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (mainid =3D=
-=3D 0x411fc090) {
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0 architecture =3D "Cortex-A9";
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 } else {
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0 architecture =3D "Unknown";
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 }
->
-> For Cortex-A8 it seems to be 0x412fc085. Aybe you can have a look at
-> arch/arm/kernel/setup.c in the kernel to see how it's done there. Would
-> be good to catch the Cortex-A8 aswell with this patch.
->
+Hi Gregory,
 
-Sorry, but now I think that my patch is completely wrong.
-The "Cortex A9" in __CPU core name__, not an __architecture name__.
-Really, "Cortex A9" has the "ARM v7" architecture.
+On Thu, Oct 06, 2011 at 10:05:07AM +0200, Gregory CLEMENT wrote:
+> This patch set is a RFC about a backlight framework. The purpose of
+> this framework is mainly to allow to add easily a support for a
+> backlight with the possibility of setting brightness directly from the
+> barebox shell using the brightness parameter.
+> 
+> An implementation is provided for i.MX23 by using the PWM. It was
+> tested on a custom i.MX23 base board.
 
-I will fix my patch using linux/arch/arm/kernel/setup.c as a model.
+Two things that bother me in this series.
 
-To show cpu name we will need something like struct proc_info_list in linux:
+First thing is that I wonder if it would be better to not
+register a seperate device for backlight. How about a call
+like this:
 
-struct cpu_ids {
-    u32 cpu_id;
-    u32 cpu_id_mask;
-    const char *cpu_name;
-} cpu_ids[] =3D {
- { 0x410fc050, 0xff0ffff0, "Cortex A5", },
- { 0x410fc090, 0xff0ffff0, "Cortex A9", },
- { 0x410fc0f0, 0xff0ffff0, "Cortex A15", },
-  ...
-}
+fb_register_backlight(const char *fb,
+	void (*set_brightness)(int brightness, void *priv));
 
--- =
+The core would only need a function to find the struct device_d
+by the corresponding "fbx" string. This way we could add the
+brightness variable to the framebuffer and not a seperate device,
+so fb0.brightness=50.
 
-Best regards,
-=A0 Antony Pavlov
+The second thing is that the pwm you use for the mxs backlight
+is a generic pwm which not necessarily drives a backlight. We
+should have a generic pwm api for this. Otherwise we end up
+with different drivers for the same pwm.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
