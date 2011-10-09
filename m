@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1RCpjr-0000Qm-Nl
-	for barebox@lists.infradead.org; Sun, 09 Oct 2011 09:32:08 +0000
-Date: Sun, 9 Oct 2011 11:32:03 +0200
+	id 1RCppH-0000VR-BF
+	for barebox@lists.infradead.org; Sun, 09 Oct 2011 09:37:44 +0000
+Date: Sun, 9 Oct 2011 11:37:38 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20111009093202.GL31404@pengutronix.de>
-References: <20111008125009.GK31404@pengutronix.de>
-	<1318152592-4463-1-git-send-email-fvanderwerf@gmail.com>
+Message-ID: <20111009093738.GN31404@pengutronix.de>
+References: <20111008141722.GG10459@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1318152592-4463-1-git-send-email-fvanderwerf@gmail.com>
+In-Reply-To: <20111008141722.GG10459@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,70 +22,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Fixed unaligned access
-To: Fabian van der Werf <fvanderwerf@gmail.com>
+Subject: Re: [PATCH 0/5] Multi uImage support on ARM
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Sun, Oct 09, 2011 at 11:29:52AM +0200, Fabian van der Werf wrote:
-> ---
->  drivers/ata/disk_drive.c |   15 ++++++++++-----
->  1 files changed, 10 insertions(+), 5 deletions(-)
+On Sat, Oct 08, 2011 at 04:17:22PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Hi,
+> 
+> 	This the final patch seires to add the Multi uImage support to
+> 	barebox
+> 
+> 	This does not support yet the script type but allow us to boot a uImage
+> 	with a kernel and an initrd inside
+> 
+> 	It will be easy to add the DT support too
+> 
+> 	And enable it on arm.
+> 
+> Jean-Christophe PLAGNIOL-VILLARD (5):
+>       bootm: ensure the uImage is mapped first to allow option to used it
+>       get_fake_image_handle: set nb_data_entries to 1 and update the header size
+>       bootm: add -L option to specify the initrd load address
+>       arm/bootm: enable multi uimage support
+>       defaultenv: add bootm_opt var to allow the board to pass parameter to bootm
 
-Applied to master.
+Applied to next.
 
 Sascha
 
 > 
-> diff --git a/drivers/ata/disk_drive.c b/drivers/ata/disk_drive.c
-> index 14b5e66..6a5dc87 100644
-> --- a/drivers/ata/disk_drive.c
-> +++ b/drivers/ata/disk_drive.c
-> @@ -38,6 +38,7 @@
->  #include <malloc.h>
->  #include <common.h>
->  #include <block.h>
-> +#include <asm/unaligned.h>
->  
->  /**
->   * Description of one partition table entry (D*S type)
-> @@ -97,25 +98,29 @@ static int disk_register_partitions(struct device_d *dev, struct partition_entry
->  	int part_order[4] = {0, 1, 2, 3};
->  	int i, rc;
->  	char drive_name[16], partition_name[19];
-> +	u32 partition_start, partition_size;
->  
->  	/* TODO order the partitions */
->  
->  	for (i = 0; i < 4; i++) {
-> +		partition_start = get_unaligned(&table[part_order[i]].partition_start);
-> +		partition_size  = get_unaligned(&table[part_order[i]].partition_size);
-> +
->  		sprintf(drive_name, "%s%d", dev->name, dev->id);
->  		sprintf(partition_name, "%s%d.%d", dev->name, dev->id, i);
-> -		if (table[part_order[i]].partition_start != 0) {
-> +		if (partition_start != 0) {
->  #if 1
->  /* ignore partitions we can't handle due to 32 bit limits */
-> -			if (table[part_order[i]].partition_start > 0x7fffff)
-> +			if (partition_start > 0x7fffff)
->  				continue;
-> -			if (table[part_order[i]].partition_size > 0x7fffff)
-> +			if (partition_size > 0x7fffff)
->  				continue;
->  #endif
->  			dev_dbg(dev, "Registering partition %s to drive %s\n",
->  				partition_name, drive_name);
->  			rc = devfs_add_partition(drive_name,
-> -				table[part_order[i]].partition_start * SECTOR_SIZE,
-> -				table[part_order[i]].partition_size * SECTOR_SIZE,
-> +				partition_start * SECTOR_SIZE,
-> +				partition_size * SECTOR_SIZE,
->  				DEVFS_PARTITION_FIXED, partition_name);
->  			if (rc != 0)
->  				dev_err(dev, "Failed to register partition %s (%d)\n", partition_name, rc);
-> -- 
-> 1.7.0.4
+>  arch/arm/lib/bootm.c |    5 -----
+>  commands/bootm.c     |   42 +++++++++++++++++++++++++++++++++++-------
+>  defaultenv/bin/boot  |    2 +-
+>  3 files changed, 36 insertions(+), 13 deletions(-)
 > 
+> Best Regards,
+> J.
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 > 
 
 -- 
