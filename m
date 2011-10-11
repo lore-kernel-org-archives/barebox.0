@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from comal.ext.ti.com ([198.47.26.152])
+Received: from devils.ext.ti.com ([198.47.26.153])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1RDe8A-0003RO-5y
-	for barebox@lists.infradead.org; Tue, 11 Oct 2011 15:20:35 +0000
+	id 1RDeAy-0003TA-3F
+	for barebox@lists.infradead.org; Tue, 11 Oct 2011 15:23:29 +0000
 Received: from dbdp20.itg.ti.com ([172.24.170.38])
-	by comal.ext.ti.com (8.13.7/8.13.7) with ESMTP id p9BFKTo8003019
+	by devils.ext.ti.com (8.13.7/8.13.7) with ESMTP id p9BFNNMG015824
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
-	for <barebox@lists.infradead.org>; Tue, 11 Oct 2011 10:20:31 -0500
-Received: from dbde70.ent.ti.com (localhost [127.0.0.1])
-	by dbdp20.itg.ti.com (8.13.8/8.13.8) with ESMTP id p9BFKTQN000560
-	for <barebox@lists.infradead.org>; Tue, 11 Oct 2011 20:50:29 +0530 (IST)
+	for <barebox@lists.infradead.org>; Tue, 11 Oct 2011 10:23:25 -0500
+Received: from dbde71.ent.ti.com (localhost [127.0.0.1])
+	by dbdp20.itg.ti.com (8.13.8/8.13.8) with ESMTP id p9BFNNbx000833
+	for <barebox@lists.infradead.org>; Tue, 11 Oct 2011 20:53:23 +0530 (IST)
 From: Sanjeev Premi <premi@ti.com>
-Date: Tue, 11 Oct 2011 20:50:24 +0530
-Message-ID: <1318346424-13246-1-git-send-email-premi@ti.com>
+Date: Tue, 11 Oct 2011 20:53:20 +0530
+Message-ID: <1318346600-13360-1-git-send-email-premi@ti.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -26,7 +26,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] iomap: Unify run_shell() in xload configuration
+Subject: [PATCH v2] omap: Unify run_shell() in xload configuration
 To: barebox@lists.infradead.org
 
 Currently, there are multiple definitions of run_shell()
@@ -39,6 +39,10 @@ This has been fixed as well.
 
 Signed-off-by: Sanjeev Premi <premi@ti.com>
 ---
+
+ Change in v2:
+    Fixed the typo in the subject s/iomap/omap/
+    ...observed when mail reached my inbox :(
 
  Only build tested with these commands:
    make distclean ; make omap3530_beagle_defconfig ; make ;
