@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from tango.tkos.co.il ([62.219.50.35])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1RDWLw-0002uw-90
-	for barebox@lists.infradead.org; Tue, 11 Oct 2011 07:02:17 +0000
-Date: Tue, 11 Oct 2011 09:01:56 +0200
-From: Baruch Siach <baruch@tkos.co.il>
-Message-ID: <20111011070155.GD16040@sapphire.tkos.co.il>
+	id 1RDWPu-0002zW-KQ
+	for barebox@lists.infradead.org; Tue, 11 Oct 2011 07:06:23 +0000
+Date: Tue, 11 Oct 2011 09:06:16 +0200
+From: Robert Schwebel <r.schwebel@pengutronix.de>
+Message-ID: <20111011070616.GM18273@pengutronix.de>
 References: <20110308071058.GB22012@jasper.tkos.co.il>
 	<4DE1E2FA.1090907@wellsense-tech.com>
 	<20110529063350.GB32378@jasper.tkos.co.il>
@@ -35,53 +35,28 @@ Subject: Re: iMX35 3stack framebuffer problem
 To: Boaz Ben-David <boaz.bd@wellsense-tech.com>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi Boaz,
-
 On Tue, Oct 11, 2011 at 08:57:15AM +0200, Boaz Ben-David wrote:
-> On 10/11/11 08:54, Robert Schwebel wrote:
-> 
->     On Tue, Oct 11, 2011 at 08:40:52AM +0200, Boaz Ben-David wrote:
-> 
->         Yes, I didn't mention it, but I tried your suggestion. It works
->         (meaning there's no flicker) but
-> 
->         the problem is that the screen is blank for about 8 seconds before I
->         have control again to init it.
-> 
->         People here said they prefer flicker over 8 seconds of blank time...
-> 
->     This is why we have a framebuffer / video driver framework in Barebox.
->     We do not have a driver for MX35 yet, but that could of course be
->     changed.
-> 
->     On the other hand, I'm wondering why it needs 8 s until you see
->     something on the Linux side. We have an MX35 system here which runs at
->     532 MHz, and it needs about 1 s from power-on into Linux userspace, so
->     we decided to show the splash screen from there.
-> 
->     rsc
-> 
 > The kernel size is almost 5MB (it includes an initramfs).
-> 
+>
 > 8 seconds are from the time I call "bootm uImage" and until the init script in
 > the initramfs kicks in.
-> 
+>
 > If I can seriously shorten this time I will be glad to know, maybe there's
 > something I missed.
-> 
-> Any input will be appreciated.
 
-See 
-http://elinux.org/images/8/89/ELCE-2010-Barebox-Booting-Linux-Fast-and-Fancy.pdf.  
-This presentation (by Robert Schwebel) specifically mentions Barebox on 
-i.MX35.
+Do you really need such a big image? Making things as small as possible
+in the first place and load everything that's possible at a later time
+is a good strategy for quickboot scenarios.
 
-baruch
+The elinux reference is a good one for boot time reduction. Their wiki
+has a long list of possibilities.
 
+rsc
 -- 
-                                                     ~. .~   Tk Open Systems
-=}------------------------------------------------ooO--U--Ooo------------{=
-   - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
