@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-iy0-f177.google.com ([209.85.210.177])
+Received: from arroyo.ext.ti.com ([192.94.94.40])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1RDvGa-0004hz-BS
-	for barebox@lists.infradead.org; Wed, 12 Oct 2011 09:38:25 +0000
-Received: by iarr31 with SMTP id r31so728499iar.36
-	for <barebox@lists.infradead.org>; Wed, 12 Oct 2011 02:38:22 -0700 (PDT)
+	id 1RDvmH-0005Gm-2B
+	for barebox@lists.infradead.org; Wed, 12 Oct 2011 10:11:10 +0000
+From: "Premi, Sanjeev" <premi@ti.com>
+Date: Wed, 12 Oct 2011 15:41:00 +0530
+Message-ID: <B85A65D85D7EB246BE421B3FB0FBB5930257A576C4@dbde02.ent.ti.com>
+References: <1318346600-13360-1-git-send-email-premi@ti.com>
+	<20111011203011.GJ18064@game.jcrosoft.org>
+In-Reply-To: <20111011203011.GJ18064@game.jcrosoft.org>
+Content-Language: en-US
 MIME-Version: 1.0
-In-Reply-To: <CAJeSw6A7fSXznW8v_hWXBinGw4VDpn_8-_k1qx3TH6B1cQR3tQ@mail.gmail.com>
-References: <CAGiJk9cnibz1M-FEyxo956b4PF0e3V06FH-vTxbZ=FogADSogQ@mail.gmail.com>
-	<CAJeSw6A7fSXznW8v_hWXBinGw4VDpn_8-_k1qx3TH6B1cQR3tQ@mail.gmail.com>
-Date: Wed, 12 Oct 2011 11:38:20 +0200
-Message-ID: <CAGiJk9cqsKde00LyZNP5QdkBm2tdmrjYj9n5VOh=rCvqqAzqdg@mail.gmail.com>
-From: Samuel Stirtzel <s.stirtzel@googlemail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,94 +19,95 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Pandaboard boot problems persist (was: [PATCH] Fixed unaligned
-	access)
-To: Fabian van der Werf <fvanderwerf@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: RE: [PATCH v2] omap: Unify run_shell() in xload configuration
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi,
+> -----Original Message-----
+> From: Jean-Christophe PLAGNIOL-VILLARD [mailto:plagnioj@jcrosoft.com] 
+> Sent: Wednesday, October 12, 2011 2:00 AM
+> To: Premi, Sanjeev
+> Cc: barebox@lists.infradead.org
+> Subject: Re: [PATCH v2] omap: Unify run_shell() in xload configuration
+> 
+> > -
+> > -	if (!func) {
+> > -		printf("booting failed\n");
+> > -		while (1);
+> > -	}
+> > -
+> > -	shutdown_barebox();
+> > -	func();
+> > -
+> > -	while (1);
+> > -}
+> > -#endif
+> > diff --git a/arch/arm/mach-omap/Makefile 
+> b/arch/arm/mach-omap/Makefile
+> > index 7204746..07bf30a 100644
+> > --- a/arch/arm/mach-omap/Makefile
+> > +++ b/arch/arm/mach-omap/Makefile
+> > @@ -25,4 +25,5 @@ obj-$(CONFIG_ARCH_OMAP3) += omap3_core.o 
+> omap3_generic.o
+> >  obj-$(CONFIG_ARCH_OMAP4) += omap4_generic.o omap4_clock.o
+> >  obj-$(CONFIG_OMAP3_CLOCK_CONFIG) += omap3_clock_core.o 
+> omap3_clock.o
+> >  obj-$(CONFIG_OMAP_GPMC) += gpmc.o devices-gpmc-nand.o
+> > -obj-y += gpio.o xload.o
+> > +obj-$(CONFIG_SHELL_NONE) += xload.o
+> > +obj-y += gpio.o
+> > diff --git a/arch/arm/mach-omap/xload.c b/arch/arm/mach-omap/xload.c
+> > index 216b9b5..ac859fa 100644
+> > --- a/arch/arm/mach-omap/xload.c
+> > +++ b/arch/arm/mach-omap/xload.c
+> > @@ -52,3 +52,39 @@ void *omap_xload_boot_mmc(void)
+> >  
+> >  	return buf;
+> >  }
+> > +
+> > +/*
+> > + * Replaces the default shell in xload configuration
+> > + */
+> > +int run_shell(void)
+> > +{
+> > +	int (*func)(void) = NULL;
+> > +
+> > +#if defined(CONFIG_ARCH_OMAP3)
+> > +	switch (omap3_bootsrc())
+> > +#elif  defined(CONFIG_ARCH_OMAP4)
+> > +	switch (omap4_bootsrc())
+> > +#endif
+> I really don't like this
+> 
+> please create a small local station like this to manage the OMAPx
+> 
+> static u32 omap_bootsrc(void)
+> {
+> #if defined(CONFIG_ARCH_OMAP3)
+> 	return omap3_bootsrc())
+> #elif defined(CONFIG_ARCH_OMAP4)
+> 	return omap4_bootsrc())
+> 	switch (omap4_bootsrc())
+> #endif
+> }
 
-this works, Barebox is running thanks.
+Actually I wanted to do this... just postponed it long enough to forget :(
+Will do this now.
 
-2011/10/12 Fabian van der Werf <fvanderwerf@gmail.com>:
-> Hi,
->
->
-> I noted that the latest merge of branch 'next' also broke barebox on my
-> pandaboard. I suggest you get release v2011.10 and apply the unalignment
-> patch on that release.
->
->
-> Kind regards,
->
-> Fabian
->
-> On Wed, Oct 12, 2011 at 10:32 AM, Samuel Stirtzel
-> <s.stirtzel@googlemail.com> wrote:
->>
->> Hi,
->> today I built the latest Barebox version for Pandaboard, which
->> includes the 'Fixed unaligned access' patch, but I still won't get it
->> to boot.
->>
->> Maybe I'm missing some configurations that differ from the defaults,
->> anyone had success booting Barebox on the Pandaboard?
->>
->>
->> At power on I get the following message:
->>
->> -
->> Texas Instruments X-Loader 1.5.1 (Sep =A06 2011 - 13:37:48)
->> Reading boot sector
->> Loading u-boot.bin from mmc
->>
->>
->> barebox 2011.10.0-00092-gc3d7a97 (Oct 12 2011 - 09:55:05)
->>
->> Board: Texas Instrument's Panda
->> PandaBoard Revision: 003
->> unable to handle NULL pointer dereference at address 0x00000000
->> pc : [<8f018044>] =A0 =A0lr : [<8f018020>]
->> sp : 8cffff38 =A0ip : 8d006158 =A0fp : 00100103
->> r10: 00000000 =A0r9 : 12345678 =A0r8 : 00000001
->> r7 : 8d006170 =A0r6 : 8f03d07c =A0r5 : 8d006170 =A0r4 : 8d0061e8
->> r3 : 00000000 =A0r2 : 00000000 =A0r1 : 00000000 =A0r0 : 8d0061e8
->> Flags: nZCv =A0IRQs off =A0FIQs off =A0Mode SVC_32
->> [<8f018044>] (omap_mmc_probe+0x6c/0x94) from [<8f005708>]
->> (platform_probe+0x10/0x14)
->> [<8f005708>] (platform_probe+0x10/0x14) from [<8f004f80>]
->> (match+0x54/0x98)
->> [<8f004f80>] (match+0x54/0x98) from [<8f005460>]
->> (register_device+0xc0/0xf4)
->> [<8f005460>] (register_device+0xc0/0xf4) from [<8f005778>]
->> (add_generic_device_res+0x44/0x4c)
->> [<8f005778>] (add_generic_device_res+0x44/0x4c) from [<8f029a08>]
->> (panda_devices_init+0xf4/0x1e4)
->> [<8f029a08>] (panda_devices_init+0xf4/0x1e4) from [<8f004bc4>]
->> (start_barebox+0x1c/0x118)
->> [<8f004bc4>] (start_barebox+0x1c/0x118) from [<80e80084>] (0x80e80084)
->> -
->>
->> Is this error directly related to the current issues with Barebox on
->> the Pandaboard?
->>
->> --
->> Regards
->> Samuel
->
->
+~sanjeev
 
-
-
--- =
-
-Regards
-Samuel
-
+> 
+> and then
+> 	switch (omap_bootsrc()) {
+> 
+> 
+> Best Regards,
+> J.
+> 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
