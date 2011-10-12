@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1RDsii-0002so-IS
-	for barebox@lists.infradead.org; Wed, 12 Oct 2011 06:55:17 +0000
-Date: Wed, 12 Oct 2011 08:55:14 +0200
+	id 1RDuCZ-0003uP-4V
+	for barebox@lists.infradead.org; Wed, 12 Oct 2011 08:30:12 +0000
+Date: Wed, 12 Oct 2011 10:30:05 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20111012065514.GH13898@pengutronix.de>
-References: <20111008141722.GG10459@game.jcrosoft.org>
-	<20111009093738.GN31404@pengutronix.de>
-	<20111010220636.GD18064@game.jcrosoft.org>
+Message-ID: <20111012083005.GN13898@pengutronix.de>
+References: <1314693807.22308@milas.spb.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20111010220636.GD18064@game.jcrosoft.org>
+In-Reply-To: <1314693807.22308@milas.spb.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,40 +22,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/5] Multi uImage support on ARM
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: ID fix for mx51 SDHC2
+To: Alexander Shiyan <shc@milas.spb.ru>
 Cc: barebox@lists.infradead.org
 
-On Tue, Oct 11, 2011 at 12:06:36AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 11:37 Sun 09 Oct     , Sascha Hauer wrote:
-> > On Sat, Oct 08, 2011 at 04:17:22PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > Hi,
-> > > 
-> > > 	This the final patch seires to add the Multi uImage support to
-> > > 	barebox
-> > > 
-> > > 	This does not support yet the script type but allow us to boot a uImage
-> > > 	with a kernel and an initrd inside
-> > > 
-> > > 	It will be easy to add the DT support too
-> > > 
-> > > 	And enable it on arm.
-> > > 
-> > > Jean-Christophe PLAGNIOL-VILLARD (5):
-> > >       bootm: ensure the uImage is mapped first to allow option to used it
-> > >       get_fake_image_handle: set nb_data_entries to 1 and update the header size
-> > >       bootm: add -L option to specify the initrd load address
-> > >       arm/bootm: enable multi uimage support
-> > >       defaultenv: add bootm_opt var to allow the board to pass parameter to bootm
-> > 
-> > Applied to next.
-> can we have it on the master it's the second part of the Multi uImage patch
-> series already present in the master
+Hi Alexander,
 
-No. It changes the bootm command which most boards use. A little bit
-more testing is a good thing for this kind of stuff.
+On Tue, Aug 30, 2011 at 12:43:27PM +0400, Alexander Shiyan wrote:
+> Hello.
+> 
+> Please review this patch.
 
-Sascha
+Sorry for the delay. The patch is fine and now applied.
+
+Thanks
+ Sascha
+
+> 
+> diff -urN barebox-v2011.09.0.orig/arch/arm/mach-imx/include/mach/devices-imx51.h barebox-v2011.09.0/arch/arm/mach-imx/include/mach/devices-imx51.h
+> --- barebox-v2011.09.0.orig/arch/arm/mach-imx/include/mach/devices-imx51.h	2011-08-26 18:23:46.000000000 +0400
+> +++ barebox-v2011.09.0/arch/arm/mach-imx/include/mach/devices-imx51.h	2011-08-30 12:35:08.000000000 +0400
+> @@ -48,7 +48,7 @@
+> 
+>  static inline struct device_d *imx51_add_mmc1(void *pdata)
+>  {
+> -	return imx_add_esdhc((void *)MX51_MMC_SDHC2_BASE_ADDR, 0, pdata);
+> +	return imx_add_esdhc((void *)MX51_MMC_SDHC2_BASE_ADDR, 1, pdata);
+>  }
+> 
+>  static inline struct device_d *imx51_add_nand(struct imx_nand_platform_data *pdata)
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 
 -- 
