@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1RDshJ-0002rb-0v
-	for barebox@lists.infradead.org; Wed, 12 Oct 2011 06:53:49 +0000
-Date: Wed, 12 Oct 2011 08:53:45 +0200
+	id 1RDsii-0002so-IS
+	for barebox@lists.infradead.org; Wed, 12 Oct 2011 06:55:17 +0000
+Date: Wed, 12 Oct 2011 08:55:14 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20111012065344.GG13898@pengutronix.de>
-References: <1318084919-3984-1-git-send-email-plagnioj@jcrosoft.com>
-	<1318084919-3984-3-git-send-email-plagnioj@jcrosoft.com>
-	<20111009093850.GO31404@pengutronix.de>
-	<20111010181045.GA18064@game.jcrosoft.org>
+Message-ID: <20111012065514.GH13898@pengutronix.de>
+References: <20111008141722.GG10459@game.jcrosoft.org>
+	<20111009093738.GN31404@pengutronix.de>
+	<20111010220636.GD18064@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20111010181045.GA18064@game.jcrosoft.org>
+In-Reply-To: <20111010220636.GD18064@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,23 +24,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/5] sha1: drop never used sha1_hmac
+Subject: Re: [PATCH 0/5] Multi uImage support on ARM
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Oct 10, 2011 at 08:10:45PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 11:38 Sun 09 Oct     , Sascha Hauer wrote:
-> > On Sat, Oct 08, 2011 at 04:41:57PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > > ---
-> > >  crypto/sha1.c |   39 ---------------------------------------
-> > >  1 files changed, 0 insertions(+), 39 deletions(-)
+On Tue, Oct 11, 2011 at 12:06:36AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 11:37 Sun 09 Oct     , Sascha Hauer wrote:
+> > On Sat, Oct 08, 2011 at 04:17:22PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > Hi,
+> > > 
+> > > 	This the final patch seires to add the Multi uImage support to
+> > > 	barebox
+> > > 
+> > > 	This does not support yet the script type but allow us to boot a uImage
+> > > 	with a kernel and an initrd inside
+> > > 
+> > > 	It will be easy to add the DT support too
+> > > 
+> > > 	And enable it on arm.
+> > > 
+> > > Jean-Christophe PLAGNIOL-VILLARD (5):
+> > >       bootm: ensure the uImage is mapped first to allow option to used it
+> > >       get_fake_image_handle: set nb_data_entries to 1 and update the header size
+> > >       bootm: add -L option to specify the initrd load address
+> > >       arm/bootm: enable multi uimage support
+> > >       defaultenv: add bootm_opt var to allow the board to pass parameter to bootm
 > > 
-> > This one does not apply. We do not have a crypto/ dir in the tree.
-> the frist patch do the move it
+> > Applied to next.
+> can we have it on the master it's the second part of the Multi uImage patch
+> series already present in the master
 
-Ah, ok. I probably skipped the first patch because I thought it's the
-introductory mail.
+No. It changes the bootm command which most boards use. A little bit
+more testing is a good thing for this kind of stuff.
 
 Sascha
 
