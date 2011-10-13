@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1REMjy-0004kk-36
-	for barebox@lists.infradead.org; Thu, 13 Oct 2011 14:58:34 +0000
+	id 1REN3Z-000594-QZ
+	for barebox@lists.infradead.org; Thu, 13 Oct 2011 15:18:50 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 13 Oct 2011 16:58:29 +0200
-Message-Id: <1318517909-21205-3-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1318517909-21205-1-git-send-email-s.hauer@pengutronix.de>
-References: <1318517909-21205-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 13 Oct 2011 17:18:44 +0200
+Message-Id: <1318519124-23388-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1318519124-23388-1-git-send-email-s.hauer@pengutronix.de>
+References: <1318519124-23388-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,32 +21,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] nand: export some useful information about flashes to
-	device variables
+Subject: [PATCH 2/2] ARM panda: fix default env path in config
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/nand/nand.c |    6 ++++++
- 1 files changed, 6 insertions(+), 0 deletions(-)
+ arch/arm/configs/panda_defconfig |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/mtd/nand/nand.c b/drivers/mtd/nand/nand.c
-index 9423ac8..6db21d6 100644
---- a/drivers/mtd/nand/nand.c
-+++ b/drivers/mtd/nand/nand.c
-@@ -265,6 +265,12 @@ int add_mtd_device(struct mtd_info *mtd)
- 
- 	sprintf(str, "%u", mtd->size);
- 	dev_add_param_fixed(&mtd->class_dev, "size", str);
-+	sprintf(str, "%u", mtd->erasesize);
-+	dev_add_param_fixed(&mtd->class_dev, "erasesize", str);
-+	sprintf(str, "%u", mtd->writesize);
-+	dev_add_param_fixed(&mtd->class_dev, "writesize", str);
-+	sprintf(str, "%u", mtd->oobsize);
-+	dev_add_param_fixed(&mtd->class_dev, "oobsize", str);
- 
- 	devfs_create(&mtd->cdev);
- 
+diff --git a/arch/arm/configs/panda_defconfig b/arch/arm/configs/panda_defconfig
+index 38cc958..3ea2466 100644
+--- a/arch/arm/configs/panda_defconfig
++++ b/arch/arm/configs/panda_defconfig
+@@ -17,7 +17,7 @@ CONFIG_AUTO_COMPLETE=y
+ # CONFIG_TIMESTAMP is not set
+ CONFIG_PARTITION=y
+ CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
+-CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/pcm049/env"
++CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/panda/env"
+ CONFIG_CMD_EDIT=y
+ CONFIG_CMD_SLEEP=y
+ CONFIG_CMD_SAVEENV=y
 -- 
 1.7.7
 
