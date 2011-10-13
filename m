@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-iy0-f177.google.com ([209.85.210.177])
+Received: from mail-gy0-f177.google.com ([209.85.160.177])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1REHGD-00075G-TC
-	for barebox@lists.infradead.org; Thu, 13 Oct 2011 09:07:30 +0000
-Received: by iarr31 with SMTP id r31so1281654iar.36
-	for <barebox@lists.infradead.org>; Thu, 13 Oct 2011 02:07:28 -0700 (PDT)
+	id 1REHMq-0007Fb-Cx
+	for barebox@lists.infradead.org; Thu, 13 Oct 2011 09:14:21 +0000
+Received: by gyd10 with SMTP id 10so1886565gyd.36
+	for <barebox@lists.infradead.org>; Thu, 13 Oct 2011 02:14:18 -0700 (PDT)
 MIME-Version: 1.0
 In-Reply-To: <CAGiJk9ePXFCwosqXUtU9yzGPmmZ5O6R_9gFtJXnJ9=DUnCpOxg@mail.gmail.com>
 References: <CAGiJk9ePXFCwosqXUtU9yzGPmmZ5O6R_9gFtJXnJ9=DUnCpOxg@mail.gmail.com>
-Date: Thu, 13 Oct 2011 11:07:28 +0200
-Message-ID: <CAGiJk9ckVjeprWxLZ6Auebfb2HUF9jqBpPXYu-1N0SCk3NT56A@mail.gmail.com>
-From: Samuel Stirtzel <s.stirtzel@googlemail.com>
+Date: Thu, 13 Oct 2011 11:14:17 +0200
+Message-ID: <CAJeSw6BJqdBON18UDRsBJgPov5iqXKmYRROnEyoH6SkNhOJg3w@mail.gmail.com>
+From: Fabian van der Werf <fvanderwerf@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,70 +24,18 @@ Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: Booting Pandaboard from SD card
-To: barebox@lists.infradead.org
+To: Samuel Stirtzel <s.stirtzel@googlemail.com>
+Cc: barebox@lists.infradead.org
 
-Pasted wrong link sorry, here is the right one:
-http://www.omappedia.com/wiki/Minimal-FS_SD_Configuration
-
-2011/10/13 Samuel Stirtzel <s.stirtzel@googlemail.com>:
-> Hi,
-> currently I try to get a Pandaboard to boot out of Barebox, so far I
-> got Barebox up and running.
->
->
-> For testing purpose I'd like to boot from a SD card, optimal would be
-> if I could set up the card like the description in the Omappedia
-> tutorial [1].
-> Is there a tutorial how to set up barebox to boot from SD cards?
->
->
-> What I already tried:
->
-> In the configuration file from arch/arm/boards/panda/env is the
-> description for a network boot configuration,
-> I used this file to start out and wanted to boot from the barebox prompt.
->
-> Barebox is build from my toolchain and i copy the MLO file, the
-> barebox.bin and the bareboxenv file to the boot partition of the card.
-> For convenience I currently use a precompiled MLO that has been made
-> for u-boot thus I just renamed the barebox.bin file to u-boot.bin.
->
-> On startup the following messages were displayed:
-> -
-> Texas Instruments X-Loader 1.5.1 (Sep =A06 2011 - 13:37:48)
-> Reading boot sector
-> Loading u-boot.bin from mmc
->
->
-> barebox 2011.10.0 (Oct 13 2011 - 09:45:17)
->
-> Board: Texas Instrument's Panda
-> PandaBoard Revision: 003
-> ehci@ehci0: USB EHCI 1.00
-> Malloc space: 0x8d000000 -> 0x8f000000 (size 32 MB)
-> Stack space : 0x8cff8000 -> 0x8d000000 (size 32 kB)
-> running /env/bin/init...
-> not found
-> -
-> For me it looks like i forgot to copy a file or something, any advice?
->
->
-> Although booting the uImage with bootm looks ok it won't work, the
-> following message was displayed:
-> -
-> Verifying Checksum ... OK
-> =A0 Image Name: =A0 Angstrom/2.6.35.7/omap4430-panda
-> =A0 Image Type: =A0 ARM Linux Kernel Image (uncompressed)
-> =A0 Data Size: =A0 =A03688408 Bytes =3D =A03.5 MB
-> =A0 Load Address: 80008000
-> =A0 Entry Point: =A080008000
-> OK
+On Thu, Oct 13, 2011 at 10:49 AM, Samuel Stirtzel
+<s.stirtzel@googlemail.com> wrote:
 >
 > Starting kernel ...
 >
 > commandline: <NULL>
 > arch_number: 2791
 > Uncompressing Linux... done, booting the kernel.
+>
 > -
 > The screen just stays blank after the last message.
 > This looks to me like it is (obviously) caused by an incorrect
@@ -95,6 +43,22 @@ http://www.omappedia.com/wiki/Minimal-FS_SD_Configuration
 >
 >
 > Help would be appreciated.
+
+Hi
+
+I am also trying to get things up and running using barebox. I am at
+about the same stage where you are. Though I am loading the kernel
+over TFTP instead from SD. Like you, I get "Uncompressing Linux...
+done, booting the kernel" and then nothing.
+
+Note that this last line is not printed by barebox but by the kernel.
+There is a separate=A0kernel build option to enable a console on the
+omap serial port. Then you still need to add console=3DttyOx,115200n8 to
+your boot arguments. I think it needs to be ttyO2, though I am not
+sure. I haven't had the time yet to try these options (it's just for a
+hobby project).
+
+
 >
 > [1] http://www.omappedia.com/wiki/Minimal-FS_SD_flashing (using 2
 > partitions, one for boot files and the other for the rootfs)
@@ -103,13 +67,15 @@ http://www.omappedia.com/wiki/Minimal-FS_SD_Configuration
 > Regards
 > Samuel
 >
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebo
 
 
+Regards,
 
--- =
-
-Regards
-Samuel
+Fabian
 
 _______________________________________________
 barebox mailing list
