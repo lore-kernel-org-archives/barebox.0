@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-ey0-f177.google.com ([209.85.215.177])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1RERoQ-0002Gn-HY
-	for barebox@lists.infradead.org; Thu, 13 Oct 2011 20:23:31 +0000
+	id 1RERoS-0002Gn-Ah
+	for barebox@lists.infradead.org; Thu, 13 Oct 2011 20:23:33 +0000
 Received: by mail-ey0-f177.google.com with SMTP id 3so572175eye.36
-	for <barebox@lists.infradead.org>; Thu, 13 Oct 2011 13:23:30 -0700 (PDT)
+	for <barebox@lists.infradead.org>; Thu, 13 Oct 2011 13:23:32 -0700 (PDT)
 From: Marek Belisko <marek.belisko@open-nandra.com>
-Date: Thu, 13 Oct 2011 22:23:10 +0200
-Message-Id: <1318537394-8555-4-git-send-email-marek.belisko@open-nandra.com>
+Date: Thu, 13 Oct 2011 22:23:11 +0200
+Message-Id: <1318537394-8555-5-git-send-email-marek.belisko@open-nandra.com>
 In-Reply-To: <1318537394-8555-1-git-send-email-marek.belisko@open-nandra.com>
 References: <1318537394-8555-1-git-send-email-marek.belisko@open-nandra.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,78 +23,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/8] mci:s3c: Fix shadow name sparse warning.
+Subject: [PATCH 5/8] mci:s3c: Fix sparse warning for readl/writel arguments.
 To: barebox@lists.infradead.org
 Cc: Marek Belisko <marek.belisko@open-nandra.com>
 
-warnings:
-drivers/mci/s3c.c:215:22: warning: symbol 'host_data' shadows an earlier one
-drivers/mci/s3c.c:166:28: originally declared here
-drivers/mci/s3c.c:242:22: warning: symbol 'host_data' shadows an earlier one
-drivers/mci/s3c.c:166:28: originally declared here
-drivers/mci/s3c.c:258:22: warning: symbol 'host_data' shadows an earlier one
-drivers/mci/s3c.c:166:28: originally declared here
-drivers/mci/s3c.c:312:22: warning: symbol 'host_data' shadows an earlier one
-drivers/mci/s3c.c:166:28: originally declared here
-drivers/mci/s3c.c:342:22: warning: symbol 'host_data' shadows an earlier one
-drivers/mci/s3c.c:166:28: originally declared here
-drivers/mci/s3c.c:368:22: warning: symbol 'host_data' shadows an earlier one
-drivers/mci/s3c.c:166:28: originally declared here
-drivers/mci/s3c.c:391:22: warning: symbol 'host_data' shadows an earlier one
-drivers/mci/s3c.c:166:28: originally declared here
-drivers/mci/s3c.c:453:22: warning: symbol 'host_data' shadows an earlier one
-drivers/mci/s3c.c:166:28: originally declared here
-drivers/mci/s3c.c:498:22: warning: symbol 'host_data' shadows an earlier one
-drivers/mci/s3c.c:166:28: originally declared here
-drivers/mci/s3c.c:554:22: warning: symbol 'host_data' shadows an earlier one
-drivers/mci/s3c.c:166:28: originally declared here
-drivers/mci/s3c.c:629:22: warning: symbol 'host_data' shadows an earlier one
-drivers/mci/s3c.c:166:28: originally declared here
-drivers/mci/s3c.c:688:22: warning: symbol 'host_data' shadows an earlier one
-drivers/mci/s3c.c:166:28: originally declared here
-drivers/mci/s3c.c:719:22: warning: symbol 'host_data' shadows an earlier one
-drivers/mci/s3c.c:166:28: originally declared here
+warning:
+drivers/mci/s3c.c:789:2: warning: incorrect type in argument 1 (different base types)
+drivers/mci/s3c.c:789:2:    expected void const volatile [noderef] <asn:2>*<noident>
+drivers/mci/s3c.c:789:2:    got int
+drivers/mci/s3c.c:789:2: warning: incorrect type in argument 1 (different base types)
+drivers/mci/s3c.c:789:2:    expected void const volatile [noderef] <asn:2>*<noident>
+drivers/mci/s3c.c:789:2:    got int
 
 Signed-off-by: Marek Belisko <marek.belisko@open-nandra.com>
 ---
- drivers/mci/s3c.c |   10 +++++-----
- 1 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/mci/s3c.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/mci/s3c.c b/drivers/mci/s3c.c
-index 15defe7..b03d7d7 100644
+index b03d7d7..69573fb 100644
 --- a/drivers/mci/s3c.c
 +++ b/drivers/mci/s3c.c
-@@ -163,7 +163,7 @@ struct s3c_mci_host {
-  * There is only one host MCI hardware instance available.
-  * It makes no sense to dynamically allocate this data
-  */
--static struct s3c_mci_host host_data;
-+static struct s3c_mci_host host_pdata;
+@@ -786,8 +786,8 @@ static int s3c_mci_probe(struct device_d *hw_dev)
+ 	struct s3c_mci_platform_data *pd = hw_dev->platform_data;
  
- /**
-  * Finish a request
-@@ -794,8 +794,8 @@ static int s3c_mci_probe(struct device_d *hw_dev)
- 		return -EINVAL;
- 	}
+ 	/* TODO replace by the global func: enable the SDI unit clock */
+-	writel(readl(S3C24X0_CLOCK_POWER_BASE + 0x0c) | 0x200,
+-		S3C24X0_CLOCK_POWER_BASE + 0x0c);
++	writel(readl(IOMEM(S3C24X0_CLOCK_POWER_BASE + 0x0c)) | 0x200,
++		IOMEM(S3C24X0_CLOCK_POWER_BASE + 0x0c));
  
--	hw_dev->priv = &host_data;
--	host_data.base = dev_request_mem_region(hw_dev, 0);
-+	hw_dev->priv = &host_pdata;
-+	host_pdata.base = dev_request_mem_region(hw_dev, 0);
- 	mci_pdata.hw_dev = hw_dev;
- 
- 	/* feed forward the platform specific values */
-@@ -807,8 +807,8 @@ static int s3c_mci_probe(struct device_d *hw_dev)
- 	/*
- 	 * Start the clock to let the engine and the card finishes its startup
- 	 */
--	host_data.clock = s3c_setup_clock_speed(hw_dev, mci_pdata.f_min);
--	writel(SDICON_FIFORESET | SDICON_MMCCLOCK, host_data.base + SDICON);
-+	host_pdata.clock = s3c_setup_clock_speed(hw_dev, mci_pdata.f_min);
-+	writel(SDICON_FIFORESET | SDICON_MMCCLOCK, host_pdata.base + SDICON);
- 
- 	return mci_register(&mci_pdata);
- }
+ 	if (pd == NULL) {
+ 		pr_err("Missing platform data\n");
 -- 
 1.7.4.1
 
