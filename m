@@ -1,12 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from pig2.dooz.org ([88.191.118.219])
+Received: from mail-gx0-f177.google.com ([209.85.161.177])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1REQsZ-0001b9-0p
-	for barebox@lists.infradead.org; Thu, 13 Oct 2011 19:23:44 +0000
-From: =?UTF-8?q?Lo=C3=AFc=20Minier?= <loic.minier@linaro.org>
-Date: Thu, 13 Oct 2011 21:23:31 +0200
-Message-Id: <1318533811-18568-1-git-send-email-loic.minier@linaro.org>
-MIME-Version: 1.0
+	id 1RERoO-0002Gm-R6
+	for barebox@lists.infradead.org; Thu, 13 Oct 2011 20:23:29 +0000
+Received: by ggnr4 with SMTP id r4so504492ggn.36
+	for <barebox@lists.infradead.org>; Thu, 13 Oct 2011 13:23:26 -0700 (PDT)
+From: Marek Belisko <marek.belisko@open-nandra.com>
+Date: Thu, 13 Oct 2011 22:23:07 +0200
+Message-Id: <1318537394-8555-1-git-send-email-marek.belisko@open-nandra.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,36 +16,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Fix spelling of "omitted"; found by lintian
+Subject: [PATCH 1/8] block: Sparse fix.
 To: barebox@lists.infradead.org
+Cc: Marek Belisko <marek.belisko@open-nandra.com>
 
-U2lnbmVkLW9mZi1ieTogTG/Dr2MgTWluaWVyIDxsb2ljLm1pbmllckBsaW5hcm8ub3JnPgotLS0K
-IGNvbW1hbmRzL21lbS5jICAgICB8ICAgIDIgKy0KIGNvbW1hbmRzL3NhdmVlbnYuYyB8ICAgIDIg
-Ky0KIDIgZmlsZXMgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQoKZGlm
-ZiAtLWdpdCBhL2NvbW1hbmRzL21lbS5jIGIvY29tbWFuZHMvbWVtLmMKaW5kZXggOGRmNWYwYS4u
-NTk2M2NmYiAxMDA2NDQKLS0tIGEvY29tbWFuZHMvbWVtLmMKKysrIGIvY29tbWFuZHMvbWVtLmMK
-QEAgLTIyMyw3ICsyMjMsNyBAQCBzdGF0aWMgY29uc3QgX19tYXliZV91bnVzZWQgY2hhciBjbWRf
-bWRfaGVscFtdID0KICJcbiIKICJNZW1vcnkgcmVnaW9uczpcbiIKICJNZW1vcnkgcmVnaW9ucyBj
-YW4gYmUgc3BlY2lmaWVkIGluIHR3byBkaWZmZXJlbnQgZm9ybXM6IHN0YXJ0K3NpemVcbiIKLSJv
-ciBzdGFydC1lbmQsIElmIDxzdGFydD4gaXMgb21taXR0ZWQgaXQgZGVmYXVsdHMgdG8gMC4gSWYg
-ZW5kIGlzIG9tbWl0ZWQgaXRcbiIKKyJvciBzdGFydC1lbmQsIElmIDxzdGFydD4gaXMgb21pdHRl
-ZCBpdCBkZWZhdWx0cyB0byAwLiBJZiBlbmQgaXMgb21pdHRlZCBpdFxuIgogImRlZmF1bHRzIHRv
-IHRoZSBlbmQgb2YgdGhlIGRldmljZSwgZXhjZXB0IGZvciBpbnRlcmFjdGl2ZSBjb21tYW5kcyBs
-aWtlIG1kXG4iCiAiYW5kIG13IGZvciB3aGljaCBpdCBkZWZhdWx0cyB0byAweDEwMC5cbiIKICJT
-aXplcyBjYW4gYmUgc3BlY2lmaWVkIGFzIGRlY2ltYWwsIG9yIGlmIHByZWZpeGVkIHdpdGggMHgg
-YXMgaGV4YWRlY2ltYWwuXG4iCmRpZmYgLS1naXQgYS9jb21tYW5kcy9zYXZlZW52LmMgYi9jb21t
-YW5kcy9zYXZlZW52LmMKaW5kZXggMTFhOWZlZS4uYzYzMDgwYiAxMDA2NDQKLS0tIGEvY29tbWFu
-ZHMvc2F2ZWVudi5jCisrKyBiL2NvbW1hbmRzL3NhdmVlbnYuYwpAQCAtMTA5LDcgKzEwOSw3IEBA
-IEJBUkVCT1hfQ01EX0VORAogICogQHBhZ2Ugc2F2ZWVudl9jb21tYW5kCiAKIDxwPlw8ZW52ZnM+
-IGlzIHVzdWFsbHkgYSBibG9jayBpbiBmbGFzaCBidXQgY2FuIGJlIGFueSBvdGhlciBmaWxlLiBJ
-Zgotb21taXR0ZWQsIFw8ZGlyZWN0b3J5PiBkZWZhdWx0cyB0byAvZW52IGFuZCBcPGVudmZzPiBk
-ZWZhdWx0cyB0bworb21pdHRlZCwgXDxkaXJlY3Rvcnk+IGRlZmF1bHRzIHRvIC9lbnYgYW5kIFw8
-ZW52ZnM+IGRlZmF1bHRzIHRvCiAvZGV2L2VudjAuIE5vdGUgdGhhdCBlbnZmcyBjYW4gb25seSBo
-YW5kbGUgZmlsZXMsIGRpcmVjdG9yaWVzIGFyZSBiZWluZwogc2tpcHBlZCBzaWxlbnRseS48L3A+
-CiAKLS0gCjEuNy41LjQKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcK
-aHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Signed-off-by: Marek Belisko <marek.belisko@open-nandra.com>
+---
+ common/block.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/common/block.c b/common/block.c
+index 24377c6..ac4f2b2 100644
+--- a/common/block.c
++++ b/common/block.c
+@@ -221,7 +221,7 @@ static int block_flush(struct cdev *cdev)
+ 	return writebuffer_flush(blk);
+ }
+ 
+-struct file_operations block_ops = {
++static struct file_operations block_ops = {
+ 	.read	= block_read,
+ #ifdef CONFIG_BLOCK_WRITE
+ 	.write	= block_write,
+-- 
+1.7.4.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
