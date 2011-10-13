@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1R9dVF-0005Ci-L1
-	for barebox@lists.infradead.org; Fri, 30 Sep 2011 13:51:50 +0000
-Received: from gallifrey.ext.pengutronix.de
-	([2001:6f8:1178:4:5054:ff:fe8d:eefb] helo=localhost)
-	by metis.ext.pengutronix.de with esmtp (Exim 4.72)
-	(envelope-from <jbe@pengutronix.de>) id 1R9dVA-0007U8-OA
-	for barebox@lists.infradead.org; Fri, 30 Sep 2011 15:51:44 +0200
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Fri, 30 Sep 2011 15:51:42 +0200
+	id 1REHiK-0007W0-0u
+	for barebox@lists.infradead.org; Thu, 13 Oct 2011 09:36:32 +0000
+Date: Thu, 13 Oct 2011 11:36:27 +0200
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20111013093627.GU577@pengutronix.de>
+References: <CAGiJk9ePXFCwosqXUtU9yzGPmmZ5O6R_9gFtJXnJ9=DUnCpOxg@mail.gmail.com>
+	<CAJeSw6BJqdBON18UDRsBJgPov5iqXKmYRROnEyoH6SkNhOJg3w@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-Message-Id: <201109301551.43165.jbe@pengutronix.de>
+In-Reply-To: <CAJeSw6BJqdBON18UDRsBJgPov5iqXKmYRROnEyoH6SkNhOJg3w@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,43 +19,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] x86: Define byteorder
-To: barebox@lists.infradead.org
+Subject: Re: Booting Pandaboard from SD card
+To: Fabian van der Werf <fvanderwerf@gmail.com>
+Cc: barebox@lists.infradead.org
 
-This is required to avoid warnings like this:
+Hello,
 
-In file included from <some file>:
-include/io.h:7:5: warning: "__BYTE_ORDER" is not defined
-include/io.h:7:21: warning: "__BIG_ENDIAN" is not defined
+On Thu, Oct 13, 2011 at 11:14:17AM +0200, Fabian van der Werf wrote:
+> On Thu, Oct 13, 2011 at 10:49 AM, Samuel Stirtzel
+> <s.stirtzel@googlemail.com> wrote:
+> >
+> > Starting kernel ...
+> >
+> > commandline: <NULL>
+> > arch_number: 2791
+> > Uncompressing Linux... done, booting the kernel.
+> >
+> > -
+> > The screen just stays blank after the last message.
+> > This looks to me like it is (obviously) caused by an incorrect
+> > environment loaded.
+> >
+> >
+> > Help would be appreciated.
+> =
 
-Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
----
- arch/x86/include/asm/io.h |    2 ++
- 1 files changed, 2 insertions(+), 0 deletions(-)
+> Hi
+> =
 
-diff --git a/arch/x86/include/asm/io.h b/arch/x86/include/asm/io.h
-index 27ea642..9cb78e4 100644
---- a/arch/x86/include/asm/io.h
-+++ b/arch/x86/include/asm/io.h
-@@ -10,6 +10,8 @@
- #ifndef __ASM_X86_IO_H
- #define __ASM_X86_IO_H
- 
-+#include <asm/byteorder.h>
-+
- static inline void outb(unsigned char value, int port)
- {
- 	asm volatile("outb %b0, %w1" : : "a"(value), "Nd"(port));
+> I am also trying to get things up and running using barebox. I am at
+> about the same stage where you are. Though I am loading the kernel
+> over TFTP instead from SD. Like you, I get "Uncompressing Linux...
+> done, booting the kernel" and then nothing.
+> =
 
--- 
-Pengutronix e.K.                              | Juergen Beisert             |
-Linux Solutions for Science and Industry      | Phone: +49-5121-206917-5128 |
-Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
+> Note that this last line is not printed by barebox but by the kernel.
+> There is a separate=A0kernel build option to enable a console on the
+> omap serial port. Then you still need to add console=3DttyOx,115200n8 to
+> your boot arguments. I think it needs to be ttyO2, though I am not
+> sure. I haven't had the time yet to try these options (it's just for a
+> hobby project).
+You might want to enable DEBUG_LL and EARLY_PRINTK in your kernel and
+pass "earlyprintk" on the commandline. This is usually enough to provide
+some output after Uncompressing Linux...
+
+Uwe
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
