@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bw0-f49.google.com ([209.85.214.49])
+Received: from pig2.dooz.org ([88.191.118.219])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1RERoX-0002Gy-6J
-	for barebox@lists.infradead.org; Thu, 13 Oct 2011 20:23:38 +0000
-Received: by mail-bw0-f49.google.com with SMTP id c12so2477964bkb.36
-	for <barebox@lists.infradead.org>; Thu, 13 Oct 2011 13:23:36 -0700 (PDT)
-From: Marek Belisko <marek.belisko@open-nandra.com>
-Date: Thu, 13 Oct 2011 22:23:14 +0200
-Message-Id: <1318537394-8555-8-git-send-email-marek.belisko@open-nandra.com>
-In-Reply-To: <1318537394-8555-1-git-send-email-marek.belisko@open-nandra.com>
-References: <1318537394-8555-1-git-send-email-marek.belisko@open-nandra.com>
+	id 1RETQT-0003NH-DR
+	for barebox@lists.infradead.org; Thu, 13 Oct 2011 22:06:54 +0000
+From: =?UTF-8?q?Lo=C3=AFc=20Minier?= <loic.minier@linaro.org>
+Date: Fri, 14 Oct 2011 00:06:37 +0200
+Message-Id: <1318543601-20819-2-git-send-email-loic.minier@linaro.org>
+In-Reply-To: <1318543601-20819-1-git-send-email-loic.minier@linaro.org>
+References: <1318543601-20819-1-git-send-email-loic.minier@linaro.org>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,103 +17,87 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 8/8] serial_s3c24x0: Fix sparse warnings.
+Subject: [PATCH 1/5] Only pass -P to cpp when generating ld scripts
 To: barebox@lists.infradead.org
-Cc: Marek Belisko <marek.belisko@open-nandra.com>
 
-warnings:
-drivers/serial/serial_s3c24x0.c:47:26: warning: incorrect type in initializer (different address spaces)
-drivers/serial/serial_s3c24x0.c:47:26:    expected void [noderef] <asn:2>*base
-drivers/serial/serial_s3c24x0.c:47:26:    got void *priv
-drivers/serial/serial_s3c24x0.c:60:26: warning: incorrect type in initializer (different address spaces)
-drivers/serial/serial_s3c24x0.c:60:26:    expected void [noderef] <asn:2>*base
-drivers/serial/serial_s3c24x0.c:60:26:    got void *priv
-drivers/serial/serial_s3c24x0.c:84:26: warning: incorrect type in initializer (different address spaces)
-drivers/serial/serial_s3c24x0.c:84:26:    expected void [noderef] <asn:2>*base
-drivers/serial/serial_s3c24x0.c:84:26:    got void *priv
-drivers/serial/serial_s3c24x0.c:96:26: warning: incorrect type in initializer (different address spaces)
-drivers/serial/serial_s3c24x0.c:96:26:    expected void [noderef] <asn:2>*base
-drivers/serial/serial_s3c24x0.c:96:26:    got void *priv
-drivers/serial/serial_s3c24x0.c:108:26: warning: incorrect type in initializer (different address spaces)
-drivers/serial/serial_s3c24x0.c:108:26:    expected void [noderef] <asn:2>*base
-drivers/serial/serial_s3c24x0.c:108:26:    got void *priv
-drivers/serial/serial_s3c24x0.c:120:26: warning: incorrect type in initializer (different address spaces)
-drivers/serial/serial_s3c24x0.c:120:26:    expected void [noderef] <asn:2>*base
-drivers/serial/serial_s3c24x0.c:120:26:    got void *priv
-
-Signed-off-by: Marek Belisko <marek.belisko@open-nandra.com>
----
- drivers/serial/serial_s3c24x0.c |   12 ++++++------
- 1 files changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/serial/serial_s3c24x0.c b/drivers/serial/serial_s3c24x0.c
-index 3a703b6..2fb2bb4 100644
---- a/drivers/serial/serial_s3c24x0.c
-+++ b/drivers/serial/serial_s3c24x0.c
-@@ -44,7 +44,7 @@
- static int s3c24x0_serial_setbaudrate(struct console_device *cdev, int baudrate)
- {
- 	struct device_d *dev = cdev->dev;
--	void __iomem *base = dev->priv;
-+	void __iomem *base = IOMEM(dev->priv);
- 	unsigned val;
- 
- 	/* value is calculated so : PCLK / (16 * baudrate) -1 */
-@@ -57,7 +57,7 @@ static int s3c24x0_serial_setbaudrate(struct console_device *cdev, int baudrate)
- static int s3c24x0_serial_init_port(struct console_device *cdev)
- {
- 	struct device_d *dev = cdev->dev;
--	void __iomem *base = dev->priv;
-+	void __iomem *base = IOMEM(dev->priv);
- 
- 	/* FIFO enable, Tx/Rx FIFO clear */
- 	writeb(0x07, base + UFCON);
-@@ -81,7 +81,7 @@ static int s3c24x0_serial_init_port(struct console_device *cdev)
- static void s3c24x0_serial_putc(struct console_device *cdev, char c)
- {
- 	struct device_d *dev = cdev->dev;
--	void __iomem *base = dev->priv;
-+	void __iomem *base = IOMEM(dev->priv);
- 
- 	/* Wait for Tx FIFO not full */
- 	while (!(readb(base + UTRSTAT) & 0x2))
-@@ -93,7 +93,7 @@ static void s3c24x0_serial_putc(struct console_device *cdev, char c)
- static int s3c24x0_serial_tstc(struct console_device *cdev)
- {
- 	struct device_d *dev = cdev->dev;
--	void __iomem *base = dev->priv;
-+	void __iomem *base = IOMEM(dev->priv);
- 
- 	/* If receive fifo is empty, return false */
- 	if (readb(base + UTRSTAT) & 0x1)
-@@ -105,7 +105,7 @@ static int s3c24x0_serial_tstc(struct console_device *cdev)
- static int s3c24x0_serial_getc(struct console_device *cdev)
- {
- 	struct device_d *dev = cdev->dev;
--	void __iomem *base = dev->priv;
-+	void __iomem *base = IOMEM(dev->priv);
- 
- 	/* wait for a character */
- 	while (!(readb(base + UTRSTAT) & 0x1))
-@@ -117,7 +117,7 @@ static int s3c24x0_serial_getc(struct console_device *cdev)
- static void s3c24x0_serial_flush(struct console_device *cdev)
- {
- 	struct device_d *dev = cdev->dev;
--	void __iomem *base = dev->priv;
-+	void __iomem *base = IOMEM(dev->priv);
- 
- 	while (!(readb(base + UTRSTAT) & 0x4))
- 		;
--- 
-1.7.4.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+V2hlbiBidWlsZGluZyBzYW5kYm94IHdpdGggY2NhY2hlLCBvbmUgd291bGQgaGl0IHdhcm5pbmdz
+IHN1Y2ggYXM6CiAgICB3YXJuaW5nOiAnc3RydWN0IG1tc2doZHInIGRlY2xhcmVkIGluc2lkZSBw
+YXJhbWV0ZXIgbGlzdApvbiByYW5kb20gZmlsZXM7IGEgd2F5IHRvIHJlcHJvZHVjZSB0aGlzIGlz
+c3VlIGlzIHRvIGJ1aWxkIGEgc2ltcGxlCmZpbGUgZG9pbmcganVzdDoKICAgICNpbmNsdWRlIDxz
+eXMvc29ja2V0Lmg+CgogICAgaW50IG1haW4odm9pZCkgewogICAgICAgIHJldHVybiAwOwogICAg
+fQoKICAgIGdjYyAtV2FsbCAtUCAtYyAtbyBmb28gZm9vLmMKCkJ1dCBhY3R1YWxseSB0aGUgLVAg
+ZmxhZyBpcyBvbmx5IHVzZWZ1bCB3aGVuIGdlbmVyYXRpbmcgbm9uLUMgZmlsZXMsCnN1Y2ggYXMg
+bGlua2VyIHNjcmlwdHMgaW4gdGhlIGNhc2Ugb2YgYmFyZWJveC4gIFJlbW92aW5nIHRoZSAtUCBm
+bGFnCmZyb20gYWxsIHRoZSBnY2MgaW52b2NhdGlvbnMsIGV4Y2VwdCB3aGVuIGdlbmVyYXRpbmcg
+LmxkcyBmaWxlcyBtYWtlcwp0aGUgd2FybmluZyBnbyBhd2F5LiAgSXQgdHVybnMgb3V0IHRoYXQg
+dGhpcyBpcyB3aGF0CmxpbnV4L3NjcmlwdHMvTWFrZWZpbGUuYnVpbGQgYWxzbyBkb2VzIG5vd2Fk
+YXlzLgoKU2lnbmVkLW9mZi1ieTogTG/Dr2MgTWluaWVyIDxsb2ljLm1pbmllckBsaW5hcm8ub3Jn
+PgotLS0KIE1ha2VmaWxlICAgICAgICAgICAgICAgICB8ICAgIDIgKy0KIGFyY2gvYXJtL01ha2Vm
+aWxlICAgICAgICB8ICAgIDIgKy0KIGFyY2gvYmxhY2tmaW4vTWFrZWZpbGUgICB8ICAgIDIgKy0K
+IGFyY2gvcHBjL01ha2VmaWxlICAgICAgICB8ICAgIDIgKy0KIGFyY2gvc2FuZGJveC9NYWtlZmls
+ZSAgICB8ICAgIDEgLQogYXJjaC9zYW5kYm94L29zL01ha2VmaWxlIHwgICAgMSAtCiBhcmNoL3g4
+Ni9NYWtlZmlsZSAgICAgICAgfCAgICAyICstCiBzY3JpcHRzL01ha2VmaWxlLmJ1aWxkICAgfCAg
+ICAyICstCiA4IGZpbGVzIGNoYW5nZWQsIDYgaW5zZXJ0aW9ucygrKSwgOCBkZWxldGlvbnMoLSkK
+CmRpZmYgLS1naXQgYS9NYWtlZmlsZSBiL01ha2VmaWxlCmluZGV4IDU0MTRlNjMuLjEwZDU3ODAg
+MTAwNjQ0Ci0tLSBhL01ha2VmaWxlCisrKyBiL01ha2VmaWxlCkBAIC04MjUsNyArODI1LDcgQEAg
+cHJlcGFyZSBwcmVwYXJlLWFsbDogcHJlcGFyZTAKICMgTGVhdmUgdGhpcyBhcyBkZWZhdWx0IGZv
+ciBwcmVwcm9jZXNzaW5nIGJhcmVib3gubGRzLlMsIHdoaWNoIGlzIG5vdwogIyBkb25lIGluIGFy
+Y2gvJChBUkNIKS9rZXJuZWwvTWFrZWZpbGUKIAotZXhwb3J0IENQUEZMQUdTX2JhcmVib3gubGRz
+ICs9IC1QIC1DIC1VJChBUkNIKQorZXhwb3J0IENQUEZMQUdTX2JhcmVib3gubGRzICs9IC1DIC1V
+JChBUkNIKQogCiAjIEZJWE1FOiBUaGUgYXNtIHN5bWxpbmsgY2hhbmdlcyB3aGVuICQoQVJDSCkg
+Y2hhbmdlcy4gVGhhdCdzCiAjIGhhcmQgdG8gZGV0ZWN0LCBidXQgSSBzdXBwb3NlICJtYWtlIG1y
+cHJvcGVyIiBpcyBhIGdvb2QgaWRlYQpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vTWFrZWZpbGUgYi9h
+cmNoL2FybS9NYWtlZmlsZQppbmRleCBkMjU0MTJkLi4wYzQyZjNkIDEwMDY0NAotLS0gYS9hcmNo
+L2FybS9NYWtlZmlsZQorKysgYi9hcmNoL2FybS9NYWtlZmlsZQpAQCAtMTIxLDcgKzEyMSw3IEBA
+IGVuZGlmCiAKIFRFWFRfQkFTRSA9ICQoQ09ORklHX1RFWFRfQkFTRSkKIAotQ1BQRkxBR1MgKz0g
+LURURVhUX0JBU0U9JChURVhUX0JBU0UpIC1QCitDUFBGTEFHUyArPSAtRFRFWFRfQkFTRT0kKFRF
+WFRfQkFTRSkKIAogaWZuZGVmIENPTkZJR19NT0RVTEVTCiAjIEFkZCBjbGVhbnVwIGZsYWdzCmRp
+ZmYgLS1naXQgYS9hcmNoL2JsYWNrZmluL01ha2VmaWxlIGIvYXJjaC9ibGFja2Zpbi9NYWtlZmls
+ZQppbmRleCA5MDIyNjhkLi5hMGI4N2Y3IDEwMDY0NAotLS0gYS9hcmNoL2JsYWNrZmluL01ha2Vm
+aWxlCisrKyBiL2FyY2gvYmxhY2tmaW4vTWFrZWZpbGUKQEAgLTcsNyArNyw3IEBAIGNwdS0kKENP
+TkZJR19CRjU2MSkJCTo9IGJmNTYxCiAKIFRFWFRfQkFTRSA9ICQoQ09ORklHX1RFWFRfQkFTRSkK
+IAotQ1BQRkxBR1MgKz0gLURURVhUX0JBU0U9JChURVhUX0JBU0UpIC1QCitDUFBGTEFHUyArPSAt
+RFRFWFRfQkFTRT0kKFRFWFRfQkFTRSkKIENGTEFHUyArPSAtRF9fYmxhY2tmaW5fXwogIyAtVHRl
+eHQgJChURVhUX0JBU0UpCiBLQUxMU1lNUyAgICAgICAgICs9IC0tc3ltYm9sLXByZWZpeD1fCmRp
+ZmYgLS1naXQgYS9hcmNoL3BwYy9NYWtlZmlsZSBiL2FyY2gvcHBjL01ha2VmaWxlCmluZGV4IDQ2
+ZDY0ZTUuLmM3YmY4NjMgMTAwNjQ0Ci0tLSBhL2FyY2gvcHBjL01ha2VmaWxlCisrKyBiL2FyY2gv
+cHBjL01ha2VmaWxlCkBAIC0xNCw3ICsxNCw3IEBAIGNwdS0kKENPTkZJR19BUkNIX01QQzUyMDAp
+CQkJOj0gbXBjNXh4eAogCiBURVhUX0JBU0UgPSAkKENPTkZJR19URVhUX0JBU0UpCiAKLUNQUEZM
+QUdTICs9IC1EVEVYVF9CQVNFPSQoVEVYVF9CQVNFKSAtUAorQ1BQRkxBR1MgKz0gLURURVhUX0JB
+U0U9JChURVhUX0JBU0UpCiAKICMgQWRkIGNsZWFudXAgZmxhZ3MKIGlmbmRlZiBDT05GSUdfTU9E
+VUxFUwpkaWZmIC0tZ2l0IGEvYXJjaC9zYW5kYm94L01ha2VmaWxlIGIvYXJjaC9zYW5kYm94L01h
+a2VmaWxlCmluZGV4IDRjYTE3ZWQuLjczYzA2ZGIgMTAwNjQ0Ci0tLSBhL2FyY2gvc2FuZGJveC9N
+YWtlZmlsZQorKysgYi9hcmNoL3NhbmRib3gvTWFrZWZpbGUKQEAgLTEwLDcgKzEwLDYgQEAgbGRz
+LXkgICA6PSAkKEJPQVJEKS9iYXJlYm94LmxkcwogCiBURVhUX0JBU0UgPSAkKENPTkZJR19URVhU
+X0JBU0UpCiAKLUNQUEZMQUdTICs9IC1QCiBDRkxBR1MgKz0gLURtYWxsb2M9YmFyZWJveF9tYWxs
+b2MgXAogCQktRGZyZWU9YmFyZWJveF9mcmVlIC1EcmVhbGxvYz1iYXJlYm94X3JlYWxsb2MgXAog
+CQktRHJlYWQ9YmFyZWJveF9yZWFkIC1Ed3JpdGU9YmFyZWJveF93cml0ZSBcCmRpZmYgLS1naXQg
+YS9hcmNoL3NhbmRib3gvb3MvTWFrZWZpbGUgYi9hcmNoL3NhbmRib3gvb3MvTWFrZWZpbGUKaW5k
+ZXggMjk4MDMwMS4uZGMyMTFkOSAxMDA2NDQKLS0tIGEvYXJjaC9zYW5kYm94L29zL01ha2VmaWxl
+CisrKyBiL2FyY2gvc2FuZGJveC9vcy9NYWtlZmlsZQpAQCAtOCw3ICs4LDYgQEAgZWxzZQogQ1BQ
+RkxBR1MgPSAkKHBhdHN1YnN0ICUsLUkkKHNyY3RyZWUpLyVpbmNsdWRlLCQobWFjaGRpcnMpKQog
+ZW5kaWYKIAotQ1BQRkxBR1MgKz0gLVAKIENGTEFHUyA6PSAtV2FsbAogTk9TVERJTkNfRkxBR1Mg
+Oj0KIApkaWZmIC0tZ2l0IGEvYXJjaC94ODYvTWFrZWZpbGUgYi9hcmNoL3g4Ni9NYWtlZmlsZQpp
+bmRleCAzYjAzNGMwLi5kYjQxODBiIDEwMDY0NAotLS0gYS9hcmNoL3g4Ni9NYWtlZmlsZQorKysg
+Yi9hcmNoL3g4Ni9NYWtlZmlsZQpAQCAtNSw3ICs1LDcgQEAgbWFjaGluZS15IDo9IGkzODYKIAog
+VEVYVF9CQVNFID0gJChDT05GSUdfVEVYVF9CQVNFKQogCi1DUFBGTEFHUyArPSAtbWFyY2g9aTM4
+NiAtbTMyIC1EVEVYVF9CQVNFPSQoVEVYVF9CQVNFKSAtUAorQ1BQRkxBR1MgKz0gLW1hcmNoPWkz
+ODYgLW0zMiAtRFRFWFRfQkFTRT0kKFRFWFRfQkFTRSkKIExERkxBR1MgKz0gLW0gZWxmX2kzODYK
+IAogaWZuZGVmIENPTkZJR19NT0RVTEVTCmRpZmYgLS1naXQgYS9zY3JpcHRzL01ha2VmaWxlLmJ1
+aWxkIGIvc2NyaXB0cy9NYWtlZmlsZS5idWlsZAppbmRleCBjMmJhYjVjLi5mNzBlMmI5IDEwMDY0
+NAotLS0gYS9zY3JpcHRzL01ha2VmaWxlLmJ1aWxkCisrKyBiL3NjcmlwdHMvTWFrZWZpbGUuYnVp
+bGQKQEAgLTI0NCw3ICsyNDQsNyBAQCB0YXJnZXRzICs9ICQoZXh0cmEteSkgJChNQUtFQ01ER09B
+TFMpICQoYWx3YXlzKQogIyBMaW5rZXIgc2NyaXB0cyBwcmVwcm9jZXNzb3IgKC5sZHMuUyAtPiAu
+bGRzKQogIyAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KIHF1aWV0X2NtZF9jcHBfbGRzX1MgPSBMRFMgICAg
+ICRACi0gICAgICBjbWRfY3BwX2xkc19TID0gJChDUFApICQoY3BwX2ZsYWdzKSAtRF9fQVNTRU1C
+TFlfXyAtbyAkQCAkPAorICAgICAgY21kX2NwcF9sZHNfUyA9ICQoQ1BQKSAkKGNwcF9mbGFncykg
+LVAgLURfX0FTU0VNQkxZX18gLW8gJEAgJDwKIAogJS5sZHM6ICUubGRzLlMgRk9SQ0UKIAkkKGNh
+bGwgaWZfY2hhbmdlZF9kZXAsY3BwX2xkc19TKQotLSAKMS43LjUuNAoKCl9fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJh
+cmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWls
+bWFuL2xpc3RpbmZvL2JhcmVib3gK
