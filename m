@@ -1,14 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from pig2.dooz.org ([88.191.118.219])
-	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1RETQb-0003Q8-Qg
-	for barebox@lists.infradead.org; Thu, 13 Oct 2011 22:07:02 +0000
-From: =?UTF-8?q?Lo=C3=AFc=20Minier?= <loic.minier@linaro.org>
-Date: Fri, 14 Oct 2011 00:06:41 +0200
-Message-Id: <1318543601-20819-6-git-send-email-loic.minier@linaro.org>
-In-Reply-To: <1318543601-20819-1-git-send-email-loic.minier@linaro.org>
-References: <1318543601-20819-1-git-send-email-loic.minier@linaro.org>
+Received: from 6.mo4.mail-out.ovh.net ([188.165.36.253]
+	helo=mo4.mail-out.ovh.net)
+	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+	id 1REXwK-0005iZ-Te
+	for barebox@lists.infradead.org; Fri, 14 Oct 2011 02:56:06 +0000
+Received: from mail423.ha.ovh.net (b9.ovh.net [213.186.33.59])
+	by mo4.mail-out.ovh.net (Postfix) with SMTP id 6F782FFC360
+	for <barebox@lists.infradead.org>;
+	Fri, 14 Oct 2011 04:50:34 +0200 (CEST)
+Date: Fri, 14 Oct 2011 04:24:56 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20111014022456.GB1459@game.jcrosoft.org>
+References: <1318517909-21205-1-git-send-email-s.hauer@pengutronix.de>
+	<1318517909-21205-2-git-send-email-s.hauer@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1318517909-21205-2-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,45 +24,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/5] Use size_t for memory offsets
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] ARM: use arm_system_rev from environment
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-bWVtX3JlYWQoKSBhbmQgbWVtX3dyaXRlKCkgZGlkIGFyaXRobWV0aWMgd2l0aCBhIGxvY2FsIHVs
-b25nIHNpemUKdmFyaWFibGUsIGEgc2l6ZV90IGNvdW50IGFuZCBhbiB1bG9uZyBvZmZzZXQgdG8g
-cmV0dXJuIGEgc3NpemVfdCByZXN1bHQuCkNoYW5nZSB0aGVtIHRvIHVzZSBzaXplX3QgZm9yIHNp
-emUgYW5kIG9mZnNldCBhbmQgc3RvcCBjYXN0aW5nIGNvdW50IHRvCnVsb25nLgoKVGhpcyBmaXhl
-cyBhIHdhcm5pbmcgd2hlbiBidWlsZGluZyBmb3IgNjQtYml0cy4KClRoaXMgY2hhbmdlIG1pZ2h0
-IGhhdmUgaW1wYWN0IG9uIHRoZSBleHBvcnRlZCBzeW1ib2xzLgoKU2lnbmVkLW9mZi1ieTogTG/D
-r2MgTWluaWVyIDxsb2ljLm1pbmllckBsaW5hcm8ub3JnPgotLS0KIGZzL2ZzLmMgfCAgIDEyICsr
-KysrKy0tLS0tLQogMSBmaWxlcyBjaGFuZ2VkLCA2IGluc2VydGlvbnMoKyksIDYgZGVsZXRpb25z
-KC0pCgpkaWZmIC0tZ2l0IGEvZnMvZnMuYyBiL2ZzL2ZzLmMKaW5kZXggN2Q2NWVjOC4uMGNiMjI2
-ZCAxMDA2NDQKLS0tIGEvZnMvZnMuYworKysgYi9mcy9mcy5jCkBAIC0xMDM4LDMxICsxMDM4LDMx
-IEBAIHN0YXRpYyB2b2lkIG1lbWNweV9zeih2b2lkICpfZHN0LCBjb25zdCB2b2lkICpfc3JjLCB1
-bG9uZyBjb3VudCwgdWxvbmcgcndzaXplKQogCX0KIH0KIAotc3NpemVfdCBtZW1fcmVhZChzdHJ1
-Y3QgY2RldiAqY2Rldiwgdm9pZCAqYnVmLCBzaXplX3QgY291bnQsIHVsb25nIG9mZnNldCwgdWxv
-bmcgZmxhZ3MpCitzc2l6ZV90IG1lbV9yZWFkKHN0cnVjdCBjZGV2ICpjZGV2LCB2b2lkICpidWYs
-IHNpemVfdCBjb3VudCwgc2l6ZV90IG9mZnNldCwgdWxvbmcgZmxhZ3MpCiB7Ci0JdWxvbmcgc2l6
-ZTsKKwlzaXplX3Qgc2l6ZTsKIAlzdHJ1Y3QgZGV2aWNlX2QgKmRldjsKIAogCWlmICghY2Rldi0+
-ZGV2IHx8IGNkZXYtPmRldi0+bnVtX3Jlc291cmNlcyA8IDEpCiAJCXJldHVybiAtMTsKIAlkZXYg
-PSBjZGV2LT5kZXY7CiAKLQlzaXplID0gbWluKCh1bG9uZyljb3VudCwgZGV2LT5yZXNvdXJjZVsw
-XS5zaXplIC0gb2Zmc2V0KTsKKwlzaXplID0gbWluKGNvdW50LCAoc2l6ZV90KWRldi0+cmVzb3Vy
-Y2VbMF0uc2l6ZSAtIG9mZnNldCk7CiAJbWVtY3B5X3N6KGJ1ZiwgZGV2X2dldF9tZW1fcmVnaW9u
-KGRldiwgMCkgKyBvZmZzZXQsIHNpemUsIGZsYWdzICYgT19SV1NJWkVfTUFTSyk7CiAJcmV0dXJu
-IHNpemU7CiB9CiBFWFBPUlRfU1lNQk9MKG1lbV9yZWFkKTsKIAotc3NpemVfdCBtZW1fd3JpdGUo
-c3RydWN0IGNkZXYgKmNkZXYsIGNvbnN0IHZvaWQgKmJ1Ziwgc2l6ZV90IGNvdW50LCB1bG9uZyBv
-ZmZzZXQsIHVsb25nIGZsYWdzKQorc3NpemVfdCBtZW1fd3JpdGUoc3RydWN0IGNkZXYgKmNkZXYs
-IGNvbnN0IHZvaWQgKmJ1Ziwgc2l6ZV90IGNvdW50LCBzaXplX3Qgb2Zmc2V0LCB1bG9uZyBmbGFn
-cykKIHsKLQl1bG9uZyBzaXplOworCXNpemVfdCBzaXplOwogCXN0cnVjdCBkZXZpY2VfZCAqZGV2
-OwogCiAJaWYgKCFjZGV2LT5kZXYgfHwgY2Rldi0+ZGV2LT5udW1fcmVzb3VyY2VzIDwgMSkKIAkJ
-cmV0dXJuIC0xOwogCWRldiA9IGNkZXYtPmRldjsKIAotCXNpemUgPSBtaW4oKHVsb25nKWNvdW50
-LCBkZXYtPnJlc291cmNlWzBdLnNpemUgLSBvZmZzZXQpOworCXNpemUgPSBtaW4oY291bnQsIChz
-aXplX3QpZGV2LT5yZXNvdXJjZVswXS5zaXplIC0gb2Zmc2V0KTsKIAltZW1jcHlfc3ooZGV2X2dl
-dF9tZW1fcmVnaW9uKGRldiwgMCkgKyBvZmZzZXQsIGJ1Ziwgc2l6ZSwgZmxhZ3MgJiBPX1JXU0la
-RV9NQVNLKTsKIAlyZXR1cm4gc2l6ZTsKIH0KLS0gCjEuNy41LjQKCgpfX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJl
-Ym94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1h
-bi9saXN0aW5mby9iYXJlYm94Cg==
+On 16:58 Thu 13 Oct     , Sascha Hauer wrote:
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  arch/arm/lib/armlinux.c |   11 +++++++++++
+>  1 files changed, 11 insertions(+), 0 deletions(-)
+> 
+> diff --git a/arch/arm/lib/armlinux.c b/arch/arm/lib/armlinux.c
+> index e3a74f4..f636f12 100644
+> --- a/arch/arm/lib/armlinux.c
+> +++ b/arch/arm/lib/armlinux.c
+> @@ -198,7 +198,14 @@ void armlinux_set_architecture(int architecture)
+>  
+>  void armlinux_set_revision(unsigned int rev)
+>  {
+> +	char *revstr = asprintf("%d", rev);
+> +
+>  	system_rev = rev;
+> +
+> +	setenv("arm_system_rev", revstr);
+> +	export("arm_system_rev");
+> +
+> +	kfree(revstr);
+>  }
+>  
+>  void armlinux_set_serial(u64 serial)
+> @@ -209,6 +216,10 @@ void armlinux_set_serial(u64 serial)
+>  void start_linux(void *adr, int swap, struct image_data *data)
+>  {
+>  	void (*kernel)(int zero, int arch, void *params) = adr;
+> +	const char *revstr = getenv("arm_system_rev");
+> +
+> +	if (revstr)
+> +		system_rev = simple_strtoul(revstr, NULL, 0);
+we need to use boot getopt  as done on bootm
+
+Best Regards,
+J.
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
