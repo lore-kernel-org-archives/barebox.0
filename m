@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1REbb1-00075r-Du
-	for barebox@lists.infradead.org; Fri, 14 Oct 2011 06:50:21 +0000
-Date: Fri, 14 Oct 2011 08:50:15 +0200
+	id 1REboW-00079b-Ow
+	for barebox@lists.infradead.org; Fri, 14 Oct 2011 07:04:17 +0000
+Date: Fri, 14 Oct 2011 09:04:14 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20111014065015.GV13898@pengutronix.de>
+Message-ID: <20111014070414.GW13898@pengutronix.de>
 References: <1318543601-20819-1-git-send-email-loic.minier@linaro.org>
-	<1318543601-20819-3-git-send-email-loic.minier@linaro.org>
+	<1318543601-20819-4-git-send-email-loic.minier@linaro.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1318543601-20819-3-git-send-email-loic.minier@linaro.org>
+In-Reply-To: <1318543601-20819-4-git-send-email-loic.minier@linaro.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,139 +23,130 @@ Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/5] Avoid warnings by using format(__printf__)
+Subject: Re: [PATCH 3/5] fprintf() returns an int
 To: =?iso-8859-15?Q?Lo=EFc?= Minier <loic.minier@linaro.org>
 Cc: barebox@lists.infradead.org
 
-Hi Lo=EFc,
-
-On Fri, Oct 14, 2011 at 12:06:38AM +0200, Lo=EFc Minier wrote:
-> When building sandbox, barebox is built with -Dprintf=3Dbarebox_printf as
-> to not collide with the printf provided by libc.  This would also match
-> the format(printf) function __attribute__.
-> =
-
-> Since gcc documents that __printf__ can be used instead of printf as a
-> format attribute, use this instead and avoid a lot of noisy warnings.
-> =
-
-> NB: this relates to 6b082cfe9f9b5b2bea294918ad916c739490cea7 which was
-> an earlier attempt at solving this, which got reverted due to other
-> regressions.
-
-\o/
-
-Thank you for finding a solution for this. That was really an annoying
-issue.
-
-Sascha
-
+On Fri, Oct 14, 2011 at 12:06:39AM +0200, Lo=EFc Minier wrote:
+> For consistency, let fprintf return an int just like it's regular libc
+> implementation and all the other printf variations barebox has.  This
+> also fixes a warning on variable i being never read in the function.
 > =
 
 > Signed-off-by: Lo=EFc Minier <loic.minier@linaro.org>
 > ---
->  include/stdio.h       |   12 ++++++------
->  scripts/mod/modpost.c |    2 +-
->  scripts/mod/modpost.h |    2 +-
->  3 files changed, 8 insertions(+), 8 deletions(-)
+>  common/console.c |    4 +++-
+>  include/stdio.h  |    2 +-
+>  2 files changed, 4 insertions(+), 2 deletions(-)
 > =
 
-> diff --git a/include/stdio.h b/include/stdio.h
-> index c824764..a0d81d3 100644
-> --- a/include/stdio.h
-> +++ b/include/stdio.h
-> @@ -9,7 +9,7 @@
->   */
->  =
-
->  /* serial stuff */
-> -void	serial_printf(const char *fmt, ...) __attribute__ ((format(printf, =
-1, 2)));
-> +void	serial_printf(const char *fmt, ...) __attribute__ ((format(__printf=
-__, 1, 2)));
->  =
-
->  /* stdin */
->  int	tstc(void);
-> @@ -30,12 +30,12 @@ static inline void putchar(char c)
->  	console_putc(CONSOLE_STDOUT, c);
+> diff --git a/common/console.c b/common/console.c
+> index 06e9c29..0d2a33b 100644
+> --- a/common/console.c
+> +++ b/common/console.c
+> @@ -327,7 +327,7 @@ void console_flush(void)
 >  }
+>  EXPORT_SYMBOL(console_flush);
 >  =
 
-> -int	printf(const char *fmt, ...) __attribute__ ((format(printf, 1, 2)));
-> +int	printf(const char *fmt, ...) __attribute__ ((format(__printf__, 1, 2=
-)));
->  int	vprintf(const char *fmt, va_list args);
-> -int	sprintf(char *buf, const char *fmt, ...) __attribute__ ((format(prin=
-tf, 2, 3)));
-> -int	snprintf(char *buf, size_t size, const char *fmt, ...) __attribute__=
- ((format(printf, 3, 4)));
-> +int	sprintf(char *buf, const char *fmt, ...) __attribute__ ((format(__pr=
-intf__, 2, 3)));
-> +int	snprintf(char *buf, size_t size, const char *fmt, ...) __attribute__=
- ((format(__printf__, 3, 4)));
->  int	vsprintf(char *buf, const char *fmt, va_list args);
-> -char	*asprintf(const char *fmt, ...) __attribute__ ((format(printf, 1, 2=
-)));
-> +char	*asprintf(const char *fmt, ...) __attribute__ ((format(__printf__, =
-1, 2)));
->  char	*vasprintf(const char *fmt, va_list ap);
->  int	vsnprintf(char *buf, size_t size, const char *fmt, va_list args);
->  int	vscnprintf(char *buf, size_t size, const char *fmt, va_list args);
-> @@ -54,7 +54,7 @@ int	vscnprintf(char *buf, size_t size, const char *fmt,=
- va_list args);
->  #define stderr		2
->  #define MAX_FILES	128
->  =
-
-> -void	fprintf(int file, const char *fmt, ...) __attribute__ ((format(prin=
-tf, 2, 3)));
-> +void	fprintf(int file, const char *fmt, ...) __attribute__ ((format(__pr=
-intf__, 2, 3)));
->  int	fputs(int file, const char *s);
->  int	fputc(int file, const char c);
->  int	ftstc(int file);
-> diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
-> index 08b75b6..e994486 100644
-> --- a/scripts/mod/modpost.c
-> +++ b/scripts/mod/modpost.c
-> @@ -1300,7 +1300,7 @@ static void read_symbols(char *modname)
->   * following helper, then compare to the file on disk and
->   * only update the later if anything changed */
->  =
-
-> -void __attribute__((format(printf, 2, 3))) buf_printf(struct buffer *buf,
-> +void __attribute__((format(__printf__, 2, 3))) buf_printf(struct buffer =
-*buf,
->  						      const char *fmt, ...)
+> -void fprintf (int file, const char *fmt, ...)
+> +int fprintf (int file, const char *fmt, ...)
 >  {
->  	char tmp[SZ];
-> diff --git a/scripts/mod/modpost.h b/scripts/mod/modpost.h
-> index 4156dd3..0c23259 100644
-> --- a/scripts/mod/modpost.h
-> +++ b/scripts/mod/modpost.h
-> @@ -94,7 +94,7 @@ struct buffer {
->  	int size;
->  };
+>  	va_list args;
+>  	uint i;
+> @@ -343,6 +343,8 @@ void fprintf (int file, const char *fmt, ...)
 >  =
 
-> -void __attribute__((format(printf, 2, 3)))
-> +void __attribute__((format(__printf__, 2, 3)))
->  buf_printf(struct buffer *buf, const char *fmt, ...);
->  =
+>  	/* Print the string */
+>  	fputs (file, printbuffer);
+> +
+> +	return i;
+>  }
+>  EXPORT_SYMBOL(fprintf);
 
->  void
-> -- =
+fprintf is supposed to return the number of characters printed, that is
+the return value of fputs. I know that fputs currently returns a wrong
+value, but maybe we can fix this with the following:
 
-> 1.7.5.4
-> =
 
-> =
 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+From 51a7a01e90cc50c6b41bae60dcf70a50f0ff3486 Mon Sep 17 00:00:00 2001
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Fri, 14 Oct 2011 08:56:22 +0200
+Subject: [PATCH] console: fix return values of puts functions
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/console.c |   14 ++++++++++----
+ include/stdio.h  |    6 +++---
+ 2 files changed, 13 insertions(+), 7 deletions(-)
+
+diff --git a/common/console.c b/common/console.c
+index 0d2a33b..6216e88 100644
+--- a/common/console.c
++++ b/common/console.c
+@@ -292,24 +292,30 @@ int fputc(int fd, char c)
+ }
+ EXPORT_SYMBOL(fputc);
+ =
+
+-void console_puts(unsigned int ch, const char *str)
++int console_puts(unsigned int ch, const char *str)
+ {
+ 	const char *s =3D str;
++	int n =3D 0;
++
+ 	while (*s) {
+-		if (*s =3D=3D '\n')
++		if (*s =3D=3D '\n') {
+ 			console_putc(ch, '\r');
++			n++;
++		}
+ 		console_putc(ch, *s);
++		n++;
+ 		s++;
+ 	}
++	return n;
+ }
+ EXPORT_SYMBOL(console_puts);
+ =
+
+ int fputs(int fd, const char *s)
+ {
+ 	if (fd =3D=3D 1)
+-		puts(s);
++		return puts(s);
+ 	else if (fd =3D=3D 2)
+-		eputs(s);
++		return eputs(s);
+ 	else
+ 		return write(fd, s, strlen(s));
+ 	return 0;
+diff --git a/include/stdio.h b/include/stdio.h
+index 0c68fa8..4901bc7 100644
+--- a/include/stdio.h
++++ b/include/stdio.h
+@@ -17,12 +17,12 @@ int	tstc(void);
+ /* stdout */
+ void	console_putc(unsigned int ch, const char c);
+ int	getc(void);
+-void	console_puts(unsigned int ch, const char *s);
++int	console_puts(unsigned int ch, const char *s);
+ void	console_flush(void);
+ =
+
+-static inline void puts(const char *s)
++static inline int puts(const char *s)
+ {
+-	console_puts(CONSOLE_STDOUT, s);
++	return console_puts(CONSOLE_STDOUT, s);
+ }
+ =
+
+ static inline void putchar(char c)
+-- =
+
+1.7.7
 
 -- =
 
