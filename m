@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1REc63-0007sl-LX
-	for barebox@lists.infradead.org; Fri, 14 Oct 2011 07:22:24 +0000
-Date: Fri, 14 Oct 2011 09:22:21 +0200
+	id 1REcBN-0007y7-3Z
+	for barebox@lists.infradead.org; Fri, 14 Oct 2011 07:27:53 +0000
+Date: Fri, 14 Oct 2011 09:27:51 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20111014072221.GZ13898@pengutronix.de>
-References: <1318543601-20819-1-git-send-email-loic.minier@linaro.org>
-	<1318543601-20819-5-git-send-email-loic.minier@linaro.org>
-	<20111014071850.GX13898@pengutronix.de>
+Message-ID: <20111014072751.GA13898@pengutronix.de>
+References: <1318533811-18568-1-git-send-email-loic.minier@linaro.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20111014071850.GX13898@pengutronix.de>
+In-Reply-To: <1318533811-18568-1-git-send-email-loic.minier@linaro.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,48 +18,79 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/5] Use %p in format for pointers
+Subject: Re: [PATCH] Fix spelling of "omitted"; found by lintian
 To: =?iso-8859-15?Q?Lo=EFc?= Minier <loic.minier@linaro.org>
 Cc: barebox@lists.infradead.org
 
-T24gRnJpLCBPY3QgMTQsIDIwMTEgYXQgMDk6MTg6NTBBTSArMDIwMCwgU2FzY2hhIEhhdWVyIHdy
-b3RlOgo+IE9uIEZyaSwgT2N0IDE0LCAyMDExIGF0IDEyOjA2OjQwQU0gKzAyMDAsIExvw69jIE1p
-bmllciB3cm90ZToKPiA+IHJlcy0+c3RhcnQgYW5kIHJlcy0+c2l6ZSBhcmUgcmVzb3VyY2VfdHlw
-ZV90IHdoaWNoIGlzIGEgcGh5c19hZGRyX3QKPiA+IHdoaWNoIGl0c2VsZiBjb3VsZCBzb21lZGF5
-IGJlIGEgNjQtYml0cyBwb2ludGVyIChmb3IgaW5zdGFuY2Ugd2hlbgo+ID4gYnVpbGRpbmcgc2Fu
-ZGJveCBvbiBhIDY0LWJpdHMgaG9zdCkuICBJbnN0ZWFkIG9mIGhhcmRjb2RpbmcgJTA4eCBhcyBh
-Cj4gPiBmb3JtYXQgZm9yIHBvaW50ZXJzLCB1c2UgdGhlICVwIGZvcm1hdC4KPiA+IAo+ID4gU2ln
-bmVkLW9mZi1ieTogTG/Dr2MgTWluaWVyIDxsb2ljLm1pbmllckBsaW5hcm8ub3JnPgo+ID4gLS0t
-Cj4gPiAgZHJpdmVycy9iYXNlL2RyaXZlci5jIHwgICAgNCArKy0tCj4gPiAgMSBmaWxlcyBjaGFu
-Z2VkLCAyIGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pCj4gPiAKPiA+IGRpZmYgLS1naXQg
-YS9kcml2ZXJzL2Jhc2UvZHJpdmVyLmMgYi9kcml2ZXJzL2Jhc2UvZHJpdmVyLmMKPiA+IGluZGV4
-IDBiODAxMDMuLjUxNWZmOGQgMTAwNjQ0Cj4gPiAtLS0gYS9kcml2ZXJzL2Jhc2UvZHJpdmVyLmMK
-PiA+ICsrKyBiL2RyaXZlcnMvYmFzZS9kcml2ZXIuYwo+ID4gQEAgLTM0OSw4ICszNDksOCBAQCBz
-dGF0aWMgaW50IGRvX2RldmluZm8oc3RydWN0IGNvbW1hbmQgKmNtZHRwLCBpbnQgYXJnYywgY2hh
-ciAqYXJndltdKQo+ID4gIAkJCXByaW50ZigibnVtICAgOiAlZFxuIiwgaSk7Cj4gPiAgCQkJaWYg
-KHJlcy0+bmFtZSkKPiA+ICAJCQkJcHJpbnRmKCJuYW1lICA6ICVzXG4iLCByZXMtPm5hbWUpOwo+
-ID4gLQkJCXByaW50Zigic3RhcnQgOiAweCUwOHhcbnNpemUgIDogMHglMDh4XG4iLAo+ID4gLQkJ
-CSAgICAgICByZXMtPnN0YXJ0LCByZXMtPnNpemUpOwo+ID4gKwkJCXByaW50Zigic3RhcnQgOiAw
-eCVwXG5zaXplICA6IDB4JXBcbiIsCj4gPiArCQkJICAgICAgICh2b2lkICopcmVzLT5zdGFydCwg
-KHZvaWQgKilyZXMtPnNpemUpOwo+IAo+IFdpdGggdGhpcyBwYXRjaCBJIGdldCB0aGUgZm9sbG93
-aW5nIHdhcm5pbmcgb24gYSA2NGJpdCBob3N0Ogo+IAo+IGRyaXZlcnMvYmFzZS9kcml2ZXIuYzog
-SW4gZnVuY3Rpb24g4oCYZG9fZGV2aW5mb+KAmToKPiBkcml2ZXJzL2Jhc2UvZHJpdmVyLmM6MzUz
-OjExOiB3YXJuaW5nOiBjYXN0IHRvIHBvaW50ZXIgZnJvbSBpbnRlZ2VyIG9mIGRpZmZlcmVudCBz
-aXplIFstV2ludC10by1wb2ludGVyLWNhc3RdCj4gZHJpdmVycy9iYXNlL2RyaXZlci5jOjM1Mzoz
-MTogd2FybmluZzogY2FzdCB0byBwb2ludGVyIGZyb20gaW50ZWdlciBvZiBkaWZmZXJlbnQgc2l6
-ZSBbLVdpbnQtdG8tcG9pbnRlci1jYXN0XQo+IAo+IFdlIHNob3VsZCBwcm9iYWJseSBzZXQgQ09O
-RklHX1BIWVNfQUREUl9UXzY0QklUIGNvcnJlY3RseSBvbiBhIDY0Yml0Cj4gaG9zdC4KClNob3Vs
-ZCBoYXZlIHJlYWQgeW91ciBpbnRyb2R1Y3RvcnkgbWFpbCBtb3JlIGNsb3NlbHkgOi0vCgpTYXNj
-aGEKCgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgIHwKSW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAg
-ICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKUGVpbmVyIFN0ci4g
-Ni04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0w
-ICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAg
-ICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFk
-ZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVi
-b3gK
+On Thu, Oct 13, 2011 at 09:23:31PM +0200, Lo=EFc Minier wrote:
+> Signed-off-by: Lo=EFc Minier <loic.minier@linaro.org>
+
+Applied to master.
+
+Sascha
+
+> ---
+>  commands/mem.c     |    2 +-
+>  commands/saveenv.c |    2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+> =
+
+> diff --git a/commands/mem.c b/commands/mem.c
+> index 8df5f0a..5963cfb 100644
+> --- a/commands/mem.c
+> +++ b/commands/mem.c
+> @@ -223,7 +223,7 @@ static const __maybe_unused char cmd_md_help[] =3D
+>  "\n"
+>  "Memory regions:\n"
+>  "Memory regions can be specified in two different forms: start+size\n"
+> -"or start-end, If <start> is ommitted it defaults to 0. If end is ommite=
+d it\n"
+> +"or start-end, If <start> is omitted it defaults to 0. If end is omitted=
+ it\n"
+>  "defaults to the end of the device, except for interactive commands like=
+ md\n"
+>  "and mw for which it defaults to 0x100.\n"
+>  "Sizes can be specified as decimal, or if prefixed with 0x as hexadecima=
+l.\n"
+> diff --git a/commands/saveenv.c b/commands/saveenv.c
+> index 11a9fee..c63080b 100644
+> --- a/commands/saveenv.c
+> +++ b/commands/saveenv.c
+> @@ -109,7 +109,7 @@ BAREBOX_CMD_END
+>   * @page saveenv_command
+>  =
+
+>  <p>\<envfs> is usually a block in flash but can be any other file. If
+> -ommitted, \<directory> defaults to /env and \<envfs> defaults to
+> +omitted, \<directory> defaults to /env and \<envfs> defaults to
+>  /dev/env0. Note that envfs can only handle files, directories are being
+>  skipped silently.</p>
+>  =
+
+> -- =
+
+> 1.7.5.4
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
