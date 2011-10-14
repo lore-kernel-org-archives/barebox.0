@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1REc2g-0007qE-4E
-	for barebox@lists.infradead.org; Fri, 14 Oct 2011 07:18:55 +0000
-Date: Fri, 14 Oct 2011 09:18:50 +0200
+	id 1REc45-0007rL-Ve
+	for barebox@lists.infradead.org; Fri, 14 Oct 2011 07:20:22 +0000
+Date: Fri, 14 Oct 2011 09:20:20 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20111014071850.GX13898@pengutronix.de>
+Message-ID: <20111014072020.GY13898@pengutronix.de>
 References: <1318543601-20819-1-git-send-email-loic.minier@linaro.org>
-	<1318543601-20819-5-git-send-email-loic.minier@linaro.org>
+	<1318543601-20819-6-git-send-email-loic.minier@linaro.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1318543601-20819-5-git-send-email-loic.minier@linaro.org>
+In-Reply-To: <1318543601-20819-6-git-send-email-loic.minier@linaro.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,44 +19,113 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/5] Use %p in format for pointers
+Subject: Re: [PATCH 5/5] Use size_t for memory offsets
 To: =?iso-8859-15?Q?Lo=EFc?= Minier <loic.minier@linaro.org>
 Cc: barebox@lists.infradead.org
 
-T24gRnJpLCBPY3QgMTQsIDIwMTEgYXQgMTI6MDY6NDBBTSArMDIwMCwgTG/Dr2MgTWluaWVyIHdy
-b3RlOgo+IHJlcy0+c3RhcnQgYW5kIHJlcy0+c2l6ZSBhcmUgcmVzb3VyY2VfdHlwZV90IHdoaWNo
-IGlzIGEgcGh5c19hZGRyX3QKPiB3aGljaCBpdHNlbGYgY291bGQgc29tZWRheSBiZSBhIDY0LWJp
-dHMgcG9pbnRlciAoZm9yIGluc3RhbmNlIHdoZW4KPiBidWlsZGluZyBzYW5kYm94IG9uIGEgNjQt
-Yml0cyBob3N0KS4gIEluc3RlYWQgb2YgaGFyZGNvZGluZyAlMDh4IGFzIGEKPiBmb3JtYXQgZm9y
-IHBvaW50ZXJzLCB1c2UgdGhlICVwIGZvcm1hdC4KPiAKPiBTaWduZWQtb2ZmLWJ5OiBMb8OvYyBN
-aW5pZXIgPGxvaWMubWluaWVyQGxpbmFyby5vcmc+Cj4gLS0tCj4gIGRyaXZlcnMvYmFzZS9kcml2
-ZXIuYyB8ICAgIDQgKystLQo+ICAxIGZpbGVzIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwgMiBk
-ZWxldGlvbnMoLSkKPiAKPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9iYXNlL2RyaXZlci5jIGIvZHJp
-dmVycy9iYXNlL2RyaXZlci5jCj4gaW5kZXggMGI4MDEwMy4uNTE1ZmY4ZCAxMDA2NDQKPiAtLS0g
-YS9kcml2ZXJzL2Jhc2UvZHJpdmVyLmMKPiArKysgYi9kcml2ZXJzL2Jhc2UvZHJpdmVyLmMKPiBA
-QCAtMzQ5LDggKzM0OSw4IEBAIHN0YXRpYyBpbnQgZG9fZGV2aW5mbyhzdHJ1Y3QgY29tbWFuZCAq
-Y21kdHAsIGludCBhcmdjLCBjaGFyICphcmd2W10pCj4gIAkJCXByaW50ZigibnVtICAgOiAlZFxu
-IiwgaSk7Cj4gIAkJCWlmIChyZXMtPm5hbWUpCj4gIAkJCQlwcmludGYoIm5hbWUgIDogJXNcbiIs
-IHJlcy0+bmFtZSk7Cj4gLQkJCXByaW50Zigic3RhcnQgOiAweCUwOHhcbnNpemUgIDogMHglMDh4
-XG4iLAo+IC0JCQkgICAgICAgcmVzLT5zdGFydCwgcmVzLT5zaXplKTsKPiArCQkJcHJpbnRmKCJz
-dGFydCA6IDB4JXBcbnNpemUgIDogMHglcFxuIiwKPiArCQkJICAgICAgICh2b2lkICopcmVzLT5z
-dGFydCwgKHZvaWQgKilyZXMtPnNpemUpOwoKV2l0aCB0aGlzIHBhdGNoIEkgZ2V0IHRoZSBmb2xs
-b3dpbmcgd2FybmluZyBvbiBhIDY0Yml0IGhvc3Q6Cgpkcml2ZXJzL2Jhc2UvZHJpdmVyLmM6IElu
-IGZ1bmN0aW9uIOKAmGRvX2RldmluZm/igJk6CmRyaXZlcnMvYmFzZS9kcml2ZXIuYzozNTM6MTE6
-IHdhcm5pbmc6IGNhc3QgdG8gcG9pbnRlciBmcm9tIGludGVnZXIgb2YgZGlmZmVyZW50IHNpemUg
-Wy1XaW50LXRvLXBvaW50ZXItY2FzdF0KZHJpdmVycy9iYXNlL2RyaXZlci5jOjM1MzozMTogd2Fy
-bmluZzogY2FzdCB0byBwb2ludGVyIGZyb20gaW50ZWdlciBvZiBkaWZmZXJlbnQgc2l6ZSBbLVdp
-bnQtdG8tcG9pbnRlci1jYXN0XQoKV2Ugc2hvdWxkIHByb2JhYmx5IHNldCBDT05GSUdfUEhZU19B
-RERSX1RfNjRCSVQgY29ycmVjdGx5IG9uIGEgNjRiaXQKaG9zdC4KClNhc2NoYQoKLS0gClBlbmd1
-dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICB8CkluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8
-IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGls
-ZGVzaGVpbSwgR2VybWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJp
-Y2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5
-MTctNTU1NSB8CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-XwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDov
-L2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On Fri, Oct 14, 2011 at 12:06:41AM +0200, Lo=EFc Minier wrote:
+> mem_read() and mem_write() did arithmetic with a local ulong size
+> variable, a size_t count and an ulong offset to return a ssize_t result.
+> Change them to use size_t for size and offset and stop casting count to
+> ulong.
+
+You should change the prototypes in include/driver.h aswell.
+
+Sascha
+
+> =
+
+> This fixes a warning when building for 64-bits.
+> =
+
+> This change might have impact on the exported symbols.
+> =
+
+> Signed-off-by: Lo=EFc Minier <loic.minier@linaro.org>
+> ---
+>  fs/fs.c |   12 ++++++------
+>  1 files changed, 6 insertions(+), 6 deletions(-)
+> =
+
+> diff --git a/fs/fs.c b/fs/fs.c
+> index 7d65ec8..0cb226d 100644
+> --- a/fs/fs.c
+> +++ b/fs/fs.c
+> @@ -1038,31 +1038,31 @@ static void memcpy_sz(void *_dst, const void *_sr=
+c, ulong count, ulong rwsize)
+>  	}
+>  }
+>  =
+
+> -ssize_t mem_read(struct cdev *cdev, void *buf, size_t count, ulong offse=
+t, ulong flags)
+> +ssize_t mem_read(struct cdev *cdev, void *buf, size_t count, size_t offs=
+et, ulong flags)
+>  {
+> -	ulong size;
+> +	size_t size;
+>  	struct device_d *dev;
+>  =
+
+>  	if (!cdev->dev || cdev->dev->num_resources < 1)
+>  		return -1;
+>  	dev =3D cdev->dev;
+>  =
+
+> -	size =3D min((ulong)count, dev->resource[0].size - offset);
+> +	size =3D min(count, (size_t)dev->resource[0].size - offset);
+>  	memcpy_sz(buf, dev_get_mem_region(dev, 0) + offset, size, flags & O_RWS=
+IZE_MASK);
+>  	return size;
+>  }
+>  EXPORT_SYMBOL(mem_read);
+>  =
+
+> -ssize_t mem_write(struct cdev *cdev, const void *buf, size_t count, ulon=
+g offset, ulong flags)
+> +ssize_t mem_write(struct cdev *cdev, const void *buf, size_t count, size=
+_t offset, ulong flags)
+>  {
+> -	ulong size;
+> +	size_t size;
+>  	struct device_d *dev;
+>  =
+
+>  	if (!cdev->dev || cdev->dev->num_resources < 1)
+>  		return -1;
+>  	dev =3D cdev->dev;
+>  =
+
+> -	size =3D min((ulong)count, dev->resource[0].size - offset);
+> +	size =3D min(count, (size_t)dev->resource[0].size - offset);
+>  	memcpy_sz(dev_get_mem_region(dev, 0) + offset, buf, size, flags & O_RWS=
+IZE_MASK);
+>  	return size;
+>  }
+> -- =
+
+> 1.7.5.4
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
