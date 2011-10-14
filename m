@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1REgc1-0003y4-E8
-	for barebox@lists.infradead.org; Fri, 14 Oct 2011 12:11:42 +0000
-Received: from gallifrey.ext.pengutronix.de
-	([2001:6f8:1178:4:5054:ff:fe8d:eefb] helo=localhost)
-	by metis.ext.pengutronix.de with esmtp (Exim 4.72)
-	(envelope-from <jbe@pengutronix.de>) id 1REgby-0004A2-5r
-	for barebox@lists.infradead.org; Fri, 14 Oct 2011 14:11:38 +0200
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Fri, 14 Oct 2011 14:11:28 +0200
+	id 1REgcK-0003yw-Pf
+	for barebox@lists.infradead.org; Fri, 14 Oct 2011 12:12:01 +0000
+Date: Fri, 14 Oct 2011 14:11:58 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20111014121158.GF13898@pengutronix.de>
+References: <1318543601-20819-1-git-send-email-loic.minier@linaro.org>
+	<1318543601-20819-6-git-send-email-loic.minier@linaro.org>
+	<20111014072020.GY13898@pengutronix.de>
+	<20111014085903.GA26536@bee.dooz.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-Message-Id: <201110141411.28523.jbe@pengutronix.de>
+In-Reply-To: <20111014085903.GA26536@bee.dooz.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,39 +21,64 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH for next] 'bootz' command fails to load the zImage's header
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 5/5] Use size_t for memory offsets
+To: =?iso-8859-15?Q?Lo=EFc?= Minier <lool@dooz.org>
+Cc: barebox@lists.infradead.org
 
-Running the 'bootz' command always fails with
+On Fri, Oct 14, 2011 at 10:59:03AM +0200, Lo=EFc Minier wrote:
+> On Fri, Oct 14, 2011, Sascha Hauer wrote:
+> > You should change the prototypes in include/driver.h aswell.
+> =
 
-could not read <some file>
+>  Ah thanks, now it strikes me that the very same constructs are present
+>  in many file_operations implementations; e.g. imx_iim_cdev_read and
+>  imx_iim_cdev_write also use an ulong offset, as well as
+>  ubi_volume_cdev_read/ubi_volume_cdev_write (unsigned long), lp_read,
+>  miidev_read/_write etc.
+> =
 
-due to it loads only a size of a pointer, instead of the size of the expected
-header structure.
+>  I had a look at file_operations in linux now, and it uses
+>  size_t/ssize_t and a loff_t type for regular read/write:
+> struct file_operations {
+>         loff_t (*llseek) (struct file *, loff_t, int);
+>         ssize_t (*read) (struct file *, char __user *, size_t, loff_t *);
+>         ssize_t (*write) (struct file *, const char __user *, size_t, lof=
+f_t *);
+> =
 
-Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
+>  however for aio:
+>         ssize_t (*aio_read) (struct kiocb *, const struct iovec *, unsign=
+ed long, loff_t);
+>         ssize_t (*aio_write) (struct kiocb *, const struct iovec *, unsig=
+ned long, loff_t);
+> =
 
-diff --git a/arch/arm/lib/bootz.c b/arch/arm/lib/bootz.c
-index fc14487..9be615b 100644
---- a/arch/arm/lib/bootz.c
-+++ b/arch/arm/lib/bootz.c
-@@ -53,7 +53,7 @@ static int do_bootz(struct command *cmdtp, int argc, char *argv[])
- 
- 	if (!usemap) {
- 		header = &__header;
--		ret = read(fd, header, sizeof(header));
-+		ret = read(fd, header, sizeof(*header));
- 		if (ret < sizeof(*header)) {
- 			printf("could not read %s\n", argv[1]);
- 			goto err_out;
+>  loff_t is defined as long long on 32-bits and 64-bits arches, which I
+>  believe are both 8 bytes.
+> =
 
--- 
-Pengutronix e.K.                              | Juergen Beisert             |
-Linux Solutions for Science and Industry      | http://www.pengutronix.de/  |
+>  So perhaps it's better to switch from ulong to unsigned long long for
+>  offsets?  This isn't important for mem_read/mem_write, but it would be
+>  for e.g. MMC accesses as it's of course valid to seek after the first
+>  4 G of a MMC on a 32-bits system.
+
+Yes, an 8 byte type would be definitely better for file offsets. It
+would be a first step to support SD cards > 4G. I have looked into
+this several times before and ended up with huge patches everytime
+I tried.
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
