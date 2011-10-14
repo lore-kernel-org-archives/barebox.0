@@ -1,19 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ey0-f177.google.com ([209.85.215.177])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1REc1m-0007ok-Ip
-	for barebox@lists.infradead.org; Fri, 14 Oct 2011 07:17:59 +0000
-Received: by eye3 with SMTP id 3so1081303eye.36
-	for <barebox@lists.infradead.org>; Fri, 14 Oct 2011 00:17:56 -0700 (PDT)
+	id 1REc2g-0007qE-4E
+	for barebox@lists.infradead.org; Fri, 14 Oct 2011 07:18:55 +0000
+Date: Fri, 14 Oct 2011 09:18:50 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20111014071850.GX13898@pengutronix.de>
+References: <1318543601-20819-1-git-send-email-loic.minier@linaro.org>
+	<1318543601-20819-5-git-send-email-loic.minier@linaro.org>
 MIME-Version: 1.0
-In-Reply-To: <CAGiJk9fjG9veFsMSgA6y9dJ=sHGAa0jhStm86cfzC2VtkJHq=Q@mail.gmail.com>
-References: <CAGiJk9ePXFCwosqXUtU9yzGPmmZ5O6R_9gFtJXnJ9=DUnCpOxg@mail.gmail.com>
-	<CAJeSw6BJqdBON18UDRsBJgPov5iqXKmYRROnEyoH6SkNhOJg3w@mail.gmail.com>
-	<CAGiJk9eM=Fi+9uQEMM-64cZPGTjOvvBuy1jV60O_kXFmLD0J4Q@mail.gmail.com>
-	<CAGiJk9fjG9veFsMSgA6y9dJ=sHGAa0jhStm86cfzC2VtkJHq=Q@mail.gmail.com>
-Date: Fri, 14 Oct 2011 09:17:56 +0200
-Message-ID: <CAJeSw6DOo1_s1kJMjAOeTDv6XVhc0EgbHHZd_HN+uB3K8n+4BQ@mail.gmail.com>
-From: Fabian van der Werf <fvanderwerf@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <1318543601-20819-5-git-send-email-loic.minier@linaro.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,27 +19,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Booting Pandaboard from SD card
-To: Samuel Stirtzel <s.stirtzel@googlemail.com>
+Subject: Re: [PATCH 4/5] Use %p in format for pointers
+To: =?iso-8859-15?Q?Lo=EFc?= Minier <loic.minier@linaro.org>
 Cc: barebox@lists.infradead.org
 
->
-> Currently this is my main problem:
-> running /env/bin/init...
-> not found
-
-init is part of the default barebox environment, you can find it in
-the source tree under defaultenv. If you have your own environment it
-should bring its own init.
-
-Regards,
-Fabian
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gRnJpLCBPY3QgMTQsIDIwMTEgYXQgMTI6MDY6NDBBTSArMDIwMCwgTG/Dr2MgTWluaWVyIHdy
+b3RlOgo+IHJlcy0+c3RhcnQgYW5kIHJlcy0+c2l6ZSBhcmUgcmVzb3VyY2VfdHlwZV90IHdoaWNo
+IGlzIGEgcGh5c19hZGRyX3QKPiB3aGljaCBpdHNlbGYgY291bGQgc29tZWRheSBiZSBhIDY0LWJp
+dHMgcG9pbnRlciAoZm9yIGluc3RhbmNlIHdoZW4KPiBidWlsZGluZyBzYW5kYm94IG9uIGEgNjQt
+Yml0cyBob3N0KS4gIEluc3RlYWQgb2YgaGFyZGNvZGluZyAlMDh4IGFzIGEKPiBmb3JtYXQgZm9y
+IHBvaW50ZXJzLCB1c2UgdGhlICVwIGZvcm1hdC4KPiAKPiBTaWduZWQtb2ZmLWJ5OiBMb8OvYyBN
+aW5pZXIgPGxvaWMubWluaWVyQGxpbmFyby5vcmc+Cj4gLS0tCj4gIGRyaXZlcnMvYmFzZS9kcml2
+ZXIuYyB8ICAgIDQgKystLQo+ICAxIGZpbGVzIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwgMiBk
+ZWxldGlvbnMoLSkKPiAKPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9iYXNlL2RyaXZlci5jIGIvZHJp
+dmVycy9iYXNlL2RyaXZlci5jCj4gaW5kZXggMGI4MDEwMy4uNTE1ZmY4ZCAxMDA2NDQKPiAtLS0g
+YS9kcml2ZXJzL2Jhc2UvZHJpdmVyLmMKPiArKysgYi9kcml2ZXJzL2Jhc2UvZHJpdmVyLmMKPiBA
+QCAtMzQ5LDggKzM0OSw4IEBAIHN0YXRpYyBpbnQgZG9fZGV2aW5mbyhzdHJ1Y3QgY29tbWFuZCAq
+Y21kdHAsIGludCBhcmdjLCBjaGFyICphcmd2W10pCj4gIAkJCXByaW50ZigibnVtICAgOiAlZFxu
+IiwgaSk7Cj4gIAkJCWlmIChyZXMtPm5hbWUpCj4gIAkJCQlwcmludGYoIm5hbWUgIDogJXNcbiIs
+IHJlcy0+bmFtZSk7Cj4gLQkJCXByaW50Zigic3RhcnQgOiAweCUwOHhcbnNpemUgIDogMHglMDh4
+XG4iLAo+IC0JCQkgICAgICAgcmVzLT5zdGFydCwgcmVzLT5zaXplKTsKPiArCQkJcHJpbnRmKCJz
+dGFydCA6IDB4JXBcbnNpemUgIDogMHglcFxuIiwKPiArCQkJICAgICAgICh2b2lkICopcmVzLT5z
+dGFydCwgKHZvaWQgKilyZXMtPnNpemUpOwoKV2l0aCB0aGlzIHBhdGNoIEkgZ2V0IHRoZSBmb2xs
+b3dpbmcgd2FybmluZyBvbiBhIDY0Yml0IGhvc3Q6Cgpkcml2ZXJzL2Jhc2UvZHJpdmVyLmM6IElu
+IGZ1bmN0aW9uIOKAmGRvX2RldmluZm/igJk6CmRyaXZlcnMvYmFzZS9kcml2ZXIuYzozNTM6MTE6
+IHdhcm5pbmc6IGNhc3QgdG8gcG9pbnRlciBmcm9tIGludGVnZXIgb2YgZGlmZmVyZW50IHNpemUg
+Wy1XaW50LXRvLXBvaW50ZXItY2FzdF0KZHJpdmVycy9iYXNlL2RyaXZlci5jOjM1MzozMTogd2Fy
+bmluZzogY2FzdCB0byBwb2ludGVyIGZyb20gaW50ZWdlciBvZiBkaWZmZXJlbnQgc2l6ZSBbLVdp
+bnQtdG8tcG9pbnRlci1jYXN0XQoKV2Ugc2hvdWxkIHByb2JhYmx5IHNldCBDT05GSUdfUEhZU19B
+RERSX1RfNjRCSVQgY29ycmVjdGx5IG9uIGEgNjRiaXQKaG9zdC4KClNhc2NoYQoKLS0gClBlbmd1
+dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICB8CkluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8
+IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGls
+ZGVzaGVpbSwgR2VybWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJp
+Y2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5
+MTctNTU1NSB8CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+XwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDov
+L2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
