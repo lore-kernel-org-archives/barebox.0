@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1RG6fb-0005u9-7t
-	for barebox@lists.infradead.org; Tue, 18 Oct 2011 10:13:16 +0000
-Date: Tue, 18 Oct 2011 12:13:10 +0200
+	id 1RG8I2-0007In-Eu
+	for barebox@lists.infradead.org; Tue, 18 Oct 2011 11:57:03 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20111018101310.GK18141@pengutronix.de>
-References: <1318931325-31138-1-git-send-email-antonynpavlov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1318931325-31138-1-git-send-email-antonynpavlov@gmail.com>
+Date: Tue, 18 Oct 2011 13:56:58 +0200
+Message-Id: <1318939019-32713-4-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1318939019-32713-1-git-send-email-s.hauer@pengutronix.de>
+References: <1318939019-32713-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,77 +16,64 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC PATCH 1/2] fs: fix path_check_prereq()
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 3/4] ARM Linux: Add device tree support
+To: barebox@lists.infradead.org
 
-On Tue, Oct 18, 2011 at 01:48:44PM +0400, Antony Pavlov wrote:
-> This patch makes impossible the situations than path_check_prereq() can make
-> 'return 0' without changing errno.
+If the user has parsed a tree, we start Linux using the
+device tree, otherwise we use the traditional ATAG
+mechanism.
 
-Both applied to master. Thanks for fixing this.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/lib/armlinux.c |   15 ++++++++++++---
+ 1 files changed, 12 insertions(+), 3 deletions(-)
 
-Sascha
-
-> 
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
->  fs/fs.c |    7 ++++---
->  1 files changed, 4 insertions(+), 3 deletions(-)
-> 
-> diff --git a/fs/fs.c b/fs/fs.c
-> index 7d65ec8..714fc9b 100644
-> --- a/fs/fs.c
-> +++ b/fs/fs.c
-> @@ -293,9 +293,11 @@ static int path_check_prereq(const char *path, unsigned int flags)
->  	struct stat s;
->  	unsigned int m;
->  
-> +	errno = 0;
-> +
->  	if (stat(path, &s)) {
->  		if (flags & S_UB_DOES_NOT_EXIST)
-> -			return 0;
-> +			goto out;
->  		errno = -ENOENT;
->  		goto out;
->  	}
-> @@ -306,7 +308,7 @@ static int path_check_prereq(const char *path, unsigned int flags)
->  	}
->  
->  	if (flags == S_UB_EXISTS)
-> -		return 0;
-> +		goto out;
->  
->  	m = s.st_mode;
->  
-> @@ -325,7 +327,6 @@ static int path_check_prereq(const char *path, unsigned int flags)
->  		goto out;
->  	}
->  
-> -	errno = 0;
->  out:
->  	return errno;
->  }
-> -- 
-> 1.7.6.3
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/arch/arm/lib/armlinux.c b/arch/arm/lib/armlinux.c
+index e3a74f4..d8ca477 100644
+--- a/arch/arm/lib/armlinux.c
++++ b/arch/arm/lib/armlinux.c
+@@ -36,6 +36,7 @@
+ #include <fcntl.h>
+ #include <errno.h>
+ #include <memory.h>
++#include <of.h>
+ 
+ #include <asm/byteorder.h>
+ #include <asm/setup.h>
+@@ -209,8 +210,16 @@ void armlinux_set_serial(u64 serial)
+ void start_linux(void *adr, int swap, struct image_data *data)
+ {
+ 	void (*kernel)(int zero, int arch, void *params) = adr;
+-
+-	setup_tags(data, swap);
++	void *params = NULL;
++#ifdef CONFIG_OFTREE
++	params = of_get_fixed_tree();
++	if (params)
++		printf("booting Linux kernel with devicetree\n");
++#endif
++	if (!params) {
++		setup_tags(data, swap);
++		params = armlinux_bootparams;
++	}
+ 
+ 	shutdown_barebox();
+ 	if (swap) {
+@@ -220,5 +229,5 @@ void start_linux(void *adr, int swap, struct image_data *data)
+ 		__asm__ __volatile__("mcr p15, 0, %0, c1, c0" :: "r" (reg));
+ 	}
+ 
+-	kernel(0, armlinux_architecture, armlinux_bootparams);
++	kernel(0, armlinux_architecture, params);
+ }
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.7
+
 
 _______________________________________________
 barebox mailing list
