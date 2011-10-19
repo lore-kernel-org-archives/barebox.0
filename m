@@ -1,21 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 9.mo1.mail-out.ovh.net ([178.32.108.172]
-	helo=mo1.mail-out.ovh.net)
-	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1RGBDT-000393-2t
-	for barebox@lists.infradead.org; Tue, 18 Oct 2011 15:04:31 +0000
-Received: from mail425.ha.ovh.net (b9.ovh.net [213.186.33.59])
-	by mo1.mail-out.ovh.net (Postfix) with SMTP id D855B100C0FC
-	for <barebox@lists.infradead.org>;
-	Tue, 18 Oct 2011 17:06:17 +0200 (CEST)
-Date: Tue, 18 Oct 2011 16:39:46 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20111018143946.GA31716@game.jcrosoft.org>
-References: <1318939019-32713-1-git-send-email-s.hauer@pengutronix.de>
-	<1318939019-32713-2-git-send-email-s.hauer@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+	id 1RGSoK-0001bn-Qi
+	for barebox@lists.infradead.org; Wed, 19 Oct 2011 09:51:46 +0000
+Date: Wed, 19 Oct 2011 11:51:41 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20111019095141.GS18141@pengutronix.de>
+References: <1318931325-31138-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1318939019-32713-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1318931325-31138-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,42 +22,76 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] initial libfdt support
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [RFC PATCH 1/2] fs: fix path_check_prereq()
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On 13:56 Tue 18 Oct     , Sascha Hauer wrote:
-> vanilla libfdt 1.3.0 from the dtc git:
+On Tue, Oct 18, 2011 at 01:48:44PM +0400, Antony Pavlov wrote:
+> This patch makes impossible the situations than path_check_prereq() can make
+> 'return 0' without changing errno.
 > 
-> git://git.jdl.com/software/dtc.git
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> ---
+>  fs/fs.c |    7 ++++---
+>  1 files changed, 4 insertions(+), 3 deletions(-)
 > 
-> Only small adjustments to compile with barebox
-we the previous one hust this patch would have allow to compile in Barebox
-IIRC
-    libfdt: use linux/types.h for uintptr_t
+> diff --git a/fs/fs.c b/fs/fs.c
+> index 7d65ec8..714fc9b 100644
+> --- a/fs/fs.c
+> +++ b/fs/fs.c
+> @@ -293,9 +293,11 @@ static int path_check_prereq(const char *path, unsigned int flags)
+>  	struct stat s;
+>  	unsigned int m;
+>  
+> +	errno = 0;
+> +
+>  	if (stat(path, &s)) {
+>  		if (flags & S_UB_DOES_NOT_EXIST)
+> -			return 0;
+> +			goto out;
 
-    Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- include/libfdt_env.h |    3 +--
- 1 files changed, 1 insertions(+), 2 deletions(-)
+Wow. You broke mkdir.
 
-diff --git a/include/libfdt_env.h b/include/libfdt_env.h
-index 449bf60..e83aa96 100644
---- a/include/libfdt_env.h
-+++ b/include/libfdt_env.h
-@@ -1,8 +1,7 @@
- #ifndef _LIBFDT_ENV_H
- #define _LIBFDT_ENV_H
+stat() changes errno, so path_check_prereq returns an error value
+when S_UB_DOES_NOT_EXIST is set and a file does not exist.
 
--#include <stddef.h>
--#include <stdint.h>
-+#include <linux/types.h>
- #include <string.h>
+Sascha
 
- #define _B(n)  ((unsigned long long)((uint8_t *)&x)[n])
+>  		errno = -ENOENT;
+>  		goto out;
+>  	}
+> @@ -306,7 +308,7 @@ static int path_check_prereq(const char *path, unsigned int flags)
+>  	}
+>  
+>  	if (flags == S_UB_EXISTS)
+> -		return 0;
+> +		goto out;
+>  
+>  	m = s.st_mode;
+>  
+> @@ -325,7 +327,6 @@ static int path_check_prereq(const char *path, unsigned int flags)
+>  		goto out;
+>  	}
+>  
+> -	errno = 0;
+>  out:
+>  	return errno;
+>  }
+> -- 
+> 1.7.6.3
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
-Best Regards,
-J.
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
