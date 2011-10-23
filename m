@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 15.mo3.mail-out.ovh.net ([87.98.150.177]
+Received: from 8.mo3.mail-out.ovh.net ([87.98.172.249]
 	helo=mo3.mail-out.ovh.net)
 	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1RHstZ-00079B-VF
-	for barebox@lists.infradead.org; Sun, 23 Oct 2011 07:55:03 +0000
+	id 1RHsta-00079C-7Y
+	for barebox@lists.infradead.org; Sun, 23 Oct 2011 07:55:04 +0000
 Received: from mail402.ha.ovh.net (b6.ovh.net [213.186.33.56])
-	by mo3.mail-out.ovh.net (Postfix) with SMTP id 988661008514
+	by mo3.mail-out.ovh.net (Postfix) with SMTP id 61DA61008513
 	for <barebox@lists.infradead.org>;
-	Sun, 23 Oct 2011 09:51:04 +0200 (CEST)
+	Sun, 23 Oct 2011 09:51:03 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sun, 23 Oct 2011 15:48:21 +0800
-Message-Id: <1319356101-4521-3-git-send-email-plagnioj@jcrosoft.com>
+Date: Sun, 23 Oct 2011 15:48:20 +0800
+Message-Id: <1319356101-4521-2-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1319356101-4521-1-git-send-email-plagnioj@jcrosoft.com>
 References: <1319356101-4521-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
@@ -26,68 +26,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] sandbox: simplify linker script
+Subject: [PATCH 2/3] sandbox: remove duplicate barebox.lds.S
 To: barebox@lists.infradead.org
 
-let the linker to provide the basic linker script
-
-just insert the commands and initcalls before the .rodata section
+today we have the same linker script in board and lib
+and only the board linker script is used
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/sandbox/Makefile            |    8 +-
- arch/sandbox/board/Makefile      |    3 -
- arch/sandbox/board/barebox.lds.S |  245 +++-----------------------------------
- 3 files changed, 17 insertions(+), 239 deletions(-)
- rewrite arch/sandbox/board/barebox.lds.S (99%)
+ arch/sandbox/lib/Makefile      |    4 -
+ arch/sandbox/lib/barebox.lds.S |  229 ----------------------------------------
+ 2 files changed, 0 insertions(+), 233 deletions(-)
+ delete mode 100644 arch/sandbox/lib/Makefile
+ delete mode 100644 arch/sandbox/lib/barebox.lds.S
 
-diff --git a/arch/sandbox/Makefile b/arch/sandbox/Makefile
-index 860ed1c..ed1194c 100644
---- a/arch/sandbox/Makefile
-+++ b/arch/sandbox/Makefile
-@@ -38,23 +38,17 @@ SUBARCH := $(shell uname -m | sed -e s/i.86/i386/ -e s/sun4u/sparc64/ \
- 				  -e s/ppc.*/powerpc/ -e s/mips.*/mips/ )
- 
- ifeq ($(SUBARCH),x86_64)
--ELF_ARCH   := i386:x86-64
--ELF_FORMAT := elf64-x86-64
- ELF_CLASS := ELFCLASS64
- endif
- ifeq ($(SUBARCH),i386)
--ELF_ARCH   := $(SUBARCH)
--ELF_FORMAT := elf32-$(SUBARCH)
- ELF_CLASS  := ELFCLASS32
- endif
- ifeq ($(SUBARCH),powerpc)
--ELF_ARCH   := powerpc
--ELF_FORMAT := elf32-powerpc
- ELF_CLASS  := ELFCLASS32
- endif
- 
- CPPFLAGS += -DELF_CLASS="$(ELF_CLASS)"
--export ELF_FORMAT ELF_ARCH SUBARCH ELF_CLASS
-+export ELF_CLASS
- 
- archprepare: maketools
- 
-diff --git a/arch/sandbox/board/Makefile b/arch/sandbox/board/Makefile
-index 8abe5dd..266c3a3 100644
---- a/arch/sandbox/board/Makefile
-+++ b/arch/sandbox/board/Makefile
-@@ -3,7 +3,4 @@ obj-y += clock.o
- obj-y += hostfile.o
- obj-y += console.o
- 
+diff --git a/arch/sandbox/lib/Makefile b/arch/sandbox/lib/Makefile
+deleted file mode 100644
+index 854aa43..0000000
+--- a/arch/sandbox/lib/Makefile
++++ /dev/null
+@@ -1,4 +0,0 @@
 -CPPFLAGS_barebox.lds = -U$(SUBARCH) -DELF_ARCH=$(ELF_ARCH) \
--        -DELF_FORMAT="$(ELF_FORMAT)"
- extra-y += barebox.lds
+-	-DELF_FORMAT="$(ELF_FORMAT)"
 -
-diff --git a/arch/sandbox/board/barebox.lds.S b/arch/sandbox/board/barebox.lds.S
-dissimilarity index 99%
-index 53e9f60..76975ee 100644
---- a/arch/sandbox/board/barebox.lds.S
-+++ b/arch/sandbox/board/barebox.lds.S
-@@ -1,229 +1,16 @@
+-extra-y += barebox.lds
+diff --git a/arch/sandbox/lib/barebox.lds.S b/arch/sandbox/lib/barebox.lds.S
+deleted file mode 100644
+index 53e9f60..0000000
+--- a/arch/sandbox/lib/barebox.lds.S
++++ /dev/null
+@@ -1,229 +0,0 @@
 -#include <asm-generic/barebox.lds.h>
 -
 -OUTPUT_FORMAT(ELF_FORMAT)
@@ -317,22 +285,6 @@ index 53e9f60..76975ee 100644
 -  /DISCARD/ : { *(.note.GNU-stack) }
 -}
 -
-+#include <asm-generic/barebox.lds.h>
-+
-+SECTIONS
-+{
-+	. = ALIGN(64);
-+	__barebox_initcalls_start = .;
-+	__barebox_initcalls : { INITCALLS }
-+	__barebox_initcalls_end = .;
-+
-+	. = ALIGN(64);
-+	__barebox_cmd_start = .;
-+	__barebox_cmd : { BAREBOX_CMDS }
-+	__barebox_cmd_end = .;
-+}
-+
-+INSERT BEFORE .rodata;
 -- 
 1.7.7
 
