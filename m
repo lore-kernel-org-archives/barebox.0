@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1RIRk3-0006DM-5C
-	for barebox@lists.infradead.org; Mon, 24 Oct 2011 21:07:31 +0000
-Date: Mon, 24 Oct 2011 23:07:28 +0200
-From: Robert Schwebel <r.schwebel@pengutronix.de>
-Message-ID: <20111024210728.GG9199@pengutronix.de>
-References: <20111024210152.GA19298@hoothoot>
+Received: from fmmailgate03.web.de ([217.72.192.234])
+	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+	id 1RIRo7-0006Ew-LT
+	for barebox@lists.infradead.org; Mon, 24 Oct 2011 21:11:44 +0000
+Date: Mon, 24 Oct 2011 23:11:37 +0200
+From: Johannes Schauer <j.schauer@email.de>
+Message-ID: <20111024211137.GB19298@hoothoot>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20111024210152.GA19298@hoothoot>
+Reply-To: 20111024202514.GA17005@hoothoot
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,24 +21,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: barebox on gta04
-To: Johannes Schauer <j.schauer@email.de>
-Cc: barebox@lists.infradead.org
+Subject: barebox on gta04
+To: barebox@lists.infradead.org
+Cc: gta04-owner@goldelico.com
 
-On Mon, Oct 24, 2011 at 11:01:52PM +0200, Johannes Schauer wrote:
-> I was booting barebox from git on my "openmoko" gta04 today but what was
-> not working was the mmc initialization.
+Hi,
 
-Can you send us more information about *what* goes wrong? Do you see
-something in the kernel output? Any error messages? Please provide your
-boot lot.
 
-rsc
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+I was booting barebox from git on my "openmoko" gta04 today but what was
+not working was the mmc initialization.
+
+It was failing in mmc_init_setup() in ./drivers/mci/omap_hsmmc.c after
+printing "timedout waiting for cc2!" when I had DEBUG enabled.
+
+-%<-----------------------------------------------------------------
+barebox 2011.10.0-00107-gdac6e90-dirty (Oct 24 2011 - 22:12:10)
+
+Board: Texas Instrument's Beagle
+omap-hsmmc@omap-hsmmc0: timedout waiting for cc2!
+Cannot reset the SD/MMC interface
+->%-----------------------------------------------------------------
+
+The gta04 should be very similar to the beagleboard and hence I was
+building using the omap3530_beagle_defconfig.
+
+any hints on how to continue debugging this problem are highly
+appreciated!
+
+cheers, josch
+
+PS: sorry for my previous mail which was the result of hitting "y"
+instead of "e" in my mutt...
 
 _______________________________________________
 barebox mailing list
