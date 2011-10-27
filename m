@@ -1,16 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 2.mo5.mail-out.ovh.net ([178.33.109.111]
-	helo=mo5.mail-out.ovh.net)
-	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
-	id 1RJOTw-0002cF-Hc
-	for barebox@lists.infradead.org; Thu, 27 Oct 2011 11:50:49 +0000
-Received: from mail98.ha.ovh.net (b9.ovh.net [213.186.33.59])
-	by mo5.mail-out.ovh.net (Postfix) with SMTP id 00C9CFFB14F
-	for <barebox@lists.infradead.org>;
-	Thu, 27 Oct 2011 13:56:14 +0200 (CEST)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu, 27 Oct 2011 19:50:42 +0800
-Message-Id: <1319716242-2328-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from devils.ext.ti.com ([198.47.26.153])
+	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+	id 1RJQgf-000417-6z
+	for barebox@lists.infradead.org; Thu, 27 Oct 2011 14:12:05 +0000
+Received: from dbdp20.itg.ti.com ([172.24.170.38])
+	by devils.ext.ti.com (8.13.7/8.13.7) with ESMTP id p9REC0nH031241
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <barebox@lists.infradead.org>; Thu, 27 Oct 2011 09:12:02 -0500
+Received: from dbde70.ent.ti.com (localhost [127.0.0.1])
+	by dbdp20.itg.ti.com (8.13.8/8.13.8) with ESMTP id p9REBxKv024831
+	for <barebox@lists.infradead.org>; Thu, 27 Oct 2011 19:42:00 +0530 (IST)
+From: "Premi, Sanjeev" <premi@ti.com>
+Date: Thu, 27 Oct 2011 14:11:58 +0000
+Message-ID: <E28AAFD00EFAA646AE3DF9B89CD24A89BF50@DBDE01.ent.ti.com>
+References: <1318417430-2039-1-git-send-email-premi@ti.com>
+In-Reply-To: <1318417430-2039-1-git-send-email-premi@ti.com>
+Content-Language: en-US
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -20,47 +25,68 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3] sandbox: move ELFCLASS detection to asm/elf.h
-To: barebox@lists.infradead.org
-Cc: =?UTF-8?q?Lo=C3=AFc=20Minier?= <loic.minier@linaro.org>
+Subject: RE: [PATCH v3] omap: Unify run_shell() in xload configuration
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-bm93IHdlIGNhbiBkZXRlY3QgdGhlIGhvc3QgYnVpbGQgZnJvbSBnY2MgbWFjcm8KYW5kIGNyb3Nz
-IGNvbXBpbGUgdGhlIHNhbmRib3gKClNpZ25lZC1vZmYtYnk6IEplYW4tQ2hyaXN0b3BoZSBQTEFH
-TklPTC1WSUxMQVJEIDxwbGFnbmlvakBqY3Jvc29mdC5jb20+CkNjOiBMb8OvYyBNaW5pZXIgPGxv
-aWMubWluaWVyQGxpbmFyby5vcmc+Ci0tLQp2MzoKCglmaXggdHlwbwp2MjoKCWFzIGRpc2N1c3Mg
-d2l0aCBMb8OvYyB1c2UgdGhlIHNpemUgb2YgdGhlIHBvaW50ZXIKCkxvw69jCgoJdG8gYnVpbGQg
-b24gbW9zdCBvZiBhcmNoIHlvdSBuZWVkIHRoaXMgZml4IGFuZCAzIG90aGVycwoJYWxyZWFkeSBp
-biB0aGUgbmV4dAoKCWNvbW1pdAk5YTU4OThlNTogc2FuZGJveDogc2ltcGxpZnkgbGlua2VyIHNj
-cmlwdAoJY29tbWl0CTE1Zjg3NjU3OiBzYW5kYm94OiByZW1vdmUgZHVwbGljYXRlIGJhcmVib3gu
-bGRzLlMKCW9tbWl0CWUzZTcxZjVlOiBzYW5kYm94OiBtb3ZlIF9fU0FOREJPWF9fIHRvIE1ha2Vm
-aWxlCgoJU2FjaGEgdGhvc2UgNCBwYXRjaGVzIGNvdWxkIGdvIHRvIHRoZSBtYXN0ZXIgYXMgdGhl
-eSBmaXggdGhlIHNhbmRib3gKCkJlc3QgUmVnYXJkcywKSi4KCiBhcmNoL3NhbmRib3gvTWFrZWZp
-bGUgICAgICAgICAgfCAgIDEzIC0tLS0tLS0tLS0tLS0KIGFyY2gvc2FuZGJveC9pbmNsdWRlL2Fz
-bS9lbGYuaCB8ICAgMTEgKysrKysrKysrKy0KIDIgZmlsZXMgY2hhbmdlZCwgMTAgaW5zZXJ0aW9u
-cygrKSwgMTQgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvYXJjaC9zYW5kYm94L01ha2VmaWxl
-IGIvYXJjaC9zYW5kYm94L01ha2VmaWxlCmluZGV4IGI4OGYxZjYuLjlmZDE4YTIgMTAwNjQ0Ci0t
-LSBhL2FyY2gvc2FuZGJveC9NYWtlZmlsZQorKysgYi9hcmNoL3NhbmRib3gvTWFrZWZpbGUKQEAg
-LTM2LDE5ICszNiw2IEBAIFNVQkFSQ0ggOj0gJChzaGVsbCB1bmFtZSAtbSB8IHNlZCAtZSBzL2ku
-ODYvaTM4Ni8gLWUgcy9zdW40dS9zcGFyYzY0LyBcCiAJCQkJICAtZSBzL3MzOTB4L3MzOTAvIC1l
-IHMvcGFyaXNjNjQvcGFyaXNjLyBcCiAJCQkJICAtZSBzL3BwYy4qL3Bvd2VycGMvIC1lIHMvbWlw
-cy4qL21pcHMvICkKIAotaWZlcSAoJChTVUJBUkNIKSx4ODZfNjQpCi1FTEZfQ0xBU1MgOj0gRUxG
-Q0xBU1M2NAotZW5kaWYKLWlmZXEgKCQoU1VCQVJDSCksaTM4NikKLUVMRl9DTEFTUyAgOj0gRUxG
-Q0xBU1MzMgotZW5kaWYKLWlmZXEgKCQoU1VCQVJDSCkscG93ZXJwYykKLUVMRl9DTEFTUyAgOj0g
-RUxGQ0xBU1MzMgotZW5kaWYKLQotQ1BQRkxBR1MgKz0gLURFTEZfQ0xBU1M9IiQoRUxGX0NMQVNT
-KSIKLWV4cG9ydCBFTEZfQ0xBU1MKLQogYXJjaHByZXBhcmU6IG1ha2V0b29scwogCiBQSE9OWSAr
-PSBtYWtldG9vbHMKZGlmZiAtLWdpdCBhL2FyY2gvc2FuZGJveC9pbmNsdWRlL2FzbS9lbGYuaCBi
-L2FyY2gvc2FuZGJveC9pbmNsdWRlL2FzbS9lbGYuaAppbmRleCBiNjBkMjQ4Li40MDUzOTNmIDEw
-MDY0NAotLS0gYS9hcmNoL3NhbmRib3gvaW5jbHVkZS9hc20vZWxmLmgKKysrIGIvYXJjaC9zYW5k
-Ym94L2luY2x1ZGUvYXNtL2VsZi5oCkBAIC0xLDIgKzEsMTEgQEAKKyNpZm5kZWYgX19BU01fU0FO
-REJPWF9FTEZfSF9fCisjZGVmaW5lIF9fQVNNX1NBTkRCT1hfRUxGX0hfXwogCi0vKiBub3RoaW5n
-IHlldCAqLworI2lmIF9fU0laRU9GX1BPSU5URVJfXyA9PSA4CisjZGVmaW5lIEVMRl9DTEFTUwlF
-TEZDTEFTUzY0CisjZGVmaW5lIENPTkZJR19QSFlTX0FERFJfVF82NEJJVAorI2Vsc2UKKyNkZWZp
-bmUgRUxGX0NMQVNTCUVMRkNMQVNTMzIKKyNlbmRpZgorCisjZW5kaWYgLyogX19BU01fU0FOREJP
-WF9FTEZfSF9fICovCi0tIAoxLjcuNwoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFk
-ZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVi
-b3gK
+> -----Original Message-----
+> From: Premi, Sanjeev 
+> Sent: Wednesday, October 12, 2011 4:34 PM
+> To: barebox@lists.infradead.org
+> Cc: Premi, Sanjeev
+> Subject: [PATCH v3] omap: Unify run_shell() in xload configuration
+> 
+> Currently, there are multiple definitions of run_shell()
+> for each board that can be build in "xload" configuration.
+> Now there is only one function used by all boards.
+> 
+> The functions defined in xload.c are used only when "xload"
+> configuration used; but it gets compiled unconditionally.
+> This has been fixed as well.
+> 
+> Signed-off-by: Sanjeev Premi <premi@ti.com>
+> ---
+> 
+>  Change in v3:
+>     Added function omap_bootsrc() to replace the #ifdef
+>     around the switch-case.
+> 
+>  Change in v2:
+>     Fixed the typo in the subject s/iomap/omap/
+>     ...observed when mail reached my inbox :(
+> 
+>  Only build tested with these commands:
+>    make distclean ; make omap3530_beagle_defconfig ; make ;
+>    make distclean ; make omap3530_beagle_xload_defconfig ; make ;
+>    make distclean ; make panda_xload_defconfig ; make ;
+>    make distclean ; make panda_defconfig ; make ;
+>    make distclean ; make pcm049_defconfig ; make ;
+>    make distclean ; make pcm049_xload_defconfig ; make ;
+> 
+> 
+>  arch/arm/boards/omap/board-beagle.c |   31 --------------------------
+>  arch/arm/boards/panda/board.c       |   19 ----------------
+>  arch/arm/boards/pcm049/board.c      |   30 -------------------------
+>  arch/arm/mach-omap/Makefile         |    3 +-
+>  arch/arm/mach-omap/xload.c          |   41 
+> +++++++++++++++++++++++++++++++++++
+>  5 files changed, 43 insertions(+), 81 deletions(-)
+> 
+
+Jean-Christophe,
+
+  Just wanted to check if this patch takes care of your comment[1].
+
+  [1] http://lists.infradead.org/pipermail/barebox/2011-October/004752.html
+
+~sanjeev
+
+[snip]...[snip]
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
