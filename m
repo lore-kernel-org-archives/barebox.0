@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1RJ22B-0001vB-Hl
-	for barebox@lists.infradead.org; Wed, 26 Oct 2011 11:52:42 +0000
-Date: Wed, 26 Oct 2011 13:52:34 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20111026115234.GZ23421@pengutronix.de>
-References: <4EA7C424.2030901@televic.com>
+Received: from smtp.mikenopa.com ([77.78.97.148])
+	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+	id 1RJJnI-0007NO-UT
+	for barebox@lists.infradead.org; Thu, 27 Oct 2011 06:50:29 +0000
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Thu, 27 Oct 2011 14:50:14 +0800
+Message-Id: <1319698214-30330-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <4EA7C424.2030901@televic.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,39 +15,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: No DHCP time out ? (v2010.12.0)
-To: Lambrecht =?iso-8859-15?Q?J=FCrgen?= <J.Lambrecht@TELEVIC.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: =?UTF-8?q?=5BPATCH=201/1=5D=20sandbox=3A=20move=20ELFCLASS=20detection=20to=20asm/elf=2Eh?=
+To: barebox@lists.infradead.org
+Cc: =?UTF-8?q?Lo=C3=AFc=20Minier?= <loic.minier@linaro.org>
 
-Hi J=FCrgen,
-
-On Wed, Oct 26, 2011 at 10:26:12AM +0200, Lambrecht J=FCrgen wrote:
-> Hello,
-> =
-
-> When our DHCP server crashes, Barebox DHCP client tries forever.
-> Is there a way to set a time out to let it fall back to a default IP =
-
-> address?
-
-Not currently, no. Our dhcp server does not crash ;)
-
-Patches welcome
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+bm93IHdlIGNhbiBkZXRlY3QgdGhlIGhvc3QgYnVpbGQgZnJvbSBnY2MgbWFjcm8KYW5kIGNyb3Nz
+IGNvbXBpbGUgdGhlIHNhbmRib3gKCmZvciA2NGJpdCB0b2RheSB3ZSBqdXN0IGRldGVjdCB4ODZf
+NjQgYW5kIHBvd2VycGM2NApieSBkZWZhdWx0IGJhcmVib3ggd2lsbCB1c2UgMzJiaXQgZWxmIGNs
+YXNzCgpTaWduZWQtb2ZmLWJ5OiBKZWFuLUNocmlzdG9waGUgUExBR05JT0wtVklMTEFSRCA8cGxh
+Z25pb2pAamNyb3NvZnQuY29tPgpDYzogTG/Dr2MgTWluaWVyIDxsb2ljLm1pbmllckBsaW5hcm8u
+b3JnPgotLS0KTG/Dr2MKCgl0byBidWlsZCBvbiBtb3N0IG9mIGFyY2ggeW91IG5lZWQgdGhpcyBm
+aXggYW5kIDMgb3RoZXJzCglhbHJlYWR5IGluIHRoZSBuZXh0CgoJY29tbWl0CTlhNTg5OGU1OiBz
+YW5kYm94OiBzaW1wbGlmeSBsaW5rZXIgc2NyaXB0Cgljb21taXQJMTVmODc2NTc6IHNhbmRib3g6
+IHJlbW92ZSBkdXBsaWNhdGUgYmFyZWJveC5sZHMuUwoJb21taXQJZTNlNzFmNWU6IHNhbmRib3g6
+IG1vdmUgX19TQU5EQk9YX18gdG8gTWFrZWZpbGUKCglTYWNoYSB0aG9zZSA0IHBhdGNoZXMgY291
+bGQgZ28gdG8gdGhlIG1hc3RlciBhcyB0aGV5IGZpeCB0aGUgc2FuZGJveAoKQmVzdCBSZWdhcmRz
+LApKLgogYXJjaC9zYW5kYm94L01ha2VmaWxlICAgICAgICAgIHwgICAxMyAtLS0tLS0tLS0tLS0t
+CiBhcmNoL3NhbmRib3gvaW5jbHVkZS9hc20vZWxmLmggfCAgIDE0ICsrKysrKysrKysrKystCiAy
+IGZpbGVzIGNoYW5nZWQsIDEzIGluc2VydGlvbnMoKyksIDE0IGRlbGV0aW9ucygtKQoKZGlmZiAt
+LWdpdCBhL2FyY2gvc2FuZGJveC9NYWtlZmlsZSBiL2FyY2gvc2FuZGJveC9NYWtlZmlsZQppbmRl
+eCBiODhmMWY2Li45ZmQxOGEyIDEwMDY0NAotLS0gYS9hcmNoL3NhbmRib3gvTWFrZWZpbGUKKysr
+IGIvYXJjaC9zYW5kYm94L01ha2VmaWxlCkBAIC0zNiwxOSArMzYsNiBAQCBTVUJBUkNIIDo9ICQo
+c2hlbGwgdW5hbWUgLW0gfCBzZWQgLWUgcy9pLjg2L2kzODYvIC1lIHMvc3VuNHUvc3BhcmM2NC8g
+XAogCQkJCSAgLWUgcy9zMzkweC9zMzkwLyAtZSBzL3BhcmlzYzY0L3BhcmlzYy8gXAogCQkJCSAg
+LWUgcy9wcGMuKi9wb3dlcnBjLyAtZSBzL21pcHMuKi9taXBzLyApCiAKLWlmZXEgKCQoU1VCQVJD
+SCkseDg2XzY0KQotRUxGX0NMQVNTIDo9IEVMRkNMQVNTNjQKLWVuZGlmCi1pZmVxICgkKFNVQkFS
+Q0gpLGkzODYpCi1FTEZfQ0xBU1MgIDo9IEVMRkNMQVNTMzIKLWVuZGlmCi1pZmVxICgkKFNVQkFS
+Q0gpLHBvd2VycGMpCi1FTEZfQ0xBU1MgIDo9IEVMRkNMQVNTMzIKLWVuZGlmCi0KLUNQUEZMQUdT
+ICs9IC1ERUxGX0NMQVNTPSIkKEVMRl9DTEFTUykiCi1leHBvcnQgRUxGX0NMQVNTCi0KIGFyY2hw
+cmVwYXJlOiBtYWtldG9vbHMKIAogUEhPTlkgKz0gbWFrZXRvb2xzCmRpZmYgLS1naXQgYS9hcmNo
+L3NhbmRib3gvaW5jbHVkZS9hc20vZWxmLmggYi9hcmNoL3NhbmRib3gvaW5jbHVkZS9hc20vZWxm
+LmgKaW5kZXggYjYwZDI0OC4uNjE1YjQ4ZiAxMDA2NDQKLS0tIGEvYXJjaC9zYW5kYm94L2luY2x1
+ZGUvYXNtL2VsZi5oCisrKyBiL2FyY2gvc2FuZGJveC9pbmNsdWRlL2FzbS9lbGYuaApAQCAtMSwy
+ICsxLDE0IEBACisjaWZuZGVmIF9fQVNNX1NBTkRCT1hfRUxGX0hfXworI2RlZmluZSBfX0FTTV9T
+QU5EQk9YX0VMRl9IX18KIAotLyogbm90aGluZyB5ZXQgKi8KKyNpZiBkZWZpbmVkKF9feDg2XzY0
+X18pCisjZGVmaW5lIEVMRl9DTEFTUwlFTEZDTEFTUzY0CisjZGVmaW5lIENPTkZJR19QSFlTX0FE
+RFJfVF82NEJJVAorI2VsaWYgZGVmaW5lZChfX3Bvd2VycGM2NF9fKQorI2RlZmluZSBFTEZfQ0xB
+U1MJRUxGQ0xBU1M2NAorI2RlZmluZSBDT05GSUdfUEhZU19BRERSX1RfNjRCSVQKKyNlbHNlIC8q
+IDMyYml0OiBpMzg2LCBwb3dlcnBjLCBhcm0sIGV0Yy4uLiAqLworI2RlZmluZSBFTEZfQ0xBU1MJ
+RUxGQ0xBU1MzMgorI2VuZGlmCisKKyNlbmRpZiAvKiBfX0FTTV9TQU5EQk9YX0VMRl9IX18gKi8K
+LS0gCjEuNy43CgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6
+Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
