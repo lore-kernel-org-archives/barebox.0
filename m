@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-bw0-f49.google.com ([209.85.214.49])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1RJmQ8-0006CQ-Qt
-	for barebox@lists.infradead.org; Fri, 28 Oct 2011 13:24:29 +0000
-Received: by mail-bw0-f49.google.com with SMTP id 11so1504043bke.36
-	for <barebox@lists.infradead.org>; Fri, 28 Oct 2011 06:24:28 -0700 (PDT)
+	id 1RJmQ7-0006CR-3H
+	for barebox@lists.infradead.org; Fri, 28 Oct 2011 13:24:28 +0000
+Received: by mail-bw0-f49.google.com with SMTP id 11so1504068bke.36
+	for <barebox@lists.infradead.org>; Fri, 28 Oct 2011 06:24:26 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Fri, 28 Oct 2011 17:24:12 +0400
-Message-Id: <1319808253-16693-6-git-send-email-antonynpavlov@gmail.com>
+Date: Fri, 28 Oct 2011 17:24:11 +0400
+Message-Id: <1319808253-16693-5-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1319808253-16693-1-git-send-email-antonynpavlov@gmail.com>
 References: <1319808253-16693-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,28 +23,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC PATCH V2 5/6] USB: set MAXINTERFACES=16,
-	so Toshiba AC100 works correctly
+Subject: [RFC PATCH V2 4/6] toshiba-ac100: add USB host support
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- include/usb/usb.h |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+ arch/arm/boards/toshiba-ac100/board.c |   18 ++++++++++++++++++
+ 1 files changed, 18 insertions(+), 0 deletions(-)
 
-diff --git a/include/usb/usb.h b/include/usb/usb.h
-index 08fd1a1..f1aad21 100644
---- a/include/usb/usb.h
-+++ b/include/usb/usb.h
-@@ -38,7 +38,7 @@
+diff --git a/arch/arm/boards/toshiba-ac100/board.c b/arch/arm/boards/toshiba-ac100/board.c
+index e3a5eba..3fd720d 100644
+--- a/arch/arm/boards/toshiba-ac100/board.c
++++ b/arch/arm/boards/toshiba-ac100/board.c
+@@ -24,6 +24,8 @@
+ #include <init.h>
+ #include <asm/armlinux.h>
+ #include <sizes.h>
++#include <usb/ehci.h>
++#include <mach/iomap.h>
  
- #define USB_MAX_DEVICE			32
- #define USB_MAXCONFIG			8
--#define USB_MAXINTERFACES		8
-+#define USB_MAXINTERFACES		16
- #define USB_MAXENDPOINTS		16
- #define USB_MAXCHILDREN			8	/* This is arbitrary */
- #define USB_MAX_HUB			16
+ static int ac100_mem_init(void)
+ {
+@@ -32,3 +34,19 @@ static int ac100_mem_init(void)
+ 	return 0;
+ }
+ mem_initcall(ac100_mem_init);
++
++#ifdef CONFIG_USB_EHCI
++static struct ehci_platform_data ehci_pdata = {
++	.flags = EHCI_HAS_TT,
++};
++#endif
++
++static int ac100_devices_init(void)
++{
++#ifdef CONFIG_USB_EHCI
++	add_generic_usb_ehci_device(-1, TEGRA_USB3_BASE, &ehci_pdata);
++#endif
++
++	return 0;
++}
++device_initcall(ac100_devices_init);
 -- 
 1.7.7
 
