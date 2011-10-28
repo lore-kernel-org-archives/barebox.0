@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
-	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1RJigd-00030z-L2
-	for barebox@lists.infradead.org; Fri, 28 Oct 2011 09:25:16 +0000
-Date: Fri, 28 Oct 2011 11:25:09 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20111028092509.GD23421@pengutronix.de>
-References: <4EAA6994.1020005@erwinrol.com>
+Received: from mo3.mail-out.ovh.net ([178.32.228.3])
+	by canuck.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+	id 1RJiqL-0003AI-95
+	for barebox@lists.infradead.org; Fri, 28 Oct 2011 09:35:18 +0000
+Received: from mail407.ha.ovh.net (b9.ovh.net [213.186.33.59])
+	by mo3.mail-out.ovh.net (Postfix) with SMTP id 4A20A1008527
+	for <barebox@lists.infradead.org>;
+	Fri, 28 Oct 2011 11:38:02 +0200 (CEST)
+Date: Fri, 28 Oct 2011 11:34:56 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20111028093456.GA7961@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <4EAA6994.1020005@erwinrol.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,28 +24,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Tegra 2
-To: Erwin Rol <mailinglists@erwinrol.com>
-Cc: barebox@lists.infradead.org
+Subject: [RFC PATCH 0/2] NEW boot config 
+To: barebox@lists.infradead.org
 
-Hi Erwin,
+Hi,
 
-On Fri, Oct 28, 2011 at 10:36:36AM +0200, Erwin Rol wrote:
-> Hey all,
-> 
-> If I remember right a while back someone mentioned Tegra 2 here. I
-> would like to ask what the status is of Tegra 2 support. Or if there
-> is support at all ? :-)
+	This is a frist attempt to implement a new boot config management
+	that will allow us to have more complex config and a boot menu
 
-Antony said he would eventually work on that. Added him to Cc.
+	so for small boot loader we will be able to drop the shell
 
-Sascha
+Jean-Christophe PLAGNIOL-VILLARD (2):
+      add boot_config command support
+      add boot_menu command support
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+ Documentation/bootsec.dtb         |  Bin 0 -> 2198 bytes
+ Documentation/bootsec/bootsec.cfg |  104 +++++++++
+ commands/Kconfig                  |   16 ++
+ commands/Makefile                 |    2 +
+ commands/boot_config.c            |  262 ++++++++++++++++++++++
+ commands/boot_menu.c              |  234 ++++++++++++++++++++
+ common/Kconfig                    |    5 +
+ common/Makefile                   |    1 +
+ common/boot_config.c              |  438 +++++++++++++++++++++++++++++++++++++
+ common/boot_config_dts.c          |  256 ++++++++++++++++++++++
+ include/boot_config.h             |  158 +++++++++++++
+ 11 files changed, 1476 insertions(+), 0 deletions(-)
+ create mode 100644 Documentation/bootsec.dtb
+ create mode 100644 Documentation/bootsec/bootsec.cfg
+ create mode 100644 Documentation/bootsec/splash_installer.bmp
+ create mode 100644 Documentation/bootsec/splash_menu.bmp
+ create mode 100644 commands/boot_config.c
+ create mode 100644 commands/boot_menu.c
+ create mode 100644 common/boot_config.c
+ create mode 100644 common/boot_config_dts.c
+ create mode 100644 include/boot_config.h
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
