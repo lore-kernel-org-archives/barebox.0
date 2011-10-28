@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-bw0-f49.google.com ([209.85.214.49])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1RJmQ7-0006CR-3H
-	for barebox@lists.infradead.org; Fri, 28 Oct 2011 13:24:28 +0000
-Received: by mail-bw0-f49.google.com with SMTP id 11so1504068bke.36
-	for <barebox@lists.infradead.org>; Fri, 28 Oct 2011 06:24:26 -0700 (PDT)
+	id 1RJmQ9-0006DE-MH
+	for barebox@lists.infradead.org; Fri, 28 Oct 2011 13:24:30 +0000
+Received: by mail-bw0-f49.google.com with SMTP id 11so1504117bke.36
+	for <barebox@lists.infradead.org>; Fri, 28 Oct 2011 06:24:29 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Fri, 28 Oct 2011 17:24:11 +0400
-Message-Id: <1319808253-16693-5-git-send-email-antonynpavlov@gmail.com>
+Date: Fri, 28 Oct 2011 17:24:13 +0400
+Message-Id: <1319808253-16693-7-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1319808253-16693-1-git-send-email-antonynpavlov@gmail.com>
 References: <1319808253-16693-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,47 +23,70 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC PATCH V2 4/6] toshiba-ac100: add USB host support
+Subject: [RFC PATCH V2 6/6] add toshiba_ac100_defconfig
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/arm/boards/toshiba-ac100/board.c |   18 ++++++++++++++++++
- 1 files changed, 18 insertions(+), 0 deletions(-)
+ arch/arm/configs/toshiba_ac100_defconfig |   49 ++++++++++++++++++++++++++++++
+ 1 files changed, 49 insertions(+), 0 deletions(-)
+ create mode 100644 arch/arm/configs/toshiba_ac100_defconfig
 
-diff --git a/arch/arm/boards/toshiba-ac100/board.c b/arch/arm/boards/toshiba-ac100/board.c
-index e3a5eba..3fd720d 100644
---- a/arch/arm/boards/toshiba-ac100/board.c
-+++ b/arch/arm/boards/toshiba-ac100/board.c
-@@ -24,6 +24,8 @@
- #include <init.h>
- #include <asm/armlinux.h>
- #include <sizes.h>
-+#include <usb/ehci.h>
-+#include <mach/iomap.h>
- 
- static int ac100_mem_init(void)
- {
-@@ -32,3 +34,19 @@ static int ac100_mem_init(void)
- 	return 0;
- }
- mem_initcall(ac100_mem_init);
-+
-+#ifdef CONFIG_USB_EHCI
-+static struct ehci_platform_data ehci_pdata = {
-+	.flags = EHCI_HAS_TT,
-+};
-+#endif
-+
-+static int ac100_devices_init(void)
-+{
-+#ifdef CONFIG_USB_EHCI
-+	add_generic_usb_ehci_device(-1, TEGRA_USB3_BASE, &ehci_pdata);
-+#endif
-+
-+	return 0;
-+}
-+device_initcall(ac100_devices_init);
+diff --git a/arch/arm/configs/toshiba_ac100_defconfig b/arch/arm/configs/toshiba_ac100_defconfig
+new file mode 100644
+index 0000000..1eb3211
+--- /dev/null
++++ b/arch/arm/configs/toshiba_ac100_defconfig
+@@ -0,0 +1,49 @@
++CONFIG_ARCH_TEGRA=y
++CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
++CONFIG_TEXT_BASE=0x01000000
++CONFIG_BROKEN=y
++CONFIG_EXPERIMENTAL=y
++CONFIG_PROMPT="toshiba ac100> "
++CONFIG_LONGHELP=y
++CONFIG_CMDLINE_EDITING=y
++CONFIG_AUTO_COMPLETE=y
++# CONFIG_ERRNO_MESSAGES is not set
++# CONFIG_DEFAULT_ENVIRONMENT is not set
++CONFIG_POLLER=y
++CONFIG_ENABLE_DEVICE_NOISE=y
++CONFIG_CMD_SLEEP=y
++# CONFIG_CMD_TRUE is not set
++# CONFIG_CMD_FALSE is not set
++# CONFIG_CMD_CLEAR is not set
++# CONFIG_CMD_ECHO is not set
++CONFIG_CMD_LOADB=y
++CONFIG_CMD_LOADY=y
++CONFIG_CMD_LOADS=y
++CONFIG_CMD_MEMINFO=y
++CONFIG_CMD_MD5SUM=y
++CONFIG_CMD_SHA1SUM=y
++CONFIG_CMD_BOOTM_ZLIB=y
++CONFIG_CMD_BOOTM_SHOW_TYPE=y
++CONFIG_CMD_RESET=y
++CONFIG_CMD_GO=y
++CONFIG_CMD_I2C=y
++CONFIG_NET=y
++CONFIG_NET_DHCP=y
++CONFIG_NET_PING=y
++CONFIG_NET_TFTP=y
++CONFIG_NET_TFTP_PUSH=y
++CONFIG_NET_NETCONSOLE=y
++CONFIG_DRIVER_SERIAL_NS16550=y
++CONFIG_NET_USB=y
++CONFIG_NET_USB_ASIX=y
++# CONFIG_SPI is not set
++CONFIG_I2C=y
++CONFIG_I2C_TEGRA=y
++CONFIG_ATA=y
++CONFIG_ATA_DISK=y
++CONFIG_USB=y
++CONFIG_USB_EHCI=y
++CONFIG_USB_STORAGE=y
++CONFIG_VIDEO=y
++CONFIG_DRIVER_VIDEO_FB_TEGRA_DUMMY=y
++CONFIG_FS_FAT=y
 -- 
 1.7.7
 
