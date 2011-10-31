@@ -1,14 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-fx0-f49.google.com ([209.85.161.49])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1RKvuD-0006Ld-TT
-	for barebox@lists.infradead.org; Mon, 31 Oct 2011 17:44:22 +0000
-Received: by faaf16 with SMTP id f16so7769318faa.36
-	for <barebox@lists.infradead.org>; Mon, 31 Oct 2011 10:44:12 -0700 (PDT)
-Message-ID: <4EAEDE2C.5010904@crane-soft.de>
-Date: Mon, 31 Oct 2011 18:43:08 +0100
-From: Peter <sailingsmoky@googlemail.com>
+	id 1RKwfa-0006rI-6Z
+	for barebox@lists.infradead.org; Mon, 31 Oct 2011 18:33:15 +0000
+Date: Mon, 31 Oct 2011 19:33:08 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20111031183308.GH23421@pengutronix.de>
+References: <20111028093456.GA7961@game.jcrosoft.org>
+	<1319794660-6295-1-git-send-email-plagnioj@jcrosoft.com>
+	<20111028221922.GF23421@pengutronix.de>
+	<20111030185023.GD7961@game.jcrosoft.org>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20111030185023.GD7961@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
 	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,359 +25,207 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Failed to launch barebox from flash memory on i.MX35
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] add boot_config command support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-Hi all,
-I just managed to compile the latest barebox source (http://barebox.org/download/barebox-2011.10.0.tar.bz2 <http://barebox.org/download/>) for the pcm043 board.
-I configured and compiled it:
-$ make pcm043_defconfig
-$ make xconfig # nothing changed there
-$ make
+On Sun, Oct 30, 2011 at 07:50:23PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > +			dev = "sda1";
+> > > +			fs = "ext3";
+> > > +			path = "/boot/inird-3.0.0";
+> > > +		};
+> > > +		fdt@3 {
+> > > +			dev = "sda1";
+> > > +			fs = "ext3";
+> > > +			path = "boot/usb_a9g20.dtb";
+> > > +		};
+> > > +
+> > > +		kernel@4 {
+> > > +			format = "uimage";
+> > > +			dev = "sda3";
+> > > +			fs = "squashfs";
+> > > +			path = "/boot/uImage-installer-3.0.0";
+> > > +		};
+> > > +		initrd@4 {
+> > > +			dev = "sda3";
+> > > +			fs = "squashfs";
+> > > +			path = "/boot/initrd-installer-3.0.0";
+> > > +		};
+> > 
+> > Why do you describe the device/fstype in each and every node? a
+> > reference to a partition descriptions would be more convenient here.
+> > Also it's strange that the patch is an absolute path and not a path
+> > relative to the mountpoint.
+> becasue we need to known the fs to mont it
+> 
+> the fs could a real fs or nfs or tftp the path is absolute mount the
+> mountpoint
 
-I used the following CROSS environment settings:
-export PATH="$PATH:/opt/OSELAS.Toolchain-1.99.3/arm-1136jfs-linux-gnueabi/gcc-4.3.2-glibc-2.8-binutils-2.19-kernel-2.6.27-sanitized/bin"
-export ARCH=arm
-export CROSS_COMPILE=arm-1136jfs-linux-gnueabi-
+Linux normally mounts the boot partition to /boot. The information you
+need to describe is: sda3:initrd-installer-3.0.0. What shall the /boot
+mean above?
 
-The make went well without any problems.
-I flashed the barebox.bin at address 0xa000_0000 and rebootet.
-The program then trapped while trying to relocate the code to SDRAM.
-The SDRAM is propperly initialized but the call to memcpy takes adress
-0x9FFFE000 as source and 0x87F00000 as destination.
-0x9FFFE000 is definitely not correct, it is 0x2000 below the start of the
-flash memory, obviously the same size as symbol  _stext in the map
-when subtracting the base address.
+> > 
+> > > +	};
+> > > +
+> > > +	configuration {
+> > > +		description = "Welcome on Barebox Boot Sequence";
+> > > +		default = "linux_3_0_0";
+> > > +		altboot = "installer";
+> > > +		bootdelay = <5>;
+> > > +		splash = /incbin/("splash_menu.bmp");
+> > > +
+> > > +		linux_2_6_36 {
+> > > +			description = "Linux 2.6.36";
+> > > +			cmdline = "mem=64M console=ttyS0,115200 root=/dev/sda2 rw rootfstype=ext3";
+> > 
+> > We should be able to build the commandline out of its parts. A
+> > monolithic string seems not very flexible.
+> 
+> the idea is to put var inside and after you will use this cmdline as a based
+> to construct the finall one
+> > 
+> > > +			kernel = "kernel@1";
+> > > +			initrd = "initrd@1";
+> > phandles instead?
+> > 
+> more code in the c code and mre difficult to handle when modifying the dtb
+> from barebox
 
-Map:
-00038e50 A _barebox_image_size
-87f02000 T _stext
-87f02000 T _text
+I don't buy that. Other than that it seems to justify my point that the
+dtb format you chose is driven by your adhoc needs and not by some
+concept.
 
-The source is in arch/arm/copu/start.c at line 122.
+> > 
+> > So instead of the list_head directly you export it via
+> > boot_config_get_kernels() which basically has the same effect but is
+> > harder to read. Please do not do that.
+> realy don't like to export it
 
-I am completly stuck. What went wrong?
-Any help will be very much appreciated.
+You already do, by taking the indirection over a function.
 
-Regards, Peter
+> > 
+> > > +	printf("[Initrd]\n");
+> > > +
+> > > +	list_for_each_entry(bed, boot_config_get_initrds(), list)
+> > > +		printf("%s\n", bed->name);
+> > > +
+> > > +	printf("[FDT]\n");
+> > > +
+> > > +	list_for_each_entry(bed, boot_config_get_fdts(), list)
+> > > +		printf("%s\n", bed->name);
+> > > +
+> > > +}
+> > > +
+> > > +static void print_boot_config_data(struct boot_config_data *bed)
+> > 
+> > What's a bed? Supposedly the thing I should go now.
+> I like it :P
+> it was supposed to mean boot env data
+> 
+> but switch to boot_config_data
+> > 
+> > > +{
+> > > +	printf("name = '%s'\n", bed->name);
+> > > +	printf("dev  = '%s'\n", bed->dev);
+> > > +	printf("fs   = '%s'\n", bed->fs);
+> > > +	printf("path = '%s'\n", bed->path);
+> > > +}
+> > > +
+> > > +static void print_boot_config(struct boot_config *e)
+> > > +{
+> > > +	struct boot_config_var *v;
+> > > +
+> > > +	printf("Config '%s'\n\n", e->name);
+> > > +
+> > > +	v = boot_config_var_get_by_name(e, "description");
+> > 
+> > You have a mechanism to attach arbitrary key/value pairs to a struct
+> > boot_config. Still you do not iterate over all over all variables in the
+> > corresponding devicetree node, but instead only handle the variables
+> > explicitely that you now about.
+> > 
+> > This does not make sense. struct boot_config should simply have a char
+> > *description, char *cmdline and whatever else you need. Then you can
+> > remove this boot_config_var_get_by_name() cruft.
+> I knwon this version is not switch to new one I finish it
 
-.config
+-ENOPARSE
 
-#
-# Automatically generated make config: don't edit
-# Linux/arm 2011.10.0 Barebox Configuration
-# Sun Oct 30 18:48:51 2011
-#
-# CONFIG_BOARD_LINKER_SCRIPT is not set
-CONFIG_GENERIC_LINKER_SCRIPT=y
-CONFIG_ARM=y
-CONFIG_ARM_LINUX=y
+> > > +	switch(cbc.action) {
+> > 
+> > What's this cbc.action thing about? It is only ever used in this
+> > function.
+> is to specify what to do based on the option as you can have alots of option
+> see menu framwork
 
-#
-# System Type
-#
-# CONFIG_ARCH_AT91 is not set
-# CONFIG_ARCH_EP93XX is not set
-CONFIG_ARCH_IMX=y
-# CONFIG_ARCH_MXS is not set
-# CONFIG_ARCH_NETX is not set
-# CONFIG_ARCH_NOMADIK is not set
-# CONFIG_ARCH_OMAP is not set
-# CONFIG_ARCH_S3C24xx is not set
-# CONFIG_ARCH_VERSATILE is not set
+Look again. This variable is used only locally in this function and it
+would be a bug if the functions below would interpret it.
 
-#
-# Processor Type
-#
-CONFIG_CPU_32=y
-CONFIG_CPU_V6=y
-CONFIG_CPU_32v6=y
+> > 
+> > > +	case action_list:
+> > > +		ret = do_boot_config_list(&cbc);
+> > > +		break;
+> > > +	case action_load:
+> > > +		ret = do_boot_config_load(&cbc);
+> > > +		break;
+> > > +	case action_boot:
+> > > +		ret = do_boot_config_boot(&cbc);
+> > > +		break;
+> > > +
+> > > +	};
+> > > +
+> > > +	if (ret)
+> > > +		return COMMAND_ERROR_USAGE;
+> > 
+> > 
+> > I am not going to read further. Every struct boot_config seems to have a
+> > clearly defined set of variables but instead of adding the corresponding
+> > pointers to struct boot_config you have this strange
+> > attach-key-value-pairs-to-c-struct in place.
+> > Supposedly this is some leftover from earlier versions. Sending
+> > non-finished patches as a RFC is perfectly fine, but in this case it's
+> > sometimes really hard to see where you're heading to.
+> Yas you have miniamal set of variable but the code is more generic and
+> support to have more var.
+> 
+> As example for network or complex system the idea is to have no limit of which
+> var you can add, you just need to specify the mandatory one.
+> 
+> And the Framework is not DTB only but generic other format will have other
+> var.
 
-#
-# processor features
-#
-# CONFIG_BOOT_ENDIANNESS_SWITCH is not set
-CONFIG_ARCH_HAS_L2X0=y
-CONFIG_CACHE_L2X0=y
-CONFIG_ARCH_TEXT_BASE=0x87f00000
-CONFIG_BOARDINFO="Phytec phyCORE-i.MX35"
-CONFIG_ARCH_IMX_INTERNAL_BOOT=y
-# CONFIG_ARCH_IMX_EXTERNAL_BOOT is not set
-CONFIG_ARCH_IMX_INTERNAL_BOOT_NAND=y
-# CONFIG_ARCH_IMX_INTERNAL_BOOT_NOR is not set
-# CONFIG_ARCH_IMX_INTERNAL_BOOT_ONENAND is not set
+When other formats have other variables then you end up with a system
+where barebox does not know its own internal format. No. It does not
+make sense to translate from dtb or whatever format to another
+nonnative format which then has to be translated into soemthing else
+which barebox understands.
 
-#
-# Freescale i.MX System-on-Chip
-#
-# CONFIG_ARCH_IMX1 is not set
-# CONFIG_ARCH_IMX21 is not set
-# CONFIG_ARCH_IMX25 is not set
-# CONFIG_ARCH_IMX27 is not set
-# CONFIG_ARCH_IMX31 is not set
-CONFIG_ARCH_IMX35=y
-# CONFIG_ARCH_IMX51 is not set
-# CONFIG_ARCH_IMX53 is not set
-# CONFIG_MACH_EUKREA_CPUIMX35 is not set
-# CONFIG_MACH_FREESCALE_MX35_3STACK is not set
-CONFIG_MACH_PCM043=y
-# CONFIG_MACH_GUF_CUPID is not set
+> > 
+> > If you want to get this in someday it's going to be a long way.
+> > Communicating with the Linux userspace using a devicetree means creating
+> > an API which also means that we have to have the nice feeling that this API
+> > can be stable. Right now it more looks to me as if the devicetree format is
+> > an adhoc implementation of what you needed for your example.
+> The point is the DTB is one format , we can use ant format for the
+> boot_config.
+> THe DTB match the need to describe the boot config and will not impact the
+> boot laoder size but we can use a grub config file too or PXE boot
+> 
+> so the DTB is just a format to support to demonstrate the boot_config
+> framework
 
-#
-# Board specific settings      
-#
-CONFIG_PCM043_DISPLAY_SHARP=y
-# CONFIG_PCM043_DISPLAY_TY090 is not set
+This 'just a format' is exported to Linux and thus should be more
+thought about.
 
-#
-# i.MX specific settings       
-#
-CONFIG_IMX_CLKO=y
-CONFIG_IMX_IIM=y
-CONFIG_IMX_IIM_FUSE_BLOW=y
-CONFIG_AEABI=y
+Sascha
 
-#
-# Arm specific settings        
-#
-CONFIG_CMD_ARM_CPUINFO=y
-# CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS is not set
-CONFIG_ARM_EXCEPTIONS=y
-CONFIG_ARM_UNWIND=y
-CONFIG_DEFCONFIG_LIST="$ARCH_DEFCONFIG"
-CONFIG_GREGORIAN_CALENDER=y
-CONFIG_HAS_KALLSYMS=y
-CONFIG_HAS_MODULES=y
-CONFIG_CMD_MEMORY=y
-CONFIG_ENV_HANDLING=y
-CONFIG_GENERIC_GPIO=y
 
-#
-# General Settings             
-#
-CONFIG_LOCALVERSION_AUTO=y
-CONFIG_ENVIRONMENT_VARIABLES=y
-
-#
-# memory layout                
-#
-CONFIG_MMU=y
-CONFIG_HAVE_CONFIGURABLE_TEXT_BASE=y
-CONFIG_TEXT_BASE=0x87F00000
-CONFIG_HAVE_CONFIGURABLE_MEMORY_LAYOUT=y
-CONFIG_MEMORY_LAYOUT_DEFAULT=y
-# CONFIG_MEMORY_LAYOUT_FIXED is not set
-CONFIG_STACK_SIZE=0x8000
-CONFIG_MALLOC_SIZE=0x1000000
-# CONFIG_BROKEN is not set
-# CONFIG_EXPERIMENTAL is not set
-CONFIG_MALLOC_DLMALLOC=y
-CONFIG_KALLSYMS=y
-CONFIG_MACH_HAS_LOWLEVEL_INIT=y
-CONFIG_MACH_DO_LOWLEVEL_INIT=y
-CONFIG_PROMPT="barebox:"
-CONFIG_BAUDRATE=115200
-CONFIG_LONGHELP=y
-CONFIG_CBSIZE=1024
-CONFIG_MAXARGS=16
-CONFIG_SHELL_HUSH=y
-# CONFIG_SHELL_SIMPLE is not set
-CONFIG_GLOB=y
-CONFIG_PROMPT_HUSH_PS2="> "
-CONFIG_HUSH_FANCY_PROMPT=y
-CONFIG_HUSH_GETOPT=y
-CONFIG_CMDLINE_EDITING=y
-CONFIG_AUTO_COMPLETE=y
-# CONFIG_MENU is not set
-# CONFIG_PASSWORD is not set
-CONFIG_DYNAMIC_CRC_TABLE=y
-CONFIG_ERRNO_MESSAGES=y
-CONFIG_TIMESTAMP=y
-CONFIG_CONSOLE_FULL=y
-CONFIG_CONSOLE_ACTIVATE_FIRST=y
-# CONFIG_OF_FLAT_TREE is not set
-CONFIG_PARTITION=y
-CONFIG_DEFAULT_ENVIRONMENT=y
-CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
-CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/pcm043/env"
-# CONFIG_POLLER is not set
-
-#
-# Debugging                    
-#
-CONFIG_DEBUG_INFO=y
-# CONFIG_ENABLE_FLASH_NOISE is not set
-# CONFIG_ENABLE_PARTITION_NOISE is not set
-# CONFIG_ENABLE_DEVICE_NOISE is not set
-CONFIG_COMMAND_SUPPORT=y
-
-#
-# commands                     
-#
-
-#
-# scripting                    
-#
-CONFIG_CMD_EDIT=y
-CONFIG_CMD_SLEEP=y
-CONFIG_CMD_SAVEENV=y
-CONFIG_CMD_LOADENV=y
-CONFIG_CMD_EXPORT=y
-CONFIG_CMD_PRINTENV=y
-CONFIG_CMD_READLINE=y
-CONFIG_CMD_TRUE=y
-CONFIG_CMD_FALSE=y
-# CONFIG_CMD_LOGIN is not set
-# CONFIG_CMD_PASSWD is not set
-# CONFIG_CMD_TIME is not set
-
-#
-# file commands                
-#
-CONFIG_CMD_LS=y
-CONFIG_CMD_RM=y
-CONFIG_CMD_CAT=y
-CONFIG_CMD_MKDIR=y
-CONFIG_CMD_RMDIR=y
-CONFIG_CMD_CP=y
-CONFIG_CMD_PWD=y
-CONFIG_CMD_CD=y
-CONFIG_CMD_MOUNT=y
-CONFIG_CMD_UMOUNT=y
-CONFIG_CMD_NAND=y
-
-#
-# console                      
-#
-CONFIG_CMD_CLEAR=y
-CONFIG_CMD_ECHO=y
-CONFIG_CMD_ECHO_E=y
-
-#
-# memory                       
-#
-# CONFIG_CMD_LOADB is not set
-# CONFIG_CMD_LOADS is not set
-CONFIG_CMD_MEMINFO=y
-CONFIG_CMD_CRC=y
-CONFIG_CMD_CRC_CMP=y
-# CONFIG_CMD_MD5SUM is not set
-# CONFIG_CMD_SHA1SUM is not set
-# CONFIG_CMD_SHA256SUM is not set
-# CONFIG_CMD_MTEST is not set
-
-#
-# flash                        
-#
-CONFIG_CMD_FLASH=y
-CONFIG_CMD_UBI=y
-
-#
-# booting                      
-#
-CONFIG_CMD_BOOTM=y
-# CONFIG_CMD_BOOTM_ZLIB is not set
-# CONFIG_CMD_BOOTM_BZLIB is not set
-# CONFIG_CMD_BOOTM_SHOW_TYPE is not set
-CONFIG_CMD_BOOTZ=y
-CONFIG_CMD_BOOTU=y
-CONFIG_CMD_RESET=y
-CONFIG_CMD_GO=y
-CONFIG_CMD_TIMEOUT=y
-CONFIG_CMD_PARTITION=y
-CONFIG_CMD_TEST=y
-CONFIG_CMD_VERSION=y
-CONFIG_CMD_HELP=y
-CONFIG_CMD_DEVINFO=y
-CONFIG_CMD_GPIO=y
-CONFIG_CMD_UNLZO=y
-CONFIG_NET=y
-CONFIG_NET_DHCP=y
-CONFIG_NET_NFS=y
-CONFIG_NET_PING=y
-CONFIG_NET_TFTP=y
-CONFIG_NET_TFTP_PUSH=y
-CONFIG_NET_NETCONSOLE=y
-# CONFIG_NET_RESOLV is not set
-#
-# Drivers                      
-#
-#
-# serial drivers               
-#
-# CONFIG_DRIVER_SERIAL_ARM_DCC is not set
-CONFIG_DRIVER_SERIAL_IMX=y
-# CONFIG_DRIVER_SERIAL_NS16550 is not set
-CONFIG_ARCH_HAS_FEC_IMX=y
-CONFIG_MIIDEV=y
-#
-# Network drivers              
-#
-# CONFIG_DRIVER_NET_SMC911X is not set
-# CONFIG_DRIVER_NET_SMC91111 is not set
-CONFIG_DRIVER_NET_FEC_IMX=y
-#
-# SPI drivers                  
-#
-# CONFIG_SPI is not set
-# CONFIG_I2C is not set
-
-#
-# flash drivers                
-#
-CONFIG_DRIVER_CFI=y
-CONFIG_HAS_CFI=y
-CONFIG_DRIVER_CFI_INTEL=y
-CONFIG_DRIVER_CFI_AMD=y
-CONFIG_DRIVER_CFI_BANK_WIDTH_1=y
-CONFIG_DRIVER_CFI_BANK_WIDTH_2=y
-CONFIG_DRIVER_CFI_BANK_WIDTH_4=y
-# CONFIG_DRIVER_CFI_BANK_WIDTH_8 is not set
-CONFIG_CFI_BUFFER_WRITE=y
-CONFIG_MTD=y
-CONFIG_NAND=y
-CONFIG_NAND_WRITE=y
-CONFIG_NAND_ECC_SOFT=y
-CONFIG_NAND_ECC_HW=y
-CONFIG_NAND_ECC_HW_SYNDROME=y
-CONFIG_NAND_ECC_HW_NONE=y
-CONFIG_NAND_INFO=y
-CONFIG_NAND_BBT=y
-CONFIG_NAND_READ_OOB=y
-CONFIG_NAND_IMX=y
-# CONFIG_MTD_NAND_VERIFY_WRITE is not set
-# CONFIG_MTD_NAND_ECC_SMC is not set
-CONFIG_MTD_NAND_IDS=y
-CONFIG_UBI=y
-# CONFIG_ATA is not set
-# CONFIG_USB is not set
-# CONFIG_USB_GADGET is not set
-# CONFIG_VIDEO is not set
-# CONFIG_MCI is not set
-
-#
-# MFD
-#
-# CONFIG_LED is not set
-
-#
-# EEPROM support
-#
-
-#
-# Filesystem support           
-#
-# CONFIG_FS_CRAMFS is not set
-CONFIG_FS_RAMFS=y
-CONFIG_FS_DEVFS=y
-# CONFIG_FS_FAT is not set
-CONFIG_PARTITION_NEED_MTD=y
-CONFIG_CRC32=y
-# CONFIG_DIGEST is not set
-# CONFIG_GENERIC_FIND_NEXT_BIT is not set
-CONFIG_PROCESS_ESCAPE_SEQUENCE=y
-CONFIG_LZO_DECOMPRESS=y
-
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
