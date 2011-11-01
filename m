@@ -1,70 +1,59 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1ROnOz-0000U3-1A
- for barebox@lists.infradead.org; Fri, 11 Nov 2011 09:28:06 +0000
-Date: Fri, 11 Nov 2011 10:27:43 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20111111092743.GL16886@pengutronix.de>
-References: <1319592341-2295-1-git-send-email-festevam@gmail.com>
- <CAOMZO5B9CfVgVYPF7kUgo_Y=fv52S1oLOkyGgLS0YW4hcPn0vw@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAOMZO5B9CfVgVYPF7kUgo_Y=fv52S1oLOkyGgLS0YW4hcPn0vw@mail.gmail.com>
+Received: from 82-148-208-25.fiber.unet.nl ([82.148.208.25]
+	helo=berilia.team-embedded.nl)
+	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+	id 1RLBI2-000102-9M
+	for barebox@lists.infradead.org; Tue, 01 Nov 2011 10:09:55 +0000
+Received: from keppler ([192.168.0.13] helo=localhost.localdomain)
+	by berilia.team-embedded.nl with esmtp (Exim 4.69)
+	(envelope-from <mark.vels@team-embedded.nl>) id 1RLBCq-0005eI-06
+	for barebox@lists.infradead.org; Tue, 01 Nov 2011 11:04:32 +0100
+From: Mark Vels <mark.vels@team-embedded.nl>
+Date: Tue,  1 Nov 2011 11:09:42 +0100
+Message-Id: <3ef0ea7905f52a82090cf4dc0e1a76ccdecc8bf6.1320141619.git.mark.vels@team-embedded.nl>
+In-Reply-To: <cover.1320141619.git.mark.vels@team-embedded.nl>
+References: <cover.1320141619.git.mark.vels@team-embedded.nl>
+In-Reply-To: <cover.1320141619.git.mark.vels@team-embedded.nl>
+References: <cover.1320141619.git.mark.vels@team-embedded.nl>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
- <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
+	<mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/barebox/>
 List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
- <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+	<mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: mx53-loco: Remove duplicate call to loco_fec_reset()
-To: Fabio Estevam <festevam@gmail.com>
-Cc: Fabio Estevam <fabio.estevam@freescale.com>, barebox@lists.infradead.org, kernel@pengutronix.de
+Subject: [PATCH 6/9] docs: Enable BAREBOX_CMD_HELP_TEXT() in generated
+	documentation
+To: barebox@lists.infradead.org
 
-On Thu, Nov 10, 2011 at 12:14:03PM -0200, Fabio Estevam wrote:
-> Sascha,
-> =
 
-> On Tue, Oct 25, 2011 at 11:25 PM, Fabio Estevam <festevam@gmail.com> wrot=
-e:
-> > Remove duplicate call to loco_fec_reset().
-> >
-> > Signed-off-by: Fabio Estevam <fabio.estevam@freescale.com>
-> > ---
-> > =A0arch/arm/boards/freescale-mx53-loco/board.c | =A0 =A02 --
-> > =A01 files changed, 0 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/arch/arm/boards/freescale-mx53-loco/board.c b/arch/arm/boa=
-rds/freescale-mx53-loco/board.c
-> > index 24df9ae..36f1b57 100644
-> > --- a/arch/arm/boards/freescale-mx53-loco/board.c
-> > +++ b/arch/arm/boards/freescale-mx53-loco/board.c
-> > @@ -102,8 +102,6 @@ static int loco_devices_init(void)
-> > =A0 =A0 =A0 =A0armlinux_set_bootparams((void *)0x70000100);
-> > =A0 =A0 =A0 =A0armlinux_set_architecture(MACH_TYPE_MX53_LOCO);
-> >
-> > - =A0 =A0 =A0 loco_fec_reset();
-> > -
-> =
+Signed-off-by: Mark Vels <mark.vels@team-embedded.nl>
+---
+ include/command.h |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-> Does this one look fine?
+diff --git a/include/command.h b/include/command.h
+index e221546..9a90e0b 100644
+--- a/include/command.h
++++ b/include/command.h
+@@ -95,7 +95,7 @@ static const __maybe_unused char cmd_##_name##_help[] =
+ #define BAREBOX_CMD_HELP_USAGE(_name) "Usage: " _name
+ #define BAREBOX_CMD_HELP_SHORT(_text) _text
+ #define BAREBOX_CMD_HELP_OPT(_opt, _desc) _opt "\t" _desc
+-#define BAREBOX_CMD_HELP_TEXT(_text)
++#define BAREBOX_CMD_HELP_TEXT(_text) _text
+ #define BAREBOX_CMD_HELP_END ;
+ 
+ #ifdef CONFIG_LONGHELP
+-- 
+1.7.0.4
 
-Looks good. Applied now. Sorry, missed this one.
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
