@@ -2,15 +2,15 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 82-148-208-25.fiber.unet.nl ([82.148.208.25]
 	helo=berilia.team-embedded.nl)
 	by canuck.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-	id 1RLBI2-0000zv-9L
-	for barebox@lists.infradead.org; Tue, 01 Nov 2011 10:09:57 +0000
+	id 1RLBI2-000103-Bo
+	for barebox@lists.infradead.org; Tue, 01 Nov 2011 10:09:58 +0000
 Received: from keppler ([192.168.0.13] helo=localhost.localdomain)
 	by berilia.team-embedded.nl with esmtp (Exim 4.69)
-	(envelope-from <mark.vels@team-embedded.nl>) id 1RLBCp-0005eI-UH
+	(envelope-from <mark.vels@team-embedded.nl>) id 1RLBCp-0005eI-Uk
 	for barebox@lists.infradead.org; Tue, 01 Nov 2011 11:04:31 +0100
 From: Mark Vels <mark.vels@team-embedded.nl>
-Date: Tue,  1 Nov 2011 11:09:38 +0100
-Message-Id: <20be88d72bbe97474097bf96b2999e7fd2c763c7.1320141619.git.mark.vels@team-embedded.nl>
+Date: Tue,  1 Nov 2011 11:09:40 +0100
+Message-Id: <c1e5708f02c730d9a3d8cf891b4d08e2a8eda557.1320141619.git.mark.vels@team-embedded.nl>
 In-Reply-To: <cover.1320141619.git.mark.vels@team-embedded.nl>
 References: <cover.1320141619.git.mark.vels@team-embedded.nl>
 In-Reply-To: <cover.1320141619.git.mark.vels@team-embedded.nl>
@@ -28,63 +28,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/9] trivial: relocate doxygen help page for led command
+Subject: [PATCH 4/9] trivial: fix doxygen error in dlink-dir-320.dox
 To: barebox@lists.infradead.org
 
 
 Signed-off-by: Mark Vels <mark.vels@team-embedded.nl>
 ---
- Documentation/commands.dox |    1 +
- commands/led.c             |   16 +++++++++-------
- 2 files changed, 10 insertions(+), 7 deletions(-)
+ arch/mips/boards/dlink-dir-320/dlink-dir-320.dox |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/Documentation/commands.dox b/Documentation/commands.dox
-index 2b5bc44..31183ec 100644
---- a/Documentation/commands.dox
-+++ b/Documentation/commands.dox
-@@ -58,6 +58,7 @@ available in @a Barebox:
- @li @subpage icache
- @li @subpage iminfo
- @li @subpage insmod
-+@li @subpage led_command
- @li @subpage linux16_command
- @li @subpage loadenv_command
- @li @subpage loadb
-diff --git a/commands/led.c b/commands/led.c
-index 7fd9d44..2591ed0 100644
---- a/commands/led.c
-+++ b/commands/led.c
-@@ -74,21 +74,23 @@ static int do_led(struct command *cmdtp, int argc, char *argv[])
- 	return 0;
- }
+diff --git a/arch/mips/boards/dlink-dir-320/dlink-dir-320.dox b/arch/mips/boards/dlink-dir-320/dlink-dir-320.dox
+index d0f5869..1db135b 100644
+--- a/arch/mips/boards/dlink-dir-320/dlink-dir-320.dox
++++ b/arch/mips/boards/dlink-dir-320/dlink-dir-320.dox
+@@ -19,7 +19,7 @@ You must setup tftp-server on host 192.168.0.1.
+ Put your barebox.bin to tftp-server directory
+ (usual /tftpboot or /srv/tftp).
+ Connect your DIR-320 to your tftp-server network via
+-one of four <LAN> sockets.
++one of four &lt;LAN&gt; sockets.
  
-+
-+BAREBOX_CMD_HELP_START(led)
-+BAREBOX_CMD_HELP_USAGE("led <led> <value>\n")
-+BAREBOX_CMD_HELP_SHORT("control the value of a LED. a value of 0 means disabled\n")
-+BAREBOX_CMD_HELP_SHORT("without arguments the available LEDs are listed\n")
-+BAREBOX_CMD_HELP_END
-+
- /**
-  * @page led_command
- 
--The exact meaning of <value> is unspecified. It can be a color in case of rgb
-+The exact meaning of &lt;value&gt; is unspecified. It can be a color in case of rgb
- LEDs or a brightness if this is controllable. In most cases only 1 for enabled
- is allowed.
- 
-+\note This command is available only if enabled in menuconfig.
- */
- 
--BAREBOX_CMD_HELP_START(led)
--BAREBOX_CMD_HELP_USAGE("led <led> <value>\n")
--BAREBOX_CMD_HELP_SHORT("control the value of a LED. a value of 0 means disabled\n")
--BAREBOX_CMD_HELP_SHORT("without arguments the available LEDs are listed\n")
--BAREBOX_CMD_HELP_END
--
- BAREBOX_CMD_START(led)
- 	.cmd		= do_led,
- 	.usage		= "led <led> <value>",
+ Next, setup network on DIR-320 and run barebox.bin, e.g.:
+ @verbatim
 -- 
 1.7.0.4
 
