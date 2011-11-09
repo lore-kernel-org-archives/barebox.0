@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-fx0-f49.google.com ([209.85.161.49])
+Received: from mail-gx0-f177.google.com ([209.85.161.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1ROAeb-00049L-F7
- for barebox@lists.infradead.org; Wed, 09 Nov 2011 16:05:37 +0000
-Received: by faaq17 with SMTP id q17so2338052faa.36
- for <barebox@lists.infradead.org>; Wed, 09 Nov 2011 08:05:28 -0800 (PST)
-From: Hubert Feurstein <h.feurstein@gmail.com>
-Date: Wed,  9 Nov 2011 17:03:41 +0100
-Message-Id: <1320854621-633-1-git-send-email-h.feurstein@gmail.com>
+ id 1ROFra-000362-4p
+ for barebox@lists.infradead.org; Wed, 09 Nov 2011 21:39:18 +0000
+Received: by ggno1 with SMTP id o1so1718299ggn.36
+ for <barebox@lists.infradead.org>; Wed, 09 Nov 2011 13:39:16 -0800 (PST)
+From: Lucas De Marchi <lucas.demarchi@profusion.mobi>
+Date: Wed,  9 Nov 2011 19:39:53 -0200
+Message-Id: <1320874797-14270-1-git-send-email-lucas.demarchi@profusion.mobi>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,45 +17,52 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] at91: add config option for ohci driver
+Subject: [PATCH 0/4] Fixes for x86
 To: barebox@lists.infradead.org
 
-Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
-Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- drivers/usb/host/Kconfig  |    4 ++++
- drivers/usb/host/Makefile |    2 +-
- 2 files changed, 5 insertions(+), 1 deletions(-)
+The following patches are fixes for x86 in order to be able to build barebox
+with ARCH=x86 and generic_defconfig. Patch 3 fixes build for any version of gcc
+while the last one is specific to gcc 4.6 (I'm not sure about gcc 4.5).
 
-diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
-index 929eb89..96e09e2 100644
---- a/drivers/usb/host/Kconfig
-+++ b/drivers/usb/host/Kconfig
-@@ -7,3 +7,7 @@ config USB_EHCI_OMAP
+With gcc 4.6 there's still an error, but when it's linking barebox, that I
+didn't find out how to fix. I thought the problem was in the linker or linker
+script but they seem to be ok since it works when compiled with gcc 4.4. The
+error is the following:
 
- config USB_OHCI
- 	bool "OHCI driver"
-+
-+config USB_OHCI_AT91
-+	depends on ARCH_AT91
-+	bool "AT91 OHCI driver"
-diff --git a/drivers/usb/host/Makefile b/drivers/usb/host/Makefile
-index 1c7e18f..00f5e24 100644
---- a/drivers/usb/host/Makefile
-+++ b/drivers/usb/host/Makefile
-@@ -1,4 +1,4 @@
- obj-$(CONFIG_USB_EHCI)		+= ehci-hcd.o
- obj-$(CONFIG_USB_EHCI_OMAP)	+= ehci-omap.o
- obj-$(CONFIG_USB_OHCI)		+= ohci-hcd.o
--obj-$(CONFIG_ARCH_AT91)		+= ohci-at91.o
-+obj-$(CONFIG_USB_OHCI_AT91)	+= ohci-at91.o
---
-1.7.4.1
+  LD      barebox
+ld: section .eh_frame loaded at [0000000000011a54,0000000000018ac3] overlaps section .barebox_initcalls loaded at [0000000000011a54,0000000000011a9b]
+make: *** [barebox] Error 1
+
+
+Regards,
+Lucas De Marchi
+
+
+
+Lucas De Marchi (4):
+  Make fprintf return number of bytes written
+  Add setupmbr to gitignore
+  x86: fix build error because of missing header
+  x86: fix symbol size calculation
+
+ arch/x86/boot/pmjump.S           |    3 ++-
+ arch/x86/include/asm/types.h     |    2 ++
+ arch/x86/include/asm/unaligned.h |   14 ++++++++++++++
+ arch/x86/lib/traveler.S          |   11 +++++++----
+ common/console.c                 |    4 +++-
+ common/console_simple.c          |    4 +++-
+ include/stdio.h                  |    2 +-
+ scripts/setupmbr/.gitignore      |    1 +
+ 8 files changed, 33 insertions(+), 8 deletions(-)
+ create mode 100644 arch/x86/include/asm/unaligned.h
+ create mode 100644 scripts/setupmbr/.gitignore
+
+-- 
+1.7.7.2
 
 
 _______________________________________________
