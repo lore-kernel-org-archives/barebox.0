@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1ROSwU-0000e3-Hm
- for barebox@lists.infradead.org; Thu, 10 Nov 2011 11:37:15 +0000
-Date: Thu, 10 Nov 2011 12:37:07 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20111110113707.GZ16886@pengutronix.de>
-References: <1318417430-2039-1-git-send-email-premi@ti.com>
- <E28AAFD00EFAA646AE3DF9B89CD24A89BF50@DBDE01.ent.ti.com>
- <E28AAFD00EFAA646AE3DF9B89CD24A8903B69C@DBDE01.ent.ti.com>
+Received: from mail-yx0-f177.google.com ([209.85.213.177])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1ROUT5-0003WN-RV
+ for barebox@lists.infradead.org; Thu, 10 Nov 2011 13:15:00 +0000
+Received: by yenl9 with SMTP id l9so2251906yen.36
+ for <barebox@lists.infradead.org>; Thu, 10 Nov 2011 05:14:58 -0800 (PST)
+From: Lucas De Marchi <lucas.demarchi@profusion.mobi>
+Date: Thu, 10 Nov 2011 11:15:55 -0200
+Message-Id: <1320930955-5462-1-git-send-email-lucas.demarchi@profusion.mobi>
+In-Reply-To: <4EBBAD3A.5060805@pengutronix.de>
+References: <4EBBAD3A.5060805@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <E28AAFD00EFAA646AE3DF9B89CD24A8903B69C@DBDE01.ent.ti.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,42 +19,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3] omap: Unify run_shell() in xload configuration
-To: "Premi, Sanjeev" <premi@ti.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH 1/4] Make fprintf return number of bytes written
+To: barebox@lists.infradead.org
 
-On Thu, Nov 10, 2011 at 08:50:38AM +0000, Premi, Sanjeev wrote:
-> > >  5 files changed, 43 insertions(+), 81 deletions(-)
-> > > 
-> > 
-> > Jean-Christophe,
-> > 
-> >   Just wanted to check if this patch takes care of your comment[1].
-> > 
-> >   [1] 
-> > http://lists.infradead.org/pipermail/barebox/2011-October/004752.html
-> > 
-> > ~sanjeev
-> 
-> Another ping.
-
-Might help if you put him on Cc (just did that). Besides, I'm fine with
-your patch. I'll take it if Jean-Christophe does not react in time.
-
-Sascha
-
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+UmV0dXJuIG51bWJlciBvZiBieXRlcyB3cml0dGVuLCBsaWtlIGl0cyBzaWJsaW5ncyBmdW5jdGlv
+bi4gVGhpcyBhbHNvCnJlbW92ZXMgdGhlIHdhcm5pbmcgYmVsb3cgb24gZ2NjID49IDQuNi4KCmNv
+bW1vbi9jb25zb2xlLmM6MzMzOjc6IHdhcm5pbmc6IHZhcmlhYmxlIOKAmGnigJkgc2V0IGJ1dCBu
+b3QgdXNlZApbLVd1bnVzZWQtYnV0LXNldC12YXJpYWJsZV0KClNpZ25lZC1vZmYtYnk6IEx1Y2Fz
+IERlIE1hcmNoaSA8bHVjYXMuZGVtYXJjaGlAcHJvZnVzaW9uLm1vYmk+Ci0tLQoKdjI6IHVzZSBw
+cm9wZXIgaW5kZW50YXRpb24KCiBjb21tb24vY29uc29sZS5jICAgICAgICB8ICAgIDQgKysrLQog
+Y29tbW9uL2NvbnNvbGVfc2ltcGxlLmMgfCAgICA0ICsrKy0KIGluY2x1ZGUvc3RkaW8uaCAgICAg
+ICAgIHwgICAgMiArLQogMyBmaWxlcyBjaGFuZ2VkLCA3IGluc2VydGlvbnMoKyksIDMgZGVsZXRp
+b25zKC0pCgpkaWZmIC0tZ2l0IGEvY29tbW9uL2NvbnNvbGUuYyBiL2NvbW1vbi9jb25zb2xlLmMK
+aW5kZXggMDZlOWMyOS4uMGQyYTMzYiAxMDA2NDQKLS0tIGEvY29tbW9uL2NvbnNvbGUuYworKysg
+Yi9jb21tb24vY29uc29sZS5jCkBAIC0zMjcsNyArMzI3LDcgQEAgdm9pZCBjb25zb2xlX2ZsdXNo
+KHZvaWQpCiB9CiBFWFBPUlRfU1lNQk9MKGNvbnNvbGVfZmx1c2gpOwogCi12b2lkIGZwcmludGYg
+KGludCBmaWxlLCBjb25zdCBjaGFyICpmbXQsIC4uLikKK2ludCBmcHJpbnRmIChpbnQgZmlsZSwg
+Y29uc3QgY2hhciAqZm10LCAuLi4pCiB7CiAJdmFfbGlzdCBhcmdzOwogCXVpbnQgaTsKQEAgLTM0
+Myw2ICszNDMsOCBAQCB2b2lkIGZwcmludGYgKGludCBmaWxlLCBjb25zdCBjaGFyICpmbXQsIC4u
+LikKIAogCS8qIFByaW50IHRoZSBzdHJpbmcgKi8KIAlmcHV0cyAoZmlsZSwgcHJpbnRidWZmZXIp
+OworCisJcmV0dXJuIGk7CiB9CiBFWFBPUlRfU1lNQk9MKGZwcmludGYpOwogCmRpZmYgLS1naXQg
+YS9jb21tb24vY29uc29sZV9zaW1wbGUuYyBiL2NvbW1vbi9jb25zb2xlX3NpbXBsZS5jCmluZGV4
+IDczMDRkOGUuLjFmNjBlNzkgMTAwNjQ0Ci0tLSBhL2NvbW1vbi9jb25zb2xlX3NpbXBsZS5jCisr
+KyBiL2NvbW1vbi9jb25zb2xlX3NpbXBsZS5jCkBAIC00NSw3ICs0NSw3IEBAIGludCB2cHJpbnRm
+IChjb25zdCBjaGFyICpmbXQsIHZhX2xpc3QgYXJncykKIH0KIEVYUE9SVF9TWU1CT0wodnByaW50
+Zik7CiAKLXZvaWQgZnByaW50ZiAoaW50IGZpbGUsIGNvbnN0IGNoYXIgKmZtdCwgLi4uKQoraW50
+IGZwcmludGYgKGludCBmaWxlLCBjb25zdCBjaGFyICpmbXQsIC4uLikKIHsKIAl2YV9saXN0IGFy
+Z3M7CiAJdWludCBpOwpAQCAtNjEsNiArNjEsOCBAQCB2b2lkIGZwcmludGYgKGludCBmaWxlLCBj
+b25zdCBjaGFyICpmbXQsIC4uLikKIAogCS8qIFByaW50IHRoZSBzdHJpbmcgKi8KIAlmcHV0cyhm
+aWxlLCBwcmludGJ1ZmZlcik7CisKKwlyZXR1cm4gaTsKIH0KIEVYUE9SVF9TWU1CT0woZnByaW50
+Zik7CiAKZGlmZiAtLWdpdCBhL2luY2x1ZGUvc3RkaW8uaCBiL2luY2x1ZGUvc3RkaW8uaAppbmRl
+eCBhMGQ4MWQzLi4wYzY4ZmE4IDEwMDY0NAotLS0gYS9pbmNsdWRlL3N0ZGlvLmgKKysrIGIvaW5j
+bHVkZS9zdGRpby5oCkBAIC01NCw3ICs1NCw3IEBAIGludAl2c2NucHJpbnRmKGNoYXIgKmJ1Ziwg
+c2l6ZV90IHNpemUsIGNvbnN0IGNoYXIgKmZtdCwgdmFfbGlzdCBhcmdzKTsKICNkZWZpbmUgc3Rk
+ZXJyCQkyCiAjZGVmaW5lIE1BWF9GSUxFUwkxMjgKIAotdm9pZAlmcHJpbnRmKGludCBmaWxlLCBj
+b25zdCBjaGFyICpmbXQsIC4uLikgX19hdHRyaWJ1dGVfXyAoKGZvcm1hdChfX3ByaW50Zl9fLCAy
+LCAzKSkpOworaW50CWZwcmludGYoaW50IGZpbGUsIGNvbnN0IGNoYXIgKmZtdCwgLi4uKSBfX2F0
+dHJpYnV0ZV9fICgoZm9ybWF0KF9fcHJpbnRmX18sIDIsIDMpKSk7CiBpbnQJZnB1dHMoaW50IGZp
+bGUsIGNvbnN0IGNoYXIgKnMpOwogaW50CWZwdXRjKGludCBmaWxlLCBjb25zdCBjaGFyIGMpOwog
+aW50CWZ0c3RjKGludCBmaWxlKTsKLS0gCjEuNy43LjIKCgpfX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxp
+c3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0
+aW5mby9iYXJlYm94Cg==
