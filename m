@@ -1,15 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yw0-f49.google.com ([209.85.213.49])
+Received: from bear.ext.ti.com ([192.94.94.41])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1ROFrb-00036F-LA
- for barebox@lists.infradead.org; Wed, 09 Nov 2011 21:39:20 +0000
-Received: by ywp31 with SMTP id 31so169618ywp.36
- for <barebox@lists.infradead.org>; Wed, 09 Nov 2011 13:39:18 -0800 (PST)
-From: Lucas De Marchi <lucas.demarchi@profusion.mobi>
-Date: Wed,  9 Nov 2011 19:39:54 -0200
-Message-Id: <1320874797-14270-2-git-send-email-lucas.demarchi@profusion.mobi>
-In-Reply-To: <1320874797-14270-1-git-send-email-lucas.demarchi@profusion.mobi>
-References: <1320874797-14270-1-git-send-email-lucas.demarchi@profusion.mobi>
+ id 1ROQLL-0003Bp-NE
+ for barebox@lists.infradead.org; Thu, 10 Nov 2011 08:50:44 +0000
+Received: from dbdp20.itg.ti.com ([172.24.170.38])
+ by bear.ext.ti.com (8.13.7/8.13.7) with ESMTP id pAA8odpO018445
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+ for <barebox@lists.infradead.org>; Thu, 10 Nov 2011 02:50:41 -0600
+Received: from DBDE70.ent.ti.com (localhost [127.0.0.1])
+ by dbdp20.itg.ti.com (8.13.8/8.13.8) with ESMTP id pAA8odgk011623
+ for <barebox@lists.infradead.org>; Thu, 10 Nov 2011 14:20:39 +0530 (IST)
+From: "Premi, Sanjeev" <premi@ti.com>
+Date: Thu, 10 Nov 2011 08:50:38 +0000
+Message-ID: <E28AAFD00EFAA646AE3DF9B89CD24A8903B69C@DBDE01.ent.ti.com>
+References: <1318417430-2039-1-git-send-email-premi@ti.com>
+ <E28AAFD00EFAA646AE3DF9B89CD24A89BF50@DBDE01.ent.ti.com>
+In-Reply-To: <E28AAFD00EFAA646AE3DF9B89CD24A89BF50@DBDE01.ent.ti.com>
+Content-Language: en-US
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,48 +26,88 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] Make fprintf return number of bytes written
-To: barebox@lists.infradead.org
+Subject: RE: [PATCH v3] omap: Unify run_shell() in xload configuration
+To: "Premi, Sanjeev" <premi@ti.com>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-UmV0dXJuIG51bWJlciBvZiBieXRlcyB3cml0dGVuLCBsaWtlIGl0cyBzaWJsaW5ncyBmdW5jdGlv
-bi4gVGhpcyBhbHNvCnJlbW92ZXMgdGhlIHdhcm5pbmcgYmVsb3cgb24gZ2NjID49IDQuNi4KCmNv
-bW1vbi9jb25zb2xlLmM6MzMzOjc6IHdhcm5pbmc6IHZhcmlhYmxlIOKAmGnigJkgc2V0IGJ1dCBu
-b3QgdXNlZApbLVd1bnVzZWQtYnV0LXNldC12YXJpYWJsZV0KClNpZ25lZC1vZmYtYnk6IEx1Y2Fz
-IERlIE1hcmNoaSA8bHVjYXMuZGVtYXJjaGlAcHJvZnVzaW9uLm1vYmk+Ci0tLQogY29tbW9uL2Nv
-bnNvbGUuYyAgICAgICAgfCAgICA0ICsrKy0KIGNvbW1vbi9jb25zb2xlX3NpbXBsZS5jIHwgICAg
-NCArKystCiBpbmNsdWRlL3N0ZGlvLmggICAgICAgICB8ICAgIDIgKy0KIDMgZmlsZXMgY2hhbmdl
-ZCwgNyBpbnNlcnRpb25zKCspLCAzIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2NvbW1vbi9j
-b25zb2xlLmMgYi9jb21tb24vY29uc29sZS5jCmluZGV4IDA2ZTljMjkuLjdmMjgxMGUgMTAwNjQ0
-Ci0tLSBhL2NvbW1vbi9jb25zb2xlLmMKKysrIGIvY29tbW9uL2NvbnNvbGUuYwpAQCAtMzI3LDcg
-KzMyNyw3IEBAIHZvaWQgY29uc29sZV9mbHVzaCh2b2lkKQogfQogRVhQT1JUX1NZTUJPTChjb25z
-b2xlX2ZsdXNoKTsKIAotdm9pZCBmcHJpbnRmIChpbnQgZmlsZSwgY29uc3QgY2hhciAqZm10LCAu
-Li4pCitpbnQgZnByaW50ZiAoaW50IGZpbGUsIGNvbnN0IGNoYXIgKmZtdCwgLi4uKQogewogCXZh
-X2xpc3QgYXJnczsKIAl1aW50IGk7CkBAIC0zNDMsNiArMzQzLDggQEAgdm9pZCBmcHJpbnRmIChp
-bnQgZmlsZSwgY29uc3QgY2hhciAqZm10LCAuLi4pCiAKIAkvKiBQcmludCB0aGUgc3RyaW5nICov
-CiAJZnB1dHMgKGZpbGUsIHByaW50YnVmZmVyKTsKKworICAgICAgICByZXR1cm4gaTsKIH0KIEVY
-UE9SVF9TWU1CT0woZnByaW50Zik7CiAKZGlmZiAtLWdpdCBhL2NvbW1vbi9jb25zb2xlX3NpbXBs
-ZS5jIGIvY29tbW9uL2NvbnNvbGVfc2ltcGxlLmMKaW5kZXggNzMwNGQ4ZS4uZDczYWY5OCAxMDA2
-NDQKLS0tIGEvY29tbW9uL2NvbnNvbGVfc2ltcGxlLmMKKysrIGIvY29tbW9uL2NvbnNvbGVfc2lt
-cGxlLmMKQEAgLTQ1LDcgKzQ1LDcgQEAgaW50IHZwcmludGYgKGNvbnN0IGNoYXIgKmZtdCwgdmFf
-bGlzdCBhcmdzKQogfQogRVhQT1JUX1NZTUJPTCh2cHJpbnRmKTsKIAotdm9pZCBmcHJpbnRmIChp
-bnQgZmlsZSwgY29uc3QgY2hhciAqZm10LCAuLi4pCitpbnQgZnByaW50ZiAoaW50IGZpbGUsIGNv
-bnN0IGNoYXIgKmZtdCwgLi4uKQogewogCXZhX2xpc3QgYXJnczsKIAl1aW50IGk7CkBAIC02MSw2
-ICs2MSw4IEBAIHZvaWQgZnByaW50ZiAoaW50IGZpbGUsIGNvbnN0IGNoYXIgKmZtdCwgLi4uKQog
-CiAJLyogUHJpbnQgdGhlIHN0cmluZyAqLwogCWZwdXRzKGZpbGUsIHByaW50YnVmZmVyKTsKKwor
-ICAgICAgICByZXR1cm4gaTsKIH0KIEVYUE9SVF9TWU1CT0woZnByaW50Zik7CiAKZGlmZiAtLWdp
-dCBhL2luY2x1ZGUvc3RkaW8uaCBiL2luY2x1ZGUvc3RkaW8uaAppbmRleCBhMGQ4MWQzLi4wYzY4
-ZmE4IDEwMDY0NAotLS0gYS9pbmNsdWRlL3N0ZGlvLmgKKysrIGIvaW5jbHVkZS9zdGRpby5oCkBA
-IC01NCw3ICs1NCw3IEBAIGludAl2c2NucHJpbnRmKGNoYXIgKmJ1Ziwgc2l6ZV90IHNpemUsIGNv
-bnN0IGNoYXIgKmZtdCwgdmFfbGlzdCBhcmdzKTsKICNkZWZpbmUgc3RkZXJyCQkyCiAjZGVmaW5l
-IE1BWF9GSUxFUwkxMjgKIAotdm9pZAlmcHJpbnRmKGludCBmaWxlLCBjb25zdCBjaGFyICpmbXQs
-IC4uLikgX19hdHRyaWJ1dGVfXyAoKGZvcm1hdChfX3ByaW50Zl9fLCAyLCAzKSkpOworaW50CWZw
-cmludGYoaW50IGZpbGUsIGNvbnN0IGNoYXIgKmZtdCwgLi4uKSBfX2F0dHJpYnV0ZV9fICgoZm9y
-bWF0KF9fcHJpbnRmX18sIDIsIDMpKSk7CiBpbnQJZnB1dHMoaW50IGZpbGUsIGNvbnN0IGNoYXIg
-KnMpOwogaW50CWZwdXRjKGludCBmaWxlLCBjb25zdCBjaGFyIGMpOwogaW50CWZ0c3RjKGludCBm
-aWxlKTsKLS0gCjEuNy43LjIKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5v
-cmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+> -----Original Message-----
+> From: barebox-bounces@lists.infradead.org 
+> [mailto:barebox-bounces@lists.infradead.org] On Behalf Of 
+> Premi, Sanjeev
+> Sent: Thursday, October 27, 2011 7:42 PM
+> To: barebox@lists.infradead.org
+> Subject: RE: [PATCH v3] omap: Unify run_shell() in xload configuration
+> 
+> > -----Original Message-----
+> > From: Premi, Sanjeev 
+> > Sent: Wednesday, October 12, 2011 4:34 PM
+> > To: barebox@lists.infradead.org
+> > Cc: Premi, Sanjeev
+> > Subject: [PATCH v3] omap: Unify run_shell() in xload configuration
+> > 
+> > Currently, there are multiple definitions of run_shell()
+> > for each board that can be build in "xload" configuration.
+> > Now there is only one function used by all boards.
+> > 
+> > The functions defined in xload.c are used only when "xload"
+> > configuration used; but it gets compiled unconditionally.
+> > This has been fixed as well.
+> > 
+> > Signed-off-by: Sanjeev Premi <premi@ti.com>
+> > ---
+> > 
+> >  Change in v3:
+> >     Added function omap_bootsrc() to replace the #ifdef
+> >     around the switch-case.
+> > 
+> >  Change in v2:
+> >     Fixed the typo in the subject s/iomap/omap/
+> >     ...observed when mail reached my inbox :(
+> > 
+> >  Only build tested with these commands:
+> >    make distclean ; make omap3530_beagle_defconfig ; make ;
+> >    make distclean ; make omap3530_beagle_xload_defconfig ; make ;
+> >    make distclean ; make panda_xload_defconfig ; make ;
+> >    make distclean ; make panda_defconfig ; make ;
+> >    make distclean ; make pcm049_defconfig ; make ;
+> >    make distclean ; make pcm049_xload_defconfig ; make ;
+> > 
+> > 
+> >  arch/arm/boards/omap/board-beagle.c |   31 
+> --------------------------
+> >  arch/arm/boards/panda/board.c       |   19 ----------------
+> >  arch/arm/boards/pcm049/board.c      |   30 
+> -------------------------
+> >  arch/arm/mach-omap/Makefile         |    3 +-
+> >  arch/arm/mach-omap/xload.c          |   41 
+> > +++++++++++++++++++++++++++++++++++
+> >  5 files changed, 43 insertions(+), 81 deletions(-)
+> > 
+> 
+> Jean-Christophe,
+> 
+>   Just wanted to check if this patch takes care of your comment[1].
+> 
+>   [1] 
+> http://lists.infradead.org/pipermail/barebox/2011-October/004752.html
+> 
+> ~sanjeev
+
+Another ping.
+
+
+> 
+> [snip]...[snip]
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
