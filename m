@@ -1,17 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wy0-f177.google.com ([74.125.82.177])
+Received: from 82-148-208-25.fiber.unet.nl ([82.148.208.25]
+ helo=berilia.team-embedded.nl)
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1ROY2K-0003Gw-Tq
- for barebox@lists.infradead.org; Thu, 10 Nov 2011 17:03:37 +0000
-Received: by wyi11 with SMTP id 11so1987757wyi.36
- for <barebox@lists.infradead.org>; Thu, 10 Nov 2011 09:03:34 -0800 (PST)
+ id 1ROdRc-00034k-IR
+ for barebox@lists.infradead.org; Thu, 10 Nov 2011 22:50:05 +0000
+Received: from [192.168.0.21]
+ by berilia.team-embedded.nl with esmtp (Exim 4.69)
+ (envelope-from <mark.vels@team-embedded.nl>) id 1ROdCU-0005bB-A3
+ for barebox@lists.infradead.org; Thu, 10 Nov 2011 23:34:26 +0100
+Message-ID: <4EBC5173.4080409@team-embedded.nl>
+Date: Thu, 10 Nov 2011 23:34:27 +0100
+From: Mark Vels <mark.vels@team-embedded.nl>
 MIME-Version: 1.0
-In-Reply-To: <20111110141821.GG17366@game.jcrosoft.org>
-References: <1320854621-633-1-git-send-email-h.feurstein@gmail.com>
- <20111110141821.GG17366@game.jcrosoft.org>
-Date: Thu, 10 Nov 2011 18:03:34 +0100
-Message-ID: <CAFfN3gX4CfoEmjsaiD=pmrO+QbZXNR0vL2=k6-e2A=OQcnFGvw@mail.gmail.com>
-From: Hubert Feurstein <h.feurstein@gmail.com>
+References: <1320327965-23067-1-git-send-email-mark.vels@team-embedded.nl>
+In-Reply-To: <1320327965-23067-1-git-send-email-mark.vels@team-embedded.nl>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,31 +22,27 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] at91: add config option for ohci driver
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] arm:imx27: add basic support for KaRo TX27 module on
+ StarterKit 5
+To: barebox@lists.infradead.org
 
-2011/11/10 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>:
-[snip]
->> -obj-$(CONFIG_ARCH_AT91) =A0 =A0 =A0 =A0 =A0 =A0 =A0+=3D ohci-at91.o
->> +obj-$(CONFIG_USB_OHCI_AT91) =A0+=3D ohci-at91.o
-> no need such config
+On 11/03/2011 02:46 PM, Mark Vels wrote:
+> This patch adds basic support for the TX27 CPU module.
+> It has been tested so far using OpenOCD to write it into memory and execute.
+> Environment loading and saving from NAND seems to work correctly, further
+> testing will be focused on booting from NAND.
 >
-> =A0on AT91 you just need to enable the OCHI
+> Since I don't have any datasheets of the IIM in the i.MX27 I would appreciate
+> some help with getting the serial number and the ethernet MAC from there. Can
+> anyone shine some light here?
 >
-> Best Regards,
-> J.
->
-
-without that the ohci-at91 is _always_ compiled and linked into
-barebox, even when 'USB support' is unselected.
-
-Best Regards
-Hubert
+> Signed-off-by: Mark Vels<mark.vels@team-embedded.nl>
+> ---
+Anyone? No comments?
 
 _______________________________________________
 barebox mailing list
