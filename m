@@ -1,19 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 82-148-208-25.fiber.unet.nl ([82.148.208.25]
- helo=berilia.team-embedded.nl)
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1ROdRc-00034k-IR
- for barebox@lists.infradead.org; Thu, 10 Nov 2011 22:50:05 +0000
-Received: from [192.168.0.21]
- by berilia.team-embedded.nl with esmtp (Exim 4.69)
- (envelope-from <mark.vels@team-embedded.nl>) id 1ROdCU-0005bB-A3
- for barebox@lists.infradead.org; Thu, 10 Nov 2011 23:34:26 +0100
-Message-ID: <4EBC5173.4080409@team-embedded.nl>
-Date: Thu, 10 Nov 2011 23:34:27 +0100
-From: Mark Vels <mark.vels@team-embedded.nl>
-MIME-Version: 1.0
-References: <1320327965-23067-1-git-send-email-mark.vels@team-embedded.nl>
-In-Reply-To: <1320327965-23067-1-git-send-email-mark.vels@team-embedded.nl>
+Received: from mail.phytec.eu ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1ROn26-0004BE-DC
+ for barebox@lists.infradead.org; Fri, 11 Nov 2011 09:04:26 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id DB0B1BF0CC
+ for <barebox@lists.infradead.org>; Fri, 11 Nov 2011 10:09:03 +0100 (CET)
+From: Juergen Kilb <J.Kilb@phytec.de>
+Date: Fri, 11 Nov 2011 10:03:31 +0100
+Message-Id: <1321002211-14950-1-git-send-email-J.Kilb@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,27 +17,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] arm:imx27: add basic support for KaRo TX27 module on
- StarterKit 5
+Subject: [PATCH] Remove md5,sh1,sh2 from lib/Makefile.
 To: barebox@lists.infradead.org
+Cc: Juergen Kilb <J.Kilb@phytec.de>
 
-On 11/03/2011 02:46 PM, Mark Vels wrote:
-> This patch adds basic support for the TX27 CPU module.
-> It has been tested so far using OpenOCD to write it into memory and execute.
-> Environment loading and saving from NAND seems to work correctly, further
-> testing will be focused on booting from NAND.
->
-> Since I don't have any datasheets of the IIM in the i.MX27 I would appreciate
-> some help with getting the serial number and the ethernet MAC from there. Can
-> anyone shine some light here?
->
-> Signed-off-by: Mark Vels<mark.vels@team-embedded.nl>
-> ---
-Anyone? No comments?
+Commit 4ac3a1f9 has moved the files md5.c, sh1.c
+and sh2.c from lib/* to crypto/*.
+But the files were still listed in lib/Makefile.
+
+Signed-off-by: Juergen Kilb <J.Kilb@phytec.de>
+---
+ lib/Makefile |    3 ---
+ 1 files changed, 0 insertions(+), 3 deletions(-)
+
+diff --git a/lib/Makefile b/lib/Makefile
+index eccdfff..cb72842 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -29,7 +29,4 @@ obj-y			+= lzo/
+ obj-y			+= show_progress.o
+ obj-$(CONFIG_LZO_DECOMPRESS)		+= decompress_unlzo.o
+ obj-$(CONFIG_PROCESS_ESCAPE_SEQUENCE)	+= process_escape_sequence.o
+-obj-$(CONFIG_MD5)	+= md5.o
+-obj-$(CONFIG_SHA1)	+= sha1.o
+-obj-$(CONFIG_SHA256)	+= sha256.o
+ obj-$(CONFIG_FDT)	+= fdt/
+-- 
+1.7.0.4
+
 
 _______________________________________________
 barebox mailing list
