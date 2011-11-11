@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pz0-f43.google.com ([209.85.210.43])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1ROrKG-0001g0-M8
- for barebox@lists.infradead.org; Fri, 11 Nov 2011 13:39:25 +0000
-Received: by pzk34 with SMTP id 34so5066197pzk.2
- for <barebox@lists.infradead.org>; Fri, 11 Nov 2011 05:39:23 -0800 (PST)
-MIME-Version: 1.0
-In-Reply-To: <20111111112738.GQ16886@pengutronix.de>
-References: <1320874797-14270-1-git-send-email-lucas.demarchi@profusion.mobi>
- <1320874797-14270-2-git-send-email-lucas.demarchi@profusion.mobi>
- <20111111112738.GQ16886@pengutronix.de>
-From: Lucas De Marchi <lucas.demarchi@profusion.mobi>
-Date: Fri, 11 Nov 2011 11:39:02 -0200
-Message-ID: <CAMOw1v4GiEqYu=t_vTPwNoU-U9nxhrE+SNOwh1H30=dYswm2Xg@mail.gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1ROsvQ-0003Cr-N5
+ for barebox@lists.infradead.org; Fri, 11 Nov 2011 15:21:53 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Fri, 11 Nov 2011 16:21:45 +0100
+Message-Id: <1321024905-17030-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1321024905-17030-1-git-send-email-s.hauer@pengutronix.de>
+References: <1321024905-17030-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,58 +16,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] Make fprintf return number of bytes written
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/2] export: do not fail on already exported variable
+To: barebox@lists.infradead.org
 
-On Fri, Nov 11, 2011 at 9:27 AM, Sascha Hauer <s.hauer@pengutronix.de> wrot=
-e:
-> On Wed, Nov 09, 2011 at 07:39:54PM -0200, Lucas De Marchi wrote:
->> Return number of bytes written, like its siblings function. This also
->> removes the warning below on gcc >=3D 4.6.
->>
->> common/console.c:333:7: warning: variable =91i=92 set but not used
->> [-Wunused-but-set-variable]
->>
->> Signed-off-by: Lucas De Marchi <lucas.demarchi@profusion.mobi>
->> ---
->> =A0common/console.c =A0 =A0 =A0 =A0| =A0 =A04 +++-
->> =A0common/console_simple.c | =A0 =A04 +++-
->> =A0include/stdio.h =A0 =A0 =A0 =A0 | =A0 =A02 +-
->> =A03 files changed, 7 insertions(+), 3 deletions(-)
->>
->> diff --git a/common/console.c b/common/console.c
->> index 06e9c29..7f2810e 100644
->> --- a/common/console.c
->> +++ b/common/console.c
->> @@ -327,7 +327,7 @@ void console_flush(void)
->> =A0}
->> =A0EXPORT_SYMBOL(console_flush);
->>
->> -void fprintf (int file, const char *fmt, ...)
->> +int fprintf (int file, const char *fmt, ...)
->> =A0{
->> =A0 =A0 =A0 va_list args;
->> =A0 =A0 =A0 uint i;
->> @@ -343,6 +343,8 @@ void fprintf (int file, const char *fmt, ...)
->>
->> =A0 =A0 =A0 /* Print the string */
->> =A0 =A0 =A0 fputs (file, printbuffer);
->> +
->> + =A0 =A0 =A0 =A0return i;
->> =A0}
->
-> I just applied another patch I suggested earlier which fixes the return
-> value of the various puts functions. With this I suggest returning the
-> return value of fputs here instead of a bogus 1.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/env.c |    3 +--
+ 1 files changed, 1 insertions(+), 2 deletions(-)
 
-It makes sense. Thanks
+diff --git a/common/env.c b/common/env.c
+index defb26b..05ed714 100644
+--- a/common/env.c
++++ b/common/env.c
+@@ -247,8 +247,7 @@ int export(const char *varname)
+ 	if (val) {
+ 		setenv_raw(context->global, varname, val);
+ 		setenv_raw(context->local, varname, NULL);
+-		return 0;
+ 	}
+-	return -1;
++	return 0;
+ }
+ EXPORT_SYMBOL(export);
+-- 
+1.7.7.1
 
-Lucas De Marchi
 
 _______________________________________________
 barebox mailing list
