@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1ROovB-0002nt-Qs
- for barebox@lists.infradead.org; Fri, 11 Nov 2011 11:05:24 +0000
-Date: Fri, 11 Nov 2011 12:05:06 +0100
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1ROp4x-0000V0-8r
+ for barebox@lists.infradead.org; Fri, 11 Nov 2011 11:15:28 +0000
+Date: Fri, 11 Nov 2011 12:15:19 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20111111110506.GO16886@pengutronix.de>
-References: <1320854621-633-1-git-send-email-h.feurstein@gmail.com>
- <20111111104614.GC15318@game.jcrosoft.org>
+Message-ID: <20111111111519.GP16886@pengutronix.de>
+References: <1320838161-29653-1-git-send-email-franck.jullien@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20111111104614.GC15318@game.jcrosoft.org>
+In-Reply-To: <1320838161-29653-1-git-send-email-franck.jullien@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,43 +22,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] at91: add config option for ohci driver
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: Try to fix mount display of a disk
+To: franck.jullien@gmail.com
 Cc: barebox@lists.infradead.org
 
-On Fri, Nov 11, 2011 at 11:46:14AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 17:03 Wed 09 Nov     , Hubert Feurstein wrote:
-> > Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
-> > Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > ---
-> >  drivers/usb/host/Kconfig  |    4 ++++
-> >  drivers/usb/host/Makefile |    2 +-
-> >  2 files changed, 5 insertions(+), 1 deletions(-)
-> > 
-> > diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
-> > index 929eb89..96e09e2 100644
-> > --- a/drivers/usb/host/Kconfig
-> > +++ b/drivers/usb/host/Kconfig
-> > @@ -7,3 +7,7 @@ config USB_EHCI_OMAP
-> > 
-> >  config USB_OHCI
-> >  	bool "OHCI driver"
-> > +
-> > +config USB_OHCI_AT91
-> > +	depends on ARCH_AT91
-> > +	bool "AT91 OHCI driver"
-> Sacahs can you revert this one
+On Wed, Nov 09, 2011 at 12:29:19PM +0100, franck.jullien@gmail.com wrote:
+> From: Franck Jullien <franck.jullien@gmail.com>
 > 
-> there is no need to have any select for the user
+> This is the second try for fixing the display of the mount command.
+> I'm doing some test with a sd card over spi (path to come).
+> This is what I get:
 > 
-> if you enalbe the OHCI it must just enable it on AT91 directly otherwise you
-> have a OHCI enable but without driver
+> barebox@generic:/ devinfo
+> devices:
+> `---- altera_serial0
+>      `---- cs0
+> `---- ramfs0
+> `---- devfs0
+> `---- mem0
+>      `---- 0x00000000-0x00001c8c: /dev/defaultenv
+> `---- mem1
+>      `---- 0x00000000-0xfffffffe: /dev/mem
+> `---- mem2
+>      `---- 0x00000000-0x007fffff: /dev/ram0
+> `---- altera_spi0
+>      `---- m25p0
+> `---- altera_spi1
+>      `---- spi_mci0
+> `---- mci0
+>      `---- disk0
+>           `---- 0x00000000-0x00e37fff: /dev/disk0
+>           `---- 0x00007200-0x00e37fff: /dev/disk0.0
+>           `---- fat0
+> 
+> barebox@generic:/ mount
+> none on / type ramfs
+> none on /dev type devfs
+> disk0 on /mnt type fat
+> 
+> Seems good to me....
+> 
+> Franck Jullien (2):
+>   ata: Add dev ref to blockdevice during probe
+>   [RFC v2] mount: Fix the printing of device name
+> 
+>  commands/mount.c         |    2 +-
+>  drivers/ata/disk_drive.c |    1 +
+>  fs/fs.c                  |    7 +++++++
+>  3 files changed, 9 insertions(+), 1 deletions(-)
 
-What the patch fixes is that ohci-at91.c is compiled even when USB is
-completely disabled, so reverting just it is not a good solution. I'm
-open to better solutions.
+Looks good, applied.
 
-Sascha
+Thanks
+ Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
