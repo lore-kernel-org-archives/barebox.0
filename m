@@ -1,13 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1ROpR8-0000uP-3W
- for barebox@lists.infradead.org; Fri, 11 Nov 2011 11:38:22 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 11 Nov 2011 12:38:13 +0100
-Message-Id: <1321011494-4274-2-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1321011494-4274-1-git-send-email-s.hauer@pengutronix.de>
+Received: from mail-vw0-f49.google.com ([209.85.212.49])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1ROpZa-0007R8-Cv
+ for barebox@lists.infradead.org; Fri, 11 Nov 2011 11:47:07 +0000
+Received: by vws15 with SMTP id 15so4226467vws.36
+ for <barebox@lists.infradead.org>; Fri, 11 Nov 2011 03:47:05 -0800 (PST)
+MIME-Version: 1.0
+In-Reply-To: <1321011494-4274-2-git-send-email-s.hauer@pengutronix.de>
 References: <1321011494-4274-1-git-send-email-s.hauer@pengutronix.de>
+ <1321011494-4274-2-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 11 Nov 2011 12:47:04 +0100
+Message-ID: <CAAfyv359sAv-NPH8fdSGNSQG0np5JEDYxzvf1ivNQ4hWZ0YPsw@mail.gmail.com>
+From: Belisko Marek <marek.belisko@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,86 +20,67 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] mci: implement multi block write
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] mci: implement multi block write
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-This speeds up writes to MMC/SD cards significantly.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/mci/mci-core.c |   30 ++++++++++++++++++++++++++----
- 1 files changed, 26 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-index 09f7e29..58f7f6d 100644
---- a/drivers/mci/mci-core.c
-+++ b/drivers/mci/mci-core.c
-@@ -107,12 +107,20 @@ static void *sector_buf;
-  * @return Transaction status (0 on success)
-  */
- #ifdef CONFIG_MCI_WRITE
--static int mci_block_write(struct device_d *mci_dev, const void *src, unsigned blocknum)
-+static int mci_block_write(struct device_d *mci_dev, const void *src, unsigned blocknum,
-+	int blocks)
- {
- 	struct mci *mci = GET_MCI_DATA(mci_dev);
- 	struct mci_cmd cmd;
- 	struct mci_data data;
- 	const void *buf;
-+	unsigned mmccmd;
-+	int ret;
-+
-+	if (blocks > 1)
-+		mmccmd = MMC_CMD_WRITE_MULTIPLE_BLOCK;
-+	else
-+		mmccmd = MMC_CMD_WRITE_SINGLE_BLOCK;
- 
- 	if ((unsigned long)src & 0x3) {
- 		memcpy(sector_buf, src, 512);
-@@ -122,16 +130,30 @@ static int mci_block_write(struct device_d *mci_dev, const void *src, unsigned b
- 	}
- 
- 	mci_setup_cmd(&cmd,
--		MMC_CMD_WRITE_SINGLE_BLOCK,
-+		mmccmd,
- 		mci->high_capacity != 0 ? blocknum : blocknum * mci->write_bl_len,
- 		MMC_RSP_R1);
- 
- 	data.src = buf;
--	data.blocks = 1;
-+	data.blocks = blocks;
- 	data.blocksize = mci->write_bl_len;
- 	data.flags = MMC_DATA_WRITE;
- 
--	return mci_send_cmd(mci_dev, &cmd, &data);
-+	ret = mci_send_cmd(mci_dev, &cmd, &data);
-+	if (ret)
-+		return ret;
-+
-+
-+	if (blocks > 1) {
-+		mci_setup_cmd(&cmd,
-+			MMC_CMD_STOP_TRANSMISSION,
-+			0, MMC_RSP_R1b);
-+			ret = mci_send_cmd(mci_dev, &cmd, NULL);
-+			if (ret)
-+				return ret;
-+        }
-+
-+	return ret;
- }
- #endif
- 
--- 
-1.7.7.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gRnJpLCBOb3YgMTEsIDIwMTEgYXQgMTI6MzggUE0sIFNhc2NoYSBIYXVlciA8cy5oYXVlckBw
+ZW5ndXRyb25peC5kZT4gd3JvdGU6Cj4gVGhpcyBzcGVlZHMgdXAgd3JpdGVzIHRvIE1NQy9TRCBj
+YXJkcyBzaWduaWZpY2FudGx5Lgo+Cj4gU2lnbmVkLW9mZi1ieTogU2FzY2hhIEhhdWVyIDxzLmhh
+dWVyQHBlbmd1dHJvbml4LmRlPgo+IC0tLQo+IMKgZHJpdmVycy9tY2kvbWNpLWNvcmUuYyB8IMKg
+IDMwICsrKysrKysrKysrKysrKysrKysrKysrKysrLS0tLQo+IMKgMSBmaWxlcyBjaGFuZ2VkLCAy
+NiBpbnNlcnRpb25zKCspLCA0IGRlbGV0aW9ucygtKQo+Cj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMv
+bWNpL21jaS1jb3JlLmMgYi9kcml2ZXJzL21jaS9tY2ktY29yZS5jCj4gaW5kZXggMDlmN2UyOS4u
+NThmN2Y2ZCAxMDA2NDQKPiAtLS0gYS9kcml2ZXJzL21jaS9tY2ktY29yZS5jCj4gKysrIGIvZHJp
+dmVycy9tY2kvbWNpLWNvcmUuYwo+IEBAIC0xMDcsMTIgKzEwNywyMCBAQCBzdGF0aWMgdm9pZCAq
+c2VjdG9yX2J1ZjsKPiDCoCogQHJldHVybiBUcmFuc2FjdGlvbiBzdGF0dXMgKDAgb24gc3VjY2Vz
+cykKPiDCoCovCj4gwqAjaWZkZWYgQ09ORklHX01DSV9XUklURQo+IC1zdGF0aWMgaW50IG1jaV9i
+bG9ja193cml0ZShzdHJ1Y3QgZGV2aWNlX2QgKm1jaV9kZXYsIGNvbnN0IHZvaWQgKnNyYywgdW5z
+aWduZWQgYmxvY2tudW0pCj4gK3N0YXRpYyBpbnQgbWNpX2Jsb2NrX3dyaXRlKHN0cnVjdCBkZXZp
+Y2VfZCAqbWNpX2RldiwgY29uc3Qgdm9pZCAqc3JjLCB1bnNpZ25lZCBibG9ja251bSwKPiArIMKg
+IMKgIMKgIGludCBibG9ja3MpCj4gwqB7Cj4gwqAgwqAgwqAgwqBzdHJ1Y3QgbWNpICptY2kgPSBH
+RVRfTUNJX0RBVEEobWNpX2Rldik7Cj4gwqAgwqAgwqAgwqBzdHJ1Y3QgbWNpX2NtZCBjbWQ7Cj4g
+wqAgwqAgwqAgwqBzdHJ1Y3QgbWNpX2RhdGEgZGF0YTsKPiDCoCDCoCDCoCDCoGNvbnN0IHZvaWQg
+KmJ1ZjsKPiArIMKgIMKgIMKgIHVuc2lnbmVkIG1tY2NtZDsKPiArIMKgIMKgIMKgIGludCByZXQ7
+Cj4gKwo+ICsgwqAgwqAgwqAgaWYgKGJsb2NrcyA+IDEpCj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDC
+oCBtbWNjbWQgPSBNTUNfQ01EX1dSSVRFX01VTFRJUExFX0JMT0NLOwo+ICsgwqAgwqAgwqAgZWxz
+ZQo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgbW1jY21kID0gTU1DX0NNRF9XUklURV9TSU5HTEVf
+QkxPQ0s7Cj4KPiDCoCDCoCDCoCDCoGlmICgodW5zaWduZWQgbG9uZylzcmMgJiAweDMpIHsKPiDC
+oCDCoCDCoCDCoCDCoCDCoCDCoCDCoG1lbWNweShzZWN0b3JfYnVmLCBzcmMsIDUxMik7Cj4gQEAg
+LTEyMiwxNiArMTMwLDMwIEBAIHN0YXRpYyBpbnQgbWNpX2Jsb2NrX3dyaXRlKHN0cnVjdCBkZXZp
+Y2VfZCAqbWNpX2RldiwgY29uc3Qgdm9pZCAqc3JjLCB1bnNpZ25lZCBiCj4gwqAgwqAgwqAgwqB9
+Cj4KPiDCoCDCoCDCoCDCoG1jaV9zZXR1cF9jbWQoJmNtZCwKPiAtIMKgIMKgIMKgIMKgIMKgIMKg
+IMKgIE1NQ19DTURfV1JJVEVfU0lOR0xFX0JMT0NLLAo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAg
+bW1jY21kLAo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgbWNpLT5oaWdoX2NhcGFjaXR5ICE9IDAg
+PyBibG9ja251bSA6IGJsb2NrbnVtICogbWNpLT53cml0ZV9ibF9sZW4sCj4gwqAgwqAgwqAgwqAg
+wqAgwqAgwqAgwqBNTUNfUlNQX1IxKTsKPgo+IMKgIMKgIMKgIMKgZGF0YS5zcmMgPSBidWY7Cj4g
+LSDCoCDCoCDCoCBkYXRhLmJsb2NrcyA9IDE7Cj4gKyDCoCDCoCDCoCBkYXRhLmJsb2NrcyA9IGJs
+b2NrczsKPiDCoCDCoCDCoCDCoGRhdGEuYmxvY2tzaXplID0gbWNpLT53cml0ZV9ibF9sZW47Cj4g
+wqAgwqAgwqAgwqBkYXRhLmZsYWdzID0gTU1DX0RBVEFfV1JJVEU7Cj4KPiAtIMKgIMKgIMKgIHJl
+dHVybiBtY2lfc2VuZF9jbWQobWNpX2RldiwgJmNtZCwgJmRhdGEpOwo+ICsgwqAgwqAgwqAgcmV0
+ID0gbWNpX3NlbmRfY21kKG1jaV9kZXYsICZjbWQsICZkYXRhKTsKPiArIMKgIMKgIMKgIGlmIChy
+ZXQpCj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCByZXR1cm4gcmV0Owo+ICsKPiArCk5lY2Vzc2Fy
+eSAyIG5ldyBsaW5lcyBoZXJlPwo+ICsgwqAgwqAgwqAgaWYgKGJsb2NrcyA+IDEpIHsKPiArIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIG1jaV9zZXR1cF9jbWQoJmNtZCwKPiArIMKgIMKgIMKgIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIE1NQ19DTURfU1RPUF9UUkFOU01JU1NJT04sCj4gKyDCoCDCoCDC
+oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCAwLCBNTUNfUlNQX1IxYik7Cj4gKyDCoCDCoCDCoCDC
+oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCByZXQgPSBtY2lfc2VuZF9jbWQobWNpX2RldiwgJmNtZCwg
+TlVMTCk7Cj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCBpZiAocmV0KQo+ICsg
+wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgcmV0dXJuIHJldDsK
+PiArIMKgIMKgIMKgIMKgfQo+ICsKPiArIMKgIMKgIMKgIHJldHVybiByZXQ7Cj4gwqB9Cj4gwqAj
+ZW5kaWYKPgo+IC0tCj4gMS43LjcuMQo+Cj4KPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fXwo+IGJhcmVib3ggbWFpbGluZyBsaXN0Cj4gYmFyZWJveEBsaXN0
+cy5pbmZyYWRlYWQub3JnCj4gaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0
+aW5mby9iYXJlYm94Cj4KCnJlZ2FyZHMsCgptYXJlawoKLS0gCmFzIHNpbXBsZSBhbmQgcHJpbWl0
+aXZlIGFzIHBvc3NpYmxlCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0KTWFyZWsgQmVsaXNrbyAtIE9QRU4tTkFORFJBCkZyZWVsYW5jZSBEZXZlbG9wZXIK
+ClJ1c2thIE5vdmEgVmVzIDIxOSB8IFByZXNvdiwgMDgwMDUgU2xvdmFrIFJlcHVibGljClRlbDog
+KzQyMSA5MTUgMDUyIDE4NApza3lwZTogbWFyZWt3aGl0ZQp0d2l0dGVyOiAjb3Blbm5hbmRyYQp3
+ZWI6IGh0dHA6Ly9vcGVuLW5hbmRyYS5jb20KCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5m
+cmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2Jh
+cmVib3gK
