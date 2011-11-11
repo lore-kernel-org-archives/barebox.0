@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ey0-f177.google.com ([209.85.215.177])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1ROVOJ-0004Im-Mh
- for barebox@lists.infradead.org; Thu, 10 Nov 2011 14:14:08 +0000
-Received: by eye3 with SMTP id 3so3032534eye.36
- for <barebox@lists.infradead.org>; Thu, 10 Nov 2011 06:14:04 -0800 (PST)
-MIME-Version: 1.0
-In-Reply-To: <1319592341-2295-1-git-send-email-festevam@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1ROnOz-0000U3-1A
+ for barebox@lists.infradead.org; Fri, 11 Nov 2011 09:28:06 +0000
+Date: Fri, 11 Nov 2011 10:27:43 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20111111092743.GL16886@pengutronix.de>
 References: <1319592341-2295-1-git-send-email-festevam@gmail.com>
-Date: Thu, 10 Nov 2011 12:14:03 -0200
-Message-ID: <CAOMZO5B9CfVgVYPF7kUgo_Y=fv52S1oLOkyGgLS0YW4hcPn0vw@mail.gmail.com>
-From: Fabio Estevam <festevam@gmail.com>
+ <CAOMZO5B9CfVgVYPF7kUgo_Y=fv52S1oLOkyGgLS0YW4hcPn0vw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAOMZO5B9CfVgVYPF7kUgo_Y=fv52S1oLOkyGgLS0YW4hcPn0vw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,28 +19,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] ARM: mx53-loco: Remove duplicate call to loco_fec_reset()
-To: barebox@lists.infradead.org
-Cc: Fabio Estevam <fabio.estevam@freescale.com>, kernel@pengutronix.de
+To: Fabio Estevam <festevam@gmail.com>
+Cc: Fabio Estevam <fabio.estevam@freescale.com>, barebox@lists.infradead.org, kernel@pengutronix.de
 
-U2FzY2hhLAoKT24gVHVlLCBPY3QgMjUsIDIwMTEgYXQgMTE6MjUgUE0sIEZhYmlvIEVzdGV2YW0g
-PGZlc3RldmFtQGdtYWlsLmNvbT4gd3JvdGU6Cj4gUmVtb3ZlIGR1cGxpY2F0ZSBjYWxsIHRvIGxv
-Y29fZmVjX3Jlc2V0KCkuCj4KPiBTaWduZWQtb2ZmLWJ5OiBGYWJpbyBFc3RldmFtIDxmYWJpby5l
-c3RldmFtQGZyZWVzY2FsZS5jb20+Cj4gLS0tCj4gwqBhcmNoL2FybS9ib2FyZHMvZnJlZXNjYWxl
-LW14NTMtbG9jby9ib2FyZC5jIHwgwqAgwqAyIC0tCj4gwqAxIGZpbGVzIGNoYW5nZWQsIDAgaW5z
-ZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMoLSkKPgo+IGRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2Fy
-ZHMvZnJlZXNjYWxlLW14NTMtbG9jby9ib2FyZC5jIGIvYXJjaC9hcm0vYm9hcmRzL2ZyZWVzY2Fs
-ZS1teDUzLWxvY28vYm9hcmQuYwo+IGluZGV4IDI0ZGY5YWUuLjM2ZjFiNTcgMTAwNjQ0Cj4gLS0t
-IGEvYXJjaC9hcm0vYm9hcmRzL2ZyZWVzY2FsZS1teDUzLWxvY28vYm9hcmQuYwo+ICsrKyBiL2Fy
-Y2gvYXJtL2JvYXJkcy9mcmVlc2NhbGUtbXg1My1sb2NvL2JvYXJkLmMKPiBAQCAtMTAyLDggKzEw
-Miw2IEBAIHN0YXRpYyBpbnQgbG9jb19kZXZpY2VzX2luaXQodm9pZCkKPiDCoCDCoCDCoCDCoGFy
-bWxpbnV4X3NldF9ib290cGFyYW1zKCh2b2lkICopMHg3MDAwMDEwMCk7Cj4gwqAgwqAgwqAgwqBh
-cm1saW51eF9zZXRfYXJjaGl0ZWN0dXJlKE1BQ0hfVFlQRV9NWDUzX0xPQ08pOwo+Cj4gLSDCoCDC
-oCDCoCBsb2NvX2ZlY19yZXNldCgpOwo+IC0KCkRvZXMgdGhpcyBvbmUgbG9vayBmaW5lPwoKUmVn
-YXJkcywKCkZhYmlvIEVzdGV2YW0KCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFk
-Lm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Thu, Nov 10, 2011 at 12:14:03PM -0200, Fabio Estevam wrote:
+> Sascha,
+> =
+
+> On Tue, Oct 25, 2011 at 11:25 PM, Fabio Estevam <festevam@gmail.com> wrot=
+e:
+> > Remove duplicate call to loco_fec_reset().
+> >
+> > Signed-off-by: Fabio Estevam <fabio.estevam@freescale.com>
+> > ---
+> > =A0arch/arm/boards/freescale-mx53-loco/board.c | =A0 =A02 --
+> > =A01 files changed, 0 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/arch/arm/boards/freescale-mx53-loco/board.c b/arch/arm/boa=
+rds/freescale-mx53-loco/board.c
+> > index 24df9ae..36f1b57 100644
+> > --- a/arch/arm/boards/freescale-mx53-loco/board.c
+> > +++ b/arch/arm/boards/freescale-mx53-loco/board.c
+> > @@ -102,8 +102,6 @@ static int loco_devices_init(void)
+> > =A0 =A0 =A0 =A0armlinux_set_bootparams((void *)0x70000100);
+> > =A0 =A0 =A0 =A0armlinux_set_architecture(MACH_TYPE_MX53_LOCO);
+> >
+> > - =A0 =A0 =A0 loco_fec_reset();
+> > -
+> =
+
+> Does this one look fine?
+
+Looks good. Applied now. Sorry, missed this one.
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
