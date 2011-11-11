@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1ROpGs-0000k9-3W
- for barebox@lists.infradead.org; Fri, 11 Nov 2011 11:27:47 +0000
-Date: Fri, 11 Nov 2011 12:27:38 +0100
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1ROpIW-0007Wc-9i
+ for barebox@lists.infradead.org; Fri, 11 Nov 2011 11:29:29 +0000
+Date: Fri, 11 Nov 2011 12:29:20 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20111111112738.GQ16886@pengutronix.de>
+Message-ID: <20111111112920.GR16886@pengutronix.de>
 References: <1320874797-14270-1-git-send-email-lucas.demarchi@profusion.mobi>
- <1320874797-14270-2-git-send-email-lucas.demarchi@profusion.mobi>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1320874797-14270-2-git-send-email-lucas.demarchi@profusion.mobi>
+In-Reply-To: <1320874797-14270-1-git-send-email-lucas.demarchi@profusion.mobi>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,72 +18,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] Make fprintf return number of bytes written
+Subject: Re: [PATCH 0/4] Fixes for x86
 To: Lucas De Marchi <lucas.demarchi@profusion.mobi>
 Cc: barebox@lists.infradead.org
 
-T24gV2VkLCBOb3YgMDksIDIwMTEgYXQgMDc6Mzk6NTRQTSAtMDIwMCwgTHVjYXMgRGUgTWFyY2hp
-IHdyb3RlOgo+IFJldHVybiBudW1iZXIgb2YgYnl0ZXMgd3JpdHRlbiwgbGlrZSBpdHMgc2libGlu
-Z3MgZnVuY3Rpb24uIFRoaXMgYWxzbwo+IHJlbW92ZXMgdGhlIHdhcm5pbmcgYmVsb3cgb24gZ2Nj
-ID49IDQuNi4KPiAKPiBjb21tb24vY29uc29sZS5jOjMzMzo3OiB3YXJuaW5nOiB2YXJpYWJsZSDi
-gJhp4oCZIHNldCBidXQgbm90IHVzZWQKPiBbLVd1bnVzZWQtYnV0LXNldC12YXJpYWJsZV0KPiAK
-PiBTaWduZWQtb2ZmLWJ5OiBMdWNhcyBEZSBNYXJjaGkgPGx1Y2FzLmRlbWFyY2hpQHByb2Z1c2lv
-bi5tb2JpPgo+IC0tLQo+ICBjb21tb24vY29uc29sZS5jICAgICAgICB8ICAgIDQgKysrLQo+ICBj
-b21tb24vY29uc29sZV9zaW1wbGUuYyB8ICAgIDQgKysrLQo+ICBpbmNsdWRlL3N0ZGlvLmggICAg
-ICAgICB8ICAgIDIgKy0KPiAgMyBmaWxlcyBjaGFuZ2VkLCA3IGluc2VydGlvbnMoKyksIDMgZGVs
-ZXRpb25zKC0pCj4gCj4gZGlmZiAtLWdpdCBhL2NvbW1vbi9jb25zb2xlLmMgYi9jb21tb24vY29u
-c29sZS5jCj4gaW5kZXggMDZlOWMyOS4uN2YyODEwZSAxMDA2NDQKPiAtLS0gYS9jb21tb24vY29u
-c29sZS5jCj4gKysrIGIvY29tbW9uL2NvbnNvbGUuYwo+IEBAIC0zMjcsNyArMzI3LDcgQEAgdm9p
-ZCBjb25zb2xlX2ZsdXNoKHZvaWQpCj4gIH0KPiAgRVhQT1JUX1NZTUJPTChjb25zb2xlX2ZsdXNo
-KTsKPiAgCj4gLXZvaWQgZnByaW50ZiAoaW50IGZpbGUsIGNvbnN0IGNoYXIgKmZtdCwgLi4uKQo+
-ICtpbnQgZnByaW50ZiAoaW50IGZpbGUsIGNvbnN0IGNoYXIgKmZtdCwgLi4uKQo+ICB7Cj4gIAl2
-YV9saXN0IGFyZ3M7Cj4gIAl1aW50IGk7Cj4gQEAgLTM0Myw2ICszNDMsOCBAQCB2b2lkIGZwcmlu
-dGYgKGludCBmaWxlLCBjb25zdCBjaGFyICpmbXQsIC4uLikKPiAgCj4gIAkvKiBQcmludCB0aGUg
-c3RyaW5nICovCj4gIAlmcHV0cyAoZmlsZSwgcHJpbnRidWZmZXIpOwo+ICsKPiArICAgICAgICBy
-ZXR1cm4gaTsKPiAgfQoKSSBqdXN0IGFwcGxpZWQgYW5vdGhlciBwYXRjaCBJIHN1Z2dlc3RlZCBl
-YXJsaWVyIHdoaWNoIGZpeGVzIHRoZSByZXR1cm4KdmFsdWUgb2YgdGhlIHZhcmlvdXMgcHV0cyBm
-dW5jdGlvbnMuIFdpdGggdGhpcyBJIHN1Z2dlc3QgcmV0dXJuaW5nIHRoZQpyZXR1cm4gdmFsdWUg
-b2YgZnB1dHMgaGVyZSBpbnN0ZWFkIG9mIGEgYm9ndXMgMS4KCgpGcm9tIDE4NTZkNDVmYmMyZmEw
-MTQxNWQ5N2VhODY4ZDE2ZWE3YTk3NGY2NmIgTW9uIFNlcCAxNyAwMDowMDowMCAyMDAxCkZyb206
-IFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25peC5kZT4KRGF0ZTogRnJpLCAxMSBOb3Yg
-MjAxMSAxMjoyNTo1MyArMDEwMApTdWJqZWN0OiBbUEFUQ0hdIGZpeCBmcHJpbnRmIHByb3RvdHlw
-ZSBhbmQgcmV0dXJuIHZhbHVlCgpUaGUgcHV0cyBmdW5jdGlvbnMgbm93IHByb3Blcmx5IHJldHVy
-biB0aGUgbnVtYmVyIG9mIGNoYXJhY3RlcnMKd3JpdHRlbi4gV2l0aCB0aGlzIHdlIGNhbiBhbHNv
-IGZpeCBmcHJpbnRmLgpBbHNvLCByZW1vdmUgbmV2ZXIgcmVhY2hlZCByZXR1cm4gaW4gZnB1dHMu
-CgpTaWduZWQtb2ZmLWJ5OiBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+Ci0t
-LQogY29tbW9uL2NvbnNvbGUuYyB8ICAgIDUgKystLS0KIGluY2x1ZGUvc3RkaW8uaCAgfCAgICAy
-ICstCiAyIGZpbGVzIGNoYW5nZWQsIDMgaW5zZXJ0aW9ucygrKSwgNCBkZWxldGlvbnMoLSkKCmRp
-ZmYgLS1naXQgYS9jb21tb24vY29uc29sZS5jIGIvY29tbW9uL2NvbnNvbGUuYwppbmRleCBlODI5
-MzRiLi45NDRkZDA3IDEwMDY0NAotLS0gYS9jb21tb24vY29uc29sZS5jCisrKyBiL2NvbW1vbi9j
-b25zb2xlLmMKQEAgLTMxOCw3ICszMTgsNiBAQCBpbnQgZnB1dHMoaW50IGZkLCBjb25zdCBjaGFy
-ICpzKQogCQlyZXR1cm4gZXB1dHMocyk7CiAJZWxzZQogCQlyZXR1cm4gd3JpdGUoZmQsIHMsIHN0
-cmxlbihzKSk7Ci0JcmV0dXJuIDA7CiB9CiBFWFBPUlRfU1lNQk9MKGZwdXRzKTsKIApAQCAtMzMz
-LDcgKzMzMiw3IEBAIHZvaWQgY29uc29sZV9mbHVzaCh2b2lkKQogfQogRVhQT1JUX1NZTUJPTChj
-b25zb2xlX2ZsdXNoKTsKIAotdm9pZCBmcHJpbnRmIChpbnQgZmlsZSwgY29uc3QgY2hhciAqZm10
-LCAuLi4pCitpbnQgZnByaW50ZihpbnQgZmlsZSwgY29uc3QgY2hhciAqZm10LCAuLi4pCiB7CiAJ
-dmFfbGlzdCBhcmdzOwogCXVpbnQgaTsKQEAgLTM0OCw3ICszNDcsNyBAQCB2b2lkIGZwcmludGYg
-KGludCBmaWxlLCBjb25zdCBjaGFyICpmbXQsIC4uLikKIAl2YV9lbmQgKGFyZ3MpOwogCiAJLyog
-UHJpbnQgdGhlIHN0cmluZyAqLwotCWZwdXRzIChmaWxlLCBwcmludGJ1ZmZlcik7CisJcmV0dXJu
-IGZwdXRzKGZpbGUsIHByaW50YnVmZmVyKTsKIH0KIEVYUE9SVF9TWU1CT0woZnByaW50Zik7CiAK
-ZGlmZiAtLWdpdCBhL2luY2x1ZGUvc3RkaW8uaCBiL2luY2x1ZGUvc3RkaW8uaAppbmRleCBiZmFl
-YjZjLi40OTAxYmM3IDEwMDY0NAotLS0gYS9pbmNsdWRlL3N0ZGlvLmgKKysrIGIvaW5jbHVkZS9z
-dGRpby5oCkBAIC01NCw3ICs1NCw3IEBAIGludAl2c2NucHJpbnRmKGNoYXIgKmJ1Ziwgc2l6ZV90
-IHNpemUsIGNvbnN0IGNoYXIgKmZtdCwgdmFfbGlzdCBhcmdzKTsKICNkZWZpbmUgc3RkZXJyCQky
-CiAjZGVmaW5lIE1BWF9GSUxFUwkxMjgKIAotdm9pZAlmcHJpbnRmKGludCBmaWxlLCBjb25zdCBj
-aGFyICpmbXQsIC4uLikgX19hdHRyaWJ1dGVfXyAoKGZvcm1hdChfX3ByaW50Zl9fLCAyLCAzKSkp
-OworaW50CWZwcmludGYoaW50IGZpbGUsIGNvbnN0IGNoYXIgKmZtdCwgLi4uKSBfX2F0dHJpYnV0
-ZV9fICgoZm9ybWF0KF9fcHJpbnRmX18sIDIsIDMpKSk7CiBpbnQJZnB1dHMoaW50IGZpbGUsIGNv
-bnN0IGNoYXIgKnMpOwogaW50CWZwdXRjKGludCBmaWxlLCBjb25zdCBjaGFyIGMpOwogaW50CWZ0
-c3RjKGludCBmaWxlKTsKLS0gCjEuNy43LjEKCi0tIApQZW5ndXRyb25peCBlLksuICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfApJbmR1c3Ry
-aWFsIExpbnV4IFNvbHV0aW9ucyAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJv
-bml4LmRlLyAgfApQZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgfCBQ
-aG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfApBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEg
-MjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxp
-c3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3Jn
-L21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Wed, Nov 09, 2011 at 07:39:53PM -0200, Lucas De Marchi wrote:
+> The following patches are fixes for x86 in order to be able to build barebox
+> with ARCH=x86 and generic_defconfig. Patch 3 fixes build for any version of gcc
+> while the last one is specific to gcc 4.6 (I'm not sure about gcc 4.5).
+> 
+> With gcc 4.6 there's still an error, but when it's linking barebox, that I
+> didn't find out how to fix. I thought the problem was in the linker or linker
+> script but they seem to be ok since it works when compiled with gcc 4.4. The
+> error is the following:
+> 
+>   LD      barebox
+> ld: section .eh_frame loaded at [0000000000011a54,0000000000018ac3] overlaps section .barebox_initcalls loaded at [0000000000011a54,0000000000011a9b]
+> make: *** [barebox] Error 1
+
+Applied patches 2-4. For 1 I prefer the solution just posted.
+
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
