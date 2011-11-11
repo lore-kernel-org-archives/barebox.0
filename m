@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1ROqX5-0005rb-FM
- for barebox@lists.infradead.org; Fri, 11 Nov 2011 12:48:36 +0000
-In-Reply-To: <20111111104150.GA15318@game.jcrosoft.org>
-References: <1321002211-14950-1-git-send-email-J.Kilb@phytec.de>
- <20111111104150.GA15318@game.jcrosoft.org>
+Received: from mail-pz0-f43.google.com ([209.85.210.43])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1ROrKG-0001g0-M8
+ for barebox@lists.infradead.org; Fri, 11 Nov 2011 13:39:25 +0000
+Received: by pzk34 with SMTP id 34so5066197pzk.2
+ for <barebox@lists.infradead.org>; Fri, 11 Nov 2011 05:39:23 -0800 (PST)
 MIME-Version: 1.0
-Message-ID: <OF9BFDE307.B64778A4-ONC1257945.0045FDD1-C1257945.00465A60@phytec.de>
-From: =?ISO-8859-1?Q?J=FCrgen_Kilb?= <J.Kilb@phytec.de>
-Date: Fri, 11 Nov 2011 13:48:25 +0100
+In-Reply-To: <20111111112738.GQ16886@pengutronix.de>
+References: <1320874797-14270-1-git-send-email-lucas.demarchi@profusion.mobi>
+ <1320874797-14270-2-git-send-email-lucas.demarchi@profusion.mobi>
+ <20111111112738.GQ16886@pengutronix.de>
+From: Lucas De Marchi <lucas.demarchi@profusion.mobi>
+Date: Fri, 11 Nov 2011 11:39:02 -0200
+Message-ID: <CAMOw1v4GiEqYu=t_vTPwNoU-U9nxhrE+SNOwh1H30=dYswm2Xg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,81 +21,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============2623495627582618973=="
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Antwort: Re: [PATCH] Remove md5,sh1,sh2 from lib/Makefile.
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH 1/4] Make fprintf return number of bytes written
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Dies ist eine mehrteilige Nachricht im MIME-Format.
---===============2623495627582618973==
-Content-Type: multipart/alternative; boundary="=_alternative 00465A5FC1257945_="
+On Fri, Nov 11, 2011 at 9:27 AM, Sascha Hauer <s.hauer@pengutronix.de> wrot=
+e:
+> On Wed, Nov 09, 2011 at 07:39:54PM -0200, Lucas De Marchi wrote:
+>> Return number of bytes written, like its siblings function. This also
+>> removes the warning below on gcc >=3D 4.6.
+>>
+>> common/console.c:333:7: warning: variable =91i=92 set but not used
+>> [-Wunused-but-set-variable]
+>>
+>> Signed-off-by: Lucas De Marchi <lucas.demarchi@profusion.mobi>
+>> ---
+>> =A0common/console.c =A0 =A0 =A0 =A0| =A0 =A04 +++-
+>> =A0common/console_simple.c | =A0 =A04 +++-
+>> =A0include/stdio.h =A0 =A0 =A0 =A0 | =A0 =A02 +-
+>> =A03 files changed, 7 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/common/console.c b/common/console.c
+>> index 06e9c29..7f2810e 100644
+>> --- a/common/console.c
+>> +++ b/common/console.c
+>> @@ -327,7 +327,7 @@ void console_flush(void)
+>> =A0}
+>> =A0EXPORT_SYMBOL(console_flush);
+>>
+>> -void fprintf (int file, const char *fmt, ...)
+>> +int fprintf (int file, const char *fmt, ...)
+>> =A0{
+>> =A0 =A0 =A0 va_list args;
+>> =A0 =A0 =A0 uint i;
+>> @@ -343,6 +343,8 @@ void fprintf (int file, const char *fmt, ...)
+>>
+>> =A0 =A0 =A0 /* Print the string */
+>> =A0 =A0 =A0 fputs (file, printbuffer);
+>> +
+>> + =A0 =A0 =A0 =A0return i;
+>> =A0}
+>
+> I just applied another patch I suggested earlier which fixes the return
+> value of the various puts functions. With this I suggest returning the
+> return value of fputs here instead of a bogus 1.
 
-Dies ist eine mehrteilige Nachricht im MIME-Format.
---=_alternative 00465A5FC1257945_=
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
+It makes sense. Thanks
 
-Hi Jean,
-I was a bit to hasty. Sorry !
-So just to clarify
-
-Commit 4ac3a1f9 was ok.
-
-Best regards,
-J=FCrgen
-
-> On 10:03 Fri 11 Nov     , Juergen Kilb wrote:
-> > Commit 4ac3a1f9 has moved the files md5.c, sh1.c
-> > and sh2.c from lib/* to crypto/*.
-> > But the files were still listed in lib/Makefile.
-> the commit modify the Makefile correctly sn other comit breakit
-> >=20
-> > Signed-off-by: Juergen Kilb <J.Kilb@phytec.de>
-> Sacha send a fix already
->=20
-> Best Regards,
-> J.
-
---=_alternative 00465A5FC1257945_=
-Content-Type: text/html; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-<tt><font size=3D2>Hi Jean,</font></tt>
-<br><tt><font size=3D2>I was a bit to hasty. Sorry !</font></tt>
-<br><tt><font size=3D2>So just to clarify</font></tt>
-<br>
-<br><tt><font size=3D2>Commit 4ac3a1f9 was ok.</font></tt>
-<br>
-<br><tt><font size=3D2>Best regards,</font></tt>
-<br><tt><font size=3D2>J=FCrgen</font></tt>
-<br>
-<br><tt><font size=3D2>&gt; On 10:03 Fri 11 Nov &nbsp; &nbsp; , Juergen Kilb
-wrote:<br>
-&gt; &gt; Commit 4ac3a1f9 has moved the files md5.c, sh1.c<br>
-&gt; &gt; and sh2.c from lib/* to crypto/*.<br>
-&gt; &gt; But the files were still listed in lib/Makefile.<br>
-&gt; the commit modify the Makefile correctly sn other comit breakit<br>
-&gt; &gt; <br>
-&gt; &gt; Signed-off-by: Juergen Kilb &lt;J.Kilb@phytec.de&gt;<br>
-&gt; Sacha send a fix already<br>
-&gt; <br>
-&gt; Best Regards,<br>
-&gt; J.<br>
-</font></tt>
---=_alternative 00465A5FC1257945_=--
-
-
---===============2623495627582618973==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Lucas De Marchi
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============2623495627582618973==--
