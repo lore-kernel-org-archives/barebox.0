@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1ROwcr-0002rU-C5
- for barebox@lists.infradead.org; Fri, 11 Nov 2011 19:18:58 +0000
-Date: Fri, 11 Nov 2011 20:18:50 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20111111191850.GD16886@pengutronix.de>
-References: <1320327965-23067-1-git-send-email-mark.vels@team-embedded.nl>
- <4EBC5173.4080409@team-embedded.nl>
- <20111111153154.GZ16886@pengutronix.de>
- <4EBD65A8.4090302@team-embedded.nl>
+Received: from smtp6-g21.free.fr ([2a01:e0c:1:1599::15])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1RPeoG-0007vp-Vk
+ for barebox@lists.infradead.org; Sun, 13 Nov 2011 18:29:42 +0000
+Received: from beldin.local (unknown [82.243.122.54])
+ by smtp6-g21.free.fr (Postfix) with ESMTP id DC4A3822E2
+ for <barebox@lists.infradead.org>; Sun, 13 Nov 2011 19:29:33 +0100 (CET)
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+Date: Sun, 13 Nov 2011 19:29:32 +0100
+Message-ID: <8739drj2pf.fsf@free.fr>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <4EBD65A8.4090302@team-embedded.nl>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,49 +22,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] arm:imx27: add basic support for KaRo TX27 module on
- StarterKit 5
-To: Mark Vels <mark.vels@team-embedded.nl>
-Cc: barebox@lists.infradead.org
+Subject: Barebox newbie questions : arch/arm/{plat,mach} split and interrupts
+To: barebox@lists.infradead.org
 
-On Fri, Nov 11, 2011 at 07:12:56PM +0100, Mark Vels wrote:
-> On 11-11-11 16:31, Sascha Hauer wrote:
-> > On Thu, Nov 10, 2011 at 11:34:27PM +0100, Mark Vels wrote:
-> >> On 11/03/2011 02:46 PM, Mark Vels wrote:
-> >>> This patch adds basic support for the TX27 CPU module.
-> >>> It has been tested so far using OpenOCD to write it into memory and execute.
-> >>> Environment loading and saving from NAND seems to work correctly, further
-> >>> testing will be focused on booting from NAND.
-> >>>
-> >>> Since I don't have any datasheets of the IIM in the i.MX27 I would appreciate
-> >>> some help with getting the serial number and the ethernet MAC from there. Can
-> >>> anyone shine some light here?
-> > I don't think that the i.MX27 has any MAC address in the IIM if the
-> > board manufacturer has programmed one.
-> kk, that explains. You think the same goes for the serial number?
-> I expected this to be preprogrammed during  silicon production but I may of course be wrong...
-> >>> Signed-off-by: Mark Vels<mark.vels@team-embedded.nl>
-> >>> ---
-> >> Anyone? No comments?
-> > The patch looks fine. Any reason not to use the default environment?
-> >
-> > Sascha
-> >
-> >
-> Yeah, it's probably called ignorance :-( I just copied other stuff
-> from the tx25 over.  I'll have a look why the tx25 isn't using the
-> generic defaultenv too, if I can't find any reason I'll submit a new
-> patch.
+Hi,
 
-Most probably because noone converted it so far.
+As I'm a bit new to barebone, and after reading a bit the code for the ARM
+architectures, I have questions :
 
-Sascha
+ (1) Why is there not anywhere a arch/arm/plat-xxx ?
+     My understanding is that normally, platform generic code (like gpio
+     handling for XScale processors) should go there.
+     The machine specific code (ie. PXA27x, PXA25x, etc ...) would still go to
+     arch/arm/mach-pxa.
+
+ (2) In arch/arm, I understand that interruptions are never used (do_irq()
+     implementation is quite clear about that). Is that a design decision and
+     why ?
+     If so, I suppose that active polling for each device is required. Am I
+     right here ?
+
+ (3) MMU: one can enable or not the MMU. AFAIR, the MMU is required to enable
+     both I-Cache and D-Cache on ARM achitectures. Are there any other obvious
+     advantages I'm missing in the case of a bootloader ?
+
+ (4) Is it possible to have 2 outputs as result of compilation of barebox for a
+     board ?
+     Let me be clearer. My board, mioa701, has a disk-on-chip on which it can
+     boot. Barebox will be the SPL (written from barebox.bin). The IPL, which is
+     limited to 2048 bytes, will only initialize RAM, GPIOs, and load the
+     SPL. Is there a way for me to add the generation of a 'mioa701_ipl.bin' out
+     of a 'mioa701_ipl.S' ?
+
+Cheers.
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Robert
 
 _______________________________________________
 barebox mailing list
