@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ww0-f49.google.com ([74.125.82.49])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RQRyl-0000Mc-IO
- for barebox@lists.infradead.org; Tue, 15 Nov 2011 22:59:48 +0000
-Received: by wwe32 with SMTP id 32so4166812wwe.18
- for <barebox@lists.infradead.org>; Tue, 15 Nov 2011 14:59:45 -0800 (PST)
-From: franck.jullien@gmail.com
-Date: Tue, 15 Nov 2011 23:46:28 +0100
-Message-Id: <1321397188-32451-1-git-send-email-franck.jullien@gmail.com>
-In-Reply-To: <CAJfOKBx4y+6ViUTeZdktAcyYsNvTRaNxdLH3LcYjrE+qYfsGPw@mail.gmail.com>
-References: <CAJfOKBx4y+6ViUTeZdktAcyYsNvTRaNxdLH3LcYjrE+qYfsGPw@mail.gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RQbQU-00020d-SA
+ for barebox@lists.infradead.org; Wed, 16 Nov 2011 09:05:08 +0000
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:6f8:1178:4:5054:ff:fe8d:eefb] helo=localhost)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <jbe@pengutronix.de>) id 1RQbQJ-00027Y-Us
+ for barebox@lists.infradead.org; Wed, 16 Nov 2011 10:04:52 +0100
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Wed, 16 Nov 2011 10:04:13 +0100
+MIME-Version: 1.0
+Content-Disposition: inline
+Message-Id: <201111161004.13969.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,42 +21,52 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fs/fat: Initialize local variable finfo
+Subject: [PATCH/next] x86: Provide 'unaligned' macros for x86 arch as well
 To: barebox@lists.infradead.org
 
-From: Franck Jullien <franck.jullien@gmail.com>
+These macros are used in the generic partition detection code.
+So, x86 would fails without it.
 
-fat_stat in fs/fat.c declares finfo but doesn't initialize it.
-When get_fileinfo is called, fno->lfname and fno->lfsize are
-tested but haven't been zeroed...This can lead to a wrong
-behavior.
+Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 
-Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
----
- fs/fat/fat.c |    2 ++
- 1 files changed, 2 insertions(+), 0 deletions(-)
-
-diff --git a/fs/fat/fat.c b/fs/fat/fat.c
-index 4219801..8420f3a 100644
---- a/fs/fat/fat.c
-+++ b/fs/fat/fat.c
-@@ -354,6 +354,8 @@ static int fat_stat(struct device_d *dev, const char *filename, struct stat *s)
- 	FILINFO finfo;
- 	int ret;
+diff --git a/arch/x86/include/asm/types.h b/arch/x86/include/asm/types.h
+index 17c5fd7..d520869 100644
+--- a/arch/x86/include/asm/types.h
++++ b/arch/x86/include/asm/types.h
+@@ -39,6 +39,8 @@ typedef unsigned short u16;
  
-+	memset(&finfo, 0, sizeof(FILINFO));
+ typedef unsigned int u32;
+ 
++typedef unsigned long long u64;
 +
- 	ret = f_stat(&priv->fat, filename, &finfo);
- 	if (ret)
- 		return ret;
--- 
-1.7.7
+ #endif /* __ASSEMBLY__ */
+ 
+ #endif /* __ASM_X86_TYPES_H */
+diff --git a/arch/x86/include/asm/unaligned.h b/arch/x86/include/asm/unaligned.h
+new file mode 100644
+index 0000000..34f2367
+--- /dev/null
++++ b/arch/x86/include/asm/unaligned.h
+@@ -0,0 +1,11 @@
++#ifndef _ASM_X86_UNALIGNED_H
++#define _ASM_X86_UNALIGNED_H
++
++#include <linux/unaligned/le_byteshift.h>
++#include <linux/unaligned/be_byteshift.h>
++#include <linux/unaligned/generic.h>
++
++#define get_unaligned	__get_unaligned_le
++#define put_unaligned	__put_unaligned_le
++
++#endif /* _ASM_X86_UNALIGNED_H */
 
+-- 
+Pengutronix e.K.                              | Juergen Beisert             |
+Linux Solutions for Science and Industry      | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
