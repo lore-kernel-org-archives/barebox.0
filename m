@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RQbjW-0005mf-LL
- for barebox@lists.infradead.org; Wed, 16 Nov 2011 09:24:43 +0000
+ id 1RQbjc-0005nS-A9
+ for barebox@lists.infradead.org; Wed, 16 Nov 2011 09:24:48 +0000
 Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
  by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <jbe@pengutronix.de>) id 1RQbjM-00034s-Hy
+ (envelope-from <jbe@pengutronix.de>) id 1RQbjM-000356-OU
  for barebox@lists.infradead.org; Wed, 16 Nov 2011 10:24:32 +0100
 Received: from jbe by dude.hi.pengutronix.de with local (Exim 4.77)
- (envelope-from <jbe@pengutronix.de>) id 1RQbjM-0006Xm-Fl
+ (envelope-from <jbe@pengutronix.de>) id 1RQbjM-0006Y7-Je
  for barebox@lists.infradead.org; Wed, 16 Nov 2011 10:24:32 +0100
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Wed, 16 Nov 2011 10:24:18 +0100
-Message-Id: <1321435467-19148-5-git-send-email-jbe@pengutronix.de>
+Date: Wed, 16 Nov 2011 10:24:25 +0100
+Message-Id: <1321435467-19148-12-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1321435467-19148-1-git-send-email-jbe@pengutronix.de>
 References: <1321435467-19148-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -28,34 +28,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/13] ATA/DISK: Enabling write support does not belong to
- 'drive types'
+Subject: [PATCH 11/13] ATA/DISK: Remove the now unused header <ata.h>
 To: barebox@lists.infradead.org
+
+This file is obsolete now.
 
 Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 ---
- drivers/ata/Kconfig |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
+ include/ata.h |   39 ---------------------------------------
+ 1 files changed, 0 insertions(+), 39 deletions(-)
+ delete mode 100644 include/ata.h
 
-diff --git a/drivers/ata/Kconfig b/drivers/ata/Kconfig
-index 6a57e5c..5be1805 100644
---- a/drivers/ata/Kconfig
-+++ b/drivers/ata/Kconfig
-@@ -6,12 +6,12 @@ menuconfig ATA
- 
- if ATA
- 
--comment "drive types"
+diff --git a/include/ata.h b/include/ata.h
+deleted file mode 100644
+index d56399e..0000000
+--- a/include/ata.h
++++ /dev/null
+@@ -1,39 +0,0 @@
+-/*
+- * Copyright (C) 2009 Juergen Beisert, Pengutronix
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+- * MA 02111-1307 USA
+- *
+- */
 -
- config ATA_WRITE
- 	select BLOCK_WRITE
- 	bool "support writing to ATA drives"
- 
-+comment "drive types"
-+
- config ATA_DISK
- 	bool "disk drives"
- 	help
+-/**
+- * @file
+- * @brief Declarations to communicate with ATA types of drives
+- */
+-
+-#include <types.h>
+-#include <driver.h>
+-
+-/**
+- * Access functions from drives through the specified interface
+- */
+-struct ata_interface {
+-	/** write a count of sectors from a buffer to the drive */
+-	int (*write)(struct device_d*, uint64_t, unsigned, const void*);
+-	/** read a count of sectors from the drive into the buffer */
+-	int (*read)(struct device_d*, uint64_t, unsigned, void*);
+-	/** private interface data */
+-	void *priv;
+-};
 -- 
 1.7.7.1
 
