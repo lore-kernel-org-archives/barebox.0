@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RR8qa-0002mo-5o
- for barebox@lists.infradead.org; Thu, 17 Nov 2011 20:46:13 +0000
-Date: Thu, 17 Nov 2011 21:46:04 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20111117204604.GU27267@pengutronix.de>
-References: <1321435467-19148-1-git-send-email-jbe@pengutronix.de>
- <1321435467-19148-13-git-send-email-jbe@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1321435467-19148-13-git-send-email-jbe@pengutronix.de>
+Received: from mail-ww0-f49.google.com ([74.125.82.49])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RR8zt-0005tP-It
+ for barebox@lists.infradead.org; Thu, 17 Nov 2011 20:55:51 +0000
+Received: by wwe32 with SMTP id 32so2582420wwe.18
+ for <barebox@lists.infradead.org>; Thu, 17 Nov 2011 12:55:37 -0800 (PST)
+From: Franck Jullien <franck.jullien@gmail.com>
+Date: Thu, 17 Nov 2011 21:53:09 +0100
+Message-Id: <1321563189-10956-1-git-send-email-franck.jullien@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,206 +16,124 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 12/13] ATA Disk Support: Add support for native ATA type
- drives
-To: Juergen Beisert <jbe@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] spi/altera_spi: Add cs_change support
+To: barebox@lists.infradead.org
 
-On Wed, Nov 16, 2011 at 10:24:26AM +0100, Juergen Beisert wrote:
-> Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
-> ---
->  drivers/ata/Kconfig          |   12 +
->  drivers/ata/Makefile         |    1 +
->  drivers/ata/disk_ata_drive.c |  631 ++++++++++++++++++++++++++++++++++++++++++
->  include/ata_drive.h          |  194 +++++++++++++
->  4 files changed, 838 insertions(+), 0 deletions(-)
->  create mode 100644 drivers/ata/disk_ata_drive.c
->  create mode 100644 include/ata_drive.h
-> 
-> diff --git a/drivers/ata/Kconfig b/drivers/ata/Kconfig
-> index 86b5673..0a15863 100644
-> --- a/drivers/ata/Kconfig
-> +++ b/drivers/ata/Kconfig
-> @@ -24,6 +24,18 @@ config DISK_BIOS
->  	  media to work on. Disadvantage is: Due to its 16 bit nature it is
->  	  slow.
->  
-> +config DISK_ATA
-> +	bool "ATA type drives"
-> +	select DISK_DRIVE
-> +	help
-> +	  Support for native ATA/IDE drives
-> +
-> +config DISK_LE_ATTACHED
-> +	bool "little endianess attachment"
-> +	depends on DISK_ATA
-> +	help
-> +	  How the drive's data port (16 bit) is connected to the CPU: LE or BE
+The Linux kernel says (spi.h) :
 
-No. We have platform data for this stuff.
+* All SPI transfers start with the relevant chipselect active.  Normally
+* it stays selected until after the last transfer in a message.  Drivers
+* can affect the chipselect signal using cs_change.
+*
+* (i) If the transfer isn't the last one in the message, this flag is
+* used to make the chipselect briefly go inactive in the middle of the
+* message.  Toggling chipselect in this way may be needed to terminate
+* a chip command, letting a single spi_message perform all of group of
+* chip transactions together.
+*
+* (ii) When the transfer is the last one in the message, the chip may
+* stay selected until the next transfer.  On multi-device SPI busses
+* with nothing blocking messages going to other devices, this is just
+* a performance hint; starting a message to another device deselects
+* this one.  But in other cases, this can be used to ensure correctness.
+* Some devices need protocol transactions to be built from a series of
+* spi_message submissions, where the content of one message is
+* determined by the results of previous messages and where the whole transaction
+* ends when the chipselect goes intactive.
 
-> diff --git a/drivers/ata/disk_ata_drive.c b/drivers/ata/disk_ata_drive.c
-> new file mode 100644
-> index 0000000..cd0dabe
-> --- /dev/null
-> +++ b/drivers/ata/disk_ata_drive.c
-> @@ -0,0 +1,631 @@
-> +/*
-> + * Copyright (C) 2011 Juergen Beisert, Pengutronix
-> + *
-> + * Inspired from various soures like http://wiki.osdev.org/ATA_PIO_Mode,
-> + * u-boot and the linux kernel
-> + *
-> + * This program is free software; you can redistribute it and/or
-> + * modify it under the terms of the GNU General Public License as
-> + * published by the Free Software Foundation; either version 2 of
-> + * the License, or (at your option) any later version.
-> + *
-> + * This program is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> + * GNU General Public License for more details.
-> + */
-> +
-> +
-> +#define MAX_TIMEOUT 30000
+In other words, cs_change changes the default chipselect *behavior*.
 
-30s seems a bit much.
+Support of cs_change is necessary to implement the mci spi driver.
 
-> + * Swap little endian data on demand
-> + * @param buf Buffer with little endian word data
-> + * @param wds 16 bit word count
-> + *
-> + * ATA disks report their ID data in little endian notation on a 16 bit word
-> + * base. So swap the buffer content if the running CPU differs in their
-> + * endiaeness.
-> + */
-> +static void ata_fix_endianess(uint16_t *buf, unsigned wds)
-> +{
-> +#if __BYTE_ORDER == __BIG_ENDIAN
-> +	unsigned u;
-> +
-> +	for (u = 0; u < wds; u++)
-> +		buf[u] = le16_to_cpu(buf[u]);
-> +#endif
-> +}
+This patch also fix few things:
 
-Is this correct? I wonder that ata_id_string also works on 16bit bufs.
+Passing the bus number to the brand new master device.
+Disable chipselect during master->setup.
 
-> +
-> +/**
-> + * Read the status register of the ATA drive
-> + * @param io Register file
-> + * @return Register's content
-> + */
-> +static uint8_t ata_rd_status(struct ata_ioports *io)
-> +{
-> +	return readb(io->status_addr);
-> +}
-> +
-> +#define ATA_STATUS_BUSY (1 << 7)
-> +#define ATA_STATUS_READY (1 << 6)
-> +#define ATA_STATUS_WR_FLT (1 << 5)
-> +#define ATA_STATUS_DRQ (1 << 4)
-> +#define ATA_STATUS_CORR (1 << 3)
-> +#define ATA_STATUS_ERROR (1 << 1)
-> +
-> +/**
-> + * Wait until the disk is busy or time out
-> + * @param io Register file
-> + * @param timeout Timeout in [ms]
-> + * @return 0 on success, -ETIMEDOUT else
-> + */
-> +static int ata_wait_busy(struct ata_ioports *io, unsigned timeout)
-> +{
-> +	uint8_t status;
-> +
-> +	timeout *= 100;
-> +
-> +	while (timeout) {
-> +		status = ata_rd_status(io);
-> +		if (status & ATA_STATUS_BUSY)
-> +			break;
-> +		udelay(10);
-> +		timeout -= 10;
-> +	};
+Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
+---
+ drivers/spi/altera_spi.c |   27 ++++++++++++++++++++++++++-
+ 1 files changed, 26 insertions(+), 1 deletions(-)
 
-Please use get_time_ns()/is_timeout() for timeout loops. It helps you to
-implement straight forward timeout loops which do not take 20us when the
-device is ready after 11us.
-
-> +
-> +	if (timeout) {
-> +		pr_debug("%s: Finished with %u us remaining\n", __func__, timeout);
-
-This seems *very* noisy.
-
-> +		return 0;
-> +	}
-> +
-> +	pr_debug("%s: Waiting timed out!\n", __func__);
-
-We have a pr_debug here and additionally in each function calling this.
-I think having it here is enough.
-
-> +	return -ETIMEDOUT;
-> +}
-> +
-> +/**
- +
-> +/**
-> + * Register an ATA drive behind an IDE like interface
-> + * @param dev The interface device
-> + * @param io ATA register file description
-> + * @return 0 on success
-> + */
-> +int register_ata_drive(struct device_d *dev, struct ata_ioports *io)
-> +{
-> +	int rc;
-> +	struct ata_id_layout *l;
-> +	struct ata_drive_access *drive;
-> +
-> +	drive = xzalloc(sizeof(struct ata_drive_access));
-> +
-> +	drive->io = io;
-> +	drive->blk.dev = dev;
-> +	drive->blk.ops = &ata_ops;
-> +	l = (struct ata_id_layout *)&drive->id;
-> +
-> +	rc = ata_reset(io);
-> +	if (rc) {
-> +		dev_dbg(dev, "Resetting failed\n");
-> +		goto on_error;
-> +	}
-> +
-> +	rc = ata_get_id(drive);
-> +	if (rc != 0) {
-> +		dev_dbg(dev, "Reading ID failed\n");
-> +		goto on_error;
-> +	}
-> +
-> +#ifdef DEBUG
-> +	ata_dump_id(drive->id);
-> +#endif
-> +	rc = cdev_find_free_number("disk");
-> +	if (rc == -1)
-> +		pr_err("Cannot find a free number for the disk node\n");
-> +
-> +	drive->blk.num_blocks = ata_rd_capacity(l);
-
-This is the only place where struct ata_id_layout is used.
-ata_id_n_sectors seems to read the same fields from the id
-block and additionally correctly handles lba48.
-
+diff --git a/drivers/spi/altera_spi.c b/drivers/spi/altera_spi.c
+index 4fd82fb..d63dce3 100644
+--- a/drivers/spi/altera_spi.c
++++ b/drivers/spi/altera_spi.c
+@@ -25,6 +25,9 @@
+ #include <io.h>
+ #include <asm/spi.h>
+ #include <asm/nios2-io.h>
++#include <clock.h>
++
++static void altera_spi_cs_inactive(struct spi_device *spi);
+ 
+ static int altera_spi_setup(struct spi_device *spi)
+ {
+@@ -49,6 +52,8 @@ static int altera_spi_setup(struct spi_device *spi)
+ 		return -1;
+ 	}
+ 
++	altera_spi_cs_inactive(spi);
++
+ 	dev_dbg(master->dev, " mode 0x%08x, bits_per_word: %d, speed: %d\n",
+ 		spi->mode, spi->bits_per_word, altera_spi->speed);
+ 
+@@ -167,19 +172,38 @@ static int altera_spi_transfer(struct spi_device *spi, struct spi_message *mesg)
+ 	struct altera_spi *altera_spi = container_of(spi->master, struct altera_spi, master);
+ 	struct nios_spi *nios_spi = altera_spi->regs;
+ 	struct spi_transfer *t;
++	unsigned int cs_change;
++	const int nsecs = 50;
+ 
+ 	altera_spi_cs_active(spi);
+ 
++	cs_change = 0;
++
+ 	mesg->actual_length = 0;
+ 
+ 	list_for_each_entry(t, &mesg->transfers, transfer_list) {
++
++		if (cs_change) {
++			ndelay(nsecs);
++			altera_spi_cs_inactive(spi);
++			ndelay(nsecs);
++			altera_spi_cs_active(spi);
++		}
++
++		cs_change = t->cs_change;
++
+ 		mesg->actual_length += altera_spi_do_xfer(spi, t);
++
++		if (cs_change) {
++			altera_spi_cs_active(spi);
++		}
+ 	}
+ 
+ 	/* Wait the end of any pending transfer */
+ 	while ((readl(&nios_spi->status) & NIOS_SPI_TMT) == 0);
+ 
+-	altera_spi_cs_inactive(spi);
++	if(!cs_change)
++		altera_spi_cs_inactive(spi);
+ 
+ 	return 0;
+ }
+@@ -199,6 +223,7 @@ static int altera_spi_probe(struct device_d *dev)
+ 	master->setup = altera_spi_setup;
+ 	master->transfer = altera_spi_transfer;
+ 	master->num_chipselect = pdata->num_chipselect;
++	master->bus_num = pdata->bus_num;
+ 
+ 	altera_spi->regs = dev_request_mem_region(dev, 0);
+ 	altera_spi->databits = pdata->databits;
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.7
+
 
 _______________________________________________
 barebox mailing list
