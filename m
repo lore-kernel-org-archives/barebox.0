@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RRKAm-00017e-Uz
- for barebox@lists.infradead.org; Fri, 18 Nov 2011 08:51:49 +0000
-Date: Fri, 18 Nov 2011 09:51:28 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20111118085128.GX27267@pengutronix.de>
-References: <1321435467-19148-1-git-send-email-jbe@pengutronix.de>
- <1321435467-19148-9-git-send-email-jbe@pengutronix.de>
- <20111117161706.GN27267@pengutronix.de>
- <201111180926.05353.jbe@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <201111180926.05353.jbe@pengutronix.de>
+Received: from mail-bw0-f49.google.com ([209.85.214.49])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RRNTg-0001Eo-OG
+ for barebox@lists.infradead.org; Fri, 18 Nov 2011 12:23:33 +0000
+Received: by bkat2 with SMTP id t2so4371633bka.36
+ for <barebox@lists.infradead.org>; Fri, 18 Nov 2011 04:23:29 -0800 (PST)
+From: Hubert Feurstein <h.feurstein@gmail.com>
+Date: Fri, 18 Nov 2011 13:23:23 +0100
+Message-Id: <1321619003-19741-1-git-send-email-h.feurstein@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,84 +16,172 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 08/13] DISK: Add common partition handling for disk like
- media
-To: Juergen Beisert <jbe@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [RFC PATCH 1/2] commands/cp: add verbose mode which displays progress
+ bar
+To: barebox@lists.infradead.org
 
-On Fri, Nov 18, 2011 at 09:26:05AM +0100, Juergen Beisert wrote:
-> Sascha Hauer wrote:
-> > On Wed, Nov 16, 2011 at 10:24:22AM +0100, Juergen Beisert wrote:
-> > > This covers disk like media like SD card, CF cards, regular hard disks
-> > > and also USB mass storage devices. Most common used partition table is
-> > > still of DOS type. This implementation is prepared to support more
-> > > partition types in the future.
-> > >
-> > > Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
-> > > ---
-> > >  common/Kconfig      |   18 ++++
-> > >  common/Makefile     |    2 +
-> > >  common/partitions.c |  229
-> > > +++++++++++++++++++++++++++++++++++++++++++++++++++ include/disks.h     |
-> > >    2 +
-> > >  4 files changed, 251 insertions(+), 0 deletions(-)
-> > >  create mode 100644 common/partitions.c
-> > >
-> > > diff --git a/common/Kconfig b/common/Kconfig
-> > > index 8e96920..1318e7d 100644
-> > > --- a/common/Kconfig
-> > > +++ b/common/Kconfig
-> > > @@ -406,6 +406,24 @@ config PARTITION
-> >
-> >  +
-> >
-> > > +/**
-> > > + * Try to collect partition information on the given block device
-> > > + * @param blk Block device to examine
-> > > + * @return 0 most of the time, negative value else
-> > > + *
-> > > + * It is not a failure if no partition information is found
-> > > + */
-> > > +int parse_partition_table(struct block_device *blk)
-> > > +{
-> > > +	int i;
-> > > +	int rc = 0;
-> > > +
-> > > +#ifdef CONFIG_PARTITION_DISK_DOS
-> > > +	if (pdesc.used_entries == 0)
-> > > +		try_dos_partition(blk);
-> > > +#endif
-> > > +
-> > > +	if (pdesc.used_entries != 0) {
-> >
-> > So every block device that comes in uses the same global variable. We
-> > should support multiple block devices.
-> 
-> Arrgggh. So many tests and this one has slipped in. A memset to 0 at the end 
-> of this function should do the job, shouldn't it?
-> 
-> > Also it should be possible to unregister the partitions on a block
-> > device.
-> 
-> You mean for the case someone removes an SD card or an USB memory stick? Who 
-> would call such a function?
+Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
+---
+ commands/cp.c            |   20 ++++++++++++++------
+ drivers/usb/gadget/dfu.c |    2 +-
+ include/libbb.h          |    2 +-
+ lib/copy_file.c          |   20 +++++++++++++++++++-
+ 4 files changed, 35 insertions(+), 9 deletions(-)
 
-The usb command rescans the USB bus and will unregister all devices
-which disappeared. I don't know if this actually works for USB sticks
-(it would mean that also the fs has to be unmounted), but at least it
-should work one day...
+diff --git a/commands/cp.c b/commands/cp.c
+index 3428105..bbe350d 100644
+--- a/commands/cp.c
++++ b/commands/cp.c
+@@ -44,8 +44,15 @@ static int do_cp(struct command *cmdtp, int argc, char *argv[])
+ 	struct stat statbuf;
+ 	int last_is_dir = 0;
+ 	int i;
++	int verbose = 0;
++	int argc_min = 3;
 
-Sascha
+-	if (argc < 3)
++	if (argc >= argc_min && strcmp(argv[1], "-v") == 0) {
++		verbose = 1;
++		argc_min++;
++	}
++
++	if (argc < argc_min)
+ 		return COMMAND_ERROR_USAGE;
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+ 	if (!stat(argv[argc - 1], &statbuf)) {
+@@ -53,21 +60,22 @@ static int do_cp(struct command *cmdtp, int argc, char *argv[])
+ 			last_is_dir = 1;
+ 	}
+
+-	if (argc > 3 && !last_is_dir) {
++	if (argc > argc_min && !last_is_dir) {
+ 		printf("cp: target `%s' is not a directory\n", argv[argc - 1]);
+ 		return 1;
+ 	}
+
+-	for (i = 1; i < argc - 1; i++) {
++	i = (!verbose) ? 1 : 2;
++	for (; i < argc - 1; i++) {
+ 		if (last_is_dir) {
+ 			char *dst;
+ 			dst = concat_path_file(argv[argc - 1], basename(argv[i]));
+-			ret = copy_file(argv[i], dst);
++			ret = copy_file(argv[i], dst, verbose);
+ 			if (ret)
+ 				goto out;
+ 			free(dst);
+ 		} else {
+-			ret = copy_file(argv[i], argv[argc - 1]);
++			ret = copy_file(argv[i], argv[argc - 1], verbose);
+ 			if (ret)
+ 				goto out;
+ 		}
+@@ -79,7 +87,7 @@ out:
+ }
+
+ BAREBOX_CMD_HELP_START(cp)
+-BAREBOX_CMD_HELP_USAGE("cp <source> <destination>\n")
++BAREBOX_CMD_HELP_USAGE("cp [-v] <source> <destination>\n")
+ BAREBOX_CMD_HELP_SHORT("copy file from <source> to <destination>.\n")
+ BAREBOX_CMD_HELP_END
+
+diff --git a/drivers/usb/gadget/dfu.c b/drivers/usb/gadget/dfu.c
+index 1387c6d..0a0d244 100644
+--- a/drivers/usb/gadget/dfu.c
++++ b/drivers/usb/gadget/dfu.c
+@@ -259,7 +259,7 @@ static int handle_dnload(struct usb_function *f, const struct usb_ctrlrequest *c
+ 				ret = -EINVAL;
+ 				goto err_out;
+ 			}
+-			ret = copy_file(DFU_TEMPFILE, dfu_devs[dfualt].dev);
++			ret = copy_file(DFU_TEMPFILE, dfu_devs[dfualt].dev, 0);
+ 			if (ret) {
+ 				printf("copy file failed\n");
+ 				ret = -EINVAL;
+diff --git a/include/libbb.h b/include/libbb.h
+index 0962969..2d17c3f 100644
+--- a/include/libbb.h
++++ b/include/libbb.h
+@@ -26,7 +26,7 @@ int recursive_action(const char *fileName, unsigned flags,
+
+ char * safe_strncpy(char *dst, const char *src, size_t size);
+
+-int copy_file(const char *src, const char *dst);
++int copy_file(const char *src, const char *dst, int verbose);
+
+ int process_escape_sequence(const char *source, char *dest, int destlen);
+
+diff --git a/lib/copy_file.c b/lib/copy_file.c
+index 809befe..e4bb07c 100644
+--- a/lib/copy_file.c
++++ b/lib/copy_file.c
+@@ -4,6 +4,7 @@
+ #include <errno.h>
+ #include <malloc.h>
+ #include <libbb.h>
++#include <progress.h>
+
+ #define RW_BUF_SIZE	(ulong)4096
+
+@@ -11,13 +12,14 @@
+  * @param[in] src FIXME
+  * @param[out] dst FIXME
+  */
+-int copy_file(const char *src, const char *dst)
++int copy_file(const char *src, const char *dst, int verbose)
+ {
+ 	char *rw_buf = NULL;
+ 	int srcfd = 0, dstfd = 0;
+ 	int r, w;
+ 	int ret = 1;
+ 	void *buf;
++	int total = 0;
+
+ 	rw_buf = xmalloc(RW_BUF_SIZE);
+
+@@ -33,6 +35,15 @@ int copy_file(const char *src, const char *dst)
+ 		goto out;
+ 	}
+
++	if (verbose) {
++		struct stat statbuf;
++
++		if (stat(src, &statbuf) < 0)
++			statbuf.st_size = 0;
++
++		init_progression_bar(statbuf.st_size);
++	}
++
+ 	while(1) {
+ 		r = read(srcfd, rw_buf, RW_BUF_SIZE);
+ 		if (r < 0) {
+@@ -51,11 +62,18 @@ int copy_file(const char *src, const char *dst)
+ 			}
+ 			buf += w;
+ 			r -= w;
++			total += w;
+ 		}
++
++		if (verbose)
++			show_progress(total);
+ 	}
+
+ 	ret = 0;
+ out:
++	if (verbose)
++		putchar('\n');
++
+ 	free(rw_buf);
+ 	if (srcfd > 0)
+ 		close(srcfd);
+--
+1.7.4.1
+
 
 _______________________________________________
 barebox mailing list
