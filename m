@@ -1,13 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bw0-f49.google.com ([209.85.214.49])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RRNTg-0001Eo-OG
- for barebox@lists.infradead.org; Fri, 18 Nov 2011 12:23:33 +0000
-Received: by bkat2 with SMTP id t2so4371633bka.36
- for <barebox@lists.infradead.org>; Fri, 18 Nov 2011 04:23:29 -0800 (PST)
-From: Hubert Feurstein <h.feurstein@gmail.com>
-Date: Fri, 18 Nov 2011 13:23:23 +0100
-Message-Id: <1321619003-19741-1-git-send-email-h.feurstein@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RSQlc-0004Bi-4c
+ for barebox@lists.infradead.org; Mon, 21 Nov 2011 10:06:29 +0000
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Mon, 21 Nov 2011 11:05:30 +0100
+References: <1321435467-19148-1-git-send-email-jbe@pengutronix.de>
+ <1321435467-19148-9-git-send-email-jbe@pengutronix.de>
+ <20111117161706.GN27267@pengutronix.de>
+In-Reply-To: <20111117161706.GN27267@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+Message-Id: <201111211105.30369.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,172 +20,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC PATCH 1/2] commands/cp: add verbose mode which displays progress
- bar
+Subject: Re: [PATCH 08/13] DISK: Add common partition handling for disk like
+ media
 To: barebox@lists.infradead.org
 
-Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
----
- commands/cp.c            |   20 ++++++++++++++------
- drivers/usb/gadget/dfu.c |    2 +-
- include/libbb.h          |    2 +-
- lib/copy_file.c          |   20 +++++++++++++++++++-
- 4 files changed, 35 insertions(+), 9 deletions(-)
+What about this simple change? As we do always work sequential in barebox it
+should work.
 
-diff --git a/commands/cp.c b/commands/cp.c
-index 3428105..bbe350d 100644
---- a/commands/cp.c
-+++ b/commands/cp.c
-@@ -44,8 +44,15 @@ static int do_cp(struct command *cmdtp, int argc, char *argv[])
- 	struct stat statbuf;
- 	int last_is_dir = 0;
+diff --git a/common/partitions.c b/common/partitions.c
+index f3e0f6f..3ae1cf3 100644
+--- a/common/partitions.c
++++ b/common/partitions.c
+@@ -207,6 +207,8 @@ int parse_partition_table(struct block_device *blk)
  	int i;
-+	int verbose = 0;
-+	int argc_min = 3;
-
--	if (argc < 3)
-+	if (argc >= argc_min && strcmp(argv[1], "-v") == 0) {
-+		verbose = 1;
-+		argc_min++;
-+	}
+ 	int rc = 0;
+ 
++	pdesc.used_entries = 0;	/* (re-)start with an empty table */
 +
-+	if (argc < argc_min)
- 		return COMMAND_ERROR_USAGE;
+ #ifdef CONFIG_PARTITION_DISK_DOS
+ 	if (pdesc.used_entries == 0)
+ 		try_dos_partition(blk);
 
- 	if (!stat(argv[argc - 1], &statbuf)) {
-@@ -53,21 +60,22 @@ static int do_cp(struct command *cmdtp, int argc, char *argv[])
- 			last_is_dir = 1;
- 	}
-
--	if (argc > 3 && !last_is_dir) {
-+	if (argc > argc_min && !last_is_dir) {
- 		printf("cp: target `%s' is not a directory\n", argv[argc - 1]);
- 		return 1;
- 	}
-
--	for (i = 1; i < argc - 1; i++) {
-+	i = (!verbose) ? 1 : 2;
-+	for (; i < argc - 1; i++) {
- 		if (last_is_dir) {
- 			char *dst;
- 			dst = concat_path_file(argv[argc - 1], basename(argv[i]));
--			ret = copy_file(argv[i], dst);
-+			ret = copy_file(argv[i], dst, verbose);
- 			if (ret)
- 				goto out;
- 			free(dst);
- 		} else {
--			ret = copy_file(argv[i], argv[argc - 1]);
-+			ret = copy_file(argv[i], argv[argc - 1], verbose);
- 			if (ret)
- 				goto out;
- 		}
-@@ -79,7 +87,7 @@ out:
- }
-
- BAREBOX_CMD_HELP_START(cp)
--BAREBOX_CMD_HELP_USAGE("cp <source> <destination>\n")
-+BAREBOX_CMD_HELP_USAGE("cp [-v] <source> <destination>\n")
- BAREBOX_CMD_HELP_SHORT("copy file from <source> to <destination>.\n")
- BAREBOX_CMD_HELP_END
-
-diff --git a/drivers/usb/gadget/dfu.c b/drivers/usb/gadget/dfu.c
-index 1387c6d..0a0d244 100644
---- a/drivers/usb/gadget/dfu.c
-+++ b/drivers/usb/gadget/dfu.c
-@@ -259,7 +259,7 @@ static int handle_dnload(struct usb_function *f, const struct usb_ctrlrequest *c
- 				ret = -EINVAL;
- 				goto err_out;
- 			}
--			ret = copy_file(DFU_TEMPFILE, dfu_devs[dfualt].dev);
-+			ret = copy_file(DFU_TEMPFILE, dfu_devs[dfualt].dev, 0);
- 			if (ret) {
- 				printf("copy file failed\n");
- 				ret = -EINVAL;
-diff --git a/include/libbb.h b/include/libbb.h
-index 0962969..2d17c3f 100644
---- a/include/libbb.h
-+++ b/include/libbb.h
-@@ -26,7 +26,7 @@ int recursive_action(const char *fileName, unsigned flags,
-
- char * safe_strncpy(char *dst, const char *src, size_t size);
-
--int copy_file(const char *src, const char *dst);
-+int copy_file(const char *src, const char *dst, int verbose);
-
- int process_escape_sequence(const char *source, char *dest, int destlen);
-
-diff --git a/lib/copy_file.c b/lib/copy_file.c
-index 809befe..e4bb07c 100644
---- a/lib/copy_file.c
-+++ b/lib/copy_file.c
-@@ -4,6 +4,7 @@
- #include <errno.h>
- #include <malloc.h>
- #include <libbb.h>
-+#include <progress.h>
-
- #define RW_BUF_SIZE	(ulong)4096
-
-@@ -11,13 +12,14 @@
-  * @param[in] src FIXME
-  * @param[out] dst FIXME
-  */
--int copy_file(const char *src, const char *dst)
-+int copy_file(const char *src, const char *dst, int verbose)
- {
- 	char *rw_buf = NULL;
- 	int srcfd = 0, dstfd = 0;
- 	int r, w;
- 	int ret = 1;
- 	void *buf;
-+	int total = 0;
-
- 	rw_buf = xmalloc(RW_BUF_SIZE);
-
-@@ -33,6 +35,15 @@ int copy_file(const char *src, const char *dst)
- 		goto out;
- 	}
-
-+	if (verbose) {
-+		struct stat statbuf;
-+
-+		if (stat(src, &statbuf) < 0)
-+			statbuf.st_size = 0;
-+
-+		init_progression_bar(statbuf.st_size);
-+	}
-+
- 	while(1) {
- 		r = read(srcfd, rw_buf, RW_BUF_SIZE);
- 		if (r < 0) {
-@@ -51,11 +62,18 @@ int copy_file(const char *src, const char *dst)
- 			}
- 			buf += w;
- 			r -= w;
-+			total += w;
- 		}
-+
-+		if (verbose)
-+			show_progress(total);
- 	}
-
- 	ret = 0;
- out:
-+	if (verbose)
-+		putchar('\n');
-+
- 	free(rw_buf);
- 	if (srcfd > 0)
- 		close(srcfd);
---
-1.7.4.1
-
+-- 
+Pengutronix e.K.                              | Juergen Beisert             |
+Linux Solutions for Science and Industry      | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
