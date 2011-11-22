@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RSnqp-00068N-33
- for barebox@lists.infradead.org; Tue, 22 Nov 2011 10:45:19 +0000
-Date: Tue, 22 Nov 2011 11:45:13 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20111122104513.GI27267@pengutronix.de>
-References: <1321882291-26290-1-git-send-email-h.feurstein@gmail.com>
- <20111122091926.GE27267@pengutronix.de>
- <CAFfN3gU23rF4f1-JOxTHeLzxMrKBupamNYRQvCAAFdjiGEOdew@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAFfN3gU23rF4f1-JOxTHeLzxMrKBupamNYRQvCAAFdjiGEOdew@mail.gmail.com>
+Received: from mail.visioncatalog.de ([217.6.246.34] helo=root.phytec.de)
+ by casper.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1RSpWc-0001hr-Fu
+ for barebox@lists.infradead.org; Tue, 22 Nov 2011 12:32:38 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id ACDF7BF0D9
+ for <barebox@lists.infradead.org>; Tue, 22 Nov 2011 13:37:26 +0100 (CET)
+From: Jan Weitzel <j.weitzel@phytec.de>
+Date: Tue, 22 Nov 2011 13:32:19 +0100
+Message-Id: <1321965139-17745-1-git-send-email-j.weitzel@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,43 +17,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] eeprom/at25: add erase support
-To: Hubert Feurstein <h.feurstein@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] readkey: force return from while true
+To: barebox@lists.infradead.org
 
-On Tue, Nov 22, 2011 at 10:58:56AM +0100, Hubert Feurstein wrote:
-> 2011/11/22 Sascha Hauer <s.hauer@pengutronix.de>:
-> > On Mon, Nov 21, 2011 at 02:31:31PM +0100, Hubert Feurstein wrote:
-> >> Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
-> >> ---
-> >> =A0drivers/eeprom/at25.c | =A0 15 +++++++++++++++
-> >> =A01 files changed, 15 insertions(+), 0 deletions(-)
-> >
-> > Do we need this? We normally only have erase functions for devices that
-> > need it, namely flashes.
-> >
-> In my case I use the eeprom (or fram) to store the environment. So
-> with this I can erase the env-partition simply by calling 'erase
-> /dev/env0'.
-> So it's more like a convenience function. Or is there a other
-> possibility to easily erase a partition completely? The memset-command
-> is not really suitable because I have to pass the size as an argument.
+If read_key is feeded by STRG + KEY_LEFT you run into the while(1)
+loop and corrupt memory through esc array.
+Force return if index gets too high.
 
-How about cp /dev/zero /dev/env0?
+Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
+---
+ lib/readkey.c |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
 
-Sascha
+diff --git a/lib/readkey.c b/lib/readkey.c
+index a42d1cb..895db82 100644
+--- a/lib/readkey.c
++++ b/lib/readkey.c
+@@ -67,6 +67,8 @@ int read_key(void)
+ 				esc[i] = getc();
+ 				if (esc[i++] == '~')
+ 					break;
++				if (i == 5)
++					return -1;
+ 			}
+ 		}
+ 		esc[i] = 0;
+-- 
+1.7.0.4
 
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
