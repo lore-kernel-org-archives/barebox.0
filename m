@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RSljn-00053O-Bk
- for barebox@lists.infradead.org; Tue, 22 Nov 2011 08:29:57 +0000
+ id 1RSljn-00053P-Fb
+ for barebox@lists.infradead.org; Tue, 22 Nov 2011 08:29:59 +0000
 Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
  by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <jbe@pengutronix.de>) id 1RSljQ-0007UJ-DL
+ (envelope-from <jbe@pengutronix.de>) id 1RSljQ-0007UF-BF
  for barebox@lists.infradead.org; Tue, 22 Nov 2011 09:29:32 +0100
 Received: from jbe by dude.hi.pengutronix.de with local (Exim 4.77)
- (envelope-from <jbe@pengutronix.de>) id 1RSljQ-0003T2-8V
+ (envelope-from <jbe@pengutronix.de>) id 1RSljQ-0003Sw-6e
  for barebox@lists.infradead.org; Tue, 22 Nov 2011 09:29:32 +0100
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Tue, 22 Nov 2011 09:29:24 +0100
-Message-Id: <1321950567-13261-11-git-send-email-jbe@pengutronix.de>
+Date: Tue, 22 Nov 2011 09:29:22 +0100
+Message-Id: <1321950567-13261-9-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1321950567-13261-1-git-send-email-jbe@pengutronix.de>
 References: <1321950567-13261-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -28,303 +28,312 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/13] Remove 'disk_drive.c' as it is now replaced by generic
- partition handling
+Subject: [PATCH 08/13] DISK: Add common partition handling for disk like media
 To: barebox@lists.infradead.org
+
+This covers disk like media like SD card, CF cards, regular hard disks and also
+USB mass storage devices. Most common used partition table is still of DOS type.
+This implementation is prepared to support more partition types in the future.
 
 Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 ---
- drivers/ata/Kconfig      |    8 --
- drivers/ata/Makefile     |    1 -
- drivers/ata/disk_drive.c |  247 ----------------------------------------------
- 3 files changed, 0 insertions(+), 256 deletions(-)
- delete mode 100644 drivers/ata/disk_drive.c
+ common/Kconfig      |   18 ++++
+ common/Makefile     |    2 +
+ common/partitions.c |  231 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ include/disks.h     |    2 +
+ 4 files changed, 253 insertions(+), 0 deletions(-)
+ create mode 100644 common/partitions.c
 
-diff --git a/drivers/ata/Kconfig b/drivers/ata/Kconfig
-index a85958c..86b5673 100644
---- a/drivers/ata/Kconfig
-+++ b/drivers/ata/Kconfig
-@@ -15,16 +15,8 @@ config DISK_WRITE
+diff --git a/common/Kconfig b/common/Kconfig
+index 8e96920..1318e7d 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -406,6 +406,24 @@ config PARTITION
+ 	bool
+ 	prompt "Enable Partitions"
  
- comment "drive types"
++if PARTITION
++
++config PARTITION_DISK
++	bool "DISK partition support"
++	help
++	  Add support for handling common partition tables on all kind of disk
++	  like devices (harddisks, CF cards, SD cards and so on)
++
++if PARTITION_DISK
++
++config PARTITION_DISK_DOS
++	bool "DOS partition support"
++	help
++	  Add support to handle partitions in DOS style.
++
++endif
++endif
++
+ config DEFAULT_ENVIRONMENT
+ 	bool
+ 	default y
+diff --git a/common/Makefile b/common/Makefile
+index 7bb8ea4..3edf38f 100644
+--- a/common/Makefile
++++ b/common/Makefile
+@@ -7,6 +7,8 @@ obj-$(CONFIG_ENV_HANDLING)	+= environment.o
+ obj-$(CONFIG_AUTO_COMPLETE)	+= complete.o
+ obj-$(CONFIG_POLLER)		+= poller.o
+ obj-$(CONFIG_BLOCK)		+= block.o
++obj-$(CONFIG_PARTITION_DISK)	+= partitions.o
++
+ obj-$(CONFIG_CMD_LOADS)		+= s_record.o
+ obj-$(CONFIG_OFTREE)		+= oftree.o
  
--config DISK_DRIVE
--	bool "Generic disk drives"
--	help
--	  Add support for generic disk drives. Common behaviour for this kind
--	  of devices is using a partition table in the first sector. Say Y here
--	  if you intend to work with disk drives (also CF cards and SD cards).
--
- config DISK_BIOS
- 	bool "BIOS based"
--	select DISK_DRIVE
- 	depends on X86_BIOS_BRINGUP
- 	help
- 	  Gain disk drive access via int13 calls to the standard PC-BIOS.
-diff --git a/drivers/ata/Makefile b/drivers/ata/Makefile
-index 10f3957..e2b41b7 100644
---- a/drivers/ata/Makefile
-+++ b/drivers/ata/Makefile
-@@ -1,6 +1,5 @@
- # drive types
+diff --git a/common/partitions.c b/common/partitions.c
+new file mode 100644
+index 0000000..6310988
+--- /dev/null
++++ b/common/partitions.c
+@@ -0,0 +1,231 @@
++/*
++ * Copyright (C) 2009...2011 Juergen Beisert, Pengutronix
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ *
++ */
++
++/**
++ * @file
++ * @brief Generic support for partition tables on disk like media
++ *
++ * @todo Support for disks larger than 4 GiB
++ * @todo Reliable size detection for BIOS based disks (on x86 only)
++ */
++#include <common.h>
++#include <malloc.h>
++#include <errno.h>
++#include <block.h>
++#include <asm/unaligned.h>
++#include <disks.h>
++
++struct partition {
++	uint64_t first_sec;
++	uint64_t size;
++};
++
++struct partition_desc {
++	int used_entries;
++	struct partition parts[8];
++};
++
++static void add_one_partition_entry(struct partition *p,
++						struct partition_desc *pdesc)
++{
++	if (pdesc->used_entries >= 8)
++		return;	/* ignore */
++	pdesc->parts[pdesc->used_entries] = *p;
++	pdesc->used_entries++;
++}
++
++/**
++ * Reject values which cannot be used in Barebox
++ * @param val Value to be check
++ * @return 0 if value can be used in Barebox, -EINVAL if not
++ *
++ * @note this routine can be removes when Barebox uses file offsets larger
++ * than 32 bit
++ */
++static int check_offset_value(uint64_t val)
++{
++#if 1	/* until Barebox can handle 64 bit offsets */
++	if (val > 0x7fffff)
++		return -EINVAL;
++#endif
++	return 0;
++}
++
++/**
++ * Guess the size of the disk, based on the partition table entries
++ * @param dev device to create partitions for
++ * @param table partition table
++ * @return size in sectors
++ */
++static uint64_t disk_guess_size(struct device_d *dev, struct partition_entry *table)
++{
++	int part_order[4] = {0, 1, 2, 3};
++	uint64_t size = 0;
++	int i;
++
++	for (i = 0; i < 4; i++) {
++		if (table[part_order[i]].partition_start != 0) {
++			size += table[part_order[i]].partition_start - size;
++			size += table[part_order[i]].partition_size;
++		}
++	}
++	/* limit disk sector counts we can't handle due to 32 bit limits */
++	if (check_offset_value(size) > 0x7fffffff) {
++		dev_warn(dev, "Warning: Sector count limited due to 31 bit"
++				"contraints\n");
++		size = 0x7fffffff;
++	}
++
++	return size;
++}
++
++/**
++ * Read and check a DOS partition table
++ * @param blk Info about the whole disk
++ * @param sector_buf Buffer for at least one sector
++ * @return 0 on success
++ */
++static int read_dos_partition_table(struct block_device *blk, uint8_t *sector_buf)
++{
++	int rc;
++
++	/* read in the MBR to get the partition table */
++	rc = blk->ops->read(blk, sector_buf, 0, 1);
++	if (rc != 0) {
++		dev_err(blk->dev, "Cannot read MBR/partition table\n");
++		return -ENODEV;
++	}
++
++	if ((sector_buf[510] != 0x55) || (sector_buf[511] != 0xAA)) {
++		dev_info(blk->dev, "No partition table found\n");
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++/**
++ * Check if a DOS like partition describes this block device
++ * @param blk Block device to register to
++ * @param pd Where to store the partition information
++ * @return 0 on success, -EINVAL if no partition table was found
++ *
++ * It seems at least on ARM this routine canot use temp. stack space for the
++ * sector. So, keep the malloc/free.
++ */
++static int __maybe_unused try_dos_partition(struct block_device *blk,
++						struct partition_desc *pd)
++{
++	int part_order[4] = {0, 1, 2, 3};
++	uint8_t *buffer;
++	struct partition_entry *table;
++	struct partition pentry;
++	int i, rc;
++
++	buffer = xmalloc(SECTOR_SIZE);
++
++	rc = read_dos_partition_table(blk, (uint8_t*)buffer);
++	if (rc != 0)
++		goto on_error;
++
++	table = (struct partition_entry *)&buffer[446];
++
++	/* valid for x86 BIOS based disks only */
++	if (blk->num_blocks == 0)
++		disk_guess_size(blk->dev, table);
++
++	for (i = 0; i < 4; i++) {
++		pentry.first_sec =
++			get_unaligned(&table[part_order[i]].partition_start);
++		pentry.size =
++			get_unaligned(&table[part_order[i]].partition_size);
++
++		/* do we have to ignore this partition due to limitations? */
++		if (check_offset_value(pentry.first_sec) != 0)
++			continue;
++		if (check_offset_value(pentry.size) != 0)
++			continue;
++
++		if (pentry.first_sec != 0)
++			add_one_partition_entry(&pentry, pd);
++		else {
++			dev_dbg(blk->dev, "Skipping empty partition %d\n", i);
++		}
++	}
++
++on_error:
++	free(buffer);
++	return rc;
++}
++
++/**
++ * Register one partition on the given block device
++ * @param blk Block device to register to
++ * @param part Partition description
++ * @param no Partition number
++ * @return 0 on success
++ */
++static int register_one_partition(struct block_device *blk,
++					struct partition *part, int no)
++{
++	char partition_name[19];
++
++	sprintf(partition_name, "%s.%d", blk->cdev.name, no);
++	dev_dbg(blk->dev, "Registering partition %s on drive %s\n",
++				partition_name, blk->cdev.name);
++	return devfs_add_partition(blk->cdev.name,
++				part->first_sec * SECTOR_SIZE,
++				part->size * SECTOR_SIZE,
++				DEVFS_PARTITION_FIXED, partition_name);
++}
++
++/**
++ * Try to collect partition information on the given block device
++ * @param blk Block device to examine
++ * @return 0 most of the time, negative value else
++ *
++ * It is not a failure if no partition information is found
++ */
++int parse_partition_table(struct block_device *blk)
++{
++	struct partition_desc pdesc = { .used_entries = 0, };
++	int i;
++	int rc = 0;
++
++#ifdef CONFIG_PARTITION_DISK_DOS
++	if (pdesc.used_entries == 0)
++		try_dos_partition(blk, &pdesc);
++#endif
++
++	if (pdesc.used_entries != 0) {
++		/* at least one partition description found */
++		for (i = 0; i < pdesc.used_entries; i++) {
++			rc = register_one_partition(blk, &pdesc.parts[i], i);
++			if (rc != 0)
++				dev_err(blk->dev,
++					"Failed to register partition %d on %s (%d)\n",
++					i, blk->cdev.name, rc);
++			if (rc != -ENODEV)
++				rc = 0;
++		}
++	}
++
++	return rc;
++}
+diff --git a/include/disks.h b/include/disks.h
+index ec136d4..9932750 100644
+--- a/include/disks.h
++++ b/include/disks.h
+@@ -36,4 +36,6 @@ struct partition_entry {
+ 	uint32_t partition_size; /*! Start of the partition in LBA notation */
+ } __attribute__ ((packed));
  
--obj-$(CONFIG_DISK_DRIVE) += disk_drive.o
- obj-$(CONFIG_DISK_BIOS) += disk_bios_drive.o
- 
- # interface types
-diff --git a/drivers/ata/disk_drive.c b/drivers/ata/disk_drive.c
-deleted file mode 100644
-index c5c1ee9..0000000
---- a/drivers/ata/disk_drive.c
-+++ /dev/null
-@@ -1,247 +0,0 @@
--/*
-- * Copyright (C) 2009 Juergen Beisert, Pengutronix
-- *
-- * This program is free software; you can redistribute it and/or
-- * modify it under the terms of the GNU General Public License as
-- * published by the Free Software Foundation; either version 2 of
-- * the License, or (at your option) any later version.
-- *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- *
-- * You should have received a copy of the GNU General Public License
-- * along with this program; if not, write to the Free Software
-- * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-- * MA 02111-1307 USA
-- *
-- */
--
--/**
-- * @file
-- * @brief Generic disk drive support
-- *
-- * @todo Support for disks larger than 4 GiB
-- * @todo Reliable size detection for BIOS based disks (on x86 only)
-- */
--
--#include <stdio.h>
--#include <init.h>
--#include <driver.h>
--#include <types.h>
--#include <ata.h>
--#include <xfuncs.h>
--#include <errno.h>
--#include <string.h>
--#include <linux/kernel.h>
--#include <malloc.h>
--#include <common.h>
--#include <block.h>
--#include <asm/unaligned.h>
--
--/**
-- * Description of one partition table entry (D*S type)
-- */
--struct partition_entry {
--	uint8_t boot_indicator;
--	uint8_t chs_begin[3];
--	uint8_t type;
--	uint8_t chs_end[3];
--	uint32_t partition_start;
--	uint32_t partition_size;
--} __attribute__ ((packed));
--
--/** one for all */
--#define SECTOR_SIZE 512
--
--/**
-- * Guess the size of the disk, based on the partition table entries
-- * @param dev device to create partitions for
-- * @param table partition table
-- * @return size in sectors
-- */
--#ifdef CONFIG_DISK_BIOS
--static unsigned long disk_guess_size(struct device_d *dev, struct partition_entry *table)
--{
--	int part_order[4] = {0, 1, 2, 3};
--	unsigned long size = 0;
--	int i;
--
--	/* TODO order the partitions */
--
--	for (i = 0; i < 4; i++) {
--		if (table[part_order[i]].partition_start != 0) {
--			size += table[part_order[i]].partition_start - size; /* the gap */
--			size += table[part_order[i]].partition_size;
--		}
--	}
--#if 1
--/* limit disk sizes we can't handle due to 32 bit limits */
--	if (size > 0x7fffff) {
--		dev_warn(dev, "Warning: Size limited due to 32 bit contraints\n");
--		size = 0x7fffff;
--	}
--#endif
--	return size;
--}
--#endif
--
--/**
-- * Register partitions found on the drive
-- * @param dev device to create partitions for
-- * @param table partition table
-- * @return 0 on success
-- */
--static int disk_register_partitions(struct device_d *dev, struct partition_entry *table)
--{
--	int part_order[4] = {0, 1, 2, 3};
--	int i, rc;
--	char drive_name[16], partition_name[19];
--	u32 partition_start, partition_size;
--
--	/* TODO order the partitions */
--
--	for (i = 0; i < 4; i++) {
--		partition_start = get_unaligned(&table[part_order[i]].partition_start);
--		partition_size  = get_unaligned(&table[part_order[i]].partition_size);
--
--		sprintf(drive_name, "%s%d", dev->name, dev->id);
--		sprintf(partition_name, "%s%d.%d", dev->name, dev->id, i);
--		if (partition_start != 0) {
--#if 1
--/* ignore partitions we can't handle due to 32 bit limits */
--			if (partition_start > 0x7fffff)
--				continue;
--			if (partition_size > 0x7fffff)
--				continue;
--#endif
--			dev_dbg(dev, "Registering partition %s to drive %s\n",
--				partition_name, drive_name);
--			rc = devfs_add_partition(drive_name,
--				partition_start * SECTOR_SIZE,
--				partition_size * SECTOR_SIZE,
--				DEVFS_PARTITION_FIXED, partition_name);
--			if (rc != 0)
--				dev_err(dev, "Failed to register partition %s (%d)\n", partition_name, rc);
--		}
--	}
--
--	return 0;
--}
--
--struct ata_block_device {
--	struct block_device blk;
--	struct device_d *dev;
--	struct ata_interface *intf;
--};
--
--static int atablk_read(struct block_device *blk, void *buf, int block,
--		int num_blocks)
--{
--	struct ata_block_device *atablk = container_of(blk, struct ata_block_device, blk);
--
--	return atablk->intf->read(atablk->dev, block, num_blocks, buf);
--}
--
--#ifdef CONFIG_DISK_WRITE
--static int atablk_write(struct block_device *blk, const void *buf, int block,
--		int num_blocks)
--{
--	struct ata_block_device *atablk = container_of(blk, struct ata_block_device, blk);
--
--	return atablk->intf->write(atablk->dev, block, num_blocks, buf);
--}
--#endif
--
--static struct block_device_ops ataops = {
--	.read = atablk_read,
--#ifdef CONFIG_DISK_WRITE
--	.write = atablk_write,
--#endif
--};
--
--/**
-- * Probe the connected disk drive
-- */
--static int disk_probe(struct device_d *dev)
--{
--	uint8_t *sector;
--	int rc;
--	struct ata_interface *intf = dev->platform_data;
--	struct ata_block_device *atablk = xzalloc(sizeof(*atablk));
--
--	sector = xmalloc(SECTOR_SIZE);
--
--	rc = intf->read(dev, 0, 1, sector);
--	if (rc != 0) {
--		dev_err(dev, "Cannot read MBR of this device\n");
--		rc = -ENODEV;
--		goto on_error;
--	}
--
--	/*
--	 * BIOS based disks needs special handling. Not the driver can
--	 * enumerate the hardware, the BIOS did it already. To show the user
--	 * the drive ordering must not correspond to the Linux drive order,
--	 * use the 'biosdisk' name instead.
--	 */
--#ifdef CONFIG_DISK_BIOS
--	if (strcmp(dev->driver->name, "biosdisk") == 0)
--		atablk->blk.cdev.name = asprintf("biosdisk%d", dev->id);
--	else
--#endif
--		atablk->blk.cdev.name = asprintf("disk%d", dev->id);
--
--#ifdef CONFIG_DISK_BIOS
--	/* On x86, BIOS based disks are coming without a valid .size field */
--	if (dev->resource[0].size == 0) {
--		/* guess the size of this drive if not otherwise given */
--		dev->resource[0].size = disk_guess_size(dev,
--			(struct partition_entry*)&sector[446]) * SECTOR_SIZE;
--		dev_info(dev, "Drive size guessed to %u kiB\n", dev->resource[0].size / 1024);
--	}
--#endif
--	atablk->blk.num_blocks = dev->resource[0].size / SECTOR_SIZE;
--	atablk->blk.ops = &ataops;
--	atablk->blk.blockbits = 9;
--	atablk->dev = dev;
--	atablk->intf = intf;
--	blockdevice_register(&atablk->blk);
--
--	if ((sector[510] != 0x55) || (sector[511] != 0xAA)) {
--		dev_info(dev, "No partition table found\n");
--		rc = 0;
--		goto on_error;
--	}
--
--
--	rc = disk_register_partitions(dev, (struct partition_entry*)&sector[446]);
--
--on_error:
--	free(sector);
--	return rc;
--}
--
--#ifdef CONFIG_DISK_BIOS
--static struct driver_d biosdisk_driver = {
--        .name   = "biosdisk",
--        .probe  = disk_probe,
--};
--#endif
--
--static struct driver_d disk_driver = {
--        .name   = "disk",
--        .probe  = disk_probe,
--};
--
--static int disk_init(void)
--{
--#ifdef CONFIG_DISK_BIOS
--	register_driver(&biosdisk_driver);
--#endif
--	register_driver(&disk_driver);
--	return 0;
--}
--
--device_initcall(disk_init);
++extern int parse_partition_table(struct block_device*);
++
+ #endif /* DISKS_H */
 -- 
 1.7.7.1
 
