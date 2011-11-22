@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RSljg-00052e-Jx
- for barebox@lists.infradead.org; Tue, 22 Nov 2011 08:29:50 +0000
+ id 1RSlje-00051x-FW
+ for barebox@lists.infradead.org; Tue, 22 Nov 2011 08:29:48 +0000
 Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
  by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <jbe@pengutronix.de>) id 1RSljQ-0007UE-AE
+ (envelope-from <jbe@pengutronix.de>) id 1RSljQ-0007U6-5s
  for barebox@lists.infradead.org; Tue, 22 Nov 2011 09:29:32 +0100
 Received: from jbe by dude.hi.pengutronix.de with local (Exim 4.77)
- (envelope-from <jbe@pengutronix.de>) id 1RSljQ-0003St-63
+ (envelope-from <jbe@pengutronix.de>) id 1RSljQ-0003Sh-3J
  for barebox@lists.infradead.org; Tue, 22 Nov 2011 09:29:32 +0100
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Tue, 22 Nov 2011 09:29:21 +0100
-Message-Id: <1321950567-13261-8-git-send-email-jbe@pengutronix.de>
+Date: Tue, 22 Nov 2011 09:29:17 +0100
+Message-Id: <1321950567-13261-4-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1321950567-13261-1-git-send-email-jbe@pengutronix.de>
 References: <1321950567-13261-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -28,60 +28,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/13] ATA/DISK: Share important constants and structures
+Subject: [PATCH 03/13] ATA/DISK: Add generic disk support when enabling the
+ BIOS disk driver
 To: barebox@lists.infradead.org
+
+The BIOS based disk driver makes no sense without the generic disk support.
 
 Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 ---
- include/disks.h |   39 +++++++++++++++++++++++++++++++++++++++
- 1 files changed, 39 insertions(+), 0 deletions(-)
- create mode 100644 include/disks.h
+ drivers/ata/Kconfig |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
 
-diff --git a/include/disks.h b/include/disks.h
-new file mode 100644
-index 0000000..ec136d4
---- /dev/null
-+++ b/include/disks.h
-@@ -0,0 +1,39 @@
-+/*
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
-+
-+#ifndef DISKS_H
-+#define DISKS_H
-+
-+struct block_device;
-+
-+/** Size of one sector in bytes */
-+#define SECTOR_SIZE 512
-+
-+/** Size of one sector in bit shift */
-+#define SECTOR_SHIFT 9
-+
-+/**
-+ * Description of one partition table entry (D*S type)
-+ */
-+struct partition_entry {
-+	uint8_t boot_indicator;	/*! Maybe marked as an active partition */
-+	uint8_t chs_begin[3];	/*! Start of the partition in cylinders, heads and sectors */
-+	uint8_t type;		/*! Filesystem type */
-+	uint8_t chs_end[3];	/*! End of the partition in cylinders, heads and sectors */
-+	uint32_t partition_start; /*! Start of the partition in LBA notation */
-+	uint32_t partition_size; /*! Start of the partition in LBA notation */
-+} __attribute__ ((packed));
-+
-+#endif /* DISKS_H */
+diff --git a/drivers/ata/Kconfig b/drivers/ata/Kconfig
+index d7f4dcb..6a57e5c 100644
+--- a/drivers/ata/Kconfig
++++ b/drivers/ata/Kconfig
+@@ -21,6 +21,7 @@ comment "interface types"
+ 
+ config ATA_BIOS
+ 	bool "BIOS based"
++	select ATA_DISK
+ 	depends on X86_BIOS_BRINGUP
+ 	help
+ 	  Gain disk drive access via int13 calls to the standard PC-BIOS.
 -- 
 1.7.7.1
 
