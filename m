@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RTVNZ-00020b-FX
- for barebox@lists.infradead.org; Thu, 24 Nov 2011 09:14:05 +0000
-Message-ID: <4ECE0ACE.2070103@pengutronix.de>
-Date: Thu, 24 Nov 2011 10:13:50 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+ id 1RTVRW-00025G-Sp
+ for barebox@lists.infradead.org; Thu, 24 Nov 2011 09:18:10 +0000
+Date: Thu, 24 Nov 2011 10:17:58 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20111124091758.GX27267@pengutronix.de>
+References: <1322082748-17409-1-git-send-email-franck.jullien@gmail.com>
+ <1322082748-17409-3-git-send-email-franck.jullien@gmail.com>
 MIME-Version: 1.0
-References: <1322103764-6265-1-git-send-email-robert.jarzmik@free.fr>
- <1322103764-6265-10-git-send-email-robert.jarzmik@free.fr>
-In-Reply-To: <1322103764-6265-10-git-send-email-robert.jarzmik@free.fr>
+Content-Disposition: inline
+In-Reply-To: <1322082748-17409-3-git-send-email-franck.jullien@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,119 +19,241 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============7254718962290148742=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 9/9] arm/mach-pxa: add mioa701 board
-To: Robert Jarzmik <robert.jarzmik@free.fr>
+Subject: Re: [PATCH 2/4] mci: Add MCI over SPI support
+To: franck.jullien@gmail.com
 Cc: barebox@lists.infradead.org
 
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---===============7254718962290148742==
-Content-Type: multipart/signed; micalg=pgp-sha1;
- protocol="application/pgp-signature";
- boundary="------------enig245FD984A8B71E58A02BBB82"
+Hi Franck,
 
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---------------enig245FD984A8B71E58A02BBB82
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
+Nice to see this driver. Some comments inline.
 
-On 11/24/2011 04:02 AM, Robert Jarzmik wrote:
-> Add Mitac MioA701 board initial support.
-> The support only provides basic boot and a console over USB
-> (serial gadget).
 
-Please remove the address of the FSF in the header of the files, please
-fix you (C), we don't have 2012 yet :)
-
-some more comments inline
-
-Marc
-
->=20
-> Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
+On Wed, Nov 23, 2011 at 10:12:26PM +0100, franck.jullien@gmail.com wrote:
+> From: Franck Jullien <franck.jullien@gmail.com>
+> 
+> This patch adds MMC over SPI support to mci-core.c and
+> mci_spi.c driver.
+> 
+> This driver is useful when SOC doesn't have built-in MCI
+> component. Tested with nios, 2Go SD-CARD and FAT file system.
+> 
+> Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
 > ---
->  Makefile                                |    4 +-
->  arch/arm/Makefile                       |    1 +
->  arch/arm/boards/mioa701/Makefile        |    2 +
->  arch/arm/boards/mioa701/board.c         |  251 +++++++++++++++++++++++=
-++++++++
->  arch/arm/boards/mioa701/config.h        |  207 +++++++++++++++++++++++=
-++
->  arch/arm/boards/mioa701/env/bin/init    |   13 ++
->  arch/arm/boards/mioa701/env/config      |    4 +
->  arch/arm/boards/mioa701/lowlevel_init.S |   46 ++++++
->  arch/arm/boards/mioa701/mioa701.h       |   86 +++++++++++
->  arch/arm/mach-pxa/Kconfig               |    9 +
->  arch/arm/mach-pxa/Makefile              |    1 +
->  11 files changed, 622 insertions(+), 2 deletions(-)
->  create mode 100644 arch/arm/boards/mioa701/Makefile
->  create mode 100644 arch/arm/boards/mioa701/board.c
->  create mode 100644 arch/arm/boards/mioa701/config.h
->  create mode 100644 arch/arm/boards/mioa701/env/bin/init
->  create mode 100644 arch/arm/boards/mioa701/env/config
->  create mode 100644 arch/arm/boards/mioa701/lowlevel_init.S
->  create mode 100644 arch/arm/boards/mioa701/mioa701.h
->=20
-> diff --git a/Makefile b/Makefile
-> index 1d1e50d..7e94d37 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -163,8 +163,8 @@ export srctree objtree VPATH
->  # Alternatively CROSS_COMPILE can be set in the environment.
->  # Default value for CROSS_COMPILE is not to prefix executables
-> =20
-> -ARCH            ?=3D sandbox
-> -CROSS_COMPILE   ?=3D
-> +ARCH            ?=3D arm
-> +CROSS_COMPILE   ?=3D /home/rj/mio_linux/arm-2007q1/bin/arm-none-eabi-
+>  drivers/mci/Kconfig    |   17 ++
+>  drivers/mci/Makefile   |    1 +
+>  drivers/mci/mci-core.c |   67 ++++++--
+>  drivers/mci/mci_spi.c  |  431 ++++++++++++++++++++++++++++++++++++++++++++++++
+>  include/mci.h          |   14 ++
+>  5 files changed, 514 insertions(+), 16 deletions(-)
+>  create mode 100644 drivers/mci/mci_spi.c
+> 
+> diff --git a/drivers/mci/Kconfig b/drivers/mci/Kconfig
+> index 0d5a0e0..ed88abb 100644
+> --- a/drivers/mci/Kconfig
+> +++ b/drivers/mci/Kconfig
+> @@ -80,4 +80,21 @@ config MCI_ATMEL
+>  	  Enable this entry to add support to read and write SD cards on a
+>  	  Atmel AT91.
+>  
+> +config MCI_SPI
+> +	bool "MMC/SD over SPI"
+> +	help
+> +	  Some systems access MMC/SD/SDIO cards using a SPI controller
+> +	  instead of using a "native" MMC/SD/SDIO controller.  This has a
+> +	  disadvantage of being relatively high overhead, but a compensating
+> +	  advantage of working on many systems without dedicated MMC/SD/SDIO
+> +	  controllers.
+> +
+> +config MMC_SPI_CRC_ON
+> +	bool "Enable CRC protection for transferts"
 
-Please remove that hunk :)
+s/transferts/transfers/
 
-> =20
->  # Architecture as present in compile.h
->  UTS_MACHINE :=3D $(ARCH)
-> diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-> index 913a90e..ae1e0fc 100644
-> --- a/arch/arm/Makefile
-> +++ b/arch/arm/Makefile
-> @@ -82,6 +82,7 @@ board-$(CONFIG_MACH_FREESCALE_MX25_3STACK)	:=3D frees=
-cale-mx25-3-stack
->  board-$(CONFIG_MACH_FREESCALE_MX35_3STACK)	:=3D freescale-mx35-3-stack=
+> +	select CRC7
+> +	select CRC16
+> +	depends on MCI_SPI
+> +	help
+> +	  EEnable CRC protection for transferts
 
->  board-$(CONFIG_MACH_IMX21ADS)			:=3D imx21ads
->  board-$(CONFIG_MACH_IMX27ADS)			:=3D imx27ads
-> +board-$(CONFIG_MACH_MIOA701)			:=3D mioa701
->  board-$(CONFIG_MACH_MMCCPU)			:=3D mmccpu
->  board-$(CONFIG_MACH_MX1ADS)			:=3D mx1ads
->  board-$(CONFIG_MACH_NOMADIK_8815NHK)		:=3D nhk8815
-> diff --git a/arch/arm/boards/mioa701/Makefile b/arch/arm/boards/mioa701=
-/Makefile
+s/EEnable/Enable/
+
+> +
+>  endif
+> diff --git a/drivers/mci/Makefile b/drivers/mci/Makefile
+> index 4fc0046..d7482dc 100644
+> --- a/drivers/mci/Makefile
+> +++ b/drivers/mci/Makefile
+> @@ -5,3 +5,4 @@ obj-$(CONFIG_MCI_IMX) += imx.o
+>  obj-$(CONFIG_MCI_IMX_ESDHC) += imx-esdhc.o
+>  obj-$(CONFIG_MCI_OMAP_HSMMC) += omap_hsmmc.o
+>  obj-$(CONFIG_MCI_ATMEL) += atmel_mci.o
+> +obj-$(CONFIG_MCI_SPI) += mci_spi.o
+> diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
+> index 09f7e29..849c088 100644
+> --- a/drivers/mci/mci-core.c
+> +++ b/drivers/mci/mci-core.c
+> @@ -218,6 +218,7 @@ static int sd_send_op_cond(struct device_d *mci_dev)
+>  	int timeout = 1000;
+>  	int err;
+>  	unsigned voltages;
+> +	unsigned busy;
+>  
+>  	/*
+>  	 * Most cards do not answer if some reserved bits
+> @@ -237,7 +238,7 @@ static int sd_send_op_cond(struct device_d *mci_dev)
+>  		}
+>  
+>  		mci_setup_cmd(&cmd, SD_CMD_APP_SEND_OP_COND,
+> -			voltages | (mci->version == SD_VERSION_2 ? OCR_HCS : 0),
+> +			mmc_host_is_spi(host) ? 0 : (voltages | (mci->version == SD_VERSION_2 ? OCR_HCS : 0)),
+>  			MMC_RSP_R3);
+>  		err = mci_send_cmd(mci_dev, &cmd, NULL);
+>  		if (err) {
+> @@ -245,7 +246,13 @@ static int sd_send_op_cond(struct device_d *mci_dev)
+>  			return err;
+>  		}
+>  		udelay(1000);
+> -	} while ((!(cmd.response[0] & OCR_BUSY)) && timeout--);
+> +
+> +		if (mmc_host_is_spi(host))
+> +			busy = cmd.response[0] & R1_SPI_IDLE;
+> +		else
+> +			busy = !(cmd.response[0] & OCR_BUSY);
+> +
+> +	} while (busy && timeout--);
+>  
+>  	if (timeout <= 0) {
+>  		pr_debug("SD operation condition set timed out\n");
+> @@ -255,6 +262,13 @@ static int sd_send_op_cond(struct device_d *mci_dev)
+>  	if (mci->version != SD_VERSION_2)
+>  		mci->version = SD_VERSION_1_0;
+>  
+> +	if (mmc_host_is_spi(host)) { /* read OCR for spi */
+> +		mci_setup_cmd(&cmd, MMC_CMD_SPI_READ_OCR, 0, MMC_RSP_R3);
+> +		err = mci_send_cmd(mci_dev, &cmd, NULL);
+> +		if (err)
+> +			return err;
+> +	}
+> +
+>  	mci->ocr = cmd.response[0];
+>  
+>  	mci->high_capacity = ((mci->ocr & OCR_HCS) == OCR_HCS);
+> @@ -451,6 +465,7 @@ static int sd_switch(struct device_d *mci_dev, unsigned mode, unsigned group,
+>  static int sd_change_freq(struct device_d *mci_dev)
+>  {
+>  	struct mci *mci = GET_MCI_DATA(mci_dev);
+> +	struct mci_host *host = GET_MCI_PDATA(mci_dev);
+>  	struct mci_cmd cmd;
+>  	struct mci_data data;
+>  	uint32_t *switch_status = sector_buf;
+> @@ -458,6 +473,9 @@ static int sd_change_freq(struct device_d *mci_dev)
+>  	int timeout;
+>  	int err;
+>  
+> +	if (mmc_host_is_spi(host))
+> +		return 0;
+> +
+>  	pr_debug("Changing transfer frequency\n");
+>  	mci->card_caps = 0;
+>  
+> @@ -748,10 +766,23 @@ static int mci_startup(struct device_d *mci_dev)
+>  	struct mci_cmd cmd;
+>  	int err;
+>  
+> +#ifdef CONFIG_MMC_SPI_CRC_ON
+> +	if (mmc_host_is_spi(host)) { /* enable CRC check for spi */
+> +
+> +		mci_setup_cmd(&cmd, MMC_CMD_SPI_CRC_ON_OFF, 1, MMC_RSP_R1);
+> +		err = mci_send_cmd(mci_dev, &cmd, NULL);
+> +
+> +		if (err) {
+> +			pr_debug("Can't enable CRC check : %d\n", err);
+> +			return err;
+> +		}
+> +	}
+> +#endif
+> +
+>  	pr_debug("Put the Card in Identify Mode\n");
+>  
+>  	/* Put the Card in Identify Mode */
+> -	mci_setup_cmd(&cmd, MMC_CMD_ALL_SEND_CID, 0, MMC_RSP_R2);
+> +	mci_setup_cmd(&cmd, mmc_host_is_spi(host) ? MMC_CMD_SEND_CID : MMC_CMD_ALL_SEND_CID, 0, MMC_RSP_R2);
+>  	err = mci_send_cmd(mci_dev, &cmd, NULL);
+>  	if (err) {
+>  		pr_debug("Can't bring card into identify mode: %d\n", err);
+> @@ -768,12 +799,14 @@ static int mci_startup(struct device_d *mci_dev)
+>  	 * For SD cards, get the Relatvie Address.
+>  	 * This also puts the cards into Standby State
+>  	 */
+> -	pr_debug("Get/Set relative address\n");
+> -	mci_setup_cmd(&cmd, SD_CMD_SEND_RELATIVE_ADDR, mci->rca << 16, MMC_RSP_R6);
+> -	err = mci_send_cmd(mci_dev, &cmd, NULL);
+> -	if (err) {
+> -		pr_debug("Get/Set relative address failed: %d\n", err);
+> -		return err;
+> +	if (!mmc_host_is_spi(host)) { /* cmd not supported in spi */
+> +		pr_debug("Get/Set relative address\n");
+> +		mci_setup_cmd(&cmd, SD_CMD_SEND_RELATIVE_ADDR, mci->rca << 16, MMC_RSP_R6);
+> +		err = mci_send_cmd(mci_dev, &cmd, NULL);
+> +		if (err) {
+> +			pr_debug("Get/Set relative address failed: %d\n", err);
+> +			return err;
+> +		}
+>  	}
+>  
+>  	if (IS_SD(mci))
+> @@ -814,13 +847,15 @@ static int mci_startup(struct device_d *mci_dev)
+>  	pr_debug("Read block length: %u, Write block length: %u\n",
+>  		mci->read_bl_len, mci->write_bl_len);
+>  
+> -	pr_debug("Select the card, and put it into Transfer Mode\n");
+> -	/* Select the card, and put it into Transfer Mode */
+> -	mci_setup_cmd(&cmd, MMC_CMD_SELECT_CARD, mci->rca << 16, MMC_RSP_R1b);
+> -	err = mci_send_cmd(mci_dev, &cmd, NULL);
+> -	if (err) {
+> -		pr_debug("Putting in transfer mode failed: %d\n", err);
+> -		return err;
+> +	if (!mmc_host_is_spi(host)) { /* cmd not supported in spi */
+> +		pr_debug("Select the card, and put it into Transfer Mode\n");
+> +		/* Select the card, and put it into Transfer Mode */
+> +		mci_setup_cmd(&cmd, MMC_CMD_SELECT_CARD, mci->rca << 16, MMC_RSP_R1b);
+> +		err = mci_send_cmd(mci_dev, &cmd, NULL);
+> +		if (err) {
+> +			pr_debug("Putting in transfer mode failed: %d\n", err);
+> +			return err;
+> +		}
+>  	}
+>  
+>  	if (IS_SD(mci))
+> diff --git a/drivers/mci/mci_spi.c b/drivers/mci/mci_spi.c
 > new file mode 100644
-> index 0000000..b823b62
+> index 0000000..663db89
 > --- /dev/null
-> +++ b/arch/arm/boards/mioa701/Makefile
-> @@ -0,0 +1,2 @@
-> +obj-y +=3D lowlevel_init.o
-> +obj-y +=3D board.o
-> diff --git a/arch/arm/boards/mioa701/board.c b/arch/arm/boards/mioa701/=
-board.c
-> new file mode 100644
-> index 0000000..b6af2d1
-> --- /dev/null
-> +++ b/arch/arm/boards/mioa701/board.c
-> @@ -0,0 +1,251 @@
+> +++ b/drivers/mci/mci_spi.c
+> @@ -0,0 +1,431 @@
 > +/*
-> + * (C) 2012 Robert Jarzmik <robert.jarzmik@free.fr>
+> + * (C) Copyright 2011 - Franck JULLIEN <elec4fun@gmail.com>
 > + *
-> + * See file CREDITS for list of people who contributed to this
-> + * project.
+> + * This code was inspired from u-boot mmc_spi.c:
+> + * Copyright (C) 2010 Thomas Chou <thomas@wytron.com.tw>
 > + *
-> + * This program is free software; you can redistribute it and/or
-> + * modify it under the terms of the GNU General Public License as
-> + * published by the Free Software Foundation; either version 2 of
-> + * the License, or (at your option) any later version.
+> + * and linux mmc_spi.c:
+> + * (C) Copyright 2005, Intec Automation,
+> + *              Mike Lavender (mike@steroidmicros)
+> + * (C) Copyright 2006-2007, David Brownell
+> + * (C) Copyright 2007, Axis Communications,
+> + *              Hans-Peter Nilsson (hp@axis.com)
+> + * (C) Copyright 2007, ATRON electronic GmbH,
+> + *              Jan Nikitenko <jan.nikitenko@gmail.com>
+> + *
+> + * This program is free software; you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License as published by
+> + * the Free Software Foundation; either version 2 of the License, or
+> + * (at your option) any later version.
 > + *
 > + * This program is distributed in the hope that it will be useful,
 > + * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -139,744 +262,466 @@ board.c
 > + *
 > + * You should have received a copy of the GNU General Public License
 > + * along with this program; if not, write to the Free Software
-> + * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-> + * MA 02111-1307 USA
-
-Please remove the section with the address, the FSF tends to move ;)
-
+> + * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 > + *
 > + */
 > +
 > +#include <common.h>
-> +#include <driver.h>
-> +#include <environment.h>
-> +#include <fs.h>
 > +#include <init.h>
-> +#include <partition.h>
-> +#include <led.h>
-> +#include <gpio.h>
-> +
-> +#include <mach/devices.h>
-> +#include <mach/mfp-pxa27x.h>
-> +#include <mach/pxa-regs.h>
-> +#include <mach/udc_pxa2xx.h>
-> +
-> +#include <asm/armlinux.h>
+> +#include <errno.h>
+> +#include <clock.h>
 > +#include <asm/io.h>
-> +#include <generated/mach-types.h>
-> +#include <asm/mmu.h>
+> +#include <driver.h>
+> +#include <spi/spi.h>
+> +#include <mci.h>
+> +#include <crc.h>
+> +#ifdef CONFIG_MMC_SPI_CRC_ON
+> +#include <crc7.h>
+> +#endif
+
+Please do not ifdef includes.
+
 > +
-> +#include "mioa701.h"
+> +#define to_spi_host(mci) container_of(mci, struct mmc_spi_host, mci)
+> +#define spi_setup(spi) spi->master->setup(spi)
 > +
-> +/*
-> + * LTM0305A776C LCD panel timings
-> + *
-> + * see:
-> + *  - the LTM0305A776C datasheet,
-> + *  - and the PXA27x Programmers' manual
+> +/* Response tokens used to ack each block written: */
+> +#define SPI_MMC_RESPONSE_CODE(x)	((x) & 0x1f)
+> +#define SPI_RESPONSE_ACCEPTED		((2 << 1)|1)
+> +
+> +/* Read and write blocks start with these tokens and end with crc;
+> + * on error, read tokens act like a subset of R2_SPI_* values.
 > + */
-> +static struct pxafb_videomode mioa701_ltm0305a776c =3D {
-> +	{
-> +		.pixclock		=3D 220000,	/* CLK=3D4.545 MHz */
-> +		.xres			=3D 240,
-> +		.yres			=3D 320,
-> +		.hsync_len		=3D 4,
-> +		.vsync_len		=3D 2,
-> +		.left_margin		=3D 6,
-> +		.right_margin		=3D 4,
-> +		.upper_margin		=3D 5,
-> +		.lower_margin		=3D 3,
-> +	},
-> +	.bpp =3D 16,
+> +#define SPI_TOKEN_SINGLE	0xFE	/* single block r/w, multiblock read */
+> +#define SPI_TOKEN_MULTI_WRITE	0xFC	/* multiblock write */
+> +#define SPI_TOKEN_STOP_TRAN	0xFD	/* terminate multiblock write */
+> +
+> +/* MMC SPI commands start with a start bit "0" and a transmit bit "1" */
+> +#define MMC_SPI_CMD(x) (0x40 | (x & 0x3F))
+> +
+> +#define MMC_SPI_BLOCKSIZE       512
+> +
+> +/* timeout value */
+> +#define CTOUT 8
+> +#define RTOUT 3000000 /* 1 sec */
+> +#define WTOUT 3000000 /* 1 sec */
+> +
+> +#ifndef CONFIG_MMC_SPI_CRC_ON
+> +/* Note that while the CRC, in general, is ignored in SPI mode, the very first
+> +command must be followed by a valid CRC, since the card is not yet in SPI mode.
+> +The CRC byte for a CMD0 command with a zero argument is a constant 0x95. For
+> +simplicity, this CRC byte is always sent with every command. */
+> +
+> +static inline u8 crc7(u8 crc, const u8 *buffer, size_t len)
+> +{
+> +	return 0x4A;
+> +}
+> +#endif
+
+Is it 0x4a or 0x95? While it's good to have a comment for this the
+difference in the values is a bit confusing.
+
+/*
+ * Multi line comments
+ * like this please
+ */
+
+> +
+> +struct mmc_spi_host {
+> +	struct mci_host	mci;
+> +	struct spi_device	*spi;
+> +	struct device_d	*dev;
+> +
+> +	/* for bulk data transfers */
+> +	struct spi_transfer	t_tx;
+> +	struct spi_message	m_tx;
+> +
+> +	/* for status readback */
+> +	struct spi_transfer	t_rx;
+> +	struct spi_message	m_rx;
+> +
+> +	void			*ones;
 > +};
 > +
-> +static void mioa701_lcd_power(int on)
+> +static char *maptype(struct mci_cmd *cmd)
 > +{
-> +	gpio_set_value(GPIO87_LCD_POWER, on);
+> +	switch (cmd->resp_type) {
+> +	case MMC_RSP_NONE:	return "NONE";
+> +	case MMC_RSP_R1:	return "R1";
+> +	case MMC_RSP_R1b:	return "R1B";
+> +	case MMC_RSP_R2:	return "R2/R5";
+> +	case MMC_RSP_R3:	return "R3/R4/R7";
+> +	default:		return "?";
+> +	}
 > +}
 > +
-> +static struct pxafb_platform_data mioa701_pxafb_info =3D {
-> +	.mode			=3D &mioa701_ltm0305a776c,
-> +	.lcd_conn		=3D LCD_COLOR_TFT_16BPP | LCD_PCLK_EDGE_FALL,
-> +	.lcd_power		=3D mioa701_lcd_power,
-> +};
-> +
-> +#define MIO_LED(_name, _gpio) \
-> +	{ .gpio =3D _gpio, .active_low =3D 1, .led =3D { .name =3D #_name, } =
-}
-> +static struct gpio_led leds[] =3D {
-> +	MIO_LED(charging, GPIO10_LED_nCharging),
-> +	MIO_LED(blue, GPIO97_LED_nBlue),
-> +	MIO_LED(orange, GPIO98_LED_nOrange),
-> +	MIO_LED(vibra, GPIO82_LED_nVibra),
-> +	MIO_LED(keyboard, GPIO115_LED_nKeyboard),
-> +};
-> +
-> +
-> +static int is_usb_connected(void)
+> +static inline int mmc_cs_off(struct mmc_spi_host *host)
 > +{
-> +	return !gpio_get_value(GPIO13_nUSB_DETECT);
+> +	/* chipselect will always be inactive after setup() */
+> +	return spi_setup(host->spi);
 > +}
 > +
-> +static struct pxa2xx_udc_mach_info mioa701_udc_info =3D {
-> +	.udc_is_connected =3D is_usb_connected,
-> +	.gpio_pullup	  =3D GPIO22_USB_ENABLE,
-> +};
-> +
-> +static struct resource mioa701_udc_ress =3D {
-> +	.start =3D 0x40600000,
-> +	.size =3D 1024,
-> +	.flags =3D IORESOURCE_MEM,
-> +};
-> +
-> +static struct device_d udc_device =3D {
-> +	.name =3D "pxa27x-udc",
-> +	.resource =3D &mioa701_udc_ress,
-> +	.num_resources =3D 1,
-> +	.platform_data =3D &mioa701_udc_info,
-> +};
-> +
-> +static int mioa701_devices_init(void)
+> +static int
+> +mmc_spi_readbytes(struct mmc_spi_host *host, unsigned len, void *data)
 > +{
+> +	int status;
+> +
+> +	host->t_rx.len = len;
+> +	host->t_rx.rx_buf = data;
+> +
+> +	status = spi_sync(host->spi, &host->m_rx);
+> +
+> +	return status;
+> +}
+> +
+> +static int
+> +mmc_spi_writebytes(struct mmc_spi_host *host, unsigned len, void *data)
+> +{
+> +	int status;
+> +
+> +	host->t_tx.len = len;
+> +	host->t_tx.tx_buf = data;
+> +
+> +	status = spi_sync(host->spi, &host->m_tx);
+> +
+> +	return status;
+> +}
+> +
+> +static int mmc_spi_command_send(struct mmc_spi_host *host, struct mci_cmd *cmd)
+> +{
+> +	uint8_t r1;
+> +	uint8_t command[7];
 > +	int i;
 > +
-> +	pxa_add_fb((void *)0x44000000, &mioa701_pxafb_info);
+> +	command[0] = 0xff;
+> +	command[1] = MMC_SPI_CMD(cmd->cmdidx);
+> +	command[2] = cmd->cmdarg >> 24;
+> +	command[3] = cmd->cmdarg >> 16;
+> +	command[4] = cmd->cmdarg >> 8;
+> +	command[5] = cmd->cmdarg;
+> +	command[6] = (crc7(0, &command[1], 5) << 1) | 0x01;
 > +
-> +	arm_add_mem_device("ram0", 0xa0000000, 64 * 1024 * 1024);
-> +	armlinux_set_bootparams((void *)0xa0000100);
-> +	armlinux_set_architecture(MACH_TYPE_MIOA701);
+> +	mmc_spi_writebytes(host, 7, command);
 > +
-> +	for (i =3D 0; i < ARRAY_SIZE(leds); i++)
-> +		led_gpio_register(&leds[i]);
-> +	register_device(&udc_device);
+> +	for (i = 0; i < CTOUT; i++) {
+> +		mmc_spi_readbytes(host, 1, &r1);
+> +		if (i && ((r1 & 0x80) == 0)) {  /* r1 response */
+> +			dev_dbg(host->dev, "%s: CMD%d, TRY %d, RESP %x\n", __func__, cmd->cmdidx, i, r1);
+> +			break;
+> +		}
+> +	}
+> +
+> +	return r1;
+> +}
+> +
+> +static uint mmc_spi_readdata(struct mmc_spi_host *host, void *xbuf,
+> +				uint32_t bcnt, uint32_t bsize)
+> +{
+> +	uint8_t *buf = xbuf;
+> +	uint8_t r1;
+> +	uint16_t crc;
+> +	int i;
+> +
+> +	while (bcnt--) {
+> +		for (i = 0; i < RTOUT; i++) {
+> +			mmc_spi_readbytes(host, 1, &r1);
+> +			if (r1 != 0xff) /* data token */
+> +				break;
+> +		}
+> +		if (r1 == SPI_TOKEN_SINGLE) {
+> +			mmc_spi_readbytes(host, bsize, buf);
+> +			mmc_spi_readbytes(host, 2, &crc);
+> +#ifdef CONFIG_MMC_SPI_CRC_ON
+> +			if (swab16(cyg_crc16(buf, bsize)) != crc) {
+> +				dev_dbg(host->dev, "%s: CRC error\n", __func__);
+> +				r1 = R1_SPI_COM_CRC;
+> +				break;
+> +			}
+> +#endif
+> +			r1 = 0;
+> +		} else {
+> +			r1 = R1_SPI_ERROR;
+> +			break;
+> +		}
+> +		buf += bsize;
+> +	}
+> +
+> +	return r1;
+> +}
+> +
+> +static uint mmc_spi_writedata(struct mmc_spi_host *host, const void *xbuf,
+> +			      uint32_t bcnt, uint32_t bsize, int multi)
+> +{
+> +	const uint8_t *buf = xbuf;
+> +	uint8_t r1;
+> +	uint16_t crc;
+> +	uint8_t tok[2];
+> +	int i;
+> +
+> +	tok[0] = 0xff;
+> +	tok[1] = multi ? SPI_TOKEN_MULTI_WRITE : SPI_TOKEN_SINGLE;
+> +
+> +	while (bcnt--) {
+> +#ifdef CONFIG_MMC_SPI_CRC_ON
+> +		crc = swab16(cyg_crc16((u8 *)buf, bsize));
+> +#endif
+> +		mmc_spi_writebytes(host, 2, tok);
+> +		mmc_spi_writebytes(host, bsize, (void *)buf);
+> +		mmc_spi_writebytes(host, 2, &crc);
+
+Without CONFIG_MMC_SPI_CRC_ON you write an unitialized variable out to
+the device. It's probably ignored anyway then, but it's nicer to
+initialize it.
+
+> +
+> +		for (i = 0; i < CTOUT; i++) {
+> +			mmc_spi_readbytes(host, 1, &r1);
+> +			if ((r1 & 0x11) == 0x01) /* response token */
+> +				break;
+> +		}
+> +
+> +		dev_dbg(host->dev,"%s   : TOKEN%d RESP 0x%X\n", __func__, i, r1);
+> +		if (SPI_MMC_RESPONSE_CODE(r1) == SPI_RESPONSE_ACCEPTED) {
+> +			for (i = 0; i < WTOUT; i++) { /* wait busy */
+> +				mmc_spi_readbytes(host, 1, &r1);
+> +				if (i && r1 == 0xff) {
+> +					r1 = 0;
+> +					break;
+> +				}
+> +			}
+> +			if (i == WTOUT) {
+> +				dev_dbg(host->dev, "%s: wtout %x\n", __func__, r1);
+> +				r1 = R1_SPI_ERROR;
+> +				break;
+> +			}
+> +		} else {
+> +			dev_dbg(host->dev, "%s: err %x\n", __func__, r1);
+> +			r1 = R1_SPI_COM_CRC;
+> +			break;
+> +		}
+> +		buf += bsize;
+> +	}
+> +
+> +	if (multi && bcnt == -1) { /* stop multi write */
+> +		tok[1] = SPI_TOKEN_STOP_TRAN;
+> +		mmc_spi_writebytes(host, 2, tok);
+> +		for (i = 0; i < WTOUT; i++) { /* wait busy */
+> +			mmc_spi_readbytes(host, 1, &r1);
+> +			if (i && r1 == 0xff) {
+> +				r1 = 0;
+> +				break;
+> +			}
+> +		}
+> +		if (i == WTOUT) {
+> +			dev_dbg(host->dev, "%s: wstop %x\n", __func__, r1);
+> +			r1 = R1_SPI_ERROR;
+> +		}
+> +	}
+> +return r1;
+
+missing \t
+
+> +}
+> +
+> +static int mmc_spi_request(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
+> +{
+> +	struct mmc_spi_host	*host = to_spi_host(mci);
+> +	uint8_t r1;
+> +	int i;
+> +	int ret = 0;
+> +
+> +	dev_dbg(host->dev, "%s     : CMD%02d, RESP %s, ARG 0x%X\n", __func__,
+> +	      cmd->cmdidx, maptype(cmd), cmd->cmdarg);
+> +
+> +	r1 = mmc_spi_command_send(host, cmd);
+> +
+> +	cmd->response[0] = r1;
+> +
+> +	if (r1 == 0xff) { /* no response */
+> +		ret = -ETIME;
+> +		goto done;
+> +	} else if (r1 & R1_SPI_COM_CRC) {
+> +		ret = -ECOMM;
+> +		goto done;
+> +	} else if (r1 & ~R1_SPI_IDLE) { /* other errors */
+> +		ret = -ETIME;
+> +		goto done;
+> +	} else if (cmd->resp_type == MMC_RSP_R2) {
+> +		r1 = mmc_spi_readdata(host, cmd->response, 1, 16);
+> +		for (i = 0; i < 4; i++)
+> +			cmd->response[i] = swab32(cmd->response[i]);
+> +		dev_dbg(host->dev, "MMC_RSP_R2 -> %x %x %x %x\n", cmd->response[0], cmd->response[1],
+> +		      cmd->response[2], cmd->response[3]);
+> +	} else if (!data) {
+> +		switch (cmd->cmdidx) {
+> +		case SD_CMD_SEND_IF_COND:
+> +		case MMC_CMD_SPI_READ_OCR:
+> +			mmc_spi_readbytes(host, 4, cmd->response);
+> +			cmd->response[0] = swab32(cmd->response[0]);
+> +			break;
+> +		}
+> +	} else {
+> +		if (data->flags == MMC_DATA_READ) {
+> +			dev_dbg(host->dev, "%s     : DATA READ, %x blocks, bsize = 0x%X\n", __func__,
+> +			      data->blocks, data->blocksize);
+> +			r1 = mmc_spi_readdata(host, data->dest,
+> +				data->blocks, data->blocksize);
+> +		} else if  (data->flags == MMC_DATA_WRITE) {
+> +			dev_dbg(host->dev, "%s     : DATA WRITE, %x blocks, bsize = 0x%X\n", __func__,
+> +			      data->blocks, data->blocksize);
+> +			r1 = mmc_spi_writedata(host, data->src,
+> +				data->blocks, data->blocksize,
+> +				(cmd->cmdidx == MMC_CMD_WRITE_MULTIPLE_BLOCK));
+> +		}
+> +		if (r1 & R1_SPI_COM_CRC)
+> +			ret = -ECOMM;
+> +		else if (r1) 
+> +			ret = -ETIME;
+> +	}
+> +
+> +done:
+> +	mmc_cs_off(host);
+> +	return ret;
+> +
+> +return  0;
+> +
+> +}
+> +
+> +static void mmc_spi_set_ios(struct mci_host *mci, struct device_d *mci_dev,
+> +			unsigned bus_width, unsigned clock)
+> +{
+> +	struct mmc_spi_host	*host = to_spi_host(mci);
+> +
+> +	spi_setup(host->spi);
+> +}
+> +
+> +static int mmc_spi_init(struct mci_host *mci, struct device_d *mci_dev)
+> +{
+> +	struct mmc_spi_host	*host = to_spi_host(mci);
+> +	mmc_spi_readbytes(host, 10, NULL);
+> +
+> +	/*
+> +	 * Do a burst with chipselect active-high.  We need to do this to
+> +	 * meet the requirement of 74 clock cycles with both chipselect
+> +	 * and CMD (MOSI) high before CMD0 ... after the card has been
+> +	 * powered up to Vdd(min), and so is ready to take commands.
+> +	 *
+> +	 * Some cards are particularly needy of this (e.g. Viking "SD256")
+> +	 * while most others don't seem to care.
+> +	 *
+> +	 * Note that this is one of the places MMC/SD plays games with the
+> +	 * SPI protocol.  Another is that when chipselect is released while
+> +	 * the card returns BUSY status, the clock must issue several cycles
+> +	 * with chipselect high before the card will stop driving its output.
+> +	 */
+> +
+> +	host->spi->mode |= SPI_CS_HIGH;
+> +	if (spi_setup(host->spi) != 0) {
+> +		/* Just warn; most cards work without it. */
+> +		dev_warn(&host->spi->dev,
+> +				"can't change chip-select polarity\n");
+> +		host->spi->mode &= ~SPI_CS_HIGH;
+> +	} else {
+> +		mmc_spi_readbytes(host, 18, NULL);
+> +
+> +		host->spi->mode &= ~SPI_CS_HIGH;
+> +		if (spi_setup(host->spi) != 0) {
+> +			/* Wot, we can't get the same setup we had before? */
+> +			dev_err(&host->spi->dev,
+> +					"can't restore chip-select polarity\n");
+> +		}
+> +	}
+> +
 > +	return 0;
 > +}
 > +
-> +device_initcall(mioa701_devices_init);
+> +static int spi_mci_probe(struct device_d *dev)
+> +{
+> +	struct spi_device	*spi = (struct spi_device *)dev->type_data;
+> +	struct mmc_spi_host	*host;
+> +	void			*ones;
 > +
-> +static unsigned long mioa701_pin_config[] =3D {
-> +	/* Mio global */
-> +	MIO_CFG_OUT(GPIO9_CHARGE_EN, AF0, DRIVE_LOW),
-> +	MIO_CFG_OUT(GPIO18_POWEROFF, AF0, DRIVE_LOW),
-> +	MFP_CFG_OUT(GPIO3, AF0, DRIVE_HIGH),
-> +	MFP_CFG_OUT(GPIO4, AF0, DRIVE_HIGH),
-> +	MIO_CFG_IN(GPIO80_MAYBE_CHARGE_VDROP, AF0),
+> +	host = xzalloc(sizeof(*host));
+> +	host->mci.send_cmd = mmc_spi_request;
+> +	host->mci.set_ios = mmc_spi_set_ios;
+> +	host->mci.init = mmc_spi_init;
 > +
-> +	/* Backlight PWM 0 */
-> +	GPIO16_PWM0_OUT,
+> +	host->dev = dev;
+> +	host->spi = spi;
+> +	dev->priv = host;
 > +
-> +	/* MMC */
-> +	GPIO32_MMC_CLK,
-> +	GPIO92_MMC_DAT_0,
-> +	GPIO109_MMC_DAT_1,
-> +	GPIO110_MMC_DAT_2,
-> +	GPIO111_MMC_DAT_3,
-> +	GPIO112_MMC_CMD,
-> +	MIO_CFG_IN(GPIO78_SDIO_RO, AF0),
-> +	MIO_CFG_IN(GPIO15_SDIO_INSERT, AF0),
-> +	MIO_CFG_OUT(GPIO91_SDIO_EN, AF0, DRIVE_LOW),
+> +	ones = xmalloc(MMC_SPI_BLOCKSIZE);
+> +	memset(ones, 0xff, MMC_SPI_BLOCKSIZE);
 > +
-> +	/* USB */
-> +	MIO_CFG_IN(GPIO13_nUSB_DETECT, AF0),
-> +	MIO_CFG_OUT(GPIO22_USB_ENABLE, AF0, DRIVE_LOW),
+> +	host->ones = ones;
 > +
-> +	/* QCI */
-> +	GPIO12_CIF_DD_7,
-> +	GPIO17_CIF_DD_6,
-> +	GPIO50_CIF_DD_3,
-> +	GPIO51_CIF_DD_2,
-> +	GPIO52_CIF_DD_4,
-> +	GPIO53_CIF_MCLK,
-> +	GPIO54_CIF_PCLK,
-> +	GPIO55_CIF_DD_1,
-> +	GPIO81_CIF_DD_0,
-> +	GPIO82_CIF_DD_5,
-> +	GPIO84_CIF_FV,
-> +	GPIO85_CIF_LV,
+> +	spi_message_init(&host->m_tx);
+> +	spi_message_init(&host->m_rx);
 > +
-> +	/* Bluetooth */
-> +	MIO_CFG_IN(GPIO14_BT_nACTIVITY, AF0),
-> +	GPIO44_BTUART_CTS,
-> +	GPIO42_BTUART_RXD,
-> +	GPIO45_BTUART_RTS,
-> +	GPIO43_BTUART_TXD,
-> +	MIO_CFG_OUT(GPIO83_BT_ON, AF0, DRIVE_LOW),
-> +	MIO_CFG_OUT(GPIO77_BT_UNKNOWN1, AF0, DRIVE_HIGH),
-> +	MIO_CFG_OUT(GPIO86_BT_MAYBE_nRESET, AF0, DRIVE_HIGH),
+> +	spi_message_add_tail(&host->t_tx, &host->m_tx);
+> +	spi_message_add_tail(&host->t_rx, &host->m_rx);
 > +
-> +	/* GPS */
-> +	MIO_CFG_OUT(GPIO23_GPS_UNKNOWN1, AF0, DRIVE_LOW),
-> +	MIO_CFG_OUT(GPIO26_GPS_ON, AF0, DRIVE_LOW),
-> +	MIO_CFG_OUT(GPIO27_GPS_RESET, AF0, DRIVE_LOW),
-> +	MIO_CFG_OUT(GPIO106_GPS_UNKNOWN2, AF0, DRIVE_LOW),
-> +	MIO_CFG_OUT(GPIO107_GPS_UNKNOWN3, AF0, DRIVE_LOW),
-> +	GPIO46_STUART_RXD,
-> +	GPIO47_STUART_TXD,
+> +	host->t_rx.tx_buf = host->ones;
+> +	host->t_rx.cs_change = 1;
 > +
-> +	/* GSM */
-> +	MIO_CFG_OUT(GPIO24_GSM_MOD_RESET_CMD, AF0, DRIVE_LOW),
-> +	MIO_CFG_OUT(GPIO88_GSM_nMOD_ON_CMD, AF0, DRIVE_HIGH),
-> +	MIO_CFG_OUT(GPIO90_GSM_nMOD_OFF_CMD, AF0, DRIVE_HIGH),
-> +	MIO_CFG_OUT(GPIO114_GSM_nMOD_DTE_UART_STATE, AF0, DRIVE_HIGH),
-> +	MIO_CFG_IN(GPIO25_GSM_MOD_ON_STATE, AF0),
-> +	MIO_CFG_IN(GPIO113_GSM_EVENT, AF0) | WAKEUP_ON_EDGE_BOTH,
-> +	GPIO34_FFUART_RXD,
-> +	GPIO35_FFUART_CTS,
-> +	GPIO36_FFUART_DCD,
-> +	GPIO37_FFUART_DSR,
-> +	GPIO39_FFUART_TXD,
-> +	GPIO40_FFUART_DTR,
-> +	GPIO41_FFUART_RTS,
+> +	host->t_tx.cs_change = 1;
 > +
-> +	/* Sound */
-> +	GPIO28_AC97_BITCLK,
-> +	GPIO29_AC97_SDATA_IN_0,
-> +	GPIO30_AC97_SDATA_OUT,
-> +	GPIO31_AC97_SYNC,
-> +	GPIO89_AC97_SYSCLK,
-> +	MIO_CFG_IN(GPIO12_HPJACK_INSERT, AF0),
+> +	host->mci.voltages = MMC_VDD_32_33 | MMC_VDD_33_34;
+> +	host->mci.host_caps = MMC_CAP_SPI;
 > +
-> +	/* Leds */
-> +	MIO_CFG_OUT(GPIO10_LED_nCharging, AF0, DRIVE_HIGH),
-> +	MIO_CFG_OUT(GPIO97_LED_nBlue, AF0, DRIVE_HIGH),
-> +	MIO_CFG_OUT(GPIO98_LED_nOrange, AF0, DRIVE_HIGH),
-> +	MIO_CFG_OUT(GPIO82_LED_nVibra, AF0, DRIVE_HIGH),
-> +	MIO_CFG_OUT(GPIO115_LED_nKeyboard, AF0, DRIVE_HIGH),
+> +	mci_register(&host->mci);
 > +
-> +	/* Keyboard */
-> +	MIO_CFG_IN(GPIO0_KEY_POWER, AF0) | WAKEUP_ON_EDGE_BOTH,
-> +	MIO_CFG_IN(GPIO93_KEY_VOLUME_UP, AF0),
-> +	MIO_CFG_IN(GPIO94_KEY_VOLUME_DOWN, AF0),
-> +	GPIO100_KP_MKIN_0,
-> +	GPIO101_KP_MKIN_1,
-> +	GPIO102_KP_MKIN_2,
-> +	GPIO103_KP_MKOUT_0,
-> +	GPIO104_KP_MKOUT_1,
-> +	GPIO105_KP_MKOUT_2,
+> +	return 0;
+> +}
 > +
-> +	/* I2C */
-> +	GPIO117_I2C_SCL,
-> +	GPIO118_I2C_SDA,
-> +
-> +	/* Unknown */
-> +	MFP_CFG_IN(GPIO20, AF0),
-> +	MFP_CFG_IN(GPIO21, AF0),
-> +	MFP_CFG_IN(GPIO33, AF0),
-> +	MFP_CFG_OUT(GPIO49, AF0, DRIVE_HIGH),
-> +	MFP_CFG_OUT(GPIO57, AF0, DRIVE_HIGH),
-> +	MFP_CFG_IN(GPIO96, AF0),
-> +	MFP_CFG_OUT(GPIO116, AF0, DRIVE_HIGH),
+> +static struct driver_d spi_mci_driver = {
+> +	.name	= "spi_mci",
+> +	.probe	= spi_mci_probe,
 > +};
 > +
-> +static int mioa701_coredevice_init(void)
+> +static int spi_mci_init_driver(void)
 > +{
-> +	/* route pins */
-> +	pxa2xx_mfp_config(ARRAY_AND_SIZE(mioa701_pin_config));
-> +
+> +	register_driver(&spi_mci_driver);
 > +	return 0;
 > +}
-> +coredevice_initcall(mioa701_coredevice_init);
-> diff --git a/arch/arm/boards/mioa701/config.h b/arch/arm/boards/mioa701=
-/config.h
-> new file mode 100644
-> index 0000000..0b50067
-> --- /dev/null
-> +++ b/arch/arm/boards/mioa701/config.h
-> @@ -0,0 +1,207 @@
-> +/*
-> + * (C) 2012 Robert Jarzmik <robert.jarzmik@free.fr>
-> + *
-> + * See file CREDITS for list of people who contributed to this
-> + * project.
-> + *
-> + * This program is free software; you can redistribute it and/or
-> + * modify it under the terms of the GNU General Public License as
-> + * published by the Free Software Foundation; either version 2 of
-> + * the License, or (at your option) any later version.
-> + *
-> + * This program is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> + * GNU General Public License for more details.
-> + *
-> + * You should have received a copy of the GNU General Public License
-> + * along with this program; if not, write to the Free Software
-> + * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-> + * MA 02111-1307 USA
+> +
+> +device_initcall(spi_mci_init_driver);
+> diff --git a/include/mci.h b/include/mci.h
+> index 69cffe8..ed54e14 100644
+> --- a/include/mci.h
+> +++ b/include/mci.h
+> @@ -49,6 +49,7 @@
+>  
+>  #define MMC_MODE_HS		0x001
+>  #define MMC_MODE_HS_52MHz	0x010
+> +#define MMC_CAP_SPI		0x020
+>  #define MMC_MODE_4BIT		0x100
+>  #define MMC_MODE_8BIT		0x200
+>  
+> @@ -56,6 +57,8 @@
+>  
+>  #define IS_SD(x) (x->version & SD_VERSION_SD)
+>  
+> +#define mmc_host_is_spi(host)	((host)->host_caps & MMC_CAP_SPI)
 
-dito
+You could lower the impact of spimmc on non spimmc enabled builds
+a bit by doing:
 
-> + *
-> + */
-> +
-> +#ifndef __CONFIG_H
-> +#define __CONFIG_H
-> +
-> +/*********************************************************************=
+#ifdef CONFIG_MCI_SPI
+#define mmc_host_is_spi(host)		((host)->host_caps & MMC_CAP_SPI)
+#else
+#define mmc_host_is_spi(host)		0
+#endif
 
-> + * CONFIG PXA270 GPIO settings                                       *=
+Sascha
 
-> + *********************************************************************=
-/
-> +
-> +#define GPSR0_DFT		0x00800200
-> +#define GPSR1_DFT		0x03020000
-> +#define GPSR2_DFT		0x00000000
-> +#define GPSR3_DFT		0x001c0006
-> +
-> +#define GPCR0_DFT		0x0d2d8000
-> +#define GPCR1_DFT		0x00002300
-> +#define GPCR2_DFT		0x08c80000
-> +#define GPCR3_DFT		0x01800c00
-> +
-> +#define GPDR0_DFT		0x00000000
-> +#define GPDR1_DFT		0xff22ab81
-> +#define GPDR2_DFT		0x8ffc3fff
-> +#define GPDR3_DFT		0x00014000
-> +
-> +#define GAFR0_L_DFT		0x00000000
-> +#define GAFR0_U_DFT		0x00000000
-> +#define GAFR1_L_DFT		0x00900550
-> +#define GAFR1_U_DFT		0x00000000
-> +#define GAFR2_L_DFT		0x000a8000
-> +#define GAFR2_U_DFT		0x00000000
-> +#define GAFR3_L_DFT		0x00000000
-> +#define GAFR3_U_DFT		0x00000000
-> +
-> +
-> +/*
-> + * Power Manager Sleep Status Register (PSSR)
-> + *
-> + * [6] =3D 0   OTG pad is not holding it's state
-> + * [5] =3D 1   Read Disable Hold: receivers of all gpio pins are disab=
-led
-> + * [4] =3D 1   gpio pins are held in their sleep mode state
-> + * [3] =3D 0   The processor has not been placed in standby mode by
-> + *           configuring the PWRMODE register since STS was cleared
-> + *           by a reset or by software.
-> + * [2] =3D 0   nVDD_FAULT has been asserted and caused the processor t=
-o
-> + *           enter deep-sleep mode.
-> + * [1] =3D 1   nBATT_FAULT has been asserted and caused the processor =
-to
-> + *           enter deep-sleep mode.
-> + * [0] =3D 1   The processor was placed in sleep mode by configuring t=
-he
-> + *           PWRMODE register.
-> + */
-> +
-> +#define CONFIG_PSSR_VAL		0x33
-> +
-> +
-> +/*********************************************************************=
-
-> + * CONFIG PXA270 Chipselect settings                                 *=
-
-> + *********************************************************************=
-/
-> +
-> +/*
-> + * Memory settings
-> + *
-> + * This is the configuration for nCS1/0 -> nothing / flash
-> + * configuration for nCS1: nothing
-> + * [31]    0    - Slower Device
-> + * [30:28] 111  - CS deselect to CS time: 7*(2*MemClk) =3D 20 ns
-> + * [27:24] 1111 - Address to data valid in bursts: (30+1)*MemClk =3D 3=
-0 ns
-> + * [23:20] 1111 - " for first access: (30+2)*MemClk =3D 130 ns
-> + * [19]    0    - 32 Bit bus width
-> + * [18:16] 000  - burst RAM or FLASH
-> + * configuration for nCS0 (DocG3 Flash floor 0):
-> + * [15]    0    - Slower Device
-> + * [14:12] 010  - CS deselect to CS time: 2*(2*MemClk) =3D 20 ns
-> + * [11:08] 1101 - Address to data valid in bursts: (20+1)*MemClk =3D x=
-x ns
-> + * [07:04] 1101 - " for first access: (20-1)*MemClk =3D xx ns
-> + * [03]    1    - 16 Bit bus width
-> + * [02:00] 000  - synchronous FLASH
-> + */
-> +#define CONFIG_MSC0_VAL		0x7ff02dd8
-> +
-> +/*
-> + * This is the configuration for nCS3/2
-> + * configuration for nCS3: nothing
-> + * configuration for nCS2: nothing
-> + */
-> +#define CONFIG_MSC1_VAL		0x00000000
-> +
-> +/*
-> + * This is the configuration for nCS5/4
-> + * configuration for nCS5: nothing
-> + * configuration for nCS4: nothing
-> + */
-> +#define CONFIG_MSC2_VAL		0x00000000
-> +
-> +/*********************************************************************=
-
-> + * CONFIG PXA270 SDRAM settings                                      *=
-
-> + *********************************************************************=
-/
-> +
-> +#define CONFIG_DRAM_BASE	0xa0000000
-> +
-> +
-> +/* MDCNFG: SDRAM Configuration Register
-> + *
-> + * [31]      0	 - Memory map 0/1 (normal 256MBytes/large 1GBytes)
-> + * [30]      0   - dcacx2
-> + * [29]      0   - reserved
-> + * [28]      0	 - SA1111 compatiblity mode
-> + * [27]      0   - latch return data with return clock
-> + * [26]      0   - alternate addressing for pair 2/3
-> + * [25:24]   00  - timings
-> + * [23]      0   - internal banks in lower partition 2/3 (not used)
-> + * [22:21]   00  - row address bits for partition 2/3 (not used)
-> + * [20:19]   00  - column address bits for partition 2/3 (not used)
-> + * [18]      0   - SDRAM partition 2/3 width is 32 bit
-> + * [17]      0   - SDRAM partition 3 disabled
-> + * [16]      0   - SDRAM partition 2 disabled
-> + * [15]      0	 - Stack1
-> + * [14]      0   - dcacx0
-> + * [13]      0   - Stack0
-> + * [12]      0	 - SA1110 compatiblity mode
-> + * [11]      1   - always 1
-> + * [10]      0   - no alternate addressing for pair 0/1
-> + * [09:08]   11  - tRP=3D2*MemClk CL=3D2 tRCD=3D2*MemClk tRAS=3D5*MemC=
-lk tRC=3D8*MemClk RJK
-> + * [7]       1   - 4 internal banks in partitions 0/1
-> + * [06:05]   10  - 13 row address bits for partition 0/1
-> + * [04:03]   10  - 10 column address bits for partition 0/1
-> + * [02]      1   - SDRAM partition 0/1 width is 32 bit
-> + * [01]      0   - disable SDRAM partition 1
-> + * [00]      1   - enable  SDRAM partition 0
-> + *
-> + * Configuration is for 1 bank of 64MBytes (13 rows * 10 cols)
-> + * in bank0, of width 32bits
-> + */
-> +#define CONFIG_MDCNFG_VAL	0x00000bd5
-> +
-> +/* MDREFR: SDRAM Refresh Control Register
-> + *
-> + * [31]    0     - ALTREFA
-> + * [30]    0     - ALTREFB
-> + * [29]    1     - K0DB4: SDCLK0 =3D MemClk / 4
-> + * [28]    0     - reserved
-> + * [27]    0     - reserved
-> + * [26]    0     - reserved
-> + * [25]    0     - K2FREE: not free running
-> + * [24]    0     - K1FREE: not free running
-> + * [23]    0     - K0FREE: not free running
-> + * [22]    0     - SLFRSH: self refresh disabled
-> + * [21]    0     - reserved
-> + * [20]    1     - APD: no SDRAM auto power down
-> + * [19]    0     - K2DB2: SDCLK2 is MemClk
-> + * [18]    0     - K2RUN: disable SDCLK2
-> + * [17]    1     - K1DB2: SDCLK1 =3D MemClk / 2
-> + * [16]    1     - K1RUN: enable SDCLK1
-> + * [15]    1     - E1PIN: SDRAM clock enable
-> + * [14]    0     - K0DB2: SDCLK0 is MemClk
-> + * [13]    0     - K0RUN: disable SDCLK0
-> + * [12]    0     - RESERVED
-> + * [11:00] 000000011000 - (64ms/8192)*MemClkFreq/32 =3D 25
-> + */
-> +#define CONFIG_MDREFR_VAL	0x20138017
-> +
-> +/* MDMRS: Mode Register Set Configuration Register
-> + *
-> + * [31]      0        - reserved
-> + * [30:23]   00000000 - MDMRS2: SDRAM2/3 MRS Value. (not used)
-> + * [22:20]   011      - MDCL2:  SDRAM2/3 Cas Latency.  (not used)
-> + * [19]      0        - MDADD2: SDRAM2/3 burst Type. Fixed to sequenti=
-al.  (not used)
-> + * [18:16]   010      - MDBL2:  SDRAM2/3 burst Length. Fixed to 4.  (n=
-ot used)
-> + * [15]      0        - reserved
-> + * [14:07]   00000000 - MDMRS0: SDRAM0/1 MRS Value.
-> + * [06:04]   011      - MDCL0:  SDRAM0/1 Cas Latency.
-> + * [03]      0        - MDADD0: SDRAM0/1 burst Type. Fixed to sequenti=
-al.
-> + * [02:00]   010      - MDBL0:  SDRAM0/1 burst Length. Fixed to 4.
-> + */
-> +#define CONFIG_MDMRS_VAL	0x00320032
-> +
-> +/*********************************************************************=
-
-> + * CONFIG PXA270 Clock generation                                    *=
-
-> + *********************************************************************=
-/
-> +#define CONFIG_FLYCNFG_VAL	0x00010001
-> +#define CONFIG_SXCNFG_VAL	0x00000000
-> +#define CONFIG_CKEN		(CKEN_MEMC |  CKEN_OSTIMER)
-> +
-> +/* Memory Clock =3D System-Bus Freq., N=3D1, L=3D16  =3D>  12x16=3D208=
-, 208x1=3D208 MHz */
-> +#define CONFIG_CCCR		0x02000210
-> +
-> +#endif  /* __CONFIG_H */
-> diff --git a/arch/arm/boards/mioa701/env/bin/init b/arch/arm/boards/mio=
-a701/env/bin/init
-> new file mode 100644
-> index 0000000..2f99eb8
-> --- /dev/null
-> +++ b/arch/arm/boards/mioa701/env/bin/init
-> @@ -0,0 +1,13 @@
-> +#!/bin/sh
-> +
-> +PATH=3D/env/bin
-> +export PATH
-> +
-> +. /env/config
-> +
-> +fb0.enable=3D1
-> +
-> +while [ -z $toto ]; do
-> +    readline "Give me a word" word
-> +    echo "I've got your $word"
-> +done
-> diff --git a/arch/arm/boards/mioa701/env/config b/arch/arm/boards/mioa7=
-01/env/config
-> new file mode 100644
-> index 0000000..67504c2
-> --- /dev/null
-> +++ b/arch/arm/boards/mioa701/env/config
-> @@ -0,0 +1,4 @@
-> +#!/bin/sh
-> +
-> +# MioA701 empty config
-> +# Should be filled in once development is advanced enough
-> diff --git a/arch/arm/boards/mioa701/lowlevel_init.S b/arch/arm/boards/=
-mioa701/lowlevel_init.S
-> new file mode 100644
-> index 0000000..72b5436
-> --- /dev/null
-> +++ b/arch/arm/boards/mioa701/lowlevel_init.S
-> @@ -0,0 +1,46 @@
-> +/*
-> + *
-> + * (c) 2012 Robert Jarzmik <robert.jarzmik@free.fr>
-> + *
-> + * See file CREDITS for list of people who contributed to this
-> + * project.
-> + *
-> + * This program is free software; you can redistribute it and/or
-> + * modify it under the terms of the GNU General Public License as
-> + * published by the Free Software Foundation; either version 2 of
-> + * the License, or (at your option) any later version.
-> + *
-> + * This program is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> + * GNU General Public License for more details.
-> + *
-> + * You should have received a copy of the GNU General Public License
-> + * along with this program; if not, write to the Free Software
-> + * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-> + * MA 02111-1307 USA
-
-dito
-
-> + */
-> +
-> +#define writel(val, reg) \
-> +	ldr		r0,	=3Dreg;	\
-> +	ldr		r1,	=3Dval;	\
-> +	str		r1,   [r0];
-> +
-> +#define writeb(val, reg) \
-> +	ldr		r0,	=3Dreg;	\
-> +	ldr		r1,	=3Dval;	\
-> +	strb		r1,   [r0];
-> +
-> +	.section ".text_bare_init","ax"
-> +.global board_init_lowlevel
-> +board_init_lowlevel:
-> +	mov	r10, lr
-> +	/*
-> +	 * This piece of code should ensure at least:
-> +	 *  - getting SDRAM out of self-refresh, and/or setup SDRAM timings
-> +	 *  - putting the GPIO logic into a usable state
-> +	bl	stabilize_reset
-> +	bl	setup_sdram
-> +	bl	setup_gpios
-> +	 */
-> +	mov	pc, r10
-> diff --git a/arch/arm/boards/mioa701/mioa701.h b/arch/arm/boards/mioa70=
-1/mioa701.h
-> new file mode 100644
-> index 0000000..c561b80
-> --- /dev/null
-> +++ b/arch/arm/boards/mioa701/mioa701.h
-> @@ -0,0 +1,86 @@
-> +/*
-> + * (C) 2012 Robert Jarzmik <robert.jarzmik@free.fr>
-> + *
-> + * See file CREDITS for list of people who contributed to this
-> + * project.
-> + *
-> + * This program is free software; you can redistribute it and/or
-> + * modify it under the terms of the GNU General Public License as
-> + * published by the Free Software Foundation; either version 2 of
-> + * the License, or (at your option) any later version.
-> + *
-> + * This program is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> + * GNU General Public License for more details.
-> + *
-> + * You should have received a copy of the GNU General Public License
-> + * along with this program; if not, write to the Free Software
-> + * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-> + * MA 02111-1307 USA
-
-dito
-
-> + *
-> + */
-> +#ifndef _MIOA701_H_
-> +#define _MIOA701_H_
-> +
-> +#define MIO_CFG_IN(pin, af)		\
-> +	((MFP_CFG_DEFAULT & ~(MFP_AF_MASK | MFP_DIR_MASK)) |\
-> +	 (MFP_PIN(pin) | MFP_##af | MFP_DIR_IN))
-> +
-> +#define MIO_CFG_OUT(pin, af, state)	\
-> +	((MFP_CFG_DEFAULT & ~(MFP_AF_MASK | MFP_DIR_MASK | MFP_LPM_STATE_MASK=
-)) |\
-> +	 (MFP_PIN(pin) | MFP_##af | MFP_DIR_OUT | MFP_LPM_##state))
-> +
-> +/* Global GPIOs */
-> +#define GPIO9_CHARGE_EN				9
-> +#define GPIO18_POWEROFF				18
-> +#define GPIO87_LCD_POWER			87
-> +#define GPIO96_AC_DETECT			96
-> +#define GPIO80_MAYBE_CHARGE_VDROP		80	/* Drop of 88mV */
-> +
-> +/* USB */
-> +#define GPIO13_nUSB_DETECT			13
-> +#define GPIO22_USB_ENABLE			22
-> +
-> +/* SDIO bits */
-> +#define GPIO78_SDIO_RO				78
-> +#define GPIO15_SDIO_INSERT			15
-> +#define GPIO91_SDIO_EN				91
-> +
-> +/* Bluetooth */
-> +#define GPIO14_BT_nACTIVITY			14
-> +#define GPIO83_BT_ON				83
-> +#define GPIO77_BT_UNKNOWN1			77
-> +#define GPIO86_BT_MAYBE_nRESET			86
-> +
-> +/* GPS */
-> +#define GPIO23_GPS_UNKNOWN1			23
-> +#define GPIO26_GPS_ON				26
-> +#define GPIO27_GPS_RESET			27
-> +#define GPIO106_GPS_UNKNOWN2			106
-> +#define GPIO107_GPS_UNKNOWN3			107
-> +
-> +/* GSM */
-> +#define GPIO24_GSM_MOD_RESET_CMD		24
-> +#define GPIO88_GSM_nMOD_ON_CMD			88
-> +#define GPIO90_GSM_nMOD_OFF_CMD			90
-> +#define GPIO114_GSM_nMOD_DTE_UART_STATE 	114
-> +#define GPIO25_GSM_MOD_ON_STATE			25
-> +#define GPIO113_GSM_EVENT			113
-> +
-> +/* SOUND */
-> +#define GPIO12_HPJACK_INSERT			12
-> +
-> +/* LEDS */
-> +#define GPIO10_LED_nCharging			10
-> +#define GPIO97_LED_nBlue			97
-> +#define GPIO98_LED_nOrange			98
-> +#define GPIO82_LED_nVibra			82
-> +#define GPIO115_LED_nKeyboard			115
-> +
-> +/* Keyboard */
-> +#define GPIO0_KEY_POWER				0
-> +#define GPIO93_KEY_VOLUME_UP			93
-> +#define GPIO94_KEY_VOLUME_DOWN			94
-> +
-> +#endif /* _MIOA701_H */
-> diff --git a/arch/arm/mach-pxa/Kconfig b/arch/arm/mach-pxa/Kconfig
-> index 9e3c53a..2e5cb1c 100644
-> --- a/arch/arm/mach-pxa/Kconfig
-> +++ b/arch/arm/mach-pxa/Kconfig
-> @@ -2,9 +2,11 @@ if ARCH_PXA
-> =20
->  config ARCH_TEXT_BASE
->  	hex
-> +	default 0xa0000000 if MACH_MIOA701
-> =20
->  config BOARDINFO
->  	string
-> +	default "Scoter Mitac Mio A701" if MACH_MIOA701
-> =20
->  # ----------------------------------------------------------
-> =20
-> @@ -28,6 +30,13 @@ if ARCH_PXA27X
->  choice
->  	prompt "PXA27x Board Type"
-> =20
-> +config MACH_MIOA701
-> +	bool "Mitac Mio A701"
-> +	select MACH_HAS_LOWLEVEL_INIT
-> +	help
-> +	  Say Y here if you are using a Mitac Mio A701 smartphone
-> +	  board
-> +
->  endchoice
-> =20
->  endif
-> diff --git a/arch/arm/mach-pxa/Makefile b/arch/arm/mach-pxa/Makefile
-> index c01a9e0..6a02a54 100644
-> --- a/arch/arm/mach-pxa/Makefile
-> +++ b/arch/arm/mach-pxa/Makefile
-> @@ -1,6 +1,7 @@
->  obj-y +=3D clocksource.o
->  obj-y +=3D common.o
->  obj-y +=3D gpio.o
-> +obj-y +=3D devices.o
-> =20
->  obj-$(CONFIG_ARCH_PXA2XX) +=3D mfp-pxa2xx.o
->  obj-$(CONFIG_ARCH_PXA27X) +=3D speed-pxa27x.o
-
-Marc
---=20
-Pengutronix e.K.                  | Marc Kleine-Budde           |
-Industrial Linux Solutions        | Phone: +49-231-2826-924     |
-Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
-
-
---------------enig245FD984A8B71E58A02BBB82
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.10 (GNU/Linux)
-Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org/
-
-iEYEARECAAYFAk7OCs4ACgkQjTAFq1RaXHPxvwCgjo0XJ0mKq2yemGvW16W9wY6f
-CNsAn0dQVoA9MVrY2fjEa4YRaFK7atsr
-=JAfm
------END PGP SIGNATURE-----
-
---------------enig245FD984A8B71E58A02BBB82--
-
-
---===============7254718962290148742==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============7254718962290148742==--
