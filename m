@@ -1,20 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RTYey-0005hc-RW
- for barebox@lists.infradead.org; Thu, 24 Nov 2011 12:44:14 +0000
+ id 1RTYet-0005h7-OP
+ for barebox@lists.infradead.org; Thu, 24 Nov 2011 12:44:09 +0000
 Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
  by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <jbe@pengutronix.de>) id 1RTYej-0006pQ-9C
+ (envelope-from <jbe@pengutronix.de>) id 1RTYej-0006pO-99
  for barebox@lists.infradead.org; Thu, 24 Nov 2011 13:43:57 +0100
 Received: from jbe by dude.hi.pengutronix.de with local (Exim 4.77)
- (envelope-from <jbe@pengutronix.de>) id 1RTYei-0002LS-6r
+ (envelope-from <jbe@pengutronix.de>) id 1RTYei-0002LN-5q
  for barebox@lists.infradead.org; Thu, 24 Nov 2011 13:43:56 +0100
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Thu, 24 Nov 2011 13:43:40 +0100
-Message-Id: <1322138631-8963-3-git-send-email-jbe@pengutronix.de>
-In-Reply-To: <1322138631-8963-1-git-send-email-jbe@pengutronix.de>
-References: <1322138631-8963-1-git-send-email-jbe@pengutronix.de>
+Date: Thu, 24 Nov 2011 13:43:38 +0100
+Message-Id: <1322138631-8963-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,58 +26,71 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/13] Create a unique cdev number for on demand devices
+Subject: [PATCHv3] Rework of handling disk like media
 To: barebox@lists.infradead.org
 
-For disk like devices attached to MCI, ATA or USB it depends on the order they
-will be recognized. So an unique number for all disk like devices is required.
+This patch stack reworks the handling of disk like media (hard disks, USB mass
+storage, SD/MMC cards). It should simplify the code by using the generic
+blockdevice layer.
+Also partition handling is now a separate step to provide more partition types
+than the D*S one in the future.
+At the end of this series support for a subset of ATA devices and their
+interface is added.
 
-Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
----
- fs/devfs-core.c  |   14 ++++++++++++++
- include/driver.h |    1 +
- 2 files changed, 15 insertions(+), 0 deletions(-)
+Update: This series contains fixed and improved versions of the patches
+08/13, 09/13 and 12/13.
+An additional fix in 08/13 was made, due to a broken disk size guessing for
+x86.
 
-diff --git a/fs/devfs-core.c b/fs/devfs-core.c
-index 519e18e..9bc3126 100644
---- a/fs/devfs-core.c
-+++ b/fs/devfs-core.c
-@@ -40,6 +40,20 @@ struct cdev *cdev_by_name(const char *filename)
- 	return NULL;
- }
- 
-+int cdev_find_free_index(const char *basename)
-+{
-+	int i;
-+	char fname[100];
-+
-+	for (i = 0; i < 1000; i++) {
-+		snprintf(fname, sizeof(fname), "%s%d", basename, i);
-+		if (cdev_by_name(fname) == NULL)
-+			return i;
-+	}
-+
-+	return -EBUSY;	/* all indexes are used */
-+}
-+
- struct cdev *cdev_open(const char *name, unsigned long flags)
- {
- 	struct cdev *cdev = cdev_by_name(name);
-diff --git a/include/driver.h b/include/driver.h
-index 80de0c8..fe9d37a 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -394,6 +394,7 @@ struct cdev {
- 
- int devfs_create(struct cdev *);
- int devfs_remove(struct cdev *);
-+int cdev_find_free_index(const char *);
- struct cdev *cdev_by_name(const char *filename);
- struct cdev *cdev_open(const char *name, unsigned long flags);
- void cdev_close(struct cdev *cdev);
--- 
-1.7.7.1
+Comments are welcome.
 
+Juergen Beisert (13):
+      USB Mass Storage driver: Fix compile time warning
+      Create a unique cdev number for on demand devices
+      ATA/DISK: Add generic disk support when enabling the BIOS disk driver
+      ATA/DISK: Enabling write support does not belong to 'drive types'
+      ATA/DISK: Reorganize file structure and names for future updates
+      ATA/DISK: The BIOS based disk driver is not an interface
+      ATA/DISK: Share important constants and structures
+      DISK: Add common partition handling for disk like media
+      Use generic block layer to access the drives and do partition parsing
+      Remove 'disk_drive.c' as it is now replaced by generic partition handling
+      ATA/DISK: Remove the now unused header <ata.h>
+      ATA Disk Support: Add support for native ATA type drives
+      Add driver for IDE like interfaces
+
+ common/Kconfig                            |   18 +
+ common/Makefile                           |    2 +
+ common/partitions.c                       |  200 +++++++++
+ drivers/Makefile                          |    2 +-
+ drivers/ata/Kconfig                       |   41 ++-
+ drivers/ata/Makefile                      |    5 +-
+ drivers/ata/disk_ata_drive.c              |  697 +++++++++++++++++++++++++++++
+ drivers/ata/{bios.c => disk_bios_drive.c} |  102 +++--
+ drivers/ata/disk_drive.c                  |  247 ----------
+ drivers/ata/intf_platform_ide.c           |  130 ++++++
+ drivers/mci/Kconfig                       |    3 +-
+ drivers/mci/mci-core.c                    |  135 ++++---
+ drivers/usb/storage/Kconfig               |    1 +
+ drivers/usb/storage/usb.c                 |  126 +++---
+ drivers/usb/storage/usb.h                 |    8 +-
+ fs/devfs-core.c                           |   14 +
+ include/ata.h                             |   39 --
+ include/ata_drive.h                       |  100 ++++
+ include/disks.h                           |   41 ++
+ include/driver.h                          |    1 +
+ include/mci.h                             |    3 +-
+ include/platform_ide.h                    |   32 ++
+ 22 files changed, 1484 insertions(+), 463 deletions(-)
+ create mode 100644 common/partitions.c
+ create mode 100644 drivers/ata/disk_ata_drive.c
+ rename drivers/ata/{bios.c => disk_bios_drive.c} (79%)
+ delete mode 100644 drivers/ata/disk_drive.c
+ create mode 100644 drivers/ata/intf_platform_ide.c
+ delete mode 100644 include/ata.h
+ create mode 100644 include/ata_drive.h
+ create mode 100644 include/disks.h
+ create mode 100644 include/platform_ide.h
 
 _______________________________________________
 barebox mailing list
