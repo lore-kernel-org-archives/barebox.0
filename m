@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bw0-f49.google.com ([209.85.214.49])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RTK7M-0004YZ-Nl
- for barebox@lists.infradead.org; Wed, 23 Nov 2011 21:12:33 +0000
-Received: by bkat2 with SMTP id t2so2163865bka.36
- for <barebox@lists.infradead.org>; Wed, 23 Nov 2011 13:12:29 -0800 (PST)
-From: franck.jullien@gmail.com
-Date: Wed, 23 Nov 2011 22:12:24 +0100
-Message-Id: <1322082748-17409-1-git-send-email-franck.jullien@gmail.com>
+Received: from smtp6-g21.free.fr ([2a01:e0c:1:1599::15])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1RTPZK-0007Oz-Cq
+ for barebox@lists.infradead.org; Thu, 24 Nov 2011 03:01:47 +0000
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+Date: Thu, 24 Nov 2011 04:01:25 +0100
+Message-Id: <1322103690-32669-1-git-send-email-robert.jarzmik@free.fr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,44 +19,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/4] Add MCI over SPI support
+Subject: [PATCH 0/5] Enable a console over a serial USB gadget
 To: barebox@lists.infradead.org
 
-From: Franck Jullien <franck.jullien@gmail.com>
+This patchset aims at providing a working console over a USB port.
+It includes:
+ - a driver for PXA27x SoC UDC device
+ - various fixes in the serial gadgets
+ - a small evolution in the generic console to sustain a console unregistering
+  (as when a USB cable is severed)
 
-This series adds MCI over SPI support to barebox.
+This serie was obviously tested on a XScale PX27x chip.
 
-It also makes small changes to nios2 in order to get
-this thing to works. As a matter of fact, SPI master
-drivers needs to support cs_change is you want to use
-MCI over SPI.
+Cheers.
 
-Franck Jullien (4):
-  crypto: Add crc7 function
-  mci: Add MCI over SPI support
-  nios2: Include asm/unaligned.h
-  spi/altera_spi: Add cs_change support
+--
+Robert
 
- arch/nios2/include/asm/spi.h       |    1 +
- arch/nios2/include/asm/unaligned.h |   15 ++
- crypto/Kconfig                     |    3 +
- crypto/Makefile                    |    1 +
- crypto/crc7.c                      |   63 ++++++
- drivers/mci/Kconfig                |   17 ++
- drivers/mci/Makefile               |    1 +
- drivers/mci/mci-core.c             |   67 +++++--
- drivers/mci/mci_spi.c              |  431 ++++++++++++++++++++++++++++++++++++
- drivers/spi/altera_spi.c           |   27 +++-
- include/crc7.h                     |   14 ++
- include/mci.h                      |   14 ++
- 12 files changed, 637 insertions(+), 17 deletions(-)
- create mode 100644 arch/nios2/include/asm/unaligned.h
- create mode 100644 crypto/crc7.c
- create mode 100644 drivers/mci/mci_spi.c
- create mode 100644 include/crc7.h
+Robert Jarzmik (5):
+  console: add console unregistering
+  usb/gadget: add pxa27x_udc driver
+  usb/gadget: use generic usb_gadget_poll() in u_serial
+  usb/gadget: add USB serial connect and disconnect
+  usb/gadget: make serial gadget resistant to cable unplug
+
+ arch/arm/mach-pxa/include/mach/udc_pxa2xx.h |   26 +
+ common/console.c                            |   24 +-
+ common/console_simple.c                     |    4 +
+ drivers/usb/gadget/Kconfig                  |    7 +
+ drivers/usb/gadget/Makefile                 |    1 +
+ drivers/usb/gadget/f_serial.c               |    5 +-
+ drivers/usb/gadget/pxa27x_udc.c             | 1524 +++++++++++++++++++++++++++
+ drivers/usb/gadget/pxa27x_udc.h             |  393 +++++++
+ drivers/usb/gadget/u_serial.c               |   27 +-
+ include/console.h                           |    1 +
+ 10 files changed, 1997 insertions(+), 15 deletions(-)
+ create mode 100644 arch/arm/mach-pxa/include/mach/udc_pxa2xx.h
+ create mode 100644 drivers/usb/gadget/pxa27x_udc.c
+ create mode 100644 drivers/usb/gadget/pxa27x_udc.h
 
 -- 
-1.7.7
+1.7.5.4
 
 
 _______________________________________________
