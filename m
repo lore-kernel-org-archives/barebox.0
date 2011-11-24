@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RTXQU-0004bY-GO
- for barebox@lists.infradead.org; Thu, 24 Nov 2011 11:25:13 +0000
-Received: from beldin.local (unknown
- [IPv6:2a01:e35:2f37:a360:ea11:32ff:fe70:ee3e])
- by smtp1-g21.free.fr (Postfix) with ESMTP id 9A437940617
- for <barebox@lists.infradead.org>; Thu, 24 Nov 2011 12:25:00 +0100 (CET)
-From: Robert Jarzmik <robert.jarzmik@free.fr>
-Date: Thu, 24 Nov 2011 12:24:55 +0100
-Message-ID: <87ipm9yd88.fsf@free.fr>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RTXUx-0004TX-TK
+ for barebox@lists.infradead.org; Thu, 24 Nov 2011 11:29:48 +0000
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Thu, 24 Nov 2011 12:28:51 +0100
+References: <1321435467-19148-1-git-send-email-jbe@pengutronix.de>
+ <1321435467-19148-13-git-send-email-jbe@pengutronix.de>
+ <20111117204604.GU27267@pengutronix.de>
+In-Reply-To: <20111117204604.GU27267@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+Message-Id: <201111241228.51594.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,32 +24,72 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: ARM, MMU and IO space mapping
+Subject: Re: [PATCH 12/13] ATA Disk Support: Add support for native ATA type
+ drives
 To: barebox@lists.infradead.org
 
-Hi,
+Sascha Hauer wrote:
+> On Wed, Nov 16, 2011 at 10:24:26AM +0100, Juergen Beisert wrote:
+> > Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
+> > ---
+> >  drivers/ata/Kconfig          |   12 +
+> >  drivers/ata/Makefile         |    1 +
+> >  drivers/ata/disk_ata_drive.c |  631
+> > ++++++++++++++++++++++++++++++++++++++++++ include/ata_drive.h          |
+> >  194 +++++++++++++
+> >  4 files changed, 838 insertions(+), 0 deletions(-)
+> >  create mode 100644 drivers/ata/disk_ata_drive.c
+> >  create mode 100644 include/ata_drive.h
+> >
+> > diff --git a/drivers/ata/Kconfig b/drivers/ata/Kconfig
+> > index 86b5673..0a15863 100644
+> > --- a/drivers/ata/Kconfig
+> > +++ b/drivers/ata/Kconfig
+> > @@ -24,6 +24,18 @@ config DISK_BIOS
+> >  	  media to work on. Disadvantage is: Due to its 16 bit nature it is
+> >  	  slow.
+> >
+> > +config DISK_ATA
+> > +	bool "ATA type drives"
+> > +	select DISK_DRIVE
+> > +	help
+> > +	  Support for native ATA/IDE drives
+> > +
+> > +config DISK_LE_ATTACHED
+> > +	bool "little endianess attachment"
+> > +	depends on DISK_ATA
+> > +	help
+> > +	  How the drive's data port (16 bit) is connected to the CPU: LE or BE
+>
+> No. We have platform data for this stuff.
 
-I was wandering in the MMU arm implementation and I'm wondering if anybody is
-using it and accessing some IO mapped space.
+The platform data will imply a runtime decision. While this approach is a 
+compile time decision.
 
-My trouble is that mmu_init() only maps the RAM space (and with cacheable memory
-type). For the PXA, I would need a non-cacheable non-bufferable memory type,
-which could be allocated either :
- - through dev_request_mem_region(), which would be amended for the MMU case
- - or through a dedicated ioremap() function, which will be empty in no MMU case
+I will change it.
 
-The current issue I'm facing is that when I launch barebox with MMU enabled, the
-UDC device doesn't work (I presume because the IO space is not mapped into the
-MMU). This prevents me from using barebox in MMU context (and therefore I have
-no D-Cache).
+> [...]
+> > +
+> > +	if (timeout) {
+> > +		pr_debug("%s: Finished with %u us remaining\n", __func__, timeout);
+>
+> This seems *very* noisy.
+>
+> > +		return 0;
+> > +	}
+> > +
+> > +	pr_debug("%s: Waiting timed out!\n", __func__);
+>
+> We have a pr_debug here and additionally in each function calling this.
+> I think having it here is enough.
 
-Would the evolution of dev_request_mem_region() be acceptable, or should I
-consider another way ?
+Ups. My mistake. Leftover from debugging.
 
-Cheers.
+jbe
 
 -- 
-Robert
+Pengutronix e.K.                              | Juergen Beisert             |
+Linux Solutions for Science and Industry      | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
