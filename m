@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RTgeC-0003oR-2v
- for barebox@lists.infradead.org; Thu, 24 Nov 2011 21:15:57 +0000
+ id 1RTgkJ-00042z-Rh
+ for barebox@lists.infradead.org; Thu, 24 Nov 2011 21:22:16 +0000
 From: Robert Jarzmik <robert.jarzmik@free.fr>
 References: <1322103764-6265-1-git-send-email-robert.jarzmik@free.fr>
  <1322103764-6265-10-git-send-email-robert.jarzmik@free.fr>
- <4ECE0ACE.2070103@pengutronix.de>
-Date: Thu, 24 Nov 2011 22:15:46 +0100
-In-Reply-To: <4ECE0ACE.2070103@pengutronix.de> (Marc Kleine-Budde's message of
- "Thu, 24 Nov 2011 10:13:50 +0100")
-Message-ID: <874nxtxlvh.fsf@free.fr>
+ <20111124094525.GB27267@pengutronix.de>
+Date: Thu, 24 Nov 2011 22:22:08 +0100
+In-Reply-To: <20111124094525.GB27267@pengutronix.de> (Sascha Hauer's message
+ of "Thu, 24 Nov 2011 10:45:25 +0100")
+Message-ID: <87zkflw70f.fsf@free.fr>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -25,40 +25,34 @@ Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 9/9] arm/mach-pxa: add mioa701 board
-To: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Marc Kleine-Budde <mkl@pengutronix.de> writes:
+Sascha Hauer <s.hauer@pengutronix.de> writes:
+> Are the defines in this file used by generic code? If not, please put
+> them into a board specific include file (or remove them if they are
+> unused)
+I intended to use these values in lowlevel_init.S. Isn't that the right place ?
 
-> On 11/24/2011 04:02 AM, Robert Jarzmik wrote:
->> Add Mitac MioA701 board initial support.
->> The support only provides basic boot and a console over USB
->> (serial gadget).
+>> diff --git a/arch/arm/boards/mioa701/lowlevel_init.S b/arch/arm/boards/mioa701/lowlevel_init.S
+>> +	.section ".text_bare_init","ax"
+>> +.global board_init_lowlevel
+>> +board_init_lowlevel:
+>> +	mov	r10, lr
+>> +	/*
+>> +	 * This piece of code should ensure at least:
+>> +	 *  - getting SDRAM out of self-refresh, and/or setup SDRAM timings
+>> +	 *  - putting the GPIO logic into a usable state
+>> +	bl	stabilize_reset
+>> +	bl	setup_sdram
+>> +	bl	setup_gpios
 >
-> Please remove the address of the FSF in the header of the files, please
-> fix you (C), we don't have 2012 yet :)
-OK :)
+> I can't find these functions in the patch. Is this used?
+It's ... within a comment because these functions are not written yet. This is
+where the config.h values will be used, and the 3 functions should be coded in a
+next step.
 
->> diff --git a/Makefile b/Makefile
->> index 1d1e50d..7e94d37 100644
->> --- a/Makefile
->> +++ b/Makefile
->> @@ -163,8 +163,8 @@ export srctree objtree VPATH
->>  # Alternatively CROSS_COMPILE can be set in the environment.
->>  # Default value for CROSS_COMPILE is not to prefix executables
->>  
->> -ARCH            ?= sandbox
->> -CROSS_COMPILE   ?=
->> +ARCH            ?= arm
->> +CROSS_COMPILE   ?= /home/rj/mio_linux/arm-2007q1/bin/arm-none-eabi-
->
-> Please remove that hunk :)
-Urgh, the little sneaky one.
-
-...zip...
-All following remarks will be taken into account for v2.
-
-Thanks for the review.
+Cheers.
 
 -- 
 Robert
