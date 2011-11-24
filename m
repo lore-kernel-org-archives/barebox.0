@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp6-g21.free.fr ([2a01:e0c:1:1599::15])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RTPZK-0007Oz-Cq
- for barebox@lists.infradead.org; Thu, 24 Nov 2011 03:01:47 +0000
+ id 1RTPZS-0007Qe-UH
+ for barebox@lists.infradead.org; Thu, 24 Nov 2011 03:01:56 +0000
 From: Robert Jarzmik <robert.jarzmik@free.fr>
-Date: Thu, 24 Nov 2011 04:01:25 +0100
-Message-Id: <1322103690-32669-1-git-send-email-robert.jarzmik@free.fr>
+Date: Thu, 24 Nov 2011 04:01:28 +0100
+Message-Id: <1322103690-32669-4-git-send-email-robert.jarzmik@free.fr>
+In-Reply-To: <1322103690-32669-1-git-send-email-robert.jarzmik@free.fr>
+References: <1322103690-32669-1-git-send-email-robert.jarzmik@free.fr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,45 +21,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/5] Enable a console over a serial USB gadget
+Subject: [PATCH 3/5] usb/gadget: use generic usb_gadget_poll() in u_serial
 To: barebox@lists.infradead.org
+Cc: Robert Jarzmik <robert.jarzmik@atosorigin.com>
 
-This patchset aims at providing a working console over a USB port.
-It includes:
- - a driver for PXA27x SoC UDC device
- - various fixes in the serial gadgets
- - a small evolution in the generic console to sustain a console unregistering
-  (as when a USB cable is severed)
+From: Robert Jarzmik <robert.jarzmik@atosorigin.com>
 
-This serie was obviously tested on a XScale PX27x chip.
+Use the generic gadget polling function instead of the
+specific fsl function. This is a fix from a leftover in
+gadget development.
 
-Cheers.
+Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
+---
+ drivers/usb/gadget/u_serial.c |    5 ++---
+ 1 files changed, 2 insertions(+), 3 deletions(-)
 
---
-Robert
-
-Robert Jarzmik (5):
-  console: add console unregistering
-  usb/gadget: add pxa27x_udc driver
-  usb/gadget: use generic usb_gadget_poll() in u_serial
-  usb/gadget: add USB serial connect and disconnect
-  usb/gadget: make serial gadget resistant to cable unplug
-
- arch/arm/mach-pxa/include/mach/udc_pxa2xx.h |   26 +
- common/console.c                            |   24 +-
- common/console_simple.c                     |    4 +
- drivers/usb/gadget/Kconfig                  |    7 +
- drivers/usb/gadget/Makefile                 |    1 +
- drivers/usb/gadget/f_serial.c               |    5 +-
- drivers/usb/gadget/pxa27x_udc.c             | 1524 +++++++++++++++++++++++++++
- drivers/usb/gadget/pxa27x_udc.h             |  393 +++++++
- drivers/usb/gadget/u_serial.c               |   27 +-
- include/console.h                           |    1 +
- 10 files changed, 1997 insertions(+), 15 deletions(-)
- create mode 100644 arch/arm/mach-pxa/include/mach/udc_pxa2xx.h
- create mode 100644 drivers/usb/gadget/pxa27x_udc.c
- create mode 100644 drivers/usb/gadget/pxa27x_udc.h
-
+diff --git a/drivers/usb/gadget/u_serial.c b/drivers/usb/gadget/u_serial.c
+index d3baed7..8c2c8fa 100644
+--- a/drivers/usb/gadget/u_serial.c
++++ b/drivers/usb/gadget/u_serial.c
+@@ -382,7 +382,7 @@ static void serial_putc(struct console_device *cdev, char c)
+ 	status = usb_ep_queue(in, req);
+ 
+ 	while (list_empty(pool))
+-		fsl_udc_irq();
++		usb_gadget_poll();
+ }
+ 
+ static int serial_tstc(struct console_device *cdev)
+@@ -475,7 +475,7 @@ static int do_mycdev(struct command *cmdtp, int argc, char *argv[])
+ 		printf("%c", i);
+ 		mdelay(500);
+ 		for (j = 0; j < 100; j++)
+-			fsl_udc_irq();
++			usb_gadget_poll();
+ 	}
+ 	return 0;
+ }
+@@ -522,4 +522,3 @@ printf("%s\n", __func__);
+ 	gs_free_requests(gser->out, &port->read_pool);
+ 	gs_free_requests(gser->in, &port->write_pool);
+ }
+-
 -- 
 1.7.5.4
 
