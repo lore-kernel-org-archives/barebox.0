@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RTYet-0005h4-34
- for barebox@lists.infradead.org; Thu, 24 Nov 2011 12:44:08 +0000
+ id 1RTYf6-0005iR-OC
+ for barebox@lists.infradead.org; Thu, 24 Nov 2011 12:44:21 +0000
 Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
  by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <jbe@pengutronix.de>) id 1RTYej-0006pT-8m
+ (envelope-from <jbe@pengutronix.de>) id 1RTYej-0006pb-8s
  for barebox@lists.infradead.org; Thu, 24 Nov 2011 13:43:57 +0100
 Received: from jbe by dude.hi.pengutronix.de with local (Exim 4.77)
- (envelope-from <jbe@pengutronix.de>) id 1RTYei-0002Lb-8Q
+ (envelope-from <jbe@pengutronix.de>) id 1RTYei-0002Lz-Ca
  for barebox@lists.infradead.org; Thu, 24 Nov 2011 13:43:56 +0100
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Thu, 24 Nov 2011 13:43:43 +0100
-Message-Id: <1322138631-8963-6-git-send-email-jbe@pengutronix.de>
+Date: Thu, 24 Nov 2011 13:43:51 +0100
+Message-Id: <1322138631-8963-14-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1322138631-8963-1-git-send-email-jbe@pengutronix.de>
 References: <1322138631-8963-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -28,128 +28,221 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/13] ATA/DISK: Reorganize file structure and names for
- future updates
+Subject: [PATCH 13/13] Add driver for IDE like interfaces
 To: barebox@lists.infradead.org
 
-'ATA' means more an interface than a disk drive. Change the names to reflect
-their real meaning.
+This simple driver enables a generic driver for ATA type of devices to get
+access to the so called 'register file' of an ATA drive.
 
 Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 ---
- drivers/Makefile         |    2 +-
- drivers/ata/Kconfig      |   23 +++++++++++++----------
- drivers/ata/Makefile     |    2 +-
- drivers/ata/disk_drive.c |    4 ++--
- drivers/mci/Kconfig      |    4 ++--
- 5 files changed, 19 insertions(+), 16 deletions(-)
+ drivers/ata/Kconfig             |    7 ++
+ drivers/ata/Makefile            |    1 +
+ drivers/ata/intf_platform_ide.c |  130 +++++++++++++++++++++++++++++++++++++++
+ include/platform_ide.h          |   32 ++++++++++
+ 4 files changed, 170 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/ata/intf_platform_ide.c
+ create mode 100644 include/platform_ide.h
 
-diff --git a/drivers/Makefile b/drivers/Makefile
-index 16b3bb1..592c39e 100644
---- a/drivers/Makefile
-+++ b/drivers/Makefile
-@@ -4,7 +4,7 @@ obj-y	+= serial/
- obj-y	+= mtd/
- obj-y	+= nor/
- obj-y	+= usb/
--obj-$(CONFIG_ATA) += ata/
-+obj-$(CONFIG_DISK) += ata/
- obj-$(CONFIG_SPI) += spi/
- obj-$(CONFIG_I2C) += i2c/
- obj-$(CONFIG_MCI) += mci/
 diff --git a/drivers/ata/Kconfig b/drivers/ata/Kconfig
-index 5be1805..025ff94 100644
+index f4334c2..fe6f5e6 100644
 --- a/drivers/ata/Kconfig
 +++ b/drivers/ata/Kconfig
-@@ -1,27 +1,30 @@
--menuconfig ATA
-+menuconfig DISK
- 	select BLOCK
--	bool "ATA                           "
-+	bool "Disk support                  "
- 	help
--	  Add support for ATA types of drives like harddisks and CDROMs.
-+	  Add support for disk like drives like harddisks, CDROMs, SD cards and
-+	  CF cards.
- 
--if ATA
-+if DISK
- 
--config ATA_WRITE
-+config DISK_WRITE
- 	select BLOCK_WRITE
--	bool "support writing to ATA drives"
-+	bool "support writing to disk drives"
- 
- comment "drive types"
- 
--config ATA_DISK
--	bool "disk drives"
-+config DISK_DRIVE
-+	bool "Generic disk drives"
- 	help
--	  Add support for regular disk drives
-+	  Add support for generic disk drives. Common behaviour for this kind
-+	  of devices is using a partition table in the first sector. Say Y here
-+	  if you intend to work with disk drives (also CF cards and SD cards).
+@@ -32,4 +32,11 @@ config DISK_ATA
  
  comment "interface types"
  
- config ATA_BIOS
- 	bool "BIOS based"
--	select ATA_DISK
-+	select DISK_DRIVE
- 	depends on X86_BIOS_BRINGUP
- 	help
- 	  Gain disk drive access via int13 calls to the standard PC-BIOS.
++config DISK_INTF_PLATFORM_IDE
++	bool "Platform IDE"
++	select DISK_ATA
++	help
++	  Generic platform driver for simple IDE like interfaces to a connected
++	  ATA device.
++
+ endif
 diff --git a/drivers/ata/Makefile b/drivers/ata/Makefile
-index 30d15cc..c3260d7 100644
+index cdbcbe7..2560076 100644
 --- a/drivers/ata/Makefile
 +++ b/drivers/ata/Makefile
-@@ -1,6 +1,6 @@
- # drive types
- 
--obj-$(CONFIG_ATA_DISK) += disk_drive.o
-+obj-$(CONFIG_DISK_DRIVE) += disk_drive.o
+@@ -5,3 +5,4 @@ obj-$(CONFIG_DISK_ATA) += disk_ata_drive.o
  
  # interface types
  
-diff --git a/drivers/ata/disk_drive.c b/drivers/ata/disk_drive.c
-index 6a5dc87..c2a6a51 100644
---- a/drivers/ata/disk_drive.c
-+++ b/drivers/ata/disk_drive.c
-@@ -144,7 +144,7 @@ static int atablk_read(struct block_device *blk, void *buf, int block,
- 	return atablk->intf->read(atablk->dev, block, num_blocks, buf);
- }
- 
--#ifdef CONFIG_ATA_WRITE
-+#ifdef CONFIG_DISK_WRITE
- static int atablk_write(struct block_device *blk, const void *buf, int block,
- 		int num_blocks)
- {
-@@ -156,7 +156,7 @@ static int atablk_write(struct block_device *blk, const void *buf, int block,
- 
- static struct block_device_ops ataops = {
- 	.read = atablk_read,
--#ifdef CONFIG_ATA_WRITE
-+#ifdef CONFIG_DISK_WRITE
- 	.write = atablk_write,
- #endif
- };
-diff --git a/drivers/mci/Kconfig b/drivers/mci/Kconfig
-index 0d5a0e0..d24e606 100644
---- a/drivers/mci/Kconfig
-+++ b/drivers/mci/Kconfig
-@@ -1,7 +1,7 @@
- menuconfig MCI
- 	bool "MCI drivers                   "
--	select ATA
--	select ATA_DISK
-+	select DISK
-+	select DISK_DRIVE
- 	help
- 	  Add support for MCI drivers, used to handle MMC and SD cards
- 
++obj-$(CONFIG_DISK_INTF_PLATFORM_IDE) += intf_platform_ide.o
+diff --git a/drivers/ata/intf_platform_ide.c b/drivers/ata/intf_platform_ide.c
+new file mode 100644
+index 0000000..1955a9c
+--- /dev/null
++++ b/drivers/ata/intf_platform_ide.c
+@@ -0,0 +1,130 @@
++/*
++ * Copyright (C) 2011 Juergen Beisert, Pengutronix
++ *
++ * Derived from the Linux kernel: Generic platform device PATA driver
++ *  Copyright (C) 2006 - 2007  Paul Mundt
++ *  Based on pata_pcmcia:
++ *  Copyright 2005-2006 Red Hat Inc, all rights reserved.
++ *
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
++
++#include <common.h>
++#include <init.h>
++#include <xfuncs.h>
++#include <malloc.h>
++#include <errno.h>
++#include <ata_drive.h>
++#include <platform_ide.h>
++
++/**
++ * Setup the register specific addresses for an ATA like divice
++ * @param reg_base Base address of the standard ATA like registers
++ * @param alt_base Base address of the alternate ATA like registers
++ * @param ioaddr Register file structure to setup
++ * @param shift Shift offset between registers
++ *
++ * Some of the registers have different names but use the same offset. This is
++ * due to the fact read or write access at the same offset reaches different
++ * registers.
++ */
++static void platform_ide_setup_port(void *reg_base, void *alt_base,
++			struct ata_ioports *ioaddr, unsigned shift)
++{
++	/* standard registers (0 ... 7) */
++	ioaddr->cmd_addr = reg_base;
++
++	ioaddr->data_addr = reg_base + (IDE_REG_DATA << shift);
++
++	ioaddr->error_addr = reg_base + (IDE_REG_ERR << shift);
++	ioaddr->feature_addr = reg_base + (IDE_REG_FEATURE << shift);
++
++	ioaddr->nsect_addr = reg_base + (IDE_REG_NSECT << shift);
++
++	ioaddr->lbal_addr = reg_base + (IDE_REG_LBAL << shift);
++
++	ioaddr->lbam_addr = reg_base + (IDE_REG_LBAM << shift);
++
++	ioaddr->lbah_addr = reg_base + (IDE_REG_LBAH << shift);
++
++	ioaddr->device_addr = reg_base + (IDE_REG_DEVICE << shift);
++
++	ioaddr->status_addr = reg_base + (IDE_REG_STATUS << shift);
++	ioaddr->command_addr = reg_base + (IDE_REG_CMD << shift);
++
++	ioaddr->altstatus_addr = alt_base + (IDE_REG_ALT_STATUS << shift);
++	ioaddr->ctl_addr = alt_base + (IDE_REG_DEV_CTL << shift);
++
++	ioaddr->alt_dev_addr = alt_base + (IDE_REG_DRV_ADDR << shift);
++}
++
++static int platform_ide_probe(struct device_d *dev)
++{
++	int rc;
++	struct ide_port_info *pdata = dev->platform_data;
++	struct ata_ioports *io;
++	void *reg_base, *alt_base;
++
++	if (pdata == NULL) {
++		dev_err(dev, "No platform data. Cannot continue\n");
++		return -EINVAL;
++	}
++
++	io = xzalloc(sizeof(struct ata_ioports));
++	reg_base = dev_request_mem_region(dev, 0);
++	alt_base = dev_request_mem_region(dev, 1);
++	platform_ide_setup_port(reg_base, alt_base, io, pdata->ioport_shift);
++	io->reset = pdata->reset;
++	io->dataif_be = pdata->dataif_be;
++
++	rc = register_ata_drive(dev, io);
++	if (rc != 0) {
++		dev_err(dev, "Cannot register IDE interface\n");
++		free(io);
++	}
++
++	return rc;
++}
++
++static struct driver_d platform_ide_driver = {
++	.name   = "ide_intf",
++	.probe  = platform_ide_probe,
++};
++
++static int platform_ide_init(void)
++{
++	return register_driver(&platform_ide_driver);
++}
++
++device_initcall(platform_ide_init);
++
++/**
++ * @file
++ * @brief Interface driver for an ATA drive behind an IDE like interface
++ *
++ * This communication driver does all accesses to the drive via memory IO
++ * instructions.
++ *
++ * This kind of interface is also useable for regular bus like access, when
++ * there is no dedicated IDE available.
++ *
++ * "IDE like" means the platform data defines addresses to the register file
++ * of the attached ATA drive.
++ *
++ * This driver does not change any access timings due to the fact it has no idea
++ * how to do so. So, do not expect an impressive data throughput.
++ *
++ * @todo Support also the IO port access method, the x86 architecture is using
++ */
+diff --git a/include/platform_ide.h b/include/platform_ide.h
+new file mode 100644
+index 0000000..f71fbfb
+--- /dev/null
++++ b/include/platform_ide.h
+@@ -0,0 +1,32 @@
++/*
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
++
++#ifndef __PLATFORM_IDE_H
++#define __PLATFORM_IDE_H
++
++struct ide_port_info {
++	/*
++	 * I/O port shift, for platforms with ports that are
++	 * constantly spaced and need larger than the 1-byte
++	 * spacing
++	 */
++	unsigned ioport_shift;
++	int dataif_be;	/* true if 16 bit data register is big endian */
++
++	/* handle hard reset of this port */
++	void (*reset)(int);	/* true: assert reset, false: de-assert reset */
++};
++
++#endif /* __PLATFORM_IDE_H */
 -- 
 1.7.7.1
 
