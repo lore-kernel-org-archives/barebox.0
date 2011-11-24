@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RTVcg-0006xu-3m
- for barebox@lists.infradead.org; Thu, 24 Nov 2011 09:29:41 +0000
-Date: Thu, 24 Nov 2011 10:29:31 +0100
+ id 1RTVjX-0000GW-Ep
+ for barebox@lists.infradead.org; Thu, 24 Nov 2011 09:36:44 +0000
+Date: Thu, 24 Nov 2011 10:36:36 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20111124092931.GZ27267@pengutronix.de>
-References: <1322103764-6265-1-git-send-email-robert.jarzmik@free.fr>
- <1322103764-6265-2-git-send-email-robert.jarzmik@free.fr>
+Message-ID: <20111124093636.GA27267@pengutronix.de>
+References: <1322082748-17409-1-git-send-email-franck.jullien@gmail.com>
+ <1322082748-17409-4-git-send-email-franck.jullien@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1322103764-6265-2-git-send-email-robert.jarzmik@free.fr>
+In-Reply-To: <1322082748-17409-4-git-send-email-franck.jullien@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,53 +23,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/9] initial Intel/Marvell PXA support
-To: Robert Jarzmik <robert.jarzmik@free.fr>
+Subject: Re: [PATCH 3/4] nios2: Include asm/unaligned.h
+To: franck.jullien@gmail.com
 Cc: barebox@lists.infradead.org
 
-On Thu, Nov 24, 2011 at 04:02:36AM +0100, Robert Jarzmik wrote:
-> From: Marc Kleine-Budde <mkl@pengutronix.de>
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-> 
-> Conflicts:
-> 
-> 	arch/arm/cpu/Makefile
-> 	drivers/serial/Makefile
-> ---
->  arch/arm/Kconfig                             |    4 +
->  arch/arm/Makefile                            |    2 +
->  arch/arm/cpu/Kconfig                         |    5 +
->  arch/arm/cpu/Makefile                        |    1 +
->  arch/arm/mach-pxa/Kconfig                    |   37 ++
->  arch/arm/mach-pxa/Makefile                   |    6 +
->  arch/arm/mach-pxa/clocksource.c              |   50 +++
->  arch/arm/mach-pxa/common.c                   |   42 +++
->  arch/arm/mach-pxa/gpio.c                     |   70 ++++
->  arch/arm/mach-pxa/include/mach/clock.h       |   16 +
->  arch/arm/mach-pxa/include/mach/gpio.h        |  137 ++++++++
->  arch/arm/mach-pxa/include/mach/hardware.h    |   31 ++
->  arch/arm/mach-pxa/include/mach/mfp-pxa27x.h  |  438 ++++++++++++++++++++++++
->  arch/arm/mach-pxa/include/mach/mfp-pxa2xx.h  |  133 ++++++++
->  arch/arm/mach-pxa/include/mach/mfp.h         |   21 ++
->  arch/arm/mach-pxa/include/mach/pxa-regs.h    |   33 ++
->  arch/arm/mach-pxa/include/mach/pxa27x-regs.h |    6 +
->  arch/arm/mach-pxa/include/mach/pxa2xx-regs.h |  267 +++++++++++++++
->  arch/arm/mach-pxa/include/mach/regs-intc.h   |   34 ++
->  arch/arm/mach-pxa/include/mach/regs-ost.h    |   34 ++
->  arch/arm/mach-pxa/include/plat/gpio.h        |   55 +++
->  arch/arm/mach-pxa/include/plat/mfp.h         |  468 ++++++++++++++++++++++++++
->  arch/arm/mach-pxa/mfp-pxa2xx.c               |  189 +++++++++++
->  arch/arm/mach-pxa/speed-pxa27x.c             |   20 ++
->  drivers/serial/Kconfig                       |    4 +
->  drivers/serial/Makefile                      |    1 +
->  drivers/serial/serial_pxa.c                  |  203 +++++++++++
+On Wed, Nov 23, 2011 at 10:12:27PM +0100, franck.jullien@gmail.com wrote:
+> From: Franck Jullien <franck.jullien@gmail.com>
 
-Please remove or update the serial driver here. It still uses map_base
-and won't compile currently.
+Applied this one to master.
 
 Sascha
+
+> 
+> drivers/ata/disk_drive.c needs it....
+> 
+> Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
+> ---
+>  arch/nios2/include/asm/unaligned.h |   15 +++++++++++++++
+>  1 files changed, 15 insertions(+), 0 deletions(-)
+>  create mode 100644 arch/nios2/include/asm/unaligned.h
+> 
+> diff --git a/arch/nios2/include/asm/unaligned.h b/arch/nios2/include/asm/unaligned.h
+> new file mode 100644
+> index 0000000..7615e8a
+> --- /dev/null
+> +++ b/arch/nios2/include/asm/unaligned.h
+> @@ -0,0 +1,15 @@
+> +#ifndef _ASM_NIOS_UNALIGNED_H
+> +#define _ASM_NIOS_UNALIGNED_H
+> +
+> +#include <linux/unaligned/le_byteshift.h>
+> +#include <linux/unaligned/be_byteshift.h>
+> +#include <linux/unaligned/generic.h>
+> +
+> +/*
+> + * Select endianness
+> + */
+> +
+> +#define get_unaligned	__get_unaligned_le
+> +#define put_unaligned	__put_unaligned_le
+> +
+> +#endif /* _ASM_NIOS_UNALIGNED_H */
+> -- 
+> 1.7.7
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
