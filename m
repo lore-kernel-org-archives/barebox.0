@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp6-g21.free.fr ([2a01:e0c:1:1599::15])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RTPZS-0007Qe-UH
- for barebox@lists.infradead.org; Thu, 24 Nov 2011 03:01:56 +0000
+ id 1RTPZL-0007PB-7X
+ for barebox@lists.infradead.org; Thu, 24 Nov 2011 03:01:48 +0000
 From: Robert Jarzmik <robert.jarzmik@free.fr>
-Date: Thu, 24 Nov 2011 04:01:28 +0100
-Message-Id: <1322103690-32669-4-git-send-email-robert.jarzmik@free.fr>
+Date: Thu, 24 Nov 2011 04:01:26 +0100
+Message-Id: <1322103690-32669-2-git-send-email-robert.jarzmik@free.fr>
 In-Reply-To: <1322103690-32669-1-git-send-email-robert.jarzmik@free.fr>
 References: <1322103690-32669-1-git-send-email-robert.jarzmik@free.fr>
 List-Id: <barebox.lists.infradead.org>
@@ -21,48 +21,92 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] usb/gadget: use generic usb_gadget_poll() in u_serial
+Subject: [PATCH 1/5] console: add console unregistering
 To: barebox@lists.infradead.org
 Cc: Robert Jarzmik <robert.jarzmik@atosorigin.com>
 
 From: Robert Jarzmik <robert.jarzmik@atosorigin.com>
 
-Use the generic gadget polling function instead of the
-specific fsl function. This is a fix from a leftover in
-gadget development.
+Some console are transient, like the USB connected serial
+console which should be removed when the USB connection is
+severed.
+
+Enable console removal for such devices.
 
 Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
 ---
- drivers/usb/gadget/u_serial.c |    5 ++---
- 1 files changed, 2 insertions(+), 3 deletions(-)
+ common/console.c        |   24 ++++++++++++++++++------
+ common/console_simple.c |    4 ++++
+ include/console.h       |    1 +
+ 3 files changed, 23 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/usb/gadget/u_serial.c b/drivers/usb/gadget/u_serial.c
-index d3baed7..8c2c8fa 100644
---- a/drivers/usb/gadget/u_serial.c
-+++ b/drivers/usb/gadget/u_serial.c
-@@ -382,7 +382,7 @@ static void serial_putc(struct console_device *cdev, char c)
- 	status = usb_ep_queue(in, req);
+diff --git a/common/console.c b/common/console.c
+index 06e9c29..706d9b2 100644
+--- a/common/console.c
++++ b/common/console.c
+@@ -154,13 +154,9 @@ int console_register(struct console_device *newcdev)
  
- 	while (list_empty(pool))
--		fsl_udc_irq();
-+		usb_gadget_poll();
+ 	list_add_tail(&newcdev->list, &console_list);
+ 
+-	if (console_output_buffer) {
+-		while (kfifo_getc(console_output_buffer, &ch) == 0)
+-			console_putc(CONSOLE_STDOUT, ch);
+-		kfifo_free(console_output_buffer);
+-		console_output_buffer = NULL;
+-	}
+ 
++	while (kfifo_getc(console_output_buffer, &ch) == 0)
++		console_putc(CONSOLE_STDOUT, ch);
+ 	if (first)
+ 		barebox_banner();
+ 
+@@ -168,6 +164,22 @@ int console_register(struct console_device *newcdev)
  }
+ EXPORT_SYMBOL(console_register);
  
- static int serial_tstc(struct console_device *cdev)
-@@ -475,7 +475,7 @@ static int do_mycdev(struct command *cmdtp, int argc, char *argv[])
- 		printf("%c", i);
- 		mdelay(500);
- 		for (j = 0; j < 100; j++)
--			fsl_udc_irq();
-+			usb_gadget_poll();
++int console_unregister(struct console_device *cdev)
++{
++	struct device_d *dev = &cdev->class_dev;
++	int status;
++
++	list_del(&cdev->list);
++	if (list_empty(&console_list))
++		initialized = CONSOLE_UNINITIALIZED;
++
++	status = unregister_device(dev);
++	if (!status)
++		memset(cdev, 0, sizeof(*cdev));
++	return status;
++}
++EXPORT_SYMBOL(console_unregister);
++
+ static int getc_raw(void)
+ {
+ 	struct console_device *cdev;
+diff --git a/common/console_simple.c b/common/console_simple.c
+index 7304d8e..7e0619d 100644
+--- a/common/console_simple.c
++++ b/common/console_simple.c
+@@ -157,3 +157,7 @@ int console_register(struct console_device *newcdev)
  	}
  	return 0;
  }
-@@ -522,4 +522,3 @@ printf("%s\n", __func__);
- 	gs_free_requests(gser->out, &port->read_pool);
- 	gs_free_requests(gser->in, &port->write_pool);
- }
--
++
++int console_unregister(struct console_device *cdev)
++{
++}
+diff --git a/include/console.h b/include/console.h
+index 3bcc5db..c0817f6 100644
+--- a/include/console.h
++++ b/include/console.h
+@@ -49,6 +49,7 @@ struct console_device {
+ };
+ 
+ int console_register(struct console_device *cdev);
++int console_unregister(struct console_device *cdev);
+ 
+ extern struct list_head console_list;
+ #define for_each_console(console) list_for_each_entry(console, &console_list, list)
 -- 
 1.7.5.4
 
