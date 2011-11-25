@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bw0-f49.google.com ([209.85.214.49])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RTxQr-0003PZ-1Z
- for barebox@lists.infradead.org; Fri, 25 Nov 2011 15:11:17 +0000
-Received: by bkat2 with SMTP id t2so5026251bka.36
- for <barebox@lists.infradead.org>; Fri, 25 Nov 2011 07:11:14 -0800 (PST)
-Message-ID: <4ECFB00F.3070002@gmail.com>
-Date: Fri, 25 Nov 2011 16:11:11 +0100
-From: Hubert Feurstein <h.feurstein@gmail.com>
+Received: from smtp6-g21.free.fr ([2a01:e0c:1:1599::15])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1RU3IG-00082j-78
+ for barebox@lists.infradead.org; Fri, 25 Nov 2011 21:26:49 +0000
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+References: <1322103764-6265-1-git-send-email-robert.jarzmik@free.fr>
+ <1322103764-6265-2-git-send-email-robert.jarzmik@free.fr>
+ <20111124092931.GZ27267@pengutronix.de>
+Date: Fri, 25 Nov 2011 22:26:39 +0100
+In-Reply-To: <20111124092931.GZ27267@pengutronix.de> (Sascha Hauer's message
+ of "Thu, 24 Nov 2011 10:29:31 +0100")
+Message-ID: <87vcq7ki5s.fsf@free.fr>
 MIME-Version: 1.0
-References: <20111124143239.GA32286@pengutronix.de>
-In-Reply-To: <20111124143239.GA32286@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,20 +24,18 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] atmel_spi: add mesg->actual_length, so devices can use
- it for read/write
-To: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Subject: Re: [PATCH 1/9] initial Intel/Marvell PXA support
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 2011-11-24 15:32, Michael Grzeschik wrote:
-> Without this i.e. the m25p driver is not working properly.
+Sascha Hauer <s.hauer@pengutronix.de> writes:
 
-Hi,
+> Please remove or update the serial driver here. It still uses map_base
+> and won't compile currently.
+Fixed and updated for v2.
 
-I've tested your change together with the at25 eeprom driver and it
-still works :)
-
-Acked-by: Hubert Feurstein <h.feurstein@gmail.com>
+-- 
+Robert
 
 _______________________________________________
 barebox mailing list
