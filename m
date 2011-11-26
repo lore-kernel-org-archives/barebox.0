@@ -1,18 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RUN4H-0007hS-2W
- for barebox@lists.infradead.org; Sat, 26 Nov 2011 18:33:41 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:6f8:1178:4:5054:ff:fe8d:eefb] helo=localhost)
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RUOmJ-0000zY-2O
+ for barebox@lists.infradead.org; Sat, 26 Nov 2011 20:23:17 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
  by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <jbe@pengutronix.de>) id 1RUN4B-0001aS-Qt
- for barebox@lists.infradead.org; Sat, 26 Nov 2011 19:33:35 +0100
+ (envelope-from <jbe@pengutronix.de>) id 1RUOmA-0004ru-4f
+ for barebox@lists.infradead.org; Sat, 26 Nov 2011 21:23:06 +0100
+Received: from jbe by dude.hi.pengutronix.de with local (Exim 4.77)
+ (envelope-from <jbe@pengutronix.de>) id 1RUOm9-00084a-6U
+ for barebox@lists.infradead.org; Sat, 26 Nov 2011 21:23:05 +0100
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Sat, 26 Nov 2011 19:32:49 +0100
-MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <201111261932.49351.jbe@pengutronix.de>
+Date: Sat, 26 Nov 2011 21:22:52 +0100
+Message-Id: <1322338981-30978-6-git-send-email-jbe@pengutronix.de>
+In-Reply-To: <1322338981-30978-1-git-send-email-jbe@pengutronix.de>
+References: <1322338981-30978-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,37 +23,56 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: S3C24XX: Fix wrong RTS behaviour
+Subject: [PATCH 05/14] MACH SAMSUNG/S3C: The SDHC driver can be shared in the
+ S3C CPU family
 To: barebox@lists.infradead.org
 
-Enabling AUTOSYNC means enabling the auto sync feature, not rising the RTS
-
 Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
-
 ---
- drivers/serial/serial_s3c24x0.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm/boards/mini2440/mini2440.c                |    2 +-
+ .../mach-samsung/include/mach/{mci.h => s3c-mci.h} |    0
+ drivers/mci/s3c.c                                  |    2 +-
+ 3 files changed, 2 insertions(+), 2 deletions(-)
+ rename arch/arm/mach-samsung/include/mach/{mci.h => s3c-mci.h} (100%)
 
-Index: barebox-git/drivers/serial/serial_s3c24x0.c
-===================================================================
---- barebox-git.orig/drivers/serial/serial_s3c24x0.c
-+++ barebox-git/drivers/serial/serial_s3c24x0.c
-@@ -72,6 +72,8 @@ static int s3c24x0_serial_init_port(stru
- 	writew(0x0245, base + UCON);
+diff --git a/arch/arm/boards/mini2440/mini2440.c b/arch/arm/boards/mini2440/mini2440.c
+index ad90852..b28d255 100644
+--- a/arch/arm/boards/mini2440/mini2440.c
++++ b/arch/arm/boards/mini2440/mini2440.c
+@@ -41,7 +41,7 @@
+ #include <mach/s3c-iomap.h>
+ #include <mach/s3c24xx-nand.h>
+ #include <mach/s3c-generic.h>
+-#include <mach/mci.h>
++#include <mach/s3c-mci.h>
+ #include <mach/fb.h>
  
- #ifdef CONFIG_DRIVER_SERIAL_S3C24X0_AUTOSYNC
-+	writeb(0x10, base + UMCON); /* enable auto flow control */
-+#else
- 	writeb(0x01, base + UMCON); /* RTS up */
- #endif
+ static struct s3c24x0_nand_platform_data nand_info = {
+diff --git a/arch/arm/mach-samsung/include/mach/mci.h b/arch/arm/mach-samsung/include/mach/s3c-mci.h
+similarity index 100%
+rename from arch/arm/mach-samsung/include/mach/mci.h
+rename to arch/arm/mach-samsung/include/mach/s3c-mci.h
+diff --git a/drivers/mci/s3c.c b/drivers/mci/s3c.c
+index f4011d9..2a21ca6 100644
+--- a/drivers/mci/s3c.c
++++ b/drivers/mci/s3c.c
+@@ -40,7 +40,7 @@
+ #include <errno.h>
+ #include <clock.h>
+ #include <io.h>
+-#include <mach/mci.h>
++#include <mach/s3c-mci.h>
+ #include <mach/s3c-generic.h>
+ #include <mach/s3c-iomap.h>
  
 -- 
-Pengutronix e.K.                              | Juergen Beisert             |
-Linux Solutions for Science and Industry      | http://www.pengutronix.de/  |
+1.7.7.1
+
 
 _______________________________________________
 barebox mailing list
