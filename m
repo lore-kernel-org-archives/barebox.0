@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RUOmc-000125-RB
- for barebox@lists.infradead.org; Sat, 26 Nov 2011 20:23:37 +0000
+ id 1RUOmY-00011c-P1
+ for barebox@lists.infradead.org; Sat, 26 Nov 2011 20:23:32 +0000
 Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
  by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <jbe@pengutronix.de>) id 1RUOmN-0004s1-C9
+ (envelope-from <jbe@pengutronix.de>) id 1RUOmN-0004rz-BI
  for barebox@lists.infradead.org; Sat, 26 Nov 2011 21:23:19 +0100
 Received: from jbe by dude.hi.pengutronix.de with local (Exim 4.77)
- (envelope-from <jbe@pengutronix.de>) id 1RUOm9-000852-AV
+ (envelope-from <jbe@pengutronix.de>) id 1RUOm9-00084v-9S
  for barebox@lists.infradead.org; Sat, 26 Nov 2011 21:23:05 +0100
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Sat, 26 Nov 2011 21:22:59 +0100
-Message-Id: <1322338981-30978-13-git-send-email-jbe@pengutronix.de>
+Date: Sat, 26 Nov 2011 21:22:57 +0100
+Message-Id: <1322338981-30978-11-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1322338981-30978-1-git-send-email-jbe@pengutronix.de>
 References: <1322338981-30978-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -28,299 +28,178 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/14] MACH SAMSUNG/S3C: Unify the UART driver for the S3C
- family of CPUs
+Subject: [PATCH 10/14] MACH SAMSUNG/S3C: Re-work the S3C family timer driver
 To: barebox@lists.infradead.org
 
-The UART is one of the units which differs only slightly inside the S3C family.
-Prepare this driver to share it with more recent CPUs.
+After separation and after all S3C macros are now present, change the driver
+to be more generic for future additions. This includes the clock sources of
+the timers, that will be now in the CPU part (it cannot be generic due to
+differences in the clock tree).
+
+The timer registers in the S3C24XX family are only 16 bit wide. But these
+registers can be read and written in a 32 bit manner.
 
 Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 ---
- arch/arm/boards/a9m2410/a9m2410.c                 |    2 +-
- arch/arm/boards/a9m2440/a9m2440.c                 |    2 +-
- arch/arm/boards/mini2440/mini2440.c               |    2 +-
- arch/arm/mach-samsung/include/mach/s3c-iomap.h    |   15 ++---
- drivers/serial/Kconfig                            |   10 ++--
- drivers/serial/Makefile                           |    2 +-
- drivers/serial/{serial_s3c24x0.c => serial_s3c.c} |   68 +++++++++++++--------
- 7 files changed, 58 insertions(+), 43 deletions(-)
- rename drivers/serial/{serial_s3c24x0.c => serial_s3c.c} (68%)
+ arch/arm/mach-samsung/include/mach/s3c-generic.h |    3 +
+ arch/arm/mach-samsung/include/mach/s3c-timer.h   |   10 ++++
+ arch/arm/mach-samsung/s3c-timer.c                |   54 ++++++++++++++-------
+ arch/arm/mach-samsung/s3c24xx-clocks.c           |   24 ++++++++++
+ 4 files changed, 73 insertions(+), 18 deletions(-)
 
-diff --git a/arch/arm/boards/a9m2410/a9m2410.c b/arch/arm/boards/a9m2410/a9m2410.c
-index 989dcf7..a66afb9 100644
---- a/arch/arm/boards/a9m2410/a9m2410.c
-+++ b/arch/arm/boards/a9m2410/a9m2410.c
-@@ -167,7 +167,7 @@ void __bare_init nand_boot(void)
+diff --git a/arch/arm/mach-samsung/include/mach/s3c-generic.h b/arch/arm/mach-samsung/include/mach/s3c-generic.h
+index 33f025d..0909c0e 100644
+--- a/arch/arm/mach-samsung/include/mach/s3c-generic.h
++++ b/arch/arm/mach-samsung/include/mach/s3c-generic.h
+@@ -30,4 +30,7 @@ uint32_t s3c_get_fclk(void);
+ uint32_t s3c_get_hclk(void);
+ uint32_t s3c_get_pclk(void);
+ uint32_t s3c_get_uclk(void);
++void s3c_init_t4_clk_source(void);
++unsigned s3c_get_t4_clk(void);
+ uint32_t s3c24x0_get_memory_size(void);
++
+diff --git a/arch/arm/mach-samsung/include/mach/s3c-timer.h b/arch/arm/mach-samsung/include/mach/s3c-timer.h
+index 5201fc4..f122b09 100644
+--- a/arch/arm/mach-samsung/include/mach/s3c-timer.h
++++ b/arch/arm/mach-samsung/include/mach/s3c-timer.h
+@@ -16,8 +16,18 @@
+ # define __MACH_S3C_TIMER_H
  
- static int a9m2410_console_init(void)
- {
--	add_generic_device("s3c24x0_serial", -1, NULL, UART1_BASE, UART1_SIZE,
-+	add_generic_device("s3c_serial", -1, NULL, S3C_UART1_BASE, S3C_UART1_SIZE,
- 			   IORESOURCE_MEM, NULL);
- 	return 0;
- }
-diff --git a/arch/arm/boards/a9m2440/a9m2440.c b/arch/arm/boards/a9m2440/a9m2440.c
-index 1986efb..077d726 100644
---- a/arch/arm/boards/a9m2440/a9m2440.c
-+++ b/arch/arm/boards/a9m2440/a9m2440.c
-@@ -168,7 +168,7 @@ void __bare_init nand_boot(void)
+ #define S3C_TCFG0 (S3C_TIMER_BASE + 0x00)
++# define S3C_TCFG0_T4MASK 0xff00
++# define S3C_TCFG0_SET_PSCL234(x) ((x) << 8)
++# define S3C_TCFG0_GET_PSCL234(x) (((x) >> 8) & 0xff)
+ #define S3C_TCFG1 (S3C_TIMER_BASE + 0x04)
++# define S3C_TCFG1_T4MASK 0xf0000
++# define S3C_TCFG1_SET_T4MUX(x) ((x) << 16)
++# define S3C_TCFG1_GET_T4MUX(x) (((x) >> 16) & 0xf)
+ #define S3C_TCON (S3C_TIMER_BASE + 0x08)
++# define S3C_TCON_T4MASK (7 << 20)
++# define S3C_TCON_T4START (1 << 20)
++# define S3C_TCON_T4MANUALUPD (1 << 21)
++# define S3C_TCON_T4RELOAD (1 <<22)
+ #define S3C_TCNTB0 (S3C_TIMER_BASE + 0x0c)
+ #define S3C_TCMPB0 (S3C_TIMER_BASE + 0x10)
+ #define S3C_TCNTO0 (S3C_TIMER_BASE + 0x14)
+diff --git a/arch/arm/mach-samsung/s3c-timer.c b/arch/arm/mach-samsung/s3c-timer.c
+index a3ce4a2..a29c8d6 100644
+--- a/arch/arm/mach-samsung/s3c-timer.c
++++ b/arch/arm/mach-samsung/s3c-timer.c
+@@ -22,35 +22,53 @@
+ #include <mach/s3c-generic.h>
+ #include <mach/s3c-timer.h>
  
- static int a9m2440_console_init(void)
- {
--	add_generic_device("s3c24x0_serial", -1, NULL, UART1_BASE, UART1_SIZE,
-+	add_generic_device("s3c_serial", -1, NULL, S3C_UART1_BASE, S3C_UART1_SIZE,
- 			   IORESOURCE_MEM, NULL);
- 	return 0;
- }
-diff --git a/arch/arm/boards/mini2440/mini2440.c b/arch/arm/boards/mini2440/mini2440.c
-index df3bcc6..9270c18 100644
---- a/arch/arm/boards/mini2440/mini2440.c
-+++ b/arch/arm/boards/mini2440/mini2440.c
-@@ -342,7 +342,7 @@ static int mini2440_console_init(void)
- 	s3c_gpio_mode(GPH2_TXD0);
- 	s3c_gpio_mode(GPH3_RXD0);
- 
--	add_generic_device("s3c24x0_serial", -1, NULL, UART1_BASE, UART1_SIZE,
-+	add_generic_device("s3c_serial", -1, NULL, S3C_UART1_BASE, S3C_UART1_SIZE,
- 			   IORESOURCE_MEM, NULL);
- 	return 0;
- }
-diff --git a/arch/arm/mach-samsung/include/mach/s3c-iomap.h b/arch/arm/mach-samsung/include/mach/s3c-iomap.h
-index 9677803..7c45c53 100644
---- a/arch/arm/mach-samsung/include/mach/s3c-iomap.h
-+++ b/arch/arm/mach-samsung/include/mach/s3c-iomap.h
-@@ -28,7 +28,7 @@
- #define S3C_CLOCK_POWER_BASE		0x4C000000
- #define S3C2410_LCD_BASE		0x4D000000
- #define S3C24X0_NAND_BASE		0x4E000000
--#define S3C24X0_UART_BASE		0x50000000
-+#define S3C_UART_BASE			0x50000000
- #define S3C_TIMER_BASE			0x51000000
- #define S3C2410_USB_DEVICE_BASE		0x52000140
- #define S3C_WATCHDOG_BASE		0x53000000
-@@ -52,13 +52,12 @@
- #endif
- #define NFC_RAM_SIZE 4096
- 
--/* internal UARTs (driver based) */
--#define UART1_BASE (S3C24X0_UART_BASE)
--#define UART1_SIZE 0x4000
--#define UART2_BASE (S3C24X0_UART_BASE + 0x4000)
--#define UART2_SIZE 0x4000
--#define UART3_BASE (S3C24X0_UART_BASE + 0x8000)
--#define UART3_SIZE 0x4000
-+#define S3C_UART1_BASE (S3C_UART_BASE)
-+#define S3C_UART1_SIZE 0x4000
-+#define S3C_UART2_BASE (S3C_UART_BASE + 0x4000)
-+#define S3C_UART2_SIZE 0x4000
-+#define S3C_UART3_BASE (S3C_UART_BASE + 0x8000)
-+#define S3C_UART3_SIZE 0x4000
- 
- /* CS configuration (direct access) */
- #define BWSCON (S3C24X0_MEMCTL_BASE)
-diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
-index c2bee79..a986793 100644
---- a/drivers/serial/Kconfig
-+++ b/drivers/serial/Kconfig
-@@ -78,16 +78,16 @@ config DRIVER_SERIAL_PL010
- 	help
- 	  Enable this to get support for AMBA PL010 based serial devices
- 
--config DRIVER_SERIAL_S3C24X0
--	bool "Samsung S3C24X0 serial driver"
-+config DRIVER_SERIAL_S3C
-+	bool "Samsung S3C serial driver"
- 	depends on ARCH_S3C24xx
- 	default y
- 	help
--	  Say Y here if you want to use the CONS on a S3C24X0 CPU
-+	  Say Y here if you want to use the CONS on a Samsung S3C CPU
- 
--config DRIVER_SERIAL_S3C24X0_AUTOSYNC
-+config DRIVER_SERIAL_S3C_AUTOSYNC
- 	bool "Enable auto flow"
--	depends on DRIVER_SERIAL_S3C24X0
-+	depends on DRIVER_SERIAL_S3C
- 	help
- 	  Say Y here if you want to use the auto flow feature of this
- 	  UART. RTS and CTS will be handled by the hardware when enabled.
-diff --git a/drivers/serial/Makefile b/drivers/serial/Makefile
-index 411b8c5..1d1cff7 100644
---- a/drivers/serial/Makefile
-+++ b/drivers/serial/Makefile
-@@ -15,6 +15,6 @@ obj-$(CONFIG_DRIVER_SERIAL_MPC5XXX)		+= serial_mpc5xxx.o
- obj-$(CONFIG_DRIVER_SERIAL_BLACKFIN)		+= serial_blackfin.o
- obj-$(CONFIG_DRIVER_SERIAL_NS16550)		+= serial_ns16550.o
- obj-$(CONFIG_DRIVER_SERIAL_PL010)		+= serial_pl010.o
--obj-$(CONFIG_DRIVER_SERIAL_S3C24X0)		+= serial_s3c24x0.o
-+obj-$(CONFIG_DRIVER_SERIAL_S3C)			+= serial_s3c.o
- obj-$(CONFIG_DRIVER_SERIAL_ALTERA)		+= serial_altera.o
- obj-$(CONFIG_DRIVER_SERIAL_ALTERA_JTAG)		+= serial_altera_jtag.o
-diff --git a/drivers/serial/serial_s3c24x0.c b/drivers/serial/serial_s3c.c
-similarity index 68%
-rename from drivers/serial/serial_s3c24x0.c
-rename to drivers/serial/serial_s3c.c
-index 0ca2319..7b31f67 100644
---- a/drivers/serial/serial_s3c24x0.c
-+++ b/drivers/serial/serial_s3c.c
-@@ -1,5 +1,5 @@
- /*
-- * (c) 2009 Juergen Beisert <j.beisert@saschahauer.de>
-+ * (c) 2009...2011 Juergen Beisert <j.beisert@pengutronix.de>
-  *
-  * Based on code from:
-  * (c) 2004 Sascha Hauer <sascha@saschahauer.de>
-@@ -41,20 +41,36 @@
- #define URXH 0x24		/* receive */
- #define UBRDIV 0x28		/* baudrate generator */
- 
--static int s3c24x0_serial_setbaudrate(struct console_device *cdev, int baudrate)
-+static unsigned s3c_get_arch_uart_input_clock(void __iomem *base)
+-static uint64_t s3c24xx_clocksource_read(void)
++#define TIMER_WIDTH 16
++#define TIMER_SHIFT 10
++static const uint32_t max = 0x0000ffff;
++
++static void s3c_timer_init(void)
 +{
-+	unsigned reg = readw(base + UCON);
++	unsigned tcon;
 +
-+	switch (reg & 0xc00) {
-+		case 0x000:
-+		case 0x800:
-+			return s3c_get_pclk();
-+		case 0x400:
-+			break;	/* TODO UEXTCLK */
-+		case 0xc00:
-+			break;	/* TODO FCLK/n */
-+	}
++	tcon = readl(S3C_TCON) & ~S3C_TCON_T4MASK;
 +
-+	return 0;	/* not nice, but we can't emit an error message! */
++	writel(max, S3C_TCNTB4);	/* reload value */
++	/* force a manual counter update */
++	writel(tcon | S3C_TCON_T4MANUALUPD, S3C_TCON);
 +}
 +
-+static int s3c_serial_setbaudrate(struct console_device *cdev, int baudrate)
++static void s3c_timer_start(void)
++{
++	unsigned tcon;
++
++	tcon  = readl(S3C_TCON) & ~S3C_TCON_T4MANUALUPD;
++	tcon |= S3C_TCON_T4START | S3C_TCON_T4RELOAD;
++	writel(tcon, S3C_TCON);
++}
++
++static uint64_t s3c_clocksource_read(void)
  {
- 	struct device_d *dev = cdev->dev;
- 	void __iomem *base = dev->priv;
- 	unsigned val;
- 
--	/* value is calculated so : PCLK / (16 * baudrate) -1 */
--	val = s3c_get_pclk() / (16 * baudrate) - 1;
-+	val = s3c_get_arch_uart_input_clock(base) / (16 * baudrate) - 1;
- 	writew(val, base + UBRDIV);
- 
- 	return 0;
+ 	/* note: its a down counter */
+-	return 0xFFFF - readw(S3C_TCNTO4);
++	return max - readl(S3C_TCNTO4);
  }
  
--static int s3c24x0_serial_init_port(struct console_device *cdev)
-+static int s3c_serial_init_port(struct console_device *cdev)
- {
- 	struct device_d *dev = cdev->dev;
- 	void __iomem *base = dev->priv;
-@@ -71,7 +87,7 @@ static int s3c24x0_serial_init_port(struct console_device *cdev)
- 	 */
- 	writew(0x0245, base + UCON);
- 
--#ifdef CONFIG_DRIVER_SERIAL_S3C24X0_AUTOSYNC
-+#ifdef CONFIG_DRIVER_SERIAL_S3C_AUTOSYNC
- 	writeb(0x10, base + UMCON); /* enable auto flow control */
- #else
- 	writeb(0x01, base + UMCON); /* RTS up */
-@@ -80,7 +96,7 @@ static int s3c24x0_serial_init_port(struct console_device *cdev)
- 	return 0;
- }
- 
--static void s3c24x0_serial_putc(struct console_device *cdev, char c)
-+static void s3c_serial_putc(struct console_device *cdev, char c)
- {
- 	struct device_d *dev = cdev->dev;
- 	void __iomem *base = dev->priv;
-@@ -92,7 +108,7 @@ static void s3c24x0_serial_putc(struct console_device *cdev, char c)
- 	writeb(c, base + UTXH);
- }
- 
--static int s3c24x0_serial_tstc(struct console_device *cdev)
-+static int s3c_serial_tstc(struct console_device *cdev)
- {
- 	struct device_d *dev = cdev->dev;
- 	void __iomem *base = dev->priv;
-@@ -104,7 +120,7 @@ static int s3c24x0_serial_tstc(struct console_device *cdev)
- 	return 0;
- }
- 
--static int s3c24x0_serial_getc(struct console_device *cdev)
-+static int s3c_serial_getc(struct console_device *cdev)
- {
- 	struct device_d *dev = cdev->dev;
- 	void __iomem *base = dev->priv;
-@@ -116,7 +132,7 @@ static int s3c24x0_serial_getc(struct console_device *cdev)
- 	return readb(base + URXH);
- }
- 
--static void s3c24x0_serial_flush(struct console_device *cdev)
-+static void s3c_serial_flush(struct console_device *cdev)
- {
- 	struct device_d *dev = cdev->dev;
- 	void __iomem *base = dev->priv;
-@@ -125,7 +141,7 @@ static void s3c24x0_serial_flush(struct console_device *cdev)
- 		;
- }
- 
--static int s3c24x0_serial_probe(struct device_d *dev)
-+static int s3c_serial_probe(struct device_d *dev)
- {
- 	struct console_device *cdev;
- 
-@@ -134,13 +150,13 @@ static int s3c24x0_serial_probe(struct device_d *dev)
- 	dev->priv = dev_request_mem_region(dev, 0);
- 	cdev->dev = dev;
- 	cdev->f_caps = CONSOLE_STDIN | CONSOLE_STDOUT | CONSOLE_STDERR;
--	cdev->tstc = s3c24x0_serial_tstc;
--	cdev->putc = s3c24x0_serial_putc;
--	cdev->getc = s3c24x0_serial_getc;
--	cdev->flush = s3c24x0_serial_flush;
--	cdev->setbrg = s3c24x0_serial_setbaudrate;
-+	cdev->tstc = s3c_serial_tstc;
-+	cdev->putc = s3c_serial_putc;
-+	cdev->getc = s3c_serial_getc;
-+	cdev->flush = s3c_serial_flush;
-+	cdev->setbrg = s3c_serial_setbaudrate;
- 
--	s3c24x0_serial_init_port(cdev);
-+	s3c_serial_init_port(cdev);
- 
- 	/* Enable UART */
- 	console_register(cdev);
-@@ -148,25 +164,25 @@ static int s3c24x0_serial_probe(struct device_d *dev)
- 	return 0;
- }
- 
--static void s3c24x0_serial_remove(struct device_d *dev)
-+static void s3c_serial_remove(struct device_d *dev)
- {
- 	struct console_device *cdev = dev->type_data;
- 
--	s3c24x0_serial_flush(cdev);
-+	s3c_serial_flush(cdev);
- 	free(cdev);
- 	dev->type_data = NULL;
- }
- 
--static struct driver_d s3c24x0_serial_driver = {
--	.name   = "s3c24x0_serial",
--	.probe  = s3c24x0_serial_probe,
--	.remove = s3c24x0_serial_remove,
-+static struct driver_d s3c_serial_driver = {
-+	.name   = "s3c_serial",
-+	.probe  = s3c_serial_probe,
-+	.remove = s3c_serial_remove,
+ static struct clocksource cs = {
+-	.read	= s3c24xx_clocksource_read,
+-	.mask	= CLOCKSOURCE_MASK(16),
+-	.shift	= 10,
++	.read = s3c_clocksource_read,
++	.mask = CLOCKSOURCE_MASK(TIMER_WIDTH),
++	.shift = TIMER_SHIFT,
  };
  
--static int s3c24x0_serial_init(void)
-+static int s3c_serial_init(void)
+-static int clocksource_init(void)
++static int s3c_clk_src_init(void)
  {
--	register_driver(&s3c24x0_serial_driver);
-+	register_driver(&s3c_serial_driver);
+-	uint32_t p_clk = s3c_get_pclk();
+-
+-	writel(0x00000000, S3C_TCON);	/* stop all timers */
+-	writel(0x00ffffff, S3C_TCFG0);	/* PCLK / (255 + 1) for timer 4 */
+-	writel(0x00030000, S3C_TCFG1);	/* /16 */
+-
+-	writew(0xffff, S3C_TCNTB4);	/* reload value is TOP */
++	/* select its clock source first */
++	s3c_init_t4_clk_source();
+ 
+-	writel(0x00600000, S3C_TCON);	/* force a first reload */
+-	writel(0x00400000, S3C_TCON);
+-	writel(0x00500000, S3C_TCON);	/* enable timer 4 with auto reload */
++	s3c_timer_init();
++	s3c_timer_start();
+ 
+-	cs.mult = clocksource_hz2mult(p_clk / ((255 + 1) * 16), cs.shift);
++	cs.mult = clocksource_hz2mult(s3c_get_t4_clk(), cs.shift);
+ 	init_clock(&cs);
+ 
  	return 0;
  }
+-core_initcall(clocksource_init);
++core_initcall(s3c_clk_src_init);
+diff --git a/arch/arm/mach-samsung/s3c24xx-clocks.c b/arch/arm/mach-samsung/s3c24xx-clocks.c
+index beacc76..3a230b2 100644
+--- a/arch/arm/mach-samsung/s3c24xx-clocks.c
++++ b/arch/arm/mach-samsung/s3c24xx-clocks.c
+@@ -21,6 +21,7 @@
+ #include <mach/s3c-iomap.h>
+ #include <mach/s3c-generic.h>
+ #include <mach/s3c-clocks.h>
++#include <mach/s3c-timer.h>
  
--console_initcall(s3c24x0_serial_init);
-+console_initcall(s3c_serial_init);
+ /**
+  * Calculate the current M-PLL clock.
+@@ -116,6 +117,29 @@ uint32_t s3c24_get_uclk(void)
+ 	return s3c_get_upllclk();
+ }
+ 
++void s3c_init_t4_clk_source(void)
++{
++	unsigned reg;
++
++	reg = readl(S3C_TCON) & ~S3C_TCON_T4MASK; /* stop timer 4 */
++	writel(reg, S3C_TCON);
++	reg = readl(S3C_TCFG0) & ~S3C_TCFG0_T4MASK;
++	reg |= S3C_TCFG0_SET_PSCL234(0); /* 0 means pre scaler is '256' */
++	writel(reg, S3C_TCFG0);
++	reg = readl(S3C_TCFG1) & ~S3C_TCFG1_T4MASK;
++	reg |= S3C_TCFG1_SET_T4MUX(3); /* / 16 */
++	writel(reg, S3C_TCFG1);
++}
++
++unsigned s3c_get_t4_clk(void)
++{
++	unsigned clk = s3c_get_pclk();
++	unsigned pre = S3C_TCFG0_GET_PSCL234(readl(S3C_TCFG0)) + 1;
++	unsigned div = S3C_TCFG1_GET_T4MUX(readl(S3C_TCFG1)) + 1;
++
++	return clk / pre / (1 << div);
++}
++
+ /**
+  * Show the user the current clock settings
+  */
 -- 
 1.7.7.1
 
