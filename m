@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RUOmM-00028L-O8
- for barebox@lists.infradead.org; Sat, 26 Nov 2011 20:23:20 +0000
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RUOmL-00010U-Bd
+ for barebox@lists.infradead.org; Sat, 26 Nov 2011 20:23:23 +0000
 Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
  by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <jbe@pengutronix.de>) id 1RUOmA-0004rs-4M
+ (envelope-from <jbe@pengutronix.de>) id 1RUOmA-0004rq-4L
  for barebox@lists.infradead.org; Sat, 26 Nov 2011 21:23:06 +0100
 Received: from jbe by dude.hi.pengutronix.de with local (Exim 4.77)
- (envelope-from <jbe@pengutronix.de>) id 1RUOm9-00084U-5T
+ (envelope-from <jbe@pengutronix.de>) id 1RUOm9-00084O-4P
  for barebox@lists.infradead.org; Sat, 26 Nov 2011 21:23:05 +0100
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Sat, 26 Nov 2011 21:22:50 +0100
-Message-Id: <1322338981-30978-4-git-send-email-jbe@pengutronix.de>
+Date: Sat, 26 Nov 2011 21:22:48 +0100
+Message-Id: <1322338981-30978-2-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1322338981-30978-1-git-send-email-jbe@pengutronix.de>
 References: <1322338981-30978-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -28,313 +28,168 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/14] MACH SAMSUNG/S3C: Make it more generic for future
- updates
+Subject: [PATCH 01/14] MACH SAMSUNG: Rename the whole mach to add more CPUs in
+ future
 To: barebox@lists.infradead.org
 
-Start with renaming files to share them in the S3C CPU family,
+The S3Cxxxx family consists of ARMv4, ARMv5 and ARMv6 types of CPU cores. The
+S3C24xx sub family is only one of it. To be able to handle all CPUs in one mach
+directory, use a more generic name for it.
 
 Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 ---
- arch/arm/boards/a9m2410/a9m2410.c                  |    2 +-
- arch/arm/boards/a9m2410/lowlevel_init.S            |    2 +-
- arch/arm/boards/a9m2440/a9m2410dev.c               |    2 +-
- arch/arm/boards/a9m2440/a9m2440.c                  |    4 +-
- arch/arm/boards/a9m2440/lowlevel_init.S            |    2 +-
- arch/arm/boards/mini2440/lowlevel_init.S           |    2 +-
- arch/arm/boards/mini2440/mini2440.c                |    6 ++--
- arch/arm/mach-samsung/generic.c                    |    2 +-
- arch/arm/mach-samsung/gpio-s3c24x0.c               |    4 +-
- arch/arm/mach-samsung/include/mach/gpio.h          |   15 +--------
- .../mach/{s3c24xx-generic.h => s3c-generic.h}      |    0
- arch/arm/mach-samsung/include/mach/s3c-gpio.h      |   31 ++++++++++++++++++++
- .../include/mach/{s3c24x0-iomap.h => s3c-iomap.h}  |    0
- arch/arm/mach-samsung/lowlevel-init.S              |    2 +-
- drivers/mci/s3c.c                                  |    4 +-
- drivers/mtd/nand/nand_s3c2410.c                    |    4 +-
- drivers/serial/serial_s3c24x0.c                    |    4 +-
- drivers/video/s3c.c                                |    4 +-
- 18 files changed, 55 insertions(+), 35 deletions(-)
- rename arch/arm/mach-samsung/include/mach/{s3c24xx-generic.h => s3c-generic.h} (100%)
- create mode 100644 arch/arm/mach-samsung/include/mach/s3c-gpio.h
- rename arch/arm/mach-samsung/include/mach/{s3c24x0-iomap.h => s3c-iomap.h} (100%)
+ arch/arm/Kconfig                                   |    3 ++-
+ arch/arm/Makefile                                  |    2 +-
+ arch/arm/{mach-s3c24xx => mach-samsung}/Kconfig    |   15 ++++++++++++---
+ arch/arm/{mach-s3c24xx => mach-samsung}/Makefile   |    0
+ arch/arm/{mach-s3c24xx => mach-samsung}/generic.c  |    0
+ .../{mach-s3c24xx => mach-samsung}/gpio-s3c24x0.c  |    0
+ .../include/mach/fb.h                              |    0
+ .../include/mach/gpio.h                            |    0
+ .../include/mach/iomux-s3c24x0.h                   |    0
+ .../include/mach/mci.h                             |    0
+ .../include/mach/s3c24x0-iomap.h                   |    0
+ .../include/mach/s3c24x0-nand.h                    |    0
+ .../include/mach/s3c24xx-generic.h                 |    0
+ .../{mach-s3c24xx => mach-samsung}/lowlevel-init.S |    0
+ 14 files changed, 15 insertions(+), 5 deletions(-)
+ rename arch/arm/{mach-s3c24xx => mach-samsung}/Kconfig (91%)
+ rename arch/arm/{mach-s3c24xx => mach-samsung}/Makefile (100%)
+ rename arch/arm/{mach-s3c24xx => mach-samsung}/generic.c (100%)
+ rename arch/arm/{mach-s3c24xx => mach-samsung}/gpio-s3c24x0.c (100%)
+ rename arch/arm/{mach-s3c24xx => mach-samsung}/include/mach/fb.h (100%)
+ rename arch/arm/{mach-s3c24xx => mach-samsung}/include/mach/gpio.h (100%)
+ rename arch/arm/{mach-s3c24xx => mach-samsung}/include/mach/iomux-s3c24x0.h (100%)
+ rename arch/arm/{mach-s3c24xx => mach-samsung}/include/mach/mci.h (100%)
+ rename arch/arm/{mach-s3c24xx => mach-samsung}/include/mach/s3c24x0-iomap.h (100%)
+ rename arch/arm/{mach-s3c24xx => mach-samsung}/include/mach/s3c24x0-nand.h (100%)
+ rename arch/arm/{mach-s3c24xx => mach-samsung}/include/mach/s3c24xx-generic.h (100%)
+ rename arch/arm/{mach-s3c24xx => mach-samsung}/lowlevel-init.S (100%)
 
-diff --git a/arch/arm/boards/a9m2410/a9m2410.c b/arch/arm/boards/a9m2410/a9m2410.c
-index bbe1604..14eaa1b 100644
---- a/arch/arm/boards/a9m2410/a9m2410.c
-+++ b/arch/arm/boards/a9m2410/a9m2410.c
-@@ -32,7 +32,7 @@
- #include <partition.h>
- #include <nand.h>
- #include <io.h>
--#include <mach/s3c24x0-iomap.h>
-+#include <mach/s3c-iomap.h>
- #include <mach/s3c24x0-nand.h>
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index b15728e..843b7e8 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -64,6 +64,7 @@ config ARCH_OMAP
  
- // {"NAND 1MiB 3,3V 8-bit", 0xec, 256, 1, 0x1000, 0},
-diff --git a/arch/arm/boards/a9m2410/lowlevel_init.S b/arch/arm/boards/a9m2410/lowlevel_init.S
-index 461b93c..752c668 100644
---- a/arch/arm/boards/a9m2410/lowlevel_init.S
-+++ b/arch/arm/boards/a9m2410/lowlevel_init.S
-@@ -3,7 +3,7 @@
-  */
+ config ARCH_S3C24xx
+ 	bool "Samsung S3C2410, S3C2412, S3C2413, S3C2440, S3C2442, S3C2443"
++	select ARCH_SAMSUNG
+ 	select CPU_ARM920T
+ 	select GENERIC_GPIO
  
- #include <config.h>
--#include <mach/s3c24x0-iomap.h>
-+#include <mach/s3c-iomap.h>
+@@ -81,7 +82,7 @@ source arch/arm/mach-mxs/Kconfig
+ source arch/arm/mach-netx/Kconfig
+ source arch/arm/mach-nomadik/Kconfig
+ source arch/arm/mach-omap/Kconfig
+-source arch/arm/mach-s3c24xx/Kconfig
++source arch/arm/mach-samsung/Kconfig
+ source arch/arm/mach-versatile/Kconfig
  
- 	.section ".text_bare_init.board_init_lowlevel","ax"
+ config ARM_ASM_UNIFIED
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 0c42f3d..5efcc0e 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -50,7 +50,7 @@ machine-$(CONFIG_ARCH_MXS)		:= mxs
+ machine-$(CONFIG_ARCH_NOMADIK)		:= nomadik
+ machine-$(CONFIG_ARCH_NETX)		:= netx
+ machine-$(CONFIG_ARCH_OMAP)		:= omap
+-machine-$(CONFIG_ARCH_S3C24xx)		:= s3c24xx
++machine-$(CONFIG_ARCH_SAMSUNG)		:= samsung
+ machine-$(CONFIG_ARCH_VERSATILE)	:= versatile
  
-diff --git a/arch/arm/boards/a9m2440/a9m2410dev.c b/arch/arm/boards/a9m2440/a9m2410dev.c
-index 5f7c53b..aa5da88 100644
---- a/arch/arm/boards/a9m2440/a9m2410dev.c
-+++ b/arch/arm/boards/a9m2440/a9m2410dev.c
-@@ -28,7 +28,7 @@
- #include <driver.h>
- #include <init.h>
- #include <io.h>
--#include <mach/s3c24x0-iomap.h>
-+#include <mach/s3c-iomap.h>
+ # Board directory name.  This list is sorted alphanumerically
+diff --git a/arch/arm/mach-s3c24xx/Kconfig b/arch/arm/mach-samsung/Kconfig
+similarity index 91%
+rename from arch/arm/mach-s3c24xx/Kconfig
+rename to arch/arm/mach-samsung/Kconfig
+index 80b65fb..a800cb8 100644
+--- a/arch/arm/mach-s3c24xx/Kconfig
++++ b/arch/arm/mach-samsung/Kconfig
+@@ -1,14 +1,21 @@
+-if ARCH_S3C24xx
++config ARCH_SAMSUNG
++	bool
++
++if ARCH_SAMSUNG
  
- /**
-  * Initialize the CPU to be able to work with the a9m2410dev evaluation board
-diff --git a/arch/arm/boards/a9m2440/a9m2440.c b/arch/arm/boards/a9m2440/a9m2440.c
-index 964d376..9002052 100644
---- a/arch/arm/boards/a9m2440/a9m2440.c
-+++ b/arch/arm/boards/a9m2440/a9m2440.c
-@@ -32,9 +32,9 @@
- #include <partition.h>
- #include <nand.h>
- #include <io.h>
--#include <mach/s3c24x0-iomap.h>
-+#include <mach/s3c-iomap.h>
- #include <mach/s3c24x0-nand.h>
--#include <mach/s3c24xx-generic.h>
-+#include <mach/s3c-generic.h>
+ config ARCH_TEXT_BASE
+ 	hex
+-	default 0x31fc0000
++	default 0x31fc0000 if MACH_MINI2440
++	default 0x31fc0000 if MACH_A9M2440
++	default 0x31fc0000 if MACH_A9M2410
  
- #include "baseboards.h"
+ config BOARDINFO
+ 	default "Mini 2440"    if MACH_MINI2440
+ 	default "Digi A9M2440" if MACH_A9M2440
+ 	default "Digi A9M2410" if MACH_A9M2410
  
-diff --git a/arch/arm/boards/a9m2440/lowlevel_init.S b/arch/arm/boards/a9m2440/lowlevel_init.S
-index 4b5c596..bfdd7f0 100644
---- a/arch/arm/boards/a9m2440/lowlevel_init.S
-+++ b/arch/arm/boards/a9m2440/lowlevel_init.S
-@@ -3,7 +3,7 @@
-  */
++if ARCH_S3C24xx
++
+ config CPU_S3C2410
+ 	bool
  
- #include <config.h>
--#include <mach/s3c24x0-iomap.h>
-+#include <mach/s3c-iomap.h>
+@@ -67,7 +74,7 @@ config MACH_A9M2410DEV
  
- 	.section ".text_bare_init.board_init_lowlevel","ax"
+ endchoice
  
-diff --git a/arch/arm/boards/mini2440/lowlevel_init.S b/arch/arm/boards/mini2440/lowlevel_init.S
-index 41f50cb..f114bb7 100644
---- a/arch/arm/boards/mini2440/lowlevel_init.S
-+++ b/arch/arm/boards/mini2440/lowlevel_init.S
-@@ -3,7 +3,7 @@
-  */
+-source arch/arm/boards/mini2440/Kconfig 
++source arch/arm/boards/mini2440/Kconfig
  
- #include <config.h>
--#include <mach/s3c24x0-iomap.h>
-+#include <mach/s3c-iomap.h>
+ endmenu
  
- 	.section ".text_bare_init.board_init_lowlevel","ax"
+@@ -106,3 +113,5 @@ config S3C24XX_NAND_BOOT
+ endmenu
  
-diff --git a/arch/arm/boards/mini2440/mini2440.c b/arch/arm/boards/mini2440/mini2440.c
-index b4cc0f8..f84e23c 100644
---- a/arch/arm/boards/mini2440/mini2440.c
-+++ b/arch/arm/boards/mini2440/mini2440.c
-@@ -37,10 +37,10 @@
- #include <fb.h>
- #include <asm/armlinux.h>
- #include <io.h>
--#include <mach/gpio.h>
--#include <mach/s3c24x0-iomap.h>
-+#include <mach/s3c-gpio.h>
-+#include <mach/s3c-iomap.h>
- #include <mach/s3c24x0-nand.h>
--#include <mach/s3c24xx-generic.h>
-+#include <mach/s3c-generic.h>
- #include <mach/mci.h>
- #include <mach/fb.h>
- 
-diff --git a/arch/arm/mach-samsung/generic.c b/arch/arm/mach-samsung/generic.c
-index d2f2ac7..3c24b1a 100644
---- a/arch/arm/mach-samsung/generic.c
-+++ b/arch/arm/mach-samsung/generic.c
-@@ -27,7 +27,7 @@
- #include <init.h>
- #include <clock.h>
- #include <io.h>
--#include <mach/s3c24x0-iomap.h>
-+#include <mach/s3c-iomap.h>
- 
- /**
-  * Calculate the current M-PLL clock.
-diff --git a/arch/arm/mach-samsung/gpio-s3c24x0.c b/arch/arm/mach-samsung/gpio-s3c24x0.c
-index 946ec33..9994c92 100644
---- a/arch/arm/mach-samsung/gpio-s3c24x0.c
-+++ b/arch/arm/mach-samsung/gpio-s3c24x0.c
-@@ -18,8 +18,8 @@
- #include <common.h>
- #include <errno.h>
- #include <io.h>
--#include <mach/s3c24x0-iomap.h>
--#include <mach/gpio.h>
-+#include <mach/s3c-iomap.h>
-+#include <mach/s3c-gpio.h>
- 
- static const unsigned char group_offset[] =
- {
-diff --git a/arch/arm/mach-samsung/include/mach/gpio.h b/arch/arm/mach-samsung/include/mach/gpio.h
-index 37db4f5..5e0844e 100644
---- a/arch/arm/mach-samsung/include/mach/gpio.h
-+++ b/arch/arm/mach-samsung/include/mach/gpio.h
-@@ -8,24 +8,13 @@
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
-- *
-- * You should have received a copy of the GNU General Public License
-- * along with this program; if not, write to the Free Software
-- * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-- * MA 02111-1307 USA
-  */
- 
- #ifndef __ASM_MACH_GPIO_H
- #define __ASM_MACH_GPIO_H
- 
--#if defined(CONFIG_CPU_S3C2440) || defined(CONFIG_CPU_S3C2410)
--# include <mach/iomux-s3c24x0.h>
-+#ifdef CONFIG_ARCH_S3C24xx
-+# include <mach/s3c-gpio.h>
- #endif
- 
--void gpio_set_value(unsigned, int);
--int gpio_direction_input(unsigned);
--int gpio_direction_output(unsigned, int);
--int gpio_get_value(unsigned);
--void s3c_gpio_mode(unsigned);
--
- #endif /* __ASM_MACH_GPIO_H */
-diff --git a/arch/arm/mach-samsung/include/mach/s3c24xx-generic.h b/arch/arm/mach-samsung/include/mach/s3c-generic.h
+ endif
++
++endif
+diff --git a/arch/arm/mach-s3c24xx/Makefile b/arch/arm/mach-samsung/Makefile
 similarity index 100%
-rename from arch/arm/mach-samsung/include/mach/s3c24xx-generic.h
-rename to arch/arm/mach-samsung/include/mach/s3c-generic.h
-diff --git a/arch/arm/mach-samsung/include/mach/s3c-gpio.h b/arch/arm/mach-samsung/include/mach/s3c-gpio.h
-new file mode 100644
-index 0000000..dc22c6e
---- /dev/null
-+++ b/arch/arm/mach-samsung/include/mach/s3c-gpio.h
-@@ -0,0 +1,31 @@
-+/*
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-+ * MA 02111-1307 USA
-+ */
-+
-+#ifndef __ASM_MACH_S3C_GPIO_H
-+#define __ASM_MACH_S3C_GPIO_H
-+
-+#ifdef CONFIG_ARCH_S3C24xx
-+# include <mach/iomux-s3c24x0.h>
-+#endif
-+
-+void gpio_set_value(unsigned, int);
-+int gpio_direction_input(unsigned);
-+int gpio_direction_output(unsigned, int);
-+int gpio_get_value(unsigned);
-+void s3c_gpio_mode(unsigned);
-+
-+#endif /* __ASM_MACH_S3C_GPIO_H */
-diff --git a/arch/arm/mach-samsung/include/mach/s3c24x0-iomap.h b/arch/arm/mach-samsung/include/mach/s3c-iomap.h
+rename from arch/arm/mach-s3c24xx/Makefile
+rename to arch/arm/mach-samsung/Makefile
+diff --git a/arch/arm/mach-s3c24xx/generic.c b/arch/arm/mach-samsung/generic.c
 similarity index 100%
-rename from arch/arm/mach-samsung/include/mach/s3c24x0-iomap.h
-rename to arch/arm/mach-samsung/include/mach/s3c-iomap.h
-diff --git a/arch/arm/mach-samsung/lowlevel-init.S b/arch/arm/mach-samsung/lowlevel-init.S
-index e8004e5..8529283 100644
---- a/arch/arm/mach-samsung/lowlevel-init.S
-+++ b/arch/arm/mach-samsung/lowlevel-init.S
-@@ -19,7 +19,7 @@
-  */
- 
- #include <config.h>
--#include <mach/s3c24x0-iomap.h>
-+#include <mach/s3c-iomap.h>
- 
- 	.section ".text_bare_init.s3c24x0_disable_wd","ax"
- 
-diff --git a/drivers/mci/s3c.c b/drivers/mci/s3c.c
-index f97e13a..f4011d9 100644
---- a/drivers/mci/s3c.c
-+++ b/drivers/mci/s3c.c
-@@ -41,8 +41,8 @@
- #include <clock.h>
- #include <io.h>
- #include <mach/mci.h>
--#include <mach/s3c24xx-generic.h>
--#include <mach/s3c24x0-iomap.h>
-+#include <mach/s3c-generic.h>
-+#include <mach/s3c-iomap.h>
- 
- #define SDICON 0x0
- # define SDICON_SDRESET (1 << 8)
-diff --git a/drivers/mtd/nand/nand_s3c2410.c b/drivers/mtd/nand/nand_s3c2410.c
-index c5f5d97..facdeee 100644
---- a/drivers/mtd/nand/nand_s3c2410.c
-+++ b/drivers/mtd/nand/nand_s3c2410.c
-@@ -30,8 +30,8 @@
- #include <init.h>
- #include <linux/mtd/mtd.h>
- #include <linux/mtd/nand.h>
--#include <mach/s3c24xx-generic.h>
--#include <mach/s3c24x0-iomap.h>
-+#include <mach/s3c-generic.h>
-+#include <mach/s3c-iomap.h>
- #include <mach/s3c24x0-nand.h>
- #include <io.h>
- #include <asm-generic/errno.h>
-diff --git a/drivers/serial/serial_s3c24x0.c b/drivers/serial/serial_s3c24x0.c
-index abc08e0..8e6bb0c 100644
---- a/drivers/serial/serial_s3c24x0.c
-+++ b/drivers/serial/serial_s3c24x0.c
-@@ -25,8 +25,8 @@
- #include <init.h>
- #include <malloc.h>
- #include <io.h>
--#include <mach/s3c24xx-generic.h>
--#include <mach/s3c24x0-iomap.h>
-+#include <mach/s3c-generic.h>
-+#include <mach/s3c-iomap.h>
- 
- /* Note: Offsets are for little endian access */
- #define ULCON 0x00		/* line control */
-diff --git a/drivers/video/s3c.c b/drivers/video/s3c.c
-index b17aeb6..b605c42 100644
---- a/drivers/video/s3c.c
-+++ b/drivers/video/s3c.c
-@@ -30,8 +30,8 @@
- #include <malloc.h>
- #include <errno.h>
- #include <io.h>
--#include <mach/gpio.h>
--#include <mach/s3c24xx-generic.h>
-+#include <mach/s3c-gpio.h>
-+#include <mach/s3c-generic.h>
- #include <mach/fb.h>
- 
- #define LCDCON1 0x00
+rename from arch/arm/mach-s3c24xx/generic.c
+rename to arch/arm/mach-samsung/generic.c
+diff --git a/arch/arm/mach-s3c24xx/gpio-s3c24x0.c b/arch/arm/mach-samsung/gpio-s3c24x0.c
+similarity index 100%
+rename from arch/arm/mach-s3c24xx/gpio-s3c24x0.c
+rename to arch/arm/mach-samsung/gpio-s3c24x0.c
+diff --git a/arch/arm/mach-s3c24xx/include/mach/fb.h b/arch/arm/mach-samsung/include/mach/fb.h
+similarity index 100%
+rename from arch/arm/mach-s3c24xx/include/mach/fb.h
+rename to arch/arm/mach-samsung/include/mach/fb.h
+diff --git a/arch/arm/mach-s3c24xx/include/mach/gpio.h b/arch/arm/mach-samsung/include/mach/gpio.h
+similarity index 100%
+rename from arch/arm/mach-s3c24xx/include/mach/gpio.h
+rename to arch/arm/mach-samsung/include/mach/gpio.h
+diff --git a/arch/arm/mach-s3c24xx/include/mach/iomux-s3c24x0.h b/arch/arm/mach-samsung/include/mach/iomux-s3c24x0.h
+similarity index 100%
+rename from arch/arm/mach-s3c24xx/include/mach/iomux-s3c24x0.h
+rename to arch/arm/mach-samsung/include/mach/iomux-s3c24x0.h
+diff --git a/arch/arm/mach-s3c24xx/include/mach/mci.h b/arch/arm/mach-samsung/include/mach/mci.h
+similarity index 100%
+rename from arch/arm/mach-s3c24xx/include/mach/mci.h
+rename to arch/arm/mach-samsung/include/mach/mci.h
+diff --git a/arch/arm/mach-s3c24xx/include/mach/s3c24x0-iomap.h b/arch/arm/mach-samsung/include/mach/s3c24x0-iomap.h
+similarity index 100%
+rename from arch/arm/mach-s3c24xx/include/mach/s3c24x0-iomap.h
+rename to arch/arm/mach-samsung/include/mach/s3c24x0-iomap.h
+diff --git a/arch/arm/mach-s3c24xx/include/mach/s3c24x0-nand.h b/arch/arm/mach-samsung/include/mach/s3c24x0-nand.h
+similarity index 100%
+rename from arch/arm/mach-s3c24xx/include/mach/s3c24x0-nand.h
+rename to arch/arm/mach-samsung/include/mach/s3c24x0-nand.h
+diff --git a/arch/arm/mach-s3c24xx/include/mach/s3c24xx-generic.h b/arch/arm/mach-samsung/include/mach/s3c24xx-generic.h
+similarity index 100%
+rename from arch/arm/mach-s3c24xx/include/mach/s3c24xx-generic.h
+rename to arch/arm/mach-samsung/include/mach/s3c24xx-generic.h
+diff --git a/arch/arm/mach-s3c24xx/lowlevel-init.S b/arch/arm/mach-samsung/lowlevel-init.S
+similarity index 100%
+rename from arch/arm/mach-s3c24xx/lowlevel-init.S
+rename to arch/arm/mach-samsung/lowlevel-init.S
 -- 
 1.7.7.1
 
