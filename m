@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vx0-f177.google.com ([209.85.220.177])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RUdZj-0006vG-Hz
- for barebox@lists.infradead.org; Sun, 27 Nov 2011 12:11:16 +0000
-Received: by vcbfl10 with SMTP id fl10so2267187vcb.36
- for <barebox@lists.infradead.org>; Sun, 27 Nov 2011 04:11:13 -0800 (PST)
+Received: from smtp3-g21.free.fr ([2a01:e0c:1:1599::12])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1RUfRl-0001J0-76
+ for barebox@lists.infradead.org; Sun, 27 Nov 2011 14:11:11 +0000
+Received: from [192.168.2.8] (unknown [82.233.81.124])
+ by smtp3-g21.free.fr (Postfix) with ESMTP id 7CD8CA659B
+ for <barebox@lists.infradead.org>; Sun, 27 Nov 2011 15:10:57 +0100 (CET)
+Message-ID: <4ED244F0.7050407@eukrea.com>
+Date: Sun, 27 Nov 2011 15:10:56 +0100
+From: =?ISO-8859-1?Q?Eric_B=E9nard?= <eric@eukrea.com>
 MIME-Version: 1.0
-In-Reply-To: <20111127105740.GK27267@pengutronix.de>
-References: <CAAfyv345QDLnUt4n7vTyBqmt-y5E9mOLuOgrb0VYBBENofwA=w@mail.gmail.com>
- <20111127105740.GK27267@pengutronix.de>
-Date: Sun, 27 Nov 2011 13:11:13 +0100
-Message-ID: <CAAfyv34ETYN2ZZ-wOqNpKLkA7qHJ7Nfbe5hiKq4gkzXRECDAfg@mail.gmail.com>
-From: Belisko Marek <marek.belisko@gmail.com>
+References: <1321565812-335-1-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1321565812-335-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,45 +20,27 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: next branch compilation errors
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] fix unlzo support
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-T24gU3VuLCBOb3YgMjcsIDIwMTEgYXQgMTE6NTcgQU0sIFNhc2NoYSBIYXVlciA8cy5oYXVlckBw
-ZW5ndXRyb25peC5kZT4gd3JvdGU6Cj4gT24gRnJpLCBOb3YgMjUsIDIwMTEgYXQgMTA6NDI6MzNQ
-TSArMDEwMCwgQmVsaXNrbyBNYXJlayB3cm90ZToKPj4gSGksCj4+Cj4+IHRvZGF5IEkgdXBkYXRl
-IG5leHQgYnJhbmNoIGFuZCBydW4gTUFLRUFMTCBmb3IgYXJtIGdpdmVzIHJlc3VsdCB0aGF0Cj4+
-IG1vc3Qgb2YgYm9hcmQgYXJlbid0IGNvbXBpbGFibGUgYmVjYXVzZSBvZjoKPj4KPj4gYmFyZWJv
-eC9jb21tb24vbWVtb3J5LmM6NjY6MTQ6IHdhcm5pbmc6ICdzYnJrJyBkZWZpbmVkIGJ1dCBub3Qg
-dXNlZAo+PiBjb21tb24vYnVpbHQtaW4ubzogSW4gZnVuY3Rpb24gYG1lbWFsaWduJzoKPj4gbWVt
-c2l6ZS5jOigudGV4dC5tZW1hbGlnbisweGMpOiB1bmRlZmluZWQgcmVmZXJlbmNlIHRvIGBzYnJr
-Jwo+PiBtYWtlWzFdOiAqKiogW2JhcmVib3hdIEVycm9yIDEKPj4gbWFrZTogKioqIFtfYWxsXSBF
-cnJvciAyCj4+Cj4+IG9yOgo+Pgo+PiBiYXJlYm94L2NvbW1vbi9tZW1vcnkuYzo2NjoxNDogd2Fy
-bmluZzogJ3NicmsnIGRlZmluZWQgYnV0IG5vdCB1c2VkCj4+IGNvbW1vbi9idWlsdC1pbi5vOiBJ
-biBmdW5jdGlvbiBgbWFsbG9jJzoKPj4gbWVtc2l6ZS5jOigudGV4dC5tYWxsb2MrMHgzZTQpOiB1
-bmRlZmluZWQgcmVmZXJlbmNlIHRvIGBzYnJrJwo+PiBtZW1zaXplLmM6KC50ZXh0Lm1hbGxvYysw
-eDQ3NCk6IHVuZGVmaW5lZCByZWZlcmVuY2UgdG8gYHNicmsnCj4+IG1ha2VbMV06ICoqKiBbYmFy
-ZWJveF0gRXJyb3IgMQo+PiBtYWtlOiAqKiogW19hbGxdIEVycm9yIDIKPj4KPj4gTm90IHN1cmUg
-aWYgSSdtIGRvaW5nIHNvbWV0aGluZyB3cm9uZyBvciBtaXNzIHNvbWV0aGluZz8KPgo+IFdvcmtz
-IGZvciBtZS4gVGhpcyAnZGVmaW5lZCBidXQgbm90IHVzZWQnIGFuZCB0aGVuIHRoZSBsaW5rZXIg
-ZXJyb3IKPiBsb29rcyBsaWtlIHNicmsgd291bGQgYmUgc3RhdGljLCBidXQgaXQgaXNuJ3QuCk1h
-eWJlIGl0IGRlcGVuZHMgb24gdG9vbGNoYWluPyBJJ20gdXNpbmc6CmdjYyB2ZXJzaW9uIDQuNS4x
-IChTb3VyY2VyeSBHKysgTGl0ZSAyMDEwLjA5LTUwKQo+Cj4gU2FzY2hhCj4KPgo+IC0tCj4gUGVu
-Z3V0cm9uaXggZS5LLiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCB8IMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHwKPiBJbmR1c3RyaWFsIExp
-bnV4IFNvbHV0aW9ucyDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCB8IGh0dHA6Ly93d3cucGVuZ3V0
-cm9uaXguZGUvIMKgfAo+IFBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFu
-eSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCDCoCDCoHwKPiBBbXRzZ2VyaWNodCBIaWxkZXNo
-ZWltLCBIUkEgMjY4NiDCoCDCoCDCoCDCoCDCoCB8IEZheDogwqAgKzQ5LTUxMjEtMjA2OTE3LTU1
-NTUgfAo+CgpyZWdhcmRzLAoKTWFyZWsKCi0tIAphcyBzaW1wbGUgYW5kIHByaW1pdGl2ZSBhcyBw
-b3NzaWJsZQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-Ck1hcmVrIEJlbGlza28gLSBPUEVOLU5BTkRSQQpGcmVlbGFuY2UgRGV2ZWxvcGVyCgpSdXNrYSBO
-b3ZhIFZlcyAyMTkgfCBQcmVzb3YsIDA4MDA1IFNsb3ZhayBSZXB1YmxpYwpUZWw6ICs0MjEgOTE1
-IDA1MiAxODQKc2t5cGU6IG1hcmVrd2hpdGUKdHdpdHRlcjogI29wZW5uYW5kcmEKd2ViOiBodHRw
-Oi8vb3Blbi1uYW5kcmEuY29tCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5v
-cmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Le 17/11/2011 22:36, Sascha Hauer a =E9crit :
+> unlzo support is broken for files>  256k (more than one block)
+> since commit a3463cc12877f6527624972c190a80ebb787a604
+> (lib/decompress_unlzo: use fill and full to read and write data)
+> This patch updates unlzo support to the latest version of the kernel
+> plus a small buffer free fix.
+>
+> Signed-off-by: Sascha Hauer<s.hauer@pengutronix.de>
+Tested-by: Eric B=E9nard <eric@eukrea.com>
+
+thanks !
+Eric
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
