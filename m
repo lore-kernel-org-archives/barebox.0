@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RUdYM-0008H5-T1
- for barebox@lists.infradead.org; Sun, 27 Nov 2011 12:09:51 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1RUdYD-0007dd-SP
- for barebox@lists.infradead.org; Sun, 27 Nov 2011 13:09:41 +0100
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.77)
- (envelope-from <sha@pengutronix.de>) id 1RUdYD-0005jK-RW
- for barebox@lists.infradead.org; Sun, 27 Nov 2011 13:09:41 +0100
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RUdYN-0002tu-MD
+ for barebox@lists.infradead.org; Sun, 27 Nov 2011 12:09:53 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 27 Nov 2011 13:09:35 +0100
-Message-Id: <1322395780-21916-1-git-send-email-s.hauer@pengutronix.de>
+Date: Sun, 27 Nov 2011 13:09:39 +0100
+Message-Id: <1322395780-21916-5-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1322395780-21916-1-git-send-email-s.hauer@pengutronix.de>
+References: <1322395780-21916-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,43 +21,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] magic variables
+Subject: [PATCH 4/5] hush: Add magicvars
 To: barebox@lists.infradead.org
 
-I don't like magic variables that much, but we have them and they are at
-times very convenient to use. The problem with those variables is that
-we don't know which variables exist in a running binary, so this patchset
-adds a 'magicvar' command which prints information about the magic variables.
-The description for magic variables can be put next to their user and
-the description completely compiles away when the magicvar command is not
-selected.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/hush.c |    8 ++++++++
+ 1 files changed, 8 insertions(+), 0 deletions(-)
 
-Sascha Hauer (5):
-      add magicvar command
-      bootm: Add bootargs magicvar
-      ARM i.MX boot: Add barebox_loc magicvar
-      hush: Add magicvars
-      dhcp: Add magicvars
+diff --git a/common/hush.c b/common/hush.c
+index 573bd3e..c70c274 100644
+--- a/common/hush.c
++++ b/common/hush.c
+@@ -122,6 +122,7 @@
+ #include <glob.h>
+ #include <getopt.h>
+ #include <libbb.h>
++#include <magicvar.h>
+ #include <linux/list.h>
+ 
+ /*cmd_boot.c*/
+@@ -540,6 +541,8 @@ static int builtin_getopt(struct p_context *ctx, struct child_prog *child)
+ 
+ 	return 0;
+ }
++
++BAREBOX_MAGIC_VAR(OPTARG, "optarg for hush builtin getopt");
+ #endif
+ 
+ /* run_pipe_real() starts all the jobs, but doesn't wait for anything
+@@ -1721,6 +1724,11 @@ BAREBOX_CMD_START(getopt)
+ BAREBOX_CMD_END
+ #endif
+ 
++BAREBOX_MAGIC_VAR(PATH, "colon seperated list of pathes to search for executables");
++#ifdef CONFIG_HUSH_FANCY_PROMPT
++BAREBOX_MAGIC_VAR(PS1, "hush prompt");
++#endif
++
+ /**
+  * @file
+  * @brief A prototype Bourne shell grammar parser
+-- 
+1.7.7.1
 
- arch/arm/lib/barebox.lds.S                |    4 +++
- arch/arm/mach-imx/boot.c                  |    3 ++
- arch/blackfin/boards/ipe337/barebox.lds.S |    4 +++
- arch/mips/lib/barebox.lds.S               |    4 +++
- arch/nios2/cpu/barebox.lds.S              |    4 +++
- arch/ppc/boards/pcm030/barebox.lds.S      |    4 +++
- arch/sandbox/board/barebox.lds.S          |    5 ++++
- arch/x86/lib/barebox.lds.S                |    9 +++++++-
- commands/Kconfig                          |   14 ++++++++++++
- commands/Makefile                         |    1 +
- commands/bootm.c                          |    3 ++
- commands/magicvar.c                       |   20 ++++++++++++++++++
- common/hush.c                             |    8 +++++++
- include/asm-generic/barebox.lds.h         |    2 +
- include/magicvar.h                        |   32 +++++++++++++++++++++++++++++
- net/dhcp.c                                |    6 +++++
- 16 files changed, 122 insertions(+), 1 deletions(-)
- create mode 100644 commands/magicvar.c
- create mode 100644 include/magicvar.h
 
 _______________________________________________
 barebox mailing list
