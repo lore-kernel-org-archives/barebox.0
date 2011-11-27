@@ -1,13 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RUdYN-0008H6-KU
- for barebox@lists.infradead.org; Sun, 27 Nov 2011 12:09:52 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 27 Nov 2011 13:09:36 +0100
-Message-Id: <1322395780-21916-2-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1322395780-21916-1-git-send-email-s.hauer@pengutronix.de>
-References: <1322395780-21916-1-git-send-email-s.hauer@pengutronix.de>
+Received: from mail-vx0-f177.google.com ([209.85.220.177])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RUdZj-0006vG-Hz
+ for barebox@lists.infradead.org; Sun, 27 Nov 2011 12:11:16 +0000
+Received: by vcbfl10 with SMTP id fl10so2267187vcb.36
+ for <barebox@lists.infradead.org>; Sun, 27 Nov 2011 04:11:13 -0800 (PST)
+MIME-Version: 1.0
+In-Reply-To: <20111127105740.GK27267@pengutronix.de>
+References: <CAAfyv345QDLnUt4n7vTyBqmt-y5E9mOLuOgrb0VYBBENofwA=w@mail.gmail.com>
+ <20111127105740.GK27267@pengutronix.de>
+Date: Sun, 27 Nov 2011 13:11:13 +0100
+Message-ID: <CAAfyv34ETYN2ZZ-wOqNpKLkA7qHJ7Nfbe5hiKq4gkzXRECDAfg@mail.gmail.com>
+From: Belisko Marek <marek.belisko@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,259 +20,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/5] add magicvar command
-To: barebox@lists.infradead.org
+Subject: Re: next branch compilation errors
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-The magicvar command gives an overview about all environment variables
-with a special meaning.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/lib/barebox.lds.S                |    4 +++
- arch/blackfin/boards/ipe337/barebox.lds.S |    4 +++
- arch/mips/lib/barebox.lds.S               |    4 +++
- arch/nios2/cpu/barebox.lds.S              |    4 +++
- arch/ppc/boards/pcm030/barebox.lds.S      |    4 +++
- arch/sandbox/board/barebox.lds.S          |    5 ++++
- arch/x86/lib/barebox.lds.S                |    9 +++++++-
- commands/Kconfig                          |   14 ++++++++++++
- commands/Makefile                         |    1 +
- commands/magicvar.c                       |   20 ++++++++++++++++++
- include/asm-generic/barebox.lds.h         |    2 +
- include/magicvar.h                        |   32 +++++++++++++++++++++++++++++
- 12 files changed, 102 insertions(+), 1 deletions(-)
- create mode 100644 commands/magicvar.c
- create mode 100644 include/magicvar.h
-
-diff --git a/arch/arm/lib/barebox.lds.S b/arch/arm/lib/barebox.lds.S
-index 81a9123..f05f345 100644
---- a/arch/arm/lib/barebox.lds.S
-+++ b/arch/arm/lib/barebox.lds.S
-@@ -80,6 +80,10 @@ SECTIONS
- 	.barebox_cmd : { BAREBOX_CMDS }
- 	__barebox_cmd_end = .;
- 
-+	__barebox_magicvar_start = .;
-+	.barebox_magicvar : { BAREBOX_MAGICVARS }
-+	__barebox_magicvar_end = .;
-+
- 	__barebox_initcalls_start = .;
- 	.barebox_initcalls : { INITCALLS }
- 	__barebox_initcalls_end = .;
-diff --git a/arch/blackfin/boards/ipe337/barebox.lds.S b/arch/blackfin/boards/ipe337/barebox.lds.S
-index 571eeb1..25ca988 100644
---- a/arch/blackfin/boards/ipe337/barebox.lds.S
-+++ b/arch/blackfin/boards/ipe337/barebox.lds.S
-@@ -71,6 +71,10 @@ SECTIONS
- 	.barebox_cmd : { BAREBOX_CMDS }
- 	___barebox_cmd_end = .;
- 
-+	__barebox_magicvar_start = .;
-+	.barebox_magicvar : { BAREBOX_MAGICVARS }
-+	__barebox_magicvar_end = .;
-+
- 	___barebox_initcalls_start = .;
- 	.barebox_initcalls : { INITCALLS }
- 	___barebox_initcalls_end = .;
-diff --git a/arch/mips/lib/barebox.lds.S b/arch/mips/lib/barebox.lds.S
-index ba4c0af..7746ea0 100644
---- a/arch/mips/lib/barebox.lds.S
-+++ b/arch/mips/lib/barebox.lds.S
-@@ -56,6 +56,10 @@ SECTIONS
- 	.barebox_cmd : { BAREBOX_CMDS }
- 	__barebox_cmd_end = .;
- 
-+	__barebox_magicvar_start = .;
-+	.barebox_magicvar : { BAREBOX_MAGICVARS }
-+	__barebox_magicvar_end = .;
-+
- 	__barebox_initcalls_start = .;
- 	.barebox_initcalls : { INITCALLS }
- 	__barebox_initcalls_end = .;
-diff --git a/arch/nios2/cpu/barebox.lds.S b/arch/nios2/cpu/barebox.lds.S
-index 2b626fb..934eaf7 100644
---- a/arch/nios2/cpu/barebox.lds.S
-+++ b/arch/nios2/cpu/barebox.lds.S
-@@ -56,6 +56,10 @@ SECTIONS
- 	.barebox_cmd : { BAREBOX_CMDS }
- 	__barebox_cmd_end = .;
- 
-+	__barebox_magicvar_start = .;
-+	.barebox_magicvar : { BAREBOX_MAGICVARS }
-+	__barebox_magicvar_end = .;
-+
- 	__barebox_initcalls_start = .;
- 	.barebox_initcalls : { INITCALLS }
- 	__barebox_initcalls_end = .;
-diff --git a/arch/ppc/boards/pcm030/barebox.lds.S b/arch/ppc/boards/pcm030/barebox.lds.S
-index 4aacfc5..7dda039 100644
---- a/arch/ppc/boards/pcm030/barebox.lds.S
-+++ b/arch/ppc/boards/pcm030/barebox.lds.S
-@@ -102,6 +102,10 @@ SECTIONS
-   .barebox_cmd : { BAREBOX_CMDS }
-   __barebox_cmd_end = .;
- 
-+  __barebox_magicvar_start = .;
-+  .barebox_magicvar : { BAREBOX_MAGICVARS }
-+  __barebox_magicvar_end = .;
-+
-   __barebox_initcalls_start = .;
-   .barebox_initcalls : { INITCALLS }
-   __barebox_initcalls_end = .;
-diff --git a/arch/sandbox/board/barebox.lds.S b/arch/sandbox/board/barebox.lds.S
-index 76975ee..db5b7de 100644
---- a/arch/sandbox/board/barebox.lds.S
-+++ b/arch/sandbox/board/barebox.lds.S
-@@ -8,6 +8,11 @@ SECTIONS
- 	__barebox_initcalls_end = .;
- 
- 	. = ALIGN(64);
-+	__barebox_magicvar_start = .;
-+	.barebox_magicvar : { BAREBOX_MAGICVARS }
-+	__barebox_magicvar_end = .;
-+
-+	. = ALIGN(64);
- 	__barebox_cmd_start = .;
- 	__barebox_cmd : { BAREBOX_CMDS }
- 	__barebox_cmd_end = .;
-diff --git a/arch/x86/lib/barebox.lds.S b/arch/x86/lib/barebox.lds.S
-index fffc3a5..716cea6 100644
---- a/arch/x86/lib/barebox.lds.S
-+++ b/arch/x86/lib/barebox.lds.S
-@@ -170,7 +170,14 @@ SECTIONS
- 		. = ALIGN(4);
- 	} > barebox
- 
--	.barebox_initcalls : AT ( LOADADDR(.barebox_cmd) + SIZEOF (.barebox_cmd) ) {
-+	.barebox_magicvars : AT ( LOADADDR(.barebox_cmd) + SIZEOF (.barebox_cmd) ) {
-+		__barebox_magicvar_start = .;
-+		.barebox_magicvar : { BAREBOX_MAGICVARS }
-+		__barebox_magicvar_end = .;
-+		. = ALIGN(4);
-+	} > barebox
-+
-+	.barebox_initcalls : AT ( LOADADDR(.barebox_magicvars) + SIZEOF (.barebox_magicvars) ) {
- 		__barebox_initcalls_start = .;
- 		INITCALLS
- 		__barebox_initcalls_end = .;
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 18ab840..78b9d2a 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -383,6 +383,20 @@ config CMD_HELP
- 	default y
- 	prompt "help"
- 
-+config CMD_MAGICVAR
-+	tristate
-+	prompt "magicvar"
-+	help
-+	  barebox has some shell variables with special meanings. This
-+	  command shows the available magic variables.
-+
-+config CMD_MAGICVAR_HELP
-+	bool
-+	prompt "display description"
-+	depends on CMD_MAGICVAR
-+	help
-+	  Also display a description to the magic variables
-+
- config CMD_DEVINFO
- 	tristate
- 	default y
-diff --git a/commands/Makefile b/commands/Makefile
-index 5c51916..9b3a349 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -58,3 +58,4 @@ obj-$(CONFIG_CMD_LED_TRIGGER)	+= trigger.o
- obj-$(CONFIG_CMD_USB)		+= usb.o
- obj-$(CONFIG_CMD_TIME)		+= time.o
- obj-$(CONFIG_CMD_OFTREE)	+= oftree.o
-+obj-$(CONFIG_CMD_MAGICVAR)	+= magicvar.o
-diff --git a/commands/magicvar.c b/commands/magicvar.c
-new file mode 100644
-index 0000000..31606d2
---- /dev/null
-+++ b/commands/magicvar.c
-@@ -0,0 +1,20 @@
-+#include <common.h>
-+#include <command.h>
-+#include <magicvar.h>
-+
-+static int do_magicvar(struct command *cmdtp, int argc, char *argv[])
-+{
-+	struct magicvar *m;
-+
-+	for (m = &__barebox_magicvar_start;
-+			m != &__barebox_magicvar_end;
-+			m++)
-+		printf("%-32s %s\n", m->name, m->description);
-+
-+	return 0;
-+}
-+
-+BAREBOX_CMD_START(magicvar)
-+	.cmd		= do_magicvar,
-+	.usage		= "List information about magic variables",
-+BAREBOX_CMD_END
-diff --git a/include/asm-generic/barebox.lds.h b/include/asm-generic/barebox.lds.h
-index 8aee5d2..5467d3a 100644
---- a/include/asm-generic/barebox.lds.h
-+++ b/include/asm-generic/barebox.lds.h
-@@ -24,3 +24,5 @@
- #define BAREBOX_CMDS	KEEP(*(SORT_BY_NAME(.barebox_cmd*)))
- 
- #define BAREBOX_SYMS	KEEP(*(__usymtab))
-+
-+#define BAREBOX_MAGICVARS	KEEP(*(SORT_BY_NAME(.barebox_magicvar*)))
-diff --git a/include/magicvar.h b/include/magicvar.h
-new file mode 100644
-index 0000000..b119a75
---- /dev/null
-+++ b/include/magicvar.h
-@@ -0,0 +1,32 @@
-+#ifndef __MAGIC_VARS_H
-+#define __MAGIC_VARS_H
-+
-+#include <linux/stringify.h>
-+
-+struct magicvar {
-+	const char *name;
-+	const char *description;
-+};
-+
-+extern struct magicvar __barebox_magicvar_start;
-+extern struct magicvar __barebox_magicvar_end;
-+
-+#ifdef CONFIG_CMD_MAGICVAR_HELP
-+#define MAGICVAR_DESCRIPTION(d)		(d)
-+#else
-+#define MAGICVAR_DESCRIPTION(d)		NULL
-+#endif
-+
-+#ifdef CONFIG_CMD_MAGICVAR
-+#define BAREBOX_MAGIC_VAR(_name, _description)			\
-+extern const struct magicvar __barebox_magicvar_##_name;	\
-+const struct magicvar __barebox_magicvar_##_name		\
-+        __attribute__ ((unused,section (".barebox_magicvar_" __stringify(_name)))) = {	\
-+        .name	= #_name,					\
-+	.description = MAGICVAR_DESCRIPTION(_description),	\
-+};
-+#else
-+#define BAREBOX_MAGICVAR(_name, _description)
-+#endif
-+
-+#endif /* __MAGIC_VARS_H */
--- 
-1.7.7.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gU3VuLCBOb3YgMjcsIDIwMTEgYXQgMTE6NTcgQU0sIFNhc2NoYSBIYXVlciA8cy5oYXVlckBw
+ZW5ndXRyb25peC5kZT4gd3JvdGU6Cj4gT24gRnJpLCBOb3YgMjUsIDIwMTEgYXQgMTA6NDI6MzNQ
+TSArMDEwMCwgQmVsaXNrbyBNYXJlayB3cm90ZToKPj4gSGksCj4+Cj4+IHRvZGF5IEkgdXBkYXRl
+IG5leHQgYnJhbmNoIGFuZCBydW4gTUFLRUFMTCBmb3IgYXJtIGdpdmVzIHJlc3VsdCB0aGF0Cj4+
+IG1vc3Qgb2YgYm9hcmQgYXJlbid0IGNvbXBpbGFibGUgYmVjYXVzZSBvZjoKPj4KPj4gYmFyZWJv
+eC9jb21tb24vbWVtb3J5LmM6NjY6MTQ6IHdhcm5pbmc6ICdzYnJrJyBkZWZpbmVkIGJ1dCBub3Qg
+dXNlZAo+PiBjb21tb24vYnVpbHQtaW4ubzogSW4gZnVuY3Rpb24gYG1lbWFsaWduJzoKPj4gbWVt
+c2l6ZS5jOigudGV4dC5tZW1hbGlnbisweGMpOiB1bmRlZmluZWQgcmVmZXJlbmNlIHRvIGBzYnJr
+Jwo+PiBtYWtlWzFdOiAqKiogW2JhcmVib3hdIEVycm9yIDEKPj4gbWFrZTogKioqIFtfYWxsXSBF
+cnJvciAyCj4+Cj4+IG9yOgo+Pgo+PiBiYXJlYm94L2NvbW1vbi9tZW1vcnkuYzo2NjoxNDogd2Fy
+bmluZzogJ3NicmsnIGRlZmluZWQgYnV0IG5vdCB1c2VkCj4+IGNvbW1vbi9idWlsdC1pbi5vOiBJ
+biBmdW5jdGlvbiBgbWFsbG9jJzoKPj4gbWVtc2l6ZS5jOigudGV4dC5tYWxsb2MrMHgzZTQpOiB1
+bmRlZmluZWQgcmVmZXJlbmNlIHRvIGBzYnJrJwo+PiBtZW1zaXplLmM6KC50ZXh0Lm1hbGxvYysw
+eDQ3NCk6IHVuZGVmaW5lZCByZWZlcmVuY2UgdG8gYHNicmsnCj4+IG1ha2VbMV06ICoqKiBbYmFy
+ZWJveF0gRXJyb3IgMQo+PiBtYWtlOiAqKiogW19hbGxdIEVycm9yIDIKPj4KPj4gTm90IHN1cmUg
+aWYgSSdtIGRvaW5nIHNvbWV0aGluZyB3cm9uZyBvciBtaXNzIHNvbWV0aGluZz8KPgo+IFdvcmtz
+IGZvciBtZS4gVGhpcyAnZGVmaW5lZCBidXQgbm90IHVzZWQnIGFuZCB0aGVuIHRoZSBsaW5rZXIg
+ZXJyb3IKPiBsb29rcyBsaWtlIHNicmsgd291bGQgYmUgc3RhdGljLCBidXQgaXQgaXNuJ3QuCk1h
+eWJlIGl0IGRlcGVuZHMgb24gdG9vbGNoYWluPyBJJ20gdXNpbmc6CmdjYyB2ZXJzaW9uIDQuNS4x
+IChTb3VyY2VyeSBHKysgTGl0ZSAyMDEwLjA5LTUwKQo+Cj4gU2FzY2hhCj4KPgo+IC0tCj4gUGVu
+Z3V0cm9uaXggZS5LLiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCB8IMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHwKPiBJbmR1c3RyaWFsIExp
+bnV4IFNvbHV0aW9ucyDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCB8IGh0dHA6Ly93d3cucGVuZ3V0
+cm9uaXguZGUvIMKgfAo+IFBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFu
+eSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCDCoCDCoHwKPiBBbXRzZ2VyaWNodCBIaWxkZXNo
+ZWltLCBIUkEgMjY4NiDCoCDCoCDCoCDCoCDCoCB8IEZheDogwqAgKzQ5LTUxMjEtMjA2OTE3LTU1
+NTUgfAo+CgpyZWdhcmRzLAoKTWFyZWsKCi0tIAphcyBzaW1wbGUgYW5kIHByaW1pdGl2ZSBhcyBw
+b3NzaWJsZQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+Ck1hcmVrIEJlbGlza28gLSBPUEVOLU5BTkRSQQpGcmVlbGFuY2UgRGV2ZWxvcGVyCgpSdXNrYSBO
+b3ZhIFZlcyAyMTkgfCBQcmVzb3YsIDA4MDA1IFNsb3ZhayBSZXB1YmxpYwpUZWw6ICs0MjEgOTE1
+IDA1MiAxODQKc2t5cGU6IG1hcmVrd2hpdGUKdHdpdHRlcjogI29wZW5uYW5kcmEKd2ViOiBodHRw
+Oi8vb3Blbi1uYW5kcmEuY29tCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5v
+cmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
