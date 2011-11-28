@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RUwAd-0003rb-8f
- for barebox@lists.infradead.org; Mon, 28 Nov 2011 08:02:35 +0000
+ id 1RUwAe-0003s9-AW
+ for barebox@lists.infradead.org; Mon, 28 Nov 2011 08:02:36 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 28 Nov 2011 09:02:18 +0100
-Message-Id: <1322467340-10596-13-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 28 Nov 2011 09:02:14 +0100
+Message-Id: <1322467340-10596-9-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1322467340-10596-1-git-send-email-s.hauer@pengutronix.de>
 References: <1322467340-10596-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,76 +21,118 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/14] bootm relocate_image: honour load_address
+Subject: [PATCH 08/14] bootm: remove image handler options
 To: barebox@lists.infradead.org
-
-the uImage should be relocated to load_address. This is handled correctly
-in gzip/bzip2 compressed images, but not in uncompressed images. fix this.
-Also, when a variable is not used once without casting to another type it
-probably means that its type is wrong.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/bootm.c |   16 ++++++++--------
- 1 files changed, 8 insertions(+), 8 deletions(-)
+ commands/bootm.c |   55 +-----------------------------------------------------
+ include/boot.h   |    4 ---
+ 2 files changed, 1 insertions(+), 58 deletions(-)
 
 diff --git a/commands/bootm.c b/commands/bootm.c
-index 0458919..c400ab5 100644
+index 17139f7..316ed1f 100644
 --- a/commands/bootm.c
 +++ b/commands/bootm.c
-@@ -44,7 +44,7 @@
- #include <init.h>
- #include <asm-generic/memory_layout.h>
+@@ -141,25 +141,6 @@ static struct image_handle *get_fake_image_handle(struct image_data *data, int n
+ 	return handle;
+ }
  
--#define CFG_BOOTM_LEN	0x800000	/* use 8MByte as default max gunzip size */
-+#define BOOTM_LEN	0x800000	/* use 8MByte as default max gunzip size */
- 
- struct image_handle_data* image_handle_data_get_by_num(struct image_handle* handle, int num)
+-static int handler_parse_options(struct image_data *data, int opt, char *optarg)
+-{
+-	struct image_handler *handler;
+-	int ret;
+-
+-	list_for_each_entry(handler, &handler_list, list) {
+-		if (!handler->cmdline_parse)
+-			continue;
+-
+-		ret = handler->cmdline_parse(data, opt, optarg);
+-		if (ret > 0)
+-			continue;
+-
+-		return ret;
+-	}
+-
+-	return -1;
+-}
+-
+ static int do_bootm(struct command *cmdtp, int argc, char *argv[])
  {
-@@ -59,28 +59,28 @@ int relocate_image(struct image_handle *handle, void *load_address)
- 	image_header_t *hdr = &handle->header;
- 	unsigned long len  = image_get_size(hdr);
- 	struct image_handle_data *iha;
--	unsigned long data;
-+	void *data;
+ 	int	opt;
+@@ -168,32 +149,15 @@ static int do_bootm(struct command *cmdtp, int argc, char *argv[])
+ 	struct image_handler *handler;
+ 	struct image_data data;
+ 	u32 initrd_start;
+-	char options[53]; /* worst case: whole alphabet with colons */
  
- #if defined CONFIG_CMD_BOOTM_ZLIB || defined CONFIG_CMD_BOOTM_BZLIB
--	uint	unc_len = CFG_BOOTM_LEN;
-+	uint	unc_len = BOOTM_LEN;
- #endif
+ 	memset(&data, 0, sizeof(struct image_data));
+ 	data.verify = 1;
  
- 	iha = image_handle_data_get_by_num(handle, 0);
--	data = (unsigned long)(iha->data);
-+	data = iha->data;
+-	/* Collect options from registered handlers */
+-	strcpy(options, "nhr:L:");
+-	list_for_each_entry(handler, &handler_list, list) {
+-		if (handler->cmdline_options)
+-			strcat(options, handler->cmdline_options);
+-	}
+-
+-	while((opt = getopt(argc, argv, options)) > 0) {
++	while ((opt = getopt(argc, argv, "nr:L:")) > 0) {
+ 		switch(opt) {
+ 		case 'n':
+ 			data.verify = 0;
+ 			break;
+-		case 'h':
+-			printf("bootm advanced options:\n");
+-
+-			list_for_each_entry(handler, &handler_list, list) {
+-				if (handler->help_string)
+-					printf("%s\n", handler->help_string);
+-			}
+-
+-			return 0;
+ 		case 'L':
+ 			if (!data.initrd) {
+ 				eprintf("Warning -L ingnored. Specify the initrd first\n");
+@@ -237,23 +201,6 @@ static int do_bootm(struct command *cmdtp, int argc, char *argv[])
+ 		goto err_out;
+ 	}
  
- 	switch (image_get_comp(hdr)) {
- 	case IH_COMP_NONE:
--		if(image_get_load(hdr) == data) {
-+		if (load_address == data) {
- 			printf ("   XIP ... ");
- 		} else {
--			memmove ((void *) image_get_load(hdr), (uchar *)data, len);
-+			memmove(load_address, data, len);
- 		}
- 		break;
- #ifdef CONFIG_CMD_BOOTM_ZLIB
- 	case IH_COMP_GZIP:
- 		printf ("   Uncompressing ... ");
- 		if (gunzip (load_address, unc_len,
--			    (uchar *)data, &len) != 0)
-+			    data, &len) != 0)
- 			return -1;
- 		break;
- #endif
-@@ -93,7 +93,7 @@ int relocate_image(struct image_handle *handle, void *load_address)
- 		 * at most 2300 KB of memory.
- 		 */
- 		if (BZ2_bzBuffToBuffDecompress (load_address,
--						&unc_len, (char *)data, len,
-+						&unc_len, data, len,
- 						MALLOC_SIZE < (4096 * 1024), 0)
- 						!= BZ_OK)
- 			return -1;
+-	optind = 0;
+-
+-	while((opt = getopt(argc, argv, options)) > 0) {
+-		switch(opt) {
+-		case 'h':
+-		case 'n':
+-		case 'L':
+-		case 'r':
+-			break;
+-		default:
+-			if (!handler_parse_options(&data, opt, optarg))
+-				continue;
+-
+-			return 1;
+-		}
+-	}
+-
+ 	/*
+ 	 * We have reached the point of no return: we are going to
+ 	 * overwrite all exception vector code, so we cannot easily
+diff --git a/include/boot.h b/include/boot.h
+index 623f443..4901598 100644
+--- a/include/boot.h
++++ b/include/boot.h
+@@ -14,10 +14,6 @@ struct image_data {
+ struct image_handler {
+ 	struct list_head list;
+ 
+-	char *cmdline_options;
+-	int (*cmdline_parse)(struct image_data *data, int opt, char *optarg);
+-	char *help_string;
+-
+ 	int image_type;
+ 	int (*bootm)(struct image_data *data);
+ };
 -- 
 1.7.7.1
 
