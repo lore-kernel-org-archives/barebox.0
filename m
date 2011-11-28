@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RUwAa-0000ZX-6S
- for barebox@lists.infradead.org; Mon, 28 Nov 2011 08:02:33 +0000
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RUwAb-0003qr-B5
+ for barebox@lists.infradead.org; Mon, 28 Nov 2011 08:02:35 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 28 Nov 2011 09:02:09 +0100
-Message-Id: <1322467340-10596-4-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 28 Nov 2011 09:02:07 +0100
+Message-Id: <1322467340-10596-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1322467340-10596-1-git-send-email-s.hauer@pengutronix.de>
 References: <1322467340-10596-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,49 +21,76 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/14] compile in simple_strtoull
+Subject: [PATCH 01/14] bootm: remove dead code
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/common.h |    2 --
- lib/vsprintf.c   |    2 --
- 2 files changed, 0 insertions(+), 4 deletions(-)
+ commands/bootm.c |   47 -----------------------------------------------
+ 1 files changed, 0 insertions(+), 47 deletions(-)
 
-diff --git a/include/common.h b/include/common.h
-index d63ad02..68ccbd9 100644
---- a/include/common.h
-+++ b/include/common.h
-@@ -115,9 +115,7 @@ int gunzip(void *dst, int dstlen, unsigned char *src, unsigned long *lenp);
+diff --git a/commands/bootm.c b/commands/bootm.c
+index 731b74d..2a4fde8 100644
+--- a/commands/bootm.c
++++ b/commands/bootm.c
+@@ -44,57 +44,10 @@
+ #include <init.h>
+ #include <asm-generic/memory_layout.h>
  
- /* lib_generic/vsprintf.c */
- ulong	simple_strtoul(const char *cp,char **endp,unsigned int base);
--#ifdef CFG_64BIT_VSPRINTF
- unsigned long long	simple_strtoull(const char *cp,char **endp,unsigned int base);
--#endif
- long	simple_strtol(const char *cp,char **endp,unsigned int base);
+-/*
+- *  Continue booting an OS image; caller already has:
+- *  - copied image header to global variable `header'
+- *  - checked header magic number, checksums (both header & image),
+- *  - verified image architecture (PPC) and type (KERNEL or MULTI),
+- *  - loaded (first part of) image to header load address,
+- *  - disabled interrupts.
+- */
+-typedef void boot_os_Fcn(struct command *cmdtp, int flag,
+-			  int	argc, char *argv[],
+-			  ulong	addr,		/* of image to boot */
+-			  ulong	*len_ptr,	/* multi-file image length table */
+-			  int	verify);	/* getenv("verify")[0] != 'n' */
+-
+ #ifndef CFG_BOOTM_LEN
+ #define CFG_BOOTM_LEN	0x800000	/* use 8MByte as default max gunzip size */
+ #endif
  
- /* lib_generic/crc32.c */
-diff --git a/lib/vsprintf.c b/lib/vsprintf.c
-index 54e162f..4165f97 100644
---- a/lib/vsprintf.c
-+++ b/lib/vsprintf.c
-@@ -56,7 +56,6 @@ long simple_strtol(const char *cp,char **endp,unsigned int base)
- }
- EXPORT_SYMBOL(simple_strtol);
- 
--#ifdef CFG_64BIT_STRTOUL
- unsigned long long simple_strtoull (const char *cp, char **endp, unsigned int base)
+-#ifdef CONFIG_SILENT_CONSOLE
+-static void
+-fixup_silent_linux ()
+-{
+-	char buf[256], *start, *end;
+-	char *cmdline = getenv ("bootargs");
+-
+-	/* Only fix cmdline when requested */
+-	if (!(gd->flags & GD_FLG_SILENT))
+-		return;
+-
+-	debug ("before silent fix-up: %s\n", cmdline);
+-	if (cmdline) {
+-		if ((start = strstr (cmdline, "console=")) != NULL) {
+-			end = strchr (start, ' ');
+-			strncpy (buf, cmdline, (start - cmdline + 8));
+-			if (end)
+-				strcpy (buf + (start - cmdline + 8), end);
+-			else
+-				buf[start - cmdline + 8] = '\0';
+-		} else {
+-			strcpy (buf, cmdline);
+-			strcat (buf, " console=");
+-		}
+-	} else {
+-		strcpy (buf, "console=");
+-	}
+-
+-	setenv ("bootargs", buf);
+-	debug ("after silent fix-up: %s\n", buf);
+-}
+-#endif /* CONFIG_SILENT_CONSOLE */
+-
+ struct image_handle_data* image_handle_data_get_by_num(struct image_handle* handle, int num)
  {
- 	unsigned long long result = 0, value;
-@@ -84,7 +83,6 @@ unsigned long long simple_strtoull (const char *cp, char **endp, unsigned int ba
- 		*endp = (char *) cp;
- 	return result;
- }
--#endif /* CFG_64BIT_STRTOUL */
- 
- /* we use this so that we can do without the ctype library */
- #define is_digit(c)	((c) >= '0' && (c) <= '9')
+ 	if (!handle || num < 0 || num >= handle->nb_data_entries)
 -- 
 1.7.7.1
 
