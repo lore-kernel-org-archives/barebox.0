@@ -1,20 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 3.mo2.mail-out.ovh.net ([46.105.58.226]
+Received: from 1.mo2.mail-out.ovh.net ([46.105.63.121]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RUz07-0002mo-Je
- for barebox@lists.infradead.org; Mon, 28 Nov 2011 11:04:00 +0000
+ id 1RUz2q-0002tc-22
+ for barebox@lists.infradead.org; Mon, 28 Nov 2011 11:06:44 +0000
 Received: from mail190.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id F1406DC6C75
- for <barebox@lists.infradead.org>; Mon, 28 Nov 2011 12:10:24 +0100 (CET)
-Date: Mon, 28 Nov 2011 12:00:29 +0100
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id A9B6BDC2C4F
+ for <barebox@lists.infradead.org>; Mon, 28 Nov 2011 12:13:14 +0100 (CET)
+Date: Mon, 28 Nov 2011 12:03:31 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20111128110029.GD15008@game.jcrosoft.org>
+Message-ID: <20111128110331.GE15008@game.jcrosoft.org>
 References: <1322467340-10596-1-git-send-email-s.hauer@pengutronix.de>
- <1322467340-10596-12-git-send-email-s.hauer@pengutronix.de>
+ <1322467340-10596-6-git-send-email-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1322467340-10596-12-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1322467340-10596-6-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,28 +27,19 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 11/14] bootm: fix typo, update help str
+Subject: Re: [PATCH 05/14] armlinux: cleanup linux vars
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
 On 09:02 Mon 28 Nov     , Sascha Hauer wrote:
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  commands/bootm.c |    6 ++----
->  1 files changed, 2 insertions(+), 4 deletions(-)
-> 
-> diff --git a/commands/bootm.c b/commands/bootm.c
-> index 86470c2..0458919 100644
-> --- a/commands/bootm.c
-> +++ b/commands/bootm.c
-> @@ -44,9 +44,7 @@
->  #include <init.h>
->  #include <asm-generic/memory_layout.h>
->  
-> -#ifndef CFG_BOOTM_LEN
->  #define CFG_BOOTM_LEN	0x800000	/* use 8MByte as default max gunzip size */
-> -#endif
-why do you rempve this too in this patch?
+> arch_number is currently exported to the environment but not read back
+> on boot time which is rather confusing. system_rev and system_serial
+> are not exported to the environment but can be set in board specific
+> code.
+> This patch exports all these variables to the environment and reads them
+> back on boot time. All variables get a armlinux_ prefix, so the
+> arch_number environment variable gets renamed.
+I'm using it so please do not remove the old arch_number
 
 Best Regards,
 J.
