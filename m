@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RV9PG-0007ku-D5
- for barebox@lists.infradead.org; Mon, 28 Nov 2011 22:10:43 +0000
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RV9PK-0003Bc-7M
+ for barebox@lists.infradead.org; Mon, 28 Nov 2011 22:10:45 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 28 Nov 2011 23:10:06 +0100
-Message-Id: <1322518209-2965-14-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 28 Nov 2011 23:10:09 +0100
+Message-Id: <1322518209-2965-17-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1322518209-2965-1-git-send-email-s.hauer@pengutronix.de>
 References: <1322518209-2965-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,116 +21,86 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 13/16] add generic uncompress command
+Subject: [PATCH 16/16] bootm: use generic uncompress function
 To: barebox@lists.infradead.org
 
-Using the new uncompress function we can now implement a command which
-can uncompress all known compression types. This supplements the unlzo
-command.
+This simplifies the code somewhat. The user visible change here is
+that we now ignore the compression specified in the uImage. Instead
+we detect the compression type from the data which also means that
+we now support lzo compressed uImages.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/Kconfig                   |   10 +++++-----
- commands/Makefile                  |    2 +-
- commands/{unlzo.c => uncompress.c} |   23 ++++++++++++-----------
- 3 files changed, 18 insertions(+), 17 deletions(-)
- rename commands/{unlzo.c => uncompress.c} (73%)
+ commands/bootm.c |   31 ++++---------------------------
+ 1 files changed, 4 insertions(+), 27 deletions(-)
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index e5c0fb5..890be78 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -402,13 +402,13 @@ config CMD_GPIO
- 	  include gpio_set_value, gpio_get_value, gpio_direction_input and
- 	  gpio_direction_output commands to control gpios.
- 
--config CMD_UNLZO
-+config CMD_UNCOMPRESS
- 	bool
--	select LZO_DECOMPRESS
--	prompt "unlzo"
-+	prompt "uncompress"
- 	help
--	  Say yes here to get the unlzo command. lzo is a fast compression
--	  algorithm by Markus Franz Xaver Johannes Oberhumer.
-+	  Say yes here to get the uncompress command. uncompress handles
-+	  lzo, gzip and bzip2 compressed files depending on the compiled
-+	  in compression libraries
- 
- config CMD_I2C
- 	bool
-diff --git a/commands/Makefile b/commands/Makefile
-index 5c51916..0aae666 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -47,7 +47,7 @@ obj-$(CONFIG_CMD_INSMOD)	+= insmod.o
- obj-$(CONFIG_CMD_BMP)		+= bmp.o
- obj-$(CONFIG_USB_GADGET_DFU)	+= dfu.o
- obj-$(CONFIG_CMD_GPIO)		+= gpio.o
--obj-$(CONFIG_CMD_UNLZO)		+= unlzo.o
-+obj-$(CONFIG_CMD_UNCOMPRESS)	+= uncompress.o
- obj-$(CONFIG_CMD_I2C)		+= i2c.o
- obj-$(CONFIG_CMD_UBI)		+= ubi.o
- obj-$(CONFIG_CMD_MENU)		+= menu.o
-diff --git a/commands/unlzo.c b/commands/uncompress.c
-similarity index 73%
-rename from commands/unlzo.c
-rename to commands/uncompress.c
-index 0b6dd4b..fff6227 100644
---- a/commands/unlzo.c
-+++ b/commands/uncompress.c
-@@ -1,5 +1,5 @@
- /*
-- * unlzo.c - uncompress a lzo compressed file
-+ * uncompress.c - uncompress a lzo compressed file
-  *
-  * Copyright (c) 2010 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-  *
-@@ -25,11 +25,11 @@
- #include <errno.h>
- #include <fcntl.h>
- #include <fs.h>
--#include <lzo.h>
+diff --git a/commands/bootm.c b/commands/bootm.c
+index 878b7aa..b313cfc 100644
+--- a/commands/bootm.c
++++ b/commands/bootm.c
+@@ -30,7 +30,6 @@
+ #include <command.h>
+ #include <image.h>
+ #include <malloc.h>
+-#include <gunzip.h>
+ #include <environment.h>
+ #include <asm/byteorder.h>
+ #include <xfuncs.h>
+@@ -41,7 +40,7 @@
+ #include <boot.h>
+ #include <rtc.h>
+ #include <init.h>
+-#include <bunzip2.h>
 +#include <uncompress.h>
+ #include <asm-generic/memory_layout.h>
  
--static int do_unlzo(struct command *cmdtp, int argc, char *argv[])
-+static int do_uncompress(struct command *cmdtp, int argc, char *argv[])
- {
--	int from, to, ret, retlen;
-+	int from, to, ret;
- 
- 	if (argc != 3)
- 		return COMMAND_ERROR_USAGE;
-@@ -47,7 +47,8 @@ static int do_unlzo(struct command *cmdtp, int argc, char *argv[])
- 		goto exit_close;
- 	}
- 
--	ret = unlzo(from, to, &retlen);
-+	ret = uncompress_fd_to_fd(from, to, uncompress_err_stdout);
-+
- 	if (ret)
- 		printf("failed to decompress\n");
- 
-@@ -57,13 +58,13 @@ exit_close:
- 	return ret;
+ /*
+@@ -103,11 +102,6 @@ struct image_handle_data* image_handle_data_get_by_num(struct image_handle* hand
+ 	return &handle->data_entries[num];
  }
  
--static const __maybe_unused char cmd_unlzo_help[] =
--"Usage: unlzo <infile> <outfile>\n"
--"Uncompress a lzo compressed file\n";
-+static const __maybe_unused char cmd_uncompress_help[] =
-+"Usage: uncompress <infile> <outfile>\n"
-+"Uncompress a compressed file\n";
+-static void unzip_error(char *x)
+-{
+-	puts(x);
+-}
+-
+ int relocate_image(struct image_handle *handle, void *load_address)
+ {
+ 	image_header_t *hdr = &handle->header;
+@@ -131,30 +125,13 @@ int relocate_image(struct image_handle *handle, void *load_address)
+ 			memmove ((void *) image_get_load(hdr), (uchar *)data, len);
+ 		}
+ 		break;
+-#ifdef CONFIG_ZLIB
+-	case IH_COMP_GZIP:
+-		printf ("   Uncompressing ... ");
+-
+-		ret = gunzip((void *)data, len, NULL, NULL, load_address, NULL,
+-				unzip_error);
+-		if (ret)
+-			return ret;
+-		break;
+-#endif
+-#ifdef CONFIG_BZLIB
+-	case IH_COMP_BZIP2:
++	default:
+ 		printf ("   Uncompressing ... ");
+-
+-		ret = bunzip2((void *)data, len, NULL, NULL, load_address, NULL,
+-				unzip_error);
++		ret = uncompress((void *)data, len, NULL, NULL, load_address, NULL,
++				uncompress_err_stdout);
+ 		if (ret)
+ 			return ret;
+ 		break;
+-#endif
+-	default:
+-		printf("Unimplemented compression type %d\n",
+-		       image_get_comp(hdr));
+-		return -1;
+ 	}
  
--BAREBOX_CMD_START(unlzo)
--        .cmd            = do_unlzo,
-+BAREBOX_CMD_START(uncompress)
-+        .cmd            = do_uncompress,
-         .usage          = "lzop <infile> <outfile>",
--        BAREBOX_CMD_HELP(cmd_unlzo_help)
-+        BAREBOX_CMD_HELP(cmd_uncompress_help)
- BAREBOX_CMD_END
- 
+ 	return 0;
 -- 
 1.7.7.1
 
