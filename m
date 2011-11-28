@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RV9PQ-0003CD-Dt
- for barebox@lists.infradead.org; Mon, 28 Nov 2011 22:10:46 +0000
+ id 1RV9Pk-0003Cr-Vz
+ for barebox@lists.infradead.org; Mon, 28 Nov 2011 22:11:09 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 28 Nov 2011 23:09:57 +0100
-Message-Id: <1322518209-2965-5-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 28 Nov 2011 23:10:00 +0100
+Message-Id: <1322518209-2965-8-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1322518209-2965-1-git-send-email-s.hauer@pengutronix.de>
 References: <1322518209-2965-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,875 +21,2714 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/16] use kernel bunzip implementation
+Subject: [PATCH 07/16] remove old zlib
 To: barebox@lists.infradead.org
-
-The kernel uncompression functions have a unified API. Switch
-to the kernel implementation to unify the different uncompression
-APIs. As a bonus the kernel implementation is much smaller.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/bootm.c         |   23 +-
- include/bunzip2.h        |   10 +
- lib/Makefile             |    2 +-
- lib/decompress_bunzip2.c |  756 ++++++++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 779 insertions(+), 12 deletions(-)
- create mode 100644 include/bunzip2.h
- create mode 100644 lib/decompress_bunzip2.c
+ include/zlib.h |  434 ------------
+ lib/gunzip.c   |   85 ---
+ lib/zlib.c     | 2158 --------------------------------------------------------
+ 3 files changed, 0 insertions(+), 2677 deletions(-)
+ delete mode 100644 include/zlib.h
+ delete mode 100644 lib/gunzip.c
+ delete mode 100644 lib/zlib.c
 
-diff --git a/commands/bootm.c b/commands/bootm.c
-index 731b74d..22b4964 100644
---- a/commands/bootm.c
-+++ b/commands/bootm.c
-@@ -31,7 +31,6 @@
- #include <image.h>
- #include <malloc.h>
- #include <zlib.h>
--#include <bzlib.h>
- #include <environment.h>
- #include <asm/byteorder.h>
- #include <xfuncs.h>
-@@ -42,6 +41,7 @@
- #include <boot.h>
- #include <rtc.h>
- #include <init.h>
-+#include <bunzip2.h>
- #include <asm-generic/memory_layout.h>
- 
- /*
-@@ -103,12 +103,18 @@ struct image_handle_data* image_handle_data_get_by_num(struct image_handle* hand
- 	return &handle->data_entries[num];
- }
- 
-+static void unzip_error(char *x)
-+{
-+	puts(x);
-+}
-+
- int relocate_image(struct image_handle *handle, void *load_address)
- {
- 	image_header_t *hdr = &handle->header;
- 	unsigned long len  = image_get_size(hdr);
- 	struct image_handle_data *iha;
- 	unsigned long data;
-+	int ret;
- 
- #if defined CONFIG_CMD_BOOTM_ZLIB || defined CONFIG_CMD_BOOTM_BZLIB
- 	uint	unc_len = CFG_BOOTM_LEN;
-@@ -136,16 +142,11 @@ int relocate_image(struct image_handle *handle, void *load_address)
- #ifdef CONFIG_CMD_BOOTM_BZLIB
- 	case IH_COMP_BZIP2:
- 		printf ("   Uncompressing ... ");
--		/*
--		 * If we've got less than 4 MB of malloc() space,
--		 * use slower decompression algorithm which requires
--		 * at most 2300 KB of memory.
--		 */
--		if (BZ2_bzBuffToBuffDecompress (load_address,
--						&unc_len, (char *)data, len,
--						MALLOC_SIZE < (4096 * 1024), 0)
--						!= BZ_OK)
--			return -1;
-+
-+		ret = bunzip2((void *)data, len, NULL, NULL, load_address, NULL,
-+				unzip_error);
-+		if (ret)
-+			return ret;
- 		break;
- #endif
- 	default:
-diff --git a/include/bunzip2.h b/include/bunzip2.h
-new file mode 100644
-index 0000000..1152721
---- /dev/null
-+++ b/include/bunzip2.h
-@@ -0,0 +1,10 @@
-+#ifndef DECOMPRESS_BUNZIP2_H
-+#define DECOMPRESS_BUNZIP2_H
-+
-+int bunzip2(unsigned char *inbuf, int len,
-+	    int(*fill)(void*, unsigned int),
-+	    int(*flush)(void*, unsigned int),
-+	    unsigned char *output,
-+	    int *pos,
-+	    void(*error)(char *x));
-+#endif
-diff --git a/lib/Makefile b/lib/Makefile
-index eccdfff..b02191a 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -15,7 +15,7 @@ obj-y			+= libgen.o
- obj-y			+= stringlist.o
- obj-y			+= recursive_action.o
- obj-y			+= make_directory.o
--obj-$(CONFIG_BZLIB)	+= bzlib.o bzlib_crctable.o bzlib_decompress.o bzlib_huffman.o bzlib_randtable.o
-+obj-$(CONFIG_BZLIB)	+= decompress_bunzip2.o
- obj-$(CONFIG_ZLIB)	+= zlib.o gunzip.o
- obj-$(CONFIG_CMDLINE_EDITING)	+= readline.o
- obj-$(CONFIG_SIMPLE_READLINE)	+= readline_simple.o
-diff --git a/lib/decompress_bunzip2.c b/lib/decompress_bunzip2.c
-new file mode 100644
-index 0000000..4b6edd1
---- /dev/null
-+++ b/lib/decompress_bunzip2.c
-@@ -0,0 +1,756 @@
-+/* vi: set sw = 4 ts = 4: */
-+/*	Small bzip2 deflate implementation, by Rob Landley (rob@landley.net).
-+
-+	Based on bzip2 decompression code by Julian R Seward (jseward@acm.org),
-+	which also acknowledges contributions by Mike Burrows, David Wheeler,
-+	Peter Fenwick, Alistair Moffat, Radford Neal, Ian H. Witten,
-+	Robert Sedgewick, and Jon L. Bentley.
-+
-+	This code is licensed under the LGPLv2:
-+		LGPL (http://www.gnu.org/copyleft/lgpl.html
-+*/
-+
-+/*
-+	Size and speed optimizations by Manuel Novoa III  (mjn3@codepoet.org).
-+
-+	More efficient reading of Huffman codes, a streamlined read_bunzip()
-+	function, and various other tweaks.  In (limited) tests, approximately
-+	20% faster than bzcat on x86 and about 10% faster on arm.
-+
-+	Note that about 2/3 of the time is spent in read_unzip() reversing
-+	the Burrows-Wheeler transformation.  Much of that time is delay
-+	resulting from cache misses.
-+
-+	I would ask that anyone benefiting from this work, especially those
-+	using it in commercial products, consider making a donation to my local
-+	non-profit hospice organization in the name of the woman I loved, who
-+	passed away Feb. 12, 2003.
-+
-+		In memory of Toni W. Hagan
-+
-+		Hospice of Acadiana, Inc.
-+		2600 Johnston St., Suite 200
-+		Lafayette, LA 70503-3240
-+
-+		Phone (337) 232-1234 or 1-800-738-2226
-+		Fax   (337) 232-1297
-+
-+		http://www.hospiceacadiana.com/
-+
-+	Manuel
-+ */
-+
-+/*
-+	Made it fit for running in Linux Kernel by Alain Knaff (alain@knaff.lu)
-+*/
-+
-+#include <common.h>
-+#include <malloc.h>
-+
-+#ifdef STATIC
-+#define PREBOOT
-+#else
-+#include <bunzip2.h>
-+#endif /* STATIC */
-+
-+#ifndef INT_MAX
-+#define INT_MAX 0x7fffffff
-+#endif
-+
-+/* Constants for Huffman coding */
-+#define MAX_GROUPS		6
-+#define GROUP_SIZE   		50	/* 64 would have been more efficient */
-+#define MAX_HUFCODE_BITS 	20	/* Longest Huffman code allowed */
-+#define MAX_SYMBOLS 		258	/* 256 literals + RUNA + RUNB */
-+#define SYMBOL_RUNA		0
-+#define SYMBOL_RUNB		1
-+
-+/* Status return values */
-+#define RETVAL_OK			0
-+#define RETVAL_LAST_BLOCK		(-1)
-+#define RETVAL_NOT_BZIP_DATA		(-2)
-+#define RETVAL_UNEXPECTED_INPUT_EOF	(-3)
-+#define RETVAL_UNEXPECTED_OUTPUT_EOF	(-4)
-+#define RETVAL_DATA_ERROR		(-5)
-+#define RETVAL_OUT_OF_MEMORY		(-6)
-+#define RETVAL_OBSOLETE_INPUT		(-7)
-+
-+/* Other housekeeping constants */
-+#define BZIP2_IOBUF_SIZE		4096
-+
-+/* This is what we know about each Huffman coding group */
-+struct group_data {
-+	/* We have an extra slot at the end of limit[] for a sentinal value. */
-+	int limit[MAX_HUFCODE_BITS+1];
-+	int base[MAX_HUFCODE_BITS];
-+	int permute[MAX_SYMBOLS];
-+	int minLen, maxLen;
-+};
-+
-+/* Structure holding all the housekeeping data, including IO buffers and
-+   memory that persists between calls to bunzip */
-+struct bunzip_data {
-+	/* State for interrupting output loop */
-+	int writeCopies, writePos, writeRunCountdown, writeCount, writeCurrent;
-+	/* I/O tracking data (file handles, buffers, positions, etc.) */
-+	int (*fill)(void*, unsigned int);
-+	int inbufCount, inbufPos /*, outbufPos*/;
-+	unsigned char *inbuf /*,*outbuf*/;
-+	unsigned int inbufBitCount, inbufBits;
-+	/* The CRC values stored in the block header and calculated from the
-+	data */
-+	unsigned int crc32Table[256], headerCRC, totalCRC, writeCRC;
-+	/* Intermediate buffer and its size (in bytes) */
-+	unsigned int *dbuf, dbufSize;
-+	/* These things are a bit too big to go on the stack */
-+	unsigned char selectors[32768];		/* nSelectors = 15 bits */
-+	struct group_data groups[MAX_GROUPS];	/* Huffman coding tables */
-+	int io_error;			/* non-zero if we have IO error */
-+	int byteCount[256];
-+	unsigned char symToByte[256], mtfSymbol[256];
-+};
-+
-+
-+/* Return the next nnn bits of input.  All reads from the compressed input
-+   are done through this function.  All reads are big endian */
-+static unsigned int get_bits(struct bunzip_data *bd, char bits_wanted)
-+{
-+	unsigned int bits = 0;
-+
-+	/* If we need to get more data from the byte buffer, do so.
-+	   (Loop getting one byte at a time to enforce endianness and avoid
-+	   unaligned access.) */
-+	while (bd->inbufBitCount < bits_wanted) {
-+		/* If we need to read more data from file into byte buffer, do
-+		   so */
-+		if (bd->inbufPos == bd->inbufCount) {
-+			if (bd->io_error)
-+				return 0;
-+			bd->inbufCount = bd->fill(bd->inbuf, BZIP2_IOBUF_SIZE);
-+			if (bd->inbufCount <= 0) {
-+				bd->io_error = RETVAL_UNEXPECTED_INPUT_EOF;
-+				return 0;
-+			}
-+			bd->inbufPos = 0;
-+		}
-+		/* Avoid 32-bit overflow (dump bit buffer to top of output) */
-+		if (bd->inbufBitCount >= 24) {
-+			bits = bd->inbufBits&((1 << bd->inbufBitCount)-1);
-+			bits_wanted -= bd->inbufBitCount;
-+			bits <<= bits_wanted;
-+			bd->inbufBitCount = 0;
-+		}
-+		/* Grab next 8 bits of input from buffer. */
-+		bd->inbufBits = (bd->inbufBits << 8)|bd->inbuf[bd->inbufPos++];
-+		bd->inbufBitCount += 8;
-+	}
-+	/* Calculate result */
-+	bd->inbufBitCount -= bits_wanted;
-+	bits |= (bd->inbufBits >> bd->inbufBitCount)&((1 << bits_wanted)-1);
-+
-+	return bits;
-+}
-+
-+/* Unpacks the next block and sets up for the inverse burrows-wheeler step. */
-+
-+static int get_next_block(struct bunzip_data *bd)
-+{
-+	struct group_data *hufGroup = NULL;
-+	int *base = NULL;
-+	int *limit = NULL;
-+	int dbufCount, nextSym, dbufSize, groupCount, selector,
-+		i, j, k, t, runPos, symCount, symTotal, nSelectors, *byteCount;
-+	unsigned char uc, *symToByte, *mtfSymbol, *selectors;
-+	unsigned int *dbuf, origPtr;
-+
-+	dbuf = bd->dbuf;
-+	dbufSize = bd->dbufSize;
-+	selectors = bd->selectors;
-+	byteCount = bd->byteCount;
-+	symToByte = bd->symToByte;
-+	mtfSymbol = bd->mtfSymbol;
-+
-+	/* Read in header signature and CRC, then validate signature.
-+	   (last block signature means CRC is for whole file, return now) */
-+	i = get_bits(bd, 24);
-+	j = get_bits(bd, 24);
-+	bd->headerCRC = get_bits(bd, 32);
-+	if ((i == 0x177245) && (j == 0x385090))
-+		return RETVAL_LAST_BLOCK;
-+	if ((i != 0x314159) || (j != 0x265359))
-+		return RETVAL_NOT_BZIP_DATA;
-+	/* We can add support for blockRandomised if anybody complains.
-+	   There was some code for this in busybox 1.0.0-pre3, but nobody ever
-+	   noticed that it didn't actually work. */
-+	if (get_bits(bd, 1))
-+		return RETVAL_OBSOLETE_INPUT;
-+	origPtr = get_bits(bd, 24);
-+	if (origPtr > dbufSize)
-+		return RETVAL_DATA_ERROR;
-+	/* mapping table: if some byte values are never used (encoding things
-+	   like ascii text), the compression code removes the gaps to have fewer
-+	   symbols to deal with, and writes a sparse bitfield indicating which
-+	   values were present.  We make a translation table to convert the
-+	   symbols back to the corresponding bytes. */
-+	t = get_bits(bd, 16);
-+	symTotal = 0;
-+	for (i = 0; i < 16; i++) {
-+		if (t&(1 << (15-i))) {
-+			k = get_bits(bd, 16);
-+			for (j = 0; j < 16; j++)
-+				if (k&(1 << (15-j)))
-+					symToByte[symTotal++] = (16*i)+j;
-+		}
-+	}
-+	/* How many different Huffman coding groups does this block use? */
-+	groupCount = get_bits(bd, 3);
-+	if (groupCount < 2 || groupCount > MAX_GROUPS)
-+		return RETVAL_DATA_ERROR;
-+	/* nSelectors: Every GROUP_SIZE many symbols we select a new
-+	   Huffman coding group.  Read in the group selector list,
-+	   which is stored as MTF encoded bit runs.  (MTF = Move To
-+	   Front, as each value is used it's moved to the start of the
-+	   list.) */
-+	nSelectors = get_bits(bd, 15);
-+	if (!nSelectors)
-+		return RETVAL_DATA_ERROR;
-+	for (i = 0; i < groupCount; i++)
-+		mtfSymbol[i] = i;
-+	for (i = 0; i < nSelectors; i++) {
-+		/* Get next value */
-+		for (j = 0; get_bits(bd, 1); j++)
-+			if (j >= groupCount)
-+				return RETVAL_DATA_ERROR;
-+		/* Decode MTF to get the next selector */
-+		uc = mtfSymbol[j];
-+		for (; j; j--)
-+			mtfSymbol[j] = mtfSymbol[j-1];
-+		mtfSymbol[0] = selectors[i] = uc;
-+	}
-+	/* Read the Huffman coding tables for each group, which code
-+	   for symTotal literal symbols, plus two run symbols (RUNA,
-+	   RUNB) */
-+	symCount = symTotal+2;
-+	for (j = 0; j < groupCount; j++) {
-+		unsigned char length[MAX_SYMBOLS], temp[MAX_HUFCODE_BITS+1];
-+		int	minLen,	maxLen, pp;
-+		/* Read Huffman code lengths for each symbol.  They're
-+		   stored in a way similar to mtf; record a starting
-+		   value for the first symbol, and an offset from the
-+		   previous value for everys symbol after that.
-+		   (Subtracting 1 before the loop and then adding it
-+		   back at the end is an optimization that makes the
-+		   test inside the loop simpler: symbol length 0
-+		   becomes negative, so an unsigned inequality catches
-+		   it.) */
-+		t = get_bits(bd, 5)-1;
-+		for (i = 0; i < symCount; i++) {
-+			for (;;) {
-+				if (((unsigned)t) > (MAX_HUFCODE_BITS-1))
-+					return RETVAL_DATA_ERROR;
-+
-+				/* If first bit is 0, stop.  Else
-+				   second bit indicates whether to
-+				   increment or decrement the value.
-+				   Optimization: grab 2 bits and unget
-+				   the second if the first was 0. */
-+
-+				k = get_bits(bd, 2);
-+				if (k < 2) {
-+					bd->inbufBitCount++;
-+					break;
-+				}
-+				/* Add one if second bit 1, else
-+				 * subtract 1.  Avoids if/else */
-+				t += (((k+1)&2)-1);
-+			}
-+			/* Correct for the initial -1, to get the
-+			 * final symbol length */
-+			length[i] = t+1;
-+		}
-+		/* Find largest and smallest lengths in this group */
-+		minLen = maxLen = length[0];
-+
-+		for (i = 1; i < symCount; i++) {
-+			if (length[i] > maxLen)
-+				maxLen = length[i];
-+			else if (length[i] < minLen)
-+				minLen = length[i];
-+		}
-+
-+		/* Calculate permute[], base[], and limit[] tables from
-+		 * length[].
-+		 *
-+		 * permute[] is the lookup table for converting
-+		 * Huffman coded symbols into decoded symbols.  base[]
-+		 * is the amount to subtract from the value of a
-+		 * Huffman symbol of a given length when using
-+		 * permute[].
-+		 *
-+		 * limit[] indicates the largest numerical value a
-+		 * symbol with a given number of bits can have.  This
-+		 * is how the Huffman codes can vary in length: each
-+		 * code with a value > limit[length] needs another
-+		 * bit.
-+		 */
-+		hufGroup = bd->groups+j;
-+		hufGroup->minLen = minLen;
-+		hufGroup->maxLen = maxLen;
-+		/* Note that minLen can't be smaller than 1, so we
-+		   adjust the base and limit array pointers so we're
-+		   not always wasting the first entry.  We do this
-+		   again when using them (during symbol decoding).*/
-+		base = hufGroup->base-1;
-+		limit = hufGroup->limit-1;
-+		/* Calculate permute[].  Concurrently, initialize
-+		 * temp[] and limit[]. */
-+		pp = 0;
-+		for (i = minLen; i <= maxLen; i++) {
-+			temp[i] = limit[i] = 0;
-+			for (t = 0; t < symCount; t++)
-+				if (length[t] == i)
-+					hufGroup->permute[pp++] = t;
-+		}
-+		/* Count symbols coded for at each bit length */
-+		for (i = 0; i < symCount; i++)
-+			temp[length[i]]++;
-+		/* Calculate limit[] (the largest symbol-coding value
-+		 *at each bit length, which is (previous limit <<
-+		 *1)+symbols at this level), and base[] (number of
-+		 *symbols to ignore at each bit length, which is limit
-+		 *minus the cumulative count of symbols coded for
-+		 *already). */
-+		pp = t = 0;
-+		for (i = minLen; i < maxLen; i++) {
-+			pp += temp[i];
-+			/* We read the largest possible symbol size
-+			   and then unget bits after determining how
-+			   many we need, and those extra bits could be
-+			   set to anything.  (They're noise from
-+			   future symbols.)  At each level we're
-+			   really only interested in the first few
-+			   bits, so here we set all the trailing
-+			   to-be-ignored bits to 1 so they don't
-+			   affect the value > limit[length]
-+			   comparison. */
-+			limit[i] = (pp << (maxLen - i)) - 1;
-+			pp <<= 1;
-+			base[i+1] = pp-(t += temp[i]);
-+		}
-+		limit[maxLen+1] = INT_MAX; /* Sentinal value for
-+					    * reading next sym. */
-+		limit[maxLen] = pp+temp[maxLen]-1;
-+		base[minLen] = 0;
-+	}
-+	/* We've finished reading and digesting the block header.  Now
-+	   read this block's Huffman coded symbols from the file and
-+	   undo the Huffman coding and run length encoding, saving the
-+	   result into dbuf[dbufCount++] = uc */
-+
-+	/* Initialize symbol occurrence counters and symbol Move To
-+	 * Front table */
-+	for (i = 0; i < 256; i++) {
-+		byteCount[i] = 0;
-+		mtfSymbol[i] = (unsigned char)i;
-+	}
-+	/* Loop through compressed symbols. */
-+	runPos = dbufCount = symCount = selector = 0;
-+	for (;;) {
-+		/* Determine which Huffman coding group to use. */
-+		if (!(symCount--)) {
-+			symCount = GROUP_SIZE-1;
-+			if (selector >= nSelectors)
-+				return RETVAL_DATA_ERROR;
-+			hufGroup = bd->groups+selectors[selector++];
-+			base = hufGroup->base-1;
-+			limit = hufGroup->limit-1;
-+		}
-+		/* Read next Huffman-coded symbol. */
-+		/* Note: It is far cheaper to read maxLen bits and
-+		   back up than it is to read minLen bits and then an
-+		   additional bit at a time, testing as we go.
-+		   Because there is a trailing last block (with file
-+		   CRC), there is no danger of the overread causing an
-+		   unexpected EOF for a valid compressed file.  As a
-+		   further optimization, we do the read inline
-+		   (falling back to a call to get_bits if the buffer
-+		   runs dry).  The following (up to got_huff_bits:) is
-+		   equivalent to j = get_bits(bd, hufGroup->maxLen);
-+		 */
-+		while (bd->inbufBitCount < hufGroup->maxLen) {
-+			if (bd->inbufPos == bd->inbufCount) {
-+				j = get_bits(bd, hufGroup->maxLen);
-+				goto got_huff_bits;
-+			}
-+			bd->inbufBits =
-+				(bd->inbufBits << 8)|bd->inbuf[bd->inbufPos++];
-+			bd->inbufBitCount += 8;
-+		};
-+		bd->inbufBitCount -= hufGroup->maxLen;
-+		j = (bd->inbufBits >> bd->inbufBitCount)&
-+			((1 << hufGroup->maxLen)-1);
-+got_huff_bits:
-+		/* Figure how how many bits are in next symbol and
-+		 * unget extras */
-+		i = hufGroup->minLen;
-+		while (j > limit[i])
-+			++i;
-+		bd->inbufBitCount += (hufGroup->maxLen - i);
-+		/* Huffman decode value to get nextSym (with bounds checking) */
-+		if ((i > hufGroup->maxLen)
-+			|| (((unsigned)(j = (j>>(hufGroup->maxLen-i))-base[i]))
-+				>= MAX_SYMBOLS))
-+			return RETVAL_DATA_ERROR;
-+		nextSym = hufGroup->permute[j];
-+		/* We have now decoded the symbol, which indicates
-+		   either a new literal byte, or a repeated run of the
-+		   most recent literal byte.  First, check if nextSym
-+		   indicates a repeated run, and if so loop collecting
-+		   how many times to repeat the last literal. */
-+		if (((unsigned)nextSym) <= SYMBOL_RUNB) { /* RUNA or RUNB */
-+			/* If this is the start of a new run, zero out
-+			 * counter */
-+			if (!runPos) {
-+				runPos = 1;
-+				t = 0;
-+			}
-+			/* Neat trick that saves 1 symbol: instead of
-+			   or-ing 0 or 1 at each bit position, add 1
-+			   or 2 instead.  For example, 1011 is 1 << 0
-+			   + 1 << 1 + 2 << 2.  1010 is 2 << 0 + 2 << 1
-+			   + 1 << 2.  You can make any bit pattern
-+			   that way using 1 less symbol than the basic
-+			   or 0/1 method (except all bits 0, which
-+			   would use no symbols, but a run of length 0
-+			   doesn't mean anything in this context).
-+			   Thus space is saved. */
-+			t += (runPos << nextSym);
-+			/* +runPos if RUNA; +2*runPos if RUNB */
-+
-+			runPos <<= 1;
-+			continue;
-+		}
-+		/* When we hit the first non-run symbol after a run,
-+		   we now know how many times to repeat the last
-+		   literal, so append that many copies to our buffer
-+		   of decoded symbols (dbuf) now.  (The last literal
-+		   used is the one at the head of the mtfSymbol
-+		   array.) */
-+		if (runPos) {
-+			runPos = 0;
-+			if (dbufCount+t >= dbufSize)
-+				return RETVAL_DATA_ERROR;
-+
-+			uc = symToByte[mtfSymbol[0]];
-+			byteCount[uc] += t;
-+			while (t--)
-+				dbuf[dbufCount++] = uc;
-+		}
-+		/* Is this the terminating symbol? */
-+		if (nextSym > symTotal)
-+			break;
-+		/* At this point, nextSym indicates a new literal
-+		   character.  Subtract one to get the position in the
-+		   MTF array at which this literal is currently to be
-+		   found.  (Note that the result can't be -1 or 0,
-+		   because 0 and 1 are RUNA and RUNB.  But another
-+		   instance of the first symbol in the mtf array,
-+		   position 0, would have been handled as part of a
-+		   run above.  Therefore 1 unused mtf position minus 2
-+		   non-literal nextSym values equals -1.) */
-+		if (dbufCount >= dbufSize)
-+			return RETVAL_DATA_ERROR;
-+		i = nextSym - 1;
-+		uc = mtfSymbol[i];
-+		/* Adjust the MTF array.  Since we typically expect to
-+		 *move only a small number of symbols, and are bound
-+		 *by 256 in any case, using memmove here would
-+		 *typically be bigger and slower due to function call
-+		 *overhead and other assorted setup costs. */
-+		do {
-+			mtfSymbol[i] = mtfSymbol[i-1];
-+		} while (--i);
-+		mtfSymbol[0] = uc;
-+		uc = symToByte[uc];
-+		/* We have our literal byte.  Save it into dbuf. */
-+		byteCount[uc]++;
-+		dbuf[dbufCount++] = (unsigned int)uc;
-+	}
-+	/* At this point, we've read all the Huffman-coded symbols
-+	   (and repeated runs) for this block from the input stream,
-+	   and decoded them into the intermediate buffer.  There are
-+	   dbufCount many decoded bytes in dbuf[].  Now undo the
-+	   Burrows-Wheeler transform on dbuf.  See
-+	   http://dogma.net/markn/articles/bwt/bwt.htm
-+	 */
-+	/* Turn byteCount into cumulative occurrence counts of 0 to n-1. */
-+	j = 0;
-+	for (i = 0; i < 256; i++) {
-+		k = j+byteCount[i];
-+		byteCount[i] = j;
-+		j = k;
-+	}
-+	/* Figure out what order dbuf would be in if we sorted it. */
-+	for (i = 0; i < dbufCount; i++) {
-+		uc = (unsigned char)(dbuf[i] & 0xff);
-+		dbuf[byteCount[uc]] |= (i << 8);
-+		byteCount[uc]++;
-+	}
-+	/* Decode first byte by hand to initialize "previous" byte.
-+	   Note that it doesn't get output, and if the first three
-+	   characters are identical it doesn't qualify as a run (hence
-+	   writeRunCountdown = 5). */
-+	if (dbufCount) {
-+		if (origPtr >= dbufCount)
-+			return RETVAL_DATA_ERROR;
-+		bd->writePos = dbuf[origPtr];
-+		bd->writeCurrent = (unsigned char)(bd->writePos&0xff);
-+		bd->writePos >>= 8;
-+		bd->writeRunCountdown = 5;
-+	}
-+	bd->writeCount = dbufCount;
-+
-+	return RETVAL_OK;
-+}
-+
-+/* Undo burrows-wheeler transform on intermediate buffer to produce output.
-+   If start_bunzip was initialized with out_fd =-1, then up to len bytes of
-+   data are written to outbuf.  Return value is number of bytes written or
-+   error (all errors are negative numbers).  If out_fd!=-1, outbuf and len
-+   are ignored, data is written to out_fd and return is RETVAL_OK or error.
-+*/
-+
-+static int read_bunzip(struct bunzip_data *bd, char *outbuf, int len)
-+{
-+	const unsigned int *dbuf;
-+	int pos, xcurrent, previous, gotcount;
-+
-+	/* If last read was short due to end of file, return last block now */
-+	if (bd->writeCount < 0)
-+		return bd->writeCount;
-+
-+	gotcount = 0;
-+	dbuf = bd->dbuf;
-+	pos = bd->writePos;
-+	xcurrent = bd->writeCurrent;
-+
-+	/* We will always have pending decoded data to write into the output
-+	   buffer unless this is the very first call (in which case we haven't
-+	   Huffman-decoded a block into the intermediate buffer yet). */
-+
-+	if (bd->writeCopies) {
-+		/* Inside the loop, writeCopies means extra copies (beyond 1) */
-+		--bd->writeCopies;
-+		/* Loop outputting bytes */
-+		for (;;) {
-+			/* If the output buffer is full, snapshot
-+			 * state and return */
-+			if (gotcount >= len) {
-+				bd->writePos = pos;
-+				bd->writeCurrent = xcurrent;
-+				bd->writeCopies++;
-+				return len;
-+			}
-+			/* Write next byte into output buffer, updating CRC */
-+			outbuf[gotcount++] = xcurrent;
-+			bd->writeCRC = (((bd->writeCRC) << 8)
-+				^bd->crc32Table[((bd->writeCRC) >> 24)
-+				^xcurrent]);
-+			/* Loop now if we're outputting multiple
-+			 * copies of this byte */
-+			if (bd->writeCopies) {
-+				--bd->writeCopies;
-+				continue;
-+			}
-+decode_next_byte:
-+			if (!bd->writeCount--)
-+				break;
-+			/* Follow sequence vector to undo
-+			 * Burrows-Wheeler transform */
-+			previous = xcurrent;
-+			pos = dbuf[pos];
-+			xcurrent = pos&0xff;
-+			pos >>= 8;
-+			/* After 3 consecutive copies of the same
-+			   byte, the 4th is a repeat count.  We count
-+			   down from 4 instead *of counting up because
-+			   testing for non-zero is faster */
-+			if (--bd->writeRunCountdown) {
-+				if (xcurrent != previous)
-+					bd->writeRunCountdown = 4;
-+			} else {
-+				/* We have a repeated run, this byte
-+				 * indicates the count */
-+				bd->writeCopies = xcurrent;
-+				xcurrent = previous;
-+				bd->writeRunCountdown = 5;
-+				/* Sometimes there are just 3 bytes
-+				 * (run length 0) */
-+				if (!bd->writeCopies)
-+					goto decode_next_byte;
-+				/* Subtract the 1 copy we'd output
-+				 * anyway to get extras */
-+				--bd->writeCopies;
-+			}
-+		}
-+		/* Decompression of this block completed successfully */
-+		bd->writeCRC = ~bd->writeCRC;
-+		bd->totalCRC = ((bd->totalCRC << 1) |
-+				(bd->totalCRC >> 31)) ^ bd->writeCRC;
-+		/* If this block had a CRC error, force file level CRC error. */
-+		if (bd->writeCRC != bd->headerCRC) {
-+			bd->totalCRC = bd->headerCRC+1;
-+			return RETVAL_LAST_BLOCK;
-+		}
-+	}
-+
-+	/* Refill the intermediate buffer by Huffman-decoding next
-+	 * block of input */
-+	/* (previous is just a convenient unused temp variable here) */
-+	previous = get_next_block(bd);
-+	if (previous) {
-+		bd->writeCount = previous;
-+		return (previous != RETVAL_LAST_BLOCK) ? previous : gotcount;
-+	}
-+	bd->writeCRC = 0xffffffffUL;
-+	pos = bd->writePos;
-+	xcurrent = bd->writeCurrent;
-+	goto decode_next_byte;
-+}
-+
-+static int nofill(void *buf, unsigned int len)
-+{
-+	return -1;
-+}
-+
-+/* Allocate the structure, read file header.  If in_fd ==-1, inbuf must contain
-+   a complete bunzip file (len bytes long).  If in_fd!=-1, inbuf and len are
-+   ignored, and data is read from file handle into temporary buffer. */
-+static int start_bunzip(struct bunzip_data **bdp, void *inbuf, int len,
-+			     int (*fill)(void*, unsigned int))
-+{
-+	struct bunzip_data *bd;
-+	unsigned int i, j, c;
-+	const unsigned int BZh0 =
-+		(((unsigned int)'B') << 24)+(((unsigned int)'Z') << 16)
-+		+(((unsigned int)'h') << 8)+(unsigned int)'0';
-+
-+	/* Figure out how much data to allocate */
-+	i = sizeof(struct bunzip_data);
-+
-+	/* Allocate bunzip_data.  Most fields initialize to zero. */
-+	bd = *bdp = malloc(i);
-+	if (!bd)
-+		return RETVAL_OUT_OF_MEMORY;
-+	memset(bd, 0, sizeof(struct bunzip_data));
-+	/* Setup input buffer */
-+	bd->inbuf = inbuf;
-+	bd->inbufCount = len;
-+	if (fill != NULL)
-+		bd->fill = fill;
-+	else
-+		bd->fill = nofill;
-+
-+	/* Init the CRC32 table (big endian) */
-+	for (i = 0; i < 256; i++) {
-+		c = i << 24;
-+		for (j = 8; j; j--)
-+			c = c&0x80000000 ? (c << 1)^0x04c11db7 : (c << 1);
-+		bd->crc32Table[i] = c;
-+	}
-+
-+	/* Ensure that file starts with "BZh['1'-'9']." */
-+	i = get_bits(bd, 32);
-+	if (((unsigned int)(i-BZh0-1)) >= 9)
-+		return RETVAL_NOT_BZIP_DATA;
-+
-+	/* Fourth byte (ascii '1'-'9'), indicates block size in units of 100k of
-+	   uncompressed data.  Allocate intermediate buffer for block. */
-+	bd->dbufSize = 100000*(i-BZh0);
-+
-+	bd->dbuf = malloc(bd->dbufSize * sizeof(int));
-+	if (!bd->dbuf)
-+		return RETVAL_OUT_OF_MEMORY;
-+	return RETVAL_OK;
-+}
-+
-+/* Example usage: decompress src_fd to dst_fd.  (Stops at end of bzip2 data,
-+   not end of file.) */
-+int bunzip2(unsigned char *buf, int len,
-+			int(*fill)(void*, unsigned int),
-+			int(*flush)(void*, unsigned int),
-+			unsigned char *outbuf,
-+			int *pos,
-+			void(*error)(char *x))
-+{
-+	struct bunzip_data *bd;
-+	int i = -1;
-+	unsigned char *inbuf;
-+
-+	if (flush)
-+		outbuf = malloc(BZIP2_IOBUF_SIZE);
-+
-+	if (!outbuf) {
-+		error("Could not allocate output bufer");
-+		return RETVAL_OUT_OF_MEMORY;
-+	}
-+	if (buf)
-+		inbuf = buf;
-+	else
-+		inbuf = malloc(BZIP2_IOBUF_SIZE);
-+	if (!inbuf) {
-+		error("Could not allocate input bufer");
-+		i = RETVAL_OUT_OF_MEMORY;
-+		goto exit_0;
-+	}
-+	i = start_bunzip(&bd, inbuf, len, fill);
-+	if (!i) {
-+		for (;;) {
-+			i = read_bunzip(bd, outbuf, BZIP2_IOBUF_SIZE);
-+			if (i <= 0)
-+				break;
-+			if (!flush)
-+				outbuf += i;
-+			else
-+				if (i != flush(outbuf, i)) {
-+					i = RETVAL_UNEXPECTED_OUTPUT_EOF;
-+					break;
-+				}
-+		}
-+	}
-+	/* Check CRC and release memory */
-+	if (i == RETVAL_LAST_BLOCK) {
-+		if (bd->headerCRC != bd->totalCRC)
-+			error("Data integrity error when decompressing.");
-+		else
-+			i = RETVAL_OK;
-+	} else if (i == RETVAL_UNEXPECTED_OUTPUT_EOF) {
-+		error("Compressed file ends unexpectedly");
-+	}
-+	if (!bd)
-+		goto exit_1;
-+	if (bd->dbuf)
-+		free(bd->dbuf);
-+	if (pos)
-+		*pos = bd->inbufPos;
-+	free(bd);
-+exit_1:
-+	if (!buf)
-+		free(inbuf);
-+exit_0:
-+	if (flush)
-+		free(outbuf);
-+	return i;
-+}
-+
-+#ifdef PREBOOT
-+STATIC int INIT decompress(unsigned char *buf, int len,
-+			int(*fill)(void*, unsigned int),
-+			int(*flush)(void*, unsigned int),
-+			unsigned char *outbuf,
-+			int *pos,
-+			void(*error)(char *x))
-+{
-+	return bunzip2(buf, len - 4, fill, flush, outbuf, pos, error);
-+}
-+#endif
+diff --git a/include/zlib.h b/include/zlib.h
+deleted file mode 100644
+index e441494..0000000
+--- a/include/zlib.h
++++ /dev/null
+@@ -1,434 +0,0 @@
+-/*
+- * This file is derived from zlib.h and zconf.h from the zlib-0.95
+- * distribution by Jean-loup Gailly and Mark Adler, with some additions
+- * by Paul Mackerras to aid in implementing Deflate compression and
+- * decompression for PPP packets.
+- */
+-
+-/*
+- *  ==FILEVERSION 960122==
+- *
+- * This marker is used by the Linux installation script to determine
+- * whether an up-to-date version of this file is already installed.
+- */
+-
+-/* zlib.h -- interface of the 'zlib' general purpose compression library
+-  version 0.95, Aug 16th, 1995.
+-
+-  Copyright (C) 1995 Jean-loup Gailly and Mark Adler
+-
+-  This software is provided 'as-is', without any express or implied
+-  warranty.  In no event will the authors be held liable for any damages
+-  arising from the use of this software.
+-
+-  Permission is granted to anyone to use this software for any purpose,
+-  including commercial applications, and to alter it and redistribute it
+-  freely, subject to the following restrictions:
+-
+-  1. The origin of this software must not be misrepresented; you must not
+-     claim that you wrote the original software. If you use this software
+-     in a product, an acknowledgment in the product documentation would be
+-     appreciated but is not required.
+-  2. Altered source versions must be plainly marked as such, and must not be
+-     misrepresented as being the original software.
+-  3. This notice may not be removed or altered from any source distribution.
+-
+-  Jean-loup Gailly        Mark Adler
+-  gzip@prep.ai.mit.edu    madler@alumni.caltech.edu
+- */
+-
+-#ifndef _ZLIB_H
+-#define _ZLIB_H
+-
+-/* #include "zconf.h" */	/* included directly here */
+-
+-/* zconf.h -- configuration of the zlib compression library
+- * Copyright (C) 1995 Jean-loup Gailly.
+- * For conditions of distribution and use, see copyright notice in zlib.h
+- */
+-
+-/* From: zconf.h,v 1.12 1995/05/03 17:27:12 jloup Exp */
+-
+-/*
+-     The library does not install any signal handler. It is recommended to
+-  add at least a handler for SIGSEGV when decompressing; the library checks
+-  the consistency of the input data whenever possible but may go nuts
+-  for some forms of corrupted input.
+- */
+-
+-/*
+- * Compile with -DMAXSEG_64K if the alloc function cannot allocate more
+- * than 64k bytes at a time (needed on systems with 16-bit int).
+- * Compile with -DUNALIGNED_OK if it is OK to access shorts or ints
+- * at addresses which are not a multiple of their size.
+- * Under DOS, -DFAR=far or -DFAR=__far may be needed.
+- */
+-
+-#ifndef STDC
+-#  if defined(MSDOS) || defined(__STDC__) || defined(__cplusplus)
+-#    define STDC
+-#  endif
+-#endif
+-
+-#ifdef	__MWERKS__ /* Metrowerks CodeWarrior declares fileno() in unix.h */
+-#  include <unix.h>
+-#endif
+-
+-/* Maximum value for memLevel in deflateInit2 */
+-#ifndef MAX_MEM_LEVEL
+-#  ifdef MAXSEG_64K
+-#    define MAX_MEM_LEVEL 8
+-#  else
+-#    define MAX_MEM_LEVEL 9
+-#  endif
+-#endif
+-
+-#ifndef FAR
+-#  define FAR
+-#endif
+-
+-/* Maximum value for windowBits in deflateInit2 and inflateInit2 */
+-#ifndef MAX_WBITS
+-#  define MAX_WBITS   15 /* 32K LZ77 window */
+-#endif
+-
+-/* The memory requirements for deflate are (in bytes):
+-	    1 << (windowBits+2)   +  1 << (memLevel+9)
+- that is: 128K for windowBits=15  +  128K for memLevel = 8  (default values)
+- plus a few kilobytes for small objects. For example, if you want to reduce
+- the default memory requirements from 256K to 128K, compile with
+-     make CFLAGS="-O -DMAX_WBITS=14 -DMAX_MEM_LEVEL=7"
+- Of course this will generally degrade compression (there's no free lunch).
+-
+-   The memory requirements for inflate are (in bytes) 1 << windowBits
+- that is, 32K for windowBits=15 (default value) plus a few kilobytes
+- for small objects.
+-*/
+-
+-			/* Type declarations */
+-
+-#ifndef OF /* function prototypes */
+-#  ifdef STDC
+-#    define OF(args)  args
+-#  else
+-#    define OF(args)  ()
+-#  endif
+-#endif
+-
+-typedef unsigned char  Byte;  /* 8 bits */
+-typedef unsigned int   uInt;  /* 16 bits or more */
+-typedef unsigned long  uLong; /* 32 bits or more */
+-
+-typedef Byte FAR Bytef;
+-typedef char FAR charf;
+-typedef int FAR intf;
+-typedef uInt FAR uIntf;
+-typedef uLong FAR uLongf;
+-
+-#ifdef STDC
+-   typedef void FAR *voidpf;
+-   typedef void     *voidp;
+-#else
+-   typedef Byte FAR *voidpf;
+-   typedef Byte     *voidp;
+-#endif
+-
+-/* end of original zconf.h */
+-
+-#define ZLIB_VERSION "0.95P"
+-
+-/*
+-     The 'zlib' compression library provides in-memory compression and
+-  decompression functions, including integrity checks of the uncompressed
+-  data.  This version of the library supports only one compression method
+-  (deflation) but other algorithms may be added later and will have the same
+-  stream interface.
+-
+-     For compression the application must provide the output buffer and
+-  may optionally provide the input buffer for optimization. For decompression,
+-  the application must provide the input buffer and may optionally provide
+-  the output buffer for optimization.
+-
+-     Compression can be done in a single step if the buffers are large
+-  enough (for example if an input file is mmap'ed), or can be done by
+-  repeated calls of the compression function.  In the latter case, the
+-  application must provide more input and/or consume the output
+-  (providing more output space) before each call.
+-*/
+-
+-typedef voidpf (*alloc_func) OF((voidpf opaque, uInt items, uInt size));
+-typedef void   (*free_func)  OF((voidpf opaque, voidpf address, uInt nbytes));
+-
+-typedef void   (*cb_func)    OF((Bytef *buf, uInt len));
+-
+-struct internal_state;
+-
+-typedef struct z_stream_s {
+-    Bytef    *next_in;  /* next input byte */
+-    uInt     avail_in;  /* number of bytes available at next_in */
+-    uLong    total_in;  /* total nb of input bytes read so far */
+-
+-    Bytef    *next_out; /* next output byte should be put there */
+-    uInt     avail_out; /* remaining free space at next_out */
+-    uLong    total_out; /* total nb of bytes output so far */
+-
+-    char     *msg;      /* last error message, NULL if no error */
+-    struct internal_state FAR *state; /* not visible by applications */
+-
+-    alloc_func zalloc;  /* used to allocate the internal state */
+-    free_func  zfree;   /* used to free the internal state */
+-    voidp      opaque;  /* private data object passed to zalloc and zfree */
+-
+-    Byte     data_type; /* best guess about the data type: ascii or binary */
+-
+-    cb_func  outcb;	/* called regularly just before blocks of output */
+-
+-} z_stream;
+-
+-/*
+-   The application must update next_in and avail_in when avail_in has
+-   dropped to zero. It must update next_out and avail_out when avail_out
+-   has dropped to zero. The application must initialize zalloc, zfree and
+-   opaque before calling the init function. All other fields are set by the
+-   compression library and must not be updated by the application.
+-
+-   The opaque value provided by the application will be passed as the first
+-   parameter for calls of zalloc and zfree. This can be useful for custom
+-   memory management. The compression library attaches no meaning to the
+-   opaque value.
+-
+-   zalloc must return Z_NULL if there is not enough memory for the object.
+-   On 16-bit systems, the functions zalloc and zfree must be able to allocate
+-   exactly 65536 bytes, but will not be required to allocate more than this
+-   if the symbol MAXSEG_64K is defined (see zconf.h). WARNING: On MSDOS,
+-   pointers returned by zalloc for objects of exactly 65536 bytes *must*
+-   have their offset normalized to zero. The default allocation function
+-   provided by this library ensures this (see zutil.c). To reduce memory
+-   requirements and avoid any allocation of 64K objects, at the expense of
+-   compression ratio, compile the library with -DMAX_WBITS=14 (see zconf.h).
+-
+-   The fields total_in and total_out can be used for statistics or
+-   progress reports. After compression, total_in holds the total size of
+-   the uncompressed data and may be saved for use in the decompressor
+-   (particularly if the decompressor wants to decompress everything in
+-   a single step).
+-*/
+-
+-			/* constants */
+-
+-#define Z_NO_FLUSH      0
+-#define Z_PARTIAL_FLUSH 1
+-#define Z_FULL_FLUSH    2
+-#define Z_SYNC_FLUSH    3 /* experimental: partial_flush + byte align */
+-#define Z_FINISH        4
+-#define Z_PACKET_FLUSH	5
+-/* See deflate() below for the usage of these constants */
+-
+-#define Z_OK            0
+-#define Z_STREAM_END    1
+-#define Z_ERRNO        (-1)
+-#define Z_STREAM_ERROR (-2)
+-#define Z_DATA_ERROR   (-3)
+-#define Z_MEM_ERROR    (-4)
+-#define Z_BUF_ERROR    (-5)
+-/* error codes for the compression/decompression functions */
+-
+-#define Z_BEST_SPEED             1
+-#define Z_BEST_COMPRESSION       9
+-#define Z_DEFAULT_COMPRESSION  (-1)
+-/* compression levels */
+-
+-#define Z_FILTERED            1
+-#define Z_HUFFMAN_ONLY        2
+-#define Z_DEFAULT_STRATEGY    0
+-
+-#define Z_BINARY   0
+-#define Z_ASCII    1
+-#define Z_UNKNOWN  2
+-/* Used to set the data_type field */
+-
+-#define Z_NULL  0  /* for initializing zalloc, zfree, opaque */
+-
+-extern char *zlib_version;
+-/* The application can compare zlib_version and ZLIB_VERSION for consistency.
+-   If the first character differs, the library code actually used is
+-   not compatible with the zlib.h header file used by the application.
+- */
+-
+-			/* basic functions */
+-
+-extern int inflateInit OF((z_stream *strm));
+-/*
+-     Initializes the internal stream state for decompression. The fields
+-   zalloc and zfree must be initialized before by the caller.  If zalloc and
+-   zfree are set to Z_NULL, inflateInit updates them to use default allocation
+-   functions.
+-
+-     inflateInit returns Z_OK if success, Z_MEM_ERROR if there was not
+-   enough memory.  msg is set to null if there is no error message.
+-   inflateInit does not perform any decompression: this will be done by
+-   inflate().
+-*/
+-
+-
+-extern int inflate OF((z_stream *strm, int flush));
+-/*
+-  Performs one or both of the following actions:
+-
+-  - Decompress more input starting at next_in and update next_in and avail_in
+-    accordingly. If not all input can be processed (because there is not
+-    enough room in the output buffer), next_in is updated and processing
+-    will resume at this point for the next call of inflate().
+-
+-  - Provide more output starting at next_out and update next_out and avail_out
+-    accordingly.  inflate() always provides as much output as possible
+-    (until there is no more input data or no more space in the output buffer).
+-
+-  Before the call of inflate(), the application should ensure that at least
+-  one of the actions is possible, by providing more input and/or consuming
+-  more output, and updating the next_* and avail_* values accordingly.
+-  The application can consume the uncompressed output when it wants, for
+-  example when the output buffer is full (avail_out == 0), or after each
+-  call of inflate().
+-
+-    If the parameter flush is set to Z_PARTIAL_FLUSH or Z_PACKET_FLUSH,
+-  inflate flushes as much output as possible to the output buffer. The
+-  flushing behavior of inflate is not specified for values of the flush
+-  parameter other than Z_PARTIAL_FLUSH, Z_PACKET_FLUSH or Z_FINISH, but the
+-  current implementation actually flushes as much output as possible
+-  anyway.  For Z_PACKET_FLUSH, inflate checks that once all the input data
+-  has been consumed, it is expecting to see the length field of a stored
+-  block; if not, it returns Z_DATA_ERROR.
+-
+-    inflate() should normally be called until it returns Z_STREAM_END or an
+-  error. However if all decompression is to be performed in a single step
+-  (a single call of inflate), the parameter flush should be set to
+-  Z_FINISH. In this case all pending input is processed and all pending
+-  output is flushed; avail_out must be large enough to hold all the
+-  uncompressed data. (The size of the uncompressed data may have been saved
+-  by the compressor for this purpose.) The next operation on this stream must
+-  be inflateEnd to deallocate the decompression state. The use of Z_FINISH
+-  is never required, but can be used to inform inflate that a faster routine
+-  may be used for the single inflate() call.
+-
+-    inflate() returns Z_OK if some progress has been made (more input
+-  processed or more output produced), Z_STREAM_END if the end of the
+-  compressed data has been reached and all uncompressed output has been
+-  produced, Z_DATA_ERROR if the input data was corrupted, Z_STREAM_ERROR if
+-  the stream structure was inconsistent (for example if next_in or next_out
+-  was NULL), Z_MEM_ERROR if there was not enough memory, Z_BUF_ERROR if no
+-  progress is possible or if there was not enough room in the output buffer
+-  when Z_FINISH is used. In the Z_DATA_ERROR case, the application may then
+-  call inflateSync to look for a good compression block.  */
+-
+-
+-extern int inflateEnd OF((z_stream *strm));
+-/*
+-     All dynamically allocated data structures for this stream are freed.
+-   This function discards any unprocessed input and does not flush any
+-   pending output.
+-
+-     inflateEnd returns Z_OK if success, Z_STREAM_ERROR if the stream state
+-   was inconsistent. In the error case, msg may be set but then points to a
+-   static string (which must not be deallocated).
+-*/
+-
+-			/* advanced functions */
+-
+-extern int inflateInit2 OF((z_stream *strm,
+-			    int  windowBits));
+-/*
+-     This is another version of inflateInit with more compression options. The
+-   fields next_out, zalloc and zfree must be initialized before by the caller.
+-
+-     The windowBits parameter is the base two logarithm of the maximum window
+-   size (the size of the history buffer).  It should be in the range 8..15 for
+-   this version of the library (the value 16 will be allowed soon). The
+-   default value is 15 if inflateInit is used instead. If a compressed stream
+-   with a larger window size is given as input, inflate() will return with
+-   the error code Z_DATA_ERROR instead of trying to allocate a larger window.
+-
+-     If next_out is not null, the library will use this buffer for the history
+-   buffer; the buffer must either be large enough to hold the entire output
+-   data, or have at least 1<<windowBits bytes.  If next_out is null, the
+-   library will allocate its own buffer (and leave next_out null). next_in
+-   need not be provided here but must be provided by the application for the
+-   next call of inflate().
+-
+-     If the history buffer is provided by the application, next_out must
+-   never be changed by the application since the decompressor maintains
+-   history information inside this buffer from call to call; the application
+-   can only reset next_out to the beginning of the history buffer when
+-   avail_out is zero and all output has been consumed.
+-
+-      inflateInit2 returns Z_OK if success, Z_MEM_ERROR if there was
+-   not enough memory, Z_STREAM_ERROR if a parameter is invalid (such as
+-   windowBits < 8). msg is set to null if there is no error message.
+-   inflateInit2 does not perform any decompression: this will be done by
+-   inflate().
+-*/
+-
+-extern int inflateSync OF((z_stream *strm));
+-/*
+-    Skips invalid compressed data until the special marker (see deflate()
+-  above) can be found, or until all available input is skipped. No output
+-  is provided.
+-
+-    inflateSync returns Z_OK if the special marker has been found, Z_BUF_ERROR
+-  if no more input was provided, Z_DATA_ERROR if no marker has been found,
+-  or Z_STREAM_ERROR if the stream structure was inconsistent. In the success
+-  case, the application may save the current current value of total_in which
+-  indicates where valid compressed data was found. In the error case, the
+-  application may repeatedly call inflateSync, providing more input each time,
+-  until success or end of the input data.
+-*/
+-
+-extern int inflateReset OF((z_stream *strm));
+-/*
+-     This function is equivalent to inflateEnd followed by inflateInit,
+-   but does not free and reallocate all the internal decompression state.
+-   The stream will keep attributes that may have been set by inflateInit2.
+-
+-      inflateReset returns Z_OK if success, or Z_STREAM_ERROR if the source
+-   stream state was inconsistent (such as zalloc or state being NULL).
+-*/
+-
+-extern int inflateIncomp OF((z_stream *strm));
+-/*
+-     This function adds the data at next_in (avail_in bytes) to the output
+-   history without performing any output.  There must be no pending output,
+-   and the decompressor must be expecting to see the start of a block.
+-   Calling this function is equivalent to decompressing a stored block
+-   containing the data at next_in (except that the data is not output).
+-*/
+-
+-			/* checksum functions */
+-
+-/*
+-     This function is not related to compression but is exported
+-   anyway because it might be useful in applications using the
+-   compression library.
+-*/
+-
+-extern uLong adler32 OF((uLong adler, Bytef *buf, uInt len));
+-
+-/*
+-     Update a running Adler-32 checksum with the bytes buf[0..len-1] and
+-   return the updated checksum. If buf is NULL, this function returns
+-   the required initial value for the checksum.
+-   An Adler-32 checksum is almost as reliable as a CRC32 but can be computed
+-   much faster. Usage example:
+-
+-     uLong adler = adler32(0L, Z_NULL, 0);
+-
+-     while (read_buffer(buffer, length) != EOF) {
+-       adler = adler32(adler, buffer, length);
+-     }
+-     if (adler != original_adler) error();
+-*/
+-
+-#ifndef _Z_UTIL_H
+-    struct internal_state {int dummy;}; /* hack for buggy compilers */
+-#endif
+-
+-#endif /* _ZLIB_H */
+diff --git a/lib/gunzip.c b/lib/gunzip.c
+deleted file mode 100644
+index c41568a..0000000
+--- a/lib/gunzip.c
++++ /dev/null
+@@ -1,85 +0,0 @@
+-#include <common.h>
+-#include <zlib.h>
+-#include <malloc.h>
+-
+-#define	ZALLOC_ALIGNMENT	16
+-
+-static void *zalloc(void *x, unsigned items, unsigned size)
+-{
+-	void *p;
+-
+-	size *= items;
+-	size = (size + ZALLOC_ALIGNMENT - 1) & ~(ZALLOC_ALIGNMENT - 1);
+-
+-	p = malloc (size);
+-
+-	return (p);
+-}
+-
+-static void zfree(void *x, void *addr, unsigned nb)
+-{
+-	free (addr);
+-}
+-
+-#define HEAD_CRC	2
+-#define EXTRA_FIELD	4
+-#define ORIG_NAME	8
+-#define COMMENT		0x10
+-#define RESERVED	0xe0
+-
+-#define DEFLATED	8
+-
+-int gunzip(void *dst, int dstlen, unsigned char *src, unsigned long *lenp)
+-{
+-	z_stream s;
+-	int r, i, flags;
+-
+-	/* skip header */
+-	i = 10;
+-	flags = src[3];
+-	if (src[2] != DEFLATED || (flags & RESERVED) != 0) {
+-		puts ("Error: Bad gzipped data\n");
+-		return (-1);
+-	}
+-	if ((flags & EXTRA_FIELD) != 0)
+-		i = 12 + src[10] + (src[11] << 8);
+-	if ((flags & ORIG_NAME) != 0)
+-		while (src[i++] != 0)
+-			;
+-	if ((flags & COMMENT) != 0)
+-		while (src[i++] != 0)
+-			;
+-	if ((flags & HEAD_CRC) != 0)
+-		i += 2;
+-	if (i >= *lenp) {
+-		puts ("Error: gunzip out of data in header\n");
+-		return (-1);
+-	}
+-
+-	s.zalloc = zalloc;
+-	s.zfree = zfree;
+-#if defined(CONFIG_HW_WATCHDOG) || defined(CONFIG_WATCHDOG)
+-	s.outcb = (cb_func)WATCHDOG_RESET;
+-#else
+-	s.outcb = Z_NULL;
+-#endif	/* CONFIG_HW_WATCHDOG */
+-
+-	r = inflateInit2(&s, -MAX_WBITS);
+-	if (r != Z_OK) {
+-		printf ("Error: inflateInit2() returned %d\n", r);
+-		return (-1);
+-	}
+-	s.next_in = src + i;
+-	s.avail_in = *lenp - i;
+-	s.next_out = dst;
+-	s.avail_out = dstlen;
+-	r = inflate(&s, Z_FINISH);
+-	if (r != Z_OK && r != Z_STREAM_END) {
+-		printf ("Error: inflate() returned %d\n", r);
+-		return (-1);
+-	}
+-	*lenp = s.next_out - (unsigned char *) dst;
+-	inflateEnd(&s);
+-
+-	return (0);
+-}
+diff --git a/lib/zlib.c b/lib/zlib.c
+deleted file mode 100644
+index 699a6f2..0000000
+--- a/lib/zlib.c
++++ /dev/null
+@@ -1,2158 +0,0 @@
+-/*
+- * This file is derived from various .h and .c files from the zlib-0.95
+- * distribution by Jean-loup Gailly and Mark Adler, with some additions
+- * by Paul Mackerras to aid in implementing Deflate compression and
+- * decompression for PPP packets.  See zlib.h for conditions of
+- * distribution and use.
+- *
+- * Changes that have been made include:
+- * - changed functions not used outside this file to "local"
+- * - added minCompression parameter to deflateInit2
+- * - added Z_PACKET_FLUSH (see zlib.h for details)
+- * - added inflateIncomp
+- */
+-
+-/*+++++*/
+-/* zutil.h -- internal interface and configuration of the compression library
+- * Copyright (C) 1995 Jean-loup Gailly.
+- * For conditions of distribution and use, see copyright notice in zlib.h
+- */
+-
+-/* WARNING: this file should *not* be used by applications. It is
+-   part of the implementation of the compression library and is
+-   subject to change. Applications should only use zlib.h.
+- */
+-
+-/* From: zutil.h,v 1.9 1995/05/03 17:27:12 jloup Exp */
+-
+-#define _Z_UTIL_H
+-
+-#include "zlib.h"
+-
+-#ifndef local
+-#  define local static
+-#endif
+-/* compile with -Dlocal if your debugger can't find static symbols */
+-
+-#define FAR
+-
+-typedef unsigned char  uch;
+-typedef uch FAR uchf;
+-typedef unsigned short ush;
+-typedef ush FAR ushf;
+-typedef unsigned long  ulg;
+-
+-extern char *z_errmsg[]; /* indexed by 1-zlib_error */
+-
+-#define ERR_RETURN(strm,err) return (strm->msg=z_errmsg[1-err], err)
+-/* To be used only when the state is known to be valid */
+-
+-#ifndef NULL
+-#define NULL	((void *) 0)
+-#endif
+-
+-	/* common constants */
+-
+-#define DEFLATED   8
+-
+-#ifndef DEF_WBITS
+-#  define DEF_WBITS MAX_WBITS
+-#endif
+-/* default windowBits for decompression. MAX_WBITS is for compression only */
+-
+-#if MAX_MEM_LEVEL >= 8
+-#  define DEF_MEM_LEVEL 8
+-#else
+-#  define DEF_MEM_LEVEL  MAX_MEM_LEVEL
+-#endif
+-/* default memLevel */
+-
+-#define STORED_BLOCK 0
+-#define STATIC_TREES 1
+-#define DYN_TREES    2
+-/* The three kinds of block type */
+-
+-#define MIN_MATCH  3
+-#define MAX_MATCH  258
+-/* The minimum and maximum match lengths */
+-
+-	 /* functions */
+-
+-#include <linux/string.h>
+-#define zmemcpy memcpy
+-#define zmemzero(dest, len)	memset(dest, 0, len)
+-
+-/* Diagnostic functions */
+-#ifdef DEBUG_ZLIB
+-#  include <stdio.h>
+-#  ifndef verbose
+-#    define verbose 0
+-#  endif
+-#  define Assert(cond,msg) {if(!(cond)) z_error(msg);}
+-#  define Trace(x) fprintf x
+-#  define Tracev(x) {if (verbose) fprintf x ;}
+-#  define Tracevv(x) {if (verbose>1) fprintf x ;}
+-#  define Tracec(c,x) {if (verbose && (c)) fprintf x ;}
+-#  define Tracecv(c,x) {if (verbose>1 && (c)) fprintf x ;}
+-#else
+-#  define Assert(cond,msg)
+-#  define Trace(x)
+-#  define Tracev(x)
+-#  define Tracevv(x)
+-#  define Tracec(c,x)
+-#  define Tracecv(c,x)
+-#endif
+-
+-
+-typedef uLong (*check_func) OF((uLong check, Bytef *buf, uInt len));
+-
+-/* voidpf zcalloc OF((voidpf opaque, unsigned items, unsigned size)); */
+-/* void   zcfree  OF((voidpf opaque, voidpf ptr)); */
+-
+-#define ZALLOC(strm, items, size) \
+-	   (*((strm)->zalloc))((strm)->opaque, (items), (size))
+-#define ZFREE(strm, addr, size)	\
+-	   (*((strm)->zfree))((strm)->opaque, (voidpf)(addr), (size))
+-#define TRY_FREE(s, p, n) {if (p) ZFREE(s, p, n);}
+-
+-/* deflate.h -- internal compression state
+- * Copyright (C) 1995 Jean-loup Gailly
+- * For conditions of distribution and use, see copyright notice in zlib.h
+- */
+-
+-/* WARNING: this file should *not* be used by applications. It is
+-   part of the implementation of the compression library and is
+-   subject to change. Applications should only use zlib.h.
+- */
+-
+-/*+++++*/
+-/* infblock.h -- header to use infblock.c
+- * Copyright (C) 1995 Mark Adler
+- * For conditions of distribution and use, see copyright notice in zlib.h
+- */
+-
+-/* WARNING: this file should *not* be used by applications. It is
+-   part of the implementation of the compression library and is
+-   subject to change. Applications should only use zlib.h.
+- */
+-
+-struct inflate_blocks_state;
+-typedef struct inflate_blocks_state FAR inflate_blocks_statef;
+-
+-local inflate_blocks_statef * inflate_blocks_new OF((
+-    z_stream *z,
+-    check_func c,               /* check function */
+-    uInt w));                   /* window size */
+-
+-local int inflate_blocks OF((
+-    inflate_blocks_statef *,
+-    z_stream *,
+-    int));                      /* initial return code */
+-
+-local void inflate_blocks_reset OF((
+-    inflate_blocks_statef *,
+-    z_stream *,
+-    uLongf *));                  /* check value on output */
+-
+-local int inflate_blocks_free OF((
+-    inflate_blocks_statef *,
+-    z_stream *,
+-    uLongf *));                  /* check value on output */
+-
+-local int inflate_addhistory OF((
+-    inflate_blocks_statef *,
+-    z_stream *));
+-
+-local int inflate_packet_flush OF((
+-    inflate_blocks_statef *));
+-
+-/*+++++*/
+-/* inftrees.h -- header to use inftrees.c
+- * Copyright (C) 1995 Mark Adler
+- * For conditions of distribution and use, see copyright notice in zlib.h
+- */
+-
+-/* WARNING: this file should *not* be used by applications. It is
+-   part of the implementation of the compression library and is
+-   subject to change. Applications should only use zlib.h.
+- */
+-
+-/* Huffman code lookup table entry--this entry is four bytes for machines
+-   that have 16-bit pointers (e.g. PC's in the small or medium model). */
+-
+-typedef struct inflate_huft_s FAR inflate_huft;
+-
+-struct inflate_huft_s {
+-  union {
+-    struct {
+-      Byte Exop;        /* number of extra bits or operation */
+-      Byte Bits;        /* number of bits in this code or subcode */
+-    } what;
+-    uInt Nalloc;	/* number of these allocated here */
+-    Bytef *pad;         /* pad structure to a power of 2 (4 bytes for */
+-  } word;               /*  16-bit, 8 bytes for 32-bit machines) */
+-  union {
+-    uInt Base;          /* literal, length base, or distance base */
+-    inflate_huft *Next; /* pointer to next level of table */
+-  } more;
+-};
+-
+-#ifdef DEBUG_ZLIB
+-  local uInt inflate_hufts;
+-#endif
+-
+-local int inflate_trees_bits OF((
+-    uIntf *,                    /* 19 code lengths */
+-    uIntf *,                    /* bits tree desired/actual depth */
+-    inflate_huft * FAR *,       /* bits tree result */
+-    z_stream *));               /* for zalloc, zfree functions */
+-
+-local int inflate_trees_dynamic OF((
+-    uInt,                       /* number of literal/length codes */
+-    uInt,                       /* number of distance codes */
+-    uIntf *,                    /* that many (total) code lengths */
+-    uIntf *,                    /* literal desired/actual bit depth */
+-    uIntf *,                    /* distance desired/actual bit depth */
+-    inflate_huft * FAR *,       /* literal/length tree result */
+-    inflate_huft * FAR *,       /* distance tree result */
+-    z_stream *));               /* for zalloc, zfree functions */
+-
+-local int inflate_trees_fixed OF((
+-    uIntf *,                    /* literal desired/actual bit depth */
+-    uIntf *,                    /* distance desired/actual bit depth */
+-    inflate_huft * FAR *,       /* literal/length tree result */
+-    inflate_huft * FAR *));     /* distance tree result */
+-
+-local int inflate_trees_free OF((
+-    inflate_huft *,             /* tables to free */
+-    z_stream *));               /* for zfree function */
+-
+-
+-/*+++++*/
+-/* infcodes.h -- header to use infcodes.c
+- * Copyright (C) 1995 Mark Adler
+- * For conditions of distribution and use, see copyright notice in zlib.h
+- */
+-
+-/* WARNING: this file should *not* be used by applications. It is
+-   part of the implementation of the compression library and is
+-   subject to change. Applications should only use zlib.h.
+- */
+-
+-struct inflate_codes_state;
+-typedef struct inflate_codes_state FAR inflate_codes_statef;
+-
+-local inflate_codes_statef *inflate_codes_new OF((
+-    uInt, uInt,
+-    inflate_huft *, inflate_huft *,
+-    z_stream *));
+-
+-local int inflate_codes OF((
+-    inflate_blocks_statef *,
+-    z_stream *,
+-    int));
+-
+-local void inflate_codes_free OF((
+-    inflate_codes_statef *,
+-    z_stream *));
+-
+-
+-/*+++++*/
+-/* inflate.c -- zlib interface to inflate modules
+- * Copyright (C) 1995 Mark Adler
+- * For conditions of distribution and use, see copyright notice in zlib.h
+- */
+-
+-/* inflate private state */
+-struct internal_state {
+-
+-  /* mode */
+-  enum {
+-      METHOD,   /* waiting for method byte */
+-      FLAG,     /* waiting for flag byte */
+-      BLOCKS,   /* decompressing blocks */
+-      CHECK4,   /* four check bytes to go */
+-      CHECK3,   /* three check bytes to go */
+-      CHECK2,   /* two check bytes to go */
+-      CHECK1,   /* one check byte to go */
+-      DONE,     /* finished check, done */
+-      BAD}      /* got an error--stay here */
+-    mode;               /* current inflate mode */
+-
+-  /* mode dependent information */
+-  union {
+-    uInt method;        /* if FLAGS, method byte */
+-    struct {
+-      uLong was;                /* computed check value */
+-      uLong need;               /* stream check value */
+-    } check;            /* if CHECK, check values to compare */
+-    uInt marker;        /* if BAD, inflateSync's marker bytes count */
+-  } sub;        /* submode */
+-
+-  /* mode independent information */
+-  int  nowrap;          /* flag for no wrapper */
+-  uInt wbits;           /* log2(window size)  (8..15, defaults to 15) */
+-  inflate_blocks_statef
+-    *blocks;            /* current inflate_blocks state */
+-
+-};
+-
+-
+-int inflateReset(z)
+-z_stream *z;
+-{
+-  uLong c;
+-
+-  if (z == Z_NULL || z->state == Z_NULL)
+-    return Z_STREAM_ERROR;
+-  z->total_in = z->total_out = 0;
+-  z->msg = Z_NULL;
+-  z->state->mode = z->state->nowrap ? BLOCKS : METHOD;
+-  inflate_blocks_reset(z->state->blocks, z, &c);
+-  Trace((stderr, "inflate: reset\n"));
+-  return Z_OK;
+-}
+-
+-
+-int inflateEnd(z)
+-z_stream *z;
+-{
+-  uLong c;
+-
+-  if (z == Z_NULL || z->state == Z_NULL || z->zfree == Z_NULL)
+-    return Z_STREAM_ERROR;
+-  if (z->state->blocks != Z_NULL)
+-    inflate_blocks_free(z->state->blocks, z, &c);
+-  ZFREE(z, z->state, sizeof(struct internal_state));
+-  z->state = Z_NULL;
+-  Trace((stderr, "inflate: end\n"));
+-  return Z_OK;
+-}
+-
+-
+-int inflateInit2(z, w)
+-z_stream *z;
+-int w;
+-{
+-  /* initialize state */
+-  if (z == Z_NULL)
+-    return Z_STREAM_ERROR;
+-/*  if (z->zalloc == Z_NULL) z->zalloc = zcalloc; */
+-/*  if (z->zfree == Z_NULL) z->zfree = zcfree; */
+-  if ((z->state = (struct internal_state FAR *)
+-       ZALLOC(z,1,sizeof(struct internal_state))) == Z_NULL)
+-    return Z_MEM_ERROR;
+-  z->state->blocks = Z_NULL;
+-
+-  /* handle undocumented nowrap option (no zlib header or check) */
+-  z->state->nowrap = 0;
+-  if (w < 0)
+-  {
+-    w = - w;
+-    z->state->nowrap = 1;
+-  }
+-
+-  /* set window size */
+-  if (w < 8 || w > 15)
+-  {
+-    inflateEnd(z);
+-    return Z_STREAM_ERROR;
+-  }
+-  z->state->wbits = (uInt)w;
+-
+-  /* create inflate_blocks state */
+-  if ((z->state->blocks =
+-       inflate_blocks_new(z, z->state->nowrap ? Z_NULL : adler32, 1 << w))
+-      == Z_NULL)
+-  {
+-    inflateEnd(z);
+-    return Z_MEM_ERROR;
+-  }
+-  Trace((stderr, "inflate: allocated\n"));
+-
+-  /* reset state */
+-  inflateReset(z);
+-  return Z_OK;
+-}
+-
+-
+-int inflateInit(z)
+-z_stream *z;
+-{
+-  return inflateInit2(z, DEF_WBITS);
+-}
+-
+-
+-#define NEEDBYTE {if(z->avail_in==0)goto empty;r=Z_OK;}
+-#define NEXTBYTE (z->avail_in--,z->total_in++,*z->next_in++)
+-
+-int inflate(z, f)
+-z_stream *z;
+-int f;
+-{
+-  int r;
+-  uInt b;
+-
+-  if (z == Z_NULL || z->next_in == Z_NULL)
+-    return Z_STREAM_ERROR;
+-  r = Z_BUF_ERROR;
+-  while (1) switch (z->state->mode)
+-  {
+-    case METHOD:
+-      NEEDBYTE
+-      if (((z->state->sub.method = NEXTBYTE) & 0xf) != DEFLATED)
+-      {
+-	z->state->mode = BAD;
+-	z->msg = "unknown compression method";
+-	z->state->sub.marker = 5;       /* can't try inflateSync */
+-	break;
+-      }
+-      if ((z->state->sub.method >> 4) + 8 > z->state->wbits)
+-      {
+-	z->state->mode = BAD;
+-	z->msg = "invalid window size";
+-	z->state->sub.marker = 5;       /* can't try inflateSync */
+-	break;
+-      }
+-      z->state->mode = FLAG;
+-    case FLAG:
+-      NEEDBYTE
+-      if ((b = NEXTBYTE) & 0x20)
+-      {
+-	z->state->mode = BAD;
+-	z->msg = "invalid reserved bit";
+-	z->state->sub.marker = 5;       /* can't try inflateSync */
+-	break;
+-      }
+-      if (((z->state->sub.method << 8) + b) % 31)
+-      {
+-	z->state->mode = BAD;
+-	z->msg = "incorrect header check";
+-	z->state->sub.marker = 5;       /* can't try inflateSync */
+-	break;
+-      }
+-      Trace((stderr, "inflate: zlib header ok\n"));
+-      z->state->mode = BLOCKS;
+-    case BLOCKS:
+-      r = inflate_blocks(z->state->blocks, z, r);
+-      if (f == Z_PACKET_FLUSH && z->avail_in == 0 && z->avail_out != 0)
+-	  r = inflate_packet_flush(z->state->blocks);
+-      if (r == Z_DATA_ERROR)
+-      {
+-	z->state->mode = BAD;
+-	z->state->sub.marker = 0;       /* can try inflateSync */
+-	break;
+-      }
+-      if (r != Z_STREAM_END)
+-	return r;
+-      r = Z_OK;
+-      inflate_blocks_reset(z->state->blocks, z, &z->state->sub.check.was);
+-      if (z->state->nowrap)
+-      {
+-	z->state->mode = DONE;
+-	break;
+-      }
+-      z->state->mode = CHECK4;
+-    case CHECK4:
+-      NEEDBYTE
+-      z->state->sub.check.need = (uLong)NEXTBYTE << 24;
+-      z->state->mode = CHECK3;
+-    case CHECK3:
+-      NEEDBYTE
+-      z->state->sub.check.need += (uLong)NEXTBYTE << 16;
+-      z->state->mode = CHECK2;
+-    case CHECK2:
+-      NEEDBYTE
+-      z->state->sub.check.need += (uLong)NEXTBYTE << 8;
+-      z->state->mode = CHECK1;
+-    case CHECK1:
+-      NEEDBYTE
+-      z->state->sub.check.need += (uLong)NEXTBYTE;
+-
+-      if (z->state->sub.check.was != z->state->sub.check.need)
+-      {
+-	z->state->mode = BAD;
+-	z->msg = "incorrect data check";
+-	z->state->sub.marker = 5;       /* can't try inflateSync */
+-	break;
+-      }
+-      Trace((stderr, "inflate: zlib check ok\n"));
+-      z->state->mode = DONE;
+-    case DONE:
+-      return Z_STREAM_END;
+-    case BAD:
+-      return Z_DATA_ERROR;
+-    default:
+-      return Z_STREAM_ERROR;
+-  }
+-
+- empty:
+-  if (f != Z_PACKET_FLUSH)
+-    return r;
+-  z->state->mode = BAD;
+-  z->state->sub.marker = 0;       /* can try inflateSync */
+-  return Z_DATA_ERROR;
+-}
+-
+-/*
+- * This subroutine adds the data at next_in/avail_in to the output history
+- * without performing any output.  The output buffer must be "caught up";
+- * i.e. no pending output (hence s->read equals s->write), and the state must
+- * be BLOCKS (i.e. we should be willing to see the start of a series of
+- * BLOCKS).  On exit, the output will also be caught up, and the checksum
+- * will have been updated if need be.
+- */
+-
+-int inflateIncomp(z)
+-z_stream *z;
+-{
+-    if (z->state->mode != BLOCKS)
+-	return Z_DATA_ERROR;
+-    return inflate_addhistory(z->state->blocks, z);
+-}
+-
+-
+-int inflateSync(z)
+-z_stream *z;
+-{
+-  uInt n;       /* number of bytes to look at */
+-  Bytef *p;     /* pointer to bytes */
+-  uInt m;       /* number of marker bytes found in a row */
+-  uLong r, w;   /* temporaries to save total_in and total_out */
+-
+-  /* set up */
+-  if (z == Z_NULL || z->state == Z_NULL)
+-    return Z_STREAM_ERROR;
+-  if (z->state->mode != BAD)
+-  {
+-    z->state->mode = BAD;
+-    z->state->sub.marker = 0;
+-  }
+-  if ((n = z->avail_in) == 0)
+-    return Z_BUF_ERROR;
+-  p = z->next_in;
+-  m = z->state->sub.marker;
+-
+-  /* search */
+-  while (n && m < 4)
+-  {
+-    if (*p == (Byte)(m < 2 ? 0 : 0xff))
+-      m++;
+-    else if (*p)
+-      m = 0;
+-    else
+-      m = 4 - m;
+-    p++, n--;
+-  }
+-
+-  /* restore */
+-  z->total_in += p - z->next_in;
+-  z->next_in = p;
+-  z->avail_in = n;
+-  z->state->sub.marker = m;
+-
+-  /* return no joy or set up to restart on a new block */
+-  if (m != 4)
+-    return Z_DATA_ERROR;
+-  r = z->total_in;  w = z->total_out;
+-  inflateReset(z);
+-  z->total_in = r;  z->total_out = w;
+-  z->state->mode = BLOCKS;
+-  return Z_OK;
+-}
+-
+-#undef NEEDBYTE
+-#undef NEXTBYTE
+-
+-/*+++++*/
+-/* infutil.h -- types and macros common to blocks and codes
+- * Copyright (C) 1995 Mark Adler
+- * For conditions of distribution and use, see copyright notice in zlib.h
+- */
+-
+-/* WARNING: this file should *not* be used by applications. It is
+-   part of the implementation of the compression library and is
+-   subject to change. Applications should only use zlib.h.
+- */
+-
+-/* inflate blocks semi-private state */
+-struct inflate_blocks_state {
+-
+-  /* mode */
+-  enum {
+-      TYPE,     /* get type bits (3, including end bit) */
+-      LENS,     /* get lengths for stored */
+-      STORED,   /* processing stored block */
+-      TABLE,    /* get table lengths */
+-      BTREE,    /* get bit lengths tree for a dynamic block */
+-      DTREE,    /* get length, distance trees for a dynamic block */
+-      CODES,    /* processing fixed or dynamic block */
+-      DRY,      /* output remaining window bytes */
+-      DONEB,     /* finished last block, done */
+-      BADB}      /* got a data error--stuck here */
+-    mode;               /* current inflate_block mode */
+-
+-  /* mode dependent information */
+-  union {
+-    uInt left;          /* if STORED, bytes left to copy */
+-    struct {
+-      uInt table;               /* table lengths (14 bits) */
+-      uInt index;               /* index into blens (or border) */
+-      uIntf *blens;             /* bit lengths of codes */
+-      uInt bb;                  /* bit length tree depth */
+-      inflate_huft *tb;         /* bit length decoding tree */
+-      int nblens;		/* # elements allocated at blens */
+-    } trees;            /* if DTREE, decoding info for trees */
+-    struct {
+-      inflate_huft *tl, *td;    /* trees to free */
+-      inflate_codes_statef
+-	 *codes;
+-    } decode;           /* if CODES, current state */
+-  } sub;                /* submode */
+-  uInt last;            /* true if this block is the last block */
+-
+-  /* mode independent information */
+-  uInt bitk;            /* bits in bit buffer */
+-  uLong bitb;           /* bit buffer */
+-  Bytef *window;        /* sliding window */
+-  Bytef *end;           /* one byte after sliding window */
+-  Bytef *read;          /* window read pointer */
+-  Bytef *write;         /* window write pointer */
+-  check_func checkfn;   /* check function */
+-  uLong check;          /* check on output */
+-
+-};
+-
+-
+-/* defines for inflate input/output */
+-/*   update pointers and return */
+-#define UPDBITS {s->bitb=b;s->bitk=k;}
+-#define UPDIN {z->avail_in=n;z->total_in+=p-z->next_in;z->next_in=p;}
+-#define UPDOUT {s->write=q;}
+-#define UPDATE {UPDBITS UPDIN UPDOUT}
+-#define LEAVE {UPDATE return inflate_flush(s,z,r);}
+-/*   get bytes and bits */
+-#define LOADIN {p=z->next_in;n=z->avail_in;b=s->bitb;k=s->bitk;}
+-#define NEEDBYTE {if(n)r=Z_OK;else LEAVE}
+-#define NEXTBYTE (n--,*p++)
+-#define NEEDBITS(j) {while(k<(j)){NEEDBYTE;b|=((uLong)NEXTBYTE)<<k;k+=8;}}
+-#define DUMPBITS(j) {b>>=(j);k-=(j);}
+-/*   output bytes */
+-#define WAVAIL (q<s->read?s->read-q-1:s->end-q)
+-#define LOADOUT {q=s->write;m=WAVAIL;}
+-#define WRAP {if(q==s->end&&s->read!=s->window){q=s->window;m=WAVAIL;}}
+-#define FLUSH {UPDOUT r=inflate_flush(s,z,r); LOADOUT}
+-#define NEEDOUT {if(m==0){WRAP if(m==0){FLUSH WRAP if(m==0) LEAVE}}r=Z_OK;}
+-#define OUTBYTE(a) {*q++=(Byte)(a);m--;}
+-/*   load local pointers */
+-#define LOAD {LOADIN LOADOUT}
+-
+-/*
+- * The IBM 150 firmware munges the data right after _etext[].  This
+- * protects it. -- Cort
+- */
+-/* And'ing with mask[n] masks the lower n bits */
+-local uInt inflate_mask[] = {
+-    0x0000,
+-    0x0001, 0x0003, 0x0007, 0x000f, 0x001f, 0x003f, 0x007f, 0x00ff,
+-    0x01ff, 0x03ff, 0x07ff, 0x0fff, 0x1fff, 0x3fff, 0x7fff, 0xffff
+-};
+-
+-/* copy as much as possible from the sliding window to the output area */
+-local int inflate_flush OF((
+-    inflate_blocks_statef *,
+-    z_stream *,
+-    int));
+-
+-/*+++++*/
+-/* inffast.h -- header to use inffast.c
+- * Copyright (C) 1995 Mark Adler
+- * For conditions of distribution and use, see copyright notice in zlib.h
+- */
+-
+-/* WARNING: this file should *not* be used by applications. It is
+-   part of the implementation of the compression library and is
+-   subject to change. Applications should only use zlib.h.
+- */
+-
+-local int inflate_fast OF((
+-    uInt,
+-    uInt,
+-    inflate_huft *,
+-    inflate_huft *,
+-    inflate_blocks_statef *,
+-    z_stream *));
+-
+-
+-/*+++++*/
+-/* infblock.c -- interpret and process block types to last block
+- * Copyright (C) 1995 Mark Adler
+- * For conditions of distribution and use, see copyright notice in zlib.h
+- */
+-
+-/* Table for deflate from PKZIP's appnote.txt. */
+-local uInt border[] = { /* Order of the bit length code lengths */
+-	16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15};
+-
+-/*
+-   Notes beyond the 1.93a appnote.txt:
+-
+-   1. Distance pointers never point before the beginning of the output
+-      stream.
+-   2. Distance pointers can point back across blocks, up to 32k away.
+-   3. There is an implied maximum of 7 bits for the bit length table and
+-      15 bits for the actual data.
+-   4. If only one code exists, then it is encoded using one bit.  (Zero
+-      would be more efficient, but perhaps a little confusing.)  If two
+-      codes exist, they are coded using one bit each (0 and 1).
+-   5. There is no way of sending zero distance codes--a dummy must be
+-      sent if there are none.  (History: a pre 2.0 version of PKZIP would
+-      store blocks with no distance codes, but this was discovered to be
+-      too harsh a criterion.)  Valid only for 1.93a.  2.04c does allow
+-      zero distance codes, which is sent as one code of zero bits in
+-      length.
+-   6. There are up to 286 literal/length codes.  Code 256 represents the
+-      end-of-block.  Note however that the static length tree defines
+-      288 codes just to fill out the Huffman codes.  Codes 286 and 287
+-      cannot be used though, since there is no length base or extra bits
+-      defined for them.  Similarily, there are up to 30 distance codes.
+-      However, static trees define 32 codes (all 5 bits) to fill out the
+-      Huffman codes, but the last two had better not show up in the data.
+-   7. Unzip can check dynamic Huffman blocks for complete code sets.
+-      The exception is that a single code would not be complete (see #4).
+-   8. The five bits following the block type is really the number of
+-      literal codes sent minus 257.
+-   9. Length codes 8,16,16 are interpreted as 13 length codes of 8 bits
+-      (1+6+6).  Therefore, to output three times the length, you output
+-      three codes (1+1+1), whereas to output four times the same length,
+-      you only need two codes (1+3).  Hmm.
+-  10. In the tree reconstruction algorithm, Code = Code + Increment
+-      only if BitLength(i) is not zero.  (Pretty obvious.)
+-  11. Correction: 4 Bits: # of Bit Length codes - 4     (4 - 19)
+-  12. Note: length code 284 can represent 227-258, but length code 285
+-      really is 258.  The last length deserves its own, short code
+-      since it gets used a lot in very redundant files.  The length
+-      258 is special since 258 - 3 (the min match length) is 255.
+-  13. The literal/length and distance code bit lengths are read as a
+-      single stream of lengths.  It is possible (and advantageous) for
+-      a repeat code (16, 17, or 18) to go across the boundary between
+-      the two sets of lengths.
+- */
+-
+-
+-local void inflate_blocks_reset(s, z, c)
+-inflate_blocks_statef *s;
+-z_stream *z;
+-uLongf *c;
+-{
+-  if (s->checkfn != Z_NULL)
+-    *c = s->check;
+-  if (s->mode == BTREE || s->mode == DTREE)
+-    ZFREE(z, s->sub.trees.blens, s->sub.trees.nblens * sizeof(uInt));
+-  if (s->mode == CODES)
+-  {
+-    inflate_codes_free(s->sub.decode.codes, z);
+-    inflate_trees_free(s->sub.decode.td, z);
+-    inflate_trees_free(s->sub.decode.tl, z);
+-  }
+-  s->mode = TYPE;
+-  s->bitk = 0;
+-  s->bitb = 0;
+-  s->read = s->write = s->window;
+-  if (s->checkfn != Z_NULL)
+-    s->check = (*s->checkfn)(0L, Z_NULL, 0);
+-  if (z->outcb != Z_NULL)
+-    (*z->outcb)(Z_NULL, 0);
+-  Trace((stderr, "inflate:   blocks reset\n"));
+-}
+-
+-
+-local inflate_blocks_statef *inflate_blocks_new(z, c, w)
+-z_stream *z;
+-check_func c;
+-uInt w;
+-{
+-  inflate_blocks_statef *s;
+-
+-  if ((s = (inflate_blocks_statef *)ZALLOC
+-       (z,1,sizeof(struct inflate_blocks_state))) == Z_NULL)
+-    return s;
+-  if ((s->window = (Bytef *)ZALLOC(z, 1, w)) == Z_NULL)
+-  {
+-    ZFREE(z, s, sizeof(struct inflate_blocks_state));
+-    return Z_NULL;
+-  }
+-  s->end = s->window + w;
+-  s->checkfn = c;
+-  s->mode = TYPE;
+-  Trace((stderr, "inflate:   blocks allocated\n"));
+-  inflate_blocks_reset(s, z, &s->check);
+-  return s;
+-}
+-
+-
+-local int inflate_blocks(s, z, r)
+-inflate_blocks_statef *s;
+-z_stream *z;
+-int r;
+-{
+-  uInt t;               /* temporary storage */
+-  uLong b;              /* bit buffer */
+-  uInt k;               /* bits in bit buffer */
+-  Bytef *p;             /* input data pointer */
+-  uInt n;               /* bytes available there */
+-  Bytef *q;             /* output window write pointer */
+-  uInt m;               /* bytes to end of window or read pointer */
+-
+-  /* copy input/output information to locals (UPDATE macro restores) */
+-  LOAD
+-
+-  /* process input based on current state */
+-  while (1) switch (s->mode)
+-  {
+-    case TYPE:
+-      NEEDBITS(3)
+-      t = (uInt)b & 7;
+-      s->last = t & 1;
+-      switch (t >> 1)
+-      {
+-	case 0:                         /* stored */
+-	  Trace((stderr, "inflate:     stored block%s\n",
+-		 s->last ? " (last)" : ""));
+-	  DUMPBITS(3)
+-	  t = k & 7;                    /* go to byte boundary */
+-	  DUMPBITS(t)
+-	  s->mode = LENS;               /* get length of stored block */
+-	  break;
+-	case 1:                         /* fixed */
+-	  Trace((stderr, "inflate:     fixed codes block%s\n",
+-		 s->last ? " (last)" : ""));
+-	  {
+-	    uInt bl, bd;
+-	    inflate_huft *tl, *td;
+-
+-	    inflate_trees_fixed(&bl, &bd, &tl, &td);
+-	    s->sub.decode.codes = inflate_codes_new(bl, bd, tl, td, z);
+-	    if (s->sub.decode.codes == Z_NULL)
+-	    {
+-	      r = Z_MEM_ERROR;
+-	      LEAVE
+-	    }
+-	    s->sub.decode.tl = Z_NULL;  /* don't try to free these */
+-	    s->sub.decode.td = Z_NULL;
+-	  }
+-	  DUMPBITS(3)
+-	  s->mode = CODES;
+-	  break;
+-	case 2:                         /* dynamic */
+-	  Trace((stderr, "inflate:     dynamic codes block%s\n",
+-		 s->last ? " (last)" : ""));
+-	  DUMPBITS(3)
+-	  s->mode = TABLE;
+-	  break;
+-	case 3:                         /* illegal */
+-	  DUMPBITS(3)
+-	  s->mode = BADB;
+-	  z->msg = "invalid block type";
+-	  r = Z_DATA_ERROR;
+-	  LEAVE
+-      }
+-      break;
+-    case LENS:
+-      NEEDBITS(32)
+-      if (((~b) >> 16) != (b & 0xffff))
+-      {
+-	s->mode = BADB;
+-	z->msg = "invalid stored block lengths";
+-	r = Z_DATA_ERROR;
+-	LEAVE
+-      }
+-      s->sub.left = (uInt)b & 0xffff;
+-      b = k = 0;                      /* dump bits */
+-      Tracev((stderr, "inflate:       stored length %u\n", s->sub.left));
+-      s->mode = s->sub.left ? STORED : TYPE;
+-      break;
+-    case STORED:
+-      if (n == 0)
+-	LEAVE
+-      NEEDOUT
+-      t = s->sub.left;
+-      if (t > n) t = n;
+-      if (t > m) t = m;
+-      zmemcpy(q, p, t);
+-      p += t;  n -= t;
+-      q += t;  m -= t;
+-      if ((s->sub.left -= t) != 0)
+-	break;
+-      Tracev((stderr, "inflate:       stored end, %lu total out\n",
+-	      z->total_out + (q >= s->read ? q - s->read :
+-	      (s->end - s->read) + (q - s->window))));
+-      s->mode = s->last ? DRY : TYPE;
+-      break;
+-    case TABLE:
+-      NEEDBITS(14)
+-      s->sub.trees.table = t = (uInt)b & 0x3fff;
+-#ifndef PKZIP_BUG_WORKAROUND
+-      if ((t & 0x1f) > 29 || ((t >> 5) & 0x1f) > 29)
+-      {
+-	s->mode = BADB;
+-	z->msg = "too many length or distance symbols";
+-	r = Z_DATA_ERROR;
+-	LEAVE
+-      }
+-#endif
+-      t = 258 + (t & 0x1f) + ((t >> 5) & 0x1f);
+-      if (t < 19)
+-	t = 19;
+-      if ((s->sub.trees.blens = (uIntf*)ZALLOC(z, t, sizeof(uInt))) == Z_NULL)
+-      {
+-	r = Z_MEM_ERROR;
+-	LEAVE
+-      }
+-      s->sub.trees.nblens = t;
+-      DUMPBITS(14)
+-      s->sub.trees.index = 0;
+-      Tracev((stderr, "inflate:       table sizes ok\n"));
+-      s->mode = BTREE;
+-    case BTREE:
+-      while (s->sub.trees.index < 4 + (s->sub.trees.table >> 10))
+-      {
+-	NEEDBITS(3)
+-	s->sub.trees.blens[border[s->sub.trees.index++]] = (uInt)b & 7;
+-	DUMPBITS(3)
+-      }
+-      while (s->sub.trees.index < 19)
+-	s->sub.trees.blens[border[s->sub.trees.index++]] = 0;
+-      s->sub.trees.bb = 7;
+-      t = inflate_trees_bits(s->sub.trees.blens, &s->sub.trees.bb,
+-			     &s->sub.trees.tb, z);
+-      if (t != Z_OK)
+-      {
+-	r = t;
+-	if (r == Z_DATA_ERROR)
+-	  s->mode = BADB;
+-	LEAVE
+-      }
+-      s->sub.trees.index = 0;
+-      Tracev((stderr, "inflate:       bits tree ok\n"));
+-      s->mode = DTREE;
+-    case DTREE:
+-      while (t = s->sub.trees.table,
+-	     s->sub.trees.index < 258 + (t & 0x1f) + ((t >> 5) & 0x1f))
+-      {
+-	inflate_huft *h;
+-	uInt i, j, c;
+-
+-	t = s->sub.trees.bb;
+-	NEEDBITS(t)
+-	h = s->sub.trees.tb + ((uInt)b & inflate_mask[t]);
+-	t = h->word.what.Bits;
+-	c = h->more.Base;
+-	if (c < 16)
+-	{
+-	  DUMPBITS(t)
+-	  s->sub.trees.blens[s->sub.trees.index++] = c;
+-	}
+-	else /* c == 16..18 */
+-	{
+-	  i = c == 18 ? 7 : c - 14;
+-	  j = c == 18 ? 11 : 3;
+-	  NEEDBITS(t + i)
+-	  DUMPBITS(t)
+-	  j += (uInt)b & inflate_mask[i];
+-	  DUMPBITS(i)
+-	  i = s->sub.trees.index;
+-	  t = s->sub.trees.table;
+-	  if (i + j > 258 + (t & 0x1f) + ((t >> 5) & 0x1f) ||
+-	      (c == 16 && i < 1))
+-	  {
+-	    s->mode = BADB;
+-	    z->msg = "invalid bit length repeat";
+-	    r = Z_DATA_ERROR;
+-	    LEAVE
+-	  }
+-	  c = c == 16 ? s->sub.trees.blens[i - 1] : 0;
+-	  do {
+-	    s->sub.trees.blens[i++] = c;
+-	  } while (--j);
+-	  s->sub.trees.index = i;
+-	}
+-      }
+-      inflate_trees_free(s->sub.trees.tb, z);
+-      s->sub.trees.tb = Z_NULL;
+-      {
+-	uInt bl, bd;
+-	inflate_huft *tl, *td;
+-	inflate_codes_statef *c;
+-
+-	bl = 9;         /* must be <= 9 for lookahead assumptions */
+-	bd = 6;         /* must be <= 9 for lookahead assumptions */
+-	t = s->sub.trees.table;
+-	t = inflate_trees_dynamic(257 + (t & 0x1f), 1 + ((t >> 5) & 0x1f),
+-				  s->sub.trees.blens, &bl, &bd, &tl, &td, z);
+-	if (t != Z_OK)
+-	{
+-	  if (t == (uInt)Z_DATA_ERROR)
+-	    s->mode = BADB;
+-	  r = t;
+-	  LEAVE
+-	}
+-	Tracev((stderr, "inflate:       trees ok\n"));
+-	if ((c = inflate_codes_new(bl, bd, tl, td, z)) == Z_NULL)
+-	{
+-	  inflate_trees_free(td, z);
+-	  inflate_trees_free(tl, z);
+-	  r = Z_MEM_ERROR;
+-	  LEAVE
+-	}
+-	ZFREE(z, s->sub.trees.blens, s->sub.trees.nblens * sizeof(uInt));
+-	s->sub.decode.codes = c;
+-	s->sub.decode.tl = tl;
+-	s->sub.decode.td = td;
+-      }
+-      s->mode = CODES;
+-    case CODES:
+-      UPDATE
+-      if ((r = inflate_codes(s, z, r)) != Z_STREAM_END)
+-	return inflate_flush(s, z, r);
+-      r = Z_OK;
+-      inflate_codes_free(s->sub.decode.codes, z);
+-      inflate_trees_free(s->sub.decode.td, z);
+-      inflate_trees_free(s->sub.decode.tl, z);
+-      LOAD
+-      Tracev((stderr, "inflate:       codes end, %lu total out\n",
+-	      z->total_out + (q >= s->read ? q - s->read :
+-	      (s->end - s->read) + (q - s->window))));
+-      if (!s->last)
+-      {
+-	s->mode = TYPE;
+-	break;
+-      }
+-      if (k > 7)              /* return unused byte, if any */
+-      {
+-	Assert(k < 16, "inflate_codes grabbed too many bytes")
+-	k -= 8;
+-	n++;
+-	p--;                    /* can always return one */
+-      }
+-      s->mode = DRY;
+-    case DRY:
+-      FLUSH
+-      if (s->read != s->write)
+-	LEAVE
+-      s->mode = DONEB;
+-    case DONEB:
+-      r = Z_STREAM_END;
+-      LEAVE
+-    case BADB:
+-      r = Z_DATA_ERROR;
+-      LEAVE
+-    default:
+-      r = Z_STREAM_ERROR;
+-      LEAVE
+-  }
+-}
+-
+-
+-local int inflate_blocks_free(s, z, c)
+-inflate_blocks_statef *s;
+-z_stream *z;
+-uLongf *c;
+-{
+-  inflate_blocks_reset(s, z, c);
+-  ZFREE(z, s->window, s->end - s->window);
+-  ZFREE(z, s, sizeof(struct inflate_blocks_state));
+-  Trace((stderr, "inflate:   blocks freed\n"));
+-  return Z_OK;
+-}
+-
+-/*
+- * This subroutine adds the data at next_in/avail_in to the output history
+- * without performing any output.  The output buffer must be "caught up";
+- * i.e. no pending output (hence s->read equals s->write), and the state must
+- * be BLOCKS (i.e. we should be willing to see the start of a series of
+- * BLOCKS).  On exit, the output will also be caught up, and the checksum
+- * will have been updated if need be.
+- */
+-local int inflate_addhistory(s, z)
+-inflate_blocks_statef *s;
+-z_stream *z;
+-{
+-    uLong b;              /* bit buffer */  /* NOT USED HERE */
+-    uInt k;               /* bits in bit buffer */ /* NOT USED HERE */
+-    uInt t;               /* temporary storage */
+-    Bytef *p;             /* input data pointer */
+-    uInt n;               /* bytes available there */
+-    Bytef *q;             /* output window write pointer */
+-    uInt m;               /* bytes to end of window or read pointer */
+-
+-    if (s->read != s->write)
+-	return Z_STREAM_ERROR;
+-    if (s->mode != TYPE)
+-	return Z_DATA_ERROR;
+-
+-    /* we're ready to rock */
+-    LOAD
+-    /* while there is input ready, copy to output buffer, moving
+-     * pointers as needed.
+-     */
+-    while (n) {
+-	t = n;  /* how many to do */
+-	/* is there room until end of buffer? */
+-	if (t > m) t = m;
+-	/* update check information */
+-	if (s->checkfn != Z_NULL)
+-	    s->check = (*s->checkfn)(s->check, q, t);
+-	/* output callback */
+-	if (z->outcb != Z_NULL)
+-	    (*z->outcb)(q, t);
+-	zmemcpy(q, p, t);
+-	q += t;
+-	p += t;
+-	n -= t;
+-	z->total_out += t;
+-	s->read = q;    /* drag read pointer forward */
+-/*      WRAP  */ 	/* expand WRAP macro by hand to handle s->read */
+-	if (q == s->end) {
+-	    s->read = q = s->window;
+-	    m = WAVAIL;
+-	}
+-    }
+-    UPDATE
+-    return Z_OK;
+-}
+-
+-
+-/*
+- * At the end of a Deflate-compressed PPP packet, we expect to have seen
+- * a `stored' block type value but not the (zero) length bytes.
+- */
+-local int inflate_packet_flush(s)
+-    inflate_blocks_statef *s;
+-{
+-    if (s->mode != LENS)
+-	return Z_DATA_ERROR;
+-    s->mode = TYPE;
+-    return Z_OK;
+-}
+-
+-
+-/*+++++*/
+-/* inftrees.c -- generate Huffman trees for efficient decoding
+- * Copyright (C) 1995 Mark Adler
+- * For conditions of distribution and use, see copyright notice in zlib.h
+- */
+-
+-/* simplify the use of the inflate_huft type with some defines */
+-#define base more.Base
+-#define next more.Next
+-#define exop word.what.Exop
+-#define bits word.what.Bits
+-
+-
+-local int huft_build OF((
+-    uIntf *,            /* code lengths in bits */
+-    uInt,               /* number of codes */
+-    uInt,               /* number of "simple" codes */
+-    uIntf *,            /* list of base values for non-simple codes */
+-    uIntf *,            /* list of extra bits for non-simple codes */
+-    inflate_huft * FAR*,/* result: starting table */
+-    uIntf *,            /* maximum lookup bits (returns actual) */
+-    z_stream *));       /* for zalloc function */
+-
+-local voidpf falloc OF((
+-    voidpf,             /* opaque pointer (not used) */
+-    uInt,               /* number of items */
+-    uInt));             /* size of item */
+-
+-local void ffree OF((
+-    voidpf q,           /* opaque pointer (not used) */
+-    voidpf p,           /* what to free (not used) */
+-    uInt n));		/* number of bytes (not used) */
+-
+-/* Tables for deflate from PKZIP's appnote.txt. */
+-local uInt cplens[] = { /* Copy lengths for literal codes 257..285 */
+-	3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 19, 23, 27, 31,
+-	35, 43, 51, 59, 67, 83, 99, 115, 131, 163, 195, 227, 258, 0, 0};
+-	/* actually lengths - 2; also see note #13 above about 258 */
+-local uInt cplext[] = { /* Extra bits for literal codes 257..285 */
+-	0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2,
+-	3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0, 192, 192}; /* 192==invalid */
+-local uInt cpdist[] = { /* Copy offsets for distance codes 0..29 */
+-	1, 2, 3, 4, 5, 7, 9, 13, 17, 25, 33, 49, 65, 97, 129, 193,
+-	257, 385, 513, 769, 1025, 1537, 2049, 3073, 4097, 6145,
+-	8193, 12289, 16385, 24577};
+-local uInt cpdext[] = { /* Extra bits for distance codes */
+-	0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6,
+-	7, 7, 8, 8, 9, 9, 10, 10, 11, 11,
+-	12, 12, 13, 13};
+-
+-/*
+-   Huffman code decoding is performed using a multi-level table lookup.
+-   The fastest way to decode is to simply build a lookup table whose
+-   size is determined by the longest code.  However, the time it takes
+-   to build this table can also be a factor if the data being decoded
+-   is not very long.  The most common codes are necessarily the
+-   shortest codes, so those codes dominate the decoding time, and hence
+-   the speed.  The idea is you can have a shorter table that decodes the
+-   shorter, more probable codes, and then point to subsidiary tables for
+-   the longer codes.  The time it costs to decode the longer codes is
+-   then traded against the time it takes to make longer tables.
+-
+-   This results of this trade are in the variables lbits and dbits
+-   below.  lbits is the number of bits the first level table for literal/
+-   length codes can decode in one step, and dbits is the same thing for
+-   the distance codes.  Subsequent tables are also less than or equal to
+-   those sizes.  These values may be adjusted either when all of the
+-   codes are shorter than that, in which case the longest code length in
+-   bits is used, or when the shortest code is *longer* than the requested
+-   table size, in which case the length of the shortest code in bits is
+-   used.
+-
+-   There are two different values for the two tables, since they code a
+-   different number of possibilities each.  The literal/length table
+-   codes 286 possible values, or in a flat code, a little over eight
+-   bits.  The distance table codes 30 possible values, or a little less
+-   than five bits, flat.  The optimum values for speed end up being
+-   about one bit more than those, so lbits is 8+1 and dbits is 5+1.
+-   The optimum values may differ though from machine to machine, and
+-   possibly even between compilers.  Your mileage may vary.
+- */
+-
+-
+-/* If BMAX needs to be larger than 16, then h and x[] should be uLong. */
+-#define BMAX 15         /* maximum bit length of any code */
+-#define N_MAX 288       /* maximum number of codes in any set */
+-
+-#ifdef DEBUG_ZLIB
+-  uInt inflate_hufts;
+-#endif
+-
+-local int huft_build(b, n, s, d, e, t, m, zs)
+-uIntf *b;               /* code lengths in bits (all assumed <= BMAX) */
+-uInt n;                 /* number of codes (assumed <= N_MAX) */
+-uInt s;                 /* number of simple-valued codes (0..s-1) */
+-uIntf *d;               /* list of base values for non-simple codes */
+-uIntf *e;               /* list of extra bits for non-simple codes */
+-inflate_huft * FAR *t;  /* result: starting table */
+-uIntf *m;               /* maximum lookup bits, returns actual */
+-z_stream *zs;           /* for zalloc function */
+-/* Given a list of code lengths and a maximum table size, make a set of
+-   tables to decode that set of codes.  Return Z_OK on success, Z_BUF_ERROR
+-   if the given code set is incomplete (the tables are still built in this
+-   case), Z_DATA_ERROR if the input is invalid (all zero length codes or an
+-   over-subscribed set of lengths), or Z_MEM_ERROR if not enough memory. */
+-{
+-
+-  uInt a;                       /* counter for codes of length k */
+-  uInt c[BMAX+1];               /* bit length count table */
+-  uInt f;                       /* i repeats in table every f entries */
+-  int g;                        /* maximum code length */
+-  int h;                        /* table level */
+-  register uInt i;              /* counter, current code */
+-  register uInt j;              /* counter */
+-  register int k;               /* number of bits in current code */
+-  int l;                        /* bits per table (returned in m) */
+-  register uIntf *p;            /* pointer into c[], b[], or v[] */
+-  inflate_huft *q;              /* points to current table */
+-  struct inflate_huft_s r;      /* table entry for structure assignment */
+-  inflate_huft *u[BMAX];        /* table stack */
+-  uInt v[N_MAX];                /* values in order of bit length */
+-  register int w;               /* bits before this table == (l * h) */
+-  uInt x[BMAX+1];               /* bit offsets, then code stack */
+-  uIntf *xp;                    /* pointer into x */
+-  int y;                        /* number of dummy codes added */
+-  uInt z;                       /* number of entries in current table */
+-
+-
+-  /* Generate counts for each bit length */
+-  p = c;
+-#define C0 *p++ = 0;
+-#define C2 C0 C0 C0 C0
+-#define C4 C2 C2 C2 C2
+-  C4                            /* clear c[]--assume BMAX+1 is 16 */
+-  p = b;  i = n;
+-  do {
+-    c[*p++]++;                  /* assume all entries <= BMAX */
+-  } while (--i);
+-  if (c[0] == n)                /* null input--all zero length codes */
+-  {
+-    *t = (inflate_huft *)Z_NULL;
+-    *m = 0;
+-    return Z_OK;
+-  }
+-
+-
+-  /* Find minimum and maximum length, bound *m by those */
+-  l = *m;
+-  for (j = 1; j <= BMAX; j++)
+-    if (c[j])
+-      break;
+-  k = j;                        /* minimum code length */
+-  if ((uInt)l < j)
+-    l = j;
+-  for (i = BMAX; i; i--)
+-    if (c[i])
+-      break;
+-  g = i;                        /* maximum code length */
+-  if ((uInt)l > i)
+-    l = i;
+-  *m = l;
+-
+-
+-  /* Adjust last length count to fill out codes, if needed */
+-  for (y = 1 << j; j < i; j++, y <<= 1)
+-    if ((y -= c[j]) < 0)
+-      return Z_DATA_ERROR;
+-  if ((y -= c[i]) < 0)
+-    return Z_DATA_ERROR;
+-  c[i] += y;
+-
+-
+-  /* Generate starting offsets into the value table for each length */
+-  x[1] = j = 0;
+-  p = c + 1;  xp = x + 2;
+-  while (--i) {                 /* note that i == g from above */
+-    *xp++ = (j += *p++);
+-  }
+-
+-
+-  /* Make a table of values in order of bit lengths */
+-  p = b;  i = 0;
+-  do {
+-    if ((j = *p++) != 0)
+-      v[x[j]++] = i;
+-  } while (++i < n);
+-
+-
+-  /* Generate the Huffman codes and for each, make the table entries */
+-  x[0] = i = 0;                 /* first Huffman code is zero */
+-  p = v;                        /* grab values in bit order */
+-  h = -1;                       /* no tables yet--level -1 */
+-  w = -l;                       /* bits decoded == (l * h) */
+-  u[0] = (inflate_huft *)Z_NULL;        /* just to keep compilers happy */
+-  q = (inflate_huft *)Z_NULL;   /* ditto */
+-  z = 0;                        /* ditto */
+-
+-  /* go through the bit lengths (k already is bits in shortest code) */
+-  for (; k <= g; k++)
+-  {
+-    a = c[k];
+-    while (a--)
+-    {
+-      /* here i is the Huffman code of length k bits for value *p */
+-      /* make tables up to required level */
+-      while (k > w + l)
+-      {
+-	h++;
+-	w += l;                 /* previous table always l bits */
+-
+-	/* compute minimum size table less than or equal to l bits */
+-	z = (z = g - w) > (uInt)l ? l : z;      /* table size upper limit */
+-	if ((f = 1 << (j = k - w)) > a + 1)     /* try a k-w bit table */
+-	{                       /* too few codes for k-w bit table */
+-	  f -= a + 1;           /* deduct codes from patterns left */
+-	  xp = c + k;
+-	  if (j < z)
+-	    while (++j < z)     /* try smaller tables up to z bits */
+-	    {
+-	      if ((f <<= 1) <= *++xp)
+-		break;          /* enough codes to use up j bits */
+-	      f -= *xp;         /* else deduct codes from patterns */
+-	    }
+-	}
+-	z = 1 << j;             /* table entries for j-bit table */
+-
+-	/* allocate and link in new table */
+-	if ((q = (inflate_huft *)ZALLOC
+-	     (zs,z + 1,sizeof(inflate_huft))) == Z_NULL)
+-	{
+-	  if (h)
+-	    inflate_trees_free(u[0], zs);
+-	  return Z_MEM_ERROR;   /* not enough memory */
+-	}
+-	q->word.Nalloc = z + 1;
+-#ifdef DEBUG_ZLIB
+-	inflate_hufts += z + 1;
+-#endif
+-	*t = q + 1;             /* link to list for huft_free() */
+-	*(t = &(q->next)) = Z_NULL;
+-	u[h] = ++q;             /* table starts after link */
+-
+-	/* connect to last table, if there is one */
+-	if (h)
+-	{
+-	  x[h] = i;             /* save pattern for backing up */
+-	  r.bits = (Byte)l;     /* bits to dump before this table */
+-	  r.exop = (Byte)j;     /* bits in this table */
+-	  r.next = q;           /* pointer to this table */
+-	  j = i >> (w - l);     /* (get around Turbo C bug) */
+-	  u[h-1][j] = r;        /* connect to last table */
+-	}
+-      }
+-
+-      /* set up table entry in r */
+-      r.bits = (Byte)(k - w);
+-      if (p >= v + n)
+-	r.exop = 128 + 64;      /* out of values--invalid code */
+-      else if (*p < s)
+-      {
+-	r.exop = (Byte)(*p < 256 ? 0 : 32 + 64);     /* 256 is end-of-block */
+-	r.base = *p++;          /* simple code is just the value */
+-      }
+-      else
+-      {
+-	r.exop = (Byte)e[*p - s] + 16 + 64; /* non-simple--look up in lists */
+-	r.base = d[*p++ - s];
+-      }
+-
+-      /* fill code-like entries with r */
+-      f = 1 << (k - w);
+-      for (j = i >> w; j < z; j += f)
+-	q[j] = r;
+-
+-      /* backwards increment the k-bit code i */
+-      for (j = 1 << (k - 1); i & j; j >>= 1)
+-	i ^= j;
+-      i ^= j;
+-
+-      /* backup over finished tables */
+-      while ((i & ((1 << w) - 1)) != x[h])
+-      {
+-	h--;                    /* don't need to update q */
+-	w -= l;
+-      }
+-    }
+-  }
+-
+-
+-  /* Return Z_BUF_ERROR if we were given an incomplete table */
+-  return y != 0 && g != 1 ? Z_BUF_ERROR : Z_OK;
+-}
+-
+-
+-local int inflate_trees_bits(c, bb, tb, z)
+-uIntf *c;               /* 19 code lengths */
+-uIntf *bb;              /* bits tree desired/actual depth */
+-inflate_huft * FAR *tb; /* bits tree result */
+-z_stream *z;            /* for zfree function */
+-{
+-  int r;
+-
+-  r = huft_build(c, 19, 19, (uIntf*)Z_NULL, (uIntf*)Z_NULL, tb, bb, z);
+-  if (r == Z_DATA_ERROR)
+-    z->msg = "oversubscribed dynamic bit lengths tree";
+-  else if (r == Z_BUF_ERROR)
+-  {
+-    inflate_trees_free(*tb, z);
+-    z->msg = "incomplete dynamic bit lengths tree";
+-    r = Z_DATA_ERROR;
+-  }
+-  return r;
+-}
+-
+-
+-local int inflate_trees_dynamic(nl, nd, c, bl, bd, tl, td, z)
+-uInt nl;                /* number of literal/length codes */
+-uInt nd;                /* number of distance codes */
+-uIntf *c;               /* that many (total) code lengths */
+-uIntf *bl;              /* literal desired/actual bit depth */
+-uIntf *bd;              /* distance desired/actual bit depth */
+-inflate_huft * FAR *tl; /* literal/length tree result */
+-inflate_huft * FAR *td; /* distance tree result */
+-z_stream *z;            /* for zfree function */
+-{
+-  int r;
+-
+-  /* build literal/length tree */
+-  if ((r = huft_build(c, nl, 257, cplens, cplext, tl, bl, z)) != Z_OK)
+-  {
+-    if (r == Z_DATA_ERROR)
+-      z->msg = "oversubscribed literal/length tree";
+-    else if (r == Z_BUF_ERROR)
+-    {
+-      inflate_trees_free(*tl, z);
+-      z->msg = "incomplete literal/length tree";
+-      r = Z_DATA_ERROR;
+-    }
+-    return r;
+-  }
+-
+-  /* build distance tree */
+-  if ((r = huft_build(c + nl, nd, 0, cpdist, cpdext, td, bd, z)) != Z_OK)
+-  {
+-    if (r == Z_DATA_ERROR)
+-      z->msg = "oversubscribed literal/length tree";
+-    else if (r == Z_BUF_ERROR) {
+-#ifdef PKZIP_BUG_WORKAROUND
+-      r = Z_OK;
+-    }
+-#else
+-      inflate_trees_free(*td, z);
+-      z->msg = "incomplete literal/length tree";
+-      r = Z_DATA_ERROR;
+-    }
+-    inflate_trees_free(*tl, z);
+-    return r;
+-#endif
+-  }
+-
+-  /* done */
+-  return Z_OK;
+-}
+-
+-
+-/* build fixed tables only once--keep them here */
+-local int fixed_lock = 0;
+-local int fixed_built = 0;
+-#define FIXEDH 530      /* number of hufts used by fixed tables */
+-local uInt fixed_left = FIXEDH;
+-local inflate_huft fixed_mem[FIXEDH];
+-local uInt fixed_bl;
+-local uInt fixed_bd;
+-local inflate_huft *fixed_tl;
+-local inflate_huft *fixed_td;
+-
+-
+-local voidpf falloc(q, n, s)
+-voidpf q;        /* opaque pointer (not used) */
+-uInt n;         /* number of items */
+-uInt s;         /* size of item */
+-{
+-  Assert(s == sizeof(inflate_huft) && n <= fixed_left,
+-	 "inflate_trees falloc overflow");
+-  if (q) s++; /* to make some compilers happy */
+-  fixed_left -= n;
+-  return (voidpf)(fixed_mem + fixed_left);
+-}
+-
+-
+-local void ffree(q, p, n)
+-voidpf q;
+-voidpf p;
+-uInt n;
+-{
+-  Assert(0, "inflate_trees ffree called!");
+-  if (q) q = p; /* to make some compilers happy */
+-}
+-
+-
+-local int inflate_trees_fixed(bl, bd, tl, td)
+-uIntf *bl;               /* literal desired/actual bit depth */
+-uIntf *bd;               /* distance desired/actual bit depth */
+-inflate_huft * FAR *tl;  /* literal/length tree result */
+-inflate_huft * FAR *td;  /* distance tree result */
+-{
+-  /* build fixed tables if not built already--lock out other instances */
+-  while (++fixed_lock > 1)
+-    fixed_lock--;
+-  if (!fixed_built)
+-  {
+-    int k;              /* temporary variable */
+-    unsigned c[288];    /* length list for huft_build */
+-    z_stream z;         /* for falloc function */
+-
+-    /* set up fake z_stream for memory routines */
+-    z.zalloc = falloc;
+-    z.zfree = ffree;
+-    z.opaque = Z_NULL;
+-
+-    /* literal table */
+-    for (k = 0; k < 144; k++)
+-      c[k] = 8;
+-    for (; k < 256; k++)
+-      c[k] = 9;
+-    for (; k < 280; k++)
+-      c[k] = 7;
+-    for (; k < 288; k++)
+-      c[k] = 8;
+-    fixed_bl = 7;
+-    huft_build(c, 288, 257, cplens, cplext, &fixed_tl, &fixed_bl, &z);
+-
+-    /* distance table */
+-    for (k = 0; k < 30; k++)
+-      c[k] = 5;
+-    fixed_bd = 5;
+-    huft_build(c, 30, 0, cpdist, cpdext, &fixed_td, &fixed_bd, &z);
+-
+-    /* done */
+-    fixed_built = 1;
+-  }
+-  fixed_lock--;
+-  *bl = fixed_bl;
+-  *bd = fixed_bd;
+-  *tl = fixed_tl;
+-  *td = fixed_td;
+-  return Z_OK;
+-}
+-
+-
+-local int inflate_trees_free(t, z)
+-inflate_huft *t;        /* table to free */
+-z_stream *z;            /* for zfree function */
+-/* Free the malloc'ed tables built by huft_build(), which makes a linked
+-   list of the tables it made, with the links in a dummy first entry of
+-   each table. */
+-{
+-  register inflate_huft *p, *q;
+-
+-  /* Go through linked list, freeing from the malloced (t[-1]) address. */
+-  p = t;
+-  while (p != Z_NULL)
+-  {
+-    q = (--p)->next;
+-    ZFREE(z, p, p->word.Nalloc * sizeof(inflate_huft));
+-    p = q;
+-  }
+-  return Z_OK;
+-}
+-
+-/*+++++*/
+-/* infcodes.c -- process literals and length/distance pairs
+- * Copyright (C) 1995 Mark Adler
+- * For conditions of distribution and use, see copyright notice in zlib.h
+- */
+-
+-/* simplify the use of the inflate_huft type with some defines */
+-#define base more.Base
+-#define next more.Next
+-#define exop word.what.Exop
+-#define bits word.what.Bits
+-
+-/* inflate codes private state */
+-struct inflate_codes_state {
+-
+-  /* mode */
+-  enum {        /* waiting for "i:"=input, "o:"=output, "x:"=nothing */
+-      START,    /* x: set up for LEN */
+-      LEN,      /* i: get length/literal/eob next */
+-      LENEXT,   /* i: getting length extra (have base) */
+-      DIST,     /* i: get distance next */
+-      DISTEXT,  /* i: getting distance extra */
+-      COPY,     /* o: copying bytes in window, waiting for space */
+-      LIT,      /* o: got literal, waiting for output space */
+-      WASH,     /* o: got eob, possibly still output waiting */
+-      END,      /* x: got eob and all data flushed */
+-      BADCODE}  /* x: got error */
+-    mode;               /* current inflate_codes mode */
+-
+-  /* mode dependent information */
+-  uInt len;
+-  union {
+-    struct {
+-      inflate_huft *tree;       /* pointer into tree */
+-      uInt need;                /* bits needed */
+-    } code;             /* if LEN or DIST, where in tree */
+-    uInt lit;           /* if LIT, literal */
+-    struct {
+-      uInt get;                 /* bits to get for extra */
+-      uInt dist;                /* distance back to copy from */
+-    } copy;             /* if EXT or COPY, where and how much */
+-  } sub;                /* submode */
+-
+-  /* mode independent information */
+-  Byte lbits;           /* ltree bits decoded per branch */
+-  Byte dbits;           /* dtree bits decoder per branch */
+-  inflate_huft *ltree;          /* literal/length/eob tree */
+-  inflate_huft *dtree;          /* distance tree */
+-
+-};
+-
+-
+-local inflate_codes_statef *inflate_codes_new(bl, bd, tl, td, z)
+-uInt bl, bd;
+-inflate_huft *tl, *td;
+-z_stream *z;
+-{
+-  inflate_codes_statef *c;
+-
+-  if ((c = (inflate_codes_statef *)
+-       ZALLOC(z,1,sizeof(struct inflate_codes_state))) != Z_NULL)
+-  {
+-    c->mode = START;
+-    c->lbits = (Byte)bl;
+-    c->dbits = (Byte)bd;
+-    c->ltree = tl;
+-    c->dtree = td;
+-    Tracev((stderr, "inflate:       codes new\n"));
+-  }
+-  return c;
+-}
+-
+-
+-local int inflate_codes(s, z, r)
+-inflate_blocks_statef *s;
+-z_stream *z;
+-int r;
+-{
+-  uInt j;               /* temporary storage */
+-  inflate_huft *t;      /* temporary pointer */
+-  uInt e;               /* extra bits or operation */
+-  uLong b;              /* bit buffer */
+-  uInt k;               /* bits in bit buffer */
+-  Bytef *p;             /* input data pointer */
+-  uInt n;               /* bytes available there */
+-  Bytef *q;             /* output window write pointer */
+-  uInt m;               /* bytes to end of window or read pointer */
+-  Bytef *f;             /* pointer to copy strings from */
+-  inflate_codes_statef *c = s->sub.decode.codes;  /* codes state */
+-
+-  /* copy input/output information to locals (UPDATE macro restores) */
+-  LOAD
+-
+-  /* process input and output based on current state */
+-  while (1) switch (c->mode)
+-  {             /* waiting for "i:"=input, "o:"=output, "x:"=nothing */
+-    case START:         /* x: set up for LEN */
+-#ifndef SLOW
+-      if (m >= 258 && n >= 10)
+-      {
+-	UPDATE
+-	r = inflate_fast(c->lbits, c->dbits, c->ltree, c->dtree, s, z);
+-	LOAD
+-	if (r != Z_OK)
+-	{
+-	  c->mode = r == Z_STREAM_END ? WASH : BADCODE;
+-	  break;
+-	}
+-      }
+-#endif /* !SLOW */
+-      c->sub.code.need = c->lbits;
+-      c->sub.code.tree = c->ltree;
+-      c->mode = LEN;
+-    case LEN:           /* i: get length/literal/eob next */
+-      j = c->sub.code.need;
+-      NEEDBITS(j)
+-      t = c->sub.code.tree + ((uInt)b & inflate_mask[j]);
+-      DUMPBITS(t->bits)
+-      e = (uInt)(t->exop);
+-      if (e == 0)               /* literal */
+-      {
+-	c->sub.lit = t->base;
+-	Tracevv((stderr, t->base >= 0x20 && t->base < 0x7f ?
+-		 "inflate:         literal '%c'\n" :
+-		 "inflate:         literal 0x%02x\n", t->base));
+-	c->mode = LIT;
+-	break;
+-      }
+-      if (e & 16)               /* length */
+-      {
+-	c->sub.copy.get = e & 15;
+-	c->len = t->base;
+-	c->mode = LENEXT;
+-	break;
+-      }
+-      if ((e & 64) == 0)        /* next table */
+-      {
+-	c->sub.code.need = e;
+-	c->sub.code.tree = t->next;
+-	break;
+-      }
+-      if (e & 32)               /* end of block */
+-      {
+-	Tracevv((stderr, "inflate:         end of block\n"));
+-	c->mode = WASH;
+-	break;
+-      }
+-      c->mode = BADCODE;        /* invalid code */
+-      z->msg = "invalid literal/length code";
+-      r = Z_DATA_ERROR;
+-      LEAVE
+-    case LENEXT:        /* i: getting length extra (have base) */
+-      j = c->sub.copy.get;
+-      NEEDBITS(j)
+-      c->len += (uInt)b & inflate_mask[j];
+-      DUMPBITS(j)
+-      c->sub.code.need = c->dbits;
+-      c->sub.code.tree = c->dtree;
+-      Tracevv((stderr, "inflate:         length %u\n", c->len));
+-      c->mode = DIST;
+-    case DIST:          /* i: get distance next */
+-      j = c->sub.code.need;
+-      NEEDBITS(j)
+-      t = c->sub.code.tree + ((uInt)b & inflate_mask[j]);
+-      DUMPBITS(t->bits)
+-      e = (uInt)(t->exop);
+-      if (e & 16)               /* distance */
+-      {
+-	c->sub.copy.get = e & 15;
+-	c->sub.copy.dist = t->base;
+-	c->mode = DISTEXT;
+-	break;
+-      }
+-      if ((e & 64) == 0)        /* next table */
+-      {
+-	c->sub.code.need = e;
+-	c->sub.code.tree = t->next;
+-	break;
+-      }
+-      c->mode = BADCODE;        /* invalid code */
+-      z->msg = "invalid distance code";
+-      r = Z_DATA_ERROR;
+-      LEAVE
+-    case DISTEXT:       /* i: getting distance extra */
+-      j = c->sub.copy.get;
+-      NEEDBITS(j)
+-      c->sub.copy.dist += (uInt)b & inflate_mask[j];
+-      DUMPBITS(j)
+-      Tracevv((stderr, "inflate:         distance %u\n", c->sub.copy.dist));
+-      c->mode = COPY;
+-    case COPY:          /* o: copying bytes in window, waiting for space */
+-#ifndef __TURBOC__ /* Turbo C bug for following expression */
+-      f = (uInt)(q - s->window) < c->sub.copy.dist ?
+-	  s->end - (c->sub.copy.dist - (q - s->window)) :
+-	  q - c->sub.copy.dist;
+-#else
+-      f = q - c->sub.copy.dist;
+-      if ((uInt)(q - s->window) < c->sub.copy.dist)
+-	f = s->end - (c->sub.copy.dist - (q - s->window));
+-#endif
+-      while (c->len)
+-      {
+-	NEEDOUT
+-	OUTBYTE(*f++)
+-	if (f == s->end)
+-	  f = s->window;
+-	c->len--;
+-      }
+-      c->mode = START;
+-      break;
+-    case LIT:           /* o: got literal, waiting for output space */
+-      NEEDOUT
+-      OUTBYTE(c->sub.lit)
+-      c->mode = START;
+-      break;
+-    case WASH:          /* o: got eob, possibly more output */
+-      FLUSH
+-      if (s->read != s->write)
+-	LEAVE
+-      c->mode = END;
+-    case END:
+-      r = Z_STREAM_END;
+-      LEAVE
+-    case BADCODE:       /* x: got error */
+-      r = Z_DATA_ERROR;
+-      LEAVE
+-    default:
+-      r = Z_STREAM_ERROR;
+-      LEAVE
+-  }
+-}
+-
+-
+-local void inflate_codes_free(c, z)
+-inflate_codes_statef *c;
+-z_stream *z;
+-{
+-  ZFREE(z, c, sizeof(struct inflate_codes_state));
+-  Tracev((stderr, "inflate:       codes free\n"));
+-}
+-
+-/*+++++*/
+-/* inflate_util.c -- data and routines common to blocks and codes
+- * Copyright (C) 1995 Mark Adler
+- * For conditions of distribution and use, see copyright notice in zlib.h
+- */
+-
+-/* copy as much as possible from the sliding window to the output area */
+-local int inflate_flush(s, z, r)
+-inflate_blocks_statef *s;
+-z_stream *z;
+-int r;
+-{
+-  uInt n;
+-  Bytef *p, *q;
+-
+-  /* local copies of source and destination pointers */
+-  p = z->next_out;
+-  q = s->read;
+-
+-  /* compute number of bytes to copy as far as end of window */
+-  n = (uInt)((q <= s->write ? s->write : s->end) - q);
+-  if (n > z->avail_out) n = z->avail_out;
+-  if (n && r == Z_BUF_ERROR) r = Z_OK;
+-
+-  /* update counters */
+-  z->avail_out -= n;
+-  z->total_out += n;
+-
+-  /* update check information */
+-  if (s->checkfn != Z_NULL)
+-    s->check = (*s->checkfn)(s->check, q, n);
+-
+-  /* output callback */
+-  if (z->outcb != Z_NULL)
+-    (*z->outcb)(q, n);
+-
+-  /* copy as far as end of window */
+-  zmemcpy(p, q, n);
+-  p += n;
+-  q += n;
+-
+-  /* see if more to copy at beginning of window */
+-  if (q == s->end)
+-  {
+-    /* wrap pointers */
+-    q = s->window;
+-    if (s->write == s->end)
+-      s->write = s->window;
+-
+-    /* compute bytes to copy */
+-    n = (uInt)(s->write - q);
+-    if (n > z->avail_out) n = z->avail_out;
+-    if (n && r == Z_BUF_ERROR) r = Z_OK;
+-
+-    /* update counters */
+-    z->avail_out -= n;
+-    z->total_out += n;
+-
+-    /* update check information */
+-    if (s->checkfn != Z_NULL)
+-      s->check = (*s->checkfn)(s->check, q, n);
+-
+-    /* output callback */
+-    if (z->outcb != Z_NULL)
+-	(*z->outcb)(q, n);
+-
+-    /* copy */
+-    zmemcpy(p, q, n);
+-    p += n;
+-    q += n;
+-  }
+-
+-  /* update pointers */
+-  z->next_out = p;
+-  s->read = q;
+-
+-  /* done */
+-  return r;
+-}
+-
+-
+-/*+++++*/
+-/* inffast.c -- process literals and length/distance pairs fast
+- * Copyright (C) 1995 Mark Adler
+- * For conditions of distribution and use, see copyright notice in zlib.h
+- */
+-
+-/* simplify the use of the inflate_huft type with some defines */
+-#define base more.Base
+-#define next more.Next
+-#define exop word.what.Exop
+-#define bits word.what.Bits
+-
+-/* macros for bit input with no checking and for returning unused bytes */
+-#define GRABBITS(j) {while(k<(j)){b|=((uLong)NEXTBYTE)<<k;k+=8;}}
+-#define UNGRAB {n+=(c=k>>3);p-=c;k&=7;}
+-
+-/* Called with number of bytes left to write in window at least 258
+-   (the maximum string length) and number of input bytes available
+-   at least ten.  The ten bytes are six bytes for the longest length/
+-   distance pair plus four bytes for overloading the bit buffer. */
+-
+-local int inflate_fast(bl, bd, tl, td, s, z)
+-uInt bl, bd;
+-inflate_huft *tl, *td;
+-inflate_blocks_statef *s;
+-z_stream *z;
+-{
+-  inflate_huft *t;      /* temporary pointer */
+-  uInt e;               /* extra bits or operation */
+-  uLong b;              /* bit buffer */
+-  uInt k;               /* bits in bit buffer */
+-  Bytef *p;             /* input data pointer */
+-  uInt n;               /* bytes available there */
+-  Bytef *q;             /* output window write pointer */
+-  uInt m;               /* bytes to end of window or read pointer */
+-  uInt ml;              /* mask for literal/length tree */
+-  uInt md;              /* mask for distance tree */
+-  uInt c;               /* bytes to copy */
+-  uInt d;               /* distance back to copy from */
+-  Bytef *r;             /* copy source pointer */
+-
+-  /* load input, output, bit values */
+-  LOAD
+-
+-  /* initialize masks */
+-  ml = inflate_mask[bl];
+-  md = inflate_mask[bd];
+-
+-  /* do until not enough input or output space for fast loop */
+-  do {                          /* assume called with m >= 258 && n >= 10 */
+-    /* get literal/length code */
+-    GRABBITS(20)                /* max bits for literal/length code */
+-    if ((e = (t = tl + ((uInt)b & ml))->exop) == 0)
+-    {
+-      DUMPBITS(t->bits)
+-      Tracevv((stderr, t->base >= 0x20 && t->base < 0x7f ?
+-		"inflate:         * literal '%c'\n" :
+-		"inflate:         * literal 0x%02x\n", t->base));
+-      *q++ = (Byte)t->base;
+-      m--;
+-      continue;
+-    }
+-    do {
+-      DUMPBITS(t->bits)
+-      if (e & 16)
+-      {
+-	/* get extra bits for length */
+-	e &= 15;
+-	c = t->base + ((uInt)b & inflate_mask[e]);
+-	DUMPBITS(e)
+-	Tracevv((stderr, "inflate:         * length %u\n", c));
+-
+-	/* decode distance base of block to copy */
+-	GRABBITS(15);           /* max bits for distance code */
+-	e = (t = td + ((uInt)b & md))->exop;
+-	do {
+-	  DUMPBITS(t->bits)
+-	  if (e & 16)
+-	  {
+-	    /* get extra bits to add to distance base */
+-	    e &= 15;
+-	    GRABBITS(e)         /* get extra bits (up to 13) */
+-	    d = t->base + ((uInt)b & inflate_mask[e]);
+-	    DUMPBITS(e)
+-	    Tracevv((stderr, "inflate:         * distance %u\n", d));
+-
+-	    /* do the copy */
+-	    m -= c;
+-	    if ((uInt)(q - s->window) >= d)     /* offset before dest */
+-	    {                                   /*  just copy */
+-	      r = q - d;
+-	      *q++ = *r++;  c--;        /* minimum count is three, */
+-	      *q++ = *r++;  c--;        /*  so unroll loop a little */
+-	    }
+-	    else                        /* else offset after destination */
+-	    {
+-	      e = d - (q - s->window);  /* bytes from offset to end */
+-	      r = s->end - e;           /* pointer to offset */
+-	      if (c > e)                /* if source crosses, */
+-	      {
+-		c -= e;                 /* copy to end of window */
+-		do {
+-		  *q++ = *r++;
+-		} while (--e);
+-		r = s->window;          /* copy rest from start of window */
+-	      }
+-	    }
+-	    do {                        /* copy all or what's left */
+-	      *q++ = *r++;
+-	    } while (--c);
+-	    break;
+-	  }
+-	  else if ((e & 64) == 0)
+-	    e = (t = t->next + ((uInt)b & inflate_mask[e]))->exop;
+-	  else
+-	  {
+-	    z->msg = "invalid distance code";
+-	    UNGRAB
+-	    UPDATE
+-	    return Z_DATA_ERROR;
+-	  }
+-	} while (1);
+-	break;
+-      }
+-      if ((e & 64) == 0)
+-      {
+-	if ((e = (t = t->next + ((uInt)b & inflate_mask[e]))->exop) == 0)
+-	{
+-	  DUMPBITS(t->bits)
+-	  Tracevv((stderr, t->base >= 0x20 && t->base < 0x7f ?
+-		    "inflate:         * literal '%c'\n" :
+-		    "inflate:         * literal 0x%02x\n", t->base));
+-	  *q++ = (Byte)t->base;
+-	  m--;
+-	  break;
+-	}
+-      }
+-      else if (e & 32)
+-      {
+-	Tracevv((stderr, "inflate:         * end of block\n"));
+-	UNGRAB
+-	UPDATE
+-	return Z_STREAM_END;
+-      }
+-      else
+-      {
+-	z->msg = "invalid literal/length code";
+-	UNGRAB
+-	UPDATE
+-	return Z_DATA_ERROR;
+-      }
+-    } while (1);
+-  } while (m >= 258 && n >= 10);
+-
+-  /* not enough input or output--restore pointers and return */
+-  UNGRAB
+-  UPDATE
+-  return Z_OK;
+-}
+-
+-
+-/*+++++*/
+-/* zutil.c -- target dependent utility functions for the compression library
+- * Copyright (C) 1995 Jean-loup Gailly.
+- * For conditions of distribution and use, see copyright notice in zlib.h
+- */
+-
+-/* From: zutil.c,v 1.8 1995/05/03 17:27:12 jloup Exp */
+-
+-char *zlib_version = ZLIB_VERSION;
+-
+-char *z_errmsg[] = {
+-"stream end",          /* Z_STREAM_END    1 */
+-"",                    /* Z_OK            0 */
+-"file error",          /* Z_ERRNO        (-1) */
+-"stream error",        /* Z_STREAM_ERROR (-2) */
+-"data error",          /* Z_DATA_ERROR   (-3) */
+-"insufficient memory", /* Z_MEM_ERROR    (-4) */
+-"buffer error",        /* Z_BUF_ERROR    (-5) */
+-""};
+-
+-
+-/*+++++*/
+-/* adler32.c -- compute the Adler-32 checksum of a data stream
+- * Copyright (C) 1995 Mark Adler
+- * For conditions of distribution and use, see copyright notice in zlib.h
+- */
+-
+-/* From: adler32.c,v 1.6 1995/05/03 17:27:08 jloup Exp */
+-
+-#define BASE 65521L /* largest prime smaller than 65536 */
+-#define NMAX 5552
+-/* NMAX is the largest n such that 255n(n+1)/2 + (n+1)(BASE-1) <= 2^32-1 */
+-
+-#define DO1(buf)  {s1 += *buf++; s2 += s1;}
+-#define DO2(buf)  DO1(buf); DO1(buf);
+-#define DO4(buf)  DO2(buf); DO2(buf);
+-#define DO8(buf)  DO4(buf); DO4(buf);
+-#define DO16(buf) DO8(buf); DO8(buf);
+-
+-/* ========================================================================= */
+-uLong adler32(adler, buf, len)
+-    uLong adler;
+-    Bytef *buf;
+-    uInt len;
+-{
+-    unsigned long s1 = adler & 0xffff;
+-    unsigned long s2 = (adler >> 16) & 0xffff;
+-    int k;
+-
+-    if (buf == Z_NULL) return 1L;
+-
+-    while (len > 0) {
+-	k = len < NMAX ? len : NMAX;
+-	len -= k;
+-	while (k >= 16) {
+-	    DO16(buf);
+-	    k -= 16;
+-	}
+-	if (k != 0) do {
+-	    DO1(buf);
+-	} while (--k);
+-	s1 %= BASE;
+-	s2 %= BASE;
+-    }
+-    return (s2 << 16) | s1;
+-}
 -- 
 1.7.7.1
 
