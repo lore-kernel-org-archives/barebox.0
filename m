@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RV2gu-0002N3-O6
- for barebox@lists.infradead.org; Mon, 28 Nov 2011 15:00:26 +0000
-Date: Mon, 28 Nov 2011 15:59:57 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20111128145957.GC27267@pengutronix.de>
-References: <4ED399D0.7020302@ge.com>
+Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1RV5EZ-00064D-DY
+ for barebox@lists.infradead.org; Mon, 28 Nov 2011 17:43:16 +0000
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+References: <87ipm9yd88.fsf@free.fr> <20111124120400.GC27267@pengutronix.de>
+ <87d3chxoxp.fsf@free.fr> <20111125000145.GE27267@pengutronix.de>
+ <87lir18ag7.fsf@free.fr> <20111128074319.GO27267@pengutronix.de>
+Date: Mon, 28 Nov 2011 18:43:06 +0100
+In-Reply-To: <20111128074319.GO27267@pengutronix.de> (Sascha Hauer's message
+ of "Mon, 28 Nov 2011 08:43:19 +0100")
+Message-ID: <87d3cc87o5.fsf@free.fr>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <4ED399D0.7020302@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,52 +24,91 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Running Barebox in Barebox.
-To: Renaud Barbier <renaud.barbier@ge.com>
+Subject: Re: ARM, MMU and IO space mapping
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Renaud,
+Sascha Hauer <s.hauer@pengutronix.de> writes:
 
-On Mon, Nov 28, 2011 at 02:25:20PM +0000, Renaud Barbier wrote:
-> I have seen an example of tftp loading barebox in /dev/ram0
-> and then running it with the go command.
+> That's why I had to disable this mapping. Most other SoCs do not have
+> flash on 0x0. The i.MX processors for example have their internal ROM
+> there.
+Ah, I see.
 
-Yes, this works on most boards.
+>> And as a consequence, I'm a bit afraid that my disk-on-chip, having it's memory
+>> mapped to 0x0 - 0x2000, will be difficult to convert ... I must think of a way
+>> in there.
+>
+> Your options are:
+>
+> - Add some switch to disable the 0x0 mapping.
+> - Add ioremap support.
+>
+> I think we should go for the former for now. Real ioremap support
+> requires more thinking about how we want to do it. Will all drivers have
+> to do it or only the cfi driver?
+I think that only cfi and disk-on-chips drivers will have that problem, as being
+mapped (from an memory bus address POV) to address 0 is bound to boot code,
+which relies on some kind of memory (ROM, flash, ...).
 
-> 
-> Is that something that has been tested with the MPC5200?
+And disabling 0x0 mapping will make the MMU booting quite fragile IMHO.
+Consider the following example:
+ - a flash/ROM is mapped at address 0 for booting the ARM SoC
+ - as requested by ARM, the first words of the flash are the vectors, with the
+ first one being the reset vector into a code that is supposed to run in a
+ *non-MMU* context
+ - the ARM core starts, and IPL is loaded
+ - IPL loads SPL (barebox)
+ - barebox remaps 0x0 to vectors at malloc'd 0xa0003f00 (former solution)
+ - barebox switches into MMU on
+ - a bug happens in barebox (urgh!!!) and the exception vector is triggered
+ ===> here, the flash/ROM vector is used
+ ===> this vectors assumes running from MMU-disabled environment
+ - the code running in the IPL triggers an exception because it's in MMU
+ environment
+  => eternal cycle begins
 
-This should work since
+I think either :
+ - we implement ioremap
+ - or we forbid (on ARM) MMU with board requiring 0x0 iomapped device
 
-commit 1c9c937a6ac34c4d41fa70d0339f546f40b6c6d5
-Author: Sascha Hauer <s.hauer@pengutronix.de>
-Date:   Mon Sep 26 17:29:51 2011 +0200
+I would prefer a simple ioremap solution of the like:
+ - a mach-XXX declares an adress-space for io-remapping (contiguous, section
+ aligned and of size multiple of 1MBytes)
+   => if not => MMU config is not possible
+             => ioremap() gives back the flat physical address
+   => if yes => MMU config is possible
+             => ioremap() gives back an entry in io-remapping address space
+ - ioremap() is embedded in dev_request_mem_region()
 
-    ppc mpc5200b: cleanup lowlevel startup
-    
-    The old startup process consisted of several CFG_LOWBOOT,
-    CFG_RAMBOOT ifdeffery which I do not understand. So remove
-    all this and replace it with:
-    
-    - put the entry point for second stage loaders to offset 0x0
-      so that we can do a go /dev/ram0 to start a second barebox
-    - When we come from the reset vector assume MBAR is at 0x80000000
-    - When we come from the second stage entry assume that
-      SPR 311 is in sync with the current MBAR address.
-    - Switch MBAR to 0xf0000000 and we are done.
-    
-    Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+What do you think ?
 
-Just tested on current master and this works for me.
+>> I don't know either. All I see is that the datacache is filled so that stale
+>> values are flushed out, and then it's flushed again through normal coproc
+>> operations.
+>> Note that there's an erratum in the XScale series that says that turning off the
+>> cache leaves "dirty bits" set, and reenabling it later might cause havoc. That
+>> would be a good reason for UBoot the read the 64kb before turning off the MMU,
+>> wouldn't it ?
+>
+> Yes, it would. Does your first stage loader use the MMU?
+Well, when barebox is stable enough for me, no.
+For now, the answer will be yes, as barebox will be the TPL:
+ - IPL load SPL, which is a proprietary bootloader
+   => IPL runs in non-MMU mode
+ - SPL loads the TPL (third program loader), which is barebox
+   => SPL uses MMU
+I need the IPL/SPL/TPL, as if there is any problem with barebox, the current SPL
+is stable and will enable me to reflash the TPL (ie. barebox). I have no JTAG
+access by now to my board, so I cannot afford loosing the security of the SPL.
 
-Sascha
+When my barebox will be stable enough, and I'll be bold enough, I'll replace the
+SPL with barebox :)
 
+Cheers.
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Robert
 
 _______________________________________________
 barebox mailing list
