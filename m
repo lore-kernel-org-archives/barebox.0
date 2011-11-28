@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RUwJI-0005pS-72
- for barebox@lists.infradead.org; Mon, 28 Nov 2011 08:11:33 +0000
-Date: Mon, 28 Nov 2011 09:11:24 +0100
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RUwlB-0001By-Qk
+ for barebox@lists.infradead.org; Mon, 28 Nov 2011 08:40:24 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20111128081124.GP27267@pengutronix.de>
-References: <1322338981-30978-1-git-send-email-jbe@pengutronix.de>
- <1322338981-30978-10-git-send-email-jbe@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1322338981-30978-10-git-send-email-jbe@pengutronix.de>
+Date: Mon, 28 Nov 2011 09:40:11 +0100
+Message-Id: <1322469611-20173-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1322469611-20173-1-git-send-email-s.hauer@pengutronix.de>
+References: <1322469611-20173-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,132 +16,82 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 09/14] MACH SAMSUNG/S3C: Rename register macros to
- reflect the MACH they are valid for
-To: Juergen Beisert <jbe@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/2] mmc spi: compile fix
+To: barebox@lists.infradead.org
 
-On Sat, Nov 26, 2011 at 09:22:56PM +0100, Juergen Beisert wrote:
-> Most members of the S3Cxxxx family share similar timer units. But they are
-> not really register compatible. To reflect this, use a separate name space for
-> the S3C family.
-> 
-> Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
-> ---
->  arch/arm/mach-samsung/include/mach/s3c-iomap.h |   20 +------------
->  arch/arm/mach-samsung/include/mach/s3c-timer.h |   36 ++++++++++++++++++++++++
->  arch/arm/mach-samsung/s3c-timer.c              |   17 ++++++-----
->  3 files changed, 46 insertions(+), 27 deletions(-)
->  create mode 100644 arch/arm/mach-samsung/include/mach/s3c-timer.h
-> 
+Without CRC support the mmc spi driver fails to compile with
+the following:
 
-[...]
+drivers/mci/mci_spi.c:74:18: error: static declaration of 'crc7' follows non-static declaration
 
-> diff --git a/arch/arm/mach-samsung/include/mach/s3c-timer.h b/arch/arm/mach-samsung/include/mach/s3c-timer.h
-> new file mode 100644
-> index 0000000..5201fc4
-> --- /dev/null
-> +++ b/arch/arm/mach-samsung/include/mach/s3c-timer.h
-> @@ -0,0 +1,36 @@
-> +/*
-> + * Copyright (C) 2011 Juergen Beisert, Pengutronix
-> + *
-> + * This program is free software; you can redistribute it and/or
-> + * modify it under the terms of the GNU General Public License as
-> + * published by the Free Software Foundation; either version 2 of
-> + * the License, or (at your option) any later version.
-> + *
-> + * This program is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> + * GNU General Public License for more details.
-> + */
-> +
-> +#ifndef __MACH_S3C_TIMER_H
-> +# define __MACH_S3C_TIMER_H
-> +
-> +#define S3C_TCFG0 (S3C_TIMER_BASE + 0x00)
-> +#define S3C_TCFG1 (S3C_TIMER_BASE + 0x04)
-> +#define S3C_TCON (S3C_TIMER_BASE + 0x08)
-> +#define S3C_TCNTB0 (S3C_TIMER_BASE + 0x0c)
-> +#define S3C_TCMPB0 (S3C_TIMER_BASE + 0x10)
-> +#define S3C_TCNTO0 (S3C_TIMER_BASE + 0x14)
-> +#define S3C_TCNTB1 (S3C_TIMER_BASE + 0x18)
-> +#define S3C_TCMPB1 (S3C_TIMER_BASE + 0x1c)
-> +#define S3C_TCNTO1 (S3C_TIMER_BASE + 0x20)
-> +#define S3C_TCNTB2 (S3C_TIMER_BASE + 0x24)
-> +#define S3C_TCMPB2 (S3C_TIMER_BASE + 0x28)
-> +#define S3C_TCNTO2 (S3C_TIMER_BASE + 0x2c)
-> +#define S3C_TCNTB3 (S3C_TIMER_BASE + 0x30)
-> +#define S3C_TCMPB3 (S3C_TIMER_BASE + 0x34)
-> +#define S3C_TCNTO3 (S3C_TIMER_BASE + 0x38)
-> +#define S3C_TCNTB4 (S3C_TIMER_BASE + 0x3c)
-> +#define S3C_TCNTO4 (S3C_TIMER_BASE + 0x40)
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/mci/mci_spi.c |   29 ++++++++++++-----------------
+ 1 files changed, 12 insertions(+), 17 deletions(-)
 
-You should rather put these into s3c-timer.c directly.
-
-> +
-> +#endif /* __MACH_S3C_TIMER_H */
-> diff --git a/arch/arm/mach-samsung/s3c-timer.c b/arch/arm/mach-samsung/s3c-timer.c
-> index 2b0b38a..a3ce4a2 100644
-> --- a/arch/arm/mach-samsung/s3c-timer.c
-> +++ b/arch/arm/mach-samsung/s3c-timer.c
-> @@ -20,11 +20,12 @@
->  #include <io.h>
->  #include <mach/s3c-iomap.h>
->  #include <mach/s3c-generic.h>
-> +#include <mach/s3c-timer.h>
->  
->  static uint64_t s3c24xx_clocksource_read(void)
->  {
->  	/* note: its a down counter */
-> -	return 0xFFFF - readw(TCNTO4);
-> +	return 0xFFFF - readw(S3C_TCNTO4);
->  }
->  
->  static struct clocksource cs = {
-> @@ -37,15 +38,15 @@ static int clocksource_init(void)
->  {
->  	uint32_t p_clk = s3c_get_pclk();
->  
-> -	writel(0x00000000, TCON);	/* stop all timers */
-> -	writel(0x00ffffff, TCFG0);	/* PCLK / (255 + 1) for timer 4 */
-> -	writel(0x00030000, TCFG1);	/* /16 */
-> +	writel(0x00000000, S3C_TCON);	/* stop all timers */
-> +	writel(0x00ffffff, S3C_TCFG0);	/* PCLK / (255 + 1) for timer 4 */
-> +	writel(0x00030000, S3C_TCFG1);	/* /16 */
->  
-> -	writew(0xffff, TCNTB4);		/* reload value is TOP */
-> +	writew(0xffff, S3C_TCNTB4);	/* reload value is TOP */
->  
-> -	writel(0x00600000, TCON);	/* force a first reload */
-> -	writel(0x00400000, TCON);
-> -	writel(0x00500000, TCON);	/* enable timer 4 with auto reload */
-> +	writel(0x00600000, S3C_TCON);	/* force a first reload */
-> +	writel(0x00400000, S3C_TCON);
-> +	writel(0x00500000, S3C_TCON);	/* enable timer 4 with auto reload */
->  
->  	cs.mult = clocksource_hz2mult(p_clk / ((255 + 1) * 16), cs.shift);
->  	init_clock(&cs);
-> -- 
-> 1.7.7.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/drivers/mci/mci_spi.c b/drivers/mci/mci_spi.c
+index 124e49b..653910b 100644
+--- a/drivers/mci/mci_spi.c
++++ b/drivers/mci/mci_spi.c
+@@ -64,23 +64,6 @@
+ #define RTOUT 3000000 /* 1 sec */
+ #define WTOUT 3000000 /* 1 sec */
+ 
+-#ifndef CONFIG_MMC_SPI_CRC_ON
+-/* Note that while the CRC, in general, is ignored in SPI mode, the very first
+- * command must be followed by a valid CRC, since the card is not yet in SPI mode.
+- * The CRC byte for a CMD0 command with a zero argument is a constant 0x4A. For
+- * simplicity, this CRC byte is always sent with every command.
+- */
+-
+-static inline u8 crc7(u8 crc, const u8 *buffer, size_t len)
+-{
+-	/* This is the crc7 value for a CMD0 command with a zero argument.
+-	 * It'll be left shifted and ored with '1' in mmc_spi_command_send
+-	 * to give 0x95 (also known as the CMD0 constant CRC value...)
+-	 */
+-	return 0x4A;
+-}
+-#endif
+-
+ struct mmc_spi_host {
+ 	struct mci_host	mci;
+ 	struct spi_device	*spi;
+@@ -141,6 +124,14 @@ mmc_spi_writebytes(struct mmc_spi_host *host, unsigned len, void *data)
+ 	return status;
+ }
+ 
++/*
++ * Note that while the CRC, in general, is ignored in SPI mode, the very first
++ * command must be followed by a valid CRC, since the card is not yet in SPI mode.
++ * The CRC byte for a CMD0 command with a zero argument is a constant 0x4A. For
++ * simplicity, this CRC byte is always sent with every command.
++ */
++#define MMC_SPI_CMD0_CRC	((0x4a << 1) | 0x1)
++
+ static int mmc_spi_command_send(struct mmc_spi_host *host, struct mci_cmd *cmd)
+ {
+ 	uint8_t r1;
+@@ -153,7 +144,11 @@ static int mmc_spi_command_send(struct mmc_spi_host *host, struct mci_cmd *cmd)
+ 	command[3] = cmd->cmdarg >> 16;
+ 	command[4] = cmd->cmdarg >> 8;
+ 	command[5] = cmd->cmdarg;
++#ifdef CONFIG_MMC_SPI_CRC_ON
+ 	command[6] = (crc7(0, &command[1], 5) << 1) | 0x01;
++#else
++	command[6] = MMC_SPI_CMD0_CRC;
++#endif
+ 
+ 	mmc_spi_writebytes(host, 7, command);
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.7.1
+
 
 _______________________________________________
 barebox mailing list
