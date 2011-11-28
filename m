@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RV9Pk-0003Cr-Vz
- for barebox@lists.infradead.org; Mon, 28 Nov 2011 22:11:09 +0000
+ id 1RV9Pk-0003Cq-1X
+ for barebox@lists.infradead.org; Mon, 28 Nov 2011 22:11:12 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 28 Nov 2011 23:10:00 +0100
-Message-Id: <1322518209-2965-8-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 28 Nov 2011 23:09:58 +0100
+Message-Id: <1322518209-2965-6-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1322518209-2965-1-git-send-email-s.hauer@pengutronix.de>
 References: <1322518209-2965-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,2714 +21,3156 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/16] remove old zlib
+Subject: [PATCH 05/16] remove old bzlib
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/zlib.h |  434 ------------
- lib/gunzip.c   |   85 ---
- lib/zlib.c     | 2158 --------------------------------------------------------
- 3 files changed, 0 insertions(+), 2677 deletions(-)
- delete mode 100644 include/zlib.h
- delete mode 100644 lib/gunzip.c
- delete mode 100644 lib/zlib.c
+ include/bzlib.h        |  329 ----------
+ lib/bzlib.c            | 1592 ------------------------------------------------
+ lib/bzlib_crctable.c   |  145 -----
+ lib/bzlib_decompress.c |  674 --------------------
+ lib/bzlib_huffman.c    |  229 -------
+ lib/bzlib_randtable.c  |  126 ----
+ 6 files changed, 0 insertions(+), 3095 deletions(-)
+ delete mode 100644 include/bzlib.h
+ delete mode 100644 lib/bzlib.c
+ delete mode 100644 lib/bzlib_crctable.c
+ delete mode 100644 lib/bzlib_decompress.c
+ delete mode 100644 lib/bzlib_huffman.c
+ delete mode 100644 lib/bzlib_randtable.c
 
-diff --git a/include/zlib.h b/include/zlib.h
+diff --git a/include/bzlib.h b/include/bzlib.h
 deleted file mode 100644
-index e441494..0000000
---- a/include/zlib.h
+index 4b0f820..0000000
+--- a/include/bzlib.h
 +++ /dev/null
-@@ -1,434 +0,0 @@
+@@ -1,329 +0,0 @@
 -/*
-- * This file is derived from zlib.h and zconf.h from the zlib-0.95
-- * distribution by Jean-loup Gailly and Mark Adler, with some additions
-- * by Paul Mackerras to aid in implementing Deflate compression and
-- * decompression for PPP packets.
+- * This file is a modified version of bzlib.h from the bzip2-1.0.2
+- * distribution which can be found at http://sources.redhat.com/bzip2/
 - */
 -
--/*
-- *  ==FILEVERSION 960122==
-- *
-- * This marker is used by the Linux installation script to determine
-- * whether an up-to-date version of this file is already installed.
-- */
+-/*-------------------------------------------------------------*/
+-/*--- Public header file for the library.                   ---*/
+-/*---                                               bzlib.h ---*/
+-/*-------------------------------------------------------------*/
 -
--/* zlib.h -- interface of the 'zlib' general purpose compression library
--  version 0.95, Aug 16th, 1995.
+-/*--
+-  This file is a part of bzip2 and/or libbzip2, a program and
+-  library for lossless, block-sorting data compression.
 -
--  Copyright (C) 1995 Jean-loup Gailly and Mark Adler
+-  Copyright (C) 1996-2002 Julian R Seward.  All rights reserved.
 -
--  This software is provided 'as-is', without any express or implied
--  warranty.  In no event will the authors be held liable for any damages
--  arising from the use of this software.
+-  Redistribution and use in source and binary forms, with or without
+-  modification, are permitted provided that the following conditions
+-  are met:
 -
--  Permission is granted to anyone to use this software for any purpose,
--  including commercial applications, and to alter it and redistribute it
--  freely, subject to the following restrictions:
+-  1. Redistributions of source code must retain the above copyright
+-     notice, this list of conditions and the following disclaimer.
 -
--  1. The origin of this software must not be misrepresented; you must not
--     claim that you wrote the original software. If you use this software
--     in a product, an acknowledgment in the product documentation would be
--     appreciated but is not required.
--  2. Altered source versions must be plainly marked as such, and must not be
--     misrepresented as being the original software.
--  3. This notice may not be removed or altered from any source distribution.
+-  2. The origin of this software must not be misrepresented; you must
+-     not claim that you wrote the original software.  If you use this
+-     software in a product, an acknowledgment in the product
+-     documentation would be appreciated but is not required.
 -
--  Jean-loup Gailly        Mark Adler
--  gzip@prep.ai.mit.edu    madler@alumni.caltech.edu
-- */
+-  3. Altered source versions must be plainly marked as such, and must
+-     not be misrepresented as being the original software.
 -
--#ifndef _ZLIB_H
--#define _ZLIB_H
+-  4. The name of the author may not be used to endorse or promote
+-     products derived from this software without specific prior written
+-     permission.
 -
--/* #include "zconf.h" */	/* included directly here */
+-  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS
+-  OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+-  ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
+-  DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+-  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+-  GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+-  INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+-  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+-  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -
--/* zconf.h -- configuration of the zlib compression library
-- * Copyright (C) 1995 Jean-loup Gailly.
-- * For conditions of distribution and use, see copyright notice in zlib.h
-- */
+-  Julian Seward, Cambridge, UK.
+-  jseward@acm.org
+-  bzip2/libbzip2 version 1.0 of 21 March 2000
 -
--/* From: zconf.h,v 1.12 1995/05/03 17:27:12 jloup Exp */
+-  This program is based on (at least) the work of:
+-     Mike Burrows
+-     David Wheeler
+-     Peter Fenwick
+-     Alistair Moffat
+-     Radford Neal
+-     Ian H. Witten
+-     Robert Sedgewick
+-     Jon L. Bentley
 -
--/*
--     The library does not install any signal handler. It is recommended to
--  add at least a handler for SIGSEGV when decompressing; the library checks
--  the consistency of the input data whenever possible but may go nuts
--  for some forms of corrupted input.
-- */
+-  For more information on these sources, see the manual.
+---*/
 -
--/*
-- * Compile with -DMAXSEG_64K if the alloc function cannot allocate more
-- * than 64k bytes at a time (needed on systems with 16-bit int).
-- * Compile with -DUNALIGNED_OK if it is OK to access shorts or ints
-- * at addresses which are not a multiple of their size.
-- * Under DOS, -DFAR=far or -DFAR=__far may be needed.
-- */
 -
--#ifndef STDC
--#  if defined(MSDOS) || defined(__STDC__) || defined(__cplusplus)
--#    define STDC
--#  endif
+-#ifndef _BZLIB_H
+-#define _BZLIB_H
+-
+-/* Configure for barebox environment */
+-#define BZ_NO_STDIO
+-#define BZ_NO_COMPRESS
+-/* End of configuration for barebox environment */
+-
+-#ifdef __cplusplus
+-extern "C" {
 -#endif
 -
--#ifdef	__MWERKS__ /* Metrowerks CodeWarrior declares fileno() in unix.h */
--#  include <unix.h>
+-#define BZ_RUN               0
+-#define BZ_FLUSH             1
+-#define BZ_FINISH            2
+-
+-#define BZ_OK                0
+-#define BZ_RUN_OK            1
+-#define BZ_FLUSH_OK          2
+-#define BZ_FINISH_OK         3
+-#define BZ_STREAM_END        4
+-#define BZ_SEQUENCE_ERROR    (-1)
+-#define BZ_PARAM_ERROR       (-2)
+-#define BZ_MEM_ERROR         (-3)
+-#define BZ_DATA_ERROR        (-4)
+-#define BZ_DATA_ERROR_MAGIC  (-5)
+-#define BZ_IO_ERROR          (-6)
+-#define BZ_UNEXPECTED_EOF    (-7)
+-#define BZ_OUTBUFF_FULL      (-8)
+-#define BZ_CONFIG_ERROR      (-9)
+-
+-typedef
+-   struct {
+-      char *next_in;
+-      unsigned int avail_in;
+-      unsigned int total_in_lo32;
+-      unsigned int total_in_hi32;
+-
+-      char *next_out;
+-      unsigned int avail_out;
+-      unsigned int total_out_lo32;
+-      unsigned int total_out_hi32;
+-
+-      void *state;
+-
+-      void *(*bzalloc)(void *,int,int);
+-      void (*bzfree)(void *,void *);
+-      void *opaque;
+-   }
+-   bz_stream;
+-
+-
+-#ifndef BZ_IMPORT
+-#define BZ_EXPORT
 -#endif
 -
--/* Maximum value for memLevel in deflateInit2 */
--#ifndef MAX_MEM_LEVEL
--#  ifdef MAXSEG_64K
--#    define MAX_MEM_LEVEL 8
--#  else
--#    define MAX_MEM_LEVEL 9
--#  endif
--#endif
--
--#ifndef FAR
--#  define FAR
--#endif
--
--/* Maximum value for windowBits in deflateInit2 and inflateInit2 */
--#ifndef MAX_WBITS
--#  define MAX_WBITS   15 /* 32K LZ77 window */
--#endif
--
--/* The memory requirements for deflate are (in bytes):
--	    1 << (windowBits+2)   +  1 << (memLevel+9)
-- that is: 128K for windowBits=15  +  128K for memLevel = 8  (default values)
-- plus a few kilobytes for small objects. For example, if you want to reduce
-- the default memory requirements from 256K to 128K, compile with
--     make CFLAGS="-O -DMAX_WBITS=14 -DMAX_MEM_LEVEL=7"
-- Of course this will generally degrade compression (there's no free lunch).
--
--   The memory requirements for inflate are (in bytes) 1 << windowBits
-- that is, 32K for windowBits=15 (default value) plus a few kilobytes
-- for small objects.
--*/
--
--			/* Type declarations */
--
--#ifndef OF /* function prototypes */
--#  ifdef STDC
--#    define OF(args)  args
--#  else
--#    define OF(args)  ()
--#  endif
--#endif
--
--typedef unsigned char  Byte;  /* 8 bits */
--typedef unsigned int   uInt;  /* 16 bits or more */
--typedef unsigned long  uLong; /* 32 bits or more */
--
--typedef Byte FAR Bytef;
--typedef char FAR charf;
--typedef int FAR intf;
--typedef uInt FAR uIntf;
--typedef uLong FAR uLongf;
--
--#ifdef STDC
--   typedef void FAR *voidpf;
--   typedef void     *voidp;
+-#ifdef _WIN32
+-#   include <windows.h>
+-#   ifdef small
+-      /* windows.h define small to char */
+-#      undef small
+-#   endif
+-#   ifdef BZ_EXPORT
+-#   define BZ_API(func) WINAPI func
+-#   define BZ_EXTERN extern
+-#   else
+-   /* import windows dll dynamically */
+-#   define BZ_API(func) (WINAPI * func)
+-#   define BZ_EXTERN
+-#   endif
 -#else
--   typedef Byte FAR *voidpf;
--   typedef Byte     *voidp;
+-#   define BZ_API(func) func
+-#   define BZ_EXTERN extern
 -#endif
 -
--/* end of original zconf.h */
 -
--#define ZLIB_VERSION "0.95P"
+-/*-- Core (low-level) library functions --*/
 -
--/*
--     The 'zlib' compression library provides in-memory compression and
--  decompression functions, including integrity checks of the uncompressed
--  data.  This version of the library supports only one compression method
--  (deflation) but other algorithms may be added later and will have the same
--  stream interface.
+-BZ_EXTERN int BZ_API(BZ2_bzCompressInit) (
+-      bz_stream* strm,
+-      int        blockSize100k,
+-      int        verbosity,
+-      int        workFactor
+-   );
 -
--     For compression the application must provide the output buffer and
--  may optionally provide the input buffer for optimization. For decompression,
--  the application must provide the input buffer and may optionally provide
--  the output buffer for optimization.
+-BZ_EXTERN int BZ_API(BZ2_bzCompress) (
+-      bz_stream* strm,
+-      int action
+-   );
 -
--     Compression can be done in a single step if the buffers are large
--  enough (for example if an input file is mmap'ed), or can be done by
--  repeated calls of the compression function.  In the latter case, the
--  application must provide more input and/or consume the output
--  (providing more output space) before each call.
--*/
+-BZ_EXTERN int BZ_API(BZ2_bzCompressEnd) (
+-      bz_stream* strm
+-   );
 -
--typedef voidpf (*alloc_func) OF((voidpf opaque, uInt items, uInt size));
--typedef void   (*free_func)  OF((voidpf opaque, voidpf address, uInt nbytes));
+-BZ_EXTERN int BZ_API(BZ2_bzDecompressInit) (
+-      bz_stream *strm,
+-      int       verbosity,
+-      int       small
+-   );
 -
--typedef void   (*cb_func)    OF((Bytef *buf, uInt len));
+-BZ_EXTERN int BZ_API(BZ2_bzDecompress) (
+-      bz_stream* strm
+-   );
 -
--struct internal_state;
--
--typedef struct z_stream_s {
--    Bytef    *next_in;  /* next input byte */
--    uInt     avail_in;  /* number of bytes available at next_in */
--    uLong    total_in;  /* total nb of input bytes read so far */
--
--    Bytef    *next_out; /* next output byte should be put there */
--    uInt     avail_out; /* remaining free space at next_out */
--    uLong    total_out; /* total nb of bytes output so far */
--
--    char     *msg;      /* last error message, NULL if no error */
--    struct internal_state FAR *state; /* not visible by applications */
--
--    alloc_func zalloc;  /* used to allocate the internal state */
--    free_func  zfree;   /* used to free the internal state */
--    voidp      opaque;  /* private data object passed to zalloc and zfree */
--
--    Byte     data_type; /* best guess about the data type: ascii or binary */
--
--    cb_func  outcb;	/* called regularly just before blocks of output */
--
--} z_stream;
--
--/*
--   The application must update next_in and avail_in when avail_in has
--   dropped to zero. It must update next_out and avail_out when avail_out
--   has dropped to zero. The application must initialize zalloc, zfree and
--   opaque before calling the init function. All other fields are set by the
--   compression library and must not be updated by the application.
--
--   The opaque value provided by the application will be passed as the first
--   parameter for calls of zalloc and zfree. This can be useful for custom
--   memory management. The compression library attaches no meaning to the
--   opaque value.
--
--   zalloc must return Z_NULL if there is not enough memory for the object.
--   On 16-bit systems, the functions zalloc and zfree must be able to allocate
--   exactly 65536 bytes, but will not be required to allocate more than this
--   if the symbol MAXSEG_64K is defined (see zconf.h). WARNING: On MSDOS,
--   pointers returned by zalloc for objects of exactly 65536 bytes *must*
--   have their offset normalized to zero. The default allocation function
--   provided by this library ensures this (see zutil.c). To reduce memory
--   requirements and avoid any allocation of 64K objects, at the expense of
--   compression ratio, compile the library with -DMAX_WBITS=14 (see zconf.h).
--
--   The fields total_in and total_out can be used for statistics or
--   progress reports. After compression, total_in holds the total size of
--   the uncompressed data and may be saved for use in the decompressor
--   (particularly if the decompressor wants to decompress everything in
--   a single step).
--*/
--
--			/* constants */
--
--#define Z_NO_FLUSH      0
--#define Z_PARTIAL_FLUSH 1
--#define Z_FULL_FLUSH    2
--#define Z_SYNC_FLUSH    3 /* experimental: partial_flush + byte align */
--#define Z_FINISH        4
--#define Z_PACKET_FLUSH	5
--/* See deflate() below for the usage of these constants */
--
--#define Z_OK            0
--#define Z_STREAM_END    1
--#define Z_ERRNO        (-1)
--#define Z_STREAM_ERROR (-2)
--#define Z_DATA_ERROR   (-3)
--#define Z_MEM_ERROR    (-4)
--#define Z_BUF_ERROR    (-5)
--/* error codes for the compression/decompression functions */
--
--#define Z_BEST_SPEED             1
--#define Z_BEST_COMPRESSION       9
--#define Z_DEFAULT_COMPRESSION  (-1)
--/* compression levels */
--
--#define Z_FILTERED            1
--#define Z_HUFFMAN_ONLY        2
--#define Z_DEFAULT_STRATEGY    0
--
--#define Z_BINARY   0
--#define Z_ASCII    1
--#define Z_UNKNOWN  2
--/* Used to set the data_type field */
--
--#define Z_NULL  0  /* for initializing zalloc, zfree, opaque */
--
--extern char *zlib_version;
--/* The application can compare zlib_version and ZLIB_VERSION for consistency.
--   If the first character differs, the library code actually used is
--   not compatible with the zlib.h header file used by the application.
-- */
--
--			/* basic functions */
--
--extern int inflateInit OF((z_stream *strm));
--/*
--     Initializes the internal stream state for decompression. The fields
--   zalloc and zfree must be initialized before by the caller.  If zalloc and
--   zfree are set to Z_NULL, inflateInit updates them to use default allocation
--   functions.
--
--     inflateInit returns Z_OK if success, Z_MEM_ERROR if there was not
--   enough memory.  msg is set to null if there is no error message.
--   inflateInit does not perform any decompression: this will be done by
--   inflate().
--*/
+-BZ_EXTERN int BZ_API(BZ2_bzDecompressEnd) (
+-      bz_stream *strm
+-   );
 -
 -
--extern int inflate OF((z_stream *strm, int flush));
--/*
--  Performs one or both of the following actions:
+-/*-- High(er) level library functions --*/
 -
--  - Decompress more input starting at next_in and update next_in and avail_in
--    accordingly. If not all input can be processed (because there is not
--    enough room in the output buffer), next_in is updated and processing
--    will resume at this point for the next call of inflate().
+-#ifndef BZ_NO_STDIO
+-#define BZ_MAX_UNUSED 5000
 -
--  - Provide more output starting at next_out and update next_out and avail_out
--    accordingly.  inflate() always provides as much output as possible
--    (until there is no more input data or no more space in the output buffer).
+-/* Need a definitition for FILE */
+-#include <stdio.h>
 -
--  Before the call of inflate(), the application should ensure that at least
--  one of the actions is possible, by providing more input and/or consuming
--  more output, and updating the next_* and avail_* values accordingly.
--  The application can consume the uncompressed output when it wants, for
--  example when the output buffer is full (avail_out == 0), or after each
--  call of inflate().
+-typedef void BZFILE;
 -
--    If the parameter flush is set to Z_PARTIAL_FLUSH or Z_PACKET_FLUSH,
--  inflate flushes as much output as possible to the output buffer. The
--  flushing behavior of inflate is not specified for values of the flush
--  parameter other than Z_PARTIAL_FLUSH, Z_PACKET_FLUSH or Z_FINISH, but the
--  current implementation actually flushes as much output as possible
--  anyway.  For Z_PACKET_FLUSH, inflate checks that once all the input data
--  has been consumed, it is expecting to see the length field of a stored
--  block; if not, it returns Z_DATA_ERROR.
+-BZ_EXTERN BZFILE* BZ_API(BZ2_bzReadOpen) (
+-      int*  bzerror,
+-      FILE* f,
+-      int   verbosity,
+-      int   small,
+-      void* unused,
+-      int   nUnused
+-   );
 -
--    inflate() should normally be called until it returns Z_STREAM_END or an
--  error. However if all decompression is to be performed in a single step
--  (a single call of inflate), the parameter flush should be set to
--  Z_FINISH. In this case all pending input is processed and all pending
--  output is flushed; avail_out must be large enough to hold all the
--  uncompressed data. (The size of the uncompressed data may have been saved
--  by the compressor for this purpose.) The next operation on this stream must
--  be inflateEnd to deallocate the decompression state. The use of Z_FINISH
--  is never required, but can be used to inform inflate that a faster routine
--  may be used for the single inflate() call.
+-BZ_EXTERN void BZ_API(BZ2_bzReadClose) (
+-      int*    bzerror,
+-      BZFILE* b
+-   );
 -
--    inflate() returns Z_OK if some progress has been made (more input
--  processed or more output produced), Z_STREAM_END if the end of the
--  compressed data has been reached and all uncompressed output has been
--  produced, Z_DATA_ERROR if the input data was corrupted, Z_STREAM_ERROR if
--  the stream structure was inconsistent (for example if next_in or next_out
--  was NULL), Z_MEM_ERROR if there was not enough memory, Z_BUF_ERROR if no
--  progress is possible or if there was not enough room in the output buffer
--  when Z_FINISH is used. In the Z_DATA_ERROR case, the application may then
--  call inflateSync to look for a good compression block.  */
+-BZ_EXTERN void BZ_API(BZ2_bzReadGetUnused) (
+-      int*    bzerror,
+-      BZFILE* b,
+-      void**  unused,
+-      int*    nUnused
+-   );
 -
+-BZ_EXTERN int BZ_API(BZ2_bzRead) (
+-      int*    bzerror,
+-      BZFILE* b,
+-      void*   buf,
+-      int     len
+-   );
 -
--extern int inflateEnd OF((z_stream *strm));
--/*
--     All dynamically allocated data structures for this stream are freed.
--   This function discards any unprocessed input and does not flush any
--   pending output.
+-BZ_EXTERN BZFILE* BZ_API(BZ2_bzWriteOpen) (
+-      int*  bzerror,
+-      FILE* f,
+-      int   blockSize100k,
+-      int   verbosity,
+-      int   workFactor
+-   );
 -
--     inflateEnd returns Z_OK if success, Z_STREAM_ERROR if the stream state
--   was inconsistent. In the error case, msg may be set but then points to a
--   static string (which must not be deallocated).
--*/
+-BZ_EXTERN void BZ_API(BZ2_bzWrite) (
+-      int*    bzerror,
+-      BZFILE* b,
+-      void*   buf,
+-      int     len
+-   );
 -
--			/* advanced functions */
+-BZ_EXTERN void BZ_API(BZ2_bzWriteClose) (
+-      int*          bzerror,
+-      BZFILE*       b,
+-      int           abandon,
+-      unsigned int* nbytes_in,
+-      unsigned int* nbytes_out
+-   );
 -
--extern int inflateInit2 OF((z_stream *strm,
--			    int  windowBits));
--/*
--     This is another version of inflateInit with more compression options. The
--   fields next_out, zalloc and zfree must be initialized before by the caller.
--
--     The windowBits parameter is the base two logarithm of the maximum window
--   size (the size of the history buffer).  It should be in the range 8..15 for
--   this version of the library (the value 16 will be allowed soon). The
--   default value is 15 if inflateInit is used instead. If a compressed stream
--   with a larger window size is given as input, inflate() will return with
--   the error code Z_DATA_ERROR instead of trying to allocate a larger window.
--
--     If next_out is not null, the library will use this buffer for the history
--   buffer; the buffer must either be large enough to hold the entire output
--   data, or have at least 1<<windowBits bytes.  If next_out is null, the
--   library will allocate its own buffer (and leave next_out null). next_in
--   need not be provided here but must be provided by the application for the
--   next call of inflate().
--
--     If the history buffer is provided by the application, next_out must
--   never be changed by the application since the decompressor maintains
--   history information inside this buffer from call to call; the application
--   can only reset next_out to the beginning of the history buffer when
--   avail_out is zero and all output has been consumed.
--
--      inflateInit2 returns Z_OK if success, Z_MEM_ERROR if there was
--   not enough memory, Z_STREAM_ERROR if a parameter is invalid (such as
--   windowBits < 8). msg is set to null if there is no error message.
--   inflateInit2 does not perform any decompression: this will be done by
--   inflate().
--*/
--
--extern int inflateSync OF((z_stream *strm));
--/*
--    Skips invalid compressed data until the special marker (see deflate()
--  above) can be found, or until all available input is skipped. No output
--  is provided.
--
--    inflateSync returns Z_OK if the special marker has been found, Z_BUF_ERROR
--  if no more input was provided, Z_DATA_ERROR if no marker has been found,
--  or Z_STREAM_ERROR if the stream structure was inconsistent. In the success
--  case, the application may save the current current value of total_in which
--  indicates where valid compressed data was found. In the error case, the
--  application may repeatedly call inflateSync, providing more input each time,
--  until success or end of the input data.
--*/
--
--extern int inflateReset OF((z_stream *strm));
--/*
--     This function is equivalent to inflateEnd followed by inflateInit,
--   but does not free and reallocate all the internal decompression state.
--   The stream will keep attributes that may have been set by inflateInit2.
--
--      inflateReset returns Z_OK if success, or Z_STREAM_ERROR if the source
--   stream state was inconsistent (such as zalloc or state being NULL).
--*/
--
--extern int inflateIncomp OF((z_stream *strm));
--/*
--     This function adds the data at next_in (avail_in bytes) to the output
--   history without performing any output.  There must be no pending output,
--   and the decompressor must be expecting to see the start of a block.
--   Calling this function is equivalent to decompressing a stored block
--   containing the data at next_in (except that the data is not output).
--*/
--
--			/* checksum functions */
--
--/*
--     This function is not related to compression but is exported
--   anyway because it might be useful in applications using the
--   compression library.
--*/
--
--extern uLong adler32 OF((uLong adler, Bytef *buf, uInt len));
--
--/*
--     Update a running Adler-32 checksum with the bytes buf[0..len-1] and
--   return the updated checksum. If buf is NULL, this function returns
--   the required initial value for the checksum.
--   An Adler-32 checksum is almost as reliable as a CRC32 but can be computed
--   much faster. Usage example:
--
--     uLong adler = adler32(0L, Z_NULL, 0);
--
--     while (read_buffer(buffer, length) != EOF) {
--       adler = adler32(adler, buffer, length);
--     }
--     if (adler != original_adler) error();
--*/
--
--#ifndef _Z_UTIL_H
--    struct internal_state {int dummy;}; /* hack for buggy compilers */
+-BZ_EXTERN void BZ_API(BZ2_bzWriteClose64) (
+-      int*          bzerror,
+-      BZFILE*       b,
+-      int           abandon,
+-      unsigned int* nbytes_in_lo32,
+-      unsigned int* nbytes_in_hi32,
+-      unsigned int* nbytes_out_lo32,
+-      unsigned int* nbytes_out_hi32
+-   );
 -#endif
 -
--#endif /* _ZLIB_H */
-diff --git a/lib/gunzip.c b/lib/gunzip.c
+-
+-/*-- Utility functions --*/
+-
+-BZ_EXTERN int BZ_API(BZ2_bzBuffToBuffCompress) (
+-      char*         dest,
+-      unsigned int* destLen,
+-      char*         source,
+-      unsigned int  sourceLen,
+-      int           blockSize100k,
+-      int           verbosity,
+-      int           workFactor
+-   );
+-
+-BZ_EXTERN int BZ_API(BZ2_bzBuffToBuffDecompress) (
+-      char*         dest,
+-      unsigned int* destLen,
+-      char*         source,
+-      unsigned int  sourceLen,
+-      int           small,
+-      int           verbosity
+-   );
+-
+-
+-/*--
+-   Code contributed by Yoshioka Tsuneo
+-   (QWF00133@niftyserve.or.jp/tsuneo-y@is.aist-nara.ac.jp),
+-   to support better zlib compatibility.
+-   This code is not _officially_ part of libbzip2 (yet);
+-   I haven't tested it, documented it, or considered the
+-   threading-safeness of it.
+-   If this code breaks, please contact both Yoshioka and me.
+---*/
+-
+-BZ_EXTERN const char * BZ_API(BZ2_bzlibVersion) (
+-      void
+-   );
+-
+-#ifndef BZ_NO_STDIO
+-BZ_EXTERN BZFILE * BZ_API(BZ2_bzopen) (
+-      const char *path,
+-      const char *mode
+-   );
+-
+-BZ_EXTERN BZFILE * BZ_API(BZ2_bzdopen) (
+-      int        fd,
+-      const char *mode
+-   );
+-
+-BZ_EXTERN int BZ_API(BZ2_bzread) (
+-      BZFILE* b,
+-      void* buf,
+-      int len
+-   );
+-
+-BZ_EXTERN int BZ_API(BZ2_bzwrite) (
+-      BZFILE* b,
+-      void*   buf,
+-      int     len
+-   );
+-
+-BZ_EXTERN int BZ_API(BZ2_bzflush) (
+-      BZFILE* b
+-   );
+-
+-BZ_EXTERN void BZ_API(BZ2_bzclose) (
+-      BZFILE* b
+-   );
+-
+-BZ_EXTERN const char * BZ_API(BZ2_bzerror) (
+-      BZFILE *b,
+-      int    *errnum
+-   );
+-#endif
+-
+-#ifdef __cplusplus
+-}
+-#endif
+-
+-#endif
+-
+-/*-------------------------------------------------------------*/
+-/*--- end                                           bzlib.h ---*/
+-/*-------------------------------------------------------------*/
+diff --git a/lib/bzlib.c b/lib/bzlib.c
 deleted file mode 100644
-index c41568a..0000000
---- a/lib/gunzip.c
+index 4c928ca..0000000
+--- a/lib/bzlib.c
 +++ /dev/null
-@@ -1,85 +0,0 @@
+@@ -1,1592 +0,0 @@
+-#include <config.h>
 -#include <common.h>
--#include <zlib.h>
--#include <malloc.h>
--
--#define	ZALLOC_ALIGNMENT	16
--
--static void *zalloc(void *x, unsigned items, unsigned size)
--{
--	void *p;
--
--	size *= items;
--	size = (size + ZALLOC_ALIGNMENT - 1) & ~(ZALLOC_ALIGNMENT - 1);
--
--	p = malloc (size);
--
--	return (p);
--}
--
--static void zfree(void *x, void *addr, unsigned nb)
--{
--	free (addr);
--}
--
--#define HEAD_CRC	2
--#define EXTRA_FIELD	4
--#define ORIG_NAME	8
--#define COMMENT		0x10
--#define RESERVED	0xe0
--
--#define DEFLATED	8
--
--int gunzip(void *dst, int dstlen, unsigned char *src, unsigned long *lenp)
--{
--	z_stream s;
--	int r, i, flags;
--
--	/* skip header */
--	i = 10;
--	flags = src[3];
--	if (src[2] != DEFLATED || (flags & RESERVED) != 0) {
--		puts ("Error: Bad gzipped data\n");
--		return (-1);
--	}
--	if ((flags & EXTRA_FIELD) != 0)
--		i = 12 + src[10] + (src[11] << 8);
--	if ((flags & ORIG_NAME) != 0)
--		while (src[i++] != 0)
--			;
--	if ((flags & COMMENT) != 0)
--		while (src[i++] != 0)
--			;
--	if ((flags & HEAD_CRC) != 0)
--		i += 2;
--	if (i >= *lenp) {
--		puts ("Error: gunzip out of data in header\n");
--		return (-1);
--	}
--
--	s.zalloc = zalloc;
--	s.zfree = zfree;
--#if defined(CONFIG_HW_WATCHDOG) || defined(CONFIG_WATCHDOG)
--	s.outcb = (cb_func)WATCHDOG_RESET;
--#else
--	s.outcb = Z_NULL;
--#endif	/* CONFIG_HW_WATCHDOG */
--
--	r = inflateInit2(&s, -MAX_WBITS);
--	if (r != Z_OK) {
--		printf ("Error: inflateInit2() returned %d\n", r);
--		return (-1);
--	}
--	s.next_in = src + i;
--	s.avail_in = *lenp - i;
--	s.next_out = dst;
--	s.avail_out = dstlen;
--	r = inflate(&s, Z_FINISH);
--	if (r != Z_OK && r != Z_STREAM_END) {
--		printf ("Error: inflate() returned %d\n", r);
--		return (-1);
--	}
--	*lenp = s.next_out - (unsigned char *) dst;
--	inflateEnd(&s);
--
--	return (0);
--}
-diff --git a/lib/zlib.c b/lib/zlib.c
-deleted file mode 100644
-index 699a6f2..0000000
---- a/lib/zlib.c
-+++ /dev/null
-@@ -1,2158 +0,0 @@
--/*
-- * This file is derived from various .h and .c files from the zlib-0.95
-- * distribution by Jean-loup Gailly and Mark Adler, with some additions
-- * by Paul Mackerras to aid in implementing Deflate compression and
-- * decompression for PPP packets.  See zlib.h for conditions of
-- * distribution and use.
-- *
-- * Changes that have been made include:
-- * - changed functions not used outside this file to "local"
-- * - added minCompression parameter to deflateInit2
-- * - added Z_PACKET_FLUSH (see zlib.h for details)
-- * - added inflateIncomp
-- */
--
--/*+++++*/
--/* zutil.h -- internal interface and configuration of the compression library
-- * Copyright (C) 1995 Jean-loup Gailly.
-- * For conditions of distribution and use, see copyright notice in zlib.h
-- */
--
--/* WARNING: this file should *not* be used by applications. It is
--   part of the implementation of the compression library and is
--   subject to change. Applications should only use zlib.h.
-- */
--
--/* From: zutil.h,v 1.9 1995/05/03 17:27:12 jloup Exp */
--
--#define _Z_UTIL_H
--
--#include "zlib.h"
--
--#ifndef local
--#  define local static
--#endif
--/* compile with -Dlocal if your debugger can't find static symbols */
--
--#define FAR
--
--typedef unsigned char  uch;
--typedef uch FAR uchf;
--typedef unsigned short ush;
--typedef ush FAR ushf;
--typedef unsigned long  ulg;
--
--extern char *z_errmsg[]; /* indexed by 1-zlib_error */
--
--#define ERR_RETURN(strm,err) return (strm->msg=z_errmsg[1-err], err)
--/* To be used only when the state is known to be valid */
--
--#ifndef NULL
--#define NULL	((void *) 0)
--#endif
--
--	/* common constants */
--
--#define DEFLATED   8
--
--#ifndef DEF_WBITS
--#  define DEF_WBITS MAX_WBITS
--#endif
--/* default windowBits for decompression. MAX_WBITS is for compression only */
--
--#if MAX_MEM_LEVEL >= 8
--#  define DEF_MEM_LEVEL 8
--#else
--#  define DEF_MEM_LEVEL  MAX_MEM_LEVEL
--#endif
--/* default memLevel */
--
--#define STORED_BLOCK 0
--#define STATIC_TREES 1
--#define DYN_TREES    2
--/* The three kinds of block type */
--
--#define MIN_MATCH  3
--#define MAX_MATCH  258
--/* The minimum and maximum match lengths */
--
--	 /* functions */
--
--#include <linux/string.h>
--#define zmemcpy memcpy
--#define zmemzero(dest, len)	memset(dest, 0, len)
--
--/* Diagnostic functions */
--#ifdef DEBUG_ZLIB
--#  include <stdio.h>
--#  ifndef verbose
--#    define verbose 0
--#  endif
--#  define Assert(cond,msg) {if(!(cond)) z_error(msg);}
--#  define Trace(x) fprintf x
--#  define Tracev(x) {if (verbose) fprintf x ;}
--#  define Tracevv(x) {if (verbose>1) fprintf x ;}
--#  define Tracec(c,x) {if (verbose && (c)) fprintf x ;}
--#  define Tracecv(c,x) {if (verbose>1 && (c)) fprintf x ;}
--#else
--#  define Assert(cond,msg)
--#  define Trace(x)
--#  define Tracev(x)
--#  define Tracevv(x)
--#  define Tracec(c,x)
--#  define Tracecv(c,x)
--#endif
--
--
--typedef uLong (*check_func) OF((uLong check, Bytef *buf, uInt len));
--
--/* voidpf zcalloc OF((voidpf opaque, unsigned items, unsigned size)); */
--/* void   zcfree  OF((voidpf opaque, voidpf ptr)); */
--
--#define ZALLOC(strm, items, size) \
--	   (*((strm)->zalloc))((strm)->opaque, (items), (size))
--#define ZFREE(strm, addr, size)	\
--	   (*((strm)->zfree))((strm)->opaque, (voidpf)(addr), (size))
--#define TRY_FREE(s, p, n) {if (p) ZFREE(s, p, n);}
--
--/* deflate.h -- internal compression state
-- * Copyright (C) 1995 Jean-loup Gailly
-- * For conditions of distribution and use, see copyright notice in zlib.h
-- */
--
--/* WARNING: this file should *not* be used by applications. It is
--   part of the implementation of the compression library and is
--   subject to change. Applications should only use zlib.h.
-- */
--
--/*+++++*/
--/* infblock.h -- header to use infblock.c
-- * Copyright (C) 1995 Mark Adler
-- * For conditions of distribution and use, see copyright notice in zlib.h
-- */
--
--/* WARNING: this file should *not* be used by applications. It is
--   part of the implementation of the compression library and is
--   subject to change. Applications should only use zlib.h.
-- */
--
--struct inflate_blocks_state;
--typedef struct inflate_blocks_state FAR inflate_blocks_statef;
--
--local inflate_blocks_statef * inflate_blocks_new OF((
--    z_stream *z,
--    check_func c,               /* check function */
--    uInt w));                   /* window size */
--
--local int inflate_blocks OF((
--    inflate_blocks_statef *,
--    z_stream *,
--    int));                      /* initial return code */
--
--local void inflate_blocks_reset OF((
--    inflate_blocks_statef *,
--    z_stream *,
--    uLongf *));                  /* check value on output */
--
--local int inflate_blocks_free OF((
--    inflate_blocks_statef *,
--    z_stream *,
--    uLongf *));                  /* check value on output */
--
--local int inflate_addhistory OF((
--    inflate_blocks_statef *,
--    z_stream *));
--
--local int inflate_packet_flush OF((
--    inflate_blocks_statef *));
--
--/*+++++*/
--/* inftrees.h -- header to use inftrees.c
-- * Copyright (C) 1995 Mark Adler
-- * For conditions of distribution and use, see copyright notice in zlib.h
-- */
--
--/* WARNING: this file should *not* be used by applications. It is
--   part of the implementation of the compression library and is
--   subject to change. Applications should only use zlib.h.
-- */
--
--/* Huffman code lookup table entry--this entry is four bytes for machines
--   that have 16-bit pointers (e.g. PC's in the small or medium model). */
--
--typedef struct inflate_huft_s FAR inflate_huft;
--
--struct inflate_huft_s {
--  union {
--    struct {
--      Byte Exop;        /* number of extra bits or operation */
--      Byte Bits;        /* number of bits in this code or subcode */
--    } what;
--    uInt Nalloc;	/* number of these allocated here */
--    Bytef *pad;         /* pad structure to a power of 2 (4 bytes for */
--  } word;               /*  16-bit, 8 bytes for 32-bit machines) */
--  union {
--    uInt Base;          /* literal, length base, or distance base */
--    inflate_huft *Next; /* pointer to next level of table */
--  } more;
--};
--
--#ifdef DEBUG_ZLIB
--  local uInt inflate_hufts;
--#endif
--
--local int inflate_trees_bits OF((
--    uIntf *,                    /* 19 code lengths */
--    uIntf *,                    /* bits tree desired/actual depth */
--    inflate_huft * FAR *,       /* bits tree result */
--    z_stream *));               /* for zalloc, zfree functions */
--
--local int inflate_trees_dynamic OF((
--    uInt,                       /* number of literal/length codes */
--    uInt,                       /* number of distance codes */
--    uIntf *,                    /* that many (total) code lengths */
--    uIntf *,                    /* literal desired/actual bit depth */
--    uIntf *,                    /* distance desired/actual bit depth */
--    inflate_huft * FAR *,       /* literal/length tree result */
--    inflate_huft * FAR *,       /* distance tree result */
--    z_stream *));               /* for zalloc, zfree functions */
--
--local int inflate_trees_fixed OF((
--    uIntf *,                    /* literal desired/actual bit depth */
--    uIntf *,                    /* distance desired/actual bit depth */
--    inflate_huft * FAR *,       /* literal/length tree result */
--    inflate_huft * FAR *));     /* distance tree result */
--
--local int inflate_trees_free OF((
--    inflate_huft *,             /* tables to free */
--    z_stream *));               /* for zfree function */
--
--
--/*+++++*/
--/* infcodes.h -- header to use infcodes.c
-- * Copyright (C) 1995 Mark Adler
-- * For conditions of distribution and use, see copyright notice in zlib.h
-- */
--
--/* WARNING: this file should *not* be used by applications. It is
--   part of the implementation of the compression library and is
--   subject to change. Applications should only use zlib.h.
-- */
--
--struct inflate_codes_state;
--typedef struct inflate_codes_state FAR inflate_codes_statef;
--
--local inflate_codes_statef *inflate_codes_new OF((
--    uInt, uInt,
--    inflate_huft *, inflate_huft *,
--    z_stream *));
--
--local int inflate_codes OF((
--    inflate_blocks_statef *,
--    z_stream *,
--    int));
--
--local void inflate_codes_free OF((
--    inflate_codes_statef *,
--    z_stream *));
--
--
--/*+++++*/
--/* inflate.c -- zlib interface to inflate modules
-- * Copyright (C) 1995 Mark Adler
-- * For conditions of distribution and use, see copyright notice in zlib.h
-- */
--
--/* inflate private state */
--struct internal_state {
--
--  /* mode */
--  enum {
--      METHOD,   /* waiting for method byte */
--      FLAG,     /* waiting for flag byte */
--      BLOCKS,   /* decompressing blocks */
--      CHECK4,   /* four check bytes to go */
--      CHECK3,   /* three check bytes to go */
--      CHECK2,   /* two check bytes to go */
--      CHECK1,   /* one check byte to go */
--      DONE,     /* finished check, done */
--      BAD}      /* got an error--stay here */
--    mode;               /* current inflate mode */
--
--  /* mode dependent information */
--  union {
--    uInt method;        /* if FLAGS, method byte */
--    struct {
--      uLong was;                /* computed check value */
--      uLong need;               /* stream check value */
--    } check;            /* if CHECK, check values to compare */
--    uInt marker;        /* if BAD, inflateSync's marker bytes count */
--  } sub;        /* submode */
--
--  /* mode independent information */
--  int  nowrap;          /* flag for no wrapper */
--  uInt wbits;           /* log2(window size)  (8..15, defaults to 15) */
--  inflate_blocks_statef
--    *blocks;            /* current inflate_blocks state */
--
--};
--
--
--int inflateReset(z)
--z_stream *z;
--{
--  uLong c;
--
--  if (z == Z_NULL || z->state == Z_NULL)
--    return Z_STREAM_ERROR;
--  z->total_in = z->total_out = 0;
--  z->msg = Z_NULL;
--  z->state->mode = z->state->nowrap ? BLOCKS : METHOD;
--  inflate_blocks_reset(z->state->blocks, z, &c);
--  Trace((stderr, "inflate: reset\n"));
--  return Z_OK;
--}
--
--
--int inflateEnd(z)
--z_stream *z;
--{
--  uLong c;
--
--  if (z == Z_NULL || z->state == Z_NULL || z->zfree == Z_NULL)
--    return Z_STREAM_ERROR;
--  if (z->state->blocks != Z_NULL)
--    inflate_blocks_free(z->state->blocks, z, &c);
--  ZFREE(z, z->state, sizeof(struct internal_state));
--  z->state = Z_NULL;
--  Trace((stderr, "inflate: end\n"));
--  return Z_OK;
--}
--
--
--int inflateInit2(z, w)
--z_stream *z;
--int w;
--{
--  /* initialize state */
--  if (z == Z_NULL)
--    return Z_STREAM_ERROR;
--/*  if (z->zalloc == Z_NULL) z->zalloc = zcalloc; */
--/*  if (z->zfree == Z_NULL) z->zfree = zcfree; */
--  if ((z->state = (struct internal_state FAR *)
--       ZALLOC(z,1,sizeof(struct internal_state))) == Z_NULL)
--    return Z_MEM_ERROR;
--  z->state->blocks = Z_NULL;
--
--  /* handle undocumented nowrap option (no zlib header or check) */
--  z->state->nowrap = 0;
--  if (w < 0)
--  {
--    w = - w;
--    z->state->nowrap = 1;
--  }
--
--  /* set window size */
--  if (w < 8 || w > 15)
--  {
--    inflateEnd(z);
--    return Z_STREAM_ERROR;
--  }
--  z->state->wbits = (uInt)w;
--
--  /* create inflate_blocks state */
--  if ((z->state->blocks =
--       inflate_blocks_new(z, z->state->nowrap ? Z_NULL : adler32, 1 << w))
--      == Z_NULL)
--  {
--    inflateEnd(z);
--    return Z_MEM_ERROR;
--  }
--  Trace((stderr, "inflate: allocated\n"));
--
--  /* reset state */
--  inflateReset(z);
--  return Z_OK;
--}
--
--
--int inflateInit(z)
--z_stream *z;
--{
--  return inflateInit2(z, DEF_WBITS);
--}
--
--
--#define NEEDBYTE {if(z->avail_in==0)goto empty;r=Z_OK;}
--#define NEXTBYTE (z->avail_in--,z->total_in++,*z->next_in++)
--
--int inflate(z, f)
--z_stream *z;
--int f;
--{
--  int r;
--  uInt b;
--
--  if (z == Z_NULL || z->next_in == Z_NULL)
--    return Z_STREAM_ERROR;
--  r = Z_BUF_ERROR;
--  while (1) switch (z->state->mode)
--  {
--    case METHOD:
--      NEEDBYTE
--      if (((z->state->sub.method = NEXTBYTE) & 0xf) != DEFLATED)
--      {
--	z->state->mode = BAD;
--	z->msg = "unknown compression method";
--	z->state->sub.marker = 5;       /* can't try inflateSync */
--	break;
--      }
--      if ((z->state->sub.method >> 4) + 8 > z->state->wbits)
--      {
--	z->state->mode = BAD;
--	z->msg = "invalid window size";
--	z->state->sub.marker = 5;       /* can't try inflateSync */
--	break;
--      }
--      z->state->mode = FLAG;
--    case FLAG:
--      NEEDBYTE
--      if ((b = NEXTBYTE) & 0x20)
--      {
--	z->state->mode = BAD;
--	z->msg = "invalid reserved bit";
--	z->state->sub.marker = 5;       /* can't try inflateSync */
--	break;
--      }
--      if (((z->state->sub.method << 8) + b) % 31)
--      {
--	z->state->mode = BAD;
--	z->msg = "incorrect header check";
--	z->state->sub.marker = 5;       /* can't try inflateSync */
--	break;
--      }
--      Trace((stderr, "inflate: zlib header ok\n"));
--      z->state->mode = BLOCKS;
--    case BLOCKS:
--      r = inflate_blocks(z->state->blocks, z, r);
--      if (f == Z_PACKET_FLUSH && z->avail_in == 0 && z->avail_out != 0)
--	  r = inflate_packet_flush(z->state->blocks);
--      if (r == Z_DATA_ERROR)
--      {
--	z->state->mode = BAD;
--	z->state->sub.marker = 0;       /* can try inflateSync */
--	break;
--      }
--      if (r != Z_STREAM_END)
--	return r;
--      r = Z_OK;
--      inflate_blocks_reset(z->state->blocks, z, &z->state->sub.check.was);
--      if (z->state->nowrap)
--      {
--	z->state->mode = DONE;
--	break;
--      }
--      z->state->mode = CHECK4;
--    case CHECK4:
--      NEEDBYTE
--      z->state->sub.check.need = (uLong)NEXTBYTE << 24;
--      z->state->mode = CHECK3;
--    case CHECK3:
--      NEEDBYTE
--      z->state->sub.check.need += (uLong)NEXTBYTE << 16;
--      z->state->mode = CHECK2;
--    case CHECK2:
--      NEEDBYTE
--      z->state->sub.check.need += (uLong)NEXTBYTE << 8;
--      z->state->mode = CHECK1;
--    case CHECK1:
--      NEEDBYTE
--      z->state->sub.check.need += (uLong)NEXTBYTE;
--
--      if (z->state->sub.check.was != z->state->sub.check.need)
--      {
--	z->state->mode = BAD;
--	z->msg = "incorrect data check";
--	z->state->sub.marker = 5;       /* can't try inflateSync */
--	break;
--      }
--      Trace((stderr, "inflate: zlib check ok\n"));
--      z->state->mode = DONE;
--    case DONE:
--      return Z_STREAM_END;
--    case BAD:
--      return Z_DATA_ERROR;
--    default:
--      return Z_STREAM_ERROR;
--  }
--
-- empty:
--  if (f != Z_PACKET_FLUSH)
--    return r;
--  z->state->mode = BAD;
--  z->state->sub.marker = 0;       /* can try inflateSync */
--  return Z_DATA_ERROR;
--}
+-#include <watchdog.h>
 -
 -/*
-- * This subroutine adds the data at next_in/avail_in to the output history
-- * without performing any output.  The output buffer must be "caught up";
-- * i.e. no pending output (hence s->read equals s->write), and the state must
-- * be BLOCKS (i.e. we should be willing to see the start of a series of
-- * BLOCKS).  On exit, the output will also be caught up, and the checksum
-- * will have been updated if need be.
+- * This file is a modified version of bzlib.c from the bzip2-1.0.2
+- * distribution which can be found at http://sources.redhat.com/bzip2/
 - */
 -
--int inflateIncomp(z)
--z_stream *z;
+-/*-------------------------------------------------------------*/
+-/*--- Library top-level functions.                          ---*/
+-/*---                                               bzlib.c ---*/
+-/*-------------------------------------------------------------*/
+-
+-/*--
+-  This file is a part of bzip2 and/or libbzip2, a program and
+-  library for lossless, block-sorting data compression.
+-
+-  Copyright (C) 1996-2002 Julian R Seward.  All rights reserved.
+-
+-  Redistribution and use in source and binary forms, with or without
+-  modification, are permitted provided that the following conditions
+-  are met:
+-
+-  1. Redistributions of source code must retain the above copyright
+-     notice, this list of conditions and the following disclaimer.
+-
+-  2. The origin of this software must not be misrepresented; you must
+-     not claim that you wrote the original software.  If you use this
+-     software in a product, an acknowledgment in the product
+-     documentation would be appreciated but is not required.
+-
+-  3. Altered source versions must be plainly marked as such, and must
+-     not be misrepresented as being the original software.
+-
+-  4. The name of the author may not be used to endorse or promote
+-     products derived from this software without specific prior written
+-     permission.
+-
+-  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS
+-  OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+-  ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
+-  DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+-  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+-  GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+-  INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+-  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+-  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-
+-  Julian Seward, Cambridge, UK.
+-  jseward@acm.org
+-  bzip2/libbzip2 version 1.0 of 21 March 2000
+-
+-  This program is based on (at least) the work of:
+-     Mike Burrows
+-     David Wheeler
+-     Peter Fenwick
+-     Alistair Moffat
+-     Radford Neal
+-     Ian H. Witten
+-     Robert Sedgewick
+-     Jon L. Bentley
+-
+-  For more information on these sources, see the manual.
+---*/
+-
+-/*--
+-   CHANGES
+-   ~~~~~~~
+-   0.9.0 -- original version.
+-
+-   0.9.0a/b -- no changes in this file.
+-
+-   0.9.0c
+-      * made zero-length BZ_FLUSH work correctly in bzCompress().
+-      * fixed bzWrite/bzRead to ignore zero-length requests.
+-      * fixed bzread to correctly handle read requests after EOF.
+-      * wrong parameter order in call to bzDecompressInit in
+-	bzBuffToBuffDecompress.  Fixed.
+---*/
+-
+-#include "bzlib_private.h"
+-
+-/*---------------------------------------------------*/
+-/*--- Compression stuff                           ---*/
+-/*---------------------------------------------------*/
+-
+-
+-/*---------------------------------------------------*/
+-#ifndef BZ_NO_STDIO
+-void BZ2_bz__AssertH__fail ( int errcode )
 -{
--    if (z->state->mode != BLOCKS)
--	return Z_DATA_ERROR;
--    return inflate_addhistory(z->state->blocks, z);
+-   fprintf(stderr,
+-      "\n\nbzip2/libbzip2: internal error number %d.\n"
+-      "This is a bug in bzip2/libbzip2, %s.\n"
+-      "Please report it to me at: jseward@acm.org.  If this happened\n"
+-      "when you were using some program which uses libbzip2 as a\n"
+-      "component, you should also report this bug to the author(s)\n"
+-      "of that program.  Please make an effort to report this bug;\n"
+-      "timely and accurate bug reports eventually lead to higher\n"
+-      "quality software.  Thanks.  Julian Seward, 30 December 2001.\n\n",
+-      errcode,
+-      BZ2_bzlibVersion()
+-   );
+-
+-   if (errcode == 1007) {
+-   fprintf(stderr,
+-      "\n*** A special note about internal error number 1007 ***\n"
+-      "\n"
+-      "Experience suggests that a common cause of i.e. 1007\n"
+-      "is unreliable memory or other hardware.  The 1007 assertion\n"
+-      "just happens to cross-check the results of huge numbers of\n"
+-      "memory reads/writes, and so acts (unintendedly) as a stress\n"
+-      "test of your memory system.\n"
+-      "\n"
+-      "I suggest the following: try compressing the file again,\n"
+-      "possibly monitoring progress in detail with the -vv flag.\n"
+-      "\n"
+-      "* If the error cannot be reproduced, and/or happens at different\n"
+-      "  points in compression, you may have a flaky memory system.\n"
+-      "  Try a memory-test program.  I have used Memtest86\n"
+-      "  (www.memtest86.com).  At the time of writing it is free (GPLd).\n"
+-      "  Memtest86 tests memory much more thorougly than your BIOSs\n"
+-      "  power-on test, and may find failures that the BIOS doesn't.\n"
+-      "\n"
+-      "* If the error can be repeatably reproduced, this is a bug in\n"
+-      "  bzip2, and I would very much like to hear about it.  Please\n"
+-      "  let me know, and, ideally, save a copy of the file causing the\n"
+-      "  problem -- without which I will be unable to investigate it.\n"
+-      "\n"
+-   );
+-   }
+-
+-   exit(3);
 -}
--
--
--int inflateSync(z)
--z_stream *z;
--{
--  uInt n;       /* number of bytes to look at */
--  Bytef *p;     /* pointer to bytes */
--  uInt m;       /* number of marker bytes found in a row */
--  uLong r, w;   /* temporaries to save total_in and total_out */
--
--  /* set up */
--  if (z == Z_NULL || z->state == Z_NULL)
--    return Z_STREAM_ERROR;
--  if (z->state->mode != BAD)
--  {
--    z->state->mode = BAD;
--    z->state->sub.marker = 0;
--  }
--  if ((n = z->avail_in) == 0)
--    return Z_BUF_ERROR;
--  p = z->next_in;
--  m = z->state->sub.marker;
--
--  /* search */
--  while (n && m < 4)
--  {
--    if (*p == (Byte)(m < 2 ? 0 : 0xff))
--      m++;
--    else if (*p)
--      m = 0;
--    else
--      m = 4 - m;
--    p++, n--;
--  }
--
--  /* restore */
--  z->total_in += p - z->next_in;
--  z->next_in = p;
--  z->avail_in = n;
--  z->state->sub.marker = m;
--
--  /* return no joy or set up to restart on a new block */
--  if (m != 4)
--    return Z_DATA_ERROR;
--  r = z->total_in;  w = z->total_out;
--  inflateReset(z);
--  z->total_in = r;  z->total_out = w;
--  z->state->mode = BLOCKS;
--  return Z_OK;
--}
--
--#undef NEEDBYTE
--#undef NEXTBYTE
--
--/*+++++*/
--/* infutil.h -- types and macros common to blocks and codes
-- * Copyright (C) 1995 Mark Adler
-- * For conditions of distribution and use, see copyright notice in zlib.h
-- */
--
--/* WARNING: this file should *not* be used by applications. It is
--   part of the implementation of the compression library and is
--   subject to change. Applications should only use zlib.h.
-- */
--
--/* inflate blocks semi-private state */
--struct inflate_blocks_state {
--
--  /* mode */
--  enum {
--      TYPE,     /* get type bits (3, including end bit) */
--      LENS,     /* get lengths for stored */
--      STORED,   /* processing stored block */
--      TABLE,    /* get table lengths */
--      BTREE,    /* get bit lengths tree for a dynamic block */
--      DTREE,    /* get length, distance trees for a dynamic block */
--      CODES,    /* processing fixed or dynamic block */
--      DRY,      /* output remaining window bytes */
--      DONEB,     /* finished last block, done */
--      BADB}      /* got a data error--stuck here */
--    mode;               /* current inflate_block mode */
--
--  /* mode dependent information */
--  union {
--    uInt left;          /* if STORED, bytes left to copy */
--    struct {
--      uInt table;               /* table lengths (14 bits) */
--      uInt index;               /* index into blens (or border) */
--      uIntf *blens;             /* bit lengths of codes */
--      uInt bb;                  /* bit length tree depth */
--      inflate_huft *tb;         /* bit length decoding tree */
--      int nblens;		/* # elements allocated at blens */
--    } trees;            /* if DTREE, decoding info for trees */
--    struct {
--      inflate_huft *tl, *td;    /* trees to free */
--      inflate_codes_statef
--	 *codes;
--    } decode;           /* if CODES, current state */
--  } sub;                /* submode */
--  uInt last;            /* true if this block is the last block */
--
--  /* mode independent information */
--  uInt bitk;            /* bits in bit buffer */
--  uLong bitb;           /* bit buffer */
--  Bytef *window;        /* sliding window */
--  Bytef *end;           /* one byte after sliding window */
--  Bytef *read;          /* window read pointer */
--  Bytef *write;         /* window write pointer */
--  check_func checkfn;   /* check function */
--  uLong check;          /* check on output */
--
--};
--
--
--/* defines for inflate input/output */
--/*   update pointers and return */
--#define UPDBITS {s->bitb=b;s->bitk=k;}
--#define UPDIN {z->avail_in=n;z->total_in+=p-z->next_in;z->next_in=p;}
--#define UPDOUT {s->write=q;}
--#define UPDATE {UPDBITS UPDIN UPDOUT}
--#define LEAVE {UPDATE return inflate_flush(s,z,r);}
--/*   get bytes and bits */
--#define LOADIN {p=z->next_in;n=z->avail_in;b=s->bitb;k=s->bitk;}
--#define NEEDBYTE {if(n)r=Z_OK;else LEAVE}
--#define NEXTBYTE (n--,*p++)
--#define NEEDBITS(j) {while(k<(j)){NEEDBYTE;b|=((uLong)NEXTBYTE)<<k;k+=8;}}
--#define DUMPBITS(j) {b>>=(j);k-=(j);}
--/*   output bytes */
--#define WAVAIL (q<s->read?s->read-q-1:s->end-q)
--#define LOADOUT {q=s->write;m=WAVAIL;}
--#define WRAP {if(q==s->end&&s->read!=s->window){q=s->window;m=WAVAIL;}}
--#define FLUSH {UPDOUT r=inflate_flush(s,z,r); LOADOUT}
--#define NEEDOUT {if(m==0){WRAP if(m==0){FLUSH WRAP if(m==0) LEAVE}}r=Z_OK;}
--#define OUTBYTE(a) {*q++=(Byte)(a);m--;}
--/*   load local pointers */
--#define LOAD {LOADIN LOADOUT}
--
--/*
-- * The IBM 150 firmware munges the data right after _etext[].  This
-- * protects it. -- Cort
-- */
--/* And'ing with mask[n] masks the lower n bits */
--local uInt inflate_mask[] = {
--    0x0000,
--    0x0001, 0x0003, 0x0007, 0x000f, 0x001f, 0x003f, 0x007f, 0x00ff,
--    0x01ff, 0x03ff, 0x07ff, 0x0fff, 0x1fff, 0x3fff, 0x7fff, 0xffff
--};
--
--/* copy as much as possible from the sliding window to the output area */
--local int inflate_flush OF((
--    inflate_blocks_statef *,
--    z_stream *,
--    int));
--
--/*+++++*/
--/* inffast.h -- header to use inffast.c
-- * Copyright (C) 1995 Mark Adler
-- * For conditions of distribution and use, see copyright notice in zlib.h
-- */
--
--/* WARNING: this file should *not* be used by applications. It is
--   part of the implementation of the compression library and is
--   subject to change. Applications should only use zlib.h.
-- */
--
--local int inflate_fast OF((
--    uInt,
--    uInt,
--    inflate_huft *,
--    inflate_huft *,
--    inflate_blocks_statef *,
--    z_stream *));
--
--
--/*+++++*/
--/* infblock.c -- interpret and process block types to last block
-- * Copyright (C) 1995 Mark Adler
-- * For conditions of distribution and use, see copyright notice in zlib.h
-- */
--
--/* Table for deflate from PKZIP's appnote.txt. */
--local uInt border[] = { /* Order of the bit length code lengths */
--	16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15};
--
--/*
--   Notes beyond the 1.93a appnote.txt:
--
--   1. Distance pointers never point before the beginning of the output
--      stream.
--   2. Distance pointers can point back across blocks, up to 32k away.
--   3. There is an implied maximum of 7 bits for the bit length table and
--      15 bits for the actual data.
--   4. If only one code exists, then it is encoded using one bit.  (Zero
--      would be more efficient, but perhaps a little confusing.)  If two
--      codes exist, they are coded using one bit each (0 and 1).
--   5. There is no way of sending zero distance codes--a dummy must be
--      sent if there are none.  (History: a pre 2.0 version of PKZIP would
--      store blocks with no distance codes, but this was discovered to be
--      too harsh a criterion.)  Valid only for 1.93a.  2.04c does allow
--      zero distance codes, which is sent as one code of zero bits in
--      length.
--   6. There are up to 286 literal/length codes.  Code 256 represents the
--      end-of-block.  Note however that the static length tree defines
--      288 codes just to fill out the Huffman codes.  Codes 286 and 287
--      cannot be used though, since there is no length base or extra bits
--      defined for them.  Similarily, there are up to 30 distance codes.
--      However, static trees define 32 codes (all 5 bits) to fill out the
--      Huffman codes, but the last two had better not show up in the data.
--   7. Unzip can check dynamic Huffman blocks for complete code sets.
--      The exception is that a single code would not be complete (see #4).
--   8. The five bits following the block type is really the number of
--      literal codes sent minus 257.
--   9. Length codes 8,16,16 are interpreted as 13 length codes of 8 bits
--      (1+6+6).  Therefore, to output three times the length, you output
--      three codes (1+1+1), whereas to output four times the same length,
--      you only need two codes (1+3).  Hmm.
--  10. In the tree reconstruction algorithm, Code = Code + Increment
--      only if BitLength(i) is not zero.  (Pretty obvious.)
--  11. Correction: 4 Bits: # of Bit Length codes - 4     (4 - 19)
--  12. Note: length code 284 can represent 227-258, but length code 285
--      really is 258.  The last length deserves its own, short code
--      since it gets used a lot in very redundant files.  The length
--      258 is special since 258 - 3 (the min match length) is 255.
--  13. The literal/length and distance code bit lengths are read as a
--      single stream of lengths.  It is possible (and advantageous) for
--      a repeat code (16, 17, or 18) to go across the boundary between
--      the two sets of lengths.
-- */
--
--
--local void inflate_blocks_reset(s, z, c)
--inflate_blocks_statef *s;
--z_stream *z;
--uLongf *c;
--{
--  if (s->checkfn != Z_NULL)
--    *c = s->check;
--  if (s->mode == BTREE || s->mode == DTREE)
--    ZFREE(z, s->sub.trees.blens, s->sub.trees.nblens * sizeof(uInt));
--  if (s->mode == CODES)
--  {
--    inflate_codes_free(s->sub.decode.codes, z);
--    inflate_trees_free(s->sub.decode.td, z);
--    inflate_trees_free(s->sub.decode.tl, z);
--  }
--  s->mode = TYPE;
--  s->bitk = 0;
--  s->bitb = 0;
--  s->read = s->write = s->window;
--  if (s->checkfn != Z_NULL)
--    s->check = (*s->checkfn)(0L, Z_NULL, 0);
--  if (z->outcb != Z_NULL)
--    (*z->outcb)(Z_NULL, 0);
--  Trace((stderr, "inflate:   blocks reset\n"));
--}
--
--
--local inflate_blocks_statef *inflate_blocks_new(z, c, w)
--z_stream *z;
--check_func c;
--uInt w;
--{
--  inflate_blocks_statef *s;
--
--  if ((s = (inflate_blocks_statef *)ZALLOC
--       (z,1,sizeof(struct inflate_blocks_state))) == Z_NULL)
--    return s;
--  if ((s->window = (Bytef *)ZALLOC(z, 1, w)) == Z_NULL)
--  {
--    ZFREE(z, s, sizeof(struct inflate_blocks_state));
--    return Z_NULL;
--  }
--  s->end = s->window + w;
--  s->checkfn = c;
--  s->mode = TYPE;
--  Trace((stderr, "inflate:   blocks allocated\n"));
--  inflate_blocks_reset(s, z, &s->check);
--  return s;
--}
--
--
--local int inflate_blocks(s, z, r)
--inflate_blocks_statef *s;
--z_stream *z;
--int r;
--{
--  uInt t;               /* temporary storage */
--  uLong b;              /* bit buffer */
--  uInt k;               /* bits in bit buffer */
--  Bytef *p;             /* input data pointer */
--  uInt n;               /* bytes available there */
--  Bytef *q;             /* output window write pointer */
--  uInt m;               /* bytes to end of window or read pointer */
--
--  /* copy input/output information to locals (UPDATE macro restores) */
--  LOAD
--
--  /* process input based on current state */
--  while (1) switch (s->mode)
--  {
--    case TYPE:
--      NEEDBITS(3)
--      t = (uInt)b & 7;
--      s->last = t & 1;
--      switch (t >> 1)
--      {
--	case 0:                         /* stored */
--	  Trace((stderr, "inflate:     stored block%s\n",
--		 s->last ? " (last)" : ""));
--	  DUMPBITS(3)
--	  t = k & 7;                    /* go to byte boundary */
--	  DUMPBITS(t)
--	  s->mode = LENS;               /* get length of stored block */
--	  break;
--	case 1:                         /* fixed */
--	  Trace((stderr, "inflate:     fixed codes block%s\n",
--		 s->last ? " (last)" : ""));
--	  {
--	    uInt bl, bd;
--	    inflate_huft *tl, *td;
--
--	    inflate_trees_fixed(&bl, &bd, &tl, &td);
--	    s->sub.decode.codes = inflate_codes_new(bl, bd, tl, td, z);
--	    if (s->sub.decode.codes == Z_NULL)
--	    {
--	      r = Z_MEM_ERROR;
--	      LEAVE
--	    }
--	    s->sub.decode.tl = Z_NULL;  /* don't try to free these */
--	    s->sub.decode.td = Z_NULL;
--	  }
--	  DUMPBITS(3)
--	  s->mode = CODES;
--	  break;
--	case 2:                         /* dynamic */
--	  Trace((stderr, "inflate:     dynamic codes block%s\n",
--		 s->last ? " (last)" : ""));
--	  DUMPBITS(3)
--	  s->mode = TABLE;
--	  break;
--	case 3:                         /* illegal */
--	  DUMPBITS(3)
--	  s->mode = BADB;
--	  z->msg = "invalid block type";
--	  r = Z_DATA_ERROR;
--	  LEAVE
--      }
--      break;
--    case LENS:
--      NEEDBITS(32)
--      if (((~b) >> 16) != (b & 0xffff))
--      {
--	s->mode = BADB;
--	z->msg = "invalid stored block lengths";
--	r = Z_DATA_ERROR;
--	LEAVE
--      }
--      s->sub.left = (uInt)b & 0xffff;
--      b = k = 0;                      /* dump bits */
--      Tracev((stderr, "inflate:       stored length %u\n", s->sub.left));
--      s->mode = s->sub.left ? STORED : TYPE;
--      break;
--    case STORED:
--      if (n == 0)
--	LEAVE
--      NEEDOUT
--      t = s->sub.left;
--      if (t > n) t = n;
--      if (t > m) t = m;
--      zmemcpy(q, p, t);
--      p += t;  n -= t;
--      q += t;  m -= t;
--      if ((s->sub.left -= t) != 0)
--	break;
--      Tracev((stderr, "inflate:       stored end, %lu total out\n",
--	      z->total_out + (q >= s->read ? q - s->read :
--	      (s->end - s->read) + (q - s->window))));
--      s->mode = s->last ? DRY : TYPE;
--      break;
--    case TABLE:
--      NEEDBITS(14)
--      s->sub.trees.table = t = (uInt)b & 0x3fff;
--#ifndef PKZIP_BUG_WORKAROUND
--      if ((t & 0x1f) > 29 || ((t >> 5) & 0x1f) > 29)
--      {
--	s->mode = BADB;
--	z->msg = "too many length or distance symbols";
--	r = Z_DATA_ERROR;
--	LEAVE
--      }
--#endif
--      t = 258 + (t & 0x1f) + ((t >> 5) & 0x1f);
--      if (t < 19)
--	t = 19;
--      if ((s->sub.trees.blens = (uIntf*)ZALLOC(z, t, sizeof(uInt))) == Z_NULL)
--      {
--	r = Z_MEM_ERROR;
--	LEAVE
--      }
--      s->sub.trees.nblens = t;
--      DUMPBITS(14)
--      s->sub.trees.index = 0;
--      Tracev((stderr, "inflate:       table sizes ok\n"));
--      s->mode = BTREE;
--    case BTREE:
--      while (s->sub.trees.index < 4 + (s->sub.trees.table >> 10))
--      {
--	NEEDBITS(3)
--	s->sub.trees.blens[border[s->sub.trees.index++]] = (uInt)b & 7;
--	DUMPBITS(3)
--      }
--      while (s->sub.trees.index < 19)
--	s->sub.trees.blens[border[s->sub.trees.index++]] = 0;
--      s->sub.trees.bb = 7;
--      t = inflate_trees_bits(s->sub.trees.blens, &s->sub.trees.bb,
--			     &s->sub.trees.tb, z);
--      if (t != Z_OK)
--      {
--	r = t;
--	if (r == Z_DATA_ERROR)
--	  s->mode = BADB;
--	LEAVE
--      }
--      s->sub.trees.index = 0;
--      Tracev((stderr, "inflate:       bits tree ok\n"));
--      s->mode = DTREE;
--    case DTREE:
--      while (t = s->sub.trees.table,
--	     s->sub.trees.index < 258 + (t & 0x1f) + ((t >> 5) & 0x1f))
--      {
--	inflate_huft *h;
--	uInt i, j, c;
--
--	t = s->sub.trees.bb;
--	NEEDBITS(t)
--	h = s->sub.trees.tb + ((uInt)b & inflate_mask[t]);
--	t = h->word.what.Bits;
--	c = h->more.Base;
--	if (c < 16)
--	{
--	  DUMPBITS(t)
--	  s->sub.trees.blens[s->sub.trees.index++] = c;
--	}
--	else /* c == 16..18 */
--	{
--	  i = c == 18 ? 7 : c - 14;
--	  j = c == 18 ? 11 : 3;
--	  NEEDBITS(t + i)
--	  DUMPBITS(t)
--	  j += (uInt)b & inflate_mask[i];
--	  DUMPBITS(i)
--	  i = s->sub.trees.index;
--	  t = s->sub.trees.table;
--	  if (i + j > 258 + (t & 0x1f) + ((t >> 5) & 0x1f) ||
--	      (c == 16 && i < 1))
--	  {
--	    s->mode = BADB;
--	    z->msg = "invalid bit length repeat";
--	    r = Z_DATA_ERROR;
--	    LEAVE
--	  }
--	  c = c == 16 ? s->sub.trees.blens[i - 1] : 0;
--	  do {
--	    s->sub.trees.blens[i++] = c;
--	  } while (--j);
--	  s->sub.trees.index = i;
--	}
--      }
--      inflate_trees_free(s->sub.trees.tb, z);
--      s->sub.trees.tb = Z_NULL;
--      {
--	uInt bl, bd;
--	inflate_huft *tl, *td;
--	inflate_codes_statef *c;
--
--	bl = 9;         /* must be <= 9 for lookahead assumptions */
--	bd = 6;         /* must be <= 9 for lookahead assumptions */
--	t = s->sub.trees.table;
--	t = inflate_trees_dynamic(257 + (t & 0x1f), 1 + ((t >> 5) & 0x1f),
--				  s->sub.trees.blens, &bl, &bd, &tl, &td, z);
--	if (t != Z_OK)
--	{
--	  if (t == (uInt)Z_DATA_ERROR)
--	    s->mode = BADB;
--	  r = t;
--	  LEAVE
--	}
--	Tracev((stderr, "inflate:       trees ok\n"));
--	if ((c = inflate_codes_new(bl, bd, tl, td, z)) == Z_NULL)
--	{
--	  inflate_trees_free(td, z);
--	  inflate_trees_free(tl, z);
--	  r = Z_MEM_ERROR;
--	  LEAVE
--	}
--	ZFREE(z, s->sub.trees.blens, s->sub.trees.nblens * sizeof(uInt));
--	s->sub.decode.codes = c;
--	s->sub.decode.tl = tl;
--	s->sub.decode.td = td;
--      }
--      s->mode = CODES;
--    case CODES:
--      UPDATE
--      if ((r = inflate_codes(s, z, r)) != Z_STREAM_END)
--	return inflate_flush(s, z, r);
--      r = Z_OK;
--      inflate_codes_free(s->sub.decode.codes, z);
--      inflate_trees_free(s->sub.decode.td, z);
--      inflate_trees_free(s->sub.decode.tl, z);
--      LOAD
--      Tracev((stderr, "inflate:       codes end, %lu total out\n",
--	      z->total_out + (q >= s->read ? q - s->read :
--	      (s->end - s->read) + (q - s->window))));
--      if (!s->last)
--      {
--	s->mode = TYPE;
--	break;
--      }
--      if (k > 7)              /* return unused byte, if any */
--      {
--	Assert(k < 16, "inflate_codes grabbed too many bytes")
--	k -= 8;
--	n++;
--	p--;                    /* can always return one */
--      }
--      s->mode = DRY;
--    case DRY:
--      FLUSH
--      if (s->read != s->write)
--	LEAVE
--      s->mode = DONEB;
--    case DONEB:
--      r = Z_STREAM_END;
--      LEAVE
--    case BADB:
--      r = Z_DATA_ERROR;
--      LEAVE
--    default:
--      r = Z_STREAM_ERROR;
--      LEAVE
--  }
--}
--
--
--local int inflate_blocks_free(s, z, c)
--inflate_blocks_statef *s;
--z_stream *z;
--uLongf *c;
--{
--  inflate_blocks_reset(s, z, c);
--  ZFREE(z, s->window, s->end - s->window);
--  ZFREE(z, s, sizeof(struct inflate_blocks_state));
--  Trace((stderr, "inflate:   blocks freed\n"));
--  return Z_OK;
--}
--
--/*
-- * This subroutine adds the data at next_in/avail_in to the output history
-- * without performing any output.  The output buffer must be "caught up";
-- * i.e. no pending output (hence s->read equals s->write), and the state must
-- * be BLOCKS (i.e. we should be willing to see the start of a series of
-- * BLOCKS).  On exit, the output will also be caught up, and the checksum
-- * will have been updated if need be.
-- */
--local int inflate_addhistory(s, z)
--inflate_blocks_statef *s;
--z_stream *z;
--{
--    uLong b;              /* bit buffer */  /* NOT USED HERE */
--    uInt k;               /* bits in bit buffer */ /* NOT USED HERE */
--    uInt t;               /* temporary storage */
--    Bytef *p;             /* input data pointer */
--    uInt n;               /* bytes available there */
--    Bytef *q;             /* output window write pointer */
--    uInt m;               /* bytes to end of window or read pointer */
--
--    if (s->read != s->write)
--	return Z_STREAM_ERROR;
--    if (s->mode != TYPE)
--	return Z_DATA_ERROR;
--
--    /* we're ready to rock */
--    LOAD
--    /* while there is input ready, copy to output buffer, moving
--     * pointers as needed.
--     */
--    while (n) {
--	t = n;  /* how many to do */
--	/* is there room until end of buffer? */
--	if (t > m) t = m;
--	/* update check information */
--	if (s->checkfn != Z_NULL)
--	    s->check = (*s->checkfn)(s->check, q, t);
--	/* output callback */
--	if (z->outcb != Z_NULL)
--	    (*z->outcb)(q, t);
--	zmemcpy(q, p, t);
--	q += t;
--	p += t;
--	n -= t;
--	z->total_out += t;
--	s->read = q;    /* drag read pointer forward */
--/*      WRAP  */ 	/* expand WRAP macro by hand to handle s->read */
--	if (q == s->end) {
--	    s->read = q = s->window;
--	    m = WAVAIL;
--	}
--    }
--    UPDATE
--    return Z_OK;
--}
--
--
--/*
-- * At the end of a Deflate-compressed PPP packet, we expect to have seen
-- * a `stored' block type value but not the (zero) length bytes.
-- */
--local int inflate_packet_flush(s)
--    inflate_blocks_statef *s;
--{
--    if (s->mode != LENS)
--	return Z_DATA_ERROR;
--    s->mode = TYPE;
--    return Z_OK;
--}
--
--
--/*+++++*/
--/* inftrees.c -- generate Huffman trees for efficient decoding
-- * Copyright (C) 1995 Mark Adler
-- * For conditions of distribution and use, see copyright notice in zlib.h
-- */
--
--/* simplify the use of the inflate_huft type with some defines */
--#define base more.Base
--#define next more.Next
--#define exop word.what.Exop
--#define bits word.what.Bits
--
--
--local int huft_build OF((
--    uIntf *,            /* code lengths in bits */
--    uInt,               /* number of codes */
--    uInt,               /* number of "simple" codes */
--    uIntf *,            /* list of base values for non-simple codes */
--    uIntf *,            /* list of extra bits for non-simple codes */
--    inflate_huft * FAR*,/* result: starting table */
--    uIntf *,            /* maximum lookup bits (returns actual) */
--    z_stream *));       /* for zalloc function */
--
--local voidpf falloc OF((
--    voidpf,             /* opaque pointer (not used) */
--    uInt,               /* number of items */
--    uInt));             /* size of item */
--
--local void ffree OF((
--    voidpf q,           /* opaque pointer (not used) */
--    voidpf p,           /* what to free (not used) */
--    uInt n));		/* number of bytes (not used) */
--
--/* Tables for deflate from PKZIP's appnote.txt. */
--local uInt cplens[] = { /* Copy lengths for literal codes 257..285 */
--	3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 19, 23, 27, 31,
--	35, 43, 51, 59, 67, 83, 99, 115, 131, 163, 195, 227, 258, 0, 0};
--	/* actually lengths - 2; also see note #13 above about 258 */
--local uInt cplext[] = { /* Extra bits for literal codes 257..285 */
--	0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2,
--	3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0, 192, 192}; /* 192==invalid */
--local uInt cpdist[] = { /* Copy offsets for distance codes 0..29 */
--	1, 2, 3, 4, 5, 7, 9, 13, 17, 25, 33, 49, 65, 97, 129, 193,
--	257, 385, 513, 769, 1025, 1537, 2049, 3073, 4097, 6145,
--	8193, 12289, 16385, 24577};
--local uInt cpdext[] = { /* Extra bits for distance codes */
--	0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6,
--	7, 7, 8, 8, 9, 9, 10, 10, 11, 11,
--	12, 12, 13, 13};
--
--/*
--   Huffman code decoding is performed using a multi-level table lookup.
--   The fastest way to decode is to simply build a lookup table whose
--   size is determined by the longest code.  However, the time it takes
--   to build this table can also be a factor if the data being decoded
--   is not very long.  The most common codes are necessarily the
--   shortest codes, so those codes dominate the decoding time, and hence
--   the speed.  The idea is you can have a shorter table that decodes the
--   shorter, more probable codes, and then point to subsidiary tables for
--   the longer codes.  The time it costs to decode the longer codes is
--   then traded against the time it takes to make longer tables.
--
--   This results of this trade are in the variables lbits and dbits
--   below.  lbits is the number of bits the first level table for literal/
--   length codes can decode in one step, and dbits is the same thing for
--   the distance codes.  Subsequent tables are also less than or equal to
--   those sizes.  These values may be adjusted either when all of the
--   codes are shorter than that, in which case the longest code length in
--   bits is used, or when the shortest code is *longer* than the requested
--   table size, in which case the length of the shortest code in bits is
--   used.
--
--   There are two different values for the two tables, since they code a
--   different number of possibilities each.  The literal/length table
--   codes 286 possible values, or in a flat code, a little over eight
--   bits.  The distance table codes 30 possible values, or a little less
--   than five bits, flat.  The optimum values for speed end up being
--   about one bit more than those, so lbits is 8+1 and dbits is 5+1.
--   The optimum values may differ though from machine to machine, and
--   possibly even between compilers.  Your mileage may vary.
-- */
--
--
--/* If BMAX needs to be larger than 16, then h and x[] should be uLong. */
--#define BMAX 15         /* maximum bit length of any code */
--#define N_MAX 288       /* maximum number of codes in any set */
--
--#ifdef DEBUG_ZLIB
--  uInt inflate_hufts;
 -#endif
 -
--local int huft_build(b, n, s, d, e, t, m, zs)
--uIntf *b;               /* code lengths in bits (all assumed <= BMAX) */
--uInt n;                 /* number of codes (assumed <= N_MAX) */
--uInt s;                 /* number of simple-valued codes (0..s-1) */
--uIntf *d;               /* list of base values for non-simple codes */
--uIntf *e;               /* list of extra bits for non-simple codes */
--inflate_huft * FAR *t;  /* result: starting table */
--uIntf *m;               /* maximum lookup bits, returns actual */
--z_stream *zs;           /* for zalloc function */
--/* Given a list of code lengths and a maximum table size, make a set of
--   tables to decode that set of codes.  Return Z_OK on success, Z_BUF_ERROR
--   if the given code set is incomplete (the tables are still built in this
--   case), Z_DATA_ERROR if the input is invalid (all zero length codes or an
--   over-subscribed set of lengths), or Z_MEM_ERROR if not enough memory. */
+-
+-/*---------------------------------------------------*/
+-static
+-int bz_config_ok ( void )
 -{
--
--  uInt a;                       /* counter for codes of length k */
--  uInt c[BMAX+1];               /* bit length count table */
--  uInt f;                       /* i repeats in table every f entries */
--  int g;                        /* maximum code length */
--  int h;                        /* table level */
--  register uInt i;              /* counter, current code */
--  register uInt j;              /* counter */
--  register int k;               /* number of bits in current code */
--  int l;                        /* bits per table (returned in m) */
--  register uIntf *p;            /* pointer into c[], b[], or v[] */
--  inflate_huft *q;              /* points to current table */
--  struct inflate_huft_s r;      /* table entry for structure assignment */
--  inflate_huft *u[BMAX];        /* table stack */
--  uInt v[N_MAX];                /* values in order of bit length */
--  register int w;               /* bits before this table == (l * h) */
--  uInt x[BMAX+1];               /* bit offsets, then code stack */
--  uIntf *xp;                    /* pointer into x */
--  int y;                        /* number of dummy codes added */
--  uInt z;                       /* number of entries in current table */
--
--
--  /* Generate counts for each bit length */
--  p = c;
--#define C0 *p++ = 0;
--#define C2 C0 C0 C0 C0
--#define C4 C2 C2 C2 C2
--  C4                            /* clear c[]--assume BMAX+1 is 16 */
--  p = b;  i = n;
--  do {
--    c[*p++]++;                  /* assume all entries <= BMAX */
--  } while (--i);
--  if (c[0] == n)                /* null input--all zero length codes */
--  {
--    *t = (inflate_huft *)Z_NULL;
--    *m = 0;
--    return Z_OK;
--  }
--
--
--  /* Find minimum and maximum length, bound *m by those */
--  l = *m;
--  for (j = 1; j <= BMAX; j++)
--    if (c[j])
--      break;
--  k = j;                        /* minimum code length */
--  if ((uInt)l < j)
--    l = j;
--  for (i = BMAX; i; i--)
--    if (c[i])
--      break;
--  g = i;                        /* maximum code length */
--  if ((uInt)l > i)
--    l = i;
--  *m = l;
--
--
--  /* Adjust last length count to fill out codes, if needed */
--  for (y = 1 << j; j < i; j++, y <<= 1)
--    if ((y -= c[j]) < 0)
--      return Z_DATA_ERROR;
--  if ((y -= c[i]) < 0)
--    return Z_DATA_ERROR;
--  c[i] += y;
--
--
--  /* Generate starting offsets into the value table for each length */
--  x[1] = j = 0;
--  p = c + 1;  xp = x + 2;
--  while (--i) {                 /* note that i == g from above */
--    *xp++ = (j += *p++);
--  }
--
--
--  /* Make a table of values in order of bit lengths */
--  p = b;  i = 0;
--  do {
--    if ((j = *p++) != 0)
--      v[x[j]++] = i;
--  } while (++i < n);
--
--
--  /* Generate the Huffman codes and for each, make the table entries */
--  x[0] = i = 0;                 /* first Huffman code is zero */
--  p = v;                        /* grab values in bit order */
--  h = -1;                       /* no tables yet--level -1 */
--  w = -l;                       /* bits decoded == (l * h) */
--  u[0] = (inflate_huft *)Z_NULL;        /* just to keep compilers happy */
--  q = (inflate_huft *)Z_NULL;   /* ditto */
--  z = 0;                        /* ditto */
--
--  /* go through the bit lengths (k already is bits in shortest code) */
--  for (; k <= g; k++)
--  {
--    a = c[k];
--    while (a--)
--    {
--      /* here i is the Huffman code of length k bits for value *p */
--      /* make tables up to required level */
--      while (k > w + l)
--      {
--	h++;
--	w += l;                 /* previous table always l bits */
--
--	/* compute minimum size table less than or equal to l bits */
--	z = (z = g - w) > (uInt)l ? l : z;      /* table size upper limit */
--	if ((f = 1 << (j = k - w)) > a + 1)     /* try a k-w bit table */
--	{                       /* too few codes for k-w bit table */
--	  f -= a + 1;           /* deduct codes from patterns left */
--	  xp = c + k;
--	  if (j < z)
--	    while (++j < z)     /* try smaller tables up to z bits */
--	    {
--	      if ((f <<= 1) <= *++xp)
--		break;          /* enough codes to use up j bits */
--	      f -= *xp;         /* else deduct codes from patterns */
--	    }
--	}
--	z = 1 << j;             /* table entries for j-bit table */
--
--	/* allocate and link in new table */
--	if ((q = (inflate_huft *)ZALLOC
--	     (zs,z + 1,sizeof(inflate_huft))) == Z_NULL)
--	{
--	  if (h)
--	    inflate_trees_free(u[0], zs);
--	  return Z_MEM_ERROR;   /* not enough memory */
--	}
--	q->word.Nalloc = z + 1;
--#ifdef DEBUG_ZLIB
--	inflate_hufts += z + 1;
--#endif
--	*t = q + 1;             /* link to list for huft_free() */
--	*(t = &(q->next)) = Z_NULL;
--	u[h] = ++q;             /* table starts after link */
--
--	/* connect to last table, if there is one */
--	if (h)
--	{
--	  x[h] = i;             /* save pattern for backing up */
--	  r.bits = (Byte)l;     /* bits to dump before this table */
--	  r.exop = (Byte)j;     /* bits in this table */
--	  r.next = q;           /* pointer to this table */
--	  j = i >> (w - l);     /* (get around Turbo C bug) */
--	  u[h-1][j] = r;        /* connect to last table */
--	}
--      }
--
--      /* set up table entry in r */
--      r.bits = (Byte)(k - w);
--      if (p >= v + n)
--	r.exop = 128 + 64;      /* out of values--invalid code */
--      else if (*p < s)
--      {
--	r.exop = (Byte)(*p < 256 ? 0 : 32 + 64);     /* 256 is end-of-block */
--	r.base = *p++;          /* simple code is just the value */
--      }
--      else
--      {
--	r.exop = (Byte)e[*p - s] + 16 + 64; /* non-simple--look up in lists */
--	r.base = d[*p++ - s];
--      }
--
--      /* fill code-like entries with r */
--      f = 1 << (k - w);
--      for (j = i >> w; j < z; j += f)
--	q[j] = r;
--
--      /* backwards increment the k-bit code i */
--      for (j = 1 << (k - 1); i & j; j >>= 1)
--	i ^= j;
--      i ^= j;
--
--      /* backup over finished tables */
--      while ((i & ((1 << w) - 1)) != x[h])
--      {
--	h--;                    /* don't need to update q */
--	w -= l;
--      }
--    }
--  }
--
--
--  /* Return Z_BUF_ERROR if we were given an incomplete table */
--  return y != 0 && g != 1 ? Z_BUF_ERROR : Z_OK;
+-   if (sizeof(int)   != 4) return 0;
+-   if (sizeof(short) != 2) return 0;
+-   if (sizeof(char)  != 1) return 0;
+-   return 1;
 -}
 -
 -
--local int inflate_trees_bits(c, bb, tb, z)
--uIntf *c;               /* 19 code lengths */
--uIntf *bb;              /* bits tree desired/actual depth */
--inflate_huft * FAR *tb; /* bits tree result */
--z_stream *z;            /* for zfree function */
+-/*---------------------------------------------------*/
+-static
+-void* default_bzalloc ( void* opaque, Int32 items, Int32 size )
 -{
--  int r;
+-   void* v = malloc ( items * size );
+-   return v;
+-}
 -
--  r = huft_build(c, 19, 19, (uIntf*)Z_NULL, (uIntf*)Z_NULL, tb, bb, z);
--  if (r == Z_DATA_ERROR)
--    z->msg = "oversubscribed dynamic bit lengths tree";
--  else if (r == Z_BUF_ERROR)
--  {
--    inflate_trees_free(*tb, z);
--    z->msg = "incomplete dynamic bit lengths tree";
--    r = Z_DATA_ERROR;
--  }
--  return r;
+-static
+-void default_bzfree ( void* opaque, void* addr )
+-{
+-   if (addr != NULL) free ( addr );
+-}
+-
+-#ifndef BZ_NO_COMPRESS
+-/*---------------------------------------------------*/
+-static
+-void prepare_new_block ( EState* s )
+-{
+-   Int32 i;
+-   s->nblock = 0;
+-   s->numZ = 0;
+-   s->state_out_pos = 0;
+-   BZ_INITIALISE_CRC ( s->blockCRC );
+-   for (i = 0; i < 256; i++) s->inUse[i] = False;
+-   s->blockNo++;
 -}
 -
 -
--local int inflate_trees_dynamic(nl, nd, c, bl, bd, tl, td, z)
--uInt nl;                /* number of literal/length codes */
--uInt nd;                /* number of distance codes */
--uIntf *c;               /* that many (total) code lengths */
--uIntf *bl;              /* literal desired/actual bit depth */
--uIntf *bd;              /* distance desired/actual bit depth */
--inflate_huft * FAR *tl; /* literal/length tree result */
--inflate_huft * FAR *td; /* distance tree result */
--z_stream *z;            /* for zfree function */
+-/*---------------------------------------------------*/
+-static
+-void init_RL ( EState* s )
 -{
--  int r;
--
--  /* build literal/length tree */
--  if ((r = huft_build(c, nl, 257, cplens, cplext, tl, bl, z)) != Z_OK)
--  {
--    if (r == Z_DATA_ERROR)
--      z->msg = "oversubscribed literal/length tree";
--    else if (r == Z_BUF_ERROR)
--    {
--      inflate_trees_free(*tl, z);
--      z->msg = "incomplete literal/length tree";
--      r = Z_DATA_ERROR;
--    }
--    return r;
--  }
--
--  /* build distance tree */
--  if ((r = huft_build(c + nl, nd, 0, cpdist, cpdext, td, bd, z)) != Z_OK)
--  {
--    if (r == Z_DATA_ERROR)
--      z->msg = "oversubscribed literal/length tree";
--    else if (r == Z_BUF_ERROR) {
--#ifdef PKZIP_BUG_WORKAROUND
--      r = Z_OK;
--    }
--#else
--      inflate_trees_free(*td, z);
--      z->msg = "incomplete literal/length tree";
--      r = Z_DATA_ERROR;
--    }
--    inflate_trees_free(*tl, z);
--    return r;
--#endif
--  }
--
--  /* done */
--  return Z_OK;
+-   s->state_in_ch  = 256;
+-   s->state_in_len = 0;
 -}
 -
 -
--/* build fixed tables only once--keep them here */
--local int fixed_lock = 0;
--local int fixed_built = 0;
--#define FIXEDH 530      /* number of hufts used by fixed tables */
--local uInt fixed_left = FIXEDH;
--local inflate_huft fixed_mem[FIXEDH];
--local uInt fixed_bl;
--local uInt fixed_bd;
--local inflate_huft *fixed_tl;
--local inflate_huft *fixed_td;
--
--
--local voidpf falloc(q, n, s)
--voidpf q;        /* opaque pointer (not used) */
--uInt n;         /* number of items */
--uInt s;         /* size of item */
+-static
+-Bool isempty_RL ( EState* s )
 -{
--  Assert(s == sizeof(inflate_huft) && n <= fixed_left,
--	 "inflate_trees falloc overflow");
--  if (q) s++; /* to make some compilers happy */
--  fixed_left -= n;
--  return (voidpf)(fixed_mem + fixed_left);
+-   if (s->state_in_ch < 256 && s->state_in_len > 0)
+-      return False; else
+-      return True;
+-}
+-
+-/*---------------------------------------------------*/
+-int BZ_API(BZ2_bzCompressInit)
+-		    ( bz_stream* strm,
+-		     int        blockSize100k,
+-		     int        verbosity,
+-		     int        workFactor )
+-{
+-   Int32   n;
+-   EState* s;
+-
+-   if (!bz_config_ok()) return BZ_CONFIG_ERROR;
+-
+-   if (strm == NULL ||
+-       blockSize100k < 1 || blockSize100k > 9 ||
+-       workFactor < 0 || workFactor > 250)
+-     return BZ_PARAM_ERROR;
+-
+-   if (workFactor == 0) workFactor = 30;
+-   if (strm->bzalloc == NULL) strm->bzalloc = default_bzalloc;
+-   if (strm->bzfree == NULL) strm->bzfree = default_bzfree;
+-
+-   s = BZALLOC( sizeof(EState) );
+-   if (s == NULL) return BZ_MEM_ERROR;
+-   s->strm = strm;
+-
+-   s->arr1 = NULL;
+-   s->arr2 = NULL;
+-   s->ftab = NULL;
+-
+-   n       = 100000 * blockSize100k;
+-   s->arr1 = BZALLOC( n                  * sizeof(UInt32) );
+-   s->arr2 = BZALLOC( (n+BZ_N_OVERSHOOT) * sizeof(UInt32) );
+-   s->ftab = BZALLOC( 65537              * sizeof(UInt32) );
+-
+-   if (s->arr1 == NULL || s->arr2 == NULL || s->ftab == NULL) {
+-      if (s->arr1 != NULL) BZFREE(s->arr1);
+-      if (s->arr2 != NULL) BZFREE(s->arr2);
+-      if (s->ftab != NULL) BZFREE(s->ftab);
+-      if (s       != NULL) BZFREE(s);
+-      return BZ_MEM_ERROR;
+-   }
+-
+-   s->blockNo           = 0;
+-   s->state             = BZ_S_INPUT;
+-   s->mode              = BZ_M_RUNNING;
+-   s->combinedCRC       = 0;
+-   s->blockSize100k     = blockSize100k;
+-   s->nblockMAX         = 100000 * blockSize100k - 19;
+-   s->verbosity         = verbosity;
+-   s->workFactor        = workFactor;
+-
+-   s->block             = (UChar*)s->arr2;
+-   s->mtfv              = (UInt16*)s->arr1;
+-   s->zbits             = NULL;
+-   s->ptr               = (UInt32*)s->arr1;
+-
+-   strm->state          = s;
+-   strm->total_in_lo32  = 0;
+-   strm->total_in_hi32  = 0;
+-   strm->total_out_lo32 = 0;
+-   strm->total_out_hi32 = 0;
+-   init_RL ( s );
+-   prepare_new_block ( s );
+-   return BZ_OK;
 -}
 -
 -
--local void ffree(q, p, n)
--voidpf q;
--voidpf p;
--uInt n;
+-/*---------------------------------------------------*/
+-static
+-void add_pair_to_block ( EState* s )
 -{
--  Assert(0, "inflate_trees ffree called!");
--  if (q) q = p; /* to make some compilers happy */
+-   Int32 i;
+-   UChar ch = (UChar)(s->state_in_ch);
+-   for (i = 0; i < s->state_in_len; i++) {
+-      BZ_UPDATE_CRC( s->blockCRC, ch );
+-   }
+-   s->inUse[s->state_in_ch] = True;
+-   switch (s->state_in_len) {
+-      case 1:
+-	 s->block[s->nblock] = (UChar)ch; s->nblock++;
+-	 break;
+-      case 2:
+-	 s->block[s->nblock] = (UChar)ch; s->nblock++;
+-	 s->block[s->nblock] = (UChar)ch; s->nblock++;
+-	 break;
+-      case 3:
+-	 s->block[s->nblock] = (UChar)ch; s->nblock++;
+-	 s->block[s->nblock] = (UChar)ch; s->nblock++;
+-	 s->block[s->nblock] = (UChar)ch; s->nblock++;
+-	 break;
+-      default:
+-	 s->inUse[s->state_in_len-4] = True;
+-	 s->block[s->nblock] = (UChar)ch; s->nblock++;
+-	 s->block[s->nblock] = (UChar)ch; s->nblock++;
+-	 s->block[s->nblock] = (UChar)ch; s->nblock++;
+-	 s->block[s->nblock] = (UChar)ch; s->nblock++;
+-	 s->block[s->nblock] = ((UChar)(s->state_in_len-4));
+-	 s->nblock++;
+-	 break;
+-   }
 -}
 -
 -
--local int inflate_trees_fixed(bl, bd, tl, td)
--uIntf *bl;               /* literal desired/actual bit depth */
--uIntf *bd;               /* distance desired/actual bit depth */
--inflate_huft * FAR *tl;  /* literal/length tree result */
--inflate_huft * FAR *td;  /* distance tree result */
+-/*---------------------------------------------------*/
+-static
+-void flush_RL ( EState* s )
 -{
--  /* build fixed tables if not built already--lock out other instances */
--  while (++fixed_lock > 1)
--    fixed_lock--;
--  if (!fixed_built)
--  {
--    int k;              /* temporary variable */
--    unsigned c[288];    /* length list for huft_build */
--    z_stream z;         /* for falloc function */
--
--    /* set up fake z_stream for memory routines */
--    z.zalloc = falloc;
--    z.zfree = ffree;
--    z.opaque = Z_NULL;
--
--    /* literal table */
--    for (k = 0; k < 144; k++)
--      c[k] = 8;
--    for (; k < 256; k++)
--      c[k] = 9;
--    for (; k < 280; k++)
--      c[k] = 7;
--    for (; k < 288; k++)
--      c[k] = 8;
--    fixed_bl = 7;
--    huft_build(c, 288, 257, cplens, cplext, &fixed_tl, &fixed_bl, &z);
--
--    /* distance table */
--    for (k = 0; k < 30; k++)
--      c[k] = 5;
--    fixed_bd = 5;
--    huft_build(c, 30, 0, cpdist, cpdext, &fixed_td, &fixed_bd, &z);
--
--    /* done */
--    fixed_built = 1;
--  }
--  fixed_lock--;
--  *bl = fixed_bl;
--  *bd = fixed_bd;
--  *tl = fixed_tl;
--  *td = fixed_td;
--  return Z_OK;
+-   if (s->state_in_ch < 256) add_pair_to_block ( s );
+-   init_RL ( s );
 -}
 -
 -
--local int inflate_trees_free(t, z)
--inflate_huft *t;        /* table to free */
--z_stream *z;            /* for zfree function */
--/* Free the malloc'ed tables built by huft_build(), which makes a linked
--   list of the tables it made, with the links in a dummy first entry of
--   each table. */
--{
--  register inflate_huft *p, *q;
--
--  /* Go through linked list, freeing from the malloced (t[-1]) address. */
--  p = t;
--  while (p != Z_NULL)
--  {
--    q = (--p)->next;
--    ZFREE(z, p, p->word.Nalloc * sizeof(inflate_huft));
--    p = q;
--  }
--  return Z_OK;
--}
--
--/*+++++*/
--/* infcodes.c -- process literals and length/distance pairs
-- * Copyright (C) 1995 Mark Adler
-- * For conditions of distribution and use, see copyright notice in zlib.h
-- */
--
--/* simplify the use of the inflate_huft type with some defines */
--#define base more.Base
--#define next more.Next
--#define exop word.what.Exop
--#define bits word.what.Bits
--
--/* inflate codes private state */
--struct inflate_codes_state {
--
--  /* mode */
--  enum {        /* waiting for "i:"=input, "o:"=output, "x:"=nothing */
--      START,    /* x: set up for LEN */
--      LEN,      /* i: get length/literal/eob next */
--      LENEXT,   /* i: getting length extra (have base) */
--      DIST,     /* i: get distance next */
--      DISTEXT,  /* i: getting distance extra */
--      COPY,     /* o: copying bytes in window, waiting for space */
--      LIT,      /* o: got literal, waiting for output space */
--      WASH,     /* o: got eob, possibly still output waiting */
--      END,      /* x: got eob and all data flushed */
--      BADCODE}  /* x: got error */
--    mode;               /* current inflate_codes mode */
--
--  /* mode dependent information */
--  uInt len;
--  union {
--    struct {
--      inflate_huft *tree;       /* pointer into tree */
--      uInt need;                /* bits needed */
--    } code;             /* if LEN or DIST, where in tree */
--    uInt lit;           /* if LIT, literal */
--    struct {
--      uInt get;                 /* bits to get for extra */
--      uInt dist;                /* distance back to copy from */
--    } copy;             /* if EXT or COPY, where and how much */
--  } sub;                /* submode */
--
--  /* mode independent information */
--  Byte lbits;           /* ltree bits decoded per branch */
--  Byte dbits;           /* dtree bits decoder per branch */
--  inflate_huft *ltree;          /* literal/length/eob tree */
--  inflate_huft *dtree;          /* distance tree */
--
--};
--
--
--local inflate_codes_statef *inflate_codes_new(bl, bd, tl, td, z)
--uInt bl, bd;
--inflate_huft *tl, *td;
--z_stream *z;
--{
--  inflate_codes_statef *c;
--
--  if ((c = (inflate_codes_statef *)
--       ZALLOC(z,1,sizeof(struct inflate_codes_state))) != Z_NULL)
--  {
--    c->mode = START;
--    c->lbits = (Byte)bl;
--    c->dbits = (Byte)bd;
--    c->ltree = tl;
--    c->dtree = td;
--    Tracev((stderr, "inflate:       codes new\n"));
--  }
--  return c;
+-/*---------------------------------------------------*/
+-#define ADD_CHAR_TO_BLOCK(zs,zchh0)               \
+-{                                                 \
+-   UInt32 zchh = (UInt32)(zchh0);                 \
+-   /*-- fast track the common case --*/           \
+-   if (zchh != zs->state_in_ch &&                 \
+-       zs->state_in_len == 1) {                   \
+-      UChar ch = (UChar)(zs->state_in_ch);        \
+-      BZ_UPDATE_CRC( zs->blockCRC, ch );          \
+-      zs->inUse[zs->state_in_ch] = True;          \
+-      zs->block[zs->nblock] = (UChar)ch;          \
+-      zs->nblock++;                               \
+-      zs->state_in_ch = zchh;                     \
+-   }                                              \
+-   else                                           \
+-   /*-- general, uncommon cases --*/              \
+-   if (zchh != zs->state_in_ch ||                 \
+-      zs->state_in_len == 255) {                  \
+-      if (zs->state_in_ch < 256)                  \
+-	 add_pair_to_block ( zs );                \
+-      zs->state_in_ch = zchh;                     \
+-      zs->state_in_len = 1;                       \
+-   } else {                                       \
+-      zs->state_in_len++;                         \
+-   }                                              \
 -}
 -
 -
--local int inflate_codes(s, z, r)
--inflate_blocks_statef *s;
--z_stream *z;
--int r;
+-/*---------------------------------------------------*/
+-static
+-Bool copy_input_until_stop ( EState* s )
 -{
--  uInt j;               /* temporary storage */
--  inflate_huft *t;      /* temporary pointer */
--  uInt e;               /* extra bits or operation */
--  uLong b;              /* bit buffer */
--  uInt k;               /* bits in bit buffer */
--  Bytef *p;             /* input data pointer */
--  uInt n;               /* bytes available there */
--  Bytef *q;             /* output window write pointer */
--  uInt m;               /* bytes to end of window or read pointer */
--  Bytef *f;             /* pointer to copy strings from */
--  inflate_codes_statef *c = s->sub.decode.codes;  /* codes state */
+-   Bool progress_in = False;
 -
--  /* copy input/output information to locals (UPDATE macro restores) */
--  LOAD
+-   if (s->mode == BZ_M_RUNNING) {
 -
--  /* process input and output based on current state */
--  while (1) switch (c->mode)
--  {             /* waiting for "i:"=input, "o:"=output, "x:"=nothing */
--    case START:         /* x: set up for LEN */
--#ifndef SLOW
--      if (m >= 258 && n >= 10)
--      {
--	UPDATE
--	r = inflate_fast(c->lbits, c->dbits, c->ltree, c->dtree, s, z);
--	LOAD
--	if (r != Z_OK)
--	{
--	  c->mode = r == Z_STREAM_END ? WASH : BADCODE;
--	  break;
--	}
+-      /*-- fast track the common case --*/
+-      while (True) {
+-	 /*-- block full? --*/
+-	 if (s->nblock >= s->nblockMAX) break;
+-	 /*-- no input? --*/
+-	 if (s->strm->avail_in == 0) break;
+-	 progress_in = True;
+-	 ADD_CHAR_TO_BLOCK ( s, (UInt32)(*((UChar*)(s->strm->next_in))) );
+-	 s->strm->next_in++;
+-	 s->strm->avail_in--;
+-	 s->strm->total_in_lo32++;
+-	 if (s->strm->total_in_lo32 == 0) s->strm->total_in_hi32++;
 -      }
--#endif /* !SLOW */
--      c->sub.code.need = c->lbits;
--      c->sub.code.tree = c->ltree;
--      c->mode = LEN;
--    case LEN:           /* i: get length/literal/eob next */
--      j = c->sub.code.need;
--      NEEDBITS(j)
--      t = c->sub.code.tree + ((uInt)b & inflate_mask[j]);
--      DUMPBITS(t->bits)
--      e = (uInt)(t->exop);
--      if (e == 0)               /* literal */
--      {
--	c->sub.lit = t->base;
--	Tracevv((stderr, t->base >= 0x20 && t->base < 0x7f ?
--		 "inflate:         literal '%c'\n" :
--		 "inflate:         literal 0x%02x\n", t->base));
--	c->mode = LIT;
--	break;
+-
+-   } else {
+-
+-      /*-- general, uncommon case --*/
+-      while (True) {
+-	 /*-- block full? --*/
+-	 if (s->nblock >= s->nblockMAX) break;
+-	 /*-- no input? --*/
+-	 if (s->strm->avail_in == 0) break;
+-	 /*-- flush/finish end? --*/
+-	 if (s->avail_in_expect == 0) break;
+-	 progress_in = True;
+-	 ADD_CHAR_TO_BLOCK ( s, (UInt32)(*((UChar*)(s->strm->next_in))) );
+-	 s->strm->next_in++;
+-	 s->strm->avail_in--;
+-	 s->strm->total_in_lo32++;
+-	 if (s->strm->total_in_lo32 == 0) s->strm->total_in_hi32++;
+-	 s->avail_in_expect--;
 -      }
--      if (e & 16)               /* length */
--      {
--	c->sub.copy.get = e & 15;
--	c->len = t->base;
--	c->mode = LENEXT;
--	break;
--      }
--      if ((e & 64) == 0)        /* next table */
--      {
--	c->sub.code.need = e;
--	c->sub.code.tree = t->next;
--	break;
--      }
--      if (e & 32)               /* end of block */
--      {
--	Tracevv((stderr, "inflate:         end of block\n"));
--	c->mode = WASH;
--	break;
--      }
--      c->mode = BADCODE;        /* invalid code */
--      z->msg = "invalid literal/length code";
--      r = Z_DATA_ERROR;
--      LEAVE
--    case LENEXT:        /* i: getting length extra (have base) */
--      j = c->sub.copy.get;
--      NEEDBITS(j)
--      c->len += (uInt)b & inflate_mask[j];
--      DUMPBITS(j)
--      c->sub.code.need = c->dbits;
--      c->sub.code.tree = c->dtree;
--      Tracevv((stderr, "inflate:         length %u\n", c->len));
--      c->mode = DIST;
--    case DIST:          /* i: get distance next */
--      j = c->sub.code.need;
--      NEEDBITS(j)
--      t = c->sub.code.tree + ((uInt)b & inflate_mask[j]);
--      DUMPBITS(t->bits)
--      e = (uInt)(t->exop);
--      if (e & 16)               /* distance */
--      {
--	c->sub.copy.get = e & 15;
--	c->sub.copy.dist = t->base;
--	c->mode = DISTEXT;
--	break;
--      }
--      if ((e & 64) == 0)        /* next table */
--      {
--	c->sub.code.need = e;
--	c->sub.code.tree = t->next;
--	break;
--      }
--      c->mode = BADCODE;        /* invalid code */
--      z->msg = "invalid distance code";
--      r = Z_DATA_ERROR;
--      LEAVE
--    case DISTEXT:       /* i: getting distance extra */
--      j = c->sub.copy.get;
--      NEEDBITS(j)
--      c->sub.copy.dist += (uInt)b & inflate_mask[j];
--      DUMPBITS(j)
--      Tracevv((stderr, "inflate:         distance %u\n", c->sub.copy.dist));
--      c->mode = COPY;
--    case COPY:          /* o: copying bytes in window, waiting for space */
--#ifndef __TURBOC__ /* Turbo C bug for following expression */
--      f = (uInt)(q - s->window) < c->sub.copy.dist ?
--	  s->end - (c->sub.copy.dist - (q - s->window)) :
--	  q - c->sub.copy.dist;
--#else
--      f = q - c->sub.copy.dist;
--      if ((uInt)(q - s->window) < c->sub.copy.dist)
--	f = s->end - (c->sub.copy.dist - (q - s->window));
--#endif
--      while (c->len)
--      {
--	NEEDOUT
--	OUTBYTE(*f++)
--	if (f == s->end)
--	  f = s->window;
--	c->len--;
--      }
--      c->mode = START;
--      break;
--    case LIT:           /* o: got literal, waiting for output space */
--      NEEDOUT
--      OUTBYTE(c->sub.lit)
--      c->mode = START;
--      break;
--    case WASH:          /* o: got eob, possibly more output */
--      FLUSH
--      if (s->read != s->write)
--	LEAVE
--      c->mode = END;
--    case END:
--      r = Z_STREAM_END;
--      LEAVE
--    case BADCODE:       /* x: got error */
--      r = Z_DATA_ERROR;
--      LEAVE
--    default:
--      r = Z_STREAM_ERROR;
--      LEAVE
--  }
+-   }
+-   return progress_in;
 -}
 -
 -
--local void inflate_codes_free(c, z)
--inflate_codes_statef *c;
--z_stream *z;
+-/*---------------------------------------------------*/
+-static
+-Bool copy_output_until_stop ( EState* s )
 -{
--  ZFREE(z, c, sizeof(struct inflate_codes_state));
--  Tracev((stderr, "inflate:       codes free\n"));
--}
+-   Bool progress_out = False;
 -
--/*+++++*/
--/* inflate_util.c -- data and routines common to blocks and codes
-- * Copyright (C) 1995 Mark Adler
-- * For conditions of distribution and use, see copyright notice in zlib.h
-- */
+-   while (True) {
 -
--/* copy as much as possible from the sliding window to the output area */
--local int inflate_flush(s, z, r)
--inflate_blocks_statef *s;
--z_stream *z;
--int r;
--{
--  uInt n;
--  Bytef *p, *q;
+-      /*-- no output space? --*/
+-      if (s->strm->avail_out == 0) break;
 -
--  /* local copies of source and destination pointers */
--  p = z->next_out;
--  q = s->read;
+-      /*-- block done? --*/
+-      if (s->state_out_pos >= s->numZ) break;
 -
--  /* compute number of bytes to copy as far as end of window */
--  n = (uInt)((q <= s->write ? s->write : s->end) - q);
--  if (n > z->avail_out) n = z->avail_out;
--  if (n && r == Z_BUF_ERROR) r = Z_OK;
+-      progress_out = True;
+-      *(s->strm->next_out) = s->zbits[s->state_out_pos];
+-      s->state_out_pos++;
+-      s->strm->avail_out--;
+-      s->strm->next_out++;
+-      s->strm->total_out_lo32++;
+-      if (s->strm->total_out_lo32 == 0) s->strm->total_out_hi32++;
+-   }
 -
--  /* update counters */
--  z->avail_out -= n;
--  z->total_out += n;
--
--  /* update check information */
--  if (s->checkfn != Z_NULL)
--    s->check = (*s->checkfn)(s->check, q, n);
--
--  /* output callback */
--  if (z->outcb != Z_NULL)
--    (*z->outcb)(q, n);
--
--  /* copy as far as end of window */
--  zmemcpy(p, q, n);
--  p += n;
--  q += n;
--
--  /* see if more to copy at beginning of window */
--  if (q == s->end)
--  {
--    /* wrap pointers */
--    q = s->window;
--    if (s->write == s->end)
--      s->write = s->window;
--
--    /* compute bytes to copy */
--    n = (uInt)(s->write - q);
--    if (n > z->avail_out) n = z->avail_out;
--    if (n && r == Z_BUF_ERROR) r = Z_OK;
--
--    /* update counters */
--    z->avail_out -= n;
--    z->total_out += n;
--
--    /* update check information */
--    if (s->checkfn != Z_NULL)
--      s->check = (*s->checkfn)(s->check, q, n);
--
--    /* output callback */
--    if (z->outcb != Z_NULL)
--	(*z->outcb)(q, n);
--
--    /* copy */
--    zmemcpy(p, q, n);
--    p += n;
--    q += n;
--  }
--
--  /* update pointers */
--  z->next_out = p;
--  s->read = q;
--
--  /* done */
--  return r;
+-   return progress_out;
 -}
 -
 -
--/*+++++*/
--/* inffast.c -- process literals and length/distance pairs fast
-- * Copyright (C) 1995 Mark Adler
-- * For conditions of distribution and use, see copyright notice in zlib.h
-- */
--
--/* simplify the use of the inflate_huft type with some defines */
--#define base more.Base
--#define next more.Next
--#define exop word.what.Exop
--#define bits word.what.Bits
--
--/* macros for bit input with no checking and for returning unused bytes */
--#define GRABBITS(j) {while(k<(j)){b|=((uLong)NEXTBYTE)<<k;k+=8;}}
--#define UNGRAB {n+=(c=k>>3);p-=c;k&=7;}
--
--/* Called with number of bytes left to write in window at least 258
--   (the maximum string length) and number of input bytes available
--   at least ten.  The ten bytes are six bytes for the longest length/
--   distance pair plus four bytes for overloading the bit buffer. */
--
--local int inflate_fast(bl, bd, tl, td, s, z)
--uInt bl, bd;
--inflate_huft *tl, *td;
--inflate_blocks_statef *s;
--z_stream *z;
+-/*---------------------------------------------------*/
+-static
+-Bool handle_compress ( bz_stream* strm )
 -{
--  inflate_huft *t;      /* temporary pointer */
--  uInt e;               /* extra bits or operation */
--  uLong b;              /* bit buffer */
--  uInt k;               /* bits in bit buffer */
--  Bytef *p;             /* input data pointer */
--  uInt n;               /* bytes available there */
--  Bytef *q;             /* output window write pointer */
--  uInt m;               /* bytes to end of window or read pointer */
--  uInt ml;              /* mask for literal/length tree */
--  uInt md;              /* mask for distance tree */
--  uInt c;               /* bytes to copy */
--  uInt d;               /* distance back to copy from */
--  Bytef *r;             /* copy source pointer */
+-   Bool progress_in  = False;
+-   Bool progress_out = False;
+-   EState* s = strm->state;
 -
--  /* load input, output, bit values */
--  LOAD
+-   while (True) {
 -
--  /* initialize masks */
--  ml = inflate_mask[bl];
--  md = inflate_mask[bd];
+-      if (s->state == BZ_S_OUTPUT) {
+-	 progress_out |= copy_output_until_stop ( s );
+-	 if (s->state_out_pos < s->numZ) break;
+-	 if (s->mode == BZ_M_FINISHING &&
+-	     s->avail_in_expect == 0 &&
+-	     isempty_RL(s)) break;
+-	 prepare_new_block ( s );
+-	 s->state = BZ_S_INPUT;
+-	 if (s->mode == BZ_M_FLUSHING &&
+-	     s->avail_in_expect == 0 &&
+-	     isempty_RL(s)) break;
+-      }
 -
--  /* do until not enough input or output space for fast loop */
--  do {                          /* assume called with m >= 258 && n >= 10 */
--    /* get literal/length code */
--    GRABBITS(20)                /* max bits for literal/length code */
--    if ((e = (t = tl + ((uInt)b & ml))->exop) == 0)
--    {
--      DUMPBITS(t->bits)
--      Tracevv((stderr, t->base >= 0x20 && t->base < 0x7f ?
--		"inflate:         * literal '%c'\n" :
--		"inflate:         * literal 0x%02x\n", t->base));
--      *q++ = (Byte)t->base;
--      m--;
--      continue;
--    }
--    do {
--      DUMPBITS(t->bits)
--      if (e & 16)
--      {
--	/* get extra bits for length */
--	e &= 15;
--	c = t->base + ((uInt)b & inflate_mask[e]);
--	DUMPBITS(e)
--	Tracevv((stderr, "inflate:         * length %u\n", c));
--
--	/* decode distance base of block to copy */
--	GRABBITS(15);           /* max bits for distance code */
--	e = (t = td + ((uInt)b & md))->exop;
--	do {
--	  DUMPBITS(t->bits)
--	  if (e & 16)
--	  {
--	    /* get extra bits to add to distance base */
--	    e &= 15;
--	    GRABBITS(e)         /* get extra bits (up to 13) */
--	    d = t->base + ((uInt)b & inflate_mask[e]);
--	    DUMPBITS(e)
--	    Tracevv((stderr, "inflate:         * distance %u\n", d));
--
--	    /* do the copy */
--	    m -= c;
--	    if ((uInt)(q - s->window) >= d)     /* offset before dest */
--	    {                                   /*  just copy */
--	      r = q - d;
--	      *q++ = *r++;  c--;        /* minimum count is three, */
--	      *q++ = *r++;  c--;        /*  so unroll loop a little */
--	    }
--	    else                        /* else offset after destination */
--	    {
--	      e = d - (q - s->window);  /* bytes from offset to end */
--	      r = s->end - e;           /* pointer to offset */
--	      if (c > e)                /* if source crosses, */
--	      {
--		c -= e;                 /* copy to end of window */
--		do {
--		  *q++ = *r++;
--		} while (--e);
--		r = s->window;          /* copy rest from start of window */
--	      }
--	    }
--	    do {                        /* copy all or what's left */
--	      *q++ = *r++;
--	    } while (--c);
+-      if (s->state == BZ_S_INPUT) {
+-	 progress_in |= copy_input_until_stop ( s );
+-	 if (s->mode != BZ_M_RUNNING && s->avail_in_expect == 0) {
+-	    flush_RL ( s );
+-	    BZ2_compressBlock ( s, (Bool)(s->mode == BZ_M_FINISHING) );
+-	    s->state = BZ_S_OUTPUT;
+-	 }
+-	 else
+-	 if (s->nblock >= s->nblockMAX) {
+-	    BZ2_compressBlock ( s, False );
+-	    s->state = BZ_S_OUTPUT;
+-	 }
+-	 else
+-	 if (s->strm->avail_in == 0) {
 -	    break;
--	  }
--	  else if ((e & 64) == 0)
--	    e = (t = t->next + ((uInt)b & inflate_mask[e]))->exop;
--	  else
--	  {
--	    z->msg = "invalid distance code";
--	    UNGRAB
--	    UPDATE
--	    return Z_DATA_ERROR;
--	  }
--	} while (1);
--	break;
+-	 }
 -      }
--      if ((e & 64) == 0)
--      {
--	if ((e = (t = t->next + ((uInt)b & inflate_mask[e]))->exop) == 0)
--	{
--	  DUMPBITS(t->bits)
--	  Tracevv((stderr, t->base >= 0x20 && t->base < 0x7f ?
--		    "inflate:         * literal '%c'\n" :
--		    "inflate:         * literal 0x%02x\n", t->base));
--	  *q++ = (Byte)t->base;
--	  m--;
--	  break;
--	}
--      }
--      else if (e & 32)
--      {
--	Tracevv((stderr, "inflate:         * end of block\n"));
--	UNGRAB
--	UPDATE
--	return Z_STREAM_END;
--      }
--      else
--      {
--	z->msg = "invalid literal/length code";
--	UNGRAB
--	UPDATE
--	return Z_DATA_ERROR;
--      }
--    } while (1);
--  } while (m >= 258 && n >= 10);
 -
--  /* not enough input or output--restore pointers and return */
--  UNGRAB
--  UPDATE
--  return Z_OK;
+-   }
+-
+-   return progress_in || progress_out;
 -}
 -
 -
--/*+++++*/
--/* zutil.c -- target dependent utility functions for the compression library
-- * Copyright (C) 1995 Jean-loup Gailly.
-- * For conditions of distribution and use, see copyright notice in zlib.h
-- */
--
--/* From: zutil.c,v 1.8 1995/05/03 17:27:12 jloup Exp */
--
--char *zlib_version = ZLIB_VERSION;
--
--char *z_errmsg[] = {
--"stream end",          /* Z_STREAM_END    1 */
--"",                    /* Z_OK            0 */
--"file error",          /* Z_ERRNO        (-1) */
--"stream error",        /* Z_STREAM_ERROR (-2) */
--"data error",          /* Z_DATA_ERROR   (-3) */
--"insufficient memory", /* Z_MEM_ERROR    (-4) */
--"buffer error",        /* Z_BUF_ERROR    (-5) */
--""};
--
--
--/*+++++*/
--/* adler32.c -- compute the Adler-32 checksum of a data stream
-- * Copyright (C) 1995 Mark Adler
-- * For conditions of distribution and use, see copyright notice in zlib.h
-- */
--
--/* From: adler32.c,v 1.6 1995/05/03 17:27:08 jloup Exp */
--
--#define BASE 65521L /* largest prime smaller than 65536 */
--#define NMAX 5552
--/* NMAX is the largest n such that 255n(n+1)/2 + (n+1)(BASE-1) <= 2^32-1 */
--
--#define DO1(buf)  {s1 += *buf++; s2 += s1;}
--#define DO2(buf)  DO1(buf); DO1(buf);
--#define DO4(buf)  DO2(buf); DO2(buf);
--#define DO8(buf)  DO4(buf); DO4(buf);
--#define DO16(buf) DO8(buf); DO8(buf);
--
--/* ========================================================================= */
--uLong adler32(adler, buf, len)
--    uLong adler;
--    Bytef *buf;
--    uInt len;
+-/*---------------------------------------------------*/
+-int BZ_API(BZ2_bzCompress) ( bz_stream *strm, int action )
 -{
--    unsigned long s1 = adler & 0xffff;
--    unsigned long s2 = (adler >> 16) & 0xffff;
--    int k;
+-   Bool progress;
+-   EState* s;
+-   if (strm == NULL) return BZ_PARAM_ERROR;
+-   s = strm->state;
+-   if (s == NULL) return BZ_PARAM_ERROR;
+-   if (s->strm != strm) return BZ_PARAM_ERROR;
 -
--    if (buf == Z_NULL) return 1L;
+-   preswitch:
+-   switch (s->mode) {
 -
--    while (len > 0) {
--	k = len < NMAX ? len : NMAX;
--	len -= k;
--	while (k >= 16) {
--	    DO16(buf);
--	    k -= 16;
--	}
--	if (k != 0) do {
--	    DO1(buf);
--	} while (--k);
--	s1 %= BASE;
--	s2 %= BASE;
--    }
--    return (s2 << 16) | s1;
+-      case BZ_M_IDLE:
+-	 return BZ_SEQUENCE_ERROR;
+-
+-      case BZ_M_RUNNING:
+-	 if (action == BZ_RUN) {
+-	    progress = handle_compress ( strm );
+-	    return progress ? BZ_RUN_OK : BZ_PARAM_ERROR;
+-	 }
+-	 else
+-	 if (action == BZ_FLUSH) {
+-	    s->avail_in_expect = strm->avail_in;
+-	    s->mode = BZ_M_FLUSHING;
+-	    goto preswitch;
+-	 }
+-	 else
+-	 if (action == BZ_FINISH) {
+-	    s->avail_in_expect = strm->avail_in;
+-	    s->mode = BZ_M_FINISHING;
+-	    goto preswitch;
+-	 }
+-	 else
+-	    return BZ_PARAM_ERROR;
+-
+-      case BZ_M_FLUSHING:
+-	 if (action != BZ_FLUSH) return BZ_SEQUENCE_ERROR;
+-	 if (s->avail_in_expect != s->strm->avail_in)
+-	    return BZ_SEQUENCE_ERROR;
+-	 progress = handle_compress ( strm );
+-	 if (s->avail_in_expect > 0 || !isempty_RL(s) ||
+-	     s->state_out_pos < s->numZ) return BZ_FLUSH_OK;
+-	 s->mode = BZ_M_RUNNING;
+-	 return BZ_RUN_OK;
+-
+-      case BZ_M_FINISHING:
+-	 if (action != BZ_FINISH) return BZ_SEQUENCE_ERROR;
+-	 if (s->avail_in_expect != s->strm->avail_in)
+-	    return BZ_SEQUENCE_ERROR;
+-	 progress = handle_compress ( strm );
+-	 if (!progress) return BZ_SEQUENCE_ERROR;
+-	 if (s->avail_in_expect > 0 || !isempty_RL(s) ||
+-	     s->state_out_pos < s->numZ) return BZ_FINISH_OK;
+-	 s->mode = BZ_M_IDLE;
+-	 return BZ_STREAM_END;
+-   }
+-   return BZ_OK; /*--not reached--*/
 -}
+-
+-
+-/*---------------------------------------------------*/
+-int BZ_API(BZ2_bzCompressEnd)  ( bz_stream *strm )
+-{
+-   EState* s;
+-   if (strm == NULL) return BZ_PARAM_ERROR;
+-   s = strm->state;
+-   if (s == NULL) return BZ_PARAM_ERROR;
+-   if (s->strm != strm) return BZ_PARAM_ERROR;
+-
+-   if (s->arr1 != NULL) BZFREE(s->arr1);
+-   if (s->arr2 != NULL) BZFREE(s->arr2);
+-   if (s->ftab != NULL) BZFREE(s->ftab);
+-   BZFREE(strm->state);
+-
+-   strm->state = NULL;
+-
+-   return BZ_OK;
+-}
+-#endif /* BZ_NO_COMPRESS */
+-
+-/*---------------------------------------------------*/
+-/*--- Decompression stuff                         ---*/
+-/*---------------------------------------------------*/
+-
+-/*---------------------------------------------------*/
+-int BZ_API(BZ2_bzDecompressInit)
+-		     ( bz_stream* strm,
+-		       int        verbosity,
+-		       int        small )
+-{
+-   DState* s;
+-
+-   if (!bz_config_ok()) return BZ_CONFIG_ERROR;
+-
+-   if (strm == NULL) return BZ_PARAM_ERROR;
+-   if (small != 0 && small != 1) return BZ_PARAM_ERROR;
+-   if (verbosity < 0 || verbosity > 4) return BZ_PARAM_ERROR;
+-
+-   if (strm->bzalloc == NULL) strm->bzalloc = default_bzalloc;
+-   if (strm->bzfree == NULL) strm->bzfree = default_bzfree;
+-
+-   s = BZALLOC( sizeof(DState) );
+-   if (s == NULL) return BZ_MEM_ERROR;
+-   s->strm                  = strm;
+-   strm->state              = s;
+-   s->state                 = BZ_X_MAGIC_1;
+-   s->bsLive                = 0;
+-   s->bsBuff                = 0;
+-   s->calculatedCombinedCRC = 0;
+-   strm->total_in_lo32      = 0;
+-   strm->total_in_hi32      = 0;
+-   strm->total_out_lo32     = 0;
+-   strm->total_out_hi32     = 0;
+-   s->smallDecompress       = (Bool)small;
+-   s->ll4                   = NULL;
+-   s->ll16                  = NULL;
+-   s->tt                    = NULL;
+-   s->currBlockNo           = 0;
+-   s->verbosity             = verbosity;
+-
+-   return BZ_OK;
+-}
+-
+-
+-/*---------------------------------------------------*/
+-static
+-void unRLE_obuf_to_output_FAST ( DState* s )
+-{
+-   UChar k1;
+-
+-   if (s->blockRandomised) {
+-
+-      while (True) {
+-	 /* try to finish existing run */
+-	 while (True) {
+-	    if (s->strm->avail_out == 0) return;
+-	    if (s->state_out_len == 0) break;
+-	    *( (UChar*)(s->strm->next_out) ) = s->state_out_ch;
+-	    BZ_UPDATE_CRC ( s->calculatedBlockCRC, s->state_out_ch );
+-	    s->state_out_len--;
+-	    s->strm->next_out++;
+-	    s->strm->avail_out--;
+-	    s->strm->total_out_lo32++;
+-	    if (s->strm->total_out_lo32 == 0) s->strm->total_out_hi32++;
+-	 }
+-
+-	 /* can a new run be started? */
+-	 if (s->nblock_used == s->save_nblock+1) return;
+-
+-
+-	 s->state_out_len = 1;
+-	 s->state_out_ch = s->k0;
+-	 BZ_GET_FAST(k1); BZ_RAND_UPD_MASK;
+-	 k1 ^= BZ_RAND_MASK; s->nblock_used++;
+-	 if (s->nblock_used == s->save_nblock+1) continue;
+-	 if (k1 != s->k0) { s->k0 = k1; continue; };
+-
+-	 s->state_out_len = 2;
+-	 BZ_GET_FAST(k1); BZ_RAND_UPD_MASK;
+-	 k1 ^= BZ_RAND_MASK; s->nblock_used++;
+-	 if (s->nblock_used == s->save_nblock+1) continue;
+-	 if (k1 != s->k0) { s->k0 = k1; continue; };
+-
+-	 s->state_out_len = 3;
+-	 BZ_GET_FAST(k1); BZ_RAND_UPD_MASK;
+-	 k1 ^= BZ_RAND_MASK; s->nblock_used++;
+-	 if (s->nblock_used == s->save_nblock+1) continue;
+-	 if (k1 != s->k0) { s->k0 = k1; continue; };
+-
+-	 BZ_GET_FAST(k1); BZ_RAND_UPD_MASK;
+-	 k1 ^= BZ_RAND_MASK; s->nblock_used++;
+-	 s->state_out_len = ((Int32)k1) + 4;
+-	 BZ_GET_FAST(s->k0); BZ_RAND_UPD_MASK;
+-	 s->k0 ^= BZ_RAND_MASK; s->nblock_used++;
+-      }
+-
+-   } else {
+-
+-      /* restore */
+-      UInt32        c_calculatedBlockCRC = s->calculatedBlockCRC;
+-      UChar         c_state_out_ch       = s->state_out_ch;
+-      Int32         c_state_out_len      = s->state_out_len;
+-      Int32         c_nblock_used        = s->nblock_used;
+-      Int32         c_k0                 = s->k0;
+-      UInt32*       c_tt                 = s->tt;
+-      UInt32        c_tPos               = s->tPos;
+-      char*         cs_next_out          = s->strm->next_out;
+-      unsigned int  cs_avail_out         = s->strm->avail_out;
+-      /* end restore */
+-
+-      UInt32       avail_out_INIT = cs_avail_out;
+-      Int32        s_save_nblockPP = s->save_nblock+1;
+-      unsigned int total_out_lo32_old;
+-
+-      while (True) {
+-
+-	 /* try to finish existing run */
+-	 if (c_state_out_len > 0) {
+-	    while (True) {
+-	       if (cs_avail_out == 0) goto return_notr;
+-	       if (c_state_out_len == 1) break;
+-	       *( (UChar*)(cs_next_out) ) = c_state_out_ch;
+-	       BZ_UPDATE_CRC ( c_calculatedBlockCRC, c_state_out_ch );
+-	       c_state_out_len--;
+-	       cs_next_out++;
+-	       cs_avail_out--;
+-	    }
+-	    s_state_out_len_eq_one:
+-	    {
+-	       if (cs_avail_out == 0) {
+-		  c_state_out_len = 1; goto return_notr;
+-	       };
+-	       *( (UChar*)(cs_next_out) ) = c_state_out_ch;
+-	       BZ_UPDATE_CRC ( c_calculatedBlockCRC, c_state_out_ch );
+-	       cs_next_out++;
+-	       cs_avail_out--;
+-	    }
+-	 }
+-	 /* can a new run be started? */
+-	 if (c_nblock_used == s_save_nblockPP) {
+-	    c_state_out_len = 0; goto return_notr;
+-	 };
+-	 c_state_out_ch = c_k0;
+-	 BZ_GET_FAST_C(k1); c_nblock_used++;
+-	 if (k1 != c_k0) {
+-	    c_k0 = k1; goto s_state_out_len_eq_one;
+-	 };
+-	 if (c_nblock_used == s_save_nblockPP)
+-	    goto s_state_out_len_eq_one;
+-
+-	 c_state_out_len = 2;
+-	 BZ_GET_FAST_C(k1); c_nblock_used++;
+-	 if (c_nblock_used == s_save_nblockPP) continue;
+-	 if (k1 != c_k0) { c_k0 = k1; continue; };
+-
+-	 c_state_out_len = 3;
+-	 BZ_GET_FAST_C(k1); c_nblock_used++;
+-	 if (c_nblock_used == s_save_nblockPP) continue;
+-	 if (k1 != c_k0) { c_k0 = k1; continue; };
+-
+-	 BZ_GET_FAST_C(k1); c_nblock_used++;
+-	 c_state_out_len = ((Int32)k1) + 4;
+-	 BZ_GET_FAST_C(c_k0); c_nblock_used++;
+-      }
+-
+-      return_notr:
+-      total_out_lo32_old = s->strm->total_out_lo32;
+-      s->strm->total_out_lo32 += (avail_out_INIT - cs_avail_out);
+-      if (s->strm->total_out_lo32 < total_out_lo32_old)
+-	 s->strm->total_out_hi32++;
+-
+-      /* save */
+-      s->calculatedBlockCRC = c_calculatedBlockCRC;
+-      s->state_out_ch       = c_state_out_ch;
+-      s->state_out_len      = c_state_out_len;
+-      s->nblock_used        = c_nblock_used;
+-      s->k0                 = c_k0;
+-      s->tt                 = c_tt;
+-      s->tPos               = c_tPos;
+-      s->strm->next_out     = cs_next_out;
+-      s->strm->avail_out    = cs_avail_out;
+-      /* end save */
+-   }
+-}
+-
+-
+-/*---------------------------------------------------*/
+-__inline__ Int32 BZ2_indexIntoF ( Int32 indx, Int32 *cftab )
+-{
+-   Int32 nb, na, mid;
+-   nb = 0;
+-   na = 256;
+-   do {
+-      mid = (nb + na) >> 1;
+-      if (indx >= cftab[mid]) nb = mid; else na = mid;
+-   }
+-   while (na - nb != 1);
+-   return nb;
+-}
+-
+-
+-/*---------------------------------------------------*/
+-static
+-void unRLE_obuf_to_output_SMALL ( DState* s )
+-{
+-   UChar k1;
+-
+-   if (s->blockRandomised) {
+-
+-      while (True) {
+-	 /* try to finish existing run */
+-	 while (True) {
+-	    if (s->strm->avail_out == 0) return;
+-	    if (s->state_out_len == 0) break;
+-	    *( (UChar*)(s->strm->next_out) ) = s->state_out_ch;
+-	    BZ_UPDATE_CRC ( s->calculatedBlockCRC, s->state_out_ch );
+-	    s->state_out_len--;
+-	    s->strm->next_out++;
+-	    s->strm->avail_out--;
+-	    s->strm->total_out_lo32++;
+-	    if (s->strm->total_out_lo32 == 0) s->strm->total_out_hi32++;
+-	 }
+-
+-	 /* can a new run be started? */
+-	 if (s->nblock_used == s->save_nblock+1) return;
+-
+-
+-	 s->state_out_len = 1;
+-	 s->state_out_ch = s->k0;
+-	 BZ_GET_SMALL(k1); BZ_RAND_UPD_MASK;
+-	 k1 ^= BZ_RAND_MASK; s->nblock_used++;
+-	 if (s->nblock_used == s->save_nblock+1) continue;
+-	 if (k1 != s->k0) { s->k0 = k1; continue; };
+-
+-	 s->state_out_len = 2;
+-	 BZ_GET_SMALL(k1); BZ_RAND_UPD_MASK;
+-	 k1 ^= BZ_RAND_MASK; s->nblock_used++;
+-	 if (s->nblock_used == s->save_nblock+1) continue;
+-	 if (k1 != s->k0) { s->k0 = k1; continue; };
+-
+-	 s->state_out_len = 3;
+-	 BZ_GET_SMALL(k1); BZ_RAND_UPD_MASK;
+-	 k1 ^= BZ_RAND_MASK; s->nblock_used++;
+-	 if (s->nblock_used == s->save_nblock+1) continue;
+-	 if (k1 != s->k0) { s->k0 = k1; continue; };
+-
+-	 BZ_GET_SMALL(k1); BZ_RAND_UPD_MASK;
+-	 k1 ^= BZ_RAND_MASK; s->nblock_used++;
+-	 s->state_out_len = ((Int32)k1) + 4;
+-	 BZ_GET_SMALL(s->k0); BZ_RAND_UPD_MASK;
+-	 s->k0 ^= BZ_RAND_MASK; s->nblock_used++;
+-      }
+-
+-   } else {
+-
+-      while (True) {
+-	 /* try to finish existing run */
+-	 while (True) {
+-	    if (s->strm->avail_out == 0) return;
+-	    if (s->state_out_len == 0) break;
+-	    *( (UChar*)(s->strm->next_out) ) = s->state_out_ch;
+-	    BZ_UPDATE_CRC ( s->calculatedBlockCRC, s->state_out_ch );
+-	    s->state_out_len--;
+-	    s->strm->next_out++;
+-	    s->strm->avail_out--;
+-	    s->strm->total_out_lo32++;
+-	    if (s->strm->total_out_lo32 == 0) s->strm->total_out_hi32++;
+-	 }
+-
+-	 /* can a new run be started? */
+-	 if (s->nblock_used == s->save_nblock+1) return;
+-
+-	 s->state_out_len = 1;
+-	 s->state_out_ch = s->k0;
+-	 BZ_GET_SMALL(k1); s->nblock_used++;
+-	 if (s->nblock_used == s->save_nblock+1) continue;
+-	 if (k1 != s->k0) { s->k0 = k1; continue; };
+-
+-	 s->state_out_len = 2;
+-	 BZ_GET_SMALL(k1); s->nblock_used++;
+-	 if (s->nblock_used == s->save_nblock+1) continue;
+-	 if (k1 != s->k0) { s->k0 = k1; continue; };
+-
+-	 s->state_out_len = 3;
+-	 BZ_GET_SMALL(k1); s->nblock_used++;
+-	 if (s->nblock_used == s->save_nblock+1) continue;
+-	 if (k1 != s->k0) { s->k0 = k1; continue; };
+-
+-	 BZ_GET_SMALL(k1); s->nblock_used++;
+-	 s->state_out_len = ((Int32)k1) + 4;
+-	 BZ_GET_SMALL(s->k0); s->nblock_used++;
+-      }
+-
+-   }
+-}
+-
+-
+-/*---------------------------------------------------*/
+-int BZ_API(BZ2_bzDecompress) ( bz_stream *strm )
+-{
+-   DState* s;
+-   if (strm == NULL) return BZ_PARAM_ERROR;
+-   s = strm->state;
+-   if (s == NULL) return BZ_PARAM_ERROR;
+-   if (s->strm != strm) return BZ_PARAM_ERROR;
+-
+-   while (True) {
+-#if defined(CONFIG_HW_WATCHDOG) || defined(CONFIG_WATCHDOG)
+-	WATCHDOG_RESET();
+-#endif
+-      if (s->state == BZ_X_IDLE) return BZ_SEQUENCE_ERROR;
+-      if (s->state == BZ_X_OUTPUT) {
+-	 if (s->smallDecompress)
+-	    unRLE_obuf_to_output_SMALL ( s ); else
+-	    unRLE_obuf_to_output_FAST  ( s );
+-	 if (s->nblock_used == s->save_nblock+1 && s->state_out_len == 0) {
+-	    BZ_FINALISE_CRC ( s->calculatedBlockCRC );
+-	    if (s->verbosity >= 3)
+-	       VPrintf2 ( " {0x%x, 0x%x}", s->storedBlockCRC,
+-			  s->calculatedBlockCRC );
+-	    if (s->verbosity >= 2) VPrintf0 ( "]" );
+-	    if (s->calculatedBlockCRC != s->storedBlockCRC)
+-	       return BZ_DATA_ERROR;
+-	    s->calculatedCombinedCRC
+-	       = (s->calculatedCombinedCRC << 1) |
+-		    (s->calculatedCombinedCRC >> 31);
+-	    s->calculatedCombinedCRC ^= s->calculatedBlockCRC;
+-	    s->state = BZ_X_BLKHDR_1;
+-	 } else {
+-	    return BZ_OK;
+-	 }
+-      }
+-      if (s->state >= BZ_X_MAGIC_1) {
+-	 Int32 r = BZ2_decompress ( s );
+-	 if (r == BZ_STREAM_END) {
+-	    if (s->verbosity >= 3)
+-	       VPrintf2 ( "\n    combined CRCs: stored = 0x%x, computed = 0x%x",
+-			  s->storedCombinedCRC, s->calculatedCombinedCRC );
+-	    if (s->calculatedCombinedCRC != s->storedCombinedCRC)
+-	       return BZ_DATA_ERROR;
+-	    return r;
+-	 }
+-	 if (s->state != BZ_X_OUTPUT) return r;
+-      }
+-   }
+-
+-   AssertH ( 0, 6001 );
+-
+-   return 0;  /*NOTREACHED*/
+-}
+-
+-
+-/*---------------------------------------------------*/
+-int BZ_API(BZ2_bzDecompressEnd)  ( bz_stream *strm )
+-{
+-   DState* s;
+-   if (strm == NULL) return BZ_PARAM_ERROR;
+-   s = strm->state;
+-   if (s == NULL) return BZ_PARAM_ERROR;
+-   if (s->strm != strm) return BZ_PARAM_ERROR;
+-
+-   if (s->tt   != NULL) BZFREE(s->tt);
+-   if (s->ll16 != NULL) BZFREE(s->ll16);
+-   if (s->ll4  != NULL) BZFREE(s->ll4);
+-
+-   BZFREE(strm->state);
+-   strm->state = NULL;
+-
+-   return BZ_OK;
+-}
+-
+-
+-#ifndef BZ_NO_STDIO
+-/*---------------------------------------------------*/
+-/*--- File I/O stuff                              ---*/
+-/*---------------------------------------------------*/
+-
+-#define BZ_SETERR(eee)                    \
+-{                                         \
+-   if (bzerror != NULL) *bzerror = eee;   \
+-   if (bzf != NULL) bzf->lastErr = eee;   \
+-}
+-
+-typedef
+-   struct {
+-      FILE*     handle;
+-      Char      buf[BZ_MAX_UNUSED];
+-      Int32     bufN;
+-      Bool      writing;
+-      bz_stream strm;
+-      Int32     lastErr;
+-      Bool      initialisedOk;
+-   }
+-   bzFile;
+-
+-
+-/*---------------------------------------------*/
+-static Bool myfeof ( FILE* f )
+-{
+-   Int32 c = fgetc ( f );
+-   if (c == EOF) return True;
+-   ungetc ( c, f );
+-   return False;
+-}
+-
+-
+-/*---------------------------------------------------*/
+-BZFILE* BZ_API(BZ2_bzWriteOpen)
+-		    ( int*  bzerror,
+-		      FILE* f,
+-		      int   blockSize100k,
+-		      int   verbosity,
+-		      int   workFactor )
+-{
+-   Int32   ret;
+-   bzFile* bzf = NULL;
+-
+-   BZ_SETERR(BZ_OK);
+-
+-   if (f == NULL ||
+-       (blockSize100k < 1 || blockSize100k > 9) ||
+-       (workFactor < 0 || workFactor > 250) ||
+-       (verbosity < 0 || verbosity > 4))
+-      { BZ_SETERR(BZ_PARAM_ERROR); return NULL; };
+-
+-   if (ferror(f))
+-      { BZ_SETERR(BZ_IO_ERROR); return NULL; };
+-
+-   bzf = malloc ( sizeof(bzFile) );
+-   if (bzf == NULL)
+-      { BZ_SETERR(BZ_MEM_ERROR); return NULL; };
+-
+-   BZ_SETERR(BZ_OK);
+-   bzf->initialisedOk = False;
+-   bzf->bufN          = 0;
+-   bzf->handle        = f;
+-   bzf->writing       = True;
+-   bzf->strm.bzalloc  = NULL;
+-   bzf->strm.bzfree   = NULL;
+-   bzf->strm.opaque   = NULL;
+-
+-   if (workFactor == 0) workFactor = 30;
+-   ret = BZ2_bzCompressInit ( &(bzf->strm), blockSize100k,
+-			      verbosity, workFactor );
+-   if (ret != BZ_OK)
+-      { BZ_SETERR(ret); free(bzf); return NULL; };
+-
+-   bzf->strm.avail_in = 0;
+-   bzf->initialisedOk = True;
+-   return bzf;
+-}
+-
+-
+-/*---------------------------------------------------*/
+-void BZ_API(BZ2_bzWrite)
+-	     ( int*    bzerror,
+-	       BZFILE* b,
+-	       void*   buf,
+-	       int     len )
+-{
+-   Int32 n, n2, ret;
+-   bzFile* bzf = (bzFile*)b;
+-
+-   BZ_SETERR(BZ_OK);
+-   if (bzf == NULL || buf == NULL || len < 0)
+-      { BZ_SETERR(BZ_PARAM_ERROR); return; };
+-   if (!(bzf->writing))
+-      { BZ_SETERR(BZ_SEQUENCE_ERROR); return; };
+-   if (ferror(bzf->handle))
+-      { BZ_SETERR(BZ_IO_ERROR); return; };
+-
+-   if (len == 0)
+-      { BZ_SETERR(BZ_OK); return; };
+-
+-   bzf->strm.avail_in = len;
+-   bzf->strm.next_in  = buf;
+-
+-   while (True) {
+-      bzf->strm.avail_out = BZ_MAX_UNUSED;
+-      bzf->strm.next_out = bzf->buf;
+-      ret = BZ2_bzCompress ( &(bzf->strm), BZ_RUN );
+-      if (ret != BZ_RUN_OK)
+-	 { BZ_SETERR(ret); return; };
+-
+-      if (bzf->strm.avail_out < BZ_MAX_UNUSED) {
+-	 n = BZ_MAX_UNUSED - bzf->strm.avail_out;
+-	 n2 = fwrite ( (void*)(bzf->buf), sizeof(UChar),
+-		       n, bzf->handle );
+-	 if (n != n2 || ferror(bzf->handle))
+-	    { BZ_SETERR(BZ_IO_ERROR); return; };
+-      }
+-
+-      if (bzf->strm.avail_in == 0)
+-	 { BZ_SETERR(BZ_OK); return; };
+-   }
+-}
+-
+-
+-/*---------------------------------------------------*/
+-void BZ_API(BZ2_bzWriteClose)
+-		  ( int*          bzerror,
+-		    BZFILE*       b,
+-		    int           abandon,
+-		    unsigned int* nbytes_in,
+-		    unsigned int* nbytes_out )
+-{
+-   BZ2_bzWriteClose64 ( bzerror, b, abandon,
+-			nbytes_in, NULL, nbytes_out, NULL );
+-}
+-
+-
+-void BZ_API(BZ2_bzWriteClose64)
+-		  ( int*          bzerror,
+-		    BZFILE*       b,
+-		    int           abandon,
+-		    unsigned int* nbytes_in_lo32,
+-		    unsigned int* nbytes_in_hi32,
+-		    unsigned int* nbytes_out_lo32,
+-		    unsigned int* nbytes_out_hi32 )
+-{
+-   Int32   n, n2, ret;
+-   bzFile* bzf = (bzFile*)b;
+-
+-   if (bzf == NULL)
+-      { BZ_SETERR(BZ_OK); return; };
+-   if (!(bzf->writing))
+-      { BZ_SETERR(BZ_SEQUENCE_ERROR); return; };
+-   if (ferror(bzf->handle))
+-      { BZ_SETERR(BZ_IO_ERROR); return; };
+-
+-   if (nbytes_in_lo32 != NULL) *nbytes_in_lo32 = 0;
+-   if (nbytes_in_hi32 != NULL) *nbytes_in_hi32 = 0;
+-   if (nbytes_out_lo32 != NULL) *nbytes_out_lo32 = 0;
+-   if (nbytes_out_hi32 != NULL) *nbytes_out_hi32 = 0;
+-
+-   if ((!abandon) && bzf->lastErr == BZ_OK) {
+-      while (True) {
+-	 bzf->strm.avail_out = BZ_MAX_UNUSED;
+-	 bzf->strm.next_out = bzf->buf;
+-	 ret = BZ2_bzCompress ( &(bzf->strm), BZ_FINISH );
+-	 if (ret != BZ_FINISH_OK && ret != BZ_STREAM_END)
+-	    { BZ_SETERR(ret); return; };
+-
+-	 if (bzf->strm.avail_out < BZ_MAX_UNUSED) {
+-	    n = BZ_MAX_UNUSED - bzf->strm.avail_out;
+-	    n2 = fwrite ( (void*)(bzf->buf), sizeof(UChar),
+-			  n, bzf->handle );
+-	    if (n != n2 || ferror(bzf->handle))
+-	       { BZ_SETERR(BZ_IO_ERROR); return; };
+-	 }
+-
+-	 if (ret == BZ_STREAM_END) break;
+-      }
+-   }
+-
+-   if ( !abandon && !ferror ( bzf->handle ) ) {
+-      fflush ( bzf->handle );
+-      if (ferror(bzf->handle))
+-	 { BZ_SETERR(BZ_IO_ERROR); return; };
+-   }
+-
+-   if (nbytes_in_lo32 != NULL)
+-      *nbytes_in_lo32 = bzf->strm.total_in_lo32;
+-   if (nbytes_in_hi32 != NULL)
+-      *nbytes_in_hi32 = bzf->strm.total_in_hi32;
+-   if (nbytes_out_lo32 != NULL)
+-      *nbytes_out_lo32 = bzf->strm.total_out_lo32;
+-   if (nbytes_out_hi32 != NULL)
+-      *nbytes_out_hi32 = bzf->strm.total_out_hi32;
+-
+-   BZ_SETERR(BZ_OK);
+-   BZ2_bzCompressEnd ( &(bzf->strm) );
+-   free ( bzf );
+-}
+-
+-
+-/*---------------------------------------------------*/
+-BZFILE* BZ_API(BZ2_bzReadOpen)
+-		   ( int*  bzerror,
+-		     FILE* f,
+-		     int   verbosity,
+-		     int   small,
+-		     void* unused,
+-		     int   nUnused )
+-{
+-   bzFile* bzf = NULL;
+-   int     ret;
+-
+-   BZ_SETERR(BZ_OK);
+-
+-   if (f == NULL ||
+-       (small != 0 && small != 1) ||
+-       (verbosity < 0 || verbosity > 4) ||
+-       (unused == NULL && nUnused != 0) ||
+-       (unused != NULL && (nUnused < 0 || nUnused > BZ_MAX_UNUSED)))
+-      { BZ_SETERR(BZ_PARAM_ERROR); return NULL; };
+-
+-   if (ferror(f))
+-      { BZ_SETERR(BZ_IO_ERROR); return NULL; };
+-
+-   bzf = malloc ( sizeof(bzFile) );
+-   if (bzf == NULL)
+-      { BZ_SETERR(BZ_MEM_ERROR); return NULL; };
+-
+-   BZ_SETERR(BZ_OK);
+-
+-   bzf->initialisedOk = False;
+-   bzf->handle        = f;
+-   bzf->bufN          = 0;
+-   bzf->writing       = False;
+-   bzf->strm.bzalloc  = NULL;
+-   bzf->strm.bzfree   = NULL;
+-   bzf->strm.opaque   = NULL;
+-
+-   while (nUnused > 0) {
+-      bzf->buf[bzf->bufN] = *((UChar*)(unused)); bzf->bufN++;
+-      unused = ((void*)( 1 + ((UChar*)(unused))  ));
+-      nUnused--;
+-   }
+-
+-   ret = BZ2_bzDecompressInit ( &(bzf->strm), verbosity, small );
+-   if (ret != BZ_OK)
+-      { BZ_SETERR(ret); free(bzf); return NULL; };
+-
+-   bzf->strm.avail_in = bzf->bufN;
+-   bzf->strm.next_in  = bzf->buf;
+-
+-   bzf->initialisedOk = True;
+-   return bzf;
+-}
+-
+-
+-/*---------------------------------------------------*/
+-void BZ_API(BZ2_bzReadClose) ( int *bzerror, BZFILE *b )
+-{
+-   bzFile* bzf = (bzFile*)b;
+-
+-   BZ_SETERR(BZ_OK);
+-   if (bzf == NULL)
+-      { BZ_SETERR(BZ_OK); return; };
+-
+-   if (bzf->writing)
+-      { BZ_SETERR(BZ_SEQUENCE_ERROR); return; };
+-
+-   if (bzf->initialisedOk)
+-      (void)BZ2_bzDecompressEnd ( &(bzf->strm) );
+-   free ( bzf );
+-}
+-
+-
+-/*---------------------------------------------------*/
+-int BZ_API(BZ2_bzRead)
+-	   ( int*    bzerror,
+-	     BZFILE* b,
+-	     void*   buf,
+-	     int     len )
+-{
+-   Int32   n, ret;
+-   bzFile* bzf = (bzFile*)b;
+-
+-   BZ_SETERR(BZ_OK);
+-
+-   if (bzf == NULL || buf == NULL || len < 0)
+-      { BZ_SETERR(BZ_PARAM_ERROR); return 0; };
+-
+-   if (bzf->writing)
+-      { BZ_SETERR(BZ_SEQUENCE_ERROR); return 0; };
+-
+-   if (len == 0)
+-      { BZ_SETERR(BZ_OK); return 0; };
+-
+-   bzf->strm.avail_out = len;
+-   bzf->strm.next_out = buf;
+-
+-   while (True) {
+-
+-      if (ferror(bzf->handle))
+-	 { BZ_SETERR(BZ_IO_ERROR); return 0; };
+-
+-      if (bzf->strm.avail_in == 0 && !myfeof(bzf->handle)) {
+-	 n = fread ( bzf->buf, sizeof(UChar),
+-		     BZ_MAX_UNUSED, bzf->handle );
+-	 if (ferror(bzf->handle))
+-	    { BZ_SETERR(BZ_IO_ERROR); return 0; };
+-	 bzf->bufN = n;
+-	 bzf->strm.avail_in = bzf->bufN;
+-	 bzf->strm.next_in = bzf->buf;
+-      }
+-
+-      ret = BZ2_bzDecompress ( &(bzf->strm) );
+-
+-      if (ret != BZ_OK && ret != BZ_STREAM_END)
+-	 { BZ_SETERR(ret); return 0; };
+-
+-      if (ret == BZ_OK && myfeof(bzf->handle) &&
+-	  bzf->strm.avail_in == 0 && bzf->strm.avail_out > 0)
+-	 { BZ_SETERR(BZ_UNEXPECTED_EOF); return 0; };
+-
+-      if (ret == BZ_STREAM_END)
+-	 { BZ_SETERR(BZ_STREAM_END);
+-	   return len - bzf->strm.avail_out; };
+-      if (bzf->strm.avail_out == 0)
+-	 { BZ_SETERR(BZ_OK); return len; };
+-
+-   }
+-
+-   return 0; /*not reached*/
+-}
+-
+-
+-/*---------------------------------------------------*/
+-void BZ_API(BZ2_bzReadGetUnused)
+-		     ( int*    bzerror,
+-		       BZFILE* b,
+-		       void**  unused,
+-		       int*    nUnused )
+-{
+-   bzFile* bzf = (bzFile*)b;
+-   if (bzf == NULL)
+-      { BZ_SETERR(BZ_PARAM_ERROR); return; };
+-   if (bzf->lastErr != BZ_STREAM_END)
+-      { BZ_SETERR(BZ_SEQUENCE_ERROR); return; };
+-   if (unused == NULL || nUnused == NULL)
+-      { BZ_SETERR(BZ_PARAM_ERROR); return; };
+-
+-   BZ_SETERR(BZ_OK);
+-   *nUnused = bzf->strm.avail_in;
+-   *unused = bzf->strm.next_in;
+-}
+-#endif
+-
+-
+-/*---------------------------------------------------*/
+-/*--- Misc convenience stuff                      ---*/
+-/*---------------------------------------------------*/
+-#ifndef BZ_NO_COMPRESS
+-/*---------------------------------------------------*/
+-int BZ_API(BZ2_bzBuffToBuffCompress)
+-			 ( char*         dest,
+-			   unsigned int* destLen,
+-			   char*         source,
+-			   unsigned int  sourceLen,
+-			   int           blockSize100k,
+-			   int           verbosity,
+-			   int           workFactor )
+-{
+-   bz_stream strm;
+-   int ret;
+-
+-   if (dest == NULL || destLen == NULL ||
+-       source == NULL ||
+-       blockSize100k < 1 || blockSize100k > 9 ||
+-       verbosity < 0 || verbosity > 4 ||
+-       workFactor < 0 || workFactor > 250)
+-      return BZ_PARAM_ERROR;
+-
+-   if (workFactor == 0) workFactor = 30;
+-   strm.bzalloc = NULL;
+-   strm.bzfree = NULL;
+-   strm.opaque = NULL;
+-   ret = BZ2_bzCompressInit ( &strm, blockSize100k,
+-			      verbosity, workFactor );
+-   if (ret != BZ_OK) return ret;
+-
+-   strm.next_in = source;
+-   strm.next_out = dest;
+-   strm.avail_in = sourceLen;
+-   strm.avail_out = *destLen;
+-
+-   ret = BZ2_bzCompress ( &strm, BZ_FINISH );
+-   if (ret == BZ_FINISH_OK) goto output_overflow;
+-   if (ret != BZ_STREAM_END) goto errhandler;
+-
+-   /* normal termination */
+-   *destLen -= strm.avail_out;
+-   BZ2_bzCompressEnd ( &strm );
+-   return BZ_OK;
+-
+-   output_overflow:
+-   BZ2_bzCompressEnd ( &strm );
+-   return BZ_OUTBUFF_FULL;
+-
+-   errhandler:
+-   BZ2_bzCompressEnd ( &strm );
+-   return ret;
+-}
+-#endif /* BZ_NO_COMPRESS */
+-
+-/*---------------------------------------------------*/
+-int BZ_API(BZ2_bzBuffToBuffDecompress)
+-			   ( char*         dest,
+-			     unsigned int* destLen,
+-			     char*         source,
+-			     unsigned int  sourceLen,
+-			     int           small,
+-			     int           verbosity )
+-{
+-   bz_stream strm;
+-   int ret;
+-
+-   if (destLen == NULL || source == NULL)
+-	  return BZ_PARAM_ERROR;
+-
+-   strm.bzalloc = NULL;
+-   strm.bzfree = NULL;
+-   strm.opaque = NULL;
+-   ret = BZ2_bzDecompressInit ( &strm, verbosity, small );
+-   if (ret != BZ_OK) return ret;
+-
+-   strm.next_in = source;
+-   strm.next_out = dest;
+-   strm.avail_in = sourceLen;
+-   strm.avail_out = *destLen;
+-
+-   ret = BZ2_bzDecompress ( &strm );
+-   if (ret == BZ_OK) goto output_overflow_or_eof;
+-   if (ret != BZ_STREAM_END) goto errhandler;
+-
+-   /* normal termination */
+-   *destLen -= strm.avail_out;
+-   BZ2_bzDecompressEnd ( &strm );
+-   return BZ_OK;
+-
+-   output_overflow_or_eof:
+-   if (strm.avail_out > 0) {
+-      BZ2_bzDecompressEnd ( &strm );
+-      return BZ_UNEXPECTED_EOF;
+-   } else {
+-      BZ2_bzDecompressEnd ( &strm );
+-      return BZ_OUTBUFF_FULL;
+-   };
+-
+-   errhandler:
+-   BZ2_bzDecompressEnd ( &strm );
+-   return ret;
+-}
+-
+-
+-/*---------------------------------------------------*/
+-/*--
+-   Code contributed by Yoshioka Tsuneo
+-   (QWF00133@niftyserve.or.jp/tsuneo-y@is.aist-nara.ac.jp),
+-   to support better zlib compatibility.
+-   This code is not _officially_ part of libbzip2 (yet);
+-   I haven't tested it, documented it, or considered the
+-   threading-safeness of it.
+-   If this code breaks, please contact both Yoshioka and me.
+---*/
+-/*---------------------------------------------------*/
+-
+-/*---------------------------------------------------*/
+-/*--
+-   return version like "0.9.0c".
+---*/
+-const char * BZ_API(BZ2_bzlibVersion)(void)
+-{
+-   return BZ_VERSION;
+-}
+-
+-
+-#ifndef BZ_NO_STDIO
+-/*---------------------------------------------------*/
+-
+-#if defined(_WIN32) || defined(OS2) || defined(MSDOS)
+-#   include <fcntl.h>
+-#   include <io.h>
+-#   define SET_BINARY_MODE(file) setmode(fileno(file),O_BINARY)
+-#else
+-#   define SET_BINARY_MODE(file)
+-#endif
+-static
+-BZFILE * bzopen_or_bzdopen
+-	       ( const char *path,   /* no use when bzdopen */
+-		 int fd,             /* no use when bzdopen */
+-		 const char *mode,
+-		 int open_mode)      /* bzopen: 0, bzdopen:1 */
+-{
+-   int    bzerr;
+-   char   unused[BZ_MAX_UNUSED];
+-   int    blockSize100k = 9;
+-   int    writing       = 0;
+-   char   mode2[10]     = "";
+-   FILE   *fp           = NULL;
+-   BZFILE *bzfp         = NULL;
+-   int    verbosity     = 0;
+-   int    workFactor    = 30;
+-   int    smallMode     = 0;
+-   int    nUnused       = 0;
+-
+-   if (mode == NULL) return NULL;
+-   while (*mode) {
+-      switch (*mode) {
+-      case 'r':
+-	 writing = 0; break;
+-      case 'w':
+-	 writing = 1; break;
+-      case 's':
+-	 smallMode = 1; break;
+-      default:
+-	 if (isdigit((int)(*mode))) {
+-	    blockSize100k = *mode-BZ_HDR_0;
+-	 }
+-      }
+-      mode++;
+-   }
+-   strcat(mode2, writing ? "w" : "r" );
+-   strcat(mode2,"b");   /* binary mode */
+-
+-   if (open_mode==0) {
+-      if (path==NULL || strcmp(path,"")==0) {
+-	fp = (writing ? stdout : stdin);
+-	SET_BINARY_MODE(fp);
+-      } else {
+-	fp = fopen(path,mode2);
+-      }
+-   } else {
+-#ifdef BZ_STRICT_ANSI
+-      fp = NULL;
+-#else
+-      fp = fdopen(fd,mode2);
+-#endif
+-   }
+-   if (fp == NULL) return NULL;
+-
+-   if (writing) {
+-      /* Guard against total chaos and anarchy -- JRS */
+-      if (blockSize100k < 1) blockSize100k = 1;
+-      if (blockSize100k > 9) blockSize100k = 9;
+-      bzfp = BZ2_bzWriteOpen(&bzerr,fp,blockSize100k,
+-			     verbosity,workFactor);
+-   } else {
+-      bzfp = BZ2_bzReadOpen(&bzerr,fp,verbosity,smallMode,
+-			    unused,nUnused);
+-   }
+-   if (bzfp == NULL) {
+-      if (fp != stdin && fp != stdout) fclose(fp);
+-      return NULL;
+-   }
+-   return bzfp;
+-}
+-
+-
+-/*---------------------------------------------------*/
+-/*--
+-   open file for read or write.
+-      ex) bzopen("file","w9")
+-      case path="" or NULL => use stdin or stdout.
+---*/
+-BZFILE * BZ_API(BZ2_bzopen)
+-	       ( const char *path,
+-		 const char *mode )
+-{
+-   return bzopen_or_bzdopen(path,-1,mode,/*bzopen*/0);
+-}
+-
+-
+-/*---------------------------------------------------*/
+-BZFILE * BZ_API(BZ2_bzdopen)
+-	       ( int fd,
+-		 const char *mode )
+-{
+-   return bzopen_or_bzdopen(NULL,fd,mode,/*bzdopen*/1);
+-}
+-
+-
+-/*---------------------------------------------------*/
+-int BZ_API(BZ2_bzread) (BZFILE* b, void* buf, int len )
+-{
+-   int bzerr, nread;
+-   if (((bzFile*)b)->lastErr == BZ_STREAM_END) return 0;
+-   nread = BZ2_bzRead(&bzerr,b,buf,len);
+-   if (bzerr == BZ_OK || bzerr == BZ_STREAM_END) {
+-      return nread;
+-   } else {
+-      return -1;
+-   }
+-}
+-
+-
+-/*---------------------------------------------------*/
+-int BZ_API(BZ2_bzwrite) (BZFILE* b, void* buf, int len )
+-{
+-   int bzerr;
+-
+-   BZ2_bzWrite(&bzerr,b,buf,len);
+-   if(bzerr == BZ_OK){
+-      return len;
+-   }else{
+-      return -1;
+-   }
+-}
+-
+-
+-/*---------------------------------------------------*/
+-int BZ_API(BZ2_bzflush) (BZFILE *b)
+-{
+-   /* do nothing now... */
+-   return 0;
+-}
+-
+-
+-/*---------------------------------------------------*/
+-void BZ_API(BZ2_bzclose) (BZFILE* b)
+-{
+-   int bzerr;
+-   FILE *fp = ((bzFile *)b)->handle;
+-
+-   if (b==NULL) {return;}
+-   if(((bzFile*)b)->writing){
+-      BZ2_bzWriteClose(&bzerr,b,0,NULL,NULL);
+-      if(bzerr != BZ_OK){
+-	 BZ2_bzWriteClose(NULL,b,1,NULL,NULL);
+-      }
+-   }else{
+-      BZ2_bzReadClose(&bzerr,b);
+-   }
+-   if(fp!=stdin && fp!=stdout){
+-      fclose(fp);
+-   }
+-}
+-
+-
+-/*---------------------------------------------------*/
+-/*--
+-   return last error code
+---*/
+-static char *bzerrorstrings[] = {
+-       "OK"
+-      ,"SEQUENCE_ERROR"
+-      ,"PARAM_ERROR"
+-      ,"MEM_ERROR"
+-      ,"DATA_ERROR"
+-      ,"DATA_ERROR_MAGIC"
+-      ,"IO_ERROR"
+-      ,"UNEXPECTED_EOF"
+-      ,"OUTBUFF_FULL"
+-      ,"CONFIG_ERROR"
+-      ,"???"   /* for future */
+-      ,"???"   /* for future */
+-      ,"???"   /* for future */
+-      ,"???"   /* for future */
+-      ,"???"   /* for future */
+-      ,"???"   /* for future */
+-};
+-
+-
+-const char * BZ_API(BZ2_bzerror) (BZFILE *b, int *errnum)
+-{
+-   int err = ((bzFile *)b)->lastErr;
+-
+-   if(err>0) err = 0;
+-   *errnum = err;
+-   return bzerrorstrings[err*-1];
+-}
+-#endif
+diff --git a/lib/bzlib_crctable.c b/lib/bzlib_crctable.c
+deleted file mode 100644
+index 325b966..0000000
+--- a/lib/bzlib_crctable.c
++++ /dev/null
+@@ -1,145 +0,0 @@
+-#include <config.h>
+-
+-/*-------------------------------------------------------------*/
+-/*--- Table for doing CRCs                                  ---*/
+-/*---                                            crctable.c ---*/
+-/*-------------------------------------------------------------*/
+-
+-/*--
+-  This file is a part of bzip2 and/or libbzip2, a program and
+-  library for lossless, block-sorting data compression.
+-
+-  Copyright (C) 1996-2002 Julian R Seward.  All rights reserved.
+-
+-  Redistribution and use in source and binary forms, with or without
+-  modification, are permitted provided that the following conditions
+-  are met:
+-
+-  1. Redistributions of source code must retain the above copyright
+-     notice, this list of conditions and the following disclaimer.
+-
+-  2. The origin of this software must not be misrepresented; you must
+-     not claim that you wrote the original software.  If you use this
+-     software in a product, an acknowledgment in the product
+-     documentation would be appreciated but is not required.
+-
+-  3. Altered source versions must be plainly marked as such, and must
+-     not be misrepresented as being the original software.
+-
+-  4. The name of the author may not be used to endorse or promote
+-     products derived from this software without specific prior written
+-     permission.
+-
+-  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS
+-  OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+-  ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
+-  DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+-  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+-  GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+-  INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+-  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+-  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-
+-  Julian Seward, Cambridge, UK.
+-  jseward@acm.org
+-  bzip2/libbzip2 version 1.0 of 21 March 2000
+-
+-  This program is based on (at least) the work of:
+-     Mike Burrows
+-     David Wheeler
+-     Peter Fenwick
+-     Alistair Moffat
+-     Radford Neal
+-     Ian H. Witten
+-     Robert Sedgewick
+-     Jon L. Bentley
+-
+-  For more information on these sources, see the manual.
+---*/
+-
+-
+-#include "bzlib_private.h"
+-
+-/*--
+-  I think this is an implementation of the AUTODIN-II,
+-  Ethernet & FDDI 32-bit CRC standard.  Vaguely derived
+-  from code by Rob Warnock, in Section 51 of the
+-  comp.compression FAQ.
+---*/
+-
+-UInt32 BZ2_crc32Table[256] = {
+-
+-   /*-- Ugly, innit? --*/
+-
+-   0x00000000L, 0x04c11db7L, 0x09823b6eL, 0x0d4326d9L,
+-   0x130476dcL, 0x17c56b6bL, 0x1a864db2L, 0x1e475005L,
+-   0x2608edb8L, 0x22c9f00fL, 0x2f8ad6d6L, 0x2b4bcb61L,
+-   0x350c9b64L, 0x31cd86d3L, 0x3c8ea00aL, 0x384fbdbdL,
+-   0x4c11db70L, 0x48d0c6c7L, 0x4593e01eL, 0x4152fda9L,
+-   0x5f15adacL, 0x5bd4b01bL, 0x569796c2L, 0x52568b75L,
+-   0x6a1936c8L, 0x6ed82b7fL, 0x639b0da6L, 0x675a1011L,
+-   0x791d4014L, 0x7ddc5da3L, 0x709f7b7aL, 0x745e66cdL,
+-   0x9823b6e0L, 0x9ce2ab57L, 0x91a18d8eL, 0x95609039L,
+-   0x8b27c03cL, 0x8fe6dd8bL, 0x82a5fb52L, 0x8664e6e5L,
+-   0xbe2b5b58L, 0xbaea46efL, 0xb7a96036L, 0xb3687d81L,
+-   0xad2f2d84L, 0xa9ee3033L, 0xa4ad16eaL, 0xa06c0b5dL,
+-   0xd4326d90L, 0xd0f37027L, 0xddb056feL, 0xd9714b49L,
+-   0xc7361b4cL, 0xc3f706fbL, 0xceb42022L, 0xca753d95L,
+-   0xf23a8028L, 0xf6fb9d9fL, 0xfbb8bb46L, 0xff79a6f1L,
+-   0xe13ef6f4L, 0xe5ffeb43L, 0xe8bccd9aL, 0xec7dd02dL,
+-   0x34867077L, 0x30476dc0L, 0x3d044b19L, 0x39c556aeL,
+-   0x278206abL, 0x23431b1cL, 0x2e003dc5L, 0x2ac12072L,
+-   0x128e9dcfL, 0x164f8078L, 0x1b0ca6a1L, 0x1fcdbb16L,
+-   0x018aeb13L, 0x054bf6a4L, 0x0808d07dL, 0x0cc9cdcaL,
+-   0x7897ab07L, 0x7c56b6b0L, 0x71159069L, 0x75d48ddeL,
+-   0x6b93dddbL, 0x6f52c06cL, 0x6211e6b5L, 0x66d0fb02L,
+-   0x5e9f46bfL, 0x5a5e5b08L, 0x571d7dd1L, 0x53dc6066L,
+-   0x4d9b3063L, 0x495a2dd4L, 0x44190b0dL, 0x40d816baL,
+-   0xaca5c697L, 0xa864db20L, 0xa527fdf9L, 0xa1e6e04eL,
+-   0xbfa1b04bL, 0xbb60adfcL, 0xb6238b25L, 0xb2e29692L,
+-   0x8aad2b2fL, 0x8e6c3698L, 0x832f1041L, 0x87ee0df6L,
+-   0x99a95df3L, 0x9d684044L, 0x902b669dL, 0x94ea7b2aL,
+-   0xe0b41de7L, 0xe4750050L, 0xe9362689L, 0xedf73b3eL,
+-   0xf3b06b3bL, 0xf771768cL, 0xfa325055L, 0xfef34de2L,
+-   0xc6bcf05fL, 0xc27dede8L, 0xcf3ecb31L, 0xcbffd686L,
+-   0xd5b88683L, 0xd1799b34L, 0xdc3abdedL, 0xd8fba05aL,
+-   0x690ce0eeL, 0x6dcdfd59L, 0x608edb80L, 0x644fc637L,
+-   0x7a089632L, 0x7ec98b85L, 0x738aad5cL, 0x774bb0ebL,
+-   0x4f040d56L, 0x4bc510e1L, 0x46863638L, 0x42472b8fL,
+-   0x5c007b8aL, 0x58c1663dL, 0x558240e4L, 0x51435d53L,
+-   0x251d3b9eL, 0x21dc2629L, 0x2c9f00f0L, 0x285e1d47L,
+-   0x36194d42L, 0x32d850f5L, 0x3f9b762cL, 0x3b5a6b9bL,
+-   0x0315d626L, 0x07d4cb91L, 0x0a97ed48L, 0x0e56f0ffL,
+-   0x1011a0faL, 0x14d0bd4dL, 0x19939b94L, 0x1d528623L,
+-   0xf12f560eL, 0xf5ee4bb9L, 0xf8ad6d60L, 0xfc6c70d7L,
+-   0xe22b20d2L, 0xe6ea3d65L, 0xeba91bbcL, 0xef68060bL,
+-   0xd727bbb6L, 0xd3e6a601L, 0xdea580d8L, 0xda649d6fL,
+-   0xc423cd6aL, 0xc0e2d0ddL, 0xcda1f604L, 0xc960ebb3L,
+-   0xbd3e8d7eL, 0xb9ff90c9L, 0xb4bcb610L, 0xb07daba7L,
+-   0xae3afba2L, 0xaafbe615L, 0xa7b8c0ccL, 0xa379dd7bL,
+-   0x9b3660c6L, 0x9ff77d71L, 0x92b45ba8L, 0x9675461fL,
+-   0x8832161aL, 0x8cf30badL, 0x81b02d74L, 0x857130c3L,
+-   0x5d8a9099L, 0x594b8d2eL, 0x5408abf7L, 0x50c9b640L,
+-   0x4e8ee645L, 0x4a4ffbf2L, 0x470cdd2bL, 0x43cdc09cL,
+-   0x7b827d21L, 0x7f436096L, 0x7200464fL, 0x76c15bf8L,
+-   0x68860bfdL, 0x6c47164aL, 0x61043093L, 0x65c52d24L,
+-   0x119b4be9L, 0x155a565eL, 0x18197087L, 0x1cd86d30L,
+-   0x029f3d35L, 0x065e2082L, 0x0b1d065bL, 0x0fdc1becL,
+-   0x3793a651L, 0x3352bbe6L, 0x3e119d3fL, 0x3ad08088L,
+-   0x2497d08dL, 0x2056cd3aL, 0x2d15ebe3L, 0x29d4f654L,
+-   0xc5a92679L, 0xc1683bceL, 0xcc2b1d17L, 0xc8ea00a0L,
+-   0xd6ad50a5L, 0xd26c4d12L, 0xdf2f6bcbL, 0xdbee767cL,
+-   0xe3a1cbc1L, 0xe760d676L, 0xea23f0afL, 0xeee2ed18L,
+-   0xf0a5bd1dL, 0xf464a0aaL, 0xf9278673L, 0xfde69bc4L,
+-   0x89b8fd09L, 0x8d79e0beL, 0x803ac667L, 0x84fbdbd0L,
+-   0x9abc8bd5L, 0x9e7d9662L, 0x933eb0bbL, 0x97ffad0cL,
+-   0xafb010b1L, 0xab710d06L, 0xa6322bdfL, 0xa2f33668L,
+-   0xbcb4666dL, 0xb8757bdaL, 0xb5365d03L, 0xb1f740b4L
+-};
+-
+-
+-/*-------------------------------------------------------------*/
+-/*--- end                                        crctable.c ---*/
+-/*-------------------------------------------------------------*/
+diff --git a/lib/bzlib_decompress.c b/lib/bzlib_decompress.c
+deleted file mode 100644
+index 4412b8a..0000000
+--- a/lib/bzlib_decompress.c
++++ /dev/null
+@@ -1,674 +0,0 @@
+-#include <config.h>
+-#include <common.h>
+-#include <watchdog.h>
+-
+-/*-------------------------------------------------------------*/
+-/*--- Decompression machinery                               ---*/
+-/*---                                          decompress.c ---*/
+-/*-------------------------------------------------------------*/
+-
+-/*--
+-  This file is a part of bzip2 and/or libbzip2, a program and
+-  library for lossless, block-sorting data compression.
+-
+-  Copyright (C) 1996-2002 Julian R Seward.  All rights reserved.
+-
+-  Redistribution and use in source and binary forms, with or without
+-  modification, are permitted provided that the following conditions
+-  are met:
+-
+-  1. Redistributions of source code must retain the above copyright
+-     notice, this list of conditions and the following disclaimer.
+-
+-  2. The origin of this software must not be misrepresented; you must
+-     not claim that you wrote the original software.  If you use this
+-     software in a product, an acknowledgment in the product
+-     documentation would be appreciated but is not required.
+-
+-  3. Altered source versions must be plainly marked as such, and must
+-     not be misrepresented as being the original software.
+-
+-  4. The name of the author may not be used to endorse or promote
+-     products derived from this software without specific prior written
+-     permission.
+-
+-  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS
+-  OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+-  ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
+-  DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+-  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+-  GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+-  INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+-  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+-  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-
+-  Julian Seward, Cambridge, UK.
+-  jseward@acm.org
+-  bzip2/libbzip2 version 1.0 of 21 March 2000
+-
+-  This program is based on (at least) the work of:
+-     Mike Burrows
+-     David Wheeler
+-     Peter Fenwick
+-     Alistair Moffat
+-     Radford Neal
+-     Ian H. Witten
+-     Robert Sedgewick
+-     Jon L. Bentley
+-
+-  For more information on these sources, see the manual.
+---*/
+-
+-
+-#include "bzlib_private.h"
+-
+-
+-/*---------------------------------------------------*/
+-static
+-void makeMaps_d ( DState* s )
+-{
+-   Int32 i;
+-   s->nInUse = 0;
+-   for (i = 0; i < 256; i++)
+-      if (s->inUse[i]) {
+-	 s->seqToUnseq[s->nInUse] = i;
+-	 s->nInUse++;
+-      }
+-}
+-
+-
+-/*---------------------------------------------------*/
+-#define RETURN(rrr)                               \
+-   { retVal = rrr; goto save_state_and_return; };
+-
+-#define GET_BITS(lll,vvv,nnn)                     \
+-   case lll: s->state = lll;                      \
+-   while (True) {                                 \
+-      if (s->bsLive >= nnn) {                     \
+-	 UInt32 v;                                \
+-	 v = (s->bsBuff >>                        \
+-	     (s->bsLive-nnn)) & ((1 << nnn)-1);   \
+-	 s->bsLive -= nnn;                        \
+-	 vvv = v;                                 \
+-	 break;                                   \
+-      }                                           \
+-      if (s->strm->avail_in == 0) RETURN(BZ_OK);  \
+-      s->bsBuff                                   \
+-	 = (s->bsBuff << 8) |                     \
+-	   ((UInt32)                              \
+-	      (*((UChar*)(s->strm->next_in))));   \
+-      s->bsLive += 8;                             \
+-      s->strm->next_in++;                         \
+-      s->strm->avail_in--;                        \
+-      s->strm->total_in_lo32++;                   \
+-      if (s->strm->total_in_lo32 == 0)            \
+-	 s->strm->total_in_hi32++;                \
+-   }
+-
+-#define GET_UCHAR(lll,uuu)                        \
+-   GET_BITS(lll,uuu,8)
+-
+-#define GET_BIT(lll,uuu)                          \
+-   GET_BITS(lll,uuu,1)
+-
+-/*---------------------------------------------------*/
+-#define GET_MTF_VAL(label1,label2,lval)           \
+-{                                                 \
+-   if (groupPos == 0) {                           \
+-      groupNo++;                                  \
+-      if (groupNo >= nSelectors)                  \
+-	 RETURN(BZ_DATA_ERROR);                   \
+-      groupPos = BZ_G_SIZE;                       \
+-      gSel = s->selector[groupNo];                \
+-      gMinlen = s->minLens[gSel];                 \
+-      gLimit = &(s->limit[gSel][0]);              \
+-      gPerm = &(s->perm[gSel][0]);                \
+-      gBase = &(s->base[gSel][0]);                \
+-   }                                              \
+-   groupPos--;                                    \
+-   zn = gMinlen;                                  \
+-   GET_BITS(label1, zvec, zn);                    \
+-   while (1) {                                    \
+-      if (zn > 20 /* the longest code */)         \
+-	 RETURN(BZ_DATA_ERROR);                   \
+-      if (zvec <= gLimit[zn]) break;              \
+-      zn++;                                       \
+-      GET_BIT(label2, zj);                        \
+-      zvec = (zvec << 1) | zj;                    \
+-   };                                             \
+-   if (zvec - gBase[zn] < 0                       \
+-       || zvec - gBase[zn] >= BZ_MAX_ALPHA_SIZE)  \
+-      RETURN(BZ_DATA_ERROR);                      \
+-   lval = gPerm[zvec - gBase[zn]];                \
+-}
+-
+-
+-/*---------------------------------------------------*/
+-Int32 BZ2_decompress ( DState* s )
+-{
+-   UChar      uc;
+-   Int32      retVal;
+-   Int32      minLen, maxLen;
+-   bz_stream* strm = s->strm;
+-
+-   /* stuff that needs to be saved/restored */
+-   Int32  i;
+-   Int32  j;
+-   Int32  t;
+-   Int32  alphaSize;
+-   Int32  nGroups;
+-   Int32  nSelectors;
+-   Int32  EOB;
+-   Int32  groupNo;
+-   Int32  groupPos;
+-   Int32  nextSym;
+-   Int32  nblockMAX;
+-   Int32  nblock;
+-   Int32  es;
+-   Int32  N;
+-   Int32  curr;
+-   Int32  zt;
+-   Int32  zn;
+-   Int32  zvec;
+-   Int32  zj;
+-   Int32  gSel;
+-   Int32  gMinlen;
+-   Int32* gLimit;
+-   Int32* gBase;
+-   Int32* gPerm;
+-
+-   if (s->state == BZ_X_MAGIC_1) {
+-      /*initialise the save area*/
+-      s->save_i           = 0;
+-      s->save_j           = 0;
+-      s->save_t           = 0;
+-      s->save_alphaSize   = 0;
+-      s->save_nGroups     = 0;
+-      s->save_nSelectors  = 0;
+-      s->save_EOB         = 0;
+-      s->save_groupNo     = 0;
+-      s->save_groupPos    = 0;
+-      s->save_nextSym     = 0;
+-      s->save_nblockMAX   = 0;
+-      s->save_nblock      = 0;
+-      s->save_es          = 0;
+-      s->save_N           = 0;
+-      s->save_curr        = 0;
+-      s->save_zt          = 0;
+-      s->save_zn          = 0;
+-      s->save_zvec        = 0;
+-      s->save_zj          = 0;
+-      s->save_gSel        = 0;
+-      s->save_gMinlen     = 0;
+-      s->save_gLimit      = NULL;
+-      s->save_gBase       = NULL;
+-      s->save_gPerm       = NULL;
+-   }
+-
+-   /*restore from the save area*/
+-   i           = s->save_i;
+-   j           = s->save_j;
+-   t           = s->save_t;
+-   alphaSize   = s->save_alphaSize;
+-   nGroups     = s->save_nGroups;
+-   nSelectors  = s->save_nSelectors;
+-   EOB         = s->save_EOB;
+-   groupNo     = s->save_groupNo;
+-   groupPos    = s->save_groupPos;
+-   nextSym     = s->save_nextSym;
+-   nblockMAX   = s->save_nblockMAX;
+-   nblock      = s->save_nblock;
+-   es          = s->save_es;
+-   N           = s->save_N;
+-   curr        = s->save_curr;
+-   zt          = s->save_zt;
+-   zn          = s->save_zn;
+-   zvec        = s->save_zvec;
+-   zj          = s->save_zj;
+-   gSel        = s->save_gSel;
+-   gMinlen     = s->save_gMinlen;
+-   gLimit      = s->save_gLimit;
+-   gBase       = s->save_gBase;
+-   gPerm       = s->save_gPerm;
+-
+-   retVal = BZ_OK;
+-
+-   switch (s->state) {
+-
+-      GET_UCHAR(BZ_X_MAGIC_1, uc);
+-      if (uc != BZ_HDR_B) RETURN(BZ_DATA_ERROR_MAGIC);
+-
+-      GET_UCHAR(BZ_X_MAGIC_2, uc);
+-      if (uc != BZ_HDR_Z) RETURN(BZ_DATA_ERROR_MAGIC);
+-
+-      GET_UCHAR(BZ_X_MAGIC_3, uc)
+-      if (uc != BZ_HDR_h) RETURN(BZ_DATA_ERROR_MAGIC);
+-
+-      GET_BITS(BZ_X_MAGIC_4, s->blockSize100k, 8)
+-      if (s->blockSize100k < (BZ_HDR_0 + 1) ||
+-	  s->blockSize100k > (BZ_HDR_0 + 9)) RETURN(BZ_DATA_ERROR_MAGIC);
+-      s->blockSize100k -= BZ_HDR_0;
+-
+-      if (s->smallDecompress) {
+-	 s->ll16 = BZALLOC( s->blockSize100k * 100000 * sizeof(UInt16) );
+-	 s->ll4  = BZALLOC(
+-		      ((1 + s->blockSize100k * 100000) >> 1) * sizeof(UChar)
+-		   );
+-	 if (s->ll16 == NULL || s->ll4 == NULL) RETURN(BZ_MEM_ERROR);
+-      } else {
+-	 s->tt  = BZALLOC( s->blockSize100k * 100000 * sizeof(Int32) );
+-	 if (s->tt == NULL) RETURN(BZ_MEM_ERROR);
+-      }
+-
+-      GET_UCHAR(BZ_X_BLKHDR_1, uc);
+-
+-      if (uc == 0x17) goto endhdr_2;
+-      if (uc != 0x31) RETURN(BZ_DATA_ERROR);
+-      GET_UCHAR(BZ_X_BLKHDR_2, uc);
+-      if (uc != 0x41) RETURN(BZ_DATA_ERROR);
+-      GET_UCHAR(BZ_X_BLKHDR_3, uc);
+-      if (uc != 0x59) RETURN(BZ_DATA_ERROR);
+-      GET_UCHAR(BZ_X_BLKHDR_4, uc);
+-      if (uc != 0x26) RETURN(BZ_DATA_ERROR);
+-      GET_UCHAR(BZ_X_BLKHDR_5, uc);
+-      if (uc != 0x53) RETURN(BZ_DATA_ERROR);
+-      GET_UCHAR(BZ_X_BLKHDR_6, uc);
+-      if (uc != 0x59) RETURN(BZ_DATA_ERROR);
+-
+-      s->currBlockNo++;
+-      if (s->verbosity >= 2)
+-	 VPrintf1 ( "\n    [%d: huff+mtf ", s->currBlockNo );
+-
+-      s->storedBlockCRC = 0;
+-      GET_UCHAR(BZ_X_BCRC_1, uc);
+-      s->storedBlockCRC = (s->storedBlockCRC << 8) | ((UInt32)uc);
+-      GET_UCHAR(BZ_X_BCRC_2, uc);
+-      s->storedBlockCRC = (s->storedBlockCRC << 8) | ((UInt32)uc);
+-      GET_UCHAR(BZ_X_BCRC_3, uc);
+-      s->storedBlockCRC = (s->storedBlockCRC << 8) | ((UInt32)uc);
+-      GET_UCHAR(BZ_X_BCRC_4, uc);
+-      s->storedBlockCRC = (s->storedBlockCRC << 8) | ((UInt32)uc);
+-
+-      GET_BITS(BZ_X_RANDBIT, s->blockRandomised, 1);
+-
+-      s->origPtr = 0;
+-      GET_UCHAR(BZ_X_ORIGPTR_1, uc);
+-      s->origPtr = (s->origPtr << 8) | ((Int32)uc);
+-      GET_UCHAR(BZ_X_ORIGPTR_2, uc);
+-      s->origPtr = (s->origPtr << 8) | ((Int32)uc);
+-      GET_UCHAR(BZ_X_ORIGPTR_3, uc);
+-      s->origPtr = (s->origPtr << 8) | ((Int32)uc);
+-
+-      if (s->origPtr < 0)
+-	 RETURN(BZ_DATA_ERROR);
+-      if (s->origPtr > 10 + 100000*s->blockSize100k)
+-	 RETURN(BZ_DATA_ERROR);
+-
+-      /*--- Receive the mapping table ---*/
+-      for (i = 0; i < 16; i++) {
+-	 GET_BIT(BZ_X_MAPPING_1, uc);
+-	 if (uc == 1)
+-	    s->inUse16[i] = True; else
+-	    s->inUse16[i] = False;
+-      }
+-
+-      for (i = 0; i < 256; i++) s->inUse[i] = False;
+-
+-      for (i = 0; i < 16; i++)
+-	 if (s->inUse16[i])
+-	    for (j = 0; j < 16; j++) {
+-	       GET_BIT(BZ_X_MAPPING_2, uc);
+-	       if (uc == 1) s->inUse[i * 16 + j] = True;
+-	    }
+-      makeMaps_d ( s );
+-      if (s->nInUse == 0) RETURN(BZ_DATA_ERROR);
+-      alphaSize = s->nInUse+2;
+-
+-      /*--- Now the selectors ---*/
+-      GET_BITS(BZ_X_SELECTOR_1, nGroups, 3);
+-      if (nGroups < 2 || nGroups > 6) RETURN(BZ_DATA_ERROR);
+-      GET_BITS(BZ_X_SELECTOR_2, nSelectors, 15);
+-      if (nSelectors < 1) RETURN(BZ_DATA_ERROR);
+-      for (i = 0; i < nSelectors; i++) {
+-	 j = 0;
+-	 while (True) {
+-	    GET_BIT(BZ_X_SELECTOR_3, uc);
+-	    if (uc == 0) break;
+-	    j++;
+-	    if (j >= nGroups) RETURN(BZ_DATA_ERROR);
+-	 }
+-	 s->selectorMtf[i] = j;
+-      }
+-
+-      /*--- Undo the MTF values for the selectors. ---*/
+-      {
+-	 UChar pos[BZ_N_GROUPS], tmp, v;
+-	 for (v = 0; v < nGroups; v++) pos[v] = v;
+-
+-	 for (i = 0; i < nSelectors; i++) {
+-	    v = s->selectorMtf[i];
+-	    tmp = pos[v];
+-	    while (v > 0) { pos[v] = pos[v-1]; v--; }
+-	    pos[0] = tmp;
+-	    s->selector[i] = tmp;
+-	 }
+-      }
+-
+-      /*--- Now the coding tables ---*/
+-      for (t = 0; t < nGroups; t++) {
+-	 GET_BITS(BZ_X_CODING_1, curr, 5);
+-	 for (i = 0; i < alphaSize; i++) {
+-	    while (True) {
+-	       if (curr < 1 || curr > 20) RETURN(BZ_DATA_ERROR);
+-	       GET_BIT(BZ_X_CODING_2, uc);
+-	       if (uc == 0) break;
+-	       GET_BIT(BZ_X_CODING_3, uc);
+-	       if (uc == 0) curr++; else curr--;
+-	    }
+-	    s->len[t][i] = curr;
+-	 }
+-      }
+-
+-      /*--- Create the Huffman decoding tables ---*/
+-      for (t = 0; t < nGroups; t++) {
+-	 minLen = 32;
+-	 maxLen = 0;
+-	 for (i = 0; i < alphaSize; i++) {
+-	    if (s->len[t][i] > maxLen) maxLen = s->len[t][i];
+-	    if (s->len[t][i] < minLen) minLen = s->len[t][i];
+-	 }
+-	 BZ2_hbCreateDecodeTables (
+-	    &(s->limit[t][0]),
+-	    &(s->base[t][0]),
+-	    &(s->perm[t][0]),
+-	    &(s->len[t][0]),
+-	    minLen, maxLen, alphaSize
+-	 );
+-	 s->minLens[t] = minLen;
+-      }
+-
+-      /*--- Now the MTF values ---*/
+-
+-      EOB      = s->nInUse+1;
+-      nblockMAX = 100000 * s->blockSize100k;
+-      groupNo  = -1;
+-      groupPos = 0;
+-
+-      for (i = 0; i <= 255; i++) s->unzftab[i] = 0;
+-
+-      /*-- MTF init --*/
+-      {
+-	 Int32 ii, jj, kk;
+-	 kk = MTFA_SIZE-1;
+-	 for (ii = 256 / MTFL_SIZE - 1; ii >= 0; ii--) {
+-	    for (jj = MTFL_SIZE-1; jj >= 0; jj--) {
+-	       s->mtfa[kk] = (UChar)(ii * MTFL_SIZE + jj);
+-	       kk--;
+-	    }
+-	    s->mtfbase[ii] = kk + 1;
+-	 }
+-      }
+-      /*-- end MTF init --*/
+-
+-      nblock = 0;
+-      GET_MTF_VAL(BZ_X_MTF_1, BZ_X_MTF_2, nextSym);
+-
+-      while (True) {
+-
+-#if defined(CONFIG_HW_WATCHDOG) || defined(CONFIG_WATCHDOG)
+-	WATCHDOG_RESET();
+-#endif
+-	 if (nextSym == EOB) break;
+-
+-	 if (nextSym == BZ_RUNA || nextSym == BZ_RUNB) {
+-
+-	    es = -1;
+-	    N = 1;
+-	    do {
+-	       if (nextSym == BZ_RUNA) es = es + (0+1) * N; else
+-	       if (nextSym == BZ_RUNB) es = es + (1+1) * N;
+-	       N = N * 2;
+-	       GET_MTF_VAL(BZ_X_MTF_3, BZ_X_MTF_4, nextSym);
+-	    }
+-	       while (nextSym == BZ_RUNA || nextSym == BZ_RUNB);
+-
+-	    es++;
+-	    uc = s->seqToUnseq[ s->mtfa[s->mtfbase[0]] ];
+-	    s->unzftab[uc] += es;
+-
+-	    if (s->smallDecompress)
+-	       while (es > 0) {
+-		  if (nblock >= nblockMAX) RETURN(BZ_DATA_ERROR);
+-		  s->ll16[nblock] = (UInt16)uc;
+-		  nblock++;
+-		  es--;
+-	       }
+-	    else
+-	       while (es > 0) {
+-		  if (nblock >= nblockMAX) RETURN(BZ_DATA_ERROR);
+-		  s->tt[nblock] = (UInt32)uc;
+-		  nblock++;
+-		  es--;
+-	       };
+-
+-	    continue;
+-
+-	 } else {
+-
+-	    if (nblock >= nblockMAX) RETURN(BZ_DATA_ERROR);
+-
+-	    /*-- uc = MTF ( nextSym-1 ) --*/
+-	    {
+-	       Int32 ii, jj, kk, pp, lno, off;
+-	       UInt32 nn;
+-	       nn = (UInt32)(nextSym - 1);
+-
+-	       if (nn < MTFL_SIZE) {
+-		  /* avoid general-case expense */
+-		  pp = s->mtfbase[0];
+-		  uc = s->mtfa[pp+nn];
+-		  while (nn > 3) {
+-		     Int32 z = pp+nn;
+-		     s->mtfa[(z)  ] = s->mtfa[(z)-1];
+-		     s->mtfa[(z)-1] = s->mtfa[(z)-2];
+-		     s->mtfa[(z)-2] = s->mtfa[(z)-3];
+-		     s->mtfa[(z)-3] = s->mtfa[(z)-4];
+-		     nn -= 4;
+-		  }
+-		  while (nn > 0) {
+-		     s->mtfa[(pp+nn)] = s->mtfa[(pp+nn)-1]; nn--;
+-		  };
+-		  s->mtfa[pp] = uc;
+-	       } else {
+-		  /* general case */
+-		  lno = nn / MTFL_SIZE;
+-		  off = nn % MTFL_SIZE;
+-		  pp = s->mtfbase[lno] + off;
+-		  uc = s->mtfa[pp];
+-		  while (pp > s->mtfbase[lno]) {
+-		     s->mtfa[pp] = s->mtfa[pp-1]; pp--;
+-		  };
+-		  s->mtfbase[lno]++;
+-		  while (lno > 0) {
+-		     s->mtfbase[lno]--;
+-		     s->mtfa[s->mtfbase[lno]]
+-			= s->mtfa[s->mtfbase[lno-1] + MTFL_SIZE - 1];
+-		     lno--;
+-		  }
+-		  s->mtfbase[0]--;
+-		  s->mtfa[s->mtfbase[0]] = uc;
+-		  if (s->mtfbase[0] == 0) {
+-		     kk = MTFA_SIZE-1;
+-		     for (ii = 256 / MTFL_SIZE-1; ii >= 0; ii--) {
+-#if defined(CONFIG_HW_WATCHDOG) || defined(CONFIG_WATCHDOG)
+-			WATCHDOG_RESET();
+-#endif
+-			for (jj = MTFL_SIZE-1; jj >= 0; jj--) {
+-			   s->mtfa[kk] = s->mtfa[s->mtfbase[ii] + jj];
+-			   kk--;
+-			}
+-			s->mtfbase[ii] = kk + 1;
+-		     }
+-		  }
+-	       }
+-	    }
+-	    /*-- end uc = MTF ( nextSym-1 ) --*/
+-
+-	    s->unzftab[s->seqToUnseq[uc]]++;
+-	    if (s->smallDecompress)
+-	       s->ll16[nblock] = (UInt16)(s->seqToUnseq[uc]); else
+-	       s->tt[nblock]   = (UInt32)(s->seqToUnseq[uc]);
+-	    nblock++;
+-
+-	    GET_MTF_VAL(BZ_X_MTF_5, BZ_X_MTF_6, nextSym);
+-	    continue;
+-	 }
+-      }
+-
+-      /* Now we know what nblock is, we can do a better sanity
+-	 check on s->origPtr.
+-      */
+-      if (s->origPtr < 0 || s->origPtr >= nblock)
+-	 RETURN(BZ_DATA_ERROR);
+-
+-      s->state_out_len = 0;
+-      s->state_out_ch  = 0;
+-      BZ_INITIALISE_CRC ( s->calculatedBlockCRC );
+-      s->state = BZ_X_OUTPUT;
+-      if (s->verbosity >= 2) VPrintf0 ( "rt+rld" );
+-
+-      /*-- Set up cftab to facilitate generation of T^(-1) --*/
+-      s->cftab[0] = 0;
+-      for (i = 1; i <= 256; i++) s->cftab[i] = s->unzftab[i-1];
+-      for (i = 1; i <= 256; i++) s->cftab[i] += s->cftab[i-1];
+-
+-      if (s->smallDecompress) {
+-
+-	 /*-- Make a copy of cftab, used in generation of T --*/
+-	 for (i = 0; i <= 256; i++) s->cftabCopy[i] = s->cftab[i];
+-
+-	 /*-- compute the T vector --*/
+-	 for (i = 0; i < nblock; i++) {
+-	    uc = (UChar)(s->ll16[i]);
+-	    SET_LL(i, s->cftabCopy[uc]);
+-	    s->cftabCopy[uc]++;
+-	 }
+-
+-	 /*-- Compute T^(-1) by pointer reversal on T --*/
+-	 i = s->origPtr;
+-	 j = GET_LL(i);
+-	 do {
+-	    Int32 tmp = GET_LL(j);
+-	    SET_LL(j, i);
+-	    i = j;
+-	    j = tmp;
+-	 }
+-	    while (i != s->origPtr);
+-
+-#if defined(CONFIG_HW_WATCHDOG) || defined(CONFIG_WATCHDOG)
+-	WATCHDOG_RESET();
+-#endif
+-	 s->tPos = s->origPtr;
+-	 s->nblock_used = 0;
+-	 if (s->blockRandomised) {
+-	    BZ_RAND_INIT_MASK;
+-	    BZ_GET_SMALL(s->k0); s->nblock_used++;
+-	    BZ_RAND_UPD_MASK; s->k0 ^= BZ_RAND_MASK;
+-	 } else {
+-	    BZ_GET_SMALL(s->k0); s->nblock_used++;
+-	 }
+-
+-      } else {
+-
+-#if defined(CONFIG_HW_WATCHDOG) || defined(CONFIG_WATCHDOG)
+-	WATCHDOG_RESET();
+-#endif
+-	 /*-- compute the T^(-1) vector --*/
+-	 for (i = 0; i < nblock; i++) {
+-	    uc = (UChar)(s->tt[i] & 0xff);
+-	    s->tt[s->cftab[uc]] |= (i << 8);
+-	    s->cftab[uc]++;
+-	 }
+-
+-	 s->tPos = s->tt[s->origPtr] >> 8;
+-	 s->nblock_used = 0;
+-	 if (s->blockRandomised) {
+-	    BZ_RAND_INIT_MASK;
+-	    BZ_GET_FAST(s->k0); s->nblock_used++;
+-	    BZ_RAND_UPD_MASK; s->k0 ^= BZ_RAND_MASK;
+-	 } else {
+-	    BZ_GET_FAST(s->k0); s->nblock_used++;
+-	 }
+-
+-      }
+-
+-      RETURN(BZ_OK);
+-
+-
+-    endhdr_2:
+-
+-      GET_UCHAR(BZ_X_ENDHDR_2, uc);
+-      if (uc != 0x72) RETURN(BZ_DATA_ERROR);
+-      GET_UCHAR(BZ_X_ENDHDR_3, uc);
+-      if (uc != 0x45) RETURN(BZ_DATA_ERROR);
+-      GET_UCHAR(BZ_X_ENDHDR_4, uc);
+-      if (uc != 0x38) RETURN(BZ_DATA_ERROR);
+-      GET_UCHAR(BZ_X_ENDHDR_5, uc);
+-      if (uc != 0x50) RETURN(BZ_DATA_ERROR);
+-      GET_UCHAR(BZ_X_ENDHDR_6, uc);
+-      if (uc != 0x90) RETURN(BZ_DATA_ERROR);
+-
+-      s->storedCombinedCRC = 0;
+-      GET_UCHAR(BZ_X_CCRC_1, uc);
+-      s->storedCombinedCRC = (s->storedCombinedCRC << 8) | ((UInt32)uc);
+-      GET_UCHAR(BZ_X_CCRC_2, uc);
+-      s->storedCombinedCRC = (s->storedCombinedCRC << 8) | ((UInt32)uc);
+-      GET_UCHAR(BZ_X_CCRC_3, uc);
+-      s->storedCombinedCRC = (s->storedCombinedCRC << 8) | ((UInt32)uc);
+-      GET_UCHAR(BZ_X_CCRC_4, uc);
+-      s->storedCombinedCRC = (s->storedCombinedCRC << 8) | ((UInt32)uc);
+-
+-      s->state = BZ_X_IDLE;
+-      RETURN(BZ_STREAM_END);
+-
+-      default: AssertH ( False, 4001 );
+-   }
+-
+-   AssertH ( False, 4002 );
+-
+-   save_state_and_return:
+-
+-   s->save_i           = i;
+-   s->save_j           = j;
+-   s->save_t           = t;
+-   s->save_alphaSize   = alphaSize;
+-   s->save_nGroups     = nGroups;
+-   s->save_nSelectors  = nSelectors;
+-   s->save_EOB         = EOB;
+-   s->save_groupNo     = groupNo;
+-   s->save_groupPos    = groupPos;
+-   s->save_nextSym     = nextSym;
+-   s->save_nblockMAX   = nblockMAX;
+-   s->save_nblock      = nblock;
+-   s->save_es          = es;
+-   s->save_N           = N;
+-   s->save_curr        = curr;
+-   s->save_zt          = zt;
+-   s->save_zn          = zn;
+-   s->save_zvec        = zvec;
+-   s->save_zj          = zj;
+-   s->save_gSel        = gSel;
+-   s->save_gMinlen     = gMinlen;
+-   s->save_gLimit      = gLimit;
+-   s->save_gBase       = gBase;
+-   s->save_gPerm       = gPerm;
+-
+-   return retVal;
+-}
+-
+-
+-/*-------------------------------------------------------------*/
+-/*--- end                                      decompress.c ---*/
+-/*-------------------------------------------------------------*/
+diff --git a/lib/bzlib_huffman.c b/lib/bzlib_huffman.c
+deleted file mode 100644
+index 801b8ec..0000000
+--- a/lib/bzlib_huffman.c
++++ /dev/null
+@@ -1,229 +0,0 @@
+-#include <config.h>
+-
+-/*-------------------------------------------------------------*/
+-/*--- Huffman coding low-level stuff                        ---*/
+-/*---                                             huffman.c ---*/
+-/*-------------------------------------------------------------*/
+-
+-/*--
+-  This file is a part of bzip2 and/or libbzip2, a program and
+-  library for lossless, block-sorting data compression.
+-
+-  Copyright (C) 1996-2002 Julian R Seward.  All rights reserved.
+-
+-  Redistribution and use in source and binary forms, with or without
+-  modification, are permitted provided that the following conditions
+-  are met:
+-
+-  1. Redistributions of source code must retain the above copyright
+-     notice, this list of conditions and the following disclaimer.
+-
+-  2. The origin of this software must not be misrepresented; you must
+-     not claim that you wrote the original software.  If you use this
+-     software in a product, an acknowledgment in the product
+-     documentation would be appreciated but is not required.
+-
+-  3. Altered source versions must be plainly marked as such, and must
+-     not be misrepresented as being the original software.
+-
+-  4. The name of the author may not be used to endorse or promote
+-     products derived from this software without specific prior written
+-     permission.
+-
+-  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS
+-  OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+-  ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
+-  DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+-  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+-  GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+-  INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+-  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+-  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-
+-  Julian Seward, Cambridge, UK.
+-  jseward@acm.org
+-  bzip2/libbzip2 version 1.0 of 21 March 2000
+-
+-  This program is based on (at least) the work of:
+-     Mike Burrows
+-     David Wheeler
+-     Peter Fenwick
+-     Alistair Moffat
+-     Radford Neal
+-     Ian H. Witten
+-     Robert Sedgewick
+-     Jon L. Bentley
+-
+-  For more information on these sources, see the manual.
+---*/
+-
+-
+-#include "bzlib_private.h"
+-
+-/*---------------------------------------------------*/
+-#define WEIGHTOF(zz0)  ((zz0) & 0xffffff00)
+-#define DEPTHOF(zz1)   ((zz1) & 0x000000ff)
+-#define MYMAX(zz2,zz3) ((zz2) > (zz3) ? (zz2) : (zz3))
+-
+-#define ADDWEIGHTS(zw1,zw2)                           \
+-   (WEIGHTOF(zw1)+WEIGHTOF(zw2)) |                    \
+-   (1 + MYMAX(DEPTHOF(zw1),DEPTHOF(zw2)))
+-
+-#define UPHEAP(z)                                     \
+-{                                                     \
+-   Int32 zz, tmp;                                     \
+-   zz = z; tmp = heap[zz];                            \
+-   while (weight[tmp] < weight[heap[zz >> 1]]) {      \
+-      heap[zz] = heap[zz >> 1];                       \
+-      zz >>= 1;                                       \
+-   }                                                  \
+-   heap[zz] = tmp;                                    \
+-}
+-
+-#define DOWNHEAP(z)                                   \
+-{                                                     \
+-   Int32 zz, yy, tmp;                                 \
+-   zz = z; tmp = heap[zz];                            \
+-   while (True) {                                     \
+-      yy = zz << 1;                                   \
+-      if (yy > nHeap) break;                          \
+-      if (yy < nHeap &&                               \
+-	  weight[heap[yy+1]] < weight[heap[yy]])      \
+-	 yy++;                                        \
+-      if (weight[tmp] < weight[heap[yy]]) break;      \
+-      heap[zz] = heap[yy];                            \
+-      zz = yy;                                        \
+-   }                                                  \
+-   heap[zz] = tmp;                                    \
+-}
+-
+-
+-/*---------------------------------------------------*/
+-void BZ2_hbMakeCodeLengths ( UChar *len,
+-			     Int32 *freq,
+-			     Int32 alphaSize,
+-			     Int32 maxLen )
+-{
+-   /*--
+-      Nodes and heap entries run from 1.  Entry 0
+-      for both the heap and nodes is a sentinel.
+-   --*/
+-   Int32 nNodes, nHeap, n1, n2, i, j, k;
+-   Bool  tooLong;
+-
+-   Int32 heap   [ BZ_MAX_ALPHA_SIZE + 2 ];
+-   Int32 weight [ BZ_MAX_ALPHA_SIZE * 2 ];
+-   Int32 parent [ BZ_MAX_ALPHA_SIZE * 2 ];
+-
+-   for (i = 0; i < alphaSize; i++)
+-      weight[i+1] = (freq[i] == 0 ? 1 : freq[i]) << 8;
+-
+-   while (True) {
+-
+-      nNodes = alphaSize;
+-      nHeap = 0;
+-
+-      heap[0] = 0;
+-      weight[0] = 0;
+-      parent[0] = -2;
+-
+-      for (i = 1; i <= alphaSize; i++) {
+-	 parent[i] = -1;
+-	 nHeap++;
+-	 heap[nHeap] = i;
+-	 UPHEAP(nHeap);
+-      }
+-
+-      AssertH( nHeap < (BZ_MAX_ALPHA_SIZE+2), 2001 );
+-
+-      while (nHeap > 1) {
+-	 n1 = heap[1]; heap[1] = heap[nHeap]; nHeap--; DOWNHEAP(1);
+-	 n2 = heap[1]; heap[1] = heap[nHeap]; nHeap--; DOWNHEAP(1);
+-	 nNodes++;
+-	 parent[n1] = parent[n2] = nNodes;
+-	 weight[nNodes] = ADDWEIGHTS(weight[n1], weight[n2]);
+-	 parent[nNodes] = -1;
+-	 nHeap++;
+-	 heap[nHeap] = nNodes;
+-	 UPHEAP(nHeap);
+-      }
+-
+-      AssertH( nNodes < (BZ_MAX_ALPHA_SIZE * 2), 2002 );
+-
+-      tooLong = False;
+-      for (i = 1; i <= alphaSize; i++) {
+-	 j = 0;
+-	 k = i;
+-	 while (parent[k] >= 0) { k = parent[k]; j++; }
+-	 len[i-1] = j;
+-	 if (j > maxLen) tooLong = True;
+-      }
+-
+-      if (! tooLong) break;
+-
+-      for (i = 1; i < alphaSize; i++) {
+-	 j = weight[i] >> 8;
+-	 j = 1 + (j / 2);
+-	 weight[i] = j << 8;
+-      }
+-   }
+-}
+-
+-
+-/*---------------------------------------------------*/
+-void BZ2_hbAssignCodes ( Int32 *code,
+-			 UChar *length,
+-			 Int32 minLen,
+-			 Int32 maxLen,
+-			 Int32 alphaSize )
+-{
+-   Int32 n, vec, i;
+-
+-   vec = 0;
+-   for (n = minLen; n <= maxLen; n++) {
+-      for (i = 0; i < alphaSize; i++)
+-	 if (length[i] == n) { code[i] = vec; vec++; };
+-      vec <<= 1;
+-   }
+-}
+-
+-
+-/*---------------------------------------------------*/
+-void BZ2_hbCreateDecodeTables ( Int32 *limit,
+-				Int32 *base,
+-				Int32 *perm,
+-				UChar *length,
+-				Int32 minLen,
+-				Int32 maxLen,
+-				Int32 alphaSize )
+-{
+-   Int32 pp, i, j, vec;
+-
+-   pp = 0;
+-   for (i = minLen; i <= maxLen; i++)
+-      for (j = 0; j < alphaSize; j++)
+-	 if (length[j] == i) { perm[pp] = j; pp++; };
+-
+-   for (i = 0; i < BZ_MAX_CODE_LEN; i++) base[i] = 0;
+-   for (i = 0; i < alphaSize; i++) base[length[i]+1]++;
+-
+-   for (i = 1; i < BZ_MAX_CODE_LEN; i++) base[i] += base[i-1];
+-
+-   for (i = 0; i < BZ_MAX_CODE_LEN; i++) limit[i] = 0;
+-   vec = 0;
+-
+-   for (i = minLen; i <= maxLen; i++) {
+-      vec += (base[i+1] - base[i]);
+-      limit[i] = vec-1;
+-      vec <<= 1;
+-   }
+-   for (i = minLen + 1; i <= maxLen; i++)
+-      base[i] = ((limit[i-1] + 1) << 1) - base[i];
+-}
+-
+-
+-/*-------------------------------------------------------------*/
+-/*--- end                                         huffman.c ---*/
+-/*-------------------------------------------------------------*/
+diff --git a/lib/bzlib_randtable.c b/lib/bzlib_randtable.c
+deleted file mode 100644
+index e620c3e..0000000
+--- a/lib/bzlib_randtable.c
++++ /dev/null
+@@ -1,126 +0,0 @@
+-#include <config.h>
+-
+-/*-------------------------------------------------------------*/
+-/*--- Table for randomising repetitive blocks               ---*/
+-/*---                                           randtable.c ---*/
+-/*-------------------------------------------------------------*/
+-
+-/*--
+-  This file is a part of bzip2 and/or libbzip2, a program and
+-  library for lossless, block-sorting data compression.
+-
+-  Copyright (C) 1996-2002 Julian R Seward.  All rights reserved.
+-
+-  Redistribution and use in source and binary forms, with or without
+-  modification, are permitted provided that the following conditions
+-  are met:
+-
+-  1. Redistributions of source code must retain the above copyright
+-     notice, this list of conditions and the following disclaimer.
+-
+-  2. The origin of this software must not be misrepresented; you must
+-     not claim that you wrote the original software.  If you use this
+-     software in a product, an acknowledgment in the product
+-     documentation would be appreciated but is not required.
+-
+-  3. Altered source versions must be plainly marked as such, and must
+-     not be misrepresented as being the original software.
+-
+-  4. The name of the author may not be used to endorse or promote
+-     products derived from this software without specific prior written
+-     permission.
+-
+-  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS
+-  OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+-  ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
+-  DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+-  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+-  GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+-  INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+-  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+-  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-
+-  Julian Seward, Cambridge, UK.
+-  jseward@acm.org
+-  bzip2/libbzip2 version 1.0 of 21 March 2000
+-
+-  This program is based on (at least) the work of:
+-     Mike Burrows
+-     David Wheeler
+-     Peter Fenwick
+-     Alistair Moffat
+-     Radford Neal
+-     Ian H. Witten
+-     Robert Sedgewick
+-     Jon L. Bentley
+-
+-  For more information on these sources, see the manual.
+---*/
+-
+-
+-#include "bzlib_private.h"
+-
+-
+-/*---------------------------------------------*/
+-Int32 BZ2_rNums[512] = {
+-   619, 720, 127, 481, 931, 816, 813, 233, 566, 247,
+-   985, 724, 205, 454, 863, 491, 741, 242, 949, 214,
+-   733, 859, 335, 708, 621, 574, 73, 654, 730, 472,
+-   419, 436, 278, 496, 867, 210, 399, 680, 480, 51,
+-   878, 465, 811, 169, 869, 675, 611, 697, 867, 561,
+-   862, 687, 507, 283, 482, 129, 807, 591, 733, 623,
+-   150, 238, 59, 379, 684, 877, 625, 169, 643, 105,
+-   170, 607, 520, 932, 727, 476, 693, 425, 174, 647,
+-   73, 122, 335, 530, 442, 853, 695, 249, 445, 515,
+-   909, 545, 703, 919, 874, 474, 882, 500, 594, 612,
+-   641, 801, 220, 162, 819, 984, 589, 513, 495, 799,
+-   161, 604, 958, 533, 221, 400, 386, 867, 600, 782,
+-   382, 596, 414, 171, 516, 375, 682, 485, 911, 276,
+-   98, 553, 163, 354, 666, 933, 424, 341, 533, 870,
+-   227, 730, 475, 186, 263, 647, 537, 686, 600, 224,
+-   469, 68, 770, 919, 190, 373, 294, 822, 808, 206,
+-   184, 943, 795, 384, 383, 461, 404, 758, 839, 887,
+-   715, 67, 618, 276, 204, 918, 873, 777, 604, 560,
+-   951, 160, 578, 722, 79, 804, 96, 409, 713, 940,
+-   652, 934, 970, 447, 318, 353, 859, 672, 112, 785,
+-   645, 863, 803, 350, 139, 93, 354, 99, 820, 908,
+-   609, 772, 154, 274, 580, 184, 79, 626, 630, 742,
+-   653, 282, 762, 623, 680, 81, 927, 626, 789, 125,
+-   411, 521, 938, 300, 821, 78, 343, 175, 128, 250,
+-   170, 774, 972, 275, 999, 639, 495, 78, 352, 126,
+-   857, 956, 358, 619, 580, 124, 737, 594, 701, 612,
+-   669, 112, 134, 694, 363, 992, 809, 743, 168, 974,
+-   944, 375, 748, 52, 600, 747, 642, 182, 862, 81,
+-   344, 805, 988, 739, 511, 655, 814, 334, 249, 515,
+-   897, 955, 664, 981, 649, 113, 974, 459, 893, 228,
+-   433, 837, 553, 268, 926, 240, 102, 654, 459, 51,
+-   686, 754, 806, 760, 493, 403, 415, 394, 687, 700,
+-   946, 670, 656, 610, 738, 392, 760, 799, 887, 653,
+-   978, 321, 576, 617, 626, 502, 894, 679, 243, 440,
+-   680, 879, 194, 572, 640, 724, 926, 56, 204, 700,
+-   707, 151, 457, 449, 797, 195, 791, 558, 945, 679,
+-   297, 59, 87, 824, 713, 663, 412, 693, 342, 606,
+-   134, 108, 571, 364, 631, 212, 174, 643, 304, 329,
+-   343, 97, 430, 751, 497, 314, 983, 374, 822, 928,
+-   140, 206, 73, 263, 980, 736, 876, 478, 430, 305,
+-   170, 514, 364, 692, 829, 82, 855, 953, 676, 246,
+-   369, 970, 294, 750, 807, 827, 150, 790, 288, 923,
+-   804, 378, 215, 828, 592, 281, 565, 555, 710, 82,
+-   896, 831, 547, 261, 524, 462, 293, 465, 502, 56,
+-   661, 821, 976, 991, 658, 869, 905, 758, 745, 193,
+-   768, 550, 608, 933, 378, 286, 215, 979, 792, 961,
+-   61, 688, 793, 644, 986, 403, 106, 366, 905, 644,
+-   372, 567, 466, 434, 645, 210, 389, 550, 919, 135,
+-   780, 773, 635, 389, 707, 100, 626, 958, 165, 504,
+-   920, 176, 193, 713, 857, 265, 203, 50, 668, 108,
+-   645, 990, 626, 197, 510, 357, 358, 850, 858, 364,
+-   936, 638
+-};
+-
+-
+-/*-------------------------------------------------------------*/
+-/*--- end                                       randtable.c ---*/
+-/*-------------------------------------------------------------*/
+-
 -- 
 1.7.7.1
 
