@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RUwAb-0000Zm-G1
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RUwAd-0003rb-8f
  for barebox@lists.infradead.org; Mon, 28 Nov 2011 08:02:35 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 28 Nov 2011 09:02:15 +0100
-Message-Id: <1322467340-10596-10-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 28 Nov 2011 09:02:18 +0100
+Message-Id: <1322467340-10596-13-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1322467340-10596-1-git-send-email-s.hauer@pengutronix.de>
 References: <1322467340-10596-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,83 +21,76 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/14] bootm: fix various memory leaks
+Subject: [PATCH 12/14] bootm relocate_image: honour load_address
 To: barebox@lists.infradead.org
+
+the uImage should be relocated to load_address. This is handled correctly
+in gzip/bzip2 compressed images, but not in uncompressed images. fix this.
+Also, when a variable is not used once without casting to another type it
+probably means that its type is wrong.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/bootm.c |   19 +++++++++++--------
- common/image.c   |    1 +
- 2 files changed, 12 insertions(+), 8 deletions(-)
+ commands/bootm.c |   16 ++++++++--------
+ 1 files changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/commands/bootm.c b/commands/bootm.c
-index 316ed1f..c62df4f 100644
+index 0458919..c400ab5 100644
 --- a/commands/bootm.c
 +++ b/commands/bootm.c
-@@ -145,10 +145,11 @@ static int do_bootm(struct command *cmdtp, int argc, char *argv[])
+@@ -44,7 +44,7 @@
+ #include <init.h>
+ #include <asm-generic/memory_layout.h>
+ 
+-#define CFG_BOOTM_LEN	0x800000	/* use 8MByte as default max gunzip size */
++#define BOOTM_LEN	0x800000	/* use 8MByte as default max gunzip size */
+ 
+ struct image_handle_data* image_handle_data_get_by_num(struct image_handle* handle, int num)
  {
- 	int	opt;
- 	image_header_t *os_header;
--	struct image_handle *os_handle, *initrd_handle = NULL;
-+	struct image_handle *os_handle = NULL;
- 	struct image_handler *handler;
- 	struct image_data data;
- 	u32 initrd_start;
-+	int ret = 1;
+@@ -59,28 +59,28 @@ int relocate_image(struct image_handle *handle, void *load_address)
+ 	image_header_t *hdr = &handle->header;
+ 	unsigned long len  = image_get_size(hdr);
+ 	struct image_handle_data *iha;
+-	unsigned long data;
++	void *data;
  
- 	memset(&data, 0, sizeof(struct image_data));
- 	data.verify = 1;
-@@ -178,19 +179,21 @@ static int do_bootm(struct command *cmdtp, int argc, char *argv[])
- 				data.initrd = map_image(optarg, data.verify);
- 			}
- 			if (!data.initrd)
--				return -1;
-+				goto err_out;
- 			break;
- 		default:
- 			break;
+ #if defined CONFIG_CMD_BOOTM_ZLIB || defined CONFIG_CMD_BOOTM_BZLIB
+-	uint	unc_len = CFG_BOOTM_LEN;
++	uint	unc_len = BOOTM_LEN;
+ #endif
+ 
+ 	iha = image_handle_data_get_by_num(handle, 0);
+-	data = (unsigned long)(iha->data);
++	data = iha->data;
+ 
+ 	switch (image_get_comp(hdr)) {
+ 	case IH_COMP_NONE:
+-		if(image_get_load(hdr) == data) {
++		if (load_address == data) {
+ 			printf ("   XIP ... ");
+ 		} else {
+-			memmove ((void *) image_get_load(hdr), (uchar *)data, len);
++			memmove(load_address, data, len);
  		}
- 	}
- 
--	if (optind == argc)
--		return COMMAND_ERROR_USAGE;
-+	if (optind == argc) {
-+		ret = COMMAND_ERROR_USAGE;
-+		goto err_out;
-+	}
- 
- 	os_handle = map_image(argv[optind], data.verify);
- 	if (!os_handle)
--		return 1;
-+		goto err_out;
- 	data.os = os_handle;
- 
- 	os_header = &os_handle->header;
-@@ -224,9 +227,9 @@ static int do_bootm(struct command *cmdtp, int argc, char *argv[])
- err_out:
- 	if (os_handle)
- 		unmap_image(os_handle);
--	if (initrd_handle)
--		unmap_image(initrd_handle);
--	return 1;
-+	if (data.initrd)
-+		unmap_image(data.initrd);
-+	return ret;
- }
- 
- BAREBOX_CMD_HELP_START(bootm)
-diff --git a/common/image.c b/common/image.c
-index 939fe4b..d68889b 100644
---- a/common/image.c
-+++ b/common/image.c
-@@ -404,6 +404,7 @@ err_out:
- 	close(fd);
- 	if (handle->flags & IH_MALLOC)
- 		free(handle->data);
-+	free(handle->data_entries);
- 	free(handle);
- 	return NULL;
- }
+ 		break;
+ #ifdef CONFIG_CMD_BOOTM_ZLIB
+ 	case IH_COMP_GZIP:
+ 		printf ("   Uncompressing ... ");
+ 		if (gunzip (load_address, unc_len,
+-			    (uchar *)data, &len) != 0)
++			    data, &len) != 0)
+ 			return -1;
+ 		break;
+ #endif
+@@ -93,7 +93,7 @@ int relocate_image(struct image_handle *handle, void *load_address)
+ 		 * at most 2300 KB of memory.
+ 		 */
+ 		if (BZ2_bzBuffToBuffDecompress (load_address,
+-						&unc_len, (char *)data, len,
++						&unc_len, data, len,
+ 						MALLOC_SIZE < (4096 * 1024), 0)
+ 						!= BZ_OK)
+ 			return -1;
 -- 
 1.7.7.1
 
