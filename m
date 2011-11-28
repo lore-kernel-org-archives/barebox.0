@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RUwlB-0001Bw-Os
- for barebox@lists.infradead.org; Mon, 28 Nov 2011 08:40:23 +0000
+ id 1RUwlB-0001Bv-Oo
+ for barebox@lists.infradead.org; Mon, 28 Nov 2011 08:40:24 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 28 Nov 2011 09:40:09 +0100
-Message-Id: <1322469611-20173-1-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 28 Nov 2011 09:40:10 +0100
+Message-Id: <1322469611-20173-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1322469611-20173-1-git-send-email-s.hauer@pengutronix.de>
+References: <1322469611-20173-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,18 +21,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: mmc spi fixes
+Subject: [PATCH 1/2] mmc spi: add missing dependency on SPI
 To: barebox@lists.infradead.org
 
-Two compile fixes for the newly merged mmc over spi support.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/mci/Kconfig |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
 
-Sascha Hauer (2):
-      mmc spi: add missing dependency on SPI
-      mmc spi: compile fix
+diff --git a/drivers/mci/Kconfig b/drivers/mci/Kconfig
+index 00c28f1..897aa4d 100644
+--- a/drivers/mci/Kconfig
++++ b/drivers/mci/Kconfig
+@@ -81,6 +81,7 @@ config MCI_ATMEL
+ 
+ config MCI_SPI
+ 	bool "MMC/SD over SPI"
++	depends on SPI
+ 	help
+ 	  Some systems access MMC/SD/SDIO cards using a SPI controller
+ 	  instead of using a "native" MMC/SD/SDIO controller.  This has a
+-- 
+1.7.7.1
 
- drivers/mci/Kconfig   |    1 +
- drivers/mci/mci_spi.c |   29 ++++++++++++-----------------
- 2 files changed, 13 insertions(+), 17 deletions(-)
 
 _______________________________________________
 barebox mailing list
