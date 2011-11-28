@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RV9PQ-0007lw-In
- for barebox@lists.infradead.org; Mon, 28 Nov 2011 22:10:46 +0000
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RV9PI-0003BO-V4
+ for barebox@lists.infradead.org; Mon, 28 Nov 2011 22:10:44 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 28 Nov 2011 23:10:07 +0100
-Message-Id: <1322518209-2965-15-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 28 Nov 2011 23:10:03 +0100
+Message-Id: <1322518209-2965-11-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1322518209-2965-1-git-send-email-s.hauer@pengutronix.de>
 References: <1322518209-2965-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,435 +21,180 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 14/16] update configs and default envs for uncompress
+Subject: [PATCH 10/16] add file detection support
 To: barebox@lists.infradead.org
 
-uncompress is the replacement for unlzo. Adjust environments
-and defconfigs accordingly.
+Several filetypes can be autodetected. Barebox could make use
+of this in several ways:
+
+- Add a command to detect filetypes
+- detect arm zImages and uImages to unify the different boot commands
+- maybe detect UBI or JFFS2 images to construct parts of the kernel
+  command line
+- select correct uncompression function based on filetype
+
+This patch adds basic support to detect filetypes.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/eukrea_cpuimx25/env/bin/init_board |    2 +-
- arch/arm/boards/eukrea_cpuimx27/env/bin/init       |    2 +-
- arch/arm/boards/eukrea_cpuimx35/env/bin/init_board |    2 +-
- arch/arm/boards/eukrea_cpuimx51/env/bin/init_board |    2 +-
- arch/arm/configs/at91rm9200ek_defconfig            |    2 +-
- arch/arm/configs/at91sam9261ek_defconfig           |    2 +-
- arch/arm/configs/at91sam9g10ek_defconfig           |    2 +-
- arch/arm/configs/at91sam9m10g45ek_defconfig        |    2 +-
- arch/arm/configs/cupid_defconfig                   |    2 +-
- arch/arm/configs/eukrea_cpuimx25_defconfig         |    2 +-
- arch/arm/configs/eukrea_cpuimx27_defconfig         |    2 +-
- arch/arm/configs/eukrea_cpuimx35_defconfig         |    2 +-
- arch/arm/configs/eukrea_cpuimx51_defconfig         |    2 +-
- arch/arm/configs/freescale_mx35_3stack_defconfig   |    2 +-
- arch/arm/configs/freescale_mx53_loco_defconfig     |    2 +-
- arch/arm/configs/neso_defconfig                    |    2 +-
- arch/arm/configs/nhk8815_defconfig                 |    2 +-
- arch/arm/configs/omap3530_beagle_defconfig         |    2 +-
- arch/arm/configs/panda_defconfig                   |    2 +-
- arch/arm/configs/pca100_defconfig                  |    2 +-
- arch/arm/configs/pcm037_defconfig                  |    2 +-
- arch/arm/configs/pcm043_defconfig                  |    2 +-
- arch/arm/configs/pcm049_defconfig                  |    2 +-
- arch/arm/configs/pm9261_defconfig                  |    2 +-
- arch/arm/configs/pm9g45_defconfig                  |    2 +-
- arch/arm/configs/scb9328_defconfig                 |    2 +-
- arch/arm/configs/versatilepb_defconfig             |    2 +-
- arch/mips/configs/dlink-dir-320_defconfig          |    2 +-
- arch/mips/configs/qemu-malta_defconfig             |    2 +-
- defaultenv/bin/boot                                |    2 +-
- 30 files changed, 30 insertions(+), 30 deletions(-)
+ common/Makefile    |    1 +
+ common/filetype.c  |  104 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ include/filetype.h |   23 +++++++++++
+ 3 files changed, 128 insertions(+), 0 deletions(-)
+ create mode 100644 common/filetype.c
+ create mode 100644 include/filetype.h
 
-diff --git a/arch/arm/boards/eukrea_cpuimx25/env/bin/init_board b/arch/arm/boards/eukrea_cpuimx25/env/bin/init_board
-index 72b4ab3..2199b88 100644
---- a/arch/arm/boards/eukrea_cpuimx25/env/bin/init_board
-+++ b/arch/arm/boards/eukrea_cpuimx25/env/bin/init_board
-@@ -4,7 +4,7 @@ if [ -f /env/logo.bmp ]; then
- 	bmp /env/logo.bmp
- 	fb0.enable=1
- elif [ -f /env/logo.bmp.lzo ]; then
--	unlzo /env/logo.bmp.lzo /logo.bmp
-+	uncompress /env/logo.bmp.lzo /logo.bmp
- 	bmp /logo.bmp
- 	fb0.enable=1
- fi
-diff --git a/arch/arm/boards/eukrea_cpuimx27/env/bin/init b/arch/arm/boards/eukrea_cpuimx27/env/bin/init
-index aefd67c..f84ace9 100644
---- a/arch/arm/boards/eukrea_cpuimx27/env/bin/init
-+++ b/arch/arm/boards/eukrea_cpuimx27/env/bin/init
-@@ -20,7 +20,7 @@ if [ -f /env/logo.bmp ]; then
- 	bmp /env/logo.bmp
- 	fb0.enable=1
- elif [ -f /env/logo.bmp.lzo ]; then
--	unlzo /env/logo.bmp.lzo /logo.bmp
-+	uncompress /env/logo.bmp.lzo /logo.bmp
- 	bmp /logo.bmp
- 	fb0.enable=1
- fi
-diff --git a/arch/arm/boards/eukrea_cpuimx35/env/bin/init_board b/arch/arm/boards/eukrea_cpuimx35/env/bin/init_board
-index 173ecf9..cb624e5 100644
---- a/arch/arm/boards/eukrea_cpuimx35/env/bin/init_board
-+++ b/arch/arm/boards/eukrea_cpuimx35/env/bin/init_board
-@@ -5,7 +5,7 @@ if [ -f /env/logo.bmp ]; then
- 	fb0.enable=1
- 	gpio_set_value 1 1
- elif [ -f /env/logo.bmp.lzo ]; then
--	unlzo /env/logo.bmp.lzo /logo.bmp
-+	uncompress /env/logo.bmp.lzo /logo.bmp
- 	bmp /logo.bmp
- 	fb0.enable=1
- 	gpio_set_value 1 1
-diff --git a/arch/arm/boards/eukrea_cpuimx51/env/bin/init_board b/arch/arm/boards/eukrea_cpuimx51/env/bin/init_board
-index 173ecf9..cb624e5 100644
---- a/arch/arm/boards/eukrea_cpuimx51/env/bin/init_board
-+++ b/arch/arm/boards/eukrea_cpuimx51/env/bin/init_board
-@@ -5,7 +5,7 @@ if [ -f /env/logo.bmp ]; then
- 	fb0.enable=1
- 	gpio_set_value 1 1
- elif [ -f /env/logo.bmp.lzo ]; then
--	unlzo /env/logo.bmp.lzo /logo.bmp
-+	uncompress /env/logo.bmp.lzo /logo.bmp
- 	bmp /logo.bmp
- 	fb0.enable=1
- 	gpio_set_value 1 1
-diff --git a/arch/arm/configs/at91rm9200ek_defconfig b/arch/arm/configs/at91rm9200ek_defconfig
-index 0c10f88..584bfdf 100644
---- a/arch/arm/configs/at91rm9200ek_defconfig
-+++ b/arch/arm/configs/at91rm9200ek_defconfig
-@@ -33,7 +33,7 @@ CONFIG_CMD_GO=y
- CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_PARTITION=y
- CONFIG_CMD_GPIO=y
--CONFIG_CMD_UNLZO=y
-+CONFIG_CMD_UNCOMPRESS=y
- # CONFIG_SPI is not set
- CONFIG_DRIVER_CFI=y
- # CONFIG_DRIVER_CFI_INTEL is not set
-diff --git a/arch/arm/configs/at91sam9261ek_defconfig b/arch/arm/configs/at91sam9261ek_defconfig
-index c753eb3..a4adee9 100644
---- a/arch/arm/configs/at91sam9261ek_defconfig
-+++ b/arch/arm/configs/at91sam9261ek_defconfig
-@@ -33,7 +33,7 @@ CONFIG_CMD_GO=y
- CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_PARTITION=y
- CONFIG_CMD_GPIO=y
--CONFIG_CMD_UNLZO=y
-+CONFIG_CMD_UNCOMPRESS=y
- CONFIG_NET=y
- CONFIG_NET_DHCP=y
- CONFIG_NET_NFS=y
-diff --git a/arch/arm/configs/at91sam9g10ek_defconfig b/arch/arm/configs/at91sam9g10ek_defconfig
-index d39639a..9271b68 100644
---- a/arch/arm/configs/at91sam9g10ek_defconfig
-+++ b/arch/arm/configs/at91sam9g10ek_defconfig
-@@ -27,7 +27,7 @@ CONFIG_CMD_GO=y
- CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_PARTITION=y
- CONFIG_CMD_GPIO=y
--CONFIG_CMD_UNLZO=y
-+CONFIG_CMD_UNCOMPRESS=y
- CONFIG_NET=y
- CONFIG_NET_DHCP=y
- CONFIG_NET_NFS=y
-diff --git a/arch/arm/configs/at91sam9m10g45ek_defconfig b/arch/arm/configs/at91sam9m10g45ek_defconfig
-index 9699f5b..548fe6c 100644
---- a/arch/arm/configs/at91sam9m10g45ek_defconfig
-+++ b/arch/arm/configs/at91sam9m10g45ek_defconfig
-@@ -37,7 +37,7 @@ CONFIG_CMD_GO=y
- CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_PARTITION=y
- CONFIG_CMD_GPIO=y
--CONFIG_CMD_UNLZO=y
-+CONFIG_CMD_UNCOMPRESS=y
- CONFIG_NET=y
- CONFIG_NET_DHCP=y
- CONFIG_NET_NFS=y
-diff --git a/arch/arm/configs/cupid_defconfig b/arch/arm/configs/cupid_defconfig
-index b842469..3f5038f 100644
---- a/arch/arm/configs/cupid_defconfig
-+++ b/arch/arm/configs/cupid_defconfig
-@@ -35,7 +35,7 @@ CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_PARTITION=y
- CONFIG_CMD_BMP=y
- CONFIG_CMD_GPIO=y
--CONFIG_CMD_UNLZO=y
-+CONFIG_CMD_UNCOMPRESS=y
- CONFIG_NET=y
- CONFIG_NET_DHCP=y
- CONFIG_NET_NFS=y
-diff --git a/arch/arm/configs/eukrea_cpuimx25_defconfig b/arch/arm/configs/eukrea_cpuimx25_defconfig
-index 7fa2042..2a697be 100644
---- a/arch/arm/configs/eukrea_cpuimx25_defconfig
-+++ b/arch/arm/configs/eukrea_cpuimx25_defconfig
-@@ -35,7 +35,7 @@ CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_PARTITION=y
- CONFIG_CMD_BMP=y
- CONFIG_CMD_GPIO=y
--CONFIG_CMD_UNLZO=y
-+CONFIG_CMD_UNCOMPRESS=y
- CONFIG_CMD_I2C=y
- CONFIG_CMD_LED=y
- CONFIG_CMD_LED_TRIGGER=y
-diff --git a/arch/arm/configs/eukrea_cpuimx27_defconfig b/arch/arm/configs/eukrea_cpuimx27_defconfig
-index 75b849b..93de428 100644
---- a/arch/arm/configs/eukrea_cpuimx27_defconfig
-+++ b/arch/arm/configs/eukrea_cpuimx27_defconfig
-@@ -33,7 +33,7 @@ CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_PARTITION=y
- CONFIG_CMD_BMP=y
- CONFIG_CMD_GPIO=y
--CONFIG_CMD_UNLZO=y
-+CONFIG_CMD_UNCOMPRESS=y
- CONFIG_CMD_I2C=y
- CONFIG_NET=y
- CONFIG_NET_DHCP=y
-diff --git a/arch/arm/configs/eukrea_cpuimx35_defconfig b/arch/arm/configs/eukrea_cpuimx35_defconfig
-index 6964332..7bbe0d5 100644
---- a/arch/arm/configs/eukrea_cpuimx35_defconfig
-+++ b/arch/arm/configs/eukrea_cpuimx35_defconfig
-@@ -34,7 +34,7 @@ CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_PARTITION=y
- CONFIG_CMD_BMP=y
- CONFIG_CMD_GPIO=y
--CONFIG_CMD_UNLZO=y
-+CONFIG_CMD_UNCOMPRESS=y
- CONFIG_CMD_I2C=y
- CONFIG_NET=y
- CONFIG_NET_DHCP=y
-diff --git a/arch/arm/configs/eukrea_cpuimx51_defconfig b/arch/arm/configs/eukrea_cpuimx51_defconfig
-index a9fca84..39fe962 100644
---- a/arch/arm/configs/eukrea_cpuimx51_defconfig
-+++ b/arch/arm/configs/eukrea_cpuimx51_defconfig
-@@ -32,7 +32,7 @@ CONFIG_CMD_GO=y
- CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_PARTITION=y
- CONFIG_CMD_GPIO=y
--CONFIG_CMD_UNLZO=y
-+CONFIG_CMD_UNCOMPRESS=y
- CONFIG_NET=y
- CONFIG_NET_DHCP=y
- CONFIG_NET_PING=y
-diff --git a/arch/arm/configs/freescale_mx35_3stack_defconfig b/arch/arm/configs/freescale_mx35_3stack_defconfig
-index 2c0e513..c8d159f 100644
---- a/arch/arm/configs/freescale_mx35_3stack_defconfig
-+++ b/arch/arm/configs/freescale_mx35_3stack_defconfig
-@@ -29,7 +29,7 @@ CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_PARTITION=y
- CONFIG_CMD_BMP=y
- CONFIG_CMD_GPIO=y
--CONFIG_CMD_UNLZO=y
-+CONFIG_CMD_UNCOMPRESS=y
- CONFIG_CMD_I2C=y
- CONFIG_NET=y
- CONFIG_NET_DHCP=y
-diff --git a/arch/arm/configs/freescale_mx53_loco_defconfig b/arch/arm/configs/freescale_mx53_loco_defconfig
-index 8e4a7ce..cb07f85 100644
---- a/arch/arm/configs/freescale_mx53_loco_defconfig
-+++ b/arch/arm/configs/freescale_mx53_loco_defconfig
-@@ -33,7 +33,7 @@ CONFIG_CMD_GO=y
- CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_PARTITION=y
- CONFIG_CMD_GPIO=y
--CONFIG_CMD_UNLZO=y
-+CONFIG_CMD_UNCOMPRESS=y
- CONFIG_NET=y
- CONFIG_NET_DHCP=y
- CONFIG_NET_NFS=y
-diff --git a/arch/arm/configs/neso_defconfig b/arch/arm/configs/neso_defconfig
-index 1b533df..dcc2f70 100644
---- a/arch/arm/configs/neso_defconfig
-+++ b/arch/arm/configs/neso_defconfig
-@@ -34,7 +34,7 @@ CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_PARTITION=y
- CONFIG_CMD_BMP=y
- CONFIG_CMD_GPIO=y
--CONFIG_CMD_UNLZO=y
-+CONFIG_CMD_UNCOMPRESS=y
- CONFIG_NET=y
- CONFIG_NET_DHCP=y
- CONFIG_NET_NFS=y
-diff --git a/arch/arm/configs/nhk8815_defconfig b/arch/arm/configs/nhk8815_defconfig
-index b81afe2..597e9dd 100644
---- a/arch/arm/configs/nhk8815_defconfig
-+++ b/arch/arm/configs/nhk8815_defconfig
-@@ -34,7 +34,7 @@ CONFIG_CMD_RESET=y
- CONFIG_CMD_GO=y
- CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_PARTITION=y
--CONFIG_CMD_UNLZO=y
-+CONFIG_CMD_UNCOMPRESS=y
- CONFIG_NET=y
- CONFIG_NET_DHCP=y
- CONFIG_NET_NFS=y
-diff --git a/arch/arm/configs/omap3530_beagle_defconfig b/arch/arm/configs/omap3530_beagle_defconfig
-index 8a12154..e0688ae 100644
---- a/arch/arm/configs/omap3530_beagle_defconfig
-+++ b/arch/arm/configs/omap3530_beagle_defconfig
-@@ -31,7 +31,7 @@ CONFIG_CMD_GO=y
- CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_PARTITION=y
- CONFIG_CMD_GPIO=y
--CONFIG_CMD_UNLZO=y
-+CONFIG_CMD_UNCOMPRESS=y
- CONFIG_CMD_I2C=y
- CONFIG_NET=y
- CONFIG_NET_DHCP=y
-diff --git a/arch/arm/configs/panda_defconfig b/arch/arm/configs/panda_defconfig
-index 3ea2466..27592e5 100644
---- a/arch/arm/configs/panda_defconfig
-+++ b/arch/arm/configs/panda_defconfig
-@@ -34,7 +34,7 @@ CONFIG_CMD_GO=y
- CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_PARTITION=y
- CONFIG_CMD_GPIO=y
--CONFIG_CMD_UNLZO=y
-+CONFIG_CMD_UNCOMPRESS=y
- CONFIG_NET=y
- CONFIG_NET_DHCP=y
- CONFIG_NET_NFS=y
-diff --git a/arch/arm/configs/pca100_defconfig b/arch/arm/configs/pca100_defconfig
-index 88e7b9f..29e02c5 100644
---- a/arch/arm/configs/pca100_defconfig
-+++ b/arch/arm/configs/pca100_defconfig
-@@ -33,7 +33,7 @@ CONFIG_CMD_GO=y
- CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_PARTITION=y
- CONFIG_CMD_GPIO=y
--CONFIG_CMD_UNLZO=y
-+CONFIG_CMD_UNCOMPRESS=y
- CONFIG_NET=y
- CONFIG_NET_DHCP=y
- CONFIG_NET_PING=y
-diff --git a/arch/arm/configs/pcm037_defconfig b/arch/arm/configs/pcm037_defconfig
-index d9525a2..ec43317 100644
---- a/arch/arm/configs/pcm037_defconfig
-+++ b/arch/arm/configs/pcm037_defconfig
-@@ -31,7 +31,7 @@ CONFIG_CMD_GO=y
- CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_PARTITION=y
- CONFIG_CMD_GPIO=y
--CONFIG_CMD_UNLZO=y
-+CONFIG_CMD_UNCOMPRESS=y
- CONFIG_NET=y
- CONFIG_NET_DHCP=y
- CONFIG_NET_NFS=y
-diff --git a/arch/arm/configs/pcm043_defconfig b/arch/arm/configs/pcm043_defconfig
-index 3bf21c8..3c64805 100644
---- a/arch/arm/configs/pcm043_defconfig
-+++ b/arch/arm/configs/pcm043_defconfig
-@@ -35,7 +35,7 @@ CONFIG_CMD_GO=y
- CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_PARTITION=y
- CONFIG_CMD_GPIO=y
--CONFIG_CMD_UNLZO=y
-+CONFIG_CMD_UNCOMPRESS=y
- CONFIG_NET=y
- CONFIG_NET_DHCP=y
- CONFIG_NET_NFS=y
-diff --git a/arch/arm/configs/pcm049_defconfig b/arch/arm/configs/pcm049_defconfig
-index ed20f1b..9b4c341 100644
---- a/arch/arm/configs/pcm049_defconfig
-+++ b/arch/arm/configs/pcm049_defconfig
-@@ -35,7 +35,7 @@ CONFIG_CMD_GO=y
- CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_PARTITION=y
- CONFIG_CMD_GPIO=y
--CONFIG_CMD_UNLZO=y
-+CONFIG_CMD_UNCOMPRESS=y
- CONFIG_NET=y
- CONFIG_NET_DHCP=y
- CONFIG_NET_NFS=y
-diff --git a/arch/arm/configs/pm9261_defconfig b/arch/arm/configs/pm9261_defconfig
-index 0bd9483..89aa033 100644
---- a/arch/arm/configs/pm9261_defconfig
-+++ b/arch/arm/configs/pm9261_defconfig
-@@ -34,7 +34,7 @@ CONFIG_CMD_GO=y
- CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_PARTITION=y
- CONFIG_CMD_GPIO=y
--CONFIG_CMD_UNLZO=y
-+CONFIG_CMD_UNCOMPRESS=y
- CONFIG_NET=y
- CONFIG_NET_DHCP=y
- CONFIG_NET_NFS=y
-diff --git a/arch/arm/configs/pm9g45_defconfig b/arch/arm/configs/pm9g45_defconfig
-index 20bfd71..bf9af22 100644
---- a/arch/arm/configs/pm9g45_defconfig
-+++ b/arch/arm/configs/pm9g45_defconfig
-@@ -37,7 +37,7 @@ CONFIG_CMD_GO=y
- CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_PARTITION=y
- CONFIG_CMD_GPIO=y
--CONFIG_CMD_UNLZO=y
-+CONFIG_CMD_UNCOMPRESS=y
- CONFIG_NET=y
- CONFIG_NET_DHCP=y
- CONFIG_NET_NFS=y
-diff --git a/arch/arm/configs/scb9328_defconfig b/arch/arm/configs/scb9328_defconfig
-index 73ef238..4955646 100644
---- a/arch/arm/configs/scb9328_defconfig
-+++ b/arch/arm/configs/scb9328_defconfig
-@@ -28,7 +28,7 @@ CONFIG_CMD_GO=y
- CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_PARTITION=y
- CONFIG_CMD_GPIO=y
--CONFIG_CMD_UNLZO=y
-+CONFIG_CMD_UNCOMPRESS=y
- CONFIG_CMD_LED=y
- CONFIG_CMD_LED_TRIGGER=y
- CONFIG_NET=y
-diff --git a/arch/arm/configs/versatilepb_defconfig b/arch/arm/configs/versatilepb_defconfig
-index 6ffdf28..1b51d91 100644
---- a/arch/arm/configs/versatilepb_defconfig
-+++ b/arch/arm/configs/versatilepb_defconfig
-@@ -32,7 +32,7 @@ CONFIG_CMD_RESET=y
- CONFIG_CMD_GO=y
- CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_PARTITION=y
--CONFIG_CMD_UNLZO=y
-+CONFIG_CMD_UNCOMPRESS=y
- CONFIG_NET=y
- CONFIG_NET_DHCP=y
- CONFIG_NET_NFS=y
-diff --git a/arch/mips/configs/dlink-dir-320_defconfig b/arch/mips/configs/dlink-dir-320_defconfig
-index dbce0b9..88c0e83 100644
---- a/arch/mips/configs/dlink-dir-320_defconfig
-+++ b/arch/mips/configs/dlink-dir-320_defconfig
-@@ -41,7 +41,7 @@ CONFIG_CMD_RESET=y
- CONFIG_CMD_GO=y
- CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_PARTITION=y
--CONFIG_CMD_UNLZO=y
-+CONFIG_CMD_UNCOMPRESS=y
- CONFIG_NET=y
- CONFIG_NET_DHCP=y
- CONFIG_NET_NFS=y
-diff --git a/arch/mips/configs/qemu-malta_defconfig b/arch/mips/configs/qemu-malta_defconfig
-index b6f53ca..eac21e7 100644
---- a/arch/mips/configs/qemu-malta_defconfig
-+++ b/arch/mips/configs/qemu-malta_defconfig
-@@ -40,7 +40,7 @@ CONFIG_CMD_RESET=y
- CONFIG_CMD_GO=y
- CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_PARTITION=y
--CONFIG_CMD_UNLZO=y
-+CONFIG_CMD_UNCOMPRESS=y
- CONFIG_NET=y
- CONFIG_NET_DHCP=y
- CONFIG_NET_NFS=y
-diff --git a/defaultenv/bin/boot b/defaultenv/bin/boot
-index 6761d84..90ebf9a 100644
---- a/defaultenv/bin/boot
-+++ b/defaultenv/bin/boot
-@@ -124,6 +124,6 @@ elif [ x$kernelimage_type = xraw ]; then
- 	fi
- 	bootu /dev/ram0.kernelraw
- elif [ x$kernelimage_type = xraw_lzo ]; then
--	unlzo $kdev /dev/ram0.kernelraw
-+	uncompress $kdev /dev/ram0.kernelraw
- 	bootu /dev/ram0.kernelraw
- fi
+diff --git a/common/Makefile b/common/Makefile
+index 3edf38f..55d9dbc 100644
+--- a/common/Makefile
++++ b/common/Makefile
+@@ -26,6 +26,7 @@ obj-$(CONFIG_CMD_BOOTM) += image.o
+ obj-y += startup.o
+ obj-y += misc.o
+ obj-y += memsize.o
++obj-y += filetype.o
+ obj-$(CONFIG_MENU) += menu.o
+ obj-$(CONFIG_PASSWORD) += password.o
+ obj-$(CONFIG_MODULES) += module.o
+diff --git a/common/filetype.c b/common/filetype.c
+new file mode 100644
+index 0000000..5d246b4
+--- /dev/null
++++ b/common/filetype.c
+@@ -0,0 +1,104 @@
++/*
++ * filetype.c - detect filetypes
++ *
++ * Copyright (c) 2011 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation.
++ */
++#include <common.h>
++#include <filetype.h>
++#include <asm/byteorder.h>
++#include <fcntl.h>
++#include <fs.h>
++#include <malloc.h>
++
++const char *file_type_to_string(enum filetype f)
++{
++	switch (f) {
++	case filetype_unknown:
++		return "unkown";
++	case filetype_arm_zimage:
++		return "arm Linux zImage";
++	case filetype_lzo_compressed:
++		return "lzo compressed";
++	case filetype_arm_barebox:
++		return "arm barebox image";
++	case filetype_uimage:
++		return "U-Boot uImage";
++	case filetype_ubi:
++		return "UBI image";
++	case filetype_jffs2:
++		return "JFFS2 image";
++	case filetype_gzip:
++		return "gzip compressed";
++	case filetype_bzip2:
++		return "bzip2 compressed";
++	}
++	return NULL;
++}
++
++enum filetype file_detect_type(void *_buf)
++{
++	u32 *buf = _buf;
++	u8 *buf8 = _buf;
++
++	if (buf[8] == 0x65726162 && buf[9] == 0x00786f62)
++		return filetype_arm_barebox;
++	if (buf[9] == 0x016f2818 || buf[9] == 0x18286f01)
++		return filetype_arm_zimage;
++	if (buf8[0] == 0x89 && buf8[1] == 0x4c && buf8[2] == 0x5a &&
++			buf8[3] == 0x4f)
++		return filetype_lzo_compressed;
++	if (buf[0] == be32_to_cpu(0x27051956))
++		return filetype_uimage;
++	if (buf[0] == 0x23494255)
++		return filetype_ubi;
++	if (buf[0] == 0x20031985)
++		return filetype_jffs2;
++	if (buf8[0] == 0x1f && buf8[1] == 0x8b && buf8[2] == 0x08)
++		return filetype_gzip;
++	if (buf8[0] == 'B' && buf8[1] == 'Z' && buf8[2] == 'h' &&
++			buf8[3] > '0' && buf8[3] <= '9')
++                return filetype_bzip2;
++
++	return filetype_unknown;
++}
++
++enum filetype file_name_detect_type(const char *filename)
++{
++	int fd, ret;
++	void *buf;
++	enum filetype type = filetype_unknown;
++
++	fd = open(filename, O_RDONLY);
++	if (fd < 0)
++		return fd;
++
++	buf = xmalloc(512);
++
++	ret = read(fd, buf, 512);
++	if (ret != 512)
++		goto err_out;
++
++	type = file_detect_type(buf);
++
++err_out:
++	close(fd);
++	free(buf);
++
++	return type;
++}
+diff --git a/include/filetype.h b/include/filetype.h
+new file mode 100644
+index 0000000..64d32ef
+--- /dev/null
++++ b/include/filetype.h
+@@ -0,0 +1,23 @@
++#ifndef __FILE_TYPE_H
++#define __FILE_TYPE_H
++
++/*
++ * List of file types we know
++ */
++enum filetype {
++	filetype_unknown,
++	filetype_arm_zimage,
++	filetype_lzo_compressed,
++	filetype_arm_barebox,
++	filetype_uimage,
++	filetype_ubi,
++	filetype_jffs2,
++	filetype_gzip,
++	filetype_bzip2,
++};
++
++const char *file_type_to_string(enum filetype f);
++enum filetype file_detect_type(void *_buf);
++enum filetype file_name_detect_type(const char *filename);
++
++#endif /* __FILE_TYPE_H */
 -- 
 1.7.7.1
 
