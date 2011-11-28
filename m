@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RV9PF-0007kT-59
- for barebox@lists.infradead.org; Mon, 28 Nov 2011 22:10:41 +0000
+ id 1RV9PE-0007kI-UG
+ for barebox@lists.infradead.org; Mon, 28 Nov 2011 22:10:42 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 28 Nov 2011 23:10:04 +0100
-Message-Id: <1322518209-2965-12-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 28 Nov 2011 23:10:08 +0100
+Message-Id: <1322518209-2965-16-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1322518209-2965-1-git-send-email-s.hauer@pengutronix.de>
 References: <1322518209-2965-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,50 +21,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/16] lzo: export decompress_unlzo function
+Subject: [PATCH 15/16] remove now unused unlzo function
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/lzo.h          |    6 ++++++
- lib/decompress_unlzo.c |    4 ++--
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ include/lzo.h          |    2 --
+ lib/decompress_unlzo.c |   25 -------------------------
+ 2 files changed, 0 insertions(+), 27 deletions(-)
 
 diff --git a/include/lzo.h b/include/lzo.h
-index 5694985..b4a514f 100644
+index b4a514f..0530a68 100644
 --- a/include/lzo.h
 +++ b/include/lzo.h
-@@ -43,4 +43,10 @@ int lzo1x_decompress_safe(const unsigned char *src, size_t src_len,
+@@ -41,8 +41,6 @@ int lzo1x_decompress_safe(const unsigned char *src, size_t src_len,
+ #define LZO_E_INPUT_NOT_CONSUMED	(-8)
+ #define LZO_E_NOT_YET_IMPLEMENTED	(-9)
  
- int unlzo(int in_fd, int out_fd, int *dest_len);
- 
-+int decompress_unlzo(u8 *input, int in_len,
-+		int (*fill) (void *, unsigned int),
-+		int (*flush) (void *, unsigned int),
-+		u8 *output, int *posp,
-+		void (*error) (char *x));
-+
- #endif
+-int unlzo(int in_fd, int out_fd, int *dest_len);
+-
+ int decompress_unlzo(u8 *input, int in_len,
+ 		int (*fill) (void *, unsigned int),
+ 		int (*flush) (void *, unsigned int),
 diff --git a/lib/decompress_unlzo.c b/lib/decompress_unlzo.c
-index 0ae3d4d..5c0587e 100644
+index 5c0587e..000bd70 100644
 --- a/lib/decompress_unlzo.c
 +++ b/lib/decompress_unlzo.c
-@@ -106,7 +106,7 @@ static inline int parse_header(u8 *input, int *skip, int in_len)
- 	return 1;
+@@ -284,28 +284,3 @@ exit_1:
+ exit:
+ 	return ret;
  }
- 
--static inline int __unlzo(u8 *input, int in_len,
-+int decompress_unlzo(u8 *input, int in_len,
- 				int (*fill) (void *, unsigned int),
- 				int (*flush) (void *, unsigned int),
- 				u8 *output, int *posp,
-@@ -307,5 +307,5 @@ int unlzo(int _in_fd, int _out_fd, int *dest_len)
- {
- 	in_fd = _in_fd;
- 	out_fd = _out_fd;
--	return __unlzo(NULL, 0, unlzo_fill, unlzo_flush, NULL, NULL, unlzo_error);
-+	return decompress_unlzo(NULL, 0, unlzo_fill, unlzo_flush, NULL, NULL, unlzo_error);
- }
+-
+-static int in_fd;
+-static int out_fd;
+-
+-static int unlzo_fill(void *buf, unsigned int len)
+-{
+-	return read(in_fd, buf, len);
+-}
+-
+-static int unlzo_flush(void *buf, unsigned int len)
+-{
+-	return write(out_fd, buf, len);
+-}
+-
+-static void unlzo_error(char *s)
+-{
+-	printf("%s\n", s);
+-}
+-
+-int unlzo(int _in_fd, int _out_fd, int *dest_len)
+-{
+-	in_fd = _in_fd;
+-	out_fd = _out_fd;
+-	return decompress_unlzo(NULL, 0, unlzo_fill, unlzo_flush, NULL, NULL, unlzo_error);
+-}
 -- 
 1.7.7.1
 
