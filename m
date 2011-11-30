@@ -1,14 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-fx0-f49.google.com ([209.85.161.49])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RVqD6-0007q3-72
- for barebox@lists.infradead.org; Wed, 30 Nov 2011 19:52:52 +0000
-Received: by faan17 with SMTP id n17so1123052faa.36
- for <barebox@lists.infradead.org>; Wed, 30 Nov 2011 11:52:49 -0800 (PST)
+Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1RVsIL-0004wI-Pd
+ for barebox@lists.infradead.org; Wed, 30 Nov 2011 22:06:27 +0000
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+References: <87ipm9yd88.fsf@free.fr> <20111124120400.GC27267@pengutronix.de>
+ <87d3chxoxp.fsf@free.fr> <20111125000145.GE27267@pengutronix.de>
+ <87lir18ag7.fsf@free.fr> <20111128074319.GO27267@pengutronix.de>
+ <87d3cc87o5.fsf@free.fr> <20111129081501.GF27267@pengutronix.de>
+Date: Wed, 30 Nov 2011 23:06:13 +0100
+In-Reply-To: <20111129081501.GF27267@pengutronix.de> (Sascha Hauer's message
+ of "Tue, 29 Nov 2011 09:15:01 +0100")
+Message-ID: <87y5ux6zai.fsf@free.fr>
 MIME-Version: 1.0
-Date: Wed, 30 Nov 2011 22:52:46 +0300
-Message-ID: <CAA4bVAGTM99RvF5XufvLSw0sEp6cRmyDRwBvj9rdN7bM+8eb-w@mail.gmail.com>
-From: Antony Pavlov <antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,59 +21,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: lib/md5.o build problem
-To: barebox <barebox@lists.infradead.org>
+Subject: Re: ARM, MMU and IO space mapping
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hi!
+Sascha Hauer <s.hauer@pengutronix.de> writes:
 
-  We still have a problem: the option CONFIG_CMD_MD5SUM=3Dy breaks build.
+> We use high vectors at 0xfff00000, so there won't be vectors at 0x0. the
+> 0x0 mapping is only used to catch NULL pointer derefs.
 
-  Here is the log:
+> That said, being able to catch NULL pointers is a very good thing,
+> especially when there is flash at 0x0 which might be accidently
+> overwritten by some code acting on NULL pointers.
+I don't know if it can be that easily overwritten, but catching NPE is always
+good, it's true.
 
-$ date --utc
-Wed Nov 30 19:42:41 UTC 2011
-$ git clone --branch next git://git.pengutronix.de/git/barebox.git
-barebox.git.next
-Cloning into 'barebox.git.next'...
-$ cd barebox.git.next
-$ make ARCH=3Darm versatilepb_defconfig
-#
-# configuration written to .config
-#
-$ grep CMD_MD5SUM -i .config
-# CONFIG_CMD_MD5SUM is not set
-$ sed "s/# CONFIG_CMD_MD5SUM.*/CONFIG_CMD_MD5SUM=3Dy/" -i .config
-$ make ARCH=3Darm oldconfig
-scripts/kconfig/conf --oldconfig Kconfig
-#
-# configuration written to .config
-#
-$ grep CMD_MD5SUM -i .config
-CONFIG_CMD_MD5SUM=3Dy
-$ make -j 2 ARCH=3Darm CROSS_COMPILE=3Darm-versatile-linux-gnueabi-
-scripts/kconfig/conf --silentoldconfig Kconfig
-  Generating include/generated/mach-types.h
-  CHK     include/generated/version.h
-  UPD     include/generated/version.h
-...
-  CC      lib/random.o
-  CC      lib/show_progress.o
-make[1]: *** No rule to make target `lib/md5.o', needed by
-`lib/built-in.o'.  Stop.
-make[1]: *** Waiting for unfinished jobs....
-  CC      lib/process_escape_sequence.o
-  CC      net/eth.o
-make: *** [lib] Error 2
-make: *** Waiting for unfinished jobs....
+> With MMU we could just remap the flash in board code and pass the
+> remapped address as resource to the cfi driver. While I think the
+> cleanest solution would be to use ioremap in all drivers (and make
+> this a no-op on most boards) I don't think it's worth it at the moment.
+OK, remap in board, and input virtual mapping address into io ressource, simple
+enough. OK, I'll try that.
+That would require a function in arch/arm/cpu/mmu.c, to remap a physical address
+range into a virtual one, wouldn't it ? Would you have a suggestion for the API
+? As in map_io_section(u32 phys_addr, void *virt) ?
 
--- =
+Cheers.
 
-Best regards,
-=A0 Antony Pavlov
+-- 
+Robert
 
 _______________________________________________
 barebox mailing list
