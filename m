@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ey0-f177.google.com ([209.85.215.177])
+Received: from mail-fx0-f49.google.com ([209.85.161.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RVVYN-0002Gy-L7
- for barebox@lists.infradead.org; Tue, 29 Nov 2011 21:49:28 +0000
-Received: by eaac10 with SMTP id c10so4365082eaa.36
- for <barebox@lists.infradead.org>; Tue, 29 Nov 2011 13:49:25 -0800 (PST)
-From: Jaccon Bastiaansen <jaccon.bastiaansen@gmail.com>
-Date: Tue, 29 Nov 2011 22:48:26 +0100
-Message-Id: <1322603306-7121-1-git-send-email-jaccon.bastiaansen@gmail.com>
+ id 1RVqD6-0007q3-72
+ for barebox@lists.infradead.org; Wed, 30 Nov 2011 19:52:52 +0000
+Received: by faan17 with SMTP id n17so1123052faa.36
+ for <barebox@lists.infradead.org>; Wed, 30 Nov 2011 11:52:49 -0800 (PST)
+MIME-Version: 1.0
+Date: Wed, 30 Nov 2011 22:52:46 +0300
+Message-ID: <CAA4bVAGTM99RvF5XufvLSw0sEp6cRmyDRwBvj9rdN7bM+8eb-w@mail.gmail.com>
+From: Antony Pavlov <antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,41 +17,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] Increase heapsize for i.MX21ADS board.
-To: barebox@lists.infradead.org
+Subject: lib/md5.o build problem
+To: barebox <barebox@lists.infradead.org>
 
-Barebox cannot boot the recent mainline Linux kernels for the
-i.MX21ADS board anymore when using TFTP, because the heap is too
-small.
+Hi!
 
-This is solved by increasing the heapsize to 5Mbyte.
+  We still have a problem: the option CONFIG_CMD_MD5SUM=3Dy breaks build.
 
+  Here is the log:
 
-Signed-off-by: Jaccon Bastiaansen <jaccon.bastiaansen@gmail.com>
----
- arch/arm/configs/mx21ads_defconfig |    1 +
- 1 files changed, 1 insertions(+), 0 deletions(-)
+$ date --utc
+Wed Nov 30 19:42:41 UTC 2011
+$ git clone --branch next git://git.pengutronix.de/git/barebox.git
+barebox.git.next
+Cloning into 'barebox.git.next'...
+$ cd barebox.git.next
+$ make ARCH=3Darm versatilepb_defconfig
+#
+# configuration written to .config
+#
+$ grep CMD_MD5SUM -i .config
+# CONFIG_CMD_MD5SUM is not set
+$ sed "s/# CONFIG_CMD_MD5SUM.*/CONFIG_CMD_MD5SUM=3Dy/" -i .config
+$ make ARCH=3Darm oldconfig
+scripts/kconfig/conf --oldconfig Kconfig
+#
+# configuration written to .config
+#
+$ grep CMD_MD5SUM -i .config
+CONFIG_CMD_MD5SUM=3Dy
+$ make -j 2 ARCH=3Darm CROSS_COMPILE=3Darm-versatile-linux-gnueabi-
+scripts/kconfig/conf --silentoldconfig Kconfig
+  Generating include/generated/mach-types.h
+  CHK     include/generated/version.h
+  UPD     include/generated/version.h
+...
+  CC      lib/random.o
+  CC      lib/show_progress.o
+make[1]: *** No rule to make target `lib/md5.o', needed by
+`lib/built-in.o'.  Stop.
+make[1]: *** Waiting for unfinished jobs....
+  CC      lib/process_escape_sequence.o
+  CC      net/eth.o
+make: *** [lib] Error 2
+make: *** Waiting for unfinished jobs....
 
-diff --git a/arch/arm/configs/mx21ads_defconfig b/arch/arm/configs/mx21ads_defconfig
-index 52f84e1..175c229 100644
---- a/arch/arm/configs/mx21ads_defconfig
-+++ b/arch/arm/configs/mx21ads_defconfig
-@@ -3,6 +3,7 @@ CONFIG_ARCH_IMX21=y
- CONFIG_IMX_CLKO=y
- CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
- CONFIG_TEXT_BASE=0xc1000000
-+CONFIG_MALLOC_SIZE=0x500000
- CONFIG_LONGHELP=y
- CONFIG_CMDLINE_EDITING=y
- CONFIG_AUTO_COMPLETE=y
--- 
-1.7.1
+-- =
 
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
