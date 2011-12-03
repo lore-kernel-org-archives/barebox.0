@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RW7ie-0001s3-NW
- for barebox@lists.infradead.org; Thu, 01 Dec 2011 14:34:37 +0000
-Message-ID: <4ED79071.4000502@pengutronix.de>
-Date: Thu, 01 Dec 2011 15:34:25 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-MIME-Version: 1.0
-References: <87ipm9yd88.fsf@free.fr> <20111124120400.GC27267@pengutronix.de>
- <87d3chxoxp.fsf@free.fr> <20111125000145.GE27267@pengutronix.de>
- <87lir18ag7.fsf@free.fr> <20111128074319.GO27267@pengutronix.de>
- <87d3cc87o5.fsf@free.fr> <20111129081501.GF27267@pengutronix.de>
- <87y5ux6zai.fsf@free.fr> <20111201142636.GP27267@pengutronix.de>
-In-Reply-To: <20111201142636.GP27267@pengutronix.de>
+Received: from 1.mo1.mail-out.ovh.net ([178.32.127.22]
+ helo=mo1.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1RWiSL-0004rl-4p
+ for barebox@lists.infradead.org; Sat, 03 Dec 2011 05:48:14 +0000
+Received: from mail99.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id D9656100C90B
+ for <barebox@lists.infradead.org>; Sat,  3 Dec 2011 06:48:11 +0100 (CET)
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Sat,  3 Dec 2011 06:44:43 +0100
+Message-Id: <1322891084-446-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,64 +18,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============8602374370763969493=="
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: ARM, MMU and IO space mapping
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/2] use format(__printf__, a, b) instead of formart(printf, a,
+ b)
+To: barebox@lists.infradead.org
 
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---===============8602374370763969493==
-Content-Type: multipart/signed; micalg=pgp-sha1;
- protocol="application/pgp-signature";
- boundary="------------enig1B5042B18304CE280D605523"
+to fix warning 'barebox_printf' is an unrecognized format function type
 
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---------------enig1B5042B18304CE280D605523
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ include/linux/compiler-gcc.h |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-On 12/01/2011 03:26 PM, Sascha Hauer wrote:
->> ? As in map_io_section(u32 phys_addr, void *virt) ?
-                          ^^^
+diff --git a/include/linux/compiler-gcc.h b/include/linux/compiler-gcc.h
+index 73dcf80..d363fdb 100644
+--- a/include/linux/compiler-gcc.h
++++ b/include/linux/compiler-gcc.h
+@@ -75,7 +75,7 @@
+  */
+ #define __pure				__attribute__((pure))
+ #define __aligned(x)			__attribute__((aligned(x)))
+-#define __printf(a,b)			__attribute__((format(printf,a,b)))
++#define __printf(a,b)			__attribute__((format(__printf__,a,b)))
+ #define  noinline			__attribute__((noinline))
+ #define __attribute_const__		__attribute__((__const__))
+ #define __maybe_unused			__attribute__((unused))
+-- 
+1.7.7
 
-make this an unsigned long
-
-Marc
---=20
-Pengutronix e.K.                  | Marc Kleine-Budde           |
-Industrial Linux Solutions        | Phone: +49-231-2826-924     |
-Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
-
-
---------------enig1B5042B18304CE280D605523
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.10 (GNU/Linux)
-Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org/
-
-iEYEARECAAYFAk7XkHQACgkQjTAFq1RaXHOBAQCeKYRKzcESySG/myV8d6bL+o3l
-zH0Ani0PrziKOpgII5cVlqIrXkzWAEa6
-=7B5Z
------END PGP SIGNATURE-----
-
---------------enig1B5042B18304CE280D605523--
-
-
---===============8602374370763969493==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============8602374370763969493==--
