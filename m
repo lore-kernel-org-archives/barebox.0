@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RXULJ-0006Uo-Ko
- for barebox@lists.infradead.org; Mon, 05 Dec 2011 08:56:11 +0000
+ id 1RXULK-0006V5-BG
+ for barebox@lists.infradead.org; Mon, 05 Dec 2011 08:56:12 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  5 Dec 2011 09:56:00 +0100
-Message-Id: <1323075361-27455-5-git-send-email-s.hauer@pengutronix.de>
+Date: Mon,  5 Dec 2011 09:55:57 +0100
+Message-Id: <1323075361-27455-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1323075361-27455-1-git-send-email-s.hauer@pengutronix.de>
 References: <1323075361-27455-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,129 +21,119 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/5] register sdram as resources
+Subject: [PATCH 1/5] fix malloc space sizes
 To: barebox@lists.infradead.org
 
-Also, request the sdram regions used by the barebox binary,
-bss, malloc space and stack.
+end is start + size - 1, not start + size.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/memory.c  |   58 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
- include/memory.h |    5 ++++
- 2 files changed, 63 insertions(+), 0 deletions(-)
+ arch/arm/lib/arm.c        |    2 +-
+ arch/blackfin/lib/board.c |    2 +-
+ arch/mips/lib/memory.c    |    2 +-
+ arch/nios2/lib/board.c    |    2 +-
+ arch/ppc/lib/board.c      |    2 +-
+ arch/sandbox/os/common.c  |    2 +-
+ arch/x86/lib/memory.c     |    4 ++--
+ 7 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/common/memory.c b/common/memory.c
-index 0ba9a18..7d0f4ca 100644
---- a/common/memory.c
-+++ b/common/memory.c
-@@ -25,6 +25,9 @@
- #include <of.h>
- #include <init.h>
- #include <libfdt.h>
-+#include <linux/ioport.h>
-+#include <asm-generic/memory_layout.h>
-+#include <asm/sections.h>
- 
- /*
-  * Begin and End of memory area for malloc(), and current "brk"
-@@ -50,6 +53,33 @@ void mem_malloc_init(void *start, void *end)
- 	malloc_brk = malloc_start;
- }
- 
-+static int mem_malloc_resource(void)
-+{
-+	/*
-+	 * Normally it's a bug when one of these fails,
-+	 * but we have some setups where some of these
-+	 * regions are outside of sdram in which case
-+	 * the following fails.
-+	 */
-+	request_sdram_region("malloc space",
-+			malloc_start,
-+			malloc_end - malloc_start + 1);
-+	request_sdram_region("barebox",
-+			(unsigned long)&_stext,
-+			(unsigned long)&_etext -
-+			(unsigned long)&_stext + 1);
-+	request_sdram_region("bss",
-+			(unsigned long)&__bss_start,
-+			(unsigned long)&__bss_stop -
-+			(unsigned long)&__bss_start + 1);
-+#ifdef STACK_BASE
-+	request_sdram_region("stack", STACK_BASE, STACK_SIZE);
-+#endif
-+
-+	return 0;
-+}
-+coredevice_initcall(mem_malloc_resource);
-+
- static void *sbrk_no_zero(ptrdiff_t increment)
+diff --git a/arch/arm/lib/arm.c b/arch/arm/lib/arm.c
+index c85aae1..80b62e9 100644
+--- a/arch/arm/lib/arm.c
++++ b/arch/arm/lib/arm.c
+@@ -7,7 +7,7 @@
+ static int arm_mem_malloc_init(void)
  {
- 	unsigned long old = malloc_brk;
-@@ -82,6 +112,10 @@ void barebox_add_memory_bank(const char *name, resource_size_t start,
- 	struct memory_bank *bank = xzalloc(sizeof(*bank));
- 	struct device_d *dev;
- 
-+	bank->res = request_iomem_region(name, start, size);
-+
-+	BUG_ON(!bank->res);
-+
- 	dev = add_mem_device(name, start, size, IORESOURCE_MEM_WRITEABLE);
- 
- 	bank->dev = dev;
-@@ -91,6 +125,30 @@ void barebox_add_memory_bank(const char *name, resource_size_t start,
- 	list_add_tail(&bank->list, &memory_banks);
+ 	mem_malloc_init((void *)MALLOC_BASE,
+-			(void *)(MALLOC_BASE + MALLOC_SIZE));
++			(void *)(MALLOC_BASE + MALLOC_SIZE - 1));
+ 	return 0;
  }
  
-+/*
-+ * Request a region from the registered sdram
-+ */
-+struct resource *request_sdram_region(const char *name, resource_size_t start,
-+		resource_size_t size)
-+{
-+	struct memory_bank *bank;
-+
-+	for_each_memory_bank(bank) {
-+		struct resource *res;
-+
-+		res = request_region(bank->res, name, start, size);
-+		if (res)
-+			return res;
-+	}
-+
-+	return NULL;
-+}
-+
-+int release_sdram_region(struct resource *res)
-+{
-+	return release_region(res);
-+}
-+
- #ifdef CONFIG_OFTREE
+diff --git a/arch/blackfin/lib/board.c b/arch/blackfin/lib/board.c
+index d1b39fa..bf5c1b6 100644
+--- a/arch/blackfin/lib/board.c
++++ b/arch/blackfin/lib/board.c
+@@ -38,7 +38,7 @@
+ int blackfin_mem_malloc_init(void)
+ {
+ 	mem_malloc_init((void *)(MALLOC_BASE),
+-			(void *)(MALLOC_BASE + MALLOC_SIZE));
++			(void *)(MALLOC_BASE + MALLOC_SIZE - 1));
+ 	return 0;
+ }
  
- /*
-diff --git a/include/memory.h b/include/memory.h
-index cb185af..4be4340 100644
---- a/include/memory.h
-+++ b/include/memory.h
-@@ -13,6 +13,7 @@ struct memory_bank {
- 	struct device_d *dev;
- 	unsigned long start;
- 	unsigned long size;
-+	struct resource *res;
- };
+diff --git a/arch/mips/lib/memory.c b/arch/mips/lib/memory.c
+index ad9f6a6..8d2d51b 100644
+--- a/arch/mips/lib/memory.c
++++ b/arch/mips/lib/memory.c
+@@ -26,7 +26,7 @@
+ static int mips_mem_malloc_init(void)
+ {
+ 	mem_malloc_init((void *)MALLOC_BASE,
+-			(void *)(MALLOC_BASE + MALLOC_SIZE));
++			(void *)(MALLOC_BASE + MALLOC_SIZE - 1));
+ 	return 0;
+ }
+ core_initcall(mips_mem_malloc_init);
+diff --git a/arch/nios2/lib/board.c b/arch/nios2/lib/board.c
+index d50f05a..ed3af49 100644
+--- a/arch/nios2/lib/board.c
++++ b/arch/nios2/lib/board.c
+@@ -31,7 +31,7 @@ int altera_mem_malloc_init(void)
+ {
  
- extern struct list_head memory_banks;
-@@ -22,4 +23,8 @@ void barebox_add_memory_bank(const char *name, resource_size_t start,
+ 	mem_malloc_init((void *)(NIOS_SOPC_TEXT_BASE - MALLOC_SIZE),
+-			(void *)(NIOS_SOPC_TEXT_BASE));
++			(void *)(NIOS_SOPC_TEXT_BASE - 1));
  
- #define for_each_memory_bank(mem)	list_for_each_entry(mem, &memory_banks, list)
+ 	return 0;
+ }
+diff --git a/arch/ppc/lib/board.c b/arch/ppc/lib/board.c
+index 0b610a5..0e839eb 100644
+--- a/arch/ppc/lib/board.c
++++ b/arch/ppc/lib/board.c
+@@ -56,7 +56,7 @@ void board_init_r (ulong end_of_ram)
+ 	debug("malloc_end: 0x%08x\n", malloc_end);
+ 	debug("TEXT_BASE after relocation: 0x%08x\n", _text_base);
  
-+struct resource *request_sdram_region(const char *name, resource_size_t start,
-+		resource_size_t size);
-+int release_sdram_region(struct resource *res);
-+
+-	mem_malloc_init((void *)(malloc_end - MALLOC_SIZE), (void *)malloc_end);
++	mem_malloc_init((void *)(malloc_end - MALLOC_SIZE), (void *)(malloc_end - 1));
+ 
+ 	/*
+ 	 * Setup trap handlers
+diff --git a/arch/sandbox/os/common.c b/arch/sandbox/os/common.c
+index 1c5ae5d..9258c66 100644
+--- a/arch/sandbox/os/common.c
++++ b/arch/sandbox/os/common.c
+@@ -262,7 +262,7 @@ int main(int argc, char *argv[])
+ 		printf("unable to get malloc space\n");
+ 		exit(1);
+ 	}
+-	mem_malloc_init(ram, ram + malloc_size);
++	mem_malloc_init(ram, ram + malloc_size - 1);
+ 
+ 	while (1) {
+ 		int option_index = 0;
+diff --git a/arch/x86/lib/memory.c b/arch/x86/lib/memory.c
+index fa7bc03..1774ef3 100644
+--- a/arch/x86/lib/memory.c
++++ b/arch/x86/lib/memory.c
+@@ -54,12 +54,12 @@ static int x86_mem_malloc_init(void)
+ 	 */
+ 	if (memory_size >= (15 * 1024 * 1024 + MALLOC_SIZE))
+ 		mem_malloc_init((void*)(16 * 1024 * 1024),
+-				(void*)(16 * 1024 * 1024) + MALLOC_SIZE);
++				(void*)(16 * 1024 * 1024 + MALLOC_SIZE - 1));
+ 	else
+ 		return -1;
+ #else
+ 	mem_malloc_init((void *)MALLOC_BASE,
+-			(void *)(MALLOC_BASE + MALLOC_SIZE));
++			(void *)(MALLOC_BASE + MALLOC_SIZE - 1));
  #endif
+ 	return 0;
+ }
 -- 
 1.7.7.3
 
