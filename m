@@ -1,20 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 15.mo1.mail-out.ovh.net ([188.165.38.232]
+Received: from 10.mo1.mail-out.ovh.net ([178.32.96.102]
  helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RXaCf-0007eu-LP
- for barebox@lists.infradead.org; Mon, 05 Dec 2011 15:11:38 +0000
+ id 1RXaFM-0008PK-EC
+ for barebox@lists.infradead.org; Mon, 05 Dec 2011 15:14:24 +0000
 Received: from mail99.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 9F658FFB8A4
- for <barebox@lists.infradead.org>; Mon,  5 Dec 2011 16:11:41 +0100 (CET)
-Date: Mon, 5 Dec 2011 16:07:58 +0100
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id A0887FFB61D
+ for <barebox@lists.infradead.org>; Mon,  5 Dec 2011 16:14:29 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20111205150758.GB9192@game.jcrosoft.org>
-References: <1322891084-446-1-git-send-email-plagnioj@jcrosoft.com>
- <20111205084846.GZ27267@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20111205084846.GZ27267@pengutronix.de>
+Date: Mon,  5 Dec 2011 16:10:36 +0100
+Message-Id: <1323097837-30282-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,25 +18,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] use format(__printf__, a, b) instead of
- formart(printf, a, b)
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/1] mci: add the probe parameter if any error happened during
+ the probe
+To: barebox@lists.infradead.org
 
-On 09:48 Mon 05 Dec     , Sascha Hauer wrote:
-> On Sat, Dec 03, 2011 at 06:44:43AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > to fix warning 'barebox_printf' is an unrecognized format function type
-> 
-> Where do you see this warning? I do not get it anymore since Loic fixed
-> it.
-__printf is the right way to fix it so use it
+as example today if the timeout happened we can not probe the SD card again
 
-Best Regards,
-J.
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ drivers/mci/mci-core.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
+index 1da7aff..e9fe87c 100644
+--- a/drivers/mci/mci-core.c
++++ b/drivers/mci/mci-core.c
+@@ -1380,7 +1380,7 @@ static int mci_probe(struct device_d *mci_dev)
+ #ifdef CONFIG_MCI_STARTUP
+ 	/* if enabled, probe the attached card immediately */
+ 	rc = mci_card_probe(mci_dev);
+-	if (rc == -ENODEV) {
++	if (rc) {
+ 		/*
+ 		 * If it fails, add the 'probe' parameter to give the user
+ 		 * a chance to insert a card and try again. Note: This may fail
+-- 
+1.7.7
+
 
 _______________________________________________
 barebox mailing list
