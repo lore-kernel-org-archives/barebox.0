@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RXULK-0006VB-HK
- for barebox@lists.infradead.org; Mon, 05 Dec 2011 08:56:13 +0000
+ id 1RXULJ-0006Uo-Ko
+ for barebox@lists.infradead.org; Mon, 05 Dec 2011 08:56:11 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  5 Dec 2011 09:55:58 +0100
-Message-Id: <1323075361-27455-3-git-send-email-s.hauer@pengutronix.de>
+Date: Mon,  5 Dec 2011 09:56:00 +0100
+Message-Id: <1323075361-27455-5-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1323075361-27455-1-git-send-email-s.hauer@pengutronix.de>
 References: <1323075361-27455-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,190 +21,129 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] add resource management functions
+Subject: [PATCH 4/5] register sdram as resources
 To: barebox@lists.infradead.org
 
-It is time to track our memory usage. Add a simple resource
-management.
+Also, request the sdram regions used by the barebox binary,
+bss, malloc space and stack.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/Makefile        |    1 +
- common/resource.c      |  121 ++++++++++++++++++++++++++++++++++++++++++++++++
- include/linux/ioport.h |   14 ++++++
- 3 files changed, 136 insertions(+), 0 deletions(-)
- create mode 100644 common/resource.c
+ common/memory.c  |   58 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ include/memory.h |    5 ++++
+ 2 files changed, 63 insertions(+), 0 deletions(-)
 
-diff --git a/common/Makefile b/common/Makefile
-index 55d9dbc..9bce479 100644
---- a/common/Makefile
-+++ b/common/Makefile
-@@ -27,6 +27,7 @@ obj-y += startup.o
- obj-y += misc.o
- obj-y += memsize.o
- obj-y += filetype.o
-+obj-y += resource.o
- obj-$(CONFIG_MENU) += menu.o
- obj-$(CONFIG_PASSWORD) += password.o
- obj-$(CONFIG_MODULES) += module.o
-diff --git a/common/resource.c b/common/resource.c
-new file mode 100644
-index 0000000..63e9c49
---- /dev/null
-+++ b/common/resource.c
-@@ -0,0 +1,121 @@
-+/*
-+ * resource.c - barebox resource management
-+ *
-+ * Copyright (c) 2011 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation.
-+ */
-+#include <common.h>
-+#include <malloc.h>
-+#include <errno.h>
-+#include <init.h>
+diff --git a/common/memory.c b/common/memory.c
+index 0ba9a18..7d0f4ca 100644
+--- a/common/memory.c
++++ b/common/memory.c
+@@ -25,6 +25,9 @@
+ #include <of.h>
+ #include <init.h>
+ #include <libfdt.h>
 +#include <linux/ioport.h>
-+
-+static int init_resource(struct resource *res, const char *name)
-+{
-+	INIT_LIST_HEAD(&res->children);
-+	res->parent = NULL;
-+	res->name = xstrdup(name);
-+
-+	return 0;
-+}
-+
-+/*
-+ * request a region.
-+ * This will succedd when the requested region is completely inside
-+ * the parent resource and does not conflict with any of the child
-+ * resources.
-+ */
-+struct resource *request_region(struct resource *parent,
-+		const char *name, resource_size_t start,
-+		resource_size_t size)
-+{
-+	struct resource *r, *new;
-+
-+	/* outside parent resource? */
-+	if (start < parent->start ||
-+			start + size > parent->start + parent->size) {
-+		debug("%s: 0x%08x:0x%08x outside parent resource 0x%08x:0x%08x\n",
-+				__func__, start, size, parent->start,
-+				parent->size);
-+		return NULL;
-+	}
-+
-+	/*
-+	 * We keep the list of child resources ordered which helps
-+	 * us searching for conflicts here.
-+	 */
-+	list_for_each_entry(r, &parent->children, sibling) {
-+		if (start + size <= r->start)
-+			goto ok;
-+		if (start >= r->start + r->size)
-+			continue;
-+		debug("%s: 0x%08x:0x%08x conflicts with 0x%08x:0x%08x\n",
-+				__func__, start, size, r->start, r->size);
-+		return NULL;
-+	}
-+
-+ok:
-+	debug("%s ok: 0x%08x 0x%08x\n", __func__, start, size);
-+
-+	new = xzalloc(sizeof(*new));
-+	init_resource(new, name);
-+	new->start = start;
-+	new->size = size;
-+	new->parent = parent;
-+	list_add_tail(&new->sibling, &r->sibling);
-+
-+	return new;
-+}
-+
-+/*
-+ * release a region previously requested with request_region
-+ */
-+int release_region(struct resource *res)
-+{
-+	if (!list_empty(&res->children))
-+		return -EBUSY;
-+
-+	list_del(&res->sibling);
-+	free((char *)res->name);
-+	free(res);
-+
-+	return 0;
-+}
-+
-+/* The root resource for the whole io space */
-+struct resource iomem_resource = {
-+	.start = 0,
-+	.size = ~0,
-+};
-+
-+/*
-+ * request a region inside the io space
-+ */
-+struct resource *request_iomem_region(const char *name,
-+		resource_size_t start, resource_size_t size)
-+{
-+	return request_region(&iomem_resource, name, start, size);
-+}
-+
-+static int iomem_init(void)
-+{
-+	init_resource(&iomem_resource, "iomem");
-+
-+	return 0;
-+}
-+postcore_initcall(iomem_init);
-diff --git a/include/linux/ioport.h b/include/linux/ioport.h
-index 5143115..c837b53 100644
---- a/include/linux/ioport.h
-+++ b/include/linux/ioport.h
-@@ -20,6 +20,9 @@ struct resource {
- 	resource_size_t size;
- 	const char *name;
- 	unsigned long flags;
-+	struct resource *parent;
-+	struct list_head children;
-+	struct list_head sibling;
- };
++#include <asm-generic/memory_layout.h>
++#include <asm/sections.h>
  
  /*
-@@ -111,5 +114,16 @@ static inline unsigned long resource_type(const struct resource *res)
- 	return res->flags & IORESOURCE_TYPE_BITS;
+  * Begin and End of memory area for malloc(), and current "brk"
+@@ -50,6 +53,33 @@ void mem_malloc_init(void *start, void *end)
+ 	malloc_brk = malloc_start;
  }
  
-+struct resource *request_iomem_region(const char *name,
-+		resource_size_t start, resource_size_t size);
++static int mem_malloc_resource(void)
++{
++	/*
++	 * Normally it's a bug when one of these fails,
++	 * but we have some setups where some of these
++	 * regions are outside of sdram in which case
++	 * the following fails.
++	 */
++	request_sdram_region("malloc space",
++			malloc_start,
++			malloc_end - malloc_start + 1);
++	request_sdram_region("barebox",
++			(unsigned long)&_stext,
++			(unsigned long)&_etext -
++			(unsigned long)&_stext + 1);
++	request_sdram_region("bss",
++			(unsigned long)&__bss_start,
++			(unsigned long)&__bss_stop -
++			(unsigned long)&__bss_start + 1);
++#ifdef STACK_BASE
++	request_sdram_region("stack", STACK_BASE, STACK_SIZE);
++#endif
 +
-+struct resource *request_region(struct resource *parent,
-+		const char *name, resource_size_t start,
++	return 0;
++}
++coredevice_initcall(mem_malloc_resource);
++
+ static void *sbrk_no_zero(ptrdiff_t increment)
+ {
+ 	unsigned long old = malloc_brk;
+@@ -82,6 +112,10 @@ void barebox_add_memory_bank(const char *name, resource_size_t start,
+ 	struct memory_bank *bank = xzalloc(sizeof(*bank));
+ 	struct device_d *dev;
+ 
++	bank->res = request_iomem_region(name, start, size);
++
++	BUG_ON(!bank->res);
++
+ 	dev = add_mem_device(name, start, size, IORESOURCE_MEM_WRITEABLE);
+ 
+ 	bank->dev = dev;
+@@ -91,6 +125,30 @@ void barebox_add_memory_bank(const char *name, resource_size_t start,
+ 	list_add_tail(&bank->list, &memory_banks);
+ }
+ 
++/*
++ * Request a region from the registered sdram
++ */
++struct resource *request_sdram_region(const char *name, resource_size_t start,
++		resource_size_t size)
++{
++	struct memory_bank *bank;
++
++	for_each_memory_bank(bank) {
++		struct resource *res;
++
++		res = request_region(bank->res, name, start, size);
++		if (res)
++			return res;
++	}
++
++	return NULL;
++}
++
++int release_sdram_region(struct resource *res)
++{
++	return release_region(res);
++}
++
+ #ifdef CONFIG_OFTREE
+ 
+ /*
+diff --git a/include/memory.h b/include/memory.h
+index cb185af..4be4340 100644
+--- a/include/memory.h
++++ b/include/memory.h
+@@ -13,6 +13,7 @@ struct memory_bank {
+ 	struct device_d *dev;
+ 	unsigned long start;
+ 	unsigned long size;
++	struct resource *res;
+ };
+ 
+ extern struct list_head memory_banks;
+@@ -22,4 +23,8 @@ void barebox_add_memory_bank(const char *name, resource_size_t start,
+ 
+ #define for_each_memory_bank(mem)	list_for_each_entry(mem, &memory_banks, list)
+ 
++struct resource *request_sdram_region(const char *name, resource_size_t start,
 +		resource_size_t size);
++int release_sdram_region(struct resource *res);
 +
-+int release_region(struct resource *res);
-+
-+extern struct resource iomem_resource;
-+
- #endif /* __ASSEMBLY__ */
- #endif	/* _LINUX_IOPORT_H */
+ #endif
 -- 
 1.7.7.3
 
