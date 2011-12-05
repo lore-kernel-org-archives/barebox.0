@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RXULJ-0003jx-Uk
- for barebox@lists.infradead.org; Mon, 05 Dec 2011 08:56:11 +0000
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RXULI-0006Un-RK
+ for barebox@lists.infradead.org; Mon, 05 Dec 2011 08:56:10 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  5 Dec 2011 09:55:59 +0100
-Message-Id: <1323075361-27455-4-git-send-email-s.hauer@pengutronix.de>
+Date: Mon,  5 Dec 2011 09:56:01 +0100
+Message-Id: <1323075361-27455-6-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1323075361-27455-1-git-send-email-s.hauer@pengutronix.de>
 References: <1323075361-27455-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,106 +21,87 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] add iomem command to show iomem usage
+Subject: [PATCH 5/5] implement resource management for platform devices
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/Kconfig  |    7 ++++++
- commands/Makefile |    1 +
- commands/iomem.c  |   56 +++++++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 64 insertions(+), 0 deletions(-)
- create mode 100644 commands/iomem.c
+ drivers/base/driver.c |   29 +++++++++++++++++++++++++++--
+ include/driver.h      |    6 +-----
+ 2 files changed, 28 insertions(+), 7 deletions(-)
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index c2492fa..2badea3 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -215,6 +215,13 @@ config CMD_MEMINFO
- 	tristate
- 	prompt "meminfo"
+diff --git a/drivers/base/driver.c b/drivers/base/driver.c
+index 0b80103..0132e7d 100644
+--- a/drivers/base/driver.c
++++ b/drivers/base/driver.c
+@@ -214,7 +214,7 @@ int register_driver(struct driver_d *drv)
+ }
+ EXPORT_SYMBOL(register_driver);
  
-+config CMD_IOMEM
-+	tristate
-+	prompt "iomem"
-+	help
-+	  Show information about iomem usage. Pendant to 'cat /proc/iomem'
-+	  under Linux.
+-void __iomem *dev_get_mem_region(struct device_d *dev, int num)
++static struct resource *dev_get_resource(struct device_d *dev, int num)
+ {
+ 	int i, n = 0;
+ 
+@@ -222,15 +222,40 @@ void __iomem *dev_get_mem_region(struct device_d *dev, int num)
+ 		struct resource *res = &dev->resource[i];
+ 		if (resource_type(res) == IORESOURCE_MEM) {
+ 			if (n == num)
+-				return (void __force __iomem *)res->start;
++				return res;
+ 			n++;
+ 		}
+ 	}
+ 
+ 	return NULL;
+ }
 +
- config CMD_MEMORY
- 	bool
- 	default y
-diff --git a/commands/Makefile b/commands/Makefile
-index f82dcfa..e95fdc3 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -60,3 +60,4 @@ obj-$(CONFIG_CMD_USB)		+= usb.o
- obj-$(CONFIG_CMD_TIME)		+= time.o
- obj-$(CONFIG_CMD_OFTREE)	+= oftree.o
- obj-$(CONFIG_CMD_MAGICVAR)	+= magicvar.o
-+obj-$(CONFIG_CMD_IOMEM)		+= iomem.o
-diff --git a/commands/iomem.c b/commands/iomem.c
-new file mode 100644
-index 0000000..78566c1
---- /dev/null
-+++ b/commands/iomem.c
-@@ -0,0 +1,56 @@
-+/*
-+ * iomem.c - barebox iomem command
-+ *
-+ * Copyright (c) 2011 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation.
-+ */
-+#include <common.h>
-+#include <command.h>
-+
-+static void __print_resources(struct resource *res, int indent)
++void __iomem *dev_get_mem_region(struct device_d *dev, int num)
 +{
-+	struct resource *r;
-+	int i;
++	struct resource *res;
 +
-+	for (i = 0; i < indent; i++)
-+		printf("  ");
++	res = dev_get_resource(dev, num);
++	if (!res)
++		return res;
 +
-+	printf("0x%08x - 0x%08x (size 0x%08x) %s\n", res->start,
-+			res->start + res->size - 1,
-+			res->size, res->name);
-+
-+	list_for_each_entry(r, &res->children, sibling)
-+		__print_resources(r, indent + 1);
++	return (void __force __iomem *)res->start;
 +}
-+
-+static void print_resources(struct resource *res)
+ EXPORT_SYMBOL(dev_get_mem_region);
+ 
++void __iomem *dev_request_mem_region(struct device_d *dev, int num)
 +{
-+	__print_resources(res, 0);
++	struct resource *res;
++
++	res = dev_get_resource(dev, num);
++	if (!res)
++		return NULL;
++
++	res = request_iomem_region(dev_name(dev), res->start, res->size);
++
++	return (void __force __iomem *)res->start;
 +}
++EXPORT_SYMBOL(dev_request_mem_region);
 +
-+static int do_iomem(struct command *cmdtp, int argc, char *argv[])
-+{
-+	print_resources(&iomem_resource);
-+
-+	return 0;
-+}
-+
-+BAREBOX_CMD_START(iomem)
-+	.cmd		= do_iomem,
-+	.usage		= "show iomem usage",
-+BAREBOX_CMD_END
+ int dev_protect(struct device_d *dev, size_t count, unsigned long offset, int prot)
+ {
+ 	printf("%s: currently broken\n", __func__);
+diff --git a/include/driver.h b/include/driver.h
+index fe9d37a..bbe7248 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -190,11 +190,7 @@ void __iomem *dev_get_mem_region(struct device_d *dev, int num);
+ /*
+  * exlusively request register base 'num' for a device
+  */
+-static inline void __iomem *dev_request_mem_region(struct device_d *dev, int num)
+-{
+-	/* no resource tracking yet */
+-	return dev_get_mem_region(dev, num);
+-}
++void __iomem *dev_request_mem_region(struct device_d *dev, int num);
+ 
+ /*
+  * register a generic device
 -- 
 1.7.7.3
 
