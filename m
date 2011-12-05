@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RXULJ-0003jo-MH
- for barebox@lists.infradead.org; Mon, 05 Dec 2011 08:56:10 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1RXULC-0004OH-34
- for barebox@lists.infradead.org; Mon, 05 Dec 2011 09:56:02 +0100
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.77)
- (envelope-from <sha@pengutronix.de>) id 1RXULC-0007IC-1n
- for barebox@lists.infradead.org; Mon, 05 Dec 2011 09:56:02 +0100
+ id 1RXULJ-0003jx-Uk
+ for barebox@lists.infradead.org; Mon, 05 Dec 2011 08:56:11 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  5 Dec 2011 09:55:56 +0100
-Message-Id: <1323075361-27455-1-git-send-email-s.hauer@pengutronix.de>
+Date: Mon,  5 Dec 2011 09:55:59 +0100
+Message-Id: <1323075361-27455-4-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1323075361-27455-1-git-send-email-s.hauer@pengutronix.de>
+References: <1323075361-27455-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,44 +21,109 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] resources
+Subject: [PATCH 3/5] add iomem command to show iomem usage
 To: barebox@lists.infradead.org
 
-We do not track sdram usage at all which means that currently we
-can't see whether regions for the binary, stack, malloc space overlap
-ot where we can safely load images to. The following implements iomem
-resources support and registers the known regions accordingly. bootm
-currently does not use this, it will be done in a later patch.
-
-Sascha
-
-Sascha Hauer (5):
-      fix malloc space sizes
-      add resource management functions
-      add iomem command to show iomem usage
-      register sdram as resources
-      implement resource management for platform devices
-
- arch/arm/lib/arm.c        |    2 +-
- arch/blackfin/lib/board.c |    2 +-
- arch/mips/lib/memory.c    |    2 +-
- arch/nios2/lib/board.c    |    2 +-
- arch/ppc/lib/board.c      |    2 +-
- arch/sandbox/os/common.c  |    2 +-
- arch/x86/lib/memory.c     |    4 +-
- commands/Kconfig          |    7 +++
- commands/Makefile         |    1 +
- commands/iomem.c          |   56 +++++++++++++++++++++
- common/Makefile           |    1 +
- common/memory.c           |   58 +++++++++++++++++++++
- common/resource.c         |  121 +++++++++++++++++++++++++++++++++++++++++++++
- drivers/base/driver.c     |   29 ++++++++++-
- include/driver.h          |    6 +--
- include/linux/ioport.h    |   14 +++++
- include/memory.h          |    5 ++
- 17 files changed, 299 insertions(+), 15 deletions(-)
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ commands/Kconfig  |    7 ++++++
+ commands/Makefile |    1 +
+ commands/iomem.c  |   56 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 64 insertions(+), 0 deletions(-)
  create mode 100644 commands/iomem.c
- create mode 100644 common/resource.c
+
+diff --git a/commands/Kconfig b/commands/Kconfig
+index c2492fa..2badea3 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -215,6 +215,13 @@ config CMD_MEMINFO
+ 	tristate
+ 	prompt "meminfo"
+ 
++config CMD_IOMEM
++	tristate
++	prompt "iomem"
++	help
++	  Show information about iomem usage. Pendant to 'cat /proc/iomem'
++	  under Linux.
++
+ config CMD_MEMORY
+ 	bool
+ 	default y
+diff --git a/commands/Makefile b/commands/Makefile
+index f82dcfa..e95fdc3 100644
+--- a/commands/Makefile
++++ b/commands/Makefile
+@@ -60,3 +60,4 @@ obj-$(CONFIG_CMD_USB)		+= usb.o
+ obj-$(CONFIG_CMD_TIME)		+= time.o
+ obj-$(CONFIG_CMD_OFTREE)	+= oftree.o
+ obj-$(CONFIG_CMD_MAGICVAR)	+= magicvar.o
++obj-$(CONFIG_CMD_IOMEM)		+= iomem.o
+diff --git a/commands/iomem.c b/commands/iomem.c
+new file mode 100644
+index 0000000..78566c1
+--- /dev/null
++++ b/commands/iomem.c
+@@ -0,0 +1,56 @@
++/*
++ * iomem.c - barebox iomem command
++ *
++ * Copyright (c) 2011 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation.
++ */
++#include <common.h>
++#include <command.h>
++
++static void __print_resources(struct resource *res, int indent)
++{
++	struct resource *r;
++	int i;
++
++	for (i = 0; i < indent; i++)
++		printf("  ");
++
++	printf("0x%08x - 0x%08x (size 0x%08x) %s\n", res->start,
++			res->start + res->size - 1,
++			res->size, res->name);
++
++	list_for_each_entry(r, &res->children, sibling)
++		__print_resources(r, indent + 1);
++}
++
++static void print_resources(struct resource *res)
++{
++	__print_resources(res, 0);
++}
++
++static int do_iomem(struct command *cmdtp, int argc, char *argv[])
++{
++	print_resources(&iomem_resource);
++
++	return 0;
++}
++
++BAREBOX_CMD_START(iomem)
++	.cmd		= do_iomem,
++	.usage		= "show iomem usage",
++BAREBOX_CMD_END
+-- 
+1.7.7.3
+
 
 _______________________________________________
 barebox mailing list
