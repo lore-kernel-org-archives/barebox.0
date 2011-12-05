@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 4.mo1.mail-out.ovh.net ([46.105.76.26]
+Received: from 2.mo1.mail-out.ovh.net ([178.32.119.250]
  helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RXaJG-0000OJ-1k
- for barebox@lists.infradead.org; Mon, 05 Dec 2011 15:18:26 +0000
+ id 1RXaO8-0000p2-Fs
+ for barebox@lists.infradead.org; Mon, 05 Dec 2011 15:23:29 +0000
 Received: from mail99.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id EAE03FFB676
- for <barebox@lists.infradead.org>; Mon,  5 Dec 2011 16:18:30 +0100 (CET)
-Date: Mon, 5 Dec 2011 16:14:39 +0100
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 63884FFB2F5
+ for <barebox@lists.infradead.org>; Mon,  5 Dec 2011 16:23:34 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20111205151439.GC9192@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Mon,  5 Dec 2011 16:19:02 +0100
+Message-Id: <1323098343-31863-3-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20111205151439.GC9192@game.jcrosoft.org>
+References: <20111205151439.GC9192@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,62 +20,83 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mx53 update
+Subject: [PATCH 3/4] mx53 loco: update sd support
 To: barebox@lists.infradead.org
 
-HI,
+update to use card detect
+add sd3 card support
 
-	this patch update the mx53 support
-	by fixing mmc devid
-	add card detect support and add smd board support
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ arch/arm/boards/freescale-mx53-loco/board.c |   36 ++++++++++++++++++++++++++-
+ 1 files changed, 35 insertions(+), 1 deletions(-)
 
-The following changes since commit 088afefa32a43bd7da80ed3c0a8cebb2c0f72ba7:
+diff --git a/arch/arm/boards/freescale-mx53-loco/board.c b/arch/arm/boards/freescale-mx53-loco/board.c
+index 6a5ef37..aec2254 100644
+--- a/arch/arm/boards/freescale-mx53-loco/board.c
++++ b/arch/arm/boards/freescale-mx53-loco/board.c
+@@ -72,6 +72,22 @@ static struct pad_desc loco_pads[] = {
+ 	MX53_PAD_SD1_DATA3__ESDHC1_DAT3,
+ 	/* SD1_CD */
+ 	MX53_PAD_EIM_DA13__GPIO3_13,
++
++	/* SD3 */
++	MX53_PAD_PATA_DATA8__ESDHC3_DAT0,
++	MX53_PAD_PATA_DATA9__ESDHC3_DAT1,
++	MX53_PAD_PATA_DATA10__ESDHC3_DAT2,
++	MX53_PAD_PATA_DATA11__ESDHC3_DAT3,
++	MX53_PAD_PATA_DATA0__ESDHC3_DAT4,
++	MX53_PAD_PATA_DATA1__ESDHC3_DAT5,
++	MX53_PAD_PATA_DATA2__ESDHC3_DAT6,
++	MX53_PAD_PATA_DATA3__ESDHC3_DAT7,
++	MX53_PAD_PATA_IORDY__ESDHC3_CLK,
++	MX53_PAD_PATA_RESET_B__ESDHC3_CMD,
++	/* SD3_CD */
++	MX53_PAD_EIM_DA11__GPIO3_11,
++	/* SD3_WP */
++	MX53_PAD_EIM_DA12__GPIO3_12,
+ };
+ 
+ static int loco_mem_init(void)
+@@ -92,11 +108,29 @@ static void loco_fec_reset(void)
+ 	gpio_set_value(LOCO_FEC_PHY_RST, 1);
+ }
+ 
++#define LOCO_SD3_CD			IMX_GPIO_NR(3, 11)
++#define LOCO_SD3_WP			IMX_GPIO_NR(3, 12)
++#define LOCO_SD1_CD			IMX_GPIO_NR(3, 13)
++
++static struct esdhc_platform_data loco_sd1_data = {
++	.cd_gpio = LOCO_SD1_CD,
++	.cd_type = ESDHC_CD_GPIO,
++	.wp_type = ESDHC_WP_NONE,
++};
++
++static struct esdhc_platform_data loco_sd3_data = {
++	.cd_gpio = LOCO_SD3_CD,
++	.wp_gpio = LOCO_SD3_WP,
++	.cd_type = ESDHC_CD_GPIO,
++	.wp_type = ESDHC_WP_GPIO,
++};
++
+ static int loco_devices_init(void)
+ {
+ 	imx51_iim_register_fec_ethaddr();
+ 	imx53_add_fec(&fec_info);
+-	imx53_add_mmc0(NULL);
++	imx53_add_mmc0(&loco_sd1_data);
++	imx53_add_mmc2(&loco_sd3_data);
+ 
+ 	loco_fec_reset();
+ 
+-- 
+1.7.7
 
-  mci: add the probe parameter if any error happened during the probe (2011-12-04 00:12:22 +0800)
-
-are available in the git repository at:
-  git ..BRANCH.NOT.VERIFIED..
-
-Jean-Christophe PLAGNIOL-VILLARD (4):
-      mx53: fix devid for imx53_add_mmc1/2
-      imx-esdhc: add support of card detect
-      mx53 loco: update sd support
-      imx: add mx53 SMD board support
-
- arch/arm/Makefile                                 |    1 +
- arch/arm/boards/freescale-mx53-loco/board.c       |   36 +++++-
- arch/arm/boards/freescale-mx53-smd/Makefile       |    2 +
- arch/arm/boards/freescale-mx53-smd/board.c        |  170 +++++++++++++++++++++
- arch/arm/boards/freescale-mx53-smd/config.h       |   24 +++
- arch/arm/boards/freescale-mx53-smd/env/config     |   51 ++++++
- arch/arm/boards/freescale-mx53-smd/flash_header.c |  101 ++++++++++++
- arch/arm/boards/freescale-mx53-smd/mx53-smd.dox   |    4 +
- arch/arm/configs/freescale_mx53_smd_defconfig     |   51 ++++++
- arch/arm/mach-imx/Kconfig                         |    5 +
- arch/arm/mach-imx/devices.c                       |    2 +-
- arch/arm/mach-imx/include/mach/devices-imx25.h    |    2 +-
- arch/arm/mach-imx/include/mach/devices-imx35.h    |    6 +-
- arch/arm/mach-imx/include/mach/devices-imx51.h    |    4 +-
- arch/arm/mach-imx/include/mach/devices-imx53.h    |   15 ++-
- arch/arm/mach-imx/include/mach/devices.h          |    3 +-
- arch/arm/mach-imx/include/mach/esdhc.h            |   43 +++++
- drivers/mci/imx-esdhc.c                           |   37 +++++
- 18 files changed, 543 insertions(+), 14 deletions(-)
- create mode 100644 arch/arm/boards/freescale-mx53-smd/Makefile
- create mode 100644 arch/arm/boards/freescale-mx53-smd/board.c
- create mode 100644 arch/arm/boards/freescale-mx53-smd/config.h
- create mode 100644 arch/arm/boards/freescale-mx53-smd/env/config
- create mode 100644 arch/arm/boards/freescale-mx53-smd/flash_header.c
- create mode 100644 arch/arm/boards/freescale-mx53-smd/mx53-smd.dox
- create mode 100644 arch/arm/configs/freescale_mx53_smd_defconfig
- create mode 100644 arch/arm/mach-imx/include/mach/esdhc.h
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
