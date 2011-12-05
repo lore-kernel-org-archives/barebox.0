@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RXUNA-0003lg-KG
- for barebox@lists.infradead.org; Mon, 05 Dec 2011 08:58:05 +0000
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RXUNA-0006XJ-7U
+ for barebox@lists.infradead.org; Mon, 05 Dec 2011 08:58:04 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1RXUN4-0004YB-Pv
+ for barebox@lists.infradead.org; Mon, 05 Dec 2011 09:57:58 +0100
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.77)
+ (envelope-from <sha@pengutronix.de>) id 1RXUN4-0007RQ-Oy
+ for barebox@lists.infradead.org; Mon, 05 Dec 2011 09:57:58 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  5 Dec 2011 09:57:57 +0100
-Message-Id: <1323075477-28567-4-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1323075477-28567-1-git-send-email-s.hauer@pengutronix.de>
-References: <1323075477-28567-1-git-send-email-s.hauer@pengutronix.de>
+Date: Mon,  5 Dec 2011 09:57:54 +0100
+Message-Id: <1323075477-28567-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,32 +26,19 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] mci imx-esdhc: do not overwrite probed host caps
+Subject: [PATCH] i.MX53 sdhc
 To: barebox@lists.infradead.org
 
-The caps are read from the hardware but overwritten afterwards.
-Fix this.
+Some patches for improving i.MX53 sdhc support.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/mci/imx-esdhc.c |    1 -
- 1 files changed, 0 insertions(+), 1 deletions(-)
+Sascha Hauer (3):
+      mci imx esdhc: enable i.MX53 fix for i.MX51 aswell
+      ARM i.MX53: Adjust MMC clock frequencies to 200MHz
+      mci imx-esdhc: do not overwrite probed host caps
 
-diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
-index 94b2738..d19b6da 100644
---- a/drivers/mci/imx-esdhc.c
-+++ b/drivers/mci/imx-esdhc.c
-@@ -485,7 +485,6 @@ static int fsl_esdhc_probe(struct device_d *dev)
- 	host->mci.send_cmd = esdhc_send_cmd;
- 	host->mci.set_ios = esdhc_set_ios;
- 	host->mci.init = esdhc_init;
--	host->mci.host_caps = MMC_MODE_4BIT;
- 	host->mci.hw_dev = dev;
- 
- 	host->mci.voltages = MMC_VDD_32_33 | MMC_VDD_33_34;
--- 
-1.7.7.3
-
+ arch/arm/mach-imx/imx53.c |    9 +++++++++
+ drivers/mci/imx-esdhc.c   |    4 ++--
+ 2 files changed, 11 insertions(+), 2 deletions(-)
 
 _______________________________________________
 barebox mailing list
