@@ -1,20 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RXUYx-0006hF-PH
- for barebox@lists.infradead.org; Mon, 05 Dec 2011 09:10:16 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1RXUYm-0005FG-8G
- for barebox@lists.infradead.org; Mon, 05 Dec 2011 10:10:04 +0100
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.77)
- (envelope-from <sha@pengutronix.de>) id 1RXUYm-000811-7D
- for barebox@lists.infradead.org; Mon, 05 Dec 2011 10:10:04 +0100
-Date: Mon, 5 Dec 2011 10:10:04 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20111205091004.GA27267@pengutronix.de>
+Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1RXW73-0004dF-8T
+ for barebox@lists.infradead.org; Mon, 05 Dec 2011 10:49:34 +0000
+Date: Mon, 05 Dec 2011 11:49:23 +0100 (CET)
+From: robert.jarzmik@free.fr
+Message-ID: <611c10fc-3097-4519-84b6-c56508dad731@zimbra1-e1.priv.proxad.net>
+In-Reply-To: <20111205084032.GY27267@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,19 +20,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: cramfs broken on -next
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH V3 3/3] arm/mach-pxa: add mioa701 board
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-I just realized that I broke cramfs support on -next. Sorry for that, I
-will fix it before it gets into a release.
+----- Mail original -----
+De: "Sascha Hauer" <s.hauer@pengutronix.de>
+On Sat, Dec 03, 2011 at 06:02:02PM +0100, Robert Jarzmik wrote:
+> Add Mitac MioA701 board initial support.
+> The support only provides basic boot and a console over USB
+> (serial gadget).
 
-Sascha
+> This currently does not compile because mach/udc_pxa2xx.h is missing.
+> We could either remove the udc support or wait with your board support
+> until the udc driver is in the tree.
+I think we can safely wait for the UDC to reach the tree. The board support
+is still a new born, and there's no hurry in getting it merged.
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> I'm fine with your udc driver, I was just waiting for the cache issues
+> to be resolved before applying it.
+Which cache issues ? I think I missed a mail in there ... I only have in mind the discussion about page 0 mapping for the MTD driver ... I must have missed something.
+
+> Also, please provide a defconfig file for your board (generated with
+make savedefconfig). As a bonus we will break your board less
+frequently ;)
+Of course.
+
+Cheers.
+
+--
+Robert
 
 _______________________________________________
 barebox mailing list
