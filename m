@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RXrqO-0008U0-Bp
- for barebox@lists.infradead.org; Tue, 06 Dec 2011 10:01:49 +0000
-From: Robert Jarzmik <robert.jarzmik@free.fr>
-References: <87r50ilxed.fsf@free.fr>
- <CAJfOKBzSOKmZEvmWsWxQ1+yJFxaB-rzCgR2mxTpTUCoA_9W1Mg@mail.gmail.com>
- <87vcpueoqc.fsf@free.fr>
- <CAJfOKBwmX8EwD1hPvYSMddp6sZKJJ5kCBLf9KYWLsjkk4ZAC9A@mail.gmail.com>
-Date: Tue, 06 Dec 2011 11:01:37 +0100
-In-Reply-To: <CAJfOKBwmX8EwD1hPvYSMddp6sZKJJ5kCBLf9KYWLsjkk4ZAC9A@mail.gmail.com>
- (Franck JULLIEN's message of "Mon, 5 Dec 2011 21:43:07 +0100")
-Message-ID: <87r50idnni.fsf@free.fr>
-MIME-Version: 1.0
+Received: from mail-ey0-f177.google.com ([209.85.215.177])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RXs5P-0000ZE-CJ
+ for barebox@lists.infradead.org; Tue, 06 Dec 2011 10:17:20 +0000
+Received: by eaac10 with SMTP id c10so6186600eaa.36
+ for <barebox@lists.infradead.org>; Tue, 06 Dec 2011 02:17:17 -0800 (PST)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Tue,  6 Dec 2011 14:17:11 +0400
+Message-Id: <1323166631-14330-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,49 +16,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: FAT filesystem write and long names stability
-To: Franck JULLIEN <franck.jullien@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] MIPS: provide __bss_stop in linker script
+To: barebox@lists.infradead.org
 
-Franck JULLIEN <franck.jullien@gmail.com> writes:
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/mips/lib/barebox.lds.S |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-> 2011/12/5 Robert Jarzmik <robert.jarzmik@free.fr>:
->> Franck JULLIEN <franck.jullien@gmail.com> writes:
->>
->>> Do you have this patch applied to your working branch ? :
->>>
->>> fs/fat: Initialize local variable finfo
->> Hi Franck,
->>
->> I cross-checked, and indeed I do not have this fix in my branch, while it sits
->> in next branch. I'll rebase and make another try.
-Good guess, with that patch no bug :)
-
->> Do you by any chance tried the "write" part of FAT ?
-> Yes I did try it and as far as I can tell it works. I wrote some test
-> files to the SD then read it back on the PC and file were there....
-> I don't think I tried to create folders.
-Ah that's the node of the story.
-I made 2 tries :
- (1) mount the SD card, create a folder "toto", umount
-     => when checked in my laptop, no new folder is created
- (2) mount the SD card, create a folder "toto", and copy in it a file "foo.txt",
- umount
-     => when checked in my laptop, both the directory and the file *are* there
-
-So I suppose that creating a directory without any file within doesn't trigger
-the write on the device.
-
-Thanks for your help.
-
-Cheers.
-
+diff --git a/arch/mips/lib/barebox.lds.S b/arch/mips/lib/barebox.lds.S
+index 7746ea0..a607284 100644
+--- a/arch/mips/lib/barebox.lds.S
++++ b/arch/mips/lib/barebox.lds.S
+@@ -71,6 +71,6 @@ SECTIONS
+ 	. = ALIGN(4);
+ 	__bss_start = .;
+ 	.bss : { *(.bss*) }
+-	__bss_end = .;
++	__bss_stop = .;
+ 	_end = .;
+ }
 -- 
-Robert
+1.7.7.3
+
 
 _______________________________________________
 barebox mailing list
