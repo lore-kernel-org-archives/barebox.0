@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RYGzu-0005eU-6q
- for barebox@lists.infradead.org; Wed, 07 Dec 2011 12:53:20 +0000
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RYGzy-0006A6-2Z
+ for barebox@lists.infradead.org; Wed, 07 Dec 2011 12:53:22 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed,  7 Dec 2011 13:53:06 +0100
-Message-Id: <1323262387-8012-11-git-send-email-s.hauer@pengutronix.de>
+Date: Wed,  7 Dec 2011 13:53:05 +0100
+Message-Id: <1323262387-8012-10-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1323262387-8012-1-git-send-email-s.hauer@pengutronix.de>
 References: <1323262387-8012-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,27 +21,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/11] arm at91sam9260: Add missing
- AT91SAM_ETX2_ETX3_ALTERNATIVE define
+Subject: [PATCH 09/11] arm eukrea boards: fix breakage after mach-types update
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-at91/include/mach/board.h |    1 +
- 1 files changed, 1 insertions(+), 0 deletions(-)
+ arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c |    2 +-
+ arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c |    2 +-
+ arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c |    2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/mach-at91/include/mach/board.h b/arch/arm/mach-at91/include/mach/board.h
-index 546fe90..5e23688 100644
---- a/arch/arm/mach-at91/include/mach/board.h
-+++ b/arch/arm/mach-at91/include/mach/board.h
-@@ -51,6 +51,7 @@ void at91_add_device_nand(struct atmel_nand_data *data);
- #define AT91SAM_ETHER_MII		(0 << 0)
- #define AT91SAM_ETHER_RMII		(1 << 0)
- #define AT91SAM_ETHER_FORCE_LINK	(1 << 1)
-+#define AT91SAM_ETX2_ETX3_ALTERNATIVE	(2 << 0)
+diff --git a/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c b/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
+index 6355e3c..162c117 100644
+--- a/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
++++ b/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
+@@ -259,7 +259,7 @@ static int eukrea_cpuimx25_devices_init(void)
+ 			   IORESOURCE_MEM, &usb_pdata);
  
- struct at91_ether_platform_data {
- 	unsigned int flags;
+ 	armlinux_set_bootparams((void *)0x80000100);
+-	armlinux_set_architecture(MACH_TYPE_EUKREA_CPUIMX25);
++	armlinux_set_architecture(MACH_TYPE_EUKREA_CPUIMX25SD);
+ 
+ 	return 0;
+ }
+diff --git a/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c b/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
+index 994f456..c419c73 100644
+--- a/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
++++ b/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
+@@ -217,7 +217,7 @@ static int eukrea_cpuimx27_devices_init(void)
+ #endif
+ 
+ 	armlinux_set_bootparams((void *)0xa0000100);
+-	armlinux_set_architecture(MACH_TYPE_CPUIMX27);
++	armlinux_set_architecture(MACH_TYPE_EUKREA_CPUIMX27);
+ 
+ 	return 0;
+ }
+diff --git a/arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c b/arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c
+index 5f654d4..20cfad4 100644
+--- a/arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c
++++ b/arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c
+@@ -169,7 +169,7 @@ static int eukrea_cpuimx35_devices_init(void)
+ 			   IORESOURCE_MEM, &usb_pdata);
+ #endif
+ 	armlinux_set_bootparams((void *)0x80000100);
+-	armlinux_set_architecture(MACH_TYPE_EUKREA_CPUIMX35);
++	armlinux_set_architecture(MACH_TYPE_EUKREA_CPUIMX35SD);
+ 
+ 	return 0;
+ }
 -- 
 1.7.7.3
 
