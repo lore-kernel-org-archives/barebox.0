@@ -1,17 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RYKZJ-0002Bo-SJ
- for barebox@lists.infradead.org; Wed, 07 Dec 2011 16:42:07 +0000
-Date: Wed, 7 Dec 2011 17:41:55 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20111207164155.GR27267@pengutronix.de>
-References: <1323202318-17697-1-git-send-email-robert.jarzmik@free.fr>
- <1323202318-17697-3-git-send-email-robert.jarzmik@free.fr>
- <20111207084944.GL27267@pengutronix.de> <87y5uocqvd.fsf@free.fr>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <87y5uocqvd.fsf@free.fr>
+Received: from smtp6-g21.free.fr ([2a01:e0c:1:1599::15])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1RYPLe-0001Ss-6S
+ for barebox@lists.infradead.org; Wed, 07 Dec 2011 21:48:19 +0000
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+Date: Wed,  7 Dec 2011 22:47:57 +0100
+Message-Id: <1323294479-22117-1-git-send-email-robert.jarzmik@free.fr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,46 +14,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] drivers/mci: add PXA host controller
-To: Robert Jarzmik <robert.jarzmik@free.fr>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH V2 1/3] arm/mach-pxa: add MMC clock
+To: barebox@lists.infradead.org
 
-On Wed, Dec 07, 2011 at 05:01:58PM +0100, Robert Jarzmik wrote:
-> Sascha Hauer <s.hauer@pengutronix.de> writes:
-> 
-> >> +	if (mmc_readl(MMC_STAT) & STAT_CLK_EN) {
-> >> +		writel(STOP_CLOCK, host->base + MMC_STRPCL);
-> >> +
-> >> +		do {
-> >> +			v = mmc_readl(MMC_STAT);
-> >> +			if (!(v & STAT_CLK_EN))
-> >> +				break;
-> >> +			udelay(1);
-> >> +		} while (timeout--);
-> >
-> > please use this for timeout loops:
-> >
-> > 	uint64_t start = get_time_ns(void);
-> >
-> > 	while (!is_timeout(start, 10 * MSECOND)
-> > 		poll_something();
-> Ok, should I do this also to the other 2 timeout loops (pxamci_read_data and
-> pxamci_write_data), or can I use the same pattern which would give :
+Add mmc clock frequency reader. Easy as MMC host controller
+is constant, while the clock between host and card is
+settable.
 
-Please always use is_timeout(). Just polling 100000 times gives no well
-defined timeout.
+Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
+---
+ arch/arm/mach-pxa/include/mach/clock.h |    1 +
+ arch/arm/mach-pxa/speed-pxa27x.c       |    5 +++++
+ 2 files changed, 6 insertions(+), 0 deletions(-)
 
-Sascha
-
+diff --git a/arch/arm/mach-pxa/include/mach/clock.h b/arch/arm/mach-pxa/include/mach/clock.h
+index 4326fca..ecd2327 100644
+--- a/arch/arm/mach-pxa/include/mach/clock.h
++++ b/arch/arm/mach-pxa/include/mach/clock.h
+@@ -13,5 +13,6 @@
+ 
+ unsigned long pxa_get_uartclk(void);
+ unsigned long pxa_get_lcdclk(void);
++unsigned long pxa_get_mmcclk(void);
+ 
+ #endif	/* !__MACH_CLOCK_H */
+diff --git a/arch/arm/mach-pxa/speed-pxa27x.c b/arch/arm/mach-pxa/speed-pxa27x.c
+index 0317d53..6360fe8 100644
+--- a/arch/arm/mach-pxa/speed-pxa27x.c
++++ b/arch/arm/mach-pxa/speed-pxa27x.c
+@@ -42,3 +42,8 @@ unsigned long pxa_get_lcdclk(void)
+ {
+ 	return pxa_get_lcdclk_10khz() * 10000;
+ }
++
++unsigned long pxa_get_mmcclk(void)
++{
++	return 19500000;
++}
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.5.4
+
 
 _______________________________________________
 barebox mailing list
