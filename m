@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RYGzt-00068h-OX
- for barebox@lists.infradead.org; Wed, 07 Dec 2011 12:53:18 +0000
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RYGzu-0005eT-7Z
+ for barebox@lists.infradead.org; Wed, 07 Dec 2011 12:53:19 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed,  7 Dec 2011 13:52:58 +0100
-Message-Id: <1323262387-8012-3-git-send-email-s.hauer@pengutronix.de>
+Date: Wed,  7 Dec 2011 13:53:03 +0100
+Message-Id: <1323262387-8012-8-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1323262387-8012-1-git-send-email-s.hauer@pengutronix.de>
 References: <1323262387-8012-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,38 +21,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/11] memory: do not try to reserve iomem on sandbox
+Subject: [PATCH 07/11] pxa: add type to Kconfig choice
 To: barebox@lists.infradead.org
+
+To avoid Kconfig warning as long we do not have any board
+support for pxa.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/memory.c |    3 ++-
- 1 files changed, 2 insertions(+), 1 deletions(-)
+ arch/arm/mach-pxa/Kconfig |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
 
-diff --git a/common/memory.c b/common/memory.c
-index 7d0f4ca..1d72888 100644
---- a/common/memory.c
-+++ b/common/memory.c
-@@ -53,6 +53,7 @@ void mem_malloc_init(void *start, void *end)
- 	malloc_brk = malloc_start;
- }
+diff --git a/arch/arm/mach-pxa/Kconfig b/arch/arm/mach-pxa/Kconfig
+index 9e3c53a..9ef11bb 100644
+--- a/arch/arm/mach-pxa/Kconfig
++++ b/arch/arm/mach-pxa/Kconfig
+@@ -27,6 +27,7 @@ if ARCH_PXA27X
  
-+#ifndef __SANDBOX__
- static int mem_malloc_resource(void)
- {
- 	/*
-@@ -75,10 +76,10 @@ static int mem_malloc_resource(void)
- #ifdef STACK_BASE
- 	request_sdram_region("stack", STACK_BASE, STACK_SIZE);
- #endif
--
- 	return 0;
- }
- coredevice_initcall(mem_malloc_resource);
-+#endif
+ choice
+ 	prompt "PXA27x Board Type"
++	bool
  
- static void *sbrk_no_zero(ptrdiff_t increment)
- {
+ endchoice
+ 
 -- 
 1.7.7.3
 
