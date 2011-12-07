@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RYDCJ-0005iw-NV
- for barebox@lists.infradead.org; Wed, 07 Dec 2011 08:49:52 +0000
-Date: Wed, 7 Dec 2011 09:49:44 +0100
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RYDet-0001no-Mq
+ for barebox@lists.infradead.org; Wed, 07 Dec 2011 09:19:24 +0000
+Date: Wed, 7 Dec 2011 10:19:17 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20111207084944.GL27267@pengutronix.de>
-References: <1323202318-17697-1-git-send-email-robert.jarzmik@free.fr>
- <1323202318-17697-3-git-send-email-robert.jarzmik@free.fr>
+Message-ID: <20111207091917.GO27267@pengutronix.de>
+References: <1322467340-10596-1-git-send-email-s.hauer@pengutronix.de>
+ <1322467340-10596-8-git-send-email-s.hauer@pengutronix.de>
+ <20111206150820.GD32515@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1323202318-17697-3-git-send-email-robert.jarzmik@free.fr>
+In-Reply-To: <20111206150820.GD32515@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,54 +24,95 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] drivers/mci: add PXA host controller
-To: Robert Jarzmik <robert.jarzmik@free.fr>
+Subject: Re: [PATCH 07/14] bootm: handle initrds inline
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-Hi Robert,
-
-On Tue, Dec 06, 2011 at 09:11:58PM +0100, Robert Jarzmik wrote:
-> Add a simple PIO based host controller for MMC and SD cards
-> on PXA SoCs. Reads and writes are available, and no usage is
-> made of DMA or IRQs.
-> SPI mode is not supported yet.
+On Tue, Dec 06, 2011 at 04:08:20PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 09:02 Mon 28 Nov     , Sascha Hauer wrote:
+> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > ---
+> > +
+> > +				data.initrd = get_fake_image_handle(&data, num);
+> this can not work
 > 
-> Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
-> ---
->  drivers/mci/Kconfig  |    7 +
->  drivers/mci/Makefile |    1 +
->  drivers/mci/pxamci.c |  357 ++++++++++++++++++++++++++++++++++++++++++++++++++
->  drivers/mci/pxamci.h |   99 ++++++++++++++
->  4 files changed, 464 insertions(+), 0 deletions(-)
->  create mode 100644 drivers/mci/pxamci.c
->  create mode 100644 drivers/mci/pxamci.h
+> get_fake_image_handle expect the uImage is mapped
+
+Yes, you're right.
+
 > 
-> +
-> +static void pxamci_stop_clock(struct pxamci_host *host)
-> +{
-> +	unsigned long timeout = 10000;
-> +	unsigned int v;
-> +
-> +	if (mmc_readl(MMC_STAT) & STAT_CLK_EN) {
-> +		writel(STOP_CLOCK, host->base + MMC_STRPCL);
-> +
-> +		do {
-> +			v = mmc_readl(MMC_STAT);
-> +			if (!(v & STAT_CLK_EN))
-> +				break;
-> +			udelay(1);
-> +		} while (timeout--);
+> attached patch fix it
+> 
 
-please use this for timeout loops:
-
-	uint64_t start = get_time_ns(void);
-
-	while (!is_timeout(start, 10 * MSECOND)
-		poll_something();
-
-Otherwise the driver looks good to me.
+How about the following instead? I think it's a bit cleaner to
+completely move the initrd code out of the option parsing.
 
 Sascha
+
+From 5128a2d2badace6102dc5461408ceaa47d0e9cc1 Mon Sep 17 00:00:00 2001
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue, 6 Dec 2011 08:44:05 +0100
+Subject: [PATCH] bootm: factor out initrd code from option parser
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ commands/bootm.c |   26 +++++++++++++++-----------
+ 1 files changed, 15 insertions(+), 11 deletions(-)
+
+diff --git a/commands/bootm.c b/commands/bootm.c
+index 859ec28..f97a842 100644
+--- a/commands/bootm.c
++++ b/commands/bootm.c
+@@ -121,6 +121,7 @@ static int do_bootm(struct command *cmdtp, int argc, char *argv[])
+ 	struct image_handle *os_handle = NULL;
+ 	struct image_handler *handler;
+ 	struct image_data data;
++	const char *initrdname = NULL;
+ 	int ret = 1;
+ 
+ 	memset(&data, 0, sizeof(struct image_data));
+@@ -136,17 +137,7 @@ static int do_bootm(struct command *cmdtp, int argc, char *argv[])
+ 			data.initrd_address = simple_strtoul(optarg, NULL, 0);
+ 			break;
+ 		case 'r':
+-			printf("use initrd %s\n", optarg);
+-			/* check for multi image @<num> */
+-			if (optarg[0] == '@') {
+-				int num = simple_strtol(optarg + 1, NULL, 0);
+-
+-				data.initrd = get_fake_image_handle(&data, num);
+-			} else {
+-				data.initrd = map_image(optarg, data.verify);
+-			}
+-			if (!data.initrd)
+-				goto err_out;
++			initrdname = optarg;
+ 			break;
+ 		default:
+ 			break;
+@@ -171,6 +162,19 @@ static int do_bootm(struct command *cmdtp, int argc, char *argv[])
+ 		goto err_out;
+ 	}
+ 
++	if (initrdname) {
++		/* check for multi image @<num> */
++		if (initrdname[0] == '@') {
++			int num = simple_strtol(optarg + 1, NULL, 0);
++
++			data.initrd = get_fake_image_handle(&data, num);
++		} else {
++			data.initrd = map_image(optarg, data.verify);
++		}
++		if (!data.initrd)
++			goto err_out;
++	}
++
+ 	/*
+ 	 * We have reached the point of no return: we are going to
+ 	 * overwrite all exception vector code, so we cannot easily
+-- 
+1.7.7.3
+
 
 -- 
 Pengutronix e.K.                           |                             |
