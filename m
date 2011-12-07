@@ -1,13 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RYGzu-0005eX-Iu
- for barebox@lists.infradead.org; Wed, 07 Dec 2011 12:53:22 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed,  7 Dec 2011 13:53:04 +0100
-Message-Id: <1323262387-8012-9-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1323262387-8012-1-git-send-email-s.hauer@pengutronix.de>
+Received: from 18.mo4.mail-out.ovh.net ([188.165.54.143]
+ helo=mo4.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1RYHSq-00060B-Cw
+ for barebox@lists.infradead.org; Wed, 07 Dec 2011 13:23:13 +0000
+Received: from mail192.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 653F01054A53
+ for <barebox@lists.infradead.org>; Wed,  7 Dec 2011 14:23:20 +0100 (CET)
+Date: Wed, 7 Dec 2011 14:19:20 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20111207131920.GB9044@game.jcrosoft.org>
 References: <1323262387-8012-1-git-send-email-s.hauer@pengutronix.de>
+ <1323262387-8012-7-git-send-email-s.hauer@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1323262387-8012-7-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,43 +23,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/11] ft_build: temporarily disable bootm oftree support
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 06/11] net macb: remove unused variable
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-We do not have any command line parser support for bootm anymore.
-Disable it for now to at least be able to compile it.
+HI,
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- common/ft_build.c |    3 ++-
- 1 files changed, 2 insertions(+), 1 deletions(-)
+	I send IIRC
 
-diff --git a/common/ft_build.c b/common/ft_build.c
-index 4c27cfa..9042f13 100644
---- a/common/ft_build.c
-+++ b/common/ft_build.c
-@@ -591,6 +591,7 @@ void ft_setup(void *blob, bd_t * bd, ulong initrd_start, ulong initrd_end)
- #endif
- }
- 
-+#if 0
- static int oftree_handler_cmdline_parse(struct image_data *data, int opt,
- 		char *optarg)
- {
-@@ -616,4 +617,4 @@ static int oftree_register_image_handler(void)
- }
- 
- late_initcall(oftree_register_image_handler);
--
-+#endif
--- 
-1.7.7.3
-
+Best Regards,
+J.
+On 13:53 Wed 07 Dec     , Sascha Hauer wrote:
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  drivers/net/macb.c |    1 -
+>  1 files changed, 0 insertions(+), 1 deletions(-)
+> 
+> diff --git a/drivers/net/macb.c b/drivers/net/macb.c
+> index e1cfd85..d79da72 100644
+> --- a/drivers/net/macb.c
+> +++ b/drivers/net/macb.c
+> @@ -344,7 +344,6 @@ static int macb_phy_write(struct mii_device *mdev, int addr, int reg, int value)
+>  	unsigned long netctl;
+>  	unsigned long netstat;
+>  	unsigned long frame;
+> -	int iflag;
+>  
+>  	debug("%s\n", __func__);
+>  
+> -- 
+> 1.7.7.3
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
