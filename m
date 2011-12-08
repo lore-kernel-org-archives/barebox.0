@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RYaXm-0004Cp-8g
- for barebox@lists.infradead.org; Thu, 08 Dec 2011 09:45:34 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  8 Dec 2011 10:45:27 +0100
-Message-Id: <1323337527-759-1-git-send-email-s.hauer@pengutronix.de>
+Received: from mail-bw0-f49.google.com ([209.85.214.49])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RYb31-0001Zn-0c
+ for barebox@lists.infradead.org; Thu, 08 Dec 2011 10:17:51 +0000
+Received: by bkcje16 with SMTP id je16so1838070bkc.36
+ for <barebox@lists.infradead.org>; Thu, 08 Dec 2011 02:17:46 -0800 (PST)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Thu,  8 Dec 2011 14:17:42 +0400
+Message-Id: <1323339462-24144-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,27 +21,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] time command: Fix needed string length
+Subject: [PATCH] fix "no previous prototype for 'sbrk'" warning
 To: barebox@lists.infradead.org
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- commands/time.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+ common/memory.c |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
 
-diff --git a/commands/time.c b/commands/time.c
-index 9a76945..c2633ba 100644
---- a/commands/time.c
-+++ b/commands/time.c
-@@ -10,7 +10,7 @@ static int do_time(struct command *cmdtp, int argc, char *argv[])
- 	unsigned char *buf;
- 	u64 start, end, diff64;
- 	unsigned long diff;
--	int len = 0;
-+	int len = 1; /* '\0' */
+diff --git a/common/memory.c b/common/memory.c
+index 7d0f4ca..8090baa 100644
+--- a/common/memory.c
++++ b/common/memory.c
+@@ -28,6 +28,7 @@
+ #include <linux/ioport.h>
+ #include <asm-generic/memory_layout.h>
+ #include <asm/sections.h>
++#include <malloc.h>
  
- 	if (argc < 2)
- 		return COMMAND_ERROR_USAGE;
+ /*
+  * Begin and End of memory area for malloc(), and current "brk"
 -- 
 1.7.7.3
 
