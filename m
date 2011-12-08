@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bw0-f49.google.com ([209.85.214.49])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RYb31-0001Zn-0c
- for barebox@lists.infradead.org; Thu, 08 Dec 2011 10:17:51 +0000
-Received: by bkcje16 with SMTP id je16so1838070bkc.36
- for <barebox@lists.infradead.org>; Thu, 08 Dec 2011 02:17:46 -0800 (PST)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Thu,  8 Dec 2011 14:17:42 +0400
-Message-Id: <1323339462-24144-1-git-send-email-antonynpavlov@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RYb3z-0002Az-2B
+ for barebox@lists.infradead.org; Thu, 08 Dec 2011 10:18:51 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu,  8 Dec 2011 11:18:41 +0100
+Message-Id: <1323339521-9544-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,26 +19,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fix "no previous prototype for 'sbrk'" warning
+Subject: [PATCH] ARM: pass -msoft-float
 To: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- common/memory.c |    1 +
- 1 files changed, 1 insertions(+), 0 deletions(-)
+This is necessary to prevent NEON instructions from leaking into
+the binary.
 
-diff --git a/common/memory.c b/common/memory.c
-index 7d0f4ca..8090baa 100644
---- a/common/memory.c
-+++ b/common/memory.c
-@@ -28,6 +28,7 @@
- #include <linux/ioport.h>
- #include <asm-generic/memory_layout.h>
- #include <asm/sections.h>
-+#include <malloc.h>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/Makefile |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index e5e951c..a3e12e6 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -39,8 +39,8 @@ ifeq ($(CONFIG_ARM_UNWIND),y)
+ CFLAGS_ABI	+=-funwind-tables
+ endif
  
- /*
-  * Begin and End of memory area for malloc(), and current "brk"
+-CPPFLAGS += $(CFLAGS_ABI) $(arch-y) $(tune-y)
+-AFLAGS   += -include asm/unified.h
++CPPFLAGS += $(CFLAGS_ABI) $(arch-y) $(tune-y) -msoft-float
++AFLAGS   += -include asm/unified.h -msoft-float
+ 
+ # Machine directory name.  This list is sorted alphanumerically
+ # by CONFIG_* macro name.
 -- 
 1.7.7.3
 
