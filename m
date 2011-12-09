@@ -1,18 +1,23 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RYyeM-0000LF-GP
- for barebox@lists.infradead.org; Fri, 09 Dec 2011 11:29:59 +0000
-Date: Fri, 9 Dec 2011 12:29:53 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20111209112953.GH27267@pengutronix.de>
-References: <1323335864-27895-1-git-send-email-s.hauer@pengutronix.de>
- <20111208142433.GC23884@game.jcrosoft.org>
- <20111209080652.GY27267@pengutronix.de>
- <20111209104631.GN23884@game.jcrosoft.org>
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RYykR-0002wW-2G
+ for barebox@lists.infradead.org; Fri, 09 Dec 2011 11:36:15 +0000
+Received: from mediacenter.hi.pengutronix.de ([2001:6f8:1178:2::65])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <mgr@pengutronix.de>) id 1RYykK-0002hr-TM
+ for barebox@lists.infradead.org; Fri, 09 Dec 2011 12:36:08 +0100
+Received: from mgr by mediacenter.hi.pengutronix.de with local (Exim 4.72)
+ (envelope-from <mgr@pengutronix.de>) id 1RYykK-0002O2-S9
+ for barebox@lists.infradead.org; Fri, 09 Dec 2011 12:36:08 +0100
+Date: Fri, 9 Dec 2011 12:36:08 +0100
+From: Michael Grzeschik <mgr@pengutronix.de>
+Message-ID: <20111209113608.GJ8203@pengutronix.de>
+References: <1323187817-28668-5-git-send-email-m.grzeschik@pengutronix.de>
+ <20111209112842.GF8203@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20111209104631.GN23884@game.jcrosoft.org>
+In-Reply-To: <20111209112842.GF8203@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,39 +30,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM i.MX27: initialize MAX
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH v2] at91sam9260_devices: add flag to change ETX{2,3}
+ pincfg on add_device_eth
+To: barebox@lists.infradead.org
 
-On Fri, Dec 09, 2011 at 11:46:31AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 09:06 Fri 09 Dec     , Sascha Hauer wrote:
-> > On Thu, Dec 08, 2011 at 03:24:33PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > On 10:17 Thu 08 Dec     , Sascha Hauer wrote:
-> > > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > > > ---
-> > > >  arch/arm/mach-imx/imx27.c                   |   43 +++++++++++++++++++++++++++
-> > > >  arch/arm/mach-imx/include/mach/imx27-regs.h |    1 +
-> > > >  2 files changed, 44 insertions(+), 0 deletions(-)
-> > > do we really need this in barebox?
-> > 
-> > Why not? It's basically just a handfull of register accesses which are
-> > normally hidden in lowlevel_init without anybody noticing it. The fact
-> > that I created defines for them just makes it slightly more visible.
-> can we have a small comment when they are needed at list
+Hi,
 
-What do you mean? The patch has this:
+On Fri, Dec 09, 2011 at 12:28:42PM +0100, Michael Grzeschik wrote:
+> diff --git a/arch/arm/mach-at91/include/mach/board.h b/arch/arm/mach-at91/include/mach/board.h
+> index 546fe90..5e23688 100644
+> --- a/arch/arm/mach-at91/include/mach/board.h
+> +++ b/arch/arm/mach-at91/include/mach/board.h
+> @@ -51,6 +51,7 @@ void at91_add_device_nand(struct atmel_nand_data *data);
+>  #define AT91SAM_ETHER_MII		(0 << 0)
+>  #define AT91SAM_ETHER_RMII		(1 << 0)
+>  #define AT91SAM_ETHER_FORCE_LINK	(1 << 1)
+> +#define AT91SAM_ETX2_ETX3_ALTERNATIVE	(2 << 0)
+>  
+>  struct at91_ether_platform_data {
+>  	unsigned int flags;
+> -- 
+> 1.7.7.3
 
-> +/*
-> + * Initialize MAX on i.MX27. necessary to give the DMA engine
-> + * higher priority to the memory than the CPU. Needed for proper
-> + * audio support
-> + */
+This Hunk was wrong and has already been fixed with commit e72399a
 
-(I agree that this does not necessarily has to be done in barebox, but
-my plan is to send a patch for the kernel aswell. This increases the
-chance that it is done at least once somewhere)
+-#define AT91SAM_ETX2_ETX3_ALTERNATIVE  (2 << 0)
++#define AT91SAM_ETX2_ETX3_ALTERNATIVE  (1 << 2)
 
-Sascha
+Regards,
+Michael Grzeschik
 
 -- 
 Pengutronix e.K.                           |                             |
