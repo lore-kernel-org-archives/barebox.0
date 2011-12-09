@@ -1,16 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RYwo2-0002ie-Se
- for barebox@lists.infradead.org; Fri, 09 Dec 2011 09:31:51 +0000
-Date: Fri, 9 Dec 2011 10:31:44 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20111209093144.GB27267@pengutronix.de>
-References: <1323353029-17281-1-git-send-email-antonynpavlov@gmail.com>
- <1323353029-17281-4-git-send-email-antonynpavlov@gmail.com>
+Received: from mail.rapiddevelopmentkit.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1RYxGb-00018u-Vn
+ for barebox@lists.infradead.org; Fri, 09 Dec 2011 10:01:23 +0000
+From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
+Date: Fri, 9 Dec 2011 11:00:58 +0100
+Message-Id: <1323424858-14282-1-git-send-email-t.gamez@phytec.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1323353029-17281-4-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,99 +15,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC PATCH 3/3] add tlsf-based malloc implementation
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] nand_omap_bch_decoder: Fix up error detection
+To: barebox@lists.infradead.org
+Cc: Steve Schefter <steve@scheftech.com>
 
-On Thu, Dec 08, 2011 at 06:03:49PM +0400, Antony Pavlov wrote:
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
->  common/Kconfig       |    3 ++
->  common/Makefile      |    2 +
->  common/memory.c      |    8 +++++
->  common/tlsf_malloc.c |   78 ++++++++++++++++++++++++++++++++++++++++++++++++++
->  4 files changed, 91 insertions(+), 0 deletions(-)
->  create mode 100644 common/tlsf_malloc.c
-> 
-> diff --git a/common/Kconfig b/common/Kconfig
-> index 27464d1..71f092c 100644
-> --- a/common/Kconfig
-> +++ b/common/Kconfig
-> @@ -159,6 +159,9 @@ choice
->  config MALLOC_DLMALLOC
->  	bool "dlmalloc"
->  
-> +config MALLOC_TLSF
-> +	bool "tlsf"
-> +
->  config MALLOC_DUMMY
->  	bool "dummy malloc"
->  	depends on SHELL_NONE
-> diff --git a/common/Makefile b/common/Makefile
-> index 9bce479..467c666 100644
-> --- a/common/Makefile
-> +++ b/common/Makefile
-> @@ -14,6 +14,8 @@ obj-$(CONFIG_OFTREE)		+= oftree.o
->  
->  obj-y += memory.o
->  obj-$(CONFIG_MALLOC_DLMALLOC) += dlmalloc.o
-> +obj-$(CONFIG_MALLOC_TLSF) += tlsf_malloc.o
-> +obj-$(CONFIG_MALLOC_TLSF) += tlsf.o
->  obj-$(CONFIG_MALLOC_DUMMY) += dummy_malloc.o
->  obj-y += clock.o
->  obj-y += version.o
-> diff --git a/common/memory.c b/common/memory.c
-> index f0ae1cc..faff33b 100644
-> --- a/common/memory.c
-> +++ b/common/memory.c
-> @@ -47,11 +47,19 @@ unsigned long mem_malloc_end(void)
->  	return malloc_end;
->  }
->  
-> +#ifdef CONFIG_MALLOC_TLSF
-> +#include <tlsf.h>
-> +tlsf_pool tlsf_mem_pool;
-> +#endif
-> +
->  void mem_malloc_init(void *start, void *end)
->  {
->  	malloc_start = (unsigned long)start;
->  	malloc_end = (unsigned long)end;
->  	malloc_brk = malloc_start;
-> +#ifdef CONFIG_MALLOC_TLSF
-> +	tlsf_mem_pool = tlsf_create(start, (char *)end - (char *)start);
-> +#endif
->  }
->  
->  #ifndef __SANDBOX__
-> +
-> +#ifdef CONFIG_CMD_MEMINFO
-> +void malloc_stats(void)
-> +{
-> +}
-> +#endif /* CONFIG_CMD_MEMINFO */
-
-An implementation of malloc_stats would be nice. It's a good thing
-during development to be able to find memory leaks. For now it's ok
-as we can still use the dlmalloc implementation for this. Anyway,
-you should add a 'depends on MALLOC_DLMALLOC' to the meminfo command
-instead. Currently we have a meminfo command which just produces no
-output.
-
-Sascha
-
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+RnJvbTogU3RldmUgU2NoZWZ0ZXIgPHN0ZXZlQHNjaGVmdGVjaC5jb20+CgpCaXQgZXJyb3JzIGlu
+IHRoZSBFQ0MgaXRzZWxmIGFyZSBub3QgYmVlaW5nIHRha2VuIGludG8gYWNjb3VudC4KSW4gdGhp
+cyBjYXNlcyB0aGUgbnVtYmVyIG9mIGRldGVjdGVkIGVycm9ycyAhPSBudW1iZXIgb2YgY29ycmVj
+dGVkIGVycm9ycyBhbmQKY2hpZW4gc2VhcmNoIHJldHVybnMgYW4gZXJyb3IuClRoaXMgcGF0Y2gg
+YWRkcyBkZXRlY3Rpb24gb2YgYml0IGVycm9ycyBpbiB0aGUgRUNDLgoKU2lnbmVkLW9mZi1ieTog
+U3RldmUgU2NoZWZ0ZXIgPHN0ZXZlQHNjaGVmdGVjaC5jb20+ClNpZ25lZC1vZmYtYnk6IFRlcmVz
+YSBHw6FtZXogPHQuZ2FtZXpAcGh5dGVjLmRlPgotLS0KIGRyaXZlcnMvbXRkL25hbmQvbmFuZF9v
+bWFwX2JjaF9kZWNvZGVyLmMgfCAgICA4ICsrKysrKy0tCiAxIGZpbGVzIGNoYW5nZWQsIDYgaW5z
+ZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9kcml2ZXJzL210ZC9uYW5k
+L25hbmRfb21hcF9iY2hfZGVjb2Rlci5jIGIvZHJpdmVycy9tdGQvbmFuZC9uYW5kX29tYXBfYmNo
+X2RlY29kZXIuYwppbmRleCAzNTZmNzFmLi5kMTQ1NWU0IDEwMDY0NAotLS0gYS9kcml2ZXJzL210
+ZC9uYW5kL25hbmRfb21hcF9iY2hfZGVjb2Rlci5jCisrKyBiL2RyaXZlcnMvbXRkL25hbmQvbmFu
+ZF9vbWFwX2JjaF9kZWNvZGVyLmMKQEAgLTY0LDYgKzY0LDcgQEAgc3RhdGljIGludCBjaGllbih1
+bnNpZ25lZCBpbnQgc2VsZWN0XzRfOCwgaW50IGVycl9udW1zLAogCQkJCXVuc2lnbmVkIGludCBl
+cnJbXSwgdW5zaWduZWQgaW50ICpsb2NhdGlvbikKIHsKIAlpbnQgaSwgY291bnQ7IC8qIE51bWJl
+ciBvZiBkZWN0ZWN0ZWQgZXJyb3JzICovCisJaW50IGVycm9yc2luZWNjOyAvKiBOdW1iZXIgb2Yg
+ZGV0ZWN0ZWQgZXJyb3JzIGluIEVDQyBiaXRzICovCiAJLyogQ29udGFpbnMgYWNjdW11bGF0aW9u
+IG9mIGV2YWx1YXRpb24gYXQgeF5pIChpOjEtPjgpICovCiAJdW5zaWduZWQgaW50IGdhbW1hc1s4
+XSA9IHswfTsKIAl1bnNpZ25lZCBpbnQgYWxwaGE7CkBAIC03Nyw3ICs3OCw4IEBAIHN0YXRpYyBp
+bnQgY2hpZW4odW5zaWduZWQgaW50IHNlbGVjdF80XzgsIGludCBlcnJfbnVtcywKIAkJZ2FtbWFz
+W2ldID0gZXJyW2ldOwogCiAJY291bnQgPSAwOwotCWZvciAoaSA9IDE7IChpIDw9IG5uKSAmJiAo
+Y291bnQgPCBlcnJfbnVtcyk7IGkrKykgeworCWVycm9yc2luZWNjID0gMDsKKwlmb3IgKGkgPSAx
+OyAoaSA8PSBubikgJiYgKChjb3VudCArIGVycm9yc2luZWNjKSA8IGVycl9udW1zKTsgaSsrKSB7
+CiAKIAkJLyogUmVzdWx0IG9mIGV2YWx1YXRpb24gYXQgcm9vdCAqLwogCQllbHBfc3VtID0gMSBe
+IGdhbW1hc1swXSBeIGdhbW1hc1sxXSBeCkBAIC0xMDgsMTEgKzExMCwxMyBAQCBzdGF0aWMgaW50
+IGNoaWVuKHVuc2lnbmVkIGludCBzZWxlY3RfNF84LCBpbnQgZXJyX251bXMsCiAJCQlpZiAoaSA+
+PSAyICogZWNjX2JpdHMpCiAJCQkJbG9jYXRpb25bY291bnQrK10gPQogCQkJCQlra19zaG9ydGVu
+IC0gKGJpdCAtIDIgKiBlY2NfYml0cykgLSAxOworCQkJZWxzZQorCQkJCWVycm9yc2luZWNjKys7
+CiAJCX0KIAl9CiAKIAkvKiBGYWlsdXJlOiBOby4gb2YgZGV0ZWN0ZWQgZXJyb3JzICE9IE5vLiBv
+ciBjb3JyZWN0ZWQgZXJyb3JzICovCi0JaWYgKGNvdW50ICE9IGVycl9udW1zKSB7CisJaWYgKChj
+b3VudCArIGVycm9yc2luZWNjKSAhPSBlcnJfbnVtcykgewogCQljb3VudCA9IC0xOwogCQlwcmlu
+dGsoS0VSTl9FUlIgIkJDSCBkZWNvZGluZyBmYWlsZWRcbiIpOwogCX0KLS0gCjEuNy4wLjQKCgpf
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1h
+aWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJh
+ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
