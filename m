@@ -1,21 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RYydD-0000IS-47
- for barebox@lists.infradead.org; Fri, 09 Dec 2011 11:28:48 +0000
+ id 1RYydd-0000Jh-Nm
+ for barebox@lists.infradead.org; Fri, 09 Dec 2011 11:29:14 +0000
 Received: from mediacenter.hi.pengutronix.de ([2001:6f8:1178:2::65])
  by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <mgr@pengutronix.de>) id 1RYyd8-00027s-NQ
- for barebox@lists.infradead.org; Fri, 09 Dec 2011 12:28:42 +0100
+ (envelope-from <mgr@pengutronix.de>) id 1RYydY-0002C0-RF
+ for barebox@lists.infradead.org; Fri, 09 Dec 2011 12:29:08 +0100
 Received: from mgr by mediacenter.hi.pengutronix.de with local (Exim 4.72)
- (envelope-from <mgr@pengutronix.de>) id 1RYyd8-0002Bj-Lr
- for barebox@lists.infradead.org; Fri, 09 Dec 2011 12:28:42 +0100
-Date: Fri, 9 Dec 2011 12:28:42 +0100
+ (envelope-from <mgr@pengutronix.de>) id 1RYydY-0002C7-Pu
+ for barebox@lists.infradead.org; Fri, 09 Dec 2011 12:29:08 +0100
+Date: Fri, 9 Dec 2011 12:29:08 +0100
 From: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Message-ID: <20111209112842.GF8203@pengutronix.de>
+Message-ID: <20111209112908.GI8203@pengutronix.de>
+References: <1323187817-28668-1-git-send-email-m.grzeschik@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1323187817-28668-5-git-send-email-m.grzeschik@pengutronix.de>
+In-Reply-To: <1323187817-28668-1-git-send-email-m.grzeschik@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,49 +29,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] at91sam9260_devices: add flag to change ETX{2,3} pincfg
- on add_device_eth
+Subject: [PATCH v2 7/7] dss11: add defconfig
 To: barebox@lists.infradead.org
 
 Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
 ---
- - added missing define for AT91SAM_ETX2_ETX3_ALTERNATIVE
- arch/arm/mach-at91/at91sam9260_devices.c |    9 +++++++--
- arch/arm/mach-at91/include/mach/board.h  |    1 +
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ arch/arm/configs/dss11_defconfig |   48 ++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 48 insertions(+), 0 deletions(-)
+ create mode 100644 arch/arm/configs/dss11_defconfig
 
-diff --git a/arch/arm/mach-at91/at91sam9260_devices.c b/arch/arm/mach-at91/at91sam9260_devices.c
-index 177f770..be1fdd9 100644
---- a/arch/arm/mach-at91/at91sam9260_devices.c
-+++ b/arch/arm/mach-at91/at91sam9260_devices.c
-@@ -63,8 +63,13 @@ void at91_add_device_eth(struct at91_ether_platform_data *data)
- 		at91_set_B_periph(AT91_PIN_PA25, 0);	/* ERX2 */
- 		at91_set_B_periph(AT91_PIN_PA26, 0);	/* ERX3 */
- 		at91_set_B_periph(AT91_PIN_PA27, 0);	/* ERXCK */
--		at91_set_B_periph(AT91_PIN_PA23, 0);	/* ETX2 */
--		at91_set_B_periph(AT91_PIN_PA24, 0);	/* ETX3 */
-+		if (data->flags & AT91SAM_ETX2_ETX3_ALTERNATIVE) {
-+			at91_set_B_periph(AT91_PIN_PA10, 0);	/* ETX2 */
-+			at91_set_B_periph(AT91_PIN_PA11, 0);	/* ETX3 */
-+		} else {
-+			at91_set_B_periph(AT91_PIN_PA23, 0);	/* ETX2 */
-+			at91_set_B_periph(AT91_PIN_PA24, 0);	/* ETX3 */
-+		}
- 		at91_set_B_periph(AT91_PIN_PA22, 0);	/* ETXER */
- 	}
- 
-diff --git a/arch/arm/mach-at91/include/mach/board.h b/arch/arm/mach-at91/include/mach/board.h
-index 546fe90..5e23688 100644
---- a/arch/arm/mach-at91/include/mach/board.h
-+++ b/arch/arm/mach-at91/include/mach/board.h
-@@ -51,6 +51,7 @@ void at91_add_device_nand(struct atmel_nand_data *data);
- #define AT91SAM_ETHER_MII		(0 << 0)
- #define AT91SAM_ETHER_RMII		(1 << 0)
- #define AT91SAM_ETHER_FORCE_LINK	(1 << 1)
-+#define AT91SAM_ETX2_ETX3_ALTERNATIVE	(2 << 0)
- 
- struct at91_ether_platform_data {
- 	unsigned int flags;
+diff --git a/arch/arm/configs/dss11_defconfig b/arch/arm/configs/dss11_defconfig
+new file mode 100644
+index 0000000..71143c9
+--- /dev/null
++++ b/arch/arm/configs/dss11_defconfig
+@@ -0,0 +1,48 @@
++CONFIG_ARCH_AT91SAM9G20=y
++CONFIG_MACH_DSS11=y
++CONFIG_MTD_NAND_ATMEL_BUSWIDTH_16=y
++CONFIG_CMDLINE_EDITING=y
++CONFIG_AUTO_COMPLETE=y
++CONFIG_PARTITION_DISK_DOS=y
++CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
++CONFIG_CMD_EDIT=y
++CONFIG_CMD_SAVEENV=y
++CONFIG_CMD_LOADENV=y
++CONFIG_CMD_EXPORT=y
++CONFIG_CMD_PRINTENV=y
++CONFIG_CMD_FLASH=y
++CONFIG_CMD_RESET=y
++CONFIG_CMD_GO=y
++CONFIG_CMD_TIMEOUT=y
++CONFIG_CMD_PARTITION=y
++CONFIG_CMD_LED=y
++CONFIG_NET=y
++CONFIG_NET_DHCP=y
++CONFIG_NET_NFS=y
++CONFIG_NET_PING=y
++CONFIG_NET_TFTP=y
++CONFIG_NET_TFTP_PUSH=y
++CONFIG_DRIVER_NET_MACB=y
++CONFIG_DRIVER_SPI_ATMEL=y
++CONFIG_MTD=y
++CONFIG_NAND=y
++# CONFIG_NAND_ECC_HW_SYNDROME is not set
++# CONFIG_NAND_ECC_HW_NONE is not set
++CONFIG_NAND_ATMEL=y
++CONFIG_UBI=y
++CONFIG_DISK_WRITE=y
++CONFIG_USB=y
++CONFIG_USB_OHCI=y
++CONFIG_USB_OHCI_AT91=y
++CONFIG_USB_STORAGE=y
++CONFIG_MCI=y
++CONFIG_MCI_STARTUP=y
++# CONFIG_MCI_WRITE is not set
++CONFIG_MCI_ATMEL=y
++CONFIG_LED=y
++CONFIG_LED_GPIO=y
++CONFIG_LED_GPIO_RGB=y
++CONFIG_LED_TRIGGERS=y
++CONFIG_FS_FAT=y
++CONFIG_FS_FAT_WRITE=y
++CONFIG_FS_FAT_LFN=y
 -- 
 1.7.7.3
 
