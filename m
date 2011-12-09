@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RYycj-0000sx-3B
- for barebox@lists.infradead.org; Fri, 09 Dec 2011 11:28:17 +0000
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RYyct-0000Gz-Lq
+ for barebox@lists.infradead.org; Fri, 09 Dec 2011 11:28:28 +0000
 Received: from mediacenter.hi.pengutronix.de ([2001:6f8:1178:2::65])
  by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <mgr@pengutronix.de>) id 1RYyce-00025h-Ck
- for barebox@lists.infradead.org; Fri, 09 Dec 2011 12:28:12 +0100
+ (envelope-from <mgr@pengutronix.de>) id 1RYycn-00026Q-O3
+ for barebox@lists.infradead.org; Fri, 09 Dec 2011 12:28:21 +0100
 Received: from mgr by mediacenter.hi.pengutronix.de with local (Exim 4.72)
- (envelope-from <mgr@pengutronix.de>) id 1RYyce-0002BK-BZ
- for barebox@lists.infradead.org; Fri, 09 Dec 2011 12:28:12 +0100
-Date: Fri, 9 Dec 2011 12:28:12 +0100
+ (envelope-from <mgr@pengutronix.de>) id 1RYycn-0002BT-Mg
+ for barebox@lists.infradead.org; Fri, 09 Dec 2011 12:28:21 +0100
+Date: Fri, 9 Dec 2011 12:28:21 +0100
 From: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Message-ID: <20111209112812.GC8203@pengutronix.de>
+Message-ID: <20111209112821.GD8203@pengutronix.de>
 References: <1323187817-28668-1-git-send-email-m.grzeschik@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
@@ -29,33 +29,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/7] atmel_mci: check for device id we use to address
- the right slot
+Subject: [PATCH 3/7] at91sam9260_devices: properly set slot id
 To: barebox@lists.infradead.org
-
-We have to check which sd card slot we use. The registered mmc_id is the
-the correct parameter for this.
 
 Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
 ---
-- removed if condition and always write the hw_dev->id instead
+ arch/arm/mach-at91/at91sam9260_devices.c |   34 +++++++++++++++++++++--------
+ 1 files changed, 24 insertions(+), 10 deletions(-)
 
- drivers/mci/atmel_mci.c |    2 ++
- 1 files changed, 2 insertions(+), 0 deletions(-)
-
-diff --git a/drivers/mci/atmel_mci.c b/drivers/mci/atmel_mci.c
-index 4a29cad..15668fc 100644
---- a/drivers/mci/atmel_mci.c
-+++ b/drivers/mci/atmel_mci.c
-@@ -369,6 +369,8 @@ static void mci_set_ios(struct mci_host *mci, struct device_d *mci_dev,
- 		atmel_mci_writel(host, AT91_MCI_SDCR, AT91_MCI_SDCBUS_1BIT);
- 		break;
- 	}
-+	atmel_mci_writel(host, AT91_MCI_SDCR, atmel_mci_readl(host, AT91_MCI_SDCR)
-+		| host->hw_dev->id);
+diff --git a/arch/arm/mach-at91/at91sam9260_devices.c b/arch/arm/mach-at91/at91sam9260_devices.c
+index 9d1acda..177f770 100644
+--- a/arch/arm/mach-at91/at91sam9260_devices.c
++++ b/arch/arm/mach-at91/at91sam9260_devices.c
+@@ -261,18 +261,32 @@ void at91_add_device_mci(short mmc_id, struct atmel_mci_platform_data *data)
+ 	/* CLK */
+ 	at91_set_A_periph(AT91_PIN_PA8, 0);
  
- 	if (clock) {
- 		atmel_set_clk_rate(host, clock);
+-	/* CMD */
+-	at91_set_A_periph(AT91_PIN_PA7, 1);
+-
+-	/* DAT0, maybe DAT1..DAT3 */
+-	at91_set_A_periph(AT91_PIN_PA6, 1);
+-	if (data->bus_width == 4) {
+-		at91_set_A_periph(AT91_PIN_PA9, 1);
+-		at91_set_A_periph(AT91_PIN_PA10, 1);
+-		at91_set_A_periph(AT91_PIN_PA11, 1);
++
++	if (mmc_id == 0) {
++		/* CMD */
++		at91_set_A_periph(AT91_PIN_PA7, 1);
++
++		/* DAT0, maybe DAT1..DAT3 */
++		at91_set_A_periph(AT91_PIN_PA6, 1);
++		if (data->bus_width == 4) {
++			at91_set_A_periph(AT91_PIN_PA9, 1);
++			at91_set_A_periph(AT91_PIN_PA10, 1);
++			at91_set_A_periph(AT91_PIN_PA11, 1);
++		}
++	} else if (mmc_id == 1) {
++		/* CMD */
++		at91_set_B_periph(AT91_PIN_PA1, 1);
++
++		/* DAT0, maybe DAT1..DAT3 */
++		at91_set_B_periph(AT91_PIN_PA0, 1);
++		if (data->bus_width == 4) {
++			at91_set_B_periph(AT91_PIN_PA3, 1);
++			at91_set_B_periph(AT91_PIN_PA4, 1);
++			at91_set_B_periph(AT91_PIN_PA5, 1);
++		}
+ 	}
+ 
+-	dev = add_generic_device("atmel_mci", 0, NULL, AT91SAM9260_BASE_MCI, SZ_16K,
++	dev = add_generic_device("atmel_mci", mmc_id, NULL, AT91SAM9260_BASE_MCI, SZ_16K,
+ 			   IORESOURCE_MEM, data);
+ }
+ #else
 -- 
 1.7.7.3
 
