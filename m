@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RYwhU-0006lm-4S
- for barebox@lists.infradead.org; Fri, 09 Dec 2011 09:25:05 +0000
-Date: Fri, 9 Dec 2011 10:24:51 +0100
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RYwo2-0002ie-Se
+ for barebox@lists.infradead.org; Fri, 09 Dec 2011 09:31:51 +0000
+Date: Fri, 9 Dec 2011 10:31:44 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20111209092451.GA27267@pengutronix.de>
+Message-ID: <20111209093144.GB27267@pengutronix.de>
 References: <1323353029-17281-1-git-send-email-antonynpavlov@gmail.com>
- <1323353029-17281-2-git-send-email-antonynpavlov@gmail.com>
+ <1323353029-17281-4-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1323353029-17281-2-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1323353029-17281-4-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,99 +23,87 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC PATCH 1/3] import TLSF 2.0 from
- http://tlsf.baisoku.org/tlsf-2.0.zip
+Subject: Re: [RFC PATCH 3/3] add tlsf-based malloc implementation
 To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, Dec 08, 2011 at 06:03:47PM +0400, Antony Pavlov wrote:
-> TLSF: Two Level Segregated Fit memory allocator implementation.
-> Written by Matthew Conte (matt@baisoku.org).
-> Public Domain, no restrictions.
-> 
+On Thu, Dec 08, 2011 at 06:03:49PM +0400, Antony Pavlov wrote:
 > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 > ---
->  common/tlsf.c      |  961 ++++++++++++++++++++++++++++++++++++++++++++++++++++
->  include/tlsf.h     |   52 +++
->  include/tlsfbits.h |  180 ++++++++++
->  3 files changed, 1193 insertions(+), 0 deletions(-)
->  create mode 100644 common/tlsf.c
->  create mode 100644 include/tlsf.h
->  create mode 100644 include/tlsfbits.h
+>  common/Kconfig       |    3 ++
+>  common/Makefile      |    2 +
+>  common/memory.c      |    8 +++++
+>  common/tlsf_malloc.c |   78 ++++++++++++++++++++++++++++++++++++++++++++++++++
+>  4 files changed, 91 insertions(+), 0 deletions(-)
+>  create mode 100644 common/tlsf_malloc.c
 > 
-> diff --git a/common/tlsf.c b/common/tlsf.c
-> new file mode 100644
-> index 0000000..02dc8d4
-> --- /dev/null
-> +++ b/common/tlsf.c
-> @@ -0,0 +1,961 @@
-
-We should probably add a header here and at least say where the code
-comes from. 'not subject to any licensing restrictions' for me means
-that we can just add the standard GPL header here, but I'm no lawyer.
-
-
-> diff --git a/include/tlsfbits.h b/include/tlsfbits.h
-> new file mode 100644
-> index 0000000..3e5c82a
-> --- /dev/null
-> +++ b/include/tlsfbits.h
-> @@ -0,0 +1,180 @@
-> +#ifndef INCLUDED_tlsfbits
-> +#define INCLUDED_tlsfbits
+> diff --git a/common/Kconfig b/common/Kconfig
+> index 27464d1..71f092c 100644
+> --- a/common/Kconfig
+> +++ b/common/Kconfig
+> @@ -159,6 +159,9 @@ choice
+>  config MALLOC_DLMALLOC
+>  	bool "dlmalloc"
+>  
+> +config MALLOC_TLSF
+> +	bool "tlsf"
 > +
-> +#if defined(__cplusplus)
-> +#define tlsf_decl inline
-> +#else
-> +#define tlsf_decl static
+>  config MALLOC_DUMMY
+>  	bool "dummy malloc"
+>  	depends on SHELL_NONE
+> diff --git a/common/Makefile b/common/Makefile
+> index 9bce479..467c666 100644
+> --- a/common/Makefile
+> +++ b/common/Makefile
+> @@ -14,6 +14,8 @@ obj-$(CONFIG_OFTREE)		+= oftree.o
+>  
+>  obj-y += memory.o
+>  obj-$(CONFIG_MALLOC_DLMALLOC) += dlmalloc.o
+> +obj-$(CONFIG_MALLOC_TLSF) += tlsf_malloc.o
+> +obj-$(CONFIG_MALLOC_TLSF) += tlsf.o
+>  obj-$(CONFIG_MALLOC_DUMMY) += dummy_malloc.o
+>  obj-y += clock.o
+>  obj-y += version.o
+> diff --git a/common/memory.c b/common/memory.c
+> index f0ae1cc..faff33b 100644
+> --- a/common/memory.c
+> +++ b/common/memory.c
+> @@ -47,11 +47,19 @@ unsigned long mem_malloc_end(void)
+>  	return malloc_end;
+>  }
+>  
+> +#ifdef CONFIG_MALLOC_TLSF
+> +#include <tlsf.h>
+> +tlsf_pool tlsf_mem_pool;
 > +#endif
 > +
-> +/*
-> +** Architecture-specific bit manipulation routines.
-> +**
-> +** TLSF achieves O(1) cost for malloc and free operations by limiting
-> +** the search for a free block to a free list of guaranteed size
-> +** adequate to fulfill the request, combined with efficient free list
-> +** queries using bitmasks and architecture-specific bit-manipulation
-> +** routines.
-> +**
-> +** Most modern processors provide instructions to count leading zeroes
-> +** in a word, find the lowest and highest set bit, etc. These
-> +** specific implementations will be used when available, falling back
-> +** to a reasonably efficient generic implementation.
-> +**
-> +** NOTE: TLSF spec relies on ffs/fls returning value 0..31.
-> +** ffs/fls return 1-32 by default, returning 0 for error.
-> +*/
-> +
-> +/*
-> +** Detect whether or not we are building for a 32- or 64-bit (LP/LLP)
-> +** architecture. There is no reliable portable method at compile-time.
-> +*/
-> +#if defined (__alpha__) || defined (__ia64__) || defined (__x86_64__) \
-> +	|| defined (_WIN64) || defined (__LP64__) || defined (__LLP64__)
-> +#define TLSF_64BIT
+>  void mem_malloc_init(void *start, void *end)
+>  {
+>  	malloc_start = (unsigned long)start;
+>  	malloc_end = (unsigned long)end;
+>  	malloc_brk = malloc_start;
+> +#ifdef CONFIG_MALLOC_TLSF
+> +	tlsf_mem_pool = tlsf_create(start, (char *)end - (char *)start);
 > +#endif
+>  }
+>  
+>  #ifndef __SANDBOX__
+> +
+> +#ifdef CONFIG_CMD_MEMINFO
+> +void malloc_stats(void)
+> +{
+> +}
+> +#endif /* CONFIG_CMD_MEMINFO */
 
-We should throw these ifdefs away and just use:
-
-#include <linux/bitops.h>
-
-tlsf_decl int tlsf_ffs(unsigned int word)
-{
-	return ffs(word) - 1;
-}
-
-tlsf_decl int tlsf_fls(unsigned int word)
-{
-	return fls(word) - 1;
-}
-
-You could fold this into the barebox adoption patch so that we still
-have the original import clean.
-
+An implementation of malloc_stats would be nice. It's a good thing
+during development to be able to find memory leaks. For now it's ok
+as we can still use the dlmalloc implementation for this. Anyway,
+you should add a 'depends on MALLOC_DLMALLOC' to the meminfo command
+instead. Currently we have a meminfo command which just produces no
+output.
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
