@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RZj20-0005v9-I2
- for barebox@lists.infradead.org; Sun, 11 Dec 2011 13:01:29 +0000
-From: Robert Jarzmik <robert.jarzmik@free.fr>
-References: <87ipm9yd88.fsf@free.fr> <20111124120400.GC27267@pengutronix.de>
- <87d3chxoxp.fsf@free.fr> <20111125000145.GE27267@pengutronix.de>
- <87lir18ag7.fsf@free.fr> <20111128074319.GO27267@pengutronix.de>
- <87d3cc87o5.fsf@free.fr> <20111129081501.GF27267@pengutronix.de>
- <87y5ux6zai.fsf@free.fr> <20111201142636.GP27267@pengutronix.de>
-Date: Sun, 11 Dec 2011 14:01:17 +0100
-In-Reply-To: <20111201142636.GP27267@pengutronix.de> (Sascha Hauer's message
- of "Thu, 1 Dec 2011 15:26:36 +0100")
-Message-ID: <87borfz2hu.fsf@free.fr>
+Received: from astoria.ccjclearline.com ([64.235.106.9])
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RZogQ-0006ei-H0
+ for barebox@lists.infradead.org; Sun, 11 Dec 2011 19:03:36 +0000
+Received: from cpec03f0ed08c7f-cm001ac318e826.cpe.net.cable.rogers.com
+ ([99.241.2.77] helo=crashcourse.ca)
+ by astoria.ccjclearline.com with esmtpsa (TLSv1:AES256-SHA:256)
+ (Exim 4.69) (envelope-from <rpjday@crashcourse.ca>)
+ id 1RZogD-0002aQ-4q
+ for barebox@lists.infradead.org; Sun, 11 Dec 2011 14:03:21 -0500
+Date: Sun, 11 Dec 2011 14:03:15 -0500 (EST)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+Message-ID: <alpine.DEB.2.02.1112111358570.19722@oneiric>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -26,27 +25,89 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: ARM, MMU and IO space mapping
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] Some trivial grammar/spelling fixes for main README file.
+To: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-Sascha Hauer <s.hauer@pengutronix.de> writes:
 
->> That would require a function in arch/arm/cpu/mmu.c, to remap a physical address
->> range into a virtual one, wouldn't it ? Would you have a suggestion for the API
->> ? As in map_io_section(u32 phys_addr, void *virt) ?
->
-> How about adding a size parameter ;)
-Ok, then it would become "map_io_range(unsignend long phys_addr, void *virt)",
-which is a little more complicated that the original map_io_section which
-remapped only full 1M sections for simplicity.
+A number of minor fixes related to spelling, grammar and
+capitalization in the top-level README file.
 
-But yeah, I can add that parameter :)
+Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
-Cheers.
+---
+
+  Hope there's no objection to the occasional grammatical patch as
+I work my way through the source.  If there are any disagreements with
+what's below, let me know if there are different standards for the doc
+files.  In some cases, it was just a judgment call.
+
+
+diff --git a/README b/README
+index 9b5317d..9b58f26 100644
+--- a/README
++++ b/README
+@@ -2,15 +2,15 @@ Barebox
+ -------
+
+ Barebox is a bootloader that follows the tradition of Das U-Boot, while
+-adapting modern design ideas from the Linux kernel.
++adopting modern design ideas from the Linux kernel.
+
+
+ Features
+ --------
+
+-- A POSIX based file API
++- A POSIX-based file API
+   Inside barebox the usual open/close/read/write/lseek functions are used.
+-  This makes it familiar to everyone who has programmed under unix systems.
++  This makes it familiar to everyone who has programmed under UNIX systems.
+
+ - Usual shell commands like ls/cd/mkdir/echo/cat,...
+
+@@ -45,9 +45,9 @@ Features
+ - simulation target
+   barebox can be compiled to run under Linux. While this is rather useless
+   in real world this is a great debugging and development aid. New features
+-  can be easily developped and tested on long train journeys and started
+-  under gdb. There is a console driver for linux which emulates a serial
+-  device and a tap based ethernet driver. Linux files can be mapped to
++  can be easily developed and tested on long train journeys and started
++  under gdb. There is a console driver for Linux which emulates a serial
++  device and a TAP-based Ethernet driver. Linux files can be mapped to
+   devices under barebox to emulate storage devices.
+
+ - device parameter support
+@@ -61,8 +61,8 @@ Features
+
+ - getopt
+   There is a small getopt implementation. Some commands got really
+-  complicated (both in code and in usage) due to the fact that U-Boot only
+-  allowed positional parameters.
++  complicated (both in code and in usage) due to the fact that U-Boot
++  allowed only positional parameters.
+
+ - editor
+   Scripts can be edited with a small editor. This editor has no features
+@@ -73,7 +73,7 @@ Building Barebox
+ ----------------
+
+ Barebox uses the Linux kernel's build system. It consists of two parts:
+-the makefile infrastructure (kbuild), plus a configuration system
++the Makefile infrastructure (kbuild), plus a configuration system
+ (kconfig). So building barebox is very similar to building the Linux
+ kernel.
+
 
 -- 
-Robert
+
+========================================================================
+Robert P. J. Day                                 Ottawa, Ontario, CANADA
+                        http://crashcourse.ca
+
+Twitter:                                       http://twitter.com/rpjday
+LinkedIn:                               http://ca.linkedin.com/in/rpjday
+========================================================================
 
 _______________________________________________
 barebox mailing list
