@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 1.mo2.mail-out.ovh.net ([46.105.63.121]
+Received: from 6.mo2.mail-out.ovh.net ([87.98.165.38]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Ra7GQ-0001E9-I3
- for barebox@lists.infradead.org; Mon, 12 Dec 2011 14:53:59 +0000
+ id 1Ra7GZ-0001Gw-OT
+ for barebox@lists.infradead.org; Mon, 12 Dec 2011 14:54:09 +0000
 Received: from mail240.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id AC4CCDC7FBD
- for <barebox@lists.infradead.org>; Mon, 12 Dec 2011 15:52:14 +0100 (CET)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 0D800DC7FDF
+ for <barebox@lists.infradead.org>; Mon, 12 Dec 2011 15:52:24 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon, 12 Dec 2011 15:46:56 +0100
-Message-Id: <1323701217-26236-3-git-send-email-plagnioj@jcrosoft.com>
+Date: Mon, 12 Dec 2011 15:46:57 +0100
+Message-Id: <1323701217-26236-4-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1323701217-26236-1-git-send-email-plagnioj@jcrosoft.com>
 References: <1323701217-26236-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
@@ -25,143 +25,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] at91: add at91_udc resource
+Subject: [PATCH 4/4] usb-a926x: add usb device support
 To: barebox@lists.infradead.org
 
-this device controller is present on rm9200/9260/9g20/9261/9g10/9263
-
-the 9g45 use an other IP
-
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: Gregory HERMANT <gregory.hermant@calao-systems.com>
 ---
- arch/arm/mach-at91/at91rm9200_devices.c  |   21 +++++++++++++++++++++
- arch/arm/mach-at91/at91sam9260_devices.c |   19 +++++++++++++++++++
- arch/arm/mach-at91/at91sam9261_devices.c |   19 +++++++++++++++++++
- arch/arm/mach-at91/at91sam9263_devices.c |   19 +++++++++++++++++++
- 4 files changed, 78 insertions(+), 0 deletions(-)
+ arch/arm/boards/usb-a926x/init.c |   17 +++++++++++++++++
+ 1 files changed, 17 insertions(+), 0 deletions(-)
 
-diff --git a/arch/arm/mach-at91/at91rm9200_devices.c b/arch/arm/mach-at91/at91rm9200_devices.c
-index bd7d3f0..8c19846 100644
---- a/arch/arm/mach-at91/at91rm9200_devices.c
-+++ b/arch/arm/mach-at91/at91rm9200_devices.c
-@@ -42,6 +42,27 @@ void __init at91_add_device_usbh_ohci(struct at91_usbh_data *data)
- void __init at91_add_device_usbh_ohci(struct at91_usbh_data *data) {}
- #endif
+diff --git a/arch/arm/boards/usb-a926x/init.c b/arch/arm/boards/usb-a926x/init.c
+index 5354582..686f638 100644
+--- a/arch/arm/boards/usb-a926x/init.c
++++ b/arch/arm/boards/usb-a926x/init.c
+@@ -165,6 +165,22 @@ static struct at91_usbh_data ek_usbh_data = {
+ 	.ports		= 2,
+ };
  
-+/* --------------------------------------------------------------------
-+ *  USB Device (Gadget)
-+ * -------------------------------------------------------------------- */
++/*
++ * USB Device port
++ */
++static struct at91_udc_data __initdata ek_udc_data = {
++	.vbus_pin	= AT91_PIN_PB11,
++	.pullup_pin	= -EINVAL,		/* pull-up driven by UDC */
++};
 +
-+#ifdef CONFIG_USB_GADGET_DRIVER_AT91
-+void __init at91_add_device_udc(struct at91_udc_data *data)
++static void __init ek_add_device_udc(void)
 +{
-+	if (data->vbus_pin > 0) {
-+		at91_set_gpio_input(data->vbus_pin, 0);
-+		at91_set_deglitch(data->vbus_pin, 1);
-+	}
++	if (machine_is_usb_a9260() || machine_is_usb_a9g20())
++		ek_udc_data.vbus_pin = AT91_PIN_PC5;
 +
-+	if (data->pullup_pin > 0)
-+		at91_set_gpio_output(data->pullup_pin, 0);
-+
-+	add_generic_device("at91_udc", -1, NULL, AT91RM9200_BASE_UDP, SZ_16K,
-+			   IORESOURCE_MEM, data);
++	at91_add_device_udc(&ek_udc_data);
 +}
-+#else
-+void __init at91_add_device_udc(struct at91_udc_data *data) {}
-+#endif
- 
- /* --------------------------------------------------------------------
-  *  Ethernet
-diff --git a/arch/arm/mach-at91/at91sam9260_devices.c b/arch/arm/mach-at91/at91sam9260_devices.c
-index be1fdd9..945530f 100644
---- a/arch/arm/mach-at91/at91sam9260_devices.c
-+++ b/arch/arm/mach-at91/at91sam9260_devices.c
-@@ -39,6 +39,25 @@ void __init at91_add_device_usbh_ohci(struct at91_usbh_data *data)
- void __init at91_add_device_usbh_ohci(struct at91_usbh_data *data) {}
- #endif
- 
-+/* --------------------------------------------------------------------
-+ *  USB Device (Gadget)
-+ * -------------------------------------------------------------------- */
 +
-+#ifdef CONFIG_USB_GADGET_DRIVER_AT91
-+void __init at91_add_device_udc(struct at91_udc_data *data)
-+{
-+	if (data->vbus_pin > 0) {
-+		at91_set_gpio_input(data->vbus_pin, 0);
-+		at91_set_deglitch(data->vbus_pin, 1);
-+	}
-+
-+	add_generic_device("at91_udc", -1, NULL, AT91SAM9260_BASE_UDP, SZ_16K,
-+			   IORESOURCE_MEM, data);
-+}
-+#else
-+void __init at91_add_device_udc(struct at91_udc_data *data) {}
-+#endif
-+
- #if defined(CONFIG_DRIVER_NET_MACB)
- void at91_add_device_eth(struct at91_ether_platform_data *data)
+ static int usb_a9260_devices_init(void)
  {
-diff --git a/arch/arm/mach-at91/at91sam9261_devices.c b/arch/arm/mach-at91/at91sam9261_devices.c
-index 3f69b18..4fd3c79 100644
---- a/arch/arm/mach-at91/at91sam9261_devices.c
-+++ b/arch/arm/mach-at91/at91sam9261_devices.c
-@@ -43,6 +43,25 @@ void __init at91_add_device_usbh_ohci(struct at91_usbh_data *data)
- void __init at91_add_device_usbh_ohci(struct at91_usbh_data *data) {}
- #endif
+ 	usb_a9260_add_device_nand();
+@@ -172,6 +188,7 @@ static int usb_a9260_devices_init(void)
+ 	at91_add_device_eth(&macb_pdata);
+ 	usb_a9260_add_device_mci();
+ 	at91_add_device_usbh_ohci(&ek_usbh_data);
++	ek_add_device_udc();
  
-+/* --------------------------------------------------------------------
-+ *  USB Device (Gadget)
-+ * -------------------------------------------------------------------- */
-+
-+#ifdef CONFIG_USB_GADGET_DRIVER_AT91
-+void __init at91_add_device_udc(struct at91_udc_data *data)
-+{
-+	if (data->vbus_pin > 0) {
-+		at91_set_gpio_input(data->vbus_pin, 0);
-+		at91_set_deglitch(data->vbus_pin, 1);
-+	}
-+
-+	add_generic_device("at91_udc", -1, NULL, AT91SAM9261_BASE_UDP, SZ_16K,
-+			   IORESOURCE_MEM, data);
-+}
-+#else
-+void __init at91_add_device_udc(struct at91_udc_data *data) {}
-+#endif
-+
- #if defined(CONFIG_NAND_ATMEL)
- void at91_add_device_nand(struct atmel_nand_data *data)
- {
-diff --git a/arch/arm/mach-at91/at91sam9263_devices.c b/arch/arm/mach-at91/at91sam9263_devices.c
-index 994a975..bbadc5d 100644
---- a/arch/arm/mach-at91/at91sam9263_devices.c
-+++ b/arch/arm/mach-at91/at91sam9263_devices.c
-@@ -51,6 +51,25 @@ void __init at91_add_device_usbh_ohci(struct at91_usbh_data *data)
- void __init at91_add_device_usbh_ohci(struct at91_usbh_data *data) {}
- #endif
- 
-+/* --------------------------------------------------------------------
-+ *  USB Device (Gadget)
-+ * -------------------------------------------------------------------- */
-+
-+#ifdef CONFIG_USB_GADGET_DRIVER_AT91
-+void __init at91_add_device_udc(struct at91_udc_data *data)
-+{
-+	if (data->vbus_pin > 0) {
-+		at91_set_gpio_input(data->vbus_pin, 0);
-+		at91_set_deglitch(data->vbus_pin, 1);
-+	}
-+
-+	add_generic_device("at91_udc", -1, NULL, AT91SAM9263_BASE_UDP, SZ_16K,
-+			   IORESOURCE_MEM, data);
-+}
-+#else
-+void __init at91_add_device_udc(struct at91_udc_data *data) {}
-+#endif
-+
- #if defined(CONFIG_DRIVER_NET_MACB)
- void at91_add_device_eth(struct at91_ether_platform_data *data)
- {
+ #ifdef CONFIG_AT91_HAVE_SRAM_128M
+ 	at91_add_device_sdram(128 * 1024 * 1024);
 -- 
 1.7.7
 
