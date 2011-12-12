@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Ra1Z8-0007hc-OB
- for barebox@lists.infradead.org; Mon, 12 Dec 2011 08:48:56 +0000
-Date: Mon, 12 Dec 2011 09:48:33 +0100
+ id 1Ra1s5-0002y2-7C
+ for barebox@lists.infradead.org; Mon, 12 Dec 2011 09:08:34 +0000
+Date: Mon, 12 Dec 2011 10:08:14 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20111212084833.GN27267@pengutronix.de>
+Message-ID: <20111212090814.GO27267@pengutronix.de>
 References: <1323424372-8142-1-git-send-email-a.aring@phytec.de>
- <1323424372-8142-2-git-send-email-a.aring@phytec.de>
+ <1323424372-8142-3-git-send-email-a.aring@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1323424372-8142-2-git-send-email-a.aring@phytec.de>
+In-Reply-To: <1323424372-8142-3-git-send-email-a.aring@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,114 +23,140 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] stringlist-functions: add sorted insert
+Subject: Re: [PATCH 2/2] auto-completion: add auto-completion for path files
 To: Alexander Aring <a.aring@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, Dec 09, 2011 at 10:52:47AM +0100, Alexander Aring wrote:
-> Add sorted insert in stringlist functions.
-> Also added function to checked if string is already
-> in string list.
+On Fri, Dec 09, 2011 at 10:52:48AM +0100, Alexander Aring wrote:
+> Add auto-completion for path files.
 > 
 > Signed-off-by: Alexander Aring <a.aring@phytec.de>
 > ---
->  include/stringlist.h |    2 ++
->  lib/stringlist.c     |   49 +++++++++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 51 insertions(+), 0 deletions(-)
+>  commands/ls.c     |    4 +-
+>  common/complete.c |   68 +++++++++++++++++++++++++++++++++++++++++++++++++++-
+>  2 files changed, 68 insertions(+), 4 deletions(-)
 > 
-> diff --git a/include/stringlist.h b/include/stringlist.h
-> index 3453e9a..c923542 100644
-> --- a/include/stringlist.h
-> +++ b/include/stringlist.h
-> @@ -9,6 +9,8 @@ struct string_list {
->  };
+> diff --git a/commands/ls.c b/commands/ls.c
+> index 278a8bc..070aa90 100644
+> --- a/commands/ls.c
+> +++ b/commands/ls.c
+> @@ -68,7 +68,7 @@ int ls(const char *path, ulong flags)
+>  		if (stat(tmp, &s))
+>  			goto out;
+>  		if (flags & LS_COLUMN)
+> -			string_list_add(&sl, d->d_name);
+> +			string_list_add_sorted(&sl, d->d_name);
+>  		else
+>  			ls_one(d->d_name, &s);
+>  	}
+> @@ -156,7 +156,7 @@ static int do_ls(struct command *cmdtp, int argc, char *argv[])
 >  
->  int string_list_add(struct string_list *sl, char *str);
-> +int string_list_add_sorted(struct string_list *sl, char *str);
-> +int string_list_contains(struct string_list *sl, char *str);
->  void string_list_print_by_column(struct string_list *sl);
->  
->  static inline void string_list_init(struct string_list *sl)
-> diff --git a/lib/stringlist.c b/lib/stringlist.c
-> index 9ccf8fa..40a0fc9 100644
-> --- a/lib/stringlist.c
-> +++ b/lib/stringlist.c
-> @@ -3,6 +3,29 @@
->  #include <malloc.h>
+>  		if (!(s.st_mode & S_IFDIR)) {
+>  			if (flags & LS_COLUMN)
+> -				string_list_add(&sl, argv[o]);
+> +				string_list_add_sorted(&sl, argv[o]);
+>  			else
+>  				ls_one(argv[o], &s);
+>  		}
+
+Ok, but this seems unrelated to the subject of this patch. Please
+separate.
+
+> diff --git a/common/complete.c b/common/complete.c
+> index 46ba871..0b79f92 100644
+> --- a/common/complete.c
+> +++ b/common/complete.c
+> @@ -27,6 +27,7 @@
+>  #include <libgen.h>
+>  #include <command.h>
 >  #include <stringlist.h>
+> +#include <environment.h>
 >  
-> +static int string_list_compare(struct list_head *a, struct list_head *b)
-> +{
-> +	int result = 0;
-> +	char *achr, *bchr;
-> +	achr = ((struct string_list *)(a))->str;
-> +	bchr = ((struct string_list *)(b))->str;
-> +
-> +	while (*achr != '\0' || *bchr != '\0') {
-> +		result = *achr - *bchr;
-> +		if (result < 0)
-> +			return -1;
-> +		if (result > 0)
-> +			return 0;
-> +		achr++;
-> +		bchr++;
-> +	}
-
-Can't you use strcmp here instead?
-
-> +
-> +	/* Avoid a endless loop because >=0 insert str in list
-> +	 * Insert string if strings are equal or is equal,
-> +	 * but lengths are not the same */
-> +	return 0;
-> +}
-> +
->  int string_list_add(struct string_list *sl, char *str)
+>  static int file_complete(struct string_list *sl, char *instr)
 >  {
->  	struct string_list *new;
-> @@ -16,6 +39,31 @@ int string_list_add(struct string_list *sl, char *str)
+> @@ -55,7 +56,7 @@ static int file_complete(struct string_list *sl, char *instr)
+>  				strcat(tmp, "/");
+>  			else
+>  				strcat(tmp, " ");
+> -			string_list_add(sl, tmp);
+> +			string_list_add_sorted(sl, tmp);
+>  		}
+>  	}
+>  
+> @@ -67,6 +68,67 @@ out:
 >  	return 0;
 >  }
 >  
-> +int string_list_add_sorted(struct string_list *sl, char *str)
+> +static int path_command_complete(struct string_list *sl, char *instr)
 > +{
-> +	struct string_list *new;
+> +	struct stat s;
+> +	DIR *dir;
+> +	struct dirent *d;
+> +	char tmp[PATH_MAX];
+> +	char *path, *p, *n;
 > +
-> +	new = xmalloc(sizeof(struct string_list) + strlen(str) + 1);
+> +	p = path = strdup(getenv("PATH"));
 > +
-> +	strcpy(new->str, str);
+> +	if (!path)
+> +		return -1;
 > +
-> +	list_add_sort(&new->list, &sl->list, string_list_compare);
+> +	while (p) {
+> +		n = strchr(p, ':');
+> +		if (n)
+> +			*n++ = '\0';
+> +		if (*p != '\0') {
+
+You can save one indention level by doing
+
+		if (*p == '\0' ) {
+			p = n;
+			continue;
+		}
+
+
+> +			dir = opendir(p);
 > +
-> +	return 0;
-> +}
+> +			/* We need to check all PATH dirs, so if one failed,
+> +			 * try next */
+> +			if (!dir) {
+> +				p = n;
+> +				continue;
+> +			}
 > +
-> +int string_list_contains(struct string_list *sl, char *str)
-> +{
-> +	struct string_list *entry;
+> +			while ((d = readdir(dir))) {
+> +				if (!strcmp(d->d_name, ".") ||
+> +					!strcmp(d->d_name, ".."))
+> +					continue;
 > +
-> +	list_for_each_entry(entry, &sl->list, list) {
-> +		if (!strcmp(str, entry->str))
-> +			return 1;
+> +				if (!strncmp(instr, d->d_name, strlen(instr))) {
+> +					strcpy(tmp, d->d_name);
+> +					if (!stat(tmp, &s) &&
+> +						S_ISDIR(s.st_mode))
+> +						continue;
+> +					else
+> +						strcat(tmp, " ");
+> +
+> +					/* This function is called
+> +					 * after command_complete,
+> +					 * so we check if a double
+> +					 * entry exist */
+> +					if (string_list_contains
+> +							(sl, tmp) == 0) {
+> +						string_list_add_sorted(sl, tmp);
+> +					}
+> +				}
+> +			}
+> +
+> +			closedir(dir);
+> +		}
+> +		p = n;
 > +	}
 > +
+> +	free(path);
+> +
 > +	return 0;
 > +}
 > +
->  void string_list_print_by_column(struct string_list *sl)
->  {
->  	int len = 0, num, i;
-> @@ -44,3 +92,4 @@ void string_list_print_by_column(struct string_list *sl)
->  	if (i % num)
->  		printf("\n");
->  }
-> +
-
-Please don't add trailing new lines.
-
-Sascha
-
-
 -- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
