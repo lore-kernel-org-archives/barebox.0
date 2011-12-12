@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 1.mo2.mail-out.ovh.net ([46.105.63.121]
- helo=mo2.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Ra7HZ-0001bM-D6
- for barebox@lists.infradead.org; Mon, 12 Dec 2011 14:55:09 +0000
-Received: from mail240.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 765A6DC6875
- for <barebox@lists.infradead.org>; Mon, 12 Dec 2011 15:45:00 +0100 (CET)
-Date: Mon, 12 Dec 2011 15:40:29 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20111212144029.GU23884@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1Ra8mh-0003jj-IX
+ for barebox@lists.infradead.org; Mon, 12 Dec 2011 16:31:24 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <jbe@pengutronix.de>) id 1Ra8mW-0001Ip-0A
+ for barebox@lists.infradead.org; Mon, 12 Dec 2011 17:31:12 +0100
+Received: from jbe by dude.hi.pengutronix.de with local (Exim 4.77)
+ (envelope-from <jbe@pengutronix.de>) id 1Ra8mV-0000el-V5
+ for barebox@lists.infradead.org; Mon, 12 Dec 2011 17:31:11 +0100
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Mon, 12 Dec 2011 17:31:08 +0100
+Message-Id: <1323707470-796-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,48 +21,27 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/4] At91 fix + usb udc support
+Subject: [PATCH v3] Add support for the more recent Davicom DM9000A and DM9000
 To: barebox@lists.infradead.org
 
-HI,
+The current Davicom DM9000 support covers the DM9000E device only. This patch
+series adds support for the more recent DM9000A and DM9000B variants.
+The DM9000E variant is still supported.
 
-	this patch series fix the mci supot on 9263 and add the USB device
-	drivers UDC present on rm9200/9260/9g20/9261/9g10/9263
+Tested on Mini2440 and scb9328 with the DM9000E variant and Mini6410 with the
+DM9000A variant.
 
-The following changes since commit eae6d3beb787a7b0f8576a5e5e1441cce3f96fa2:
+This is v3 of the patch series. It now uses the dev_* functions to output
+debug or status messages, fixes some typos, cut timeout values and disables
+the DM9k device on halt.
 
-  drivers/mci: add PXA host controller (2011-12-08 10:22:58 +0100)
+Comments are welcome.
 
-are available in the git repository at:
-  git://uboot.jcrosoft.org/barebox.git at91
-
-Jean-Christophe PLAGNIOL-VILLARD (4):
-      at91sam9263: fix mci clock
-      at91: add udc usb device controller support
-      at91: add at91_udc resource
-      usb-a926x: add usb device support
-
- arch/arm/boards/usb-a926x/init.c         |   17 +
- arch/arm/mach-at91/at91rm9200_devices.c  |   21 +
- arch/arm/mach-at91/at91sam9260_devices.c |   19 +
- arch/arm/mach-at91/at91sam9261_devices.c |   19 +
- arch/arm/mach-at91/at91sam9263.c         |    4 +-
- arch/arm/mach-at91/at91sam9263_devices.c |   19 +
- arch/arm/mach-at91/include/mach/board.h  |   10 +
- drivers/usb/gadget/Kconfig               |    7 +
- drivers/usb/gadget/Makefile              |    1 +
- drivers/usb/gadget/at91_udc.c            | 1513 ++++++++++++++++++++++++++++++
- drivers/usb/gadget/at91_udc.h            |  167 ++++
- 11 files changed, 1795 insertions(+), 2 deletions(-)
- create mode 100644 drivers/usb/gadget/at91_udc.c
- create mode 100644 drivers/usb/gadget/at91_udc.h
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
