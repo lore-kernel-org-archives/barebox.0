@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from astoria.ccjclearline.com ([64.235.106.9])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RZogQ-0006ei-H0
- for barebox@lists.infradead.org; Sun, 11 Dec 2011 19:03:36 +0000
-Received: from cpec03f0ed08c7f-cm001ac318e826.cpe.net.cable.rogers.com
- ([99.241.2.77] helo=crashcourse.ca)
- by astoria.ccjclearline.com with esmtpsa (TLSv1:AES256-SHA:256)
- (Exim 4.69) (envelope-from <rpjday@crashcourse.ca>)
- id 1RZogD-0002aQ-4q
- for barebox@lists.infradead.org; Sun, 11 Dec 2011 14:03:21 -0500
-Date: Sun, 11 Dec 2011 14:03:15 -0500 (EST)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-Message-ID: <alpine.DEB.2.02.1112111358570.19722@oneiric>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1Ra1Z8-0007hc-OB
+ for barebox@lists.infradead.org; Mon, 12 Dec 2011 08:48:56 +0000
+Date: Mon, 12 Dec 2011 09:48:33 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20111212084833.GN27267@pengutronix.de>
+References: <1323424372-8142-1-git-send-email-a.aring@phytec.de>
+ <1323424372-8142-2-git-send-email-a.aring@phytec.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1323424372-8142-2-git-send-email-a.aring@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,89 +23,119 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Some trivial grammar/spelling fixes for main README file.
-To: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: Re: [PATCH 1/2] stringlist-functions: add sorted insert
+To: Alexander Aring <a.aring@phytec.de>
+Cc: barebox@lists.infradead.org
 
+On Fri, Dec 09, 2011 at 10:52:47AM +0100, Alexander Aring wrote:
+> Add sorted insert in stringlist functions.
+> Also added function to checked if string is already
+> in string list.
+> 
+> Signed-off-by: Alexander Aring <a.aring@phytec.de>
+> ---
+>  include/stringlist.h |    2 ++
+>  lib/stringlist.c     |   49 +++++++++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 51 insertions(+), 0 deletions(-)
+> 
+> diff --git a/include/stringlist.h b/include/stringlist.h
+> index 3453e9a..c923542 100644
+> --- a/include/stringlist.h
+> +++ b/include/stringlist.h
+> @@ -9,6 +9,8 @@ struct string_list {
+>  };
+>  
+>  int string_list_add(struct string_list *sl, char *str);
+> +int string_list_add_sorted(struct string_list *sl, char *str);
+> +int string_list_contains(struct string_list *sl, char *str);
+>  void string_list_print_by_column(struct string_list *sl);
+>  
+>  static inline void string_list_init(struct string_list *sl)
+> diff --git a/lib/stringlist.c b/lib/stringlist.c
+> index 9ccf8fa..40a0fc9 100644
+> --- a/lib/stringlist.c
+> +++ b/lib/stringlist.c
+> @@ -3,6 +3,29 @@
+>  #include <malloc.h>
+>  #include <stringlist.h>
+>  
+> +static int string_list_compare(struct list_head *a, struct list_head *b)
+> +{
+> +	int result = 0;
+> +	char *achr, *bchr;
+> +	achr = ((struct string_list *)(a))->str;
+> +	bchr = ((struct string_list *)(b))->str;
+> +
+> +	while (*achr != '\0' || *bchr != '\0') {
+> +		result = *achr - *bchr;
+> +		if (result < 0)
+> +			return -1;
+> +		if (result > 0)
+> +			return 0;
+> +		achr++;
+> +		bchr++;
+> +	}
 
-A number of minor fixes related to spelling, grammar and
-capitalization in the top-level README file.
+Can't you use strcmp here instead?
 
-Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+> +
+> +	/* Avoid a endless loop because >=0 insert str in list
+> +	 * Insert string if strings are equal or is equal,
+> +	 * but lengths are not the same */
+> +	return 0;
+> +}
+> +
+>  int string_list_add(struct string_list *sl, char *str)
+>  {
+>  	struct string_list *new;
+> @@ -16,6 +39,31 @@ int string_list_add(struct string_list *sl, char *str)
+>  	return 0;
+>  }
+>  
+> +int string_list_add_sorted(struct string_list *sl, char *str)
+> +{
+> +	struct string_list *new;
+> +
+> +	new = xmalloc(sizeof(struct string_list) + strlen(str) + 1);
+> +
+> +	strcpy(new->str, str);
+> +
+> +	list_add_sort(&new->list, &sl->list, string_list_compare);
+> +
+> +	return 0;
+> +}
+> +
+> +int string_list_contains(struct string_list *sl, char *str)
+> +{
+> +	struct string_list *entry;
+> +
+> +	list_for_each_entry(entry, &sl->list, list) {
+> +		if (!strcmp(str, entry->str))
+> +			return 1;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+>  void string_list_print_by_column(struct string_list *sl)
+>  {
+>  	int len = 0, num, i;
+> @@ -44,3 +92,4 @@ void string_list_print_by_column(struct string_list *sl)
+>  	if (i % num)
+>  		printf("\n");
+>  }
+> +
 
----
+Please don't add trailing new lines.
 
-  Hope there's no objection to the occasional grammatical patch as
-I work my way through the source.  If there are any disagreements with
-what's below, let me know if there are different standards for the doc
-files.  In some cases, it was just a judgment call.
-
-
-diff --git a/README b/README
-index 9b5317d..9b58f26 100644
---- a/README
-+++ b/README
-@@ -2,15 +2,15 @@ Barebox
- -------
-
- Barebox is a bootloader that follows the tradition of Das U-Boot, while
--adapting modern design ideas from the Linux kernel.
-+adopting modern design ideas from the Linux kernel.
-
-
- Features
- --------
-
--- A POSIX based file API
-+- A POSIX-based file API
-   Inside barebox the usual open/close/read/write/lseek functions are used.
--  This makes it familiar to everyone who has programmed under unix systems.
-+  This makes it familiar to everyone who has programmed under UNIX systems.
-
- - Usual shell commands like ls/cd/mkdir/echo/cat,...
-
-@@ -45,9 +45,9 @@ Features
- - simulation target
-   barebox can be compiled to run under Linux. While this is rather useless
-   in real world this is a great debugging and development aid. New features
--  can be easily developped and tested on long train journeys and started
--  under gdb. There is a console driver for linux which emulates a serial
--  device and a tap based ethernet driver. Linux files can be mapped to
-+  can be easily developed and tested on long train journeys and started
-+  under gdb. There is a console driver for Linux which emulates a serial
-+  device and a TAP-based Ethernet driver. Linux files can be mapped to
-   devices under barebox to emulate storage devices.
-
- - device parameter support
-@@ -61,8 +61,8 @@ Features
-
- - getopt
-   There is a small getopt implementation. Some commands got really
--  complicated (both in code and in usage) due to the fact that U-Boot only
--  allowed positional parameters.
-+  complicated (both in code and in usage) due to the fact that U-Boot
-+  allowed only positional parameters.
-
- - editor
-   Scripts can be edited with a small editor. This editor has no features
-@@ -73,7 +73,7 @@ Building Barebox
- ----------------
-
- Barebox uses the Linux kernel's build system. It consists of two parts:
--the makefile infrastructure (kbuild), plus a configuration system
-+the Makefile infrastructure (kbuild), plus a configuration system
- (kconfig). So building barebox is very similar to building the Linux
- kernel.
+Sascha
 
 
 -- 
-
-========================================================================
-Robert P. J. Day                                 Ottawa, Ontario, CANADA
-                        http://crashcourse.ca
-
-Twitter:                                       http://twitter.com/rpjday
-LinkedIn:                               http://ca.linkedin.com/in/rpjday
-========================================================================
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
