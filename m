@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
- by casper.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Ra7E3-00060I-MZ
- for barebox@lists.infradead.org; Mon, 12 Dec 2011 14:51:32 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 42C19BF097
- for <barebox@lists.infradead.org>; Mon, 12 Dec 2011 15:56:46 +0100 (CET)
-From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
-Date: Mon, 12 Dec 2011 15:50:54 +0100
-Message-Id: <1323701454-8869-1-git-send-email-t.gamez@phytec.de>
-MIME-Version: 1.0
+Received: from 7.mo2.mail-out.ovh.net ([188.165.48.182]
+ helo=mo2.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1Ra7G5-00017H-Ik
+ for barebox@lists.infradead.org; Mon, 12 Dec 2011 14:53:39 +0000
+Received: from mail240.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 82FD7DC7FC3
+ for <barebox@lists.infradead.org>; Mon, 12 Dec 2011 15:51:53 +0100 (CET)
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Mon, 12 Dec 2011 15:46:54 +0100
+Message-Id: <1323701217-26236-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,27 +18,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] pcm038: Updated NOR-Flash CS values
+Subject: [PATCH 1/4] at91sam9263: fix mci clock
 To: barebox@lists.infradead.org
 
-TmV3ZXIgcGNtMDM4IGFyZSBwb3B1bGF0ZWQgd2l0aCBhIFBDMjhGMjU2UDMwQkZFIE5PUi1GbGFz
-aC4KVGhpcyBmbGFzaCByZXF1aXJlcyBkaWZmZXJlbnQgQ1MgdmFsdWVzLgpUaGUgdmFsdWVzIGFs
-c28gd29yayB3aXRoIG9sZGVyIE5PUi1GbGFzaGVzLgoKU2lnbmVkLW9mZi1ieTogVGVyZXNhIEfD
-oW1leiA8dC5nYW1lekBwaHl0ZWMuZGU+Ci0tLQogYXJjaC9hcm0vYm9hcmRzL3BjbTAzOC9wY20w
-MzguYyB8ICAgIDYgKysrLS0tCiAxIGZpbGVzIGNoYW5nZWQsIDMgaW5zZXJ0aW9ucygrKSwgMyBk
-ZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2FyZHMvcGNtMDM4L3BjbTAzOC5j
-IGIvYXJjaC9hcm0vYm9hcmRzL3BjbTAzOC9wY20wMzguYwppbmRleCAwYjA3YTYzLi42Yjg4OTdl
-IDEwMDY0NAotLS0gYS9hcmNoL2FybS9ib2FyZHMvcGNtMDM4L3BjbTAzOC5jCisrKyBiL2FyY2gv
-YXJtL2JvYXJkcy9wY20wMzgvcGNtMDM4LmMKQEAgLTIyMyw5ICsyMjMsOSBAQCBzdGF0aWMgaW50
-IHBjbTAzOF9kZXZpY2VzX2luaXQodm9pZCkKIAl9OwogCiAJLyogY29uZmlndXJlIDE2IGJpdCBu
-b3IgZmxhc2ggb24gY3MwICovCi0JQ1MwVSA9IDB4MDAwMENDMDM7Ci0JQ1MwTCA9IDB4YTAzMzBE
-MDE7Ci0JQ1MwQSA9IDB4MDAyMjA4MDA7CisJQ1MwVSA9IDB4MjJDMkNGMDA7CisJQ1MwTCA9IDB4
-NzUwMDBEMDE7CisJQ1MwQSA9IDB4MDAwMDA5MDA7CiAKIAkvKiBjb25maWd1cmUgU1JBTSBvbiBj
-czEgKi8KIAlDUzFVID0gMHgwMDAwZDg0MzsKLS0gCjEuNy4wLjQKCgpfX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJl
-Ym94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1h
-bi9saXN0aW5mby9iYXJlYm94Cg==
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ arch/arm/mach-at91/at91sam9263.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/mach-at91/at91sam9263.c b/arch/arm/mach-at91/at91sam9263.c
+index df2df7e..eef7ad0 100644
+--- a/arch/arm/mach-at91/at91sam9263.c
++++ b/arch/arm/mach-at91/at91sam9263.c
+@@ -164,8 +164,8 @@ static struct clk *periph_clocks[] = {
+ };
+ 
+ static struct clk_lookup periph_clocks_lookups[] = {
+-	CLKDEV_CON_DEV_ID("mci_clk", "at91_mci0", &mmc0_clk),
+-	CLKDEV_CON_DEV_ID("mci_clk", "at91_mci1", &mmc1_clk),
++	CLKDEV_CON_DEV_ID("mci_clk", "atmel_mci0", &mmc0_clk),
++	CLKDEV_CON_DEV_ID("mci_clk", "atmel_mci1", &mmc1_clk),
+ 	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi0", &spi0_clk),
+ 	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi1", &spi1_clk),
+ };
+-- 
+1.7.7
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
