@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp3-g21.free.fr ([2a01:e0c:1:1599::12])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RaDEG-0006e6-Rz
- for barebox@lists.infradead.org; Mon, 12 Dec 2011 21:16:11 +0000
-Received: from [192.168.2.10] (unknown [82.233.81.124])
- by smtp3-g21.free.fr (Postfix) with ESMTP id 34467A64EA
- for <barebox@lists.infradead.org>; Mon, 12 Dec 2011 22:16:01 +0100 (CET)
-Message-ID: <4EE66F10.7090409@eukrea.com>
-Date: Mon, 12 Dec 2011 22:16:00 +0100
-From: =?ISO-8859-1?Q?Eric_B=E9nard?= <eric@eukrea.com>
+ id 1RaDHm-00073S-Dr
+ for barebox@lists.infradead.org; Mon, 12 Dec 2011 21:19:47 +0000
+Received: from localhost.localdomain (unknown [82.233.81.124])
+ by smtp3-g21.free.fr (Postfix) with ESMTP id 37FB6A6336
+ for <barebox@lists.infradead.org>; Mon, 12 Dec 2011 22:19:40 +0100 (CET)
+From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
+Date: Mon, 12 Dec 2011 22:19:34 +0100
+Message-Id: <1323724779-370-1-git-send-email-eric@eukrea.com>
 MIME-Version: 1.0
-References: <4EE62D17.1090709@eukrea.com>
-In-Reply-To: <4EE62D17.1090709@eukrea.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,33 +18,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"; Format="flowed"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: magicvar breaks tftp (or ramfs)
+Subject: [PATCH 1/6] i.MX25: fix LD16 & LD17 iomux
 To: barebox@lists.infradead.org
 
-Hi,
-
-Le 12/12/2011 17:34, Eric B=E9nard a =E9crit :
-> while upgrading to lastet head, I started to get "unable to handle paging
-> request" when transfering file using tftp (either to nand or to ram).
->
-> On master it always fail. On 2011.12 : it works (both configured with make
-> eukrea_cpuimx35_defconfig and tested on an i.MX35 board)
->
- > .../...
- >
-> Any idea what could be wrong here ?
->
-OK I fail to reproduce the problem on an i.MX51 and on an i.MX25 so the =
-
-problem is not in barebox generic code.
-
-Eric
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+d2l0aG91dCB0aGlzLCB0aGUgcGlucyBzZWVtcyB0byBiZSBvcGVuZHJhaW4gYW5kIHRodXMgdGhl
+IExDRCBzaWduYWxzCmFyZSBub3QgcHJvcGVybHkgZHJpdmVuIGxlYWRpbmcgdG8gd3JvbmcgY29s
+b3JzIG9uIHRoZSBzY3JlZW4uCgpTaWduZWQtb2ZmLWJ5OiBFcmljIELDqW5hcmQgPGVyaWNAZXVr
+cmVhLmNvbT4KLS0tCiBhcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvaW9tdXgtbXgyNS5o
+IHwgICAgNCArKy0tCiAxIGZpbGVzIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwgMiBkZWxldGlv
+bnMoLSkKCmRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvaW9tdXgt
+bXgyNS5oIGIvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2lvbXV4LW14MjUuaAppbmRl
+eCBhZTI5MzIzLi41ODc2MWI1IDEwMDY0NAotLS0gYS9hcmNoL2FybS9tYWNoLWlteC9pbmNsdWRl
+L21hY2gvaW9tdXgtbXgyNS5oCisrKyBiL2FyY2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9p
+b211eC1teDI1LmgKQEAgLTQ3MywxNCArNDczLDE0IEBACiAjZGVmaW5lIE1YMjVfUEFEX0dQSU9f
+Q19fQ0FOMl9UWAlJT01VWF9QQUQoMHgzZjgsIDB4MWZjLCAweDE2LCAwLCAwLCBQQURfQ1RMX1BV
+U18yMktfVVApCiAKICNkZWZpbmUgTVgyNV9QQURfR1BJT19EX19HUElPX0QJCUlPTVVYX1BBRCgw
+eDNmYywgMHgyMDAsIDB4MDAsIDAsIDAsIE5PX1BBRF9DVFJMKQotI2RlZmluZSBNWDI1X1BBRF9H
+UElPX0VfX0xEMTYJCUlPTVVYX1BBRCgweDQwMCwgMHgyMDQsIDB4MDIsIDAsIDAsIE5PX1BBRF9D
+VFJMKQogI2RlZmluZSBNWDI1X1BBRF9HUElPX0RfX0NBTjJfUlgJSU9NVVhfUEFEKDB4M2ZjLCAw
+eDIwMCwgMHgxNiwgMHg0ODQsIDEsIFBBRF9DVExfUFVTXzIyS19VUCkKIAogI2RlZmluZSBNWDI1
+X1BBRF9HUElPX0VfX0dQSU9fRQkJSU9NVVhfUEFEKDB4NDAwLCAweDIwNCwgMHgwMCwgMCwgMCwg
+Tk9fUEFEX0NUUkwpCi0jZGVmaW5lIE1YMjVfUEFEX0dQSU9fRl9fTEQxNwkJSU9NVVhfUEFEKDB4
+NDA0LCAweDIwOCwgMHgwMiwgMCwgMCwgTk9fUEFEX0NUUkwpCisjZGVmaW5lIE1YMjVfUEFEX0dQ
+SU9fRV9fTEQxNgkJSU9NVVhfUEFEKDB4NDAwLCAweDIwNCwgMHgwMiwgMCwgMCwgUEFEX0NUTF9Q
+VVNfMTAwS19VUCkKICNkZWZpbmUgTVgyNV9QQURfR1BJT19FX19BVUQ3X1RYRAlJT01VWF9QQUQo
+MHg0MDAsIDB4MjA0LCAweDA0LCAwLCAwLCBOT19QQURfQ1RSTCkKIAogI2RlZmluZSBNWDI1X1BB
+RF9HUElPX0ZfX0dQSU9fRgkJSU9NVVhfUEFEKDB4NDA0LCAweDIwOCwgMHgwMCwgMCwgMCwgTk9f
+UEFEX0NUUkwpCisjZGVmaW5lIE1YMjVfUEFEX0dQSU9fRl9fTEQxNwkJSU9NVVhfUEFEKDB4NDA0
+LCAweDIwOCwgMHgwMiwgMCwgMCwgUEFEX0NUTF9QVVNfMTAwS19VUCkKICNkZWZpbmUgTVgyNV9Q
+QURfR1BJT19GX19BVUQ3X1RYQwlJT01VWF9QQUQoMHg0MDQsIDB4MjA4LCAweDA0LCAwLCAwLCBO
+T19QQURfQ1RSTCkKIAogI2RlZmluZSBNWDI1X1BBRF9FWFRfQVJNQ0xLX19FWFRfQVJNQ0xLCUlP
+TVVYX1BBRCgweDAwMCwgMHgyMGMsIDB4MDAsIDAsIDAsIE5PX1BBRF9DVFJMKQotLSAKMS43LjYu
+NAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVi
+b3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMu
+aW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
