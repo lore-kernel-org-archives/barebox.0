@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RaOuJ-0001RC-FZ
- for barebox@lists.infradead.org; Tue, 13 Dec 2011 09:44:20 +0000
-Date: Tue, 13 Dec 2011 10:44:14 +0100
+ id 1RaOxy-0001UC-WA
+ for barebox@lists.infradead.org; Tue, 13 Dec 2011 09:48:07 +0000
+Date: Tue, 13 Dec 2011 10:48:00 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20111213094414.GE27267@pengutronix.de>
-References: <1323724779-370-1-git-send-email-eric@eukrea.com>
+Message-ID: <20111213094800.GF27267@pengutronix.de>
+References: <4EE62D17.1090709@eukrea.com>
+ <4EE66F10.7090409@eukrea.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1323724779-370-1-git-send-email-eric@eukrea.com>
+In-Reply-To: <4EE66F10.7090409@eukrea.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,75 +23,40 @@ Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/6] i.MX25: fix LD16 & LD17 iomux
+Subject: Re: magicvar breaks tftp (or ramfs)
 To: Eric =?iso-8859-15?Q?B=E9nard?= <eric@eukrea.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Dec 12, 2011 at 10:19:34PM +0100, Eric B=E9nard wrote:
-> without this, the pins seems to be opendrain and thus the LCD signals
-> are not properly driven leading to wrong colors on the screen.
+On Mon, Dec 12, 2011 at 10:16:00PM +0100, Eric B=E9nard wrote:
+> Hi,
+> =
 
-I applied all patches except the one I commented on to master.
+> Le 12/12/2011 17:34, Eric B=E9nard a =E9crit :
+> >while upgrading to lastet head, I started to get "unable to handle paging
+> >request" when transfering file using tftp (either to nand or to ram).
+> >
+> >On master it always fail. On 2011.12 : it works (both configured with ma=
+ke
+> >eukrea_cpuimx35_defconfig and tested on an i.MX35 board)
+> >
+> > .../...
+> >
+> >Any idea what could be wrong here ?
+> >
+> OK I fail to reproduce the problem on an i.MX51 and on an i.MX25 so
+> the problem is not in barebox generic code.
+
+Those thing are hard to track down :(
+
+Sometimes it helps to enable
+
+CONFIG_KALLSYMS
+CONFIG_ARM_UNWIND
+
+to get a proper stack trace
 
 Sascha
 
-> =
-
-> Signed-off-by: Eric B=E9nard <eric@eukrea.com>
-> ---
->  arch/arm/mach-imx/include/mach/iomux-mx25.h |    4 ++--
->  1 files changed, 2 insertions(+), 2 deletions(-)
-> =
-
-> diff --git a/arch/arm/mach-imx/include/mach/iomux-mx25.h b/arch/arm/mach-=
-imx/include/mach/iomux-mx25.h
-> index ae29323..58761b5 100644
-> --- a/arch/arm/mach-imx/include/mach/iomux-mx25.h
-> +++ b/arch/arm/mach-imx/include/mach/iomux-mx25.h
-> @@ -473,14 +473,14 @@
->  #define MX25_PAD_GPIO_C__CAN2_TX	IOMUX_PAD(0x3f8, 0x1fc, 0x16, 0, 0, PAD=
-_CTL_PUS_22K_UP)
->  =
-
->  #define MX25_PAD_GPIO_D__GPIO_D		IOMUX_PAD(0x3fc, 0x200, 0x00, 0, 0, NO_=
-PAD_CTRL)
-> -#define MX25_PAD_GPIO_E__LD16		IOMUX_PAD(0x400, 0x204, 0x02, 0, 0, NO_PA=
-D_CTRL)
->  #define MX25_PAD_GPIO_D__CAN2_RX	IOMUX_PAD(0x3fc, 0x200, 0x16, 0x484, 1,=
- PAD_CTL_PUS_22K_UP)
->  =
-
->  #define MX25_PAD_GPIO_E__GPIO_E		IOMUX_PAD(0x400, 0x204, 0x00, 0, 0, NO_=
-PAD_CTRL)
-> -#define MX25_PAD_GPIO_F__LD17		IOMUX_PAD(0x404, 0x208, 0x02, 0, 0, NO_PA=
-D_CTRL)
-> +#define MX25_PAD_GPIO_E__LD16		IOMUX_PAD(0x400, 0x204, 0x02, 0, 0, PAD_C=
-TL_PUS_100K_UP)
->  #define MX25_PAD_GPIO_E__AUD7_TXD	IOMUX_PAD(0x400, 0x204, 0x04, 0, 0, NO=
-_PAD_CTRL)
->  =
-
->  #define MX25_PAD_GPIO_F__GPIO_F		IOMUX_PAD(0x404, 0x208, 0x00, 0, 0, NO_=
-PAD_CTRL)
-> +#define MX25_PAD_GPIO_F__LD17		IOMUX_PAD(0x404, 0x208, 0x02, 0, 0, PAD_C=
-TL_PUS_100K_UP)
->  #define MX25_PAD_GPIO_F__AUD7_TXC	IOMUX_PAD(0x404, 0x208, 0x04, 0, 0, NO=
-_PAD_CTRL)
->  =
-
->  #define MX25_PAD_EXT_ARMCLK__EXT_ARMCLK	IOMUX_PAD(0x000, 0x20c, 0x00, 0,=
- 0, NO_PAD_CTRL)
-> -- =
-
-> 1.7.6.4
-> =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
 
 -- =
 
