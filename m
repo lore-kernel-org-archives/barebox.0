@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.rapiddevelopmentkit.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.x-arc.co.uk ([217.6.246.34] helo=root.phytec.de)
  by casper.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RaNXo-0000A0-Lp
- for barebox@lists.infradead.org; Tue, 13 Dec 2011 08:17:03 +0000
+ id 1RaNXo-00009z-Lr
+ for barebox@lists.infradead.org; Tue, 13 Dec 2011 08:17:02 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 23CD1BF08A
- for <barebox@lists.infradead.org>; Tue, 13 Dec 2011 09:22:14 +0100 (CET)
+ by root.phytec.de (Postfix) with ESMTP id 33D84BF08D
+ for <barebox@lists.infradead.org>; Tue, 13 Dec 2011 09:22:17 +0100 (CET)
 From: Christian Hemp <c.hemp@phytec.de>
-Date: Tue, 13 Dec 2011 09:16:47 +0100
-Message-Id: <1323764207-12082-2-git-send-email-c.hemp@phytec.de>
-In-Reply-To: <1323764207-12082-1-git-send-email-c.hemp@phytec.de>
-References: <1323764207-12082-1-git-send-email-c.hemp@phytec.de>
+Date: Tue, 13 Dec 2011 09:16:46 +0100
+Message-Id: <1323764207-12082-1-git-send-email-c.hemp@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,153 +22,86 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] pca100: Add displays and framebuffer support.
+Subject: [PATCH 1/2] imxfb: Add support for multiple video modes
 To: barebox@lists.infradead.org
 
-Add displays and framebuffer support for pca100.
+Add all available video modes to the framebuffer. devinfo fb0
+shows the available modes. We can select a mode now.
 
 Signed-off-by: Christian Hemp <c.hemp@phytec.de>
 ---
- arch/arm/boards/phycard-i.MX27/pca100.c |  105 +++++++++++++++++++++++++++++++
- 1 files changed, 105 insertions(+), 0 deletions(-)
+ arch/arm/mach-imx/include/mach/imxfb.h |    1 +
+ drivers/video/imx.c                    |   17 ++++++++++++++++-
+ 2 files changed, 17 insertions(+), 1 deletions(-)
 
-diff --git a/arch/arm/boards/phycard-i.MX27/pca100.c b/arch/arm/boards/phycard-i.MX27/pca100.c
-index babb766..c7af75e 100644
---- a/arch/arm/boards/phycard-i.MX27/pca100.c
-+++ b/arch/arm/boards/phycard-i.MX27/pca100.c
-@@ -35,6 +35,7 @@
- #include <io.h>
- #include <mach/imx-nand.h>
- #include <mach/imx-pll.h>
-+#include <mach/imxfb.h>
- #include <gpio.h>
- #include <asm/mmu.h>
- #include <usb/isp1504.h>
-@@ -58,6 +59,82 @@ struct imx_nand_platform_data nand_info = {
- 	.flash_bbt = 1,
+diff --git a/arch/arm/mach-imx/include/mach/imxfb.h b/arch/arm/mach-imx/include/mach/imxfb.h
+index b71b7f4..ea39e31 100644
+--- a/arch/arm/mach-imx/include/mach/imxfb.h
++++ b/arch/arm/mach-imx/include/mach/imxfb.h
+@@ -63,6 +63,7 @@ struct imx_fb_videomode {
+  */
+ struct imx_fb_platform_data {
+ 	struct imx_fb_videomode *mode;
++	u_int			num_modes;
+ 
+ 	u_int		cmap_greyscale:1,
+ 			cmap_inverse:1,
+diff --git a/drivers/video/imx.c b/drivers/video/imx.c
+index 7ffbcb5..78179af 100644
+--- a/drivers/video/imx.c
++++ b/drivers/video/imx.c
+@@ -303,6 +303,14 @@ static int imxfb_activate_var(struct fb_info *info)
+ 	unsigned long long tmp;
+ 	struct imxfb_info *fbi = info->priv;
+ 	u32 pcr;
++	int i;
++
++	for (i = 0; i < info->num_modes; i++) {
++		if (!strcmp(fbi->mode[i].mode.name, mode->name)) {
++			fbi->pcr = fbi->mode[i].pcr;
++			break;
++		}
++	}
+ 
+ 	/* physical screen start address	    */
+ 	writel(VPW_VPW(mode->xres * info->bits_per_pixel / 8 / 4),
+@@ -390,6 +398,7 @@ static struct fb_ops imxfb_ops = {
+ 	.fb_setcolreg	= imxfb_setcolreg,
+ 	.fb_enable	= imxfb_enable_controller,
+ 	.fb_disable	= imxfb_disable_controller,
++	.fb_activate_var = imxfb_activate_var,
  };
  
-+static struct imx_fb_videomode imxfb_mode[] = {
-+	{
-+		.mode = {
-+			.name		= "Primeview-PD050VL1",
-+			.refresh	= 60,
-+			.xres		= 640,
-+			.yres		= 480,
-+			.pixclock	= 40000, /* in ps (25MHz) */
-+			.hsync_len	= 32,
-+			.left_margin	= 112,
-+			.right_margin	= 36,
-+			.vsync_len	= 2,
-+			.upper_margin	= 33,
-+			.lower_margin	= 33,
-+		},
-+		.pcr = 0xF0C88080,
-+		.bpp = 16,
-+	}, {
-+		.mode = {
-+			.name		= "Primeview-PD035VL1",
-+			.refresh	= 60,
-+			.xres		= 640,
-+			.yres		= 480,
-+			.pixclock	= 40000, /* in ps (25 MHz) */
-+			.hsync_len	= 30,
-+			.left_margin	= 98,
-+			.right_margin	= 36,
-+			.vsync_len	= 2,
-+			.upper_margin	= 15,
-+			.lower_margin	= 33,
-+		},
-+		.pcr = 0xF0C88080,
-+		.bpp = 16,
-+	}, {
-+		.mode = {
-+			.name		= "Primeview-PD104SLF",
-+			.refresh	= 60,
-+			.xres		= 800,
-+			.yres		= 600,
-+			.pixclock	= 25000, /* in ps (40,0 MHz) */
-+			.hsync_len	= 40,
-+			.left_margin	= 174,
-+			.right_margin	= 174,
-+			.vsync_len	= 4,
-+			.upper_margin	= 24,
-+			.lower_margin	= 23,
-+		},
-+		.pcr = 0xF0C88080,
-+		.bpp = 16,
-+	}, {
-+		.mode = {
-+			.name		= "Primeview-PM070WL4",
-+			.refresh	= 60,
-+			.xres		= 800,
-+			.yres		= 480,
-+			.pixclock	= 31250, /* in ps (32 MHz) */
-+			.hsync_len	= 40,
-+			.left_margin	= 174,
-+			.right_margin	= 174,
-+			.vsync_len	= 2,
-+			.upper_margin	= 33,
-+			.lower_margin	= 23,
-+		},
-+		.pcr = 0xF0C88080,
-+		.bpp = 16,
-+	},
-+};
-+
-+static struct imx_fb_platform_data pca100_fb_data = {
-+	.mode   = imxfb_mode,
-+	.num_modes = ARRAY_SIZE(imxfb_mode),
-+	.pwmr   = 0x00A903FF,
-+	.lscr1  = 0x00120300,
-+	.dmacr  = 0x00040060,
-+};
-+
- #ifdef CONFIG_USB
- static void pca100_usb_register(void)
- {
-@@ -182,6 +259,33 @@ static int pca100_devices_init(void)
- 		PE2_PF_USBOTG_DIR,
- 		PE24_PF_USBOTG_CLK,
- 		PE25_PF_USBOTG_DATA7,
-+		/* display */
-+		PA5_PF_LSCLK,
-+		PA6_PF_LD0,
-+		PA7_PF_LD1,
-+		PA8_PF_LD2,
-+		PA9_PF_LD3,
-+		PA10_PF_LD4,
-+		PA11_PF_LD5,
-+		PA12_PF_LD6,
-+		PA13_PF_LD7,
-+		PA14_PF_LD8,
-+		PA15_PF_LD9,
-+		PA16_PF_LD10,
-+		PA17_PF_LD11,
-+		PA18_PF_LD12,
-+		PA19_PF_LD13,
-+		PA20_PF_LD14,
-+		PA21_PF_LD15,
-+		PA22_PF_LD16,
-+		PA23_PF_LD17,
-+		PA26_PF_PS,
-+		PA28_PF_HSYNC,
-+		PA29_PF_VSYNC,
-+		PA31_PF_OE_ACD,
-+		/* external I2C */
-+		PD17_PF_I2C_DATA,
-+		PD18_PF_I2C_CLK,
- 	};
+ #ifdef CONFIG_IMXFB_DRIVER_VIDEO_IMX_OVERLAY
+@@ -524,7 +533,8 @@ static int imxfb_probe(struct device_d *dev)
+ 	struct imxfb_info *fbi;
+ 	struct fb_info *info;
+ 	struct imx_fb_platform_data *pdata = dev->platform_data;
+-	int ret;
++	struct fb_videomode *mode_list;
++	int ret, i;
  
- 	PCCR0 |= PCCR0_SDHC2_EN;
-@@ -195,6 +299,7 @@ static int pca100_devices_init(void)
- 	imx27_add_nand(&nand_info);
- 	imx27_add_fec(&fec_info);
- 	imx27_add_mmc0(NULL);
-+	imx27_add_fb(&pca100_fb_data);
+ 	if (!pdata)
+ 		return -ENODEV;
+@@ -542,6 +552,9 @@ static int imxfb_probe(struct device_d *dev)
+ 	writel(readl(IMX_CCM_BASE + CCM_CGCR1) & ~(1 << 29),
+ 		IMX_CCM_BASE + CCM_CGCR1);
+ #endif
++	mode_list = xzalloc(sizeof(*mode_list) * pdata->num_modes);
++	for (i = 0; i < pdata->num_modes; i++)
++		mode_list[i] = pdata->mode[i].mode;
  
- 	PCCR1 |= PCCR1_PERCLK2_EN;
- 
+ 	fbi = xzalloc(sizeof(*fbi));
+ 	info = &fbi->info;
+@@ -555,6 +568,8 @@ static int imxfb_probe(struct device_d *dev)
+ 	fbi->enable = pdata->enable;
+ 	fbi->dev = dev;
+ 	info->priv = fbi;
++	info->mode_list = mode_list;
++	info->num_modes = pdata->num_modes;
+ 	info->mode = &pdata->mode->mode;
+ 	info->xres = pdata->mode->mode.xres;
+ 	info->yres = pdata->mode->mode.yres;
 -- 
 1.7.0.4
 
