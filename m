@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RaPlC-0002RV-S6
- for barebox@lists.infradead.org; Tue, 13 Dec 2011 10:39:00 +0000
-Date: Tue, 13 Dec 2011 11:38:52 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20111213103852.GN27267@pengutronix.de>
-References: <alpine.DEB.2.02.1112120536280.27673@oneiric>
+Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1RaPt3-0004Le-8H
+ for barebox@lists.infradead.org; Tue, 13 Dec 2011 10:47:07 +0000
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+References: <1323710046-4455-1-git-send-email-robert.jarzmik@free.fr>
+ <20111213092147.GC27267@pengutronix.de>
+Date: Tue, 13 Dec 2011 11:46:55 +0100
+In-Reply-To: <20111213092147.GC27267@pengutronix.de> (Sascha Hauer's message
+ of "Tue, 13 Dec 2011 10:21:47 +0100")
+Message-ID: <87zkewycio.fsf@free.fr>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.02.1112120536280.27673@oneiric>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,64 +23,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Update README to refer to newer location of example
- environment
-To: "Robert P. J. Day" <rpjday@crashcourse.ca>
-Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: Re: [PATCH 0/2] drivers/mtd: add a core
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hi Robert,
+Sascha Hauer <s.hauer@pengutronix.de> writes:
 
-On Mon, Dec 12, 2011 at 05:37:51AM -0500, Robert P. J. Day wrote:
-> 
-> Update location of example environment to match current Documentation.
+> So if no protests from other side come we can:
+>
+> - git mv drivers/mtd/nand/nand.c drivers/mtd/core.c
+> - replace the oob device with the data+oob device
+> - apply whatever other fixes you need
+Sure, that would be great.
+If no one complains in the next 5 days, I'll provide a V2 of the patch doing it
+your way :
+ - patch1: move nand.c into core.c
+ - patch2: convert all existing nand devices to core.c (ie. add_mtd_device)
+   *Warning* The device will be named "/dev/mtd<N>" and not "/dev/nand<N>". This
+   can break things, especially if legacy board code relies on the "nand" device
+   naming. Solutions:
+     (a) Add a parameter to add_mtd_device: add_mtd_device(struct mtd_info *mtd,
+     char *basename)
+         => if basename == NULL, then use "mtd"
+         => if basename != NULL, use basename for device name
+     (b) Create a specialized add_nand_device()
+     (c) Convert all legacy boards from "nand" to "mtd"
+ - patch3: amend core.c to bring in the device+oob function
 
-Applied to master.
+Does it look good to you ?
 
-Sascha
-
-> 
-> Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
-> 
-> ---
-> 
-> diff --git a/README b/README
-> index 9b58f26..5662a1c 100644
-> --- a/README
-> +++ b/README
-> @@ -108,9 +108,9 @@ If everything goes well, the result is a file called barebox:
-> 
->  Barebox usually needs an environment for storing the configuation data.
->  You can generate an environment using the example environment contained
-> -in examples/environment:
-> +in board/sandbox/env:
-> 
-> -  # ./scripts/bareboxenv -s -p 0x10000 examples/environment/ env.bin
-> +  # ./scripts/bareboxenv -s -p 0x10000 board/sandbox/env/ env.bin
-> 
->  To get some files to play with you can generate a cramfs image:
->    # mkcramfs somedir/ cramfs.bin
-> 
-> -- 
-> 
-> ========================================================================
-> Robert P. J. Day                                 Ottawa, Ontario, CANADA
->                         http://crashcourse.ca
-> 
-> Twitter:                                       http://twitter.com/rpjday
-> LinkedIn:                               http://ca.linkedin.com/in/rpjday
-> ========================================================================
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+Cheers.
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Robert
 
 _______________________________________________
 barebox mailing list
