@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RaOsq-0001PX-6U
- for barebox@lists.infradead.org; Tue, 13 Dec 2011 09:42:49 +0000
-Date: Tue, 13 Dec 2011 10:42:41 +0100
+ id 1RaOuJ-0001RC-FZ
+ for barebox@lists.infradead.org; Tue, 13 Dec 2011 09:44:20 +0000
+Date: Tue, 13 Dec 2011 10:44:14 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20111213094241.GD27267@pengutronix.de>
+Message-ID: <20111213094414.GE27267@pengutronix.de>
 References: <1323724779-370-1-git-send-email-eric@eukrea.com>
- <1323724779-370-3-git-send-email-eric@eukrea.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1323724779-370-3-git-send-email-eric@eukrea.com>
+In-Reply-To: <1323724779-370-1-git-send-email-eric@eukrea.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,72 +22,64 @@ Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/6] CPUIMX51: add ARM errata and enable L2 cache
+Subject: Re: [PATCH 1/6] i.MX25: fix LD16 & LD17 iomux
 To: Eric =?iso-8859-15?Q?B=E9nard?= <eric@eukrea.com>
 Cc: barebox@lists.infradead.org
 
-Hi Eric,
+On Mon, Dec 12, 2011 at 10:19:34PM +0100, Eric B=E9nard wrote:
+> without this, the pins seems to be opendrain and thus the LCD signals
+> are not properly driven leading to wrong colors on the screen.
 
-On Mon, Dec 12, 2011 at 10:19:36PM +0100, Eric B=E9nard wrote:
-> - add ARM errata ID #468414
-> - enable L2 cache to get better performances
+I applied all patches except the one I commented on to master.
+
+Sascha
+
 > =
 
 > Signed-off-by: Eric B=E9nard <eric@eukrea.com>
 > ---
->  arch/arm/boards/eukrea_cpuimx51/lowlevel_init.S |   10 ++++++++++
->  1 files changed, 10 insertions(+), 0 deletions(-)
+>  arch/arm/mach-imx/include/mach/iomux-mx25.h |    4 ++--
+>  1 files changed, 2 insertions(+), 2 deletions(-)
 > =
 
-> diff --git a/arch/arm/boards/eukrea_cpuimx51/lowlevel_init.S b/arch/arm/b=
-oards/eukrea_cpuimx51/lowlevel_init.S
-> index 0b3726f..ee3b0fc 100644
-> --- a/arch/arm/boards/eukrea_cpuimx51/lowlevel_init.S
-> +++ b/arch/arm/boards/eukrea_cpuimx51/lowlevel_init.S
-
-At the moment arch/arm/boards/eukrea_cpuimx51/lowlevel_init.S and
-./arch/arm/boards/freescale-mx51-pdk/lowlevel_init.S are exact copies.
-
-What is being done first in board_init_lowlevel is
-
-- workaround the errata
-- configure aux control reg
-- dis/enable L2 cache
-
-This is basically the same as being done in mx53_init_lowlevel().
-Can we instead add a mx5_init_lowlevel which contains the L2 cache
-setting and is called from both mx51_init_lowlevel and mx53_lowlevel?
-
-Sascha
-
-> @@ -57,6 +57,11 @@
->  board_init_lowlevel:
->  	mov     r10, lr
+> diff --git a/arch/arm/mach-imx/include/mach/iomux-mx25.h b/arch/arm/mach-=
+imx/include/mach/iomux-mx25.h
+> index ae29323..58761b5 100644
+> --- a/arch/arm/mach-imx/include/mach/iomux-mx25.h
+> +++ b/arch/arm/mach-imx/include/mach/iomux-mx25.h
+> @@ -473,14 +473,14 @@
+>  #define MX25_PAD_GPIO_C__CAN2_TX	IOMUX_PAD(0x3f8, 0x1fc, 0x16, 0, 0, PAD=
+_CTL_PUS_22K_UP)
 >  =
 
-> +	/* ARM errata ID #468414 */
-> +	mrc 15, 0, r1, c1, c0, 1
-> +	orr r1, r1, #(1 << 5)    /* enable L1NEON bit */
-> +	mcr 15, 0, r1, c1, c0, 1
-> +
->  	/* explicitly disable L2 cache */
->  	mrc 15, 0, r0, c1, c0, 1
->  	bic r0, r0, #0x2
-> @@ -76,6 +81,11 @@ board_init_lowlevel:
+>  #define MX25_PAD_GPIO_D__GPIO_D		IOMUX_PAD(0x3fc, 0x200, 0x00, 0, 0, NO_=
+PAD_CTRL)
+> -#define MX25_PAD_GPIO_E__LD16		IOMUX_PAD(0x400, 0x204, 0x02, 0, 0, NO_PA=
+D_CTRL)
+>  #define MX25_PAD_GPIO_D__CAN2_RX	IOMUX_PAD(0x3fc, 0x200, 0x16, 0x484, 1,=
+ PAD_CTL_PUS_22K_UP)
 >  =
 
->  	mcr 15, 1, r0, c9, c0, 2
+>  #define MX25_PAD_GPIO_E__GPIO_E		IOMUX_PAD(0x400, 0x204, 0x00, 0, 0, NO_=
+PAD_CTRL)
+> -#define MX25_PAD_GPIO_F__LD17		IOMUX_PAD(0x404, 0x208, 0x02, 0, 0, NO_PA=
+D_CTRL)
+> +#define MX25_PAD_GPIO_E__LD16		IOMUX_PAD(0x400, 0x204, 0x02, 0, 0, PAD_C=
+TL_PUS_100K_UP)
+>  #define MX25_PAD_GPIO_E__AUD7_TXD	IOMUX_PAD(0x400, 0x204, 0x04, 0, 0, NO=
+_PAD_CTRL)
 >  =
 
-> +	/* enable L2 cache */
-> +	mrc 15, 0, r0, c1, c0, 1
-> +	orr r0, r0, #2
-> +	mcr 15, 0, r0, c1, c0, 1
-> +
->  	ldr r0, =3DMX51_CCM_BASE_ADDR
+>  #define MX25_PAD_GPIO_F__GPIO_F		IOMUX_PAD(0x404, 0x208, 0x00, 0, 0, NO_=
+PAD_CTRL)
+> +#define MX25_PAD_GPIO_F__LD17		IOMUX_PAD(0x404, 0x208, 0x02, 0, 0, PAD_C=
+TL_PUS_100K_UP)
+>  #define MX25_PAD_GPIO_F__AUD7_TXC	IOMUX_PAD(0x404, 0x208, 0x04, 0, 0, NO=
+_PAD_CTRL)
 >  =
 
->  	/* Gate of clocks to the peripherals first */
+>  #define MX25_PAD_EXT_ARMCLK__EXT_ARMCLK	IOMUX_PAD(0x000, 0x20c, 0x00, 0,=
+ 0, NO_PAD_CTRL)
 > -- =
 
 > 1.7.6.4
