@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RaPt3-0004Le-8H
- for barebox@lists.infradead.org; Tue, 13 Dec 2011 10:47:07 +0000
+ id 1RaPx8-0004Pi-U5
+ for barebox@lists.infradead.org; Tue, 13 Dec 2011 10:51:20 +0000
 From: Robert Jarzmik <robert.jarzmik@free.fr>
 References: <1323710046-4455-1-git-send-email-robert.jarzmik@free.fr>
  <20111213092147.GC27267@pengutronix.de>
-Date: Tue, 13 Dec 2011 11:46:55 +0100
+Date: Tue, 13 Dec 2011 11:51:10 +0100
 In-Reply-To: <20111213092147.GC27267@pengutronix.de> (Sascha Hauer's message
  of "Tue, 13 Dec 2011 10:21:47 +0100")
-Message-ID: <87zkewycio.fsf@free.fr>
+Message-ID: <87vcpkycbl.fsf@free.fr>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -29,28 +29,21 @@ Cc: barebox@lists.infradead.org
 
 Sascha Hauer <s.hauer@pengutronix.de> writes:
 
-> So if no protests from other side come we can:
->
-> - git mv drivers/mtd/nand/nand.c drivers/mtd/core.c
-> - replace the oob device with the data+oob device
-> - apply whatever other fixes you need
-Sure, that would be great.
-If no one complains in the next 5 days, I'll provide a V2 of the patch doing it
-your way :
- - patch1: move nand.c into core.c
- - patch2: convert all existing nand devices to core.c (ie. add_mtd_device)
-   *Warning* The device will be named "/dev/mtd<N>" and not "/dev/nand<N>". This
-   can break things, especially if legacy board code relies on the "nand" device
-   naming. Solutions:
-     (a) Add a parameter to add_mtd_device: add_mtd_device(struct mtd_info *mtd,
-     char *basename)
-         => if basename == NULL, then use "mtd"
-         => if basename != NULL, use basename for device name
-     (b) Create a specialized add_nand_device()
-     (c) Convert all legacy boards from "nand" to "mtd"
- - patch3: amend core.c to bring in the device+oob function
+> I created the nand_oob device mainly for debugging purposes. It can be
+> convenient to be able to see the oob data. As this has no practical
+> use besides debugging it can be easily replaced with an interleaved
+> data/oob device. The oob device is quite inconvenient to use anyway
+> since it requires some calculating to get the oob data for a given
+> page.
+True. What we would need to make it simple :
+ - have arithmetic expressions in hush
+ - have a "dd" command with options skip,bs,count
+   => that is actually a requirement to flash (as cp uses blocks of 4096, while
+   flash with oob wants block of writesize+oobsize which are seldom multiples of
+   512).
 
-Does it look good to you ?
+I was thinking that a "dd" command would be handy. Would you accept it in
+barebox ?
 
 Cheers.
 
