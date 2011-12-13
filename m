@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp2-g21.free.fr ([2a01:e0c:1:1599::11])
+Received: from 2.mo5.mail-out.ovh.net ([178.33.109.111]
+ helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RaU5K-0005zM-7O
- for barebox@lists.infradead.org; Tue, 13 Dec 2011 15:16:03 +0000
-Received: from e6520eb.lan (unknown [82.240.38.71])
- by smtp2-g21.free.fr (Postfix) with ESMTP id CDFDC4B02A7
- for <barebox@lists.infradead.org>; Tue, 13 Dec 2011 16:15:56 +0100 (CET)
-From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
-Date: Tue, 13 Dec 2011 16:15:55 +0100
-Message-Id: <1323789355-8697-1-git-send-email-eric@eukrea.com>
-MIME-Version: 1.0
+ id 1RaUFF-00065p-Eu
+ for barebox@lists.infradead.org; Tue, 13 Dec 2011 15:26:18 +0000
+Received: from mail434.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 74C7DFFC061
+ for <barebox@lists.infradead.org>; Tue, 13 Dec 2011 16:26:37 +0100 (CET)
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Tue, 13 Dec 2011 16:21:58 +0100
+Message-Id: <1323789718-2459-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,39 +18,63 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] eukrea_cpuimx35: update defconfig
+Subject: [PATCH 1/1] poller_call: move from getc to is_timeout
 To: barebox@lists.infradead.org
 
-U2lnbmVkLW9mZi1ieTogRXJpYyBCw6luYXJkIDxlcmljQGV1a3JlYS5jb20+Ci0tLQogYXJjaC9h
-cm0vY29uZmlncy9ldWtyZWFfY3B1aW14MzVfZGVmY29uZmlnIHwgICAxOSArKysrKysrKysrKysr
-KysrKy0tCiAxIGZpbGVzIGNoYW5nZWQsIDE3IGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0p
-CgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vY29uZmlncy9ldWtyZWFfY3B1aW14MzVfZGVmY29uZmln
-IGIvYXJjaC9hcm0vY29uZmlncy9ldWtyZWFfY3B1aW14MzVfZGVmY29uZmlnCmluZGV4IDdiYmUw
-ZDUuLmI3NDFiNGYgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2NvbmZpZ3MvZXVrcmVhX2NwdWlteDM1
-X2RlZmNvbmZpZworKysgYi9hcmNoL2FybS9jb25maWdzL2V1a3JlYV9jcHVpbXgzNV9kZWZjb25m
-aWcKQEAgLTEsOSArMSw5IEBACiBDT05GSUdfQVJDSF9JTVg9eQogQ09ORklHX0NBQ0hFX0wyWDA9
-eQotQ09ORklHX0FSQ0hfSU1YX0lOVEVSTkFMX0JPT1Q9eQogQ09ORklHX0FSQ0hfSU1YMzU9eQog
-Q09ORklHX0lNWF9JSU09eQogQ09ORklHX0lNWF9JSU1fRlVTRV9CTE9XPXkKK0NPTkZJR19BRUFC
-ST15CiBDT05GSUdfQVJNX09QVElNWkVEX1NUUklOR19GVU5DVElPTlM9eQogQ09ORklHX01NVT15
-CiBDT05GSUdfTUFMTE9DX1NJWkU9MHg4MDAwMDAKQEAgLTI2LDEyICsyNiwxOCBAQCBDT05GSUdf
-Q01EX1JFQURMSU5FPXkKIENPTkZJR19DTURfRUNIT19FPXkKIENPTkZJR19DTURfTE9BREI9eQog
-Q09ORklHX0NNRF9NRU1JTkZPPXkKK0NPTkZJR19DTURfSU9NRU09eQogQ09ORklHX0NNRF9NVEVT
-VD15CiBDT05GSUdfQ01EX0ZMQVNIPXkKK0NPTkZJR19DTURfQk9PVE1fU0hPV19UWVBFPXkKK0NP
-TkZJR19DTURfSU1JTkZPPXkKIENPTkZJR19DTURfUkVTRVQ9eQogQ09ORklHX0NNRF9HTz15CitD
-T05GSUdfQ01EX09GVFJFRT15CiBDT05GSUdfQ01EX1RJTUVPVVQ9eQogQ09ORklHX0NNRF9QQVJU
-SVRJT049eQorQ09ORklHX0NNRF9NQUdJQ1ZBUj15CitDT05GSUdfQ01EX01BR0lDVkFSX0hFTFA9
-eQogQ09ORklHX0NNRF9CTVA9eQogQ09ORklHX0NNRF9HUElPPXkKIENPTkZJR19DTURfVU5DT01Q
-UkVTUz15CkBAIC01MCw4ICs1NiwxNyBAQCBDT05GSUdfTkFORD15CiBDT05GSUdfTkFORF9JTVg9
-eQogQ09ORklHX1VTQj15CiBDT05GSUdfVVNCX0VIQ0k9eQorQ09ORklHX1VTQl9TVE9SQUdFPXkK
-IENPTkZJR19WSURFTz15CiBDT05GSUdfRFJJVkVSX1ZJREVPX0lNWF9JUFU9eQogQ09ORklHX01D
-ST15CiBDT05GSUdfTUNJX0lNWF9FU0RIQz15Ci1DT05GSUdfTUNJX0lNWF9FU0RIQ19QSU89eQor
-Q09ORklHX0xFRD15CitDT05GSUdfTEVEX0dQSU89eQorQ09ORklHX0xFRF9UUklHR0VSUz15CitD
-T05GSUdfRlNfQ1JBTUZTPXkKK0NPTkZJR19GU19GQVQ9eQorQ09ORklHX0ZTX0ZBVF9XUklURT15
-CitDT05GSUdfRlNfRkFUX0xGTj15CitDT05GSUdfQlpMSUI9eQorQ09ORklHX0xaT19ERUNPTVBS
-RVNTPXkKLS0gCjEuNy42LjQKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5v
-cmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+this will allow to always call poller_call even durring timeout
+and still the case in getc
+
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ common/clock.c   |    4 ++++
+ common/console.c |    2 --
+ 2 files changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/common/clock.c b/common/clock.c
+index 79c06c8..6e92348 100644
+--- a/common/clock.c
++++ b/common/clock.c
+@@ -27,6 +27,7 @@
+ #include <common.h>
+ #include <asm-generic/div64.h>
+ #include <clock.h>
++#include <poller.h>
+ 
+ static struct clocksource *current_clock;
+ static uint64_t time_ns;
+@@ -139,6 +140,9 @@ uint32_t clocksource_hz2mult(uint32_t hz, uint32_t shift_constant)
+ 
+ int is_timeout(uint64_t start_ns, uint64_t time_offset_ns)
+ {
++	if (time_offset_ns > MSECOND)
++		poller_call();
++
+ 	if ((int64_t)(start_ns + time_offset_ns - get_time_ns()) < 0)
+ 		return 1;
+ 	else
+diff --git a/common/console.c b/common/console.c
+index cab8689..88c4010 100644
+--- a/common/console.c
++++ b/common/console.c
+@@ -225,8 +225,6 @@ int getc(void)
+ 	 */
+ 	start = get_time_ns();
+ 	while (1) {
+-		poller_call();
+-
+ 		if (tstc_raw()) {
+ 			kfifo_putc(console_input_buffer, getc_raw());
+ 
+-- 
+1.7.7
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
