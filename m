@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RaPjU-0002Ou-G6
- for barebox@lists.infradead.org; Tue, 13 Dec 2011 10:37:13 +0000
-Date: Tue, 13 Dec 2011 11:37:07 +0100
+ id 1RaPlC-0002RV-S6
+ for barebox@lists.infradead.org; Tue, 13 Dec 2011 10:39:00 +0000
+Date: Tue, 13 Dec 2011 11:38:52 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20111213103707.GM27267@pengutronix.de>
-References: <1323701217-26236-1-git-send-email-plagnioj@jcrosoft.com>
- <1323701217-26236-2-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20111213103852.GN27267@pengutronix.de>
+References: <alpine.DEB.2.02.1112120536280.27673@oneiric>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1323701217-26236-2-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <alpine.DEB.2.02.1112120536280.27673@oneiric>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,49 +22,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/4] at91: add udc usb device controller support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] Update README to refer to newer location of example
+ environment
+To: "Robert P. J. Day" <rpjday@crashcourse.ca>
+Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-On Mon, Dec 12, 2011 at 03:46:55PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  arch/arm/mach-at91/include/mach/board.h |   10 +
->  drivers/usb/gadget/Kconfig              |    7 +
->  drivers/usb/gadget/Makefile             |    1 +
->  drivers/usb/gadget/at91_udc.c           | 1513 +++++++++++++++++++++++++++++++
->  drivers/usb/gadget/at91_udc.h           |  167 ++++
->  5 files changed, 1698 insertions(+), 0 deletions(-)
->  create mode 100644 drivers/usb/gadget/at91_udc.c
->  create mode 100644 drivers/usb/gadget/at91_udc.h
+Hi Robert,
+
+On Mon, Dec 12, 2011 at 05:37:51AM -0500, Robert P. J. Day wrote:
 > 
+> Update location of example environment to match current Documentation.
 
-[...]
-
-> +
-> +/*-------------------------------------------------------------------------*/
-> +
-> +#ifdef VERBOSE_DEBUG
-> +#    define VDBG		DBG
-> +#else
-> +#    define VDBG(stuff...)	do{}while(0)
-> +#endif
-> +
-> +#ifdef PACKET_TRACE
-> +#    define PACKET		VDBG
-> +#else
-> +#    define PACKET(stuff...)	do{}while(0)
-> +#endif
-> +
-> +#define ERR(stuff...)		pr_err("udc: " stuff)
-> +#define WARNING(stuff...)	pr_warning("udc: " stuff)
-> +#define INFO(stuff...)		pr_info("udc: " stuff)
-> +#define DBG(stuff...)		pr_debug("udc: " stuff)
-
-Please convert to dev_* functions.
+Applied to master.
 
 Sascha
 
+> 
+> Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+> 
+> ---
+> 
+> diff --git a/README b/README
+> index 9b58f26..5662a1c 100644
+> --- a/README
+> +++ b/README
+> @@ -108,9 +108,9 @@ If everything goes well, the result is a file called barebox:
+> 
+>  Barebox usually needs an environment for storing the configuation data.
+>  You can generate an environment using the example environment contained
+> -in examples/environment:
+> +in board/sandbox/env:
+> 
+> -  # ./scripts/bareboxenv -s -p 0x10000 examples/environment/ env.bin
+> +  # ./scripts/bareboxenv -s -p 0x10000 board/sandbox/env/ env.bin
+> 
+>  To get some files to play with you can generate a cramfs image:
+>    # mkcramfs somedir/ cramfs.bin
+> 
+> -- 
+> 
+> ========================================================================
+> Robert P. J. Day                                 Ottawa, Ontario, CANADA
+>                         http://crashcourse.ca
+> 
+> Twitter:                                       http://twitter.com/rpjday
+> LinkedIn:                               http://ca.linkedin.com/in/rpjday
+> ========================================================================
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
