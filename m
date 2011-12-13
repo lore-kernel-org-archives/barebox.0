@@ -1,18 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
+Received: from smtp2-g21.free.fr ([2a01:e0c:1:1599::11])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RaUMC-00069Z-I4
- for barebox@lists.infradead.org; Tue, 13 Dec 2011 15:33:30 +0000
-From: Robert Jarzmik <robert.jarzmik@free.fr>
-References: <87r50ilxed.fsf@free.fr>
- <CAJfOKBzSOKmZEvmWsWxQ1+yJFxaB-rzCgR2mxTpTUCoA_9W1Mg@mail.gmail.com>
- <87vcpueoqc.fsf@free.fr>
- <CAJfOKBwmX8EwD1hPvYSMddp6sZKJJ5kCBLf9KYWLsjkk4ZAC9A@mail.gmail.com>
- <87r50idnni.fsf@free.fr> <20111207083708.GK27267@pengutronix.de>
-Date: Tue, 13 Dec 2011 16:33:17 +0100
-In-Reply-To: <20111207083708.GK27267@pengutronix.de> (Sascha Hauer's message
- of "Wed, 7 Dec 2011 09:37:08 +0100")
-Message-ID: <87mxawxz9e.fsf@free.fr>
+ id 1RaV6e-0001jl-48
+ for barebox@lists.infradead.org; Tue, 13 Dec 2011 16:21:29 +0000
+Received: from e6520eb.lan (unknown [82.240.38.71])
+ by smtp2-g21.free.fr (Postfix) with ESMTP id D6C7B4B0595
+ for <barebox@lists.infradead.org>; Tue, 13 Dec 2011 17:21:21 +0100 (CET)
+From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
+Date: Tue, 13 Dec 2011 17:21:19 +0100
+Message-Id: <1323793280-1359-1-git-send-email-eric@eukrea.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -22,39 +18,62 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: FAT filesystem write and long names stability
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/2] iomux-mx25: update SD1 settings
+To: barebox@lists.infradead.org
 
-Sascha Hauer <s.hauer@pengutronix.de> writes:
-
-> On Tue, Dec 06, 2011 at 11:01:37AM +0100, Robert Jarzmik wrote:
-> I had a look at it and the problem seems to be the fat caching layer I
-> introduced. It brings the fat on disk and in memory out of sync. This
-> layer has been necessary since without it the performance of the fat
-> driver is really poor. You could try the following branch. It reverts
-> the fat cache layer support and instead reimplements the block caching
-> layer so that it can handle the access patterns of the fat driver
-> better.
-> It would be great if you could give it some testing as obviously my test
-> patterns didn't reveal the 'create folder' bug you described.
-Tomorrow or wednesday, I'll make the few tests I always do (making a
-directory, copying a file, deleting a file, etc ...) and report.
-
-As I also happen to use the FAT on SDCard for reading my framebuffer image, and
-also to drop MTD content onto the same FAT, I'll tell you my "feeling" about
-performance.
-
-Cheers.
-
---
-Robert
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+dGhpcyBpcyB0aGUgIm1hZ2ljIiBzZXR0aW5nIHdoaWNoIG1ha2VzIFNEY2FyZCB3b3JraW5nIG9u
+IG91ciBib2FyZAood2hpY2ggaGFzIGV4dGVybmFsIHB1bGwgdXBzKQoKU2lnbmVkLW9mZi1ieTog
+RXJpYyBCw6luYXJkIDxlcmljQGV1a3JlYS5jb20+Ci0tLQogYXJjaC9hcm0vbWFjaC1pbXgvaW5j
+bHVkZS9tYWNoL2lvbXV4LW14MjUuaCB8ICAgMTIgKysrKysrLS0tLS0tCiAxIGZpbGVzIGNoYW5n
+ZWQsIDYgaW5zZXJ0aW9ucygrKSwgNiBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9hcmNoL2Fy
+bS9tYWNoLWlteC9pbmNsdWRlL21hY2gvaW9tdXgtbXgyNS5oIGIvYXJjaC9hcm0vbWFjaC1pbXgv
+aW5jbHVkZS9tYWNoL2lvbXV4LW14MjUuaAppbmRleCA1ODc2MWI1Li4yMWE2M2NlIDEwMDY0NAot
+LS0gYS9hcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvaW9tdXgtbXgyNS5oCisrKyBiL2Fy
+Y2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9pb211eC1teDI1LmgKQEAgLTM2MSwyNiArMzYx
+LDI2IEBACiAjZGVmaW5lIE1YMjVfUEFEX1VBUlQyX0NUU19fVUFSVDJfQ1RTCUlPTVVYX1BBRCgw
+eDM4NCwgMHgxOGMsIDB4MDAsIDAsIDAsIE5PX1BBRF9DVFJMKQogI2RlZmluZSBNWDI1X1BBRF9V
+QVJUMl9DVFNfX0dQSU9fNF8yOQlJT01VWF9QQUQoMHgzODQsIDB4MThjLCAweDA1LCAwLCAwLCBO
+T19QQURfQ1RSTCkKIAotI2RlZmluZSBNWDI1X1BBRF9TRDFfQ01EX19TRDFfQ01ECUlPTVVYX1BB
+RCgweDM4OCwgMHgxOTAsIDB4MDAsIDAsIDAsIFBBRF9DVExfUFVTXzQ3S19VUCkKKyNkZWZpbmUg
+TVgyNV9QQURfU0QxX0NNRF9fU0QxX0NNRAlJT01VWF9QQUQoMHgzODgsIDB4MTkwLCAweDEwLCAw
+LCAwLCBOT19QQURfQ1RSTCkKICNkZWZpbmUgTVgyNV9QQURfU0QxX0NNRF9fRkVDX1JEQVRBMglJ
+T01VWF9QQUQoMHgzODgsIDB4MTkwLCAweDAyLCAweDUwYywgMiwgTk9fUEFEX0NUUkwpCiAjZGVm
+aW5lIE1YMjVfUEFEX1NEMV9DTURfX0dQSU9fMl8yMwlJT01VWF9QQUQoMHgzODgsIDB4MTkwLCAw
+eDA1LCAwLCAwLCBOT19QQURfQ1RSTCkKIAotI2RlZmluZSBNWDI1X1BBRF9TRDFfQ0xLX19TRDFf
+Q0xLCUlPTVVYX1BBRCgweDM4YywgMHgxOTQsIDB4MDAsIDAsIDAsIFBBRF9DVExfUFVTXzQ3S19V
+UCkKKyNkZWZpbmUgTVgyNV9QQURfU0QxX0NMS19fU0QxX0NMSwlJT01VWF9QQUQoMHgzOGMsIDB4
+MTk0LCAweDEwLCAwLCAwLCBOT19QQURfQ1RSTCkKICNkZWZpbmUgTVgyNV9QQURfU0QxX0NMS19f
+RkVDX1JEQVRBMwlJT01VWF9QQUQoMHgzOGMsIDB4MTk0LCAweDAyLCAweDUxMCwgMiwgTk9fUEFE
+X0NUUkwpCiAjZGVmaW5lIE1YMjVfUEFEX1NEMV9DTEtfX0dQSU9fMl8yNAlJT01VWF9QQUQoMHgz
+OGMsIDB4MTk0LCAweDA1LCAwLCAwLCBOT19QQURfQ1RSTCkKIAotI2RlZmluZSBNWDI1X1BBRF9T
+RDFfREFUQTBfX1NEMV9EQVRBMAlJT01VWF9QQUQoMHgzOTAsIDB4MTk4LCAweDAwLCAwLCAwLCBQ
+QURfQ1RMX1BVU180N0tfVVApCisjZGVmaW5lIE1YMjVfUEFEX1NEMV9EQVRBMF9fU0QxX0RBVEEw
+CUlPTVVYX1BBRCgweDM5MCwgMHgxOTgsIDB4MTAsIDAsIDAsIE5PX1BBRF9DVFJMKQogI2RlZmlu
+ZSBNWDI1X1BBRF9TRDFfREFUQTBfX0dQSU9fMl8yNQlJT01VWF9QQUQoMHgzOTAsIDB4MTk4LCAw
+eDA1LCAwLCAwLCBOT19QQURfQ1RSTCkKIAotI2RlZmluZSBNWDI1X1BBRF9TRDFfREFUQTFfX1NE
+MV9EQVRBMQlJT01VWF9QQUQoMHgzOTQsIDB4MTljLCAweDAwLCAwLCAwLCBQQURfQ1RMX1BVU180
+N0tfVVApCisjZGVmaW5lIE1YMjVfUEFEX1NEMV9EQVRBMV9fU0QxX0RBVEExCUlPTVVYX1BBRCgw
+eDM5NCwgMHgxOWMsIDB4MTAsIDAsIDAsIE5PX1BBRF9DVFJMKQogI2RlZmluZSBNWDI1X1BBRF9T
+RDFfREFUQTFfX0FVRDdfUlhECUlPTVVYX1BBRCgweDM5NCwgMHgxOWMsIDB4MDMsIDB4NDc4LCAw
+LCBOT19QQURfQ1RSTCkKICNkZWZpbmUgTVgyNV9QQURfU0QxX0RBVEExX19HUElPXzJfMjYJSU9N
+VVhfUEFEKDB4Mzk0LCAweDE5YywgMHgwNSwgMCwgMCwgTk9fUEFEX0NUUkwpCiAKLSNkZWZpbmUg
+TVgyNV9QQURfU0QxX0RBVEEyX19TRDFfREFUQTIJSU9NVVhfUEFEKDB4Mzk4LCAweDFhMCwgMHgw
+MCwgMCwgMCwgUEFEX0NUTF9QVVNfNDdLX1VQKQorI2RlZmluZSBNWDI1X1BBRF9TRDFfREFUQTJf
+X1NEMV9EQVRBMglJT01VWF9QQUQoMHgzOTgsIDB4MWEwLCAweDEwLCAwLCAwLCBOT19QQURfQ1RS
+TCkKICNkZWZpbmUgTVgyNV9QQURfU0QxX0RBVEEyX19GRUNfUlhfQ0xLCUlPTVVYX1BBRCgweDM5
+OCwgMHgxYTAsIDB4MDUsIDB4NTE0LCAyLCBOT19QQURfQ1RSTCkKICNkZWZpbmUgTVgyNV9QQURf
+U0QxX0RBVEEyX19HUElPXzJfMjcJSU9NVVhfUEFEKDB4Mzk4LCAweDFhMCwgMHgwNSwgMCwgMCwg
+Tk9fUEFEX0NUUkwpCiAKLSNkZWZpbmUgTVgyNV9QQURfU0QxX0RBVEEzX19TRDFfREFUQTMJSU9N
+VVhfUEFEKDB4MzljLCAweDFhNCwgMHgwMCwgMCwgMCwgUEFEX0NUTF9QVVNfNDdLX1VQKQorI2Rl
+ZmluZSBNWDI1X1BBRF9TRDFfREFUQTNfX1NEMV9EQVRBMwlJT01VWF9QQUQoMHgzOWMsIDB4MWE0
+LCAweDEwLCAwLCAwLCBOT19QQURfQ1RSTCkKICNkZWZpbmUgTVgyNV9QQURfU0QxX0RBVEEzX19G
+RUNfQ1JTCUlPTVVYX1BBRCgweDM5YywgMHgxYTQsIDB4MDAsIDB4NTA4LCAyLCBOT19QQURfQ1RS
+TCkKICNkZWZpbmUgTVgyNV9QQURfU0QxX0RBVEEzX19HUElPXzJfMjgJSU9NVVhfUEFEKDB4Mzlj
+LCAweDFhNCwgMHgwNSwgMCwgMCwgTk9fUEFEX0NUUkwpCiAKLS0gCjEuNy42LjQKCgpfX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcg
+bGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5v
+cmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
