@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Ralf6-000804-H9
- for barebox@lists.infradead.org; Wed, 14 Dec 2011 10:02:11 +0000
-From: Robert Jarzmik <robert.jarzmik@free.fr>
-References: <1323710046-4455-1-git-send-email-robert.jarzmik@free.fr>
- <20111213092147.GC27267@pengutronix.de> <87vcpkycbl.fsf@free.fr>
- <20111213112936.GQ27267@pengutronix.de> <87r508y7gz.fsf@free.fr>
- <20111213185847.GY27267@pengutronix.de>
-Date: Wed, 14 Dec 2011 11:01:58 +0100
-Message-ID: <87borbxyi1.fsf@free.fr>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1Ralub-0003Y4-HJ
+ for barebox@lists.infradead.org; Wed, 14 Dec 2011 10:18:11 +0000
+Date: Wed, 14 Dec 2011 11:17:49 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20111214101749.GB27267@pengutronix.de>
+References: <CAJfOKBws5V3VmfnW0eXZkgR+TgAo4_ZpSviy6pLF61fevpG7DQ@mail.gmail.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAJfOKBws5V3VmfnW0eXZkgR+TgAo4_ZpSviy6pLF61fevpG7DQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,77 +22,74 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/2] drivers/mtd: add a core
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: Linker question
+To: Franck JULLIEN <franck.jullien@gmail.com>
+Cc: barebox <barebox@lists.infradead.org>
 
-Sascha Hauer <s.hauer@pengutronix.de> writes:
-> No, it doesn't. The bb device handles whatever size it passed to it.
-> Given your 528 byte example and a cp buffer size of 4096 bytes the bb
-> devices would do the following:
->
-> - write 7 * 528 bytes to the device
-> - buffer 4096 - (7 * 528) = 400 bytes until the next write
-> - Now we have 4096 + 400 bytes, write 8 * 528 bytes to the device
-> - buffer 4224 - (8 * 512) = 128 bytes
->
-> and so on. The fact that lseek is not implemented makes sure that we can
-> safely buffer until the next write call from cp. The remaining buffer
-> bytes are flushed on device close.
-Ah I see it now, you're actually talking about the nand.bb buffer, and not the
-cp buffer, ie. nand_bb.writebuf. This buffer "stores" the extra bytes until the
-next write.
+Hi Franck,
 
->> No, I don't think so, as the OOB has to be written as well, and therefore
->> multiples of 528 bytes should be possible. Note that if "cp" had a parameter for
->> the size of its buffer (currently 4096), then the "dd" would not be needed
->> anymore. A "cp -bs=528 image /dev/nand0.kernel" or "cp -bs=4224" would be
->> enough.
->
-> As explained above this won't be a problem. I see another problem
-> though: The oob layout is often dictated by hardware ecc engines. To
-> handle this the mtd layer has this oob_avail/oob_free/oob_pos[] thingy.
-> How does your mtd+oob device look like? Is it raw or does it care about
-> the the nonfree bytes in ecc? In mtd terms it would be MTD_OOB_RAW vs.
-> MTD_OOB_AUTO.
-It looks like pages of 512 bytes + OOB of 16 bytes (7 free, 1 for Hamming code,
-7 for BCH code, 1 free).
-And I definitely choose RAW, as it encompassed the AUTO case (ie. all ECC is
-correctly filled in the provided source image), and the RAW case (ie. the ECC
-provided can have wanted errors (thing security markers here)).
-I'm sure here that this device should be raw. I could create a device with
-autooob, but I don't see a usecase for it.
+On Wed, Dec 14, 2011 at 12:14:08AM +0100, Franck JULLIEN wrote:
+> Hi,
+> 
+> I'm doing some tests with the openrisc processor. As I'm building
+> barebox I have a question
+> related to the linking of barebox.
+> 
+> In order to get uint64 arithmetic functions, I need to add "-L $(shell
+> dirname `$(CC) $(CFLAGS) -print-libgcc-file-name`) -lgcc"
+> to the final link (only way ? found this in uboot).
+> 
+> However, if I do this using LDFLAGS_barebox I get :
+> 
+> /opt/crosstool/or32/or32-elf/bin/or32-elf-ld  -Map barebox.map -L
+> /opt/crosstool/or32/or32-elf-1.0rc1/bin/../lib/gcc/or32-elf/4.5.1-or32-1.0rc4
+> -lgcc -o barebox -T arch/openrisc/cpu/barebox.lds  --start-group
+> common/built-in.o  drivers/built-in.o  commands/built-in.o
+> lib/built-in.o  crypto/built-in.o  net/built-in.o  fs/built-in.o
+> arch/openrisc/boards/generic/built-in.o  arch/openrisc/lib/built-in.o
+> arch/openrisc/cpu/built-in.o --end-group
+> 
+> And it doesn't work. It works if "-L
+> /opt/crosstool/or32/or32-elf-1.0rc1/bin/../lib/gcc/or32-elf/4.5.1-or32-1.0rc4
+> -lgcc" is at the end of the command line:
+> 
+> /opt/crosstool/or32/or32-elf/bin/or32-elf-ld -Map barebox.map -o
+> barebox -T arch/openrisc/cpu/barebox.lds --start-group
+> common/built-in.o  drivers/built-in.o  commands/built-in.o
+> lib/built-in.o  crypto/built-in.o  net/built-in.o  fs/built-in.o
+> arch/openrisc/boards/generic/built-in.o  arch/openrisc/lib/built-in.o
+> arch/openrisc/cpu/built-in.o --end-group -L
+> /opt/crosstool/or32/or32-elf-1.0rc1/bin/../lib/gcc/or32-elf/4.5.1-or32-1.0rc4
+> -lgcc
+> 
+> Any idea on why this is happening ?
+> 
+> The only way I found to fix this is to move LDFLAGS_barebox in the
+> main Makefile:
+> 
+> -      cmd_barebox__ ?= $(LD) $(LDFLAGS) $(LDFLAGS_barebox) -o $@ \
+> +      cmd_barebox__ ?= $(LD) $(LDFLAGS)  -o $@ \
+>        -T $(barebox-lds) $(barebox-head)                         \
+> -      --start-group $(barebox-common) --end-group                  \
+> +      --start-group $(barebox-common) --end-group $(LDFLAGS_barebox)
+>                \
+>        $(filter-out $(barebox-lds) $(barebox-common) FORCE ,$^)
+> 
+> What do you think about this problem ?
 
-> Do you need the mtd+oob device for writing the SPL or also for writing
-> your WFFS? In case of only SPL you might also add a specialized command
-> which automatically writes the user data and generates the BIP000n into
-> oob on the fly.
-Ah, I won't make a specialized command. As the IPL is *rewritable*, the marker
-can change, and I'll have to change the command. Better have a generic approach
-here, whether would that be the "dd" option, or the specialized unseekable and
-buffered "mtdoob" device.
+The kernel currently does it the same way for openrisc. The other
+architectures have there own implementation of the 64bit arithmetix
+functions inside the kernel (and barebox) which is IMO cleaner. Maybe
+you can grab them from the gcc source code and use them in barebox
+instead.
 
-Now, to finish this discussion, let me sum up :
- - you think the specialized unseekable buffered "mtdoob" device is better that
- a "dd" command to flash partitions because the specialized device can be filled
- in by existing "cp" or "tftp" commands, right ?
- - I think it's cleaner to do a "cp file | dd bs=528 of=/dev/mtdoob"
-   I feel really nervous about the "unseekable buffered" part. It doesn't allow
-   partial writes (you have to define subpartitions for that).
-   Moreover, I think "dd" can have other fields of application, and is a usefull
-   tool around.
-
-But as I'm rather open minded, I'll let you choose between :
- (1) specialized mtdoob device
- (2) dd command
- (3) dd command and specialized mtdoob device
-
-I'll encourage you considering (2) or (3) :)
-
-Cheers.
+Sascha
 
 -- 
-Robert
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
