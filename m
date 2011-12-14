@@ -1,20 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 14.mo5.mail-out.ovh.net ([188.165.51.82]
+Received: from 12.mo5.mail-out.ovh.net ([46.105.39.65]
  helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RaqyO-00082e-Ij
- for barebox@lists.infradead.org; Wed, 14 Dec 2011 15:42:25 +0000
+ id 1Rar2w-0000XE-U6
+ for barebox@lists.infradead.org; Wed, 14 Dec 2011 15:47:07 +0000
 Received: from mail434.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 36947FF9D0A
- for <barebox@lists.infradead.org>; Wed, 14 Dec 2011 16:42:46 +0100 (CET)
-Date: Wed, 14 Dec 2011 16:37:59 +0100
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 26668FF902B
+ for <barebox@lists.infradead.org>; Wed, 14 Dec 2011 16:47:29 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20111214153759.GD7553@game.jcrosoft.org>
-References: <1323701217-26236-1-git-send-email-plagnioj@jcrosoft.com>
- <1323701217-26236-3-git-send-email-plagnioj@jcrosoft.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1323701217-26236-3-git-send-email-plagnioj@jcrosoft.com>
+Date: Wed, 14 Dec 2011 16:42:42 +0100
+Message-Id: <1323877362-9738-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,156 +18,103 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/4] at91: add at91_udc resource
+Subject: [PATCH 1/1] defaultenv: use a compressed version when embedded in
+ barebox
 To: barebox@lists.infradead.org
 
+with using gzip and the default env we can save 5.2KiB (5,352 bytes)
+
+tested on sam9g20ek
+before
+-rwxr-xr-x  1 root root 260396 Dec 14 00:42 barebox.bin
+after
+-rwxr-xr-x  1 root root 265748 Dec 14 00:42 barebox.bin
+
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
 Hi,
 
-	do not forget this one otherwise the usb device will not compile
+	need to apply usb-926x first
 
 Best Regards,
 J.
-On 15:46 Mon 12 Dec     , Jean-Christophe PLAGNIOL-VILLARD wrote:
-> this device controller is present on rm9200/9260/9g20/9261/9g10/9263
-> 
-> the 9g45 use an other IP
-> 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  arch/arm/mach-at91/at91rm9200_devices.c  |   21 +++++++++++++++++++++
->  arch/arm/mach-at91/at91sam9260_devices.c |   19 +++++++++++++++++++
->  arch/arm/mach-at91/at91sam9261_devices.c |   19 +++++++++++++++++++
->  arch/arm/mach-at91/at91sam9263_devices.c |   19 +++++++++++++++++++
->  4 files changed, 78 insertions(+), 0 deletions(-)
-> 
-> diff --git a/arch/arm/mach-at91/at91rm9200_devices.c b/arch/arm/mach-at91/at91rm9200_devices.c
-> index bd7d3f0..8c19846 100644
-> --- a/arch/arm/mach-at91/at91rm9200_devices.c
-> +++ b/arch/arm/mach-at91/at91rm9200_devices.c
-> @@ -42,6 +42,27 @@ void __init at91_add_device_usbh_ohci(struct at91_usbh_data *data)
->  void __init at91_add_device_usbh_ohci(struct at91_usbh_data *data) {}
->  #endif
->  
-> +/* --------------------------------------------------------------------
-> + *  USB Device (Gadget)
-> + * -------------------------------------------------------------------- */
-> +
-> +#ifdef CONFIG_USB_GADGET_DRIVER_AT91
-> +void __init at91_add_device_udc(struct at91_udc_data *data)
-> +{
-> +	if (data->vbus_pin > 0) {
-> +		at91_set_gpio_input(data->vbus_pin, 0);
-> +		at91_set_deglitch(data->vbus_pin, 1);
-> +	}
-> +
-> +	if (data->pullup_pin > 0)
-> +		at91_set_gpio_output(data->pullup_pin, 0);
-> +
-> +	add_generic_device("at91_udc", -1, NULL, AT91RM9200_BASE_UDP, SZ_16K,
-> +			   IORESOURCE_MEM, data);
-> +}
-> +#else
-> +void __init at91_add_device_udc(struct at91_udc_data *data) {}
-> +#endif
->  
->  /* --------------------------------------------------------------------
->   *  Ethernet
-> diff --git a/arch/arm/mach-at91/at91sam9260_devices.c b/arch/arm/mach-at91/at91sam9260_devices.c
-> index be1fdd9..945530f 100644
-> --- a/arch/arm/mach-at91/at91sam9260_devices.c
-> +++ b/arch/arm/mach-at91/at91sam9260_devices.c
-> @@ -39,6 +39,25 @@ void __init at91_add_device_usbh_ohci(struct at91_usbh_data *data)
->  void __init at91_add_device_usbh_ohci(struct at91_usbh_data *data) {}
->  #endif
->  
-> +/* --------------------------------------------------------------------
-> + *  USB Device (Gadget)
-> + * -------------------------------------------------------------------- */
-> +
-> +#ifdef CONFIG_USB_GADGET_DRIVER_AT91
-> +void __init at91_add_device_udc(struct at91_udc_data *data)
-> +{
-> +	if (data->vbus_pin > 0) {
-> +		at91_set_gpio_input(data->vbus_pin, 0);
-> +		at91_set_deglitch(data->vbus_pin, 1);
-> +	}
-> +
-> +	add_generic_device("at91_udc", -1, NULL, AT91SAM9260_BASE_UDP, SZ_16K,
-> +			   IORESOURCE_MEM, data);
-> +}
-> +#else
-> +void __init at91_add_device_udc(struct at91_udc_data *data) {}
-> +#endif
-> +
->  #if defined(CONFIG_DRIVER_NET_MACB)
->  void at91_add_device_eth(struct at91_ether_platform_data *data)
->  {
-> diff --git a/arch/arm/mach-at91/at91sam9261_devices.c b/arch/arm/mach-at91/at91sam9261_devices.c
-> index 3f69b18..4fd3c79 100644
-> --- a/arch/arm/mach-at91/at91sam9261_devices.c
-> +++ b/arch/arm/mach-at91/at91sam9261_devices.c
-> @@ -43,6 +43,25 @@ void __init at91_add_device_usbh_ohci(struct at91_usbh_data *data)
->  void __init at91_add_device_usbh_ohci(struct at91_usbh_data *data) {}
->  #endif
->  
-> +/* --------------------------------------------------------------------
-> + *  USB Device (Gadget)
-> + * -------------------------------------------------------------------- */
-> +
-> +#ifdef CONFIG_USB_GADGET_DRIVER_AT91
-> +void __init at91_add_device_udc(struct at91_udc_data *data)
-> +{
-> +	if (data->vbus_pin > 0) {
-> +		at91_set_gpio_input(data->vbus_pin, 0);
-> +		at91_set_deglitch(data->vbus_pin, 1);
-> +	}
-> +
-> +	add_generic_device("at91_udc", -1, NULL, AT91SAM9261_BASE_UDP, SZ_16K,
-> +			   IORESOURCE_MEM, data);
-> +}
-> +#else
-> +void __init at91_add_device_udc(struct at91_udc_data *data) {}
-> +#endif
-> +
->  #if defined(CONFIG_NAND_ATMEL)
->  void at91_add_device_nand(struct atmel_nand_data *data)
->  {
-> diff --git a/arch/arm/mach-at91/at91sam9263_devices.c b/arch/arm/mach-at91/at91sam9263_devices.c
-> index 994a975..bbadc5d 100644
-> --- a/arch/arm/mach-at91/at91sam9263_devices.c
-> +++ b/arch/arm/mach-at91/at91sam9263_devices.c
-> @@ -51,6 +51,25 @@ void __init at91_add_device_usbh_ohci(struct at91_usbh_data *data)
->  void __init at91_add_device_usbh_ohci(struct at91_usbh_data *data) {}
->  #endif
->  
-> +/* --------------------------------------------------------------------
-> + *  USB Device (Gadget)
-> + * -------------------------------------------------------------------- */
-> +
-> +#ifdef CONFIG_USB_GADGET_DRIVER_AT91
-> +void __init at91_add_device_udc(struct at91_udc_data *data)
-> +{
-> +	if (data->vbus_pin > 0) {
-> +		at91_set_gpio_input(data->vbus_pin, 0);
-> +		at91_set_deglitch(data->vbus_pin, 1);
-> +	}
-> +
-> +	add_generic_device("at91_udc", -1, NULL, AT91SAM9263_BASE_UDP, SZ_16K,
-> +			   IORESOURCE_MEM, data);
-> +}
-> +#else
-> +void __init at91_add_device_udc(struct at91_udc_data *data) {}
-> +#endif
-> +
->  #if defined(CONFIG_DRIVER_NET_MACB)
->  void at91_add_device_eth(struct at91_ether_platform_data *data)
->  {
-> -- 
-> 1.7.7
+ common/Kconfig   |    1 +
+ common/Makefile  |    6 +++++-
+ common/startup.c |   23 +++++++++++++++++++++--
+ 3 files changed, 27 insertions(+), 3 deletions(-)
+
+diff --git a/common/Kconfig b/common/Kconfig
+index 27464d1..ef5bba7 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -423,6 +423,7 @@ config PARTITION_DISK_DOS
+ config DEFAULT_ENVIRONMENT
+ 	bool
+ 	default y
++	select ZLIB
+ 	prompt "Compile in default environment"
+ 	help
+ 	  Enabling this option will give you a default environment when
+diff --git a/common/Makefile b/common/Makefile
+index 9bce479..5cbaa1d 100644
+--- a/common/Makefile
++++ b/common/Makefile
+@@ -52,5 +52,9 @@ endif # ifdef CONFIG_DEFAULT_ENVIRONMENT
+ barebox_default_env: $(ENV_FILES)
+ 	$(Q)$(srctree)/scripts/genenv $(srctree) $(objtree) $(DEFAULT_ENVIRONMENT_PATH)
+ 
+-include/generated/barebox_default_env.h: barebox_default_env
++barebox_default_env.gz: barebox_default_env FORCE
++	$(call if_changed,gzip)
++
++include/generated/barebox_default_env.h: barebox_default_env.gz
+ 	$(Q)cat $< | $(objtree)/scripts/bin2c default_environment > $@
++	echo "const int default_environment_uncompress_size=`stat -c%s barebox_default_env`;" >> $@
+diff --git a/common/startup.c b/common/startup.c
+index 13783fb..c68ac8b 100644
+--- a/common/startup.c
++++ b/common/startup.c
+@@ -63,11 +63,30 @@ static void display_meminfo(void)
+ 
+ #ifdef CONFIG_DEFAULT_ENVIRONMENT
+ #include <generated/barebox_default_env.h>
++#include <uncompress.h>
++
++void *defaultenv;
+ 
+ static int register_default_env(void)
+ {
+-	add_mem_device("defaultenv", (unsigned long)default_environment,
+-		       sizeof(default_environment),
++	int ret;
++	void *tmp;
++
++	tmp = xzalloc(default_environment_size);
++	memcpy(tmp, default_environment, default_environment_size);
++
++	defaultenv = xzalloc(default_environment_uncompress_size);
++
++	ret = uncompress(tmp, default_environment_size, NULL, NULL,
++			 defaultenv, NULL, uncompress_err_stdout);
++
++	free(tmp);
++
++	if (ret)
++		return ret;
++
++	add_mem_device("defaultenv", (unsigned long)defaultenv,
++		       default_environment_uncompress_size,
+ 		       IORESOURCE_MEM_WRITEABLE);
+ 	return 0;
+ }
+-- 
+1.7.7
+
 
 _______________________________________________
 barebox mailing list
