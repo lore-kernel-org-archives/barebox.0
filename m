@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Rb8aa-0004Db-V5
- for barebox@lists.infradead.org; Thu, 15 Dec 2011 10:31:02 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1Rb8aB-0000D0-F5
- for barebox@lists.infradead.org; Thu, 15 Dec 2011 11:30:35 +0100
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.77)
- (envelope-from <sha@pengutronix.de>) id 1Rb8aB-0007Ed-86
- for barebox@lists.infradead.org; Thu, 15 Dec 2011 11:30:35 +0100
+ id 1Rb8ad-0004E2-BK
+ for barebox@lists.infradead.org; Thu, 15 Dec 2011 10:31:10 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 15 Dec 2011 11:30:22 +0100
-Message-Id: <1323945034-19687-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 15 Dec 2011 11:30:33 +0100
+Message-Id: <1323945034-19687-12-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1323945034-19687-1-git-send-email-s.hauer@pengutronix.de>
+References: <1323945034-19687-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,147 +21,561 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: reimplement bootm support
+Subject: [PATCH 11/12] move code now only used in mkimage to mkimage
 To: barebox@lists.infradead.org
 
-The following series reimplements bootm. bootm now can handle
-all kinds of images and becomes the single point of booting.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/image.c    |  169 -------------------------------------
+ include/image.h   |  103 -----------------------
+ scripts/mkimage.c |  240 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 240 insertions(+), 272 deletions(-)
 
-The simplest case for booting an image still is:
+diff --git a/common/image.c b/common/image.c
+index 7a7c0df..e7d2242 100644
+--- a/common/image.c
++++ b/common/image.c
+@@ -144,172 +144,3 @@ const char *image_get_comp_name(uint8_t comp)
+ 	return get_table_entry_name(comp_name, "Unknown Compression", comp);
+ }
+ #endif
+-
+-/**
+- * image_multi_count - get component (sub-image) count
+- * @hdr: pointer to the header of the multi component image
+- *
+- * image_multi_count() returns number of components in a multi
+- * component image.
+- *
+- * Note: no checking of the image type is done, caller must pass
+- * a valid multi component image.
+- *
+- * returns:
+- *     number of components
+- */
+-ulong image_multi_count(void *data)
+-{
+-	ulong i, count = 0;
+-	uint32_t *size;
+-
+-	/* get start of the image payload, which in case of multi
+-	 * component images that points to a table of component sizes */
+-	size = (uint32_t *)data;
+-
+-	/* count non empty slots */
+-	for (i = 0; size[i]; ++i)
+-		count++;
+-
+-	return count;
+-}
+-
+-/**
+- * image_multi_getimg - get component data address and size
+- * @hdr: pointer to the header of the multi component image
+- * @idx: index of the requested component
+- * @data: pointer to a ulong variable, will hold component data address
+- * @len: pointer to a ulong variable, will hold component size
+- *
+- * image_multi_getimg() returns size and data address for the requested
+- * component in a multi component image.
+- *
+- * Note: no checking of the image type is done, caller must pass
+- * a valid multi component image.
+- *
+- * returns:
+- *     data address and size of the component, if idx is valid
+- *     0 in data and len, if idx is out of range
+- */
+-void image_multi_getimg(void *data, ulong idx,
+-			ulong *img_data, ulong *len)
+-{
+-	int i;
+-	uint32_t *size;
+-	ulong offset, count, tmp_img_data;
+-
+-	/* get number of component */
+-	count = image_multi_count(data);
+-
+-	/* get start of the image payload, which in case of multi
+-	 * component images that points to a table of component sizes */
+-	size = (uint32_t *)data;
+-
+-	/* get address of the proper component data start, which means
+-	 * skipping sizes table (add 1 for last, null entry) */
+-	tmp_img_data = (ulong)data + (count + 1) * sizeof (uint32_t);
+-
+-	if (idx < count) {
+-		*len = uimage_to_cpu(size[idx]);
+-		offset = 0;
+-
+-		/* go over all indices preceding requested component idx */
+-		for (i = 0; i < idx; i++) {
+-			/* add up i-th component size, rounding up to 4 bytes */
+-			offset += (uimage_to_cpu(size[i]) + 3) & ~3 ;
+-		}
+-
+-		/* calculate idx-th component data address */
+-		*img_data = tmp_img_data + offset;
+-	} else {
+-		*len = 0;
+-		*img_data = 0;
+-	}
+-}
+-
+-static void image_print_type(const image_header_t *hdr)
+-{
+-	const char *os, *arch, *type, *comp;
+-
+-	os = image_get_os_name(image_get_os(hdr));
+-	arch = image_get_arch_name(image_get_arch(hdr));
+-	type = image_get_type_name(image_get_type(hdr));
+-	comp = image_get_comp_name(image_get_comp(hdr));
+-
+-	printf ("%s %s %s (%s)\n", arch, os, type, comp);
+-}
+-
+-#if defined(CONFIG_TIMESTAMP) || defined(CONFIG_CMD_DATE) || !defined(__BAREBOX__)
+-static void image_print_time(time_t timestamp)
+-{
+-#if defined(__BAREBOX__)
+-	struct rtc_time tm;
+-
+-	to_tm(timestamp, &tm);
+-	printf("%4d-%02d-%02d  %2d:%02d:%02d UTC\n",
+-			tm.tm_year, tm.tm_mon, tm.tm_mday,
+-			tm.tm_hour, tm.tm_min, tm.tm_sec);
+-#else
+-	printf("%s", ctime(&timestamp));
+-#endif
+-}
+-#endif /* CONFIG_TIMESTAMP || CONFIG_CMD_DATE || !__BAREBOX__ */
+-
+-void image_print_size(uint32_t size)
+-{
+-#ifdef __BAREBOX__
+-	printf("%d Bytes = %s\n", size, size_human_readable(size));
+-#else
+-	printf("%d Bytes = %.2f kB = %.2f MB\n",
+-			size, (double)size / 1.024e3,
+-			(double)size / 1.048576e6);
+-#endif
+-}
+-
+-void image_print_contents(const image_header_t *hdr, void *data)
+-{
+-	const char *p;
+-	int type;
+-
+-#ifdef __BAREBOX__
+-	p = "   ";
+-#else
+-	p = "";
+-#endif
+-
+-	printf("%sImage Name:   %.*s\n", p, IH_NMLEN, image_get_name(hdr));
+-#if defined(CONFIG_TIMESTAMP) || defined(CONFIG_CMD_DATE) || !defined(__BAREBOX__)
+-	printf("%sCreated:      ", p);
+-	image_print_time((time_t)image_get_time(hdr));
+-#endif
+-	printf ("%sImage Type:   ", p);
+-	image_print_type(hdr);
+-	printf ("%sData Size:    ", p);
+-	image_print_size(image_get_data_size(hdr));
+-	printf ("%sLoad Address: %08x\n", p, image_get_load(hdr));
+-	printf ("%sEntry Point:  %08x\n", p, image_get_ep(hdr));
+-
+-	type = image_get_type(hdr);
+-	if (data && (type == IH_TYPE_MULTI || type == IH_TYPE_SCRIPT)) {
+-		int i;
+-		ulong img_data, len;
+-		ulong count = image_multi_count(data);
+-
+-		printf ("%sContents:\n", p);
+-		for (i = 0; i < count; i++) {
+-			image_multi_getimg(data, i, &img_data, &len);
+-
+-			printf("%s   Image %d: ", p, i);
+-			image_print_size(len);
+-
+-			if (image_get_type(hdr) != IH_TYPE_SCRIPT && i > 0) {
+-				/*
+-				 * the user may need to know offsets
+-				 * if planning to do something with
+-				 * multiple files
+-				 */
+-				printf("%s    Offset = 0x%08lx\n", p, img_data);
+-			}
+-		}
+-	}
+-}
+diff --git a/include/image.h b/include/image.h
+index 97de881..35ff01b 100644
+--- a/include/image.h
++++ b/include/image.h
+@@ -218,109 +218,6 @@ static inline const char *image_get_comp_name(uint8_t comp)
+ #define uimage_to_cpu(x)		be32_to_cpu(x)
+ #define cpu_to_uimage(x)		cpu_to_be32(x)
+ 
+-static inline uint32_t image_get_header_size(void)
+-{
+-	return sizeof(image_header_t);
+-}
+-
+-#define image_get_hdr_u32(x)					\
+-static inline uint32_t image_get_##x(const image_header_t *hdr)	\
+-{								\
+-	return uimage_to_cpu(hdr->ih_##x);			\
+-}
+-
+-image_get_hdr_u32(magic);	/* image_get_magic */
+-image_get_hdr_u32(hcrc);	/* image_get_hcrc */
+-image_get_hdr_u32(time);	/* image_get_time */
+-image_get_hdr_u32(size);	/* image_get_size */
+-image_get_hdr_u32(load);	/* image_get_load */
+-image_get_hdr_u32(ep);		/* image_get_ep */
+-image_get_hdr_u32(dcrc);	/* image_get_dcrc */
+-
+-#define image_get_hdr_u8(x)					\
+-static inline uint8_t image_get_##x(const image_header_t *hdr)	\
+-{								\
+-	return hdr->ih_##x;					\
+-}
+-image_get_hdr_u8(os);		/* image_get_os */
+-image_get_hdr_u8(arch);		/* image_get_arch */
+-image_get_hdr_u8(type);		/* image_get_type */
+-image_get_hdr_u8(comp);		/* image_get_comp */
+-
+-static inline char *image_get_name(const image_header_t *hdr)
+-{
+-	return (char*)hdr->ih_name;
+-}
+-
+-static inline uint32_t image_get_data_size(const image_header_t *hdr)
+-{
+-	return image_get_size(hdr);
+-}
+-
+-/**
+- * image_get_data - get image payload start address
+- * @hdr: image header
+- *
+- * image_get_data() returns address of the image payload. For single
+- * component images it is image data start. For multi component
+- * images it points to the null terminated table of sub-images sizes.
+- *
+- * returns:
+- *     image payload data start address
+- */
+-static inline ulong image_get_data(const image_header_t *hdr)
+-{
+-	return ((ulong)hdr + image_get_header_size());
+-}
+-
+-static inline uint32_t image_get_image_size(const image_header_t *hdr)
+-{
+-	return (image_get_size(hdr) + image_get_header_size());
+-}
+-
+-static inline ulong image_get_image_end(const image_header_t *hdr)
+-{
+-	return ((ulong)hdr + image_get_image_size(hdr));
+-}
+-
+-#define image_set_hdr_u32(x)						\
+-static inline void image_set_##x(image_header_t *hdr, uint32_t val)	\
+-{									\
+-	hdr->ih_##x = cpu_to_uimage(val);				\
+-}
+-
+-image_set_hdr_u32(magic);	/* image_set_magic */
+-image_set_hdr_u32(hcrc);	/* image_set_hcrc */
+-image_set_hdr_u32(time);	/* image_set_time */
+-image_set_hdr_u32(size);	/* image_set_size */
+-image_set_hdr_u32(load);	/* image_set_load */
+-image_set_hdr_u32(ep);		/* image_set_ep */
+-image_set_hdr_u32(dcrc);	/* image_set_dcrc */
+-
+-#define image_set_hdr_u8(x)						\
+-static inline void image_set_##x(image_header_t *hdr, uint8_t val)	\
+-{									\
+-	hdr->ih_##x = val;						\
+-}
+-
+-image_set_hdr_u8(os);		/* image_set_os */
+-image_set_hdr_u8(arch);		/* image_set_arch */
+-image_set_hdr_u8(type);		/* image_set_type */
+-image_set_hdr_u8(comp);		/* image_set_comp */
+-
+-static inline void image_set_name(image_header_t *hdr, const char *name)
+-{
+-	strncpy(image_get_name(hdr), name, IH_NMLEN);
+-}
+-
+-ulong image_multi_count(void *data);
+-void image_multi_getimg(void *data, ulong idx,
+-			ulong *img_data, ulong *len);
+-
+-void image_print_size(uint32_t size);
+-
+-void image_print_contents(const image_header_t *hdr, void *data);
+-
+ struct uimage_handle_data {
+ 	size_t offset; /* offset in the image */
+ 	ulong len;
+diff --git a/scripts/mkimage.c b/scripts/mkimage.c
+index b219cb8..64290cf 100644
+--- a/scripts/mkimage.c
++++ b/scripts/mkimage.c
+@@ -62,6 +62,246 @@ int opt_comp = IH_COMP_GZIP;
+ image_header_t header;
+ image_header_t *hdr = &header;
+ 
++static inline uint32_t image_get_header_size(void)
++{
++	return sizeof(image_header_t);
++}
++
++#define image_get_hdr_u32(x)					\
++static inline uint32_t image_get_##x(const image_header_t *hdr)	\
++{								\
++	return uimage_to_cpu(hdr->ih_##x);			\
++}
++
++image_get_hdr_u32(magic);	/* image_get_magic */
++image_get_hdr_u32(hcrc);	/* image_get_hcrc */
++image_get_hdr_u32(time);	/* image_get_time */
++image_get_hdr_u32(size);	/* image_get_size */
++image_get_hdr_u32(load);	/* image_get_load */
++image_get_hdr_u32(ep);		/* image_get_ep */
++image_get_hdr_u32(dcrc);	/* image_get_dcrc */
++
++#define image_get_hdr_u8(x)					\
++static inline uint8_t image_get_##x(const image_header_t *hdr)	\
++{								\
++	return hdr->ih_##x;					\
++}
++image_get_hdr_u8(os);		/* image_get_os */
++image_get_hdr_u8(arch);		/* image_get_arch */
++image_get_hdr_u8(type);		/* image_get_type */
++image_get_hdr_u8(comp);		/* image_get_comp */
++
++static inline char *image_get_name(const image_header_t *hdr)
++{
++	return (char*)hdr->ih_name;
++}
++
++static inline uint32_t image_get_data_size(const image_header_t *hdr)
++{
++	return image_get_size(hdr);
++}
++
++/**
++ * image_get_data - get image payload start address
++ * @hdr: image header
++ *
++ * image_get_data() returns address of the image payload. For single
++ * component images it is image data start. For multi component
++ * images it points to the null terminated table of sub-images sizes.
++ *
++ * returns:
++ *     image payload data start address
++ */
++static inline ulong image_get_data(const image_header_t *hdr)
++{
++	return ((ulong)hdr + image_get_header_size());
++}
++
++static inline uint32_t image_get_image_size(const image_header_t *hdr)
++{
++	return (image_get_size(hdr) + image_get_header_size());
++}
++
++static inline ulong image_get_image_end(const image_header_t *hdr)
++{
++	return ((ulong)hdr + image_get_image_size(hdr));
++}
++
++#define image_set_hdr_u32(x)						\
++static inline void image_set_##x(image_header_t *hdr, uint32_t val)	\
++{									\
++	hdr->ih_##x = cpu_to_uimage(val);				\
++}
++
++image_set_hdr_u32(magic);	/* image_set_magic */
++image_set_hdr_u32(hcrc);	/* image_set_hcrc */
++image_set_hdr_u32(time);	/* image_set_time */
++image_set_hdr_u32(size);	/* image_set_size */
++image_set_hdr_u32(load);	/* image_set_load */
++image_set_hdr_u32(ep);		/* image_set_ep */
++image_set_hdr_u32(dcrc);	/* image_set_dcrc */
++
++#define image_set_hdr_u8(x)						\
++static inline void image_set_##x(image_header_t *hdr, uint8_t val)	\
++{									\
++	hdr->ih_##x = val;						\
++}
++
++image_set_hdr_u8(os);		/* image_set_os */
++image_set_hdr_u8(arch);		/* image_set_arch */
++image_set_hdr_u8(type);		/* image_set_type */
++image_set_hdr_u8(comp);		/* image_set_comp */
++
++static inline void image_set_name(image_header_t *hdr, const char *name)
++{
++	strncpy(image_get_name(hdr), name, IH_NMLEN);
++}
++
++/**
++ * image_multi_count - get component (sub-image) count
++ * @hdr: pointer to the header of the multi component image
++ *
++ * image_multi_count() returns number of components in a multi
++ * component image.
++ *
++ * Note: no checking of the image type is done, caller must pass
++ * a valid multi component image.
++ *
++ * returns:
++ *     number of components
++ */
++static ulong image_multi_count(void *data)
++{
++	ulong i, count = 0;
++	uint32_t *size;
++
++	/* get start of the image payload, which in case of multi
++	 * component images that points to a table of component sizes */
++	size = (uint32_t *)data;
++
++	/* count non empty slots */
++	for (i = 0; size[i]; ++i)
++		count++;
++
++	return count;
++}
++
++/**
++ * image_multi_getimg - get component data address and size
++ * @hdr: pointer to the header of the multi component image
++ * @idx: index of the requested component
++ * @data: pointer to a ulong variable, will hold component data address
++ * @len: pointer to a ulong variable, will hold component size
++ *
++ * image_multi_getimg() returns size and data address for the requested
++ * component in a multi component image.
++ *
++ * Note: no checking of the image type is done, caller must pass
++ * a valid multi component image.
++ *
++ * returns:
++ *     data address and size of the component, if idx is valid
++ *     0 in data and len, if idx is out of range
++ */
++static void image_multi_getimg(void *data, ulong idx,
++			ulong *img_data, ulong *len)
++{
++	int i;
++	uint32_t *size;
++	ulong offset, count, tmp_img_data;
++
++	/* get number of component */
++	count = image_multi_count(data);
++
++	/* get start of the image payload, which in case of multi
++	 * component images that points to a table of component sizes */
++	size = (uint32_t *)data;
++
++	/* get address of the proper component data start, which means
++	 * skipping sizes table (add 1 for last, null entry) */
++	tmp_img_data = (ulong)data + (count + 1) * sizeof (uint32_t);
++
++	if (idx < count) {
++		*len = uimage_to_cpu(size[idx]);
++		offset = 0;
++
++		/* go over all indices preceding requested component idx */
++		for (i = 0; i < idx; i++) {
++			/* add up i-th component size, rounding up to 4 bytes */
++			offset += (uimage_to_cpu(size[i]) + 3) & ~3 ;
++		}
++
++		/* calculate idx-th component data address */
++		*img_data = tmp_img_data + offset;
++	} else {
++		*len = 0;
++		*img_data = 0;
++	}
++}
++
++static void image_print_type(const image_header_t *hdr)
++{
++	const char *os, *arch, *type, *comp;
++
++	os = image_get_os_name(image_get_os(hdr));
++	arch = image_get_arch_name(image_get_arch(hdr));
++	type = image_get_type_name(image_get_type(hdr));
++	comp = image_get_comp_name(image_get_comp(hdr));
++
++	printf ("%s %s %s (%s)\n", arch, os, type, comp);
++}
++
++static void image_print_time(time_t timestamp)
++{
++	printf("%s", ctime(&timestamp));
++}
++
++static void image_print_size(uint32_t size)
++{
++	printf("%d Bytes = %.2f kB = %.2f MB\n",
++			size, (double)size / 1.024e3,
++			(double)size / 1.048576e6);
++}
++
++static void image_print_contents(const image_header_t *hdr, void *data)
++{
++	int type;
++
++	printf("Image Name:   %.*s\n", IH_NMLEN, image_get_name(hdr));
++	printf("Created:      ");
++	image_print_time((time_t)image_get_time(hdr));
++	printf ("Image Type:   ");
++	image_print_type(hdr);
++	printf ("Data Size:    ");
++	image_print_size(image_get_data_size(hdr));
++	printf ("Load Address: %08x\n", image_get_load(hdr));
++	printf ("Entry Point:  %08x\n", image_get_ep(hdr));
++
++	type = image_get_type(hdr);
++	if (data && (type == IH_TYPE_MULTI || type == IH_TYPE_SCRIPT)) {
++		int i;
++		ulong img_data, len;
++		ulong count = image_multi_count(data);
++
++		printf ("Contents:\n");
++		for (i = 0; i < count; i++) {
++			image_multi_getimg(data, i, &img_data, &len);
++
++			printf("   Image %d: ", i);
++			image_print_size(len);
++
++			if (image_get_type(hdr) != IH_TYPE_SCRIPT && i > 0) {
++				/*
++				 * the user may need to know offsets
++				 * if planning to do something with
++				 * multiple files
++				 */
++				printf("    Offset = 0x%08lx\n", img_data);
++			}
++		}
++	}
++}
++
+ int
+ main (int argc, char **argv)
+ {
+-- 
+1.7.7.3
 
-bootm <image>
-
-With image being a uImage, or, if the architecture supports
-it, a zImage, a raw image or a barebox image.
-
-the bootm implementation also supports initrds and oftrees in
-uImage or native format. An example for booting with initrd
-and oftree is:
-
-bootm -r uImage.initrd -o uImage.oftree uImage.kernel
-bootm -r initrd.lzo -o oftree.dtb zImage
-
-or:
-
-bootm -r uImage.multi@1 -o uImage.multi@2 uImage.multi@0
-
-for multifile uImages.
-
-uImages have a hardcoded load address which does work for
-multi SoC kernel images with different SDRAM addresses. For
-this reason this implementation interprets a load address
-of 0xffffffff as "let the handler decide". If the handlers
-decision is wrong then the load address can be forced with
--a <address>
-
-Unlike the old implementation this one uses the resource mechanism
-to make sure that the images are really loaded to SDRAM and that
-the images do not overlap with either other images or parts
-of barebox.
-
-All this is based on a new uImage implementation which provides
-a simple API for loading and checking uImages.
-
-This API is also used to implement a new 'uimage' command which
-superseeds the iminfo command. Unlike iminfo uimage can also
-be used for extracting and verifying images.
-
-The arm 'bootz' and 'bootu' commands are not necessary anymore
-but kept in the tree for now.
-
-Here is a complete list of options for the bootm command:
-
-Usage: bootm [OPTIONS] image
-Boot an application image.
--c      crc check uImage data
--r <initrd>     specify an initrd image
--L <load addr>  specify initrd load address
--a <load addr>  specify os load address
--e <ofs>        entry point to the image relative to start (0)
--o <oftree>     specify oftree
--v      verbose
-
-Sascha
-
-
-Sascha Hauer (12):
-      oftree: add of_fix_tree()
-      filetype: Add oftree detection
-      uncompress: implement uncompress_fd_to_buf
-      libbb: add read_full/write_full functions
-      ARM: call start_linux directly with initrd start/size and oftree
-      reimplement uImage code
-      bootm: use new uimage code
-      add uimage command
-      remove now obsolete iminfo command
-      remove now unused uImage code
-      move code now only used in mkimage to mkimage
-      defaultenv: simplify boot
-
- arch/arm/boards/at91rm9200ek/env/config           |    5 -
- arch/arm/boards/at91sam9261ek/env/config          |    5 -
- arch/arm/boards/at91sam9263ek/env/config          |    5 -
- arch/arm/boards/at91sam9m10g45ek/env/config       |    5 -
- arch/arm/boards/chumby_falconwing/env/bin/boot    |    9 +-
- arch/arm/boards/chumby_falconwing/env/config      |    2 -
- arch/arm/boards/dss11/env/config                  |    5 -
- arch/arm/boards/eukrea_cpuimx25/env/config        |    1 -
- arch/arm/boards/eukrea_cpuimx35/env/config        |    1 -
- arch/arm/boards/eukrea_cpuimx51/env/config        |    1 -
- arch/arm/boards/freescale-mx35-3-stack/env/config |    5 -
- arch/arm/boards/freescale-mx51-pdk/env/config     |    5 -
- arch/arm/boards/freescale-mx53-loco/env/config    |    5 -
- arch/arm/boards/freescale-mx53-smd/env/config     |    5 -
- arch/arm/boards/guf-cupid/env/config              |    5 -
- arch/arm/boards/guf-neso/env/config               |    5 -
- arch/arm/boards/karo-tx25/env/config              |    5 -
- arch/arm/boards/karo-tx28/env/config              |    5 -
- arch/arm/boards/mini2440/env/config               |    5 -
- arch/arm/boards/nhk8815/env/config                |    5 -
- arch/arm/boards/panda/env/config                  |    5 -
- arch/arm/boards/pcm037/env/config                 |    5 -
- arch/arm/boards/pcm038/env/config                 |    5 -
- arch/arm/boards/pcm043/env/config                 |    5 -
- arch/arm/boards/pcm049/env/config                 |    5 -
- arch/arm/boards/phycard-i.MX27/env/config         |    5 -
- arch/arm/boards/pm9261/env/config                 |    5 -
- arch/arm/boards/pm9g45/env/config                 |    5 -
- arch/arm/boards/scb9328/env/config                |    5 -
- arch/arm/boards/usb-a926x/env/config              |    5 -
- arch/arm/boards/versatile/env/config              |    5 -
- arch/arm/include/asm/armlinux.h                   |    3 +-
- arch/arm/lib/armlinux.c                           |   20 +-
- arch/arm/lib/bootm.c                              |  221 +++++++++-
- arch/arm/lib/bootu.c                              |    8 +-
- arch/arm/lib/bootz.c                              |    7 +-
- arch/blackfin/lib/blackfin_linux.c                |   12 +-
- arch/nios2/boards/generic/env/config              |    1 -
- arch/nios2/lib/bootm.c                            |   11 +-
- arch/ppc/lib/ppclinux.c                           |   16 +-
- commands/Kconfig                                  |   28 +-
- commands/Makefile                                 |    2 +-
- commands/bootm.c                                  |  451 +++++++++++++-----
- commands/iminfo.c                                 |   71 ---
- commands/uimage.c                                 |  108 +++++
- common/Makefile                                   |    1 +
- common/filetype.c                                 |    3 +
- common/image.c                                    |  287 ------------
- common/oftree.c                                   |   22 +-
- common/uimage.c                                   |  505 +++++++++++++++++++++
- defaultenv/bin/boot                               |   43 +--
- defaultenv/config                                 |    5 -
- include/boot.h                                    |   62 +++-
- include/filetype.h                                |    1 +
- include/image.h                                   |  155 ++------
- include/libbb.h                                   |    3 +
- include/of.h                                      |    1 +
- lib/libbb.c                                       |   50 ++
- lib/uncompress.c                                  |    8 +
- scripts/mkimage.c                                 |  240 ++++++++++
- 60 files changed, 1629 insertions(+), 860 deletions(-)
- delete mode 100644 commands/iminfo.c
- create mode 100644 commands/uimage.c
- create mode 100644 common/uimage.c
 
 _______________________________________________
 barebox mailing list
