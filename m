@@ -1,16 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
+Received: from mo5.mail-out.ovh.net ([178.32.228.5])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RbBiw-0004kr-Pm
- for barebox@lists.infradead.org; Thu, 15 Dec 2011 13:51:56 +0000
-From: Robert Jarzmik <robert.jarzmik@free.fr>
-References: <1323946179-9883-1-git-send-email-s.hauer@pengutronix.de>
- <1323946179-9883-8-git-send-email-s.hauer@pengutronix.de>
-Date: Thu, 15 Dec 2011 14:51:40 +0100
-In-Reply-To: <1323946179-9883-8-git-send-email-s.hauer@pengutronix.de> (Sascha
- Hauer's message of "Thu, 15 Dec 2011 11:49:39 +0100")
-Message-ID: <87y5uevt77.fsf@free.fr>
+ id 1RbBnu-0005Gf-41
+ for barebox@lists.infradead.org; Thu, 15 Dec 2011 13:56:59 +0000
+Received: from mail434.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id ABA5CFF936A
+ for <barebox@lists.infradead.org>; Thu, 15 Dec 2011 14:57:21 +0100 (CET)
+Date: Thu, 15 Dec 2011 14:52:29 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20111215135229.GG9234@game.jcrosoft.org>
+References: <1323884841-21920-1-git-send-email-plagnioj@jcrosoft.com>
+ <4EE8F498.1080108@eukrea.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <4EE8F498.1080108@eukrea.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,85 +22,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 7/7] nand-bb: implement lseek in readonly mode
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH v2] defaultenv: use a compressed version when embedded
+ in barebox
+To: Eric =?iso-8859-1?Q?B=E9nard?= <eric@eukrea.com>
 Cc: barebox@lists.infradead.org
 
-Sascha Hauer <s.hauer@pengutronix.de> writes:
+On 20:10 Wed 14 Dec     , Eric B=E9nard wrote:
+> Hi,
+> =
 
-> +static off_t nand_bb_lseek(struct cdev *cdev, off_t __offset)
-> +{
-> +	struct nand_bb *bb = cdev->priv;
-> +	unsigned long raw_pos = 0;
-> +	uint32_t offset = __offset;
-> +	int ret;
-> +
-> +	/* lseek only in readonly mode */
-> +	if (bb->flags & O_ACCMODE)
-> +		return -ENOSYS;
-> +
-> +	while (raw_pos < bb->raw_size) {
-> +		off_t now = min(offset, bb->info.erasesize);
-> +
-> +		ret = cdev_ioctl(bb->cdev_parent, MEMGETBADBLOCK, (void *)raw_pos);
-> +		if (ret < 0)
-> +			return ret;
-> +		if (!ret)
-> +			offset -= now;
-> +		raw_pos += now;
-> +		if (!offset) {
-> +			bb->offset = raw_pos;
-> +			return __offset;
-> +		}
-> +	}
-Are you sure of this algorithm ?
-I tried to check it with:
- - erasesize=16 (silly I know, but it's simpler for my mind)
- - bb->raw_size = +oo
- - offset = 34
+> Le 14/12/2011 18:47, Jean-Christophe PLAGNIOL-VILLARD a =E9crit :
+> >with using gzip and the default env we can save 5.2KiB (5,352 bytes)
+> >
+> >tested on sam9g20ek
+> >before
+> >-rwxr-xr-x  1 root root 265748 Dec 14 00:42 barebox.bin
+> >after
+> >-rwxr-xr-x  1 root root 260396 Dec 14 00:42 barebox.bin
+> >
+> what is the consequence on the boottime ?
+no difference nearly I've seen the same boot time
 
-Let's assume we have eraseblock B0, B1, B2 and B3 of 16 bytes.
-B0, B1 and B3 are good, B2 is a bad block.
+I've seen over 10 boots sometime 100ms differences (3 times)
 
-+--------+--------+--------+--------+
-|   B0   |   B1   |xxxB2xxx|   B3   |
-+--------+--------+--------+--------+
+but it manual check and my chrono can not be more preceise than 100ms
 
-If I unroll the while loop:
- - loop1:
-     now=16
-     ret=0 (B0 good)
-     offset = 18
-     raw_pos = 16
- - loop2:
-     now=16
-     ret=0 (B1 good)
-     offset = 2
-     raw_pos = 32
- - loop3:
-     now=2
-     ret=1 (B2 bad)
-     offset = 2
-     raw_pos = 34
- - loop4:
-     now=2
-     ret=0 (B3 good)
-     offset = 0
-     raw_pos = 36
-     bb->offset = 36
-     return 34
+I've no scope to be more precise
 
-So we end up with bb->offset = 36, which seems incorrect to me. I would have
-understood a value of 50, but 36 ... I don't
-
-Cheers.
-
--- 
-Robert
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
