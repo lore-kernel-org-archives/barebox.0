@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Rb8ad-0004E2-BK
- for barebox@lists.infradead.org; Thu, 15 Dec 2011 10:31:10 +0000
+ id 1Rb8ah-0004Em-Ol
+ for barebox@lists.infradead.org; Thu, 15 Dec 2011 10:31:13 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 15 Dec 2011 11:30:33 +0100
-Message-Id: <1323945034-19687-12-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 15 Dec 2011 11:30:34 +0100
+Message-Id: <1323945034-19687-13-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1323945034-19687-1-git-send-email-s.hauer@pengutronix.de>
 References: <1323945034-19687-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,558 +21,707 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/12] move code now only used in mkimage to mkimage
+Subject: [PATCH 12/12] defaultenv: simplify boot
 To: barebox@lists.infradead.org
+
+Now that we have a bootm command which boots everything we can
+simplify the defaultenvironment. We can call bootm on every
+image type and can remove the kernelimage_type variables.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/image.c    |  169 -------------------------------------
- include/image.h   |  103 -----------------------
- scripts/mkimage.c |  240 +++++++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 240 insertions(+), 272 deletions(-)
+ arch/arm/boards/at91rm9200ek/env/config           |    5 --
+ arch/arm/boards/at91sam9261ek/env/config          |    5 --
+ arch/arm/boards/at91sam9263ek/env/config          |    5 --
+ arch/arm/boards/at91sam9m10g45ek/env/config       |    5 --
+ arch/arm/boards/chumby_falconwing/env/bin/boot    |    9 +----
+ arch/arm/boards/chumby_falconwing/env/config      |    2 -
+ arch/arm/boards/dss11/env/config                  |    5 --
+ arch/arm/boards/eukrea_cpuimx25/env/config        |    1 -
+ arch/arm/boards/eukrea_cpuimx35/env/config        |    1 -
+ arch/arm/boards/eukrea_cpuimx51/env/config        |    1 -
+ arch/arm/boards/freescale-mx35-3-stack/env/config |    5 --
+ arch/arm/boards/freescale-mx51-pdk/env/config     |    5 --
+ arch/arm/boards/freescale-mx53-loco/env/config    |    5 --
+ arch/arm/boards/freescale-mx53-smd/env/config     |    5 --
+ arch/arm/boards/guf-cupid/env/config              |    5 --
+ arch/arm/boards/guf-neso/env/config               |    5 --
+ arch/arm/boards/karo-tx25/env/config              |    5 --
+ arch/arm/boards/karo-tx28/env/config              |    5 --
+ arch/arm/boards/mini2440/env/config               |    5 --
+ arch/arm/boards/nhk8815/env/config                |    5 --
+ arch/arm/boards/panda/env/config                  |    5 --
+ arch/arm/boards/pcm037/env/config                 |    5 --
+ arch/arm/boards/pcm038/env/config                 |    5 --
+ arch/arm/boards/pcm043/env/config                 |    5 --
+ arch/arm/boards/pcm049/env/config                 |    5 --
+ arch/arm/boards/phycard-i.MX27/env/config         |    5 --
+ arch/arm/boards/pm9261/env/config                 |    5 --
+ arch/arm/boards/pm9g45/env/config                 |    5 --
+ arch/arm/boards/scb9328/env/config                |    5 --
+ arch/arm/boards/usb-a926x/env/config              |    5 --
+ arch/arm/boards/versatile/env/config              |    5 --
+ arch/nios2/boards/generic/env/config              |    1 -
+ defaultenv/bin/boot                               |   43 ++-------------------
+ defaultenv/config                                 |    5 --
+ 34 files changed, 5 insertions(+), 188 deletions(-)
 
-diff --git a/common/image.c b/common/image.c
-index 7a7c0df..e7d2242 100644
---- a/common/image.c
-+++ b/common/image.c
-@@ -144,172 +144,3 @@ const char *image_get_comp_name(uint8_t comp)
- 	return get_table_entry_name(comp_name, "Unknown Compression", comp);
- }
- #endif
--
--/**
-- * image_multi_count - get component (sub-image) count
-- * @hdr: pointer to the header of the multi component image
-- *
-- * image_multi_count() returns number of components in a multi
-- * component image.
-- *
-- * Note: no checking of the image type is done, caller must pass
-- * a valid multi component image.
-- *
-- * returns:
-- *     number of components
-- */
--ulong image_multi_count(void *data)
--{
--	ulong i, count = 0;
--	uint32_t *size;
--
--	/* get start of the image payload, which in case of multi
--	 * component images that points to a table of component sizes */
--	size = (uint32_t *)data;
--
--	/* count non empty slots */
--	for (i = 0; size[i]; ++i)
--		count++;
--
--	return count;
--}
--
--/**
-- * image_multi_getimg - get component data address and size
-- * @hdr: pointer to the header of the multi component image
-- * @idx: index of the requested component
-- * @data: pointer to a ulong variable, will hold component data address
-- * @len: pointer to a ulong variable, will hold component size
-- *
-- * image_multi_getimg() returns size and data address for the requested
-- * component in a multi component image.
-- *
-- * Note: no checking of the image type is done, caller must pass
-- * a valid multi component image.
-- *
-- * returns:
-- *     data address and size of the component, if idx is valid
-- *     0 in data and len, if idx is out of range
-- */
--void image_multi_getimg(void *data, ulong idx,
--			ulong *img_data, ulong *len)
--{
--	int i;
--	uint32_t *size;
--	ulong offset, count, tmp_img_data;
--
--	/* get number of component */
--	count = image_multi_count(data);
--
--	/* get start of the image payload, which in case of multi
--	 * component images that points to a table of component sizes */
--	size = (uint32_t *)data;
--
--	/* get address of the proper component data start, which means
--	 * skipping sizes table (add 1 for last, null entry) */
--	tmp_img_data = (ulong)data + (count + 1) * sizeof (uint32_t);
--
--	if (idx < count) {
--		*len = uimage_to_cpu(size[idx]);
--		offset = 0;
--
--		/* go over all indices preceding requested component idx */
--		for (i = 0; i < idx; i++) {
--			/* add up i-th component size, rounding up to 4 bytes */
--			offset += (uimage_to_cpu(size[i]) + 3) & ~3 ;
--		}
--
--		/* calculate idx-th component data address */
--		*img_data = tmp_img_data + offset;
--	} else {
--		*len = 0;
--		*img_data = 0;
--	}
--}
--
--static void image_print_type(const image_header_t *hdr)
--{
--	const char *os, *arch, *type, *comp;
--
--	os = image_get_os_name(image_get_os(hdr));
--	arch = image_get_arch_name(image_get_arch(hdr));
--	type = image_get_type_name(image_get_type(hdr));
--	comp = image_get_comp_name(image_get_comp(hdr));
--
--	printf ("%s %s %s (%s)\n", arch, os, type, comp);
--}
--
--#if defined(CONFIG_TIMESTAMP) || defined(CONFIG_CMD_DATE) || !defined(__BAREBOX__)
--static void image_print_time(time_t timestamp)
--{
--#if defined(__BAREBOX__)
--	struct rtc_time tm;
--
--	to_tm(timestamp, &tm);
--	printf("%4d-%02d-%02d  %2d:%02d:%02d UTC\n",
--			tm.tm_year, tm.tm_mon, tm.tm_mday,
--			tm.tm_hour, tm.tm_min, tm.tm_sec);
--#else
--	printf("%s", ctime(&timestamp));
--#endif
--}
--#endif /* CONFIG_TIMESTAMP || CONFIG_CMD_DATE || !__BAREBOX__ */
--
--void image_print_size(uint32_t size)
--{
--#ifdef __BAREBOX__
--	printf("%d Bytes = %s\n", size, size_human_readable(size));
--#else
--	printf("%d Bytes = %.2f kB = %.2f MB\n",
--			size, (double)size / 1.024e3,
--			(double)size / 1.048576e6);
--#endif
--}
--
--void image_print_contents(const image_header_t *hdr, void *data)
--{
--	const char *p;
--	int type;
--
--#ifdef __BAREBOX__
--	p = "   ";
--#else
--	p = "";
--#endif
--
--	printf("%sImage Name:   %.*s\n", p, IH_NMLEN, image_get_name(hdr));
--#if defined(CONFIG_TIMESTAMP) || defined(CONFIG_CMD_DATE) || !defined(__BAREBOX__)
--	printf("%sCreated:      ", p);
--	image_print_time((time_t)image_get_time(hdr));
--#endif
--	printf ("%sImage Type:   ", p);
--	image_print_type(hdr);
--	printf ("%sData Size:    ", p);
--	image_print_size(image_get_data_size(hdr));
--	printf ("%sLoad Address: %08x\n", p, image_get_load(hdr));
--	printf ("%sEntry Point:  %08x\n", p, image_get_ep(hdr));
--
--	type = image_get_type(hdr);
--	if (data && (type == IH_TYPE_MULTI || type == IH_TYPE_SCRIPT)) {
--		int i;
--		ulong img_data, len;
--		ulong count = image_multi_count(data);
--
--		printf ("%sContents:\n", p);
--		for (i = 0; i < count; i++) {
--			image_multi_getimg(data, i, &img_data, &len);
--
--			printf("%s   Image %d: ", p, i);
--			image_print_size(len);
--
--			if (image_get_type(hdr) != IH_TYPE_SCRIPT && i > 0) {
--				/*
--				 * the user may need to know offsets
--				 * if planning to do something with
--				 * multiple files
--				 */
--				printf("%s    Offset = 0x%08lx\n", p, img_data);
--			}
--		}
--	}
--}
-diff --git a/include/image.h b/include/image.h
-index 97de881..35ff01b 100644
---- a/include/image.h
-+++ b/include/image.h
-@@ -218,109 +218,6 @@ static inline const char *image_get_comp_name(uint8_t comp)
- #define uimage_to_cpu(x)		be32_to_cpu(x)
- #define cpu_to_uimage(x)		cpu_to_be32(x)
+diff --git a/arch/arm/boards/at91rm9200ek/env/config b/arch/arm/boards/at91rm9200ek/env/config
+index 1b56b25..12655c2 100644
+--- a/arch/arm/boards/at91rm9200ek/env/config
++++ b/arch/arm/boards/at91rm9200ek/env/config
+@@ -19,14 +19,9 @@ rootfs_loc=net
+ rootfs_type=ubifs
+ rootfsimage=root.$rootfs_type
  
--static inline uint32_t image_get_header_size(void)
--{
--	return sizeof(image_header_t);
--}
--
--#define image_get_hdr_u32(x)					\
--static inline uint32_t image_get_##x(const image_header_t *hdr)	\
--{								\
--	return uimage_to_cpu(hdr->ih_##x);			\
--}
--
--image_get_hdr_u32(magic);	/* image_get_magic */
--image_get_hdr_u32(hcrc);	/* image_get_hcrc */
--image_get_hdr_u32(time);	/* image_get_time */
--image_get_hdr_u32(size);	/* image_get_size */
--image_get_hdr_u32(load);	/* image_get_load */
--image_get_hdr_u32(ep);		/* image_get_ep */
--image_get_hdr_u32(dcrc);	/* image_get_dcrc */
--
--#define image_get_hdr_u8(x)					\
--static inline uint8_t image_get_##x(const image_header_t *hdr)	\
--{								\
--	return hdr->ih_##x;					\
--}
--image_get_hdr_u8(os);		/* image_get_os */
--image_get_hdr_u8(arch);		/* image_get_arch */
--image_get_hdr_u8(type);		/* image_get_type */
--image_get_hdr_u8(comp);		/* image_get_comp */
--
--static inline char *image_get_name(const image_header_t *hdr)
--{
--	return (char*)hdr->ih_name;
--}
--
--static inline uint32_t image_get_data_size(const image_header_t *hdr)
--{
--	return image_get_size(hdr);
--}
--
--/**
-- * image_get_data - get image payload start address
-- * @hdr: image header
-- *
-- * image_get_data() returns address of the image payload. For single
-- * component images it is image data start. For multi component
-- * images it points to the null terminated table of sub-images sizes.
-- *
-- * returns:
-- *     image payload data start address
-- */
--static inline ulong image_get_data(const image_header_t *hdr)
--{
--	return ((ulong)hdr + image_get_header_size());
--}
--
--static inline uint32_t image_get_image_size(const image_header_t *hdr)
--{
--	return (image_get_size(hdr) + image_get_header_size());
--}
--
--static inline ulong image_get_image_end(const image_header_t *hdr)
--{
--	return ((ulong)hdr + image_get_image_size(hdr));
--}
--
--#define image_set_hdr_u32(x)						\
--static inline void image_set_##x(image_header_t *hdr, uint32_t val)	\
--{									\
--	hdr->ih_##x = cpu_to_uimage(val);				\
--}
--
--image_set_hdr_u32(magic);	/* image_set_magic */
--image_set_hdr_u32(hcrc);	/* image_set_hcrc */
--image_set_hdr_u32(time);	/* image_set_time */
--image_set_hdr_u32(size);	/* image_set_size */
--image_set_hdr_u32(load);	/* image_set_load */
--image_set_hdr_u32(ep);		/* image_set_ep */
--image_set_hdr_u32(dcrc);	/* image_set_dcrc */
--
--#define image_set_hdr_u8(x)						\
--static inline void image_set_##x(image_header_t *hdr, uint8_t val)	\
--{									\
--	hdr->ih_##x = val;						\
--}
--
--image_set_hdr_u8(os);		/* image_set_os */
--image_set_hdr_u8(arch);		/* image_set_arch */
--image_set_hdr_u8(type);		/* image_set_type */
--image_set_hdr_u8(comp);		/* image_set_comp */
--
--static inline void image_set_name(image_header_t *hdr, const char *name)
--{
--	strncpy(image_get_name(hdr), name, IH_NMLEN);
--}
--
--ulong image_multi_count(void *data);
--void image_multi_getimg(void *data, ulong idx,
--			ulong *img_data, ulong *len);
--
--void image_print_size(uint32_t size);
--
--void image_print_contents(const image_header_t *hdr, void *data);
--
- struct uimage_handle_data {
- 	size_t offset; /* offset in the image */
- 	ulong len;
-diff --git a/scripts/mkimage.c b/scripts/mkimage.c
-index b219cb8..64290cf 100644
---- a/scripts/mkimage.c
-+++ b/scripts/mkimage.c
-@@ -62,6 +62,246 @@ int opt_comp = IH_COMP_GZIP;
- image_header_t header;
- image_header_t *hdr = &header;
+-# The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
+-#kernelimage_type=zimage
+ #kernelimage=zImage
+-kernelimage_type=uimage
+ kernelimage=uImage
+-#kernelimage_type=raw
+ #kernelimage=Image
+-#kernelimage_type=raw_lzo
+ #kernelimage=Image.lzo
  
-+static inline uint32_t image_get_header_size(void)
-+{
-+	return sizeof(image_header_t);
-+}
-+
-+#define image_get_hdr_u32(x)					\
-+static inline uint32_t image_get_##x(const image_header_t *hdr)	\
-+{								\
-+	return uimage_to_cpu(hdr->ih_##x);			\
-+}
-+
-+image_get_hdr_u32(magic);	/* image_get_magic */
-+image_get_hdr_u32(hcrc);	/* image_get_hcrc */
-+image_get_hdr_u32(time);	/* image_get_time */
-+image_get_hdr_u32(size);	/* image_get_size */
-+image_get_hdr_u32(load);	/* image_get_load */
-+image_get_hdr_u32(ep);		/* image_get_ep */
-+image_get_hdr_u32(dcrc);	/* image_get_dcrc */
-+
-+#define image_get_hdr_u8(x)					\
-+static inline uint8_t image_get_##x(const image_header_t *hdr)	\
-+{								\
-+	return hdr->ih_##x;					\
-+}
-+image_get_hdr_u8(os);		/* image_get_os */
-+image_get_hdr_u8(arch);		/* image_get_arch */
-+image_get_hdr_u8(type);		/* image_get_type */
-+image_get_hdr_u8(comp);		/* image_get_comp */
-+
-+static inline char *image_get_name(const image_header_t *hdr)
-+{
-+	return (char*)hdr->ih_name;
-+}
-+
-+static inline uint32_t image_get_data_size(const image_header_t *hdr)
-+{
-+	return image_get_size(hdr);
-+}
-+
-+/**
-+ * image_get_data - get image payload start address
-+ * @hdr: image header
-+ *
-+ * image_get_data() returns address of the image payload. For single
-+ * component images it is image data start. For multi component
-+ * images it points to the null terminated table of sub-images sizes.
-+ *
-+ * returns:
-+ *     image payload data start address
-+ */
-+static inline ulong image_get_data(const image_header_t *hdr)
-+{
-+	return ((ulong)hdr + image_get_header_size());
-+}
-+
-+static inline uint32_t image_get_image_size(const image_header_t *hdr)
-+{
-+	return (image_get_size(hdr) + image_get_header_size());
-+}
-+
-+static inline ulong image_get_image_end(const image_header_t *hdr)
-+{
-+	return ((ulong)hdr + image_get_image_size(hdr));
-+}
-+
-+#define image_set_hdr_u32(x)						\
-+static inline void image_set_##x(image_header_t *hdr, uint32_t val)	\
-+{									\
-+	hdr->ih_##x = cpu_to_uimage(val);				\
-+}
-+
-+image_set_hdr_u32(magic);	/* image_set_magic */
-+image_set_hdr_u32(hcrc);	/* image_set_hcrc */
-+image_set_hdr_u32(time);	/* image_set_time */
-+image_set_hdr_u32(size);	/* image_set_size */
-+image_set_hdr_u32(load);	/* image_set_load */
-+image_set_hdr_u32(ep);		/* image_set_ep */
-+image_set_hdr_u32(dcrc);	/* image_set_dcrc */
-+
-+#define image_set_hdr_u8(x)						\
-+static inline void image_set_##x(image_header_t *hdr, uint8_t val)	\
-+{									\
-+	hdr->ih_##x = val;						\
-+}
-+
-+image_set_hdr_u8(os);		/* image_set_os */
-+image_set_hdr_u8(arch);		/* image_set_arch */
-+image_set_hdr_u8(type);		/* image_set_type */
-+image_set_hdr_u8(comp);		/* image_set_comp */
-+
-+static inline void image_set_name(image_header_t *hdr, const char *name)
-+{
-+	strncpy(image_get_name(hdr), name, IH_NMLEN);
-+}
-+
-+/**
-+ * image_multi_count - get component (sub-image) count
-+ * @hdr: pointer to the header of the multi component image
-+ *
-+ * image_multi_count() returns number of components in a multi
-+ * component image.
-+ *
-+ * Note: no checking of the image type is done, caller must pass
-+ * a valid multi component image.
-+ *
-+ * returns:
-+ *     number of components
-+ */
-+static ulong image_multi_count(void *data)
-+{
-+	ulong i, count = 0;
-+	uint32_t *size;
-+
-+	/* get start of the image payload, which in case of multi
-+	 * component images that points to a table of component sizes */
-+	size = (uint32_t *)data;
-+
-+	/* count non empty slots */
-+	for (i = 0; size[i]; ++i)
-+		count++;
-+
-+	return count;
-+}
-+
-+/**
-+ * image_multi_getimg - get component data address and size
-+ * @hdr: pointer to the header of the multi component image
-+ * @idx: index of the requested component
-+ * @data: pointer to a ulong variable, will hold component data address
-+ * @len: pointer to a ulong variable, will hold component size
-+ *
-+ * image_multi_getimg() returns size and data address for the requested
-+ * component in a multi component image.
-+ *
-+ * Note: no checking of the image type is done, caller must pass
-+ * a valid multi component image.
-+ *
-+ * returns:
-+ *     data address and size of the component, if idx is valid
-+ *     0 in data and len, if idx is out of range
-+ */
-+static void image_multi_getimg(void *data, ulong idx,
-+			ulong *img_data, ulong *len)
-+{
-+	int i;
-+	uint32_t *size;
-+	ulong offset, count, tmp_img_data;
-+
-+	/* get number of component */
-+	count = image_multi_count(data);
-+
-+	/* get start of the image payload, which in case of multi
-+	 * component images that points to a table of component sizes */
-+	size = (uint32_t *)data;
-+
-+	/* get address of the proper component data start, which means
-+	 * skipping sizes table (add 1 for last, null entry) */
-+	tmp_img_data = (ulong)data + (count + 1) * sizeof (uint32_t);
-+
-+	if (idx < count) {
-+		*len = uimage_to_cpu(size[idx]);
-+		offset = 0;
-+
-+		/* go over all indices preceding requested component idx */
-+		for (i = 0; i < idx; i++) {
-+			/* add up i-th component size, rounding up to 4 bytes */
-+			offset += (uimage_to_cpu(size[i]) + 3) & ~3 ;
-+		}
-+
-+		/* calculate idx-th component data address */
-+		*img_data = tmp_img_data + offset;
-+	} else {
-+		*len = 0;
-+		*img_data = 0;
-+	}
-+}
-+
-+static void image_print_type(const image_header_t *hdr)
-+{
-+	const char *os, *arch, *type, *comp;
-+
-+	os = image_get_os_name(image_get_os(hdr));
-+	arch = image_get_arch_name(image_get_arch(hdr));
-+	type = image_get_type_name(image_get_type(hdr));
-+	comp = image_get_comp_name(image_get_comp(hdr));
-+
-+	printf ("%s %s %s (%s)\n", arch, os, type, comp);
-+}
-+
-+static void image_print_time(time_t timestamp)
-+{
-+	printf("%s", ctime(&timestamp));
-+}
-+
-+static void image_print_size(uint32_t size)
-+{
-+	printf("%d Bytes = %.2f kB = %.2f MB\n",
-+			size, (double)size / 1.024e3,
-+			(double)size / 1.048576e6);
-+}
-+
-+static void image_print_contents(const image_header_t *hdr, void *data)
-+{
-+	int type;
-+
-+	printf("Image Name:   %.*s\n", IH_NMLEN, image_get_name(hdr));
-+	printf("Created:      ");
-+	image_print_time((time_t)image_get_time(hdr));
-+	printf ("Image Type:   ");
-+	image_print_type(hdr);
-+	printf ("Data Size:    ");
-+	image_print_size(image_get_data_size(hdr));
-+	printf ("Load Address: %08x\n", image_get_load(hdr));
-+	printf ("Entry Point:  %08x\n", image_get_ep(hdr));
-+
-+	type = image_get_type(hdr);
-+	if (data && (type == IH_TYPE_MULTI || type == IH_TYPE_SCRIPT)) {
-+		int i;
-+		ulong img_data, len;
-+		ulong count = image_multi_count(data);
-+
-+		printf ("Contents:\n");
-+		for (i = 0; i < count; i++) {
-+			image_multi_getimg(data, i, &img_data, &len);
-+
-+			printf("   Image %d: ", i);
-+			image_print_size(len);
-+
-+			if (image_get_type(hdr) != IH_TYPE_SCRIPT && i > 0) {
-+				/*
-+				 * the user may need to know offsets
-+				 * if planning to do something with
-+				 * multiple files
-+				 */
-+				printf("    Offset = 0x%08lx\n", img_data);
-+			}
-+		}
-+	}
-+}
-+
- int
- main (int argc, char **argv)
- {
+ nor_parts="256k(barebox)ro,64k(bareboxenv),1536k(kernel),-(root)"
+diff --git a/arch/arm/boards/at91sam9261ek/env/config b/arch/arm/boards/at91sam9261ek/env/config
+index 733326d..d6eeea4 100644
+--- a/arch/arm/boards/at91sam9261ek/env/config
++++ b/arch/arm/boards/at91sam9261ek/env/config
+@@ -19,14 +19,9 @@ rootfs_loc=net
+ rootfs_type=ubifs
+ rootfsimage=root.$rootfs_type
+ 
+-# The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
+-#kernelimage_type=zimage
+ #kernelimage=zImage
+-kernelimage_type=uimage
+ kernelimage=uImage
+-#kernelimage_type=raw
+ #kernelimage=Image
+-#kernelimage_type=raw_lzo
+ #kernelimage=Image.lzo
+ 
+ nand_device=atmel_nand
+diff --git a/arch/arm/boards/at91sam9263ek/env/config b/arch/arm/boards/at91sam9263ek/env/config
+index 4e29232..bd771ac 100644
+--- a/arch/arm/boards/at91sam9263ek/env/config
++++ b/arch/arm/boards/at91sam9263ek/env/config
+@@ -19,14 +19,9 @@ rootfs_loc=net
+ rootfs_type=ubifs
+ rootfsimage=root.$rootfs_type
+ 
+-# The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
+-#kernelimage_type=zimage
+ #kernelimage=zImage
+-kernelimage_type=uimage
+ kernelimage=uImage
+-#kernelimage_type=raw
+ #kernelimage=Image
+-#kernelimage_type=raw_lzo
+ #kernelimage=Image.lzo
+ 
+ nand_device=atmel_nand
+diff --git a/arch/arm/boards/at91sam9m10g45ek/env/config b/arch/arm/boards/at91sam9m10g45ek/env/config
+index b8ca18d..3dea724 100644
+--- a/arch/arm/boards/at91sam9m10g45ek/env/config
++++ b/arch/arm/boards/at91sam9m10g45ek/env/config
+@@ -19,14 +19,9 @@ rootfs_loc=net
+ rootfs_type=ubifs
+ rootfsimage=root.$rootfs_type
+ 
+-# The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
+-#kernelimage_type=zimage
+ #kernelimage=zImage
+-kernelimage_type=uimage
+ kernelimage=uImage
+-#kernelimage_type=raw
+ #kernelimage=Image
+-#kernelimage_type=raw_lzo
+ #kernelimage=Image.lzo
+ 
+ nand_device=atmel_nand
+diff --git a/arch/arm/boards/chumby_falconwing/env/bin/boot b/arch/arm/boards/chumby_falconwing/env/bin/boot
+index 981a387..999170c 100644
+--- a/arch/arm/boards/chumby_falconwing/env/bin/boot
++++ b/arch/arm/boards/chumby_falconwing/env/bin/boot
+@@ -26,13 +26,6 @@ elif [ x$rootfs_loc = xinitrd ]; then
+ 	bootargs="$bootargs root=/dev/ram0 rdinit=/sbin/init"
+ fi
+ 
+-if [ x$kernelimage_type = xuimage ]; then
+-	bootm /dev/$kernel_part
+-elif [ x$kernelimage_type = xzimage ]; then
+-	bootz /dev/$kernel_part
+-else
+-	echo "Booting failed. Correct setup of 'kernelimage_type'?"
+-	exit
+-fi
++bootm /dev/$kernel_part
+ 
+ echo "Booting failed. Correct setup of 'kernel_part'?"
+diff --git a/arch/arm/boards/chumby_falconwing/env/config b/arch/arm/boards/chumby_falconwing/env/config
+index 1e61dce..1419161 100644
+--- a/arch/arm/boards/chumby_falconwing/env/config
++++ b/arch/arm/boards/chumby_falconwing/env/config
+@@ -25,8 +25,6 @@ rootfs_part=mmcblk0p4
+ # Where is the rootfs in case of 'rootfs_loc=net'
+ nfsroot=FIXME
+ 
+-# The image type of the kernel. Can be uimage, zimage
+-kernelimage_type=uimage
+ # Where to get the kernel image in case of 'kernel_loc=disk'
+ kernel_part=disk0.2
+ 
+diff --git a/arch/arm/boards/dss11/env/config b/arch/arm/boards/dss11/env/config
+index 5c9be7d..adf3af5 100644
+--- a/arch/arm/boards/dss11/env/config
++++ b/arch/arm/boards/dss11/env/config
+@@ -19,14 +19,9 @@ rootfs_loc=net
+ rootfs_type=ubifs
+ rootfsimage=root.$rootfs_type
+ 
+-# The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
+-#kernelimage_type=zimage
+ #kernelimage=zImage
+-kernelimage_type=uimage
+ kernelimage=uImage
+-#kernelimage_type=raw
+ #kernelimage=Image
+-#kernelimage_type=raw_lzo
+ #kernelimage=Image.lzo
+ 
+ nand_device=atmel_nand
+diff --git a/arch/arm/boards/eukrea_cpuimx25/env/config b/arch/arm/boards/eukrea_cpuimx25/env/config
+index 5cedbf8..bc1cfd5 100644
+--- a/arch/arm/boards/eukrea_cpuimx25/env/config
++++ b/arch/arm/boards/eukrea_cpuimx25/env/config
+@@ -25,7 +25,6 @@ rootfs_type=ubifs
+ rootfsimage=$machine/rootfs.$rootfs_type
+ 
+ # kernel
+-kernelimage_type=uimage
+ kernelimage=$machine/uImage-${machine}.bin
+ 
+ # barebox and it's env
+diff --git a/arch/arm/boards/eukrea_cpuimx35/env/config b/arch/arm/boards/eukrea_cpuimx35/env/config
+index 776d19a..8f64ba0 100644
+--- a/arch/arm/boards/eukrea_cpuimx35/env/config
++++ b/arch/arm/boards/eukrea_cpuimx35/env/config
+@@ -25,7 +25,6 @@ rootfs_type=ubifs
+ rootfsimage=$machine/rootfs.$rootfs_type
+ 
+ # kernel
+-kernelimage_type=uimage
+ kernelimage=$machine/uImage-${machine}.bin
+ 
+ # barebox and it's env
+diff --git a/arch/arm/boards/eukrea_cpuimx51/env/config b/arch/arm/boards/eukrea_cpuimx51/env/config
+index 91a2671..1b57b29 100644
+--- a/arch/arm/boards/eukrea_cpuimx51/env/config
++++ b/arch/arm/boards/eukrea_cpuimx51/env/config
+@@ -28,7 +28,6 @@ rootfs_type=ubifs
+ rootfsimage=$machine/rootfs.$rootfs_type
+ 
+ # kernel
+-kernelimage_type=uimage
+ kernelimage=$machine/uImage-${machine}.bin
+ 
+ # barebox and it's env
+diff --git a/arch/arm/boards/freescale-mx35-3-stack/env/config b/arch/arm/boards/freescale-mx35-3-stack/env/config
+index ee9bd07..17b1e31 100644
+--- a/arch/arm/boards/freescale-mx35-3-stack/env/config
++++ b/arch/arm/boards/freescale-mx35-3-stack/env/config
+@@ -23,14 +23,9 @@ rootfs_loc=net
+ rootfs_type=ubifs
+ rootfsimage=root-$machine.$rootfs_type
+ 
+-# The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
+-kernelimage_type=zimage
+ kernelimage=zImage-$machine
+-#kernelimage_type=uimage
+ #kernelimage=uImage-$machine
+-#kernelimage_type=raw
+ #kernelimage=Image-$machine
+-#kernelimage_type=raw_lzo
+ #kernelimage=Image-$machine.lzo
+ 
+ if [ -n $user ]; then
+diff --git a/arch/arm/boards/freescale-mx51-pdk/env/config b/arch/arm/boards/freescale-mx51-pdk/env/config
+index 8e6b34e..10690c9 100644
+--- a/arch/arm/boards/freescale-mx51-pdk/env/config
++++ b/arch/arm/boards/freescale-mx51-pdk/env/config
+@@ -23,14 +23,9 @@ rootfs_loc=net
+ rootfs_type=ubifs
+ rootfsimage=root-$machine.$rootfs_type
+ 
+-# The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
+-kernelimage_type=zimage
+ kernelimage=zImage-$machine
+-#kernelimage_type=uimage
+ #kernelimage=uImage-$machine
+-#kernelimage_type=raw
+ #kernelimage=Image-$machine
+-#kernelimage_type=raw_lzo
+ #kernelimage=Image-$machine.lzo
+ 
+ if [ -n $user ]; then
+diff --git a/arch/arm/boards/freescale-mx53-loco/env/config b/arch/arm/boards/freescale-mx53-loco/env/config
+index 3659a62..fd238a6 100644
+--- a/arch/arm/boards/freescale-mx53-loco/env/config
++++ b/arch/arm/boards/freescale-mx53-loco/env/config
+@@ -23,14 +23,9 @@ rootfs_loc=net
+ rootfs_type=ubifs
+ rootfsimage=root-$machine.$rootfs_type
+ 
+-# The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
+-kernelimage_type=zimage
+ kernelimage=zImage-$machine
+-#kernelimage_type=uimage
+ #kernelimage=uImage-$machine
+-#kernelimage_type=raw
+ #kernelimage=Image-$machine
+-#kernelimage_type=raw_lzo
+ #kernelimage=Image-$machine.lzo
+ 
+ if [ -n $user ]; then
+diff --git a/arch/arm/boards/freescale-mx53-smd/env/config b/arch/arm/boards/freescale-mx53-smd/env/config
+index 3659a62..fd238a6 100644
+--- a/arch/arm/boards/freescale-mx53-smd/env/config
++++ b/arch/arm/boards/freescale-mx53-smd/env/config
+@@ -23,14 +23,9 @@ rootfs_loc=net
+ rootfs_type=ubifs
+ rootfsimage=root-$machine.$rootfs_type
+ 
+-# The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
+-kernelimage_type=zimage
+ kernelimage=zImage-$machine
+-#kernelimage_type=uimage
+ #kernelimage=uImage-$machine
+-#kernelimage_type=raw
+ #kernelimage=Image-$machine
+-#kernelimage_type=raw_lzo
+ #kernelimage=Image-$machine.lzo
+ 
+ if [ -n $user ]; then
+diff --git a/arch/arm/boards/guf-cupid/env/config b/arch/arm/boards/guf-cupid/env/config
+index cd11eb1..930a97d 100644
+--- a/arch/arm/boards/guf-cupid/env/config
++++ b/arch/arm/boards/guf-cupid/env/config
+@@ -23,14 +23,9 @@ rootfs_loc=net
+ rootfs_type=ubifs
+ rootfsimage=root-$machine.$rootfs_type
+ 
+-# The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
+-kernelimage_type=zimage
+ kernelimage=zImage-$machine
+-#kernelimage_type=uimage
+ #kernelimage=uImage-$machine
+-#kernelimage_type=raw
+ #kernelimage=Image-$machine
+-#kernelimage_type=raw_lzo
+ #kernelimage=Image-$machine.lzo
+ 
+ if [ -n $user ]; then
+diff --git a/arch/arm/boards/guf-neso/env/config b/arch/arm/boards/guf-neso/env/config
+index 162488f..9b675b5 100644
+--- a/arch/arm/boards/guf-neso/env/config
++++ b/arch/arm/boards/guf-neso/env/config
+@@ -23,14 +23,9 @@ rootfs_loc=net
+ rootfs_type=ubifs
+ rootfsimage=root-$machine.$rootfs_type
+ 
+-# The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
+-kernelimage_type=zimage
+ kernelimage=zImage-$machine
+-#kernelimage_type=uimage
+ #kernelimage=uImage-$machine
+-#kernelimage_type=raw
+ #kernelimage=Image-$machine
+-#kernelimage_type=raw_lzo
+ #kernelimage=Image-$machine.lzo
+ 
+ if [ -n $user ]; then
+diff --git a/arch/arm/boards/karo-tx25/env/config b/arch/arm/boards/karo-tx25/env/config
+index 9113a87..69f2c26 100644
+--- a/arch/arm/boards/karo-tx25/env/config
++++ b/arch/arm/boards/karo-tx25/env/config
+@@ -23,14 +23,9 @@ rootfs_loc=net
+ rootfs_type=ubifs
+ rootfsimage=root-$machine.$rootfs_type
+ 
+-# The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
+-kernelimage_type=zimage
+ kernelimage=zImage-$machine
+-#kernelimage_type=uimage
+ #kernelimage=uImage-$machine
+-#kernelimage_type=raw
+ #kernelimage=Image-$machine
+-#kernelimage_type=raw_lzo
+ #kernelimage=Image-$machine.lzo
+ 
+ if [ -n $user ]; then
+diff --git a/arch/arm/boards/karo-tx28/env/config b/arch/arm/boards/karo-tx28/env/config
+index fdf57ea..ed361eb 100644
+--- a/arch/arm/boards/karo-tx28/env/config
++++ b/arch/arm/boards/karo-tx28/env/config
+@@ -24,14 +24,9 @@ rootfs_loc=net
+ rootfs_type=ubifs
+ rootfsimage=root-$machine.$rootfs_type
+ 
+-# The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
+-kernelimage_type=zimage
+ kernelimage=zImage-$machine
+-#kernelimage_type=uimage
+ #kernelimage=uImage-$machine
+-#kernelimage_type=raw
+ #kernelimage=Image-$machine
+-#kernelimage_type=raw_lzo
+ #kernelimage=Image-$machine.lzo
+ 
+ if [ -n $user ]; then
+diff --git a/arch/arm/boards/mini2440/env/config b/arch/arm/boards/mini2440/env/config
+index ff6f1ea..ac8c32a 100644
+--- a/arch/arm/boards/mini2440/env/config
++++ b/arch/arm/boards/mini2440/env/config
+@@ -23,14 +23,9 @@ rootfs_loc=net
+ rootfs_type=ubifs
+ rootfsimage=root-${machine}.${rootfs_type}
+ 
+-# The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
+-kernelimage_type=zimage
+ kernelimage=zImage-${machine}
+-#kernelimage_type=uimage
+ #kernelimage=uImage-$machine
+-#kernelimage_type=raw
+ #kernelimage=Image-$machine
+-#kernelimage_type=raw_lzo
+ #kernelimage=Image-$machine.lzo
+ 
+ if [ -n $user ]; then
+diff --git a/arch/arm/boards/nhk8815/env/config b/arch/arm/boards/nhk8815/env/config
+index 7428c43..c05ed27 100644
+--- a/arch/arm/boards/nhk8815/env/config
++++ b/arch/arm/boards/nhk8815/env/config
+@@ -19,14 +19,9 @@ rootfs_loc=net
+ rootfs_type=ubifs
+ rootfsimage=root.$rootfs_type
+ 
+-# The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
+-#kernelimage_type=zimage
+ #kernelimage=zImage
+-kernelimage_type=uimage
+ kernelimage=uImage
+-#kernelimage_type=raw
+ #kernelimage=Image
+-#kernelimage_type=raw_lzo
+ #kernelimage=Image.lzo
+ 
+ # Partition			Size	Start
+diff --git a/arch/arm/boards/panda/env/config b/arch/arm/boards/panda/env/config
+index 363208e..29672be 100644
+--- a/arch/arm/boards/panda/env/config
++++ b/arch/arm/boards/panda/env/config
+@@ -18,14 +18,9 @@ kernel_loc=tftp
+ # can be either 'net', 'nor', 'nand' or 'initrd'
+ rootfs_loc=net
+ 
+-# The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
+-kernelimage_type=zimage
+ kernelimage=zImage-$machine
+-#kernelimage_type=uimage
+ #kernelimage=uImage-$machine
+-#kernelimage_type=raw
+ #kernelimage=Image-$machine
+-#kernelimage_type=raw_lzo
+ #kernelimage=Image-${machine}.lzo
+ 
+ if [ -n $user ]; then
+diff --git a/arch/arm/boards/pcm037/env/config b/arch/arm/boards/pcm037/env/config
+index 3748cc4..d67d319 100644
+--- a/arch/arm/boards/pcm037/env/config
++++ b/arch/arm/boards/pcm037/env/config
+@@ -23,14 +23,9 @@ rootfs_loc=net
+ rootfs_type=ubifs
+ rootfsimage=root-$machine.$rootfs_type
+ 
+-# The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
+-kernelimage_type=zimage
+ kernelimage=zImage-$machine
+-#kernelimage_type=uimage
+ #kernelimage=uImage-$machine
+-#kernelimage_type=raw
+ #kernelimage=Image-$machine
+-#kernelimage_type=raw_lzo
+ #kernelimage=Image-$machine.lzo
+ 
+ if [ -n $user ]; then
+diff --git a/arch/arm/boards/pcm038/env/config b/arch/arm/boards/pcm038/env/config
+index 9e28f5d..eb0f9c1 100644
+--- a/arch/arm/boards/pcm038/env/config
++++ b/arch/arm/boards/pcm038/env/config
+@@ -23,14 +23,9 @@ rootfs_loc=net
+ rootfs_type=ubifs
+ rootfsimage=root-$machine.$rootfs_type
+ 
+-# The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
+-kernelimage_type=zimage
+ kernelimage=zImage-$machine
+-#kernelimage_type=uimage
+ #kernelimage=uImage-$machine
+-#kernelimage_type=raw
+ #kernelimage=Image-$machine
+-#kernelimage_type=raw_lzo
+ #kernelimage=Image-$machine.lzo
+ 
+ if [ -n $user ]; then
+diff --git a/arch/arm/boards/pcm043/env/config b/arch/arm/boards/pcm043/env/config
+index e7f94f8..2a355e6 100644
+--- a/arch/arm/boards/pcm043/env/config
++++ b/arch/arm/boards/pcm043/env/config
+@@ -23,14 +23,9 @@ rootfs_loc=net
+ rootfs_type=ubifs
+ rootfsimage=root-$machine.$rootfs_type
+ 
+-# The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
+-kernelimage_type=zimage
+ kernelimage=zImage-$machine
+-#kernelimage_type=uimage
+ #kernelimage=uImage-$machine
+-#kernelimage_type=raw
+ #kernelimage=Image-$machine
+-#kernelimage_type=raw_lzo
+ #kernelimage=Image-$machine.lzo
+ 
+ if [ -n $user ]; then
+diff --git a/arch/arm/boards/pcm049/env/config b/arch/arm/boards/pcm049/env/config
+index 54b2e3d..f348714 100644
+--- a/arch/arm/boards/pcm049/env/config
++++ b/arch/arm/boards/pcm049/env/config
+@@ -23,14 +23,9 @@ rootfs_loc=net
+ rootfs_type=ubifs
+ rootfsimage=root-${machine}.$rootfs_type
+ 
+-# The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
+-kernelimage_type=zimage
+ kernelimage=zImage-$machine
+-#kernelimage_type=uimage
+ #kernelimage=uImage-$machine
+-#kernelimage_type=raw
+ #kernelimage=Image-$machine
+-#kernelimage_type=raw_lzo
+ #kernelimage=Image-${machine}.lzo
+ 
+ if [ -n $user ]; then
+diff --git a/arch/arm/boards/phycard-i.MX27/env/config b/arch/arm/boards/phycard-i.MX27/env/config
+index 0e20b48..5db33d0 100644
+--- a/arch/arm/boards/phycard-i.MX27/env/config
++++ b/arch/arm/boards/phycard-i.MX27/env/config
+@@ -23,14 +23,9 @@ rootfs_loc=net
+ rootfs_type=ubifs
+ rootfsimage=root-$machine.$rootfs_type
+ 
+-# The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
+-kernelimage_type=zimage
+ kernelimage=zImage-$machine
+-#kernelimage_type=uimage
+ #kernelimage=uImage-$machine
+-#kernelimage_type=raw
+ #kernelimage=Image-$machine
+-#kernelimage_type=raw_lzo
+ #kernelimage=Image-$machine.lzo
+ 
+ if [ -n $user ]; then
+diff --git a/arch/arm/boards/pm9261/env/config b/arch/arm/boards/pm9261/env/config
+index 7933379..bdc2d38 100644
+--- a/arch/arm/boards/pm9261/env/config
++++ b/arch/arm/boards/pm9261/env/config
+@@ -19,14 +19,9 @@ rootfs_loc=net
+ rootfs_type=ubifs
+ rootfsimage=root.$rootfs_type
+ 
+-# The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
+-#kernelimage_type=zimage
+ #kernelimage=zImage
+-kernelimage_type=uimage
+ kernelimage=uImage
+-#kernelimage_type=raw
+ #kernelimage=Image
+-#kernelimage_type=raw_lzo
+ #kernelimage=Image.lzo
+ 
+ nor_parts="256k(barebox)ro,64k(bareboxenv),1536k(kernel),-(root)"
+diff --git a/arch/arm/boards/pm9g45/env/config b/arch/arm/boards/pm9g45/env/config
+index b8ca18d..3dea724 100644
+--- a/arch/arm/boards/pm9g45/env/config
++++ b/arch/arm/boards/pm9g45/env/config
+@@ -19,14 +19,9 @@ rootfs_loc=net
+ rootfs_type=ubifs
+ rootfsimage=root.$rootfs_type
+ 
+-# The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
+-#kernelimage_type=zimage
+ #kernelimage=zImage
+-kernelimage_type=uimage
+ kernelimage=uImage
+-#kernelimage_type=raw
+ #kernelimage=Image
+-#kernelimage_type=raw_lzo
+ #kernelimage=Image.lzo
+ 
+ nand_device=atmel_nand
+diff --git a/arch/arm/boards/scb9328/env/config b/arch/arm/boards/scb9328/env/config
+index d0f3f25..e1c5807 100644
+--- a/arch/arm/boards/scb9328/env/config
++++ b/arch/arm/boards/scb9328/env/config
+@@ -23,14 +23,9 @@ rootfs_loc=net
+ rootfs_type=ubifs
+ rootfsimage=root-$machine.$rootfs_type
+ 
+-# The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
+-kernelimage_type=zimage
+ kernelimage=zImage-$machine
+-#kernelimage_type=uimage
+ #kernelimage=uImage-$machine
+-#kernelimage_type=raw
+ #kernelimage=Image-$machine
+-#kernelimage_type=raw_lzo
+ #kernelimage=Image-$machine.lzo
+ 
+ if [ -n $user ]; then
+diff --git a/arch/arm/boards/usb-a926x/env/config b/arch/arm/boards/usb-a926x/env/config
+index d77f678..96a4524 100644
+--- a/arch/arm/boards/usb-a926x/env/config
++++ b/arch/arm/boards/usb-a926x/env/config
+@@ -19,14 +19,9 @@ rootfs_loc=net
+ rootfs_type=ubifs
+ rootfsimage=root.$rootfs_type
+ 
+-# The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
+-#kernelimage_type=zimage
+ #kernelimage=zImage
+-kernelimage_type=uimage
+ kernelimage=uImage
+-#kernelimage_type=raw
+ #kernelimage=Image
+-#kernelimage_type=raw_lzo
+ #kernelimage=Image.lzo
+ 
+ nand_device=atmel_nand
+diff --git a/arch/arm/boards/versatile/env/config b/arch/arm/boards/versatile/env/config
+index 9c5ce61..667dce3 100644
+--- a/arch/arm/boards/versatile/env/config
++++ b/arch/arm/boards/versatile/env/config
+@@ -19,14 +19,9 @@ rootfs_loc=initrd
+ rootfs_type=ubifs
+ rootfsimage=root.$rootfs_type
+ 
+-# The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
+-#kernelimage_type=zimage
+ #kernelimage=zImage
+-kernelimage_type=uimage
+ kernelimage=uImage
+-#kernelimage_type=raw
+ #kernelimage=Image
+-#kernelimage_type=raw_lzo
+ #kernelimage=Image.lzo
+ 
+ nfsroot="$eth0.serverip:/opt/work/busybox/arm9/rootfs_arm"
+diff --git a/arch/nios2/boards/generic/env/config b/arch/nios2/boards/generic/env/config
+index 5d23098..16adc49 100644
+--- a/arch/nios2/boards/generic/env/config
++++ b/arch/nios2/boards/generic/env/config
+@@ -5,7 +5,6 @@ kernel=flash
+ root=flash
+ 
+ kernel_loc=nor
+-kernelimage_type=uimage
+ 
+ # use 'dhcp' todo dhcp in barebox and in kernel
+ ip=none
+diff --git a/defaultenv/bin/boot b/defaultenv/bin/boot
+index 90ebf9a..1120757 100644
+--- a/defaultenv/bin/boot
++++ b/defaultenv/bin/boot
+@@ -72,35 +72,12 @@ if [ -n $mtdparts ]; then
+ 	bootargs="${bootargs} mtdparts=${mtdparts}"
+ fi
+ 
+-if [ ! -e /dev/ram0.kernelraw ]; then
+-	# arm raw kernel images are usually located at sdram start + 0x8000
+-	addpart /dev/ram0 8M@0x8000(kernelraw)
+-fi
+-
+-if [ ! -e /dev/ram0.kernel ]; then
+-	# Here we can safely put the kernel without risking of overwriting it
+-	# while extracting
+-	addpart /dev/ram0 8M@8M(kernel)
+-fi
+-
+ if [ x$kernel_loc = xnfs -o x$kernel_loc = xtftp ]; then
+ 	if [ x$ip = xdhcp ]; then
+ 		dhcp
+ 	fi
+-	if [ $kernelimage_type = uimage ]; then
+-		netload="/dev/ram0.kernel"
+-	elif [ $kernelimage_type = zimage ]; then
+-		netload="/dev/ram0.kernel"
+-	elif [ $kernelimage_type = raw ]; then
+-		netload="/dev/ram0.kernelraw"
+-	elif [ $kernelimage_type = raw_lzo ]; then
+-		netload="/dev/ram0.kernel"
+-	else
+-		echo "error: set kernelimage_type to one of 'uimage', 'zimage', 'raw' or 'raw_lzo'"
+-		exit 1
+-	fi
+-	$kernel_loc $kernelimage $netload || exit 1
+-	kdev="$netload"
++	kdev=/image
++	$kernel_loc $kernelimage $kdev || exit 1
+ elif [ x$kernel_loc = xnor ]; then
+ 	kdev="/dev/nor0.kernel"
+ elif [ x$kernel_loc = xnand ]; then
+@@ -112,18 +89,6 @@ else
+ 	exit 1
+ fi
+ 
+-echo "booting kernel of type $kernelimage_type from $kdev"
++echo "booting kernel from $kdev"
+ 
+-if [ x$kernelimage_type = xuimage ]; then
+-	bootm $bootm_opt $kdev
+-elif [ x$kernelimage_type = xzimage ]; then
+-	bootz $kdev
+-elif [ x$kernelimage_type = xraw ]; then
+-	if [ $kernel_loc != net ]; then
+-		cp $kdev /dev/ram0.kernelraw
+-	fi
+-	bootu /dev/ram0.kernelraw
+-elif [ x$kernelimage_type = xraw_lzo ]; then
+-	uncompress $kdev /dev/ram0.kernelraw
+-	bootu /dev/ram0.kernelraw
+-fi
++bootm $bootm_opt $kdev
+diff --git a/defaultenv/config b/defaultenv/config
+index 0aaead5..9866273 100644
+--- a/defaultenv/config
++++ b/defaultenv/config
+@@ -31,14 +31,9 @@ rootfsimage=rootfs-${machine}.$rootfs_type
+ # where is the kernel image in case of 'kernel_loc=disk'
+ kernel_part=disk0.2
+ 
+-# The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
+-kernelimage_type=zimage
+ kernelimage=zImage-$machine
+-#kernelimage_type=uimage
+ #kernelimage=uImage-$machine
+-#kernelimage_type=raw
+ #kernelimage=Image-$machine
+-#kernelimage_type=raw_lzo
+ #kernelimage=Image-$machine.lzo
+ 
+ bareboximage=barebox-${machine}.bin
 -- 
 1.7.7.3
 
