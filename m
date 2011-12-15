@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Rb8sp-0001vi-M9
- for barebox@lists.infradead.org; Thu, 15 Dec 2011 10:49:53 +0000
+ id 1Rb8sq-0001vl-4q
+ for barebox@lists.infradead.org; Thu, 15 Dec 2011 10:49:55 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 15 Dec 2011 11:49:38 +0100
-Message-Id: <1323946179-9883-7-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 15 Dec 2011 11:49:36 +0100
+Message-Id: <1323946179-9883-5-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1323946179-9883-1-git-send-email-s.hauer@pengutronix.de>
 References: <1323946179-9883-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,83 +21,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/7] cdev: pass flags to open function
+Subject: [PATCH 4/7] ARM: remove unused icache command
 To: barebox@lists.infradead.org
+
+The icache command is unused. Instead of adding it to compilation
+again, remove it as the cpuinfo command provides the same information.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/nand/nand-bb.c |    2 +-
- drivers/mtd/ubi/cdev.c     |    2 +-
- fs/devfs-core.c            |    2 +-
- fs/devfs.c                 |    2 +-
- include/driver.h           |    2 +-
- 5 files changed, 5 insertions(+), 5 deletions(-)
+ arch/arm/cpu/cpu.c |   34 ----------------------------------
+ 1 files changed, 0 insertions(+), 34 deletions(-)
 
-diff --git a/drivers/mtd/nand/nand-bb.c b/drivers/mtd/nand/nand-bb.c
-index dbfb8e3..ae84ce1 100644
---- a/drivers/mtd/nand/nand-bb.c
-+++ b/drivers/mtd/nand/nand-bb.c
-@@ -164,7 +164,7 @@ static int nand_bb_erase(struct cdev *cdev, size_t count, unsigned long offset)
- }
+diff --git a/arch/arm/cpu/cpu.c b/arch/arm/cpu/cpu.c
+index d4a3b14..14bb6d1 100644
+--- a/arch/arm/cpu/cpu.c
++++ b/arch/arm/cpu/cpu.c
+@@ -89,37 +89,3 @@ void arch_shutdown(void)
+ 	);
  #endif
- 
--static int nand_bb_open(struct cdev *cdev)
-+static int nand_bb_open(struct cdev *cdev, unsigned long flags)
- {
- 	struct nand_bb *bb = cdev->priv;
- 
-diff --git a/drivers/mtd/ubi/cdev.c b/drivers/mtd/ubi/cdev.c
-index 96ae16e..95bef1f 100644
---- a/drivers/mtd/ubi/cdev.c
-+++ b/drivers/mtd/ubi/cdev.c
-@@ -81,7 +81,7 @@ static ssize_t ubi_volume_cdev_write(struct cdev* cdev, const void *buf,
- 	return err;
  }
- 
--static int ubi_volume_cdev_open(struct cdev *cdev)
-+static int ubi_volume_cdev_open(struct cdev *cdev, unsigned long flags)
- {
- 	struct ubi_volume_cdev_priv *priv = cdev->priv;
- 
-diff --git a/fs/devfs-core.c b/fs/devfs-core.c
-index 9bc3126..5f22ce7 100644
---- a/fs/devfs-core.c
-+++ b/fs/devfs-core.c
-@@ -63,7 +63,7 @@ struct cdev *cdev_open(const char *name, unsigned long flags)
- 		return NULL;
- 
- 	if (cdev->ops->open) {
--		ret = cdev->ops->open(cdev);
-+		ret = cdev->ops->open(cdev, flags);
- 		if (ret)
- 			return NULL;
- 	}
-diff --git a/fs/devfs.c b/fs/devfs.c
-index 66f7ca4..2e70cc5 100644
---- a/fs/devfs.c
-+++ b/fs/devfs.c
-@@ -116,7 +116,7 @@ static int devfs_open(struct device_d *_dev, FILE *f, const char *filename)
- 	f->inode = cdev;
- 
- 	if (cdev->ops->open) {
--		ret = cdev->ops->open(cdev);
-+		ret = cdev->ops->open(cdev, f->flags);
- 		if (ret)
- 			return ret;
- 	}
-diff --git a/include/driver.h b/include/driver.h
-index bbe7248..bc60bdc 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -366,7 +366,7 @@ struct file_operations {
- 
- 	int (*ioctl)(struct cdev*, int, void *);
- 	off_t (*lseek)(struct cdev*, off_t);
--	int (*open)(struct cdev*);
-+	int (*open)(struct cdev*, unsigned long flags);
- 	int (*close)(struct cdev*);
- 	int (*flush)(struct cdev*);
- 	int (*erase)(struct cdev*, size_t count, unsigned long offset);
+-
+-/**
+- * @page arm_boot_preparation Linux Preparation on ARM
+- *
+- * For ARM we never enable data cache so we do not need to disable it again.
+- * Linux can be called with instruction cache enabled. As this is the
+- * default setting we are running in barebox, there's no special preparation
+- * required.
+- */
+-#ifdef CONFIG_COMMAND
+-static int do_icache(struct command *cmdtp, int argc, char *argv[])
+-{
+-	if (argc == 1) {
+-		printf("icache is %sabled\n", icache_status() ? "en" : "dis");
+-		return 0;
+-	}
+-
+-	if (simple_strtoul(argv[1], NULL, 0) > 0)
+-		icache_enable();
+-	else
+-		icache_disable();
+-
+-	return 0;
+-}
+-
+-static const __maybe_unused char cmd_icache_help[] =
+-"Usage: icache [0|1]\n";
+-
+-BAREBOX_CMD_START(icache)
+-	.cmd		= do_icache,
+-	.usage		= "show/change icache status",
+-	BAREBOX_CMD_HELP(cmd_icache_help)
+-BAREBOX_CMD_END
+-#endif
 -- 
 1.7.7.3
 
