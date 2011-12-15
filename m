@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Rb8ad-0004E3-Ps
- for barebox@lists.infradead.org; Thu, 15 Dec 2011 10:31:08 +0000
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1Rb8aZ-0001ZV-E1
+ for barebox@lists.infradead.org; Thu, 15 Dec 2011 10:31:10 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 15 Dec 2011 11:30:30 +0100
-Message-Id: <1323945034-19687-9-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 15 Dec 2011 11:30:27 +0100
+Message-Id: <1323945034-19687-6-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1323945034-19687-1-git-send-email-s.hauer@pengutronix.de>
 References: <1323945034-19687-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,164 +21,163 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/12] add uimage command
+Subject: [PATCH 05/12] ARM: call start_linux directly with initrd start/size
+ and oftree
 To: barebox@lists.infradead.org
 
-The uimage command superseeds the iminfo command. Unlike
-the iminfo command the uimage command can also be used
-to verify the data crc on demand and to extract uImages
-to files.
+whoever calls this function is not necessarily aware of a struct
+image_data, so remove the dependency from the function.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/Kconfig  |    6 +++
- commands/Makefile |    1 +
- commands/uimage.c |  108 +++++++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 115 insertions(+), 0 deletions(-)
- create mode 100644 commands/uimage.c
+ arch/arm/include/asm/armlinux.h |    3 ++-
+ arch/arm/lib/armlinux.c         |   20 ++++++++++----------
+ arch/arm/lib/bootm.c            |    3 ++-
+ arch/arm/lib/bootu.c            |    8 +++++++-
+ arch/arm/lib/bootz.c            |    7 ++++++-
+ 5 files changed, 27 insertions(+), 14 deletions(-)
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 3cf2d08..fc37971 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -338,6 +338,12 @@ config CMD_IMINFO
- 	help
- 	  Show information about uImages
+diff --git a/arch/arm/include/asm/armlinux.h b/arch/arm/include/asm/armlinux.h
+index ba3a424..9ca1e4b 100644
+--- a/arch/arm/include/asm/armlinux.h
++++ b/arch/arm/include/asm/armlinux.h
+@@ -29,6 +29,7 @@ static inline void armlinux_set_serial(u64 serial)
  
-+config CMD_UIMAGE
-+	tristate
-+	prompt "uimage"
-+	help
-+	  Show information about uImage and also extract and verify uImages.
+ struct image_data;
+ 
+-void start_linux(void *adr, int swap, struct image_data *data);
++void start_linux(void *adr, int swap, unsigned long initrd_address,
++		unsigned long initrd_size, void *oftree);
+ 
+ #endif /* __ARCH_ARMLINUX_H */
+diff --git a/arch/arm/lib/armlinux.c b/arch/arm/lib/armlinux.c
+index bd9b72a..1d210d1 100644
+--- a/arch/arm/lib/armlinux.c
++++ b/arch/arm/lib/armlinux.c
+@@ -224,7 +224,8 @@ static void setup_end_tag (void)
+ 	params->hdr.size = 0;
+ }
+ 
+-static void setup_tags(struct image_data *data, int swap)
++static void setup_tags(unsigned long initrd_address,
++		unsigned long initrd_size, int swap)
+ {
+ 	const char *commandline = getenv("bootargs");
+ 
+@@ -232,8 +233,8 @@ static void setup_tags(struct image_data *data, int swap)
+ 	setup_memory_tags();
+ 	setup_commandline_tag(commandline, swap);
+ 
+-	if (data && (data->initrd_size > 0))
+-		setup_initrd_tag(data->initrd_address, data->initrd_size);
++	if (initrd_size)
++		setup_initrd_tag(initrd_address, initrd_size);
+ 
+ 	setup_revision_tag();
+ 	setup_serial_tag();
+@@ -249,17 +250,16 @@ void armlinux_set_bootparams(void *params)
+ 	armlinux_bootparams = params;
+ }
+ 
+-void start_linux(void *adr, int swap, struct image_data *data)
++void start_linux(void *adr, int swap, unsigned long initrd_address,
++		unsigned long initrd_size, void *oftree)
+ {
+ 	void (*kernel)(int zero, int arch, void *params) = adr;
+ 	void *params = NULL;
+-#ifdef CONFIG_OFTREE
+-	params = of_get_fixed_tree();
+-	if (params)
 +
- config CMD_BOOTZ
- 	tristate
- 	default y
-diff --git a/commands/Makefile b/commands/Makefile
-index aa013de..01cd1a2 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -1,5 +1,6 @@
- obj-$(CONFIG_CMD_BOOTM)		+= bootm.o
- obj-$(CONFIG_CMD_IMINFO)	+= iminfo.o
-+obj-$(CONFIG_CMD_UIMAGE)	+= uimage.o
- obj-$(CONFIG_CMD_LINUX16)	+= linux16.o
- obj-$(CONFIG_CMD_LOADB)		+= loadb.o xyzModem.o
- obj-$(CONFIG_CMD_LOADY)		+= loadb.o xyzModem.o
-diff --git a/commands/uimage.c b/commands/uimage.c
-new file mode 100644
-index 0000000..82efd78
---- /dev/null
-+++ b/commands/uimage.c
-@@ -0,0 +1,108 @@
-+#include <common.h>
-+#include <command.h>
-+#include <image.h>
-+#include <libbb.h>
-+#include <fcntl.h>
-+#include <fs.h>
-+#include <malloc.h>
-+#include <errno.h>
-+#include <getopt.h>
++	if (oftree) {
+ 		printf("booting Linux kernel with devicetree\n");
+-#endif
+-	if (!params) {
+-		setup_tags(data, swap);
++	} else {
++		setup_tags(initrd_address, initrd_size, swap);
+ 		params = armlinux_bootparams;
+ 	}
+ 
+diff --git a/arch/arm/lib/bootm.c b/arch/arm/lib/bootm.c
+index 031a269..1de22bf 100644
+--- a/arch/arm/lib/bootm.c
++++ b/arch/arm/lib/bootm.c
+@@ -31,7 +31,8 @@ static int do_bootm_linux(struct image_data *data)
+ 	/* we assume that the kernel is in place */
+ 	printf("\nStarting kernel %s...\n\n", data->initrd ? "with initrd " : "");
+ 
+-	start_linux(theKernel, 0, data);
++	start_linux((void *)theKernel, 0, data->initrd_address, data->initrd_size,
++			data->oftree);
+ 
+ 	return -1;
+ }
+diff --git a/arch/arm/lib/bootu.c b/arch/arm/lib/bootu.c
+index e97ded0..89d793a 100644
+--- a/arch/arm/lib/bootu.c
++++ b/arch/arm/lib/bootu.c
+@@ -3,12 +3,14 @@
+ #include <fs.h>
+ #include <fcntl.h>
+ #include <errno.h>
++#include <of.h>
+ #include <asm/armlinux.h>
+ 
+ static int do_bootu(struct command *cmdtp, int argc, char *argv[])
+ {
+ 	int fd;
+ 	void *kernel = NULL;
++	void *oftree = NULL;
+ 
+ 	if (argc != 2) {
+ 		barebox_cmd_usage(cmdtp);
+@@ -22,7 +24,11 @@ static int do_bootu(struct command *cmdtp, int argc, char *argv[])
+ 	if (!kernel)
+ 		kernel = (void *)simple_strtoul(argv[1], NULL, 0);
+ 
+-	start_linux(kernel, 0, NULL);
++#ifdef CONFIG_OFTREE
++	oftree = of_get_fixed_tree();
++#endif
 +
-+static int uimage_fd;
-+
-+static int uimage_flush(void *buf, unsigned int len)
-+{
-+	int ret;
-+
-+	ret = write_full(uimage_fd, buf, len);
-+
-+	return ret;
-+}
-+
-+static int do_uimage(struct command *cmdtp, int argc, char *argv[])
-+{
-+	struct uimage_handle *handle;
-+	int ret;
-+	int verify = 0;
-+	int fd;
-+	int opt;
-+	char *extract = NULL;
-+	int info = 0;
-+	int image_no = 0;
-+
-+	while ((opt = getopt(argc, argv, "ve:in:")) > 0) {
-+		switch (opt) {
-+		case 'v':
-+			verify = 1;
-+			break;
-+		case 'i':
-+			info = 1;
-+			break;
-+		case 'e':
-+			extract = optarg;
-+			break;
-+		case 'n':
-+			image_no = simple_strtoul(optarg, NULL, 0);
-+			break;
-+		}
-+	}
-+
-+	if (optind == argc)
-+		return COMMAND_ERROR_USAGE;
-+
-+	handle = uimage_open(argv[optind]);
-+	if (!handle)
-+		return 1;
-+
-+	if (info) {
-+		printf("Image at %s:\n", argv[optind]);
-+		uimage_print_contents(handle);
-+	}
-+
-+	if (verify) {
-+		printf("verifying data crc... ");
-+		ret = uimage_verify(handle);
-+		if (ret) {
-+			goto err;
-+			printf("Bad Data CRC\n");
-+		} else {
-+			printf("ok\n");
-+		}
-+	}
-+
-+	if (extract) {
-+		fd = open(extract, O_WRONLY | O_CREAT | O_TRUNC);
-+		if (fd < 0) {
-+			perror("open");
-+			ret = fd;
-+			goto err;
-+		}
-+		uimage_fd = fd;
-+		ret = uimage_load(handle, image_no, uimage_flush);
-+		if (ret) {
-+			printf("loading uImage failed with %d\n", ret);
-+			close(fd);
-+			goto err;
-+		}
-+
-+		close(fd);
-+	}
-+err:
-+	uimage_close(handle);
-+
-+	return ret ? 1 : 0;
-+}
-+
-+BAREBOX_CMD_HELP_START(uimage)
-+BAREBOX_CMD_HELP_USAGE("uimage [OPTIONS] <file>\n")
-+BAREBOX_CMD_HELP_OPT  ("-i",  "show information about image\n")
-+BAREBOX_CMD_HELP_OPT  ("-v",  "verify image\n")
-+BAREBOX_CMD_HELP_OPT  ("-e <outfile>",  "extract image to <outfile>\n")
-+BAREBOX_CMD_HELP_OPT  ("-n <no>",  "use image number <no> in multifile images\n")
-+BAREBOX_CMD_HELP_END
-+
-+BAREBOX_CMD_START(uimage)
-+	.cmd		= do_uimage,
-+	.usage		= "extract/verify uImage",
-+	BAREBOX_CMD_HELP(cmd_uimage_help)
-+BAREBOX_CMD_END
++	start_linux(kernel, 0, 0, 0, oftree);
+ 
+ 	return 1;
+ }
+diff --git a/arch/arm/lib/bootz.c b/arch/arm/lib/bootz.c
+index 956ea82..40facf6 100644
+--- a/arch/arm/lib/bootz.c
++++ b/arch/arm/lib/bootz.c
+@@ -1,6 +1,7 @@
+ #include <common.h>
+ #include <command.h>
+ #include <fs.h>
++#include <of.h>
+ #include <fcntl.h>
+ #include <errno.h>
+ #include <malloc.h>
+@@ -25,6 +26,7 @@ static int do_bootz(struct command *cmdtp, int argc, char *argv[])
+ 	int fd, ret, swap = 0;
+ 	struct zimage_header __header, *header;
+ 	void *zimage;
++	void *oftree = NULL;
+ 	u32 end;
+ 	int usemap = 0;
+ 	struct memory_bank *bank = list_first_entry(&memory_banks, struct memory_bank, list);
+@@ -105,8 +107,11 @@ static int do_bootz(struct command *cmdtp, int argc, char *argv[])
+ 	}
+ 
+ 	printf("loaded zImage from %s with size %d\n", argv[1], end);
++#ifdef CONFIG_OFTREE
++	oftree = of_get_fixed_tree();
++#endif
+ 
+-	start_linux(zimage, swap, NULL);
++	start_linux(zimage, swap, 0, 0, oftree);
+ 
+ 	return 0;
+ 
 -- 
 1.7.7.3
 
