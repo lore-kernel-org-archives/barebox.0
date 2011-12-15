@@ -1,15 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Rav1P-0004w7-Dg
- for barebox@lists.infradead.org; Wed, 14 Dec 2011 20:01:48 +0000
-Date: Wed, 14 Dec 2011 21:01:37 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20111214200137.GK27267@pengutronix.de>
-References: <1323884841-21920-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1Rb7cM-0004We-SR
+ for barebox@lists.infradead.org; Thu, 15 Dec 2011 09:28:51 +0000
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+References: <87r50ilxed.fsf@free.fr>
+ <CAJfOKBzSOKmZEvmWsWxQ1+yJFxaB-rzCgR2mxTpTUCoA_9W1Mg@mail.gmail.com>
+ <87vcpueoqc.fsf@free.fr>
+ <CAJfOKBwmX8EwD1hPvYSMddp6sZKJJ5kCBLf9KYWLsjkk4ZAC9A@mail.gmail.com>
+ <87r50idnni.fsf@free.fr> <20111207083708.GK27267@pengutronix.de>
+ <87mxawxz9e.fsf@free.fr>
+Date: Thu, 15 Dec 2011 10:28:38 +0100
+In-Reply-To: <87mxawxz9e.fsf@free.fr> (Robert Jarzmik's message of "Tue, 13
+ Dec 2011 16:33:17 +0100")
+Message-ID: <8739cmxjy1.fsf@free.fr>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1323884841-21920-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,59 +27,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] defaultenv: use a compressed version when embedded in
- barebox
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: FAT filesystem write and long names stability
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Dec 14, 2011 at 06:47:21PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> with using gzip and the default env we can save 5.2KiB (5,352 bytes)
-> 
-> tested on sam9g20ek
-> before
-> -rwxr-xr-x  1 root root 265748 Dec 14 00:42 barebox.bin
-> after
-> -rwxr-xr-x  1 root root 260396 Dec 14 00:42 barebox.bin
-> 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
-> v2:
-> 
-> 	fix the comment
+Robert Jarzmik <robert.jarzmik@free.fr> writes:
 
-Appearently you haven't read my mail. So to repeat myself:
+> Sascha Hauer <s.hauer@pengutronix.de> writes:
+>> It would be great if you could give it some testing as obviously my test
+>> patterns didn't reveal the 'create folder' bug you described.
+> Tomorrow or wednesday, I'll make the few tests I always do (making a
+> directory, copying a file, deleting a file, etc ...) and report.
+This is what my tests give back:
 
-> zlib is bigger than the uncompressed defaultenv.
+**** With FAT caching (barebox.git/next + rjk mioa701 support):
+barebox:/sdcard time bmp /sdcard/help.bmp 
+time: 6895ms
+barebox:/sdcard time cp /sdcard/help.bmp /sdcard/toto.tmp
+time: 13278ms
+barebox:/sdcard ls -l help.bmp
+-rwxrwxrwx     230454 help.bmp
+barebox:/sdcard 
 
-This means that this step is only worth doing when zlib is selected
-anyway. Otherwise you end up with 5Kb more: 10Kb zlib binary space + 3Kb
-compressed env is bigger than 8Kb uncompressed defaultenv.
+**** Without FAT caching (merged pu/block into barebox.git/next + rjk mioa701 support)
+barebox:/sdcard time bmp /sdcard/help.bmp
+time: 9219ms
+barebox:/sdcard time cp /sdcard/help.bmp /sdcard/titi.tmp
+BUG: failure at common/block.c:248/block_
 
-So my suggestion was:
+The "BUG" thing prevents me from going further. But it seems the cache in main
+tree speeds up things. I also think that creating directories without files
+serves no purpose I can think of, and is an acceptable tradeoff for the improved
+performance.
 
-> How about a
-> config DEFAULT_ENVIRONMENT_COMPRESSED
->         default y if ZLIB
-> instead?
+Cheers.
 
+--
+Robert
 
->  
-> -include/generated/barebox_default_env.h: barebox_default_env
-> +barebox_default_env.gz: barebox_default_env FORCE
-
-And also I asked:
-
-> Do we need this FORCE? It triggers a new build everytime even when
-> nothing has changed.
-
-Sascha
-
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+PS: help.bmp is a converted bmp, 320x480, 24 bpp from :
+    http://t0.gstatic.com/images?q=tbn:ANd9GcQssQd1VBKJUde7lZpU49GVwDaZbNGvbDNbrOeSbPrL_MfBkK61SA
 
 _______________________________________________
 barebox mailing list
