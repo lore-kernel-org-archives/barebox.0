@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Rb8eI-0001f6-M2
- for barebox@lists.infradead.org; Thu, 15 Dec 2011 10:34:55 +0000
-Date: Thu, 15 Dec 2011 11:34:42 +0100
+ id 1Rb8sn-0001vF-DH
+ for barebox@lists.infradead.org; Thu, 15 Dec 2011 10:49:50 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1Rb8sh-000199-3v
+ for barebox@lists.infradead.org; Thu, 15 Dec 2011 11:49:43 +0100
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.77)
+ (envelope-from <sha@pengutronix.de>) id 1Rb8sh-0002bD-30
+ for barebox@lists.infradead.org; Thu, 15 Dec 2011 11:49:43 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20111215103442.GP27267@pengutronix.de>
-References: <1323877574-10276-1-git-send-email-plagnioj@jcrosoft.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1323877574-10276-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Thu, 15 Dec 2011 11:49:32 +0100
+Message-Id: <1323946179-9883-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,79 +21,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] usb-a926x: fix mem init
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: misc patches
+To: barebox@lists.infradead.org
 
-Hi J,
+Some cleanup patches and also one patch which should
+really be in the bootm series. The new uimage code uses
+lseek. So to make it work on nand devices lseek is implemented
+on bb devices. This currently is limited to readonly mode
+which is enough for booting images.
 
-On Wed, Dec 14, 2011 at 04:46:12PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> move mem init to mem_initcall
-> 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Sascha Hauer (7):
+      remove unused watchdog header
+      remove unused keyboard.h file
+      ARM cpuinfo: decode more bits, use ARRAY_SIZE
+      ARM: remove unused icache command
+      common.h: remove unused function declarations
+      cdev: pass flags to open function
+      nand-bb: implement lseek in readonly mode
 
-Applied this one to master and the other two to next.
-
-Sascha
-
-> ---
->  arch/arm/boards/usb-a926x/init.c |   17 ++++++++++++-----
->  1 files changed, 12 insertions(+), 5 deletions(-)
-> 
-> diff --git a/arch/arm/boards/usb-a926x/init.c b/arch/arm/boards/usb-a926x/init.c
-> index 686f638..20af4b0 100644
-> --- a/arch/arm/boards/usb-a926x/init.c
-> +++ b/arch/arm/boards/usb-a926x/init.c
-> @@ -181,6 +181,18 @@ static void __init ek_add_device_udc(void)
->  	at91_add_device_udc(&ek_udc_data);
->  }
->  
-> +static int usb_a9260_mem_init(void)
-> +{
-> +#ifdef CONFIG_AT91_HAVE_SRAM_128M
-> +	at91_add_device_sdram(128 * 1024 * 1024);
-> +#else
-> +	at91_add_device_sdram(64 * 1024 * 1024);
-> +#endif
-> +
-> +	return 0;
-> +}
-> +mem_initcall(usb_a9260_mem_init);
-> +
->  static int usb_a9260_devices_init(void)
->  {
->  	usb_a9260_add_device_nand();
-> @@ -190,11 +202,6 @@ static int usb_a9260_devices_init(void)
->  	at91_add_device_usbh_ohci(&ek_usbh_data);
->  	ek_add_device_udc();
->  
-> -#ifdef CONFIG_AT91_HAVE_SRAM_128M
-> -	at91_add_device_sdram(128 * 1024 * 1024);
-> -#else
-> -	at91_add_device_sdram(64 * 1024 * 1024);
-> -#endif
->  	armlinux_set_bootparams((void *)(AT91_CHIPSELECT_1 + 0x100));
->  	usb_a9260_set_board_type();
->  
-> -- 
-> 1.7.7
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+ arch/arm/cpu/cpu.c         |   34 ----------------
+ arch/arm/cpu/cpuinfo.c     |    6 +-
+ arch/ppc/lib/board.c       |    1 -
+ arch/ppc/lib/ppclinux.c    |    1 -
+ arch/ppc/lib/ticks.S       |    1 -
+ commands/bootm.c           |    1 -
+ drivers/mtd/nand/nand-bb.c |   34 ++++++++++++++++-
+ drivers/mtd/ubi/cdev.c     |    2 +-
+ fs/devfs-core.c            |    2 +-
+ fs/devfs.c                 |    2 +-
+ include/common.h           |    5 --
+ include/driver.h           |    2 +-
+ include/keyboard.h         |   22 ----------
+ include/watchdog.h         |   92 --------------------------------------------
+ lib/readline_simple.c      |    1 -
+ net/net.c                  |    1 -
+ 16 files changed, 40 insertions(+), 167 deletions(-)
+ delete mode 100644 include/keyboard.h
+ delete mode 100644 include/watchdog.h
 
 _______________________________________________
 barebox mailing list
