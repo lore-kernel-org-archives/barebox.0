@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp6-g21.free.fr ([2a01:e0c:1:1599::15])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RbfgP-00021G-AF
- for barebox@lists.infradead.org; Fri, 16 Dec 2011 21:51:14 +0000
+ id 1Rbfg9-0001yt-98
+ for barebox@lists.infradead.org; Fri, 16 Dec 2011 21:50:59 +0000
 From: Robert Jarzmik <robert.jarzmik@free.fr>
-Date: Fri, 16 Dec 2011 22:50:32 +0100
-Message-Id: <1324072234-31634-7-git-send-email-robert.jarzmik@free.fr>
-In-Reply-To: <1324072234-31634-1-git-send-email-robert.jarzmik@free.fr>
-References: <1324072234-31634-1-git-send-email-robert.jarzmik@free.fr>
+Date: Fri, 16 Dec 2011 22:50:26 +0100
+Message-Id: <1324072234-31634-1-git-send-email-robert.jarzmik@free.fr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,115 +19,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH V2 6/8] drivers/mtd: add mtd core hooks
+Subject: [PATCH V2 0/8] mtd framework rework
 To: barebox@lists.infradead.org
 
-Add hooks for spinoff MTD drivers (mtdoob, mtdraw, ...).
+This patchset aims at reworking the mtd support :
+ - add a mtd core
+ - concentrate MTD core functions (MTD_WRITE)
+ - split mtd core character device (/dev/mtd<N>) from other
+   character devices (/dev/mtdoob<N>).
+ - add a data+oob character device (/dev/mtdraw<N>)
 
-Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
----
- drivers/mtd/core.c |   17 +++++++++++++++++
- drivers/mtd/mtd.h  |   39 +++++++++++++++++++++++++++++++++++++++
- 2 files changed, 56 insertions(+), 0 deletions(-)
+Robert Jarzmik (8):
+  drivers/mtd: move nand.c into core.c
+  drivers/mtd: cosmetic changes
+  drivers/mtd: transfer NAND notions to MTD core
+  drivers/mtd: recover NAND default device name "nand"
+  drivers/mtd: fix core multiple MTD registrations
+  drivers/mtd: add mtd core hooks
+  mtd/drivers: split mtd mtdoob devices
+  drivers/mtd: add the mtdraw device (data+oob)
+
+ drivers/mtd/Kconfig                    |   15 ++
+ drivers/mtd/Makefile                   |    8 +-
+ drivers/mtd/core.c                     |  241 +++++++++++++++++++++++++
+ drivers/mtd/mtd.h                      |   42 +++++
+ drivers/mtd/mtdoob.c                   |  100 +++++++++++
+ drivers/mtd/mtdraw.c                   |  303 ++++++++++++++++++++++++++++++++
+ drivers/mtd/nand/Kconfig               |   10 -
+ drivers/mtd/nand/Makefile              |    4 +-
+ drivers/mtd/nand/atmel_nand.c          |    2 +-
+ drivers/mtd/nand/diskonchip.c          |    2 +-
+ drivers/mtd/nand/nand-bb.c             |    6 +-
+ drivers/mtd/nand/nand.c                |  290 ------------------------------
+ drivers/mtd/nand/nand_base.c           |   14 +-
+ drivers/mtd/nand/nand_bbt.c            |    2 +-
+ drivers/mtd/nand/nand_hwecc.c          |    4 +-
+ drivers/mtd/nand/nand_hwecc_syndrome.c |    6 +-
+ drivers/mtd/nand/nand_imx.c            |    2 +-
+ drivers/mtd/nand/nand_omap_gpmc.c      |    2 +-
+ drivers/mtd/nand/nand_s3c2410.c        |    2 +-
+ drivers/mtd/nand/nand_swecc.c          |    4 +-
+ drivers/mtd/nand/nomadik_nand.c        |    2 +-
+ include/linux/mtd/mtd.h                |    3 +-
+ 22 files changed, 734 insertions(+), 330 deletions(-)
+ create mode 100644 drivers/mtd/core.c
  create mode 100644 drivers/mtd/mtd.h
+ create mode 100644 drivers/mtd/mtdoob.c
+ create mode 100644 drivers/mtd/mtdraw.c
+ delete mode 100644 drivers/mtd/nand/nand.c
 
-diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
-index 49a2dfa..55fe575 100644
---- a/drivers/mtd/core.c
-+++ b/drivers/mtd/core.c
-@@ -26,6 +26,10 @@
- #include <nand.h>
- #include <errno.h>
- 
-+#include "mtd.h"
-+
-+static LIST_HEAD(mtd_register_hooks);
-+
- static 	ssize_t mtd_read(struct cdev *cdev, void* buf, size_t count,
- 			  ulong offset, ulong flags)
- {
-@@ -250,6 +254,7 @@ static void mtd_exit_oob_cdev(struct mtd_info *mtd)
- int add_mtd_device(struct mtd_info *mtd, char *devname)
- {
- 	char str[16];
-+	struct mtddev_hook *hook;
- 
- 	if (!devname)
- 		devname = "mtd";
-@@ -276,12 +281,20 @@ int add_mtd_device(struct mtd_info *mtd, char *devname)
- 	devfs_create(&mtd->cdev);
- 
- 	mtd_init_oob_cdev(mtd, devname);
-+	list_for_each_entry(hook, &mtd_register_hooks, hook)
-+		if (hook->add_mtd_device)
-+			hook->add_mtd_device(mtd, devname);
- 
- 	return 0;
- }
- 
- int del_mtd_device (struct mtd_info *mtd)
- {
-+	struct mtddev_hook *hook;
-+
-+	list_for_each_entry(hook, &mtd_register_hooks, hook)
-+		if (hook->del_mtd_device)
-+			hook->del_mtd_device(mtd);
- 	unregister_device(&mtd->class_dev);
- 	mtd_exit_oob_cdev(mtd);
- 	free(mtd->param_size.value);
-@@ -289,3 +302,7 @@ int del_mtd_device (struct mtd_info *mtd)
- 	return 0;
- }
- 
-+void mtdcore_add_hook(struct mtddev_hook *hook)
-+{
-+	list_add(&hook->hook, &mtd_register_hooks);
-+}
-diff --git a/drivers/mtd/mtd.h b/drivers/mtd/mtd.h
-new file mode 100644
-index 0000000..261cd2b
---- /dev/null
-+++ b/drivers/mtd/mtd.h
-@@ -0,0 +1,39 @@
-+/*
-+ * MTD devices registration
-+ *
-+ * Copyright (C) 2011 Robert Jarzmik
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+/**
-+ * mtddev_hook - hook to register additional mtd devices
-+ * @add_mtd_device: called when a MTD driver calls add_mtd_device()
-+ * @del_mtd_device: called when a MTD driver calls del_mtd_device()
-+ *
-+ * Provide a hook to be called whenether a add_mtd_device() is called.
-+ * Additionnal devices like mtdoob and mtdraw subscribe to the service.
-+ */
-+struct mtddev_hook {
-+	struct list_head hook;
-+	int (*add_mtd_device)(struct mtd_info *mtd, char *devname);
-+	int (*del_mtd_device)(struct mtd_info *mtd);
-+};
-+
-+/**
-+ * mtdcore_add_hook - add a hook to MTD registration/unregistration
-+ * @hook: the hook
-+ *
-+ * Normally called in a coredevice_initcall() to add another MTD layout (such as
-+ * mtdraw, ...)
-+ */
-+void mtdcore_add_hook(struct mtddev_hook *hook);
 -- 
 1.7.5.4
 
