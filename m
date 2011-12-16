@@ -1,19 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RbEKx-0000Bw-9p
- for barebox@lists.infradead.org; Thu, 15 Dec 2011 16:39:16 +0000
-Date: Thu, 15 Dec 2011 17:39:07 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20111215163907.GW27267@pengutronix.de>
-References: <1323945034-19687-1-git-send-email-s.hauer@pengutronix.de>
- <1323945034-19687-7-git-send-email-s.hauer@pengutronix.de>
- <20111215133317.GD9234@game.jcrosoft.org>
- <20111215152752.GU27267@pengutronix.de>
- <20111215162013.GI9234@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20111215162013.GI9234@game.jcrosoft.org>
+Received: from smtp6-g21.free.fr ([2a01:e0c:1:1599::15])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1RbfgP-00021G-AF
+ for barebox@lists.infradead.org; Fri, 16 Dec 2011 21:51:14 +0000
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+Date: Fri, 16 Dec 2011 22:50:32 +0100
+Message-Id: <1324072234-31634-7-git-send-email-robert.jarzmik@free.fr>
+In-Reply-To: <1324072234-31634-1-git-send-email-robert.jarzmik@free.fr>
+References: <1324072234-31634-1-git-send-email-robert.jarzmik@free.fr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,70 +16,123 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: *** PROBABLY SPAM *** [PATCH 06/12] reimplement uImage code
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH V2 6/8] drivers/mtd: add mtd core hooks
+To: barebox@lists.infradead.org
 
-On Thu, Dec 15, 2011 at 05:20:13PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 16:27 Thu 15 Dec     , Sascha Hauer wrote:
-> > On Thu, Dec 15, 2011 at 02:33:17PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > On 11:30 Thu 15 Dec     , Sascha Hauer wrote:
-> > > > Provide a new API for accessing uImages which makes it easy
-> > > > for commands to open images, verify them, load to (free) sdram
-> > > > regions and show information about uImages.
-> > > > 
-> > > > - We now do not load the image to malloced space anymore.
-> > > > - The data in the header is now stored in cpu native endianess
-> > > >   after uimage_open which makes it easy to access the header data.
-> > > > - uImage can be loaded to dynamically allocated sdram regions.
-> > > > 
-> > > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > > I was more think of a filesystem
-> > > 
-> > > so we can execute an embedded script
-> > 
-> > You can still do with "uimage -e script myimage; ./script"
-> > 
-> > I thought about the filesystem approach and I came to the conclusion
-> > that this is not really what we want for booting. While it definitely
-> > has charm when we can mount a uImage and just work on the included file
-> > we would loose the meta data in this case. We could create the metadata
-> > in form of files, maybe like this:
-> > 
-> > # mount uImage uimage /mnt
-> > # ls /mnt
-> > /mnt/image0
-> > /mnt/image1
-> > /mnt/entrypoint
-> > /mnt/loadaddress
-> > 
-> > But these files would be hard to work on and also would not have
-> > the 'uImage is just another image handled by bootm' facility.
-> I get a first patch that do this but not finished
-> 
-> no my idea why a new falicity as all the image could be mouted in my mind
-> 
-> and maybe use an ioctl to get the metadata
+Add hooks for spinoff MTD drivers (mtdoob, mtdraw, ...).
 
-We could add this later if it turns out to be useful.
+Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
+---
+ drivers/mtd/core.c |   17 +++++++++++++++++
+ drivers/mtd/mtd.h  |   39 +++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 56 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/mtd/mtd.h
 
-> 
-> and we could map it
-
-This only helps on devices which we can physically map into memory. NOR
-flash seems to become more the exception than the rule.
-
-Sascha
-
+diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
+index 49a2dfa..55fe575 100644
+--- a/drivers/mtd/core.c
++++ b/drivers/mtd/core.c
+@@ -26,6 +26,10 @@
+ #include <nand.h>
+ #include <errno.h>
+ 
++#include "mtd.h"
++
++static LIST_HEAD(mtd_register_hooks);
++
+ static 	ssize_t mtd_read(struct cdev *cdev, void* buf, size_t count,
+ 			  ulong offset, ulong flags)
+ {
+@@ -250,6 +254,7 @@ static void mtd_exit_oob_cdev(struct mtd_info *mtd)
+ int add_mtd_device(struct mtd_info *mtd, char *devname)
+ {
+ 	char str[16];
++	struct mtddev_hook *hook;
+ 
+ 	if (!devname)
+ 		devname = "mtd";
+@@ -276,12 +281,20 @@ int add_mtd_device(struct mtd_info *mtd, char *devname)
+ 	devfs_create(&mtd->cdev);
+ 
+ 	mtd_init_oob_cdev(mtd, devname);
++	list_for_each_entry(hook, &mtd_register_hooks, hook)
++		if (hook->add_mtd_device)
++			hook->add_mtd_device(mtd, devname);
+ 
+ 	return 0;
+ }
+ 
+ int del_mtd_device (struct mtd_info *mtd)
+ {
++	struct mtddev_hook *hook;
++
++	list_for_each_entry(hook, &mtd_register_hooks, hook)
++		if (hook->del_mtd_device)
++			hook->del_mtd_device(mtd);
+ 	unregister_device(&mtd->class_dev);
+ 	mtd_exit_oob_cdev(mtd);
+ 	free(mtd->param_size.value);
+@@ -289,3 +302,7 @@ int del_mtd_device (struct mtd_info *mtd)
+ 	return 0;
+ }
+ 
++void mtdcore_add_hook(struct mtddev_hook *hook)
++{
++	list_add(&hook->hook, &mtd_register_hooks);
++}
+diff --git a/drivers/mtd/mtd.h b/drivers/mtd/mtd.h
+new file mode 100644
+index 0000000..261cd2b
+--- /dev/null
++++ b/drivers/mtd/mtd.h
+@@ -0,0 +1,39 @@
++/*
++ * MTD devices registration
++ *
++ * Copyright (C) 2011 Robert Jarzmik
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++
++/**
++ * mtddev_hook - hook to register additional mtd devices
++ * @add_mtd_device: called when a MTD driver calls add_mtd_device()
++ * @del_mtd_device: called when a MTD driver calls del_mtd_device()
++ *
++ * Provide a hook to be called whenether a add_mtd_device() is called.
++ * Additionnal devices like mtdoob and mtdraw subscribe to the service.
++ */
++struct mtddev_hook {
++	struct list_head hook;
++	int (*add_mtd_device)(struct mtd_info *mtd, char *devname);
++	int (*del_mtd_device)(struct mtd_info *mtd);
++};
++
++/**
++ * mtdcore_add_hook - add a hook to MTD registration/unregistration
++ * @hook: the hook
++ *
++ * Normally called in a coredevice_initcall() to add another MTD layout (such as
++ * mtdraw, ...)
++ */
++void mtdcore_add_hook(struct mtddev_hook *hook);
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.5.4
+
 
 _______________________________________________
 barebox mailing list
