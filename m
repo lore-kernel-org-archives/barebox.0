@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp6-g21.free.fr ([2a01:e0c:1:1599::15])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RbfgB-0001yv-IT
- for barebox@lists.infradead.org; Fri, 16 Dec 2011 21:51:00 +0000
+ id 1RbfgS-00021v-Ma
+ for barebox@lists.infradead.org; Fri, 16 Dec 2011 21:51:17 +0000
 From: Robert Jarzmik <robert.jarzmik@free.fr>
-Date: Fri, 16 Dec 2011 22:50:28 +0100
-Message-Id: <1324072234-31634-3-git-send-email-robert.jarzmik@free.fr>
+Date: Fri, 16 Dec 2011 22:50:33 +0100
+Message-Id: <1324072234-31634-8-git-send-email-robert.jarzmik@free.fr>
 In-Reply-To: <1324072234-31634-1-git-send-email-robert.jarzmik@free.fr>
 References: <1324072234-31634-1-git-send-email-robert.jarzmik@free.fr>
 List-Id: <barebox.lists.infradead.org>
@@ -21,145 +21,268 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH V2 2/8] drivers/mtd: cosmetic changes
+Subject: [PATCH V2 7/8] mtd/drivers: split mtd mtdoob devices
 To: barebox@lists.infradead.org
 
-Fix whitespace, replace all debug() by dev_dbg(), and fix
-line length to 80 characters.
+Split /dev/mtd and /dev/mtdoob devices.
+Remove from mtd structure the mtdoob character device.
 
 Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
 ---
- drivers/mtd/core.c |   47 ++++++++++++++++++++++-------------------------
- 1 files changed, 22 insertions(+), 25 deletions(-)
+ drivers/mtd/Makefile    |    1 +
+ drivers/mtd/core.c      |   69 +--------------------------------
+ drivers/mtd/mtd.h       |    3 +
+ drivers/mtd/mtdoob.c    |  100 +++++++++++++++++++++++++++++++++++++++++++++++
+ include/linux/mtd/mtd.h |    1 -
+ 5 files changed, 105 insertions(+), 69 deletions(-)
+ create mode 100644 drivers/mtd/mtdoob.c
 
+diff --git a/drivers/mtd/Makefile b/drivers/mtd/Makefile
+index 80fe386..ae52a68 100644
+--- a/drivers/mtd/Makefile
++++ b/drivers/mtd/Makefile
+@@ -2,3 +2,4 @@ obj-$(CONFIG_NAND)	+= nand/
+ obj-$(CONFIG_UBI)	+= ubi/
+ obj-$(CONFIG_PARTITION_NEED_MTD)	+= partition.o
+ obj-$(CONFIG_MTD)	+= core.o
++obj-$(CONFIG_MTD_READ_OOB)		+= mtdoob.o
 diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
-index 6db21d6..3bfcaf4 100644
+index 55fe575..55d845d 100644
 --- a/drivers/mtd/core.c
 +++ b/drivers/mtd/core.c
-@@ -14,11 +14,6 @@
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
-- *
-- * You should have received a copy of the GNU General Public License
-- * along with this program; if not, write to the Free Software
-- * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-- * MA 02111-1307 USA
-  */
- #include <common.h>
- #include <linux/mtd/nand.h>
-@@ -31,7 +26,8 @@
- #include <nand.h>
- #include <errno.h>
- 
--static 	ssize_t nand_read(struct cdev *cdev, void* buf, size_t count, ulong offset, ulong flags)
-+static 	ssize_t nand_read(struct cdev *cdev, void* buf, size_t count,
-+			  ulong offset, ulong flags)
- {
- 	struct mtd_info *info = cdev->priv;
- 	size_t retlen;
-@@ -49,6 +45,7 @@ static 	ssize_t nand_read(struct cdev *cdev, void* buf, size_t count, ulong offs
- }
- 
- #define NOTALIGNED(x) (x & (info->writesize - 1)) != 0
-+#define MTDPGALG(x) ((x) & (info->writesize - 1))
- 
- #ifdef CONFIG_NAND_WRITE
- static int all_ff(const void *buf, int len)
-@@ -62,7 +59,8 @@ static int all_ff(const void *buf, int len)
- 	return 1;
- }
- 
--static ssize_t nand_write(struct cdev* cdev, const void *buf, size_t _count, ulong offset, ulong flags)
-+static ssize_t nand_write(struct cdev* cdev, const void *buf, size_t _count,
-+			  ulong offset, ulong flags)
- {
- 	struct mtd_info *info = cdev->priv;
- 	size_t retlen, now;
-@@ -75,24 +73,29 @@ static ssize_t nand_write(struct cdev* cdev, const void *buf, size_t _count, ulo
- 		return -EINVAL;
- 	}
- 
--	debug("write: 0x%08lx 0x%08x\n", offset, count);
--
-+	dev_dbg(cdev->dev, "write: 0x%08lx 0x%08x\n", offset, count);
- 	while (count) {
- 		now = count > info->writesize ? info->writesize : count;
- 
- 		if (NOTALIGNED(now)) {
--			debug("not aligned: %d %ld\n", info->writesize, (offset % info->writesize));
-+			dev_dbg(cdev->dev, "not aligned: %d %ld\n",
-+				info->writesize,
-+				(offset % info->writesize));
- 			wrbuf = xmalloc(info->writesize);
- 			memset(wrbuf, 0xff, info->writesize);
- 			memcpy(wrbuf + (offset % info->writesize), buf, now);
- 			if (!all_ff(wrbuf, info->writesize))
--				ret = info->write(info, offset & ~(info->writesize - 1),
--						info->writesize, &retlen, wrbuf);
-+				ret = info->write(info, MTDPGALG(offset),
-+						  info->writesize, &retlen,
-+						  wrbuf);
- 			free(wrbuf);
- 		} else {
- 			if (!all_ff(buf, info->writesize))
--				ret = info->write(info, offset, now, &retlen, buf);
--			debug("offset: 0x%08lx now: 0x%08x retlen: 0x%08x\n", offset, now, retlen);
-+				ret = info->write(info, offset, now, &retlen,
-+						  buf);
-+			dev_dbg(cdev->dev,
-+				"offset: 0x%08lx now: 0x%08x retlen: 0x%08x\n",
-+				offset, now, retlen);
- 		}
- 		if (ret)
- 			goto out;
-@@ -114,11 +117,11 @@ static int nand_ioctl(struct cdev *cdev, int request, void *buf)
- 
- 	switch (request) {
- 	case MEMGETBADBLOCK:
--		debug("MEMGETBADBLOCK: 0x%08lx\n", (off_t)buf);
-+		dev_dbg(cdev->dev, "MEMGETBADBLOCK: 0x%08lx\n", (off_t)buf);
- 		return info->block_isbad(info, (off_t)buf);
- #ifdef CONFIG_NAND_WRITE
- 	case MEMSETBADBLOCK:
--		debug("MEMSETBADBLOCK: 0x%08lx\n", (off_t)buf);
-+		dev_dbg(cdev->dev, "MEMSETBADBLOCK: 0x%08lx\n", (off_t)buf);
- 		return info->block_markbad(info, (off_t)buf);
- #endif
- 	case MEMGETINFO:
-@@ -150,7 +153,7 @@ static ssize_t nand_erase(struct cdev *cdev, size_t count, unsigned long offset)
- 	erase.len = info->erasesize;
- 
- 	while (count > 0) {
--		debug("erase %d %d\n", erase.addr, erase.len);
-+		dev_dbg(cdev->dev, "erase %d %d\n", erase.addr, erase.len);
- 
- 		ret = info->block_isbad(info, erase.addr);
- 		if (ret > 0) {
-@@ -169,13 +172,6 @@ static ssize_t nand_erase(struct cdev *cdev, size_t count, unsigned long offset)
+@@ -114,7 +114,7 @@ out:
  }
  #endif
  
--#if 0
--static char* mtd_get_size(struct device_d *, struct param_d *param)
+-static int mtd_ioctl(struct cdev *cdev, int request, void *buf)
++int mtd_ioctl(struct cdev *cdev, int request, void *buf)
+ {
+ 	struct mtd_info *mtd = cdev->priv;
+ 	struct mtd_info_user *user = buf;
+@@ -186,71 +186,6 @@ static struct file_operations mtd_ops = {
+ 	.lseek  = dev_lseek_default,
+ };
+ 
+-#ifdef CONFIG_MTD_READ_OOB
+-static ssize_t mtd_read_oob(struct cdev *cdev, void *buf, size_t count,
+-			     ulong offset, ulong flags)
 -{
--	static char 
+-	struct mtd_info *mtd = cdev->priv;
+-	struct mtd_oob_ops ops;
+-	int ret;
+-
+-	if (count < mtd->oobsize)
+-		return -EINVAL;
+-
+-	ops.mode = MTD_OOB_RAW;
+-	ops.ooboffs = 0;
+-	ops.ooblen = mtd->oobsize;
+-	ops.oobbuf = buf;
+-	ops.datbuf = NULL;
+-	ops.len = mtd->oobsize;
+-
+-	offset /= mtd->oobsize;
+-	/*
+-	 * This seems suspicious, shouldn't it be :
+-	 *   offset / mtd->oobsize * mtd->writesize
+-	 */
+-	ret = mtd->read_oob(mtd, offset * mtd->writesize, &ops);
+-	if (ret)
+-		return ret;
+-
+-	return mtd->oobsize;
+-}
+-
+-static struct file_operations mtd_ops_oob = {
+-	.read   = mtd_read_oob,
+-	.ioctl  = mtd_ioctl,
+-	.lseek  = dev_lseek_default,
+-};
+-
+-static int mtd_init_oob_cdev(struct mtd_info *mtd, char *devname)
+-{
+-	mtd->cdev_oob.ops = &mtd_ops_oob;
+-	mtd->cdev_oob.size = (mtd->size / mtd->writesize) * mtd->oobsize;
+-	mtd->cdev_oob.name = asprintf("%s_oob%d", devname, mtd->class_dev.id);
+-	mtd->cdev_oob.priv = mtd;
+-	mtd->cdev_oob.dev = &mtd->class_dev;
+-	devfs_create(&mtd->cdev_oob);
+-
+-	return 0;
+-}
+-
+-static void mtd_exit_oob_cdev(struct mtd_info *mtd)
+-{
+-	free(mtd->cdev_oob.name);
+-}
+-#else
+-
+-static int mtd_init_oob_cdev(struct mtd_info *mtd, char *devname)
+-{
+-	return 0;
+-}
+-
+-static void mtd_exit_oob_cdev(struct mtd_info *mtd)
+-{
+-	return;
 -}
 -#endif
 -
- static struct file_operations nand_ops = {
- 	.read   = nand_read,
- #ifdef CONFIG_NAND_WRITE
-@@ -187,7 +183,8 @@ static struct file_operations nand_ops = {
- };
- 
- #ifdef CONFIG_NAND_READ_OOB
--static ssize_t nand_read_oob(struct cdev *cdev, void *buf, size_t count, ulong offset, ulong flags)
-+static ssize_t nand_read_oob(struct cdev *cdev, void *buf, size_t count,
-+			     ulong offset, ulong flags)
+ int add_mtd_device(struct mtd_info *mtd, char *devname)
  {
- 	struct mtd_info *info = cdev->priv;
- 	struct nand_chip *chip = info->priv;
+ 	char str[16];
+@@ -280,7 +215,6 @@ int add_mtd_device(struct mtd_info *mtd, char *devname)
+ 
+ 	devfs_create(&mtd->cdev);
+ 
+-	mtd_init_oob_cdev(mtd, devname);
+ 	list_for_each_entry(hook, &mtd_register_hooks, hook)
+ 		if (hook->add_mtd_device)
+ 			hook->add_mtd_device(mtd, devname);
+@@ -296,7 +230,6 @@ int del_mtd_device (struct mtd_info *mtd)
+ 		if (hook->del_mtd_device)
+ 			hook->del_mtd_device(mtd);
+ 	unregister_device(&mtd->class_dev);
+-	mtd_exit_oob_cdev(mtd);
+ 	free(mtd->param_size.value);
+ 	free(mtd->cdev.name);
+ 	return 0;
+diff --git a/drivers/mtd/mtd.h b/drivers/mtd/mtd.h
+index 261cd2b..c8af6e3 100644
+--- a/drivers/mtd/mtd.h
++++ b/drivers/mtd/mtd.h
+@@ -28,6 +28,7 @@ struct mtddev_hook {
+ 	int (*add_mtd_device)(struct mtd_info *mtd, char *devname);
+ 	int (*del_mtd_device)(struct mtd_info *mtd);
+ };
++struct cdev;
+ 
+ /**
+  * mtdcore_add_hook - add a hook to MTD registration/unregistration
+@@ -37,3 +38,5 @@ struct mtddev_hook {
+  * mtdraw, ...)
+  */
+ void mtdcore_add_hook(struct mtddev_hook *hook);
++
++int mtd_ioctl(struct cdev *cdev, int request, void *buf);
+diff --git a/drivers/mtd/mtdoob.c b/drivers/mtd/mtdoob.c
+new file mode 100644
+index 0000000..ba30c5b
+--- /dev/null
++++ b/drivers/mtd/mtdoob.c
+@@ -0,0 +1,100 @@
++/*
++ * MTD oob device
++ *
++ * Copyright (C) 2011 Sasha Hauer
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * Adds a character devices :
++ *  - mtdoob<N>
++ */
++
++#include <common.h>
++#include <init.h>
++#include <malloc.h>
++#include <ioctl.h>
++#include <errno.h>
++#include <linux/mtd/mtd.h>
++
++#include "mtd.h"
++
++struct mtdoob {
++	struct cdev cdev;
++	struct mtd_info *mtd;
++};
++
++static struct mtd_info *to_mtd(struct cdev *cdev)
++{
++	struct mtdoob *mtdoob = cdev->priv;
++	return mtdoob->mtd;
++}
++
++static ssize_t mtd_read_oob(struct cdev *cdev, void *buf, size_t count,
++			     ulong offset, ulong flags)
++{
++	struct mtd_info *mtd = to_mtd(cdev);
++	struct mtd_oob_ops ops;
++	int ret;
++
++	if (count < mtd->oobsize)
++		return -EINVAL;
++
++	ops.mode = MTD_OOB_RAW;
++	ops.ooboffs = 0;
++	ops.ooblen = mtd->oobsize;
++	ops.oobbuf = buf;
++	ops.datbuf = NULL;
++	ops.len = mtd->oobsize;
++
++	offset /= mtd->oobsize;
++	/*
++	 * This seems suspicious, shouldn't it be :
++	 *   offset / mtd->oobsize * mtd->writesize
++	 */
++	ret = mtd->read_oob(mtd, offset * mtd->writesize, &ops);
++	if (ret)
++		return ret;
++
++	return mtd->oobsize;
++}
++
++static struct file_operations mtd_ops_oob = {
++	.read   = mtd_read_oob,
++	.ioctl  = mtd_ioctl,
++	.lseek  = dev_lseek_default,
++};
++
++static int add_mtdoob_device(struct mtd_info *mtd, char *devname)
++{
++	struct mtdoob *mtdoob;
++
++	mtdoob = xzalloc(sizeof(*mtdoob));
++	mtdoob->cdev.ops = &mtd_ops_oob;
++	mtdoob->cdev.size = (mtd->size / mtd->writesize) * mtd->oobsize;
++	mtdoob->cdev.name = asprintf("%s_oob%d", devname, mtd->class_dev.id);
++	mtdoob->cdev.priv = mtdoob;
++	mtdoob->cdev.dev = &mtd->class_dev;
++	devfs_create(&mtdoob->cdev);
++
++	return 0;
++}
++
++static struct mtddev_hook mtdoob_hook = {
++	.add_mtd_device = add_mtdoob_device,
++};
++
++static int __init register_mtdoob(void)
++{
++	mtdcore_add_hook(&mtdoob_hook);
++	return 0;
++}
++
++coredevice_initcall(register_mtdoob);
+diff --git a/include/linux/mtd/mtd.h b/include/linux/mtd/mtd.h
+index a985c30..71d3c6f 100644
+--- a/include/linux/mtd/mtd.h
++++ b/include/linux/mtd/mtd.h
+@@ -202,7 +202,6 @@ struct mtd_info {
+ 	struct device_d class_dev;
+ 	struct device_d *dev;
+ 	struct cdev cdev;
+-	struct cdev cdev_oob;
+ 
+ 	struct param_d param_size;
+ 	char *size_str;
 -- 
 1.7.5.4
 
