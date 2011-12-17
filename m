@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Rbvcb-0003X9-JS
- for barebox@lists.infradead.org; Sat, 17 Dec 2011 14:52:24 +0000
+ id 1Rbvca-0003Wq-DW
+ for barebox@lists.infradead.org; Sat, 17 Dec 2011 14:52:22 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1RbvcQ-0003Wh-7l
+ for barebox@lists.infradead.org; Sat, 17 Dec 2011 15:52:10 +0100
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.77)
+ (envelope-from <sha@pengutronix.de>) id 1RbvcQ-0000hz-6q
+ for barebox@lists.infradead.org; Sat, 17 Dec 2011 15:52:10 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sat, 17 Dec 2011 15:52:02 +0100
-Message-Id: <1324133529-2036-3-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1324133529-2036-1-git-send-email-s.hauer@pengutronix.de>
-References: <1324133529-2036-1-git-send-email-s.hauer@pengutronix.de>
+Date: Sat, 17 Dec 2011 15:52:00 +0100
+Message-Id: <1324133529-2036-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,154 +26,80 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/9] ARM i.MX51: implement a imx51_lowlevel_init
+Subject: Thumb-2 support
 To: barebox@lists.infradead.org
 
-Reimplement the code from lowlevel.S in C. It is run
-from SDRAM anyway, so we can safely do this initialization
-in a regular barebox environment instead in Assembly.
+The following series adds Thumb-2 support to barebox. To do this
+we have to update the Arm assembly functions which are from the
+kernel anyway, so we just update them to newer versions. Some
+boards may need additional updates for their lowlevel assembly
+code. At least the babbage lowlevel code did not work in Thumb-2,
+so this series contains an update for this board. If Omap works
+in Thumb-2 remains to be tested.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/mach-imx/imx51.c             |  105 +++++++++++++++++++++++++++++++++
- arch/arm/mach-imx/include/mach/imx5.h |    1 +
- 2 files changed, 106 insertions(+), 0 deletions(-)
+This series was tested on a babbage board and reduces the binary
+size by about 25%.
 
-diff --git a/arch/arm/mach-imx/imx51.c b/arch/arm/mach-imx/imx51.c
-index 2c1efed..2431e61 100644
---- a/arch/arm/mach-imx/imx51.c
-+++ b/arch/arm/mach-imx/imx51.c
-@@ -21,6 +21,8 @@
- #include <environment.h>
- #include <io.h>
- #include <mach/imx51-regs.h>
-+#include <mach/imx5.h>
-+#include <mach/clock-imx51_53.h>
- 
- #include "gpio.h"
- 
-@@ -176,3 +178,106 @@ static int imx51_boot_save_loc(void)
- }
- 
- coredevice_initcall(imx51_boot_save_loc);
-+
-+#define setup_pll_1000(base)	imx5_setup_pll((base), 1000, ((10 << 4) + ((1 - 1) << 0)), (12 - 1), 5)
-+#define setup_pll_800(base)	imx5_setup_pll((base), 800, ((8 << 4) + ((1 - 1)  << 0)), (3 - 1), 1)
-+#define setup_pll_665(base)	imx5_setup_pll((base), 665, ((6 << 4) + ((1 - 1)  << 0)), (96 - 1), 89)
-+#define setup_pll_400(base)	imx5_setup_pll((base), 400, ((8 << 4) + ((2 - 1)  << 0)), (3 - 1), 1)
-+#define setup_pll_455(base)	imx5_setup_pll((base), 455, ((9 << 4) + ((2 - 1)  << 0)), (48 - 1), 23)
-+#define setup_pll_216(base)	imx5_setup_pll((base), 216, ((6 << 4) + ((3 - 1)  << 0)), (4 - 1), 3)
-+
-+void imx51_init_lowlevel(void)
-+{
-+	void __iomem *ccm = (void __iomem *)MX51_CCM_BASE_ADDR;
-+	u32 r;
-+
-+	imx5_init_lowlevel();
-+
-+	/* disable write combine for TO 2 and lower revs */
-+	if (imx_silicon_revision() < MX51_CHIP_REV_3_0) {
-+		__asm__ __volatile__("mrc 15, 1, %0, c9, c0, 1":"=r"(r));
-+		r |= (1 << 25);
-+		__asm__ __volatile__("mcr 15, 1, %0, c9, c0, 1" : : "r"(r));
-+	}
-+
-+	/* Gate of clocks to the peripherals first */
-+	writel(0x3fffffff, ccm + MX5_CCM_CCGR0);
-+	writel(0x00000000, ccm + MX5_CCM_CCGR1);
-+	writel(0x00000000, ccm + MX5_CCM_CCGR2);
-+	writel(0x00000000, ccm + MX5_CCM_CCGR3);
-+	writel(0x00030000, ccm + MX5_CCM_CCGR4);
-+	writel(0x00fff030, ccm + MX5_CCM_CCGR5);
-+	writel(0x00000300, ccm + MX5_CCM_CCGR6);
-+
-+	/* Disable IPU and HSC dividers */
-+	writel(0x00060000, ccm + MX5_CCM_CCDR);
-+
-+	/* Make sure to switch the DDR away from PLL 1 */
-+	writel(0x19239145, ccm + MX5_CCM_CBCDR);
-+	/* make sure divider effective */
-+	while (readl(ccm + MX5_CCM_CDHIPR));
-+
-+	/* Switch ARM to step clock */
-+	writel(0x4, ccm + MX5_CCM_CCSR);
-+
-+	setup_pll_800((void __iomem *)MX51_PLL1_BASE_ADDR);
-+	setup_pll_665((void __iomem *)MX51_PLL3_BASE_ADDR);
-+
-+	/* Switch peripheral to PLL 3 */
-+	writel(0x000010C0, ccm + MX5_CCM_CBCMR);
-+	writel(0x13239145, ccm + MX5_CCM_CBCDR);
-+
-+	setup_pll_665((void __iomem *)MX51_PLL2_BASE_ADDR);
-+
-+	/* Switch peripheral to PLL2 */
-+	writel(0x19239145, ccm + MX5_CCM_CBCDR);
-+	writel(0x000020C0, ccm + MX5_CCM_CBCMR);
-+
-+	setup_pll_216((void __iomem *)MX51_PLL3_BASE_ADDR);
-+
-+	/* Set the platform clock dividers */
-+	writel(0x00000124, MX51_ARM_BASE_ADDR + 0x14);
-+
-+	/* Run TO 3.0 at Full speed, for other TO's wait till we increase VDDGP */
-+	if (imx_silicon_revision() == MX51_CHIP_REV_3_0)
-+		writel(0x0, ccm + MX5_CCM_CACRR);
-+	else
-+		writel(0x1, ccm + MX5_CCM_CACRR);
-+
-+	/* Switch ARM back to PLL 1 */
-+	writel(0x0, ccm + MX5_CCM_CCSR);
-+
-+	/* setup the rest */
-+	/* Use lp_apm (24MHz) source for perclk */
-+	writel(0x000020C2, ccm + MX5_CCM_CBCMR);
-+	/* ddr clock from PLL 1, all perclk dividers are 1 since using 24MHz */
-+	writel(0x59239100, ccm + MX5_CCM_CBCDR);
-+
-+	/* Restore the default values in the Gate registers */
-+	writel(0xffffffff, ccm + MX5_CCM_CCGR0);
-+	writel(0xffffffff, ccm + MX5_CCM_CCGR1);
-+	writel(0xffffffff, ccm + MX5_CCM_CCGR2);
-+	writel(0xffffffff, ccm + MX5_CCM_CCGR3);
-+	writel(0xffffffff, ccm + MX5_CCM_CCGR4);
-+	writel(0xffffffff, ccm + MX5_CCM_CCGR5);
-+	writel(0xffffffff, ccm + MX5_CCM_CCGR6);
-+
-+	/* Use PLL 2 for UART's, get 66.5MHz from it */
-+	writel(0xA5A2A020, ccm + MX5_CCM_CSCMR1);
-+	writel(0x00C30321, ccm + MX5_CCM_CSCDR1);
-+
-+	/* make sure divider effective */
-+	while (readl(ccm + MX5_CCM_CDHIPR));
-+
-+	writel(0x0, ccm + MX5_CCM_CCDR);
-+
-+	writel(0x1, 0x73fa8074);
-+
-+	r = readl(0x73f88000);
-+	r |= 0x40;
-+	writel(r, 0x73f88000);
-+
-+	r = readl(0x73f88004);
-+	r |= 0x40;
-+	writel(r, 0x73f88004);
-+}
-diff --git a/arch/arm/mach-imx/include/mach/imx5.h b/arch/arm/mach-imx/include/mach/imx5.h
-index d034082..0491179 100644
---- a/arch/arm/mach-imx/include/mach/imx5.h
-+++ b/arch/arm/mach-imx/include/mach/imx5.h
-@@ -2,6 +2,7 @@
- #define __MACH_MX5_H
- 
- void imx53_init_lowlevel(void);
-+void imx51_init_lowlevel(void);
- void imx5_setup_pll(void __iomem *base, int freq, u32 op, u32 mfd, u32 mfn);
- void imx5_init_lowlevel(void);
- 
--- 
-1.7.7.3
+Sascha
 
+Sascha Hauer (9):
+      ARM i.MX5: prepare to add a imx51_lowlevel_init
+      ARM i.MX51: implement a imx51_lowlevel_init
+      ARM i.MX51 babbage: use generic lowlevel init function
+      ARM eukrea i.MX51: use generic lowlevel init
+      ARM: update string functions from Linux Kernel
+      ARM cache-armv7: use thumb-2 instructions where necessary
+      ARM: move exception vectors away from start of binary
+      ARM: get runtime offset of board_init_lowlevel_return by using separate section
+      ARM: Allow to compile in thumb-2 mode
+
+ arch/arm/Kconfig                                   |   12 +
+ arch/arm/Makefile                                  |   11 +-
+ arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c  |    3 +-
+ arch/arm/boards/eukrea_cpuimx35/flash_header.c     |    3 +-
+ arch/arm/boards/eukrea_cpuimx51/Makefile           |    1 -
+ arch/arm/boards/eukrea_cpuimx51/eukrea_cpuimx51.c  |    3 +
+ arch/arm/boards/eukrea_cpuimx51/flash_header.c     |    3 +-
+ arch/arm/boards/eukrea_cpuimx51/lowlevel_init.S    |  216 --------------------
+ arch/arm/boards/freescale-mx25-3-stack/3stack.c    |    3 +-
+ .../boards/freescale-mx35-3-stack/flash_header.c   |    3 +-
+ arch/arm/boards/freescale-mx51-pdk/Makefile        |    1 -
+ arch/arm/boards/freescale-mx51-pdk/board.c         |    3 +
+ arch/arm/boards/freescale-mx51-pdk/flash_header.c  |    3 +-
+ arch/arm/boards/freescale-mx51-pdk/lowlevel_init.S |  216 --------------------
+ arch/arm/boards/freescale-mx53-loco/board.c        |    2 +-
+ arch/arm/boards/freescale-mx53-loco/flash_header.c |    3 +-
+ arch/arm/boards/freescale-mx53-smd/board.c         |    2 +-
+ arch/arm/boards/freescale-mx53-smd/flash_header.c  |    3 +-
+ arch/arm/cpu/cache-armv7.S                         |    8 +-
+ arch/arm/cpu/cpu.c                                 |   27 +++
+ arch/arm/cpu/exceptions.S                          |    1 +
+ arch/arm/cpu/mmu.c                                 |    4 +-
+ arch/arm/cpu/start.c                               |   44 +++--
+ arch/arm/include/asm/barebox-arm-head.h            |   29 +++
+ arch/arm/include/asm/barebox-arm.h                 |    3 +
+ arch/arm/include/asm/unified.h                     |    8 +-
+ arch/arm/lib/armlinux.c                            |   16 ++-
+ arch/arm/lib/barebox.lds.S                         |    7 +-
+ arch/arm/lib/copy_template.S                       |   24 ++-
+ arch/arm/lib/findbit.S                             |   84 +++++---
+ arch/arm/lib/io-writesw-armv4.S                    |   11 +-
+ arch/arm/lib/memcpy.S                              |    7 +-
+ arch/arm/mach-imx/Kconfig                          |    2 -
+ arch/arm/mach-imx/Makefile                         |    4 +-
+ arch/arm/mach-imx/imx51.c                          |  105 ++++++++++
+ arch/arm/mach-imx/imx53.c                          |   61 +-----
+ arch/arm/mach-imx/include/mach/imx5.h              |    9 +
+ arch/arm/mach-imx/include/mach/imx53.h             |    6 -
+ commands/go.c                                      |    6 +-
+ common/misc.c                                      |    3 +
+ include/common.h                                   |    6 +
+ 41 files changed, 387 insertions(+), 579 deletions(-)
+ delete mode 100644 arch/arm/boards/eukrea_cpuimx51/lowlevel_init.S
+ delete mode 100644 arch/arm/boards/freescale-mx51-pdk/lowlevel_init.S
+ create mode 100644 arch/arm/include/asm/barebox-arm-head.h
+ create mode 100644 arch/arm/mach-imx/include/mach/imx5.h
+ delete mode 100644 arch/arm/mach-imx/include/mach/imx53.h
 
 _______________________________________________
 barebox mailing list
