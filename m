@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Rbvca-0003Wq-DW
- for barebox@lists.infradead.org; Sat, 17 Dec 2011 14:52:22 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1RbvcQ-0003Wh-7l
- for barebox@lists.infradead.org; Sat, 17 Dec 2011 15:52:10 +0100
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.77)
- (envelope-from <sha@pengutronix.de>) id 1RbvcQ-0000hz-6q
- for barebox@lists.infradead.org; Sat, 17 Dec 2011 15:52:10 +0100
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1Rbvcd-0008PA-Ew
+ for barebox@lists.infradead.org; Sat, 17 Dec 2011 14:52:24 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sat, 17 Dec 2011 15:52:00 +0100
-Message-Id: <1324133529-2036-1-git-send-email-s.hauer@pengutronix.de>
+Date: Sat, 17 Dec 2011 15:52:07 +0100
+Message-Id: <1324133529-2036-8-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1324133529-2036-1-git-send-email-s.hauer@pengutronix.de>
+References: <1324133529-2036-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,80 +21,314 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Thumb-2 support
+Subject: [PATCH 7/9] ARM: move exception vectors away from start of binary
 To: barebox@lists.infradead.org
 
-The following series adds Thumb-2 support to barebox. To do this
-we have to update the Arm assembly functions which are from the
-kernel anyway, so we just update them to newer versions. Some
-boards may need additional updates for their lowlevel assembly
-code. At least the babbage lowlevel code did not work in Thumb-2,
-so this series contains an update for this board. If Omap works
-in Thumb-2 remains to be tested.
+Traditionally U-Boot and barebox have the exception vectors at
+the start of the binary. There is no real reason in doing so,
+because in the majority of cases this data will not be at 0x0
+where it could be used as vectors directly anyway.
+This patch puts the vectors into a separate linker section and
+defines an head function which is placed at the start of the
+image instead. Putting this in a separate function also has
+the advantage that it can be placed at the start of images
+which require an additional header like several Freescale i.MX
+images. As the head function contains the barebox arm magic
+those images can now also be detected aas barebox images.
 
-This series was tested on a babbage board and reduces the binary
-size by about 25%.
-
-Sascha
-
-Sascha Hauer (9):
-      ARM i.MX5: prepare to add a imx51_lowlevel_init
-      ARM i.MX51: implement a imx51_lowlevel_init
-      ARM i.MX51 babbage: use generic lowlevel init function
-      ARM eukrea i.MX51: use generic lowlevel init
-      ARM: update string functions from Linux Kernel
-      ARM cache-armv7: use thumb-2 instructions where necessary
-      ARM: move exception vectors away from start of binary
-      ARM: get runtime offset of board_init_lowlevel_return by using separate section
-      ARM: Allow to compile in thumb-2 mode
-
- arch/arm/Kconfig                                   |   12 +
- arch/arm/Makefile                                  |   11 +-
- arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c  |    3 +-
- arch/arm/boards/eukrea_cpuimx35/flash_header.c     |    3 +-
- arch/arm/boards/eukrea_cpuimx51/Makefile           |    1 -
- arch/arm/boards/eukrea_cpuimx51/eukrea_cpuimx51.c  |    3 +
- arch/arm/boards/eukrea_cpuimx51/flash_header.c     |    3 +-
- arch/arm/boards/eukrea_cpuimx51/lowlevel_init.S    |  216 --------------------
- arch/arm/boards/freescale-mx25-3-stack/3stack.c    |    3 +-
- .../boards/freescale-mx35-3-stack/flash_header.c   |    3 +-
- arch/arm/boards/freescale-mx51-pdk/Makefile        |    1 -
- arch/arm/boards/freescale-mx51-pdk/board.c         |    3 +
- arch/arm/boards/freescale-mx51-pdk/flash_header.c  |    3 +-
- arch/arm/boards/freescale-mx51-pdk/lowlevel_init.S |  216 --------------------
- arch/arm/boards/freescale-mx53-loco/board.c        |    2 +-
- arch/arm/boards/freescale-mx53-loco/flash_header.c |    3 +-
- arch/arm/boards/freescale-mx53-smd/board.c         |    2 +-
- arch/arm/boards/freescale-mx53-smd/flash_header.c  |    3 +-
- arch/arm/cpu/cache-armv7.S                         |    8 +-
- arch/arm/cpu/cpu.c                                 |   27 +++
- arch/arm/cpu/exceptions.S                          |    1 +
- arch/arm/cpu/mmu.c                                 |    4 +-
- arch/arm/cpu/start.c                               |   44 +++--
- arch/arm/include/asm/barebox-arm-head.h            |   29 +++
- arch/arm/include/asm/barebox-arm.h                 |    3 +
- arch/arm/include/asm/unified.h                     |    8 +-
- arch/arm/lib/armlinux.c                            |   16 ++-
- arch/arm/lib/barebox.lds.S                         |    7 +-
- arch/arm/lib/copy_template.S                       |   24 ++-
- arch/arm/lib/findbit.S                             |   84 +++++---
- arch/arm/lib/io-writesw-armv4.S                    |   11 +-
- arch/arm/lib/memcpy.S                              |    7 +-
- arch/arm/mach-imx/Kconfig                          |    2 -
- arch/arm/mach-imx/Makefile                         |    4 +-
- arch/arm/mach-imx/imx51.c                          |  105 ++++++++++
- arch/arm/mach-imx/imx53.c                          |   61 +-----
- arch/arm/mach-imx/include/mach/imx5.h              |    9 +
- arch/arm/mach-imx/include/mach/imx53.h             |    6 -
- commands/go.c                                      |    6 +-
- common/misc.c                                      |    3 +
- include/common.h                                   |    6 +
- 41 files changed, 387 insertions(+), 579 deletions(-)
- delete mode 100644 arch/arm/boards/eukrea_cpuimx51/lowlevel_init.S
- delete mode 100644 arch/arm/boards/freescale-mx51-pdk/lowlevel_init.S
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c  |    3 ++-
+ arch/arm/boards/eukrea_cpuimx35/flash_header.c     |    3 ++-
+ arch/arm/boards/eukrea_cpuimx51/flash_header.c     |    3 ++-
+ arch/arm/boards/freescale-mx25-3-stack/3stack.c    |    3 ++-
+ .../boards/freescale-mx35-3-stack/flash_header.c   |    3 ++-
+ arch/arm/boards/freescale-mx51-pdk/flash_header.c  |    3 ++-
+ arch/arm/boards/freescale-mx53-loco/flash_header.c |    3 ++-
+ arch/arm/boards/freescale-mx53-smd/flash_header.c  |    3 ++-
+ arch/arm/cpu/mmu.c                                 |    4 ++--
+ arch/arm/cpu/start.c                               |   14 +++++++-------
+ arch/arm/include/asm/barebox-arm-head.h            |   17 +++++++++++++++++
+ arch/arm/include/asm/barebox-arm.h                 |    2 ++
+ arch/arm/lib/barebox.lds.S                         |    5 ++++-
+ 13 files changed, 48 insertions(+), 18 deletions(-)
  create mode 100644 arch/arm/include/asm/barebox-arm-head.h
- create mode 100644 arch/arm/mach-imx/include/mach/imx5.h
- delete mode 100644 arch/arm/mach-imx/include/mach/imx53.h
+
+diff --git a/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c b/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
+index 162c117..7717210 100644
+--- a/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
++++ b/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
+@@ -46,13 +46,14 @@
+ #include <usb/fsl_usb2.h>
+ #include <mach/usb.h>
+ #include <mach/devices-imx25.h>
++#include <asm/barebox-arm-head.h>
+ 
+ extern unsigned long _stext;
+ extern void exception_vectors(void);
+ 
+ void __naked __flash_header_start go(void)
+ {
+-	__asm__ __volatile__("b exception_vectors\n");
++	barebox_arm_head();
+ }
+ 
+ struct imx_dcd_entry __dcd_entry_section dcd_entry[] = {
+diff --git a/arch/arm/boards/eukrea_cpuimx35/flash_header.c b/arch/arm/boards/eukrea_cpuimx35/flash_header.c
+index 93c8348..f8ed5d4 100644
+--- a/arch/arm/boards/eukrea_cpuimx35/flash_header.c
++++ b/arch/arm/boards/eukrea_cpuimx35/flash_header.c
+@@ -1,12 +1,13 @@
+ #include <common.h>
+ #include <mach/imx-flash-header.h>
+ #include <mach/imx-regs.h>
++#include <asm/barebox-arm-head.h>
+ 
+ extern void exception_vectors(void);
+ 
+ void __naked __flash_header_start go(void)
+ {
+-	__asm__ __volatile__("b exception_vectors\n");
++	barebox_arm_head();
+ }
+ 
+ struct imx_dcd_entry __dcd_entry_section dcd_entry[] = {
+diff --git a/arch/arm/boards/eukrea_cpuimx51/flash_header.c b/arch/arm/boards/eukrea_cpuimx51/flash_header.c
+index f953b09..ac6bbdc 100644
+--- a/arch/arm/boards/eukrea_cpuimx51/flash_header.c
++++ b/arch/arm/boards/eukrea_cpuimx51/flash_header.c
+@@ -1,11 +1,12 @@
+ #include <common.h>
+ #include <mach/imx-flash-header.h>
++#include <asm/barebox-arm-head.h>
+ 
+ extern unsigned long _stext;
+ 
+ void __naked __flash_header_start go(void)
+ {
+-	__asm__ __volatile__("b exception_vectors\n");
++	barebox_arm_head();
+ }
+ 
+ struct imx_dcd_entry __dcd_entry_section dcd_entry[] = {
+diff --git a/arch/arm/boards/freescale-mx25-3-stack/3stack.c b/arch/arm/boards/freescale-mx25-3-stack/3stack.c
+index 5aa54e4..d7e24cf 100644
+--- a/arch/arm/boards/freescale-mx25-3-stack/3stack.c
++++ b/arch/arm/boards/freescale-mx25-3-stack/3stack.c
+@@ -42,13 +42,14 @@
+ #include <i2c/i2c.h>
+ #include <mfd/mc34704.h>
+ #include <mach/devices-imx25.h>
++#include <asm/barebox-arm-head.h>
+ 
+ extern unsigned long _stext;
+ extern void exception_vectors(void);
+ 
+ void __naked __flash_header_start go(void)
+ {
+-	__asm__ __volatile__("b exception_vectors\n");
++	barebox_arm_head();
+ }
+ 
+ struct imx_dcd_entry __dcd_entry_section dcd_entry[] = {
+diff --git a/arch/arm/boards/freescale-mx35-3-stack/flash_header.c b/arch/arm/boards/freescale-mx35-3-stack/flash_header.c
+index 4bee797..312568e 100644
+--- a/arch/arm/boards/freescale-mx35-3-stack/flash_header.c
++++ b/arch/arm/boards/freescale-mx35-3-stack/flash_header.c
+@@ -1,12 +1,13 @@
+ #include <common.h>
+ #include <mach/imx-flash-header.h>
+ #include <mach/imx-regs.h>
++#include <asm/barebox-arm-head.h>
+ 
+ extern void exception_vectors(void);
+ 
+ void __naked __flash_header_start go(void)
+ {
+-	__asm__ __volatile__("b exception_vectors\n");
++	barebox_arm_head();
+ }
+ 
+ struct imx_dcd_entry __dcd_entry_section dcd_entry[] = {
+diff --git a/arch/arm/boards/freescale-mx51-pdk/flash_header.c b/arch/arm/boards/freescale-mx51-pdk/flash_header.c
+index 5f94506..297dca1 100644
+--- a/arch/arm/boards/freescale-mx51-pdk/flash_header.c
++++ b/arch/arm/boards/freescale-mx51-pdk/flash_header.c
+@@ -1,11 +1,12 @@
+ #include <common.h>
+ #include <mach/imx-flash-header.h>
++#include <asm/barebox-arm-head.h>
+ 
+ extern unsigned long _stext;
+ 
+ void __naked __flash_header_start go(void)
+ {
+-	__asm__ __volatile__("b exception_vectors\n");
++	barebox_arm_head();
+ }
+ 
+ struct imx_dcd_entry __dcd_entry_section dcd_entry[] = {
+diff --git a/arch/arm/boards/freescale-mx53-loco/flash_header.c b/arch/arm/boards/freescale-mx53-loco/flash_header.c
+index 490e223..b459640 100644
+--- a/arch/arm/boards/freescale-mx53-loco/flash_header.c
++++ b/arch/arm/boards/freescale-mx53-loco/flash_header.c
+@@ -16,10 +16,11 @@
+ #include <common.h>
+ #include <asm/byteorder.h>
+ #include <mach/imx-flash-header.h>
++#include <asm/barebox-arm-head.h>
+ 
+ void __naked __flash_header_start go(void)
+ {
+-	__asm__ __volatile__("b exception_vectors\n");
++	barebox_arm_head();
+ }
+ 
+ struct imx_dcd_v2_entry __dcd_entry_section dcd_entry[] = {
+diff --git a/arch/arm/boards/freescale-mx53-smd/flash_header.c b/arch/arm/boards/freescale-mx53-smd/flash_header.c
+index 490e223..b459640 100644
+--- a/arch/arm/boards/freescale-mx53-smd/flash_header.c
++++ b/arch/arm/boards/freescale-mx53-smd/flash_header.c
+@@ -16,10 +16,11 @@
+ #include <common.h>
+ #include <asm/byteorder.h>
+ #include <mach/imx-flash-header.h>
++#include <asm/barebox-arm-head.h>
+ 
+ void __naked __flash_header_start go(void)
+ {
+-	__asm__ __volatile__("b exception_vectors\n");
++	barebox_arm_head();
+ }
+ 
+ struct imx_dcd_v2_entry __dcd_entry_section dcd_entry[] = {
+diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
+index 8e4e81a..ac60e41 100644
+--- a/arch/arm/cpu/mmu.c
++++ b/arch/arm/cpu/mmu.c
+@@ -4,6 +4,7 @@
+ #include <errno.h>
+ #include <sizes.h>
+ #include <asm/memory.h>
++#include <asm/barebox-arm.h>
+ #include <asm/system.h>
+ #include <memory.h>
+ 
+@@ -170,7 +171,6 @@ static void vectors_init(void)
+ {
+ 	u32 *exc, *zero = NULL;
+ 	void *vectors;
+-	extern unsigned long exception_vectors;
+ 	u32 cr;
+ 
+ 	cr = get_cr();
+@@ -198,7 +198,7 @@ static void vectors_init(void)
+ 
+ 	vectors = xmemalign(PAGE_SIZE, PAGE_SIZE);
+ 	memset(vectors, 0, PAGE_SIZE);
+-	memcpy(vectors, &exception_vectors, ARM_VECTORS_SIZE);
++	memcpy(vectors, __exceptions_start, __exceptions_stop - __exceptions_start);
+ 
+ 	if (cr & CR_V)
+ 		exc[256 - 16] = (u32)vectors | PTE_TYPE_SMALL | PTE_FLAGS_CACHED;
+diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
+index 5e09300..b3a0419 100644
+--- a/arch/arm/cpu/start.c
++++ b/arch/arm/cpu/start.c
+@@ -23,11 +23,17 @@
+ #include <common.h>
+ #include <init.h>
+ #include <asm/barebox-arm.h>
++#include <asm/barebox-arm-head.h>
+ #include <asm/system.h>
+ #include <asm-generic/memory_layout.h>
+ #include <asm/sections.h>
+ 
+-void __naked __section(.text_entry) exception_vectors(void)
++void __naked __section(.text_entry) start(void)
++{
++	barebox_arm_head();
++}
++
++void __naked __section(.text_exceptions) exception_vectors(void)
+ {
+ 	__asm__ __volatile__ (
+ 		"b reset\n"				/* reset */
+@@ -48,12 +54,6 @@ void __naked __section(.text_entry) exception_vectors(void)
+ 		"1: bne 1b\n"				/* irq (interrupt) */
+ 		"1: bne 1b\n"				/* fiq (fast interrupt) */
+ #endif
+-		".word 0x65726162\n"			/* 'bare' */
+-		".word 0x00786f62\n"			/* 'box' */
+-		".word _text\n"				/* text base. If copied there,
+-							 * barebox can skip relocation
+-							 */
+-		".word _barebox_image_size\n"		/* image size to copy */
+ 	);
+ }
+ 
+diff --git a/arch/arm/include/asm/barebox-arm-head.h b/arch/arm/include/asm/barebox-arm-head.h
+new file mode 100644
+index 0000000..ec4a68c
+--- /dev/null
++++ b/arch/arm/include/asm/barebox-arm-head.h
+@@ -0,0 +1,17 @@
++
++static inline void barebox_arm_head(void)
++{
++	__asm__ __volatile__ (
++		"b reset\n"
++		".rept 7\n"
++		".word 0x0\n"
++		".endr\n"
++		".word 0x65726162\n"			/* 'bare' */
++		".word 0x00786f62\n"			/* 'box' */
++		".word _text\n"				/* text base. If copied there,
++							 * barebox can skip relocation
++							 */
++		".word _barebox_image_size\n"		/* image size to copy */
++	);
++}
++
+diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
+index 7bb1af1..3339782 100644
+--- a/arch/arm/include/asm/barebox-arm.h
++++ b/arch/arm/include/asm/barebox-arm.h
+@@ -36,6 +36,8 @@ int	cleanup_before_linux(void);
+ int	board_init(void);
+ int	dram_init (void);
+ 
++extern char __exceptions_start[], __exceptions_stop[];
++
+ void board_init_lowlevel(void);
+ void board_init_lowlevel_return(void);
+ void arch_init_lowlevel(void);
+diff --git a/arch/arm/lib/barebox.lds.S b/arch/arm/lib/barebox.lds.S
+index f05f345..db876af 100644
+--- a/arch/arm/lib/barebox.lds.S
++++ b/arch/arm/lib/barebox.lds.S
+@@ -26,7 +26,7 @@
+ 
+ OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
+ OUTPUT_ARCH(arm)
+-ENTRY(exception_vectors)
++ENTRY(start)
+ SECTIONS
+ {
+ 	. = TEXT_BASE;
+@@ -45,6 +45,9 @@ SECTIONS
+ 	  LONG(0x53555243) /* 'CRUS' */
+ #endif
+ 		*(.text_bare_init*)
++		__exceptions_start = .;
++		KEEP(*(.text_exceptions*))
++		__exceptions_stop = .;
+ 		*(.text*)
+ 	}
+ 
+-- 
+1.7.7.3
+
 
 _______________________________________________
 barebox mailing list
