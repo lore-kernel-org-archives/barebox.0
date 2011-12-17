@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Rbvcd-0008P8-9a
- for barebox@lists.infradead.org; Sat, 17 Dec 2011 14:52:24 +0000
+ id 1Rbvcd-0008PB-Rf
+ for barebox@lists.infradead.org; Sat, 17 Dec 2011 14:52:25 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sat, 17 Dec 2011 15:52:05 +0100
-Message-Id: <1324133529-2036-6-git-send-email-s.hauer@pengutronix.de>
+Date: Sat, 17 Dec 2011 15:52:09 +0100
+Message-Id: <1324133529-2036-10-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1324133529-2036-1-git-send-email-s.hauer@pengutronix.de>
 References: <1324133529-2036-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,351 +21,316 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/9] ARM: update string functions from Linux Kernel
+Subject: [PATCH 9/9] ARM: Allow to compile in thumb-2 mode
 To: barebox@lists.infradead.org
 
-The newer versions contain fixes for Thumb-2 mode.
+This shrinks the resulting binary size by ~25%. Exceptions
+are still handled in arm mode, so we have to explicitely
+put .arm directives into the exception code. Thumb-2 mode
+has been tested on i.MX51 Babbage board.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/lib/copy_template.S    |   24 ++++++++++-
- arch/arm/lib/findbit.S          |   84 ++++++++++++++++++++++++---------------
- arch/arm/lib/io-writesw-armv4.S |   11 +++--
- arch/arm/lib/memcpy.S           |    7 ++-
- 4 files changed, 85 insertions(+), 41 deletions(-)
+ arch/arm/Kconfig                        |   12 ++++++++++++
+ arch/arm/Makefile                       |   11 +++++++++--
+ arch/arm/cpu/cpu.c                      |   27 +++++++++++++++++++++++++++
+ arch/arm/cpu/exceptions.S               |    1 +
+ arch/arm/cpu/start.c                    |   26 ++++++++++++++++++--------
+ arch/arm/include/asm/barebox-arm-head.h |   12 ++++++++++++
+ arch/arm/include/asm/unified.h          |    8 ++++----
+ arch/arm/lib/armlinux.c                 |   16 +++++++++++++++-
+ commands/go.c                           |    6 +++++-
+ common/misc.c                           |    3 +++
+ include/common.h                        |    6 ++++++
+ 11 files changed, 112 insertions(+), 16 deletions(-)
 
-diff --git a/arch/arm/lib/copy_template.S b/arch/arm/lib/copy_template.S
-index 61b6e54..d8eb063 100644
---- a/arch/arm/lib/copy_template.S
-+++ b/arch/arm/lib/copy_template.S
-@@ -57,6 +57,13 @@
-  *
-  *	Restore registers with the values previously saved with the
-  *	'preserv' macro. Called upon code termination.
-+ *
-+ * LDR1W_SHIFT
-+ * STR1W_SHIFT
-+ *
-+ *	Correction to be applied to the "ip" register when branching into
-+ *	the ldr1w or str1w instructions (some of these macros may expand to
-+ *	than one 32bit instruction in Thumb-2)
-  */
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 40677a3..4ad10fe 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -100,6 +100,18 @@ config AEABI
  
+ 	  To use this you need GCC version 4.0.0 or later.
  
-@@ -99,9 +106,15 @@
- 
- 5:		ands	ip, r2, #28
- 		rsb	ip, ip, #32
-+#if LDR1W_SHIFT > 0
-+		lsl	ip, ip, #LDR1W_SHIFT
-+#endif
- 		addne	pc, pc, ip		@ C is always clear here
- 		b	7f
--6:		nop
-+6:
-+		.rept	(1 << LDR1W_SHIFT)
-+		W(nop)
-+		.endr
- 		ldr1w	r1, r3, abort=20f
- 		ldr1w	r1, r4, abort=20f
- 		ldr1w	r1, r5, abort=20f
-@@ -110,9 +123,16 @@
- 		ldr1w	r1, r8, abort=20f
- 		ldr1w	r1, lr, abort=20f
- 
-+#if LDR1W_SHIFT < STR1W_SHIFT
-+		lsl	ip, ip, #STR1W_SHIFT - LDR1W_SHIFT
-+#elif LDR1W_SHIFT > STR1W_SHIFT
-+		lsr	ip, ip, #LDR1W_SHIFT - STR1W_SHIFT
-+#endif
- 		add	pc, pc, ip
- 		nop
--		nop
-+		.rept	(1 << STR1W_SHIFT)
-+		W(nop)
-+		.endr
- 		str1w	r0, r3, abort=20f
- 		str1w	r0, r4, abort=20f
- 		str1w	r0, r5, abort=20f
-diff --git a/arch/arm/lib/findbit.S b/arch/arm/lib/findbit.S
-index 7fa93a5..ef4caff 100644
---- a/arch/arm/lib/findbit.S
-+++ b/arch/arm/lib/findbit.S
-@@ -14,18 +14,22 @@
-  *   also call with zero size.
-  * Reworked by rmk.
-  */
--	.section .text.basic_bit_functions
-+#include <linux/linkage.h>
-+#include <asm/assembler.h>
-+                .text
- 
- /*
-  * Purpose  : Find a 'zero' bit
-  * Prototype: int find_first_zero_bit(void *addr, unsigned int maxbit);
-  */
--	.globl _find_first_zero_bit_le;
--_find_first_zero_bit_le:
-+ENTRY(_find_first_zero_bit_le)
- 		teq	r1, #0
- 		beq	3f
- 		mov	r2, #0
--1:		ldrb	r3, [r0, r2, lsr #3]
-+1:
-+ ARM(		ldrb	r3, [r0, r2, lsr #3]	)
-+ THUMB(		lsr	r3, r2, #3		)
-+ THUMB(		ldrb	r3, [r0, r3]		)
- 		eors	r3, r3, #0xff		@ invert bits
- 		bne	.L_found		@ any now set - found zero bit
- 		add	r2, r2, #8		@ next bit pointer
-@@ -33,36 +37,40 @@ _find_first_zero_bit_le:
- 		blo	1b
- 3:		mov	r0, r1			@ no free bits
- 		mov	pc, lr
-+ENDPROC(_find_first_zero_bit_le)
- 
- /*
-  * Purpose  : Find next 'zero' bit
-- * Prototype: int find_next_zero_bit(void *addr, unsigned int maxbit,
-- *					int offset)
-+ * Prototype: int find_next_zero_bit(void *addr, unsigned int maxbit, int offset)
-  */
--	.globl _find_next_zero_bit_le;
--_find_next_zero_bit_le:
-+ENTRY(_find_next_zero_bit_le)
- 		teq	r1, #0
- 		beq	3b
- 		ands	ip, r2, #7
- 		beq	1b			@ If new byte, goto old routine
--		ldrb	r3, [r0, r2, lsr #3]
-+ ARM(		ldrb	r3, [r0, r2, lsr #3]	)
-+ THUMB(		lsr	r3, r2, #3		)
-+ THUMB(		ldrb	r3, [r0, r3]		)
- 		eor	r3, r3, #0xff		@ now looking for a 1 bit
- 		movs	r3, r3, lsr ip		@ shift off unused bits
- 		bne	.L_found
- 		orr	r2, r2, #7		@ if zero, then no bits here
- 		add	r2, r2, #1		@ align bit pointer
- 		b	2b			@ loop for next bit
-+ENDPROC(_find_next_zero_bit_le)
- 
- /*
-  * Purpose  : Find a 'one' bit
-- * Prototype: int find_first_bit(const unsigned long *addr, unsigned int maxbit)
-+ * Prototype: int find_first_bit(const unsigned long *addr, unsigned int maxbit);
-  */
--	.globl _find_first_bit_le;
--_find_first_bit_le:
-+ENTRY(_find_first_bit_le)
- 		teq	r1, #0
- 		beq	3f
- 		mov	r2, #0
--1:		ldrb	r3, [r0, r2, lsr #3]
-+1:
-+ ARM(		ldrb	r3, [r0, r2, lsr #3]	)
-+ THUMB(		lsr	r3, r2, #3		)
-+ THUMB(		ldrb	r3, [r0, r3]		)
- 		movs	r3, r3
- 		bne	.L_found		@ any now set - found zero bit
- 		add	r2, r2, #8		@ next bit pointer
-@@ -70,34 +78,37 @@ _find_first_bit_le:
- 		blo	1b
- 3:		mov	r0, r1			@ no free bits
- 		mov	pc, lr
-+ENDPROC(_find_first_bit_le)
- 
- /*
-  * Purpose  : Find next 'one' bit
-- * Prototype: int find_next_zero_bit(void *addr, unsigned int maxbit,
-- * 					int offset)
-+ * Prototype: int find_next_zero_bit(void *addr, unsigned int maxbit, int offset)
-  */
--	.globl _find_next_bit_le;
--_find_next_bit_le:
-+ENTRY(_find_next_bit_le)
- 		teq	r1, #0
- 		beq	3b
- 		ands	ip, r2, #7
- 		beq	1b			@ If new byte, goto old routine
--		ldrb	r3, [r0, r2, lsr #3]
-+ ARM(		ldrb	r3, [r0, r2, lsr #3]	)
-+ THUMB(		lsr	r3, r2, #3		)
-+ THUMB(		ldrb	r3, [r0, r3]		)
- 		movs	r3, r3, lsr ip		@ shift off unused bits
- 		bne	.L_found
- 		orr	r2, r2, #7		@ if zero, then no bits here
- 		add	r2, r2, #1		@ align bit pointer
- 		b	2b			@ loop for next bit
-+ENDPROC(_find_next_bit_le)
- 
- #ifdef __ARMEB__
- 
--	.globl _find_first_zero_bit_be;
--_find_first_zero_bit_be:
-+ENTRY(_find_first_zero_bit_be)
- 		teq	r1, #0
- 		beq	3f
- 		mov	r2, #0
- 1:		eor	r3, r2, #0x18		@ big endian byte ordering
--		ldrb	r3, [r0, r3, lsr #3]
-+ ARM(		ldrb	r3, [r0, r3, lsr #3]	)
-+ THUMB(		lsr	r3, #3			)
-+ THUMB(		ldrb	r3, [r0, r3]		)
- 		eors	r3, r3, #0xff		@ invert bits
- 		bne	.L_found		@ any now set - found zero bit
- 		add	r2, r2, #8		@ next bit pointer
-@@ -105,29 +116,33 @@ _find_first_zero_bit_be:
- 		blo	1b
- 3:		mov	r0, r1			@ no free bits
- 		mov	pc, lr
-+ENDPROC(_find_first_zero_bit_be)
- 
--	.globl _find_next_zero_bit_be;
--_find_next_zero_bit_be:
-+ENTRY(_find_next_zero_bit_be)
- 		teq	r1, #0
- 		beq	3b
- 		ands	ip, r2, #7
- 		beq	1b			@ If new byte, goto old routine
- 		eor	r3, r2, #0x18		@ big endian byte ordering
--		ldrb	r3, [r0, r3, lsr #3]
-+ ARM(		ldrb	r3, [r0, r3, lsr #3]	)
-+ THUMB(		lsr	r3, #3			)
-+ THUMB(		ldrb	r3, [r0, r3]		)
- 		eor	r3, r3, #0xff		@ now looking for a 1 bit
- 		movs	r3, r3, lsr ip		@ shift off unused bits
- 		bne	.L_found
- 		orr	r2, r2, #7		@ if zero, then no bits here
- 		add	r2, r2, #1		@ align bit pointer
- 		b	2b			@ loop for next bit
-+ENDPROC(_find_next_zero_bit_be)
- 
--	.globl _find_first_bit_be;
--_find_first_bit_be:
-+ENTRY(_find_first_bit_be)
- 		teq	r1, #0
- 		beq	3f
- 		mov	r2, #0
- 1:		eor	r3, r2, #0x18		@ big endian byte ordering
--		ldrb	r3, [r0, r3, lsr #3]
-+ ARM(		ldrb	r3, [r0, r3, lsr #3]	)
-+ THUMB(		lsr	r3, #3			)
-+ THUMB(		ldrb	r3, [r0, r3]		)
- 		movs	r3, r3
- 		bne	.L_found		@ any now set - found zero bit
- 		add	r2, r2, #8		@ next bit pointer
-@@ -135,20 +150,23 @@ _find_first_bit_be:
- 		blo	1b
- 3:		mov	r0, r1			@ no free bits
- 		mov	pc, lr
-+ENDPROC(_find_first_bit_be)
- 
--	.globl _find_next_bit_be;
--_find_next_bit_be:
-+ENTRY(_find_next_bit_be)
- 		teq	r1, #0
- 		beq	3b
- 		ands	ip, r2, #7
- 		beq	1b			@ If new byte, goto old routine
- 		eor	r3, r2, #0x18		@ big endian byte ordering
--		ldrb	r3, [r0, r3, lsr #3]
-+ ARM(		ldrb	r3, [r0, r3, lsr #3]	)
-+ THUMB(		lsr	r3, #3			)
-+ THUMB(		ldrb	r3, [r0, r3]		)
- 		movs	r3, r3, lsr ip		@ shift off unused bits
- 		bne	.L_found
- 		orr	r2, r2, #7		@ if zero, then no bits here
- 		add	r2, r2, #1		@ align bit pointer
- 		b	2b			@ loop for next bit
-+ENDPROC(_find_next_bit_be)
- 
- #endif
- 
-@@ -157,8 +175,8 @@ _find_next_bit_be:
-  */
- .L_found:
- #if __LINUX_ARM_ARCH__ >= 5
--		rsb	r1, r3, #0
--		and	r3, r3, r1
-+		rsb	r0, r3, #0
-+		and	r3, r3, r0
- 		clz	r3, r3
- 		rsb	r3, r3, #31
- 		add	r0, r2, r3
-@@ -173,5 +191,7 @@ _find_next_bit_be:
- 		addeq	r2, r2, #1
- 		mov	r0, r2
- #endif
-+		cmp	r1, r0			@ Clamp to maxbit
-+		movlo	r0, r1
- 		mov	pc, lr
- 
-diff --git a/arch/arm/lib/io-writesw-armv4.S b/arch/arm/lib/io-writesw-armv4.S
-index cd0aa7f..ff4f71b 100644
---- a/arch/arm/lib/io-writesw-armv4.S
-+++ b/arch/arm/lib/io-writesw-armv4.S
-@@ -22,8 +22,6 @@
- #endif
- 		.endm
- 
--.section .text.writesw
--
- .Loutsw_align:	movs	ip, r1, lsl #31
- 		bne	.Loutsw_noalign
- 
-@@ -31,7 +29,7 @@
- 		sub	r2, r2, #1
- 		strh	r3, [r0]
- 
--ENTRY(writesw)
-+ENTRY(__raw_writesw)
- 		teq	r2, #0
- 		moveq	pc, lr
- 		ands	r3, r1, #3
-@@ -77,7 +75,10 @@ ENTRY(writesw)
- #endif
- 
- .Loutsw_noalign:
--		ldr	r3, [r1, -r3]!
-+ ARM(		ldr	r3, [r1, -r3]!	)
-+ THUMB(		rsb	r3, r3, #0	)
-+ THUMB(		ldr	r3, [r1, r3]	)
-+ THUMB(		sub	r1, r3		)
- 		subcs	r2, r2, #1
- 		bcs	2f
- 		subs	r2, r2, #2
-@@ -96,4 +97,4 @@ ENTRY(writesw)
- 3:		movne	ip, r3, lsr #8
- 		strneh	ip, [r0]
- 		mov	pc, lr
--ENDPROC(writesw)
-+ENDPROC(__raw_writesw)
-diff --git a/arch/arm/lib/memcpy.S b/arch/arm/lib/memcpy.S
-index 513ed64..5123691 100644
---- a/arch/arm/lib/memcpy.S
-+++ b/arch/arm/lib/memcpy.S
-@@ -13,8 +13,11 @@
- #include <linux/linkage.h>
- #include <asm/assembler.h>
- 
-+#define LDR1W_SHIFT	0
-+#define STR1W_SHIFT	0
++config THUMB2_BAREBOX
++	select ARM_ASM_UNIFIED
++	depends on CPU_V7
++	bool "Compile barebox in thumb-2 mode (read help)"
++	help
++	  This enables compilation of barebox in thumb-2 mode which generates
++	  ~25% smaller binaries. Arm Assembly code needs some fixups to be able
++	  to work correctly in thumb-2 mode. the barebox core should have these
++	  fixups since most assembly code is derived from the Kernel. However,
++	  your board lowlevel init code may break in thumb-2 mode. You have been
++	  warned.
 +
- 	.macro ldr1w ptr reg abort
--	ldr \reg, [\ptr], #4
-+	W(ldr) \reg, [\ptr], #4
- 	.endm
+ endmenu
  
- 	.macro ldr4w ptr reg1 reg2 reg3 reg4 abort
-@@ -30,7 +33,7 @@
- 	.endm
+ menu "Arm specific settings         "
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index a3e12e6..edb1a0d 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -39,8 +39,15 @@ ifeq ($(CONFIG_ARM_UNWIND),y)
+ CFLAGS_ABI	+=-funwind-tables
+ endif
  
- 	.macro str1w ptr reg abort
--	str \reg, [\ptr], #4
-+	W(str) \reg, [\ptr], #4
- 	.endm
+-CPPFLAGS += $(CFLAGS_ABI) $(arch-y) $(tune-y) -msoft-float
+-AFLAGS   += -include asm/unified.h -msoft-float
++ifeq ($(CONFIG_THUMB2_BAREBOX),y)
++AFLAGS_AUTOIT	:=$(call as-option,-Wa$(comma)-mimplicit-it=always,-Wa$(comma)-mauto-it)
++AFLAGS_NOWARN	:=$(call as-option,-Wa$(comma)-mno-warn-deprecated,-Wa$(comma)-W)
++CFLAGS_THUMB2	:=-mthumb $(AFLAGS_AUTOIT) $(AFLAGS_NOWARN)
++AFLAGS_THUMB2	:=$(CFLAGS_THUMB2) -Wa$(comma)-mthumb
++endif
++
++CPPFLAGS += $(CFLAGS_ABI) $(arch-y) $(tune-y) -msoft-float $(CFLAGS_THUMB2)
++AFLAGS   += -include asm/unified.h -msoft-float $(AFLAGS_THUMB2)
  
- 	.macro str8w ptr reg1 reg2 reg3 reg4 reg5 reg6 reg7 reg8 abort
+ # Machine directory name.  This list is sorted alphanumerically
+ # by CONFIG_* macro name.
+diff --git a/arch/arm/cpu/cpu.c b/arch/arm/cpu/cpu.c
+index 14bb6d1..a7b55d4 100644
+--- a/arch/arm/cpu/cpu.c
++++ b/arch/arm/cpu/cpu.c
+@@ -26,6 +26,7 @@
+  */
+ 
+ #include <common.h>
++#include <init.h>
+ #include <command.h>
+ #include <cache.h>
+ #include <asm/mmu.h>
+@@ -89,3 +90,29 @@ void arch_shutdown(void)
+ 	);
+ #endif
+ }
++
++#ifdef CONFIG_THUMB2_BAREBOX
++static void thumb2_execute(void *func, int argc, char *argv[])
++{
++	/*
++	 * Switch back to arm mode before executing external
++	 * programs.
++	 */
++	__asm__ __volatile__ (
++		"mov r0, #0\n"
++		"mov r1, %0\n"
++		"mov r2, %1\n"
++		"bx %2\n"
++		:
++		: "r" (argc - 1), "r" (&argv[1]), "r" (func)
++		: "r0", "r1", "r2"
++	);
++}
++
++static int execute_init(void)
++{
++	do_execute = thumb2_execute;
++	return 0;
++}
++postcore_initcall(execute_init);
++#endif
+diff --git a/arch/arm/cpu/exceptions.S b/arch/arm/cpu/exceptions.S
+index 6f35d40..c08537a 100644
+--- a/arch/arm/cpu/exceptions.S
++++ b/arch/arm/cpu/exceptions.S
+@@ -106,6 +106,7 @@ _STACK_START:
+  * exception handlers
+  */
+ 	.section ".text","ax"
++	.arm
+ 
+ 	.align  5
+ .globl undefined_instruction
+diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
+index 1f4fdd2..ff0081a 100644
+--- a/arch/arm/cpu/start.c
++++ b/arch/arm/cpu/start.c
+@@ -33,26 +33,36 @@ void __naked __section(.text_entry) start(void)
+ 	barebox_arm_head();
+ }
+ 
++#ifdef CONFIG_THUMB2_BAREBOX
++#define STOP	\
++	"1: bne 1b\n" \
++	"nop\n"
++#else
++#define STOP	\
++	"1: bne 1b\n"
++#endif
++
+ void __naked __section(.text_exceptions) exception_vectors(void)
+ {
+ 	__asm__ __volatile__ (
++		".arm\n"
+ 		"b reset\n"				/* reset */
+ #ifdef CONFIG_ARM_EXCEPTIONS
+ 		"ldr pc, =undefined_instruction\n"	/* undefined instruction */
+ 		"ldr pc, =software_interrupt\n"		/* software interrupt (SWI) */
+ 		"ldr pc, =prefetch_abort\n"		/* prefetch abort */
+ 		"ldr pc, =data_abort\n"			/* data abort */
+-		"1: bne 1b\n"				/* (reserved) */
++		STOP					/* (reserved) */
+ 		"ldr pc, =irq\n"			/* irq (interrupt) */
+ 		"ldr pc, =fiq\n"			/* fiq (fast interrupt) */
+ #else
+-		"1: bne 1b\n"				/* undefined instruction */
+-		"1: bne 1b\n"				/* software interrupt (SWI) */
+-		"1: bne 1b\n"				/* prefetch abort */
+-		"1: bne 1b\n"				/* data abort */
+-		"1: bne 1b\n"				/* (reserved) */
+-		"1: bne 1b\n"				/* irq (interrupt) */
+-		"1: bne 1b\n"				/* fiq (fast interrupt) */
++		STOP					/* undefined instruction */
++		STOP					/* software interrupt (SWI) */
++		STOP					/* prefetch abort */
++		STOP					/* data abort */
++		STOP					/* (reserved) */
++		STOP					/* irq (interrupt) */
++		STOP					/* fiq (fast interrupt) */
+ #endif
+ 	);
+ }
+diff --git a/arch/arm/include/asm/barebox-arm-head.h b/arch/arm/include/asm/barebox-arm-head.h
+index ec4a68c..dc0acb1 100644
+--- a/arch/arm/include/asm/barebox-arm-head.h
++++ b/arch/arm/include/asm/barebox-arm-head.h
+@@ -2,10 +2,22 @@
+ static inline void barebox_arm_head(void)
+ {
+ 	__asm__ __volatile__ (
++#ifdef CONFIG_THUMB2_BAREBOX
++		".arm\n"
++		"adr r9, 1f + 1\n"
++		"bx r9\n"
++		".thumb\n"
++		"1:\n"
++		"bl reset\n"
++		".rept 10\n"
++		"nop\n"
++		".endr\n"
++#else
+ 		"b reset\n"
+ 		".rept 7\n"
+ 		".word 0x0\n"
+ 		".endr\n"
++#endif
+ 		".word 0x65726162\n"			/* 'bare' */
+ 		".word 0x00786f62\n"			/* 'box' */
+ 		".word _text\n"				/* text base. If copied there,
+diff --git a/arch/arm/include/asm/unified.h b/arch/arm/include/asm/unified.h
+index bc63116..4d855c8 100644
+--- a/arch/arm/include/asm/unified.h
++++ b/arch/arm/include/asm/unified.h
+@@ -24,10 +24,10 @@
+ 	.syntax unified
+ #endif
+ 
+-#ifdef CONFIG_THUMB2_KERNEL
++#ifdef CONFIG_THUMB2_BAREBOX
+ 
+ #if __GNUC__ < 4
+-#error Thumb-2 kernel requires gcc >= 4
++#error Thumb-2 barebox requires gcc >= 4
+ #endif
+ 
+ /* The CPSR bit describing the instruction set (Thumb) */
+@@ -40,7 +40,7 @@
+ #endif
+ #define BSYM(sym)	sym + 1
+ 
+-#else	/* !CONFIG_THUMB2_KERNEL */
++#else	/* !CONFIG_THUMB2_BAREBOX */
+ 
+ /* The CPSR bit describing the instruction set (ARM) */
+ #define PSR_ISETSTATE	0
+@@ -52,7 +52,7 @@
+ #endif
+ #define BSYM(sym)	sym
+ 
+-#endif	/* CONFIG_THUMB2_KERNEL */
++#endif	/* CONFIG_THUMB2_BAREBOX */
+ 
+ #ifndef CONFIG_ARM_ASM_UNIFIED
+ 
+diff --git a/arch/arm/lib/armlinux.c b/arch/arm/lib/armlinux.c
+index bd9b72a..3fafb4b 100644
+--- a/arch/arm/lib/armlinux.c
++++ b/arch/arm/lib/armlinux.c
+@@ -253,6 +253,8 @@ void start_linux(void *adr, int swap, struct image_data *data)
+ {
+ 	void (*kernel)(int zero, int arch, void *params) = adr;
+ 	void *params = NULL;
++	int architecture = armlinux_get_architecture();
++
+ #ifdef CONFIG_OFTREE
+ 	params = of_get_fixed_tree();
+ 	if (params)
+@@ -271,5 +273,17 @@ void start_linux(void *adr, int swap, struct image_data *data)
+ 		__asm__ __volatile__("mcr p15, 0, %0, c1, c0" :: "r" (reg));
+ 	}
+ 
+-	kernel(0, armlinux_get_architecture(), params);
++#ifdef CONFIG_THUMB2_BAREBOX
++	__asm__ __volatile__ (
++		"mov r0, #0\n"
++		"mov r1, %0\n"
++		"mov r2, %1\n"
++		"bx %2\n"
++		:
++		: "r" (architecture), "r" (params), "r" (kernel)
++		: "r0", "r1", "r2"
++	);
++#else
++	kernel(0, architecture, params);
++#endif
+ }
+diff --git a/commands/go.c b/commands/go.c
+index 6082fe5..bc984c8 100644
+--- a/commands/go.c
++++ b/commands/go.c
+@@ -62,7 +62,11 @@ static int do_go(struct command *cmdtp, int argc, char *argv[])
+ 	func = addr;
+ 
+ 	shutdown_barebox();
+-	func(argc - 1, &argv[1]);
++
++	if (do_execute)
++		do_execute(func, argc - 1, &argv[1]);
++	else
++		func(argc - 1, &argv[1]);
+ 
+ 	/*
+ 	 * The application returned. Since we have shutdown barebox and
+diff --git a/common/misc.c b/common/misc.c
+index 7edf536..9263f4a 100644
+--- a/common/misc.c
++++ b/common/misc.c
+@@ -125,3 +125,6 @@ void perror(const char *s)
+ #endif
+ }
+ EXPORT_SYMBOL(perror);
++
++void (*do_execute)(void *func, int argc, char *argv[]);
++EXPORT_SYMBOL(do_execute);
+diff --git a/include/common.h b/include/common.h
+index 2f37dd8..aa84539 100644
+--- a/include/common.h
++++ b/include/common.h
+@@ -137,6 +137,12 @@ unsigned long strtoul_suffix(const char *str, char **endp, int base);
+ void start_barebox(void);
+ void shutdown_barebox(void);
+ 
++/*
++ * architectures which have special calling conventions for
++ * executing programs should set this. Used by the 'go' command
++ */
++extern void (*do_execute)(void *func, int argc, char *argv[]);
++
+ void arch_shutdown(void);
+ 
+ int run_shell(void);
 -- 
 1.7.7.3
 
