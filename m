@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from svenfoo.org ([82.94.215.22] helo=mail.zonque.de)
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RcO6D-0006Fn-Cm
- for barebox@lists.infradead.org; Sun, 18 Dec 2011 21:16:50 +0000
-From: Daniel Mack <zonque@gmail.com>
-Date: Sun, 18 Dec 2011 22:16:22 +0100
-Message-Id: <1324242982-29919-1-git-send-email-zonque@gmail.com>
-In-Reply-To: <1324235162-25587-1-git-send-email-zonque@gmail.com>
-References: <1324235162-25587-1-git-send-email-zonque@gmail.com>
+Received: from mail-ee0-f49.google.com ([74.125.83.49])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RcQOF-0003LZ-07
+ for barebox@lists.infradead.org; Sun, 18 Dec 2011 23:43:36 +0000
+Received: by eekc13 with SMTP id c13so3783947eek.36
+ for <barebox@lists.infradead.org>; Sun, 18 Dec 2011 15:43:30 -0800 (PST)
+From: Peter Korsgaard <jacmet@sunsite.dk>
+References: <1324133529-2036-1-git-send-email-s.hauer@pengutronix.de>
+ <1324133529-2036-8-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 19 Dec 2011 00:43:21 +0100
+In-Reply-To: <1324133529-2036-8-git-send-email-s.hauer@pengutronix.de> (Sascha
+ Hauer's message of "Sat, 17 Dec 2011 15:52:07 +0100")
+Message-ID: <87hb0xtpie.fsf@macbook.be.48ers.dk>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,40 +21,22 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] omap3: add register definitions for chip die ID
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 7/9] ARM: move exception vectors away from start of binary
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Daniel Mack <zonque@gmail.com>
----
+>>>>> "Sascha" == Sascha Hauer <s.hauer@pengutronix.de> writes:
 
-the previous version had a copy'n paste error. sorry.
+ Sascha> those images can now also be detected aas barebox images.
 
- arch/arm/mach-omap/include/mach/omap3-silicon.h |    4 ++++
- 1 files changed, 4 insertions(+), 0 deletions(-)
+s/aas/as/
 
-diff --git a/arch/arm/mach-omap/include/mach/omap3-silicon.h b/arch/arm/mach-omap/include/mach/omap3-silicon.h
-index 67f7747..361d25e 100644
---- a/arch/arm/mach-omap/include/mach/omap3-silicon.h
-+++ b/arch/arm/mach-omap/include/mach/omap3-silicon.h
-@@ -115,6 +115,10 @@
- /** Gives the silicon revision */
- #define OMAP_TAP_BASE		(OMAP_L4_WKUP_BASE + 0xA000)
- #define IDCODE_REG		(OMAP_TAP_BASE + 0x204)
-+#define DIE_ID_0		(OMAP_TAP_BASE + 0x218)
-+#define DIE_ID_1		(OMAP_TAP_BASE + 0x21c)
-+#define DIE_ID_2		(OMAP_TAP_BASE + 0x220)
-+#define DIE_ID_3		(OMAP_TAP_BASE + 0x224)
- 
- /** Masks to extract information from ID code register */
- #define IDCODE_HAWKEYE_MASK	0x0FFFF000
 -- 
-1.7.7.4
-
+Bye, Peter Korsgaard
 
 _______________________________________________
 barebox mailing list
