@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RcaV4-0007FF-Fd
- for barebox@lists.infradead.org; Mon, 19 Dec 2011 10:31:19 +0000
-Date: Mon, 19 Dec 2011 11:31:09 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20111219103109.GJ27267@pengutronix.de>
-References: <1323945034-19687-1-git-send-email-s.hauer@pengutronix.de>
- <1323945034-19687-2-git-send-email-s.hauer@pengutronix.de>
- <20111218130742.GE7899@game.jcrosoft.org>
+Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1RcamA-0006Tt-Cy
+ for barebox@lists.infradead.org; Mon, 19 Dec 2011 10:48:59 +0000
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+References: <1324072234-31634-1-git-send-email-robert.jarzmik@free.fr>
+ <1324072234-31634-4-git-send-email-robert.jarzmik@free.fr>
+ <20111219094932.GC27267@pengutronix.de>
+Date: Mon, 19 Dec 2011 11:48:49 +0100
+In-Reply-To: <20111219094932.GC27267@pengutronix.de> (Sascha Hauer's message
+ of "Mon, 19 Dec 2011 10:49:32 +0100")
+Message-ID: <8739cgg7la.fsf@free.fr>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20111218130742.GE7899@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,102 +24,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: *** PROBABLY SPAM *** [PATCH 01/12] oftree: add of_fix_tree()
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH V2 3/8] drivers/mtd: transfer NAND notions to MTD core
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Sun, Dec 18, 2011 at 02:07:42PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> HI,
-> 
-> 	what is the impact on the binary size??
+Sascha Hauer <s.hauer@pengutronix.de> writes:
 
-Don't know. Why should this have a great influence on binary size?
+> On Fri, Dec 16, 2011 at 10:50:29PM +0100, Robert Jarzmik wrote:
+>
+>>  
+>>  if MTD
+>>
+>> +config MTD_WRITE
+>> +	bool
+>> +	default y
+>> +	prompt "Support writing to MTD devices"
+>> +
+>> +config MTD_READ_OOB
+>> +	bool
+>> +	default y
+>> +	prompt "Create a device for reading the OOB data"
+>> +
+>
+> This one is a rename...
+>
+>>  
+>> -config NAND_READ_OOB
+>> -	bool
+>> -	default y
+>> -	prompt "create a device for reading the OOB data"
+>> -
+>
+> from this one, but not all references to it were renamed.
+Arg. I see it now. I'll amend this patch.
 
-Sascha
+> This revealed a bug which was present before this patch. The following
+> fixes this, see the commit log for more details. Can you rebase your
+> series on this patch?
+Of course.
 
-> 
-> Best Regards,
-> J.
-> On 11:30 Thu 15 Dec     , Sascha Hauer wrote:
-> > Currently we have of_get_fixed_tree() which assumes that
-> > there is a global variable holding a oftree. This seems
-> > not very flexible, so for now introduce a of_fix_tree()
-> > which takes an fdt_header as argument and walks the
-> > list of registered of fixup functions.
-> > 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > ---
-> >  common/oftree.c |   22 +++++++++++++++-------
-> >  include/of.h    |    1 +
-> >  2 files changed, 16 insertions(+), 7 deletions(-)
-> > 
-> > diff --git a/common/oftree.c b/common/oftree.c
-> > index 2a2f464..a657d31 100644
-> > --- a/common/oftree.c
-> > +++ b/common/oftree.c
-> > @@ -293,20 +293,28 @@ int of_register_fixup(int (*fixup)(struct fdt_header *))
-> >  	return 0;
-> >  }
-> >  
-> > -struct fdt_header *of_get_fixed_tree(void)
-> > +int of_fix_tree(struct fdt_header *fdt)
-> >  {
-> >  	struct of_fixup *of_fixup;
-> >  	int ret;
-> >  
-> > -	if (!barebox_fdt)
-> > -		return NULL;
-> > -
-> >  	list_for_each_entry(of_fixup, &of_fixup_list, list) {
-> > -		ret = of_fixup->fixup(barebox_fdt);
-> > +		ret = of_fixup->fixup(fdt);
-> >  		if (ret)
-> > -			return NULL;
-> > +			return ret;
-> >  	}
-> >  
-> > -	return barebox_fdt;
-> > +	return 0;
-> >  }
-> >  
-> > +struct fdt_header *of_get_fixed_tree(void)
-> > +{
-> > +	int ret;
-> > +
-> > +	if (!barebox_fdt)
-> > +		return NULL;
-> > +	ret = of_fix_tree(barebox_fdt);
-> > +	if (ret)
-> > +		return NULL;
-> > +	return barebox_fdt;
-> > +}
-> > diff --git a/include/of.h b/include/of.h
-> > index c2661ef..609b3b5 100644
-> > --- a/include/of.h
-> > +++ b/include/of.h
-> > @@ -8,6 +8,7 @@ extern struct fdt_header *barebox_fdt;
-> >  int fdt_print(struct fdt_header *working_fdt, const char *pathp);
-> >  
-> >  struct fdt_header *of_get_fixed_tree(void);
-> > +int of_fix_tree(struct fdt_header *fdt);
-> >  int of_register_fixup(int (*fixup)(struct fdt_header *));
-> >  
-> >  int fdt_find_and_setprop(struct fdt_header *fdt, const char *node, const char *prop,
-> > -- 
-> > 1.7.7.3
-> > 
-> > 
-> > _______________________________________________
-> > barebox mailing list
-> > barebox@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/barebox
-> 
+> Otherwise your series seems to work properly.
+Ok, great. Do you want me to resend the whole serie, or provide you a pull
+request with this patchset rebased on barebox.git/next, and your patch, and then
+this serie ?
+
+FWIW, I checked erase/read/write on mtdraw and mtd, and with the docg3
+everything works fine. If I understand correctly, you tested with a NAND you've
+got, which is great as a non-regression test :)
+
+Cheers.
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Robert
 
 _______________________________________________
 barebox mailing list
