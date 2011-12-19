@@ -1,17 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Rcb5P-00025t-IG
- for barebox@lists.infradead.org; Mon, 19 Dec 2011 11:08:52 +0000
-Date: Mon, 19 Dec 2011 12:08:46 +0100
+ id 1RcbAr-0002Bp-Iu
+ for barebox@lists.infradead.org; Mon, 19 Dec 2011 11:14:30 +0000
+Date: Mon, 19 Dec 2011 12:14:24 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20111219110846.GL27267@pengutronix.de>
-References: <1324072234-31634-1-git-send-email-robert.jarzmik@free.fr>
- <1324072234-31634-4-git-send-email-robert.jarzmik@free.fr>
- <20111219094932.GC27267@pengutronix.de> <8739cgg7la.fsf@free.fr>
+Message-ID: <20111219111424.GM27267@pengutronix.de>
+References: <87r50ilxed.fsf@free.fr>
+ <CAJfOKBzSOKmZEvmWsWxQ1+yJFxaB-rzCgR2mxTpTUCoA_9W1Mg@mail.gmail.com>
+ <87vcpueoqc.fsf@free.fr>
+ <CAJfOKBwmX8EwD1hPvYSMddp6sZKJJ5kCBLf9KYWLsjkk4ZAC9A@mail.gmail.com>
+ <87r50idnni.fsf@free.fr> <20111207083708.GK27267@pengutronix.de>
+ <87mxawxz9e.fsf@free.fr> <8739cmxjy1.fsf@free.fr>
+ <20111219110120.GK27267@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <8739cgg7la.fsf@free.fr>
+In-Reply-To: <20111219110120.GK27267@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,56 +28,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH V2 3/8] drivers/mtd: transfer NAND notions to MTD core
+Subject: Re: FAT filesystem write and long names stability
 To: Robert Jarzmik <robert.jarzmik@free.fr>
 Cc: barebox@lists.infradead.org
 
-On Mon, Dec 19, 2011 at 11:48:49AM +0100, Robert Jarzmik wrote:
-> Sascha Hauer <s.hauer@pengutronix.de> writes:
+On Mon, Dec 19, 2011 at 12:01:20PM +0100, Sascha Hauer wrote:
+> On Thu, Dec 15, 2011 at 10:28:38AM +0100, Robert Jarzmik wrote:
+> > Robert Jarzmik <robert.jarzmik@free.fr> writes:
+> > 
+> > > Sascha Hauer <s.hauer@pengutronix.de> writes:
+> > >> It would be great if you could give it some testing as obviously my test
+> > >> patterns didn't reveal the 'create folder' bug you described.
+> > > Tomorrow or wednesday, I'll make the few tests I always do (making a
+> > > directory, copying a file, deleting a file, etc ...) and report.
+> > This is what my tests give back:
+> > 
+> > **** With FAT caching (barebox.git/next + rjk mioa701 support):
+> > barebox:/sdcard time bmp /sdcard/help.bmp 
+> > time: 6895ms
+> > barebox:/sdcard time cp /sdcard/help.bmp /sdcard/toto.tmp
+> > time: 13278ms
+> > barebox:/sdcard ls -l help.bmp
+> > -rwxrwxrwx     230454 help.bmp
+> > barebox:/sdcard 
 > 
-> > On Fri, Dec 16, 2011 at 10:50:29PM +0100, Robert Jarzmik wrote:
-> >
-> >>  
-> >>  if MTD
-> >>
-> >> +config MTD_WRITE
-> >> +	bool
-> >> +	default y
-> >> +	prompt "Support writing to MTD devices"
-> >> +
-> >> +config MTD_READ_OOB
-> >> +	bool
-> >> +	default y
-> >> +	prompt "Create a device for reading the OOB data"
-> >> +
-> >
-> > This one is a rename...
-> >
-> >>  
-> >> -config NAND_READ_OOB
-> >> -	bool
-> >> -	default y
-> >> -	prompt "create a device for reading the OOB data"
-> >> -
-> >
-> > from this one, but not all references to it were renamed.
-> Arg. I see it now. I'll amend this patch.
-> 
-> > This revealed a bug which was present before this patch. The following
-> > fixes this, see the commit log for more details. Can you rebase your
-> > series on this patch?
-> Of course.
-> 
-> > Otherwise your series seems to work properly.
-> Ok, great. Do you want me to resend the whole serie, or provide you a pull
-> request with this patchset rebased on barebox.git/next, and your patch, and then
-> this serie ?
+> There is something wrong. These times are far from being acceptable.
 
-I just applied the fix to -master and merged master into -next. Please
-just rebase your series on top of this and resend.
+BTW Does your SD card work with a proper frequency?
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
