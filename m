@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp6-g21.free.fr ([2a01:e0c:1:1599::15])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RcZLy-0008Hf-Px
- for barebox@lists.infradead.org; Mon, 19 Dec 2011 09:17:52 +0000
-From: Robert Jarzmik <robert.jarzmik@free.fr>
-Date: Mon, 19 Dec 2011 10:17:20 +0100
-Message-Id: <1324286241-23083-4-git-send-email-robert.jarzmik@free.fr>
-In-Reply-To: <1324286241-23083-1-git-send-email-robert.jarzmik@free.fr>
-References: <1324286241-23083-1-git-send-email-robert.jarzmik@free.fr>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RcZqy-0007B7-4l
+ for barebox@lists.infradead.org; Mon, 19 Dec 2011 09:49:53 +0000
+Date: Mon, 19 Dec 2011 10:49:32 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20111219094932.GC27267@pengutronix.de>
+References: <1324072234-31634-1-git-send-email-robert.jarzmik@free.fr>
+ <1324072234-31634-4-git-send-email-robert.jarzmik@free.fr>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1324072234-31634-4-git-send-email-robert.jarzmik@free.fr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,186 +19,119 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] commands: add hexdump command
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH V2 3/8] drivers/mtd: transfer NAND notions to MTD core
+To: Robert Jarzmik <robert.jarzmik@free.fr>
+Cc: barebox@lists.infradead.org
 
-Add a hexdump command to copycat the "hexdump -C <file>"
-unix standard command.
+On Fri, Dec 16, 2011 at 10:50:29PM +0100, Robert Jarzmik wrote:
 
-Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
+>  
+>  if MTD
+>
+> +config MTD_WRITE
+> +	bool
+> +	default y
+> +	prompt "Support writing to MTD devices"
+> +
+> +config MTD_READ_OOB
+> +	bool
+> +	default y
+> +	prompt "Create a device for reading the OOB data"
+> +
+
+This one is a rename...
+
+>  
+> -config NAND_READ_OOB
+> -	bool
+> -	default y
+> -	prompt "create a device for reading the OOB data"
+> -
+
+from this one, but not all references to it were renamed.
+
+This revealed a bug which was present before this patch. The following
+fixes this, see the commit log for more details. Can you rebase your
+series on this patch?
+Otherwise your series seems to work properly.
+
+Sascha
+
+8<--------------------------------------------------
+
+mtd nand: fix oob compile time option
+
+The NAND_READ_OOB Kconfig option is used to
+
+a) creating a cdev for reading OOB data
+b) compiling in mtd->read_oob support
+
+The former was intended and that's also what the Kconfig help
+says. The latter though was implicit and wrong. mtd->read_oob
+is also used by the bbt code which resulted in a NULL pointer
+deref when compiled with BBT but without NAND_READ_OOB.
+To fix this, split the option into two. The now invisible
+option NAND_OOB_DEVICE is only responsible for b) and gets
+selected when necessary.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/Kconfig   |    5 ++
- commands/Makefile  |    1 +
- commands/hexdump.c |  126 ++++++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 132 insertions(+), 0 deletions(-)
- create mode 100644 commands/hexdump.c
+ drivers/mtd/nand/Kconfig |    7 ++++++-
+ drivers/mtd/nand/nand.c  |    2 +-
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index d9e182f..9a9dfb9 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -173,6 +173,11 @@ config CMD_NAND
- 	depends on NAND
- 	prompt "nand"
+diff --git a/drivers/mtd/nand/Kconfig b/drivers/mtd/nand/Kconfig
+index 20f9f33..1cc29a8 100644
+--- a/drivers/mtd/nand/Kconfig
++++ b/drivers/mtd/nand/Kconfig
+@@ -41,16 +41,21 @@ config NAND_INFO
+ 	  Show informational strings about the vendor and nand flash type
+ 	  during startup
  
-+config CMD_HEXDUMP
-+	tristate
-+	default n
-+	prompt "hexdump"
++config NAND_READ_OOB
++	bool
 +
- endmenu
+ config NAND_BBT
+ 	bool
++	select NAND_READ_OOB
+ 	default y
+ 	prompt "support bad block tables"
+ 	help
+ 	  Say y here to include support for bad block tables. This speeds
+ 	  up the process of checking for bad blocks
  
- menu "console                       "
-diff --git a/commands/Makefile b/commands/Makefile
-index 24753be..5725cc3 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -62,3 +62,4 @@ obj-$(CONFIG_CMD_OFTREE)	+= oftree.o
- obj-$(CONFIG_CMD_MAGICVAR)	+= magicvar.o
- obj-$(CONFIG_CMD_IOMEM)		+= iomem.o
- obj-$(CONFIG_CMD_LINUX_EXEC)	+= linux_exec.o
-+obj-$(CONFIG_CMD_HEXDUMP)	+= hexdump.o
-\ No newline at end of file
-diff --git a/commands/hexdump.c b/commands/hexdump.c
-new file mode 100644
-index 0000000..a7e8e4f
---- /dev/null
-+++ b/commands/hexdump.c
-@@ -0,0 +1,126 @@
-+/*
-+ * Copyright (c) 2011 Robert Jarzmik <robert.jarzmik@free.fr>
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
-+
-+/**
-+ * @file
-+ * @brief Cat a file on the console as standard "hexdump -C" would
-+ */
-+
-+#include <common.h>
-+#include <command.h>
-+#include <fs.h>
-+#include <fcntl.h>
-+#include <linux/ctype.h>
-+#include <errno.h>
-+#include <xfuncs.h>
-+#include <malloc.h>
-+
-+#define LINESZ  16
-+#define BUFSIZE 1024
-+
-+static void printline(const u8 *src, int linesz, uint ofs, int len)
-+{
-+	static const int groupsz = 8;
-+	int i, j;
-+
-+	printf("%08x  ", ofs);
-+	for (j = 0; j * groupsz < linesz; j++) {
-+		for (i = 0; i < groupsz; i++)
-+			if (j * groupsz + i < len)
-+				printf("%s%02x", i ? " " : "",
-+				       src[j * groupsz + i]);
-+			else
-+				printf("%s  ", i ? " " : "");
-+		printf("  ");
-+	}
-+	printf("\t|");
-+	for (i = 0; i < linesz; i++) {
-+		if (i && i % groupsz == 0)
-+			printf(" ");
-+		if (i < len)
-+			printf("%c", isprint(src[i]) ? src[i] : '.');
-+		else
-+			printf(" ");
-+	}
-+	printf("|\n");
-+}
-+
-+/**
-+ * @param[in] cmdtp FIXME
-+ * @param[in] argc Argument count from command line
-+ * @param[in] argv List of input arguments
-+ */
-+static int do_hexdump(struct command *cmdtp, int argc, char *argv[])
-+{
-+	int ret, fd = -1, i, err = 1, samelastline = 0, nbsame = 0;
-+	uint ofs = 0;
-+	char *buf = NULL;
-+
-+	if (argc != 2) {
-+		perror("hexdump require one argument");
-+		goto out;
-+	}
-+
-+	buf = xzalloc(BUFSIZE + LINESZ);
-+	fd = open(argv[1], O_RDONLY);
-+	if (fd < 0) {
-+		err = 1;
-+		printf("could not open %s: %s\n", argv[1], errno_str());
-+		goto out;
-+	}
-+
-+	while ((ret = read(fd, buf, BUFSIZE)) > 0) {
-+		for (i = 0; i < ret; i += LINESZ) {
-+			samelastline = !memcmp(buf + i, buf + BUFSIZE, LINESZ);
-+			if (samelastline) {
-+				nbsame++;
-+			} else {
-+				if (nbsame)
-+					printf("*\n");
-+				nbsame = 0;
-+				printline(buf + i, LINESZ, ofs + i,
-+					  min(ret - i, LINESZ));
-+				memcpy(buf + BUFSIZE, buf + i, LINESZ);
-+			}
-+			if (ctrlc())
-+				goto out;
-+		}
-+		ofs += BUFSIZE;
-+	}
-+	if (nbsame)
-+		printf("*\n");
-+	err = 0;
-+
-+out:
-+	if (fd >= 0)
-+		close(fd);
-+	free(buf);
-+
-+	return err;
-+}
-+
-+BAREBOX_CMD_HELP_START(hexdump)
-+BAREBOX_CMD_HELP_USAGE("hexdump [FILE]\n")
-+BAREBOX_CMD_HELP_SHORT("Dump in a pretty print a file on stdout.\n")
-+BAREBOX_CMD_HELP_TEXT("Currently only printable characters are printed,\n")
-+BAREBOX_CMD_HELP_TEXT("but this should be optional.\n")
-+BAREBOX_CMD_HELP_END
-+
-+BAREBOX_CMD_START(hexdump)
-+	.cmd		= do_hexdump,
-+	.usage		= "heximal dump of a file",
-+	BAREBOX_CMD_HELP(cmd_hexdump_help)
-+BAREBOX_CMD_END
+-config NAND_READ_OOB
++config NAND_OOB_DEVICE
+ 	bool
++	select NAND_READ_OOB
+ 	default y
+ 	prompt "create a device for reading the OOB data"
+ 
+diff --git a/drivers/mtd/nand/nand.c b/drivers/mtd/nand/nand.c
+index 6db21d6..130e2af 100644
+--- a/drivers/mtd/nand/nand.c
++++ b/drivers/mtd/nand/nand.c
+@@ -186,7 +186,7 @@ static struct file_operations nand_ops = {
+ 	.lseek  = dev_lseek_default,
+ };
+ 
+-#ifdef CONFIG_NAND_READ_OOB
++#ifdef CONFIG_NAND_OOB_DEVICE
+ static ssize_t nand_read_oob(struct cdev *cdev, void *buf, size_t count, ulong offset, ulong flags)
+ {
+ 	struct mtd_info *info = cdev->priv;
 -- 
-1.7.5.4
+1.7.7.3
 
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
