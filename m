@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Rcc8S-0002uj-UE
- for barebox@lists.infradead.org; Mon, 19 Dec 2011 12:16:06 +0000
+ id 1Rcd9t-00072Q-S4
+ for barebox@lists.infradead.org; Mon, 19 Dec 2011 13:21:38 +0000
+Received: from beldin.local (unknown
+ [IPv6:2a01:e35:2f37:a360:ea11:32ff:fe70:ee3e])
+ by smtp1-g21.free.fr (Postfix) with ESMTP id D4F0B940364
+ for <barebox@lists.infradead.org>; Mon, 19 Dec 2011 14:21:30 +0100 (CET)
 From: Robert Jarzmik <robert.jarzmik@free.fr>
-References: <1324286241-23083-1-git-send-email-robert.jarzmik@free.fr>
- <1324286241-23083-4-git-send-email-robert.jarzmik@free.fr>
- <CAA4bVAEAOhNDRj7dfZBf2Nkrjv5Bot9iTiX7CJ7PCj6YcXUN7Q@mail.gmail.com>
-Date: Mon, 19 Dec 2011 13:15:55 +0100
-In-Reply-To: <CAA4bVAEAOhNDRj7dfZBf2Nkrjv5Bot9iTiX7CJ7PCj6YcXUN7Q@mail.gmail.com>
- (Antony Pavlov's message of "Mon, 19 Dec 2011 14:29:19 +0300")
-Message-ID: <87ty4weozo.fsf@free.fr>
+Date: Mon, 19 Dec 2011 14:21:27 +0100
+Message-ID: <87fwggelyg.fsf@free.fr>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -24,19 +23,20 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] commands: add hexdump command
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: barebox build error : WATCHDOG_RESET
+To: barebox@lists.infradead.org
 
-Antony Pavlov <antonynpavlov@gmail.com> writes:
+If think commit fc726402479efc486bbd3fb207e8d21ed0f4581c "remote unused watchdog
+header" has left a remaining WATCHDOG_RESET in readline_simple.c ...
 
-> On 19 December 2011 13:17, Robert Jarzmik <robert.jarzmik@free.fr> wrote:
->> Add a hexdump command to copycat the "hexdump -C <file>"
->> unix standard command.
->
-> md -b -s <file> ?
-Ah yes, I haven't seen that one.
-Well, that kills that patch, doesn't it ? :)
+rj@beldin:~/mio_linux/barebox$ make
+make[1]: `include/generated/mach-types.h' is up to date.
+  CHK     include/generated/version.h
+  CHK     include/generated/utsrelease.h
+  SYMLINK include/config.h -> arch/arm/boards/mioa701//config.h
+  LD      barebox
+lib/built-in.o: In function `readline':
+uncompress.c:(.text.readline+0x4c): undefined reference to `WATCHDOG_RESET'
 
 Cheers.
 
