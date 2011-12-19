@@ -1,21 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RcbAr-0002Bp-Iu
- for barebox@lists.infradead.org; Mon, 19 Dec 2011 11:14:30 +0000
-Date: Mon, 19 Dec 2011 12:14:24 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20111219111424.GM27267@pengutronix.de>
-References: <87r50ilxed.fsf@free.fr>
- <CAJfOKBzSOKmZEvmWsWxQ1+yJFxaB-rzCgR2mxTpTUCoA_9W1Mg@mail.gmail.com>
- <87vcpueoqc.fsf@free.fr>
- <CAJfOKBwmX8EwD1hPvYSMddp6sZKJJ5kCBLf9KYWLsjkk4ZAC9A@mail.gmail.com>
- <87r50idnni.fsf@free.fr> <20111207083708.GK27267@pengutronix.de>
- <87mxawxz9e.fsf@free.fr> <8739cmxjy1.fsf@free.fr>
- <20111219110120.GK27267@pengutronix.de>
+Received: from mail-wi0-f177.google.com ([209.85.212.177])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RcbPH-0007xE-S8
+ for barebox@lists.infradead.org; Mon, 19 Dec 2011 11:29:25 +0000
+Received: by wibhq15 with SMTP id hq15so1161393wib.36
+ for <barebox@lists.infradead.org>; Mon, 19 Dec 2011 03:29:20 -0800 (PST)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20111219110120.GK27267@pengutronix.de>
+In-Reply-To: <1324286241-23083-4-git-send-email-robert.jarzmik@free.fr>
+References: <1324286241-23083-1-git-send-email-robert.jarzmik@free.fr>
+ <1324286241-23083-4-git-send-email-robert.jarzmik@free.fr>
+Date: Mon, 19 Dec 2011 14:29:19 +0300
+Message-ID: <CAA4bVAEAOhNDRj7dfZBf2Nkrjv5Bot9iTiX7CJ7PCj6YcXUN7Q@mail.gmail.com>
+From: Antony Pavlov <antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,45 +20,24 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: FAT filesystem write and long names stability
+Subject: Re: [PATCH] commands: add hexdump command
 To: Robert Jarzmik <robert.jarzmik@free.fr>
 Cc: barebox@lists.infradead.org
 
-On Mon, Dec 19, 2011 at 12:01:20PM +0100, Sascha Hauer wrote:
-> On Thu, Dec 15, 2011 at 10:28:38AM +0100, Robert Jarzmik wrote:
-> > Robert Jarzmik <robert.jarzmik@free.fr> writes:
-> > 
-> > > Sascha Hauer <s.hauer@pengutronix.de> writes:
-> > >> It would be great if you could give it some testing as obviously my test
-> > >> patterns didn't reveal the 'create folder' bug you described.
-> > > Tomorrow or wednesday, I'll make the few tests I always do (making a
-> > > directory, copying a file, deleting a file, etc ...) and report.
-> > This is what my tests give back:
-> > 
-> > **** With FAT caching (barebox.git/next + rjk mioa701 support):
-> > barebox:/sdcard time bmp /sdcard/help.bmp 
-> > time: 6895ms
-> > barebox:/sdcard time cp /sdcard/help.bmp /sdcard/toto.tmp
-> > time: 13278ms
-> > barebox:/sdcard ls -l help.bmp
-> > -rwxrwxrwx     230454 help.bmp
-> > barebox:/sdcard 
-> 
-> There is something wrong. These times are far from being acceptable.
+On 19 December 2011 13:17, Robert Jarzmik <robert.jarzmik@free.fr> wrote:
+> Add a hexdump command to copycat the "hexdump -C <file>"
+> unix standard command.
 
-BTW Does your SD card work with a proper frequency?
+md -b -s <file> ?
 
-Sascha
+-- =
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
