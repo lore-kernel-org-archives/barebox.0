@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp6-g21.free.fr ([2a01:e0c:1:1599::15])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Rcdpi-0006XI-D2
- for barebox@lists.infradead.org; Mon, 19 Dec 2011 14:04:52 +0000
+ id 1RckMh-0008Ub-TI
+ for barebox@lists.infradead.org; Mon, 19 Dec 2011 21:03:22 +0000
 From: Robert Jarzmik <robert.jarzmik@free.fr>
-Date: Mon, 19 Dec 2011 15:04:09 +0100
-Message-Id: <1324303449-30045-9-git-send-email-robert.jarzmik@free.fr>
-In-Reply-To: <1324303449-30045-1-git-send-email-robert.jarzmik@free.fr>
-References: <1324303449-30045-1-git-send-email-robert.jarzmik@free.fr>
+Date: Mon, 19 Dec 2011 22:03:05 +0100
+Message-Id: <1324328585-30806-1-git-send-email-robert.jarzmik@free.fr>
+In-Reply-To: <20111219111424.GM27267@pengutronix.de>
+References: <20111219111424.GM27267@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,363 +21,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH V3 8/8] drivers/mtd: add the mtdraw device (data+oob)
+Subject: [PATCH] drivers/mci: pxa fix clockrate
 To: barebox@lists.infradead.org
 
-Add a device to read and write to MTD data and oob
-(/dev/mtdraw<N>).
+The clock rate was incorrectly calculated, leading to a
+frequency of 19.5MHz / 64 instead of 19.5Mz for the host
+controller.
 
-The device is constrained in a separate source file, so that
-further improvement of commands (such as nandwrite) could
-make it useless, and easy to remove.
+with the fix applied, a copy of a file of 230 kB shrinks
+from 6000ms to 123ms.
 
 Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
 ---
- drivers/mtd/Kconfig  |    6 +
- drivers/mtd/Makefile |    5 +-
- drivers/mtd/mtdraw.c |  303 ++++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 312 insertions(+), 2 deletions(-)
- create mode 100644 drivers/mtd/mtdraw.c
+ drivers/mci/pxamci.c |   14 +++++++++-----
+ 1 files changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/mtd/Kconfig b/drivers/mtd/Kconfig
-index a130c74..9137cde 100644
---- a/drivers/mtd/Kconfig
-+++ b/drivers/mtd/Kconfig
-@@ -14,6 +14,12 @@ config MTD_OOB_DEVICE
- 	default y
- 	prompt "Create a device for reading the OOB data"
+diff --git a/drivers/mci/pxamci.c b/drivers/mci/pxamci.c
+index 1634a1d..75b61f0 100644
+--- a/drivers/mci/pxamci.c
++++ b/drivers/mci/pxamci.c
+@@ -161,7 +161,8 @@ static int pxamci_transfer_data(struct pxamci_host *host,
+ static void pxamci_start_cmd(struct pxamci_host *host, struct mci_cmd *cmd,
+ 			     unsigned int cmdat)
+ {
+-	mci_dbg("cmd=(idx=%d,type=%d)\n", cmd->cmdidx, cmd->resp_type);
++	mci_dbg("cmd=(idx=%d,type=%d,clkrt=%d)\n", cmd->cmdidx, cmd->resp_type,
++		host->clkrt);
+ 	if (cmd->resp_type & MMC_RSP_BUSY)
+ 		cmdat |= CMDAT_BUSY;
  
-+config MTD_RAW_DEVICE
-+	bool
-+	select NAND_READ_OOB
-+	default n
-+	prompt "mtdraw device to read/write both data+oob"
-+
- source "drivers/mtd/nand/Kconfig"
- source "drivers/mtd/ubi/Kconfig"
+@@ -277,11 +278,14 @@ static void pxamci_set_ios(struct mci_host *mci, struct device_d *dev,
+ {
+ 	struct pxamci_host *host = to_pxamci(mci);
+ 	unsigned int clk_in = pxa_get_mmcclk();
+-	unsigned long fact;
++	int fact;
  
-diff --git a/drivers/mtd/Makefile b/drivers/mtd/Makefile
-index d41ffd4..67741f4 100644
---- a/drivers/mtd/Makefile
-+++ b/drivers/mtd/Makefile
-@@ -1,5 +1,6 @@
--obj-$(CONFIG_NAND)	+= nand/
--obj-$(CONFIG_UBI)	+= ubi/
-+obj-$(CONFIG_NAND)			+= nand/
-+obj-$(CONFIG_UBI)			+= ubi/
- obj-$(CONFIG_PARTITION_NEED_MTD)	+= partition.o
- obj-$(CONFIG_MTD)			+= core.o
- obj-$(CONFIG_MTD_OOB_DEVICE)		+= mtdoob.o
-+obj-$(CONFIG_MTD_RAW_DEVICE)		+= mtdraw.o
-diff --git a/drivers/mtd/mtdraw.c b/drivers/mtd/mtdraw.c
-new file mode 100644
-index 0000000..b1cce3d
---- /dev/null
-+++ b/drivers/mtd/mtdraw.c
-@@ -0,0 +1,303 @@
-+/*
-+ * MTD raw device
-+ *
-+ * Copyright (C) 2011 Robert Jarzmik
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * Adds a character devices :
-+ *  - mtdraw<N>
-+ *
-+ * Device mtd_raw<N> provides acces to the MTD "pages+OOB". For example if a MTD
-+ * has pages of 512 bytes and OOB of 16 bytes, mtd_oob<N> will be made of blocks
-+ * of 528 bytes, with page data being followed by OOB.
-+ * The layout will be: <page0> <oob0> <page1> <oob1> ... <pageN> <oobN>.
-+ * This means that a read at offset 516 of 20 bytes will give the 12 last bytes
-+ * of the OOB of page0, and the 8 first bytes of page1.
-+ * Same thing applies for writes, which have to be page+oob aligned (ie. offset
-+ * and size should be multiples of (mtd->writesize + mtd->oobsize)).
-+ */
-+
-+#include <common.h>
-+#include <init.h>
-+#include <malloc.h>
-+#include <ioctl.h>
-+#include <errno.h>
-+#include <linux/mtd/mtd.h>
-+
-+#include "mtd.h"
-+
-+/* Must be a multiple of the largest NAND page size */
-+#define RAW_WRITEBUF_SIZE	4096
-+
-+/**
-+ * mtdraw - mtdraw device private data
-+ * @cdev: character device "mtdraw<N>"
-+ * @mtd: MTD device to handle read/writes/erases
-+ *
-+ * @writebuf: buffer to handle unaligned writes (ie. writes of sizes which are
-+ * not multiples of MTD (writesize+oobsize)
-+ * @write_fill: number of bytes in writebuf
-+ * @write_ofs: offset in character device (mtdraw) where last write(s) stored
-+ * bytes because of unaligned writes (ie. remain of writesize+oobsize write)
-+ *
-+ * The mtdraw device must allow unaligned writes. This is enabled by a write buffer which gathers data to issue mtd->write_oob() with full page+oob data.
-+ * Suppose writesize=512, oobsize=16.
-+ * A first write of 512 bytes triggers:
-+ *  - write_ofs = offset of write()
-+ *  - write_fill = 512
-+ *  - copy of the 512 provided bytes into writebuf
-+ *  - no actual mtd->write if done
-+ * A second write of 512 bytes triggers:
-+ *  - copy of the 16 first bytes into writebuf
-+ *  - a mtd->write_oob() from writebuf
-+ *  - empty writebuf
-+ *  - copy the remaining 496 bytes into writebuf
-+ *    => write_fill = 496, write_ofs = offset + 528
-+ * Etc ...
-+ */
-+struct mtdraw {
-+	struct cdev cdev;
-+	struct mtd_info *mtd;
-+	void *writebuf;
-+	int write_fill;
-+	int write_ofs;
-+};
-+
-+static struct mtdraw *to_mtdraw(struct cdev *cdev)
-+{
-+	return cdev->priv;
-+}
-+
-+static struct mtd_info *to_mtd(struct cdev *cdev)
-+{
-+	struct mtdraw *mtdraw = to_mtdraw(cdev);
-+	return mtdraw->mtd;
-+}
-+
-+static ssize_t mtdraw_read_unaligned(struct mtd_info *mtd, void *dst,
-+				     size_t count, int skip, ulong offset)
-+{
-+	struct mtd_oob_ops ops;
-+	ssize_t ret;
-+	int partial = 0;
-+	void *tmp = dst;
-+
-+	if (skip || count < mtd->writesize + mtd->oobsize)
-+		partial = 1;
-+	if (partial)
-+		tmp = malloc(mtd->writesize + mtd->oobsize);
-+	if (!tmp)
-+		return -ENOMEM;
-+	ops.mode = MTD_OOB_RAW;
-+	ops.datbuf = tmp;
-+	ops.len = mtd->writesize;
-+	ops.oobbuf = tmp + mtd->writesize;
-+	ops.ooblen = mtd->oobsize;
-+	ret = mtd->read_oob(mtd, offset, &ops);
-+	if (ret)
-+		goto err;
-+	if (partial)
-+		memcpy(dst, tmp + skip, count);
-+	ret = count;
-+err:
-+	if (partial)
-+		free(tmp);
-+
-+	return ret;
-+}
-+
-+static ssize_t mtdraw_read(struct cdev *cdev, void *buf, size_t count,
-+			    ulong offset, ulong flags)
-+{
-+	struct mtd_info *mtd = to_mtd(cdev);
-+	ssize_t retlen = 0, ret = 1, toread;
-+	ulong numpage;
-+	int skip;
-+
-+	numpage = offset / (mtd->writesize + mtd->oobsize);
-+	skip = offset % (mtd->writesize + mtd->oobsize);
-+
-+	while (ret > 0 && count > 0) {
-+		toread = min_t(int, count, mtd->writesize + mtd->oobsize);
-+		ret = mtdraw_read_unaligned(mtd, buf, toread,
-+					    skip, numpage++ * mtd->writesize);
-+		buf += ret;
-+		skip = 0;
-+		count -= ret;
-+		retlen += ret;
-+	}
-+	if (ret < 0)
-+		printf("err %d\n", ret);
+-	mci_dbg("bus_width=%d, clock=%ud\n", bus_width, clock);
+-	fact = min_t(int, clock / clk_in, 1);
+-	fact = max_t(int, fact, 1 << 6);
++	mci_dbg("bus_width=%d, clock=%u\n", bus_width, clock);
++	if (clock)
++		fact = min_t(int, clk_in / clock, 1 << 6);
 +	else
-+		ret = retlen;
-+	return ret;
-+}
-+
-+#ifdef CONFIG_MTD_WRITE
-+static ssize_t mtdraw_blkwrite(struct mtd_info *mtd, const void *buf,
-+			       ulong offset)
-+{
-+	struct mtd_oob_ops ops;
-+	int ret;
-+
-+	ops.mode = MTD_OOB_RAW;
-+	ops.datbuf = (void *)buf;
-+	ops.len = mtd->writesize;
-+	ops.oobbuf = (void *)buf + mtd->writesize;
-+	ops.ooblen = mtd->oobsize;
-+	ret = mtd->write_oob(mtd, offset, &ops);
-+	if (!ret)
-+		ret = ops.retlen + ops.oobretlen;
-+	return ret;
-+}
-+
-+static void mtdraw_fillbuf(struct mtdraw *mtdraw, const void *src, int nbbytes)
-+{
-+	memcpy(mtdraw->writebuf + mtdraw->write_fill, src, nbbytes);
-+	mtdraw->write_fill += nbbytes;
-+}
-+
-+static ssize_t mtdraw_write(struct cdev *cdev, const void *buf, size_t count,
-+			    ulong offset, ulong flags)
-+{
-+	struct mtdraw *mtdraw = to_mtdraw(cdev);
-+	struct mtd_info *mtd = to_mtd(cdev);
-+	int bsz = mtd->writesize + mtd->oobsize;
-+	ulong numpage;
-+	size_t retlen = 0, tofill;
-+	int ret = 0;
-+
-+	if (mtdraw->write_fill &&
-+	    mtdraw->write_ofs + mtdraw->write_fill != offset)
-+		return -EINVAL;
-+	if (mtdraw->write_fill == 0 && offset % bsz)
-+		return -EINVAL;
-+
-+	if (mtdraw->write_fill) {
-+		tofill = min_t(size_t, count, bsz - mtdraw->write_fill);
-+		mtdraw_fillbuf(mtdraw, buf, tofill);
-+		offset += tofill;
-+		count -= tofill;
-+		retlen += tofill;
-+	}
-+
-+	if (mtdraw->write_fill == bsz) {
-+		ret = mtdraw_blkwrite(mtd, mtdraw->writebuf, mtdraw->write_ofs);
-+		retlen += ret;
-+		mtdraw->write_fill = 0;
-+	}
-+
-+	numpage = offset / (mtd->writesize + mtd->oobsize);
-+	while (ret >= 0 && count >= bsz) {
-+		ret = mtdraw_blkwrite(mtd, buf + retlen,
-+				   mtd->writesize * numpage++);
-+		count -= ret;
-+		retlen += ret;
-+		offset += ret;
-+	}
-+
-+	if (ret >= 0 && count) {
-+		mtdraw->write_ofs = offset - mtdraw->write_fill;
-+		mtdraw_fillbuf(mtdraw, buf + retlen, count);
-+	}
-+
-+	if (ret < 0) {
-+		printf("err %d\n", ret);
-+		return ret;
-+	} else {
-+		return retlen;
-+	}
-+}
-+
-+static ssize_t mtdraw_erase(struct cdev *cdev, size_t count, ulong offset)
-+{
-+	struct mtd_info *mtd = to_mtd(cdev);
-+	struct erase_info erase;
-+	int ret;
-+
-+	offset = offset / (mtd->writesize + mtd->oobsize) * mtd->writesize;
-+	count = count / (mtd->writesize + mtd->oobsize) * mtd->writesize;
-+
-+	memset(&erase, 0, sizeof(erase));
-+	erase.mtd = mtd;
-+	erase.addr = offset;
-+	erase.len = mtd->erasesize;
-+
-+	while (count > 0) {
-+		debug("erase %d %d\n", erase.addr, erase.len);
-+
-+		ret = mtd->block_isbad(mtd, erase.addr);
-+		if (ret > 0) {
-+			printf("Skipping bad block at 0x%08x\n", erase.addr);
-+		} else {
-+			ret = mtd->erase(mtd, &erase);
-+			if (ret)
-+				return ret;
-+		}
-+
-+		erase.addr += mtd->erasesize;
-+		count -= count > mtd->erasesize ? mtd->erasesize : count;
-+	}
-+
-+	return 0;
-+}
-+#else
-+static ssize_t mtdraw_write(struct cdev *cdev, const void *buf, size_t count,
-+			    ulong offset, ulong flags)
-+{
-+	return 0;
-+}
-+static ssize_t mtdraw_erase(struct cdev *cdev, size_t count, ulong offset)
-+{
-+	return 0;
-+}
-+#endif
-+
-+static const struct file_operations mtd_raw_fops = {
-+	.read		= mtdraw_read,
-+	.write		= mtdraw_write,
-+	.erase		= mtdraw_erase,
-+	.ioctl		= mtd_ioctl,
-+	.lseek		= dev_lseek_default,
-+};
-+
-+static int add_mtdraw_device(struct mtd_info *mtd, char *devname)
-+{
-+	struct mtdraw *mtdraw;
-+
-+	mtdraw = xzalloc(sizeof(*mtdraw));
-+	mtdraw->writebuf = xmalloc(RAW_WRITEBUF_SIZE);
-+	mtdraw->mtd = mtd;
-+
-+	mtdraw->cdev.ops = (struct file_operations *)&mtd_raw_fops;
-+	mtdraw->cdev.size = mtd->size / mtd->writesize *
-+		(mtd->writesize + mtd->oobsize);
-+	mtdraw->cdev.name = asprintf("%sraw%d", devname, mtd->class_dev.id);
-+	mtdraw->cdev.priv = mtdraw;
-+	mtdraw->cdev.dev = &mtd->class_dev;
-+	mtdraw->cdev.mtd = mtd;
-+	devfs_create(&mtdraw->cdev);
-+
-+	return 0;
-+}
-+
-+static struct mtddev_hook mtdraw_hook = {
-+	.add_mtd_device = add_mtdraw_device,
-+};
-+
-+static int __init register_mtdraw(void)
-+{
-+	mtdcore_add_hook(&mtdraw_hook);
-+	return 0;
-+}
-+
-+coredevice_initcall(register_mtdraw);
++		fact = 1 << 6;
++	fact = max_t(int, fact, 1);
+ 
+ 	/*
+ 	 * We calculate clkrt here, and will write it on the next command
 -- 
 1.7.5.4
 
