@@ -1,13 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp6-g21.free.fr ([2a01:e0c:1:1599::15])
+Received: from 8.mo5.mail-out.ovh.net ([178.32.116.78]
+ helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RckMh-0008Ub-TI
- for barebox@lists.infradead.org; Mon, 19 Dec 2011 21:03:22 +0000
-From: Robert Jarzmik <robert.jarzmik@free.fr>
-Date: Mon, 19 Dec 2011 22:03:05 +0100
-Message-Id: <1324328585-30806-1-git-send-email-robert.jarzmik@free.fr>
-In-Reply-To: <20111219111424.GM27267@pengutronix.de>
-References: <20111219111424.GM27267@pengutronix.de>
+ id 1Rd0Qt-0003me-0i
+ for barebox@lists.infradead.org; Tue, 20 Dec 2011 14:12:44 +0000
+Received: from mail173.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 10899FFBAAC
+ for <barebox@lists.infradead.org>; Tue, 20 Dec 2011 15:13:16 +0100 (CET)
+Date: Tue, 20 Dec 2011 15:07:45 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20111220140745.GG7899@game.jcrosoft.org>
+References: <1324133529-2036-1-git-send-email-s.hauer@pengutronix.de>
+ <1324133529-2036-8-git-send-email-s.hauer@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1324133529-2036-8-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,62 +23,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] drivers/mci: pxa fix clockrate
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 7/9] ARM: move exception vectors away from start of binary
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-The clock rate was incorrectly calculated, leading to a
-frequency of 19.5MHz / 64 instead of 19.5Mz for the host
-controller.
+On 15:52 Sat 17 Dec     , Sascha Hauer wrote:
+> Traditionally U-Boot and barebox have the exception vectors at
+> the start of the binary. There is no real reason in doing so,
+> because in the majority of cases this data will not be at 0x0
+> where it could be used as vectors directly anyway.
+> This patch puts the vectors into a separate linker section and
+> defines an head function which is placed at the start of the
+> image instead. Putting this in a separate function also has
+> the advantage that it can be placed at the start of images
+> which require an additional header like several Freescale i.MX
+> images. As the head function contains the barebox arm magic
+> those images can now also be detected aas barebox images.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c  |    3 ++-
+>  arch/arm/boards/eukrea_cpuimx35/flash_header.c     |    3 ++-
+>  arch/arm/boards/eukrea_cpuimx51/flash_header.c     |    3 ++-
+>  arch/arm/boards/freescale-mx25-3-stack/3stack.c    |    3 ++-
+>  .../boards/freescale-mx35-3-stack/flash_header.c   |    3 ++-
+>  arch/arm/boards/freescale-mx51-pdk/flash_header.c  |    3 ++-
+>  arch/arm/boards/freescale-mx53-loco/flash_header.c |    3 ++-
+>  arch/arm/boards/freescale-mx53-smd/flash_header.c  |    3 ++-
+>  arch/arm/cpu/mmu.c                                 |    4 ++--
+>  arch/arm/cpu/start.c                               |   14 +++++++-------
+>  arch/arm/include/asm/barebox-arm-head.h            |   17 +++++++++++++++++
+>  arch/arm/include/asm/barebox-arm.h                 |    2 ++
+>  arch/arm/lib/barebox.lds.S                         |    5 ++++-
+>  13 files changed, 48 insertions(+), 18 deletions(-)
+>  create mode 100644 arch/arm/include/asm/barebox-arm-head.h
+you need to update the rm9200 too
 
-with the fix applied, a copy of a file of 230 kB shrinks
-from 6000ms to 123ms.
-
-Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
----
- drivers/mci/pxamci.c |   14 +++++++++-----
- 1 files changed, 9 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/mci/pxamci.c b/drivers/mci/pxamci.c
-index 1634a1d..75b61f0 100644
---- a/drivers/mci/pxamci.c
-+++ b/drivers/mci/pxamci.c
-@@ -161,7 +161,8 @@ static int pxamci_transfer_data(struct pxamci_host *host,
- static void pxamci_start_cmd(struct pxamci_host *host, struct mci_cmd *cmd,
- 			     unsigned int cmdat)
- {
--	mci_dbg("cmd=(idx=%d,type=%d)\n", cmd->cmdidx, cmd->resp_type);
-+	mci_dbg("cmd=(idx=%d,type=%d,clkrt=%d)\n", cmd->cmdidx, cmd->resp_type,
-+		host->clkrt);
- 	if (cmd->resp_type & MMC_RSP_BUSY)
- 		cmdat |= CMDAT_BUSY;
- 
-@@ -277,11 +278,14 @@ static void pxamci_set_ios(struct mci_host *mci, struct device_d *dev,
- {
- 	struct pxamci_host *host = to_pxamci(mci);
- 	unsigned int clk_in = pxa_get_mmcclk();
--	unsigned long fact;
-+	int fact;
- 
--	mci_dbg("bus_width=%d, clock=%ud\n", bus_width, clock);
--	fact = min_t(int, clock / clk_in, 1);
--	fact = max_t(int, fact, 1 << 6);
-+	mci_dbg("bus_width=%d, clock=%u\n", bus_width, clock);
-+	if (clock)
-+		fact = min_t(int, clk_in / clock, 1 << 6);
-+	else
-+		fact = 1 << 6;
-+	fact = max_t(int, fact, 1);
- 
- 	/*
- 	 * We calculate clkrt here, and will write it on the next command
--- 
-1.7.5.4
-
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
