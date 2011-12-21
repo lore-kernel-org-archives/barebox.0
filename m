@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.tricorecenter.de ([217.6.246.34] helo=root.phytec.de)
- by casper.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RdNx4-0003cX-0P
- for barebox@lists.infradead.org; Wed, 21 Dec 2011 15:19:31 +0000
-From: Teresa Gamez <T.Gamez@phytec.de>
-In-Reply-To: <20111221134958.GV27267@pengutronix.de>
-References: <1324467373-27201-1-git-send-email-s.hauer@pengutronix.de>
- <1324472748.18539.37.camel@lws-gamez>
- <20111221134958.GV27267@pengutronix.de>
-Date: Wed, 21 Dec 2011 16:19:36 +0100
-Message-ID: <1324480776.18539.107.camel@lws-gamez>
-Mime-Version: 1.0
+Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1RdThX-0006Lp-0J
+ for barebox@lists.infradead.org; Wed, 21 Dec 2011 21:27:53 +0000
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+References: <1324303449-30045-1-git-send-email-robert.jarzmik@free.fr>
+ <1324303449-30045-3-git-send-email-robert.jarzmik@free.fr>
+ <20111221110032.GS27267@pengutronix.de>
+Date: Wed, 21 Dec 2011 22:27:40 +0100
+In-Reply-To: <20111221110032.GS27267@pengutronix.de> (Sascha Hauer's message
+ of "Wed, 21 Dec 2011 12:00:32 +0100")
+Message-ID: <87vcp9aa43.fsf@free.fr>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,65 +24,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: add board support for Phytec phyCARD-M aka pca101
+Subject: Re: [PATCH V3 2/8] drivers/mtd: cosmetic changes
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Am Mittwoch, den 21.12.2011, 14:49 +0100 schrieb Sascha Hauer:
-> On Wed, Dec 21, 2011 at 02:05:48PM +0100, Teresa Gamez wrote:
-> > Hello Sascha,
-> > 
-> > we want to use a different name convention for all the phyCARDs since it
-> > is quite chaotic atm.
-> 
-> Indeed.
-> 
-> > Christian is working on patches for the phyCARD-M1
-> > with the new name convention.
-> 
-> How will the new name convention look like?
+Sascha Hauer <s.hauer@pengutronix.de> writes:
 
-The board name looks like this:
+>> -#ifdef CONFIG_NAND_OOB_DEVICE
+>> -static ssize_t nand_read_oob(struct cdev *cdev, void *buf, size_t count, ulong offset, ulong flags)
+>> +#ifdef CONFIG_NAND_READ_DEVICE
+>> +static ssize_t nand_read_oob(struct cdev *cdev, void *buf, size_t count,
+>> +			     ulong offset, ulong flags)
+>
+> You change the name of the Kconfig variable here. This shouldn't be here
+> and breaks read_oob support.
+True, but that was eliminated by a further patch (split of main mtd device from
+oob device). Still, I removed that hunk for V4.
 
-phyCARD-<generation>-<type><revision>
+Cheers.
 
-The phyCARD-M is called correctly phyCARD-A-M1.
-
-The Kconfig suppose look like this:
-
-@@ -356,6 +358,13 @@ config MACH_PCM043
- 	  Say Y here if you are using Phytec's phyCORE-i.MX35 (pcm043)
-equipped
- 	  with a Freescale i.MX35 Processor
- 
-+config MACH_PCAAM1
-+        bool "phyCARD-A-M1"
-+        select MACH_HAS_LOWLEVEL_INIT
-+        help
-+           Say Y here if you are using Phytec's phyCARD-A-M1 (pca-a-m1)
-equipped
-+           with a Freescale i.MX35 Processor
-+
- config MACH_GUF_CUPID
- 	bool "Garz+Fricke Cupid"
- 	select MACH_HAS_LOWLEVEL_INIT
- 
-Board code name:
-a/arch/arm/boards/phycard-a-m1/pca-a-m1.c
-
-Function names (example):
-static int pcaam1_init_devices(void)
-
-defconfig:
-arch/arm/configs/phycard_a_m1_defconfig
-
-Teresa
-
-> 
-> Sascha
-> 
-
-
+-- 
+Robert
 
 _______________________________________________
 barebox mailing list
