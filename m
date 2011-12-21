@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.visioncatalog.de ([217.6.246.34] helo=root.phytec.de)
- by casper.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RdM41-0000Xp-MU
- for barebox@lists.infradead.org; Wed, 21 Dec 2011 13:18:34 +0000
-From: Teresa Gamez <T.Gamez@phytec.de>
-In-Reply-To: <1323424858-14282-1-git-send-email-t.gamez@phytec.de>
-References: <1323424858-14282-1-git-send-email-t.gamez@phytec.de>
-Date: Wed, 21 Dec 2011 14:18:38 +0100
-Message-ID: <1324473518.18539.45.camel@lws-gamez>
-Mime-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RdMYi-0005Y5-PP
+ for barebox@lists.infradead.org; Wed, 21 Dec 2011 13:50:17 +0000
+Date: Wed, 21 Dec 2011 14:49:58 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20111221134958.GV27267@pengutronix.de>
+References: <1324467373-27201-1-git-send-email-s.hauer@pengutronix.de>
+ <1324472748.18539.37.camel@lws-gamez>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1324472748.18539.37.camel@lws-gamez>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,49 +19,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] nand_omap_bch_decoder: Fix up error detection
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Steve Schefter <steve@scheftech.com>, barebox@lists.infradead.org
+Subject: Re: [PATCH] ARM: add board support for Phytec phyCARD-M aka pca101
+To: Teresa Gamez <T.Gamez@phytec.de>
+Cc: barebox@lists.infradead.org
 
-QW0gRnJlaXRhZywgZGVuIDA5LjEyLjIwMTEsIDExOjAwICswMTAwIHNjaHJpZWIgVGVyZXNhIEfD
-oW1lejoKPiBGcm9tOiBTdGV2ZSBTY2hlZnRlciA8c3RldmVAc2NoZWZ0ZWNoLmNvbT4KPiAKPiBC
-aXQgZXJyb3JzIGluIHRoZSBFQ0MgaXRzZWxmIGFyZSBub3QgYmVlaW5nIHRha2VuIGludG8gYWNj
-b3VudC4KPiBJbiB0aGlzIGNhc2VzIHRoZSBudW1iZXIgb2YgZGV0ZWN0ZWQgZXJyb3JzICE9IG51
-bWJlciBvZiBjb3JyZWN0ZWQgZXJyb3JzIGFuZAo+IGNoaWVuIHNlYXJjaCByZXR1cm5zIGFuIGVy
-cm9yLgo+IFRoaXMgcGF0Y2ggYWRkcyBkZXRlY3Rpb24gb2YgYml0IGVycm9ycyBpbiB0aGUgRUND
-Lgo+IAo+IFNpZ25lZC1vZmYtYnk6IFN0ZXZlIFNjaGVmdGVyIDxzdGV2ZUBzY2hlZnRlY2guY29t
-Pgo+IFNpZ25lZC1vZmYtYnk6IFRlcmVzYSBHw6FtZXogPHQuZ2FtZXpAcGh5dGVjLmRlPgoKUGlu
-Zz8KClJlZ2FyZHMKVGVyZXNhCgo+IC0tLQo+ICBkcml2ZXJzL210ZC9uYW5kL25hbmRfb21hcF9i
-Y2hfZGVjb2Rlci5jIHwgICAgOCArKysrKystLQo+ICAxIGZpbGVzIGNoYW5nZWQsIDYgaW5zZXJ0
-aW9ucygrKSwgMiBkZWxldGlvbnMoLSkKPiAKPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9tdGQvbmFu
-ZC9uYW5kX29tYXBfYmNoX2RlY29kZXIuYyBiL2RyaXZlcnMvbXRkL25hbmQvbmFuZF9vbWFwX2Jj
-aF9kZWNvZGVyLmMKPiBpbmRleCAzNTZmNzFmLi5kMTQ1NWU0IDEwMDY0NAo+IC0tLSBhL2RyaXZl
-cnMvbXRkL25hbmQvbmFuZF9vbWFwX2JjaF9kZWNvZGVyLmMKPiArKysgYi9kcml2ZXJzL210ZC9u
-YW5kL25hbmRfb21hcF9iY2hfZGVjb2Rlci5jCj4gQEAgLTY0LDYgKzY0LDcgQEAgc3RhdGljIGlu
-dCBjaGllbih1bnNpZ25lZCBpbnQgc2VsZWN0XzRfOCwgaW50IGVycl9udW1zLAo+ICAJCQkJdW5z
-aWduZWQgaW50IGVycltdLCB1bnNpZ25lZCBpbnQgKmxvY2F0aW9uKQo+ICB7Cj4gIAlpbnQgaSwg
-Y291bnQ7IC8qIE51bWJlciBvZiBkZWN0ZWN0ZWQgZXJyb3JzICovCj4gKwlpbnQgZXJyb3JzaW5l
-Y2M7IC8qIE51bWJlciBvZiBkZXRlY3RlZCBlcnJvcnMgaW4gRUNDIGJpdHMgKi8KPiAgCS8qIENv
-bnRhaW5zIGFjY3VtdWxhdGlvbiBvZiBldmFsdWF0aW9uIGF0IHheaSAoaToxLT44KSAqLwo+ICAJ
-dW5zaWduZWQgaW50IGdhbW1hc1s4XSA9IHswfTsKPiAgCXVuc2lnbmVkIGludCBhbHBoYTsKPiBA
-QCAtNzcsNyArNzgsOCBAQCBzdGF0aWMgaW50IGNoaWVuKHVuc2lnbmVkIGludCBzZWxlY3RfNF84
-LCBpbnQgZXJyX251bXMsCj4gIAkJZ2FtbWFzW2ldID0gZXJyW2ldOwo+ICAKPiAgCWNvdW50ID0g
-MDsKPiAtCWZvciAoaSA9IDE7IChpIDw9IG5uKSAmJiAoY291bnQgPCBlcnJfbnVtcyk7IGkrKykg
-ewo+ICsJZXJyb3JzaW5lY2MgPSAwOwo+ICsJZm9yIChpID0gMTsgKGkgPD0gbm4pICYmICgoY291
-bnQgKyBlcnJvcnNpbmVjYykgPCBlcnJfbnVtcyk7IGkrKykgewo+ICAKPiAgCQkvKiBSZXN1bHQg
-b2YgZXZhbHVhdGlvbiBhdCByb290ICovCj4gIAkJZWxwX3N1bSA9IDEgXiBnYW1tYXNbMF0gXiBn
-YW1tYXNbMV0gXgo+IEBAIC0xMDgsMTEgKzExMCwxMyBAQCBzdGF0aWMgaW50IGNoaWVuKHVuc2ln
-bmVkIGludCBzZWxlY3RfNF84LCBpbnQgZXJyX251bXMsCj4gIAkJCWlmIChpID49IDIgKiBlY2Nf
-Yml0cykKPiAgCQkJCWxvY2F0aW9uW2NvdW50KytdID0KPiAgCQkJCQlra19zaG9ydGVuIC0gKGJp
-dCAtIDIgKiBlY2NfYml0cykgLSAxOwo+ICsJCQllbHNlCj4gKwkJCQllcnJvcnNpbmVjYysrOwo+
-ICAJCX0KPiAgCX0KPiAgCj4gIAkvKiBGYWlsdXJlOiBOby4gb2YgZGV0ZWN0ZWQgZXJyb3JzICE9
-IE5vLiBvciBjb3JyZWN0ZWQgZXJyb3JzICovCj4gLQlpZiAoY291bnQgIT0gZXJyX251bXMpIHsK
-PiArCWlmICgoY291bnQgKyBlcnJvcnNpbmVjYykgIT0gZXJyX251bXMpIHsKPiAgCQljb3VudCA9
-IC0xOwo+ICAJCXByaW50ayhLRVJOX0VSUiAiQkNIIGRlY29kaW5nIGZhaWxlZFxuIik7Cj4gIAl9
-CgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJv
-eCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5p
-bmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Wed, Dec 21, 2011 at 02:05:48PM +0100, Teresa Gamez wrote:
+> Hello Sascha,
+> 
+> we want to use a different name convention for all the phyCARDs since it
+> is quite chaotic atm.
+
+Indeed.
+
+> Christian is working on patches for the phyCARD-M1
+> with the new name convention.
+
+How will the new name convention look like?
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
