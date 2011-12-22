@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RdfXA-0007KU-Th
- for barebox@lists.infradead.org; Thu, 22 Dec 2011 10:06:02 +0000
-From: Robert Jarzmik <robert.jarzmik@free.fr>
-References: <1324503044-6085-1-git-send-email-robert.jarzmik@free.fr>
- <20111222091836.GX27267@pengutronix.de>
-Date: Thu, 22 Dec 2011 11:05:46 +0100
-In-Reply-To: <20111222091836.GX27267@pengutronix.de> (Sascha Hauer's message
- of "Thu, 22 Dec 2011 10:18:36 +0100")
-Message-ID: <87ty4sncp1.fsf@free.fr>
-MIME-Version: 1.0
+Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1RdjbB-0006Sp-H9
+ for barebox@lists.infradead.org; Thu, 22 Dec 2011 14:26:25 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 896B1BF0D9
+ for <barebox@lists.infradead.org>; Thu, 22 Dec 2011 15:31:41 +0100 (CET)
+From: Juergen Kilb <J.Kilb@phytec.de>
+Date: Thu, 22 Dec 2011 15:25:57 +0100
+Message-Id: <1324563957-30984-2-git-send-email-J.Kilb@phytec.de>
+In-Reply-To: <1324563957-30984-1-git-send-email-J.Kilb@phytec.de>
+References: <1324563957-30984-1-git-send-email-J.Kilb@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,29 +19,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH V4 1/7] drivers/mtd: move nand.c into core.c
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/2] Change the machine id/name to follow the phyCARD naming
+ convention. This patch can be dropped if the phyCARD-A-L1 is updated in the
+ official machine registry.
+To: barebox@lists.infradead.org
+Cc: Juergen Kilb <J.Kilb@phytec.de>
 
-Sascha Hauer <s.hauer@pengutronix.de> writes:
+Signed-off-by: Juergen Kilb <J.Kilb@phytec.de>
+---
+ arch/arm/tools/mach-types |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-> Hi Robert,
->
-> The series looks good now. It works on my pcm043 board and seems to have
-> no bisecting breakage anymore. Applied to next.
-That's great.
-
-As no good deed goes unpunished, this will trigger the next patchset adding
-MSystem's docg3 support, rebased on next :)
-
-Cheers.
-
+diff --git a/arch/arm/tools/mach-types b/arch/arm/tools/mach-types
+index d593026..042bf52 100644
+--- a/arch/arm/tools/mach-types
++++ b/arch/arm/tools/mach-types
+@@ -2814,7 +2814,7 @@ omap3_braillo		MACH_OMAP3_BRAILLO	OMAP3_BRAILLO		2839
+ spyplug			MACH_SPYPLUG		SPYPLUG			2840
+ ginger			MACH_GINGER		GINGER			2841
+ tny_t3530		MACH_TNY_T3530		TNY_T3530		2842
+-pca102			MACH_PCA102		PCA102			2843
++pcaal1			MACH_PCAAL1		PCAAL1			2843
+ spade			MACH_SPADE		SPADE			2844
+ mxc25_topaz		MACH_MXC25_TOPAZ	MXC25_TOPAZ		2845
+ t5325			MACH_T5325		T5325			2846
 -- 
-Robert
+1.7.0.4
+
 
 _______________________________________________
 barebox mailing list
