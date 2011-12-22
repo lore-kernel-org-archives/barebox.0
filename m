@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp6-g21.free.fr ([2a01:e0c:1:1599::15])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Rdkvl-00026r-7U
- for barebox@lists.infradead.org; Thu, 22 Dec 2011 15:51:44 +0000
+ id 1Rdkvs-00027B-2c
+ for barebox@lists.infradead.org; Thu, 22 Dec 2011 15:51:49 +0000
 From: Robert Jarzmik <robert.jarzmik@free.fr>
-Date: Thu, 22 Dec 2011 16:51:19 +0100
-Message-Id: <1324569082-17117-1-git-send-email-robert.jarzmik@free.fr>
+Date: Thu, 22 Dec 2011 16:51:21 +0100
+Message-Id: <1324569082-17117-3-git-send-email-robert.jarzmik@free.fr>
+In-Reply-To: <1324569082-17117-1-git-send-email-robert.jarzmik@free.fr>
+References: <1324569082-17117-1-git-send-email-robert.jarzmik@free.fr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,49 +21,138 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH V2 0/3] Add MSystems Disk-On-Chip G3 support
+Subject: [PATCH V2 2/3] lib: add bitrev utility
 To: barebox@lists.infradead.org
 
-This patchset brings support for M-Systems disk-on-chip G3
-chips. Almost all code is taken from linux kernel (bitrev,
-bch, docg3), and slightly amended for barebox.
+Add bit reversing utility, taken from the linux kernel.
 
-This patchset relies on a previous patchset "drivers/mtd:
-add a core" included in barebox.git/next, and is rebased on
-top of it.
-
-This patchset won't bring hopefully, as it doesn't change
-anything outside of its own scope.
-
-Cheers.
-
-Robert Jarzmik (3):
-  lib: add BCH encoding/decoding
-  lib: add bitrev utility
-  drivers/mtd: add docg3 chip
-
- drivers/mtd/Kconfig          |    1 +
- drivers/mtd/Makefile         |    1 +
- drivers/mtd/devices/Kconfig  |   16 +
- drivers/mtd/devices/Makefile |    5 +
- drivers/mtd/devices/docg3.c  | 1196 ++++++++++++++++++++++++++++++++++++
- drivers/mtd/devices/docg3.h  |  283 +++++++++
- include/linux/bch.h          |   79 +++
- include/linux/bitrev.h       |   16 +
- lib/Kconfig                  |    7 +
- lib/Makefile                 |    2 +
- lib/bch.c                    | 1366 ++++++++++++++++++++++++++++++++++++++++++
- lib/bitrev.c                 |   68 +++
- 12 files changed, 3040 insertions(+), 0 deletions(-)
- create mode 100644 drivers/mtd/devices/Kconfig
- create mode 100644 drivers/mtd/devices/Makefile
- create mode 100644 drivers/mtd/devices/docg3.c
- create mode 100644 drivers/mtd/devices/docg3.h
- create mode 100644 include/linux/bch.h
+Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
+---
+ include/linux/bitrev.h |   16 +++++++++++
+ lib/Kconfig            |    3 ++
+ lib/Makefile           |    1 +
+ lib/bitrev.c           |   68 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 88 insertions(+), 0 deletions(-)
  create mode 100644 include/linux/bitrev.h
- create mode 100644 lib/bch.c
  create mode 100644 lib/bitrev.c
 
+diff --git a/include/linux/bitrev.h b/include/linux/bitrev.h
+new file mode 100644
+index 0000000..7ffe03f
+--- /dev/null
++++ b/include/linux/bitrev.h
+@@ -0,0 +1,16 @@
++#ifndef _LINUX_BITREV_H
++#define _LINUX_BITREV_H
++
++#include <linux/types.h>
++
++extern u8 const byte_rev_table[256];
++
++static inline u8 bitrev8(u8 byte)
++{
++	return byte_rev_table[byte];
++}
++
++extern u16 bitrev16(u16 in);
++extern u32 bitrev32(u32 in);
++
++#endif /* _LINUX_BITREV_H */
+diff --git a/lib/Kconfig b/lib/Kconfig
+index 83ac1ac..3339a9a 100644
+--- a/lib/Kconfig
++++ b/lib/Kconfig
+@@ -23,4 +23,7 @@ config OFTREE
+ config BCH
+        bool
+ 
++config BITREV
++       bool
++
+ endmenu
+diff --git a/lib/Makefile b/lib/Makefile
+index 04c5487..7799e69 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -32,3 +32,4 @@ obj-$(CONFIG_PROCESS_ESCAPE_SEQUENCE)	+= process_escape_sequence.o
+ obj-$(CONFIG_FDT)	+= fdt/
+ obj-y			+= uncompress.o
+ obj-$(CONFIG_BCH)	+= bch.o
++obj-$(CONFIG_BITREV)	+= bitrev.o
+diff --git a/lib/bitrev.c b/lib/bitrev.c
+new file mode 100644
+index 0000000..2662760
+--- /dev/null
++++ b/lib/bitrev.c
+@@ -0,0 +1,68 @@
++/*
++ * Bit reversal module
++ *
++ * Copyright (C) Akinobu Mita
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * Taken from linux kernel.
++ */
++#include <linux/types.h>
++#include <linux/bitrev.h>
++
++const u8 byte_rev_table[256] = {
++	0x00, 0x80, 0x40, 0xc0, 0x20, 0xa0, 0x60, 0xe0,
++	0x10, 0x90, 0x50, 0xd0, 0x30, 0xb0, 0x70, 0xf0,
++	0x08, 0x88, 0x48, 0xc8, 0x28, 0xa8, 0x68, 0xe8,
++	0x18, 0x98, 0x58, 0xd8, 0x38, 0xb8, 0x78, 0xf8,
++	0x04, 0x84, 0x44, 0xc4, 0x24, 0xa4, 0x64, 0xe4,
++	0x14, 0x94, 0x54, 0xd4, 0x34, 0xb4, 0x74, 0xf4,
++	0x0c, 0x8c, 0x4c, 0xcc, 0x2c, 0xac, 0x6c, 0xec,
++	0x1c, 0x9c, 0x5c, 0xdc, 0x3c, 0xbc, 0x7c, 0xfc,
++	0x02, 0x82, 0x42, 0xc2, 0x22, 0xa2, 0x62, 0xe2,
++	0x12, 0x92, 0x52, 0xd2, 0x32, 0xb2, 0x72, 0xf2,
++	0x0a, 0x8a, 0x4a, 0xca, 0x2a, 0xaa, 0x6a, 0xea,
++	0x1a, 0x9a, 0x5a, 0xda, 0x3a, 0xba, 0x7a, 0xfa,
++	0x06, 0x86, 0x46, 0xc6, 0x26, 0xa6, 0x66, 0xe6,
++	0x16, 0x96, 0x56, 0xd6, 0x36, 0xb6, 0x76, 0xf6,
++	0x0e, 0x8e, 0x4e, 0xce, 0x2e, 0xae, 0x6e, 0xee,
++	0x1e, 0x9e, 0x5e, 0xde, 0x3e, 0xbe, 0x7e, 0xfe,
++	0x01, 0x81, 0x41, 0xc1, 0x21, 0xa1, 0x61, 0xe1,
++	0x11, 0x91, 0x51, 0xd1, 0x31, 0xb1, 0x71, 0xf1,
++	0x09, 0x89, 0x49, 0xc9, 0x29, 0xa9, 0x69, 0xe9,
++	0x19, 0x99, 0x59, 0xd9, 0x39, 0xb9, 0x79, 0xf9,
++	0x05, 0x85, 0x45, 0xc5, 0x25, 0xa5, 0x65, 0xe5,
++	0x15, 0x95, 0x55, 0xd5, 0x35, 0xb5, 0x75, 0xf5,
++	0x0d, 0x8d, 0x4d, 0xcd, 0x2d, 0xad, 0x6d, 0xed,
++	0x1d, 0x9d, 0x5d, 0xdd, 0x3d, 0xbd, 0x7d, 0xfd,
++	0x03, 0x83, 0x43, 0xc3, 0x23, 0xa3, 0x63, 0xe3,
++	0x13, 0x93, 0x53, 0xd3, 0x33, 0xb3, 0x73, 0xf3,
++	0x0b, 0x8b, 0x4b, 0xcb, 0x2b, 0xab, 0x6b, 0xeb,
++	0x1b, 0x9b, 0x5b, 0xdb, 0x3b, 0xbb, 0x7b, 0xfb,
++	0x07, 0x87, 0x47, 0xc7, 0x27, 0xa7, 0x67, 0xe7,
++	0x17, 0x97, 0x57, 0xd7, 0x37, 0xb7, 0x77, 0xf7,
++	0x0f, 0x8f, 0x4f, 0xcf, 0x2f, 0xaf, 0x6f, 0xef,
++	0x1f, 0x9f, 0x5f, 0xdf, 0x3f, 0xbf, 0x7f, 0xff,
++};
++
++u16 bitrev16(u16 x)
++{
++	return (bitrev8(x & 0xff) << 8) | bitrev8(x >> 8);
++}
++
++/**
++ * bitrev32 - reverse the order of bits in a u32 value
++ * @x: value to be bit-reversed
++ */
++u32 bitrev32(u32 x)
++{
++	return (bitrev16(x & 0xffff) << 16) | bitrev16(x >> 16);
++}
 -- 
 1.7.5.4
 
