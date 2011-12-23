@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Re1zV-0007Mh-Hq
- for barebox@lists.infradead.org; Fri, 23 Dec 2011 10:04:43 +0000
-Date: Fri, 23 Dec 2011 11:04:21 +0100
+ id 1Re2GR-0002eH-J9
+ for barebox@lists.infradead.org; Fri, 23 Dec 2011 10:22:12 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20111223100421.GB27267@pengutronix.de>
-References: <1323353029-17281-1-git-send-email-antonynpavlov@gmail.com>
- <20111209091729.GZ27267@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20111209091729.GZ27267@pengutronix.de>
+Date: Fri, 23 Dec 2011 11:22:01 +0100
+Message-Id: <1324635721-20195-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,56 +14,162 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC PATCH 0/3] add tlsf memory allocator
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] uart drivers: use xzalloc instead of xmalloc
+To: barebox@lists.infradead.org
 
-On Fri, Dec 09, 2011 at 10:17:29AM +0100, Sascha Hauer wrote:
-> Hi Antony,
-> 
-> On Thu, Dec 08, 2011 at 06:03:46PM +0400, Antony Pavlov wrote:
-> > This patch series adds the tlsf memory allocator to barebox.
-> > 
-> > TLSF: Two Level Segregated Fit memory allocator implementation.
-> > Written by Matthew Conte (matt@baisoku.org).
-> > Public Domain, no restrictions.
-> > 
-> > [RFC PATCH 1/3] import TLSF 2.0
-> > [RFC PATCH 2/3] adapt tlsf for barebox
-> > [RFC PATCH 3/3] add tlsf-based malloc implementation
-> 
-> The tlsf code looks really nice. Not that I even tried to understand it,
-> but it looks like one *could* understand the code when he has to (unlike
-> the dlmalloc code). It is also smaller in binary space and it has the
-> great advantage of having memory pools. Memory pools can be useful to
-> seperate the general malloc space from the ramfs malloc space, so that
-> a full ramfs does not crash barebox. It could also be used to implement
-> dma_alloc_coherent().
-> 
-> Unfortunately there are two downsides. As the author already says on the
-> webpage it's slightly slower than dlmalloc. That's ok as long we do not
-> store big files in ramfs. The second one is that it needs a
-> memset(pool, 0, size) on initialization. Without it I was not able to
-> test your patches as barebox crashes before even the console was
-> initialized.
+The flags in struct console_device have to be initialized
+to zero. Otherwise the following can happen:
 
-This issue goes down to a bug in the console drivers. The most console
-drivers use xmalloc instead of xzalloc which caused unitialized flags.
-Somehow the tlsf allocater triggered this.
+- console_register sets the initial baudrate of a new console
+  before we set the global console init state to CONSOLE_INIT_FULL.
+- In console_baudrate_set we test whether the current console is
+  active which may be true because of unitialized flags.
+- we then call getc() to wait for the user to accept the new settings
+  and we are stuck because of the CONSOLE_UNINITIALIZED state
+  we will never get anything from getc().
 
-So I'm going to merge this series.
+Looking back this explains some cases for me when barebox refused
+to start and I really wonder why this did not become a more visible
+problem before.
 
-Sascha
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/serial/amba-pl011.c         |    2 +-
+ drivers/serial/atmel.c              |    2 +-
+ drivers/serial/serial_altera.c      |    2 +-
+ drivers/serial/serial_altera_jtag.c |    2 +-
+ drivers/serial/serial_blackfin.c    |    2 +-
+ drivers/serial/serial_imx.c         |    2 +-
+ drivers/serial/serial_netx.c        |    2 +-
+ drivers/serial/serial_pl010.c       |    2 +-
+ drivers/serial/serial_s3c24x0.c     |    2 +-
+ 9 files changed, 9 insertions(+), 9 deletions(-)
 
+diff --git a/drivers/serial/amba-pl011.c b/drivers/serial/amba-pl011.c
+index 148bdbf..56f6f15 100644
+--- a/drivers/serial/amba-pl011.c
++++ b/drivers/serial/amba-pl011.c
+@@ -159,7 +159,7 @@ static int pl011_probe(struct device_d *dev)
+ 	struct amba_uart_port *uart;
+ 	struct console_device *cdev;
+ 
+-	uart = xmalloc(sizeof(struct amba_uart_port));
++	uart = xzalloc(sizeof(struct amba_uart_port));
+ 	uart->clk = clk_get(dev, NULL);
+ 
+ 	if (IS_ERR(uart->clk))
+diff --git a/drivers/serial/atmel.c b/drivers/serial/atmel.c
+index 9ba4ca9..de58465 100644
+--- a/drivers/serial/atmel.c
++++ b/drivers/serial/atmel.c
+@@ -399,7 +399,7 @@ static int atmel_serial_probe(struct device_d *dev)
+ 	struct atmel_uart_port *uart;
+ 	struct console_device *cdev;
+ 
+-	uart = xmalloc(sizeof(struct atmel_uart_port));
++	uart = xzalloc(sizeof(struct atmel_uart_port));
+ 	cdev = &uart->uart;
+ 	dev->type_data = cdev;
+ 	cdev->dev = dev;
+diff --git a/drivers/serial/serial_altera.c b/drivers/serial/serial_altera.c
+index 8fd5d8a..e4d3c40 100644
+--- a/drivers/serial/serial_altera.c
++++ b/drivers/serial/serial_altera.c
+@@ -85,7 +85,7 @@ static int altera_serial_probe(struct device_d *dev)
+ 	struct console_device *cdev;
+ 	struct altera_serial_priv *priv;
+ 
+-	priv = xmalloc(sizeof(*priv));
++	priv = xzalloc(sizeof(*priv));
+ 	cdev = &priv->cdev;
+ 
+ 	priv->regs = dev_request_mem_region(dev, 0);
+diff --git a/drivers/serial/serial_altera_jtag.c b/drivers/serial/serial_altera_jtag.c
+index 3e1b0cf..140ca26 100644
+--- a/drivers/serial/serial_altera_jtag.c
++++ b/drivers/serial/serial_altera_jtag.c
+@@ -90,7 +90,7 @@ static int altera_serial_jtag_probe(struct device_d *dev) {
+ 	struct console_device *cdev;
+ 	struct altera_serial_jtag_priv *priv;
+ 
+-	priv = xmalloc(sizeof(*priv));
++	priv = xzalloc(sizeof(*priv));
+ 	cdev = &priv->cdev;
+ 
+ 	priv->regs = dev_request_mem_region(dev, 0);
+diff --git a/drivers/serial/serial_blackfin.c b/drivers/serial/serial_blackfin.c
+index 9ad5579..d38a06c 100644
+--- a/drivers/serial/serial_blackfin.c
++++ b/drivers/serial/serial_blackfin.c
+@@ -115,7 +115,7 @@ static int blackfin_serial_probe(struct device_d *dev)
+ {
+ 	struct console_device *cdev;
+ 
+-	cdev = xmalloc(sizeof(struct console_device));
++	cdev = xzalloc(sizeof(struct console_device));
+ 	dev->type_data = cdev;
+ 	cdev->dev = dev;
+ 	cdev->f_caps = CONSOLE_STDIN | CONSOLE_STDOUT | CONSOLE_STDERR;
+diff --git a/drivers/serial/serial_imx.c b/drivers/serial/serial_imx.c
+index 4923dcb..8547f36 100644
+--- a/drivers/serial/serial_imx.c
++++ b/drivers/serial/serial_imx.c
+@@ -320,7 +320,7 @@ static int imx_serial_probe(struct device_d *dev)
+ 	struct imx_serial_priv *priv;
+ 	uint32_t val;
+ 
+-	priv = xmalloc(sizeof(*priv));
++	priv = xzalloc(sizeof(*priv));
+ 	cdev = &priv->cdev;
+ 
+ 	priv->regs = dev_request_mem_region(dev, 0);
+diff --git a/drivers/serial/serial_netx.c b/drivers/serial/serial_netx.c
+index a3273e9..4f4fb2d 100644
+--- a/drivers/serial/serial_netx.c
++++ b/drivers/serial/serial_netx.c
+@@ -140,7 +140,7 @@ static int netx_serial_probe(struct device_d *dev)
+ {
+ 	struct console_device *cdev;
+ 
+-	cdev = xmalloc(sizeof(struct console_device));
++	cdev = xzalloc(sizeof(struct console_device));
+ 	dev->type_data = cdev;
+ 	dev->priv = dev_request_mem_region(dev, 0);
+ 	cdev->dev = dev;
+diff --git a/drivers/serial/serial_pl010.c b/drivers/serial/serial_pl010.c
+index cb87541..e11406d 100644
+--- a/drivers/serial/serial_pl010.c
++++ b/drivers/serial/serial_pl010.c
+@@ -141,7 +141,7 @@ static int pl010_probe(struct device_d *dev)
+ {
+ 	struct console_device *cdev;
+ 
+-	cdev = xmalloc(sizeof(struct console_device));
++	cdev = xzalloc(sizeof(struct console_device));
+ 	dev->type_data = cdev;
+ 	dev->priv = dev_request_mem_region(dev, 0);
+ 	cdev->dev = dev;
+diff --git a/drivers/serial/serial_s3c24x0.c b/drivers/serial/serial_s3c24x0.c
+index abc08e0..1e27d48 100644
+--- a/drivers/serial/serial_s3c24x0.c
++++ b/drivers/serial/serial_s3c24x0.c
+@@ -129,7 +129,7 @@ static int s3c24x0_serial_probe(struct device_d *dev)
+ {
+ 	struct console_device *cdev;
+ 
+-	cdev = xmalloc(sizeof(struct console_device));
++	cdev = xzalloc(sizeof(struct console_device));
+ 	dev->type_data = cdev;
+ 	dev->priv = dev_request_mem_region(dev, 0);
+ 	cdev->dev = dev;
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.7.3
+
 
 _______________________________________________
 barebox mailing list
