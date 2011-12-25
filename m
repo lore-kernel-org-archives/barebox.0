@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Reuqj-00049S-Mv
- for barebox@lists.infradead.org; Sun, 25 Dec 2011 20:39:19 +0000
+ id 1Reuqf-000494-Oy
+ for barebox@lists.infradead.org; Sun, 25 Dec 2011 20:39:16 +0000
 Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
  by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <jbe@pengutronix.de>) id 1ReuqA-0000hR-M2
+ (envelope-from <jbe@pengutronix.de>) id 1ReuqA-0000h8-Bs
  for barebox@lists.infradead.org; Sun, 25 Dec 2011 21:38:42 +0100
 Received: from jbe by dude.hi.pengutronix.de with local (Exim 4.77)
- (envelope-from <jbe@pengutronix.de>) id 1ReuqA-0001Lu-HF
+ (envelope-from <jbe@pengutronix.de>) id 1ReuqA-0001LQ-9p
  for barebox@lists.infradead.org; Sun, 25 Dec 2011 21:38:42 +0100
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Sun, 25 Dec 2011 21:38:36 +0100
-Message-Id: <1324845517-4601-14-git-send-email-jbe@pengutronix.de>
+Date: Sun, 25 Dec 2011 21:38:26 +0100
+Message-Id: <1324845517-4601-4-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1324845517-4601-1-git-send-email-jbe@pengutronix.de>
 References: <1324845517-4601-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -28,475 +28,200 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 13/14] MACH SAMSUNG/S3C: Re-work the memory detection and
- handling
+Subject: [PATCH 03/14] MACH SAMSUNG/S3C: Make it more generic for future
+ updates
 To: barebox@lists.infradead.org
 
-Keep common code in the MACH instead of re-inventing it in each platform.
-Also use S3C* macros for all memory related register.
+Start with renaming files to share them in the S3C CPU family,
 
 Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 ---
- arch/arm/boards/a9m2410/a9m2410.c                |   47 ++++++----------------
- arch/arm/boards/a9m2410/lowlevel_init.S          |    4 +-
- arch/arm/boards/a9m2440/a9m2410dev.c             |    9 ++--
- arch/arm/boards/a9m2440/a9m2440.c                |   37 +++++++----------
- arch/arm/boards/a9m2440/lowlevel_init.S          |    6 +-
- arch/arm/boards/mini2440/lowlevel_init.S         |    4 +-
- arch/arm/boards/mini2440/mini2440.c              |   13 +++---
- arch/arm/mach-samsung/generic.c                  |   28 ++++++++-----
- arch/arm/mach-samsung/include/mach/s3c-busctl.h  |   32 +++++++++++++++
- arch/arm/mach-samsung/include/mach/s3c-generic.h |    3 +-
- arch/arm/mach-samsung/include/mach/s3c-iomap.h   |   39 ++++++------------
- arch/arm/mach-samsung/lowlevel-init.S            |    4 +-
- arch/arm/mach-samsung/s3c24xx-clocks.c           |    9 +++-
- 13 files changed, 119 insertions(+), 116 deletions(-)
- create mode 100644 arch/arm/mach-samsung/include/mach/s3c-busctl.h
+ arch/arm/boards/a9m2410/a9m2410.c                  |    2 +-
+ arch/arm/boards/a9m2410/lowlevel_init.S            |    2 +-
+ arch/arm/boards/a9m2440/a9m2410dev.c               |    2 +-
+ arch/arm/boards/a9m2440/a9m2440.c                  |    4 +-
+ arch/arm/boards/a9m2440/lowlevel_init.S            |    2 +-
+ arch/arm/boards/mini2440/lowlevel_init.S           |    2 +-
+ arch/arm/boards/mini2440/mini2440.c                |    4 +-
+ arch/arm/mach-samsung/generic.c                    |    2 +-
+ arch/arm/mach-samsung/gpio-s3c24x0.c               |    2 +-
+ arch/arm/mach-samsung/include/mach/gpio.h          |    7 +-
+ arch/arm/mach-samsung/include/mach/s3c-generic.h   |   33 ++++
+ arch/arm/mach-samsung/include/mach/s3c-iomap.h     |  177 ++++++++++++++++++++
+ arch/arm/mach-samsung/include/mach/s3c24x0-iomap.h |  177 --------------------
+ .../mach-samsung/include/mach/s3c24xx-generic.h    |   33 ----
+ arch/arm/mach-samsung/lowlevel-init.S              |    2 +-
+ drivers/mci/s3c.c                                  |    4 +-
+ drivers/mtd/nand/nand_s3c2410.c                    |    4 +-
+ drivers/serial/serial_s3c24x0.c                    |    4 +-
+ drivers/video/s3c.c                                |    2 +-
+ 19 files changed, 230 insertions(+), 235 deletions(-)
+ create mode 100644 arch/arm/mach-samsung/include/mach/s3c-generic.h
+ create mode 100644 arch/arm/mach-samsung/include/mach/s3c-iomap.h
+ delete mode 100644 arch/arm/mach-samsung/include/mach/s3c24x0-iomap.h
+ delete mode 100644 arch/arm/mach-samsung/include/mach/s3c24xx-generic.h
 
 diff --git a/arch/arm/boards/a9m2410/a9m2410.c b/arch/arm/boards/a9m2410/a9m2410.c
-index a66afb9..daaa5c1 100644
+index bbe1604..14eaa1b 100644
 --- a/arch/arm/boards/a9m2410/a9m2410.c
 +++ b/arch/arm/boards/a9m2410/a9m2410.c
-@@ -34,6 +34,8 @@
+@@ -32,7 +32,7 @@
+ #include <partition.h>
+ #include <nand.h>
  #include <io.h>
- #include <mach/s3c-iomap.h>
- #include <mach/s3c24xx-nand.h>
-+#include <mach/s3c-generic.h>
-+#include <mach/s3c-busctl.h>
+-#include <mach/s3c24x0-iomap.h>
++#include <mach/s3c-iomap.h>
+ #include <mach/s3c24x0-nand.h>
  
  // {"NAND 1MiB 3,3V 8-bit", 0xec, 256, 1, 0x1000, 0},
- static struct s3c24x0_nand_platform_data nand_info = {
-@@ -42,38 +44,13 @@ static struct s3c24x0_nand_platform_data nand_info = {
- 
- static int a9m2410_mem_init(void)
- {
--	resource_size_t size = 0;
--	uint32_t reg;
-+	resource_size_t size;
- 
- 	/*
--	 * detect the current memory size
- 	 * Note: On this card the second SDRAM page is not used
- 	 */
--	reg = readl(BANKSIZE);
--
--	switch (reg &= 0x7) {
--	case 0:
--		size = 32 * 1024 * 1024;
--		break;
--	case 1:
--		size = 64 * 1024 * 1024;
--		break;
--	case 2:
--		size = 128 * 1024 * 1024;
--		break;
--	case 4:
--		size = 2 * 1024 * 1024;
--		break;
--	case 5:
--		size = 4 * 1024 * 1024;
--		break;
--	case 6:
--		size = 8 * 1024 * 1024;
--		break;
--	case 7:
--		size = 16 * 1024 * 1024;
--		break;
--	}
-+	s3c24xx_disable_second_sdram_bank();
-+	size = s3c24xx_get_memory_size();
- 
- 	/* ---------- configure the GPIOs ------------- */
- 	writel(0x007FFFFF, GPACON);
-@@ -100,7 +77,7 @@ static int a9m2410_mem_init(void)
- 	 */
- 	writel(0x40140, MISCCR);
- 
--	arm_add_mem_device("ram0", CS6_BASE, size);
-+	arm_add_mem_device("ram0", S3C_SDRAM_BASE, size);
- 
- 	return 0;
- }
-@@ -111,19 +88,19 @@ static int a9m2410_devices_init(void)
- 	uint32_t reg;
- 
- 	/* ----------- configure the access to the outer space ---------- */
--	reg = readl(BWSCON);
-+	reg = readl(S3C_BWSCON);
- 
- 	/* CS#1 to access the network controller */
- 	reg &= ~0xf0;
- 	reg |= 0xe0;
--	writel(0x1350, BANKCON1);
-+	writel(0x1350, S3C_BANKCON1);
- 
- 	/* CS#2 to the dual 16550 UART */
- 	reg &= ~0xf00;
- 	reg |= 0x400;
--	writel(0x0d50, BANKCON2);
-+	writel(0x0d50, S3C_BANKCON2);
- 
--	writel(reg, BWSCON);
-+	writel(reg, S3C_BWSCON);
- 
- 	/* release the reset signal to the network and UART device */
-         reg = readl(MISCCR);
-@@ -138,7 +115,7 @@ static int a9m2410_devices_init(void)
- 	 * connected to CS line 1 and interrupt line
- 	 * GPIO3, data width is 32 bit
- 	 */
--	add_generic_device("smc91c111", -1, NULL, CS1_BASE + 0x300, 16,
-+	add_generic_device("smc91c111", -1, NULL, S3C_CS1_BASE + 0x300, 16,
- 			   IORESOURCE_MEM, NULL);
- 
- #ifdef CONFIG_NAND
-@@ -150,7 +127,7 @@ static int a9m2410_devices_init(void)
- 	dev_add_bb_dev("env_raw", "env0");
- #endif
- 
--	armlinux_set_bootparams((void*)CS6_BASE + 0x100);
-+	armlinux_set_bootparams((void*)S3C_SDRAM_BASE + 0x100);
- 	armlinux_set_architecture(MACH_TYPE_A9M2410);
- 
- 	return 0;
 diff --git a/arch/arm/boards/a9m2410/lowlevel_init.S b/arch/arm/boards/a9m2410/lowlevel_init.S
-index 752c668..a106d53 100644
+index 461b93c..752c668 100644
 --- a/arch/arm/boards/a9m2410/lowlevel_init.S
 +++ b/arch/arm/boards/a9m2410/lowlevel_init.S
-@@ -15,9 +15,9 @@ board_init_lowlevel:
- 	bl s3c24x0_disable_wd
+@@ -3,7 +3,7 @@
+  */
  
- 	/* skip everything here if we are already running from SDRAM */
--	cmp pc, #S3C24X0_SDRAM_BASE
-+	cmp pc, #S3C_SDRAM_BASE
- 	blo 1f
--	cmp pc, #S3C24X0_SDRAM_END
-+	cmp pc, #S3C_SDRAM_END
- 	bhs 1f
+ #include <config.h>
+-#include <mach/s3c24x0-iomap.h>
++#include <mach/s3c-iomap.h>
  
- 	mov pc, r10
+ 	.section ".text_bare_init.board_init_lowlevel","ax"
+ 
 diff --git a/arch/arm/boards/a9m2440/a9m2410dev.c b/arch/arm/boards/a9m2440/a9m2410dev.c
-index aa5da88..1da69eb 100644
+index 5f7c53b..aa5da88 100644
 --- a/arch/arm/boards/a9m2440/a9m2410dev.c
 +++ b/arch/arm/boards/a9m2440/a9m2410dev.c
-@@ -29,6 +29,7 @@
+@@ -28,7 +28,7 @@
+ #include <driver.h>
  #include <init.h>
  #include <io.h>
- #include <mach/s3c-iomap.h>
-+#include <mach/s3c-busctl.h>
+-#include <mach/s3c24x0-iomap.h>
++#include <mach/s3c-iomap.h>
  
  /**
   * Initialize the CPU to be able to work with the a9m2410dev evaluation board
-@@ -72,19 +73,19 @@ int a9m2410dev_devices_init(void)
- 	writel((readl(MISCCR) & ~0xFFFF) | 0x0140, MISCCR);
- 
- 	/* ----------- configure the access to the outer space ---------- */
--	reg = readl(BWSCON);
-+	reg = readl(S3C_BWSCON);
- 
- 	/* CS#1 to access the network controller */
- 	reg &= ~0xf0;
- 	reg |= 0xe0;
--	writel(0x1350, BANKCON1);
-+	writel(0x1350, S3C_BANKCON1);
- 
- 	/* CS#2 to the dual 16550 UART */
- 	reg &= ~0xf00;
- 	reg |= 0x400;
--	writel(0x0d50, BANKCON2);
-+	writel(0x0d50, S3C_BANKCON2);
- 
--	writel(reg, BWSCON);
-+	writel(reg, S3C_BWSCON);
- 
- 	/* release the reset signal to the network and UART device */
-         reg = readl(MISCCR);
 diff --git a/arch/arm/boards/a9m2440/a9m2440.c b/arch/arm/boards/a9m2440/a9m2440.c
-index 077d726..56ae914 100644
+index 964d376..9002052 100644
 --- a/arch/arm/boards/a9m2440/a9m2440.c
 +++ b/arch/arm/boards/a9m2440/a9m2440.c
-@@ -35,6 +35,7 @@
- #include <mach/s3c-iomap.h>
- #include <mach/s3c24xx-nand.h>
- #include <mach/s3c-generic.h>
-+#include <mach/s3c-busctl.h>
+@@ -32,9 +32,9 @@
+ #include <partition.h>
+ #include <nand.h>
+ #include <io.h>
+-#include <mach/s3c24x0-iomap.h>
++#include <mach/s3c-iomap.h>
+ #include <mach/s3c24x0-nand.h>
+-#include <mach/s3c24xx-generic.h>
++#include <mach/s3c-generic.h>
  
  #include "baseboards.h"
  
-@@ -66,12 +67,6 @@ static int a9m2440_check_for_ram(uint32_t addr)
- 	return rc;
- }
- 
--static void a9m2440_disable_second_sdram_bank(void)
--{
--	writel(readl(BANKCON7) & ~(0x3 << 15),BANKCON7);
--	writel(readl(MISCCR) | (1 << 18), MISCCR); /* disable clock */
--}
--
- static int a9m2440_mem_init(void)
- {
- 	/*
-@@ -80,30 +75,30 @@ static int a9m2440_mem_init(void)
- 	 * So we must check here, if the second bank is populated to get the
- 	 * correct RAM size.
- 	 */
--	switch (readl(BANKSIZE) & 0x7) {
-+	switch (readl(S3C_BANKSIZE) & 0x7) {
- 	case 0:
--		if (a9m2440_check_for_ram(S3C24X0_SDRAM_BASE + 32 * 1024 * 1024))
--			a9m2440_disable_second_sdram_bank();
-+		if (a9m2440_check_for_ram(S3C_SDRAM_BASE + 32 * 1024 * 1024))
-+			s3c24xx_disable_second_sdram_bank();
- 		break;
- 	case 1:
--		if (a9m2440_check_for_ram(S3C24X0_SDRAM_BASE + 64 * 1024 * 1024))
--			a9m2440_disable_second_sdram_bank();
-+		if (a9m2440_check_for_ram(S3C_SDRAM_BASE + 64 * 1024 * 1024))
-+			s3c24xx_disable_second_sdram_bank();
- 		break;
- 	case 2:
--		if (a9m2440_check_for_ram(S3C24X0_SDRAM_BASE + 128 * 1024 * 1024))
--			a9m2440_disable_second_sdram_bank();
-+		if (a9m2440_check_for_ram(S3C_SDRAM_BASE + 128 * 1024 * 1024))
-+			s3c24xx_disable_second_sdram_bank();
- 		break;
- 	case 4:
- 	case 5:
- 	case 6:		/* not supported on this machine */
- 		break;
- 	default:
--		if (a9m2440_check_for_ram(S3C24X0_SDRAM_BASE + 16 * 1024 * 1024))
--			a9m2440_disable_second_sdram_bank();
-+		if (a9m2440_check_for_ram(S3C_SDRAM_BASE + 16 * 1024 * 1024))
-+			s3c24xx_disable_second_sdram_bank();
- 		break;
- 	}
- 
--	arm_add_mem_device("ram0", CS6_BASE, s3c24x0_get_memory_size());
-+	arm_add_mem_device("ram0", S3C_SDRAM_BASE, s3c24xx_get_memory_size());
- 
- 	return 0;
- }
-@@ -114,14 +109,14 @@ static int a9m2440_devices_init(void)
- 	uint32_t reg;
- 
- 	/* ----------- configure the access to the outer space ---------- */
--	reg = readl(BWSCON);
-+	reg = readl(S3C_BWSCON);
- 
- 	/* CS#5 to access the network controller */
- 	reg &= ~0x00f00000;
- 	reg |=  0x00d00000;	/* 16 bit */
--	writel(0x1f4c, BANKCON5);
-+	writel(0x1f4c, S3C_BANKCON5);
- 
--	writel(reg, BWSCON);
-+	writel(reg, S3C_BWSCON);
- 
- #ifdef CONFIG_MACH_A9M2410DEV
- 	a9m2410dev_devices_init();
-@@ -140,7 +135,7 @@ static int a9m2440_devices_init(void)
- 	 * Connected to CS line 5 + A24 and interrupt line EINT9,
- 	 * data width is 16 bit
- 	 */
--	add_generic_device("cs8900", -1, NULL, CS5_BASE + (1 << 24) + 0x300, 16,
-+	add_generic_device("cs8900", -1, NULL, S3C_CS5_BASE + (1 << 24) + 0x300, 16,
- 			   IORESOURCE_MEM, NULL);
- 
- #ifdef CONFIG_NAND
-@@ -151,7 +146,7 @@ static int a9m2440_devices_init(void)
- 	devfs_add_partition("nand0", 0x40000, 0x20000, PARTITION_FIXED, "env_raw");
- 	dev_add_bb_dev("env_raw", "env0");
- #endif
--	armlinux_set_bootparams((void*)CS6_BASE + 0x100);
-+	armlinux_set_bootparams((void*)S3C_SDRAM_BASE + 0x100);
- 	armlinux_set_architecture(MACH_TYPE_A9M2440);
- 
- 	return 0;
 diff --git a/arch/arm/boards/a9m2440/lowlevel_init.S b/arch/arm/boards/a9m2440/lowlevel_init.S
-index bfdd7f0..57ebe3f 100644
+index 4b5c596..bfdd7f0 100644
 --- a/arch/arm/boards/a9m2440/lowlevel_init.S
 +++ b/arch/arm/boards/a9m2440/lowlevel_init.S
-@@ -37,7 +37,7 @@ sdram_init:
- 	ldr r4, [r1]
- 	and r4, r4, #0x3
+@@ -3,7 +3,7 @@
+  */
  
--	ldr r1, =S3C24X0_MEMCTL_BASE
-+	ldr r1, =S3C_MEMCTL_BASE
- 	/* configure both SDRAM areas with 32 bit data bus width */
- 	ldr r0, =((0x2 << 24) + (0x2 << 28))
- 	str r0, [r1], #0x1c	/* post add register offset for bank6 */
-@@ -218,9 +218,9 @@ board_init_lowlevel:
- 	bl s3c24x0_disable_wd
+ #include <config.h>
+-#include <mach/s3c24x0-iomap.h>
++#include <mach/s3c-iomap.h>
  
- 	/* skip everything here if we are already running from SDRAM */
--	cmp pc, #S3C24X0_SDRAM_BASE
-+	cmp pc, #S3C_SDRAM_BASE
- 	blo 1f
--	cmp pc, #S3C24X0_SDRAM_END
-+	cmp pc, #S3C_SDRAM_END
- 	bhs 1f
+ 	.section ".text_bare_init.board_init_lowlevel","ax"
  
- 	mov pc, r10
 diff --git a/arch/arm/boards/mini2440/lowlevel_init.S b/arch/arm/boards/mini2440/lowlevel_init.S
-index f114bb7..1c8860a 100644
+index 41f50cb..f114bb7 100644
 --- a/arch/arm/boards/mini2440/lowlevel_init.S
 +++ b/arch/arm/boards/mini2440/lowlevel_init.S
-@@ -17,9 +17,9 @@ board_init_lowlevel:
- 	bl s3c24x0_disable_wd
+@@ -3,7 +3,7 @@
+  */
  
- 	/* skip everything here if we are already running from SDRAM */
--	cmp pc, #S3C24X0_SDRAM_BASE
-+	cmp pc, #S3C_SDRAM_BASE
- 	blo 1f
--	cmp pc, #S3C24X0_SDRAM_END
-+	cmp pc, #S3C_SDRAM_END
- 	bhs 1f
+ #include <config.h>
+-#include <mach/s3c24x0-iomap.h>
++#include <mach/s3c-iomap.h>
  
- 	mov pc, r10
+ 	.section ".text_bare_init.board_init_lowlevel","ax"
+ 
 diff --git a/arch/arm/boards/mini2440/mini2440.c b/arch/arm/boards/mini2440/mini2440.c
-index ec4eb05..29fd5a8 100644
+index b4cc0f8..5e6910b 100644
 --- a/arch/arm/boards/mini2440/mini2440.c
 +++ b/arch/arm/boards/mini2440/mini2440.c
-@@ -43,6 +43,7 @@
- #include <mach/s3c-generic.h>
- #include <mach/s3c-mci.h>
- #include <mach/s3c24xx-fb.h>
-+#include <mach/s3c-busctl.h>
+@@ -38,9 +38,9 @@
+ #include <asm/armlinux.h>
+ #include <io.h>
+ #include <mach/gpio.h>
+-#include <mach/s3c24x0-iomap.h>
++#include <mach/s3c-iomap.h>
+ #include <mach/s3c24x0-nand.h>
+-#include <mach/s3c24xx-generic.h>
++#include <mach/s3c-generic.h>
+ #include <mach/mci.h>
+ #include <mach/fb.h>
  
- static struct s3c24x0_nand_platform_data nand_info = {
- 	.nand_timing = CALC_NFCONF_TIMING(MINI2440_TACLS, MINI2440_TWRPH0,
-@@ -266,7 +267,7 @@ static const unsigned pin_usage[] = {
- 
- static int mini2440_mem_init(void)
- {
--	arm_add_mem_device("ram0", CS6_BASE, s3c24x0_get_memory_size());
-+	arm_add_mem_device("ram0", S3C_SDRAM_BASE, s3c24xx_get_memory_size());
- 
- 	return 0;
- }
-@@ -281,14 +282,14 @@ static int mini2440_devices_init(void)
- 	for (i = 0; i < ARRAY_SIZE(pin_usage); i++)
- 		s3c_gpio_mode(pin_usage[i]);
- 
--	reg = readl(BWSCON);
-+	reg = readl(S3C_BWSCON);
- 
- 	/* CS#4 to access the network controller */
- 	reg &= ~0x000f0000;
- 	reg |=  0x000d0000;	/* 16 bit */
--	writel(0x1f4c, BANKCON4);
-+	writel(0x1f4c, S3C_BANKCON4);
- 
--	writel(reg, BWSCON);
-+	writel(reg, S3C_BWSCON);
- 
- 	/* release the reset signal to external devices */
- 	reg = readl(MISCCR);
-@@ -298,7 +299,7 @@ static int mini2440_devices_init(void)
- 	add_generic_device("s3c24x0_nand", -1, NULL, S3C24X0_NAND_BASE, 0,
- 			   IORESOURCE_MEM, &nand_info);
- 
--	add_dm9000_device(0, CS4_BASE + 0x300, CS4_BASE + 0x304,
-+	add_dm9000_device(0, S3C_CS4_BASE + 0x300, S3C_CS4_BASE + 0x304,
- 			  IORESOURCE_MEM_16BIT, &dm9000_data);
- #ifdef CONFIG_NAND
- 	/* ----------- add some vital partitions -------- */
-@@ -316,7 +317,7 @@ static int mini2440_devices_init(void)
- 			   IORESOURCE_MEM, &s3c24x0_fb_data);
- 	add_generic_device("ohci", 0, NULL, S3C2410_USB_HOST_BASE, 0x100,
- 			   IORESOURCE_MEM, NULL);
--	armlinux_set_bootparams((void*)CS6_BASE + 0x100);
-+	armlinux_set_bootparams((void*)S3C_SDRAM_BASE + 0x100);
- 	armlinux_set_architecture(MACH_TYPE_MINI2440);
- 
- 	return 0;
 diff --git a/arch/arm/mach-samsung/generic.c b/arch/arm/mach-samsung/generic.c
-index 4a0c87b..cbe0321 100644
+index d2f2ac7..3c24b1a 100644
 --- a/arch/arm/mach-samsung/generic.c
 +++ b/arch/arm/mach-samsung/generic.c
-@@ -27,55 +27,63 @@
+@@ -27,7 +27,7 @@
  #include <init.h>
  #include <clock.h>
  #include <io.h>
-+#include <sizes.h>
- #include <mach/s3c-iomap.h>
- #include <mach/s3c-generic.h>
-+#include <mach/s3c-busctl.h>
+-#include <mach/s3c24x0-iomap.h>
++#include <mach/s3c-iomap.h>
  
  /**
-  * Calculate the amount of connected and available memory
-  * @return Memory size in bytes
+  * Calculate the current M-PLL clock.
+diff --git a/arch/arm/mach-samsung/gpio-s3c24x0.c b/arch/arm/mach-samsung/gpio-s3c24x0.c
+index 946ec33..23b2609 100644
+--- a/arch/arm/mach-samsung/gpio-s3c24x0.c
++++ b/arch/arm/mach-samsung/gpio-s3c24x0.c
+@@ -18,7 +18,7 @@
+ #include <common.h>
+ #include <errno.h>
+ #include <io.h>
+-#include <mach/s3c24x0-iomap.h>
++#include <mach/s3c-iomap.h>
+ #include <mach/gpio.h>
+ 
+ static const unsigned char group_offset[] =
+diff --git a/arch/arm/mach-samsung/include/mach/gpio.h b/arch/arm/mach-samsung/include/mach/gpio.h
+index 37db4f5..3723394 100644
+--- a/arch/arm/mach-samsung/include/mach/gpio.h
++++ b/arch/arm/mach-samsung/include/mach/gpio.h
+@@ -8,17 +8,12 @@
+  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+- * MA 02111-1307 USA
   */
--uint32_t s3c24x0_get_memory_size(void)
-+uint32_t s3c24xx_get_memory_size(void)
- {
- 	uint32_t reg, size;
  
- 	/*
- 	 * detect the current memory size
- 	 */
--	reg = readl(BANKSIZE);
-+	reg = readl(S3C_BANKSIZE);
+ #ifndef __ASM_MACH_GPIO_H
+ #define __ASM_MACH_GPIO_H
  
- 	switch (reg & 0x7) {
- 	case 0:
--		size = 32 * 1024 * 1024;
-+		size = SZ_32M;
- 		break;
- 	case 1:
--		size = 64 * 1024 * 1024;
-+		size = SZ_64M;
- 		break;
- 	case 2:
--		size = 128 * 1024 * 1024;
-+		size = SZ_128M;
- 		break;
- 	case 4:
--		size = 2 * 1024 * 1024;
-+		size = SZ_2M;
- 		break;
- 	case 5:
--		size = 4 * 1024 * 1024;
-+		size = SZ_4M;
- 		break;
- 	case 6:
--		size = 8 * 1024 * 1024;
-+		size = SZ_8M;
- 		break;
- 	default:
--		size = 16 * 1024 * 1024;
-+		size = SZ_16M;
- 		break;
- 	}
+-#if defined(CONFIG_CPU_S3C2440) || defined(CONFIG_CPU_S3C2410)
++#ifdef CONFIG_ARCH_S3C24xx
+ # include <mach/iomux-s3c24x0.h>
+ #endif
  
- 	/*
- 	 * Is bank7 also configured for SDRAM usage?
- 	 */
--	if ((readl(BANKCON7) & (0x3 << 15)) == (0x3 << 15))
-+	if ((readl(S3C_BANKCON7) & (0x3 << 15)) == (0x3 << 15))
- 		size <<= 1;	/* also count this bank */
- 
- 	return size;
- }
- 
-+void s3c24xx_disable_second_sdram_bank(void)
-+{
-+	writel(readl(S3C_BANKCON7) & ~(0x3 << 15), S3C_BANKCON7);
-+	writel(readl(MISCCR) | (1 << 18), MISCCR); /* disable its clock */
-+}
-+
- #define S3C_WTCON (S3C_WATCHDOG_BASE)
- #define S3C_WTDAT (S3C_WATCHDOG_BASE + 0x04)
- #define S3C_WTCNT (S3C_WATCHDOG_BASE + 0x08)
-diff --git a/arch/arm/mach-samsung/include/mach/s3c-busctl.h b/arch/arm/mach-samsung/include/mach/s3c-busctl.h
+diff --git a/arch/arm/mach-samsung/include/mach/s3c-generic.h b/arch/arm/mach-samsung/include/mach/s3c-generic.h
 new file mode 100644
-index 0000000..4bcf0a7
+index 0000000..b8abcf1
 --- /dev/null
-+++ b/arch/arm/mach-samsung/include/mach/s3c-busctl.h
-@@ -0,0 +1,32 @@
++++ b/arch/arm/mach-samsung/include/mach/s3c-generic.h
+@@ -0,0 +1,33 @@
 +/*
-+ * Copyright (C) 2011 Juergen Beisert, Pengutronix
++ * (C) Copyright 2009
++ * Juergen Beisert, Pengutronix
++ *
++ * (C) Copyright 2001-2004
++ * Wolfgang Denk, DENX Software Engineering, wd@denx.de.
++ *
++ * (C) Copyright 2002
++ * David Mueller, ELSOFT AG, d.mueller@elsoft.ch
 + *
 + * This program is free software; you can redistribute it and/or
 + * modify it under the terms of the GNU General Public License as
@@ -507,74 +232,303 @@ index 0000000..4bcf0a7
 + * but WITHOUT ANY WARRANTY; without even the implied warranty of
 + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 + * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
 + */
 +
-+#ifndef __MACH_S3C_BUSCTL_H
-+# define __MACH_S3C_BUSCTL_H
-+
-+#define S3C_BWSCON (S3C_MEMCTL_BASE)
-+#define S3C_BANKCON0 (S3C_MEMCTL_BASE + 0x04)
-+#define S3C_BANKCON1 (S3C_MEMCTL_BASE + 0x08)
-+#define S3C_BANKCON2 (S3C_MEMCTL_BASE + 0x0c)
-+#define S3C_BANKCON3 (S3C_MEMCTL_BASE + 0x10)
-+#define S3C_BANKCON4 (S3C_MEMCTL_BASE + 0x14)
-+#define S3C_BANKCON5 (S3C_MEMCTL_BASE + 0x18)
-+#define S3C_BANKCON6 (S3C_MEMCTL_BASE + 0x1c)
-+#define S3C_BANKCON7 (S3C_MEMCTL_BASE + 0x20)
-+#define S3C_REFRESH (S3C_MEMCTL_BASE + 0x24)
-+#define S3C_BANKSIZE (S3C_MEMCTL_BASE + 0x28)
-+#define S3C_MRSRB6 (S3C_MEMCTL_BASE + 0x2c)
-+#define S3C_MRSRB7 (S3C_MEMCTL_BASE + 0x30)
-+
-+#endif /* __MACH_S3C_BUSCTL_H */
-diff --git a/arch/arm/mach-samsung/include/mach/s3c-generic.h b/arch/arm/mach-samsung/include/mach/s3c-generic.h
-index 33f025d..4ea3dd7 100644
---- a/arch/arm/mach-samsung/include/mach/s3c-generic.h
-+++ b/arch/arm/mach-samsung/include/mach/s3c-generic.h
-@@ -30,4 +30,5 @@ uint32_t s3c_get_fclk(void);
- uint32_t s3c_get_hclk(void);
- uint32_t s3c_get_pclk(void);
- uint32_t s3c_get_uclk(void);
--uint32_t s3c24x0_get_memory_size(void);
-+uint32_t s3c24xx_get_memory_size(void);
-+void s3c24xx_disable_second_sdram_bank(void);
++uint32_t s3c24xx_get_mpllclk(void);
++uint32_t s3c24xx_get_upllclk(void);
++uint32_t s3c24xx_get_fclk(void);
++uint32_t s3c24xx_get_hclk(void);
++uint32_t s3c24xx_get_pclk(void);
++uint32_t s3c24xx_get_uclk(void);
++uint32_t s3c24x0_get_memory_size(void);
 diff --git a/arch/arm/mach-samsung/include/mach/s3c-iomap.h b/arch/arm/mach-samsung/include/mach/s3c-iomap.h
-index 7c45c53..4f713be 100644
---- a/arch/arm/mach-samsung/include/mach/s3c-iomap.h
+new file mode 100644
+index 0000000..a990d80
+--- /dev/null
 +++ b/arch/arm/mach-samsung/include/mach/s3c-iomap.h
-@@ -19,9 +19,7 @@
-  */
- 
- /* S3C2410 device base addresses */
+@@ -0,0 +1,177 @@
++/*
++ * Copyright (C) 2009 Juergen Beisert, Pengutronix
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ *
++ */
++
++/* S3C2410 device base addresses */
++#define S3C24X0_SDRAM_BASE		0x30000000
++#define S3C24X0_SDRAM_END		0x40000000
++#define S3C24X0_MEMCTL_BASE		0x48000000
++#define S3C2410_USB_HOST_BASE		0x49000000
++#define S3C2410_INTERRUPT_BASE		0x4A000000
++#define S3C2410_DMA_BASE		0x4B000000
++#define S3C24X0_CLOCK_POWER_BASE	0x4C000000
++#define S3C2410_LCD_BASE		0x4D000000
++#define S3C24X0_NAND_BASE		0x4E000000
++#define S3C24X0_UART_BASE		0x50000000
++#define S3C24X0_TIMER_BASE		0x51000000
++#define S3C2410_USB_DEVICE_BASE		0x52000140
++#define S3C24X0_WATCHDOG_BASE		0x53000000
++#define S3C2410_I2C_BASE		0x54000000
++#define S3C2410_I2S_BASE		0x55000000
++#define S3C24X0_GPIO_BASE		0x56000000
++#define S3C2410_RTC_BASE		0x57000000
++#define S3C2410_ADC_BASE		0x58000000
++#define S3C2410_SPI_BASE		0x59000000
++#define S3C2410_SDI_BASE		0x5A000000
++
++/* Clock control (direct access) */
++
++#define LOCKTIME (S3C24X0_CLOCK_POWER_BASE)
++#define MPLLCON (S3C24X0_CLOCK_POWER_BASE + 0x4)
++#define UPLLCON (S3C24X0_CLOCK_POWER_BASE + 0x8)
++#define CLKCON (S3C24X0_CLOCK_POWER_BASE + 0xc)
++#define CLKSLOW (S3C24X0_CLOCK_POWER_BASE + 0x10)
++#define CLKDIVN (S3C24X0_CLOCK_POWER_BASE + 0x14)
++
++/* Timer (direct access) */
++#define TCFG0 (S3C24X0_TIMER_BASE + 0x00)
++#define TCFG1 (S3C24X0_TIMER_BASE + 0x04)
++#define TCON (S3C24X0_TIMER_BASE + 0x08)
++#define TCNTB0 (S3C24X0_TIMER_BASE + 0x0c)
++#define TCMPB0 (S3C24X0_TIMER_BASE + 0x10)
++#define TCNTO0 (S3C24X0_TIMER_BASE + 0x14)
++#define TCNTB1 (S3C24X0_TIMER_BASE + 0x18)
++#define TCMPB1 (S3C24X0_TIMER_BASE + 0x1c)
++#define TCNTO1 (S3C24X0_TIMER_BASE + 0x20)
++#define TCNTB2 (S3C24X0_TIMER_BASE + 0x24)
++#define TCMPB2 (S3C24X0_TIMER_BASE + 0x28)
++#define TCNTO2 (S3C24X0_TIMER_BASE + 0x2c)
++#define TCNTB3 (S3C24X0_TIMER_BASE + 0x30)
++#define TCMPB3 (S3C24X0_TIMER_BASE + 0x34)
++#define TCNTO3 (S3C24X0_TIMER_BASE + 0x38)
++#define TCNTB4 (S3C24X0_TIMER_BASE + 0x3c)
++#define TCNTO4 (S3C24X0_TIMER_BASE + 0x40)
++
++/* Watchdog (direct access) */
++#define WTCON (S3C24X0_WATCHDOG_BASE)
++#define WTDAT (S3C24X0_WATCHDOG_BASE + 0x04)
++#define WTCNT (S3C24X0_WATCHDOG_BASE + 0x08)
++
++/*
++ * if we are booting from NAND, its internal SRAM occures at
++ * a different address than without this feature
++ */
++#ifdef CONFIG_S3C24XX_NAND_BOOT
++# define NFC_RAM_AREA 0x00000000
++#else
++# define NFC_RAM_AREA 0x40000000
++#endif
++#define NFC_RAM_SIZE 4096
++
++/* internal UARTs (driver based) */
++#define UART1_BASE (S3C24X0_UART_BASE)
++#define UART1_SIZE 0x4000
++#define UART2_BASE (S3C24X0_UART_BASE + 0x4000)
++#define UART2_SIZE 0x4000
++#define UART3_BASE (S3C24X0_UART_BASE + 0x8000)
++#define UART3_SIZE 0x4000
++
++/* CS configuration (direct access) */
++#define BWSCON (S3C24X0_MEMCTL_BASE)
++#define BANKCON0 (S3C24X0_MEMCTL_BASE + 0x04)
++#define BANKCON1 (S3C24X0_MEMCTL_BASE + 0x08)
++#define BANKCON2 (S3C24X0_MEMCTL_BASE + 0x0c)
++#define BANKCON3 (S3C24X0_MEMCTL_BASE + 0x10)
++#define BANKCON4 (S3C24X0_MEMCTL_BASE + 0x14)
++#define BANKCON5 (S3C24X0_MEMCTL_BASE + 0x18)
++#define BANKCON6 (S3C24X0_MEMCTL_BASE + 0x1c)
++#define BANKCON7 (S3C24X0_MEMCTL_BASE + 0x20)
++#define REFRESH (S3C24X0_MEMCTL_BASE + 0x24)
++#define BANKSIZE (S3C24X0_MEMCTL_BASE + 0x28)
++#define MRSRB6 (S3C24X0_MEMCTL_BASE + 0x2c)
++#define MRSRB7 (S3C24X0_MEMCTL_BASE + 0x30)
++
++/* GPIO registers (direct access) */
++#define GPACON (S3C24X0_GPIO_BASE)
++#define GPADAT (S3C24X0_GPIO_BASE + 0x04)
++
++#define GPBCON (S3C24X0_GPIO_BASE + 0x10)
++#define GPBDAT (S3C24X0_GPIO_BASE + 0x14)
++#define GPBUP (S3C24X0_GPIO_BASE + 0x18)
++
++#define GPCCON (S3C24X0_GPIO_BASE + 0x20)
++#define GPCDAT (S3C24X0_GPIO_BASE + 0x24)
++#define GPCUP (S3C24X0_GPIO_BASE + 0x28)
++
++#define GPDCON (S3C24X0_GPIO_BASE + 0x30)
++#define GPDDAT (S3C24X0_GPIO_BASE + 0x34)
++#define GPDUP (S3C24X0_GPIO_BASE + 0x38)
++
++#define GPECON (S3C24X0_GPIO_BASE + 0x40)
++#define GPEDAT (S3C24X0_GPIO_BASE + 0x44)
++#define GPEUP (S3C24X0_GPIO_BASE + 0x48)
++
++#define GPFCON (S3C24X0_GPIO_BASE + 0x50)
++#define GPFDAT (S3C24X0_GPIO_BASE + 0x54)
++#define GPFUP (S3C24X0_GPIO_BASE + 0x58)
++
++#define GPGCON (S3C24X0_GPIO_BASE + 0x60)
++#define GPGDAT (S3C24X0_GPIO_BASE + 0x64)
++#define GPGUP (S3C24X0_GPIO_BASE + 0x68)
++
++#define GPHCON (S3C24X0_GPIO_BASE + 0x70)
++#define GPHDAT (S3C24X0_GPIO_BASE + 0x74)
++#define GPHUP (S3C24X0_GPIO_BASE + 0x78)
++
++#ifdef CONFIG_CPU_S3C2440
++# define GPJCON (S3C24X0_GPIO_BASE + 0xd0)
++# define GPJDAT (S3C24X0_GPIO_BASE + 0xd4)
++# define GPJUP (S3C24X0_GPIO_BASE + 0xd8)
++#endif
++
++#define MISCCR  (S3C24X0_GPIO_BASE + 0x80)
++#define DCLKCON (S3C24X0_GPIO_BASE + 0x84)
++#define EXTINT0 (S3C24X0_GPIO_BASE + 0x88)
++#define EXTINT1 (S3C24X0_GPIO_BASE + 0x8c)
++#define EXTINT2 (S3C24X0_GPIO_BASE + 0x90)
++#define EINTFLT0 (S3C24X0_GPIO_BASE + 0x94)
++#define EINTFLT1 (S3C24X0_GPIO_BASE + 0x98)
++#define EINTFLT2 (S3C24X0_GPIO_BASE + 0x9c)
++#define EINTFLT3 (S3C24X0_GPIO_BASE + 0xa0)
++#define EINTMASK (S3C24X0_GPIO_BASE + 0xa4)
++#define EINTPEND (S3C24X0_GPIO_BASE + 0xa8)
++#define GSTATUS0 (S3C24X0_GPIO_BASE + 0xac)
++#define GSTATUS1 (S3C24X0_GPIO_BASE + 0xb0)
++#define GSTATUS2 (S3C24X0_GPIO_BASE + 0xb4)
++#define GSTATUS3 (S3C24X0_GPIO_BASE + 0xb8)
++#define GSTATUS4 (S3C24X0_GPIO_BASE + 0xbc)
++
++#ifdef CONFIG_CPU_S3C2440
++# define DSC0 (S3C24X0_GPIO_BASE + 0xc4)
++# define DSC1 (S3C24X0_GPIO_BASE + 0xc8)
++#endif
++
++/* external IO space */
++#define CS0_BASE 0x00000000
++#define CS1_BASE 0x08000000
++#define CS2_BASE 0x10000000
++#define CS3_BASE 0x18000000
++#define CS4_BASE 0x20000000
++#define CS5_BASE 0x28000000
++#define CS6_BASE 0x30000000
+diff --git a/arch/arm/mach-samsung/include/mach/s3c24x0-iomap.h b/arch/arm/mach-samsung/include/mach/s3c24x0-iomap.h
+deleted file mode 100644
+index a990d80..0000000
+--- a/arch/arm/mach-samsung/include/mach/s3c24x0-iomap.h
++++ /dev/null
+@@ -1,177 +0,0 @@
+-/*
+- * Copyright (C) 2009 Juergen Beisert, Pengutronix
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+- * MA 02111-1307 USA
+- *
+- */
+-
+-/* S3C2410 device base addresses */
 -#define S3C24X0_SDRAM_BASE		0x30000000
 -#define S3C24X0_SDRAM_END		0x40000000
 -#define S3C24X0_MEMCTL_BASE		0x48000000
-+#define S3C_MEMCTL_BASE			0x48000000
- #define S3C2410_USB_HOST_BASE		0x49000000
- #define S3C2410_INTERRUPT_BASE		0x4A000000
- #define S3C2410_DMA_BASE		0x4B000000
-@@ -40,6 +38,17 @@
- #define S3C2410_SPI_BASE		0x59000000
- #define S3C2410_SDI_BASE		0x5A000000
- 
-+/* external IO space */
-+#define S3C_CS0_BASE 0x00000000
-+#define S3C_CS1_BASE 0x08000000
-+#define S3C_CS2_BASE 0x10000000
-+#define S3C_CS3_BASE 0x18000000
-+#define S3C_CS4_BASE 0x20000000
-+#define S3C_CS5_BASE 0x28000000
-+#define S3C_CS6_BASE 0x30000000
-+
-+#define S3C_SDRAM_BASE S3C_CS6_BASE
-+#define S3C_SDRAM_END (S3C_SDRAM_BASE + 0x10000000)
- 
- /*
-  * if we are booting from NAND, its internal SRAM occures at
-@@ -59,21 +68,6 @@
- #define S3C_UART3_BASE (S3C_UART_BASE + 0x8000)
- #define S3C_UART3_SIZE 0x4000
- 
+-#define S3C2410_USB_HOST_BASE		0x49000000
+-#define S3C2410_INTERRUPT_BASE		0x4A000000
+-#define S3C2410_DMA_BASE		0x4B000000
+-#define S3C24X0_CLOCK_POWER_BASE	0x4C000000
+-#define S3C2410_LCD_BASE		0x4D000000
+-#define S3C24X0_NAND_BASE		0x4E000000
+-#define S3C24X0_UART_BASE		0x50000000
+-#define S3C24X0_TIMER_BASE		0x51000000
+-#define S3C2410_USB_DEVICE_BASE		0x52000140
+-#define S3C24X0_WATCHDOG_BASE		0x53000000
+-#define S3C2410_I2C_BASE		0x54000000
+-#define S3C2410_I2S_BASE		0x55000000
+-#define S3C24X0_GPIO_BASE		0x56000000
+-#define S3C2410_RTC_BASE		0x57000000
+-#define S3C2410_ADC_BASE		0x58000000
+-#define S3C2410_SPI_BASE		0x59000000
+-#define S3C2410_SDI_BASE		0x5A000000
+-
+-/* Clock control (direct access) */
+-
+-#define LOCKTIME (S3C24X0_CLOCK_POWER_BASE)
+-#define MPLLCON (S3C24X0_CLOCK_POWER_BASE + 0x4)
+-#define UPLLCON (S3C24X0_CLOCK_POWER_BASE + 0x8)
+-#define CLKCON (S3C24X0_CLOCK_POWER_BASE + 0xc)
+-#define CLKSLOW (S3C24X0_CLOCK_POWER_BASE + 0x10)
+-#define CLKDIVN (S3C24X0_CLOCK_POWER_BASE + 0x14)
+-
+-/* Timer (direct access) */
+-#define TCFG0 (S3C24X0_TIMER_BASE + 0x00)
+-#define TCFG1 (S3C24X0_TIMER_BASE + 0x04)
+-#define TCON (S3C24X0_TIMER_BASE + 0x08)
+-#define TCNTB0 (S3C24X0_TIMER_BASE + 0x0c)
+-#define TCMPB0 (S3C24X0_TIMER_BASE + 0x10)
+-#define TCNTO0 (S3C24X0_TIMER_BASE + 0x14)
+-#define TCNTB1 (S3C24X0_TIMER_BASE + 0x18)
+-#define TCMPB1 (S3C24X0_TIMER_BASE + 0x1c)
+-#define TCNTO1 (S3C24X0_TIMER_BASE + 0x20)
+-#define TCNTB2 (S3C24X0_TIMER_BASE + 0x24)
+-#define TCMPB2 (S3C24X0_TIMER_BASE + 0x28)
+-#define TCNTO2 (S3C24X0_TIMER_BASE + 0x2c)
+-#define TCNTB3 (S3C24X0_TIMER_BASE + 0x30)
+-#define TCMPB3 (S3C24X0_TIMER_BASE + 0x34)
+-#define TCNTO3 (S3C24X0_TIMER_BASE + 0x38)
+-#define TCNTB4 (S3C24X0_TIMER_BASE + 0x3c)
+-#define TCNTO4 (S3C24X0_TIMER_BASE + 0x40)
+-
+-/* Watchdog (direct access) */
+-#define WTCON (S3C24X0_WATCHDOG_BASE)
+-#define WTDAT (S3C24X0_WATCHDOG_BASE + 0x04)
+-#define WTCNT (S3C24X0_WATCHDOG_BASE + 0x08)
+-
+-/*
+- * if we are booting from NAND, its internal SRAM occures at
+- * a different address than without this feature
+- */
+-#ifdef CONFIG_S3C24XX_NAND_BOOT
+-# define NFC_RAM_AREA 0x00000000
+-#else
+-# define NFC_RAM_AREA 0x40000000
+-#endif
+-#define NFC_RAM_SIZE 4096
+-
+-/* internal UARTs (driver based) */
+-#define UART1_BASE (S3C24X0_UART_BASE)
+-#define UART1_SIZE 0x4000
+-#define UART2_BASE (S3C24X0_UART_BASE + 0x4000)
+-#define UART2_SIZE 0x4000
+-#define UART3_BASE (S3C24X0_UART_BASE + 0x8000)
+-#define UART3_SIZE 0x4000
+-
 -/* CS configuration (direct access) */
 -#define BWSCON (S3C24X0_MEMCTL_BASE)
 -#define BANKCON0 (S3C24X0_MEMCTL_BASE + 0x04)
@@ -590,13 +544,65 @@ index 7c45c53..4f713be 100644
 -#define MRSRB6 (S3C24X0_MEMCTL_BASE + 0x2c)
 -#define MRSRB7 (S3C24X0_MEMCTL_BASE + 0x30)
 -
- /* GPIO registers (direct access) */
- #define GPACON (S3C24X0_GPIO_BASE)
- #define GPADAT (S3C24X0_GPIO_BASE + 0x04)
-@@ -133,12 +127,3 @@
- # define DSC0 (S3C24X0_GPIO_BASE + 0xc4)
- # define DSC1 (S3C24X0_GPIO_BASE + 0xc8)
- #endif
+-/* GPIO registers (direct access) */
+-#define GPACON (S3C24X0_GPIO_BASE)
+-#define GPADAT (S3C24X0_GPIO_BASE + 0x04)
+-
+-#define GPBCON (S3C24X0_GPIO_BASE + 0x10)
+-#define GPBDAT (S3C24X0_GPIO_BASE + 0x14)
+-#define GPBUP (S3C24X0_GPIO_BASE + 0x18)
+-
+-#define GPCCON (S3C24X0_GPIO_BASE + 0x20)
+-#define GPCDAT (S3C24X0_GPIO_BASE + 0x24)
+-#define GPCUP (S3C24X0_GPIO_BASE + 0x28)
+-
+-#define GPDCON (S3C24X0_GPIO_BASE + 0x30)
+-#define GPDDAT (S3C24X0_GPIO_BASE + 0x34)
+-#define GPDUP (S3C24X0_GPIO_BASE + 0x38)
+-
+-#define GPECON (S3C24X0_GPIO_BASE + 0x40)
+-#define GPEDAT (S3C24X0_GPIO_BASE + 0x44)
+-#define GPEUP (S3C24X0_GPIO_BASE + 0x48)
+-
+-#define GPFCON (S3C24X0_GPIO_BASE + 0x50)
+-#define GPFDAT (S3C24X0_GPIO_BASE + 0x54)
+-#define GPFUP (S3C24X0_GPIO_BASE + 0x58)
+-
+-#define GPGCON (S3C24X0_GPIO_BASE + 0x60)
+-#define GPGDAT (S3C24X0_GPIO_BASE + 0x64)
+-#define GPGUP (S3C24X0_GPIO_BASE + 0x68)
+-
+-#define GPHCON (S3C24X0_GPIO_BASE + 0x70)
+-#define GPHDAT (S3C24X0_GPIO_BASE + 0x74)
+-#define GPHUP (S3C24X0_GPIO_BASE + 0x78)
+-
+-#ifdef CONFIG_CPU_S3C2440
+-# define GPJCON (S3C24X0_GPIO_BASE + 0xd0)
+-# define GPJDAT (S3C24X0_GPIO_BASE + 0xd4)
+-# define GPJUP (S3C24X0_GPIO_BASE + 0xd8)
+-#endif
+-
+-#define MISCCR  (S3C24X0_GPIO_BASE + 0x80)
+-#define DCLKCON (S3C24X0_GPIO_BASE + 0x84)
+-#define EXTINT0 (S3C24X0_GPIO_BASE + 0x88)
+-#define EXTINT1 (S3C24X0_GPIO_BASE + 0x8c)
+-#define EXTINT2 (S3C24X0_GPIO_BASE + 0x90)
+-#define EINTFLT0 (S3C24X0_GPIO_BASE + 0x94)
+-#define EINTFLT1 (S3C24X0_GPIO_BASE + 0x98)
+-#define EINTFLT2 (S3C24X0_GPIO_BASE + 0x9c)
+-#define EINTFLT3 (S3C24X0_GPIO_BASE + 0xa0)
+-#define EINTMASK (S3C24X0_GPIO_BASE + 0xa4)
+-#define EINTPEND (S3C24X0_GPIO_BASE + 0xa8)
+-#define GSTATUS0 (S3C24X0_GPIO_BASE + 0xac)
+-#define GSTATUS1 (S3C24X0_GPIO_BASE + 0xb0)
+-#define GSTATUS2 (S3C24X0_GPIO_BASE + 0xb4)
+-#define GSTATUS3 (S3C24X0_GPIO_BASE + 0xb8)
+-#define GSTATUS4 (S3C24X0_GPIO_BASE + 0xbc)
+-
+-#ifdef CONFIG_CPU_S3C2440
+-# define DSC0 (S3C24X0_GPIO_BASE + 0xc4)
+-# define DSC1 (S3C24X0_GPIO_BASE + 0xc8)
+-#endif
 -
 -/* external IO space */
 -#define CS0_BASE 0x00000000
@@ -606,55 +612,116 @@ index 7c45c53..4f713be 100644
 -#define CS4_BASE 0x20000000
 -#define CS5_BASE 0x28000000
 -#define CS6_BASE 0x30000000
+diff --git a/arch/arm/mach-samsung/include/mach/s3c24xx-generic.h b/arch/arm/mach-samsung/include/mach/s3c24xx-generic.h
+deleted file mode 100644
+index b8abcf1..0000000
+--- a/arch/arm/mach-samsung/include/mach/s3c24xx-generic.h
++++ /dev/null
+@@ -1,33 +0,0 @@
+-/*
+- * (C) Copyright 2009
+- * Juergen Beisert, Pengutronix
+- *
+- * (C) Copyright 2001-2004
+- * Wolfgang Denk, DENX Software Engineering, wd@denx.de.
+- *
+- * (C) Copyright 2002
+- * David Mueller, ELSOFT AG, d.mueller@elsoft.ch
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+- * MA 02111-1307 USA
+- */
+-
+-uint32_t s3c24xx_get_mpllclk(void);
+-uint32_t s3c24xx_get_upllclk(void);
+-uint32_t s3c24xx_get_fclk(void);
+-uint32_t s3c24xx_get_hclk(void);
+-uint32_t s3c24xx_get_pclk(void);
+-uint32_t s3c24xx_get_uclk(void);
+-uint32_t s3c24x0_get_memory_size(void);
 diff --git a/arch/arm/mach-samsung/lowlevel-init.S b/arch/arm/mach-samsung/lowlevel-init.S
-index 93ea3ce..31c6196 100644
+index e8004e5..8529283 100644
 --- a/arch/arm/mach-samsung/lowlevel-init.S
 +++ b/arch/arm/mach-samsung/lowlevel-init.S
-@@ -192,7 +192,7 @@ With m = MDIV + 8, p = PDIV + 2 and s = SDIV.
- s3c24x0_sdram_init:
- 
- 	adr r0, SDRAMDATA	/* get the current relative address of the table */
--	mov r1, #S3C24X0_MEMCTL_BASE
-+	mov r1, #S3C_MEMCTL_BASE
- 	mov r2, #6		/* we *know* it contains 6 entries */
- 
- 	ldr r3, [r0], #4	/* write BSWCON first */
-@@ -255,7 +255,7 @@ s3c24x0_nand_boot:
-  * In the case of NOR boot we are running from the same address space.
-  * Detect this case to handle it correctly.
+@@ -19,7 +19,7 @@
   */
--	mov r1, #S3C24X0_MEMCTL_BASE
-+	mov r1, #S3C_MEMCTL_BASE
- 	ldr r3, [r1]
- 	and r3, r3, #0x6
- 	cmp r3, #0x0	/* check for NAND case */
-diff --git a/arch/arm/mach-samsung/s3c24xx-clocks.c b/arch/arm/mach-samsung/s3c24xx-clocks.c
-index beacc76..a99d1b9 100644
---- a/arch/arm/mach-samsung/s3c24xx-clocks.c
-+++ b/arch/arm/mach-samsung/s3c24xx-clocks.c
-@@ -21,6 +21,7 @@
- #include <mach/s3c-iomap.h>
- #include <mach/s3c-generic.h>
- #include <mach/s3c-clocks.h>
-+#include <mach/s3c-busctl.h>
  
- /**
-  * Calculate the current M-PLL clock.
-@@ -127,9 +128,11 @@ int s3c24xx_dump_clocks(void)
- 	printf("fclk:    %7d kHz\n", s3c_get_fclk() / 1000);
- 	printf("hclk:    %7d kHz\n", s3c_get_hclk() / 1000);
- 	printf("pclk:    %7d kHz\n", s3c_get_pclk() / 1000);
--	printf("SDRAM1:   CL%d@%dMHz\n", ((readl(BANKCON6) & 0xc) >> 2) + 2, s3c_get_hclk() / 1000000);
--	if ((readl(BANKCON7) & (0x3 << 15)) == (0x3 << 15))
--		printf("SDRAM2:   CL%d@%dMHz\n", ((readl(BANKCON7) & 0xc) >> 2) + 2,
-+	printf("SDRAM1:   CL%d@%dMHz\n", ((readl(S3C_BANKCON6) & 0xc) >> 2) + 2,
-+						s3c_get_hclk() / 1000000);
-+	if ((readl(S3C_BANKCON7) & (0x3 << 15)) == (0x3 << 15))
-+		printf("SDRAM2:   CL%d@%dMHz\n",
-+			((readl(S3C_BANKCON7) & 0xc) >> 2) + 2,
- 			s3c_get_hclk() / 1000000);
- 	return 0;
- }
+ #include <config.h>
+-#include <mach/s3c24x0-iomap.h>
++#include <mach/s3c-iomap.h>
+ 
+ 	.section ".text_bare_init.s3c24x0_disable_wd","ax"
+ 
+diff --git a/drivers/mci/s3c.c b/drivers/mci/s3c.c
+index 89c8168..c877e09 100644
+--- a/drivers/mci/s3c.c
++++ b/drivers/mci/s3c.c
+@@ -41,8 +41,8 @@
+ #include <clock.h>
+ #include <io.h>
+ #include <mach/mci.h>
+-#include <mach/s3c24xx-generic.h>
+-#include <mach/s3c24x0-iomap.h>
++#include <mach/s3c-generic.h>
++#include <mach/s3c-iomap.h>
+ 
+ #define SDICON 0x0
+ # define SDICON_SDRESET (1 << 8)
+diff --git a/drivers/mtd/nand/nand_s3c2410.c b/drivers/mtd/nand/nand_s3c2410.c
+index ed45788..3117614 100644
+--- a/drivers/mtd/nand/nand_s3c2410.c
++++ b/drivers/mtd/nand/nand_s3c2410.c
+@@ -30,8 +30,8 @@
+ #include <init.h>
+ #include <linux/mtd/mtd.h>
+ #include <linux/mtd/nand.h>
+-#include <mach/s3c24xx-generic.h>
+-#include <mach/s3c24x0-iomap.h>
++#include <mach/s3c-generic.h>
++#include <mach/s3c-iomap.h>
+ #include <mach/s3c24x0-nand.h>
+ #include <io.h>
+ #include <asm-generic/errno.h>
+diff --git a/drivers/serial/serial_s3c24x0.c b/drivers/serial/serial_s3c24x0.c
+index 1e27d48..4e95e5c 100644
+--- a/drivers/serial/serial_s3c24x0.c
++++ b/drivers/serial/serial_s3c24x0.c
+@@ -25,8 +25,8 @@
+ #include <init.h>
+ #include <malloc.h>
+ #include <io.h>
+-#include <mach/s3c24xx-generic.h>
+-#include <mach/s3c24x0-iomap.h>
++#include <mach/s3c-generic.h>
++#include <mach/s3c-iomap.h>
+ 
+ /* Note: Offsets are for little endian access */
+ #define ULCON 0x00		/* line control */
+diff --git a/drivers/video/s3c.c b/drivers/video/s3c.c
+index b17aeb6..a03ec3d 100644
+--- a/drivers/video/s3c.c
++++ b/drivers/video/s3c.c
+@@ -31,7 +31,7 @@
+ #include <errno.h>
+ #include <io.h>
+ #include <mach/gpio.h>
+-#include <mach/s3c24xx-generic.h>
++#include <mach/s3c-generic.h>
+ #include <mach/fb.h>
+ 
+ #define LCDCON1 0x00
 -- 
 1.7.7.3
 
