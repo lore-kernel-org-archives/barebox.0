@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Reuqd-000481-4l
- for barebox@lists.infradead.org; Sun, 25 Dec 2011 20:39:13 +0000
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1Reuqc-0006Cr-Ja
+ for barebox@lists.infradead.org; Sun, 25 Dec 2011 20:39:15 +0000
 Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
  by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <jbe@pengutronix.de>) id 1ReuqA-0000hG-Fd
+ (envelope-from <jbe@pengutronix.de>) id 1ReuqA-0000hP-L0
  for barebox@lists.infradead.org; Sun, 25 Dec 2011 21:38:42 +0100
 Received: from jbe by dude.hi.pengutronix.de with local (Exim 4.77)
- (envelope-from <jbe@pengutronix.de>) id 1ReuqA-0001Lc-CS
+ (envelope-from <jbe@pengutronix.de>) id 1ReuqA-0001Lr-Gf
  for barebox@lists.infradead.org; Sun, 25 Dec 2011 21:38:42 +0100
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Sun, 25 Dec 2011 21:38:30 +0100
-Message-Id: <1324845517-4601-8-git-send-email-jbe@pengutronix.de>
+Date: Sun, 25 Dec 2011 21:38:35 +0100
+Message-Id: <1324845517-4601-13-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1324845517-4601-1-git-send-email-jbe@pengutronix.de>
 References: <1324845517-4601-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -28,494 +28,510 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/14] MACH SAMSUNG/S3C: Separate S3C24XX clock management
+Subject: [PATCH 12/14] MACH SAMSUNG/S3C: Unify the UART driver for the S3C
+ family of CPUs
 To: barebox@lists.infradead.org
 
-There are major differences in the clock tree of the S3C24xx family and the
-more recent CPUs of the S3C family. Keep the S3C24XX clock routines separate to
-avoid an ifdef hell. But also use generic function names to be able to
-share drivers among the S3C family.
+The UART is one of the units which differs only slightly inside the S3C family.
+Prepare this driver to share it with more recent CPUs.
 
 Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 ---
- arch/arm/mach-samsung/Makefile                   |    2 +-
- arch/arm/mach-samsung/generic.c                  |  117 +------------------
- arch/arm/mach-samsung/include/mach/s3c-clocks.h  |   31 +++++
- arch/arm/mach-samsung/include/mach/s3c-generic.h |   12 +-
- arch/arm/mach-samsung/include/mach/s3c-iomap.h   |   11 +--
- arch/arm/mach-samsung/lowlevel-init.S            |    2 +-
- arch/arm/mach-samsung/s3c24xx-clocks.c           |  137 ++++++++++++++++++++++
- drivers/mci/s3c.c                                |   10 +-
- drivers/serial/serial_s3c24x0.c                  |    2 +-
- drivers/video/s3c24xx.c                          |    4 +-
- 10 files changed, 187 insertions(+), 141 deletions(-)
- create mode 100644 arch/arm/mach-samsung/include/mach/s3c-clocks.h
- create mode 100644 arch/arm/mach-samsung/s3c24xx-clocks.c
+ arch/arm/boards/a9m2410/a9m2410.c              |    2 +-
+ arch/arm/boards/a9m2440/a9m2440.c              |    2 +-
+ arch/arm/boards/mini2440/mini2440.c            |    2 +-
+ arch/arm/mach-samsung/include/mach/s3c-iomap.h |   15 +-
+ drivers/serial/Kconfig                         |   10 +-
+ drivers/serial/Makefile                        |    2 +-
+ drivers/serial/serial_s3c.c                    |  188 ++++++++++++++++++++++++
+ drivers/serial/serial_s3c24x0.c                |  172 ----------------------
+ 8 files changed, 204 insertions(+), 189 deletions(-)
+ create mode 100644 drivers/serial/serial_s3c.c
+ delete mode 100644 drivers/serial/serial_s3c24x0.c
 
-diff --git a/arch/arm/mach-samsung/Makefile b/arch/arm/mach-samsung/Makefile
-index f329cdb..c590180 100644
---- a/arch/arm/mach-samsung/Makefile
-+++ b/arch/arm/mach-samsung/Makefile
-@@ -1,3 +1,3 @@
- obj-y += generic.o
--obj-$(CONFIG_ARCH_S3C24xx) += gpio-s3c24x0.o
-+obj-$(CONFIG_ARCH_S3C24xx) += gpio-s3c24x0.o s3c24xx-clocks.o
- obj-$(CONFIG_S3C24XX_LOW_LEVEL_INIT) += lowlevel-init.o
-diff --git a/arch/arm/mach-samsung/generic.c b/arch/arm/mach-samsung/generic.c
-index 3c24b1a..3f6e801 100644
---- a/arch/arm/mach-samsung/generic.c
-+++ b/arch/arm/mach-samsung/generic.c
-@@ -28,100 +28,7 @@
- #include <clock.h>
- #include <io.h>
- #include <mach/s3c-iomap.h>
--
--/**
-- * Calculate the current M-PLL clock.
-- * @return Current frequency in Hz
-- */
--uint32_t s3c24xx_get_mpllclk(void)
--{
--	uint32_t m, p, s, reg_val;
--
--	reg_val = readl(MPLLCON);
--	m = ((reg_val & 0xFF000) >> 12) + 8;
--	p = ((reg_val & 0x003F0) >> 4) + 2;
--	s = reg_val & 0x3;
--#ifdef CONFIG_CPU_S3C2410
--	return (S3C24XX_CLOCK_REFERENCE * m) / (p << s);
--#endif
--#ifdef CONFIG_CPU_S3C2440
--	return 2 * m * (S3C24XX_CLOCK_REFERENCE / (p << s));
--#endif
--}
--
--/**
-- * Calculate the current U-PLL clock
-- * @return Current frequency in Hz
-- */
--uint32_t s3c24xx_get_upllclk(void)
--{
--	uint32_t m, p, s, reg_val;
--
--	reg_val = readl(UPLLCON);
--	m = ((reg_val & 0xFF000) >> 12) + 8;
--	p = ((reg_val & 0x003F0) >> 4) + 2;
--	s = reg_val & 0x3;
--
--	return (S3C24XX_CLOCK_REFERENCE * m) / (p << s);
--}
--
--/**
-- * Calculate the FCLK frequency used for the ARM CPU core
-- * @return Current frequency in Hz
-- */
--uint32_t s3c24xx_get_fclk(void)
--{
--	return s3c24xx_get_mpllclk();
--}
--
--/**
-- * Calculate the HCLK frequency used for the AHB bus (CPU to main peripheral)
-- * @return Current frequency in Hz
-- */
--uint32_t s3c24xx_get_hclk(void)
--{
--	uint32_t f_clk;
--
--	f_clk = s3c24xx_get_fclk();
--#ifdef CONFIG_CPU_S3C2410
--	if (readl(CLKDIVN) & 0x02)
--		return f_clk >> 1;
--#endif
--#ifdef CONFIG_CPU_S3C2440
--	switch(readl(CLKDIVN) & 0x06) {
--	case 2:
--		return f_clk >> 1;
--	case 4:
--		return f_clk >> 2;	/* TODO consider CAMDIVN */
--	case 6:
--		return f_clk / 3;	/* TODO consider CAMDIVN */
--	}
--#endif
--	return f_clk;
--}
--
--/**
-- * Calculate the PCLK frequency used for the slower peripherals
-- * @return Current frequency in Hz
-- */
--uint32_t s3c24xx_get_pclk(void)
--{
--	uint32_t p_clk;
--
--	p_clk = s3c24xx_get_hclk();
--	if (readl(CLKDIVN) & 0x01)
--		return p_clk >> 1;
--	return p_clk;
--}
--
--/**
-- * Calculate the UCLK frequency used by the USB host device
-- * @return Current frequency in Hz
-- */
--uint32_t s3c24xx_get_uclk(void)
--{
--    return s3c24xx_get_upllclk();
--}
-+#include <mach/s3c-generic.h>
+diff --git a/arch/arm/boards/a9m2410/a9m2410.c b/arch/arm/boards/a9m2410/a9m2410.c
+index 989dcf7..a66afb9 100644
+--- a/arch/arm/boards/a9m2410/a9m2410.c
++++ b/arch/arm/boards/a9m2410/a9m2410.c
+@@ -167,7 +167,7 @@ void __bare_init nand_boot(void)
  
- /**
-  * Calculate the amount of connected and available memory
-@@ -169,26 +76,6 @@ uint32_t s3c24x0_get_memory_size(void)
- 	return size;
+ static int a9m2410_console_init(void)
+ {
+-	add_generic_device("s3c24x0_serial", -1, NULL, UART1_BASE, UART1_SIZE,
++	add_generic_device("s3c_serial", -1, NULL, S3C_UART1_BASE, S3C_UART1_SIZE,
+ 			   IORESOURCE_MEM, NULL);
+ 	return 0;
  }
+diff --git a/arch/arm/boards/a9m2440/a9m2440.c b/arch/arm/boards/a9m2440/a9m2440.c
+index 1986efb..077d726 100644
+--- a/arch/arm/boards/a9m2440/a9m2440.c
++++ b/arch/arm/boards/a9m2440/a9m2440.c
+@@ -168,7 +168,7 @@ void __bare_init nand_boot(void)
  
--/**
-- * Show the user the current clock settings
-- */
--int s3c24xx_dump_clocks(void)
--{
--	printf("refclk:  %7d kHz\n", S3C24XX_CLOCK_REFERENCE / 1000);
--	printf("mpll:    %7d kHz\n", s3c24xx_get_mpllclk() / 1000);
--	printf("upll:    %7d kHz\n", s3c24xx_get_upllclk() / 1000);
--	printf("fclk:    %7d kHz\n", s3c24xx_get_fclk() / 1000);
--	printf("hclk:    %7d kHz\n", s3c24xx_get_hclk() / 1000);
--	printf("pclk:    %7d kHz\n", s3c24xx_get_pclk() / 1000);
--	printf("SDRAM1:   CL%d@%dMHz\n", ((readl(BANKCON6) & 0xc) >> 2) + 2, s3c24xx_get_hclk() / 1000000);
--	if ((readl(BANKCON7) & (0x3 << 15)) == (0x3 << 15))
--		printf("SDRAM2:   CL%d@%dMHz\n", ((readl(BANKCON7) & 0xc) >> 2) + 2,
--			s3c24xx_get_hclk() / 1000000);
--	return 0;
--}
--
--late_initcall(s3c24xx_dump_clocks);
--
- static uint64_t s3c24xx_clocksource_read(void)
+ static int a9m2440_console_init(void)
  {
- 	/* note: its a down counter */
-@@ -203,7 +90,7 @@ static struct clocksource cs = {
+-	add_generic_device("s3c24x0_serial", -1, NULL, UART1_BASE, UART1_SIZE,
++	add_generic_device("s3c_serial", -1, NULL, S3C_UART1_BASE, S3C_UART1_SIZE,
+ 			   IORESOURCE_MEM, NULL);
+ 	return 0;
+ }
+diff --git a/arch/arm/boards/mini2440/mini2440.c b/arch/arm/boards/mini2440/mini2440.c
+index 0186465..ec4eb05 100644
+--- a/arch/arm/boards/mini2440/mini2440.c
++++ b/arch/arm/boards/mini2440/mini2440.c
+@@ -342,7 +342,7 @@ static int mini2440_console_init(void)
+ 	s3c_gpio_mode(GPH2_TXD0);
+ 	s3c_gpio_mode(GPH3_RXD0);
  
- static int clocksource_init (void)
- {
--	uint32_t p_clk = s3c24xx_get_pclk();
-+	uint32_t p_clk = s3c_get_pclk();
- 
- 	writel(0x00000000, TCON);	/* stop all timers */
- 	writel(0x00ffffff, TCFG0);	/* PCLK / (255 + 1) for timer 4 */
-diff --git a/arch/arm/mach-samsung/include/mach/s3c-clocks.h b/arch/arm/mach-samsung/include/mach/s3c-clocks.h
-new file mode 100644
-index 0000000..44b2a6c
---- /dev/null
-+++ b/arch/arm/mach-samsung/include/mach/s3c-clocks.h
-@@ -0,0 +1,31 @@
-+/*
-+ * Copyright (C) 2011 Juergen Beisert, Pengutronix
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
-+
-+#ifndef __MACH_S3C_CLOCKS_H
-+# define __MACH_S3C_CLOCKS_H
-+
-+#ifdef CONFIG_ARCH_S3C24xx
-+# define S3C_LOCKTIME (S3C_CLOCK_POWER_BASE)
-+# define S3C_MPLLCON (S3C_CLOCK_POWER_BASE + 0x4)
-+# define S3C_UPLLCON (S3C_CLOCK_POWER_BASE + 0x8)
-+# define S3C_CLKCON (S3C_CLOCK_POWER_BASE + 0xc)
-+# define S3C_CLKSLOW (S3C_CLOCK_POWER_BASE + 0x10)
-+# define S3C_CLKDIVN (S3C_CLOCK_POWER_BASE + 0x14)
-+
-+# define S3C_MPLLCON_GET_MDIV(x) ((((x) >> 12) & 0xff) + 8)
-+# define S3C_MPLLCON_GET_PDIV(x) ((((x) >> 4) & 0x3f) + 2)
-+# define S3C_MPLLCON_GET_SDIV(x) ((x) & 0x3)
-+#endif
-+
-+#endif /* __MACH_S3C_CLOCKS_H */
-diff --git a/arch/arm/mach-samsung/include/mach/s3c-generic.h b/arch/arm/mach-samsung/include/mach/s3c-generic.h
-index b8abcf1..33f025d 100644
---- a/arch/arm/mach-samsung/include/mach/s3c-generic.h
-+++ b/arch/arm/mach-samsung/include/mach/s3c-generic.h
-@@ -24,10 +24,10 @@
-  * MA 02111-1307 USA
-  */
- 
--uint32_t s3c24xx_get_mpllclk(void);
--uint32_t s3c24xx_get_upllclk(void);
--uint32_t s3c24xx_get_fclk(void);
--uint32_t s3c24xx_get_hclk(void);
--uint32_t s3c24xx_get_pclk(void);
--uint32_t s3c24xx_get_uclk(void);
-+uint32_t s3c_get_mpllclk(void);
-+uint32_t s3c_get_upllclk(void);
-+uint32_t s3c_get_fclk(void);
-+uint32_t s3c_get_hclk(void);
-+uint32_t s3c_get_pclk(void);
-+uint32_t s3c_get_uclk(void);
- uint32_t s3c24x0_get_memory_size(void);
+-	add_generic_device("s3c24x0_serial", -1, NULL, UART1_BASE, UART1_SIZE,
++	add_generic_device("s3c_serial", -1, NULL, S3C_UART1_BASE, S3C_UART1_SIZE,
+ 			   IORESOURCE_MEM, NULL);
+ 	return 0;
+ }
 diff --git a/arch/arm/mach-samsung/include/mach/s3c-iomap.h b/arch/arm/mach-samsung/include/mach/s3c-iomap.h
-index a990d80..7cedf6a 100644
+index 9677803..7c45c53 100644
 --- a/arch/arm/mach-samsung/include/mach/s3c-iomap.h
 +++ b/arch/arm/mach-samsung/include/mach/s3c-iomap.h
-@@ -25,7 +25,7 @@
- #define S3C2410_USB_HOST_BASE		0x49000000
- #define S3C2410_INTERRUPT_BASE		0x4A000000
- #define S3C2410_DMA_BASE		0x4B000000
--#define S3C24X0_CLOCK_POWER_BASE	0x4C000000
-+#define S3C_CLOCK_POWER_BASE		0x4C000000
+@@ -28,7 +28,7 @@
+ #define S3C_CLOCK_POWER_BASE		0x4C000000
  #define S3C2410_LCD_BASE		0x4D000000
  #define S3C24X0_NAND_BASE		0x4E000000
- #define S3C24X0_UART_BASE		0x50000000
-@@ -40,15 +40,6 @@
- #define S3C2410_SPI_BASE		0x59000000
- #define S3C2410_SDI_BASE		0x5A000000
+-#define S3C24X0_UART_BASE		0x50000000
++#define S3C_UART_BASE			0x50000000
+ #define S3C_TIMER_BASE			0x51000000
+ #define S3C2410_USB_DEVICE_BASE		0x52000140
+ #define S3C_WATCHDOG_BASE		0x53000000
+@@ -52,13 +52,12 @@
+ #endif
+ #define NFC_RAM_SIZE 4096
  
--/* Clock control (direct access) */
--
--#define LOCKTIME (S3C24X0_CLOCK_POWER_BASE)
--#define MPLLCON (S3C24X0_CLOCK_POWER_BASE + 0x4)
--#define UPLLCON (S3C24X0_CLOCK_POWER_BASE + 0x8)
--#define CLKCON (S3C24X0_CLOCK_POWER_BASE + 0xc)
--#define CLKSLOW (S3C24X0_CLOCK_POWER_BASE + 0x10)
--#define CLKDIVN (S3C24X0_CLOCK_POWER_BASE + 0x14)
--
- /* Timer (direct access) */
- #define TCFG0 (S3C24X0_TIMER_BASE + 0x00)
- #define TCFG1 (S3C24X0_TIMER_BASE + 0x04)
-diff --git a/arch/arm/mach-samsung/lowlevel-init.S b/arch/arm/mach-samsung/lowlevel-init.S
-index 8529283..e2e3fc0 100644
---- a/arch/arm/mach-samsung/lowlevel-init.S
-+++ b/arch/arm/mach-samsung/lowlevel-init.S
-@@ -77,7 +77,7 @@ routine very early in your board_init_lowlevel routine.
- .globl s3c24x0_pll_init
- s3c24x0_pll_init:
+-/* internal UARTs (driver based) */
+-#define UART1_BASE (S3C24X0_UART_BASE)
+-#define UART1_SIZE 0x4000
+-#define UART2_BASE (S3C24X0_UART_BASE + 0x4000)
+-#define UART2_SIZE 0x4000
+-#define UART3_BASE (S3C24X0_UART_BASE + 0x8000)
+-#define UART3_SIZE 0x4000
++#define S3C_UART1_BASE (S3C_UART_BASE)
++#define S3C_UART1_SIZE 0x4000
++#define S3C_UART2_BASE (S3C_UART_BASE + 0x4000)
++#define S3C_UART2_SIZE 0x4000
++#define S3C_UART3_BASE (S3C_UART_BASE + 0x8000)
++#define S3C_UART3_SIZE 0x4000
  
--	mov r0, #S3C24X0_CLOCK_POWER_BASE
-+	mov r0, #S3C_CLOCK_POWER_BASE
+ /* CS configuration (direct access) */
+ #define BWSCON (S3C24X0_MEMCTL_BASE)
+diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
+index 592d543..186b596 100644
+--- a/drivers/serial/Kconfig
++++ b/drivers/serial/Kconfig
+@@ -78,16 +78,16 @@ config DRIVER_SERIAL_PL010
+ 	help
+ 	  Enable this to get support for AMBA PL010 based serial devices
  
- 	/* configure internal clock ratio */
- 	mov r1, #BOARD_SPECIFIC_CLKDIVN
-diff --git a/arch/arm/mach-samsung/s3c24xx-clocks.c b/arch/arm/mach-samsung/s3c24xx-clocks.c
+-config DRIVER_SERIAL_S3C24X0
+-	bool "Samsung S3C24X0 serial driver"
++config DRIVER_SERIAL_S3C
++	bool "Samsung S3C serial driver"
+ 	depends on ARCH_S3C24xx
+ 	default y
+ 	help
+-	  Say Y here if you want to use the CONS on a S3C24X0 CPU
++	  Say Y here if you want to use the CONS on a Samsung S3C CPU
+ 
+-config DRIVER_SERIAL_S3C24X0_AUTOSYNC
++config DRIVER_SERIAL_S3C_AUTOSYNC
+ 	bool "Enable auto flow"
+-	depends on DRIVER_SERIAL_S3C24X0
++	depends on DRIVER_SERIAL_S3C
+ 	help
+ 	  Say Y here if you want to use the auto flow feature of this
+ 	  UART. RTS and CTS will be handled by the hardware when enabled.
+diff --git a/drivers/serial/Makefile b/drivers/serial/Makefile
+index a702125..e2d56b9 100644
+--- a/drivers/serial/Makefile
++++ b/drivers/serial/Makefile
+@@ -15,7 +15,7 @@ obj-$(CONFIG_DRIVER_SERIAL_MPC5XXX)		+= serial_mpc5xxx.o
+ obj-$(CONFIG_DRIVER_SERIAL_BLACKFIN)		+= serial_blackfin.o
+ obj-$(CONFIG_DRIVER_SERIAL_NS16550)		+= serial_ns16550.o
+ obj-$(CONFIG_DRIVER_SERIAL_PL010)		+= serial_pl010.o
+-obj-$(CONFIG_DRIVER_SERIAL_S3C24X0)		+= serial_s3c24x0.o
++obj-$(CONFIG_DRIVER_SERIAL_S3C)			+= serial_s3c.o
+ obj-$(CONFIG_DRIVER_SERIAL_ALTERA)		+= serial_altera.o
+ obj-$(CONFIG_DRIVER_SERIAL_ALTERA_JTAG)		+= serial_altera_jtag.o
+ obj-$(CONFIG_DRIVER_SERIAL_PXA)			+= serial_pxa.o
+diff --git a/drivers/serial/serial_s3c.c b/drivers/serial/serial_s3c.c
 new file mode 100644
-index 0000000..beacc76
+index 0000000..b7e0987
 --- /dev/null
-+++ b/arch/arm/mach-samsung/s3c24xx-clocks.c
-@@ -0,0 +1,137 @@
++++ b/drivers/serial/serial_s3c.c
+@@ -0,0 +1,188 @@
 +/*
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
++ * (c) 2009...2011 Juergen Beisert <j.beisert@pengutronix.de>
 + *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
++ * Based on code from:
++ * (c) 2004 Sascha Hauer <sascha@saschahauer.de>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
 + *
 + * This program is distributed in the hope that it will be useful,
 + * but WITHOUT ANY WARRANTY; without even the implied warranty of
 + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 + * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ *
 + */
 +
-+#include <config.h>
 +#include <common.h>
++#include <driver.h>
 +#include <init.h>
-+#include <clock.h>
++#include <malloc.h>
 +#include <io.h>
-+#include <mach/s3c-iomap.h>
 +#include <mach/s3c-generic.h>
-+#include <mach/s3c-clocks.h>
++#include <mach/s3c-iomap.h>
 +
-+/**
-+ * Calculate the current M-PLL clock.
-+ * @return Current frequency in Hz
-+ */
-+uint32_t s3c_get_mpllclk(void)
++/* Note: Offsets are for little endian access */
++#define ULCON 0x00		/* line control */
++#define UCON 0x04		/* UART control */
++#define UFCON 0x08		/* FIFO control */
++#define UMCON 0x0c		/* modem control */
++#define UTRSTAT 0x10		/* Rx/Tx status */
++#define UERSTAT 0x14		/* error status */
++#define UFSTAT 0x18		/* FIFO status */
++#define UMSTAT 0x1c		/* modem status */
++#define UTXH 0x20		/* transmitt */
++#define URXH 0x24		/* receive */
++#define UBRDIV 0x28		/* baudrate generator */
++
++static unsigned s3c_get_arch_uart_input_clock(void __iomem *base)
 +{
-+	uint32_t m, p, s, reg_val;
++	unsigned reg = readw(base + UCON);
 +
-+	reg_val = readl(S3C_MPLLCON);
-+	m = ((reg_val & 0xFF000) >> 12) + 8;
-+	p = ((reg_val & 0x003F0) >> 4) + 2;
-+	s = reg_val & 0x3;
-+#ifdef CONFIG_CPU_S3C2410
-+	return (S3C24XX_CLOCK_REFERENCE * m) / (p << s);
-+#endif
-+#ifdef CONFIG_CPU_S3C2440
-+	return 2 * m * (S3C24XX_CLOCK_REFERENCE / (p << s));
-+#endif
-+}
-+
-+/**
-+ * Calculate the current U-PLL clock
-+ * @return Current frequency in Hz
-+ */
-+uint32_t s3c_get_upllclk(void)
-+{
-+	uint32_t m, p, s, reg_val;
-+
-+	reg_val = readl(S3C_UPLLCON);
-+	m = ((reg_val & 0xFF000) >> 12) + 8;
-+	p = ((reg_val & 0x003F0) >> 4) + 2;
-+	s = reg_val & 0x3;
-+
-+	return (S3C24XX_CLOCK_REFERENCE * m) / (p << s);
-+}
-+
-+/**
-+ * Calculate the FCLK frequency used for the ARM CPU core
-+ * @return Current frequency in Hz
-+ */
-+uint32_t s3c_get_fclk(void)
-+{
-+	return s3c_get_mpllclk();
-+}
-+
-+/**
-+ * Calculate the HCLK frequency used for the AHB bus (CPU to main peripheral)
-+ * @return Current frequency in Hz
-+ */
-+uint32_t s3c_get_hclk(void)
-+{
-+	uint32_t f_clk;
-+
-+	f_clk = s3c_get_fclk();
-+#ifdef CONFIG_CPU_S3C2410
-+	if (readl(S3C_CLKDIVN) & 0x02)
-+		return f_clk >> 1;
-+#endif
-+#ifdef CONFIG_CPU_S3C2440
-+	switch(readl(S3C_CLKDIVN) & 0x06) {
-+	case 2:
-+		return f_clk >> 1;
-+	case 4:
-+		return f_clk >> 2;	/* TODO consider CAMDIVN */
-+	case 6:
-+		return f_clk / 3;	/* TODO consider CAMDIVN */
++	switch (reg & 0xc00) {
++		case 0x000:
++		case 0x800:
++			return s3c_get_pclk();
++		case 0x400:
++			break;	/* TODO UEXTCLK */
++		case 0xc00:
++			break;	/* TODO FCLK/n */
 +	}
-+#endif
-+	return f_clk;
++
++	return 0;	/* not nice, but we can't emit an error message! */
 +}
 +
-+/**
-+ * Calculate the PCLK frequency used for the slower peripherals
-+ * @return Current frequency in Hz
-+ */
-+uint32_t s3c_get_pclk(void)
++static int s3c_serial_setbaudrate(struct console_device *cdev, int baudrate)
 +{
-+	uint32_t p_clk;
++	struct device_d *dev = cdev->dev;
++	void __iomem *base = dev->priv;
++	unsigned val;
 +
-+	p_clk = s3c_get_hclk();
-+	if (readl(S3C_CLKDIVN) & 0x01)
-+		return p_clk >> 1;
-+	return p_clk;
-+}
++	val = s3c_get_arch_uart_input_clock(base) / (16 * baudrate) - 1;
++	writew(val, base + UBRDIV);
 +
-+/**
-+ * Calculate the UCLK frequency used by the USB host device
-+ * @return Current frequency in Hz
-+ */
-+uint32_t s3c24_get_uclk(void)
-+{
-+	return s3c_get_upllclk();
-+}
-+
-+/**
-+ * Show the user the current clock settings
-+ */
-+int s3c24xx_dump_clocks(void)
-+{
-+	printf("refclk:  %7d kHz\n", S3C24XX_CLOCK_REFERENCE / 1000);
-+	printf("mpll:    %7d kHz\n", s3c_get_mpllclk() / 1000);
-+	printf("upll:    %7d kHz\n", s3c_get_upllclk() / 1000);
-+	printf("fclk:    %7d kHz\n", s3c_get_fclk() / 1000);
-+	printf("hclk:    %7d kHz\n", s3c_get_hclk() / 1000);
-+	printf("pclk:    %7d kHz\n", s3c_get_pclk() / 1000);
-+	printf("SDRAM1:   CL%d@%dMHz\n", ((readl(BANKCON6) & 0xc) >> 2) + 2, s3c_get_hclk() / 1000000);
-+	if ((readl(BANKCON7) & (0x3 << 15)) == (0x3 << 15))
-+		printf("SDRAM2:   CL%d@%dMHz\n", ((readl(BANKCON7) & 0xc) >> 2) + 2,
-+			s3c_get_hclk() / 1000000);
 +	return 0;
 +}
 +
-+late_initcall(s3c24xx_dump_clocks);
-diff --git a/drivers/mci/s3c.c b/drivers/mci/s3c.c
-index 12d2c03..7babab4 100644
---- a/drivers/mci/s3c.c
-+++ b/drivers/mci/s3c.c
-@@ -191,7 +191,7 @@ static unsigned s3c_setup_clock_speed(struct device_d *hw_dev, unsigned nc)
- 	if (nc == 0)
- 		return 0;
- 
--	clock = s3c24xx_get_pclk();
-+	clock = s3c_get_pclk();
- 	/* Calculate the required prescaler value to get the requested frequency */
- 	mci_psc = (clock + (nc >> 2)) / nc;
- 
-@@ -760,8 +760,8 @@ static int s3c_mci_probe(struct device_d *hw_dev)
- 	struct s3c_mci_platform_data *pd = hw_dev->platform_data;
- 
- 	/* TODO replace by the global func: enable the SDI unit clock */
--	writel(readl(S3C24X0_CLOCK_POWER_BASE + 0x0c) | 0x200,
--		S3C24X0_CLOCK_POWER_BASE + 0x0c);
-+	writel(readl(S3C_CLOCK_POWER_BASE + 0x0c) | 0x200,
-+		S3C_CLOCK_POWER_BASE + 0x0c);
- 
- 	if (pd == NULL) {
- 		pr_err("Missing platform data\n");
-@@ -775,8 +775,8 @@ static int s3c_mci_probe(struct device_d *hw_dev)
- 	/* feed forward the platform specific values */
- 	mci_pdata.voltages = pd->voltages;
- 	mci_pdata.host_caps = pd->caps;
--	mci_pdata.f_min = pd->f_min == 0 ? s3c24xx_get_pclk() / 256 : pd->f_min;
--	mci_pdata.f_max = pd->f_max == 0 ? s3c24xx_get_pclk() / 2 : pd->f_max;
-+	mci_pdata.f_min = pd->f_min == 0 ? s3c_get_pclk() / 256 : pd->f_min;
-+	mci_pdata.f_max = pd->f_max == 0 ? s3c_get_pclk() / 2 : pd->f_max;
- 
- 	/*
- 	 * Start the clock to let the engine and the card finishes its startup
++static int s3c_serial_init_port(struct console_device *cdev)
++{
++	struct device_d *dev = cdev->dev;
++	void __iomem *base = dev->priv;
++
++	/* FIFO enable, Tx/Rx FIFO clear */
++	writeb(0x07, base + UFCON);
++	writeb(0x00, base + UMCON);
++
++	/* Normal,No parity,1 stop,8 bit */
++	writeb(0x03, base + ULCON);
++	/*
++	 * tx=level,rx=edge,disable timeout int.,enable rx error int.,
++	 * normal,interrupt or polling
++	 */
++	writew(0x0245, base + UCON);
++
++#ifdef CONFIG_DRIVER_SERIAL_S3C_AUTOSYNC
++	writeb(0x10, base + UMCON); /* enable auto flow control */
++#else
++	writeb(0x01, base + UMCON); /* RTS up */
++#endif
++
++	return 0;
++}
++
++static void s3c_serial_putc(struct console_device *cdev, char c)
++{
++	struct device_d *dev = cdev->dev;
++	void __iomem *base = dev->priv;
++
++	/* Wait for Tx FIFO not full */
++	while (!(readb(base + UTRSTAT) & 0x2))
++		;
++
++	writeb(c, base + UTXH);
++}
++
++static int s3c_serial_tstc(struct console_device *cdev)
++{
++	struct device_d *dev = cdev->dev;
++	void __iomem *base = dev->priv;
++
++	/* If receive fifo is empty, return false */
++	if (readb(base + UTRSTAT) & 0x1)
++		return 1;
++
++	return 0;
++}
++
++static int s3c_serial_getc(struct console_device *cdev)
++{
++	struct device_d *dev = cdev->dev;
++	void __iomem *base = dev->priv;
++
++	/* wait for a character */
++	while (!(readb(base + UTRSTAT) & 0x1))
++		;
++
++	return readb(base + URXH);
++}
++
++static void s3c_serial_flush(struct console_device *cdev)
++{
++	struct device_d *dev = cdev->dev;
++	void __iomem *base = dev->priv;
++
++	while (!(readb(base + UTRSTAT) & 0x4))
++		;
++}
++
++static int s3c_serial_probe(struct device_d *dev)
++{
++	struct console_device *cdev;
++
++	cdev = xzalloc(sizeof(struct console_device));
++	dev->type_data = cdev;
++	dev->priv = dev_request_mem_region(dev, 0);
++	cdev->dev = dev;
++	cdev->f_caps = CONSOLE_STDIN | CONSOLE_STDOUT | CONSOLE_STDERR;
++	cdev->tstc = s3c_serial_tstc;
++	cdev->putc = s3c_serial_putc;
++	cdev->getc = s3c_serial_getc;
++	cdev->flush = s3c_serial_flush;
++	cdev->setbrg = s3c_serial_setbaudrate;
++
++	s3c_serial_init_port(cdev);
++
++	/* Enable UART */
++	console_register(cdev);
++
++	return 0;
++}
++
++static void s3c_serial_remove(struct device_d *dev)
++{
++	struct console_device *cdev = dev->type_data;
++
++	s3c_serial_flush(cdev);
++	free(cdev);
++	dev->type_data = NULL;
++}
++
++static struct driver_d s3c_serial_driver = {
++	.name   = "s3c_serial",
++	.probe  = s3c_serial_probe,
++	.remove = s3c_serial_remove,
++};
++
++static int s3c_serial_init(void)
++{
++	register_driver(&s3c_serial_driver);
++	return 0;
++}
++
++console_initcall(s3c_serial_init);
 diff --git a/drivers/serial/serial_s3c24x0.c b/drivers/serial/serial_s3c24x0.c
-index 4e95e5c..4191a49 100644
+deleted file mode 100644
+index 4191a49..0000000
 --- a/drivers/serial/serial_s3c24x0.c
-+++ b/drivers/serial/serial_s3c24x0.c
-@@ -48,7 +48,7 @@ static int s3c24x0_serial_setbaudrate(struct console_device *cdev, int baudrate)
- 	unsigned val;
- 
- 	/* value is calculated so : PCLK / (16 * baudrate) -1 */
--	val = s3c24xx_get_pclk() / (16 * baudrate) - 1;
-+	val = s3c_get_pclk() / (16 * baudrate) - 1;
- 	writew(val, base + UBRDIV);
- 
- 	return 0;
-diff --git a/drivers/video/s3c24xx.c b/drivers/video/s3c24xx.c
-index 75677c3..f6af773 100644
---- a/drivers/video/s3c24xx.c
-+++ b/drivers/video/s3c24xx.c
-@@ -227,7 +227,7 @@ static int s3cfb_activate_var(struct fb_info *fb_info)
- 	/* ensure video output is _off_ */
- 	writel(0x00000000, fbi->base + LCDCON1);
- 
--	hclk = s3c24xx_get_hclk() / 1000U;	/* hclk in kHz */
-+	hclk = s3c_get_hclk() / 1000U;	/* hclk in kHz */
- 	div = hclk / PICOS2KHZ(mode->pixclock);
- 	if (div < 3)
- 		div  = 3;
-@@ -339,7 +339,7 @@ static void s3cfb_info(struct device_d *hw_dev)
- 	addr3 = readl(fbi->base + LCDSADDR3);
- 
- 	printf(" Video hardware info:\n");
--	printf("  Video clock is running at %u Hz\n", s3c24xx_get_hclk() / ((GET_CLKVAL(con1) + 1) * 2));
-+	printf("  Video clock is running at %u Hz\n", s3c_get_hclk() / ((GET_CLKVAL(con1) + 1) * 2));
- 	printf("  Video memory bank starts at 0x%08X\n", GET_LCDBANK(addr1) << 22);
- 	printf("  Video memory bank offset: 0x%08X\n", GET_LCDBASEU(addr1));
- 	printf("  Video memory end: 0x%08X\n", GET_LCDBASEU(addr2));
++++ /dev/null
+@@ -1,172 +0,0 @@
+-/*
+- * (c) 2009 Juergen Beisert <j.beisert@saschahauer.de>
+- *
+- * Based on code from:
+- * (c) 2004 Sascha Hauer <sascha@saschahauer.de>
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+- *
+- */
+-
+-#include <common.h>
+-#include <driver.h>
+-#include <init.h>
+-#include <malloc.h>
+-#include <io.h>
+-#include <mach/s3c-generic.h>
+-#include <mach/s3c-iomap.h>
+-
+-/* Note: Offsets are for little endian access */
+-#define ULCON 0x00		/* line control */
+-#define UCON 0x04		/* UART control */
+-#define UFCON 0x08		/* FIFO control */
+-#define UMCON 0x0c		/* modem control */
+-#define UTRSTAT 0x10		/* Rx/Tx status */
+-#define UERSTAT 0x14		/* error status */
+-#define UFSTAT 0x18		/* FIFO status */
+-#define UMSTAT 0x1c		/* modem status */
+-#define UTXH 0x20		/* transmitt */
+-#define URXH 0x24		/* receive */
+-#define UBRDIV 0x28		/* baudrate generator */
+-
+-static int s3c24x0_serial_setbaudrate(struct console_device *cdev, int baudrate)
+-{
+-	struct device_d *dev = cdev->dev;
+-	void __iomem *base = dev->priv;
+-	unsigned val;
+-
+-	/* value is calculated so : PCLK / (16 * baudrate) -1 */
+-	val = s3c_get_pclk() / (16 * baudrate) - 1;
+-	writew(val, base + UBRDIV);
+-
+-	return 0;
+-}
+-
+-static int s3c24x0_serial_init_port(struct console_device *cdev)
+-{
+-	struct device_d *dev = cdev->dev;
+-	void __iomem *base = dev->priv;
+-
+-	/* FIFO enable, Tx/Rx FIFO clear */
+-	writeb(0x07, base + UFCON);
+-	writeb(0x00, base + UMCON);
+-
+-	/* Normal,No parity,1 stop,8 bit */
+-	writeb(0x03, base + ULCON);
+-	/*
+-	 * tx=level,rx=edge,disable timeout int.,enable rx error int.,
+-	 * normal,interrupt or polling
+-	 */
+-	writew(0x0245, base + UCON);
+-
+-#ifdef CONFIG_DRIVER_SERIAL_S3C24X0_AUTOSYNC
+-	writeb(0x10, base + UMCON); /* enable auto flow control */
+-#else
+-	writeb(0x01, base + UMCON); /* RTS up */
+-#endif
+-
+-	return 0;
+-}
+-
+-static void s3c24x0_serial_putc(struct console_device *cdev, char c)
+-{
+-	struct device_d *dev = cdev->dev;
+-	void __iomem *base = dev->priv;
+-
+-	/* Wait for Tx FIFO not full */
+-	while (!(readb(base + UTRSTAT) & 0x2))
+-		;
+-
+-	writeb(c, base + UTXH);
+-}
+-
+-static int s3c24x0_serial_tstc(struct console_device *cdev)
+-{
+-	struct device_d *dev = cdev->dev;
+-	void __iomem *base = dev->priv;
+-
+-	/* If receive fifo is empty, return false */
+-	if (readb(base + UTRSTAT) & 0x1)
+-		return 1;
+-
+-	return 0;
+-}
+-
+-static int s3c24x0_serial_getc(struct console_device *cdev)
+-{
+-	struct device_d *dev = cdev->dev;
+-	void __iomem *base = dev->priv;
+-
+-	/* wait for a character */
+-	while (!(readb(base + UTRSTAT) & 0x1))
+-		;
+-
+-	return readb(base + URXH);
+-}
+-
+-static void s3c24x0_serial_flush(struct console_device *cdev)
+-{
+-	struct device_d *dev = cdev->dev;
+-	void __iomem *base = dev->priv;
+-
+-	while (!(readb(base + UTRSTAT) & 0x4))
+-		;
+-}
+-
+-static int s3c24x0_serial_probe(struct device_d *dev)
+-{
+-	struct console_device *cdev;
+-
+-	cdev = xzalloc(sizeof(struct console_device));
+-	dev->type_data = cdev;
+-	dev->priv = dev_request_mem_region(dev, 0);
+-	cdev->dev = dev;
+-	cdev->f_caps = CONSOLE_STDIN | CONSOLE_STDOUT | CONSOLE_STDERR;
+-	cdev->tstc = s3c24x0_serial_tstc;
+-	cdev->putc = s3c24x0_serial_putc;
+-	cdev->getc = s3c24x0_serial_getc;
+-	cdev->flush = s3c24x0_serial_flush;
+-	cdev->setbrg = s3c24x0_serial_setbaudrate;
+-
+-	s3c24x0_serial_init_port(cdev);
+-
+-	/* Enable UART */
+-	console_register(cdev);
+-
+-	return 0;
+-}
+-
+-static void s3c24x0_serial_remove(struct device_d *dev)
+-{
+-	struct console_device *cdev = dev->type_data;
+-
+-	s3c24x0_serial_flush(cdev);
+-	free(cdev);
+-	dev->type_data = NULL;
+-}
+-
+-static struct driver_d s3c24x0_serial_driver = {
+-	.name   = "s3c24x0_serial",
+-	.probe  = s3c24x0_serial_probe,
+-	.remove = s3c24x0_serial_remove,
+-};
+-
+-static int s3c24x0_serial_init(void)
+-{
+-	register_driver(&s3c24x0_serial_driver);
+-	return 0;
+-}
+-
+-console_initcall(s3c24x0_serial_init);
 -- 
 1.7.7.3
 
