@@ -1,20 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Reuqa-0006CA-5V
- for barebox@lists.infradead.org; Sun, 25 Dec 2011 20:39:11 +0000
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1Reuqc-000480-Px
+ for barebox@lists.infradead.org; Sun, 25 Dec 2011 20:39:12 +0000
 Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
  by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <jbe@pengutronix.de>) id 1ReuqA-0000hK-IB
+ (envelope-from <jbe@pengutronix.de>) id 1ReuqA-0000h4-8u
  for barebox@lists.infradead.org; Sun, 25 Dec 2011 21:38:42 +0100
 Received: from jbe by dude.hi.pengutronix.de with local (Exim 4.77)
- (envelope-from <jbe@pengutronix.de>) id 1ReuqA-0001Li-E4
+ (envelope-from <jbe@pengutronix.de>) id 1ReuqA-0001LI-81
  for barebox@lists.infradead.org; Sun, 25 Dec 2011 21:38:42 +0100
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Sun, 25 Dec 2011 21:38:32 +0100
-Message-Id: <1324845517-4601-10-git-send-email-jbe@pengutronix.de>
-In-Reply-To: <1324845517-4601-1-git-send-email-jbe@pengutronix.de>
-References: <1324845517-4601-1-git-send-email-jbe@pengutronix.de>
+Date: Sun, 25 Dec 2011 21:38:23 +0100
+Message-Id: <1324845517-4601-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,116 +26,101 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/14] MACH SAMSUNG/S3C: Rename register macros to reflect the
- MACH they are valid for
+Subject: [PATCH] Prepare to add more Samsung S3C CPUs to barebox
 To: barebox@lists.infradead.org
 
-Most members of the S3Cxxxx family share similar timer units. But they are
-not really register compatible. To reflect this, use a separate name space for
-the S3C family.
+This patch series makes the current Samsung S3C24XX CPU and platform support
+more generic to be able to add Samsung's more recent S3C CPUs (S3C64XX for
+example). Some drivers can be shared between members in the S3C family of
+processors, so the drivers get a s3c in their names to reflect it. But some
+parts stick to their processor. To avoid an ifdef hell, I moved these parts
+into separte files.
 
-Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
----
- arch/arm/mach-samsung/include/mach/s3c-iomap.h |   20 +-------------
- arch/arm/mach-samsung/s3c-timer.c              |   33 ++++++++++++++++++------
- 2 files changed, 26 insertions(+), 27 deletions(-)
+Comments are welcome.
 
-diff --git a/arch/arm/mach-samsung/include/mach/s3c-iomap.h b/arch/arm/mach-samsung/include/mach/s3c-iomap.h
-index 7cedf6a..807660a 100644
---- a/arch/arm/mach-samsung/include/mach/s3c-iomap.h
-+++ b/arch/arm/mach-samsung/include/mach/s3c-iomap.h
-@@ -29,7 +29,7 @@
- #define S3C2410_LCD_BASE		0x4D000000
- #define S3C24X0_NAND_BASE		0x4E000000
- #define S3C24X0_UART_BASE		0x50000000
--#define S3C24X0_TIMER_BASE		0x51000000
-+#define S3C_TIMER_BASE			0x51000000
- #define S3C2410_USB_DEVICE_BASE		0x52000140
- #define S3C24X0_WATCHDOG_BASE		0x53000000
- #define S3C2410_I2C_BASE		0x54000000
-@@ -40,24 +40,6 @@
- #define S3C2410_SPI_BASE		0x59000000
- #define S3C2410_SDI_BASE		0x5A000000
- 
--/* Timer (direct access) */
--#define TCFG0 (S3C24X0_TIMER_BASE + 0x00)
--#define TCFG1 (S3C24X0_TIMER_BASE + 0x04)
--#define TCON (S3C24X0_TIMER_BASE + 0x08)
--#define TCNTB0 (S3C24X0_TIMER_BASE + 0x0c)
--#define TCMPB0 (S3C24X0_TIMER_BASE + 0x10)
--#define TCNTO0 (S3C24X0_TIMER_BASE + 0x14)
--#define TCNTB1 (S3C24X0_TIMER_BASE + 0x18)
--#define TCMPB1 (S3C24X0_TIMER_BASE + 0x1c)
--#define TCNTO1 (S3C24X0_TIMER_BASE + 0x20)
--#define TCNTB2 (S3C24X0_TIMER_BASE + 0x24)
--#define TCMPB2 (S3C24X0_TIMER_BASE + 0x28)
--#define TCNTO2 (S3C24X0_TIMER_BASE + 0x2c)
--#define TCNTB3 (S3C24X0_TIMER_BASE + 0x30)
--#define TCMPB3 (S3C24X0_TIMER_BASE + 0x34)
--#define TCNTO3 (S3C24X0_TIMER_BASE + 0x38)
--#define TCNTB4 (S3C24X0_TIMER_BASE + 0x3c)
--#define TCNTO4 (S3C24X0_TIMER_BASE + 0x40)
- 
- /* Watchdog (direct access) */
- #define WTCON (S3C24X0_WATCHDOG_BASE)
-diff --git a/arch/arm/mach-samsung/s3c-timer.c b/arch/arm/mach-samsung/s3c-timer.c
-index 2b0b38a..d9dae55 100644
---- a/arch/arm/mach-samsung/s3c-timer.c
-+++ b/arch/arm/mach-samsung/s3c-timer.c
-@@ -21,10 +21,27 @@
- #include <mach/s3c-iomap.h>
- #include <mach/s3c-generic.h>
- 
-+#define S3C_TCFG0 (S3C_TIMER_BASE + 0x00)
-+# define S3C_TCFG0_T4MASK 0xff00
-+# define S3C_TCFG0_SET_PSCL234(x) ((x) << 8)
-+# define S3C_TCFG0_GET_PSCL234(x) (((x) >> 8) & 0xff)
-+#define S3C_TCFG1 (S3C_TIMER_BASE + 0x04)
-+# define S3C_TCFG1_T4MASK 0xf0000
-+# define S3C_TCFG1_SET_T4MUX(x) ((x) << 16)
-+# define S3C_TCFG1_GET_T4MUX(x) (((x) >> 16) & 0xf)
-+#define S3C_TCON (S3C_TIMER_BASE + 0x08)
-+# define S3C_TCON_T4MASK (7 << 20)
-+# define S3C_TCON_T4START (1 << 20)
-+# define S3C_TCON_T4MANUALUPD (1 << 21)
-+# define S3C_TCON_T4RELOAD (1 <<22)
-+#define S3C_TCNTB4 (S3C_TIMER_BASE + 0x3c)
-+#define S3C_TCNTO4 (S3C_TIMER_BASE + 0x40)
-+
-+
- static uint64_t s3c24xx_clocksource_read(void)
- {
- 	/* note: its a down counter */
--	return 0xFFFF - readw(TCNTO4);
-+	return 0xFFFF - readw(S3C_TCNTO4);
- }
- 
- static struct clocksource cs = {
-@@ -37,15 +54,15 @@ static int clocksource_init(void)
- {
- 	uint32_t p_clk = s3c_get_pclk();
- 
--	writel(0x00000000, TCON);	/* stop all timers */
--	writel(0x00ffffff, TCFG0);	/* PCLK / (255 + 1) for timer 4 */
--	writel(0x00030000, TCFG1);	/* /16 */
-+	writel(0x00000000, S3C_TCON);	/* stop all timers */
-+	writel(0x00ffffff, S3C_TCFG0);	/* PCLK / (255 + 1) for timer 4 */
-+	writel(0x00030000, S3C_TCFG1);	/* /16 */
- 
--	writew(0xffff, TCNTB4);		/* reload value is TOP */
-+	writew(0xffff, S3C_TCNTB4);	/* reload value is TOP */
- 
--	writel(0x00600000, TCON);	/* force a first reload */
--	writel(0x00400000, TCON);
--	writel(0x00500000, TCON);	/* enable timer 4 with auto reload */
-+	writel(0x00600000, S3C_TCON);	/* force a first reload */
-+	writel(0x00400000, S3C_TCON);
-+	writel(0x00500000, S3C_TCON);	/* enable timer 4 with auto reload */
- 
- 	cs.mult = clocksource_hz2mult(p_clk / ((255 + 1) * 16), cs.shift);
- 	init_clock(&cs);
--- 
-1.7.7.3
+The following changes since commit c100eacc25c5b59a5d68f7b0590c295cb398e934:
+
+  at91: add at91_udc resource (2011-12-23 18:15:29 +0100)
+
+Juergen Beisert (14):
+      MACH SAMSUNG: Rename the whole mach to add more CPUs in future
+      MACH SAMSUNG/S3C: Do not compile S3C24xx's GPIO support unconditionally
+      MACH SAMSUNG/S3C: Make it more generic for future updates
+      MACH SAMSUNG/S3C: Use the correct CPU family name to reflect NAND driver's usage
+      MACH SAMSUNG/S3C: Parts of the SDHC driver can be shared in the S3C CPU family
+      MACH SAMSUNG/S3C: Reflect the CPU name the LCD driver is for
+      MACH SAMSUNG/S3C: Separate S3C24XX clock management
+      MACH SAMSUNG/S3C: Separate the clocksource for the S3C family
+      MACH SAMSUNG/S3C: Rename register macros to reflect the MACH they are valid for
+      MACH SAMSUNG/S3C: Re-work the S3C family timer driver
+      MACH SAMSUNG/S3C: Prepare watchdog unit to be shared in the S3C family
+      MACH SAMSUNG/S3C: Unify the UART driver for the S3C family of CPUs
+      MACH SAMSUNG/S3C: Re-work the memory detection and handling
+      MACH SAMSUNG/S3C: Re-work the GPIO handling for S3C24xx CPUs
+
+ arch/arm/Kconfig                                   |    3 +-
+ arch/arm/Makefile                                  |    2 +-
+ arch/arm/boards/a9m2410/a9m2410.c                  |   94 +++----
+ arch/arm/boards/a9m2410/lowlevel_init.S            |    6 +-
+ arch/arm/boards/a9m2440/a9m2410dev.c               |   64 +++--
+ arch/arm/boards/a9m2440/a9m2440.c                  |   50 ++--
+ arch/arm/boards/a9m2440/lowlevel_init.S            |   11 +-
+ arch/arm/boards/mini2440/lowlevel_init.S           |    6 +-
+ arch/arm/boards/mini2440/mini2440.c                |   30 +-
+ arch/arm/mach-s3c24xx/Makefile                     |    2 -
+ arch/arm/mach-s3c24xx/generic.c                    |  297 --------------------
+ arch/arm/mach-s3c24xx/include/mach/s3c24x0-iomap.h |  177 ------------
+ arch/arm/{mach-s3c24xx => mach-samsung}/Kconfig    |   17 +-
+ arch/arm/mach-samsung/Makefile                     |    3 +
+ arch/arm/mach-samsung/generic.c                    |  164 +++++++++++
+ .../{mach-s3c24xx => mach-samsung}/gpio-s3c24x0.c  |   33 ++-
+ .../include/mach/gpio.h                            |    7 +-
+ .../include/mach/iomux-s3c24x0.h                   |    0
+ arch/arm/mach-samsung/include/mach/s3c-busctl.h    |   32 ++
+ arch/arm/mach-samsung/include/mach/s3c-clocks.h    |   31 ++
+ .../include/mach/s3c-generic.h}                    |   15 +-
+ arch/arm/mach-samsung/include/mach/s3c-iomap.h     |   69 +++++
+ .../mci.h => mach-samsung/include/mach/s3c-mci.h}  |    0
+ .../include/mach/s3c24xx-fb.h}                     |    0
+ arch/arm/mach-samsung/include/mach/s3c24xx-gpio.h  |   77 +++++
+ .../include/mach/s3c24xx-nand.h}                   |    0
+ .../{mach-s3c24xx => mach-samsung}/lowlevel-init.S |   10 +-
+ arch/arm/mach-samsung/s3c-timer.c                  |  114 ++++++++
+ arch/arm/mach-samsung/s3c24xx-clocks.c             |  140 +++++++++
+ drivers/mci/s3c.c                                  |   16 +-
+ drivers/mtd/nand/Kconfig                           |    4 +-
+ drivers/mtd/nand/Makefile                          |    2 +-
+ .../mtd/nand/{nand_s3c2410.c => nand_s3c24xx.c}    |   10 +-
+ drivers/serial/Kconfig                             |   10 +-
+ drivers/serial/Makefile                            |    2 +-
+ drivers/serial/{serial_s3c24x0.c => serial_s3c.c}  |   72 +++--
+ drivers/video/Kconfig                              |    2 +-
+ drivers/video/Makefile                             |    2 +-
+ drivers/video/{s3c.c => s3c24xx.c}                 |   10 +-
+ 39 files changed, 870 insertions(+), 714 deletions(-)
+ delete mode 100644 arch/arm/mach-s3c24xx/Makefile
+ delete mode 100644 arch/arm/mach-s3c24xx/generic.c
+ delete mode 100644 arch/arm/mach-s3c24xx/include/mach/s3c24x0-iomap.h
+ rename arch/arm/{mach-s3c24xx => mach-samsung}/Kconfig (90%)
+ create mode 100644 arch/arm/mach-samsung/Makefile
+ create mode 100644 arch/arm/mach-samsung/generic.c
+ rename arch/arm/{mach-s3c24xx => mach-samsung}/gpio-s3c24x0.c (84%)
+ rename arch/arm/{mach-s3c24xx => mach-samsung}/include/mach/gpio.h (74%)
+ rename arch/arm/{mach-s3c24xx => mach-samsung}/include/mach/iomux-s3c24x0.h (100%)
+ create mode 100644 arch/arm/mach-samsung/include/mach/s3c-busctl.h
+ create mode 100644 arch/arm/mach-samsung/include/mach/s3c-clocks.h
+ rename arch/arm/{mach-s3c24xx/include/mach/s3c24xx-generic.h => mach-samsung/include/mach/s3c-generic.h} (77%)
+ create mode 100644 arch/arm/mach-samsung/include/mach/s3c-iomap.h
+ rename arch/arm/{mach-s3c24xx/include/mach/mci.h => mach-samsung/include/mach/s3c-mci.h} (100%)
+ rename arch/arm/{mach-s3c24xx/include/mach/fb.h => mach-samsung/include/mach/s3c24xx-fb.h} (100%)
+ create mode 100644 arch/arm/mach-samsung/include/mach/s3c24xx-gpio.h
+ rename arch/arm/{mach-s3c24xx/include/mach/s3c24x0-nand.h => mach-samsung/include/mach/s3c24xx-nand.h} (100%)
+ rename arch/arm/{mach-s3c24xx => mach-samsung}/lowlevel-init.S (98%)
+ create mode 100644 arch/arm/mach-samsung/s3c-timer.c
+ create mode 100644 arch/arm/mach-samsung/s3c24xx-clocks.c
+ rename drivers/mtd/nand/{nand_s3c2410.c => nand_s3c24xx.c} (99%)
+ rename drivers/serial/{serial_s3c24x0.c => serial_s3c.c} (67%)
+ rename drivers/video/{s3c.c => s3c24xx.c} (97%)
 
 
 _______________________________________________
