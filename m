@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from exprod5og105.obsmtp.com ([64.18.0.180])
  by merlin.infradead.org with smtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RgDvh-0005ma-2h
- for barebox@lists.infradead.org; Thu, 29 Dec 2011 11:13:49 +0000
+ id 1RgDve-0005lu-W8
+ for barebox@lists.infradead.org; Thu, 29 Dec 2011 11:13:47 +0000
 From: Renaud Barbier <renaud.barbier@ge.com>
-Date: Thu, 29 Dec 2011 11:13:31 +0000
-Message-Id: <1325157211-3986-3-git-send-email-renaud.barbier@ge.com>
-In-Reply-To: <1325157211-3986-1-git-send-email-renaud.barbier@ge.com>
-References: <1325157211-3986-1-git-send-email-renaud.barbier@ge.com>
+Date: Thu, 29 Dec 2011 11:13:29 +0000
+Message-Id: <1325157211-3986-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,34 +19,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] Make clock shift and mask configurable based on the
- processor type.
+Subject: [PATCH 0/2] PPC multiple architecture preparation
 To: s.hauer@pengutronix.de
 Cc: barebox@lists.infradead.org
 
+These patches allow for the future addition of other PPC architectures.
 
-Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
----
- arch/ppc/lib/time.c |    6 +++---
- 1 files changed, 3 insertions(+), 3 deletions(-)
+I am planning on submitting the mpc85xx support quite soon.
 
-diff --git a/arch/ppc/lib/time.c b/arch/ppc/lib/time.c
-index 04c71df..accc548 100644
---- a/arch/ppc/lib/time.c
-+++ b/arch/ppc/lib/time.c
-@@ -55,9 +55,9 @@ uint64_t ppc_clocksource_read(void)
- }
- 
- static struct clocksource cs = {
--	.read	= ppc_clocksource_read,
--	.mask	= CLOCKSOURCE_MASK(32),
--	.shift	= 15,
-+	.read = ppc_clocksource_read,
-+	.mask = CLOCKSOURCE_MASK(CONFIG_CLOCKSOURCE_MASK),
-+	.shift = CONFIG_CLOCKSOURCE_SHIFT,
- };
- 
- static int clocksource_init (void)
+MPC8xxx patches are quite large. How would you like to handle them?
+
+Renaud Barbier (2):
+  Preparation stage to support multiple PPC architectures.
+  Make clock shift and mask configurable based on the processor type.
+
+ arch/ppc/Kconfig                  |   45 ++++++------------------------
+ arch/ppc/configs/pcm030_defconfig |    2 +
+ arch/ppc/lib/time.c               |    6 ++--
+ arch/ppc/mach-mpc5xxx/Kconfig     |   54 +++++++++++++++++++++++++++++++++++++
+ 4 files changed, 68 insertions(+), 39 deletions(-)
+
 -- 
 1.7.6.4
 
