@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 6.mo2.mail-out.ovh.net ([87.98.165.38]
- helo=mo2.mail-out.ovh.net)
+Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RgyZT-0006tU-Nr
- for barebox@lists.infradead.org; Sat, 31 Dec 2011 13:02:01 +0000
-Received: from mail190.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id D5C75DC35FA
- for <barebox@lists.infradead.org>; Sat, 31 Dec 2011 14:02:50 +0100 (CET)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sat, 31 Dec 2011 13:56:04 +0100
-Message-Id: <1325336164-25760-1-git-send-email-plagnioj@jcrosoft.com>
+ id 1RgzE9-0007R8-MG
+ for barebox@lists.infradead.org; Sat, 31 Dec 2011 13:44:03 +0000
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+References: <1324503044-6085-1-git-send-email-robert.jarzmik@free.fr>
+ <20111231082920.GB16816@game.jcrosoft.org>
+Date: Sat, 31 Dec 2011 14:43:50 +0100
+In-Reply-To: <20111231082920.GB16816@game.jcrosoft.org> (Jean-Christophe
+ PLAGNIOL-VILLARD's message of "Sat, 31 Dec 2011 09:29:20 +0100")
+Message-ID: <877h1cua95.fsf@free.fr>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,49 +19,33 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mtd/core.c: fix MTDPGALG
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH V4 1/7] drivers/mtd: move nand.c into core.c
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-introduced in commit f76ad819e4971094
-drivers/mtd: cosmetic changes
+Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> writes:
 
-it's supposed to the invert of the writesize - 1
+> On 22:30 Wed 21 Dec     , Robert Jarzmik wrote:
+>> Move nand core into the global MTD core.
+>> 
+>> Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
+>> ---
+> the nand support is broken
+Hi Jean-Christophe,
 
-Cc: Robert Jarzmik <robert.jarzmik@free.fr>
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
-Hi,
+Sasha tested it on his pcm043 board, and everything worked fine.
+Could you be more specific when you say "NAND support is broken" ? Which board,
+which NAND, which barebox tree (today's next ?), and which commands do you input
+that make you say "doesn't work" ?
 
-	Robert please test more carefully next time
+Cheers.
 
-	I spend time to debug this while working on at91 nand boot :(
-
-Best Regards,
-J.
- drivers/mtd/core.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
-
-diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
-index 55d845d..f25863d 100644
---- a/drivers/mtd/core.c
-+++ b/drivers/mtd/core.c
-@@ -49,7 +49,7 @@ static 	ssize_t mtd_read(struct cdev *cdev, void* buf, size_t count,
- }
- 
- #define NOTALIGNED(x) (x & (mtd->writesize - 1)) != 0
--#define MTDPGALG(x) ((x) & (mtd->writesize - 1))
-+#define MTDPGALG(x) ((x) & ~(mtd->writesize - 1))
- 
- #ifdef CONFIG_MTD_WRITE
- static int all_ff(const void *buf, int len)
 -- 
-1.7.7
-
+Robert
 
 _______________________________________________
 barebox mailing list
