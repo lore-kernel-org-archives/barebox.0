@@ -1,20 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 7.mo2.mail-out.ovh.net ([188.165.48.182]
+Received: from 6.mo2.mail-out.ovh.net ([87.98.165.38]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RgznS-0008T7-Sc
- for barebox@lists.infradead.org; Sat, 31 Dec 2011 14:20:32 +0000
+ id 1Rh0gL-0000CP-7r
+ for barebox@lists.infradead.org; Sat, 31 Dec 2011 15:17:14 +0000
 Received: from mail190.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id B9698DC3701
- for <barebox@lists.infradead.org>; Sat, 31 Dec 2011 15:21:21 +0100 (CET)
-Date: Sat, 31 Dec 2011 15:13:52 +0100
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 38674DC373B
+ for <barebox@lists.infradead.org>; Sat, 31 Dec 2011 16:18:03 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20111231141352.GA945@game.jcrosoft.org>
-References: <1324503044-6085-1-git-send-email-robert.jarzmik@free.fr>
- <20111231082920.GB16816@game.jcrosoft.org> <877h1cua95.fsf@free.fr>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <877h1cua95.fsf@free.fr>
+Date: Sat, 31 Dec 2011 16:11:11 +0100
+Message-Id: <1325344272-5999-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,39 +18,103 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH V4 1/7] drivers/mtd: move nand.c into core.c
-To: Robert Jarzmik <robert.jarzmik@free.fr>
-Cc: barebox@lists.infradead.org
+Subject: [RESEND PATCH 1/2] scripts/Makefile.lib: update compress cmd support
+To: barebox@lists.infradead.org
 
-On 14:43 Sat 31 Dec     , Robert Jarzmik wrote:
-> Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> writes:
-> 
-> > On 22:30 Wed 21 Dec     , Robert Jarzmik wrote:
-> >> Move nand core into the global MTD core.
-> >> 
-> >> Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
-> >> ---
-> > the nand support is broken
-> Hi Jean-Christophe,
-> 
-> Sasha tested it on his pcm043 board, and everything worked fine.
-> Could you be more specific when you say "NAND support is broken" ? Which board,
-> which NAND, which barebox tree (today's next ?), and which commands do you input
-> that make you say "doesn't work" ?
-impossible to write on the bb file
-correctly
+import from linux 3.2-rc3
 
-Best Regards,
-J.
-> 
-> Cheers.
-> 
-> -- 
-> Robert
+update gzip and add bzip2, lzma, lzo and xz
+
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ scripts/Makefile.lib |   67 +++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 files changed, 66 insertions(+), 1 deletions(-)
+
+diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+index d7e2563..b842c48 100644
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -160,6 +160,71 @@ cmd_objcopy = $(OBJCOPY) $(OBJCOPYFLAGS) $(OBJCOPYFLAGS_$(@F)) $< $@
+ # ---------------------------------------------------------------------------
+ 
+ quiet_cmd_gzip = GZIP    $@
+-cmd_gzip = gzip -f -9 < $< > $@
++cmd_gzip = (cat $(filter-out FORCE,$^) | gzip -n -f -9 > $@) || \
++	(rm -f $@ ; false)
+ 
++# Bzip2
++# ---------------------------------------------------------------------------
++
++# Bzip2 and LZMA do not include size in file... so we have to fake that;
++# append the size as a 32-bit littleendian number as gzip does.
++size_append = printf $(shell						\
++dec_size=0;								\
++for F in $1; do								\
++	fsize=$$(stat -c "%s" $$F);					\
++	dec_size=$$(expr $$dec_size + $$fsize);				\
++done;									\
++printf "%08x\n" $$dec_size |						\
++	sed 's/\(..\)/\1 /g' | {					\
++		read ch0 ch1 ch2 ch3;					\
++		for ch in $$ch3 $$ch2 $$ch1 $$ch0; do			\
++			printf '%s%03o' '\\' $$((0x$$ch)); 		\
++		done;							\
++	}								\
++)
++
++quiet_cmd_bzip2 = BZIP2   $@
++cmd_bzip2 = (cat $(filter-out FORCE,$^) | \
++	bzip2 -9 && $(call size_append, $(filter-out FORCE,$^))) > $@ || \
++	(rm -f $@ ; false)
++
++# Lzma
++# ---------------------------------------------------------------------------
++
++quiet_cmd_lzma = LZMA    $@
++cmd_lzma = (cat $(filter-out FORCE,$^) | \
++	lzma -9 && $(call size_append, $(filter-out FORCE,$^))) > $@ || \
++	(rm -f $@ ; false)
++
++quiet_cmd_lzo = LZO     $@
++cmd_lzo = (cat $(filter-out FORCE,$^) | \
++	lzop -9 && $(call size_append, $(filter-out FORCE,$^))) > $@ || \
++	(rm -f $@ ; false)
++
++# XZ
++# ---------------------------------------------------------------------------
++# Use xzkern to compress the kernel image and xzmisc to compress other things.
++#
++# xzkern uses a big LZMA2 dictionary since it doesn't increase memory usage
++# of the kernel decompressor. A BCJ filter is used if it is available for
++# the target architecture. xzkern also appends uncompressed size of the data
++# using size_append. The .xz format has the size information available at
++# the end of the file too, but it's in more complex format and it's good to
++# avoid changing the part of the boot code that reads the uncompressed size.
++# Note that the bytes added by size_append will make the xz tool think that
++# the file is corrupt. This is expected.
++#
++# xzmisc doesn't use size_append, so it can be used to create normal .xz
++# files. xzmisc uses smaller LZMA2 dictionary than xzkern, because a very
++# big dictionary would increase the memory usage too much in the multi-call
++# decompression mode. A BCJ filter isn't used either.
++quiet_cmd_xzkern = XZKERN  $@
++cmd_xzkern = (cat $(filter-out FORCE,$^) | \
++	sh $(srctree)/scripts/xz_wrap.sh && \
++	$(call size_append, $(filter-out FORCE,$^))) > $@ || \
++	(rm -f $@ ; false)
+ 
++quiet_cmd_xzmisc = XZMISC  $@
++cmd_xzmisc = (cat $(filter-out FORCE,$^) | \
++	xz --check=crc32 --lzma2=dict=1MiB) > $@ || \
++	(rm -f $@ ; false)
+-- 
+1.7.7
+
 
 _______________________________________________
 barebox mailing list
