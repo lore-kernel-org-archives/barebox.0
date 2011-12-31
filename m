@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 6.mo2.mail-out.ovh.net ([87.98.165.38]
+Received: from 8.mo2.mail-out.ovh.net ([188.165.52.147]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Rh0gL-0000CQ-7t
- for barebox@lists.infradead.org; Sat, 31 Dec 2011 15:17:14 +0000
+ id 1Rh0lj-0000If-GC
+ for barebox@lists.infradead.org; Sat, 31 Dec 2011 15:22:48 +0000
 Received: from mail190.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 7D450DC373E
- for <barebox@lists.infradead.org>; Sat, 31 Dec 2011 16:18:03 +0100 (CET)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id BD459DC36C8
+ for <barebox@lists.infradead.org>; Sat, 31 Dec 2011 16:23:39 +0100 (CET)
+Date: Sat, 31 Dec 2011 16:16:55 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sat, 31 Dec 2011 16:11:12 +0100
-Message-Id: <1325344272-5999-2-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1325344272-5999-1-git-send-email-plagnioj@jcrosoft.com>
-References: <1325344272-5999-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20111231151655.GB945@game.jcrosoft.org>
+MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,156 +20,88 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RESEND PATCH 2/2] defaultenv: use a compressed version when embedded
- in barebox
+Subject: AT91: Pull
 To: barebox@lists.infradead.org
 
-enable it only if a compression is enabled
-support gzip, bzip2 and lzo
+Hi,
 
-you will be able to choose which compression to use
+	the following patch serie update nand, lowlevel init sram, gpio and
+	Atmel and Calao boards
 
--rw-r--r--  1 root root    8436 Dec 15 01:35 barebox_default_env
--rw-r--r--  1 root root    2782 Dec 15 01:35 barebox_default_env.bz2
--rw-r--r--  1 root root    2691 Dec 15 01:38 barebox_default_env.gz
--rw-r--r--  1 root root    3262 Dec 15 01:38 barebox_default_env.lzo
+The following changes since commit 06d9b16d98f9da5ff2b8ddf4bb3dea9e9352abf0:
 
-with using gzip and the default env we can save 5.6KiB (5,745 bytes)
-with using bzip2 and the default env we can save 5.5KiB (5,654 bytes)
-with using lzo and the default env we can save 5.1KiB (5,174 bytes)
+  atmel_nand: add on_flash_btt option to enable bbt option (2011-12-31 22:17:29 +0800)
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- common/Kconfig   |   28 ++++++++++++++++++++++++++++
- common/Makefile  |   27 ++++++++++++++++++++++++++-
- common/startup.c |   29 +++++++++++++++++++++++++++--
- 3 files changed, 81 insertions(+), 3 deletions(-)
+are available in the git repository at:
+  git://uboot.jcrosoft.org/barebox.git at91
 
-diff --git a/common/Kconfig b/common/Kconfig
-index f8df3dd..ca4f099 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -427,6 +427,34 @@ config DEFAULT_ENVIRONMENT
- 	  Enabling this option will give you a default environment when
- 	  the environment found in the environment sector is invalid
- 
-+config DEFAULT_ENVIRONMENT_COMPRESSED
-+	bool
-+	depends on DEFAULT_ENVIRONMENT
-+	default y if ZLIB
-+	default y if BZLIB
-+	default y if LZO_DECOMPRESS
-+
-+if DEFAULT_ENVIRONMENT_COMPRESSED
-+
-+choice
-+	prompt "compression"
-+
-+config DEFAULT_ENVIRONMENT_COMPRESSED_GZIP
-+	bool "gzip"
-+	depends on ZLIB
-+
-+config DEFAULT_ENVIRONMENT_COMPRESSED_BZIP2
-+	bool "bzip2"
-+	depends on BZLIB
-+
-+config DEFAULT_ENVIRONMENT_COMPRESSED_LZO
-+	bool "lzo"
-+	depends on LZO_DECOMPRESS
-+
-+endchoice
-+
-+endif
-+
- config DEFAULT_ENVIRONMENT_GENERIC
- 	bool
- 	depends on DEFAULT_ENVIRONMENT
-diff --git a/common/Makefile b/common/Makefile
-index a53d37a..d1132c3 100644
---- a/common/Makefile
-+++ b/common/Makefile
-@@ -54,5 +54,30 @@ endif # ifdef CONFIG_DEFAULT_ENVIRONMENT
- barebox_default_env: $(ENV_FILES)
- 	$(Q)$(srctree)/scripts/genenv $(srctree) $(objtree) $(DEFAULT_ENVIRONMENT_PATH)
- 
--include/generated/barebox_default_env.h: barebox_default_env
-+barebox_default_env_comp =
-+ifeq ($(CONFIG_DEFAULT_ENVIRONMENT_COMPRESSED_GZIP),y)
-+barebox_default_env_comp = .gz
-+endif
-+ifeq ($(CONFIG_DEFAULT_ENVIRONMENT_COMPRESSED_BZIP2),y)
-+barebox_default_env_comp = .bz2
-+endif
-+ifeq ($(CONFIG_DEFAULT_ENVIRONMENT_COMPRESSED_LZO),y)
-+barebox_default_env_comp = .lzo
-+endif
-+
-+barebox_default_env.gz: barebox_default_env
-+	$(call if_changed,gzip)
-+
-+barebox_default_env.bz2: barebox_default_env
-+	$(call if_changed,bzip2)
-+
-+barebox_default_env.lzo: barebox_default_env
-+	$(call if_changed,lzo)
-+
-+include/generated/barebox_default_env.h: barebox_default_env$(barebox_default_env_comp)
- 	$(Q)cat $< | $(objtree)/scripts/bin2c default_environment > $@
-+	$(Q)echo "const int default_environment_uncompress_size=`stat -c%s barebox_default_env`;" >> $@
-+
-+CLEAN_FILES += include/generated/barebox_default_env.h barebox_default_env
-+CLEAN_FILES += barebox_default_env.gz barebox_default_env.bz2
-+CLEAN_FILES += barebox_default_env.lzo
-diff --git a/common/startup.c b/common/startup.c
-index 13783fb..180fdc3 100644
---- a/common/startup.c
-+++ b/common/startup.c
-@@ -64,10 +64,35 @@ static void display_meminfo(void)
- #ifdef CONFIG_DEFAULT_ENVIRONMENT
- #include <generated/barebox_default_env.h>
- 
-+#ifdef CONFIG_DEFAULT_ENVIRONMENT_COMPRESSED
-+#include <uncompress.h>
-+void *defaultenv;
-+#else
-+#define defaultenv default_environment
-+#endif
-+
- static int register_default_env(void)
- {
--	add_mem_device("defaultenv", (unsigned long)default_environment,
--		       sizeof(default_environment),
-+#ifdef CONFIG_DEFAULT_ENVIRONMENT_COMPRESSED
-+	int ret;
-+	void *tmp;
-+
-+	tmp = xzalloc(default_environment_size);
-+	memcpy(tmp, default_environment, default_environment_size);
-+
-+	defaultenv = xzalloc(default_environment_uncompress_size);
-+
-+	ret = uncompress(tmp, default_environment_size, NULL, NULL,
-+			 defaultenv, NULL, uncompress_err_stdout);
-+
-+	free(tmp);
-+
-+	if (ret)
-+		return ret;
-+#endif
-+
-+	add_mem_device("defaultenv", (unsigned long)defaultenv,
-+		       default_environment_uncompress_size,
- 		       IORESOURCE_MEM_WRITEABLE);
- 	return 0;
- }
--- 
-1.7.7
+Jean-Christophe PLAGNIOL-VILLARD (12):
+      atmel: reference boards and Caloa boards bbt option enabled
+      ARM: import memcpy_from/toio and memset_io from linux
+      mtd: atmel_nand: optimize read/write buffer functions
+      atmel_nand: drop dead code
+      at91: add sram memory devices
+      at91sam9263ek: add nor partition
+      at91sam9x: switch lowlevel init to c
+      at91/gpio: simplify resources
+      usb-a926x: add led support
+      usb-a926x: add dfu support
+      at91_udc: update vbus param only if updated
+      usb-a926x: update defconfig
 
+ arch/arm/boards/at91sam9260ek/init.c           |    1 +
+ arch/arm/boards/at91sam9261ek/init.c           |    1 +
+ arch/arm/boards/at91sam9263ek/config.h         |   18 --
+ arch/arm/boards/at91sam9263ek/env/config       |    2 +
+ arch/arm/boards/at91sam9263ek/init.c           |    1 +
+ arch/arm/boards/at91sam9m10g45ek/init.c        |    1 +
+ arch/arm/boards/mmccpu/config.h                |   18 --
+ arch/arm/boards/pm9261/config.h                |   18 --
+ arch/arm/boards/pm9263/config.h                |   18 --
+ arch/arm/boards/usb-a926x/env/bin/init_board   |   43 ++++
+ arch/arm/boards/usb-a926x/init.c               |   28 +++
+ arch/arm/configs/usb_a9260_defconfig           |   20 ++-
+ arch/arm/configs/usb_a9263_128mib_defconfig    |   20 ++-
+ arch/arm/configs/usb_a9263_defconfig           |   20 ++-
+ arch/arm/configs/usb_a9g20_128mib_defconfig    |   20 ++-
+ arch/arm/configs/usb_a9g20_defconfig           |   20 ++-
+ arch/arm/include/asm/io.h                      |    7 +
+ arch/arm/lib/Makefile                          |    1 +
+ arch/arm/lib/io.c                              |   50 +++++
+ arch/arm/mach-at91/at91rm9200.c                |   12 +-
+ arch/arm/mach-at91/at91rm9200_devices.c        |    2 +
+ arch/arm/mach-at91/at91sam9260.c               |    9 +-
+ arch/arm/mach-at91/at91sam9260_devices.c       |   12 +
+ arch/arm/mach-at91/at91sam9261.c               |    9 +-
+ arch/arm/mach-at91/at91sam9261_devices.c       |    7 +
+ arch/arm/mach-at91/at91sam9263.c               |   15 +-
+ arch/arm/mach-at91/at91sam9263_devices.c       |    4 +
+ arch/arm/mach-at91/at91sam926x_lowlevel_init.S |  278 ------------------------
+ arch/arm/mach-at91/at91sam926x_lowlevel_init.c |  171 +++++++++++++++
+ arch/arm/mach-at91/at91sam9g45.c               |   15 +-
+ arch/arm/mach-at91/at91sam9g45_devices.c       |    2 +
+ arch/arm/mach-at91/gpio.c                      |   13 +-
+ arch/arm/mach-at91/include/mach/at91rm9200.h   |    9 +-
+ arch/arm/mach-at91/include/mach/at91sam9260.h  |   17 ++-
+ arch/arm/mach-at91/include/mach/at91sam9261.h  |   10 +-
+ arch/arm/mach-at91/include/mach/at91sam9263.h  |   11 +-
+ arch/arm/mach-at91/include/mach/at91sam9g45.h  |   11 +-
+ arch/arm/mach-at91/include/mach/gpio.h         |    4 -
+ drivers/mtd/nand/atmel_nand.c                  |   46 +----
+ drivers/usb/gadget/at91_udc.c                  |   17 ++-
+ drivers/usb/gadget/at91_udc.h                  |    1 +
+ 41 files changed, 497 insertions(+), 485 deletions(-)
+ create mode 100644 arch/arm/boards/usb-a926x/env/bin/init_board
+ create mode 100644 arch/arm/lib/io.c
+ delete mode 100644 arch/arm/mach-at91/at91sam926x_lowlevel_init.S
+ create mode 100644 arch/arm/mach-at91/at91sam926x_lowlevel_init.c
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
