@@ -2,14 +2,16 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 6.mo2.mail-out.ovh.net ([87.98.165.38]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Rh0gL-0000CP-7r
+ id 1Rh0gL-0000CQ-7t
  for barebox@lists.infradead.org; Sat, 31 Dec 2011 15:17:14 +0000
 Received: from mail190.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 38674DC373B
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 7D450DC373E
  for <barebox@lists.infradead.org>; Sat, 31 Dec 2011 16:18:03 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sat, 31 Dec 2011 16:11:11 +0100
-Message-Id: <1325344272-5999-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Sat, 31 Dec 2011 16:11:12 +0100
+Message-Id: <1325344272-5999-2-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1325344272-5999-1-git-send-email-plagnioj@jcrosoft.com>
+References: <1325344272-5999-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,95 +25,148 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RESEND PATCH 1/2] scripts/Makefile.lib: update compress cmd support
+Subject: [RESEND PATCH 2/2] defaultenv: use a compressed version when embedded
+ in barebox
 To: barebox@lists.infradead.org
 
-import from linux 3.2-rc3
+enable it only if a compression is enabled
+support gzip, bzip2 and lzo
 
-update gzip and add bzip2, lzma, lzo and xz
+you will be able to choose which compression to use
+
+-rw-r--r--  1 root root    8436 Dec 15 01:35 barebox_default_env
+-rw-r--r--  1 root root    2782 Dec 15 01:35 barebox_default_env.bz2
+-rw-r--r--  1 root root    2691 Dec 15 01:38 barebox_default_env.gz
+-rw-r--r--  1 root root    3262 Dec 15 01:38 barebox_default_env.lzo
+
+with using gzip and the default env we can save 5.6KiB (5,745 bytes)
+with using bzip2 and the default env we can save 5.5KiB (5,654 bytes)
+with using lzo and the default env we can save 5.1KiB (5,174 bytes)
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- scripts/Makefile.lib |   67 +++++++++++++++++++++++++++++++++++++++++++++++++-
- 1 files changed, 66 insertions(+), 1 deletions(-)
+ common/Kconfig   |   28 ++++++++++++++++++++++++++++
+ common/Makefile  |   27 ++++++++++++++++++++++++++-
+ common/startup.c |   29 +++++++++++++++++++++++++++--
+ 3 files changed, 81 insertions(+), 3 deletions(-)
 
-diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-index d7e2563..b842c48 100644
---- a/scripts/Makefile.lib
-+++ b/scripts/Makefile.lib
-@@ -160,6 +160,71 @@ cmd_objcopy = $(OBJCOPY) $(OBJCOPYFLAGS) $(OBJCOPYFLAGS_$(@F)) $< $@
- # ---------------------------------------------------------------------------
+diff --git a/common/Kconfig b/common/Kconfig
+index f8df3dd..ca4f099 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -427,6 +427,34 @@ config DEFAULT_ENVIRONMENT
+ 	  Enabling this option will give you a default environment when
+ 	  the environment found in the environment sector is invalid
  
- quiet_cmd_gzip = GZIP    $@
--cmd_gzip = gzip -f -9 < $< > $@
-+cmd_gzip = (cat $(filter-out FORCE,$^) | gzip -n -f -9 > $@) || \
-+	(rm -f $@ ; false)
++config DEFAULT_ENVIRONMENT_COMPRESSED
++	bool
++	depends on DEFAULT_ENVIRONMENT
++	default y if ZLIB
++	default y if BZLIB
++	default y if LZO_DECOMPRESS
++
++if DEFAULT_ENVIRONMENT_COMPRESSED
++
++choice
++	prompt "compression"
++
++config DEFAULT_ENVIRONMENT_COMPRESSED_GZIP
++	bool "gzip"
++	depends on ZLIB
++
++config DEFAULT_ENVIRONMENT_COMPRESSED_BZIP2
++	bool "bzip2"
++	depends on BZLIB
++
++config DEFAULT_ENVIRONMENT_COMPRESSED_LZO
++	bool "lzo"
++	depends on LZO_DECOMPRESS
++
++endchoice
++
++endif
++
+ config DEFAULT_ENVIRONMENT_GENERIC
+ 	bool
+ 	depends on DEFAULT_ENVIRONMENT
+diff --git a/common/Makefile b/common/Makefile
+index a53d37a..d1132c3 100644
+--- a/common/Makefile
++++ b/common/Makefile
+@@ -54,5 +54,30 @@ endif # ifdef CONFIG_DEFAULT_ENVIRONMENT
+ barebox_default_env: $(ENV_FILES)
+ 	$(Q)$(srctree)/scripts/genenv $(srctree) $(objtree) $(DEFAULT_ENVIRONMENT_PATH)
  
-+# Bzip2
-+# ---------------------------------------------------------------------------
+-include/generated/barebox_default_env.h: barebox_default_env
++barebox_default_env_comp =
++ifeq ($(CONFIG_DEFAULT_ENVIRONMENT_COMPRESSED_GZIP),y)
++barebox_default_env_comp = .gz
++endif
++ifeq ($(CONFIG_DEFAULT_ENVIRONMENT_COMPRESSED_BZIP2),y)
++barebox_default_env_comp = .bz2
++endif
++ifeq ($(CONFIG_DEFAULT_ENVIRONMENT_COMPRESSED_LZO),y)
++barebox_default_env_comp = .lzo
++endif
 +
-+# Bzip2 and LZMA do not include size in file... so we have to fake that;
-+# append the size as a 32-bit littleendian number as gzip does.
-+size_append = printf $(shell						\
-+dec_size=0;								\
-+for F in $1; do								\
-+	fsize=$$(stat -c "%s" $$F);					\
-+	dec_size=$$(expr $$dec_size + $$fsize);				\
-+done;									\
-+printf "%08x\n" $$dec_size |						\
-+	sed 's/\(..\)/\1 /g' | {					\
-+		read ch0 ch1 ch2 ch3;					\
-+		for ch in $$ch3 $$ch2 $$ch1 $$ch0; do			\
-+			printf '%s%03o' '\\' $$((0x$$ch)); 		\
-+		done;							\
-+	}								\
-+)
++barebox_default_env.gz: barebox_default_env
++	$(call if_changed,gzip)
 +
-+quiet_cmd_bzip2 = BZIP2   $@
-+cmd_bzip2 = (cat $(filter-out FORCE,$^) | \
-+	bzip2 -9 && $(call size_append, $(filter-out FORCE,$^))) > $@ || \
-+	(rm -f $@ ; false)
++barebox_default_env.bz2: barebox_default_env
++	$(call if_changed,bzip2)
 +
-+# Lzma
-+# ---------------------------------------------------------------------------
++barebox_default_env.lzo: barebox_default_env
++	$(call if_changed,lzo)
 +
-+quiet_cmd_lzma = LZMA    $@
-+cmd_lzma = (cat $(filter-out FORCE,$^) | \
-+	lzma -9 && $(call size_append, $(filter-out FORCE,$^))) > $@ || \
-+	(rm -f $@ ; false)
++include/generated/barebox_default_env.h: barebox_default_env$(barebox_default_env_comp)
+ 	$(Q)cat $< | $(objtree)/scripts/bin2c default_environment > $@
++	$(Q)echo "const int default_environment_uncompress_size=`stat -c%s barebox_default_env`;" >> $@
 +
-+quiet_cmd_lzo = LZO     $@
-+cmd_lzo = (cat $(filter-out FORCE,$^) | \
-+	lzop -9 && $(call size_append, $(filter-out FORCE,$^))) > $@ || \
-+	(rm -f $@ ; false)
-+
-+# XZ
-+# ---------------------------------------------------------------------------
-+# Use xzkern to compress the kernel image and xzmisc to compress other things.
-+#
-+# xzkern uses a big LZMA2 dictionary since it doesn't increase memory usage
-+# of the kernel decompressor. A BCJ filter is used if it is available for
-+# the target architecture. xzkern also appends uncompressed size of the data
-+# using size_append. The .xz format has the size information available at
-+# the end of the file too, but it's in more complex format and it's good to
-+# avoid changing the part of the boot code that reads the uncompressed size.
-+# Note that the bytes added by size_append will make the xz tool think that
-+# the file is corrupt. This is expected.
-+#
-+# xzmisc doesn't use size_append, so it can be used to create normal .xz
-+# files. xzmisc uses smaller LZMA2 dictionary than xzkern, because a very
-+# big dictionary would increase the memory usage too much in the multi-call
-+# decompression mode. A BCJ filter isn't used either.
-+quiet_cmd_xzkern = XZKERN  $@
-+cmd_xzkern = (cat $(filter-out FORCE,$^) | \
-+	sh $(srctree)/scripts/xz_wrap.sh && \
-+	$(call size_append, $(filter-out FORCE,$^))) > $@ || \
-+	(rm -f $@ ; false)
++CLEAN_FILES += include/generated/barebox_default_env.h barebox_default_env
++CLEAN_FILES += barebox_default_env.gz barebox_default_env.bz2
++CLEAN_FILES += barebox_default_env.lzo
+diff --git a/common/startup.c b/common/startup.c
+index 13783fb..180fdc3 100644
+--- a/common/startup.c
++++ b/common/startup.c
+@@ -64,10 +64,35 @@ static void display_meminfo(void)
+ #ifdef CONFIG_DEFAULT_ENVIRONMENT
+ #include <generated/barebox_default_env.h>
  
-+quiet_cmd_xzmisc = XZMISC  $@
-+cmd_xzmisc = (cat $(filter-out FORCE,$^) | \
-+	xz --check=crc32 --lzma2=dict=1MiB) > $@ || \
-+	(rm -f $@ ; false)
++#ifdef CONFIG_DEFAULT_ENVIRONMENT_COMPRESSED
++#include <uncompress.h>
++void *defaultenv;
++#else
++#define defaultenv default_environment
++#endif
++
+ static int register_default_env(void)
+ {
+-	add_mem_device("defaultenv", (unsigned long)default_environment,
+-		       sizeof(default_environment),
++#ifdef CONFIG_DEFAULT_ENVIRONMENT_COMPRESSED
++	int ret;
++	void *tmp;
++
++	tmp = xzalloc(default_environment_size);
++	memcpy(tmp, default_environment, default_environment_size);
++
++	defaultenv = xzalloc(default_environment_uncompress_size);
++
++	ret = uncompress(tmp, default_environment_size, NULL, NULL,
++			 defaultenv, NULL, uncompress_err_stdout);
++
++	free(tmp);
++
++	if (ret)
++		return ret;
++#endif
++
++	add_mem_device("defaultenv", (unsigned long)defaultenv,
++		       default_environment_uncompress_size,
+ 		       IORESOURCE_MEM_WRITEABLE);
+ 	return 0;
+ }
 -- 
 1.7.7
 
