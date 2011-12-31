@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 8.mo2.mail-out.ovh.net ([188.165.52.147]
+Received: from 2.mo2.mail-out.ovh.net ([188.165.53.149]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Rh0qP-0000Nx-3P
- for barebox@lists.infradead.org; Sat, 31 Dec 2011 15:27:41 +0000
+ id 1Rh0qL-0000MI-MR
+ for barebox@lists.infradead.org; Sat, 31 Dec 2011 15:27:37 +0000
 Received: from mail190.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 696AFDC37C4
- for <barebox@lists.infradead.org>; Sat, 31 Dec 2011 16:28:30 +0100 (CET)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 550FCDC3792
+ for <barebox@lists.infradead.org>; Sat, 31 Dec 2011 16:28:24 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sat, 31 Dec 2011 16:21:36 +0100
-Message-Id: <1325344898-7076-10-git-send-email-plagnioj@jcrosoft.com>
+Date: Sat, 31 Dec 2011 16:21:27 +0100
+Message-Id: <1325344898-7076-1-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <20111231151655.GB945@game.jcrosoft.org>
 References: <20111231151655.GB945@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
@@ -25,96 +25,79 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/12] usb-a926x: add dfu support
+Subject: [PATCH 01/12] atmel: reference boards and Caloa boards bbt option
+ enabled
 To: barebox@lists.infradead.org
-
-detect it at boot time
-
-if the user button is pressed 5s and the vbus is 1 start the dfu
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/boards/usb-a926x/env/bin/init_board |   43 ++++++++++++++++++++++++++
- arch/arm/boards/usb-a926x/init.c             |    9 +++++
- 2 files changed, 52 insertions(+), 0 deletions(-)
- create mode 100644 arch/arm/boards/usb-a926x/env/bin/init_board
+ arch/arm/boards/at91sam9260ek/init.c    |    1 +
+ arch/arm/boards/at91sam9261ek/init.c    |    1 +
+ arch/arm/boards/at91sam9263ek/init.c    |    1 +
+ arch/arm/boards/at91sam9m10g45ek/init.c |    1 +
+ arch/arm/boards/usb-a926x/init.c        |    1 +
+ 5 files changed, 5 insertions(+), 0 deletions(-)
 
-diff --git a/arch/arm/boards/usb-a926x/env/bin/init_board b/arch/arm/boards/usb-a926x/env/bin/init_board
-new file mode 100644
-index 0000000..77e5c1a
---- /dev/null
-+++ b/arch/arm/boards/usb-a926x/env/bin/init_board
-@@ -0,0 +1,43 @@
-+#!/bin/sh
-+
-+button_name="dfu_bp"
-+button_wait=5
-+
-+product_id=0x1234
-+vendor_id=0x4321
-+
-+dfu_config="/dev/nand0.barebox.bb(barebox)sr,/dev/nand0.kernel.bb(kernel)r,/dev/nand0.rootfs.bb(rootfs)r"
-+
-+gpio_get_value ${dfu_button}
-+if [ $? != 0 ]
-+then
-+	exit
-+fi
-+
-+if [ $at91_udc0.vbus != 1 ]
-+then
-+	echo "No USB Device cable plugged, normal boot"
-+	exit
-+fi
-+
-+echo "${button_name} pressed detected wait ${button_wait}s"
-+timeout -s -a ${button_wait}
-+
-+gpio_get_value ${dfu_button}
-+if [ $? != 0 ]
-+then
-+	echo "${button_name} released, normal boot"
-+	exit
-+fi
-+
-+if [ $at91_udc0.vbus != 1 ]
-+then
-+	echo "No USB Device cable plugged, normal boot"
-+	exit
-+fi
-+
-+echo ""
-+echo "Start DFU Mode"
-+echo ""
-+
-+dfu ${dfu_config} -P ${product_id} -V ${vendor_id}
+diff --git a/arch/arm/boards/at91sam9260ek/init.c b/arch/arm/boards/at91sam9260ek/init.c
+index dbd6541..b10d0dc 100644
+--- a/arch/arm/boards/at91sam9260ek/init.c
++++ b/arch/arm/boards/at91sam9260ek/init.c
+@@ -71,6 +71,7 @@ static struct atmel_nand_data nand_pdata = {
+ #else
+ 	.bus_width_16	= 0,
+ #endif
++	.on_flash_bbt	= 1,
+ };
+ 
+ static struct sam9_smc_config ek_9260_nand_smc_config = {
+diff --git a/arch/arm/boards/at91sam9261ek/init.c b/arch/arm/boards/at91sam9261ek/init.c
+index 0854eea..8b192b2 100644
+--- a/arch/arm/boards/at91sam9261ek/init.c
++++ b/arch/arm/boards/at91sam9261ek/init.c
+@@ -50,6 +50,7 @@ static struct atmel_nand_data nand_pdata = {
+ #else
+ 	.bus_width_16	= 0,
+ #endif
++	.on_flash_bbt	= 1,
+ };
+ 
+ static struct sam9_smc_config ek_nand_smc_config = {
+diff --git a/arch/arm/boards/at91sam9263ek/init.c b/arch/arm/boards/at91sam9263ek/init.c
+index bb564d7..d7b9afe 100644
+--- a/arch/arm/boards/at91sam9263ek/init.c
++++ b/arch/arm/boards/at91sam9263ek/init.c
+@@ -51,6 +51,7 @@ static struct atmel_nand_data nand_pdata = {
+ #else
+ 	.bus_width_16	= 0,
+ #endif
++	.on_flash_bbt	= 1,
+ };
+ 
+ static struct sam9_smc_config ek_nand_smc_config = {
+diff --git a/arch/arm/boards/at91sam9m10g45ek/init.c b/arch/arm/boards/at91sam9m10g45ek/init.c
+index 5fdc960..eff2769 100644
+--- a/arch/arm/boards/at91sam9m10g45ek/init.c
++++ b/arch/arm/boards/at91sam9m10g45ek/init.c
+@@ -72,6 +72,7 @@ static struct atmel_nand_data nand_pdata = {
+ #else
+ 	.bus_width_16	= 0,
+ #endif
++	.on_flash_bbt	= 1,
+ };
+ 
+ static struct sam9_smc_config ek_nand_smc_config = {
 diff --git a/arch/arm/boards/usb-a926x/init.c b/arch/arm/boards/usb-a926x/init.c
-index 469d98e..364c1ba 100644
+index 20af4b0..41daab8 100644
 --- a/arch/arm/boards/usb-a926x/init.c
 +++ b/arch/arm/boards/usb-a926x/init.c
-@@ -211,6 +211,14 @@ static int usb_a9260_mem_init(void)
- }
- mem_initcall(usb_a9260_mem_init);
+@@ -57,6 +57,7 @@ static struct atmel_nand_data nand_pdata = {
+ /*	.det_pin	= ... not connected */
+ 	.rdy_pin	= AT91_PIN_PC13,
+ 	.enable_pin	= AT91_PIN_PC14,
++	.on_flash_bbt	= 1,
+ };
  
-+static void __init ek_add_device_button(void)
-+{
-+	at91_set_GPIO_periph(AT91_PIN_PB10, 1);	/* user push button, pull up enabled */
-+	at91_set_deglitch(AT91_PIN_PB10, 1);
-+
-+	export_env_ull("dfu_button", AT91_PIN_PB10);
-+}
-+
- static int usb_a9260_devices_init(void)
- {
- 	usb_a9260_add_device_nand();
-@@ -220,6 +228,7 @@ static int usb_a9260_devices_init(void)
- 	at91_add_device_usbh_ohci(&ek_usbh_data);
- 	ek_add_device_udc();
- 	ek_add_led();
-+	ek_add_device_button();
- 
- 	armlinux_set_bootparams((void *)(AT91_CHIPSELECT_1 + 0x100));
- 	usb_a9260_set_board_type();
+ static struct sam9_smc_config usb_a9260_nand_smc_config = {
 -- 
 1.7.7
 
