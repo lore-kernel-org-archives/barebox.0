@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RhiOB-0005Td-7K
+ id 1RhiOC-0005Te-9A
  for barebox@lists.infradead.org; Mon, 02 Jan 2012 13:57:24 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  2 Jan 2012 14:57:12 +0100
-Message-Id: <1325512634-25797-4-git-send-email-s.hauer@pengutronix.de>
+Date: Mon,  2 Jan 2012 14:57:11 +0100
+Message-Id: <1325512634-25797-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1325512634-25797-1-git-send-email-s.hauer@pengutronix.de>
 References: <1325512634-25797-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,39 +21,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] mtd Kconfig: only select NAND_READ_OOB when NAND is
- enabled
+Subject: [PATCH 2/5] Makefile: disable unused-but-set-variable warning
 To: barebox@lists.infradead.org
 
-To get rid of:
-
-(MTD_OOB_DEVICE && MTD_RAW_DEVICE) selects NAND_READ_OOB which has unmet direct dependencies (MTD && NAND)
+This produces too many false positives.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/Kconfig |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
+ Makefile |    4 ++++
+ 1 files changed, 4 insertions(+), 0 deletions(-)
 
-diff --git a/drivers/mtd/Kconfig b/drivers/mtd/Kconfig
-index 69ababc..0a4ca31 100644
---- a/drivers/mtd/Kconfig
-+++ b/drivers/mtd/Kconfig
-@@ -10,13 +10,13 @@ config MTD_WRITE
+diff --git a/Makefile b/Makefile
+index b6e4c0c..d96fc88 100644
+--- a/Makefile
++++ b/Makefile
+@@ -450,6 +450,10 @@ endif
+ # Force gcc to behave correct even for buggy distributions
+ CFLAGS          += $(call cc-option, -fno-stack-protector)
  
- config MTD_OOB_DEVICE
- 	bool
--	select NAND_READ_OOB
-+	select NAND_READ_OOB if NAND
- 	default y
- 	prompt "Create a device for reading the OOB data"
- 
- config MTD_RAW_DEVICE
- 	bool
--	select NAND_READ_OOB
-+	select NAND_READ_OOB if NAND
- 	default n
- 	prompt "mtdraw device to read/write both data+oob"
- 
++# This warning generated too much noise in a regular build.
++# Use make W=1 to enable this warning (see scripts/Makefile.build)
++CFLAGS += $(call cc-disable-warning, unused-but-set-variable)
++
+ # arch Makefile may override CC so keep this after arch Makefile is included
+ NOSTDINC_FLAGS += -nostdinc -isystem $(shell $(CC) -print-file-name=include)
+ CHECKFLAGS     += $(NOSTDINC_FLAGS)
 -- 
 1.7.7.3
 
