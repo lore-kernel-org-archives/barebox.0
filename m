@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RhiHO-0000VM-0M
- for barebox@lists.infradead.org; Mon, 02 Jan 2012 13:50:23 +0000
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RhiHK-0004RP-Db
+ for barebox@lists.infradead.org; Mon, 02 Jan 2012 13:50:20 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  2 Jan 2012 14:50:04 +0100
-Message-Id: <1325512207-16501-2-git-send-email-s.hauer@pengutronix.de>
+Date: Mon,  2 Jan 2012 14:50:07 +0100
+Message-Id: <1325512207-16501-5-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1325512207-16501-1-git-send-email-s.hauer@pengutronix.de>
 References: <1325512207-16501-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,54 +21,267 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] tlsf: enable assertions
+Subject: [PATCH 3/3] tlsf: remove unused stuff from tlsfbits.h
 To: barebox@lists.infradead.org
+
+Also, as this file is locally used by the tlsf implementation,
+move this file to common.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/tlsf.c |   17 +++++++----------
- 1 files changed, 7 insertions(+), 10 deletions(-)
+ common/tlsfbits.h  |   55 ++++++++++++++++
+ include/tlsfbits.h |  180 ----------------------------------------------------
+ 2 files changed, 55 insertions(+), 180 deletions(-)
+ create mode 100644 common/tlsfbits.h
+ delete mode 100644 include/tlsfbits.h
 
-diff --git a/common/tlsf.c b/common/tlsf.c
-index b3de976..c810e8d 100644
---- a/common/tlsf.c
-+++ b/common/tlsf.c
-@@ -1,20 +1,17 @@
--#ifndef __BAREBOX__
--#include <assert.h>
--#include <limits.h>
--#endif
- #include <stddef.h>
- #include <stdio.h>
- #include <stdlib.h>
- #include <string.h>
-+#include <linux/stringify.h>
- 
- #include "tlsf.h"
- #include "tlsfbits.h"
- 
--#ifdef __BAREBOX__
--#ifndef _DEBUG
--#define _DEBUG 0
--#endif
--#define tlsf_assert(expr)           ((void) (0))
-+#ifdef DEBUG
-+#define tlsf_assert(expr)	\
-+	((expr) ? (void)(0) : printf("%s\n", __stringify(expr)))
+diff --git a/common/tlsfbits.h b/common/tlsfbits.h
+new file mode 100644
+index 0000000..93466e4
+--- /dev/null
++++ b/common/tlsfbits.h
+@@ -0,0 +1,55 @@
++#ifndef INCLUDED_tlsfbits
++#define INCLUDED_tlsfbits
++
++#include <linux/bitops.h>
++
++/*
++** Architecture-specific bit manipulation routines.
++**
++** TLSF achieves O(1) cost for malloc and free operations by limiting
++** the search for a free block to a free list of guaranteed size
++** adequate to fulfill the request, combined with efficient free list
++** queries using bitmasks and architecture-specific bit-manipulation
++** routines.
++**
++** Most modern processors provide instructions to count leading zeroes
++** in a word, find the lowest and highest set bit, etc. These
++** specific implementations will be used when available, falling back
++** to a reasonably efficient generic implementation.
++**
++** NOTE: TLSF spec relies on ffs/fls returning value 0..31.
++** ffs/fls return 1-32 by default, returning 0 for error.
++*/
++
++static int tlsf_ffs(unsigned int word)
++{
++	return ffs(word) - 1;
++}
++
++static int tlsf_fls(unsigned int word)
++{
++	return fls(word) - 1;
++}
++
++/* Possibly 64-bit version of tlsf_fls. */
++#if defined (TLSF_64BIT)
++tlsf_decl int tlsf_fls_sizet(size_t size)
++{
++	int high = (int)(size >> 32);
++	int bits = 0;
++	if (high)
++	{
++		bits = 32 + tlsf_fls(high);
++	}
++	else
++	{
++		bits = tlsf_fls((int)size & 0xffffffff);
++
++	}
++	return bits;
++}
 +#else
-+#define tlsf_assert(expr)	(void)(0)
- #endif
- 
- /*
-@@ -759,7 +756,7 @@ tlsf_pool tlsf_create(void* mem, size_t bytes)
- 	const size_t pool_bytes = align_down(bytes - pool_overhead, ALIGN_SIZE);
- 	pool_t* pool = tlsf_cast(pool_t*, mem);
- 
--#if _DEBUG
-+#ifdef DEBUG
- 	/* Verify ffs/fls work properly. */
- 	int rv = 0;
- 	rv += (tlsf_ffs(0) == -1) ? 0 : 0x1;
++#define tlsf_fls_sizet tlsf_fls
++#endif
++
++#endif
+diff --git a/include/tlsfbits.h b/include/tlsfbits.h
+deleted file mode 100644
+index 3e5c82a..0000000
+--- a/include/tlsfbits.h
++++ /dev/null
+@@ -1,180 +0,0 @@
+-#ifndef INCLUDED_tlsfbits
+-#define INCLUDED_tlsfbits
+-
+-#if defined(__cplusplus)
+-#define tlsf_decl inline
+-#else
+-#define tlsf_decl static
+-#endif
+-
+-/*
+-** Architecture-specific bit manipulation routines.
+-**
+-** TLSF achieves O(1) cost for malloc and free operations by limiting
+-** the search for a free block to a free list of guaranteed size
+-** adequate to fulfill the request, combined with efficient free list
+-** queries using bitmasks and architecture-specific bit-manipulation
+-** routines.
+-**
+-** Most modern processors provide instructions to count leading zeroes
+-** in a word, find the lowest and highest set bit, etc. These
+-** specific implementations will be used when available, falling back
+-** to a reasonably efficient generic implementation.
+-**
+-** NOTE: TLSF spec relies on ffs/fls returning value 0..31.
+-** ffs/fls return 1-32 by default, returning 0 for error.
+-*/
+-
+-/*
+-** Detect whether or not we are building for a 32- or 64-bit (LP/LLP)
+-** architecture. There is no reliable portable method at compile-time.
+-*/
+-#if defined (__alpha__) || defined (__ia64__) || defined (__x86_64__) \
+-	|| defined (_WIN64) || defined (__LP64__) || defined (__LLP64__)
+-#define TLSF_64BIT
+-#endif
+-
+-/*
+-** gcc 3.4 and above have builtin support, specialized for architecture.
+-** Some compilers masquerade as gcc; patchlevel test filters them out.
+-*/
+-#if defined (__GNUC__) && (__GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 4)) \
+-	&& defined (__GNUC_PATCHLEVEL__)
+-
+-tlsf_decl int tlsf_ffs(unsigned int word)
+-{
+-	return __builtin_ffs(word) - 1;
+-}
+-
+-tlsf_decl int tlsf_fls(unsigned int word)
+-{
+-	const int bit = word ? 32 - __builtin_clz(word) : 0;
+-	return bit - 1;
+-}
+-
+-#elif defined (_MSC_VER) && defined (_M_IX86) && (_MSC_VER >= 1400)
+-/* Microsoft Visual C++ 2005 support on x86 architectures. */
+-
+-#include <intrin.h>
+-
+-#pragma intrinsic(_BitScanReverse)
+-#pragma intrinsic(_BitScanForward)
+-
+-tlsf_decl int tlsf_fls(unsigned int word)
+-{
+-	unsigned long index;
+-	return _BitScanReverse(&index, word) ? index : -1;
+-}
+-
+-tlsf_decl int tlsf_ffs(unsigned int word)
+-{
+-	unsigned long index;
+-	return _BitScanForward(&index, word) ? index : -1;
+-}
+-
+-#elif defined (_MSC_VER) && defined (_M_PPC)
+-/* Microsoft Visual C++ support on PowerPC architectures. */
+-
+-#include <ppcintrinsics.h>
+-
+-tlsf_decl int tlsf_fls(unsigned int word)
+-{
+-	const int bit = 32 - _CountLeadingZeros(word);
+-	return bit - 1;
+-}
+-
+-tlsf_decl int tlsf_ffs(unsigned int word)
+-{
+-	const unsigned int reverse = word & (~word + 1);
+-	const int bit = 32 - _CountLeadingZeros(reverse);
+-	return bit - 1;
+-}
+-
+-#elif defined (__ARMCC_VERSION)
+-/* RealView Compilation Tools for ARM */
+-
+-tlsf_decl int tlsf_ffs(unsigned int word)
+-{
+-	const unsigned int reverse = word & (~word + 1);
+-	const int bit = 32 - __clz(reverse);
+-	return bit - 1;
+-}
+-
+-tlsf_decl int tlsf_fls(unsigned int word)
+-{
+-	const int bit = word ? 32 - __clz(word) : 0;
+-	return bit - 1;
+-}
+-
+-#elif defined (__ghs__)
+-/* Green Hills support for PowerPC */
+-
+-#include <ppc_ghs.h>
+-
+-tlsf_decl int tlsf_ffs(unsigned int word)
+-{
+-	const unsigned int reverse = word & (~word + 1);
+-	const int bit = 32 - __CLZ32(reverse);
+-	return bit - 1;
+-}
+-
+-tlsf_decl int tlsf_fls(unsigned int word)
+-{
+-	const int bit = word ? 32 - __CLZ32(word) : 0;
+-	return bit - 1;
+-}
+-
+-#else
+-/* Fall back to generic implementation. */
+-
+-tlsf_decl int tlsf_fls_generic(unsigned int word)
+-{
+-	int bit = 32;
+-
+-	if (!word) bit -= 1;
+-	if (!(word & 0xffff0000)) { word <<= 16; bit -= 16; }
+-	if (!(word & 0xff000000)) { word <<= 8; bit -= 8; }
+-	if (!(word & 0xf0000000)) { word <<= 4; bit -= 4; }
+-	if (!(word & 0xc0000000)) { word <<= 2; bit -= 2; }
+-	if (!(word & 0x80000000)) { word <<= 1; bit -= 1; }
+-
+-	return bit;
+-}
+-
+-/* Implement ffs in terms of fls. */
+-tlsf_decl int tlsf_ffs(unsigned int word)
+-{
+-	return tlsf_fls_generic(word & (~word + 1)) - 1;
+-}
+-
+-tlsf_decl int tlsf_fls(unsigned int word)
+-{
+-	return tlsf_fls_generic(word) - 1;
+-}
+-
+-#endif
+-
+-/* Possibly 64-bit version of tlsf_fls. */
+-#if defined (TLSF_64BIT)
+-tlsf_decl int tlsf_fls_sizet(size_t size)
+-{
+-	int high = (int)(size >> 32);
+-	int bits = 0;
+-	if (high)
+-	{
+-		bits = 32 + tlsf_fls(high);
+-	}
+-	else
+-	{
+-		bits = tlsf_fls((int)size & 0xffffffff);
+-
+-	}
+-	return bits;
+-}
+-#else
+-#define tlsf_fls_sizet tlsf_fls
+-#endif
+-
+-#undef tlsf_decl
+-
+-#endif
 -- 
 1.7.7.3
 
