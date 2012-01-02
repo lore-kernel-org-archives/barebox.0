@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RhiOC-0005Te-9A
+ id 1RhiOA-0005Ta-PE
  for barebox@lists.infradead.org; Mon, 02 Jan 2012 13:57:24 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1RhiO3-0008Ov-3o
+ for barebox@lists.infradead.org; Mon, 02 Jan 2012 14:57:15 +0100
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.77)
+ (envelope-from <sha@pengutronix.de>) id 1RhiO3-0007I3-2d
+ for barebox@lists.infradead.org; Mon, 02 Jan 2012 14:57:15 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  2 Jan 2012 14:57:11 +0100
-Message-Id: <1325512634-25797-3-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1325512634-25797-1-git-send-email-s.hauer@pengutronix.de>
-References: <1325512634-25797-1-git-send-email-s.hauer@pengutronix.de>
+Date: Mon,  2 Jan 2012 14:57:09 +0100
+Message-Id: <1325512634-25797-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,34 +26,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] Makefile: disable unused-but-set-variable warning
+Subject: patches for compiler warnings
 To: barebox@lists.infradead.org
 
-This produces too many false positives.
+These patches fix some compiler warnings, partly by just disabling
+the warning in the compiler. The set-but-not-used warnings are not
+very useful and often trigger false positives, so disable this. Same
+with "warning: generating trampoline in object".
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- Makefile |    4 ++++
- 1 files changed, 4 insertions(+), 0 deletions(-)
+Sascha Hauer (5):
+      scripts/Kbuild.include: update to latest kernel version
+      Makefile: disable unused-but-set-variable warning
+      mtd Kconfig: only select NAND_READ_OOB when NAND is enabled
+      net dm9k: Fix compiler warning
+      Makefile: disable warning: generating trampoline in object
 
-diff --git a/Makefile b/Makefile
-index b6e4c0c..d96fc88 100644
---- a/Makefile
-+++ b/Makefile
-@@ -450,6 +450,10 @@ endif
- # Force gcc to behave correct even for buggy distributions
- CFLAGS          += $(call cc-option, -fno-stack-protector)
- 
-+# This warning generated too much noise in a regular build.
-+# Use make W=1 to enable this warning (see scripts/Makefile.build)
-+CFLAGS += $(call cc-disable-warning, unused-but-set-variable)
-+
- # arch Makefile may override CC so keep this after arch Makefile is included
- NOSTDINC_FLAGS += -nostdinc -isystem $(shell $(CC) -print-file-name=include)
- CHECKFLAGS     += $(NOSTDINC_FLAGS)
--- 
-1.7.7.3
-
+ Makefile               |    6 ++
+ drivers/mtd/Kconfig    |    4 +-
+ drivers/net/dm9k.c     |    2 +
+ scripts/Kbuild.include |  143 ++++++++++++++++++++++++++++++++++--------------
+ 4 files changed, 112 insertions(+), 43 deletions(-)
 
 _______________________________________________
 barebox mailing list
