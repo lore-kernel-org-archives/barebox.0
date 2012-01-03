@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Ri0ju-0002qw-Cg
- for barebox@lists.infradead.org; Tue, 03 Jan 2012 09:33:03 +0000
-Date: Tue, 3 Jan 2012 10:32:55 +0100
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1Ri0oZ-0002VT-Io
+ for barebox@lists.infradead.org; Tue, 03 Jan 2012 09:37:52 +0000
+Date: Tue, 3 Jan 2012 10:37:39 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120103093255.GA3489@pengutronix.de>
-References: <260174ADA4D63F4AA543B9C81F2DE7120531CD14@POCITMSEXMB02.LntUniverse.com>
- <20120102111027.GG27267@pengutronix.de>
- <260174ADA4D63F4AA543B9C81F2DE7120531CF29@POCITMSEXMB02.LntUniverse.com>
+Message-ID: <20120103093739.GO27267@pengutronix.de>
+References: <20111231151655.GB945@game.jcrosoft.org>
+ <1325344898-7076-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <260174ADA4D63F4AA543B9C81F2DE7120531CF29@POCITMSEXMB02.LntUniverse.com>
+In-Reply-To: <1325344898-7076-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,26 +23,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Adding New comand
-To: G Rajender <G.Rajender@lnties.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH 01/12] atmel: reference boards and Caloa boards bbt
+ option enabled
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-On Tue, Jan 03, 2012 at 09:27:04AM +0000, G Rajender wrote:
-> Hi,
-
-Please do not top post.
-
+On Sat, Dec 31, 2011 at 04:21:27PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  arch/arm/boards/at91sam9260ek/init.c    |    1 +
+>  arch/arm/boards/at91sam9261ek/init.c    |    1 +
+>  arch/arm/boards/at91sam9263ek/init.c    |    1 +
+>  arch/arm/boards/at91sam9m10g45ek/init.c |    1 +
+>  arch/arm/boards/usb-a926x/init.c        |    1 +
+>  5 files changed, 5 insertions(+), 0 deletions(-)
 > 
-> I want to configure the USB OTG port in iMX35 board as a device by
-> adding a separate command and writing USB OTG peripheral code
-> (firmware) in command function.  This USB OTG of iMX35 board should
-> detect in Windows PC. This is primary goal.  ThanX.
+> diff --git a/arch/arm/boards/at91sam9260ek/init.c b/arch/arm/boards/at91sam9260ek/init.c
+> index dbd6541..b10d0dc 100644
+> --- a/arch/arm/boards/at91sam9260ek/init.c
+> +++ b/arch/arm/boards/at91sam9260ek/init.c
+> @@ -71,6 +71,7 @@ static struct atmel_nand_data nand_pdata = {
+>  #else
+>  	.bus_width_16	= 0,
+>  #endif
+> +	.on_flash_bbt	= 1,
 
-Have a look at commands/dfu.c. This is probably the closest template for
-this we have in barebox.
+This field does not exist and is not added in this series, so current
+next is broken on Atmel.
+Maybe your branch is different from your pull request? I had to apply
+these patches from the mails since I can't reach your server.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
