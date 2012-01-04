@@ -1,20 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 4.mo3.mail-out.ovh.net ([178.33.46.10]
+Received: from 13.mo3.mail-out.ovh.net ([188.165.33.202]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RiUGL-0004AF-1W
- for barebox@lists.infradead.org; Wed, 04 Jan 2012 17:04:30 +0000
-Received: from mail402.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 6C3C6100871A
- for <barebox@lists.infradead.org>; Wed,  4 Jan 2012 18:05:33 +0100 (CET)
-Date: Wed, 4 Jan 2012 18:04:23 +0100
-From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
-Message-ID: <20120104180423.5d13b88c@eb-e6520>
-In-Reply-To: <20120104163755.GW5446@pengutronix.de>
-References: <20120104114533.GB1810@game.jcrosoft.org>
- <1325689276-12863-1-git-send-email-eric@eukrea.com>
- <20120104163755.GW5446@pengutronix.de>
-Mime-Version: 1.0
+ id 1RiVFW-00074h-2E
+ for barebox@lists.infradead.org; Wed, 04 Jan 2012 18:07:47 +0000
+Received: from mail181.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 9E358FFD13E
+ for <barebox@lists.infradead.org>; Wed,  4 Jan 2012 19:08:46 +0100 (CET)
+Date: Wed, 4 Jan 2012 19:01:28 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20120104180128.GC1810@game.jcrosoft.org>
+References: <20111231151655.GB945@game.jcrosoft.org>
+ <1325344898-7076-8-git-send-email-plagnioj@jcrosoft.com>
+ <20120104134042.GP27267@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20120104134042.GP27267@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,50 +24,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] loadb: only try to change the baudrate if the driver
- has this feature
+Subject: Re: [PATCH 08/12] at91/gpio: simplify resources
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Sascha,
+On 14:40 Wed 04 Jan     , Sascha Hauer wrote:
+> Hi J,
+> 
+> On Sat, Dec 31, 2011 at 04:21:34PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > drop irq id and rebase instead of of offset
+> > 
+> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > ---
+> >  arch/arm/mach-at91/at91rm9200.c                |   12 ++++--------
+> >  arch/arm/mach-at91/at91sam9260.c               |    9 +++------
+> >  arch/arm/mach-at91/at91sam9261.c               |    9 +++------
+> >  arch/arm/mach-at91/at91sam9263.c               |   15 +++++----------
+> >  arch/arm/mach-at91/at91sam926x_lowlevel_init.c |   10 +++++-----
+> >  arch/arm/mach-at91/at91sam9g45.c               |   15 +++++----------
+> >  arch/arm/mach-at91/gpio.c                      |   13 ++-----------
+> >  arch/arm/mach-at91/include/mach/at91rm9200.h   |    9 +++++----
+> >  arch/arm/mach-at91/include/mach/at91sam9260.h  |    7 ++++---
+> >  arch/arm/mach-at91/include/mach/at91sam9261.h  |    7 ++++---
+> >  arch/arm/mach-at91/include/mach/at91sam9263.h  |   11 ++++++-----
+> >  arch/arm/mach-at91/include/mach/at91sam9g45.h  |   11 ++++++-----
+> >  arch/arm/mach-at91/include/mach/gpio.h         |    4 ----
+> >  13 files changed, 52 insertions(+), 80 deletions(-)
+> 
+> This breaks at91rm9200ek_defconfig which still references AT91_PIOC.
+> I don't know if it's worth it to keep this around anyway since the
+> ethernet driver seems to be broken since ages.
+see it too I've a fix for this
 
-Le Wed, 4 Jan 2012 17:37:56 +0100,
-Sascha Hauer <s.hauer@pengutronix.de> a =E9crit :
-
-> On Wed, Jan 04, 2012 at 04:01:16PM +0100, Eric B=E9nard wrote:
-> > this allows loadb to work over usbserial gadget
-> =
-
-> I like the original approach better. The baudrate setting has no meaning
-> in hardware for the usb serial gadget. This means that we can happily
-> support every baudrate requested by adding a fake setbrg function.
-> =
-
-> If we had some global console_setbrg function I would agree
-> Jean-Christophe, this function should return cdev->setbrg or
-> -ENOSYS if the driver does not have a setbrg function. Still the
-> usb gadget serial driver should have a fake setbrg function for
-> the reason explained above.
-> =
-
-> This command could be improved by doing all this baudrate stuff only
-> when the -b option is given. This way we default to the current
-> baudrate (which seems sane in the cases I can think of)
-> =
-
-OK so in conclusion, what do you prefer : =
-
-- applying " u_serial: add setbrg to be able to use loadb & co"
-- a fix for loadb to only handle baudrate change if -b option is given
-- or maybe both options ? ;-)
-
-?
-Eric
-
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
