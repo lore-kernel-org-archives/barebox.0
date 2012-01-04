@@ -1,22 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 8.mo3.mail-out.ovh.net ([87.98.172.249]
- helo=mo3.mail-out.ovh.net)
+Received: from mo3.mail-out.ovh.net ([178.32.228.3])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RiPMg-0005kC-Ex
- for barebox@lists.infradead.org; Wed, 04 Jan 2012 11:50:43 +0000
+ id 1RiPNj-0005mF-5U
+ for barebox@lists.infradead.org; Wed, 04 Jan 2012 11:51:47 +0000
 Received: from mail181.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id E9AC71008083
- for <barebox@lists.infradead.org>; Wed,  4 Jan 2012 12:51:42 +0100 (CET)
-Date: Wed, 4 Jan 2012 12:44:26 +0100
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 51D88100816E
+ for <barebox@lists.infradead.org>; Wed,  4 Jan 2012 12:52:52 +0100 (CET)
+Date: Wed, 4 Jan 2012 12:45:33 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120104114426.GA1810@game.jcrosoft.org>
-References: <1325669809-32637-1-git-send-email-eric@eukrea.com>
- <1325669809-32637-4-git-send-email-eric@eukrea.com>
- <20120104104741.GG18008@game.jcrosoft.org>
- <20120104121015.254532c7@eb-e6520>
+Message-ID: <20120104114533.GB1810@game.jcrosoft.org>
+References: <1325673359-8101-1-git-send-email-eric@eukrea.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120104121015.254532c7@eb-e6520>
+In-Reply-To: <1325673359-8101-1-git-send-email-eric@eukrea.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,38 +25,43 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v4 4/5] timeout: add poller_call
+Subject: Re: [PATCH] u_serial: add setbrg to be able to use loadb & co
 To: Eric =?iso-8859-1?Q?B=E9nard?= <eric@eukrea.com>
 Cc: barebox@lists.infradead.org
 
-On 12:10 Wed 04 Jan     , Eric B=E9nard wrote:
-> Hi Jean-Christophe,
+On 11:35 Wed 04 Jan     , Eric B=E9nard wrote:
+> Signed-off-by: Eric B=E9nard <eric@eukrea.com>
+> ---
+>  drivers/usb/gadget/u_serial.c |    5 +++++
+>  1 files changed, 5 insertions(+), 0 deletions(-)
 > =
 
-> Le Wed, 4 Jan 2012 11:47:41 +0100,
-> Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> a =E9crit :
-> =
+> diff --git a/drivers/usb/gadget/u_serial.c b/drivers/usb/gadget/u_serial.c
+> index e310c3a..980b527 100644
+> --- a/drivers/usb/gadget/u_serial.c
+> +++ b/drivers/usb/gadget/u_serial.c
+> @@ -420,6 +420,10 @@ static int serial_getc(struct console_device *cdev)
+>  static void serial_flush(struct console_device *cdev)
+>  {
+>  }
+> +static int serial_setbaudrate(struct console_device *cdev, int baudrate)
+> +{
+> +	return 0;
+> +}
+>  =
 
-> > On 10:36 Wed 04 Jan     , Eric B=E9nard wrote:
-> > > without this, usb gadget can't enumerate during boot once the
-> > > timeout command is launched (thus preventing usbserial console
-> > > access to take control of the board before autoboot)
-> > > =
+>  static struct console_device *mycdev;
+>  =
 
-> > > Signed-off-by: Eric B=E9nard <eric@eukrea.com>
-> > =
+> @@ -469,6 +473,7 @@ int gserial_connect(struct gserial *gser, u8 port_num)
+>  	cdev->putc =3D serial_putc;
+>  	cdev->getc =3D serial_getc;
+>  	cdev->flush =3D serial_flush;
+> +	cdev->setbrg =3D serial_setbaudrate;
+>  	console_register(cdev);
+>  	mycdev =3D cdev;
 
-> > I send a patch to put it in the is_timeout c code
-> > =
-
-> I just saw it.
-> =
-
-> > I think it's better
-> Maybe, I don't understand whyu you need to add if (time_offset_ns >=3D
-> 100 * USECOND) which was not here before.
-I'm working to add bitbanging i2c so I do not want the small delay to be
-impacted by the pull
+if no setbrg this need to be manage at framework level
 
 Best Regards,
 J.
