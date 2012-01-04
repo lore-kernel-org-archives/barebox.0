@@ -1,19 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 12.mo3.mail-out.ovh.net ([188.165.41.191]
- helo=mo3.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RiN01-0005me-6M
- for barebox@lists.infradead.org; Wed, 04 Jan 2012 09:19:09 +0000
-Received: from mail402.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 176A010101E8
- for <barebox@lists.infradead.org>; Wed,  4 Jan 2012 10:20:12 +0100 (CET)
-Date: Wed, 4 Jan 2012 10:19:02 +0100
-From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
-Message-ID: <20120104101902.7215bf61@eb-e6520>
-In-Reply-To: <20120104090312.GO5446@pengutronix.de>
-References: <1325609969-21471-1-git-send-email-eric@eukrea.com>
- <20120104090312.GO5446@pengutronix.de>
-Mime-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RiN6S-0000IS-LV
+ for barebox@lists.infradead.org; Wed, 04 Jan 2012 09:25:49 +0000
+Date: Wed, 4 Jan 2012 10:25:43 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120104092543.GQ5446@pengutronix.de>
+References: <1325566850-24432-1-git-send-email-plagnioj@jcrosoft.com>
+ <1325566850-24432-3-git-send-email-plagnioj@jcrosoft.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1325566850-24432-3-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,34 +19,79 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] fsl_udc: update and fix
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 3/6] poller_call: move from getc to is_timeout
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-Hi Sascha,
+On Tue, Jan 03, 2012 at 06:00:47AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> this will allow to always call poller_call even durring timeout
+> and still the case in getc
+> 
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  common/clock.c   |    4 ++++
+>  common/console.c |    2 --
+>  2 files changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/common/clock.c b/common/clock.c
+> index 79c06c8..f322db8 100644
+> --- a/common/clock.c
+> +++ b/common/clock.c
+> @@ -27,6 +27,7 @@
+>  #include <common.h>
+>  #include <asm-generic/div64.h>
+>  #include <clock.h>
+> +#include <poller.h>
+>  
+>  static struct clocksource *current_clock;
+>  static uint64_t time_ns;
+> @@ -139,6 +140,9 @@ uint32_t clocksource_hz2mult(uint32_t hz, uint32_t shift_constant)
+>  
+>  int is_timeout(uint64_t start_ns, uint64_t time_offset_ns)
+>  {
+> +	if (time_offset_ns >= 100 * USECOND)
+> +		poller_call();
 
-Le Wed, 4 Jan 2012 10:03:12 +0100,
-Sascha Hauer <s.hauer@pengutronix.de> a =E9crit :
-> Generally, can you please collect the comments to a series and then
-> send the whole series again instead of responding with v2 patches in
-> the original thread? I find it quite hard to pick the correct patches
-> from a longer thread. It's easier to just see 'no comments to the new
-> series (except maybe acks), so apply it'.
-> =
+Do we need this if() at all? I think not.
 
-I'll send a clean version of the whole serie once all the comments are
-addressed.
+Sascha
 
-While testing in an other configuration, I fixed a problem which
-was preventing the usbserial console enumeration while timeout was
-running (needs poller_call() in the do {} while () loop in
-do_timeout()) so a v4 is following.
+> +
+>  	if ((int64_t)(start_ns + time_offset_ns - get_time_ns()) < 0)
+>  		return 1;
+>  	else
+> diff --git a/common/console.c b/common/console.c
+> index cab8689..88c4010 100644
+> --- a/common/console.c
+> +++ b/common/console.c
+> @@ -225,8 +225,6 @@ int getc(void)
+>  	 */
+>  	start = get_time_ns();
+>  	while (1) {
+> -		poller_call();
+> -
+>  		if (tstc_raw()) {
+>  			kfifo_putc(console_input_buffer, getc_raw());
+>  
+> -- 
+> 1.7.7
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
-Eric
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
