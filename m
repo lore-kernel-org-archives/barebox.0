@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RiR6g-0008MS-4c
- for barebox@lists.infradead.org; Wed, 04 Jan 2012 13:42:23 +0000
-Date: Wed, 4 Jan 2012 14:42:09 +0100
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RiRib-0005mX-Mg
+ for barebox@lists.infradead.org; Wed, 04 Jan 2012 14:21:30 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120104134209.GQ27267@pengutronix.de>
-References: <20111231151655.GB945@game.jcrosoft.org>
- <1325344898-7076-5-git-send-email-plagnioj@jcrosoft.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1325344898-7076-5-git-send-email-plagnioj@jcrosoft.com>
+Date: Wed,  4 Jan 2012 15:21:22 +0100
+Message-Id: <1325686882-8379-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,46 +14,120 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 05/12] at91: add sram memory devices
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] video imx: specify num_modes in platform_data
+To: barebox@lists.infradead.org
 
-On Sat, Dec 31, 2011 at 04:21:31PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  arch/arm/mach-at91/at91rm9200_devices.c       |    2 ++
->  arch/arm/mach-at91/at91sam9260_devices.c      |   12 ++++++++++++
->  arch/arm/mach-at91/at91sam9261_devices.c      |    7 +++++++
->  arch/arm/mach-at91/at91sam9263_devices.c      |    4 ++++
->  arch/arm/mach-at91/at91sam9g45_devices.c      |    2 ++
->  arch/arm/mach-at91/include/mach/at91sam9260.h |   10 ++++++++++
->  arch/arm/mach-at91/include/mach/at91sam9261.h |    3 +++
->  7 files changed, 40 insertions(+), 0 deletions(-)
-> 
-> diff --git a/arch/arm/mach-at91/at91rm9200_devices.c b/arch/arm/mach-at91/at91rm9200_devices.c
-> index 8c19846..7032789 100644
-> --- a/arch/arm/mach-at91/at91rm9200_devices.c
-> +++ b/arch/arm/mach-at91/at91rm9200_devices.c
-> @@ -23,6 +23,8 @@
->  void at91_add_device_sdram(u32 size)
->  {
->  	arm_add_mem_device("ram0", AT91_CHIPSELECT_1, size);
-> +	add_mem_device("sram0", AT91RM9200_SRAM_BASE, AT91RM9200_SRAM_SIZE,
-> +			IORESOURCE_MEM_WRITEABLE);
+Without num_modes the imx fb driver won't work. Specify this
+in the boards and also bail out in the driver when num_modes
+is unspecified.
 
-This breaks the at91rm9200ek_defconfig since this file is missing a
-include <sizes.h>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c |    1 +
+ arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c |    1 +
+ arch/arm/boards/guf-neso/board.c                  |    1 +
+ arch/arm/boards/imx21ads/imx21ads.c               |    1 +
+ arch/arm/boards/karo-tx25/board.c                 |    1 +
+ arch/arm/boards/pcm038/pcm038.c                   |    1 +
+ drivers/video/imx.c                               |    5 +++++
+ 7 files changed, 11 insertions(+), 0 deletions(-)
 
-
+diff --git a/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c b/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
+index 162c117..73e54f2 100644
+--- a/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
++++ b/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
+@@ -116,6 +116,7 @@ static struct imx_fb_videomode imxfb_mode = {
+ 
+ static struct imx_fb_platform_data eukrea_cpuimx25_fb_data = {
+ 	.mode		= &imxfb_mode,
++	.num_modes	= 1,
+ 	.pwmr		= 0x00A903FF,
+ 	.lscr1		= 0x00120300,
+ 	.dmacr		= 0x80040060,
+diff --git a/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c b/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
+index c419c73..e2766fb 100644
+--- a/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
++++ b/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
+@@ -116,6 +116,7 @@ static struct imx_fb_videomode imxfb_mode = {
+ 
+ static struct imx_fb_platform_data eukrea_cpuimx27_fb_data = {
+ 	.mode	= &imxfb_mode,
++	.num_modes = 1,
+ 	.pwmr	= 0x00A903FF,
+ 	.lscr1	= 0x00120300,
+ 	.dmacr	= 0x00020010,
+diff --git a/arch/arm/boards/guf-neso/board.c b/arch/arm/boards/guf-neso/board.c
+index e524b70..62d82f2 100644
+--- a/arch/arm/boards/guf-neso/board.c
++++ b/arch/arm/boards/guf-neso/board.c
+@@ -105,6 +105,7 @@ static void neso_fb_enable(int enable)
+ 
+ static struct imx_fb_platform_data neso_fb_data = {
+ 	.mode	= &imxfb_mode,
++	.num_modes = 1,
+ 	.pwmr	= 0x00000000,	/* doesn't matter */
+ 	.lscr1	= 0x00120300,	/* doesn't matter */
+ 	/* dynamic mode -> using the reset values (as recommended in the datasheet) */
+diff --git a/arch/arm/boards/imx21ads/imx21ads.c b/arch/arm/boards/imx21ads/imx21ads.c
+index fc34709..fde6774 100644
+--- a/arch/arm/boards/imx21ads/imx21ads.c
++++ b/arch/arm/boards/imx21ads/imx21ads.c
+@@ -70,6 +70,7 @@ static struct imx_fb_videomode imx_fb_modedata = {
+ 
+ static struct imx_fb_platform_data imx_fb_data = {
+ 	.mode           = &imx_fb_modedata,
++	.num_modes	= 1,
+ 	.cmap_greyscale = 0,
+ 	.cmap_inverse   = 0,
+ 	.cmap_static    = 0,
+diff --git a/arch/arm/boards/karo-tx25/board.c b/arch/arm/boards/karo-tx25/board.c
+index 1eece1d..bfccd0c 100644
+--- a/arch/arm/boards/karo-tx25/board.c
++++ b/arch/arm/boards/karo-tx25/board.c
+@@ -239,6 +239,7 @@ static void tx25_fb_enable(int enable)
+ 
+ static struct imx_fb_platform_data tx25_fb_data = {
+ 	.mode		= &stk5_fb_mode,
++	.num_modes	= 1,
+ 	.dmacr		= 0x80040060,
+ 	.enable		= tx25_fb_enable,
+ };
+diff --git a/arch/arm/boards/pcm038/pcm038.c b/arch/arm/boards/pcm038/pcm038.c
+index 6b8897e..8dd6521 100644
+--- a/arch/arm/boards/pcm038/pcm038.c
++++ b/arch/arm/boards/pcm038/pcm038.c
+@@ -104,6 +104,7 @@ static struct imx_fb_videomode imxfb_mode = {
+ 
+ static struct imx_fb_platform_data pcm038_fb_data = {
+ 	.mode	= &imxfb_mode,
++	.num_modes = 1,
+ 	.pwmr	= 0x00A903FF,
+ 	.lscr1	= 0x00120300,
+ 	.dmacr	= 0x00020010,
+diff --git a/drivers/video/imx.c b/drivers/video/imx.c
+index 78179af..452e558 100644
+--- a/drivers/video/imx.c
++++ b/drivers/video/imx.c
+@@ -552,6 +552,11 @@ static int imxfb_probe(struct device_d *dev)
+ 	writel(readl(IMX_CCM_BASE + CCM_CGCR1) & ~(1 << 29),
+ 		IMX_CCM_BASE + CCM_CGCR1);
+ #endif
++	if (!pdata->num_modes) {
++		dev_err(dev, "no modes. bailing out\n");
++		return -EINVAL;
++	}
++
+ 	mode_list = xzalloc(sizeof(*mode_list) * pdata->num_modes);
+ 	for (i = 0; i < pdata->num_modes; i++)
+ 		mode_list[i] = pdata->mode[i].mode;
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.7.3
+
 
 _______________________________________________
 barebox mailing list
