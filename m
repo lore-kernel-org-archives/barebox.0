@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 13.mo3.mail-out.ovh.net ([188.165.33.202]
+Received: from 11.mo3.mail-out.ovh.net ([87.98.184.158]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RiVFW-00074h-2E
- for barebox@lists.infradead.org; Wed, 04 Jan 2012 18:07:47 +0000
+ id 1RiVJA-0007Ll-UN
+ for barebox@lists.infradead.org; Wed, 04 Jan 2012 18:11:29 +0000
 Received: from mail181.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 9E358FFD13E
- for <barebox@lists.infradead.org>; Wed,  4 Jan 2012 19:08:46 +0100 (CET)
-Date: Wed, 4 Jan 2012 19:01:28 +0100
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 9E0CF1004108
+ for <barebox@lists.infradead.org>; Wed,  4 Jan 2012 19:12:34 +0100 (CET)
+Date: Wed, 4 Jan 2012 19:05:15 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120104180128.GC1810@game.jcrosoft.org>
+Message-ID: <20120104180515.GD1810@game.jcrosoft.org>
 References: <20111231151655.GB945@game.jcrosoft.org>
  <1325344898-7076-8-git-send-email-plagnioj@jcrosoft.com>
  <20120104134042.GP27267@pengutronix.de>
@@ -58,7 +58,9 @@ On 14:40 Wed 04 Jan     , Sascha Hauer wrote:
 > This breaks at91rm9200ek_defconfig which still references AT91_PIOC.
 > I don't know if it's worth it to keep this around anyway since the
 > ethernet driver seems to be broken since ages.
-see it too I've a fix for this
+I do use it and I've a new version of the ethernet driver
+
+need to finish to cleanup before send
 
 Best Regards,
 J.
