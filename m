@@ -1,22 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 19.mo3.mail-out.ovh.net ([178.32.98.231]
- helo=mo3.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RiQxa-0000Wz-De
- for barebox@lists.infradead.org; Wed, 04 Jan 2012 13:33:01 +0000
-Received: from mail402.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 1B5051000E90
- for <barebox@lists.infradead.org>; Wed,  4 Jan 2012 14:33:59 +0100 (CET)
-Date: Wed, 4 Jan 2012 14:32:50 +0100
-From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
-Message-ID: <20120104143250.55a91f0d@eb-e6520>
-In-Reply-To: <20120104114426.GA1810@game.jcrosoft.org>
-References: <1325669809-32637-1-git-send-email-eric@eukrea.com>
- <1325669809-32637-4-git-send-email-eric@eukrea.com>
- <20120104104741.GG18008@game.jcrosoft.org>
- <20120104121015.254532c7@eb-e6520>
- <20120104114426.GA1810@game.jcrosoft.org>
-Mime-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RiR5H-0004jV-47
+ for barebox@lists.infradead.org; Wed, 04 Jan 2012 13:40:52 +0000
+Date: Wed, 4 Jan 2012 14:40:42 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120104134042.GP27267@pengutronix.de>
+References: <20111231151655.GB945@game.jcrosoft.org>
+ <1325344898-7076-8-git-send-email-plagnioj@jcrosoft.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1325344898-7076-8-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,54 +19,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v4 4/5] timeout: add poller_call
+Subject: Re: [PATCH 08/12] at91/gpio: simplify resources
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-Hi Jean-Christophe,
+Hi J,
 
-Le Wed, 4 Jan 2012 12:44:26 +0100,
-Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> a =E9crit :
+On Sat, Dec 31, 2011 at 04:21:34PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> drop irq id and rebase instead of of offset
+> 
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  arch/arm/mach-at91/at91rm9200.c                |   12 ++++--------
+>  arch/arm/mach-at91/at91sam9260.c               |    9 +++------
+>  arch/arm/mach-at91/at91sam9261.c               |    9 +++------
+>  arch/arm/mach-at91/at91sam9263.c               |   15 +++++----------
+>  arch/arm/mach-at91/at91sam926x_lowlevel_init.c |   10 +++++-----
+>  arch/arm/mach-at91/at91sam9g45.c               |   15 +++++----------
+>  arch/arm/mach-at91/gpio.c                      |   13 ++-----------
+>  arch/arm/mach-at91/include/mach/at91rm9200.h   |    9 +++++----
+>  arch/arm/mach-at91/include/mach/at91sam9260.h  |    7 ++++---
+>  arch/arm/mach-at91/include/mach/at91sam9261.h  |    7 ++++---
+>  arch/arm/mach-at91/include/mach/at91sam9263.h  |   11 ++++++-----
+>  arch/arm/mach-at91/include/mach/at91sam9g45.h  |   11 ++++++-----
+>  arch/arm/mach-at91/include/mach/gpio.h         |    4 ----
+>  13 files changed, 52 insertions(+), 80 deletions(-)
 
-> On 12:10 Wed 04 Jan     , Eric B=E9nard wrote:
-> > Hi Jean-Christophe,
-> > =
+This breaks at91rm9200ek_defconfig which still references AT91_PIOC.
+I don't know if it's worth it to keep this around anyway since the
+ethernet driver seems to be broken since ages.
 
-> > Le Wed, 4 Jan 2012 11:47:41 +0100,
-> > Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> a =E9crit :
-> > =
+Sascha
 
-> > > On 10:36 Wed 04 Jan     , Eric B=E9nard wrote:
-> > > > without this, usb gadget can't enumerate during boot once the
-> > > > timeout command is launched (thus preventing usbserial console
-> > > > access to take control of the board before autoboot)
-> > > > =
-
-> > > > Signed-off-by: Eric B=E9nard <eric@eukrea.com>
-> > > =
-
-> > > I send a patch to put it in the is_timeout c code
-> > > =
-
-> > I just saw it.
-> > =
-
-> > > I think it's better
-> > Maybe, I don't understand whyu you need to add if (time_offset_ns >=3D
-> > 100 * USECOND) which was not here before.
-> I'm working to add bitbanging i2c so I do not want the small delay to be
-> impacted by the pull
-> =
-
-then I suggest you first add the poll change without this test, and
-then add this test once you add bitbanging i2c. That will make the
-change more understandable.
-
-Eric
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
