@@ -1,20 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RiNH7-0001XA-8T
- for barebox@lists.infradead.org; Wed, 04 Jan 2012 09:36:50 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <jbe@pengutronix.de>) id 1RiNGq-00071P-5J
- for barebox@lists.infradead.org; Wed, 04 Jan 2012 10:36:32 +0100
-Received: from jbe by dude.hi.pengutronix.de with local (Exim 4.77)
- (envelope-from <jbe@pengutronix.de>) id 1RiNGq-0004zU-3z
- for barebox@lists.infradead.org; Wed, 04 Jan 2012 10:36:32 +0100
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Wed,  4 Jan 2012 10:36:29 +0100
-Message-Id: <1325669790-18433-2-git-send-email-jbe@pengutronix.de>
-In-Reply-To: <1325669790-18433-1-git-send-email-jbe@pengutronix.de>
-References: <1325669790-18433-1-git-send-email-jbe@pengutronix.de>
+Received: from smtp2-g21.free.fr ([2a01:e0c:1:1599::11])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1RiNHR-0007jY-2y
+ for barebox@lists.infradead.org; Wed, 04 Jan 2012 09:37:10 +0000
+Received: from localhost.localdomain (unknown [82.240.38.71])
+ by smtp2-g21.free.fr (Postfix) with ESMTP id CD2744B01FB
+ for <barebox@lists.infradead.org>; Wed,  4 Jan 2012 10:37:03 +0100 (CET)
+From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
+Date: Wed,  4 Jan 2012 10:36:49 +0100
+Message-Id: <1325669809-32637-5-git-send-email-eric@eukrea.com>
+In-Reply-To: <1325669809-32637-1-git-send-email-eric@eukrea.com>
+References: <1325669809-32637-1-git-send-email-eric@eukrea.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,53 +20,28 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] Mini2440: enable more working devices for a more broad
- compile time test
+Subject: [PATCH v4 5/5] eukrea_cpuimx35: fix compilation when
+ CONFIG_USB_GADGET is enabled
 To: barebox@lists.infradead.org
 
-Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
----
- arch/arm/configs/mini2440_defconfig |    5 ++++-
- 1 files changed, 4 insertions(+), 1 deletions(-)
-
-diff --git a/arch/arm/configs/mini2440_defconfig b/arch/arm/configs/mini2440_defconfig
-index 869df6a..9b35dd5 100644
---- a/arch/arm/configs/mini2440_defconfig
-+++ b/arch/arm/configs/mini2440_defconfig
-@@ -1,5 +1,6 @@
- CONFIG_ARCH_S3C24xx=y
- CONFIG_MACH_MINI2440=y
-+CONFIG_MINI2440_VIDEO_N35=y
- CONFIG_S3C24XX_NAND_BOOT=y
- CONFIG_AEABI=y
- CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-@@ -10,7 +11,6 @@ CONFIG_LONGHELP=y
- CONFIG_GLOB=y
- CONFIG_CMDLINE_EDITING=y
- CONFIG_AUTO_COMPLETE=y
--CONFIG_PARTITION=y
- CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
- CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/mini2440/env"
- CONFIG_DEBUG_INFO=y
-@@ -35,5 +35,8 @@ CONFIG_NET_PING=y
- CONFIG_NET_TFTP=y
- CONFIG_DRIVER_NET_DM9K=y
- # CONFIG_SPI is not set
-+CONFIG_USB=y
-+CONFIG_USB_OHCI=y
-+CONFIG_DRIVER_VIDEO_S3C24XX=y
- CONFIG_MCI=y
- CONFIG_MCI_S3C=y
--- 
-1.7.7.3
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+dGhpcyB3YXMgaW50cm9kdWNlZCBpbiAiNmIzZTAxYSBhcm06IGV1a3JlYTogRml4IGNvbXBpbGF0
+aW9uIHdhcm5pbmciCgpTaWduZWQtb2ZmLWJ5OiBFcmljIELDqW5hcmQgPGVyaWNAZXVrcmVhLmNv
+bT4KLS0tCiBhcmNoL2FybS9ib2FyZHMvZXVrcmVhX2NwdWlteDM1L2V1a3JlYV9jcHVpbXgzNS5j
+IHwgICAgMyArKysKIDEgZmlsZXMgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCspLCAwIGRlbGV0aW9u
+cygtKQoKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9ldWtyZWFfY3B1aW14MzUvZXVrcmVh
+X2NwdWlteDM1LmMgYi9hcmNoL2FybS9ib2FyZHMvZXVrcmVhX2NwdWlteDM1L2V1a3JlYV9jcHVp
+bXgzNS5jCmluZGV4IDIwY2ZhZDQuLmQxNjdhYjkgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2JvYXJk
+cy9ldWtyZWFfY3B1aW14MzUvZXVrcmVhX2NwdWlteDM1LmMKKysrIGIvYXJjaC9hcm0vYm9hcmRz
+L2V1a3JlYV9jcHVpbXgzNS9ldWtyZWFfY3B1aW14MzUuYwpAQCAtMTQ0LDYgKzE0NCw5IEBAIHBv
+c3RtbXVfaW5pdGNhbGwoZXVrcmVhX2NwdWlteDM1X21tdV9pbml0KTsKIAogc3RhdGljIGludCBl
+dWtyZWFfY3B1aW14MzVfZGV2aWNlc19pbml0KHZvaWQpCiB7CisjaWZkZWYgQ09ORklHX1VTQl9H
+QURHRVQKKwl1bnNpZ25lZCBpbnQgdG1wOworI2VuZGlmCiAJaW14MzVfYWRkX25hbmQoJm5hbmRf
+aW5mbyk7CiAKIAlkZXZmc19hZGRfcGFydGl0aW9uKCJuYW5kMCIsIDB4MDAwMDAsIDB4NDAwMDAs
+IFBBUlRJVElPTl9GSVhFRCwgInNlbGZfcmF3Iik7Ci0tIAoxLjcuNy41CgoKX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QK
+YmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21h
+aWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
