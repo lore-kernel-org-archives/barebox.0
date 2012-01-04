@@ -1,16 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RiN6S-0000IS-LV
- for barebox@lists.infradead.org; Wed, 04 Jan 2012 09:25:49 +0000
-Date: Wed, 4 Jan 2012 10:25:43 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120104092543.GQ5446@pengutronix.de>
-References: <1325566850-24432-1-git-send-email-plagnioj@jcrosoft.com>
- <1325566850-24432-3-git-send-email-plagnioj@jcrosoft.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1325566850-24432-3-git-send-email-plagnioj@jcrosoft.com>
+ id 1RiNGx-0000Ss-Jx
+ for barebox@lists.infradead.org; Wed, 04 Jan 2012 09:36:40 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <jbe@pengutronix.de>) id 1RiNGq-00071R-6B
+ for barebox@lists.infradead.org; Wed, 04 Jan 2012 10:36:32 +0100
+Received: from jbe by dude.hi.pengutronix.de with local (Exim 4.77)
+ (envelope-from <jbe@pengutronix.de>) id 1RiNGq-0004zX-4a
+ for barebox@lists.infradead.org; Wed, 04 Jan 2012 10:36:32 +0100
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Wed,  4 Jan 2012 10:36:30 +0100
+Message-Id: <1325669790-18433-3-git-send-email-jbe@pengutronix.de>
+In-Reply-To: <1325669790-18433-1-git-send-email-jbe@pengutronix.de>
+References: <1325669790-18433-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,79 +23,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/6] poller_call: move from getc to is_timeout
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/2] S3C24xx/video: fix forgotten include file name change
+To: barebox@lists.infradead.org
 
-On Tue, Jan 03, 2012 at 06:00:47AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> this will allow to always call poller_call even durring timeout
-> and still the case in getc
-> 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  common/clock.c   |    4 ++++
->  common/console.c |    2 --
->  2 files changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/common/clock.c b/common/clock.c
-> index 79c06c8..f322db8 100644
-> --- a/common/clock.c
-> +++ b/common/clock.c
-> @@ -27,6 +27,7 @@
->  #include <common.h>
->  #include <asm-generic/div64.h>
->  #include <clock.h>
-> +#include <poller.h>
->  
->  static struct clocksource *current_clock;
->  static uint64_t time_ns;
-> @@ -139,6 +140,9 @@ uint32_t clocksource_hz2mult(uint32_t hz, uint32_t shift_constant)
->  
->  int is_timeout(uint64_t start_ns, uint64_t time_offset_ns)
->  {
-> +	if (time_offset_ns >= 100 * USECOND)
-> +		poller_call();
+While we are here: do not follow the change of the file name, because there is
+no GPIO dependency in this driver.
 
-Do we need this if() at all? I think not.
+Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
+---
+ drivers/video/s3c24xx.c |    1 -
+ 1 files changed, 0 insertions(+), 1 deletions(-)
 
-Sascha
-
-> +
->  	if ((int64_t)(start_ns + time_offset_ns - get_time_ns()) < 0)
->  		return 1;
->  	else
-> diff --git a/common/console.c b/common/console.c
-> index cab8689..88c4010 100644
-> --- a/common/console.c
-> +++ b/common/console.c
-> @@ -225,8 +225,6 @@ int getc(void)
->  	 */
->  	start = get_time_ns();
->  	while (1) {
-> -		poller_call();
-> -
->  		if (tstc_raw()) {
->  			kfifo_putc(console_input_buffer, getc_raw());
->  
-> -- 
-> 1.7.7
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/drivers/video/s3c24xx.c b/drivers/video/s3c24xx.c
+index f6af773..564ccbd 100644
+--- a/drivers/video/s3c24xx.c
++++ b/drivers/video/s3c24xx.c
+@@ -30,7 +30,6 @@
+ #include <malloc.h>
+ #include <errno.h>
+ #include <io.h>
+-#include <mach/s3c-gpio.h>
+ #include <mach/s3c-generic.h>
+ #include <mach/s3c24xx-fb.h>
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.7.3
+
 
 _______________________________________________
 barebox mailing list
