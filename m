@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp2-g21.free.fr ([2a01:e0c:1:1599::11])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RiNHD-0007gK-Od
- for barebox@lists.infradead.org; Wed, 04 Jan 2012 09:36:57 +0000
-Received: from localhost.localdomain (unknown [82.240.38.71])
- by smtp2-g21.free.fr (Postfix) with ESMTP id 689684B023A
- for <barebox@lists.infradead.org>; Wed,  4 Jan 2012 10:36:50 +0100 (CET)
-From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
-Date: Wed,  4 Jan 2012 10:36:45 +0100
-Message-Id: <1325669809-32637-1-git-send-email-eric@eukrea.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RiO3k-0001CR-6p
+ for barebox@lists.infradead.org; Wed, 04 Jan 2012 10:27:06 +0000
+Date: Wed, 4 Jan 2012 11:26:56 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120104102656.GR5446@pengutronix.de>
+References: <1325566850-24432-1-git-send-email-plagnioj@jcrosoft.com>
+ <1325566850-24432-5-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1325566850-24432-5-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,104 +19,442 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 1/5] fsl_udc: update and fix
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 5/6] ARM: add ARM_EXCEPTION_VECTOR6 options
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-LSB0aGlzIHBhdGNoIHN5bmMgZnNsX3VkYy5jIHdpdGggbGludXgncyBkcml2ZXIsCi0gYWRkIGEg
-cG9sbGVyIG9uIHVzYl9nYWRnZXRfcG9sbCB0byBnZXQgc2VyaWFsIGdhZGdldCB3b3JraW5nLAot
-IHJldHVybiAtRUlPIGluIHVzYl9nYWRnZXRfcG9sbCB3aGVuIHVkYyBpcyBzdG9wcGVkIChkbyBk
-ZXRlY3QKY2FibGUgZGlzb25uZWN0aW9uKQotIHRlc3RlZCBvbiBpLk1YMjUgJiBpLk1YMzUKClNp
-Z25lZC1vZmYtYnk6IEVyaWMgQsOpbmFyZCA8ZXJpY0BldWtyZWEuY29tPgotLS0KIGRyaXZlcnMv
-dXNiL2dhZGdldC9mc2xfdWRjLmMgfCAgIDQ1ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKy0tLS0tLS0tCiAxIGZpbGVzIGNoYW5nZWQsIDM2IGluc2VydGlvbnMoKyksIDkgZGVsZXRp
-b25zKC0pCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy91c2IvZ2FkZ2V0L2ZzbF91ZGMuYyBiL2RyaXZl
-cnMvdXNiL2dhZGdldC9mc2xfdWRjLmMKaW5kZXggZmJjNmU0ZS4uNWI2NGVjMiAxMDA2NDQKLS0t
-IGEvZHJpdmVycy91c2IvZ2FkZ2V0L2ZzbF91ZGMuYworKysgYi9kcml2ZXJzL3VzYi9nYWRnZXQv
-ZnNsX3VkYy5jCkBAIC02LDYgKzYsNyBAQAogI2luY2x1ZGUgPHVzYi9nYWRnZXQuaD4KICNpbmNs
-dWRlIDx1c2IvZnNsX3VzYjIuaD4KICNpbmNsdWRlIDxpby5oPgorI2luY2x1ZGUgPHBvbGxlci5o
-PgogI2luY2x1ZGUgPGFzbS9ieXRlb3JkZXIuaD4KICNpbmNsdWRlIDxhc20vbW11Lmg+CiAKQEAg
-LTIzMyw2ICsyMzQsNyBAQCBzdHJ1Y3QgdXNiX2RyX2RldmljZSB7CiAjZGVmaW5lICBVU0JfTU9E
-RV9DVFJMX01PREVfREVWSUNFICAgICAgICAgICAgMHgwMDAwMDAwMgogI2RlZmluZSAgVVNCX01P
-REVfQ1RSTF9NT0RFX0hPU1QgICAgICAgICAgICAgIDB4MDAwMDAwMDMKICNkZWZpbmUgIFVTQl9N
-T0RFX0NUUkxfTU9ERV9SU1YgICAgICAgICAgICAgICAweDAwMDAwMDAxCisjZGVmaW5lICBVU0Jf
-TU9ERV9DVFJMX01PREVfTUFTSyAgICAgICAgICAgICAgMHgwMDAwMDAwMwogI2RlZmluZSAgVVNC
-X01PREVfU0VUVVBfTE9DS19PRkYgICAgICAgICAgICAgIDB4MDAwMDAwMDgKICNkZWZpbmUgIFVT
-Ql9NT0RFX1NUUkVBTV9ESVNBQkxFICAgICAgICAgICAgICAweDAwMDAwMDEwCiAvKiBFbmRwb2lu
-dCBGbHVzaCBSZWdpc3RlciAqLwpAQCAtNjAzLDcgKzYwNSw4IEBAIHN0YXRpYyB2b2lkIG51a2Uo
-c3RydWN0IGZzbF9lcCAqZXAsIGludCBzdGF0dXMpCiAKIHN0YXRpYyBpbnQgZHJfY29udHJvbGxl
-cl9zZXR1cChzdHJ1Y3QgZnNsX3VkYyAqdWRjKQogewotCXVuc2lnbmVkIGludCB0bXAsIHBvcnRj
-dHJsOworCXVuc2lnbmVkIGludCB0bXAsIHBvcnRjdHJsLCBlcF9udW07CisJdW5zaWduZWQgaW50
-IG1heF9ub19vZl9lcDsKIAl1aW50NjRfdCB0bzsKIAogCS8qIENvbmZpZyBQSFkgaW50ZXJmYWNl
-ICovCkBAIC02NDcsNiArNjUwLDcgQEAgc3RhdGljIGludCBkcl9jb250cm9sbGVyX3NldHVwKHN0
-cnVjdCBmc2xfdWRjICp1ZGMpCiAKIAkvKiBTZXQgdGhlIGNvbnRyb2xsZXIgYXMgZGV2aWNlIG1v
-ZGUgKi8KIAl0bXAgPSByZWFkbCgmZHJfcmVncy0+dXNibW9kZSk7CisJdG1wICY9IH5VU0JfTU9E
-RV9DVFJMX01PREVfTUFTSzsJLyogY2xlYXIgbW9kZSBiaXRzICovCiAJdG1wIHw9IFVTQl9NT0RF
-X0NUUkxfTU9ERV9ERVZJQ0U7CiAJLyogRGlzYWJsZSBTZXR1cCBMb2Nrb3V0ICovCiAJdG1wIHw9
-IFVTQl9NT0RFX1NFVFVQX0xPQ0tfT0ZGOwpAQCAtNjU5LDYgKzY2MywxNCBAQCBzdGF0aWMgaW50
-IGRyX2NvbnRyb2xsZXJfc2V0dXAoc3RydWN0IGZzbF91ZGMgKnVkYykKIAl0bXAgJj0gVVNCX0VQ
-X0xJU1RfQUREUkVTU19NQVNLOwogCXdyaXRlbCh0bXAsICZkcl9yZWdzLT5lbmRwb2ludGxpc3Rh
-ZGRyKTsKIAorCW1heF9ub19vZl9lcCA9ICgweDAwMDAwMDFGICYgcmVhZGwoJmRyX3JlZ3MtPmRj
-Y3BhcmFtcykpOworCWZvciAoZXBfbnVtID0gMTsgZXBfbnVtIDwgbWF4X25vX29mX2VwOyBlcF9u
-dW0rKykgeworCQl0bXAgPSByZWFkbCgmZHJfcmVncy0+ZW5kcHRjdHJsW2VwX251bV0pOworCQl0
-bXAgJj0gfihFUENUUkxfVFhfVFlQRSB8IEVQQ1RSTF9SWF9UWVBFKTsKKwkJdG1wIHw9IChFUENU
-UkxfRVBfVFlQRV9CVUxLIDw8IEVQQ1RSTF9UWF9FUF9UWVBFX1NISUZUKQorCQl8IChFUENUUkxf
-RVBfVFlQRV9CVUxLIDw8IEVQQ1RSTF9SWF9FUF9UWVBFX1NISUZUKTsKKwkJd3JpdGVsKHRtcCwg
-JmRyX3JlZ3MtPmVuZHB0Y3RybFtlcF9udW1dKTsKKwl9CiAJVkRCRygidmlyW3FoX2Jhc2VdIGlz
-ICVwIHBoeVtxaF9iYXNlXSBpcyAweCU4eCByZWcgaXMgMHglOHgiLAogCQl1ZGMtPmVwX3FoLCAo
-aW50KXRtcCwKIAkJcmVhZGwoJmRyX3JlZ3MtPmVuZHBvaW50bGlzdGFkZHIpKTsKQEAgLTcyNSwx
-MiArNzM3LDE0IEBAIHN0YXRpYyB2b2lkIGRyX2VwX3NldHVwKHVuc2lnbmVkIGNoYXIgZXBfbnVt
-LCB1bnNpZ25lZCBjaGFyIGRpciwKIAkJaWYgKGVwX251bSkKIAkJCXRtcF9lcGN0cmwgfD0gRVBD
-VFJMX1RYX0RBVEFfVE9HR0xFX1JTVDsKIAkJdG1wX2VwY3RybCB8PSBFUENUUkxfVFhfRU5BQkxF
-OworCQl0bXBfZXBjdHJsICY9IH5FUENUUkxfVFhfVFlQRTsKIAkJdG1wX2VwY3RybCB8PSAoKHVu
-c2lnbmVkIGludCkoZXBfdHlwZSkKIAkJCQk8PCBFUENUUkxfVFhfRVBfVFlQRV9TSElGVCk7CiAJ
-fSBlbHNlIHsKIAkJaWYgKGVwX251bSkKIAkJCXRtcF9lcGN0cmwgfD0gRVBDVFJMX1JYX0RBVEFf
-VE9HR0xFX1JTVDsKIAkJdG1wX2VwY3RybCB8PSBFUENUUkxfUlhfRU5BQkxFOworCQl0bXBfZXBj
-dHJsICY9IH5FUENUUkxfUlhfVFlQRTsKIAkJdG1wX2VwY3RybCB8PSAoKHVuc2lnbmVkIGludCko
-ZXBfdHlwZSkKIAkJCQk8PCBFUENUUkxfUlhfRVBfVFlQRV9TSElGVCk7CiAJfQpAQCAtODg3LDcg
-KzkwMSw3IEBAIHN0YXRpYyBpbnQgZnNsX2VwX2VuYWJsZShzdHJ1Y3QgdXNiX2VwICpfZXAsCiAJ
-Y2FzZSBVU0JfRU5EUE9JTlRfWEZFUl9JU09DOgogCQkvKiBDYWxjdWxhdGUgdHJhbnNhY3Rpb25z
-IG5lZWRlZCBmb3IgaGlnaCBiYW5kd2lkdGggaXNvICovCiAJCW11bHQgPSAodW5zaWduZWQgY2hh
-cikoMSArICgobWF4ID4+IDExKSAmIDB4MDMpKTsKLQkJbWF4ID0gbWF4ICYgMHg4ZmY7CS8qIGJp
-dCAwfjEwICovCisJCW1heCA9IG1heCAmIDB4N2ZmOwkvKiBiaXQgMH4xMCAqLwogCQkvKiAzIHRy
-YW5zYWN0aW9ucyBhdCBtb3N0ICovCiAJCWlmIChtdWx0ID4gMykKIAkJCWdvdG8gZW5fZG9uZTsK
-QEAgLTkyNCw3ICs5MzgsNiBAQCBzdGF0aWMgaW50IGZzbF9lcF9lbmFibGUoc3RydWN0IHVzYl9l
-cCAqX2VwLAogCQkJKGRlc2MtPmJFbmRwb2ludEFkZHJlc3MgJiBVU0JfRElSX0lOKQogCQkJCT8g
-ImluIiA6ICJvdXQiLCBtYXgpOwogZW5fZG9uZToKLQlwcmludGYoIiVzOiAlZFxuIiwgX19mdW5j
-X18sIHJldHZhbCk7CiAJcmV0dXJuIHJldHZhbDsKIH0KIApAQCAtOTQ4LDEwICs5NjEsMTMgQEAg
-c3RhdGljIGludCBmc2xfZXBfZGlzYWJsZShzdHJ1Y3QgdXNiX2VwICpfZXApCiAJLyogZGlzYWJs
-ZSBlcCBvbiBjb250cm9sbGVyICovCiAJZXBfbnVtID0gZXBfaW5kZXgoZXApOwogCWVwY3RybCA9
-IHJlYWRsKCZkcl9yZWdzLT5lbmRwdGN0cmxbZXBfbnVtXSk7Ci0JaWYgKGVwX2lzX2luKGVwKSkK
-LQkJZXBjdHJsICY9IH5FUENUUkxfVFhfRU5BQkxFOwotCWVsc2UKLQkJZXBjdHJsICY9IH5FUENU
-UkxfUlhfRU5BQkxFOworCWlmIChlcF9pc19pbihlcCkpIHsKKwkJZXBjdHJsICY9IH4oRVBDVFJM
-X1RYX0VOQUJMRSB8IEVQQ1RSTF9UWF9UWVBFKTsKKwkJZXBjdHJsIHw9IEVQQ1RSTF9FUF9UWVBF
-X0JVTEsgPDwgRVBDVFJMX1RYX0VQX1RZUEVfU0hJRlQ7CisJfSBlbHNlIHsKKwkJZXBjdHJsICY9
-IH4oRVBDVFJMX1JYX0VOQUJMRSB8IEVQQ1RSTF9UWF9UWVBFKTsKKwkJZXBjdHJsIHw9IEVQQ1RS
-TF9FUF9UWVBFX0JVTEsgPDwgRVBDVFJMX1JYX0VQX1RZUEVfU0hJRlQ7CisJfQogCXdyaXRlbChl
-cGN0cmwsICZkcl9yZWdzLT5lbmRwdGN0cmxbZXBfbnVtXSk7CiAKIAl1ZGMgPSAoc3RydWN0IGZz
-bF91ZGMgKillcC0+dWRjOwpAQCAtMTkyMSw3ICsxOTM3LDcgQEAgaW50IHVzYl9nYWRnZXRfcG9s
-bCh2b2lkKQogCiAJLyogRGlzYWJsZSBJU1IgZm9yIE9URyBob3N0IG1vZGUgKi8KIAlpZiAodWRj
-LT5zdG9wcGVkKQotCQlyZXR1cm4gMDsKKwkJcmV0dXJuIC1FSU87CiAKIAlpcnFfc3JjID0gcmVh
-ZGwoJmRyX3JlZ3MtPnVzYnN0cykgJiByZWFkbCgmZHJfcmVncy0+dXNiaW50cik7CiAJLyogQ2xl
-YXIgbm90aWZpY2F0aW9uIGJpdHMgKi8KQEAgLTE5OTksNyArMjAxNSw3IEBAIGludCB1c2JfZ2Fk
-Z2V0X3JlZ2lzdGVyX2RyaXZlcihzdHJ1Y3QgdXNiX2dhZGdldF9kcml2ZXIgKmRyaXZlcikKIAkv
-KiBiaW5kIHVkYyBkcml2ZXIgdG8gZ2FkZ2V0IGRyaXZlciAqLwogCXJldHZhbCA9IGRyaXZlci0+
-YmluZCgmdWRjX2NvbnRyb2xsZXItPmdhZGdldCk7CiAJaWYgKHJldHZhbCkgewotCQlWREJHKCJi
-aW5kIHRvICVzIC0tPiAlZCIsIGRyaXZlci0+ZHJpdmVyLm5hbWUsIHJldHZhbCk7CisJCVZEQkco
-ImJpbmQgdG8gZ2FkZ2V0IC0tPiAlZCIsIHJldHZhbCk7CiAJCXVkY19jb250cm9sbGVyLT5kcml2
-ZXIgPSBOVUxMOwogCQlnb3RvIG91dDsKIAl9CkBAIC0yMjMxLDYgKzIyNDcsMTUgQEAgc3RhdGlj
-IGludCBfX2luaXQgc3RydWN0X2VwX3NldHVwKHN0cnVjdCBmc2xfdWRjICp1ZGMsIHVuc2lnbmVk
-IGNoYXIgaW5kZXgsCiAJcmV0dXJuIDA7CiB9CiAKK3N0YXRpYyB2b2lkIGZzbF91ZGNfcG9sbGVy
-KHN0cnVjdCBwb2xsZXJfc3RydWN0ICpwb2xsZXIpCit7CisJdXNiX2dhZGdldF9wb2xsKCk7Cit9
-CisKK3N0YXRpYyBzdHJ1Y3QgcG9sbGVyX3N0cnVjdCBwb2xsZXIgPSB7CisJLmZ1bmMJCT0gZnNs
-X3VkY19wb2xsZXIKK307CisKIHN0YXRpYyBpbnQgZnNsX3VkY19wcm9iZShzdHJ1Y3QgZGV2aWNl
-X2QgKmRldikKIHsKIAlpbnQgcmV0LCBpOwpAQCAtMjI5Myw2ICsyMzE4LDggQEAgc3RhdGljIGlu
-dCBmc2xfdWRjX3Byb2JlKHN0cnVjdCBkZXZpY2VfZCAqZGV2KQogCQlzdHJ1Y3RfZXBfc2V0dXAo
-dWRjX2NvbnRyb2xsZXIsIGkgKiAyICsgMSwgbmFtZSwgMSk7CiAJfQogCisJcG9sbGVyX3JlZ2lz
-dGVyKCZwb2xsZXIpOworCiAJcmV0dXJuIDA7CiBlcnJfb3V0OgogCXJldHVybiByZXQ7Ci0tIAox
-LjcuNy41CgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
-YmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9s
-aXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Tue, Jan 03, 2012 at 06:00:49AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> to pass the bare_init or barebox size via the vector 6
+> 
+> ARM_EXCEPTION_VECTOR6_BARE_INIT_SIZE    bare_init size
+> ARM_EXCEPTION_VECTOR6_SIZE              barebox size
+> 
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  arch/arm/Kconfig     |   11 +++++++++++
+>  arch/arm/cpu/start.c |   14 ++++++++++++--
+>  2 files changed, 23 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+> index b600179..49445fb 100644
+> --- a/arch/arm/Kconfig
+> +++ b/arch/arm/Kconfig
+> @@ -26,6 +26,17 @@ config ARM_LINUX
+>  	default y
+>  	depends on CMD_BOOTZ || CMD_BOOTU || CMD_BOOTM
+>  
+> +config ARM_EXCEPTION_VECTOR6
+> +	bool
+> +
+> +config ARM_EXCEPTION_VECTOR6_SIZE
+> +	bool
+> +	depends on ARM_EXCEPTION_VECTOR6
+> +
+> +config  ARM_EXCEPTION_VECTOR6_BARE_INIT_SIZE
+> +	bool
+> +	depends on ARM_EXCEPTION_VECTOR6
+> +
+>  menu "System Type                   "
+>  
+>  choice
+> diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
+> index 5e09300..09e80d7 100644
+> --- a/arch/arm/cpu/start.c
+> +++ b/arch/arm/cpu/start.c
+> @@ -27,6 +27,16 @@
+>  #include <asm-generic/memory_layout.h>
+>  #include <asm/sections.h>
+>  
+> +#ifdef CONFIG_ARM_EXCEPTION_VECTOR6
+> +#ifdef CONFIG_ARM_EXCEPTION_VECTOR6_BARE_INIT_SIZE
+> +#define exception_vector_6	".word _barebox_bare_init_size\n"
+> +#else
+> +#define exception_vector_6	".word _barebox_image_size\n"
+> +#endif
+> +#else
+> +#define exception_vector_6	"1: bne 1b\n"
+> +#endif
+
+Sorry, I don't like this at all. This solves the AT91 case, but requires
+even more ifdefs to support some other architecture which might need
+some magic as exception vector 6.
+Additionally we don't need the exception vectors at the start of the
+binary. AT91 (and others) might need something that *looks* like arm
+exception vectors, but this don't need to be our original exception
+vectors.
+My suggestion is that we extend my original 'move exception vectors away
+from start of binary' patch in a way that the header can be fully
+customized on board or architecture level.
+
+See the following patch for a first version.
+
+Sascha
+
+8<-------------------------------------------------
+
+ARM: move exception vectors away from start of binary
+
+Traditionally U-Boot and barebox have the exception vectors at
+the start of the binary. There is no real reason in doing so,
+because in the majority of cases this data will not be at 0x0
+where it could be used as vectors directly anyway.
+This patch puts the vectors into a separate linker section and
+defines an head function which is placed at the start of the
+image instead. Putting this in a separate function also has
+the advantage that it can be placed at the start of images
+which require an additional header like several Freescale i.MX
+images. As the head function contains the barebox arm magic
+those images can now also be detected as barebox images.
+The header of the image can be customized using
+CONFIG_ARM_CUSTOM_HEAD. If this is set the user must specify
+a custom barebox_arm_head function in the text_entry section.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/Kconfig                                   |    6 ++++
+ arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c  |    3 +-
+ arch/arm/boards/eukrea_cpuimx35/flash_header.c     |    3 +-
+ arch/arm/boards/eukrea_cpuimx51/flash_header.c     |    3 +-
+ arch/arm/boards/freescale-mx25-3-stack/3stack.c    |    3 +-
+ .../boards/freescale-mx35-3-stack/flash_header.c   |    3 +-
+ arch/arm/boards/freescale-mx51-pdk/flash_header.c  |    3 +-
+ arch/arm/boards/freescale-mx53-loco/flash_header.c |    3 +-
+ arch/arm/boards/freescale-mx53-smd/flash_header.c  |    3 +-
+ arch/arm/cpu/mmu.c                                 |    4 +-
+ arch/arm/cpu/start.c                               |   20 ++++++++------
+ arch/arm/include/asm/barebox-arm-head.h            |   28 ++++++++++++++++++++
+ arch/arm/include/asm/barebox-arm.h                 |    2 +
+ arch/arm/lib/barebox.lds.S                         |    5 +++-
+ 14 files changed, 69 insertions(+), 20 deletions(-)
+ create mode 100644 arch/arm/include/asm/barebox-arm-head.h
+
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index b600179..b0b8f9c 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -26,6 +26,12 @@ config ARM_LINUX
+ 	default y
+ 	depends on CMD_BOOTZ || CMD_BOOTU || CMD_BOOTM
+ 
++config ARM_CUSTOM_HEAD
++	bool
++	help
++	  specify a board or architecture specific custom head
++	  function
++
+ menu "System Type                   "
+ 
+ choice
+diff --git a/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c b/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
+index 162c117..c7b0d2d 100644
+--- a/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
++++ b/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
+@@ -46,13 +46,14 @@
+ #include <usb/fsl_usb2.h>
+ #include <mach/usb.h>
+ #include <mach/devices-imx25.h>
++#include <asm/barebox-arm-head.h>
+ 
+ extern unsigned long _stext;
+ extern void exception_vectors(void);
+ 
+ void __naked __flash_header_start go(void)
+ {
+-	__asm__ __volatile__("b exception_vectors\n");
++	barebox_arm_default_head();
+ }
+ 
+ struct imx_dcd_entry __dcd_entry_section dcd_entry[] = {
+diff --git a/arch/arm/boards/eukrea_cpuimx35/flash_header.c b/arch/arm/boards/eukrea_cpuimx35/flash_header.c
+index 93c8348..4ded270 100644
+--- a/arch/arm/boards/eukrea_cpuimx35/flash_header.c
++++ b/arch/arm/boards/eukrea_cpuimx35/flash_header.c
+@@ -1,12 +1,13 @@
+ #include <common.h>
+ #include <mach/imx-flash-header.h>
+ #include <mach/imx-regs.h>
++#include <asm/barebox-arm-head.h>
+ 
+ extern void exception_vectors(void);
+ 
+ void __naked __flash_header_start go(void)
+ {
+-	__asm__ __volatile__("b exception_vectors\n");
++	barebox_arm_default_head();
+ }
+ 
+ struct imx_dcd_entry __dcd_entry_section dcd_entry[] = {
+diff --git a/arch/arm/boards/eukrea_cpuimx51/flash_header.c b/arch/arm/boards/eukrea_cpuimx51/flash_header.c
+index f953b09..4f29dd9 100644
+--- a/arch/arm/boards/eukrea_cpuimx51/flash_header.c
++++ b/arch/arm/boards/eukrea_cpuimx51/flash_header.c
+@@ -1,11 +1,12 @@
+ #include <common.h>
+ #include <mach/imx-flash-header.h>
++#include <asm/barebox-arm-head.h>
+ 
+ extern unsigned long _stext;
+ 
+ void __naked __flash_header_start go(void)
+ {
+-	__asm__ __volatile__("b exception_vectors\n");
++	barebox_arm_default_head();
+ }
+ 
+ struct imx_dcd_entry __dcd_entry_section dcd_entry[] = {
+diff --git a/arch/arm/boards/freescale-mx25-3-stack/3stack.c b/arch/arm/boards/freescale-mx25-3-stack/3stack.c
+index 5aa54e4..78b872c 100644
+--- a/arch/arm/boards/freescale-mx25-3-stack/3stack.c
++++ b/arch/arm/boards/freescale-mx25-3-stack/3stack.c
+@@ -42,13 +42,14 @@
+ #include <i2c/i2c.h>
+ #include <mfd/mc34704.h>
+ #include <mach/devices-imx25.h>
++#include <asm/barebox-arm-head.h>
+ 
+ extern unsigned long _stext;
+ extern void exception_vectors(void);
+ 
+ void __naked __flash_header_start go(void)
+ {
+-	__asm__ __volatile__("b exception_vectors\n");
++	barebox_arm_default_head();
+ }
+ 
+ struct imx_dcd_entry __dcd_entry_section dcd_entry[] = {
+diff --git a/arch/arm/boards/freescale-mx35-3-stack/flash_header.c b/arch/arm/boards/freescale-mx35-3-stack/flash_header.c
+index 4bee797..63c1502 100644
+--- a/arch/arm/boards/freescale-mx35-3-stack/flash_header.c
++++ b/arch/arm/boards/freescale-mx35-3-stack/flash_header.c
+@@ -1,12 +1,13 @@
+ #include <common.h>
+ #include <mach/imx-flash-header.h>
+ #include <mach/imx-regs.h>
++#include <asm/barebox-arm-head.h>
+ 
+ extern void exception_vectors(void);
+ 
+ void __naked __flash_header_start go(void)
+ {
+-	__asm__ __volatile__("b exception_vectors\n");
++	barebox_arm_default_head();
+ }
+ 
+ struct imx_dcd_entry __dcd_entry_section dcd_entry[] = {
+diff --git a/arch/arm/boards/freescale-mx51-pdk/flash_header.c b/arch/arm/boards/freescale-mx51-pdk/flash_header.c
+index 5f94506..d513c8c 100644
+--- a/arch/arm/boards/freescale-mx51-pdk/flash_header.c
++++ b/arch/arm/boards/freescale-mx51-pdk/flash_header.c
+@@ -1,11 +1,12 @@
+ #include <common.h>
+ #include <mach/imx-flash-header.h>
++#include <asm/barebox-arm-head.h>
+ 
+ extern unsigned long _stext;
+ 
+ void __naked __flash_header_start go(void)
+ {
+-	__asm__ __volatile__("b exception_vectors\n");
++	barebox_arm_default_head();
+ }
+ 
+ struct imx_dcd_entry __dcd_entry_section dcd_entry[] = {
+diff --git a/arch/arm/boards/freescale-mx53-loco/flash_header.c b/arch/arm/boards/freescale-mx53-loco/flash_header.c
+index 490e223..105f54a 100644
+--- a/arch/arm/boards/freescale-mx53-loco/flash_header.c
++++ b/arch/arm/boards/freescale-mx53-loco/flash_header.c
+@@ -16,10 +16,11 @@
+ #include <common.h>
+ #include <asm/byteorder.h>
+ #include <mach/imx-flash-header.h>
++#include <asm/barebox-arm-head.h>
+ 
+ void __naked __flash_header_start go(void)
+ {
+-	__asm__ __volatile__("b exception_vectors\n");
++	barebox_arm_default_head();
+ }
+ 
+ struct imx_dcd_v2_entry __dcd_entry_section dcd_entry[] = {
+diff --git a/arch/arm/boards/freescale-mx53-smd/flash_header.c b/arch/arm/boards/freescale-mx53-smd/flash_header.c
+index 490e223..105f54a 100644
+--- a/arch/arm/boards/freescale-mx53-smd/flash_header.c
++++ b/arch/arm/boards/freescale-mx53-smd/flash_header.c
+@@ -16,10 +16,11 @@
+ #include <common.h>
+ #include <asm/byteorder.h>
+ #include <mach/imx-flash-header.h>
++#include <asm/barebox-arm-head.h>
+ 
+ void __naked __flash_header_start go(void)
+ {
+-	__asm__ __volatile__("b exception_vectors\n");
++	barebox_arm_default_head();
+ }
+ 
+ struct imx_dcd_v2_entry __dcd_entry_section dcd_entry[] = {
+diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
+index c6c91df..e8ff676 100644
+--- a/arch/arm/cpu/mmu.c
++++ b/arch/arm/cpu/mmu.c
+@@ -4,6 +4,7 @@
+ #include <errno.h>
+ #include <sizes.h>
+ #include <asm/memory.h>
++#include <asm/barebox-arm.h>
+ #include <asm/system.h>
+ #include <memory.h>
+ 
+@@ -182,7 +183,6 @@ static void vectors_init(void)
+ {
+ 	u32 *exc, *zero = NULL;
+ 	void *vectors;
+-	extern unsigned long exception_vectors;
+ 	u32 cr;
+ 
+ 	cr = get_cr();
+@@ -210,7 +210,7 @@ static void vectors_init(void)
+ 
+ 	vectors = xmemalign(PAGE_SIZE, PAGE_SIZE);
+ 	memset(vectors, 0, PAGE_SIZE);
+-	memcpy(vectors, &exception_vectors, ARM_VECTORS_SIZE);
++	memcpy(vectors, __exceptions_start, __exceptions_stop - __exceptions_start);
+ 
+ 	if (cr & CR_V)
+ 		exc[256 - 16] = (u32)vectors | PTE_TYPE_SMALL | PTE_FLAGS_CACHED;
+diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
+index 5e09300..e78d749 100644
+--- a/arch/arm/cpu/start.c
++++ b/arch/arm/cpu/start.c
+@@ -23,14 +23,22 @@
+ #include <common.h>
+ #include <init.h>
+ #include <asm/barebox-arm.h>
++#include <asm/barebox-arm-head.h>
+ #include <asm/system.h>
+ #include <asm-generic/memory_layout.h>
+ #include <asm/sections.h>
+ 
+-void __naked __section(.text_entry) exception_vectors(void)
++#ifndef CONFIG_ARM_CUSTOM_HEAD
++void __naked __section(.text_entry) barebox_arm_head(void)
++{
++	barebox_arm_default_head();
++}
++#endif
++
++void __naked __section(.text_exceptions) exception_vectors(void)
+ {
+ 	__asm__ __volatile__ (
+-		"b reset\n"				/* reset */
++		"b start_arm_barebox\n"			/* reset */
+ #ifdef CONFIG_ARM_EXCEPTIONS
+ 		"ldr pc, =undefined_instruction\n"	/* undefined instruction */
+ 		"ldr pc, =software_interrupt\n"		/* software interrupt (SWI) */
+@@ -48,12 +56,6 @@ void __naked __section(.text_entry) exception_vectors(void)
+ 		"1: bne 1b\n"				/* irq (interrupt) */
+ 		"1: bne 1b\n"				/* fiq (fast interrupt) */
+ #endif
+-		".word 0x65726162\n"			/* 'bare' */
+-		".word 0x00786f62\n"			/* 'box' */
+-		".word _text\n"				/* text base. If copied there,
+-							 * barebox can skip relocation
+-							 */
+-		".word _barebox_image_size\n"		/* image size to copy */
+ 	);
+ }
+ 
+@@ -61,7 +63,7 @@ void __naked __section(.text_entry) exception_vectors(void)
+  * The actual reset vector. This code is position independent and usually
+  * does not run at the address it's linked at.
+  */
+-void __naked __bare_init reset(void)
++void __naked __bare_init start_arm_barebox(void)
+ {
+ 	uint32_t r;
+ 
+diff --git a/arch/arm/include/asm/barebox-arm-head.h b/arch/arm/include/asm/barebox-arm-head.h
+new file mode 100644
+index 0000000..72ad8ec
+--- /dev/null
++++ b/arch/arm/include/asm/barebox-arm-head.h
+@@ -0,0 +1,28 @@
++#ifndef __BAREBOX_ARM_HEAD_H
++#define __BAREBOX_ARM_HEAD_H
++
++#ifndef ARM_EXCEPTION_VECTOR_6
++#define ARM_EXCEPTION_VECTOR_6	".word 0x0\n"
++#endif
++
++static inline void barebox_arm_default_head(void)
++{
++	__asm__ __volatile__ (
++		"b start_arm_barebox\n"
++		".word 0x0\n"
++		".word 0x0\n"
++		".word 0x0\n"
++		".word 0x0\n"
++		ARM_EXCEPTION_VECTOR_6
++		".word 0x0\n"
++		".word 0x0\n"
++		".word 0x65726162\n"			/* 'bare' */
++		".word 0x00786f62\n"			/* 'box' */
++		".word _text\n"				/* text base. If copied there,
++							 * barebox can skip relocation
++							 */
++		".word _barebox_image_size\n"		/* image size to copy */
++	);
++}
++
++#endif /* __BAREBOX_ARM_HEAD_H */
+diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
+index 7bb1af1..3339782 100644
+--- a/arch/arm/include/asm/barebox-arm.h
++++ b/arch/arm/include/asm/barebox-arm.h
+@@ -36,6 +36,8 @@ int	cleanup_before_linux(void);
+ int	board_init(void);
+ int	dram_init (void);
+ 
++extern char __exceptions_start[], __exceptions_stop[];
++
+ void board_init_lowlevel(void);
+ void board_init_lowlevel_return(void);
+ void arch_init_lowlevel(void);
+diff --git a/arch/arm/lib/barebox.lds.S b/arch/arm/lib/barebox.lds.S
+index f05f345..f0d675b 100644
+--- a/arch/arm/lib/barebox.lds.S
++++ b/arch/arm/lib/barebox.lds.S
+@@ -26,7 +26,7 @@
+ 
+ OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
+ OUTPUT_ARCH(arm)
+-ENTRY(exception_vectors)
++ENTRY(barebox_arm_head)
+ SECTIONS
+ {
+ 	. = TEXT_BASE;
+@@ -45,6 +45,9 @@ SECTIONS
+ 	  LONG(0x53555243) /* 'CRUS' */
+ #endif
+ 		*(.text_bare_init*)
++		__exceptions_start = .;
++		KEEP(*(.text_exceptions*))
++		__exceptions_stop = .;
+ 		*(.text*)
+ 	}
+ 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
