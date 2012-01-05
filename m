@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RijYS-0008BT-8S
- for barebox@lists.infradead.org; Thu, 05 Jan 2012 09:24:14 +0000
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RijYR-0000QB-4n
+ for barebox@lists.infradead.org; Thu, 05 Jan 2012 09:24:12 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1RijYG-0004eB-HW
+ for barebox@lists.infradead.org; Thu, 05 Jan 2012 10:24:00 +0100
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.77)
+ (envelope-from <sha@pengutronix.de>) id 1RijYG-0005AP-Gc
+ for barebox@lists.infradead.org; Thu, 05 Jan 2012 10:24:00 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  5 Jan 2012 10:23:59 +0100
-Message-Id: <1325755439-19534-6-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1325755439-19534-1-git-send-email-s.hauer@pengutronix.de>
-References: <1325755439-19534-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu,  5 Jan 2012 10:23:54 +0100
+Message-Id: <1325755439-19534-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,30 +26,18 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] fat fs: Fix compile warning
+Subject: compile patches
 To: barebox@lists.infradead.org
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- fs/fat/ff.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+Sascha Hauer (3):
+      ARM AT91: Add missing on_flash_bbt in atmel_nand_data
+      ARM omap beagle xload: update defconfig
+      fat fs: Fix compile warning
 
-diff --git a/fs/fat/ff.c b/fs/fat/ff.c
-index 3ada867..0087e21 100644
---- a/fs/fat/ff.c
-+++ b/fs/fat/ff.c
-@@ -874,7 +874,7 @@ void fit_lfn (
- /*
-  * Create numbered name
-  */
--#ifdef CONFIG_FS_FAT_LFN
-+#if defined(CONFIG_FS_FAT_LFN) && defined(CONFIG_FS_FAT_WRITE)
- static void gen_numname (
- 	BYTE *dst,		/* Pointer to generated SFN */
- 	const BYTE *src,	/* Pointer to source SFN to be modified */
--- 
-1.7.7.3
-
+ arch/arm/configs/omap3530_beagle_xload_defconfig |    4 ++--
+ arch/arm/mach-at91/include/mach/board.h          |    1 +
+ fs/fat/ff.c                                      |    2 +-
+ 3 files changed, 4 insertions(+), 3 deletions(-)
 
 _______________________________________________
 barebox mailing list
