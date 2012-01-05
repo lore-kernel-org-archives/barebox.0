@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 15.mo4.mail-out.ovh.net ([91.121.62.11]
+Received: from 20.mo4.mail-out.ovh.net ([46.105.33.73]
  helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Rinau-0004ZG-Vh
+ id 1Rinav-0004ZH-3f
  for barebox@lists.infradead.org; Thu, 05 Jan 2012 13:43:02 +0000
 Received: from mail643.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 5E5FF1058582
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 9421D1058585
  for <barebox@lists.infradead.org>; Thu,  5 Jan 2012 14:44:06 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu,  5 Jan 2012 14:36:37 +0100
-Message-Id: <1325770598-10931-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Thu,  5 Jan 2012 14:36:38 +0100
+Message-Id: <1325770598-10931-2-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1325770598-10931-1-git-send-email-plagnioj@jcrosoft.com>
+References: <1325770598-10931-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,222 +25,125 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] at91sam9260/9g20ek: add dfu and usb serial support
+Subject: [PATCH 2/2] at91sam9260/9g20ek: add led support
 To: barebox@lists.infradead.org
 
-if bp3 is pressed 5s during boot enable dfu otherwise usbserial
+use ds3 for heartbeat and ds5 for dfu
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/boards/at91sam9260ek/env/bin/init_board |   72 +++++++++++++++-------
- arch/arm/boards/at91sam9260ek/init.c             |    2 +
- arch/arm/configs/at91sam9260ek_defconfig         |   15 ++++-
- arch/arm/configs/at91sam9g20ek_defconfig         |   15 ++++-
- 4 files changed, 79 insertions(+), 25 deletions(-)
- rewrite arch/arm/boards/at91sam9260ek/env/bin/init_board (67%)
+ arch/arm/boards/at91sam9260ek/env/bin/init_board |    1 +
+ arch/arm/boards/at91sam9260ek/init.c             |   32 ++++++++++++++++++++++
+ arch/arm/configs/at91sam9260ek_defconfig         |    5 +++
+ arch/arm/configs/at91sam9g20ek_defconfig         |    5 +++
+ 4 files changed, 43 insertions(+), 0 deletions(-)
 
 diff --git a/arch/arm/boards/at91sam9260ek/env/bin/init_board b/arch/arm/boards/at91sam9260ek/env/bin/init_board
-dissimilarity index 67%
-index 0da2781..0a6baf7 100644
+index 0a6baf7..977430d 100644
 --- a/arch/arm/boards/at91sam9260ek/env/bin/init_board
 +++ b/arch/arm/boards/at91sam9260ek/env/bin/init_board
-@@ -1,23 +1,49 @@
--#!/bin/sh
--
--#PIOA_31
--gpio_get_value 63
--if [ $? != 0 ]
--then
--	exit
--fi
--
--echo "BP4 pressed detected wait 5s"
--timeout -s -a 5
--gpio_get_value 63
--if [ $? != 0 ]
--then
--	echo "BP4 released, normal boot"
--	exit
--fi
--
--echo ""
--echo "Start DFU Mode"
--echo ""
--
--dfu /dev/self0(barebox)sr,/dev/nand0.kernel.bb(kernel)r,/dev/nand0.root.bb(root)r -P 0x1234 -V 0x4321
-+#!/bin/sh
-+
-+button_name="dfu_bp"
-+button_wait=5
-+
-+product_id=0x1234
-+vendor_id=0x4321
-+
-+dfu_config="/dev/nand0.barebox.bb(barebox)sr,/dev/nand0.kernel.bb(kernel)r,/dev/nand0.rootfs.bb(rootfs)r"
-+
-+if [ $at91_udc0.vbus != 1 ]
-+then
-+	echo "No USB Device cable plugged, normal boot"
-+	exit
-+fi
-+
-+gpio_get_value ${dfu_button}
-+if [ $? != 0 ]
-+then
-+	autoboot_timeout=16
-+	echo "enable tty over USB Device, increase the boot delay to ${autoboot_timeout}s"
-+	usbserial
-+	exit
-+fi
-+
-+echo "${button_name} pressed detected wait ${button_wait}s"
-+timeout -s -a ${button_wait}
-+
-+if [ $at91_udc0.vbus != 1 ]
-+then
-+	echo "No USB Device cable plugged, normal boot"
-+	exit
-+fi
-+
-+gpio_get_value ${dfu_button}
-+if [ $? != 0 ]
-+then
-+	echo "${button_name} released, normal boot"
-+	autoboot_timeout=16
-+	echo "enable tty over USB Device, increase the boot delay to ${autoboot_timeout}s"
-+	usbserial
-+	exit
-+fi
-+
-+echo ""
-+echo "Start DFU Mode"
-+echo ""
-+
-+dfu ${dfu_config} -P ${product_id} -V ${vendor_id}
+@@ -46,4 +46,5 @@ echo ""
+ echo "Start DFU Mode"
+ echo ""
+ 
++led ds5 1
+ dfu ${dfu_config} -P ${product_id} -V ${vendor_id}
 diff --git a/arch/arm/boards/at91sam9260ek/init.c b/arch/arm/boards/at91sam9260ek/init.c
-index b10d0dc..a11998a 100644
+index a11998a..4bff35e 100644
 --- a/arch/arm/boards/at91sam9260ek/init.c
 +++ b/arch/arm/boards/at91sam9260ek/init.c
-@@ -212,8 +212,10 @@ static void __init ek_add_device_buttons(void)
- {
- 	at91_set_gpio_input(AT91_PIN_PA30, 1);	/* btn3 */
- 	at91_set_deglitch(AT91_PIN_PA30, 1);
-+	export_env_ull("dfu_button", AT91_PIN_PA30);
- 	at91_set_gpio_input(AT91_PIN_PA31, 1);	/* btn4 */
- 	at91_set_deglitch(AT91_PIN_PA31, 1);
-+	export_env_ull("btn4", AT91_PIN_PA31);
- }
+@@ -200,6 +200,37 @@ static struct at91_udc_data __initdata ek_udc_data = {
+ 	.pullup_pin	= -EINVAL,		/* pull-up driven by UDC */
+ };
  
- static int at91sam9260ek_devices_init(void)
++struct gpio_led leds[] = {
++	{
++		.gpio	= AT91_PIN_PA6,
++		.active_low	= 1,
++		.led	= {
++			.name = "ds5",
++		},
++	}, {
++		.gpio	= AT91_PIN_PA9,
++		.led	= {
++			.name = "ds3",
++		},
++	},
++};
++
++static void __init ek_add_led(void)
++{
++	int i;
++
++#ifdef CONFIG_AT91_HAVE_2MMC
++	leds[0].gpio = AT91_PIN_PB8;
++	leds[1].gpio = AT91_PIN_PB9;
++#endif
++
++	for (i = 0; i < ARRAY_SIZE(leds); i++) {
++		at91_set_gpio_output(leds[i].gpio, leds[i].active_low);
++		led_gpio_register(&leds[i]);
++	}
++	led_set_trigger(LED_TRIGGER_HEARTBEAT, &leds[1].led);
++}
++
+ static int at91sam9260ek_mem_init(void)
+ {
+ 	at91_add_device_sdram(64 * 1024 * 1024);
+@@ -227,6 +258,7 @@ static int at91sam9260ek_devices_init(void)
+ 	at91_add_device_udc(&ek_udc_data);
+ 	ek_usb_add_device_mci();
+ 	ek_add_device_buttons();
++	ek_add_led();
+ 
+ 	armlinux_set_bootparams((void *)(AT91_CHIPSELECT_1 + 0x100));
+ 	ek_set_board_type();
 diff --git a/arch/arm/configs/at91sam9260ek_defconfig b/arch/arm/configs/at91sam9260ek_defconfig
-index 3367cee..f6d0f25 100644
+index f6d0f25..613dd9f 100644
 --- a/arch/arm/configs/at91sam9260ek_defconfig
 +++ b/arch/arm/configs/at91sam9260ek_defconfig
-@@ -1,6 +1,8 @@
- CONFIG_ARCH_AT91SAM9260=y
- CONFIG_AEABI=y
-+# CONFIG_CMD_ARM_CPUINFO is not set
- CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_EXPERIMENTAL=y
- CONFIG_PROMPT="9260-EK:"
- CONFIG_LONGHELP=y
- CONFIG_GLOB=y
-@@ -8,6 +10,8 @@ CONFIG_PROMPT_HUSH_PS2="y"
- CONFIG_HUSH_FANCY_PROMPT=y
- CONFIG_CMDLINE_EDITING=y
- CONFIG_AUTO_COMPLETE=y
-+# CONFIG_CONSOLE_ACTIVATE_FIRST is not set
-+CONFIG_CONSOLE_ACTIVATE_ALL=y
- CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
- CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/at91sam9260ek/env"
- CONFIG_CMD_EDIT=y
-@@ -24,6 +28,11 @@ CONFIG_CMD_MTEST=y
- CONFIG_CMD_MTEST_ALTERNATIVE=y
- CONFIG_CMD_FLASH=y
- CONFIG_CMD_BOOTM_SHOW_TYPE=y
-+CONFIG_CMD_BOOTM_INITRD=y
-+CONFIG_CMD_BOOTM_OFTREE=y
-+CONFIG_CMD_BOOTM_OFTREE_UIMAGE=y
-+CONFIG_CMD_UIMAGE=y
-+# CONFIG_CMD_BOOTU is not set
- CONFIG_CMD_RESET=y
- CONFIG_CMD_GO=y
- CONFIG_CMD_OFTREE=y
-@@ -40,9 +49,14 @@ CONFIG_DRIVER_NET_MACB=y
- # CONFIG_SPI is not set
- CONFIG_MTD=y
- CONFIG_NAND=y
-+# CONFIG_NAND_ECC_HW is not set
-+# CONFIG_NAND_ECC_HW_SYNDROME is not set
-+# CONFIG_NAND_ECC_HW_NONE is not set
- CONFIG_NAND_ATMEL=y
- CONFIG_UBI=y
- CONFIG_USB_GADGET=y
-+CONFIG_USB_GADGET_DFU=y
-+CONFIG_USB_GADGET_SERIAL=y
+@@ -39,6 +39,8 @@ CONFIG_CMD_OFTREE=y
+ CONFIG_CMD_TIMEOUT=y
+ CONFIG_CMD_PARTITION=y
+ CONFIG_CMD_GPIO=y
++CONFIG_CMD_LED=y
++CONFIG_CMD_LED_TRIGGER=y
+ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+@@ -60,6 +62,9 @@ CONFIG_USB_GADGET_SERIAL=y
  CONFIG_MCI=y
  CONFIG_MCI_STARTUP=y
  CONFIG_MCI_ATMEL=y
-@@ -50,4 +64,3 @@ CONFIG_FS_FAT=y
++CONFIG_LED=y
++CONFIG_LED_GPIO=y
++CONFIG_LED_TRIGGERS=y
+ CONFIG_FS_FAT=y
  CONFIG_FS_FAT_WRITE=y
  CONFIG_FS_FAT_LFN=y
- CONFIG_ZLIB=y
--CONFIG_BZLIB=y
 diff --git a/arch/arm/configs/at91sam9g20ek_defconfig b/arch/arm/configs/at91sam9g20ek_defconfig
-index 2492b30..16b6252 100644
+index 16b6252..18bd2ae 100644
 --- a/arch/arm/configs/at91sam9g20ek_defconfig
 +++ b/arch/arm/configs/at91sam9g20ek_defconfig
-@@ -1,7 +1,9 @@
- CONFIG_ARCH_AT91SAM9G20=y
- CONFIG_AT91_HAVE_2MMC=y
- CONFIG_AEABI=y
-+# CONFIG_CMD_ARM_CPUINFO is not set
- CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_EXPERIMENTAL=y
- CONFIG_PROMPT="9G20-EK:"
- CONFIG_LONGHELP=y
- CONFIG_GLOB=y
-@@ -9,6 +11,8 @@ CONFIG_PROMPT_HUSH_PS2="y"
- CONFIG_HUSH_FANCY_PROMPT=y
- CONFIG_CMDLINE_EDITING=y
- CONFIG_AUTO_COMPLETE=y
-+# CONFIG_CONSOLE_ACTIVATE_FIRST is not set
-+CONFIG_CONSOLE_ACTIVATE_ALL=y
- CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
- CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/at91sam9260ek/env"
- CONFIG_CMD_EDIT=y
-@@ -25,6 +29,11 @@ CONFIG_CMD_MTEST=y
- CONFIG_CMD_MTEST_ALTERNATIVE=y
- CONFIG_CMD_FLASH=y
- CONFIG_CMD_BOOTM_SHOW_TYPE=y
-+CONFIG_CMD_BOOTM_INITRD=y
-+CONFIG_CMD_BOOTM_OFTREE=y
-+CONFIG_CMD_BOOTM_OFTREE_UIMAGE=y
-+CONFIG_CMD_UIMAGE=y
-+# CONFIG_CMD_BOOTU is not set
- CONFIG_CMD_RESET=y
- CONFIG_CMD_GO=y
- CONFIG_CMD_OFTREE=y
-@@ -41,9 +50,14 @@ CONFIG_DRIVER_NET_MACB=y
- # CONFIG_SPI is not set
- CONFIG_MTD=y
- CONFIG_NAND=y
-+# CONFIG_NAND_ECC_HW is not set
-+# CONFIG_NAND_ECC_HW_SYNDROME is not set
-+# CONFIG_NAND_ECC_HW_NONE is not set
- CONFIG_NAND_ATMEL=y
- CONFIG_UBI=y
- CONFIG_USB_GADGET=y
-+CONFIG_USB_GADGET_DFU=y
-+CONFIG_USB_GADGET_SERIAL=y
+@@ -40,6 +40,8 @@ CONFIG_CMD_OFTREE=y
+ CONFIG_CMD_TIMEOUT=y
+ CONFIG_CMD_PARTITION=y
+ CONFIG_CMD_GPIO=y
++CONFIG_CMD_LED=y
++CONFIG_CMD_LED_TRIGGER=y
+ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+@@ -61,6 +63,9 @@ CONFIG_USB_GADGET_SERIAL=y
  CONFIG_MCI=y
  CONFIG_MCI_STARTUP=y
  CONFIG_MCI_ATMEL=y
-@@ -51,4 +65,3 @@ CONFIG_FS_FAT=y
++CONFIG_LED=y
++CONFIG_LED_GPIO=y
++CONFIG_LED_TRIGGERS=y
+ CONFIG_FS_FAT=y
  CONFIG_FS_FAT_WRITE=y
  CONFIG_FS_FAT_LFN=y
- CONFIG_ZLIB=y
--CONFIG_BZLIB=y
 -- 
 1.7.7
 
