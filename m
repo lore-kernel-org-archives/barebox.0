@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RiwT1-0005kc-4p
- for barebox@lists.infradead.org; Thu, 05 Jan 2012 23:11:28 +0000
-From: Robert Jarzmik <robert.jarzmik@free.fr>
-References: <1324569082-17117-1-git-send-email-robert.jarzmik@free.fr>
-Date: Fri, 06 Jan 2012 00:11:13 +0100
-In-Reply-To: <1324569082-17117-1-git-send-email-robert.jarzmik@free.fr>
- (Robert Jarzmik's message of "Thu, 22 Dec 2011 16:51:19 +0100")
-Message-ID: <8762gpoicu.fsf@free.fr>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1Rj5B1-000588-Hy
+ for barebox@lists.infradead.org; Fri, 06 Jan 2012 08:29:28 +0000
+Date: Fri, 6 Jan 2012 09:29:18 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120106082918.GB5446@pengutronix.de>
+References: <1325791095-32363-1-git-send-email-w.sang@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1325791095-32363-1-git-send-email-w.sang@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,23 +22,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH V2 0/3] Add MSystems Disk-On-Chip G3 support
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH] fs: fat: gen_numname() is only need with FS_FAT_WRITE
+To: Wolfram Sang <w.sang@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Robert Jarzmik <robert.jarzmik@free.fr> writes:
-> This patchset brings support for M-Systems disk-on-chip G3
-> chips. Almost all code is taken from linux kernel (bitrev,
-> bch, docg3), and slightly amended for barebox.
+On Thu, Jan 05, 2012 at 08:18:15PM +0100, Wolfram Sang wrote:
+> So, check for that config option, too. This will get rid of the warning:
+> 
+> 	fs/fat/ff.c:878:13: warning: 'gen_numname' defined but not used
+> 
+> I could have also moved the function further down, but I decided for the
+> least intrusive change.
 
-Hi Sascha, happy new year.
+I already posted the same patch.
 
-Do you intend to review / merge this serie ?
+Sascha
 
-Cheers.
+> 
+> Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
+> ---
+>  fs/fat/ff.c |    2 +-
+>  1 files changed, 1 insertions(+), 1 deletions(-)
+> 
+> diff --git a/fs/fat/ff.c b/fs/fat/ff.c
+> index 3ada867..0087e21 100644
+> --- a/fs/fat/ff.c
+> +++ b/fs/fat/ff.c
+> @@ -874,7 +874,7 @@ void fit_lfn (
+>  /*
+>   * Create numbered name
+>   */
+> -#ifdef CONFIG_FS_FAT_LFN
+> +#if defined(CONFIG_FS_FAT_LFN) && defined(CONFIG_FS_FAT_WRITE)
+>  static void gen_numname (
+>  	BYTE *dst,		/* Pointer to generated SFN */
+>  	const BYTE *src,	/* Pointer to source SFN to be modified */
+> -- 
+> 1.7.7.3
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
---
-Robert
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
