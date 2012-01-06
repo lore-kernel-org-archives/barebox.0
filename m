@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Rj5km-0007Oe-Sk
- for barebox@lists.infradead.org; Fri, 06 Jan 2012 09:06:25 +0000
-Date: Fri, 6 Jan 2012 10:06:17 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120106090617.GE5446@pengutronix.de>
-References: <1324569082-17117-1-git-send-email-robert.jarzmik@free.fr>
- <8762gpoicu.fsf@free.fr>
+ id 1Rj6F5-0004ny-Fh
+ for barebox@lists.infradead.org; Fri, 06 Jan 2012 09:37:44 +0000
+Date: Fri, 6 Jan 2012 10:37:35 +0100
+From: Wolfram Sang <w.sang@pengutronix.de>
+Message-ID: <20120106093735.GA2610@pengutronix.de>
+References: <1325791095-32363-1-git-send-email-w.sang@pengutronix.de>
+ <20120106082918.GB5446@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <8762gpoicu.fsf@free.fr>
+In-Reply-To: <20120106082918.GB5446@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,41 +18,67 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============2474715832020627163=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH V2 0/3] Add MSystems Disk-On-Chip G3 support
-To: Robert Jarzmik <robert.jarzmik@free.fr>
+Subject: Re: [PATCH] fs: fat: gen_numname() is only need with FS_FAT_WRITE
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Robert,
 
-On Fri, Jan 06, 2012 at 12:11:13AM +0100, Robert Jarzmik wrote:
-> Robert Jarzmik <robert.jarzmik@free.fr> writes:
-> > This patchset brings support for M-Systems disk-on-chip G3
-> > chips. Almost all code is taken from linux kernel (bitrev,
-> > bch, docg3), and slightly amended for barebox.
-> 
-> Hi Sascha, happy new year.
-
-Happy new year ;)
-
-> 
-> Do you intend to review / merge this serie ?
-
-I already did. Have a look at current master.
-
-Sascha
+--===============2474715832020627163==
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="EeQfGwPcQSOJBaQU"
+Content-Disposition: inline
 
 
--- 
-Pengutronix e.K.                           |                             |
+--EeQfGwPcQSOJBaQU
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, Jan 06, 2012 at 09:29:18AM +0100, Sascha Hauer wrote:
+> On Thu, Jan 05, 2012 at 08:18:15PM +0100, Wolfram Sang wrote:
+> > So, check for that config option, too. This will get rid of the warning:
+> >=20
+> > 	fs/fat/ff.c:878:13: warning: 'gen_numname' defined but not used
+> >=20
+> > I could have also moved the function further down, but I decided for the
+> > least intrusive change.
+>=20
+> I already posted the same patch.
+
+Ah, now I found it. Terrible patch description, if I may say so ;)
+
+--=20
+Pengutronix e.K.                           | Wolfram Sang                |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+--EeQfGwPcQSOJBaQU
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.10 (GNU/Linux)
+
+iEYEARECAAYFAk8GwN8ACgkQD27XaX1/VRu2vgCeOiAHsVxKvjs1SXK2mlmOQKLI
+hlkAoMcf7Qq8a23otJ8JzIJ8m13xGN2s
+=XAdy
+-----END PGP SIGNATURE-----
+
+--EeQfGwPcQSOJBaQU--
+
+
+--===============2474715832020627163==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============2474715832020627163==--
