@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Rk93L-00085E-GK
- for barebox@lists.infradead.org; Mon, 09 Jan 2012 06:49:56 +0000
-From: Robert Jarzmik <robert.jarzmik@free.fr>
-References: <1324569082-17117-1-git-send-email-robert.jarzmik@free.fr>
- <8762gpoicu.fsf@free.fr> <20120106090617.GE5446@pengutronix.de>
-Date: Mon, 09 Jan 2012 07:49:45 +0100
-In-Reply-To: <20120106090617.GE5446@pengutronix.de> (Sascha Hauer's message of
- "Fri, 6 Jan 2012 10:06:17 +0100")
-Message-ID: <87wr91l69i.fsf@free.fr>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RkAjW-00059d-1V
+ for barebox@lists.infradead.org; Mon, 09 Jan 2012 08:37:35 +0000
+Date: Mon, 9 Jan 2012 09:37:20 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120109083720.GM5446@pengutronix.de>
+References: <1325930228-10935-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1325930228-10935-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,22 +22,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH V2 0/3] Add MSystems Disk-On-Chip G3 support
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [RESEND PATCH] atmel_nand: add on_flash_btt option to enable bbt
+ option
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-Sascha Hauer <s.hauer@pengutronix.de> writes:
+On Sat, Jan 07, 2012 at 10:57:08AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  drivers/mtd/nand/atmel_nand.c |    6 ++++++
+>  1 files changed, 6 insertions(+), 0 deletions(-)
+> 
+> diff --git a/drivers/mtd/nand/atmel_nand.c b/drivers/mtd/nand/atmel_nand.c
+> index 3213de2..3e00226 100644
+> --- a/drivers/mtd/nand/atmel_nand.c
+> +++ b/drivers/mtd/nand/atmel_nand.c
+> @@ -406,6 +406,12 @@ static int __init atmel_nand_probe(struct device_d *dev)
+>  		}
+>  	}
+>  
+> +	if (host->board->on_flash_bbt) {
+> +		printk(KERN_INFO "atmel_nand: Use On Flash BBT\n");
 
->> Do you intend to review / merge this serie ?
-> I already did. Have a look at current master.
-Oh great, thanks.
+dev_info?
 
-Now everything is in place, and I'll send the mioa701 board support :)
-
-Cheers.
+Sascha
 
 -- 
-Robert
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
