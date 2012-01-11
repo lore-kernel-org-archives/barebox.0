@@ -1,11 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from arroyo.ext.ti.com ([192.94.94.40])
+Received: from devils.ext.ti.com ([198.47.26.153])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Rl24t-0000zo-Lo
- for barebox@lists.infradead.org; Wed, 11 Jan 2012 17:35:13 +0000
-From: Sanjeev Premi <premi@ti.com>
-Date: Wed, 11 Jan 2012 23:04:43 +0530
-Message-ID: <1326303284-14444-1-git-send-email-premi@ti.com>
+ id 1Rl2Lo-0004h7-Gz
+ for barebox@lists.infradead.org; Wed, 11 Jan 2012 17:52:41 +0000
+From: "Premi, Sanjeev" <premi@ti.com>
+Date: Wed, 11 Jan 2012 17:52:34 +0000
+Message-ID: <E28AAFD00EFAA646AE3DF9B89CD24A89317EFCEC@DBDE01.ent.ti.com>
+References: <s.hauer@pengutronix.de,plagnioj@jcrosoft.com,J.Kilb@phytec.de>
+ <1326293842-3063-1-git-send-email-premi@ti.com>
+ <E28AAFD00EFAA646AE3DF9B89CD24A89317EF443@DBDE01.ent.ti.com>
+In-Reply-To: <E28AAFD00EFAA646AE3DF9B89CD24A89317EF443@DBDE01.ent.ti.com>
+Content-Language: en-US
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,270 +24,83 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC 1/2] ARM omap: Add null console
-To: barebox@lists.infradead.org
+Subject: RE: [PATCH 0/5] ARM omap: Some fixes and enhancements
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Cc: "J.Kilb@phytec.de" <J.Kilb@phytec.de>
 
-When using barebox as both 1st and 2nd stage bootloader,
-same banner gets printed - date being the only difference.
+> -----Original Message-----
+> From: barebox-bounces@lists.infradead.org 
+> [mailto:barebox-bounces@lists.infradead.org] On Behalf Of 
+> Premi, Sanjeev
+> Sent: Wednesday, January 11, 2012 11:02 PM
+> To: barebox@lists.infradead.org
+> Cc: J.Kilb@phytec.de
+> Subject: RE: [PATCH 0/5] ARM omap: Some fixes and enhancements
+> 
+> > -----Original Message-----
+> > From: Premi, Sanjeev 
+> > Sent: Wednesday, January 11, 2012 8:27 PM
+> > To: barebox@lists.infradead.org
+> > Cc: Premi, Sanjeev
+> > Subject: [PATCH 0/5] ARM omap: Some fixes and enhancements
+> > 
 
-For the first stage bootloader, prints are definitely
-required during initial debug and development phases,
-but after that, they can easily be avoided.
+Not sure where the problem is?
 
-And if we don't need prints, then we can do without the
-serial driver as well.
+The mail in my "Sent Items" has 3 addresses (quoted below). Of these,
+2 addresses got deleted on the way!
 
-With this background, this patch introduces concept of
-NULL console. Most Kconfig changes are quite simple.
+[quote]
+> -----Original Message-----
+> From: Premi, Sanjeev 
+> Sent: Wednesday, January 11, 2012 11:02 PM
+> To: barebox@lists.infradead.org
+> Cc: 's.hauer@pengutronix.de'; 'plagnioj@jcrosoft.com'; 
+> 'J.Kilb@phytec.de'
+> Subject: RE: [PATCH 0/5] ARM omap: Some fixes and enhancements
+> 
+[/quote]
 
-Separate file console_null.c was created only for ease
-of review and maintaining console_simple.c as-is.
+~sanjeev
 
-In final version, appropriate #ifdefs in console_simple.c
-should be used.
-
-Visually, the prompt from barebox.bin comes up is about
-a second - and appears to be much faster.
-
-Here is comparison of the size:
-
-   text    data     bss     dec     hex filename
-  45801    3300    4024   53125    cf85 barebox  (Before)
-  44221    3196    4020   51437    c8ed barebox  (After)
-
-Tested on OMAP3EVM with xload configuration derived from
-omap3530_beagle_xload_defconfig.
-
-Signed-off-by: Sanjeev Premi <premi@ti.com>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
-
- Although I have marked the change to be specific to
- ARM+OMAP, it could be generally applicable.
-
- arch/arm/mach-omap/Kconfig |    4 +-
- common/Kconfig             |   11 +++-
- common/Makefile            |    1 +
- common/console_null.c      |  135 ++++++++++++++++++++++++++++++++++++++++++++
- drivers/serial/Kconfig     |    1 +
- 5 files changed, 149 insertions(+), 3 deletions(-)
- create mode 100644 common/console_null.c
-
-diff --git a/arch/arm/mach-omap/Kconfig b/arch/arm/mach-omap/Kconfig
-index 72c6850..9edb4a9 100644
---- a/arch/arm/mach-omap/Kconfig
-+++ b/arch/arm/mach-omap/Kconfig
-@@ -171,13 +171,13 @@ if MACH_OMAP3EVM
- 
- 	config OMAP3EVM_UART1
- 		bool "Use UART1"
--		depends on MACH_OMAP3EVM
-+		depends on MACH_OMAP3EVM && !CONSOLE_NULL
- 		help
- 		  Say Y here if you would like to use UART1 as console.
- 
- 	config OMAP3EVM_UART3
- 		bool "Use UART3"
--		depends on MACH_OMAP3EVM
-+		depends on MACH_OMAP3EVM && !CONSOLE_NULL
- 		help
- 		  Say Y here if you would like to use UART3 as console.
- 	endchoice
-diff --git a/common/Kconfig b/common/Kconfig
-index ca4f099..a664624 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -377,10 +377,19 @@ config CONSOLE_FULL
- 	  This option enables full console support capable of
- 	  handling multiple consoles.
- 
-+config CONSOLE_NULL
-+	bool
-+	depends on !CONSOLE_FULL
-+	prompt "Enable null console"
-+	help
-+	  This option enables null console i.e. there is no real
-+	  read/ write operation.
-+
- config CONSOLE_SIMPLE
- 	bool
- 	default y
--	depends on !CONSOLE_FULL
-+	depends on !CONSOLE_FULL && !CONSOLE_NULL
-+
- 
- config CONSOLE_ACTIVATE_FIRST
- 	depends on CONSOLE_FULL
-diff --git a/common/Makefile b/common/Makefile
-index d1132c3..6705257 100644
---- a/common/Makefile
-+++ b/common/Makefile
-@@ -20,6 +20,7 @@ obj-y += clock.o
- obj-y += version.o
- obj-$(CONFIG_COMMAND_SUPPORT) += command.o
- obj-$(CONFIG_CONSOLE_FULL) += console.o
-+obj-$(CONFIG_CONSOLE_NULL) += console_null.o
- obj-$(CONFIG_CONSOLE_SIMPLE) += console_simple.o
- obj-$(CONFIG_DIGEST) += digest.o
- obj-$(CONFIG_ENVIRONMENT_VARIABLES) += env.o
-diff --git a/common/console_null.c b/common/console_null.c
-new file mode 100644
-index 0000000..7b2db37
---- /dev/null
-+++ b/common/console_null.c
-@@ -0,0 +1,135 @@
-+#include <config.h>
-+#include <common.h>
-+#include <fs.h>
-+#include <errno.h>
-+
-+int printf (const char *fmt, ...)
-+{
-+	va_list args;
-+	uint i;
-+	char printbuffer[CFG_PBSIZE];
-+
-+	va_start (args, fmt);
-+
-+	/* For this to work, printbuffer must be larger than
-+	 * anything we ever want to print.
-+	 */
-+	i = vsprintf (printbuffer, fmt, args);
-+	va_end (args);
-+
-+	/* Don't put off callers who check for return value */
-+	return i;
-+}
-+EXPORT_SYMBOL(printf);
-+
-+int vprintf (const char *fmt, va_list args)
-+{
-+	uint i;
-+	char printbuffer[CFG_PBSIZE];
-+
-+	/* For this to work, printbuffer must be larger than
-+	 * anything we ever want to print.
-+	 */
-+	i = vsprintf (printbuffer, fmt, args);
-+
-+	/* Don't put off callers who check for return value */
-+	return i;
-+}
-+EXPORT_SYMBOL(vprintf);
-+
-+int fprintf(int file, const char *fmt, ...)
-+{
-+	va_list args;
-+	uint i;
-+	char printbuffer[CFG_PBSIZE];
-+
-+	va_start (args, fmt);
-+
-+	/* For this to work, printbuffer must be larger than
-+	 * anything we ever want to print.
-+	 */
-+	i = vsprintf (printbuffer, fmt, args);
-+	va_end (args);
-+
-+	/* Don't put off callers who check for return value */
-+	return i;
-+}
-+EXPORT_SYMBOL(fprintf);
-+
-+int console_puts(unsigned int ch, const char *str)
-+{
-+	const char *s = str;
-+	int i = 0;
-+
-+	while (*s)
-+		i++;
-+
-+	/* Don't put off callers who check for return value */
-+	return i;
-+}
-+EXPORT_SYMBOL(console_puts);
-+
-+void console_putc(unsigned int ch, char c)
-+{
-+}
-+EXPORT_SYMBOL(console_putc);
-+
-+int fputc(int fd, char c)
-+{
-+	if (fd == 1)
-+		putchar(c);
-+	else if (fd == 2)
-+		eputc(c);
-+	else
-+		return write(fd, &c, 1);
-+	return 0;
-+}
-+EXPORT_SYMBOL(fputc);
-+
-+int fputs(int fd, const char *s)
-+{
-+	if (fd == 1)
-+		puts(s);
-+	else if (fd == 2)
-+		eputs(s);
-+	else
-+		return write(fd, s, strlen(s));
-+	return 0;
-+}
-+EXPORT_SYMBOL(fputs);
-+
-+int tstc(void)
-+{
-+	return 0;
-+}
-+EXPORT_SYMBOL(tstc);
-+
-+int getc(void)
-+{
-+	return -EINVAL;
-+}
-+EXPORT_SYMBOL(getc);
-+
-+void console_flush(void)
-+{
-+}
-+EXPORT_SYMBOL(console_flush);
-+
-+#ifndef ARCH_HAS_CTRLC
-+/* test if ctrl-c was pressed */
-+int ctrlc (void)
-+{
-+	return 0;
-+}
-+EXPORT_SYMBOL(ctrlc);
-+#endif /* ARCH_HAS_CTRC */
-+
-+int console_register(struct console_device *newcdev)
-+{
-+	return 0;
-+}
-+
-+int console_unregister(struct console_device *cdev)
-+{
-+	return -EBUSY;
-+}
-diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
-index 186b596..cc0e583 100644
---- a/drivers/serial/Kconfig
-+++ b/drivers/serial/Kconfig
-@@ -56,6 +56,7 @@ config DRIVER_SERIAL_ALTERA_JTAG
- config DRIVER_SERIAL_NS16550
- 	default n
- 	bool "NS16550 serial driver"
-+	depends on !CONSOLE_NULL
- 	help
- 	  Enable this to get support for NS16550 based serial devices
- 
--- 
-1.7.0.4
-
-
+> 
+> It appears that something went wrong in my script for
+> sending patches and "cc:" list was stripped.
+> 
+> Specifically adding cc: here for review of these patches.
+> 
+> ~sanjeev
+> 
+> > First two patches in this series are fixes to problems in the
+> > existing code.
+> > 
+> > Next two patches enable specific features on the OMAP3EVM.
+> > 
+> > The last patch is an enhancement to avoid manual copy each
+> > time barebox is built as the primary bootloader i.e. in the
+> > xload configuration.
+> > 
+> > Sanjeev Premi (5):
+> >   ARM omap: Use updated config option
+> >   ARM omap3beagle: Fix incorrect base addresses
+> >   ARM omap3evm: Allow building first stage bootloader
+> >   ARM omap3evm: Enable HSMMC device
+> >   ARM omap: Set IFT target as MLO
+> > 
+> >  arch/arm/Makefile                       |    5 +++--
+> >  arch/arm/boards/omap/board-beagle.c     |   10 +++++-----
+> >  arch/arm/boards/omap/board-omap3evm.c   |    7 ++++++-
+> >  arch/arm/boards/omap/board-sdp343x.c    |    2 +-
+> >  arch/arm/boards/phycard-a-l1/pca-a-l1.c |    2 +-
+> >  arch/arm/mach-omap/Kconfig              |    1 +
+> >  6 files changed, 17 insertions(+), 10 deletions(-)
+> > 
+> > 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
