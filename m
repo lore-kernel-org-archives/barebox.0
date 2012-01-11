@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 16.mo3.mail-out.ovh.net ([188.165.56.217]
- helo=mo3.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RljTn-0001nb-HP
- for barebox@lists.infradead.org; Fri, 13 Jan 2012 15:55:49 +0000
-Received: from mail617.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id C718910048CF
- for <barebox@lists.infradead.org>; Fri, 13 Jan 2012 16:57:08 +0100 (CET)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 13 Jan 2012 16:55:24 +0100
-Message-Id: <1326470124-12717-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from devils.ext.ti.com ([198.47.26.153])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1Rl24y-00010B-Dm
+ for barebox@lists.infradead.org; Wed, 11 Jan 2012 17:35:17 +0000
+From: Sanjeev Premi <premi@ti.com>
+Date: Wed, 11 Jan 2012 23:04:44 +0530
+Message-ID: <1326303284-14444-2-git-send-email-premi@ti.com>
+In-Reply-To: <1326303284-14444-1-git-send-email-premi@ti.com>
+References: <1326303284-14444-1-git-send-email-premi@ti.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,254 +17,84 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] atmel/mci: fix slot_b support
+Subject: [RFC 2/2] ARM omap: Add CONFIG_SILENT
 To: barebox@lists.infradead.org
 
-in commit commit f60f6c58e
-atmel_mci: check for device id we use to address the right slot
+Don't display any verbose message on the console.
 
-the driver use the dev_id to detect the slot which is wrong on 9263 as we have
-2 devices with 2 slots
-
-use slot_b paramter to specify the slot as done in linux
-
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Signed-off-by: Sanjeev Premi <premi@ti.com>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/boards/at91sam9260ek/init.c     |    3 +-
- arch/arm/boards/dss11/init.c             |    3 +-
- arch/arm/mach-at91/at91sam9260_devices.c |   24 ++++++------
- arch/arm/mach-at91/at91sam9263_devices.c |   61 +++++++++++++++++++++---------
- arch/arm/mach-at91/at91sam9g45_devices.c |    1 +
- arch/arm/mach-at91/include/mach/board.h  |    1 +
- drivers/mci/atmel_mci.c                  |    4 +-
- 7 files changed, 64 insertions(+), 33 deletions(-)
 
-diff --git a/arch/arm/boards/at91sam9260ek/init.c b/arch/arm/boards/at91sam9260ek/init.c
-index 4bff35e..03abc0e 100644
---- a/arch/arm/boards/at91sam9260ek/init.c
-+++ b/arch/arm/boards/at91sam9260ek/init.c
-@@ -172,6 +172,7 @@ static void at91sam9260ek_phy_reset(void)
- #if defined(CONFIG_MCI_ATMEL)
- static struct atmel_mci_platform_data __initdata ek_mci_data = {
- 	.bus_width	= 4,
-+	.slot_b		= 1,
- };
+ This config option is kept separate, as user may
+ want console features, but avoid initial messages.
+
+ Although I have marked the change to be specific to
+ ARM+OMAP, it is generally applicable. Will change
+ the subject in actual based on review comments to
+ this RFC.
+
+ common/Kconfig   |    4 ++++
+ common/startup.c |    2 ++
+ common/version.c |    3 ++-
+ 3 files changed, 8 insertions(+), 1 deletions(-)
+
+diff --git a/common/Kconfig b/common/Kconfig
+index a664624..cf09034 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -369,6 +369,10 @@ config TIMESTAMP
+ 	  commands like bootm or iminfo. This option is
+ 	  automatically enabled when you select CFG_CMD_DATE .
  
- static void ek_usb_add_device_mci(void)
-@@ -179,7 +180,7 @@ static void ek_usb_add_device_mci(void)
- 	if (machine_is_at91sam9g20ek())
- 		ek_mci_data.detect_pin = AT91_PIN_PC9;
++config SILENT
++	bool
++	prompt "Don't display any messages on console"
++
+ config CONSOLE_FULL
+ 	bool
+ 	default y
+diff --git a/common/startup.c b/common/startup.c
+index 180fdc3..976c0d3 100644
+--- a/common/startup.c
++++ b/common/startup.c
+@@ -52,6 +52,7 @@ static void display_meminfo(void)
  
--	at91_add_device_mci(1, &ek_mci_data);
-+	at91_add_device_mci(0, &ek_mci_data);
+ 	debug("barebox code: 0x%p -> 0x%p\n", _stext, _etext);
+ 	debug("bss segment:  0x%p -> 0x%p\n", __bss_start, __bss_stop);
++#ifndef CONFIG_SILENT
+ 	printf("Malloc space: 0x%08lx -> 0x%08lx (size %s)\n",
+ 		mstart, mend, size_human_readable(msize));
+ #ifdef CONFIG_ARM
+@@ -59,6 +60,7 @@ static void display_meminfo(void)
+ 		STACK_BASE, STACK_BASE + STACK_SIZE,
+ 		size_human_readable(STACK_SIZE));
+ #endif
++#endif /* CONFIG_SILENT */
  }
- #else
- static void ek_usb_add_device_mci(void) {}
-diff --git a/arch/arm/boards/dss11/init.c b/arch/arm/boards/dss11/init.c
-index 96c4eef..722c0f6 100644
---- a/arch/arm/boards/dss11/init.c
-+++ b/arch/arm/boards/dss11/init.c
-@@ -110,6 +110,7 @@ static void dss11_phy_reset(void)
+ 
+ #ifdef CONFIG_DEFAULT_ENVIRONMENT
+diff --git a/common/version.c b/common/version.c
+index 0af8ec1..6d26ef8 100644
+--- a/common/version.c
++++ b/common/version.c
+@@ -6,7 +6,8 @@ const char version_string[] =
+ 
+ void barebox_banner (void)
+ {
++#ifndef CONFIG_SILENT
+ 	printf("\n\n%s\n\n", version_string);
+ 	printf("Board: " CONFIG_BOARDINFO "\n");
++#endif
  }
- 
- static struct atmel_mci_platform_data dss11_mci_data = {
-+	.slot_b		= 1,
- 	.bus_width	= 4,
- 	.host_caps	= MMC_MODE_HS,
- };
-@@ -131,7 +132,7 @@ static int dss11_devices_init(void)
- 	dss11_add_device_nand();
- 	dss11_phy_reset();
- 	at91_add_device_eth(&macb_pdata);
--	at91_add_device_mci(1, &dss11_mci_data);
-+	at91_add_device_mci(0, &dss11_mci_data);
- 	at91_add_device_usbh_ohci(&dss11_usbh_data);
- 
- 	armlinux_set_bootparams((void *)(AT91_CHIPSELECT_1 + 0x100));
-diff --git a/arch/arm/mach-at91/at91sam9260_devices.c b/arch/arm/mach-at91/at91sam9260_devices.c
-index c8871f8..3ddd0cf 100644
---- a/arch/arm/mach-at91/at91sam9260_devices.c
-+++ b/arch/arm/mach-at91/at91sam9260_devices.c
-@@ -356,18 +356,7 @@ void at91_add_device_mci(short mmc_id, struct atmel_mci_platform_data *data)
- 	at91_set_A_periph(AT91_PIN_PA8, 0);
- 
- 
--	if (mmc_id == 0) {
--		/* CMD */
--		at91_set_A_periph(AT91_PIN_PA7, 1);
 -
--		/* DAT0, maybe DAT1..DAT3 */
--		at91_set_A_periph(AT91_PIN_PA6, 1);
--		if (data->bus_width == 4) {
--			at91_set_A_periph(AT91_PIN_PA9, 1);
--			at91_set_A_periph(AT91_PIN_PA10, 1);
--			at91_set_A_periph(AT91_PIN_PA11, 1);
--		}
--	} else if (mmc_id == 1) {
-+	if (data->slot_b) {
- 		/* CMD */
- 		at91_set_B_periph(AT91_PIN_PA1, 1);
- 
-@@ -378,6 +367,17 @@ void at91_add_device_mci(short mmc_id, struct atmel_mci_platform_data *data)
- 			at91_set_B_periph(AT91_PIN_PA4, 1);
- 			at91_set_B_periph(AT91_PIN_PA5, 1);
- 		}
-+	} else {
-+		/* CMD */
-+		at91_set_A_periph(AT91_PIN_PA7, 1);
-+
-+		/* DAT0, maybe DAT1..DAT3 */
-+		at91_set_A_periph(AT91_PIN_PA6, 1);
-+		if (data->bus_width == 4) {
-+			at91_set_A_periph(AT91_PIN_PA9, 1);
-+			at91_set_A_periph(AT91_PIN_PA10, 1);
-+			at91_set_A_periph(AT91_PIN_PA11, 1);
-+		}
- 	}
- 
- 	dev = add_generic_device("atmel_mci", mmc_id, NULL, AT91SAM9260_BASE_MCI, SZ_16K,
-diff --git a/arch/arm/mach-at91/at91sam9263_devices.c b/arch/arm/mach-at91/at91sam9263_devices.c
-index 1811c12..fc7dc14 100644
---- a/arch/arm/mach-at91/at91sam9263_devices.c
-+++ b/arch/arm/mach-at91/at91sam9263_devices.c
-@@ -310,33 +310,58 @@ void at91_add_device_mci(short mmc_id, struct atmel_mci_platform_data *data)
- 
- 	if (mmc_id == 0) {		/* MCI0 */
- 		start = AT91SAM9263_BASE_MCI0;
-+
- 		/* CLK */
- 		at91_set_A_periph(AT91_PIN_PA12, 0);
- 
--		/* CMD */
--		at91_set_A_periph(AT91_PIN_PA1, 1);
-+		if (data->slot_b) {
-+			/* CMD */
-+			at91_set_A_periph(AT91_PIN_PA16, 1);
-+
-+			/* DAT0, maybe DAT1..DAT3 */
-+			at91_set_A_periph(AT91_PIN_PA17, 1);
-+			if (data->bus_width == 4) {
-+				at91_set_A_periph(AT91_PIN_PA18, 1);
-+				at91_set_A_periph(AT91_PIN_PA19, 1);
-+				at91_set_A_periph(AT91_PIN_PA20, 1);
-+			}
-+		} else {
-+			/* CMD */
-+			at91_set_A_periph(AT91_PIN_PA1, 1);
- 
--		/* DAT0, maybe DAT1..DAT3 and maybe DAT4..DAT7 */
--		at91_set_A_periph(AT91_PIN_PA0, 1);
--		if (data->bus_width == 4) {
--			at91_set_A_periph(AT91_PIN_PA3, 1);
--			at91_set_A_periph(AT91_PIN_PA4, 1);
--			at91_set_A_periph(AT91_PIN_PA5, 1);
-+			/* DAT0, maybe DAT1..DAT3 */
-+			at91_set_A_periph(AT91_PIN_PA0, 1);
-+			if (data->bus_width == 4) {
-+				at91_set_A_periph(AT91_PIN_PA3, 1);
-+				at91_set_A_periph(AT91_PIN_PA4, 1);
-+				at91_set_A_periph(AT91_PIN_PA5, 1);
-+			}
- 		}
- 	} else {			/* MCI1 */
- 		start = AT91SAM9263_BASE_MCI1;
--		/* CLK */
--		at91_set_A_periph(AT91_PIN_PA6, 0);
- 
--		/* CMD */
--		at91_set_A_periph(AT91_PIN_PA7, 1);
-+		if (data->slot_b) {
-+			/* CMD */
-+			at91_set_A_periph(AT91_PIN_PA21, 1);
-+
-+			/* DAT0, maybe DAT1..DAT3 */
-+			at91_set_A_periph(AT91_PIN_PA22, 1);
-+			if (data->bus_width == 4) {
-+				at91_set_A_periph(AT91_PIN_PA23, 1);
-+				at91_set_A_periph(AT91_PIN_PA24, 1);
-+				at91_set_A_periph(AT91_PIN_PA25, 1);
-+			}
-+		} else {
-+			/* CMD */
-+			at91_set_A_periph(AT91_PIN_PA7, 1);
- 
--		/* DAT0, maybe DAT1..DAT3 */
--		at91_set_A_periph(AT91_PIN_PA8, 1);
--		if (data->bus_width == 4) {
--			at91_set_A_periph(AT91_PIN_PA9, 1);
--			at91_set_A_periph(AT91_PIN_PA10, 1);
--			at91_set_A_periph(AT91_PIN_PA11, 1);
-+			/* DAT0, maybe DAT1..DAT3 */
-+			at91_set_A_periph(AT91_PIN_PA8, 1);
-+			if (data->bus_width == 4) {
-+				at91_set_A_periph(AT91_PIN_PA9, 1);
-+				at91_set_A_periph(AT91_PIN_PA10, 1);
-+				at91_set_A_periph(AT91_PIN_PA11, 1);
-+			}
- 		}
- 	}
- 
-diff --git a/arch/arm/mach-at91/at91sam9g45_devices.c b/arch/arm/mach-at91/at91sam9g45_devices.c
-index 9a24022..bb252bd 100644
---- a/arch/arm/mach-at91/at91sam9g45_devices.c
-+++ b/arch/arm/mach-at91/at91sam9g45_devices.c
-@@ -264,6 +264,7 @@ void at91_add_device_mci(short mmc_id, struct atmel_mci_platform_data *data)
- 			}
- 		}
- 	} else {			/* MCI1 */
-+		data->slot_b = 1;
- 		start = AT91SAM9G45_BASE_MCI1;
- 		/* CLK */
- 		at91_set_A_periph(AT91_PIN_PA31, 0);
-diff --git a/arch/arm/mach-at91/include/mach/board.h b/arch/arm/mach-at91/include/mach/board.h
-index 738af87..755ddc8 100644
---- a/arch/arm/mach-at91/include/mach/board.h
-+++ b/arch/arm/mach-at91/include/mach/board.h
-@@ -87,6 +87,7 @@ void at91_register_uart(unsigned id, unsigned pins);
- 
- /* Multimedia Card Interface */
- struct atmel_mci_platform_data {
-+	unsigned slot_b;
- 	unsigned bus_width;
- 	unsigned host_caps; /* MCI_MODE_* from mci.h */
- 	unsigned detect_pin;
-diff --git a/drivers/mci/atmel_mci.c b/drivers/mci/atmel_mci.c
-index 15668fc..3c37747 100644
---- a/drivers/mci/atmel_mci.c
-+++ b/drivers/mci/atmel_mci.c
-@@ -36,6 +36,7 @@ struct atmel_mci_host {
- 	u32			datasize;
- 	struct mci_cmd		*cmd;
- 	struct mci_data		*data;
-+	unsigned		slot_b;
- };
- 
- #define to_mci_host(mci)	container_of(mci, struct atmel_mci_host, mci)
-@@ -370,7 +371,7 @@ static void mci_set_ios(struct mci_host *mci, struct device_d *mci_dev,
- 		break;
- 	}
- 	atmel_mci_writel(host, AT91_MCI_SDCR, atmel_mci_readl(host, AT91_MCI_SDCR)
--		| host->hw_dev->id);
-+		| host->slot_b);
- 
- 	if (clock) {
- 		atmel_set_clk_rate(host, clock);
-@@ -459,6 +460,7 @@ static int mci_probe(struct device_d *hw_dev)
- 		host->mci.host_caps |= MMC_MODE_4BIT;
- 	if (pd->bus_width == 8)
- 		host->mci.host_caps |= MMC_MODE_8BIT;
-+	host->slot_b = pd->slot_b;
- 
- 	host->base = dev_request_mem_region(hw_dev, 0);
- 	host->hw_dev = hw_dev;
 -- 
-1.7.7
+1.7.0.4
 
 
 _______________________________________________
