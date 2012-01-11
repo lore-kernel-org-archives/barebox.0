@@ -1,17 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 20.mo3.mail-out.ovh.net ([178.33.47.94]
- helo=mo3.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RkyO8-0004cP-A3
- for barebox@lists.infradead.org; Wed, 11 Jan 2012 13:38:49 +0000
-Received: from mail617.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 4810010002C2
- for <barebox@lists.infradead.org>; Wed, 11 Jan 2012 14:40:06 +0100 (CET)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Wed, 11 Jan 2012 14:31:51 +0100
-Message-Id: <1326288716-1342-1-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <20120111132914.GB958@game.jcrosoft.org>
-References: <20120111132914.GB958@game.jcrosoft.org>
+Received: from comal.ext.ti.com ([198.47.26.152])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RkzcJ-0001yU-HA
+ for barebox@lists.infradead.org; Wed, 11 Jan 2012 14:57:32 +0000
+Received: from dbdp20.itg.ti.com ([172.24.170.38])
+ by comal.ext.ti.com (8.13.7/8.13.7) with ESMTP id q0BEvSRX011858
+ for <barebox@lists.infradead.org>; Wed, 11 Jan 2012 08:57:29 -0600
+Received: from DBDE70.ent.ti.com (localhost [127.0.0.1])
+ by dbdp20.itg.ti.com (8.13.8/8.13.8) with ESMTP id q0BEvSvi019975
+ for <barebox@lists.infradead.org>; Wed, 11 Jan 2012 20:27:28 +0530 (IST)
+From: Sanjeev Premi <premi@ti.com>
+Date: Wed, 11 Jan 2012 20:27:17 +0530
+Message-ID: <1326293842-3063-1-git-send-email-premi@ti.com>
+In-Reply-To: <s.hauer@pengutronix.de,plagnioj@jcrosoft.com,J.Kilb@phytec.de>
+References: <s.hauer@pengutronix.de,plagnioj@jcrosoft.com,J.Kilb@phytec.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,82 +23,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/6] banner: add config to disable it
+Subject: [PATCH 0/5] ARM omap: Some fixes and enhancements
 To: barebox@lists.infradead.org
 
-this will allow to save 144 bytes
+First two patches in this series are fixes to problems in the
+existing code.
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- commands/Kconfig |    1 +
- common/Kconfig   |    4 ++++
- common/Makefile  |    2 +-
- include/common.h |    4 ++++
- 4 files changed, 10 insertions(+), 1 deletions(-)
+Next two patches enable specific features on the OMAP3EVM.
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 6f9ccb8..1d080e3 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -420,6 +420,7 @@ config CMD_REGINFO
- config CMD_VERSION
- 	tristate
- 	default y
-+	depends on BANNER
- 	prompt "version"
- 
- config CMD_HELP
-diff --git a/common/Kconfig b/common/Kconfig
-index ca4f099..d184d9e 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -74,6 +74,10 @@ config LOCALVERSION_AUTO
- config BOARDINFO
- 	string
- 
-+config BANNER
-+	bool "display banner"
-+	default y
-+
- config ENVIRONMENT_VARIABLES
- 	bool "environment variables support"
- 
-diff --git a/common/Makefile b/common/Makefile
-index d1132c3..eaf74a6 100644
---- a/common/Makefile
-+++ b/common/Makefile
-@@ -17,7 +17,7 @@ obj-$(CONFIG_MALLOC_TLSF) += tlsf_malloc.o
- obj-$(CONFIG_MALLOC_TLSF) += tlsf.o
- obj-$(CONFIG_MALLOC_DUMMY) += dummy_malloc.o
- obj-y += clock.o
--obj-y += version.o
-+obj-$(CONFIG_BANNER) += version.o
- obj-$(CONFIG_COMMAND_SUPPORT) += command.o
- obj-$(CONFIG_CONSOLE_FULL) += console.o
- obj-$(CONFIG_CONSOLE_SIMPLE) += console_simple.o
-diff --git a/include/common.h b/include/common.h
-index 2f37dd8..a89b3bd 100644
---- a/include/common.h
-+++ b/include/common.h
-@@ -198,7 +198,11 @@ int run_shell(void);
- int memory_display(char *addr, ulong offs, ulong nbytes, int size);
- 
- extern const char version_string[];
-+#ifdef CONFIG_BANNER
- void barebox_banner(void);
-+#else
-+static inline void barebox_banner(void) {}
-+#endif
- 
- #define IOMEM(addr)	((void __force __iomem *)(addr))
- 
--- 
-1.7.7
+The last patch is an enhancement to avoid manual copy each
+time barebox is built as the primary bootloader i.e. in the
+xload configuration.
+
+Sanjeev Premi (5):
+  ARM omap: Use updated config option
+  ARM omap3beagle: Fix incorrect base addresses
+  ARM omap3evm: Allow building first stage bootloader
+  ARM omap3evm: Enable HSMMC device
+  ARM omap: Set IFT target as MLO
+
+ arch/arm/Makefile                       |    5 +++--
+ arch/arm/boards/omap/board-beagle.c     |   10 +++++-----
+ arch/arm/boards/omap/board-omap3evm.c   |    7 ++++++-
+ arch/arm/boards/omap/board-sdp343x.c    |    2 +-
+ arch/arm/boards/phycard-a-l1/pca-a-l1.c |    2 +-
+ arch/arm/mach-omap/Kconfig              |    1 +
+ 6 files changed, 17 insertions(+), 10 deletions(-)
 
 
 _______________________________________________
