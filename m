@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from bear.ext.ti.com ([192.94.94.41])
+Received: from devils.ext.ti.com ([198.47.26.153])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Rkzcg-0002Fv-6D
- for barebox@lists.infradead.org; Wed, 11 Jan 2012 14:57:55 +0000
+ id 1Rkzck-0002JG-B1
+ for barebox@lists.infradead.org; Wed, 11 Jan 2012 14:57:59 +0000
 Received: from dbdp20.itg.ti.com ([172.24.170.38])
- by bear.ext.ti.com (8.13.7/8.13.7) with ESMTP id q0BEvqJu029601
- for <barebox@lists.infradead.org>; Wed, 11 Jan 2012 08:57:52 -0600
+ by devils.ext.ti.com (8.13.7/8.13.7) with ESMTP id q0BEvuao022441
+ for <barebox@lists.infradead.org>; Wed, 11 Jan 2012 08:57:57 -0600
 Received: from DBDE70.ent.ti.com (localhost [127.0.0.1])
- by dbdp20.itg.ti.com (8.13.8/8.13.8) with ESMTP id q0BEvpaq020040
- for <barebox@lists.infradead.org>; Wed, 11 Jan 2012 20:27:51 +0530 (IST)
+ by dbdp20.itg.ti.com (8.13.8/8.13.8) with ESMTP id q0BEvtfl020045
+ for <barebox@lists.infradead.org>; Wed, 11 Jan 2012 20:27:55 +0530 (IST)
 From: Sanjeev Premi <premi@ti.com>
-Date: Wed, 11 Jan 2012 20:27:21 +0530
-Message-ID: <1326293842-3063-5-git-send-email-premi@ti.com>
+Date: Wed, 11 Jan 2012 20:27:22 +0530
+Message-ID: <1326293842-3063-6-git-send-email-premi@ti.com>
 In-Reply-To: <s.hauer@pengutronix.de,plagnioj@jcrosoft.com,J.Kilb@phytec.de>
 References: <s.hauer@pengutronix.de,plagnioj@jcrosoft.com,J.Kilb@phytec.de>
 MIME-Version: 1.0
@@ -27,17 +27,15 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/5] ARM omap3evm: Enable HSMMC device
+Subject: [PATCH 5/5] ARM omap: Set IFT target as MLO
 To: barebox@lists.infradead.org
 
-Enable the HSMMC device to fix these errors:
+When CONFIG_OMAP_BUILD_IFT is selected, the
+target image name was set to "barebox.bin.ift".
+This file must be renamed "MLO" before it can
+be used on the SD card.
 
-   Board: Texas Instrument's OMAP3EVM
-   Malloc space: 0x87bfff10 -> 0x87ffff0f (size  4 MB)
-   Stack space : 0x87bf7f10 -> 0x87bfff10 (size 32 kB)
-   booting from MMC1
-   mounting sd card failed with -22
-   booting failed
+Make this as default behavior.
 
 Signed-off-by: Sanjeev Premi <premi@ti.com>
 ---
@@ -45,33 +43,29 @@ Signed-off-by: Sanjeev Premi <premi@ti.com>
  Did basic boot testing on OMAP3EVM after this
  change.
 
+ arch/arm/Makefile |    5 +++--
+ 1 files changed, 3 insertions(+), 2 deletions(-)
 
- arch/arm/boards/omap/board-omap3evm.c |    5 +++++
- 1 files changed, 5 insertions(+), 0 deletions(-)
-
-diff --git a/arch/arm/boards/omap/board-omap3evm.c b/arch/arm/boards/omap/board-omap3evm.c
-index 9e96bc8..9e292d2 100644
---- a/arch/arm/boards/omap/board-omap3evm.c
-+++ b/arch/arm/boards/omap/board-omap3evm.c
-@@ -49,6 +49,7 @@
- #include <init.h>
- #include <driver.h>
- #include <io.h>
-+#include <sizes.h>
- #include <ns16550.h>
- #include <asm/armlinux.h>
- #include <mach/silicon.h>
-@@ -252,6 +253,10 @@ static int omap3evm_init_devices(void)
- 	 */
- 	gpmc_generic_init(0x10);
- #endif
-+#ifdef CONFIG_MCI_OMAP_HSMMC
-+	add_generic_device("omap-hsmmc", -1, NULL, OMAP_MMC1_BASE, SZ_4K,
-+				IORESOURCE_MEM, NULL);
-+#endif
- 	return 0;
- }
- device_initcall(omap3evm_init_devices);
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 9885634..a994ce2 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -147,12 +147,13 @@ ifeq ($(machine-y),netx)
+ KBUILD_IMAGE := barebox.netx
+ endif
+ 
+-barebox.bin.ift: barebox.bin
++MLO: barebox.bin
+ 	@echo "  IFT    " $@
+ 	$(Q)scripts/omap_signGP barebox.bin $(TEXT_BASE) 1
++	$(Q)test -e barebox.bin.ift && mv barebox.bin.ift MLO
+ 
+ ifeq ($(CONFIG_OMAP_BUILD_IFT),y)
+-KBUILD_IMAGE := barebox.bin.ift
++KBUILD_IMAGE := MLO
+ endif
+ 
+ all: $(KBUILD_IMAGE)
 -- 
 1.7.0.4
 
