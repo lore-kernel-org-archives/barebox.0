@@ -1,19 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from devils.ext.ti.com ([198.47.26.153])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Rkzck-0002JG-B1
- for barebox@lists.infradead.org; Wed, 11 Jan 2012 14:57:59 +0000
-Received: from dbdp20.itg.ti.com ([172.24.170.38])
- by devils.ext.ti.com (8.13.7/8.13.7) with ESMTP id q0BEvuao022441
- for <barebox@lists.infradead.org>; Wed, 11 Jan 2012 08:57:57 -0600
-Received: from DBDE70.ent.ti.com (localhost [127.0.0.1])
- by dbdp20.itg.ti.com (8.13.8/8.13.8) with ESMTP id q0BEvtfl020045
- for <barebox@lists.infradead.org>; Wed, 11 Jan 2012 20:27:55 +0530 (IST)
-From: Sanjeev Premi <premi@ti.com>
-Date: Wed, 11 Jan 2012 20:27:22 +0530
-Message-ID: <1326293842-3063-6-git-send-email-premi@ti.com>
-In-Reply-To: <s.hauer@pengutronix.de,plagnioj@jcrosoft.com,J.Kilb@phytec.de>
-References: <s.hauer@pengutronix.de,plagnioj@jcrosoft.com,J.Kilb@phytec.de>
+Received: from mailout2.ltindia.com ([125.18.18.171])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1Rl0wW-0001wC-BA
+ for barebox@lists.infradead.org; Wed, 11 Jan 2012 16:22:30 +0000
+From: G Rajender <G.Rajender@lnties.com>
+Date: Wed, 11 Jan 2012 16:22:22 +0000
+Message-ID: <260174ADA4D63F4AA543B9C81F2DE712053235C0@POCITMSEXMB02.LntUniverse.com>
+Content-Language: en-US
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,54 +16,92 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============1547343470487130048=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/5] ARM omap: Set IFT target as MLO
-To: barebox@lists.infradead.org
+Subject: how to boot from external RAM
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-When CONFIG_OMAP_BUILD_IFT is selected, the
-target image name was set to "barebox.bin.ift".
-This file must be renamed "MLO" before it can
-be used on the SD card.
+--===============1547343470487130048==
+Content-Language: en-US
+Content-Type: multipart/alternative;
+	boundary="_000_260174ADA4D63F4AA543B9C81F2DE712053235C0POCITMSEXMB02Ln_"
 
-Make this as default behavior.
+--_000_260174ADA4D63F4AA543B9C81F2DE712053235C0POCITMSEXMB02Ln_
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Sanjeev Premi <premi@ti.com>
----
+Hi All,
 
- Did basic boot testing on OMAP3EVM after this
- change.
+How to boot barebox from External SDRAM??
+Im using iMX35 based board.
 
- arch/arm/Makefile |    5 +++--
- 1 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index 9885634..a994ce2 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -147,12 +147,13 @@ ifeq ($(machine-y),netx)
- KBUILD_IMAGE := barebox.netx
- endif
- 
--barebox.bin.ift: barebox.bin
-+MLO: barebox.bin
- 	@echo "  IFT    " $@
- 	$(Q)scripts/omap_signGP barebox.bin $(TEXT_BASE) 1
-+	$(Q)test -e barebox.bin.ift && mv barebox.bin.ift MLO
- 
- ifeq ($(CONFIG_OMAP_BUILD_IFT),y)
--KBUILD_IMAGE := barebox.bin.ift
-+KBUILD_IMAGE := MLO
- endif
- 
- all: $(KBUILD_IMAGE)
--- 
-1.7.0.4
+Raj
 
+
+
+Larsen & Toubro Limited
+
+www.larsentoubro.com
+
+This Email may contain confidential or privileged information for the inten=
+ded recipient (s) If you are not the intended recipient, please do not use =
+or disseminate the information, notify the sender and delete it from your s=
+ystem.
+
+--_000_260174ADA4D63F4AA543B9C81F2DE712053235C0POCITMSEXMB02Ln_
+Content-Type: text/html; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<html dir=3D"ltr">
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Diso-8859-=
+1">
+<style id=3D"owaParaStyle" type=3D"text/css">
+<!--
+p
+	{margin-top:0;
+	margin-bottom:0}
+-->
+</style>
+</head>
+<body>
+<div style=3D"direction:ltr; font-family:Tahoma; color:#000000; font-size:1=
+0pt">Hi All,<br>
+<br>
+How to boot barebox from External SDRAM??<br>
+Im using iMX35 based board.<br>
+<br>
+<br>
+Raj<br>
+<br>
+</div>
+<br>
+<br>
+<b>Larsen &amp; Toubro Limited <br>
+<br>
+www.larsentoubro.com <br>
+<br>
+</b>This Email may contain confidential or privileged information for the i=
+ntended recipient (s) If you are not the intended recipient, please do not =
+use or disseminate the information, notify the sender and delete it from yo=
+ur system.
+</body>
+</html>
+
+--_000_260174ADA4D63F4AA543B9C81F2DE712053235C0POCITMSEXMB02Ln_--
+
+
+--===============1547343470487130048==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============1547343470487130048==--
