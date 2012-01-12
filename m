@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from devils.ext.ti.com ([198.47.26.153])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RlJjN-00037F-Sj
- for barebox@lists.infradead.org; Thu, 12 Jan 2012 12:26:10 +0000
-From: "Premi, Sanjeev" <premi@ti.com>
-Date: Thu, 12 Jan 2012 12:26:02 +0000
-Message-ID: <E28AAFD00EFAA646AE3DF9B89CD24A89317F3290@DBDE01.ent.ti.com>
-References: <1326303284-14444-1-git-send-email-premi@ti.com>
- <1326303284-14444-2-git-send-email-premi@ti.com>
- <20120112092853.GZ5446@pengutronix.de>
-In-Reply-To: <20120112092853.GZ5446@pengutronix.de>
-Content-Language: en-US
-MIME-Version: 1.0
+Received: from 17.mo3.mail-out.ovh.net ([87.98.178.58]
+ helo=mo3.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1RlLqP-0001i8-JT
+ for barebox@lists.infradead.org; Thu, 12 Jan 2012 14:41:35 +0000
+Received: from mail617.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 8F70DFFBD7E
+ for <barebox@lists.infradead.org>; Thu, 12 Jan 2012 15:42:54 +0100 (CET)
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Thu, 12 Jan 2012 15:41:14 +0100
+Message-Id: <1326379274-29847-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,84 +18,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: [RFC 2/2] ARM omap: Add CONFIG_SILENT
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH 1/1] devfs-code: fix warning
+To: barebox@lists.infradead.org
 
-> -----Original Message-----
-> From: Sascha Hauer [mailto:s.hauer@pengutronix.de] 
-> Sent: Thursday, January 12, 2012 2:59 PM
-> To: Premi, Sanjeev
-> Cc: barebox@lists.infradead.org; Jean-Christophe PLAGNIOL-VILLARD
-> Subject: Re: [RFC 2/2] ARM omap: Add CONFIG_SILENT
-> 
-> On Wed, Jan 11, 2012 at 11:04:44PM +0530, Sanjeev Premi wrote:
-> > Don't display any verbose message on the console.
-> 
-> We already have pr_info and friends which right now all fall
-> back to printf. Instead of adding an ifdef for each conditional
-> printf how about making pr_* configurable? Something like this:
-> 
-> #if (CONFIG_LOGLEVEL > 6)
-> #define pr_info(fmt, arg...) printf(fmt, ##arg)
-> #else
-> #define pr_info(fmt, arg...)	do {} while(0)
-> #endif
-> #if (CONFIG_LOGLEVEL > 5)
-> #define pr_notice(fmt, arg...)	printf(fmt, ##arg)
-> #else
-> #define pr_notice(fmt, arg...)    do {} while(0)
-> #endif
-> 
-> BTW you seem to be very concerned about the codesize in the xloader
+/opt/work/barebox/fs/devfs-core.c: In function 'partition_ioctl':
+/opt/work/barebox/fs/devfs-core.c:109:27: warning: unused variable 'reg'
 
-Yes. Esp. what makes the code "big" when compared to the original
-x-loader for omap3. Idea was to identify portions of code that
-isn't getting used - at all (or most of the time).
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ fs/devfs-core.c |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
 
-> environments, which I can understand. How about giving my 
-> thumb2 patches
-> a try?
+diff --git a/fs/devfs-core.c b/fs/devfs-core.c
+index e11fea2..3014d0e 100644
+--- a/fs/devfs-core.c
++++ b/fs/devfs-core.c
+@@ -106,7 +106,6 @@ static int partition_ioctl(struct cdev *cdev, int request, void *buf)
+ 	int ret = 0;
+ 	size_t offset;
+ 	struct mtd_info_user *user = buf;
+-	struct region_info_user *reg = buf;
+ 
+ 	switch (request) {
+ 	case MEMSETBADBLOCK:
+@@ -146,6 +145,8 @@ static int partition_ioctl(struct cdev *cdev, int request, void *buf)
+ #ifdef CONFIG_PARTITION
+ 	case MEMGETREGIONINFO:
+ 		if (cdev->mtd) {
++			struct region_info_user *reg = buf;
++
+ 			reg->offset = cdev->offset;
+ 			reg->erasesize = cdev->mtd->erasesize;
+ 			reg->numblocks = cdev->size/reg->erasesize;
+-- 
+1.7.7
 
-I will. Just located the patches in my mailbox.
 
-I return to OMAP3 and barebox in my free time - which isn't too
-often; but I should be able to try these patches by end of this
-week.
-
-In fact, the code changes for this RFC were done in NOV - just
-couldn't post because I couldn't write detailed changelong
-explaining the motivation.
-
-~sanjeev
-
-> 
-> panda_xload_defconfig:
-> -rwxr-xr-x 1 sha ptx 41272 Jan 12 10:25 barebox.bin
-> 
-> panda_xload_defconfig in thumb2 mode:
-> -rwxr-xr-x 1 sha ptx 30348 Jan 12 10:25 barebox.bin
-> 
-> To merge these I'm currently waiting for Jean-Christophes OK on
-> 
-> ARM: move exception vectors away from start of binary
-> 
-> Sascha
-> 
-> -- 
-> Pengutronix e.K.                           |                  
->            |
-> Industrial Linux Solutions                 | 
-> http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: 
-> +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   
-> +49-5121-206917-5555 |
-> 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
