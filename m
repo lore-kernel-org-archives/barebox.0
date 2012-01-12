@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from bear.ext.ti.com ([192.94.94.41])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RlMwW-0007RK-SE
- for barebox@lists.infradead.org; Thu, 12 Jan 2012 15:51:57 +0000
-From: "Premi, Sanjeev" <premi@ti.com>
-Date: Thu, 12 Jan 2012 15:51:49 +0000
-Message-ID: <E28AAFD00EFAA646AE3DF9B89CD24A89317F362C@DBDE01.ent.ti.com>
-References: <1326303284-14444-1-git-send-email-premi@ti.com>
- <1326303284-14444-2-git-send-email-premi@ti.com>
- <20120112092853.GZ5446@pengutronix.de>
-In-Reply-To: <20120112092853.GZ5446@pengutronix.de>
+Received: from mailout2.ltindia.com ([125.18.18.171])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1RlNk5-0001q5-PK
+ for barebox@lists.infradead.org; Thu, 12 Jan 2012 16:43:11 +0000
+From: G Rajender <G.Rajender@lnties.com>
+Date: Thu, 12 Jan 2012 16:43:04 +0000
+Message-ID: <260174ADA4D63F4AA543B9C81F2DE71205323640@POCITMSEXMB02.LntUniverse.com>
+References: <260174ADA4D63F4AA543B9C81F2DE712053235C0@POCITMSEXMB02.LntUniverse.com>,
+ <20120112093127.GA5446@pengutronix.de>
+In-Reply-To: <20120112093127.GA5446@pengutronix.de>
 Content-Language: en-US
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
@@ -24,59 +23,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: [RFC 2/2] ARM omap: Add CONFIG_SILENT
+Subject: RE: how to boot from external RAM
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-> -----Original Message-----
-> From: Sascha Hauer [mailto:s.hauer@pengutronix.de] 
-> Sent: Thursday, January 12, 2012 2:59 PM
-> To: Premi, Sanjeev
-> Cc: barebox@lists.infradead.org; Jean-Christophe PLAGNIOL-VILLARD
-> Subject: Re: [RFC 2/2] ARM omap: Add CONFIG_SILENT
-> 
+Hi,
 
-[snip]
+I am using  Lauterbauk ARM In Circuit Debugger.
+I have done SDRAM initializations in .cmm (batch file) of debugger and configured SDRAM address in make menuconfig.
+I am able to download the image in to SDRAM mapped address but unable boot from it.
+any suggestions on this. Thanks.
 
-> BTW you seem to be very concerned about the codesize in the xloader
-> environments, which I can understand. How about giving my 
-> thumb2 patches
-> a try?
+Raj
 
-I tried pulling these patches on the latest master, but git am failed.
-Manual patching reports previously applied patches. (I was able to find
-few patches in the series already in master)
+________________________________________
+From: Sascha Hauer [s.hauer@pengutronix.de]
+Sent: Thursday, January 12, 2012 3:01 PM
+To: G Rajender
+Cc: barebox@lists.infradead.org
+Subject: Re: how to boot from external RAM
 
-Some hunks don't apply cleanly. For example:
+On Wed, Jan 11, 2012 at 04:22:22PM +0000, G Rajender wrote:
+> Hi All,
+>
+> How to boot barebox from External SDRAM??
+> Im using iMX35 based board.
 
-diff --git a/arch/arm/lib/armlinux.c b/arch/arm/lib/armlinux.c
-index bd9b72a..3fafb4b 100644
---- a/arch/arm/lib/armlinux.c
-+++ b/arch/arm/lib/armlinux.c
-@@ -253,6 +253,8 @@ void start_linux(void *adr, int swap, struct image_data *data)
- {
- 	void (*kernel)(int zero, int arch, void *params) = adr;
- 	void *params = NULL;
-+	int architecture = armlinux_get_architecture();
-+
- #ifdef CONFIG_OFTREE
- 	params = of_get_fixed_tree();
- 	if (params)
+How do you get the image into the SDRAM? With a debugger?
 
-I did quick fix-ups at few places to make compiler happy, but got
-stuck with this:
+However, barebox can start from SDRAM in which case it just skips
+the SDRAM initialization and depending on the board some more lowlevel
+init steps. Just copy the image somewhere into SDRAM and jump into
+it.
 
-  AS      arch/arm/mach-omap/omap3_core.o
-arch/arm/mach-omap/omap3_core.S: Assembler messages:
-arch/arm/mach-omap/omap3_core.S:116: Error: shift must be constant -- `orr r11,r10,r9,lsl r5'
-arch/arm/mach-omap/omap3_core.S:117: Error: shift must be constant -- `orr r11,r11,r7,lsl r2'
-make[1]: *** [arch/arm/mach-omap/omap3_core.o] Error 1
-make: *** [arch/arm/mach-omap] Error 2
+Sascha
 
-Will look at this later in the week.
-Do you have updated patches agaist latest master that I can try?
+--
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
-~sanjeev
+
+Larsen & Toubro Limited
+
+www.larsentoubro.com
+
+This Email may contain confidential or privileged information for the intended recipient (s) If you are not the intended recipient, please do not use or disseminate the information, notify the sender and delete it from your system.
 
 _______________________________________________
 barebox mailing list
