@@ -1,20 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 18.mo3.mail-out.ovh.net ([87.98.172.162]
+Received: from 8.mo3.mail-out.ovh.net ([87.98.172.249]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RlHJn-0004GC-O7
- for barebox@lists.infradead.org; Thu, 12 Jan 2012 09:51:37 +0000
+ id 1RlIIU-0007AA-RY
+ for barebox@lists.infradead.org; Thu, 12 Jan 2012 10:54:19 +0000
 Received: from mail617.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 9656FFFB66D
- for <barebox@lists.infradead.org>; Thu, 12 Jan 2012 10:52:54 +0100 (CET)
-Date: Thu, 12 Jan 2012 10:51:30 +0100
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id BBAAEFFB8D5
+ for <barebox@lists.infradead.org>; Thu, 12 Jan 2012 11:55:38 +0100 (CET)
+Date: Thu, 12 Jan 2012 11:54:13 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120112095130.GA13145@game.jcrosoft.org>
-References: <20120111132914.GB958@game.jcrosoft.org>
- <20120112085035.GX5446@pengutronix.de>
+Message-ID: <20120112105413.GB13145@game.jcrosoft.org>
+References: <1326303284-14444-1-git-send-email-premi@ti.com>
+ <1326303284-14444-2-git-send-email-premi@ti.com>
+ <20120112092853.GZ5446@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120112085035.GX5446@pengutronix.de>
+In-Reply-To: <20120112092853.GZ5446@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,35 +28,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/6] code size reduction for xloader
+Subject: Re: [RFC 2/2] ARM omap: Add CONFIG_SILENT
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 09:50 Thu 12 Jan     , Sascha Hauer wrote:
-> Hi J,
+On 10:28 Thu 12 Jan     , Sascha Hauer wrote:
+> On Wed, Jan 11, 2012 at 11:04:44PM +0530, Sanjeev Premi wrote:
+> > Don't display any verbose message on the console.
 > 
-> On Wed, Jan 11, 2012 at 02:29:14PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > HI,
-> > 
-> > 	this patch serie wrok on disble non needed code to optimize the size
-> > 	of barebox specially in the case of non interactive version suc as
-> > 	xloader for TI and late bootstrap for at91
-> > 
-> > 	tis will also iclude a sync of the kconfig need for this
-> > 
-> > 
-> > The following changes since commit 21d0fac1382cbe20dfc95c0a400350632f28cbdb:
-> > 
-> >   at91: add Calao TNY-A9260/TNY-A9263/TNY-A9G20 (2012-01-11 09:41:25 +0100)
-> > 
-> > are available in the git repository at:
-> >    git://uboot.jcrosoft.org/barebox.git size-optimisation
+> We already have pr_info and friends which right now all fall
+> back to printf. Instead of adding an ifdef for each conditional
+> printf how about making pr_* configurable? Something like this:
 > 
-> Your git server does not work for me. A git pull just stalls. The web
-> frontend works well though.
+> #if (CONFIG_LOGLEVEL > 6)
+> #define pr_info(fmt, arg...) printf(fmt, ##arg)
+> #else
+> #define pr_info(fmt, arg...)	do {} while(0)
+> #endif
+> #if (CONFIG_LOGLEVEL > 5)
+> #define pr_notice(fmt, arg...)	printf(fmt, ##arg)
+> #else
+> #define pr_notice(fmt, arg...)    do {} while(0)
+> #endif
 > 
-> Can you check this?
-check ready
+> BTW you seem to be very concerned about the codesize in the xloader
+> environments, which I can understand. How about giving my thumb2 patches
+> a try?
+> 
+> panda_xload_defconfig:
+> -rwxr-xr-x 1 sha ptx 41272 Jan 12 10:25 barebox.bin
+> 
+> panda_xload_defconfig in thumb2 mode:
+> -rwxr-xr-x 1 sha ptx 30348 Jan 12 10:25 barebox.bin
+> 
+> To merge these I'm currently waiting for Jean-Christophes OK on
+> 
+> ARM: move exception vectors away from start of binary
+does not work on at91 yet
+
+I'm working on the modification to make it work
+
+
+I'll send a first version of the at91 bootstrap soon without this modifcation
+and then fix it
 
 Best Regards,
 J.
