@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mailout2.ltindia.com ([125.18.18.171])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RlNk5-0001q5-PK
- for barebox@lists.infradead.org; Thu, 12 Jan 2012 16:43:11 +0000
-From: G Rajender <G.Rajender@lnties.com>
-Date: Thu, 12 Jan 2012 16:43:04 +0000
-Message-ID: <260174ADA4D63F4AA543B9C81F2DE71205323640@POCITMSEXMB02.LntUniverse.com>
-References: <260174ADA4D63F4AA543B9C81F2DE712053235C0@POCITMSEXMB02.LntUniverse.com>,
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RlcZE-0007EL-2e
+ for barebox@lists.infradead.org; Fri, 13 Jan 2012 08:32:57 +0000
+Date: Fri, 13 Jan 2012 09:32:41 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120113083241.GF5446@pengutronix.de>
+References: <260174ADA4D63F4AA543B9C81F2DE712053235C0@POCITMSEXMB02.LntUniverse.com>
  <20120112093127.GA5446@pengutronix.de>
-In-Reply-To: <20120112093127.GA5446@pengutronix.de>
-Content-Language: en-US
+ <260174ADA4D63F4AA543B9C81F2DE71205323640@POCITMSEXMB02.LntUniverse.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <260174ADA4D63F4AA543B9C81F2DE71205323640@POCITMSEXMB02.LntUniverse.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,53 +24,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: how to boot from external RAM
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: how to boot from external RAM
+To: G Rajender <G.Rajender@lnties.com>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi,
+On Thu, Jan 12, 2012 at 04:43:04PM +0000, G Rajender wrote:
+> Hi,
+> 
+> I am using  Lauterbauk ARM In Circuit Debugger.
+> I have done SDRAM initializations in .cmm (batch file) of debugger and configured SDRAM address in make menuconfig.
+> I am able to download the image in to SDRAM mapped address but unable boot from it.
+> any suggestions on this. Thanks.
 
-I am using  Lauterbauk ARM In Circuit Debugger.
-I have done SDRAM initializations in .cmm (batch file) of debugger and configured SDRAM address in make menuconfig.
-I am able to download the image in to SDRAM mapped address but unable boot from it.
-any suggestions on this. Thanks.
-
-Raj
-
-________________________________________
-From: Sascha Hauer [s.hauer@pengutronix.de]
-Sent: Thursday, January 12, 2012 3:01 PM
-To: G Rajender
-Cc: barebox@lists.infradead.org
-Subject: Re: how to boot from external RAM
-
-On Wed, Jan 11, 2012 at 04:22:22PM +0000, G Rajender wrote:
-> Hi All,
->
-> How to boot barebox from External SDRAM??
-> Im using iMX35 based board.
-
-How do you get the image into the SDRAM? With a debugger?
-
-However, barebox can start from SDRAM in which case it just skips
-the SDRAM initialization and depending on the board some more lowlevel
-init steps. Just copy the image somewhere into SDRAM and jump into
-it.
+Well, you have a debugger. You could have a look what the code actually
+does. To make your life a bit easier you can load the image to
+CONFIG_TEXT_BASE which means that barebox does not have to relocate
+itself and that the addresses in barebox.S match your hardware addresses
+from the beginning on.
 
 Sascha
 
---
+
+-- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-
-Larsen & Toubro Limited
-
-www.larsentoubro.com
-
-This Email may contain confidential or privileged information for the intended recipient (s) If you are not the intended recipient, please do not use or disseminate the information, notify the sender and delete it from your system.
 
 _______________________________________________
 barebox mailing list
