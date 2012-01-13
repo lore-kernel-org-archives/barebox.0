@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RlfYG-0002Rj-9t
- for barebox@lists.infradead.org; Fri, 13 Jan 2012 11:44:10 +0000
-Date: Fri, 13 Jan 2012 12:43:55 +0100
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RlflP-0005zz-3Q
+ for barebox@lists.infradead.org; Fri, 13 Jan 2012 11:57:45 +0000
+Date: Fri, 13 Jan 2012 12:57:31 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120113114355.GG5446@pengutronix.de>
-References: <1326303284-14444-1-git-send-email-premi@ti.com>
- <1326303284-14444-2-git-send-email-premi@ti.com>
- <20120112092853.GZ5446@pengutronix.de>
- <E28AAFD00EFAA646AE3DF9B89CD24A89317F362C@DBDE01.ent.ti.com>
+Message-ID: <20120113115731.GI5446@pengutronix.de>
+References: <OF2ADC7AFF.7875240B-ONC1257984.002AE123-C1257984.003043B9@o0802.rafi.inhouse>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <E28AAFD00EFAA646AE3DF9B89CD24A89317F362C@DBDE01.ent.ti.com>
+In-Reply-To: <OF2ADC7AFF.7875240B-ONC1257984.002AE123-C1257984.003043B9@o0802.rafi.inhouse>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,75 +22,116 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 2/2] ARM omap: Add CONFIG_SILENT
-To: "Premi, Sanjeev" <premi@ti.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: imx35 NFC and jffs2
+To: guenter.gebhardt@rafi.de
+Cc: barebox@lists.infradead.org
 
-On Thu, Jan 12, 2012 at 03:51:49PM +0000, Premi, Sanjeev wrote:
-> > -----Original Message-----
-> > From: Sascha Hauer [mailto:s.hauer@pengutronix.de] 
-> > Sent: Thursday, January 12, 2012 2:59 PM
-> > To: Premi, Sanjeev
-> > Cc: barebox@lists.infradead.org; Jean-Christophe PLAGNIOL-VILLARD
-> > Subject: Re: [RFC 2/2] ARM omap: Add CONFIG_SILENT
-> > 
-> 
-> [snip]
-> 
-> > BTW you seem to be very concerned about the codesize in the xloader
-> > environments, which I can understand. How about giving my 
-> > thumb2 patches
-> > a try?
-> 
-> I tried pulling these patches on the latest master, but git am failed.
-> Manual patching reports previously applied patches. (I was able to find
-> few patches in the series already in master)
-> 
-> Some hunks don't apply cleanly. For example:
-> 
-> diff --git a/arch/arm/lib/armlinux.c b/arch/arm/lib/armlinux.c
-> index bd9b72a..3fafb4b 100644
-> --- a/arch/arm/lib/armlinux.c
-> +++ b/arch/arm/lib/armlinux.c
-> @@ -253,6 +253,8 @@ void start_linux(void *adr, int swap, struct image_data *data)
->  {
->  	void (*kernel)(int zero, int arch, void *params) = adr;
->  	void *params = NULL;
-> +	int architecture = armlinux_get_architecture();
-> +
->  #ifdef CONFIG_OFTREE
->  	params = of_get_fixed_tree();
->  	if (params)
-> 
-> I did quick fix-ups at few places to make compiler happy, but got
-> stuck with this:
-> 
->   AS      arch/arm/mach-omap/omap3_core.o
-> arch/arm/mach-omap/omap3_core.S: Assembler messages:
-> arch/arm/mach-omap/omap3_core.S:116: Error: shift must be constant -- `orr r11,r10,r9,lsl r5'
-> arch/arm/mach-omap/omap3_core.S:117: Error: shift must be constant -- `orr r11,r11,r7,lsl r2'
+Hi Guenter,
 
-This can be fixed with the following:
+On Fri, Jan 13, 2012 at 09:47:08AM +0100, guenter.gebhardt@rafi.de wrote:
+> I am using jffs2 for my Linux root file system.
+> 
+> I am using the following command to create it:
+> 
+> $ mkfs.jffs2 -D ${ROOTFS_DEVICE_TABLE} -r ${ROOTFS_TMP} -o 
+> ${DIR_TFTP}/${ROOTFS_IMG} -n -l -e 128
+> 
+> Then I am using the barebox shell to program this image to the NAND flash:
+> 
+> $ update_rootfs nand
+> 
+> The system get's booted now. All seems to be fine.
+> But after using the system for a while I get a lot of error messages 
+> originating from the jffs2 file system:
+> 
+> UnCorrectable RS-ECC Error   
+> UnCorrectable RS-ECC Error   
+> UnCorrectable RS-ECC Error   
+> UnCorrectable RS-ECC Error   
+> mtd->read(0x6f8 bytes from 0x760108) returned ECC error
+> 
+> This leads to a corrupted and unusable file system.
+> 
+> I executed all the tests provided by the Linux kernel mtd device driver 
+> with success.
+> Also nandtest from the MTD utils package runs with success.
+> Therefore I assume that the imx35 NFC device driver is working well.
 
-ARM(	orr	r11, r10, r9, lsl r5	) /* factor way and cache number into r11 */
-ARM(	orr	r11, r11, r7, lsl r2	) /* factor index number into r11 */
-THUMB(	lsl	r6, r9, r5		)
-THUMB(	orr	r11, r10, r6		) /* factor way and cache number into r11 */
-THUMB(	lsl	r6, r7, r2		)
-THUMB(	orr	r11, r11, r6		) /* factor index number into r11 */
-
-Just how it is done in arch/arm/cpu/cache-armv7.S. Anyway, this is
-only the top of the iceberg. All Assembly code must be carefully
-reviewed in thumb mode and omap3 has quite a lot of it. I managed
-to start a second stage barebox (compiled with xloader defconfig +
-THUMB) in which I commented out arch_init_lowlevel() and
-board_init_lowlevel().
-
-I see if I can sort some of this stuff out on the weekend.
+Do yourself a favour and use UBIFS. The i.MX NFC is not very suitable
+for jffs2 because it uses OOB data which the NFC can't handle properly.
+If you really want to use jffs2 try the following patch which is from
+the Freescale BSP
 
 Sascha
 
 
+commit cfead094af78e18512a0515f213dbd490892b75a
+Author: Jason Liu <r64343@freescale.com>
+Date:   Fri Mar 14 21:53:04 2008 -0500
+
+    ENGR00068619 JFFS2 community fix with not use OOB
+    
+    JFFS2 community fix with not use OOB at MLC NAND, this patch
+    is coming from the MTD community
+    
+    Signed-off-by: Jason Liu <r64343@freescale.com>
+
+diff --git a/fs/jffs2/fs.c b/fs/jffs2/fs.c
+index e896e67..c6f902d 100644
+--- a/fs/jffs2/fs.c
++++ b/fs/jffs2/fs.c
+@@ -692,7 +692,9 @@ void jffs2_gc_release_page(struct jffs2_sb_info *c,
+ static int jffs2_flash_setup(struct jffs2_sb_info *c) {
+ 	int ret = 0;
+ 
+-	if (jffs2_cleanmarker_oob(c)) {
++	if (c->mtd->type == MTD_NANDFLASH) {
++		if (!(c->mtd->flags & MTD_OOB_WRITEABLE))
++			printk(KERN_INFO "JFFS2 doesn't use OOB.\n");
+ 		/* NAND flash... do setup accordingly */
+ 		ret = jffs2_nand_flash_setup(c);
+ 		if (ret)
+@@ -725,7 +727,7 @@ static int jffs2_flash_setup(struct jffs2_sb_info *c) {
+ 
+ void jffs2_flash_cleanup(struct jffs2_sb_info *c) {
+ 
+-	if (jffs2_cleanmarker_oob(c)) {
++	if (c->mtd->type == MTD_NANDFLASH) {
+ 		jffs2_nand_flash_cleanup(c);
+ 	}
+ 
+diff --git a/fs/jffs2/os-linux.h b/fs/jffs2/os-linux.h
+index 00bae7c..b6776d9 100644
+--- a/fs/jffs2/os-linux.h
++++ b/fs/jffs2/os-linux.h
+@@ -106,7 +106,7 @@ static inline void jffs2_init_inode_info(struct jffs2_inode_info *f)
+ #define jffs2_can_mark_obsolete(c) (c->mtd->flags & (MTD_BIT_WRITEABLE))
+ #endif
+ 
+-#define jffs2_cleanmarker_oob(c) (c->mtd->type == MTD_NANDFLASH)
++#define jffs2_cleanmarker_oob(c) (c->mtd->type == MTD_NANDFLASH && (c->mtd->flags & MTD_OOB_WRITEABLE))
+ 
+ #define jffs2_flash_write_oob(c, ofs, len, retlen, buf) ((c)->mtd->write_oob((c)->mtd, ofs, len, retlen, buf))
+ #define jffs2_flash_read_oob(c, ofs, len, retlen, buf) ((c)->mtd->read_oob((c)->mtd, ofs, len, retlen, buf))
+diff --git a/include/mtd/mtd-abi.h b/include/mtd/mtd-abi.h
+index 2f7d45b..e486432 100644
+--- a/include/mtd/mtd-abi.h
++++ b/include/mtd/mtd-abi.h
+@@ -58,12 +58,13 @@ struct mtd_oob_buf64 {
+ #define MTD_BIT_WRITEABLE	0x800	/* Single bits can be flipped */
+ #define MTD_NO_ERASE		0x1000	/* No erase necessary */
+ #define MTD_POWERUP_LOCK	0x2000	/* Always locked after reset */
++#define MTD_OOB_WRITEABLE	0x4000	/* Use Out-Of-Band area */
+ 
+ // Some common devices / combinations of capabilities
+ #define MTD_CAP_ROM		0
+ #define MTD_CAP_RAM		(MTD_WRITEABLE | MTD_BIT_WRITEABLE | MTD_NO_ERASE)
+ #define MTD_CAP_NORFLASH	(MTD_WRITEABLE | MTD_BIT_WRITEABLE)
+-#define MTD_CAP_NANDFLASH	(MTD_WRITEABLE)
++#define MTD_CAP_NANDFLASH	(MTD_WRITEABLE | MTD_OOB_WRITEABLE)
+ 
+ /* ECC byte placement */
+ #define MTD_NANDECC_OFF		0	// Switch off ECC (Not recommended)
 -- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
