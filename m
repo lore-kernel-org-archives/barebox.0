@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 4.mo3.mail-out.ovh.net ([178.33.46.10]
- helo=mo3.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RmMtX-000883-W3
- for barebox@lists.infradead.org; Sun, 15 Jan 2012 10:01:02 +0000
-Received: from mail617.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 07704FFADB6
- for <barebox@lists.infradead.org>; Sun, 15 Jan 2012 11:02:26 +0100 (CET)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sun, 15 Jan 2012 11:00:18 +0100
-Message-Id: <1326621621-11484-2-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <20120115095156.GH5002@game.jcrosoft.org>
-References: <20120115095156.GH5002@game.jcrosoft.org>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1Rmi2i-0000WZ-Lj
+ for barebox@lists.infradead.org; Mon, 16 Jan 2012 08:35:54 +0000
+Date: Mon, 16 Jan 2012 09:35:27 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120116083527.GK5446@pengutronix.de>
+References: <1326552527-8359-1-git-send-email-plagnioj@jcrosoft.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1326552527-8359-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,111 +18,68 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] defaultenv/boot: add getopt option support to select boot
- mode
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/1] usb: fix driver name
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-boot: boot [-m <mode>] [-k <kernel_option>] [-r <rootfs_option>] [-i <ip_mode>]
+On Sat, Jan 14, 2012 at 03:48:47PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> use the usb_driver name
 
-options
- - kernel        nand, nor, nfs, tftp, disk
- - rootfs        nand, nor, net, disk
- - ip            dhcp, none, empty
+Can you add some explanation to the commit log why this is needed? Which
+name is used before the patch and what does it use now?
 
-mode option
-   mode       kernel      rootfs
-   nand       nand        nand
-   nor        nor         nor
-   nfs        nfs         net
-   tftp       fttp        net
-   disk       disk        disk
+Sascha
 
-default mode are used from the /env/config
+> 
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  drivers/usb/core/usb.c    |    1 +
+>  drivers/usb/storage/usb.c |    1 -
+>  2 files changed, 1 insertions(+), 1 deletions(-)
+> 
+> diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
+> index 7039a2c..f10bcad 100644
+> --- a/drivers/usb/core/usb.c
+> +++ b/drivers/usb/core/usb.c
+> @@ -1275,6 +1275,7 @@ static int usb_hub_probe(struct usb_device *dev, int ifnum)
+>  
+>  int usb_driver_register(struct usb_driver *drv)
+>  {
+> +	drv->driver.name = drv->name;
+>  	drv->driver.bus = &usb_bus_type;
+>  	return register_driver(&drv->driver);
+>  }
+> diff --git a/drivers/usb/storage/usb.c b/drivers/usb/storage/usb.c
+> index 865ba8e..5b8923f 100644
+> --- a/drivers/usb/storage/usb.c
+> +++ b/drivers/usb/storage/usb.c
+> @@ -632,7 +632,6 @@ static struct usb_driver usb_storage_driver = {
+>  
+>  static int __init usb_stor_init(void)
+>  {
+> -	usb_storage_driver.name = usb_storage_driver.driver.name;
+>  	return usb_driver_register(&usb_storage_driver);
+>  }
+>  device_initcall(usb_stor_init);
+> -- 
+> 1.7.7
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- defaultenv/bin/_boot_help |   18 ++++++++++++++++++
- defaultenv/bin/boot       |   26 +++++++++++++++++++++-----
- 2 files changed, 39 insertions(+), 5 deletions(-)
- create mode 100644 defaultenv/bin/_boot_help
-
-diff --git a/defaultenv/bin/_boot_help b/defaultenv/bin/_boot_help
-new file mode 100644
-index 0000000..e7f7f16
---- /dev/null
-+++ b/defaultenv/bin/_boot_help
-@@ -0,0 +1,18 @@
-+#!/bin/sh
-+
-+echo "boot: boot [-m <mode>] [-k <kernel_option>] [-r <rootfs_option>] [-i <ip_mode>]"
-+echo ""
-+echo "options"
-+echo " - kernel        nand, nor, nfs, tftp, disk"
-+echo " - rootfs        nand, nor, net, disk"
-+echo " - ip            dhcp, none, empty"
-+echo ""
-+echo "mode option"
-+echo "   mode       kernel      rootfs"
-+echo "   nand       nand        nand"
-+echo "   nor        nor         nor"
-+echo "   nfs        nfs         net"
-+echo "   tftp       fttp        net"
-+echo "   disk       disk        disk"
-+echo ""
-+echo "default mode are used from the /env/config"
-diff --git a/defaultenv/bin/boot b/defaultenv/bin/boot
-index 1120757..d37eca8 100644
---- a/defaultenv/bin/boot
-+++ b/defaultenv/bin/boot
-@@ -6,19 +6,35 @@ if [ x$kernel_loc = xnet ]; then
- 	kernel_loc=tftp
- fi
- 
--if [ x$1 = xnand ]; then
-+while getopt "hk:r:i:m:" Option
-+do
-+if [ ${Option} = k ]; then
-+	kernel_loc=${OPTARG}
-+elif [ ${Option} = r ]; then
-+	rootfs_loc=${OPTARG}
-+elif [ ${Option} = i ]; then
-+	ip=${OPTARG}
-+elif [ ${Option} = m ]; then
-+	mode=${OPTARG}
-+else
-+	. /env/bin/_boot_help
-+	exit 0
-+fi
-+done
-+
-+if [ x$mode = xnand ]; then
- 	rootfs_loc=nand
- 	kernel_loc=nand
--elif [ x$1 = xnor ]; then
-+elif [ x$mode = xnor ]; then
- 	rootfs_loc=nor
- 	kernel_loc=nor
--elif [ x$1 = xnfs ]; then
-+elif [ x$mode = xnfs ]; then
- 	rootfs_loc=net
- 	kernel_loc=nfs
--elif [ x$1 = xtftp ]; then
-+elif [ x$mode = xtftp ]; then
- 	rootfs_loc=net
- 	kernel_loc=tftp
--elif [ x$1 = xdisk ]; then
-+elif [ x$mode = xdisk ]; then
- 	rootfs_loc=disk
- 	kernel_loc=disk
- fi
 -- 
-1.7.7
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
