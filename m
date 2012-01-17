@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RnEvD-0006Nf-Ql
- for barebox@lists.infradead.org; Tue, 17 Jan 2012 19:42:21 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 17 Jan 2012 20:42:06 +0100
-Message-Id: <1326829326-25841-1-git-send-email-s.hauer@pengutronix.de>
+Received: from mail-bk0-f49.google.com ([209.85.214.49])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RnFDW-00013C-5t
+ for barebox@lists.infradead.org; Tue, 17 Jan 2012 20:01:14 +0000
+Received: by bkty8 with SMTP id y8so8111559bkt.36
+ for <barebox@lists.infradead.org>; Tue, 17 Jan 2012 12:01:12 -0800 (PST)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Wed, 18 Jan 2012 00:00:59 +0400
+Message-Id: <1326830459-4092-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,59 +21,77 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] USB: Remove __attribute__ ((packed)) for struct ehci_hccr and
- ehci_hcor
+Subject: [PATCH v2] ns16550: support for UART with broken FIFO
 To: barebox@lists.infradead.org
 
-From: Jason Kridner <jkridner@beagleboard.org>
-
-cherry-picked from U-Boot.
-
-commit 69716c1900274a89bd5cbd1b0bb276ceaaa04f61
-Author: Jason Kridner <jkridner@beagleboard.org>
-Date:   Wed Apr 20 08:54:16 2011 -0500
-
-    USB: Remove __attribute__ ((packed)) for struct ehci_hccr and ehci_hcor
-
-    Remove __attribute__ ((packed)) to prevent byte access to soc
-    registers in some gcc versions.
-
-    Having patches to enable ehci for the BeagleBoard lying around for
-    several months, this one was the show-stopper.
-
-    Switched to align(4), rather than remove the attribute, per suggestion
-    from Alexander.
-
-    Credits have to go to Laine Walker-Avina <lwalkera@ieee.org> for
-    finding the problem.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- drivers/usb/host/ehci.h |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/serial/serial_ns16550.c |   17 +++++++++++++++--
+ include/ns16550.h               |    2 ++
+ 2 files changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/host/ehci.h b/drivers/usb/host/ehci.h
-index 07a1768..eac93db 100644
---- a/drivers/usb/host/ehci.h
-+++ b/drivers/usb/host/ehci.h
-@@ -55,7 +55,7 @@ struct ehci_hccr {
- #define HCS_N_PORTS(p)		(((p) >> 0) & 0xf)
- 	uint32_t cr_hccparams;
- 	uint8_t cr_hcsp_portrt[8];
--} __attribute__ ((packed));
-+} __attribute__ ((packed, aligned(4)));
+diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
+index 1217a5f..391a539 100644
+--- a/drivers/serial/serial_ns16550.c
++++ b/drivers/serial/serial_ns16550.c
+@@ -139,6 +139,8 @@ static unsigned int ns16550_calc_divisor(struct console_device *cdev,
+ static void ns16550_serial_init_port(struct console_device *cdev)
+ {
+ 	unsigned int baud_divisor;
++	struct NS16550_plat *plat = (struct NS16550_plat *)
++	    cdev->dev->platform_data;
  
- struct ehci_hcor {
- 	uint32_t or_usbcmd;
-@@ -80,7 +80,7 @@ struct ehci_hcor {
- #define FLAG_CF		(1 << 0)	/* true:  we'll support "high speed" */
- 	uint32_t or_portsc[CONFIG_SYS_USB_EHCI_MAX_ROOT_PORTS];
- 	uint32_t or_systune;
--} __attribute__ ((packed));
-+} __attribute__ ((packed, aligned(4)));
+ 	/* Setup the serial port with the defaults first */
+ 	baud_divisor = ns16550_calc_divisor(cdev, CONFIG_BAUDRATE);
+@@ -153,7 +155,12 @@ static void ns16550_serial_init_port(struct console_device *cdev)
+ 	ns16550_write(cdev, (baud_divisor >> 8) & 0xff, dlm);
+ 	ns16550_write(cdev, LCRVAL, lcr);
+ 	ns16550_write(cdev, MCRVAL, mcr);
+-	ns16550_write(cdev, FCRVAL, fcr);
++
++	if (plat->flags & NS16650_FLAG_DISABLE_FIFO)
++		ns16550_write(cdev, FCRVAL & ~FCR_FIFO_EN, fcr);
++	else
++		ns16550_write(cdev, FCRVAL, fcr);
++
+ #ifdef CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS
+ 	ns16550_write(cdev, 0x00,  mdr1);
+ #endif
+@@ -211,6 +218,8 @@ static int ns16550_tstc(struct console_device *cdev)
+ static int ns16550_setbaudrate(struct console_device *cdev, int baud_rate)
+ {
+ 	unsigned int baud_divisor = ns16550_calc_divisor(cdev, baud_rate);
++	struct NS16550_plat *plat = (struct NS16550_plat *)
++	    cdev->dev->platform_data;
  
- #define USBMODE		0x68		/* USB Device mode */
- #define USBMODE_SDIS	(1 << 3)	/* Stream disable */
+ 	ns16550_write(cdev, 0x00, ier);
+ 	ns16550_write(cdev, LCR_BKSE, lcr);
+@@ -218,7 +227,11 @@ static int ns16550_setbaudrate(struct console_device *cdev, int baud_rate)
+ 	ns16550_write(cdev, (baud_divisor >> 8) & 0xff, dlm);
+ 	ns16550_write(cdev, LCRVAL, lcr);
+ 	ns16550_write(cdev, MCRVAL, mcr);
+-	ns16550_write(cdev, FCRVAL, fcr);
++	if (plat->flags & NS16650_FLAG_DISABLE_FIFO)
++		ns16550_write(cdev, FCRVAL & ~FCR_FIFO_EN, fcr);
++	else
++		ns16550_write(cdev, FCRVAL, fcr);
++
+ 	return 0;
+ }
+ 
+diff --git a/include/ns16550.h b/include/ns16550.h
+index 5fd52fa..4a41b93 100644
+--- a/include/ns16550.h
++++ b/include/ns16550.h
+@@ -52,6 +52,8 @@ struct NS16550_plat {
+ 				    unsigned char reg_offset);
+ 
+ 	int shift;
++	unsigned int flags;
++#define NS16650_FLAG_DISABLE_FIFO	1
+ };
+ 
+ #endif				/* __NS16650_PLATFORM_H_ */
 -- 
 1.7.8.3
 
