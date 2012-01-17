@@ -1,11 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Rn6CM-0003NF-An
- for barebox@lists.infradead.org; Tue, 17 Jan 2012 10:23:31 +0000
+ id 1Rn6IJ-0004OK-Q6
+ for barebox@lists.infradead.org; Tue, 17 Jan 2012 10:29:41 +0000
+Date: Tue, 17 Jan 2012 11:29:20 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 17 Jan 2012 11:23:09 +0100
-Message-Id: <1326795789-10058-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20120117102920.GW5446@pengutronix.de>
+References: <20120115095156.GH5002@game.jcrosoft.org>
+ <1326621621-11484-5-git-send-email-plagnioj@jcrosoft.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1326621621-11484-5-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,107 +19,52 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM pca-a-l1: fix board_init
-To: barebox@lists.infradead.org
-Cc: Juergen Kilb <J.Kilb@phytec.de>
+Subject: Re: [PATCH 5/5] usb-926x: add dfu mem options support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-board_init is now called omap3_board_init. broken since:
+On Sun, Jan 15, 2012 at 11:00:21AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> this will allow to upload a bootable image in memory and boot it
+> boot with the rootfs via nfs
+> 
+> the image will must be 16MiB max
+> 
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  arch/arm/boards/usb-a926x/env/bin/init_board |   10 +++++++++-
+>  arch/arm/configs/usb_a9260_defconfig         |    1 +
+>  arch/arm/configs/usb_a9263_128mib_defconfig  |    1 +
+>  arch/arm/configs/usb_a9263_defconfig         |    1 +
+>  arch/arm/configs/usb_a9g20_128mib_defconfig  |    1 +
+>  arch/arm/configs/usb_a9g20_defconfig         |    1 +
+>  6 files changed, 14 insertions(+), 1 deletions(-)
+> 
+> diff --git a/arch/arm/boards/usb-a926x/env/bin/init_board b/arch/arm/boards/usb-a926x/env/bin/init_board
+> index 0a6baf7..4c906f0 100644
+> --- a/arch/arm/boards/usb-a926x/env/bin/init_board
+> +++ b/arch/arm/boards/usb-a926x/env/bin/init_board
+> @@ -6,7 +6,7 @@ button_wait=5
+>  product_id=0x1234
+>  vendor_id=0x4321
+>  
+> -dfu_config="/dev/nand0.barebox.bb(barebox)sr,/dev/nand0.kernel.bb(kernel)r,/dev/nand0.rootfs.bb(rootfs)r"
+> +dfu_config="/dev/nand0.barebox.bb(barebox)sr,/dev/nand0.kernel.bb(kernel)r,/dev/nand0.rootfs.bb(rootfs)r,/dev/ram0.kernel(mem)r"
 
-commit 494a12f703c33f80fe96e2a728545c490347eceb
-Author: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date:   Sat Jan 14 15:51:05 2012 +0100
+I really want to discourage usage of /dev/ram0 for 'official' use. Can't
+you use a regular file instead? From what I see only the O_CREAT flag is
+missing in the dfu driver.
 
-    omap3: move platform lowlevel init to mach-omap
+Sascha
 
-    this will allow to switch omap3 to standard organisation
-
-    Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-    Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/boards/phycard-a-l1/Makefile   |    1 -
- arch/arm/boards/phycard-a-l1/lowlevel.c |   39 -------------------------------
- arch/arm/boards/phycard-a-l1/pca-a-l1.c |    2 +-
- 3 files changed, 1 insertions(+), 41 deletions(-)
- delete mode 100644 arch/arm/boards/phycard-a-l1/lowlevel.c
-
-diff --git a/arch/arm/boards/phycard-a-l1/Makefile b/arch/arm/boards/phycard-a-l1/Makefile
-index cb0106b..db48b6d 100644
---- a/arch/arm/boards/phycard-a-l1/Makefile
-+++ b/arch/arm/boards/phycard-a-l1/Makefile
-@@ -18,5 +18,4 @@
- # Foundation, Inc., 59 Temple Place, Suite 330, Boston,
- # MA 02111-1307 USA
- 
--obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel.o
- obj-y += pca-a-l1.o
-diff --git a/arch/arm/boards/phycard-a-l1/lowlevel.c b/arch/arm/boards/phycard-a-l1/lowlevel.c
-deleted file mode 100644
-index bffbb08..0000000
---- a/arch/arm/boards/phycard-a-l1/lowlevel.c
-+++ /dev/null
-@@ -1,39 +0,0 @@
--/*
-- * (C) Copyright 2011
-- * Phytec Messtechnik GmbH <www.phytec.de>
-- * Juergen Kilb <j.kilb@phytec.de>
-- *
-- * See file CREDITS for list of people who contributed to this
-- * project.
-- *
-- * This program is free software; you can redistribute it and/or
-- * modify it under the terms of the GNU General Public License
-- * version 2 as published by the Free Software Foundation.
-- *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- *
-- * You should have received a copy of the GNU General Public License
-- * along with this program; if not, write to the Free Software
-- * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-- * MA 02111-1307 USA
-- */
--#include <common.h>
--#include <asm/barebox-arm.h>
--#include <mach/sdrc.h>
--#include <mach/omap3-silicon.h>
--
--void __naked board_init_lowlevel(void)
--{
--	uint32_t r;
--
--	/* setup a stack */
--	r = OMAP_SRAM_STACK;
--	__asm__ __volatile__("mov sp, %0" : : "r"(r));
--
--	board_init();
--
--	board_init_lowlevel_return();
--}
-diff --git a/arch/arm/boards/phycard-a-l1/pca-a-l1.c b/arch/arm/boards/phycard-a-l1/pca-a-l1.c
-index 7b127f3..11e8638 100644
---- a/arch/arm/boards/phycard-a-l1/pca-a-l1.c
-+++ b/arch/arm/boards/phycard-a-l1/pca-a-l1.c
-@@ -224,7 +224,7 @@ static void pcaal1_mux_config(void)
-  *
-  * @return void
-  */
--void board_init(void)
-+void omap3_board_init(void)
- {
- 	int in_sdram = running_in_sdram();
- 
 -- 
-1.7.8.3
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
