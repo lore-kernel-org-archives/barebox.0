@@ -1,15 +1,24 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Rn8n2-0001lj-BQ
- for barebox@lists.infradead.org; Tue, 17 Jan 2012 13:09:31 +0000
-Date: Tue, 17 Jan 2012 14:09:17 +0100
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1Rn8oX-0001U3-3m
+ for barebox@lists.infradead.org; Tue, 17 Jan 2012 13:11:02 +0000
+Date: Tue, 17 Jan 2012 14:10:55 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120117130917.GZ5446@pengutronix.de>
-References: <1326796746-8652-1-git-send-email-antonynpavlov@gmail.com>
+Message-ID: <20120117131055.GA5446@pengutronix.de>
+References: <1326709100-24106-1-git-send-email-s.hauer@pengutronix.de>
+ <E28AAFD00EFAA646AE3DF9B89CD24A89317FAA5B@DBDE01.ent.ti.com>
+ <20120116115228.GR5446@pengutronix.de>
+ <E28AAFD00EFAA646AE3DF9B89CD24A89317FAD15@DBDE01.ent.ti.com>
+ <E28AAFD00EFAA646AE3DF9B89CD24A89317FAE23@DBDE01.ent.ti.com>
+ <20120116154626.GS5446@pengutronix.de>
+ <E28AAFD00EFAA646AE3DF9B89CD24A89317FB2B7@DBDE01.ent.ti.com>
+ <E28AAFD00EFAA646AE3DF9B89CD24A89317FCED7@DBDE01.ent.ti.com>
+ <20120117121246.GY5446@pengutronix.de>
+ <E28AAFD00EFAA646AE3DF9B89CD24A89317FD026@DBDE01.ent.ti.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1326796746-8652-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <E28AAFD00EFAA646AE3DF9B89CD24A89317FD026@DBDE01.ent.ti.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,69 +31,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] ns16550: support for UART with broken FIFO
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] omap3 towards thumb2 support
+To: "Premi, Sanjeev" <premi@ti.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Tue, Jan 17, 2012 at 02:39:06PM +0400, Antony Pavlov wrote:
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
->  drivers/serial/serial_ns16550.c |   19 +++++++++++++++++--
->  include/ns16550.h               |    2 ++
->  2 files changed, 19 insertions(+), 2 deletions(-)
+On Tue, Jan 17, 2012 at 12:24:26PM +0000, Premi, Sanjeev wrote:
+> > -----Original Message-----
+> > From: Sascha Hauer [mailto:s.hauer@pengutronix.de] 
+> > Sent: Tuesday, January 17, 2012 5:43 PM
+> > To: Premi, Sanjeev
+> > Cc: barebox@lists.infradead.org
+> > Subject: Re: [PATCH] omap3 towards thumb2 support
+> > 
+> > On Tue, Jan 17, 2012 at 11:14:31AM +0000, Premi, Sanjeev wrote:
 > 
-> diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
-> index 1217a5f..01de964 100644
-> --- a/drivers/serial/serial_ns16550.c
-> +++ b/drivers/serial/serial_ns16550.c
-> @@ -139,6 +139,8 @@ static unsigned int ns16550_calc_divisor(struct console_device *cdev,
->  static void ns16550_serial_init_port(struct console_device *cdev)
->  {
->  	unsigned int baud_divisor;
-> +	struct NS16550_plat *plat = (struct NS16550_plat *)
-> +	    cdev->dev->platform_data;
->  
->  	/* Setup the serial port with the defaults first */
->  	baud_divisor = ns16550_calc_divisor(cdev, CONFIG_BAUDRATE);
-> @@ -153,7 +155,13 @@ static void ns16550_serial_init_port(struct console_device *cdev)
->  	ns16550_write(cdev, (baud_divisor >> 8) & 0xff, dlm);
->  	ns16550_write(cdev, LCRVAL, lcr);
->  	ns16550_write(cdev, MCRVAL, mcr);
-> -	ns16550_write(cdev, FCRVAL, fcr);
-> +
-> +	if (plat->flags & NS16650_FLAG_DISABLE_FIFO) {
-> +		ns16550_write(cdev, FCRVAL & ~FCR_FIFO_EN, fcr);
-> +	} else {
-> +		ns16550_write(cdev, FCRVAL, fcr);
-> +	}
+> [snip]
+> 
+> > > > 
+> > > > I attached my binary MLO file. Could you check if it 
+> > works for you? I
+> > > > just checked this binary and it comes up with:
+> > > > 
+> > > > [sp] I will try tomorrow morning.
+> > > 
+> > > Sascha,
+> > >   Your MLO boots fine. But I couldn't make repeat success on either
+> > >   beagle or the omap3evem on my side.
+> > > 
+> > >   Each time there is an exception on entry of setup_auxcr() on both
+> > >   boards. See attached image.
+> > > 
+> > >   I noticed that the size of the generated MLO for beagle 
+> > were different
+> > >   for us - 35224(yours) vs. 35572(mine).
+> > > 
+> > >   I am building with CodeSourcery 2011.03-41.
+> > 
+> > Ok, got it. Please replace the setup_auxcr patch with the 
+> > following one
+> > (I also updated the work/omap3 branch). The problem was the missing
+> > ENDPROC(setup_auxcr) directive which tells the assembler that
+> > setup_auxcr is a function. With this the function is correctly called
+> > with 'blx' instead of 'bl'. 'blx' is needed because setup_auxcr is
+> > compiled in arm mode instead of thumb2 mode. Somehow my toolchain
+> > got that right without ENDPROC but the codesourcery toolchain didn't.
+> > With this patch the binary also works with the codesourcery toolchain.
+> > 
+> 
+> I replaced the contents of auxcr.S and I am able to boot fine on the
+> OMAP3EVM.
+> 
+> BTW, I noticed that this file has no license header. Is this okay?
 
-unnecessary braces here..
-
-> +
->  #ifdef CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS
->  	ns16550_write(cdev, 0x00,  mdr1);
->  #endif
-> @@ -211,6 +219,8 @@ static int ns16550_tstc(struct console_device *cdev)
->  static int ns16550_setbaudrate(struct console_device *cdev, int baud_rate)
->  {
->  	unsigned int baud_divisor = ns16550_calc_divisor(cdev, baud_rate);
-> +	struct NS16550_plat *plat = (struct NS16550_plat *)
-> +	    cdev->dev->platform_data;
->  
->  	ns16550_write(cdev, 0x00, ier);
->  	ns16550_write(cdev, LCR_BKSE, lcr);
-> @@ -218,7 +228,12 @@ static int ns16550_setbaudrate(struct console_device *cdev, int baud_rate)
->  	ns16550_write(cdev, (baud_divisor >> 8) & 0xff, dlm);
->  	ns16550_write(cdev, LCRVAL, lcr);
->  	ns16550_write(cdev, MCRVAL, mcr);
-> -	ns16550_write(cdev, FCRVAL, fcr);
-> +	if (plat->flags & NS16650_FLAG_DISABLE_FIFO) {
-> +		ns16550_write(cdev, FCRVAL & ~FCR_FIFO_EN, fcr);
-> +	} else {
-> +		ns16550_write(cdev, FCRVAL, fcr);
-> +	}
-
-and here. Otherwise this looks ok.
+Added one. Can I have your tested-by?
 
 Sascha
 
