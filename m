@@ -1,25 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from devils.ext.ti.com ([198.47.26.153])
+Received: from mail-we0-f177.google.com ([74.125.82.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Rn8xN-0004YM-JX
- for barebox@lists.infradead.org; Tue, 17 Jan 2012 13:20:11 +0000
-From: "Premi, Sanjeev" <premi@ti.com>
-Date: Tue, 17 Jan 2012 13:20:03 +0000
-Message-ID: <E28AAFD00EFAA646AE3DF9B89CD24A89317FD25F@DBDE01.ent.ti.com>
-References: <1326709100-24106-1-git-send-email-s.hauer@pengutronix.de>
- <E28AAFD00EFAA646AE3DF9B89CD24A89317FAA5B@DBDE01.ent.ti.com>
- <20120116115228.GR5446@pengutronix.de>
- <E28AAFD00EFAA646AE3DF9B89CD24A89317FAD15@DBDE01.ent.ti.com>
- <E28AAFD00EFAA646AE3DF9B89CD24A89317FAE23@DBDE01.ent.ti.com>
- <20120116154626.GS5446@pengutronix.de>
- <E28AAFD00EFAA646AE3DF9B89CD24A89317FB2B7@DBDE01.ent.ti.com>
- <E28AAFD00EFAA646AE3DF9B89CD24A89317FCED7@DBDE01.ent.ti.com>
- <20120117121246.GY5446@pengutronix.de>
- <E28AAFD00EFAA646AE3DF9B89CD24A89317FD026@DBDE01.ent.ti.com>
- <20120117131055.GA5446@pengutronix.de>
-In-Reply-To: <20120117131055.GA5446@pengutronix.de>
-Content-Language: en-US
+ id 1Rn94X-0004bl-91
+ for barebox@lists.infradead.org; Tue, 17 Jan 2012 13:27:34 +0000
+Received: by werm13 with SMTP id m13so2090074wer.36
+ for <barebox@lists.infradead.org>; Tue, 17 Jan 2012 05:27:30 -0800 (PST)
 MIME-Version: 1.0
+In-Reply-To: <20120117130917.GZ5446@pengutronix.de>
+References: <1326796746-8652-1-git-send-email-antonynpavlov@gmail.com>
+ <20120117130917.GZ5446@pengutronix.de>
+Date: Tue, 17 Jan 2012 17:27:30 +0400
+Message-ID: <CAA4bVAFT8qQ_Z1WxOJQ=RKSGqFNwgSwDgx8BZqg4_+E72OWxwA@mail.gmail.com>
+From: Antony Pavlov <antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,93 +20,103 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: [PATCH] omap3 towards thumb2 support
+Subject: Re: [RFC] ns16550: support for UART with broken FIFO
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Cc: barebox@lists.infradead.org
 
-> -----Original Message-----
-> From: Sascha Hauer [mailto:s.hauer@pengutronix.de] 
-> Sent: Tuesday, January 17, 2012 6:41 PM
-> To: Premi, Sanjeev
-> Cc: barebox@lists.infradead.org
-> Subject: Re: [PATCH] omap3 towards thumb2 support
-> 
-> On Tue, Jan 17, 2012 at 12:24:26PM +0000, Premi, Sanjeev wrote:
-> > > -----Original Message-----
-> > > From: Sascha Hauer [mailto:s.hauer@pengutronix.de] 
-> > > Sent: Tuesday, January 17, 2012 5:43 PM
-> > > To: Premi, Sanjeev
-> > > Cc: barebox@lists.infradead.org
-> > > Subject: Re: [PATCH] omap3 towards thumb2 support
-> > > 
-> > > On Tue, Jan 17, 2012 at 11:14:31AM +0000, Premi, Sanjeev wrote:
-> > 
-> > [snip]
-> > 
-> > > > > 
-> > > > > I attached my binary MLO file. Could you check if it 
-> > > works for you? I
-> > > > > just checked this binary and it comes up with:
-> > > > > 
-> > > > > [sp] I will try tomorrow morning.
-> > > > 
-> > > > Sascha,
-> > > >   Your MLO boots fine. But I couldn't make repeat 
-> success on either
-> > > >   beagle or the omap3evem on my side.
-> > > > 
-> > > >   Each time there is an exception on entry of 
-> setup_auxcr() on both
-> > > >   boards. See attached image.
-> > > > 
-> > > >   I noticed that the size of the generated MLO for beagle 
-> > > were different
-> > > >   for us - 35224(yours) vs. 35572(mine).
-> > > > 
-> > > >   I am building with CodeSourcery 2011.03-41.
-> > > 
-> > > Ok, got it. Please replace the setup_auxcr patch with the 
-> > > following one
-> > > (I also updated the work/omap3 branch). The problem was 
-> the missing
-> > > ENDPROC(setup_auxcr) directive which tells the assembler that
-> > > setup_auxcr is a function. With this the function is 
-> correctly called
-> > > with 'blx' instead of 'bl'. 'blx' is needed because setup_auxcr is
-> > > compiled in arm mode instead of thumb2 mode. Somehow my toolchain
-> > > got that right without ENDPROC but the codesourcery 
-> toolchain didn't.
-> > > With this patch the binary also works with the 
-> codesourcery toolchain.
-> > > 
-> > 
-> > I replaced the contents of auxcr.S and I am able to boot fine on the
-> > OMAP3EVM.
-> > 
-> > BTW, I noticed that this file has no license header. Is this okay?
-> 
-> Added one. Can I have your tested-by?
+On 17 January 2012 17:09, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> On Tue, Jan 17, 2012 at 02:39:06PM +0400, Antony Pavlov wrote:
+>> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+>> ---
+>> =A0drivers/serial/serial_ns16550.c | =A0 19 +++++++++++++++++--
+>> =A0include/ns16550.h =A0 =A0 =A0 =A0 =A0 =A0 =A0 | =A0 =A02 ++
+>> =A02 files changed, 19 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns1=
+6550.c
+>> index 1217a5f..01de964 100644
+>> --- a/drivers/serial/serial_ns16550.c
+>> +++ b/drivers/serial/serial_ns16550.c
+>> @@ -139,6 +139,8 @@ static unsigned int ns16550_calc_divisor(struct cons=
+ole_device *cdev,
+>> =A0static void ns16550_serial_init_port(struct console_device *cdev)
+>> =A0{
+>> =A0 =A0 =A0 unsigned int baud_divisor;
+>> + =A0 =A0 struct NS16550_plat *plat =3D (struct NS16550_plat *)
+>> + =A0 =A0 =A0 =A0 cdev->dev->platform_data;
+>>
+>> =A0 =A0 =A0 /* Setup the serial port with the defaults first */
+>> =A0 =A0 =A0 baud_divisor =3D ns16550_calc_divisor(cdev, CONFIG_BAUDRATE);
+>> @@ -153,7 +155,13 @@ static void ns16550_serial_init_port(struct console=
+_device *cdev)
+>> =A0 =A0 =A0 ns16550_write(cdev, (baud_divisor >> 8) & 0xff, dlm);
+>> =A0 =A0 =A0 ns16550_write(cdev, LCRVAL, lcr);
+>> =A0 =A0 =A0 ns16550_write(cdev, MCRVAL, mcr);
+>> - =A0 =A0 ns16550_write(cdev, FCRVAL, fcr);
+>> +
+>> + =A0 =A0 if (plat->flags & NS16650_FLAG_DISABLE_FIFO) {
+>> + =A0 =A0 =A0 =A0 =A0 =A0 ns16550_write(cdev, FCRVAL & ~FCR_FIFO_EN, fcr=
+);
+>> + =A0 =A0 } else {
+>> + =A0 =A0 =A0 =A0 =A0 =A0 ns16550_write(cdev, FCRVAL, fcr);
+>> + =A0 =A0 }
+>
+> unnecessary braces here..
+>
+>> +
+>> =A0#ifdef CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS
+>> =A0 =A0 =A0 ns16550_write(cdev, 0x00, =A0mdr1);
+>> =A0#endif
+>> @@ -211,6 +219,8 @@ static int ns16550_tstc(struct console_device *cdev)
+>> =A0static int ns16550_setbaudrate(struct console_device *cdev, int baud_=
+rate)
+>> =A0{
+>> =A0 =A0 =A0 unsigned int baud_divisor =3D ns16550_calc_divisor(cdev, bau=
+d_rate);
+>> + =A0 =A0 struct NS16550_plat *plat =3D (struct NS16550_plat *)
+>> + =A0 =A0 =A0 =A0 cdev->dev->platform_data;
+>>
+>> =A0 =A0 =A0 ns16550_write(cdev, 0x00, ier);
+>> =A0 =A0 =A0 ns16550_write(cdev, LCR_BKSE, lcr);
+>> @@ -218,7 +228,12 @@ static int ns16550_setbaudrate(struct console_devic=
+e *cdev, int baud_rate)
+>> =A0 =A0 =A0 ns16550_write(cdev, (baud_divisor >> 8) & 0xff, dlm);
+>> =A0 =A0 =A0 ns16550_write(cdev, LCRVAL, lcr);
+>> =A0 =A0 =A0 ns16550_write(cdev, MCRVAL, mcr);
+>> - =A0 =A0 ns16550_write(cdev, FCRVAL, fcr);
+>> + =A0 =A0 if (plat->flags & NS16650_FLAG_DISABLE_FIFO) {
+>> + =A0 =A0 =A0 =A0 =A0 =A0 ns16550_write(cdev, FCRVAL & ~FCR_FIFO_EN, fcr=
+);
+>> + =A0 =A0 } else {
+>> + =A0 =A0 =A0 =A0 =A0 =A0 ns16550_write(cdev, FCRVAL, fcr);
+>> + =A0 =A0 }
+>
+> and here. Otherwise this looks ok.
 
-Tested-by: Sanjeev Premi <premi@ti.com>
+Ok, I shall remove the braces.
 
-> 
-> Sascha
-> 
-> 
-> -- 
-> Pengutronix e.K.                           |                  
->            |
-> Industrial Linux Solutions                 | 
-> http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: 
-> +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   
-> +49-5121-206917-5555 |
-> 
+Sascha!
+
+We have special OMAP code, e.g.:
+
+#ifdef CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS
+        ns16550_write(cdev, 0x07, mdr1);        /* Disable */
+#endif
+
+I think, that we can change it to something like this:
+
+    if (plat->flags & NS16650_FLAG_OMAP_EXTENSIONS)
+        ns16550_write(cdev, 0x07, mdr1);        /* Disable */
+
+-- =
+
+Best regards,
+=A0 Antony Pavlov
+
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
