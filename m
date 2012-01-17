@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Rn6At-0003MU-Ig
- for barebox@lists.infradead.org; Tue, 17 Jan 2012 10:22:01 +0000
-Date: Tue, 17 Jan 2012 11:21:37 +0100
+ id 1Rn6CM-0003NF-An
+ for barebox@lists.infradead.org; Tue, 17 Jan 2012 10:23:31 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120117102137.GA26642@pengutronix.de>
-References: <1326730793-2818-1-git-send-email-plagnioj@jcrosoft.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1326730793-2818-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Tue, 17 Jan 2012 11:23:09 +0100
+Message-Id: <1326795789-10058-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,58 +14,107 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2 v2] add config to check if the size of barebox exceed
- the target size
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ARM pca-a-l1: fix board_init
+To: barebox@lists.infradead.org
+Cc: Juergen Kilb <J.Kilb@phytec.de>
 
-On Mon, Jan 16, 2012 at 05:19:52PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> CONFIG_BAREBOX_MAX_IMAGE_SIZE will allow to detected silent oversize result
-> 
-> if 0x0 the size will not been checked
-> 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
-> v2:
-> 
-> 	change to CONFIG_BAREBOX_MAX_IMAGE_SIZE
-> 	use default as 0xffffffff
-> 
-> Best Regards,
-> J.
->  Makefile       |    7 +++++++
->  common/Kconfig |    8 ++++++++
->  2 files changed, 15 insertions(+), 0 deletions(-)
-> 
-> diff --git a/Makefile b/Makefile
-> index d8e685e..12fa192 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -659,6 +659,13 @@ OBJCOPYFLAGS_barebox.bin = -O binary
->  
->  barebox.bin: barebox FORCE
->  	$(call if_changed,objcopy)
-> +	size=`stat -c%s $@`; \
-> +	max_size=`printf "%d" $(CONFIG_BAREBOX_MAX_IMAGE_SIZE)`; \
-> +	if [ $$size -gt $$max_size ] ; \
-> +	then \
-> +		echo "$@ size $$size > of the maximum size $$max_size"; \
-> +		exit 1 ; \
-> +	fi
+board_init is now called omap3_board_init. broken since:
 
-added a '@' while applying to make this check quiet.
+commit 494a12f703c33f80fe96e2a728545c490347eceb
+Author: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date:   Sat Jan 14 15:51:05 2012 +0100
 
-Sascha
+    omap3: move platform lowlevel init to mach-omap
 
+    this will allow to switch omap3 to standard organisation
+
+    Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+    Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/boards/phycard-a-l1/Makefile   |    1 -
+ arch/arm/boards/phycard-a-l1/lowlevel.c |   39 -------------------------------
+ arch/arm/boards/phycard-a-l1/pca-a-l1.c |    2 +-
+ 3 files changed, 1 insertions(+), 41 deletions(-)
+ delete mode 100644 arch/arm/boards/phycard-a-l1/lowlevel.c
+
+diff --git a/arch/arm/boards/phycard-a-l1/Makefile b/arch/arm/boards/phycard-a-l1/Makefile
+index cb0106b..db48b6d 100644
+--- a/arch/arm/boards/phycard-a-l1/Makefile
++++ b/arch/arm/boards/phycard-a-l1/Makefile
+@@ -18,5 +18,4 @@
+ # Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+ # MA 02111-1307 USA
+ 
+-obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel.o
+ obj-y += pca-a-l1.o
+diff --git a/arch/arm/boards/phycard-a-l1/lowlevel.c b/arch/arm/boards/phycard-a-l1/lowlevel.c
+deleted file mode 100644
+index bffbb08..0000000
+--- a/arch/arm/boards/phycard-a-l1/lowlevel.c
++++ /dev/null
+@@ -1,39 +0,0 @@
+-/*
+- * (C) Copyright 2011
+- * Phytec Messtechnik GmbH <www.phytec.de>
+- * Juergen Kilb <j.kilb@phytec.de>
+- *
+- * See file CREDITS for list of people who contributed to this
+- * project.
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License
+- * version 2 as published by the Free Software Foundation.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+- * MA 02111-1307 USA
+- */
+-#include <common.h>
+-#include <asm/barebox-arm.h>
+-#include <mach/sdrc.h>
+-#include <mach/omap3-silicon.h>
+-
+-void __naked board_init_lowlevel(void)
+-{
+-	uint32_t r;
+-
+-	/* setup a stack */
+-	r = OMAP_SRAM_STACK;
+-	__asm__ __volatile__("mov sp, %0" : : "r"(r));
+-
+-	board_init();
+-
+-	board_init_lowlevel_return();
+-}
+diff --git a/arch/arm/boards/phycard-a-l1/pca-a-l1.c b/arch/arm/boards/phycard-a-l1/pca-a-l1.c
+index 7b127f3..11e8638 100644
+--- a/arch/arm/boards/phycard-a-l1/pca-a-l1.c
++++ b/arch/arm/boards/phycard-a-l1/pca-a-l1.c
+@@ -224,7 +224,7 @@ static void pcaal1_mux_config(void)
+  *
+  * @return void
+  */
+-void board_init(void)
++void omap3_board_init(void)
+ {
+ 	int in_sdram = running_in_sdram();
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.8.3
+
 
 _______________________________________________
 barebox mailing list
