@@ -1,23 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 16.mo3.mail-out.ovh.net ([188.165.56.217]
+Received: from 19.mo3.mail-out.ovh.net ([178.32.98.231]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RnIwM-0001MR-QQ
- for barebox@lists.infradead.org; Tue, 17 Jan 2012 23:59:48 +0000
+ id 1RnK16-0002na-Hw
+ for barebox@lists.infradead.org; Wed, 18 Jan 2012 01:08:46 +0000
 Received: from mail617.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 603A8FFB613
- for <barebox@lists.infradead.org>; Wed, 18 Jan 2012 01:01:17 +0100 (CET)
-Date: Wed, 18 Jan 2012 00:58:38 +0100
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 11C14FFB1D5
+ for <barebox@lists.infradead.org>; Wed, 18 Jan 2012 02:10:16 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120117235838.GF25622@game.jcrosoft.org>
-References: <1326796746-8652-1-git-send-email-antonynpavlov@gmail.com>
- <20120117130917.GZ5446@pengutronix.de>
- <CAA4bVAFT8qQ_Z1WxOJQ=RKSGqFNwgSwDgx8BZqg4_+E72OWxwA@mail.gmail.com>
- <20120117145302.GB25622@game.jcrosoft.org>
- <CAA4bVAFLHb6idJ6yUa5ZNDYdBTKroAE4g2_u=YAZ7XB2MCLGrw@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAA4bVAFLHb6idJ6yUa5ZNDYdBTKroAE4g2_u=YAZ7XB2MCLGrw@mail.gmail.com>
+Date: Wed, 18 Jan 2012 02:07:33 +0100
+Message-Id: <1326848854-21033-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,143 +18,167 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] ns16550: support for UART with broken FIFO
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/2] introduce barebox_bare_init_size to known the bare_init
+ size and check it
+To: barebox@lists.infradead.org
 
-On 23:40 Tue 17 Jan     , Antony Pavlov wrote:
-> On 17 January 2012 18:53, Jean-Christophe PLAGNIOL-VILLARD
-> <plagnioj@jcrosoft.com> wrote:
-> > On 17:27 Tue 17 Jan =A0 =A0 , Antony Pavlov wrote:
-> >> On 17 January 2012 17:09, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> >> > On Tue, Jan 17, 2012 at 02:39:06PM +0400, Antony Pavlov wrote:
-> >> >> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> >> >> ---
-> >> >> =A0drivers/serial/serial_ns16550.c | =A0 19 +++++++++++++++++--
-> >> >> =A0include/ns16550.h =A0 =A0 =A0 =A0 =A0 =A0 =A0 | =A0 =A02 ++
-> >> >> =A02 files changed, 19 insertions(+), 2 deletions(-)
-> >> >>
-> >> >> diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/seria=
-l_ns16550.c
-> >> >> index 1217a5f..01de964 100644
-> >> >> --- a/drivers/serial/serial_ns16550.c
-> >> >> +++ b/drivers/serial/serial_ns16550.c
-> >> >> @@ -139,6 +139,8 @@ static unsigned int ns16550_calc_divisor(struct=
- console_device *cdev,
-> >> >> =A0static void ns16550_serial_init_port(struct console_device *cdev)
-> >> >> =A0{
-> >> >> =A0 =A0 =A0 unsigned int baud_divisor;
-> >> >> + =A0 =A0 struct NS16550_plat *plat =3D (struct NS16550_plat *)
-> >> >> + =A0 =A0 =A0 =A0 cdev->dev->platform_data;
-> >> >>
-> >> >> =A0 =A0 =A0 /* Setup the serial port with the defaults first */
-> >> >> =A0 =A0 =A0 baud_divisor =3D ns16550_calc_divisor(cdev, CONFIG_BAUD=
-RATE);
-> >> >> @@ -153,7 +155,13 @@ static void ns16550_serial_init_port(struct co=
-nsole_device *cdev)
-> >> >> =A0 =A0 =A0 ns16550_write(cdev, (baud_divisor >> 8) & 0xff, dlm);
-> >> >> =A0 =A0 =A0 ns16550_write(cdev, LCRVAL, lcr);
-> >> >> =A0 =A0 =A0 ns16550_write(cdev, MCRVAL, mcr);
-> >> >> - =A0 =A0 ns16550_write(cdev, FCRVAL, fcr);
-> >> >> +
-> >> >> + =A0 =A0 if (plat->flags & NS16650_FLAG_DISABLE_FIFO) {
-> >> >> + =A0 =A0 =A0 =A0 =A0 =A0 ns16550_write(cdev, FCRVAL & ~FCR_FIFO_EN=
-, fcr);
-> >> >> + =A0 =A0 } else {
-> >> >> + =A0 =A0 =A0 =A0 =A0 =A0 ns16550_write(cdev, FCRVAL, fcr);
-> >> >> + =A0 =A0 }
-> >> >
-> >> > unnecessary braces here..
-> >> >
-> >> >> +
-> >> >> =A0#ifdef CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS
-> >> >> =A0 =A0 =A0 ns16550_write(cdev, 0x00, =A0mdr1);
-> >> >> =A0#endif
-> >> >> @@ -211,6 +219,8 @@ static int ns16550_tstc(struct console_device *=
-cdev)
-> >> >> =A0static int ns16550_setbaudrate(struct console_device *cdev, int =
-baud_rate)
-> >> >> =A0{
-> >> >> =A0 =A0 =A0 unsigned int baud_divisor =3D ns16550_calc_divisor(cdev=
-, baud_rate);
-> >> >> + =A0 =A0 struct NS16550_plat *plat =3D (struct NS16550_plat *)
-> >> >> + =A0 =A0 =A0 =A0 cdev->dev->platform_data;
-> >> >>
-> >> >> =A0 =A0 =A0 ns16550_write(cdev, 0x00, ier);
-> >> >> =A0 =A0 =A0 ns16550_write(cdev, LCR_BKSE, lcr);
-> >> >> @@ -218,7 +228,12 @@ static int ns16550_setbaudrate(struct console_=
-device *cdev, int baud_rate)
-> >> >> =A0 =A0 =A0 ns16550_write(cdev, (baud_divisor >> 8) & 0xff, dlm);
-> >> >> =A0 =A0 =A0 ns16550_write(cdev, LCRVAL, lcr);
-> >> >> =A0 =A0 =A0 ns16550_write(cdev, MCRVAL, mcr);
-> >> >> - =A0 =A0 ns16550_write(cdev, FCRVAL, fcr);
-> >> >> + =A0 =A0 if (plat->flags & NS16650_FLAG_DISABLE_FIFO) {
-> >> >> + =A0 =A0 =A0 =A0 =A0 =A0 ns16550_write(cdev, FCRVAL & ~FCR_FIFO_EN=
-, fcr);
-> >> >> + =A0 =A0 } else {
-> >> >> + =A0 =A0 =A0 =A0 =A0 =A0 ns16550_write(cdev, FCRVAL, fcr);
-> >> >> + =A0 =A0 }
-> >> >
-> >> > and here. Otherwise this looks ok.
-> >>
-> >> Ok, I shall remove the braces.
-> >>
-> >> Sascha!
-> >>
-> >> We have special OMAP code, e.g.:
-> >>
-> >> #ifdef CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS
-> >> =A0 =A0 =A0 =A0 ns16550_write(cdev, 0x07, mdr1); =A0 =A0 =A0 =A0/* Dis=
-able */
-> >> #endif
-> >>
-> >> I think, that we can change it to something like this:
-> >>
-> >> =A0 =A0 if (plat->flags & NS16650_FLAG_OMAP_EXTENSIONS)
-> >> =A0 =A0 =A0 =A0 ns16550_write(cdev, 0x07, mdr1); =A0 =A0 =A0 =A0/* Dis=
-able */
-> > I don't like to add dead code in the binary
-> > just use
-> > =A0 =A0 =A0 =A0if (IS_ENABLED(CONFIG_...)
-> =
+this allow to check we do not exceed the size of the SRAM as example
 
-> You is right, but there is another point of view.
-> =
+introduce BAREBOX_MAX_BARE_INIT_SIZE the maximum size of bare_init
+this will allow your bare_init will fit in SRAM as example
+ARCH can overwrite it via ARCH_BAREBOX_MAX_BARE_INIT_SIZE
 
-> If you have defined CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS
-> macro, then you will use OMAP extensions for __ALL__ ports, not only
-> for OMAP internal port. May be OMAP have no other ports, only internal
-> ports with extensions. But in any case it is bad design example: we
-> have very special code (OMAP EXTENSIONS) in universal driver
-> (ns16550), and this special code works without checking presents of
-> the extensions.
-> =
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ arch/arm/lib/barebox.lds.S        |    3 +++
+ arch/mips/lib/barebox.lds.S       |    3 +++
+ arch/nios2/cpu/barebox.lds.S      |    3 +++
+ arch/x86/lib/barebox.lds.S        |    3 +++
+ common/Kconfig                    |    9 +++++++++
+ include/asm-generic/barebox.lds.h |   15 +++++++++++++++
+ include/asm-generic/sections.h    |    3 +++
+ 7 files changed, 39 insertions(+), 0 deletions(-)
 
-> I don't like dead code too. So there are another solutions:
-> =
+diff --git a/arch/arm/lib/barebox.lds.S b/arch/arm/lib/barebox.lds.S
+index f05f345..e9f6210 100644
+--- a/arch/arm/lib/barebox.lds.S
++++ b/arch/arm/lib/barebox.lds.S
+@@ -44,9 +44,12 @@ SECTIONS
+ 	  . = 0x1000;
+ 	  LONG(0x53555243) /* 'CRUS' */
+ #endif
++		__bare_init_start = .;
+ 		*(.text_bare_init*)
++		__bare_init_end = .;
+ 		*(.text*)
+ 	}
++	BAREBOX_BARE_INIT_SIZE
+ 
+ 	. = ALIGN(4);
+ 	.rodata : { *(.rodata*) }
+diff --git a/arch/mips/lib/barebox.lds.S b/arch/mips/lib/barebox.lds.S
+index a607284..9ebc8d1 100644
+--- a/arch/mips/lib/barebox.lds.S
++++ b/arch/mips/lib/barebox.lds.S
+@@ -34,9 +34,12 @@ SECTIONS
+ 		*(.text_entry*)
+ 		_stext = .;
+ 		_text = .;
++		__bare_init_start = .;
+ 		*(.text_bare_init*)
++		__bare_init_end = .;
+ 		*(.text*)
+ 	}
++	BAREBOX_BARE_INIT_SIZE
+ 
+ 	PRE_IMAGE
+ 
+diff --git a/arch/nios2/cpu/barebox.lds.S b/arch/nios2/cpu/barebox.lds.S
+index 04bfdf8..127e1bf 100644
+--- a/arch/nios2/cpu/barebox.lds.S
++++ b/arch/nios2/cpu/barebox.lds.S
+@@ -44,9 +44,12 @@ SECTIONS
+ 		_stext = .;
+ 		__text = .;
+ 		_text = .;
++		__bare_init_start = .;
+ 		*(.text_entry)
++		__bare_init_end = .;
+ 		*(.text)
+ 	}
++	BAREBOX_BARE_INIT_SIZE
+ 
+ 	. = ALIGN(4);
+ 	.rodata : { *(.rodata) }
+diff --git a/arch/x86/lib/barebox.lds.S b/arch/x86/lib/barebox.lds.S
+index c7d5175..9798ed5 100644
+--- a/arch/x86/lib/barebox.lds.S
++++ b/arch/x86/lib/barebox.lds.S
+@@ -145,13 +145,16 @@ SECTIONS
+ 		/* do not align here! It may fails with the LOADADDR! */
+ 		_stext = .;
+ 		*(.text_entry*)
++		__bare_init_start = .;
+ 		*(.text_bare_init*)
++		__bare_init_end = .;
+ 		*(.text*)
+ 		. = ALIGN(4);
+ 		*(.rodata*)
+ 		. = ALIGN(4);
+ 		_etext = .;			/* End of text and rodata section */
+ 	} > barebox
++	BAREBOX_BARE_INIT_SIZE
+ 
+ 	.data : AT ( LOADADDR(.text) + SIZEOF(.text) ) {
+ 		*(.data*)
+diff --git a/common/Kconfig b/common/Kconfig
+index 8089061..d1db27d 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -111,6 +111,15 @@ config BAREBOX_MAX_IMAGE_SIZE
+ 	help
+ 	  Define the maximum size of barebox
+ 
++config BAREBOX_MAX_BARE_INIT_SIZE
++	prompt "Maximum bare_init size"
++	hex
++	default 0xffffffff
++	help
++	  Define the maximum size of bare_init
++	  this will allow your bare_init will fit in SRAM as example
++	  ARCH can overwrite it via ARCH_BAREBOX_MAX_BARE_INIT_SIZE
++
+ config HAVE_CONFIGURABLE_MEMORY_LAYOUT
+ 	bool
+ 
+diff --git a/include/asm-generic/barebox.lds.h b/include/asm-generic/barebox.lds.h
+index 5467d3a..b6fc79d 100644
+--- a/include/asm-generic/barebox.lds.h
++++ b/include/asm-generic/barebox.lds.h
+@@ -26,3 +26,18 @@
+ #define BAREBOX_SYMS	KEEP(*(__usymtab))
+ 
+ #define BAREBOX_MAGICVARS	KEEP(*(SORT_BY_NAME(.barebox_magicvar*)))
++
++#if defined(CONFIG_ARCH_BAREBOX_MAX_BARE_INIT_SIZE) && \
++CONFIG_ARCH_BAREBOX_MAX_BARE_INIT_SIZE < CONFIG_BAREBOX_MAX_BARE_INIT_SIZE
++#define MAX_BARE_INIT_SIZE CONFIG_ARCH_BAREBOX_MAX_BARE_INIT_SIZE
++#else
++#define MAX_BARE_INIT_SIZE CONFIG_BAREBOX_MAX_BARE_INIT_SIZE
++#endif
++
++#include <linux/stringify.h>
++/* use 2 ASSERT because ld can not accept '"size" "10"' formet */
++#define BAREBOX_BARE_INIT_SIZE					\
++	_barebox_bare_init_size = __bare_init_end - _text;	\
++	ASSERT(_barebox_bare_init_size < MAX_BARE_INIT_SIZE, "Barebox bare_init size > ") \
++	ASSERT(_barebox_bare_init_size < MAX_BARE_INIT_SIZE, __stringify(MAX_BARE_INIT_SIZE)) \
++
+diff --git a/include/asm-generic/sections.h b/include/asm-generic/sections.h
+index 1f48fb8..5484b6f 100644
+--- a/include/asm-generic/sections.h
++++ b/include/asm-generic/sections.h
+@@ -3,9 +3,12 @@
+ 
+ extern char _text[], _stext[], _etext[];
+ extern char __bss_start[], __bss_stop[];
++extern char __bare_init_start[], __bare_init_end[];
+ extern char _end[];
+ extern void *_barebox_image_size;
++extern void *_barebox_bare_init_size;
+ 
+ #define barebox_image_size	(unsigned int)&_barebox_image_size
++#define barebox_bare_init_size	(unsigned int)&_barebox_bare_init_size
+ 
+ #endif /* _ASM_GENERIC_SECTIONS_H_ */
+-- 
+1.7.7
 
-> #ifdef CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS
->         if (plat->flags & NS16650_FLAG_OMAP_EXTENSIONS)
->             ns16550_write(cdev, 0x07, mdr1);        /* Disable */
-> #endif
-> =
-
-> or even
->         if (IS_ENABLED(CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS) &&
->          plat->flags & NS16650_FLAG_OMAP_EXTENSIONS)
->             ns16550_write(cdev, 0x07, mdr1);        /* Disable */
-this one
-
-Best Regards,
-J.
-> -- =
-
-> Best regards,
-> =A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
