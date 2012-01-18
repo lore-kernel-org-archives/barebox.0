@@ -1,18 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-f177.google.com ([209.85.212.177])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Rndql-0000ez-Pm
- for barebox@lists.infradead.org; Wed, 18 Jan 2012 22:19:24 +0000
-Received: by wibhq15 with SMTP id hq15so5205899wib.36
- for <barebox@lists.infradead.org>; Wed, 18 Jan 2012 14:19:21 -0800 (PST)
-From: Peter Korsgaard <jacmet@sunsite.dk>
-References: <1326848854-21033-1-git-send-email-plagnioj@jcrosoft.com>
-Date: Wed, 18 Jan 2012 23:19:15 +0100
-In-Reply-To: <1326848854-21033-1-git-send-email-plagnioj@jcrosoft.com>
- (Jean-Christophe PLAGNIOL-VILLARD's message of "Wed, 18 Jan 2012
- 02:07:33 +0100")
-Message-ID: <87hazsodr0.fsf@macbook.be.48ers.dk>
+Received: from 19.mo3.mail-out.ovh.net ([178.32.98.231]
+ helo=mo3.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1RneS6-0002m2-1y
+ for barebox@lists.infradead.org; Wed, 18 Jan 2012 22:57:59 +0000
+Received: from mail617.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 90E06FFB09F
+ for <barebox@lists.infradead.org>; Wed, 18 Jan 2012 23:59:31 +0100 (CET)
+Date: Wed, 18 Jan 2012 23:56:38 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20120118225638.GJ25622@game.jcrosoft.org>
+References: <1326917859-25058-1-git-send-email-robert.jarzmik@free.fr>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1326917859-25058-1-git-send-email-robert.jarzmik@free.fr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,27 +26,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] introduce barebox_bare_init_size to known the
- bare_init size and check it
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH] usb/gadget: fix poller NPE in early polling
+To: Robert Jarzmik <robert.jarzmik@free.fr>
 Cc: barebox@lists.infradead.org
 
->>>>> "JC" == Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> writes:
+On 21:17 Wed 18 Jan     , Robert Jarzmik wrote:
+> The timings of the poller calling have changed, digging out
+> a latent bug in pxa27x udc controller.
+> The polling routine is called before the probe function is
+> called, and the driver internal are not initialized at that
+> time. This triggers a NULL pointer exception.
+> 
+> Fix it by adding an extra check.
+> 
+> Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
+> ---
+>  drivers/usb/gadget/pxa27x_udc.c |    5 ++++-
+>  1 files changed, 4 insertions(+), 1 deletions(-)
+> 
+> diff --git a/drivers/usb/gadget/pxa27x_udc.c b/drivers/usb/gadget/pxa27x_udc.c
+> index d0dbee9..bde9e74 100644
+> --- a/drivers/usb/gadget/pxa27x_udc.c
+> +++ b/drivers/usb/gadget/pxa27x_udc.c
+> @@ -1508,7 +1508,10 @@ static struct driver_d udc_driver = {
+>  
+>  static int pxa27x_udc_poller(struct poller_struct *poller)
+>  {
+> -	return usb_gadget_poll();
+> +	if (the_controller)
+> +		return usb_gadget_poll();
+> +	else
+> +		return 0;
+>  }
+instead of this register thee poll at the probe
 
- JC> this allow to check we do not exceed the size of the SRAM as example
- JC> introduce BAREBOX_MAX_BARE_INIT_SIZE the maximum size of bare_init
- JC> this will allow your bare_init will fit in SRAM as example
- JC> ARCH can overwrite it via ARCH_BAREBOX_MAX_BARE_INIT_SIZE
-
- JC> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-
- JC> +#include <linux/stringify.h>
- JC> +/* use 2 ASSERT because ld can not accept '"size" "10"' formet */
-
-s/formet/format/
-
--- 
-Bye, Peter Korsgaard
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
