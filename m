@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-f49.google.com ([209.85.214.49])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RnP42-0000sj-Gn
- for barebox@lists.infradead.org; Wed, 18 Jan 2012 06:32:08 +0000
-Received: by bkty8 with SMTP id y8so8659409bkt.36
- for <barebox@lists.infradead.org>; Tue, 17 Jan 2012 22:32:03 -0800 (PST)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed, 18 Jan 2012 10:31:53 +0400
-Message-Id: <1326868316-29385-2-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1326868316-29385-1-git-send-email-antonynpavlov@gmail.com>
-References: <1326868316-29385-1-git-send-email-antonynpavlov@gmail.com>
+Received: from 6.mo3.mail-out.ovh.net ([188.165.43.173]
+ helo=mo3.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1RnXgZ-0008Q2-Pm
+ for barebox@lists.infradead.org; Wed, 18 Jan 2012 15:44:29 +0000
+Received: from mail617.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 6D102FFB7AE
+ for <barebox@lists.infradead.org>; Wed, 18 Jan 2012 16:45:59 +0100 (CET)
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Wed, 18 Jan 2012 16:43:06 +0100
+Message-Id: <1326901386-9220-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,80 +23,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 1/4] ns16550: support for UART with broken FIFO
+Subject: [PATCH 1/1] Revert "mtd omap nand: fix driver without
+ CONFIG_PARAMETER"
 To: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- drivers/serial/serial_ns16550.c |   18 ++++++++++++++++--
- include/ns16550.h               |    2 ++
- 2 files changed, 18 insertions(+), 2 deletions(-)
+This reverts commit 7762f9627a3ec971e4122abf0b3d831b619dcad7.
 
-diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
-index 1217a5f..4cef469 100644
---- a/drivers/serial/serial_ns16550.c
-+++ b/drivers/serial/serial_ns16550.c
-@@ -139,6 +139,8 @@ static unsigned int ns16550_calc_divisor(struct console_device *cdev,
- static void ns16550_serial_init_port(struct console_device *cdev)
- {
- 	unsigned int baud_divisor;
-+	struct NS16550_plat *plat = (struct NS16550_plat *)
-+	    cdev->dev->platform_data;
+already applied by d002818ae37545481a8de55ed8c56eb2735b5a72
+
+    fix gpmc_nand_probe without param support
+
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ drivers/mtd/nand/nand_omap_gpmc.c |    1 -
+ 1 files changed, 0 insertions(+), 1 deletions(-)
+
+diff --git a/drivers/mtd/nand/nand_omap_gpmc.c b/drivers/mtd/nand/nand_omap_gpmc.c
+index 04617f6..d55dcaa 100644
+--- a/drivers/mtd/nand/nand_omap_gpmc.c
++++ b/drivers/mtd/nand/nand_omap_gpmc.c
+@@ -958,7 +958,6 @@ static int gpmc_nand_probe(struct device_d *pdev)
  
- 	/* Setup the serial port with the defaults first */
- 	baud_divisor = ns16550_calc_divisor(cdev, CONFIG_BAUDRATE);
-@@ -153,7 +155,12 @@ static void ns16550_serial_init_port(struct console_device *cdev)
- 	ns16550_write(cdev, (baud_divisor >> 8) & 0xff, dlm);
- 	ns16550_write(cdev, LCRVAL, lcr);
- 	ns16550_write(cdev, MCRVAL, mcr);
--	ns16550_write(cdev, FCRVAL, fcr);
-+
-+	if (plat->flags & NS16650_FLAG_DISABLE_FIFO)
-+		ns16550_write(cdev, FCRVAL & ~FCR_FIFO_EN, fcr);
-+	else
-+		ns16550_write(cdev, FCRVAL, fcr);
-+
- #ifdef CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS
- 	ns16550_write(cdev, 0x00,  mdr1);
- #endif
-@@ -211,6 +218,8 @@ static int ns16550_tstc(struct console_device *cdev)
- static int ns16550_setbaudrate(struct console_device *cdev, int baud_rate)
- {
- 	unsigned int baud_divisor = ns16550_calc_divisor(cdev, baud_rate);
-+	struct NS16550_plat *plat = (struct NS16550_plat *)
-+	    cdev->dev->platform_data;
+ 	dev_add_param(pdev, "eccmode", omap_gpmc_eccmode_set, NULL, 0);
+ 	dev_set_param(pdev, "eccmode", ecc_mode_strings[pdata->ecc_mode]);
+-	omap_gpmc_eccmode(oinfo, pdata->ecc_mode);
  
- 	ns16550_write(cdev, 0x00, ier);
- 	ns16550_write(cdev, LCR_BKSE, lcr);
-@@ -218,7 +227,12 @@ static int ns16550_setbaudrate(struct console_device *cdev, int baud_rate)
- 	ns16550_write(cdev, (baud_divisor >> 8) & 0xff, dlm);
- 	ns16550_write(cdev, LCRVAL, lcr);
- 	ns16550_write(cdev, MCRVAL, mcr);
--	ns16550_write(cdev, FCRVAL, fcr);
-+
-+	if (plat->flags & NS16650_FLAG_DISABLE_FIFO)
-+		ns16550_write(cdev, FCRVAL & ~FCR_FIFO_EN, fcr);
-+	else
-+		ns16550_write(cdev, FCRVAL, fcr);
-+
- 	return 0;
- }
- 
-diff --git a/include/ns16550.h b/include/ns16550.h
-index 5fd52fa..4a41b93 100644
---- a/include/ns16550.h
-+++ b/include/ns16550.h
-@@ -52,6 +52,8 @@ struct NS16550_plat {
- 				    unsigned char reg_offset);
- 
- 	int shift;
-+	unsigned int flags;
-+#define NS16650_FLAG_DISABLE_FIFO	1
- };
- 
- #endif				/* __NS16650_PLATFORM_H_ */
+ 	if (! IS_ENABLED(CONFIG_PARAMETER))
+ 		omap_gpmc_eccmode(oinfo, pdata->ecc_mode);
 -- 
-1.7.8.3
+1.7.7
 
 
 _______________________________________________
