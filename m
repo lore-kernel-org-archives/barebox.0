@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 19.mo3.mail-out.ovh.net ([178.32.98.231]
- helo=mo3.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RnK16-0002nb-Hy
- for barebox@lists.infradead.org; Wed, 18 Jan 2012 01:08:46 +0000
-Received: from mail617.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 89109FFB34D
- for <barebox@lists.infradead.org>; Wed, 18 Jan 2012 02:10:16 +0100 (CET)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Wed, 18 Jan 2012 02:07:34 +0100
-Message-Id: <1326848854-21033-2-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1326848854-21033-1-git-send-email-plagnioj@jcrosoft.com>
-References: <1326848854-21033-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from mail-bk0-f49.google.com ([209.85.214.49])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RnP42-0000si-Gl
+ for barebox@lists.infradead.org; Wed, 18 Jan 2012 06:32:07 +0000
+Received: by bkty8 with SMTP id y8so8659401bkt.36
+ for <barebox@lists.infradead.org>; Tue, 17 Jan 2012 22:32:02 -0800 (PST)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Wed, 18 Jan 2012 10:31:52 +0400
+Message-Id: <1326868316-29385-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,38 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] at91: specify the bare_init max size for each soc
+Subject: [PATCH v4 0/2] ns16550-related patches
 To: barebox@lists.infradead.org
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- arch/arm/mach-at91/Kconfig |   10 ++++++++++
- 1 files changed, 10 insertions(+), 0 deletions(-)
+This patch series consist of two ns16550-related patches.
 
-diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index 8f3b8ce..41e9b99 100644
---- a/arch/arm/mach-at91/Kconfig
-+++ b/arch/arm/mach-at91/Kconfig
-@@ -83,6 +83,16 @@ config ARCH_AT91SAM9G45
- 
- endchoice
- 
-+config ARCH_BAREBOX_MAX_BARE_INIT_SIZE
-+	hex
-+	default 0x1000 if ARCH_AT91SAM9260
-+	default 0x270000 if ARCH_AT91SAM9261
-+	default 0x12000 if ARCH_AT91SAM9263
-+	default 0x4000 if ARCH_AT91SAM9G20
-+	default 0x3000 if ARCH_AT91SAM9G10
-+	default 0xF000 if ARCH_AT91SAM9G45
-+	default 0xffffffff
-+
- # ----------------------------------------------------------
- 
- if ARCH_AT91RM9200
--- 
-1.7.7
+[PATCH v4 1/4] ns16550: support for UART with broken FIFO
+[PATCH v4 2/4] ns16550: make ns16550_serial_init_port() shorter
+[PATCH v4 3/4] ns16550: write zero to ier only once
+[PATCH v4 4/4] ns16550: fix ier selection
 
+The 1st one adds the flag (NS16650_FLAG_DISABLE_FIFO) in internal
+ns16550 data structure to recognise UART with broken FIFO
+(or UART without FIFO at all) and the code to use this flag.
+The flag can be set in board-related code.
+
+The 2nd one use the fact that ns16550_serial_init_port() and
+ns16550_setbaudrate() functions have many common code.
+It change the most of ns16550_serial_init_port() code for
+one ns16550_setbaudrate() call.
+
+The 3rd one removes unnecessary interrupt disable on every
+speed change operation.
+
+The 4th one adds explicit IER register selection before accessing it.
 
 _______________________________________________
 barebox mailing list
