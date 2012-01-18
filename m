@@ -1,11 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp6-g21.free.fr ([2a01:e0c:1:1599::15])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RnbxI-00032x-GO
- for barebox@lists.infradead.org; Wed, 18 Jan 2012 20:18:02 +0000
-From: Robert Jarzmik <robert.jarzmik@free.fr>
-Date: Wed, 18 Jan 2012 21:17:39 +0100
-Message-Id: <1326917859-25058-1-git-send-email-robert.jarzmik@free.fr>
+Received: from mail-wi0-f177.google.com ([209.85.212.177])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1Rndql-0000ez-Pm
+ for barebox@lists.infradead.org; Wed, 18 Jan 2012 22:19:24 +0000
+Received: by wibhq15 with SMTP id hq15so5205899wib.36
+ for <barebox@lists.infradead.org>; Wed, 18 Jan 2012 14:19:21 -0800 (PST)
+From: Peter Korsgaard <jacmet@sunsite.dk>
+References: <1326848854-21033-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Wed, 18 Jan 2012 23:19:15 +0100
+In-Reply-To: <1326848854-21033-1-git-send-email-plagnioj@jcrosoft.com>
+ (Jean-Christophe PLAGNIOL-VILLARD's message of "Wed, 18 Jan 2012
+ 02:07:33 +0100")
+Message-ID: <87hazsodr0.fsf@macbook.be.48ers.dk>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,46 +21,31 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] usb/gadget: fix poller NPE in early polling
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] introduce barebox_bare_init_size to known the
+ bare_init size and check it
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-The timings of the poller calling have changed, digging out
-a latent bug in pxa27x udc controller.
-The polling routine is called before the probe function is
-called, and the driver internal are not initialized at that
-time. This triggers a NULL pointer exception.
+>>>>> "JC" == Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> writes:
 
-Fix it by adding an extra check.
+ JC> this allow to check we do not exceed the size of the SRAM as example
+ JC> introduce BAREBOX_MAX_BARE_INIT_SIZE the maximum size of bare_init
+ JC> this will allow your bare_init will fit in SRAM as example
+ JC> ARCH can overwrite it via ARCH_BAREBOX_MAX_BARE_INIT_SIZE
 
-Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
----
- drivers/usb/gadget/pxa27x_udc.c |    5 ++++-
- 1 files changed, 4 insertions(+), 1 deletions(-)
+ JC> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 
-diff --git a/drivers/usb/gadget/pxa27x_udc.c b/drivers/usb/gadget/pxa27x_udc.c
-index d0dbee9..bde9e74 100644
---- a/drivers/usb/gadget/pxa27x_udc.c
-+++ b/drivers/usb/gadget/pxa27x_udc.c
-@@ -1508,7 +1508,10 @@ static struct driver_d udc_driver = {
- 
- static int pxa27x_udc_poller(struct poller_struct *poller)
- {
--	return usb_gadget_poll();
-+	if (the_controller)
-+		return usb_gadget_poll();
-+	else
-+		return 0;
- }
- static struct poller_struct poller = {
- 	.func		= pxa27x_udc_poller
+ JC> +#include <linux/stringify.h>
+ JC> +/* use 2 ASSERT because ld can not accept '"size" "10"' formet */
+
+s/formet/format/
+
 -- 
-1.7.5.4
-
+Bye, Peter Korsgaard
 
 _______________________________________________
 barebox mailing list
