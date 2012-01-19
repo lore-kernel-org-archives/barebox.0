@@ -1,19 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 19.mo3.mail-out.ovh.net ([178.32.98.231]
- helo=mo3.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RneS6-0002m2-1y
- for barebox@lists.infradead.org; Wed, 18 Jan 2012 22:57:59 +0000
-Received: from mail617.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 90E06FFB09F
- for <barebox@lists.infradead.org>; Wed, 18 Jan 2012 23:59:31 +0100 (CET)
-Date: Wed, 18 Jan 2012 23:56:38 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120118225638.GJ25622@game.jcrosoft.org>
-References: <1326917859-25058-1-git-send-email-robert.jarzmik@free.fr>
+Received: from mail.phytec.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1RnnHd-0003u0-08
+ for barebox@lists.infradead.org; Thu, 19 Jan 2012 08:23:46 +0000
+From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
+Date: Thu, 19 Jan 2012 09:23:12 +0100
+Message-Id: <1326961396-19782-1-git-send-email-t.gamez@phytec.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1326917859-25058-1-git-send-email-robert.jarzmik@free.fr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,48 +15,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] usb/gadget: fix poller NPE in early polling
-To: Robert Jarzmik <robert.jarzmik@free.fr>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/5] imx-ipu-fb: Add support for multiple video modes
+To: barebox@lists.infradead.org
 
-On 21:17 Wed 18 Jan     , Robert Jarzmik wrote:
-> The timings of the poller calling have changed, digging out
-> a latent bug in pxa27x udc controller.
-> The polling routine is called before the probe function is
-> called, and the driver internal are not initialized at that
-> time. This triggers a NULL pointer exception.
-> 
-> Fix it by adding an extra check.
-> 
-> Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
-> ---
->  drivers/usb/gadget/pxa27x_udc.c |    5 ++++-
->  1 files changed, 4 insertions(+), 1 deletions(-)
-> 
-> diff --git a/drivers/usb/gadget/pxa27x_udc.c b/drivers/usb/gadget/pxa27x_udc.c
-> index d0dbee9..bde9e74 100644
-> --- a/drivers/usb/gadget/pxa27x_udc.c
-> +++ b/drivers/usb/gadget/pxa27x_udc.c
-> @@ -1508,7 +1508,10 @@ static struct driver_d udc_driver = {
->  
->  static int pxa27x_udc_poller(struct poller_struct *poller)
->  {
-> -	return usb_gadget_poll();
-> +	if (the_controller)
-> +		return usb_gadget_poll();
-> +	else
-> +		return 0;
->  }
-instead of this register thee poll at the probe
-
-Best Regards,
-J.
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+TWFrZSBzdXBwb3J0IG9mIG11bHRpcGxlIHZpZGVvIG1vZGVzIHBvc3NpYmxlIGZvciBpLk1YMyBi
+b2FyZHMuCgpTaWduZWQtb2ZmLWJ5OiBUZXJlc2EgR8OhbWV6IDx0LmdhbWV6QHBoeXRlYy5kZT4K
+LS0tCiBhcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvaW14LWlwdS1mYi5oIHwgICAgMSAr
+CiBkcml2ZXJzL3ZpZGVvL2lteC1pcHUtZmIuYyAgICAgICAgICAgICAgICAgIHwgICAxMCArKysr
+KysrKystCiAyIGZpbGVzIGNoYW5nZWQsIDEwIGluc2VydGlvbnMoKyksIDEgZGVsZXRpb25zKC0p
+CgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2lteC1pcHUtZmIu
+aCBiL2FyY2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9pbXgtaXB1LWZiLmgKaW5kZXggOGUx
+Y2M4Ny4uNWQ1ODNlOCAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNo
+L2lteC1pcHUtZmIuaAorKysgYi9hcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvaW14LWlw
+dS1mYi5oCkBAIC0yNyw2ICsyNyw3IEBACiBzdHJ1Y3QgaW14X2lwdV9mYl9wbGF0Zm9ybV9kYXRh
+IHsKIAlzdHJ1Y3QgZmJfdmlkZW9tb2RlCSptb2RlOwogCXVuc2lnbmVkIGNoYXIJCWJwcDsKKwl1
+X2ludAkJCW51bV9tb2RlczsKIAl2b2lkIF9faW9tZW0JCSpmcmFtZWJ1ZmZlcjsKIAkvKiogaG9v
+ayB0byBlbmFibGUgYmFja2xpZ2h0IGFuZCBzdHVmZiAqLwogCXZvaWQJCQkoKmVuYWJsZSkoaW50
+IGVuYWJsZSk7CmRpZmYgLS1naXQgYS9kcml2ZXJzL3ZpZGVvL2lteC1pcHUtZmIuYyBiL2RyaXZl
+cnMvdmlkZW8vaW14LWlwdS1mYi5jCmluZGV4IGRjZTJhOWUuLmEzZmRiNzYgMTAwNjQ0Ci0tLSBh
+L2RyaXZlcnMvdmlkZW8vaW14LWlwdS1mYi5jCisrKyBiL2RyaXZlcnMvdmlkZW8vaW14LWlwdS1m
+Yi5jCkBAIC04MDcsOSArODA3LDE1IEBAIHN0YXRpYyB2b2lkIGlwdV9mYl9kaXNhYmxlKHN0cnVj
+dCBmYl9pbmZvICppbmZvKQogCXJlZ193cml0ZShmYmksIHJlZywgU0RDX0NPTV9DT05GKTsKIH0K
+IAorc3RhdGljIGludCBpcHVfZmJfYWN0aXZhdGVfdmFyKHN0cnVjdCBmYl9pbmZvICppbmZvKQor
+eworCXJldHVybiAwOworfQorCiBzdGF0aWMgc3RydWN0IGZiX29wcyBpbXhmYl9vcHMgPSB7CiAJ
+LmZiX2VuYWJsZSA9IGlwdV9mYl9lbmFibGUsCiAJLmZiX2Rpc2FibGUgPSBpcHVfZmJfZGlzYWJs
+ZSwKKwkuZmJfYWN0aXZhdGVfdmFyID0gaXB1X2ZiX2FjdGl2YXRlX3ZhciwKIH07CiAKIHN0YXRp
+YyB2b2lkIGlteGZiX2luaXRfaW5mbyhzdHJ1Y3QgZmJfaW5mbyAqaW5mbywgc3RydWN0IGZiX3Zp
+ZGVvbW9kZSAqbW9kZSwKQEAgLTg2MCw5ICs4NjYsMTEgQEAgc3RhdGljIGludCBpbXhmYl9wcm9i
+ZShzdHJ1Y3QgZGV2aWNlX2QgKmRldikKIAogCWZiaS0+cmVncyA9IGRldl9yZXF1ZXN0X21lbV9y
+ZWdpb24oZGV2LCAwKTsKIAlmYmktPmRldiA9IGRldjsKKwlmYmktPmVuYWJsZSA9IHBkYXRhLT5l
+bmFibGU7CiAJaW5mby0+cHJpdiA9IGZiaTsKIAlpbmZvLT5mYm9wcyA9ICZpbXhmYl9vcHM7Ci0J
+ZmJpLT5lbmFibGUgPSBwZGF0YS0+ZW5hYmxlOworCWluZm8tPm51bV9tb2RlcyA9IHBkYXRhLT5u
+dW1fbW9kZXM7CisJaW5mby0+bW9kZV9saXN0ID0gcGRhdGEtPm1vZGU7CiAKIAlpbXhmYl9pbml0
+X2luZm8oaW5mbywgcGRhdGEtPm1vZGUsIHBkYXRhLT5icHApOwogCi0tIAoxLjcuMC40CgoKX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWls
+aW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRl
+YWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
