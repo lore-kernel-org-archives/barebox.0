@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RqjKL-0004eq-Ik
- for barebox@lists.infradead.org; Fri, 27 Jan 2012 10:46:44 +0000
-Date: Fri, 27 Jan 2012 11:46:31 +0100
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20120127104631.GX6305@pengutronix.de>
-References: <CALQ+5adUr7Sy2z-irN=1eeGGFPu=L9bqBMtmU7JtYJh_tK1NAg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CALQ+5adUr7Sy2z-irN=1eeGGFPu=L9bqBMtmU7JtYJh_tK1NAg@mail.gmail.com>
+Received: from smtp6-g21.free.fr ([2a01:e0c:1:1599::15])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1Rnq5p-0007GP-AX
+ for barebox@lists.infradead.org; Thu, 19 Jan 2012 11:23:47 +0000
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+Date: Thu, 19 Jan 2012 12:23:27 +0100
+Message-Id: <1326972208-438-1-git-send-email-robert.jarzmik@free.fr>
+In-Reply-To: <20120118225638.GJ25622@game.jcrosoft.org>
+References: <20120118225638.GJ25622@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,77 +16,80 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Booting linux on a custom iMX27 board
-To: Igor <igt1972@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH V2] usb/gadget: fix poller NPE in early polling
+To: barebox@lists.infradead.org, plagnioj@jcrosoft.com
 
-Hello,
+The timings of the poller calling have changed, digging out
+a latent bug in pxa27x udc controller.
+The polling routine is called before the probe function is
+called, and the driver internal are not initialized at that
+time. This triggers a NULL pointer exception.
 
-On Thu, Jan 26, 2012 at 09:23:32PM +0100, Igor wrote:
-> Hi,
-> =
+Fix it by moving poller registration after driver probe.
 
-> I 'm trying to port Barebox (2012.01.0) and make it successfully booting
-> Linux
-> on a custom board based on iMX27.
-> I could successfully configure, compile and use Barebox on my MX27ADS boa=
-rd,
-> making it work both as a second stage bootloader (after Redboot)
-> and as the first stage bootloader (booting the system from flash).
-> =
+Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
 
-> I modified the sources to adapt the low level init functions to my HW
-> that has half the ram of the ev.board and a different flash
-> (a Spansion S29GLxxx, same size of the one in the eva board).
-> With my customized version of Barebox I can:
-> - boot Linux (zImage, 2.6.32.3) using Barebox as a second stage bootloader
-> (after Redboot)
-> - start from Flash as a first stage bootloader, correctly initializing the
-> system.
-> =
+---
+Since V1: Review by Jean-Christophe
+---
+ drivers/usb/gadget/pxa27x_udc.c |   19 ++++++++++---------
+ 1 files changed, 10 insertions(+), 9 deletions(-)
 
-> In the second case, indeed, the system seems to be fully working:
-> I can read and write the flash partitions, I can complete successfully
-> the ram test with "mtest", but... I cannot boot Linux!
-> =
+diff --git a/drivers/usb/gadget/pxa27x_udc.c b/drivers/usb/gadget/pxa27x_udc.c
+index d0dbee9..10483c5 100644
+--- a/drivers/usb/gadget/pxa27x_udc.c
++++ b/drivers/usb/gadget/pxa27x_udc.c
+@@ -1473,6 +1473,14 @@ static struct pxa_udc memory = {
+ 	}
+ };
+ 
++static int pxa27x_udc_poller(struct poller_struct *poller)
++{
++		return usb_gadget_poll();
++}
++static struct poller_struct poller = {
++	.func		= pxa27x_udc_poller
++};
++
+ static int __init pxa_udc_probe(struct device_d *dev)
+ {
+ 	struct pxa_udc *udc = &memory;
+@@ -1496,6 +1504,8 @@ static int __init pxa_udc_probe(struct device_d *dev)
+ 	the_controller = udc;
+ 	udc_init_data(udc);
+ 	pxa_eps_setup(udc);
++	poller_register(&poller);
++
+ 	return 0;
+ }
+ 
+@@ -1506,18 +1516,9 @@ static struct driver_d udc_driver = {
+ 	.probe		= pxa_udc_probe,
+ };
+ 
+-static int pxa27x_udc_poller(struct poller_struct *poller)
+-{
+-	return usb_gadget_poll();
+-}
+-static struct poller_struct poller = {
+-	.func		= pxa27x_udc_poller
+-};
+-
+ static int __init pxa27x_udc_init(void)
+ {
+ 	register_driver(&udc_driver);
+-	poller_register(&poller);
+ 	return 0;
+ }
+ 
+-- 
+1.7.5.4
 
-> I just get:
-> "uncompressing linux... done booting the kernel"
-> and then it's silence...
-> =
-
-> architecture_type is 846 (it's the one of the mx27ads).
-> It should be right  considering that I used both for the kernel and for t=
-he
-> bootloader
-> the configuration for imx27ads.
-> =
-
-> I also tryed to make it boot a more recent kernel version;
-> I compiled a 3.0.8 with early_printk anabled to get more info about
-> the initial crash/problem  but... Nothing!
-> I didn't get nothing after "... done booting the kernel" also with the 3.=
-0.8
-> with low level debug and early_printk enabled.
-Do you have configured the right output port for low level debug? Did
-you pass the earlyprintk kernel parameter?
-
-Do you have a jtag debugger?
- =
-
-> What's the reason for the boot failure?
-Probably not a bootloader problem.
-
-Uwe
-
--- =
-
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
