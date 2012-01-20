@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Rnte9-0008E9-KP
- for barebox@lists.infradead.org; Thu, 19 Jan 2012 15:11:27 +0000
-Message-ID: <4F18328E.9080404@pengutronix.de>
-Date: Thu, 19 Jan 2012 16:11:10 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+Received: from mailout-de.gmx.net ([213.165.64.23])
+ by merlin.infradead.org with smtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1RoG1D-0002LO-Q5
+ for barebox@lists.infradead.org; Fri, 20 Jan 2012 15:04:44 +0000
+Message-ID: <4F19827C.5080601@gmx.de>
+Date: Fri, 20 Jan 2012 16:04:28 +0100
+From: Thomas Mayer <tm.telemotive@gmx.de>
 MIME-Version: 1.0
-References: <20120118225638.GJ25622@game.jcrosoft.org>
- <1326972208-438-1-git-send-email-robert.jarzmik@free.fr>
-In-Reply-To: <1326972208-438-1-git-send-email-robert.jarzmik@free.fr>
+References: <201104261430.01267.roman.fietze@telemotive.de>
+ <201104271038.46439.roman.fietze@telemotive.de>
+ <4DB7DE8E.6070100@pengutronix.de>
+ <201104271232.12931.roman.fietze@telemotive.de>
+ <4DB7F14E.1080404@pengutronix.de>
+In-Reply-To: <4DB7F14E.1080404@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,121 +21,137 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============7846020606533409838=="
+Content-Type: multipart/mixed; boundary="===============6971341059935763483=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH V2] usb/gadget: fix poller NPE in early polling
-To: Robert Jarzmik <robert.jarzmik@free.fr>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] freescale-mx35-3-stack: support 256 MiB RAM
+To: barebox@lists.infradead.org
 
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---===============7846020606533409838==
-Content-Type: multipart/signed; micalg=pgp-sha1;
- protocol="application/pgp-signature";
- boundary="------------enig35A6EAA21299AA8AFF979304"
+This is a multi-part message in MIME format.
+--===============6971341059935763483==
+Content-Type: multipart/alternative;
+ boundary="------------050102040701060509000100"
 
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---------------enig35A6EAA21299AA8AFF979304
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
+This is a multi-part message in MIME format.
+--------------050102040701060509000100
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 01/19/2012 12:23 PM, Robert Jarzmik wrote:
-> The timings of the poller calling have changed, digging out
-> a latent bug in pxa27x udc controller.
-> The polling routine is called before the probe function is
-> called, and the driver internal are not initialized at that
-> time. This triggers a NULL pointer exception.
->=20
-> Fix it by moving poller registration after driver probe.
->=20
-> Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
->=20
-> ---
-> Since V1: Review by Jean-Christophe
-> ---
->  drivers/usb/gadget/pxa27x_udc.c |   19 ++++++++++---------
->  1 files changed, 10 insertions(+), 9 deletions(-)
->=20
-> diff --git a/drivers/usb/gadget/pxa27x_udc.c b/drivers/usb/gadget/pxa27=
-x_udc.c
-> index d0dbee9..10483c5 100644
-> --- a/drivers/usb/gadget/pxa27x_udc.c
-> +++ b/drivers/usb/gadget/pxa27x_udc.c
-> @@ -1473,6 +1473,14 @@ static struct pxa_udc memory =3D {
->  	}
->  };
-> =20
-> +static int pxa27x_udc_poller(struct poller_struct *poller)
-> +{
-> +		return usb_gadget_poll();
+Hi,
 
-one tab should be enough.
+is there a reason why this patch was never applied?
+It works fine for us.
 
-> +}
-> +static struct poller_struct poller =3D {
-> +	.func		=3D pxa27x_udc_poller
-> +};
-> +
->  static int __init pxa_udc_probe(struct device_d *dev)
->  {
->  	struct pxa_udc *udc =3D &memory;
-> @@ -1496,6 +1504,8 @@ static int __init pxa_udc_probe(struct device_d *=
-dev)
->  	the_controller =3D udc;
->  	udc_init_data(udc);
->  	pxa_eps_setup(udc);
-> +	poller_register(&poller);
-> +
->  	return 0;
->  }
-> =20
-> @@ -1506,18 +1516,9 @@ static struct driver_d udc_driver =3D {
->  	.probe		=3D pxa_udc_probe,
->  };
-> =20
-> -static int pxa27x_udc_poller(struct poller_struct *poller)
-> -{
-> -	return usb_gadget_poll();
-> -}
-> -static struct poller_struct poller =3D {
-> -	.func		=3D pxa27x_udc_poller
-> -};
-> -
->  static int __init pxa27x_udc_init(void)
->  {
->  	register_driver(&udc_driver);
-> -	poller_register(&poller);
->  	return 0;
->  }
-> =20
+Regards,
+Thomas
 
+
+On 27.04.2011 12:34, Marc Kleine-Budde wrote:
+> On 04/27/2011 12:32 PM, Roman Fietze wrote:
+>> Hello Marc,
+>>
+>> On Wednesday, 27.April.2011 11:14:54 Marc Kleine-Budde wrote:
+>>
+>>> Have a look at the /dev folder, do you have two "/dev/mem*"? If not
+>>> you should make the .id unique, i.e. should be "0" here.
+>> Barebox' register_device auto increments the ID if it's below zero,
+>> and devinfo shows me
+> Even better!
+>
+>> ...
+>> |----mem2 (ram0)
+>> |----mem3 (ram1)
+>> ...
+>>
+>> "My" code is just borrowed from boards/karo-tx25/board.c. So if it's
+>> ambiguous, somebody (Sascha? Me?) should fix that there as well.
+> Marc
+>
+>
+>
+>
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+
+--------------050102040701060509000100
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+
+<html>
+  <head>
+    <meta content="text/html; charset=ISO-8859-1"
+      http-equiv="Content-Type">
+  </head>
+  <body bgcolor="#FFFFFF" text="#000000">
+    Hi,<br>
+    <br>
+    is there a reason why this patch was never applied?<br>
+    It works fine for us.<br>
+    <br>
+    Regards,<br>
+    Thomas<br>
+    <br>
+    <br>
+    On 27.04.2011 12:34, Marc Kleine-Budde wrote:
+    <blockquote cite="mid:4DB7F14E.1080404@pengutronix.de" type="cite">
+      <pre wrap="">On 04/27/2011 12:32 PM, Roman Fietze wrote:
+</pre>
+      <blockquote type="cite">
+        <pre wrap="">Hello Marc,
+
+On Wednesday, 27.April.2011 11:14:54 Marc Kleine-Budde wrote:
+
+</pre>
+        <blockquote type="cite">
+          <pre wrap="">Have a look at the /dev folder, do you have two "/dev/mem*"? If not
+you should make the .id unique, i.e. should be "0" here.
+</pre>
+        </blockquote>
+        <pre wrap="">
+Barebox' register_device auto increments the ID if it's below zero,
+and devinfo shows me
+</pre>
+      </blockquote>
+      <pre wrap="">
+Even better!
+
+</pre>
+      <blockquote type="cite">
+        <pre wrap="">
+...
+|----mem2 (ram0)
+|----mem3 (ram1)
+...
+
+"My" code is just borrowed from boards/karo-tx25/board.c. So if it's
+ambiguous, somebody (Sascha? Me?) should fix that there as well.
+</pre>
+      </blockquote>
+      <pre wrap="">
 Marc
 
---=20
-Pengutronix e.K.                  | Marc Kleine-Budde           |
-Industrial Linux Solutions        | Phone: +49-231-2826-924     |
-Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
+
+</pre>
+      <br>
+      <fieldset class="mimeAttachmentHeader"></fieldset>
+      <br>
+      <pre wrap="">_______________________________________________
+barebox mailing list
+<a class="moz-txt-link-abbreviated" href="mailto:barebox@lists.infradead.org">barebox@lists.infradead.org</a>
+<a class="moz-txt-link-freetext" href="http://lists.infradead.org/mailman/listinfo/barebox">http://lists.infradead.org/mailman/listinfo/barebox</a>
+</pre>
+    </blockquote>
+    <br>
+  </body>
+</html>
+
+--------------050102040701060509000100--
 
 
---------------enig35A6EAA21299AA8AFF979304
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.10 (GNU/Linux)
-Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org/
-
-iEYEARECAAYFAk8YMo4ACgkQjTAFq1RaXHPfcgCcCguUroWJ9awp05shu7kbBcCD
-LG4Ani1l5VqcoY6QMEx0ngq+aRgpf+M3
-=UF8C
------END PGP SIGNATURE-----
-
---------------enig35A6EAA21299AA8AFF979304--
-
-
---===============7846020606533409838==
+--===============6971341059935763483==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -143,4 +162,4 @@ barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
 
---===============7846020606533409838==--
+--===============6971341059935763483==--
