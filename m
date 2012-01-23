@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RpIgc-0007MN-BT
- for barebox@lists.infradead.org; Mon, 23 Jan 2012 12:07:48 +0000
-Date: Mon, 23 Jan 2012 13:07:38 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120123120738.GB26642@pengutronix.de>
-References: <1324133529-2036-1-git-send-email-s.hauer@pengutronix.de>
- <1324133529-2036-8-git-send-email-s.hauer@pengutronix.de>
- <20120101043717.GC945@game.jcrosoft.org>
- <20120102141345.GB5446@pengutronix.de>
- <20120102150901.GF945@game.jcrosoft.org>
+Received: from mailout-de.gmx.net ([213.165.64.23])
+ by merlin.infradead.org with smtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1RpKVb-00068X-96
+ for barebox@lists.infradead.org; Mon, 23 Jan 2012 14:04:31 +0000
+Message-ID: <4F1D68E9.5000704@gmx.de>
+Date: Mon, 23 Jan 2012 15:04:25 +0100
+From: Thomas Mayer <tm.telemotive@gmx.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20120102150901.GF945@game.jcrosoft.org>
+References: <201104261430.01267.roman.fietze@telemotive.de>
+ <201104271038.46439.roman.fietze@telemotive.de>
+ <4DB7DE8E.6070100@pengutronix.de>
+ <201104271232.12931.roman.fietze@telemotive.de>
+ <4DB7F14E.1080404@pengutronix.de> <4F19827C.5080601@gmx.de>
+ <20120123092652.GK5446@pengutronix.de>
+In-Reply-To: <20120123092652.GK5446@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,64 +22,28 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 7/9] ARM: move exception vectors away from start of binary
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] freescale-mx35-3-stack: support 256 MiB RAM
+To: barebox@lists.infradead.org
 
-On Mon, Jan 02, 2012 at 04:09:01PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 15:13 Mon 02 Jan     , Sascha Hauer wrote:
-> > On Sun, Jan 01, 2012 at 05:37:17AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > On 15:52 Sat 17 Dec     , Sascha Hauer wrote:
-> > > > Traditionally U-Boot and barebox have the exception vectors at
-> > > > the start of the binary. There is no real reason in doing so,
-> > > > because in the majority of cases this data will not be at 0x0
-> > > > where it could be used as vectors directly anyway.
-> > > > This patch puts the vectors into a separate linker section and
-> > > > defines an head function which is placed at the start of the
-> > > > image instead. Putting this in a separate function also has
-> > > > the advantage that it can be placed at the start of images
-> > > > which require an additional header like several Freescale i.MX
-> > > > images. As the head function contains the barebox arm magic
-> > > > those images can now also be detected aas barebox images.
-> > > > 
-> > > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > > > ---
-> > > I've to make it optionnal as on AT91 for boot we must have it at the bigeniing
-> > > of the binary
-> > 
-> > Instead of this:
-> > 
-> > 		"b reset\n"
-> > 		".rept 7\n"
-> > 		".word 0x0\n"
-> > 		".endr\n"
-> > 
-> > we could do this:
-> > 
-> > 		"b reset\n"
-> > 		".rept 7\n"
-> > 		"1: b 1b\n"
-> > 		".endr\n"
-> > 
-> > This looks like a exception vector table for the at91 bootloader. BTW
-> > I just looked at a at91 datasheet and at least on the at91sam9260 the
-> > sixth vector should contain the image size to copy. So maybe this does
-> > not work on at91 anyway?
-> I'm working on it so please hold on this
+Hi Sasha,
 
-ping. I'd really like to merge the remaining thumb2 support pieces.
+On 23.01.2012 10:26, Sascha Hauer wrote:
+> On Fri, Jan 20, 2012 at 04:04:28PM +0100, Thomas Mayer wrote:
+>> Hi,
+>>
+>> is there a reason why this patch was never applied?
+>> It works fine for us.
+> Yeah, the reason probably is that I forgot to apply it.
+>
+> It does not apply anymore. Can you check this updated version?
+I patched the v2012.01.0 release to test it, seems to work fine :)
 
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Regards,
+Thomas
 
 _______________________________________________
 barebox mailing list
