@@ -1,24 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 16.mo3.mail-out.ovh.net ([188.165.56.217]
- helo=mo3.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RpYCq-0006bA-GV
- for barebox@lists.infradead.org; Tue, 24 Jan 2012 04:42:06 +0000
-Received: from mail617.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 4CD54FFB6DC
- for <barebox@lists.infradead.org>; Tue, 24 Jan 2012 05:43:47 +0100 (CET)
-Date: Tue, 24 Jan 2012 05:39:43 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120124043943.GT25622@game.jcrosoft.org>
-References: <1324133529-2036-1-git-send-email-s.hauer@pengutronix.de>
- <1324133529-2036-8-git-send-email-s.hauer@pengutronix.de>
- <20120101043717.GC945@game.jcrosoft.org>
- <20120102141345.GB5446@pengutronix.de>
- <20120102150901.GF945@game.jcrosoft.org>
- <20120123120738.GB26642@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20120123120738.GB26642@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RpdyA-0001QW-NQ
+ for barebox@lists.infradead.org; Tue, 24 Jan 2012 10:51:19 +0000
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Date: Tue, 24 Jan 2012 11:51:06 +0100
+Message-Id: <1327402267-22385-6-git-send-email-mkl@pengutronix.de>
+In-Reply-To: <1327402267-22385-1-git-send-email-mkl@pengutronix.de>
+References: <1327402267-22385-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,63 +16,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 7/9] ARM: move exception vectors away from start of binary
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 5/6] ARM: mx3/mx35_3ds: increase kernel partition size to 4 MiB
+To: barebox@lists.infradead.org
 
-On 13:07 Mon 23 Jan     , Sascha Hauer wrote:
-> On Mon, Jan 02, 2012 at 04:09:01PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > On 15:13 Mon 02 Jan     , Sascha Hauer wrote:
-> > > On Sun, Jan 01, 2012 at 05:37:17AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > > On 15:52 Sat 17 Dec     , Sascha Hauer wrote:
-> > > > > Traditionally U-Boot and barebox have the exception vectors at
-> > > > > the start of the binary. There is no real reason in doing so,
-> > > > > because in the majority of cases this data will not be at 0x0
-> > > > > where it could be used as vectors directly anyway.
-> > > > > This patch puts the vectors into a separate linker section and
-> > > > > defines an head function which is placed at the start of the
-> > > > > image instead. Putting this in a separate function also has
-> > > > > the advantage that it can be placed at the start of images
-> > > > > which require an additional header like several Freescale i.MX
-> > > > > images. As the head function contains the barebox arm magic
-> > > > > those images can now also be detected aas barebox images.
-> > > > > 
-> > > > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > > > > ---
-> > > > I've to make it optionnal as on AT91 for boot we must have it at the bigeniing
-> > > > of the binary
-> > > 
-> > > Instead of this:
-> > > 
-> > > 		"b reset\n"
-> > > 		".rept 7\n"
-> > > 		".word 0x0\n"
-> > > 		".endr\n"
-> > > 
-> > > we could do this:
-> > > 
-> > > 		"b reset\n"
-> > > 		".rept 7\n"
-> > > 		"1: b 1b\n"
-> > > 		".endr\n"
-> > > 
-> > > This looks like a exception vector table for the at91 bootloader. BTW
-> > > I just looked at a at91 datasheet and at least on the at91sam9260 the
-> > > sixth vector should contain the image size to copy. So maybe this does
-> > > not work on at91 anyway?
-> > I'm working on it so please hold on this
-> 
-> ping. I'd really like to merge the remaining thumb2 support pieces.
-I've issue on it
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ arch/arm/boards/freescale-mx35-3-stack/env/config |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
 
-I try to send a version this week sorry but here its chinese new year
+diff --git a/arch/arm/boards/freescale-mx35-3-stack/env/config b/arch/arm/boards/freescale-mx35-3-stack/env/config
+index fa45812..9f37348 100644
+--- a/arch/arm/boards/freescale-mx35-3-stack/env/config
++++ b/arch/arm/boards/freescale-mx35-3-stack/env/config
+@@ -40,10 +40,10 @@ autoboot_timeout=3
+ 
+ bootargs="console=ttymxc0,115200"
+ 
+-nor_parts="256k(barebox)ro,512k(bareboxenv),2M(kernel),-(root)"
++nor_parts="256k(barebox)ro,512k(bareboxenv),4M(kernel),-(root)"
+ rootfs_mtdblock_nor=3
+ 
+-nand_parts="256k(barebox)ro,512k(bareboxenv),2M(kernel),-(root)"
++nand_parts="256k(barebox)ro,512k(bareboxenv),4M(kernel),-(root)"
+ rootfs_mtdblock_nand=7
+ nand_device=mxc_nand
+ 
+-- 
+1.7.4.1
 
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
