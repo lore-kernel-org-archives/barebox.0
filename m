@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RpdyB-0001Qn-1x
- for barebox@lists.infradead.org; Tue, 24 Jan 2012 10:51:20 +0000
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RpdyF-00045x-KZ
+ for barebox@lists.infradead.org; Tue, 24 Jan 2012 10:51:24 +0000
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Tue, 24 Jan 2012 11:51:04 +0100
-Message-Id: <1327402267-22385-4-git-send-email-mkl@pengutronix.de>
+Date: Tue, 24 Jan 2012 11:51:07 +0100
+Message-Id: <1327402267-22385-7-git-send-email-mkl@pengutronix.de>
 In-Reply-To: <1327402267-22385-1-git-send-email-mkl@pengutronix.de>
 References: <1327402267-22385-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,89 +21,177 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/6] defaultenv: update: add nfs support
+Subject: [PATCH 6/6] ARM: mx3/mx35_3ds: add (optinal) support for flexcan0
 To: barebox@lists.infradead.org
+
+The i.MX35 processor consists of numerous subsystems, there are
+several possibilities to route the internal signals to external BGA
+pins and most pins can select several functions. The layout of the
+MX35 3 Stack development kit requires the that the RX and TX signals
+of the first CAN controller use the I2C2_DAT and I2C2_CLK pin. (The
+pins are named after their primary functions.)
+
+On the 3 Stack board these pin can be used for the first USB Host
+controller (USBH2), too. This means activating the first CAN, the USB
+Host controller needs to be disabled. Several steps are needed:
+
+1) Disable the driver for the USB Controller, just to be sure.
+
+2) Change the pin mux setup, so that the CAN signals are routed CPU
+   internally to the pin.
+
+3) Activate the driver for the CAN Controller.
+
+4) Control muxer U85 on the base board, so that the CAN signals reach
+   the CAN transceiver.
+
+5) Turn on the CAN transceiver (U77).
+
+---
+
+The signal routing of the first CAN controller (CAN1 according to the
+datasheet) consists of two signals: "CAN TX" and "CAN RX".
+
+ +-----------------------------------------+
+ | i.MX35                                  |
+ |                                         |
+ | I2C2_CLK/CAN_TX1/USBH2_PWR/GPIO2_26  L3 |----<CAN_TX1>--------.
+ |                                         |                     |
+ |  I2C2_DAT/CAN_RX1/USBH2_OC/GPIO2_27  M1 |----<CAN_RX1>----.   |
+ |                                         |                 |   |
+ |                                         |                 |   |
+ +-----------------------------------------+                 |   |
+                                     |                       |   |
+                                     | <I2C>                 |   |
+                                     |                       |   |
+                           +-------------------+             |   |
+                           | MC9S08DZ60        |             |   |
+                           |                   |             |   |
+                           |                   |             |   |
+                           | PTD0/PID0/TPM2CH0 |             |   |
+                           |                   |             |   |
+                           |        31         |             |   |
+                           +-------------------+             |   |
+                                     |                       |   |
+                                     | <CAN_PWDN>            |   |
+                                     |                       |   |
+                                     |                       |   |
+                                     | <J28>           <K24> |   | <K23>
+                                     |                       |   |
+    ^^^^ CPU Board ^^^^              V                       V   V
+
+    VVVV Base Board VVVV             ^                       ^   ^
+                                     |                       |   |
+                                     | <J28>           <K24> |   | <K23>
+                                     |                       |   |
+  .----------------------------------+                       |   |
+  |                                  |                       |   |
+  |                                  | <CAN_PWDN>            |   |
+  |                                  |                       |   |
+  |                          +-------------+                 |   |
+  |                          |PI3USB10 U85 |                 |   |
+  |                          |             |                 |   |
+  |     ... --<USBH2_PWR>----| 10          |                 |   |
+  |                          |             |                 |   |
+  |     ... ---<USBH2_OC>----| 9         4 |----<CAN_RX1>----'   |
+  |                          |   Muxer     |                     |
+  |   .--------<CAN_RX_1>----| 11        3 |----<CAN_TX1>--------'
+  |   |                      |             |
+  |   |   .----<CAN_TX_1>----| 12          |
+  |   |   |                  +-------------+
+  |   |   |
+  |   |   |
+  |   |   |                  +-------------+
+  |   |   |                  |TLE6250  U77 |
+  |   |   |                  |             |
+  |   |   '------------------| 1         7 |----<CANH>---- ...
+  |   |                      |   CAN       |
+  |   '----------------------| 4         6 |----<CANL>---- ...
+  |                          | Transceiver |
+  '--------------------------| 8           |
+                             |             |
+                             +-------------+
+
+The "can tx" signal takes the following route:
+
+CPU Board:  i.MX35 pin L3 - CAN_TX1 - K23
+Base Board: K23 - CAN_TX1 - Muxer - CAN_TX_1 - Transceiver
+
+The "can rx" travels accordingly:
+
+CPU Board:  i.MX35 pin M1 - CAN_RX1 - K24
+Base Board: K24 - CAN_RX1 - Muxer - CAN_RX_1 - Transceiver
+
+The muxer and the CAN transceiver are enabled by the low active signal
+CAN_PWDN, which is in default configuration pulled up by a
+resistor. The signal is generated on the CPU Board by a companion chip
+MC9S08DZ60 which itself is connected to the CPU via I2C. The routing
+of CAN_PWDN follows:
+
+CPU Board:  MC9S08DZ60 Pin 31 - CAN_PWDN - J28
+Base Board: J28 - Muxer
+            J28 - Transceiver
+
+In order to activate the CAN_PWDN signal the CPU has to modify a
+register in the MC9S08DZ60 chip, but the Linux kernel is lacking
+support for this chip. However the bootloader "barebox" which is used,
+already has a driver.
+
+Pin 31 of the MC9S08DZ60 is controlled via the 2nd bit (bit mask 0x2)
+of the GPIO_2 reg.
+
+---
+
+This patch adds Kconfig option to choose between USB and CAN at
+compile time. When activating CAN the CAN_PWDN is driven low by pin 31
+of MC9S08DZ60, so that the muxer routes the CAN signals to the CAN
+transceiver. The CAN transceiver itself is activated by the CAN_PWDN
+signal, too.
 
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- defaultenv/bin/_update      |   11 ++++-------
- defaultenv/bin/_update_help |   10 +++++-----
- defaultenv/bin/update       |    2 +-
- 3 files changed, 10 insertions(+), 13 deletions(-)
+ arch/arm/boards/freescale-mx35-3-stack/3stack.c |    7 +++++++
+ arch/arm/mach-imx/Kconfig                       |    4 ++++
+ 2 files changed, 11 insertions(+), 0 deletions(-)
 
-diff --git a/defaultenv/bin/_update b/defaultenv/bin/_update
-index 9e88dea..e7cf149 100644
---- a/defaultenv/bin/_update
-+++ b/defaultenv/bin/_update
-@@ -10,7 +10,7 @@ if [ ! -e "$part" ]; then
- 	exit 1
- fi
+diff --git a/arch/arm/boards/freescale-mx35-3-stack/3stack.c b/arch/arm/boards/freescale-mx35-3-stack/3stack.c
+index fe17899..5b7f76a 100644
+--- a/arch/arm/boards/freescale-mx35-3-stack/3stack.c
++++ b/arch/arm/boards/freescale-mx35-3-stack/3stack.c
+@@ -383,11 +383,18 @@ static int f3s_pmic_init_v2(struct mc13892 *mc13892)
+ 	return err;
+ }
  
--if [ x$mode = xtftp ]; then
-+if [ x$mode = xtftp -o x$mode = xnfs ]; then
- 	if [ x$ip = xdhcp ]; then
- 		dhcp
- 	fi
-@@ -20,6 +20,7 @@ if [ x$mode = xtftp ]; then
- 		echo "Server did not reply! Update aborted."
- 		exit 1
- 	fi
-+	load=$mode
- fi
++#ifdef CONFIG_MACH_FREESCALE_MX35_3STACK_CAN
++#define MX35PDK_GPIO2_CAN_VAL	(0x0)
++#else
++#define MX35PDK_GPIO2_CAN_VAL	(0x2)
++#endif
++
+ static int f3s_pmic_init_all(struct mc9sdz60 *mc9sdz60)
+ {
+ 	int err = 0;
  
- if [ x$mode = xxmodem ]; then
-@@ -28,6 +29,7 @@ if [ x$mode = xxmodem ]; then
- 		echo "loadb failed or cancelled! Update aborted."
- 		exit 1
- 	fi
-+	load="cp -v"
- fi
+ 	err |= mc9sdz60_set_bits(mc9sdz60, MC9SDZ60_REG_GPIO_1, 0x04, 0x04);
++	err |= mc9sdz60_set_bits(mc9sdz60, MC9SDZ60_REG_GPIO_2, 0x02, MX35PDK_GPIO2_CAN_VAL);
  
- unprotect $part
-@@ -40,11 +42,6 @@ erase $part || exit 1
- echo
- echo "flashing $image to $part"
- echo
--
--if [ x$mode = xtftp ]; then
--	tftp $image $part || exit 1
--else
--	cp -v $image $part || exit 1
--fi
-+$load $image $part || exit 1
+ 	err |= mc9sdz60_set_bits(mc9sdz60, MC9SDZ60_REG_RESET_1, 0x80, 0x00);
+ 	mdelay(200);
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index a4b603b..59f8def 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -462,6 +462,10 @@ config FREESCALE_MX25_3STACK_SDRAM_128MB_MDDR
+ 	bool "128 MB (mDDR)"
+ endchoice
+ endif
++if MACH_FREESCALE_MX35_3STACK
++config MACH_FREESCALE_MX35_3STACK_CAN
++	bool "activate CAN instead of USB"
++endif
+ endmenu
  
- protect $part
-diff --git a/defaultenv/bin/_update_help b/defaultenv/bin/_update_help
-index 92d6772..3b7ad23 100644
---- a/defaultenv/bin/_update_help
-+++ b/defaultenv/bin/_update_help
-@@ -7,8 +7,8 @@ echo "options"
- echo " -c     to check the crc32 for the image and flashed one"
- echo ""
- echo "default mode is tftp"
--echo "type update -t kernel -d <nor|nand|disk> [-m tftp|xmodem] [-f imagename] to update kernel into flash"
--echo "type update -t rootfs -d <nor|nand> [-m tftp|xmodem] [-f imagename] to update rootfs into flash"
--echo "type update -t barebox -d <nor|nand> [-m tftp|xmodem] [-f imagename] to update barebox into flash"
--echo "type update -t bareboxenv -d <nor|nand> [-m tftp|xmodem] [-f imagename] to update bareboxenv into flash"
--echo "type update -t xload -d <nor|nand> [-m tftp|xmodem] [-f imagename] to update xload into flash"
-+echo "type update -t kernel -d <nor|nand|disk> [-m tftp|xmodem|nfs] [-f imagename] to update kernel into flash"
-+echo "type update -t rootfs -d <nor|nand> [-m tftp|xmodem|nfs] [-f imagename] to update rootfs into flash"
-+echo "type update -t barebox -d <nor|nand> [-m tftp|xmodem|nfs] [-f imagename] to update barebox into flash"
-+echo "type update -t bareboxenv -d <nor|nand> [-m tftp|xmodem|nfs] [-f imagename] to update bareboxenv into flash"
-+echo "type update -t xload -d <nor|nand> [-m tftp|xmodem|nfs] [-f imagename] to update xload into flash"
-diff --git a/defaultenv/bin/update b/defaultenv/bin/update
-index 39e7591..96442b1 100644
---- a/defaultenv/bin/update
-+++ b/defaultenv/bin/update
-@@ -63,7 +63,7 @@ else
- 	exit 1
- fi
- 
--if [ x${mode} != xtftp -a x${mode} != xxmodem ] ; then
-+if [ x${mode} != xtftp -a x${mode} != xxmodem -a x${mode} != xnfs ]; then
- 	echo "unsupported mode ${mode}."
- 	. /env/bin/_update_help
- 	exit 1
+ menu "i.MX specific settings        "
 -- 
 1.7.4.1
 
