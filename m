@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from exprod5og107.obsmtp.com ([64.18.0.184])
+Received: from exprod5og112.obsmtp.com ([64.18.0.24])
  by merlin.infradead.org with smtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RpfZm-0004iL-UZ
+ id 1RpfZm-0004iM-LP
  for barebox@lists.infradead.org; Tue, 24 Jan 2012 12:34:15 +0000
 From: Renaud Barbier <renaud.barbier@ge.com>
-Date: Tue, 24 Jan 2012 12:33:55 +0000
-Message-Id: <1327408443-3519-2-git-send-email-renaud.barbier@ge.com>
+Date: Tue, 24 Jan 2012 12:33:56 +0000
+Message-Id: <1327408443-3519-3-git-send-email-renaud.barbier@ge.com>
 In-Reply-To: <1327408443-3519-1-git-send-email-renaud.barbier@ge.com>
 References: <1327408443-3519-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
@@ -21,162 +21,211 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/9] Preparation stage to support multiple PPC architectures.
+Subject: [PATCH 2/9] Define clock source shift and mask.
 To: barebox@lists.infradead.org
 
-Rework arch/ppc/Kconfig to select processor types.
-Move MPC5200 configuration to architecture sub-directory.
-pcm030 configuration file is updated to reflect changes.
+* Define clock source shift and mask in mach/clock_config.h.
+* Rename ppc/lib/time.c to ppc/lib/time-mpc5200.c.
+* Update lib/Makefile to reflect change.
 
 Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
 ---
- arch/ppc/Kconfig                  |   48 +++++++++---------------------------
- arch/ppc/configs/pcm030_defconfig |    3 ++
- arch/ppc/mach-mpc5xxx/Kconfig     |   46 +++++++++++++++++++++++++++++++++++
- 3 files changed, 61 insertions(+), 36 deletions(-)
+ arch/ppc/lib/Makefile                             |    2 +-
+ arch/ppc/lib/time-mpc5200.c                       |   75 +++++++++++++++++++++
+ arch/ppc/lib/time.c                               |   74 --------------------
+ arch/ppc/mach-mpc5xxx/include/mach/clock_config.h |    7 ++
+ 4 files changed, 83 insertions(+), 75 deletions(-)
+ create mode 100644 arch/ppc/lib/time-mpc5200.c
+ delete mode 100644 arch/ppc/lib/time.c
+ create mode 100644 arch/ppc/mach-mpc5xxx/include/mach/clock_config.h
 
-diff --git a/arch/ppc/Kconfig b/arch/ppc/Kconfig
-index 4c7b7cd..ea38af6 100644
---- a/arch/ppc/Kconfig
-+++ b/arch/ppc/Kconfig
-@@ -1,53 +1,29 @@
+diff --git a/arch/ppc/lib/Makefile b/arch/ppc/lib/Makefile
+index b611ddf..2af000a 100644
+--- a/arch/ppc/lib/Makefile
++++ b/arch/ppc/lib/Makefile
+@@ -4,7 +4,7 @@ obj-y += extable.o
+ obj-y += kgdb.o
+ obj-y += ppcstring.o
+ obj-y += ticks.o
+-obj-y += time.o
++obj-$(CONFIG_MPC5200) += time-mpc5200.o
+ obj-y += misc.o
+ obj-$(CONFIG_CMD_BOOTM) += ppclinux.o
+ obj-y += board_data.o
+diff --git a/arch/ppc/lib/time-mpc5200.c b/arch/ppc/lib/time-mpc5200.c
+new file mode 100644
+index 0000000..11f08a7
+--- /dev/null
++++ b/arch/ppc/lib/time-mpc5200.c
+@@ -0,0 +1,75 @@
++/*
++ * (C) Copyright 2000, 2001
++ * Wolfgang Denk, DENX Software Engineering, wd@denx.de.
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
++
++#include <common.h>
++#include <clock.h>
++#include <init.h>
++#include <mach/clocks.h>
++#include <mach/clock_config.h>
++#include <asm/common.h>
++
++/* ------------------------------------------------------------------------- */
++
++static int init_timebase (void)
++{
++#if defined(CONFIG_5xx) || defined(CONFIG_8xx)
++	volatile immap_t *immap = (immap_t *) CFG_IMMR;
++
++	/* unlock */
++	immap->im_sitk.sitk_tbk = KAPWR_KEY;
++#endif
++
++	/* reset */
++	asm ("li 3,0 ; mttbu 3 ; mttbl 3 ;");
++
++#if defined(CONFIG_5xx) || defined(CONFIG_8xx)
++	/* enable */
++	immap->im_sit.sit_tbscr |= TBSCR_TBE;
++#endif
++	return (0);
++}
++/* ------------------------------------------------------------------------- */
++
++uint64_t ppc_clocksource_read(void)
++{
++	return get_ticks();
++}
++
++static struct clocksource cs = {
++	.read	= ppc_clocksource_read,
++	.mask	= CLOCKSOURCE_MASK(CONFIG_CLOCKSOURCE_MASK),
++	.shift	= CONFIG_CLOCKSOURCE_SHIFT,
++};
++
++static int clocksource_init (void)
++{
++	init_timebase();
++
++	cs.mult = clocksource_hz2mult(get_timebase_clock(), cs.shift);
++
++	init_clock(&cs);
++
++	return 0;
++}
++
++core_initcall(clocksource_init);
+diff --git a/arch/ppc/lib/time.c b/arch/ppc/lib/time.c
+deleted file mode 100644
+index 04c71df..0000000
+--- a/arch/ppc/lib/time.c
++++ /dev/null
+@@ -1,74 +0,0 @@
+-/*
+- * (C) Copyright 2000, 2001
+- * Wolfgang Denk, DENX Software Engineering, wd@denx.de.
+- *
+- * See file CREDITS for list of people who contributed to this
+- * project.
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+- * MA 02111-1307 USA
+- */
 -
--config BOARDINFO
--	default "Phytec Phycore mpc5200b tiny" if MACH_PHYCORE_MPC5200B_TINY
--	
--config ARCH_TEXT_BASE
--	hex
--	default 0x00000000 if RELOCATABLE
--	default 0x01000000 if MACH_PHYCORE_MPC5200B_TINY
+-#include <common.h>
+-#include <clock.h>
+-#include <init.h>
+-#include <mach/clocks.h>
+-#include <asm/common.h>
 -
-+#
-+#
-+#
- config PPC
- 	bool
- 	select HAVE_CONFIGURABLE_TEXT_BASE
- 	select HAS_KALLSYMS
- 	select HAS_MODULES
- 	select HAVE_CONFIGURABLE_MEMORY_LAYOUT
--	select HAVE_CONFIGURABLE_TEXT_BASE
- 	default y
- 
--# Uh, we should decide which one we want to use
--config ARCH_MPC5200
--	bool
+-/* ------------------------------------------------------------------------- */
 -
--config MPC5200
--	bool
+-static int init_timebase (void)
+-{
+-#if defined(CONFIG_5xx) || defined(CONFIG_8xx)
+-	volatile immap_t *immap = (immap_t *) CFG_IMMR;
 -
--config MPC5xxx
--	bool
-+menu "Architecture Type"
- 
--config CACHELINE_SIZE
--	int
--	default 32 if ARCH_MPC5200
-+choice
-+	prompt "PPC Architecture type"
- 
--config HAS_REGINFO
--	bool
--	default y if ARCH_MPC5200
-+config ARCH_MPC8XXX
-+	bool "Freescale MPC85xx"
- 
--choice
--	prompt "Select your board"
-+config ARCH_MPC5XXX
-+	bool "Freescale MPC5xxx"
- 
--config MACH_PHYCORE_MPC5200B_TINY
--	bool "Phycore mpc5200b tiny"
--	select ARCH_MPC5200
--	select MPC5200
--	select MPC5xxx
--	select HAS_CFI
--	help
--	  Say Y here if you are using the Phytec Phycore MPC5200B Tiny
--	  board aka pcm030
- endchoice
- 
-+endmenu
+-	/* unlock */
+-	immap->im_sitk.sitk_tbk = KAPWR_KEY;
+-#endif
+-
+-	/* reset */
+-	asm ("li 3,0 ; mttbu 3 ; mttbl 3 ;");
+-
+-#if defined(CONFIG_5xx) || defined(CONFIG_8xx)
+-	/* enable */
+-	immap->im_sit.sit_tbscr |= TBSCR_TBE;
+-#endif
+-	return (0);
+-}
+-/* ------------------------------------------------------------------------- */
+-
+-uint64_t ppc_clocksource_read(void)
+-{
+-	return get_ticks();
+-}
+-
+-static struct clocksource cs = {
+-	.read	= ppc_clocksource_read,
+-	.mask	= CLOCKSOURCE_MASK(32),
+-	.shift	= 15,
+-};
+-
+-static int clocksource_init (void)
+-{
+-	init_timebase();
+-
+-	cs.mult = clocksource_hz2mult(get_timebase_clock(), cs.shift);
+-
+-	init_clock(&cs);
+-
+-	return 0;
+-}
+-
+-core_initcall(clocksource_init);
+diff --git a/arch/ppc/mach-mpc5xxx/include/mach/clock_config.h b/arch/ppc/mach-mpc5xxx/include/mach/clock_config.h
+new file mode 100644
+index 0000000..ee39199
+--- /dev/null
++++ b/arch/ppc/mach-mpc5xxx/include/mach/clock_config.h
+@@ -0,0 +1,7 @@
++#ifndef __ASM_ARCH_CLOCK_CONFIG_H
++#define __ASM_ARCH_CLOCK_CONFIG_H
 +
- source arch/ppc/mach-mpc5xxx/Kconfig
- source common/Kconfig
- source commands/Kconfig
-diff --git a/arch/ppc/configs/pcm030_defconfig b/arch/ppc/configs/pcm030_defconfig
-index 5de1c75..c037502 100644
---- a/arch/ppc/configs/pcm030_defconfig
-+++ b/arch/ppc/configs/pcm030_defconfig
-@@ -32,6 +32,9 @@ CONFIG_NET=y
- CONFIG_NET_DHCP=y
- CONFIG_NET_PING=y
- CONFIG_NET_TFTP=y
-+CONFIG_ARCH_MPC5XXX=y
-+CONFIG_MACH_PHYCORE_MPC5200B_TINY=y
-+CONFIG_DRIVER_NET_MPC5200=y
- CONFIG_DRIVER_CFI=y
- CONFIG_CFI_BUFFER_WRITE=y
- CONFIG_ZLIB=y
-diff --git a/arch/ppc/mach-mpc5xxx/Kconfig b/arch/ppc/mach-mpc5xxx/Kconfig
-index 632fb85..1473211 100644
---- a/arch/ppc/mach-mpc5xxx/Kconfig
-+++ b/arch/ppc/mach-mpc5xxx/Kconfig
-@@ -1,3 +1,47 @@
-+if ARCH_MPC5XXX
++#define CONFIG_CLOCKSOURCE_MASK     32
++#define CONFIG_CLOCKSOURCE_SHIFT    15
 +
-+config BOARDINFO
-+	default "Phytec Phycore mpc5200b tiny" if MACH_PHYCORE_MPC5200B_TINY
-+
-+config ARCH_TEXT_BASE
-+	hex
-+	default 0x00000000 if RELOCATABLE
-+	default 0x01000000 if MACH_PHYCORE_MPC5200B_TINY
-+
-+config HAS_REGINFO
-+	bool
-+	default y if ARCH_MPC5200
-+
-+config CACHELINE_SIZE
-+	int
-+	default 32 if ARCH_MPC5200
-+
-+choice
-+	prompt "Select your board"
-+
-+config MACH_PHYCORE_MPC5200B_TINY
-+	bool "Phycore mpc5200b tiny"
-+	select HAS_CFI
-+	help
-+	  Say Y here if you are using the Phytec Phycore MPC5200B Tiny
-+	  board aka pcm030
-+endchoice
-+
-+config MPC5200
-+	bool
-+	depends on MACH_PHYCORE_MPC5200B_TINY
-+    default y
-+
-+config ARCH_MPC5200
-+	bool
-+	depends on MACH_PHYCORE_MPC5200B_TINY
-+    default y
-+
-+config MPC5xxx
-+	bool
-+	depends on MACH_PHYCORE_MPC5200B_TINY
-+    default y
-+
- menu "Board specific settings       "
- 
- config MACH_PHYCORE_MPC5200B_TINY_REV
-@@ -10,3 +54,5 @@ config MACH_PHYCORE_MPC5200B_TINY_REV
- 	  old board you should set this option to 1
- 
- endmenu
-+
-+endif
++#endif /* __ASM_ARCH_CLOCK_CONFIG_H */
 -- 
 1.7.1
 
