@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from exprod5og106.obsmtp.com ([64.18.0.182])
+Received: from exprod5og107.obsmtp.com ([64.18.0.184])
  by merlin.infradead.org with smtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RpfZl-0004iK-Le
- for barebox@lists.infradead.org; Tue, 24 Jan 2012 12:34:14 +0000
+ id 1RpfZq-0004j3-KB
+ for barebox@lists.infradead.org; Tue, 24 Jan 2012 12:34:21 +0000
 From: Renaud Barbier <renaud.barbier@ge.com>
-Date: Tue, 24 Jan 2012 12:33:54 +0000
-Message-Id: <1327408443-3519-1-git-send-email-renaud.barbier@ge.com>
+Date: Tue, 24 Jan 2012 12:34:01 +0000
+Message-Id: <1327408443-3519-8-git-send-email-renaud.barbier@ge.com>
+In-Reply-To: <1327408443-3519-1-git-send-email-renaud.barbier@ge.com>
+References: <1327408443-3519-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,177 +21,221 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/9] MPC8xxx support
+Subject: [PATCH 7/9] Add-ons to the PPC library to support the mpc8xxx.
 To: barebox@lists.infradead.org
 
-These patches are a work in progress to introduce the mpc8xxx
-architecture to barebox.
-They include preparation work to add the new architecture and
-a minimal support for the P2020RDB. That is, serial only, no
-network driver or storage drivers.
-I will follow up with the Ethernet, NAND and I2C driver.
+* Added suport for the mpc8xxx clock source.
+* Call functions in board_init_r to initialize the mpc85xx.
+* Added reloc.S (used in mpc85xx/start.S)
 
-Renaud Barbier (9):
-  Preparation stage to support multiple PPC architectures.
-  Define clock source shift and mask.
-  Added support for the mpc8xxx architecture.
-  Header files added to support the mpc8xxx architecture.
-  Update to existing header files.
-  Add file and compilation of strmhz.
-  Add-ons to the PPC library to support the mpc8xxx.
-  Update (ppc) Makefile and Kconfig.
-  P1_P2 platform support code and configuratin file for the P2020RDB.
-
- arch/ppc/Kconfig                                  |   49 +-
- arch/ppc/Makefile                                 |   10 +
- arch/ppc/boards/freescale/p1_p2_rdb/Makefile      |    5 +
- arch/ppc/boards/freescale/p1_p2_rdb/barebox.lds.S |  173 ++
- arch/ppc/boards/freescale/p1_p2_rdb/config.h      |  310 +++
- arch/ppc/boards/freescale/p1_p2_rdb/ddr.c         |  244 +++
- arch/ppc/boards/freescale/p1_p2_rdb/law.c         |   33 +
- arch/ppc/boards/freescale/p1_p2_rdb/p1_p2_rdb.c   |  463 ++++
- arch/ppc/boards/freescale/p1_p2_rdb/pci.c         |   43 +
- arch/ppc/boards/freescale/p1_p2_rdb/tlb.c         |   95 +
- arch/ppc/configs/p2020rdb_defconfig               |   24 +
- arch/ppc/configs/pcm030_defconfig                 |    3 +
- arch/ppc/include/asm/bitops.h                     |  102 +-
- arch/ppc/include/asm/cache.h                      |   11 +
- arch/ppc/include/asm/common.h                     |   43 +-
- arch/ppc/include/asm/config.h                     |   84 +
- arch/ppc/include/asm/config_mpc85xx.h             |  188 ++
- arch/ppc/include/asm/e500.h                       |   31 +
- arch/ppc/include/asm/fsl_ddr_sdram.h              |  288 +++
- arch/ppc/include/asm/fsl_dma.h                    |  141 ++
- arch/ppc/include/asm/fsl_enet.h                   |   33 +
- arch/ppc/include/asm/fsl_fman.h                   |  212 ++
- arch/ppc/include/asm/fsl_law.h                    |  123 ++
- arch/ppc/include/asm/fsl_lbc.h                    |  531 +++++
- arch/ppc/include/asm/fsl_portals.h                |   59 +
- arch/ppc/include/asm/fsl_serdes.h                 |   56 +
- arch/ppc/include/asm/fsl_upm.h                    |   48 +
- arch/ppc/include/asm/global_data.h                |  121 ++
- arch/ppc/include/asm/io.h                         |   38 +
- arch/ppc/include/asm/mmu.h                        |  490 ++++--
- arch/ppc/include/asm/mp.h                         |   31 +
- arch/ppc/include/asm/processor.h                  |  685 ++++--
- arch/ppc/lib/Makefile                             |    4 +-
- arch/ppc/lib/board.c                              |   24 +-
- arch/ppc/lib/reloc.S                              |   50 +
- arch/ppc/lib/time-8xxx.c                          |   64 +
- arch/ppc/lib/time-mpc5200.c                       |   75 +
- arch/ppc/lib/time.c                               |   74 -
- arch/ppc/mach-mpc5xxx/Kconfig                     |   46 +
- arch/ppc/mach-mpc5xxx/include/mach/clock_config.h |    7 +
- arch/ppc/mach-mpc8xxx/Kconfig                     |   72 +
- arch/ppc/mach-mpc8xxx/Makefile                    |    6 +
- arch/ppc/mach-mpc8xxx/cpuid.c                     |  133 ++
- arch/ppc/mach-mpc8xxx/fdt_8xxx.c                  |  266 +++
- arch/ppc/mach-mpc8xxx/fsl_law.c                   |  259 +++
- arch/ppc/mach-mpc8xxx/fsl_lbc.c                   |  149 ++
- arch/ppc/mach-mpc8xxx/include/mach/README         |    1 +
- arch/ppc/mach-mpc8xxx/include/mach/clock_config.h |    7 +
- arch/ppc/mach-mpc8xxx/include/mach/clocks.h       |    8 +
- arch/ppc/mach-mpc8xxx/include/mach/early_udelay.h |   33 +
- arch/ppc/mach-mpc8xxx/include/mach/immap_85xx.h   | 2339 +++++++++++++++++++++
- arch/ppc/mach-mpc8xxx/include/mach/mpc85xx.h      |   29 +
- arch/ppc/mach-mpc8xxx/include/mach/nand_upm.h     |   36 +
- arch/ppc/mach-mpc8xxx/include/mach/ppc_asm.tmpl   |  299 +++
- arch/ppc/mach-mpc8xxx/include/mach/tsec.h         |  664 ++++++
- arch/ppc/mach-mpc8xxx/include/mach/uart.h         |   38 +
- arch/ppc/mach-mpc8xxx/io.S                        |  128 ++
- arch/ppc/mach-mpc8xxx/mpc85xx/Makefile            |   14 +
- arch/ppc/mach-mpc8xxx/mpc85xx/cpu.c               |  347 +++
- arch/ppc/mach-mpc8xxx/mpc85xx/cpu_init.c          |  263 +++
- arch/ppc/mach-mpc8xxx/mpc85xx/cpu_init_early.c    |   80 +
- arch/ppc/mach-mpc8xxx/mpc85xx/fdt.c               |  490 +++++
- arch/ppc/mach-mpc8xxx/mpc85xx/fixed_ivor.S        |   79 +
- arch/ppc/mach-mpc8xxx/mpc85xx/interrupts.c        |  113 +
- arch/ppc/mach-mpc8xxx/mpc85xx/mp.c                |  408 ++++
- arch/ppc/mach-mpc8xxx/mpc85xx/mp.h                |   22 +
- arch/ppc/mach-mpc8xxx/mpc85xx/mpc8544_serdes.c    |   95 +
- arch/ppc/mach-mpc8xxx/mpc85xx/p2020_serdes.c      |   73 +
- arch/ppc/mach-mpc8xxx/mpc85xx/release.S           |  317 +++
- arch/ppc/mach-mpc8xxx/mpc85xx/resetvec.S          |    2 +
- arch/ppc/mach-mpc8xxx/mpc85xx/speed.c             |  213 ++
- arch/ppc/mach-mpc8xxx/mpc85xx/start.S             | 1236 +++++++++++
- arch/ppc/mach-mpc8xxx/mpc85xx/tlb.c               |  307 +++
- arch/ppc/mach-mpc8xxx/mpc85xx/traps.c             |  329 +++
- include/common.h                                  |    6 +
- include/ddr_spd.h                                 |  317 +++
- include/ioports.h                                 |   65 +
- include/linux/bitops.h                            |   32 +
- include/linux/types.h                             |    2 +
- include/lmb.h                                     |   61 +
- include/net.h                                     |    2 +
- lib/Makefile                                      |    1 +
- lib/strmhz.c                                      |   38 +
- 83 files changed, 14011 insertions(+), 479 deletions(-)
- create mode 100644 arch/ppc/boards/freescale/p1_p2_rdb/Makefile
- create mode 100644 arch/ppc/boards/freescale/p1_p2_rdb/barebox.lds.S
- create mode 100644 arch/ppc/boards/freescale/p1_p2_rdb/config.h
- create mode 100644 arch/ppc/boards/freescale/p1_p2_rdb/ddr.c
- create mode 100644 arch/ppc/boards/freescale/p1_p2_rdb/law.c
- create mode 100644 arch/ppc/boards/freescale/p1_p2_rdb/p1_p2_rdb.c
- create mode 100644 arch/ppc/boards/freescale/p1_p2_rdb/pci.c
- create mode 100644 arch/ppc/boards/freescale/p1_p2_rdb/tlb.c
- create mode 100644 arch/ppc/configs/p2020rdb_defconfig
- create mode 100644 arch/ppc/include/asm/config.h
- create mode 100644 arch/ppc/include/asm/config_mpc85xx.h
- create mode 100644 arch/ppc/include/asm/e500.h
- create mode 100644 arch/ppc/include/asm/fsl_ddr_sdram.h
- create mode 100644 arch/ppc/include/asm/fsl_dma.h
- create mode 100644 arch/ppc/include/asm/fsl_enet.h
- create mode 100644 arch/ppc/include/asm/fsl_fman.h
- create mode 100644 arch/ppc/include/asm/fsl_law.h
- create mode 100644 arch/ppc/include/asm/fsl_lbc.h
- create mode 100644 arch/ppc/include/asm/fsl_portals.h
- create mode 100644 arch/ppc/include/asm/fsl_serdes.h
- create mode 100644 arch/ppc/include/asm/fsl_upm.h
- create mode 100644 arch/ppc/include/asm/global_data.h
- create mode 100644 arch/ppc/include/asm/mp.h
+Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
+---
+ arch/ppc/lib/Makefile    |    2 +
+ arch/ppc/lib/board.c     |   24 ++++++++++++++++-
+ arch/ppc/lib/reloc.S     |   50 ++++++++++++++++++++++++++++++++++++
+ arch/ppc/lib/time-8xxx.c |   64 ++++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 139 insertions(+), 1 deletions(-)
  create mode 100644 arch/ppc/lib/reloc.S
  create mode 100644 arch/ppc/lib/time-8xxx.c
- create mode 100644 arch/ppc/lib/time-mpc5200.c
- delete mode 100644 arch/ppc/lib/time.c
- create mode 100644 arch/ppc/mach-mpc5xxx/include/mach/clock_config.h
- create mode 100644 arch/ppc/mach-mpc8xxx/Kconfig
- create mode 100644 arch/ppc/mach-mpc8xxx/Makefile
- create mode 100644 arch/ppc/mach-mpc8xxx/cpuid.c
- create mode 100644 arch/ppc/mach-mpc8xxx/fdt_8xxx.c
- create mode 100644 arch/ppc/mach-mpc8xxx/fsl_law.c
- create mode 100644 arch/ppc/mach-mpc8xxx/fsl_lbc.c
- create mode 100644 arch/ppc/mach-mpc8xxx/include/mach/README
- create mode 100644 arch/ppc/mach-mpc8xxx/include/mach/clock_config.h
- create mode 100644 arch/ppc/mach-mpc8xxx/include/mach/clocks.h
- create mode 100644 arch/ppc/mach-mpc8xxx/include/mach/early_udelay.h
- create mode 100644 arch/ppc/mach-mpc8xxx/include/mach/immap_85xx.h
- create mode 100644 arch/ppc/mach-mpc8xxx/include/mach/mpc85xx.h
- create mode 100644 arch/ppc/mach-mpc8xxx/include/mach/nand_upm.h
- create mode 100644 arch/ppc/mach-mpc8xxx/include/mach/ppc_asm.tmpl
- create mode 100644 arch/ppc/mach-mpc8xxx/include/mach/tsec.h
- create mode 100644 arch/ppc/mach-mpc8xxx/include/mach/uart.h
- create mode 100644 arch/ppc/mach-mpc8xxx/io.S
- create mode 100644 arch/ppc/mach-mpc8xxx/mpc85xx/Makefile
- create mode 100644 arch/ppc/mach-mpc8xxx/mpc85xx/cpu.c
- create mode 100644 arch/ppc/mach-mpc8xxx/mpc85xx/cpu_init.c
- create mode 100644 arch/ppc/mach-mpc8xxx/mpc85xx/cpu_init_early.c
- create mode 100644 arch/ppc/mach-mpc8xxx/mpc85xx/fdt.c
- create mode 100644 arch/ppc/mach-mpc8xxx/mpc85xx/fixed_ivor.S
- create mode 100644 arch/ppc/mach-mpc8xxx/mpc85xx/interrupts.c
- create mode 100644 arch/ppc/mach-mpc8xxx/mpc85xx/mp.c
- create mode 100644 arch/ppc/mach-mpc8xxx/mpc85xx/mp.h
- create mode 100644 arch/ppc/mach-mpc8xxx/mpc85xx/mpc8544_serdes.c
- create mode 100644 arch/ppc/mach-mpc8xxx/mpc85xx/p2020_serdes.c
- create mode 100644 arch/ppc/mach-mpc8xxx/mpc85xx/release.S
- create mode 100644 arch/ppc/mach-mpc8xxx/mpc85xx/resetvec.S
- create mode 100644 arch/ppc/mach-mpc8xxx/mpc85xx/speed.c
- create mode 100644 arch/ppc/mach-mpc8xxx/mpc85xx/start.S
- create mode 100644 arch/ppc/mach-mpc8xxx/mpc85xx/tlb.c
- create mode 100644 arch/ppc/mach-mpc8xxx/mpc85xx/traps.c
- create mode 100644 include/ddr_spd.h
- create mode 100644 include/ioports.h
- create mode 100644 include/lmb.h
- create mode 100644 lib/strmhz.c
+
+diff --git a/arch/ppc/lib/Makefile b/arch/ppc/lib/Makefile
+index 2af000a..8d65760 100644
+--- a/arch/ppc/lib/Makefile
++++ b/arch/ppc/lib/Makefile
+@@ -5,9 +5,11 @@ obj-y += kgdb.o
+ obj-y += ppcstring.o
+ obj-y += ticks.o
+ obj-$(CONFIG_MPC5200) += time-mpc5200.o
++obj-$(CONFIG_ARCH_MPC8XXX) += time-8xxx.o
+ obj-y += misc.o
+ obj-$(CONFIG_CMD_BOOTM) += ppclinux.o
+ obj-y += board_data.o
+ obj-$(CONFIG_MODULES) += module.o
+ obj-y += crtsavres.o
++obj-y += reloc.o
+ 
+diff --git a/arch/ppc/lib/board.c b/arch/ppc/lib/board.c
+index a840c75..8ef2397 100644
+--- a/arch/ppc/lib/board.c
++++ b/arch/ppc/lib/board.c
+@@ -29,6 +29,10 @@
+ #include <init.h>
+ #include <net.h>
+ #include <asm-generic/memory_layout.h>
++#include <asm/common.h>
++#include <asm/global_data.h>
++
++DECLARE_GLOBAL_DATA_PTR;
+ 
+ /************************************************************************
+  *
+@@ -40,12 +44,16 @@
+  ************************************************************************
+  */
+ 
+-void board_init_r (ulong end_of_ram)
++void board_init_r (ulong dest_addr)
+ {
+ 	unsigned long malloc_end;
+ 
+ 	asm ("sync ; isync");
+ 
++#ifdef CONFIG_MPC85xx
++	_text_base = dest_addr;
++#endif
++
+ 	/*
+ 	 * FIXME: 128k stack size. Is this enough? should
+ 	 *        it be configurable?
+@@ -62,6 +70,20 @@ void board_init_r (ulong end_of_ram)
+ 	 */
+ 	trap_init (0);
+ 
++#if defined(CONFIG_BOARD_EARLY_INIT_R)
++	board_early_init_r ();
++#endif
++
++#ifdef CONFIG_ARCH_MPC8XXX
++	cpu_init_r();
++#endif
++	/*
++	 * Enable Interrupts
++	 */
++#ifdef CONFIG_USE_IRQ
++	interrupt_init ();
++#endif
++
+ 	/* Initialization complete - start the monitor */
+ 
+ 	start_barebox();
+diff --git a/arch/ppc/lib/reloc.S b/arch/ppc/lib/reloc.S
+new file mode 100644
+index 0000000..b1840fc
+--- /dev/null
++++ b/arch/ppc/lib/reloc.S
+@@ -0,0 +1,50 @@
++/*
++ * Copyright (C) 2009 Wolfgang Denk <wd@denx.de>
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
++
++
++#include <asm/ppc_asm.tmpl>
++
++	.file	"reloc.S"
++
++	.text
++#ifndef CONFIG_NAND_SPL
++	/*
++	 * Function: relocate entries for one exception vector
++	 */
++	.globl trap_reloc
++	.type	trap_reloc, @function
++trap_reloc:
++	lwz	r0, 0(r7)		/* hdlr ...		*/
++	add	r0, r0, r3		/*  ... += dest_addr	*/
++	stw	r0, 0(r7)
++
++	lwz	r0, 4(r7)		/* int_return ...	*/
++	add	r0, r0, r3		/*  ... += dest_addr	*/
++	stw	r0, 4(r7)
++
++	lwz	r0, 8(r7)		/* transfer_to_handler ...*/
++	add	r0, r0, r3		/*  ... += dest_addr	*/
++	stw	r0, 8(r7)
++
++	blr
++	.size	trap_reloc, .-trap_reloc
++#endif
+diff --git a/arch/ppc/lib/time-8xxx.c b/arch/ppc/lib/time-8xxx.c
+new file mode 100644
+index 0000000..662217d
+--- /dev/null
++++ b/arch/ppc/lib/time-8xxx.c
+@@ -0,0 +1,64 @@
++/*
++ * (C) Copyright 2000, 2001
++ * Wolfgang Denk, DENX Software Engineering, wd@denx.de.
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
++
++#include <common.h>
++#include <clock.h>
++#include <init.h>
++#include <mach/clocks.h>
++#include <mach/clock_config.h>
++#include <asm/common.h>
++
++/* ------------------------------------------------------------------------- */
++
++static int init_timebase (void)
++{
++	/* reset */
++	asm ("li 3,0 ; mttbu 3 ; mttbl 3 ;");
++
++	return (0);
++}
++/* ------------------------------------------------------------------------- */
++
++uint64_t ppc_clocksource_read(void)
++{
++	return get_ticks();
++}
++
++static struct clocksource cs = {
++	.read	= ppc_clocksource_read,
++	.mask	= CLOCKSOURCE_MASK(CONFIG_CLOCKSOURCE_MASK),
++};
++
++static int clocksource_init (void)
++{
++	init_timebase();
++
++    clocks_calc_mult_shift(&cs.mult, &cs.shift, get_timebase_clock(),
++                           1000000000L, 10);
++
++	init_clock(&cs);
++
++	return 0;
++}
++
++core_initcall(clocksource_init);
+-- 
+1.7.1
 
 
 _______________________________________________
