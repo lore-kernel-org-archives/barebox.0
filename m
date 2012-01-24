@@ -1,16 +1,24 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.tricorecenter.de ([217.6.246.34] helo=root.phytec.de)
- by casper.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RpRHB-0005jj-S9
- for barebox@lists.infradead.org; Mon, 23 Jan 2012 21:18:06 +0000
-Message-ID: <4F1DCE81.4070208@phytec.de>
-Date: Mon, 23 Jan 2012 22:17:53 +0100
-From: =?ISO-8859-1?Q?J=FCrgen_Kilb?= <j.kilb@phytec.de>
+Received: from 16.mo3.mail-out.ovh.net ([188.165.56.217]
+ helo=mo3.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1RpYCq-0006bA-GV
+ for barebox@lists.infradead.org; Tue, 24 Jan 2012 04:42:06 +0000
+Received: from mail617.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 4CD54FFB6DC
+ for <barebox@lists.infradead.org>; Tue, 24 Jan 2012 05:43:47 +0100 (CET)
+Date: Tue, 24 Jan 2012 05:39:43 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20120124043943.GT25622@game.jcrosoft.org>
+References: <1324133529-2036-1-git-send-email-s.hauer@pengutronix.de>
+ <1324133529-2036-8-git-send-email-s.hauer@pengutronix.de>
+ <20120101043717.GC945@game.jcrosoft.org>
+ <20120102141345.GB5446@pengutronix.de>
+ <20120102150901.GF945@game.jcrosoft.org>
+ <20120123120738.GB26642@pengutronix.de>
 MIME-Version: 1.0
-References: <1327094703-6958-1-git-send-email-J.Kilb@phytec.de>
- <1327094703-6958-3-git-send-email-J.Kilb@phytec.de>
- <20120123104054.GR25622@game.jcrosoft.org>
-In-Reply-To: <20120123104054.GR25622@game.jcrosoft.org>
+Content-Disposition: inline
+In-Reply-To: <20120123120738.GB26642@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,51 +27,63 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM pca-a-l1: fix board_init
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH 7/9] ARM: move exception vectors away from start of binary
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Jean-Christophe
+On 13:07 Mon 23 Jan     , Sascha Hauer wrote:
+> On Mon, Jan 02, 2012 at 04:09:01PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > On 15:13 Mon 02 Jan     , Sascha Hauer wrote:
+> > > On Sun, Jan 01, 2012 at 05:37:17AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > > On 15:52 Sat 17 Dec     , Sascha Hauer wrote:
+> > > > > Traditionally U-Boot and barebox have the exception vectors at
+> > > > > the start of the binary. There is no real reason in doing so,
+> > > > > because in the majority of cases this data will not be at 0x0
+> > > > > where it could be used as vectors directly anyway.
+> > > > > This patch puts the vectors into a separate linker section and
+> > > > > defines an head function which is placed at the start of the
+> > > > > image instead. Putting this in a separate function also has
+> > > > > the advantage that it can be placed at the start of images
+> > > > > which require an additional header like several Freescale i.MX
+> > > > > images. As the head function contains the barebox arm magic
+> > > > > those images can now also be detected aas barebox images.
+> > > > > 
+> > > > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > > > > ---
+> > > > I've to make it optionnal as on AT91 for boot we must have it at the bigeniing
+> > > > of the binary
+> > > 
+> > > Instead of this:
+> > > 
+> > > 		"b reset\n"
+> > > 		".rept 7\n"
+> > > 		".word 0x0\n"
+> > > 		".endr\n"
+> > > 
+> > > we could do this:
+> > > 
+> > > 		"b reset\n"
+> > > 		".rept 7\n"
+> > > 		"1: b 1b\n"
+> > > 		".endr\n"
+> > > 
+> > > This looks like a exception vector table for the at91 bootloader. BTW
+> > > I just looked at a at91 datasheet and at least on the at91sam9260 the
+> > > sixth vector should contain the image size to copy. So maybe this does
+> > > not work on at91 anyway?
+> > I'm working on it so please hold on this
+> 
+> ping. I'd really like to merge the remaining thumb2 support pieces.
+I've issue on it
 
-On 23.01.2012 11:40, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 22:25 Fri 20 Jan     , Juergen Kilb wrote:
->> board_init was moved to pure_initcall. broken since:
->>
->> commit 0adce7ec683b4b325f51de4ac8892b32925d7ef8
->> Author: Sascha Hauer<s.hauer@pengutronix.de>
->> Date:   Sun Jan 15 21:11:17 2012 +0100
->>
->>      ARM omap3: move board_init to pure_initcall
->>
->>      board_init initializes the mux and sdram. For both there is no
->>      need to configure this so early. Move the code to a pure_initcall
->>      and remove the surrounding unneeded code.
->>
->>      Signed-off-by: Sascha Hauer<s.hauer@pengutronix.de>
->>      Tested-by: Sanjeev Premi<premi@ti.com>
->>
->> Signed-off-by: Juergen Kilb<J.Kilb@phytec.de>
-> can't you fix all in one patch?
-I'v used separate patches because the break was created by two different =
+I try to send a version this week sorry but here its chinese new year
 
-commits and the other two doesn't depend on each other.
->> ---
->>   arch/arm/boards/phycard-a-l1/pca-a-l1.c |    8 +++++---
->>   arch/arm/mach-omap/Kconfig              |    1 -
->>   barebox_default_env.gz                  |  Bin 0 ->  2656 bytes
->>   3 files changed, 5 insertions(+), 4 deletions(-)
->>   create mode 100644 barebox_default_env.gz
-> ???
-ups.. have not seen this. Was a result of 'git add .'
-> Best Regards,
-> J.
-greetings,
-J=FCrgen
-
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
