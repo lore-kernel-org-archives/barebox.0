@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Rpgp1-0004d8-WF
- for barebox@lists.infradead.org; Tue, 24 Jan 2012 13:54:05 +0000
+ id 1Rpgoz-0004cr-TU
+ for barebox@lists.infradead.org; Tue, 24 Jan 2012 13:54:03 +0000
 From: Wolfram Sang <w.sang@pengutronix.de>
-Date: Tue, 24 Jan 2012 14:53:50 +0100
-Message-Id: <1327413231-17495-5-git-send-email-w.sang@pengutronix.de>
-In-Reply-To: <1327413231-17495-1-git-send-email-w.sang@pengutronix.de>
-References: <1327413231-17495-1-git-send-email-w.sang@pengutronix.de>
+Date: Tue, 24 Jan 2012 14:53:46 +0100
+Message-Id: <1327413231-17495-1-git-send-email-w.sang@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,126 +19,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/5] net: miidev: factor out miidev_get_status()
+Subject: [PATCH 0/5] fec_imx & miidev: support for 10 MBit connections
 To: barebox@lists.infradead.org
 
-Currently, we can only print the phy_status. Factor out the routine to
-get the status, so we can query it from fec drivers and configure
-accordingly. Needed because mx28 needs a special bit set for 10Mbit.
+This series enables an MX28 to support 10 Mbit connections. It couldn't do
+before, because a special bit has to be set, but the phy needs to be queried
+first:
 
-Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
----
- drivers/net/miidev.c |   65 ++++++++++++++++++++++++++++++++-----------------
- include/miidev.h     |    5 ++++
- 2 files changed, 47 insertions(+), 23 deletions(-)
+1/5, 2/5: minor cleanups
+3/5: activate additional FEC features
+4/5: refactor phy code to let drivers get the status
+5/5: set 10MBit mode when phy reported such a connection
 
-diff --git a/drivers/net/miidev.c b/drivers/net/miidev.c
-index 501a4f8..d721aac 100644
---- a/drivers/net/miidev.c
-+++ b/drivers/net/miidev.c
-@@ -100,44 +100,63 @@ int miidev_wait_aneg(struct mii_device *mdev)
- 	return 0;
- }
- 
-+int miidev_get_status(struct mii_device *mdev)
-+{
-+	int ret, status;
-+
-+	ret = mii_read(mdev, mdev->address, MII_BMSR);
-+	if (ret < 0)
-+		goto err_out;
-+
-+	status = ret & BMSR_LSTATUS ? MIIDEV_STATUS_IS_UP : 0;
-+
-+	ret = mii_read(mdev, mdev->address, MII_BMCR);
-+	if (ret < 0)
-+		goto err_out;
-+
-+	if (ret & BMCR_ANENABLE) {
-+		ret = mii_read(mdev, mdev->address, MII_LPA);
-+		if (ret < 0)
-+			goto err_out;
-+
-+		status |= ret & LPA_DUPLEX ? MIIDEV_STATUS_IS_FULL_DUPLEX : 0;
-+		status |= ret & LPA_100 ? MIIDEV_STATUS_IS_100MBIT :
-+				MIIDEV_STATUS_IS_10MBIT;
-+	} else {
-+		status |= ret & BMCR_FULLDPLX ? MIIDEV_STATUS_IS_FULL_DUPLEX : 0;
-+		status |= ret & BMCR_SPEED100 ? MIIDEV_STATUS_IS_100MBIT :
-+			MIIDEV_STATUS_IS_10MBIT;
-+	}
-+
-+	return status;
-+err_out:
-+	printf("%s: failed to read (%d)\n", mdev->cdev.name, ret);
-+	return ret;
-+}
-+
- int miidev_print_status(struct mii_device *mdev)
- {
--	int bmsr, bmcr, lpa;
- 	char *duplex;
--	int speed;
-+	int speed, status;
- 
- 	if (mdev->flags & MIIDEV_FORCE_LINK) {
- 		printf("Forcing link present...\n");
- 		return 0;
- 	}
- 
--	bmsr = mii_read(mdev, mdev->address, MII_BMSR);
--	if (bmsr < 0)
--		goto err_out;
--	bmcr = mii_read(mdev, mdev->address, MII_BMCR);
--	if (bmcr < 0)
--		goto err_out;
--	lpa = mii_read(mdev, mdev->address, MII_LPA);
--	if (lpa < 0)
--		goto err_out;
-+	status = miidev_get_status(mdev);
-+	if (status < 0)
-+		return status;
- 
--	printf("%s: Link is %s", mdev->cdev.name,
--			bmsr & BMSR_LSTATUS ? "up" : "down");
-+	duplex = status & MIIDEV_STATUS_IS_FULL_DUPLEX ? "Full" : "Half";
-+	speed = status & MIIDEV_STATUS_IS_100MBIT ? 100 : 10;
- 
--	if (bmcr & BMCR_ANENABLE) {
--		duplex = lpa & LPA_DUPLEX ? "Full" : "Half";
--		speed = lpa & LPA_100 ? 100 : 10;
--	} else {
--		duplex = bmcr & BMCR_FULLDPLX ? "Full" : "Half";
--		speed = bmcr & BMCR_SPEED100 ? 100 : 10;
--	}
- 
-+	printf("%s: Link is %s", mdev->cdev.name,
-+			status & MIIDEV_STATUS_IS_UP ? "up" : "down");
- 	printf(" - %d/%s\n", speed, duplex);
- 
- 	return 0;
--err_out:
--	printf("%s: failed to read\n", mdev->cdev.name);
--	return -1;
- }
- 
- static ssize_t miidev_read(struct cdev *cdev, void *_buf, size_t count, ulong offset, ulong flags)
-diff --git a/include/miidev.h b/include/miidev.h
-index 21727ef..8cd4c45 100644
---- a/include/miidev.h
-+++ b/include/miidev.h
-@@ -49,6 +49,11 @@ int mii_register(struct mii_device *dev);
- void mii_unregister(struct mii_device *mdev);
- int miidev_restart_aneg(struct mii_device *mdev);
- int miidev_wait_aneg(struct mii_device *mdev);
-+int miidev_get_status(struct mii_device *mdev);
-+#define MIIDEV_STATUS_IS_UP		(1 << 0)
-+#define MIIDEV_STATUS_IS_FULL_DUPLEX	(1 << 1)
-+#define MIIDEV_STATUS_IS_10MBIT		(1 << 2)
-+#define MIIDEV_STATUS_IS_100MBIT	(1 << 3)
- int miidev_print_status(struct mii_device *mdev);
- 
- static int inline mii_write(struct mii_device *dev, int addr, int reg, int value)
+All tested on a custom MX28 board, very similar to MX28EVK.
+
+Regards,
+
+   Wolfram
+
+Wolfram Sang (5):
+  net: fec_imx: small cleanups
+  net: fec_imx: refactor R_CNTRL setup
+  net: fec_imx: enable payload length check and pause frames
+  net: miidev: factor out miidev_get_status()
+  net: fec_imx: configure FEC for 10Mbit when necessary
+
+ drivers/net/fec_imx.c |   44 ++++++++++++++++----------------
+ drivers/net/fec_imx.h |   14 ----------
+ drivers/net/miidev.c  |   65 +++++++++++++++++++++++++++++++-----------------
+ include/miidev.h      |    5 ++++
+ 4 files changed, 69 insertions(+), 59 deletions(-)
+
 -- 
 1.7.8.3
 
