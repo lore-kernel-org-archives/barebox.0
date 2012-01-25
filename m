@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RpiUX-0007Aa-Pm
- for barebox@lists.infradead.org; Tue, 24 Jan 2012 15:41:04 +0000
-Date: Tue, 24 Jan 2012 16:40:56 +0100
-From: Wolfram Sang <w.sang@pengutronix.de>
-Message-ID: <20120124154056.GG2609@pengutronix.de>
-References: <1327413231-17495-1-git-send-email-w.sang@pengutronix.de>
- <1327413231-17495-6-git-send-email-w.sang@pengutronix.de>
- <20120124163815.479a3059@eb-e6520>
+Received: from oproxy8.bluehost.com ([2605:dc00:100:2::a8]
+ helo=oproxy8-pub.bluehost.com)
+ by merlin.infradead.org with smtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1Rq55E-0003r3-1H
+ for barebox@lists.infradead.org; Wed, 25 Jan 2012 15:48:25 +0000
+Received: from 173-161-179-205-philadelphia.hfc.comcastbusiness.net
+ ([173.161.179.205] helo=[10.10.48.173])
+ by host200.hostmonster.com with esmtpa (Exim 4.76)
+ (envelope-from <dhlii@dlasys.net>) id 1Rq4yk-0001U7-3y
+ for barebox@lists.infradead.org; Wed, 25 Jan 2012 08:41:42 -0700
+Message-ID: <4F2022B5.9060907@dlasys.net>
+Date: Wed, 25 Jan 2012 10:41:41 -0500
+From: "David H. Lynch Jr." <dhlii@dlasys.net>
 MIME-Version: 1.0
-In-Reply-To: <20120124163815.479a3059@eb-e6520>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,68 +21,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============6071077628075357472=="
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 5/5] net: fec_imx: configure FEC for 10Mbit when necessary
-To: Eric =?iso-8859-15?Q?B=E9nard?= <eric@eukrea.com>
-Cc: barebox@lists.infradead.org
+Subject: Kconfig
+To: barebox@lists.infradead.org
+
+This is probably not the right list for this, but I have a project that 
+makes sense to use the configuration system that BareBox, BuildRoot, the 
+Linux Kernel and some other things are using.
+
+Where can I find some documentation, information to try to get this 
+setup for a new project.
+
+I have gotten part why by just stealing peices from the linux kernel, 
+and creating Makefiles and Kconfig's,
+But that is not the most efficient approach and doesn't provide lots of 
+documentation or detailed understanding.
 
 
---===============6071077628075357472==
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="w/VI3ydZO+RcZ3Ux"
-Content-Disposition: inline
+Pointers would be appreciated.
 
 
---w/VI3ydZO+RcZ3Ux
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-Eric,
+-- 
+Dave Lynch 					  	    DLA Systems
+Software Development:  				         Embedded Linux
+717.587.7774 	       dhlii@dlasys.net 	  http://www.dlasys.net
+Over 25 years' experience in platforms, languages, and technologies too numerous to list.
 
-> I didn't check the code where this patch is inserted but if the fec is
-> similar to the MX25 one, you need to set this bit only when wired in
-> RMII so maybe you need a test for the way the PHY is wired.
+"Any intelligent fool can make things bigger and more complex... It takes a touch of genius - and a lot of courage to move in the opposite direction."
+Albert Einstein
 
-I know this patch, it is different. The MX28 has no gasking, and only
-MX28 has this special bit which needs to be set after the negotiation.
-Kernel does it this way, too.
-
-Regards,
-
-   Wolfram
-
---=20
-Pengutronix e.K.                           | Wolfram Sang                |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-
---w/VI3ydZO+RcZ3Ux
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.10 (GNU/Linux)
-
-iEYEARECAAYFAk8e0QgACgkQD27XaX1/VRsy9gCfdvOB0S1K2YoGwzJGJFXEqvzw
-9UAAoMvffsCCCgxkj/MoqI747/pWPREO
-=Z5Rl
------END PGP SIGNATURE-----
-
---w/VI3ydZO+RcZ3Ux--
-
-
---===============6071077628075357472==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============6071077628075357472==--
