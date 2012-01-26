@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp6-g21.free.fr ([2a01:e0c:1:1599::15])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RqVQH-0000dk-AX
- for barebox@lists.infradead.org; Thu, 26 Jan 2012 19:55:54 +0000
-From: Robert Jarzmik <robert.jarzmik@free.fr>
-Date: Thu, 26 Jan 2012 20:55:27 +0100
-Message-Id: <1327607728-2788-4-git-send-email-robert.jarzmik@free.fr>
-In-Reply-To: <1327607728-2788-1-git-send-email-robert.jarzmik@free.fr>
-References: <1327607728-2788-1-git-send-email-robert.jarzmik@free.fr>
+Received: from mail-lpp01m010-f49.google.com ([209.85.215.49])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RqVrP-0001m1-8r
+ for barebox@lists.infradead.org; Thu, 26 Jan 2012 20:23:56 +0000
+Received: by lagr15 with SMTP id r15so749858lag.36
+ for <barebox@lists.infradead.org>; Thu, 26 Jan 2012 12:23:52 -0800 (PST)
+MIME-Version: 1.0
+From: Igor <igt1972@gmail.com>
+Date: Thu, 26 Jan 2012 21:23:32 +0100
+Message-ID: <CALQ+5adUr7Sy2z-irN=1eeGGFPu=L9bqBMtmU7JtYJh_tK1NAg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,46 +17,121 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============5594758868327727163=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] arm/mach-pxa: add CCCR bits definitions
+Subject: Booting linux on a custom iMX27 board
 To: barebox@lists.infradead.org
 
-Add CCCR bits definition for PXA SoC, so that the bootloader
-can setup a stable core clock frequency, which is not the
-initial reset clock, as required by Intel's PXA27x Processor
-family developer's guide, chapter 3.5.5, table 3.7 (clock
-frequencies).
+--===============5594758868327727163==
+Content-Type: multipart/alternative; boundary=f46d0407152f9beb6104b774283c
 
-Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
----
- arch/arm/mach-pxa/include/mach/pxa2xx-regs.h |    5 +++++
- 1 files changed, 5 insertions(+), 0 deletions(-)
+--f46d0407152f9beb6104b774283c
+Content-Type: text/plain; charset=ISO-8859-1
 
-diff --git a/arch/arm/mach-pxa/include/mach/pxa2xx-regs.h b/arch/arm/mach-pxa/include/mach/pxa2xx-regs.h
-index 4762d8a..b43648e 100644
---- a/arch/arm/mach-pxa/include/mach/pxa2xx-regs.h
-+++ b/arch/arm/mach-pxa/include/mach/pxa2xx-regs.h
-@@ -222,6 +222,11 @@
- #define CCCR_N_MASK	0x0380	/* Run Mode Frequency to Turbo Mode Frequency Multiplier */
- #define CCCR_M_MASK	0x0060	/* Memory Frequency to Run Mode Frequency Multiplier */
- #define CCCR_L_MASK	0x001f	/* Crystal Frequency to Memory Frequency Multiplier */
-+#define CCCR_CPDIS	(1 << 31)
-+#define CCCR_PPDIS	(1 << 30)
-+#define CCCR_LCD26	(1 << 27)
-+#define CCCR_PLL_EARLY	(1 << 26)
-+#define CCCR_A		(1 << 25)
- 
- #define CKEN_AC97CONF   (1 << 31)    /* AC97 Controller Configuration */
- #define CKEN_CAMERA	(1 << 24)	/* Camera Interface Clock Enable */
+Hi,
+
+I 'm trying to port Barebox (2012.01.0) and make it successfully booting
+Linux
+on a custom board based on iMX27.
+I could successfully configure, compile and use Barebox on my MX27ADS board,
+making it work both as a second stage bootloader (after Redboot)
+and as the first stage bootloader (booting the system from flash).
+
+I modified the sources to adapt the low level init functions to my HW
+that has half the ram of the ev.board and a different flash
+(a Spansion S29GLxxx, same size of the one in the eva board).
+With my customized version of Barebox I can:
+- boot Linux (zImage, 2.6.32.3) using Barebox as a second stage bootloader
+(after Redboot)
+- start from Flash as a first stage bootloader, correctly initializing the
+system.
+
+In the second case, indeed, the system seems to be fully working:
+I can read and write the flash partitions, I can complete successfully
+the ram test with "mtest", but... I cannot boot Linux!
+
+I just get:
+"uncompressing linux... done booting the kernel"
+and then it's silence...
+
+architecture_type is 846 (it's the one of the mx27ads).
+It should be right  considering that I used both for the kernel and for the
+bootloader
+the configuration for imx27ads.
+
+I also tryed to make it boot a more recent kernel version;
+I compiled a 3.0.8 with early_printk anabled to get more info about
+the initial crash/problem  but... Nothing!
+I didn't get nothing after "... done booting the kernel" also with the 3.0.8
+with low level debug and early_printk enabled.
+
+What's the reason for the boot failure?
+I'm desperately looking for new ideas and suggestions!
+
+Thanks in advance for every possible hint,
+Igor.
+
+
 -- 
-1.7.5.4
+"Don't find fault, find a remedy."
+(Henry Ford)
 
+--f46d0407152f9beb6104b774283c
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+Hi,<br><br>I &#39;m trying to port Barebox (2012.01.0) and make it successf=
+ully booting Linux <br>on a custom board based on iMX27.<br>I could success=
+fully configure, compile and use Barebox on my MX27ADS board,<br>making it =
+work both as a second stage bootloader (after Redboot) <br>
+
+and as the first stage bootloader (booting the system from flash).<br><br>I=
+ modified the sources to adapt the low level init functions to my HW<br>tha=
+t has half the ram of the ev.board and a different flash <br>(a Spansion S2=
+9GLxxx, same size of the one in the eva board).<br>
+
+With my customized version of Barebox I can:<br>- boot Linux (zImage, 2.6.3=
+2.3) using Barebox as a second stage bootloader (after Redboot)<br>- start =
+from Flash as a first stage bootloader, correctly initializing the system.<=
+br>
+
+<br>In the second case, indeed, the system seems to be fully working:<br>I =
+can read and write the flash partitions, I can complete successfully<br>the=
+ ram test with &quot;mtest&quot;, but... I cannot boot Linux!<br><br>I just=
+ get:<br>
+
+&quot;uncompressing linux... done booting the kernel&quot;<br>and then it&#=
+39;s silence...<br><br>architecture_type is 846 (it&#39;s the one of the mx=
+27ads).<br>It should be right=A0 considering that I used both for the kerne=
+l and for the bootloader<br>
+
+the configuration for imx27ads.<br><br>I also tryed to make it boot a more =
+recent kernel version;<br>I compiled a 3.0.8 with early_printk anabled to g=
+et more info about<br>the initial crash/problem=A0 but... Nothing!<br>I did=
+n&#39;t get nothing after &quot;... done booting the kernel&quot; also with=
+ the 3.0.8<br>
+
+with low level debug and early_printk enabled. <br><br>What&#39;s the reaso=
+n for the boot failure?<br>I&#39;m desperately looking for new ideas and su=
+ggestions!<br><br>Thanks in advance for every possible hint,<br>Igor. =A0=
+=A0=A0=A0=A0 <br>
+
+<br clear=3D"all"><br>-- <br>&quot;Don&#39;t find fault, find a remedy.&quo=
+t; <br>(Henry Ford)<br>
+
+--f46d0407152f9beb6104b774283c--
+
+
+--===============5594758868327727163==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============5594758868327727163==--
