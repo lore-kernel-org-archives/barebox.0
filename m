@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RqB1Y-0004vH-1r
- for barebox@lists.infradead.org; Wed, 25 Jan 2012 22:09:01 +0000
-Date: Wed, 25 Jan 2012 23:08:48 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120125220848.GC5446@pengutronix.de>
+Received: from mail-yw0-f49.google.com ([209.85.213.49])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RqDGh-0005Uy-RU
+ for barebox@lists.infradead.org; Thu, 26 Jan 2012 00:32:48 +0000
+Received: by yhjj72 with SMTP id j72so10383yhj.36
+ for <barebox@lists.infradead.org>; Wed, 25 Jan 2012 16:32:45 -0800 (PST)
+From: Marc Reilly <marc@cpdesign.com.au>
+Date: Thu, 26 Jan 2012 11:32:32 +1100
 References: <1327525133.19793.23.camel@hp-dhlii>
+ <20120125220848.GC5446@pengutronix.de>
+In-Reply-To: <20120125220848.GC5446@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1327525133.19793.23.camel@hp-dhlii>
+Message-Id: <201201261132.32331.marc@cpdesign.com.au>
+Reply-To: marc@cpdesign.com.au
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,31 +26,38 @@ Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: i.MX53 QSB
-To: "David Lynch Jr." <dhlii@dlasys.net>
-Cc: barebox@lists.infradead.org
+To: barebox@lists.infradead.org
 
-Hi David,
+Hi,
 
-On Wed, Jan 25, 2012 at 03:58:53PM -0500, David Lynch Jr. wrote:
-> I can build a barebox.bin for the i.MX53 QSB. 
+> > If I am booting from the SD card how do I get it onto the card
+> > 
+> > dd if=barebox.bin of=/dev/sdc bs=512 seek=2 ??
 > 
-> If I am booting from the SD card how do I get it onto the card
+> cat barebox.bin > /dev/sdc
 > 
-> dd if=barebox.bin of=/dev/sdc bs=512 seek=2 ??
+> Of course this means that you will overwrite the partition table of the
+> SD card. I'm still loooking for a good way to make this behaviour more
+> convenient.
 
-cat barebox.bin > /dev/sdc
+(For iMX35 at least): The barebox image doesn't contain anything in the first 
+1K apart from an unconditional branch to the reset vector (at 2K offset). This 
+branch is not necessary for internal booting, because the app entry point is 
+specified in the flash header information.
 
-Of course this means that you will overwrite the partition table of the
-SD card. I'm still loooking for a good way to make this behaviour more
-convenient.
+sudo dd if=barebox.bin of=/dev/sde bs=512 seek=2 skip=2
 
-Sascha
+similarly for the env and kernel...
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+sudo dd if=barebox_default_env of=/dev/sde bs=512 seek=512
+sudo dd if=${KERNEL_LOC}/arch/arm/boot/uImage of=/dev/sde bs=512 seek=1536
+sync && sync
+
+
+Make sure that your boot pins are set to boot from SD!! 
+
+Cheers,
+Marc
 
 _______________________________________________
 barebox mailing list
