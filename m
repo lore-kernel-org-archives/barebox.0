@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp6-g21.free.fr ([2a01:e0c:1:1599::15])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RqVQA-0000d4-MP
+ id 1RqVQ9-0000d3-TR
  for barebox@lists.infradead.org; Thu, 26 Jan 2012 19:55:47 +0000
 From: Robert Jarzmik <robert.jarzmik@free.fr>
-Date: Thu, 26 Jan 2012 20:55:25 +0100
-Message-Id: <1327607728-2788-2-git-send-email-robert.jarzmik@free.fr>
-In-Reply-To: <1327607728-2788-1-git-send-email-robert.jarzmik@free.fr>
-References: <1327607728-2788-1-git-send-email-robert.jarzmik@free.fr>
+Date: Thu, 26 Jan 2012 20:55:24 +0100
+Message-Id: <1327607728-2788-1-git-send-email-robert.jarzmik@free.fr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,41 +19,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] drivers/mtd: fix docg3 write support
+Subject: [PATCH] drivers/mtd: fix mtdraw write support
 To: barebox@lists.infradead.org
 
-Fix typo error in MTD_WRITE defines.
+When unaligned writes are used, typically doing a cp file /dev/mtdraw0.foo,
+the alignement correction code was incorrectly handling such cases, and
+didn't return the expected number of written bytes.
+
+This was tested on a 528 block size.
 
 Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
 
 ---
-This fix applies to branches master and next.
+This fix applies to branch master and next.
 ---
- drivers/mtd/devices/docg3.c |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/mtd/mtdraw.c |    6 ++++--
+ 1 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/devices/docg3.c b/drivers/mtd/devices/docg3.c
-index f7e33dc..88d707c 100644
---- a/drivers/mtd/devices/docg3.c
-+++ b/drivers/mtd/devices/docg3.c
-@@ -614,7 +614,7 @@ static int doc_block_isbad(struct mtd_info *mtd, loff_t from)
- 	return !is_good;
- }
+diff --git a/drivers/mtd/mtdraw.c b/drivers/mtd/mtdraw.c
+index b1cce3d..7abe235 100644
+--- a/drivers/mtd/mtdraw.c
++++ b/drivers/mtd/mtdraw.c
+@@ -191,8 +191,9 @@ static ssize_t mtdraw_write(struct cdev *cdev, const void *buf, size_t count,
+ 	}
  
--#ifdef MTD_WRITE
-+#ifdef CONFIG_MTD_WRITE
- static int doc_guess_autoecc(struct mtd_oob_ops *ops)
- {
- 	int autoecc;
-@@ -1065,7 +1065,7 @@ static void __init doc_set_driver_info(int chip_id, struct mtd_info *mtd)
- 	mtd->read = doc_read;
- 	mtd->read_oob = doc_read_oob;
- 	mtd->block_isbad = doc_block_isbad;
--#ifdef MTD_WRITE
-+#ifdef CONFIG_MTD_WRITE
- 	mtd->erase = doc_erase;
- 	mtd->write = doc_write;
- 	mtd->write_oob = doc_write_oob;
+ 	if (mtdraw->write_fill == bsz) {
+-		ret = mtdraw_blkwrite(mtd, mtdraw->writebuf, mtdraw->write_ofs);
+-		retlen += ret;
++		numpage = mtdraw->write_ofs / (mtd->writesize + mtd->oobsize);
++		ret = mtdraw_blkwrite(mtd, mtdraw->writebuf,
++				      mtd->writesize * numpage);
+ 		mtdraw->write_fill = 0;
+ 	}
+ 
+@@ -208,6 +209,7 @@ static ssize_t mtdraw_write(struct cdev *cdev, const void *buf, size_t count,
+ 	if (ret >= 0 && count) {
+ 		mtdraw->write_ofs = offset - mtdraw->write_fill;
+ 		mtdraw_fillbuf(mtdraw, buf + retlen, count);
++		retlen += count;
+ 	}
+ 
+ 	if (ret < 0) {
 -- 
 1.7.5.4
 
