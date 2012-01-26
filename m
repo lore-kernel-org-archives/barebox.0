@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RqPM4-0000dp-NS
- for barebox@lists.infradead.org; Thu, 26 Jan 2012 13:27:10 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 26 Jan 2012 14:26:51 +0100
-Message-Id: <1327584413-23055-6-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1327584413-23055-1-git-send-email-s.hauer@pengutronix.de>
-References: <1327584413-23055-1-git-send-email-s.hauer@pengutronix.de>
+Received: from oproxy3.bluehost.com ([2605:dc00:100:2::a3]
+ helo=oproxy3-pub.bluehost.com)
+ by merlin.infradead.org with smtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1RqPdw-0006AT-9j
+ for barebox@lists.infradead.org; Thu, 26 Jan 2012 13:45:37 +0000
+From: "David Lynch Jr." <dhlii@dlasys.net>
+In-Reply-To: <20120125220848.GC5446@pengutronix.de>
+References: <1327525133.19793.23.camel@hp-dhlii>
+ <20120125220848.GC5446@pengutronix.de>
+Date: Thu, 26 Jan 2012 08:45:30 -0500
+Message-ID: <1327585530.8900.1.camel@hp-dhlii>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,42 +19,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/7] initcalls: do not hang if an initcall fails
-To: barebox@lists.infradead.org
+Subject: Re: i.MX53 QSB
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Currently we just hang when an initcall fails. This resulted
-in most initcalls just returning 0 unconditionally. Instead
-of hanging which usually leaves the user without a clue what
-happened just continue and hope for the best.
+Thanks for all the responses. 
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- common/startup.c |    5 +----
- 1 files changed, 1 insertions(+), 4 deletions(-)
 
-diff --git a/common/startup.c b/common/startup.c
-index 180fdc3..d39748b 100644
---- a/common/startup.c
-+++ b/common/startup.c
-@@ -124,10 +124,7 @@ void start_barebox (void)
- 		PUTS_LL("<<");
- 		PUTHEX_LL(*initcall);
- 		result = (*initcall)();
--		PUTC_LL('>');
--		if (result)
--			hang();
--		PUTS_LL(">\n");
-+		PUTS_LL(">>\n");
- 	}
- 
- 	PUTS_LL("initcalls done\n");
--- 
-1.7.8.3
+On Wed, 2012-01-25 at 23:08 +0100, Sascha Hauer wrote:
+> Hi David,
+> 
+> On Wed, Jan 25, 2012 at 03:58:53PM -0500, David Lynch Jr. wrote:
+> > I can build a barebox.bin for the i.MX53 QSB. 
+> > 
+> > If I am booting from the SD card how do I get it onto the card
+> > 
+> > dd if=barebox.bin of=/dev/sdc bs=512 seek=2 ??
+> 
+> cat barebox.bin > /dev/sdc
+> 
+> Of course this means that you will overwrite the partition table of the
+> SD card. I'm still loooking for a good way to make this behaviour more
+> convenient.
+> 
+> Sascha
+> 
+
+
 
 
 _______________________________________________
