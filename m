@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Rql63-0006uZ-Gi
- for barebox@lists.infradead.org; Fri, 27 Jan 2012 12:40:04 +0000
-Message-ID: <4F229B1B.5000504@pengutronix.de>
-Date: Fri, 27 Jan 2012 13:39:55 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1RqoKY-0000AJ-SQ
+ for barebox@lists.infradead.org; Fri, 27 Jan 2012 16:07:16 +0000
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+References: <1327607728-2788-1-git-send-email-robert.jarzmik@free.fr>
+ <1327607728-2788-5-git-send-email-robert.jarzmik@free.fr>
+ <20120127114210.GC5446@pengutronix.de>
+Date: Fri, 27 Jan 2012 17:07:04 +0100
+In-Reply-To: <20120127114210.GC5446@pengutronix.de> (Sascha Hauer's message of
+ "Fri, 27 Jan 2012 12:42:10 +0100")
+Message-ID: <87zkd9gmdz.fsf@free.fr>
 MIME-Version: 1.0
-References: <4F229A11.8020102@pengutronix.de>
- <20120127123832.GG5446@pengutronix.de>
-In-Reply-To: <20120127123832.GG5446@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,74 +20,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============2992136196461903423=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: mx35-3stack 124MiByte RAM
-To: Sascha Hauer <sha@pengutronix.de>
-Cc: barebox mailing list <barebox@lists.infradead.org>
+Subject: Re: [PATCH] arm/mach-pxa: add pulse width modulator controller
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---===============2992136196461903423==
-Content-Type: multipart/signed; micalg=pgp-sha1;
- protocol="application/pgp-signature";
- boundary="------------enigF83BFDDE8B7AD5ACC11D7D06"
+Sascha Hauer <s.hauer@pengutronix.de> writes:
 
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---------------enigF83BFDDE8B7AD5ACC11D7D06
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
+> On Thu, Jan 26, 2012 at 08:55:28PM +0100, Robert Jarzmik wrote:
+>> Add PXA embedded pulse width modulator support. The PWM can
+>> generate signals from 49.6kHz to 1.625MHz.
+>> 
+>> Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
+>> ---
+>
+> [...]
+>
+>> +
+>> +	/* NOTE: the clock to PWM has to be enabled first
+>> +	 * before writing to the registers
+>> +	 */
+>
+> Does this mean that pwm_enable() has to be called prior to pxm_config()?
+Yes.
 
-On 01/27/2012 01:38 PM, Sascha Hauer wrote:
-> On Fri, Jan 27, 2012 at 01:35:29PM +0100, Marc Kleine-Budde wrote:
->>> =20
->>> -	register_device(&sdram_dev);
->>> +	sdram_dev =3D add_mem_device("ram0", IMX_SDRAM_CS0, 124 * 1024 * 10=
-24,
->>                                                           ^^^
->>
->> What happened to the upper 4 MiByte?
->=20
-> This was changed in a unrelated patch. Probably a type. This is fixed i=
-n
-> -next since:
+> I think we should rather have a real pwm API.
+So do I.
 
-Thanks...
+> The following Kernel patch could be easily adopted and the overhead is
+> acceptable I think.
+Would you adapt it or do you want me to do it ?
 
-Marc
---=20
-Pengutronix e.K.                  | Marc Kleine-Budde           |
-Industrial Linux Solutions        | Phone: +49-231-2826-924     |
-Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
+> The problem is that once we let PXA implement pwm functions we cannot support
+> other pwms in the same binary. On i.MX for example we have dedicated PWM
+> controllers which most people use, but some others use a pwm internal to the
+> framebuffer controller.
+True. That's a good reason to have your framework implemented. I don't think the
+rework of my patch on top of the framework will take me a lot of time.
 
+Cheers.
 
---------------enigF83BFDDE8B7AD5ACC11D7D06
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.10 (GNU/Linux)
-Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org/
-
-iEYEARECAAYFAk8imx4ACgkQjTAFq1RaXHPhWwCfZxlKCeFd1aDdL0vyNa6eQf86
-rGMAnRC7d9g1dUUzVEtjtpvsEirw8TfH
-=SmYd
------END PGP SIGNATURE-----
-
---------------enigF83BFDDE8B7AD5ACC11D7D06--
-
-
---===============2992136196461903423==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+--
+Robert
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============2992136196461903423==--
