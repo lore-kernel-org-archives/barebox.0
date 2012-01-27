@@ -1,11 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RqjrJ-0004bS-M8
- for barebox@lists.infradead.org; Fri, 27 Jan 2012 11:20:46 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 27 Jan 2012 12:20:34 +0100
-Message-Id: <1327663234-16330-1-git-send-email-s.hauer@pengutronix.de>
+Received: from mail-lpp01m010-f49.google.com ([209.85.215.49])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1Rqjve-0003pv-PM
+ for barebox@lists.infradead.org; Fri, 27 Jan 2012 11:25:15 +0000
+Received: by lagr15 with SMTP id r15so1182270lag.36
+ for <barebox@lists.infradead.org>; Fri, 27 Jan 2012 03:25:12 -0800 (PST)
+MIME-Version: 1.0
+In-Reply-To: <20120127104631.GX6305@pengutronix.de>
+References: <CALQ+5adUr7Sy2z-irN=1eeGGFPu=L9bqBMtmU7JtYJh_tK1NAg@mail.gmail.com>
+ <20120127104631.GX6305@pengutronix.de>
+From: Igor <igt1972@gmail.com>
+Date: Fri, 27 Jan 2012 12:23:03 +0100
+Message-ID: <CALQ+5adZoaB-ReF+EOZpXV1_R6XVQcXC2hdWv55Sh0rON0tDRg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,80 +20,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM omap pandaboard: update defconfig
+Subject: Re: Booting linux on a custom iMX27 board
 To: barebox@lists.infradead.org
 
-- enable bootm command
-- enable iomem command
-- enable magicvar command
-- disable nand support, the panda does not have nand
+Hi Uwe,
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/configs/panda_defconfig |   18 +++++++++++-------
- 1 files changed, 11 insertions(+), 7 deletions(-)
+first of all thanks for the answer.
+A few minutes ago I could see the answer that Sasha Hauer sent to Marek Belisko
+(that was having a problem similar to mine) and it was "illuminating"!
 
-diff --git a/arch/arm/configs/panda_defconfig b/arch/arm/configs/panda_defconfig
-index 27592e5..68cc11e 100644
---- a/arch/arm/configs/panda_defconfig
-+++ b/arch/arm/configs/panda_defconfig
-@@ -11,11 +11,9 @@ CONFIG_PROMPT="barebox> "
- CONFIG_LONGHELP=y
- CONFIG_GLOB=y
- CONFIG_HUSH_FANCY_PROMPT=y
--CONFIG_HUSH_GETOPT=y
- CONFIG_CMDLINE_EDITING=y
- CONFIG_AUTO_COMPLETE=y
- # CONFIG_TIMESTAMP is not set
--CONFIG_PARTITION=y
- CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
- CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/panda/env"
- CONFIG_CMD_EDIT=y
-@@ -25,14 +23,24 @@ CONFIG_CMD_LOADENV=y
- CONFIG_CMD_EXPORT=y
- CONFIG_CMD_PRINTENV=y
- CONFIG_CMD_READLINE=y
-+CONFIG_CMD_TIME=y
- CONFIG_CMD_ECHO_E=y
- CONFIG_CMD_LOADB=y
-+CONFIG_CMD_IOMEM=y
- CONFIG_CMD_FLASH=y
--# CONFIG_CMD_BOOTM is not set
-+CONFIG_CMD_BOOTM_SHOW_TYPE=y
-+CONFIG_CMD_BOOTM_VERBOSE=y
-+CONFIG_CMD_BOOTM_INITRD=y
-+CONFIG_CMD_BOOTM_OFTREE=y
-+CONFIG_CMD_BOOTM_OFTREE_UIMAGE=y
-+# CONFIG_CMD_BOOTZ is not set
-+# CONFIG_CMD_BOOTU is not set
- CONFIG_CMD_RESET=y
- CONFIG_CMD_GO=y
- CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_PARTITION=y
-+CONFIG_CMD_MAGICVAR=y
-+CONFIG_CMD_MAGICVAR_HELP=y
- CONFIG_CMD_GPIO=y
- CONFIG_CMD_UNCOMPRESS=y
- CONFIG_NET=y
-@@ -46,10 +54,6 @@ CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
- CONFIG_NET_USB=y
- CONFIG_NET_USB_SMSC95XX=y
- # CONFIG_SPI is not set
--CONFIG_MTD=y
--CONFIG_NAND=y
--CONFIG_NAND_OMAP_GPMC=y
--CONFIG_UBI=y
- CONFIG_USB=y
- CONFIG_USB_EHCI=y
- CONFIG_MCI=y
+> Do you have configured the right output port for low level debug? Did
+> you pass the earlyprintk kernel parameter?
+
+I didn't know that early printk has to be enabled with a cmd line option!
+Sorry...
+So I changed Barebox bootargs and I could see my 3.0.8 kernel talking to me!
+And this helped the following debug...
+
+>
+>> What's the reason for the boot failure?
+> Probably not a bootloader problem.
+>
+
+You were "probably" right... ;-)
+
+Thanks,
+I.
+
 -- 
-1.7.8.3
-
+"Don't find fault, find a remedy."
+(Henry Ford)
 
 _______________________________________________
 barebox mailing list
