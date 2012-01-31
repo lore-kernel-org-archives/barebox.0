@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RsDWC-0004lJ-AQ
- for barebox@lists.infradead.org; Tue, 31 Jan 2012 13:13:05 +0000
-Date: Tue, 31 Jan 2012 14:12:56 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120131131256.GP1990@pengutronix.de>
-References: <CALQ+5acXuFBGkeRgv+xR8FE2_ykWxbRggEi-AVaJhZm-ZzLk7g@mail.gmail.com>
- <20120131114045.GO1990@pengutronix.de>
- <CALQ+5afWB0hQBXzkH2Vgo7FBAPP=z2jqDqxeTB07cRTkvPOfjQ@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CALQ+5afWB0hQBXzkH2Vgo7FBAPP=z2jqDqxeTB07cRTkvPOfjQ@mail.gmail.com>
+Received: from mail-ey0-f177.google.com ([209.85.215.177])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RsKfd-00076X-33
+ for barebox@lists.infradead.org; Tue, 31 Jan 2012 20:51:18 +0000
+Received: by eaai1 with SMTP id i1so163783eaa.36
+ for <barebox@lists.infradead.org>; Tue, 31 Jan 2012 12:51:15 -0800 (PST)
+From: Marek Belisko <marek.belisko@open-nandra.com>
+Date: Tue, 31 Jan 2012 21:51:08 +0100
+Message-Id: <1328043068-9577-2-git-send-email-marek.belisko@open-nandra.com>
+In-Reply-To: <1328043068-9577-1-git-send-email-marek.belisko@open-nandra.com>
+References: <1328043068-9577-1-git-send-email-marek.belisko@open-nandra.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,41 +18,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: IIM on iMX27 "how-to" needed
-To: Igor Trevisan <igt1972@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/2] pandaboard: Add gpmc_generic_init to board init.
+To: barebox@lists.infradead.org
+Cc: Marek Belisko <marek.belisko@open-nandra.com>
 
-On Tue, Jan 31, 2012 at 01:51:31PM +0100, Igor Trevisan wrote:
-> Hi,
-> 
-> >
-> > The command is correct, the usage is wrong.
-> > See http://wiki.barebox.org/doku.php?id=commands:md and let me know
-> > if that helps
-> 
-> Yes, it helps.
-> It helped me, first of all to RTFM ;-) and use correctly Barebox commands...
-> And second it helped to find a new problem:
-> 
-> barebox:/ md -b -s /dev/imx_iim_bank0
-> do_fuse_sense: sense error (0x04)
-> read: I/O error
-> 
-> What do I do wrong?
+We need to setup generic gpmc otherwise kernel panic during boot.
 
-You could try imx_iim0.explicit_sense_enable=0, maybe this helps.
+Signed-off-by: Marek Belisko <marek.belisko@open-nandra.com>
+---
+ arch/arm/boards/panda/board.c |    3 +++
+ 1 files changed, 3 insertions(+), 0 deletions(-)
 
-Sascha
-
+diff --git a/arch/arm/boards/panda/board.c b/arch/arm/boards/panda/board.c
+index be3ad77..1c71545 100644
+--- a/arch/arm/boards/panda/board.c
++++ b/arch/arm/boards/panda/board.c
+@@ -20,6 +20,7 @@
+ #include <mach/gpio.h>
+ #include <environment.h>
+ #include <mach/xload.h>
++#include <mach/gpmc.h>
+ 
+ static int board_revision;
+ 
+@@ -137,6 +138,8 @@ static int panda_devices_init(void)
+ 			   IORESOURCE_MEM, NULL);
+ 	panda_ehci_init();
+ 
++	gpmc_generic_init(0x00);
++
+ 	armlinux_set_bootparams((void *)0x80000100);
+ 	armlinux_set_architecture(MACH_TYPE_OMAP4_PANDA);
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.5.4
+
 
 _______________________________________________
 barebox mailing list
