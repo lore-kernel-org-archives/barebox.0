@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vw0-f49.google.com ([209.85.212.49])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RsLGL-0000Ro-HU
- for barebox@lists.infradead.org; Tue, 31 Jan 2012 21:29:14 +0000
-Received: by vbbfs19 with SMTP id fs19so514684vbb.36
- for <barebox@lists.infradead.org>; Tue, 31 Jan 2012 13:29:11 -0800 (PST)
+Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1RsVQu-0002Rq-4r
+ for barebox@lists.infradead.org; Wed, 01 Feb 2012 08:20:50 +0000
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+References: <1328002599-7539-1-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 01 Feb 2012 09:20:36 +0100
+In-Reply-To: <1328002599-7539-1-git-send-email-s.hauer@pengutronix.de> (Sascha
+ Hauer's message of "Tue, 31 Jan 2012 10:36:39 +0100")
+Message-ID: <87wr873qy3.fsf@free.fr>
 MIME-Version: 1.0
-Date: Tue, 31 Jan 2012 22:29:10 +0100
-Message-ID: <CAAfyv3449qX1_ODzDq0rOtLL3kx2M5D=eEZ+Ep1OA3C4LjMoxw@mail.gmail.com>
-From: Belisko Marek <marek.belisko@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,34 +22,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: booting kernel from SD card
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] Add pwm core support
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hi,
+Sascha Hauer <s.hauer@pengutronix.de> writes:
 
-I want to boot Pandaboard kernel directly from mmc fat partition
-(after power on).
-I'm trying to find something in documentation also in defaultenv but
-found nothing usable
-how to set environment to do that.
+> This patch adds framework support for PWM (pulse width modulation)
+> devices.
+> A new pwm can be registered from a hardware driver using
+> pwmchip_add(). It can then be requested from a client driver using
+> pwm_request(). A string is used as a unique identifier for the
+> pwms. It should usually be initialized by the hardware drivers
+> using dev_name(dev). The client API is the same as currently
+> in the Linux Kernel.
+>
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>
+> This patch is currently compile tested only due to the lack of
+> client drivers.
+You can add my :
+Tested-by: Robert Jarzmik <robert.jarzmik@free.fr>
 
-Is there anybody booting kernel for Pandaboard from mmc by default?
+And I'll post the pxa pwm driver which I developped on top on that framework
+today, with which I'm pretty sure your core works, because my screen backlight
+ignites :)
 
-Thanks,
+Cheers.
 
-marek
-
--- 
-as simple and primitive as possible
--------------------------------------------------
-Marek Belisko - OPEN-NANDRA
-Freelance Developer
-
-Ruska Nova Ves 219 | Presov, 08005 Slovak Republic
-Tel: +421 915 052 184
-skype: marekwhite
-twitter: #opennandra
-web: http://open-nandra.com
+--
+Robert
 
 _______________________________________________
 barebox mailing list
