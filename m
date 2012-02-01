@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vx0-f177.google.com ([209.85.220.177])
+Received: from bear.ext.ti.com ([192.94.94.41])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RsXEj-00011z-Oa
- for barebox@lists.infradead.org; Wed, 01 Feb 2012 10:16:23 +0000
-Received: by vcbf1 with SMTP id f1so985057vcb.36
- for <barebox@lists.infradead.org>; Wed, 01 Feb 2012 02:16:19 -0800 (PST)
-MIME-Version: 1.0
-In-Reply-To: <E28AAFD00EFAA646AE3DF9B89CD24A89318237E1@DBDE01.ent.ti.com>
+ id 1RsY0D-0004Vg-9o
+ for barebox@lists.infradead.org; Wed, 01 Feb 2012 11:05:26 +0000
+From: "Premi, Sanjeev" <premi@ti.com>
+Date: Wed, 1 Feb 2012 11:05:20 +0000
+Message-ID: <E28AAFD00EFAA646AE3DF9B89CD24A8931823B1B@DBDE01.ent.ti.com>
 References: <1328043068-9577-1-git-send-email-marek.belisko@open-nandra.com>
  <E28AAFD00EFAA646AE3DF9B89CD24A89318237E1@DBDE01.ent.ti.com>
-Date: Wed, 1 Feb 2012 11:16:19 +0100
-Message-ID: <CAAfyv35gncmFgiHkqmS6u2so9TcDYM6yodiCw6YAdOARMPwMFw@mail.gmail.com>
-From: Belisko Marek <marek.belisko@gmail.com>
+ <CAAfyv35gncmFgiHkqmS6u2so9TcDYM6yodiCw6YAdOARMPwMFw@mail.gmail.com>
+In-Reply-To: <CAAfyv35gncmFgiHkqmS6u2so9TcDYM6yodiCw6YAdOARMPwMFw@mail.gmail.com>
+Content-Language: en-US
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,146 +20,121 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] omap: Remove OMAP_GPMC prompt and usage.
-To: "Premi, Sanjeev" <premi@ti.com>
+Subject: RE: [PATCH 1/2] omap: Remove OMAP_GPMC prompt and usage.
+To: Belisko Marek <marek.belisko@gmail.com>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-T24gV2VkLCBGZWIgMSwgMjAxMiBhdCAxMDozMiBBTSwgUHJlbWksIFNhbmplZXYgPHByZW1pQHRp
-LmNvbT4gd3JvdGU6Cj4+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tCj4+IEZyb206IGJhcmVi
-b3gtYm91bmNlc0BsaXN0cy5pbmZyYWRlYWQub3JnCj4+IFttYWlsdG86YmFyZWJveC1ib3VuY2Vz
-QGxpc3RzLmluZnJhZGVhZC5vcmddIE9uIEJlaGFsZiBPZgo+PiBNYXJlayBCZWxpc2tvCj4+IFNl
-bnQ6IFdlZG5lc2RheSwgRmVicnVhcnkgMDEsIDIwMTIgMjoyMSBBTQo+PiBUbzogYmFyZWJveEBs
-aXN0cy5pbmZyYWRlYWQub3JnCj4+IENjOiBNYXJlayBCZWxpc2tvCj4+IFN1YmplY3Q6IFtQQVRD
-SCAxLzJdIG9tYXA6IFJlbW92ZSBPTUFQX0dQTUMgcHJvbXB0IGFuZCB1c2FnZS4KPj4KPj4gQnVp
-bGQgZm9yIG9tYXAgcGxhdGZvcm0gYnkgZGVmYXVsdC4KPj4KPj4gU2lnbmVkLW9mZi1ieTogTWFy
-ZWsgQmVsaXNrbyA8bWFyZWsuYmVsaXNrb0BvcGVuLW5hbmRyYS5jb20+Cj4+IC0tLQo+PiDCoGFy
-Y2gvYXJtL2JvYXJkcy9iZWFnbGUvYm9hcmQuYyDCoCDCoCDCoCDCoCDCoHwgwqAgwqA0ICsrLS0K
-Pj4gwqBhcmNoL2FybS9ib2FyZHMvb21hcDM0M3hkc3AvYm9hcmQuYyDCoCDCoCB8IMKgIMKgMiAt
-LQo+PiDCoGFyY2gvYXJtL2JvYXJkcy9vbWFwM2V2bS9ib2FyZC5jIMKgIMKgIMKgIMKgfCDCoCDC
-oDMgKy0tCj4+IMKgYXJjaC9hcm0vYm9hcmRzL3BoeWNhcmQtYS1sMS9wY2EtYS1sMS5jIHwgwqAg
-wqAzIC0tLQo+PiDCoGFyY2gvYXJtL2NvbmZpZ3MvcGFuZGFfeGxvYWRfZGVmY29uZmlnIMKgfCDC
-oCDCoDEgLQo+PiDCoGFyY2gvYXJtL2NvbmZpZ3MvcGh5Y2FyZF9hX2wxX2RlZmNvbmZpZyB8IMKg
-IMKgMSAtCj4+IMKgYXJjaC9hcm0vbWFjaC1vbWFwL0tjb25maWcgwqAgwqAgwqAgwqAgwqAgwqAg
-wqB8IMKgIDEwIC0tLS0tLS0tLS0KPj4gwqBhcmNoL2FybS9tYWNoLW9tYXAvTWFrZWZpbGUgwqAg
-wqAgwqAgwqAgwqAgwqAgfCDCoCDCoDMgKy0tCj4+IMKgZHJpdmVycy9tdGQvbmFuZC9LY29uZmln
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgfCDCoCDCoDEgLQo+PiDCoDkgZmlsZXMgY2hhbmdlZCwg
-NCBpbnNlcnRpb25zKCspLCAyNCBkZWxldGlvbnMoLSkKPj4KPj4gZGlmZiAtLWdpdCBhL2FyY2gv
-YXJtL2JvYXJkcy9iZWFnbGUvYm9hcmQuYwo+PiBiL2FyY2gvYXJtL2JvYXJkcy9iZWFnbGUvYm9h
-cmQuYwo+PiBpbmRleCBmYWVhZjhlLi5jYWViNTc4IDEwMDY0NAo+PiAtLS0gYS9hcmNoL2FybS9i
-b2FyZHMvYmVhZ2xlL2JvYXJkLmMKPj4gKysrIGIvYXJjaC9hcm0vYm9hcmRzL2JlYWdsZS9ib2Fy
-ZC5jCj4+IEBAIC0zMDIsMTAgKzMwMiwxMCBAQCBzdGF0aWMgaW50IGJlYWdsZV9kZXZpY2VzX2lu
-aXQodm9pZCkKPj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgYWRkX3VzYl9laGNpX2RldmljZSgtMSwg
-T01BUF9FSENJX0JBU0UsCj4+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
-IMKgIMKgIMKgIMKgIE9NQVBfRUhDSV9CQVNFICsgMHgxMCwgJmVoY2lfcGRhdGEpOwo+PiDCoCNl
-bmRpZiAvKiBDT05GSUdfVVNCX0VIQ0lfT01BUCAqLwo+PiAtI2lmZGVmIENPTkZJR19PTUFQX0dQ
-TUMKPj4gKwo+PiDCoCDCoCDCoCAvKiBXUCBpcyBtYWRlIGhpZ2ggYW5kIFdBSVQxIGFjdGl2ZSBM
-b3cgKi8KPj4gwqAgwqAgwqAgZ3BtY19nZW5lcmljX2luaXQoMHgxMCk7Cj4+IC0jZW5kaWYKPj4g
-Kwo+PiDCoCDCoCDCoCBncG1jX2dlbmVyaWNfbmFuZF9kZXZpY2VzX2luaXQoMCwgMTYsCj4+IE9N
-QVBfRUNDX0hBTU1JTkdfQ09ERV9IV19ST01DT0RFKTsKPj4KPj4gwqAgwqAgwqAgYWRkX2dlbmVy
-aWNfZGV2aWNlKCJvbWFwLWhzbW1jIiwgLTEsIE5VTEwsCj4+IE9NQVBfTU1DMV9CQVNFLCBTWl80
-SywKPj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9vbWFwMzQzeGRzcC9ib2FyZC5jCj4+
-IGIvYXJjaC9hcm0vYm9hcmRzL29tYXAzNDN4ZHNwL2JvYXJkLmMKPj4gaW5kZXggNGFkNmYxMy4u
-NGNmNmYzMSAxMDA2NDQKPj4gLS0tIGEvYXJjaC9hcm0vYm9hcmRzL29tYXAzNDN4ZHNwL2JvYXJk
-LmMKPj4gKysrIGIvYXJjaC9hcm0vYm9hcmRzL29tYXAzNDN4ZHNwL2JvYXJkLmMKPj4gQEAgLTY0
-MSwxMCArNjQxLDggQEAgbWVtX2luaXRjYWxsKHNkcDM0MzBfbWVtX2luaXQpOwo+Pgo+PiDCoHN0
-YXRpYyBpbnQgc2RwMzQzMF9kZXZpY2VzX2luaXQodm9pZCkKPj4gwqB7Cj4+IC0jaWZkZWYgQ09O
-RklHX09NQVBfR1BNQwo+PiDCoCDCoCDCoCAvKiBXUCBpcyBtYWRlIGhpZ2ggYW5kIFdBSVQxIGFj
-dGl2ZSBMb3cgKi8KPj4gwqAgwqAgwqAgZ3BtY19nZW5lcmljX2luaXQoMHgxMCk7Cj4+IC0jZW5k
-aWYKPj4KPj4gwqAgwqAgwqAgcmV0dXJuIDA7Cj4+IMKgfQo+PiBkaWZmIC0tZ2l0IGEvYXJjaC9h
-cm0vYm9hcmRzL29tYXAzZXZtL2JvYXJkLmMKPj4gYi9hcmNoL2FybS9ib2FyZHMvb21hcDNldm0v
-Ym9hcmQuYwo+PiBpbmRleCBmZGQ1MjI3Li5mZmNiNmE2IDEwMDY0NAo+PiAtLS0gYS9hcmNoL2Fy
-bS9ib2FyZHMvb21hcDNldm0vYm9hcmQuYwo+PiArKysgYi9hcmNoL2FybS9ib2FyZHMvb21hcDNl
-dm0vYm9hcmQuYwo+PiBAQCAtMjUzLDEyICsyNTMsMTEgQEAgbWVtX2luaXRjYWxsKG9tYXAzZXZt
-X21lbV9pbml0KTsKPj4KPj4gwqBzdGF0aWMgaW50IG9tYXAzZXZtX2luaXRfZGV2aWNlcyh2b2lk
-KQo+PiDCoHsKPj4gLSNpZmRlZiBDT05GSUdfT01BUF9HUE1DCj4+IMKgIMKgIMKgIC8qCj4+IMKg
-IMKgIMKgIMKgKiBXUCBpcyBtYWRlIGhpZ2ggYW5kIFdBSVQxIGFjdGl2ZSBMb3cKPj4gwqAgwqAg
-wqAgwqAqLwo+PiDCoCDCoCDCoCBncG1jX2dlbmVyaWNfaW5pdCgweDEwKTsKPj4gLSNlbmRpZgo+
-PiArCj4+IMKgI2lmZGVmIENPTkZJR19NQ0lfT01BUF9IU01NQwo+PiDCoCDCoCDCoCBhZGRfZ2Vu
-ZXJpY19kZXZpY2UoIm9tYXAtaHNtbWMiLCAtMSwgTlVMTCwKPj4gT01BUF9NTUMxX0JBU0UsIFNa
-XzRLLAo+PiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCBJT1JF
-U09VUkNFX01FTSwgTlVMTCk7Cj4+IGRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2FyZHMvcGh5Y2Fy
-ZC1hLWwxL3BjYS1hLWwxLmMKPj4gYi9hcmNoL2FybS9ib2FyZHMvcGh5Y2FyZC1hLWwxL3BjYS1h
-LWwxLmMKPj4gaW5kZXggZjdkMzE4NS4uN2ExMTk2ZSAxMDA2NDQKPj4gLS0tIGEvYXJjaC9hcm0v
-Ym9hcmRzL3BoeWNhcmQtYS1sMS9wY2EtYS1sMS5jCj4+ICsrKyBiL2FyY2gvYXJtL2JvYXJkcy9w
-aHljYXJkLWEtbDEvcGNhLWEtbDEuYwo+PiBAQCAtMjg4LDEzICsyODgsMTAgQEAgc3RhdGljIHZv
-aWQgcGNhYWwxX3NldHVwX25ldF9jaGlwKHZvaWQpCj4+Cj4+IMKgc3RhdGljIGludCBwY2FhbDFf
-bWVtX2luaXQodm9pZCkKPj4gwqB7Cj4+IC0KPj4gLSNpZmRlZiBDT05GSUdfT01BUF9HUE1DCj4+
-IMKgIMKgIMKgIC8qCj4+IMKgIMKgIMKgIMKgKiBXUCBpcyBtYWRlIGhpZ2ggYW5kIFdBSVQxIGFj
-dGl2ZSBMb3cKPj4gwqAgwqAgwqAgwqAqLwo+PiDCoCDCoCDCoCBncG1jX2dlbmVyaWNfaW5pdCgw
-eDEwKTsKPj4gLSNlbmRpZgo+Pgo+PiDCoCDCoCDCoCBhcm1fYWRkX21lbV9kZXZpY2UoInJhbTAi
-LCBPTUFQX1NEUkNfQ1MwLAo+PiBnZXRfc2RyX2NzX3NpemUoU0RSQ19DUzBfT1NFVCkpOwo+Pgo+
-PiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vY29uZmlncy9wYW5kYV94bG9hZF9kZWZjb25maWcKPj4g
-Yi9hcmNoL2FybS9jb25maWdzL3BhbmRhX3hsb2FkX2RlZmNvbmZpZwo+PiBpbmRleCBmOGYwYWU5
-Li5iZGZiZWI5IDEwMDY0NAo+PiAtLS0gYS9hcmNoL2FybS9jb25maWdzL3BhbmRhX3hsb2FkX2Rl
-ZmNvbmZpZwo+PiArKysgYi9hcmNoL2FybS9jb25maWdzL3BhbmRhX3hsb2FkX2RlZmNvbmZpZwo+
-PiBAQCAtMSw2ICsxLDUgQEAKPj4gwqBDT05GSUdfQVJDSF9PTUFQPXkKPj4gwqBDT05GSUdfQVJD
-SF9PTUFQND15Cj4+IC0jIENPTkZJR19PTUFQX0dQTUMgaXMgbm90IHNldAo+PiDCoENPTkZJR19P
-TUFQX0JVSUxEX0lGVD15Cj4+IMKgQ09ORklHX0FFQUJJPXkKPj4gwqAjIENPTkZJR19DTURfQVJN
-X0NQVUlORk8gaXMgbm90IHNldAo+PiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vY29uZmlncy9waHlj
-YXJkX2FfbDFfZGVmY29uZmlnCj4+IGIvYXJjaC9hcm0vY29uZmlncy9waHljYXJkX2FfbDFfZGVm
-Y29uZmlnCj4+IGluZGV4IDk1ZGZmYmIuLjljY2Y0M2QgMTAwNjQ0Cj4+IC0tLSBhL2FyY2gvYXJt
-L2NvbmZpZ3MvcGh5Y2FyZF9hX2wxX2RlZmNvbmZpZwo+PiArKysgYi9hcmNoL2FybS9jb25maWdz
-L3BoeWNhcmRfYV9sMV9kZWZjb25maWcKPj4gQEAgLTExLDcgKzExLDYgQEAgQ09ORklHX09NQVBf
-Q0xPQ0tfQUxMPXkKPj4gwqBDT05GSUdfT01BUF9DTE9DS19TT1VSQ0VfUzMySz15Cj4+IMKgQ09O
-RklHX09NQVAzX0NMT0NLX0NPTkZJRz15Cj4+IMKgQ09ORklHX09NQVAzX0NPUFlfQ0xPQ0tfU1JB
-TT1uCj4+IC1DT05GSUdfT01BUF9HUE1DPXkKPj4gwqBDT05GSUdfTUFDSF9QQ0FBTDE9eQo+PiDC
-oENPTkZJR19IQVNfT01BUF9OQU5EPXkKPj4gwqBDT05GSUdfQUVBQkk9eQo+PiBkaWZmIC0tZ2l0
-IGEvYXJjaC9hcm0vbWFjaC1vbWFwL0tjb25maWcgYi9hcmNoL2FybS9tYWNoLW9tYXAvS2NvbmZp
-Zwo+PiBpbmRleCA1MGY1M2RkLi4xMWI5NjYxIDEwMDY0NAo+PiAtLS0gYS9hcmNoL2FybS9tYWNo
-LW9tYXAvS2NvbmZpZwo+PiArKysgYi9hcmNoL2FybS9tYWNoLW9tYXAvS2NvbmZpZwo+PiBAQCAt
-NzcsMTYgKzc3LDYgQEAgY29uZmlnIE9NQVAzX0NMT0NLX0NPTkZJRwo+PiDCoCDCoCDCoCBoZWxw
-Cj4+IMKgIMKgIMKgIMKgIFNheSBZIGhlcmUgaWYgeW91IGxpa2UgdG8gaGF2ZSBPTUFQMyBDbG9j
-ayBjb25maWd1cmF0aW9uIGRvbmUuCj4+Cj4+IC1jb25maWcgT01BUF9HUE1DCj4+IC0gwqAgwqAg
-cHJvbXB0ICJTdXBwb3J0IGZvciBHUE1DIGNvbmZpZ3VyYXRpb24iCj4+IC0gwqAgwqAgYm9vbAo+
-PiAtIMKgIMKgIGRlcGVuZHMgb24gwqAoQVJDSF9PTUFQMiB8fCBBUkNIX09NQVAzIHx8IEFSQ0hf
-T01BUDQpCj4+IC0gwqAgwqAgZGVmYXVsdCB5Cj4+IC0gwqAgwqAgaGVscAo+PiAtIMKgIMKgIMKg
-IEVuYWJsZSB0aGlzIGlmIHlvdSB1c2UgVGV4YXMgSW5zdHJ1bWVudCdzIEdlbmVyYWwKPj4gcHVy
-cG9zZSBNZW1vcnkKPj4gLSDCoCDCoCDCoCBDb250cm9sbGVyKEdQTUMpLiBHUE1DIGFsbG93cyB5
-b3UgdG8gY29uZmlndXJlCj4+IGRldmljZXMgc3VjaCBhcyBOT1IsCj4+IC0gwqAgwqAgwqAgTkFO
-RCwgT25lTkFORCBldGMuCj4+IC0KPj4gwqBjb25maWcgT01BUF9CVUlMRF9JRlQKPj4gwqAgwqAg
-wqAgcHJvbXB0ICJidWlsZCBpZnQgYmluYXJ5Igo+PiDCoCDCoCDCoCBib29sCj4+IGRpZmYgLS1n
-aXQgYS9hcmNoL2FybS9tYWNoLW9tYXAvTWFrZWZpbGUgYi9hcmNoL2FybS9tYWNoLW9tYXAvTWFr
-ZWZpbGUKPj4gaW5kZXggODcwNzhhZS4uMjZkM2Y3ZCAxMDA2NDQKPj4gLS0tIGEvYXJjaC9hcm0v
-bWFjaC1vbWFwL01ha2VmaWxlCj4+ICsrKyBiL2FyY2gvYXJtL21hY2gtb21hcC9NYWtlZmlsZQo+
-PiBAQCAtMjQsNyArMjQsNiBAQCBvYmotJChDT05GSUdfT01BUF9DTE9DS19TT1VSQ0VfUzMySykg
-Kz0KPj4gczMya19jbGtzb3VyY2Uubwo+PiDCoG9iai0kKENPTkZJR19BUkNIX09NQVAzKSArPSBv
-bWFwM19jb3JlLm8gb21hcDNfZ2VuZXJpYy5vIGF1eGNyLm8KPj4gwqBvYmotJChDT05GSUdfQVJD
-SF9PTUFQNCkgKz0gb21hcDRfZ2VuZXJpYy5vIG9tYXA0X2Nsb2NrLm8KPj4gwqBvYmotJChDT05G
-SUdfT01BUDNfQ0xPQ0tfQ09ORklHKSArPSBvbWFwM19jbG9jay5vCj4+IC1vYmotJChDT05GSUdf
-T01BUF9HUE1DKSArPSBncG1jLm8gZGV2aWNlcy1ncG1jLW5hbmQubwo+PiDCoG9iai0kKENPTkZJ
-R19TSEVMTF9OT05FKSArPSB4bG9hZC5vCj4+IMKgb2JqLSQoQ09ORklHX0kyQ19UV0w2MDMwKSAr
-PSBvbWFwNF90d2w2MDMwX21tYy5vCj4+IC1vYmoteSArPSBncGlvLm8KPj4gK29iai15ICs9IGdw
-aW8ubyBncG1jLm8gZGV2aWNlcy1ncG1jLW5hbmQubwo+PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9t
-dGQvbmFuZC9LY29uZmlnIGIvZHJpdmVycy9tdGQvbmFuZC9LY29uZmlnCj4+IGluZGV4IDkyNmE2
-NGIuLmQ4NDZjZTAgMTAwNjQ0Cj4+IC0tLSBhL2RyaXZlcnMvbXRkL25hbmQvS2NvbmZpZwo+PiAr
-KysgYi9kcml2ZXJzL210ZC9uYW5kL0tjb25maWcKPj4gQEAgLTU1LDcgKzU1LDYgQEAgY29uZmln
-IE5BTkRfSU1YCj4+Cj4+IMKgY29uZmlnIE5BTkRfT01BUF9HUE1DCj4+IMKgIMKgIMKgIHRyaXN0
-YXRlICJOQU5EIEZsYXNoIFN1cHBvcnQgZm9yIEdQTUMgYmFzZWQgT01BUCBwbGF0Zm9ybXMiCj4+
-IC0gwqAgwqAgZGVwZW5kcyBvbiBPTUFQX0dQTUMKPj4gwqAgwqAgwqAgaGVscAo+PiDCoCDCoCDC
-oCDCoFN1cHBvcnQgZm9yIE5BTkQgZmxhc2ggdXNpbmcgR1BNQy4gR1BNQyBpcyBhIGNvbW1vbiBt
-ZW1vcnkKPj4gwqAgwqAgwqAgwqBpbnRlcmZhY2UgZm91bmQgb24gVGV4YXMgSW5zdHJ1bWVudCdz
-IE9NQVAgcGxhdGZvcm1zCj4+IC0tCj4KPiBUaGUgY29uZmlnIG9wdGlvbiBoZWxwcyBpbiByZWR1
-Y2luZyB0aGUgZXh0cmEgY29kZSBiZWluZyBidWlsdCBpbnRvCj4gdGhlICJ4bG9hZCIgY29uZmln
-dXJhdGlvbnMgLSB3aGVyZSB0aGUgc2l6ZSBtYXR0ZXJzLgo+Cj4gSW5zdGVhZCBvZiBtYWtpbmcg
-dGhpcyBjaGFuZ2UsIEkgc3VnZ2VzdCB5b3UgYWRkIHRoaXMgaW4gdGhlIGRlZmNvbmZpZwo+IGZv
-ciBwYW5kYWJvYXJkOgo+IENPTkZJR19PTUFQX0dQTUM9eQo+Cj4gSXQgaXMgbXVjaCBzbWFsbGVy
-IGNoYW5nZS4KR1BNQyBpcyBjb21tb24gZm9yIG9tYXAgcGxhdGZvcm0gc28gSSBkb24ndCBzZWUg
-YSBiZW5lZml0IHRvIGFkZCB1c2VyCnBvc3NpYmlsaXR5IHRvIGRpc2FibGUgaXQgYW5kCnRoZW4g
-bWFrZSBoaXMgYm9hcmQgdW4tYm9vdGFibGUuIFNvbHV0aW9uIHdhcyBwcm9wb3NlZCBieSBTYXNj
-aGEgOgpodHRwOi8vd3d3LnNwaW5pY3MubmV0L2xpc3RzL3UtYm9vdC12Mi9tc2cwNTg5Ny5odG1s
-Cgo+Cj4gfnNhbmplZXYKPgo+PiAxLjcuNS40Cj4+Cj4+Cj4+IF9fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fCj4+IGJhcmVib3ggbWFpbGluZyBsaXN0Cj4+IGJh
-cmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwo+PiBodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9t
-YWlsbWFuL2xpc3RpbmZvL2JhcmVib3gKPj4KCnJlZ2FyZHMsCgptYXJlawoKLS0gCmFzIHNpbXBs
-ZSBhbmQgcHJpbWl0aXZlIGFzIHBvc3NpYmxlCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0KTWFyZWsgQmVsaXNrbyAtIE9QRU4tTkFORFJBCkZyZWVsYW5j
-ZSBEZXZlbG9wZXIKClJ1c2thIE5vdmEgVmVzIDIxOSB8IFByZXNvdiwgMDgwMDUgU2xvdmFrIFJl
-cHVibGljClRlbDogKzQyMSA5MTUgMDUyIDE4NApza3lwZTogbWFyZWt3aGl0ZQp0d2l0dGVyOiAj
-b3Blbm5hbmRyYQp3ZWI6IGh0dHA6Ly9vcGVuLW5hbmRyYS5jb20KCl9fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVi
-b3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFu
-L2xpc3RpbmZvL2JhcmVib3gK
+
+> -----Original Message-----
+> From: Belisko Marek [mailto:marek.belisko@gmail.com] =
+
+> Sent: Wednesday, February 01, 2012 3:46 PM
+> To: Premi, Sanjeev
+> Cc: barebox@lists.infradead.org
+> Subject: Re: [PATCH 1/2] omap: Remove OMAP_GPMC prompt and usage.
+> =
+
+> On Wed, Feb 1, 2012 at 10:32 AM, Premi, Sanjeev <premi@ti.com> wrote:
+> >> -----Original Message-----
+> >> From: barebox-bounces@lists.infradead.org
+> >> [mailto:barebox-bounces@lists.infradead.org] On Behalf Of
+> >> Marek Belisko
+> >> Sent: Wednesday, February 01, 2012 2:21 AM
+> >> To: barebox@lists.infradead.org
+> >> Cc: Marek Belisko
+> >> Subject: [PATCH 1/2] omap: Remove OMAP_GPMC prompt and usage.
+> >>
+> >> Build for omap platform by default.
+> >>
+> >> Signed-off-by: Marek Belisko <marek.belisko@open-nandra.com>
+> >> ---
+> >> =A0arch/arm/boards/beagle/board.c =A0 =A0 =A0 =A0 =A0| =A0 =A04 ++--
+> >> =A0arch/arm/boards/omap343xdsp/board.c =A0 =A0 | =A0 =A02 --
+> >> =A0arch/arm/boards/omap3evm/board.c =A0 =A0 =A0 =A0| =A0 =A03 +--
+> >> =A0arch/arm/boards/phycard-a-l1/pca-a-l1.c | =A0 =A03 ---
+> >> =A0arch/arm/configs/panda_xload_defconfig =A0| =A0 =A01 -
+> >> =A0arch/arm/configs/phycard_a_l1_defconfig | =A0 =A01 -
+> >> =A0arch/arm/mach-omap/Kconfig =A0 =A0 =A0 =A0 =A0 =A0 =A0| =A0 10 ----=
+------
+> >> =A0arch/arm/mach-omap/Makefile =A0 =A0 =A0 =A0 =A0 =A0 | =A0 =A03 +--
+> >> =A0drivers/mtd/nand/Kconfig =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0| =A0 =A01 -
+> >> =A09 files changed, 4 insertions(+), 24 deletions(-)
+> >>
+
+[snip]...[snip]
+
+> > The config option helps in reducing the extra code being built into
+> > the "xload" configurations - where the size matters.
+> >
+> > Instead of making this change, I suggest you add this in =
+
+> the defconfig
+> > for pandaboard:
+> > CONFIG_OMAP_GPMC=3Dy
+> >
+> > It is much smaller change.
+> GPMC is common for omap platform so I don't see a benefit to add user
+> possibility to disable it and
+> then make his board un-bootable. Solution was proposed by Sascha :
+> http://www.spinics.net/lists/u-boot-v2/msg05897.html
+
+I missed this discussion, but if in the early boot stages we aren't
+concerned about the devices on GPMC, then we shouldn't be initializing it.
+
+I don't have code in front of me, so can't say whether this is the
+case for xload configurations today - but I am assuming this was the
+original intent of having this option.
+
+On OMAP3EVM, GPMC needs to be configured only if NAND and Ethernet are
+used. Else, the init can easily be skipped.
+
+In patch 2/2 you mentioned about the kernel crash.
+Can you share the crash log?
+(or point me to a post which already has it)
+
+~sanjeev
+
+> =
+
+> >
+> > ~sanjeev
+> >
+> >> 1.7.5.4
+> >>
+> >>
+> >> _______________________________________________
+> >> barebox mailing list
+> >> barebox@lists.infradead.org
+> >> http://lists.infradead.org/mailman/listinfo/barebox
+> >>
+> =
+
+> regards,
+> =
+
+> marek
+> =
+
+> -- =
+
+> as simple and primitive as possible
+> -------------------------------------------------
+> Marek Belisko - OPEN-NANDRA
+> Freelance Developer
+> =
+
+> Ruska Nova Ves 219 | Presov, 08005 Slovak Republic
+> Tel: +421 915 052 184
+> skype: marekwhite
+> twitter: #opennandra
+> web: http://open-nandra.com
+> =
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
