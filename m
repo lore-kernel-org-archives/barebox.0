@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RtFoV-0001o5-Uj
- for barebox@lists.infradead.org; Fri, 03 Feb 2012 09:52:16 +0000
-Date: Fri, 3 Feb 2012 10:52:05 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120203095205.GF1990@pengutronix.de>
+Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1RtLEb-0003gd-UX
+ for barebox@lists.infradead.org; Fri, 03 Feb 2012 15:39:35 +0000
+From: Robert Jarzmik <robert.jarzmik@free.fr>
 References: <1328002599-7539-1-git-send-email-s.hauer@pengutronix.de>
  <1328136148-23307-1-git-send-email-robert.jarzmik@free.fr>
+ <20120203095205.GF1990@pengutronix.de>
+Date: Fri, 03 Feb 2012 16:39:18 +0100
+In-Reply-To: <20120203095205.GF1990@pengutronix.de> (Sascha Hauer's message of
+ "Fri, 3 Feb 2012 10:52:05 +0100")
+Message-ID: <87mx903p09.fsf@free.fr>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1328136148-23307-1-git-send-email-robert.jarzmik@free.fr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,27 +25,36 @@ Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] drivers/pwm: add PXA pulse width modulator controller
-To: Robert Jarzmik <robert.jarzmik@free.fr>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Robert,
+Sascha Hauer <s.hauer@pengutronix.de> writes:
 
-On Wed, Feb 01, 2012 at 11:42:28PM +0100, Robert Jarzmik wrote:
-> Add PXA embedded pulse width modulator support. The PWM can
-> generate signals from 49.6kHz to 1.625MHz.
-> The driver is for pxa2xx family. The pxa3xx was not handled yet.
+> Hi Robert,
+>
+> Why not implement it as a regular driver? If we ever want to implement
+> a commandline control of the pwms via pwm0.dutyns=xx we'll need
+> a struct device.
 
-Why not implement it as a regular driver? If we ever want to implement
-a commandline control of the pwms via pwm0.dutyns=xx we'll need
-a struct device.
+This is because in my own case, I need pwm to be registered before other devices
+are probed. The trouble (in my case) is that for drivers/video/pxa.c, I have the
+following call path :
+ - pxafb_probe()
+   -> pxafb_enable_controller()
+     -> pxafb_backlight_power()
+       -> mioa701_lcd_backlight()
+          => 	struct pwm_device *pwm0 = pwm_request("pxa_pwm0");
+		pwm_enable(pwm0);
+		pwm_config(pwm0, 2000 * 1024, 4000 * 1024);
 
-Sascha
+I'm a bit afraid that the pxafb driver will be probed first, before pwm_pxa, and
+therefore the backlight setting won't work. I haven't found a clean way to
+specify this dependency.
+
+Cheers.
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Robert
 
 _______________________________________________
 barebox mailing list
