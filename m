@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from astoria.ccjclearline.com ([64.235.106.9])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Ru0eJ-00048H-Ii
- for barebox@lists.infradead.org; Sun, 05 Feb 2012 11:52:52 +0000
-Received: from cpec03f0ed08c7f-cm001ac318e826.cpe.net.cable.rogers.com
- ([99.241.91.63] helo=crashcourse.ca)
- by astoria.ccjclearline.com with esmtpsa (TLSv1:AES256-SHA:256)
- (Exim 4.69) (envelope-from <rpjday@crashcourse.ca>)
- id 1Ru0e5-0002hv-DP
- for barebox@lists.infradead.org; Sun, 05 Feb 2012 06:52:37 -0500
-Date: Sun, 5 Feb 2012 06:52:28 -0500 (EST)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-Message-ID: <alpine.DEB.2.02.1202050635190.30340@oneiric>
-MIME-Version: 1.0
+Received: from smtp3-g21.free.fr ([2a01:e0c:1:1599::12])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1Ru3Rq-0002mK-Qu
+ for barebox@lists.infradead.org; Sun, 05 Feb 2012 14:52:12 +0000
+Received: from eb-e6520 (unknown [82.233.81.124])
+ by smtp3-g21.free.fr (Postfix) with ESMTP id A02D2A61D3
+ for <barebox@lists.infradead.org>; Sun,  5 Feb 2012 15:52:02 +0100 (CET)
+Date: Sun, 5 Feb 2012 15:52:01 +0100
+From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
+Message-ID: <20120205155201.4086003e@eb-e6520>
+In-Reply-To: <alpine.DEB.2.02.1202050635190.30340@oneiric>
+References: <alpine.DEB.2.02.1202050635190.30340@oneiric>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,87 +20,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: how do i add the defn for the beagle xM to barebox?
-To: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: Re: how do i add the defn for the beagle xM to barebox?
+To: barebox@lists.infradead.org
 
+Hi Robert,
 
-  just about to start reading the barebox docs to see if it's
-explained there but here's what i want to do -- i want to specifically
-add support for the beagleboard xM to barebox.
+Le Sun, 5 Feb 2012 06:52:28 -0500 (EST),
+"Robert P. J. Day" <rpjday@crashcourse.ca> a =E9crit :
+>   thoughts?  i'd actually like to make the tweaks one at a time so
+> that the git log shows clearly how the two boards differ one feature
+> at a time.
 
-  i can see there is already classic beagle support:
+By sensing a few GPIO, you can easily check which board you are running
+barebox on and thus have ony binary which supports all beagleboards
+(as already done in u-boot).
 
-http://wiki.barebox.org/doku.php?id=boards:omap
+Check around line 108 in u-boot's beagle support for the details : =
 
-and as a test, i build both the MLO and loader for a *regular* beagle
-using barebox and replaced those files in a basic validation image for
-the xM.  happily, it booted to the barebox loader, which proves that
-the current barebox beagle support represents at least a viable
-starting point for the xM.
+http://git.denx.de/?p=3Du-boot.git;a=3Dblob;f=3Dboard/ti/beagle/beagle.c;h=
+=3D5c04b34e1ab0140aca93e7752c8672ce7aebc0b9;hb=3DHEAD
 
-  there were, of course, some diagnostics based on the differences,
-such as:
+So in the end you can register the nand support only if you run on a
+board which has a NAND flash and have one defconfig for all
+beagleboards (some tweaks in the clock settings may be nedded -
+especially for USB IIRC - as beagle XM is built around a DM3730 which
+can run at 1GHz when older beagles had older OMAP3530 limited to
+720MHz).
 
-... snip ...
-NAND type unknown: ff,ff
-No NAND device found (-19)!
-... snip ...
+Eric
+-- =
 
-that's not surprising since the beagle has NAND flash while the xM
-doesn't, so i'm assuming that my first mod would be something like, in
-the xload file, replacing all of:
-
-CONFIG_MTD=y
-# CONFIG_MTD_WRITE is not set
-# CONFIG_MTD_OOB_DEVICE is not set
-CONFIG_NAND=y
-# CONFIG_NAND_ECC_SOFT is not set
-# CONFIG_NAND_ECC_HW_SYNDROME is not set
-# CONFIG_NAND_ECC_HW_NONE is not set
-# CONFIG_NAND_INFO is not set
-# CONFIG_NAND_BBT is not set
-CONFIG_NAND_OMAP_GPMC=y
-
-with:
-
-CONFIG_MTD=n
-CONFIG_MAND=n
-
-and in the loader defconfig file, replacing:
-
-CONFIG_MTD=y
-CONFIG_NAND=y
-CONFIG_NAND_OMAP_GPMC=y
-
-with the same thing, is that it?
-
-  in any event, unless someone has already done this, i'm willing to
-start with the existing beagle defconfig files, perhaps even add them
-to barebox as is, then start submitting patches that handle the
-differences one by one.  is this a reasonable plan?  i'm sure i won't
-come up with the final correct defconfig file all in one shot, so i'll
-definitely be tweaking and submitting and converging to the correct
-solution.
-
-  thoughts?  i'd actually like to make the tweaks one at a time so
-that the git log shows clearly how the two boards differ one feature
-at a time.
-
-rday
-
--- 
-
-========================================================================
-Robert P. J. Day                                 Ottawa, Ontario, CANADA
-                        http://crashcourse.ca
-
-Twitter:                                       http://twitter.com/rpjday
-LinkedIn:                               http://ca.linkedin.com/in/rpjday
-========================================================================
+http://eukrea.com/en/news/104-2012
 
 _______________________________________________
 barebox mailing list
