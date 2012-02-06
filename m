@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from astoria.ccjclearline.com ([64.235.106.9])
  by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RuVeO-0002Se-4D
- for barebox@lists.infradead.org; Mon, 06 Feb 2012 20:59:00 +0000
+ id 1RuVto-0006Ef-V5
+ for barebox@lists.infradead.org; Mon, 06 Feb 2012 21:14:57 +0000
 Received: from cpec03f0ed08c7f-cm001ac318e826.cpe.net.cable.rogers.com
  ([99.241.91.63] helo=crashcourse.ca)
  by astoria.ccjclearline.com with esmtpsa (TLSv1:AES256-SHA:256)
  (Exim 4.69) (envelope-from <rpjday@crashcourse.ca>)
- id 1RuVeH-0005G9-OV
- for barebox@lists.infradead.org; Mon, 06 Feb 2012 15:58:53 -0500
-Date: Mon, 6 Feb 2012 15:58:38 -0500 (EST)
+ id 1RuVtl-0006Dg-Hn
+ for barebox@lists.infradead.org; Mon, 06 Feb 2012 16:14:53 -0500
+Date: Mon, 6 Feb 2012 16:14:45 -0500 (EST)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-Message-ID: <alpine.DEB.2.02.1202061555500.16840@oneiric>
+Message-ID: <alpine.DEB.2.02.1202061612300.17751@oneiric>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -25,39 +25,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Add ARCH_OMAP[34] dependencies to Kconfig file
+Subject: what is the purpose of config option HAS_OMAP_NAND?
 To: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
 
-Without the proper OMAP3 or OMAP4 dependency directives, you get the
-wrong list of choices displayed based on which OMAP variant you pick.
+  based on the output from grep:
 
-Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+$ grep -r HAS_OMAP_NAND *
+arch/arm/mach-omap/Kconfig:	select HAS_OMAP_NAND
+arch/arm/mach-omap/Kconfig:	select HAS_OMAP_NAND
+arch/arm/mach-omap/Kconfig:	select HAS_OMAP_NAND
+arch/arm/mach-omap/Kconfig:	select HAS_OMAP_NAND
+arch/arm/mach-omap/Kconfig:config HAS_OMAP_NAND
+arch/arm/configs/phycard_a_l1_defconfig:CONFIG_HAS_OMAP_NAND=y
+$
 
----
+i'm not sure of the purpose of that Kconfig option.  if nothing in the
+source tree tests it, what value does it have?  the definition of that
+option is simply:
 
-  is the MACH_PCAAL1 an OMAP3?  i wasn't sure, it looked that way.
+config HAS_OMAP_NAND
+        bool
 
-diff --git a/arch/arm/mach-omap/Kconfig b/arch/arm/mach-omap/Kconfig
-index 73125a7..ae5044a 100644
---- a/arch/arm/mach-omap/Kconfig
-+++ b/arch/arm/mach-omap/Kconfig
-@@ -142,6 +142,7 @@ config MACH_PANDA
- 	bool "Texas Instrument's Panda Board"
- 	select HAVE_NOSHELL
- 	select MACH_HAS_LOWLEVEL_INIT
-+	depends on ARCH_OMAP4
- 	help
- 	  Say Y here if you are using OMAP4 Panda board
+am i missing something subtle?
 
-@@ -159,6 +160,7 @@ config MACH_PCAAL1
- 	select MACH_HAS_LOWLEVEL_INIT
- 	select OMAP_CLOCK_ALL
- 	select HAS_OMAP_NAND
-+	depends on ARCH_OMAP3
- 	  help
- 	  Say Y here if you are using a phyCARD-A-L1 PCA-A-L1
-
+rday
 
 -- 
 
