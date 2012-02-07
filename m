@@ -1,21 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 12.mo3.mail-out.ovh.net ([188.165.41.191]
- helo=mo3.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Rujje-0006PF-E1
- for barebox@lists.infradead.org; Tue, 07 Feb 2012 12:01:23 +0000
-Received: from mail617.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 2ED10100445B
- for <barebox@lists.infradead.org>; Tue,  7 Feb 2012 13:01:21 +0100 (CET)
-Date: Tue, 7 Feb 2012 12:56:18 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120207115618.GA19413@game.jcrosoft.org>
-References: <alpine.DEB.2.02.1202061041330.5018@oneiric>
- <20120207093342.GB3852@pengutronix.de>
- <alpine.DEB.2.02.1202070608280.17306@oneiric>
+Received: from astoria.ccjclearline.com ([64.235.106.9])
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RujjY-0007nA-Q3
+ for barebox@lists.infradead.org; Tue, 07 Feb 2012 12:01:18 +0000
+Received: from cpec03f0ed08c7f-cm001ac318e826.cpe.net.cable.rogers.com
+ ([99.241.91.63] helo=crashcourse.ca)
+ by astoria.ccjclearline.com with esmtpsa (TLSv1:AES256-SHA:256)
+ (Exim 4.69) (envelope-from <rpjday@crashcourse.ca>)
+ id 1RujjV-0005U8-Om
+ for barebox@lists.infradead.org; Tue, 07 Feb 2012 07:01:13 -0500
+Date: Tue, 7 Feb 2012 07:01:04 -0500 (EST)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+Message-ID: <alpine.DEB.2.02.1202070656530.23864@oneiric>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.02.1202070608280.17306@oneiric>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,42 +25,102 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: any value in allowing user selection of barebox prompt?
-To: "Robert P. J. Day" <rpjday@crashcourse.ca>
-Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: [PATCH] Remove apparently superfluous Kconfig variable HAS_OMAP_NAND
+To: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-On 06:13 Tue 07 Feb     , Robert P. J. Day wrote:
-> On Tue, 7 Feb 2012, Sascha Hauer wrote:
-> 
-> > On Mon, Feb 06, 2012 at 10:57:22AM -0500, Robert P. J. Day wrote:
-> 
-> ... snip ...
-> 
-> > >   i tried it and it seems to work fine although the aesthetics in
-> > > "make menuconfig" is a bit strange WRT order:
-> > >
-> > >     (Texas Instrument's Beagle) Board info
-> > >         Select OMAP board (Texas Instrument's Beagle Board)  --->
-> > >
-> > > but that could be fixed just by moving the BOARDINFO entry below the
-> > > board choice in that file.
-> > >
-> > >   was this already discussed and rejected once upon a time?  it's not
-> > > a big deal but it has the value of being moderately informative.
-> >
-> > It hasn't been discussed before. It's mostly the way it is because I
-> > did it that way without much thinking. The change you suggest has
-> > one drawback. Consider you do a make menuconfig and change the
-> > board. Currently BOARDINFO correctly changes to the new board, but
-> > if we prompt the user for BOARDINFO the board string will still have
-> > the name of the old board.
-> 
->   i'd noticed that but didn't know if there was any way to resolve
-> it easily.
-add set support to Kconfig
 
-Best Regards,
-J.
+Remove what is an apparently valueless Kconfig variable HAS_OMAP_NAND.
+A search of the entire source tree shows:
+
+$ grep -r HAS_OMAP_NAND *
+arch/arm/mach-omap/Kconfig:	select HAS_OMAP_NAND
+arch/arm/mach-omap/Kconfig:	select HAS_OMAP_NAND
+arch/arm/mach-omap/Kconfig:	select HAS_OMAP_NAND
+arch/arm/mach-omap/Kconfig:	select HAS_OMAP_NAND
+arch/arm/mach-omap/Kconfig:config HAS_OMAP_NAND
+arch/arm/configs/phycard_a_l1_defconfig:CONFIG_HAS_OMAP_NAND=y
+$
+
+where the definition of that variable is simply:
+
+config HAS_OMAP_NAND
+        bool
+
+so it seems pretty clear it can be removed as nothing is using it.
+
+Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+
+---
+
+  compile-tested for beagleboard.  beyond that, it looks like a pretty
+safe removal.
+
+diff --git a/arch/arm/configs/phycard_a_l1_defconfig b/arch/arm/configs/phycard_a_l1_defconfig
+index 95dffbb..64afcc2 100644
+--- a/arch/arm/configs/phycard_a_l1_defconfig
++++ b/arch/arm/configs/phycard_a_l1_defconfig
+@@ -13,7 +13,6 @@ CONFIG_OMAP3_CLOCK_CONFIG=y
+ CONFIG_OMAP3_COPY_CLOCK_SRAM=n
+ CONFIG_OMAP_GPMC=y
+ CONFIG_MACH_PCAAL1=y
+-CONFIG_HAS_OMAP_NAND=y
+ CONFIG_AEABI=y
+ CONFIG_CMD_ARM_CPUINFO=y
+ CONFIG_ARM_EXCEPTIONS=y
+diff --git a/arch/arm/mach-omap/Kconfig b/arch/arm/mach-omap/Kconfig
+index 73125a7..6a5e674 100644
+--- a/arch/arm/mach-omap/Kconfig
++++ b/arch/arm/mach-omap/Kconfig
+@@ -114,7 +114,6 @@ config MACH_OMAP343xSDP
+ 	bool "Texas Instrument's SDP343x"
+ 	select MACH_HAS_LOWLEVEL_INIT
+ 	select OMAP_CLOCK_ALL
+-	select HAS_OMAP_NAND
+ 	depends on ARCH_OMAP3
+ 	help
+ 	  Say Y here if you are using SDP343x platform
+@@ -124,7 +123,6 @@ config MACH_BEAGLE
+ 	select MACH_HAS_LOWLEVEL_INIT
+ 	select OMAP_CLOCK_ALL
+ 	select HAVE_NOSHELL
+-	select HAS_OMAP_NAND
+ 	depends on ARCH_OMAP3
+ 	  help
+ 	  Say Y here if you are using Beagle Board
+@@ -133,7 +131,6 @@ config MACH_OMAP3EVM
+ 	bool "Texas Instrument's OMAP3 EVM"
+ 	select MACH_HAS_LOWLEVEL_INIT
+ 	select OMAP_CLOCK_ALL
+-	select HAS_OMAP_NAND
+ 	depends on ARCH_OMAP3
+ 	  help
+ 	  Say Y here if you are using OMAP3EVM
+@@ -158,7 +155,6 @@ config MACH_PCAAL1
+ 	bool "Phytec phyCARD-A-L1"
+ 	select MACH_HAS_LOWLEVEL_INIT
+ 	select OMAP_CLOCK_ALL
+-	select HAS_OMAP_NAND
+ 	  help
+ 	  Say Y here if you are using a phyCARD-A-L1 PCA-A-L1
+
+@@ -190,7 +186,4 @@ config MACH_OMAP_ADVANCED_MUX
+ 	  Say Y here if you would like to have complete pin muxing to be
+ 	  done at boot time
+
+-config HAS_OMAP_NAND
+-	bool
+-
+ endmenu
+
+-- 
+
+========================================================================
+Robert P. J. Day                                 Ottawa, Ontario, CANADA
+                        http://crashcourse.ca
+
+Twitter:                                       http://twitter.com/rpjday
+LinkedIn:                               http://ca.linkedin.com/in/rpjday
+========================================================================
 
 _______________________________________________
 barebox mailing list
