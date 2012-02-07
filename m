@@ -1,19 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from arroyo.ext.ti.com ([192.94.94.40])
+Received: from bear.ext.ti.com ([192.94.94.41])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Runpu-0007gM-GE
- for barebox@lists.infradead.org; Tue, 07 Feb 2012 16:24:07 +0000
-Received: from dbdp20.itg.ti.com ([172.24.170.38])
- by arroyo.ext.ti.com (8.13.7/8.13.7) with ESMTP id q17GO3hG019284
- for <barebox@lists.infradead.org>; Tue, 7 Feb 2012 10:24:04 -0600
-Received: from DBDE71.ent.ti.com (localhost [127.0.0.1])
- by dbdp20.itg.ti.com (8.13.8/8.13.8) with ESMTP id q17GO2iK007192
- for <barebox@lists.infradead.org>; Tue, 7 Feb 2012 21:54:03 +0530 (IST)
+ id 1Runzo-0000K3-0W
+ for barebox@lists.infradead.org; Tue, 07 Feb 2012 16:34:20 +0000
 From: "Premi, Sanjeev" <premi@ti.com>
-Date: Tue, 7 Feb 2012 16:24:02 +0000
-Message-ID: <E28AAFD00EFAA646AE3DF9B89CD24A8931834282@DBDE01.ent.ti.com>
-References: <1328631414-19427-1-git-send-email-premi@ti.com>
-In-Reply-To: <1328631414-19427-1-git-send-email-premi@ti.com>
+Date: Tue, 7 Feb 2012 16:34:12 +0000
+Message-ID: <E28AAFD00EFAA646AE3DF9B89CD24A89318342F9@DBDE01.ent.ti.com>
+References: <alpine.DEB.2.02.1202070816090.3550@oneiric>
+In-Reply-To: <alpine.DEB.2.02.1202070816090.3550@oneiric>
 Content-Language: en-US
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
@@ -28,85 +22,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: [PATCH 0/2] omap3evm: Enable Linux boot
-To: "Premi, Sanjeev" <premi@ti.com>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: RE: "make distclean" doesn't remove generated MLO file
+To: "Robert P. J. Day" <rpjday@crashcourse.ca>, "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
 > -----Original Message-----
-> From: Premi, Sanjeev 
-> Sent: Tuesday, February 07, 2012 9:47 PM
-> To: barebox@lists.infradead.org
-> Cc: Premi, Sanjeev
-> Subject: [PATCH 0/2] omap3evm: Enable Linux boot
+> From: barebox-bounces@lists.infradead.org 
+> [mailto:barebox-bounces@lists.infradead.org] On Behalf Of 
+> Robert P. J. Day
+> Sent: Tuesday, February 07, 2012 6:49 PM
+> To: U-Boot Version 2 (barebox)
+> Subject: "make distclean" doesn't remove generated MLO file
 > 
-> These patches are necessary enable Linux boot from
-> barebox.bin.
 > 
-> Both patches apply against the 'next' branch at:
+>   i see that the latest barebox now automatically renames
+> barebox.bin.ift to MLO -- cool.  but a subsequent "make distclean"
+> doesn't remove that generated MLO, which it should, no?
 > 
-> Linux still doesn't boot successfully, and changes
-> are necessary in the defconfig and default env.
-> Will submit the patches once I have done some more
-> debug.
+>   where would that removal properly belong?  in "archmrproper"?  it's
+> architecture specific, right?
 > 
-> Will share the failure log in reponse to this patch
-> (just to prevent clutter in this description).
-> 
-> Sanjeev Premi (2):
->   omap3evm: Remove inclusion of non-existent header
->   omap3evm: Setup ATAGs for Linux boot
-> 
->  arch/arm/boards/omap3evm/board.c |    5 ++++-
->  1 files changed, 4 insertions(+), 1 deletions(-)
-> 
+[snip]
 
-My local init script uses this command to boot Linux:
-bootm -c -v /mnt/uImage
+This patch should help.
+If you confirm, I can submit it formally.
 
-As noted in the original description, Linux doesn't boot
-successfully. Debugger indicates an exception - but need
-to investigate further.
+~sanjeev
 
-Here is the log:
-
-barebox 2012.01.0-00248-g9119228-dirty (Feb  7 2012 - 21:08:10)
-
-Board: Texas Instrument's OMAP3EVM
-Malloc space: 0x87bfff10 -> 0x87ffff0f (size  4 MB)
-Stack space : 0x4020f000 -> 0x4020fc00 (size  3 kB)
-booting from MMC1
+From 072ef5dd7022877fc1470b6dc14a0ec309eb68a0 Mon Sep 17 00:00:00 2001
+From: Sanjeev Premi <premi@ti.com>
+Date: Tue, 7 Feb 2012 21:58:50 +0530
+Subject: [PATCH] omap: Remove MLO with distclean
 
 
-barebox 2012.01.0-00248-g9119228-dirty (Feb  7 2012 - 21:09:16)
+Signed-off-by: Sanjeev Premi <premi@ti.com>
+---
+ Makefile |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-Board: Texas Instrument's OMAP3EVM
-Malloc space: 0x80c00000 -> 0x80ffffff (size  4 MB)
-Stack space : 0x80bf8000 -> 0x80c00000 (size 32 kB)
-Open /dev/env0 No such file or directory
-no valid environment found on /dev/env0. Using default environment
-running /env/bin/init...
-
-:: Press any key to stop autoboot:  0
-
-::
-:: Booting from disk ...
-::
-   Image Name:   Linux-3.3.0-rc1-11551-g1c6ece3
-   Created:      2012-02-07  16:08:10 UTC
-   OS:           Linux
-   Architecture: ARM
-   Type:         Kernel Image
-   Compression:  uncompressed
-   Data Size:    3382624 Bytes =  3.2 MB
-   Load Address: 80008000
-   Entry Point:  80008000
-
-Loading OS U-Boot uImage '/mnt/uImage'
-OS image is at 0x80008000-0x80341d5f
-Passing control to ARM Linux uImage handler
-
-Starting kernel at 0x80008000...
-commandline: console=tty02,115200n8 mem=256M earlyprintk=serial,ttyO2,115200 noinitrd root=/dev/mmcblk0p2 rw rootfstype=ext3 ip=dhcp
-arch_number: 1535
+diff --git a/Makefile b/Makefile
+index 5cf49da..5a03b32 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1008,7 +1008,7 @@ MRPROPER_DIRS  += include/config include2 usr/include
+ MRPROPER_FILES += .config .config.old include/asm .version .old_version \
+                   include/generated/autoconf.h include/generated/version.h      \
+                   include/generated/utsrelease.h include/config.h           \
+-		  Module.symvers tags TAGS cscope*
++		  Module.symvers tags TAGS cscope* MLO
+ 
+ # clean - Delete most, but leave enough to build external modules
+ #
+-- 
+1.7.0.4
 
 _______________________________________________
 barebox mailing list
