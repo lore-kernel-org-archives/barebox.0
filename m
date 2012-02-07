@@ -1,21 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from arroyo.ext.ti.com ([192.94.94.40])
+Received: from mail-vw0-f49.google.com ([209.85.212.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RuoqH-0004mt-LT
- for barebox@lists.infradead.org; Tue, 07 Feb 2012 17:28:34 +0000
-From: "Premi, Sanjeev" <premi@ti.com>
-Date: Tue, 7 Feb 2012 17:27:35 +0000
-Message-ID: <E28AAFD00EFAA646AE3DF9B89CD24A893183453E@DBDE01.ent.ti.com>
-References: <alpine.DEB.2.02.1202070816090.3550@oneiric>
- <E28AAFD00EFAA646AE3DF9B89CD24A89318342F9@DBDE01.ent.ti.com>
- <alpine.DEB.2.02.1202071138340.15978@oneiric>
- <E28AAFD00EFAA646AE3DF9B89CD24A8931834408@DBDE01.ent.ti.com>
- <alpine.DEB.2.02.1202071200480.16867@oneiric>
- <E28AAFD00EFAA646AE3DF9B89CD24A8931834466@DBDE01.ent.ti.com>
- <alpine.DEB.2.02.1202071206120.17030@oneiric>
-In-Reply-To: <alpine.DEB.2.02.1202071206120.17030@oneiric>
-Content-Language: en-US
+ id 1RurYj-000396-La
+ for barebox@lists.infradead.org; Tue, 07 Feb 2012 20:22:39 +0000
+Received: by vbbfs19 with SMTP id fs19so5907807vbb.36
+ for <barebox@lists.infradead.org>; Tue, 07 Feb 2012 12:22:35 -0800 (PST)
 MIME-Version: 1.0
+In-Reply-To: <E28AAFD00EFAA646AE3DF9B89CD24A8931823F80@DBDE01.ent.ti.com>
+References: <1328043068-9577-1-git-send-email-marek.belisko@open-nandra.com>
+ <E28AAFD00EFAA646AE3DF9B89CD24A89318237E1@DBDE01.ent.ti.com>
+ <CAAfyv35gncmFgiHkqmS6u2so9TcDYM6yodiCw6YAdOARMPwMFw@mail.gmail.com>
+ <E28AAFD00EFAA646AE3DF9B89CD24A8931823B1B@DBDE01.ent.ti.com>
+ <20120201135134.GV1990@pengutronix.de>
+ <E28AAFD00EFAA646AE3DF9B89CD24A8931823F80@DBDE01.ent.ti.com>
+Date: Tue, 7 Feb 2012 21:22:35 +0100
+Message-ID: <CAAfyv35RSKUE5-QorvSL8=v6yWygQdNnJ-fjivj0nL9FDC2w8g@mail.gmail.com>
+From: Belisko Marek <marek.belisko@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,58 +24,92 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: "make distclean" doesn't remove generated MLO file
-To: "Robert P. J. Day" <rpjday@crashcourse.ca>
-Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: Re: [PATCH 1/2] omap: Remove OMAP_GPMC prompt and usage.
+To: "Premi, Sanjeev" <premi@ti.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-> -----Original Message-----
-> From: Robert P. J. Day [mailto:rpjday@crashcourse.ca] 
-> Sent: Tuesday, February 07, 2012 10:38 PM
-> To: Premi, Sanjeev
-> Cc: U-Boot Version 2 (barebox)
-> Subject: RE: "make distclean" doesn't remove generated MLO file
-> 
-> On Tue, 7 Feb 2012, Premi, Sanjeev wrote:
-> 
-> > > -----Original Message-----
-> > > From: Robert P. J. Day [mailto:rpjday@crashcourse.ca]
-> > > Sent: Tuesday, February 07, 2012 10:33 PM
-> > > To: Premi, Sanjeev
-> > > Cc: U-Boot Version 2 (barebox)
-> > > Subject: RE: "make distclean" doesn't remove generated MLO file
-> > >
-> > > On Tue, 7 Feb 2012, Premi, Sanjeev wrote:
-> > >
-> > > > I usually compile both stages together with a 'make clean' in
-> > > > between, hence decided to preserve MLO. Makes it easy 
-> to copy both
-> > > > MLO and barebox.bin at same time.
-> > >
-> > >   is there any sort of requirement about cleaning in 
-> between those two
-> > > steps?  if there is, that's a potential "gotcha" that should be
-> > > clearly documented.
-> >
-> > No "gotcha" that I know of - but just a habit!
-> 
->   i figured as much.  but under the circumstances, i think removing
-> MLO should be part of CLEAN_FILES given its obvious relationship to
-> things like barebox.bin.  philosophically, it just makes more sense.
-> and on that note, i will now shut up about it.
-
-I noted in earlier response:
-  > Otherwise, yes, MLO goes better with CLEAN_FILES.
-So, you are right.
-
-Let us wait if there is any other opinion on this.
-
-~sanjeev
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gV2VkLCBGZWIgMSwgMjAxMiBhdCAzOjEwIFBNLCBQcmVtaSwgU2FuamVldiA8cHJlbWlAdGku
+Y29tPiB3cm90ZToKPj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0KPj4gRnJvbTogU2FzY2hh
+IEhhdWVyIFttYWlsdG86cy5oYXVlckBwZW5ndXRyb25peC5kZV0KPj4gU2VudDogV2VkbmVzZGF5
+LCBGZWJydWFyeSAwMSwgMjAxMiA3OjIyIFBNCj4+IFRvOiBQcmVtaSwgU2FuamVldgo+PiBDYzog
+QmVsaXNrbyBNYXJlazsgYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCj4+IFN1YmplY3Q6IFJl
+OiBbUEFUQ0ggMS8yXSBvbWFwOiBSZW1vdmUgT01BUF9HUE1DIHByb21wdCBhbmQgdXNhZ2UuCj4+
+Cj4+IE9uIFdlZCwgRmViIDAxLCAyMDEyIGF0IDExOjA1OjIwQU0gKzAwMDAsIFByZW1pLCBTYW5q
+ZWV2IHdyb3RlOgo+PiA+Cj4+ID4gPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQo+PiA+ID4g
+RnJvbTogQmVsaXNrbyBNYXJlayBbbWFpbHRvOm1hcmVrLmJlbGlza29AZ21haWwuY29tXQo+PiA+
+ID4gU2VudDogV2VkbmVzZGF5LCBGZWJydWFyeSAwMSwgMjAxMiAzOjQ2IFBNCj4+ID4gPiBUbzog
+UHJlbWksIFNhbmplZXYKPj4gPiA+IENjOiBiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKPj4g
+PiA+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggMS8yXSBvbWFwOiBSZW1vdmUgT01BUF9HUE1DIHByb21w
+dCBhbmQgdXNhZ2UuCj4+ID4gPgo+PiA+ID4gT24gV2VkLCBGZWIgMSwgMjAxMiBhdCAxMDozMiBB
+TSwgUHJlbWksIFNhbmplZXYKPj4gPHByZW1pQHRpLmNvbT4gd3JvdGU6Cj4+ID4gPiA+PiAtLS0t
+LU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQo+PiA+ID4gPj4gRnJvbTogYmFyZWJveC1ib3VuY2VzQGxp
+c3RzLmluZnJhZGVhZC5vcmcKPj4gPiA+ID4+IFttYWlsdG86YmFyZWJveC1ib3VuY2VzQGxpc3Rz
+LmluZnJhZGVhZC5vcmddIE9uIEJlaGFsZiBPZgo+PiA+ID4gPj4gTWFyZWsgQmVsaXNrbwo+PiA+
+ID4gPj4gU2VudDogV2VkbmVzZGF5LCBGZWJydWFyeSAwMSwgMjAxMiAyOjIxIEFNCj4+ID4gPiA+
+PiBUbzogYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCj4+ID4gPiA+PiBDYzogTWFyZWsgQmVs
+aXNrbwo+PiA+ID4gPj4gU3ViamVjdDogW1BBVENIIDEvMl0gb21hcDogUmVtb3ZlIE9NQVBfR1BN
+QyBwcm9tcHQgYW5kIHVzYWdlLgo+PiA+ID4gPj4KPj4gPiA+ID4+IEJ1aWxkIGZvciBvbWFwIHBs
+YXRmb3JtIGJ5IGRlZmF1bHQuCj4+ID4gPiA+Pgo+PiA+ID4gPj4gU2lnbmVkLW9mZi1ieTogTWFy
+ZWsgQmVsaXNrbyA8bWFyZWsuYmVsaXNrb0BvcGVuLW5hbmRyYS5jb20+Cj4+ID4gPiA+PiAtLS0K
+Pj4gPiA+ID4+IMKgYXJjaC9hcm0vYm9hcmRzL2JlYWdsZS9ib2FyZC5jIMKgIMKgIMKgIMKgIMKg
+fCDCoCDCoDQgKystLQo+PiA+ID4gPj4gwqBhcmNoL2FybS9ib2FyZHMvb21hcDM0M3hkc3AvYm9h
+cmQuYyDCoCDCoCB8IMKgIMKgMiAtLQo+PiA+ID4gPj4gwqBhcmNoL2FybS9ib2FyZHMvb21hcDNl
+dm0vYm9hcmQuYyDCoCDCoCDCoCDCoHwgwqAgwqAzICstLQo+PiA+ID4gPj4gwqBhcmNoL2FybS9i
+b2FyZHMvcGh5Y2FyZC1hLWwxL3BjYS1hLWwxLmMgfCDCoCDCoDMgLS0tCj4+ID4gPiA+PiDCoGFy
+Y2gvYXJtL2NvbmZpZ3MvcGFuZGFfeGxvYWRfZGVmY29uZmlnIMKgfCDCoCDCoDEgLQo+PiA+ID4g
+Pj4gwqBhcmNoL2FybS9jb25maWdzL3BoeWNhcmRfYV9sMV9kZWZjb25maWcgfCDCoCDCoDEgLQo+
+PiA+ID4gPj4gwqBhcmNoL2FybS9tYWNoLW9tYXAvS2NvbmZpZyDCoCDCoCDCoCDCoCDCoCDCoCDC
+oHwgwqAgMTAgLS0tLS0tLS0tLQo+PiA+ID4gPj4gwqBhcmNoL2FybS9tYWNoLW9tYXAvTWFrZWZp
+bGUgwqAgwqAgwqAgwqAgwqAgwqAgfCDCoCDCoDMgKy0tCj4+ID4gPiA+PiDCoGRyaXZlcnMvbXRk
+L25hbmQvS2NvbmZpZyDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoHwgwqAgwqAxIC0KPj4gPiA+ID4+
+IMKgOSBmaWxlcyBjaGFuZ2VkLCA0IGluc2VydGlvbnMoKyksIDI0IGRlbGV0aW9ucygtKQo+PiA+
+ID4gPj4KPj4gPgo+PiA+IFtzbmlwXS4uLltzbmlwXQo+PiA+Cj4+ID4gPiA+IFRoZSBjb25maWcg
+b3B0aW9uIGhlbHBzIGluIHJlZHVjaW5nIHRoZSBleHRyYSBjb2RlCj4+IGJlaW5nIGJ1aWx0IGlu
+dG8KPj4gPiA+ID4gdGhlICJ4bG9hZCIgY29uZmlndXJhdGlvbnMgLSB3aGVyZSB0aGUgc2l6ZSBt
+YXR0ZXJzLgo+PiA+ID4gPgo+PiA+ID4gPiBJbnN0ZWFkIG9mIG1ha2luZyB0aGlzIGNoYW5nZSwg
+SSBzdWdnZXN0IHlvdSBhZGQgdGhpcyBpbgo+PiA+ID4gdGhlIGRlZmNvbmZpZwo+PiA+ID4gPiBm
+b3IgcGFuZGFib2FyZDoKPj4gPiA+ID4gQ09ORklHX09NQVBfR1BNQz15Cj4+ID4gPiA+Cj4+ID4g
+PiA+IEl0IGlzIG11Y2ggc21hbGxlciBjaGFuZ2UuCj4+Cj4+IFllcywgdGhlIGNoYW5nZSBpcyBz
+bWFsbGVyLCBidXQgd2Ugc2hvdyBhbiBvcHRpb24gdG8gdGhlIHVzZXIgd2hpY2gKPj4gaGUgYmV0
+dGVyIG5vdCBjaGFuZ2VzLiBJdCdzIGJldHRlciB0byBqdXN0IG5vdCBhc2sgcXVlc3Rpb25zIHdo
+aWNoCj4+IGhhdmUgb25seSBvbmUgcmVhc29uYWJsZSBhbnN3ZXIuCj4+Cj4+ID4gPiBHUE1DIGlz
+IGNvbW1vbiBmb3Igb21hcCBwbGF0Zm9ybSBzbyBJIGRvbid0IHNlZSBhIGJlbmVmaXQKPj4gdG8g
+YWRkIHVzZXIKPj4gPiA+IHBvc3NpYmlsaXR5IHRvIGRpc2FibGUgaXQgYW5kCj4+ID4gPiB0aGVu
+IG1ha2UgaGlzIGJvYXJkIHVuLWJvb3RhYmxlLiBTb2x1dGlvbiB3YXMgcHJvcG9zZWQgYnkgU2Fz
+Y2hhIDoKPj4gPiA+IGh0dHA6Ly93d3cuc3Bpbmljcy5uZXQvbGlzdHMvdS1ib290LXYyL21zZzA1
+ODk3Lmh0bWwKPj4gPgo+PiA+IEkgbWlzc2VkIHRoaXMgZGlzY3Vzc2lvbiwgYnV0IGlmIGluIHRo
+ZSBlYXJseSBib290IHN0YWdlcyB3ZSBhcmVuJ3QKPj4gPiBjb25jZXJuZWQgYWJvdXQgdGhlIGRl
+dmljZXMgb24gR1BNQywgdGhlbiB3ZSBzaG91bGRuJ3QgYmUKPj4gaW5pdGlhbGl6aW5nIGl0Lgo+
+Pgo+PiBJIGdlbmVyYWxseSBhZ3JlZSwgYnV0IHdlIGFyZSB0YWxraW5nIGFib3V0IGEgZmV3IHdy
+aXRlbCBoZXJlLCBpdAo+PiBzaG91bGRuJ3QgYWRkIG1vcmUgdGhhbiBhIGZldyBieXRlcyB0byB0
+aGUgYmluYXJ5Lgo+Pgo+PiA+Cj4+ID4gSSBkb24ndCBoYXZlIGNvZGUgaW4gZnJvbnQgb2YgbWUs
+IHNvIGNhbid0IHNheSB3aGV0aGVyIHRoaXMgaXMgdGhlCj4+ID4gY2FzZSBmb3IgeGxvYWQgY29u
+ZmlndXJhdGlvbnMgdG9kYXkgLSBidXQgSSBhbSBhc3N1bWluZyB0aGlzIHdhcyB0aGUKPj4gPiBv
+cmlnaW5hbCBpbnRlbnQgb2YgaGF2aW5nIHRoaXMgb3B0aW9uLgo+PiA+Cj4+ID4gT24gT01BUDNF
+Vk0sIEdQTUMgbmVlZHMgdG8gYmUgY29uZmlndXJlZCBvbmx5IGlmIE5BTkQgYW5kCj4+IEV0aGVy
+bmV0IGFyZQo+PiA+IHVzZWQuIEVsc2UsIHRoZSBpbml0IGNhbiBlYXNpbHkgYmUgc2tpcHBlZC4K
+Pj4gPgo+PiA+IEluIHBhdGNoIDIvMiB5b3UgbWVudGlvbmVkIGFib3V0IHRoZSBrZXJuZWwgY3Jh
+c2guCj4+ID4gQ2FuIHlvdSBzaGFyZSB0aGUgY3Jhc2ggbG9nPwo+PiA+IChvciBwb2ludCBtZSB0
+byBhIHBvc3Qgd2hpY2ggYWxyZWFkeSBoYXMgaXQpCj4+Cj4+IFRoZSByaWdodCh0bSkgZml4IGlz
+IHByb2JhYmx5IHRvIGZpeCB0aGlzIGluIHRoZSBLZXJuZWwgdG8gbm90IGRlcGVuZAo+PiBvbiB0
+aGUgYm9vdGxvYWRlci4KPgo+IEFncmVlLgpXZWxsIEkgY2FuIHNlbmQgcGF0Y2ggZm9yIGtlcm5l
+bCBidXQgbm90IHN1cmUgd2hhdCBzaG91bGQgYmUgY2hhbmdlZCA7KS4KQ291bGQgYW55Ym9keSBk
+byB0aGlzIG9yIGdpdmUgbWUgYSBoaW50IGFib3V0IHNvbHV0aW9uPwpUaGFua3MuCj4KPj4KPj4g
+U2FzY2hhCj4+Cj4+IC0tCj4+IFBlbmd1dHJvbml4IGUuSy4gwqAgwqAgwqAgwqAgwqAgwqAgwqAg
+wqAgwqAgwqAgwqAgwqAgwqAgfAo+PiDCoCDCoCDCoCDCoCDCoCDCoHwKPj4gSW5kdXN0cmlhbCBM
+aW51eCBTb2x1dGlvbnMgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgfAo+PiBodHRwOi8vd3d3LnBl
+bmd1dHJvbml4LmRlLyDCoHwKPj4gUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBH
+ZXJtYW55IHwgUGhvbmU6Cj4+ICs0OS01MTIxLTIwNjkxNy0wIMKgIMKgfAo+PiBBbXRzZ2VyaWNo
+dCBIaWxkZXNoZWltLCBIUkEgMjY4NiDCoCDCoCDCoCDCoCDCoCB8IEZheDoKPj4gKzQ5LTUxMjEt
+MjA2OTE3LTU1NTUgfAo+PgoKbWFyZWsKCi0tIAphcyBzaW1wbGUgYW5kIHByaW1pdGl2ZSBhcyBw
+b3NzaWJsZQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+Ck1hcmVrIEJlbGlza28gLSBPUEVOLU5BTkRSQQpGcmVlbGFuY2UgRGV2ZWxvcGVyCgpSdXNrYSBO
+b3ZhIFZlcyAyMTkgfCBQcmVzb3YsIDA4MDA1IFNsb3ZhayBSZXB1YmxpYwpUZWw6ICs0MjEgOTE1
+IDA1MiAxODQKc2t5cGU6IG1hcmVrd2hpdGUKdHdpdHRlcjogI29wZW5uYW5kcmEKd2ViOiBodHRw
+Oi8vb3Blbi1uYW5kcmEuY29tCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5v
+cmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
