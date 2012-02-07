@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from arroyo.ext.ti.com ([192.94.94.40])
+Received: from bear.ext.ti.com ([192.94.94.41])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RuoHj-0001b1-6m
- for barebox@lists.infradead.org; Tue, 07 Feb 2012 16:52:52 +0000
-Received: from dbdp20.itg.ti.com ([172.24.170.38])
- by arroyo.ext.ti.com (8.13.7/8.13.7) with ESMTP id q17Gqnu3005615
- for <barebox@lists.infradead.org>; Tue, 7 Feb 2012 10:52:49 -0600
-Received: from DBDE70.ent.ti.com (localhost [127.0.0.1])
- by dbdp20.itg.ti.com (8.13.8/8.13.8) with ESMTP id q17Gqmbi011020
- for <barebox@lists.infradead.org>; Tue, 7 Feb 2012 22:22:48 +0530 (IST)
-From: Sanjeev Premi <premi@ti.com>
-Date: Tue, 7 Feb 2012 22:22:45 +0530
-Message-ID: <1328633565-21914-1-git-send-email-premi@ti.com>
+ id 1RuoOg-0002p9-LI
+ for barebox@lists.infradead.org; Tue, 07 Feb 2012 17:00:05 +0000
+From: "Premi, Sanjeev" <premi@ti.com>
+Date: Tue, 7 Feb 2012 16:59:54 +0000
+Message-ID: <E28AAFD00EFAA646AE3DF9B89CD24A8931834408@DBDE01.ent.ti.com>
+References: <alpine.DEB.2.02.1202070816090.3550@oneiric>
+ <E28AAFD00EFAA646AE3DF9B89CD24A89318342F9@DBDE01.ent.ti.com>
+ <alpine.DEB.2.02.1202071138340.15978@oneiric>
+In-Reply-To: <alpine.DEB.2.02.1202071138340.15978@oneiric>
+Content-Language: en-US
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -25,44 +24,89 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC] Select CMD_LOADENV with DEFAULT_ENVIRONMENT
-To: barebox@lists.infradead.org
+Subject: RE: "make distclean" doesn't remove generated MLO file
+To: "Robert P. J. Day" <rpjday@crashcourse.ca>
+Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-The environment isn't loaded until this command is
-is selected - even if compiled in.
+> -----Original Message-----
+> From: Robert P. J. Day [mailto:rpjday@crashcourse.ca] 
+> Sent: Tuesday, February 07, 2012 10:15 PM
+> To: Premi, Sanjeev
+> Cc: U-Boot Version 2 (barebox)
+> Subject: RE: "make distclean" doesn't remove generated MLO file
+> 
+> On Tue, 7 Feb 2012, Premi, Sanjeev wrote:
+> 
+> > This patch should help.
+> > If you confirm, I can submit it formally.
+> >
+> > ~sanjeev
+> >
+> > >From 072ef5dd7022877fc1470b6dc14a0ec309eb68a0 Mon Sep 17 
+> 00:00:00 2001
+> > From: Sanjeev Premi <premi@ti.com>
+> > Date: Tue, 7 Feb 2012 21:58:50 +0530
+> > Subject: [PATCH] omap: Remove MLO with distclean
+> >
+> >
+> > Signed-off-by: Sanjeev Premi <premi@ti.com>
+> > ---
+> >  Makefile |    2 +-
+> >  1 files changed, 1 insertions(+), 1 deletions(-)
+> >
+> > diff --git a/Makefile b/Makefile
+> > index 5cf49da..5a03b32 100644
+> > --- a/Makefile
+> > +++ b/Makefile
+> > @@ -1008,7 +1008,7 @@ MRPROPER_DIRS  += include/config 
+> include2 usr/include
+> >  MRPROPER_FILES += .config .config.old include/asm .version 
+> .old_version \
+> >                    include/generated/autoconf.h 
+> include/generated/version.h      \
+> >                    include/generated/utsrelease.h 
+> include/config.h           \
+> > -		  Module.symvers tags TAGS cscope*
+> > +		  Module.symvers tags TAGS cscope* MLO
+> >
+> >  # clean - Delete most, but leave enough to build external modules
+> >  #
+> 
+>   based on this from the Makefile:
+> 
+> ===== snip =====
+> 
+> # Directories & files removed with 'make clean'
+> CLEAN_DIRS  += $(MODVERDIR)
+> CLEAN_FILES +=  barebox System.map
+> include/generated/barebox_default_env.h \
+>                 .tmp_version .tmp_barebox* barebox.bin barebox.S \
+>                 .tmp_kallsyms* barebox_default_env barebox.ldr
+> Doxyfile.version
+> 
+> # Directories & files removed with 'make mrproper'
+> MRPROPER_DIRS  += include/config include2 usr/include
+> MRPROPER_FILES += .config .config.old include/asm .version
+> .old_version \
+>                   include/generated/autoconf.h 
+> include/generated/version.h      \
+>                   include/generated/utsrelease.h 
+> include/config.h           \
+>                   Module.symvers tags TAGS cscope* MLO
+> 
+> ===== snip =====
+> 
+>   i would think that it should be added to CLEAN_FILES, given its
+> relation to barebox.bin, etc.  but either way will certainly work.
+> 
 
-This patch makes the dependency explicit.
+I usually compile both stages together with a 'make clean' in
+between, hence decided to preserve MLO. Makes it easy to copy
+both MLO and barebox.bin at same time.
 
-Signed-off-by: Sanjeev Premi <premi@ti.com>
----
- Problem was encountered when trying to boot Linux with
- default environmenti on OMAP3 EVM. Since the default
- config was also being improved from its current state,
- it took rather long to narrow why the compiled
- environment was being 'ignored'.
+Otherwise, yes, MLO goes better with CLEAN_FILES.
 
- Sending change as RFC, as I may be missing something
- obvious as well.
-
- common/Kconfig |    1 +
- 1 files changed, 1 insertions(+), 0 deletions(-)
-
-diff --git a/common/Kconfig b/common/Kconfig
-index d1db27d..2a7cbfc 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -447,6 +447,7 @@ config PARTITION_DISK_DOS
- config DEFAULT_ENVIRONMENT
- 	bool
- 	default y
-+	select CMD_LOADENV
- 	prompt "Compile in default environment"
- 	help
- 	  Enabling this option will give you a default environment when
--- 
-1.7.0.4
-
-
+~sanjeev
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
