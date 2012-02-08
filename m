@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Rute9-0002M2-4Y
- for barebox@lists.infradead.org; Tue, 07 Feb 2012 22:36:24 +0000
-Date: Tue, 7 Feb 2012 23:36:15 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120207223615.GL3852@pengutronix.de>
-References: <alpine.DEB.2.02.1202070656530.23864@oneiric>
+Received: from astoria.ccjclearline.com ([64.235.106.9])
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1Ruv8Z-00024m-QS
+ for barebox@lists.infradead.org; Wed, 08 Feb 2012 00:11:52 +0000
+Received: from cpec03f0ed08c7f-cm001ac318e826.cpe.net.cable.rogers.com
+ ([99.241.91.63] helo=crashcourse.ca)
+ by astoria.ccjclearline.com with esmtpsa (TLSv1:AES256-SHA:256)
+ (Exim 4.69) (envelope-from <rpjday@crashcourse.ca>)
+ id 1Ruv8W-0003Ob-5O
+ for barebox@lists.infradead.org; Tue, 07 Feb 2012 19:11:48 -0500
+Date: Tue, 7 Feb 2012 19:11:42 -0500 (EST)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+Message-ID: <alpine.DEB.2.02.1202071802010.5917@oneiric>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.02.1202070656530.23864@oneiric>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,122 +25,114 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Remove apparently superfluous Kconfig variable
- HAS_OMAP_NAND#
-To: "Robert P. J. Day" <rpjday@crashcourse.ca>
-Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: need some clarification on how environments work
+To: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-On Tue, Feb 07, 2012 at 07:01:04AM -0500, Robert P. J. Day wrote:
-> 
-> Remove what is an apparently valueless Kconfig variable HAS_OMAP_NAND.
-> A search of the entire source tree shows:
-> 
-> $ grep -r HAS_OMAP_NAND *
-> arch/arm/mach-omap/Kconfig:	select HAS_OMAP_NAND
-> arch/arm/mach-omap/Kconfig:	select HAS_OMAP_NAND
-> arch/arm/mach-omap/Kconfig:	select HAS_OMAP_NAND
-> arch/arm/mach-omap/Kconfig:	select HAS_OMAP_NAND
-> arch/arm/mach-omap/Kconfig:config HAS_OMAP_NAND
-> arch/arm/configs/phycard_a_l1_defconfig:CONFIG_HAS_OMAP_NAND=y
-> $
-> 
-> where the definition of that variable is simply:
-> 
-> config HAS_OMAP_NAND
->         bool
-> 
-> so it seems pretty clear it can be removed as nothing is using it.
-> 
-> Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
-> 
 
-Applied to master.
+  ok, i'm trying to figure out how environments work so bear with me
+as i'm going to ask a number of questions.  i'm reading this page:
 
-Sascha
+http://wiki.barebox.org/doku.php?id=user:environment
 
-> ---
-> 
->   compile-tested for beagleboard.  beyond that, it looks like a pretty
-> safe removal.
-> 
-> diff --git a/arch/arm/configs/phycard_a_l1_defconfig b/arch/arm/configs/phycard_a_l1_defconfig
-> index 95dffbb..64afcc2 100644
-> --- a/arch/arm/configs/phycard_a_l1_defconfig
-> +++ b/arch/arm/configs/phycard_a_l1_defconfig
-> @@ -13,7 +13,6 @@ CONFIG_OMAP3_CLOCK_CONFIG=y
->  CONFIG_OMAP3_COPY_CLOCK_SRAM=n
->  CONFIG_OMAP_GPMC=y
->  CONFIG_MACH_PCAAL1=y
-> -CONFIG_HAS_OMAP_NAND=y
->  CONFIG_AEABI=y
->  CONFIG_CMD_ARM_CPUINFO=y
->  CONFIG_ARM_EXCEPTIONS=y
-> diff --git a/arch/arm/mach-omap/Kconfig b/arch/arm/mach-omap/Kconfig
-> index 73125a7..6a5e674 100644
-> --- a/arch/arm/mach-omap/Kconfig
-> +++ b/arch/arm/mach-omap/Kconfig
-> @@ -114,7 +114,6 @@ config MACH_OMAP343xSDP
->  	bool "Texas Instrument's SDP343x"
->  	select MACH_HAS_LOWLEVEL_INIT
->  	select OMAP_CLOCK_ALL
-> -	select HAS_OMAP_NAND
->  	depends on ARCH_OMAP3
->  	help
->  	  Say Y here if you are using SDP343x platform
-> @@ -124,7 +123,6 @@ config MACH_BEAGLE
->  	select MACH_HAS_LOWLEVEL_INIT
->  	select OMAP_CLOCK_ALL
->  	select HAVE_NOSHELL
-> -	select HAS_OMAP_NAND
->  	depends on ARCH_OMAP3
->  	  help
->  	  Say Y here if you are using Beagle Board
-> @@ -133,7 +131,6 @@ config MACH_OMAP3EVM
->  	bool "Texas Instrument's OMAP3 EVM"
->  	select MACH_HAS_LOWLEVEL_INIT
->  	select OMAP_CLOCK_ALL
-> -	select HAS_OMAP_NAND
->  	depends on ARCH_OMAP3
->  	  help
->  	  Say Y here if you are using OMAP3EVM
-> @@ -158,7 +155,6 @@ config MACH_PCAAL1
->  	bool "Phytec phyCARD-A-L1"
->  	select MACH_HAS_LOWLEVEL_INIT
->  	select OMAP_CLOCK_ALL
-> -	select HAS_OMAP_NAND
->  	  help
->  	  Say Y here if you are using a phyCARD-A-L1 PCA-A-L1
-> 
-> @@ -190,7 +186,4 @@ config MACH_OMAP_ADVANCED_MUX
->  	  Say Y here if you would like to have complete pin muxing to be
->  	  done at boot time
-> 
-> -config HAS_OMAP_NAND
-> -	bool
-> -
->  endmenu
-> 
-> -- 
-> 
-> ========================================================================
-> Robert P. J. Day                                 Ottawa, Ontario, CANADA
->                         http://crashcourse.ca
-> 
-> Twitter:                                       http://twitter.com/rpjday
-> LinkedIn:                               http://ca.linkedin.com/in/rpjday
-> ========================================================================
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+and based on that, i took a look at what i have running on my beagle
+xM having configured and built *entirely* using defaults.
+confusingly, i have no /dev/env0 as that web page seems to suggest.
+here's what's in my dev directory:
+
+barebox@Texas Instrument's Beagle:/ ls -l dev
+cr-------- 4294967295 zero
+crw-------  134217728 ram0
+crw-------       7496 defaultenv
+crw------- 4294967295 mem
+crw-------       1024 twl4030
+crw------- 3963617280 disk0
+crw-------  123346944 disk0.0
+
+  so i have a "defaultenv" file there.  i puzzled over this for a
+while until i noticed that there is no arch/arm/boards/beagle/env/
+directory, as there is for most of the other boards.
+
+  so let's step back and look at the relevant source in
+common/Makefile:
+
+=====
+
+ifdef CONFIG_DEFAULT_ENVIRONMENT
+$(obj)/startup.o: include/generated/barebox_default_env.h
+$(obj)/env.o: include/generated/barebox_default_env.h
+
+ifeq ($(CONFIG_DEFAULT_ENVIRONMENT_GENERIC),y)
+DEFAULT_ENVIRONMENT_PATH = "defaultenv"
+endif
+
+ifneq ($(CONFIG_DEFAULT_ENVIRONMENT_PATH),"")
+DEFAULT_ENVIRONMENT_PATH += $(CONFIG_DEFAULT_ENVIRONMENT_PATH)
+endif
+
+ENV_FILES := $(shell cd $(srctree); for i in
+$(DEFAULT_ENVIRONMENT_PATH); do find $${i} -type f -exec readlink -f
+'{}' \;; done)
+
+endif # ifdef CONFIG_DEFAULT_ENVIRONMENT
+
+barebox_default_env: $(ENV_FILES)
+        $(Q)$(srctree)/scripts/genenv $(srctree) $(objtree)
+$(DEFAULT_ENVIRONMENT_PATH)
+
+=====
+
+   as well as the menu selections from "make menuconfig":
+
+      [*] Compile in default environment
+      [*]   Default environment generic
+      ()    Default environment path
+
+so now, the questions.
+
+  first, what is the "default" environment?  is that the one found
+for the board in arch/arm/boards/<board>/env/config?  so that there is
+*no* current default environment for the beagleboard right now?
+
+  also, from the Kconfig help text:
+
+CONFIG_DEFAULT_ENVIRONMENT:
+
+Enabling this option will give you a default environment when
+the environment found in the environment sector is invalid
+
+  is that true?  as in, the "default" environment will only be used if
+what's in the environment sector is found to be invalid?
+
+  next, what is meant by the "generic" default environment?  from the
+Kconfig file,
+
+"With this option barebox will use the generic default
+environment found under defaultenv/ in the src tree.
+The Directory given with DEFAULT_ENVIRONMENT_PATH
+will be added to the default environment. This should
+at least contain a /env/config file.
+This will be able to overwrite the files from defaultenv."
+
+  ok, i can appreciate that -- it's a "generic" environment, defined
+by the file defaultenv/config, and it's apparently what i got, is that
+it?  but why the reference to DEFAULT_ENVIRONMENT_PATH, which is an
+entirely separate Kconfig option?
+
+  and regarding the final setting, CONFIG_DEFAULT_ENVIRONMENT_PATH,
+how does that affect the first two settings?  i'm just trying to
+puzzle all this out.
+
+rday
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+========================================================================
+Robert P. J. Day                                 Ottawa, Ontario, CANADA
+                        http://crashcourse.ca
+
+Twitter:                                       http://twitter.com/rpjday
+LinkedIn:                               http://ca.linkedin.com/in/rpjday
+========================================================================
 
 _______________________________________________
 barebox mailing list
