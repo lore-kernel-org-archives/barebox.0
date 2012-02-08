@@ -1,12 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mx2.rafi.de ([80.150.88.70])
+Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Rv8JI-0001bn-L9
- for barebox@lists.infradead.org; Wed, 08 Feb 2012 14:15:50 +0000
+ id 1Rv9Pk-00065B-Pq
+ for barebox@lists.infradead.org; Wed, 08 Feb 2012 15:26:35 +0000
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+References: <1328002599-7539-1-git-send-email-s.hauer@pengutronix.de>
+ <1328136148-23307-1-git-send-email-robert.jarzmik@free.fr>
+ <20120203095205.GF1990@pengutronix.de> <87mx903p09.fsf@free.fr>
+Date: Wed, 08 Feb 2012 16:26:21 +0100
+In-Reply-To: <87mx903p09.fsf@free.fr> (Robert Jarzmik's message of "Fri, 03
+ Feb 2012 16:39:18 +0100")
+Message-ID: <87ehu54a8y.fsf@free.fr>
 MIME-Version: 1.0
-Message-ID: <OFFA780848.709EDB56-ONC125799E.004D9434-C125799E.004E5941@o0802.rafi.inhouse>
-From: christian.buettner@rafi.de
-Date: Wed, 8 Feb 2012 15:15:50 +0100
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,88 +20,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============7450612093052191017=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: flash image through CAN
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] drivers/pwm: add PXA pulse width modulator controller
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Dies ist eine mehrteilige Nachricht im MIME-Format.
---===============7450612093052191017==
-Content-Type: multipart/alternative; boundary="=_alternative 004E593FC125799E_="
+Robert Jarzmik <robert.jarzmik@free.fr> writes:
 
-Dies ist eine mehrteilige Nachricht im MIME-Format.
---=_alternative 004E593FC125799E_=
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
+> Sascha Hauer <s.hauer@pengutronix.de> writes:
+>
+>> Hi Robert,
+>>
+>> Why not implement it as a regular driver? If we ever want to implement
+>> a commandline control of the pwms via pwm0.dutyns=xx we'll need
+>> a struct device.
+>
+> This is because in my own case, I need pwm to be registered before other devices
+> are probed. The trouble (in my case) is that for drivers/video/pxa.c, I have the
+> following call path :
+>  - pxafb_probe()
+>    -> pxafb_enable_controller()
+>      -> pxafb_backlight_power()
+>        -> mioa701_lcd_backlight()
+>           => 	struct pwm_device *pwm0 = pwm_request("pxa_pwm0");
+> 		pwm_enable(pwm0);
+> 		pwm_config(pwm0, 2000 * 1024, 4000 * 1024);
+>
+> I'm a bit afraid that the pxafb driver will be probed first, before pwm_pxa, and
+> therefore the backlight setting won't work. I haven't found a clean way to
+> specify this dependency.
 
-Hi all,
+Sascha, ping ?
 
-we use the i.MX28 from freescale.
-Has anyone succeeded flashing a linux or rootfs image through the barebox=20
-bootloader using a CAN bus connection?
-We need it to make a field update of the target possible.=20
+Do you have a way to specify the dependency, and do you want me to adapt the
+driver ?
 
-best regards
+Cheers.
 
-Christian B=FCttner
-Entwicklung Elektronik
-
-RAFI GmbH & Co. KG
-Ravensburger Str. 128-134, D-88276 Berg
-Tel.:  +49 751 89-6075, Fax: +49 751 89-7414
-mailto:christian.buettner@rafi.de, http://www.rafi.de
-
-Kommanditgesellschaft: Sitz Berg, Amtsgericht Ulm, HRA 550059
-Komplement=E4r: RAFI Beteiligungs-GmbH, Sitz Berg, Amtsgericht Ulm HRB=20
-550074
-Gesch=E4ftsf=FChrer: Albert Wasmeier, Dipl.-Kfm. Gerhard Schenk
-USt-Ident.-Nr.: DE 146 392 319, Steuer-Nr.: 77079/00291
---=_alternative 004E593FC125799E_=
-Content-Type: text/html; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-<font size=3D2 face=3D"sans-serif">Hi all,</font>
-<br>
-<br><font size=3D2 face=3D"sans-serif">we use the i.MX28 from freescale.</f=
-ont>
-<br><font size=3D2 face=3D"sans-serif">Has anyone succeeded flashing a linux
-or rootfs image through the barebox bootloader using a CAN bus connection?<=
-/font>
-<br><font size=3D2 face=3D"sans-serif">We need it to make a field update of
-the target possible. </font>
-<br>
-<br><font size=3D2 face=3D"sans-serif">best regards<br>
-<br>
-Christian B=FCttner<br>
-Entwicklung Elektronik<br>
-<br>
-RAFI GmbH &amp; Co. KG<br>
-Ravensburger Str. 128-134, D-88276 Berg<br>
-Tel.: &nbsp;+49 751 89-6075, Fax: +49 751 89-7414<br>
-</font><a href=3Dmailto:christian.buettner@rafi.de><font size=3D2 face=3D"s=
-ans-serif">mailto:christian.buettner@rafi.de</font></a><font size=3D2 face=
-=3D"sans-serif">,
-</font><a href=3Dhttp://www.rafi.de/><font size=3D2 face=3D"sans-serif">htt=
-p://www.rafi.de</font></a><font size=3D2 face=3D"sans-serif"><br>
-<br>
-Kommanditgesellschaft: Sitz Berg, Amtsgericht Ulm, HRA 550059<br>
-Komplement=E4r: RAFI Beteiligungs-GmbH, Sitz Berg, Amtsgericht Ulm HRB 5500=
-74<br>
-Gesch=E4ftsf=FChrer: Albert Wasmeier, Dipl.-Kfm. Gerhard Schenk<br>
-USt-Ident.-Nr.: DE 146 392 319, Steuer-Nr.: 77079/00291</font>
---=_alternative 004E593FC125799E_=--
-
-
---===============7450612093052191017==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+--
+Robert
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============7450612093052191017==--
