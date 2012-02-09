@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from astoria.ccjclearline.com ([64.235.106.9])
  by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RvSZt-0004fC-OA
- for barebox@lists.infradead.org; Thu, 09 Feb 2012 11:54:18 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  9 Feb 2012 12:53:53 +0100
-Message-Id: <1328788438-19717-11-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1328788438-19717-1-git-send-email-s.hauer@pengutronix.de>
-References: <1328788438-19717-1-git-send-email-s.hauer@pengutronix.de>
+ id 1RvSaO-0004hN-Mz
+ for barebox@lists.infradead.org; Thu, 09 Feb 2012 11:54:49 +0000
+Received: from cpec03f0ed08c7f-cm001ac318e826.cpe.net.cable.rogers.com
+ ([99.241.91.63] helo=crashcourse.ca)
+ by astoria.ccjclearline.com with esmtpsa (TLSv1:AES256-SHA:256)
+ (Exim 4.69) (envelope-from <rpjday@crashcourse.ca>)
+ id 1RvSaL-0005IP-RG
+ for barebox@lists.infradead.org; Thu, 09 Feb 2012 06:54:45 -0500
+Date: Thu, 9 Feb 2012 06:54:40 -0500 (EST)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+Message-ID: <alpine.DEB.2.02.1202090652380.19369@oneiric>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,38 +21,33 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/15] mci core: fix mixup of max write/read block len
-To: barebox@lists.infradead.org
+Subject: what config setting causes barebox to automount the boot
+ partition?
+To: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-The argmument order in this pr_debug does not match
-the string printed. Fix this.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/mci/mci-core.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+  i just noticed with my panda build that the boot partition of the SD
+card is automatically mounted under "boot".  i don't remember that
+happening with my beagle, and i'm not sure if i messed with the config
+settings before building for the panda.
 
-diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-index e0e70dd..1c0e4e7 100644
---- a/drivers/mci/mci-core.c
-+++ b/drivers/mci/mci-core.c
-@@ -753,7 +753,7 @@ static void mci_extract_block_lengths_from_csd(struct device_d *mci_dev)
- 		mci->write_bl_len = 1 << ((mci->csd[3] >> 22) & 0xf);
- 
- 	pr_debug("Max. block length are: Write=%u, Read=%u Bytes\n",
--		mci->read_bl_len, mci->write_bl_len);
-+		mci->write_bl_len, mci->read_bl_len);
- }
- 
- /**
+  what is it that generates that mount?  thanks.
+
+rday
+
 -- 
-1.7.9
 
+========================================================================
+Robert P. J. Day                                 Ottawa, Ontario, CANADA
+                        http://crashcourse.ca
+
+Twitter:                                       http://twitter.com/rpjday
+LinkedIn:                               http://ca.linkedin.com/in/rpjday
+========================================================================
 
 _______________________________________________
 barebox mailing list
