@@ -1,20 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 18.mo3.mail-out.ovh.net ([87.98.172.162]
- helo=mo3.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RvVM4-0004ge-Hd
- for barebox@lists.infradead.org; Thu, 09 Feb 2012 14:52:14 +0000
-Received: from mail617.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id DFEE51004A13
- for <barebox@lists.infradead.org>; Thu,  9 Feb 2012 15:52:15 +0100 (CET)
-Date: Thu, 9 Feb 2012 15:46:43 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120209144643.GC1214@game.jcrosoft.org>
-References: <20120115095156.GH5002@game.jcrosoft.org>
- <1326621621-11484-2-git-send-email-plagnioj@jcrosoft.com>
+Received: from arroyo.ext.ti.com ([192.94.94.40])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RvVON-00051C-VV
+ for barebox@lists.infradead.org; Thu, 09 Feb 2012 14:54:37 +0000
+From: "Premi, Sanjeev" <premi@ti.com>
+Date: Thu, 9 Feb 2012 14:54:28 +0000
+Message-ID: <E28AAFD00EFAA646AE3DF9B89CD24A893183BA4E@DBDE01.ent.ti.com>
+References: <alpine.DEB.2.02.1202090837370.5576@oneiric>
+In-Reply-To: <alpine.DEB.2.02.1202090837370.5576@oneiric>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1326621621-11484-2-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,111 +22,102 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/5] defaultenv/boot: add getopt option support to
- select boot mode
-To: barebox@lists.infradead.org
+Subject: RE: [PATCH] Add support for default env and mounting /boot to
+ BeagleBoard
+To: "Robert P. J. Day" <rpjday@crashcourse.ca>, "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-On 11:00 Sun 15 Jan     , Jean-Christophe PLAGNIOL-VILLARD wrote:
-> boot: boot [-m <mode>] [-k <kernel_option>] [-r <rootfs_option>] [-i <ip_mode>]
+> -----Original Message-----
+> From: barebox-bounces@lists.infradead.org 
+> [mailto:barebox-bounces@lists.infradead.org] On Behalf Of 
+> Robert P. J. Day
+> Sent: Thursday, February 09, 2012 7:10 PM
+> To: U-Boot Version 2 (barebox)
+> Subject: [PATCH] Add support for default env and mounting 
+> /boot to BeagleBoard
 > 
-> options
->  - kernel        nand, nor, nfs, tftp, disk
->  - rootfs        nand, nor, net, disk
->  - ip            dhcp, none, empty
 > 
-> mode option
->    mode       kernel      rootfs
->    nand       nand        nand
->    nor        nor         nor
->    nfs        nfs         net
->    tftp       fttp        net
->    disk       disk        disk
+> Stealing shamelessly from the panda/board.c file, add equivalent
+> support for checking for the default environment and automounting the
+> /boot partition on the SD card.
 > 
-> default mode are used from the /env/config
+> Also, include the necessary header files for this, and fix the
+> filename reference at the top of the file.
 > 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-can we have patch 1 and 2 applied
-
-Best Regards,
-J.
+> Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+> 
 > ---
->  defaultenv/bin/_boot_help |   18 ++++++++++++++++++
->  defaultenv/bin/boot       |   26 +++++++++++++++++++++-----
->  2 files changed, 39 insertions(+), 5 deletions(-)
->  create mode 100644 defaultenv/bin/_boot_help
 > 
-> diff --git a/defaultenv/bin/_boot_help b/defaultenv/bin/_boot_help
-> new file mode 100644
-> index 0000000..e7f7f16
-> --- /dev/null
-> +++ b/defaultenv/bin/_boot_help
-> @@ -0,0 +1,18 @@
-> +#!/bin/sh
+>   a quick and dirty theft of code from panda/board.c, it builds and
+> boots and appears to work.  thoughts?
+> 
+> diff --git a/arch/arm/boards/beagle/board.c 
+> b/arch/arm/boards/beagle/board.c
+> index faeaf8e..6825ef2 100644
+> --- a/arch/arm/boards/beagle/board.c
+> +++ b/arch/arm/boards/beagle/board.c
+> @@ -27,7 +27,7 @@
+>  /**
+>   * @page ti_beagle Texas Instruments Beagle Board
+>   *
+> - * FileName: arch/arm/boards/omap/board-beagle.c
+> + * FileName: arch/arm/boards/beagle/board.c
+>   *
+>   * Beagle Board from Texas Instruments as described here:
+>   * http://www.beagleboard.org
+> @@ -55,6 +55,7 @@
+>  #include <common.h>
+>  #include <console.h>
+>  #include <init.h>
+> +#include <fs.h>
+>  #include <driver.h>
+>  #include <sizes.h>
+>  #include <io.h>
+> @@ -72,8 +73,10 @@
+>  #include <mach/ehci.h>
+>  #include <i2c/i2c.h>
+>  #include <linux/err.h>
+> +#include <linux/stat.h>
+>  #include <usb/ehci.h>
+>  #include <mach/xload.h>
+> +#include <environment.h>
+> 
+>  /******************** Board Boot Time *******************/
+> 
+> @@ -317,3 +320,30 @@ static int beagle_devices_init(void)
+>  	return 0;
+>  }
+>  device_initcall(beagle_devices_init);
 > +
-> +echo "boot: boot [-m <mode>] [-k <kernel_option>] [-r <rootfs_option>] [-i <ip_mode>]"
-> +echo ""
-> +echo "options"
-> +echo " - kernel        nand, nor, nfs, tftp, disk"
-> +echo " - rootfs        nand, nor, net, disk"
-> +echo " - ip            dhcp, none, empty"
-> +echo ""
-> +echo "mode option"
-> +echo "   mode       kernel      rootfs"
-> +echo "   nand       nand        nand"
-> +echo "   nor        nor         nor"
-> +echo "   nfs        nfs         net"
-> +echo "   tftp       fttp        net"
-> +echo "   disk       disk        disk"
-> +echo ""
-> +echo "default mode are used from the /env/config"
-> diff --git a/defaultenv/bin/boot b/defaultenv/bin/boot
-> index 1120757..d37eca8 100644
-> --- a/defaultenv/bin/boot
-> +++ b/defaultenv/bin/boot
-> @@ -6,19 +6,35 @@ if [ x$kernel_loc = xnet ]; then
->  	kernel_loc=tftp
->  fi
->  
-> -if [ x$1 = xnand ]; then
-> +while getopt "hk:r:i:m:" Option
-> +do
-> +if [ ${Option} = k ]; then
-> +	kernel_loc=${OPTARG}
-> +elif [ ${Option} = r ]; then
-> +	rootfs_loc=${OPTARG}
-> +elif [ ${Option} = i ]; then
-> +	ip=${OPTARG}
-> +elif [ ${Option} = m ]; then
-> +	mode=${OPTARG}
-> +else
-> +	. /env/bin/_boot_help
-> +	exit 0
-> +fi
-> +done
+> +#ifdef CONFIG_DEFAULT_ENVIRONMENT
+> +static int beagle_env_init(void)
+> +{
+> +	struct stat s;
+> +	char *diskdev = "/dev/disk0.0";
+> +	int ret;
 > +
-> +if [ x$mode = xnand ]; then
->  	rootfs_loc=nand
->  	kernel_loc=nand
-> -elif [ x$1 = xnor ]; then
-> +elif [ x$mode = xnor ]; then
->  	rootfs_loc=nor
->  	kernel_loc=nor
-> -elif [ x$1 = xnfs ]; then
-> +elif [ x$mode = xnfs ]; then
->  	rootfs_loc=net
->  	kernel_loc=nfs
-> -elif [ x$1 = xtftp ]; then
-> +elif [ x$mode = xtftp ]; then
->  	rootfs_loc=net
->  	kernel_loc=tftp
-> -elif [ x$1 = xdisk ]; then
-> +elif [ x$mode = xdisk ]; then
->  	rootfs_loc=disk
->  	kernel_loc=disk
->  fi
-> -- 
-> 1.7.7
+> +	ret = stat(diskdev, &s);
+> +	if (ret) {
+> +		printf("no %s. using default env\n", diskdev);
+> +		return 0;
+> +	}
+> +
+> +	mkdir ("/boot", 0666);
+> +	ret = mount(diskdev, "fat", "/boot");
+> +	if (ret) {
+> +		printf("failed to mount %s\n", diskdev);
+> +		return 0;
+> +	}
+> +
+> +	default_environment_path = "/boot/bareboxenv";
+> +
+> +	return 0;
+> +}
+> +late_initcall(beagle_env_init);
+> +#endif
 
+Keeping this sequence, in init scripts makes things more & easily configurable.
+
+~sanjeev
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
