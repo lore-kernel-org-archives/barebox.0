@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RvOnl-0000JQ-Qh
- for barebox@lists.infradead.org; Thu, 09 Feb 2012 07:52:22 +0000
-Date: Thu, 9 Feb 2012 08:52:07 +0100
+ id 1RvP5f-0000lt-Io
+ for barebox@lists.infradead.org; Thu, 09 Feb 2012 08:10:53 +0000
+Date: Thu, 9 Feb 2012 09:10:45 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120209075207.GT3852@pengutronix.de>
-References: <alpine.DEB.2.02.1202071802010.5917@oneiric>
- <E28AAFD00EFAA646AE3DF9B89CD24A893183573C@DBDE01.ent.ti.com>
- <20120208085402.GO3852@pengutronix.de>
- <alpine.DEB.2.02.1202080534280.30661@oneiric>
+Message-ID: <20120209081045.GU3852@pengutronix.de>
+References: <1328002599-7539-1-git-send-email-s.hauer@pengutronix.de>
+ <1328136148-23307-1-git-send-email-robert.jarzmik@free.fr>
+ <20120203095205.GF1990@pengutronix.de> <87mx903p09.fsf@free.fr>
+ <87ehu54a8y.fsf@free.fr>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.02.1202080534280.30661@oneiric>
+In-Reply-To: <87ehu54a8y.fsf@free.fr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,89 +25,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: need some clarification on how environments work
-To: "Robert P. J. Day" <rpjday@crashcourse.ca>
-Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: Re: [PATCH] drivers/pwm: add PXA pulse width modulator controller
+To: Robert Jarzmik <robert.jarzmik@free.fr>
+Cc: barebox@lists.infradead.org
 
-On Wed, Feb 08, 2012 at 06:01:08AM -0500, Robert P. J. Day wrote:
-> On Wed, 8 Feb 2012, Sascha Hauer wrote:
+On Wed, Feb 08, 2012 at 04:26:21PM +0100, Robert Jarzmik wrote:
+> Robert Jarzmik <robert.jarzmik@free.fr> writes:
 > 
-> ... snip ...
+> > Sascha Hauer <s.hauer@pengutronix.de> writes:
+> >
+> >> Hi Robert,
+> >>
+> >> Why not implement it as a regular driver? If we ever want to implement
+> >> a commandline control of the pwms via pwm0.dutyns=xx we'll need
+> >> a struct device.
+> >
+> > This is because in my own case, I need pwm to be registered before other devices
+> > are probed. The trouble (in my case) is that for drivers/video/pxa.c, I have the
+> > following call path :
+> >  - pxafb_probe()
+> >    -> pxafb_enable_controller()
+> >      -> pxafb_backlight_power()
+> >        -> mioa701_lcd_backlight()
+> >           => 	struct pwm_device *pwm0 = pwm_request("pxa_pwm0");
+> > 		pwm_enable(pwm0);
+> > 		pwm_config(pwm0, 2000 * 1024, 4000 * 1024);
+> >
+> > I'm a bit afraid that the pxafb driver will be probed first, before pwm_pxa, and
+> > therefore the backlight setting won't work. I haven't found a clean way to
+> > specify this dependency.
 > 
-> > This is not the whole truth. CONFIG_DEFAULT_ENVIRONMENT_PATH can be
-> > a list of directories. All pathes in this list are copied into a
-> > temporary directory. This means that you can compose your
-> > environment out of different directories. This also means that you
-> > can overwrite files with more specific versions.
+> Sascha, ping ?
 > 
-> > If CONFIG_DEFAULT_ENVIRONMENT is enabled 'defaultenv' will be added
-> > to the start of the list. So defaultenv/ contains a 'config' files
-> > with FIXMEs. This is normally overwritten with the contents of your
-> > board specific config file in arch/<arch>/<board>/env/config.
-> 
->   i think what is needed here is an agreement on *terminology*.  you
-> can't document anything properly unless you can *name* it.  so what
-> names should be used here?
-> 
->   consider the file referred to above, whose name is *actually*
-> arch/<arch>/boards/<board>/env/config (correct?), an example being,
-> say, arch/arm/boards/panda/env/config.  what is the official name of
-> this "config" file?
+> Do you have a way to specify the dependency, and do you want me to adapt the
+> driver ?
 
-Since this mechanism is not limited to the config file maybe we can
-speak of the generic environment and the board environment. Files in
-the generic environment can be overwritten with files from the board
-environment.
+Sorry, I wanted to think about this issue and appearently forgot about
+it.
+So the moment has come we have the same problems as in the kernel: we
+can't express the dependencies between devices. For your case I think
+we can get around the problem once more.
 
-> 
->   sascha called it the "board-specific config file"?  everyone good
-> with that?  it could just as easily be called the "board-specific
-> environment file".  whatever.  a couple questions about it.  first,
-> will there always be just one of them per board, and will it always be
-> named "config"?  i *think* so but i refuse to make any assumptions.
-> 
->   and second, is it an error if a board has no such file?  currently,
-> the beagleboard has no such file.  is that an acceptable state of
-> affairs?  or is it something that should be resolved?  the
-> "freescale-mx23-evk" board directory also doesn't have one, and there
-> might be others.  so what should be done there?
+Experience shows that the framebuffer shouldn't be enabled on
+initialization time. If it does you end up with a framebuffer showing
+a blank screen in the best case. Instead the framebuffer should be
+enabled explicitely once there is an image on the screen which looks
+much nicer to the user. That said the following should be removed from
+the pxafb driver:
 
-I think this should be resolved, but only by someone who is actively
-working on this board to make sure the result really matches the board.
+	if (pdata->enable_on_load)
+		info->fbops->fb_enable(info);
 
-> 
->   and i want to correct what sascha wrote above, when he wrote:
-> 
-> > If CONFIG_DEFAULT_ENVIRONMENT is enabled 'defaultenv' will be added
-> > to the start of the list. So defaultenv/ contains a 'config' files
-> > with FIXMEs.
-> 
->   actually, here's that part of common/Makefile:
-> 
-> ifdef CONFIG_DEFAULT_ENVIRONMENT
-> $(obj)/startup.o: include/generated/barebox_default_env.h
-> $(obj)/env.o: include/generated/barebox_default_env.h
-> 
-> ifeq ($(CONFIG_DEFAULT_ENVIRONMENT_GENERIC),y)
-> DEFAULT_ENVIRONMENT_PATH = "defaultenv"
-> endif
-> 
->   so it would appear to be CONFIG_DEFAULT_ENVIRONMENT_GENERIC that
-> dictates whether the file defaultenv/config is imported as part of the
-> environment.
-
-Even more specific it dictates that defaultenv/ is imported as part
-of the environment.
-
-BTW in some configs we have:
-
-CONFIG_DEFAULT_ENVIRONMENT_PATH="defaultenv arch/arm/boards/freescale-mx53-loco/env/"
-
-This means that defaultenv/ will be compiled in regardless of
-CONFIG_DEFAULT_ENVIRONMENT_GENERIC being set or not. This should
-be fixed to
-
-CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/freescale-mx53-loco/env/"
+Are you ok with that?
 
 Sascha
 
