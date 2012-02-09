@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from astoria.ccjclearline.com ([64.235.106.9])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RvWyV-0001oh-Mf
- for barebox@lists.infradead.org; Thu, 09 Feb 2012 16:36:00 +0000
-Date: Thu, 9 Feb 2012 11:35:49 -0500 (EST)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-In-Reply-To: <E28AAFD00EFAA646AE3DF9B89CD24A893183BA4E@DBDE01.ent.ti.com>
-Message-ID: <alpine.DEB.2.02.1202091135080.14123@oneiric>
-References: <alpine.DEB.2.02.1202090837370.5576@oneiric>
- <E28AAFD00EFAA646AE3DF9B89CD24A893183BA4E@DBDE01.ent.ti.com>
-MIME-Version: 1.0
+Received: from smtp2-g21.free.fr ([2a01:e0c:1:1599::11])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1RvX7e-0008Dv-QR
+ for barebox@lists.infradead.org; Thu, 09 Feb 2012 16:45:28 +0000
+Received: from eb-e6520 (unknown [82.240.38.71])
+ by smtp2-g21.free.fr (Postfix) with ESMTP id 6BFA14B0074
+ for <barebox@lists.infradead.org>; Thu,  9 Feb 2012 17:45:20 +0100 (CET)
+Date: Thu, 9 Feb 2012 17:45:19 +0100
+From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
+Message-ID: <20120209174519.4d0ae559@eb-e6520>
+In-Reply-To: <alpine.DEB.2.02.1202091130540.14123@oneiric>
+References: <alpine.DEB.2.02.1202091130540.14123@oneiric>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,67 +20,32 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: [PATCH] Add support for default env and mounting /boot to
- BeagleBoard
-To: "Premi, Sanjeev" <premi@ti.com>
-Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: Re: how to read GPIO values from command line?
+To: barebox@lists.infradead.org
 
-On Thu, 9 Feb 2012, Premi, Sanjeev wrote:
+Le Thu, 9 Feb 2012 11:34:55 -0500 (EST),
+"Robert P. J. Day" <rpjday@crashcourse.ca> a =E9crit :
+>   so what exactly does one do to read those values?  i tried:
+> =
 
-> >  /******************** Board Boot Time *******************/
-> >
-> > @@ -317,3 +320,30 @@ static int beagle_devices_init(void)
-> >  	return 0;
-> >  }
-> >  device_initcall(beagle_devices_init);
-> > +
-> > +#ifdef CONFIG_DEFAULT_ENVIRONMENT
-> > +static int beagle_env_init(void)
-> > +{
-> > +	struct stat s;
-> > +	char *diskdev = "/dev/disk0.0";
-> > +	int ret;
-> > +
-> > +	ret = stat(diskdev, &s);
-> > +	if (ret) {
-> > +		printf("no %s. using default env\n", diskdev);
-> > +		return 0;
-> > +	}
-> > +
-> > +	mkdir ("/boot", 0666);
-> > +	ret = mount(diskdev, "fat", "/boot");
-> > +	if (ret) {
-> > +		printf("failed to mount %s\n", diskdev);
-> > +		return 0;
-> > +	}
-> > +
-> > +	default_environment_path = "/boot/bareboxenv";
-> > +
-> > +	return 0;
-> > +}
-> > +late_initcall(beagle_env_init);
-> > +#endif
->
-> Keeping this sequence, in init scripts makes things more & easily configurable.
+> barebox@Texas Instrument's Beagle:/ gpio_direction_input 171
+> barebox@Texas Instrument's Beagle:/ gpio_get_value 171
+> =
 
-  i agree, it was a bad idea of mine.  so moving it *out* of the panda
-code would make sense as well, yes?
+> but what do i check?  the shell variable $?  i'm not sure what i
+> should do next.
+> =
 
-rday
+you can check the mux of the pins to be sure they are in GPIO mode.
 
--- 
+Eric
+-- =
 
-========================================================================
-Robert P. J. Day                                 Ottawa, Ontario, CANADA
-                        http://crashcourse.ca
-
-Twitter:                                       http://twitter.com/rpjday
-LinkedIn:                               http://ca.linkedin.com/in/rpjday
-========================================================================
+http://eukrea.com/en/news/104-2012
 
 _______________________________________________
 barebox mailing list
