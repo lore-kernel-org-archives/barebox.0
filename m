@@ -1,13 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RvUEO-0006g8-P9
- for barebox@lists.infradead.org; Thu, 09 Feb 2012 13:40:16 +0000
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RvUIh-0006DE-7Q
+ for barebox@lists.infradead.org; Thu, 09 Feb 2012 13:44:39 +0000
+Date: Thu, 9 Feb 2012 14:44:31 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  9 Feb 2012 14:39:55 +0100
-Message-Id: <1328794798-17699-3-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1328794798-17699-1-git-send-email-s.hauer@pengutronix.de>
-References: <1328794798-17699-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20120209134431.GZ3852@pengutronix.de>
+References: <1328002599-7539-1-git-send-email-s.hauer@pengutronix.de>
+ <1328136148-23307-1-git-send-email-robert.jarzmik@free.fr>
+ <20120203095205.GF1990@pengutronix.de> <87mx903p09.fsf@free.fr>
+ <87ehu54a8y.fsf@free.fr> <20120209081045.GU3852@pengutronix.de>
+ <877gzw445i.fsf@free.fr>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <877gzw445i.fsf@free.fr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,79 +22,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] mci i.MX esdhc: use timeout loops
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] drivers/pwm: add PXA pulse width modulator controller
+To: Robert Jarzmik <robert.jarzmik@free.fr>
+Cc: barebox@lists.infradead.org
 
-Too often I have waited to get a reaction from this driver
-when something goes wrong. Use timeout loops instead of
-inifinite polling loops.
+On Thu, Feb 09, 2012 at 12:50:17PM +0100, Robert Jarzmik wrote:
+> Sascha Hauer <s.hauer@pengutronix.de> writes:
+> > Experience shows that the framebuffer shouldn't be enabled on
+> > initialization time. If it does you end up with a framebuffer showing
+> > a blank screen in the best case. Instead the framebuffer should be
+> > enabled explicitely once there is an image on the screen which looks
+> > much nicer to the user. That said the following should be removed from
+> > the pxafb driver:
+> >
+> > 	if (pdata->enable_on_load)
+> > 		info->fbops->fb_enable(info);
+> >
+> > Are you ok with that?
+> For the pxafb, yes agreed.
+> 
+> I still see a small issue with the PWM API.
+> When I register the pxa-pwm driver, I have :
+>  pxa_pwm_probe(struct device_d *dev)
+>    -> base = dev_request_mem_region(dev, 0);
+>    -> pxa_pwm = xzalloc(...)
+>    -> pxa_pwm->name = drv_name(...)
+>    -> pxa_pwm->ops = &pxa_pwm_ops,
+>    -> pwmchip_add(pxa_pwm)
+> 
+> As you can see, the "base" is lost, and I have no way to store it in the
+> pwm_chip structure.
+> 
+> Shouldn't the pwm_chip structure have a priv pointer ?
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/mci/imx-esdhc.c |   27 ++++++++++++++++++++-------
- 1 files changed, 20 insertions(+), 7 deletions(-)
+The intention was to put a struct pwm_chip into a struct pxa_pwm_chip
+and use container_of.
 
-diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
-index 2123a8b..d36d211 100644
---- a/drivers/mci/imx-esdhc.c
-+++ b/drivers/mci/imx-esdhc.c
-@@ -238,6 +238,7 @@ esdhc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
- 	u32	irqstat;
- 	struct fsl_esdhc_host *host = to_fsl_esdhc(mci);
- 	struct fsl_esdhc *regs = host->regs;
-+	int ret;
- 
- 	esdhc_write32(&regs->irqstat, -1);
- 
-@@ -268,8 +269,12 @@ esdhc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
- 	esdhc_write32(&regs->xfertyp, xfertyp);
- 
- 	/* Wait for the command to complete */
--	while (!(esdhc_read32(&regs->irqstat) & IRQSTAT_CC))
--		;
-+	ret = wait_on_timeout(100 * MSECOND,
-+			esdhc_read32(&regs->irqstat) & IRQSTAT_CC);
-+	if (ret) {
-+		dev_err(host->dev, "timeout 1\n");
-+		return -ETIMEDOUT;
-+	}
- 
- 	irqstat = esdhc_read32(&regs->irqstat);
- 	esdhc_write32(&regs->irqstat, irqstat);
-@@ -321,12 +326,20 @@ esdhc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
- 	esdhc_write32(&regs->irqstat, -1);
- 
- 	/* Wait for the bus to be idle */
--	while ((esdhc_read32(&regs->prsstat) & PRSSTAT_CICHB) ||
--			(esdhc_read32(&regs->prsstat) & PRSSTAT_CIDHB))
--		;
-+	ret = wait_on_timeout(100 * MSECOND,
-+			!(esdhc_read32(&regs->prsstat) &
-+				(PRSSTAT_CICHB | PRSSTAT_CIDHB)));
-+	if (ret) {
-+		dev_err(host->dev, "timeout 2\n");
-+		return -ETIMEDOUT;
-+	}
- 
--	while (esdhc_read32(&regs->prsstat) & PRSSTAT_DLA)
--		;
-+	ret = wait_on_timeout(100 * MSECOND,
-+			!(esdhc_read32(&regs->prsstat) & PRSSTAT_DLA));
-+	if (ret) {
-+		dev_err(host->dev, "timeout 3\n");
-+		return -ETIMEDOUT;
-+	}
- 
- 	return 0;
- }
+Sascha
+
+
 -- 
-1.7.9
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
