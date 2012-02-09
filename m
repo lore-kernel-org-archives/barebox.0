@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from astoria.ccjclearline.com ([64.235.106.9])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RvUJf-0006pa-G6
- for barebox@lists.infradead.org; Thu, 09 Feb 2012 13:45:41 +0000
-Received: from cpec03f0ed08c7f-cm001ac318e826.cpe.net.cable.rogers.com
- ([99.241.91.63] helo=crashcourse.ca)
- by astoria.ccjclearline.com with esmtpsa (TLSv1:AES256-SHA:256)
- (Exim 4.69) (envelope-from <rpjday@crashcourse.ca>)
- id 1RvUJa-0002rl-IH
- for barebox@lists.infradead.org; Thu, 09 Feb 2012 08:45:34 -0500
-Date: Thu, 9 Feb 2012 08:45:28 -0500 (EST)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-Message-ID: <alpine.DEB.2.02.1202090843580.5803@oneiric>
+ id 1RvUrJ-0007Un-Ta
+ for barebox@lists.infradead.org; Thu, 09 Feb 2012 14:20:27 +0000
+Date: Thu, 9 Feb 2012 15:19:58 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120209141958.GC3852@pengutronix.de>
+References: <alpine.DEB.2.02.1202071600020.402@oneiric>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <alpine.DEB.2.02.1202071600020.402@oneiric>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,28 +22,23 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: oh, crap, never mind that last patch
-To: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: Re: [PATCH] Correct Kconfig comment for MCI_OMAP_HSMMC to include
+ OMAP3.
+To: "Robert P. J. Day" <rpjday@crashcourse.ca>
+Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
+On Tue, Feb 07, 2012 at 04:01:44PM -0500, Robert P. J. Day wrote:
+> 
+> Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
-  i totally forgot that original beagles might have their root
-filesystem on NAND so it's inappropriate to simply mount the first
-partition on the SD card as /boot.
+Applied to master.
 
-  at some point, there really will have to be a distinction between
-original beagles and xMs.
-
-rday
 
 -- 
-
-========================================================================
-Robert P. J. Day                                 Ottawa, Ontario, CANADA
-                        http://crashcourse.ca
-
-Twitter:                                       http://twitter.com/rpjday
-LinkedIn:                               http://ca.linkedin.com/in/rpjday
-========================================================================
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
