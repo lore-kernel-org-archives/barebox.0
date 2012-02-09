@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RvSZp-00079d-RL
- for barebox@lists.infradead.org; Thu, 09 Feb 2012 11:54:15 +0000
+ id 1RvSZp-00079c-Qn
+ for barebox@lists.infradead.org; Thu, 09 Feb 2012 11:54:14 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1RvSZb-0004RX-2r
+ for barebox@lists.infradead.org; Thu, 09 Feb 2012 12:53:59 +0100
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.77)
+ (envelope-from <sha@pengutronix.de>) id 1RvSZb-0005DP-1Y
+ for barebox@lists.infradead.org; Thu, 09 Feb 2012 12:53:59 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  9 Feb 2012 12:53:49 +0100
-Message-Id: <1328788438-19717-7-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1328788438-19717-1-git-send-email-s.hauer@pengutronix.de>
-References: <1328788438-19717-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu,  9 Feb 2012 12:53:43 +0100
+Message-Id: <1328788438-19717-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,62 +26,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/15] mci s3c: Do not mess with struct mci_host
+Subject: [PATCH] mmc/sd patches
 To: barebox@lists.infradead.org
 
-This structure is owned by the core, do not change its contents
-in the driver.
+Here are several patches to clean up the sd/mmc layer.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/mci/s3c.c |    9 +++------
- 1 files changed, 3 insertions(+), 6 deletions(-)
+Sascha Hauer (15):
+      mci: Add complete definitions for the card type
+      mci: use card type definitions
+      mci: fix high capacity detection
+      mci mxs: do not use external define for internal use
+      mci core: replace discrete ios values with struct ios
+      mci s3c: Do not mess with struct mci_host
+      mci s3c: allocate host struct dynamically
+      mci s3c: pass around the right pointer
+      mci: remove unused device argument from set_ios
+      mci core: fix mixup of max write/read block len
+      mci: Use struct mci for internal argument passing
+      mci: replace pr_debug with dev_dbg
+      mci: factor out mci/sd specific startup functions
+      mci: cdev_find_free_index won't fail, no need to check
+      mci: Be more verbose on what device is associated to which disk
 
-diff --git a/drivers/mci/s3c.c b/drivers/mci/s3c.c
-index 9d46b09..a153b1c 100644
---- a/drivers/mci/s3c.c
-+++ b/drivers/mci/s3c.c
-@@ -691,17 +691,14 @@ static void mci_set_ios(struct mci_host *mci_pdata, struct device_d *mci_dev,
- {
- 	struct device_d *hw_dev = mci_pdata->hw_dev;
- 	struct s3c_mci_host *host_data = GET_HOST_DATA(hw_dev);
--	struct mci_host *host = GET_MCI_PDATA(mci_dev);
- 	uint32_t reg;
- 
- 	switch (ios->bus_width) {
- 	case MMC_BUS_WIDTH_4:
- 		host_data->bus_width = 1;
--		host->bus_width = 4;	/* 4 bit is possible */
- 		break;
- 	case MMC_BUS_WIDTH_1:
- 		host_data->bus_width = 0;
--		host->bus_width = 1;	/* 1 bit is possible */
- 		break;
- 	default:
- 		return;
-@@ -710,16 +707,16 @@ static void mci_set_ios(struct mci_host *mci_pdata, struct device_d *mci_dev,
- 	reg = readl(host_data->base + SDICON);
- 	if (ios->clock) {
- 		/* setup the IO clock frequency and enable it */
--		host->clock = host_data->clock = s3c_setup_clock_speed(hw_dev, ios->clock);
-+		host_data->clock = s3c_setup_clock_speed(hw_dev, ios->clock);
- 		reg |= SDICON_CLKEN;	/* enable the clock */
- 	} else {
- 		reg &= ~SDICON_CLKEN;	/* disable the clock */
--		host->clock = host_data->clock = 0;
-+		host_data->clock = 0;
- 	}
- 	writel(reg, host_data->base + SDICON);
- 
- 	pr_debug("IO settings: bus width=%d, frequency=%u Hz\n",
--		host->bus_width, host->clock);
-+		host_data->bus_width, host_data->clock);
- }
- 
- /* ----------------------------------------------------------------------- */
--- 
-1.7.9
-
+ drivers/mci/atmel_mci.c  |   19 +-
+ drivers/mci/imx-esdhc.c  |   17 +-
+ drivers/mci/imx.c        |   19 +-
+ drivers/mci/mci-core.c   |  503 +++++++++++++++++++++++-----------------------
+ drivers/mci/mci_spi.c    |    3 +-
+ drivers/mci/mxs.c        |   17 +-
+ drivers/mci/omap_hsmmc.c |   20 +-
+ drivers/mci/pxamci.c     |   20 ++-
+ drivers/mci/s3c.c        |  165 +++++++---------
+ include/mci.h            |   52 ++++-
+ 10 files changed, 437 insertions(+), 398 deletions(-)
 
 _______________________________________________
 barebox mailing list
