@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from astoria.ccjclearline.com ([64.235.106.9])
  by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RvPxQ-0003YS-Te
- for barebox@lists.infradead.org; Thu, 09 Feb 2012 09:06:29 +0000
-Message-ID: <4F338C81.6010207@pengutronix.de>
-Date: Thu, 09 Feb 2012 10:06:09 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+ id 1RvQ9U-0005eY-7j
+ for barebox@lists.infradead.org; Thu, 09 Feb 2012 09:18:54 +0000
+Date: Thu, 9 Feb 2012 04:18:33 -0500 (EST)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+In-Reply-To: <20120209081628.GV3852@pengutronix.de>
+Message-ID: <alpine.DEB.2.02.1202090418050.10799@oneiric>
+References: <alpine.DEB.2.02.1202081718100.26281@oneiric>
+ <20120209081628.GV3852@pengutronix.de>
 MIME-Version: 1.0
-References: <OFFA780848.709EDB56-ONC125799E.004D9434-C125799E.004E5941@o0802.rafi.inhouse>
- <4F32A501.4080102@pengutronix.de>
- <OF22330FAC.132482AF-ONC125799F.00307755-C125799F.0030998E@o0802.rafi.inhouse>
-In-Reply-To: <OF22330FAC.132482AF-ONC125799F.00307755-C125799F.0030998E@o0802.rafi.inhouse>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,67 +18,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============7715568849755161291=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Antwort: Re: flash image through CAN
-To: christian.buettner@rafi.de
-Cc: Robert Schwebel <rsc@pengutronix.de>, barebox@lists.infradead.org
+Subject: Re: "panda" config and build doesn't work on panda ES at all
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---===============7715568849755161291==
-Content-Type: multipart/signed; micalg=pgp-sha1;
- protocol="application/pgp-signature";
- boundary="------------enigE6F6E478E61F9E2A76CA2884"
+On Thu, 9 Feb 2012, Sascha Hauer wrote:
 
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---------------enigE6F6E478E61F9E2A76CA2884
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
+> On Wed, Feb 08, 2012 at 05:20:45PM -0500, Robert P. J. Day wrote:
+> >
+> >   just for fun, i configured and built MLO and barebox.bin for the
+> > panda, then tried to use that on a panda ES -- got no response
+> > whatever from minicom.  i did verify that i could boot to barebox just
+> > fine on a regular panda, though.
+> >
+> >   this is different from the case of a regular beagle and beagle xM,
+> > for which the MLO and barebox.bin boot just fine on an xM, so there's
+> > clearly a significant difference between those two panda variants as
+> > far as barebox is concerned.  i haven't had any time to look at it in
+> > more detail yet.
+>
+> We should add some information about that here:
+>
+> http://wiki.barebox.org/doku.php?id=boards:texas_instruments_panda
+> http://wiki.barebox.org/doku.php?id=boards:texas_instruments_beagle
+>
+> So what variants of these boards are out there?
+>
+> Panda 'regular'
+> Panda ES
+> Beagle 'regular'
+> Beagle xM
+>
+> Do these correspond somehow to the revisions printed on the board?
+> I have a Beagle rev C3 and a Panda rev A1.
 
-On 02/09/2012 09:50 AM, christian.buettner@rafi.de wrote:
-> what is the effort to port the CAN stack to barebox?
+  i'll write something up and ask the beagle & panda lists to take a
+look.
 
-Definitely more than implementing the "boot a minimal Linux (2-3 MB) and
-do the update process there". And more error prone, for the minimal
-update Linux basically we have all components (Kernel, CAN-Stack,
-minimal Userspace).
+rday
 
-regards, Marc
+-- 
 
---=20
-Pengutronix e.K.                  | Marc Kleine-Budde           |
-Industrial Linux Solutions        | Phone: +49-231-2826-924     |
-Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
+========================================================================
+Robert P. J. Day                                 Ottawa, Ontario, CANADA
+                        http://crashcourse.ca
 
-
---------------enigE6F6E478E61F9E2A76CA2884
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.10 (GNU/Linux)
-Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org/
-
-iEYEARECAAYFAk8zjIQACgkQjTAFq1RaXHOusgCfcW3RsrgOEOc6GACHhSSylfh+
-keAAnjob6znGLcSPrwdYzEsY3ZUZDah6
-=MMS8
------END PGP SIGNATURE-----
-
---------------enigE6F6E478E61F9E2A76CA2884--
-
-
---===============7715568849755161291==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Twitter:                                       http://twitter.com/rpjday
+LinkedIn:                               http://ca.linkedin.com/in/rpjday
+========================================================================
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============7715568849755161291==--
