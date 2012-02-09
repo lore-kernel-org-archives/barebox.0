@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RvSZo-0004dw-Tk
- for barebox@lists.infradead.org; Thu, 09 Feb 2012 11:54:14 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  9 Feb 2012 12:53:50 +0100
-Message-Id: <1328788438-19717-8-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1328788438-19717-1-git-send-email-s.hauer@pengutronix.de>
-References: <1328788438-19717-1-git-send-email-s.hauer@pengutronix.de>
+Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1RvSWA-0000Wu-TN
+ for barebox@lists.infradead.org; Thu, 09 Feb 2012 11:50:29 +0000
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+References: <1328002599-7539-1-git-send-email-s.hauer@pengutronix.de>
+ <1328136148-23307-1-git-send-email-robert.jarzmik@free.fr>
+ <20120203095205.GF1990@pengutronix.de> <87mx903p09.fsf@free.fr>
+ <87ehu54a8y.fsf@free.fr> <20120209081045.GU3852@pengutronix.de>
+Date: Thu, 09 Feb 2012 12:50:17 +0100
+In-Reply-To: <20120209081045.GU3852@pengutronix.de> (Sascha Hauer's message of
+ "Thu, 9 Feb 2012 09:10:45 +0100")
+Message-ID: <877gzw445i.fsf@free.fr>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,111 +21,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/15] mci s3c: allocate host struct dynamically
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] drivers/pwm: add PXA pulse width modulator controller
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Yes, it does make sense. First there will always be the next
-hardware which has multiple controllers. Also, we shouldn't
-give bad examples to others.
+Sascha Hauer <s.hauer@pengutronix.de> writes:
+> Experience shows that the framebuffer shouldn't be enabled on
+> initialization time. If it does you end up with a framebuffer showing
+> a blank screen in the best case. Instead the framebuffer should be
+> enabled explicitely once there is an image on the screen which looks
+> much nicer to the user. That said the following should be removed from
+> the pxafb driver:
+>
+> 	if (pdata->enable_on_load)
+> 		info->fbops->fb_enable(info);
+>
+> Are you ok with that?
+For the pxafb, yes agreed.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/mci/s3c.c |   43 +++++++++++++++++--------------------------
- 1 files changed, 17 insertions(+), 26 deletions(-)
+I still see a small issue with the PWM API.
+When I register the pxa-pwm driver, I have :
+ pxa_pwm_probe(struct device_d *dev)
+   -> base = dev_request_mem_region(dev, 0);
+   -> pxa_pwm = xzalloc(...)
+   -> pxa_pwm->name = drv_name(...)
+   -> pxa_pwm->ops = &pxa_pwm_ops,
+   -> pwmchip_add(pxa_pwm)
 
-diff --git a/drivers/mci/s3c.c b/drivers/mci/s3c.c
-index a153b1c..44c682e 100644
---- a/drivers/mci/s3c.c
-+++ b/drivers/mci/s3c.c
-@@ -153,18 +153,13 @@
- #define SDIDATA 0x40
- 
- struct s3c_mci_host {
-+	struct mci_host	host;
- 	void __iomem	*base;
- 	int		bus_width:2; /* 0 = 1 bit, 1 = 4 bit, 2 = 8 bit */
- 	unsigned	clock;	/* current clock in Hz */
- 	unsigned	data_size;	/* data transfer in bytes */
- };
- 
--/*
-- * There is only one host MCI hardware instance available.
-- * It makes no sense to dynamically allocate this data
-- */
--static struct s3c_mci_host host_data;
--
- /**
-  * Finish a request
-  * @param hw_dev Host interface instance
-@@ -743,20 +738,16 @@ static void s3c_info(struct device_d *hw_dev)
- }
- #endif
- 
--/*
-- * There is only one host MCI hardware instance available.
-- * It makes no sense to dynamically allocate this data
-- */
--static struct mci_host mci_pdata = {
--	.send_cmd = mci_request,
--	.set_ios = mci_set_ios,
--	.init = mci_reset,
--};
--
- static int s3c_mci_probe(struct device_d *hw_dev)
- {
-+	struct s3c_mci_host *s3c_host;
- 	struct s3c_mci_platform_data *pd = hw_dev->platform_data;
- 
-+	s3c_host = xzalloc(sizeof(*s3c_host));
-+	s3c_host->host.send_cmd = mci_request;
-+	s3c_host->host.set_ios = mci_set_ios;
-+	s3c_host->host.init = mci_reset;
-+
- 	/* TODO replace by the global func: enable the SDI unit clock */
- 	writel(readl(S3C_CLOCK_POWER_BASE + 0x0c) | 0x200,
- 		S3C_CLOCK_POWER_BASE + 0x0c);
-@@ -766,23 +757,23 @@ static int s3c_mci_probe(struct device_d *hw_dev)
- 		return -EINVAL;
- 	}
- 
--	hw_dev->priv = &host_data;
--	host_data.base = dev_request_mem_region(hw_dev, 0);
--	mci_pdata.hw_dev = hw_dev;
-+	hw_dev->priv = s3c_host;
-+	s3c_host->base = dev_request_mem_region(hw_dev, 0);
-+	s3c_host->host.hw_dev = hw_dev;
- 
- 	/* feed forward the platform specific values */
--	mci_pdata.voltages = pd->voltages;
--	mci_pdata.host_caps = pd->caps;
--	mci_pdata.f_min = pd->f_min == 0 ? s3c_get_pclk() / 256 : pd->f_min;
--	mci_pdata.f_max = pd->f_max == 0 ? s3c_get_pclk() / 2 : pd->f_max;
-+	s3c_host->host.voltages = pd->voltages;
-+	s3c_host->host.host_caps = pd->caps;
-+	s3c_host->host.f_min = pd->f_min == 0 ? s3c_get_pclk() / 256 : pd->f_min;
-+	s3c_host->host.f_max = pd->f_max == 0 ? s3c_get_pclk() / 2 : pd->f_max;
- 
- 	/*
- 	 * Start the clock to let the engine and the card finishes its startup
- 	 */
--	host_data.clock = s3c_setup_clock_speed(hw_dev, mci_pdata.f_min);
--	writel(SDICON_FIFORESET | SDICON_MMCCLOCK, host_data.base + SDICON);
-+	s3c_host->clock = s3c_setup_clock_speed(hw_dev, pd->f_min);
-+	writel(SDICON_FIFORESET | SDICON_MMCCLOCK, s3c_host->base + SDICON);
- 
--	return mci_register(&mci_pdata);
-+	return mci_register(&s3c_host->host);
- }
- 
- static struct driver_d s3c_mci_driver = {
--- 
-1.7.9
+As you can see, the "base" is lost, and I have no way to store it in the
+pwm_chip structure.
 
+Shouldn't the pwm_chip structure have a priv pointer ?
+
+Cheers.
+
+--
+Robert
 
 _______________________________________________
 barebox mailing list
