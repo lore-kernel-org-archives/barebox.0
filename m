@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from astoria.ccjclearline.com ([64.235.106.9])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RvasV-0006xe-DM
- for barebox@lists.infradead.org; Thu, 09 Feb 2012 20:46:05 +0000
-Received: from cpec03f0ed08c7f-cm001ac318e826.cpe.net.cable.rogers.com
- ([99.241.91.63] helo=crashcourse.ca)
- by astoria.ccjclearline.com with esmtpsa (TLSv1:AES256-SHA:256)
- (Exim 4.69) (envelope-from <rpjday@crashcourse.ca>)
- id 1RvasM-0008Tt-L2
- for barebox@lists.infradead.org; Thu, 09 Feb 2012 15:45:54 -0500
-Date: Thu, 9 Feb 2012 15:45:44 -0500 (EST)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-Message-ID: <alpine.DEB.2.02.1202091539470.7618@oneiric>
+ id 1Rvkzt-00019i-0u
+ for barebox@lists.infradead.org; Fri, 10 Feb 2012 07:34:22 +0000
+Date: Fri, 10 Feb 2012 08:34:06 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120210073406.GD3852@pengutronix.de>
+References: <alpine.DEB.2.02.1202091130540.14123@oneiric>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <alpine.DEB.2.02.1202091130540.14123@oneiric>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,78 +22,87 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: a question about adding panda ES support before i get rolling
-To: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: Re: how to read GPIO values from command line?
+To: "Robert P. J. Day" <rpjday@crashcourse.ca>
+Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
+On Thu, Feb 09, 2012 at 11:34:55AM -0500, Robert P. J. Day wrote:
+> 
+>   i'm looking at the docs and tried the obvious but it didn't seem to
+> work.  in order to recognize the version of beagleboard, i can see
+> what happens in the u-boot code:
+> 
+> /*
+>  * Routine: get_board_revision
+>  * Description: Detect if we are running on a Beagle revision Ax/Bx,
+>  *              C1/2/3, C4 or xM. This can be done by reading
+>  *              the level of GPIO173, GPIO172 and GPIO171. This should
+>  *              result in
+>  *              GPIO173, GPIO172, GPIO171: 1 1 1 => Ax/Bx
+>  *              GPIO173, GPIO172, GPIO171: 1 1 0 => C1/2/3
+>  *              GPIO173, GPIO172, GPIO171: 1 0 1 => C4
+>  *              GPIO173, GPIO172, GPIO171: 0 0 0 => xM
+>  */
+> int get_board_revision(void)
+> {
+>         int revision;
+> 
+>         if (!gpio_request(171, "") &&
+>             !gpio_request(172, "") &&
+>             !gpio_request(173, "")) {
+> 
+>                 gpio_direction_input(171);
+>                 gpio_direction_input(172);
+>                 gpio_direction_input(173);
+> 
+>                 revision = gpio_get_value(173) << 2 |
+>                            gpio_get_value(172) << 1 |
+>                            gpio_get_value(171);
+>         } else {
+>                 printf("Error: unable to acquire board revision GPIOs\n");
+>                 revision = -1;
+>         }
+> 
+>         return revision;
+> }
+> 
+>   however, in the latest kernel tree, it seems things have changed
+> slightly:
+> 
+> /*
+>  * OMAP3 Beagle revision
+>  * Run time detection of Beagle revision is done by reading GPIO.
+>  * GPIO ID -
+>  *      AXBX    = GPIO173, GPIO172, GPIO171: 1 1 1
+>  *      C1_3    = GPIO173, GPIO172, GPIO171: 1 1 0
+>  *      C4      = GPIO173, GPIO172, GPIO171: 1 0 1
+>  *      XMA/XMB = GPIO173, GPIO172, GPIO171: 0 0 0
+>  *      XMC = GPIO173, GPIO172, GPIO171: 0 1 0
+>  */
+> 
+>   now that's useful since there are now allegedly different values for
+> xM A/B, and xM C, and i have a rev C.
+> 
+>   so what exactly does one do to read those values?  i tried:
+> 
+> barebox@Texas Instrument's Beagle:/ gpio_direction_input 171
+> barebox@Texas Instrument's Beagle:/ gpio_get_value 171
+> 
+> but what do i check?  the shell variable $?  i'm not sure what i
+> should do next.
 
-  a preliminary question to make sure i'm on the right track in terms
-of adding panda ES support.  i have a couple panda boards -- an
-earlier EA3 revision (OMAP 4430), and a panda ES (OMAP 4460).
+Yes, check $?. This assumes that your iomux is set up correctly as Eric
+already mentioned. I wonder that there is no iomux setup for the panda
+board. You can copy it from U-Boot. It has to arrays of iomux setup:
+core_padconf_array_essential and core_padconf_array_non_essential
 
-  using a regular panda config and build, i can boot the earlier
-board:
-
-barebox 2012.02.0-00090-g675502d-dirty (Feb  8 2012 - 17:03:18)
-
-Board: Texas Instrument's Panda
-PandaBoard Revision: 003
-ehci@ehci0: USB EHCI 1.00
-Malloc space: 0x8d000000 -> 0x8effffff (size 32 MB)
-Stack space : 0x8cff8000 -> 0x8d000000 (size 32 kB)
-Open /boot/bareboxenv No such file or directory
-no valid environment found on /boot/bareboxenv. Using default
-environment
-running /env/bin/init...
-
-so that's a good sign.  and the Revision number of 3 matches what i
-see here:
-
-http://omappedia.org/wiki/PandaBoard_Revisions#PandaBoard_Revision_History
-
-so far, so good.
-
-  now if i use precisely the same files for my ES, i get absolutely no
-output.  none.  but that's not surprising since in the omap4_generic.c
-file, i read:
-
-unsigned int omap4_revision(void)
-{
-        unsigned int chip_rev = 0;
-        unsigned int rev = cortex_a9_rev();
-
-        switch(rev) {
-        case 0x410FC091:
-                return OMAP4430_ES1_0;
-        case 0x411FC092:
-                chip_rev = (readl(OMAP44XX_CTRL_BASE + 0x204)  >> 28) & 0xF;
-                if (chip_rev == 3)
-                        return OMAP4430_ES2_1;
-                else if (chip_rev >= 4)
-                        return OMAP4430_ES2_2;
-                else
-                        return OMAP4430_ES2_0;
-        }
-        return OMAP4430_SILICON_ID_INVALID;
-}
-
-i'm assuming the fact there is *no* checking for an OMAP4460 is the
-reason i get nothing, is that a reasonable assumption?  i'll post more
-detail later about what i'm going to try but given that the above
-function does not take into account the OMAP4460-based ES boards,
-would that cause a complete lack of output at boot time?  thanks.
-
-rday
-
+Sascha
 
 -- 
-
-========================================================================
-Robert P. J. Day                                 Ottawa, Ontario, CANADA
-                        http://crashcourse.ca
-
-Twitter:                                       http://twitter.com/rpjday
-LinkedIn:                               http://ca.linkedin.com/in/rpjday
-========================================================================
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
