@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Rvor7-0002KE-4s
- for barebox@lists.infradead.org; Fri, 10 Feb 2012 11:41:34 +0000
-Date: Fri, 10 Feb 2012 12:41:24 +0100
+ id 1RvpW7-00030n-KL
+ for barebox@lists.infradead.org; Fri, 10 Feb 2012 12:23:56 +0000
+Date: Fri, 10 Feb 2012 13:23:43 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120210114124.GH3852@pengutronix.de>
-References: <alpine.DEB.2.02.1202091539470.7618@oneiric>
+Message-ID: <20120210122343.GI3852@pengutronix.de>
+References: <1328811868-1000-1-git-send-email-premi@ti.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.02.1202091539470.7618@oneiric>
+In-Reply-To: <1328811868-1000-1-git-send-email-premi@ti.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,70 +22,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: a question about adding panda ES support before i get rolling
-To: "Robert P. J. Day" <rpjday@crashcourse.ca>
-Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: Re: [RFC] omap3evm: Set preliminary environment
+To: Sanjeev Premi <premi@ti.com>
+Cc: barebox@lists.infradead.org
 
-On Thu, Feb 09, 2012 at 03:45:44PM -0500, Robert P. J. Day wrote:
+On Thu, Feb 09, 2012 at 11:54:28PM +0530, Sanjeev Premi wrote:
+> This is still work-in-progress, but wanted to
+> share them early for any feedback.
 > 
->   a preliminary question to make sure i'm on the right track in terms
-> of adding panda ES support.  i have a couple panda boards -- an
-> earlier EA3 revision (OMAP 4430), and a panda ES (OMAP 4460).
+> Signed-off-by: Sanjeev Premi <premi@ti.com>
+> ---
+>  I have made offline edits on these scripts before making
+>  this patch. There is a possibility of run-time failure.
 > 
->   using a regular panda config and build, i can boot the earlier
-> board:
-> 
-> barebox 2012.02.0-00090-g675502d-dirty (Feb  8 2012 - 17:03:18)
-> 
-> Board: Texas Instrument's Panda
-> PandaBoard Revision: 003
-> ehci@ehci0: USB EHCI 1.00
-> Malloc space: 0x8d000000 -> 0x8effffff (size 32 MB)
-> Stack space : 0x8cff8000 -> 0x8d000000 (size 32 kB)
-> Open /boot/bareboxenv No such file or directory
-> no valid environment found on /boot/bareboxenv. Using default
-> environment
-> running /env/bin/init...
-> 
-> so that's a good sign.  and the Revision number of 3 matches what i
-> see here:
-> 
-> http://omappedia.org/wiki/PandaBoard_Revisions#PandaBoard_Revision_History
-> 
-> so far, so good.
-> 
->   now if i use precisely the same files for my ES, i get absolutely no
-> output.  none.  but that's not surprising since in the omap4_generic.c
-> file, i read:
-> 
-> unsigned int omap4_revision(void)
-> {
->         unsigned int chip_rev = 0;
->         unsigned int rev = cortex_a9_rev();
-> 
->         switch(rev) {
->         case 0x410FC091:
->                 return OMAP4430_ES1_0;
->         case 0x411FC092:
->                 chip_rev = (readl(OMAP44XX_CTRL_BASE + 0x204)  >> 28) & 0xF;
->                 if (chip_rev == 3)
->                         return OMAP4430_ES2_1;
->                 else if (chip_rev >= 4)
->                         return OMAP4430_ES2_2;
->                 else
->                         return OMAP4430_ES2_0;
->         }
->         return OMAP4430_SILICON_ID_INVALID;
-> }
-> 
-> i'm assuming the fact there is *no* checking for an OMAP4460 is the
-> reason i get nothing, is that a reasonable assumption?  i'll post more
-> detail later about what i'm going to try but given that the above
-> function does not take into account the OMAP4460-based ES boards,
-> would that cause a complete lack of output at boot time?  thanks.
+>  You will also observe many TODOs. Hope to get them sorted
+>  tomorrow - for a patch worthy of applying on the tree.
 
-This seems to be a good start to look for differences. Also it's worth
-to grep for users of omap_revision() in U-Boot
+You are rewriting what we already have in form of the generic
+environment. You shouldn't do this, we've been there before.
+Before there was the generic environment every board had its
+own set of environment scripts. This resulted in tons of
+board specific scripts in slightly different states.
 
 Sascha
 
