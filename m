@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RvomN-0002Ev-Ax
- for barebox@lists.infradead.org; Fri, 10 Feb 2012 11:36:40 +0000
-Date: Fri, 10 Feb 2012 12:36:32 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120210113632.GG3852@pengutronix.de>
-References: <1328812298-1737-1-git-send-email-premi@ti.com>
+Received: from astoria.ccjclearline.com ([64.235.106.9])
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1Rvooq-0005mx-QW
+ for barebox@lists.infradead.org; Fri, 10 Feb 2012 11:39:13 +0000
+Received: from cpec03f0ed08c7f-cm001ac318e826.cpe.net.cable.rogers.com
+ ([99.241.91.63] helo=crashcourse.ca)
+ by astoria.ccjclearline.com with esmtpsa (TLSv1:AES256-SHA:256)
+ (Exim 4.69) (envelope-from <rpjday@crashcourse.ca>)
+ id 1Rvooo-0007EA-G4
+ for barebox@lists.infradead.org; Fri, 10 Feb 2012 06:39:10 -0500
+Date: Fri, 10 Feb 2012 06:39:01 -0500 (EST)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+Message-ID: <alpine.DEB.2.02.1202100637150.6972@oneiric>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1328812298-1737-1-git-send-email-premi@ti.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,44 +25,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] omap: xload: Make error more specific
-To: Sanjeev Premi <premi@ti.com>
-Cc: barebox@lists.infradead.org
+Subject: working on extending board identification right now
+To: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-On Fri, Feb 10, 2012 at 12:01:38AM +0530, Sanjeev Premi wrote:
-> Current message indicating that SD card isn't
-> mounted is misleading if the card has only one
-> partition.
-> 
-> Updated the message to indicate that mounting
-> the specific partition failed.
-> 
-> Signed-off-by: Sanjeev Premi <premi@ti.com>
-> ---
->  arch/arm/mach-omap/xload.c |    2 +-
->  1 files changed, 1 insertions(+), 1 deletions(-)
-> 
-> diff --git a/arch/arm/mach-omap/xload.c b/arch/arm/mach-omap/xload.c
-> index a52a8ba..bf7fd06 100644
-> --- a/arch/arm/mach-omap/xload.c
-> +++ b/arch/arm/mach-omap/xload.c
-> @@ -40,7 +40,7 @@ void *omap_xload_boot_mmc(void)
->  
->  	ret = mount("disk0.0", "fat", "/");
->  	if (ret) {
-> -		printf("mounting sd card failed with %d\n", ret);
-> +		printf("Unable to mount disk0.0 (%d)\n", ret);
 
-Small nitpick: Can we have a const char *diskdev = "disk0.0" and use
-it for mount and error message? This makes sure we keep both in sync.
+  if anyone's interested, i'm currently working on extending barebox
+to recognize more boards.  i'm keeping track of this here:
 
-Sascha
+http://www.crashcourse.ca/wiki/index.php/Barebox#Identifying_the_board
+
+so i should have a patch later today that recognizes pandaboards.
+
+rday
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+========================================================================
+Robert P. J. Day                                 Ottawa, Ontario, CANADA
+                        http://crashcourse.ca
+
+Twitter:                                       http://twitter.com/rpjday
+LinkedIn:                               http://ca.linkedin.com/in/rpjday
+========================================================================
 
 _______________________________________________
 barebox mailing list
