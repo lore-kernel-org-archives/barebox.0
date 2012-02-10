@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from astoria.ccjclearline.com ([64.235.106.9])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RvrdC-0004jl-C6
- for barebox@lists.infradead.org; Fri, 10 Feb 2012 14:39:23 +0000
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RvsMP-0006L6-Qb
+ for barebox@lists.infradead.org; Fri, 10 Feb 2012 15:26:07 +0000
 Received: from cpec03f0ed08c7f-cm001ac318e826.cpe.net.cable.rogers.com
  ([99.241.91.63] helo=crashcourse.ca)
  by astoria.ccjclearline.com with esmtpsa (TLSv1:AES256-SHA:256)
  (Exim 4.69) (envelope-from <rpjday@crashcourse.ca>)
- id 1Rvrd6-0008B3-Tn
- for barebox@lists.infradead.org; Fri, 10 Feb 2012 09:39:17 -0500
-Date: Fri, 10 Feb 2012 09:39:10 -0500 (EST)
+ id 1RvsMD-0002Qv-Tb
+ for barebox@lists.infradead.org; Fri, 10 Feb 2012 10:25:59 -0500
+Date: Fri, 10 Feb 2012 10:25:47 -0500 (EST)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-Message-ID: <alpine.DEB.2.02.1202100937130.23570@oneiric>
+Message-ID: <alpine.DEB.2.02.1202101021410.31471@oneiric>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -25,19 +25,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC] A first pass at recognizing Pandaboards
+Subject: [PATCH] Extend OMAP code to recognize PandaBoard ES
 To: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
 
-  thoughts on the following patch?  it's certainly not the final
-result, but it at least *starts* the process of properly recognizing
-newer pandaboards, using code taking very close to verbatim out of
-u-boot.
+  Without yet adding in the underlying code, extend the revision
+checking code to return additional values for PandaBoard ES boards.
+Much of the code was taken close to verbatim from U-Boot.
 
-  it's been compile-tested and appears to still work on all boards it
-did before.  i'll do a bit more testing to make sure of that, but is
-there any philosophical objection to the following as a single patch
-submission?
+Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+
+-- 
+
+  compile tested, and confirmed that this code behaves identically to
+the original panda configure and build for the three pandas i have:
+
+  * Rev A2 (boots)
+  * Rev EA3 (boots)
+  * Rev B1 ES (no output)
+
+so while there's still work to be done, this at least represents the
+necessary infrastructure to start *recognizing* panda ES boards.
+
+  if anyone wants to test this on their own pandas, that would be
+helpful.
+
 
 diff --git a/arch/arm/mach-omap/include/mach/omap4-silicon.h b/arch/arm/mach-omap/include/mach/omap4-silicon.h
 index db0dfdf..4a98f45 100644
@@ -139,7 +151,6 @@ index 5223c7e..2816889 100644
 
  /*
 
--- 
 
 ========================================================================
 Robert P. J. Day                                 Ottawa, Ontario, CANADA
