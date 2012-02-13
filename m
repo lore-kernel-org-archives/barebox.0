@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-tul01m020-f177.google.com ([209.85.214.177])
+Received: from bear.ext.ti.com ([192.94.94.41])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RwsTq-0005iU-QB
- for barebox@lists.infradead.org; Mon, 13 Feb 2012 09:45:57 +0000
-Received: by obcuz6 with SMTP id uz6so7460089obc.36
- for <barebox@lists.infradead.org>; Mon, 13 Feb 2012 01:45:51 -0800 (PST)
+ id 1RwsqP-0001fH-R1
+ for barebox@lists.infradead.org; Mon, 13 Feb 2012 10:09:15 +0000
+Received: from dbdp20.itg.ti.com ([172.24.170.38])
+ by bear.ext.ti.com (8.13.7/8.13.7) with ESMTP id q1DA9AQk013955
+ for <barebox@lists.infradead.org>; Mon, 13 Feb 2012 04:09:11 -0600
+Received: from DBDE71.ent.ti.com (localhost [127.0.0.1])
+ by dbdp20.itg.ti.com (8.13.8/8.13.8) with ESMTP id q1DA99nU018347
+ for <barebox@lists.infradead.org>; Mon, 13 Feb 2012 15:39:09 +0530 (IST)
+From: Sanjeev Premi <premi@ti.com>
+Date: Mon, 13 Feb 2012 15:39:01 +0530
+Message-ID: <1329127741-2672-1-git-send-email-premi@ti.com>
 MIME-Version: 1.0
-In-Reply-To: <20120210113344.GF3852@pengutronix.de>
-References: <CAHjoi4eBPAL=R-E132z3ZsOWVw+VBFtQWUcMAYvmvx5hEkn+4A@mail.gmail.com>
- <20120210113344.GF3852@pengutronix.de>
-Date: Mon, 13 Feb 2012 17:45:51 +0800
-Message-ID: <CAHjoi4eS2UwNTMKHs3wnytgmLLCSnTFPA5yfBQrDbwOSuJ4YoQ@mail.gmail.com>
-From: Keith Mok <ek9852@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,417 +21,52 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] Fix Mac OS cross compile failed.
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2] omap: xload: Make error more specific
+To: barebox@lists.infradead.org
 
-Hi Sascha,
+Current message indicating that SD card isn't
+mounted is misleading if the card has only one
+partition.
 
-> The patch is corrupted by your mailer. I see some additional linebreaks
-> and also for some other reason patch reports a malformed patch.
-I copied and pasted on web gmail and sent via plain text. Please check
-again this time okay or not.
+Updated the message to indicate that mounting
+the specific partition failed.
 
->
-> Please use a standard unsigned long instead.
->
-Done.
-
->
-> I *think* this should be
->
-> #ifdef __BAREBOX__
-> #include <asm/byteorder.h>
-> #endif
-Done.
-
->
-> instead. I assume that compilation on apple fails on
->
-> HOSTCC =A0scripts/bareboxenv
->
-> right?
->
->
-No, I have the bareboxenv generated and can be executed in Mac.
-
-
->
-> Do we need the #ifdef __APPLE__? Something like this is a bit easier
-> to read:
->
-> #ifndef __BYTE_ORDER
-> #ifdef __LITTLE_ENDIAN__ /* Apple defines this */
-> #define __BYTE_ORDER __LITTLE_ENDIAN
-> #elif defined(__BIG_ENDIAN__)
-> #define __BYTE_ORDER __BIG_ENDIAN
-> #endif
-> #endif
->
-> #ifndef __BYTE_ORDER
-> #error "No byte order defined in __BYTE_ORDER"
-> #endif
->
-
-> I wonder why there's a seperate section for this config_header anyway.
-> Maybe we can drop this completely?
-Done.
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-
-Fix to avoid using GNU extension on varies areas.
-
-Signed-off-by: Keith Mok <ek9852@gmail.com>
+Signed-off-by: Sanjeev Premi <premi@ti.com>
 ---
- common/Makefile       |    4 +-
- crypto/crc32.c        |   10 ++--
- include/envfs.h       |   10 ++++
- include/image.h       |    3 +-
- scripts/genenv        |    4 +-
- scripts/omap_signGP.c |  139 ++++++++++++++++++++++++---------------------=
-----
- 6 files changed, 90 insertions(+), 80 deletions(-)
-
-diff --git a/common/Makefile b/common/Makefile
-index d1132c3..ded742b 100644
---- a/common/Makefile
-+++ b/common/Makefile
-@@ -47,7 +47,7 @@ ifneq ($(CONFIG_DEFAULT_ENVIRONMENT_PATH),"")
- DEFAULT_ENVIRONMENT_PATH +=3D $(CONFIG_DEFAULT_ENVIRONMENT_PATH)
- endif
-
--ENV_FILES :=3D $(shell cd $(srctree); for i in
-$(DEFAULT_ENVIRONMENT_PATH); do find $${i} -type f -exec readlink -f
-'{}' \;; done)
-+ENV_FILES :=3D $(shell for i in $(srctree)/$(DEFAULT_ENVIRONMENT_PATH);
-do find $${i} -type f; done)
-
- endif # ifdef CONFIG_DEFAULT_ENVIRONMENT
-
-@@ -76,7 +76,7 @@ barebox_default_env.lzo: barebox_default_env
-
- include/generated/barebox_default_env.h:
-barebox_default_env$(barebox_default_env_comp)
- 	$(Q)cat $< | $(objtree)/scripts/bin2c default_environment > $@
--	$(Q)echo "const int default_environment_uncompress_size=3D`stat -c%s
-barebox_default_env`;" >> $@
-+	$(Q)echo "const int default_environment_uncompress_size=3D`wc -c
-barebox_default_env | awk '{print $$1}'`;" >> $@
-
- CLEAN_FILES +=3D include/generated/barebox_default_env.h barebox_default_e=
-nv
- CLEAN_FILES +=3D barebox_default_env.gz barebox_default_env.bz2
-diff --git a/crypto/crc32.c b/crypto/crc32.c
-index 275edb4..da6c465 100644
---- a/crypto/crc32.c
-+++ b/crypto/crc32.c
-@@ -15,7 +15,7 @@
- #ifdef CONFIG_DYNAMIC_CRC_TABLE
-
- static int crc_table_empty =3D 1;
--static ulong crc_table[256];
-+static unsigned long crc_table[256];
- static void make_crc_table(void);
-
- /*
-@@ -44,9 +44,9 @@ static void make_crc_table(void);
- */
- static void make_crc_table(void)
- {
--  ulong c;
-+  unsigned long c;
-   int n, k;
--  ulong poly;            /* polynomial exclusive-or pattern */
-+  unsigned long poly;            /* polynomial exclusive-or pattern */
-   /* terms of polynomial defining this crc (except x^32): */
-   static const char p[] =3D {0,1,2,4,5,7,8,10,11,12,16,22,23,26};
-
-@@ -57,7 +57,7 @@ static void make_crc_table(void)
-
-   for (n =3D 0; n < 256; n++)
-   {
--    c =3D (ulong)n;
-+    c =3D (unsigned long)n;
-     for (k =3D 0; k < 8; k++)
-       c =3D c & 1 ? poly ^ (c >> 1) : c >> 1;
-     crc_table[n] =3D c;
-@@ -68,7 +68,7 @@ static void make_crc_table(void)
- /* =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-  * Table of CRC-32's of all single-byte values (made by make_crc_table)
-  */
--static const ulong crc_table[256] =3D {
-+static const unsigned long crc_table[256] =3D {
-   0x00000000L, 0x77073096L, 0xee0e612cL, 0x990951baL, 0x076dc419L,
-   0x706af48fL, 0xe963a535L, 0x9e6495a3L, 0x0edb8832L, 0x79dcb8a4L,
-   0xe0d5e91eL, 0x97d2d988L, 0x09b64c2bL, 0x7eb17cbdL, 0xe7b82d07L,
-diff --git a/include/envfs.h b/include/envfs.h
-index b5849d9..a622210 100644
---- a/include/envfs.h
-+++ b/include/envfs.h
-@@ -1,7 +1,9 @@
- #ifndef _ENVFS_H
- #define _ENVFS_H
-
-+#ifdef __BAREBOX__
- #include <asm/byteorder.h>
-+#endif
-
- #define ENVFS_MAGIC		    0x798fba79	/* some random number */
- #define ENVFS_INODE_MAGIC	0x67a8c78d
-@@ -33,6 +35,14 @@ struct envfs_super {
- };
-
- #ifndef __BYTE_ORDER
-+#ifdef __LITTLE_ENDIAN__ /* Apple defines this */
-+#define __BYTE_ORDER __LITTLE_ENDIAN
-+#elif defined(__BIG_ENDIAN__)
-+#define __BYTE_ORDER __BIG_ENDIAN
-+#endif
-+#endif
-+
-+#ifndef __BYTE_ORDER
- #error "No byte order defined in __BYTE_ORDER"
- #endif
-
-diff --git a/include/image.h b/include/image.h
-index 35ff01b..b219b20 100644
---- a/include/image.h
-+++ b/include/image.h
-@@ -31,11 +31,12 @@
- #ifndef __IMAGE_H__
- #define __IMAGE_H__
-
--#include <linux/types.h>
- #ifdef __BAREBOX__
- #include <asm/byteorder.h>
- #include <stdio.h>
- #include <string.h>
-+#else
-+#include <stdint.h>
- #endif
-
- /*
-diff --git a/scripts/genenv b/scripts/genenv
-index 7b279c8..da9de61 100755
---- a/scripts/genenv
-+++ b/scripts/genenv
-@@ -8,13 +8,13 @@ objtree=3D$2
- cd $1 || exit 1
- shift 2
-
--tempdir=3D$(mktemp -d)
-+tempdir=3D$(mktemp -d tmp.XXXXXXXXXX)
-
- for i in $*; do
- 	cp -r $i/* $tempdir
- done
-
--find $tempdir -name '.svn' -o -name '*~' | xargs --no-run-if-empty rm -r
-+find $tempdir -name '.svn' -o -name '*~' | xargs rm -rf
-
- $objtree/scripts/bareboxenv -s $tempdir $objtree/barebox_default_env
-
-diff --git a/scripts/omap_signGP.c b/scripts/omap_signGP.c
-index d20d357..46c016c 100644
---- a/scripts/omap_signGP.c
-+++ b/scripts/omap_signGP.c
-@@ -28,90 +28,90 @@
- #include <sys/stat.h>
- #include <string.h>
- #include <malloc.h>
--#include <linux/types.h>
-+#include <stdint.h>
-
- #undef CH_WITH_CHRAM
- struct chsettings {
--	__u32 section_key;
--	__u8 valid;
--	__u8 version;
--	__u16 reserved;
--	__u32 flags;
-+	uint32_t section_key;
-+	uint8_t valid;
-+	uint8_t version;
-+	uint16_t reserved;
-+	uint32_t flags;
- } __attribute__ ((__packed__));
-
--/*    __u32  cm_clksel_core;
--    __u32  reserved1;
--    __u32  cm_autoidle_dpll_mpu;
--    __u32  cm_clksel_dpll_mpu;
--    __u32  cm_div_m2_dpll_mpu;
--    __u32  cm_autoidle_dpll_core;
--    __u32  cm_clksel_dpll_core;
--    __u32  cm_div_m2_dpll_core;
--    __u32  cm_div_m3_dpll_core;
--    __u32  cm_div_m4_dpll_core;
--    __u32  cm_div_m5_dpll_core;
--    __u32  cm_div_m6_dpll_core;
--    __u32  cm_div_m7_dpll_core;
--    __u32  cm_autoidle_dpll_per;
--    __u32  cm_clksel_dpll_per;
--    __u32  cm_div_m2_dpll_per;
--    __u32  cm_div_m3_dpll_per;
--    __u32  cm_div_m4_dpll_per;
--    __u32  cm_div_m5_dpll_per;
--    __u32  cm_div_m6_dpll_per;
--    __u32  cm_div_m7_dpll_per;
--    __u32  cm_autoidle_dpll_usb;
--    __u32  cm_clksel_dpll_usb;
--    __u32  cm_div_m2_dpll_usb;
-+/*    uint32_t  cm_clksel_core;
-+    uint32_t  reserved1;
-+    uint32_t  cm_autoidle_dpll_mpu;
-+    uint32_t  cm_clksel_dpll_mpu;
-+    uint32_t  cm_div_m2_dpll_mpu;
-+    uint32_t  cm_autoidle_dpll_core;
-+    uint32_t  cm_clksel_dpll_core;
-+    uint32_t  cm_div_m2_dpll_core;
-+    uint32_t  cm_div_m3_dpll_core;
-+    uint32_t  cm_div_m4_dpll_core;
-+    uint32_t  cm_div_m5_dpll_core;
-+    uint32_t  cm_div_m6_dpll_core;
-+    uint32_t  cm_div_m7_dpll_core;
-+    uint32_t  cm_autoidle_dpll_per;
-+    uint32_t  cm_clksel_dpll_per;
-+    uint32_t  cm_div_m2_dpll_per;
-+    uint32_t  cm_div_m3_dpll_per;
-+    uint32_t  cm_div_m4_dpll_per;
-+    uint32_t  cm_div_m5_dpll_per;
-+    uint32_t  cm_div_m6_dpll_per;
-+    uint32_t  cm_div_m7_dpll_per;
-+    uint32_t  cm_autoidle_dpll_usb;
-+    uint32_t  cm_clksel_dpll_usb;
-+    uint32_t  cm_div_m2_dpll_usb;
- }*/
-
- struct gp_header {
--	__u32 size;
--	__u32 load_addr;
-+	uint32_t size;
-+	uint32_t load_addr;
- } __attribute__ ((__packed__));
-
- struct ch_toc {
--	__u32 section_offset;
--	__u32 section_size;
--	__u8 unused[12];
--	__u8 section_name[12];
-+	uint32_t section_offset;
-+	uint32_t section_size;
-+	uint8_t unused[12];
-+	uint8_t section_name[12];
- } __attribute__ ((__packed__));
-
- struct chram {
- 	/* CHRAM */
--	__u32 section_key_chr;
--	__u8 section_disable_chr;
--	__u8 pad_chr[3];
-+	uint32_t section_key_chr;
-+	uint8_t section_disable_chr;
-+	uint8_t pad_chr[3];
- 	/* EMIF1 */
--	__u32 config_emif1;
--	__u32 refresh_emif1;
--	__u32 tim1_emif1;
--	__u32 tim2_emif1;
--	__u32 tim3_emif1;
--	__u32 pwrControl_emif1;
--	__u32 phy_cntr1_emif1;
--	__u32 phy_cntr2_emif1;
--	__u8 modereg1_emif1;
--	__u8 modereg2_emif1;
--	__u8 modereg3_emif1;
--	__u8 pad_emif1;
-+	uint32_t config_emif1;
-+	uint32_t refresh_emif1;
-+	uint32_t tim1_emif1;
-+	uint32_t tim2_emif1;
-+	uint32_t tim3_emif1;
-+	uint32_t pwrControl_emif1;
-+	uint32_t phy_cntr1_emif1;
-+	uint32_t phy_cntr2_emif1;
-+	uint8_t modereg1_emif1;
-+	uint8_t modereg2_emif1;
-+	uint8_t modereg3_emif1;
-+	uint8_t pad_emif1;
- 	/* EMIF2 */
--	__u32 config_emif2;
--	__u32 refresh_emif2;
--	__u32 tim1_emif2;
--	__u32 tim2_emif2;
--	__u32 tim3_emif2;
--	__u32 pwrControl_emif2;
--	__u32 phy_cntr1_emif2;
--	__u32 phy_cntr2_emif2;
--	__u8 modereg1_emif2;
--	__u8 modereg2_emif2;
--	__u8 modereg3_emif2;
--	__u8 pad_emif2;
-+	uint32_t config_emif2;
-+	uint32_t refresh_emif2;
-+	uint32_t tim1_emif2;
-+	uint32_t tim2_emif2;
-+	uint32_t tim3_emif2;
-+	uint32_t pwrControl_emif2;
-+	uint32_t phy_cntr1_emif2;
-+	uint32_t phy_cntr2_emif2;
-+	uint8_t modereg1_emif2;
-+	uint8_t modereg2_emif2;
-+	uint8_t modereg3_emif2;
-+	uint8_t pad_emif2;
-
--	__u32 dmm_lisa_map;
--	__u8 flags;
--	__u8 pad[3];
-+	uint32_t dmm_lisa_map;
-+	uint8_t flags;
-+	uint8_t pad[3];
- } __attribute__ ((__packed__));
+ Changes since v1:
+   Use variable diskdev to ensure that name of device
+   used in the mount() and error message continue to
+   remain in sync.
 
 
-@@ -121,7 +121,7 @@ struct ch_chsettings_chram {
- 	struct ch_toc toc_terminator;
- 	struct chsettings section_chsettings;
- 	struct chram section_chram;
--	__u8 padding1[512 -
-+	uint8_t padding1[512 -
- 		    (sizeof(struct ch_toc) * 3 +
- 		     sizeof(struct chsettings) + sizeof(struct chram))];
- 	/* struct gp_header gpheader; */
-@@ -131,7 +131,7 @@ struct ch_chsettings_nochram {
- 	struct ch_toc toc_chsettings;
- 	struct ch_toc toc_terminator;
- 	struct chsettings section_chsettings;
--	__u8 padding1[512 -
-+	uint8_t padding1[512 -
- 		    (sizeof(struct ch_toc) * 2 +
- 		     sizeof(struct chsettings))];
- 	/* struct gp_header gpheader; */
-@@ -209,8 +209,7 @@ static const struct ch_chsettings_chram config_header =
-=3D {
- 	""
- };
- #else
--static struct ch_chsettings_nochram config_header
--	__attribute__((section(".config_header"))) =3D {
-+static struct ch_chsettings_nochram config_header =3D {
- 	/* CHSETTINGS TOC */
- 	{(sizeof(struct ch_toc)) * 2,
- 	 sizeof(struct chsettings),
--- =
+ arch/arm/mach-omap/xload.c |    5 +++--
+ 1 files changed, 3 insertions(+), 2 deletions(-)
 
-1.7.7.4
+diff --git a/arch/arm/mach-omap/xload.c b/arch/arm/mach-omap/xload.c
+index a52a8ba..59f75e2 100644
+--- a/arch/arm/mach-omap/xload.c
++++ b/arch/arm/mach-omap/xload.c
+@@ -37,10 +37,11 @@ void *omap_xload_boot_mmc(void)
+ 	int ret;
+ 	void *buf;
+ 	int len;
++	const char *diskdev = "disk0.0";
+ 
+-	ret = mount("disk0.0", "fat", "/");
++	ret = mount(diskdev, "fat", "/");
+ 	if (ret) {
+-		printf("mounting sd card failed with %d\n", ret);
++		printf("Unable to mount %s (%d)\n", diskdev, ret);
+ 		return NULL;
+ 	}
+ 
+-- 
+1.7.0.4
+
 
 _______________________________________________
 barebox mailing list
