@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from bear.ext.ti.com ([192.94.94.41])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RwsxG-0001jL-MC
- for barebox@lists.infradead.org; Mon, 13 Feb 2012 10:16:19 +0000
-From: "Premi, Sanjeev" <premi@ti.com>
-Date: Mon, 13 Feb 2012 10:16:13 +0000
-Message-ID: <E28AAFD00EFAA646AE3DF9B89CD24A89318431A3@DBDE01.ent.ti.com>
-References: <1328811868-1000-1-git-send-email-premi@ti.com>
- <20120210122343.GI3852@pengutronix.de>
-In-Reply-To: <20120210122343.GI3852@pengutronix.de>
-Content-Language: en-US
-MIME-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RwtKy-0008Rk-8y
+ for barebox@lists.infradead.org; Mon, 13 Feb 2012 10:40:48 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1RwtKm-0001b2-TW
+ for barebox@lists.infradead.org; Mon, 13 Feb 2012 11:40:36 +0100
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.77)
+ (envelope-from <sha@pengutronix.de>) id 1RwtKm-0005wz-SK
+ for barebox@lists.infradead.org; Mon, 13 Feb 2012 11:40:36 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Mon, 13 Feb 2012 11:40:33 +0100
+Message-Id: <1329129636-22269-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,66 +21,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: [RFC] omap3evm: Set preliminary environment
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH] Add TQ tqma53 support
+To: barebox@lists.infradead.org
 
-> -----Original Message-----
-> From: Sascha Hauer [mailto:s.hauer@pengutronix.de] 
-> Sent: Friday, February 10, 2012 5:54 PM
-> To: Premi, Sanjeev
-> Cc: barebox@lists.infradead.org
-> Subject: Re: [RFC] omap3evm: Set preliminary environment
-> 
-> On Thu, Feb 09, 2012 at 11:54:28PM +0530, Sanjeev Premi wrote:
-> > This is still work-in-progress, but wanted to
-> > share them early for any feedback.
-> > 
-> > Signed-off-by: Sanjeev Premi <premi@ti.com>
-> > ---
-> >  I have made offline edits on these scripts before making
-> >  this patch. There is a possibility of run-time failure.
-> > 
-> >  You will also observe many TODOs. Hope to get them sorted
-> >  tomorrow - for a patch worthy of applying on the tree.
-> 
-> You are rewriting what we already have in form of the generic
-> environment. You shouldn't do this, we've been there before.
-> Before there was the generic environment every board had its
-> own set of environment scripts. This resulted in tons of
-> board specific scripts in slightly different states.
 
-Agree. I didn't want duplication - but was swayed by "FIXME"s
-the barebox/defaultenv and scripts in some of the boards that
-I saw.
+The following series adds support for the TQ tqma53 module with a
+Freescale i.MX53 SoC. To do this mach-types has to be updated and
+also we need a possibility to run the i.MX53 at 800MHz.
 
-It is possible to override selective variables? e.g.
+Sascha Hauer (3):
+      ARM: update mach-types
+      ARM i.MX5: Allow to pass cpu clock to lowlevel init
+      initial tqm53 support
 
-machine=FIXME
-bootargs="console=ttyFIXME,115200"
-kernel_part=disk0.2
+ arch/arm/Makefile                           |    1 +
+ arch/arm/boards/freescale-mx53-loco/board.c |    2 +-
+ arch/arm/boards/freescale-mx53-smd/board.c  |    2 +-
+ arch/arm/boards/tqma53/Makefile             |    2 +
+ arch/arm/boards/tqma53/board.c              |  272 +++++++++++++++++++++++++++
+ arch/arm/boards/tqma53/config.h             |    4 +
+ arch/arm/boards/tqma53/env/config           |   43 +++++
+ arch/arm/boards/tqma53/flash_header.c       |  109 +++++++++++
+ arch/arm/configs/tqma53_defconfig           |   64 +++++++
+ arch/arm/mach-imx/Kconfig                   |   11 +
+ arch/arm/mach-imx/imx53.c                   |    9 +-
+ arch/arm/mach-imx/include/mach/imx5.h       |    2 +-
+ arch/arm/tools/mach-types                   |   62 ++++++-
+ 13 files changed, 577 insertions(+), 6 deletions(-)
+ create mode 100644 arch/arm/boards/tqma53/Makefile
+ create mode 100644 arch/arm/boards/tqma53/board.c
+ create mode 100644 arch/arm/boards/tqma53/config.h
+ create mode 100644 arch/arm/boards/tqma53/env/config
+ create mode 100644 arch/arm/boards/tqma53/flash_header.c
+ create mode 100644 arch/arm/configs/tqma53_defconfig
 
-Is there an example to refer?
-
-~sanjev
-
-> 
-> Sascha
-> 
-> -- 
-> Pengutronix e.K.                           |                  
->            |
-> Industrial Linux Solutions                 | 
-> http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: 
-> +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   
-> +49-5121-206917-5555 |
-> 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
