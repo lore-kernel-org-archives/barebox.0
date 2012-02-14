@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 15.mo5.mail-out.ovh.net ([178.33.107.29]
+Received: from 14.mo5.mail-out.ovh.net ([188.165.51.82]
  helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RxJVt-0007oq-Va
- for barebox@lists.infradead.org; Tue, 14 Feb 2012 14:37:53 +0000
+ id 1RxJVu-0007ow-Sy
+ for barebox@lists.infradead.org; Tue, 14 Feb 2012 14:37:58 +0000
 Received: from mail98.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 88F37FFAA3A
- for <barebox@lists.infradead.org>; Tue, 14 Feb 2012 15:40:10 +0100 (CET)
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 5CFDAFF9E9B
+ for <barebox@lists.infradead.org>; Tue, 14 Feb 2012 15:40:11 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Tue, 14 Feb 2012 15:31:19 +0100
-Message-Id: <1329229881-26751-2-git-send-email-plagnioj@jcrosoft.com>
+Date: Tue, 14 Feb 2012 15:31:20 +0100
+Message-Id: <1329229881-26751-3-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1329229881-26751-1-git-send-email-plagnioj@jcrosoft.com>
 References: <1329229881-26751-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
@@ -25,56 +25,163 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] readkey: add define for Ascii keys
+Subject: [PATCH 3/4] at91: at91_register_uart return device
 To: barebox@lists.infradead.org
 
-this will simplify the usage of gpio keyboard
+this will allow to set the active parameter from C
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- common/menu.c     |    6 +++---
- include/readkey.h |    4 ++++
- 2 files changed, 7 insertions(+), 3 deletions(-)
+ arch/arm/mach-at91/at91rm9200_devices.c  |    6 +++---
+ arch/arm/mach-at91/at91sam9260_devices.c |    6 +++---
+ arch/arm/mach-at91/at91sam9261_devices.c |    6 +++---
+ arch/arm/mach-at91/at91sam9263_devices.c |    6 +++---
+ arch/arm/mach-at91/at91sam9g45_devices.c |    6 +++---
+ arch/arm/mach-at91/include/mach/board.h  |    2 +-
+ 6 files changed, 16 insertions(+), 16 deletions(-)
 
-diff --git a/common/menu.c b/common/menu.c
-index 5291fcb..fd21e52 100644
---- a/common/menu.c
-+++ b/common/menu.c
-@@ -296,7 +296,7 @@ int menu_show(struct menu *m)
+diff --git a/arch/arm/mach-at91/at91rm9200_devices.c b/arch/arm/mach-at91/at91rm9200_devices.c
+index 599eb79..bda73e6 100644
+--- a/arch/arm/mach-at91/at91rm9200_devices.c
++++ b/arch/arm/mach-at91/at91rm9200_devices.c
+@@ -265,7 +265,7 @@ static inline void configure_usart3_pins(unsigned pins)
+ 		at91_set_B_periph(AT91_PIN_PB0, 0);	/* RTS3 */
+ }
  
- 	do {
- 		if (m->auto_select >= 0)
--			ch = '\n';
-+			ch = KEY_ENTER;
- 		else
- 			ch = getc();
+-void __init at91_register_uart(unsigned id, unsigned pins)
++struct device_d * __init at91_register_uart(unsigned id, unsigned pins)
+ {
+ 	resource_size_t start;
  
-@@ -339,8 +339,8 @@ int menu_show(struct menu *m)
- 				m->selected->action(m, m->selected);
- 			print_menu_entry(m, m->selected, 1);
+@@ -296,9 +296,9 @@ void __init at91_register_uart(unsigned id, unsigned pins)
+ 			id = 4;
  			break;
--		case '\n':
--		case '\r':
-+		case KEY_ENTER:
-+		case KEY_RETURN:
- 			clear();
- 			gotoXY(1,1);
- 			m->selected->action(m, m->selected);
-diff --git a/include/readkey.h b/include/readkey.h
-index aabb835..f134846 100644
---- a/include/readkey.h
-+++ b/include/readkey.h
-@@ -3,6 +3,10 @@
+ 		default:
+-			return;
++			return NULL;
+ 	}
  
- #define CTL_CH(c)		((c) - 'a' + 1)
+-	add_generic_device("atmel_usart", id, NULL, start, 4096,
++	return add_generic_device("atmel_usart", id, NULL, start, 4096,
+ 			   IORESOURCE_MEM, NULL);
+ }
+diff --git a/arch/arm/mach-at91/at91sam9260_devices.c b/arch/arm/mach-at91/at91sam9260_devices.c
+index 3ddd0cf..3bdcd4f 100644
+--- a/arch/arm/mach-at91/at91sam9260_devices.c
++++ b/arch/arm/mach-at91/at91sam9260_devices.c
+@@ -282,7 +282,7 @@ static inline void configure_usart5_pins(void)
+ 	at91_set_A_periph(AT91_PIN_PB13, 0);		/* RXD5 */
+ }
  
-+/* Ascii keys */
-+#define KEY_ENTER		'\n'
-+#define KEY_RETURN		'\r'
-+
- /* Misc. non-Ascii keys */
- #define KEY_UP			CTL_CH('p')	/* cursor key Up	*/
- #define KEY_DOWN		CTL_CH('n')	/* cursor key Down	*/
+-void at91_register_uart(unsigned id, unsigned pins)
++struct device_d * __init at91_register_uart(unsigned id, unsigned pins)
+ {
+ 	resource_size_t start;
+ 
+@@ -323,10 +323,10 @@ void at91_register_uart(unsigned id, unsigned pins)
+ 			id = 6;
+ 			break;
+ 		default:
+-			return;
++			return NULL;
+ 	}
+ 
+-	add_generic_device("atmel_usart", id, NULL, start, 4096,
++	return add_generic_device("atmel_usart", id, NULL, start, 4096,
+ 			   IORESOURCE_MEM, NULL);
+ }
+ 
+diff --git a/arch/arm/mach-at91/at91sam9261_devices.c b/arch/arm/mach-at91/at91sam9261_devices.c
+index 7805c27..d4f7b5e 100644
+--- a/arch/arm/mach-at91/at91sam9261_devices.c
++++ b/arch/arm/mach-at91/at91sam9261_devices.c
+@@ -203,7 +203,7 @@ static inline void configure_usart2_pins(unsigned pins)
+ 		at91_set_B_periph(AT91_PIN_PA16, 0);	/* CTS2 */
+ }
+ 
+-void at91_register_uart(unsigned id, unsigned pins)
++struct device_d * __init at91_register_uart(unsigned id, unsigned pins)
+ {
+ 	resource_size_t start;
+ 
+@@ -229,10 +229,10 @@ void at91_register_uart(unsigned id, unsigned pins)
+ 			id = 3;
+ 			break;
+ 		default:
+-			return;
++			return NULL;
+ 	}
+ 
+-	add_generic_device("atmel_usart", id, NULL, start, 4096,
++	return add_generic_device("atmel_usart", id, NULL, start, 4096,
+ 			   IORESOURCE_MEM, NULL);
+ }
+ 
+diff --git a/arch/arm/mach-at91/at91sam9263_devices.c b/arch/arm/mach-at91/at91sam9263_devices.c
+index fc7dc14..87a1726 100644
+--- a/arch/arm/mach-at91/at91sam9263_devices.c
++++ b/arch/arm/mach-at91/at91sam9263_devices.c
+@@ -253,7 +253,7 @@ static inline void configure_usart2_pins(unsigned pins)
+ 		at91_set_B_periph(AT91_PIN_PD6, 0);	/* CTS2 */
+ }
+ 
+-void at91_register_uart(unsigned id, unsigned pins)
++struct device_d * __init at91_register_uart(unsigned id, unsigned pins)
+ {
+ 	resource_size_t start;
+ 
+@@ -279,10 +279,10 @@ void at91_register_uart(unsigned id, unsigned pins)
+ 			id = 3;
+ 			break;
+ 		default:
+-			return;
++			return NULL;
+ 	}
+ 
+-	add_generic_device("atmel_usart", id, NULL, start, 4096,
++	return add_generic_device("atmel_usart", id, NULL, start, 4096,
+ 			   IORESOURCE_MEM, NULL);
+ }
+ 
+diff --git a/arch/arm/mach-at91/at91sam9g45_devices.c b/arch/arm/mach-at91/at91sam9g45_devices.c
+index bb252bd..6931a3f 100644
+--- a/arch/arm/mach-at91/at91sam9g45_devices.c
++++ b/arch/arm/mach-at91/at91sam9g45_devices.c
+@@ -182,7 +182,7 @@ static inline void configure_usart3_pins(unsigned pins)
+ 		at91_set_B_periph(AT91_PIN_PA24, 0);	/* CTS3 */
+ }
+ 
+-void at91_register_uart(unsigned id, unsigned pins)
++struct device_d * __init at91_register_uart(unsigned id, unsigned pins)
+ {
+ 	resource_size_t start;
+ 
+@@ -213,10 +213,10 @@ void at91_register_uart(unsigned id, unsigned pins)
+ 			id = 4;
+ 			break;
+ 		default:
+-			return;
++			return NULL;
+ 	}
+ 
+-	add_generic_device("atmel_usart", id, NULL, start, 4096,
++	return add_generic_device("atmel_usart", id, NULL, start, 4096,
+ 			   IORESOURCE_MEM, NULL);
+ }
+ 
+diff --git a/arch/arm/mach-at91/include/mach/board.h b/arch/arm/mach-at91/include/mach/board.h
+index 755ddc8..9f1abc1 100644
+--- a/arch/arm/mach-at91/include/mach/board.h
++++ b/arch/arm/mach-at91/include/mach/board.h
+@@ -83,7 +83,7 @@ void at91_add_device_sdram(u32 size);
+ #define ATMEL_UART_DCD	0x10
+ #define ATMEL_UART_RI	0x20
+ 
+-void at91_register_uart(unsigned id, unsigned pins);
++struct device_d * __init at91_register_uart(unsigned id, unsigned pins);
+ 
+ /* Multimedia Card Interface */
+ struct atmel_mci_platform_data {
 -- 
 1.7.7
 
