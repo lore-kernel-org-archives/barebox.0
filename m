@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp6-g21.free.fr ([2a01:e0c:1:1599::15])
+Received: from 11.mo5.mail-out.ovh.net ([46.105.47.167]
+ helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RxHxn-0004pe-Lu
- for barebox@lists.infradead.org; Tue, 14 Feb 2012 12:58:34 +0000
-From: Robert Jarzmik <robert.jarzmik@free.fr>
-Date: Tue, 14 Feb 2012 13:58:13 +0100
-Message-Id: <1329224294-31475-1-git-send-email-robert.jarzmik@free.fr>
-In-Reply-To: <877gzw445i.fsf@free.fr>
-References: <877gzw445i.fsf@free.fr>
+ id 1RxJVt-0007om-Va
+ for barebox@lists.infradead.org; Tue, 14 Feb 2012 14:37:54 +0000
+Received: from mail98.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id B1967FFABAF
+ for <barebox@lists.infradead.org>; Tue, 14 Feb 2012 15:40:09 +0100 (CET)
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Tue, 14 Feb 2012 15:31:18 +0100
+Message-Id: <1329229881-26751-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,364 +23,285 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH V2 1/2] drivers/pwm: add PXA pulse width modulator controller
+Subject: [PATCH 1/4] add gpio keyboard support
 To: barebox@lists.infradead.org
 
-Add PXA embedded pulse width modulator support. The PWM can
-generate signals from 49.6kHz to 1.625MHz.
-The driver is for pxa2xx family. The pxa3xx was not handled yet.
-
-Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/mach-pxa/Makefile                |    1 +
- arch/arm/mach-pxa/devices.c               |    5 +
- arch/arm/mach-pxa/include/mach/clock.h    |    1 +
- arch/arm/mach-pxa/include/mach/devices.h  |    2 +-
- arch/arm/mach-pxa/include/mach/regs-pwm.h |   20 +++
- arch/arm/mach-pxa/speed-pxa27x.c          |    5 +
- drivers/pwm/Kconfig                       |    6 +
- drivers/pwm/Makefile                      |    1 +
- drivers/pwm/pxa_pwm.c                     |  219 +++++++++++++++++++++++++++++
- 9 files changed, 259 insertions(+), 1 deletions(-)
- create mode 100644 arch/arm/mach-pxa/include/mach/regs-pwm.h
- create mode 100644 drivers/pwm/pxa_pwm.c
+ drivers/Kconfig           |    1 +
+ drivers/Makefile          |    1 +
+ drivers/input/Kconfig     |   19 ++++++
+ drivers/input/Makefile    |    1 +
+ drivers/input/gpio_keys.c |  146 +++++++++++++++++++++++++++++++++++++++++++++
+ include/driver.h          |    5 ++
+ include/gpio_keys.h       |   33 ++++++++++
+ 7 files changed, 206 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/input/Kconfig
+ create mode 100644 drivers/input/Makefile
+ create mode 100644 drivers/input/gpio_keys.c
+ create mode 100644 include/gpio_keys.h
 
-diff --git a/arch/arm/mach-pxa/Makefile b/arch/arm/mach-pxa/Makefile
-index c01a9e0..6a02a54 100644
---- a/arch/arm/mach-pxa/Makefile
-+++ b/arch/arm/mach-pxa/Makefile
-@@ -1,6 +1,7 @@
- obj-y += clocksource.o
- obj-y += common.o
- obj-y += gpio.o
-+obj-y += devices.o
+diff --git a/drivers/Kconfig b/drivers/Kconfig
+index c4e1517..c058b25 100644
+--- a/drivers/Kconfig
++++ b/drivers/Kconfig
+@@ -14,5 +14,6 @@ source "drivers/clk/Kconfig"
+ source "drivers/mfd/Kconfig"
+ source "drivers/led/Kconfig"
+ source "drivers/eeprom/Kconfig"
++source "drivers/input/Kconfig"
  
- obj-$(CONFIG_ARCH_PXA2XX) += mfp-pxa2xx.o
- obj-$(CONFIG_ARCH_PXA27X) += speed-pxa27x.o
-diff --git a/arch/arm/mach-pxa/devices.c b/arch/arm/mach-pxa/devices.c
-index 1a396f1..b6ac0ba 100644
---- a/arch/arm/mach-pxa/devices.c
-+++ b/arch/arm/mach-pxa/devices.c
-@@ -47,3 +47,8 @@ struct device_d *pxa_add_mmc(void *base, int id, void *pdata)
- {
- 	return pxa_add_device("pxa-mmc", id, base, 0x1000, pdata);
- }
-+
-+struct device_d *pxa_add_pwm(void *base, int id)
-+{
-+	return pxa_add_device("pxa_pwm", id, base, 0x10, NULL);
-+}
-diff --git a/arch/arm/mach-pxa/include/mach/clock.h b/arch/arm/mach-pxa/include/mach/clock.h
-index c53432f..f86152f 100644
---- a/arch/arm/mach-pxa/include/mach/clock.h
-+++ b/arch/arm/mach-pxa/include/mach/clock.h
-@@ -14,5 +14,6 @@
- unsigned long pxa_get_uartclk(void);
- unsigned long pxa_get_mmcclk(void);
- unsigned long pxa_get_lcdclk(void);
-+unsigned long pxa_get_pwmclk(void);
- 
- #endif	/* !__MACH_CLOCK_H */
-diff --git a/arch/arm/mach-pxa/include/mach/devices.h b/arch/arm/mach-pxa/include/mach/devices.h
-index e205b7c..8390153 100644
---- a/arch/arm/mach-pxa/include/mach/devices.h
-+++ b/arch/arm/mach-pxa/include/mach/devices.h
-@@ -23,4 +23,4 @@ struct device_d *pxa_add_i2c(void *base, int id,
- struct device_d *pxa_add_uart(void *base, int id);
- struct device_d *pxa_add_fb(void *base, struct pxafb_platform_data *pdata);
- struct device_d *pxa_add_mmc(void *base, int id, void *pdata);
--
-+struct device_d *pxa_add_pwm(void *base, int id);
-diff --git a/arch/arm/mach-pxa/include/mach/regs-pwm.h b/arch/arm/mach-pxa/include/mach/regs-pwm.h
+ endmenu
+diff --git a/drivers/Makefile b/drivers/Makefile
+index 592c39e..61e85af 100644
+--- a/drivers/Makefile
++++ b/drivers/Makefile
+@@ -13,3 +13,4 @@ obj-y	+= clk/
+ obj-y	+= mfd/
+ obj-$(CONFIG_LED) += led/
+ obj-y	+= eeprom/
++obj-y	+= input/
+diff --git a/drivers/input/Kconfig b/drivers/input/Kconfig
 new file mode 100644
-index 0000000..9fdcbb6
+index 0000000..b488553
 --- /dev/null
-+++ b/arch/arm/mach-pxa/include/mach/regs-pwm.h
-@@ -0,0 +1,20 @@
-+/*
-+ *
-+ *  This program is free software; you can redistribute it and/or modify
-+ *  it under the terms of the GNU General Public License version 2 as
-+ *  published by the Free Software Foundation.
-+ */
-+#ifndef __ASM_MACH_REGS_PWM_H
-+#define __ASM_MACH_REGS_PWM_H
++++ b/drivers/input/Kconfig
+@@ -0,0 +1,19 @@
++#
++# Input device configuration
++#
 +
-+#include <mach/hardware.h>
++menu "Input device support"
 +
-+/*
-+ * Pulse modulator registers
-+ */
-+#define PWM0		0x40B00000
-+#define PWM1		0x40C00000
-+#define PWM0slave	0x40B00010
-+#define PWM1slave	0x40C00010
-+
-+#endif
-diff --git a/arch/arm/mach-pxa/speed-pxa27x.c b/arch/arm/mach-pxa/speed-pxa27x.c
-index 534eb1d..1de034c 100644
---- a/arch/arm/mach-pxa/speed-pxa27x.c
-+++ b/arch/arm/mach-pxa/speed-pxa27x.c
-@@ -47,3 +47,8 @@ unsigned long pxa_get_lcdclk(void)
- {
- 	return pxa_get_lcdclk_10khz() * 10000;
- }
-+
-+unsigned long pxa_get_pwmclk(void)
-+{
-+	return BASE_CLK;
-+}
-diff --git a/drivers/pwm/Kconfig b/drivers/pwm/Kconfig
-index 93c1052..50c956a 100644
---- a/drivers/pwm/Kconfig
-+++ b/drivers/pwm/Kconfig
-@@ -8,5 +8,11 @@ menuconfig PWM
- 	  If unsure, say N.
- 
- if PWM
-+config PWM_PXA
-+	bool "PXA PWM Support"
-+	default y if ARCH_PXA2XX
++config KEYBOARD_GPIO
++	bool "GPIO Buttons"
++	depends on GENERIC_GPIO
 +	help
-+	  This enables PWM support for Intel/Marvell PXA chips, such
-+	  as the PXA25x, PXA27x.
- 
- endif
-diff --git a/drivers/pwm/Makefile b/drivers/pwm/Makefile
-index 3469c3d..c886bd5 100644
---- a/drivers/pwm/Makefile
-+++ b/drivers/pwm/Makefile
-@@ -1 +1,2 @@
- obj-$(CONFIG_PWM)		+= core.o
-+obj-$(CONFIG_PWM_PXA)		+= pxa_pwm.o
-\ No newline at end of file
-diff --git a/drivers/pwm/pxa_pwm.c b/drivers/pwm/pxa_pwm.c
++	  This driver implements support for buttons connected
++	  to GPIO pins of various CPUs (and some other chips).
++
++	  Say Y here if your device has buttons connected
++	  directly to such GPIO pins.  Your board-specific
++	  setup logic must also provide a platform device,
++	  with configuration data saying which GPIOs are used.
++
++endmenu
+diff --git a/drivers/input/Makefile b/drivers/input/Makefile
 new file mode 100644
-index 0000000..f52d675
+index 0000000..7784d52
 --- /dev/null
-+++ b/drivers/pwm/pxa_pwm.c
-@@ -0,0 +1,219 @@
++++ b/drivers/input/Makefile
+@@ -0,0 +1 @@
++obj-$(CONFIG_KEYBOARD_GPIO) += gpio_keys.o
+diff --git a/drivers/input/gpio_keys.c b/drivers/input/gpio_keys.c
+new file mode 100644
+index 0000000..ec5c701
+--- /dev/null
++++ b/drivers/input/gpio_keys.c
+@@ -0,0 +1,146 @@
 +/*
-+ * simple driver for PWM (Pulse Width Modulator) controller
++ * Copyright (C) 2011 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 + *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
-+ *
-+ * 2008-02-13	initial version
-+ * 		eric miao <eric.miao@marvell.com>
-+ * 2012         Robert Jarzmik <robert.jarzmik@free.fr>
++ * Under GPLv2
 + */
 +
 +#include <common.h>
-+#include <init.h>
 +#include <errno.h>
-+#include <io.h>
-+#include <pwm.h>
++#include <init.h>
++#include <clock.h>
++#include <gpio_keys.h>
++#include <poller.h>
++#include <gpio.h>
 +
-+#include <mach/hardware.h>
-+#include <mach/clock.h>
-+#include <mach/pxa-regs.h>
-+#include <mach/regs-pwm.h>
-+#include <asm-generic/div64.h>
-+#include <linux/compiler.h>
-+
-+/* PWM registers and bits definitions */
-+#define PWMCR		(0x00)
-+#define PWMDCR		(0x04)
-+#define PWMPCR		(0x08)
-+
-+#define PWMCR_SD	(1 << 6)
-+#define PWMDCR_FD	(1 << 10)
-+
-+struct pxa_pwm_chip {
-+	struct pwm_chip chip;
-+	void __iomem *iobase;
-+	int id;
-+	int duty_ns;
-+	int period_ns;
-+};
-+
-+static struct pxa_pwm_chip *to_pxa_pwm_chip(struct pwm_chip *chip)
++static inline struct gpio_keys_platform_data *
++poller_to_gk_pdata(struct poller_struct *poller)
 +{
-+	return container_of(chip, struct pxa_pwm_chip, chip);
++	return container_of(poller, struct gpio_keys_platform_data, poller);
 +}
 +
-+/*
-+ * period_ns    = 10^9 * (PRESCALE + 1) * (PV + 1) / PWM_CLK_RATE
-+ * duty_ns      = 10^9 * (PRESCALE + 1) * DC / PWM_CLK_RATE
-+ * PWM_CLK_RATE = 13 MHz
-+ */
-+static int pxa_pwm_config(struct pwm_chip *chip, int duty_ns, int period_ns)
++static inline struct gpio_keys_platform_data *
++cdev_to_gk_pdata(struct console_device *cdev)
 +{
-+	unsigned long long c;
-+	unsigned long period_cycles, prescale, pv, dc;
-+	struct pxa_pwm_chip *pxa_pwm = to_pxa_pwm_chip(chip);
++	return container_of(cdev, struct gpio_keys_platform_data, cdev);
++}
 +
-+	c = pxa_get_pwmclk();
-+	c = c * period_ns;
-+	do_div(c, 1000000000);
-+	period_cycles = c;
++static int pop_buf(struct gpio_keys_platform_data *pdata)
++{
++	int c;
 +
-+	if (period_cycles < 1)
-+		period_cycles = 1;
-+	prescale = (period_cycles - 1) / 1024;
-+	pv = period_cycles / (prescale + 1) - 1;
++	if (pdata->len == 0)
++		return -EIO;
 +
-+	if (prescale > 63)
-+		return -EINVAL;
++	c = pdata->buf[pdata->pos];
 +
-+	if (duty_ns == period_ns)
-+		dc = PWMDCR_FD;
++	if (!pdata->pos)
++		pdata->pos = pdata->buf_size - 1;
 +	else
-+		dc = (pv + 1) * duty_ns / period_ns;
++		pdata->pos--;
++	pdata->len--;
 +
-+	pxa_pwm->duty_ns = duty_ns;
-+	pxa_pwm->period_ns = period_ns;
++	return c;
++}
 +
-+	/* NOTE: the clock to PWM has to be enabled first
-+	 * before writing to the registers
-+	 */
-+	__raw_writel(prescale, pxa_pwm->iobase + PWMCR);
-+	__raw_writel(dc, pxa_pwm->iobase + PWMDCR);
-+	__raw_writel(pv, pxa_pwm->iobase + PWMPCR);
++static int push_buf(struct gpio_keys_platform_data *pdata, int c)
++{
++	if (pdata->len >= pdata->buf_size)
++		return -ENOSPC;
++
++	pdata->pos++;
++	pdata->len++;
++	if (pdata->pos >= pdata->buf_size)
++		pdata->pos = 0;
++
++	pdata->buf[pdata->pos] = c;
 +
 +	return 0;
 +}
 +
-+static int pxa_pwm_enable(struct pwm_chip *chip)
++static void gpio_key_poller(struct poller_struct *poller)
 +{
-+	struct pxa_pwm_chip *pxa_pwm = to_pxa_pwm_chip(chip);
++	struct gpio_keys_platform_data *pdata = poller_to_gk_pdata(poller);
++	struct gpio_keys_button *gb;
++	int i, val;
 +
-+	switch (pxa_pwm->id) {
-+	case 0:
-+	case 2:
-+		CKEN |= CKEN_PWM0;
-+		break;
-+	case 1:
-+	case 3:
-+		CKEN |= CKEN_PWM1;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+	return 0;
-+}
++	for (i = 0; i < pdata->nbuttons; i++) {
 +
-+static void pxa_pwm_disable(struct pwm_chip *chip)
-+{
-+	struct pxa_pwm_chip *pxa_pwm = to_pxa_pwm_chip(chip);
++		gb = &pdata->buttons[i];
++		val = gpio_get_value(gb->gpio);
 +
-+	switch (pxa_pwm->id) {
-+	case 0:
-+	case 2:
-+		CKEN &= ~CKEN_PWM0;
-+		break;
-+	case 1:
-+	case 3:
-+		CKEN &= ~CKEN_PWM1;
-+		break;
-+	default:
-+		break;
++		if (val != gb->previous_state && val != gb->active_low) {
++			push_buf(pdata, gb->code);
++			debug("pressed ok\n");
++		}
++		gb->previous_state = val;
 +	}
 +}
 +
-+static struct pwm_ops pxa_pwm_ops = {
-+	.config = pxa_pwm_config,
-+	.enable = pxa_pwm_enable,
-+	.disable = pxa_pwm_disable,
++static int gpio_keys_tstc(struct console_device *cdev)
++{
++	struct gpio_keys_platform_data *pdata = cdev_to_gk_pdata(cdev);
++
++	return pdata->len;
++}
++
++static int gpio_keys_getc(struct console_device *cdev)
++{
++	struct gpio_keys_platform_data *pdata = cdev_to_gk_pdata(cdev);
++
++	return pop_buf(pdata);
++}
++
++static int __init gpio_keys_probe(struct device_d *dev)
++{
++	int ret, i, gpio;
++	struct gpio_keys_platform_data *pdata;
++	struct console_device *cdev;
++
++	pdata = dev->platform_data;
++
++	if (!pdata) {
++		/* small (so we copy it) but critical! */
++		pr_err("missing platform_data\n");
++		return -ENODEV;
++	}
++
++	if (!pdata->buf_size)
++		pdata->buf_size = 50;
++
++	pdata->buf = xzalloc(sizeof(int) * pdata->buf_size);
++
++	for (i = 0; i < pdata->nbuttons; i++) {
++		gpio = pdata->buttons->gpio;
++		ret = gpio_request(gpio, "gpio_keys");
++		if (ret) {
++			pr_err("gpio_keys: (%d) can not be requested\n", gpio);
++			return ret;
++		}
++		gpio_direction_input(gpio);
++	}
++
++	pdata->poller.func = gpio_key_poller;
++
++	cdev = &pdata->cdev;
++	dev->type_data = cdev;
++	cdev->dev = dev;
++	cdev->f_caps = CONSOLE_STDIN;
++	cdev->tstc = gpio_keys_tstc;
++	cdev->getc = gpio_keys_getc;
++
++	console_register(&pdata->cdev);
++
++	return poller_register(&pdata->poller);
++}
++
++static struct driver_d gpio_keys_driver = {
++	.name	= "gpio_keys",
++	.probe	= gpio_keys_probe,
 +};
 +
-+static int set_period_ns(struct device_d *dev, struct param_d *p, const char *val)
++static int gpio_keys_init(void)
 +{
-+	struct pxa_pwm_chip *pxa_pwm = dev->priv;
-+	int period_ns;
-+
-+	if (!val)
-+		return dev_param_set_generic(dev, p, NULL);
-+
-+	period_ns = simple_strtoul(val, NULL, 0);
-+	pxa_pwm_config(&pxa_pwm->chip, pxa_pwm->duty_ns, period_ns);
-+	return dev_param_set_generic(dev, p, val);
-+}
-+
-+static int set_duty_ns(struct device_d *dev, struct param_d *p, const char *val)
-+{
-+	struct pxa_pwm_chip *pxa_pwm = dev->priv;
-+	int duty_ns;
-+
-+	if (!val)
-+		return dev_param_set_generic(dev, p, NULL);
-+
-+	duty_ns = simple_strtoul(val, NULL, 0);
-+	pxa_pwm_config(&pxa_pwm->chip, duty_ns, pxa_pwm->period_ns);
-+	return dev_param_set_generic(dev, p, val);
-+}
-+
-+static int set_enable(struct device_d *dev, struct param_d *p, const char *val)
-+{
-+	struct pxa_pwm_chip *pxa_pwm = dev->priv;
-+	int enable;
-+
-+	if (!val)
-+		return dev_param_set_generic(dev, p, NULL);
-+
-+	enable = !!simple_strtoul(val, NULL, 0);
-+	if (enable)
-+		pxa_pwm_enable(&pxa_pwm->chip);
-+	else
-+		pxa_pwm_disable(&pxa_pwm->chip);
-+	return dev_param_set_generic(dev, p, enable ? "1" : "0");
-+}
-+
-+static int __init pxa_pwm_register_vars(struct device_d *dev,
-+					struct pxa_pwm_chip *pxa_pwm)
-+{
-+	int ret;
-+
-+	ret = dev_add_param(dev, "duty_ns", set_duty_ns, NULL, 0);
-+	if (!ret)
-+		ret = dev_add_param(dev, "period_ns", set_period_ns, NULL, 0);
-+	if (!ret)
-+		ret = dev_add_param(dev, "enable", set_enable, NULL, 0);
-+	if (!ret)
-+		ret = dev_set_param(dev, "enable", 0);
-+	return ret;
-+}
-+
-+static int pxa_pwm_probe(struct device_d *dev)
-+{
-+	struct pxa_pwm_chip *chip;
-+	int ret;
-+
-+	chip = xzalloc(sizeof(*chip));
-+	chip->chip.devname = asprintf("%s", dev_name(dev));
-+	chip->chip.ops = &pxa_pwm_ops;
-+	chip->iobase = dev_request_mem_region(dev, 0);
-+	chip->id = dev->id;
-+	dev->priv = chip;
-+
-+	ret = pwmchip_add(&chip->chip);
-+	if (!ret)
-+		ret = pxa_pwm_register_vars(dev, chip);
-+	return ret;
-+}
-+
-+static struct driver_d pxa_pwm_driver = {
-+	.name  = "pxa_pwm",
-+	.probe = pxa_pwm_probe,
-+};
-+
-+static int __init pxa_pwm_init_driver(void)
-+{
-+	CKEN &= ~CKEN_PWM0 & ~CKEN_PWM1;
-+	register_driver(&pxa_pwm_driver);
++	register_driver(&gpio_keys_driver);
 +	return 0;
 +}
++device_initcall(gpio_keys_init);
+diff --git a/include/driver.h b/include/driver.h
+index 1b8b16d..51d6393 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -260,6 +260,11 @@ static inline struct device_d *add_generic_usb_ehci_device(int id,
+ 	return add_usb_ehci_device(id, base + 0x100, base + 0x140, pdata);
+ }
+ 
++static inline struct device_d *add_gpio_keys_device(int id, void *pdata)
++{
++	return add_generic_device_res("gpio_keys", id, 0, 0, pdata);
++}
 +
-+device_initcall(pxa_pwm_init_driver);
+ /* linear list over all available devices
+  */
+ extern struct list_head device_list;
+diff --git a/include/gpio_keys.h b/include/gpio_keys.h
+new file mode 100644
+index 0000000..c5d484b
+--- /dev/null
++++ b/include/gpio_keys.h
+@@ -0,0 +1,33 @@
++#ifndef _GPIO_KEYS_H
++#define _GPIO_KEYS_H
++
++#include <poller.h>
++
++struct gpio_keys_button {
++	/* Configuration parameters */
++	int code;
++
++	int gpio;
++	int active_low;
++
++	/* internal */
++	int previous_state;
++};
++
++struct gpio_keys_platform_data {
++	struct gpio_keys_button *buttons;
++	int nbuttons;
++
++	/* optional */
++	int buf_size;
++
++	/* internal */
++	int* buf;
++	int pos;
++	int len;
++
++	struct poller_struct poller;
++	struct console_device cdev;
++};
++
++#endif
 -- 
-1.7.5.4
+1.7.7
 
 
 _______________________________________________
