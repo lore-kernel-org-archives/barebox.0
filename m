@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 14.mo5.mail-out.ovh.net ([188.165.51.82]
+Received: from 12.mo5.mail-out.ovh.net ([46.105.39.65]
  helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RxJVu-0007ow-Sy
- for barebox@lists.infradead.org; Tue, 14 Feb 2012 14:37:58 +0000
+ id 1RxJVw-0007pG-02
+ for barebox@lists.infradead.org; Tue, 14 Feb 2012 14:37:59 +0000
 Received: from mail98.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 5CFDAFF9E9B
- for <barebox@lists.infradead.org>; Tue, 14 Feb 2012 15:40:11 +0100 (CET)
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 2DA8AFFABF9
+ for <barebox@lists.infradead.org>; Tue, 14 Feb 2012 15:40:12 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Tue, 14 Feb 2012 15:31:20 +0100
-Message-Id: <1329229881-26751-3-git-send-email-plagnioj@jcrosoft.com>
+Date: Tue, 14 Feb 2012 15:31:21 +0100
+Message-Id: <1329229881-26751-4-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1329229881-26751-1-git-send-email-plagnioj@jcrosoft.com>
 References: <1329229881-26751-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
@@ -25,163 +25,199 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] at91: at91_register_uart return device
+Subject: [PATCH 4/4] usb-a926x: add DAB MMX Daughter board support
 To: barebox@lists.infradead.org
 
-this will allow to set the active parameter from C
+ - gpio_keys support
+ - leds
+ - uarts 2 and 4 (for oled)
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/mach-at91/at91rm9200_devices.c  |    6 +++---
- arch/arm/mach-at91/at91sam9260_devices.c |    6 +++---
- arch/arm/mach-at91/at91sam9261_devices.c |    6 +++---
- arch/arm/mach-at91/at91sam9263_devices.c |    6 +++---
- arch/arm/mach-at91/at91sam9g45_devices.c |    6 +++---
- arch/arm/mach-at91/include/mach/board.h  |    2 +-
- 6 files changed, 16 insertions(+), 16 deletions(-)
+ arch/arm/boards/usb-a926x/init.c |  108 ++++++++++++++++++++++++++++++++++++++
+ arch/arm/mach-at91/Kconfig       |    9 +++
+ 2 files changed, 117 insertions(+), 0 deletions(-)
 
-diff --git a/arch/arm/mach-at91/at91rm9200_devices.c b/arch/arm/mach-at91/at91rm9200_devices.c
-index 599eb79..bda73e6 100644
---- a/arch/arm/mach-at91/at91rm9200_devices.c
-+++ b/arch/arm/mach-at91/at91rm9200_devices.c
-@@ -265,7 +265,7 @@ static inline void configure_usart3_pins(unsigned pins)
- 		at91_set_B_periph(AT91_PIN_PB0, 0);	/* RTS3 */
- }
+diff --git a/arch/arm/boards/usb-a926x/init.c b/arch/arm/boards/usb-a926x/init.c
+index 364c1ba..af025b4 100644
+--- a/arch/arm/boards/usb-a926x/init.c
++++ b/arch/arm/boards/usb-a926x/init.c
+@@ -41,6 +41,8 @@
+ #include <mach/io.h>
+ #include <mach/at91_pmc.h>
+ #include <mach/at91_rstc.h>
++#include <gpio_keys.h>
++#include <readkey.h>
  
--void __init at91_register_uart(unsigned id, unsigned pins)
-+struct device_d * __init at91_register_uart(unsigned id, unsigned pins)
+ static void usb_a9260_set_board_type(void)
  {
- 	resource_size_t start;
- 
-@@ -296,9 +296,9 @@ void __init at91_register_uart(unsigned id, unsigned pins)
- 			id = 4;
- 			break;
- 		default:
--			return;
-+			return NULL;
- 	}
- 
--	add_generic_device("atmel_usart", id, NULL, start, 4096,
-+	return add_generic_device("atmel_usart", id, NULL, start, 4096,
- 			   IORESOURCE_MEM, NULL);
- }
-diff --git a/arch/arm/mach-at91/at91sam9260_devices.c b/arch/arm/mach-at91/at91sam9260_devices.c
-index 3ddd0cf..3bdcd4f 100644
---- a/arch/arm/mach-at91/at91sam9260_devices.c
-+++ b/arch/arm/mach-at91/at91sam9260_devices.c
-@@ -282,7 +282,7 @@ static inline void configure_usart5_pins(void)
- 	at91_set_A_periph(AT91_PIN_PB13, 0);		/* RXD5 */
+@@ -219,6 +221,101 @@ static void __init ek_add_device_button(void)
+ 	export_env_ull("dfu_button", AT91_PIN_PB10);
  }
  
--void at91_register_uart(unsigned id, unsigned pins)
-+struct device_d * __init at91_register_uart(unsigned id, unsigned pins)
++#ifdef CONFIG_CALAO_DAB_MMX
++struct gpio_led dab_mmx_leds[] = {
++	{
++		.gpio = AT91_PIN_PB20,
++		.led = {
++			.name = "user_led1",
++		},
++	}, {
++		.gpio = AT91_PIN_PB21,
++		.led = {
++			.name = "user_led2",
++		},
++	}, {
++		.gpio = AT91_PIN_PB22,
++		.led = {
++			.name = "user_led3",
++		},
++	}, {
++		.gpio = AT91_PIN_PB23,
++		.led = {
++			.name = "user_led4",
++		},
++	}, {
++		.gpio = AT91_PIN_PB24,
++		.led = {
++			.name = "red",
++		},
++	}, {
++		.gpio = AT91_PIN_PB30,
++		.led = {
++			.name = "orange",
++		},
++	}, {
++		.gpio = AT91_PIN_PB31,
++		.led = {
++			.name = "green",
++		},
++	},
++};
++
++#ifdef CONFIG_KEYBOARD_GPIO
++struct gpio_keys_button keys[] = {
++	{
++		.code = KEY_UP,
++		.gpio = AT91_PIN_PB25,
++	}, {
++		.code = KEY_HOME,
++		.gpio = AT91_PIN_PB13,
++	}, {
++		.code = KEY_DOWN,
++		.gpio = AT91_PIN_PA26,
++	}, {
++		.code = KEY_ENTER,
++		.gpio = AT91_PIN_PC9,
++	},
++};
++
++struct gpio_keys_platform_data gk_pdata = {
++	.buttons = keys,
++	.nbuttons = ARRAY_SIZE(keys),
++};
++
++static void usb_a9260_keyboard_device_dab_mmx(void)
++{
++	int i;
++
++	for (i = 0; i < gk_pdata.nbuttons; i++) {
++		/* user push button, pull up enabled */
++		keys[i].active_low = 1;
++		at91_set_GPIO_periph(keys[i].gpio, keys[i].active_low);
++		at91_set_deglitch(keys[i].gpio, 1);
++	}
++
++	add_gpio_keys_device(-1, &gk_pdata);
++}
++#else
++static void usb_a9260_keyboard_device_dab_mmx(void) {}
++#endif
++
++static void usb_a9260_device_dab_mmx(void)
++{
++	int i;
++
++	usb_a9260_keyboard_device_dab_mmx();
++
++	for (i = 0; i < ARRAY_SIZE(dab_mmx_leds); i++) {
++		dab_mmx_leds[i].active_low = 1;
++		at91_set_gpio_output(dab_mmx_leds[i].gpio, dab_mmx_leds[i].active_low);
++		led_gpio_register(&dab_mmx_leds[i]);
++	}
++}
++#else
++static void usb_a9260_device_dab_mmx(void) {}
++#endif
++
+ static int usb_a9260_devices_init(void)
  {
- 	resource_size_t start;
+ 	usb_a9260_add_device_nand();
+@@ -229,6 +326,7 @@ static int usb_a9260_devices_init(void)
+ 	ek_add_device_udc();
+ 	ek_add_led();
+ 	ek_add_device_button();
++	usb_a9260_device_dab_mmx();
  
-@@ -323,10 +323,10 @@ void at91_register_uart(unsigned id, unsigned pins)
- 			id = 6;
- 			break;
- 		default:
--			return;
-+			return NULL;
- 	}
+ 	armlinux_set_bootparams((void *)(AT91_CHIPSELECT_1 + 0x100));
+ 	usb_a9260_set_board_type();
+@@ -248,7 +346,17 @@ device_initcall(usb_a9260_devices_init);
  
--	add_generic_device("atmel_usart", id, NULL, start, 4096,
-+	return add_generic_device("atmel_usart", id, NULL, start, 4096,
- 			   IORESOURCE_MEM, NULL);
- }
- 
-diff --git a/arch/arm/mach-at91/at91sam9261_devices.c b/arch/arm/mach-at91/at91sam9261_devices.c
-index 7805c27..d4f7b5e 100644
---- a/arch/arm/mach-at91/at91sam9261_devices.c
-+++ b/arch/arm/mach-at91/at91sam9261_devices.c
-@@ -203,7 +203,7 @@ static inline void configure_usart2_pins(unsigned pins)
- 		at91_set_B_periph(AT91_PIN_PA16, 0);	/* CTS2 */
- }
- 
--void at91_register_uart(unsigned id, unsigned pins)
-+struct device_d * __init at91_register_uart(unsigned id, unsigned pins)
+ static int usb_a9260_console_init(void)
  {
- 	resource_size_t start;
- 
-@@ -229,10 +229,10 @@ void at91_register_uart(unsigned id, unsigned pins)
- 			id = 3;
- 			break;
- 		default:
--			return;
-+			return NULL;
- 	}
- 
--	add_generic_device("atmel_usart", id, NULL, start, 4096,
-+	return add_generic_device("atmel_usart", id, NULL, start, 4096,
- 			   IORESOURCE_MEM, NULL);
++	struct device_d *dev;
++
+ 	at91_register_uart(0, 0);
++
++	if (IS_ENABLED(CONFIG_CALAO_DAB_MMX)) {
++		at91_register_uart(2, 0);
++
++		dev = at91_register_uart(4, 0);
++		dev_set_param(dev, "active", "");
++	}
++
+ 	return 0;
  }
+ console_initcall(usb_a9260_console_init);
+diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+index 41e9b99..d2bb7bc 100644
+--- a/arch/arm/mach-at91/Kconfig
++++ b/arch/arm/mach-at91/Kconfig
+@@ -93,6 +93,9 @@ config ARCH_BAREBOX_MAX_BARE_INIT_SIZE
+ 	default 0xF000 if ARCH_AT91SAM9G45
+ 	default 0xffffffff
  
-diff --git a/arch/arm/mach-at91/at91sam9263_devices.c b/arch/arm/mach-at91/at91sam9263_devices.c
-index fc7dc14..87a1726 100644
---- a/arch/arm/mach-at91/at91sam9263_devices.c
-+++ b/arch/arm/mach-at91/at91sam9263_devices.c
-@@ -253,7 +253,7 @@ static inline void configure_usart2_pins(unsigned pins)
- 		at91_set_B_periph(AT91_PIN_PD6, 0);	/* CTS2 */
- }
++config SUPPORT_CALAO_DAB_MMX
++	bool
++
+ # ----------------------------------------------------------
  
--void at91_register_uart(unsigned id, unsigned pins)
-+struct device_d * __init at91_register_uart(unsigned id, unsigned pins)
- {
- 	resource_size_t start;
+ if ARCH_AT91RM9200
+@@ -133,6 +136,7 @@ config MACH_TNY_A9260
  
-@@ -279,10 +279,10 @@ void at91_register_uart(unsigned id, unsigned pins)
- 			id = 3;
- 			break;
- 		default:
--			return;
-+			return NULL;
- 	}
+ config MACH_USB_A9260
+ 	bool "CALAO USB-A9260"
++	select SUPPORT_CALAO_DAB_MMX
+ 	help
+ 	  Select this if you are using a Calao Systems USB-A9260.
+ 	  <http://www.calao-systems.com>
+@@ -209,6 +213,7 @@ config MACH_TNY_A9G20
  
--	add_generic_device("atmel_usart", id, NULL, start, 4096,
-+	return add_generic_device("atmel_usart", id, NULL, start, 4096,
- 			   IORESOURCE_MEM, NULL);
- }
+ config MACH_USB_A9G20
+ 	bool "CALAO USB-A9G20"
++	select SUPPORT_CALAO_DAB_MMX
+ 	help
+ 	  Select this if you are using a Calao Systems USB-A9G20.
+ 	  <http://www.calao-systems.com>
+@@ -328,4 +333,8 @@ config LCD_LG_LB043WQ1
  
-diff --git a/arch/arm/mach-at91/at91sam9g45_devices.c b/arch/arm/mach-at91/at91sam9g45_devices.c
-index bb252bd..6931a3f 100644
---- a/arch/arm/mach-at91/at91sam9g45_devices.c
-+++ b/arch/arm/mach-at91/at91sam9g45_devices.c
-@@ -182,7 +182,7 @@ static inline void configure_usart3_pins(unsigned pins)
- 		at91_set_B_periph(AT91_PIN_PA24, 0);	/* CTS3 */
- }
+ endchoice
  
--void at91_register_uart(unsigned id, unsigned pins)
-+struct device_d * __init at91_register_uart(unsigned id, unsigned pins)
- {
- 	resource_size_t start;
- 
-@@ -213,10 +213,10 @@ void at91_register_uart(unsigned id, unsigned pins)
- 			id = 4;
- 			break;
- 		default:
--			return;
-+			return NULL;
- 	}
- 
--	add_generic_device("atmel_usart", id, NULL, start, 4096,
-+	return add_generic_device("atmel_usart", id, NULL, start, 4096,
- 			   IORESOURCE_MEM, NULL);
- }
- 
-diff --git a/arch/arm/mach-at91/include/mach/board.h b/arch/arm/mach-at91/include/mach/board.h
-index 755ddc8..9f1abc1 100644
---- a/arch/arm/mach-at91/include/mach/board.h
-+++ b/arch/arm/mach-at91/include/mach/board.h
-@@ -83,7 +83,7 @@ void at91_add_device_sdram(u32 size);
- #define ATMEL_UART_DCD	0x10
- #define ATMEL_UART_RI	0x20
- 
--void at91_register_uart(unsigned id, unsigned pins);
-+struct device_d * __init at91_register_uart(unsigned id, unsigned pins);
- 
- /* Multimedia Card Interface */
- struct atmel_mci_platform_data {
++config CALAO_DAB_MMX
++	bool "DAB MMX Daughter Board support"
++	depends on SUPPORT_CALAO_DAB_MMX
++
+ endif
 -- 
 1.7.7
 
