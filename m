@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Rxa8g-0004YK-NB
- for barebox@lists.infradead.org; Wed, 15 Feb 2012 08:23:01 +0000
+ id 1Rxa8g-0004Y5-Ii
+ for barebox@lists.infradead.org; Wed, 15 Feb 2012 08:23:02 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 15 Feb 2012 09:22:44 +0100
-Message-Id: <1329294165-12089-12-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 15 Feb 2012 09:22:45 +0100
+Message-Id: <1329294165-12089-13-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1329294165-12089-1-git-send-email-s.hauer@pengutronix.de>
 References: <1329294165-12089-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,44 +21,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/12] fs: allow to mount on subdirectories
+Subject: [PATCH 12/12] devices: unregister children when unregistering a device
 To: barebox@lists.infradead.org
 
-Since get_mtab_entry_by_path() is a bit more flexible now
-we no longer have to force the user to mount on the root
-directory only. Instead, we can allow to mount on subdirectories
-aswell. Nested mounts are still not possible though.
+We currently do not allow to unregister a device when it
+has children. However, the return value is seldomly checked.
+Also this breaks for hot pluggable devices like USB which we have
+to unregister when they disappear. The best way to fix this is to
+unregister our children and also the partitions on the unregistered
+device.
+We unregister the device first and then afterwards the children.
+We do this because for example network devices have a miidev as
+child which they unregister themselves. So we only have to
+unregister the children which are not cleaned up by the drivers,
+namely fs devices.
+Also, unregister all partitions on a disappearing device.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- fs/fs.c |   13 +++++++------
- 1 files changed, 7 insertions(+), 6 deletions(-)
+ drivers/base/driver.c |   20 +++++++++++++++-----
+ 1 files changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/fs/fs.c b/fs/fs.c
-index 637a01f..3923ec6 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -778,13 +778,14 @@ int mount(const char *device, const char *fsname, const char *_path)
+diff --git a/drivers/base/driver.c b/drivers/base/driver.c
+index 0132e7d..3777f82 100644
+--- a/drivers/base/driver.c
++++ b/drivers/base/driver.c
+@@ -137,16 +137,26 @@ EXPORT_SYMBOL(register_device);
  
- 	debug("mount: %s on %s type %s\n", device, path, fsname);
+ int unregister_device(struct device_d *old_dev)
+ {
+-	debug("unregister_device: %s\n", dev_name(old_dev));
++	struct cdev *cdev, *ct;
++	struct device_d *child, *dt;
  
--	if (strchr(path + 1, '/')) {
--		printf("mounting allowed on first directory level only\n");
+-	if (!list_empty(&old_dev->children)) {
 -		errno = -EBUSY;
--		goto err_free_path;
+-		return errno;
 -	}
--
- 	if (mtab_root) {
-+		struct mtab_entry *entry;
-+		entry = get_mtab_entry_by_path(path);
-+		if (entry != mtab_root) {
-+			printf("sorry, no nested mounts\n");
-+			errno = -EBUSY;
-+			goto err_free_path;
++	dev_dbg(old_dev, "unregister\n");
+ 
+ 	if (old_dev->driver)
+ 		old_dev->bus->remove(old_dev);
+ 
++	list_for_each_entry_safe(child, dt, &old_dev->children, sibling) {
++		dev_dbg(old_dev, "unregister child %s\n", dev_name(child));
++		unregister_device(child);
++	}
++
++	list_for_each_entry_safe(cdev, ct, &old_dev->cdevs, devices_list) {
++		if (cdev->flags & DEVFS_IS_PARTITION) {
++			dev_dbg(old_dev, "unregister part %s\n", cdev->name);
++			devfs_del_partition(cdev->name);
 +		}
- 		if (path_check_prereq(path, S_IFDIR))
- 			goto err_free_path;
- 	} else {
++	}
++
+ 	list_del(&old_dev->list);
+ 	list_del(&old_dev->active);
+ 
 -- 
 1.7.9
 
