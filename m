@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RxZqd-000480-EF
- for barebox@lists.infradead.org; Wed, 15 Feb 2012 08:04:24 +0000
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RxZqb-00052R-8q
+ for barebox@lists.infradead.org; Wed, 15 Feb 2012 08:04:18 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1RxZqP-0000hK-Sq
+ for barebox@lists.infradead.org; Wed, 15 Feb 2012 09:04:05 +0100
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.77)
+ (envelope-from <sha@pengutronix.de>) id 1RxZqP-0002dH-Re
+ for barebox@lists.infradead.org; Wed, 15 Feb 2012 09:04:05 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 15 Feb 2012 09:03:59 +0100
-Message-Id: <1329293044-9967-2-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1329293044-9967-1-git-send-email-s.hauer@pengutronix.de>
-References: <1329293044-9967-1-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 15 Feb 2012 09:03:58 +0100
+Message-Id: <1329293044-9967-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,39 +26,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/6] usb net smsc95xx: remove unused variable
+Subject: USB/network unregistration patches
 To: barebox@lists.infradead.org
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/net/usb/smsc95xx.c |    4 ----
- 1 files changed, 0 insertions(+), 4 deletions(-)
+Registering devices works fine on barebox, unregistration often not so.
+This series cleans up unregistration of network/USB devices.
 
-diff --git a/drivers/net/usb/smsc95xx.c b/drivers/net/usb/smsc95xx.c
-index b518992..f2a2d00 100644
---- a/drivers/net/usb/smsc95xx.c
-+++ b/drivers/net/usb/smsc95xx.c
-@@ -722,8 +722,6 @@ static int smsc95xx_reset(struct usbnet *dev)
- 	return 0;
- }
- 
--static struct usbnet *usbnet_global;
--
- static int smsc95xx_bind(struct usbnet *dev)
- {
- 	struct smsc95xx_priv *pdata = NULL;
-@@ -767,8 +765,6 @@ static void smsc95xx_unbind(struct usbnet *dev)
- 		pdata = NULL;
- 		dev->data[0] = 0;
- 	}
--
--	usbnet_global = NULL;
- }
- 
- static int smsc95xx_rx_fixup(struct usbnet *dev, void *buf, int len)
--- 
-1.7.9
+Sascha Hauer (6):
+      usb net smsc95xx: remove unused variable
+      usb net smsc95xx: add missing mii_unregister
+      usb net: fix unregistration
+      net: fix eth device unregistration
+      net: set enetaddr to invalid address when an invalid string is passed
+      USB storage: fix disconnect
 
+ drivers/net/usb/smsc95xx.c |    7 +++----
+ drivers/net/usb/usbnet.c   |    6 ++----
+ drivers/usb/storage/usb.c  |   23 ++++++-----------------
+ drivers/usb/storage/usb.h  |    1 +
+ net/eth.c                  |    5 ++++-
+ net/net.c                  |    6 ++++--
+ 6 files changed, 20 insertions(+), 28 deletions(-)
 
 _______________________________________________
 barebox mailing list
