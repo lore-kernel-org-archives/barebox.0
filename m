@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RxbCp-0005hY-Vs
- for barebox@lists.infradead.org; Wed, 15 Feb 2012 09:31:25 +0000
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Wed, 15 Feb 2012 10:29:12 +0100
-References: <CALQ+5adUP4qyf8+82s2NK6R3LbvjteuE-bkQ0iUdMG7X2LtxFQ@mail.gmail.com>
-In-Reply-To: <CALQ+5adUP4qyf8+82s2NK6R3LbvjteuE-bkQ0iUdMG7X2LtxFQ@mail.gmail.com>
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RxbCs-0000mP-6Q
+ for barebox@lists.infradead.org; Wed, 15 Feb 2012 09:31:23 +0000
+Date: Wed, 15 Feb 2012 10:31:08 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120215093108.GA3852@pengutronix.de>
+References: <1329229881-26751-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-Message-Id: <201202151029.12926.jbe@pengutronix.de>
+In-Reply-To: <1329229881-26751-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,80 +18,185 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: iMX27 clock settings
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/4] add gpio keyboard support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-Igor Trevisan wrote:
-> Hi,
->
-> I'm working on a custom board based on iMX27L. Initially I worked with
-> Redboot as Linux bootloader but now, I'm happily working with Barebox
-> (2012.01.0) having replaced Redboot with it.
->
-> Everithing is fine (thanks to the guys in the list for helping me!) but...
-> I noticed that my Linux apps run more slowly within my system if it's
-> started by Barebox
-> then if it's started by Redbbot.
-> I think it's a matter of internal clocks settings.
->
-> I see that Redboot, for example, set:
->         CSR=3D0x33F38107
-> while Barebox does:
-> 	writel(0x33F30307 | CSCR_MPLL_RESTART | CSCR_SPLL_RESTART, CSCR)
-> That brings to CSR=3D0x33F30307 at the end of the PLLs restart procedure.
->
-> Reading the Manual I can see that the differences between the two settings
-> mean having an arm_clk that is 2/3 and an AHB_clk that's the half.
->
-> Is there a particular reason for having these "slower configuration"?
->
-> I tried to change the lowlevel_init.S to force 0x33F38107 into CSCR
-> at startup but, after that change, my board starts, has time to write
-> somenthing on the
-> serial console:
->
-> "barebox 2012.01.0-svn11070-dirty1 (Feb 14 2012 - 11:10:39)
->
-> Board: Freescale i=FF"
->
-> and then restarts... continuously.
->
-> Can anybody help me to understand this and to make (if possible) my
-> system faster?
+On Tue, Feb 14, 2012 at 03:31:18PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+> +static inline struct gpio_keys_platform_data *
+> +poller_to_gk_pdata(struct poller_struct *poller)
+> +{
+> +	return container_of(poller, struct gpio_keys_platform_data, poller);
+> +}
+> +
+> +static inline struct gpio_keys_platform_data *
+> +cdev_to_gk_pdata(struct console_device *cdev)
+> +{
+> +	return container_of(cdev, struct gpio_keys_platform_data, cdev);
+> +}
+> +
+> +static int pop_buf(struct gpio_keys_platform_data *pdata)
+> +{
+> +	int c;
+> +
+> +	if (pdata->len == 0)
+> +		return -EIO;
+> +
+> +	c = pdata->buf[pdata->pos];
+> +
+> +	if (!pdata->pos)
+> +		pdata->pos = pdata->buf_size - 1;
+> +	else
+> +		pdata->pos--;
+> +	pdata->len--;
+> +
+> +	return c;
+> +}
+> +
+> +static int push_buf(struct gpio_keys_platform_data *pdata, int c)
+> +{
+> +	if (pdata->len >= pdata->buf_size)
+> +		return -ENOSPC;
+> +
+> +	pdata->pos++;
+> +	pdata->len++;
+> +	if (pdata->pos >= pdata->buf_size)
+> +		pdata->pos = 0;
+> +
+> +	pdata->buf[pdata->pos] = c;
+> +
+> +	return 0;
+> +}
 
-a) you cannot change the PLL settings, when the system is already up and
-   running (which means the SDRAM controller is running)
-   This is due to the fact, the clocks are stopping until the PLLs lock
-   again to the new settings. While the clock is stopped the SDRAM may lose
-   data (no refresh for about 100ms).
-b) one way to solve it is to re-program the PLL very early prior the SDRAM
-   controller gets configured.
-c) solution b) does not work if the default core power supply is to low to =
-run
-   the core at the full speed.
-d) solution here is to re-program the PLL to its final values, but with hig=
-her
-   prescaler vale to keep the core clock at rates corresponding to the
-   available core power supply value. Later on, when Barebox is up and runn=
-ing
-   and can re-program the core power supply to higher values, it is possible
-   the change only the prescalers to run the core at higher speed (without =
-the
-   need to reprogram the PLL).
+This seems the exact usecase for kfifos.
 
-Regards,
-Juergen
+> +
+> +static void gpio_key_poller(struct poller_struct *poller)
+> +{
+> +	struct gpio_keys_platform_data *pdata = poller_to_gk_pdata(poller);
+> +	struct gpio_keys_button *gb;
+> +	int i, val;
+> +
+> +	for (i = 0; i < pdata->nbuttons; i++) {
+> +
+> +		gb = &pdata->buttons[i];
+> +		val = gpio_get_value(gb->gpio);
+> +
+> +		if (val != gb->previous_state && val != gb->active_low) {
+> +			push_buf(pdata, gb->code);
+> +			debug("pressed ok\n");
 
--- =
+This information would be far more informative if you printed the
+button that is pressed/released here.
 
-Pengutronix e.K.                              | Juergen Beisert            =
- |
-Linux Solutions for Science and Industry      | http://www.pengutronix.de/ =
- |
+> +		}
+> +		gb->previous_state = val;
+> +	}
+
+You do nothing for debouncing the keys.
+
+> +}
+> +
+> +static int gpio_keys_tstc(struct console_device *cdev)
+> +{
+> +	struct gpio_keys_platform_data *pdata = cdev_to_gk_pdata(cdev);
+> +
+> +	return pdata->len;
+> +}
+> +
+> +static int gpio_keys_getc(struct console_device *cdev)
+> +{
+> +	struct gpio_keys_platform_data *pdata = cdev_to_gk_pdata(cdev);
+> +
+> +	return pop_buf(pdata);
+> +}
+> +
+> +static int __init gpio_keys_probe(struct device_d *dev)
+> +{
+> +	int ret, i, gpio;
+> +	struct gpio_keys_platform_data *pdata;
+> +	struct console_device *cdev;
+> +
+> +	pdata = dev->platform_data;
+> +
+> +	if (!pdata) {
+> +		/* small (so we copy it) but critical! */
+> +		pr_err("missing platform_data\n");
+
+dev_err
+
+> +		return -ENODEV;
+> +	}
+> +
+> +	if (!pdata->buf_size)
+> +		pdata->buf_size = 50;
+> +
+> +	pdata->buf = xzalloc(sizeof(int) * pdata->buf_size);
+> +
+> +	for (i = 0; i < pdata->nbuttons; i++) {
+> +		gpio = pdata->buttons->gpio;
+> +		ret = gpio_request(gpio, "gpio_keys");
+> +		if (ret) {
+> +			pr_err("gpio_keys: (%d) can not be requested\n", gpio);
+
+dev_err
+
+> +			return ret;
+> +		}
+> +		gpio_direction_input(gpio);
+> +	}
+> +
+> +	pdata->poller.func = gpio_key_poller;
+> +
+> +	cdev = &pdata->cdev;
+> +	dev->type_data = cdev;
+> +	cdev->dev = dev;
+> +	cdev->f_caps = CONSOLE_STDIN;
+> +	cdev->tstc = gpio_keys_tstc;
+> +	cdev->getc = gpio_keys_getc;
+> +
+> +	console_register(&pdata->cdev);
+
+As I tried to explain yesterday I'm not sure that directly registering
+the gpio keys as a console is the right thing to do. A keyboard has
+more attributes than what we have in the console. For example a keyboard
+has a button press / button release event which we don't have on the
+console.
+
+> +
+> +	return poller_register(&pdata->poller);
+> +}
+> +
+> +static struct driver_d gpio_keys_driver = {
+> +	.name	= "gpio_keys",
+> +	.probe	= gpio_keys_probe,
+> +};
+> +
+> +static int gpio_keys_init(void)
+> +{
+> +	register_driver(&gpio_keys_driver);
+> +	return 0;
+
+Since we now do not panic anymore when an initcall fails but only
+use the return value for debug purposes please do a
+
+return register_driver(&gpio_keys_driver);
+
+instead.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
