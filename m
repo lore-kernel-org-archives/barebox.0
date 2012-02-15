@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lpp01m010-f49.google.com ([209.85.215.49])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RxgSw-0006Dh-MN
- for barebox@lists.infradead.org; Wed, 15 Feb 2012 15:08:22 +0000
-Received: by lahg1 with SMTP id g1so1388982lah.36
- for <barebox@lists.infradead.org>; Wed, 15 Feb 2012 07:08:15 -0800 (PST)
+Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1Rxgfc-00075J-4d
+ for barebox@lists.infradead.org; Wed, 15 Feb 2012 15:21:29 +0000
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+References: <877gzw445i.fsf@free.fr>
+ <1329224294-31475-1-git-send-email-robert.jarzmik@free.fr>
+ <20120215083202.GX3852@pengutronix.de>
+Date: Wed, 15 Feb 2012 16:21:13 +0100
+In-Reply-To: <20120215083202.GX3852@pengutronix.de> (Sascha Hauer's message of
+ "Wed, 15 Feb 2012 09:32:02 +0100")
+Message-ID: <87k43o2kd2.fsf@free.fr>
 MIME-Version: 1.0
-In-Reply-To: <20120215083733.GY3852@pengutronix.de>
-References: <CANtfVZ2NJpVLbX65u7qMv2+8n5djAzjv3YLxh8iuwc=vSccXnQ@mail.gmail.com>
- <4F3B56B8.10709@mleia.com> <20120215083733.GY3852@pengutronix.de>
-Date: Wed, 15 Feb 2012 16:08:15 +0100
-Message-ID: <CANtfVZ0=nnQSXHiWR_sMx6p0vLZ5FNOKrakqDVyfsaT+f7RbDA@mail.gmail.com>
-From: =?ISO-8859-2?Q?Tomislav_Se=E8en?= <tomislav.secen@3plus.hr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,62 +20,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============4363338461444882382=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: LPC3250 support
+Subject: Re: [PATCH V2 1/2] drivers/pwm: add PXA pulse width modulator
+ controller
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
---===============4363338461444882382==
-Content-Type: multipart/alternative; boundary=e89a8f22c415b8970504b902140b
+Sascha Hauer <s.hauer@pengutronix.de> writes:
 
---e89a8f22c415b8970504b902140b
-Content-Type: text/plain; charset=ISO-8859-1
+> Hi Robert,
+> Nice to make the pwms accessible from the command line, but shouldn't
+> this be in the core? From what I see all we have to do is to add
+> duty_ns and period_ns to struct pwm_chip.
 
-On Wed, Feb 15, 2012 at 9:37 AM, Sascha Hauer <s.hauer@pengutronix.de>wrote:
+I thought it over twice.
 
-> 'dropped' sounds like an active decision, it was more like we stopped
-> working on this due to the lack of resources/interest. As far as I know
-> there are no real road blocks.
->
+If the set_duty_ns(), set_period_ns() and set_enable() are transfered to the
+core, I'll have to link the device and pwm_chip :
+ - expand pwmadd_chip() : should be expanded with the "struct device_d *dev"
+parameter
+ - provide a way to link *dev with *pwm_chip
+   => either store device_d pointer into pwm_device structure, and go through the
+   list of all PWMs at each set_X() calls
+   => or use dev->priv (bad idea since the driver, ie. pxa_pwm wants to do that)
 
-OK, thanks.
+This way, calling set_X(struct device_d *dev, ...) will find pwm_chip pointer
+from dev, and call the approriate pwm_config(), ...
 
-It's nice to see such an active development effort, kudos!
+So it's a bit more that adding duty_ns and period_ns to struct pwm_chip. Is this
+what you want ?
 
---
-Cheers,
-Tom
+Cheers.
 
---e89a8f22c415b8970504b902140b
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-<div class=3D"gmail_quote">On Wed, Feb 15, 2012 at 9:37 AM, Sascha Hauer <s=
-pan dir=3D"ltr">&lt;<a href=3D"mailto:s.hauer@pengutronix.de">s.hauer@pengu=
-tronix.de</a>&gt;</span> wrote:<br><blockquote class=3D"gmail_quote" style=
-=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">
-<div class=3D"im">&#39;dropped&#39; sounds like an active decision, it was =
-more like we stopped</div>
-working on this due to the lack of resources/interest. As far as I know<br>
-there are no real road blocks.<br></blockquote><div><br></div><div>OK, than=
-ks.</div><div><br></div><div>It&#39;s nice to see such an active developmen=
-t effort, kudos!</div><div><br></div><div>--</div><div>Cheers,</div><div>
-Tom=A0</div></div>
-
---e89a8f22c415b8970504b902140b--
-
-
---===============4363338461444882382==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+-- 
+Robert
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============4363338461444882382==--
