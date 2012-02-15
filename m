@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lpp01m010-f49.google.com ([209.85.215.49])
+Received: from mail-bk0-f49.google.com ([209.85.214.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RxgKZ-0005X3-Eb
- for barebox@lists.infradead.org; Wed, 15 Feb 2012 14:59:40 +0000
-Received: by lahg1 with SMTP id g1so1376486lah.36
- for <barebox@lists.infradead.org>; Wed, 15 Feb 2012 06:59:37 -0800 (PST)
+ id 1RxgSp-0006Cg-4L
+ for barebox@lists.infradead.org; Wed, 15 Feb 2012 15:08:15 +0000
+Received: by bkcjk13 with SMTP id jk13so1406696bkc.36
+ for <barebox@lists.infradead.org>; Wed, 15 Feb 2012 07:08:07 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20120215120911.GB3852@pengutronix.de>
-References: <CALQ+5adUP4qyf8+82s2NK6R3LbvjteuE-bkQ0iUdMG7X2LtxFQ@mail.gmail.com>
- <20120215120911.GB3852@pengutronix.de>
-From: Igor Trevisan <igt1972@gmail.com>
-Date: Wed, 15 Feb 2012 15:59:17 +0100
-Message-ID: <CALQ+5adPFLiwehAoeLoDKwzU5KLhQmMs92GxsT62yDYfppk+aA@mail.gmail.com>
+In-Reply-To: <4F3B56B8.10709@mleia.com>
+References: <CANtfVZ2NJpVLbX65u7qMv2+8n5djAzjv3YLxh8iuwc=vSccXnQ@mail.gmail.com>
+ <4F3B56B8.10709@mleia.com>
+Date: Wed, 15 Feb 2012 16:08:07 +0100
+Message-ID: <CANtfVZ13AEMP0_AEFfVk0AJ+dGXtrJgjRrEv9X_nquTDZavO_w@mail.gmail.com>
+From: =?ISO-8859-2?Q?Tomislav_Se=E8en?= <tomislav.secen@3plus.hr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,50 +20,78 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============6237267879686277743=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: iMX27 clock settings
-To: barebox@lists.infradead.org
+Subject: Re: LPC3250 support
+To: Vladimir Zapolskiy <vz@mleia.com>
+Cc: barebox@lists.infradead.org
 
->
-> One thing that might be interesting in such cases is the output of
-> the dump_clocks command.
+--===============6237267879686277743==
+Content-Type: multipart/alternative; boundary=bcaec554d52c414fb004b9021453
 
-It's a useful debug command!
-Here it is its output:
+--bcaec554d52c414fb004b9021453
+Content-Type: text/plain; charset=ISO-8859-1
 
-barebox:/ dump_clocks
-chip id: [2,882,1,01d]
-mpll:     600000000 Hz
-spll:     240000000 Hz
-arm:      400000000 Hz
-perclk1:   20000000 Hz
-perclk2:   40000000 Hz
-perclk3:  100000000 Hz
-perclk4:   40000000 Hz
-clkin26:   26000000 Hz
-ahb:      133333333 Hz
-ipg:       66666666 Hz
-barebox:/
+Hi Vladimir,
 
-This is what I get after the last configuration I tried:
+On Wed, Feb 15, 2012 at 7:54 AM, Vladimir Zapolskiy <vz@mleia.com> wrote:
 
-writel(0x00262C15, MPCTL0)	
-writel(0x040C2403, SPCTL0)	
-writel(0x33F30207, CSCR)	/* Use DIV3 and AHBDIV=10 */
+> barebox works on one my LPC3250 board pretty well, but I have to polish
+> the patches before public publishing in the barebox maillist.
 
-We have three different boards using iMX27L; on two of them
-Barebox with this setting runs properly, on the third we frequently
-see the system hanging (cyclic restarts).
-Note: I have the same results with:
-writel(0x33F30307, CSCR)	/* Use DIV3 and AHBDIV=11 */
 
-Best regards,
-I.
+That's cool!
+I spent almost two days on it (using Sascha's old commits/patches), but I
+can't even get barebox to boot/start from S1L (I have a phy3250 board and
+was going for net, usb and i2c support in barebox).
+I have no more time to mess around with barebox so it's back to u-boot.
+
+
+> If it's ok for you to wait a couple of weeks, I'll publish the changes
+> with basic support of LPC32XX SoCs.
+
+
+Please do, it would be great to have it.
+
+--
+Cheers,
+Tom
+
+--bcaec554d52c414fb004b9021453
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+Hi Vladimir,<br><br><div class=3D"gmail_quote">On Wed, Feb 15, 2012 at 7:54=
+ AM, Vladimir Zapolskiy <span dir=3D"ltr">&lt;<a href=3D"mailto:vz@mleia.co=
+m">vz@mleia.com</a>&gt;</span> wrote:<br><blockquote class=3D"gmail_quote" =
+style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">
+barebox works on one my LPC3250 board pretty well, but I have to polish the=
+ patches before public publishing in the barebox maillist.</blockquote><div=
+><br></div><div>That&#39;s cool!</div><div>I spent almost two days on it (u=
+sing Sascha&#39;s old commits/patches), but I can&#39;t even get barebox to=
+ boot/start from S1L (I have a phy3250 board and was going for net, usb and=
+ i2c support in barebox).</div>
+<div>I have no more time to mess around with barebox so it&#39;s back to u-=
+boot.</div><div>=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:=
+0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">
+If it&#39;s ok for you to wait a couple of weeks, I&#39;ll publish the chan=
+ges with basic support of LPC32XX SoCs.</blockquote><div><br></div><div>Ple=
+ase do, it would be great to have it.</div><div><br></div><div>--</div>
+<div>Cheers,</div><div>Tom</div></div>
+
+--bcaec554d52c414fb004b9021453--
+
+
+--===============6237267879686277743==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============6237267879686277743==--
