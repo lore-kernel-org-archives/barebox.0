@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RxbCs-0000mP-6Q
- for barebox@lists.infradead.org; Wed, 15 Feb 2012 09:31:23 +0000
-Date: Wed, 15 Feb 2012 10:31:08 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120215093108.GA3852@pengutronix.de>
-References: <1329229881-26751-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from mail-lpp01m010-f49.google.com ([209.85.215.49])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1Rxcl6-0000CM-J1
+ for barebox@lists.infradead.org; Wed, 15 Feb 2012 11:10:49 +0000
+Received: by lahg1 with SMTP id g1so1060223lah.36
+ for <barebox@lists.infradead.org>; Wed, 15 Feb 2012 03:10:46 -0800 (PST)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1329229881-26751-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <CAM9uW_4Df7yazcWNvai0ffALC1eHrMUC5WetMNf=KJ7PBhm51w@mail.gmail.com>
+References: <CALQ+5adUP4qyf8+82s2NK6R3LbvjteuE-bkQ0iUdMG7X2LtxFQ@mail.gmail.com>
+ <CAM9uW_4Df7yazcWNvai0ffALC1eHrMUC5WetMNf=KJ7PBhm51w@mail.gmail.com>
+From: Igor Trevisan <igt1972@gmail.com>
+Date: Wed, 15 Feb 2012 12:10:26 +0100
+Message-ID: <CALQ+5aegByok5nGD4QRmRxWZtkw0bXOA3QioB7TMWRPFAoaJSg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,181 +24,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] add gpio keyboard support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: iMX27 clock settings
+To: barebox@lists.infradead.org
 
-On Tue, Feb 14, 2012 at 03:31:18PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
-> +static inline struct gpio_keys_platform_data *
-> +poller_to_gk_pdata(struct poller_struct *poller)
-> +{
-> +	return container_of(poller, struct gpio_keys_platform_data, poller);
-> +}
-> +
-> +static inline struct gpio_keys_platform_data *
-> +cdev_to_gk_pdata(struct console_device *cdev)
-> +{
-> +	return container_of(cdev, struct gpio_keys_platform_data, cdev);
-> +}
-> +
-> +static int pop_buf(struct gpio_keys_platform_data *pdata)
-> +{
-> +	int c;
-> +
-> +	if (pdata->len == 0)
-> +		return -EIO;
-> +
-> +	c = pdata->buf[pdata->pos];
-> +
-> +	if (!pdata->pos)
-> +		pdata->pos = pdata->buf_size - 1;
-> +	else
-> +		pdata->pos--;
-> +	pdata->len--;
-> +
-> +	return c;
-> +}
-> +
-> +static int push_buf(struct gpio_keys_platform_data *pdata, int c)
-> +{
-> +	if (pdata->len >= pdata->buf_size)
-> +		return -ENOSPC;
-> +
-> +	pdata->pos++;
-> +	pdata->len++;
-> +	if (pdata->pos >= pdata->buf_size)
-> +		pdata->pos = 0;
-> +
-> +	pdata->buf[pdata->pos] = c;
-> +
-> +	return 0;
-> +}
+Hi,
 
-This seems the exact usecase for kfifos.
+On Wed, Feb 15, 2012 at 10:15 AM, Kamel BOUHARA <k.bouhara@gmail.com> wrote:
+> Hi Igor,
+>
+> What revision of imx27 silicon do you have?
 
-> +
-> +static void gpio_key_poller(struct poller_struct *poller)
-> +{
-> +	struct gpio_keys_platform_data *pdata = poller_to_gk_pdata(poller);
-> +	struct gpio_keys_button *gb;
-> +	int i, val;
-> +
-> +	for (i = 0; i < pdata->nbuttons; i++) {
-> +
-> +		gb = &pdata->buttons[i];
-> +		val = gpio_get_value(gb->gpio);
-> +
-> +		if (val != gb->previous_state && val != gb->active_low) {
-> +			push_buf(pdata, gb->code);
-> +			debug("pressed ok\n");
+Silicon Rev. of my iMX27L is V2.1 (code M72J).
 
-This information would be far more informative if you printed the
-button that is pressed/released here.
+> If it's a rev2.0 or 2.1, you shoult take a look a the freescale errata in
+> order to set your PLL properly.
 
-> +		}
-> +		gb->previous_state = val;
-> +	}
+I had a look at the Chip Errata. I saw that there's a PLL problem and
+for it Freescale suggest two possible workarounds, a Hardware and a
+Software one.
+On my board the Hardware workaround has been used.
+By the way, I tried also to add the SW workaround configuring:
+MPCTL0=0x00262C15 (I use the 26MHz oscillator as source)
+and
+CSCR=0x33F30307 (to use DIV3 as it is by default and AHBDIV=11)
+or
+CSCR=0x33F30207 (to use DIV3 as it is by default and AHBDIV=10 to slow down AHB)
+and I discovered that this configuration (both of CSCR) works properly
+on some boards, while on other boards (same uC-Memories core but different
+peripherals and power supply) the system starts and hangs continuously
+as I described in my first post.
+So, at the end, I think that my settings to speed up the uC core @400MHz
+are correct but probably I have a power supply problem on one of the
+products I'm working on!
+I'll investigate this and inform the list if it's not so...
+Thanks for the support, also thanks to Juergen for his suggestions.
+Ciao,
+I.
 
-You do nothing for debouncing the keys.
-
-> +}
-> +
-> +static int gpio_keys_tstc(struct console_device *cdev)
-> +{
-> +	struct gpio_keys_platform_data *pdata = cdev_to_gk_pdata(cdev);
-> +
-> +	return pdata->len;
-> +}
-> +
-> +static int gpio_keys_getc(struct console_device *cdev)
-> +{
-> +	struct gpio_keys_platform_data *pdata = cdev_to_gk_pdata(cdev);
-> +
-> +	return pop_buf(pdata);
-> +}
-> +
-> +static int __init gpio_keys_probe(struct device_d *dev)
-> +{
-> +	int ret, i, gpio;
-> +	struct gpio_keys_platform_data *pdata;
-> +	struct console_device *cdev;
-> +
-> +	pdata = dev->platform_data;
-> +
-> +	if (!pdata) {
-> +		/* small (so we copy it) but critical! */
-> +		pr_err("missing platform_data\n");
-
-dev_err
-
-> +		return -ENODEV;
-> +	}
-> +
-> +	if (!pdata->buf_size)
-> +		pdata->buf_size = 50;
-> +
-> +	pdata->buf = xzalloc(sizeof(int) * pdata->buf_size);
-> +
-> +	for (i = 0; i < pdata->nbuttons; i++) {
-> +		gpio = pdata->buttons->gpio;
-> +		ret = gpio_request(gpio, "gpio_keys");
-> +		if (ret) {
-> +			pr_err("gpio_keys: (%d) can not be requested\n", gpio);
-
-dev_err
-
-> +			return ret;
-> +		}
-> +		gpio_direction_input(gpio);
-> +	}
-> +
-> +	pdata->poller.func = gpio_key_poller;
-> +
-> +	cdev = &pdata->cdev;
-> +	dev->type_data = cdev;
-> +	cdev->dev = dev;
-> +	cdev->f_caps = CONSOLE_STDIN;
-> +	cdev->tstc = gpio_keys_tstc;
-> +	cdev->getc = gpio_keys_getc;
-> +
-> +	console_register(&pdata->cdev);
-
-As I tried to explain yesterday I'm not sure that directly registering
-the gpio keys as a console is the right thing to do. A keyboard has
-more attributes than what we have in the console. For example a keyboard
-has a button press / button release event which we don't have on the
-console.
-
-> +
-> +	return poller_register(&pdata->poller);
-> +}
-> +
-> +static struct driver_d gpio_keys_driver = {
-> +	.name	= "gpio_keys",
-> +	.probe	= gpio_keys_probe,
-> +};
-> +
-> +static int gpio_keys_init(void)
-> +{
-> +	register_driver(&gpio_keys_driver);
-> +	return 0;
-
-Since we now do not panic anymore when an initcall fails but only
-use the return value for debug purposes please do a
-
-return register_driver(&gpio_keys_driver);
-
-instead.
-
-Sascha
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+"Don't find fault, find a remedy."
+(Henry Ford)
 
 _______________________________________________
 barebox mailing list
