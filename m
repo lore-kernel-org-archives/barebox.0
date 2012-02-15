@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Rxa8f-0002fF-1D
- for barebox@lists.infradead.org; Wed, 15 Feb 2012 08:22:58 +0000
+ id 1Rxa8f-0002fH-1C
+ for barebox@lists.infradead.org; Wed, 15 Feb 2012 08:22:57 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 15 Feb 2012 09:22:34 +0100
-Message-Id: <1329294165-12089-2-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 15 Feb 2012 09:22:37 +0100
+Message-Id: <1329294165-12089-5-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1329294165-12089-1-git-send-email-s.hauer@pengutronix.de>
 References: <1329294165-12089-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,34 +21,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/12] add list_is_singular
+Subject: [PATCH 04/12] fs: make locally used function get_mtab_entry_by_path
+ static
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/linux/list.h |    9 +++++++++
- 1 files changed, 9 insertions(+), 0 deletions(-)
+ fs/fs.c      |    2 +-
+ include/fs.h |    1 -
+ 2 files changed, 1 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/list.h b/include/linux/list.h
-index 15ed499..5ae90b4 100644
---- a/include/linux/list.h
-+++ b/include/linux/list.h
-@@ -210,6 +210,15 @@ static inline int list_empty_careful(const struct list_head *head)
- 	return (next == head) && (next == head->prev);
- }
+diff --git a/fs/fs.c b/fs/fs.c
+index 3dfbaaa..afa0198 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -170,7 +170,7 @@ EXPORT_SYMBOL(normalise_path);
+ LIST_HEAD(mtab_list);
+ static struct mtab_entry *mtab_root;
  
-+/**
-+ * list_is_singular - tests whether a list has just one entry.
-+ * @head: the list to test.
-+ */
-+static inline int list_is_singular(const struct list_head *head)
-+{
-+	return !list_empty(head) && (head->next == head->prev);
-+}
-+
- static inline void __list_splice(struct list_head *list,
- 				 struct list_head *head)
+-struct mtab_entry *get_mtab_entry_by_path(const char *_path)
++static struct mtab_entry *get_mtab_entry_by_path(const char *_path)
  {
+ 	struct mtab_entry *e = NULL;
+ 	char *path, *tok;
+diff --git a/include/fs.h b/include/fs.h
+index dd10677..d31fb20 100644
+--- a/include/fs.h
++++ b/include/fs.h
+@@ -150,7 +150,6 @@ char *mkmodestr(unsigned long mode, char *str);
+  * Note that we only support mounting on directories lying
+  * directly in / and of course the root directory itself
+  */
+-struct mtab_entry *get_mtab_entry_by_path(const char *path);
+ const char *fsdev_get_mountpoint(struct fs_device_d *fsdev);
+ 
+ /*
 -- 
 1.7.9
 
