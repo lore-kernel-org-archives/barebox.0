@@ -1,20 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 7.mo5.mail-out.ovh.net ([178.32.124.100]
- helo=mo5.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1RxhbS-0002Vz-OP
- for barebox@lists.infradead.org; Wed, 15 Feb 2012 16:21:12 +0000
-Received: from mail98.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id A7C77FFA843
- for <barebox@lists.infradead.org>; Wed, 15 Feb 2012 17:23:31 +0100 (CET)
-Date: Wed, 15 Feb 2012 17:14:26 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120215161426.GJ1214@game.jcrosoft.org>
-References: <1329229881-26751-1-git-send-email-plagnioj@jcrosoft.com>
- <20120215093108.GA3852@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1RxvxN-0003j2-8H
+ for barebox@lists.infradead.org; Thu, 16 Feb 2012 07:40:53 +0000
+Date: Thu, 16 Feb 2012 08:40:31 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120216074031.GG3852@pengutronix.de>
+References: <877gzw445i.fsf@free.fr>
+ <1329224294-31475-1-git-send-email-robert.jarzmik@free.fr>
+ <20120215083202.GX3852@pengutronix.de> <87k43o2kd2.fsf@free.fr>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120215093108.GA3852@pengutronix.de>
+In-Reply-To: <87k43o2kd2.fsf@free.fr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,71 +24,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] add gpio keyboard support
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH V2 1/2] drivers/pwm: add PXA pulse width modulator
+ controller
+To: Robert Jarzmik <robert.jarzmik@free.fr>
 Cc: barebox@lists.infradead.org
 
+On Wed, Feb 15, 2012 at 04:21:13PM +0100, Robert Jarzmik wrote:
+> Sascha Hauer <s.hauer@pengutronix.de> writes:
 > 
-> This information would be far more informative if you printed the
-> button that is pressed/released here.
-ok
+> > Hi Robert,
+> > Nice to make the pwms accessible from the command line, but shouldn't
+> > this be in the core? From what I see all we have to do is to add
+> > duty_ns and period_ns to struct pwm_chip.
 > 
-> > +		}
-> > +		gb->previous_state = val;
-> > +	}
+> I thought it over twice.
 > 
-> You do nothing for debouncing the keys.
-yes my hardware manage directly (gpio IP)
+> If the set_duty_ns(), set_period_ns() and set_enable() are transfered to the
+> core, I'll have to link the device and pwm_chip :
+>  - expand pwmadd_chip() : should be expanded with the "struct device_d *dev"
+> parameter
+>  - provide a way to link *dev with *pwm_chip
+>    => either store device_d pointer into pwm_device structure, and go through the
+>    list of all PWMs at each set_X() calls
+>    => or use dev->priv (bad idea since the driver, ie. pxa_pwm wants to do that)
+> 
+> This way, calling set_X(struct device_d *dev, ...) will find pwm_chip pointer
+> from dev, and call the approriate pwm_config(), ...
+> 
+> So it's a bit more that adding duty_ns and period_ns to struct pwm_chip. Is this
+> what you want ?
 
-we can add it later
-> > +			return ret;
-> > +		}
-> > +		gpio_direction_input(gpio);
-> > +	}
-> > +
-> > +	pdata->poller.func = gpio_key_poller;
-> > +
-> > +	cdev = &pdata->cdev;
-> > +	dev->type_data = cdev;
-> > +	cdev->dev = dev;
-> > +	cdev->f_caps = CONSOLE_STDIN;
-> > +	cdev->tstc = gpio_keys_tstc;
-> > +	cdev->getc = gpio_keys_getc;
-> > +
-> > +	console_register(&pdata->cdev);
-> 
-> As I tried to explain yesterday I'm not sure that directly registering
-> the gpio keys as a console is the right thing to do. A keyboard has
-> more attributes than what we have in the console. For example a keyboard
-> has a button press / button release event which we don't have on the
-> console.
-agreed but today we do not have a input framework yet
+Oh, yes, you are right. You have to add a struct device_d * to struct
+pwm_chip.
 
-I'm planning to add such framework but as a second step
-I'll add the usb keyboard too
-> 
-> > +
-> > +	return poller_register(&pdata->poller);
-> > +}
-> > +
-> > +static struct driver_d gpio_keys_driver = {
-> > +	.name	= "gpio_keys",
-> > +	.probe	= gpio_keys_probe,
-> > +};
-> > +
-> > +static int gpio_keys_init(void)
-> > +{
-> > +	register_driver(&gpio_keys_driver);
-> > +	return 0;
-> 
-> Since we now do not panic anymore when an initcall fails but only
-> use the return value for debug purposes please do a
-> 
-> return register_driver(&gpio_keys_driver);
-ok
+Sascha
 
-Best Regards,
-J.
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
