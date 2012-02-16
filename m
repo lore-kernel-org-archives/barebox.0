@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1RxvxN-0003j2-8H
- for barebox@lists.infradead.org; Thu, 16 Feb 2012 07:40:53 +0000
-Date: Thu, 16 Feb 2012 08:40:31 +0100
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1Rxw7a-0002d2-0B
+ for barebox@lists.infradead.org; Thu, 16 Feb 2012 07:51:22 +0000
+Date: Thu, 16 Feb 2012 08:51:03 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120216074031.GG3852@pengutronix.de>
-References: <877gzw445i.fsf@free.fr>
- <1329224294-31475-1-git-send-email-robert.jarzmik@free.fr>
- <20120215083202.GX3852@pengutronix.de> <87k43o2kd2.fsf@free.fr>
+Message-ID: <20120216075103.GJ3852@pengutronix.de>
+References: <1329229881-26751-1-git-send-email-plagnioj@jcrosoft.com>
+ <20120215093108.GA3852@pengutronix.de>
+ <20120215161426.GJ1214@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <87k43o2kd2.fsf@free.fr>
+In-Reply-To: <20120215161426.GJ1214@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,40 +24,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH V2 1/2] drivers/pwm: add PXA pulse width modulator
- controller
-To: Robert Jarzmik <robert.jarzmik@free.fr>
+Subject: Re: [PATCH 1/4] add gpio keyboard support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, Feb 15, 2012 at 04:21:13PM +0100, Robert Jarzmik wrote:
-> Sascha Hauer <s.hauer@pengutronix.de> writes:
+On Wed, Feb 15, 2012 at 05:14:26PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > 
+> > This information would be far more informative if you printed the
+> > button that is pressed/released here.
+> ok
+> > 
+> > > +		}
+> > > +		gb->previous_state = val;
+> > > +	}
+> > 
+> > You do nothing for debouncing the keys.
+> yes my hardware manage directly (gpio IP)
 > 
-> > Hi Robert,
-> > Nice to make the pwms accessible from the command line, but shouldn't
-> > this be in the core? From what I see all we have to do is to add
-> > duty_ns and period_ns to struct pwm_chip.
+> we can add it later
+> > > +			return ret;
+> > > +		}
+> > > +		gpio_direction_input(gpio);
+> > > +	}
+> > > +
+> > > +	pdata->poller.func = gpio_key_poller;
+> > > +
+> > > +	cdev = &pdata->cdev;
+> > > +	dev->type_data = cdev;
+> > > +	cdev->dev = dev;
+> > > +	cdev->f_caps = CONSOLE_STDIN;
+> > > +	cdev->tstc = gpio_keys_tstc;
+> > > +	cdev->getc = gpio_keys_getc;
+> > > +
+> > > +	console_register(&pdata->cdev);
+> > 
+> > As I tried to explain yesterday I'm not sure that directly registering
+> > the gpio keys as a console is the right thing to do. A keyboard has
+> > more attributes than what we have in the console. For example a keyboard
+> > has a button press / button release event which we don't have on the
+> > console.
+> agreed but today we do not have a input framework yet
 > 
-> I thought it over twice.
-> 
-> If the set_duty_ns(), set_period_ns() and set_enable() are transfered to the
-> core, I'll have to link the device and pwm_chip :
->  - expand pwmadd_chip() : should be expanded with the "struct device_d *dev"
-> parameter
->  - provide a way to link *dev with *pwm_chip
->    => either store device_d pointer into pwm_device structure, and go through the
->    list of all PWMs at each set_X() calls
->    => or use dev->priv (bad idea since the driver, ie. pxa_pwm wants to do that)
-> 
-> This way, calling set_X(struct device_d *dev, ...) will find pwm_chip pointer
-> from dev, and call the approriate pwm_config(), ...
-> 
-> So it's a bit more that adding duty_ns and period_ns to struct pwm_chip. Is this
-> what you want ?
+> I'm planning to add such framework but as a second step
+> I'll add the usb keyboard too
 
-Oh, yes, you are right. You have to add a struct device_d * to struct
-pwm_chip.
+Ok, we can to it like this.
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
