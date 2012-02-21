@@ -1,20 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 15.mo5.mail-out.ovh.net ([178.33.107.29]
- helo=mo5.mail-out.ovh.net)
+Received: from smtp3-g21.free.fr ([2a01:e0c:1:1599::12])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Rzgrr-0007X3-5h
- for barebox@lists.infradead.org; Tue, 21 Feb 2012 03:58:19 +0000
-Received: from mail98.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id CFE90FFA0AF
- for <barebox@lists.infradead.org>; Tue, 21 Feb 2012 05:00:51 +0100 (CET)
-Date: Tue, 21 Feb 2012 04:50:38 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120221035038.GE9343@game.jcrosoft.org>
+ id 1RzjlU-0006Kr-1X
+ for barebox@lists.infradead.org; Tue, 21 Feb 2012 07:03:57 +0000
+Date: Tue, 21 Feb 2012 08:03:46 +0100
+From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
+Message-ID: <20120221080346.1501ec1f@eb-e6520>
+In-Reply-To: <20120221034835.GD9343@game.jcrosoft.org>
 References: <1329784059-6006-1-git-send-email-eric@eukrea.com>
- <1329784059-6006-6-git-send-email-eric@eukrea.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1329784059-6006-6-git-send-email-eric@eukrea.com>
+ <1329784059-6006-2-git-send-email-eric@eukrea.com>
+ <20120221034835.GD9343@game.jcrosoft.org>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,116 +23,32 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 6/7] mx53-loco: add board revision support
-To: Eric =?iso-8859-1?Q?B=E9nard?= <eric@eukrea.com>
+Subject: Re: [PATCH 2/7] mfd: add mc34708 driver
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On 01:27 Tue 21 Feb     , Eric B=E9nard wrote:
-> - this is taken from freescale-mx35-3-stack/3stack.c and allows
-> this board to run Freescale's kernel which relies on the system
-> revision to configure the correct PMIC.
-> =
+Le Tue, 21 Feb 2012 04:48:35 +0100,
+Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> a =E9crit :
 
-> - On rev0 boards (with DA9053), the log is :
-> detected i.MX53 rev 2.1
-> MCIMX53-START board 1.0
-> =
+> > +static struct mc34708 *mc_dev;
+> > +
+> > +struct mc34708 *mc34708_get(void)
+> > +{
+> > +	if (!mc_dev)
+> > +		return NULL;
+> > +
+> > +	return mc_dev;
+> > +}
+> > +EXPORT_SYMBOL(mc34708_get);
+> no please do not export the current as it will not alloe multiple chip on
+> board
+you can't have more than one of this chip on the board connected to
+the same CPU.
 
-> On newer boards (rev A or B with MC34708), the log is :
-> mc34708-i2c@mc34708-i2c0: MC34708 ID: 0x0014
-> detected i.MX53 rev 2.1
-> MCIMX53-START-R board 1.0 rev B
-> =
+Eric
+-- =
 
-> Signed-off-by: Eric B=E9nard <eric@eukrea.com>
-> ---
->  arch/arm/boards/freescale-mx53-loco/board.c |   51 +++++++++++++++++++++=
-++++++
->  1 files changed, 51 insertions(+), 0 deletions(-)
-> =
-
-> diff --git a/arch/arm/boards/freescale-mx53-loco/board.c b/arch/arm/board=
-s/freescale-mx53-loco/board.c
-> index 66ff040..6c0e1d1 100644
-> --- a/arch/arm/boards/freescale-mx53-loco/board.c
-> +++ b/arch/arm/boards/freescale-mx53-loco/board.c
-> @@ -103,6 +103,31 @@ static struct i2c_board_info i2c_devices[] =3D {
->  	},
->  };
->  =
-
-> +/*
-> + * Revision to be passed to kernel. The kernel provided
-> + * by freescale relies on this.
-> + *
-> + * C --> CPU type
-> + * S --> Silicon revision
-> + * B --> Board rev
-> + *
-> + * 31    20     16     12    8      4     0
-> + *        | Cmaj | Cmin | B  | Smaj | Smin|
-> + *
-> + * e.g 0x00053120 --> i.MX35, Cpu silicon rev 2.0, Board rev 2
-> +*/
-> +static unsigned int loco_system_rev =3D 0x00053000;
-> +
-> +static void set_silicon_rev( int rev)
-> +{
-> +	loco_system_rev =3D loco_system_rev | (rev & 0xFF);
-> +}
-> +
-> +static void set_board_rev(int rev)
-> +{
-> +	loco_system_rev =3D  (loco_system_rev & ~(0xF << 8)) | (rev & 0xF) << 8;
-> +}
-> +
->  static int loco_mem_init(void)
->  {
->  	arm_add_mem_device("ram0", 0x70000000, SZ_512M);
-> @@ -149,6 +174,8 @@ static int loco_devices_init(void)
->  =
-
->  	loco_fec_reset();
->  =
-
-> +	set_silicon_rev(imx_silicon_revision());
-> +
->  	armlinux_set_bootparams((void *)0x70000100);
->  	armlinux_set_architecture(MACH_TYPE_MX53_LOCO);
->  =
-
-> @@ -177,3 +204,27 @@ static int loco_console_init(void)
->  }
->  =
-
->  console_initcall(loco_console_init);
-> +
-> +static int loco_pmic_init(void)
-> +{
-> +	struct mc34708 *mc34708;
-> +	int rev;
-> +
-> +	mc34708 =3D mc34708_get();
-please check the file exist
-> +	if (!mc34708) {
-> +		/* so we have a DA9053 based board */
-> +		printf("MCIMX53-START board 1.0\n");
-> +		armlinux_set_revision(loco_system_rev);
-please do not duplicate it
-> +		return 0;
-> +	}
-> +
-> +	/* get the board revision from fuse */
-> +	rev =3D readl(MX53_IIM_BASE_ADDR + 0x878);
-> +	set_board_rev(rev);
-> +	printf("MCIMX53-START-R board 1.0 rev %c\n", (rev =3D=3D 1) ? 'A' : 'B'=
- );
-> +	armlinux_set_revision(loco_system_rev);
-> +
-> +	return 0;
-> +}
-Best Regards,
-J.
+http://eukrea.com/en/news/104-2012
 
 _______________________________________________
 barebox mailing list
