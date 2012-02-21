@@ -1,17 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp3-g21.free.fr ([2a01:e0c:1:1599::12])
+Received: from 3.mo5.mail-out.ovh.net ([46.105.40.108]
+ helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Rzda9-0005XJ-N5
- for barebox@lists.infradead.org; Tue, 21 Feb 2012 00:27:51 +0000
-Received: from localhost.localdomain (unknown [82.233.81.124])
- by smtp3-g21.free.fr (Postfix) with ESMTP id 6C5F1A615E
- for <barebox@lists.infradead.org>; Tue, 21 Feb 2012 01:27:44 +0100 (CET)
-From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
-Date: Tue, 21 Feb 2012 01:27:34 +0100
-Message-Id: <1329784059-6006-2-git-send-email-eric@eukrea.com>
-In-Reply-To: <1329784059-6006-1-git-send-email-eric@eukrea.com>
+ id 1Rzgpw-0007Ud-8u
+ for barebox@lists.infradead.org; Tue, 21 Feb 2012 03:56:22 +0000
+Received: from mail98.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 48FCDFFA15B
+ for <barebox@lists.infradead.org>; Tue, 21 Feb 2012 04:58:49 +0100 (CET)
+Date: Tue, 21 Feb 2012 04:48:35 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20120221034835.GD9343@game.jcrosoft.org>
 References: <1329784059-6006-1-git-send-email-eric@eukrea.com>
+ <1329784059-6006-2-git-send-email-eric@eukrea.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1329784059-6006-2-git-send-email-eric@eukrea.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,203 +23,290 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/7] mfd: add mc34708 driver
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/7] mfd: add mc34708 driver
+To: Eric =?iso-8859-1?Q?B=E9nard?= <eric@eukrea.com>
+Cc: barebox@lists.infradead.org
 
-dGhpcyBkcml2ZXIgaXMgYSBjb3BpZSBvZiB0aGUgbWMxMzg5MiBvbmUKClNpZ25lZC1vZmYtYnk6
-IEVyaWMgQsOpbmFyZCA8ZXJpY0BldWtyZWEuY29tPgotLS0KIGRyaXZlcnMvbWZkL0tjb25maWcg
-ICB8ICAgIDQgKwogZHJpdmVycy9tZmQvTWFrZWZpbGUgIHwgICAgMSArCiBkcml2ZXJzL21mZC9t
-YzM0NzA4LmMgfCAgMjk0ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKysKIGluY2x1ZGUvbWZkL21jMzQ3MDguaCB8ICAxMDIgKysrKysrKysrKysrKysrKysK
-IDQgZmlsZXMgY2hhbmdlZCwgNDAxIGluc2VydGlvbnMoKyksIDAgZGVsZXRpb25zKC0pCiBjcmVh
-dGUgbW9kZSAxMDA2NDQgZHJpdmVycy9tZmQvbWMzNDcwOC5jCiBjcmVhdGUgbW9kZSAxMDA2NDQg
-aW5jbHVkZS9tZmQvbWMzNDcwOC5oCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9tZmQvS2NvbmZpZyBi
-L2RyaXZlcnMvbWZkL0tjb25maWcKaW5kZXggODc3OTdkZS4uYjA4MGMxYyAxMDA2NDQKLS0tIGEv
-ZHJpdmVycy9tZmQvS2NvbmZpZworKysgYi9kcml2ZXJzL21mZC9LY29uZmlnCkBAIC04LDYgKzgs
-MTAgQEAgY29uZmlnIEkyQ19NQzM0NzA0CiAJZGVwZW5kcyBvbiBJMkMKIAlib29sICJNQzM0NzA0
-IFBNSUMgZHJpdmVyIgogCitjb25maWcgSTJDX01DMzQ3MDgKKwlkZXBlbmRzIG9uIEkyQworCWJv
-b2wgIk1DMzQ3MDggUE1JQyBkcml2ZXIiCisKIGNvbmZpZyBJMkNfTUM5U0RaNjAKIAlkZXBlbmRz
-IG9uIEkyQwogCWJvb2wgIk1DOVNEWjYwIGRyaXZlciIKZGlmZiAtLWdpdCBhL2RyaXZlcnMvbWZk
-L01ha2VmaWxlIGIvZHJpdmVycy9tZmQvTWFrZWZpbGUKaW5kZXggMTE3MTMzNS4uYmM5ZTBlOCAx
-MDA2NDQKLS0tIGEvZHJpdmVycy9tZmQvTWFrZWZpbGUKKysrIGIvZHJpdmVycy9tZmQvTWFrZWZp
-bGUKQEAgLTEsNSArMSw2IEBACiBvYmotJChDT05GSUdfSTJDX01DMTM4OTIpICs9IG1jMTM4OTIu
-bwogb2JqLSQoQ09ORklHX0kyQ19NQzM0NzA0KSArPSBtYzM0NzA0Lm8KK29iai0kKENPTkZJR19J
-MkNfTUMzNDcwOCkgKz0gbWMzNDcwOC5vCiBvYmotJChDT05GSUdfSTJDX01DOVNEWjYwKSArPSBt
-YzlzZHo2MC5vCiBvYmotJChDT05GSUdfSTJDX0xQMzk3MikgKz0gbHAzOTcyLm8KIG9iai0kKENP
-TkZJR19JMkNfVFdMQ09SRSkgKz0gdHdsLWNvcmUubwpkaWZmIC0tZ2l0IGEvZHJpdmVycy9tZmQv
-bWMzNDcwOC5jIGIvZHJpdmVycy9tZmQvbWMzNDcwOC5jCm5ldyBmaWxlIG1vZGUgMTAwNjQ0Cmlu
-ZGV4IDAwMDAwMDAuLmU3ZjQwYzAKLS0tIC9kZXYvbnVsbAorKysgYi9kcml2ZXJzL21mZC9tYzM0
-NzA4LmMKQEAgLTAsMCArMSwyOTQgQEAKKy8qCisgKiBDb3B5cmlnaHQgKEMpIDIwMDcgU2FzY2hh
-IEhhdWVyLCBQZW5ndXRyb25peAorICogICAgICAgICAgICAgICAyMDA5IE1hcmMgS2xlaW5lLUJ1
-ZGRlIDxta2xAcGVuZ3V0cm9uaXguZGU+CisgKgorICogVGhpcyBwcm9ncmFtIGlzIGZyZWUgc29m
-dHdhcmU7IHlvdSBjYW4gcmVkaXN0cmlidXRlIGl0IGFuZC9vcgorICogbW9kaWZ5IGl0IHVuZGVy
-IHRoZSB0ZXJtcyBvZiB0aGUgR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgYXMKKyAqIHB1Ymxp
-c2hlZCBieSB0aGUgRnJlZSBTb2Z0d2FyZSBGb3VuZGF0aW9uOyBlaXRoZXIgdmVyc2lvbiAyIG9m
-CisgKiB0aGUgTGljZW5zZSwgb3IgKGF0IHlvdXIgb3B0aW9uKSBhbnkgbGF0ZXIgdmVyc2lvbi4K
-KyAqCisgKiBUaGlzIHByb2dyYW0gaXMgZGlzdHJpYnV0ZWQgaW4gdGhlIGhvcGUgdGhhdCBpdCB3
-aWxsIGJlIHVzZWZ1bCwKKyAqIGJ1dCBXSVRIT1VUIEFOWSBXQVJSQU5UWTsgd2l0aG91dCBldmVu
-IHRoZSBpbXBsaWVkIHdhcnJhbnR5IG9mCisgKiBNRVJDSEFOVEFCSUxJVFkgb3IgRklUTkVTUyBG
-T1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UuICBTZWUgdGhlCisgKiBHTlUgR2VuZXJhbCBQdWJsaWMg
-TGljZW5zZSBmb3IgbW9yZSBkZXRhaWxzLgorICoKKyAqIFlvdSBzaG91bGQgaGF2ZSByZWNlaXZl
-ZCBhIGNvcHkgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlCisgKiBhbG9uZyB3aXRo
-IHRoaXMgcHJvZ3JhbTsgaWYgbm90LCB3cml0ZSB0byB0aGUgRnJlZSBTb2Z0d2FyZQorICogRm91
-bmRhdGlvbiwgSW5jLiwgNTkgVGVtcGxlIFBsYWNlLCBTdWl0ZSAzMzAsIEJvc3RvbiwKKyAqIE1B
-IDAyMTExLTEzMDcgVVNBCisgKgorICovCisKKyNpbmNsdWRlIDxjb21tb24uaD4KKyNpbmNsdWRl
-IDxpbml0Lmg+CisjaW5jbHVkZSA8ZHJpdmVyLmg+CisjaW5jbHVkZSA8eGZ1bmNzLmg+CisjaW5j
-bHVkZSA8ZXJybm8uaD4KKyNpbmNsdWRlIDxzcGkvc3BpLmg+CisjaW5jbHVkZSA8bWFsbG9jLmg+
-CisKKyNpbmNsdWRlIDxpMmMvaTJjLmg+CisjaW5jbHVkZSA8bWZkL21jMzQ3MDguaD4KKworI2Rl
-ZmluZSBEUklWRVJOQU1FCQkibWMzNDcwOCIKKworI2RlZmluZSB0b19tYzM0NzA4KGEpCQljb250
-YWluZXJfb2YoYSwgc3RydWN0IG1jMzQ3MDgsIGNkZXYpCisKK3N0YXRpYyBzdHJ1Y3QgbWMzNDcw
-OCAqbWNfZGV2OworCitzdHJ1Y3QgbWMzNDcwOCAqbWMzNDcwOF9nZXQodm9pZCkKK3sKKwlpZiAo
-IW1jX2RldikKKwkJcmV0dXJuIE5VTEw7CisKKwlyZXR1cm4gbWNfZGV2OworfQorRVhQT1JUX1NZ
-TUJPTChtYzM0NzA4X2dldCk7CisKKyNpZmRlZiBDT05GSUdfU1BJCitzdGF0aWMgaW50IHNwaV9y
-dyhzdHJ1Y3Qgc3BpX2RldmljZSAqc3BpLCB2b2lkICogYnVmLCBzaXplX3QgbGVuKQoreworCWlu
-dCByZXQ7CisKKwlzdHJ1Y3Qgc3BpX3RyYW5zZmVyIHQgPSB7CisJCS50eF9idWYgPSAoY29uc3Qg
-dm9pZCAqKWJ1ZiwKKwkJLnJ4X2J1ZiA9IGJ1ZiwKKwkJLmxlbiA9IGxlbiwKKwkJLmNzX2NoYW5n
-ZSA9IDAsCisJCS5kZWxheV91c2VjcyA9IDAsCisJfTsKKwlzdHJ1Y3Qgc3BpX21lc3NhZ2UgbTsK
-KworCXNwaV9tZXNzYWdlX2luaXQoJm0pOworCXNwaV9tZXNzYWdlX2FkZF90YWlsKCZ0LCAmbSk7
-CisKKwlpZiAoKHJldCA9IHNwaV9zeW5jKHNwaSwgJm0pKSkKKwkJcmV0dXJuIHJldDsKKwlyZXR1
-cm4gMDsKK30KKworI2RlZmluZSBNWENfUE1JQ19SRUdfTlVNKHJlZykJKCgocmVnKSAmIDB4M2Yp
-IDw8IDI1KQorI2RlZmluZSBNWENfUE1JQ19XUklURQkJKDEgPDwgMzEpCisKK3N0YXRpYyBpbnQg
-bWMzNDcwOF9zcGlfcmVnX3JlYWQoc3RydWN0IG1jMzQ3MDggKm1jMzQ3MDgsIGVudW0gbWMzNDcw
-OF9yZWcgcmVnLCB1MzIgKnZhbCkKK3sKKwl1aW50MzJfdCBidWY7CisKKwlidWYgPSBNWENfUE1J
-Q19SRUdfTlVNKHJlZyk7CisKKwlzcGlfcncobWMzNDcwOC0+c3BpLCAmYnVmLCA0KTsKKworCSp2
-YWwgPSBidWY7CisKKwlyZXR1cm4gMDsKK30KKworc3RhdGljIGludCBtYzM0NzA4X3NwaV9yZWdf
-d3JpdGUoc3RydWN0IG1jMzQ3MDggKm1jMzQ3MDgsIGVudW0gbWMzNDcwOF9yZWcgcmVnLCB1MzIg
-dmFsKQoreworCXVpbnQzMl90IGJ1ZiA9IE1YQ19QTUlDX1JFR19OVU0ocmVnKSB8IE1YQ19QTUlD
-X1dSSVRFIHwgKHZhbCAmIDB4ZmZmZmZmKTsKKworCXNwaV9ydyhtYzM0NzA4LT5zcGksICZidWYs
-IDQpOworCisJcmV0dXJuIDA7Cit9CisjZW5kaWYKKworI2lmZGVmIENPTkZJR19JMkMKK3N0YXRp
-YyBpbnQgbWMzNDcwOF9pMmNfcmVnX3JlYWQoc3RydWN0IG1jMzQ3MDggKm1jMzQ3MDgsIGVudW0g
-bWMzNDcwOF9yZWcgcmVnLCB1MzIgKnZhbCkKK3sKKwl1OCBidWZbM107CisJaW50IHJldDsKKwor
-CXJldCA9IGkyY19yZWFkX3JlZyhtYzM0NzA4LT5jbGllbnQsIHJlZywgYnVmLCAzKTsKKwkqdmFs
-ID0gYnVmWzBdIDw8IDE2IHwgYnVmWzFdIDw8IDggfCBidWZbMl0gPDwgMDsKKworCXJldHVybiBy
-ZXQgPT0gMyA/IDAgOiByZXQ7Cit9CisKK3N0YXRpYyBpbnQgbWMzNDcwOF9pMmNfcmVnX3dyaXRl
-KHN0cnVjdCBtYzM0NzA4ICptYzM0NzA4LCBlbnVtIG1jMzQ3MDhfcmVnIHJlZywgdTMyIHZhbCkK
-K3sKKwl1OCBidWZbXSA9IHsKKwkJdmFsID4+IDE2LAorCQl2YWwgPj4gIDgsCisJCXZhbCA+PiAg
-MCwKKwl9OworCWludCByZXQ7CisKKwlyZXQgPSBpMmNfd3JpdGVfcmVnKG1jMzQ3MDgtPmNsaWVu
-dCwgcmVnLCBidWYsIDMpOworCisJcmV0dXJuIHJldCA9PSAzID8gMCA6IHJldDsKK30KKyNlbmRp
-ZgorCitpbnQgbWMzNDcwOF9yZWdfd3JpdGUoc3RydWN0IG1jMzQ3MDggKm1jMzQ3MDgsIGVudW0g
-bWMzNDcwOF9yZWcgcmVnLCB1MzIgdmFsKQoreworI2lmZGVmIENPTkZJR19JMkMKKwlpZiAobWMz
-NDcwOC0+bW9kZSA9PSBNQzM0NzA4X01PREVfSTJDKQorCQlyZXR1cm4gbWMzNDcwOF9pMmNfcmVn
-X3dyaXRlKG1jMzQ3MDgsIHJlZywgdmFsKTsKKyNlbmRpZgorI2lmZGVmIENPTkZJR19TUEkKKwlp
-ZiAobWMzNDcwOC0+bW9kZSA9PSBNQzM0NzA4X01PREVfU1BJKQorCQlyZXR1cm4gbWMzNDcwOF9z
-cGlfcmVnX3dyaXRlKG1jMzQ3MDgsIHJlZywgdmFsKTsKKyNlbmRpZgorCXJldHVybiAtRUlOVkFM
-OworfQorRVhQT1JUX1NZTUJPTChtYzM0NzA4X3JlZ193cml0ZSk7CisKK2ludCBtYzM0NzA4X3Jl
-Z19yZWFkKHN0cnVjdCBtYzM0NzA4ICptYzM0NzA4LCBlbnVtIG1jMzQ3MDhfcmVnIHJlZywgdTMy
-ICp2YWwpCit7CisjaWZkZWYgQ09ORklHX0kyQworCWlmIChtYzM0NzA4LT5tb2RlID09IE1DMzQ3
-MDhfTU9ERV9JMkMpCisJCXJldHVybiBtYzM0NzA4X2kyY19yZWdfcmVhZChtYzM0NzA4LCByZWcs
-IHZhbCk7CisjZW5kaWYKKyNpZmRlZiBDT05GSUdfU1BJCisJaWYgKG1jMzQ3MDgtPm1vZGUgPT0g
-TUMzNDcwOF9NT0RFX1NQSSkKKwkJcmV0dXJuIG1jMzQ3MDhfc3BpX3JlZ19yZWFkKG1jMzQ3MDgs
-IHJlZywgdmFsKTsKKyNlbmRpZgorCXJldHVybiAtRUlOVkFMOworfQorRVhQT1JUX1NZTUJPTCht
-YzM0NzA4X3JlZ19yZWFkKTsKKworaW50IG1jMzQ3MDhfc2V0X2JpdHMoc3RydWN0IG1jMzQ3MDgg
-Km1jMzQ3MDgsIGVudW0gbWMzNDcwOF9yZWcgcmVnLCB1MzIgbWFzaywgdTMyIHZhbCkKK3sKKwl1
-MzIgdG1wOworCWludCBlcnI7CisKKwllcnIgPSBtYzM0NzA4X3JlZ19yZWFkKG1jMzQ3MDgsIHJl
-ZywgJnRtcCk7CisJdG1wID0gKHRtcCAmIH5tYXNrKSB8IHZhbDsKKworCWlmICghZXJyKQorCQll
-cnIgPSBtYzM0NzA4X3JlZ193cml0ZShtYzM0NzA4LCByZWcsIHRtcCk7CisKKwlyZXR1cm4gZXJy
-OworfQorRVhQT1JUX1NZTUJPTChtYzM0NzA4X3NldF9iaXRzKTsKKworc3RhdGljIHNzaXplX3Qg
-bWNfcmVhZChzdHJ1Y3QgY2RldiAqY2Rldiwgdm9pZCAqX2J1Ziwgc2l6ZV90IGNvdW50LCB1bG9u
-ZyBvZmZzZXQsIHVsb25nIGZsYWdzKQoreworCXN0cnVjdCBtYzM0NzA4ICpwcml2ID0gdG9fbWMz
-NDcwOChjZGV2KTsKKwl1MzIgKmJ1ZiA9IF9idWY7CisJc2l6ZV90IGkgPSBjb3VudCA+PiAyOwor
-CWludCBlcnI7CisKKwlvZmZzZXQgPj49IDI7CisKKwl3aGlsZSAoaSkgeworCQllcnIgPSBtYzM0
-NzA4X3JlZ19yZWFkKHByaXYsIG9mZnNldCwgYnVmKTsKKwkJaWYgKGVycikKKwkJCXJldHVybiAo
-c3NpemVfdCllcnI7CisJCWJ1ZisrOworCQlpLS07CisJCW9mZnNldCsrOworCX0KKworCXJldHVy
-biBjb3VudDsKK30KKworc3RhdGljIHNzaXplX3QgbWNfd3JpdGUoc3RydWN0IGNkZXYgKmNkZXYs
-IGNvbnN0IHZvaWQgKl9idWYsIHNpemVfdCBjb3VudCwgdWxvbmcgb2Zmc2V0LCB1bG9uZyBmbGFn
-cykKK3sKKwlzdHJ1Y3QgbWMzNDcwOCAqbWMzNDcwOCA9IHRvX21jMzQ3MDgoY2Rldik7CisJY29u
-c3QgdTMyICpidWYgPSBfYnVmOworCXNpemVfdCBpID0gY291bnQgPj4gMjsKKwlpbnQgZXJyOwor
-CisJb2Zmc2V0ID4+PSAyOworCisJd2hpbGUgKGkpIHsKKwkJZXJyID0gbWMzNDcwOF9yZWdfd3Jp
-dGUobWMzNDcwOCwgb2Zmc2V0LCAqYnVmKTsKKwkJaWYgKGVycikKKwkJCXJldHVybiAoc3NpemVf
-dCllcnI7CisJCWJ1ZisrOworCQlpLS07CisJCW9mZnNldCsrOworCX0KKworCXJldHVybiBjb3Vu
-dDsKK30KKworc3RhdGljIHN0cnVjdCBmaWxlX29wZXJhdGlvbnMgbWNfZm9wcyA9IHsKKwkubHNl
-ZWsJPSBkZXZfbHNlZWtfZGVmYXVsdCwKKwkucmVhZAk9IG1jX3JlYWQsCisJLndyaXRlCT0gbWNf
-d3JpdGUsCit9OworCitzdGF0aWMgaW50IG1jMzQ3MDhfcXVlcnlfcmV2aXNpb24oc3RydWN0IG1j
-MzQ3MDggKm1jMzQ3MDgpCit7CisJdW5zaWduZWQgaW50IHJldl9pZDsKKwlpbnQgcmV2OworCisJ
-bWMzNDcwOF9yZWdfcmVhZChtYzM0NzA4LCA3LCAmcmV2X2lkKTsKKworCWlmIChyZXZfaWQgPiAw
-eEZGRikKKwkJcmV0dXJuIC1FSU5WQUw7CisKKwlyZXYgPSByZXZfaWQgJiAweEZGRjsKKworCWRl
-dl9pbmZvKG1jX2Rldi0+Y2Rldi5kZXYsICJNQzM0NzA4IElEOiAweCUwNHhcbiIsIHJldik7CisK
-KwltYzM0NzA4LT5yZXZpc2lvbiA9IHJldjsKKworCXJldHVybiByZXY7Cit9CisKK3N0YXRpYyBp
-bnQgbWNfcHJvYmUoc3RydWN0IGRldmljZV9kICpkZXYsIGVudW0gbWMzNDcwOF9tb2RlIG1vZGUp
-Cit7CisJaW50IHJldjsKKworCWlmIChtY19kZXYpCisJCXJldHVybiAtRUJVU1k7CisKKwltY19k
-ZXYgPSB4emFsbG9jKHNpemVvZihzdHJ1Y3QgbWMzNDcwOCkpOworCW1jX2Rldi0+bW9kZSA9IG1v
-ZGU7CisJbWNfZGV2LT5jZGV2Lm5hbWUgPSBEUklWRVJOQU1FOworCWlmIChtb2RlID09IE1DMzQ3
-MDhfTU9ERV9JMkMpIHsKKwkJbWNfZGV2LT5jbGllbnQgPSB0b19pMmNfY2xpZW50KGRldik7CisJ
-fQorCWlmIChtb2RlID09IE1DMzQ3MDhfTU9ERV9TUEkpIHsKKwkJbWNfZGV2LT5zcGkgPSBkZXYt
-PnR5cGVfZGF0YTsKKwkJbWNfZGV2LT5zcGktPm1vZGUgPSBTUElfTU9ERV8wIHwgU1BJX0NTX0hJ
-R0g7CisJCW1jX2Rldi0+c3BpLT5iaXRzX3Blcl93b3JkID0gMzI7CisJfQorCW1jX2Rldi0+Y2Rl
-di5zaXplID0gMjU2OworCW1jX2Rldi0+Y2Rldi5kZXYgPSBkZXY7CisJbWNfZGV2LT5jZGV2Lm9w
-cyA9ICZtY19mb3BzOworCisJcmV2ID0gbWMzNDcwOF9xdWVyeV9yZXZpc2lvbihtY19kZXYpOwor
-CWlmIChyZXYgPCAwKSB7CisJCWZyZWUobWNfZGV2KTsKKwkJbWNfZGV2ID0gTlVMTDsKKwkJcmV0
-dXJuIC1FSU5WQUw7CisJfQorCisJZGV2ZnNfY3JlYXRlKCZtY19kZXYtPmNkZXYpOworCisJcmV0
-dXJuIDA7Cit9CisKK3N0YXRpYyBpbnQgbWNfaTJjX3Byb2JlKHN0cnVjdCBkZXZpY2VfZCAqZGV2
-KQoreworCXJldHVybiBtY19wcm9iZShkZXYsIE1DMzQ3MDhfTU9ERV9JMkMpOworfQorCitzdGF0
-aWMgaW50IG1jX3NwaV9wcm9iZShzdHJ1Y3QgZGV2aWNlX2QgKmRldikKK3sKKwlyZXR1cm4gbWNf
-cHJvYmUoZGV2LCBNQzM0NzA4X01PREVfU1BJKTsKK30KKworc3RhdGljIHN0cnVjdCBkcml2ZXJf
-ZCBtY19pMmNfZHJpdmVyID0geworCS5uYW1lICA9ICJtYzM0NzA4LWkyYyIsCisJLnByb2JlID0g
-bWNfaTJjX3Byb2JlLAorfTsKKworc3RhdGljIHN0cnVjdCBkcml2ZXJfZCBtY19zcGlfZHJpdmVy
-ID0geworCS5uYW1lICA9ICJtYzM0NzA4LXNwaSIsCisJLnByb2JlID0gbWNfc3BpX3Byb2JlLAor
-fTsKKworc3RhdGljIGludCBtY19pbml0KHZvaWQpCit7CisgICAgICAgIHJlZ2lzdGVyX2RyaXZl
-cigmbWNfaTJjX2RyaXZlcik7CisgICAgICAgIHJlZ2lzdGVyX2RyaXZlcigmbWNfc3BpX2RyaXZl
-cik7CisgICAgICAgIHJldHVybiAwOworfQorCitkZXZpY2VfaW5pdGNhbGwobWNfaW5pdCk7CmRp
-ZmYgLS1naXQgYS9pbmNsdWRlL21mZC9tYzM0NzA4LmggYi9pbmNsdWRlL21mZC9tYzM0NzA4LmgK
-bmV3IGZpbGUgbW9kZSAxMDA2NDQKaW5kZXggMDAwMDAwMC4uZjM4NGM2MgotLS0gL2Rldi9udWxs
-CisrKyBiL2luY2x1ZGUvbWZkL21jMzQ3MDguaApAQCAtMCwwICsxLDEwMiBAQAorLyoKKyAqIENv
-cHlyaWdodCAoQykgMjAwOSBNYXJjIEtsZWluZS1CdWRkZSA8bWtsQHBlbmd1dHJvbml4LmRlPgor
-ICoKKyAqIFRoaXMgZmlsZSBpcyByZWxlYXNlZCB1bmRlciB0aGUgR1BMdjIKKyAqCisgKiBEZXJp
-dmVkIGZyb206CisgKiAtIGFyY2gtbXhjL3BtaWNfZXh0ZXJuYWwuaCAtLSAgY29udGFpbnMgaW50
-ZXJmYWNlIG9mIHRoZSBQTUlDIHByb3RvY29sIGRyaXZlcgorICogICBDb3B5cmlnaHQgMjAwOC0y
-MDA5IEZyZWVzY2FsZSBTZW1pY29uZHVjdG9yLCBJbmMuIEFsbCBSaWdodHMgUmVzZXJ2ZWQuCisg
-KgorICovCisKKyNpZm5kZWYgX19BU01fQVJDSF9NQzM0NzA4X0gKKyNkZWZpbmUgX19BU01fQVJD
-SF9NQzM0NzA4X0gKKworZW51bSBtYzM0NzA4X3JlZyB7CisJTUMzNDcwOF9SRUdfSU5UX1NUQVRV
-UzAJCT0gMHgwMCwKKwlNQzM0NzA4X1JFR19JTlRfTUFTSzAJCT0gMHgwMSwKKwlNQzM0NzA4X1JF
-R19JTlRfU0VOU0UwCQk9IDB4MDIsCisJTUMzNDcwOF9SRUdfSU5UX1NUQVRVUzEJCT0gMHgwMywK
-KwlNQzM0NzA4X1JFR19JTlRfTUFTSzEJCT0gMHgwNCwKKwlNQzM0NzA4X1JFR19JTlRfU0VOU0Ux
-CQk9IDB4MDUsCisJTUMzNDcwOF9SRUdfUFVfTU9ERV9TCQk9IDB4MDYsCisJTUMzNDcwOF9SRUdf
-SURFTlRJRklDQVRJT04JPSAweDA3LAorCU1DMzQ3MDhfUkVHX1JFR19GQVVMVF9TCQk9IDB4MDgs
-CisJTUMzNDcwOF9SRUdfQUNDMAkJPSAweDA5LAorCU1DMzQ3MDhfUkVHX0FDQzEJCT0gMHgwYSwK
-KwlNQzM0NzA4X1JFR19BQ0MyCQk9IDB4MGIsCisJTUMzNDcwOF9SRUdfVU5VU0VEMAkJPSAweDBj
-LAorCU1DMzQ3MDhfUkVHX1BPV0VSX0NUTDAJCT0gMHgwZCwKKwlNQzM0NzA4X1JFR19QT1dFUl9D
-VEwxCQk9IDB4MGUsCisJTUMzNDcwOF9SRUdfUE9XRVJfQ1RMMgkJPSAweDBmLAorCU1DMzQ3MDhf
-UkVHX01FTV9BCQk9IDB4MTAsCisJTUMzNDcwOF9SRUdfTUVNX0IJCT0gMHgxMSwKKwlNQzM0NzA4
-X1JFR19NRU1fQwkJPSAweDEyLAorCU1DMzQ3MDhfUkVHX01FTV9ECQk9IDB4MTMsCisJTUMzNDcw
-OF9SRUdfUlRDX1RJTUUJCT0gMHgxNCwKKwlNQzM0NzA4X1JFR19SVENfQUxBUk0JCT0gMHgxNSwK
-KwlNQzM0NzA4X1JFR19SVENfREFZCQk9IDB4MTYsCisJTUMzNDcwOF9SRUdfUlRDX0RBWV9BTEFS
-TQk9IDB4MTcsCisJTUMzNDcwOF9SRUdfMQkJCT0gMHgxOCwKKwlNQzM0NzA4X1JFR18yXzMJCQk9
-IDB4MTksCisJTUMzNDcwOF9SRUdfNAkJCT0gMHgxYSwKKwlNQzM0NzA4X1JFR181CQkJPSAweDFi
-LAorCU1DMzQ3MDhfUkVHXzFfMl9NT0RFCQk9IDB4MWMsCisJTUMzNDcwOF9SRUdfM180XzVfTU9E
-RQkJPSAweDFkLAorCU1DMzQ3MDhfUkVHX1NFVFRJTkdfMAkJPSAweDFlLAorCU1DMzQ3MDhfUkVH
-X1NXQlNUX0NUUkwJCT0gMHgxZiwKKwlNQzM0NzA4X1JFR19NT0RFXzAJCT0gMHgyMCwKKwlNQzM0
-NzA4X1JFR19HUElPTFYwX0NUUkwJPSAweDIxLAorCU1DMzQ3MDhfUkVHX0dQSU9MVjFfQ1RSTAk9
-IDB4MjIsCisJTUMzNDcwOF9SRUdfR1BJT0xWMl9DVFJMCT0gMHgyMywKKwlNQzM0NzA4X1JFR19H
-UElPTFYzX0NUUkwJPSAweDI0LAorCU1DMzQ3MDhfUkVHX1VTQl9USU1JTkcJCT0gMHgyNSwKKwlN
-QzM0NzA4X1JFR19VU0JfQlVUVE9OCQk9IDB4MjYsCisJTUMzNDcwOF9SRUdfVVNCX0NUUkwJCT0g
-MHgyNywKKwlNQzM0NzA4X1JFR19VU0JfREVWVFlQRQkJPSAweDI4LAorCU1DMzQ3MDhfUkVHX1VO
-VVNFRDEJCT0gMHgyOSwKKwlNQzM0NzA4X1JFR19VTlVTRUQyCQk9IDB4MmEsCisJTUMzNDcwOF9S
-RUdfQURDMAkJPSAweDJiLAorCU1DMzQ3MDhfUkVHX0FEQzEJCT0gMHgyYywKKwlNQzM0NzA4X1JF
-R19BREMyCQk9IDB4MmQsCisJTUMzNDcwOF9SRUdfQURDMwkJPSAweDJlLAorCU1DMzQ3MDhfUkVH
-X0FEQzQJCT0gMHgyZiwKKwlNQzM0NzA4X1JFR19BREM1CQk9IDB4MzAsCisJTUMzNDcwOF9SRUdf
-QURDNgkJPSAweDMxLAorCU1DMzQ3MDhfUkVHX0FEQzcJCT0gMHgzMiwKKwlNQzM0NzA4X1JFR19C
-QVRfUFJPRklMRQkJPSAweDMzLAorCU1DMzQ3MDhfUkVHX0NIUkdfREVCT1VOQ0UJPSAweDM0LAor
-CU1DMzQ3MDhfUkVHX0NIUkdfU09VUkNFCQk9IDB4MzUsCisJTUMzNDcwOF9SRUdfQ0hSR19MRURf
-Q1RSTAk9IDB4MzYsCisJTUMzNDcwOF9SRUdfUFdNX0NUUkwJCT0gMHgzNywKKwlNQzM0NzA4X1JF
-R19VTlVTRUQzCQk9IDB4MzgsCisJTUMzNDcwOF9SRUdfVU5VU0VENAkJPSAweDM5LAorCU1DMzQ3
-MDhfUkVHX1VOVVNFRDUJCT0gMHgzYSwKKwlNQzM0NzA4X1JFR19VTlVTRUQ2CQk9IDB4M2IsCisJ
-TUMzNDcwOF9SRUdfVU5VU0VENwkJPSAweDNjLAorCU1DMzQ3MDhfUkVHX1VOVVNFRDgJCT0gMHgz
-ZCwKKwlNQzM0NzA4X1JFR19VTlVTRUQ5CQk9IDB4M2UsCisJTUMzNDcwOF9SRUdfVU5VU0VEMTAJ
-CT0gMHgzZiwKK307CisKKworZW51bSBtYzM0NzA4X21vZGUgeworCU1DMzQ3MDhfTU9ERV9JMkMs
-CisJTUMzNDcwOF9NT0RFX1NQSSwKK307CisKK3N0cnVjdCBtYzM0NzA4IHsKKwlzdHJ1Y3QgY2Rl
-dgkJY2RldjsKKwlzdHJ1Y3QgaTJjX2NsaWVudAkqY2xpZW50OworCXN0cnVjdCBzcGlfZGV2aWNl
-CSpzcGk7CisJZW51bSBtYzM0NzA4X21vZGUJbW9kZTsKKwl1bnNpZ25lZCBpbnQJCXJldmlzaW9u
-OworfTsKKworZXh0ZXJuIHN0cnVjdCBtYzM0NzA4ICptYzM0NzA4X2dldCh2b2lkKTsKKworZXh0
-ZXJuIGludCBtYzM0NzA4X3JlZ19yZWFkKHN0cnVjdCBtYzM0NzA4ICptYzM0NzA4LCBlbnVtIG1j
-MzQ3MDhfcmVnIHJlZywgdTMyICp2YWwpOworZXh0ZXJuIGludCBtYzM0NzA4X3JlZ193cml0ZShz
-dHJ1Y3QgbWMzNDcwOCAqbWMzNDcwOCwgZW51bSBtYzM0NzA4X3JlZyByZWcsIHUzMiB2YWwpOwor
-ZXh0ZXJuIGludCBtYzM0NzA4X3NldF9iaXRzKHN0cnVjdCBtYzM0NzA4ICptYzM0NzA4LCBlbnVt
-IG1jMzQ3MDhfcmVnIHJlZywgdTMyIG1hc2ssIHUzMiB2YWwpOworCisjZW5kaWYgLyogX19BU01f
-QVJDSF9NQzM0NzA4X0ggKi8KLS0gCjEuNy43LjYKCgpfX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3Rz
-LmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5m
-by9iYXJlYm94Cg==
+> +static struct mc34708 *mc_dev;
+> +
+> +struct mc34708 *mc34708_get(void)
+> +{
+> +	if (!mc_dev)
+> +		return NULL;
+> +
+> +	return mc_dev;
+> +}
+> +EXPORT_SYMBOL(mc34708_get);
+no please do not export the current as it will not alloe multiple chip on
+board
+> +
+> +#ifdef CONFIG_SPI
+please drop the ifdef
+> +static int spi_rw(struct spi_device *spi, void * buf, size_t len)
+> +{
+> +	int ret;
+> +
+> +	struct spi_transfer t = {
+> +		.tx_buf = (const void *)buf,
+> +		.rx_buf = buf,
+> +		.len = len,
+> +		.cs_change = 0,
+> +		.delay_usecs = 0,
+> +	};
+> +	struct spi_message m;
+> +
+> +	spi_message_init(&m);
+> +	spi_message_add_tail(&t, &m);
+> +
+> +	if ((ret = spi_sync(spi, &m)))
+> +		return ret;
+> +	return 0;
+> +}
+> +
+> +#define MXC_PMIC_REG_NUM(reg)	(((reg) & 0x3f) << 25)
+> +#define MXC_PMIC_WRITE		(1 << 31)
+> +
+> +static int mc34708_spi_reg_read(struct mc34708 *mc34708, enum mc34708_reg reg, u32 *val)
+> +{
+> +	uint32_t buf;
+> +
+> +	buf = MXC_PMIC_REG_NUM(reg);
+> +
+> +	spi_rw(mc34708->spi, &buf, 4);
+you need to check the return
+> +
+> +	*val = buf;
+> +
+> +	return 0;
+> +}
+> +
+> +static int mc34708_spi_reg_write(struct mc34708 *mc34708, enum mc34708_reg reg, u32 val)
+> +{
+> +	uint32_t buf = MXC_PMIC_REG_NUM(reg) | MXC_PMIC_WRITE | (val & 0xffffff);
+> +
+> +	spi_rw(mc34708->spi, &buf, 4);
+ditto
+> +
+> +	return 0;
+> +}
+> +#endif
+> +
+> +#ifdef CONFIG_I2C
+please drop the ifdef
+> +static int mc34708_i2c_reg_read(struct mc34708 *mc34708, enum mc34708_reg reg, u32 *val)
+> +{
+> +	u8 buf[3];
+> +	int ret;
+> +
+> +	ret = i2c_read_reg(mc34708->client, reg, buf, 3);
+> +	*val = buf[0] << 16 | buf[1] << 8 | buf[2] << 0;
+> +
+> +	return ret == 3 ? 0 : ret;
+> +}
+> +
+> +static int mc34708_i2c_reg_write(struct mc34708 *mc34708, enum mc34708_reg reg, u32 val)
+> +{
+> +	u8 buf[] = {
+> +		val >> 16,
+> +		val >>  8,
+> +		val >>  0,
+> +	};
+why not convert val as a u8* and did this wirk on big endian?
+> +	int ret;
+> +
+> +	ret = i2c_write_reg(mc34708->client, reg, buf, 3);
+> +
+> +	return ret == 3 ? 0 : ret;
+> +}
+> +#endif
+> +
+> +int mc34708_reg_write(struct mc34708 *mc34708, enum mc34708_reg reg, u32 val)
+> +{
+> +#ifdef CONFIG_I2C
+please use IS_ENABLED
+> +	if (mc34708->mode == MC34708_MODE_I2C)
+> +		return mc34708_i2c_reg_write(mc34708, reg, val);
+> +#endif
+> +#ifdef CONFIG_SPI
+ditto
+> +	if (mc34708->mode == MC34708_MODE_SPI)
+> +		return mc34708_spi_reg_write(mc34708, reg, val);
+> +#endif
+> +	return -EINVAL;
+> +}
+> +EXPORT_SYMBOL(mc34708_reg_write);
+> +
+> +int mc34708_reg_read(struct mc34708 *mc34708, enum mc34708_reg reg, u32 *val)
+> +{
+> +#ifdef CONFIG_I2C
+ditto
+> +	if (mc34708->mode == MC34708_MODE_I2C)
+> +		return mc34708_i2c_reg_read(mc34708, reg, val);
+> +#endif
+> +#ifdef CONFIG_SPI
+> +	if (mc34708->mode == MC34708_MODE_SPI)
+> +		return mc34708_spi_reg_read(mc34708, reg, val);
+> +#endif
+> +	return -EINVAL;
+> +}
+> +EXPORT_SYMBOL(mc34708_reg_read);
+> +
+> +int mc34708_set_bits(struct mc34708 *mc34708, enum mc34708_reg reg, u32 mask, u32 val)
+> +{
+> +	u32 tmp;
+> +	int err;
+> +
+> +	err = mc34708_reg_read(mc34708, reg, &tmp);
+> +	tmp = (tmp & ~mask) | val;
+no need if err != 0
+> +
+> +	if (!err)
+> +		err = mc34708_reg_write(mc34708, reg, tmp);
+> +
+> +	return err;
+> +}
+> +EXPORT_SYMBOL(mc34708_set_bits);
+> +
+> +static ssize_t mc_read(struct cdev *cdev, void *_buf, size_t count, ulong offset, ulong flags)
+> +{
+> +	struct mc34708 *priv = to_mc34708(cdev);
+> +	u32 *buf = _buf;
+> +	size_t i = count >> 2;
+> +	int err;
+> +
+> +	offset >>= 2;
+> +
+> +	while (i) {
+> +		err = mc34708_reg_read(priv, offset, buf);
+> +		if (err)
+> +			return (ssize_t)err;
+> +		buf++;
+> +		i--;
+> +		offset++;
+> +	}
+> +
+> +	return count;
+> +}
+> +
+> +static ssize_t mc_write(struct cdev *cdev, const void *_buf, size_t count, ulong offset, ulong flags)
+> +{
+> +	struct mc34708 *mc34708 = to_mc34708(cdev);
+> +	const u32 *buf = _buf;
+> +	size_t i = count >> 2;
+> +	int err;
+> +
+> +	offset >>= 2;
+> +
+> +	while (i) {
+> +		err = mc34708_reg_write(mc34708, offset, *buf);
+> +		if (err)
+> +			return (ssize_t)err;
+> +		buf++;
+> +		i--;
+> +		offset++;
+> +	}
+> +
+> +	return count;
+> +}
+> +
+> +static struct file_operations mc_fops = {
+> +	.lseek	= dev_lseek_default,
+> +	.read	= mc_read,
+> +	.write	= mc_write,
+> +};
+> +
+> +static int mc34708_query_revision(struct mc34708 *mc34708)
+> +{
+> +	unsigned int rev_id;
+> +	int rev;
+> +
+> +	mc34708_reg_read(mc34708, 7, &rev_id);
+> +
+> +	if (rev_id > 0xFFF)
+> +		return -EINVAL;
+> +
+> +	rev = rev_id & 0xFFF;
+> +
+> +	dev_info(mc_dev->cdev.dev, "MC34708 ID: 0x%04x\n", rev);
+> +
+> +	mc34708->revision = rev;
+> +
+> +	return rev;
+> +}
+> +
+> +static int mc_probe(struct device_d *dev, enum mc34708_mode mode)
+> +{
+> +	int rev;
+> +
+> +	if (mc_dev)
+> +		return -EBUSY;
+> +
+> +	mc_dev = xzalloc(sizeof(struct mc34708));
+> +	mc_dev->mode = mode;
+> +	mc_dev->cdev.name = DRIVERNAME;
+
+> +	if (mode == MC34708_MODE_I2C) {
+please use IS_ENABLED
+> +		mc_dev->client = to_i2c_client(dev);
+> +	}
+ditto
+> +	if (mode == MC34708_MODE_SPI) {
+> +		mc_dev->spi = dev->type_data;
+> +		mc_dev->spi->mode = SPI_MODE_0 | SPI_CS_HIGH;
+> +		mc_dev->spi->bits_per_word = 32;
+> +	}
+> +	mc_dev->cdev.size = 256;
+> +	mc_dev->cdev.dev = dev;
+> +	mc_dev->cdev.ops = &mc_fops;
+> +
+> +	rev = mc34708_query_revision(mc_dev);
+> +	if (rev < 0) {
+> +		free(mc_dev);
+> +		mc_dev = NULL;
+> +		return -EINVAL;
+> +	}
+> +
+> +	devfs_create(&mc_dev->cdev);
+return?
+> +
+> +	return 0;
+> +}
+> +
+> +static int mc_i2c_probe(struct device_d *dev)
+> +{
+> +	return mc_probe(dev, MC34708_MODE_I2C);
+> +}
+> +
+> +static int mc_spi_probe(struct device_d *dev)
+> +{
+> +	return mc_probe(dev, MC34708_MODE_SPI);
+> +}
+> +
+> +static struct driver_d mc_i2c_driver = {
+> +	.name  = "mc34708-i2c",
+> +	.probe = mc_i2c_probe,
+> +};
+> +
+> +static struct driver_d mc_spi_driver = {
+> +	.name  = "mc34708-spi",
+> +	.probe = mc_spi_probe,
+> +};
+> +
+> +static int mc_init(void)
+> +{
+please use IS_ENABLED
+> +        register_driver(&mc_i2c_driver);
+> +        register_driver(&mc_spi_driver);
+> +        return 0;
+
+Best Regards,
+J.
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
