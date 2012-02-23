@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-f177.google.com ([74.125.82.177])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1S0bvB-0005S4-9x
- for barebox@lists.infradead.org; Thu, 23 Feb 2012 16:53:34 +0000
-Received: by wera10 with SMTP id a10so1131650wer.36
- for <barebox@lists.infradead.org>; Thu, 23 Feb 2012 08:53:31 -0800 (PST)
-From: Mark Olleson <mark.olleson@yamaha.co.uk>
-Date: Thu, 23 Feb 2012 16:53:28 +0000
-References: <35246B69-4D16-4459-9E1E-0C79C4350EFF@yamaha.co.uk>
-Message-Id: <AF4465C4-1845-4DA0-B5B8-EEE9CB5A8AB5@yamaha.co.uk>
-Mime-Version: 1.0 (Apple Message framework v1251.1)
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1S0f3E-0003R6-Tu
+ for barebox@lists.infradead.org; Thu, 23 Feb 2012 20:14:05 +0000
+Date: Thu, 23 Feb 2012 21:13:48 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120223201348.GR3852@pengutronix.de>
+References: <CAACwSTKshGv05PfJWJkFTKzhof2q+hjupdh=U3VH2Fbdc-6VBQ@mail.gmail.com>
+ <20120221210127.GG3852@pengutronix.de>
+ <CAACwSTJxLsZxwfp4=7bunemR3SV8QqqVKz7Ox-Fo-Jt_zCnnVA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAACwSTJxLsZxwfp4=7bunemR3SV8QqqVKz7Ox-Fo-Jt_zCnnVA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,51 +24,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: PATCH: Fix MMC boot in OMAP4 xload configurations
-To: barebox@lists.infradead.org
+Subject: Re: mx53 loco boot procedure
+To: George Stefan <stefan.george87@gmail.com>
+Cc: barebox@lists.infradead.org
 
-omap4_bootsrc() always returns OMAP_BOOTSRC_UNKNOWN when an OMAP4 xload image is built with pcm049_xload_defconfig.  This is likely to be the case for all OMAP4 xload configurations.
+Hi,
 
-This means that when the CPU is configured to boot from MMC1 with boot[5:0],  xload will load the second stage boot loader from NAND flash (if present) rather than MMC1 as intended. 
+Please do not top post.
 
-omap4_bootsrc() reads data left behind towards the top of the SRAM by the ROM-based boot-loader.  This is the same SRAM into which the xload image is loaded.   The xload image is of a sufficient size that it overwrites these locations, and OMAP4_TRACING_VECTOR3 always contains 0.
+On Wed, Feb 22, 2012 at 11:22:37AM +0200, George Stefan wrote:
+> Hello,
+> How could i link barebox and zImage together?
+> Could you please give an example?
 
-These locations are in fact trampled by data in the BSS section of the image.   The single largest item in there is FILE files[MAX_FILES].  This patch reduces the size of files[] considerably.  The image now JUST fits. 
+I'm afraid there is no easy example for this.
 
-Long term, a better solution would be to not rely on OMAP4_TRACING_VECTOR3, and instead use the structure passed into the xload by the ROM-based boot loader - which also indicates the boot device.     This wold allow us another 4kB of code before we overflow the SRAM completely. 
+Sascha
 
-
-Signed-off-by: Mark Olleson <mark@yamaha.co.uk>
----
-diff --git a/include/stdio.h b/include/stdio.h
-index 4901bc7..98a4639 100644
---- a/include/stdio.h
-+++ b/include/stdio.h
-@@ -52,8 +52,21 @@ int  vscnprintf(char *buf, size_t size, const char *fmt, va_list args);
- #define stdin          0
- #define stdout         1
- #define stderr         2
-+
-+#if defined (CONFIG_SHELL_NONE) && defined (CONFIG_ARCH_OMAP4)
-+
-+// OMAP4 XLOAD configuations are very tight on RAM. If MAX_FILES is any
-+// larger, FILE files[MAX_FILES] (fs.c) tramples over data left for us by
-+// ROM-based bootloader and breaks boot from mmc.
-+
-+#define MAX_FILES      16
-+
-+#else
-+
-+
- #define MAX_FILES      128
- 
-+#endif 
- int    fprintf(int file, const char *fmt, ...) __attribute__ ((format(__printf__, 2, 3)));
- int    fputs(int file, const char *s);
- int    fputc(int file, const char c);
-
-
-
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
