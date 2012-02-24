@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp3-g21.free.fr ([2a01:e0c:1:1599::12])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1S0fl1-0003Cv-KF
- for barebox@lists.infradead.org; Thu, 23 Feb 2012 20:59:21 +0000
-Date: Thu, 23 Feb 2012 21:59:07 +0100
-From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
-Message-ID: <20120223215907.70906772@eb-e6520>
-In-Reply-To: <CAACwSTLb5OkU5R_dUH5MVNP+UhVwvYZo8LK5Xo0sya2CeTgzaA@mail.gmail.com>
-References: <CAACwSTKshGv05PfJWJkFTKzhof2q+hjupdh=U3VH2Fbdc-6VBQ@mail.gmail.com>
- <20120221210127.GG3852@pengutronix.de>
- <CAACwSTJxLsZxwfp4=7bunemR3SV8QqqVKz7Ox-Fo-Jt_zCnnVA@mail.gmail.com>
- <20120223201348.GR3852@pengutronix.de>
- <CAACwSTLb5OkU5R_dUH5MVNP+UhVwvYZo8LK5Xo0sya2CeTgzaA@mail.gmail.com>
-Mime-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1S0pUp-0005Rt-1d
+ for barebox@lists.infradead.org; Fri, 24 Feb 2012 07:23:16 +0000
+Date: Fri, 24 Feb 2012 08:23:08 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120224072308.GS3852@pengutronix.de>
+References: <35246B69-4D16-4459-9E1E-0C79C4350EFF@yamaha.co.uk>
+ <AF4465C4-1845-4DA0-B5B8-EEE9CB5A8AB5@yamaha.co.uk>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <AF4465C4-1845-4DA0-B5B8-EEE9CB5A8AB5@yamaha.co.uk>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,34 +19,63 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: mx53 loco boot procedure
-To: George Stefan <stefan.george87@gmail.com>
+Subject: Re: PATCH: Fix MMC boot in OMAP4 xload configurations
+To: Mark Olleson <mark.olleson@yamaha.co.uk>
 Cc: barebox@lists.infradead.org
 
-Hi,
+Hi Mark,
 
-Le Thu, 23 Feb 2012 22:40:41 +0200,
-George Stefan <stefan.george87@gmail.com> a =E9crit :
-> What i have done so far is take vmlinux.o and vmlinux.lds  and try to
-> "integrate"
-> them into barebox.lds.s.
-> Do you thing that this is the correct aproach?
-> =
+On Thu, Feb 23, 2012 at 04:53:28PM +0000, Mark Olleson wrote:
+> omap4_bootsrc() always returns OMAP_BOOTSRC_UNKNOWN when an OMAP4
+> xload image is built with pcm049_xload_defconfig.  This is likely to
+> be the case for all OMAP4 xload configurations.
+> 
+> This means that when the CPU is configured to boot from MMC1 with
+> boot[5:0],  xload will load the second stage boot loader from NAND
+> flash (if present) rather than MMC1 as intended. 
+> 
+> omap4_bootsrc() reads data left behind towards the top of the SRAM by
+> the ROM-based boot-loader.  This is the same SRAM into which the xload
+> image is loaded.   The xload image is of a sufficient size that it
+> overwrites these locations, and OMAP4_TRACING_VECTOR3 always contains
+> 0.
+> 
+> These locations are in fact trampled by data in the BSS section of the
+> image.   The single largest item in there is FILE files[MAX_FILES].
+> This patch reduces the size of files[] considerably.  The image now
+> JUST fits.
 
-Why do you want to keep barebox in that case ? You may try to hack the
-kernel so that is can boot standalone, add a DCD header to the
-resulting kernel binary with the correct parameters to have the romcode
-load your kernel, burn the resulting binary on your SD and forget
-barebox as that's what you are trying to do.
+Sorry, this is not even a short term solution, it will probably break
+very soon again.
 
-Eric
--- =
+> 
+> Long term, a better solution would be to not rely on
+> OMAP4_TRACING_VECTOR3, and instead use the structure passed into the
+> xload by the ROM-based boot loader - which also indicates the boot
+> device.     This wold allow us another 4kB of code before we overflow
+> the SRAM completely.
 
-http://eukrea.com/en/news/104-2012
+That sounds interesting. I wasn't aware that the ROM passes a structure
+into the bootloader.
+
+Another thing is that I still have the Thumb2 patches pending which are
+currently blocked by Jean-Christophe.
+
+Jean-Christophe, please please have a look on these patches again or at
+least say *what* is wrong with them so that I have a chance to rework
+them.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
