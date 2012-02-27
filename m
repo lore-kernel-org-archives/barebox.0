@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1S25sn-0005PQ-1m
- for barebox@lists.infradead.org; Mon, 27 Feb 2012 19:05:13 +0000
+ id 1S26Bx-0000KP-BA
+ for barebox@lists.infradead.org; Mon, 27 Feb 2012 19:25:02 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 27 Feb 2012 20:05:05 +0100
-Message-Id: <1330369505-21262-1-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 27 Feb 2012 20:24:51 +0100
+Message-Id: <1330370693-1591-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1330370693-1591-1-git-send-email-s.hauer@pengutronix.de>
+References: <1330370693-1591-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,68 +21,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] lib: remove unused bcopy function
+Subject: [PATCH 1/3] command: do not allow abbreviated commands anymore
 To: barebox@lists.infradead.org
+
+abbreviated commands are derived from U-Boot and are only
+partly useful. Noone expects from a shell to support this,
+also we have tab completion. They also have some funny
+side effects. For example we have a 'time' command. If this
+command is not compiled in, the time command is interpreted
+as an abbreviated version of the 'timeout' command. So remove
+support for abbreviated commands and safe the binary space.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/ppc/lib/ppcstring.S |    7 -------
- lib/string.c             |   24 ------------------------
- 2 files changed, 0 insertions(+), 31 deletions(-)
+ common/command.c |   22 +++-------------------
+ 1 files changed, 3 insertions(+), 19 deletions(-)
 
-diff --git a/arch/ppc/lib/ppcstring.S b/arch/ppc/lib/ppcstring.S
-index cce85e3..05fd4b1 100644
---- a/arch/ppc/lib/ppcstring.S
-+++ b/arch/ppc/lib/ppcstring.S
-@@ -95,13 +95,6 @@ memset:
- 	bdnz	8b
- 	blr
+diff --git a/common/command.c b/common/command.c
+index de2c3a9..c9bab2a 100644
+--- a/common/command.c
++++ b/common/command.c
+@@ -159,26 +159,10 @@ EXPORT_SYMBOL(register_command);
+ struct command *find_cmd (const char *cmd)
+ {
+ 	struct command *cmdtp;
+-	struct command *cmdtp_temp = &__barebox_cmd_start;	/*Init value */
+-	int len;
+-	int n_found = 0;
+-	len = strlen (cmd);
  
--	.globl	bcopy
--bcopy:
--	mr	r6,r3
--	mr	r3,r4
--	mr	r4,r6
--	b	memcpy
+-	cmdtp = list_entry(&command_list, struct command, list);
 -
- 	.globl	memmove
- memmove:
- 	cmplw	0,r3,r4
-diff --git a/lib/string.c b/lib/string.c
-index 77435aa..2865088 100644
---- a/lib/string.c
-+++ b/lib/string.c
-@@ -420,30 +420,6 @@ void * memset(void * s,int c,size_t count)
- #endif
- EXPORT_SYMBOL(memset);
+-	for_each_command(cmdtp) {
+-		if (strncmp (cmd, cmdtp->name, len) == 0) {
+-			if (len == strlen (cmdtp->name))
+-				return cmdtp;		/* full match */
+-
+-			cmdtp_temp = cmdtp;		/* abbreviated command ? */
+-			n_found++;
+-		}
+-	}
+-
+-	if (n_found == 1) {			/* exactly one match */
+-		return cmdtp_temp;
+-	}
++	for_each_command(cmdtp)
++		if (!strcmp(cmd, cmdtp->name))
++			return cmdtp;
  
--#ifndef __HAVE_ARCH_BCOPY
--/**
-- * bcopy - Copy one area of memory to another
-- * @src: Where to copy from
-- * @dest: Where to copy to
-- * @count: The size of the area.
-- *
-- * Note that this is the same as memcpy(), with the arguments reversed.
-- * memcpy() is the standard, bcopy() is a legacy BSD function.
-- *
-- * You should not use this function to access IO space, use memcpy_toio()
-- * or memcpy_fromio() instead.
-- */
--char * bcopy(const char * src, char * dest, int count)
--{
--	char *tmp = dest;
--
--	while (count--)
--		*tmp++ = *src++;
--
--	return dest;
--}
--#endif
--
- #ifndef __HAVE_ARCH_MEMCPY
- /**
-  * memcpy - Copy one area of memory to another
+ 	return NULL;	/* not found or ambiguous command */
+ }
 -- 
 1.7.9.1
 
