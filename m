@@ -1,21 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 8.mo5.mail-out.ovh.net ([178.32.116.78]
- helo=mo5.mail-out.ovh.net)
+Received: from smtp6-g21.free.fr ([2a01:e0c:1:1599::15])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1S26SC-0008AX-Fd
- for barebox@lists.infradead.org; Mon, 27 Feb 2012 19:41:49 +0000
-Received: from mail98.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 48B59FF9248
- for <barebox@lists.infradead.org>; Mon, 27 Feb 2012 20:44:32 +0100 (CET)
-Date: Mon, 27 Feb 2012 20:32:47 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120227193247.GI12248@game.jcrosoft.org>
-References: <35246B69-4D16-4459-9E1E-0C79C4350EFF@yamaha.co.uk>
- <AF4465C4-1845-4DA0-B5B8-EEE9CB5A8AB5@yamaha.co.uk>
- <20120224072308.GS3852@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20120224072308.GS3852@pengutronix.de>
+ id 1S29KI-0004R8-Bj
+ for barebox@lists.infradead.org; Mon, 27 Feb 2012 22:45:52 +0000
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+Date: Mon, 27 Feb 2012 23:45:28 +0100
+Message-Id: <1330382728-10708-1-git-send-email-robert.jarzmik@free.fr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,65 +14,93 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: PATCH: Fix MMC boot in OMAP4 xload configurations
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] drivers/mci: fix read/write stalling
+To: barebox@lists.infradead.org
 
-On 08:23 Fri 24 Feb     , Sascha Hauer wrote:
-> Hi Mark,
-> 
-> On Thu, Feb 23, 2012 at 04:53:28PM +0000, Mark Olleson wrote:
-> > omap4_bootsrc() always returns OMAP_BOOTSRC_UNKNOWN when an OMAP4
-> > xload image is built with pcm049_xload_defconfig.  This is likely to
-> > be the case for all OMAP4 xload configurations.
-> > 
-> > This means that when the CPU is configured to boot from MMC1 with
-> > boot[5:0],  xload will load the second stage boot loader from NAND
-> > flash (if present) rather than MMC1 as intended. 
-> > 
-> > omap4_bootsrc() reads data left behind towards the top of the SRAM by
-> > the ROM-based boot-loader.  This is the same SRAM into which the xload
-> > image is loaded.   The xload image is of a sufficient size that it
-> > overwrites these locations, and OMAP4_TRACING_VECTOR3 always contains
-> > 0.
-> > 
-> > These locations are in fact trampled by data in the BSS section of the
-> > image.   The single largest item in there is FILE files[MAX_FILES].
-> > This patch reduces the size of files[] considerably.  The image now
-> > JUST fits.
-> 
-> Sorry, this is not even a short term solution, it will probably break
-> very soon again.
-> 
-> > 
-> > Long term, a better solution would be to not rely on
-> > OMAP4_TRACING_VECTOR3, and instead use the structure passed into the
-> > xload by the ROM-based boot loader - which also indicates the boot
-> > device.     This wold allow us another 4kB of code before we overflow
-> > the SRAM completely.
-> 
-> That sounds interesting. I wasn't aware that the ROM passes a structure
-> into the bootloader.
-> 
-> Another thing is that I still have the Thumb2 patches pending which are
-> currently blocked by Jean-Christophe.
-> 
-> Jean-Christophe, please please have a look on these patches again or at
-> least say *what* is wrong with them so that I have a chance to rework
-> them.
-sorry need to finish some work on the kernel and the support of sam9x5 series
+If a read or write operation encounters an error, the card
+might stay in "recv" or "data" state, and never get back to
+"tran" state.
 
-on AT91 we must have the vector at the begeniing of the binary and the only
-valid instruction are ldr and branch
+In these cases, the host is required to send a CMD12 (end
+transmission) to switch the FSM of the card back to "tran"
+state, as described in MMC Specification, chapter "Data
+Transfer Mode".
 
-so with your patch the rom code cannot boot barebox
+Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
+---
+ drivers/mci/mci-core.c |   31 ++++++++++---------------------
+ 1 files changed, 10 insertions(+), 21 deletions(-)
 
-Best Regards,
-J.
+diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
+index 0bf4449..6432391 100644
+--- a/drivers/mci/mci-core.c
++++ b/drivers/mci/mci-core.c
+@@ -101,7 +101,7 @@ static int mci_set_blocklen(struct mci *mci, unsigned len)
+ static void *sector_buf;
+ 
+ /**
+- * Write one block of data to the card
++ * Write one or several blocks of data to the card
+  * @param mci_dev MCI instance
+  * @param src Where to read from to write to the card
+  * @param blocknum Block number to write
+@@ -140,23 +140,17 @@ static int mci_block_write(struct mci *mci, const void *src, int blocknum,
+ 	data.flags = MMC_DATA_WRITE;
+ 
+ 	ret = mci_send_cmd(mci, &cmd, &data);
+-	if (ret)
+-		return ret;
+-
+-	if (blocks > 1) {
+-		mci_setup_cmd(&cmd,
+-			MMC_CMD_STOP_TRANSMISSION,
+-			0, MMC_RSP_R1b);
+-			ret = mci_send_cmd(mci, &cmd, NULL);
+-			if (ret)
+-				return ret;
++
++	if (ret || blocks > 1) {
++		mci_setup_cmd(&cmd, MMC_CMD_STOP_TRANSMISSION, 0, MMC_RSP_R1b);
++		mci_send_cmd(mci, &cmd, NULL);
+         }
+ 
+ 	return ret;
+ }
+ 
+ /**
+- * Read one block of data from the card
++ * Read one or several block(s) of data from the card
+  * @param mci MCI instance
+  * @param dst Where to store the data read from the card
+  * @param blocknum Block number to read
+@@ -186,15 +180,10 @@ static int mci_read_block(struct mci *mci, void *dst, int blocknum,
+ 	data.flags = MMC_DATA_READ;
+ 
+ 	ret = mci_send_cmd(mci, &cmd, &data);
+-	if (ret)
+-		return ret;
+-
+-	if (blocks > 1) {
+-		mci_setup_cmd(&cmd,
+-			MMC_CMD_STOP_TRANSMISSION,
+-			0,
+-			MMC_RSP_R1b);
+-			ret = mci_send_cmd(mci, &cmd, NULL);
++
++	if (ret || blocks > 1) {
++		mci_setup_cmd(&cmd, MMC_CMD_STOP_TRANSMISSION, 0, MMC_RSP_R1b);
++		mci_send_cmd(mci, &cmd, NULL);
+ 	}
+ 	return ret;
+ }
+-- 
+1.7.5.4
+
 
 _______________________________________________
 barebox mailing list
