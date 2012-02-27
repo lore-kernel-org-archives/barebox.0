@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ww0-f49.google.com ([74.125.82.49])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1S0xqm-0000PQ-B7
- for barebox@lists.infradead.org; Fri, 24 Feb 2012 16:18:28 +0000
-Received: by wgbdt13 with SMTP id dt13so1471989wgb.18
- for <barebox@lists.infradead.org>; Fri, 24 Feb 2012 08:18:24 -0800 (PST)
-From: Mark Olleson <mark.olleson@yamaha.co.uk>
-Date: Fri, 24 Feb 2012 16:18:20 +0000
-References: <FCA231F0-6BD8-4368-8303-C664165FAC42@yamaha.co.uk>
-Message-Id: <689AA175-B33D-4D56-994B-747B2C5CF019@yamaha.co.uk>
-Mime-Version: 1.0 (Apple Message framework v1251.1)
+Received: from smtp3-g21.free.fr ([2a01:e0c:1:1599::12])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1S1vop-0007FR-S1
+ for barebox@lists.infradead.org; Mon, 27 Feb 2012 08:20:28 +0000
+Received: from localhost.localdomain (unknown [82.233.81.124])
+ by smtp3-g21.free.fr (Postfix) with ESMTP id 9BF2EA6259
+ for <barebox@lists.infradead.org>; Mon, 27 Feb 2012 09:20:22 +0100 (CET)
+From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
+Date: Mon, 27 Feb 2012 09:20:09 +0100
+Message-Id: <1330330813-21605-3-git-send-email-eric@eukrea.com>
+In-Reply-To: <1330330813-21605-1-git-send-email-eric@eukrea.com>
+References: <20120222073359.GL3852@pengutronix.de>
+ <1330330813-21605-1-git-send-email-eric@eukrea.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,74 +21,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Fwd: PATCH: Fix MMC boot in OMAP4 xload configurations
+Subject: [PATCH v2 3/7] i.MX53: add silicon revision functions
 To: barebox@lists.infradead.org
 
-> Sascha,
-> On 24 Feb 2012, at 07:23, Sascha Hauer wrote:
-> 
->> Hi Mark,
->> 
->> On Thu, Feb 23, 2012 at 04:53:28PM +0000, Mark Olleson wrote:
->>> omap4_bootsrc() always returns OMAP_BOOTSRC_UNKNOWN when an OMAP4
->>> xload image is built with pcm049_xload_defconfig.  This is likely to
->>> be the case for all OMAP4 xload configurations.
->>> 
->>> This means that when the CPU is configured to boot from MMC1 with
->>> boot[5:0],  xload will load the second stage boot loader from NAND
->>> flash (if present) rather than MMC1 as intended. 
->>> 
->>> omap4_bootsrc() reads data left behind towards the top of the SRAM by
->>> the ROM-based boot-loader.  This is the same SRAM into which the xload
->>> image is loaded.   The xload image is of a sufficient size that it
->>> overwrites these locations, and OMAP4_TRACING_VECTOR3 always contains
->>> 0.
->>> 
->>> These locations are in fact trampled by data in the BSS section of the
->>> image.   The single largest item in there is FILE files[MAX_FILES].
->>> This patch reduces the size of files[] considerably.  The image now
->>> JUST fits.
->> 
->> Sorry, this is not even a short term solution, it will probably break
->> very soon again.
-> 
-> I totally agree - this fixed me in the very short term, but we're sailing so close 
-> to the wind here that changes in the any (few) modules that are used in these 
-> configurations will break it again. 
-> 
-> My patch was really a heads-up that we have an issue. 
-> 
->> 
-
-
-On further digging,  this gets even worse:  Barebox's initial stack is in the same area of SRAM as the ROM-loader's - overwriting the area where bss section of the image is getting loaded, containing various areas of static storage.  Here, these addresses were falling somewhere in the middles of:
-
-static FILE files[MAX_FILES]
-
-Thankfully, there isn't a great deal of function call depth before the stack is then set up in SDRAM, and tramples here don't matter too much.   
-
-Anyway, be warned - some interesting failure modes lie ahead should some of the other bits of static data or even program code fall at this location!
-
-
-Mark
----
-
-Mark Olleson - Senior R&D Engineer
-Technology Research & Development Group
-Yamaha R&D Centre London
-
-mark.olleson@yamaha.co.uk
-
-
-
-
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogRXJpYyBCw6luYXJkIDxlcmljQGV1a3JlYS5jb20+Ci0tLQogYXJjaC9h
+cm0vbWFjaC1pbXgvaW14NTMuYyAgICAgICAgICAgICAgICAgfCAgIDQ3ICsrKysrKysrKysrKysr
+KysrKysrKysrKysrKystCiBhcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvaW14LXJlZ3Mu
+aCB8ICAgIDUgKysrCiAyIGZpbGVzIGNoYW5nZWQsIDUxIGluc2VydGlvbnMoKyksIDEgZGVsZXRp
+b25zKC0pCgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1pbXgvaW14NTMuYyBiL2FyY2gvYXJt
+L21hY2gtaW14L2lteDUzLmMKaW5kZXggNGY3ZDFjYi4uODc0MmM0NiAxMDA2NDQKLS0tIGEvYXJj
+aC9hcm0vbWFjaC1pbXgvaW14NTMuYworKysgYi9hcmNoL2FybS9tYWNoLWlteC9pbXg1My5jCkBA
+IC0yMCw3ICsyMCw3IEBACiAjaW5jbHVkZSA8aW8uaD4KICNpbmNsdWRlIDxzaXplcy5oPgogI2lu
+Y2x1ZGUgPG1hY2gvaW14NS5oPgotI2luY2x1ZGUgPG1hY2gvaW14NTMtcmVncy5oPgorI2luY2x1
+ZGUgPG1hY2gvaW14LXJlZ3MuaD4KICNpbmNsdWRlIDxtYWNoL2Nsb2NrLWlteDUxXzUzLmg+CiAK
+ICNpbmNsdWRlICJncGlvLmgiCkBAIC0zNyw2ICszNyw1MSBAQCB2b2lkICppbXhfZ3Bpb19iYXNl
+W10gPSB7CiAKIGludCBpbXhfZ3Bpb19jb3VudCA9IEFSUkFZX1NJWkUoaW14X2dwaW9fYmFzZSkg
+KiAzMjsKIAorI2RlZmluZSBTSV9SRVYgMHg0OAorCitzdGF0aWMgdTMyIG14NTNfc2lsaWNvbl9y
+ZXZpc2lvbjsKK3N0YXRpYyBjaGFyICpteDUzX3Jldl9zdHJpbmcgPSAidW5rbm93biI7CisKK2lu
+dCBpbXhfc2lsaWNvbl9yZXZpc2lvbih2b2lkKQoreworCXJldHVybiBteDUzX3NpbGljb25fcmV2
+aXNpb247Cit9CisKK3N0YXRpYyBpbnQgcXVlcnlfc2lsaWNvbl9yZXZpc2lvbih2b2lkKQorewor
+CXZvaWQgX19pb21lbSAqcm9tID0gTVg1M19JUk9NX0JBU0VfQUREUjsKKwl1MzIgcmV2OworCisJ
+cmV2ID0gcmVhZGwocm9tICsgU0lfUkVWKTsKKwlzd2l0Y2ggKHJldikgeworCWNhc2UgMHgxMDoK
+KwkJbXg1M19zaWxpY29uX3JldmlzaW9uID0gSU1YX0NISVBfUkVWXzFfMDsKKwkJbXg1M19yZXZf
+c3RyaW5nID0gIjEuMCI7CisJCWJyZWFrOworCWNhc2UgMHgyMDoKKwkJbXg1M19zaWxpY29uX3Jl
+dmlzaW9uID0gSU1YX0NISVBfUkVWXzJfMDsKKwkJbXg1M19yZXZfc3RyaW5nID0gIjIuMCI7CisJ
+CWJyZWFrOworCWNhc2UgMHgyMToKKwkJbXg1M19zaWxpY29uX3JldmlzaW9uID0gSU1YX0NISVBf
+UkVWXzJfMTsKKwkJbXg1M19yZXZfc3RyaW5nID0gIjIuMSI7CisJCWJyZWFrOworCWRlZmF1bHQ6
+CisJCW14NTNfc2lsaWNvbl9yZXZpc2lvbiA9IDA7CisJfQorCisJcmV0dXJuIDA7Cit9Citjb3Jl
+X2luaXRjYWxsKHF1ZXJ5X3NpbGljb25fcmV2aXNpb24pOworCitzdGF0aWMgaW50IGlteDUzX3By
+aW50X3NpbGljb25fcmV2KHZvaWQpCit7CisJcHJpbnRmKCJkZXRlY3RlZCBpLk1YNTMgcmV2ICVz
+XG4iLCBteDUzX3Jldl9zdHJpbmcpOworCisJcmV0dXJuIDA7Cit9CitkZXZpY2VfaW5pdGNhbGwo
+aW14NTNfcHJpbnRfc2lsaWNvbl9yZXYpOworCiBzdGF0aWMgaW50IGlteDUzX2luaXQodm9pZCkK
+IHsKIAlhZGRfZ2VuZXJpY19kZXZpY2UoImlteF9paW0iLCAwLCBOVUxMLCBNWDUzX0lJTV9CQVNF
+X0FERFIsIFNaXzRLLApkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNo
+L2lteC1yZWdzLmggYi9hcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvaW14LXJlZ3MuaApp
+bmRleCBhMjcyZGRhLi43ODkzOTdlIDEwMDY0NAotLS0gYS9hcmNoL2FybS9tYWNoLWlteC9pbmNs
+dWRlL21hY2gvaW14LXJlZ3MuaAorKysgYi9hcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gv
+aW14LXJlZ3MuaApAQCAtMTA1LDQgKzEwNSw5IEBACiAKICNkZWZpbmUgR1BJT19HSVVTICAgICAg
+KDE8PDE2KQogCisvKiBzaWxpY29uIHJldmlzaW9ucyAgKi8KKyNkZWZpbmUgSU1YX0NISVBfUkVW
+XzFfMAkweDEwCisjZGVmaW5lIElNWF9DSElQX1JFVl8yXzAJMHgyMAorI2RlZmluZSBJTVhfQ0hJ
+UF9SRVZfMl8xCTB4MjEKKwogI2VuZGlmCQkJCS8qIF9JTVhfUkVHU19IICovCi0tIAoxLjcuNy42
+CgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJv
+eCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5p
+bmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
