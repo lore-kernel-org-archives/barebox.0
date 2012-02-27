@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1S25kC-0004Y9-6A
- for barebox@lists.infradead.org; Mon, 27 Feb 2012 18:56:21 +0000
-Date: Mon, 27 Feb 2012 19:56:14 +0100
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1S25mn-0003SD-On
+ for barebox@lists.infradead.org; Mon, 27 Feb 2012 18:59:02 +0000
+Date: Mon, 27 Feb 2012 19:58:52 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120227185614.GF3852@pengutronix.de>
-References: <1330362868-18186-1-git-send-email-lars@kiwigrid.com>
+Message-ID: <20120227185852.GG3852@pengutronix.de>
+References: <20120222073359.GL3852@pengutronix.de>
+ <1330330813-21605-1-git-send-email-eric@eukrea.com>
+ <1330330813-21605-6-git-send-email-eric@eukrea.com>
+ <20120227154023.GD3318@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1330362868-18186-1-git-send-email-lars@kiwigrid.com>
+In-Reply-To: <20120227154023.GD3318@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,65 +21,121 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Add unaligned.h to sandbox arch
-To: Lars Poeschel <lars@kiwigrid.com>
+Subject: Re: [PATCH v2 6/7] mx53-loco: add board revision support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Feb 27, 2012 at 06:14:28PM +0100, Lars Poeschel wrote:
-> To be able to use the sandbox with fat filesystem support unaligned.h is needed.
-> It tries to be general in selecting little endian or big endian on a gcc macro.
-> 
-> Signed-off-by: Lars Poeschel <lars@kiwigrid.com>
+On Mon, Feb 27, 2012 at 04:40:23PM +0100, Jean-Christophe PLAGNIOL-VILLARD =
+wrote:
+> On 09:20 Mon 27 Feb     , Eric B=E9nard wrote:
+> > - this is taken from freescale-mx35-3-stack/3stack.c and allows
+> > this board to run Freescale's kernel which relies on the system
+> > revision to configure the correct PMIC.
+> > =
 
-Applied, thanks
+> > - On rev0 boards (with DA9053), the log is :
+> > detected i.MX53 rev 2.1
+> > MCIMX53-START board 1.0
+> > =
 
-  Sascha
+> > On newer boards (rev A or B with MC34708), the log is :
+> > mc34708-i2c@mc34708-i2c0: MC34708 ID: 0x0014
+> > detected i.MX53 rev 2.1
+> > MCIMX53-START-R board 1.0 rev B
+> > =
 
-> ---
->  arch/sandbox/include/asm/unaligned.h |   19 +++++++++++++++++++
->  1 files changed, 19 insertions(+), 0 deletions(-)
->  create mode 100644 arch/sandbox/include/asm/unaligned.h
-> 
-> diff --git a/arch/sandbox/include/asm/unaligned.h b/arch/sandbox/include/asm/unaligned.h
-> new file mode 100644
-> index 0000000..07c1ae4
-> --- /dev/null
-> +++ b/arch/sandbox/include/asm/unaligned.h
-> @@ -0,0 +1,19 @@
-> +#ifndef _ASM_SANDBOX_UNALIGNED_H
-> +#define _ASM_SANDBOX_UNALIGNED_H
-> +
-> +/*
-> + * The architecture sandbox is compiled on can do unaligned accesses itself.
-> + */
-> +
-> +#include <linux/unaligned/access_ok.h>
-> +#include <linux/unaligned/generic.h>
-> +
-> +#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-> +#define get_unaligned __get_unaligned_le
-> +#define put_unaligned __put_unaligned_le
-> +#else
-> +#define get_unaligned __get_unaligned_be
-> +#define put_unaligned __put_unaligned_be
-> +#endif
-> +
-> +#endif /* _ASM_SANDBOX_UNALIGNED_H */
-> -- 
-> 1.7.5.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+> > Signed-off-by: Eric B=E9nard <eric@eukrea.com>
+> > ---
+> >  arch/arm/boards/freescale-mx53-loco/board.c |   51 +++++++++++++++++++=
+++++++++
+> >  1 files changed, 51 insertions(+), 0 deletions(-)
+> > =
 
--- 
+> > diff --git a/arch/arm/boards/freescale-mx53-loco/board.c b/arch/arm/boa=
+rds/freescale-mx53-loco/board.c
+> > index 66ff040..6c0e1d1 100644
+> > --- a/arch/arm/boards/freescale-mx53-loco/board.c
+> > +++ b/arch/arm/boards/freescale-mx53-loco/board.c
+> > @@ -103,6 +103,31 @@ static struct i2c_board_info i2c_devices[] =3D {
+> >  	},
+> >  };
+> >  =
+
+> > +/*
+> > + * Revision to be passed to kernel. The kernel provided
+> > + * by freescale relies on this.
+> > + *
+> > + * C --> CPU type
+> > + * S --> Silicon revision
+> > + * B --> Board rev
+> > + *
+> > + * 31    20     16     12    8      4     0
+> > + *        | Cmaj | Cmin | B  | Smaj | Smin|
+> > + *
+> > + * e.g 0x00053120 --> i.MX35, Cpu silicon rev 2.0, Board rev 2
+> > +*/
+> > +static unsigned int loco_system_rev =3D 0x00053000;
+> > +
+> > +static void set_silicon_rev( int rev)
+> > +{
+> > +	loco_system_rev =3D loco_system_rev | (rev & 0xFF);
+> > +}
+> > +
+> > +static void set_board_rev(int rev)
+> > +{
+> > +	loco_system_rev =3D  (loco_system_rev & ~(0xF << 8)) | (rev & 0xF) <<=
+ 8;
+> > +}
+> > +
+> >  static int loco_mem_init(void)
+> >  {
+> >  	arm_add_mem_device("ram0", 0x70000000, SZ_512M);
+> > @@ -149,6 +174,8 @@ static int loco_devices_init(void)
+> >  =
+
+> >  	loco_fec_reset();
+> >  =
+
+> > +	set_silicon_rev(imx_silicon_revision());
+> > +
+> >  	armlinux_set_bootparams((void *)0x70000100);
+> >  	armlinux_set_architecture(MACH_TYPE_MX53_LOCO);
+> >  =
+
+> > @@ -177,3 +204,27 @@ static int loco_console_init(void)
+> >  }
+> >  =
+
+> >  console_initcall(loco_console_init);
+> > +
+> > +static int loco_pmic_init(void)
+> > +{
+> > +	struct mc34708 *mc34708;
+> > +	int rev;
+> > +
+> > +	mc34708 =3D mc34708_get();
+> > +	if (!mc34708) {
+> > +		/* so we have a DA9053 based board */
+> > +		printf("MCIMX53-START board 1.0\n");
+> > +		armlinux_set_revision(loco_system_rev);
+> > +		return 0;
+> > +	}
+> here I still don't like the idea to check the pointer
+> =
+
+> check the file exist is the rigght way
+
+I don't agree.
+
+Sascha
+
+
+-- =
+
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
