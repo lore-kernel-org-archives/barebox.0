@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1S2Irk-0002l2-HA
- for barebox@lists.infradead.org; Tue, 28 Feb 2012 08:57:01 +0000
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1S2Is0-0001Dh-Fg
+ for barebox@lists.infradead.org; Tue, 28 Feb 2012 08:57:17 +0000
+Date: Tue, 28 Feb 2012 09:57:05 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 28 Feb 2012 09:56:40 +0100
-Message-Id: <1330419401-11994-3-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1330419401-11994-1-git-send-email-s.hauer@pengutronix.de>
-References: <1330419401-11994-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20120228085705.GN3852@pengutronix.de>
+References: <35246B69-4D16-4459-9E1E-0C79C4350EFF@yamaha.co.uk>
+ <AF4465C4-1845-4DA0-B5B8-EEE9CB5A8AB5@yamaha.co.uk>
+ <20120224072308.GS3852@pengutronix.de>
+ <20120227193247.GI12248@game.jcrosoft.org>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20120227193247.GI12248@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,76 +21,73 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] ARM: get runtime offset of board_init_lowlevel_return by
- using separate section
-To: barebox@lists.infradead.org
+Subject: Re: PATCH: Fix MMC boot in OMAP4 xload configurations
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-We used to get the runtime offset of the board_init_lowlevel_return
-by doing a &board_init_lowlevel_return. This does not work in thumb-2
-mode, so use a separate linker section for this function instead.
+On Mon, Feb 27, 2012 at 08:32:47PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 08:23 Fri 24 Feb     , Sascha Hauer wrote:
+> > Hi Mark,
+> > 
+> > On Thu, Feb 23, 2012 at 04:53:28PM +0000, Mark Olleson wrote:
+> > > omap4_bootsrc() always returns OMAP_BOOTSRC_UNKNOWN when an OMAP4
+> > > xload image is built with pcm049_xload_defconfig.  This is likely to
+> > > be the case for all OMAP4 xload configurations.
+> > > 
+> > > This means that when the CPU is configured to boot from MMC1 with
+> > > boot[5:0],  xload will load the second stage boot loader from NAND
+> > > flash (if present) rather than MMC1 as intended. 
+> > > 
+> > > omap4_bootsrc() reads data left behind towards the top of the SRAM by
+> > > the ROM-based boot-loader.  This is the same SRAM into which the xload
+> > > image is loaded.   The xload image is of a sufficient size that it
+> > > overwrites these locations, and OMAP4_TRACING_VECTOR3 always contains
+> > > 0.
+> > > 
+> > > These locations are in fact trampled by data in the BSS section of the
+> > > image.   The single largest item in there is FILE files[MAX_FILES].
+> > > This patch reduces the size of files[] considerably.  The image now
+> > > JUST fits.
+> > 
+> > Sorry, this is not even a short term solution, it will probably break
+> > very soon again.
+> > 
+> > > 
+> > > Long term, a better solution would be to not rely on
+> > > OMAP4_TRACING_VECTOR3, and instead use the structure passed into the
+> > > xload by the ROM-based boot loader - which also indicates the boot
+> > > device.     This wold allow us another 4kB of code before we overflow
+> > > the SRAM completely.
+> > 
+> > That sounds interesting. I wasn't aware that the ROM passes a structure
+> > into the bootloader.
+> > 
+> > Another thing is that I still have the Thumb2 patches pending which are
+> > currently blocked by Jean-Christophe.
+> > 
+> > Jean-Christophe, please please have a look on these patches again or at
+> > least say *what* is wrong with them so that I have a chance to rework
+> > them.
+> sorry need to finish some work on the kernel and the support of sam9x5 series
+> 
+> on AT91 we must have the vector at the begeniing of the binary and the only
+> valid instruction are ldr and branch
+> 
+> so with your patch the rom code cannot boot barebox
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/cpu/start.c               |    4 ++--
- arch/arm/include/asm/barebox-arm.h |    1 +
- arch/arm/lib/barebox.lds.S         |    2 ++
- 3 files changed, 5 insertions(+), 2 deletions(-)
+Please check the series I just sent.
 
-diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
-index 1a1538e..89aff1d 100644
---- a/arch/arm/cpu/start.c
-+++ b/arch/arm/cpu/start.c
-@@ -109,7 +109,7 @@ void __naked __bare_init reset(void)
-  * Board code can jump here by either returning from board_init_lowlevel
-  * or by calling this funtion directly.
-  */
--void __naked __bare_init board_init_lowlevel_return(void)
-+void __naked __section(.text_ll_return) board_init_lowlevel_return(void)
- {
- 	uint32_t r, addr;
- 
-@@ -124,7 +124,7 @@ void __naked __bare_init board_init_lowlevel_return(void)
- 	__asm__ __volatile__("mov sp, %0" : : "r"(r));
- 
- 	/* Get start of binary image */
--	addr -= (uint32_t)&board_init_lowlevel_return - TEXT_BASE;
-+	addr -= (uint32_t)&__ll_return - TEXT_BASE;
- 
- 	/* relocate to link address if necessary */
- 	if (addr != TEXT_BASE)
-diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
-index 3339782..b880dd4 100644
---- a/arch/arm/include/asm/barebox-arm.h
-+++ b/arch/arm/include/asm/barebox-arm.h
-@@ -37,6 +37,7 @@ int	board_init(void);
- int	dram_init (void);
- 
- extern char __exceptions_start[], __exceptions_stop[];
-+extern char __ll_return[];
- 
- void board_init_lowlevel(void);
- void board_init_lowlevel_return(void);
-diff --git a/arch/arm/lib/barebox.lds.S b/arch/arm/lib/barebox.lds.S
-index 531e3d0..bc20694 100644
---- a/arch/arm/lib/barebox.lds.S
-+++ b/arch/arm/lib/barebox.lds.S
-@@ -39,6 +39,8 @@ SECTIONS
- 		_stext = .;
- 		_text = .;
- 		*(.text_entry*)
-+		__ll_return = .;
-+		*(.text_ll_return*)
- #ifdef CONFIG_ARCH_EP93XX
- 		/* the EP93xx expects to find the pattern 'CRUS' at 0x1000 */
- 	  . = 0x1000;
+Sascha
+
 -- 
-1.7.9.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
