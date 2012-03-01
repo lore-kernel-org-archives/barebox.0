@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtprelay06.ispgateway.de ([80.67.31.95])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1S38kQ-00060l-5x
+ id 1S38kR-000617-OU
  for barebox@lists.infradead.org; Thu, 01 Mar 2012 16:20:57 +0000
 From: Asen Chavdarov Dimov <dimov@ronetix.at>
-Date: Thu,  1 Mar 2012 18:21:28 +0200
-Message-Id: <1330618889-11482-2-git-send-email-dimov@ronetix.at>
+Date: Thu,  1 Mar 2012 18:21:29 +0200
+Message-Id: <1330618889-11482-3-git-send-email-dimov@ronetix.at>
 In-Reply-To: <1330618889-11482-1-git-send-email-dimov@ronetix.at>
 References: <1330618889-11482-1-git-send-email-dimov@ronetix.at>
 List-Id: <barebox.lists.infradead.org>
@@ -21,116 +21,149 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] pm9g45: enable MCI0
+Subject: [PATCH 3/3] pm9g45: enable USB OHCI host and USB mass storage
 To: barebox@lists.infradead.org
 
-FIXME: part of or no data is written. File copy ends
-with message: "atmel_mci@atmel_mci0: command/data timeout"
+FIXME: execute the "usb" command twice to create the /dev/disk0 device.
 
 Signed-off-by: Asen Chavdarov Dimov <dimov@ronetix.at>
 ---
- arch/arm/boards/pm9g45/init.c     |   17 ++++++++++++++++-
- arch/arm/configs/pm9g45_defconfig |   34 +++++++++++++++++++++++++++++++---
- 2 files changed, 47 insertions(+), 4 deletions(-)
+ arch/arm/boards/pm9g45/init.c     |   21 ++++++++++++++++++++-
+ arch/arm/configs/pm9g45_defconfig |   31 +++++++++++++++----------------
+ 2 files changed, 35 insertions(+), 17 deletions(-)
 
 diff --git a/arch/arm/boards/pm9g45/init.c b/arch/arm/boards/pm9g45/init.c
-index 9eba12a..257e5e2 100644
+index 257e5e2..b26038e 100644
 --- a/arch/arm/boards/pm9g45/init.c
 +++ b/arch/arm/boards/pm9g45/init.c
-@@ -77,6 +77,21 @@ static void pm_add_device_nand(void)
- 	at91_add_device_nand(&nand_pdata);
- }
+@@ -92,6 +92,23 @@ static void add_device_mci(void)
+ static void add_device_mci(void) {}
+ #endif
  
-+#if defined(CONFIG_MCI_ATMEL)
-+static struct atmel_mci_platform_data __initdata mci_data = {
-+	.bus_width	= 4,
-+	.wp_pin		= 0,
-+	.detect_pin	= AT91_PIN_PD6,
++/*
++ * USB OHCI Host port
++ */
++#ifdef CONFIG_USB_OHCI_AT91
++static struct at91_usbh_data  __initdata usbh_data = {
++	.ports		= 2,
++	.vbus_pin	= { AT91_PIN_PD0,  0x0 },
 +};
 +
-+static void add_device_mci(void)
++static void __init add_device_usbh(void)
 +{
-+	at91_add_device_mci(0, &mci_data);
++	at91_add_device_usbh_ohci(&usbh_data);
 +}
 +#else
-+static void add_device_mci(void) {}
++static void __init add_device_usbh(void) {}
 +#endif
 +
  static struct at91_ether_platform_data macb_pdata = {
  	.flags = AT91SAM_ETHER_RMII,
  	.phy_addr = 0,
-@@ -122,8 +137,8 @@ static int pm9g45_devices_init(void)
- 	}
- 	phy_init();
+@@ -123,7 +140,8 @@ static const char *periph_clocks[] __initdata = {
+ 	"pioB_clk",
+ 	"pioC_clk",
+ 	"pioDE_clk",
+-	"macb_clk"
++	"macb_clk",
++	"uhphs_clk"
+ };
  
-+	add_device_mci();
+ static int pm9g45_devices_init(void)
+@@ -140,6 +158,7 @@ static int pm9g45_devices_init(void)
+ 	add_device_mci();
  	pm_add_device_nand();
--
  	at91_add_device_eth(&macb_pdata);
++	add_device_usbh();
  
  	devfs_add_partition("nand0", 0x00000, 0x80000, PARTITION_FIXED, "self_raw");
+ 	dev_add_bb_dev("self_raw", "self0");
 diff --git a/arch/arm/configs/pm9g45_defconfig b/arch/arm/configs/pm9g45_defconfig
-index f05d4de..5132ea4 100644
+index 5132ea4..1f3c780 100644
 --- a/arch/arm/configs/pm9g45_defconfig
 +++ b/arch/arm/configs/pm9g45_defconfig
-@@ -69,6 +69,8 @@ CONFIG_HAS_MODULES=y
- CONFIG_CMD_MEMORY=y
- CONFIG_ENV_HANDLING=y
- CONFIG_GENERIC_GPIO=y
-+CONFIG_BLOCK=y
-+CONFIG_BLOCK_WRITE=y
- CONFIG_FILETYPE=y
+@@ -197,7 +197,7 @@ CONFIG_CMD_CRC_CMP=y
+ #
+ # flash                         
+ #
+-CONFIG_CMD_FLASH=y
++# CONFIG_CMD_FLASH is not set
+ CONFIG_CMD_UBI=y
  
  #
-@@ -290,11 +292,35 @@ CONFIG_NAND_ATMEL=y
- # CONFIG_MTD_NAND_ECC_SMC is not set
- CONFIG_MTD_NAND_IDS=y
- CONFIG_UBI=y
--# CONFIG_DISK is not set
-+CONFIG_DISK=y
-+CONFIG_DISK_WRITE=y
-+
-+#
-+# drive types
-+#
-+# CONFIG_DISK_ATA is not set
-+
-+#
-+# interface types
-+#
-+# CONFIG_DISK_INTF_PLATFORM_IDE is not set
- # CONFIG_USB is not set
+@@ -223,15 +223,15 @@ CONFIG_CMD_HELP=y
+ CONFIG_CMD_DEVINFO=y
+ # CONFIG_CMD_GPIO is not set
+ # CONFIG_CMD_UNCOMPRESS is not set
+-CONFIG_CMD_I2C=y
++CONFIG_CMD_USB=y
+ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ # CONFIG_NET_NFS is not set
+ CONFIG_NET_PING=y
+-# CONFIG_NET_TFTP is not set
+-# CONFIG_NET_TFTP_PUSH is not set
++CONFIG_NET_TFTP=y
++CONFIG_NET_TFTP_PUSH=y
+ # CONFIG_NET_NETCONSOLE is not set
+-# CONFIG_NET_RESOLV is not set
++CONFIG_NET_RESOLV=y
+ 
+ #
+ # Drivers                       
+@@ -252,17 +252,14 @@ CONFIG_MIIDEV=y
+ # CONFIG_DRIVER_NET_SMC911X is not set
+ # CONFIG_DRIVER_NET_SMC91111 is not set
+ CONFIG_DRIVER_NET_MACB=y
++# CONFIG_NET_USB is not set
+ 
+ #
+ # SPI drivers                   
+ #
+ CONFIG_SPI=y
+ CONFIG_DRIVER_SPI_ATMEL=y
+-CONFIG_I2C=y
+-
+-#
+-# I2C Hardware Bus support
+-#
++# CONFIG_I2C is not set
+ 
+ #
+ # flash drivers                 
+@@ -298,13 +295,19 @@ CONFIG_DISK_WRITE=y
+ #
+ # drive types
+ #
+-# CONFIG_DISK_ATA is not set
++CONFIG_DISK_ATA=y
+ 
+ #
+ # interface types
+ #
+ # CONFIG_DISK_INTF_PLATFORM_IDE is not set
+-# CONFIG_USB is not set
++CONFIG_USB=y
++# CONFIG_USB_EHCI is not set
++CONFIG_USB_OHCI=y
++CONFIG_USB_OHCI_AT91=y
++# CONFIG_USB_ISP1504 is not set
++# CONFIG_USB_TWL4030 is not set
++CONFIG_USB_STORAGE=y
  # CONFIG_USB_GADGET is not set
  # CONFIG_VIDEO is not set
--# CONFIG_MCI is not set
-+CONFIG_MCI=y
-+
-+#
-+# --- Feature list ---
-+#
-+# CONFIG_MCI_STARTUP is not set
-+CONFIG_MCI_INFO=y
-+CONFIG_MCI_WRITE=y
-+
-+#
-+# --- MCI host drivers ---
-+#
-+CONFIG_MCI_ATMEL=y
-+# CONFIG_MCI_SPI is not set
- CONFIG_CLKDEV_LOOKUP=y
- 
+ CONFIG_MCI=y
+@@ -327,10 +330,6 @@ CONFIG_CLKDEV_LOOKUP=y
+ # MFD
  #
-@@ -319,7 +345,9 @@ CONFIG_EEPROM_AT25=y
- # CONFIG_FS_CRAMFS is not set
- CONFIG_FS_RAMFS=y
- CONFIG_FS_DEVFS=y
--# CONFIG_FS_FAT is not set
-+CONFIG_FS_FAT=y
-+CONFIG_FS_FAT_WRITE=y
-+CONFIG_FS_FAT_LFN=y
- CONFIG_PARTITION_NEED_MTD=y
+ # CONFIG_I2C_MC13892 is not set
+-# CONFIG_I2C_MC34704 is not set
+-# CONFIG_I2C_MC9SDZ60 is not set
+-# CONFIG_I2C_LP3972 is not set
+-# CONFIG_I2C_TWL6030 is not set
+ # CONFIG_DRIVER_SPI_MC13783 is not set
+ # CONFIG_LED is not set
  
- #
 -- 
 1.7.4.4
 
