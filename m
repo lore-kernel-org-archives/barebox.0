@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtprelay06.ispgateway.de ([80.67.31.103])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1S3VkZ-00038Y-7t
+ id 1S3VkZ-00038F-KU
  for barebox@lists.infradead.org; Fri, 02 Mar 2012 16:54:38 +0000
 From: Asen Chavdarov Dimov <dimov@ronetix.at>
-Date: Fri,  2 Mar 2012 18:55:22 +0200
-Message-Id: <1330707323-8021-3-git-send-email-dimov@ronetix.at>
+Date: Fri,  2 Mar 2012 18:55:21 +0200
+Message-Id: <1330707323-8021-2-git-send-email-dimov@ronetix.at>
 In-Reply-To: <1330707323-8021-1-git-send-email-dimov@ronetix.at>
 References: <1330618889-11482-1-git-send-email-dimov@ronetix.at>
  <1330707323-8021-1-git-send-email-dimov@ronetix.at>
@@ -22,117 +22,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 3/4] pm9g45: enable MCI0
+Subject: [PATCH v2 2/4] pm9g45: fix Ethernet
 To: barebox@lists.infradead.org
 
-FIXME: part of or no data is written. File copy ends
-with message: "atmel_mci@atmel_mci0: command/data timeout"
+Enable PHY clock.
 
 Signed-off-by: Asen Chavdarov Dimov <dimov@ronetix.at>
 ---
 since v1:
-	add_device_mci renamed to pm9g45_add_device_mci
+	- phy_init changed to pm9g45_phy_init
+	- pm9g45_phy_init becamos void and "return 0" is removed
+	- removed manual clock enabling
 ---
- arch/arm/boards/pm9g45/init.c     |   16 ++++++++++++++++
- arch/arm/configs/pm9g45_defconfig |   34 +++++++++++++++++++++++++++++++---
- 2 files changed, 47 insertions(+), 3 deletions(-)
+ arch/arm/boards/pm9g45/init.c |   13 +++++++++++++
+ 1 files changed, 13 insertions(+), 0 deletions(-)
 
 diff --git a/arch/arm/boards/pm9g45/init.c b/arch/arm/boards/pm9g45/init.c
-index 92d010f..79a0128 100644
+index 480c751..92d010f 100644
 --- a/arch/arm/boards/pm9g45/init.c
 +++ b/arch/arm/boards/pm9g45/init.c
-@@ -77,6 +77,21 @@ static void pm_add_device_nand(void)
- 	at91_add_device_nand(&nand_pdata);
- }
- 
-+#if defined(CONFIG_MCI_ATMEL)
-+static struct atmel_mci_platform_data __initdata mci_data = {
-+	.bus_width	= 4,
-+	.wp_pin		= 0,
-+	.detect_pin	= AT91_PIN_PD6,
-+};
-+
-+static void pm9g45_add_device_mci(void)
-+{
-+	at91_add_device_mci(0, &mci_data);
-+}
-+#else
-+static void pm9g45_add_device_mci(void) {}
-+#endif
-+
- static struct at91_ether_platform_data macb_pdata = {
- 	.flags = AT91SAM_ETHER_RMII,
+@@ -82,6 +82,17 @@ static struct at91_ether_platform_data macb_pdata = {
  	.phy_addr = 0,
-@@ -105,6 +120,7 @@ static int pm9g45_devices_init(void)
- {
+ };
  
++static void pm9g45_phy_init(void)
++{
++	/*
++	 * PD2 enables the 50MHz oscillator for Ethernet PHY
++	 * 1 - enable
++	 * 0 - disable
++	 */
++	at91_set_gpio_output(AT91_PIN_PD2, 1);
++	at91_set_gpio_value(AT91_PIN_PD2, 1);
++}
++
+ static int pm9g45_mem_init(void)
+ {
+ 	at91_add_device_sdram(128 * 1024 * 1024);
+@@ -92,7 +103,9 @@ mem_initcall(pm9g45_mem_init);
+ 
+ static int pm9g45_devices_init(void)
+ {
++
  	pm_add_device_nand();
-+	pm9g45_add_device_mci();
- 	pm9g45_phy_init();
++	pm9g45_phy_init();
  	at91_add_device_eth(&macb_pdata);
  
-diff --git a/arch/arm/configs/pm9g45_defconfig b/arch/arm/configs/pm9g45_defconfig
-index f05d4de..5132ea4 100644
---- a/arch/arm/configs/pm9g45_defconfig
-+++ b/arch/arm/configs/pm9g45_defconfig
-@@ -69,6 +69,8 @@ CONFIG_HAS_MODULES=y
- CONFIG_CMD_MEMORY=y
- CONFIG_ENV_HANDLING=y
- CONFIG_GENERIC_GPIO=y
-+CONFIG_BLOCK=y
-+CONFIG_BLOCK_WRITE=y
- CONFIG_FILETYPE=y
- 
- #
-@@ -290,11 +292,35 @@ CONFIG_NAND_ATMEL=y
- # CONFIG_MTD_NAND_ECC_SMC is not set
- CONFIG_MTD_NAND_IDS=y
- CONFIG_UBI=y
--# CONFIG_DISK is not set
-+CONFIG_DISK=y
-+CONFIG_DISK_WRITE=y
-+
-+#
-+# drive types
-+#
-+# CONFIG_DISK_ATA is not set
-+
-+#
-+# interface types
-+#
-+# CONFIG_DISK_INTF_PLATFORM_IDE is not set
- # CONFIG_USB is not set
- # CONFIG_USB_GADGET is not set
- # CONFIG_VIDEO is not set
--# CONFIG_MCI is not set
-+CONFIG_MCI=y
-+
-+#
-+# --- Feature list ---
-+#
-+# CONFIG_MCI_STARTUP is not set
-+CONFIG_MCI_INFO=y
-+CONFIG_MCI_WRITE=y
-+
-+#
-+# --- MCI host drivers ---
-+#
-+CONFIG_MCI_ATMEL=y
-+# CONFIG_MCI_SPI is not set
- CONFIG_CLKDEV_LOOKUP=y
- 
- #
-@@ -319,7 +345,9 @@ CONFIG_EEPROM_AT25=y
- # CONFIG_FS_CRAMFS is not set
- CONFIG_FS_RAMFS=y
- CONFIG_FS_DEVFS=y
--# CONFIG_FS_FAT is not set
-+CONFIG_FS_FAT=y
-+CONFIG_FS_FAT_WRITE=y
-+CONFIG_FS_FAT_LFN=y
- CONFIG_PARTITION_NEED_MTD=y
- 
- #
+ 	devfs_add_partition("nand0", 0x00000, 0x80000, PARTITION_FIXED, "self_raw");
 -- 
 1.7.4.4
 
