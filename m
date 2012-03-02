@@ -1,21 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 2.mo2.mail-out.ovh.net ([188.165.53.149]
+Received: from 4.mo2.mail-out.ovh.net ([87.98.172.75]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1S3WKn-0005aw-W5
- for barebox@lists.infradead.org; Fri, 02 Mar 2012 17:32:02 +0000
+ id 1S3XEq-0005Pi-PG
+ for barebox@lists.infradead.org; Fri, 02 Mar 2012 18:29:57 +0000
 Received: from mail621.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 72FC8DC3E6C
- for <barebox@lists.infradead.org>; Fri,  2 Mar 2012 18:34:55 +0100 (CET)
-Date: Fri, 2 Mar 2012 18:22:20 +0100
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id E0AEADC3FCE
+ for <barebox@lists.infradead.org>; Fri,  2 Mar 2012 19:32:50 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120302172220.GG12248@game.jcrosoft.org>
-References: <1330618889-11482-1-git-send-email-dimov@ronetix.at>
- <1330707323-8021-1-git-send-email-dimov@ronetix.at>
- <1330707323-8021-4-git-send-email-dimov@ronetix.at>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1330707323-8021-4-git-send-email-dimov@ronetix.at>
+Date: Fri,  2 Mar 2012 19:20:10 +0100
+Message-Id: <1330712410-26479-5-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1330712410-26479-1-git-send-email-plagnioj@jcrosoft.com>
+References: <1330712410-26479-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,31 +20,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 4/4] pm9g45: enable USB OHCI host and USB mass storage
-To: Asen Chavdarov Dimov <dimov@ronetix.at>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 5/5] macb: add timeout on send
+To: barebox@lists.infradead.org
 
-On 18:55 Fri 02 Mar     , Asen Chavdarov Dimov wrote:
-> FIXME: execute the "usb" command twice to create the /dev/disk0 device.
-> 
-> Signed-off-by: Asen Chavdarov Dimov <dimov@ronetix.at>
-> ---
-> since v1:
-> 	- add_device_usbh renamed to pm9g45_add_device_usbh
-> 	- skipped manual enabling of clocks
-> ---
->  arch/arm/boards/pm9g45/init.c     |   18 ++++++++++++++++++
->  arch/arm/configs/pm9g45_defconfig |   31 +++++++++++++++----------------
-same comment as the other patch
+This will ensure that we send an other packet only when the first one is send.
 
-please use savedefconfig
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ drivers/net/macb.c |    5 +++++
+ 1 files changed, 5 insertions(+), 0 deletions(-)
 
-Best Regards,
-J.
+diff --git a/drivers/net/macb.c b/drivers/net/macb.c
+index 9b54afa..3835dba 100644
+--- a/drivers/net/macb.c
++++ b/drivers/net/macb.c
+@@ -121,6 +121,11 @@ static int macb_send(struct eth_device *edev, void *packet,
+ 	barrier();
+ 	writel(MACB_BIT(TE) | MACB_BIT(RE) | MACB_BIT(TSTART), macb->regs + MACB_NCR);
+ 
++	wait_on_timeout(100 * MSECOND,
++		!(macb->tx_ring[0].ctrl & TXBUF_USED));
++
++	ctrl = macb->tx_ring[0].ctrl;
++
+ 	if (ctrl & TXBUF_UNDERRUN)
+ 		printf("TX underrun\n");
+ 	if (ctrl & TXBUF_EXHAUSTED)
+-- 
+1.7.7
+
 
 _______________________________________________
 barebox mailing list
