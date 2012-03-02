@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 1.mo2.mail-out.ovh.net ([46.105.63.121]
+Received: from 4.mo2.mail-out.ovh.net ([87.98.172.75]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1S3XEq-0005Pd-P3
+ id 1S3XEq-0005Pf-PI
  for barebox@lists.infradead.org; Fri, 02 Mar 2012 18:29:59 +0000
 Received: from mail621.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 92DFEDC3FC2
- for <barebox@lists.infradead.org>; Fri,  2 Mar 2012 19:32:49 +0100 (CET)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 56D54DC3FBD
+ for <barebox@lists.infradead.org>; Fri,  2 Mar 2012 19:32:50 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri,  2 Mar 2012 19:20:07 +0100
-Message-Id: <1330712410-26479-2-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri,  2 Mar 2012 19:20:09 +0100
+Message-Id: <1330712410-26479-4-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1330712410-26479-1-git-send-email-plagnioj@jcrosoft.com>
 References: <1330712410-26479-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
@@ -25,62 +25,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] net: introduce net_free_packet to free the packet
+Subject: [PATCH 4/5] macb: implement alloc_packet & free_packet
 To: barebox@lists.infradead.org
+
+We need to have a non cached buffer.
+Need when MMU enabled.
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- include/net.h |    5 +++++
- net/net.c     |    6 +++---
- 2 files changed, 8 insertions(+), 3 deletions(-)
+ drivers/net/macb.c |   19 ++++++++++++++++---
+ 1 files changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/include/net.h b/include/net.h
-index d0f8341..c7da380 100644
---- a/include/net.h
-+++ b/include/net.h
-@@ -401,6 +401,11 @@ static inline char *net_alloc_packet(void)
- 	return xmemalign(32, PKTSIZE);
- }
+diff --git a/drivers/net/macb.c b/drivers/net/macb.c
+index d79da72..9b54afa 100644
+--- a/drivers/net/macb.c
++++ b/drivers/net/macb.c
+@@ -50,6 +50,7 @@
+ #include <mach/board.h>
+ #include <linux/clk.h>
+ #include <linux/err.h>
++#include <asm/mmu.h>
  
-+static inline void net_free_packet(void *packet)
-+{
-+	free(packet);
-+}
-+
- struct net_connection *net_udp_new(IPaddr_t dest, uint16_t dport,
- 		rx_handler_f *handler, void *ctx);
+ #include "macb.h"
  
-diff --git a/net/net.c b/net/net.c
-index cbcac40..07fc23a 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -402,7 +402,7 @@ static struct net_connection *net_new(IPaddr_t dest, rx_handler_f *handler,
- 
- 	return con;
- out:
--	free(con->packet);
-+	net_free_packet(con->packet);
- 	free(con);
- 	return ERR_PTR(ret);
- }
-@@ -440,7 +440,7 @@ struct net_connection *net_icmp_new(IPaddr_t dest, rx_handler_f *handler,
- void net_unregister(struct net_connection *con)
- {
- 	list_del(&con->list);
--	free(con->packet);
-+	net_free_packet(con->packet);
- 	free(con);
- }
- 
-@@ -495,7 +495,7 @@ static int net_answer_arp(unsigned char *pkt, int len)
- 		return 0;
- 	memcpy(packet, pkt, ETHER_HDR_SIZE + ARP_HDR_SIZE);
- 	eth_send(packet, ETHER_HDR_SIZE + ARP_HDR_SIZE);
--	free(packet);
-+	net_free_packet(packet);
- 
+@@ -391,6 +392,16 @@ static int macb_set_ethaddr(struct eth_device *edev, unsigned char *adr)
  	return 0;
  }
+ 
++static void *macb_alloc_packet(struct eth_device* edev)
++{
++	return dma_alloc_coherent(PKTSIZE);
++}
++
++static void macb_free_packet(struct eth_device* edev, void *packet)
++{
++	dma_free_coherent(packet, PKTSIZE);
++}
++
+ static int macb_probe(struct device_d *dev)
+ {
+ 	struct eth_device *edev;
+@@ -420,6 +431,8 @@ static int macb_probe(struct device_d *dev)
+ 	edev->halt = macb_halt;
+ 	edev->get_ethaddr = pdata->get_ethaddr ? pdata->get_ethaddr : macb_get_ethaddr;
+ 	edev->set_ethaddr = macb_set_ethaddr;
++	edev->alloc_packet = macb_alloc_packet;
++	edev->free_packet = macb_free_packet;
+ 	edev->parent = dev;
+ 
+ 	macb->miidev.read = macb_phy_read;
+@@ -431,9 +444,9 @@ static int macb_probe(struct device_d *dev)
+ 	macb->miidev.parent = dev;
+ 	macb->flags = pdata->flags;
+ 
+-	macb->rx_buffer = xmalloc(CFG_MACB_RX_BUFFER_SIZE);
+-	macb->rx_ring = xmalloc(CFG_MACB_RX_RING_SIZE * sizeof(struct macb_dma_desc));
+-	macb->tx_ring = xmalloc(sizeof(struct macb_dma_desc));
++	macb->rx_buffer = dma_alloc_coherent(CFG_MACB_RX_BUFFER_SIZE);
++	macb->rx_ring = dma_alloc_coherent(CFG_MACB_RX_RING_SIZE * sizeof(struct macb_dma_desc));
++	macb->tx_ring = dma_alloc_coherent(sizeof(struct macb_dma_desc));
+ 
+ 	macb->regs = dev_request_mem_region(dev, 0);
+ 
 -- 
 1.7.7
 
