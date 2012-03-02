@@ -1,18 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from exprod5og108.obsmtp.com ([64.18.0.186])
- by merlin.infradead.org with smtps (Exim 4.76 #1 (Red Hat Linux))
- id 1S3VLA-00083O-Gr
- for barebox@lists.infradead.org; Fri, 02 Mar 2012 16:28:21 +0000
-Received: from corgarff.edi.geip.ge.com (corgarff.edi.geip.ge.com
- [3.26.68.194])
- by selma.edi.geip.ge.com (Postfix) with ESMTP id 8E264E054A
- for <barebox@lists.infradead.org>; Fri,  2 Mar 2012 16:28:15 +0000 (GMT)
-Message-ID: <4F50F51F.5000109@ge.com>
-Date: Fri, 02 Mar 2012 16:28:15 +0000
-From: Renaud Barbier <renaud.barbier@ge.com>
-MIME-Version: 1.0
-References: <4F4FD0EF.1000905@ge.com> <20120301200729.GE3852@pengutronix.de>
-In-Reply-To: <20120301200729.GE3852@pengutronix.de>
+Received: from smtprelay06.ispgateway.de ([80.67.31.103])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1S3VkZ-00038Y-7t
+ for barebox@lists.infradead.org; Fri, 02 Mar 2012 16:54:38 +0000
+From: Asen Chavdarov Dimov <dimov@ronetix.at>
+Date: Fri,  2 Mar 2012 18:55:22 +0200
+Message-Id: <1330707323-8021-3-git-send-email-dimov@ronetix.at>
+In-Reply-To: <1330707323-8021-1-git-send-email-dimov@ronetix.at>
+References: <1330618889-11482-1-git-send-email-dimov@ronetix.at>
+ <1330707323-8021-1-git-send-email-dimov@ronetix.at>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,65 +17,124 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Booting PPC Linux
+Subject: [PATCH v2 3/4] pm9g45: enable MCI0
 To: barebox@lists.infradead.org
 
+FIXME: part of or no data is written. File copy ends
+with message: "atmel_mci@atmel_mci0: command/data timeout"
 
+Signed-off-by: Asen Chavdarov Dimov <dimov@ronetix.at>
+---
+since v1:
+	add_device_mci renamed to pm9g45_add_device_mci
+---
+ arch/arm/boards/pm9g45/init.c     |   16 ++++++++++++++++
+ arch/arm/configs/pm9g45_defconfig |   34 +++++++++++++++++++++++++++++++---
+ 2 files changed, 47 insertions(+), 3 deletions(-)
 
-On 01/03/12 20:07, Sascha Hauer wrote:
-> On Thu, Mar 01, 2012 at 07:41:35PM +0000, Renaud Barbier wrote:
->> I have a uImage + dtb that use to boot on a MPC8544-like system
->> a few months ago.
->>
->> After rebasing my code, it did not work.
->>
->> I notice that in arch/ppc/lib/ppclinux.c the kernel is now called
->> with the device tree as a parameter.
->>
->> After investigation, I copied the device tree to within 8MB of the
->> kernel entry point (0x0). It booted.
->>
->> Is the DTB relocation a missing step?
-> Yes, it seems so. barebox holds the device tree in malloced space. This
-> is likely outside 8MB of the kernel entry point. I was not aware of that
-> restriction.
-I think I found the limitation in Linux.
-
-In arch/powerpc/mm/init_32.c:
-
-/*
-  * address of the limit of what is accessible with initial MMU setup -
-  * 256MB usually, but only 16MB on 601.
-  */
-phys_addr_t __initial_memory_limit_addr = (phys_addr_t)0x10000000;
-
-
-The book E specific code (arch/ppc/mm/fsl_booke_mmu.c) adjusts this variable
-  to 256MB but the highest I was able to  put the DTB is below 64MB.
-It may be limited by another function call.
-
-The available memory may be limited to 8 or 16MB on other CPUs (601 and 
-8xx).
-
-Thanks.
-
->
-> Sascha
->
->
->
-
+diff --git a/arch/arm/boards/pm9g45/init.c b/arch/arm/boards/pm9g45/init.c
+index 92d010f..79a0128 100644
+--- a/arch/arm/boards/pm9g45/init.c
++++ b/arch/arm/boards/pm9g45/init.c
+@@ -77,6 +77,21 @@ static void pm_add_device_nand(void)
+ 	at91_add_device_nand(&nand_pdata);
+ }
+ 
++#if defined(CONFIG_MCI_ATMEL)
++static struct atmel_mci_platform_data __initdata mci_data = {
++	.bus_width	= 4,
++	.wp_pin		= 0,
++	.detect_pin	= AT91_PIN_PD6,
++};
++
++static void pm9g45_add_device_mci(void)
++{
++	at91_add_device_mci(0, &mci_data);
++}
++#else
++static void pm9g45_add_device_mci(void) {}
++#endif
++
+ static struct at91_ether_platform_data macb_pdata = {
+ 	.flags = AT91SAM_ETHER_RMII,
+ 	.phy_addr = 0,
+@@ -105,6 +120,7 @@ static int pm9g45_devices_init(void)
+ {
+ 
+ 	pm_add_device_nand();
++	pm9g45_add_device_mci();
+ 	pm9g45_phy_init();
+ 	at91_add_device_eth(&macb_pdata);
+ 
+diff --git a/arch/arm/configs/pm9g45_defconfig b/arch/arm/configs/pm9g45_defconfig
+index f05d4de..5132ea4 100644
+--- a/arch/arm/configs/pm9g45_defconfig
++++ b/arch/arm/configs/pm9g45_defconfig
+@@ -69,6 +69,8 @@ CONFIG_HAS_MODULES=y
+ CONFIG_CMD_MEMORY=y
+ CONFIG_ENV_HANDLING=y
+ CONFIG_GENERIC_GPIO=y
++CONFIG_BLOCK=y
++CONFIG_BLOCK_WRITE=y
+ CONFIG_FILETYPE=y
+ 
+ #
+@@ -290,11 +292,35 @@ CONFIG_NAND_ATMEL=y
+ # CONFIG_MTD_NAND_ECC_SMC is not set
+ CONFIG_MTD_NAND_IDS=y
+ CONFIG_UBI=y
+-# CONFIG_DISK is not set
++CONFIG_DISK=y
++CONFIG_DISK_WRITE=y
++
++#
++# drive types
++#
++# CONFIG_DISK_ATA is not set
++
++#
++# interface types
++#
++# CONFIG_DISK_INTF_PLATFORM_IDE is not set
+ # CONFIG_USB is not set
+ # CONFIG_USB_GADGET is not set
+ # CONFIG_VIDEO is not set
+-# CONFIG_MCI is not set
++CONFIG_MCI=y
++
++#
++# --- Feature list ---
++#
++# CONFIG_MCI_STARTUP is not set
++CONFIG_MCI_INFO=y
++CONFIG_MCI_WRITE=y
++
++#
++# --- MCI host drivers ---
++#
++CONFIG_MCI_ATMEL=y
++# CONFIG_MCI_SPI is not set
+ CONFIG_CLKDEV_LOOKUP=y
+ 
+ #
+@@ -319,7 +345,9 @@ CONFIG_EEPROM_AT25=y
+ # CONFIG_FS_CRAMFS is not set
+ CONFIG_FS_RAMFS=y
+ CONFIG_FS_DEVFS=y
+-# CONFIG_FS_FAT is not set
++CONFIG_FS_FAT=y
++CONFIG_FS_FAT_WRITE=y
++CONFIG_FS_FAT_LFN=y
+ CONFIG_PARTITION_NEED_MTD=y
+ 
+ #
 -- 
-Renaud Barbier
-14, Links Place
-3/2 great Michael House
-Edinburgh, EH67EN
-Tel: +44 131 561 3532
---------------------------------------------------------------------------------
+1.7.4.4
 
 
 _______________________________________________
