@@ -1,19 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 5.mo2.mail-out.ovh.net ([87.98.181.248]
- helo=mo2.mail-out.ovh.net)
+Received: from smtprelay03.ispgateway.de ([80.67.29.7])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1S3SUi-0004sn-1d
- for barebox@lists.infradead.org; Fri, 02 Mar 2012 13:26:01 +0000
-Received: from mail621.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 7B35DDC3C4C
- for <barebox@lists.infradead.org>; Fri,  2 Mar 2012 14:28:51 +0100 (CET)
-Date: Fri, 2 Mar 2012 14:16:17 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120302131617.GZ12248@game.jcrosoft.org>
-References: <4F50C74E.20703@ronetix.at>
+ id 1S3UH2-0002BJ-MJ
+ for barebox@lists.infradead.org; Fri, 02 Mar 2012 15:20:02 +0000
+Message-ID: <4F50E556.3040600@ronetix.at>
+Date: Fri, 02 Mar 2012 17:20:54 +0200
+From: RONETIX - Asen Dimov <dimov@ronetix.at>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <4F50C74E.20703@ronetix.at>
+References: <1330618889-11482-1-git-send-email-dimov@ronetix.at>
+ <1330618889-11482-3-git-send-email-dimov@ronetix.at>
+ <20120301171243.GU12248@game.jcrosoft.org>
+In-Reply-To: <20120301171243.GU12248@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,24 +19,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: AT91SAM9G45: MACB: not usable Ethernet when MMU is enabled
-To: RONETIX - Asen Dimov <dimov@ronetix.at>
+Subject: Re: [PATCH 3/3] pm9g45: enable USB OHCI host and USB mass storage
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On 15:12 Fri 02 Mar     , RONETIX - Asen Dimov wrote:
-> Hello everyone,
-> 
-> the Ethernet on AT91SAM9G45(with ARM926J CPU) is not operational
-> when the MMU is enabled.
-> Have some met with this issue before and probably solved it?
-check if the buffer is allocated for dma
+Hi Jean-Christophe,
 
-Best Regards,
-J.
+On 03/01/2012 07:12 PM, Jean-Christophe PLAGNIOL-VILLARD wrote:
+...
+> diff --git a/arch/arm/configs/pm9g45_defconfig 
+> b/arch/arm/configs/pm9g45_defconfig
+>> index 5132ea4..1f3c780 100644
+>> --- a/arch/arm/configs/pm9g45_defconfig
+>> +++ b/arch/arm/configs/pm9g45_defconfig
+>> @@ -197,7 +197,7 @@ CONFIG_CMD_CRC_CMP=y
+>>   #
+>>   # flash
+>>   #
+>> -CONFIG_CMD_FLASH=y
+>> +# CONFIG_CMD_FLASH is not set
+> why this?
+>
+there is no NOR flash on the pm9g45 board.
+> Best Regards,
+> J.
+Regards,
+Asen
+
 
 _______________________________________________
 barebox mailing list
