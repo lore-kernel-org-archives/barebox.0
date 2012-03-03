@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 1.mo2.mail-out.ovh.net ([46.105.63.121]
- helo=mo2.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1S3XEq-0005Pe-P1
- for barebox@lists.infradead.org; Fri, 02 Mar 2012 18:29:58 +0000
-Received: from mail621.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 92D13DC3FBC
- for <barebox@lists.infradead.org>; Fri,  2 Mar 2012 19:32:48 +0100 (CET)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri,  2 Mar 2012 19:20:06 +0100
-Message-Id: <1330712410-26479-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from mail-vw0-f49.google.com ([209.85.212.49])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1S3nnx-0000P0-TQ
+ for barebox@lists.infradead.org; Sat, 03 Mar 2012 12:11:18 +0000
+Received: by vbbfo1 with SMTP id fo1so2906765vbb.36
+ for <barebox@lists.infradead.org>; Sat, 03 Mar 2012 04:11:15 -0800 (PST)
+MIME-Version: 1.0
+In-Reply-To: <1330675480.3149.4.camel@lws-weitzel>
+References: <1328043068-9577-1-git-send-email-marek.belisko@open-nandra.com>
+ <1328043068-9577-2-git-send-email-marek.belisko@open-nandra.com>
+ <1330675480.3149.4.camel@lws-weitzel>
+Date: Sat, 3 Mar 2012 13:11:15 +0100
+Message-ID: <CAAfyv36_n=mM+K2m_SQt_St_2+LhEUAcwXBG0LCU6pXz6KFGLw@mail.gmail.com>
+From: Belisko Marek <marek.belisko@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,48 +21,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/5] net: use net_alloc_packet to allocate packet
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/2] pandaboard: Add gpmc_generic_init to board init.
+To: J.Weitzel@phytec.de
+Cc: barebox@lists.infradead.org
 
-Was missing in net_init and net_new.
-
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- net/net.c |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/net/net.c b/net/net.c
-index 2752884..cbcac40 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -370,7 +370,7 @@ static struct net_connection *net_new(IPaddr_t dest, rx_handler_f *handler,
- 		return ERR_PTR(-ENETDOWN);
- 
- 	con = xzalloc(sizeof(*con));
--	con->packet = xmemalign(32, PKTSIZE);
-+	con->packet = net_alloc_packet();
- 	con->priv = ctx;
- 	memset(con->packet, 0, PKTSIZE);
- 
-@@ -665,7 +665,7 @@ static int net_init(void)
- 	int i;
- 
- 	for (i = 0; i < PKTBUFSRX; i++)
--		NetRxPackets[i] =  xmemalign(32, PKTSIZE);
-+		NetRxPackets[i] = net_alloc_packet();
- 
- 	return 0;
- }
--- 
-1.7.7
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gRnJpLCBNYXIgMiwgMjAxMiBhdCA5OjA0IEFNLCBKYW4gV2VpdHplbCA8Si5XZWl0emVsQHBo
+eXRlYy5kZT4gd3JvdGU6Cj4gQW0gRGllbnN0YWcsIGRlbiAzMS4wMS4yMDEyLCAyMTo1MSArMDEw
+MCBzY2hyaWViIE1hcmVrIEJlbGlza286Cj4+IFdlIG5lZWQgdG8gc2V0dXAgZ2VuZXJpYyBncG1j
+IG90aGVyd2lzZSBrZXJuZWwgcGFuaWMgZHVyaW5nIGJvb3QuCj4+Cj4+IFNpZ25lZC1vZmYtYnk6
+IE1hcmVrIEJlbGlza28gPG1hcmVrLmJlbGlza29Ab3Blbi1uYW5kcmEuY29tPgo+PiAtLS0KPj4g
+wqBhcmNoL2FybS9ib2FyZHMvcGFuZGEvYm9hcmQuYyB8IMKgIMKgMyArKysKPj4gwqAxIGZpbGVz
+IGNoYW5nZWQsIDMgaW5zZXJ0aW9ucygrKSwgMCBkZWxldGlvbnMoLSkKPj4KPj4gZGlmZiAtLWdp
+dCBhL2FyY2gvYXJtL2JvYXJkcy9wYW5kYS9ib2FyZC5jIGIvYXJjaC9hcm0vYm9hcmRzL3BhbmRh
+L2JvYXJkLmMKPj4gaW5kZXggYmUzYWQ3Ny4uMWM3MTU0NSAxMDA2NDQKPj4gLS0tIGEvYXJjaC9h
+cm0vYm9hcmRzL3BhbmRhL2JvYXJkLmMKPj4gKysrIGIvYXJjaC9hcm0vYm9hcmRzL3BhbmRhL2Jv
+YXJkLmMKPj4gQEAgLTIwLDYgKzIwLDcgQEAKPj4gwqAjaW5jbHVkZSA8bWFjaC9ncGlvLmg+Cj4+
+IMKgI2luY2x1ZGUgPGVudmlyb25tZW50Lmg+Cj4+IMKgI2luY2x1ZGUgPG1hY2gveGxvYWQuaD4K
+Pj4gKyNpbmNsdWRlIDxtYWNoL2dwbWMuaD4KPj4KPj4gwqBzdGF0aWMgaW50IGJvYXJkX3Jldmlz
+aW9uOwo+Pgo+PiBAQCAtMTM3LDYgKzEzOCw4IEBAIHN0YXRpYyBpbnQgcGFuZGFfZGV2aWNlc19p
+bml0KHZvaWQpCj4+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgSU9SRVNP
+VVJDRV9NRU0sIE5VTEwpOwo+PiDCoCDCoCDCoCBwYW5kYV9laGNpX2luaXQoKTsKPj4KPj4gKyDC
+oCDCoCBncG1jX2dlbmVyaWNfaW5pdCgweDAwKTsKPj4gKwo+Cj4gMy4zLjAtcmM1IGlzIHN0aWxs
+IG5vdCBib290aW5nIHdpdGhvdXQgdGhpcyBwYXRjaC4gVXNpbmcgcGFuZGFfZGVmY29uZmlnCj4g
+aW1wbGljaXRseSBzZWxlY3QgQ09ORklHX09NQVBfR1BNQy4KVGhlcmUgd2FzIGRpc2N1c3Npb24g
+dG8gZml4IGtlcm5lbCBpbnN0ZWFkIGZpeGluZyBiYXJlYm94OgpodHRwOi8vbGlzdHMuaW5mcmFk
+ZWFkLm9yZy9waXBlcm1haWwvYmFyZWJveC8yMDEyLUZlYnJ1YXJ5LzAwNTk0Ni5odG1sCkkgZG9u
+J3QgaGF2ZSB0aW1lIHRvIHRha2UgYSBsb29rIGFuZCBwb3N0IHByb3BlciBmaXggc28gc3RpbGwg
+dXNpbmcKdGhhdCBwYXRoIGluIGJhcmVib3guClNvcnJ5Lgo+Cj4+IMKgIMKgIMKgIGFybWxpbnV4
+X3NldF9ib290cGFyYW1zKCh2b2lkICopMHg4MDAwMDEwMCk7Cj4+IMKgIMKgIMKgIGFybWxpbnV4
+X3NldF9hcmNoaXRlY3R1cmUoTUFDSF9UWVBFX09NQVA0X1BBTkRBKTsKPj4KPgo+CgpyZWdhcmRz
+LAoKbWFyZWsKCi0tIAphcyBzaW1wbGUgYW5kIHByaW1pdGl2ZSBhcyBwb3NzaWJsZQotLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCk1hcmVrIEJlbGlza28g
+LSBPUEVOLU5BTkRSQQpGcmVlbGFuY2UgRGV2ZWxvcGVyCgpSdXNrYSBOb3ZhIFZlcyAyMTkgfCBQ
+cmVzb3YsIDA4MDA1IFNsb3ZhayBSZXB1YmxpYwpUZWw6ICs0MjEgOTE1IDA1MiAxODQKc2t5cGU6
+IG1hcmVrd2hpdGUKdHdpdHRlcjogI29wZW5uYW5kcmEKd2ViOiBodHRwOi8vb3Blbi1uYW5kcmEu
+Y29tCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJl
+Ym94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3Rz
+LmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
