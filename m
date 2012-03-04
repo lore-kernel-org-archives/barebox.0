@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1S4A87-0002Ng-J3
- for barebox@lists.infradead.org; Sun, 04 Mar 2012 12:01:37 +0000
-Date: Sun, 4 Mar 2012 13:01:27 +0100
+ id 1S4AF7-0002Tp-Bd
+ for barebox@lists.infradead.org; Sun, 04 Mar 2012 12:08:50 +0000
+Date: Sun, 4 Mar 2012 13:08:41 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120304120127.GQ3852@pengutronix.de>
-References: <1330677280-13825-1-git-send-email-t.gamez@phytec.de>
+Message-ID: <20120304120841.GR3852@pengutronix.de>
+References: <1330712410-26479-1-git-send-email-plagnioj@jcrosoft.com>
+ <1330712410-26479-4-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1330677280-13825-1-git-send-email-t.gamez@phytec.de>
+In-Reply-To: <1330712410-26479-4-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,65 +19,56 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] pca-a-l1: remove duplicate includes
-To: Teresa =?iso-8859-15?Q?G=E1mez?= <t.gamez@phytec.de>
+Subject: Re: [PATCH 4/5] macb: implement alloc_packet & free_packet
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Mar 02, 2012 at 09:34:40AM +0100, Teresa G=E1mez wrote:
-> Removed duplicate includes from phyCARD-A-L1 board code.
-> =
+On Fri, Mar 02, 2012 at 07:20:09PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> We need to have a non cached buffer.
+> Need when MMU enabled.
+> 
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  drivers/net/macb.c |   19 ++++++++++++++++---
+>  1 files changed, 16 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/net/macb.c b/drivers/net/macb.c
+> index d79da72..9b54afa 100644
+> --- a/drivers/net/macb.c
+> +++ b/drivers/net/macb.c
+> @@ -50,6 +50,7 @@
+>  #include <mach/board.h>
+>  #include <linux/clk.h>
+>  #include <linux/err.h>
+> +#include <asm/mmu.h>
+>  
+>  #include "macb.h"
+>  
+> @@ -391,6 +392,16 @@ static int macb_set_ethaddr(struct eth_device *edev, unsigned char *adr)
+>  	return 0;
+>  }
+>  
+> +static void *macb_alloc_packet(struct eth_device* edev)
+> +{
+> +	return dma_alloc_coherent(PKTSIZE);
+> +}
+> +
+> +static void macb_free_packet(struct eth_device* edev, void *packet)
+> +{
+> +	dma_free_coherent(packet, PKTSIZE);
+> +}
 
-> Signed-off-by: Teresa G=E1mez <t.gamez@phytec.de>
-
-Applied, thanks
+Why don't you use dma_flush_range/dma_clean_range like we do in other
+drivers?
 
 Sascha
 
-> ---
->  arch/arm/boards/phycard-a-l1/pca-a-l1.c |    3 ---
->  1 files changed, 0 insertions(+), 3 deletions(-)
-> =
 
-> diff --git a/arch/arm/boards/phycard-a-l1/pca-a-l1.c b/arch/arm/boards/ph=
-ycard-a-l1/pca-a-l1.c
-> index f7d3185..e4f2483 100644
-> --- a/arch/arm/boards/phycard-a-l1/pca-a-l1.c
-> +++ b/arch/arm/boards/phycard-a-l1/pca-a-l1.c
-> @@ -65,14 +65,11 @@
->  #include <mach/gpmc_nand.h>
->  #include <mach/omap_hsmmc.h>
->  #include <mach/xload.h>
-> -#include <partition.h>
-> -#include <nand.h>
->  #include <mach/omap3-mux.h>
->  #include <mach/sdrc.h>
->  #include <mach/silicon.h>
->  #include <mach/sys_info.h>
->  #include <mach/syslib.h>
-> -#include <mach/xload.h>
->  =
-
->  #define SMC911X_BASE 0x2c000000
->  =
-
-> -- =
-
-> 1.7.0.4
-> =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
--- =
-
+-- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
