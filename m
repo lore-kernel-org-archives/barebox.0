@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1S4bSN-0003hW-IE
- for barebox@lists.infradead.org; Mon, 05 Mar 2012 17:12:19 +0000
-Date: Mon, 5 Mar 2012 18:12:14 +0100
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1S4bTN-0003cJ-Ol
+ for barebox@lists.infradead.org; Mon, 05 Mar 2012 17:13:23 +0000
+Date: Mon, 5 Mar 2012 18:13:15 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120305171214.GX3852@pengutronix.de>
-References: <1330942784-22394-1-git-send-email-j.weitzel@phytec.de>
- <1330942784-22394-2-git-send-email-j.weitzel@phytec.de>
+Message-ID: <20120305171315.GY3852@pengutronix.de>
+References: <1330943606-2387-1-git-send-email-j.weitzel@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1330942784-22394-2-git-send-email-j.weitzel@phytec.de>
+In-Reply-To: <1330943606-2387-1-git-send-email-j.weitzel@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,28 +22,106 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] omap: move do_set_mux to omap4_generic
+Subject: Re: [PATCH] mach-omap: add HAS_DEBUG_LL
 To: Jan Weitzel <j.weitzel@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Mar 05, 2012 at 11:19:44AM +0100, Jan Weitzel wrote:
-> do_set_mux is used by two boards.
->  	return 0;
->  }
-> +
-> +void do_set_mux(u32 base, struct pad_conf_entry const *array, int size)
-> +{
-> +	int i;
-> +	struct pad_conf_entry *pad = (struct pad_conf_entry *) array;
-> +
-> +	for (i = 0; i < size; i++, pad++)
-> +		writew(pad->val, base + pad->offset);
-> +}
+On Mon, Mar 05, 2012 at 11:33:26AM +0100, Jan Weitzel wrote:
+> Add support for debug_ll
+> 
+> Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
 
-Same here.
-
+Applied, thanks
 
 Sascha
+
+> ---
+>  arch/arm/Kconfig                           |    1 +
+>  arch/arm/mach-omap/include/mach/debug_ll.h |   54 ++++++++++++++++++++++++++++
+>  2 files changed, 55 insertions(+), 0 deletions(-)
+>  create mode 100644 arch/arm/mach-omap/include/mach/debug_ll.h
+> 
+> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+> index 4c0ee58..67a1009 100644
+> --- a/arch/arm/Kconfig
+> +++ b/arch/arm/Kconfig
+> @@ -61,6 +61,7 @@ config ARCH_NOMADIK
+>  
+>  config ARCH_OMAP
+>  	bool "TI OMAP"
+> +	select HAS_DEBUG_LL
+>  
+>  config ARCH_PXA
+>  	bool "Intel/Marvell PXA based"
+> diff --git a/arch/arm/mach-omap/include/mach/debug_ll.h b/arch/arm/mach-omap/include/mach/debug_ll.h
+> new file mode 100644
+> index 0000000..be388d1
+> --- /dev/null
+> +++ b/arch/arm/mach-omap/include/mach/debug_ll.h
+> @@ -0,0 +1,54 @@
+> +/*
+> + * Copyright (C) 2011
+> + * Author: Jan Weitzel <j.weitzel@phytec.de>
+> + * based on arch/arm/mach-versatile/include/mach/debug_ll.h
+> + *
+> + * barebox is free software: you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License as published by
+> + * the Free Software Foundation, either version 2 of the License, or
+> + * (at your option) any later version.
+> + *
+> + * barebox is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + *
+> + * You should have received a copy of the GNU General Public License
+> + * along with barebox.  If not, see <http://www.gnu.org/licenses/>.
+> + */
+> +
+> +#ifndef __MACH_DEBUG_LL_H__
+> +#define   __MACH_DEBUG_LL_H__
+> +
+> +#include <asm/io.h>
+> +
+> +#ifdef CONFIG_ARCH_OMAP3
+> +#include <mach/omap3-silicon.h>
+> +
+> +#ifdef CONFIG_OMAP3EVM_UART1
+> +#define UART_BASE	OMAP_UART1_BASE
+> +#else
+> +#define UART_BASE	OMAP_UART3_BASE
+> +#endif
+> +
+> +#endif
+> +
+> +#ifdef CONFIG_ARCH_OMAP4
+> +#include <mach/omap4-silicon.h>
+> +#define UART_BASE	OMAP44XX_UART3_BASE
+> +#endif
+> +
+> +#define LSR_THRE	0x20	/* Xmit holding register empty */
+> +#define LSR		(5 << 2)
+> +#define THR		(0 << 2)
+> +
+> +static inline void putc(char c)
+> +{
+> +	/* Wait until there is space in the FIFO */
+> +	while ((readb(UART_BASE + LSR) & LSR_THRE) == 0);
+> +	/* Send the character */
+> +	writeb(c, UART_BASE + THR);
+> +	/* Wait to make sure it hits the line, in case we die too soon. */
+> +	while ((readb(UART_BASE + LSR) & LSR_THRE) == 0);
+> +}
+> +#endif
+> -- 
+> 1.7.0.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
