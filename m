@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycore.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1S4V1W-0001i5-I4
- for barebox@lists.infradead.org; Mon, 05 Mar 2012 10:20:11 +0000
+Received: from mail.phytec.de ([217.6.246.34] helo=root.phytec.de)
+ by casper.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1S4VEQ-0002sk-24
+ for barebox@lists.infradead.org; Mon, 05 Mar 2012 10:33:31 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 97A5FBF0CE
- for <barebox@lists.infradead.org>; Sun,  4 Mar 2012 12:35:51 +0100 (CET)
+ by root.phytec.de (Postfix) with ESMTP id C0CE4BF0F0
+ for <barebox@lists.infradead.org>; Sun,  4 Mar 2012 12:49:21 +0100 (CET)
 From: Jan Weitzel <j.weitzel@phytec.de>
-Date: Mon, 5 Mar 2012 11:19:43 +0100
-Message-Id: <1330942784-22394-1-git-send-email-j.weitzel@phytec.de>
+Date: Mon, 5 Mar 2012 11:33:26 +0100
+Message-Id: <1330943606-2387-1-git-send-email-j.weitzel@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,153 +22,90 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] omap: move scale_vcores to omap4_generic
+Subject: [PATCH] mach-omap: add HAS_DEBUG_LL
 To: barebox@lists.infradead.org
 
-scale_vcores is used by two boards.
+Add support for debug_ll
 
 Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
 ---
- arch/arm/boards/panda/lowlevel.c                |   31 -----------------------
- arch/arm/boards/pcm049/lowlevel.c               |   31 -----------------------
- arch/arm/mach-omap/include/mach/omap4-silicon.h |    1 +
- arch/arm/mach-omap/omap4_generic.c              |   31 +++++++++++++++++++++++
- 4 files changed, 32 insertions(+), 62 deletions(-)
+ arch/arm/Kconfig                           |    1 +
+ arch/arm/mach-omap/include/mach/debug_ll.h |   54 ++++++++++++++++++++++++++++
+ 2 files changed, 55 insertions(+), 0 deletions(-)
+ create mode 100644 arch/arm/mach-omap/include/mach/debug_ll.h
 
-diff --git a/arch/arm/boards/panda/lowlevel.c b/arch/arm/boards/panda/lowlevel.c
-index 45ea221..e73e2cf 100644
---- a/arch/arm/boards/panda/lowlevel.c
-+++ b/arch/arm/boards/panda/lowlevel.c
-@@ -44,37 +44,6 @@ static const struct ddr_regs ddr_regs_400_mhz_2cs = {
- 	.mr2		= 0x4
- };
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 4c0ee58..67a1009 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -61,6 +61,7 @@ config ARCH_NOMADIK
  
--#define I2C_SLAVE 0x12
--
--static int noinline scale_vcores(void)
--{
--	unsigned int rev = omap4_revision();
--
--	/* For VC bypass only VCOREx_CGF_FORCE  is necessary and
--	 * VCOREx_CFG_VOLTAGE  changes can be discarded
--	 */
--	writel(0, OMAP44XX_PRM_VC_CFG_I2C_MODE);
--	writel(0x6026, OMAP44XX_PRM_VC_CFG_I2C_CLK);
--
--	/* set VCORE1 force VSEL */
--	omap4_power_i2c_send((0x3A55 << 8) | I2C_SLAVE);
--
--	/* FIXME: set VCORE2 force VSEL, Check the reset value */
--	omap4_power_i2c_send((0x295B << 8) | I2C_SLAVE);
--
--	/* set VCORE3 force VSEL */
--	switch (rev) {
--	case OMAP4430_ES2_0:
--		omap4_power_i2c_send((0x2961 << 8) | I2C_SLAVE);
--		break;
--	case OMAP4430_ES2_1:
--		omap4_power_i2c_send((0x2A61 << 8) | I2C_SLAVE);
--		break;
--	}
--
--	return 0;
--}
--
- static void noinline panda_init_lowlevel(void)
- {
- 	struct dpll_param core = OMAP4_CORE_DPLL_PARAM_38M4_DDR400;
-diff --git a/arch/arm/boards/pcm049/lowlevel.c b/arch/arm/boards/pcm049/lowlevel.c
-index bea895e..2b6e91f 100644
---- a/arch/arm/boards/pcm049/lowlevel.c
-+++ b/arch/arm/boards/pcm049/lowlevel.c
-@@ -44,37 +44,6 @@ static const struct ddr_regs ddr_regs_mt42L64M64_3_200_mhz = {
- 	.mr2		= 0x1	      /* from elpida 200MHz! */
- };
+ config ARCH_OMAP
+ 	bool "TI OMAP"
++	select HAS_DEBUG_LL
  
--#define I2C_SLAVE 0x12
--
--static int noinline scale_vcores(void)
--{
--	unsigned int rev = omap4_revision();
--
--	/* For VC bypass only VCOREx_CGF_FORCE  is necessary and
--	 * VCOREx_CFG_VOLTAGE  changes can be discarded
--	 */
--	writel(0, OMAP44XX_PRM_VC_CFG_I2C_MODE);
--	writel(0x6026, OMAP44XX_PRM_VC_CFG_I2C_CLK);
--
--	/* set VCORE1 force VSEL */
--	omap4_power_i2c_send((0x3A55 << 8) | I2C_SLAVE);
--
--	/* FIXME: set VCORE2 force VSEL, Check the reset value */
--	omap4_power_i2c_send((0x295B << 8) | I2C_SLAVE);
--
--	/* set VCORE3 force VSEL */
--	switch (rev) {
--	case OMAP4430_ES2_0:
--		omap4_power_i2c_send((0x2961 << 8) | I2C_SLAVE);
--		break;
--	case OMAP4430_ES2_1:
--		omap4_power_i2c_send((0x2A61 << 8) | I2C_SLAVE);
--		break;
--	}
--
--	return 0;
--}
--
- static void noinline pcm049_init_lowlevel(void)
- {
- 	struct dpll_param core = OMAP4_CORE_DPLL_PARAM_19M2_DDR200;
-diff --git a/arch/arm/mach-omap/include/mach/omap4-silicon.h b/arch/arm/mach-omap/include/mach/omap4-silicon.h
-index db0dfdf..12ab9a5 100644
---- a/arch/arm/mach-omap/include/mach/omap4-silicon.h
-+++ b/arch/arm/mach-omap/include/mach/omap4-silicon.h
-@@ -175,5 +175,6 @@ struct dpll_param;
- void omap4_ddr_init(const struct ddr_regs *, const struct dpll_param *);
- void omap4_power_i2c_send(u32);
- unsigned int omap4_revision(void);
-+noinline int scale_vcores(void);
- 
- #endif
-diff --git a/arch/arm/mach-omap/omap4_generic.c b/arch/arm/mach-omap/omap4_generic.c
-index c6e46e6..76cf2f5 100644
---- a/arch/arm/mach-omap/omap4_generic.c
-+++ b/arch/arm/mach-omap/omap4_generic.c
-@@ -419,3 +419,34 @@ enum omap_boot_src omap4_bootsrc(void)
- 		return OMAP_BOOTSRC_NAND;
- 	return OMAP_BOOTSRC_UNKNOWN;
- }
+ config ARCH_PXA
+ 	bool "Intel/Marvell PXA based"
+diff --git a/arch/arm/mach-omap/include/mach/debug_ll.h b/arch/arm/mach-omap/include/mach/debug_ll.h
+new file mode 100644
+index 0000000..be388d1
+--- /dev/null
++++ b/arch/arm/mach-omap/include/mach/debug_ll.h
+@@ -0,0 +1,54 @@
++/*
++ * Copyright (C) 2011
++ * Author: Jan Weitzel <j.weitzel@phytec.de>
++ * based on arch/arm/mach-versatile/include/mach/debug_ll.h
++ *
++ * barebox is free software: you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation, either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * barebox is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with barebox.  If not, see <http://www.gnu.org/licenses/>.
++ */
 +
-+#define I2C_SLAVE 0x12
++#ifndef __MACH_DEBUG_LL_H__
++#define   __MACH_DEBUG_LL_H__
 +
-+noinline int scale_vcores(void)
++#include <asm/io.h>
++
++#ifdef CONFIG_ARCH_OMAP3
++#include <mach/omap3-silicon.h>
++
++#ifdef CONFIG_OMAP3EVM_UART1
++#define UART_BASE	OMAP_UART1_BASE
++#else
++#define UART_BASE	OMAP_UART3_BASE
++#endif
++
++#endif
++
++#ifdef CONFIG_ARCH_OMAP4
++#include <mach/omap4-silicon.h>
++#define UART_BASE	OMAP44XX_UART3_BASE
++#endif
++
++#define LSR_THRE	0x20	/* Xmit holding register empty */
++#define LSR		(5 << 2)
++#define THR		(0 << 2)
++
++static inline void putc(char c)
 +{
-+	unsigned int rev = omap4_revision();
-+
-+	/* For VC bypass only VCOREx_CGF_FORCE  is necessary and
-+	 * VCOREx_CFG_VOLTAGE  changes can be discarded
-+	 */
-+	writel(0, OMAP44XX_PRM_VC_CFG_I2C_MODE);
-+	writel(0x6026, OMAP44XX_PRM_VC_CFG_I2C_CLK);
-+
-+	/* set VCORE1 force VSEL */
-+	omap4_power_i2c_send((0x3A55 << 8) | I2C_SLAVE);
-+
-+	/* FIXME: set VCORE2 force VSEL, Check the reset value */
-+	omap4_power_i2c_send((0x295B << 8) | I2C_SLAVE);
-+
-+	/* set VCORE3 force VSEL */
-+	switch (rev) {
-+	case OMAP4430_ES2_0:
-+		omap4_power_i2c_send((0x2961 << 8) | I2C_SLAVE);
-+		break;
-+	case OMAP4430_ES2_1:
-+		omap4_power_i2c_send((0x2A61 << 8) | I2C_SLAVE);
-+		break;
-+	}
-+
-+	return 0;
++	/* Wait until there is space in the FIFO */
++	while ((readb(UART_BASE + LSR) & LSR_THRE) == 0);
++	/* Send the character */
++	writeb(c, UART_BASE + THR);
++	/* Wait to make sure it hits the line, in case we die too soon. */
++	while ((readb(UART_BASE + LSR) & LSR_THRE) == 0);
 +}
++#endif
 -- 
 1.7.0.4
 
