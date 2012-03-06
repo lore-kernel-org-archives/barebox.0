@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail.cvg.de ([62.153.82.30])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1S4zF3-0005UH-4Q
- for barebox@lists.infradead.org; Tue, 06 Mar 2012 18:36:09 +0000
+ id 1S4zJm-00062j-Mb
+ for barebox@lists.infradead.org; Tue, 06 Mar 2012 18:41:03 +0000
 From: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
-Date: Tue,  6 Mar 2012 19:36:26 +0100
-Message-Id: <1331058986-9169-1-git-send-email-enrico.scholz@sigma-chemnitz.de>
+Date: Tue,  6 Mar 2012 19:41:22 +0100
+Message-Id: <1331059282-10824-1-git-send-email-enrico.scholz@sigma-chemnitz.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,57 +19,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fs: flush device on close
+Subject: [PATCH] bmp: honor alpha channel bits
 To: barebox@lists.infradead.org
 Cc: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
 
-When working with DMA backed devices (e.g. framebuffers), writes are
-delayed so that 'mw -d /dev/fb0' might not have an immediate effect.
-
-Behavior after this patch resembles POSIX close(2) functionality which
-flushes (blocking) streams on close.
-
-Drivers which provide 'memmap()' can/should implement a 'flush()' method
-which works similarly msync(2) so that buffers can be synchronized on
-demand (without low level dma_*_range() operations). Closing such
-devices (e.g. when 'mw' or 'bmp' exits) will flush modified memory
-content automatically without the need to touch the 'mw', 'bmp' or ...
-code.
+Some displays might use RGBA formats. The 'A' component must be set
+there to make image opaque.
 
 Signed-off-by: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
 ---
- fs/fs.c         |    5 +++++
- include/fcntl.h |    1 +
- 2 files changed, 6 insertions(+), 0 deletions(-)
+ commands/bmp.c |    9 +++++----
+ 1 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/fs/fs.c b/fs/fs.c
-index 13df71c..6ba1da6 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -714,6 +714,11 @@ int close(int fd)
- 	dev = f->dev;
+diff --git a/commands/bmp.c b/commands/bmp.c
+index 644a977..2be6fe0 100644
+--- a/commands/bmp.c
++++ b/commands/bmp.c
+@@ -10,13 +10,14 @@
+ #include <bmp_layout.h>
+ #include <asm/byteorder.h>
  
- 	fsdrv = (struct fs_driver_d *)dev->driver->type_data;
-+
-+	if (!(f->flags & O_NONBLOCK) && fsdrv->flush)
-+		/* no way to deal with errors here... */
-+		fsdrv->flush(dev, f);
-+
- 	errno = fsdrv->close(dev, f);
+-static inline void set_pixel(struct fb_info *info, void *adr, int r, int g, int b)
++static inline void set_pixel(struct fb_info *info, void *adr, int r, int g, int b, int a)
+ {
+ 	u32 px;
  
- 	put_file(f);
-diff --git a/include/fcntl.h b/include/fcntl.h
-index aed741e..ffe2f5f 100644
---- a/include/fcntl.h
-+++ b/include/fcntl.h
-@@ -13,6 +13,7 @@
- #define O_EXCL		00000200	/* not fcntl */
- #define O_TRUNC		00001000	/* not fcntl */
- #define O_APPEND	00002000
-+#define O_NONBLOCK	00004000
- #define O_DIRECTORY	00200000	/* must be a directory */
- #define O_NOFOLLOW	00400000	/* don't follow links */
+ 	px = (r >> (8 - info->red.length)) << info->red.offset |
+ 		(g >> (8 - info->green.length)) << info->green.offset |
+-		(b >> (8 - info->blue.length)) << info->blue.offset;
++		(b >> (8 - info->blue.length)) << info->blue.offset |
++		(a >> (8 - info->transp.length)) << info->transp.offset;
  
+ 	switch (info->bits_per_pixel) {
+ 	case 8:
+@@ -148,7 +149,7 @@ static int do_bmp(struct command *cmdtp, int argc, char *argv[])
+ 
+ 				set_pixel(&info, adr, color_table[pixel].red,
+ 						color_table[pixel].green,
+-						color_table[pixel].blue);
++						color_table[pixel].blue, 255);
+ 				adr += info.bits_per_pixel >> 3;
+ 
+ 				image += bits_per_pixel >> 3;
+@@ -169,7 +170,7 @@ static int do_bmp(struct command *cmdtp, int argc, char *argv[])
+ 				pixel = image;
+ 
+ 				set_pixel(&info, adr, pixel[2], pixel[1],
+-						pixel[0]);
++						pixel[0], 255);
+ 				adr += info.bits_per_pixel >> 3;
+ 
+ 				image += bits_per_pixel >> 3;
 -- 
 1.7.7.6
 
