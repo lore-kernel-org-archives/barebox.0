@@ -1,21 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 3.mo2.mail-out.ovh.net ([46.105.58.226]
- helo=mo2.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1S4cR1-0008Sn-Ia
- for barebox@lists.infradead.org; Mon, 05 Mar 2012 18:15:00 +0000
-Received: from mail621.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 10C1CDC5802
- for <barebox@lists.infradead.org>; Mon,  5 Mar 2012 19:08:32 +0100 (CET)
-Date: Mon, 5 Mar 2012 18:55:15 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120305175515.GI12248@game.jcrosoft.org>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1S4pm9-0002jP-NY
+ for barebox@lists.infradead.org; Tue, 06 Mar 2012 08:29:43 +0000
+Date: Tue, 6 Mar 2012 09:29:30 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120306082930.GE3852@pengutronix.de>
 References: <1330712410-26479-1-git-send-email-plagnioj@jcrosoft.com>
- <1330712410-26479-4-git-send-email-plagnioj@jcrosoft.com>
- <20120304120841.GR3852@pengutronix.de>
+ <1330712410-26479-5-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120304120841.GR3852@pengutronix.de>
+In-Reply-To: <1330712410-26479-5-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,57 +23,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/5] macb: implement alloc_packet & free_packet
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 5/5] macb: add timeout on send
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On 13:08 Sun 04 Mar     , Sascha Hauer wrote:
-> On Fri, Mar 02, 2012 at 07:20:09PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > We need to have a non cached buffer.
-> > Need when MMU enabled.
-> > 
-> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > ---
-> >  drivers/net/macb.c |   19 ++++++++++++++++---
-> >  1 files changed, 16 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/drivers/net/macb.c b/drivers/net/macb.c
-> > index d79da72..9b54afa 100644
-> > --- a/drivers/net/macb.c
-> > +++ b/drivers/net/macb.c
-> > @@ -50,6 +50,7 @@
-> >  #include <mach/board.h>
-> >  #include <linux/clk.h>
-> >  #include <linux/err.h>
-> > +#include <asm/mmu.h>
-> >  
-> >  #include "macb.h"
-> >  
-> > @@ -391,6 +392,16 @@ static int macb_set_ethaddr(struct eth_device *edev, unsigned char *adr)
-> >  	return 0;
-> >  }
-> >  
-> > +static void *macb_alloc_packet(struct eth_device* edev)
-> > +{
-> > +	return dma_alloc_coherent(PKTSIZE);
-> > +}
-> > +
-> > +static void macb_free_packet(struct eth_device* edev, void *packet)
-> > +{
-> > +	dma_free_coherent(packet, PKTSIZE);
-> > +}
+On Fri, Mar 02, 2012 at 07:20:10PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> This will ensure that we send an other packet only when the first one is send.
 > 
-> Why don't you use dma_flush_range/dma_clean_range like we do in other
-> drivers?
-yeah I did it last week-end but too much late and put the flush at thw wrong
-place
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  drivers/net/macb.c |    5 +++++
+>  1 files changed, 5 insertions(+), 0 deletions(-)
+> 
+> diff --git a/drivers/net/macb.c b/drivers/net/macb.c
+> index 9b54afa..3835dba 100644
+> --- a/drivers/net/macb.c
+> +++ b/drivers/net/macb.c
+> @@ -121,6 +121,11 @@ static int macb_send(struct eth_device *edev, void *packet,
+>  	barrier();
+>  	writel(MACB_BIT(TE) | MACB_BIT(RE) | MACB_BIT(TSTART), macb->regs + MACB_NCR);
+>  
+> +	wait_on_timeout(100 * MSECOND,
+> +		!(macb->tx_ring[0].ctrl & TXBUF_USED));
 
-now work send an update.
+If you care for adding a timeout loop then you should also check
+the return value.
 
-can you apply them on master as they fix the macb when MMU is enable on AT91
+Sascha
 
-Best Regards,
-J.
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
