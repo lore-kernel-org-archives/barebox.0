@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
- by casper.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1S4vLd-0000mx-VN
- for barebox@lists.infradead.org; Tue, 06 Mar 2012 14:26:45 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id EDFCDBF0E6
- for <barebox@lists.infradead.org>; Mon,  5 Mar 2012 16:18:37 +0100 (CET)
-From: Jan Weitzel <j.weitzel@phytec.de>
-Date: Tue, 6 Mar 2012 15:26:29 +0100
-Message-Id: <1331043989-19554-2-git-send-email-j.weitzel@phytec.de>
-In-Reply-To: <20120305171214.GX3852@pengutronix.de>
-References: <20120305171214.GX3852@pengutronix.de>
+Received: from mail.cvg.de ([62.153.82.30])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1S4yJA-0000ZL-9H
+ for barebox@lists.infradead.org; Tue, 06 Mar 2012 17:36:21 +0000
+From: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
+Date: Tue,  6 Mar 2012 18:36:15 +0100
+Message-Id: <1331055375-21439-1-git-send-email-enrico.scholz@sigma-chemnitz.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,113 +19,88 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2 v2] omap: move do_set_mux to omap4_generic
+Subject: [PATCH] net: dhcp: allow to set transmitted vendor id
 To: barebox@lists.infradead.org
+Cc: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
 
-do_set_mux is used by two boards.
+For net boot setups it is useful to submit boot params like server or
+bootfile over dhcp.  To distinguish barebox from e.g. pxe machines, a
+custom vendor id can be sent in dhcp discover/request messages.
 
-Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
+E.g. the ISC dhcp server can be configured with
+
+| if substring(option vendor-class-identifier,0,8) = "barebox:" {
+| 	next-server		192.168.3.24;
+| 	server-name		"192.168.3.24";
+| 	option tftp-server-name	"192.168.3.24";
+| 	option root-path = concat("/srv/sysroots/by-mac/",
+|          binary-to-ascii (16, 8, "-", substring (hardware, 1, 6)));
+| }
+
+to sent boot params which are valid for barebox hosts only.
+
+Signed-off-by: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
 ---
-v2: add omap4_ prefix
+ net/Kconfig |   13 +++++++++++++
+ net/dhcp.c  |   12 ++++++++++++
+ 2 files changed, 25 insertions(+), 0 deletions(-)
 
- arch/arm/boards/panda/mux.c                 |   13 ++-----------
- arch/arm/boards/pcm049/mux.c                |   13 ++-----------
- arch/arm/mach-omap/include/mach/omap4-mux.h |    2 ++
- arch/arm/mach-omap/omap4_generic.c          |   10 ++++++++++
- 4 files changed, 16 insertions(+), 22 deletions(-)
-
-diff --git a/arch/arm/boards/panda/mux.c b/arch/arm/boards/panda/mux.c
-index 7586e86..310e433 100644
---- a/arch/arm/boards/panda/mux.c
-+++ b/arch/arm/boards/panda/mux.c
-@@ -238,20 +238,11 @@ static const struct pad_conf_entry wkup_padconf_array[] = {
- 	{ PAD0_FREF_CLK4_OUT, M3 /* gpio_wk8 */ },
- };
+diff --git a/net/Kconfig b/net/Kconfig
+index 3169d20..56d6ee8 100644
+--- a/net/Kconfig
++++ b/net/Kconfig
+@@ -7,6 +7,19 @@ config NET_DHCP
+ 	bool
+ 	prompt "dhcp support"
  
--static void do_set_mux(u32 base, struct pad_conf_entry const *array, int size)
--{
--	int i;
--	struct pad_conf_entry *pad = (struct pad_conf_entry *) array;
--
--	for (i = 0; i < size; i++, pad++)
--		writew(pad->val, base + pad->offset);
--}
--
- void set_muxconf_regs(void)
++config NET_DHCP_VENDOR_ID
++        string
++	prompt "dhcp vendor id"
++	depends on NET_DHCP
++	default "barebox:default"
++	help
++	  DHCP Vendor ID (code 60) submitted in DHCP requests. It can
++	  be used in the DHCP server's configuration to select options
++	  (e.g. bootfile or server) which are valid for barebox clients
++	  only.
++
++	  An empty string will suppress generation of such requests.
++
+ config NET_NFS
+ 	bool
+ 	prompt "nfs support"
+diff --git a/net/dhcp.c b/net/dhcp.c
+index 2ce9090..65f2614 100644
+--- a/net/dhcp.c
++++ b/net/dhcp.c
+@@ -129,6 +129,7 @@ static void bootp_copy_net_params(struct bootp *bp)
+  */
+ static int dhcp_extended (u8 *e, int message_type, IPaddr_t ServerID, IPaddr_t RequestedIP)
  {
--	do_set_mux(OMAP44XX_CONTROL_PADCONF_CORE, core_padconf_array,
-+	omap4_do_set_mux(OMAP44XX_CONTROL_PADCONF_CORE, core_padconf_array,
- 			ARRAY_SIZE(core_padconf_array));
++	size_t vendor_id_len = sizeof CONFIG_NET_DHCP_VENDOR_ID - 1;
+ 	u8 *start = e;
+ 	u8 *cnt;
  
--	do_set_mux(OMAP44XX_CONTROL_PADCONF_WKUP, wkup_padconf_array,
-+	omap4_do_set_mux(OMAP44XX_CONTROL_PADCONF_WKUP, wkup_padconf_array,
- 			ARRAY_SIZE(wkup_padconf_array));
- }
-diff --git a/arch/arm/boards/pcm049/mux.c b/arch/arm/boards/pcm049/mux.c
-index 9911b62..0e7adea 100644
---- a/arch/arm/boards/pcm049/mux.c
-+++ b/arch/arm/boards/pcm049/mux.c
-@@ -235,20 +235,11 @@ static const struct pad_conf_entry wkup_padconf_array[] = {
- 	{PAD1_SYS_BOOT7, (IEN | M3)},					/* gpio_wk10 */
- };
+@@ -168,6 +169,17 @@ static int dhcp_extended (u8 *e, int message_type, IPaddr_t ServerID, IPaddr_t R
+ 		*e++ = tmp & 0xff;
+ 	}
  
--static void do_set_mux(u32 base, struct pad_conf_entry const *array, int size)
--{
--	int i;
--	struct pad_conf_entry *pad = (struct pad_conf_entry *) array;
--
--	for (i = 0; i < size; i++, pad++)
--		writew(pad->val, base + pad->offset);
--}
--
- void set_muxconf_regs(void)
- {
--	do_set_mux(OMAP44XX_CONTROL_PADCONF_CORE, core_padconf_array,
-+	omap4_do_set_mux(OMAP44XX_CONTROL_PADCONF_CORE, core_padconf_array,
- 			ARRAY_SIZE(core_padconf_array));
- 
--	do_set_mux(OMAP44XX_CONTROL_PADCONF_WKUP, wkup_padconf_array,
-+	omap4_do_set_mux(OMAP44XX_CONTROL_PADCONF_WKUP, wkup_padconf_array,
- 			ARRAY_SIZE(wkup_padconf_array));
- }
-diff --git a/arch/arm/mach-omap/include/mach/omap4-mux.h b/arch/arm/mach-omap/include/mach/omap4-mux.h
-index 019574b..d06beaa 100644
---- a/arch/arm/mach-omap/include/mach/omap4-mux.h
-+++ b/arch/arm/mach-omap/include/mach/omap4-mux.h
-@@ -341,4 +341,6 @@ struct pad_conf_entry {
- #define CONTROL_SPARE_R		0x0618
- #define CONTROL_SPARE_R_C0		0x061C
- 
-+void omap4_do_set_mux(u32 base, struct pad_conf_entry const *array, int size);
++	/* 64 is some arbitrary value to prevent generation of too
++	 * large dhcp requests. */
++	BUILD_BUG_ON(sizeof CONFIG_NET_DHCP_VENDOR_ID > 64);
 +
- #endif /* _MUX_OMAP4_H_ */
-diff --git a/arch/arm/mach-omap/omap4_generic.c b/arch/arm/mach-omap/omap4_generic.c
-index 8352470..baa138d 100644
---- a/arch/arm/mach-omap/omap4_generic.c
-+++ b/arch/arm/mach-omap/omap4_generic.c
-@@ -3,6 +3,7 @@
- #include <mach/silicon.h>
- #include <io.h>
- #include <mach/omap4-silicon.h>
-+#include <mach/omap4-mux.h>
- #include <mach/omap4-clock.h>
- #include <mach/syslib.h>
- #include <mach/xload.h>
-@@ -450,3 +451,12 @@ noinline int omap4_scale_vcores(void)
- 
- 	return 0;
- }
++	if (vendor_id_len > 0) {
++		*e++ = 60;
++		*e++ = vendor_id_len;
++		memcpy(e, CONFIG_NET_DHCP_VENDOR_ID,  vendor_id_len);
++		e   += vendor_id_len;
++	}
 +
-+void omap4_do_set_mux(u32 base, struct pad_conf_entry const *array, int size)
-+{
-+	int i;
-+	struct pad_conf_entry *pad = (struct pad_conf_entry *) array;
-+
-+	for (i = 0; i < size; i++, pad++)
-+		writew(pad->val, base + pad->offset);
-+}
+ 	*e++ = 55;		/* Parameter Request List */
+ 	 cnt = e++;		/* Pointer to count of requested items */
+ 	*cnt = 0;
 -- 
-1.7.0.4
+1.7.7.6
 
 
 _______________________________________________
