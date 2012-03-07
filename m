@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.rapiddevelopmentkit.de ([217.6.246.34] helo=root.phytec.de)
- by casper.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1S5FpL-0005Xi-6T
- for barebox@lists.infradead.org; Wed, 07 Mar 2012 12:18:47 +0000
+Received: from mail.phytec.de ([217.6.246.34] helo=root.phytec.de)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1S5G7E-0007sH-8I
+ for barebox@lists.infradead.org; Wed, 07 Mar 2012 12:37:15 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 5F05DBF0E7
- for <barebox@lists.infradead.org>; Tue,  6 Mar 2012 13:52:01 +0100 (CET)
+ by root.phytec.de (Postfix) with ESMTP id 47A2DBF0DC
+ for <barebox@lists.infradead.org>; Tue,  6 Mar 2012 13:51:00 +0100 (CET)
 From: Jan Weitzel <j.weitzel@phytec.de>
-Date: Wed, 7 Mar 2012 13:18:34 +0100
-Message-Id: <1331122714-2463-1-git-send-email-j.weitzel@phytec.de>
+Date: Wed, 7 Mar 2012 13:17:33 +0100
+Message-Id: <1331122653-2404-1-git-send-email-j.weitzel@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,192 +22,103 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] omap: add support for phycard-a-xl2
+Subject: [PATCH] NET: Add support for ks8851_mll
 To: barebox@lists.infradead.org
 
-Support for omap4 based Phytec phyCARD-A-XL2 board
+Add support for KS8851 16bit MLL chip from Micrel Inc.
 
 Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
 ---
- arch/arm/Makefile                                  |    1 +
- arch/arm/boards/phycard-a-xl2/Makefile             |   20 ++
- arch/arm/boards/phycard-a-xl2/config.h             |    1 +
- .../boards/phycard-a-xl2/env/bin/nand_bootstrap    |   31 +++
- arch/arm/boards/phycard-a-xl2/env/config           |   52 ++++
- arch/arm/boards/phycard-a-xl2/lowlevel.c           |   95 ++++++++
- arch/arm/boards/phycard-a-xl2/mux.c                |  245 ++++++++++++++++++++
- arch/arm/boards/phycard-a-xl2/pca-a-xl2.c          |  147 ++++++++++++
- arch/arm/configs/phycard_a_xl2_defconfig           |   56 +++++
- arch/arm/configs/phycard_a_xl2_xload_defconfig     |   40 ++++
- arch/arm/mach-omap/Kconfig                         |   10 +
- 11 files changed, 698 insertions(+), 0 deletions(-)
- create mode 100644 arch/arm/boards/phycard-a-xl2/Makefile
- create mode 100644 arch/arm/boards/phycard-a-xl2/config.h
- create mode 100644 arch/arm/boards/phycard-a-xl2/env/bin/nand_bootstrap
- create mode 100644 arch/arm/boards/phycard-a-xl2/env/config
- create mode 100644 arch/arm/boards/phycard-a-xl2/lowlevel.c
- create mode 100644 arch/arm/boards/phycard-a-xl2/mux.c
- create mode 100644 arch/arm/boards/phycard-a-xl2/pca-a-xl2.c
- create mode 100644 arch/arm/configs/phycard_a_xl2_defconfig
- create mode 100644 arch/arm/configs/phycard_a_xl2_xload_defconfig
+ drivers/base/resource.c  |   33 ++
+ drivers/net/Kconfig      |    7 +
+ drivers/net/Makefile     |    1 +
+ drivers/net/ks8851_mll.c |  902 ++++++++++++++++++++++++++++++++++++++++++++++
+ include/driver.h         |   11 +
+ 5 files changed, 954 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/net/ks8851_mll.c
 
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index 4c6a566..bf46ca3 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -102,6 +102,7 @@ board-$(CONFIG_MACH_PANDA)			:= panda
- board-$(CONFIG_MACH_PCM049)			:= pcm049
- board-$(CONFIG_MACH_PCA100)			:= phycard-i.MX27
- board-$(CONFIG_MACH_PCAAL1)			:= phycard-a-l1
-+board-$(CONFIG_MACH_PCAAXL2)			:= phycard-a-xl2
- board-$(CONFIG_MACH_PCM037)			:= pcm037
- board-$(CONFIG_MACH_PCM038)			:= pcm038
- board-$(CONFIG_MACH_PCM043)			:= pcm043
-diff --git a/arch/arm/boards/phycard-a-xl2/Makefile b/arch/arm/boards/phycard-a-xl2/Makefile
+diff --git a/drivers/base/resource.c b/drivers/base/resource.c
+index d2f7a07..b31c7d7 100644
+--- a/drivers/base/resource.c
++++ b/drivers/base/resource.c
+@@ -121,3 +121,36 @@ struct device_d *add_usb_ehci_device(int id, resource_size_t hccr,
+ }
+ EXPORT_SYMBOL(add_usb_ehci_device);
+ #endif
++
++#ifdef CONFIG_DRIVER_NET_KS8851_MLL
++struct device_d *add_ks8851_device(int id, resource_size_t addr,
++		resource_size_t addr_cmd, int flags, void *pdata)
++{
++	struct resource *res;
++	resource_size_t size;
++
++	switch (flags) {
++	case IORESOURCE_MEM_16BIT:
++		size = 2;
++		break;
++	case IORESOURCE_MEM_8BIT:
++		size = 1;
++		break;
++	default:
++		printf("ks8851: memory width flag missing\n");
++		return NULL;
++	}
++
++	res = xzalloc(sizeof(struct resource) * 2);
++
++	res[0].start = addr;
++	res[0].size = size;
++	res[0].flags = IORESOURCE_MEM | flags;
++	res[1].start = addr_cmd;
++	res[1].size = size;
++	res[1].flags = IORESOURCE_MEM | flags;
++
++	return add_generic_device_res("ks8851_mll", id, res, 2, pdata);
++}
++EXPORT_SYMBOL(add_ks8851_device);
++#endif
+diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
+index b236d17..4cdb37b 100644
+--- a/drivers/net/Kconfig
++++ b/drivers/net/Kconfig
+@@ -100,6 +100,13 @@ config TSE_USE_DEDICATED_DESC_MEM
+ 	  reserved with a malloc but directly mapped to the memory
+ 	  address (defined in config.h)
+ 
++config DRIVER_NET_KS8851_MLL
++	bool "ks8851 mll ethernet driver"
++	select MIIDEV
++	help
++	  This option enables support for the Micrel KS8851 MLL
++	  ethernet chip.
++
+ source "drivers/net/usb/Kconfig"
+ 
+ endmenu
+diff --git a/drivers/net/Makefile b/drivers/net/Makefile
+index a84d3dc..34dbee9 100644
+--- a/drivers/net/Makefile
++++ b/drivers/net/Makefile
+@@ -12,3 +12,4 @@ obj-$(CONFIG_DRIVER_NET_TAP)		+= tap.o
+ obj-$(CONFIG_MIIDEV)			+= miidev.o
+ obj-$(CONFIG_NET_USB)			+= usb/
+ obj-$(CONFIG_DRIVER_NET_TSE)		+= altera_tse.o
++obj-$(CONFIG_DRIVER_NET_KS8851_MLL)	+= ks8851_mll.o
+diff --git a/drivers/net/ks8851_mll.c b/drivers/net/ks8851_mll.c
 new file mode 100644
-index 0000000..1d23d72
+index 0000000..8387950
 --- /dev/null
-+++ b/arch/arm/boards/phycard-a-xl2/Makefile
-@@ -0,0 +1,20 @@
-+# (C) Copyright 2012 Jan Weitzel <j.weitzel@phytec.de>
-+#
-+# See file CREDITS for list of people who contributed to this
-+# project.
-+#
-+# This program is free software; you can redistribute it and/or
-+# modify it under the terms of the GNU General Public License as
-+# published by the Free Software Foundation; either version 2 of
-+# the License, or (at your option) any later version.
-+#
-+# This program is distributed in the hope that it will be useful,
-+# but WITHOUT ANY WARRANTY; without even the implied warranty of
-+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+# GNU General Public License for more details.
-+#
-+# You should have received a copy of the GNU General Public License
-+# along with this program; if not, write to the Free Software
-+# Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-+# MA 02111-1307 USA
-+obj-y += pca-a-xl2.o mux.o lowlevel.o
-diff --git a/arch/arm/boards/phycard-a-xl2/config.h b/arch/arm/boards/phycard-a-xl2/config.h
-new file mode 100644
-index 0000000..da84fa5
---- /dev/null
-+++ b/arch/arm/boards/phycard-a-xl2/config.h
-@@ -0,0 +1 @@
-+/* nothing */
-diff --git a/arch/arm/boards/phycard-a-xl2/env/bin/nand_bootstrap b/arch/arm/boards/phycard-a-xl2/env/bin/nand_bootstrap
-new file mode 100644
-index 0000000..acd00dc
---- /dev/null
-+++ b/arch/arm/boards/phycard-a-xl2/env/bin/nand_bootstrap
-@@ -0,0 +1,31 @@
-+
-+echo "copying barebox to nand..."
-+
-+mci0.probe=1
-+mkdir mnt
-+
-+mount /dev/disk0.0 fat /mnt
-+if [ $? != 0 ]; then
-+	echo "failed to mount mmc card"
-+	exit 1
-+fi
-+
-+if [ ! -f /mnt/mlo-nand.bin ]; then
-+	echo "mlo-nand.bin not found on mmc card"
-+	exit 1
-+fi
-+
-+if [ ! -f /mnt/barebox.bin ]; then
-+	echo "barebox.bin not found on mmc card"
-+fi
-+
-+gpmc_nand0.eccmode=bch8_hw_romcode
-+erase /dev/nand0.xload.bb
-+cp /mnt/mlo-nand.bin /dev/nand0.xload.bb
-+
-+gpmc_nand0.eccmode=bch8_hw
-+erase /dev/nand0.barebox.bb
-+cp /mnt/barebox.bin /dev/nand0.barebox.bb
-+
-+echo "success"
-+
-diff --git a/arch/arm/boards/phycard-a-xl2/env/config b/arch/arm/boards/phycard-a-xl2/env/config
-new file mode 100644
-index 0000000..8ed0459
---- /dev/null
-+++ b/arch/arm/boards/phycard-a-xl2/env/config
-@@ -0,0 +1,52 @@
-+#!/bin/sh
-+
-+machine=pcaaxl2
-+user=
-+
-+# use 'dhcp' to do dhcp in barebox and in kernel
-+# use 'none' if you want to skip kernel ip autoconfiguration
-+ip=dhcp
-+
-+# or set your networking parameters here
-+#eth0.ipaddr=a.b.c.d
-+#eth0.netmask=a.b.c.d
-+#eth0.gateway=a.b.c.d
-+#eth0.serverip=a.b.c.d
-+
-+# can be either 'nfs', 'tftp', 'nor' or 'nand'
-+kernel_loc=tftp
-+# can be either 'net', 'nor', 'nand' or 'initrd'
-+rootfs_loc=net
-+
-+# can be either 'jffs2' or 'ubifs'
-+rootfs_type=ubifs
-+rootfsimage=root-${machine}.$rootfs_type
-+
-+# The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
-+kernelimage_type=zimage
-+kernelimage=zImage-$machine
-+#kernelimage_type=uimage
-+#kernelimage=uImage-$machine
-+#kernelimage_type=raw
-+#kernelimage=Image-$machine
-+#kernelimage_type=raw_lzo
-+#kernelimage=Image-${machine}.lzo
-+
-+if [ -n $user ]; then
-+	kernelimage="$user"-"$kernelimage"
-+	nfsroot="$eth0.serverip:/home/$user/nfsroot/$machine"
-+	rootfsimage="$user"-"$rootfsimage"
-+else
-+	nfsroot="$eth0.serverip:/path/to/nfs/root"
-+fi
-+
-+autoboot_timeout=3
-+
-+bootargs="console=ttyO2,115200"
-+
-+nand_parts="128k(xload)ro,256k(barebox),128k(bareboxenv),4M(kernel),-(root)"
-+rootfs_mtdblock_nand=4
-+
-+# set a fancy prompt (if support is compiled in)
-+PS1="\e[1;32mbarebox@\e[1;31m\h:\w\e[0m "
-+
-diff --git a/arch/arm/boards/phycard-a-xl2/lowlevel.c b/arch/arm/boards/phycard-a-xl2/lowlevel.c
-new file mode 100644
-index 0000000..fb23c8f
---- /dev/null
-+++ b/arch/arm/boards/phycard-a-xl2/lowlevel.c
-@@ -0,0 +1,95 @@
-+/*
-+ * (C) Copyright 2004-2009
-+ * Texas Instruments, <www.ti.com>
-+ * Richard Woodruff <r-woodruff2@ti.com>
++++ b/drivers/net/ks8851_mll.c
+@@ -0,0 +1,902 @@
++/**
++ * Copyright (c) 2012 Jan Weitzel <j.weitzel@phytec.de>
++ * based on kernel driver drivers/net/ks8851_mll.c
++ * Copyright (c) 2009 Micrel Inc.
 + *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License
-+ * version 2 as published by the Free Software Foundation.
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
 + *
 + * This program is distributed in the hope that it will be useful,
 + * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -216,622 +127,914 @@ index 0000000..fb23c8f
 + *
 + * You should have received a copy of the GNU General Public License
 + * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-+ * MA 02111-1307 USA
-+ */
-+#include <common.h>
-+#include <io.h>
-+#include <mach/omap4-mux.h>
-+#include <mach/omap4-silicon.h>
-+#include <mach/omap4-clock.h>
-+#include <mach/syslib.h>
-+#include <asm/barebox-arm.h>
-+
-+void set_muxconf_regs(void);
-+
-+static const struct ddr_regs ddr_regs_mt42L64M64_25_400_mhz = {
-+	.tim1           = 0x0EEB0662,
-+	.tim2           = 0x20370DD2,
-+	.tim3           = 0x00BFC33F,
-+	.phy_ctrl_1     = 0x849FF408,
-+	.ref_ctrl       = 0x00000618,
-+	.config_init    = 0x80001AB1,
-+	.config_final   = 0x80001AB1,
-+	.zq_config      = 0xd0093215,
-+	.mr1            = 0x83,
-+	.mr2            = 0x4
-+};
-+
-+static void noinline pcaaxl2_init_lowlevel(void)
-+{
-+	struct dpll_param core = OMAP4_CORE_DPLL_PARAM_19M2_DDR400;
-+	struct dpll_param mpu = OMAP4_MPU_DPLL_PARAM_19M2_MPU1000;
-+	struct dpll_param iva = OMAP4_IVA_DPLL_PARAM_19M2;
-+	struct dpll_param per = OMAP4_PER_DPLL_PARAM_19M2;
-+	struct dpll_param abe = OMAP4_ABE_DPLL_PARAM_19M2;
-+	struct dpll_param usb = OMAP4_USB_DPLL_PARAM_19M2;
-+
-+	set_muxconf_regs();
-+
-+	omap4_ddr_init(&ddr_regs_mt42L64M64_25_400_mhz, &core);
-+
-+	/* Set VCORE1 = 1.3 V, VCORE2 = VCORE3 = 1.21V */
-+	omap4_scale_vcores();
-+
-+	writel(CM_SYS_CLKSEL_19M2, CM_SYS_CLKSEL);
-+
-+	/* Configure all DPLL's at 100% OPP */
-+	omap4_configure_mpu_dpll(&mpu);
-+	omap4_configure_iva_dpll(&iva);
-+	omap4_configure_per_dpll(&per);
-+	omap4_configure_abe_dpll(&abe);
-+	omap4_configure_usb_dpll(&usb);
-+
-+	/* Enable all clocks */
-+	omap4_enable_all_clocks();
-+
-+	sr32(0x4A30a31C, 8, 1, 0x1);  /* enable software ioreq */
-+	sr32(0x4A30a31C, 1, 2, 0x0);  /* set for sys_clk (19.2MHz) */
-+	sr32(0x4A30a31C, 16, 4, 0x0); /* set divisor to 1 */
-+	sr32(0x4A30a110, 0, 1, 0x1);  /* set the clock source to active */
-+	sr32(0x4A30a110, 2, 2, 0x3);  /* enable clocks */
-+
-+	board_init_lowlevel_return();
-+}
-+
-+void board_init_lowlevel(void)
-+{
-+	u32 r;
-+
-+	if (get_pc() > 0x80000000)
-+		return;
-+
-+	r = 0x4030d000;
-+	__asm__ __volatile__("mov sp, %0" : : "r"(r));
-+
-+	pcaaxl2_init_lowlevel();
-+}
-+
-diff --git a/arch/arm/boards/phycard-a-xl2/mux.c b/arch/arm/boards/phycard-a-xl2/mux.c
-new file mode 100644
-index 0000000..179e6b6
---- /dev/null
-+++ b/arch/arm/boards/phycard-a-xl2/mux.c
-@@ -0,0 +1,245 @@
-+#include <common.h>
-+#include <init.h>
-+#include <io.h>
-+#include <mach/omap4-silicon.h>
-+#include <mach/omap4-mux.h>
-+
-+static const struct pad_conf_entry core_padconf_array[] = {
-+	{GPMC_AD0, (IEN | PTD | DIS | M0)},				/* gpmc_ad0 */
-+	{GPMC_AD1, (IEN | PTD | DIS | M0)},			 	/* gpmc_ad1 */
-+	{GPMC_AD2, (IEN | PTD | DIS | M0)},				/* gpmc_ad2 */
-+	{GPMC_AD3, (IEN | PTD | DIS | M0)},				/* gpmc_ad3 */
-+	{GPMC_AD4, (IEN | PTD | DIS | M0)},				/* gpmc_ad4 */
-+	{GPMC_AD5, (IEN | PTD | DIS | M0)},				/* gpmc_ad5 */
-+	{GPMC_AD6, (IEN | PTD | DIS | M0)},				/* gpmc_ad6 */
-+	{GPMC_AD7, (IEN | PTD | DIS | M0)},				/* gpmc_ad7 */
-+	{GPMC_AD8, (IEN | PTD | DIS | M0)},				/* gpmc_ad8 */
-+	{GPMC_AD9, (IEN | PTD | DIS | M0)},				/* gpmc_ad9 */
-+	{GPMC_AD10, (IEN | PTD | DIS | M0)},				/* gpmc_ad10 */
-+	{GPMC_AD11, (IEN | PTD | DIS | M0)},				/* gpmc_ad11 */
-+	{GPMC_AD12, (IEN | PTD | DIS | M0)},				/* gpmc_ad12 */
-+	{GPMC_AD13, (IEN | PTD | DIS | M0)},				/* gpmc_ad13 */
-+	{GPMC_AD14, (IEN | PTD | DIS | M0)},				/* gpmc_ad14 */
-+	{GPMC_AD15, (IEN | PTD | DIS | M0)},				/* gpmc_ad15 */
-+	{GPMC_A16, (IEN | PTD | DIS | M0)},				/* gpmc_a16 */
-+	{GPMC_A17, (SAFE_MODE)},					/* nc */
-+	{GPMC_A18, (SAFE_MODE)},					/* nc */
-+	{GPMC_A19, (SAFE_MODE)},					/* nc */
-+	{GPMC_A20, (SAFE_MODE)},					/* nc */
-+	{GPMC_A21, (SAFE_MODE)},					/* nc */
-+	{GPMC_A22, (SAFE_MODE)},					/* nc */
-+	{GPMC_A23, (SAFE_MODE)},					/* nc */
-+	{GPMC_A24, (SAFE_MODE)},					/* nc */
-+	{GPMC_A25, (SAFE_MODE)},					/* nc */
-+	{GPMC_NCS0, (IDIS | PTU | EN | M0)},				/* gpmc_nsc0 */
-+	{GPMC_NCS1, (IDIS | PTU | EN | M0)},				/* gpmc_nsc1 */
-+	{GPMC_NCS2, (SAFE_MODE)},					/* nc */
-+	{GPMC_NCS3, (SAFE_MODE)},					/* nc */
-+	{GPMC_NWP, (IEN | PTD | DIS | M0)},				/* gpmc_nwp */
-+	{GPMC_CLK, (PTU | IEN | M3)},					/* gpio_55 */
-+	{GPMC_NADV_ALE, (IDIS | PTD | DIS | M0)},			/* gpmc_ndav_ale */
-+	{GPMC_NOE, (IDIS | PTD | DIS | M0)},				/* gpmc_noe */
-+	{GPMC_NWE, (IDIS | PTD | DIS | M0)},				/* gpmc_nwe */
-+	{GPMC_NBE0_CLE, (IDIS | PTD | DIS | M0)},			/* gpmc_nbe0_cle */
-+	{GPMC_NBE1, (SAFE_MODE)},					/* nc */
-+	{GPMC_WAIT0, (IEN | PTU | EN | M0)},				/* gpmc_wait0 */
-+	{GPMC_WAIT1, (IEN | PTU | EN | M0)},				/* gpmc_wait1 */
-+	{C2C_DATA11, (SAFE_MODE)},					/* nc */
-+	{C2C_DATA12, (SAFE_MODE)},					/* nc */
-+	{C2C_DATA13, (IDIS | PTU | EN | M0)},				/* gpmc_nsc5 */
-+	{C2C_DATA14, (SAFE_MODE)},					/* nc */
-+	{C2C_DATA15, (SAFE_MODE)},					/* nc */
-+	{HDMI_HPD, (SAFE_MODE)},					/* nc */
-+	{HDMI_CEC, (SAFE_MODE)},					/* nc */
-+	{HDMI_DDC_SCL, (SAFE_MODE)},					/* nc */
-+	{HDMI_DDC_SDA, (SAFE_MODE)},					/* nc */
-+	{CSI21_DX0, (SAFE_MODE)},					/* nc */
-+	{CSI21_DY0, (SAFE_MODE)},					/* nc */
-+	{CSI21_DX1, (SAFE_MODE)},					/* nc */
-+	{CSI21_DY1, (SAFE_MODE)},					/* nc */
-+	{CSI21_DX2, (SAFE_MODE)},					/* nc */
-+	{CSI21_DY2, (SAFE_MODE)},					/* nc */
-+	{CSI21_DX3, (SAFE_MODE)},					/* nc */
-+	{CSI21_DY3, (SAFE_MODE)},					/* nc */
-+	{CSI21_DX4, (SAFE_MODE)},					/* nc */
-+	{CSI21_DY4, (SAFE_MODE)},					/* nc */
-+	{CSI22_DX0, (SAFE_MODE)},					/* nc */
-+	{CSI22_DY0, (SAFE_MODE)},					/* nc */
-+	{CSI22_DX1, (SAFE_MODE)},					/* nc */
-+	{CSI22_DY1, (SAFE_MODE)},					/* nc */
-+	{CAM_SHUTTER, (SAFE_MODE)},					/* unused */
-+	{CAM_STROBE, (SAFE_MODE)},					/* unused */
-+	{CAM_GLOBALRESET, (SAFE_MODE)},					/* unused */
-+	{USBB1_ULPITLL_CLK, (PTD | IEN | OFF_EN | OFF_PD | OFF_IN | M4)},/* usbb1_ulpiphy_clk */
-+	{USBB1_ULPITLL_STP, (OFF_EN | OFF_OUT_PTD | M4)},		/* usbb1_ulpiphy_stp */
-+	{USBB1_ULPITLL_DIR, (IEN | OFF_EN | OFF_PD | OFF_IN | M4)},	/* usbb1_ulpiphy_dir */
-+	{USBB1_ULPITLL_NXT, (IEN | OFF_EN | OFF_PD | OFF_IN | M4)},	/* usbb1_ulpiphy_nxt */
-+	{USBB1_ULPITLL_DAT0, (IEN | OFF_EN | OFF_PD | OFF_IN | M4)},	/* usbb1_ulpiphy_dat0 */
-+	{USBB1_ULPITLL_DAT1, (IEN | OFF_EN | OFF_PD | OFF_IN | M4)},	/* usbb1_ulpiphy_dat1 */
-+	{USBB1_ULPITLL_DAT2, (IEN | OFF_EN | OFF_PD | OFF_IN | M4)},	/* usbb1_ulpiphy_dat2 */
-+	{USBB1_ULPITLL_DAT3, (IEN | OFF_EN | OFF_PD | OFF_IN | M4)},	/* usbb1_ulpiphy_dat3 */
-+	{USBB1_ULPITLL_DAT4, (IEN | OFF_EN | OFF_PD | OFF_IN | M4)},	/* usbb1_ulpiphy_dat4 */
-+	{USBB1_ULPITLL_DAT5, (IEN | OFF_EN | OFF_PD | OFF_IN | M4)},	/* usbb1_ulpiphy_dat5 */
-+	{USBB1_ULPITLL_DAT6, (IEN | OFF_EN | OFF_PD | OFF_IN | M4)},	/* usbb1_ulpiphy_dat6 */
-+	{USBB1_ULPITLL_DAT7, (IEN | OFF_EN | OFF_PD | OFF_IN | M4)},	/* usbb1_ulpiphy_dat7 */
-+	{USBB1_HSIC_DATA, (SAFE_MODE)},					/* nc */
-+	{USBB1_HSIC_STROBE, (SAFE_MODE)},				/* nc */
-+	{USBC1_ICUSB_DP, (SAFE_MODE)},					/* nc */
-+	{USBC1_ICUSB_DM, (SAFE_MODE)},					/* nc */
-+	{SDMMC1_CLK, (PTU | OFF_EN | OFF_OUT_PTD | M0)},		/* sdmmc1_clk */
-+	{SDMMC1_CMD, (PTU | IEN | OFF_EN | OFF_PD | OFF_IN | M0)},	/* sdmmc1_cmd */
-+	{SDMMC1_DAT0, (PTU | IEN | OFF_EN | OFF_PD | OFF_IN | M0)},	/* sdmmc1_dat0 */
-+	{SDMMC1_DAT1, (PTU | IEN | OFF_EN | OFF_PD | OFF_IN | M0)},	/* sdmmc1_dat1 */
-+	{SDMMC1_DAT2, (PTU | IEN | OFF_EN | OFF_PD | OFF_IN | M0)},	/* sdmmc1_dat2 */
-+	{SDMMC1_DAT3, (PTU | IEN | OFF_EN | OFF_PD | OFF_IN | M0)},	/* sdmmc1_dat3 */
-+	{SDMMC1_DAT4, (SAFE_MODE)},					/* nc */
-+	{SDMMC1_DAT5, (SAFE_MODE)},					/* nc */
-+	{SDMMC1_DAT6, (SAFE_MODE)},					/* nc */
-+	{SDMMC1_DAT7, (SAFE_MODE)},					/* nc */
-+	{ABE_MCBSP2_CLKX, (SAFE_MODE)},					/* nc */
-+	{ABE_MCBSP2_DR, (SAFE_MODE)},					/* nc */
-+	{ABE_MCBSP2_DX, (SAFE_MODE)},					/* nc */
-+	{ABE_MCBSP2_FSX, (SAFE_MODE)},					/* nc */
-+	{ABE_MCBSP1_CLKX, (SAFE_MODE)},					/* unused */
-+	{ABE_MCBSP1_DR, (SAFE_MODE)},					/* unused */
-+	{ABE_MCBSP1_DX, (SAFE_MODE)},					/* unused */
-+	{ABE_MCBSP1_FSX, (SAFE_MODE)},					/* nc */
-+	{ABE_PDM_UL_DATA, (SAFE_MODE)},					/* unused */
-+	{ABE_PDM_DL_DATA, (SAFE_MODE)},					/* unused */
-+	{ABE_PDM_FRAME, (SAFE_MODE)},					/* unused */
-+	{ABE_PDM_LB_CLK, (SAFE_MODE)},					/* unused */
-+	{ABE_CLKS, (SAFE_MODE)},					/* unused */
-+	{ABE_DMIC_CLK1, (SAFE_MODE)},					/* nc */
-+	{ABE_DMIC_DIN1, (SAFE_MODE)},					/* unused */
-+	{ABE_DMIC_DIN2, (SAFE_MODE)},					/* nc */
-+	{ABE_DMIC_DIN3, (SAFE_MODE)},					/* unused */
-+	{UART2_CTS, (SAFE_MODE)},					/* nc */
-+	{UART2_RTS, (SAFE_MODE)},					/* nc */
-+	{UART2_RX, (SAFE_MODE)},					/* nc */
-+	{UART2_TX, (SAFE_MODE)},					/* nc */
-+	{HDQ_SIO, (SAFE_MODE)},						/* unused */
-+	{I2C1_SCL, (PTU | IEN | M0)},					/* i2c1_scl */
-+	{I2C1_SDA, (PTU | IEN | M0)},					/* i2c1_sda */
-+	{I2C2_SCL, (SAFE_MODE)},					/* unused */
-+	{I2C2_SDA, (SAFE_MODE)},					/* unused */
-+	{I2C3_SCL, (PTU | IEN | M0)},					/* i2c3_scl */
-+	{I2C3_SDA, (PTU | IEN | M0)},					/* i2c3_sda */
-+	{I2C4_SCL, (SAFE_MODE)},					/* nc */
-+	{I2C4_SDA, (SAFE_MODE)},					/* nc */
-+	{MCSPI1_CLK, (SAFE_MODE)},					/* unused */
-+	{MCSPI1_SOMI, (SAFE_MODE)},					/* unused */
-+	{MCSPI1_SIMO, (SAFE_MODE)},					/* unused */
-+	{MCSPI1_CS0, (SAFE_MODE)},					/* unused */
-+	{MCSPI1_CS1, (SAFE_MODE)},					/* unused */
-+	{MCSPI1_CS2, (SAFE_MODE)},					/* nc */
-+	{MCSPI1_CS3, (SAFE_MODE)},					/* nc */
-+	{UART3_CTS_RCTX, (PTU | IEN | M0)},				/* uart3_tx */
-+	{UART3_RTS_SD, (M0)},						/* uart3_rts_sd */
-+	{UART3_RX_IRRX, (IEN | M0)},					/* uart3_rx */
-+	{UART3_TX_IRTX, (M0)},						/* uart3_tx */
-+	{SDMMC5_CLK, (PTU | IEN | M3)},					/* goio_145 */
-+	{SDMMC5_CMD, (PTU | IEN | M3)},					/* goio_146 */
-+	{SDMMC5_DAT0, (SAFE_MODE)},					/* nc */
-+	{SDMMC5_DAT1, (SAFE_MODE)},					/* nc */
-+	{SDMMC5_DAT2, (SAFE_MODE)},					/* nc */
-+	{SDMMC5_DAT3, (SAFE_MODE)},					/* nc */
-+	{MCSPI4_CLK, (PTU | IEN | M3)},					/* gpio_151 */
-+	{MCSPI4_SIMO, (PTU | IEN | M3)},				/* gpio_152 */
-+	{MCSPI4_SOMI, (PTU | IEN | M3)},				/* gpio_153 */
-+	{MCSPI4_CS0, (SAFE_MODE)},					/* nc */
-+	{UART4_RX, (SAFE_MODE)},					/* nc */
-+	{UART4_TX, (SAFE_MODE)},					/* nc */
-+	{USBB2_ULPITLL_CLK, (SAFE_MODE)},				/* nc */
-+	{USBB2_ULPITLL_STP, (SAFE_MODE)},				/* unused */
-+	{USBB2_ULPITLL_DIR, (SAFE_MODE)},				/* unused */
-+	{USBB2_ULPITLL_NXT, (SAFE_MODE)},				/* unused */
-+	{USBB2_ULPITLL_DAT0, (SAFE_MODE)},				/* unused */
-+	{USBB2_ULPITLL_DAT1, (SAFE_MODE)},				/* unused */
-+	{USBB2_ULPITLL_DAT2, (SAFE_MODE)},				/* unused */
-+	{USBB2_ULPITLL_DAT3, (SAFE_MODE)},				/* unused */
-+	{USBB2_ULPITLL_DAT4, (SAFE_MODE)},				/* unused */
-+	{USBB2_ULPITLL_DAT5, (SAFE_MODE)},				/* unused */
-+	{USBB2_ULPITLL_DAT6, (SAFE_MODE)},				/* unused */
-+	{USBB2_ULPITLL_DAT7, (SAFE_MODE)},				/* unused */
-+	{USBB2_HSIC_DATA, (SAFE_MODE)},					/* unused */
-+	{USBB2_HSIC_STROBE, (SAFE_MODE)},				/* nc */
-+	{UNIPRO_TX0, (SAFE_MODE)},					/* nc */
-+	{UNIPRO_TY0, (SAFE_MODE)},					/* nc */
-+	{UNIPRO_TX1, (SAFE_MODE)},					/* nc */
-+	{UNIPRO_TY1, (SAFE_MODE)},					/* nc */
-+	{UNIPRO_TX2, (SAFE_MODE)},					/* unused */
-+	{UNIPRO_TY2, (SAFE_MODE)},					/* unused */
-+	{UNIPRO_RX0, (SAFE_MODE)},					/* unused */
-+	{UNIPRO_RY0, (SAFE_MODE)},					/* unused */
-+	{UNIPRO_RX1, (SAFE_MODE)},					/* unused */
-+	{UNIPRO_RY1, (SAFE_MODE)},					/* unused */
-+	{UNIPRO_RX2, (SAFE_MODE)},					/* unused */
-+	{UNIPRO_RY2, (SAFE_MODE)},					/* unused */
-+	{USBA0_OTG_CE, (PTD | OFF_EN | OFF_PD | OFF_OUT_PTD | M0)},	/* usba0_otg_ce */
-+	{USBA0_OTG_DP, (IEN | OFF_EN | OFF_PD | OFF_IN | M0)},		/* usba0_otg_dp */
-+	{USBA0_OTG_DM, (IEN | OFF_EN | OFF_PD | OFF_IN | M0)},		/* usba0_otg_dm */
-+	{FREF_CLK1_OUT, (SAFE_MODE)},					/* nc */
-+	{FREF_CLK2_OUT, (SAFE_MODE)},					/* nc */
-+	{SYS_NIRQ1, (PTU | IEN | M0)},					/* sys_nirq1 */
-+	{SYS_NIRQ2, (SAFE_MODE)},					/* nc */
-+	{SYS_BOOT0, (M0)},						/* sys_boot */
-+	{SYS_BOOT1, (M0)},						/* sys_boot */
-+	{SYS_BOOT2, (M0)},						/* sys_boot */
-+	{SYS_BOOT3, (M0)},						/* sys_boot */
-+	{SYS_BOOT4, (M0)},						/* sys_boot */
-+	{SYS_BOOT5, (M0)},						/* sys_boot */
-+	{DPM_EMU0, (IEN | M0)},						/* dpm_emu0 */
-+	{DPM_EMU1, (IEN | M0)},						/* dpm_emu1 */
-+	{DPM_EMU2, (SAFE_MODE)},					/* unused */
-+	{DPM_EMU3, (SAFE_MODE)},					/* unused */
-+	{DPM_EMU4, (SAFE_MODE)},					/* unused */
-+	{DPM_EMU5, (SAFE_MODE)},					/* unused */
-+	{DPM_EMU6, (SAFE_MODE)},					/* unused */
-+	{DPM_EMU7, (SAFE_MODE)},					/* unused */
-+	{DPM_EMU8, (SAFE_MODE)},					/* unused */
-+	{DPM_EMU9, (SAFE_MODE)},					/* unused */
-+	{DPM_EMU10, (SAFE_MODE)},					/* unused */
-+	{DPM_EMU11, (SAFE_MODE)},					/* unused */
-+	{DPM_EMU12, (SAFE_MODE)},					/* unused */
-+	{DPM_EMU13, (SAFE_MODE)},					/* unused */
-+	{DPM_EMU14, (SAFE_MODE)},					/* unused */
-+	{DPM_EMU15, (SAFE_MODE)},					/* unused */
-+	{DPM_EMU16, (SAFE_MODE)},					/* unused */
-+	{DPM_EMU17, (SAFE_MODE)},					/* unused */
-+	{DPM_EMU18, (SAFE_MODE)},					/* unused */
-+	{DPM_EMU19, (SAFE_MODE)},					/* unused */
-+};
-+
-+static const struct pad_conf_entry wkup_padconf_array[] = {
-+	{PAD0_SIM_IO, (SAFE_MODE)},					/* tbd */
-+	{PAD1_SIM_CLK, (SAFE_MODE)},					/* nc */
-+	{PAD0_SIM_RESET, (SAFE_MODE)},					/* nc */
-+	{PAD1_SIM_CD, (SAFE_MODE)},					/* nc */
-+	{PAD0_SIM_PWRCTRL, (SAFE_MODE)},				/* nc */
-+	{PAD1_SR_SCL, (PTU | IEN | M0)},				/* sr_scl */
-+	{PAD0_SR_SDA, (PTU | IEN | M0)},				/* sr_sda */
-+	{PAD1_FREF_XTAL_IN, (M0)},					/* # */
-+	{PAD0_FREF_SLICER_IN, (SAFE_MODE)},				/* nc */
-+	{PAD1_FREF_CLK_IOREQ, (SAFE_MODE)},				/* nc */
-+	{PAD0_FREF_CLK0_OUT, (M2)},					/* sys_drm_msecure */
-+	{PAD1_FREF_CLK3_REQ, (SAFE_MODE)},				/* nc */
-+	{PAD0_FREF_CLK3_OUT, (M0)},					/* fref_clk3_out */
-+	{PAD1_FREF_CLK4_REQ, (IEN | M3)},				/* gpio_wk7 */
-+	{PAD0_FREF_CLK4_OUT, (M0)},					/* fref_clk4_out */
-+	{PAD1_SYS_32K, (IEN | M0)},					/* sys_32k */
-+	{PAD0_SYS_NRESPWRON, (M0)},					/* sys_nrespwron */
-+	{PAD1_SYS_NRESWARM, (M0)},					/* sys_nreswarm */
-+	{PAD0_SYS_PWR_REQ, (PTU | M0)},					/* sys_pwr_req */
-+	{PAD1_SYS_PWRON_RESET, (M0)},					/* sys_pwron_reset_out */
-+	{PAD0_SYS_BOOT6, (M0)},						/* sys_boot6 */
-+	{PAD1_SYS_BOOT7, (M0)},						/* sys_boot7 */
-+};
-+
-+void set_muxconf_regs(void)
-+{
-+	omap4_do_set_mux(OMAP44XX_CONTROL_PADCONF_CORE, core_padconf_array,
-+			ARRAY_SIZE(core_padconf_array));
-+
-+	omap4_do_set_mux(OMAP44XX_CONTROL_PADCONF_WKUP, wkup_padconf_array,
-+			ARRAY_SIZE(wkup_padconf_array));
-+}
-diff --git a/arch/arm/boards/phycard-a-xl2/pca-a-xl2.c b/arch/arm/boards/phycard-a-xl2/pca-a-xl2.c
-new file mode 100644
-index 0000000..5513661
---- /dev/null
-+++ b/arch/arm/boards/phycard-a-xl2/pca-a-xl2.c
-@@ -0,0 +1,147 @@
-+/*
-+ * Copyright (C) 2011 Sascha Hauer, Pengutronix
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-+ * MA 02111-1307 USA
-+ *
++ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 + */
 +
++/**
++ * Supports:
++ * KS8851 16bit MLL chip from Micrel Inc.
++ */
 +#include <common.h>
-+#include <console.h>
-+#include <init.h>
-+#include <driver.h>
-+#include <io.h>
-+#include <ns16550.h>
-+#include <asm/armlinux.h>
-+#include <generated/mach-types.h>
-+#include <mach/silicon.h>
-+#include <mach/sdrc.h>
-+#include <mach/sys_info.h>
-+#include <mach/syslib.h>
-+#include <mach/control.h>
-+#include <linux/err.h>
-+#include <sizes.h>
-+#include <partition.h>
-+#include <nand.h>
-+#include <asm/mmu.h>
-+#include <mach/gpio.h>
-+#include <mach/gpmc.h>
-+#include <mach/gpmc_nand.h>
-+#include <mach/xload.h>
-+#include <mach/omap_hsmmc.h>
-+#include <i2c/i2c.h>
 +
-+static struct NS16550_plat serial_plat = {
-+	.clock = 48000000,      /* 48MHz (APLL96/2) */
-+	.shift = 2,
++#include <command.h>
++#include <net.h>
++#include <miidev.h>
++#include <malloc.h>
++#include <init.h>
++#include <xfuncs.h>
++#include <errno.h>
++#include <clock.h>
++#include <io.h>
++
++#define MAX_RECV_FRAMES			32
++#define MAX_BUF_SIZE			2048
++#define TX_BUF_SIZE			2000
++#define RX_BUF_SIZE			2000
++
++#define KS_CCR				0x08
++#define CCR_EEPROM			(1 << 9)
++#define CCR_SPI				(1 << 8)
++#define CCR_8BIT			(1 << 7)
++#define CCR_16BIT			(1 << 6)
++#define CCR_32BIT			(1 << 5)
++#define CCR_SHARED			(1 << 4)
++#define CCR_32PIN			(1 << 0)
++
++/* MAC address registers */
++#define KS_MARL				0x10
++#define KS_MARM				0x12
++#define KS_MARH				0x14
++
++#define KS_OBCR				0x20
++#define OBCR_ODS_16MA			(1 << 6)
++
++#define KS_EEPCR			0x22
++#define EEPCR_EESA			(1 << 4)
++#define EEPCR_EESB			(1 << 3)
++#define EEPCR_EEDO			(1 << 2)
++#define EEPCR_EESCK			(1 << 1)
++#define EEPCR_EECS			(1 << 0)
++
++#define KS_MBIR				0x24
++#define MBIR_TXMBF			(1 << 12)
++#define MBIR_TXMBFA			(1 << 11)
++#define MBIR_RXMBF			(1 << 4)
++#define MBIR_RXMBFA			(1 << 3)
++
++#define KS_GRR				0x26
++#define GRR_QMU				(1 << 1)
++#define GRR_GSR				(1 << 0)
++
++#define KS_WFCR				0x2A
++#define WFCR_MPRXE			(1 << 7)
++#define WFCR_WF3E			(1 << 3)
++#define WFCR_WF2E			(1 << 2)
++#define WFCR_WF1E			(1 << 1)
++#define WFCR_WF0E			(1 << 0)
++
++#define KS_WF0CRC0			0x30
++#define KS_WF0CRC1			0x32
++#define KS_WF0BM0			0x34
++#define KS_WF0BM1			0x36
++#define KS_WF0BM2			0x38
++#define KS_WF0BM3			0x3A
++
++#define KS_WF1CRC0			0x40
++#define KS_WF1CRC1			0x42
++#define KS_WF1BM0			0x44
++#define KS_WF1BM1			0x46
++#define KS_WF1BM2			0x48
++#define KS_WF1BM3			0x4A
++
++#define KS_WF2CRC0			0x50
++#define KS_WF2CRC1			0x52
++#define KS_WF2BM0			0x54
++#define KS_WF2BM1			0x56
++#define KS_WF2BM2			0x58
++#define KS_WF2BM3			0x5A
++
++#define KS_WF3CRC0			0x60
++#define KS_WF3CRC1			0x62
++#define KS_WF3BM0			0x64
++#define KS_WF3BM1			0x66
++#define KS_WF3BM2			0x68
++#define KS_WF3BM3			0x6A
++
++#define KS_TXCR				0x70
++#define TXCR_TCGICMP			(1 << 8)
++#define TXCR_TCGUDP			(1 << 7)
++#define TXCR_TCGTCP			(1 << 6)
++#define TXCR_TCGIP			(1 << 5)
++#define TXCR_FTXQ			(1 << 4)
++#define TXCR_TXFCE			(1 << 3)
++#define TXCR_TXPE			(1 << 2)
++#define TXCR_TXCRC			(1 << 1)
++#define TXCR_TXE			(1 << 0)
++
++#define KS_TXSR				0x72
++#define TXSR_TXLC			(1 << 13)
++#define TXSR_TXMC			(1 << 12)
++#define TXSR_TXFID_MASK			(0x3f << 0)
++#define TXSR_TXFID_SHIFT		(0)
++#define TXSR_TXFID_GET(_v)		(((_v) >> 0) & 0x3f)
++
++
++#define KS_RXCR1			0x74
++#define RXCR1_FRXQ			(1 << 15)
++#define RXCR1_RXUDPFCC			(1 << 14)
++#define RXCR1_RXTCPFCC			(1 << 13)
++#define RXCR1_RXIPFCC			(1 << 12)
++#define RXCR1_RXPAFMA			(1 << 11)
++#define RXCR1_RXFCE			(1 << 10)
++#define RXCR1_RXEFE			(1 << 9)
++#define RXCR1_RXMAFMA			(1 << 8)
++#define RXCR1_RXBE			(1 << 7)
++#define RXCR1_RXME			(1 << 6)
++#define RXCR1_RXUE			(1 << 5)
++#define RXCR1_RXAE			(1 << 4)
++#define RXCR1_RXINVF			(1 << 1)
++#define RXCR1_RXE			(1 << 0)
++#define RXCR1_FILTER_MASK		(RXCR1_RXINVF | RXCR1_RXAE | \
++					 RXCR1_RXMAFMA | RXCR1_RXPAFMA)
++
++#define KS_RXCR2			0x76
++#define RXCR2_SRDBL_MASK		(0x7 << 5)
++#define RXCR2_SRDBL_SHIFT		(5)
++#define RXCR2_SRDBL_4B			(0x0 << 5)
++#define RXCR2_SRDBL_8B			(0x1 << 5)
++#define RXCR2_SRDBL_16B			(0x2 << 5)
++#define RXCR2_SRDBL_32B			(0x3 << 5)
++/* #define RXCR2_SRDBL_FRAME		(0x4 << 5) */
++#define RXCR2_IUFFP			(1 << 4)
++#define RXCR2_RXIUFCEZ			(1 << 3)
++#define RXCR2_UDPLFE			(1 << 2)
++#define RXCR2_RXICMPFCC			(1 << 1)
++#define RXCR2_RXSAF			(1 << 0)
++
++#define KS_TXMIR			0x78
++
++#define KS_RXFHSR			0x7C
++#define RXFSHR_RXFV			(1 << 15)
++#define RXFSHR_RXICMPFCS		(1 << 13)
++#define RXFSHR_RXIPFCS			(1 << 12)
++#define RXFSHR_RXTCPFCS			(1 << 11)
++#define RXFSHR_RXUDPFCS			(1 << 10)
++#define RXFSHR_RXBF			(1 << 7)
++#define RXFSHR_RXMF			(1 << 6)
++#define RXFSHR_RXUF			(1 << 5)
++#define RXFSHR_RXMR			(1 << 4)
++#define RXFSHR_RXFT			(1 << 3)
++#define RXFSHR_RXFTL			(1 << 2)
++#define RXFSHR_RXRF			(1 << 1)
++#define RXFSHR_RXCE			(1 << 0)
++#define	RXFSHR_ERR			(RXFSHR_RXCE | RXFSHR_RXRF |\
++					RXFSHR_RXFTL | RXFSHR_RXMR |\
++					RXFSHR_RXICMPFCS | RXFSHR_RXIPFCS |\
++					RXFSHR_RXTCPFCS)
++#define KS_RXFHBCR			0x7E
++#define RXFHBCR_CNT_MASK		0x0FFF
++
++#define KS_TXQCR			0x80
++#define TXQCR_AETFE			(1 << 2)
++#define TXQCR_TXQMAM			(1 << 1)
++#define TXQCR_METFE			(1 << 0)
++
++#define KS_RXQCR			0x82
++#define RXQCR_RXDTTS			(1 << 12)
++#define RXQCR_RXDBCTS			(1 << 11)
++#define RXQCR_RXFCTS			(1 << 10)
++#define RXQCR_RXIPHTOE			(1 << 9)
++#define RXQCR_RXDTTE			(1 << 7)
++#define RXQCR_RXDBCTE			(1 << 6)
++#define RXQCR_RXFCTE			(1 << 5)
++#define RXQCR_ADRFE			(1 << 4)
++#define RXQCR_SDA			(1 << 3)
++#define RXQCR_RRXEF			(1 << 0)
++#define RXQCR_CMD_CNTL			(RXQCR_RXFCTE|RXQCR_ADRFE)
++
++#define KS_TXFDPR			0x84
++#define TXFDPR_TXFPAI			(1 << 14)
++#define TXFDPR_TXFP_MASK		(0x7ff << 0)
++#define TXFDPR_TXFP_SHIFT		(0)
++
++#define KS_RXFDPR			0x86
++#define RXFDPR_RXFPAI			(1 << 14)
++
++#define KS_RXDTTR			0x8C
++#define KS_RXDBCTR			0x8E
++
++#define KS_IER				0x90
++#define KS_ISR				0x92
++#define IRQ_LCI				(1 << 15)
++#define IRQ_TXI				(1 << 14)
++#define IRQ_RXI				(1 << 13)
++#define IRQ_RXOI			(1 << 11)
++#define IRQ_TXPSI			(1 << 9)
++#define IRQ_RXPSI			(1 << 8)
++#define IRQ_TXSAI			(1 << 6)
++#define IRQ_RXWFDI			(1 << 5)
++#define IRQ_RXMPDI			(1 << 4)
++#define IRQ_LDI				(1 << 3)
++#define IRQ_EDI				(1 << 2)
++#define IRQ_SPIBEI			(1 << 1)
++#define IRQ_DEDI			(1 << 0)
++
++#define KS_RXFCTR			0x9C
++#define RXFCTR_THRESHOLD_MASK		0x00FF
++
++#define KS_RXFC				0x9D
++#define RXFCTR_RXFC_MASK		(0xff << 8)
++#define RXFCTR_RXFC_SHIFT		(8)
++#define RXFCTR_RXFC_GET(_v)		(((_v) >> 8) & 0xff)
++#define RXFCTR_RXFCT_MASK		(0xff << 0)
++#define RXFCTR_RXFCT_SHIFT		(0)
++
++#define KS_TXNTFSR			0x9E
++
++#define KS_MAHTR0			0xA0
++#define KS_MAHTR1			0xA2
++#define KS_MAHTR2			0xA4
++#define KS_MAHTR3			0xA6
++
++#define KS_FCLWR			0xB0
++#define KS_FCHWR			0xB2
++#define KS_FCOWR			0xB4
++
++#define KS_CIDER			0xC0
++#define CIDER_ID			0x8870
++#define CIDER_REV_MASK			(0x7 << 1)
++#define CIDER_REV_SHIFT			(1)
++#define CIDER_REV_GET(_v)		(((_v) >> 1) & 0x7)
++
++#define KS_CGCR				0xC6
++#define KS_IACR				0xC8
++#define IACR_RDEN			(1 << 12)
++#define IACR_TSEL_MASK			(0x3 << 10)
++#define IACR_TSEL_SHIFT			(10)
++#define IACR_TSEL_MIB			(0x3 << 10)
++#define IACR_ADDR_MASK			(0x1f << 0)
++#define IACR_ADDR_SHIFT			(0)
++
++#define KS_IADLR			0xD0
++#define KS_IADHR			0xD2
++
++#define KS_PMECR			0xD4
++#define PMECR_PME_DELAY			(1 << 14)
++#define PMECR_PME_POL			(1 << 12)
++#define PMECR_WOL_WAKEUP		(1 << 11)
++#define PMECR_WOL_MAGICPKT		(1 << 10)
++#define PMECR_WOL_LINKUP		(1 << 9)
++#define PMECR_WOL_ENERGY		(1 << 8)
++#define PMECR_AUTO_WAKE_EN		(1 << 7)
++#define PMECR_WAKEUP_NORMAL		(1 << 6)
++#define PMECR_WKEVT_MASK		(0xf << 2)
++#define PMECR_WKEVT_SHIFT		(2)
++#define PMECR_WKEVT_GET(_v)		(((_v) >> 2) & 0xf)
++#define PMECR_WKEVT_ENERGY		(0x1 << 2)
++#define PMECR_WKEVT_LINK		(0x2 << 2)
++#define PMECR_WKEVT_MAGICPKT		(0x4 << 2)
++#define PMECR_WKEVT_FRAME		(0x8 << 2)
++#define PMECR_PM_MASK			(0x3 << 0)
++#define PMECR_PM_SHIFT			(0)
++#define PMECR_PM_NORMAL			(0x0 << 0)
++#define PMECR_PM_ENERGY			(0x1 << 0)
++#define PMECR_PM_SOFTDOWN		(0x2 << 0)
++#define PMECR_PM_POWERSAVE		(0x3 << 0)
++
++/* Standard MII PHY data */
++#define KS_P1MBCR			0xE4
++#define P1MBCR_FORCE_FDX		(1 << 8)
++
++#define KS_P1MBSR			0xE6
++#define P1MBSR_AN_COMPLETE		(1 << 5)
++#define P1MBSR_AN_CAPABLE		(1 << 3)
++#define P1MBSR_LINK_UP			(1 << 2)
++
++#define KS_PHY1ILR			0xE8
++#define KS_PHY1IHR			0xEA
++#define KS_P1ANAR			0xEC
++#define KS_P1ANLPR			0xEE
++
++#define KS_P1SCLMD			0xF4
++#define P1SCLMD_LEDOFF			(1 << 15)
++#define P1SCLMD_TXIDS			(1 << 14)
++#define P1SCLMD_RESTARTAN		(1 << 13)
++#define P1SCLMD_DISAUTOMDIX		(1 << 10)
++#define P1SCLMD_FORCEMDIX		(1 << 9)
++#define P1SCLMD_AUTONEGEN		(1 << 7)
++#define P1SCLMD_FORCE100		(1 << 6)
++#define P1SCLMD_FORCEFDX		(1 << 5)
++#define P1SCLMD_ADV_FLOW		(1 << 4)
++#define P1SCLMD_ADV_100BT_FDX		(1 << 3)
++#define P1SCLMD_ADV_100BT_HDX		(1 << 2)
++#define P1SCLMD_ADV_10BT_FDX		(1 << 1)
++#define P1SCLMD_ADV_10BT_HDX		(1 << 0)
++
++#define KS_P1CR				0xF6
++#define P1CR_HP_MDIX			(1 << 15)
++#define P1CR_REV_POL			(1 << 13)
++#define P1CR_OP_100M			(1 << 10)
++#define P1CR_OP_FDX			(1 << 9)
++#define P1CR_OP_MDI			(1 << 7)
++#define P1CR_AN_DONE			(1 << 6)
++#define P1CR_LINK_GOOD			(1 << 5)
++#define P1CR_PNTR_FLOW			(1 << 4)
++#define P1CR_PNTR_100BT_FDX		(1 << 3)
++#define P1CR_PNTR_100BT_HDX		(1 << 2)
++#define P1CR_PNTR_10BT_FDX		(1 << 1)
++#define P1CR_PNTR_10BT_HDX		(1 << 0)
++
++/* TX Frame control */
++
++#define TXFR_TXIC			(1 << 15)
++#define TXFR_TXFID_MASK			(0x3f << 0)
++#define TXFR_TXFID_SHIFT		(0)
++
++#define KS_P1SR				0xF8
++#define P1SR_HP_MDIX			(1 << 15)
++#define P1SR_REV_POL			(1 << 13)
++#define P1SR_OP_100M			(1 << 10)
++#define P1SR_OP_FDX			(1 << 9)
++#define P1SR_OP_MDI			(1 << 7)
++#define P1SR_AN_DONE			(1 << 6)
++#define P1SR_LINK_GOOD			(1 << 5)
++#define P1SR_PNTR_FLOW			(1 << 4)
++#define P1SR_PNTR_100BT_FDX		(1 << 3)
++#define P1SR_PNTR_100BT_HDX		(1 << 2)
++#define P1SR_PNTR_10BT_FDX		(1 << 1)
++#define P1SR_PNTR_10BT_HDX		(1 << 0)
++
++#define	ENUM_BUS_NONE			0
++#define	ENUM_BUS_8BIT			1
++#define	ENUM_BUS_16BIT			2
++#define	ENUM_BUS_32BIT			3
++
++#define MAX_MCAST_LST			32
++#define HW_MCAST_SIZE			8
++
++/**
++ * struct ks_net - KS8851 driver private data
++ * @hw_addr	: start address of data register.
++ * @hw_addr_cmd	: start address of command register.
++ * @pdev	: Pointer to platform device.
++ * @bus_width	: i/o bus width.
++ * @extra_byte	: number of extra byte prepended rx pkt.
++ *
++ */
++
++struct ks_net {
++	struct eth_device	edev;
++	struct mii_device	miidev;
++	void __iomem		*hw_addr;
++	void __iomem		*hw_addr_cmd;
++	struct platform_device	*pdev;
++	int			bus_width;
 +};
 +
-+static int pcaaxl2_console_init(void)
++#define BE3             0x8000      /* Byte Enable 3 */
++#define BE2             0x4000      /* Byte Enable 2 */
++#define BE1             0x2000      /* Byte Enable 1 */
++#define BE0             0x1000      /* Byte Enable 0 */
++
++/**
++ * ks_rdreg16 - read 16 bit register from device
++ * @ks	  : The chip information
++ * @offset: The register address
++ *
++ * Read a 16bit register from the chip, returning the result
++ */
++
++static u16 ks_rdreg16(struct ks_net *ks, int offset)
 +{
-+	/* Register the serial port */
-+	add_ns16550_device(-1, OMAP44XX_UART3_BASE, 1024,
-+		IORESOURCE_MEM_8BIT, &serial_plat);
++	u16 value;
++	u16 cmd_reg_cache = (u16)offset | ((BE1 | BE0) << (offset & 0x02));
++
++	writew(cmd_reg_cache, ks->hw_addr_cmd);
++	value = readw(ks->hw_addr);
++
++	return value;
++}
++
++/**
++ * ks_wrreg16 - write 16bit register value to chip
++ * @ks: The chip information
++ * @offset: The register address
++ * @value: The value to write
++ *
++ */
++
++static void ks_wrreg16(struct ks_net *ks, int offset, u16 value)
++{
++	u16 cmd_reg_cache = (u16)offset | ((BE1 | BE0) << (offset & 0x02));
++	writew(cmd_reg_cache, ks->hw_addr_cmd);
++	writew(value, ks->hw_addr);
++}
++
++/**
++ * ks_inblk - read a block of data from QMU.
++ * @ks: The chip state
++ * @wptr: buffer address to save data
++ * @len: length in byte to read
++ *
++ */
++static inline void ks_inblk(struct ks_net *ks, u16 *wptr, u32 len)
++{
++	len >>= 1;
++	while (len--)
++		*wptr++ = (u16)readw(ks->hw_addr);
++}
++
++/**
++ * ks_outblk - write data to QMU.
++ * @ks: The chip information
++ * @wptr: buffer address
++ * @len: length in byte to write
++ *
++ */
++static inline void ks_outblk(struct ks_net *ks, u16 *wptr, u32 len)
++{
++	len >>= 1;
++	while (len--)
++		writew(*wptr++, ks->hw_addr);
++}
++
++void ks_enable_qmu(struct ks_net *ks)
++{
++	u16 w;
++
++	w = ks_rdreg16(ks, KS_TXCR);
++	/* Enables QMU Transmit (TXCR). */
++	ks_wrreg16(ks, KS_TXCR, w | TXCR_TXE);
++
++	/*
++	 * RX Frame Count Threshold Enable and Auto-Dequeue RXQ Frame
++	 * Enable
++	 */
++
++	w = ks_rdreg16(ks, KS_RXQCR);
++	ks_wrreg16(ks, KS_RXQCR, w | RXQCR_RXFCTE);
++
++	/* Enables QMU Receive (RXCR1). */
++	w = ks_rdreg16(ks, KS_RXCR1);
++	ks_wrreg16(ks, KS_RXCR1, w | RXCR1_RXE);
++}  /* ks_enable_qmu */
++
++static void ks_disable_qmu(struct ks_net *ks)
++{
++	u16	w;
++
++	w = ks_rdreg16(ks, KS_TXCR);
++
++	/* Disables QMU Transmit (TXCR). */
++	w  &= ~TXCR_TXE;
++	ks_wrreg16(ks, KS_TXCR, w);
++
++	/* Disables QMU Receive (RXCR1). */
++	w = ks_rdreg16(ks, KS_RXCR1);
++	w &= ~RXCR1_RXE ;
++	ks_wrreg16(ks, KS_RXCR1, w);
++
++}  /* ks_disable_qmu */
++
++/* MII interface controls */
++
++/**
++ * ks_phy_reg - convert MII register into a KS8851 register
++ * @reg: MII register number.
++ *
++ * Return the KS8851 register number for the corresponding MII PHY register
++ * if possible. Return zero if the MII register has no direct mapping to the
++ * KS8851 register set.
++ */
++static int ks_phy_reg(int reg)
++{
++	int retval;
++
++	switch (reg) {
++	case MII_BMCR:
++		retval = KS_P1MBCR;
++		break;
++	case MII_BMSR:
++		retval = KS_P1MBSR;
++		break;
++	case MII_PHYSID1:
++		retval = KS_PHY1ILR;
++		break;
++	case MII_PHYSID2:
++		retval = KS_PHY1IHR;
++		break;
++	case MII_ADVERTISE:
++		retval = KS_P1ANAR;
++		break;
++	case MII_LPA:
++		retval = KS_P1ANLPR;
++		break;
++	default:
++		retval = 0x0;
++	}
++
++	debug("%s lookup 0x%.2x -> 0x%.2x\n", __func__, reg, retval);
++
++	return retval;
++}
++
++/**
++ * ks_phy_read - MII interface PHY register read.
++ *
++ * This call reads data from the PHY register specified in @reg. Since the
++ * device does not support all the MII registers, the non-existent values
++ * are always returned as zero.
++ *
++ * We return zero for unsupported registers as the MII code does not check
++ * the value returned for any error status, and simply returns it to the
++ * caller. The mii-tool that the driver was tested with takes any -ve error
++ * as real PHY capabilities, thus displaying incorrect data to the user.
++ */
++static int ks_phy_read(struct mii_device *mdev, int addr, int reg)
++{
++	struct eth_device *edev = mdev->edev;
++	struct ks_net *priv = (struct ks_net *)edev->priv;
++	int ksreg;
++	int result;
++
++	ksreg = ks_phy_reg(reg);
++	if (!ksreg)
++		return 0x0;	/* no error return allowed, so use zero */
++
++	result = ks_rdreg16(priv, ksreg);
++
++	return result;
++}
++
++static int ks_phy_write(struct mii_device *mdev, int addr, int reg, int val)
++{
++	struct eth_device *edev = mdev->edev;
++	struct ks_net *priv = (struct ks_net *)edev->priv;
++	int ksreg;
++
++	ksreg = ks_phy_reg(reg);
++	if (ksreg)
++		ks_wrreg16(priv, ksreg, val);
 +
 +	return 0;
 +}
-+console_initcall(pcaaxl2_console_init);
 +
-+static int pcaaxl2_mem_init(void)
++static int ks8851_get_ethaddr(struct eth_device *edev, unsigned char *adr)
 +{
-+	arm_add_mem_device("ram0", 0x80000000, SZ_512M);
++	struct ks_net *priv = (struct ks_net *)edev->priv;
 +
-+	add_mem_device("sram0", 0x40300000, 48 * 1024,
-+				   IORESOURCE_MEM_WRITEABLE);
++	((u16 *) adr)[0] = be16_to_cpu(ks_rdreg16(priv, KS_MARH));
++	((u16 *) adr)[1] = be16_to_cpu(ks_rdreg16(priv, KS_MARM));
++	((u16 *) adr)[2] = be16_to_cpu(ks_rdreg16(priv, KS_MARL));
++
 +	return 0;
 +}
-+mem_initcall(pcaaxl2_mem_init);
 +
-+static struct gpmc_config net_cfg = {
-+	.cfg = {
-+		0x00001000, /* CONF1 */
-+		0x00080800, /* CONF2 */
-+		0x00000000, /* CONF3 */
-+		0x08000800, /* CONF4 */
-+		0x000a0a0a, /* CONF5 */
-+		0x000003c2, /* CONF6 */
-+	},
-+	.base = 0x2C000000,
-+	.size = GPMC_SIZE_16M,
-+};
-+
-+static void pcaaxl2_network_init(void)
++static int ks8851_set_ethaddr(struct eth_device *edev, unsigned char *adr)
 +{
-+	gpmc_cs_config(5, &net_cfg);
++	struct ks_net *priv = (struct ks_net *)edev->priv;
 +
-+	add_ks8851_device(-1, net_cfg.base, net_cfg.base + 2,
-+				IORESOURCE_MEM_16BIT, NULL);
++	ks_wrreg16(priv, KS_MARH, cpu_to_be16(((u16 *) adr)[0]));
++	ks_wrreg16(priv, KS_MARM, cpu_to_be16(((u16 *) adr)[1]));
++	ks_wrreg16(priv, KS_MARL, cpu_to_be16(((u16 *) adr)[2]));
++
++	return 0;
 +}
 +
-+static struct i2c_board_info i2c_devices[] = {
-+	{
-+		I2C_BOARD_INFO("twlcore", 0x48),
-+	},
-+};
-+
-+
-+static struct omap_hsmmc_platform_data mmc_device = {
-+	.f_max = 26000000,
-+};
-+
-+#define OMAP4_CONTROL_PBIASLITE			0x4A100600
-+#define OMAP4_MMC1_PBIASLITE_VMODE		(1<<21)
-+#define OMAP4_MMC1_PBIASLITE_PWRDNZ		(1<<22)
-+#define OMAP4_MMC1_PWRDNZ			(1<<26)
-+
-+static int pcaaxl2_devices_init(void)
++static void ks_soft_reset(struct ks_net *ks, unsigned op)
 +{
-+	u32 value;
++	/* Disable interrupt first */
++	ks_wrreg16(ks, KS_IER, 0x0000);
++	ks_wrreg16(ks, KS_GRR, op);
++	mdelay(10);	/* wait a short time to effect reset */
++	ks_wrreg16(ks, KS_GRR, 0);
++	mdelay(1);	/* wait for condition to clear */
++}
 +
-+	i2c_register_board_info(0, i2c_devices, ARRAY_SIZE(i2c_devices));
-+	add_generic_device("i2c-omap", -1, NULL, 0x48070000, 0x1000,
-+				IORESOURCE_MEM, NULL);
++/**
++ * ks_read_selftest - read the selftest memory info.
++ * @ks: The device state
++ *
++ * Read and check the TX/RX memory selftest information.
++ */
++static int ks_read_selftest(struct ks_net *ks)
++{
++	unsigned both_done = MBIR_TXMBF | MBIR_RXMBF;
++	int ret = 0;
++	unsigned rd;
 +
-+	value = readl(OMAP4_CONTROL_PBIASLITE);
-+	value &= ~OMAP4_MMC1_PBIASLITE_VMODE;
-+	value |= (OMAP4_MMC1_PBIASLITE_PWRDNZ |	OMAP4_MMC1_PWRDNZ);
-+	writel(value, OMAP4_CONTROL_PBIASLITE);
++	rd = ks_rdreg16(ks, KS_MBIR);
 +
-+	add_generic_device("omap-hsmmc", -1, NULL, 0x4809C100, SZ_4K,
-+			   IORESOURCE_MEM, &mmc_device);
++	if ((rd & both_done) != both_done) {
++		printf("Memory selftest not finished\n");
++		return 0;
++	}
 +
-+	gpmc_generic_init(0x10);
++	if (rd & MBIR_TXMBFA) {
++		printf("TX memory selftest fails\n");
++		ret |= 1;
++	}
 +
-+	pcaaxl2_network_init();
++	if (rd & MBIR_RXMBFA) {
++		printf("RX memory selftest fails\n");
++		ret |= 2;
++	}
 +
-+	gpmc_generic_nand_devices_init(0, 16, OMAP_ECC_BCH8_CODE_HW);
++	debug("the selftest passes\n");
++	return ret;
++}
 +
-+#ifdef CONFIG_PARTITION
-+	devfs_add_partition("nand0", 0x00000, SZ_128K,
-+			PARTITION_FIXED, "xload_raw");
-+	dev_add_bb_dev("xload_raw", "xload");
-+	devfs_add_partition("nand0", SZ_128K, SZ_256K,
-+			PARTITION_FIXED, "self_raw");
-+	dev_add_bb_dev("self_raw", "self0");
-+	devfs_add_partition("nand0", SZ_128K + SZ_256K, SZ_128K,
-+			PARTITION_FIXED, "env_raw");
-+	dev_add_bb_dev("env_raw", "env0");
++static void ks_setup(struct ks_net *ks)
++{
++	u16	w;
++
++	/**
++	 * Configure QMU Transmit
++	 */
++
++	/* Setup Transmit Frame Data Pointer Auto-Increment (TXFDPR) */
++	ks_wrreg16(ks, KS_TXFDPR, TXFDPR_TXFPAI);
++
++	/* Setup Receive Frame Data Pointer Auto-Increment */
++	ks_wrreg16(ks, KS_RXFDPR, RXFDPR_RXFPAI);
++
++	/* Setup Receive Frame Threshold - 1 frame (RXFCTFC) */
++	ks_wrreg16(ks, KS_RXFCTR, 1 & RXFCTR_THRESHOLD_MASK);
++
++	/* Setup RxQ Command Control (RXQCR) */
++	ks_wrreg16(ks, KS_RXQCR, RXQCR_CMD_CNTL);
++
++	/**
++	 * set the force mode to half duplex, default is full duplex
++	 *  because if the auto-negotiation fails, most switch uses
++	 *  half-duplex.
++	 */
++
++	w = ks_rdreg16(ks, KS_P1MBCR);
++	w &= ~P1MBCR_FORCE_FDX;
++	ks_wrreg16(ks, KS_P1MBCR, w);
++
++	w = TXCR_TXFCE | TXCR_TXPE | TXCR_TXCRC | TXCR_TCGIP;
++	ks_wrreg16(ks, KS_TXCR, w);
++
++	w = RXCR1_RXFCE | RXCR1_RXBE | RXCR1_RXUE | RXCR1_RXME | RXCR1_RXIPFCC |
++		RXCR1_RXPAFMA;
++	ks_wrreg16(ks, KS_RXCR1, w);
++}  /*ks_setup */
++
++static int ks8851_rx_frame(struct ks_net *ks)
++{
++	u16 *rdptr = (u16 *) NetRxPackets[0];
++	u16 RxStatus, RxLen = 0;
++	u16 tmp_rxqcr;
++	int i;
++
++	debug("receiving packet\n");
++
++	RxStatus = ks_rdreg16(ks, KS_RXFHSR);
++	RxLen = ks_rdreg16(ks, KS_RXFHBCR) & RXFHBCR_CNT_MASK;
++	debug("%s RxLen %d (%d) RxStatus 0x%04x",
++		__func__, RxLen, ALIGN(RxLen, 4), RxStatus);
++
++	if (RxLen > PKTSIZE)
++		printf("\nrx length too big\n");
++
++	/* reset Frame pointer */
++	ks_wrreg16(ks, KS_RXFDPR, RXFDPR_RXFPAI);
++
++	tmp_rxqcr = ks_rdreg16(ks, KS_RXQCR);
++	ks_wrreg16(ks, KS_RXQCR, tmp_rxqcr | RXQCR_SDA);
++	/* read 2 bytes for dummy, 2 for status, 2 for len*/
++	ks_inblk(ks, rdptr, 2 + 2 + 2);
++	ks_inblk(ks, rdptr, ALIGN(RxLen, 4));
++	ks_wrreg16(ks, KS_RXQCR, tmp_rxqcr);
++
++	for (i = 0; i < RxLen; i++) {
++		if (i % 16 == 0)
++			debug("\nReceive: %02x: ", i);
++		debug("%02x ", ((unsigned char *) rdptr)[i]);
++	} debug("\n");
++
++	if (RxStatus & RXFSHR_RXFV) {
++		/* Pass to upper layer */
++		debug("passing packet to upper layer\n\n");
++		net_receive(NetRxPackets[0], RxLen);
++		return RxLen;
++	} else if (RxStatus & RXFSHR_ERR) {
++		printf("RxStatus error 0x%04x\n", RxStatus & RXFSHR_ERR);
++		if (RxStatus & RXFSHR_RXICMPFCS)
++			debug("ICMP frame checksum field is incorrect\n");
++		if (RxStatus & RXFSHR_RXIPFCS)
++			debug("IP frame checksum field is incorrect\n");
++		if (RxStatus & RXFSHR_RXTCPFCS)
++			debug("TCP frame checksum field is incorrect\n");
++		if (RxStatus & RXFSHR_RXCE)
++			debug("CRC Error\n");
++		if (RxStatus & RXFSHR_RXRF)
++			debug("frame collision\n");
++		if (RxStatus & RXFSHR_RXFTL)
++			debug("frame too long\n");
++		if (RxStatus & RXFSHR_RXMR)
++			debug("MII symbol error\n");
++	} else
++		printf("other RxStatus error 0x%04x\n", RxStatus);
++	return 0;
++}
++
++static int ks8851_eth_rx(struct eth_device *edev)
++{
++	struct ks_net *ks = (struct ks_net *)edev->priv;
++	u16 frame_cnt;
++
++	if (!(ks_rdreg16(ks, KS_ISR) & IRQ_RXI))
++		return 0;
++	ks_wrreg16(ks, KS_ISR, IRQ_RXI);
++
++	frame_cnt = RXFCTR_RXFC_GET(ks_rdreg16(ks, KS_RXFCTR));
++
++	while (frame_cnt--) {
++		debug("%s frame %d\n", __func__, frame_cnt);
++		ks8851_rx_frame(ks);
++	}
++
++	return 0;
++}
++
++static int ks8851_eth_send(struct eth_device *edev,
++		void *packet, int length)
++{
++	struct ks_net *ks = (struct ks_net *)edev->priv;
++	uint64_t tmo;
++	u16 tmp_rxqcr;
++	int i;
++
++	debug("eth_send: length: %d (%d)", length, ALIGN(length, 4));
++
++	for (i = 0; i < length; i++) {
++		if (i % 16 == 0)
++			debug("\nSend: %02x: ", i);
++		debug("%02x ", ((unsigned char *) packet)[i]);
++	} debug("\n");
++
++	/* Enable TXQ write access */
++	tmp_rxqcr = ks_rdreg16(ks, KS_RXQCR);
++	ks_wrreg16(ks, KS_RXQCR, tmp_rxqcr | RXQCR_SDA);
++
++	/* write status/lenth info */
++	writew(0, ks->hw_addr);
++	writew(cpu_to_le16(length), ks->hw_addr);
++
++	/* write pkt data */
++	ks_outblk(ks, (u16 *) packet, ALIGN(length, 4));
++	ks_wrreg16(ks, KS_RXQCR, tmp_rxqcr);
++
++	/* (move the pkt from TX buffer into TXQ) */
++	ks_wrreg16(ks, KS_TXQCR, TXQCR_METFE);
++	/* wait for transmit done */
++	tmo = get_time_ns();
++	while (ks_rdreg16(ks, KS_TXQCR) & TXQCR_METFE) {
++		if (is_timeout(tmo, 5 * SECOND)) {
++			printf("transmission timeout\n");
++			break;
++		}
++	}
++
++	debug("transmit done\n\n");
++	return 0;
++}
++
++static int ks8851_eth_open(struct eth_device *edev)
++{
++	struct ks_net *priv = (struct ks_net *)edev->priv;
++
++	ks_enable_qmu(priv);
++
++	miidev_wait_aneg(&priv->miidev);
++	miidev_print_status(&priv->miidev);
++
++	debug("eth_open\n");
++
++	return 0;
++}
++
++static int ks8851_init_dev(struct eth_device *edev)
++{
++	struct ks_net *priv = (struct ks_net *)edev->priv;
++
++	miidev_restart_aneg(&priv->miidev);
++	return 0;
++}
++
++static void ks8851_eth_halt(struct eth_device *edev)
++{
++	struct ks_net *priv = (struct ks_net *)edev->priv;
++
++	ks_disable_qmu(priv);
++
++	debug("eth_halt\n");
++}
++
++static int ks8851_probe(struct device_d *dev)
++{
++	struct eth_device *edev;
++	struct ks_net *ks;
++	u16 id;
++
++	ks = xzalloc(sizeof(struct ks_net));
++	edev = &ks->edev;
++	dev->type_data = edev;
++	edev->priv = ks;
++
++	if (dev->num_resources < 2) {
++		printf("ks8851: need 2 resources addr and addr_cmd");
++		return -ENODEV;
++	}
++
++	ks->hw_addr = dev_request_mem_region(dev, 0);
++	ks->hw_addr_cmd = dev_request_mem_region(dev, 1);
++	ks->bus_width = dev->resource[0].flags & IORESOURCE_MEM_TYPE_MASK;
++
++	edev->init = ks8851_init_dev;
++	edev->open = ks8851_eth_open;
++	edev->send = ks8851_eth_send;
++	edev->recv = ks8851_eth_rx;
++	edev->halt = ks8851_eth_halt;
++	edev->set_ethaddr = ks8851_set_ethaddr;
++	edev->get_ethaddr = ks8851_get_ethaddr;
++	edev->parent = dev;
++
++	/* setup mii state */
++	ks->miidev.read = ks_phy_read;
++	ks->miidev.write = ks_phy_write;
++	ks->miidev.address = 1;
++	ks->miidev.flags = 0;
++	ks->miidev.edev = edev;
++	ks->miidev.parent = dev;
++
++	/* simple check for a valid chip being connected to the bus */
++
++	id = ks_rdreg16(ks, KS_CIDER);
++
++	if ((id & ~CIDER_REV_MASK) != CIDER_ID) {
++		printf("failed to read device ID\n");
++		return -ENODEV;
++	}
++	debug("Found chip, family: 0x%x, id: 0x%x, rev: 0x%x\n",
++	     (id >> 8) & 0xff, (id >> 4) & 0xf, (id >> 1) & 0x7);
++
++
++	if (ks_read_selftest(ks)) {
++		printf("failed to read device ID\n");
++		return -ENODEV;
++	}
++
++	ks_soft_reset(ks, GRR_GSR);
++	ks_setup(ks);
++
++	mii_register(&ks->miidev);
++	eth_register(edev);
++	debug("%s MARL 0x%04x MARM 0x%04x MARH 0x%04x\n", __func__,
++		ks_rdreg16(ks, KS_MARL), ks_rdreg16(ks, KS_MARM),
++		ks_rdreg16(ks, KS_MARH));
++
++	return 0;
++}
++
++static struct driver_d ks8851_driver = {
++	.name  = "ks8851_mll",
++	.probe = ks8851_probe,
++};
++
++static int ks8851_init(void)
++{
++	register_driver(&ks8851_driver);
++	return 0;
++}
++
++device_initcall(ks8851_init);
++
+diff --git a/include/driver.h b/include/driver.h
+index f1964b7..3762027 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -247,6 +247,17 @@ static inline struct device_d *add_usb_ehci_device(int id, resource_size_t hccr,
+ }
+ #endif
+ 
++#ifdef CONFIG_DRIVER_NET_KS8851_MLL
++struct device_d *add_ks8851_device(int id, resource_size_t addr,
++		resource_size_t addr_cmd, int flags, void *pdata);
++#else
++static inline struct device_d *add_ks8851_device(int id, resource_size_t addr,
++		resource_size_t addr_cmd, int flags, void *pdata)
++{
++	return NULL;
++}
 +#endif
 +
-+	armlinux_set_bootparams((void *)0x80000100);
-+	armlinux_set_architecture(MACH_TYPE_PCAAXL2);
-+
-+	return 0;
-+}
-+device_initcall(pcaaxl2_devices_init);
-diff --git a/arch/arm/configs/phycard_a_xl2_defconfig b/arch/arm/configs/phycard_a_xl2_defconfig
-new file mode 100644
-index 0000000..62ea5e9
---- /dev/null
-+++ b/arch/arm/configs/phycard_a_xl2_defconfig
-@@ -0,0 +1,56 @@
-+CONFIG_ARCH_OMAP=y
-+CONFIG_ARCH_OMAP4=y
-+CONFIG_MACH_PCAAXL2=y
-+CONFIG_AEABI=y
-+CONFIG_ARM_UNWIND=y
-+CONFIG_MMU=y
-+CONFIG_TEXT_BASE=0x8f000000
-+CONFIG_MALLOC_SIZE=0x2000000
-+CONFIG_KALLSYMS=y
-+CONFIG_PROMPT="barebox> "
-+CONFIG_LONGHELP=y
-+CONFIG_GLOB=y
-+CONFIG_HUSH_FANCY_PROMPT=y
-+CONFIG_HUSH_GETOPT=y
-+CONFIG_CMDLINE_EDITING=y
-+CONFIG_AUTO_COMPLETE=y
-+# CONFIG_TIMESTAMP is not set
-+CONFIG_PARTITION=y
-+CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
-+CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/phycard-a-xl2/env/"
-+CONFIG_CMD_EDIT=y
-+CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_SAVEENV=y
-+CONFIG_CMD_LOADENV=y
-+CONFIG_CMD_EXPORT=y
-+CONFIG_CMD_PRINTENV=y
-+CONFIG_CMD_READLINE=y
-+CONFIG_CMD_ECHO_E=y
-+CONFIG_CMD_LOADB=y
-+CONFIG_CMD_FLASH=y
-+# CONFIG_CMD_BOOTM is not set
-+CONFIG_CMD_RESET=y
-+CONFIG_CMD_GO=y
-+CONFIG_CMD_TIMEOUT=y
-+CONFIG_CMD_PARTITION=y
-+CONFIG_CMD_GPIO=y
-+CONFIG_CMD_UNLZO=y
-+CONFIG_NET=y
-+CONFIG_NET_DHCP=y
-+CONFIG_NET_NFS=y
-+CONFIG_NET_PING=y
-+CONFIG_NET_TFTP=y
-+CONFIG_NET_TFTP_PUSH=y
-+CONFIG_DRIVER_SERIAL_NS16550=y
-+CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
-+CONFIG_DRIVER_NET_KS8851_MLL=y
-+# CONFIG_SPI is not set
-+CONFIG_MTD=y
-+CONFIG_NAND=y
-+CONFIG_NAND_OMAP_GPMC=y
-+CONFIG_UBI=y
-+CONFIG_MCI=y
-+CONFIG_MCI_OMAP_HSMMC=y
-+CONFIG_FS_FAT=y
-+CONFIG_FS_FAT_WRITE=y
-+CONFIG_FS_FAT_LFN=y
-diff --git a/arch/arm/configs/phycard_a_xl2_xload_defconfig b/arch/arm/configs/phycard_a_xl2_xload_defconfig
-new file mode 100644
-index 0000000..adee364
---- /dev/null
-+++ b/arch/arm/configs/phycard_a_xl2_xload_defconfig
-@@ -0,0 +1,40 @@
-+CONFIG_ARCH_OMAP=y
-+CONFIG_ARCH_OMAP4=y
-+CONFIG_OMAP_BUILD_IFT=y
-+CONFIG_MACH_PCAAXL2=y
-+CONFIG_AEABI=y
-+# CONFIG_CMD_ARM_CPUINFO is not set
-+# CONFIG_ARM_EXCEPTIONS is not set
-+CONFIG_MMU=y
-+CONFIG_TEXT_BASE=0x40300000
-+CONFIG_MEMORY_LAYOUT_FIXED=y
-+CONFIG_STACK_BASE=0x8f000000
-+CONFIG_MALLOC_BASE=0x84000000
-+CONFIG_MALLOC_SIZE=0x2000000
-+CONFIG_MALLOC_DUMMY=y
-+CONFIG_PROMPT="barebox> "
-+CONFIG_SHELL_NONE=y
-+# CONFIG_ERRNO_MESSAGES is not set
-+# CONFIG_TIMESTAMP is not set
-+# CONFIG_CONSOLE_FULL is not set
-+# CONFIG_DEFAULT_ENVIRONMENT is not set
-+CONFIG_DRIVER_SERIAL_NS16550=y
-+CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
-+# CONFIG_SPI is not set
-+CONFIG_MTD=y
-+# CONFIG_MTD_WRITE is not set
-+# CONFIG_MTD_OOB_DEVICE is not set
-+CONFIG_NAND=y
-+# CONFIG_NAND_ECC_SOFT is not set
-+# CONFIG_NAND_ECC_HW_SYNDROME is not set
-+# CONFIG_NAND_ECC_HW_NONE is not set
-+# CONFIG_NAND_INFO is not set
-+# CONFIG_NAND_BBT is not set
-+CONFIG_NAND_OMAP_GPMC=y
-+CONFIG_MCI=y
-+CONFIG_MCI_STARTUP=y
-+# CONFIG_MCI_WRITE is not set
-+CONFIG_MCI_OMAP_HSMMC=y
-+# CONFIG_FS_RAMFS is not set
-+# CONFIG_FS_DEVFS is not set
-+CONFIG_FS_FAT=y
-diff --git a/arch/arm/mach-omap/Kconfig b/arch/arm/mach-omap/Kconfig
-index f3db8f6..386c484 100644
---- a/arch/arm/mach-omap/Kconfig
-+++ b/arch/arm/mach-omap/Kconfig
-@@ -103,6 +103,8 @@ config BOARDINFO
- 	default "Texas Instrument's Panda" if MACH_PANDA
- 	default "Phytec phyCORE pcm049" if MACH_PCM049
- 	default "Phytec phyCARD-A-L1" if MACH_PCAAL1
-+	default "Phytec phyCARD-A-XL2" if MACH_PCAAXL2
-+
- choice
- 	prompt "Select OMAP board"
- 
-@@ -153,6 +155,14 @@ config MACH_PCAAL1
- 	  help
- 	  Say Y here if you are using a phyCARD-A-L1 PCA-A-L1
- 
-+config MACH_PCAAXL2
-+	bool "Phytec phyCARD XL2"
-+	select HAVE_NOSHELL
-+	select MACH_HAS_LOWLEVEL_INIT
-+	depends on ARCH_OMAP4
-+	help
-+	  Say Y here if you are using a phyCARD-A-XL1 PCA-A-XL1
-+
- endchoice
- 
- if MACH_OMAP3EVM
+ static inline struct device_d *add_generic_usb_ehci_device(int id,
+ 		resource_size_t base, void *pdata)
+ {
 -- 
 1.7.0.4
 
