@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtprelay02.ispgateway.de ([80.67.18.14])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1S5bdm-00044f-8g
- for barebox@lists.infradead.org; Thu, 08 Mar 2012 11:36:15 +0000
-Message-ID: <4F5899EF.8010801@ronetix.at>
-Date: Thu, 08 Mar 2012 13:37:19 +0200
-From: RONETIX - Asen Dimov <dimov@ronetix.at>
+Received: from mail-ee0-f49.google.com ([74.125.83.49])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1S5cNs-0000Nr-Pc
+ for barebox@lists.infradead.org; Thu, 08 Mar 2012 12:23:53 +0000
+Received: by eekb45 with SMTP id b45so156306eek.36
+ for <barebox@lists.infradead.org>; Thu, 08 Mar 2012 04:23:50 -0800 (PST)
 MIME-Version: 1.0
-References: <1330618889-11482-1-git-send-email-dimov@ronetix.at>
- <1330707323-8021-1-git-send-email-dimov@ronetix.at>
- <20120302171851.GD12248@game.jcrosoft.org>
-In-Reply-To: <20120302171851.GD12248@game.jcrosoft.org>
+Date: Thu, 8 Mar 2012 14:23:50 +0200
+Message-ID: <CAACwST+JNsH0Yic-SbuA+6sYCWq-cE=M_nEy+ybgJebKZ4hY1Q@mail.gmail.com>
+From: George Stefan <stefan.george87@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,71 +17,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Type: multipart/mixed; boundary="===============4093734961764052616=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 1/4] pm9g45: boot from NAND
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: __bss_stop question
+To: barebox@lists.infradead.org
 
-Hi Jean-Christophe,
+--===============4093734961764052616==
+Content-Type: multipart/alternative; boundary=0015174beea43cf15e04baba5929
 
-On 03/02/2012 07:18 PM, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 18:55 Fri 02 Mar     , Asen Chavdarov Dimov wrote:
->> - change the kernel and rootfs locations
->> - correct the NAND mtd partitions
->> - fix the DDR RAM location(so BareBox load address)
->> - expect the root file system type to be UBIFS
->>
->> Signed-off-by: Asen Chavdarov Dimov<dimov@ronetix.at>
->> ---
->> since v1:
->> 	this patch I gorgot to send, so it pops-up now
->> ---
->>   arch/arm/boards/pm9g45/env/config |    8 +-
->>   arch/arm/configs/pm9g45_defconfig |  339 +++++++++++++++++++++++++++++++++---
-> please use savedefconfig to generate the defconfig
-done.
->>   2 files changed, 314 insertions(+), 33 deletions(-)
->>
->> diff --git a/arch/arm/boards/pm9g45/env/config b/arch/arm/boards/pm9g45/env/config
->> index 3dea724..1858292 100644
->> --- a/arch/arm/boards/pm9g45/env/config
->> +++ b/arch/arm/boards/pm9g45/env/config
->> @@ -11,9 +11,9 @@ ip=dhcp
->>   #eth0.serverip=a.b.c.d
->>
->>   # can be either 'nfs', 'tftp' or 'nand'
->> -kernel_loc=tftp
->> +kernel_loc=nand
->>   # can be either 'net', 'nand' or 'initrd'
->> -rootfs_loc=net
->> +rootfs_loc=nand
->>
->>   # can be either 'jffs2' or 'ubifs'
->>   rootfs_type=ubifs
->> @@ -25,8 +25,8 @@ kernelimage=uImage
->>   #kernelimage=Image.lzo
->>
->>   nand_device=atmel_nand
->> -nand_parts="256k(barebox)ro,64k(bareboxenv),1536k(kernel),-(root)"
->> -rootfs_mtdblock_nand=3
->> +nand_parts="128k(bootstrap)ro,256k(barebox)ro,1664k(bareboxenv),3M(kernel.bb),-(root)"
-> use kerenel not kernel.bb
-In the "defaultenv/bin/boot"  it is mentioned "/dev/nand0.kernel.bb" and 
-many boards are using
-".bb" suffix.
-> why env the 1664k?
-To align the kernel to start at 2MiB offset.
-> Best Regards,
-> J.
->
+--0015174beea43cf15e04baba5929
+Content-Type: text/plain; charset=ISO-8859-1
+
+Hello all,
+Is __bss_stop the end of barebox.bin?
+Meaning that, if i have i file which i dd it with offset=768
+could i refer to it with __bss_stop.
+Should i consider also the bareboxenv, meaning that
+the end of barebox.bin is __bss_stop + sizeof(bareboxenv)?
+PS: board is imx53 loco
 Regards,
-Asen
+George!
 
+--0015174beea43cf15e04baba5929
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+Hello all,<div>Is __bss_stop the end of barebox.bin?=A0</div><div>Meaning t=
+hat, if i have i file which i dd it with offset=3D768</div><div>could i ref=
+er to it with __bss_stop.=A0</div><div>Should i consider also the bareboxen=
+v, meaning that</div>
+<div>the end of barebox.bin is __bss_stop + sizeof(bareboxenv)?</div><div>P=
+S: board is imx53 loco</div><div>Regards,</div><div>George!</div>
+
+--0015174beea43cf15e04baba5929--
+
+
+--===============4093734961764052616==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============4093734961764052616==--
