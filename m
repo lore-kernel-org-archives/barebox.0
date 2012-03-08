@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ey0-f177.google.com ([209.85.215.177])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1S5dfO-000269-Ud
- for barebox@lists.infradead.org; Thu, 08 Mar 2012 13:46:03 +0000
-Received: by eaak13 with SMTP id k13so179491eaa.36
- for <barebox@lists.infradead.org>; Thu, 08 Mar 2012 05:46:00 -0800 (PST)
-MIME-Version: 1.0
-In-Reply-To: <20120308131134.GO12248@game.jcrosoft.org>
-References: <CAACwST+JNsH0Yic-SbuA+6sYCWq-cE=M_nEy+ybgJebKZ4hY1Q@mail.gmail.com>
- <20120308131134.GO12248@game.jcrosoft.org>
-Date: Thu, 8 Mar 2012 15:45:59 +0200
-Message-ID: <CAACwSTJQu-mrt+x9=tgipTr+XTPQT+xGqV2zw+NBCfoYn3H=RQ@mail.gmail.com>
-From: George Stefan <stefan.george87@gmail.com>
+Received: from 3.mo2.mail-out.ovh.net ([46.105.58.226]
+ helo=mo2.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1S5e6j-0003Ar-CK
+ for barebox@lists.infradead.org; Thu, 08 Mar 2012 14:14:19 +0000
+Received: from mail621.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 93E63DC824F
+ for <barebox@lists.infradead.org>; Thu,  8 Mar 2012 15:17:22 +0100 (CET)
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Thu,  8 Mar 2012 15:03:26 +0100
+Message-Id: <1331215406-10548-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,100 +18,166 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0938653143870286389=="
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: __bss_stop question
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/1] net: dhcp: allow to set transmitted vendor id
+To: barebox@lists.infradead.org
+Cc: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
 
---===============0938653143870286389==
-Content-Type: multipart/alternative; boundary=0015174be40e0b3a5d04babb7f83
+From: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
 
---0015174be40e0b3a5d04babb7f83
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
+For net boot setups it is useful to submit boot params like server or
+bootfile over dhcp. To distinguish barebox from e.g. pxe machines,
+a custom vendor id can be sent in dhcp discover/request messages.
 
-=CEn data de 8 martie 2012, 15:11, Jean-Christophe PLAGNIOL-VILLARD <
-plagnioj@jcrosoft.com> a scris:
+E.g. the ISC dhcp server can be configured with
 
-> On 14:23 Thu 08 Mar     , George Stefan wrote:
-> >    Hello all,
-> >    Is __bss_stop the end of barebox.bin?
-> >    Meaning that, if i have i file which i dd it with offset=3D768
-> >    could i refer to it with __bss_stop.
-> >    Should i consider also the bareboxenv, meaning that
-> >    the end of barebox.bin is __bss_stop + sizeof(bareboxenv)?
-> >    PS: board is imx53 loco
-> the env is where you want
->
-> and barebox_image_size will give you the size of barebox
->
-> and the end of barebox is __bss_start
->
-> Best Regards,
-> J.
->
+| if substring(option vendor-class-identifier,0,8) = "barebox:" {
+|       next-server             192.168.3.24;
+|       server-name             "192.168.3.24";
+|       option tftp-server-name "192.168.3.24";
+|       option root-path = concat("/srv/sysroots/by-mac/",
+|          binary-to-ascii (16, 8, "-", substring (hardware, 1, 6)));
+| }
 
-Thanks for the reply.
-So, if i do something like
-dd if=3Dbarebox.bin of=3D/dev/mmcblk0 bs=3D512 && sync\
-and
-dd if=3DuImage of=3D/dev/mmcblk0 bs=3D512 seek=3D768 && sync
-how could i access the contents of uimage within barebox?
-Since " the end of barebox is __bss_start" should it be __bss_start?
-Regards,
-George!
+to sent boot params which are valid for barebox hosts only.
 
---0015174be40e0b3a5d04babb7f83
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
+Jean-Christophe PLAGNIOL-VILLARD:
+ - update the use dhcp command option
+ - support to set the vendor via env dhcp_vendor_id
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ defaultenv/config |    1 +
+ net/dhcp.c        |   42 +++++++++++++++++++++++++++++++++++++-----
+ 2 files changed, 38 insertions(+), 5 deletions(-)
 
-<br><br><div class=3D"gmail_quote">=CEn data de 8 martie 2012, 15:11, Jean-=
-Christophe PLAGNIOL-VILLARD <span dir=3D"ltr">&lt;<a href=3D"mailto:plagnio=
-j@jcrosoft.com" target=3D"_blank">plagnioj@jcrosoft.com</a>&gt;</span> a sc=
-ris:<br>
-<blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1p=
-x #ccc solid;padding-left:1ex">
-<div><div></div><div>On 14:23 Thu 08 Mar =A0 =A0 , George Stefan wrote:<br>
-&gt; =A0 =A0Hello all,<br>
-&gt; =A0 =A0Is __bss_stop the end of barebox.bin?<br>
-&gt; =A0 =A0Meaning that, if i have i file which i dd it with offset=3D768<=
-br>
-&gt; =A0 =A0could i refer to it with __bss_stop.<br>
-&gt; =A0 =A0Should i consider also the bareboxenv, meaning that<br>
-&gt; =A0 =A0the end of barebox.bin is __bss_stop + sizeof(bareboxenv)?<br>
-&gt; =A0 =A0PS: board is imx53 loco<br>
-</div></div>the env is where you want<br>
-<br>
-and barebox_image_size will give you the size of barebox<br>
-<br>
-and the end of barebox is __bss_start<br>
-<br>
-Best Regards,<br>
-<font color=3D"#888888">J.<br>
-</font></blockquote></div><br><div>Thanks for the reply.</div><div>So, if i=
- do something like=A0</div><div>dd if=3Dbarebox.bin of=3D/dev/mmcblk0 bs=3D=
-512 &amp;&amp; sync\</div><div>and=A0</div><div>dd if=3DuImage of=3D/dev/mm=
-cblk0 bs=3D512 seek=3D768 &amp;&amp; sync</div>
-<div>how could i access the contents of uimage within barebox?</div><div>Si=
-nce &quot;=A0the end of barebox is __bss_start&quot; should it be __bss_sta=
-rt?</div><div>Regards,</div><div>George!</div><meta http-equiv=3D"content-t=
-ype" content=3D"text/html; charset=3Dutf-8">
-<div><br></div>
+diff --git a/defaultenv/config b/defaultenv/config
+index 9866273..63fc059 100644
+--- a/defaultenv/config
++++ b/defaultenv/config
+@@ -9,6 +9,7 @@ machine=FIXME
+ # use 'dhcp' to do dhcp in barebox and in kernel
+ # use 'none' if you want to skip kernel ip autoconfiguration
+ ip=dhcp
++dhcp_vendor_id=barebox
+ 
+ # or set your networking parameters here
+ #eth0.ipaddr=a.b.c.d
+diff --git a/net/dhcp.c b/net/dhcp.c
+index d86f9a9..53eed6c 100644
+--- a/net/dhcp.c
++++ b/net/dhcp.c
+@@ -17,6 +17,7 @@
+ #include <errno.h>
+ #include <magicvar.h>
+ #include <linux/err.h>
++#include <getopt.h>
+ 
+ #define OPT_SIZE 312	/* Minimum DHCP Options size per RFC2131 - results in 576 byte pkt */
+ 
+@@ -127,10 +128,12 @@ static void bootp_copy_net_params(struct bootp *bp)
+ /*
+  * Initialize BOOTP extension fields in the request.
+  */
+-static int dhcp_extended (u8 *e, int message_type, IPaddr_t ServerID, IPaddr_t RequestedIP)
++static int dhcp_extended (u8 *e, int message_type, IPaddr_t ServerID,
++			  IPaddr_t RequestedIP, char *vendor_id)
+ {
+ 	u8 *start = e;
+ 	u8 *cnt;
++	int vendor_id_len = vendor_id ? strlen(vendor_id) : 0;
+ 
+ 	*e++ = 99;		/* RFC1048 Magic Cookie */
+ 	*e++ = 130;
+@@ -168,6 +171,13 @@ static int dhcp_extended (u8 *e, int message_type, IPaddr_t ServerID, IPaddr_t R
+ 		*e++ = tmp & 0xff;
+ 	}
+ 
++	if (vendor_id_len > 0) {
++		*e++ = 60;
++		*e++ = vendor_id_len;
++		memcpy(e, vendor_id, vendor_id_len);
++		 e  += vendor_id_len;
++	}
++
+ 	*e++ = 55;		/* Parameter Request List */
+ 	 cnt = e++;		/* Pointer to count of requested items */
+ 	*cnt = 0;
+@@ -223,7 +233,8 @@ static int bootp_request(void)
+ 		safe_strncpy (bp->bp_file, bfile, sizeof(bp->bp_file));
+ 
+ 	/* Request additional information from the BOOTP/DHCP server */
+-	ext_len = dhcp_extended((u8 *)bp->bp_vend, DHCP_DISCOVER, 0, 0);
++	ext_len = dhcp_extended((u8 *)bp->bp_vend, DHCP_DISCOVER, 0, 0,
++				dhcp_con->priv);
+ 
+ 	Bootp_id = (uint32_t)get_time_ns();
+ 	net_copy_uint32(&bp->bp_id, &Bootp_id);
+@@ -373,7 +384,8 @@ static void dhcp_send_request_packet(struct bootp *bp_offer)
+ 	 * Copy options from OFFER packet if present
+ 	 */
+ 	net_copy_ip(&OfferedIP, &bp->bp_yiaddr);
+-	extlen = dhcp_extended((u8 *)bp->bp_vend, DHCP_REQUEST, net_dhcp_server_ip, OfferedIP);
++	extlen = dhcp_extended((u8 *)bp->bp_vend, DHCP_REQUEST, net_dhcp_server_ip,
++				OfferedIP, dhcp_con->priv);
+ 
+ 	debug("Transmitting DHCPREQUEST packet\n");
+ 	net_udp_send(dhcp_con, sizeof(*bp) + extlen);
+@@ -438,9 +450,18 @@ static void dhcp_handler(void *ctx, char *packet, unsigned int len)
+ 
+ static int do_dhcp(int argc, char *argv[])
+ {
+-	int ret;
++	int ret, opt;
++	char *vendor_id = (char*)getenv("dhcp_vendor_id");
++
++	while((opt = getopt(argc, argv, "v:")) > 0) {
++		switch(opt) {
++		case 'v':
++			vendor_id = optarg;
++			break;
++		}
++	}
+ 
+-	dhcp_con = net_udp_new(0xffffffff, PORT_BOOTPS, dhcp_handler, NULL);
++	dhcp_con = net_udp_new(0xffffffff, PORT_BOOTPS, dhcp_handler, vendor_id);
+ 	if (IS_ERR(dhcp_con)) {
+ 		ret = PTR_ERR(dhcp_con);
+ 		goto out;
+@@ -478,9 +499,19 @@ out:
+ 	return ret ? 1 : 0;
+ }
+ 
++BAREBOX_CMD_HELP_START(dhcp)
++BAREBOX_CMD_HELP_USAGE("dhcp [OPTIONS]\n")
++BAREBOX_CMD_HELP_SHORT("Invoke dhcp client to obtain ip/boot params.\n")
++BAREBOX_CMD_HELP_OPT  ("-v <vendor_id>",
++"DHCP Vendor ID (code 60) submitted in DHCP requests. It can\n"
++"be used in the DHCP server's configuration to select options\n"
++"(e.g. bootfile or server) which are valid for barebox clients only.\n");
++BAREBOX_CMD_HELP_END
++
+ BAREBOX_CMD_START(dhcp)
+ 	.cmd		= do_dhcp,
+ 	.usage		= "invoke dhcp client to obtain ip/boot params",
++	BAREBOX_CMD_HELP(cmd_dhcp_help)
+ BAREBOX_CMD_END
+ 
+ BAREBOX_MAGICVAR(bootfile, "bootfile returned from DHCP request");
+@@ -488,3 +519,4 @@ BAREBOX_MAGICVAR(nameserver, "Nameserver returned from DHCP request");
+ BAREBOX_MAGICVAR(hostname, "hostname returned from DHCP request");
+ BAREBOX_MAGICVAR(domainname, "domainname returned from DHCP request");
+ BAREBOX_MAGICVAR(rootpath, "rootpath returned from DHCP request");
++BAREBOX_MAGICVAR(dhcp_vendor_id, "vendor id to send to the DHCP server");
+-- 
+1.7.7
 
---0015174be40e0b3a5d04babb7f83--
-
-
---===============0938653143870286389==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============0938653143870286389==--
