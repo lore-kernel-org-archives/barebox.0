@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-bk0-f49.google.com ([209.85.214.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1S5jMS-000332-9U
- for barebox@lists.infradead.org; Thu, 08 Mar 2012 19:50:58 +0000
-Received: by bkcjk13 with SMTP id jk13so900511bkc.36
- for <barebox@lists.infradead.org>; Thu, 08 Mar 2012 11:50:51 -0800 (PST)
+ id 1S5jMS-000318-Nt
+ for barebox@lists.infradead.org; Thu, 08 Mar 2012 19:50:59 +0000
+Received: by mail-bk0-f49.google.com with SMTP id jk13so900337bkc.36
+ for <barebox@lists.infradead.org>; Thu, 08 Mar 2012 11:50:52 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Thu,  8 Mar 2012 23:50:31 +0400
-Message-Id: <1331236232-32735-6-git-send-email-antonynpavlov@gmail.com>
+Date: Thu,  8 Mar 2012 23:50:32 +0400
+Message-Id: <1331236232-32735-7-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1331236232-32735-1-git-send-email-antonynpavlov@gmail.com>
 References: <1331236232-32735-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,58 +23,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC V2 5/6] net: add Realtek 8139 Ethernet controller support
+Subject: [RFC V2 6/6] net: add DEC 21143 (tulip) Ethernet controller support
 To: barebox@lists.infradead.org
 
-This driver is based on Linux 2.6.39 8139too driver.
+This driver is based on the tulip driver from Linux, and on
+the dc driver from *BSD.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
  drivers/net/Kconfig     |    8 +
+ drivers/pci/21143.c     |  769 +++++++++++++++++++++++++++++++++++++++++++++++
  drivers/pci/Makefile    |    1 +
- drivers/pci/rtl8139.c   |  654 +++++++++++++++++++++++++++++++++++++++++++++++
- include/linux/pci_ids.h |    5 +
- 4 files changed, 668 insertions(+), 0 deletions(-)
- create mode 100644 drivers/pci/rtl8139.c
+ include/linux/pci_ids.h |    3 +
+ 4 files changed, 781 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/pci/21143.c
 
 diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
-index b236d17..ff18b5e 100644
+index ff18b5e..7b87501 100644
 --- a/drivers/net/Kconfig
 +++ b/drivers/net/Kconfig
-@@ -100,6 +100,14 @@ config TSE_USE_DEDICATED_DESC_MEM
- 	  reserved with a malloc but directly mapped to the memory
- 	  address (defined in config.h)
+@@ -108,6 +108,14 @@ config 8139
+ 	  This is a driver for the Fast Ethernet PCI network cards based on
+ 	  the RTL 8139 chips.
  
-+config 8139
++config 21143
 +	depends on PCI
-+	bool "RealTek RTL-8139 PCI Fast Ethernet Adapter support"
++	bool "DECchip Tulip (dc21143) PCI Fast Ethernet Adapter support"
 +	select MIIDEV
 +	help
 +	  This is a driver for the Fast Ethernet PCI network cards based on
-+	  the RTL 8139 chips.
++	  the DEC 21143 chips.
 +
  source "drivers/net/usb/Kconfig"
  
  endmenu
-diff --git a/drivers/pci/Makefile b/drivers/pci/Makefile
-index c7d43c3..6523385 100644
---- a/drivers/pci/Makefile
-+++ b/drivers/pci/Makefile
-@@ -2,6 +2,7 @@
- # Makefile for the PCI bus specific drivers.
- #
- obj-y		+= pci.o bus.o
-+obj-$(CONFIG_8139)	+= rtl8139.o
- 
- ccflags-$(CONFIG_PCI_DEBUG) := -DDEBUG
- 
-diff --git a/drivers/pci/rtl8139.c b/drivers/pci/rtl8139.c
+diff --git a/drivers/pci/21143.c b/drivers/pci/21143.c
 new file mode 100644
-index 0000000..57575bb
+index 0000000..bd2268a
 --- /dev/null
-+++ b/drivers/pci/rtl8139.c
-@@ -0,0 +1,654 @@
++++ b/drivers/pci/21143.c
+@@ -0,0 +1,769 @@
++/*
++ * DEC/Intel 21143 (tulip) ethernet driver
++ *
++ * Copyright (C) 2011 Antony Pavlov <antonynpavlov@gmail.com>
++ *
++ * This file is part of barebox.
++ * See file CREDITS for list of people who contributed to this project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ */
++
 +#include <common.h>
 +
 +#include <command.h>
@@ -89,325 +99,169 @@ index 0000000..57575bb
 +
 +#include <linux/pci.h>
 +
-+#undef RTL8139_DEBUG
-+#define RTL8139_DEBUG
++#undef DEC21143_DEBUG
++#define DEC21143_DEBUG
 +
-+/*
-+ * Receive ring size
-+ * Warning: 64K ring has hardware issues and may lock up.
-+ */
-+#define RX_BUF_IDX	0	/* 8K ring */
-+#define RX_BUF_LEN	(8192 << RX_BUF_IDX)
-+#define RX_BUF_PAD	16
-+#define RX_BUF_WRAP_PAD 2048 /* spare padding to handle lack of packet wrap */
++#define NUM_RX_DESC 1
++#define NUM_TX_DESC 1
++#define RX_BUFF_SZ  1600
 +
-+#if RX_BUF_LEN == 65536
-+#define RX_BUF_TOT_LEN	RX_BUF_LEN
-+#else
-+#define RX_BUF_TOT_LEN	(RX_BUF_LEN + RX_BUF_PAD + RX_BUF_WRAP_PAD)
-+#endif
++struct tx_desc {
++	u32 status;
++	u32 length;
++	u32 buffer1;
++	u32 buffer2;
++};
 +
-+/* Number of Tx descriptor registers. */
-+#define NUM_TX_DESC	4
++struct rx_desc {
++	u32 status;
++	u32 length;
++	u32 buffer1;
++	u32 buffer2;
++};
 +
-+/* max supported ethernet frame size -- must be at least (dev->mtu+14+4).*/
-+#define MAX_ETH_FRAME_SIZE	1536
++/* Descriptor bits. */
++#define TULIP_RDES0_OWN   (1 << 31) /* Own Bit: indicates that the descriptor is owned by the 21143 */
++#define RD_RER		0x02000000	/* Receive End Of Ring */
++#define RD_LS		0x00000100	/* Last Descriptor */
++#define RD_ES		0x00008000	/* Error Summary */
 +
-+/* Size of the Tx bounce buffers -- must be at least (dev->mtu+14+4). */
-+#define TX_BUF_SIZE	MAX_ETH_FRAME_SIZE
-+#define TX_BUF_TOT_LEN	(TX_BUF_SIZE * NUM_TX_DESC)
++#define TULIP_TDES0_OWN   (1 << 31) /* Own Bit: indicates that the descriptor is owned by the 21143 */
++#define TULIP_TDES1_LS    (1 << 30) /* Last Segment */
++#define TULIP_TDES1_FS    (1 << 29) /* First Segment */
++#define TULIP_TDES1_SET   (1 << 27) /* Setup Packet */
++#define TD_TER		0x02000000	/* Transmit End Of Ring */
++#define TD_ES		0x00008000	/* Error Summary */
 +
-+/* PCI Tuning Parameters
-+   Threshold is bytes transferred to chip before transmission starts. */
-+#define TX_FIFO_THRESH 256	/* In bytes, rounded down to 32 byte units. */
-+
-+/* The following settings are log_2(bytes)-4:  0 == 16 bytes .. 6==1024, 7==end of packet. */
-+#define RX_FIFO_THRESH	7	/* Rx buffer level before first PCI xfer.  */
-+#define RX_DMA_BURST	7	/* Maximum PCI burst, '6' is 1024 */
-+#define TX_DMA_BURST	6	/* Maximum PCI burst, '6' is 1024 */
-+#define TX_RETRY	8	/* 0-15.  retries = 16 + (TX_RETRY * 16) */
-+
-+struct rtl8139_priv {
++struct dec21143_priv {
 +	void __iomem		*base;
 +	struct pci_dev		*pci_dev;
-+	unsigned char		*rx_ring;
-+	unsigned int		cur_rx; /* RX buf index of next pkt */
-+	dma_addr_t		rx_ring_dma;
-+
-+	u32			rx_config;
-+	unsigned int		tx_flag;
-+	unsigned long		cur_tx;
-+	unsigned long		dirty_tx;
-+	unsigned char		*tx_buf[NUM_TX_DESC];   /* Tx bounce buffers */
-+	unsigned char		*tx_bufs;       /* Tx bounce buffer region. */
-+	dma_addr_t		tx_bufs_dma;
 +
 +	struct mii_device	miidev;
++
++	struct rx_desc		*rx_ring;
++	struct tx_desc		*tx_ring;
++
++	int			tx_new;
++	int			rx_new;
 +};
 +
-+#define ETH_ZLEN        60              /* Min. octets in frame sans FCS */
++/* FIXME: write 0 to CSR7 */
 +
-+/* Registers */
-+#define MAC0		0x00
-+#define MAR0		0x08
-+#define TxStatus0	0x10
++#define TULIP_CSR0	0x00 /* Setting Register */
++ #define TULIP_CSR0_SWR		0x01 /* Software Reset */
++ #define TULIP_CSR0_TAP_MASK	(0x03 << 17)
 +
-+enum TxStatusBits {
-+	TxHostOwns	= 0x2000,
-+	TxUnderrun	= 0x4000,
-+	TxStatOK	= 0x8000,
-+	TxOutOfWindow	= 0x20000000,
-+	TxAborted	= 0x40000000,
-+	TxCarrierLost	= 0x80000000,
-+};
++#define TULIP_CSR1	0x08 /* Transmit Poll Demand Register */
 +
-+#define TxAddr0		0x20
-+#define RxBuf		0x30
-+#define ChipCmd		0x37
-+#define  CmdReset	0x10
-+#define  CmdRxEnb	0x08
-+#define  CmdTxEnb	0x04
-+#define  RxBufEmpty	0x01
-+#define RxBufPtr	0x38
-+#define RxBufAddr	0x3A
-+#define IntrMask	0x3C
-+#define IntrStatus	0x3E
-+#define  PCIErr		0x8000
-+#define  PCSTimeout	0x4000
-+#define  RxFIFOOver	0x0040
-+#define  RxUnderrun	0x0020
-+#define  RxOverflow	0x0010
-+#define  TxErr		0x0008
-+#define  TxOK		0x0004
-+#define  RxErr		0x0002
-+#define  RxOK		0x0001
-+#define    RxAckBits	(RxFIFOOver | RxOverflow | RxOK)
++#define TULIP_CSR2	0x10 /* Receive Poll Demand Register */
++#define POLL_DEMAND	1
 +
-+#define TxConfig	0x40
-+/* Bits in TxConfig. */
-+enum tx_config_bits {
-+	/* Interframe Gap Time. Only TxIFG96 doesn't violate IEEE 802.3 */
-+	TxIFGShift	= 24,
-+	TxIFG84		= (0 << TxIFGShift), /* 8.4us / 840ns (10 / 100Mbps) */
-+	TxIFG88		= (1 << TxIFGShift), /* 8.8us / 880ns (10 / 100Mbps) */
-+	TxIFG92		= (2 << TxIFGShift), /* 9.2us / 920ns (10 / 100Mbps) */
-+	TxIFG96		= (3 << TxIFGShift), /* 9.6us / 960ns (10 / 100Mbps) */
++#define TULIP_CSR3	0x18 /* Start of Receive List */
 +
-+	TxLoopBack	= (1 << 18) | (1 << 17), /* enable loopback test mode */
-+	TxCRC		= (1 << 16),	/* DISABLE Tx pkt CRC append */
-+	TxClearAbt	= (1 << 0),	/* Clear abort (WO) */
-+	TxDMAShift	= 8, /* DMA burst value (0-7) is shifted X many bits */
-+	TxRetryShift	= 4, /* TXRR value (0-15) is shifted X many bits */
++#define TULIP_CSR4	0x20 /* Start of Transmit List */
 +
-+	TxVersionMask	= 0x7C800000, /* mask out version bits 30-26, 23 */
-+};
++#define TULIP_CSR5	0x28 /* Status Register */
++ #define TULIP_CSR5_RI	(1 << 6) /* Receive Interrupt */
++ #define TULIP_CSR5_TI	1 /* Transmit Interrupt */
++ #define TULIP_CSR5_TS_MASK	(0x07 << 20)
++ #define TULIP_CSR5_RS_MASK	(0x07 << 17)
 +
-+#define RxConfig	0x44
-+	/* rx fifo threshold */
-+#define  RxCfgFIFOShift	13
-+#define	 RxCfgFIFONone	(7 << RxCfgFIFOShift)
-+	/* Max DMA burst */
-+#define	 RxCfgDMAShift	8
-+#define	 RxCfgDMAUnlimited (7 << RxCfgDMAShift)
-+	/* rx ring buffer length */
-+#define	 RxCfgRcv8K	0
-+#define	 RxCfgRcv16K	(1 << 11)
-+#define	 RxCfgRcv32K	(1 << 12)
-+#define	 RxCfgRcv64K	((1 << 11) | (1 << 12))
-+	/* Disable packet wrap at end of Rx buffer. (not possible with 64k) */
-+#define	 RxNoWrap	(1 << 7)
-+#define	 AcceptErr		0x20
-+#define	 AcceptRunt		0x10
-+#define	 AcceptBroadcast	0x08
-+#define	 AcceptMulticast	0x04
-+#define	 AcceptMyPhys		0x02
-+#define	 AcceptAllPhys		0x01
++#define TULIP_CSR6	0x30 /* Operation Mode Register */
++ #define TULIP_CSR6_TXON	0x2000
++ #define TULIP_CSR6_RXON	0x0002
 +
-+#define RxMissed	0x4C
-+#define Cfg9346		0x50
-+#define  Cfg9346_Lock	0x00
-+#define  Cfg9346_Unlock	0xC0
-+#define BasicModeCtrl	0x62
-+#define BasicModeStatus	0x64
-+#define NWayAdvert	0x66
-+#define NWayLPAR	0x68
-+#define NWayExpansion	0x6a
++#define TULIP_CSR7	0x38 /* Interrupt Enable Register */
 +
-+static const char mii_2_8139_map[8] = {
-+	BasicModeCtrl,
-+	BasicModeStatus,
-+	0,
-+	0,
-+	NWayAdvert,
-+	NWayLPAR,
-+	NWayExpansion,
-+	0
-+};
++#define TULIP_CSR8	0x40 /* Unused */
 +
-+/* write MMIO register */
-+#define RTL_W8(priv, reg, val)	writeb(val, ((char *)(priv->base) + reg))
-+#define RTL_W16(priv, reg, val)	writew(val, ((char *)(priv->base) + reg))
-+#define RTL_W32(priv, reg, val)	writel(val, ((char *)(priv->base) + reg))
++#define TULIP_CSR9	0x48 /* Boot ROM, Serial ROM, and MII Management Register */
++#define TULIP_MDIO_DATA0 0x00000
++#define TULIP_MDIO_DATA1 0x20000
++#define MDIO_ENB		0x00000		/* Ignore the 0x02000 databook setting. */
++#define MDIO_ENB_IN		0x40000
++#define MDIO_DATA_READ	0x80000
 +
-+/* read MMIO register */
-+#define RTL_R8(priv, reg)	readb(((char *)(priv->base) + reg))
-+#define RTL_R16(priv, reg)	readw(((char *)(priv->base) + reg))
-+#define RTL_R32(priv, reg)	readl(((char *)(priv->base) + reg))
++ #define TULIP_CSR9_MDI         (1 << 19) /* MDIO Data In */
++ #define TULIP_CSR9_MDOM        (1 << 18) /* MDIO Operation Mode */
++ #define TULIP_CSR9_MDO         (1 << 17) /* MDIO Data Out */
++ #define TULIP_CSR9_MDC         (1 << 16) /* MDIO Clock */
++ #define TULIP_CSR9_RD          (1 << 14)
++ #define TULIP_CSR9_WR          (1 << 13)
++ #define TULIP_CSR9_SR          (1 << 11) /* Serial ROM Select */
++ #define TULIP_CSR9_SRDO        (1 << 3) /* Serial ROM Data Out */
++ #define TULIP_CSR9_SRDI        (1 << 2) /* Serial ROM Data In */
++ #define TULIP_CSR9_SRCK        (1 << 1) /* Serial ROM Clock */
++ #define TULIP_CSR9_SRCS        (1) /* Serial ROM Chip Select */
 +
-+/* write MMIO register, with flush */
-+/* Flush avoids rtl8139 bug w/ posted MMIO writes */
-+static inline void RTL_W8_F(struct rtl8139_priv *priv, int reg, int val)
-+{
-+	RTL_W8(priv, reg, val);
-+	RTL_R8(priv, reg);
-+}
++#define TULIP_CSR10	0x50 /* Unused */
++#define TULIP_CSR11	0x58 /* Unused */
++#define TULIP_CSR12	0x60 /* Unused */
++#define TULIP_CSR13	0x68 /* Unused */
++#define TULIP_CSR14	0x70 /* Unused: SIA Transmit and Receive Register */
++#define TULIP_CSR15	0x78 /* Unused */
 +
-+static inline void RTL_W16_F(struct rtl8139_priv *priv, int reg, int val)
-+{
-+	RTL_W16(priv, reg, val);
-+	RTL_R16(priv, reg);
-+}
++/* Register bits. */
++/* CSR5 */
++#define STS_TS		0x00700000	/* Transmit Process State */
++#define STS_RS		0x000e0000	/* Receive Process State */
 +
-+static inline void RTL_W32_F(struct rtl8139_priv *priv, int reg, int val)
-+{
-+	RTL_W32(priv, reg, val);
-+	RTL_R32(priv, reg);
-+}
++/* CSR6 */
++#define OMR_PS		0x00040000	/* Port Select */
++#define OMR_SDP		0x02000000	/* SD Polarity - MUST BE ASSERTED */
++#define OMR_PM		0x00000080	/* Pass All Multicast */
 +
-+static const unsigned int rtl8139_rx_config =
-+	RxCfgRcv8K | RxNoWrap |
-+	(RX_FIFO_THRESH << RxCfgFIFOShift) |
-+	(RX_DMA_BURST << RxCfgDMAShift);
++#define DC_W32(priv, reg, val)	writel(val, ((char *)(priv->base) + reg))
++#define DC_R32(priv, reg)	readl(((char *)(priv->base) + reg))
 +
-+static const unsigned int rtl8139_tx_config =
-+	TxIFG96 | (TX_DMA_BURST << TxDMAShift) | (TX_RETRY << TxRetryShift);
++/* Read and write the MII registers using software-generated serial
++   MDIO protocol.  It is just different enough from the EEPROM protocol
++   to not share code.  The maxium data clock rate is 2.5 MHz. */
 +
-+static void rtl8139_chip_reset(struct rtl8139_priv *priv)
-+{
-+	int i;
++#define mdio_delay() (void)DC_R32(priv, TULIP_CSR9)
 +
-+#ifdef RTL8139_DEBUG
-+	printf("rtl8139_chip_reset()\n");
-+#endif
-+
-+	/* Soft reset the chip. */
-+	RTL_W8(priv, ChipCmd, CmdReset);
-+
-+	/* Check that the chip has finished the reset. */
-+	for (i = 1000; i > 0; i--) {
-+		//barrier();
-+		if ((RTL_R8(priv, ChipCmd) & CmdReset) == 0)
-+			break;
-+		udelay(10);
-+	}
-+}
-+
-+static void __set_rx_mode(struct rtl8139_priv *priv)
-+{
-+	u32 mc_filter[2];	/* Multicast hash filter */
-+	int rx_mode;
-+	u32 tmp;
-+
-+	rx_mode =
-+	    AcceptBroadcast | AcceptMulticast | AcceptMyPhys |
-+	    AcceptAllPhys;
-+	mc_filter[1] = mc_filter[0] = 0xffffffff;
-+
-+	/* We can safely update without stopping the chip. */
-+	tmp = rtl8139_rx_config | rx_mode;
-+	if (priv->rx_config != tmp) {
-+		RTL_W32_F(priv, RxConfig, tmp);
-+		priv->rx_config = tmp;
-+	}
-+
-+	RTL_W32_F(priv, MAR0 + 0, mc_filter[0]);
-+	RTL_W32_F(priv, MAR0 + 4, mc_filter[1]);
-+}
-+
-+/* Start the hardware at open or resume. */
-+static void rtl8139_hw_start(struct rtl8139_priv *priv)
-+{
-+	u32 i;
-+	u8 tmp;
-+
-+	rtl8139_chip_reset(priv);
-+
-+	/* unlock Config[01234] and BMCR register writes */
-+	RTL_W8_F(priv, Cfg9346, Cfg9346_Unlock);
-+
-+#if 0
-+	/* Restore our idea of the MAC address. */
-+	RTL_W32_F(priv, MAC0 + 0, *(__le32 *) (dev->dev_addr + 0));
-+	RTL_W32_F(priv, MAC0 + 4, *(__le16 *) (dev->dev_addr + 4));
-+#endif
-+
-+	priv->cur_rx = 0;
-+
-+	/* init Rx ring buffer DMA address */
-+	RTL_W32_F(priv, RxBuf, priv->rx_ring_dma);
-+
-+	/* Must enable Tx/Rx before setting transfer thresholds! */
-+	RTL_W8(priv, ChipCmd, CmdRxEnb | CmdTxEnb);
-+
-+	priv->rx_config = rtl8139_rx_config | AcceptBroadcast | AcceptMyPhys;
-+	RTL_W32(priv, RxConfig, priv->rx_config);
-+	RTL_W32(priv, TxConfig, rtl8139_tx_config);
-+
-+	/* Lock Config[01234] and BMCR register writes */
-+	RTL_W8(priv, Cfg9346, Cfg9346_Lock);
-+
-+	/* init Tx buffer DMA addresses */
-+	for (i = 0; i < NUM_TX_DESC; i++)
-+		RTL_W32_F(priv, TxAddr0 + (i * 4), priv->tx_bufs_dma + (priv->tx_buf[i] - priv->tx_bufs));
-+
-+	RTL_W32(priv, RxMissed, 0);
-+
-+	__set_rx_mode(priv);
-+
-+	/* Disable interrupts by clearing the interrupt mask. */
-+	RTL_W16(priv, IntrMask, 0);
-+
-+	/* make sure RxTx has started */
-+	tmp = RTL_R8(priv, ChipCmd);
-+	if ((!(tmp & CmdRxEnb)) || (!(tmp & CmdTxEnb)))
-+		RTL_W8(priv, ChipCmd, CmdRxEnb | CmdTxEnb);
-+}
-+
-+static inline void rtl8139_tx_clear(struct rtl8139_priv *priv)
-+{
-+	priv->cur_tx = 0;
-+	priv->dirty_tx = 0;
-+
-+	/* XXX account for unsent Tx packets in tp->stats.tx_dropped */
-+}
-+
-+/* Initialize the Rx and Tx rings, along with various 'dev' bits. */
-+static void rtl8139_init_ring(struct rtl8139_priv *priv)
-+{
-+	int i;
-+
-+	priv->cur_rx = 0;
-+	priv->cur_tx = 0;
-+	priv->dirty_tx = 0;
-+
-+	for (i = 0; i < NUM_TX_DESC; i++)
-+		priv->tx_buf[i] = &priv->tx_bufs[i * TX_BUF_SIZE];
-+}
-+
-+static int rtl8139_phy_read(struct mii_device *mdev, int phy_addr, int reg)
++static int dec21143_phy_read(struct mii_device *mdev, int phy_addr, int reg)
 +{
 +	struct eth_device *edev = mdev->edev;
-+	struct rtl8139_priv *priv = edev->priv;
++	struct dec21143_priv *priv = edev->priv;
 +	int val;
++
++	int i;
++	int read_cmd = (0xf6 << 10) | (priv->miidev.address << 5) | reg;
 +
 +	val = 0;
 +
-+	if (phy_addr == 0) { /* Really a 8139. Use internal registers. */
-+		val = reg < 8 && mii_2_8139_map[reg] ?
-+				RTL_R16(priv, mii_2_8139_map[reg]) : 0;
++	/* Establish sync by sending at least 32 logic ones. */
++	for (i = 32; i >= 0; i--) {
++		DC_W32(priv, TULIP_CSR9, MDIO_ENB | TULIP_MDIO_DATA1);
++		mdio_delay();
++		DC_W32(priv, TULIP_CSR9, MDIO_ENB | TULIP_MDIO_DATA1 | TULIP_CSR9_MDC);
++		mdio_delay();
 +	}
 +
-+#ifdef RTL8139_DEBUG
++	/* Shift the read command bits out. */
++	for (i = 15; i >= 0; i--) {
++		int dataval = (read_cmd & (1 << i)) ? TULIP_MDIO_DATA1 : TULIP_MDIO_DATA0;
++
++		DC_W32(priv, TULIP_CSR9, MDIO_ENB | dataval);
++		mdio_delay();
++		DC_W32(priv, TULIP_CSR9, MDIO_ENB | dataval | TULIP_CSR9_MDC);
++		mdio_delay();
++	}
++
++	/* Read the two transition, 16 data, and wire-idle bits. */
++	for (i = 19; i > 0; i--) {
++		DC_W32(priv, TULIP_CSR9, MDIO_ENB_IN);
++		mdio_delay();
++		val = (val << 1) | ((DC_R32(priv, TULIP_CSR9) & MDIO_DATA_READ) ? 1 : 0);
++		DC_W32(priv, TULIP_CSR9, MDIO_ENB_IN | TULIP_CSR9_MDC);
++		mdio_delay();
++	}
++
++	val = (val >> 1) & 0xffff;
++
++//#ifdef DEC21143_DEBUG
++#if 0
 +	printf("%s: addr: 0x%02x reg: 0x%02x val: 0x%04x\n", __func__,
 +			phy_addr, reg, val);
 +#endif
@@ -415,90 +269,312 @@ index 0000000..57575bb
 +	return val;
 +}
 +
-+static int rtl8139_phy_write(struct mii_device *mdev, int phy_addr,
++static int dec21143_phy_write(struct mii_device *mdev, int phy_addr,
 +	int reg, int val)
 +{
 +	struct eth_device *edev = mdev->edev;
-+	struct rtl8139_priv *priv = edev->priv;
++	struct dec21143_priv *priv = edev->priv;
 +
-+#ifdef RTL8139_DEBUG
++	int i;
++	int cmd = (0x5002 << 16) | (priv->miidev.address << 23) | (reg << 18) | val;
++
++#ifdef DEC21143_DEBUG
 +	printf("%s: addr: 0x%02x reg: 0x%02x val: 0x%04x\n", __func__,
 +	      phy_addr, reg, val);
 +#endif
 +
-+	if (phy_addr == 0) { /* Really a 8139. Use internal registers. */
-+		if (reg == 0) {
-+			RTL_W8(priv, Cfg9346, Cfg9346_Unlock);
-+			RTL_W16(priv, BasicModeCtrl, val);
-+			RTL_W8(priv, Cfg9346, Cfg9346_Lock);
-+		} else if (reg < 8 && mii_2_8139_map[reg]) {
-+			RTL_W16(priv, mii_2_8139_map[reg], val);
++	/* Establish sync by sending 32 logic ones. */
++	for (i = 32; i >= 0; i--) {
++		DC_W32(priv, TULIP_CSR9, MDIO_ENB | TULIP_MDIO_DATA1);
++		mdio_delay();
++		DC_W32(priv, TULIP_CSR9, MDIO_ENB | TULIP_MDIO_DATA1 | TULIP_CSR9_MDC);
++		mdio_delay();
++	}
++
++	/* Shift the command bits out. */
++	for (i = 31; i >= 0; i--) {
++		int dataval = (cmd & (1 << i)) ? TULIP_MDIO_DATA1 : TULIP_MDIO_DATA0;
++
++		DC_W32(priv, TULIP_CSR9, MDIO_ENB | dataval);
++		mdio_delay();
++		DC_W32(priv, TULIP_CSR9, MDIO_ENB | dataval | TULIP_CSR9_MDC);
++		mdio_delay();
++	}
++
++	/* Clear out extra bits. */
++	for (i = 2; i > 0; i--) {
++		DC_W32(priv, TULIP_CSR9, MDIO_ENB_IN);
++		mdio_delay();
++		DC_W32(priv, TULIP_CSR9, MDIO_ENB_IN | TULIP_CSR9_MDC);
++		mdio_delay();
++	}
++
++	return 0;
++}
++
++#define SETUP_FRAME_LEN 192
++#define ETH_ALEN	6
++#define	TOUT_LOOP	100
++
++/* FIXME */
++#define phys_to_bus(x) (0x0fffffff & (x))
++
++static void dump_rings(struct dec21143_priv *priv)
++{
++	int i;
++
++	printf("dump_rings(): tx_new = %d, rx_new = %d\n", priv->tx_new, priv->rx_new);
++
++	for (i = 0; i < NUM_RX_DESC; i++) {
++		printf("rx_ring[%d].status  = %08x\n", i, le32_to_cpu(priv->rx_ring[i].status));
++		printf("rx_ring[%d].length  = %08x\n", i, le32_to_cpu(priv->rx_ring[i].length));
++		printf("rx_ring[%d].buffer1 = %08x\n", i, le32_to_cpu(priv->rx_ring[i].buffer1));
++		printf("rx_ring[%d].buffer2 = %08x\n", i, le32_to_cpu(priv->rx_ring[i].buffer2));
++	}
++	printf("\n");
++
++	for (i = 0; i < NUM_TX_DESC; i++) {
++		printf("tx_ring[%d].status  = %08x\n", i, le32_to_cpu(priv->tx_ring[i].status));
++		printf("tx_ring[%d].length  = %08x\n", i, le32_to_cpu(priv->tx_ring[i].length));
++		printf("tx_ring[%d].buffer1 = %08x\n", i, le32_to_cpu(priv->tx_ring[i].buffer1));
++		printf("tx_ring[%d].buffer2 = %08x\n", i, le32_to_cpu(priv->tx_ring[i].buffer2));
++	}
++	printf("\n");
++	printf("TULIP_CSR0 = 0x%08x\n", DC_R32(priv, TULIP_CSR0));
++	printf("TULIP_CSR1 = 0x%08x\n", DC_R32(priv, TULIP_CSR1));
++	printf("TULIP_CSR2 = 0x%08x\n", DC_R32(priv, TULIP_CSR2));
++	printf("TULIP_CSR3 = 0x%08x\n", DC_R32(priv, TULIP_CSR3));
++	printf("TULIP_CSR4 = 0x%08x\n", DC_R32(priv, TULIP_CSR4));
++{
++	int t;
++	t = DC_R32(priv, TULIP_CSR5);
++	printf("TULIP_CSR5 = 0x%08x ", t);
++	if (t & 1) {
++		printf("<tx int>");
++	}
++	if (t & 2) {
++		printf("<tx stop>");
++	}
++	if (t & 4) {
++		printf("<tx bufun>");
++	}
++	printf("\n");
++}
++	printf("TULIP_CSR6 = 0x%08x\n", DC_R32(priv, TULIP_CSR6));
++
++}
++
++static void dec21143_send_setup_frame(struct eth_device *edev)
++{
++	struct dec21143_priv *priv = edev->priv;
++	int i;
++	char setup_frame[SETUP_FRAME_LEN];
++	char *pa = &setup_frame[15 * 6];
++	char *eaddrs[6];
++
++	/* add the broadcast address. */
++	memset(setup_frame, 0xff, SETUP_FRAME_LEN);
++
++	edev->get_ethaddr(edev, eaddrs);
++
++	/* Fill the final entry of the table with our physical address. */
++	*pa++ = eaddrs[0]; *pa++ = eaddrs[0];
++	*pa++ = eaddrs[1]; *pa++ = eaddrs[1];
++	*pa++ = eaddrs[2]; *pa++ = eaddrs[2];
++
++	dump_rings(priv);
++
++	for (i = 0; priv->tx_ring[priv->tx_new].status & cpu_to_le32(TULIP_TDES0_OWN); i++) {
++		if (i >= TOUT_LOOP) {
++			printf("%s: tx buffer not ready 0\n", edev->dev.name);
++			goto Done;
 +		}
 +	}
 +
-+	return 0;
++	priv->tx_ring[priv->tx_new].buffer1 = cpu_to_le32(phys_to_bus((u32) &setup_frame[0]));
++	priv->tx_ring[priv->tx_new].length = cpu_to_le32(TD_TER | TULIP_TDES1_SET | SETUP_FRAME_LEN);
++	priv->tx_ring[priv->tx_new].status = cpu_to_le32(TULIP_TDES0_OWN);
++
++	DC_W32(priv, TULIP_CSR1, POLL_DEMAND);
++
++	dump_rings(priv);
++	for (i = 0; priv->tx_ring[priv->tx_new].status & cpu_to_le32(TULIP_TDES0_OWN); i++) {
++		if (i >= TOUT_LOOP) {
++			printf("%s: tx buffer not ready 1\n", edev->dev.name);
++			goto Done;
++		}
++	}
++
++	if (le32_to_cpu(priv->tx_ring[priv->tx_new].status) != 0x7FFFFFFF) {
++		printf("TX error status2 = 0x%08X\n", le32_to_cpu(priv->tx_ring[priv->tx_new].status));
++	}
++
++	priv->tx_new = (priv->tx_new + 1) % NUM_TX_DESC;
++
++	printf("============================== done\n");
++Done:
++	return;
 +}
 +
-+static int rtl8139_get_ethaddr(struct eth_device *edev, unsigned char *m)
++/*  EEPROM_Ctrl bits. */
++#define EE_SHIFT_CLK	0x02	/* EEPROM shift clock. */
++#define EE_CS		0x01	/* EEPROM chip select. */
++#define EE_DATA_WRITE	0x04	/* Data from the Tulip to EEPROM. */
++#define EE_WRITE_0	0x01
++#define EE_WRITE_1	0x05
++#define EE_DATA_READ	0x08	/* Data from the EEPROM chip. */
++#define EE_ENB		(0x4800 | EE_CS)
++
++/* The EEPROM commands include the alway-set leading bit. */
++#define EE_READ_CMD		(6)
++
++#define eeprom_delay()	(void)DC_R32(priv, TULIP_CSR9)
++
++static int dec21143_read_eeprom(struct dec21143_priv *priv, int addr, u_int16_t *dest)
 +{
-+	struct rtl8139_priv *priv = edev->priv;
++	int i;
++	unsigned retval = 0;
++	int addr_len = 6;
++	int read_cmd = addr | (EE_READ_CMD << addr_len);
++
++	DC_W32(priv, TULIP_CSR9, EE_ENB & ~EE_CS);
++	DC_W32(priv, TULIP_CSR9, EE_ENB);
++
++	/* Shift the read command bits out. */
++	for (i = 4 + addr_len; i >= 0; i--) {
++		short dataval = (read_cmd & (1 << i)) ? EE_DATA_WRITE : 0;
++		DC_W32(priv, TULIP_CSR9, EE_ENB | dataval);
++		eeprom_delay();
++		DC_W32(priv, TULIP_CSR9, EE_ENB | dataval | EE_SHIFT_CLK);
++		eeprom_delay();
++		retval = (retval << 1) | ((DC_R32(priv, TULIP_CSR9) & EE_DATA_READ) ? 1 : 0);
++	}
++	DC_W32(priv, TULIP_CSR9, EE_ENB);
++	eeprom_delay();
++
++	for (i = 16; i > 0; i--) {
++		DC_W32(priv, TULIP_CSR9, EE_ENB | EE_SHIFT_CLK);
++		eeprom_delay();
++		retval = (retval << 1) | ((DC_R32(priv, TULIP_CSR9) & EE_DATA_READ) ? 1 : 0);
++		DC_W32(priv, TULIP_CSR9, EE_ENB);
++		eeprom_delay();
++	}
++
++	/* Terminate the EEPROM access. */
++	DC_W32(priv, TULIP_CSR9, EE_ENB & ~EE_CS);
++
++	*dest = retval;
++
++	//return (tp->flags & HAS_SWAPPED_SEEPROM) ? swab16(retval) : retval;
++	return retval;
++}
++
++static int dec21143_get_ethaddr(struct eth_device *edev, unsigned char *m)
++{
++	struct dec21143_priv *priv = edev->priv;
 +	int i;
 +
-+	for (i = 0; i < 6; ++i) {
-+		m[i] = RTL_R8(priv, (MAC0 + i));
++	for (i = 0; i < 6; i += sizeof(u16)) {
++		u_int16_t val;
++		dec21143_read_eeprom(priv, 10 + i/2, &val);
++		m[i] = val & 0xff;
++		m[i + 1] = val >> 8;
 +	}
 +
 +	return 0;
 +}
 +
-+static int rtl8139_set_ethaddr(struct eth_device *edev,
++static int dec21143_set_ethaddr(struct eth_device *edev,
 +					unsigned char *mac_addr)
 +{
-+	struct rtl8139_priv *priv = edev->priv;
-+	int i;
-+
-+	RTL_W8(priv, Cfg9346, Cfg9346_Unlock);
-+
-+	for (i = 0; i < 6; i++) {
-+		RTL_W8(priv, (MAC0 + i), mac_addr[i]);
-+		RTL_R8(priv, mac_addr[i]);
-+	}
-+
-+	RTL_W8(priv, Cfg9346, Cfg9346_Lock);
++	struct dec21143_priv *priv = edev->priv;
 +
 +	return 0;
 +}
 +
-+static int rtl8139_init_dev(struct eth_device *edev)
++static int dec21143_init_dev(struct eth_device *edev)
 +{
-+	struct rtl8139_priv *priv = edev->priv;
++	struct dec21143_priv *priv = edev->priv;
++	int i;
 +
-+#ifdef RTL8139_DEBUG
-+	printf("rtl8139_init_dev()\n");
++#ifdef DEC21143_DEBUG
++	printf("%s\n", __func__);
 +#endif
 +
-+	rtl8139_chip_reset(priv);
++	/* RESET_DE4X5(dev); */
++
++	i = DC_R32(priv, TULIP_CSR0);
++	udelay(1000);
++	DC_W32(priv, TULIP_CSR0, i | TULIP_CSR0_SWR);
++	udelay(1000);
++	DC_W32(priv, TULIP_CSR0, i);
++	udelay(1000);
++
++	for (i = 0; i < 5; i++) {
++		(void)DC_R32(priv, TULIP_CSR0);
++		udelay(10000);
++	}
++	udelay(1000);
++
++	if ((DC_R32(priv, TULIP_CSR5) & (STS_TS | STS_RS)) != 0) {
++		printf("Error: Cannot reset ethernet controller.\n");
++		return -1;
++	}
++
++	DC_W32(priv, TULIP_CSR6, OMR_SDP | OMR_PS | OMR_PM | 0x40);
++
++	for (i = 0; i < NUM_RX_DESC; i++) {
++		priv->rx_ring[i].status = cpu_to_le32(TULIP_RDES0_OWN);
++		priv->rx_ring[i].length = cpu_to_le32(RX_BUFF_SZ);
++		/* FIXME: VERY dirty */
++		priv->rx_ring[i].buffer1 = cpu_to_le32(phys_to_bus((u32) NetRxPackets[i]));
++#if 1
++		/* More that one descriptor */
++		priv->rx_ring[i].buffer2 = cpu_to_le32(phys_to_bus((u32) &priv->rx_ring[(i+1) % NUM_RX_DESC]));
++#else
++		priv->rx_ring[i].buffer2 = 0;
++#endif
++	}
++
++	for (i = 0; i < NUM_TX_DESC; i++) {
++		priv->tx_ring[i].status = 0;
++		priv->tx_ring[i].length = 0;
++		priv->tx_ring[i].buffer1 = 0;
++
++#if 0
++		priv->tx_ring[i].buffer2 = cpu_to_le32(phys_to_bus((u32) &priv->tx_ring[(i+1) % NUM_TX_DESC]));
++#endif
++		priv->tx_ring[i].buffer2 = 0;
++	}
++
++	/* Write the end of list marker to the descriptor lists. */
++	priv->rx_ring[NUM_RX_DESC - 1].length |= cpu_to_le32(RD_RER);
++	priv->tx_ring[NUM_TX_DESC - 1].length |= cpu_to_le32(TD_TER);
++
++//	priv->tx_ring[NUM_TX_DESC - 1].buffer2 = cpu_to_le32(phys_to_bus((u32) &priv->tx_ring[0]));
++
++	/* Tell the adapter where the TX/RX rings are located. */
++	/* FIXME: rx_ring to bus */
++	DC_W32(priv, TULIP_CSR3, phys_to_bus((u32) (priv->rx_ring)));
++	DC_W32(priv, TULIP_CSR4, phys_to_bus((u32) (priv->tx_ring)));
++
++	priv->rx_new = 0;
++	priv->tx_new = 0;
++
++	/* Start the chip's Tx to process setup frame. */
++	DC_W32(priv, TULIP_CSR6, DC_R32(priv, TULIP_CSR6)
++				| TULIP_CSR6_TXON | TULIP_CSR6_RXON);
++
++	dec21143_send_setup_frame(edev);
 +
 +	//miidev_restart_aneg(&priv->miidev);
 +
 +	return 0;
 +}
 +
-+static int rtl8139_eth_open(struct eth_device *edev)
++static int dec21143_eth_open(struct eth_device *edev)
 +{
-+	struct rtl8139_priv *priv = edev->priv;
-+
-+	/* HACK: FIXME */
-+	priv->tx_bufs = (unsigned char *)0xa1000000;
-+	priv->tx_bufs_dma = (dma_addr_t)0x01000000;
-+
-+	priv->rx_ring = (unsigned char *)0xa2000000;
-+	priv->rx_ring_dma = (dma_addr_t)0x02000000;
-+
-+	priv->tx_flag = (TX_FIFO_THRESH << 11) & 0x003f0000;
-+
-+	rtl8139_init_ring(priv);
-+	rtl8139_hw_start(priv);
++	struct dec21143_priv *priv = edev->priv;
 +
 +	miidev_wait_aneg(&priv->miidev);
 +	miidev_print_status(&priv->miidev);
@@ -506,163 +582,138 @@ index 0000000..57575bb
 +	return 0;
 +}
 +
-+static void rtl8139_eth_halt(struct eth_device *edev)
++static void dec21143_eth_halt(struct eth_device *edev)
 +{
-+	struct rtl8139_priv *priv = edev->priv;
++	struct dec21143_priv *priv = edev->priv;
 +
-+	/* Stop the chip's Tx and Rx DMA processes. */
-+	RTL_W8(priv, ChipCmd, 0);
++#ifdef DEC21143_DEBUG
++	printf("%s\n", __func__);
++#endif
 +
-+	/* Disable interrupts by clearing the interrupt mask. */
-+	RTL_W16(priv, IntrMask, 0);
-+
-+	/* Green! Put the chip in low-power mode. */
-+	RTL_W8(priv, Cfg9346, Cfg9346_Unlock);
++	/* Stop the Tx and Rx processes. */
++	DC_W32(priv, TULIP_CSR6, DC_R32(priv, TULIP_CSR6) &
++			~ (TULIP_CSR6_TXON | TULIP_CSR6_RXON));
 +}
 +
-+static void rtl8139_tx_interrupt(struct rtl8139_priv *priv)
-+{
-+	unsigned long dirty_tx, tx_left;
-+
-+	dirty_tx = priv->dirty_tx;
-+	tx_left = priv->cur_tx - dirty_tx;
-+	while (tx_left > 0) {
-+		int entry = dirty_tx % NUM_TX_DESC;
-+		int txstatus;
-+
-+		txstatus = RTL_R32(priv, TxStatus0 + (entry * sizeof(u32)));
-+
-+		if (!(txstatus & (TxStatOK | TxUnderrun | TxAborted)))
-+			break;	/* It still hasn't been Txed */
-+
-+		/* Note: TxCarrierLost is always asserted at 100mbps. */
-+		if (txstatus & (TxOutOfWindow | TxAborted)) {
-+			/* There was an major error, log it. */
-+			printf("Transmit error, Tx status %08x\n", txstatus);
-+			if (txstatus & TxAborted) {
-+				RTL_W32(priv, TxConfig, TxClearAbt);
-+				RTL_W16(priv, IntrStatus, TxErr);
-+			}
-+		} else {
-+			if (txstatus & TxUnderrun) {
-+				/* Add 64 to the Tx FIFO threshold. */
-+				if (priv->tx_flag < 0x00300000)
-+					priv->tx_flag += 0x00020000;
-+			}
-+		}
-+
-+		dirty_tx++;
-+		tx_left--;
-+	}
-+
-+	if (priv->dirty_tx != dirty_tx) {
-+		priv->dirty_tx = dirty_tx;
-+	}
-+}
-+
-+static int rtl8139_eth_send(struct eth_device *edev, void *packet,
++static int dec21143_eth_send(struct eth_device *edev, void *packet,
 +				int packet_length)
 +{
-+	struct rtl8139_priv *priv = edev->priv;
++	struct dec21143_priv *priv = edev->priv;
 +
-+	unsigned int entry;
++	int status = -1;
++	int i;
 +
-+#ifdef RTL8139_DEBUG
-+	printf("rtl8139_eth_send()\n");
-+	memory_display(packet, 0, 70, 1);
++#ifdef DEC21143_DEBUG
++//	printf("%s\n", __func__);
++//	memory_display(packet, 0, 70, 1);
 +#endif
 +
-+	rtl8139_tx_interrupt(priv);
-+
-+	/* Calculate the next Tx descriptor entry. */
-+	entry = priv->cur_tx % NUM_TX_DESC;
-+
-+	/* Note: the chip doesn't have auto-pad! */
-+	if (likely(packet_length < TX_BUF_SIZE)) {
-+		if (packet_length < ETH_ZLEN)
-+			memset(priv->tx_buf[entry], 0, ETH_ZLEN);
-+		memcpy(priv->tx_buf[entry], packet, packet_length);
-+	} else {
-+		printf("packet too long\n");
-+		return 0;
++	if (packet_length <= 0) {
++		printf("%s: bad packet size: %d\n", edev->dev.name, packet_length);
++		goto Done;
 +	}
 +
-+	/*
-+	 * Writing to TxStatus triggers a DMA transfer of the data
-+	 * copied to tp->tx_buf[entry] above.
-+	 */
-+	if (packet_length < ETH_ZLEN) {
-+		packet_length = ETH_ZLEN;
++	for (i = 0; priv->tx_ring[priv->tx_new].status & cpu_to_le32(TULIP_TDES0_OWN); i++) {
++		if (i >= TOUT_LOOP) {
++			printf("%s: tx error buffer not ready\n", edev->dev.name);
++			goto Done;
++		}
 +	}
-+	RTL_W32_F(priv, (TxStatus0 + (entry * sizeof(u32))),
-+			(priv->tx_flag | packet_length));
 +
-+	priv->cur_tx++;
++	priv->tx_ring[priv->tx_new].buffer1 = cpu_to_le32(phys_to_bus((u32) packet));
++	priv->tx_ring[priv->tx_new].length = cpu_to_le32(TD_TER | TULIP_TDES1_LS | TULIP_TDES1_FS | packet_length);
++	priv->tx_ring[priv->tx_new].status = cpu_to_le32(TULIP_TDES0_OWN);
 +
-+	return 0;
++	DC_W32(priv, TULIP_CSR1, POLL_DEMAND);
++
++	for(i = 0; priv->tx_ring[priv->tx_new].status & cpu_to_le32(TULIP_TDES0_OWN); i++) {
++		if (i >= TOUT_LOOP) {
++//			printf("%s: tx buffer not ready 2\n", edev->dev.name);
++			goto Done;
++		}
++	}
++
++	if (le32_to_cpu(priv->tx_ring[priv->tx_new].status) & TD_ES) {
++#if 0 /* test-only */
++		printf("TX error status = 0x%08X\n",
++			le32_to_cpu(priv->tx_ring[priv->tx_new].status));
++#endif
++		priv->tx_ring[priv->tx_new].status = 0x0;
++		goto Done;
++	}
++
++	status = packet_length;
++
++Done:
++	priv->tx_new = (priv->tx_new + 1) % NUM_TX_DESC;
++
++	return status;
 +}
 +
-+static const u16 rtl8139_intr_mask =
-+		PCIErr | PCSTimeout | RxUnderrun | RxOverflow | RxFIFOOver |
-+		TxErr | TxOK | RxErr | RxOK;
-+
-+static int rtl8139_eth_rx(struct eth_device *edev)
++static int dec21143_eth_rx(struct eth_device *edev)
 +{
-+	struct rtl8139_priv *priv = edev->priv;
-+	unsigned char *rx_ring = priv->rx_ring;
-+	unsigned int cur_rx = priv->cur_rx;
-+	unsigned int rx_size = 0;
++	struct dec21143_priv *priv = edev->priv;
 +
-+	u32 ring_offset = cur_rx % RX_BUF_LEN;
-+	u32 rx_status;
-+	unsigned int pkt_size;
++	s32 status;
++	int length = 0;
 +
-+#ifdef RTL8139_DEBUG
-+	printf("rtl8139_eth_rx()\n");
-+
-+	printf("In %s(), current %04x BufAddr %04x, free to %04x, Cmd %02x\n",
-+		   __func__, (u16)cur_rx,
-+		   RTL_R16(priv, RxBufAddr), RTL_R16(priv, RxBufPtr),
-+		   RTL_R8(priv, ChipCmd));
++#ifdef DEC21143_DEBUG
++	//printf("%s rx_new=%d\n", __func__, priv->rx_new);
++	//dump_rings(priv);
 +#endif
 +
-+	rtl8139_tx_interrupt(priv);
++	DC_W32(priv, TULIP_CSR2, POLL_DEMAND);
 +
-+	if (RTL_R8(priv, ChipCmd) & RxBufEmpty) {
-+		/* no data */
-+		return 0;
++	for ( ; ; ) {
++		status = (s32)le32_to_cpu(priv->rx_ring[priv->rx_new].status);
++
++		if (status & TULIP_RDES0_OWN) {
++			break;
++		}
++
++		if (status & RD_LS) {
++			/* Valid frame status. */
++			if (status & RD_ES) {
++				/* There was an error. */
++				printf("RX error status = 0x%08X\n", status);
++			} else {
++				/* A valid frame received. */
++				length = (le32_to_cpu(priv->rx_ring[priv->rx_new].status) >> 16);
++
++				/* Pass the packet up to the protocol layers. */
++				/* FIXME: VERY dirty */
++				//net_receive(0xa0000000 | cpu_to_le32(priv->rx_ring[priv->rx_new].buffer1), length);
++				/* Skip 4 byte CRC */
++				net_receive(NetRxPackets[priv->rx_new], length - 4);
++			}
++
++			/* Change buffer ownership for this frame, back to the adapter. */
++			priv->rx_ring[priv->rx_new].status = cpu_to_le32(TULIP_RDES0_OWN);
++			DC_W32(priv, TULIP_CSR2, POLL_DEMAND);
++		}
++
++		/* Update entry information. */
++		priv->rx_new = (priv->rx_new + 1) % NUM_RX_DESC;
++
++		break;
 +	}
 +
-+	rx_status = le32_to_cpu(*(__le32 *) (rx_ring + ring_offset));
-+	rx_size = rx_status >> 16;
-+	pkt_size = rx_size - 4;
++	DC_W32(priv, TULIP_CSR2, POLL_DEMAND);
 +
-+#ifdef RTL8139_DEBUG
-+	memory_display(&rx_ring[ring_offset], 0, 70, 1);
-+#endif
-+
-+	net_receive(&rx_ring[ring_offset + 4], pkt_size);
-+
-+	cur_rx = (cur_rx + rx_size + 4 + 3) & ~3;
-+	cur_rx = cur_rx & (RX_BUF_LEN - 1); /* FIXME */
-+	RTL_W16(priv, RxBufPtr, (u16) (cur_rx - 16));
-+
-+	priv->cur_rx = cur_rx;
-+
-+	return pkt_size /* size */;
++	return length;
 +}
 +
-+static int rtl8139_probe(struct pci_dev *pdev, const struct pci_device_id *id)
++static int dec21143_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
 +{
 +	struct eth_device *edev;
-+	struct rtl8139_priv *priv;
++	struct dec21143_priv *priv;
 +
 +	u32 bar;
 +	struct pci_bus *bus = pdev->bus;
 +	struct device_d *dev = &pdev->dev;
 +
-+#ifdef RTL8139_DEBUG
-+	printf("rtl8139_probe()\n");
++#ifdef DEC21143_DEBUG
++	printf("%s\n", __func__);
 +#endif
 +
 +	/* enable pci device */
@@ -670,37 +721,42 @@ index 0000000..57575bb
 +	pci_write_config_dword(pdev, PCI_COMMAND, bar | 0x03);
 +
 +	edev = xzalloc(sizeof(struct eth_device) +
-+			sizeof(struct rtl8139_priv));
++			sizeof(struct dec21143_priv));
 +	dev->type_data = edev;
-+	priv = (struct rtl8139_priv *)(edev + 1);
++	priv = (struct dec21143_priv *)(edev + 1);
 +
 +	edev->priv = priv;
 +
++	/* FIXME: unused ? */
 +	priv->pci_dev = pdev;
-+
-+	priv->miidev.read = rtl8139_phy_read;
-+	priv->miidev.write = rtl8139_phy_write;
-+	priv->miidev.address = 0;
-+	priv->miidev.flags = 0;
-+	priv->miidev.edev = edev;
 +
 +	/* FIXME: pci_resource_start() */
 +	pci_read_config_dword(pdev, PCI_BASE_ADDRESS_1, &bar);
 +	priv->base = (void *)bus->ops->res_start(bus, bar);
 +
-+	printf("found rtl8139 (rev %02x) at %02x: %04x (base=%p)\n",
++	printf("found dec21142/3 (rev %02x) at %02x: %04x (base=%p)\n",
 +			pdev->revision,
 +			pdev->devfn,
 +			(pdev->class >> 8) & 0xffff,
 +			priv->base);
 +
-+	edev->init = rtl8139_init_dev;
-+	edev->open = rtl8139_eth_open;
-+	edev->send = rtl8139_eth_send;
-+	edev->recv = rtl8139_eth_rx;
-+	edev->get_ethaddr = rtl8139_get_ethaddr;
-+	edev->set_ethaddr = rtl8139_set_ethaddr;
-+	edev->halt = rtl8139_eth_halt;
++	edev->init = dec21143_init_dev;
++	edev->open = dec21143_eth_open;
++	edev->send = dec21143_eth_send;
++	edev->recv = dec21143_eth_rx;
++	edev->get_ethaddr = dec21143_get_ethaddr;
++	edev->set_ethaddr = dec21143_set_ethaddr;
++	edev->halt = dec21143_eth_halt;
++
++	priv->miidev.read = dec21143_phy_read;
++	priv->miidev.write = dec21143_phy_write;
++	priv->miidev.address = 0;
++	priv->miidev.flags = 0;
++	priv->miidev.edev = edev;
++
++	/* FIXME: there is no warranty what this memory can be seen from pci */
++	priv->rx_ring = xzalloc(sizeof(struct rx_desc) * NUM_RX_DESC);
++	priv->tx_ring = xzalloc(sizeof(struct tx_desc) * NUM_TX_DESC);
 +
 +	mii_register(&priv->miidev);
 +	eth_register(edev);
@@ -708,40 +764,99 @@ index 0000000..57575bb
 +	return 0;
 +}
 +
-+static DEFINE_PCI_DEVICE_TABLE(rtl8139_pci_tbl) = {
-+	{ PCI_DEVICE(PCI_VENDOR_ID_REALTEK,	PCI_DEVICE_ID_REALTEK_8139), },
++static DEFINE_PCI_DEVICE_TABLE(dec21143_pci_tbl) = {
++	{ PCI_DEVICE(PCI_VENDOR_ID_DEC,	PCI_DEVICE_ID_DEC_21142), },
 +	{ },
 +};
 +
-+static struct pci_driver rtl8139_eth_driver = {
-+	.name = "rtl8139_eth",
-+	.id_table = rtl8139_pci_tbl,
-+	.probe = rtl8139_probe,
++static struct pci_driver dec21143_pci_eth_driver = {
++	.name = "dec21143_pci_eth",
++	.id_table = dec21143_pci_tbl,
++	.probe = dec21143_pci_probe,
 +};
 +
-+static int rtl8139_init(void)
++static int dec21143_pci_init(void)
 +{
-+	pci_register_driver(&rtl8139_eth_driver);
-+
-+	add_generic_device("rtl8139_eth", -1, NULL, 0xb0000000, 16,
-+		IORESOURCE_MEM, NULL);
++	pci_register_driver(&dec21143_pci_eth_driver);
 +
 +	return 0;
 +}
-+device_initcall(rtl8139_init);
++device_initcall(dec21143_pci_init);
++
++static int dec21143_eth_probe(struct device_d *dev)
++{
++	struct eth_device *edev;
++	struct dec21143_priv *priv;
++
++	edev = xzalloc(sizeof(struct eth_device) +
++			sizeof(struct dec21143_priv));
++	dev->type_data = edev;
++	priv = (struct dec21143_priv *)(edev + 1);
++
++	priv->base = dev_request_mem_region(dev, 0);
++
++	edev->priv = priv;
++
++	edev->init = dec21143_init_dev;
++	edev->open = dec21143_eth_open;
++	edev->send = dec21143_eth_send;
++	edev->recv = dec21143_eth_rx;
++	edev->get_ethaddr = dec21143_get_ethaddr;
++	edev->set_ethaddr = dec21143_set_ethaddr;
++	edev->halt = dec21143_eth_halt;
++
++	priv->miidev.read = dec21143_phy_read;
++	priv->miidev.write = dec21143_phy_write;
++	priv->miidev.address = 0;
++	priv->miidev.flags = 0;
++	priv->miidev.edev = edev;
++
++	priv->rx_ring = xzalloc(sizeof(struct rx_desc) * NUM_RX_DESC);
++	priv->tx_ring = xzalloc(sizeof(struct tx_desc) * NUM_TX_DESC);
++
++	mii_register(&priv->miidev);
++	eth_register(edev);
++
++	return 0;
++}
++
++static struct driver_d dec21143_eth_driver = {
++	.name = "dec21143_eth",
++	.probe = dec21143_eth_probe,
++};
++
++static int dec21143_eth_init(void)
++{
++	register_driver(&dec21143_eth_driver);
++
++	return 0;
++}
++device_initcall(dec21143_eth_init);
+diff --git a/drivers/pci/Makefile b/drivers/pci/Makefile
+index 6523385..a10f471 100644
+--- a/drivers/pci/Makefile
++++ b/drivers/pci/Makefile
+@@ -3,6 +3,7 @@
+ #
+ obj-y		+= pci.o bus.o
+ obj-$(CONFIG_8139)	+= rtl8139.o
++obj-$(CONFIG_21143)	+= 21143.o
+ 
+ ccflags-$(CONFIG_PCI_DEBUG) := -DDEBUG
+ 
 diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
-index 49e2954..17ac7fd 100644
+index 17ac7fd..a525653 100644
 --- a/include/linux/pci_ids.h
 +++ b/include/linux/pci_ids.h
-@@ -134,3 +134,8 @@
- #define PCI_CLASS_SP_OTHER		0x1180
+@@ -137,5 +137,8 @@
  
- #define PCI_CLASS_OTHERS		0xff
+ /* Vendors and devices.  Sort key: vendor first, device next. */
+ 
++#define PCI_VENDOR_ID_DEC		0x1011
++#define PCI_DEVICE_ID_DEC_21142		0x0019
 +
-+/* Vendors and devices.  Sort key: vendor first, device next. */
-+
-+#define PCI_VENDOR_ID_REALTEK		0x10ec
-+#define PCI_DEVICE_ID_REALTEK_8139	0x8139
+ #define PCI_VENDOR_ID_REALTEK		0x10ec
+ #define PCI_DEVICE_ID_REALTEK_8139	0x8139
 -- 
 1.7.8.3
 
