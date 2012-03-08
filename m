@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-bk0-f49.google.com ([209.85.214.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1S5jMN-000318-Vi
- for barebox@lists.infradead.org; Thu, 08 Mar 2012 19:50:51 +0000
-Received: by mail-bk0-f49.google.com with SMTP id jk13so900337bkc.36
- for <barebox@lists.infradead.org>; Thu, 08 Mar 2012 11:50:47 -0800 (PST)
+ id 1S5jMS-000332-9U
+ for barebox@lists.infradead.org; Thu, 08 Mar 2012 19:50:58 +0000
+Received: by bkcjk13 with SMTP id jk13so900511bkc.36
+ for <barebox@lists.infradead.org>; Thu, 08 Mar 2012 11:50:51 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Thu,  8 Mar 2012 23:50:28 +0400
-Message-Id: <1331236232-32735-3-git-send-email-antonynpavlov@gmail.com>
+Date: Thu,  8 Mar 2012 23:50:31 +0400
+Message-Id: <1331236232-32735-6-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1331236232-32735-1-git-send-email-antonynpavlov@gmail.com>
 References: <1331236232-32735-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,596 +23,725 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC V2 2/6] MIPS: add file gt64120.h from linux 2.6.39
+Subject: [RFC V2 5/6] net: add Realtek 8139 Ethernet controller support
 To: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/mips/include/asm/gt64120.h |  575 +++++++++++++++++++++++++++++++++++++++
- 1 files changed, 575 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/include/asm/gt64120.h
+This driver is based on Linux 2.6.39 8139too driver.
 
-diff --git a/arch/mips/include/asm/gt64120.h b/arch/mips/include/asm/gt64120.h
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ drivers/net/Kconfig     |    8 +
+ drivers/pci/Makefile    |    1 +
+ drivers/pci/rtl8139.c   |  654 +++++++++++++++++++++++++++++++++++++++++++++++
+ include/linux/pci_ids.h |    5 +
+ 4 files changed, 668 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/pci/rtl8139.c
+
+diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
+index b236d17..ff18b5e 100644
+--- a/drivers/net/Kconfig
++++ b/drivers/net/Kconfig
+@@ -100,6 +100,14 @@ config TSE_USE_DEDICATED_DESC_MEM
+ 	  reserved with a malloc but directly mapped to the memory
+ 	  address (defined in config.h)
+ 
++config 8139
++	depends on PCI
++	bool "RealTek RTL-8139 PCI Fast Ethernet Adapter support"
++	select MIIDEV
++	help
++	  This is a driver for the Fast Ethernet PCI network cards based on
++	  the RTL 8139 chips.
++
+ source "drivers/net/usb/Kconfig"
+ 
+ endmenu
+diff --git a/drivers/pci/Makefile b/drivers/pci/Makefile
+index c7d43c3..6523385 100644
+--- a/drivers/pci/Makefile
++++ b/drivers/pci/Makefile
+@@ -2,6 +2,7 @@
+ # Makefile for the PCI bus specific drivers.
+ #
+ obj-y		+= pci.o bus.o
++obj-$(CONFIG_8139)	+= rtl8139.o
+ 
+ ccflags-$(CONFIG_PCI_DEBUG) := -DDEBUG
+ 
+diff --git a/drivers/pci/rtl8139.c b/drivers/pci/rtl8139.c
 new file mode 100644
-index 0000000..91873b7
+index 0000000..57575bb
 --- /dev/null
-+++ b/arch/mips/include/asm/gt64120.h
-@@ -0,0 +1,575 @@
-+/*
-+ * Copyright (C) 2000, 2004, 2005  MIPS Technologies, Inc.
-+ *	All rights reserved.
-+ *	Authors: Carsten Langgaard <carstenl@mips.com>
-+ *		 Maciej W. Rozycki <macro@mips.com>
-+ * Copyright (C) 2005 Ralf Baechle (ralf@linux-mips.org)
-+ *
-+ *  This program is free software; you can distribute it and/or modify it
-+ *  under the terms of the GNU General Public License (Version 2) as
-+ *  published by the Free Software Foundation.
-+ *
-+ *  This program is distributed in the hope it will be useful, but WITHOUT
-+ *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-+ *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-+ *  for more details.
-+ *
-+ *  You should have received a copy of the GNU General Public License along
-+ *  with this program; if not, write to the Free Software Foundation, Inc.,
-+ *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
-+ */
-+#ifndef _ASM_GT64120_H
-+#define _ASM_GT64120_H
++++ b/drivers/pci/rtl8139.c
+@@ -0,0 +1,654 @@
++#include <common.h>
 +
-+#include <asm/byteorder.h>
++#include <command.h>
++#include <net.h>
++#include <miidev.h>
++#include <malloc.h>
++#include <init.h>
++#include <xfuncs.h>
++#include <errno.h>
++#include <clock.h>
++#include <asm/io.h>
 +
-+#define MSK(n)			((1 << (n)) - 1)
++#include <linux/pci.h>
++
++#undef RTL8139_DEBUG
++#define RTL8139_DEBUG
 +
 +/*
-+ *  Register offset addresses
++ * Receive ring size
++ * Warning: 64K ring has hardware issues and may lock up.
 + */
-+/* CPU Configuration.  */
-+#define GT_CPU_OFS		0x000
-+
-+#define GT_MULTI_OFS		0x120
-+
-+/* CPU Address Decode.  */
-+#define GT_SCS10LD_OFS		0x008
-+#define GT_SCS10HD_OFS		0x010
-+#define GT_SCS32LD_OFS		0x018
-+#define GT_SCS32HD_OFS		0x020
-+#define GT_CS20LD_OFS		0x028
-+#define GT_CS20HD_OFS		0x030
-+#define GT_CS3BOOTLD_OFS	0x038
-+#define GT_CS3BOOTHD_OFS	0x040
-+#define GT_PCI0IOLD_OFS		0x048
-+#define GT_PCI0IOHD_OFS		0x050
-+#define GT_PCI0M0LD_OFS		0x058
-+#define GT_PCI0M0HD_OFS		0x060
-+#define GT_ISD_OFS		0x068
-+
-+#define GT_PCI0M1LD_OFS		0x080
-+#define GT_PCI0M1HD_OFS		0x088
-+#define GT_PCI1IOLD_OFS		0x090
-+#define GT_PCI1IOHD_OFS		0x098
-+#define GT_PCI1M0LD_OFS		0x0a0
-+#define GT_PCI1M0HD_OFS		0x0a8
-+#define GT_PCI1M1LD_OFS		0x0b0
-+#define GT_PCI1M1HD_OFS		0x0b8
-+#define GT_PCI1M1LD_OFS		0x0b0
-+#define GT_PCI1M1HD_OFS		0x0b8
-+
-+#define GT_SCS10AR_OFS		0x0d0
-+#define GT_SCS32AR_OFS		0x0d8
-+#define GT_CS20R_OFS		0x0e0
-+#define GT_CS3BOOTR_OFS		0x0e8
-+
-+#define GT_PCI0IOREMAP_OFS	0x0f0
-+#define GT_PCI0M0REMAP_OFS	0x0f8
-+#define GT_PCI0M1REMAP_OFS	0x100
-+#define GT_PCI1IOREMAP_OFS	0x108
-+#define GT_PCI1M0REMAP_OFS	0x110
-+#define GT_PCI1M1REMAP_OFS	0x118
-+
-+/* CPU Error Report.  */
-+#define GT_CPUERR_ADDRLO_OFS	0x070
-+#define GT_CPUERR_ADDRHI_OFS	0x078
-+
-+#define GT_CPUERR_DATALO_OFS	0x128			/* GT-64120A only  */
-+#define GT_CPUERR_DATAHI_OFS	0x130			/* GT-64120A only  */
-+#define GT_CPUERR_PARITY_OFS	0x138			/* GT-64120A only  */
-+
-+/* CPU Sync Barrier.  */
-+#define GT_PCI0SYNC_OFS		0x0c0
-+#define GT_PCI1SYNC_OFS		0x0c8
-+
-+/* SDRAM and Device Address Decode.  */
-+#define GT_SCS0LD_OFS		0x400
-+#define GT_SCS0HD_OFS		0x404
-+#define GT_SCS1LD_OFS		0x408
-+#define GT_SCS1HD_OFS		0x40c
-+#define GT_SCS2LD_OFS		0x410
-+#define GT_SCS2HD_OFS		0x414
-+#define GT_SCS3LD_OFS		0x418
-+#define GT_SCS3HD_OFS		0x41c
-+#define GT_CS0LD_OFS		0x420
-+#define GT_CS0HD_OFS		0x424
-+#define GT_CS1LD_OFS		0x428
-+#define GT_CS1HD_OFS		0x42c
-+#define GT_CS2LD_OFS		0x430
-+#define GT_CS2HD_OFS		0x434
-+#define GT_CS3LD_OFS		0x438
-+#define GT_CS3HD_OFS		0x43c
-+#define GT_BOOTLD_OFS		0x440
-+#define GT_BOOTHD_OFS		0x444
-+
-+#define GT_ADERR_OFS		0x470
-+
-+/* SDRAM Configuration.  */
-+#define GT_SDRAM_CFG_OFS	0x448
-+
-+#define GT_SDRAM_OPMODE_OFS	0x474
-+#define GT_SDRAM_BM_OFS		0x478
-+#define GT_SDRAM_ADDRDECODE_OFS	0x47c
-+
-+/* SDRAM Parameters.  */
-+#define GT_SDRAM_B0_OFS		0x44c
-+#define GT_SDRAM_B1_OFS		0x450
-+#define GT_SDRAM_B2_OFS		0x454
-+#define GT_SDRAM_B3_OFS		0x458
-+
-+/* Device Parameters.  */
-+#define GT_DEV_B0_OFS		0x45c
-+#define GT_DEV_B1_OFS		0x460
-+#define GT_DEV_B2_OFS		0x464
-+#define GT_DEV_B3_OFS		0x468
-+#define GT_DEV_BOOT_OFS		0x46c
-+
-+/* ECC.  */
-+#define GT_ECC_ERRDATALO	0x480			/* GT-64120A only  */
-+#define GT_ECC_ERRDATAHI	0x484			/* GT-64120A only  */
-+#define GT_ECC_MEM		0x488			/* GT-64120A only  */
-+#define GT_ECC_CALC		0x48c			/* GT-64120A only  */
-+#define GT_ECC_ERRADDR		0x490			/* GT-64120A only  */
-+
-+/* DMA Record.  */
-+#define GT_DMA0_CNT_OFS		0x800
-+#define GT_DMA1_CNT_OFS		0x804
-+#define GT_DMA2_CNT_OFS		0x808
-+#define GT_DMA3_CNT_OFS		0x80c
-+#define GT_DMA0_SA_OFS		0x810
-+#define GT_DMA1_SA_OFS		0x814
-+#define GT_DMA2_SA_OFS		0x818
-+#define GT_DMA3_SA_OFS		0x81c
-+#define GT_DMA0_DA_OFS		0x820
-+#define GT_DMA1_DA_OFS		0x824
-+#define GT_DMA2_DA_OFS		0x828
-+#define GT_DMA3_DA_OFS		0x82c
-+#define GT_DMA0_NEXT_OFS	0x830
-+#define GT_DMA1_NEXT_OFS	0x834
-+#define GT_DMA2_NEXT_OFS	0x838
-+#define GT_DMA3_NEXT_OFS	0x83c
-+
-+#define GT_DMA0_CUR_OFS		0x870
-+#define GT_DMA1_CUR_OFS		0x874
-+#define GT_DMA2_CUR_OFS		0x878
-+#define GT_DMA3_CUR_OFS		0x87c
-+
-+/* DMA Channel Control.  */
-+#define GT_DMA0_CTRL_OFS	0x840
-+#define GT_DMA1_CTRL_OFS	0x844
-+#define GT_DMA2_CTRL_OFS	0x848
-+#define GT_DMA3_CTRL_OFS	0x84c
-+
-+/* DMA Arbiter.  */
-+#define GT_DMA_ARB_OFS		0x860
-+
-+/* Timer/Counter.  */
-+#define GT_TC0_OFS		0x850
-+#define GT_TC1_OFS		0x854
-+#define GT_TC2_OFS		0x858
-+#define GT_TC3_OFS		0x85c
-+
-+#define GT_TC_CONTROL_OFS	0x864
-+
-+/* PCI Internal.  */
-+#define GT_PCI0_CMD_OFS		0xc00
-+#define GT_PCI0_TOR_OFS		0xc04
-+#define GT_PCI0_BS_SCS10_OFS	0xc08
-+#define GT_PCI0_BS_SCS32_OFS	0xc0c
-+#define GT_PCI0_BS_CS20_OFS	0xc10
-+#define GT_PCI0_BS_CS3BT_OFS	0xc14
-+
-+#define GT_PCI1_IACK_OFS	0xc30
-+#define GT_PCI0_IACK_OFS	0xc34
-+
-+#define GT_PCI0_BARE_OFS	0xc3c
-+#define GT_PCI0_PREFMBR_OFS	0xc40
-+
-+#define GT_PCI0_SCS10_BAR_OFS	0xc48
-+#define GT_PCI0_SCS32_BAR_OFS	0xc4c
-+#define GT_PCI0_CS20_BAR_OFS	0xc50
-+#define GT_PCI0_CS3BT_BAR_OFS	0xc54
-+#define GT_PCI0_SSCS10_BAR_OFS	0xc58
-+#define GT_PCI0_SSCS32_BAR_OFS	0xc5c
-+
-+#define GT_PCI0_SCS3BT_BAR_OFS	0xc64
-+
-+#define GT_PCI1_CMD_OFS		0xc80
-+#define GT_PCI1_TOR_OFS		0xc84
-+#define GT_PCI1_BS_SCS10_OFS	0xc88
-+#define GT_PCI1_BS_SCS32_OFS	0xc8c
-+#define GT_PCI1_BS_CS20_OFS	0xc90
-+#define GT_PCI1_BS_CS3BT_OFS	0xc94
-+
-+#define GT_PCI1_BARE_OFS	0xcbc
-+#define GT_PCI1_PREFMBR_OFS	0xcc0
-+
-+#define GT_PCI1_SCS10_BAR_OFS	0xcc8
-+#define GT_PCI1_SCS32_BAR_OFS	0xccc
-+#define GT_PCI1_CS20_BAR_OFS	0xcd0
-+#define GT_PCI1_CS3BT_BAR_OFS	0xcd4
-+#define GT_PCI1_SSCS10_BAR_OFS	0xcd8
-+#define GT_PCI1_SSCS32_BAR_OFS	0xcdc
-+
-+#define GT_PCI1_SCS3BT_BAR_OFS	0xce4
-+
-+#define GT_PCI1_CFGADDR_OFS	0xcf0
-+#define GT_PCI1_CFGDATA_OFS	0xcf4
-+#define GT_PCI0_CFGADDR_OFS	0xcf8
-+#define GT_PCI0_CFGDATA_OFS	0xcfc
-+
-+/* Interrupts.  */
-+#define GT_INTRCAUSE_OFS	0xc18
-+#define GT_INTRMASK_OFS		0xc1c
-+
-+#define GT_PCI0_ICMASK_OFS	0xc24
-+#define GT_PCI0_SERR0MASK_OFS	0xc28
-+
-+#define GT_CPU_INTSEL_OFS	0xc70
-+#define GT_PCI0_INTSEL_OFS	0xc74
-+
-+#define GT_HINTRCAUSE_OFS	0xc98
-+#define GT_HINTRMASK_OFS	0xc9c
-+
-+#define GT_PCI0_HICMASK_OFS	0xca4
-+#define GT_PCI1_SERR1MASK_OFS	0xca8
-+
-+
-+/*
-+ * I2O Support Registers
-+ */
-+#define INBOUND_MESSAGE_REGISTER0_PCI_SIDE		0x010
-+#define INBOUND_MESSAGE_REGISTER1_PCI_SIDE		0x014
-+#define OUTBOUND_MESSAGE_REGISTER0_PCI_SIDE		0x018
-+#define OUTBOUND_MESSAGE_REGISTER1_PCI_SIDE		0x01c
-+#define INBOUND_DOORBELL_REGISTER_PCI_SIDE		0x020
-+#define INBOUND_INTERRUPT_CAUSE_REGISTER_PCI_SIDE	0x024
-+#define INBOUND_INTERRUPT_MASK_REGISTER_PCI_SIDE	0x028
-+#define OUTBOUND_DOORBELL_REGISTER_PCI_SIDE		0x02c
-+#define OUTBOUND_INTERRUPT_CAUSE_REGISTER_PCI_SIDE	0x030
-+#define OUTBOUND_INTERRUPT_MASK_REGISTER_PCI_SIDE	0x034
-+#define INBOUND_QUEUE_PORT_VIRTUAL_REGISTER_PCI_SIDE	0x040
-+#define OUTBOUND_QUEUE_PORT_VIRTUAL_REGISTER_PCI_SIDE	0x044
-+#define QUEUE_CONTROL_REGISTER_PCI_SIDE			0x050
-+#define QUEUE_BASE_ADDRESS_REGISTER_PCI_SIDE		0x054
-+#define INBOUND_FREE_HEAD_POINTER_REGISTER_PCI_SIDE	0x060
-+#define INBOUND_FREE_TAIL_POINTER_REGISTER_PCI_SIDE	0x064
-+#define INBOUND_POST_HEAD_POINTER_REGISTER_PCI_SIDE	0x068
-+#define INBOUND_POST_TAIL_POINTER_REGISTER_PCI_SIDE	0x06c
-+#define OUTBOUND_FREE_HEAD_POINTER_REGISTER_PCI_SIDE	0x070
-+#define OUTBOUND_FREE_TAIL_POINTER_REGISTER_PCI_SIDE	0x074
-+#define OUTBOUND_POST_HEAD_POINTER_REGISTER_PCI_SIDE	0x078
-+#define OUTBOUND_POST_TAIL_POINTER_REGISTER_PCI_SIDE	0x07c
-+
-+#define INBOUND_MESSAGE_REGISTER0_CPU_SIDE		0x1c10
-+#define INBOUND_MESSAGE_REGISTER1_CPU_SIDE		0x1c14
-+#define OUTBOUND_MESSAGE_REGISTER0_CPU_SIDE		0x1c18
-+#define OUTBOUND_MESSAGE_REGISTER1_CPU_SIDE		0x1c1c
-+#define INBOUND_DOORBELL_REGISTER_CPU_SIDE		0x1c20
-+#define INBOUND_INTERRUPT_CAUSE_REGISTER_CPU_SIDE	0x1c24
-+#define INBOUND_INTERRUPT_MASK_REGISTER_CPU_SIDE	0x1c28
-+#define OUTBOUND_DOORBELL_REGISTER_CPU_SIDE		0x1c2c
-+#define OUTBOUND_INTERRUPT_CAUSE_REGISTER_CPU_SIDE	0x1c30
-+#define OUTBOUND_INTERRUPT_MASK_REGISTER_CPU_SIDE	0x1c34
-+#define INBOUND_QUEUE_PORT_VIRTUAL_REGISTER_CPU_SIDE	0x1c40
-+#define OUTBOUND_QUEUE_PORT_VIRTUAL_REGISTER_CPU_SIDE	0x1c44
-+#define QUEUE_CONTROL_REGISTER_CPU_SIDE			0x1c50
-+#define QUEUE_BASE_ADDRESS_REGISTER_CPU_SIDE		0x1c54
-+#define INBOUND_FREE_HEAD_POINTER_REGISTER_CPU_SIDE	0x1c60
-+#define INBOUND_FREE_TAIL_POINTER_REGISTER_CPU_SIDE	0x1c64
-+#define INBOUND_POST_HEAD_POINTER_REGISTER_CPU_SIDE	0x1c68
-+#define INBOUND_POST_TAIL_POINTER_REGISTER_CPU_SIDE	0x1c6c
-+#define OUTBOUND_FREE_HEAD_POINTER_REGISTER_CPU_SIDE	0x1c70
-+#define OUTBOUND_FREE_TAIL_POINTER_REGISTER_CPU_SIDE	0x1c74
-+#define OUTBOUND_POST_HEAD_POINTER_REGISTER_CPU_SIDE	0x1c78
-+#define OUTBOUND_POST_TAIL_POINTER_REGISTER_CPU_SIDE	0x1c7c
-+
-+/*
-+ *  Register encodings
-+ */
-+#define GT_CPU_ENDIAN_SHF	12
-+#define GT_CPU_ENDIAN_MSK	(MSK(1) << GT_CPU_ENDIAN_SHF)
-+#define GT_CPU_ENDIAN_BIT	GT_CPU_ENDIAN_MSK
-+#define GT_CPU_WR_SHF		16
-+#define GT_CPU_WR_MSK		(MSK(1) << GT_CPU_WR_SHF)
-+#define GT_CPU_WR_BIT		GT_CPU_WR_MSK
-+#define GT_CPU_WR_DXDXDXDX	0
-+#define GT_CPU_WR_DDDD		1
-+
-+
-+#define GT_PCI_DCRM_SHF		21
-+#define GT_PCI_LD_SHF		0
-+#define GT_PCI_LD_MSK		(MSK(15) << GT_PCI_LD_SHF)
-+#define GT_PCI_HD_SHF		0
-+#define GT_PCI_HD_MSK		(MSK(7) << GT_PCI_HD_SHF)
-+#define GT_PCI_REMAP_SHF	0
-+#define GT_PCI_REMAP_MSK	(MSK(11) << GT_PCI_REMAP_SHF)
-+
-+
-+#define GT_CFGADDR_CFGEN_SHF	31
-+#define GT_CFGADDR_CFGEN_MSK	(MSK(1) << GT_CFGADDR_CFGEN_SHF)
-+#define GT_CFGADDR_CFGEN_BIT	GT_CFGADDR_CFGEN_MSK
-+
-+#define GT_CFGADDR_BUSNUM_SHF	16
-+#define GT_CFGADDR_BUSNUM_MSK	(MSK(8) << GT_CFGADDR_BUSNUM_SHF)
-+
-+#define GT_CFGADDR_DEVNUM_SHF	11
-+#define GT_CFGADDR_DEVNUM_MSK	(MSK(5) << GT_CFGADDR_DEVNUM_SHF)
-+
-+#define GT_CFGADDR_FUNCNUM_SHF	8
-+#define GT_CFGADDR_FUNCNUM_MSK	(MSK(3) << GT_CFGADDR_FUNCNUM_SHF)
-+
-+#define GT_CFGADDR_REGNUM_SHF	2
-+#define GT_CFGADDR_REGNUM_MSK	(MSK(6) << GT_CFGADDR_REGNUM_SHF)
-+
-+
-+#define GT_SDRAM_BM_ORDER_SHF	2
-+#define GT_SDRAM_BM_ORDER_MSK	(MSK(1) << GT_SDRAM_BM_ORDER_SHF)
-+#define GT_SDRAM_BM_ORDER_BIT	GT_SDRAM_BM_ORDER_MSK
-+#define GT_SDRAM_BM_ORDER_SUB	1
-+#define GT_SDRAM_BM_ORDER_LIN	0
-+
-+#define GT_SDRAM_BM_RSVD_ALL1	0xffb
-+
-+
-+#define GT_SDRAM_ADDRDECODE_ADDR_SHF	0
-+#define GT_SDRAM_ADDRDECODE_ADDR_MSK	(MSK(3) << GT_SDRAM_ADDRDECODE_ADDR_SHF)
-+#define GT_SDRAM_ADDRDECODE_ADDR_0	0
-+#define GT_SDRAM_ADDRDECODE_ADDR_1	1
-+#define GT_SDRAM_ADDRDECODE_ADDR_2	2
-+#define GT_SDRAM_ADDRDECODE_ADDR_3	3
-+#define GT_SDRAM_ADDRDECODE_ADDR_4	4
-+#define GT_SDRAM_ADDRDECODE_ADDR_5	5
-+#define GT_SDRAM_ADDRDECODE_ADDR_6	6
-+#define GT_SDRAM_ADDRDECODE_ADDR_7	7
-+
-+
-+#define GT_SDRAM_B0_CASLAT_SHF		0
-+#define GT_SDRAM_B0_CASLAT_MSK		(MSK(2) << GT_SDRAM_B0__SHF)
-+#define GT_SDRAM_B0_CASLAT_2		1
-+#define GT_SDRAM_B0_CASLAT_3		2
-+
-+#define GT_SDRAM_B0_FTDIS_SHF		2
-+#define GT_SDRAM_B0_FTDIS_MSK		(MSK(1) << GT_SDRAM_B0_FTDIS_SHF)
-+#define GT_SDRAM_B0_FTDIS_BIT		GT_SDRAM_B0_FTDIS_MSK
-+
-+#define GT_SDRAM_B0_SRASPRCHG_SHF	3
-+#define GT_SDRAM_B0_SRASPRCHG_MSK	(MSK(1) << GT_SDRAM_B0_SRASPRCHG_SHF)
-+#define GT_SDRAM_B0_SRASPRCHG_BIT	GT_SDRAM_B0_SRASPRCHG_MSK
-+#define GT_SDRAM_B0_SRASPRCHG_2		0
-+#define GT_SDRAM_B0_SRASPRCHG_3		1
-+
-+#define GT_SDRAM_B0_B0COMPAB_SHF	4
-+#define GT_SDRAM_B0_B0COMPAB_MSK	(MSK(1) << GT_SDRAM_B0_B0COMPAB_SHF)
-+#define GT_SDRAM_B0_B0COMPAB_BIT	GT_SDRAM_B0_B0COMPAB_MSK
-+
-+#define GT_SDRAM_B0_64BITINT_SHF	5
-+#define GT_SDRAM_B0_64BITINT_MSK	(MSK(1) << GT_SDRAM_B0_64BITINT_SHF)
-+#define GT_SDRAM_B0_64BITINT_BIT	GT_SDRAM_B0_64BITINT_MSK
-+#define GT_SDRAM_B0_64BITINT_2		0
-+#define GT_SDRAM_B0_64BITINT_4		1
-+
-+#define GT_SDRAM_B0_BW_SHF		6
-+#define GT_SDRAM_B0_BW_MSK		(MSK(1) << GT_SDRAM_B0_BW_SHF)
-+#define GT_SDRAM_B0_BW_BIT		GT_SDRAM_B0_BW_MSK
-+#define GT_SDRAM_B0_BW_32		0
-+#define GT_SDRAM_B0_BW_64		1
-+
-+#define GT_SDRAM_B0_BLODD_SHF		7
-+#define GT_SDRAM_B0_BLODD_MSK		(MSK(1) << GT_SDRAM_B0_BLODD_SHF)
-+#define GT_SDRAM_B0_BLODD_BIT		GT_SDRAM_B0_BLODD_MSK
-+
-+#define GT_SDRAM_B0_PAR_SHF		8
-+#define GT_SDRAM_B0_PAR_MSK		(MSK(1) << GT_SDRAM_B0_PAR_SHF)
-+#define GT_SDRAM_B0_PAR_BIT		GT_SDRAM_B0_PAR_MSK
-+
-+#define GT_SDRAM_B0_BYPASS_SHF		9
-+#define GT_SDRAM_B0_BYPASS_MSK		(MSK(1) << GT_SDRAM_B0_BYPASS_SHF)
-+#define GT_SDRAM_B0_BYPASS_BIT		GT_SDRAM_B0_BYPASS_MSK
-+
-+#define GT_SDRAM_B0_SRAS2SCAS_SHF	10
-+#define GT_SDRAM_B0_SRAS2SCAS_MSK	(MSK(1) << GT_SDRAM_B0_SRAS2SCAS_SHF)
-+#define GT_SDRAM_B0_SRAS2SCAS_BIT	GT_SDRAM_B0_SRAS2SCAS_MSK
-+#define GT_SDRAM_B0_SRAS2SCAS_2		0
-+#define GT_SDRAM_B0_SRAS2SCAS_3		1
-+
-+#define GT_SDRAM_B0_SIZE_SHF		11
-+#define GT_SDRAM_B0_SIZE_MSK		(MSK(1) << GT_SDRAM_B0_SIZE_SHF)
-+#define GT_SDRAM_B0_SIZE_BIT		GT_SDRAM_B0_SIZE_MSK
-+#define GT_SDRAM_B0_SIZE_16M		0
-+#define GT_SDRAM_B0_SIZE_64M		1
-+
-+#define GT_SDRAM_B0_EXTPAR_SHF		12
-+#define GT_SDRAM_B0_EXTPAR_MSK		(MSK(1) << GT_SDRAM_B0_EXTPAR_SHF)
-+#define GT_SDRAM_B0_EXTPAR_BIT		GT_SDRAM_B0_EXTPAR_MSK
-+
-+#define GT_SDRAM_B0_BLEN_SHF		13
-+#define GT_SDRAM_B0_BLEN_MSK		(MSK(1) << GT_SDRAM_B0_BLEN_SHF)
-+#define GT_SDRAM_B0_BLEN_BIT		GT_SDRAM_B0_BLEN_MSK
-+#define GT_SDRAM_B0_BLEN_8		0
-+#define GT_SDRAM_B0_BLEN_4		1
-+
-+
-+#define GT_SDRAM_CFG_REFINT_SHF		0
-+#define GT_SDRAM_CFG_REFINT_MSK		(MSK(14) << GT_SDRAM_CFG_REFINT_SHF)
-+
-+#define GT_SDRAM_CFG_NINTERLEAVE_SHF	14
-+#define GT_SDRAM_CFG_NINTERLEAVE_MSK	(MSK(1) << GT_SDRAM_CFG_NINTERLEAVE_SHF)
-+#define GT_SDRAM_CFG_NINTERLEAVE_BIT	GT_SDRAM_CFG_NINTERLEAVE_MSK
-+
-+#define GT_SDRAM_CFG_RMW_SHF		15
-+#define GT_SDRAM_CFG_RMW_MSK		(MSK(1) << GT_SDRAM_CFG_RMW_SHF)
-+#define GT_SDRAM_CFG_RMW_BIT		GT_SDRAM_CFG_RMW_MSK
-+
-+#define GT_SDRAM_CFG_NONSTAGREF_SHF	16
-+#define GT_SDRAM_CFG_NONSTAGREF_MSK	(MSK(1) << GT_SDRAM_CFG_NONSTAGREF_SHF)
-+#define GT_SDRAM_CFG_NONSTAGREF_BIT	GT_SDRAM_CFG_NONSTAGREF_MSK
-+
-+#define GT_SDRAM_CFG_DUPCNTL_SHF	19
-+#define GT_SDRAM_CFG_DUPCNTL_MSK	(MSK(1) << GT_SDRAM_CFG_DUPCNTL_SHF)
-+#define GT_SDRAM_CFG_DUPCNTL_BIT	GT_SDRAM_CFG_DUPCNTL_MSK
-+
-+#define GT_SDRAM_CFG_DUPBA_SHF		20
-+#define GT_SDRAM_CFG_DUPBA_MSK		(MSK(1) << GT_SDRAM_CFG_DUPBA_SHF)
-+#define GT_SDRAM_CFG_DUPBA_BIT		GT_SDRAM_CFG_DUPBA_MSK
-+
-+#define GT_SDRAM_CFG_DUPEOT0_SHF	21
-+#define GT_SDRAM_CFG_DUPEOT0_MSK	(MSK(1) << GT_SDRAM_CFG_DUPEOT0_SHF)
-+#define GT_SDRAM_CFG_DUPEOT0_BIT	GT_SDRAM_CFG_DUPEOT0_MSK
-+
-+#define GT_SDRAM_CFG_DUPEOT1_SHF	22
-+#define GT_SDRAM_CFG_DUPEOT1_MSK	(MSK(1) << GT_SDRAM_CFG_DUPEOT1_SHF)
-+#define GT_SDRAM_CFG_DUPEOT1_BIT	GT_SDRAM_CFG_DUPEOT1_MSK
-+
-+#define GT_SDRAM_OPMODE_OP_SHF		0
-+#define GT_SDRAM_OPMODE_OP_MSK		(MSK(3) << GT_SDRAM_OPMODE_OP_SHF)
-+#define GT_SDRAM_OPMODE_OP_NORMAL	0
-+#define GT_SDRAM_OPMODE_OP_NOP		1
-+#define GT_SDRAM_OPMODE_OP_PRCHG	2
-+#define GT_SDRAM_OPMODE_OP_MODE		3
-+#define GT_SDRAM_OPMODE_OP_CBR		4
-+
-+#define GT_TC_CONTROL_ENTC0_SHF		0
-+#define GT_TC_CONTROL_ENTC0_MSK		(MSK(1) << GT_TC_CONTROL_ENTC0_SHF)
-+#define GT_TC_CONTROL_ENTC0_BIT		GT_TC_CONTROL_ENTC0_MSK
-+#define GT_TC_CONTROL_SELTC0_SHF	1
-+#define GT_TC_CONTROL_SELTC0_MSK	(MSK(1) << GT_TC_CONTROL_SELTC0_SHF)
-+#define GT_TC_CONTROL_SELTC0_BIT	GT_TC_CONTROL_SELTC0_MSK
-+
-+
-+#define GT_PCI0_BARE_SWSCS3BOOTDIS_SHF	0
-+#define GT_PCI0_BARE_SWSCS3BOOTDIS_MSK	(MSK(1) << GT_PCI0_BARE_SWSCS3BOOTDIS_SHF)
-+#define GT_PCI0_BARE_SWSCS3BOOTDIS_BIT	GT_PCI0_BARE_SWSCS3BOOTDIS_MSK
-+
-+#define GT_PCI0_BARE_SWSCS32DIS_SHF	1
-+#define GT_PCI0_BARE_SWSCS32DIS_MSK	(MSK(1) << GT_PCI0_BARE_SWSCS32DIS_SHF)
-+#define GT_PCI0_BARE_SWSCS32DIS_BIT	GT_PCI0_BARE_SWSCS32DIS_MSK
-+
-+#define GT_PCI0_BARE_SWSCS10DIS_SHF	2
-+#define GT_PCI0_BARE_SWSCS10DIS_MSK	(MSK(1) << GT_PCI0_BARE_SWSCS10DIS_SHF)
-+#define GT_PCI0_BARE_SWSCS10DIS_BIT	GT_PCI0_BARE_SWSCS10DIS_MSK
-+
-+#define GT_PCI0_BARE_INTIODIS_SHF	3
-+#define GT_PCI0_BARE_INTIODIS_MSK	(MSK(1) << GT_PCI0_BARE_INTIODIS_SHF)
-+#define GT_PCI0_BARE_INTIODIS_BIT	GT_PCI0_BARE_INTIODIS_MSK
-+
-+#define GT_PCI0_BARE_INTMEMDIS_SHF	4
-+#define GT_PCI0_BARE_INTMEMDIS_MSK	(MSK(1) << GT_PCI0_BARE_INTMEMDIS_SHF)
-+#define GT_PCI0_BARE_INTMEMDIS_BIT	GT_PCI0_BARE_INTMEMDIS_MSK
-+
-+#define GT_PCI0_BARE_CS3BOOTDIS_SHF	5
-+#define GT_PCI0_BARE_CS3BOOTDIS_MSK	(MSK(1) << GT_PCI0_BARE_CS3BOOTDIS_SHF)
-+#define GT_PCI0_BARE_CS3BOOTDIS_BIT	GT_PCI0_BARE_CS3BOOTDIS_MSK
-+
-+#define GT_PCI0_BARE_CS20DIS_SHF	6
-+#define GT_PCI0_BARE_CS20DIS_MSK	(MSK(1) << GT_PCI0_BARE_CS20DIS_SHF)
-+#define GT_PCI0_BARE_CS20DIS_BIT	GT_PCI0_BARE_CS20DIS_MSK
-+
-+#define GT_PCI0_BARE_SCS32DIS_SHF	7
-+#define GT_PCI0_BARE_SCS32DIS_MSK	(MSK(1) << GT_PCI0_BARE_SCS32DIS_SHF)
-+#define GT_PCI0_BARE_SCS32DIS_BIT	GT_PCI0_BARE_SCS32DIS_MSK
-+
-+#define GT_PCI0_BARE_SCS10DIS_SHF	8
-+#define GT_PCI0_BARE_SCS10DIS_MSK	(MSK(1) << GT_PCI0_BARE_SCS10DIS_SHF)
-+#define GT_PCI0_BARE_SCS10DIS_BIT	GT_PCI0_BARE_SCS10DIS_MSK
-+
-+
-+#define GT_INTRCAUSE_MASABORT0_SHF	18
-+#define GT_INTRCAUSE_MASABORT0_MSK	(MSK(1) << GT_INTRCAUSE_MASABORT0_SHF)
-+#define GT_INTRCAUSE_MASABORT0_BIT	GT_INTRCAUSE_MASABORT0_MSK
-+
-+#define GT_INTRCAUSE_TARABORT0_SHF	19
-+#define GT_INTRCAUSE_TARABORT0_MSK	(MSK(1) << GT_INTRCAUSE_TARABORT0_SHF)
-+#define GT_INTRCAUSE_TARABORT0_BIT	GT_INTRCAUSE_TARABORT0_MSK
-+
-+
-+#define GT_PCI0_CFGADDR_REGNUM_SHF	2
-+#define GT_PCI0_CFGADDR_REGNUM_MSK	(MSK(6) << GT_PCI0_CFGADDR_REGNUM_SHF)
-+#define GT_PCI0_CFGADDR_FUNCTNUM_SHF	8
-+#define GT_PCI0_CFGADDR_FUNCTNUM_MSK	(MSK(3) << GT_PCI0_CFGADDR_FUNCTNUM_SHF)
-+#define GT_PCI0_CFGADDR_DEVNUM_SHF	11
-+#define GT_PCI0_CFGADDR_DEVNUM_MSK	(MSK(5) << GT_PCI0_CFGADDR_DEVNUM_SHF)
-+#define GT_PCI0_CFGADDR_BUSNUM_SHF	16
-+#define GT_PCI0_CFGADDR_BUSNUM_MSK	(MSK(8) << GT_PCI0_CFGADDR_BUSNUM_SHF)
-+#define GT_PCI0_CFGADDR_CONFIGEN_SHF	31
-+#define GT_PCI0_CFGADDR_CONFIGEN_MSK	(MSK(1) << GT_PCI0_CFGADDR_CONFIGEN_SHF)
-+#define GT_PCI0_CFGADDR_CONFIGEN_BIT	GT_PCI0_CFGADDR_CONFIGEN_MSK
-+
-+#define GT_PCI0_CMD_MBYTESWAP_SHF	0
-+#define GT_PCI0_CMD_MBYTESWAP_MSK	(MSK(1) << GT_PCI0_CMD_MBYTESWAP_SHF)
-+#define GT_PCI0_CMD_MBYTESWAP_BIT	GT_PCI0_CMD_MBYTESWAP_MSK
-+#define GT_PCI0_CMD_MWORDSWAP_SHF	10
-+#define GT_PCI0_CMD_MWORDSWAP_MSK	(MSK(1) << GT_PCI0_CMD_MWORDSWAP_SHF)
-+#define GT_PCI0_CMD_MWORDSWAP_BIT	GT_PCI0_CMD_MWORDSWAP_MSK
-+#define GT_PCI0_CMD_SBYTESWAP_SHF	16
-+#define GT_PCI0_CMD_SBYTESWAP_MSK	(MSK(1) << GT_PCI0_CMD_SBYTESWAP_SHF)
-+#define GT_PCI0_CMD_SBYTESWAP_BIT	GT_PCI0_CMD_SBYTESWAP_MSK
-+#define GT_PCI0_CMD_SWORDSWAP_SHF	11
-+#define GT_PCI0_CMD_SWORDSWAP_MSK	(MSK(1) << GT_PCI0_CMD_SWORDSWAP_SHF)
-+#define GT_PCI0_CMD_SWORDSWAP_BIT	GT_PCI0_CMD_SWORDSWAP_MSK
-+
-+#define GT_INTR_T0EXP_SHF		8
-+#define GT_INTR_T0EXP_MSK		(MSK(1) << GT_INTR_T0EXP_SHF)
-+#define GT_INTR_T0EXP_BIT		GT_INTR_T0EXP_MSK
-+#define GT_INTR_RETRYCTR0_SHF		20
-+#define GT_INTR_RETRYCTR0_MSK		(MSK(1) << GT_INTR_RETRYCTR0_SHF)
-+#define GT_INTR_RETRYCTR0_BIT		GT_INTR_RETRYCTR0_MSK
-+
-+/*
-+ *  Misc
-+ */
-+#define GT_DEF_PCI0_IO_BASE	0x10000000UL
-+#define GT_DEF_PCI0_IO_SIZE	0x02000000UL
-+#define GT_DEF_PCI0_MEM0_BASE	0x12000000UL
-+#define GT_DEF_PCI0_MEM0_SIZE	0x02000000UL
-+#define GT_DEF_BASE		0x14000000UL
-+
-+#define GT_MAX_BANKSIZE		(256 * 1024 * 1024)	/* Max 256MB bank  */
-+#define GT_LATTIM_MIN		6			/* Minimum lat  */
-+
-+/*
-+ * The gt64120_dep.h file must define the following macros
-+ *
-+ *   GT_READ(ofs, data_pointer)
-+ *   GT_WRITE(ofs, data)           - read/write GT64120 registers in 32bit
-+ *
-+ *   TIMER 	- gt64120 timer irq, temporary solution until
-+ *		  full gt64120 cascade interrupt support is in place
-+ */
-+
-+/*
-+ * Because of an error/peculiarity in the Galileo chip, we need to swap the
-+ * bytes when running bigendian.  We also provide non-swapping versions.
-+ */
-+#define __GT_READ(ofs)							\
-+	(*(volatile u32 *)(GT64120_BASE+(ofs)))
-+#define __GT_WRITE(ofs, data)						\
-+	do { *(volatile u32 *)(GT64120_BASE+(ofs)) = (data); } while (0)
-+#define GT_READ(ofs)		le32_to_cpu(__GT_READ(ofs))
-+#define GT_WRITE(ofs, data)	__GT_WRITE(ofs, cpu_to_le32(data))
-+
-+extern void gt641xx_set_base_clock(unsigned int clock);
-+extern int gt641xx_timer0_state(void);
-+
-+#endif /* _ASM_GT64120_H */
++#define RX_BUF_IDX	0	/* 8K ring */
++#define RX_BUF_LEN	(8192 << RX_BUF_IDX)
++#define RX_BUF_PAD	16
++#define RX_BUF_WRAP_PAD 2048 /* spare padding to handle lack of packet wrap */
++
++#if RX_BUF_LEN == 65536
++#define RX_BUF_TOT_LEN	RX_BUF_LEN
++#else
++#define RX_BUF_TOT_LEN	(RX_BUF_LEN + RX_BUF_PAD + RX_BUF_WRAP_PAD)
++#endif
++
++/* Number of Tx descriptor registers. */
++#define NUM_TX_DESC	4
++
++/* max supported ethernet frame size -- must be at least (dev->mtu+14+4).*/
++#define MAX_ETH_FRAME_SIZE	1536
++
++/* Size of the Tx bounce buffers -- must be at least (dev->mtu+14+4). */
++#define TX_BUF_SIZE	MAX_ETH_FRAME_SIZE
++#define TX_BUF_TOT_LEN	(TX_BUF_SIZE * NUM_TX_DESC)
++
++/* PCI Tuning Parameters
++   Threshold is bytes transferred to chip before transmission starts. */
++#define TX_FIFO_THRESH 256	/* In bytes, rounded down to 32 byte units. */
++
++/* The following settings are log_2(bytes)-4:  0 == 16 bytes .. 6==1024, 7==end of packet. */
++#define RX_FIFO_THRESH	7	/* Rx buffer level before first PCI xfer.  */
++#define RX_DMA_BURST	7	/* Maximum PCI burst, '6' is 1024 */
++#define TX_DMA_BURST	6	/* Maximum PCI burst, '6' is 1024 */
++#define TX_RETRY	8	/* 0-15.  retries = 16 + (TX_RETRY * 16) */
++
++struct rtl8139_priv {
++	void __iomem		*base;
++	struct pci_dev		*pci_dev;
++	unsigned char		*rx_ring;
++	unsigned int		cur_rx; /* RX buf index of next pkt */
++	dma_addr_t		rx_ring_dma;
++
++	u32			rx_config;
++	unsigned int		tx_flag;
++	unsigned long		cur_tx;
++	unsigned long		dirty_tx;
++	unsigned char		*tx_buf[NUM_TX_DESC];   /* Tx bounce buffers */
++	unsigned char		*tx_bufs;       /* Tx bounce buffer region. */
++	dma_addr_t		tx_bufs_dma;
++
++	struct mii_device	miidev;
++};
++
++#define ETH_ZLEN        60              /* Min. octets in frame sans FCS */
++
++/* Registers */
++#define MAC0		0x00
++#define MAR0		0x08
++#define TxStatus0	0x10
++
++enum TxStatusBits {
++	TxHostOwns	= 0x2000,
++	TxUnderrun	= 0x4000,
++	TxStatOK	= 0x8000,
++	TxOutOfWindow	= 0x20000000,
++	TxAborted	= 0x40000000,
++	TxCarrierLost	= 0x80000000,
++};
++
++#define TxAddr0		0x20
++#define RxBuf		0x30
++#define ChipCmd		0x37
++#define  CmdReset	0x10
++#define  CmdRxEnb	0x08
++#define  CmdTxEnb	0x04
++#define  RxBufEmpty	0x01
++#define RxBufPtr	0x38
++#define RxBufAddr	0x3A
++#define IntrMask	0x3C
++#define IntrStatus	0x3E
++#define  PCIErr		0x8000
++#define  PCSTimeout	0x4000
++#define  RxFIFOOver	0x0040
++#define  RxUnderrun	0x0020
++#define  RxOverflow	0x0010
++#define  TxErr		0x0008
++#define  TxOK		0x0004
++#define  RxErr		0x0002
++#define  RxOK		0x0001
++#define    RxAckBits	(RxFIFOOver | RxOverflow | RxOK)
++
++#define TxConfig	0x40
++/* Bits in TxConfig. */
++enum tx_config_bits {
++	/* Interframe Gap Time. Only TxIFG96 doesn't violate IEEE 802.3 */
++	TxIFGShift	= 24,
++	TxIFG84		= (0 << TxIFGShift), /* 8.4us / 840ns (10 / 100Mbps) */
++	TxIFG88		= (1 << TxIFGShift), /* 8.8us / 880ns (10 / 100Mbps) */
++	TxIFG92		= (2 << TxIFGShift), /* 9.2us / 920ns (10 / 100Mbps) */
++	TxIFG96		= (3 << TxIFGShift), /* 9.6us / 960ns (10 / 100Mbps) */
++
++	TxLoopBack	= (1 << 18) | (1 << 17), /* enable loopback test mode */
++	TxCRC		= (1 << 16),	/* DISABLE Tx pkt CRC append */
++	TxClearAbt	= (1 << 0),	/* Clear abort (WO) */
++	TxDMAShift	= 8, /* DMA burst value (0-7) is shifted X many bits */
++	TxRetryShift	= 4, /* TXRR value (0-15) is shifted X many bits */
++
++	TxVersionMask	= 0x7C800000, /* mask out version bits 30-26, 23 */
++};
++
++#define RxConfig	0x44
++	/* rx fifo threshold */
++#define  RxCfgFIFOShift	13
++#define	 RxCfgFIFONone	(7 << RxCfgFIFOShift)
++	/* Max DMA burst */
++#define	 RxCfgDMAShift	8
++#define	 RxCfgDMAUnlimited (7 << RxCfgDMAShift)
++	/* rx ring buffer length */
++#define	 RxCfgRcv8K	0
++#define	 RxCfgRcv16K	(1 << 11)
++#define	 RxCfgRcv32K	(1 << 12)
++#define	 RxCfgRcv64K	((1 << 11) | (1 << 12))
++	/* Disable packet wrap at end of Rx buffer. (not possible with 64k) */
++#define	 RxNoWrap	(1 << 7)
++#define	 AcceptErr		0x20
++#define	 AcceptRunt		0x10
++#define	 AcceptBroadcast	0x08
++#define	 AcceptMulticast	0x04
++#define	 AcceptMyPhys		0x02
++#define	 AcceptAllPhys		0x01
++
++#define RxMissed	0x4C
++#define Cfg9346		0x50
++#define  Cfg9346_Lock	0x00
++#define  Cfg9346_Unlock	0xC0
++#define BasicModeCtrl	0x62
++#define BasicModeStatus	0x64
++#define NWayAdvert	0x66
++#define NWayLPAR	0x68
++#define NWayExpansion	0x6a
++
++static const char mii_2_8139_map[8] = {
++	BasicModeCtrl,
++	BasicModeStatus,
++	0,
++	0,
++	NWayAdvert,
++	NWayLPAR,
++	NWayExpansion,
++	0
++};
++
++/* write MMIO register */
++#define RTL_W8(priv, reg, val)	writeb(val, ((char *)(priv->base) + reg))
++#define RTL_W16(priv, reg, val)	writew(val, ((char *)(priv->base) + reg))
++#define RTL_W32(priv, reg, val)	writel(val, ((char *)(priv->base) + reg))
++
++/* read MMIO register */
++#define RTL_R8(priv, reg)	readb(((char *)(priv->base) + reg))
++#define RTL_R16(priv, reg)	readw(((char *)(priv->base) + reg))
++#define RTL_R32(priv, reg)	readl(((char *)(priv->base) + reg))
++
++/* write MMIO register, with flush */
++/* Flush avoids rtl8139 bug w/ posted MMIO writes */
++static inline void RTL_W8_F(struct rtl8139_priv *priv, int reg, int val)
++{
++	RTL_W8(priv, reg, val);
++	RTL_R8(priv, reg);
++}
++
++static inline void RTL_W16_F(struct rtl8139_priv *priv, int reg, int val)
++{
++	RTL_W16(priv, reg, val);
++	RTL_R16(priv, reg);
++}
++
++static inline void RTL_W32_F(struct rtl8139_priv *priv, int reg, int val)
++{
++	RTL_W32(priv, reg, val);
++	RTL_R32(priv, reg);
++}
++
++static const unsigned int rtl8139_rx_config =
++	RxCfgRcv8K | RxNoWrap |
++	(RX_FIFO_THRESH << RxCfgFIFOShift) |
++	(RX_DMA_BURST << RxCfgDMAShift);
++
++static const unsigned int rtl8139_tx_config =
++	TxIFG96 | (TX_DMA_BURST << TxDMAShift) | (TX_RETRY << TxRetryShift);
++
++static void rtl8139_chip_reset(struct rtl8139_priv *priv)
++{
++	int i;
++
++#ifdef RTL8139_DEBUG
++	printf("rtl8139_chip_reset()\n");
++#endif
++
++	/* Soft reset the chip. */
++	RTL_W8(priv, ChipCmd, CmdReset);
++
++	/* Check that the chip has finished the reset. */
++	for (i = 1000; i > 0; i--) {
++		//barrier();
++		if ((RTL_R8(priv, ChipCmd) & CmdReset) == 0)
++			break;
++		udelay(10);
++	}
++}
++
++static void __set_rx_mode(struct rtl8139_priv *priv)
++{
++	u32 mc_filter[2];	/* Multicast hash filter */
++	int rx_mode;
++	u32 tmp;
++
++	rx_mode =
++	    AcceptBroadcast | AcceptMulticast | AcceptMyPhys |
++	    AcceptAllPhys;
++	mc_filter[1] = mc_filter[0] = 0xffffffff;
++
++	/* We can safely update without stopping the chip. */
++	tmp = rtl8139_rx_config | rx_mode;
++	if (priv->rx_config != tmp) {
++		RTL_W32_F(priv, RxConfig, tmp);
++		priv->rx_config = tmp;
++	}
++
++	RTL_W32_F(priv, MAR0 + 0, mc_filter[0]);
++	RTL_W32_F(priv, MAR0 + 4, mc_filter[1]);
++}
++
++/* Start the hardware at open or resume. */
++static void rtl8139_hw_start(struct rtl8139_priv *priv)
++{
++	u32 i;
++	u8 tmp;
++
++	rtl8139_chip_reset(priv);
++
++	/* unlock Config[01234] and BMCR register writes */
++	RTL_W8_F(priv, Cfg9346, Cfg9346_Unlock);
++
++#if 0
++	/* Restore our idea of the MAC address. */
++	RTL_W32_F(priv, MAC0 + 0, *(__le32 *) (dev->dev_addr + 0));
++	RTL_W32_F(priv, MAC0 + 4, *(__le16 *) (dev->dev_addr + 4));
++#endif
++
++	priv->cur_rx = 0;
++
++	/* init Rx ring buffer DMA address */
++	RTL_W32_F(priv, RxBuf, priv->rx_ring_dma);
++
++	/* Must enable Tx/Rx before setting transfer thresholds! */
++	RTL_W8(priv, ChipCmd, CmdRxEnb | CmdTxEnb);
++
++	priv->rx_config = rtl8139_rx_config | AcceptBroadcast | AcceptMyPhys;
++	RTL_W32(priv, RxConfig, priv->rx_config);
++	RTL_W32(priv, TxConfig, rtl8139_tx_config);
++
++	/* Lock Config[01234] and BMCR register writes */
++	RTL_W8(priv, Cfg9346, Cfg9346_Lock);
++
++	/* init Tx buffer DMA addresses */
++	for (i = 0; i < NUM_TX_DESC; i++)
++		RTL_W32_F(priv, TxAddr0 + (i * 4), priv->tx_bufs_dma + (priv->tx_buf[i] - priv->tx_bufs));
++
++	RTL_W32(priv, RxMissed, 0);
++
++	__set_rx_mode(priv);
++
++	/* Disable interrupts by clearing the interrupt mask. */
++	RTL_W16(priv, IntrMask, 0);
++
++	/* make sure RxTx has started */
++	tmp = RTL_R8(priv, ChipCmd);
++	if ((!(tmp & CmdRxEnb)) || (!(tmp & CmdTxEnb)))
++		RTL_W8(priv, ChipCmd, CmdRxEnb | CmdTxEnb);
++}
++
++static inline void rtl8139_tx_clear(struct rtl8139_priv *priv)
++{
++	priv->cur_tx = 0;
++	priv->dirty_tx = 0;
++
++	/* XXX account for unsent Tx packets in tp->stats.tx_dropped */
++}
++
++/* Initialize the Rx and Tx rings, along with various 'dev' bits. */
++static void rtl8139_init_ring(struct rtl8139_priv *priv)
++{
++	int i;
++
++	priv->cur_rx = 0;
++	priv->cur_tx = 0;
++	priv->dirty_tx = 0;
++
++	for (i = 0; i < NUM_TX_DESC; i++)
++		priv->tx_buf[i] = &priv->tx_bufs[i * TX_BUF_SIZE];
++}
++
++static int rtl8139_phy_read(struct mii_device *mdev, int phy_addr, int reg)
++{
++	struct eth_device *edev = mdev->edev;
++	struct rtl8139_priv *priv = edev->priv;
++	int val;
++
++	val = 0;
++
++	if (phy_addr == 0) { /* Really a 8139. Use internal registers. */
++		val = reg < 8 && mii_2_8139_map[reg] ?
++				RTL_R16(priv, mii_2_8139_map[reg]) : 0;
++	}
++
++#ifdef RTL8139_DEBUG
++	printf("%s: addr: 0x%02x reg: 0x%02x val: 0x%04x\n", __func__,
++			phy_addr, reg, val);
++#endif
++
++	return val;
++}
++
++static int rtl8139_phy_write(struct mii_device *mdev, int phy_addr,
++	int reg, int val)
++{
++	struct eth_device *edev = mdev->edev;
++	struct rtl8139_priv *priv = edev->priv;
++
++#ifdef RTL8139_DEBUG
++	printf("%s: addr: 0x%02x reg: 0x%02x val: 0x%04x\n", __func__,
++	      phy_addr, reg, val);
++#endif
++
++	if (phy_addr == 0) { /* Really a 8139. Use internal registers. */
++		if (reg == 0) {
++			RTL_W8(priv, Cfg9346, Cfg9346_Unlock);
++			RTL_W16(priv, BasicModeCtrl, val);
++			RTL_W8(priv, Cfg9346, Cfg9346_Lock);
++		} else if (reg < 8 && mii_2_8139_map[reg]) {
++			RTL_W16(priv, mii_2_8139_map[reg], val);
++		}
++	}
++
++	return 0;
++}
++
++static int rtl8139_get_ethaddr(struct eth_device *edev, unsigned char *m)
++{
++	struct rtl8139_priv *priv = edev->priv;
++	int i;
++
++	for (i = 0; i < 6; ++i) {
++		m[i] = RTL_R8(priv, (MAC0 + i));
++	}
++
++	return 0;
++}
++
++static int rtl8139_set_ethaddr(struct eth_device *edev,
++					unsigned char *mac_addr)
++{
++	struct rtl8139_priv *priv = edev->priv;
++	int i;
++
++	RTL_W8(priv, Cfg9346, Cfg9346_Unlock);
++
++	for (i = 0; i < 6; i++) {
++		RTL_W8(priv, (MAC0 + i), mac_addr[i]);
++		RTL_R8(priv, mac_addr[i]);
++	}
++
++	RTL_W8(priv, Cfg9346, Cfg9346_Lock);
++
++	return 0;
++}
++
++static int rtl8139_init_dev(struct eth_device *edev)
++{
++	struct rtl8139_priv *priv = edev->priv;
++
++#ifdef RTL8139_DEBUG
++	printf("rtl8139_init_dev()\n");
++#endif
++
++	rtl8139_chip_reset(priv);
++
++	//miidev_restart_aneg(&priv->miidev);
++
++	return 0;
++}
++
++static int rtl8139_eth_open(struct eth_device *edev)
++{
++	struct rtl8139_priv *priv = edev->priv;
++
++	/* HACK: FIXME */
++	priv->tx_bufs = (unsigned char *)0xa1000000;
++	priv->tx_bufs_dma = (dma_addr_t)0x01000000;
++
++	priv->rx_ring = (unsigned char *)0xa2000000;
++	priv->rx_ring_dma = (dma_addr_t)0x02000000;
++
++	priv->tx_flag = (TX_FIFO_THRESH << 11) & 0x003f0000;
++
++	rtl8139_init_ring(priv);
++	rtl8139_hw_start(priv);
++
++	miidev_wait_aneg(&priv->miidev);
++	miidev_print_status(&priv->miidev);
++
++	return 0;
++}
++
++static void rtl8139_eth_halt(struct eth_device *edev)
++{
++	struct rtl8139_priv *priv = edev->priv;
++
++	/* Stop the chip's Tx and Rx DMA processes. */
++	RTL_W8(priv, ChipCmd, 0);
++
++	/* Disable interrupts by clearing the interrupt mask. */
++	RTL_W16(priv, IntrMask, 0);
++
++	/* Green! Put the chip in low-power mode. */
++	RTL_W8(priv, Cfg9346, Cfg9346_Unlock);
++}
++
++static void rtl8139_tx_interrupt(struct rtl8139_priv *priv)
++{
++	unsigned long dirty_tx, tx_left;
++
++	dirty_tx = priv->dirty_tx;
++	tx_left = priv->cur_tx - dirty_tx;
++	while (tx_left > 0) {
++		int entry = dirty_tx % NUM_TX_DESC;
++		int txstatus;
++
++		txstatus = RTL_R32(priv, TxStatus0 + (entry * sizeof(u32)));
++
++		if (!(txstatus & (TxStatOK | TxUnderrun | TxAborted)))
++			break;	/* It still hasn't been Txed */
++
++		/* Note: TxCarrierLost is always asserted at 100mbps. */
++		if (txstatus & (TxOutOfWindow | TxAborted)) {
++			/* There was an major error, log it. */
++			printf("Transmit error, Tx status %08x\n", txstatus);
++			if (txstatus & TxAborted) {
++				RTL_W32(priv, TxConfig, TxClearAbt);
++				RTL_W16(priv, IntrStatus, TxErr);
++			}
++		} else {
++			if (txstatus & TxUnderrun) {
++				/* Add 64 to the Tx FIFO threshold. */
++				if (priv->tx_flag < 0x00300000)
++					priv->tx_flag += 0x00020000;
++			}
++		}
++
++		dirty_tx++;
++		tx_left--;
++	}
++
++	if (priv->dirty_tx != dirty_tx) {
++		priv->dirty_tx = dirty_tx;
++	}
++}
++
++static int rtl8139_eth_send(struct eth_device *edev, void *packet,
++				int packet_length)
++{
++	struct rtl8139_priv *priv = edev->priv;
++
++	unsigned int entry;
++
++#ifdef RTL8139_DEBUG
++	printf("rtl8139_eth_send()\n");
++	memory_display(packet, 0, 70, 1);
++#endif
++
++	rtl8139_tx_interrupt(priv);
++
++	/* Calculate the next Tx descriptor entry. */
++	entry = priv->cur_tx % NUM_TX_DESC;
++
++	/* Note: the chip doesn't have auto-pad! */
++	if (likely(packet_length < TX_BUF_SIZE)) {
++		if (packet_length < ETH_ZLEN)
++			memset(priv->tx_buf[entry], 0, ETH_ZLEN);
++		memcpy(priv->tx_buf[entry], packet, packet_length);
++	} else {
++		printf("packet too long\n");
++		return 0;
++	}
++
++	/*
++	 * Writing to TxStatus triggers a DMA transfer of the data
++	 * copied to tp->tx_buf[entry] above.
++	 */
++	if (packet_length < ETH_ZLEN) {
++		packet_length = ETH_ZLEN;
++	}
++	RTL_W32_F(priv, (TxStatus0 + (entry * sizeof(u32))),
++			(priv->tx_flag | packet_length));
++
++	priv->cur_tx++;
++
++	return 0;
++}
++
++static const u16 rtl8139_intr_mask =
++		PCIErr | PCSTimeout | RxUnderrun | RxOverflow | RxFIFOOver |
++		TxErr | TxOK | RxErr | RxOK;
++
++static int rtl8139_eth_rx(struct eth_device *edev)
++{
++	struct rtl8139_priv *priv = edev->priv;
++	unsigned char *rx_ring = priv->rx_ring;
++	unsigned int cur_rx = priv->cur_rx;
++	unsigned int rx_size = 0;
++
++	u32 ring_offset = cur_rx % RX_BUF_LEN;
++	u32 rx_status;
++	unsigned int pkt_size;
++
++#ifdef RTL8139_DEBUG
++	printf("rtl8139_eth_rx()\n");
++
++	printf("In %s(), current %04x BufAddr %04x, free to %04x, Cmd %02x\n",
++		   __func__, (u16)cur_rx,
++		   RTL_R16(priv, RxBufAddr), RTL_R16(priv, RxBufPtr),
++		   RTL_R8(priv, ChipCmd));
++#endif
++
++	rtl8139_tx_interrupt(priv);
++
++	if (RTL_R8(priv, ChipCmd) & RxBufEmpty) {
++		/* no data */
++		return 0;
++	}
++
++	rx_status = le32_to_cpu(*(__le32 *) (rx_ring + ring_offset));
++	rx_size = rx_status >> 16;
++	pkt_size = rx_size - 4;
++
++#ifdef RTL8139_DEBUG
++	memory_display(&rx_ring[ring_offset], 0, 70, 1);
++#endif
++
++	net_receive(&rx_ring[ring_offset + 4], pkt_size);
++
++	cur_rx = (cur_rx + rx_size + 4 + 3) & ~3;
++	cur_rx = cur_rx & (RX_BUF_LEN - 1); /* FIXME */
++	RTL_W16(priv, RxBufPtr, (u16) (cur_rx - 16));
++
++	priv->cur_rx = cur_rx;
++
++	return pkt_size /* size */;
++}
++
++static int rtl8139_probe(struct pci_dev *pdev, const struct pci_device_id *id)
++{
++	struct eth_device *edev;
++	struct rtl8139_priv *priv;
++
++	u32 bar;
++	struct pci_bus *bus = pdev->bus;
++	struct device_d *dev = &pdev->dev;
++
++#ifdef RTL8139_DEBUG
++	printf("rtl8139_probe()\n");
++#endif
++
++	/* enable pci device */
++	pci_read_config_dword(pdev, PCI_COMMAND, &bar);
++	pci_write_config_dword(pdev, PCI_COMMAND, bar | 0x03);
++
++	edev = xzalloc(sizeof(struct eth_device) +
++			sizeof(struct rtl8139_priv));
++	dev->type_data = edev;
++	priv = (struct rtl8139_priv *)(edev + 1);
++
++	edev->priv = priv;
++
++	priv->pci_dev = pdev;
++
++	priv->miidev.read = rtl8139_phy_read;
++	priv->miidev.write = rtl8139_phy_write;
++	priv->miidev.address = 0;
++	priv->miidev.flags = 0;
++	priv->miidev.edev = edev;
++
++	/* FIXME: pci_resource_start() */
++	pci_read_config_dword(pdev, PCI_BASE_ADDRESS_1, &bar);
++	priv->base = (void *)bus->ops->res_start(bus, bar);
++
++	printf("found rtl8139 (rev %02x) at %02x: %04x (base=%p)\n",
++			pdev->revision,
++			pdev->devfn,
++			(pdev->class >> 8) & 0xffff,
++			priv->base);
++
++	edev->init = rtl8139_init_dev;
++	edev->open = rtl8139_eth_open;
++	edev->send = rtl8139_eth_send;
++	edev->recv = rtl8139_eth_rx;
++	edev->get_ethaddr = rtl8139_get_ethaddr;
++	edev->set_ethaddr = rtl8139_set_ethaddr;
++	edev->halt = rtl8139_eth_halt;
++
++	mii_register(&priv->miidev);
++	eth_register(edev);
++
++	return 0;
++}
++
++static DEFINE_PCI_DEVICE_TABLE(rtl8139_pci_tbl) = {
++	{ PCI_DEVICE(PCI_VENDOR_ID_REALTEK,	PCI_DEVICE_ID_REALTEK_8139), },
++	{ },
++};
++
++static struct pci_driver rtl8139_eth_driver = {
++	.name = "rtl8139_eth",
++	.id_table = rtl8139_pci_tbl,
++	.probe = rtl8139_probe,
++};
++
++static int rtl8139_init(void)
++{
++	pci_register_driver(&rtl8139_eth_driver);
++
++	add_generic_device("rtl8139_eth", -1, NULL, 0xb0000000, 16,
++		IORESOURCE_MEM, NULL);
++
++	return 0;
++}
++device_initcall(rtl8139_init);
+diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
+index 49e2954..17ac7fd 100644
+--- a/include/linux/pci_ids.h
++++ b/include/linux/pci_ids.h
+@@ -134,3 +134,8 @@
+ #define PCI_CLASS_SP_OTHER		0x1180
+ 
+ #define PCI_CLASS_OTHERS		0xff
++
++/* Vendors and devices.  Sort key: vendor first, device next. */
++
++#define PCI_VENDOR_ID_REALTEK		0x10ec
++#define PCI_DEVICE_ID_REALTEK_8139	0x8139
 -- 
 1.7.8.3
 
