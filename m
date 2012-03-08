@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-bk0-f49.google.com ([209.85.214.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1S5jMQ-00032W-Vx
- for barebox@lists.infradead.org; Thu, 08 Mar 2012 19:50:52 +0000
-Received: by bkcjk13 with SMTP id jk13so900480bkc.36
- for <barebox@lists.infradead.org>; Thu, 08 Mar 2012 11:50:49 -0800 (PST)
+ id 1S5jMQ-00032O-4C
+ for barebox@lists.infradead.org; Thu, 08 Mar 2012 19:50:53 +0000
+Received: by bkcjk13 with SMTP id jk13so900445bkc.36
+ for <barebox@lists.infradead.org>; Thu, 08 Mar 2012 11:50:48 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Thu,  8 Mar 2012 23:50:30 +0400
-Message-Id: <1331236232-32735-5-git-send-email-antonynpavlov@gmail.com>
+Date: Thu,  8 Mar 2012 23:50:29 +0400
+Message-Id: <1331236232-32735-4-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1331236232-32735-1-git-send-email-antonynpavlov@gmail.com>
 References: <1331236232-32735-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,104 +23,311 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC V2 4/6] PCI: add draft lspci command
+Subject: [RFC V2 3/6] MIPS: add PCI support for GT64120-based malta
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- commands/Kconfig  |    8 ++++++++
- commands/Makefile |    1 +
- commands/lspci.c  |   53 +++++++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 62 insertions(+), 0 deletions(-)
- create mode 100644 commands/lspci.c
+ arch/mips/Kconfig             |   22 ++++
+ arch/mips/mach-malta/Makefile |    1 +
+ arch/mips/mach-malta/pci.c    |  241 +++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 264 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/mach-malta/pci.c
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index e332a85..2367014 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -516,6 +516,14 @@ config CMD_USB
- 	help
- 	  The usb command allows to rescan for USB devices.
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 50d5c67..158cdce 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -36,6 +36,7 @@ config MACH_MIPS_MALTA
+ 	select SYS_SUPPORTS_32BIT_KERNEL
+ 	select SYS_SUPPORTS_BIG_ENDIAN
+ 	select HAS_DEBUG_LL
++	select HW_HAS_PCI
  
-+config CMD_LSPCI
-+	bool
-+	depends on PCI
-+	prompt "lspci command"
-+	default y
-+	help
-+	  The lspci command allows to list all PCI devices.
-+
+ config MACH_MIPS_BCM47XX
+ 	bool "Broadcom BCM47xx-based boards"
+@@ -219,6 +220,27 @@ config CMD_MIPS_CPUINFO
+ 
  endmenu
  
- endif
-diff --git a/commands/Makefile b/commands/Makefile
-index 31442b5..273acce 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -64,3 +64,4 @@ obj-$(CONFIG_CMD_OFTREE)	+= oftree.o
- obj-$(CONFIG_CMD_MAGICVAR)	+= magicvar.o
- obj-$(CONFIG_CMD_IOMEM)		+= iomem.o
- obj-$(CONFIG_CMD_LINUX_EXEC)	+= linux_exec.o
-+obj-$(CONFIG_CMD_LSPCI)		+= lspci.o
-diff --git a/commands/lspci.c b/commands/lspci.c
++menu "Bus options (PCI)"
++
++config HW_HAS_PCI
++	bool
++
++config PCI
++	bool "Support for PCI controller"
++	depends on HW_HAS_PCI
++	select PCI_DOMAINS
++	help
++	  Find out whether you have a PCI motherboard. PCI is the name of a
++	  bus system, i.e. the way the CPU talks to the other stuff inside
++	  your box. If you have PCI, say Y, otherwise N.
++
++config PCI_DOMAINS
++	bool
++
++source "drivers/pci/Kconfig"
++
++endmenu
++
+ source common/Kconfig
+ source commands/Kconfig
+ source net/Kconfig
+diff --git a/arch/mips/mach-malta/Makefile b/arch/mips/mach-malta/Makefile
+index f3cc668..0c5a701 100644
+--- a/arch/mips/mach-malta/Makefile
++++ b/arch/mips/mach-malta/Makefile
+@@ -1 +1,2 @@
+ obj-y += reset.o
++obj-$(CONFIG_PCI) += pci.o
+diff --git a/arch/mips/mach-malta/pci.c b/arch/mips/mach-malta/pci.c
 new file mode 100644
-index 0000000..1460f39
+index 0000000..5e679a7
 --- /dev/null
-+++ b/commands/lspci.c
-@@ -0,0 +1,53 @@
-+/*
-+ * Copyright (C) 2011 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ * This file is part of barebox.
-+ * See file CREDITS for list of people who contributed to this project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-+ */
-+
++++ b/arch/mips/mach-malta/pci.c
+@@ -0,0 +1,241 @@
 +#include <common.h>
++#include <types.h>
++#include <driver.h>
 +#include <init.h>
++#include <mach/hardware.h>
++#include <asm/io.h>
++
 +#include <linux/pci.h>
++#include <asm/gt64120.h>
 +
-+#include <command.h>
++#define GT64120_BASE    0xb4000000
 +
-+extern struct pci_bus *pci_root;
++#define PCI_ACCESS_READ  0
++#define PCI_ACCESS_WRITE 1
 +
-+static int do_lspci(struct command *cmdtp, int argc, char *argv[])
++static struct resource gt64120_mem_resource = {
++	.name	= "GT-64120 PCI MEM",
++	.flags	= IORESOURCE_MEM,
++};
++
++static struct resource gt64120_io_resource = {
++	.name	= "GT-64120 PCI I/O",
++	.flags	= IORESOURCE_IO,
++};
++
++static int gt64xxx_pci0_pcibios_config_access(unsigned char access_type,
++		struct pci_bus *bus, unsigned int devfn, int where, u32 *data)
 +{
-+	struct pci_dev *dev;
++	unsigned char busnum = bus->number;
++	u32 intr;
 +
-+	if (!pci_present()) {
-+		printf("no pci!\n");
-+		return 1;
++	if ((busnum == 0) && (devfn >= PCI_DEVFN(31, 0)))
++		return -1;	/* Because of a bug in the galileo (for slot 31). */
++
++	/* Clear cause register bits */
++	GT_WRITE(GT_INTRCAUSE_OFS, ~(GT_INTRCAUSE_MASABORT0_BIT |
++	                             GT_INTRCAUSE_TARABORT0_BIT));
++
++	/* Setup address */
++	GT_WRITE(GT_PCI0_CFGADDR_OFS,
++		 (busnum << GT_PCI0_CFGADDR_BUSNUM_SHF) |
++		 (devfn << GT_PCI0_CFGADDR_FUNCTNUM_SHF) |
++		 ((where / 4) << GT_PCI0_CFGADDR_REGNUM_SHF) |
++		 GT_PCI0_CFGADDR_CONFIGEN_BIT);
++
++	if (access_type == PCI_ACCESS_WRITE) {
++		if (busnum == 0 && PCI_SLOT(devfn) == 0) {
++			/*
++			 * The Galileo system controller is acting
++			 * differently than other devices.
++			 */
++			GT_WRITE(GT_PCI0_CFGDATA_OFS, *data);
++		} else
++			__GT_WRITE(GT_PCI0_CFGDATA_OFS, *data);
++	} else {
++		if (busnum == 0 && PCI_SLOT(devfn) == 0) {
++			/*
++			 * The Galileo system controller is acting
++			 * differently than other devices.
++			 */
++			*data = GT_READ(GT_PCI0_CFGDATA_OFS);
++		} else
++			*data = __GT_READ(GT_PCI0_CFGDATA_OFS);
 +	}
 +
-+	list_for_each_entry(dev, &pci_root->devices, bus_list) {
-+		printf("%02x: %04x: %04x:%04x (rev %02x)\n",
-+			      dev->devfn,
-+			      (dev->class >> 8) & 0xffff,
-+			      dev->vendor,
-+			      dev->device,
-+			      dev->revision);
++	/* Check for master or target abort */
++	intr = GT_READ(GT_INTRCAUSE_OFS);
++
++	if (intr & (GT_INTRCAUSE_MASABORT0_BIT | GT_INTRCAUSE_TARABORT0_BIT)) {
++		/* Error occurred */
++
++		/* Clear bits */
++		GT_WRITE(GT_INTRCAUSE_OFS, ~(GT_INTRCAUSE_MASABORT0_BIT |
++		                             GT_INTRCAUSE_TARABORT0_BIT));
++
++		return -1;
 +	}
 +
 +	return 0;
 +}
 +
-+BAREBOX_CMD_START(lspci)
-+	.cmd            = do_lspci,
-+	.usage          = "Show PCI info",
-+BAREBOX_CMD_END
++/*
++ * We can't address 8 and 16 bit words directly.  Instead we have to
++ * read/write a 32bit word and mask/modify the data we actually want.
++ */
++static int gt64xxx_pci0_pcibios_read(struct pci_bus *bus, unsigned int devfn,
++		int where, int size, u32 * val)
++{
++	u32 data = 0;
++
++	if (gt64xxx_pci0_pcibios_config_access(PCI_ACCESS_READ, bus, devfn,
++	                                       where, &data))
++		return PCIBIOS_DEVICE_NOT_FOUND;
++
++	if (size == 1)
++		*val = (data >> ((where & 3) << 3)) & 0xff;
++	else if (size == 2)
++		*val = (data >> ((where & 3) << 3)) & 0xffff;
++	else
++		*val = data;
++
++	return PCIBIOS_SUCCESSFUL;
++}
++
++static int gt64xxx_pci0_pcibios_write(struct pci_bus *bus, unsigned int devfn,
++		int where, int size, u32 val)
++{
++	u32 data = 0;
++
++	if (size == 4)
++		data = val;
++	else {
++		if (gt64xxx_pci0_pcibios_config_access(PCI_ACCESS_READ, bus,
++		                                       devfn, where, &data))
++			return PCIBIOS_DEVICE_NOT_FOUND;
++
++		if (size == 1)
++			data = (data & ~(0xff << ((where & 3) << 3))) |
++				(val << ((where & 3) << 3));
++		else if (size == 2)
++			data = (data & ~(0xffff << ((where & 3) << 3))) |
++				(val << ((where & 3) << 3));
++	}
++
++	if (gt64xxx_pci0_pcibios_config_access(PCI_ACCESS_WRITE, bus, devfn,
++	                                       where, &data))
++		return PCIBIOS_DEVICE_NOT_FOUND;
++
++	return PCIBIOS_SUCCESSFUL;
++}
++
++/* FIXME: it's HACK */
++/* function returns memory address for begin of pci resource */
++static int gt64xxx_res_start(struct pci_bus *bus, resource_size_t res_addr)
++{
++	return res_addr | 0xa0000000;
++}
++
++struct pci_ops gt64xxx_pci0_ops = {
++	.read	= gt64xxx_pci0_pcibios_read,
++	.write	= gt64xxx_pci0_pcibios_write,
++
++	.res_start = gt64xxx_res_start,
++};
++
++static struct pci_controller gt64120_controller = {
++	.pci_ops	= &gt64xxx_pci0_ops,
++	.io_resource	= &gt64120_io_resource,
++	.mem_resource	= &gt64120_mem_resource,
++};
++
++int pcibios_init()
++{
++	resource_size_t start, end, map, start1, end1, map1, mask, res_end;
++
++	/*
++	 * Due to a bug in the Galileo system controller, we need
++	 * to setup the PCI BAR for the Galileo internal registers.
++	 * This should be done in the bios/bootprom and will be
++	 * fixed in a later revision of YAMON (the MIPS boards
++	 * boot prom).
++	 */
++	GT_WRITE(GT_PCI0_CFGADDR_OFS,
++		 (0 << GT_PCI0_CFGADDR_BUSNUM_SHF) | /* Local bus */
++		 (0 << GT_PCI0_CFGADDR_DEVNUM_SHF) | /* GT64120 dev */
++		 (0 << GT_PCI0_CFGADDR_FUNCTNUM_SHF) | /* Function 0*/
++		 ((0x20/4) << GT_PCI0_CFGADDR_REGNUM_SHF) | /* BAR 4*/
++		 GT_PCI0_CFGADDR_CONFIGEN_BIT);
++
++	/* Perform the write */
++	//GT_WRITE(GT_PCI0_CFGDATA_OFS, CPHYSADDR(MIPS_GT_BASE));
++	//GT_WRITE(GT_PCI0_CFGDATA_OFS, GT64120_BASE);
++	GT_WRITE(GT_PCI0_CFGDATA_OFS, 0x14000000);
++
++#define PCI0_IO_SPACE_BASE	0x10000000
++#define PCI0_IO_SPACE_SIZE	0x01000000
++#define PCI0_MEM_SPACE_BASE	0x11000000
++#define PCI0_MEM_SPACE_SIZE	0x01000000
++
++#if 1
++	GT_WRITE(GT_PCI0IOLD_OFS, (PCI0_IO_SPACE_BASE >> 21) & 0x7ff);
++	GT_WRITE(GT_PCI0IOHD_OFS, ((PCI0_IO_SPACE_BASE + PCI0_IO_SPACE_SIZE - 1) >> 21) & 0x7f);
++	GT_WRITE(GT_PCI0M0LD_OFS, (PCI0_MEM_SPACE_BASE >> 21) & 0x7ff);
++	GT_WRITE(GT_PCI0M0HD_OFS, ((PCI0_MEM_SPACE_BASE + PCI0_MEM_SPACE_SIZE - 1) >> 21) & 0x7f);
++#endif
++
++	/* Here is linux code. It assumes, that firmware made the work... */
++
++	/* Set up resource ranges from the controller's registers.  */
++	start = GT_READ(GT_PCI0M0LD_OFS);
++	end = GT_READ(GT_PCI0M0HD_OFS);
++	map = GT_READ(GT_PCI0M0REMAP_OFS);
++	end = (end & GT_PCI_HD_MSK) | (start & ~GT_PCI_HD_MSK);
++	start1 = GT_READ(GT_PCI0M1LD_OFS);
++	end1 = GT_READ(GT_PCI0M1HD_OFS);
++	map1 = GT_READ(GT_PCI0M1REMAP_OFS);
++	end1 = (end1 & GT_PCI_HD_MSK) | (start1 & ~GT_PCI_HD_MSK);
++#if 0
++	/* Cannot support multiple windows, use the wider.  */
++	if (end1 - start1 > end - start) {
++		start = start1;
++		end = end1;
++		map = map1;
++	}
++#endif
++	mask = ~(start ^ end);
++        /* We don't support remapping with a discontiguous mask.  */
++	BUG_ON((start & GT_PCI_HD_MSK) != (map & GT_PCI_HD_MSK) &&
++	       mask != ~((mask & -mask) - 1));
++	gt64120_mem_resource.start = start;
++	res_end = end;
++	gt64120_controller.mem_offset = (start & mask) - (map & mask);
++	/* Addresses are 36-bit, so do shifts in the destinations.  */
++	gt64120_mem_resource.start <<= GT_PCI_DCRM_SHF;
++	res_end <<= GT_PCI_DCRM_SHF;
++	res_end |= (1 << GT_PCI_DCRM_SHF) - 1;
++	gt64120_mem_resource.size = res_end - gt64120_mem_resource.start + 1;
++	gt64120_controller.mem_offset <<= GT_PCI_DCRM_SHF;
++
++	start = GT_READ(GT_PCI0IOLD_OFS);
++	end = GT_READ(GT_PCI0IOHD_OFS);
++	map = GT_READ(GT_PCI0IOREMAP_OFS);
++	end = (end & GT_PCI_HD_MSK) | (start & ~GT_PCI_HD_MSK);
++	mask = ~(start ^ end);
++        /* We don't support remapping with a discontiguous mask.  */
++	BUG_ON((start & GT_PCI_HD_MSK) != (map & GT_PCI_HD_MSK) &&
++	       mask != ~((mask & -mask) - 1));
++	gt64120_io_resource.start = map & mask;
++	res_end = (map & mask) | ~mask;
++	gt64120_controller.io_offset = 0;
++	/* Addresses are 36-bit, so do shifts in the destinations.  */
++	gt64120_io_resource.start <<= GT_PCI_DCRM_SHF;
++	res_end <<= GT_PCI_DCRM_SHF;
++	res_end |= (1 << GT_PCI_DCRM_SHF) - 1;
++	gt64120_io_resource.size = res_end - gt64120_io_resource.start + 1;
++
++	register_pci_controller(&gt64120_controller);
++
++	return 0;
++}
++EXPORT_SYMBOL(pcibios_init);
 -- 
 1.7.8.3
 
