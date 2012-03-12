@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 7.mo2.mail-out.ovh.net ([188.165.48.182]
  helo=mo2.mail-out.ovh.net)
  by casper.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1S73Ru-0006mc-7x
- for barebox@lists.infradead.org; Mon, 12 Mar 2012 11:29:59 +0000
+ id 1S73Rr-0006mK-GX
+ for barebox@lists.infradead.org; Mon, 12 Mar 2012 11:29:56 +0000
 Received: from mail621.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 83674DC6A73
- for <barebox@lists.infradead.org>; Mon, 12 Mar 2012 12:33:02 +0100 (CET)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 59456DC6946
+ for <barebox@lists.infradead.org>; Mon, 12 Mar 2012 12:33:03 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon, 12 Mar 2012 12:17:50 +0100
-Message-Id: <1331551082-7730-2-git-send-email-plagnioj@jcrosoft.com>
+Date: Mon, 12 Mar 2012 12:17:51 +0100
+Message-Id: <1331551082-7730-3-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1331551082-7730-1-git-send-email-plagnioj@jcrosoft.com>
 References: <1331551082-7730-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
@@ -25,79 +25,88 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/14] at91sam9263ek: add runtime nor detection
+Subject: [PATCH 03/14] at91sam9263ek: add leds support
 To: barebox@lists.infradead.org, Nicolas Ferre <nicolas.ferre@atmel.com>
 Cc: Patrice VILCHEZ <patrice.vilchez@atmel.com>
 
-most of the board does not have a nor soldered
-
-update the nand partition table to boot from nand with bootstrap
-
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/boards/at91sam9263ek/env/config |    6 +++---
- arch/arm/boards/at91sam9263ek/init.c     |   23 ++++++++++++++---------
- 2 files changed, 17 insertions(+), 12 deletions(-)
+ arch/arm/boards/at91sam9263ek/init.c     |   31 ++++++++++++++++++++++++++++++
+ arch/arm/configs/at91sam9263ek_defconfig |    5 ++++
+ 2 files changed, 36 insertions(+), 0 deletions(-)
 
-diff --git a/arch/arm/boards/at91sam9263ek/env/config b/arch/arm/boards/at91sam9263ek/env/config
-index e189b8e..388a939 100644
---- a/arch/arm/boards/at91sam9263ek/env/config
-+++ b/arch/arm/boards/at91sam9263ek/env/config
-@@ -25,10 +25,10 @@ kernelimage=uImage
- #kernelimage=Image.lzo
- 
- nand_device=atmel_nand
--nand_parts="256k(barebox)ro,128k(bareboxenv),1536k(kernel),-(root)"
--rootfs_mtdblock_nand=3
-+nand_parts="128k(at91bootstrap),256k(barebox)ro,128k(bareboxenv),128k(bareboxenv2),4M(kernel),120M(rootfs),-(data)"
-+rootfs_mtdblock_nand=5
- 
--nor_parts="256k(barebox),64k(bareboxenv),1536k(kernel),-(root)"
-+nor_parts="256k(barebox),64k(bareboxenv),4M(kernel),-(root)"
- 
- autoboot_timeout=3
- 
 diff --git a/arch/arm/boards/at91sam9263ek/init.c b/arch/arm/boards/at91sam9263ek/init.c
-index d7b9afe..1c52acc 100644
+index 1c52acc..42b38ba 100644
 --- a/arch/arm/boards/at91sam9263ek/init.c
 +++ b/arch/arm/boards/at91sam9263ek/init.c
-@@ -32,6 +32,7 @@
- #include <io.h>
- #include <asm/hardware.h>
- #include <nand.h>
-+#include <sizes.h>
- #include <linux/mtd/nand.h>
- #include <mach/at91_pmc.h>
- #include <mach/board.h>
-@@ -129,15 +130,19 @@ static int at91sam9263ek_devices_init(void)
+@@ -107,6 +107,36 @@ static void ek_add_device_mci(void)
+ static void ek_add_device_mci(void) {}
+ #endif
+ 
++#ifdef CONFIG_LED_GPIO
++struct gpio_led ek_leds[] = {
++	{
++		.gpio		= AT91_PIN_PC29,
++		.active_low	= 1,
++		.led = {
++			.name = "ds2",
++		},
++	}, {
++		.gpio		= AT91_PIN_PB7,
++		.led = {
++			.name = "ds3",
++		},
++	},
++};
++
++static void ek_device_add_leds(void)
++{
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(ek_leds); i++) {
++		at91_set_gpio_output(ek_leds[i].gpio, ek_leds[i].active_low);
++		led_gpio_register(&ek_leds[i]);
++	}
++	led_set_trigger(LED_TRIGGER_HEARTBEAT, &ek_leds[1].led);
++}
++#else
++static void ek_device_add_leds(void) {}
++#endif
++
+ static int at91sam9263ek_mem_init(void)
+ {
+ 	at91_add_device_sdram(64 * 1024 * 1024);
+@@ -129,6 +159,7 @@ static int at91sam9263ek_devices_init(void)
+ 	at91_add_device_eth(&macb_pdata);
  	add_cfi_flash_device(0, AT91_CHIPSELECT_0, 8 * 1024 * 1024, 0);
  	ek_add_device_mci();
++	ek_device_add_leds();
  
--#if defined(CONFIG_DRIVER_CFI) || defined(CONFIG_DRIVER_CFI_OLD)
--	devfs_add_partition("nor0", 0x00000, 0x40000, PARTITION_FIXED, "self");
--	devfs_add_partition("nor0", 0x40000, 0x20000, PARTITION_FIXED, "env0");
--#elif defined(CONFIG_NAND_ATMEL)
--	devfs_add_partition("nand0", 0x00000, 0x80000, PARTITION_FIXED, "self_raw");
--	dev_add_bb_dev("self_raw", "self0");
--	devfs_add_partition("nand0", 0x80000, 0x20000, PARTITION_FIXED, "env_raw");
--	dev_add_bb_dev("env_raw", "env0");
--#endif
-+	if (IS_ENABLED(CONFIG_DRIVER_CFI) && cdev_by_name("nor0")) {
-+		devfs_add_partition("nor0", 0x00000, 0x40000, PARTITION_FIXED, "self");
-+		devfs_add_partition("nor0", 0x40000, 0x20000, PARTITION_FIXED, "env0");
-+	} else if (IS_ENABLED(CONFIG_NAND_ATMEL)) {
-+		devfs_add_partition("nand0", 0x00000, SZ_128K, PARTITION_FIXED, "at91bootstrap_raw");
-+		dev_add_bb_dev("at91bootstrap_raw", "at91bootstrap");
-+		devfs_add_partition("nand0", SZ_128K, SZ_256K, PARTITION_FIXED, "self_raw");
-+		dev_add_bb_dev("self_raw", "self0");
-+		devfs_add_partition("nand0", SZ_256K + SZ_128K, SZ_128K, PARTITION_FIXED, "env_raw");
-+		dev_add_bb_dev("env_raw", "env0");
-+		devfs_add_partition("nand0", SZ_512K, SZ_128K, PARTITION_FIXED, "env_raw1");
-+		dev_add_bb_dev("env_raw1", "env1");
-+	}
- 
- 	armlinux_set_bootparams((void *)(AT91_CHIPSELECT_1 + 0x100));
- 	armlinux_set_architecture(MACH_TYPE_AT91SAM9263EK);
+ 	if (IS_ENABLED(CONFIG_DRIVER_CFI) && cdev_by_name("nor0")) {
+ 		devfs_add_partition("nor0", 0x00000, 0x40000, PARTITION_FIXED, "self");
+diff --git a/arch/arm/configs/at91sam9263ek_defconfig b/arch/arm/configs/at91sam9263ek_defconfig
+index 308f0cd..1b4b2e3 100644
+--- a/arch/arm/configs/at91sam9263ek_defconfig
++++ b/arch/arm/configs/at91sam9263ek_defconfig
+@@ -27,6 +27,8 @@ CONFIG_CMD_GO=y
+ CONFIG_CMD_TIMEOUT=y
+ CONFIG_CMD_PARTITION=y
+ CONFIG_CMD_GPIO=y
++CONFIG_CMD_LED=y
++CONFIG_CMD_LED_TRIGGER=y
+ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+@@ -42,6 +44,9 @@ CONFIG_NAND_ATMEL=y
+ CONFIG_UBI=y
+ CONFIG_MCI=y
+ CONFIG_MCI_ATMEL=y
++CONFIG_LED=y
++CONFIG_LED_GPIO=y
++CONFIG_LED_TRIGGERS=y
+ CONFIG_FS_FAT=y
+ CONFIG_FS_FAT_WRITE=y
+ CONFIG_FS_FAT_LFN=y
 -- 
 1.7.7
 
