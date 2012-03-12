@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 2.mo2.mail-out.ovh.net ([188.165.53.149]
+Received: from 6.mo2.mail-out.ovh.net ([87.98.165.38]
  helo=mo2.mail-out.ovh.net)
  by bombadil.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1S73SB-0005Wg-BW
- for barebox@lists.infradead.org; Mon, 12 Mar 2012 11:30:16 +0000
+ id 1S73Rm-0004ZL-Lh
+ for barebox@lists.infradead.org; Mon, 12 Mar 2012 11:29:51 +0000
 Received: from mail621.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 2FC35DC6A9B
- for <barebox@lists.infradead.org>; Mon, 12 Mar 2012 12:33:06 +0100 (CET)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 9F913DC699C
+ for <barebox@lists.infradead.org>; Mon, 12 Mar 2012 12:33:01 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon, 12 Mar 2012 12:17:55 +0100
-Message-Id: <1331551082-7730-7-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1331551082-7730-1-git-send-email-plagnioj@jcrosoft.com>
-References: <1331551082-7730-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Mon, 12 Mar 2012 12:17:49 +0100
+Message-Id: <1331551082-7730-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,120 +23,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/14] at91sam9261ek/9g10ek: add leds support
+Subject: [PATCH 01/14] macb: fix mmu support
 To: barebox@lists.infradead.org, Nicolas Ferre <nicolas.ferre@atmel.com>
 Cc: Patrice VILCHEZ <patrice.vilchez@atmel.com>
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/boards/at91sam9261ek/init.c     |   38 ++++++++++++++++++++++++++++++
- arch/arm/configs/at91sam9261ek_defconfig |    5 ++++
- arch/arm/configs/at91sam9g10ek_defconfig |    5 ++++
- 3 files changed, 48 insertions(+), 0 deletions(-)
+ drivers/net/macb.c |    8 +++++---
+ 1 files changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/boards/at91sam9261ek/init.c b/arch/arm/boards/at91sam9261ek/init.c
-index 2272fd6..6327b59 100644
---- a/arch/arm/boards/at91sam9261ek/init.c
-+++ b/arch/arm/boards/at91sam9261ek/init.c
-@@ -39,6 +39,7 @@
- #include <mach/at91sam9_smc.h>
- #include <mach/sam9_smc.h>
- #include <dm9000.h>
-+#include <led.h>
+diff --git a/drivers/net/macb.c b/drivers/net/macb.c
+index ab0d1af..48492e5 100644
+--- a/drivers/net/macb.c
++++ b/drivers/net/macb.c
+@@ -50,6 +50,7 @@
+ #include <mach/board.h>
+ #include <linux/clk.h>
+ #include <linux/err.h>
++#include <asm/mmu.h>
  
- static struct atmel_nand_data nand_pdata = {
- 	.ale		= 22,
-@@ -134,6 +135,42 @@ static void __init ek_add_device_dm9000(void)
- static void __init ek_add_device_dm9000(void) {}
- #endif /* CONFIG_DRIVER_NET_DM9K */
+ #include "macb.h"
  
-+#ifdef CONFIG_LED_GPIO
-+struct gpio_led ek_leds[] = {
-+	{
-+		.gpio		= AT91_PIN_PA23,
-+		.led = {
-+			.name = "ds1",
-+		},
-+	}, {
-+		.gpio		= AT91_PIN_PA14,
-+		.active_low	= 1,
-+		.led = {
-+			.name = "ds7",
-+		},
-+	}, {
-+		.gpio		= AT91_PIN_PA13,
-+		.active_low	= 1,
-+		.led = {
-+			.name = "ds8",
-+		},
-+	},
-+};
-+
-+static void ek_device_add_leds(void)
-+{
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(ek_leds); i++) {
-+		at91_set_gpio_output(ek_leds[i].gpio, ek_leds[i].active_low);
-+		led_gpio_register(&ek_leds[i]);
-+	}
-+	led_set_trigger(LED_TRIGGER_HEARTBEAT, &ek_leds[0].led);
-+}
-+#else
-+static void ek_device_add_leds(void) {}
-+#endif
-+
- static int at91sam9261ek_mem_init(void)
- {
- 	at91_add_device_sdram(64 * 1024 * 1024);
-@@ -147,6 +184,7 @@ static int at91sam9261ek_devices_init(void)
+@@ -118,6 +119,7 @@ static int macb_send(struct eth_device *edev, void *packet,
+ 	macb->tx_ring[0].ctrl = ctrl;
+ 	macb->tx_ring[0].addr = (ulong)packet;
+ 	barrier();
++	dma_flush_range((ulong) packet, (ulong)packet + length);
+ 	writel(MACB_BIT(TE) | MACB_BIT(RE) | MACB_BIT(TSTART), macb->regs + MACB_NCR);
  
- 	ek_add_device_nand();
- 	ek_add_device_dm9000();
-+	ek_device_add_leds();
+ 	if (ctrl & TXBUF_UNDERRUN)
+@@ -430,9 +432,9 @@ static int macb_probe(struct device_d *dev)
+ 	macb->miidev.parent = dev;
+ 	macb->flags = pdata->flags;
  
- 	devfs_add_partition("nand0", 0x00000, SZ_128K, PARTITION_FIXED, "at91bootstrap_raw");
- 	devfs_add_partition("nand0", SZ_128K, SZ_256K, PARTITION_FIXED, "self_raw");
-diff --git a/arch/arm/configs/at91sam9261ek_defconfig b/arch/arm/configs/at91sam9261ek_defconfig
-index b60407f..f9f0ddd 100644
---- a/arch/arm/configs/at91sam9261ek_defconfig
-+++ b/arch/arm/configs/at91sam9261ek_defconfig
-@@ -34,6 +34,8 @@ CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_PARTITION=y
- CONFIG_CMD_GPIO=y
- CONFIG_CMD_UNCOMPRESS=y
-+CONFIG_CMD_LED=y
-+CONFIG_CMD_LED_TRIGGER=y
- CONFIG_NET=y
- CONFIG_NET_DHCP=y
- CONFIG_NET_NFS=y
-@@ -47,3 +49,6 @@ CONFIG_MTD=y
- CONFIG_NAND=y
- CONFIG_NAND_ATMEL=y
- CONFIG_UBI=y
-+CONFIG_LED=y
-+CONFIG_LED_GPIO=y
-+CONFIG_LED_TRIGGERS=y
-diff --git a/arch/arm/configs/at91sam9g10ek_defconfig b/arch/arm/configs/at91sam9g10ek_defconfig
-index d54e42c..d074bdc 100644
---- a/arch/arm/configs/at91sam9g10ek_defconfig
-+++ b/arch/arm/configs/at91sam9g10ek_defconfig
-@@ -28,6 +28,8 @@ CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_PARTITION=y
- CONFIG_CMD_GPIO=y
- CONFIG_CMD_UNCOMPRESS=y
-+CONFIG_CMD_LED=y
-+CONFIG_CMD_LED_TRIGGER=y
- CONFIG_NET=y
- CONFIG_NET_DHCP=y
- CONFIG_NET_NFS=y
-@@ -39,3 +41,6 @@ CONFIG_MTD=y
- CONFIG_NAND=y
- CONFIG_NAND_ATMEL=y
- CONFIG_UBI=y
-+CONFIG_LED=y
-+CONFIG_LED_GPIO=y
-+CONFIG_LED_TRIGGERS=y
+-	macb->rx_buffer = xmalloc(CFG_MACB_RX_BUFFER_SIZE);
+-	macb->rx_ring = xmalloc(CFG_MACB_RX_RING_SIZE * sizeof(struct macb_dma_desc));
+-	macb->tx_ring = xmalloc(sizeof(struct macb_dma_desc));
++	macb->rx_buffer = dma_alloc_coherent(CFG_MACB_RX_BUFFER_SIZE);
++	macb->rx_ring = dma_alloc_coherent(CFG_MACB_RX_RING_SIZE * sizeof(struct macb_dma_desc));
++	macb->tx_ring = dma_alloc_coherent(sizeof(struct macb_dma_desc));
+ 
+ 	macb->regs = dev_request_mem_region(dev, 0);
+ 
 -- 
 1.7.7
 
