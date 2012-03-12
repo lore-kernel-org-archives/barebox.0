@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mo2.mail-out.ovh.net ([178.32.228.2])
+Received: from 5.mo2.mail-out.ovh.net ([87.98.181.248]
+ helo=mo2.mail-out.ovh.net)
  by bombadil.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1S72y9-0006SR-R1
- for barebox@lists.infradead.org; Mon, 12 Mar 2012 10:59:15 +0000
+ id 1S73Rp-0004Za-53
+ for barebox@lists.infradead.org; Mon, 12 Mar 2012 11:29:54 +0000
 Received: from mail621.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 07821DC6A63
- for <barebox@lists.infradead.org>; Mon, 12 Mar 2012 12:02:24 +0100 (CET)
-Date: Mon, 12 Mar 2012 11:47:36 +0100
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 747E3DC6981
+ for <barebox@lists.infradead.org>; Mon, 12 Mar 2012 12:33:05 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120312104736.GC444@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Mon, 12 Mar 2012 12:17:54 +0100
+Message-Id: <1331551082-7730-6-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1331551082-7730-1-git-send-email-plagnioj@jcrosoft.com>
+References: <1331551082-7730-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,72 +20,69 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 00/14] Atmel ref board update
-To: barebox@lists.infradead.org
-Cc: Nicolas Ferre <nicolas.ferre@atmel.com>, Patrice Vilchez <patrice.vilchez@atmel.com>
+Subject: [PATCH 06/14] at91sam9261ek/9g10ek: update partition layout
+To: barebox@lists.infradead.org, Nicolas Ferre <nicolas.ferre@atmel.com>
+Cc: Patrice VILCHEZ <patrice.vilchez@atmel.com>
 
-Hi,
+Update partition layout to be able to boot from nand with the bootstrap.
 
-	The following patch sereis update the Atmel reference board support
-	with
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ arch/arm/boards/at91sam9261ek/env/config |    4 ++--
+ arch/arm/boards/at91sam9261ek/init.c     |    8 ++++++--
+ 2 files changed, 8 insertions(+), 4 deletions(-)
 
-	 - MMU Support
-	 - USB Device
-	 - DFU
-	 - USB Gadget Serial
-	 - GPIO Keyboard
-	 - LEDS
-	 - of boot
+diff --git a/arch/arm/boards/at91sam9261ek/env/config b/arch/arm/boards/at91sam9261ek/env/config
+index d6eeea4..9be6331 100644
+--- a/arch/arm/boards/at91sam9261ek/env/config
++++ b/arch/arm/boards/at91sam9261ek/env/config
+@@ -25,8 +25,8 @@ kernelimage=uImage
+ #kernelimage=Image.lzo
+ 
+ nand_device=atmel_nand
+-nand_parts="256k(barebox)ro,128k(bareboxenv),1536k(kernel),-(root)"
+-rootfs_mtdblock_nand=3
++nand_parts="128k(at91bootstrap),256k(barebox)ro,128k(bareboxenv),128k(bareboxenv2),4M(kernel),120M(rootfs),-(data)"
++rootfs_mtdblock_nand=5
+ 
+ autoboot_timeout=3
+ 
+diff --git a/arch/arm/boards/at91sam9261ek/init.c b/arch/arm/boards/at91sam9261ek/init.c
+index 8b192b2..2272fd6 100644
+--- a/arch/arm/boards/at91sam9261ek/init.c
++++ b/arch/arm/boards/at91sam9261ek/init.c
+@@ -30,6 +30,7 @@
+ #include <io.h>
+ #include <asm/hardware.h>
+ #include <nand.h>
++#include <sizes.h>
+ #include <linux/mtd/nand.h>
+ #include <mach/at91_pmc.h>
+ #include <mach/board.h>
+@@ -147,10 +148,13 @@ static int at91sam9261ek_devices_init(void)
+ 	ek_add_device_nand();
+ 	ek_add_device_dm9000();
+ 
+-	devfs_add_partition("nand0", 0x00000, 0x40000, PARTITION_FIXED, "self_raw");
++	devfs_add_partition("nand0", 0x00000, SZ_128K, PARTITION_FIXED, "at91bootstrap_raw");
++	devfs_add_partition("nand0", SZ_128K, SZ_256K, PARTITION_FIXED, "self_raw");
+ 	dev_add_bb_dev("self_raw", "self0");
+-	devfs_add_partition("nand0", 0x40000, 0x20000, PARTITION_FIXED, "env_raw");
++	devfs_add_partition("nand0", SZ_256K + SZ_128K, SZ_128K, PARTITION_FIXED, "env_raw");
+ 	dev_add_bb_dev("env_raw", "env0");
++	devfs_add_partition("nand0", SZ_512K, SZ_128K, PARTITION_FIXED, "env_raw1");
++	dev_add_bb_dev("env_raw1", "env1");
+ 
+ 	armlinux_set_bootparams((void *)(AT91_CHIPSELECT_1 + 0x100));
+ 	if (machine_is_at91sam9g10ek())
+-- 
+1.7.7
 
-please pull
-The following changes since commit e0d674735b26c279d4cb6c73c140f1e0866a7953:
-
-  mach-omap: add HAS_DEBUG_LL (2012-03-05 18:13:00 +0100)
-
-are available in the git repository at:
-  git://git.jcrosoft.org/barebox.git at91-update
-
-Jean-Christophe PLAGNIOL-VILLARD (14):
-      macb: fix mmu support
-      at91sam9263ek: add runtime nor detection
-      at91sam9263ek: add leds support
-      at91sam9263ek: add dfu and usb serial support
-      at91sam9263ek: update defconfig
-      at91sam9261ek/9g10ek: update partition layout
-      at91sam9261ek/9g10ek: add leds support
-      at91sam9261ek/9g10ek: add dfu and usb serial support
-      at91sam9261ek/9g10ek: add gpio Keyboard support
-      at91sam9261ek/9g10ek: update board supprt
-      at91sam9m10g45ek: update partition layout
-      at91sam9m10g45ek: add leds support
-      at91sam9m10g45ek: update defconfig
-      at91sam9260ek/9g20ek: update defconfig
-
- arch/arm/boards/at91sam9261ek/env/bin/init_board |   51 ++++++++++
- arch/arm/boards/at91sam9261ek/env/config         |    7 +-
- arch/arm/boards/at91sam9261ek/init.c             |  111 +++++++++++++++++++++-
- arch/arm/boards/at91sam9263ek/env/bin/init_board |   51 ++++++++++
- arch/arm/boards/at91sam9263ek/env/config         |    6 +-
- arch/arm/boards/at91sam9263ek/init.c             |   83 ++++++++++++++--
- arch/arm/boards/at91sam9m10g45ek/env/config      |    4 +-
- arch/arm/boards/at91sam9m10g45ek/init.c          |   46 +++++++++-
- arch/arm/configs/at91sam9260ek_defconfig         |    3 +-
- arch/arm/configs/at91sam9261ek_defconfig         |   29 +++++-
- arch/arm/configs/at91sam9263ek_defconfig         |   31 +++++-
- arch/arm/configs/at91sam9g10ek_defconfig         |   39 +++++++-
- arch/arm/configs/at91sam9g20ek_defconfig         |    3 +-
- arch/arm/configs/at91sam9m10g45ek_defconfig      |   32 +++++--
- drivers/net/macb.c                               |    8 +-
- 15 files changed, 453 insertions(+), 51 deletions(-)
- create mode 100644 arch/arm/boards/at91sam9261ek/env/bin/init_board
- create mode 100644 arch/arm/boards/at91sam9263ek/env/bin/init_board
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
