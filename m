@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1S7Oss-0001Qh-8a
- for barebox@lists.infradead.org; Tue, 13 Mar 2012 10:23:15 +0000
-Date: Tue, 13 Mar 2012 11:23:09 +0100
-From: Wolfram Sang <w.sang@pengutronix.de>
-Message-ID: <20120313102309.GB2488@pengutronix.de>
-References: <20120310221035.GC14564@pengutronix.de>
- <20120313035729.GG444@game.jcrosoft.org>
+ id 1S7Qlw-0003lE-DG
+ for barebox@lists.infradead.org; Tue, 13 Mar 2012 12:24:13 +0000
+Date: Tue, 13 Mar 2012 13:24:06 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120313122406.GW3852@pengutronix.de>
+References: <201203121457.59975.jbe@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20120313035729.GG444@game.jcrosoft.org>
+Content-Disposition: inline
+In-Reply-To: <201203121457.59975.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,80 +18,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============7283935562515491971=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Shall 'bmp' uncompress automagically?
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: serial S3: fix local structure malloc
+To: Juergen Beisert <jbe@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
+On Mon, Mar 12, 2012 at 02:57:59PM +0100, Juergen Beisert wrote:
+> Patch 2c5404651091e985c9009aa417d80fdaf50d7a68 introduces a private structure
+> for the S3C based UARTs but still reserves the memory for the smaller
+> structure which fails at runtime.
+>     
+> Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 
---===============7283935562515491971==
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="mojUlQ0s9EVzWg2t"
-Content-Disposition: inline
+Applied to master, thanks
 
+Sascha
 
---mojUlQ0s9EVzWg2t
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> 
+> diff --git a/drivers/serial/serial_s3c.c b/drivers/serial/serial_s3c.c
+> index a5fd4ee..2bdc1df 100644
+> --- a/drivers/serial/serial_s3c.c
+> +++ b/drivers/serial/serial_s3c.c
+> @@ -153,7 +153,7 @@ static int s3c_serial_probe(struct device_d *dev)
+>  	struct s3c_uart *priv;
+>  	struct console_device *cdev;
+>  
+> -	priv = xzalloc(sizeof(struct console_device));
+> +	priv = xzalloc(sizeof(struct s3c_uart));
+>  	cdev = &priv->cdev;
+>  	priv->regs = dev_request_mem_region(dev, 0);
+>  	dev->priv = priv;
+> 
+> -- 
+> Pengutronix e.K.                              | Juergen Beisert             |
+> Linux Solutions for Science and Industry      | Phone: +49-5121-206917-5128 |
+> Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555 |
+> Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
-
-> > since we have 'file_detect_type' in barebox, we could use it to automag=
-ically
-> > uncompress BMP files. Pseudo-code:
-> >=20
-> > if (file_detect_type(bmp) !=3D BMP) {
-> > 	/* No BMP? Try to depack stream */
-> > 	ret =3D uncompress(bmp, unpacked_bmp);
-> > 	if (ret < 0 || file_detect_type(unpacked_bmp) !=3D BMP)
-> > 		return -ENOBMP;
-> > }
-> >=20
-> > Is something like this wanted? Or shall this be done entirely via scrip=
-ts?
-> >=20
-> > if [ $file is somehow detected as compressed ]
-> > 	uncompress $file /bmp
-> > 	bmp /bmp
-> > 	rm /bmp
-> > else
-> > 	bmp $file
-> > fi
-> I prefer the second one
-
-Care to explain why?
-
---=20
-Pengutronix e.K.                           | Wolfram Sang                |
+-- 
+Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-
---mojUlQ0s9EVzWg2t
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.10 (GNU/Linux)
-
-iEYEARECAAYFAk9fIA0ACgkQD27XaX1/VRvlKACgsIGV+juvzZUQA5uxtBbXfoz8
-bFkAnR7iUZ9J62EDUfXY45SgD4QE7diL
-=j3U4
------END PGP SIGNATURE-----
-
---mojUlQ0s9EVzWg2t--
-
-
---===============7283935562515491971==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============7283935562515491971==--
