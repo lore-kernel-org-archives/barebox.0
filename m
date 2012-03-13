@@ -1,21 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 8.mo2.mail-out.ovh.net ([188.165.52.147]
- helo=mo2.mail-out.ovh.net)
+Received: from mo2.mail-out.ovh.net ([178.32.228.2])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1S7VW9-0006xZ-J9
- for barebox@lists.infradead.org; Tue, 13 Mar 2012 17:28:14 +0000
+ id 1S7VwA-0003cV-HJ
+ for barebox@lists.infradead.org; Tue, 13 Mar 2012 17:55:07 +0000
 Received: from mail621.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id E86F0DC65AE
- for <barebox@lists.infradead.org>; Tue, 13 Mar 2012 18:31:26 +0100 (CET)
-Date: Tue, 13 Mar 2012 18:16:23 +0100
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id C6C00DC15C6
+ for <barebox@lists.infradead.org>; Tue, 13 Mar 2012 18:58:21 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120313171623.GJ444@game.jcrosoft.org>
-References: <20120310221035.GC14564@pengutronix.de>
- <20120313035729.GG444@game.jcrosoft.org>
- <20120313102309.GB2488@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20120313102309.GB2488@pengutronix.de>
+Date: Tue, 13 Mar 2012 18:43:15 +0100
+Message-Id: <1331660595-9040-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,44 +17,98 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Shall 'bmp' uncompress automagically?
-To: Wolfram Sang <w.sang@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/1] at91: set dhcp vendor id on Atmel Reference board
+To: barebox@lists.infradead.org
 
-On 11:23 Tue 13 Mar     , Wolfram Sang wrote:
-> 
-> > > since we have 'file_detect_type' in barebox, we could use it to automagically
-> > > uncompress BMP files. Pseudo-code:
-> > > 
-> > > if (file_detect_type(bmp) != BMP) {
-> > > 	/* No BMP? Try to depack stream */
-> > > 	ret = uncompress(bmp, unpacked_bmp);
-> > > 	if (ret < 0 || file_detect_type(unpacked_bmp) != BMP)
-> > > 		return -ENOBMP;
-> > > }
-> > > 
-> > > Is something like this wanted? Or shall this be done entirely via scripts?
-> > > 
-> > > if [ $file is somehow detected as compressed ]
-> > > 	uncompress $file /bmp
-> > > 	bmp /bmp
-> > > 	rm /bmp
-> > > else
-> > > 	bmp $file
-> > > fi
-> > I prefer the second one
-> 
-> Care to explain why?
-I the image could be embedeed in other format (uImage, android etc..)
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ arch/arm/boards/at91sam9260ek/env/config    |    7 +++++++
+ arch/arm/boards/at91sam9261ek/env/config    |    7 +++++++
+ arch/arm/boards/at91sam9263ek/env/config    |    1 +
+ arch/arm/boards/at91sam9m10g45ek/env/config |    1 +
+ arch/arm/boards/usb-a926x/env/config        |    1 +
+ 5 files changed, 17 insertions(+), 0 deletions(-)
 
-And I'm using such command to boot a kernel via DFU too
+diff --git a/arch/arm/boards/at91sam9260ek/env/config b/arch/arm/boards/at91sam9260ek/env/config
+index 8db18ef..74e793c 100644
+--- a/arch/arm/boards/at91sam9260ek/env/config
++++ b/arch/arm/boards/at91sam9260ek/env/config
+@@ -4,6 +4,13 @@
+ # use 'none' if you want to skip kernel ip autoconfiguration
+ ip=dhcp
+ 
++if [ x$armlinux_architecture = x1099 ]
++then
++	dhcp_vendor_id=barebox-at91sam9260ek
++else
++	dhcp_vendor_id=barebox-at91sam9g20ek
++fi
++
+ # or set your networking parameters here
+ #eth0.ipaddr=a.b.c.d
+ #eth0.netmask=a.b.c.d
+diff --git a/arch/arm/boards/at91sam9261ek/env/config b/arch/arm/boards/at91sam9261ek/env/config
+index de13010..fca5184 100644
+--- a/arch/arm/boards/at91sam9261ek/env/config
++++ b/arch/arm/boards/at91sam9261ek/env/config
+@@ -4,6 +4,13 @@
+ # use 'none' if you want to skip kernel ip autoconfiguration
+ ip=dhcp
+ 
++if [ x$armlinux_architecture = x848 ]
++then
++	dhcp_vendor_id=barebox-at91sam9261ek
++else
++	dhcp_vendor_id=barebox-at91sam9g10ek
++fi
++
+ # or set your networking parameters here
+ #eth0.ipaddr=a.b.c.d
+ #eth0.netmask=a.b.c.d
+diff --git a/arch/arm/boards/at91sam9263ek/env/config b/arch/arm/boards/at91sam9263ek/env/config
+index 388a939..95eb8af 100644
+--- a/arch/arm/boards/at91sam9263ek/env/config
++++ b/arch/arm/boards/at91sam9263ek/env/config
+@@ -3,6 +3,7 @@
+ # use 'dhcp' to do dhcp in barebox and in kernel
+ # use 'none' if you want to skip kernel ip autoconfiguration
+ ip=dhcp
++dhcp_vendor_id=barebox-at91sam9263ek
+ 
+ # or set your networking parameters here
+ #eth0.ipaddr=a.b.c.d
+diff --git a/arch/arm/boards/at91sam9m10g45ek/env/config b/arch/arm/boards/at91sam9m10g45ek/env/config
+index 9be6331..6b96599 100644
+--- a/arch/arm/boards/at91sam9m10g45ek/env/config
++++ b/arch/arm/boards/at91sam9m10g45ek/env/config
+@@ -3,6 +3,7 @@
+ # use 'dhcp' to do dhcp in barebox and in kernel
+ # use 'none' if you want to skip kernel ip autoconfiguration
+ ip=dhcp
++dhcp_vendor_id=barebox-at91sam9m10g45ek
+ 
+ # or set your networking parameters here
+ #eth0.ipaddr=a.b.c.d
+diff --git a/arch/arm/boards/usb-a926x/env/config b/arch/arm/boards/usb-a926x/env/config
+index 96a4524..ff097a0 100644
+--- a/arch/arm/boards/usb-a926x/env/config
++++ b/arch/arm/boards/usb-a926x/env/config
+@@ -3,6 +3,7 @@
+ # use 'dhcp' to do dhcp in barebox and in kernel
+ # use 'none' if you want to skip kernel ip autoconfiguration
+ ip=dhcp
++dhcp_vendor_id=barebox-at91sam9x5ek
+ 
+ # or set your networking parameters here
+ #eth0.ipaddr=a.b.c.d
+-- 
+1.7.7
 
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
