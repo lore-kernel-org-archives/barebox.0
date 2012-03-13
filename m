@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 2.mo2.mail-out.ovh.net ([188.165.53.149]
- helo=mo2.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1S7J2v-0006QD-ME
- for barebox@lists.infradead.org; Tue, 13 Mar 2012 04:09:14 +0000
-Received: from mail621.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id ED1FFDC6022
- for <barebox@lists.infradead.org>; Tue, 13 Mar 2012 05:12:25 +0100 (CET)
-Date: Tue, 13 Mar 2012 04:57:29 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120313035729.GG444@game.jcrosoft.org>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1S7Oss-0001Qh-8a
+ for barebox@lists.infradead.org; Tue, 13 Mar 2012 10:23:15 +0000
+Date: Tue, 13 Mar 2012 11:23:09 +0100
+From: Wolfram Sang <w.sang@pengutronix.de>
+Message-ID: <20120313102309.GB2488@pengutronix.de>
 References: <20120310221035.GC14564@pengutronix.de>
+ <20120313035729.GG444@game.jcrosoft.org>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20120310221035.GC14564@pengutronix.de>
+In-Reply-To: <20120313035729.GG444@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,44 +18,80 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============7283935562515491971=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: Shall 'bmp' uncompress automagically?
-To: Wolfram Sang <w.sang@pengutronix.de>
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On 23:10 Sat 10 Mar     , Wolfram Sang wrote:
-> Hi,
-> 
-> since we have 'file_detect_type' in barebox, we could use it to automagically
-> uncompress BMP files. Pseudo-code:
-> 
-> if (file_detect_type(bmp) != BMP) {
-> 	/* No BMP? Try to depack stream */
-> 	ret = uncompress(bmp, unpacked_bmp);
-> 	if (ret < 0 || file_detect_type(unpacked_bmp) != BMP)
-> 		return -ENOBMP;
-> }
-> 
-> Is something like this wanted? Or shall this be done entirely via scripts?
-> 
-> if [ $file is somehow detected as compressed ]
-> 	uncompress $file /bmp
-> 	bmp /bmp
-> 	rm /bmp
-> else
-> 	bmp $file
-> fi
-I prefer the second one
 
-I send a patch to known the type via command
+--===============7283935562515491971==
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="mojUlQ0s9EVzWg2t"
+Content-Disposition: inline
 
-Best Regards,
-J.
+
+--mojUlQ0s9EVzWg2t
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+
+> > since we have 'file_detect_type' in barebox, we could use it to automag=
+ically
+> > uncompress BMP files. Pseudo-code:
+> >=20
+> > if (file_detect_type(bmp) !=3D BMP) {
+> > 	/* No BMP? Try to depack stream */
+> > 	ret =3D uncompress(bmp, unpacked_bmp);
+> > 	if (ret < 0 || file_detect_type(unpacked_bmp) !=3D BMP)
+> > 		return -ENOBMP;
+> > }
+> >=20
+> > Is something like this wanted? Or shall this be done entirely via scrip=
+ts?
+> >=20
+> > if [ $file is somehow detected as compressed ]
+> > 	uncompress $file /bmp
+> > 	bmp /bmp
+> > 	rm /bmp
+> > else
+> > 	bmp $file
+> > fi
+> I prefer the second one
+
+Care to explain why?
+
+--=20
+Pengutronix e.K.                           | Wolfram Sang                |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+
+--mojUlQ0s9EVzWg2t
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.10 (GNU/Linux)
+
+iEYEARECAAYFAk9fIA0ACgkQD27XaX1/VRvlKACgsIGV+juvzZUQA5uxtBbXfoz8
+bFkAnR7iUZ9J62EDUfXY45SgD4QE7diL
+=j3U4
+-----END PGP SIGNATURE-----
+
+--mojUlQ0s9EVzWg2t--
+
+
+--===============7283935562515491971==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============7283935562515491971==--
