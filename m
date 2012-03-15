@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1S8Gls-0006kF-EB
- for barebox@lists.infradead.org; Thu, 15 Mar 2012 19:55:40 +0000
-Date: Thu, 15 Mar 2012 20:55:27 +0100
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1S8GmA-0001vs-TC
+ for barebox@lists.infradead.org; Thu, 15 Mar 2012 19:55:56 +0000
+Date: Thu, 15 Mar 2012 20:55:45 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120315195527.GF3852@pengutronix.de>
-References: <1331815606-15113-1-git-send-email-t.gamez@phytec.de>
+Message-ID: <20120315195545.GG3852@pengutronix.de>
+References: <1331815767-16220-1-git-send-email-t.gamez@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1331815606-15113-1-git-send-email-t.gamez@phytec.de>
+In-Reply-To: <1331815767-16220-1-git-send-email-t.gamez@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,86 +22,81 @@ Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] pcm038: increase size of barebox partition
+Subject: Re: [PATCH 1/5] pcm049: Update RAM timings
 To: Teresa =?iso-8859-15?Q?G=E1mez?= <t.gamez@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Mar 15, 2012 at 01:46:46PM +0100, Teresa G=E1mez wrote:
-> The image built with pcm038_defconfig is >256k so increase
-> the size of the barebox partition.
+On Thu, Mar 15, 2012 at 01:49:23PM +0100, Teresa G=E1mez wrote:
+> Updated RAM Timings for phyCORE-OMAP4.
 > =
 
+> Signed-off-by: Teresa G=E1mez <t.gamez@phytec.de>
 
-Applied, thanks.
+Applied this series, thanks
 
 Sascha
 
-> Signed-off-by: Teresa G=E1mez <t.gamez@phytec.de>
 > ---
->  arch/arm/boards/pcm038/env/config |    5 +++--
->  arch/arm/boards/pcm038/pcm038.c   |   12 ++++++++----
->  2 files changed, 11 insertions(+), 6 deletions(-)
+>  arch/arm/boards/pcm049/lowlevel.c |   27 +++++++++++++--------------
+>  1 files changed, 13 insertions(+), 14 deletions(-)
 > =
 
-> diff --git a/arch/arm/boards/pcm038/env/config b/arch/arm/boards/pcm038/e=
-nv/config
-> index eb0f9c1..b1a5f42 100644
-> --- a/arch/arm/boards/pcm038/env/config
-> +++ b/arch/arm/boards/pcm038/env/config
-> @@ -40,11 +40,12 @@ autoboot_timeout=3D3
+> diff --git a/arch/arm/boards/pcm049/lowlevel.c b/arch/arm/boards/pcm049/l=
+owlevel.c
+> index 444a394..5b91098 100644
+> --- a/arch/arm/boards/pcm049/lowlevel.c
+> +++ b/arch/arm/boards/pcm049/lowlevel.c
+> @@ -30,23 +30,22 @@
 >  =
 
->  bootargs=3D"console=3Dttymxc0,115200"
+>  void set_muxconf_regs(void);
 >  =
 
-> -nor_parts=3D"256k(barebox)ro,128k(bareboxenv),2M(kernel),-(root)"
-> +nor_parts=3D"512k(barebox)ro,128k(bareboxenv),2M(kernel),-(root)"
->  rootfs_mtdblock_nor=3D3
+> -/* Erstmal 200Mhz... */
+> -static const struct ddr_regs ddr_regs_mt42L64M64_3_200_mhz =3D {
+> -	.tim1		=3D 0x0aa8d4e3,
+> -	.tim2		=3D 0x202e0b92,
+> -	.tim3		=3D 0x009da2b3,
+> -	.phy_ctrl_1	=3D 0x849FF404, /* mostly from elpida */
+> -	.ref_ctrl	=3D 0x0000030c, /* from elpida 200MHz! */
+> -	.config_init	=3D 0x80000eb1,
+> -	.config_final	=3D 0x80000eb1,
+> -	.zq_config	=3D 0x500b3215, /* mostly from elpida */
+> -	.mr1		=3D 0x23,	      /* from elpida 200MHz! */
+> -	.mr2		=3D 0x1	      /* from elpida 200MHz! */
+> +static const struct ddr_regs ddr_regs_mt42L64M64_25_400_mhz =3D {
+> +	.tim1		=3D 0x0EEB0662,
+> +	.tim2		=3D 0x20370DD2,
+> +	.tim3		=3D 0x00BFC33F,
+> +	.phy_ctrl_1	=3D 0x849FF408,
+> +	.ref_ctrl	=3D 0x00000618,
+> +	.config_init	=3D 0x80001AB1,
+> +	.config_final	=3D 0x80001AB1,
+> +	.zq_config	=3D 0xd0093215,
+> +	.mr1		=3D 0x83,
+> +	.mr2		=3D 0x4
+>  };
 >  =
 
-> -nand_parts=3D"256k(barebox)ro,128k(bareboxenv),2M(kernel),-(root)"
-> +nand_parts=3D"512k(barebox)ro,128k(bareboxenv),2M(kernel),-(root)"
->  rootfs_mtdblock_nand=3D7
-> +nand_device=3D"mxc_nand"
+>  static void noinline pcm049_init_lowlevel(void)
+>  {
+> -	struct dpll_param core =3D OMAP4_CORE_DPLL_PARAM_19M2_DDR200;
+> +	struct dpll_param core =3D OMAP4_CORE_DPLL_PARAM_19M2_DDR400;
+>  	struct dpll_param mpu =3D OMAP4_MPU_DPLL_PARAM_19M2_MPU1000;
+>  	struct dpll_param iva =3D OMAP4_IVA_DPLL_PARAM_19M2;
+>  	struct dpll_param per =3D OMAP4_PER_DPLL_PARAM_19M2;
+> @@ -55,7 +54,7 @@ static void noinline pcm049_init_lowlevel(void)
 >  =
 
->  # set a fancy prompt (if support is compiled in)
->  PS1=3D"\e[1;32mbarebox@\e[1;31m\h:\w\e[0m "
-> diff --git a/arch/arm/boards/pcm038/pcm038.c b/arch/arm/boards/pcm038/pcm=
-038.c
-> index 8dd6521..58dacae 100644
-> --- a/arch/arm/boards/pcm038/pcm038.c
-> +++ b/arch/arm/boards/pcm038/pcm038.c
-> @@ -274,16 +274,20 @@ static int pcm038_devices_init(void)
->  	case GPCR_BOOT_16BIT_NAND_2k:
->  	case GPCR_BOOT_16BIT_NAND_512:
->  	case GPCR_BOOT_8BIT_NAND_512:
-> -		devfs_add_partition("nand0", 0x00000, 0x40000, PARTITION_FIXED, "self_=
-raw");
-> +		devfs_add_partition("nand0", 0x00000, 0x80000,
-> +					PARTITION_FIXED, "self_raw");
->  		dev_add_bb_dev("self_raw", "self0");
+>  	set_muxconf_regs();
 >  =
 
-> -		devfs_add_partition("nand0", 0x40000, 0x20000, PARTITION_FIXED, "env_r=
-aw");
-> +		devfs_add_partition("nand0", 0x80000, 0x100000,
-> +					PARTITION_FIXED, "env_raw");
->  		dev_add_bb_dev("env_raw", "env0");
->  		envdev =3D "NAND";
->  		break;
->  	default:
-> -		devfs_add_partition("nor0", 0x00000, 0x40000, PARTITION_FIXED, "self0"=
-);
-> -		devfs_add_partition("nor0", 0x40000, 0x20000, PARTITION_FIXED, "env0");
-> +		devfs_add_partition("nor0", 0x00000, 0x80000,
-> +					PARTITION_FIXED, "self0");
-> +		devfs_add_partition("nor0", 0x80000, 0x100000,
-> +					PARTITION_FIXED, "env0");
->  		protect_file("/dev/env0", 1);
+> -	omap4_ddr_init(&ddr_regs_mt42L64M64_3_200_mhz, &core);
+> +	omap4_ddr_init(&ddr_regs_mt42L64M64_25_400_mhz, &core);
 >  =
 
->  		envdev =3D "NOR";
+>  	/* Set VCORE1 =3D 1.3 V, VCORE2 =3D VCORE3 =3D 1.21V */
+>  	omap4_scale_vcores();
 > -- =
 
 > 1.7.0.4
