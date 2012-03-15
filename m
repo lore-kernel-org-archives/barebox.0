@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1S7trr-0002Wh-R7
- for barebox@lists.infradead.org; Wed, 14 Mar 2012 19:28:17 +0000
-Date: Wed, 14 Mar 2012 20:28:08 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120314192808.GT3852@pengutronix.de>
-References: <20120312112159.GE444@game.jcrosoft.org>
+Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1S8A50-0007Bp-1Y
+ for barebox@lists.infradead.org; Thu, 15 Mar 2012 12:46:55 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 7EE8FBF0CE
+ for <barebox@lists.infradead.org>; Wed, 14 Mar 2012 11:35:45 +0100 (CET)
+From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
+Date: Thu, 15 Mar 2012 13:46:46 +0100
+Message-Id: <1331815606-15113-1-git-send-email-t.gamez@phytec.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20120312112159.GE444@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,90 +18,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 00/14]  Atmel Reference Board Update
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] pcm038: increase size of barebox partition
+To: barebox@lists.infradead.org
 
-On Mon, Mar 12, 2012 at 12:21:59PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> Hi,
-> 
-> 	This patch serie update the support of the Atmel Reference Board with
-> 
-> 	 - MMU
-> 	 - USB device
-> 	 - DFU
-> 	 - USB Gadget Serial
-> 	 - LEDS
-> 	 - gpio Keyboard
-> 
-> Please pull
-> The following changes since commit e0d674735b26c279d4cb6c73c140f1e0866a7953:
-
-merged, thanks.
-
-Sascha
-
-> 
->   mach-omap: add HAS_DEBUG_LL (2012-03-05 18:13:00 +0100)
-> 
-> are available in the git repository at:
->   git://git.jcrosoft.org/barebox.git at91-update
-> 
-> Jean-Christophe PLAGNIOL-VILLARD (14):
->       macb: fix mmu support
->       at91sam9263ek: add runtime nor detection
->       at91sam9263ek: add leds support
->       at91sam9263ek: add dfu and usb serial support
->       at91sam9263ek: update defconfig
->       at91sam9261ek/9g10ek: update partition layout
->       at91sam9261ek/9g10ek: add leds support
->       at91sam9261ek/9g10ek: add dfu and usb serial support
->       at91sam9261ek/9g10ek: add gpio Keyboard support
->       at91sam9261ek/9g10ek: update board supprt
->       at91sam9m10g45ek: update partition layout
->       at91sam9m10g45ek: add leds support
->       at91sam9m10g45ek: update defconfig
->       at91sam9260ek/9g20ek: update defconfig
-> 
->  arch/arm/boards/at91sam9261ek/env/bin/init_board |   51 ++++++++++
->  arch/arm/boards/at91sam9261ek/env/config         |    7 +-
->  arch/arm/boards/at91sam9261ek/init.c             |  111 +++++++++++++++++++++-
->  arch/arm/boards/at91sam9263ek/env/bin/init_board |   51 ++++++++++
->  arch/arm/boards/at91sam9263ek/env/config         |    6 +-
->  arch/arm/boards/at91sam9263ek/init.c             |   83 ++++++++++++++--
->  arch/arm/boards/at91sam9m10g45ek/env/config      |    4 +-
->  arch/arm/boards/at91sam9m10g45ek/init.c          |   46 +++++++++-
->  arch/arm/configs/at91sam9260ek_defconfig         |    3 +-
->  arch/arm/configs/at91sam9261ek_defconfig         |   29 +++++-
->  arch/arm/configs/at91sam9263ek_defconfig         |   31 +++++-
->  arch/arm/configs/at91sam9g10ek_defconfig         |   39 +++++++-
->  arch/arm/configs/at91sam9g20ek_defconfig         |    3 +-
->  arch/arm/configs/at91sam9m10g45ek_defconfig      |   32 +++++--
->  drivers/net/macb.c                               |    8 +-
->  15 files changed, 453 insertions(+), 51 deletions(-)
->  create mode 100644 arch/arm/boards/at91sam9261ek/env/bin/init_board
->  create mode 100644 arch/arm/boards/at91sam9263ek/env/bin/init_board
-> 
-> Best Regards,
-> J.
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhlIGltYWdlIGJ1aWx0IHdpdGggcGNtMDM4X2RlZmNvbmZpZyBpcyA+MjU2ayBzbyBpbmNyZWFz
+ZQp0aGUgc2l6ZSBvZiB0aGUgYmFyZWJveCBwYXJ0aXRpb24uCgpTaWduZWQtb2ZmLWJ5OiBUZXJl
+c2EgR8OhbWV6IDx0LmdhbWV6QHBoeXRlYy5kZT4KLS0tCiBhcmNoL2FybS9ib2FyZHMvcGNtMDM4
+L2Vudi9jb25maWcgfCAgICA1ICsrKy0tCiBhcmNoL2FybS9ib2FyZHMvcGNtMDM4L3BjbTAzOC5j
+ICAgfCAgIDEyICsrKysrKysrLS0tLQogMiBmaWxlcyBjaGFuZ2VkLCAxMSBpbnNlcnRpb25zKCsp
+LCA2IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9wY20wMzgvZW52
+L2NvbmZpZyBiL2FyY2gvYXJtL2JvYXJkcy9wY20wMzgvZW52L2NvbmZpZwppbmRleCBlYjBmOWMx
+Li5iMWE1ZjQyIDEwMDY0NAotLS0gYS9hcmNoL2FybS9ib2FyZHMvcGNtMDM4L2Vudi9jb25maWcK
+KysrIGIvYXJjaC9hcm0vYm9hcmRzL3BjbTAzOC9lbnYvY29uZmlnCkBAIC00MCwxMSArNDAsMTIg
+QEAgYXV0b2Jvb3RfdGltZW91dD0zCiAKIGJvb3RhcmdzPSJjb25zb2xlPXR0eW14YzAsMTE1MjAw
+IgogCi1ub3JfcGFydHM9IjI1NmsoYmFyZWJveClybywxMjhrKGJhcmVib3hlbnYpLDJNKGtlcm5l
+bCksLShyb290KSIKK25vcl9wYXJ0cz0iNTEyayhiYXJlYm94KXJvLDEyOGsoYmFyZWJveGVudiks
+Mk0oa2VybmVsKSwtKHJvb3QpIgogcm9vdGZzX210ZGJsb2NrX25vcj0zCiAKLW5hbmRfcGFydHM9
+IjI1NmsoYmFyZWJveClybywxMjhrKGJhcmVib3hlbnYpLDJNKGtlcm5lbCksLShyb290KSIKK25h
+bmRfcGFydHM9IjUxMmsoYmFyZWJveClybywxMjhrKGJhcmVib3hlbnYpLDJNKGtlcm5lbCksLShy
+b290KSIKIHJvb3Rmc19tdGRibG9ja19uYW5kPTcKK25hbmRfZGV2aWNlPSJteGNfbmFuZCIKIAog
+IyBzZXQgYSBmYW5jeSBwcm9tcHQgKGlmIHN1cHBvcnQgaXMgY29tcGlsZWQgaW4pCiBQUzE9Ilxl
+WzE7MzJtYmFyZWJveEBcZVsxOzMxbVxoOlx3XGVbMG0gIgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0v
+Ym9hcmRzL3BjbTAzOC9wY20wMzguYyBiL2FyY2gvYXJtL2JvYXJkcy9wY20wMzgvcGNtMDM4LmMK
+aW5kZXggOGRkNjUyMS4uNThkYWNhZSAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vYm9hcmRzL3BjbTAz
+OC9wY20wMzguYworKysgYi9hcmNoL2FybS9ib2FyZHMvcGNtMDM4L3BjbTAzOC5jCkBAIC0yNzQs
+MTYgKzI3NCwyMCBAQCBzdGF0aWMgaW50IHBjbTAzOF9kZXZpY2VzX2luaXQodm9pZCkKIAljYXNl
+IEdQQ1JfQk9PVF8xNkJJVF9OQU5EXzJrOgogCWNhc2UgR1BDUl9CT09UXzE2QklUX05BTkRfNTEy
+OgogCWNhc2UgR1BDUl9CT09UXzhCSVRfTkFORF81MTI6Ci0JCWRldmZzX2FkZF9wYXJ0aXRpb24o
+Im5hbmQwIiwgMHgwMDAwMCwgMHg0MDAwMCwgUEFSVElUSU9OX0ZJWEVELCAic2VsZl9yYXciKTsK
+KwkJZGV2ZnNfYWRkX3BhcnRpdGlvbigibmFuZDAiLCAweDAwMDAwLCAweDgwMDAwLAorCQkJCQlQ
+QVJUSVRJT05fRklYRUQsICJzZWxmX3JhdyIpOwogCQlkZXZfYWRkX2JiX2Rldigic2VsZl9yYXci
+LCAic2VsZjAiKTsKIAotCQlkZXZmc19hZGRfcGFydGl0aW9uKCJuYW5kMCIsIDB4NDAwMDAsIDB4
+MjAwMDAsIFBBUlRJVElPTl9GSVhFRCwgImVudl9yYXciKTsKKwkJZGV2ZnNfYWRkX3BhcnRpdGlv
+bigibmFuZDAiLCAweDgwMDAwLCAweDEwMDAwMCwKKwkJCQkJUEFSVElUSU9OX0ZJWEVELCAiZW52
+X3JhdyIpOwogCQlkZXZfYWRkX2JiX2RldigiZW52X3JhdyIsICJlbnYwIik7CiAJCWVudmRldiA9
+ICJOQU5EIjsKIAkJYnJlYWs7CiAJZGVmYXVsdDoKLQkJZGV2ZnNfYWRkX3BhcnRpdGlvbigibm9y
+MCIsIDB4MDAwMDAsIDB4NDAwMDAsIFBBUlRJVElPTl9GSVhFRCwgInNlbGYwIik7Ci0JCWRldmZz
+X2FkZF9wYXJ0aXRpb24oIm5vcjAiLCAweDQwMDAwLCAweDIwMDAwLCBQQVJUSVRJT05fRklYRUQs
+ICJlbnYwIik7CisJCWRldmZzX2FkZF9wYXJ0aXRpb24oIm5vcjAiLCAweDAwMDAwLCAweDgwMDAw
+LAorCQkJCQlQQVJUSVRJT05fRklYRUQsICJzZWxmMCIpOworCQlkZXZmc19hZGRfcGFydGl0aW9u
+KCJub3IwIiwgMHg4MDAwMCwgMHgxMDAwMDAsCisJCQkJCVBBUlRJVElPTl9GSVhFRCwgImVudjAi
+KTsKIAkJcHJvdGVjdF9maWxlKCIvZGV2L2VudjAiLCAxKTsKIAogCQllbnZkZXYgPSAiTk9SIjsK
+LS0gCjEuNy4wLjQKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0
+cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
