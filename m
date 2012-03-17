@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp28.mail.ru ([94.100.176.181])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1S8mo5-00069u-FO
- for barebox@lists.infradead.org; Sat, 17 Mar 2012 06:08:02 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sat, 17 Mar 2012 10:11:41 +0400
-Message-Id: <1331964701-24910-1-git-send-email-shc_work@mail.ru>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1S8wKs-0004Im-9e
+ for barebox@lists.infradead.org; Sat, 17 Mar 2012 16:18:32 +0000
+Date: Sat, 17 Mar 2012 17:18:22 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120317161822.GK3852@pengutronix.de>
+References: <1331895146-8176-1-git-send-email-shc_work@mail.ru>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1331895146-8176-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,44 +18,68 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] i.MX51: Remove GPIO2.6 setup from lowlevel_init
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/2] PCM038: add support for MMC
+To: Alexander Shiyan <shc_work@mail.ru>
+Cc: barebox@lists.infradead.org
 
-Remove GPIO2.6 setup from lowlevel_init. It can be defined in board
-initialization code if it necessary.
+On Fri, Mar 16, 2012 at 02:52:26PM +0400, Alexander Shiyan wrote:
+> 
+> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 
-Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
----
- arch/arm/mach-imx/imx51.c |   10 ----------
- 1 files changed, 0 insertions(+), 10 deletions(-)
+Does this work without turning on the mc13783 regulator for MMC?
 
-diff --git a/arch/arm/mach-imx/imx51.c b/arch/arm/mach-imx/imx51.c
-index 2431e61..f7f2345 100644
---- a/arch/arm/mach-imx/imx51.c
-+++ b/arch/arm/mach-imx/imx51.c
-@@ -270,14 +270,4 @@ void imx51_init_lowlevel(void)
- 	while (readl(ccm + MX5_CCM_CDHIPR));
- 
- 	writel(0x0, ccm + MX5_CCM_CCDR);
--
--	writel(0x1, 0x73fa8074);
--
--	r = readl(0x73f88000);
--	r |= 0x40;
--	writel(r, 0x73f88000);
--
--	r = readl(0x73f88004);
--	r |= 0x40;
--	writel(r, 0x73f88004);
- }
+Sascha
+
+> ---
+>  arch/arm/boards/pcm038/pcm038.c |    9 +++++++++
+>  1 files changed, 9 insertions(+), 0 deletions(-)
+> 
+> diff --git a/arch/arm/boards/pcm038/pcm038.c b/arch/arm/boards/pcm038/pcm038.c
+> index 8dd6521..0d925cc 100644
+> --- a/arch/arm/boards/pcm038/pcm038.c
+> +++ b/arch/arm/boards/pcm038/pcm038.c
+> @@ -221,6 +221,13 @@ static int pcm038_devices_init(void)
+>  		/* I2C2 */
+>  		PC5_PF_I2C2_SDA,
+>  		PC6_PF_I2C2_SCL,
+> +		/* SD1 */
+> +		PE18_PF_SD1_D0,
+> +		PE19_PF_SD1_D1,
+> +		PE20_PF_SD1_D2,
+> +		PE21_PF_SD1_D3,
+> +		PE22_PF_SD1_CMD,
+> +		PE23_PF_SD1_CLK,
+>  	};
+>  
+>  	/* configure 16 bit nor flash on cs0 */
+> @@ -264,6 +271,8 @@ static int pcm038_devices_init(void)
+>  	add_generic_usb_ehci_device(-1, IMX_OTG_BASE + 0x400, NULL);
+>  #endif
+>  
+> +	imx27_add_mmc0(NULL);
+> +
+>  	/* Register the fec device after the PLL re-initialisation
+>  	 * as the fec depends on the (now higher) ipg clock
+>  	 */
+> -- 
+> 1.7.3.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-1.7.3.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
