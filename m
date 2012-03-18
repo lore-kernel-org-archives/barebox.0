@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1S9H4b-0006Pn-3t
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1S9H4Y-0001o7-6G
  for barebox@lists.infradead.org; Sun, 18 Mar 2012 14:27:06 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 18 Mar 2012 15:26:42 +0100
-Message-Id: <1332080804-13132-7-git-send-email-s.hauer@pengutronix.de>
+Date: Sun, 18 Mar 2012 15:26:43 +0100
+Message-Id: <1332080804-13132-8-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1332080804-13132-1-git-send-email-s.hauer@pengutronix.de>
 References: <1332080804-13132-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,73 +21,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/8] FAT: Fix error path
+Subject: [PATCH 7/8] usb command: by default scan only once for USB devices
 To: barebox@lists.infradead.org
 
-- forward the return value of chk_mounted to detect whether mount succeeded
-- free resources on mount failure
+We normally do not expect USB devices to be hotplugged. Instead of
+rescanning each time the usb command is called, scan only once.
+This makes the usb command safe for being called multiple times
+without making already registered USB devices reinitialized. To
+really scan multiple times a '-f' option is introduced.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- fs/fat/fat.c |   18 +++++++++++++++---
- fs/fat/ff.c  |    4 +---
- 2 files changed, 16 insertions(+), 6 deletions(-)
+ commands/usb.c |   26 ++++++++++++++++++++++----
+ 1 files changed, 22 insertions(+), 4 deletions(-)
 
-diff --git a/fs/fat/fat.c b/fs/fat/fat.c
-index 7d6e37a..21464bd 100644
---- a/fs/fat/fat.c
-+++ b/fs/fat/fat.c
-@@ -376,6 +376,7 @@ static int fat_probe(struct device_d *dev)
- 	struct fs_device_d *fsdev = dev_to_fs_device(dev);
- 	struct fat_priv *priv = xzalloc(sizeof(struct fat_priv));
- 	char *backingstore = fsdev->backingstore;
-+	int ret;
+diff --git a/commands/usb.c b/commands/usb.c
+index 6605e03..e28afd0 100644
+--- a/commands/usb.c
++++ b/commands/usb.c
+@@ -22,17 +22,35 @@
+ #include <common.h>
+ #include <command.h>
+ #include <usb/usb.h>
++#include <getopt.h>
++
++static int scanned;
  
- 	dev->priv = priv;
- 
-@@ -383,13 +384,24 @@ static int fat_probe(struct device_d *dev)
- 		backingstore += 5;
- 
- 	priv->cdev = cdev_open(backingstore, O_RDWR);
--	if (!priv->cdev)
--		return -EINVAL;
-+	if (!priv->cdev) {
-+		ret = -ENOENT;
-+		goto err_open;
+ static int do_usb(int argc, char *argv[])
+ {
+-	usb_rescan();
++	int opt;
++
++	while ((opt = getopt(argc, argv, "f")) > 0) {
++		switch (opt) {
++		case 'f':
++			scanned = 0;
++			break;
++		}
++	}
++
++	if (!scanned) {
++		usb_rescan();
++		scanned = 1;
 +	}
  
- 	priv->fat.userdata = priv;
--	f_mount(&priv->fat);
-+	ret = f_mount(&priv->fat);
-+	if (ret)
-+		goto err_mount;
- 
  	return 0;
-+
-+err_mount:
-+	cdev_close(priv->cdev);
-+err_open:
-+	free(priv);
-+
-+	return ret;
  }
  
- static void fat_remove(struct device_d *dev)
-diff --git a/fs/fat/ff.c b/fs/fat/ff.c
-index a720389..2d476ee 100644
---- a/fs/fat/ff.c
-+++ b/fs/fat/ff.c
-@@ -1699,9 +1699,7 @@ int f_mount (
- {
- 	fs->fs_type = 0; /* Clear new fs object */
+-static const __maybe_unused char cmd_usb_help[] =
+-"Usage: usb\n"
+-"(re-)detect USB devices\n";
++BAREBOX_CMD_HELP_START(usb)
++BAREBOX_CMD_HELP_USAGE("usb [-f]\n")
++BAREBOX_CMD_HELP_SHORT("Scan for USB devices.\n")
++BAREBOX_CMD_HELP_OPT("-f", "force. Rescan if if if have scanned once\n")
++BAREBOX_CMD_HELP_END
  
--	chk_mounted(fs, 0);
--
--	return 0;
-+	return chk_mounted(fs, 0);
- }
- 
- /*
+ BAREBOX_CMD_START(usb)
+ 	.cmd		= do_usb,
 -- 
 1.7.9.1
 
