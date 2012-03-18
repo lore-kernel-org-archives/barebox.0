@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1S9Hkf-0007b2-8H
- for barebox@lists.infradead.org; Sun, 18 Mar 2012 15:10:34 +0000
-Date: Sun, 18 Mar 2012 16:10:24 +0100
+ id 1S9Hmp-0007cW-Qa
+ for barebox@lists.infradead.org; Sun, 18 Mar 2012 15:12:48 +0000
+Date: Sun, 18 Mar 2012 16:12:42 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120318151024.GO3852@pengutronix.de>
-References: <1332052167-2674-1-git-send-email-shc_work@mail.ru>
+Message-ID: <20120318151242.GP3852@pengutronix.de>
+References: <1332052180-2707-1-git-send-email-shc_work@mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1332052167-2674-1-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1332052180-2707-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,35 +22,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] i.MX27: Define SDHC base address
+Subject: Re: [PATCH 2/2] i.MX27: Add support for SDHC1
 To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-On Sun, Mar 18, 2012 at 10:29:27AM +0400, Alexander Shiyan wrote:
+On Sun, Mar 18, 2012 at 10:29:40AM +0400, Alexander Shiyan wrote:
 > 
 > Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 
-Applied, thanks
+This deserves a bit more explanation, like:
+
+imx27_add_mmc0 really registered IMX_SDHC2. Fix this by adding a
+imx27_add_mmc1 and use this in the pca100 board file.
 
 Sascha
 
 > ---
->  arch/arm/mach-imx/include/mach/imx27-regs.h |    2 ++
->  1 files changed, 2 insertions(+), 0 deletions(-)
+>  arch/arm/boards/phycard-i.MX27/pca100.c        |    2 +-
+>  arch/arm/mach-imx/include/mach/devices-imx27.h |    7 +++++--
+>  2 files changed, 6 insertions(+), 3 deletions(-)
 > 
-> diff --git a/arch/arm/mach-imx/include/mach/imx27-regs.h b/arch/arm/mach-imx/include/mach/imx27-regs.h
-> index 3a4325e..75305f7 100644
-> --- a/arch/arm/mach-imx/include/mach/imx27-regs.h
-> +++ b/arch/arm/mach-imx/include/mach/imx27-regs.h
-> @@ -19,6 +19,8 @@
->  #define IMX_SPI1_BASE              (0x0e000 + IMX_IO_BASE)
->  #define IMX_SPI2_BASE              (0x0f000 + IMX_IO_BASE)
->  #define IMX_I2C1_BASE              (0x12000 + IMX_IO_BASE)
-> +#define IMX_SDHC1_BASE             (0x13000 + IMX_IO_BASE)
-> +#define IMX_SDHC2_BASE             (0x14000 + IMX_IO_BASE)
->  #define IMX_GPIO_BASE              (0x15000 + IMX_IO_BASE)
->  #define IMX_TIM4_BASE              (0x19000 + IMX_IO_BASE)
->  #define IMX_TIM5_BASE              (0x1a000 + IMX_IO_BASE)
+> diff --git a/arch/arm/boards/phycard-i.MX27/pca100.c b/arch/arm/boards/phycard-i.MX27/pca100.c
+> index 1b43951..f934a9b 100644
+> --- a/arch/arm/boards/phycard-i.MX27/pca100.c
+> +++ b/arch/arm/boards/phycard-i.MX27/pca100.c
+> @@ -292,7 +292,7 @@ static int pca100_devices_init(void)
+>  
+>  	imx27_add_nand(&nand_info);
+>  	imx27_add_fec(&fec_info);
+> -	imx27_add_mmc0(NULL);
+> +	imx27_add_mmc1(NULL);
+>  	imx27_add_fb(&pca100_fb_data);
+>  
+>  	PCCR1 |= PCCR1_PERCLK2_EN;
+> diff --git a/arch/arm/mach-imx/include/mach/devices-imx27.h b/arch/arm/mach-imx/include/mach/devices-imx27.h
+> index 3141d96..4d30200 100644
+> --- a/arch/arm/mach-imx/include/mach/devices-imx27.h
+> +++ b/arch/arm/mach-imx/include/mach/devices-imx27.h
+> @@ -58,7 +58,10 @@ static inline struct device_d *imx27_add_fec(struct fec_platform_data *pdata)
+>  
+>  static inline struct device_d *imx27_add_mmc0(void *pdata)
+>  {
+> -	return imx_add_mmc((void *)0x10014000, 0, pdata);
+> +	return imx_add_mmc((void *)IMX_SDHC1_BASE, 0, pdata);
+>  }
+>  
+> -
+> +static inline struct device_d *imx27_add_mmc1(void *pdata)
+> +{
+> +	return imx_add_mmc((void *)IMX_SDHC2_BASE, 1, pdata);
+> +}
 > -- 
 > 1.7.3.4
 > 
