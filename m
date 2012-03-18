@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1S9Hmp-0007cW-Qa
- for barebox@lists.infradead.org; Sun, 18 Mar 2012 15:12:48 +0000
-Date: Sun, 18 Mar 2012 16:12:42 +0100
+ id 1S9HnM-0007dA-OQ
+ for barebox@lists.infradead.org; Sun, 18 Mar 2012 15:13:21 +0000
+Date: Sun, 18 Mar 2012 16:13:15 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120318151242.GP3852@pengutronix.de>
-References: <1332052180-2707-1-git-send-email-shc_work@mail.ru>
+Message-ID: <20120318151315.GQ3852@pengutronix.de>
+References: <1332052813-2880-1-git-send-email-shc_work@mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1332052180-2707-1-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1332052813-2880-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,56 +22,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] i.MX27: Add support for SDHC1
+Subject: Re: [PATCH] i.MX27: Use resigter name in imx27_add_fb
 To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-On Sun, Mar 18, 2012 at 10:29:40AM +0400, Alexander Shiyan wrote:
+On Sun, Mar 18, 2012 at 10:40:13AM +0400, Alexander Shiyan wrote:
 > 
 > Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 
-This deserves a bit more explanation, like:
-
-imx27_add_mmc0 really registered IMX_SDHC2. Fix this by adding a
-imx27_add_mmc1 and use this in the pca100 board file.
+Applied, thanks.
 
 Sascha
 
 > ---
->  arch/arm/boards/phycard-i.MX27/pca100.c        |    2 +-
->  arch/arm/mach-imx/include/mach/devices-imx27.h |    7 +++++--
->  2 files changed, 6 insertions(+), 3 deletions(-)
+>  arch/arm/mach-imx/include/mach/devices-imx27.h |    2 +-
+>  1 files changed, 1 insertions(+), 1 deletions(-)
 > 
-> diff --git a/arch/arm/boards/phycard-i.MX27/pca100.c b/arch/arm/boards/phycard-i.MX27/pca100.c
-> index 1b43951..f934a9b 100644
-> --- a/arch/arm/boards/phycard-i.MX27/pca100.c
-> +++ b/arch/arm/boards/phycard-i.MX27/pca100.c
-> @@ -292,7 +292,7 @@ static int pca100_devices_init(void)
->  
->  	imx27_add_nand(&nand_info);
->  	imx27_add_fec(&fec_info);
-> -	imx27_add_mmc0(NULL);
-> +	imx27_add_mmc1(NULL);
->  	imx27_add_fb(&pca100_fb_data);
->  
->  	PCCR1 |= PCCR1_PERCLK2_EN;
 > diff --git a/arch/arm/mach-imx/include/mach/devices-imx27.h b/arch/arm/mach-imx/include/mach/devices-imx27.h
-> index 3141d96..4d30200 100644
+> index 3141d96..acef9c2 100644
 > --- a/arch/arm/mach-imx/include/mach/devices-imx27.h
 > +++ b/arch/arm/mach-imx/include/mach/devices-imx27.h
-> @@ -58,7 +58,10 @@ static inline struct device_d *imx27_add_fec(struct fec_platform_data *pdata)
+> @@ -48,7 +48,7 @@ static inline struct device_d *imx27_add_nand(struct imx_nand_platform_data *pda
 >  
->  static inline struct device_d *imx27_add_mmc0(void *pdata)
+>  static inline struct device_d *imx27_add_fb(struct imx_fb_platform_data *pdata)
 >  {
-> -	return imx_add_mmc((void *)0x10014000, 0, pdata);
-> +	return imx_add_mmc((void *)IMX_SDHC1_BASE, 0, pdata);
+> -	return imx_add_fb((void *)0x10021000, pdata);
+> +	return imx_add_fb((void *)IMX_FB_BASE, pdata);
 >  }
 >  
-> -
-> +static inline struct device_d *imx27_add_mmc1(void *pdata)
-> +{
-> +	return imx_add_mmc((void *)IMX_SDHC2_BASE, 1, pdata);
-> +}
+>  static inline struct device_d *imx27_add_fec(struct fec_platform_data *pdata)
 > -- 
 > 1.7.3.4
 > 
