@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1S9H4b-0006Pq-4V
+ id 1S9H4b-0006Po-4y
  for barebox@lists.infradead.org; Sun, 18 Mar 2012 14:27:06 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1S9H4I-0006ts-GP
+ for barebox@lists.infradead.org; Sun, 18 Mar 2012 15:26:46 +0100
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.77)
+ (envelope-from <sha@pengutronix.de>) id 1S9H4I-00047x-FJ
+ for barebox@lists.infradead.org; Sun, 18 Mar 2012 15:26:46 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 18 Mar 2012 15:26:38 +0100
-Message-Id: <1332080804-13132-3-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1332080804-13132-1-git-send-email-s.hauer@pengutronix.de>
-References: <1332080804-13132-1-git-send-email-s.hauer@pengutronix.de>
+Date: Sun, 18 Mar 2012 15:26:36 +0100
+Message-Id: <1332080804-13132-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,282 +26,96 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/8] fs: drop struct mtab_entry
+Subject: [PATCH] automount support
 To: barebox@lists.infradead.org
 
-every struct fs_device_d contains a struct mtab_entry, so they
-have a 1:1 relationship. Instead of having to use container_of
-to get from a struct mtab_entry to a struct fs_device_d we can
-better embed the members of struct mtab_entry into struct fs_device_d
-directly.
+The following series adds automount support to barebox. With the
+automount command it's possible to access arbitrary files just
+by using them without having to care about whether devices have
+to be brought up or mounted first. It has the potential of making
+the environment simpler and more flexible at the same time. Also
+this series contains some patches which either fix some bugs I came
+along while implementing it or make using automount more convenient.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- commands/mount.c |   10 +++---
- fs/fs.c          |   88 ++++++++++++++++++++++++++---------------------------
- include/fs.h     |   15 +++------
- 3 files changed, 53 insertions(+), 60 deletions(-)
+The idea of automount is quite simple. The automount command is called
+with a path and a script file argument. When the path is first accessed
+the script is executed with the destination path as argument. It's the
+resposibility of the script to make this directory available. A simple
+example could be:
 
-diff --git a/commands/mount.c b/commands/mount.c
-index dd1ae63..b32faef 100644
---- a/commands/mount.c
-+++ b/commands/mount.c
-@@ -33,14 +33,14 @@
- static int do_mount(int argc, char *argv[])
- {
- 	int ret = 0;
--	struct mtab_entry *entry;
-+	struct fs_device_d *fsdev;
- 
- 	if (argc == 1) {
--		for_each_mtab_entry(entry) {
-+		for_each_fs_device(fsdev) {
- 			printf("%s on %s type %s\n",
--				entry->parent_device ? dev_name(entry->parent_device) : "none",
--				entry->path,
--				entry->dev->name);
-+				fsdev->parent_device ? dev_name(fsdev->parent_device) : "none",
-+				fsdev->path,
-+				fsdev->dev.name);
- 		}
- 		return 0;
- 	}
-diff --git a/fs/fs.c b/fs/fs.c
-index 93a0f80..03fe9c8 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -167,21 +167,21 @@ char *normalise_path(const char *pathname)
- }
- EXPORT_SYMBOL(normalise_path);
- 
--LIST_HEAD(mtab_list);
--static struct mtab_entry *mtab_root;
-+LIST_HEAD(fs_device_list);
-+static struct fs_device_d *fs_dev_root;
- 
--static struct mtab_entry *get_mtab_entry_by_path(const char *path)
-+static struct fs_device_d *get_fsdevice_by_path(const char *path)
- {
--	struct mtab_entry *e = NULL;
-+	struct fs_device_d *fsdev = NULL;
- 
--	for_each_mtab_entry(e) {
--		int len = strlen(e->path);
--		if (!strncmp(path, e->path, len) &&
-+	for_each_fs_device(fsdev) {
-+		int len = strlen(fsdev->path);
-+		if (!strncmp(path, fsdev->path, len) &&
- 				(path[len] == '/' || path[len] == 0))
--			return e;
-+			return fsdev;
- 	}
- 
--	return mtab_root;
-+	return fs_dev_root;
- }
- 
- static FILE files[MAX_FILES];
-@@ -218,15 +218,15 @@ static int check_fd(int fd)
- 
- static struct fs_device_d *get_fs_device_and_root_path(char **path)
- {
--	struct mtab_entry *e;
-+	struct fs_device_d *fsdev;
- 
--	e = get_mtab_entry_by_path(*path);
--	if (!e)
-+	fsdev = get_fsdevice_by_path(*path);
-+	if (!fsdev)
- 		return NULL;
--	if (e != mtab_root)
--		*path += strlen(e->path);
-+	if (fsdev != fs_dev_root)
-+		*path += strlen(fsdev->path);
- 
--	return dev_to_fs_device(e->dev);
-+	return fsdev;
- }
- 
- static int dir_is_empty(const char *pathname)
-@@ -702,7 +702,7 @@ static int fs_match(struct device_d *dev, struct driver_d *drv)
- static int fs_probe(struct device_d *dev)
- {
- 	struct fs_device_d *fsdev = dev_to_fs_device(dev);
--	struct mtab_entry *entry = &fsdev->mtab;
-+	struct fs_driver_d *fsdrv = dev_to_fs_driver(dev);
- 	int ret;
- 
- 	ret = dev->driver->probe(dev);
-@@ -711,15 +711,15 @@ static int fs_probe(struct device_d *dev)
- 
- 	if (fsdev->cdev) {
- 		dev_add_child(fsdev->cdev->dev, &fsdev->dev);
--		entry->parent_device = fsdev->cdev->dev;
-+		fsdev->parent_device = fsdev->cdev->dev;
- 	}
- 
--	entry->dev = &fsdev->dev;
-+	fsdev->driver = fsdrv;
- 
--	list_add_tail(&entry->list, &mtab_list);
-+	list_add_tail(&fsdev->list, &fs_device_list);
- 
--	if (!mtab_root)
--		mtab_root = entry;
-+	if (!fs_dev_root)
-+		fs_dev_root = fsdev;
- 
- 	return 0;
- }
-@@ -727,17 +727,16 @@ static int fs_probe(struct device_d *dev)
- static void fs_remove(struct device_d *dev)
- {
- 	struct fs_device_d *fsdev = dev_to_fs_device(dev);
--	struct mtab_entry *entry = &fsdev->mtab;
- 
- 	if (fsdev->dev.driver) {
- 		dev->driver->remove(dev);
--		list_del(&entry->list);
-+		list_del(&fsdev->list);
- 	}
- 
--	free(entry->path);
-+	free(fsdev->path);
- 
--	if (entry == mtab_root)
--		mtab_root = NULL;
-+	if (fsdev == fs_dev_root)
-+		fs_dev_root = NULL;
- 
- 	free(fsdev->backingstore);
- 	free(fsdev);
-@@ -774,10 +773,9 @@ int mount(const char *device, const char *fsname, const char *_path)
- 
- 	debug("mount: %s on %s type %s\n", device, path, fsname);
- 
--	if (mtab_root) {
--		struct mtab_entry *entry;
--		entry = get_mtab_entry_by_path(path);
--		if (entry != mtab_root) {
-+	if (fs_dev_root) {
-+		fsdev = get_fsdevice_by_path(path);
-+		if (fsdev != fs_dev_root) {
- 			printf("sorry, no nested mounts\n");
- 			errno = -EBUSY;
- 			goto err_free_path;
-@@ -796,7 +794,7 @@ int mount(const char *device, const char *fsname, const char *_path)
- 	fsdev->backingstore = xstrdup(device);
- 	safe_strncpy(fsdev->dev.name, fsname, MAX_DRIVER_NAME);
- 	fsdev->dev.id = get_free_deviceid(fsdev->dev.name);
--	fsdev->mtab.path = xstrdup(path);
-+	fsdev->path = xstrdup(path);
- 	fsdev->dev.bus = &fs_bus;
- 
- 	if (!strncmp(device, "/dev/", 5))
-@@ -833,29 +831,29 @@ EXPORT_SYMBOL(mount);
- 
- int umount(const char *pathname)
- {
--	struct mtab_entry *entry = NULL, *e;
-+	struct fs_device_d *fsdev = NULL, *f;
- 	char *p = normalise_path(pathname);
- 
--	for_each_mtab_entry(e) {
--		if (!strcmp(p, e->path)) {
--			entry = e;
-+	for_each_fs_device(f) {
-+		if (!strcmp(p, f->path)) {
-+			fsdev = f;
- 			break;
- 		}
- 	}
- 
- 	free(p);
- 
--	if (e == mtab_root && !list_is_singular(&mtab_list)) {
-+	if (f == fs_dev_root && !list_is_singular(&fs_device_list)) {
- 		errno = -EBUSY;
- 		return errno;
- 	}
- 
--	if (!entry) {
-+	if (!fsdev) {
- 		errno = -EFAULT;
- 		return errno;
- 	}
- 
--	unregister_device(entry->dev);
-+	unregister_device(&fsdev->dev);
- 
- 	return 0;
- }
-@@ -915,23 +913,23 @@ int stat(const char *filename, struct stat *s)
- {
- 	struct device_d *dev;
- 	struct fs_driver_d *fsdrv;
--	struct mtab_entry *e;
-+	struct fs_device_d *fsdev;
- 	char *f = normalise_path(filename);
- 	char *freep = f;
- 
- 	memset(s, 0, sizeof(struct stat));
- 
--	e = get_mtab_entry_by_path(f);
--	if (!e) {
-+	fsdev = get_fsdevice_by_path(f);
-+	if (!fsdev) {
- 		errno = -ENOENT;
- 		goto out;
- 	}
- 
--	if (e != mtab_root && strcmp(f, e->path)) {
--		f += strlen(e->path);
--		dev = e->dev;
-+	if (fsdev != fs_dev_root && strcmp(f, fsdev->path)) {
-+		f += strlen(fsdev->path);
-+		dev = &fsdev->dev;
- 	} else
--		dev = mtab_root->dev;
-+		dev = &fs_dev_root->dev;
- 
- 	fsdrv = dev_to_fs_driver(dev);
- 
-diff --git a/include/fs.h b/include/fs.h
-index e5364f9..7815da5 100644
---- a/include/fs.h
-+++ b/include/fs.h
-@@ -77,15 +77,8 @@ struct fs_driver_d {
- #define dev_to_fs_driver(d) container_of(d->driver, struct fs_driver_d, drv)
- #define dev_to_fs_device(d) container_of(d, struct fs_device_d, dev)
- 
--struct mtab_entry {
--	char *path;
--	struct device_d *dev;
--	struct device_d *parent_device;
--	struct list_head list;
--};
--
--extern struct list_head mtab_list;
--#define for_each_mtab_entry(e) list_for_each_entry(e, &mtab_list, list)
-+extern struct list_head fs_device_list;
-+#define for_each_fs_device(f) list_for_each_entry(f, &fs_device_list, list)
- 
- struct fs_device_d {
- 	char *backingstore; /* the device we are associated with */
-@@ -94,7 +87,9 @@ struct fs_device_d {
- 	struct fs_driver_d *driver;
- 
- 	struct cdev *cdev;
--	struct mtab_entry mtab;
-+	char *path;
-+	struct device_d *parent_device;
-+	struct list_head list;
- };
- 
- /*
--- 
-1.7.9.1
+/env/bin/automount_tftp:
 
+|#!/bin/sh
+|
+|where="$1"
+|dhcp
+|mount $eth0.serverip tftp $where
+
+and on the commandline:
+
+barebox:/ automount /mnt/tftp /env/bin/automount_tftp
+barebox:/ automount -l
+/mnt/tftp       /env/bin/automount_tftp
+barebox:/ cp mnt/tftp/barebox.bin /
+phy0: Link is up - 100/Full
+T T DHCP client bound to address 192.168.24.146
+barebox:/ automount -l
+barebox:/ ls -l barebox.bin
+-rwxrwxrwx     158388 barebox.bin
+barebox:/
+
+It does not only work with filesystems mounted to directories but
+also with flat devices:
+
+/env/bin/automount_usbdisk:
+
+|#!/bin/sh
+|
+|usb
+
+barebox:/ automount /dev/usbdisk0.0 /env/bin/automount_usbdisk
+barebox:/ bootm /dev/usbdisk0.0
+USB: scanning bus for devices...
+Bus 001 Device 002: ID 090c:1000 USB DISK
+Using index 0 for the new disk
+Bus 001 Device 001: ID 0000:0000 EHCI Host Controller
+2 USB Device(s) found
+commandline:  ip=dhcp root=mtd:nand0.root rootfstype=jffs2 mtdparts=mxc_nand:512k(nand0.barebox)ro,128k(nand0.bareboxenv),2M(nand0.kernel),-(nand0.root);physmap-flash.0:512k(nor0.barebox)ro,128k(nor0.bareboxenv),2M(nor0.kernel),-(nor0.root) console=ttymxc0,115200
+arch_number: 1551
+Uncompressing Linux... done, booting the kernel.
+...
+
+
+Comments welcome.
+
+Thanks,
+ Sascha
+
+----------------------------------------------------------------
+Sascha Hauer (8):
+      fs: change get_fs_device_by_path prototype
+      fs: drop struct mtab_entry
+      Add automount support
+      fs open: pass error from stat
+      hush source: expand $PATH
+      FAT: Fix error path
+      usb command: by default scan only once for USB devices
+      partition command: optionally do not automatically prepend the device name
+
+ commands/Kconfig     |   10 ++
+ commands/Makefile    |    1 +
+ commands/automount.c |   66 ++++++++++++
+ commands/mount.c     |   10 +-
+ commands/partition.c |   33 +++++--
+ commands/usb.c       |   26 ++++-
+ common/hush.c        |   17 +++-
+ fs/Kconfig           |    3 +
+ fs/fat/fat.c         |   18 +++-
+ fs/fat/ff.c          |    4 +-
+ fs/fs.c              |  282 +++++++++++++++++++++++++++++++++++---------------
+ include/fs.h         |   19 ++--
+ 12 files changed, 371 insertions(+), 118 deletions(-)
+ create mode 100644 commands/automount.c
 
 _______________________________________________
 barebox mailing list
