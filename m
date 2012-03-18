@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1S9Hqh-0002XC-44
- for barebox@lists.infradead.org; Sun, 18 Mar 2012 15:16:48 +0000
-Date: Sun, 18 Mar 2012 16:16:42 +0100
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1S9Hvv-00019K-Ji
+ for barebox@lists.infradead.org; Sun, 18 Mar 2012 15:22:12 +0000
+Date: Sun, 18 Mar 2012 16:22:05 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120318151642.GT3852@pengutronix.de>
-References: <1332064244-5566-1-git-send-email-shc_work@mail.ru>
+Message-ID: <20120318152205.GU3852@pengutronix.de>
+References: <4F65C69D.5060500@cmotion.eu>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1332064244-5566-1-git-send-email-shc_work@mail.ru>
+In-Reply-To: <4F65C69D.5060500@cmotion.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,45 +22,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Remove duplicate voltage setup for imx-esdhc
-To: Alexander Shiyan <shc_work@mail.ru>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] Add support for Karo TX51 module
+To: Christian Kapeler <christian.kapeller@cmotion.eu>
+Cc: support@karo-electronics.de, barebox@lists.infradead.org
 
-On Sun, Mar 18, 2012 at 01:50:44PM +0400, Alexander Shiyan wrote:
-> We are already setup voltages from capabilities register.
+On Sun, Mar 18, 2012 at 12:27:25PM +0100, Christian Kapeler wrote:
+> Hi,
 > 
-> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+> the attached patches introduce basic barebox support for the Karo
+> SO-DIMM TX51 SOC modules.
+> Note, that the code is not tested with the Starterkit development
+> board as base,
+> but on our own custom board.
+> 
+> Currently the board boots, supports nand, and mmc. Ethernet support
+> is currently only working,
+> when barebox is chainloaded from Redboot shipped with the modules.
 
-Applied, thanks
+Looks mostly good, except for the FEC debugging of course. One thing
+about it is that rather than hand patching the iomux files we should
+just update them from the kernel. I have a patch in my queue which
+updates basic iomux-v3 support so that just like in the kernel the
+iomux pad is not a struct anymore but a 64bit type. This should make
+the way free to use the kernel iomux files. Given that your patch
+is not yet ready I still have some time to bring this into shape.
 
 Sascha
 
-> ---
->  drivers/mci/imx-esdhc.c |    2 --
->  1 files changed, 0 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
-> index c6f2d5c..6d0883c 100644
-> --- a/drivers/mci/imx-esdhc.c
-> +++ b/drivers/mci/imx-esdhc.c
-> @@ -548,8 +548,6 @@ static int fsl_esdhc_probe(struct device_d *dev)
->  	host->mci.init = esdhc_init;
->  	host->mci.hw_dev = dev;
->  
-> -	host->mci.voltages = MMC_VDD_32_33 | MMC_VDD_33_34;
-> -
->  	host->mci.f_min = imx_get_mmcclk() >> 12;
->  	if (host->mci.f_min < 200000)
->  		host->mci.f_min = 200000;
-> -- 
-> 1.7.3.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
