@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp4.mail.ru ([94.100.176.44])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1S9uqE-0007Ki-Ia
- for barebox@lists.infradead.org; Tue, 20 Mar 2012 08:54:56 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Tue, 20 Mar 2012 12:54:26 +0400
-Message-Id: <1332233666-5422-3-git-send-email-shc_work@mail.ru>
-In-Reply-To: <20120318151242.GP3852@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1S9yoX-0002Fq-Qi
+ for barebox@lists.infradead.org; Tue, 20 Mar 2012 13:09:27 +0000
+Date: Tue, 20 Mar 2012 14:09:20 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120320130920.GL3852@pengutronix.de>
 References: <20120318151242.GP3852@pengutronix.de>
+ <1332233666-5422-1-git-send-email-shc_work@mail.ru>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1332233666-5422-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,36 +19,61 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] i.MX51: Fix name definition for SSI3
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/3] i.MX27: Define base address for SDHC1,2,3
+To: Alexander Shiyan <shc_work@mail.ru>
+Cc: barebox@lists.infradead.org
 
+On Tue, Mar 20, 2012 at 12:54:24PM +0400, Alexander Shiyan wrote:
+> 
+> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 
-Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
----
- arch/arm/mach-imx/include/mach/imx51-regs.h |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+Applied all three patches. Thanks
 
-diff --git a/arch/arm/mach-imx/include/mach/imx51-regs.h b/arch/arm/mach-imx/include/mach/imx51-regs.h
-index c6d14cd..90e81cb 100644
---- a/arch/arm/mach-imx/include/mach/imx51-regs.h
-+++ b/arch/arm/mach-imx/include/mach/imx51-regs.h
-@@ -94,7 +94,7 @@
- #define MX51_MIPI_HSC_BASE_ADDR	(MX51_AIPS2_BASE_ADDR + 0x000DC000)
- #define MX51_ATA_BASE_ADDR	(MX51_AIPS2_BASE_ADDR + 0x000E0000)
- #define MX51_SIM_BASE_ADDR	(MX51_AIPS2_BASE_ADDR + 0x000E4000)
--#define MX51_SSI3BASE_ADDR	(MX51_AIPS2_BASE_ADDR + 0x000E8000)
-+#define MX51_SSI3_BASE_ADDR	(MX51_AIPS2_BASE_ADDR + 0x000E8000)
- #define MX51_MXC_FEC_BASE_ADDR	(MX51_AIPS2_BASE_ADDR + 0x000EC000)
- #define MX51_TVE_BASE_ADDR	(MX51_AIPS2_BASE_ADDR + 0x000F0000)
- #define MX51_VPU_BASE_ADDR	(MX51_AIPS2_BASE_ADDR + 0x000F4000)
+Sascha
+
+> ---
+>  arch/arm/mach-imx/include/mach/imx27-regs.h |    3 +++
+>  1 files changed, 3 insertions(+), 0 deletions(-)
+> 
+> diff --git a/arch/arm/mach-imx/include/mach/imx27-regs.h b/arch/arm/mach-imx/include/mach/imx27-regs.h
+> index 3a4325e..b7bebae 100644
+> --- a/arch/arm/mach-imx/include/mach/imx27-regs.h
+> +++ b/arch/arm/mach-imx/include/mach/imx27-regs.h
+> @@ -19,12 +19,15 @@
+>  #define IMX_SPI1_BASE              (0x0e000 + IMX_IO_BASE)
+>  #define IMX_SPI2_BASE              (0x0f000 + IMX_IO_BASE)
+>  #define IMX_I2C1_BASE              (0x12000 + IMX_IO_BASE)
+> +#define IMX_SDHC1_BASE             (0x13000 + IMX_IO_BASE)
+> +#define IMX_SDHC2_BASE             (0x14000 + IMX_IO_BASE)
+>  #define IMX_GPIO_BASE              (0x15000 + IMX_IO_BASE)
+>  #define IMX_TIM4_BASE              (0x19000 + IMX_IO_BASE)
+>  #define IMX_TIM5_BASE              (0x1a000 + IMX_IO_BASE)
+>  #define IMX_UART5_BASE             (0x1b000 + IMX_IO_BASE)
+>  #define IMX_UART6_BASE             (0x1c000 + IMX_IO_BASE)
+>  #define IMX_I2C2_BASE              (0x1d000 + IMX_IO_BASE)
+> +#define IMX_SDHC3_BASE             (0x1e000 + IMX_IO_BASE)
+>  #define IMX_TIM6_BASE              (0x1f000 + IMX_IO_BASE)
+>  #define IMX_AIPI2_BASE             (0x20000 + IMX_IO_BASE)
+>  #define IMX_FB_BASE                (0x21000 + IMX_IO_BASE)
+> -- 
+> 1.7.3.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-1.7.3.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
