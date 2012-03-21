@@ -1,12 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mx2.rafi.de ([80.150.88.70])
+Received: from smtprelay05.ispgateway.de ([80.67.31.94])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SALbO-0000ka-RR
- for barebox@lists.infradead.org; Wed, 21 Mar 2012 13:29:24 +0000
-MIME-Version: 1.0
-Message-ID: <OF238DCFD4.07670D15-ONC12579C8.0049BABE-C12579C8.004A1884@o0802.rafi.inhouse>
-From: guenter.gebhardt@rafi.de
-Date: Wed, 21 Mar 2012 14:29:18 +0100
+ id 1SAONE-0003te-4a
+ for barebox@lists.infradead.org; Wed, 21 Mar 2012 16:26:57 +0000
+From: Asen Chavdarov Dimov <dimov@ronetix.at>
+Date: Wed, 21 Mar 2012 18:27:24 +0200
+Message-Id: <1332347246-8777-2-git-send-email-dimov@ronetix.at>
+In-Reply-To: <1332347246-8777-1-git-send-email-dimov@ronetix.at>
+References: <1330618889-11482-1-git-send-email-dimov@ronetix.at>
+ <1332347246-8777-1-git-send-email-dimov@ronetix.at>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,105 +17,64 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============3934150251194371661=="
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: barebox-2012.03.0 imx_get_i2cclk
+Subject: [PATCH v3 2/4] pm9g45: fix Ethernet
 To: barebox@lists.infradead.org
 
-Dies ist eine mehrteilige Nachricht im MIME-Format.
---===============3934150251194371661==
-Content-Type: multipart/alternative; boundary="=_alternative 004A1884C12579C8_="
+Enable PHY clock.
 
-Dies ist eine mehrteilige Nachricht im MIME-Format.
---=_alternative 004A1884C12579C8_=
-Content-Type: text/plain; charset="US-ASCII"
+Signed-off-by: Asen Chavdarov Dimov <dimov@ronetix.at>
+---
+since v1:
+	- phy_init changed to pm9g45_phy_init
+	- pm9g45_phy_init becamos void and "return 0" is removed
+	- removed manual clock enabling
 
-Hello,
+since v2:
+	- dropped an empty line
+---
+ arch/arm/boards/pm9g45/init.c |   12 ++++++++++++
+ 1 files changed, 12 insertions(+), 0 deletions(-)
 
-when compiling for a imx53 with i2c enabled i got the following error:
-
-drivers/built-in.o: In function `i2c_imx_set_clk':
-/home/ggebhardt/repos/ecuv6_bl/barebox/drivers/i2c/busses/i2c-imx.c:282: 
-undefined reference to `imx_get_i2cclk'
-make[4]: *** [.tmp_barebox1] Error 1
-make[3]: *** [CMakeFiles/bootloader] Error 2
-make[2]: *** [CMakeFiles/bootloader.dir/all] Error 2
-make[1]: *** [CMakeFiles/bootloader.dir/rule] Error 2
-make: *** [bootloader] Error 2
-
-I copied the following from the corresponding imx51 implementation:
-
-diff --git a/barebox/arch/arm/mach-imx/speed-imx53.c 
-b/barebox/arch/arm/mach-imx/speed-imx53.c
-index 0d6ac24..a168c65 100644
---- a/barebox/arch/arm/mach-imx/speed-imx53.c
-+++ b/barebox/arch/arm/mach-imx/speed-imx53.c
-@@ -169,6 +169,11 @@ unsigned long imx_get_fecclk(void)
-        return imx_get_ipgclk();
- }
+diff --git a/arch/arm/boards/pm9g45/init.c b/arch/arm/boards/pm9g45/init.c
+index 480c751..567bad4 100644
+--- a/arch/arm/boards/pm9g45/init.c
++++ b/arch/arm/boards/pm9g45/init.c
+@@ -82,6 +82,17 @@ static struct at91_ether_platform_data macb_pdata = {
+ 	.phy_addr = 0,
+ };
  
-+unsigned long imx_get_i2cclk(void)
++static void pm9g45_phy_init(void)
 +{
-+       return imx_get_ipgclk();
++	/*
++	 * PD2 enables the 50MHz oscillator for Ethernet PHY
++	 * 1 - enable
++	 * 0 - disable
++	 */
++	at91_set_gpio_output(AT91_PIN_PD2, 1);
++	at91_set_gpio_value(AT91_PIN_PD2, 1);
 +}
 +
- unsigned long imx_get_mmcclk(void)
+ static int pm9g45_mem_init(void)
  {
-        u32 reg, prediv, podf, rate;
---=_alternative 004A1884C12579C8_=
-Content-Type: text/html; charset="US-ASCII"
+ 	at91_add_device_sdram(128 * 1024 * 1024);
+@@ -93,6 +104,7 @@ mem_initcall(pm9g45_mem_init);
+ static int pm9g45_devices_init(void)
+ {
+ 	pm_add_device_nand();
++	pm9g45_phy_init();
+ 	at91_add_device_eth(&macb_pdata);
+ 
+ 	devfs_add_partition("nand0", 0x00000, 0x80000, PARTITION_FIXED, "self_raw");
+-- 
+1.7.4.4
 
-<font size=2 face="sans-serif">Hello,</font>
-<br>
-<br><font size=2 face="sans-serif">when compiling for a imx53 with i2c
-enabled i got the following error:</font>
-<br>
-<br><font size=2 face="sans-serif">drivers/built-in.o: In function `i2c_imx_set_clk':</font>
-<br><font size=2 face="sans-serif">/home/ggebhardt/repos/ecuv6_bl/barebox/drivers/i2c/busses/i2c-imx.c:282:
-undefined reference to `imx_get_i2cclk'</font>
-<br><font size=2 face="sans-serif">make[4]: *** [.tmp_barebox1] Error 1</font>
-<br><font size=2 face="sans-serif">make[3]: *** [CMakeFiles/bootloader]
-Error 2</font>
-<br><font size=2 face="sans-serif">make[2]: *** [CMakeFiles/bootloader.dir/all]
-Error 2</font>
-<br><font size=2 face="sans-serif">make[1]: *** [CMakeFiles/bootloader.dir/rule]
-Error 2</font>
-<br><font size=2 face="sans-serif">make: *** [bootloader] Error 2</font>
-<br>
-<br><font size=2 face="sans-serif">I copied the following from the corresponding
-imx51 implementation:</font>
-<br>
-<br><font size=2 face="sans-serif">diff --git a/barebox/arch/arm/mach-imx/speed-imx53.c
-b/barebox/arch/arm/mach-imx/speed-imx53.c</font>
-<br><font size=2 face="sans-serif">index 0d6ac24..a168c65 100644</font>
-<br><font size=2 face="sans-serif">--- a/barebox/arch/arm/mach-imx/speed-imx53.c</font>
-<br><font size=2 face="sans-serif">+++ b/barebox/arch/arm/mach-imx/speed-imx53.c</font>
-<br><font size=2 face="sans-serif">@@ -169,6 +169,11 @@ unsigned long imx_get_fecclk(void)</font>
-<br><font size=2 face="sans-serif">&nbsp; &nbsp; &nbsp; &nbsp; return imx_get_ipgclk();</font>
-<br><font size=2 face="sans-serif">&nbsp;}</font>
-<br><font size=2 face="sans-serif">&nbsp;</font>
-<br><font size=2 face="sans-serif">+unsigned long imx_get_i2cclk(void)</font>
-<br><font size=2 face="sans-serif">+{</font>
-<br><font size=2 face="sans-serif">+ &nbsp; &nbsp; &nbsp; return imx_get_ipgclk();</font>
-<br><font size=2 face="sans-serif">+}</font>
-<br><font size=2 face="sans-serif">+</font>
-<br><font size=2 face="sans-serif">&nbsp;unsigned long imx_get_mmcclk(void)</font>
-<br><font size=2 face="sans-serif">&nbsp;{</font>
-<br><font size=2 face="sans-serif">&nbsp; &nbsp; &nbsp; &nbsp; u32 reg,
-prediv, podf, rate;</font>
---=_alternative 004A1884C12579C8_=--
-
-
---===============3934150251194371661==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============3934150251194371661==--
