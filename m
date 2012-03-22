@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-f177.google.com ([74.125.82.177])
+Received: from mail-iy0-f177.google.com ([209.85.210.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SApCP-00037l-HC
- for barebox@lists.infradead.org; Thu, 22 Mar 2012 21:05:34 +0000
-Received: by werp11 with SMTP id p11so2676173wer.36
- for <barebox@lists.infradead.org>; Thu, 22 Mar 2012 14:05:31 -0700 (PDT)
-From: Marek Belisko <marek.belisko@open-nandra.com>
-Date: Thu, 22 Mar 2012 22:05:18 +0100
-Message-Id: <1332450318-26079-2-git-send-email-marek.belisko@open-nandra.com>
-In-Reply-To: <1332450318-26079-1-git-send-email-marek.belisko@open-nandra.com>
-References: <1332450318-26079-1-git-send-email-marek.belisko@open-nandra.com>
+ id 1SArOF-0006dG-FL
+ for barebox@lists.infradead.org; Thu, 22 Mar 2012 23:25:56 +0000
+Received: by iaky10 with SMTP id y10so4502839iak.36
+ for <barebox@lists.infradead.org>; Thu, 22 Mar 2012 16:25:53 -0700 (PDT)
+Date: Thu, 22 Mar 2012 18:25:44 -0500
+From: "Derald D. Woods" <woods.rt@gmail.com>
+Message-ID: <20120322232544.GA3867@numbers.woodsts.org>
+MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,41 +18,31 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] pxa27x_udc: Fix compilation warning.
+Subject: i.MX21 USB OTG
 To: barebox@lists.infradead.org
-Cc: Marek Belisko <marek.belisko@open-nandra.com>
 
-Fix following:
-drivers/usb/gadget/pxa27x_udc.c:1482:1: warning: initialization from incompatible pointer type
+All,
 
-Signed-off-by: Marek Belisko <marek.belisko@open-nandra.com>
----
- drivers/usb/gadget/pxa27x_udc.c |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
+I have an existing design that uses the i.MX21 ARM9 processor. The
+design currently uses an external USB OTG chip. The chip is now
+end-of-life. I know that this is an older ARM processor. It still meets
+most of the design needs. Is the i.MX21 OTG functionality considered
+reliable? I have not seen any real success stories with the i.MX21 USB
+OTG implementation. Our board currently utilizes the USB OTG chip at
+the bootloader and Linux kernel level.
 
-diff --git a/drivers/usb/gadget/pxa27x_udc.c b/drivers/usb/gadget/pxa27x_udc.c
-index 5652555..26be29d 100644
---- a/drivers/usb/gadget/pxa27x_udc.c
-+++ b/drivers/usb/gadget/pxa27x_udc.c
-@@ -1473,9 +1473,9 @@ static struct pxa_udc memory = {
- 	}
- };
+I would appreciate being pointed in the right direction or warned of
+impending danger.
+
+I posted to this list because the support for i.MX2x processors is still
+fairly active in the Barebox community.
+
  
--static int pxa27x_udc_poller(struct poller_struct *poller)
-+static void pxa27x_udc_poller(struct poller_struct *poller)
- {
--	return usb_gadget_poll();
-+	usb_gadget_poll();
- }
- static struct poller_struct poller = {
- 	.func		= pxa27x_udc_poller
--- 
-1.7.5.4
+Derald D. Woods
 
 
 _______________________________________________
