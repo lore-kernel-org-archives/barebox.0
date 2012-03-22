@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtprelay02.ispgateway.de ([80.67.31.36])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SAOci-0004j9-HX
- for barebox@lists.infradead.org; Wed, 21 Mar 2012 16:42:57 +0000
-Message-ID: <4F6A0534.3060808@ronetix.at>
-Date: Wed, 21 Mar 2012 18:43:32 +0200
-From: RONETIX - Asen Dimov <dimov@ronetix.at>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SAeIM-0007Lc-Dk
+ for barebox@lists.infradead.org; Thu, 22 Mar 2012 09:27:00 +0000
+Date: Thu, 22 Mar 2012 10:26:44 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120322092644.GZ3852@pengutronix.de>
+References: <OF238DCFD4.07670D15-ONC12579C8.0049BABE-C12579C8.004A1884@o0802.rafi.inhouse>
 MIME-Version: 1.0
-References: <1330618889-11482-1-git-send-email-dimov@ronetix.at>
- <1330707323-8021-1-git-send-email-dimov@ronetix.at>
- <20120302171851.GD12248@game.jcrosoft.org> <4F5899EF.8010801@ronetix.at>
- <20120308130529.GN12248@game.jcrosoft.org>
-In-Reply-To: <20120308130529.GN12248@game.jcrosoft.org>
+Content-Disposition: inline
+In-Reply-To: <OF238DCFD4.07670D15-ONC12579C8.0049BABE-C12579C8.004A1884@o0802.rafi.inhouse>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,44 +18,65 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 1/4] pm9g45: boot from NAND
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: barebox-2012.03.0 imx_get_i2cclk
+To: guenter.gebhardt@rafi.de
 Cc: barebox@lists.infradead.org
 
-Hi Jean-Christophe,
+On Wed, Mar 21, 2012 at 02:29:18PM +0100, guenter.gebhardt@rafi.de wrote:
+> Hello,
+> 
+> when compiling for a imx53 with i2c enabled i got the following error:
+> 
+> drivers/built-in.o: In function `i2c_imx_set_clk':
+> /home/ggebhardt/repos/ecuv6_bl/barebox/drivers/i2c/busses/i2c-imx.c:282: 
+> undefined reference to `imx_get_i2cclk'
+> make[4]: *** [.tmp_barebox1] Error 1
+> make[3]: *** [CMakeFiles/bootloader] Error 2
+> make[2]: *** [CMakeFiles/bootloader.dir/all] Error 2
+> make[1]: *** [CMakeFiles/bootloader.dir/rule] Error 2
+> make: *** [bootloader] Error 2
+> 
+> I copied the following from the corresponding imx51 implementation:
+> 
+> diff --git a/barebox/arch/arm/mach-imx/speed-imx53.c 
+> b/barebox/arch/arm/mach-imx/speed-imx53.c
+> index 0d6ac24..a168c65 100644
+> --- a/barebox/arch/arm/mach-imx/speed-imx53.c
+> +++ b/barebox/arch/arm/mach-imx/speed-imx53.c
+> @@ -169,6 +169,11 @@ unsigned long imx_get_fecclk(void)
+>         return imx_get_ipgclk();
+>  }
+>  
+> +unsigned long imx_get_i2cclk(void)
+> +{
+> +       return imx_get_ipgclk();
+> +}
 
-I am back on the pm9g45 patches again.
+The patch looks good. Could you create a formal patch with a proper
+subject and signed-off-by? 
 
-On 03/08/2012 03:05 PM, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 13:37 Thu 08 Mar     , RONETIX - Asen Dimov wrote:
->> Hi Jean-Christophe,
->>
->> On 03/02/2012 07:18 PM, Jean-Christophe PLAGNIOL-VILLARD wrote:
->>
->> In the "defaultenv/bin/boot"  it is mentioned "/dev/nand0.kernel.bb"
->> and many boards are using
->> ".bb" suffix.
-> no the name need to be kernel
->
-> the .dd will be add automatically for the bad bloack aware device
-> so you loose space
-In the pm9g45 v3 patch series the MTD partition for Linux is named 
-"kernel", and "defaultenv/bin/boot"
-script looks for "/dev/nand0.kernel.bb".  In the same time all boards 
-name Linux MTD partition
-"kernel.bb". Is this "bad block aware device" driver scheduled to be 
-implemented in barebox or
-is it allowable to rename that partition to "kernel.bb" to un-broke the 
-boot process?
+Sascha
 
-> Best Regards,
-> J.
-Regards,
-Asen
+> +
+>  unsigned long imx_get_mmcclk(void)
+>  {
+>         u32 reg, prediv, podf, rate;
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
