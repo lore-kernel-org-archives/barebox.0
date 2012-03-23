@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SB08R-0003lv-9O
- for barebox@lists.infradead.org; Fri, 23 Mar 2012 08:46:16 +0000
-Date: Fri, 23 Mar 2012 09:45:49 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120323084549.GL3852@pengutronix.de>
-References: <1332415393-18394-1-git-send-email-christian.kapeller@cmotion.eu>
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SB15N-0005O2-Ev
+ for barebox@lists.infradead.org; Fri, 23 Mar 2012 09:47:12 +0000
+Date: Fri, 23 Mar 2012 10:46:49 +0100
+From: Wolfram Sang <w.sang@pengutronix.de>
+Message-ID: <20120323094649.GB2550@pengutronix.de>
+References: <20120310221035.GC14564@pengutronix.de>
+ <20120313035729.GG444@game.jcrosoft.org>
+ <20120313102309.GB2488@pengutronix.de>
+ <20120313171623.GJ444@game.jcrosoft.org>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1332415393-18394-1-git-send-email-christian.kapeller@cmotion.eu>
+In-Reply-To: <20120313171623.GJ444@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,51 +20,77 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============3879127143298460334=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH V2 0/2] Add support for Karo TX51 module
-To: Christian Kapeller <christian.kapeller@cmotion.eu>
+Subject: Re: Shall 'bmp' uncompress automagically?
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-Hi Christian,
 
-On Thu, Mar 22, 2012 at 12:23:11PM +0100, Christian Kapeller wrote:
-> This patch introduces board support for the Karo TX51 i.mx51 sodimm module.
-> 
-> Supported features:
->  - nand
->  - ethernet
->  - mmc0, mmc1 (on stk5v3 development board)
->  - led (on stk5v3 development board)
-> 
-> What changed from patch V1:
->  - fixed ethernet initialization
->  - added mmc1 support
->  - update defconfig to include commands for supported devices
->  - updated env:
->     - don't add 'tx51_base' parameter to kernel cmdline
->     - update kernel image name to zImage_tx51, which comes with Karo BSP
-> 
-> What doesn't work:
->  - fec mac is read in reverse byte order.
+--===============3879127143298460334==
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="s/l3CgOIzMHHjg/5"
+Content-Disposition: inline
 
-I am still searching for our tx51 board to give it a try. Especially the
-mac read in reverse order puzzles me.
 
-Your patches are not lost, I have them on my radar.
+--s/l3CgOIzMHHjg/5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Thanks
- Sascha
 
--- 
-Pengutronix e.K.                           |                             |
+> > > > Is something like this wanted? Or shall this be done entirely via s=
+cripts?
+> > > >=20
+> > > > if [ $file is somehow detected as compressed ]
+> > > > 	uncompress $file /bmp
+> > > > 	bmp /bmp
+> > > > 	rm /bmp
+> > > > else
+> > > > 	bmp $file
+> > > > fi
+> > > I prefer the second one
+> >=20
+> > Care to explain why?
+> I the image could be embedeed in other format (uImage, android etc..)
+
+A BMP in a uImage??? But even if, there is no difference if bmp command
+calls 'uncompress' or a script?
+
+> And I'm using such command to boot a kernel via DFU too
+
+Which command? What does it have to do wtih BMP?
+
+--=20
+Pengutronix e.K.                           | Wolfram Sang                |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+--s/l3CgOIzMHHjg/5
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.10 (GNU/Linux)
+
+iEYEARECAAYFAk9sRokACgkQD27XaX1/VRsu/ACgmIqZaolFT8d/PscC/i4lNZi+
+j84AnRWXYQmfXytSKYrG4xlkT4KKD8f5
+=Lv2N
+-----END PGP SIGNATURE-----
+
+--s/l3CgOIzMHHjg/5--
+
+
+--===============3879127143298460334==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============3879127143298460334==--
