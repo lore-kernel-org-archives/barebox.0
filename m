@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SB1rO-0003AY-LU
- for barebox@lists.infradead.org; Fri, 23 Mar 2012 10:36:47 +0000
+ id 1SB1rD-0003AK-PR
+ for barebox@lists.infradead.org; Fri, 23 Mar 2012 10:36:34 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 23 Mar 2012 11:36:17 +0100
-Message-Id: <1332498979-13742-2-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1332498979-13742-1-git-send-email-s.hauer@pengutronix.de>
-References: <1332498979-13742-1-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 23 Mar 2012 11:36:16 +0100
+Message-Id: <1332498979-13742-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,43 +19,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] ARM i.MX51 clk: select uart clk parent based on hardware
- setting
+Subject: ARM i.MX51: lowlevel code work
 To: barebox@lists.infradead.org
 
-The previous code assumed pll2 which is correct when we set the
-uart parent to pll2 beforehand. The reset default is different
-though, so calculate uart parent based on hardware setting.
+We currently only setup the i.MX5 to full speed on newer tapeouts.
+This really is a hack for older babbage boards. This series fixes this.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/mach-imx/speed-imx51.c |   10 +++++++++-
- 1 files changed, 9 insertions(+), 1 deletions(-)
+Sascha
 
-diff --git a/arch/arm/mach-imx/speed-imx51.c b/arch/arm/mach-imx/speed-imx51.c
-index 643ad8f..84f4892 100644
---- a/arch/arm/mach-imx/speed-imx51.c
-+++ b/arch/arm/mach-imx/speed-imx51.c
-@@ -115,7 +115,15 @@ unsigned long imx_get_uartclk(void)
- 	u32 reg, prediv, podf;
- 	unsigned long parent_rate;
- 
--	parent_rate = pll2_sw_get_rate();
-+	reg = ccm_readl(MX5_CCM_CSCMR1);
-+	reg &= MX5_CCM_CSCMR1_UART_CLK_SEL_MASK;
-+	reg >>= MX5_CCM_CSCMR1_UART_CLK_SEL_OFFSET;
-+
-+	parent_rate = get_rate_select(reg,
-+			pll1_main_get_rate,
-+			pll2_sw_get_rate,
-+			pll3_sw_get_rate,
-+			NULL);
- 
- 	reg = ccm_readl(MX5_CCM_CSCDR1);
- 	prediv = ((reg & MX5_CCM_CSCDR1_UART_CLK_PRED_MASK) >>
--- 
-1.7.9.1
+for you to fetch changes up to f762f4bf04ae9f9faf5e422b273079b3f6946e73:
 
+  ARM i.MX51 lowlevel: setup full cpu speed unconditionally (2012-03-23 11:33:03 +0100)
+
+----------------------------------------------------------------
+Sascha Hauer (3):
+      ARM i.MX51 clk: select uart clk parent based on hardware setting
+      ARM i.MX51 babbage: move lowlevel setup after power init
+      ARM i.MX51 lowlevel: setup full cpu speed unconditionally
+
+ arch/arm/boards/freescale-mx51-pdk/board.c |    7 +++++--
+ arch/arm/mach-imx/imx51.c                  |    7 ++-----
+ arch/arm/mach-imx/speed-imx51.c            |   10 +++++++++-
+ 3 files changed, 16 insertions(+), 8 deletions(-)
 
 _______________________________________________
 barebox mailing list
