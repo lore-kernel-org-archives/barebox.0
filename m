@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SAztM-0000Ml-A2
- for barebox@lists.infradead.org; Fri, 23 Mar 2012 08:30:41 +0000
-Date: Fri, 23 Mar 2012 09:30:22 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120323083022.GH3852@pengutronix.de>
-References: <1332450318-26079-1-git-send-email-marek.belisko@open-nandra.com>
- <1332450318-26079-2-git-send-email-marek.belisko@open-nandra.com>
+Received: from mail-vx0-f177.google.com ([209.85.220.177])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SAzu6-00077S-Aq
+ for barebox@lists.infradead.org; Fri, 23 Mar 2012 08:31:26 +0000
+Received: by vcbf13 with SMTP id f13so3579579vcb.36
+ for <barebox@lists.infradead.org>; Fri, 23 Mar 2012 01:31:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1332450318-26079-2-git-send-email-marek.belisko@open-nandra.com>
+In-Reply-To: <20120323082846.GG3852@pengutronix.de>
+References: <1332450318-26079-1-git-send-email-marek.belisko@open-nandra.com>
+ <20120323082846.GG3852@pengutronix.de>
+Date: Fri, 23 Mar 2012 09:31:21 +0100
+Message-ID: <CAAfyv35Wk7OitpptkOZ_pvT2-Ck6W1FVWXmq0RpyEXVqop2vBA@mail.gmail.com>
+From: Belisko Marek <marek.belisko@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,61 +20,58 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] pxa27x_udc: Fix compilation warning.
-To: Marek Belisko <marek.belisko@open-nandra.com>
+Subject: Re: [PATCH 1/2] mtd: core: Fix compilation warning.
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Mar 22, 2012 at 10:05:18PM +0100, Marek Belisko wrote:
-> Fix following:
-> drivers/usb/gadget/pxa27x_udc.c:1482:1: warning: initialization from incompatible pointer type
-> 
-> Signed-off-by: Marek Belisko <marek.belisko@open-nandra.com>
-
-Applied, thanks
-
-Sascha
-
-> ---
->  drivers/usb/gadget/pxa27x_udc.c |    4 ++--
->  1 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/usb/gadget/pxa27x_udc.c b/drivers/usb/gadget/pxa27x_udc.c
-> index 5652555..26be29d 100644
-> --- a/drivers/usb/gadget/pxa27x_udc.c
-> +++ b/drivers/usb/gadget/pxa27x_udc.c
-> @@ -1473,9 +1473,9 @@ static struct pxa_udc memory = {
->  	}
->  };
->  
-> -static int pxa27x_udc_poller(struct poller_struct *poller)
-> +static void pxa27x_udc_poller(struct poller_struct *poller)
->  {
-> -	return usb_gadget_poll();
-> +	usb_gadget_poll();
->  }
->  static struct poller_struct poller = {
->  	.func		= pxa27x_udc_poller
-> -- 
-> 1.7.5.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gRnJpLCBNYXIgMjMsIDIwMTIgYXQgOToyOCBBTSwgU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBl
+bmd1dHJvbml4LmRlPiB3cm90ZToKPiBPbiBUaHUsIE1hciAyMiwgMjAxMiBhdCAxMDowNToxN1BN
+ICswMTAwLCBNYXJlayBCZWxpc2tvIHdyb3RlOgo+PiBGaXggZm9sbG93aW5nIHdhcm5pbmc6Cj4+
+IGRyaXZlcnMvbXRkL2NvcmUuYzogSW4gZnVuY3Rpb24gJ210ZF9pb2N0bCc6Cj4+IGRyaXZlcnMv
+bXRkL2NvcmUuYzoxMjI6MjQ6IHdhcm5pbmc6IHVudXNlZCB2YXJpYWJsZSAnZWNjJwo+Pgo+PiBG
+b3VuZCBpbiBhdDkxcm05MjAwZWtfZGVmY29uZmlnLgo+Pgo+PiBTaWduZWQtb2ZmLWJ5OiBNYXJl
+ayBCZWxpc2tvIDxtYXJlay5iZWxpc2tvQG9wZW4tbmFuZHJhLmNvbT4KPj4gLS0tCj4+IMKgZHJp
+dmVycy9tdGQvY29yZS5jIHwgwqAgwqAzICsrLQo+PiDCoDEgZmlsZXMgY2hhbmdlZCwgMiBpbnNl
+cnRpb25zKCspLCAxIGRlbGV0aW9ucygtKQo+Pgo+PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9tdGQv
+Y29yZS5jIGIvZHJpdmVycy9tdGQvY29yZS5jCj4+IGluZGV4IGNjYzVjMjYuLmUxMWJhNjQgMTAw
+NjQ0Cj4+IC0tLSBhL2RyaXZlcnMvbXRkL2NvcmUuYwo+PiArKysgYi9kcml2ZXJzL210ZC9jb3Jl
+LmMKPj4gQEAgLTExOSw3ICsxMTksNiBAQCBpbnQgbXRkX2lvY3RsKHN0cnVjdCBjZGV2ICpjZGV2
+LCBpbnQgcmVxdWVzdCwgdm9pZCAqYnVmKQo+PiDCoCDCoCDCoCBpbnQgcmV0ID0gMDsKPj4gwqAg
+wqAgwqAgc3RydWN0IG10ZF9pbmZvICptdGQgPSBjZGV2LT5wcml2Owo+PiDCoCDCoCDCoCBzdHJ1
+Y3QgbXRkX2luZm9fdXNlciAqdXNlciA9IGJ1ZjsKPj4gLSDCoCDCoCBzdHJ1Y3QgbXRkX2VjY19z
+dGF0cyAqZWNjID0gYnVmOwo+PiDCoCDCoCDCoCBzdHJ1Y3QgcmVnaW9uX2luZm9fdXNlciAqcmVn
+ID0gYnVmOwo+Pgo+PiDCoCDCoCDCoCBzd2l0Y2ggKHJlcXVlc3QpIHsKPj4gQEAgLTE0Niw2ICsx
+NDUsOCBAQCBpbnQgbXRkX2lvY3RsKHN0cnVjdCBjZGV2ICpjZGV2LCBpbnQgcmVxdWVzdCwgdm9p
+ZCAqYnVmKQo+PiDCoCDCoCDCoCDCoCDCoCDCoCDCoCBicmVhazsKPj4gwqAjaWYgKGRlZmluZWQo
+Q09ORklHX05BTkRfRUNDX0hXKSB8fCBkZWZpbmVkKENPTkZJR19OQU5EX0VDQ19TT0ZUKSkKPj4g
+wqAgwqAgwqAgY2FzZSBFQ0NHRVRTVEFUUzoKPj4gKyDCoCDCoCDCoCDCoCDCoCDCoCBzdHJ1Y3Qg
+bXRkX2VjY19zdGF0cyAqZWNjID0gYnVmOwo+PiArCj4KPiBXb24ndCB0aGF0IGludHJvZHVjZSBh
+IG5ldyB3YXJuaW5nIGFib3V0IG1peGVkIGNvZGUgYW5kIGRlY2xhcmF0aW9ucz8KSSBrbm93IEMg
+ZG9uJ3QgbGlrZSBzdWNoIGEgY29uc3RydWN0aW9uIGJ1dCBteSBDb2RlU291cmNlcnkgKDIwMDlx
+MSkKY29tcGlsZXIgZG9uJ3QKZ2l2ZSBtZSBhbnkgd2FybmluZyBhZnRlciB0aGF0IGNoYW5nZS4g
+TWF5YmUgbmV3ZXIgb25lIHdpbGwgZG8uCj4KPiBTYXNjaGEKPgo+PiDCoCDCoCDCoCDCoCDCoCDC
+oCDCoCBlY2MtPmNvcnJlY3RlZCA9IG10ZC0+ZWNjX3N0YXRzLmNvcnJlY3RlZDsKPj4gwqAgwqAg
+wqAgwqAgwqAgwqAgwqAgZWNjLT5mYWlsZWQgPSBtdGQtPmVjY19zdGF0cy5mYWlsZWQ7Cj4+IMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIGVjYy0+YmFkYmxvY2tzID0gbXRkLT5lY2Nfc3RhdHMuYmFkYmxv
+Y2tzOwo+PiAtLQo+PiAxLjcuNS40Cj4+Cj4+Cj4+IF9fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fCj4+IGJhcmVib3ggbWFpbGluZyBsaXN0Cj4+IGJhcmVib3hA
+bGlzdHMuaW5mcmFkZWFkLm9yZwo+PiBodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFu
+L2xpc3RpbmZvL2JhcmVib3gKPj4KPgo+IC0tCj4gUGVuZ3V0cm9uaXggZS5LLiDCoCDCoCDCoCDC
+oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCB8IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIHwKPiBJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyDCoCDCoCDCoCDC
+oCDCoCDCoCDCoCDCoCB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvIMKgfAo+IFBlaW5lciBT
+dHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5
+MTctMCDCoCDCoHwKPiBBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiDCoCDCoCDCoCDC
+oCDCoCB8IEZheDogwqAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKbWFyZWsKCi0tIAphcyBzaW1w
+bGUgYW5kIHByaW1pdGl2ZSBhcyBwb3NzaWJsZQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tCk1hcmVrIEJlbGlza28gLSBPUEVOLU5BTkRSQQpGcmVlbGFu
+Y2UgRGV2ZWxvcGVyCgpSdXNrYSBOb3ZhIFZlcyAyMTkgfCBQcmVzb3YsIDA4MDA1IFNsb3ZhayBS
+ZXB1YmxpYwpUZWw6ICs0MjEgOTE1IDA1MiAxODQKc2t5cGU6IG1hcmVrd2hpdGUKdHdpdHRlcjog
+I29wZW5uYW5kcmEKd2ViOiBodHRwOi8vb3Blbi1uYW5kcmEuY29tCgpfX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJl
+Ym94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1h
+bi9saXN0aW5mby9iYXJlYm94Cg==
