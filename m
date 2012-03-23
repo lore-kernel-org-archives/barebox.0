@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SAzSe-00028z-9T
- for barebox@lists.infradead.org; Fri, 23 Mar 2012 08:03:05 +0000
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SAzSf-0003bY-57
+ for barebox@lists.infradead.org; Fri, 23 Mar 2012 08:03:07 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1SAzSO-0003DF-CS
+ for barebox@lists.infradead.org; Fri, 23 Mar 2012 09:02:44 +0100
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.77)
+ (envelope-from <sha@pengutronix.de>) id 1SAzSO-0007gb-6C
+ for barebox@lists.infradead.org; Fri, 23 Mar 2012 09:02:44 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 23 Mar 2012 09:02:41 +0100
-Message-Id: <1332489762-28709-2-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1332489762-28709-1-git-send-email-s.hauer@pengutronix.de>
-References: <1332489762-28709-1-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 23 Mar 2012 09:02:40 +0100
+Message-Id: <1332489762-28709-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,32 +26,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] ARM linker script: Fix barebox_image_size
+Subject: fix i.MX flash header copy sizes
 To: barebox@lists.infradead.org
 
-barebox_image_size was calculated wrong when PRE_IMAGE is defined.
-In this case _text does not refer to the binary image start. We
-have to use TEXT_BASE here.
+barebox is getting bigger and the assumption that 256k of binary
+size is enough for everybody is no longer true. Calculate the
+binary size to copy during compile time instead of hardcoding
+a value.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/lib/barebox.lds.S |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+----------------------------------------------------------------
+Sascha Hauer (2):
+      ARM linker script: Fix barebox_image_size
+      ARM i.MX flash header: Fix barebox image sizes
 
-diff --git a/arch/arm/lib/barebox.lds.S b/arch/arm/lib/barebox.lds.S
-index bc20694..3fd271b 100644
---- a/arch/arm/lib/barebox.lds.S
-+++ b/arch/arm/lib/barebox.lds.S
-@@ -105,5 +105,5 @@ SECTIONS
- 	.bss : { *(.bss*) }
- 	__bss_stop = .;
- 	_end = .;
--	_barebox_image_size = __bss_start - _text;
-+	_barebox_image_size = __bss_start - TEXT_BASE;
- }
--- 
-1.7.9.1
-
+ arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c  |    5 +----
+ arch/arm/boards/eukrea_cpuimx35/flash_header.c     |    2 +-
+ arch/arm/boards/eukrea_cpuimx51/flash_header.c     |    4 +---
+ arch/arm/boards/freescale-mx25-3-stack/3stack.c    |    5 +----
+ .../boards/freescale-mx35-3-stack/flash_header.c   |    2 +-
+ arch/arm/boards/freescale-mx51-pdk/flash_header.c  |    4 +---
+ arch/arm/boards/freescale-mx53-loco/flash_header.c |    2 +-
+ arch/arm/boards/freescale-mx53-smd/flash_header.c  |    2 +-
+ arch/arm/boards/tqma53/flash_header.c              |    2 +-
+ arch/arm/lib/barebox.lds.S                         |    2 +-
+ arch/arm/mach-imx/include/mach/imx-flash-header.h  |   10 ++++++++++
+ 11 files changed, 20 insertions(+), 20 deletions(-)
 
 _______________________________________________
 barebox mailing list
