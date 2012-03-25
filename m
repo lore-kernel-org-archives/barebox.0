@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp25.mail.ru ([94.100.176.178])
+Received: from smtp21.mail.ru ([94.100.176.174])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SBmrj-000585-3y
- for barebox@lists.infradead.org; Sun, 25 Mar 2012 12:48:12 +0000
+ id 1SBr2I-0000qJ-OV
+ for barebox@lists.infradead.org; Sun, 25 Mar 2012 17:15:24 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sun, 25 Mar 2012 16:48:06 +0400
-Message-Id: <1332679686-30768-1-git-send-email-shc_work@mail.ru>
+Date: Sun, 25 Mar 2012 21:15:16 +0400
+Message-Id: <1332695716-6959-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,27 +19,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Select POLLER option for fsl_udc
+Subject: [PATCH] i.MX27: Export boot source to magic variables
 To: barebox@lists.infradead.org
 
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- drivers/usb/gadget/Kconfig |    1 +
- 1 files changed, 1 insertions(+), 0 deletions(-)
+ arch/arm/mach-imx/boot.c |   27 ++++++++++++++++++++++++++-
+ 1 files changed, 26 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/usb/gadget/Kconfig b/drivers/usb/gadget/Kconfig
-index 797d19f..4eb2f62 100644
---- a/drivers/usb/gadget/Kconfig
-+++ b/drivers/usb/gadget/Kconfig
-@@ -14,6 +14,7 @@ config USB_GADGET_DRIVER_ARC
- 	prompt "Arc OTG device core"
- 	depends on ARCH_IMX
- 	select USB_GADGET_DUALSPEED
-+	select POLLER
+diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
+index 8b82655..9f2def6 100644
+--- a/arch/arm/mach-imx/boot.c
++++ b/arch/arm/mach-imx/boot.c
+@@ -86,9 +86,34 @@ static int imx_25_35_boot_save_loc(void)
  
- config USB_GADGET_DRIVER_AT91
- 	bool
+ 	return 0;
+ }
+-
+ coredevice_initcall(imx_25_35_boot_save_loc);
+ 
+ BAREBOX_MAGICVAR(barebox_loc, "The source barebox has been booted from");
++#endif
++
++#if defined(CONFIG_ARCH_IMX27)
++static int imx_27_boot_save_loc(void)
++{
++	switch ((GPCR & GPCR_BOOT_MASK) >> GPCR_BOOT_SHIFT) {
++	case GPCR_BOOT_UART_USB:
++		setenv("barebox_loc", "serial");
++		break;
++	case GPCR_BOOT_8BIT_NAND_2k:
++	case GPCR_BOOT_16BIT_NAND_2k:
++	case GPCR_BOOT_16BIT_NAND_512:
++	case GPCR_BOOT_8BIT_NAND_512:
++		setenv("barebox_loc", "nand");
++		break;
++	default:
++		setenv("barebox_loc", "nor");
++		break;
++	}
+ 
++	export("barebox_loc");
++
++	return 0;
++}
++coredevice_initcall(imx_27_boot_save_loc);
++
++BAREBOX_MAGICVAR(barebox_loc, "The source barebox has been booted from");
+ #endif
 -- 
 1.7.3.4
 
