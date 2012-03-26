@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SCDUL-0003ek-TD
- for barebox@lists.infradead.org; Mon, 26 Mar 2012 17:13:51 +0000
-Date: Mon, 26 Mar 2012 19:13:38 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120326171338.GU3852@pengutronix.de>
-References: <OFBBAF4175.708F4DA0-ONC12579CD.00206A41-C12579CD.00218BB2@o0802.rafi.inhouse>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <OFBBAF4175.708F4DA0-ONC12579CD.00206A41-C12579CD.00218BB2@o0802.rafi.inhouse>
+Received: from mail-lb0-f177.google.com ([209.85.217.177])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SCDjF-0005Rs-QX
+ for barebox@lists.infradead.org; Mon, 26 Mar 2012 17:29:15 +0000
+Received: by lbol5 with SMTP id l5so4906195lbo.36
+ for <barebox@lists.infradead.org>; Mon, 26 Mar 2012 10:29:10 -0700 (PDT)
+From: esben.haabendal@gmail.com
+Date: Mon, 26 Mar 2012 19:29:05 +0200
+Message-Id: <1332782947-3407-3-git-send-email-esben.haabendal@gmail.com>
+In-Reply-To: <1332782947-3407-1-git-send-email-esben.haabendal@gmail.com>
+References: <1332782947-3407-1-git-send-email-esben.haabendal@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,56 +18,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] imx53: undefined reference to `imx_get_i2cclk'
-To: guenter.gebhardt@rafi.de
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/4] mxs: Fix i.MX28 PWM3 iomux configuration
+To: barebox@lists.infradead.org
+Cc: Esben Haabendal <esben.haabendal@prevas.dk>
 
-On Mon, Mar 26, 2012 at 08:06:22AM +0200, guenter.gebhardt@rafi.de wrote:
-> Fix linker error when compiling for imx53 with I2C enabled.
-> 
+From: Esben Haabendal <esben.haabendal@gmail.com>
 
-Which branch is this patch targeted to? I applied it to next and
-reverted it afterwards because there already is a imx_get_i2cclk.
-Also master has imx_get_i2cclk already.
+Signed-off-by: Esben Haabendal <esben.haabendal@prevas.dk>
+---
+ arch/arm/mach-mxs/include/mach/iomux-imx28.h |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-Sascha
-
-> Signed-off-by: Guenter Gebhardt <g.gebhardt@gg-sw-systems.de>
-> --
-> diff --git a/barebox/arch/arm/mach-imx/speed-imx53.c 
-> b/barebox/arch/arm/mach-imx/speed-imx53.c
-> index 0d6ac24..a168c65 100644
-> --- a/barebox/arch/arm/mach-imx/speed-imx53.c
-> +++ b/barebox/arch/arm/mach-imx/speed-imx53.c
-> @@ -169,6 +169,11 @@ unsigned long imx_get_fecclk(void)
->         return imx_get_ipgclk();
->  }
->  
-> +unsigned long imx_get_i2cclk(void)
-> +{
-> +       return imx_get_ipgclk();
-> +}
-> +
->  unsigned long imx_get_mmcclk(void)
->  {
->         u32 reg, prediv, podf, rate;
-> --
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
-
+diff --git a/arch/arm/mach-mxs/include/mach/iomux-imx28.h b/arch/arm/mach-mxs/include/mach/iomux-imx28.h
+index 1557126..fae525e 100644
+--- a/arch/arm/mach-mxs/include/mach/iomux-imx28.h
++++ b/arch/arm/mach-mxs/include/mach/iomux-imx28.h
+@@ -296,7 +296,7 @@
+ #define LCD_RESET_GPIO		(FUNC(3) | PORTF(3, 30))
+ #define PWM4			(FUNC(0) | PORTF(3, 29))
+ #define PWM4_GPIO		(FUNC(3) | PORTF(3, 29))
+-#define PWM3			(FUNC(0) | PORTF(3 28))
++#define PWM3			(FUNC(0) | PORTF(3, 28))
+ #define PWM3_GPIO		(FUNC(3) | PORTF(3, 28))
+ 
+ #define PWM2			(FUNC(0) | PORTF(3, 18))
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.5.4
+
 
 _______________________________________________
 barebox mailing list
