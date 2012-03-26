@@ -1,11 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp20.mail.ru ([94.100.176.173])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SBs59-00026J-Df
- for barebox@lists.infradead.org; Sun, 25 Mar 2012 18:22:24 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sun, 25 Mar 2012 22:22:16 +0400
-Message-Id: <1332699736-10591-1-git-send-email-shc_work@mail.ru>
+Received: from mx2.rafi.de ([80.150.88.70])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1SC34T-00012v-8n
+ for barebox@lists.infradead.org; Mon, 26 Mar 2012 06:06:26 +0000
+MIME-Version: 1.0
+Message-ID: <OFBBAF4175.708F4DA0-ONC12579CD.00206A41-C12579CD.00218BB2@o0802.rafi.inhouse>
+From: guenter.gebhardt@rafi.de
+Date: Mon, 26 Mar 2012 08:06:22 +0200
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,40 +15,81 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============8016926835846863896=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Add barebox.map and compressed default_env to distclean
+Subject: [PATCH] imx53: undefined reference to `imx_get_i2cclk'
 To: barebox@lists.infradead.org
 
+Dies ist eine mehrteilige Nachricht im MIME-Format.
+--===============8016926835846863896==
+Content-Type: multipart/alternative; boundary="=_alternative 00218BAFC12579CD_="
 
-Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
----
- Makefile |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
+Dies ist eine mehrteilige Nachricht im MIME-Format.
+--=_alternative 00218BAFC12579CD_=
+Content-Type: text/plain; charset="US-ASCII"
 
-diff --git a/Makefile b/Makefile
-index 4f4c006..eef76c5 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1000,8 +1000,8 @@ endif # CONFIG_MODULES
- # Directories & files removed with 'make clean'
- CLEAN_DIRS  += $(MODVERDIR)
- CLEAN_FILES +=	barebox System.map include/generated/barebox_default_env.h \
--                .tmp_version .tmp_barebox* barebox.bin barebox.S \
--		.tmp_kallsyms* barebox_default_env barebox.ldr Doxyfile.version
-+                .tmp_version .tmp_barebox* barebox.bin barebox.map barebox.S \
-+		.tmp_kallsyms* barebox_default_env* barebox.ldr Doxyfile.version
+Fix linker error when compiling for imx53 with I2C enabled.
+
+Signed-off-by: Guenter Gebhardt <g.gebhardt@gg-sw-systems.de>
+--
+diff --git a/barebox/arch/arm/mach-imx/speed-imx53.c 
+b/barebox/arch/arm/mach-imx/speed-imx53.c
+index 0d6ac24..a168c65 100644
+--- a/barebox/arch/arm/mach-imx/speed-imx53.c
++++ b/barebox/arch/arm/mach-imx/speed-imx53.c
+@@ -169,6 +169,11 @@ unsigned long imx_get_fecclk(void)
+        return imx_get_ipgclk();
+ }
  
- # Directories & files removed with 'make mrproper'
- MRPROPER_DIRS  += include/config include2 usr/include
--- 
-1.7.3.4
++unsigned long imx_get_i2cclk(void)
++{
++       return imx_get_ipgclk();
++}
++
+ unsigned long imx_get_mmcclk(void)
+ {
+        u32 reg, prediv, podf, rate;
+--
+--=_alternative 00218BAFC12579CD_=
+Content-Type: text/html; charset="US-ASCII"
 
+<font size=2 face="sans-serif">Fix linker error when compiling for imx53
+with I2C enabled.</font>
+<br>
+<br><tt><font size=3>Signed-off-by: Guenter Gebhardt &lt;</font></tt><a href=http://lists.infradead.org/mailman/listinfo/barebox><tt><font size=3 color=blue><u>g.gebhardt@gg-sw-systems.de</u></font></tt></a><tt><font size=3>&gt;</font></tt>
+<br><tt><font size=3>--</font></tt>
+<br><font size=2 face="sans-serif">diff --git a/barebox/arch/arm/mach-imx/speed-imx53.c
+b/barebox/arch/arm/mach-imx/speed-imx53.c</font>
+<br><font size=2 face="sans-serif">index 0d6ac24..a168c65 100644</font>
+<br><font size=2 face="sans-serif">--- a/barebox/arch/arm/mach-imx/speed-imx53.c</font>
+<br><font size=2 face="sans-serif">+++ b/barebox/arch/arm/mach-imx/speed-imx53.c</font>
+<br><font size=2 face="sans-serif">@@ -169,6 +169,11 @@ unsigned long imx_get_fecclk(void)</font>
+<br><font size=2 face="sans-serif">&nbsp; &nbsp; &nbsp; &nbsp; return imx_get_ipgclk();</font>
+<br><font size=2 face="sans-serif">&nbsp;}</font>
+<br><font size=2 face="sans-serif">&nbsp;</font>
+<br><font size=2 face="sans-serif">+unsigned long imx_get_i2cclk(void)</font>
+<br><font size=2 face="sans-serif">+{</font>
+<br><font size=2 face="sans-serif">+ &nbsp; &nbsp; &nbsp; return imx_get_ipgclk();</font>
+<br><font size=2 face="sans-serif">+}</font>
+<br><font size=2 face="sans-serif">+</font>
+<br><font size=2 face="sans-serif">&nbsp;unsigned long imx_get_mmcclk(void)</font>
+<br><font size=2 face="sans-serif">&nbsp;{</font>
+<br><font size=2 face="sans-serif">&nbsp; &nbsp; &nbsp; &nbsp; u32 reg,
+prediv, podf, rate;</font>
+<br><tt><font size=3>--</font></tt>
+--=_alternative 00218BAFC12579CD_=--
+
+
+--===============8016926835846863896==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============8016926835846863896==--
