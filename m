@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lpp01m010-f49.google.com ([209.85.215.49])
+Received: from mail-lb0-f177.google.com ([209.85.217.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SCDjG-0005Rw-Ew
- for barebox@lists.infradead.org; Mon, 26 Mar 2012 17:29:16 +0000
-Received: by lagy4 with SMTP id y4so4899584lag.36
- for <barebox@lists.infradead.org>; Mon, 26 Mar 2012 10:29:10 -0700 (PDT)
+ id 1SCEF7-0007f9-Ex
+ for barebox@lists.infradead.org; Mon, 26 Mar 2012 18:02:14 +0000
+Received: by mail-lb0-f177.google.com with SMTP id l5so4938114lbo.36
+ for <barebox@lists.infradead.org>; Mon, 26 Mar 2012 11:02:09 -0700 (PDT)
 From: esben.haabendal@gmail.com
-Date: Mon, 26 Mar 2012 19:29:04 +0200
-Message-Id: <1332782947-3407-2-git-send-email-esben.haabendal@gmail.com>
-In-Reply-To: <1332782947-3407-1-git-send-email-esben.haabendal@gmail.com>
-References: <1332782947-3407-1-git-send-email-esben.haabendal@gmail.com>
+Date: Mon, 26 Mar 2012 20:02:06 +0200
+Message-Id: <1332784926-4709-1-git-send-email-esben.haabendal@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,37 +21,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] mxs: Fix support for BITKEEPER() macro
+Subject: [PATCH 2/2] mx28-evk: Enable LCD support and bmp command
 To: barebox@lists.infradead.org
 Cc: Esben Haabendal <esben.haabendal@prevas.dk>
 
-From: Esben Haabendal <esben.haabendal@gmail.com>
-
-There was no check for BE, so any BITKEEPER(1) iomux configurations
-were not being applied.
+From: Esben Haabendal <esben.haabendal@prevas.dk>
 
 Signed-off-by: Esben Haabendal <esben.haabendal@prevas.dk>
 ---
- arch/arm/mach-mxs/iomux-imx.c |    6 ++++++
- 1 files changed, 6 insertions(+), 0 deletions(-)
+ arch/arm/configs/imx28evk_defconfig |    3 +++
+ 1 files changed, 3 insertions(+), 0 deletions(-)
 
-diff --git a/arch/arm/mach-mxs/iomux-imx.c b/arch/arm/mach-mxs/iomux-imx.c
-index 3161a5d..6bcde03 100644
---- a/arch/arm/mach-mxs/iomux-imx.c
-+++ b/arch/arm/mach-mxs/iomux-imx.c
-@@ -128,6 +128,12 @@ void imx_gpio_mode(uint32_t m)
- 				(GET_PULLUP(m) == 1 ? BIT_SET : BIT_CLR));
- 	}
- 
-+	if (BK_PRESENT(m)) {
-+		reg_offset = calc_pullup_reg(gpio_pin);
-+		writel(0x1 << (gpio_pin % 32), IMX_IOMUXC_BASE + reg_offset +
-+				(GET_BITKEEPER(m) == 1 ? BIT_SET : BIT_CLR));
-+	}
-+
- 	if (GET_FUNC(m) == IS_GPIO) {
- 		if (GET_GPIODIR(m) == 1) {
- 			/* first set the output value */
+diff --git a/arch/arm/configs/imx28evk_defconfig b/arch/arm/configs/imx28evk_defconfig
+index 1860aef..1b44cf4 100644
+--- a/arch/arm/configs/imx28evk_defconfig
++++ b/arch/arm/configs/imx28evk_defconfig
+@@ -33,6 +33,7 @@ CONFIG_CMD_RESET=y
+ CONFIG_CMD_GO=y
+ CONFIG_CMD_TIMEOUT=y
+ CONFIG_CMD_PARTITION=y
++CONFIG_CMD_BMP=y
+ CONFIG_CMD_GPIO=y
+ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+@@ -41,6 +42,8 @@ CONFIG_NET_TFTP=y
+ CONFIG_NET_RESOLV=y
+ CONFIG_DRIVER_NET_FEC_IMX=y
+ # CONFIG_SPI is not set
++CONFIG_VIDEO=y
++CONFIG_DRIVER_VIDEO_STM=y
+ CONFIG_MCI=y
+ CONFIG_MCI_STARTUP=y
+ CONFIG_MCI_MXS=y
 -- 
 1.7.5.4
 
