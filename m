@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ems.wolfvision.net ([194.208.11.114])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SC5w0-0001KV-Fa
- for barebox@lists.infradead.org; Mon, 26 Mar 2012 09:09:54 +0000
-From: Matthias Fend <Matthias.Fend@wolfvision.net>
-Date: Mon, 26 Mar 2012 11:09:40 +0200
-Message-ID: <0769D45835157F4282BC17DF611B07F00D1ED6910B@wolfserver9>
+Received: from mx2.rafi.de ([80.150.88.70])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1SCBBv-0004NS-9f
+ for barebox@lists.infradead.org; Mon, 26 Mar 2012 14:46:47 +0000
+In-Reply-To: <0769D45835157F4282BC17DF611B07F00D1ED6910B@wolfserver9>
 References: <OFC5456862.5E2219B4-ONC12579CD.002FB0FF-C12579CD.00304E9A@o0802.rafi.inhouse>
-In-Reply-To: <OFC5456862.5E2219B4-ONC12579CD.002FB0FF-C12579CD.00304E9A@o0802.rafi.inhouse>
-Content-Language: de-DE
-Content-Type: multipart/mixed;
- boundary="_003_0769D45835157F4282BC17DF611B07F00D1ED6910Bwolfserver9_"
+ <0769D45835157F4282BC17DF611B07F00D1ED6910B@wolfserver9>
 MIME-Version: 1.0
+Message-ID: <OFE9729FBE.75DA1442-ONC12579CD.00510EF3-C12579CD.00512B14@o0802.rafi.inhouse>
+From: guenter.gebhardt@rafi.de
+Date: Mon, 26 Mar 2012 16:46:32 +0200
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,20 +18,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: multipart/mixed; boundary="===============4294648487568625531=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: AW: imx53 internal boot from NAND
-To: "guenter.gebhardt@rafi.de" <guenter.gebhardt@rafi.de>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Antwort: AW: imx53 internal boot from NAND
+To: Matthias Fend <Matthias.Fend@wolfvision.net>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
---_003_0769D45835157F4282BC17DF611B07F00D1ED6910Bwolfserver9_
-Content-Type: text/plain; charset="iso-8859-1"
+Dies ist eine mehrteilige Nachricht im MIME-Format.
+--===============4294648487568625531==
+Content-Type: multipart/alternative; boundary="=_alternative 00512B14C12579CD_="
+
+Dies ist eine mehrteilige Nachricht im MIME-Format.
+--=_alternative 00512B14C12579CD_=
+Content-Type: text/plain; charset="ISO-8859-1"
 Content-Transfer-Encoding: quoted-printable
+
+Hello,
+
+I have some problems. May you please send me a binary produced with this=20
+tool?
+I want to inspect the flash header.
+
+-- Gebhardt
+
+
+
+Von:    Matthias Fend <Matthias.Fend@wolfvision.net>
+An:     "guenter.gebhardt@rafi.de" <guenter.gebhardt@rafi.de>,=20
+"barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Datum:  26.03.2012 11:09
+Betreff:        AW: imx53 internal boot from NAND
+
+
 
 Hi,
 
 For a quick start you can use the provided FCB (fcb.bin).
-This FCB was generated with the attached tool (fcbgen.c) - note that the ba=
-d block handling is disabled.
+This FCB was generated with the attached tool (fcbgen.c) - note that the=20
+bad block handling is disabled.
 
 Then you can "merge" your barebox image with the FCB with something like:
 cat fcb.bin barebox-image > barebox-fcb.bin
@@ -42,8 +65,9 @@ This works at least on our custom i.MX53 hardware.
 
 ~Matthias
 
-Von: barebox-bounces@lists.infradead.org [mailto:barebox-bounces@lists.infr=
-adead.org] Im Auftrag von guenter.gebhardt@rafi.de
+Von: barebox-bounces@lists.infradead.org [
+mailto:barebox-bounces@lists.infradead.org] Im Auftrag von=20
+guenter.gebhardt@rafi.de
 Gesendet: Montag, 26. M=E4rz 2012 10:48
 An: barebox@lists.infradead.org
 Betreff: imx53 internal boot from NAND
@@ -52,140 +76,99 @@ Hello,=20
 
 I tried to use barebox in order to boot from NAND.=20
 
-The ROM loader needs a FCB (Firmware Configuration Block) table at the begi=
-nning of the flash (according to chapter 7.5.2.2 of the reference manual).=
-=20
-I looked at the existing imx53 boards within the barebox sources but I foun=
-x that no one used this mode there.=20
+The ROM loader needs a FCB (Firmware Configuration Block) table at the=20
+beginning of the flash (according to chapter 7.5.2.2 of the reference=20
+manual).=20
+I looked at the existing imx53 boards within the barebox sources but I=20
+founx that no one used this mode there.=20
 
 Has someone done this or can give me some advice?=20
 
 -- Gebhardt
+[Anhang "fcbgen.c" gel=F6scht von Guenter Gebhardt/Rafi] [Anhang "fcb.bin" =
 
---_003_0769D45835157F4282BC17DF611B07F00D1ED6910Bwolfserver9_
-Content-Type: text/plain; name="fcbgen.c"
-Content-Description: fcbgen.c
-Content-Disposition: attachment; filename="fcbgen.c"; size=1875;
-	creation-date="Mon, 26 Mar 2012 09:03:30 GMT";
-	modification-date="Mon, 26 Mar 2012 09:03:30 GMT"
-Content-Transfer-Encoding: base64
+gel=F6scht von Guenter Gebhardt/Rafi]=20
 
-LyoKICogZ2VuZXJhdGUgZmlybXdhcmUgY29udHJvbCBibG9jayAoRkNCKSAtIHJlcXVpcmVkIHRv
-IGJvb3QgaU1YNTMgZnJvbSBOQU5ECiAqCiAqIG9ubHkgd29ya3MgZm9yIDJrIHBhZ2UgTkFORHMK
-ICogYmFkIGJsb2NrIGhhbmRsaW5nIG9mIFJPTSBib290bG9hZGVyIGlzIGRpc2FibGVkCiAqCiAq
-IGZjYiBsZW5ndGggaXMgNGtCICgyIHBhZ2VzKQogKiBpbWFnZSBzdGFydCBhdCBwYWdlIDIKICov
-CiNpbmNsdWRlIDxzdGRpby5oPgojaW5jbHVkZSA8c3RkbGliLmg+CiNpbmNsdWRlIDxzdHJpbmcu
-aD4KI2luY2x1ZGUgPHN0ZGludC5oPgoKc3RydWN0IGZjYl9lbnRyeQp7CiAgdWludDMyX3QgYWRk
-cjsKICB1aW50MzJfdCB2YWx1ZTsKfTsKCnN0cnVjdCBmY2JfZW50cnkgZmNiX2VudHJpZXNbXSA9
-CnsKICB7IDB4MDAsIDB4MDAwMDAwMDAgfSwgLy8gcmVzLgogIHsgMHgwNCwgMHg0NjQzNDIyMCB9
-LCAvLyBmaW5nZXJwcmludCAjMiAoYXNjaWkgRkNCKQogIHsgMHgwOCwgMHgwMTAwMDAwMCB9LCAv
-LyBmaW5nZXJwcmludCAjMyAodmVyc2lvbikKICB7IDB4NjgsIDB4MDIwMDAwMDAgfSwgLy8gcHJp
-bWFyeSBpbWFnZSBzdGFydCBwYWdlIChwYWdlIDIpCiAgeyAweDZDLCAweDAyMDAwMDAwIH0sIC8v
-IHNlY29uZGFyeSBpbWFnZSBzdGFydCBwYWdlIChwYWdlIDIpCiAgeyAweDc4LCAweDAwMDAwMDAw
-IH0sIC8vIFN0YXJ0IHBhZ2UgYWRkcmVzcyBvZiBEQkJUIFNlYXJjaCBBcmVhICgwIG1lYW5zIG5v
-IGJhZCBibG9ja3MpCiAgeyAweDdDLCAweDAwMDAwMDAwIH0sIC8vIEJhZCBCbG9jayBNYXJrZXIg
-T2Zmc2V0IGluIHBhZ2UgZGF0YSBidWZmZXIKICB7IDB4QUMsIDB4MDAwMDAwMDAgfSwgLy8gQmFk
-IEJsb2NrIE1hcmtlciBTd2FwcGluZyBFbmFibGUKICB7IDB4QjAsIDB4MDAwMDAwMDAgfSwgLy8g
-QmFkIEJsb2NrIE1hcmtlciBPZmZzZXQgdG8gU3BhcmUgQnl0ZQp9OwoKaW50IG1haW4oKQp7CiAg
-aW50IGksIHJldDsKICBjaGFyICpmbmFtZSA9ICJmY2IuYmluIjsKICBGSUxFICpmcDsKICB1aW50
-OF90IGZjYmltYWdlWzQgKiAxMDI0XTsKCiAgbWVtc2V0KGZjYmltYWdlLCAwLCBzaXplb2YoZmNi
-aW1hZ2UpKTsKCiAgZm9yKGkgPSAwOyBpIDwgKGludCkgKHNpemVvZihmY2JfZW50cmllcykgLyBz
-aXplb2YoZmNiX2VudHJpZXNbMF0pKTsgaSsrKQogIHsKICAgIGlmKChmY2JfZW50cmllc1tpXS5h
-ZGRyICsgMykgPj0gc2l6ZW9mKGZjYmltYWdlKSkKICAgIHsKICAgICAgcHJpbnRmKCJJbnZhbGlk
-IEZDQiBlbnRyeSAoaW5kZXg6JWQpXG4iLCBpKTsKICAgICAgY29udGludWU7CiAgICB9CiAgICBm
-Y2JpbWFnZVtmY2JfZW50cmllc1tpXS5hZGRyICsgMF0gPSBmY2JfZW50cmllc1tpXS52YWx1ZSA+
-PiAyNDsKICAgIGZjYmltYWdlW2ZjYl9lbnRyaWVzW2ldLmFkZHIgKyAxXSA9IGZjYl9lbnRyaWVz
-W2ldLnZhbHVlID4+IDE2OwogICAgZmNiaW1hZ2VbZmNiX2VudHJpZXNbaV0uYWRkciArIDJdID0g
-ZmNiX2VudHJpZXNbaV0udmFsdWUgPj4gODsKICAgIGZjYmltYWdlW2ZjYl9lbnRyaWVzW2ldLmFk
-ZHIgKyAzXSA9IGZjYl9lbnRyaWVzW2ldLnZhbHVlID4+IDA7CiAgfQoKICBpZigoZnAgPSBmb3Bl
-bihmbmFtZSwgInciKSkgPT0gTlVMTCkKICB7CiAgICBwcmludGYoImNvdWxkIG5vdCBvcGVuICVz
-IVxuIiwgZm5hbWUpOwogICAgcmV0dXJuIC0xOwogIH0KCiAgcmV0ID0gZndyaXRlKGZjYmltYWdl
-LCAxLCBzaXplb2YoZmNiaW1hZ2UpLCBmcCk7CiAgcHJpbnRmKCJ3cm90ZSAlZCBieXRlcy5cbiIs
-IHJldCk7CiAgaWYocmV0ICE9IHNpemVvZihmY2JpbWFnZSkpCiAgICBwcmludGYoImVycm9yIC0g
-aW5jb21wbGV0ZSBmaWxlIVxuIik7CiAgZmNsb3NlKGZwKTsKCiAgcmV0dXJuIDA7Cn0K
+--=_alternative 00512B14C12579CD_=
+Content-Type: text/html; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
---_003_0769D45835157F4282BC17DF611B07F00D1ED6910Bwolfserver9_
-Content-Type: application/octet-stream; name="fcb.bin"
-Content-Description: fcb.bin
-Content-Disposition: attachment; filename="fcb.bin"; size=4096;
-	creation-date="Mon, 26 Mar 2012 09:03:30 GMT";
-	modification-date="Mon, 26 Mar 2012 09:03:30 GMT"
-Content-Transfer-Encoding: base64
+<font size=3D2 face=3D"sans-serif">Hello,</font>
+<br>
+<br><font size=3D2 face=3D"sans-serif">I have some problems. May you please
+send me a binary produced with this tool?</font>
+<br><font size=3D2 face=3D"sans-serif">I want to inspect the flash header.<=
+/font>
+<br>
+<br><font size=3D2 face=3D"sans-serif">-- Gebhardt</font>
+<br>
+<br>
+<br>
+<br><font size=3D1 color=3D#5f5f5f face=3D"sans-serif">Von: &nbsp; &nbsp; &=
+nbsp;
+&nbsp;</font><font size=3D1 face=3D"sans-serif">Matthias Fend &lt;Matthias.=
+Fend@wolfvision.net&gt;</font>
+<br><font size=3D1 color=3D#5f5f5f face=3D"sans-serif">An: &nbsp; &nbsp; &n=
+bsp;
+&nbsp;</font><font size=3D1 face=3D"sans-serif">&quot;guenter.gebhardt@rafi=
+.de&quot;
+&lt;guenter.gebhardt@rafi.de&gt;, &quot;barebox@lists.infradead.org&quot;
+&lt;barebox@lists.infradead.org&gt;</font>
+<br><font size=3D1 color=3D#5f5f5f face=3D"sans-serif">Datum: &nbsp; &nbsp;=
+ &nbsp;
+&nbsp;</font><font size=3D1 face=3D"sans-serif">26.03.2012 11:09</font>
+<br><font size=3D1 color=3D#5f5f5f face=3D"sans-serif">Betreff: &nbsp; &nbs=
+p;
+&nbsp; &nbsp;</font><font size=3D1 face=3D"sans-serif">AW: imx53 internal
+boot from NAND</font>
+<br>
+<hr noshade>
+<br>
+<br>
+<br><tt><font size=3D2>Hi,<br>
+<br>
+For a quick start you can use the provided FCB (fcb.bin).<br>
+This FCB was generated with the attached tool (fcbgen.c) - note that the
+bad block handling is disabled.<br>
+<br>
+Then you can &quot;merge&quot; your barebox image with the FCB with somethi=
+ng
+like:<br>
+cat fcb.bin barebox-image &gt; barebox-fcb.bin<br>
+<br>
+This works at least on our custom i.MX53 hardware.<br>
+<br>
+~Matthias<br>
+<br>
+Von: barebox-bounces@lists.infradead.org [</font></tt><a href=3D"mailto:bar=
+ebox-bounces@lists.infradead.org"><tt><font size=3D2>mailto:barebox-bounces=
+@lists.infradead.org</font></tt></a><tt><font size=3D2>]
+Im Auftrag von guenter.gebhardt@rafi.de<br>
+Gesendet: Montag, 26. M=E4rz 2012 10:48<br>
+An: barebox@lists.infradead.org<br>
+Betreff: imx53 internal boot from NAND<br>
+<br>
+Hello, <br>
+<br>
+I tried to use barebox in order to boot from NAND. <br>
+<br>
+The ROM loader needs a FCB (Firmware Configuration Block) table at the
+beginning of the flash (according to chapter 7.5.2.2 of the reference manua=
+l).
+<br>
+I looked at the existing imx53 boards within the barebox sources but I
+founx that no one used this mode there. <br>
+<br>
+Has someone done this or can give me some advice? <br>
+<br>
+-- Gebhardt<br>
+[Anhang &quot;fcbgen.c&quot; gel=F6scht von Guenter Gebhardt/Rafi] [Anhang
+&quot;fcb.bin&quot; gel=F6scht von Guenter Gebhardt/Rafi] </font></tt>
+<br>
+--=_alternative 00512B14C12579CD_=--
 
-AAAAAEZDQiABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAgAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==
 
---_003_0769D45835157F4282BC17DF611B07F00D1ED6910Bwolfserver9_
+--===============4294648487568625531==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -196,4 +179,4 @@ barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
 
---_003_0769D45835157F4282BC17DF611B07F00D1ED6910Bwolfserver9_--
+--===============4294648487568625531==--
