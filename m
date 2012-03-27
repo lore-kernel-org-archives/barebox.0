@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-f177.google.com ([209.85.217.177])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SCEF0-0007f9-7B
- for barebox@lists.infradead.org; Mon, 26 Mar 2012 18:02:08 +0000
-Received: by lbol5 with SMTP id l5so4938114lbo.36
- for <barebox@lists.infradead.org>; Mon, 26 Mar 2012 11:02:00 -0700 (PDT)
-From: esben.haabendal@gmail.com
-Date: Mon, 26 Mar 2012 20:01:57 +0200
-Message-Id: <1332784917-4630-1-git-send-email-esben.haabendal@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SCP1L-0008MK-Gc
+ for barebox@lists.infradead.org; Tue, 27 Mar 2012 05:32:40 +0000
+Date: Tue, 27 Mar 2012 07:32:25 +0200
+From: Robert Schwebel <r.schwebel@pengutronix.de>
+Message-ID: <20120327053225.GI7923@pengutronix.de>
+References: <OFC5456862.5E2219B4-ONC12579CD.002FB0FF-C12579CD.00304E9A@o0802.rafi.inhouse>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <OFC5456862.5E2219B4-ONC12579CD.002FB0FF-C12579CD.00304E9A@o0802.rafi.inhouse>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,33 +18,26 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/2] mx28-evk LCD support
-To: barebox@lists.infradead.org
-Cc: Esben Haabendal <esben.haabendal@prevas.dk>
+Subject: Re: imx53 internal boot from NAND
+To: guenter.gebhardt@rafi.de
+Cc: barebox@lists.infradead.org
 
-From: Esben Haabendal <esben.haabendal@prevas.dk>
+On Mon, Mar 26, 2012 at 10:47:36AM +0200, guenter.gebhardt@rafi.de wrote:
+> Has someone done this or can give me some advice?
 
-Configure and enable LCD support for MCIMX28EVK and the 4.3" WVGA
-LCD Display (add-on module).
+We have the "bcb" command recently, and the functionality should be
+integrated there.
 
-Allan Heldgaard (1):
-  mx28-evk: Add LCD support
-
-Esben Haabendal (1):
-  mx28-evk: Enable LCD support and bmp command
-
- arch/arm/boards/freescale-mx28-evk/mx28-evk.c |   86 +++++++++++++++++++++++++
- arch/arm/configs/imx28evk_defconfig           |    3 +
- 2 files changed, 89 insertions(+), 0 deletions(-)
-
+rsc
 -- 
-1.7.5.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
