@@ -1,14 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 89-97-197-40.ip19.fastwebnet.it ([89.97.197.40]
- helo=srv-exc.techimp.com)
+Received: from mail-qc0-f177.google.com ([209.85.216.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SDFbX-0004IR-Mr
- for barebox@lists.infradead.org; Thu, 29 Mar 2012 13:41:32 +0000
-From: Martino Ruppi <mruppi@techimp.com>
-Date: Thu, 29 Mar 2012 15:35:59 +0200
-Message-ID: <63954CAD61AA2440BC0B16A69EAE2BBC630E110778@srv-exc.techimp.com>
-Content-Language: it-IT
+ id 1SDFck-0004TA-SR
+ for barebox@lists.infradead.org; Thu, 29 Mar 2012 13:42:47 +0000
+Received: by qcsu28 with SMTP id u28so1544070qcs.36
+ for <barebox@lists.infradead.org>; Thu, 29 Mar 2012 06:42:45 -0700 (PDT)
 MIME-Version: 1.0
+In-Reply-To: <20120329150143.0ce2ddf0@eb-e6520>
+References: <OF440839EF.2383F590-ONC12579D0.00410F43-C12579D0.004184D1@o0802.rafi.inhouse>
+ <20120329140303.71c94361@eb-e6520>
+ <OF21220E76.68770C91-ONC12579D0.004452DB-C12579D0.0044D7C4@o0802.rafi.inhouse>
+ <CAB_54W4aZA1W0yGMtboW-F0CLmfx4et2XNEjExdFdZUE_g4a+g@mail.gmail.com>
+ <OFADF64A2E.4C13BEDA-ONC12579D0.0047261C-C12579D0.004752BF@o0802.rafi.inhouse>
+ <20120329150143.0ce2ddf0@eb-e6520>
+Date: Thu, 29 Mar 2012 15:42:45 +0200
+Message-ID: <CAJfOKByg6f6noOPxg6tDLuNy1XUZ1Nw0-A6U9niUeEJVHWDyhw@mail.gmail.com>
+From: Franck Jullien <franck.jullien@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,154 +24,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1189695193304577882=="
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: filling string variables in script
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: Create NAND Partition through barebox
+To: barebox <barebox@lists.infradead.org>
 
---===============1189695193304577882==
-Content-Language: it-IT
-Content-Type: multipart/alternative;
-	boundary="_000_63954CAD61AA2440BC0B16A69EAE2BBC630E110778srvexctechimp_"
+2012/3/29 Eric B=E9nard <eric@eukrea.com>:
+> Le Thu, 29 Mar 2012 14:59:07 +0200,
+> christian.buettner@rafi.de a =E9crit :
+>> I have an addpart tool as you can see but i cannot create a partition. In
+>> the /dev folder is also no /dev/nand0
+>>
+> did you register the nand device ? Is it detected by barebox ?
+>
+> I think you should check your board support file against a board
+> suppporting nand (you can for example check our cpuimx51 platform which
+> is not far from an i.MX53 one).
+>
+> Eric
+>
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
---_000_63954CAD61AA2440BC0B16A69EAE2BBC630E110778srvexctechimp_
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Hi,
 
-Dear all,
-I would ask a question as barebox user.
-I mind to set a variable as result of memory reading but I understand it do=
-esn't implemented redirection.
-I'd like to do something of this:
-
-myvar=3D""
-memcpy -s  /dev/nor0.switch -d $myvar 0x0 0x0 4
-
-or
-
-myvar=3D"$(cat /dev/nor0.switch)"
-
-I think, I use one of last releases (version command?).
-Thanks to everyone can help me.
-Marty
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Martino Ruppi, FW engineer developer, PhD
-mruppi@techimp.com<mailto:mruppi@techimp.com>
-Techimp HQ srl
-Via Toscana 11/C
-40069 Zola Predosa (BO)
-Tel.   051 19986050
-Fax.   051 19986099
-Cell.  349 4677660
-
-
-
---_000_63954CAD61AA2440BC0B16A69EAE2BBC630E110778srvexctechimp_
-Content-Type: text/html; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-
-<html xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:o=3D"urn:schemas-micr=
-osoft-com:office:office" xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
-xmlns:m=3D"http://schemas.microsoft.com/office/2004/12/omml" xmlns=3D"http:=
-//www.w3.org/TR/REC-html40"><head><META HTTP-EQUIV=3D"Content-Type" CONTENT=
-=3D"text/html; charset=3Dus-ascii"><meta name=3DGenerator content=3D"Micros=
-oft Word 12 (filtered medium)"><style><!--
-/* Font Definitions */
-@font-face
-	{font-family:Calibri;
-	panose-1:2 15 5 2 2 2 4 3 2 4;}
-@font-face
-	{font-family:Consolas;
-	panose-1:2 11 6 9 2 2 4 3 2 4;}
-/* Style Definitions */
-p.MsoNormal, li.MsoNormal, div.MsoNormal
-	{margin:0cm;
-	margin-bottom:.0001pt;
-	font-size:11.0pt;
-	font-family:"Calibri","sans-serif";}
-a:link, span.MsoHyperlink
-	{mso-style-priority:99;
-	color:blue;
-	text-decoration:underline;}
-a:visited, span.MsoHyperlinkFollowed
-	{mso-style-priority:99;
-	color:purple;
-	text-decoration:underline;}
-span.StileMessaggioDiPostaElettronica17
-	{mso-style-type:personal-compose;
-	font-family:"Calibri","sans-serif";
-	color:windowtext;}
-.MsoChpDefault
-	{mso-style-type:export-only;}
-@page WordSection1
-	{size:612.0pt 792.0pt;
-	margin:70.85pt 2.0cm 2.0cm 2.0cm;}
-div.WordSection1
-	{page:WordSection1;}
---></style><!--[if gte mso 9]><xml>
-<o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
-</xml><![endif]--><!--[if gte mso 9]><xml>
-<o:shapelayout v:ext=3D"edit">
-<o:idmap v:ext=3D"edit" data=3D"1" />
-</o:shapelayout></xml><![endif]--></head><body lang=3DIT link=3Dblue vlink=
-=3Dpurple><div class=3DWordSection1><p class=3DMsoNormal><span lang=3DEN-US=
->Dear all,<o:p></o:p></span></p><p class=3DMsoNormal><span lang=3DEN-US>I w=
-ould ask a question as barebox user. <o:p></o:p></span></p><p class=3DMsoNo=
-rmal><span lang=3DEN-US>I mind to set a variable as result of memory readin=
-g but I understand it doesn&#8217;t implemented redirection.<o:p></o:p></sp=
-an></p><p class=3DMsoNormal><span lang=3DEN-US>I&#8217;d like to do somethi=
-ng of this:<o:p></o:p></span></p><p class=3DMsoNormal><span lang=3DEN-US><o=
-:p>&nbsp;</o:p></span></p><p class=3DMsoNormal><span lang=3DEN-US>myvar=3D&=
-#8221;&#8221;<o:p></o:p></span></p><p class=3DMsoNormal><span lang=3DEN-US>=
-memcpy &#8211;s &nbsp;/dev/nor0.switch &#8211;d $myvar 0x0 0x0 4<o:p></o:p>=
-</span></p><p class=3DMsoNormal><span lang=3DEN-US><o:p>&nbsp;</o:p></span>=
-</p><p class=3DMsoNormal><span lang=3DEN-US>or <o:p></o:p></span></p><p cla=
-ss=3DMsoNormal><span lang=3DEN-US><o:p>&nbsp;</o:p></span></p><p class=3DMs=
-oNormal><span lang=3DEN-US>myvar=3D&#8221;$(cat /dev/nor0.switch)&#8221;<o:=
-p></o:p></span></p><p class=3DMsoNormal><span lang=3DEN-US><o:p>&nbsp;</o:p=
-></span></p><p class=3DMsoNormal><span lang=3DEN-US>I think, I use one of l=
-ast releases (version command?). <o:p></o:p></span></p><p class=3DMsoNormal=
-><span lang=3DEN-US>Thanks to everyone can help me.<o:p></o:p></span></p><p=
- class=3DMsoNormal><span lang=3DEN-US>Marty<o:p></o:p></span></p><p class=
-=3DMsoNormal><span lang=3DEN-US><o:p>&nbsp;</o:p></span></p><p class=3DMsoN=
-ormal><span style=3D'font-size:9.0pt;font-family:Consolas;color:#1F497D'>~~=
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~<o:p></o:p></span></p><p class=3DMsoNor=
-mal><span style=3D'font-size:9.0pt;font-family:Consolas;color:#1F497D'>Mart=
-ino Ruppi, FW engineer developer, PhD<o:p></o:p></span></p><p class=3DMsoNo=
-rmal><span style=3D'font-size:9.0pt;font-family:Consolas;color:#1F497D'><a =
-href=3D"mailto:mruppi@techimp.com"><span lang=3DEN-US style=3D'color:#1F497=
-D;text-decoration:none'>mruppi@techimp.com</span></a></span><span lang=3DEN=
--US style=3D'font-size:9.0pt;font-family:Consolas;color:#1F497D'><o:p></o:p=
-></span></p><p class=3DMsoNormal><span lang=3DEN-US style=3D'font-size:9.0p=
-t;font-family:Consolas;color:#1F497D'> <o:p></o:p></span></p><p class=3DMso=
-Normal><span lang=3DEN-US style=3D'font-size:9.0pt;font-family:Consolas;col=
-or:#1F497D'>Techimp HQ srl<o:p></o:p></span></p><p class=3DMsoNormal><span =
-style=3D'font-size:9.0pt;font-family:Consolas;color:#1F497D'>Via Toscana 11=
-/C<o:p></o:p></span></p><p class=3DMsoNormal><span style=3D'font-size:9.0pt=
-;font-family:Consolas;color:#1F497D'>40069 Zola Predosa (BO)<o:p></o:p></sp=
-an></p><p class=3DMsoNormal><span style=3D'font-size:9.0pt;font-family:Cons=
-olas;color:#1F497D'>Tel.&nbsp;&nbsp; 051 19986050<o:p></o:p></span></p><p c=
-lass=3DMsoNormal><span style=3D'font-size:9.0pt;font-family:Consolas;color:=
-#1F497D'>Fax.&nbsp;&nbsp; 051 19986099<o:p></o:p></span></p><p class=3DMsoN=
-ormal><span style=3D'font-size:9.0pt;font-family:Consolas;color:#1F497D'>Ce=
-ll.&nbsp; 349 4677660<o:p></o:p></span></p><p class=3DMsoNormal><span style=
-=3D'font-size:9.0pt;font-family:Consolas;color:#1F497D'><o:p>&nbsp;</o:p></=
-span></p><p class=3DMsoNormal><o:p>&nbsp;</o:p></p></div></body></html>=
-
---_000_63954CAD61AA2440BC0B16A69EAE2BBC630E110778srvexctechimp_--
-
-
---===============1189695193304577882==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Did you enable the NAND support (in the menuconfig) ?
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============1189695193304577882==--
