@@ -1,12 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mx2.rafi.de ([178.15.151.13])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SCuCh-00007c-KP
- for barebox@lists.infradead.org; Wed, 28 Mar 2012 14:50:28 +0000
+ id 1SDDxC-0004zG-7p
+ for barebox@lists.infradead.org; Thu, 29 Mar 2012 11:55:47 +0000
 MIME-Version: 1.0
-Message-ID: <OF2F7BD41B.4042BA65-ONC12579CF.004FE196-C12579CF.0050B13C@o0802.rafi.inhouse>
+Message-ID: <OF440839EF.2383F590-ONC12579D0.00410F43-C12579D0.004184D1@o0802.rafi.inhouse>
 From: christian.buettner@rafi.de
-Date: Wed, 28 Mar 2012 16:41:29 +0200
+Date: Thu, 29 Mar 2012 13:55:43 +0200
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,90 +15,146 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0192238173817119193=="
+Content-Type: multipart/mixed; boundary="===============8976589444979662762=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: imx53 internal boot from NAND 
-To: r.schwebel@pengutronix.de
-Cc: barebox@lists.infradead.org
+Subject: Create NAND Partition through barebox
+To: barebox@lists.infradead.org
 
 Dies ist eine mehrteilige Nachricht im MIME-Format.
---===============0192238173817119193==
-Content-Type: multipart/alternative; boundary="=_alternative 0050B13CC12579CF_="
+--===============8976589444979662762==
+Content-Type: multipart/alternative; boundary="=_alternative 004184D1C12579D0_="
 
 Dies ist eine mehrteilige Nachricht im MIME-Format.
---=_alternative 0050B13CC12579CF_=
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
+--=_alternative 004184D1C12579D0_=
+Content-Type: text/plain; charset="US-ASCII"
 
-Where can i find this bcb command? in the menuconfig, or is there a tool?
+Hi,
+
+i need to create a NAND Partition through the barebox prompt to be able to 
+flash a kernel image on it.
+
+This is the current devinfo of my target:
+
+barebox:/ devinfo 
+devices:
+`---- imx_serial0
+     `---- cs0
+`---- mem0
+     `---- 0x00000000-0x1fffffff: /dev/ram0
+`---- mem1
+     `---- 0x00000000-0x1fffffff: /dev/ram1
+`---- imx_iim0
+     `---- 0x00000000-0x0000001f: /dev/imx_iim_bank0
+     `---- 0x00000000-0x0000001f: /dev/imx_iim_bank1
+     `---- 0x00000000-0x0000001f: /dev/imx_iim_bank2
+     `---- 0x00000000-0x0000001f: /dev/imx_iim_bank3
+     `---- 0x00000000-0x0000001f: /dev/imx_iim_bank4
+     `---- 0x00000000-0x0000001f: /dev/imx_iim_bank5
+     `---- 0x00000000-0x0000001f: /dev/imx_iim_bank6
+     `---- 0x00000000-0x0000001f: /dev/imx_iim_bank7
+`---- ramfs0
+`---- devfs0
+`---- mem2
+     `---- 0x00000000-0x000018ab: /dev/defaultenv
+`---- mem3
+     `---- 0x00000000-0xfffffffe: /dev/mem
+`---- cs1
+`---- fec_imx0
+     `---- miidev0
+          `---- 0x00000000-0x0000003f: /dev/phy0
+     `---- eth0
+
+drivers:
+imx_serial
+     ramfs
+     devfs
+   imx_iim
+   fec_imx
+    miidev
+       mem
 
 
-B=FCttner
+I tried using
+$ nand -a /dev/nand0.*
 
+Nothing happens..
+What is wrong?
 
+- - Christian
+--=_alternative 004184D1C12579D0_=
+Content-Type: text/html; charset="US-ASCII"
 
-> On Mon, Mar 26, 2012 at 10:47:36AM +0200, guenter.gebhardt at rafi.de=20
-wrote:
-> > Has someone done this or can give me some advice?
-
-> We have the "bcb" command recently, and the functionality should be
-> integrated there.
-
-> rsc
-> --=20
-> Pengutronix e.K.                           | |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/=20
-|
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0 |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 =
-
-|
->=20
---=_alternative 0050B13CC12579CF_=
-Content-Type: text/html; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-<tt><font size=3D3>Where can i find this bcb command? in the menuconfig,
-or is there a tool?</font></tt>
+<font size=2 face="sans-serif">Hi,</font>
+<br>
+<br><font size=2 face="sans-serif">i need to create a NAND Partition through
+the barebox prompt to be able to flash a kernel image on it.</font>
+<br>
+<br><font size=2 face="sans-serif">This is the current devinfo of my target:</font>
+<br>
+<br><font size=2 face="sans-serif">barebox:/ devinfo </font>
+<br><font size=2 face="sans-serif">devices:</font>
+<br><font size=2 face="sans-serif">`---- imx_serial0</font>
+<br><font size=2 face="sans-serif">&nbsp; &nbsp; &nbsp;`---- cs0</font>
+<br><font size=2 face="sans-serif">`---- mem0</font>
+<br><font size=2 face="sans-serif">&nbsp; &nbsp; &nbsp;`---- 0x00000000-0x1fffffff:
+/dev/ram0</font>
+<br><font size=2 face="sans-serif">`---- mem1</font>
+<br><font size=2 face="sans-serif">&nbsp; &nbsp; &nbsp;`---- 0x00000000-0x1fffffff:
+/dev/ram1</font>
+<br><font size=2 face="sans-serif">`---- imx_iim0</font>
+<br><font size=2 face="sans-serif">&nbsp; &nbsp; &nbsp;`---- 0x00000000-0x0000001f:
+/dev/imx_iim_bank0</font>
+<br><font size=2 face="sans-serif">&nbsp; &nbsp; &nbsp;`---- 0x00000000-0x0000001f:
+/dev/imx_iim_bank1</font>
+<br><font size=2 face="sans-serif">&nbsp; &nbsp; &nbsp;`---- 0x00000000-0x0000001f:
+/dev/imx_iim_bank2</font>
+<br><font size=2 face="sans-serif">&nbsp; &nbsp; &nbsp;`---- 0x00000000-0x0000001f:
+/dev/imx_iim_bank3</font>
+<br><font size=2 face="sans-serif">&nbsp; &nbsp; &nbsp;`---- 0x00000000-0x0000001f:
+/dev/imx_iim_bank4</font>
+<br><font size=2 face="sans-serif">&nbsp; &nbsp; &nbsp;`---- 0x00000000-0x0000001f:
+/dev/imx_iim_bank5</font>
+<br><font size=2 face="sans-serif">&nbsp; &nbsp; &nbsp;`---- 0x00000000-0x0000001f:
+/dev/imx_iim_bank6</font>
+<br><font size=2 face="sans-serif">&nbsp; &nbsp; &nbsp;`---- 0x00000000-0x0000001f:
+/dev/imx_iim_bank7</font>
+<br><font size=2 face="sans-serif">`---- ramfs0</font>
+<br><font size=2 face="sans-serif">`---- devfs0</font>
+<br><font size=2 face="sans-serif">`---- mem2</font>
+<br><font size=2 face="sans-serif">&nbsp; &nbsp; &nbsp;`---- 0x00000000-0x000018ab:
+/dev/defaultenv</font>
+<br><font size=2 face="sans-serif">`---- mem3</font>
+<br><font size=2 face="sans-serif">&nbsp; &nbsp; &nbsp;`---- 0x00000000-0xfffffffe:
+/dev/mem</font>
+<br><font size=2 face="sans-serif">`---- cs1</font>
+<br><font size=2 face="sans-serif">`---- fec_imx0</font>
+<br><font size=2 face="sans-serif">&nbsp; &nbsp; &nbsp;`---- miidev0</font>
+<br><font size=2 face="sans-serif">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; `----
+0x00000000-0x0000003f: /dev/phy0</font>
+<br><font size=2 face="sans-serif">&nbsp; &nbsp; &nbsp;`---- eth0</font>
+<br>
+<br><font size=2 face="sans-serif">drivers:</font>
+<br><font size=2 face="sans-serif">imx_serial</font>
+<br><font size=2 face="sans-serif">&nbsp; &nbsp; &nbsp;ramfs</font>
+<br><font size=2 face="sans-serif">&nbsp; &nbsp; &nbsp;devfs</font>
+<br><font size=2 face="sans-serif">&nbsp; &nbsp;imx_iim</font>
+<br><font size=2 face="sans-serif">&nbsp; &nbsp;fec_imx</font>
+<br><font size=2 face="sans-serif">&nbsp; &nbsp; miidev</font>
+<br><font size=2 face="sans-serif">&nbsp; &nbsp; &nbsp; &nbsp;mem</font>
 <br>
 <br>
-<br><tt><font size=3D3>B=FCttner</font></tt>
+<br><font size=2 face="sans-serif">I tried using</font>
+<br><font size=2 face="sans-serif">$ nand -a /dev/nand0.*</font>
 <br>
+<br><font size=2 face="sans-serif">Nothing happens..</font>
+<br><font size=2 face="sans-serif">What is wrong?</font>
 <br>
-<br>
-<br><tt><font size=3D3>&gt;<i> </i>On Mon, Mar 26, 2012 at 10:47:36AM +0200,
-</font></tt><a href=3Dhttp://lists.infradead.org/mailman/listinfo/barebox><=
-tt><font size=3D3 color=3Dblue><u>guenter.gebhardt
-at rafi.de</u></font></tt></a><tt><font size=3D3> wrote:<br>
-&gt;<i> </i>&gt;<i> Has someone done this or can give me some advice?<br>
-</i><br>
-&gt;<i> </i>We have the &quot;bcb&quot; command recently, and the functiona=
-lity
-should be<br>
-&gt;<i> </i>integrated there.<br>
-<br>
-&gt;<i> </i>rsc<br>
-&gt;<i> </i>-- <br>
-&gt;<i> </i>Pengutronix e.K. &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; | &nbsp; &nbsp; &nbsp;
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-|<br>
-&gt;<i> </i>Industrial Linux Solutions &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-&nbsp; &nbsp; &nbsp; | </font></tt><a href=3Dhttp://www.pengutronix.de/><tt=
-><font size=3D3 color=3Dblue><u>http://www.pengutronix.de/</u></font></tt><=
-/a><tt><font size=3D3>
-&nbsp;|<br>
-&gt;<i> </i>Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-20=
-6917-0
-&nbsp; &nbsp;|<br>
-&gt;<i> </i>Amtsgericht Hildesheim, HRA 2686 &nbsp; &nbsp; &nbsp; &nbsp;
-&nbsp; | Fax: &nbsp; +49-5121-206917-5555 |<br>
-&gt;<i> </i></font></tt>
---=_alternative 0050B13CC12579CF_=--
+<br><font size=2 face="sans-serif">- - Christian</font>
+--=_alternative 004184D1C12579D0_=--
 
 
---===============0192238173817119193==
+--===============8976589444979662762==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -109,4 +165,4 @@ barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
 
---===============0192238173817119193==--
+--===============8976589444979662762==--
