@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lpp01m010-f49.google.com ([209.85.215.49])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SDE9c-0005BF-Nr
- for barebox@lists.infradead.org; Thu, 29 Mar 2012 12:08:37 +0000
-Received: by lagy4 with SMTP id y4so2950326lag.36
- for <barebox@lists.infradead.org>; Thu, 29 Mar 2012 05:08:31 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <OF440839EF.2383F590-ONC12579D0.00410F43-C12579D0.004184D1@o0802.rafi.inhouse>
+Received: from mx2.rafi.de ([178.15.151.13])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1SDEFt-0005aW-Iy
+ for barebox@lists.infradead.org; Thu, 29 Mar 2012 12:15:07 +0000
+In-Reply-To: <CAB_54W6ta+Gx+=j+NuspKkixkx5oQyg=OtwuHZx9bcDKg8d97A@mail.gmail.com>
 References: <OF440839EF.2383F590-ONC12579D0.00410F43-C12579D0.004184D1@o0802.rafi.inhouse>
-Date: Thu, 29 Mar 2012 14:08:31 +0200
-Message-ID: <CAB_54W6ta+Gx+=j+NuspKkixkx5oQyg=OtwuHZx9bcDKg8d97A@mail.gmail.com>
-From: Alexander Aring <alex.aring@googlemail.com>
+ <CAB_54W6ta+Gx+=j+NuspKkixkx5oQyg=OtwuHZx9bcDKg8d97A@mail.gmail.com>
+MIME-Version: 1.0
+Message-ID: <OFDFE41485.B2465294-ONC12579D0.004303E6-C12579D0.00434A06@o0802.rafi.inhouse>
+From: christian.buettner@rafi.de
+Date: Thu, 29 Mar 2012 14:15:03 +0200
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,201 +18,292 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============5705816129590553913=="
+Content-Type: multipart/mixed; boundary="===============5883862942631263281=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Create NAND Partition through barebox
-To: christian.buettner@rafi.de
+Subject: Antwort: Re: Create NAND Partition through barebox
+To: Alexander Aring <alex.aring@googlemail.com>
 Cc: barebox@lists.infradead.org
 
---===============5705816129590553913==
-Content-Type: multipart/alternative; boundary=f46d04308a28181b4804bc609529
+Dies ist eine mehrteilige Nachricht im MIME-Format.
+--===============5883862942631263281==
+Content-Type: multipart/alternative; boundary="=_alternative 00434A06C12579D0_="
 
---f46d04308a28181b4804bc609529
-Content-Type: text/plain; charset=UTF-8
+Dies ist eine mehrteilige Nachricht im MIME-Format.
+--=_alternative 00434A06C12579D0_=
+Content-Type: text/plain; charset="ISO-8859-1"
 Content-Transfer-Encoding: quoted-printable
+
+I see!
+I have an entry in the env/config:
+nand=5Fparts=3D"256k(barebox)ro,768k(bareboxenv),4M(kernel),128M(root)"
+
+The Problem might be, that the NAND Flash size is only 128M.
+I took the script from another platform..
+
+ - - Christian
+
+
+
+Von:    Alexander Aring <alex.aring@googlemail.com>
+An:     christian.buettner@rafi.de
+Kopie:  barebox@lists.infradead.org
+Datum:  29.03.2012 14:08
+Betreff:        Re: Create NAND Partition through barebox
+
+
 
 Hi,
 
-you can create NAND Partitons with nand_parts variable in /env/config.
+you can create NAND Partitons with nand=5Fparts variable in /env/config.
 
-For example nand_parts=3D"256k(barebox)ro,128k(bareboxenv),3M(kernel),-(roo=
-t)"
+For example=20
+nand=5Fparts=3D"256k(barebox)ro,128k(bareboxenv),3M(kernel),-(root)"
 
-nand -a nand0.* only creates a bb device that will handle badblocks if they
-appear.
+nand -a nand0.* only creates a bb device that will handle badblocks if=20
+they appear.
 
 Cheers
 Alex
 
-Am 29. M=C3=A4rz 2012 13:55 schrieb <christian.buettner@rafi.de>:
+Am 29. M=E4rz 2012 13:55 schrieb <christian.buettner@rafi.de>:
+Hi,=20
 
-> Hi,
->
-> i need to create a NAND Partition through the barebox prompt to be able t=
-o
-> flash a kernel image on it.
->
-> This is the current devinfo of my target:
->
-> barebox:/ devinfo
-> devices:
-> `---- imx_serial0
->      `---- cs0
-> `---- mem0
->      `---- 0x00000000-0x1fffffff: /dev/ram0
-> `---- mem1
->      `---- 0x00000000-0x1fffffff: /dev/ram1
-> `---- imx_iim0
->      `---- 0x00000000-0x0000001f: /dev/imx_iim_bank0
->      `---- 0x00000000-0x0000001f: /dev/imx_iim_bank1
->      `---- 0x00000000-0x0000001f: /dev/imx_iim_bank2
->      `---- 0x00000000-0x0000001f: /dev/imx_iim_bank3
->      `---- 0x00000000-0x0000001f: /dev/imx_iim_bank4
->      `---- 0x00000000-0x0000001f: /dev/imx_iim_bank5
->      `---- 0x00000000-0x0000001f: /dev/imx_iim_bank6
->      `---- 0x00000000-0x0000001f: /dev/imx_iim_bank7
-> `---- ramfs0
-> `---- devfs0
-> `---- mem2
->      `---- 0x00000000-0x000018ab: /dev/defaultenv
-> `---- mem3
->      `---- 0x00000000-0xfffffffe: /dev/mem
-> `---- cs1
-> `---- fec_imx0
->      `---- miidev0
->           `---- 0x00000000-0x0000003f: /dev/phy0
->      `---- eth0
->
-> drivers:
-> imx_serial
->      ramfs
->      devfs
->    imx_iim
->    fec_imx
->     miidev
->        mem
->
->
-> I tried using
-> $ nand -a /dev/nand0.*
->
-> Nothing happens..
-> What is wrong?
->
-> - - Christian
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
->
->
+i need to create a NAND Partition through the barebox prompt to be able to =
 
---f46d04308a28181b4804bc609529
-Content-Type: text/html; charset=UTF-8
+flash a kernel image on it.=20
+
+This is the current devinfo of my target:=20
+
+barebox:/ devinfo=20
+devices:=20
+`---- imx=5Fserial0=20
+     `---- cs0=20
+`---- mem0=20
+     `---- 0x00000000-0x1fffffff: /dev/ram0=20
+`---- mem1=20
+     `---- 0x00000000-0x1fffffff: /dev/ram1=20
+`---- imx=5Fiim0=20
+     `---- 0x00000000-0x0000001f: /dev/imx=5Fiim=5Fbank0=20
+     `---- 0x00000000-0x0000001f: /dev/imx=5Fiim=5Fbank1=20
+     `---- 0x00000000-0x0000001f: /dev/imx=5Fiim=5Fbank2=20
+     `---- 0x00000000-0x0000001f: /dev/imx=5Fiim=5Fbank3=20
+     `---- 0x00000000-0x0000001f: /dev/imx=5Fiim=5Fbank4=20
+     `---- 0x00000000-0x0000001f: /dev/imx=5Fiim=5Fbank5=20
+     `---- 0x00000000-0x0000001f: /dev/imx=5Fiim=5Fbank6=20
+     `---- 0x00000000-0x0000001f: /dev/imx=5Fiim=5Fbank7=20
+`---- ramfs0=20
+`---- devfs0=20
+`---- mem2=20
+     `---- 0x00000000-0x000018ab: /dev/defaultenv=20
+`---- mem3=20
+     `---- 0x00000000-0xfffffffe: /dev/mem=20
+`---- cs1=20
+`---- fec=5Fimx0=20
+     `---- miidev0=20
+          `---- 0x00000000-0x0000003f: /dev/phy0=20
+     `---- eth0=20
+
+drivers:=20
+imx=5Fserial=20
+     ramfs=20
+     devfs=20
+   imx=5Fiim=20
+   fec=5Fimx=20
+    miidev=20
+       mem=20
+
+
+I tried using=20
+$ nand -a /dev/nand0.*=20
+
+Nothing happens..=20
+What is wrong?=20
+
+- - Christian
+=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=
+=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
+
+
+
+--=_alternative 00434A06C12579D0_=
+Content-Type: text/html; charset="ISO-8859-1"
 Content-Transfer-Encoding: quoted-printable
 
-Hi,<br><br>you can create NAND Partitons with nand_parts variable in /env/c=
-onfig.<br><br>For example nand_parts=3D&quot;256k(barebox)ro,128k(bareboxen=
-v),3M(kernel),-(root)&quot;<br><br>nand -a nand0.* only creates a bb device=
- that will handle badblocks if they appear.<br>
-<br>Cheers<br>Alex<br><br><div class=3D"gmail_quote">Am 29. M=C3=A4rz 2012 =
-13:55 schrieb  <span dir=3D"ltr">&lt;<a href=3D"mailto:christian.buettner@r=
-afi.de" target=3D"_blank">christian.buettner@rafi.de</a>&gt;</span>:<br><bl=
-ockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #=
-ccc solid;padding-left:1ex">
+<font size=3D2 face=3D"sans-serif">I see!</font>
+<br><font size=3D2 face=3D"sans-serif">I have an entry in the env/config:</=
+font>
+<br><font size=3D2 face=3D"sans-serif">nand=5Fparts=3D&quot;256k(barebox)ro=
+,768k(bareboxenv),4M(kernel),128M(root)&quot;</font>
+<br>
+<br><font size=3D2 face=3D"sans-serif">The Problem might be, that the NAND
+Flash size is only 128M.</font>
+<br><font size=3D2 face=3D"sans-serif">I took the script from another platf=
+orm..</font>
+<br>
+<br><font size=3D2 face=3D"sans-serif">&nbsp;- - Christian</font>
+<br>
+<br>
+<br>
+<br><font size=3D1 color=3D#5f5f5f face=3D"sans-serif">Von: &nbsp; &nbsp; &=
+nbsp;
+&nbsp;</font><font size=3D1 face=3D"sans-serif">Alexander Aring &lt;alex.ar=
+ing@googlemail.com&gt;</font>
+<br><font size=3D1 color=3D#5f5f5f face=3D"sans-serif">An: &nbsp; &nbsp; &n=
+bsp;
+&nbsp;</font><font size=3D1 face=3D"sans-serif">christian.buettner@rafi.de<=
+/font>
+<br><font size=3D1 color=3D#5f5f5f face=3D"sans-serif">Kopie: &nbsp; &nbsp;=
+ &nbsp;
+&nbsp;</font><font size=3D1 face=3D"sans-serif">barebox@lists.infradead.org=
+</font>
+<br><font size=3D1 color=3D#5f5f5f face=3D"sans-serif">Datum: &nbsp; &nbsp;=
+ &nbsp;
+&nbsp;</font><font size=3D1 face=3D"sans-serif">29.03.2012 14:08</font>
+<br><font size=3D1 color=3D#5f5f5f face=3D"sans-serif">Betreff: &nbsp; &nbs=
+p;
+&nbsp; &nbsp;</font><font size=3D1 face=3D"sans-serif">Re: Create NAND
+Partition through barebox</font>
+<br>
+<hr noshade>
+<br>
+<br>
+<br><font size=3D3>Hi,<br>
+<br>
+you can create NAND Partitons with nand=5Fparts variable in /env/config.<br>
+<br>
+For example nand=5Fparts=3D&quot;256k(barebox)ro,128k(bareboxenv),3M(kernel=
+),-(root)&quot;<br>
+<br>
+nand -a nand0.* only creates a bb device that will handle badblocks if
+they appear.<br>
+<br>
+Cheers<br>
+Alex<br>
+</font>
+<br><font size=3D3>Am 29. M=E4rz 2012 13:55 schrieb &lt;</font><a href=3Dma=
+ilto:christian.buettner@rafi.de target=3D=5Fblank><font size=3D3 color=3Dbl=
+ue><u>christian.buettner@rafi.de</u></font></a><font size=3D3>&gt;:</font>
+<br><font size=3D3 face=3D"sans-serif">Hi,</font><font size=3D3> <br>
+</font><font size=3D3 face=3D"sans-serif"><br>
+i need to create a NAND Partition through the barebox prompt to be able
+to flash a kernel image on it.</font><font size=3D3> <br>
+</font><font size=3D3 face=3D"sans-serif"><br>
+This is the current devinfo of my target:</font><font size=3D3> <br>
+</font><font size=3D3 face=3D"sans-serif"><br>
+barebox:/ devinfo <br>
+devices:</font><font size=3D3> </font><font size=3D3 face=3D"sans-serif"><b=
+r>
+`---- imx=5Fserial0</font><font size=3D3> </font><font size=3D3 face=3D"san=
+s-serif"><br>
+&nbsp; &nbsp; &nbsp;`---- cs0</font><font size=3D3> </font><font size=3D3 f=
+ace=3D"sans-serif"><br>
+`---- mem0</font><font size=3D3> </font><font size=3D3 face=3D"sans-serif">=
+<br>
+&nbsp; &nbsp; &nbsp;`---- 0x00000000-0x1fffffff: /dev/ram0</font><font size=
+=3D3>
+</font><font size=3D3 face=3D"sans-serif"><br>
+`---- mem1</font><font size=3D3> </font><font size=3D3 face=3D"sans-serif">=
+<br>
+&nbsp; &nbsp; &nbsp;`---- 0x00000000-0x1fffffff: /dev/ram1</font><font size=
+=3D3>
+</font><font size=3D3 face=3D"sans-serif"><br>
+`---- imx=5Fiim0</font><font size=3D3> </font><font size=3D3 face=3D"sans-s=
+erif"><br>
+&nbsp; &nbsp; &nbsp;`---- 0x00000000-0x0000001f: /dev/imx=5Fiim=5Fbank0</fo=
+nt><font size=3D3>
+</font><font size=3D3 face=3D"sans-serif"><br>
+&nbsp; &nbsp; &nbsp;`---- 0x00000000-0x0000001f: /dev/imx=5Fiim=5Fbank1</fo=
+nt><font size=3D3>
+</font><font size=3D3 face=3D"sans-serif"><br>
+&nbsp; &nbsp; &nbsp;`---- 0x00000000-0x0000001f: /dev/imx=5Fiim=5Fbank2</fo=
+nt><font size=3D3>
+</font><font size=3D3 face=3D"sans-serif"><br>
+&nbsp; &nbsp; &nbsp;`---- 0x00000000-0x0000001f: /dev/imx=5Fiim=5Fbank3</fo=
+nt><font size=3D3>
+</font><font size=3D3 face=3D"sans-serif"><br>
+&nbsp; &nbsp; &nbsp;`---- 0x00000000-0x0000001f: /dev/imx=5Fiim=5Fbank4</fo=
+nt><font size=3D3>
+</font><font size=3D3 face=3D"sans-serif"><br>
+&nbsp; &nbsp; &nbsp;`---- 0x00000000-0x0000001f: /dev/imx=5Fiim=5Fbank5</fo=
+nt><font size=3D3>
+</font><font size=3D3 face=3D"sans-serif"><br>
+&nbsp; &nbsp; &nbsp;`---- 0x00000000-0x0000001f: /dev/imx=5Fiim=5Fbank6</fo=
+nt><font size=3D3>
+</font><font size=3D3 face=3D"sans-serif"><br>
+&nbsp; &nbsp; &nbsp;`---- 0x00000000-0x0000001f: /dev/imx=5Fiim=5Fbank7</fo=
+nt><font size=3D3>
+</font><font size=3D3 face=3D"sans-serif"><br>
+`---- ramfs0</font><font size=3D3> </font><font size=3D3 face=3D"sans-serif=
+"><br>
+`---- devfs0</font><font size=3D3> </font><font size=3D3 face=3D"sans-serif=
+"><br>
+`---- mem2</font><font size=3D3> </font><font size=3D3 face=3D"sans-serif">=
+<br>
+&nbsp; &nbsp; &nbsp;`---- 0x00000000-0x000018ab: /dev/defaultenv</font><fon=
+t size=3D3>
+</font><font size=3D3 face=3D"sans-serif"><br>
+`---- mem3</font><font size=3D3> </font><font size=3D3 face=3D"sans-serif">=
+<br>
+&nbsp; &nbsp; &nbsp;`---- 0x00000000-0xfffffffe: /dev/mem</font><font size=
+=3D3>
+</font><font size=3D3 face=3D"sans-serif"><br>
+`---- cs1</font><font size=3D3> </font><font size=3D3 face=3D"sans-serif"><=
+br>
+`---- fec=5Fimx0</font><font size=3D3> </font><font size=3D3 face=3D"sans-s=
+erif"><br>
+&nbsp; &nbsp; &nbsp;`---- miidev0</font><font size=3D3> </font><font size=
+=3D3 face=3D"sans-serif"><br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; `---- 0x00000000-0x0000003f: /dev/phy0</=
+font><font size=3D3>
+</font><font size=3D3 face=3D"sans-serif"><br>
+&nbsp; &nbsp; &nbsp;`---- eth0</font><font size=3D3> <br>
+</font><font size=3D3 face=3D"sans-serif"><br>
+drivers:</font><font size=3D3> </font><font size=3D3 face=3D"sans-serif"><b=
+r>
+imx=5Fserial</font><font size=3D3> </font><font size=3D3 face=3D"sans-serif=
+"><br>
+&nbsp; &nbsp; &nbsp;ramfs</font><font size=3D3> </font><font size=3D3 face=
+=3D"sans-serif"><br>
+&nbsp; &nbsp; &nbsp;devfs</font><font size=3D3> </font><font size=3D3 face=
+=3D"sans-serif"><br>
+&nbsp; &nbsp;imx=5Fiim</font><font size=3D3> </font><font size=3D3 face=3D"=
+sans-serif"><br>
+&nbsp; &nbsp;fec=5Fimx</font><font size=3D3> </font><font size=3D3 face=3D"=
+sans-serif"><br>
+&nbsp; &nbsp; miidev</font><font size=3D3> </font><font size=3D3 face=3D"sa=
+ns-serif"><br>
+&nbsp; &nbsp; &nbsp; &nbsp;mem</font><font size=3D3> <br>
+<br>
+</font><font size=3D3 face=3D"sans-serif"><br>
+I tried using</font><font size=3D3> </font><font size=3D3 face=3D"sans-seri=
+f"><br>
+$ nand -a /dev/nand0.*</font><font size=3D3> <br>
+</font><font size=3D3 face=3D"sans-serif"><br>
+Nothing happens..</font><font size=3D3> </font><font size=3D3 face=3D"sans-=
+serif"><br>
+What is wrong?</font><font size=3D3> <br>
+</font><font size=3D3 face=3D"sans-serif"><br>
+- - Christian</font><font size=3D3><br>
+=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=
+=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F<br>
+barebox mailing list</font><font size=3D3 color=3Dblue><u><br>
+</u></font><a href=3Dmailto:barebox@lists.infradead.org target=3D=5Fblank><=
+font size=3D3 color=3Dblue><u>barebox@lists.infradead.org</u></font></a><fo=
+nt size=3D3 color=3Dblue><u><br>
+</u></font><a href=3Dhttp://lists.infradead.org/mailman/listinfo/barebox ta=
+rget=3D=5Fblank><font size=3D3 color=3Dblue><u>http://lists.infradead.org/m=
+ailman/listinfo/barebox</u></font></a><font size=3D3><br>
+</font>
+<br>
+<br>
+--=_alternative 00434A06C12579D0_=--
 
-<font face=3D"sans-serif">Hi,</font>
-<br>
-<br><font face=3D"sans-serif">i need to create a NAND Partition through
-the barebox prompt to be able to flash a kernel image on it.</font>
-<br>
-<br><font face=3D"sans-serif">This is the current devinfo of my target:</fo=
-nt>
-<br>
-<br><font face=3D"sans-serif">barebox:/ devinfo </font>
-<br><font face=3D"sans-serif">devices:</font>
-<br><font face=3D"sans-serif">`---- imx_serial0</font>
-<br><font face=3D"sans-serif">=C2=A0 =C2=A0 =C2=A0`---- cs0</font>
-<br><font face=3D"sans-serif">`---- mem0</font>
-<br><font face=3D"sans-serif">=C2=A0 =C2=A0 =C2=A0`---- 0x00000000-0x1fffff=
-ff:
-/dev/ram0</font>
-<br><font face=3D"sans-serif">`---- mem1</font>
-<br><font face=3D"sans-serif">=C2=A0 =C2=A0 =C2=A0`---- 0x00000000-0x1fffff=
-ff:
-/dev/ram1</font>
-<br><font face=3D"sans-serif">`---- imx_iim0</font>
-<br><font face=3D"sans-serif">=C2=A0 =C2=A0 =C2=A0`---- 0x00000000-0x000000=
-1f:
-/dev/imx_iim_bank0</font>
-<br><font face=3D"sans-serif">=C2=A0 =C2=A0 =C2=A0`---- 0x00000000-0x000000=
-1f:
-/dev/imx_iim_bank1</font>
-<br><font face=3D"sans-serif">=C2=A0 =C2=A0 =C2=A0`---- 0x00000000-0x000000=
-1f:
-/dev/imx_iim_bank2</font>
-<br><font face=3D"sans-serif">=C2=A0 =C2=A0 =C2=A0`---- 0x00000000-0x000000=
-1f:
-/dev/imx_iim_bank3</font>
-<br><font face=3D"sans-serif">=C2=A0 =C2=A0 =C2=A0`---- 0x00000000-0x000000=
-1f:
-/dev/imx_iim_bank4</font>
-<br><font face=3D"sans-serif">=C2=A0 =C2=A0 =C2=A0`---- 0x00000000-0x000000=
-1f:
-/dev/imx_iim_bank5</font>
-<br><font face=3D"sans-serif">=C2=A0 =C2=A0 =C2=A0`---- 0x00000000-0x000000=
-1f:
-/dev/imx_iim_bank6</font>
-<br><font face=3D"sans-serif">=C2=A0 =C2=A0 =C2=A0`---- 0x00000000-0x000000=
-1f:
-/dev/imx_iim_bank7</font>
-<br><font face=3D"sans-serif">`---- ramfs0</font>
-<br><font face=3D"sans-serif">`---- devfs0</font>
-<br><font face=3D"sans-serif">`---- mem2</font>
-<br><font face=3D"sans-serif">=C2=A0 =C2=A0 =C2=A0`---- 0x00000000-0x000018=
-ab:
-/dev/defaultenv</font>
-<br><font face=3D"sans-serif">`---- mem3</font>
-<br><font face=3D"sans-serif">=C2=A0 =C2=A0 =C2=A0`---- 0x00000000-0xffffff=
-fe:
-/dev/mem</font>
-<br><font face=3D"sans-serif">`---- cs1</font>
-<br><font face=3D"sans-serif">`---- fec_imx0</font>
-<br><font face=3D"sans-serif">=C2=A0 =C2=A0 =C2=A0`---- miidev0</font>
-<br><font face=3D"sans-serif">=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 `----
-0x00000000-0x0000003f: /dev/phy0</font>
-<br><font face=3D"sans-serif">=C2=A0 =C2=A0 =C2=A0`---- eth0</font>
-<br>
-<br><font face=3D"sans-serif">drivers:</font>
-<br><font face=3D"sans-serif">imx_serial</font>
-<br><font face=3D"sans-serif">=C2=A0 =C2=A0 =C2=A0ramfs</font>
-<br><font face=3D"sans-serif">=C2=A0 =C2=A0 =C2=A0devfs</font>
-<br><font face=3D"sans-serif">=C2=A0 =C2=A0imx_iim</font>
-<br><font face=3D"sans-serif">=C2=A0 =C2=A0fec_imx</font>
-<br><font face=3D"sans-serif">=C2=A0 =C2=A0 miidev</font>
-<br><font face=3D"sans-serif">=C2=A0 =C2=A0 =C2=A0 =C2=A0mem</font>
-<br>
-<br>
-<br><font face=3D"sans-serif">I tried using</font>
-<br><font face=3D"sans-serif">$ nand -a /dev/nand0.*</font>
-<br>
-<br><font face=3D"sans-serif">Nothing happens..</font>
-<br><font face=3D"sans-serif">What is wrong?</font>
-<br>
-<br><font face=3D"sans-serif">- - Christian</font><br>_____________________=
-__________________________<br>
-barebox mailing list<br>
-<a href=3D"mailto:barebox@lists.infradead.org" target=3D"_blank">barebox@li=
-sts.infradead.org</a><br>
-<a href=3D"http://lists.infradead.org/mailman/listinfo/barebox" target=3D"_=
-blank">http://lists.infradead.org/mailman/listinfo/barebox</a><br>
-<br></blockquote></div><br>
 
---f46d04308a28181b4804bc609529--
-
-
---===============5705816129590553913==
+--===============5883862942631263281==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -224,4 +314,4 @@ barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
 
---===============5705816129590553913==--
+--===============5883862942631263281==--
