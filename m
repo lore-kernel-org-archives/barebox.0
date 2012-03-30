@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 5.mo3.mail-out.ovh.net ([87.98.178.36]
+Received: from 3.mo3.mail-out.ovh.net ([46.105.44.175]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SDTfB-0003zE-Mi
- for barebox@lists.infradead.org; Fri, 30 Mar 2012 04:42:14 +0000
+ id 1SDTjg-00042t-B0
+ for barebox@lists.infradead.org; Fri, 30 Mar 2012 04:46:53 +0000
 Received: from mail622.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 33EDEFF8B89
- for <barebox@lists.infradead.org>; Fri, 30 Mar 2012 06:42:39 +0200 (CEST)
-Date: Fri, 30 Mar 2012 06:27:13 +0200
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 2C6A1FF8B12
+ for <barebox@lists.infradead.org>; Fri, 30 Mar 2012 06:47:20 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120330042713.GX444@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Fri, 30 Mar 2012 06:31:47 +0200
+Message-Id: <1333081913-19168-2-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20120330042713.GX444@game.jcrosoft.org>
+References: <20120330042713.GX444@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,51 +20,93 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/8] Network update DHCP/BOOTP
+Subject: [PATCH 2/8] net: dhcp: add support of tftp name server
 To: barebox@lists.infradead.org
 
-HI,
+if the DNS is enable resolve it. The server ip will be set if no server ip it
+is set in the bootp.
+Export it via env tftp_server_name.
 
-	the following patch series update the network dhcp and bootp support
-	to support options 66, 150, 61, 77, 97
+E.g. the ISC dhcp server can be configured with
 
-	this will also help to add pxe boot support later
+   | class "at91sam9x5ek" {
+   |         match if substring (option vendor-class-identifier,0,20) = "barebox-at91sam9x5ek";
+   |
+   |         filename "/tftpboot/atmel/at91sam9x5/sam9x5ek/zImage";
+   |         option tftp-server-name "192.168.200.98";
+   |         option root-path "192.168.200.98:/opt/work/buildroot/build/sam9x5/target";
+   |         }
+   | }
 
-The following changes since commit 485cee59cf64b5019c5a294074007b93509b83e0:
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ net/dhcp.c |   13 ++++++++++++-
+ 1 files changed, 12 insertions(+), 1 deletions(-)
 
-  Merge branch 'work/imx51-babbage-clk' into next (2012-03-23 21:22:14 +0100)
+diff --git a/net/dhcp.c b/net/dhcp.c
+index 1ba4def..6728717 100644
+--- a/net/dhcp.c
++++ b/net/dhcp.c
+@@ -193,6 +193,8 @@ static int dhcp_extended (u8 *e, int message_type, IPaddr_t ServerID,
+ 	*cnt += 1;
+ 	*e++  = 17;		/* Boot path */
+ 	*cnt += 1;
++	*e++  = 66;		/* TFTP server name */
++	*cnt += 1;
+ 	*e++  = 255;		/* End of the list */
+ 
+ 	/* Pad to minimal length */
+@@ -252,6 +254,7 @@ static void dhcp_options_process(unsigned char *popt, struct bootp *bp)
+ 	int oplen;
+ 	IPaddr_t ip;
+ 	char str[256];
++	char tftpname[256];
+ 
+ 	while (popt < end && *popt != 0xff) {
+ 		oplen = *(popt + 1);
+@@ -295,7 +298,10 @@ static void dhcp_options_process(unsigned char *popt, struct bootp *bp)
+ 			break;
+ 		case 59:	/* Ignore Rebinding Time Option */
+ 			break;
+-		case 66:	/* Ignore TFTP server name */
++		case 66:	/* TFTP server name */
++			memcpy(tftpname, popt + 2, oplen);
++			tftpname[oplen] = 0;
++			setenv("tftp_server_name", tftpname);
+ 			break;
+ 		case 67:	/* vendor opt bootfile */
+ 			/*
+@@ -331,6 +337,9 @@ static void dhcp_options_process(unsigned char *popt, struct bootp *bp)
+ 		}
+ 		popt += oplen + 2;	/* Process next option */
+ 	}
++
++	if (tftpname[0] != 0)
++		net_set_serverip(resolv(tftpname));
+ }
+ 
+ static int dhcp_message_type(unsigned char *popt)
+@@ -458,6 +467,7 @@ static int do_dhcp(int argc, char *argv[])
+ 	setenv("hostname","");
+ 	setenv("domainname","");
+ 	setenv("rootpath","");
++	setenv("tftp_server_name","");
+ 
+ 	while((opt = getopt(argc, argv, "v:")) > 0) {
+ 		switch(opt) {
+@@ -526,3 +536,4 @@ BAREBOX_MAGICVAR(hostname, "hostname returned from DHCP request");
+ BAREBOX_MAGICVAR(domainname, "domainname returned from DHCP request");
+ BAREBOX_MAGICVAR(rootpath, "rootpath returned from DHCP request");
+ BAREBOX_MAGICVAR(dhcp_vendor_id, "vendor id to send to the DHCP server");
++BAREBOX_MAGICVAR(tftp_server_name, "TFTP server Name returned from DHCP request");
+-- 
+1.7.9.1
 
-are available in the git repository at:
-
-
-  git://git.jcrosoft.org/barebox.git net
-
-for you to fetch changes up to 2e991cac2e1444def3d27ec06fd10724fe3e19ba:
-
-  defaultenv: add support of etherboot_file (2012-03-30 12:40:18 +0800)
-
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (8):
-      net: dhcp: reset env variable before do a dhcp request
-      net: dhcp: add support of tftp name server
-      net: dhcp: add support of tftp server ip or Etherboot file (option 150)
-      net: dhcp: allow to set transmitted client id
-      net: dhcp: allow to set transmitted client uuid
-      net: dhcp: allow to set transmitted user class
-      net: dns: export resolved ip to var resolved_ip
-      defaultenv: add support of etherboot_file
-
- defaultenv/bin/boot |    4 ++
- net/dhcp.c          |  118 ++++++++++++++++++++++++++++++++++++++++++++-------
- net/dns.c           |    5 ++
- 3 files changed, 111 insertions(+), 16 deletions(-)
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
