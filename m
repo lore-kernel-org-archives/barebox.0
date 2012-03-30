@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 3.mo3.mail-out.ovh.net ([46.105.44.175]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SDTjg-00042u-GB
- for barebox@lists.infradead.org; Fri, 30 Mar 2012 04:46:54 +0000
+ id 1SDTjh-00043Y-Ja
+ for barebox@lists.infradead.org; Fri, 30 Mar 2012 04:46:57 +0000
 Received: from mail622.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id B4778FF8B22
- for <barebox@lists.infradead.org>; Fri, 30 Mar 2012 06:47:20 +0200 (CEST)
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id CFE87FF8A6E
+ for <barebox@lists.infradead.org>; Fri, 30 Mar 2012 06:47:21 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 30 Mar 2012 06:31:48 +0200
-Message-Id: <1333081913-19168-3-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri, 30 Mar 2012 06:31:50 +0200
+Message-Id: <1333081913-19168-5-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <20120330042713.GX444@game.jcrosoft.org>
 References: <20120330042713.GX444@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
@@ -25,104 +25,109 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/8] net: dhcp: add support of tftp server ip or Etherboot
- file (option 150)
+Subject: [PATCH 5/8] net: dhcp: allow to set transmitted client uuid
 To: barebox@lists.infradead.org
 
-if tftp server ip
-	Use the tftp server name only if this option is not set.
-	Export it also via env tftp_server_ip.
-else
-	Export it via end etherboot_file
+For net boot setups it is useful to submit boot params like server or
+bootfile over dhcp. To distinguish diffrent type of OS running on the same hardware,
+a custom vendor id can be sent in dhcp discover/request messages.
 
 E.g. the ISC dhcp server can be configured with
 
-  | option option-150 code 150 = ip-address;
-  | option option-150-etherboot-file code 150 = string;
-  |
-  | class "at91sam9x5ek" {
-  |         match if substring (option vendor-class-identifier,0,20) = "barebox-at91sam9x5ek";
-  |
-  |         filename "/tftpboot/atmel/at91sam9x5/sam9x5ek/zImage";
-  |         option tftp-server-name "192.168.200.98";
-  |         option option-150 192.168.200.98;
-  |         next-server 192.168.200.98;
-  |         option root-path "192.168.200.98:/opt/work/buildroot/build/sam9x5/target";
-  |         if substring (option dhcp-client-identifier,0,7) = "ser2net" {
-  |                 filename "/tftpboot/atmel/at91sam9x5/sam9x5ek/zImage-ser2net";
-  |                 ption option-150-etherboot-file "/tftpboot/test.sh";
-  |         }
-  | }
+ | option client-uuid code 97 = { unsigned integer 8, string };
+ | class "at91sam9x5ek" {
+ |         match if substring (option vendor-class-identifier,0,20) = "barebox-at91sam9x5ek";
+ |
+ |         filename "/tftpboot/atmel/at91sam9x5/sam9x5ek/zImage";
+ |         if substring (option dhcp-client-identifier,0,7) = "ser2net" {
+ |                 filename "/tftpboot/atmel/at91sam9x5/sam9x5ek/zImage-ser2net";
+ |         }
+ |         if substring (option client-uuid,0,7) = "test" {
+ |                 filename "/tftpboot/atmel/at91sam9x5/sam9x5ek/zImage-ser2net";
+ |         }
+ |         option tftp-server-name "192.168.200.98";
+ |         option option-150 192.168.200.98;
+ |         next-server 192.168.200.98;
+ |         option root-path "192.168.200.98:/opt/work/buildroot/build/sam9x5/target";
+ | }
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- net/dhcp.c |   21 ++++++++++++++++++++-
- 1 files changed, 20 insertions(+), 1 deletions(-)
+ net/dhcp.c |   14 +++++++++++++-
+ 1 files changed, 13 insertions(+), 1 deletions(-)
 
 diff --git a/net/dhcp.c b/net/dhcp.c
-index 6728717..adfb4a0 100644
+index 8945587..ae4bdd0 100644
 --- a/net/dhcp.c
 +++ b/net/dhcp.c
-@@ -195,6 +195,8 @@ static int dhcp_extended (u8 *e, int message_type, IPaddr_t ServerID,
- 	*cnt += 1;
- 	*e++  = 66;		/* TFTP server name */
- 	*cnt += 1;
-+	*e++  = 150;		/* TFTP server ip */
-+	*cnt += 1;
- 	*e++  = 255;		/* End of the list */
+@@ -77,6 +77,7 @@ static IPaddr_t net_dhcp_server_ip;
+ static uint64_t dhcp_start;
+ static char *client_id;
+ static char *vendor_id;
++static char *client_uuid;
  
- 	/* Pad to minimal length */
-@@ -255,6 +257,7 @@ static void dhcp_options_process(unsigned char *popt, struct bootp *bp)
- 	IPaddr_t ip;
- 	char str[256];
- 	char tftpname[256];
-+	bool is_tftpserverip = false;
+ static int bootp_check_packet(unsigned char *pkt, unsigned src, unsigned len)
+ {
+@@ -192,6 +193,7 @@ static int dhcp_extended (u8 *e, int message_type, IPaddr_t ServerID,
  
- 	while (popt < end && *popt != 0xff) {
- 		oplen = *(popt + 1);
-@@ -327,6 +330,18 @@ static void dhcp_options_process(unsigned char *popt, struct bootp *bp)
- 					setenv("bootfile", str);
- 			}
+ 	 e += dhcp_set_string_options(e, 60, vendor_id);
+ 	 e += dhcp_set_string_options(e, 61, client_id);
++	 e += dhcp_set_string_options(e, 97, client_uuid);
+ 
+ 	*e++ = 55;		/* Parameter Request List */
+ 	 cnt = e++;		/* Pointer to count of requested items */
+@@ -491,6 +493,7 @@ static int do_dhcp(int argc, char *argv[])
+ 	int ret, opt;
+ 	vendor_id = (char*)getenv("dhcp_vendor_id");
+ 	client_id = (char*)getenv("dhcp_client_id");
++	client_uuid = (char*)getenv("dhcp_client_uuid");
+ 
+ 	setenv("bootfile","");
+ 	setenv("nameserver","");
+@@ -501,7 +504,7 @@ static int do_dhcp(int argc, char *argv[])
+ 	setenv("tftp_server_ip","");
+ 	setenv("etherboot_file","");
+ 
+-	while((opt = getopt(argc, argv, "v:c:")) > 0) {
++	while((opt = getopt(argc, argv, "v:c:u:")) > 0) {
+ 		switch(opt) {
+ 		case 'v':
+ 			vendor_id = optarg;
+@@ -509,11 +512,15 @@ static int do_dhcp(int argc, char *argv[])
+ 		case 'c':
+ 			client_id = optarg;
  			break;
-+		case 150:	/* TFTP server ip or Etherboot*/
-+			if (oplen == sizeof(IPaddr_t)) {
-+				is_tftpserverip = true;
-+				ip = net_read_ip(popt + 2);
-+				net_set_serverip(ip);
-+				setenv_ip("tftp_server_ip", ip);
-+			} else {
-+				memcpy(str, popt + 2, oplen);
-+				str[oplen] = 0;
-+				setenv("etherboot_file", str);
-+			}
++		case 'u':
++			client_uuid = optarg;
 +			break;
- 		default:
- #ifdef CONFIG_BOOTP_VENDOREX
- 			if (dhcp_vendorex_proc (popt))
-@@ -338,7 +353,7 @@ static void dhcp_options_process(unsigned char *popt, struct bootp *bp)
- 		popt += oplen + 2;	/* Process next option */
+ 		}
  	}
  
--	if (tftpname[0] != 0)
-+	if (!is_tftpserverip && tftpname[0] != 0)
- 		net_set_serverip(resolv(tftpname));
- }
+ 	pr_debug("vendor_id: '%s'\n", vendor_id);
+ 	pr_debug("client_id: '%s'\n", client_id);
++	pr_debug("client_uuid: '%s'\n", client_uuid);
  
-@@ -468,6 +483,8 @@ static int do_dhcp(int argc, char *argv[])
- 	setenv("domainname","");
- 	setenv("rootpath","");
- 	setenv("tftp_server_name","");
-+	setenv("tftp_server_ip","");
-+	setenv("etherboot_file","");
+ 	dhcp_con = net_udp_new(0xffffffff, PORT_BOOTPS, dhcp_handler, NULL);
+ 	if (IS_ERR(dhcp_con)) {
+@@ -563,6 +570,10 @@ BAREBOX_CMD_HELP_OPT  ("-v <vendor_id>",
+ BAREBOX_CMD_HELP_OPT  ("-c <client_id>",
+ "DHCP Client ID (code 61) submitted in DHCP requests. It can\n"
+ "be used in the DHCP server's configuration to select options\n"
++"(e.g. bootfile or server) which are valid for barebox clients only.\n")
++BAREBOX_CMD_HELP_OPT  ("-u <client_uuid>",
++"DHCP Client UUID (code 97) submitted in DHCP requests. It can\n"
++"be used in the DHCP server's configuration to select options\n"
+ "(e.g. bootfile or server) which are valid for barebox clients only.\n");
+ BAREBOX_CMD_HELP_END
  
- 	while((opt = getopt(argc, argv, "v:")) > 0) {
- 		switch(opt) {
-@@ -537,3 +554,5 @@ BAREBOX_MAGICVAR(domainname, "domainname returned from DHCP request");
+@@ -578,6 +589,7 @@ BAREBOX_MAGICVAR(hostname, "hostname returned from DHCP request");
+ BAREBOX_MAGICVAR(domainname, "domainname returned from DHCP request");
  BAREBOX_MAGICVAR(rootpath, "rootpath returned from DHCP request");
  BAREBOX_MAGICVAR(dhcp_vendor_id, "vendor id to send to the DHCP server");
++BAREBOX_MAGICVAR(dhcp_client_uuid, "cliend uuid to send to the DHCP server");
+ BAREBOX_MAGICVAR(dhcp_client_id, "cliend id to send to the DHCP server");
  BAREBOX_MAGICVAR(tftp_server_name, "TFTP server Name returned from DHCP request");
-+BAREBOX_MAGICVAR(tftp_server_ip, "TFTP server IP returned from DHCP request");
-+BAREBOX_MAGICVAR(etherboot_file, "Etherboot File returned from DHCP request");
+ BAREBOX_MAGICVAR(tftp_server_ip, "TFTP server IP returned from DHCP request");
 -- 
 1.7.9.1
 
