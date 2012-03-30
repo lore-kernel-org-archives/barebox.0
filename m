@@ -1,21 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qc0-f177.google.com ([209.85.216.177])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SDFck-0004TA-SR
- for barebox@lists.infradead.org; Thu, 29 Mar 2012 13:42:47 +0000
-Received: by qcsu28 with SMTP id u28so1544070qcs.36
- for <barebox@lists.infradead.org>; Thu, 29 Mar 2012 06:42:45 -0700 (PDT)
+Received: from 5.mo3.mail-out.ovh.net ([87.98.178.36]
+ helo=mo3.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1SDTfB-0003zE-Mi
+ for barebox@lists.infradead.org; Fri, 30 Mar 2012 04:42:14 +0000
+Received: from mail622.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 33EDEFF8B89
+ for <barebox@lists.infradead.org>; Fri, 30 Mar 2012 06:42:39 +0200 (CEST)
+Date: Fri, 30 Mar 2012 06:27:13 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20120330042713.GX444@game.jcrosoft.org>
 MIME-Version: 1.0
-In-Reply-To: <20120329150143.0ce2ddf0@eb-e6520>
-References: <OF440839EF.2383F590-ONC12579D0.00410F43-C12579D0.004184D1@o0802.rafi.inhouse>
- <20120329140303.71c94361@eb-e6520>
- <OF21220E76.68770C91-ONC12579D0.004452DB-C12579D0.0044D7C4@o0802.rafi.inhouse>
- <CAB_54W4aZA1W0yGMtboW-F0CLmfx4et2XNEjExdFdZUE_g4a+g@mail.gmail.com>
- <OFADF64A2E.4C13BEDA-ONC12579D0.0047261C-C12579D0.004752BF@o0802.rafi.inhouse>
- <20120329150143.0ce2ddf0@eb-e6520>
-Date: Thu, 29 Mar 2012 15:42:45 +0200
-Message-ID: <CAJfOKByg6f6noOPxg6tDLuNy1XUZ1Nw0-A6U9niUeEJVHWDyhw@mail.gmail.com>
-From: Franck Jullien <franck.jullien@gmail.com>
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,35 +20,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Create NAND Partition through barebox
-To: barebox <barebox@lists.infradead.org>
+Subject: [PATCH 0/8] Network update DHCP/BOOTP
+To: barebox@lists.infradead.org
 
-2012/3/29 Eric B=E9nard <eric@eukrea.com>:
-> Le Thu, 29 Mar 2012 14:59:07 +0200,
-> christian.buettner@rafi.de a =E9crit :
->> I have an addpart tool as you can see but i cannot create a partition. In
->> the /dev folder is also no /dev/nand0
->>
-> did you register the nand device ? Is it detected by barebox ?
->
-> I think you should check your board support file against a board
-> suppporting nand (you can for example check our cpuimx51 platform which
-> is not far from an i.MX53 one).
->
-> Eric
->
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+HI,
 
-Hi,
+	the following patch series update the network dhcp and bootp support
+	to support options 66, 150, 61, 77, 97
 
-Did you enable the NAND support (in the menuconfig) ?
+	this will also help to add pxe boot support later
+
+The following changes since commit 485cee59cf64b5019c5a294074007b93509b83e0:
+
+  Merge branch 'work/imx51-babbage-clk' into next (2012-03-23 21:22:14 +0100)
+
+are available in the git repository at:
+
+
+  git://git.jcrosoft.org/barebox.git net
+
+for you to fetch changes up to 2e991cac2e1444def3d27ec06fd10724fe3e19ba:
+
+  defaultenv: add support of etherboot_file (2012-03-30 12:40:18 +0800)
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (8):
+      net: dhcp: reset env variable before do a dhcp request
+      net: dhcp: add support of tftp name server
+      net: dhcp: add support of tftp server ip or Etherboot file (option 150)
+      net: dhcp: allow to set transmitted client id
+      net: dhcp: allow to set transmitted client uuid
+      net: dhcp: allow to set transmitted user class
+      net: dns: export resolved ip to var resolved_ip
+      defaultenv: add support of etherboot_file
+
+ defaultenv/bin/boot |    4 ++
+ net/dhcp.c          |  118 ++++++++++++++++++++++++++++++++++++++++++++-------
+ net/dns.c           |    5 ++
+ 3 files changed, 111 insertions(+), 16 deletions(-)
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
