@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 89-97-197-40.ip19.fastwebnet.it ([89.97.197.40]
- helo=srv-exc.techimp.com)
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SEiF8-0007Ob-GA
- for barebox@lists.infradead.org; Mon, 02 Apr 2012 14:28:27 +0000
-From: Martino Ruppi <mruppi@techimp.com>
-Date: Mon, 2 Apr 2012 16:28:22 +0200
-Message-ID: <63954CAD61AA2440BC0B16A69EAE2BBC630E110855@srv-exc.techimp.com>
-References: <63954CAD61AA2440BC0B16A69EAE2BBC630E110778@srv-exc.techimp.com>
-In-Reply-To: <63954CAD61AA2440BC0B16A69EAE2BBC630E110778@srv-exc.techimp.com>
-Content-Language: it-IT
+Received: from 17.mo3.mail-out.ovh.net ([87.98.178.58]
+ helo=mo3.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1SEiJG-0007pF-0H
+ for barebox@lists.infradead.org; Mon, 02 Apr 2012 14:32:43 +0000
+Received: from mail622.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 85EC1FF9ECF
+ for <barebox@lists.infradead.org>; Mon,  2 Apr 2012 16:33:16 +0200 (CEST)
+Date: Mon, 2 Apr 2012 16:17:00 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20120402141700.GF8116@game.jcrosoft.org>
 MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,190 +20,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============5446919784886291845=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: R: filling string variables in script
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH 0/8 v3] Network update DHCP/BOOTP
+To: barebox@lists.infradead.org
 
---===============5446919784886291845==
-Content-Language: it-IT
-Content-Type: multipart/alternative;
-	boundary="_000_63954CAD61AA2440BC0B16A69EAE2BBC630E110855srvexctechimp_"
+HI,
 
---_000_63954CAD61AA2440BC0B16A69EAE2BBC630E110855srvexctechimp_
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	the following patch series update the network dhcp and bootp support
+	to support options 66, 61, 77, 97
 
-I'm sorry, I renovate my previous question.
-Or maybe it wasn't arrived to the list.
-I appreciate if someone could put me on right trace.
-Thanks. Marty
+	this will also help to add pxe boot support later
 
-Da: barebox-bounces@lists.infradead.org [mailto:barebox-bounces@lists.infra=
-dead.org] Per conto di Martino Ruppi
-Inviato: gioved=EC 29 marzo 2012 15.36
-A: barebox@lists.infradead.org
-Oggetto: filling string variables in script
+The following changes since commit c21492c293bcb97ac99f837489898582205cd168:
 
-Dear all,
-I would ask a question as barebox user.
-I mind to set a variable as result of memory reading but I understand it do=
-esn't implemented redirection.
-I'd like to do something of this:
+  AT91: at91sam9x5: add chip and board file (2012-04-02 10:31:23 +0200)
 
-myvar=3D""
-memcpy -s  /dev/nor0.switch -d $myvar 0x0 0x0 4
+are available in the git repository at:
 
-or
+  git://git.jcrosoft.org/barebox.git net
 
-myvar=3D"$(cat /dev/nor0.switch)"
+for you to fetch changes up to f09107f16b01328138aed324b3e11c96b318369f:
 
-I think, I use one of last releases (version command?).
-Thanks to everyone can help me.
-Marty
+  net: env: getenv_ip use resolv (2012-04-02 22:26:04 +0800)
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Martino Ruppi, FW engineer developer, PhD
-mruppi@techimp.com<mailto:mruppi@techimp.com>
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (8):
+      net: dhcp: factorise option recption handling
+      net: dhcp: reset env variable before do a dhcp request
+      net: dhcp: add support of tftp name server
+      net: dhcp: factorise setting option code
+      net: dhcp: allow to set transmitted client id
+      net: dhcp: allow to set transmitted client uuid
+      net: dhcp: allow to set transmitted user class
+      net: env: getenv_ip use resolv
 
-Techimp HQ srl
-Via Toscana 11/C
-40069 Zola Predosa (BO)
-Tel.   051 19986050
-Fax.   051 19986099
-Cell.  349 4677660
+ include/net.h |    6 +-
+ net/dhcp.c    |  451 +++++++++++++++++++++++++++++++++++++++++----------------
+ net/dns.c     |    2 +-
+ net/net.c     |    9 +-
+ 4 files changed, 340 insertions(+), 128 deletions(-)
 
-
-
---_000_63954CAD61AA2440BC0B16A69EAE2BBC630E110855srvexctechimp_
-Content-Type: text/html; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-<html xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:o=3D"urn:schemas-micr=
-osoft-com:office:office" xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
-xmlns:m=3D"http://schemas.microsoft.com/office/2004/12/omml" xmlns=3D"http:=
-//www.w3.org/TR/REC-html40"><head><meta http-equiv=3DContent-Type content=
-=3D"text/html; charset=3Diso-8859-1"><meta name=3DGenerator content=3D"Micr=
-osoft Word 12 (filtered medium)"><style><!--
-/* Font Definitions */
-@font-face
-	{font-family:Calibri;
-	panose-1:2 15 5 2 2 2 4 3 2 4;}
-@font-face
-	{font-family:"Segoe UI";
-	panose-1:2 11 5 2 4 2 4 2 2 3;}
-@font-face
-	{font-family:Consolas;
-	panose-1:2 11 6 9 2 2 4 3 2 4;}
-/* Style Definitions */
-p.MsoNormal, li.MsoNormal, div.MsoNormal
-	{margin:0cm;
-	margin-bottom:.0001pt;
-	font-size:11.0pt;
-	font-family:"Calibri","sans-serif";}
-a:link, span.MsoHyperlink
-	{mso-style-priority:99;
-	color:blue;
-	text-decoration:underline;}
-a:visited, span.MsoHyperlinkFollowed
-	{mso-style-priority:99;
-	color:purple;
-	text-decoration:underline;}
-span.StileMessaggioDiPostaElettronica17
-	{mso-style-type:personal;
-	font-family:"Calibri","sans-serif";
-	color:windowtext;}
-span.StileMessaggioDiPostaElettronica18
-	{mso-style-type:personal-reply;
-	font-family:"Calibri","sans-serif";
-	color:#1F497D;}
-.MsoChpDefault
-	{mso-style-type:export-only;
-	font-size:10.0pt;}
-@page WordSection1
-	{size:612.0pt 792.0pt;
-	margin:70.85pt 2.0cm 2.0cm 2.0cm;}
-div.WordSection1
-	{page:WordSection1;}
---></style><!--[if gte mso 9]><xml>
-<o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
-</xml><![endif]--><!--[if gte mso 9]><xml>
-<o:shapelayout v:ext=3D"edit">
-<o:idmap v:ext=3D"edit" data=3D"1" />
-</o:shapelayout></xml><![endif]--></head><body lang=3DIT link=3Dblue vlink=
-=3Dpurple><div class=3DWordSection1><p class=3DMsoNormal><span lang=3DEN-US=
- style=3D'color:#1F497D'>I&#8217;m sorry, I renovate my previous question.<=
-o:p></o:p></span></p><p class=3DMsoNormal><span lang=3DEN-US style=3D'color=
-:#1F497D'>Or maybe it wasn&#8217;t arrived to the list.<o:p></o:p></span></=
-p><p class=3DMsoNormal><span lang=3DEN-US style=3D'color:#1F497D'>I appreci=
-ate if someone could put me on right trace.<o:p></o:p></span></p><p class=
-=3DMsoNormal><span lang=3DEN-US style=3D'color:#1F497D'>Thanks. Marty<o:p><=
-/o:p></span></p><p class=3DMsoNormal><span lang=3DEN-US style=3D'color:#1F4=
-97D'><o:p>&nbsp;</o:p></span></p><div><div style=3D'border:none;border-top:=
-solid #B5C4DF 1.0pt;padding:3.0pt 0cm 0cm 0cm'><p class=3DMsoNormal><b><spa=
-n style=3D'font-size:10.0pt;font-family:"Segoe UI","sans-serif"'>Da:</span>=
-</b><span style=3D'font-size:10.0pt;font-family:"Segoe UI","sans-serif"'> b=
-arebox-bounces@lists.infradead.org [mailto:barebox-bounces@lists.infradead.=
-org] <b>Per conto di </b>Martino Ruppi<br><b>Inviato:</b> gioved=EC 29 marz=
-o 2012 15.36<br><b>A:</b> barebox@lists.infradead.org<br><b>Oggetto:</b> fi=
-lling string variables in script<o:p></o:p></span></p></div></div><p class=
-=3DMsoNormal><o:p>&nbsp;</o:p></p><p class=3DMsoNormal><span lang=3DEN-US>D=
-ear all,<o:p></o:p></span></p><p class=3DMsoNormal><span lang=3DEN-US>I wou=
-ld ask a question as barebox user. <o:p></o:p></span></p><p class=3DMsoNorm=
-al><span lang=3DEN-US>I mind to set a variable as result of memory reading =
-but I understand it doesn&#8217;t implemented redirection.<o:p></o:p></span=
-></p><p class=3DMsoNormal><span lang=3DEN-US>I&#8217;d like to do something=
- of this:<o:p></o:p></span></p><p class=3DMsoNormal><span lang=3DEN-US><o:p=
->&nbsp;</o:p></span></p><p class=3DMsoNormal><span lang=3DEN-US>myvar=3D&#8=
-221;&#8221;<o:p></o:p></span></p><p class=3DMsoNormal><span lang=3DEN-US>me=
-mcpy &#8211;s &nbsp;/dev/nor0.switch &#8211;d $myvar 0x0 0x0 4<o:p></o:p></=
-span></p><p class=3DMsoNormal><span lang=3DEN-US><o:p>&nbsp;</o:p></span></=
-p><p class=3DMsoNormal><span lang=3DEN-US>or <o:p></o:p></span></p><p class=
-=3DMsoNormal><span lang=3DEN-US><o:p>&nbsp;</o:p></span></p><p class=3DMsoN=
-ormal><span lang=3DEN-US>myvar=3D&#8221;$(cat /dev/nor0.switch)&#8221;<o:p>=
-</o:p></span></p><p class=3DMsoNormal><span lang=3DEN-US><o:p>&nbsp;</o:p><=
-/span></p><p class=3DMsoNormal><span lang=3DEN-US>I think, I use one of las=
-t releases (version command?). <o:p></o:p></span></p><p class=3DMsoNormal><=
-span lang=3DEN-US>Thanks to everyone can help me.<o:p></o:p></span></p><p c=
-lass=3DMsoNormal><span lang=3DEN-US>Marty<o:p></o:p></span></p><p class=3DM=
-soNormal><span lang=3DEN-US><o:p>&nbsp;</o:p></span></p><p class=3DMsoNorma=
-l><span style=3D'font-size:9.0pt;font-family:Consolas;color:#1F497D'>~~~~~~=
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~<o:p></o:p></span></p><p class=3DMsoNormal>=
-<span style=3D'font-size:9.0pt;font-family:Consolas;color:#1F497D'>Martino =
-Ruppi, FW engineer developer, PhD<o:p></o:p></span></p><p class=3DMsoNormal=
-><span style=3D'font-size:9.0pt;font-family:Consolas;color:#1F497D'><a href=
-=3D"mailto:mruppi@techimp.com"><span lang=3DEN-US style=3D'color:#1F497D;te=
-xt-decoration:none'>mruppi@techimp.com</span></a></span><span lang=3DEN-US =
-style=3D'font-size:9.0pt;font-family:Consolas;color:#1F497D'><o:p></o:p></s=
-pan></p><p class=3DMsoNormal><span lang=3DEN-US style=3D'font-size:9.0pt;fo=
-nt-family:Consolas;color:#1F497D'><o:p>&nbsp;</o:p></span></p><p class=3DMs=
-oNormal><span lang=3DEN-US style=3D'font-size:9.0pt;font-family:Consolas;co=
-lor:#1F497D'>Techimp HQ srl<o:p></o:p></span></p><p class=3DMsoNormal><span=
- style=3D'font-size:9.0pt;font-family:Consolas;color:#1F497D'>Via Toscana 1=
-1/C<o:p></o:p></span></p><p class=3DMsoNormal><span style=3D'font-size:9.0p=
-t;font-family:Consolas;color:#1F497D'>40069 Zola Predosa (BO)<o:p></o:p></s=
-pan></p><p class=3DMsoNormal><span style=3D'font-size:9.0pt;font-family:Con=
-solas;color:#1F497D'>Tel.&nbsp;&nbsp; 051 19986050<o:p></o:p></span></p><p =
-class=3DMsoNormal><span style=3D'font-size:9.0pt;font-family:Consolas;color=
-:#1F497D'>Fax.&nbsp;&nbsp; 051 19986099<o:p></o:p></span></p><p class=3DMso=
-Normal><span style=3D'font-size:9.0pt;font-family:Consolas;color:#1F497D'>C=
-ell.&nbsp; 349 4677660<o:p></o:p></span></p><p class=3DMsoNormal><span styl=
-e=3D'font-size:9.0pt;font-family:Consolas;color:#1F497D'><o:p>&nbsp;</o:p><=
-/span></p><p class=3DMsoNormal><o:p>&nbsp;</o:p></p></div></body></html>=
-
---_000_63954CAD61AA2440BC0B16A69EAE2BBC630E110855srvexctechimp_--
-
-
---===============5446919784886291845==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============5446919784886291845==--
