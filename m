@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SEcF5-0005Ye-7q
- for barebox@lists.infradead.org; Mon, 02 Apr 2012 08:04:00 +0000
-Date: Mon, 2 Apr 2012 10:03:53 +0200
+ id 1SEcJA-0005bM-E0
+ for barebox@lists.infradead.org; Mon, 02 Apr 2012 08:08:13 +0000
+Date: Mon, 2 Apr 2012 10:08:07 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120402080353.GD3852@pengutronix.de>
-References: <1332610770-2450-1-git-send-email-shc_work@mail.ru>
+Message-ID: <20120402080807.GE3852@pengutronix.de>
+References: <1332679686-30768-1-git-send-email-shc_work@mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1332610770-2450-1-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1332679686-30768-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,46 +22,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] i.MX27: Added definition for 600 mHz PLL setup.
+Subject: Re: [PATCH] Select POLLER option for fsl_udc
 To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-On Sat, Mar 24, 2012 at 09:39:30PM +0400, Alexander Shiyan wrote:
+On Sun, Mar 25, 2012 at 04:48:06PM +0400, Alexander Shiyan wrote:
 > 
 > Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 
-Fixed the subject and applied. Thanks
+Applied, thanks.
 
 Sascha
 
 > ---
->  arch/arm/mach-imx/imx51.c |   13 +++++++------
->  1 files changed, 7 insertions(+), 6 deletions(-)
+>  drivers/usb/gadget/Kconfig |    1 +
+>  1 files changed, 1 insertions(+), 0 deletions(-)
 > 
-> diff --git a/arch/arm/mach-imx/imx51.c b/arch/arm/mach-imx/imx51.c
-> index 5483d10..40f4b1e 100644
-> --- a/arch/arm/mach-imx/imx51.c
-> +++ b/arch/arm/mach-imx/imx51.c
-> @@ -179,12 +179,13 @@ static int imx51_boot_save_loc(void)
+> diff --git a/drivers/usb/gadget/Kconfig b/drivers/usb/gadget/Kconfig
+> index 797d19f..4eb2f62 100644
+> --- a/drivers/usb/gadget/Kconfig
+> +++ b/drivers/usb/gadget/Kconfig
+> @@ -14,6 +14,7 @@ config USB_GADGET_DRIVER_ARC
+>  	prompt "Arc OTG device core"
+>  	depends on ARCH_IMX
+>  	select USB_GADGET_DUALSPEED
+> +	select POLLER
 >  
->  coredevice_initcall(imx51_boot_save_loc);
->  
-> -#define setup_pll_1000(base)	imx5_setup_pll((base), 1000, ((10 << 4) + ((1 - 1) << 0)), (12 - 1), 5)
-> -#define setup_pll_800(base)	imx5_setup_pll((base), 800, ((8 << 4) + ((1 - 1)  << 0)), (3 - 1), 1)
-> -#define setup_pll_665(base)	imx5_setup_pll((base), 665, ((6 << 4) + ((1 - 1)  << 0)), (96 - 1), 89)
-> -#define setup_pll_400(base)	imx5_setup_pll((base), 400, ((8 << 4) + ((2 - 1)  << 0)), (3 - 1), 1)
-> -#define setup_pll_455(base)	imx5_setup_pll((base), 455, ((9 << 4) + ((2 - 1)  << 0)), (48 - 1), 23)
-> -#define setup_pll_216(base)	imx5_setup_pll((base), 216, ((6 << 4) + ((3 - 1)  << 0)), (4 - 1), 3)
-> +#define setup_pll_1000(base)	imx5_setup_pll((base), 1000, ((10 << 4) + ((1 - 1) << 0)), (12 - 1),  5)
-> +#define setup_pll_800(base)	imx5_setup_pll((base), 800,  (( 8 << 4) + ((1 - 1) << 0)), ( 3 - 1),  1)
-> +#define setup_pll_665(base)	imx5_setup_pll((base), 665,  (( 6 << 4) + ((1 - 1) << 0)), (96 - 1), 89)
-> +#define setup_pll_600(base)	imx5_setup_pll((base), 600,  (( 6 << 4) + ((1 - 1) << 0)), ( 4 - 1),  1)
-> +#define setup_pll_400(base)	imx5_setup_pll((base), 400,  (( 8 << 4) + ((2 - 1) << 0)), ( 3 - 1),  1)
-> +#define setup_pll_455(base)	imx5_setup_pll((base), 455,  (( 9 << 4) + ((2 - 1) << 0)), (48 - 1), 23)
-> +#define setup_pll_216(base)	imx5_setup_pll((base), 216,  (( 6 << 4) + ((3 - 1) << 0)), ( 4 - 1),  3)
->  
->  void imx51_init_lowlevel(void)
->  {
+>  config USB_GADGET_DRIVER_AT91
+>  	bool
 > -- 
 > 1.7.3.4
 > 
