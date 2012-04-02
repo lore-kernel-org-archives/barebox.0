@@ -1,15 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SEfG8-0000Ru-3d
- for barebox@lists.infradead.org; Mon, 02 Apr 2012 11:17:17 +0000
-Date: Mon, 2 Apr 2012 13:17:10 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120402111710.GV3852@pengutronix.de>
-References: <20120330042713.GX444@game.jcrosoft.org>
+Received: from tango.tkos.co.il ([62.219.50.35])
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SEfSx-0003B0-SS
+ for barebox@lists.infradead.org; Mon, 02 Apr 2012 11:30:33 +0000
+Date: Mon, 2 Apr 2012 14:30:02 +0300
+From: Baruch Siach <baruch@tkos.co.il>
+Message-ID: <20120402113002.GA18712@sapphire.tkos.co.il>
+References: <CAD9ZU8AJc+LxYRa_HFQ_pxt+G3ijZmyKcQ0MqDKvVHH5FrJ1Qw@mail.gmail.com>
+ <20120401104934.GD22835@sapphire.tkos.co.il>
+ <20120401144518.73c1cf53@eb-e6520>
+ <20120401125209.GE22835@sapphire.tkos.co.il>
+ <20120401150507.465b4a6d@eb-e6520>
+ <CAD9ZU8D0a8BRAtAN8_9Hz_75Lek=N_i_F+jjXvfR1gxMsPNZ3A@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120330042713.GX444@game.jcrosoft.org>
+In-Reply-To: <CAD9ZU8D0a8BRAtAN8_9Hz_75Lek=N_i_F+jjXvfR1gxMsPNZ3A@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,74 +23,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/8] Network update DHCP/BOOTP
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: nand_imx 4k support ?
+To: Gabriel Tisan <gabriel.tisan@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Mar 30, 2012 at 06:27:13AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> HI,
-> 
-> 	the following patch series update the network dhcp and bootp support
-> 	to support options 66, 150, 61, 77, 97
-> 
-> 	this will also help to add pxe boot support later
-> 
-> The following changes since commit 485cee59cf64b5019c5a294074007b93509b83e0:
-> 
->   Merge branch 'work/imx51-babbage-clk' into next (2012-03-23 21:22:14 +0100)
-> 
-> are available in the git repository at:
-> 
-> 
->   git://git.jcrosoft.org/barebox.git net
-> 
-> for you to fetch changes up to 2e991cac2e1444def3d27ec06fd10724fe3e19ba:
-> 
->   defaultenv: add support of etherboot_file (2012-03-30 12:40:18 +0800)
-> 
-> ----------------------------------------------------------------
-> Jean-Christophe PLAGNIOL-VILLARD (8):
->       net: dhcp: reset env variable before do a dhcp request
->       net: dhcp: add support of tftp name server
->       net: dhcp: add support of tftp server ip or Etherboot file (option 150)
->       net: dhcp: allow to set transmitted client id
->       net: dhcp: allow to set transmitted client uuid
->       net: dhcp: allow to set transmitted user class
->       net: dns: export resolved ip to var resolved_ip
->       defaultenv: add support of etherboot_file
+Hi Gabriel,
 
-Given the current poor state of net/dhcp.c I'm not very willing to
-accept feature patches to this. I think what we need is a struct
-dhcp_opt:
+On Mon, Apr 02, 2012 at 11:03:06AM +0200, Gabriel Tisan wrote:
+> Yes, Baruch I meant write support, especially ECC layout for 4K flashes.
+> =
 
-struct dhcp_opt {
-	unsigned char option;
-	const char *barebox_var_name;
-#define DHCP_OPT_IP		1
-#define DHCP_OPT_STRING		2
-	unsigned long flags;
-};
+> Actually the 4k flashes could have 128 or 218 bytes OOB.
+> =
 
-With this we could loop around all opts and
-- unset existing environment variables before a dhcp request
-- construct the request packet
-- parse response
+> Could you point me to some docs about this layout ? I use a flash with
+> 218 bytes spare.
 
-Also nice to have are defines for the different dhcp options and a
-consistent dhcp_ prefix for all environment variables modified by the
-dhcp command.
+See commit 2c1c5f199 of the Linux kernel at =
 
-Sascha
+http://git.kernel.org/linus/2c1c5f199.
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+As Eric has pointed out, this may not be necessary for Barebox.
+
+baruch
+
+> On Sun, Apr 1, 2012 at 3:05 PM, Eric B=E9nard <eric@eukrea.com> wrote:
+> > Le Sun, 1 Apr 2012 15:52:09 +0300,
+> > Baruch Siach <baruch@tkos.co.il> a =E9crit :
+> >> Does the Linux kernel detect your flash correctly?
+> >>
+> > I'm not at this stage for the moment as I'm using a SDcard rootfs to
+> > validate the hardware for the moment, but I'm sure the actual problem
+> > (in my case at least) in barebox is a detection problem as I get the
+> > right values from the flash but these value are ONFI and thus are not
+> > right with he actual flash detection code which leads to a wrong
+> > configuration of the NFC. Once I hardcode the NFC settings I manage to
+> > read/write in the 4k NAND Flash from barebox (environment & kernel
+> > are in the flash for the moment).
+
+-- =
+
+     http://baruch.siach.name/blog/                  ~. .~   Tk Open Systems
+=3D}------------------------------------------------ooO--U--Ooo------------=
+{=3D
+   - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
 
 _______________________________________________
 barebox mailing list
