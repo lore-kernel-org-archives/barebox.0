@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp3-g21.free.fr ([2a01:e0c:1:1599::12])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SEKT6-0005EA-8r
- for barebox@lists.infradead.org; Sun, 01 Apr 2012 13:05:17 +0000
-Date: Sun, 1 Apr 2012 15:05:07 +0200
-From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
-Message-ID: <20120401150507.465b4a6d@eb-e6520>
-In-Reply-To: <20120401125209.GE22835@sapphire.tkos.co.il>
-References: <CAD9ZU8AJc+LxYRa_HFQ_pxt+G3ijZmyKcQ0MqDKvVHH5FrJ1Qw@mail.gmail.com>
- <20120401104934.GD22835@sapphire.tkos.co.il>
- <20120401144518.73c1cf53@eb-e6520>
- <20120401125209.GE22835@sapphire.tkos.co.il>
-Mime-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SEbZf-00083T-4G
+ for barebox@lists.infradead.org; Mon, 02 Apr 2012 07:21:12 +0000
+Date: Mon, 2 Apr 2012 09:21:00 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120402072100.GZ3852@pengutronix.de>
+References: <1332582785-17242-1-git-send-email-shc_work@mail.ru>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1332582785-17242-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,29 +18,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: nand_imx 4k support ?
-To: Baruch Siach <baruch@tkos.co.il>
+Subject: Re: [PATCH] ARM i.MX51 babbage: Remove clock raise from power_init.
+To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-Le Sun, 1 Apr 2012 15:52:09 +0300,
-Baruch Siach <baruch@tkos.co.il> a =E9crit :
-> Does the Linux kernel detect your flash correctly?
-> =
+On Sat, Mar 24, 2012 at 01:53:05PM +0400, Alexander Shiyan wrote:
+> Because CPU frequency setup called after power initialization,
+> this call now is not necessary.
 
-I'm not at this stage for the moment as I'm using a SDcard rootfs to
-validate the hardware for the moment, but I'm sure the actual problem
-(in my case at least) in barebox is a detection problem as I get the
-right values from the flash but these value are ONFI and thus are not
-right with he actual flash detection code which leads to a wrong
-configuration of the NFC. Once I hardcode the NFC settings I manage to
-read/write in the 4k NAND Flash from barebox (environment & kernel
-are in the flash for the moment).
+Applied, thanks.
 
-Eric
+Sascha
+
+> 
+> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+> ---
+>  arch/arm/boards/freescale-mx51-pdk/board.c |    3 ---
+>  1 files changed, 0 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/arm/boards/freescale-mx51-pdk/board.c b/arch/arm/boards/freescale-mx51-pdk/board.c
+> index 108af93..2ca4339 100644
+> --- a/arch/arm/boards/freescale-mx51-pdk/board.c
+> +++ b/arch/arm/boards/freescale-mx51-pdk/board.c
+> @@ -159,9 +159,6 @@ static void babbage_power_init(void)
+>  		val &= ~0x1f;
+>  		val |= 0x1a;
+>  		mc13892_reg_write(mc13892, MC13892_REG_SW_2, val);
+> -		udelay(50);
+> -		/* Raise the core frequency to 800MHz */
+> -		writel(0x0, MX51_CCM_BASE_ADDR + MX51_CCM_CACRR);
+>  	} else {
+>  		/* Setup VCC (SW2) to 1.225 */
+>  		mc13892_reg_read(mc13892, MC13892_REG_SW_1, &val);
+> -- 
+> 1.7.3.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
