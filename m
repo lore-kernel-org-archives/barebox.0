@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SEcOV-0001yp-Np
- for barebox@lists.infradead.org; Mon, 02 Apr 2012 08:13:44 +0000
-Date: Mon, 2 Apr 2012 10:13:38 +0200
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SEcSZ-0005mq-J8
+ for barebox@lists.infradead.org; Mon, 02 Apr 2012 08:17:56 +0000
+Date: Mon, 2 Apr 2012 10:17:48 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120402081338.GJ3852@pengutronix.de>
-References: <1332061170-5151-1-git-send-email-shc_work@mail.ru>
+Message-ID: <20120402081748.GK3852@pengutronix.de>
+References: <20120330044138.GY444@game.jcrosoft.org>
+ <1333082876-22403-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1332061170-5151-1-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1333082876-22403-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,44 +23,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] i.MX51: Fix NANDF_RDY_INT pin definition
-To: Alexander Shiyan <shc_work@mail.ru>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/6] cfi_flash: fix missing resource update when probing
+ the cfi size
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: Patrice VILCHEZ <patrice.vilchez@atmel.com>, barebox@lists.infradead.org, Nicolas Ferre <nicolas.ferre@atmel.com>
 
-On Sun, Mar 18, 2012 at 12:59:30PM +0400, Alexander Shiyan wrote:
+On Fri, Mar 30, 2012 at 06:47:51AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> introduce in commit 8262d20dae583a
+> "cfi: convert to struct resource"
 > 
-> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  drivers/nor/cfi_flash.c |    5 +++++
+>  1 files changed, 5 insertions(+), 0 deletions(-)
+> 
+> diff --git a/drivers/nor/cfi_flash.c b/drivers/nor/cfi_flash.c
+> index 654e647..267c95b 100644
+> --- a/drivers/nor/cfi_flash.c
+> +++ b/drivers/nor/cfi_flash.c
+> @@ -989,6 +989,11 @@ static int cfi_probe (struct device_d *dev)
+>  	info->base = dev_request_mem_region(dev, 0);
+>  	info->size = flash_get_size(info);
+>  
+> +	if (dev->resource[0].size == 0) {
+> +		printf("cfi_probe: size : 0x%08lx\n", info->size);
+> +		dev->resource[0].size = info->size;
+> +	}
 
-Applied, thanks
+Not good. If we don't know the actual flash size, dev->resource[0].size
+should have the maximum size and not 0. We can't simply manipulate the
+resource size after having requested it.
 
 Sascha
-
-> ---
->  arch/arm/mach-imx/include/mach/iomux-mx51.h |    2 +-
->  1 files changed, 1 insertions(+), 1 deletions(-)
-> 
-> diff --git a/arch/arm/mach-imx/include/mach/iomux-mx51.h b/arch/arm/mach-imx/include/mach/iomux-mx51.h
-> index 908d1b2..872072e 100644
-> --- a/arch/arm/mach-imx/include/mach/iomux-mx51.h
-> +++ b/arch/arm/mach-imx/include/mach/iomux-mx51.h
-> @@ -151,7 +151,7 @@
->  #define MX51_PAD_NANDF_CS7__NANDF_CS7			IOMUX_PAD(0x534, 0x14C, 0, 0x0, 0, NO_PAD_CTRL)
->  #define MX51_PAD_NANDF_CS7__FEC_TX_EN			IOMUX_PAD(0x534, 0x14C, 1, 0x0, 0, MX51_FEC_PAD_CTRL)
->  
-> -#define MX51_PAD_NANDF_RDY_INT__NANDF_RDY_INT		IOMUX_PAD(0x538, 0x150, 0, 0x0, 0, NO_PAD_CTRL)
-> +#define MX51_PAD_NANDF_RDY_INT__NANDF_RDY_INT		IOMUX_PAD(0x538, 0x150, 0, 0x938, 0, NO_PAD_CTRL)
->  #define MX51_PAD_NANDF_RDY_INT__FEC_TX_CLK		IOMUX_PAD(0x538, 0x150, 1, 0x974, 0, MX51_FEC_PAD_CTRL)
->  
->  #define MX51_PAD_NANDF_D15__NANDF_D15			IOMUX_PAD(0x53C, 0x154, 0, 0x0, 0, NO_PAD_CTRL)
-> -- 
-> 1.7.3.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
