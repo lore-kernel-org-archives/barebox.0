@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SEcSZ-0005mq-J8
- for barebox@lists.infradead.org; Mon, 02 Apr 2012 08:17:56 +0000
-Date: Mon, 2 Apr 2012 10:17:48 +0200
+ id 1SEcbL-0005x6-FW
+ for barebox@lists.infradead.org; Mon, 02 Apr 2012 08:27:00 +0000
+Date: Mon, 2 Apr 2012 10:26:53 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120402081748.GK3852@pengutronix.de>
+Message-ID: <20120402082653.GL3852@pengutronix.de>
 References: <20120330044138.GY444@game.jcrosoft.org>
- <1333082876-22403-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1333082876-22403-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20120330044138.GY444@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,38 +22,71 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/6] cfi_flash: fix missing resource update when probing
- the cfi size
+Subject: Re: [PATCH 0/6 for this release]
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: Patrice VILCHEZ <patrice.vilchez@atmel.com>, barebox@lists.infradead.org, Nicolas Ferre <nicolas.ferre@atmel.com>
+Cc: barebox@lists.infradead.org
 
-On Fri, Mar 30, 2012 at 06:47:51AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> introduce in commit 8262d20dae583a
-> "cfi: convert to struct resource"
+On Fri, Mar 30, 2012 at 06:41:38AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> HI,
 > 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  drivers/nor/cfi_flash.c |    5 +++++
->  1 files changed, 5 insertions(+), 0 deletions(-)
+> 	please find fixes for at91 support
 > 
-> diff --git a/drivers/nor/cfi_flash.c b/drivers/nor/cfi_flash.c
-> index 654e647..267c95b 100644
-> --- a/drivers/nor/cfi_flash.c
-> +++ b/drivers/nor/cfi_flash.c
-> @@ -989,6 +989,11 @@ static int cfi_probe (struct device_d *dev)
->  	info->base = dev_request_mem_region(dev, 0);
->  	info->size = flash_get_size(info);
->  
-> +	if (dev->resource[0].size == 0) {
-> +		printf("cfi_probe: size : 0x%08lx\n", info->size);
-> +		dev->resource[0].size = info->size;
-> +	}
+> 	 - use dhcp-barebox on all at91
+> 	 - re-write at91rm9200 ether driver
+> 	 - fix cfi auto detect flash size
+> 
+> please pull
+> The following changes since commit 485cee59cf64b5019c5a294074007b93509b83e0:
+> 
+>   Merge branch 'work/imx51-babbage-clk' into next (2012-03-23 21:22:14 +0100)
+> 
+> are available in the git repository at:
+> 
+> 
+>   git://git.jcrosoft.org/barebox.git at91-fixes
 
-Not good. If we don't know the actual flash size, dev->resource[0].size
-should have the maximum size and not 0. We can't simply manipulate the
-resource size after having requested it.
+Applied the ones I haven't commented on.
 
 Sascha
+
+
+> 
+> for you to fetch changes up to 79ea2bb5284cc4b5b28a3fa3fee6ede7304e4179:
+> 
+>   at91rm9200ek: adjust kernel partition to be able to flash mainline kernel (2012-03-30 12:51:54 +0800)
+> 
+> ----------------------------------------------------------------
+> Jean-Christophe PLAGNIOL-VILLARD (6):
+>       cfi_flash: fix missing resource update when probing the cfi size
+>       net: at91_ether re-implement against new at91rm9200 api
+>       at91rm9200ek: enable at91_ether and net support
+>       at91: set ip mode to dhcp-barebox
+>       at91rm9200ek: update config for network
+>       at91rm9200ek: adjust kernel partition to be able to flash mainline kernel
+> 
+>  arch/arm/boards/at91rm9200ek/env/config     |    7 +-
+>  arch/arm/boards/at91sam9260ek/env/config    |    2 +-
+>  arch/arm/boards/at91sam9261ek/env/config    |    2 +-
+>  arch/arm/boards/at91sam9263ek/env/config    |    2 +-
+>  arch/arm/boards/at91sam9m10g45ek/env/config |    2 +-
+>  arch/arm/boards/tny-a926x/env/config        |    2 +-
+>  arch/arm/boards/usb-a926x/env/config        |    2 +-
+>  arch/arm/configs/at91rm9200ek_defconfig     |    9 +
+>  drivers/net/Kconfig                         |    1 +
+>  drivers/net/at91_ether.c                    |  495 ++++++++++++++-------------
+>  drivers/net/at91_ether.h                    |   50 +++
+>  drivers/nor/cfi_flash.c                     |    5 +
+>  12 files changed, 338 insertions(+), 241 deletions(-)
+>  create mode 100644 drivers/net/at91_ether.h
+> 
+> Best Regards,
+> J.
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
