@@ -1,23 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 11.mo3.mail-out.ovh.net ([87.98.184.158]
- helo=mo3.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SEfWs-0003iD-Oa
- for barebox@lists.infradead.org; Mon, 02 Apr 2012 11:34:36 +0000
-Received: from mail622.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 30AEEFF997C
- for <barebox@lists.infradead.org>; Mon,  2 Apr 2012 13:35:11 +0200 (CEST)
-Date: Mon, 2 Apr 2012 13:18:58 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120402111858.GE8116@game.jcrosoft.org>
-References: <20120330042713.GX444@game.jcrosoft.org>
- <1333081913-19168-3-git-send-email-plagnioj@jcrosoft.com>
- <20120330092144.GY3852@pengutronix.de>
- <20120330101432.GA8116@game.jcrosoft.org>
- <20120402104906.GU3852@pengutronix.de>
+Received: from mail-gy0-f177.google.com ([209.85.160.177])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SEfbu-0004hH-5X
+ for barebox@lists.infradead.org; Mon, 02 Apr 2012 11:39:46 +0000
+Received: by ghbf11 with SMTP id f11so1165413ghb.36
+ for <barebox@lists.infradead.org>; Mon, 02 Apr 2012 04:39:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20120402104906.GU3852@pengutronix.de>
+In-Reply-To: <20120402113002.GA18712@sapphire.tkos.co.il>
+References: <CAD9ZU8AJc+LxYRa_HFQ_pxt+G3ijZmyKcQ0MqDKvVHH5FrJ1Qw@mail.gmail.com>
+ <20120401104934.GD22835@sapphire.tkos.co.il>
+ <20120401144518.73c1cf53@eb-e6520>
+ <20120401125209.GE22835@sapphire.tkos.co.il>
+ <20120401150507.465b4a6d@eb-e6520>
+ <CAD9ZU8D0a8BRAtAN8_9Hz_75Lek=N_i_F+jjXvfR1gxMsPNZ3A@mail.gmail.com>
+ <20120402113002.GA18712@sapphire.tkos.co.il>
+Date: Mon, 2 Apr 2012 13:39:42 +0200
+Message-ID: <CAD9ZU8DG8r=6RCAieDzbjenPR_k0W-v+tjVBYV5Mvh-ntxa46w@mail.gmail.com>
+From: Gabriel Tisan <gabriel.tisan@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,58 +25,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/8] net: dhcp: add support of tftp server ip or
- Etherboot file (option 150)
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: nand_imx 4k support ?
+To: Baruch Siach <baruch@tkos.co.il>
 Cc: barebox@lists.infradead.org
 
-On 12:49 Mon 02 Apr     , Sascha Hauer wrote:
-> On Fri, Mar 30, 2012 at 12:14:32PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > On 11:21 Fri 30 Mar     , Sascha Hauer wrote:
-> > > >  					setenv("bootfile", str);
-> > > >  			}
-> > > >  			break;
-> > > > +		case 150:	/* TFTP server ip or Etherboot*/
-> > > > +			if (oplen == sizeof(IPaddr_t)) {
-> > > > +				is_tftpserverip = true;
-> > > > +				ip = net_read_ip(popt + 2);
-> > > > +				net_set_serverip(ip);
-> > > > +				setenv_ip("tftp_server_ip", ip);
-> > > > +			} else {
-> > > > +				memcpy(str, popt + 2, oplen);
-> > > > +				str[oplen] = 0;
-> > > > +				setenv("etherboot_file", str);
-> > > > +			}
-> > > 
-> > > This seems fragile. What if the etherboot filename has a length of 4?
-> > agree but this is really unlikely and I did want to add an option in the
-> > client to ask a file name
-> > 
-> > And we can not detect it via the DHCP RFC
-> 
-> For tftp server ip it's not one server ip but a list of server ips, so
-> the check for sizeof(IPaddr_t) is not even correct, you must check for
-> multiple of sizeof(IPaddr_t) which makes the above code even more
-> fragile. No way to accept this.
-yeah because option 150 is use by etherboot when they do not respect the RFC
-and nearly no dhcp server send more than one server ip via options 150
+Hi Baruch !
 
-Best Regards,
-J.
+Sorry, but I didn't catch it.
+Do you mean that I don't need an OOB description for 218 byte OOB ?
 
-> 
-> Sascha
-> 
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Regards,
+Gabriel
+
+On Mon, Apr 2, 2012 at 1:30 PM, Baruch Siach <baruch@tkos.co.il> wrote:
+> Hi Gabriel,
+>
+> On Mon, Apr 02, 2012 at 11:03:06AM +0200, Gabriel Tisan wrote:
+>> Yes, Baruch I meant write support, especially ECC layout for 4K flashes.
+>>
+>> Actually the 4k flashes could have 128 or 218 bytes OOB.
+>>
+>> Could you point me to some docs about this layout ? I use a flash with
+>> 218 bytes spare.
+>
+> See commit 2c1c5f199 of the Linux kernel at
+> http://git.kernel.org/linus/2c1c5f199.
+>
+> As Eric has pointed out, this may not be necessary for Barebox.
+>
+> baruch
+>
+>> On Sun, Apr 1, 2012 at 3:05 PM, Eric B=E9nard <eric@eukrea.com> wrote:
+>> > Le Sun, 1 Apr 2012 15:52:09 +0300,
+>> > Baruch Siach <baruch@tkos.co.il> a =E9crit :
+>> >> Does the Linux kernel detect your flash correctly?
+>> >>
+>> > I'm not at this stage for the moment as I'm using a SDcard rootfs to
+>> > validate the hardware for the moment, but I'm sure the actual problem
+>> > (in my case at least) in barebox is a detection problem as I get the
+>> > right values from the flash but these value are ONFI and thus are not
+>> > right with he actual flash detection code which leads to a wrong
+>> > configuration of the NFC. Once I hardcode the NFC settings I manage to
+>> > read/write in the 4k NAND Flash from barebox (environment & kernel
+>> > are in the flash for the moment).
+>
+> --
+> =A0 =A0 http://baruch.siach.name/blog/ =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0~. .~ =A0 Tk Open Systems
+> =3D}------------------------------------------------ooO--U--Ooo----------=
+--{=3D
+> =A0 - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
 
 _______________________________________________
 barebox mailing list
