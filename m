@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 8.mo3.mail-out.ovh.net ([87.98.172.249]
- helo=mo3.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SEiLQ-000095-1Z
- for barebox@lists.infradead.org; Mon, 02 Apr 2012 14:34:58 +0000
-Received: from mail622.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 9CA53FF9368
- for <barebox@lists.infradead.org>; Mon,  2 Apr 2012 16:35:32 +0200 (CEST)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon,  2 Apr 2012 16:19:08 +0200
-Message-Id: <1333376350-19506-6-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <20120402141700.GF8116@game.jcrosoft.org>
-References: <20120402141700.GF8116@game.jcrosoft.org>
+Received: from mail-gx0-f177.google.com ([209.85.161.177])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SEiO3-000139-4y
+ for barebox@lists.infradead.org; Mon, 02 Apr 2012 14:37:39 +0000
+Received: by ggnk1 with SMTP id k1so1282715ggn.36
+ for <barebox@lists.infradead.org>; Mon, 02 Apr 2012 07:37:37 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <CAO-mwNcOBNL-LFuyK9EbxUBqxLU3GAWUi61E40J5qunDP+n+ZA@mail.gmail.com>
+References: <CAO-mwNcOBNL-LFuyK9EbxUBqxLU3GAWUi61E40J5qunDP+n+ZA@mail.gmail.com>
+From: Anand Gadiyar <gadiyar@gmail.com>
+Date: Mon, 2 Apr 2012 20:07:16 +0530
+Message-ID: <CAO-mwNdKa4fukB23m_F1g=axhqw3S2stb2C6JbPXiob1Ty=xhg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,107 +19,118 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============7522113942685263707=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/8] net: dhcp: allow to set transmitted client uuid
-To: barebox@lists.infradead.org
+Subject: Re: OMAP4 Panda - MMC access broken
+To: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-For net boot setups it is useful to submit boot params like server or
-bootfile over dhcp. To distinguish diffrent type of OS running on the same hardware,
-a custom client uuid can be sent in dhcp discover/request messages.
+--===============7522113942685263707==
+Content-Type: multipart/alternative; boundary=14dae9340ddbb3905d04bcb321b9
 
-E.g. the ISC dhcp server can be configured with
+--14dae9340ddbb3905d04bcb321b9
+Content-Type: text/plain; charset=ISO-8859-1
 
- | option client-uuid code 97 = { unsigned integer 8, string };
- | class "at91sam9x5ek" {
- |         match if substring (option vendor-class-identifier,0,20) = "barebox-at91sam9x5ek";
- |
- |         filename "/tftpboot/atmel/at91sam9x5/sam9x5ek/zImage";
- |         if substring (option dhcp-client-identifier,0,7) = "ser2net" {
- |                 filename "/tftpboot/atmel/at91sam9x5/sam9x5ek/zImage-ser2net";
- |         }
- |         if substring (option client-uuid,0,7) = "test" {
- |                 filename "/tftpboot/atmel/at91sam9x5/sam9x5ek/zImage-ser2net";
- |         }
- |         option tftp-server-name "192.168.200.98";
- |         option option-150 192.168.200.98;
- |         next-server 192.168.200.98;
- |         option root-path "192.168.200.98:/opt/work/buildroot/build/sam9x5/target";
- | }
+On Fri, Mar 30, 2012 at 10:04 PM, Anand Gadiyar <gadiyar@gmail.com> wrote:
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- net/dhcp.c |   15 ++++++++++++++-
- 1 files changed, 14 insertions(+), 1 deletions(-)
+> Hi all,
+>
+> I've just started playing with barebox on OMAP4. I see that with "Release
+> v2011.11.0", my Panda could access the SD card contents, but with the
+> current release it can no longer do so.
+>
+> Git bisect shows commit 82db23d3f4c1de25bbd4b222a3bd9e81d00414f8 (Use
+> generic block layer to access the drives and do partition parsing) is when
+> it stopped working.
+>
+> Any pointers?
+>
+> Thanks in advance,
+> Anand
+>
+>
+Found the problem. I was using a 4GB SD card with just a single FAT32
+partition. The pentry.size is reported as 7744449 which fails the
+check_offset_value() call.
+I think this is the same issue Sanjeev reported in February.
 
-diff --git a/net/dhcp.c b/net/dhcp.c
-index 5b1ab5a..e452a92 100644
---- a/net/dhcp.c
-+++ b/net/dhcp.c
-@@ -258,6 +258,7 @@ static int dhcp_set_string_options(struct dhcp_param *param, u8 *e)
- 
- #define DHCP_VENDOR_ID		60
- #define DHCP_CLIENT_ID		61
-+#define DHCP_CLIENT_UUID	97
- 
- struct dhcp_param dhcp_params[] = {
- 	{
-@@ -268,6 +269,10 @@ struct dhcp_param dhcp_params[] = {
- 		.option = DHCP_CLIENT_ID,
- 		.handle = dhcp_set_string_options,
- 		.barebox_var_name = "dhcp_client_id",
-+	}, {
-+		.option = DHCP_CLIENT_UUID,
-+		.handle = dhcp_set_string_options,
-+		.barebox_var_name = "dhcp_client_uuid",
- 	}
- };
- 
-@@ -623,7 +628,7 @@ static int do_dhcp(int argc, char *argv[])
- 
- 	dhcp_reset_env();
- 
--	while((opt = getopt(argc, argv, "v:c:")) > 0) {
-+	while((opt = getopt(argc, argv, "v:c:u:")) > 0) {
- 		switch(opt) {
- 		case 'v':
- 			dhcp_set_param_data(DHCP_VENDOR_ID, optarg);
-@@ -631,6 +636,9 @@ static int do_dhcp(int argc, char *argv[])
- 		case 'c':
- 			dhcp_set_param_data(DHCP_CLIENT_ID, optarg);
- 			break;
-+		case 'u':
-+			dhcp_set_param_data(DHCP_CLIENT_UUID, optarg);
-+			break;
- 		}
- 	}
- 
-@@ -682,6 +690,10 @@ BAREBOX_CMD_HELP_OPT  ("-v <vendor_id>",
- BAREBOX_CMD_HELP_OPT  ("-c <client_id>",
- "DHCP Client ID (code 61) submitted in DHCP requests. It can\n"
- "be used in the DHCP server's configuration to select options\n"
-+"(e.g. bootfile or server) which are valid for barebox clients only.\n")
-+BAREBOX_CMD_HELP_OPT  ("-u <client_uuid>",
-+"DHCP Client UUID (code 97) submitted in DHCP requests. It can\n"
-+"be used in the DHCP server's configuration to select options\n"
- "(e.g. bootfile or server) which are valid for barebox clients only.\n");
- BAREBOX_CMD_HELP_END
- 
-@@ -697,5 +709,6 @@ BAREBOX_MAGICVAR(hostname, "hostname returned from DHCP request");
- BAREBOX_MAGICVAR(domainname, "domainname returned from DHCP request");
- BAREBOX_MAGICVAR(rootpath, "rootpath returned from DHCP request");
- BAREBOX_MAGICVAR(dhcp_vendor_id, "vendor id to send to the DHCP server");
-+BAREBOX_MAGICVAR(dhcp_client_uuid, "cliend uuid to send to the DHCP server");
- BAREBOX_MAGICVAR(dhcp_client_id, "cliend id to send to the DHCP server");
- BAREBOX_MAGICVAR(dhcp_tftp_server_name, "TFTP server Name returned from DHCP request");
--- 
-1.7.9.1
+Below patch seems to fix the issue for now. But I'm not sure what's the
+correct way to fix this.
 
+Index: barebox/common/partitions.c
+===================================================================
+--- barebox.orig/common/partitions.c
++++ barebox/common/partitions.c
+@@ -129,8 +129,6 @@ static void __maybe_unused try_dos_parti
+                /* do we have to ignore this partition due to limitations?
+*/
+                if (check_offset_value(pentry.first_sec) != 0)
+                        continue;
+-               if (check_offset_value(pentry.size) != 0)
+-                       continue;
+
+                if (pentry.first_sec != 0) {
+                        pd->parts[pd->used_entries].first_sec =
+pentry.first_sec;
+
+--14dae9340ddbb3905d04bcb321b9
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+<div class=3D"gmail_quote">On Fri, Mar 30, 2012 at 10:04 PM, Anand Gadiyar =
+<span dir=3D"ltr">&lt;<a href=3D"mailto:gadiyar@gmail.com">gadiyar@gmail.co=
+m</a>&gt;</span> wrote:<br><blockquote class=3D"gmail_quote" style=3D"margi=
+n:0pt 0pt 0pt 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex=
+">
+
+Hi all,<br><br>I&#39;ve just started playing with barebox on OMAP4. I see t=
+hat with &quot;Release v2011.11.0&quot;, my Panda could access the SD card =
+contents, but with the current release it can no longer do so.<br><br>
+Git bisect shows commit 82db23d3f4c1de25bbd4b222a3bd9e81d00414f8 (Use gener=
+ic block layer to access the drives and do partition parsing) is when it st=
+opped working.<br>
+
+<br>Any pointers?<br><br>Thanks in advance,<br><font color=3D"#888888">Anan=
+d<br><br>
+</font></blockquote></div><br>Found the problem. I was using a 4GB SD card =
+with just a single FAT32 partition. The pentry.size is reported as 7744449 =
+which fails the check_offset_value() call.<br>I think this is the same issu=
+e Sanjeev reported in February.<br>
+
+<br>Below patch seems to fix the issue for now. But I&#39;m not sure what&#=
+39;s the correct way to fix this.<br><br>Index: barebox/common/partitions.c=
+<br>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<br>
+
+--- barebox.orig/common/partitions.c<br>+++ barebox/common/partitions.c<br>=
+@@ -129,8 +129,6 @@ static void __maybe_unused try_dos_parti<br>=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 /* do we have to ignore this partition=
+ due to limitations? */<br>
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (check_offset_value(pentry=
+.first_sec) !=3D 0)<br>
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 conti=
+nue;<br>-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (check_offset_value(=
+pentry.size) !=3D 0)<br>-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0 continue;<br><br>=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0 if (pentry.first_sec !=3D 0) {<br>=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 pd-&gt;parts[pd-&gt;used_entries].firs=
+t_sec =3D pentry.first_sec;<br>
+
+<br>
+
+--14dae9340ddbb3905d04bcb321b9--
+
+
+--===============7522113942685263707==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============7522113942685263707==--
