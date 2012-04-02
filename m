@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 6.mo3.mail-out.ovh.net ([188.165.43.173]
+Received: from 8.mo3.mail-out.ovh.net ([87.98.172.249]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SEiLR-0000AE-C7
+ id 1SEiLQ-000095-1Z
  for barebox@lists.infradead.org; Mon, 02 Apr 2012 14:34:58 +0000
 Received: from mail622.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 00095FF99EA
- for <barebox@lists.infradead.org>; Mon,  2 Apr 2012 16:35:33 +0200 (CEST)
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 9CA53FF9368
+ for <barebox@lists.infradead.org>; Mon,  2 Apr 2012 16:35:32 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon,  2 Apr 2012 16:19:10 +0200
-Message-Id: <1333376350-19506-8-git-send-email-plagnioj@jcrosoft.com>
+Date: Mon,  2 Apr 2012 16:19:08 +0200
+Message-Id: <1333376350-19506-6-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <20120402141700.GF8116@game.jcrosoft.org>
 References: <20120402141700.GF8116@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
@@ -25,78 +25,97 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 8/8] net: env: getenv_ip use resolv
+Subject: [PATCH 6/8] net: dhcp: allow to set transmitted client uuid
 To: barebox@lists.infradead.org
 
-Introduce getenv_ip_dns to be able to do not do the resolv when using it in
-resolv for the nameserver (Do not loop).
+For net boot setups it is useful to submit boot params like server or
+bootfile over dhcp. To distinguish diffrent type of OS running on the same hardware,
+a custom client uuid can be sent in dhcp discover/request messages.
+
+E.g. the ISC dhcp server can be configured with
+
+ | option client-uuid code 97 = { unsigned integer 8, string };
+ | class "at91sam9x5ek" {
+ |         match if substring (option vendor-class-identifier,0,20) = "barebox-at91sam9x5ek";
+ |
+ |         filename "/tftpboot/atmel/at91sam9x5/sam9x5ek/zImage";
+ |         if substring (option dhcp-client-identifier,0,7) = "ser2net" {
+ |                 filename "/tftpboot/atmel/at91sam9x5/sam9x5ek/zImage-ser2net";
+ |         }
+ |         if substring (option client-uuid,0,7) = "test" {
+ |                 filename "/tftpboot/atmel/at91sam9x5/sam9x5ek/zImage-ser2net";
+ |         }
+ |         option tftp-server-name "192.168.200.98";
+ |         option option-150 192.168.200.98;
+ |         next-server 192.168.200.98;
+ |         option root-path "192.168.200.98:/opt/work/buildroot/build/sam9x5/target";
+ | }
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- include/net.h |    6 +++++-
- net/dns.c     |    2 +-
- net/net.c     |    9 ++++++---
- 3 files changed, 12 insertions(+), 5 deletions(-)
+ net/dhcp.c |   15 ++++++++++++++-
+ 1 files changed, 14 insertions(+), 1 deletions(-)
 
-diff --git a/include/net.h b/include/net.h
-index 2eec47f..0ebe198 100644
---- a/include/net.h
-+++ b/include/net.h
-@@ -277,7 +277,11 @@ char *ip_to_string (IPaddr_t x, char *s);
- /* Convert a string to ip address */
- int string_to_ip(const char *s, IPaddr_t *ip);
+diff --git a/net/dhcp.c b/net/dhcp.c
+index 5b1ab5a..e452a92 100644
+--- a/net/dhcp.c
++++ b/net/dhcp.c
+@@ -258,6 +258,7 @@ static int dhcp_set_string_options(struct dhcp_param *param, u8 *e)
  
--IPaddr_t getenv_ip(const char *name);
-+IPaddr_t getenv_ip_dns(const char *name, int dns);
-+static inline IPaddr_t getenv_ip(const char *name)
-+{
-+	return getenv_ip_dns(name, 0);
-+}
- int setenv_ip(const char *name, IPaddr_t ip);
+ #define DHCP_VENDOR_ID		60
+ #define DHCP_CLIENT_ID		61
++#define DHCP_CLIENT_UUID	97
  
- int string_to_ethaddr(const char *str, char *enetaddr);
-diff --git a/net/dns.c b/net/dns.c
-index 3c7aa5f..fb1178a 100644
---- a/net/dns.c
-+++ b/net/dns.c
-@@ -205,7 +205,7 @@ IPaddr_t resolv(char *host)
+ struct dhcp_param dhcp_params[] = {
+ 	{
+@@ -268,6 +269,10 @@ struct dhcp_param dhcp_params[] = {
+ 		.option = DHCP_CLIENT_ID,
+ 		.handle = dhcp_set_string_options,
+ 		.barebox_var_name = "dhcp_client_id",
++	}, {
++		.option = DHCP_CLIENT_UUID,
++		.handle = dhcp_set_string_options,
++		.barebox_var_name = "dhcp_client_uuid",
+ 	}
+ };
  
- 	dns_state = STATE_INIT;
+@@ -623,7 +628,7 @@ static int do_dhcp(int argc, char *argv[])
  
--	ip = getenv_ip("nameserver");
-+	ip = getenv_ip_dns("nameserver", 0);
- 	if (!ip)
- 		return 0;
+ 	dhcp_reset_env();
  
-diff --git a/net/net.c b/net/net.c
-index 2752884..39db75e 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -127,7 +127,7 @@ int string_to_ip(const char *s, IPaddr_t *ip)
- 	return 0;
- }
+-	while((opt = getopt(argc, argv, "v:c:")) > 0) {
++	while((opt = getopt(argc, argv, "v:c:u:")) > 0) {
+ 		switch(opt) {
+ 		case 'v':
+ 			dhcp_set_param_data(DHCP_VENDOR_ID, optarg);
+@@ -631,6 +636,9 @@ static int do_dhcp(int argc, char *argv[])
+ 		case 'c':
+ 			dhcp_set_param_data(DHCP_CLIENT_ID, optarg);
+ 			break;
++		case 'u':
++			dhcp_set_param_data(DHCP_CLIENT_UUID, optarg);
++			break;
+ 		}
+ 	}
  
--IPaddr_t getenv_ip(const char *name)
-+IPaddr_t getenv_ip_dns(const char *name, int dns)
- {
- 	IPaddr_t ip;
- 	const char *var = getenv(name);
-@@ -135,10 +135,13 @@ IPaddr_t getenv_ip(const char *name)
- 	if (!var)
- 		return 0;
+@@ -682,6 +690,10 @@ BAREBOX_CMD_HELP_OPT  ("-v <vendor_id>",
+ BAREBOX_CMD_HELP_OPT  ("-c <client_id>",
+ "DHCP Client ID (code 61) submitted in DHCP requests. It can\n"
+ "be used in the DHCP server's configuration to select options\n"
++"(e.g. bootfile or server) which are valid for barebox clients only.\n")
++BAREBOX_CMD_HELP_OPT  ("-u <client_uuid>",
++"DHCP Client UUID (code 97) submitted in DHCP requests. It can\n"
++"be used in the DHCP server's configuration to select options\n"
+ "(e.g. bootfile or server) which are valid for barebox clients only.\n");
+ BAREBOX_CMD_HELP_END
  
--	if (string_to_ip(var, &ip))
-+	if (!string_to_ip(var, &ip))
-+		return ip;
-+
-+	if (!dns)
- 		return 0;
- 
--	return ip;
-+	return resolv((char*)var);
- }
- 
- int setenv_ip(const char *name, IPaddr_t ip)
+@@ -697,5 +709,6 @@ BAREBOX_MAGICVAR(hostname, "hostname returned from DHCP request");
+ BAREBOX_MAGICVAR(domainname, "domainname returned from DHCP request");
+ BAREBOX_MAGICVAR(rootpath, "rootpath returned from DHCP request");
+ BAREBOX_MAGICVAR(dhcp_vendor_id, "vendor id to send to the DHCP server");
++BAREBOX_MAGICVAR(dhcp_client_uuid, "cliend uuid to send to the DHCP server");
+ BAREBOX_MAGICVAR(dhcp_client_id, "cliend id to send to the DHCP server");
+ BAREBOX_MAGICVAR(dhcp_tftp_server_name, "TFTP server Name returned from DHCP request");
 -- 
 1.7.9.1
 
