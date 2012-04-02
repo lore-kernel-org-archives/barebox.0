@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vx0-f177.google.com ([209.85.220.177])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SEhmX-000669-6F
- for barebox@lists.infradead.org; Mon, 02 Apr 2012 13:58:53 +0000
-Received: by vcbf13 with SMTP id f13so2190589vcb.36
- for <barebox@lists.infradead.org>; Mon, 02 Apr 2012 06:58:49 -0700 (PDT)
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SEiGI-0004RF-2Z
+ for barebox@lists.infradead.org; Mon, 02 Apr 2012 14:29:39 +0000
+Date: Mon, 2 Apr 2012 16:29:29 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120402142929.GY3852@pengutronix.de>
+References: <CAFEF1dF7M15xAgvYLdkVowavpXnvThkzXwtXe0fe4TEEYMFokQ@mail.gmail.com>
 MIME-Version: 1.0
-Date: Mon, 2 Apr 2012 15:58:49 +0200
-Message-ID: <CAFEF1dF7M15xAgvYLdkVowavpXnvThkzXwtXe0fe4TEEYMFokQ@mail.gmail.com>
-From: Jakob Malm <jakob.malm@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <CAFEF1dF7M15xAgvYLdkVowavpXnvThkzXwtXe0fe4TEEYMFokQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,32 +22,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Boot linux from cramfs on USB
-To: barebox@lists.infradead.org
+Subject: Re: Boot linux from cramfs on USB
+To: Jakob Malm <jakob.malm@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Hi,
+On Mon, Apr 02, 2012 at 03:58:49PM +0200, Jakob Malm wrote:
+> Hi,
+> 
+> How would I boot a linux system in a cramfs image on USB? I don't seem
+> to be able to mount such an image:
+> 
+> barebox:/ usb
+> USB: scanning bus for devices...
+> Bus 001 Device 002: ID 0dd8:1728 Flash Drive
+> Using index 1 for the new disk
+> Bus 001 Device 001: ID 0000:0000 EHCI Host Controller
+> 2 USB Device(s) found
+> barebox:/ mkdir /usb
+> barebox:/ mount /dev/disk1.0 fat /usb
+> barebox:/ mkdir /cramfs
+> barebox:/ mount /usb/rootfs.cramfs cramfs /cramfs
+> mount: Invalid argument
+> 
+> Is it not possible to mount a cramfs image file?
 
-How would I boot a linux system in a cramfs image on USB? I don't seem
-to be able to mount such an image:
+cramfs currently has the limitation that it can only mount
+files which are memory mappable (that is for example nor flash).
+I never fixed this due to the lack of interest for cramfs.
 
-barebox:/ usb
-USB: scanning bus for devices...
-Bus 001 Device 002: ID 0dd8:1728 Flash Drive
-Using index 1 for the new disk
-Bus 001 Device 001: ID 0000:0000 EHCI Host Controller
-2 USB Device(s) found
-barebox:/ mkdir /usb
-barebox:/ mount /dev/disk1.0 fat /usb
-barebox:/ mkdir /cramfs
-barebox:/ mount /usb/rootfs.cramfs cramfs /cramfs
-mount: Invalid argument
+That said, your setup seems a bit crazy. What is inside your cramfs? The
+kernel? You should rather put your kernel into a plain partition on the
+USB disk. Or do you only have your rootfs inside the cramfs? I rather
+recommend ext2 or ext3 for this.
 
-Is it not possible to mount a cramfs image file?
+Sascha
 
-This is on a Freescale MX-23 EVK board.
 
-Thanks,
-Jakob Malm
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
