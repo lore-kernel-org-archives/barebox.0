@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vx0-f177.google.com ([209.85.220.177])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SEjFp-0004fq-Iu
- for barebox@lists.infradead.org; Mon, 02 Apr 2012 15:33:14 +0000
-Received: by vcbf13 with SMTP id f13so2287582vcb.36
- for <barebox@lists.infradead.org>; Mon, 02 Apr 2012 08:33:11 -0700 (PDT)
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SEkVg-0007fO-S1
+ for barebox@lists.infradead.org; Mon, 02 Apr 2012 16:53:42 +0000
+Date: Mon, 2 Apr 2012 18:53:34 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120402165334.GC3852@pengutronix.de>
+References: <63954CAD61AA2440BC0B16A69EAE2BBC630E110778@srv-exc.techimp.com>
+ <63954CAD61AA2440BC0B16A69EAE2BBC630E110855@srv-exc.techimp.com>
+ <20120402143744.GZ3852@pengutronix.de>
+ <63954CAD61AA2440BC0B16A69EAE2BBC630E11085B@srv-exc.techimp.com>
 MIME-Version: 1.0
-In-Reply-To: <20120402142929.GY3852@pengutronix.de>
-References: <CAFEF1dF7M15xAgvYLdkVowavpXnvThkzXwtXe0fe4TEEYMFokQ@mail.gmail.com>
- <20120402142929.GY3852@pengutronix.de>
-Date: Mon, 2 Apr 2012 17:33:11 +0200
-Message-ID: <CAFEF1dGsAF1zYw+3NDW9sq98sTTp=K9VbyOoHA1kLn2Ltx7=Eg@mail.gmail.com>
-From: Jakob Malm <jakob.malm@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <63954CAD61AA2440BC0B16A69EAE2BBC630E11085B@srv-exc.techimp.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,51 +21,103 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Boot linux from cramfs on USB
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: R: R: filling string variables in script
+To: Martino Ruppi <mruppi@techimp.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi,
+On Mon, Apr 02, 2012 at 04:52:41PM +0200, Martino Ruppi wrote:
+> =
 
-Thanks for your prompt reply!
+> =
 
-Den 2 april 2012 16:29 skrev Sascha Hauer <s.hauer@pengutronix.de>:
-> On Mon, Apr 02, 2012 at 03:58:49PM +0200, Jakob Malm wrote:
->> Hi,
->>
->> How would I boot a linux system in a cramfs image on USB? I don't seem
->> to be able to mount such an image:
->>
->> ...
->>
->> Is it not possible to mount a cramfs image file?
->
-> cramfs currently has the limitation that it can only mount
-> files which are memory mappable (that is for example nor flash).
-> I never fixed this due to the lack of interest for cramfs.
+> -----Messaggio originale-----
+> Da: Sascha Hauer [mailto:s.hauer@pengutronix.de] =
 
-Ok.
+> Inviato: luned=EC 2 aprile 2012 16.38
+> A: Martino Ruppi
+> Cc: barebox@lists.infradead.org
+> Oggetto: Re: R: filling string variables in script
+> =
 
->
-> That said, your setup seems a bit crazy. What is inside your cramfs? The
-> kernel? You should rather put your kernel into a plain partition on the
-> USB disk. Or do you only have your rootfs inside the cramfs? I rather
-> recommend ext2 or ext3 for this.
+> On Mon, Apr 02, 2012 at 04:28:22PM +0200, Martino Ruppi wrote:
+> > I'm sorry, I renovate my previous question.
+> > Or maybe it wasn't arrived to the list.
+> > I appreciate if someone could put me on right trace.
+> > Thanks. Marty
+> > =
 
-The cramfs would contain the rootfs, including kernel.
+> > Da: barebox-bounces@lists.infradead.org =
 
-I want to be able to have FAT on the disk, preferably with a single
-file (possibly two), containing the kernel and rootfs, and then load
-up the rootfs into memory and start the kernel with that rootfs. I
-suppose I could create a command specific for our case, but it seems
-like a common enough scenario to me that someone else should have done
-something similar...
+> > [mailto:barebox-bounces@lists.infradead.org] Per conto di Martino =
 
-/Jakob
+> > Ruppi
+> > Inviato: gioved=EC 29 marzo 2012 15.36
+> > A: barebox@lists.infradead.org
+> > Oggetto: filling string variables in script
+> > =
+
+> > Dear all,
+> > I would ask a question as barebox user.
+> > I mind to set a variable as result of memory reading but I understand i=
+t doesn't implemented redirection.
+> > I'd like to do something of this:
+> > =
+
+> > myvar=3D""
+> > memcpy -s  /dev/nor0.switch -d $myvar 0x0 0x0 4
+> > =
+
+> > or
+> > =
+
+> > myvar=3D"$(cat /dev/nor0.switch)"
+> > =
+
+> > I think, I use one of last releases (version command?).
+> > Thanks to everyone can help me.
+> =
+
+> If I understand correctly then you want to copy the content of /dev/nor0.=
+switch to a variable. I'm afraid there currently is no way to do this in ba=
+rebox. What information is inside this nor partition? It seems like you wan=
+t to implement some kind of redundant boot and want to decide which rootfs =
+you want to boot. Am I right?
+> =
+
+> Sascha
+> =
+
+> It's exactly as you write. =
+
+> I mind to boot from a redundant filesystem to safety upgrade the former.
+> it's no matter about /dev/nor0.switch content, now I wrote "ZERO" chars o=
+n it.
+> I tried also comparing 2 blocks (memcmp) but it seems I can't get boolean=
+ answer form it.
+> If you suggest another way, I can move on it.
+
+You can access the barebox environment from Linux using
+scripts/bareboxenv (I have a patch which compiles it for the target
+also)
+We use this in a similar setup to set a variable under Linux and read it
+out under barebox to decide which rootfs to boot. If you prefer to
+put this into a seperate partition you can add it using
+saveenv <path_to_env> <directory> and
+loadenv <path_to_env> <directory>.
+
+Sascha
+
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
