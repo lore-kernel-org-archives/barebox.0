@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SEcbL-0005x6-FW
- for barebox@lists.infradead.org; Mon, 02 Apr 2012 08:27:00 +0000
-Date: Mon, 2 Apr 2012 10:26:53 +0200
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SEcsn-0008Rk-2v
+ for barebox@lists.infradead.org; Mon, 02 Apr 2012 08:45:02 +0000
+Date: Mon, 2 Apr 2012 10:44:53 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120402082653.GL3852@pengutronix.de>
-References: <20120330044138.GY444@game.jcrosoft.org>
+Message-ID: <20120402084453.GV26642@pengutronix.de>
+References: <1332782947-3407-1-git-send-email-esben.haabendal@gmail.com>
+ <1332782947-3407-2-git-send-email-esben.haabendal@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120330044138.GY444@game.jcrosoft.org>
+In-Reply-To: <1332782947-3407-2-git-send-email-esben.haabendal@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,71 +23,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/6 for this release]
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/4] mxs: Fix support for BITKEEPER() macro
+To: esben.haabendal@gmail.com
+Cc: barebox@lists.infradead.org, Esben Haabendal <esben.haabendal@prevas.dk>
 
-On Fri, Mar 30, 2012 at 06:41:38AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> HI,
-> 
-> 	please find fixes for at91 support
-> 
-> 	 - use dhcp-barebox on all at91
-> 	 - re-write at91rm9200 ether driver
-> 	 - fix cfi auto detect flash size
-> 
-> please pull
-> The following changes since commit 485cee59cf64b5019c5a294074007b93509b83e0:
-> 
->   Merge branch 'work/imx51-babbage-clk' into next (2012-03-23 21:22:14 +0100)
-> 
-> are available in the git repository at:
-> 
-> 
->   git://git.jcrosoft.org/barebox.git at91-fixes
+Hi Esben,
 
-Applied the ones I haven't commented on.
+On Mon, Mar 26, 2012 at 07:29:04PM +0200, esben.haabendal@gmail.com wrote:
+> From: Esben Haabendal <esben.haabendal@gmail.com>
+> 
+> There was no check for BE, so any BITKEEPER(1) iomux configurations
+> were not being applied.
+> 
+> Signed-off-by: Esben Haabendal <esben.haabendal@prevas.dk>
+> ---
+>  arch/arm/mach-mxs/iomux-imx.c |    6 ++++++
+>  1 files changed, 6 insertions(+), 0 deletions(-)
+> 
+> diff --git a/arch/arm/mach-mxs/iomux-imx.c b/arch/arm/mach-mxs/iomux-imx.c
+> index 3161a5d..6bcde03 100644
+> --- a/arch/arm/mach-mxs/iomux-imx.c
+> +++ b/arch/arm/mach-mxs/iomux-imx.c
+> @@ -128,6 +128,12 @@ void imx_gpio_mode(uint32_t m)
+>  				(GET_PULLUP(m) == 1 ? BIT_SET : BIT_CLR));
+>  	}
+>  
+> +	if (BK_PRESENT(m)) {
+> +		reg_offset = calc_pullup_reg(gpio_pin);
+> +		writel(0x1 << (gpio_pin % 32), IMX_IOMUXC_BASE + reg_offset +
+> +				(GET_BITKEEPER(m) == 1 ? BIT_SET : BIT_CLR));
+> +	}
+
+I just noticed this breaks i.MX23 support:
+
+arch/arm/mach-mxs/iomux-imx.c: In function 'imx_gpio_mode':
+arch/arm/mach-mxs/iomux-imx.c:131:2: warning: implicit declaration of function 'BK_PRESENT' [-Wimplicit-function-declaration]
+arch/arm/mach-mxs/iomux-imx.c:133:3: warning: implicit declaration of function 'GET_BITKEEPER' [-Wimplicit-function-declaration]
+arch/arm/mach-mxs/built-in.o: In function `imx_gpio_mode':
+/home/sha/dude/barebox/barebox/arch/arm/mach-mxs/iomux-imx.c:131: undefined reference to `BK_PRESENT'
+/home/sha/dude/barebox/barebox/arch/arm/mach-mxs/iomux-imx.c:133: undefined reference to `GET_BITKEEPER'
+make: *** [barebox] Error 1
+
+
+Care to send a fix for this? You can reproduce this using the
+chumby_defconfig.
 
 Sascha
-
-
-> 
-> for you to fetch changes up to 79ea2bb5284cc4b5b28a3fa3fee6ede7304e4179:
-> 
->   at91rm9200ek: adjust kernel partition to be able to flash mainline kernel (2012-03-30 12:51:54 +0800)
-> 
-> ----------------------------------------------------------------
-> Jean-Christophe PLAGNIOL-VILLARD (6):
->       cfi_flash: fix missing resource update when probing the cfi size
->       net: at91_ether re-implement against new at91rm9200 api
->       at91rm9200ek: enable at91_ether and net support
->       at91: set ip mode to dhcp-barebox
->       at91rm9200ek: update config for network
->       at91rm9200ek: adjust kernel partition to be able to flash mainline kernel
-> 
->  arch/arm/boards/at91rm9200ek/env/config     |    7 +-
->  arch/arm/boards/at91sam9260ek/env/config    |    2 +-
->  arch/arm/boards/at91sam9261ek/env/config    |    2 +-
->  arch/arm/boards/at91sam9263ek/env/config    |    2 +-
->  arch/arm/boards/at91sam9m10g45ek/env/config |    2 +-
->  arch/arm/boards/tny-a926x/env/config        |    2 +-
->  arch/arm/boards/usb-a926x/env/config        |    2 +-
->  arch/arm/configs/at91rm9200ek_defconfig     |    9 +
->  drivers/net/Kconfig                         |    1 +
->  drivers/net/at91_ether.c                    |  495 ++++++++++++++-------------
->  drivers/net/at91_ether.h                    |   50 +++
->  drivers/nor/cfi_flash.c                     |    5 +
->  12 files changed, 338 insertions(+), 241 deletions(-)
->  create mode 100644 drivers/net/at91_ether.h
-> 
-> Best Regards,
-> J.
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
