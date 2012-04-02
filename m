@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SEbnP-00056h-E7
- for barebox@lists.infradead.org; Mon, 02 Apr 2012 07:35:24 +0000
-Date: Mon, 2 Apr 2012 09:35:17 +0200
+ id 1SEcEo-0005YM-Lm
+ for barebox@lists.infradead.org; Mon, 02 Apr 2012 08:03:44 +0000
+Date: Mon, 2 Apr 2012 10:03:27 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120402073517.GB3852@pengutronix.de>
-References: <1332597640-31268-1-git-send-email-shc_work@mail.ru>
+Message-ID: <20120402080327.GC3852@pengutronix.de>
+References: <1332609452-2200-1-git-send-email-shc_work@mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1332597640-31268-1-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1332609452-2200-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,120 +22,155 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/6] Rename definitions for ULPI registers
+Subject: Re: [PATCH] i.MX27: Added helper for setup chipselect control register
 To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-On Sat, Mar 24, 2012 at 06:00:35PM +0400, Alexander Shiyan wrote:
-> These registers can be used for any standart ULPI chip,
-> not only for ISP1504.
+On Sat, Mar 24, 2012 at 09:17:32PM +0400, Alexander Shiyan wrote:
 > 
 > Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+> ---
+>  arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c |    8 +----
+>  arch/arm/boards/imx27ads/imx27ads.c               |   12 ++------
+>  arch/arm/boards/pcm038/pcm038.c                   |   12 ++------
+>  arch/arm/mach-imx/include/mach/imx27-regs.h       |   30 ++++++++------------
+>  4 files changed, 20 insertions(+), 42 deletions(-)
 
-Applied, thanks
+Applied, thanks.
 
 Sascha
 
-> ---
->  drivers/usb/otg/isp1504.c |   14 +++++++-------
->  drivers/usb/otg/ulpi.c    |    4 ++--
->  include/usb/ulpi.h        |   20 ++++++++++----------
->  3 files changed, 19 insertions(+), 19 deletions(-)
 > 
-> diff --git a/drivers/usb/otg/isp1504.c b/drivers/usb/otg/isp1504.c
-> index 9ba74b1..9884df4 100644
-> --- a/drivers/usb/otg/isp1504.c
-> +++ b/drivers/usb/otg/isp1504.c
-> @@ -6,10 +6,10 @@ int isp1504_set_vbus_power(void __iomem *view, int on)
+> diff --git a/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c b/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
+> index 6b233b2..4d2b482 100644
+> --- a/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
+> +++ b/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
+> @@ -185,9 +185,7 @@ static int eukrea_cpuimx27_devices_init(void)
+>  	};
+>  
+>  	/* configure 16 bit nor flash on cs0 */
+> -	CS0U = 0x00008F03;
+> -	CS0L = 0xA0330D01;
+> -	CS0A = 0x002208C0;
+> +	imx27_setup_weimcs(0, 0x00008F03, 0xA0330D01, 0x002208C0);
+>  
+>  	/* initialize gpios */
+>  	for (i = 0; i < ARRAY_SIZE(mode); i++)
+> @@ -233,9 +231,7 @@ static int eukrea_cpuimx27_console_init(void)
+>  #endif
+>  	/* configure 8 bit UART on cs3 */
+>  	FMCR &= ~0x2;
+> -	CS3U = 0x0000D603;
+> -	CS3L = 0x0D1D0D01;
+> -	CS3A = 0x00D20000;
+> +	imx27_setup_weimcs(3, 0x0000D603, 0x0D1D0D01, 0x00D20000);
+>  #ifdef CONFIG_DRIVER_SERIAL_NS16550
+>  	add_ns16550_device(-1, IMX_CS3_BASE + QUART_OFFSET, 0xf,
+>  			 IORESOURCE_MEM_16BIT, &quad_uart_serial_plat);
+> diff --git a/arch/arm/boards/imx27ads/imx27ads.c b/arch/arm/boards/imx27ads/imx27ads.c
+> index e93f07a..7ffaeab 100644
+> --- a/arch/arm/boards/imx27ads/imx27ads.c
+> +++ b/arch/arm/boards/imx27ads/imx27ads.c
+> @@ -42,15 +42,11 @@ static struct fec_platform_data fec_info = {
+>  static int imx27ads_timing_init(void)
 >  {
->  	int vid, pid, ret = 0;
+>  	/* configure cpld on cs4 */
+> -	CS4U = 0x0000DCF6;
+> -	CS4L = 0x444A4541;
+> -	CS4A = 0x44443302;
+> +	imx27_setup_weimcs(4, 0x0000DCF6, 0x444A4541, 0x44443302);
 >  
-> -	vid = (ulpi_read(ISP1504_VID_HIGH, view) << 8) |
-> -		ulpi_read(ISP1504_VID_LOW, view);
-> -	pid = (ulpi_read(ISP1504_PID_HIGH, view) << 8) |
-> -		ulpi_read(ISP1504_PID_LOW, view);
-> +	vid = (ulpi_read(ULPI_VID_HIGH, view) << 8) |
-> +		ulpi_read(ULPI_VID_LOW, view);
-> +	pid = (ulpi_read(ULPI_PID_HIGH, view) << 8) |
-> +		ulpi_read(ULPI_PID_LOW, view);
+>  	/* configure synchronous mode for
+>  	 * 16 bit nor flash on cs0 */
+> -	CS0U = 0x0000CC03;
+> -	CS0L = 0xa0330D01;
+> -	CS0A = 0x00220800;
+> +	imx27_setup_weimcs(0, 0x0000CC03, 0xa0330D01, 0x00220800);
 >  
->  	pr_info("ULPI Vendor ID 0x%x    Product ID 0x%x\n", vid, pid);
->  	if (vid != 0x4cc || pid != 0x1504) {
-> @@ -22,15 +22,15 @@ int isp1504_set_vbus_power(void __iomem *view, int on)
->  				DRV_VBUS |          /* enable internal Vbus */
->  				USE_EXT_VBUS_IND |  /* use external indicator */
->  				CHRG_VBUS,          /* charge Vbus */
-> -				ISP1504_OTGCTL, view);
-> +				ULPI_OTGCTL, view);
->  	} else {
->  		ret = ulpi_clear(DRV_VBUS_EXT | /* disable external Vbus */
->  				DRV_VBUS,         /* disable internal Vbus */
-> -				ISP1504_OTGCTL, view);
-> +				ULPI_OTGCTL, view);
+>  	writew(0x00f0, 0xc0000000);
+>  	writew(0x00aa, 0xc0000aaa);
+> @@ -59,9 +55,7 @@ static int imx27ads_timing_init(void)
+>  	writew(0x66ca, 0xc0000aaa);
+>  	writew(0x00f0, 0xc0000000);
 >  
->  		ret |= ulpi_set(USE_EXT_VBUS_IND | /* use external indicator */
->  				DISCHRG_VBUS,          /* discharge Vbus */
-> -				ISP1504_OTGCTL, view);
-> +				ULPI_OTGCTL, view);
->  	}
+> -	CS0U = 0x23524E80;
+> -	CS0L = 0x10000D03;
+> -	CS0A = 0x00720900;
+> +	imx27_setup_weimcs(0, 0x23524E80, 0x10000D03, 0x00720900);
 >  
->  	return ret;
-> diff --git a/drivers/usb/otg/ulpi.c b/drivers/usb/otg/ulpi.c
-> index 6ed6f01..575ed94 100644
-> --- a/drivers/usb/otg/ulpi.c
-> +++ b/drivers/usb/otg/ulpi.c
-> @@ -87,7 +87,7 @@ int ulpi_set(u8 bits, int reg, void __iomem *view)
->  	}
+>  	/* Select FEC data through data path */
+>  	writew(0x0020, IMX_CS4_BASE + 0x10);
+> diff --git a/arch/arm/boards/pcm038/pcm038.c b/arch/arm/boards/pcm038/pcm038.c
+> index 8dd6521..e3293dc 100644
+> --- a/arch/arm/boards/pcm038/pcm038.c
+> +++ b/arch/arm/boards/pcm038/pcm038.c
+> @@ -224,19 +224,13 @@ static int pcm038_devices_init(void)
+>  	};
 >  
->  	writel((ULPIVW_RUN | ULPIVW_WRITE |
-> -		      ((reg + ISP1504_REG_SET) << ULPIVW_ADDR_SHIFT) |
-> +		      ((reg + ULPI_REG_SET) << ULPIVW_ADDR_SHIFT) |
->  		      ((bits & ULPIVW_WDATA_MASK) << ULPIVW_WDATA_SHIFT)),
->  		     view);
+>  	/* configure 16 bit nor flash on cs0 */
+> -	CS0U = 0x22C2CF00;
+> -	CS0L = 0x75000D01;
+> -	CS0A = 0x00000900;
+> +	imx27_setup_weimcs(0, 0x22C2CF00, 0x75000D01, 0x00000900);
 >  
-> @@ -104,7 +104,7 @@ int ulpi_clear(u8 bits, int reg, void __iomem *view)
->  	int ret;
+>  	/* configure SRAM on cs1 */
+> -	CS1U = 0x0000d843;
+> -	CS1L = 0x22252521;
+> -	CS1A = 0x22220a00;
+> +	imx27_setup_weimcs(1, 0x0000d843, 0x22252521, 0x22220a00);
 >  
->  	writel((ULPIVW_RUN | ULPIVW_WRITE |
-> -		      ((reg + ISP1504_REG_CLEAR) << ULPIVW_ADDR_SHIFT) |
-> +		      ((reg + ULPI_REG_CLEAR) << ULPIVW_ADDR_SHIFT) |
->  		      ((bits & ULPIVW_WDATA_MASK) << ULPIVW_WDATA_SHIFT)),
->  		     view);
+>  	/* configure SJA1000 on cs4 */
+> -	CS4U = 0x0000DCF6;
+> -	CS4L = 0x444A0301;
+> -	CS4A = 0x44443302;
+> +	imx27_setup_weimcs(4, 0x0000DCF6, 0x444A0301, 0x44443302);
 >  
-> diff --git a/include/usb/ulpi.h b/include/usb/ulpi.h
-> index 0397fdb..9eed6a4 100644
-> --- a/include/usb/ulpi.h
-> +++ b/include/usb/ulpi.h
-> @@ -5,19 +5,19 @@ int ulpi_set(u8 bits, int reg, void __iomem *view);
->  int ulpi_clear(u8 bits, int reg, void __iomem *view);
->  int ulpi_read(int reg, void __iomem *view);
+>  	/* initizalize gpios */
+>  	for (i = 0; i < ARRAY_SIZE(mode); i++)
+> diff --git a/arch/arm/mach-imx/include/mach/imx27-regs.h b/arch/arm/mach-imx/include/mach/imx27-regs.h
+> index b7bebae..6d5a509 100644
+> --- a/arch/arm/mach-imx/include/mach/imx27-regs.h
+> +++ b/arch/arm/mach-imx/include/mach/imx27-regs.h
+> @@ -66,24 +66,9 @@
+>  #define GPCR_BOOT_8BIT_NAND_512		7
 >  
-> -/* ISP 1504 register addresses */
-> -#define ISP1504_VID_LOW		0x00	/* Vendor ID low */
-> -#define ISP1504_VID_HIGH	0x01	/* Vendor ID high */
-> -#define ISP1504_PID_LOW		0x02	/* Product ID low */
-> -#define ISP1504_PID_HIGH	0x03	/* Product ID high */
-> -#define ISP1504_ITFCTL		0x07	/* Interface Control */
-> -#define ISP1504_OTGCTL		0x0A	/* OTG Control */
-> +/* ULPI register addresses */
-> +#define ULPI_VID_LOW		0x00	/* Vendor ID low */
-> +#define ULPI_VID_HIGH		0x01	/* Vendor ID high */
-> +#define ULPI_PID_LOW		0x02	/* Product ID low */
-> +#define ULPI_PID_HIGH		0x03	/* Product ID high */
-> +#define ULPI_ITFCTL		0x07	/* Interface Control */
-> +#define ULPI_OTGCTL		0x0A	/* OTG Control */
+>  /* Chip Select Registers */
+> -#define CS0U __REG(IMX_WEIM_BASE + 0x00) /* Chip Select 0 Upper Register    */
+> -#define CS0L __REG(IMX_WEIM_BASE + 0x04) /* Chip Select 0 Lower Register    */
+> -#define CS0A __REG(IMX_WEIM_BASE + 0x08) /* Chip Select 0 Addition Register */
+> -#define CS1U __REG(IMX_WEIM_BASE + 0x10) /* Chip Select 1 Upper Register    */
+> -#define CS1L __REG(IMX_WEIM_BASE + 0x14) /* Chip Select 1 Lower Register    */
+> -#define CS1A __REG(IMX_WEIM_BASE + 0x18) /* Chip Select 1 Addition Register */
+> -#define CS2U __REG(IMX_WEIM_BASE + 0x20) /* Chip Select 2 Upper Register    */
+> -#define CS2L __REG(IMX_WEIM_BASE + 0x24) /* Chip Select 2 Lower Register    */
+> -#define CS2A __REG(IMX_WEIM_BASE + 0x28) /* Chip Select 2 Addition Register */
+> -#define CS3U __REG(IMX_WEIM_BASE + 0x30) /* Chip Select 3 Upper Register    */
+> -#define CS3L __REG(IMX_WEIM_BASE + 0x34) /* Chip Select 3 Lower Register    */
+> -#define CS3A __REG(IMX_WEIM_BASE + 0x38) /* Chip Select 3 Addition Register */
+> -#define CS4U __REG(IMX_WEIM_BASE + 0x40) /* Chip Select 4 Upper Register    */
+> -#define CS4L __REG(IMX_WEIM_BASE + 0x44) /* Chip Select 4 Lower Register    */
+> -#define CS4A __REG(IMX_WEIM_BASE + 0x48) /* Chip Select 4 Addition Register */
+> -#define CS5U __REG(IMX_WEIM_BASE + 0x50) /* Chip Select 5 Upper Register    */
+> -#define CS5L __REG(IMX_WEIM_BASE + 0x54) /* Chip Select 5 Lower Register    */
+> -#define CS5A __REG(IMX_WEIM_BASE + 0x58) /* Chip Select 5 Addition Register */
+> +#define CSxU(x) __REG(IMX_WEIM_BASE + (cs * 0x10) + 0x00) /* Chip Select x Upper Register    */
+> +#define CSxL(x) __REG(IMX_WEIM_BASE + (cs * 0x10) + 0x04) /* Chip Select x Lower Register    */
+> +#define CSxA(x) __REG(IMX_WEIM_BASE + (cs * 0x10) + 0x08) /* Chip Select x Addition Register */
+>  #define EIM  __REG(IMX_WEIM_BASE + 0x60) /* WEIM Configuration Register     */
 >  
->  /* add to above register address to access Set/Clear functions */
-> -#define ISP1504_REG_SET		0x01
-> -#define ISP1504_REG_CLEAR	0x02
-> +#define ULPI_REG_SET		0x01
-> +#define ULPI_REG_CLEAR		0x02
+>  #include "esdctl.h"
+> @@ -255,4 +240,13 @@
+>  #define IMX_CS4_BASE	0xD4000000
+>  #define IMX_CS5_BASE	0xD6000000
 >  
-> -/* 1504 OTG Control Register bits */
-> +/* ULPI OTG Control Register bits */
->  #define USE_EXT_VBUS_IND	(1 << 7)	/* Use ext. Vbus indicator */
->  #define DRV_VBUS_EXT		(1 << 6)	/* Drive Vbus external */
->  #define DRV_VBUS		(1 << 5)	/* Drive Vbus */
+> +static inline void imx27_setup_weimcs(size_t cs, unsigned upper, unsigned lower, unsigned addional)
+> +{
+> +	CSxU(cs) = upper;
+> +	CSxL(cs) = lower;
+> +	CSxA(cs) = addional;
+> +}
+> +
+>  #endif /* _IMX27_REGS_H */
 > -- 
 > 1.7.3.4
 > 
