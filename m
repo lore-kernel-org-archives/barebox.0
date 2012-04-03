@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-f49.google.com ([209.85.214.49])
+Received: from smtp4.mail.ru ([94.100.176.44])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SF5KJ-0008E2-SH
- for barebox@lists.infradead.org; Tue, 03 Apr 2012 15:07:20 +0000
-Received: by bkcjk13 with SMTP id jk13so4580888bkc.36
- for <barebox@lists.infradead.org>; Tue, 03 Apr 2012 08:07:16 -0700 (PDT)
-Message-ID: <4F7B1221.2050907@gmail.com>
-Date: Tue, 03 Apr 2012 21:07:13 +0600
-From: Alexey Galakhov <agalakhov@gmail.com>
-MIME-Version: 1.0
+ id 1SF7Km-0000Fx-T6
+ for barebox@lists.infradead.org; Tue, 03 Apr 2012 17:15:58 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Tue,  3 Apr 2012 21:16:23 +0400
+Message-Id: <1333473384-6741-2-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1333473384-6741-1-git-send-email-shc_work@mail.ru>
+References: <1333473384-6741-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,20 +16,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: S5PV210 CPU support
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH 2/3] i.MX51: Removed 1000 MHz pll definition
+To: barebox@lists.infradead.org
 
-Hi,
+i.MX51 operates at speeds up to 800 MHz.
 
-Does somebody work on support of Samsung S5PC1xx and/or S5PV210 SoC? I'm
-just trying to port Barebox to Mini210/Tiny210 boards from FrinedlyArm.
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+---
+ arch/arm/mach-imx/imx51.c |   13 ++++++-------
+ 1 files changed, 6 insertions(+), 7 deletions(-)
 
-Regards,
-Alex
+diff --git a/arch/arm/mach-imx/imx51.c b/arch/arm/mach-imx/imx51.c
+index 43cd45d..fb89199 100644
+--- a/arch/arm/mach-imx/imx51.c
++++ b/arch/arm/mach-imx/imx51.c
+@@ -179,13 +179,12 @@ static int imx51_boot_save_loc(void)
+ 
+ coredevice_initcall(imx51_boot_save_loc);
+ 
+-#define setup_pll_1000(base)	imx5_setup_pll((base), 1000, ((10 << 4) + ((1 - 1) << 0)), (12 - 1),  5)
+-#define setup_pll_800(base)	imx5_setup_pll((base), 800,  (( 8 << 4) + ((1 - 1) << 0)), ( 3 - 1),  1)
+-#define setup_pll_665(base)	imx5_setup_pll((base), 665,  (( 6 << 4) + ((1 - 1) << 0)), (96 - 1), 89)
+-#define setup_pll_600(base)	imx5_setup_pll((base), 600,  (( 6 << 4) + ((1 - 1) << 0)), ( 4 - 1),  1)
+-#define setup_pll_400(base)	imx5_setup_pll((base), 400,  (( 8 << 4) + ((2 - 1) << 0)), ( 3 - 1),  1)
+-#define setup_pll_455(base)	imx5_setup_pll((base), 455,  (( 9 << 4) + ((2 - 1) << 0)), (48 - 1), 23)
+-#define setup_pll_216(base)	imx5_setup_pll((base), 216,  (( 6 << 4) + ((3 - 1) << 0)), ( 4 - 1),  3)
++#define setup_pll_800(base)	imx5_setup_pll((base), 800, (( 8 << 4) + ((1 - 1) << 0)), ( 3 - 1),  1)
++#define setup_pll_665(base)	imx5_setup_pll((base), 665, (( 6 << 4) + ((1 - 1) << 0)), (96 - 1), 89)
++#define setup_pll_600(base)	imx5_setup_pll((base), 600, (( 6 << 4) + ((1 - 1) << 0)), ( 4 - 1),  1)
++#define setup_pll_400(base)	imx5_setup_pll((base), 400, (( 8 << 4) + ((2 - 1) << 0)), ( 3 - 1),  1)
++#define setup_pll_455(base)	imx5_setup_pll((base), 455, (( 9 << 4) + ((2 - 1) << 0)), (48 - 1), 23)
++#define setup_pll_216(base)	imx5_setup_pll((base), 216, (( 6 << 4) + ((3 - 1) << 0)), ( 4 - 1),  3)
+ 
+ void imx51_init_lowlevel(void)
+ {
+-- 
+1.7.3.4
+
 
 _______________________________________________
 barebox mailing list
