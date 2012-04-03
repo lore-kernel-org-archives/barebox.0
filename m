@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp4.mail.ru ([94.100.176.44])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SF7Km-0000Fw-T7
- for barebox@lists.infradead.org; Tue, 03 Apr 2012 17:15:58 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Tue,  3 Apr 2012 21:16:22 +0400
-Message-Id: <1333473384-6741-1-git-send-email-shc_work@mail.ru>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SF8kE-0001fy-LD
+ for barebox@lists.infradead.org; Tue, 03 Apr 2012 18:46:20 +0000
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Tue, 3 Apr 2012 20:45:37 +0200
+References: <4F7B1221.2050907@gmail.com>
+In-Reply-To: <4F7B1221.2050907@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+Message-Id: <201204032045.37563.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,42 +18,26 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] i.MX51: Use register names for imx_gpio_base
+Subject: Re: S5PV210 CPU support
 To: barebox@lists.infradead.org
+Cc: Alexey Galakhov <agalakhov@gmail.com>
 
+Alexey Galakhov wrote:
+> Does somebody work on support of Samsung S5PC1xx and/or S5PV210 SoC? I'm
+> just trying to port Barebox to Mini210/Tiny210 boards from FrinedlyArm.
 
-Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
----
- arch/arm/mach-imx/imx51.c |    8 ++++----
- 1 files changed, 4 insertions(+), 4 deletions(-)
+This would be really interesting. I'm working on S3C6410 support (for the 
+Mini6410), but progress is very slow due to lack of time.
 
-diff --git a/arch/arm/mach-imx/imx51.c b/arch/arm/mach-imx/imx51.c
-index 40f4b1e..43cd45d 100644
---- a/arch/arm/mach-imx/imx51.c
-+++ b/arch/arm/mach-imx/imx51.c
-@@ -27,10 +27,10 @@
- #include "gpio.h"
- 
- void *imx_gpio_base[] = {
--	(void *)0x73f84000,
--	(void *)0x73f88000,
--	(void *)0x73f8c000,
--	(void *)0x73f90000,
-+	(void *)MX51_GPIO1_BASE_ADDR,
-+	(void *)MX51_GPIO2_BASE_ADDR,
-+	(void *)MX51_GPIO3_BASE_ADDR,
-+	(void *)MX51_GPIO4_BASE_ADDR,
- };
- 
- int imx_gpio_count = ARRAY_SIZE(imx_gpio_base) * 32;
+Juergen
+
 -- 
-1.7.3.4
-
+Pengutronix e.K.                              | Juergen Beisert             |
+Linux Solutions for Science and Industry      | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
