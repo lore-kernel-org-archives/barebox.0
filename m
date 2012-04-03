@@ -1,11 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp24.mail.ru ([94.100.176.177])
+Received: from mail-bk0-f49.google.com ([209.85.214.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SF018-0005G6-Ce
- for barebox@lists.infradead.org; Tue, 03 Apr 2012 09:27:11 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Tue,  3 Apr 2012 13:27:00 +0400
-Message-Id: <1333445220-14654-1-git-send-email-shc_work@mail.ru>
+ id 1SF5KJ-0008E2-SH
+ for barebox@lists.infradead.org; Tue, 03 Apr 2012 15:07:20 +0000
+Received: by bkcjk13 with SMTP id jk13so4580888bkc.36
+ for <barebox@lists.infradead.org>; Tue, 03 Apr 2012 08:07:16 -0700 (PDT)
+Message-ID: <4F7B1221.2050907@gmail.com>
+Date: Tue, 03 Apr 2012 21:07:13 +0600
+From: Alexey Galakhov <agalakhov@gmail.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,44 +17,20 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Define barebox_loc magic variable only once
-To: barebox@lists.infradead.org
+Subject: S5PV210 CPU support
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
+Hi,
 
-Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
----
- arch/arm/mach-imx/boot.c |    4 +---
- 1 files changed, 1 insertions(+), 3 deletions(-)
+Does somebody work on support of Samsung S5PC1xx and/or S5PV210 SoC? I'm
+just trying to port Barebox to Mini210/Tiny210 boards from FrinedlyArm.
 
-diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
-index 9f2def6..b79ebc7 100644
---- a/arch/arm/mach-imx/boot.c
-+++ b/arch/arm/mach-imx/boot.c
-@@ -87,8 +87,6 @@ static int imx_25_35_boot_save_loc(void)
- 	return 0;
- }
- coredevice_initcall(imx_25_35_boot_save_loc);
--
--BAREBOX_MAGICVAR(barebox_loc, "The source barebox has been booted from");
- #endif
- 
- #if defined(CONFIG_ARCH_IMX27)
-@@ -114,6 +112,6 @@ static int imx_27_boot_save_loc(void)
- 	return 0;
- }
- coredevice_initcall(imx_27_boot_save_loc);
-+#endif
- 
- BAREBOX_MAGICVAR(barebox_loc, "The source barebox has been booted from");
--#endif
--- 
-1.7.3.4
-
+Regards,
+Alex
 
 _______________________________________________
 barebox mailing list
