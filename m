@@ -1,17 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SFAfG-0001LG-SS
- for barebox@lists.infradead.org; Tue, 03 Apr 2012 20:49:22 +0000
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Tue, 3 Apr 2012 22:48:44 +0200
+Received: from mail-gy0-f177.google.com ([209.85.160.177])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SFK0F-00067k-W2
+ for barebox@lists.infradead.org; Wed, 04 Apr 2012 06:47:36 +0000
+Received: by ghbf11 with SMTP id f11so237011ghb.36
+ for <barebox@lists.infradead.org>; Tue, 03 Apr 2012 23:47:34 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <201204032248.44260.jbe@pengutronix.de>
 References: <4F7B1221.2050907@gmail.com>
  <201204032045.37563.jbe@pengutronix.de>
  <CA+LT+-Qn3neKtS+Rm5RxHM9r-+3k1E408ZhkAwsTN_nM=1XC8w@mail.gmail.com>
-In-Reply-To: <CA+LT+-Qn3neKtS+Rm5RxHM9r-+3k1E408ZhkAwsTN_nM=1XC8w@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <201204032248.44260.jbe@pengutronix.de>
+ <201204032248.44260.jbe@pengutronix.de>
+Date: Wed, 4 Apr 2012 12:47:34 +0600
+Message-ID: <CA+LT+-RYYJG4T7qn5S0agpWj6LW0NHw-u2xdS7bOWqCHPsmE+w@mail.gmail.com>
+From: Alexey Galakhov <agalakhov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,33 +27,15 @@ Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: S5PV210 CPU support
-To: barebox@lists.infradead.org
-Cc: Alexey Galakhov <agalakhov@gmail.com>
+To: Juergen Beisert <jbe@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Alexey Galakhov wrote:
-> Juergen Beisert <jbe@pengutronix.de> wrote:
-> > Alexey Galakhov wrote:
-> > > Does somebody work on support of Samsung S5PC1xx and/or S5PV210 SoC?
-> > > I'm just trying to port Barebox to Mini210/Tiny210 boards from
-> > > FrinedlyArm.
-> >
-> > This would be really interesting. I'm working on S3C6410 support (for the
-> > Mini6410), but progress is very slow due to lack of time.
->
-> Can you please share any incomplete and/or non-working code you may
-> have, just for reference? This would help a lot. It seems that the
-> whole line of Samsung chips has many similar features, and I don't
-> like to reinvent the wheel.
+Juergen Beisert <jbe@pengutronix.de> wrote:
+> 'git://git.pengutronix.de/git/jbe/barebox.git' branch 's3c64xx_next'
 
-'git://git.pengutronix.de/git/jbe/barebox.git' branch 's3c64xx_next'
+Thank you very much!
 
-jbe
-
--- 
-Pengutronix e.K.                              | Juergen Beisert             |
-Linux Solutions for Science and Industry      | Phone: +49-5121-206917-5128 |
-Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
+Alex
 
 _______________________________________________
 barebox mailing list
