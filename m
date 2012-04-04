@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SFSha-0003hh-L0
- for barebox@lists.infradead.org; Wed, 04 Apr 2012 16:04:55 +0000
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SFShd-0000Pb-5u
+ for barebox@lists.infradead.org; Wed, 04 Apr 2012 16:04:58 +0000
 From: Wolfram Sang <w.sang@pengutronix.de>
-Date: Wed,  4 Apr 2012 18:04:40 +0200
-Message-Id: <1333555484-32635-3-git-send-email-w.sang@pengutronix.de>
+Date: Wed,  4 Apr 2012 18:04:39 +0200
+Message-Id: <1333555484-32635-2-git-send-email-w.sang@pengutronix.de>
 In-Reply-To: <1333555484-32635-1-git-send-email-w.sang@pengutronix.de>
 References: <1333555484-32635-1-git-send-email-w.sang@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,27 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/6] net: ping: remove unneeded initialization
+Subject: [PATCH 1/6] net: ping: send PING packets with 1-second interval
 To: barebox@lists.infradead.org
+
+Like standard ping does by default.
 
 Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
 ---
- net/ping.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+ net/ping.c |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
 
 diff --git a/net/ping.c b/net/ping.c
-index 0e8a0dc..4aa10f8 100644
+index b90e5af..0e8a0dc 100644
 --- a/net/ping.c
 +++ b/net/ping.c
-@@ -55,7 +55,7 @@ static void ping_handler(void *ctx, char *pkt, unsigned len)
- static int do_ping(int argc, char *argv[])
- {
- 	int ret;
--	uint64_t ping_start = 0;
-+	uint64_t ping_start;
+@@ -88,7 +88,8 @@ static int do_ping(int argc, char *argv[])
  
- 	if (argc < 2)
- 		return COMMAND_ERROR_USAGE;
+ 		net_poll();
+ 
+-		if (is_timeout(ping_start, 10 * SECOND)) {
++		if (is_timeout(ping_start, SECOND)) {
++			/* No answer, send another packet */
+ 			ping_start = get_time_ns();
+ 			ret = ping_send();
+ 			if (ret)
 -- 
 1.7.9.1
 
