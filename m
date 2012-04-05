@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SFgZz-0002rA-2o
- for barebox@lists.infradead.org; Thu, 05 Apr 2012 06:54:00 +0000
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SFgZw-0001rN-Uq
+ for barebox@lists.infradead.org; Thu, 05 Apr 2012 06:53:59 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  5 Apr 2012 08:53:46 +0200
-Message-Id: <1333608829-13213-3-git-send-email-s.hauer@pengutronix.de>
+Date: Thu,  5 Apr 2012 08:53:48 +0200
+Message-Id: <1333608829-13213-5-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1333608829-13213-1-git-send-email-s.hauer@pengutronix.de>
 References: <1333608829-13213-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,33 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] mtd: fix compiler warning
+Subject: [PATCH 4/5] mips: Fix compiler warnings
 To: barebox@lists.infradead.org
 
 Fixes:
 
-drivers/mtd/core.c: In function 'mtd_ioctl':
-drivers/mtd/core.c:122:24: warning: unused variable 'ecc' [-Wunused-variable]
+arch/mips/lib/lshrdi3.c:6: warning: no previous prototype for '__lshrdi3'
+arch/mips/lib/ashrdi3.c:6: warning: no previous prototype for '__ashrdi3'
+arch/mips/lib/ashldi3.c:6: warning: no previous prototype for '__ashldi3'
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/core.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/mips/lib/libgcc.h |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
-index ccc5c26..7bc0a0f 100644
---- a/drivers/mtd/core.c
-+++ b/drivers/mtd/core.c
-@@ -119,7 +119,9 @@ int mtd_ioctl(struct cdev *cdev, int request, void *buf)
- 	int ret = 0;
- 	struct mtd_info *mtd = cdev->priv;
- 	struct mtd_info_user *user = buf;
-+#if (defined(CONFIG_NAND_ECC_HW) || defined(CONFIG_NAND_ECC_SOFT))
- 	struct mtd_ecc_stats *ecc = buf;
-+#endif
- 	struct region_info_user *reg = buf;
+diff --git a/arch/mips/lib/libgcc.h b/arch/mips/lib/libgcc.h
+index 05909d5..593e598 100644
+--- a/arch/mips/lib/libgcc.h
++++ b/arch/mips/lib/libgcc.h
+@@ -22,4 +22,8 @@ typedef union {
+ 	long long ll;
+ } DWunion;
  
- 	switch (request) {
++long long __lshrdi3(long long u, word_type b);
++long long __ashldi3(long long u, word_type b);
++long long __ashrdi3(long long u, word_type b);
++
+ #endif /* __ASM_LIBGCC_H */
 -- 
 1.7.9.5
 
