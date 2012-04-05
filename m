@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yw0-f49.google.com ([209.85.213.49])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SFgPZ-00061W-Ai
- for barebox@lists.infradead.org; Thu, 05 Apr 2012 06:43:14 +0000
-Received: by yhjj52 with SMTP id j52so634152yhj.36
- for <barebox@lists.infradead.org>; Wed, 04 Apr 2012 23:43:12 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20120405063322.GV3852@pengutronix.de>
-References: <CAD9ZU8BR35iyRxH1-eEioCdo_mcXeVS+GjiSCiahPSUvcDXgXw@mail.gmail.com>
- <20120405063322.GV3852@pengutronix.de>
-Date: Thu, 5 Apr 2012 08:43:12 +0200
-Message-ID: <CAD9ZU8ACc_p2bTq-QtwhHXWz6NP=J-VkKS=0O2vdHkO2oRQUDw@mail.gmail.com>
-From: Gabriel Tisan <gabriel.tisan@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SFgZz-0002rB-3s
+ for barebox@lists.infradead.org; Thu, 05 Apr 2012 06:54:00 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu,  5 Apr 2012 08:53:49 +0200
+Message-Id: <1333608829-13213-6-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1333608829-13213-1-git-send-email-s.hauer@pengutronix.de>
+References: <1333608829-13213-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,72 +16,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: debugging on board
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 5/5] x86 linker script: Add missing _text
+To: barebox@lists.infradead.org
 
-Thanks !
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/x86/lib/barebox.lds.S |    1 +
+ 1 file changed, 1 insertion(+)
 
-I have an ARM from Freescale, i.MX35.
+diff --git a/arch/x86/lib/barebox.lds.S b/arch/x86/lib/barebox.lds.S
+index 9798ed5..3315be2 100644
+--- a/arch/x86/lib/barebox.lds.S
++++ b/arch/x86/lib/barebox.lds.S
+@@ -144,6 +144,7 @@ SECTIONS
+ 	.text : AT ( LOADADDR(.bootstrapping) + SIZEOF(.bootstrapping) ) {
+ 		/* do not align here! It may fails with the LOADADDR! */
+ 		_stext = .;
++		_text = .;
+ 		*(.text_entry*)
+ 		__bare_init_start = .;
+ 		*(.text_bare_init*)
+-- 
+1.7.9.5
 
-Regards,
-Gabriel
-
-
-On Thu, Apr 5, 2012 at 8:33 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> Hi Gabriel,
->
-> On Thu, Apr 05, 2012 at 08:11:47AM +0200, Gabriel Tisan wrote:
->> Hi !
->>
->> What should I do to be able to see any debug messages ? On the serial co=
-nsole I
->> could see the Barebox version but after that nothing. I suppose that
->> is something
->> regarding nand.
->
-> This means that your console is already running, a first step can then
-> be to put a '#define DEBUG' above the includes in common/startup.c. This
-> will cause the initcalls to be printed which will give you a first clue
-> where execution stops.
->
-> Also you should have the following options enabled:
->
-> CONFIG_MMU
-> ARM_EXCEPTIONS
-> CONFIG_ARM_UNWIND
-> CONFIG_KALLSYMS
->
-> This gives you a stack dump when something bad happens.
->
->>
->> If I have no JTAG debugger what should I do to be able to debug ? For
->> other board I
->> could not see any messages on console.
->
-> That's more difficult. If you have for example a U-Boot as first stage
-> loader then you can add some register writes to the UART send register
-> in the early startup code. Otherwise you are stuck with LED debugging
-> (Just configure a gpio connected to a LED and see where you can still
-> turn it on)
->
-> What machine are you working on?
->
-> Sascha
->
-> --
-> Pengutronix e.K. =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 | =
-=A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 |
-> Industrial Linux Solutions =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 | http://www.p=
-engutronix.de/ =A0|
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0 =A0=
- =A0|
-> Amtsgericht Hildesheim, HRA 2686 =A0 =A0 =A0 =A0 =A0 | Fax: =A0 +49-5121-=
-206917-5555 |
 
 _______________________________________________
 barebox mailing list
