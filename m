@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SFga3-0001rx-Vs
- for barebox@lists.infradead.org; Thu, 05 Apr 2012 06:54:04 +0000
+ id 1SFgZw-0001rM-Uz
+ for barebox@lists.infradead.org; Thu, 05 Apr 2012 06:54:00 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  5 Apr 2012 08:53:45 +0200
-Message-Id: <1333608829-13213-2-git-send-email-s.hauer@pengutronix.de>
+Date: Thu,  5 Apr 2012 08:53:47 +0200
+Message-Id: <1333608829-13213-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1333608829-13213-1-git-send-email-s.hauer@pengutronix.de>
 References: <1333608829-13213-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,49 +21,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/5] string: remove unused bcopy function
+Subject: [PATCH 3/5] USB gadget pxa: Fix compiler warning
 To: barebox@lists.infradead.org
+
+Fixes:
+
+drivers/usb/gadget/pxa27x_udc.c:1263:13: warning: 'pxa27x_change_interface' defined but not used [-Wunused-function]
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- lib/string.c |   24 ------------------------
- 1 file changed, 24 deletions(-)
+ drivers/usb/gadget/pxa27x_udc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/string.c b/lib/string.c
-index 77435aa..2865088 100644
---- a/lib/string.c
-+++ b/lib/string.c
-@@ -420,30 +420,6 @@ void * memset(void * s,int c,size_t count)
- #endif
- EXPORT_SYMBOL(memset);
+diff --git a/drivers/usb/gadget/pxa27x_udc.c b/drivers/usb/gadget/pxa27x_udc.c
+index 26be29d..87dcfac 100644
+--- a/drivers/usb/gadget/pxa27x_udc.c
++++ b/drivers/usb/gadget/pxa27x_udc.c
+@@ -1260,7 +1260,7 @@ static void pxa27x_change_configuration(struct pxa_udc *udc, int config)
+ 	udc->driver->setup(&udc->gadget, &req);
+ }
  
--#ifndef __HAVE_ARCH_BCOPY
--/**
-- * bcopy - Copy one area of memory to another
-- * @src: Where to copy from
-- * @dest: Where to copy to
-- * @count: The size of the area.
-- *
-- * Note that this is the same as memcpy(), with the arguments reversed.
-- * memcpy() is the standard, bcopy() is a legacy BSD function.
-- *
-- * You should not use this function to access IO space, use memcpy_toio()
-- * or memcpy_fromio() instead.
-- */
--char * bcopy(const char * src, char * dest, int count)
--{
--	char *tmp = dest;
--
--	while (count--)
--		*tmp++ = *src++;
--
--	return dest;
--}
--#endif
--
- #ifndef __HAVE_ARCH_MEMCPY
- /**
-  * memcpy - Copy one area of memory to another
+-static void pxa27x_change_interface(struct pxa_udc *udc, int iface, int alt)
++static void __maybe_unused pxa27x_change_interface(struct pxa_udc *udc, int iface, int alt)
+ {
+ 	struct usb_ctrlrequest  req;
+ 
 -- 
 1.7.9.5
 
