@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SFgZz-0002r9-3L
- for barebox@lists.infradead.org; Thu, 05 Apr 2012 06:54:02 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1SFgZr-0001bO-7Y
- for barebox@lists.infradead.org; Thu, 05 Apr 2012 08:53:51 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.77)
- (envelope-from <sha@pengutronix.de>) id 1SFgZr-0003SU-6M
- for barebox@lists.infradead.org; Thu, 05 Apr 2012 08:53:51 +0200
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SFga3-0001rx-Vs
+ for barebox@lists.infradead.org; Thu, 05 Apr 2012 06:54:04 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  5 Apr 2012 08:53:44 +0200
-Message-Id: <1333608829-13213-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu,  5 Apr 2012 08:53:45 +0200
+Message-Id: <1333608829-13213-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1333608829-13213-1-git-send-email-s.hauer@pengutronix.de>
+References: <1333608829-13213-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,30 +21,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Some last minute fixes for master branch
+Subject: [PATCH 1/5] string: remove unused bcopy function
 To: barebox@lists.infradead.org
 
-The following patches fix several compiler warnings which disturb my
-sense of beauty when compiling all defconfigs before a release. Also
-a missing _text is added to the x86 linker script to make it compile
-again.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ lib/string.c |   24 ------------------------
+ 1 file changed, 24 deletions(-)
 
-Sascha
+diff --git a/lib/string.c b/lib/string.c
+index 77435aa..2865088 100644
+--- a/lib/string.c
++++ b/lib/string.c
+@@ -420,30 +420,6 @@ void * memset(void * s,int c,size_t count)
+ #endif
+ EXPORT_SYMBOL(memset);
+ 
+-#ifndef __HAVE_ARCH_BCOPY
+-/**
+- * bcopy - Copy one area of memory to another
+- * @src: Where to copy from
+- * @dest: Where to copy to
+- * @count: The size of the area.
+- *
+- * Note that this is the same as memcpy(), with the arguments reversed.
+- * memcpy() is the standard, bcopy() is a legacy BSD function.
+- *
+- * You should not use this function to access IO space, use memcpy_toio()
+- * or memcpy_fromio() instead.
+- */
+-char * bcopy(const char * src, char * dest, int count)
+-{
+-	char *tmp = dest;
+-
+-	while (count--)
+-		*tmp++ = *src++;
+-
+-	return dest;
+-}
+-#endif
+-
+ #ifndef __HAVE_ARCH_MEMCPY
+ /**
+  * memcpy - Copy one area of memory to another
+-- 
+1.7.9.5
 
-----------------------------------------------------------------
-Sascha Hauer (5):
-      string: remove unused bcopy function
-      mtd: fix compiler warning
-      USB gadget pxa: Fix compiler warning
-      mips: Fix compiler warnings
-      x86 linker script: Add missing _text
-
- arch/mips/lib/libgcc.h          |    4 ++++
- arch/x86/lib/barebox.lds.S      |    1 +
- drivers/mtd/core.c              |    2 ++
- drivers/usb/gadget/pxa27x_udc.c |    2 +-
- lib/string.c                    |   24 ------------------------
- 5 files changed, 8 insertions(+), 25 deletions(-)
 
 _______________________________________________
 barebox mailing list
