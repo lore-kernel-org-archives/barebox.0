@@ -1,18 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SFikY-00014G-B6
- for barebox@lists.infradead.org; Thu, 05 Apr 2012 09:13:04 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1SFikO-0007jy-PB
- for barebox@lists.infradead.org; Thu, 05 Apr 2012 11:12:52 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.77)
- (envelope-from <sha@pengutronix.de>) id 1SFikO-0003aD-Nt
- for barebox@lists.infradead.org; Thu, 05 Apr 2012 11:12:52 +0200
-Date: Thu, 5 Apr 2012 11:12:52 +0200
+ id 1SFitA-0002zb-6j
+ for barebox@lists.infradead.org; Thu, 05 Apr 2012 09:21:57 +0000
+Date: Thu, 5 Apr 2012 11:21:45 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120405091252.GY3852@pengutronix.de>
+Message-ID: <20120405092145.GZ3852@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
@@ -23,475 +16,280 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: barebox-2012.04.0
+Subject: Currently broken defconfigs in barebox master branch
 To: barebox@lists.infradead.org
 
-
-Hi All,
-
-We have an April release. Here is what happened since the last release.
-
-Happy Easter,
-
- Sascha
-
-The following changes since commit 8bf69241883f46a2722a93d5198480d893a5c820:
-
-  Release v2012.03.0 (2012-03-06 10:08:09 +0100)
-
-are available in the git repository at:
-
-  git://git.pengutronix.de/git/barebox.git tags/v2012.04.0
-
-for you to fetch changes up to 4eb3478212e49240a1d9e9d8a1e212049829ef68:
-
-  Release v2012.04.0 (2012-04-05 11:03:03 +0200)
-
-----------------------------------------------------------------
-Release v2012.04.0
-
-----------------------------------------------------------------
-Eric B=E9nard (7):
-      add i2c clock support
-      mfd: add mc34708 driver
-      i.MX53: add silicon revision functions
-      i.MX53: enable pull up on I2C0 pins
-      mx53-loco: add i2c support
-      mx53-loco: add board revision support
-      mx53-loco: update defconfig
-
-Jan Weitzel (1):
-      mach-omap: add HAS_DEBUG_LL
-
-Jean-Christophe PLAGNIOL-VILLARD (8):
-      dfu: add description how to specify the "description" to the long help
-      defaultenv/boot: add getopt option support to select boot mode
-      add gpio keyboard support
-      readkey: add define for Ascii keys
-      at91: at91_register_uart return device
-      usb-a926x: add DAB MMX Daughter board support
-      macb: add timeout on send
-      macb: fix mmu support
-
-Juergen Beisert (1):
-      serial S3: fix local structure malloc
-
-Lars Poeschel (1):
-      Add unaligned.h to sandbox arch
-
-Marek Belisko (1):
-      pxa27x_udc: Fix compilation warning.
-
-Robert Jarzmik (8):
-      drivers/pwm: add duty_ns and period_ns to core pwm chip
-      drivers/pwm: add PXA pulse width modulator controller
-      drivers/video: remove pxafb enable on load
-      arm/mach-pxa: add standard LCD panel GPIO settings
-      arm/mach-pxa: add CCCR bits definitions
-      drivers/serial: trivial regression fix
-      arm/mach-pxa: add mioa701 board
-      drivers/mci: fix read/write stalling
-
-Sanjeev Premi (1):
-      omap: xload: Make error more specific
-
-Sascha Hauer (89):
-      mci: Add complete definitions for the card type
-      mci: use card type definitions
-      mci: fix high capacity detection
-      mci mxs: do not use external define for internal use
-      mci core: replace discrete ios values with struct ios
-      mci s3c: Do not mess with struct mci_host
-      mci s3c: allocate host struct dynamically
-      mci s3c: pass around the right pointer
-      mci: remove unused device argument from set_ios
-      mci core: fix mixup of max write/read block len
-      mci: Use struct mci for internal argument passing
-      mci: replace pr_debug with dev_dbg
-      mci: factor out mci/sd specific startup functions
-      mci: cdev_find_free_index won't fail, no need to check
-      mci: Be more verbose on what device is associated to which disk
-      Add a timeout polling loop convenience wrapper
-      mci i.MX esdhc: use timeout loops
-      mci: Add a complete list of EXT_CSD_* fields from the kernel
-      mci: Fix 8 bit mmc cards
-      mci i.MX esdhc: make 8bit modes platform dependent
-      ARM: update mach-types
-      ARM i.MX5: Allow to pass cpu clock to lowlevel init
-      initial tqm53 support
-      usb net smsc95xx: remove unused variable
-      usb net smsc95xx: add missing mii_unregister
-      usb net: fix unregistration
-      net: fix eth device unregistration
-      net: set enetaddr to invalid address when an invalid string is passed
-      list: add list_last_entry function
-      fat: revert fat caching mechanism
-      block: reimplement caching
-      USB storage: fix disconnect
-      Merge branch 'master' into next
-      Add pwm core support
-      Merge branch 'gpio_keys' of git://uboot.jcrosoft.org/barebox into next
-      Merge branch 'pu/block' into next
-      Merge branch 'pu/net-usb' into next
-      add list_is_singular
-      dos partitions: Do not register as fixed partitions
-      fs: Store mtab entries in list
-      fs: make locally used function get_mtab_entry_by_path static
-      fs: Store mtab path in allocated string
-      fs: remove unused function fsdev_get_mountpoint
-      fs: simplify get_mtab_entry_by_path
-      fs: remove only once used variable
-      fs: remove fs devices list
-      fs: put fs devices on its own bus
-      fs: allow to mount on subdirectories
-      devices: unregister children when unregistering a device
-      Merge branch 'pu/device-cleanup' into next
-      Add suport for tftp as a filesystem
-      make uimages work on tftpfs
-      net: let net_udp_get_payload return void *
-      add string for -ETIMEDOUT
-      copy_file: limit progress bar to sensible limits
-      Merge branch 'work/tftp' into next
-      fs: get fs driver using container_of
-      fs: get fs device using container_of
-      console: use container_of instead of type_data
-      serial drivers: remove unused type_data
-      serial pxa: fix unregister
-      serial imx: fix unregister
-      serial stm: fix unregister
-      serial s3c: add a driver private struct
-      net: use container_of instead of dev->type_data
-      net drivers: remove unused type_data
-      net fec_imx: drop type_data usage
-      net fec_mpc5200: drop type_data usage
-      driver: remove unused type_data field from struct driver_d
-      getopt: turn commented out printf into debug()
-      getopt: save and restore context
-      cp: fix memory leak
-      command: do not allow abbreviated commands anymore
-      ARM boot[zu]: return COMMAND_ERROR_USAGE instead of calling barebox_c=
-md_usage
-      commands: remove struct command pointer from commands
-      remove unused variable from struct driver_d
-      ARM: move exception vectors away from start of binary
-      ARM: get runtime offset of board_init_lowlevel_return by using separa=
-te section
-      Merge branch 'pu/command' into next
-      ARM: Allow to compile in thumb-2 mode
-      ARM: use unconditional branch in exception vectors
-      Merge branch 'work/thumb2' into next
-      Merge branch 'next'
-      string: remove unused bcopy function
-      mtd: fix compiler warning
-      USB gadget pxa: Fix compiler warning
-      mips: Fix compiler warnings
-      x86 linker script: Add missing _text
-      Release v2012.04.0
-
-Teresa G=E1mez (2):
-      pca-a-l1: remove duplicate includes
-      pcm038: increase size of barebox partition
-
- Makefile                                           |    2 +-
- arch/arm/Kconfig                                   |   13 +
- arch/arm/Makefile                                  |   13 +-
- arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c  |    3 +-
- arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c  |    2 +-
- arch/arm/boards/eukrea_cpuimx35/flash_header.c     |    3 +-
- arch/arm/boards/eukrea_cpuimx51/flash_header.c     |    3 +-
- arch/arm/boards/freescale-mx25-3-stack/3stack.c    |    3 +-
- .../boards/freescale-mx35-3-stack/flash_header.c   |    3 +-
- arch/arm/boards/freescale-mx51-pdk/flash_header.c  |    3 +-
- arch/arm/boards/freescale-mx53-loco/board.c        |   68 ++-
- arch/arm/boards/freescale-mx53-loco/flash_header.c |    3 +-
- arch/arm/boards/freescale-mx53-smd/board.c         |    2 +-
- arch/arm/boards/freescale-mx53-smd/flash_header.c  |    3 +-
- arch/arm/boards/guf-cupid/board.c                  |    2 +-
- arch/arm/boards/mioa701/Makefile                   |    1 +
- arch/arm/boards/mioa701/board.c                    |  278 +++++++++
- arch/arm/boards/mioa701/config.h                   |   22 +
- arch/arm/boards/mioa701/env/bin/barebox_update     |    5 +
- arch/arm/boards/mioa701/env/bin/init               |   35 ++
- arch/arm/boards/mioa701/env/bin/mtd_env_override   |    4 +
- arch/arm/boards/mioa701/env/bin/sdcard_override    |   16 +
- arch/arm/boards/mioa701/env/config                 |    5 +
- arch/arm/boards/mioa701/mioa701.h                  |   81 +++
- arch/arm/boards/pcm038/env/config                  |    5 +-
- arch/arm/boards/pcm038/pcm038.c                    |   12 +-
- arch/arm/boards/pcm043/pcm043.c                    |    2 +-
- arch/arm/boards/phycard-a-l1/pca-a-l1.c            |    3 -
- arch/arm/boards/tqma53/Makefile                    |    2 +
- arch/arm/boards/tqma53/board.c                     |  272 +++++++++
- arch/arm/boards/tqma53/config.h                    |    4 +
- arch/arm/boards/tqma53/env/config                  |   43 ++
- arch/arm/boards/tqma53/flash_header.c              |  109 ++++
- arch/arm/boards/usb-a926x/init.c                   |  108 ++++
- arch/arm/configs/freescale_mx53_loco_defconfig     |    5 +-
- arch/arm/configs/mioa701_defconfig                 |   62 ++
- arch/arm/configs/tqma53_defconfig                  |   64 ++
- arch/arm/cpu/cpu.c                                 |   27 +
- arch/arm/cpu/cpuinfo.c                             |    2 +-
- arch/arm/cpu/exceptions.S                          |    1 +
- arch/arm/cpu/mmu.c                                 |    4 +-
- arch/arm/cpu/start.c                               |   35 +-
- arch/arm/include/asm/barebox-arm-head.h            |   36 ++
- arch/arm/include/asm/barebox-arm.h                 |    3 +
- arch/arm/include/asm/unified.h                     |    8 +-
- arch/arm/lib/armlinux.c                            |   17 +-
- arch/arm/lib/barebox.lds.S                         |    7 +-
- arch/arm/lib/bootu.c                               |    8 +-
- arch/arm/lib/bootz.c                               |    8 +-
- arch/arm/mach-at91/Kconfig                         |    9 +
- arch/arm/mach-at91/at91rm9200_devices.c            |    6 +-
- arch/arm/mach-at91/at91sam9260_devices.c           |    6 +-
- arch/arm/mach-at91/at91sam9261_devices.c           |    6 +-
- arch/arm/mach-at91/at91sam9263_devices.c           |    6 +-
- arch/arm/mach-at91/at91sam9g45_devices.c           |    6 +-
- arch/arm/mach-at91/include/mach/board.h            |    2 +-
- arch/arm/mach-imx/Kconfig                          |   11 +
- arch/arm/mach-imx/clko.c                           |    2 +-
- arch/arm/mach-imx/imx53.c                          |   56 +-
- arch/arm/mach-imx/include/mach/esdhc.h             |    2 +
- arch/arm/mach-imx/include/mach/imx-regs.h          |    5 +
- arch/arm/mach-imx/include/mach/imx5.h              |    2 +-
- arch/arm/mach-imx/include/mach/iomux-mx53.h        |    8 +-
- arch/arm/mach-imx/internal-nand-boot.c             |    2 +-
- arch/arm/mach-imx/speed-imx53.c                    |   26 +
- arch/arm/mach-imx/speed.c                          |    2 +-
- arch/arm/mach-mxs/imx.c                            |    2 +-
- arch/arm/mach-netx/generic.c                       |    2 +-
- arch/arm/mach-omap/include/mach/debug_ll.h         |   54 ++
- arch/arm/mach-omap/xload.c                         |    5 +-
- arch/arm/mach-pxa/Kconfig                          |   18 +
- arch/arm/mach-pxa/Makefile                         |    1 +
- arch/arm/mach-pxa/devices.c                        |    5 +
- arch/arm/mach-pxa/include/mach/clock.h             |    1 +
- arch/arm/mach-pxa/include/mach/devices.h           |    2 +-
- arch/arm/mach-pxa/include/mach/mfp-pxa27x.h        |   32 +
- arch/arm/mach-pxa/include/mach/pxa2xx-regs.h       |    5 +
- arch/arm/mach-pxa/include/mach/pxafb.h             |    1 -
- arch/arm/mach-pxa/include/mach/regs-pwm.h          |   20 +
- arch/arm/mach-pxa/speed-pxa27x.c                   |    5 +
- arch/arm/tools/mach-types                          |   62 +-
- arch/blackfin/boards/ipe337/cmd_alternate.c        |    2 +-
- arch/mips/lib/cpuinfo.c                            |    2 +-
- arch/mips/lib/libgcc.h                             |    4 +
- arch/openrisc/lib/cpuinfo.c                        |    2 +-
- arch/sandbox/include/asm/unaligned.h               |   19 +
- arch/x86/lib/barebox.lds.S                         |    1 +
- commands/bmp.c                                     |    2 +-
- commands/bootm.c                                   |    2 +-
- commands/cat.c                                     |    3 +-
- commands/cd.c                                      |    2 +-
- commands/clear.c                                   |    2 +-
- commands/cp.c                                      |    5 +-
- commands/crc.c                                     |    2 +-
- commands/dfu.c                                     |    6 +-
- commands/digest.c                                  |    8 +-
- commands/echo.c                                    |    2 +-
- commands/edit.c                                    |    2 +-
- commands/exec.c                                    |    2 +-
- commands/export.c                                  |    2 +-
- commands/false.c                                   |    2 +-
- commands/flash.c                                   |    4 +-
- commands/go.c                                      |    8 +-
- commands/gpio.c                                    |    8 +-
- commands/help.c                                    |    4 +-
- commands/i2c.c                                     |    6 +-
- commands/insmod.c                                  |    2 +-
- commands/iomem.c                                   |    2 +-
- commands/led.c                                     |    2 +-
- commands/linux16.c                                 |    3 +-
- commands/linux_exec.c                              |    2 +-
- commands/loadb.c                                   |    2 +-
- commands/loadenv.c                                 |    2 +-
- commands/loads.c                                   |    4 +-
- commands/login.c                                   |    2 +-
- commands/ls.c                                      |    2 +-
- commands/lsmod.c                                   |    2 +-
- commands/magicvar.c                                |    2 +-
- commands/mem.c                                     |   10 +-
- commands/meminfo.c                                 |    2 +-
- commands/memtest.c                                 |    2 +-
- commands/menu.c                                    |    2 +-
- commands/mkdir.c                                   |    2 +-
- commands/mount.c                                   |   19 +-
- commands/nand.c                                    |    2 +-
- commands/nandtest.c                                |    2 +-
- commands/net.c                                     |    4 +-
- commands/oftree.c                                  |    2 +-
- commands/partition.c                               |    4 +-
- commands/passwd.c                                  |    2 +-
- commands/printenv.c                                |    2 +-
- commands/pwd.c                                     |    2 +-
- commands/readline.c                                |    2 +-
- commands/reginfo.c                                 |    2 +-
- commands/reset.c                                   |    2 +-
- commands/rm.c                                      |    2 +-
- commands/rmdir.c                                   |    2 +-
- commands/saveenv.c                                 |    2 +-
- commands/setenv.c                                  |    2 +-
- commands/sleep.c                                   |    2 +-
- commands/test.c                                    |    2 +-
- commands/time.c                                    |    2 +-
- commands/timeout.c                                 |    2 +-
- commands/trigger.c                                 |    2 +-
- commands/true.c                                    |    2 +-
- commands/ubi.c                                     |    6 +-
- commands/uimage.c                                  |    2 +-
- commands/umount.c                                  |    2 +-
- commands/uncompress.c                              |    2 +-
- commands/usb.c                                     |    2 +-
- commands/usbserial.c                               |    2 +-
- commands/version.c                                 |    2 +-
- common/block.c                                     |  274 ++++++---
- common/command.c                                   |   38 +-
- common/console.c                                   |    7 +-
- common/hush.c                                      |   23 +-
- common/menu.c                                      |    6 +-
- common/misc.c                                      |    5 +-
- common/partitions.c                                |    2 +-
- common/uimage.c                                    |   25 +
- defaultenv/bin/_boot_help                          |   18 +
- defaultenv/bin/boot                                |   26 +-
- drivers/Kconfig                                    |    3 +
- drivers/Makefile                                   |    2 +
- drivers/base/driver.c                              |   22 +-
- drivers/input/Kconfig                              |   19 +
- drivers/input/Makefile                             |    1 +
- drivers/input/gpio_keys.c                          |  115 ++++
- drivers/mci/atmel_mci.c                            |   19 +-
- drivers/mci/imx-esdhc.c                            |   50 +-
- drivers/mci/imx.c                                  |   19 +-
- drivers/mci/mci-core.c                             |  619 +++++++++++-----=
----
- drivers/mci/mci_spi.c                              |    3 +-
- drivers/mci/mxs.c                                  |   17 +-
- drivers/mci/omap_hsmmc.c                           |   20 +-
- drivers/mci/pxamci.c                               |   20 +-
- drivers/mci/s3c.c                                  |  165 +++--
- drivers/mfd/Kconfig                                |    4 +
- drivers/mfd/Makefile                               |    1 +
- drivers/mfd/mc34708.c                              |  294 +++++++++
- drivers/mtd/core.c                                 |    2 +
- drivers/mtd/nand/nand_s3c24xx.c                    |    2 +-
- drivers/net/altera_tse.c                           |    2 -
- drivers/net/cs8900.c                               |    3 +-
- drivers/net/dm9k.c                                 |    1 -
- drivers/net/ep93xx.c                               |    1 -
- drivers/net/fec_imx.c                              |    6 +-
- drivers/net/fec_mpc5200.c                          |   12 +-
- drivers/net/macb.c                                 |   14 +-
- drivers/net/netx_eth.c                             |    1 -
- drivers/net/smc91111.c                             |    1 -
- drivers/net/smc911x.c                              |    1 -
- drivers/net/tap.c                                  |    1 -
- drivers/net/usb/smsc95xx.c                         |    7 +-
- drivers/net/usb/usbnet.c                           |    6 +-
- drivers/pwm/Kconfig                                |   18 +
- drivers/pwm/Makefile                               |    2 +
- drivers/pwm/core.c                                 |  237 ++++++++
- drivers/pwm/pxa_pwm.c                              |  157 +++++
- drivers/serial/amba-pl011.c                        |    1 -
- drivers/serial/arm_dcc.c                           |    1 -
- drivers/serial/atmel.c                             |    1 -
- drivers/serial/linux_console.c                     |    1 -
- drivers/serial/serial_altera.c                     |    1 -
- drivers/serial/serial_altera_jtag.c                |    1 -
- drivers/serial/serial_blackfin.c                   |    1 -
- drivers/serial/serial_imx.c                        |    8 +-
- drivers/serial/serial_mpc5xxx.c                    |    3 +-
- drivers/serial/serial_netx.c                       |    1 -
- drivers/serial/serial_ns16550.c                    |    1 -
- drivers/serial/serial_pl010.c                      |    1 -
- drivers/serial/serial_pxa.c                        |    7 +-
- drivers/serial/serial_s3c.c                        |   47 +-
- drivers/serial/stm-serial.c                        |    9 +-
- drivers/usb/gadget/pxa27x_udc.c                    |    6 +-
- drivers/usb/gadget/u_serial.c                      |    2 +-
- drivers/usb/storage/usb.c                          |   23 +-
- drivers/usb/storage/usb.h                          |    1 +
- drivers/video/pxa.c                                |    3 -
- fs/Kconfig                                         |    4 +
- fs/Makefile                                        |    1 +
- fs/cramfs/cramfs.c                                 |    3 +-
- fs/devfs.c                                         |    1 -
- fs/fat/fat.c                                       |    3 +-
- fs/fat/ff.c                                        |   93 +--
- fs/fs.c                                            |  267 ++++----
- fs/ramfs.c                                         |    1 -
- fs/tftp.c                                          |  643 ++++++++++++++++=
-++++
- include/block.h                                    |   16 +-
- include/clock.h                                    |   19 +
- include/command.h                                  |    2 +-
- include/common.h                                   |    6 +
- include/driver.h                                   |   12 +-
- include/fs.h                                       |   22 +-
- include/getopt.h                                   |   14 +-
- include/gpio_keys.h                                |   30 +
- include/linux/list.h                               |   20 +
- include/mci.h                                      |  103 +++-
- include/mfd/mc34708.h                              |  102 ++++
- include/net.h                                      |    4 +-
- include/pwm.h                                      |   68 +++
- include/readkey.h                                  |    4 +
- lib/copy_file.c                                    |    5 +-
- lib/getopt.c                                       |   24 +-
- lib/string.c                                       |   24 -
- net/dhcp.c                                         |    2 +-
- net/dns.c                                          |    2 +-
- net/eth.c                                          |   10 +-
- net/net.c                                          |    6 +-
- net/nfs.c                                          |    2 +-
- net/ping.c                                         |    2 +-
- net/tftp.c                                         |    2 +-
- 252 files changed, 4803 insertions(+), 1146 deletions(-)
- create mode 100644 arch/arm/boards/mioa701/Makefile
- create mode 100644 arch/arm/boards/mioa701/board.c
- create mode 100644 arch/arm/boards/mioa701/config.h
- create mode 100644 arch/arm/boards/mioa701/env/bin/barebox_update
- create mode 100644 arch/arm/boards/mioa701/env/bin/init
- create mode 100644 arch/arm/boards/mioa701/env/bin/mtd_env_override
- create mode 100644 arch/arm/boards/mioa701/env/bin/sdcard_override
- create mode 100644 arch/arm/boards/mioa701/env/config
- create mode 100644 arch/arm/boards/mioa701/mioa701.h
- create mode 100644 arch/arm/boards/tqma53/Makefile
- create mode 100644 arch/arm/boards/tqma53/board.c
- create mode 100644 arch/arm/boards/tqma53/config.h
- create mode 100644 arch/arm/boards/tqma53/env/config
- create mode 100644 arch/arm/boards/tqma53/flash_header.c
- create mode 100644 arch/arm/configs/mioa701_defconfig
- create mode 100644 arch/arm/configs/tqma53_defconfig
- create mode 100644 arch/arm/include/asm/barebox-arm-head.h
- create mode 100644 arch/arm/mach-omap/include/mach/debug_ll.h
- create mode 100644 arch/arm/mach-pxa/include/mach/regs-pwm.h
- create mode 100644 arch/sandbox/include/asm/unaligned.h
- create mode 100644 defaultenv/bin/_boot_help
- create mode 100644 drivers/input/Kconfig
- create mode 100644 drivers/input/Makefile
- create mode 100644 drivers/input/gpio_keys.c
- create mode 100644 drivers/mfd/mc34708.c
- create mode 100644 drivers/pwm/Kconfig
- create mode 100644 drivers/pwm/Makefile
- create mode 100644 drivers/pwm/core.c
- create mode 100644 drivers/pwm/pxa_pwm.c
- create mode 100644 fs/tftp.c
- create mode 100644 include/gpio_keys.h
- create mode 100644 include/mfd/mc34708.h
- create mode 100644 include/pwm.h
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgQWxsLAoKVGhlIGZvbGxvd2luZyBpcyB0aGUgcmVzdWx0IG9mIGNvbXBpbGluZyBhbGwgZGVm
+Y29uZmlncyBpbiB0aGUgY3VycmVudAptYXN0ZXIgYnJhbmNoLiBBbnkgaGVscCBmaXhpbmcgdGhl
+c2UgaXMgdmVyeSBhcHByZWNpYXRlZC4KClRoYW5rcwogU2FzY2hhCgotLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KIENvbXBpbGluZyBh
+cm0gZGVmY29uZmlncwogQ3Jvc3MgQ29tcGlsZXI6IC9vcHQvT1NFTEFTLlRvb2xjaGFpbi0yMDEx
+LjExLjAvYXJtLXY1dGUtbGludXgtZ251ZWFiaS9nY2MtNC42LjItZ2xpYmMtMi4xNC4xLWJpbnV0
+aWxzLTIuMjEuMWEta2VybmVsLTIuNi4zOS1zYW5pdGl6ZWQvYmluL2FybS12NXRlLWxpbnV4LWdu
+dWVhYmktCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLQogY29uZmlnOiAgICAgICAgYTltMjQxMF9kZWZjb25maWcKLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCiBjb25maWc6
+ICAgICAgICBhOW0yNDQwX2RlZmNvbmZpZwotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KIGNvbmZpZzogICAgICAgIGF0OTFybTkyMDBl
+a19kZWZjb25maWcKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tCiBjb25maWc6ICAgICAgICBhdDkxc2FtOTI2MGVrX2RlZmNvbmZpZwpt
+YWtlOiAqKiogW2JhcmVib3guYmluXSBFcnJvciAxCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQogY29uZmlnOiAgICAgICAgYXQ5MXNh
+bTkyNjFla19kZWZjb25maWcKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tCiBjb25maWc6ICAgICAgICBhdDkxc2FtOTI2M2VrX2RlZmNv
+bmZpZwotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0KIGNvbmZpZzogICAgICAgIGF0OTFzYW05ZzEwZWtfZGVmY29uZmlnCi0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQogY29u
+ZmlnOiAgICAgICAgYXQ5MXNhbTlnMjBla19kZWZjb25maWcKbWFrZTogKioqIFtiYXJlYm94LmJp
+bl0gRXJyb3IgMQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0KIGNvbmZpZzogICAgICAgIGF0OTFzYW05bTEwZzQ1ZWtfZGVmY29uZmln
+Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLQogY29uZmlnOiAgICAgICAgYXQ5MXNhbTl4NWVrX2RlZmNvbmZpZwotLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KIGNvbmZpZzog
+ICAgICAgIGNodW1ieW9uZV9kZWZjb25maWcKYXJjaC9hcm0vbWFjaC1teHMvaW9tdXgtaW14LmM6
+IEluIGZ1bmN0aW9uICdpbXhfZ3Bpb19tb2RlJzoKYXJjaC9hcm0vbWFjaC1teHMvaW9tdXgtaW14
+LmM6MTMxOjI6IHdhcm5pbmc6IGltcGxpY2l0IGRlY2xhcmF0aW9uIG9mIGZ1bmN0aW9uICdCS19Q
+UkVTRU5UJyBbLVdpbXBsaWNpdC1mdW5jdGlvbi1kZWNsYXJhdGlvbl0KYXJjaC9hcm0vbWFjaC1t
+eHMvaW9tdXgtaW14LmM6MTMzOjM6IHdhcm5pbmc6IGltcGxpY2l0IGRlY2xhcmF0aW9uIG9mIGZ1
+bmN0aW9uICdHRVRfQklUS0VFUEVSJyBbLVdpbXBsaWNpdC1mdW5jdGlvbi1kZWNsYXJhdGlvbl0K
+YXJjaC9hcm0vbWFjaC1teHMvYnVpbHQtaW4ubzogSW4gZnVuY3Rpb24gYGlteF9ncGlvX21vZGUn
+OgovaG9tZS9zaGEvZHVkZS9iYXJlYm94L2JhcmVib3gvYXJjaC9hcm0vbWFjaC1teHMvaW9tdXgt
+aW14LmM6MTMxOiB1bmRlZmluZWQgcmVmZXJlbmNlIHRvIGBCS19QUkVTRU5UJwovaG9tZS9zaGEv
+ZHVkZS9iYXJlYm94L2JhcmVib3gvYXJjaC9hcm0vbWFjaC1teHMvaW9tdXgtaW14LmM6MTMzOiB1
+bmRlZmluZWQgcmVmZXJlbmNlIHRvIGBHRVRfQklUS0VFUEVSJwptYWtlOiAqKiogW2JhcmVib3hd
+IEVycm9yIDEKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tCiBjb25maWc6ICAgICAgICBjdXBpZF9kZWZjb25maWcKLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCiBjb25maWc6
+ICAgICAgICBkc3MxMV9kZWZjb25maWcKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCiBjb25maWc6ICAgICAgICBlZGI5M3h4X2RlZmNv
+bmZpZwotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0KIGNvbmZpZzogICAgICAgIGV1a3JlYV9jcHVpbXgyNV9kZWZjb25maWcKLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCiBj
+b25maWc6ICAgICAgICBldWtyZWFfY3B1aW14MjdfZGVmY29uZmlnCmFyY2gvYXJtL21hY2gtaW14
+L2luY2x1ZGUvbWFjaC9pbXgyNy1yZWdzLmg6IEFzc2VtYmxlciBtZXNzYWdlczoKYXJjaC9hcm0v
+bWFjaC1pbXgvaW5jbHVkZS9tYWNoL2lteDI3LXJlZ3MuaDoyNDM6IEVycm9yOiBiYWQgaW5zdHJ1
+Y3Rpb24gYHN0YXRpYyBpbmxpbmUgdm9pZCBpbXgyN19zZXR1cF93ZWltY3Moc2l6ZV90IGNzLHVu
+c2lnbmVkIHVwcGVyLHVuc2lnbmVkIGxvd2VyLHVuc2lnbmVkIGFkZGlvbmFsKScKYXJjaC9hcm0v
+bWFjaC1pbXgvaW5jbHVkZS9tYWNoL2lteDI3LXJlZ3MuaDoyNDQ6IEVycm9yOiBqdW5rIGF0IGVu
+ZCBvZiBsaW5lLCBmaXJzdCB1bnJlY29nbml6ZWQgY2hhcmFjdGVyIGlzIGB7JwphcmNoL2FybS9t
+YWNoLWlteC9pbmNsdWRlL21hY2gvaW14MjctcmVncy5oOjI0NTogRXJyb3I6IGp1bmsgYXQgZW5k
+IG9mIGxpbmUsIGZpcnN0IHVucmVjb2duaXplZCBjaGFyYWN0ZXIgaXMgYCgnCmFyY2gvYXJtL21h
+Y2gtaW14L2luY2x1ZGUvbWFjaC9pbXgyNy1yZWdzLmg6MjQ2OiBFcnJvcjoganVuayBhdCBlbmQg
+b2YgbGluZSwgZmlyc3QgdW5yZWNvZ25pemVkIGNoYXJhY3RlciBpcyBgKCcKYXJjaC9hcm0vbWFj
+aC1pbXgvaW5jbHVkZS9tYWNoL2lteDI3LXJlZ3MuaDoyNDc6IEVycm9yOiBqdW5rIGF0IGVuZCBv
+ZiBsaW5lLCBmaXJzdCB1bnJlY29nbml6ZWQgY2hhcmFjdGVyIGlzIGAoJwphcmNoL2FybS9tYWNo
+LWlteC9pbmNsdWRlL21hY2gvaW14MjctcmVncy5oOjI0ODogRXJyb3I6IGp1bmsgYXQgZW5kIG9m
+IGxpbmUsIGZpcnN0IHVucmVjb2duaXplZCBjaGFyYWN0ZXIgaXMgYH0nCm1ha2VbMV06ICoqKiBb
+YXJjaC9hcm0vYm9hcmRzL2V1a3JlYV9jcHVpbXgyNy9sb3dsZXZlbF9pbml0Lm9dIEVycm9yIDEK
+bWFrZVsxXTogKioqIFdhaXRpbmcgZm9yIHVuZmluaXNoZWQgam9icy4uLi4KbWFrZTogKioqIFth
+cmNoL2FybS9ib2FyZHMvZXVrcmVhX2NwdWlteDI3XSBFcnJvciAyCm1ha2U6ICoqKiBXYWl0aW5n
+IGZvciB1bmZpbmlzaGVkIGpvYnMuLi4uCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQogY29uZmlnOiAgICAgICAgZXVrcmVhX2NwdWlt
+eDM1X2RlZmNvbmZpZwotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0KIGNvbmZpZzogICAgICAgIGV1a3JlYV9jcHVpbXg1MV9kZWZjb25m
+aWcKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tCiBjb25maWc6ICAgICAgICBmcmVlc2NhbGVfbXgyNV8zc3RhY2tfZGVmY29uZmlnCi0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LQogY29uZmlnOiAgICAgICAgZnJlZXNjYWxlX214MzVfM3N0YWNrX2RlZmNvbmZpZwotLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KIGNv
+bmZpZzogICAgICAgIGZyZWVzY2FsZV9teDUxX2JhYmJhZ2VfZGVmY29uZmlnCi0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQogY29uZmln
+OiAgICAgICAgZnJlZXNjYWxlX214NTNfbG9jb19kZWZjb25maWcKLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCiBjb25maWc6ICAgICAg
+ICBmcmVlc2NhbGVfbXg1M19zbWRfZGVmY29uZmlnCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQogY29uZmlnOiAgICAgICAgaW14MjNl
+dmtfZGVmY29uZmlnCmFyY2gvYXJtL21hY2gtbXhzL2lvbXV4LWlteC5jOiBJbiBmdW5jdGlvbiAn
+aW14X2dwaW9fbW9kZSc6CmFyY2gvYXJtL21hY2gtbXhzL2lvbXV4LWlteC5jOjEzMToyOiB3YXJu
+aW5nOiBpbXBsaWNpdCBkZWNsYXJhdGlvbiBvZiBmdW5jdGlvbiAnQktfUFJFU0VOVCcgWy1XaW1w
+bGljaXQtZnVuY3Rpb24tZGVjbGFyYXRpb25dCmFyY2gvYXJtL21hY2gtbXhzL2lvbXV4LWlteC5j
+OjEzMzozOiB3YXJuaW5nOiBpbXBsaWNpdCBkZWNsYXJhdGlvbiBvZiBmdW5jdGlvbiAnR0VUX0JJ
+VEtFRVBFUicgWy1XaW1wbGljaXQtZnVuY3Rpb24tZGVjbGFyYXRpb25dCmFyY2gvYXJtL21hY2gt
+bXhzL2J1aWx0LWluLm86IEluIGZ1bmN0aW9uIGBpbXhfZ3Bpb19tb2RlJzoKL2hvbWUvc2hhL2R1
+ZGUvYmFyZWJveC9iYXJlYm94L2FyY2gvYXJtL21hY2gtbXhzL2lvbXV4LWlteC5jOjEzMTogdW5k
+ZWZpbmVkIHJlZmVyZW5jZSB0byBgQktfUFJFU0VOVCcKL2hvbWUvc2hhL2R1ZGUvYmFyZWJveC9i
+YXJlYm94L2FyY2gvYXJtL21hY2gtbXhzL2lvbXV4LWlteC5jOjEzMzogdW5kZWZpbmVkIHJlZmVy
+ZW5jZSB0byBgR0VUX0JJVEtFRVBFUicKbWFrZTogKioqIFtiYXJlYm94XSBFcnJvciAxCi0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQog
+Y29uZmlnOiAgICAgICAgaW14MjhldmtfZGVmY29uZmlnCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQogY29uZmlnOiAgICAgICAgbWlu
+aTI0NDBfZGVmY29uZmlnCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLQogY29uZmlnOiAgICAgICAgbWlvYTcwMV9kZWZjb25maWcKLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+CiBjb25maWc6ICAgICAgICBtbWNjcHVfZGVmY29uZmlnCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQogY29uZmlnOiAgICAgICAgbXgy
+MWFkc19kZWZjb25maWcKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tCiBjb25maWc6ICAgICAgICBteDI3YWRzX2RlZmNvbmZpZwphcmNo
+L2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvaW14MjctcmVncy5oOiBBc3NlbWJsZXIgbWVzc2Fn
+ZXM6CmFyY2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9pbXgyNy1yZWdzLmg6MjQzOiBFcnJv
+cjogYmFkIGluc3RydWN0aW9uIGBzdGF0aWMgaW5saW5lIHZvaWQgaW14Mjdfc2V0dXBfd2VpbWNz
+KHNpemVfdCBjcyx1bnNpZ25lZCB1cHBlcix1bnNpZ25lZCBsb3dlcix1bnNpZ25lZCBhZGRpb25h
+bCknCmFyY2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9pbXgyNy1yZWdzLmg6MjQ0OiBFcnJv
+cjoganVuayBhdCBlbmQgb2YgbGluZSwgZmlyc3QgdW5yZWNvZ25pemVkIGNoYXJhY3RlciBpcyBg
+eycKYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2lteDI3LXJlZ3MuaDoyNDU6IEVycm9y
+OiBqdW5rIGF0IGVuZCBvZiBsaW5lLCBmaXJzdCB1bnJlY29nbml6ZWQgY2hhcmFjdGVyIGlzIGAo
+JwphcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvaW14MjctcmVncy5oOjI0NjogRXJyb3I6
+IGp1bmsgYXQgZW5kIG9mIGxpbmUsIGZpcnN0IHVucmVjb2duaXplZCBjaGFyYWN0ZXIgaXMgYCgn
+CmFyY2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9pbXgyNy1yZWdzLmg6MjQ3OiBFcnJvcjog
+anVuayBhdCBlbmQgb2YgbGluZSwgZmlyc3QgdW5yZWNvZ25pemVkIGNoYXJhY3RlciBpcyBgKCcK
+YXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2lteDI3LXJlZ3MuaDoyNDg6IEVycm9yOiBq
+dW5rIGF0IGVuZCBvZiBsaW5lLCBmaXJzdCB1bnJlY29nbml6ZWQgY2hhcmFjdGVyIGlzIGB9Jwpt
+YWtlWzFdOiAqKiogW2FyY2gvYXJtL2JvYXJkcy9pbXgyN2Fkcy9sb3dsZXZlbF9pbml0Lm9dIEVy
+cm9yIDEKbWFrZTogKioqIFthcmNoL2FybS9ib2FyZHMvaW14MjdhZHNdIEVycm9yIDIKbWFrZTog
+KioqIFdhaXRpbmcgZm9yIHVuZmluaXNoZWQgam9icy4uLi4KLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCiBjb25maWc6ICAgICAgICBu
+ZXNvX2RlZmNvbmZpZwphcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvaW14MjctcmVncy5o
+OiBBc3NlbWJsZXIgbWVzc2FnZXM6CmFyY2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9pbXgy
+Ny1yZWdzLmg6MjQzOiBFcnJvcjogYmFkIGluc3RydWN0aW9uIGBzdGF0aWMgaW5saW5lIHZvaWQg
+aW14Mjdfc2V0dXBfd2VpbWNzKHNpemVfdCBjcyx1bnNpZ25lZCB1cHBlcix1bnNpZ25lZCBsb3dl
+cix1bnNpZ25lZCBhZGRpb25hbCknCmFyY2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9pbXgy
+Ny1yZWdzLmg6MjQ0OiBFcnJvcjoganVuayBhdCBlbmQgb2YgbGluZSwgZmlyc3QgdW5yZWNvZ25p
+emVkIGNoYXJhY3RlciBpcyBgeycKYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2lteDI3
+LXJlZ3MuaDoyNDU6IEVycm9yOiBqdW5rIGF0IGVuZCBvZiBsaW5lLCBmaXJzdCB1bnJlY29nbml6
+ZWQgY2hhcmFjdGVyIGlzIGAoJwphcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvaW14Mjct
+cmVncy5oOjI0NjogRXJyb3I6IGp1bmsgYXQgZW5kIG9mIGxpbmUsIGZpcnN0IHVucmVjb2duaXpl
+ZCBjaGFyYWN0ZXIgaXMgYCgnCmFyY2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9pbXgyNy1y
+ZWdzLmg6MjQ3OiBFcnJvcjoganVuayBhdCBlbmQgb2YgbGluZSwgZmlyc3QgdW5yZWNvZ25pemVk
+IGNoYXJhY3RlciBpcyBgKCcKYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2lteDI3LXJl
+Z3MuaDoyNDg6IEVycm9yOiBqdW5rIGF0IGVuZCBvZiBsaW5lLCBmaXJzdCB1bnJlY29nbml6ZWQg
+Y2hhcmFjdGVyIGlzIGB9JwptYWtlWzFdOiAqKiogW2FyY2gvYXJtL2JvYXJkcy9ndWYtbmVzby9w
+bGxfaW5pdC5vXSBFcnJvciAxCm1ha2U6ICoqKiBbYXJjaC9hcm0vYm9hcmRzL2d1Zi1uZXNvXSBF
+cnJvciAyCm1ha2U6ICoqKiBXYWl0aW5nIGZvciB1bmZpbmlzaGVkIGpvYnMuLi4uCi0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQogY29u
+ZmlnOiAgICAgICAgbmV0eF9ueGRiNTAwX2RlZmNvbmZpZwotLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KIGNvbmZpZzogICAgICAgIG5o
+azg4MTVfZGVmY29uZmlnCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLQogY29uZmlnOiAgICAgICAgb21hcDM0MzBfc2RwMzQzMF9wZXJf
+dWFydF9kZWZjb25maWcKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tCiBjb25maWc6ICAgICAgICBvbWFwMzUzMF9iZWFnbGVfZGVmY29u
+ZmlnCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLQogY29uZmlnOiAgICAgICAgb21hcDM1MzBfYmVhZ2xlX3Blcl91YXJ0X2RlZmNvbmZp
+ZwotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0KIGNvbmZpZzogICAgICAgIG9tYXAzNTMwX2JlYWdsZV94bG9hZF9kZWZjb25maWcKLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+CiBjb25maWc6ICAgICAgICBvbWFwM19ldm1fZGVmY29uZmlnCi0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQogY29uZmlnOiAgICAgICAg
+cGFuZGFfZGVmY29uZmlnCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLQogY29uZmlnOiAgICAgICAgcGFuZGFfeGxvYWRfZGVmY29uZmln
+Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLQogY29uZmlnOiAgICAgICAgcGNhMTAwX2RlZmNvbmZpZwphcmNoL2FybS9tYWNoLWlteC9p
+bmNsdWRlL21hY2gvaW14MjctcmVncy5oOiBBc3NlbWJsZXIgbWVzc2FnZXM6CmFyY2gvYXJtL21h
+Y2gtaW14L2luY2x1ZGUvbWFjaC9pbXgyNy1yZWdzLmg6MjQzOiBFcnJvcjogYmFkIGluc3RydWN0
+aW9uIGBzdGF0aWMgaW5saW5lIHZvaWQgaW14Mjdfc2V0dXBfd2VpbWNzKHNpemVfdCBjcyx1bnNp
+Z25lZCB1cHBlcix1bnNpZ25lZCBsb3dlcix1bnNpZ25lZCBhZGRpb25hbCknCmFyY2gvYXJtL21h
+Y2gtaW14L2luY2x1ZGUvbWFjaC9pbXgyNy1yZWdzLmg6MjQ0OiBFcnJvcjoganVuayBhdCBlbmQg
+b2YgbGluZSwgZmlyc3QgdW5yZWNvZ25pemVkIGNoYXJhY3RlciBpcyBgeycKYXJjaC9hcm0vbWFj
+aC1pbXgvaW5jbHVkZS9tYWNoL2lteDI3LXJlZ3MuaDoyNDU6IEVycm9yOiBqdW5rIGF0IGVuZCBv
+ZiBsaW5lLCBmaXJzdCB1bnJlY29nbml6ZWQgY2hhcmFjdGVyIGlzIGAoJwphcmNoL2FybS9tYWNo
+LWlteC9pbmNsdWRlL21hY2gvaW14MjctcmVncy5oOjI0NjogRXJyb3I6IGp1bmsgYXQgZW5kIG9m
+IGxpbmUsIGZpcnN0IHVucmVjb2duaXplZCBjaGFyYWN0ZXIgaXMgYCgnCmFyY2gvYXJtL21hY2gt
+aW14L2luY2x1ZGUvbWFjaC9pbXgyNy1yZWdzLmg6MjQ3OiBFcnJvcjoganVuayBhdCBlbmQgb2Yg
+bGluZSwgZmlyc3QgdW5yZWNvZ25pemVkIGNoYXJhY3RlciBpcyBgKCcKYXJjaC9hcm0vbWFjaC1p
+bXgvaW5jbHVkZS9tYWNoL2lteDI3LXJlZ3MuaDoyNDg6IEVycm9yOiBqdW5rIGF0IGVuZCBvZiBs
+aW5lLCBmaXJzdCB1bnJlY29nbml6ZWQgY2hhcmFjdGVyIGlzIGB9JwptYWtlWzFdOiAqKiogW2Fy
+Y2gvYXJtL2JvYXJkcy9waHljYXJkLWkuTVgyNy9sb3dsZXZlbF9pbml0Lm9dIEVycm9yIDEKbWFr
+ZTogKioqIFthcmNoL2FybS9ib2FyZHMvcGh5Y2FyZC1pLk1YMjddIEVycm9yIDIKbWFrZTogKioq
+IFdhaXRpbmcgZm9yIHVuZmluaXNoZWQgam9icy4uLi4KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCiBjb25maWc6ICAgICAgICBwY20w
+MzdfZGVmY29uZmlnCmFyY2gvYXJtL21hY2gtaW14L25hbmQuYzoxMDg6Mjogd2FybmluZzogI3dh
+cm5pbmcgdXNpbmcgZW1wdHkgaW14X25hbmRfc2V0X2xheW91dCgpLiBOQU5EIGZsYXNoIHdpbGwg
+bm90IHdvcmsgcHJvcGVybHkgaWYgbm90IGJvb3RpbmcgZnJvbSBpdCBbLVdjcHBdCi0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQogY29u
+ZmlnOiAgICAgICAgcGNtMDM4X2RlZmNvbmZpZwotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KIGNvbmZpZzogICAgICAgIHBjbTA0M19k
+ZWZjb25maWcKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tCiBjb25maWc6ICAgICAgICBwY20wNDlfZGVmY29uZmlnCi0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQogY29uZmln
+OiAgICAgICAgcGNtMDQ5X3hsb2FkX2RlZmNvbmZpZwotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KIGNvbmZpZzogICAgICAgIHBoeWNh
+cmRfYV9sMV9kZWZjb25maWcKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tCiBjb25maWc6ICAgICAgICBwaHljYXJkX2FfeGwyX2RlZmNv
+bmZpZwotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0KIGNvbmZpZzogICAgICAgIHBoeWNhcmRfYV94bDJfeGxvYWRfZGVmY29uZmlnCi0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LQogY29uZmlnOiAgICAgICAgcG05MjYxX2RlZmNvbmZpZwotLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KIGNvbmZpZzogICAgICAgIHBt
+OTI2M19kZWZjb25maWcKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tCiBjb25maWc6ICAgICAgICBwbTlnNDVfZGVmY29uZmlnCmFyY2gv
+YXJtL21hY2gtYXQ5MS9hdDkxc2FtOWc0NV9kZXZpY2VzLmM6MzA1OjM6IHdhcm5pbmc6IGluaXRp
+YWxpemF0aW9uIGRpc2NhcmRzICdjb25zdCcgcXVhbGlmaWVyIGZyb20gcG9pbnRlciB0YXJnZXQg
+dHlwZSBbZW5hYmxlZCBieSBkZWZhdWx0XQphcmNoL2FybS9tYWNoLWF0OTEvYXQ5MXNhbTlnNDVf
+ZGV2aWNlcy5jOjMwOTozOiB3YXJuaW5nOiBpbml0aWFsaXphdGlvbiBkaXNjYXJkcyAnY29uc3Qn
+IHF1YWxpZmllciBmcm9tIHBvaW50ZXIgdGFyZ2V0IHR5cGUgW2VuYWJsZWQgYnkgZGVmYXVsdF0K
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tCiBjb25maWc6ICAgICAgICBzY2I5MzI4X2RlZmNvbmZpZwotLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KIGNvbmZpZzogICAgICAg
+IHRueV9hOTI2MF9kZWZjb25maWcKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCiBjb25maWc6ICAgICAgICB0bnlfYTkyNjNfZGVmY29u
+ZmlnCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLQogY29uZmlnOiAgICAgICAgdG55X2E5ZzIwX2RlZmNvbmZpZwotLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KIGNvbmZpZzog
+ICAgICAgIHRxbWE1M19kZWZjb25maWcKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCiBjb25maWc6ICAgICAgICB0eDI1c3RrNV9kZWZj
+b25maWcKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tCiBjb25maWc6ICAgICAgICB0eDI4c3RrNV9kZWZjb25maWcKLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCiBjb25maWc6
+ICAgICAgICB1c2JfYTkyNjBfZGVmY29uZmlnCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQogY29uZmlnOiAgICAgICAgdXNiX2E5MjYz
+XzEyOG1pYl9kZWZjb25maWcKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tCiBjb25maWc6ICAgICAgICB1c2JfYTkyNjNfZGVmY29uZmln
+Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLQogY29uZmlnOiAgICAgICAgdXNiX2E5ZzIwXzEyOG1pYl9kZWZjb25maWcKLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCiBjb25m
+aWc6ICAgICAgICB1c2JfYTlnMjBfZGVmY29uZmlnCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQogY29uZmlnOiAgICAgICAgdmVyc2F0
+aWxlcGJfZGVmY29uZmlnCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLQogQ29tcGlsaW5nIGJsYWNrZmluIGRlZmNvbmZpZ3MKIENyb3Nz
+IENvbXBpbGVyOiAvb3B0L2JmaW4vYmZpbi1lbGYtMjAxMFIxLWdjYy00LjMvYmluL2JmaW4tZWxm
+LQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0KIGNvbmZpZzogICAgICAgIGlwZTMzN19kZWZjb25maWcKLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCiBDb21waWxpbmcgbWlw
+cyBkZWZjb25maWdzCiBDcm9zcyBDb21waWxlcjogL29wdC9PU0VMQVMuVG9vbGNoYWluLTIwMTEu
+MTEuMC9taXBzZWwtc29mdGZsb2F0LWxpbnV4LWdudS9nY2MtNC4yLjMtZ2xpYmMtMi44LWJpbnV0
+aWxzLTIuMTgta2VybmVsLTIuNi4yNy1zYW5pdGl6ZWQvYmluL21pcHNlbC1zb2Z0ZmxvYXQtbGlu
+dXgtZ251LQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0KIGNvbmZpZzogICAgICAgIGRsaW5rLWRpci0zMjBfZGVmY29uZmlnCi0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQog
+Y29uZmlnOiAgICAgICAgcWVtdS1tYWx0YV9kZWZjb25maWcKLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCiBDb21waWxpbmcgbmlvczIg
+ZGVmY29uZmlncwogQ3Jvc3MgQ29tcGlsZXI6IC9wdHgvb3B0L0xpbnV4LWk2ODYvbmlvcy9uaW9z
+Mi1saW51eC1nY2MtNC4xLjItZ2xpYmMtMi41LWJpbnV0aWxzLTIuMTcvYmluL25pb3MyLWxpbnV4
+LWdudS0KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tCiBjb25maWc6ICAgICAgICBnZW5lcmljX2RlZmNvbmZpZwotLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KIENvbXBpbGlu
+ZyBvcGVucmlzYyBkZWZjb25maWdzCiBDcm9zcyBDb21waWxlcjogL29wdC9vcGVucmlzYy9iaW4v
+b3IzMi1saW51eC0KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tCiBjb25maWc6ICAgICAgICBnZW5lcmljX2RlZmNvbmZpZwotLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KIENv
+bXBpbGluZyBwcGMgZGVmY29uZmlncwogQ3Jvc3MgQ29tcGlsZXI6IC9vcHQvT1NFTEFTLlRvb2xj
+aGFpbi0yMDExLjExLjAvcG93ZXJwYy02MDNlLWxpbnV4LWdudS9nY2MtNC42LjItZ2xpYmMtMi4x
+NC4xLWJpbnV0aWxzLTIuMjEuMWEta2VybmVsLTIuNi4zOS1zYW5pdGl6ZWQvYmluL3Bvd2VycGMt
+NjAzZS1saW51eC1nbnUtCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLQogY29uZmlnOiAgICAgICAgcGNtMDMwX2RlZmNvbmZpZwotLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0K
+IENvbXBpbGluZyBzYW5kYm94IGRlZmNvbmZpZ3MKIENyb3NzIENvbXBpbGVyOgotLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KIGNvbmZp
+ZzogICAgICAgIHNhbmRib3hfZGVmY29uZmlnCmRyaXZlcnMvYmFzZS9kcml2ZXIuYzogSW4gZnVu
+Y3Rpb24g4oCYZGV2X2dldF9tZW1fcmVnaW9u4oCZOgpkcml2ZXJzL2Jhc2UvZHJpdmVyLmM6MjUx
+Ojk6IHdhcm5pbmc6IGNhc3QgdG8gcG9pbnRlciBmcm9tIGludGVnZXIgb2YgZGlmZmVyZW50IHNp
+emUgWy1XaW50LXRvLXBvaW50ZXItY2FzdF0KZHJpdmVycy9iYXNlL2RyaXZlci5jOiBJbiBmdW5j
+dGlvbiDigJhkZXZfcmVxdWVzdF9tZW1fcmVnaW9u4oCZOgpkcml2ZXJzL2Jhc2UvZHJpdmVyLmM6
+MjY1Ojk6IHdhcm5pbmc6IGNhc3QgdG8gcG9pbnRlciBmcm9tIGludGVnZXIgb2YgZGlmZmVyZW50
+IHNpemUgWy1XaW50LXRvLXBvaW50ZXItY2FzdF0KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCiBDb21waWxpbmcgeDg2IGRlZmNvbmZp
+Z3MKIENyb3NzIENvbXBpbGVyOiAvb3B0L09TRUxBUy5Ub29sY2hhaW4tMjAxMS4wMy4xL2k1ODYt
+dW5rbm93bi1saW51eC1nbnUvZ2NjLTQuNS4yLWdsaWJjLTIuMTMtYmludXRpbHMtMi4yMS1rZXJu
+ZWwtMi42LjM2LXNhbml0aXplZC9iaW4vaTU4Ni11bmtub3duLWxpbnV4LWdudS0KLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCiBjb25m
+aWc6ICAgICAgICBnZW5lcmljX2RlZmNvbmZpZwotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAg
+ICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKSW5kdXN0
+cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRy
+b25peC5kZS8gIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55IHwg
+UGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJB
+IDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBs
+aXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9y
+Zy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
