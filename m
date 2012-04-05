@@ -1,19 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 12.mo3.mail-out.ovh.net ([188.165.41.191]
- helo=mo3.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SFnaV-00019F-1W
- for barebox@lists.infradead.org; Thu, 05 Apr 2012 14:23:00 +0000
-Received: from mail622.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id B54D4FF9720
- for <barebox@lists.infradead.org>; Thu,  5 Apr 2012 16:23:40 +0200 (CEST)
-Date: Thu, 5 Apr 2012 16:06:40 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120405140640.GA16306@game.jcrosoft.org>
-References: <1333619165-13740-1-git-send-email-eric@eukrea.com>
+Received: from nm10.bullet.mail.ukl.yahoo.com ([217.146.182.251])
+ by merlin.infradead.org with smtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1SFnpu-0001kN-8x
+ for barebox@lists.infradead.org; Thu, 05 Apr 2012 14:38:55 +0000
+Message-ID: <4F7DAE7B.2050607@yahoo.fr>
+Date: Thu, 05 Apr 2012 16:38:51 +0200
+From: Patrick <kpa_info@yahoo.fr>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1333619165-13740-1-git-send-email-eric@eukrea.com>
+References: <4F7D68A1.9000800@yahoo.fr> <20120405134957.GE3852@pengutronix.de>
+In-Reply-To: <20120405134957.GE3852@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,27 +17,63 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] at91sam9260ek: fix build error
-To: Eric =?iso-8859-1?Q?B=E9nard?= <eric@eukrea.com>
+Subject: Re: GPIO commands on OMAP4
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 11:46 Thu 05 Apr     , Eric B=E9nard wrote:
-> actual defconfig trigger :
-> barebox.bin size 262600 > of the maximum size 262144
-> =
+On 04/05/2012 03:49 PM, Sascha Hauer wrote:
+> On Thu, Apr 05, 2012 at 11:40:49AM +0200, Patrick wrote:
+>> Dear mailing-list,
+>>
+>> I am using a pcm049 phyCORE omap4430 module from Phytec with BareBox
+>> 2011.09.0 patched with BSP from Phytec.
+>>
+>> I would like to use the GPIO command to read a switch at startup.
+>> This chip is connected on ABE_MCBSP1_DX (gpio_116). I have edited
+>> the boards/pcm049/mux.c files to change the configuration of this
+>> GPIO as follow: {ABE_MCBSP1_DX, (DIS | IEN | M3)} instead of
+>> {ABE_MCBSP1_DX, (SAFE_MODE)}.
+>>
+>> I then use the "gpio_get_value 116" command followed by "echo $?" to
+>> read the value. I always read a 0. On Linux I could read the right
+>> value depending of the position of the switch, so it's not an
+>> hardware problems.
+>>
+>> I have tried with one of the two LEDs on the module (gpio_152) and I
+>> could change the LED state and read it back with gpio_get_value.
+>>
+>> I do not understand what I am doing wrong. Any help will be appreciated.
+>
+> What you tried should work. The only thing I can imagine is that you
+> need a gpio_direction_input before reading the value.
+>
+> Sascha
+>
+I have found the the problem come from the mux configuration.
 
-> removing verbose error message fix this problem without impacting
-> to much the user's experience
-no I need to udapte the config
+I have added a call to set_muxconf_regs() from the gpio_get_value() 
+(this is only to try) and then it works. I have checked my configuration 
+and the lowlevel init is enabled:
 
-And I want errno messages
+CONFIG_MACH_HAS_LOWLEVEL_INIT=y
+CONFIG_MACH_DO_LOWLEVEL_INIT=y
 
-Best Regards,
-J.
+I am runnig my development version of barebox from the stable barebox 
+flashed on NAND. I do the following:
+
+tftp barebox.bin /dev/ram0
+go /dev/ram0
+
+Could this be a problem ?
+
+Thanks for your help
+
+Patrick
+
 
 _______________________________________________
 barebox mailing list
