@@ -1,19 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SFiyr-0003xN-CP
- for barebox@lists.infradead.org; Thu, 05 Apr 2012 09:27:51 +0000
-Date: Thu, 5 Apr 2012 11:27:38 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120405092738.GB3852@pengutronix.de>
-References: <CAD9ZU8BR35iyRxH1-eEioCdo_mcXeVS+GjiSCiahPSUvcDXgXw@mail.gmail.com>
- <20120405063322.GV3852@pengutronix.de>
- <CAD9ZU8ACc_p2bTq-QtwhHXWz6NP=J-VkKS=0O2vdHkO2oRQUDw@mail.gmail.com>
- <20120405065455.GW3852@pengutronix.de>
- <CAD9ZU8Ce_s5pq8Y6wm5dXo_rv-fg2pYx1O+T9bh+7Kq088ySFA@mail.gmail.com>
+Received: from nm13.bullet.mail.ukl.yahoo.com ([217.146.183.187])
+ by merlin.infradead.org with smtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1SFjBX-0000vr-3V
+ for barebox@lists.infradead.org; Thu, 05 Apr 2012 09:40:55 +0000
+Message-ID: <4F7D68A1.9000800@yahoo.fr>
+Date: Thu, 05 Apr 2012 11:40:49 +0200
+From: Patrick <kpa_info@yahoo.fr>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAD9ZU8Ce_s5pq8Y6wm5dXo_rv-fg2pYx1O+T9bh+7Kq088ySFA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,37 +15,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: debugging on board
-To: Gabriel Tisan <gabriel.tisan@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: GPIO commands on OMAP4
+To: barebox@lists.infradead.org
 
-On Thu, Apr 05, 2012 at 09:06:30AM +0200, Gabriel Tisan wrote:
-> I use external boot mode from NAND. I choosed
-> CONFIG_NAND_IMX_BOOT_512_2K although I have a flash with 2k page size.
+Dear mailing-list,
 
-Try 'make barebox.S' and have a look at the resulting barebox.S file.
-Everything including
+I am using a pcm049 phyCORE omap4430 module from Phytec with BareBox 
+2011.09.0 patched with BSP from Phytec.
 
-reset
-__mmu_cache_flush
-imx_nand_load_image
+I would like to use the GPIO command to read a switch at startup. This 
+chip is connected on ABE_MCBSP1_DX (gpio_116). I have edited the 
+boards/pcm049/mux.c files to change the configuration of this GPIO as 
+follow: {ABE_MCBSP1_DX, (DIS | IEN | M3)} instead of {ABE_MCBSP1_DX, 
+(SAFE_MODE)}.
 
-must fit into the first 2k of memory. We currently do not catch this
-(though we could using a seperate linker section for this). If your
-lowlevel init code is too big then you can easily exceed this
-limitation.
+I then use the "gpio_get_value 116" command followed by "echo $?" to 
+read the value. I always read a 0. On Linux I could read the right value 
+depending of the position of the switch, so it's not an hardware problems.
 
-Sascha
+I have tried with one of the two LEDs on the module (gpio_152) and I 
+could change the LED state and read it back with gpio_get_value.
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+I do not understand what I am doing wrong. Any help will be appreciated.
+
+Patrick
+
+
 
 _______________________________________________
 barebox mailing list
