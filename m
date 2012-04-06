@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from wp050.webpack.hosteurope.de ([80.237.132.57])
- by bombadil.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SGBEK-0000dx-Az
- for barebox@lists.infradead.org; Fri, 06 Apr 2012 15:37:41 +0000
-Date: Fri, 6 Apr 2012 17:36:52 +0200
+ by casper.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1SGDcR-0000Sj-Ld
+ for barebox@lists.infradead.org; Fri, 06 Apr 2012 18:10:44 +0000
+Date: Fri, 6 Apr 2012 20:09:50 +0200
 From: Uwe Hermann <uwe@hermann-uwe.de>
-Message-ID: <20120406153652.GA621@greenwood>
+Message-ID: <20120406180949.GB621@greenwood>
 MIME-Version: 1.0
 Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
@@ -20,36 +20,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Remove EXPERIMENTAL flag from loady.
+Subject: [PATCH] Fixup DRIVER_VIDEO_S3C24XX usage.
 To: barebox@lists.infradead.org
 
-From bd6c5c884337ae2d4ef41d85d59c2d5ec525f8a5 Mon Sep 17 00:00:00 2001
+From c67445d601c9332fabb71df8e41367fc104e1ac1 Mon Sep 17 00:00:00 2001
 From: Uwe Hermann <uwe@hermann-uwe.de>
-Date: Fri, 6 Apr 2012 17:30:01 +0200
+Date: Fri, 6 Apr 2012 20:07:12 +0200
 
-The loady command seems to work just fine (tested on an S3C2440 target).
-
-Also, mark it as TRISTATE like loadb and loads.
+DRIVER_VIDEO_S3C was renamed to DRIVER_VIDEO_S3C24XX recently.
 
 Signed-off-by: Uwe Hermann <uwe@hermann-uwe.de>
 ---
- commands/Kconfig |    3 +--
- 1 files changed, 1 insertions(+), 2 deletions(-)
+ arch/arm/boards/mini2440/Kconfig |    2 +-
+ drivers/video/Kconfig            |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 7a8811e..d7fdf04 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -222,8 +222,7 @@ config CMD_LOADB
+diff --git a/arch/arm/boards/mini2440/Kconfig b/arch/arm/boards/mini2440/Kconfig
+index 929df60..a8e79b3 100644
+--- a/arch/arm/boards/mini2440/Kconfig
++++ b/arch/arm/boards/mini2440/Kconfig
+@@ -4,7 +4,7 @@ if MACH_MINI2440
+ config MINI2440_VIDEO
+ 	bool
+ 	select VIDEO
+-	select DRIVER_VIDEO_S3C
++	select DRIVER_VIDEO_S3C24XX
  
- config CMD_LOADY
- 	select CRC16
--	depends on EXPERIMENTAL
--	bool
-+	tristate
- 	prompt "loady"
+ config MINI2440_VIDEO_N35
+ 	bool "Support N35 display (240x320)"
+diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
+index 509ba64..519cdbf 100644
+--- a/drivers/video/Kconfig
++++ b/drivers/video/Kconfig
+@@ -37,7 +37,7 @@ config DRIVER_VIDEO_S3C24XX
+ 	help
+ 	  Add support for the S3C244x LCD controller.
  
- config CMD_LOADS
+-if DRIVER_VIDEO_S3C
++if DRIVER_VIDEO_S3C24XX
+ 
+ config DRIVER_VIDEO_S3C_VERBOSE
+ 	bool "S3C244x verbose framebuffer info"
 -- 
 1.7.6.3
 
