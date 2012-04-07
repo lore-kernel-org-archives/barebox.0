@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 19.mo3.mail-out.ovh.net ([178.32.98.231]
- helo=mo3.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SGMNA-0005ia-JH
- for barebox@lists.infradead.org; Sat, 07 Apr 2012 03:31:33 +0000
-Received: from mail622.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 30935FF889A
- for <barebox@lists.infradead.org>; Sat,  7 Apr 2012 05:32:22 +0200 (CEST)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sat,  7 Apr 2012 05:15:00 +0200
-Message-Id: <1333768501-25204-3-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <20120407031228.GF16306@game.jcrosoft.org>
-References: <20120407031228.GF16306@game.jcrosoft.org>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SGRlY-0005Gw-Ds
+ for barebox@lists.infradead.org; Sat, 07 Apr 2012 09:17:05 +0000
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Sat, 7 Apr 2012 11:16:22 +0200
+References: <20120406180949.GB621@greenwood>
+In-Reply-To: <20120406180949.GB621@greenwood>
+MIME-Version: 1.0
+Content-Disposition: inline
+Message-Id: <201204071116.22125.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,35 +18,62 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] at91sam9m10g45ek: enable kernel console over framebuffer
+Subject: Re: [PATCH] Fixup DRIVER_VIDEO_S3C24XX usage.
 To: barebox@lists.infradead.org
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- arch/arm/boards/at91sam9m10g45ek/env/config |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+Uwe Hermann wrote:
+> From c67445d601c9332fabb71df8e41367fc104e1ac1 Mon Sep 17 00:00:00 2001
+> From: Uwe Hermann <uwe@hermann-uwe.de>
+> Date: Fri, 6 Apr 2012 20:07:12 +0200
+>
+> DRIVER_VIDEO_S3C was renamed to DRIVER_VIDEO_S3C24XX recently.
 
-diff --git a/arch/arm/boards/at91sam9m10g45ek/env/config b/arch/arm/boards/at91sam9m10g45ek/env/config
-index d115132..f31fdd5 100644
---- a/arch/arm/boards/at91sam9m10g45ek/env/config
-+++ b/arch/arm/boards/at91sam9m10g45ek/env/config
-@@ -31,7 +31,7 @@ rootfs_mtdblock_nand=5
- 
- autoboot_timeout=3
- 
--bootargs="console=ttyS0,115200"
-+bootargs="console=ttyS0,115200 console=tty0"
- 
- # set a fancy prompt (if support is compiled in)
- PS1="\e[1;32mbarebox@\e[1;31m\h:\w\e[0m "
+Ups, my fault :(
+
+> Signed-off-by: Uwe Hermann <uwe@hermann-uwe.de>
+> ---
+>  arch/arm/boards/mini2440/Kconfig |    2 +-
+>  drivers/video/Kconfig            |    2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/arm/boards/mini2440/Kconfig
+> b/arch/arm/boards/mini2440/Kconfig index 929df60..a8e79b3 100644
+> --- a/arch/arm/boards/mini2440/Kconfig
+> +++ b/arch/arm/boards/mini2440/Kconfig
+> @@ -4,7 +4,7 @@ if MACH_MINI2440
+>  config MINI2440_VIDEO
+>  	bool
+>  	select VIDEO
+> -	select DRIVER_VIDEO_S3C
+> +	select DRIVER_VIDEO_S3C24XX
+>
+>  config MINI2440_VIDEO_N35
+>  	bool "Support N35 display (240x320)"
+> diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
+> index 509ba64..519cdbf 100644
+> --- a/drivers/video/Kconfig
+> +++ b/drivers/video/Kconfig
+> @@ -37,7 +37,7 @@ config DRIVER_VIDEO_S3C24XX
+>  	help
+>  	  Add support for the S3C244x LCD controller.
+>
+> -if DRIVER_VIDEO_S3C
+> +if DRIVER_VIDEO_S3C24XX
+>
+>  config DRIVER_VIDEO_S3C_VERBOSE
+>  	bool "S3C244x verbose framebuffer info"
+
+Acked-by: Juergen Beisert <jbe@pengutronix.de>
+
+Juergen
+
 -- 
-1.7.9.1
-
+Pengutronix e.K.                              | Juergen Beisert             |
+Linux Solutions for Science and Industry      | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
