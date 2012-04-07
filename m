@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 7.mo3.mail-out.ovh.net ([46.105.57.200]
+Received: from 4.mo3.mail-out.ovh.net ([178.33.46.10]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SGMAk-0005W2-Hr
- for barebox@lists.infradead.org; Sat, 07 Apr 2012 03:18:43 +0000
+ id 1SGMKg-0005fD-GP
+ for barebox@lists.infradead.org; Sat, 07 Apr 2012 03:28:59 +0000
 Received: from mail622.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id A35B6FF83CD
- for <barebox@lists.infradead.org>; Sat,  7 Apr 2012 05:19:31 +0200 (CEST)
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id AF63DFF83A6
+ for <barebox@lists.infradead.org>; Sat,  7 Apr 2012 05:29:46 +0200 (CEST)
+Date: Sat, 7 Apr 2012 05:12:28 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sat,  7 Apr 2012 05:02:11 +0200
-Message-Id: <1333767731-21927-2-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1333767731-21927-1-git-send-email-plagnioj@jcrosoft.com>
-References: <1333767731-21927-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20120407031228.GF16306@game.jcrosoft.org>
+MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,115 +20,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] at91sam9260ek/9g20ek: udpate defconfig
+Subject: [PATCH 0/4] at91 boot menu support
 To: barebox@lists.infradead.org
 
-drop:
- - zlib
- - MTD OOB device
-enable:
- - magicvar
- - menu
+Hi,
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- arch/arm/configs/at91sam9260ek_defconfig |    5 ++++-
- arch/arm/configs/at91sam9g20ek_defconfig |    8 +++++++-
- 2 files changed, 11 insertions(+), 2 deletions(-)
+	This patch series add the support on at91sam9m10g45ek of a boot menu.
 
-diff --git a/arch/arm/configs/at91sam9260ek_defconfig b/arch/arm/configs/at91sam9260ek_defconfig
-index c288d39..45363ed 100644
---- a/arch/arm/configs/at91sam9260ek_defconfig
-+++ b/arch/arm/configs/at91sam9260ek_defconfig
-@@ -29,6 +29,7 @@ CONFIG_CMD_MTEST=y
- CONFIG_CMD_MTEST_ALTERNATIVE=y
- CONFIG_CMD_FLASH=y
- CONFIG_CMD_BOOTM_SHOW_TYPE=y
-+CONFIG_CMD_BOOTM_VERBOSE=y
- CONFIG_CMD_BOOTM_INITRD=y
- CONFIG_CMD_BOOTM_OFTREE=y
- CONFIG_CMD_BOOTM_OFTREE_UIMAGE=y
-@@ -39,6 +40,8 @@ CONFIG_CMD_GO=y
- CONFIG_CMD_OFTREE=y
- CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_PARTITION=y
-+CONFIG_CMD_MAGICVAR=y
-+CONFIG_CMD_MAGICVAR_HELP=y
- CONFIG_CMD_GPIO=y
- CONFIG_CMD_LED=y
- CONFIG_CMD_LED_TRIGGER=y
-@@ -51,6 +54,7 @@ CONFIG_NET_NETCONSOLE=y
- CONFIG_DRIVER_NET_MACB=y
- # CONFIG_SPI is not set
- CONFIG_MTD=y
-+# CONFIG_MTD_OOB_DEVICE is not set
- CONFIG_NAND=y
- # CONFIG_NAND_ECC_HW is not set
- # CONFIG_NAND_ECC_HW_SYNDROME is not set
-@@ -69,4 +73,3 @@ CONFIG_LED_TRIGGERS=y
- CONFIG_FS_FAT=y
- CONFIG_FS_FAT_WRITE=y
- CONFIG_FS_FAT_LFN=y
--CONFIG_ZLIB=y
-diff --git a/arch/arm/configs/at91sam9g20ek_defconfig b/arch/arm/configs/at91sam9g20ek_defconfig
-index 9473488..fe80a7c 100644
---- a/arch/arm/configs/at91sam9g20ek_defconfig
-+++ b/arch/arm/configs/at91sam9g20ek_defconfig
-@@ -13,6 +13,7 @@ CONFIG_PROMPT_HUSH_PS2="y"
- CONFIG_HUSH_FANCY_PROMPT=y
- CONFIG_CMDLINE_EDITING=y
- CONFIG_AUTO_COMPLETE=y
-+CONFIG_MENU=y
- # CONFIG_CONSOLE_ACTIVATE_FIRST is not set
- CONFIG_CONSOLE_ACTIVATE_ALL=y
- CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
-@@ -23,6 +24,8 @@ CONFIG_CMD_SAVEENV=y
- CONFIG_CMD_EXPORT=y
- CONFIG_CMD_PRINTENV=y
- CONFIG_CMD_READLINE=y
-+CONFIG_CMD_MENU=y
-+CONFIG_CMD_MENU_MANAGEMENT=y
- CONFIG_CMD_ECHO_E=y
- CONFIG_CMD_LOADB=y
- CONFIG_CMD_MEMINFO=y
-@@ -30,6 +33,7 @@ CONFIG_CMD_MTEST=y
- CONFIG_CMD_MTEST_ALTERNATIVE=y
- CONFIG_CMD_FLASH=y
- CONFIG_CMD_BOOTM_SHOW_TYPE=y
-+CONFIG_CMD_BOOTM_VERBOSE=y
- CONFIG_CMD_BOOTM_INITRD=y
- CONFIG_CMD_BOOTM_OFTREE=y
- CONFIG_CMD_BOOTM_OFTREE_UIMAGE=y
-@@ -40,6 +44,8 @@ CONFIG_CMD_GO=y
- CONFIG_CMD_OFTREE=y
- CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_PARTITION=y
-+CONFIG_CMD_MAGICVAR=y
-+CONFIG_CMD_MAGICVAR_HELP=y
- CONFIG_CMD_GPIO=y
- CONFIG_CMD_LED=y
- CONFIG_CMD_LED_TRIGGER=y
-@@ -52,6 +58,7 @@ CONFIG_NET_NETCONSOLE=y
- CONFIG_DRIVER_NET_MACB=y
- # CONFIG_SPI is not set
- CONFIG_MTD=y
-+# CONFIG_MTD_OOB_DEVICE is not set
- CONFIG_NAND=y
- # CONFIG_NAND_ECC_HW is not set
- # CONFIG_NAND_ECC_HW_SYNDROME is not set
-@@ -70,4 +77,3 @@ CONFIG_LED_TRIGGERS=y
- CONFIG_FS_FAT=y
- CONFIG_FS_FAT_WRITE=y
- CONFIG_FS_FAT_LFN=y
--CONFIG_ZLIB=y
--- 
-1.7.9.1
+	this pull include also at91-fixes, menu
 
+please full
+The following changes since commit 9c29dab5aab70d399c51d2cae73d9e40c5948707:
+
+  net: env: getenv_ip use resolv (2012-04-03 11:39:29 +0800)
+
+are available in the git repository at:
+
+  git://git.jcrosoft.org/barebox.git at91
+
+for you to fetch changes up to 6c0b0166b7b0ba9ec5733366b5edfc34e5eb165b:
+
+  at91sam9m10g45ek: add boot menu support (2012-04-07 10:55:37 +0800)
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (8):
+      at91rm9200ek: set maximum nor flash size
+      at91sam9260ek/9g20ek: udpate defconfig
+      menu: fix double action when "\n\r" or "\r\n" is received
+      menu: add color fancy support
+      defaultenv: add support for custom board boot
+      at91sam9m10g45ek: add gpio keys support
+      at91sam9m10g45ek: enable kernel console over framebuffer
+      at91sam9m10g45ek: add boot menu support
+
+ arch/arm/boards/at91rm9200ek/init.c                |    3 +-
+ .../arm/boards/at91sam9m10g45ek/env/bin/boot_board |   51 +++++++++++++++++++
+ arch/arm/boards/at91sam9m10g45ek/env/bin/menu_boot |   37 ++++++++++++++
+ arch/arm/boards/at91sam9m10g45ek/env/config        |    2 +-
+ arch/arm/boards/at91sam9m10g45ek/init.c            |   51 +++++++++++++++++++
+ arch/arm/configs/at91sam9260ek_defconfig           |    5 ++-
+ arch/arm/configs/at91sam9g20ek_defconfig           |    8 +++-
+ common/menu.c                                      |   53 +++++++++++++++++---
+ defaultenv/bin/init                                |   18 ++++---
+ include/menu.h                                     |    3 +
+ 10 files changed, 213 insertions(+), 18 deletions(-)
+ create mode 100644 arch/arm/boards/at91sam9m10g45ek/env/bin/boot_board
+ create mode 100644 arch/arm/boards/at91sam9m10g45ek/env/bin/menu_boot
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
