@@ -2,14 +2,16 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 7.mo3.mail-out.ovh.net ([46.105.57.200]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SGMAk-0005Vy-Hs
+ id 1SGMAk-0005W2-Hr
  for barebox@lists.infradead.org; Sat, 07 Apr 2012 03:18:43 +0000
 Received: from mail622.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 217FCFF83C6
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id A35B6FF83CD
  for <barebox@lists.infradead.org>; Sat,  7 Apr 2012 05:19:31 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sat,  7 Apr 2012 05:02:10 +0200
-Message-Id: <1333767731-21927-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Sat,  7 Apr 2012 05:02:11 +0200
+Message-Id: <1333767731-21927-2-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1333767731-21927-1-git-send-email-plagnioj@jcrosoft.com>
+References: <1333767731-21927-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,37 +25,107 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] at91rm9200ek: set maximum nor flash size
+Subject: [PATCH 2/2] at91sam9260ek/9g20ek: udpate defconfig
 To: barebox@lists.infradead.org
 
-it's 8MiB.
+drop:
+ - zlib
+ - MTD OOB device
+enable:
+ - magicvar
+ - menu
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/boards/at91rm9200ek/init.c |    3 ++-
- 1 files changed, 2 insertions(+), 1 deletions(-)
+ arch/arm/configs/at91sam9260ek_defconfig |    5 ++++-
+ arch/arm/configs/at91sam9g20ek_defconfig |    8 +++++++-
+ 2 files changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boards/at91rm9200ek/init.c b/arch/arm/boards/at91rm9200ek/init.c
-index 6911447..3875f4a 100644
---- a/arch/arm/boards/at91rm9200ek/init.c
-+++ b/arch/arm/boards/at91rm9200ek/init.c
-@@ -28,6 +28,7 @@
- #include <fs.h>
- #include <fcntl.h>
- #include <io.h>
-+#include <sizes.h>
- #include <asm/hardware.h>
- #include <mach/at91_pmc.h>
- #include <mach/board.h>
-@@ -116,7 +117,7 @@ static int at91rm9200ek_devices_init(void)
- 
- 	at91_add_device_eth(0, &ether_pdata);
- 
--	add_cfi_flash_device(0, AT91_CHIPSELECT_0, 0, 0);
-+	add_cfi_flash_device(0, AT91_CHIPSELECT_0, SZ_8M, 0);
- 	/* USB Host */
- 	at91_add_device_usbh_ohci(&ek_usbh_data);
- 	ek_device_add_leds();
+diff --git a/arch/arm/configs/at91sam9260ek_defconfig b/arch/arm/configs/at91sam9260ek_defconfig
+index c288d39..45363ed 100644
+--- a/arch/arm/configs/at91sam9260ek_defconfig
++++ b/arch/arm/configs/at91sam9260ek_defconfig
+@@ -29,6 +29,7 @@ CONFIG_CMD_MTEST=y
+ CONFIG_CMD_MTEST_ALTERNATIVE=y
+ CONFIG_CMD_FLASH=y
+ CONFIG_CMD_BOOTM_SHOW_TYPE=y
++CONFIG_CMD_BOOTM_VERBOSE=y
+ CONFIG_CMD_BOOTM_INITRD=y
+ CONFIG_CMD_BOOTM_OFTREE=y
+ CONFIG_CMD_BOOTM_OFTREE_UIMAGE=y
+@@ -39,6 +40,8 @@ CONFIG_CMD_GO=y
+ CONFIG_CMD_OFTREE=y
+ CONFIG_CMD_TIMEOUT=y
+ CONFIG_CMD_PARTITION=y
++CONFIG_CMD_MAGICVAR=y
++CONFIG_CMD_MAGICVAR_HELP=y
+ CONFIG_CMD_GPIO=y
+ CONFIG_CMD_LED=y
+ CONFIG_CMD_LED_TRIGGER=y
+@@ -51,6 +54,7 @@ CONFIG_NET_NETCONSOLE=y
+ CONFIG_DRIVER_NET_MACB=y
+ # CONFIG_SPI is not set
+ CONFIG_MTD=y
++# CONFIG_MTD_OOB_DEVICE is not set
+ CONFIG_NAND=y
+ # CONFIG_NAND_ECC_HW is not set
+ # CONFIG_NAND_ECC_HW_SYNDROME is not set
+@@ -69,4 +73,3 @@ CONFIG_LED_TRIGGERS=y
+ CONFIG_FS_FAT=y
+ CONFIG_FS_FAT_WRITE=y
+ CONFIG_FS_FAT_LFN=y
+-CONFIG_ZLIB=y
+diff --git a/arch/arm/configs/at91sam9g20ek_defconfig b/arch/arm/configs/at91sam9g20ek_defconfig
+index 9473488..fe80a7c 100644
+--- a/arch/arm/configs/at91sam9g20ek_defconfig
++++ b/arch/arm/configs/at91sam9g20ek_defconfig
+@@ -13,6 +13,7 @@ CONFIG_PROMPT_HUSH_PS2="y"
+ CONFIG_HUSH_FANCY_PROMPT=y
+ CONFIG_CMDLINE_EDITING=y
+ CONFIG_AUTO_COMPLETE=y
++CONFIG_MENU=y
+ # CONFIG_CONSOLE_ACTIVATE_FIRST is not set
+ CONFIG_CONSOLE_ACTIVATE_ALL=y
+ CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
+@@ -23,6 +24,8 @@ CONFIG_CMD_SAVEENV=y
+ CONFIG_CMD_EXPORT=y
+ CONFIG_CMD_PRINTENV=y
+ CONFIG_CMD_READLINE=y
++CONFIG_CMD_MENU=y
++CONFIG_CMD_MENU_MANAGEMENT=y
+ CONFIG_CMD_ECHO_E=y
+ CONFIG_CMD_LOADB=y
+ CONFIG_CMD_MEMINFO=y
+@@ -30,6 +33,7 @@ CONFIG_CMD_MTEST=y
+ CONFIG_CMD_MTEST_ALTERNATIVE=y
+ CONFIG_CMD_FLASH=y
+ CONFIG_CMD_BOOTM_SHOW_TYPE=y
++CONFIG_CMD_BOOTM_VERBOSE=y
+ CONFIG_CMD_BOOTM_INITRD=y
+ CONFIG_CMD_BOOTM_OFTREE=y
+ CONFIG_CMD_BOOTM_OFTREE_UIMAGE=y
+@@ -40,6 +44,8 @@ CONFIG_CMD_GO=y
+ CONFIG_CMD_OFTREE=y
+ CONFIG_CMD_TIMEOUT=y
+ CONFIG_CMD_PARTITION=y
++CONFIG_CMD_MAGICVAR=y
++CONFIG_CMD_MAGICVAR_HELP=y
+ CONFIG_CMD_GPIO=y
+ CONFIG_CMD_LED=y
+ CONFIG_CMD_LED_TRIGGER=y
+@@ -52,6 +58,7 @@ CONFIG_NET_NETCONSOLE=y
+ CONFIG_DRIVER_NET_MACB=y
+ # CONFIG_SPI is not set
+ CONFIG_MTD=y
++# CONFIG_MTD_OOB_DEVICE is not set
+ CONFIG_NAND=y
+ # CONFIG_NAND_ECC_HW is not set
+ # CONFIG_NAND_ECC_HW_SYNDROME is not set
+@@ -70,4 +77,3 @@ CONFIG_LED_TRIGGERS=y
+ CONFIG_FS_FAT=y
+ CONFIG_FS_FAT_WRITE=y
+ CONFIG_FS_FAT_LFN=y
+-CONFIG_ZLIB=y
 -- 
 1.7.9.1
 
