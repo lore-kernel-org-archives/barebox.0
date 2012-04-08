@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 10.mo3.mail-out.ovh.net ([87.98.165.232]
- helo=mo3.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SGq9F-0007jr-45
- for barebox@lists.infradead.org; Sun, 08 Apr 2012 11:19:10 +0000
-Received: from mail622.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id B94FEFF8315
- for <barebox@lists.infradead.org>; Sun,  8 Apr 2012 13:20:00 +0200 (CEST)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sun,  8 Apr 2012 13:02:21 +0200
-Message-Id: <1333882941-19479-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from smtp17.mail.ru ([94.100.176.154])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SGuzR-00063h-4j
+ for barebox@lists.infradead.org; Sun, 08 Apr 2012 16:29:22 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Sun,  8 Apr 2012 20:35:31 +0400
+Message-Id: <1333902931-20312-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,28 +19,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] mx53loco: set dhcp vendor id
+Subject: [PATCH] PCM-038: fix SRAM device name
 To: barebox@lists.infradead.org
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- arch/arm/boards/freescale-mx53-loco/env/config |    1 +
- 1 files changed, 1 insertions(+), 0 deletions(-)
 
-diff --git a/arch/arm/boards/freescale-mx53-loco/env/config b/arch/arm/boards/freescale-mx53-loco/env/config
-index 92e2b18..98f5eaf 100644
---- a/arch/arm/boards/freescale-mx53-loco/env/config
-+++ b/arch/arm/boards/freescale-mx53-loco/env/config
-@@ -7,6 +7,7 @@ user=
- # use 'dhcp' to do dhcp in barebox and in kernel
- # use 'none' if you want to skip kernel ip autoconfiguration
- ip=dhcp
-+dhcp_vendor_id=barebox-mx53-loco
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+---
+ arch/arm/boards/pcm038/pcm038.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/arch/arm/boards/pcm038/pcm038.c b/arch/arm/boards/pcm038/pcm038.c
+index 86bc721..b6f4b01 100644
+--- a/arch/arm/boards/pcm038/pcm038.c
++++ b/arch/arm/boards/pcm038/pcm038.c
+@@ -135,7 +135,7 @@ static int pcm038_mem_init(void)
+ {
+ 	arm_add_mem_device("ram0", 0xa0000000, 128 * 1024 * 1024);
  
- # or set your networking parameters here
- #eth0.ipaddr=a.b.c.d
+-	add_mem_device("ram0", 0xc8000000, 512 * 1024, /* Can be up to 2MiB */
++	add_mem_device("ram1", 0xc8000000, 512 * 1024, /* Can be up to 2MiB */
+ 				   IORESOURCE_MEM_WRITEABLE);
+ 	return 0;
+ }
 -- 
-1.7.9.1
+1.7.3.4
 
 
 _______________________________________________
