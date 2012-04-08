@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 18.mo3.mail-out.ovh.net ([87.98.172.162]
+Received: from 10.mo3.mail-out.ovh.net ([87.98.165.232]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SGofU-0007Pl-20
- for barebox@lists.infradead.org; Sun, 08 Apr 2012 09:44:21 +0000
+ id 1SGq9F-0007jr-45
+ for barebox@lists.infradead.org; Sun, 08 Apr 2012 11:19:10 +0000
 Received: from mail622.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id E13DAFF8625
- for <barebox@lists.infradead.org>; Sun,  8 Apr 2012 11:45:12 +0200 (CEST)
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id B94FEFF8315
+ for <barebox@lists.infradead.org>; Sun,  8 Apr 2012 13:20:00 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sun,  8 Apr 2012 11:27:22 +0200
-Message-Id: <1333877242-582-3-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1333877242-582-1-git-send-email-plagnioj@jcrosoft.com>
-References: <1333877242-582-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Sun,  8 Apr 2012 13:02:21 +0200
+Message-Id: <1333882941-19479-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,29 +23,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] defaultenv: add support of oftree file pass via dhcp
- (option 224)
+Subject: [PATCH 1/1] mx53loco: set dhcp vendor id
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- defaultenv/bin/boot |    3 +++
- 1 files changed, 3 insertions(+), 0 deletions(-)
+ arch/arm/boards/freescale-mx53-loco/env/config |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
 
-diff --git a/defaultenv/bin/boot b/defaultenv/bin/boot
-index 5186aee..b54ea6b 100644
---- a/defaultenv/bin/boot
-+++ b/defaultenv/bin/boot
-@@ -50,6 +50,9 @@ if [ x$ip = xdhcp -o x$ip = "xdhcp-barebox" ]; then
- 		if [ x$bootfile != x ]; then
- 			kernelimage=$bootfile
- 		fi
-+		if [ x$dhcp_oftree_file != x ]; then
-+			oftreeimage=$dhcp_oftree_file
-+		fi
- 	fi
- fi
+diff --git a/arch/arm/boards/freescale-mx53-loco/env/config b/arch/arm/boards/freescale-mx53-loco/env/config
+index 92e2b18..98f5eaf 100644
+--- a/arch/arm/boards/freescale-mx53-loco/env/config
++++ b/arch/arm/boards/freescale-mx53-loco/env/config
+@@ -7,6 +7,7 @@ user=
+ # use 'dhcp' to do dhcp in barebox and in kernel
+ # use 'none' if you want to skip kernel ip autoconfiguration
+ ip=dhcp
++dhcp_vendor_id=barebox-mx53-loco
  
+ # or set your networking parameters here
+ #eth0.ipaddr=a.b.c.d
 -- 
 1.7.9.1
 
