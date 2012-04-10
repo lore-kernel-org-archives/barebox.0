@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 10.mo3.mail-out.ovh.net ([87.98.165.232]
+Received: from 5.mo3.mail-out.ovh.net ([87.98.178.36]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SHWvI-0001s4-Le
- for barebox@lists.infradead.org; Tue, 10 Apr 2012 08:59:38 +0000
+ id 1SHWvI-0001rn-1I
+ for barebox@lists.infradead.org; Tue, 10 Apr 2012 08:59:37 +0000
 Received: from mail622.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id F15A2FF8EC9
- for <barebox@lists.infradead.org>; Tue, 10 Apr 2012 11:00:33 +0200 (CEST)
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id CA904FF9046
+ for <barebox@lists.infradead.org>; Tue, 10 Apr 2012 11:00:32 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Tue, 10 Apr 2012 10:42:20 +0200
-Message-Id: <1334047344-8533-3-git-send-email-plagnioj@jcrosoft.com>
+Date: Tue, 10 Apr 2012 10:42:18 +0200
+Message-Id: <1334047344-8533-1-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <20120410082259.GH29577@game.jcrosoft.org>
 References: <20120410082259.GH29577@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
@@ -25,78 +25,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/7] usb-a926x: enable MMU
+Subject: [PATCH 1/7] usb-a926x: update DHCP vendor ID
 To: barebox@lists.infradead.org
+
+Depending on machine id.
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/configs/usb_a9260_defconfig        |    1 +
- arch/arm/configs/usb_a9263_128mib_defconfig |    1 +
- arch/arm/configs/usb_a9263_defconfig        |    1 +
- arch/arm/configs/usb_a9g20_128mib_defconfig |    1 +
- arch/arm/configs/usb_a9g20_defconfig        |    1 +
- 5 files changed, 5 insertions(+), 0 deletions(-)
+ arch/arm/boards/usb-a926x/env/config |    4 +++-
+ 1 files changed, 3 insertions(+), 1 deletions(-)
 
-diff --git a/arch/arm/configs/usb_a9260_defconfig b/arch/arm/configs/usb_a9260_defconfig
-index 258a981..85e7878 100644
---- a/arch/arm/configs/usb_a9260_defconfig
-+++ b/arch/arm/configs/usb_a9260_defconfig
-@@ -3,6 +3,7 @@ CONFIG_MACH_USB_A9260=y
- CONFIG_AEABI=y
- # CONFIG_CMD_ARM_CPUINFO is not set
- CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_MMU=y
- CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x40000
- CONFIG_EXPERIMENTAL=y
- CONFIG_PROMPT="USB-9G20:"
-diff --git a/arch/arm/configs/usb_a9263_128mib_defconfig b/arch/arm/configs/usb_a9263_128mib_defconfig
-index b3d5263..23bc3d7 100644
---- a/arch/arm/configs/usb_a9263_128mib_defconfig
-+++ b/arch/arm/configs/usb_a9263_128mib_defconfig
-@@ -4,6 +4,7 @@ CONFIG_AEABI=y
- # CONFIG_CMD_ARM_CPUINFO is not set
- CONFIG_AT91_HAVE_SRAM_128M=y
- CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_MMU=y
- CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x40000
- CONFIG_EXPERIMENTAL=y
- CONFIG_PROMPT="USB-9263:"
-diff --git a/arch/arm/configs/usb_a9263_defconfig b/arch/arm/configs/usb_a9263_defconfig
-index a362393..96ea3e1 100644
---- a/arch/arm/configs/usb_a9263_defconfig
-+++ b/arch/arm/configs/usb_a9263_defconfig
-@@ -3,6 +3,7 @@ CONFIG_MACH_USB_A9263=y
- CONFIG_AEABI=y
- # CONFIG_CMD_ARM_CPUINFO is not set
- CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_MMU=y
- CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x40000
- CONFIG_EXPERIMENTAL=y
- CONFIG_PROMPT="USB-9263:"
-diff --git a/arch/arm/configs/usb_a9g20_128mib_defconfig b/arch/arm/configs/usb_a9g20_128mib_defconfig
-index 6e2b1bf..c25d7de 100644
---- a/arch/arm/configs/usb_a9g20_128mib_defconfig
-+++ b/arch/arm/configs/usb_a9g20_128mib_defconfig
-@@ -4,6 +4,7 @@ CONFIG_AEABI=y
- # CONFIG_CMD_ARM_CPUINFO is not set
- CONFIG_AT91_HAVE_SRAM_128M=y
- CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_MMU=y
- CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x40000
- CONFIG_EXPERIMENTAL=y
- CONFIG_PROMPT="USB-9G20:"
-diff --git a/arch/arm/configs/usb_a9g20_defconfig b/arch/arm/configs/usb_a9g20_defconfig
-index d5bc908..d645adb 100644
---- a/arch/arm/configs/usb_a9g20_defconfig
-+++ b/arch/arm/configs/usb_a9g20_defconfig
-@@ -3,6 +3,7 @@ CONFIG_MACH_USB_A9G20=y
- CONFIG_AEABI=y
- # CONFIG_CMD_ARM_CPUINFO is not set
- CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_MMU=y
- CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x40000
- CONFIG_EXPERIMENTAL=y
- CONFIG_PROMPT="USB-9G20:"
+diff --git a/arch/arm/boards/usb-a926x/env/config b/arch/arm/boards/usb-a926x/env/config
+index 1f72803..d073620 100644
+--- a/arch/arm/boards/usb-a926x/env/config
++++ b/arch/arm/boards/usb-a926x/env/config
+@@ -3,7 +3,9 @@
+ # use 'dhcp' to do dhcp in barebox and in kernel
+ # use 'none' if you want to skip kernel ip autoconfiguration
+ ip=dhcp-barebox
+-dhcp_vendor_id=barebox-at91sam9x5ek
++[ x$armlinux_architecture = x1709 ] && dhcp_vendor_id=barebox-usb-a9260
++[ x$armlinux_architecture = x1710 ] && dhcp_vendor_id=barebox-usb-a9263
++[ x$armlinux_architecture = x1841 ] && dhcp_vendor_id=barebox-usb-a9g20
+ 
+ # or set your networking parameters here
+ #eth0.ipaddr=a.b.c.d
 -- 
 1.7.9.1
 
