@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SHVyR-0005TN-Pa
- for barebox@lists.infradead.org; Tue, 10 Apr 2012 07:58:48 +0000
-Date: Tue, 10 Apr 2012 09:58:42 +0200
+ id 1SHVzF-0005Tr-Lb
+ for barebox@lists.infradead.org; Tue, 10 Apr 2012 07:59:38 +0000
+Date: Tue, 10 Apr 2012 09:59:31 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120410075842.GS3852@pengutronix.de>
-References: <1333722998-28648-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20120410075931.GT3852@pengutronix.de>
+References: <20120406153652.GA621@greenwood>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1333722998-28648-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20120406153652.GA621@greenwood>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,47 +22,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] at91rm9200ek: set maximum nor flash size
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH] Remove EXPERIMENTAL flag from loady.
+To: Uwe Hermann <uwe@hermann-uwe.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, Apr 06, 2012 at 04:36:38PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> it's 8MiB.
+On Fri, Apr 06, 2012 at 05:36:52PM +0200, Uwe Hermann wrote:
+> From bd6c5c884337ae2d4ef41d85d59c2d5ec525f8a5 Mon Sep 17 00:00:00 2001
+> From: Uwe Hermann <uwe@hermann-uwe.de>
+> Date: Fri, 6 Apr 2012 17:30:01 +0200
 > 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> The loady command seems to work just fine (tested on an S3C2440 target).
+> 
+> Also, mark it as TRISTATE like loadb and loads.
+> 
+> Signed-off-by: Uwe Hermann <uwe@hermann-uwe.de>
 
 Applied, thanks
 
 Sascha
 
 > ---
->  arch/arm/boards/at91rm9200ek/init.c |    3 ++-
->  1 files changed, 2 insertions(+), 1 deletions(-)
+>  commands/Kconfig |    3 +--
+>  1 files changed, 1 insertions(+), 2 deletions(-)
 > 
-> diff --git a/arch/arm/boards/at91rm9200ek/init.c b/arch/arm/boards/at91rm9200ek/init.c
-> index 6911447..3875f4a 100644
-> --- a/arch/arm/boards/at91rm9200ek/init.c
-> +++ b/arch/arm/boards/at91rm9200ek/init.c
-> @@ -28,6 +28,7 @@
->  #include <fs.h>
->  #include <fcntl.h>
->  #include <io.h>
-> +#include <sizes.h>
->  #include <asm/hardware.h>
->  #include <mach/at91_pmc.h>
->  #include <mach/board.h>
-> @@ -116,7 +117,7 @@ static int at91rm9200ek_devices_init(void)
+> diff --git a/commands/Kconfig b/commands/Kconfig
+> index 7a8811e..d7fdf04 100644
+> --- a/commands/Kconfig
+> +++ b/commands/Kconfig
+> @@ -222,8 +222,7 @@ config CMD_LOADB
 >  
->  	at91_add_device_eth(0, &ether_pdata);
+>  config CMD_LOADY
+>  	select CRC16
+> -	depends on EXPERIMENTAL
+> -	bool
+> +	tristate
+>  	prompt "loady"
 >  
-> -	add_cfi_flash_device(0, AT91_CHIPSELECT_0, 0, 0);
-> +	add_cfi_flash_device(0, AT91_CHIPSELECT_0, SZ_8M, 0);
->  	/* USB Host */
->  	at91_add_device_usbh_ohci(&ek_usbh_data);
->  	ek_device_add_leds();
+>  config CMD_LOADS
 > -- 
-> 1.7.9.1
+> 1.7.6.3
 > 
+> 
+> -- 
+> http://hermann-uwe.de     | http://sigrok.org
+> http://randomprojects.org | http://unmaintained-free-software.org
 > 
 > _______________________________________________
 > barebox mailing list
