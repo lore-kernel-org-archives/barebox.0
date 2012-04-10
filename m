@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SHXIf-00006e-1S
- for barebox@lists.infradead.org; Tue, 10 Apr 2012 09:23:49 +0000
-Date: Tue, 10 Apr 2012 11:23:36 +0200
+ id 1SHXJp-00008T-HC
+ for barebox@lists.infradead.org; Tue, 10 Apr 2012 09:25:01 +0000
+Date: Tue, 10 Apr 2012 11:24:49 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120410092336.GD3852@pengutronix.de>
-References: <CAO-mwNcOBNL-LFuyK9EbxUBqxLU3GAWUi61E40J5qunDP+n+ZA@mail.gmail.com>
- <CAO-mwNdKa4fukB23m_F1g=axhqw3S2stb2C6JbPXiob1Ty=xhg@mail.gmail.com>
+Message-ID: <20120410092449.GE3852@pengutronix.de>
+References: <1333445220-14654-1-git-send-email-shc_work@mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAO-mwNdKa4fukB23m_F1g=axhqw3S2stb2C6JbPXiob1Ty=xhg@mail.gmail.com>
+In-Reply-To: <1333445220-14654-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,65 +22,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: OMAP4 Panda - MMC access broken
-To: Anand Gadiyar <gadiyar@gmail.com>
-Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: Re: [PATCH] Define barebox_loc magic variable only once
+To: Alexander Shiyan <shc_work@mail.ru>
+Cc: barebox@lists.infradead.org
 
-On Mon, Apr 02, 2012 at 08:07:16PM +0530, Anand Gadiyar wrote:
-> On Fri, Mar 30, 2012 at 10:04 PM, Anand Gadiyar <gadiyar@gmail.com> wrote:
+On Tue, Apr 03, 2012 at 01:27:00PM +0400, Alexander Shiyan wrote:
 > 
-> > Hi all,
-> >
-> > I've just started playing with barebox on OMAP4. I see that with "Release
-> > v2011.11.0", my Panda could access the SD card contents, but with the
-> > current release it can no longer do so.
-> >
-> > Git bisect shows commit 82db23d3f4c1de25bbd4b222a3bd9e81d00414f8 (Use
-> > generic block layer to access the drives and do partition parsing) is when
-> > it stopped working.
-> >
-> > Any pointers?
-> >
-> > Thanks in advance,
-> > Anand
-> >
-> >
-> Found the problem. I was using a 4GB SD card with just a single FAT32
-> partition. The pentry.size is reported as 7744449 which fails the
-> check_offset_value() call.
-> I think this is the same issue Sanjeev reported in February.
-> 
-> Below patch seems to fix the issue for now. But I'm not sure what's the
-> correct way to fix this.
+> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 
-The correct way would be to make all this stuff 64bit types. I am
-working for this for quite some time and have a series for an older
-barebox doing this. I would have to rebase it.
+Applied, thanks
 
 Sascha
 
+> ---
+>  arch/arm/mach-imx/boot.c |    4 +---
+>  1 files changed, 1 insertions(+), 3 deletions(-)
 > 
-> Index: barebox/common/partitions.c
-> ===================================================================
-> --- barebox.orig/common/partitions.c
-> +++ barebox/common/partitions.c
-> @@ -129,8 +129,6 @@ static void __maybe_unused try_dos_parti
->                 /* do we have to ignore this partition due to limitations?
-> */
->                 if (check_offset_value(pentry.first_sec) != 0)
->                         continue;
-> -               if (check_offset_value(pentry.size) != 0)
-> -                       continue;
+> diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
+> index 9f2def6..b79ebc7 100644
+> --- a/arch/arm/mach-imx/boot.c
+> +++ b/arch/arm/mach-imx/boot.c
+> @@ -87,8 +87,6 @@ static int imx_25_35_boot_save_loc(void)
+>  	return 0;
+>  }
+>  coredevice_initcall(imx_25_35_boot_save_loc);
+> -
+> -BAREBOX_MAGICVAR(barebox_loc, "The source barebox has been booted from");
+>  #endif
+>  
+>  #if defined(CONFIG_ARCH_IMX27)
+> @@ -114,6 +112,6 @@ static int imx_27_boot_save_loc(void)
+>  	return 0;
+>  }
+>  coredevice_initcall(imx_27_boot_save_loc);
+> +#endif
+>  
+>  BAREBOX_MAGICVAR(barebox_loc, "The source barebox has been booted from");
+> -#endif
+> -- 
+> 1.7.3.4
 > 
->                 if (pentry.first_sec != 0) {
->                         pd->parts[pd->used_entries].first_sec =
-> pentry.first_sec;
-
+> 
 > _______________________________________________
 > barebox mailing list
 > barebox@lists.infradead.org
 > http://lists.infradead.org/mailman/listinfo/barebox
-
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
