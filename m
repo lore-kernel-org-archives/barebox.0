@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 20.mo3.mail-out.ovh.net ([178.33.47.94]
- helo=mo3.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SHsCQ-0004TN-UO
- for barebox@lists.infradead.org; Wed, 11 Apr 2012 07:42:43 +0000
-Received: from mail622.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id B6C54FF9117
- for <barebox@lists.infradead.org>; Wed, 11 Apr 2012 09:43:42 +0200 (CEST)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Wed, 11 Apr 2012 09:25:24 +0200
-Message-Id: <1334129124-6903-1-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1334122954-19623-1-git-send-email-plagnioj@jcrosoft.com>
-References: <1334122954-19623-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SHsf9-0001rz-0m
+ for barebox@lists.infradead.org; Wed, 11 Apr 2012 08:12:24 +0000
+Date: Wed, 11 Apr 2012 10:12:14 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120411081214.GK3852@pengutronix.de>
+References: <1334126298-29923-1-git-send-email-plagnioj@jcrosoft.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1334126298-29923-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,56 +18,117 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] filetype: add Android boot image support
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2] arm: fix zImage support when a oftree is concatenated
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- common/filetype.c  |    3 +++
- include/filetype.h |    1 +
- 2 files changed, 4 insertions(+), 0 deletions(-)
+On Wed, Apr 11, 2012 at 08:38:18AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> When a oftree is concatenated,the zImage is bigger than the size specified in
+> the zImage header. Detect it and copy it too.
+> 
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  arch/arm/lib/bootm.c |   49 +++++++++++++++++++++++++++++++++++++++++++++++++
+>  1 files changed, 49 insertions(+), 0 deletions(-)
+> 
+> diff --git a/arch/arm/lib/bootm.c b/arch/arm/lib/bootm.c
+> index defc89b..dc379d8 100644
+> --- a/arch/arm/lib/bootm.c
+> +++ b/arch/arm/lib/bootm.c
+> @@ -123,6 +123,51 @@ struct zimage_header {
+>  
+>  #define ZIMAGE_MAGIC 0x016F2818
+>  
+> +static int do_bootz_linux_fdt(int fd, struct image_data *data)
+> +{
+> +	struct fdt_header __header, *header;
+> +	struct resource *r = data->os_res;
+> +	struct resource *of_res = data->os_res;
+> +	void *oftree;
+> +	int ret;
+> +
+> +	u32 end;
+> +
+> +	header = &__header;
+> +	ret = read(fd, header, sizeof(*header));
+> +	if (ret < sizeof(*header))
+> +		return ret;
+> +
+> +	if (file_detect_type(header) != filetype_oftree)
+> +		return -ENXIO;
+> +
+> +	end = be32_to_cpu(header->totalsize);
+> +
+> +	of_res = request_sdram_region("oftree", r->start + r->size, end);
+> +	if (!of_res) {
+> +		perror("zImage: oftree request_sdram_region");
+> +		return -ENOMEM;
+> +	}
+> +
+> +	oftree = (void*)of_res->start;
+> +
+> +	memcpy(oftree, header, sizeof(*header));
+> +
+> +	end -= sizeof(*header);
+> +
+> +	ret = read_full(fd, oftree + sizeof(*header), end);
+> +	if (ret < 0)
+> +		return ret;
+> +	if (ret < end) {
+> +		printf("premature end of image\n");
+> +		return -EIO;
+> +	}
 
-diff --git a/common/filetype.c b/common/filetype.c
-index 40faff3..b784bff 100644
---- a/common/filetype.c
-+++ b/common/filetype.c
-@@ -37,6 +37,7 @@ static const char *filetype_str[] = {
- 	[filetype_gzip] = "gzip compressed",
- 	[filetype_bzip2] = "bzip2 compressed",
- 	[filetype_oftree] = "open firmware flat device tree",
-+	[filetype_aimage] = "Android boot image",
- };
- 
- const char *file_type_to_string(enum filetype f)
-@@ -72,6 +73,8 @@ enum filetype file_detect_type(void *_buf)
-                 return filetype_bzip2;
- 	if (buf[0] == be32_to_cpu(0xd00dfeed))
- 		return filetype_oftree;
-+	if (strncmp(buf8, "ANDROID!", 8) == 0)
-+		return filetype_aimage;
- 
- 	return filetype_unknown;
- }
-diff --git a/include/filetype.h b/include/filetype.h
-index 88f31df..d0b6226 100644
---- a/include/filetype.h
-+++ b/include/filetype.h
-@@ -15,6 +15,7 @@ enum filetype {
- 	filetype_gzip,
- 	filetype_bzip2,
- 	filetype_oftree,
-+	filetype_aimage,
- };
- 
- const char *file_type_to_string(enum filetype f);
+I am missing a call to of_fix_tree() here. Without it the command line
+will not be passed to the kernel. Maybe this is not really the intended
+usecase for appending an oftree to the zImage. Being able to append the
+oftree to the zImage seems more for bootloaders which do not have native
+support for devicetrees.
+
+We could be more clever here and read the oftree to a seperately
+allocated area and set data->oftree then.
+
+Sascha
+
+> +
+> +	pr_info("zImage: concatenated oftree detected\n");
+> +
+> +	return 0;
+> +}
+> +
+>  static int do_bootz_linux(struct image_data *data)
+>  {
+>  	int fd, ret, swap = 0;
+> @@ -196,6 +241,10 @@ static int do_bootz_linux(struct image_data *data)
+>  			*(u32 *)ptr = swab32(*(u32 *)ptr);
+>  	}
+>  
+> +	ret = do_bootz_linux_fdt(fd, data);
+> +	if (ret && ret != -ENXIO)
+> +		return ret;
+> +
+>  	return __do_bootm_linux(data, swap);
+>  
+>  err_out:
+> -- 
+> 1.7.9.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-1.7.9.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
