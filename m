@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SHrRj-000122-8o
- for barebox@lists.infradead.org; Wed, 11 Apr 2012 06:54:42 +0000
-Date: Wed, 11 Apr 2012 08:54:21 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120411065421.GI3852@pengutronix.de>
-References: <1334072167-19539-1-git-send-email-plagnioj@jcrosoft.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1334072167-19539-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from 14.mo3.mail-out.ovh.net ([188.165.43.98]
+ helo=mo3.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1SHrSr-0002rR-Mi
+ for barebox@lists.infradead.org; Wed, 11 Apr 2012 06:55:38 +0000
+Received: from mail622.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 70063FF8CBB
+ for <barebox@lists.infradead.org>; Wed, 11 Apr 2012 08:56:37 +0200 (CEST)
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Wed, 11 Apr 2012 08:38:18 +0200
+Message-Id: <1334126298-29923-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,55 +18,92 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] defaultenv/update: fix dhcp-barebox support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2] arm: fix zImage support when a oftree is concatenated
+To: barebox@lists.infradead.org
 
-On Tue, Apr 10, 2012 at 05:36:07PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> call dhcp when ip mode is dhcp-barebox
-> 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+When a oftree is concatenated,the zImage is bigger than the size specified in
+the zImage header. Detect it and copy it too.
 
-Applied, thanks.
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ arch/arm/lib/bootm.c |   49 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 49 insertions(+), 0 deletions(-)
 
-Sascha
-
-> ---
->  defaultenv/bin/_update |    2 +-
->  1 files changed, 1 insertions(+), 1 deletions(-)
-> 
-> diff --git a/defaultenv/bin/_update b/defaultenv/bin/_update
-> index e7cf149..8e27ee1 100644
-> --- a/defaultenv/bin/_update
-> +++ b/defaultenv/bin/_update
-> @@ -11,7 +11,7 @@ if [ ! -e "$part" ]; then
->  fi
->  
->  if [ x$mode = xtftp -o x$mode = xnfs ]; then
-> -	if [ x$ip = xdhcp ]; then
-> +	if [ x$ip = xdhcp -o x$ip = "xdhcp-barebox" ]; then
->  		dhcp
->  	fi
->  
-> -- 
-> 1.7.9.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/arch/arm/lib/bootm.c b/arch/arm/lib/bootm.c
+index defc89b..dc379d8 100644
+--- a/arch/arm/lib/bootm.c
++++ b/arch/arm/lib/bootm.c
+@@ -123,6 +123,51 @@ struct zimage_header {
+ 
+ #define ZIMAGE_MAGIC 0x016F2818
+ 
++static int do_bootz_linux_fdt(int fd, struct image_data *data)
++{
++	struct fdt_header __header, *header;
++	struct resource *r = data->os_res;
++	struct resource *of_res = data->os_res;
++	void *oftree;
++	int ret;
++
++	u32 end;
++
++	header = &__header;
++	ret = read(fd, header, sizeof(*header));
++	if (ret < sizeof(*header))
++		return ret;
++
++	if (file_detect_type(header) != filetype_oftree)
++		return -ENXIO;
++
++	end = be32_to_cpu(header->totalsize);
++
++	of_res = request_sdram_region("oftree", r->start + r->size, end);
++	if (!of_res) {
++		perror("zImage: oftree request_sdram_region");
++		return -ENOMEM;
++	}
++
++	oftree = (void*)of_res->start;
++
++	memcpy(oftree, header, sizeof(*header));
++
++	end -= sizeof(*header);
++
++	ret = read_full(fd, oftree + sizeof(*header), end);
++	if (ret < 0)
++		return ret;
++	if (ret < end) {
++		printf("premature end of image\n");
++		return -EIO;
++	}
++
++	pr_info("zImage: concatenated oftree detected\n");
++
++	return 0;
++}
++
+ static int do_bootz_linux(struct image_data *data)
+ {
+ 	int fd, ret, swap = 0;
+@@ -196,6 +241,10 @@ static int do_bootz_linux(struct image_data *data)
+ 			*(u32 *)ptr = swab32(*(u32 *)ptr);
+ 	}
+ 
++	ret = do_bootz_linux_fdt(fd, data);
++	if (ret && ret != -ENXIO)
++		return ret;
++
+ 	return __do_bootm_linux(data, swap);
+ 
+ err_out:
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.9.1
+
 
 _______________________________________________
 barebox mailing list
