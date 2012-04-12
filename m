@@ -1,21 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f58.mail.ru ([217.69.128.75])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SIQ3q-0004zV-IL
- for barebox@lists.infradead.org; Thu, 12 Apr 2012 19:52:07 +0000
-Received: from mail by f58.mail.ru with local (envelope-from
- <shc_work@mail.ru>) id 1SIQ3o-00068g-2U
- for barebox@lists.infradead.org; Thu, 12 Apr 2012 23:52:04 +0400
-Resent-Message-Id: <E1SIQ3o-00068g-2U.shc_work-mail-ru@f58.mail.ru>
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Mime-Version: 1.0
-Date: Thu, 12 Apr 2012 23:49:53 +0400
-References: <1334247624-24896-2-git-send-email-shc_work@mail.ru>
- <1334247624-24896-1-git-send-email-shc_work@mail.ru>
- <20120412210415.3a0313e2@eb-e6520>
-In-Reply-To: <20120412210415.3a0313e2@eb-e6520>
-ReSent-To: barebox@lists.infradead.org
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SIQLk-00007R-TC
+ for barebox@lists.infradead.org; Thu, 12 Apr 2012 20:10:37 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 12 Apr 2012 22:10:19 +0200
+Message-Id: <1334261421-4194-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1334261421-4194-1-git-send-email-s.hauer@pengutronix.de>
+References: <1334261421-4194-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,31 +16,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
-Message-ID: <E1SIQ3u-00050I-BW@merlin.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmVbMl06IFtQQVRDSCAyLzddIGkuTVg1MzogTW92ZSBzcGVjaWZpYyBpLk1Y?=
- =?UTF-8?B?NTMgc2lsaWNvbiBkZWZpbml0aW9ucyB0byBpbXg1My1yZWdzLmg=?=
+Subject: [PATCH 2/4] ARM i.MX iomux-v3: one bit more for pad_ctl
 To: barebox@lists.infradead.org
 
-Hello.
+i.MX6 needs one bit more for PAD_CTRL, so make one free.
 
-...
-> > +/* silicon revisions specific to i.MX53 */
-> > +#define MX53_CHIP_REV_1_0	0x10
-> > +#define MX53_CHIP_REV_2_0	0x20
-> > +#define MX53_CHIP_REV_2_1	0x21
-> > +
-> >  #endif /* __MACH_IMX53_REGS_H */
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/mach-imx/include/mach/iomux-v3.h |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-> The goal was to move chip revision to imx-regs.h and remove them from
-> other files (as MX25/35/51/53 seems to share the same pattern for chip
-> revision)
+diff --git a/arch/arm/mach-imx/include/mach/iomux-v3.h b/arch/arm/mach-imx/include/mach/iomux-v3.h
+index f2f0ccf..2c92342 100644
+--- a/arch/arm/mach-imx/include/mach/iomux-v3.h
++++ b/arch/arm/mach-imx/include/mach/iomux-v3.h
+@@ -48,8 +48,8 @@
+  * PAD_CTRL_OFS:	   12..23 (12)
+  * SEL_INPUT_OFS:	   24..35 (12)
+  * MUX_MODE + SION:	   36..40  (5)
+- * PAD_CTRL + NO_PAD_CTRL: 41..57 (17)
+- * SEL_INP:		   58..61  (4)
++ * PAD_CTRL + NO_PAD_CTRL: 41..58 (18)
++ * SEL_INP:		   59..62  (4)
+  * reserved:		     63    (1)
+ */
+ 
+@@ -65,8 +65,8 @@ typedef u64 iomux_v3_cfg_t;
+ #define MUX_MODE_SHIFT		36
+ #define MUX_MODE_MASK		((iomux_v3_cfg_t)0x1f << MUX_MODE_SHIFT)
+ #define MUX_PAD_CTRL_SHIFT	41
+-#define MUX_PAD_CTRL_MASK	((iomux_v3_cfg_t)0x1ffff << MUX_PAD_CTRL_SHIFT)
+-#define MUX_SEL_INPUT_SHIFT	58
++#define MUX_PAD_CTRL_MASK	((iomux_v3_cfg_t)0x3ffff << MUX_PAD_CTRL_SHIFT)
++#define MUX_SEL_INPUT_SHIFT	59
+ #define MUX_SEL_INPUT_MASK	((iomux_v3_cfg_t)0xf << MUX_SEL_INPUT_SHIFT)
+ 
+ #define MUX_PAD_CTRL(x)		((iomux_v3_cfg_t)(x) << MUX_PAD_CTRL_SHIFT)
+@@ -85,7 +85,7 @@ typedef u64 iomux_v3_cfg_t;
+  * Use to set PAD control
+  */
+ 
+-#define NO_PAD_CTRL			(1 << 16)
++#define NO_PAD_CTRL			(1 << 17)
+ #define PAD_CTL_DVS			(1 << 13)
+ #define PAD_CTL_HYS			(1 << 8)
+ 
+-- 
+1.7.10
 
-Maybe you're right.
-Then we need to add definitions for the MX51 versions in the same style?
+
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
