@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp12.mail.ru ([94.100.176.89])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SIMiN-0002dw-FN
- for barebox@lists.infradead.org; Thu, 12 Apr 2012 16:17:45 +0000
+ id 1SIMiN-0002dx-FR
+ for barebox@lists.infradead.org; Thu, 12 Apr 2012 16:17:48 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Thu, 12 Apr 2012 20:20:18 +0400
-Message-Id: <1334247624-24896-1-git-send-email-shc_work@mail.ru>
+Date: Thu, 12 Apr 2012 20:20:20 +0400
+Message-Id: <1334247624-24896-3-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1334247624-24896-1-git-send-email-shc_work@mail.ru>
+References: <1334247624-24896-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,89 +21,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/7] i.MX51: Allow to pass cpu clock to lowlevel init
+Subject: [PATCH 3/7] i.MX51: Add iomux definitions for SDHC3
 To: barebox@lists.infradead.org
 
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- arch/arm/boards/eukrea_cpuimx51/eukrea_cpuimx51.c |    2 +-
- arch/arm/boards/freescale-mx51-pdk/board.c        |    2 +-
- arch/arm/mach-imx/imx51.c                         |   13 +++++++++++--
- arch/arm/mach-imx/include/mach/imx5.h             |    2 +-
- 4 files changed, 14 insertions(+), 5 deletions(-)
+ arch/arm/mach-imx/include/mach/iomux-mx51.h |   13 +++++++++++++
+ 1 files changed, 13 insertions(+), 0 deletions(-)
 
-diff --git a/arch/arm/boards/eukrea_cpuimx51/eukrea_cpuimx51.c b/arch/arm/boards/eukrea_cpuimx51/eukrea_cpuimx51.c
-index 6de8f1f..06a994a 100644
---- a/arch/arm/boards/eukrea_cpuimx51/eukrea_cpuimx51.c
-+++ b/arch/arm/boards/eukrea_cpuimx51/eukrea_cpuimx51.c
-@@ -139,7 +139,7 @@ static int eukrea_cpuimx51_console_init(void)
- {
- 	mxc_iomux_v3_setup_multiple_pads(eukrea_cpuimx51_pads, ARRAY_SIZE(eukrea_cpuimx51_pads));
+diff --git a/arch/arm/mach-imx/include/mach/iomux-mx51.h b/arch/arm/mach-imx/include/mach/iomux-mx51.h
+index 872072e..bba9990 100644
+--- a/arch/arm/mach-imx/include/mach/iomux-mx51.h
++++ b/arch/arm/mach-imx/include/mach/iomux-mx51.h
+@@ -150,24 +150,37 @@
  
--	imx51_init_lowlevel();
-+	imx51_init_lowlevel(800);
+ #define MX51_PAD_NANDF_CS7__NANDF_CS7			IOMUX_PAD(0x534, 0x14C, 0, 0x0, 0, NO_PAD_CTRL)
+ #define MX51_PAD_NANDF_CS7__FEC_TX_EN			IOMUX_PAD(0x534, 0x14C, 1, 0x0, 0, MX51_FEC_PAD_CTRL)
++#define MX51_PAD_NANDF_CS7__SD3_CLK			IOMUX_PAD(0x534, 0x14C, 5, 0x0, 0, MX51_SDHCI_PAD_CTRL | PAD_CTL_HYS)
  
- 	writel(0, 0x73fa8228);
- 	writel(0, 0x73fa822c);
-diff --git a/arch/arm/boards/freescale-mx51-pdk/board.c b/arch/arm/boards/freescale-mx51-pdk/board.c
-index 6e8b418..76d99ff 100644
---- a/arch/arm/boards/freescale-mx51-pdk/board.c
-+++ b/arch/arm/boards/freescale-mx51-pdk/board.c
-@@ -244,7 +244,7 @@ static int f3s_devices_init(void)
- 	babbage_power_init();
+ #define MX51_PAD_NANDF_RDY_INT__NANDF_RDY_INT		IOMUX_PAD(0x538, 0x150, 0, 0x938, 0, NO_PAD_CTRL)
+ #define MX51_PAD_NANDF_RDY_INT__FEC_TX_CLK		IOMUX_PAD(0x538, 0x150, 1, 0x974, 0, MX51_FEC_PAD_CTRL)
++#define MX51_PAD_NANDF_RDY_INT__SD3_CMD			IOMUX_PAD(0x538, 0x150, 0x15, 0, 0, MX51_SDHCI_PAD_CTRL)
  
- 	console_flush();
--	imx51_init_lowlevel();
-+	imx51_init_lowlevel(800);
- 	clock_notifier_call_chain();
- 
- 	armlinux_set_bootparams((void *)0x90000100);
-diff --git a/arch/arm/mach-imx/imx51.c b/arch/arm/mach-imx/imx51.c
-index 02704c1..4cfd03b 100644
---- a/arch/arm/mach-imx/imx51.c
-+++ b/arch/arm/mach-imx/imx51.c
-@@ -186,7 +186,7 @@ coredevice_initcall(imx51_boot_save_loc);
- #define setup_pll_455(base)	imx5_setup_pll((base), 455,  (( 9 << 4) + ((2 - 1) << 0)), (48 - 1), 23)
- #define setup_pll_216(base)	imx5_setup_pll((base), 216,  (( 6 << 4) + ((3 - 1) << 0)), ( 4 - 1),  3)
- 
--void imx51_init_lowlevel(void)
-+void imx51_init_lowlevel(unsigned int cpufreq_mhz)
- {
- 	void __iomem *ccm = (void __iomem *)MX51_CCM_BASE_ADDR;
- 	u32 r;
-@@ -220,7 +220,16 @@ void imx51_init_lowlevel(void)
- 	/* Switch ARM to step clock */
- 	writel(0x4, ccm + MX5_CCM_CCSR);
- 
--	setup_pll_800((void __iomem *)MX51_PLL1_BASE_ADDR);
-+	switch (cpufreq_mhz) {
-+	case 600:
-+		setup_pll_600((void __iomem *)MX51_PLL1_BASE_ADDR);
-+		break;
-+	default:
-+		/* Default maximum 800MHz */
-+		setup_pll_800((void __iomem *)MX51_PLL1_BASE_ADDR);
-+		break;
-+	}
+ #define MX51_PAD_NANDF_D15__NANDF_D15			IOMUX_PAD(0x53C, 0x154, 0, 0x0, 0, NO_PAD_CTRL)
++#define MX51_PAD_NANDF_D15__SD3_DATA7			IOMUX_PAD(0x53C, 0x154, 5, 0x0, 0, MX51_SDHCI_PAD_CTRL)
 +
- 	setup_pll_665((void __iomem *)MX51_PLL3_BASE_ADDR);
+ #define MX51_PAD_NANDF_D14__NANDF_D14			IOMUX_PAD(0x540, 0x158, 0, 0x0, 0, NO_PAD_CTRL)
++#define MX51_PAD_NANDF_D14__SD3_DATA6			IOMUX_PAD(0x540, 0x158, 5, 0x0, 0, MX51_SDHCI_PAD_CTRL)
++
+ #define MX51_PAD_NANDF_D13__NANDF_D13			IOMUX_PAD(0x544, 0x15C, 0, 0x0, 0, NO_PAD_CTRL)
++#define MX51_PAD_NANDF_D13__SD3_DATA5			IOMUX_PAD(0x544, 0x15C, 5, 0x0, 0, MX51_SDHCI_PAD_CTRL)
++
+ #define MX51_PAD_NANDF_D12__NANDF_D12			IOMUX_PAD(0x548, 0x160, 0, 0x0, 0, NO_PAD_CTRL)
++#define MX51_PAD_NANDF_D12__SD3_DATA4			IOMUX_PAD(0x548, 0x160, 5, 0x0, 0, MX51_SDHCI_PAD_CTRL)
  
- 	/* Switch peripheral to PLL 3 */
-diff --git a/arch/arm/mach-imx/include/mach/imx5.h b/arch/arm/mach-imx/include/mach/imx5.h
-index c33f75e..4c19d28 100644
---- a/arch/arm/mach-imx/include/mach/imx5.h
-+++ b/arch/arm/mach-imx/include/mach/imx5.h
-@@ -1,8 +1,8 @@
- #ifndef __MACH_MX5_H
- #define __MACH_MX5_H
+ #define MX51_PAD_NANDF_D11__NANDF_D11			IOMUX_PAD(0x54C, 0x164, 0, 0x0, 0, NO_PAD_CTRL)
+ #define MX51_PAD_NANDF_D11__FEC_RX_DV			IOMUX_PAD(0x54C, 0x164, 2, 0x96c, 0, MX51_FEC_PAD_CTRL)
++#define MX51_PAD_NANDF_D11__SD3_DATA3			IOMUX_PAD(0x54C, 0x164, 5, 0x948, 1, MX51_SDHCI_PAD_CTRL)
  
-+void imx51_init_lowlevel(unsigned int cpufreq_mhz);
- void imx53_init_lowlevel(unsigned int cpufreq_mhz);
--void imx51_init_lowlevel(void);
- void imx5_setup_pll(void __iomem *base, int freq, u32 op, u32 mfd, u32 mfn);
- void imx5_init_lowlevel(void);
+ #define MX51_PAD_NANDF_D10__NANDF_D10			IOMUX_PAD(0x550, 0x168, 0, 0x0, 0, NO_PAD_CTRL)
++#define MX51_PAD_NANDF_D10__SD3_DATA2			IOMUX_PAD(0x550, 0x168, 5, 0x944, 1, MX51_SDHCI_PAD_CTRL)
  
+ #define MX51_PAD_NANDF_D9__NANDF_D9			IOMUX_PAD(0x554, 0x16C, 0, 0x0, 0, NO_PAD_CTRL)
++#define MX51_PAD_NANDF_D9__SD3_DATA1			IOMUX_PAD(0x554, 0x16C, 5, 0x940, 1, MX51_SDHCI_PAD_CTRL)
+ 
+ #define MX51_PAD_NANDF_D8__NANDF_D8			IOMUX_PAD(0x558, 0x170, 0, 0x0, 0, NO_PAD_CTRL)
+ #define MX51_PAD_NANDF_D8__FEC_TDATA0			IOMUX_PAD(0x558, 0x170, 2, 0x0, 0, MX51_FEC_PAD_CTRL)
++#define MX51_PAD_NANDF_D8__SD3_DATA0			IOMUX_PAD(0x558, 0x170, 5, 0x93c, 1, MX51_SDHCI_PAD_CTRL)
+ 
+ #define MX51_PAD_NANDF_D7__NANDF_D7			IOMUX_PAD(0x55C, 0x174, 0, 0x0, 0, NO_PAD_CTRL)
+ #define MX51_PAD_NANDF_D6__NANDF_D6			IOMUX_PAD(0x560, 0x178, 0, 0x0, 0, NO_PAD_CTRL)
 -- 
 1.7.3.4
 
