@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SIPsL-00081J-IZ
- for barebox@lists.infradead.org; Thu, 12 Apr 2012 19:40:14 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1SIPsE-0003De-Gk
- for barebox@lists.infradead.org; Thu, 12 Apr 2012 21:40:06 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.77)
- (envelope-from <sha@pengutronix.de>) id 1SIPsE-0005if-Ev
- for barebox@lists.infradead.org; Thu, 12 Apr 2012 21:40:06 +0200
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SIPsM-0003pP-JG
+ for barebox@lists.infradead.org; Thu, 12 Apr 2012 19:40:16 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 12 Apr 2012 21:40:01 +0200
-Message-Id: <1334259605-21907-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 12 Apr 2012 21:40:04 +0200
+Message-Id: <1334259605-21907-4-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1334259605-21907-1-git-send-email-s.hauer@pengutronix.de>
+References: <1334259605-21907-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,28 +21,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: ehci patches
+Subject: [PATCH 3/4] ARM i.MX53: Setup USB clocks
 To: barebox@lists.infradead.org
 
-The following patches contain some changes for the ehci driver.
-Most interesting for all ehci users is the speed up on initialization
-based on a patch I found on the U-Boot list. Also, the i.MX53 LOCO
-gets USB support.
+- get USB PHY clock from OSC (24MHz)
+- adjust USB clock to 54MHz
 
-Sascha
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/mach-imx/imx53.c |   17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
-----------------------------------------------------------------
-Sascha Hauer (4):
-      USB ehci: make cache handling simpler
-      USB ehci: speed up initialization
-      ARM i.MX53: Setup USB clocks
-      ARM i.MX53 LOCO: Add USB support
+diff --git a/arch/arm/mach-imx/imx53.c b/arch/arm/mach-imx/imx53.c
+index 8742c46..b5dbc39 100644
+--- a/arch/arm/mach-imx/imx53.c
++++ b/arch/arm/mach-imx/imx53.c
+@@ -154,10 +154,15 @@ void imx53_init_lowlevel(unsigned int cpufreq_mhz)
+ 
+ 	writel(0x00016154, ccm + MX5_CCM_CBCMR);
+ 
+-	/* change uart clk parent to pll2 */
+ 	r = readl(ccm + MX5_CCM_CSCMR1);
+-	r &= ~(3 << 24);
+-	r |= (1 << 24);
++
++	/* change uart clk parent to pll2 */
++	r &= ~MX5_CCM_CSCMR1_UART_CLK_SEL_MASK;
++	r |= 1 << MX5_CCM_CSCMR1_UART_CLK_SEL_OFFSET;
++
++	/* USB phy clock from osc */
++	r &= ~(1 << MX5_CCM_CSCMR1_USB_PHY_CLK_SEL_OFFSET);
++
+ 	writel(r, ccm + MX5_CCM_CSCMR1);
+ 
+ 	/* make sure change is effective */
+@@ -187,6 +192,12 @@ void imx53_init_lowlevel(unsigned int cpufreq_mhz)
+ 	r &= ~MX5_CCM_CSCDR1_ESDHC3_MX53_CLK_PODF_MASK;
+ 	r |= 1 << MX5_CCM_CSCDR1_ESDHC3_MX53_CLK_PODF_OFFSET;
+ 
++	r &= ~MX5_CCM_CSCDR1_USBOH3_CLK_PRED_MASK;
++	r &= ~MX5_CCM_CSCDR1_USBOH3_CLK_PODF_MASK;
++
++	r |= 3 << MX5_CCM_CSCDR1_USBOH3_CLK_PRED_OFFSET;
++	r |= 1 << MX5_CCM_CSCDR1_USBOH3_CLK_PODF_OFFSET;
++
+ 	writel(r, ccm + MX5_CCM_CSCDR1);
+ 
+ 	/* Restore the default values in the Gate registers */
+-- 
+1.7.10
 
- arch/arm/boards/freescale-mx53-loco/board.c |   17 +++++
- arch/arm/mach-imx/imx53.c                   |   17 ++++-
- drivers/usb/core/usb.c                      |    2 +-
- drivers/usb/host/ehci-hcd.c                 |   98 +++++++++------------------
- 4 files changed, 63 insertions(+), 71 deletions(-)
 
 _______________________________________________
 barebox mailing list
