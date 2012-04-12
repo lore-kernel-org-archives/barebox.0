@@ -1,13 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SIPsM-00081K-1L
- for barebox@lists.infradead.org; Thu, 12 Apr 2012 19:40:16 +0000
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SIPzi-0004rP-Pv
+ for barebox@lists.infradead.org; Thu, 12 Apr 2012 19:47:51 +0000
+Date: Thu, 12 Apr 2012 21:47:43 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 12 Apr 2012 21:40:03 +0200
-Message-Id: <1334259605-21907-3-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1334259605-21907-1-git-send-email-s.hauer@pengutronix.de>
-References: <1334259605-21907-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20120412194743.GA3852@pengutronix.de>
+References: <1334247624-24896-1-git-send-email-shc_work@mail.ru>
+ <1334247624-24896-2-git-send-email-shc_work@mail.ru>
+ <20120412210415.3a0313e2@eb-e6520>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20120412210415.3a0313e2@eb-e6520>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,66 +20,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] USB ehci: speed up initialization
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/7] i.MX53: Move specific i.MX53 silicon definitions to
+ imx53-regs.h
+To: Eric =?iso-8859-15?Q?B=E9nard?= <eric@eukrea.com>
+Cc: barebox@lists.infradead.org
 
-This is based on the following U-Boot commit:
+On Thu, Apr 12, 2012 at 09:04:15PM +0200, Eric B=E9nard wrote:
+> Le Thu, 12 Apr 2012 20:20:19 +0400,
+> Alexander Shiyan <shc_work@mail.ru> a =E9crit :
+> =
 
-commit 5f4b4f2fed3ab8590c8c06b78642f8c1467acacf
-Author: Vincent Palatin <vpalatin@chromium.org>
-Date:   Mon Dec 5 14:52:22 2011 -0800
+> >  =
 
-    ehci: speed up initialization
+> > +/* silicon revisions specific to i.MX53 */
+> > +#define MX53_CHIP_REV_1_0	0x10
+> > +#define MX53_CHIP_REV_2_0	0x20
+> > +#define MX53_CHIP_REV_2_1	0x21
+> > +
+> >  #endif /* __MACH_IMX53_REGS_H */
+> >  =
 
-    According to EHCI specification v1.0, the controller should stabilize
-    the power on a port at most 20 ms after the port power bit transition.
-    So, we put this setting in the virtual descriptor corresponding field,
-    (bPwrOn2PwrGood = 10 => 10 x 2ms = 20ms), this saves about 500ms at each
-    controller initialization/enumeration.
+> =
 
-    Signed-off-by: Vincent Palatin <vpalatin@chromium.org>
+> The goal was to move chip revision to imx-regs.h and remove them from
+> other files (as MX25/35/51/53 seems to share the same pattern for chip
+> revision)
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/usb/core/usb.c      |    2 +-
- drivers/usb/host/ehci-hcd.c |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+Or to put it differently you should instead let i.MX51 use the
+IMX_CHIP_REV_* macros instead of MX51_CHIP_REV_*
 
-diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
-index 7039a2c..ba23e0e 100644
---- a/drivers/usb/core/usb.c
-+++ b/drivers/usb/core/usb.c
-@@ -934,8 +934,8 @@ static void usb_hub_power_on(struct usb_hub_device *hub)
- 	for (i = 0; i < dev->maxchild; i++) {
- 		usb_set_port_feature(dev, i + 1, USB_PORT_FEAT_POWER);
- 		USB_HUB_PRINTF("port %d returns %lX\n", i + 1, dev->status);
--		wait_ms(hub->desc.bPwrOn2PwrGood * 2);
- 	}
-+	mdelay(20);
- }
- 
- #define MAX_TRIES 5
-diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-index 505d919..ae2b41e 100644
---- a/drivers/usb/host/ehci-hcd.c
-+++ b/drivers/usb/host/ehci-hcd.c
-@@ -64,7 +64,7 @@ static struct descriptor {
- 		0x29,		/* bDescriptorType: hub descriptor */
- 		2,		/* bNrPorts -- runtime modified */
- 		0,		/* wHubCharacteristics */
--		0xff,		/* bPwrOn2PwrGood */
-+		10,		/* bPwrOn2PwrGood */
- 		0,		/* bHubCntrCurrent */
- 		{},		/* Device removable */
- 		{}		/* at most 7 ports! XXX */
--- 
-1.7.10
+Sascha
 
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
