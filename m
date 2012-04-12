@@ -1,19 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 14.mo3.mail-out.ovh.net ([188.165.43.98]
- helo=mo3.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SIKqJ-0005TS-Cz
- for barebox@lists.infradead.org; Thu, 12 Apr 2012 14:17:48 +0000
-Received: from mail622.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id EDFE3FF96FE
- for <barebox@lists.infradead.org>; Thu, 12 Apr 2012 16:18:48 +0200 (CEST)
-Date: Thu, 12 Apr 2012 16:00:12 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120412140012.GD11079@game.jcrosoft.org>
-References: <20120412144642.6bcb52c6@eb-e6520>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20120412144642.6bcb52c6@eb-e6520>
+Received: from smtp12.mail.ru ([94.100.176.89])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SIMiN-0002e1-Eh
+ for barebox@lists.infradead.org; Thu, 12 Apr 2012 16:17:46 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Thu, 12 Apr 2012 20:20:24 +0400
+Message-Id: <1334247624-24896-7-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1334247624-24896-1-git-send-email-shc_work@mail.ru>
+References: <1334247624-24896-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,31 +16,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: gpio_keys & gpio_request
-To: Eric =?iso-8859-1?Q?B=E9nard?= <eric@eukrea.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 7/7] i.MX51: Add support for SDHC3
+To: barebox@lists.infradead.org
 
-On 14:46 Thu 12 Apr     , Eric B=E9nard wrote:
-> Hi,
-> =
 
-> gpio_keys.c is using gpio_request which is only defined in
-> arch/arm/mach-at91/include/mach/gpio.h
-> so enabling this driver fails when we are not building barebox for
-> an at91 : is that expected ?
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+---
+ arch/arm/mach-imx/include/mach/devices-imx51.h |    5 +++++
+ 1 files changed, 5 insertions(+), 0 deletions(-)
 
-gpio_request is normal so we need to fix the other gpio drivers
+diff --git a/arch/arm/mach-imx/include/mach/devices-imx51.h b/arch/arm/mach-imx/include/mach/devices-imx51.h
+index 27fcaa2..6218299 100644
+--- a/arch/arm/mach-imx/include/mach/devices-imx51.h
++++ b/arch/arm/mach-imx/include/mach/devices-imx51.h
+@@ -57,6 +57,11 @@ static inline struct device_d *imx51_add_mmc1(struct esdhc_platform_data *pdata)
+ 	return imx_add_esdhc((void *)MX51_MMC_SDHC2_BASE_ADDR, 1, pdata);
+ }
+ 
++static inline struct device_d *imx51_add_mmc2(struct esdhc_platform_data *pdata)
++{
++	return imx_add_esdhc((void *)MX51_MMC_SDHC3_BASE_ADDR, 2, pdata);
++}
++
+ static inline struct device_d *imx51_add_nand(struct imx_nand_platform_data *pdata)
+ {
+ 	struct resource res[] = {
+-- 
+1.7.3.4
 
-I've some patch to update the atmel gpio to implement the gpio_request to m=
-ux
-the pin as gpio.
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
