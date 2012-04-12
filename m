@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SIQLk-00007R-TC
- for barebox@lists.infradead.org; Thu, 12 Apr 2012 20:10:37 +0000
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SIQLg-0001kV-Nm
+ for barebox@lists.infradead.org; Thu, 12 Apr 2012 20:10:33 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1SIQLX-0004bJ-8s
+ for barebox@lists.infradead.org; Thu, 12 Apr 2012 22:10:23 +0200
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.77)
+ (envelope-from <sha@pengutronix.de>) id 1SIQLX-00018C-7g
+ for barebox@lists.infradead.org; Thu, 12 Apr 2012 22:10:23 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 12 Apr 2012 22:10:19 +0200
-Message-Id: <1334261421-4194-3-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1334261421-4194-1-git-send-email-s.hauer@pengutronix.de>
-References: <1334261421-4194-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 12 Apr 2012 22:10:17 +0200
+Message-Id: <1334261421-4194-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,54 +26,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] ARM i.MX iomux-v3: one bit more for pad_ctl
+Subject: ARM i.MX5: Sync iomux to kernel
 To: barebox@lists.infradead.org
 
-i.MX6 needs one bit more for PAD_CTRL, so make one free.
+This patch updates the i.MX iomux-v3 to the kernel.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/mach-imx/include/mach/iomux-v3.h |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+Sascha Hauer (4):
+      ARM i.MX iomux-v3: Sync to kernel
+      ARM i.MX iomux-v3: one bit more for pad_ctl
+      ARM i.MX51 iomux: sync to kernel
+      ARM i.MX53 iomux: sync to kernel
 
-diff --git a/arch/arm/mach-imx/include/mach/iomux-v3.h b/arch/arm/mach-imx/include/mach/iomux-v3.h
-index f2f0ccf..2c92342 100644
---- a/arch/arm/mach-imx/include/mach/iomux-v3.h
-+++ b/arch/arm/mach-imx/include/mach/iomux-v3.h
-@@ -48,8 +48,8 @@
-  * PAD_CTRL_OFS:	   12..23 (12)
-  * SEL_INPUT_OFS:	   24..35 (12)
-  * MUX_MODE + SION:	   36..40  (5)
-- * PAD_CTRL + NO_PAD_CTRL: 41..57 (17)
-- * SEL_INP:		   58..61  (4)
-+ * PAD_CTRL + NO_PAD_CTRL: 41..58 (18)
-+ * SEL_INP:		   59..62  (4)
-  * reserved:		     63    (1)
- */
- 
-@@ -65,8 +65,8 @@ typedef u64 iomux_v3_cfg_t;
- #define MUX_MODE_SHIFT		36
- #define MUX_MODE_MASK		((iomux_v3_cfg_t)0x1f << MUX_MODE_SHIFT)
- #define MUX_PAD_CTRL_SHIFT	41
--#define MUX_PAD_CTRL_MASK	((iomux_v3_cfg_t)0x1ffff << MUX_PAD_CTRL_SHIFT)
--#define MUX_SEL_INPUT_SHIFT	58
-+#define MUX_PAD_CTRL_MASK	((iomux_v3_cfg_t)0x3ffff << MUX_PAD_CTRL_SHIFT)
-+#define MUX_SEL_INPUT_SHIFT	59
- #define MUX_SEL_INPUT_MASK	((iomux_v3_cfg_t)0xf << MUX_SEL_INPUT_SHIFT)
- 
- #define MUX_PAD_CTRL(x)		((iomux_v3_cfg_t)(x) << MUX_PAD_CTRL_SHIFT)
-@@ -85,7 +85,7 @@ typedef u64 iomux_v3_cfg_t;
-  * Use to set PAD control
-  */
- 
--#define NO_PAD_CTRL			(1 << 16)
-+#define NO_PAD_CTRL			(1 << 17)
- #define PAD_CTL_DVS			(1 << 13)
- #define PAD_CTL_HYS			(1 << 8)
- 
--- 
-1.7.10
-
+ arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c |    2 +-
+ arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c |    2 +-
+ arch/arm/boards/eukrea_cpuimx51/eukrea_cpuimx51.c |    2 +-
+ arch/arm/boards/freescale-mx25-3-stack/3stack.c   |    2 +-
+ arch/arm/boards/freescale-mx35-3-stack/3stack.c   |    2 +-
+ arch/arm/boards/freescale-mx51-pdk/board.c        |   16 +-
+ arch/arm/boards/freescale-mx53-loco/board.c       |    2 +-
+ arch/arm/boards/freescale-mx53-smd/board.c        |    2 +-
+ arch/arm/boards/guf-cupid/board.c                 |    2 +-
+ arch/arm/boards/karo-tx25/board.c                 |    6 +-
+ arch/arm/boards/pcm043/pcm043.c                   |    2 +-
+ arch/arm/boards/tqma53/board.c                    |    2 +-
+ arch/arm/mach-imx/include/mach/iomux-mx51.h       | 1133 +++++++++++++++------
+ arch/arm/mach-imx/include/mach/iomux-mx53.h       |    8 +-
+ arch/arm/mach-imx/include/mach/iomux-v3.h         |   78 +-
+ arch/arm/mach-imx/iomux-v3.c                      |   40 +-
+ 16 files changed, 892 insertions(+), 409 deletions(-)
 
 _______________________________________________
 barebox mailing list
