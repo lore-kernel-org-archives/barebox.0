@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SIfuT-0000ou-KJ
- for barebox@lists.infradead.org; Fri, 13 Apr 2012 12:47:30 +0000
-Date: Fri, 13 Apr 2012 14:47:18 +0200
+ id 1SIfug-0000xr-5J
+ for barebox@lists.infradead.org; Fri, 13 Apr 2012 12:47:42 +0000
+Date: Fri, 13 Apr 2012 14:47:35 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120413124718.GL3852@pengutronix.de>
-References: <1334313886-29058-1-git-send-email-w.sang@pengutronix.de>
+Message-ID: <20120413124735.GM3852@pengutronix.de>
+References: <20120413101046.GF11079@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1334313886-29058-1-git-send-email-w.sang@pengutronix.de>
+In-Reply-To: <20120413101046.GF11079@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,39 +22,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] arm: tx28: select OCOTP driver
-To: Wolfram Sang <w.sang@pengutronix.de>
+Subject: Re: [PATCH 0/2] zImage fix
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Apr 13, 2012 at 12:44:46PM +0200, Wolfram Sang wrote:
-> Compile fixes unknown symbol 'mxs_ocotp_read' for tx28 defconfig. Since
-> the vendor stores the MAC address in OCOTP, we always want this driver.
+On Fri, Apr 13, 2012 at 12:10:46PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> HI,
 > 
-> Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
+> 	fix zImage support when a oftree is concataned
+> 
+> 	if the oftree is enabled used it
+> 	otherwise just copy it
+> 
+> The following changes since commit d034757079c34d6ce258c1fd08f0bb1352e75622:
+> 
+>   arm: add Android boot image support (2012-04-13 18:13:53 +0800)
+> 
+> are available in the git repository at:
+> 
+>   git://git.jcrosoft.org/barebox.git zImage
+> 
+> for you to fetch changes up to cc80bdcb3991f995091697c035d156e1f03c6a35:
+> 
+>   arm: bootm: zImage allow to use the concataned oftree (2012-04-13 18:22:36 +0800)
 
-Applied, thanks
+Applied, thanks.
 
 Sascha
 
-> ---
->  arch/arm/mach-mxs/Kconfig |    1 +
->  1 file changed, 1 insertion(+)
 > 
-> diff --git a/arch/arm/mach-mxs/Kconfig b/arch/arm/mach-mxs/Kconfig
-> index 4c869dc..3348a3c 100644
-> --- a/arch/arm/mach-mxs/Kconfig
-> +++ b/arch/arm/mach-mxs/Kconfig
-> @@ -91,6 +91,7 @@ choice
->  
->  config MACH_TX28STK5
->  	bool "TX28-stk5"
-> +	select MXS_OCOTP
->  	help
->  	  Select this entry if you are running the TX28 CPU module on the
->  	  KARO TX28 Starterkit5.
-> -- 
-> 1.7.9.5
+> ----------------------------------------------------------------
+> Jean-Christophe PLAGNIOL-VILLARD (2):
+>       arm: fix zImage support when a oftree is concatenated
+>       arm: bootm: zImage allow to use the concataned oftree
 > 
+>  arch/arm/lib/bootm.c |   69 ++++++++++++++++++++++++++++++++++++++++++++++++++
+>  1 files changed, 69 insertions(+), 0 deletions(-)
+> 
+> 
+> Best Regards,
+> J.
 > 
 > _______________________________________________
 > barebox mailing list
