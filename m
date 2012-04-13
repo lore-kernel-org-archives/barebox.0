@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SIdNu-0000AW-1K
- for barebox@lists.infradead.org; Fri, 13 Apr 2012 10:05:46 +0000
-Date: Fri, 13 Apr 2012 12:05:23 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120413100523.GJ3852@pengutronix.de>
-References: <alpine.DEB.2.02.1202101752190.15811@oneiric>
- <CAO-mwNdrCAGs7qN2OHvWmC50s_gquMKk5TGcFbrSNu1=-Z=iqA@mail.gmail.com>
+Received: from 14.mo3.mail-out.ovh.net ([188.165.43.98]
+ helo=mo3.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1SIdjw-00048N-4D
+ for barebox@lists.infradead.org; Fri, 13 Apr 2012 10:28:28 +0000
+Received: from mail622.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 8E097FF85F7
+ for <barebox@lists.infradead.org>; Fri, 13 Apr 2012 12:29:33 +0200 (CEST)
+Date: Fri, 13 Apr 2012 12:10:46 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20120413101046.GF11079@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAO-mwNdrCAGs7qN2OHvWmC50s_gquMKk5TGcFbrSNu1=-Z=iqA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,48 +24,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Add support for OMAP4460 revision detection.
-To: Anand Gadiyar <gadiyar@gmail.com>
-Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: [PATCH 0/2] zImage fix
+To: barebox@lists.infradead.org
 
-On Fri, Apr 13, 2012 at 03:24:37PM +0530, Anand Gadiyar wrote:
-> On Sat, Feb 11, 2012 at 4:23 AM, Robert P. J. Day <rpjday@crashcourse.ca>wrote:
-> 
-> >
-> >
-> >  Without yet adding in the underlying code, extend the revision
-> > checking code to return additional values for PandaBoard ES boards.
-> > Much of the code was taken close to verbatim from U-Boot.
-> >
-> > Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
-> >
-> > --
-> >
-> 
->  compile tested, and confirmed that this code behaves identically to
-> > the original panda configure and build for the three pandas i have:
-> >
-> >  * Rev A2 (boots)
-> >  * Rev EA3 (boots)
-> >  * Rev B1 ES (no output)
-> >
-> > so while there's still work to be done, this at least represents the
-> > necessary infrastructure to start *recognizing* panda ES boards.
-> >
-> >
-> For what it's worth,
-> 
-> Tested-by: Anand Gadiyar <gadiyar@ti.com>
+HI,
 
-Thanks for testing. I forgot about this one, but I applied it now.
+	fix zImage support when a oftree is concataned
 
-Sascha
+	if the oftree is enabled used it
+	otherwise just copy it
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+The following changes since commit d034757079c34d6ce258c1fd08f0bb1352e75622:
+
+  arm: add Android boot image support (2012-04-13 18:13:53 +0800)
+
+are available in the git repository at:
+
+  git://git.jcrosoft.org/barebox.git zImage
+
+for you to fetch changes up to cc80bdcb3991f995091697c035d156e1f03c6a35:
+
+  arm: bootm: zImage allow to use the concataned oftree (2012-04-13 18:22:36 +0800)
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (2):
+      arm: fix zImage support when a oftree is concatenated
+      arm: bootm: zImage allow to use the concataned oftree
+
+ arch/arm/lib/bootm.c |   69 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 69 insertions(+), 0 deletions(-)
+
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
