@@ -1,16 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp3-g21.free.fr ([2a01:e0c:1:1599::12])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SInmz-0004uE-M4
- for barebox@lists.infradead.org; Fri, 13 Apr 2012 21:12:19 +0000
-Date: Fri, 13 Apr 2012 23:12:06 +0200
-From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
-Message-ID: <20120413231206.555628dd@eb-e6520>
-In-Reply-To: <F9C551623D2CBB4C9488801D14F864C614BE42@ex-mb1.corp.adtran.com>
-References: <F9C551623D2CBB4C9488801D14F864C614B2F7@ex-mb1.corp.adtran.com>
- <20120413202303.GT3852@pengutronix.de>
- <F9C551623D2CBB4C9488801D14F864C614BE42@ex-mb1.corp.adtran.com>
-Mime-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SIonr-0008Aj-Ls
+ for barebox@lists.infradead.org; Fri, 13 Apr 2012 22:17:16 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <wsa@pengutronix.de>) id 1SIonm-0001Rh-E2
+ for barebox@lists.infradead.org; Sat, 14 Apr 2012 00:17:10 +0200
+Received: from wsa by dude.hi.pengutronix.de with local (Exim 4.77)
+ (envelope-from <wsa@pengutronix.de>) id 1SIonm-0008Ks-Cu
+ for barebox@lists.infradead.org; Sat, 14 Apr 2012 00:17:10 +0200
+Date: Sat, 14 Apr 2012 00:17:10 +0200
+From: Wolfram Sang <w.sang@pengutronix.de>
+Message-ID: <20120413221710.GB26836@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,50 +22,66 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/mixed; boundary="===============8525577551409643390=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: I want to use Barebox
-To: ANDY KENNEDY <ANDY.KENNEDY@adtran.com>
-Cc: barebox@lists.infradead.org
+Subject: IMX_IIM on which SoCs?
+To: barebox@lists.infradead.org
 
-Hi Andy,
 
-Le Fri, 13 Apr 2012 20:38:12 +0000,
-ANDY KENNEDY <ANDY.KENNEDY@adtran.com> a =E9crit :
+--===============8525577551409643390==
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="rS8CxjVDS/+yyDmU"
+Content-Disposition: inline
 
-> > > 1)  I have a concern that barebox is not mainstream enough yet.
-> > =
 
-> > Well by using it you could make it a bit more mainstream ;)
-> =
+--rS8CxjVDS/+yyDmU
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> Hmmm.  That will be an UP HILL battle for me, I'm sure.  Are there any
-> stats on how many folks / who all uses Barebox currently?
-> =
 
-we are using it on all our i.MX based SOM (i.MX25/35/51/53), and have
-been using it in several custom product developped (mainly i.MX & AT91
-based, some of them being in production) for customers (in one product
-the bootloader is even still named u-boot-v2 as the code for i.MX27 was
-already in a very good shape at that time ;-)
+I just stumbled over commit 97c37f4014b0e3bacf31fe5b6ba890cc7f465838 which
+changes this:
 
-In the past, RedBoot was often available in official BSPs and at that
-time some people had the same hesitation to use the community u-boot
-instead of the manufacturer's RedBoot ... and after a few years u-boot
-became the de facto standard bootloader for many official BSP.
+-       depends on ARCH_IMX25 || ARCH_IMX35
++       depends on !ARCH_IMX21 && !ARCH_IMX21
 
-Moreover, some manufacturer's BSP can be quite hard to adapt to a
-custom hardware which is not the exact copy of the evaluation board,
-but of course, for a manager, using an official BSP gives a feeling of
-security and seems to be the obvious choice (even if the official BSP is
-not maintained once it's available and not really validated outside the
-case of one evaluation board) ...
+The double !ARCH_IMX21 looks fishy. Can't tell if the second IMX21 should
+have been something else.
 
-Eric
+Regards,
+
+   Wolfram
+
+--=20
+Pengutronix e.K.                           | Wolfram Sang                |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+
+--rS8CxjVDS/+yyDmU
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iEYEARECAAYFAk+IpeYACgkQD27XaX1/VRsVdQCdGTYDYNYagsXSuPuFsxNcoeRp
+NKwAnifTz4K2iw0GjAHaKXW9SdHmR2yt
+=yaqZ
+-----END PGP SIGNATURE-----
+
+--rS8CxjVDS/+yyDmU--
+
+
+--===============8525577551409643390==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============8525577551409643390==--
