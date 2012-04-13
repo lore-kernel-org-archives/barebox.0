@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SIgxY-0004vo-B9
- for barebox@lists.infradead.org; Fri, 13 Apr 2012 13:54:45 +0000
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SIgxh-0007XD-9y
+ for barebox@lists.infradead.org; Fri, 13 Apr 2012 13:54:54 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 13 Apr 2012 15:54:33 +0200
-Message-Id: <1334325273-1701-8-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 13 Apr 2012 15:54:29 +0200
+Message-Id: <1334325273-1701-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1334325273-1701-1-git-send-email-s.hauer@pengutronix.de>
 References: <1334325273-1701-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,90 +21,93 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/7] ARM Freescale i.MX6 Armadillo2: Add defconfig
+Subject: [PATCH 3/7] net fec: Add i.MX6 support
 To: barebox@lists.infradead.org
+
+Currently only 100Mb/s is tested. Freescale's U-Boot suggests that
+there are some additional adjustments necessary for Gigabit support.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/configs/freescale-mx6-arm2_defconfig |   69 +++++++++++++++++++++++++
- 1 file changed, 69 insertions(+)
- create mode 100644 arch/arm/configs/freescale-mx6-arm2_defconfig
+ drivers/net/fec_imx.c |   25 ++++++++++++++++++++++---
+ include/fec.h         |    1 +
+ 2 files changed, 23 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/configs/freescale-mx6-arm2_defconfig b/arch/arm/configs/freescale-mx6-arm2_defconfig
-new file mode 100644
-index 0000000..c150cc7
---- /dev/null
-+++ b/arch/arm/configs/freescale-mx6-arm2_defconfig
-@@ -0,0 +1,69 @@
-+CONFIG_ARCH_IMX=y
-+CONFIG_ARCH_IMX6=y
-+CONFIG_IMX_IIM=y
-+CONFIG_IMX_IIM_FUSE_BLOW=y
-+CONFIG_AEABI=y
-+CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_ARM_UNWIND=y
-+CONFIG_MMU=y
-+CONFIG_MALLOC_SIZE=0x8000000
-+CONFIG_MALLOC_TLSF=y
-+CONFIG_KALLSYMS=y
-+CONFIG_LONGHELP=y
-+CONFIG_GLOB=y
-+CONFIG_HUSH_FANCY_PROMPT=y
-+CONFIG_CMDLINE_EDITING=y
-+CONFIG_AUTO_COMPLETE=y
-+CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
-+CONFIG_DEFAULT_ENVIRONMENT_PATH="defaultenv arch/arm/boards/freescale-mx6-arm2/env/"
-+CONFIG_DEBUG_INFO=y
-+CONFIG_CMD_EDIT=y
-+CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_SAVEENV=y
-+CONFIG_CMD_EXPORT=y
-+CONFIG_CMD_PRINTENV=y
-+CONFIG_CMD_READLINE=y
-+CONFIG_CMD_TIME=y
-+CONFIG_CMD_ECHO_E=y
-+CONFIG_CMD_MEMINFO=y
-+CONFIG_CMD_IOMEM=y
-+CONFIG_CMD_FLASH=y
-+CONFIG_CMD_BOOTM_SHOW_TYPE=y
-+CONFIG_CMD_BOOTM_VERBOSE=y
-+CONFIG_CMD_BOOTM_INITRD=y
-+CONFIG_CMD_BOOTM_OFTREE=y
-+CONFIG_CMD_BOOTM_OFTREE_UIMAGE=y
-+CONFIG_CMD_UIMAGE=y
-+# CONFIG_CMD_BOOTZ is not set
-+# CONFIG_CMD_BOOTU is not set
-+CONFIG_CMD_RESET=y
-+CONFIG_CMD_GO=y
-+CONFIG_CMD_TIMEOUT=y
-+CONFIG_CMD_PARTITION=y
-+CONFIG_CMD_MAGICVAR=y
-+CONFIG_CMD_MAGICVAR_HELP=y
-+CONFIG_CMD_GPIO=y
-+CONFIG_CMD_UNCOMPRESS=y
-+CONFIG_NET=y
-+CONFIG_NET_DHCP=y
-+CONFIG_NET_NFS=y
-+CONFIG_NET_PING=y
-+CONFIG_NET_TFTP=y
-+CONFIG_NET_TFTP_PUSH=y
-+CONFIG_NET_NETCONSOLE=y
-+CONFIG_DRIVER_NET_FEC_IMX=y
-+CONFIG_NET_USB=y
-+CONFIG_NET_USB_ASIX=y
-+CONFIG_NET_USB_SMSC95XX=y
-+# CONFIG_SPI is not set
-+CONFIG_USB=y
-+CONFIG_USB_EHCI=y
-+CONFIG_USB_STORAGE=y
-+CONFIG_MCI=y
-+CONFIG_MCI_STARTUP=y
-+CONFIG_MCI_IMX_ESDHC=y
-+CONFIG_FS_FAT=y
-+CONFIG_FS_FAT_WRITE=y
-+CONFIG_FS_FAT_LFN=y
-+CONFIG_ZLIB=y
-+CONFIG_LZO_DECOMPRESS=y
+diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
+index 08cd761..599a9b4 100644
+--- a/drivers/net/fec_imx.c
++++ b/drivers/net/fec_imx.c
+@@ -274,7 +274,7 @@ static int fec_set_hwaddr(struct eth_device *dev, unsigned char *mac)
+ static int fec_init(struct eth_device *dev)
+ {
+ 	struct fec_priv *fec = (struct fec_priv *)dev->priv;
+-	u32 rcntl;
++	u32 rcntl, xwmrk;
+ 
+ 	/*
+ 	 * Clear FEC-Lite interrupt event register(IEVENT)
+@@ -317,13 +317,25 @@ static int fec_init(struct eth_device *dev)
+ 			writel(FEC_MIIGSK_ENR_EN, fec->regs + FEC_MIIGSK_ENR);
+ 		}
+ 	}
++
++	if (fec->xcv_type == RGMII)
++		rcntl |= 1 << 6;
++
+ 	writel(rcntl, fec->regs + FEC_R_CNTRL);
+ 
+ 	/*
+ 	 * Set Opcode/Pause Duration Register
+ 	 */
+ 	writel(0x00010020, fec->regs + FEC_OP_PAUSE);
+-	writel(0x2, fec->regs + FEC_X_WMRK);
++
++	xwmrk = 0x2;
++
++	/* set ENET tx at store and forward mode */
++	if (cpu_is_mx6())
++		xwmrk |= 1 << 8;
++
++	writel(xwmrk, fec->regs + FEC_X_WMRK);
++
+ 	/*
+ 	 * Set multicast address filter
+ 	 */
+@@ -349,6 +361,7 @@ static int fec_open(struct eth_device *edev)
+ {
+ 	struct fec_priv *fec = (struct fec_priv *)edev->priv;
+ 	int ret;
++	u32 ecr;
+ 
+ 	/*
+ 	 * Initialize RxBD/TxBD rings
+@@ -363,7 +376,13 @@ static int fec_open(struct eth_device *edev)
+ 	/*
+ 	 * Enable FEC-Lite controller
+ 	 */
+-	writel(FEC_ECNTRL_ETHER_EN, fec->regs + FEC_ECNTRL);
++	ecr = FEC_ECNTRL_ETHER_EN;
++
++	/* Enable Swap to support little-endian device */
++	if (cpu_is_mx6())
++		ecr |= 0x100;
++
++	writel(ecr, fec->regs + FEC_ECNTRL);
+ 	/*
+ 	 * Enable SmartDMA receive task
+ 	 */
+diff --git a/include/fec.h b/include/fec.h
+index 85691b6..f56b023 100644
+--- a/include/fec.h
++++ b/include/fec.h
+@@ -33,6 +33,7 @@ typedef enum {
+ 	MII10,
+ 	MII100,
+ 	RMII,
++	RGMII,
+ } xceiver_type;
+ 
+ /*
 -- 
 1.7.10
 
